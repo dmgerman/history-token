@@ -1,11 +1,26 @@
 macro_line|#ifndef PWC_IOCTL_H
 DECL|macro|PWC_IOCTL_H
 mdefine_line|#define PWC_IOCTL_H
-multiline_comment|/* (C) 2001-2003 Nemosoft Unv.    webcam@smcc.demon.nl&n;   &n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
-multiline_comment|/*         This is pwc-ioctl.h belonging to PWC 8.10                        */
-multiline_comment|/* &n;   Changes&n;   2001/08/03  Alvarado   Added ioctl constants to access methods for &n;                          changing white balance and red/blue gains&n;   2002/12/15  G. H. Fernandez-Toribio   VIDIOCGREALSIZE&n; */
-multiline_comment|/* These are private ioctl() commands, specific for the Philips webcams.&n;   They contain functions not found in other webcams, and settings not&n;   specified in the Video4Linux API. &n;   &n;   The #define names are built up like follows:&n;   VIDIOC&t;&t;VIDeo IOCtl prefix&n;         PWC&t;&t;Philps WebCam&n;            G           optional: Get&n;            S           optional: Set&n;             ... &t;the function&n; */
-multiline_comment|/* The frame rate is encoded in the video_window.flags parameter using&n;   the upper 16 bits, since some flags are defined nowadays. The following&n;   defines provide a mask and shift to filter out this value.&n;   &n;   In &squot;Snapshot&squot; mode the camera freezes its automatic exposure and colour &n;   balance controls.&n; */
+multiline_comment|/* (C) 2001-2004 Nemosoft Unv.    webcam@smcc.demon.nl&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+multiline_comment|/* This is pwc-ioctl.h belonging to PWC 8.12.1&n;   It contains structures and defines to communicate from user space&n;   directly to the driver.&n; */
+multiline_comment|/*&n;   Changes&n;   2001/08/03  Alvarado   Added ioctl constants to access methods for&n;                          changing white balance and red/blue gains&n;   2002/12/15  G. H. Fernandez-Toribio   VIDIOCGREALSIZE&n;   2003/12/13  Nemosft Unv. Some modifications to make interfacing to&n;               PWCX easier&n; */
+multiline_comment|/* These are private ioctl() commands, specific for the Philips webcams.&n;   They contain functions not found in other webcams, and settings not&n;   specified in the Video4Linux API.&n;&n;   The #define names are built up like follows:&n;   VIDIOC&t;&t;VIDeo IOCtl prefix&n;         PWC&t;&t;Philps WebCam&n;            G           optional: Get&n;            S           optional: Set&n;             ... &t;the function&n; */
+multiline_comment|/* Enumeration of image sizes */
+DECL|macro|PSZ_SQCIF
+mdefine_line|#define PSZ_SQCIF&t;0x00
+DECL|macro|PSZ_QSIF
+mdefine_line|#define PSZ_QSIF&t;0x01
+DECL|macro|PSZ_QCIF
+mdefine_line|#define PSZ_QCIF&t;0x02
+DECL|macro|PSZ_SIF
+mdefine_line|#define PSZ_SIF&t;&t;0x03
+DECL|macro|PSZ_CIF
+mdefine_line|#define PSZ_CIF&t;&t;0x04
+DECL|macro|PSZ_VGA
+mdefine_line|#define PSZ_VGA&t;&t;0x05
+DECL|macro|PSZ_MAX
+mdefine_line|#define PSZ_MAX&t;&t;6
+multiline_comment|/* The frame rate is encoded in the video_window.flags parameter using&n;   the upper 16 bits, since some flags are defined nowadays. The following&n;   defines provide a mask and shift to filter out this value.&n;&n;   In &squot;Snapshot&squot; mode the camera freezes its automatic exposure and colour&n;   balance controls.&n; */
 DECL|macro|PWC_FPS_SHIFT
 mdefine_line|#define PWC_FPS_SHIFT&t;&t;16
 DECL|macro|PWC_FPS_MASK
@@ -14,6 +29,27 @@ DECL|macro|PWC_FPS_FRMASK
 mdefine_line|#define PWC_FPS_FRMASK&t;&t;0x003F0000
 DECL|macro|PWC_FPS_SNAPSHOT
 mdefine_line|#define PWC_FPS_SNAPSHOT&t;0x00400000
+multiline_comment|/* structure for transfering x &amp; y coordinates */
+DECL|struct|pwc_coord
+r_struct
+id|pwc_coord
+(brace
+DECL|member|x
+DECL|member|y
+r_int
+id|x
+comma
+id|y
+suffix:semicolon
+multiline_comment|/* guess what */
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+multiline_comment|/* size, or offset */
+)brace
+suffix:semicolon
+multiline_comment|/* Used with VIDIOCPWCPROBE */
 DECL|struct|pwc_probe
 r_struct
 id|pwc_probe
@@ -29,6 +65,20 @@ DECL|member|type
 r_int
 id|type
 suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pwc_serial
+r_struct
+id|pwc_serial
+(brace
+DECL|member|serial
+r_char
+id|serial
+(braket
+l_int|30
+)braket
+suffix:semicolon
+multiline_comment|/* String with serial number. Contains terminating 0 */
 )brace
 suffix:semicolon
 multiline_comment|/* pwc_whitebalance.mode values */
@@ -123,7 +173,7 @@ DECL|macro|PWC_MPT_TILT
 mdefine_line|#define PWC_MPT_TILT&t;&t;0x02
 DECL|macro|PWC_MPT_TIMEOUT
 mdefine_line|#define PWC_MPT_TIMEOUT&t;&t;0x04 /* for status */
-multiline_comment|/* Set angles; when absolute = 1, the angle is absolute and the &n;   driver calculates the relative offset for you. This can only&n;   be used with VIDIOCPWCSANGLE; VIDIOCPWCGANGLE always returns&n;   absolute angles.&n; */
+multiline_comment|/* Set angles; when absolute != 0, the angle is absolute and the &n;   driver calculates the relative offset for you. This can only&n;   be used with VIDIOCPWCSANGLE; VIDIOCPWCGANGLE always returns&n;   absolute angles.&n; */
 DECL|struct|pwc_mpt_angles
 r_struct
 id|pwc_mpt_angles
@@ -143,14 +193,9 @@ r_int
 id|tilt
 suffix:semicolon
 multiline_comment|/* degress * 100 */
-DECL|member|zoom
-r_int
-id|zoom
-suffix:semicolon
-multiline_comment|/* N/A, set to -1 */
 )brace
 suffix:semicolon
-multiline_comment|/* Range of angles of the camera, both horizontally and vertically.&n;   The zoom is not used, maybe in the future...&n;&n; */
+multiline_comment|/* Range of angles of the camera, both horizontally and vertically.&n; */
 DECL|struct|pwc_mpt_range
 r_struct
 id|pwc_mpt_range
@@ -170,14 +215,6 @@ id|tilt_min
 comma
 id|tilt_max
 suffix:semicolon
-DECL|member|zoom_min
-DECL|member|zoom_max
-r_int
-id|zoom_min
-comma
-id|zoom_max
-suffix:semicolon
-multiline_comment|/* -1, -1 */
 )brace
 suffix:semicolon
 DECL|struct|pwc_mpt_status
@@ -198,6 +235,62 @@ id|time_tilt
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* This is used for out-of-kernel decompression. With it, you can get&n;   all the necessary information to initialize and use the decompressor&n;   routines in standalone applications.&n; */
+DECL|struct|pwc_video_command
+r_struct
+id|pwc_video_command
+(brace
+DECL|member|type
+r_int
+id|type
+suffix:semicolon
+multiline_comment|/* camera type (645, 675, 730, etc.) */
+DECL|member|release
+r_int
+id|release
+suffix:semicolon
+multiline_comment|/* release number */
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+multiline_comment|/* one of PSZ_* */
+DECL|member|alternate
+r_int
+id|alternate
+suffix:semicolon
+DECL|member|command_len
+r_int
+id|command_len
+suffix:semicolon
+multiline_comment|/* length of USB video command */
+DECL|member|command_buf
+r_int
+r_char
+id|command_buf
+(braket
+l_int|13
+)braket
+suffix:semicolon
+multiline_comment|/* Actual USB video command */
+DECL|member|bandlength
+r_int
+id|bandlength
+suffix:semicolon
+multiline_comment|/* &gt;0 = compressed */
+DECL|member|frame_size
+r_int
+id|frame_size
+suffix:semicolon
+multiline_comment|/* Size of one (un)compressed frame */
+)brace
+suffix:semicolon
+multiline_comment|/* Flags for PWCX subroutines. Not all modules honour all flags. */
+DECL|macro|PWCX_FLAG_PLANAR
+mdefine_line|#define PWCX_FLAG_PLANAR&t;0x0001
+DECL|macro|PWCX_FLAG_BAYER
+mdefine_line|#define PWCX_FLAG_BAYER&t;&t;0x0008
+multiline_comment|/* IOCTL definitions */
 multiline_comment|/* Restore user settings */
 DECL|macro|VIDIOCPWCRUSER
 mdefine_line|#define VIDIOCPWCRUSER&t;&t;_IO(&squot;v&squot;, 192)
@@ -214,7 +307,10 @@ mdefine_line|#define VIDIOCPWCSCQUAL&t;&t;_IOW(&squot;v&squot;, 195, int)
 multiline_comment|/* Get preferred compression quality */
 DECL|macro|VIDIOCPWCGCQUAL
 mdefine_line|#define VIDIOCPWCGCQUAL&t;&t;_IOR(&squot;v&squot;, 195, int)
-multiline_comment|/* This is a probe function; since so many devices are supported, it&n;    becomes difficult to include all the names in programs that want to&n;    check for the enhanced Philips stuff. So in stead, try this PROBE;&n;    it returns a structure with the original name, and the corresponding &n;    Philips type.&n;    To use, fill the structure with zeroes, call PROBE and if that succeeds,&n;    compare the name with that returned from VIDIOCGCAP; they should be the&n;    same. If so, you can be assured it is a Philips (OEM) cam and the type&n;    is valid.&n; */
+multiline_comment|/* Retrieve serial number of camera */
+DECL|macro|VIDIOCPWCGSERIAL
+mdefine_line|#define VIDIOCPWCGSERIAL&t;_IOR(&squot;v&squot;, 198, struct pwc_serial)
+multiline_comment|/* This is a probe function; since so many devices are supported, it&n;    becomes difficult to include all the names in programs that want to&n;    check for the enhanced Philips stuff. So in stead, try this PROBE;&n;    it returns a structure with the original name, and the corresponding&n;    Philips type.&n;    To use, fill the structure with zeroes, call PROBE and if that succeeds,&n;    compare the name with that returned from VIDIOCGCAP; they should be the&n;    same. If so, you can be assured it is a Philips (OEM) cam and the type&n;    is valid.&n; */
 DECL|macro|VIDIOCPWCPROBE
 mdefine_line|#define VIDIOCPWCPROBE&t;&t;_IOR(&squot;v&squot;, 199, struct pwc_probe)
 multiline_comment|/* Set AGC (Automatic Gain Control); int &lt; 0 = auto, 0..65535 = fixed */
@@ -275,5 +371,8 @@ DECL|macro|VIDIOCPWCMPTGANGLE
 mdefine_line|#define VIDIOCPWCMPTGANGLE&t;_IOR(&squot;v&squot;, 212, struct pwc_mpt_angles)
 DECL|macro|VIDIOCPWCMPTSTATUS
 mdefine_line|#define VIDIOCPWCMPTSTATUS&t;_IOR(&squot;v&squot;, 213, struct pwc_mpt_status)
+multiline_comment|/* Get the USB set-video command; needed for initializing libpwcx */
+DECL|macro|VIDIOCPWCGVIDCMD
+mdefine_line|#define VIDIOCPWCGVIDCMD&t;_IOR(&squot;v&squot;, 215, struct pwc_video_command)
 macro_line|#endif
 eof

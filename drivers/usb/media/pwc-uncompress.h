@@ -4,8 +4,13 @@ macro_line|#ifndef PWC_UNCOMPRESS_H
 DECL|macro|PWC_UNCOMPRESS_H
 mdefine_line|#define PWC_UNCOMPRESS_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &quot;pwc.h&quot;
+macro_line|#include &quot;pwc-ioctl.h&quot;
+multiline_comment|/* from pwc-dec.h */
+DECL|macro|PWCX_FLAG_PLANAR
+mdefine_line|#define PWCX_FLAG_PLANAR        0x0001
+multiline_comment|/* */
 macro_line|#ifdef __cplusplus
 r_extern
 l_string|&quot;C&quot;
@@ -33,6 +38,9 @@ op_star
 id|init
 )paren
 (paren
+r_int
+id|type
+comma
 r_int
 id|release
 comma
@@ -88,7 +96,7 @@ op_star
 id|dst
 comma
 r_int
-id|planar
+id|flags
 comma
 r_void
 op_star

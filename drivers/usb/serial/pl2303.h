@@ -47,8 +47,14 @@ DECL|macro|SITECOM_VENDOR_ID
 mdefine_line|#define SITECOM_VENDOR_ID&t;0x6189
 DECL|macro|SITECOM_PRODUCT_ID
 mdefine_line|#define SITECOM_PRODUCT_ID&t;0x2068
+multiline_comment|/* Alcatel OT535/735 USB cable */
 DECL|macro|ALCATEL_VENDOR_ID
 mdefine_line|#define ALCATEL_VENDOR_ID&t;0x11f7
 DECL|macro|ALCATEL_PRODUCT_ID
 mdefine_line|#define ALCATEL_PRODUCT_ID&t;0x02df
+multiline_comment|/* Samsung I330 phone cradle */
+DECL|macro|SAMSUNG_VENDOR_ID
+mdefine_line|#define SAMSUNG_VENDOR_ID       0x04e8
+DECL|macro|SAMSUNG_PRODUCT_ID
+mdefine_line|#define SAMSUNG_PRODUCT_ID      0x8001
 eof

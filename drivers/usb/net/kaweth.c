@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
 macro_line|#ifdef DEBUG
 DECL|macro|kaweth_dbg
 mdefine_line|#define kaweth_dbg(format, arg...) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; ,##arg)
@@ -2075,6 +2075,11 @@ id|urb-&gt;status
 op_eq
 op_minus
 id|ECONNABORTED
+op_logical_or
+id|urb-&gt;status
+op_eq
+op_minus
+id|ESHUTDOWN
 )paren
 )paren
 multiline_comment|/* we are killed - set a flag and wake the disconnect handler */

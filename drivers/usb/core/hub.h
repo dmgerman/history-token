@@ -438,6 +438,15 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* status change bitmask */
+DECL|member|change_bits
+r_int
+r_int
+id|change_bits
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* ports with logical connect&n;&t;&t;&t;&t;&t;&t;&t;status change */
 macro_line|#if USB_MAXCHILDREN &gt; 31 /* 8*sizeof(unsigned long) - 1 */
 macro_line|#error event_bits[] is too short!
 macro_line|#endif

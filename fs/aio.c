@@ -2613,6 +2613,13 @@ id|ctx-&gt;wq
 suffix:semicolon
 )brace
 )brace
+DECL|variable|kick_iocb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kick_iocb
+)paren
+suffix:semicolon
 multiline_comment|/* aio_complete&n; *&t;Called when the io request on the given iocb is complete.&n; *&t;Returns true if this is the last user of the request.  The &n; *&t;only other user of the request can be the cancellation code.&n; */
 DECL|function|aio_complete
 r_int
