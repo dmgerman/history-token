@@ -72,6 +72,11 @@ r_int
 op_star
 id|xbow_buf_sync
 suffix:semicolon
+DECL|member|pci_provider
+id|pciio_provider_t
+op_star
+id|pci_provider
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|ioports_to_tlbs_s
