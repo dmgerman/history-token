@@ -6564,8 +6564,6 @@ DECL|macro|TOO_BIG_CHUNKSIZE
 macro_line|#undef TOO_BIG_CHUNKSIZE
 DECL|macro|BAD_CHUNKSIZE
 macro_line|#undef BAD_CHUNKSIZE
-DECL|macro|OUT
-mdefine_line|#define OUT(x) do { err = (x); goto out; } while (0)
 DECL|function|restart_array
 r_static
 r_int
@@ -6579,10 +6577,13 @@ id|mddev
 (brace
 r_int
 id|err
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Complain if it has no devices&n;&t; */
+id|err
+op_assign
+op_minus
+id|ENXIO
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6593,12 +6594,8 @@ op_amp
 id|mddev-&gt;disks
 )paren
 )paren
-id|OUT
-c_func
-(paren
-op_minus
-id|ENXIO
-)paren
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
@@ -6606,18 +6603,19 @@ c_cond
 id|mddev-&gt;pers
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|mddev-&gt;ro
 )paren
-id|OUT
-c_func
-(paren
-op_minus
-id|EBUSY
-)paren
+r_goto
+id|out
 suffix:semicolon
 id|mddev-&gt;ro
 op_assign
@@ -6666,6 +6664,10 @@ c_func
 (paren
 id|mddev
 )paren
+suffix:semicolon
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -6756,12 +6758,13 @@ id|mddev
 )paren
 )paren
 suffix:semicolon
-id|OUT
-c_func
-(paren
+id|err
+op_assign
 op_minus
 id|EBUSY
-)paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -6831,17 +6834,18 @@ c_cond
 id|ro
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|ENXIO
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|mddev-&gt;ro
 )paren
-id|OUT
-c_func
-(paren
-op_minus
-id|ENXIO
-)paren
+r_goto
+id|out
 suffix:semicolon
 id|mddev-&gt;ro
 op_assign
@@ -6875,6 +6879,11 @@ id|mddev
 )paren
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EBUSY
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6888,12 +6897,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|OUT
-c_func
-(paren
-op_minus
-id|EBUSY
-)paren
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -7000,14 +7005,16 @@ id|mddev
 )paren
 )paren
 suffix:semicolon
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 id|out
 suffix:colon
 r_return
 id|err
 suffix:semicolon
 )brace
-DECL|macro|OUT
-macro_line|#undef OUT
 multiline_comment|/*&n; * We have to safely support old arrays too.&n; */
 DECL|function|detect_old_array
 r_int
