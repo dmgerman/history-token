@@ -19157,11 +19157,6 @@ id|HDIO_SET_PIO_MODE
 id|COMPATIBLE_IOCTL
 c_func
 (paren
-id|HDIO_SCAN_HWIF
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
 id|HDIO_SET_NICE
 )paren
 multiline_comment|/* 0x02 -- Floppy ioctls */

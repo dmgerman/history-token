@@ -21824,12 +21824,6 @@ comma
 id|COMPATIBLE_IOCTL
 c_func
 (paren
-id|HDIO_SCAN_HWIF
-)paren
-comma
-id|COMPATIBLE_IOCTL
-c_func
-(paren
 id|HDIO_SET_NICE
 )paren
 comma

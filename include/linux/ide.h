@@ -336,6 +336,7 @@ DECL|typedef|hw_regs_t
 id|hw_regs_t
 suffix:semicolon
 multiline_comment|/*&n; * Register new hardware with ide&n; */
+r_extern
 r_int
 id|ide_register_hw
 c_func
@@ -1467,6 +1468,16 @@ multiline_comment|/* global device tree handle */
 DECL|typedef|ide_hwif_t
 )brace
 id|ide_hwif_t
+suffix:semicolon
+r_extern
+r_void
+id|ide_unregister
+c_func
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Status returned from various ide_ functions&n; */
 r_typedef

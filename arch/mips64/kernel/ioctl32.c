@@ -4340,16 +4340,9 @@ comma
 id|IOCTL32_DEFAULT
 c_func
 (paren
-id|HDIO_SCAN_HWIF
-)paren
-comma
-id|IOCTL32_DEFAULT
-c_func
-(paren
 id|HDIO_SET_NICE
 )paren
 comma
-singleline_comment|//HDIO_UNREGISTER_HWIF
 id|IOCTL32_DEFAULT
 c_func
 (paren
