@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -21,16 +22,15 @@ macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/sbi.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
+macro_line|#include &lt;asm/cpudata.h&gt;
 DECL|macro|IRQ_CROSS_CALL
 mdefine_line|#define IRQ_CROSS_CALL&t;&t;15
 r_extern
 id|ctxd_t
 op_star
 id|srmmu_ctx_table_phys
-suffix:semicolon
-r_extern
-r_int
-id|linux_num_cpus
 suffix:semicolon
 r_extern
 r_void
@@ -64,26 +64,10 @@ r_int
 id|smp_threads_ready
 suffix:semicolon
 r_extern
-r_int
-r_char
-id|mid_xlate
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
 r_volatile
 r_int
 r_int
 id|cpu_callin_map
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|smp_proc_in_lock
 (braket
 id|NR_CPUS
 )braket
@@ -560,14 +544,6 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Cycle through the processors asking the PROM to start each one.&n; */
 r_extern
 r_struct
-id|prom_cpuinfo
-id|linux_cpus
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_struct
 id|linux_prom_registers
 id|smp_penguin_ctable
 suffix:semicolon
@@ -608,8 +584,8 @@ l_int|0
 suffix:semicolon
 r_int
 id|i
-op_assign
-l_int|0
+comma
+id|mid
 suffix:semicolon
 id|printk
 c_func
@@ -641,17 +617,26 @@ r_char
 op_star
 )paren
 op_amp
+(paren
 id|cpu_data
-(braket
+c_func
+(paren
 id|i
-)braket
+)paren
+)paren
 op_minus
 (paren
 r_char
 op_star
 )paren
 op_amp
+(paren
 id|cpu_data
+c_func
+(paren
+l_int|0
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -674,6 +659,7 @@ id|cpu_present_map
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* XXX This whole thing has to go.  See sparc64. */
 r_for
 c_loop
 (paren
@@ -681,28 +667,29 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
+op_logical_neg
+id|cpu_find_by_instance
+c_func
+(paren
 id|i
-OL
-id|linux_num_cpus
+comma
+l_int|NULL
+comma
+op_amp
+id|mid
+)paren
 suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|cpu_present_map
 op_or_assign
 (paren
 l_int|1
 op_lshift
-id|linux_cpus
-(braket
-id|i
-)braket
-dot
 id|mid
 )paren
 suffix:semicolon
-)brace
 id|SMP_PRINTK
 c_func
 (paren
@@ -761,29 +748,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_CPUS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|mid_xlate
-(braket
-id|i
-)braket
-op_assign
-id|i
-suffix:semicolon
-)brace
 id|__cpu_number_map
 (braket
 id|boot_cpu_id
@@ -798,7 +762,12 @@ l_int|0
 op_assign
 id|boot_cpu_id
 suffix:semicolon
-id|current-&gt;cpu
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|cpu
 op_assign
 id|boot_cpu_id
 suffix:semicolon
@@ -821,14 +790,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|linux_num_cpus
-op_eq
+id|cpu_find_by_instance
+c_func
+(paren
 l_int|1
+comma
+l_int|NULL
+comma
+l_int|NULL
 )paren
-(brace
+)paren
 r_return
 suffix:semicolon
-)brace
 multiline_comment|/* Not an MP box. */
 id|SMP_PRINTK
 c_func
@@ -923,16 +896,20 @@ op_amp
 id|init_task
 )paren
 suffix:semicolon
-id|p-&gt;cpu
-op_assign
+id|init_idle
+c_func
+(paren
+id|p
+comma
 id|i
+)paren
 suffix:semicolon
 id|current_set
 (braket
 id|i
 )braket
 op_assign
-id|p
+id|p-&gt;thread_info
 suffix:semicolon
 id|unhash_process
 c_func
@@ -947,26 +924,25 @@ id|no
 op_assign
 l_int|0
 suffix:semicolon
+op_logical_neg
+id|cpu_find_by_instance
+c_func
+(paren
 id|no
-OL
-id|linux_num_cpus
+comma
+l_int|NULL
+comma
+op_amp
+id|mid
+)paren
+op_logical_and
+id|mid
+op_ne
+id|i
 suffix:semicolon
 id|no
 op_increment
 )paren
-r_if
-c_cond
-(paren
-id|linux_cpus
-(braket
-id|no
-)braket
-dot
-id|mid
-op_eq
-id|i
-)paren
-r_break
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Initialize the contexts table&n;&t;&t;&t; * Since the call to prom_startcpu() trashes the structure,&n;&t;&t;&t; * we need to re-initialize it for each cpu&n;&t;&t;&t; */
 id|smp_penguin_ctable.which_io
@@ -998,10 +974,11 @@ id|entry
 comma
 id|cpucount
 comma
-id|linux_cpus
-(braket
+id|cpu_data
+c_func
+(paren
 id|no
-)braket
+)paren
 dot
 id|prom_node
 )paren
@@ -1015,10 +992,11 @@ suffix:semicolon
 id|prom_startcpu
 c_func
 (paren
-id|linux_cpus
-(braket
+id|cpu_data
+c_func
+(paren
 id|no
-)braket
+)paren
 dot
 id|prom_node
 comma
@@ -1217,9 +1195,10 @@ id|i
 id|bogosum
 op_add_assign
 id|cpu_data
-(braket
+c_func
+(paren
 id|i
-)braket
+)paren
 dot
 id|udelay_val
 suffix:semicolon
@@ -1559,6 +1538,7 @@ id|flags
 suffix:semicolon
 (brace
 multiline_comment|/* If you make changes here, make sure gcc generates proper code... */
+r_register
 id|smpfunc_t
 id|f
 id|asm
@@ -1569,6 +1549,7 @@ l_string|&quot;i0&quot;
 op_assign
 id|func
 suffix:semicolon
+r_register
 r_int
 r_int
 id|a1
@@ -1580,6 +1561,7 @@ l_string|&quot;i1&quot;
 op_assign
 id|arg1
 suffix:semicolon
+r_register
 r_int
 r_int
 id|a2
@@ -1591,6 +1573,7 @@ l_string|&quot;i2&quot;
 op_assign
 id|arg2
 suffix:semicolon
+r_register
 r_int
 r_int
 id|a3
@@ -1602,6 +1585,7 @@ l_string|&quot;i3&quot;
 op_assign
 id|arg3
 suffix:semicolon
+r_register
 r_int
 r_int
 id|a4
@@ -1613,6 +1597,7 @@ l_string|&quot;i4&quot;
 op_assign
 id|arg4
 suffix:semicolon
+r_register
 r_int
 r_int
 id|a5
@@ -2053,22 +2038,6 @@ l_string|&quot;Bogon SMP message pass.&quot;
 suffix:semicolon
 )brace
 r_extern
-r_int
-r_int
-id|prof_multiplier
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_counter
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|sparc_do_profile
 c_func
@@ -2082,6 +2051,10 @@ r_int
 id|o7
 )paren
 suffix:semicolon
+DECL|macro|prof_multiplier
+mdefine_line|#define prof_multiplier(__cpu)&t;&t;cpu_data(__cpu).multiplier
+DECL|macro|prof_counter
+mdefine_line|#define prof_counter(__cpu)&t;&t;cpu_data(__cpu).counter
 DECL|function|smp4d_percpu_timer_interrupt
 r_void
 id|smp4d_percpu_timer_interrupt
@@ -2231,9 +2204,10 @@ c_cond
 op_logical_neg
 op_decrement
 id|prof_counter
-(braket
+c_func
+(paren
 id|cpu
-)braket
+)paren
 )paren
 (brace
 r_int
@@ -2262,14 +2236,16 @@ c_func
 )paren
 suffix:semicolon
 id|prof_counter
-(braket
+c_func
+(paren
 id|cpu
-)braket
+)paren
 op_assign
 id|prof_multiplier
-(braket
+c_func
+(paren
 id|cpu
-)braket
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -2297,14 +2273,16 @@ c_func
 )paren
 suffix:semicolon
 id|prof_counter
-(braket
+c_func
+(paren
 id|cpu
-)braket
+)paren
 op_assign
 id|prof_multiplier
-(braket
+c_func
+(paren
 id|cpu
-)braket
+)paren
 op_assign
 l_int|1
 suffix:semicolon
