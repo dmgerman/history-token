@@ -1683,6 +1683,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_copyarea
 op_star
@@ -1855,6 +1856,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_image
 op_star
@@ -1868,6 +1870,10 @@ comma
 op_star
 id|cdat
 op_assign
+(paren
+id|u8
+op_star
+)paren
 id|image-&gt;data
 suffix:semicolon
 id|u_int

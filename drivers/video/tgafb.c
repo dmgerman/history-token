@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;video/tgafb.h&gt;
@@ -102,6 +101,7 @@ r_struct
 id|fb_info
 op_star
 comma
+r_const
 r_struct
 id|fb_image
 op_star
@@ -116,6 +116,7 @@ r_struct
 id|fb_info
 op_star
 comma
+r_const
 r_struct
 id|fb_fillrect
 op_star
@@ -130,6 +131,7 @@ r_struct
 id|fb_info
 op_star
 comma
+r_const
 r_struct
 id|fb_copyarea
 op_star
@@ -2693,6 +2695,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_image
 op_star
@@ -4431,6 +4434,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_fillrect
 op_star
@@ -6397,6 +6401,7 @@ comma
 id|u32
 id|line_length
 comma
+r_const
 r_struct
 id|fb_copyarea
 op_star
@@ -6832,6 +6837,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_copyarea
 op_star

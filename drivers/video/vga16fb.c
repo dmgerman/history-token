@@ -5678,6 +5678,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_image
 op_star
@@ -5890,6 +5891,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_image
 op_star
@@ -6241,6 +6243,7 @@ id|fb_info
 op_star
 id|info
 comma
+r_const
 r_struct
 id|fb_image
 op_star
@@ -6451,20 +6454,13 @@ r_const
 r_struct
 id|fb_image
 op_star
-id|img
+id|image
 )paren
 (brace
-r_struct
-id|fb_image
-id|image
-op_assign
-op_star
-id|img
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|image.depth
+id|image-&gt;depth
 op_eq
 l_int|0
 )paren
@@ -6473,7 +6469,6 @@ c_func
 (paren
 id|info
 comma
-op_amp
 id|image
 )paren
 suffix:semicolon
@@ -6481,7 +6476,7 @@ r_else
 r_if
 c_cond
 (paren
-id|image.depth
+id|image-&gt;depth
 op_eq
 id|info-&gt;var.bits_per_pixel
 )paren
@@ -6490,7 +6485,6 @@ c_func
 (paren
 id|info
 comma
-op_amp
 id|image
 )paren
 suffix:semicolon

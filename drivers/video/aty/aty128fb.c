@@ -7904,6 +7904,11 @@ id|dev-&gt;resource
 id|PCI_ROM_RESOURCE
 )braket
 suffix:semicolon
+r_int
+r_char
+op_star
+id|addr
+suffix:semicolon
 singleline_comment|// assign the ROM an address if it doesn&squot;t have one
 r_if
 c_cond
@@ -7943,9 +7948,6 @@ op_or
 id|PCI_ROM_ADDRESS_ENABLE
 )paren
 suffix:semicolon
-r_int
-r_char
-op_star
 id|addr
 op_assign
 id|ioremap
@@ -8018,12 +8020,6 @@ op_star
 id|rom
 )paren
 (brace
-id|iounmap
-c_func
-(paren
-id|rom
-)paren
-suffix:semicolon
 singleline_comment|// leave it disabled and unassigned
 r_struct
 id|resource
@@ -8035,6 +8031,12 @@ id|dev-&gt;resource
 (braket
 id|PCI_ROM_RESOURCE
 )braket
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+id|rom
+)paren
 suffix:semicolon
 id|r-&gt;flags
 op_and_assign
