@@ -628,7 +628,7 @@ id|fbgen_get_cmap
 comma
 id|fb_set_cmap
 suffix:colon
-id|fbgen_set_cmap
+id|gen_set_cmap
 comma
 id|fb_pan_display
 suffix:colon
