@@ -2284,7 +2284,7 @@ l_int|1
 )paren
 (brace
 id|newattrs.ia_valid
-op_assign
+op_or_assign
 id|ATTR_UID
 suffix:semicolon
 id|newattrs.ia_uid
@@ -2305,7 +2305,7 @@ l_int|1
 )paren
 (brace
 id|newattrs.ia_valid
-op_assign
+op_or_assign
 id|ATTR_GID
 suffix:semicolon
 id|newattrs.ia_gid
