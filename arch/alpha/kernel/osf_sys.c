@@ -4861,10 +4861,6 @@ id|r.ru_majflt
 op_assign
 id|current-&gt;maj_flt
 suffix:semicolon
-id|r.ru_nswap
-op_assign
-id|current-&gt;nswap
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -4895,10 +4891,6 @@ suffix:semicolon
 id|r.ru_majflt
 op_assign
 id|current-&gt;cmaj_flt
-suffix:semicolon
-id|r.ru_nswap
-op_assign
-id|current-&gt;cnswap
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4937,12 +4929,6 @@ op_assign
 id|current-&gt;maj_flt
 op_plus
 id|current-&gt;cmaj_flt
-suffix:semicolon
-id|r.ru_nswap
-op_assign
-id|current-&gt;nswap
-op_plus
-id|current-&gt;cnswap
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -1848,12 +1848,6 @@ id|tsk-&gt;cmaj_flt
 op_assign
 l_int|0
 suffix:semicolon
-id|tsk-&gt;nswap
-op_assign
-id|tsk-&gt;cnswap
-op_assign
-l_int|0
-suffix:semicolon
 id|tsk-&gt;nvcsw
 op_assign
 id|tsk-&gt;nivcsw

@@ -1205,7 +1205,7 @@ op_assign
 id|encode_comp_t
 c_func
 (paren
-id|current-&gt;nswap
+l_int|0
 )paren
 suffix:semicolon
 id|ac.ac_exitcode

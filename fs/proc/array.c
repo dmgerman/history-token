@@ -1621,9 +1621,9 @@ l_int|0x7fffffffUL
 comma
 id|wchan
 comma
-id|task-&gt;nswap
+l_int|0UL
 comma
-id|task-&gt;cnswap
+l_int|0UL
 comma
 id|task-&gt;exit_signal
 comma

@@ -1215,23 +1215,17 @@ suffix:semicolon
 multiline_comment|/* mm fault and swap info: this can arguably be seen as either mm-specific or thread-specific */
 DECL|member|min_flt
 DECL|member|maj_flt
-DECL|member|nswap
 DECL|member|cmin_flt
 DECL|member|cmaj_flt
-DECL|member|cnswap
 r_int
 r_int
 id|min_flt
 comma
 id|maj_flt
 comma
-id|nswap
-comma
 id|cmin_flt
 comma
 id|cmaj_flt
-comma
-id|cnswap
 suffix:semicolon
 multiline_comment|/* process credentials */
 DECL|member|uid

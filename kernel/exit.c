@@ -319,12 +319,6 @@ id|p-&gt;maj_flt
 op_plus
 id|p-&gt;cmaj_flt
 suffix:semicolon
-id|p-&gt;parent-&gt;cnswap
-op_add_assign
-id|p-&gt;nswap
-op_plus
-id|p-&gt;cnswap
-suffix:semicolon
 id|p-&gt;parent-&gt;cnvcsw
 op_add_assign
 id|p-&gt;nvcsw
