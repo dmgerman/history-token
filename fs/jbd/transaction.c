@@ -1938,12 +1938,22 @@ id|page
 suffix:semicolon
 )brace
 multiline_comment|/* If we are about to journal a buffer, then any revoke pending&n;           on it is no longer valid. */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|journal_cancel_revoke
 c_func
 (paren
 id|handle
 comma
 id|jh
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|out_unlocked
@@ -2019,11 +2029,6 @@ c_func
 id|journal
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|rc
 op_assign
 id|do_get_write_access
@@ -2034,11 +2039,6 @@ comma
 id|jh
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|journal_unlock_journal_head
@@ -2372,11 +2372,6 @@ id|journal
 )paren
 suffix:semicolon
 multiline_comment|/* Do this first --- it can drop the journal lock, so we want to&n;&t; * make sure that obtaining the committed_data is done&n;&t; * atomically wrt. completion of any outstanding commits. */
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|do_get_write_access
@@ -2396,6 +2391,7 @@ id|err
 r_goto
 id|out
 suffix:semicolon
+multiline_comment|/*&n;&t; * lock_journal() prevents jh-&gt;b_committed_data from getting set&n;&t; * by two CPUs at the same time.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2477,11 +2473,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
