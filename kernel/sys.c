@@ -3489,6 +3489,12 @@ id|out
 suffix:semicolon
 )brace
 r_else
+(brace
+id|err
+op_assign
+op_minus
+id|ESRCH
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3499,6 +3505,7 @@ id|current
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|err
 op_assign
 op_minus
