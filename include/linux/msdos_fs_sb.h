@@ -20,6 +20,11 @@ r_int
 r_int
 id|fs_umask
 suffix:semicolon
+DECL|member|fs_dmask
+r_int
+r_int
+id|fs_dmask
+suffix:semicolon
 DECL|member|codepage
 r_int
 r_int
