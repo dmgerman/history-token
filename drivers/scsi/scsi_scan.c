@@ -3595,6 +3595,13 @@ id|drv-&gt;owner
 suffix:semicolon
 )brace
 )brace
+DECL|variable|scsi_rescan_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_rescan_device
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_scan_target - scan a target id, possibly including all LUNs on the&n; *     target.&n; * @sdevsca:&t;Scsi_Device handle for scanning&n; * @shost:&t;host to scan&n; * @channel:&t;channel to scan&n; * @id:&t;&t;target id to scan&n; *&n; * Description:&n; *     Scan the target id on @shost, @channel, and @id. Scan at least LUN&n; *     0, and possibly all LUNs on the target id.&n; *&n; *     Use the pre-allocated @sdevscan as a handle for the scanning. This&n; *     function sets sdevscan-&gt;host, sdevscan-&gt;id and sdevscan-&gt;lun; the&n; *     scanning functions modify sdevscan-&gt;lun.&n; *&n; *     First try a REPORT LUN scan, if that does not scan the target, do a&n; *     sequential scan of LUNs on the target id.&n; **/
 DECL|function|scsi_scan_target
 r_static
@@ -4044,13 +4051,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|scsi_scan_host_selected
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_scan_host_selected
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * scsi_scan_host - scan the given adapter&n; * @shost:&t;adapter to scan&n; **/
 DECL|function|scsi_scan_host
 r_void
@@ -4120,6 +4120,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_scan_single_target
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_scan_single_target
+)paren
+suffix:semicolon
 DECL|function|scsi_forget_host
 r_void
 id|scsi_forget_host
