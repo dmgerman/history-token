@@ -10,6 +10,9 @@ DECL|macro|EPOLL_CTL_DEL
 mdefine_line|#define EPOLL_CTL_DEL 2
 DECL|macro|EPOLL_CTL_MOD
 mdefine_line|#define EPOLL_CTL_MOD 3
+multiline_comment|/* Set the One Shot behaviour for the target file descriptor */
+DECL|macro|EPOLLONESHOT
+mdefine_line|#define EPOLLONESHOT (1 &lt;&lt; 30)
 multiline_comment|/* Set the Edge Triggered behaviour for the target file descriptor */
 DECL|macro|EPOLLET
 mdefine_line|#define EPOLLET (1 &lt;&lt; 31)
