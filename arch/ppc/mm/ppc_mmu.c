@@ -370,7 +370,7 @@ id|PPC_MEMSTART
 comma
 id|bl
 comma
-id|_PAGE_KERNEL
+id|_PAGE_RAM
 )paren
 suffix:semicolon
 id|done
@@ -456,7 +456,7 @@ id|done
 comma
 id|bl
 comma
-id|_PAGE_KERNEL
+id|_PAGE_RAM
 )paren
 suffix:semicolon
 id|done
