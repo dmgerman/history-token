@@ -604,6 +604,10 @@ id|capi_driver
 id|b1isa_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;b1isa&quot;

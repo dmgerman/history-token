@@ -581,6 +581,10 @@ id|capi_driver
 id|b1pcmcia_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;b1pcmcia&quot;

@@ -354,6 +354,12 @@ DECL|struct|capi_driver
 r_struct
 id|capi_driver
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|name
 r_char
 id|name

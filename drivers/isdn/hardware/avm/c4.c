@@ -6461,6 +6461,10 @@ id|capi_driver
 id|c2_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;c2&quot;
@@ -6520,6 +6524,10 @@ id|capi_driver
 id|c4_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;c4&quot;

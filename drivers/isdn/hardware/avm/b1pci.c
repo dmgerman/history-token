@@ -619,6 +619,10 @@ id|capi_driver
 id|b1pci_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;b1pci&quot;
@@ -1300,6 +1304,10 @@ id|capi_driver
 id|b1pciv4_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;b1pciv4&quot;
