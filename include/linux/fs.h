@@ -230,14 +230,12 @@ DECL|macro|BLKGETSIZE
 mdefine_line|#define BLKGETSIZE _IO(0x12,96)&t;/* return device size /512 (long *arg) */
 DECL|macro|BLKFLSBUF
 mdefine_line|#define BLKFLSBUF  _IO(0x12,97)&t;/* flush buffer cache */
-DECL|macro|BLKRASET
-mdefine_line|#define BLKRASET   _IO(0x12,98)&t;/* Set read ahead for block device */
-DECL|macro|BLKRAGET
+macro_line|#if 0&t;&t;&t;&t;/* Obsolete, these don&squot;t do anything. */
+mdefine_line|#define BLKRASET   _IO(0x12,98)&t;/* set read ahead for block device */
 mdefine_line|#define BLKRAGET   _IO(0x12,99)&t;/* get current read ahead setting */
-DECL|macro|BLKFRASET
 mdefine_line|#define BLKFRASET  _IO(0x12,100)/* set filesystem (mm/filemap.c) read-ahead */
-DECL|macro|BLKFRAGET
 mdefine_line|#define BLKFRAGET  _IO(0x12,101)/* get filesystem (mm/filemap.c) read-ahead */
+macro_line|#endif
 DECL|macro|BLKSECTSET
 mdefine_line|#define BLKSECTSET _IO(0x12,102)/* set max sectors per request (ll_rw_blk.c) */
 DECL|macro|BLKSECTGET
@@ -7574,12 +7572,6 @@ comma
 id|loff_t
 op_star
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|read_ahead
-(braket
-)braket
 suffix:semicolon
 r_extern
 id|ssize_t

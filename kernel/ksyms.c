@@ -1770,13 +1770,6 @@ c_func
 id|refile_buffer
 )paren
 suffix:semicolon
-DECL|variable|max_readahead
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|max_readahead
-)paren
-suffix:semicolon
 DECL|variable|wipe_partitions
 id|EXPORT_SYMBOL
 c_func
@@ -2809,13 +2802,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|init_special_inode
-)paren
-suffix:semicolon
-DECL|variable|read_ahead
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|read_ahead
 )paren
 suffix:semicolon
 DECL|variable|__get_hash_table

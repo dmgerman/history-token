@@ -1236,14 +1236,6 @@ comma
 id|cluster
 )paren
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|8
-suffix:semicolon
-multiline_comment|/* 8 sector (4kB) read ahead */
 id|pd_gendisk.major
 op_assign
 id|major
@@ -1715,12 +1707,6 @@ id|BLKROSET
 suffix:colon
 r_case
 id|BLKROGET
-suffix:colon
-r_case
-id|BLKRASET
-suffix:colon
-r_case
-id|BLKRAGET
 suffix:colon
 r_case
 id|BLKFLSBUF

@@ -3729,41 +3729,6 @@ id|cdi
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* If our host adapter is capable of scatter-gather, then we increase&n;&t; * the read-ahead to 16 blocks (32 sectors).  If not, we use&n;&t; * a two block (4 sector) read ahead. */
-r_if
-c_cond
-(paren
-id|scsi_CDs
-(braket
-l_int|0
-)braket
-dot
-id|device
-op_logical_and
-id|scsi_CDs
-(braket
-l_int|0
-)braket
-dot
-id|device-&gt;host-&gt;sg_tablesize
-)paren
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|32
-suffix:semicolon
-multiline_comment|/* 32 sector read-ahead.  Always removable. */
-r_else
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|4
-suffix:semicolon
-multiline_comment|/* 4 sector read-ahead */
 )brace
 DECL|function|sr_detach
 r_static
@@ -3949,13 +3914,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 id|blk_clear
 c_func
 (paren

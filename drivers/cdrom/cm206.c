@@ -6363,14 +6363,6 @@ id|MAJOR_NR
 op_assign
 id|cm206_blocksizes
 suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|16
-suffix:semicolon
-multiline_comment|/* reads ahead what? */
 id|init_bh
 c_func
 (paren

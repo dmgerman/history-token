@@ -7575,14 +7575,6 @@ id|MajorNumber
 op_assign
 id|Controller-&gt;BlockSizes
 suffix:semicolon
-multiline_comment|/*&n;    Initialize Read Ahead to 128 sectors.&n;  */
-id|read_ahead
-(braket
-id|MajorNumber
-)braket
-op_assign
-l_int|128
-suffix:semicolon
 multiline_comment|/*&n;    Complete initialization of the Generic Disk Information structure.&n;  */
 id|Controller-&gt;GenericDiskInfo.major
 op_assign
@@ -20407,12 +20399,6 @@ id|BLKGETSIZE
 suffix:colon
 r_case
 id|BLKGETSIZE64
-suffix:colon
-r_case
-id|BLKRAGET
-suffix:colon
-r_case
-id|BLKRASET
 suffix:colon
 r_case
 id|BLKFLSBUF

@@ -33,8 +33,6 @@ macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/lvm.h&gt;
 macro_line|#include &quot;lvm-internal.h&quot;
-DECL|macro|LVM_CORRECT_READ_AHEAD
-mdefine_line|#define&t;LVM_CORRECT_READ_AHEAD( a) &bslash;&n;   if      ( a &lt; LVM_MIN_READ_AHEAD || &bslash;&n;             a &gt; LVM_MAX_READ_AHEAD) a = LVM_MAX_READ_AHEAD;
 macro_line|#ifndef WRITEA
 DECL|macro|WRITEA
 macro_line|#  define WRITEA WRITE
@@ -2718,97 +2716,6 @@ c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|BLKRASET
-suffix:colon
-multiline_comment|/* set read ahead for block device */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
-id|P_IOCTL
-c_func
-(paren
-l_string|&quot;BLKRASET: %ld sectors for %s&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-id|arg
-comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-r_int
-)paren
-id|arg
-template_param
-id|LVM_MAX_READ_AHEAD
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-id|lv_ptr-&gt;lv_read_ahead
-op_assign
-(paren
-r_int
-)paren
-id|arg
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|BLKRAGET
-suffix:colon
-multiline_comment|/* get current read ahead setting */
-id|P_IOCTL
-c_func
-(paren
-l_string|&quot;BLKRAGET %d&bslash;n&quot;
-comma
-id|lv_ptr-&gt;lv_read_ahead
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|put_user
-c_func
-(paren
-id|lv_ptr-&gt;lv_read_ahead
-comma
-(paren
-r_int
-op_star
-)paren
-id|arg
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8167,12 +8074,6 @@ dot
 id|lv_number
 op_assign
 id|lv_ptr-&gt;lv_number
-suffix:semicolon
-id|LVM_CORRECT_READ_AHEAD
-c_func
-(paren
-id|lv_ptr-&gt;lv_read_ahead
-)paren
 suffix:semicolon
 id|vg_ptr-&gt;lv_cur
 op_increment

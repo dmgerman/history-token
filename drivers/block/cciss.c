@@ -2210,12 +2210,6 @@ r_case
 id|BLKROGET
 suffix:colon
 r_case
-id|BLKRASET
-suffix:colon
-r_case
-id|BLKRAGET
-suffix:colon
-r_case
 id|BLKPG
 suffix:colon
 r_return
@@ -13002,15 +12996,6 @@ id|i
 )braket
 op_member_access_from_pointer
 id|blocksizes
-suffix:semicolon
-id|read_ahead
-(braket
-id|MAJOR_NR
-op_plus
-id|i
-)braket
-op_assign
-id|READ_AHEAD
 suffix:semicolon
 multiline_comment|/* Fill in the gendisk data */
 id|hba
