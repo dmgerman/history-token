@@ -625,6 +625,11 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Clean slate for TLS.  */
+id|current-&gt;pcb.unique
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 r_void
 DECL|function|release_thread
