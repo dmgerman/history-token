@@ -11336,9 +11336,9 @@ id|rdev-&gt;bdev-&gt;bd_disk
 suffix:semicolon
 id|curr_events
 op_assign
-id|disk-&gt;reads
+id|disk-&gt;read_sectors
 op_plus
-id|disk-&gt;writes
+id|disk-&gt;write_sectors
 op_minus
 id|disk-&gt;sync_io
 suffix:semicolon

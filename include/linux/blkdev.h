@@ -103,6 +103,11 @@ DECL|member|sector
 id|sector_t
 id|sector
 suffix:semicolon
+DECL|member|start_time
+r_int
+r_int
+id|start_time
+suffix:semicolon
 DECL|member|nr_sectors
 r_int
 r_int
