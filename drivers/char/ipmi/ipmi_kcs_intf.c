@@ -23,6 +23,15 @@ macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/* Measure times between events in the driver. */
 DECL|macro|DEBUG_TIMING
 macro_line|#undef DEBUG_TIMING
+multiline_comment|/* Timing parameters.  Call every 10 ms when not doing anything,&n;   otherwise call every KCS_SHORT_TIMEOUT_USEC microseconds. */
+DECL|macro|KCS_TIMEOUT_TIME_USEC
+mdefine_line|#define KCS_TIMEOUT_TIME_USEC&t;10000
+DECL|macro|KCS_USEC_PER_JIFFY
+mdefine_line|#define KCS_USEC_PER_JIFFY&t;(1000000/HZ)
+DECL|macro|KCS_TIMEOUT_JIFFIES
+mdefine_line|#define KCS_TIMEOUT_JIFFIES&t;(KCS_TIMEOUT_TIME_USEC/KCS_USEC_PER_JIFFY)
+DECL|macro|KCS_SHORT_TIMEOUT_USEC
+mdefine_line|#define KCS_SHORT_TIMEOUT_USEC  250 /* .25ms when the SM request a&n;                                       short timeout */
 macro_line|#ifdef CONFIG_IPMI_KCS
 multiline_comment|/* This forces a dependency to the config file for this option. */
 macro_line|#endif
@@ -172,6 +181,17 @@ r_int
 id|interrupt_disabled
 suffix:semicolon
 )brace
+suffix:semicolon
+r_static
+r_void
+id|kcs_restart_short_timer
+c_func
+(paren
+r_struct
+id|kcs_info
+op_star
+id|kcs_info
+)paren
 suffix:semicolon
 DECL|function|deliver_recv_msg
 r_static
@@ -929,6 +949,14 @@ id|kcs_info-&gt;kcs_state
 r_case
 id|KCS_NORMAL
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|kcs_info-&gt;curr_msg
+)paren
+r_break
+suffix:semicolon
 id|kcs_info-&gt;curr_msg-&gt;rsp_size
 op_assign
 id|kcs_get_result
@@ -1821,7 +1849,7 @@ id|KCS_SM_IDLE
 id|udelay
 c_func
 (paren
-l_int|500
+id|KCS_SHORT_TIMEOUT_USEC
 )paren
 suffix:semicolon
 id|result
@@ -1831,7 +1859,7 @@ c_func
 (paren
 id|kcs_info
 comma
-l_int|500
+id|KCS_SHORT_TIMEOUT_USEC
 )paren
 suffix:semicolon
 )brace
@@ -1936,6 +1964,12 @@ c_func
 id|kcs_info
 )paren
 suffix:semicolon
+id|kcs_restart_short_timer
+c_func
+(paren
+id|kcs_info
+)paren
+suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -2025,7 +2059,7 @@ id|KCS_SM_IDLE
 id|udelay
 c_func
 (paren
-l_int|500
+id|KCS_SHORT_TIMEOUT_USEC
 )paren
 suffix:semicolon
 id|result
@@ -2035,7 +2069,7 @@ c_func
 (paren
 id|kcs_info
 comma
-l_int|500
+id|KCS_SHORT_TIMEOUT_USEC
 )paren
 suffix:semicolon
 )brace
@@ -2085,15 +2119,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Call every 10 ms. */
-DECL|macro|KCS_TIMEOUT_TIME_USEC
-mdefine_line|#define KCS_TIMEOUT_TIME_USEC&t;10000
-DECL|macro|KCS_USEC_PER_JIFFY
-mdefine_line|#define KCS_USEC_PER_JIFFY&t;(1000000/HZ)
-DECL|macro|KCS_TIMEOUT_JIFFIES
-mdefine_line|#define KCS_TIMEOUT_JIFFIES&t;(KCS_TIMEOUT_TIME_USEC/KCS_USEC_PER_JIFFY)
-DECL|macro|KCS_SHORT_TIMEOUT_USEC
-mdefine_line|#define KCS_SHORT_TIMEOUT_USEC  500 /* .5ms when the SM request a&n;                                       short timeout */
 DECL|variable|initialized
 r_static
 r_int
@@ -2101,6 +2126,112 @@ id|initialized
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Must be called with interrupts off and with the kcs_lock held. */
+DECL|function|kcs_restart_short_timer
+r_static
+r_void
+id|kcs_restart_short_timer
+c_func
+(paren
+r_struct
+id|kcs_info
+op_star
+id|kcs_info
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|del_timer
+c_func
+(paren
+op_amp
+(paren
+id|kcs_info-&gt;kcs_timer
+)paren
+)paren
+)paren
+(brace
+macro_line|#ifdef CONFIG_HIGH_RES_TIMERS
+r_int
+r_int
+id|jiffies_now
+suffix:semicolon
+multiline_comment|/* If we don&squot;t delete the timer, then it will go off&n;&t;&t;   immediately, anyway.  So we only process if we&n;&t;&t;   actually delete the timer. */
+multiline_comment|/* We already have irqsave on, so no need for it&n;                   here. */
+id|read_lock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
+id|jiffies_now
+op_assign
+id|jiffies
+suffix:semicolon
+id|kcs_info-&gt;kcs_timer.expires
+op_assign
+id|jiffies_now
+suffix:semicolon
+id|kcs_info-&gt;kcs_timer.sub_expires
+op_assign
+id|quick_update_jiffies_sub
+c_func
+(paren
+id|jiffies_now
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|xtime_lock
+)paren
+suffix:semicolon
+id|kcs_info-&gt;kcs_timer.sub_expires
+op_add_assign
+id|usec_to_arch_cycles
+c_func
+(paren
+id|KCS_SHORT_TIMEOUT_USEC
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|kcs_info-&gt;kcs_timer.sub_expires
+op_ge
+id|cycles_per_jiffies
+)paren
+(brace
+id|kcs_info-&gt;kcs_timer.expires
+op_increment
+suffix:semicolon
+id|kcs_info-&gt;kcs_timer.sub_expires
+op_sub_assign
+id|cycles_per_jiffies
+suffix:semicolon
+)brace
+macro_line|#else
+id|kcs_info-&gt;kcs_timer.expires
+op_assign
+id|jiffies
+op_plus
+l_int|1
+suffix:semicolon
+macro_line|#endif
+id|add_timer
+c_func
+(paren
+op_amp
+(paren
+id|kcs_info-&gt;kcs_timer
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|function|kcs_timeout
 r_static
 r_void
@@ -2215,17 +2346,6 @@ comma
 id|time_diff
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-(paren
-id|kcs_info-&gt;kcs_lock
-)paren
-comma
-id|flags
-)paren
-suffix:semicolon
 id|kcs_info-&gt;last_timeout_jiffies
 op_assign
 id|jiffies_now
@@ -2297,6 +2417,10 @@ id|jiffies
 op_plus
 id|KCS_TIMEOUT_JIFFIES
 suffix:semicolon
+id|kcs_info-&gt;kcs_timer.sub_expires
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 macro_line|#else
 multiline_comment|/* If requested, take the shortest delay possible */
@@ -2334,6 +2458,17 @@ op_amp
 (paren
 id|kcs_info-&gt;kcs_timer
 )paren
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+(paren
+id|kcs_info-&gt;kcs_lock
+)paren
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
