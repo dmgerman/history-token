@@ -23,7 +23,7 @@ multiline_comment|/*Ofs*/
 multiline_comment|/*  0&t;NTFS_RECORD; -- Unfolded here as gcc doesn&squot;t like unnamed structs. */
 DECL|member|magic
 multiline_comment|/*  0*/
-id|NTFS_RECORD_TYPES
+id|NTFS_RECORD_TYPE
 id|magic
 suffix:semicolon
 multiline_comment|/* The magic is &quot;RSTR&quot;. */

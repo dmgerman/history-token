@@ -4635,7 +4635,7 @@ id|ntfs_attr_find
 c_func
 (paren
 r_const
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 comma
 r_const
@@ -5600,7 +5600,7 @@ id|ntfs_external_attr_find
 c_func
 (paren
 r_const
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 comma
 r_const
@@ -6267,7 +6267,11 @@ c_func
 (paren
 id|base_ni
 comma
+id|le64_to_cpu
+c_func
+(paren
 id|al_entry-&gt;mft_reference
+)paren
 comma
 op_amp
 id|ni
@@ -6748,7 +6752,7 @@ id|ntfs_attr_lookup
 c_func
 (paren
 r_const
-id|ATTR_TYPES
+id|ATTR_TYPE
 id|type
 comma
 r_const

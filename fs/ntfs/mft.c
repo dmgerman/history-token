@@ -74,7 +74,7 @@ suffix:semicolon
 multiline_comment|/* Set the update sequence number to 1. */
 op_star
 (paren
-id|u16
+id|le16
 op_star
 )paren
 (paren
@@ -791,7 +791,7 @@ multiline_comment|/*&n;&t; * If pure ntfs_inode, i.e. no vfs inode attached, we 
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * map_extent_mft_record - load an extent inode and attach it to its base&n; * @base_ni:&t;base ntfs inode&n; * @mref:&t;mft reference of the extent inode to load (in little endian)&n; * @ntfs_ino:&t;on successful return, pointer to the ntfs_inode structure&n; *&n; * Load the extent mft record @mref and attach it to its base inode @base_ni.&n; * Return the mapped extent mft record if IS_ERR(result) is false. Otherwise&n; * PTR_ERR(result) gives the negative error code.&n; *&n; * On successful return, @ntfs_ino contains a pointer to the ntfs_inode&n; * structure of the mapped extent inode.&n; */
+multiline_comment|/**&n; * map_extent_mft_record - load an extent inode and attach it to its base&n; * @base_ni:&t;base ntfs inode&n; * @mref:&t;mft reference of the extent inode to load&n; * @ntfs_ino:&t;on successful return, pointer to the ntfs_inode structure&n; *&n; * Load the extent mft record @mref and attach it to its base inode @base_ni.&n; * Return the mapped extent mft record if IS_ERR(result) is false.  Otherwise&n; * PTR_ERR(result) gives the negative error code.&n; *&n; * On successful return, @ntfs_ino contains a pointer to the ntfs_inode&n; * structure of the mapped extent inode.&n; */
 DECL|function|map_extent_mft_record
 id|MFT_RECORD
 op_star
@@ -835,7 +835,7 @@ r_int
 r_int
 id|mft_no
 op_assign
-id|MREF_LE
+id|MREF
 c_func
 (paren
 id|mref
@@ -844,7 +844,7 @@ suffix:semicolon
 id|u16
 id|seq_no
 op_assign
-id|MSEQNO_LE
+id|MSEQNO
 c_func
 (paren
 id|mref
