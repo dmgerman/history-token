@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -282,6 +283,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|cpcmd
+)paren
+suffix:semicolon
+DECL|variable|sys_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sys_ioctl
 )paren
 suffix:semicolon
 eof
