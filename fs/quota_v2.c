@@ -10,6 +10,24 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Jan Kara&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Quota format v2 support&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|__QUOTA_V2_PARANOIA
 mdefine_line|#define __QUOTA_V2_PARANOIA
 DECL|typedef|dqbuf_t
