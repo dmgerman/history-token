@@ -1510,8 +1510,6 @@ DECL|macro|IPCB_INSERTVLAN_ENABLE
 mdefine_line|#define IPCB_INSERTVLAN_ENABLE &t;&t;BIT_1
 DECL|macro|IPCB_IP_ACTIVATION_DEFAULT
 mdefine_line|#define IPCB_IP_ACTIVATION_DEFAULT      IPCB_HARDWAREPARSING_ENABLE
-DECL|macro|FOLD_CSUM
-mdefine_line|#define FOLD_CSUM(_XSUM)  ((((_XSUM &lt;&lt; 16) | (_XSUM &gt;&gt; 16)) + _XSUM) &gt;&gt; 16)
 multiline_comment|/* Transmit Buffer Descriptor (TBD)*/
 DECL|struct|_tbd_t
 r_typedef
