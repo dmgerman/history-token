@@ -175,6 +175,7 @@ id|usb_stv
 DECL|member|vdev
 r_struct
 id|video_device
+op_star
 id|vdev
 suffix:semicolon
 DECL|member|udev
