@@ -1898,20 +1898,6 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sigfillset
-c_func
-(paren
-op_amp
-id|current-&gt;blocked
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;kirqd&quot;
 )paren
 suffix:semicolon
@@ -6352,11 +6338,13 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * function to set the IO-APIC physical IDs based on the&n; * values stored in the MPC table.&n; *&n; * by Matt Domsch &lt;Matt_Domsch@dell.com&gt;  Tue Dec 21 12:25:05 CST 1999&n; */
+macro_line|#ifndef CONFIG_X86_NUMAQ
 DECL|function|setup_ioapic_ids_from_mpc
 r_static
 r_void
 id|__init
 id|setup_ioapic_ids_from_mpc
+c_func
 (paren
 r_void
 )paren
@@ -6809,6 +6797,19 @@ l_string|&quot; ok.&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+macro_line|#else
+DECL|function|setup_ioapic_ids_from_mpc
+r_static
+r_void
+id|__init
+id|setup_ioapic_ids_from_mpc
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * There is a nasty bug in some older SMP boards, their mptable lies&n; * about the timer IRQ. We do the following to work around the situation:&n; *&n; *&t;- timer IRQ defaults to IO-APIC IRQ&n; *&t;- if this function detects that timer IRQs are defunct, then we fall&n; *&t;  back to ISA timer IRQs&n; */
 DECL|function|timer_irq_works
 r_static

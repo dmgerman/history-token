@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
-macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -10739,12 +10738,6 @@ id|kmem_cache_t
 op_star
 id|bh_cachep
 suffix:semicolon
-DECL|variable|bh_mempool
-r_static
-id|mempool_t
-op_star
-id|bh_mempool
-suffix:semicolon
 multiline_comment|/*&n; * Once the number of bh&squot;s in the machine exceeds this level, we start&n; * stripping them in writeback.&n; */
 DECL|variable|max_buffer_heads
 r_static
@@ -10891,10 +10884,10 @@ id|buffer_head
 op_star
 id|ret
 op_assign
-id|mempool_alloc
+id|kmem_cache_alloc
 c_func
 (paren
-id|bh_mempool
+id|bh_cachep
 comma
 id|GFP_NOFS
 )paren
@@ -10964,12 +10957,12 @@ id|bh-&gt;b_assoc_buffers
 )paren
 )paren
 suffix:semicolon
-id|mempool_free
+id|kmem_cache_free
 c_func
 (paren
-id|bh
+id|bh_cachep
 comma
-id|bh_mempool
+id|bh
 )paren
 suffix:semicolon
 id|preempt_disable
@@ -11004,9 +10997,9 @@ c_func
 id|free_buffer_head
 )paren
 suffix:semicolon
-DECL|function|init_buffer_head
 r_static
 r_void
+DECL|function|init_buffer_head
 id|init_buffer_head
 c_func
 (paren
@@ -11074,60 +11067,6 @@ id|bh-&gt;b_assoc_buffers
 suffix:semicolon
 )brace
 )brace
-DECL|function|bh_mempool_alloc
-r_static
-r_void
-op_star
-id|bh_mempool_alloc
-c_func
-(paren
-r_int
-id|gfp_mask
-comma
-r_void
-op_star
-id|pool_data
-)paren
-(brace
-r_return
-id|kmem_cache_alloc
-c_func
-(paren
-id|bh_cachep
-comma
-id|gfp_mask
-)paren
-suffix:semicolon
-)brace
-DECL|function|bh_mempool_free
-r_static
-r_void
-id|bh_mempool_free
-c_func
-(paren
-r_void
-op_star
-id|element
-comma
-r_void
-op_star
-id|pool_data
-)paren
-(brace
-r_return
-id|kmem_cache_free
-c_func
-(paren
-id|bh_cachep
-comma
-id|element
-)paren
-suffix:semicolon
-)brace
-DECL|macro|NR_RESERVED
-mdefine_line|#define NR_RESERVED (10*MAX_BUF_PER_PAGE)
-DECL|macro|MAX_UNUSED_BUFFERS
-mdefine_line|#define MAX_UNUSED_BUFFERS NR_RESERVED+20
 DECL|function|buffer_init_cpu
 r_static
 r_void
@@ -11292,20 +11231,6 @@ comma
 l_int|0
 comma
 id|init_buffer_head
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|bh_mempool
-op_assign
-id|mempool_create
-c_func
-(paren
-id|MAX_UNUSED_BUFFERS
-comma
-id|bh_mempool_alloc
-comma
-id|bh_mempool_free
 comma
 l_int|NULL
 )paren

@@ -981,14 +981,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_EL3
-(brace
-id|el3_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#ifdef CONFIG_HPLAN
 (brace
 id|hp_probe

@@ -2564,6 +2564,7 @@ id|split_status_strings
 op_assign
 (brace
 l_string|&quot;%s: Received split response in %s.&bslash;n&quot;
+comma
 l_string|&quot;%s: Received split completion error message in %s&bslash;n&quot;
 comma
 l_string|&quot;%s: Receive overrun in %s&bslash;n&quot;

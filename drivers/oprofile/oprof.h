@@ -63,11 +63,6 @@ r_int
 id|fs_buffer_watershed
 suffix:semicolon
 r_extern
-r_enum
-id|oprofile_cpu
-id|oprofile_cpu_type
-suffix:semicolon
-r_extern
 r_struct
 id|oprofile_operations
 op_star

@@ -1551,25 +1551,10 @@ id|current
 )paren
 )paren
 (brace
-multiline_comment|/* we may want to do something on signals here */
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sigmask_lock
-)paren
-suffix:semicolon
 id|flush_signals
 c_func
 (paren
 id|current
-)paren
-suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
 )brace

@@ -12026,7 +12026,7 @@ l_int|0
 op_logical_or
 (paren
 id|ratemode
-OG
+op_ge
 id|BITRATE_TABLE_SIZE
 )paren
 )paren
