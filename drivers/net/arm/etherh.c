@@ -1764,6 +1764,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|ecard_readchunk
 c_func
 (paren
@@ -1776,8 +1777,21 @@ l_int|0xf5
 comma
 l_int|0
 )paren
-op_logical_and
+)paren
+(brace
+id|printk
+c_func
 (paren
+id|KERN_ERR
+l_string|&quot;%s: unable to read podule description string&bslash;n&quot;
+comma
+id|ec-&gt;dev.bus_id
+)paren
+suffix:semicolon
+r_goto
+id|no_addr
+suffix:semicolon
+)brace
 id|s
 op_assign
 id|strchr
@@ -1787,7 +1801,11 @@ id|cd.d.string
 comma
 l_char|&squot;(&squot;
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|s
 )paren
 (brace
 r_int
@@ -1857,6 +1875,19 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: unable to parse MAC address: %s&bslash;n&quot;
+comma
+id|ec-&gt;dev.bus_id
+comma
+id|cd.d.string
+)paren
+suffix:semicolon
+id|no_addr
+suffix:colon
 r_return
 op_minus
 id|ENODEV
