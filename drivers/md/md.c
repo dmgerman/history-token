@@ -7472,7 +7472,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md :do_md_run() returned %d&bslash;n&quot;
+l_string|&quot;md: do_md_run() returned %d&bslash;n&quot;
 comma
 id|err
 )paren
@@ -9917,7 +9917,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* The &quot;size&quot; is the amount of each device that is used.&n;&t;&t; * This can only make sense for arrays with redundancy.&n;&t;&t; * linear and raid0 always use whatever space is available&n;&t;&t; * We can only consider changing the size of no resync&n;&t;&t; * or reconstruction is happening, and if the new size&n;&t;&t; * is acceptable. It must fit before the sb_offset or,&n;&t;&t; * if that is &lt;data_offset, it must fit before the&n;&t;&t; * size of each device.&n;&t;&t; * If size is zero, we find the largest size that fits.&n;&t;&t; */
+multiline_comment|/* The &quot;size&quot; is the amount of each device that is used.&n;&t;&t; * This can only make sense for arrays with redundancy.&n;&t;&t; * linear and raid0 always use whatever space is available&n;&t;&t; * We can only consider changing the size if no resync&n;&t;&t; * or reconstruction is happening, and if the new size&n;&t;&t; * is acceptable. It must fit before the sb_offset or,&n;&t;&t; * if that is &lt;data_offset, it must fit before the&n;&t;&t; * size of each device.&n;&t;&t; * If size is zero, we find the largest size that fits.&n;&t;&t; */
 r_if
 c_cond
 (paren
