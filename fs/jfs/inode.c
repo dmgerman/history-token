@@ -640,11 +640,6 @@ op_assign
 id|lblock
 suffix:semicolon
 r_int
-id|no_size_check
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|rc
 op_assign
 l_int|0
@@ -714,7 +709,7 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * A directory&squot;s &quot;data&quot; is the inode index table, but i_size is the&n;&t; * size of the d-tree, so don&squot;t check the offset against i_size&n;&t; */
+multiline_comment|/*&n;&t; * Don&squot;t try to do xtLookup when there is no xtree&n;&t; */
 r_if
 c_cond
 (paren
@@ -723,17 +718,19 @@ c_func
 (paren
 id|ip-&gt;i_mode
 )paren
+op_logical_and
+id|jfs_dirtable_inline
+c_func
+(paren
+id|ip
 )paren
-id|no_size_check
-op_assign
-l_int|1
+)paren
+r_goto
+id|unlock
 suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|no_size_check
-op_logical_or
 (paren
 (paren
 id|lblock64
@@ -742,7 +739,6 @@ id|ip-&gt;i_sb-&gt;s_blocksize_bits
 )paren
 OL
 id|ip-&gt;i_size
-)paren
 )paren
 op_logical_and
 (paren
@@ -764,7 +760,7 @@ comma
 op_amp
 id|xlen
 comma
-id|no_size_check
+l_int|0
 )paren
 op_eq
 l_int|0

@@ -4782,15 +4782,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|JFS_IP
+id|jfs_dirtable_inline
 c_func
 (paren
 id|tlck-&gt;ip
 )paren
-op_member_access_from_pointer
-id|next_index
-OL
-id|MAX_INLINE_DIRTABLE_ENTRY
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * The table has been truncated, we&squot;ve must have deleted&n;&t;&t; * the last entry, so don&squot;t bother logging this&n;&t;&t; */
