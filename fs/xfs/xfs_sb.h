@@ -56,7 +56,7 @@ mdefine_line|#define&t;XFS_SB_VERSION_OKSASHBITS&t;&bslash;&n;&t;(XFS_SB_VERSION
 DECL|macro|XFS_SB_VERSION_OKREALBITS
 mdefine_line|#define&t;XFS_SB_VERSION_OKREALBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_NUMBITS | &bslash;&n;&t; XFS_SB_VERSION_OKREALFBITS | &bslash;&n;&t; XFS_SB_VERSION_OKSASHFBITS)
 DECL|macro|XFS_SB_VERSION_MKFS
-mdefine_line|#define XFS_SB_VERSION_MKFS(ia,dia,extflag,dirv2,na,sflag)&t;&bslash;&n;&t;(((ia) || (dia) || (extflag) || (dirv2) || (na)) ? &bslash;&n;&t;&t;(XFS_SB_VERSION_4 | &bslash;&n;&t;&t; ((ia) ? XFS_SB_VERSION_ALIGNBIT : 0) | &bslash;&n;&t;&t; ((dia) ? XFS_SB_VERSION_DALIGNBIT : 0) | &bslash;&n;&t;&t; ((extflag) ? XFS_SB_VERSION_EXTFLGBIT : 0) | &bslash;&n;&t;&t; ((dirv2) ? XFS_SB_VERSION_DIRV2BIT : 0) | &bslash;&n;&t;&t; ((na) ? XFS_SB_VERSION_LOGV2BIT : 0) | &bslash;&n;&t;&t; ((sflag) ? XFS_SB_VERSION_SECTORBIT : 0)) : &bslash;&n;&t;&t;XFS_SB_VERSION_1)
+mdefine_line|#define XFS_SB_VERSION_MKFS(ia,dia,extflag,dirv2,na,sflag)&t;&bslash;&n;&t;(((ia) || (dia) || (extflag) || (dirv2) || (na) || (sflag)) ? &bslash;&n;&t;&t;(XFS_SB_VERSION_4 | &bslash;&n;&t;&t; ((ia) ? XFS_SB_VERSION_ALIGNBIT : 0) | &bslash;&n;&t;&t; ((dia) ? XFS_SB_VERSION_DALIGNBIT : 0) | &bslash;&n;&t;&t; ((extflag) ? XFS_SB_VERSION_EXTFLGBIT : 0) | &bslash;&n;&t;&t; ((dirv2) ? XFS_SB_VERSION_DIRV2BIT : 0) | &bslash;&n;&t;&t; ((na) ? XFS_SB_VERSION_LOGV2BIT : 0) | &bslash;&n;&t;&t; ((sflag) ? XFS_SB_VERSION_SECTORBIT : 0)) : &bslash;&n;&t;&t;XFS_SB_VERSION_1)
 DECL|struct|xfs_sb
 r_typedef
 r_struct
