@@ -517,9 +517,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|facilities-&gt;winsize_in
 op_logical_or
 id|facilities-&gt;winsize_out
+)paren
 op_logical_and
 (paren
 id|facil_mask
