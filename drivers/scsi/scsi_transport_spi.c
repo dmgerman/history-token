@@ -2657,12 +2657,6 @@ r_sizeof
 r_struct
 id|spi_transport_attrs
 )paren
-op_minus
-r_sizeof
-(paren
-r_int
-r_int
-)paren
 suffix:semicolon
 id|i-&gt;f
 op_assign
