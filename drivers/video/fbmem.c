@@ -4282,7 +4282,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-op_amp
 id|cursor.image.data
 comma
 id|sprite-&gt;image.data
