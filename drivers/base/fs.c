@@ -84,10 +84,10 @@ id|device
 op_star
 id|dev
 comma
-r_const
-r_char
+r_struct
+id|device_attribute
 op_star
-id|name
+id|attr
 )paren
 (brace
 r_if
@@ -108,7 +108,7 @@ c_func
 op_amp
 id|dev-&gt;dir
 comma
-id|name
+id|attr-&gt;name
 )paren
 suffix:semicolon
 id|put_device

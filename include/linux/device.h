@@ -667,10 +667,10 @@ id|device
 op_star
 id|dev
 comma
-r_const
-r_char
+r_struct
+id|device_attribute
 op_star
-id|name
+id|attr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Platform &quot;fixup&quot; functions - allow the platform to have their say&n; * about devices and actions that the general device layer doesn&squot;t&n; * know about.&n; */
