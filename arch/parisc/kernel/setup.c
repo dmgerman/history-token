@@ -50,6 +50,37 @@ id|proc_mckinley_root
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#if !defined(CONFIG_PA20) &amp;&amp; (defined(CONFIG_IOMMU_CCIO) || defined(CONFIG_IOMMU_SBA))
+DECL|variable|parisc_bus_is_phys
+r_int
+id|parisc_bus_is_phys
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Assume no IOMMU is present */
+DECL|variable|parisc_bus_is_phys
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|parisc_bus_is_phys
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* This sets the vmerge boundary and size, it&squot;s here because it has to&n; * be available on all platforms (zero means no-virtual merging) */
+DECL|variable|parisc_vmerge_boundary
+r_int
+r_int
+id|parisc_vmerge_boundary
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|parisc_vmerge_max_size
+r_int
+r_int
+id|parisc_vmerge_max_size
+op_assign
+l_int|0
+suffix:semicolon
 DECL|function|setup_cmdline
 r_void
 id|__init
