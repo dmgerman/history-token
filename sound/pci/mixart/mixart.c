@@ -4569,10 +4569,6 @@ id|virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mgr-&gt;mem
 (braket
 id|i
@@ -5662,10 +5658,6 @@ id|i
 dot
 id|virt
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren

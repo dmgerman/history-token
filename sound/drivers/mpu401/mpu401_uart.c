@@ -136,8 +136,8 @@ c_func
 id|data
 comma
 (paren
-r_int
-r_int
+r_void
+id|__iomem
 op_star
 )paren
 id|addr
@@ -165,8 +165,8 @@ id|readb
 c_func
 (paren
 (paren
-r_int
-r_int
+r_void
+id|__iomem
 op_star
 )paren
 id|addr

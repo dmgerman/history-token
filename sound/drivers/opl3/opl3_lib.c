@@ -262,13 +262,20 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|port
 suffix:semicolon
 multiline_comment|/*&n;&t; * CS4281 requires a special access to I/O registers&n;&t; */
 id|port
 op_assign
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
 (paren
 id|cmd
 op_amp
@@ -279,6 +286,7 @@ c_cond
 id|opl3-&gt;r_port
 suffix:colon
 id|opl3-&gt;l_port
+)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -299,8 +307,6 @@ r_int
 id|cmd
 comma
 id|port
-op_lshift
-l_int|2
 )paren
 suffix:semicolon
 id|udelay
@@ -318,13 +324,9 @@ r_int
 )paren
 id|val
 comma
-(paren
 id|port
 op_plus
-l_int|1
-)paren
-op_lshift
-l_int|2
+l_int|4
 )paren
 suffix:semicolon
 id|udelay

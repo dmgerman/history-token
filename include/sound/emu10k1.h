@@ -1066,6 +1066,10 @@ DECL|macro|FXGPREGBASE
 mdefine_line|#define FXGPREGBASE&t;&t;0x100&t;&t;/* FX general purpose registers base       &t;*/
 DECL|macro|A_FXGPREGBASE
 mdefine_line|#define A_FXGPREGBASE&t;&t;0x400&t;&t;/* Audigy GPRs, 0x400 to 0x5ff&t;&t;&t;*/
+DECL|macro|A_TANKMEMCTLREGBASE
+mdefine_line|#define A_TANKMEMCTLREGBASE&t;0x100&t;&t;/* Tank memory control registers base - only for Audigy */
+DECL|macro|A_TANKMEMCTLREG_MASK
+mdefine_line|#define A_TANKMEMCTLREG_MASK&t;0x1f&t;&t;/* only 5 bits used - only for Audigy */
 multiline_comment|/* Tank audio data is logarithmically compressed down to 16 bits before writing to TRAM and is&t;*/
 multiline_comment|/* decompressed back to 20 bits on a read.  There are a total of 160 locations, the last 32&t;*/
 multiline_comment|/* locations are for external TRAM. &t;&t;&t;&t;&t;&t;&t;&t;*/
@@ -1450,7 +1454,7 @@ suffix:semicolon
 multiline_comment|/* count of GPR (1..16) */
 DECL|member|gpr
 r_int
-r_char
+r_int
 id|gpr
 (braket
 l_int|32
@@ -1526,7 +1530,7 @@ id|handler
 suffix:semicolon
 DECL|member|gpr_running
 r_int
-r_char
+r_int
 id|gpr_running
 suffix:semicolon
 DECL|member|private_data
@@ -1578,37 +1582,37 @@ suffix:semicolon
 multiline_comment|/* count of buffered samples */
 DECL|member|gpr_size
 r_int
-r_char
+r_int
 id|gpr_size
 suffix:semicolon
 multiline_comment|/* GPR containing size of ring buffer in samples (host) */
 DECL|member|gpr_ptr
 r_int
-r_char
+r_int
 id|gpr_ptr
 suffix:semicolon
 multiline_comment|/* GPR containing current pointer in the ring buffer (host = reset, FX8010) */
 DECL|member|gpr_count
 r_int
-r_char
+r_int
 id|gpr_count
 suffix:semicolon
 multiline_comment|/* GPR containing count of samples between two interrupts (host) */
 DECL|member|gpr_tmpcount
 r_int
-r_char
+r_int
 id|gpr_tmpcount
 suffix:semicolon
 multiline_comment|/* GPR containing current count of samples to interrupt (host = set, FX8010) */
 DECL|member|gpr_trigger
 r_int
-r_char
+r_int
 id|gpr_trigger
 suffix:semicolon
 multiline_comment|/* GPR containing trigger (activate) information (host) */
 DECL|member|gpr_running
 r_int
-r_char
+r_int
 id|gpr_running
 suffix:semicolon
 multiline_comment|/* GPR containing info if PCM is running (FX8010) */
@@ -2985,6 +2989,18 @@ DECL|macro|ITRAM_ADDR
 mdefine_line|#define ITRAM_ADDR(x)&t;(TANKMEMADDRREGBASE + 0x00 + (x)) /* x = 0x00 - 0x7f */
 DECL|macro|ETRAM_ADDR
 mdefine_line|#define ETRAM_ADDR(x)&t;(TANKMEMADDRREGBASE + 0x80 + (x)) /* x = 0x00 - 0x1f */
+DECL|macro|A_ITRAM_DATA
+mdefine_line|#define A_ITRAM_DATA(x)&t;(TANKMEMDATAREGBASE + 0x00 + (x)) /* x = 0x00 - 0xbf */
+DECL|macro|A_ETRAM_DATA
+mdefine_line|#define A_ETRAM_DATA(x)&t;(TANKMEMDATAREGBASE + 0xc0 + (x)) /* x = 0x00 - 0x3f */
+DECL|macro|A_ITRAM_ADDR
+mdefine_line|#define A_ITRAM_ADDR(x)&t;(TANKMEMADDRREGBASE + 0x00 + (x)) /* x = 0x00 - 0xbf */
+DECL|macro|A_ETRAM_ADDR
+mdefine_line|#define A_ETRAM_ADDR(x)&t;(TANKMEMADDRREGBASE + 0xc0 + (x)) /* x = 0x00 - 0x3f */
+DECL|macro|A_ITRAM_CTL
+mdefine_line|#define A_ITRAM_CTL(x)&t;(A_TANKMEMCTLREGBASE + 0x00 + (x)) /* x = 0x00 - 0xbf */
+DECL|macro|A_ETRAM_CTL
+mdefine_line|#define A_ETRAM_CTL(x)&t;(A_TANKMEMCTLREGBASE + 0xc0 + (x)) /* x = 0x00 - 0x3f */
 DECL|macro|A_FXBUS
 mdefine_line|#define A_FXBUS(x)&t;(0x00 + (x))&t;/* x = 0x00 - 0x3f? */
 DECL|macro|A_EXTIN
@@ -3220,8 +3236,16 @@ DECL|macro|A_GPR_ACCU
 mdefine_line|#define A_GPR_ACCU&t;0xd6&t;&t;/* ACCUM, accumulator */
 DECL|macro|A_GPR_COND
 mdefine_line|#define A_GPR_COND&t;0xd7&t;&t;/* CCR, condition register */
-multiline_comment|/* 0xd8 = noise1 */
-multiline_comment|/* 0xd9 = noise2 */
+DECL|macro|A_GPR_NOISE0
+mdefine_line|#define A_GPR_NOISE0&t;0xd8&t;&t;/* noise source */
+DECL|macro|A_GPR_NOISE1
+mdefine_line|#define A_GPR_NOISE1&t;0xd9&t;&t;/* noise source */
+DECL|macro|A_GPR_IRQ
+mdefine_line|#define A_GPR_IRQ&t;0xda&t;&t;/* IRQ register */
+DECL|macro|A_GPR_DBAC
+mdefine_line|#define A_GPR_DBAC&t;0xdb&t;&t;/* TRAM Delay Base Address Counter - internal */
+DECL|macro|A_GPR_DBACE
+mdefine_line|#define A_GPR_DBACE&t;0xde&t;&t;/* TRAM Delay Base Address Counter - external */
 multiline_comment|/* definitions for debug register */
 DECL|macro|EMU10K1_DBG_ZC
 mdefine_line|#define EMU10K1_DBG_ZC&t;&t;&t;0x80000000&t;/* zero tram counter */
@@ -3346,7 +3370,7 @@ suffix:semicolon
 multiline_comment|/* count of GPR (1..16) */
 DECL|member|gpr
 r_int
-r_char
+r_int
 id|gpr
 (braket
 l_int|32
@@ -3399,7 +3423,7 @@ r_int
 r_int
 id|gpr_valid
 (braket
-l_int|0x100
+l_int|0x200
 op_div
 (paren
 r_sizeof
@@ -3418,7 +3442,7 @@ r_int
 r_int
 id|gpr_map
 (braket
-l_int|0x100
+l_int|0x200
 )braket
 suffix:semicolon
 multiline_comment|/* initializers */
@@ -3472,7 +3496,7 @@ r_int
 r_int
 id|tram_valid
 (braket
-l_int|0xa0
+l_int|0x100
 op_div
 (paren
 r_sizeof
@@ -3491,7 +3515,7 @@ r_int
 r_int
 id|tram_data_map
 (braket
-l_int|0xa0
+l_int|0x100
 )braket
 suffix:semicolon
 multiline_comment|/* data initializers */
@@ -3500,7 +3524,7 @@ r_int
 r_int
 id|tram_addr_map
 (braket
-l_int|0xa0
+l_int|0x100
 )braket
 suffix:semicolon
 multiline_comment|/* map initializers */
@@ -3509,7 +3533,7 @@ r_int
 r_int
 id|code_valid
 (braket
-l_int|512
+l_int|1024
 op_div
 (paren
 r_sizeof
@@ -3528,7 +3552,7 @@ r_int
 r_int
 id|code
 (braket
-l_int|512
+l_int|1024
 )braket
 (braket
 l_int|2
@@ -3601,37 +3625,37 @@ suffix:semicolon
 multiline_comment|/* count of buffered samples */
 DECL|member|gpr_size
 r_int
-r_char
+r_int
 id|gpr_size
 suffix:semicolon
 multiline_comment|/* GPR containing size of ringbuffer in samples (host) */
 DECL|member|gpr_ptr
 r_int
-r_char
+r_int
 id|gpr_ptr
 suffix:semicolon
 multiline_comment|/* GPR containing current pointer in the ring buffer (host = reset, FX8010) */
 DECL|member|gpr_count
 r_int
-r_char
+r_int
 id|gpr_count
 suffix:semicolon
 multiline_comment|/* GPR containing count of samples between two interrupts (host) */
 DECL|member|gpr_tmpcount
 r_int
-r_char
+r_int
 id|gpr_tmpcount
 suffix:semicolon
 multiline_comment|/* GPR containing current count of samples to interrupt (host = set, FX8010) */
 DECL|member|gpr_trigger
 r_int
-r_char
+r_int
 id|gpr_trigger
 suffix:semicolon
 multiline_comment|/* GPR containing trigger (activate) information (host) */
 DECL|member|gpr_running
 r_int
-r_char
+r_int
 id|gpr_running
 suffix:semicolon
 multiline_comment|/* GPR containing info if PCM is running (FX8010) */

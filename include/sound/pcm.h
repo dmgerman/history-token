@@ -1406,6 +1406,14 @@ id|snd_info_entry_t
 op_star
 id|proc_prealloc_entry
 suffix:semicolon
+multiline_comment|/* misc flags */
+DECL|member|no_mmap_ctrl
+r_int
+r_int
+id|no_mmap_ctrl
+suffix:colon
+l_int|1
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)

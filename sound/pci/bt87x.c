@@ -995,9 +995,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|status
 op_amp
 id|INT_RISCI
+)paren
+op_logical_and
+(paren
+id|chip-&gt;reg_control
+op_amp
+id|CTL_ACAP_EN
+)paren
 )paren
 (brace
 r_int

@@ -77,8 +77,9 @@ r_int
 id|phys
 suffix:semicolon
 DECL|member|virt
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|virt
 suffix:semicolon
 DECL|member|res
