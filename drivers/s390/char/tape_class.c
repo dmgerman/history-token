@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * (C) Copyright IBM Corp. 2004&n; * tape_class.c ($Revision: 1.6 $)&n; *&n; * Tape class device support&n; *&n; * Author: Stefan Bader &lt;shbader@de.ibm.com&gt;&n; * Based on simple class device code by Greg K-H&n; */
+multiline_comment|/*&n; * (C) Copyright IBM Corp. 2004&n; * tape_class.c ($Revision: 1.8 $)&n; *&n; * Tape class device support&n; *&n; * Author: Stefan Bader &lt;shbader@de.ibm.com&gt;&n; * Based on simple class device code by Greg K-H&n; */
 macro_line|#include &quot;tape_class.h&quot;
 id|MODULE_AUTHOR
 c_func
@@ -10,7 +10,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;(C) Copyright IBM Corp. 2004   All Rights Reserved.&bslash;n&quot;
-l_string|&quot;tape_class.c ($Revision: 1.6 $)&quot;
+l_string|&quot;tape_class.c ($Revision: 1.8 $)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -280,7 +280,6 @@ suffix:colon
 id|cdev_del
 c_func
 (paren
-op_amp
 id|tcd-&gt;char_device
 )paren
 suffix:semicolon
