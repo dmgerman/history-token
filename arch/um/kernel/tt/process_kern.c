@@ -1015,11 +1015,7 @@ op_assign
 id|start_fork_tramp
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|p-&gt;thread.kernel_stack
+id|p-&gt;thread_info
 comma
 id|stack
 comma
@@ -2159,8 +2155,6 @@ l_int|1
 op_lshift
 id|CONFIG_KERNEL_STACK_ORDER
 )paren
-op_minus
-l_int|2
 suffix:semicolon
 id|sp
 op_assign
@@ -2168,7 +2162,13 @@ op_assign
 r_void
 op_star
 )paren
-id|init_task.thread.kernel_stack
+(paren
+(paren
+r_int
+r_int
+)paren
+id|init_task.thread_info
+)paren
 op_plus
 id|pages
 op_star
