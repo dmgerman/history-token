@@ -2020,7 +2020,7 @@ id|regs
 )paren
 (brace
 r_struct
-id|sigcontext_struct
+id|sigcontext
 op_star
 id|context
 op_assign

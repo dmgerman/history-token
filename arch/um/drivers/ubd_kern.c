@@ -1652,7 +1652,7 @@ dot
 id|fops
 op_assign
 op_amp
-id|ubd_fops
+id|ubd_blops
 suffix:semicolon
 r_if
 c_cond
@@ -1735,7 +1735,7 @@ dot
 id|fops
 op_assign
 op_amp
-id|ubd_fops
+id|ubd_blops
 suffix:semicolon
 id|sprintf
 c_func
@@ -1955,7 +1955,7 @@ id|ubd_gendisk
 id|n
 )braket
 dot
-id|name
+id|disk_name
 )paren
 suffix:semicolon
 r_return
@@ -4387,6 +4387,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 )brace
 DECL|function|ubd_revalidate
 r_static
