@@ -190,8 +190,9 @@ r_int
 id|sr_set_blocklength
 c_func
 (paren
-r_int
-id|minor
+id|Scsi_CD
+op_star
+id|cd
 comma
 r_int
 id|blocklength
@@ -215,16 +216,6 @@ r_struct
 id|ccs_modesel_head
 op_star
 id|modesel
-suffix:semicolon
-id|Scsi_CD
-op_star
-id|cd
-op_assign
-op_amp
-id|scsi_CDs
-(braket
-id|minor
-)braket
 suffix:semicolon
 r_int
 id|rc
@@ -409,7 +400,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -500,16 +491,6 @@ r_int
 id|rc
 comma
 id|no_multi
-comma
-id|minor
-suffix:semicolon
-id|minor
-op_assign
-id|minor
-c_func
-(paren
-id|cdi-&gt;dev
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -627,7 +608,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -810,7 +791,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -981,7 +962,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -1090,7 +1071,7 @@ suffix:semicolon
 id|sr_set_blocklength
 c_func
 (paren
-id|minor
+id|cd
 comma
 l_int|2048
 )paren
@@ -1157,7 +1138,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -1267,7 +1248,7 @@ op_assign
 id|sr_do_ioctl
 c_func
 (paren
-id|minor
+id|cd
 comma
 id|cmd
 comma
@@ -1379,7 +1360,7 @@ op_eq
 id|sr_is_xa
 c_func
 (paren
-id|minor
+id|cd
 )paren
 )paren
 id|cd-&gt;xa_flag
@@ -1397,7 +1378,7 @@ id|cd-&gt;device-&gt;sector_size
 id|sr_set_blocklength
 c_func
 (paren
-id|minor
+id|cd
 comma
 l_int|2048
 )paren
