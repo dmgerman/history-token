@@ -143,23 +143,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ip_mcf_procinfo
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;Functions provided by ip.c&n; */
 r_extern
 r_int
