@@ -2721,8 +2721,10 @@ id|printk
 c_func
 (paren
 id|KERN_CRIT
+l_string|&quot;%s: Can&squot;t create protocol sock SLAB &quot;
+l_string|&quot;caches!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Can&squot;t create protocol sock SLAB caches!&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register the socket-side information for inet6_create.  */
