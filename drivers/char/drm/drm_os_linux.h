@@ -1,5 +1,3 @@
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 macro_line|#include &lt;linux/delay.h&gt;
 DECL|macro|DRM_IOCTL_ARGS
