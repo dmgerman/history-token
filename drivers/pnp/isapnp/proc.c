@@ -300,12 +300,14 @@ id|file_operations
 id|isapnp_proc_bus_file_operations
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|isapnp_proc_bus_lseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|isapnp_proc_bus_read
 comma
 )brace
