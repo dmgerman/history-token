@@ -213,12 +213,14 @@ id|file_operations
 id|i8k_fops
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|i8k_read
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|i8k_ioctl
 comma
 )brace

@@ -542,12 +542,14 @@ id|file_operations
 id|misc_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|misc_open
 comma
 )brace

@@ -505,12 +505,14 @@ id|file_operations
 id|sx_fw_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|sx_fw_ioctl
 comma
 )brace
