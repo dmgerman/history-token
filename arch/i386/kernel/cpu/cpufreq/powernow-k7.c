@@ -1064,6 +1064,7 @@ id|CPUFREQ_POSTCHANGE
 suffix:semicolon
 )brace
 DECL|function|powernow_decode_bios
+r_static
 r_int
 id|powernow_decode_bios
 (paren
