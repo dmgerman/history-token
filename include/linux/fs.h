@@ -5517,6 +5517,7 @@ r_int
 comma
 r_int
 comma
+r_const
 r_char
 op_star
 )paren
@@ -5530,6 +5531,7 @@ id|dev_t
 comma
 r_int
 comma
+r_const
 r_char
 op_star
 )paren
