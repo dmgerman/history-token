@@ -34,6 +34,14 @@ macro_line|#ifndef GET_FPEMU_CTL
 DECL|macro|GET_FPEMU_CTL
 macro_line|# define GET_FPEMU_CTL(a,b)&t;(-EINVAL)
 macro_line|#endif
+macro_line|#ifndef SET_FPEXC_CTL
+DECL|macro|SET_FPEXC_CTL
+macro_line|# define SET_FPEXC_CTL(a,b)&t;(-EINVAL)
+macro_line|#endif
+macro_line|#ifndef GET_FPEXC_CTL
+DECL|macro|GET_FPEXC_CTL
+macro_line|# define GET_FPEXC_CTL(a,b)&t;(-EINVAL)
+macro_line|#endif
 multiline_comment|/*&n; * this is where the system-wide overflow UID and GID are defined, for&n; * architectures that now have 32-bit UID/GID but didn&squot;t in the past&n; */
 DECL|variable|overflowuid
 r_int
@@ -5033,6 +5041,36 @@ suffix:colon
 id|error
 op_assign
 id|GET_FPEMU_CTL
+c_func
+(paren
+id|current
+comma
+id|arg2
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PR_SET_FPEXC
+suffix:colon
+id|error
+op_assign
+id|SET_FPEXC_CTL
+c_func
+(paren
+id|current
+comma
+id|arg2
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PR_GET_FPEXC
+suffix:colon
+id|error
+op_assign
+id|GET_FPEXC_CTL
 c_func
 (paren
 id|current
