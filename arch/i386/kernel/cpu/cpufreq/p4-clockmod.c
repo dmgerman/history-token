@@ -701,7 +701,7 @@ l_int|0x09
 )paren
 )paren
 (brace
-multiline_comment|/* Pentium M */
+multiline_comment|/* Pentium M (Banias) */
 id|printk
 c_func
 (paren
@@ -712,6 +712,47 @@ l_string|&quot;The speedstep_centrino module offers voltage scaling&quot;
 l_string|&quot; in addition of frequency scaling. You should use &quot;
 l_string|&quot;that instead of p4-clockmod, if possible.&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|speedstep_get_processor_frequency
+c_func
+(paren
+id|SPEEDSTEP_PROCESSOR_PM
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|c-&gt;x86
+op_eq
+l_int|0x06
+)paren
+op_logical_and
+(paren
+id|c-&gt;x86_model
+op_eq
+l_int|0x13
+)paren
+)paren
+(brace
+multiline_comment|/* Pentium M (Dothan) */
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PFX
+l_string|&quot;Warning: Pentium M detected. &quot;
+l_string|&quot;The speedstep_centrino module offers voltage scaling&quot;
+l_string|&quot; in addition of frequency scaling. You should use &quot;
+l_string|&quot;that instead of p4-clockmod, if possible.&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* on P-4s, the TSC runs with constant frequency independent wether&n;&t;&t; * throttling is active or not. */
+id|p4clockmod_driver.flags
+op_or_assign
+id|CPUFREQ_CONST_LOOPS
 suffix:semicolon
 r_return
 id|speedstep_get_processor_frequency
