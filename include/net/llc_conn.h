@@ -4,6 +4,7 @@ mdefine_line|#define LLC_CONN_H
 multiline_comment|/*&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001, 2002 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;net/llc_if.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/llc.h&gt;
 DECL|macro|LLC_EVENT
 mdefine_line|#define LLC_EVENT                1
@@ -33,17 +34,16 @@ suffix:semicolon
 multiline_comment|/* timer expire time */
 )brace
 suffix:semicolon
-DECL|struct|llc_opt
+DECL|struct|llc_sock
 r_struct
-id|llc_opt
+id|llc_sock
 (brace
+multiline_comment|/* struct sock must be the first member of llc_sock */
 DECL|member|sk
 r_struct
 id|sock
-op_star
 id|sk
 suffix:semicolon
-multiline_comment|/* sock that has this llc_opt */
 DECL|member|addr
 r_struct
 id|sockaddr_llc
@@ -228,8 +228,31 @@ suffix:semicolon
 multiline_comment|/* used for saving header of last pdu&n;&t;&t;&t;&t;&t;      received and caused sending FRMR.&n;&t;&t;&t;&t;&t;      Used for resending FRMR */
 )brace
 suffix:semicolon
-DECL|macro|llc_sk
-mdefine_line|#define llc_sk(__sk) ((struct llc_opt *)(__sk)-&gt;sk_protinfo)
+DECL|function|llc_sk
+r_static
+r_inline
+r_struct
+id|llc_sock
+op_star
+id|llc_sk
+c_func
+(paren
+r_const
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|llc_sock
+op_star
+)paren
+id|sk
+suffix:semicolon
+)brace
 DECL|function|llc_set_backlog_type
 r_static
 id|__inline__

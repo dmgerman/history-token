@@ -627,6 +627,10 @@ id|output
 )paren
 (paren
 r_struct
+id|xfrm_state
+op_star
+comma
+r_struct
 id|sk_buff
 op_star
 id|pskb

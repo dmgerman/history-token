@@ -153,6 +153,12 @@ DECL|struct|atalk_sock
 r_struct
 id|atalk_sock
 (brace
+multiline_comment|/* struct sock has to be the first member of atalk_sock */
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
 DECL|member|dest_net
 r_int
 r_int
@@ -185,6 +191,30 @@ id|src_port
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|at_sk
+r_static
+r_inline
+r_struct
+id|atalk_sock
+op_star
+id|at_sk
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|atalk_sock
+op_star
+)paren
+id|sk
+suffix:semicolon
+)brace
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|struct|ddpehdr
@@ -671,8 +701,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|macro|at_sk
-mdefine_line|#define at_sk(__sk) ((struct atalk_sock *)(__sk)-&gt;sk_protinfo)
 r_extern
 r_struct
 id|hlist_head

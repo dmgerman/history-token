@@ -124,7 +124,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -253,7 +253,7 @@ id|skb
 )paren
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -639,7 +639,7 @@ id|skb
 )paren
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -919,7 +919,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -986,7 +986,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -1122,7 +1122,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -1262,7 +1262,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -1398,7 +1398,7 @@ id|skb
 )paren
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -1586,7 +1586,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -1749,7 +1749,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -1877,7 +1877,7 @@ r_int
 id|rc
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -1981,7 +1981,7 @@ r_int
 id|rc
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -2084,7 +2084,7 @@ r_int
 id|rc
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -2270,7 +2270,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -2471,7 +2471,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -2606,7 +2606,7 @@ op_assign
 l_int|1
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -2736,7 +2736,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -2871,7 +2871,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -3001,7 +3001,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -3141,7 +3141,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -3249,7 +3249,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -3327,7 +3327,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -3457,7 +3457,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -3587,7 +3587,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -3722,7 +3722,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -3857,7 +3857,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -3987,7 +3987,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -4163,7 +4163,7 @@ c_func
 )paren
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -4334,7 +4334,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -4500,7 +4500,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -4556,7 +4556,7 @@ id|u8
 id|pf_bit
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -4711,7 +4711,7 @@ r_int
 id|rc
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -4812,7 +4812,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -4899,7 +4899,7 @@ id|nskb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5009,7 +5009,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5077,7 +5077,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5165,7 +5165,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5238,7 +5238,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5295,7 +5295,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5341,7 +5341,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5408,7 +5408,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5468,7 +5468,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5512,7 +5512,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5556,7 +5556,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5644,7 +5644,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign
@@ -5742,7 +5742,7 @@ id|skb
 )paren
 suffix:semicolon
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign

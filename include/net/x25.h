@@ -3,6 +3,7 @@ macro_line|#ifndef _X25_H
 DECL|macro|_X25_H
 mdefine_line|#define _X25_H 
 macro_line|#include &lt;linux/x25.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 DECL|macro|X25_ADDR_LEN
 mdefine_line|#define&t;X25_ADDR_LEN&t;&t;&t;16
 DECL|macro|X25_MAX_L2_LEN
@@ -235,10 +236,15 @@ id|refcnt
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|x25_opt
+DECL|struct|x25_sock
 r_struct
-id|x25_opt
+id|x25_sock
 (brace
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
 DECL|member|source_addr
 DECL|member|dest_addr
 r_struct
@@ -325,13 +331,6 @@ r_struct
 id|sk_buff_head
 id|interrupt_out_queue
 suffix:semicolon
-DECL|member|sk
-r_struct
-id|sock
-op_star
-id|sk
-suffix:semicolon
-multiline_comment|/* Backlink to socket */
 DECL|member|timer
 r_struct
 id|timer_list
@@ -360,8 +359,31 @@ suffix:semicolon
 multiline_comment|/* inc_call facilities mask */
 )brace
 suffix:semicolon
-DECL|macro|x25_sk
-mdefine_line|#define x25_sk(__sk) ((struct x25_opt *)(__sk)-&gt;sk_protinfo)
+DECL|function|x25_sk
+r_static
+r_inline
+r_struct
+id|x25_sock
+op_star
+id|x25_sk
+c_func
+(paren
+r_const
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|x25_sock
+op_star
+)paren
+id|sk
+suffix:semicolon
+)brace
 multiline_comment|/* af_x25.c */
 r_extern
 r_int

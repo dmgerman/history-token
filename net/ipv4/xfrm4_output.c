@@ -436,6 +436,8 @@ op_member_access_from_pointer
 id|output
 c_func
 (paren
+id|x
+comma
 id|skb
 )paren
 suffix:semicolon
