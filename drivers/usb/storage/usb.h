@@ -216,11 +216,6 @@ DECL|macro|US_FL_DEV_ATTACHED
 mdefine_line|#define US_FL_DEV_ATTACHED    0x00010000 /* is the device attached?&t;    */
 DECL|macro|US_FLIDX_IP_WANTED
 mdefine_line|#define US_FLIDX_IP_WANTED   17  /* 0x00020000&t;is an IRQ expected?&t;    */
-multiline_comment|/* kernel thread actions */
-DECL|macro|US_ACT_COMMAND
-mdefine_line|#define US_ACT_COMMAND&t;&t;1
-DECL|macro|US_ACT_EXIT
-mdefine_line|#define US_ACT_EXIT&t;&t;5
 multiline_comment|/* processing state machine states */
 DECL|macro|US_STATE_IDLE
 mdefine_line|#define US_STATE_IDLE&t;&t;1
@@ -442,17 +437,6 @@ id|srb
 suffix:semicolon
 multiline_comment|/* current srb&t;&t;*/
 multiline_comment|/* thread information */
-DECL|member|queue_srb
-id|Scsi_Cmnd
-op_star
-id|queue_srb
-suffix:semicolon
-multiline_comment|/* the single queue slot */
-DECL|member|action
-r_int
-id|action
-suffix:semicolon
-multiline_comment|/* what to do&t;&t;  */
 DECL|member|pid
 r_int
 id|pid
@@ -536,11 +520,6 @@ id|completion
 id|notify
 suffix:semicolon
 multiline_comment|/* thread begin/end&t;    */
-DECL|member|queue_exclusion
-id|spinlock_t
-id|queue_exclusion
-suffix:semicolon
-multiline_comment|/* to protect data structs */
 DECL|member|unusual_dev
 r_struct
 id|us_unusual_dev
@@ -600,6 +579,7 @@ r_int
 id|data_len
 )paren
 suffix:semicolon
+multiline_comment|/* The scsi_lock() and scsi_unlock() macros protect the sm_state and the&n; * single queue element srb for write access */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,3)
 DECL|macro|scsi_unlock
 mdefine_line|#define scsi_unlock(host)&t;spin_unlock_irq(host-&gt;host_lock)

@@ -199,12 +199,12 @@ multiline_comment|/* Kill the control threads&n;&t; *&n;&t; * Enqueue the comman
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- sending US_ACT_EXIT command to thread&bslash;n&quot;
+l_string|&quot;-- sending exit command to thread&bslash;n&quot;
 )paren
 suffix:semicolon
-id|us-&gt;action
+id|us-&gt;srb
 op_assign
-id|US_ACT_EXIT
+l_int|NULL
 suffix:semicolon
 id|up
 c_func
@@ -267,6 +267,7 @@ l_int|16
 suffix:semicolon
 )brace
 multiline_comment|/* run command */
+multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
 DECL|function|queuecommand
 r_static
 r_int
@@ -303,10 +304,6 @@ id|srb-&gt;host-&gt;hostdata
 l_int|0
 )braket
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
@@ -322,38 +319,14 @@ op_star
 )paren
 id|us
 suffix:semicolon
-multiline_comment|/* get exclusive access to the structures we want */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|us-&gt;queue_exclusion
-comma
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* enqueue the command */
-id|us-&gt;queue_srb
-op_assign
-id|srb
-suffix:semicolon
 id|srb-&gt;scsi_done
 op_assign
 id|done
 suffix:semicolon
-id|us-&gt;action
+id|us-&gt;srb
 op_assign
-id|US_ACT_COMMAND
-suffix:semicolon
-multiline_comment|/* release the lock on the structure */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|us-&gt;queue_exclusion
-comma
-id|flags
-)paren
+id|srb
 suffix:semicolon
 multiline_comment|/* wake up the process task */
 id|up
@@ -371,6 +344,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Error handling functions&n; ***********************************************************************/
 multiline_comment|/* Command abort */
+multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
 DECL|function|command_abort
 r_static
 r_int
@@ -403,51 +377,15 @@ c_func
 l_string|&quot;command_abort() called&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Is this command still active? */
 r_if
 c_cond
 (paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_RUNNING
+id|us-&gt;srb
+op_ne
+id|srb
 )paren
 (brace
-id|scsi_unlock
-c_func
-(paren
-id|srb-&gt;host
-)paren
-suffix:semicolon
-id|usb_stor_abort_transport
-c_func
-(paren
-id|us
-)paren
-suffix:semicolon
-multiline_comment|/* wait for us to be done */
-id|wait_for_completion
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;notify
-)paren
-)paren
-suffix:semicolon
-id|scsi_lock
-c_func
-(paren
-id|srb-&gt;host
-)paren
-suffix:semicolon
-r_return
-id|SUCCESS
-suffix:semicolon
-)brace
 id|US_DEBUGP
 (paren
 l_string|&quot;-- nothing to abort&bslash;n&quot;
@@ -457,7 +395,18 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
+id|usb_stor_abort_transport
+c_func
+(paren
+id|us
+)paren
+suffix:semicolon
+r_return
+id|SUCCESS
+suffix:semicolon
+)brace
 multiline_comment|/* This invokes the transport reset mechanism to reset the state of the&n; * device */
+multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
 DECL|function|device_reset
 r_static
 r_int
@@ -493,19 +442,15 @@ c_func
 l_string|&quot;device_reset() called&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* if the device was removed, then we&squot;re already reset */
-r_if
-c_cond
+multiline_comment|/* set the state and release the lock */
+id|atomic_set
+c_func
 (paren
-op_logical_neg
-(paren
-id|us-&gt;flags
 op_amp
-id|US_FL_DEV_ATTACHED
+id|us-&gt;sm_state
+comma
+id|US_STATE_RESETTING
 )paren
-)paren
-r_return
-id|SUCCESS
 suffix:semicolon
 id|scsi_unlock
 c_func
@@ -523,19 +468,22 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-id|us-&gt;srb
-op_assign
-id|srb
-suffix:semicolon
-id|atomic_set
-c_func
+multiline_comment|/* if the device was removed, then we&squot;re already reset */
+r_if
+c_cond
 (paren
+op_logical_neg
+(paren
+id|us-&gt;flags
 op_amp
-id|us-&gt;sm_state
-comma
-id|US_STATE_RESETTING
+id|US_FL_DEV_ATTACHED
 )paren
+)paren
+id|result
+op_assign
+id|SUCCESS
 suffix:semicolon
+r_else
 id|result
 op_assign
 id|us
@@ -544,6 +492,22 @@ id|transport_reset
 c_func
 (paren
 id|us
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;dev_semaphore
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* lock access to the state and clear it */
+id|scsi_lock
+c_func
+(paren
+id|srb-&gt;host
 )paren
 suffix:semicolon
 id|atomic_set
@@ -555,27 +519,12 @@ comma
 id|US_STATE_IDLE
 )paren
 suffix:semicolon
-multiline_comment|/* unlock the device pointers */
-id|up
-c_func
-(paren
-op_amp
-(paren
-id|us-&gt;dev_semaphore
-)paren
-)paren
-suffix:semicolon
-id|scsi_lock
-c_func
-(paren
-id|srb-&gt;host
-)paren
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
 )brace
 multiline_comment|/* This resets the device port, and simulates the device&n; * disconnect/reconnect for all drivers which have claimed&n; * interfaces, including ourself. */
+multiline_comment|/* This is always called with scsi_lock(srb-&gt;host) held */
 DECL|function|bus_reset
 r_static
 r_int
@@ -612,8 +561,6 @@ r_struct
 id|usb_device
 op_star
 id|pusb_dev_save
-op_assign
-id|us-&gt;pusb_dev
 suffix:semicolon
 multiline_comment|/* we use the usb_reset_device() function to handle this for us */
 id|US_DEBUGP
@@ -622,7 +569,20 @@ c_func
 l_string|&quot;bus_reset() called&bslash;n&quot;
 )paren
 suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|srb-&gt;host
+)paren
+suffix:semicolon
 multiline_comment|/* if the device has been removed, this worked */
+id|down
+c_func
+(paren
+op_amp
+id|us-&gt;dev_semaphore
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -640,17 +600,35 @@ c_func
 l_string|&quot;-- device removed already&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|SUCCESS
+id|up
+c_func
+(paren
+op_amp
+id|us-&gt;dev_semaphore
+)paren
 suffix:semicolon
-)brace
-multiline_comment|/* attempt to reset the port */
-id|scsi_unlock
+id|scsi_lock
 c_func
 (paren
 id|srb-&gt;host
 )paren
 suffix:semicolon
+r_return
+id|SUCCESS
+suffix:semicolon
+)brace
+id|pusb_dev_save
+op_assign
+id|us-&gt;pusb_dev
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|us-&gt;dev_semaphore
+)paren
+suffix:semicolon
+multiline_comment|/* attempt to reset the port */
 id|result
 op_assign
 id|usb_reset_device
@@ -686,7 +664,7 @@ id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME: This needs to lock out driver probing while it&squot;s working&n;&t; * or we can have race conditions */
-multiline_comment|/* Is that still true?  I don&squot;t see how...  AS */
+multiline_comment|/* This functionality really should be provided by the khubd thread */
 r_for
 c_loop
 (paren
