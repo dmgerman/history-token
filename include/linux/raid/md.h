@@ -75,11 +75,16 @@ r_return
 id|partition_name
 c_func
 (paren
+id|bdev
+ques
+c_cond
 id|to_kdev_t
 c_func
 (paren
 id|bdev-&gt;bd_dev
 )paren
+suffix:colon
+id|NODEV
 )paren
 suffix:semicolon
 )brace

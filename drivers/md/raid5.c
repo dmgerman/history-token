@@ -2162,15 +2162,6 @@ op_star
 id|bdev
 )paren
 (brace
-id|kdev_t
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 id|raid5_conf_t
 op_star
 id|conf
@@ -2299,9 +2290,10 @@ id|KERN_ALERT
 l_string|&quot;raid5: Disk failure on %s, disabling device.&quot;
 l_string|&quot; Operation continuing on %d devices&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
+c_func
 (paren
-id|dev
+id|bdev
 )paren
 comma
 id|conf-&gt;working_disks
@@ -2336,9 +2328,9 @@ id|printk
 id|KERN_ALERT
 l_string|&quot;raid5: Disk failure on spare %s&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 suffix:semicolon
@@ -7677,10 +7669,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;raid5: disabled device %s (errors detected)&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -7758,10 +7750,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;raid5: disabled device %s (not in sync)&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -7788,10 +7780,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;raid5: disabled device %s (inconsistent descriptor)&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -7810,10 +7802,10 @@ c_func
 id|KERN_ERR
 l_string|&quot;raid5: disabled device %s (device %d already operational)&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|raid_disk
@@ -7828,10 +7820,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;raid5: device %s operational as raid disk %d&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 comma
 id|raid_disk
@@ -7870,10 +7862,10 @@ c_func
 id|KERN_INFO
 l_string|&quot;raid5: spare disk %s&bslash;n&quot;
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -9012,19 +9004,10 @@ id|tmp-&gt;raid_disk
 comma
 id|tmp-&gt;used_slot
 comma
-id|partition_name
+id|bdev_partition_name
 c_func
 (paren
 id|tmp-&gt;bdev
-ques
-c_cond
-id|to_kdev_t
-c_func
-(paren
-id|tmp-&gt;bdev-&gt;bd_dev
-)paren
-suffix:colon
-id|NODEV
 )paren
 )paren
 suffix:semicolon
