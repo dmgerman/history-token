@@ -1832,12 +1832,6 @@ r_int
 id|port
 suffix:semicolon
 multiline_comment|/* I/O port number */
-DECL|member|res_port
-r_struct
-id|resource
-op_star
-id|res_port
-suffix:semicolon
 DECL|member|APS
 r_int
 id|APS
