@@ -5500,6 +5500,8 @@ c_func
 (paren
 op_amp
 id|lru_pvec
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if

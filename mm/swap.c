@@ -309,6 +309,9 @@ id|pages
 comma
 r_int
 id|nr
+comma
+r_int
+id|cold
 )paren
 (brace
 r_int
@@ -330,6 +333,8 @@ c_func
 (paren
 op_amp
 id|pages_to_free
+comma
+id|cold
 )paren
 suffix:semicolon
 r_for
@@ -477,7 +482,7 @@ op_amp
 id|pages_to_free
 )paren
 suffix:semicolon
-id|pagevec_init
+id|pagevec_reinit
 c_func
 (paren
 op_amp
@@ -533,9 +538,11 @@ c_func
 (paren
 id|pvec
 )paren
+comma
+id|pvec-&gt;cold
 )paren
 suffix:semicolon
-id|pagevec_init
+id|pagevec_reinit
 c_func
 (paren
 id|pvec
@@ -566,7 +573,13 @@ c_func
 (paren
 op_amp
 id|pages_to_free
+comma
+id|pvec-&gt;cold
 )paren
+suffix:semicolon
+id|pages_to_free.cold
+op_assign
+id|pvec-&gt;cold
 suffix:semicolon
 r_for
 c_loop
@@ -633,7 +646,7 @@ op_amp
 id|pages_to_free
 )paren
 suffix:semicolon
-id|pagevec_init
+id|pagevec_reinit
 c_func
 (paren
 id|pvec

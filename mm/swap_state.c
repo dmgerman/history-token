@@ -1127,6 +1127,8 @@ c_func
 id|pagep
 comma
 id|todo
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|pagep

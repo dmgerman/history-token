@@ -31,6 +31,9 @@ id|pages
 comma
 r_int
 id|nr
+comma
+r_int
+id|cold
 )paren
 suffix:semicolon
 DECL|function|page_cache_alloc

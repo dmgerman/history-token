@@ -2488,13 +2488,15 @@ id|i
 op_ge
 l_int|0
 )paren
-id|free_hot_page
+id|free_hot_cold_page
 c_func
 (paren
 id|pvec-&gt;pages
 (braket
 id|i
 )braket
+comma
+id|pvec-&gt;cold
 )paren
 suffix:semicolon
 )brace
