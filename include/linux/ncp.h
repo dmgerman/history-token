@@ -101,6 +101,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|NCP_REPLY
 mdefine_line|#define NCP_REPLY                (0x3333)
+DECL|macro|NCP_WATCHDOG
+mdefine_line|#define NCP_WATCHDOG&t;&t; (0x3E3E)
 DECL|macro|NCP_POSITIVE_ACK
 mdefine_line|#define NCP_POSITIVE_ACK         (0x9999)
 DECL|struct|ncp_reply_header

@@ -1930,10 +1930,7 @@ id|newname
 comma
 id|user.object_name
 comma
-r_sizeof
-(paren
-id|user
-)paren
+id|user.object_name_len
 )paren
 )paren
 (brace

@@ -1,0 +1,69 @@
+macro_line|#ifndef _LINUX_GETOPT_H
+DECL|macro|_LINUX_GETOPT_H
+mdefine_line|#define _LINUX_GETOPT_H
+DECL|macro|OPT_NOPARAM
+mdefine_line|#define OPT_NOPARAM&t;1
+DECL|macro|OPT_INT
+mdefine_line|#define OPT_INT&t;&t;2
+DECL|macro|OPT_STRING
+mdefine_line|#define OPT_STRING&t;4
+DECL|struct|ncp_option
+r_struct
+id|ncp_option
+(brace
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|has_arg
+r_int
+r_int
+id|has_arg
+suffix:semicolon
+DECL|member|val
+r_int
+id|val
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_int
+id|ncp_getopt
+c_func
+(paren
+r_const
+r_char
+op_star
+id|caller
+comma
+r_char
+op_star
+op_star
+id|options
+comma
+r_const
+r_struct
+id|ncp_option
+op_star
+id|opts
+comma
+r_char
+op_star
+op_star
+id|optopt
+comma
+r_char
+op_star
+op_star
+id|optarg
+comma
+r_int
+r_int
+op_star
+id|value
+)paren
+suffix:semicolon
+macro_line|#endif /* _LINUX_GETOPT_H */
+eof
