@@ -15543,7 +15543,6 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef  CONFIG_PM
 DECL|function|ohci1394_pci_resume
 r_static
 r_int
@@ -15565,7 +15564,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|macro|PCI_CLASS_FIREWIRE_OHCI
 mdefine_line|#define PCI_CLASS_FIREWIRE_OHCI     ((PCI_CLASS_SERIAL_FIREWIRE &lt;&lt; 8) | 0x10)
 DECL|variable|ohci1394_pci_tbl
@@ -15652,13 +15650,11 @@ id|remove
 op_assign
 id|ohci1394_pci_remove
 comma
-macro_line|#ifdef  CONFIG_PM
 dot
 id|resume
 op_assign
 id|ohci1394_pci_resume
 comma
-macro_line|#endif  /* PM */
 )brace
 suffix:semicolon
 "&f;"
