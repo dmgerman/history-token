@@ -2149,6 +2149,15 @@ id|dio
 r_int
 id|i
 suffix:semicolon
+r_int
+id|nblocks
+suffix:semicolon
+id|nblocks
+op_assign
+id|dio-&gt;map_bh.b_size
+op_rshift
+id|dio-&gt;inode-&gt;i_blkbits
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2158,7 +2167,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dio-&gt;blocks_available
+id|nblocks
 suffix:semicolon
 id|i
 op_increment
