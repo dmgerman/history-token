@@ -2836,6 +2836,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|sig-&gt;flags
+op_assign
+l_int|0
+suffix:semicolon
 id|sig-&gt;group_exit
 op_assign
 l_int|0
@@ -2849,10 +2853,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|sig-&gt;group_stop_count
-op_assign
-l_int|0
-suffix:semicolon
-id|sig-&gt;stop_state
 op_assign
 l_int|0
 suffix:semicolon

@@ -800,11 +800,12 @@ DECL|member|group_stop_count
 r_int
 id|group_stop_count
 suffix:semicolon
-multiline_comment|/* 1 if group stopped since last SIGCONT, -1 if SIGCONT since report */
-DECL|member|stop_state
+DECL|member|flags
 r_int
-id|stop_state
+r_int
+id|flags
 suffix:semicolon
+multiline_comment|/* see SIGNAL_* flags below */
 multiline_comment|/* POSIX.1b Interval Timers */
 DECL|member|posix_timers
 r_struct
@@ -890,6 +891,13 @@ id|RLIM_NLIMITS
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Bits in flags field of signal_struct.&n; */
+DECL|macro|SIGNAL_STOP_STOPPED
+mdefine_line|#define SIGNAL_STOP_STOPPED&t;0x00000001 /* job control stop in effect */
+DECL|macro|SIGNAL_STOP_DEQUEUED
+mdefine_line|#define SIGNAL_STOP_DEQUEUED&t;0x00000002 /* stop signal dequeued */
+DECL|macro|SIGNAL_STOP_CONTINUED
+mdefine_line|#define SIGNAL_STOP_CONTINUED&t;0x00000004 /* SIGCONT since WCONTINUED reap */
 multiline_comment|/*&n; * Priority of a process goes from 0..MAX_PRIO-1, valid RT&n; * priority is 0..MAX_RT_PRIO-1, and SCHED_NORMAL tasks are&n; * in the range MAX_RT_PRIO..MAX_PRIO-1. Priority values&n; * are inverted: lower p-&gt;prio value means higher priority.&n; *&n; * The MAX_USER_RT_PRIO value allows the actual maximum&n; * RT priority to be separate from the value exported to&n; * user-space.  This allows kernel threads to set their&n; * priority to a value higher than any user task. Note:&n; * MAX_RT_PRIO must not be smaller than MAX_USER_RT_PRIO.&n; */
 DECL|macro|MAX_USER_RT_PRIO
 mdefine_line|#define MAX_USER_RT_PRIO&t;100

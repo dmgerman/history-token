@@ -75,8 +75,6 @@ DECL|macro|sig_user_defined
 mdefine_line|#define sig_user_defined(t, signr) &bslash;&n;&t;(((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_DFL) &amp;&amp;&t;&bslash;&n;&t; ((t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler != SIG_IGN))
 DECL|macro|sig_fatal
 mdefine_line|#define sig_fatal(t, signr) &bslash;&n;&t;(!T(signr, SIG_KERNEL_IGNORE_MASK|SIG_KERNEL_STOP_MASK) &amp;&amp; &bslash;&n;&t; (t)-&gt;sighand-&gt;action[(signr)-1].sa.sa_handler == SIG_DFL)
-DECL|macro|sig_avoid_stop_race
-mdefine_line|#define sig_avoid_stop_race() &bslash;&n;&t;(sigtestsetmask(&amp;current-&gt;pending.signal, M(SIGCONT) | M(SIGKILL)) || &bslash;&n;&t; sigtestsetmask(&amp;current-&gt;signal-&gt;shared_pending.signal, &bslash;&n;&t;&t;&t;&t;&t;&t;  M(SIGCONT) | M(SIGKILL)))
 DECL|function|sig_ignored
 r_static
 r_int
@@ -1735,6 +1733,28 @@ c_cond
 (paren
 id|signr
 op_logical_and
+id|unlikely
+c_func
+(paren
+id|sig_kernel_stop
+c_func
+(paren
+id|signr
+)paren
+)paren
+)paren
+(brace
+multiline_comment|/*&n; &t;&t; * Set a marker that we have dequeued a stop signal.  Our&n; &t;&t; * caller might release the siglock and then the pending&n; &t;&t; * stop signal it is about to process is no longer in the&n; &t;&t; * pending bitmasks, but must still be cleared by a SIGCONT&n; &t;&t; * (and overruled by a SIGKILL).  So those cases clear this&n; &t;&t; * shared flag after we&squot;ve set it.  Note that this flag may&n; &t;&t; * remain set after the signal we return is ignored or&n; &t;&t; * handled.  That doesn&squot;t matter because its only purpose&n; &t;&t; * is to alert stop-signal processing code when another&n; &t;&t; * processor has come along and cleared the flag.&n; &t;&t; */
+id|tsk-&gt;signal-&gt;flags
+op_or_assign
+id|SIGNAL_STOP_DEQUEUED
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|signr
+op_logical_and
 (paren
 (paren
 id|info-&gt;si_code
@@ -2182,9 +2202,9 @@ id|p-&gt;signal-&gt;group_stop_count
 op_assign
 l_int|0
 suffix:semicolon
-id|p-&gt;signal-&gt;stop_state
+id|p-&gt;signal-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_STOP_CONTINUED
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -2325,16 +2345,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;signal-&gt;stop_state
-OG
-l_int|0
+id|p-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_STOP_STOPPED
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * We were in fact stopped, and are now continued.&n;&t;&t;&t; * Notify the parent with CLD_CONTINUED.&n;&t;&t;&t; */
-id|p-&gt;signal-&gt;stop_state
+id|p-&gt;signal-&gt;flags
 op_assign
-op_minus
-l_int|1
+id|SIGNAL_STOP_CONTINUED
 suffix:semicolon
 id|p-&gt;signal-&gt;group_exit_code
 op_assign
@@ -2383,6 +2402,29 @@ id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t; * We are not stopped, but there could be a stop&n;&t;&t;&t; * signal in the middle of being processed after&n;&t;&t;&t; * being removed from the queue.  Clear that too.&n;&t;&t;&t; */
+id|p-&gt;signal-&gt;flags
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|sig
+op_eq
+id|SIGKILL
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Make sure that any pending stop signal already dequeued&n;&t;&t; * is undone by the wakeup for SIGKILL.&n;&t;&t; */
+id|p-&gt;signal-&gt;flags
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 )brace
 DECL|function|send_signal
@@ -3183,6 +3225,10 @@ id|p-&gt;signal-&gt;group_stop_count
 op_assign
 l_int|0
 suffix:semicolon
+id|p-&gt;signal-&gt;flags
+op_assign
+l_int|0
+suffix:semicolon
 id|t
 op_assign
 id|p
@@ -3474,6 +3520,10 @@ op_star
 id|t
 suffix:semicolon
 id|p-&gt;signal-&gt;group_stop_count
+op_assign
+l_int|0
+suffix:semicolon
+id|p-&gt;signal-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
@@ -5711,9 +5761,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This performs the stopping for SIGSTOP and other stop signals.&n; * We have to stop all threads in the thread group.&n; */
+multiline_comment|/*&n; * This performs the stopping for SIGSTOP and other stop signals.&n; * We have to stop all threads in the thread group.&n; * Returns nonzero if we&squot;ve actually stopped and released the siglock.&n; * Returns zero if we didn&squot;t stop and still hold the siglock.&n; */
 r_static
-r_void
+r_int
 DECL|function|do_signal_stop
 id|do_signal_stop
 c_func
@@ -5742,7 +5792,21 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* spin_lock_irq(&amp;sighand-&gt;siglock) is now done in caller */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|likely
+c_func
+(paren
+id|sig-&gt;flags
+op_amp
+id|SIGNAL_STOP_DEQUEUED
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5778,9 +5842,9 @@ id|stop_count
 op_eq
 l_int|0
 )paren
-id|sig-&gt;stop_state
+id|sig-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_STOP_STOPPED
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -5814,9 +5878,9 @@ c_func
 id|TASK_STOPPED
 )paren
 suffix:semicolon
-id|sig-&gt;stop_state
+id|sig-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_STOP_STOPPED
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -5859,60 +5923,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
+op_logical_neg
+id|likely
 c_func
 (paren
-id|sig-&gt;group_exit
+id|sig-&gt;flags
+op_amp
+id|SIGNAL_STOP_DEQUEUED
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * There is a group exit in progress now.&n;&t;&t;&t; * We&squot;ll just ignore the stop and process the&n;&t;&t;&t; * associated fatal signal.&n;&t;&t;&t; */
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|sighand-&gt;siglock
-)paren
-suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Another stop or continue happened while we&n;&t;&t;&t; * didn&squot;t have the lock.  We can just swallow this&n;&t;&t;&t; * signal now.  If we raced with a SIGCONT, that&n;&t;&t;&t; * should have just cleared it now.  If we raced&n;&t;&t;&t; * with another processor delivering a stop signal,&n;&t;&t;&t; * then the SIGCONT that wakes us up should clear it.&n;&t;&t;&t; */
 r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|sig_avoid_stop_race
-c_func
-(paren
-)paren
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * Either a SIGCONT or a SIGKILL signal was&n;&t;&t;&t; * posted in the siglock-not-held window.&n;&t;&t;&t; */
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|sighand-&gt;siglock
-)paren
-suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-r_return
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -6010,9 +6033,9 @@ id|stop_count
 op_eq
 l_int|0
 )paren
-id|sig-&gt;stop_state
+id|sig-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_STOP_STOPPED
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -6034,6 +6057,9 @@ c_func
 (paren
 id|stop_count
 )paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do appropriate magic when group_stop_count &gt; 0.&n; * We return nonzero if we stopped, after releasing the siglock.&n; * We return zero if we still hold the siglock and should look&n; * for another signal without checking group_stop_count again.&n; */
@@ -6089,9 +6115,9 @@ id|stop_count
 op_eq
 l_int|0
 )paren
-id|current-&gt;signal-&gt;stop_state
+id|current-&gt;signal-&gt;flags
 op_assign
-l_int|1
+id|SIGNAL_STOP_STOPPED
 suffix:semicolon
 id|current-&gt;exit_code
 op_assign
@@ -6412,21 +6438,10 @@ r_if
 c_cond
 (paren
 id|signr
-op_eq
+op_ne
 id|SIGSTOP
 )paren
 (brace
-id|do_signal_stop
-c_func
-(paren
-id|signr
-)paren
-suffix:semicolon
-multiline_comment|/* releases siglock */
-r_goto
-id|relock
-suffix:semicolon
-)brace
 id|spin_unlock_irq
 c_func
 (paren
@@ -6458,32 +6473,28 @@ op_amp
 id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
-id|unlikely
+id|likely
 c_func
 (paren
-id|sig_avoid_stop_race
-c_func
-(paren
-)paren
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Either a SIGCONT or a SIGKILL signal was&n;&t;&t;&t;&t; * posted in the siglock-not-held window.&n;&t;&t;&t;&t; */
-r_continue
-suffix:semicolon
-)brace
 id|do_signal_stop
 c_func
 (paren
 id|signr
 )paren
-suffix:semicolon
-multiline_comment|/* releases siglock */
+)paren
+)paren
+(brace
+multiline_comment|/* It released the siglock.  */
 r_goto
 id|relock
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t;&t; * We didn&squot;t actually stop, due to a race&n;&t;&t;&t; * with SIGCONT or something like that.&n;&t;&t;&t; */
+r_continue
 suffix:semicolon
 )brace
 id|spin_unlock_irq

@@ -5068,9 +5068,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;signal-&gt;stop_state
-op_ge
-l_int|0
+op_logical_neg
+(paren
+id|p-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_STOP_CONTINUED
+)paren
 )paren
 r_return
 l_int|0
@@ -5082,15 +5085,18 @@ op_amp
 id|p-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
+multiline_comment|/* Re-check with the lock held.  */
 r_if
 c_cond
 (paren
-id|p-&gt;signal-&gt;stop_state
-op_ge
-l_int|0
+op_logical_neg
+(paren
+id|p-&gt;signal-&gt;flags
+op_amp
+id|SIGNAL_STOP_CONTINUED
+)paren
 )paren
 (brace
-multiline_comment|/* Re-check with the lock held.  */
 id|spin_unlock_irq
 c_func
 (paren
@@ -5108,9 +5114,10 @@ c_cond
 op_logical_neg
 id|noreap
 )paren
-id|p-&gt;signal-&gt;stop_state
-op_assign
-l_int|0
+id|p-&gt;signal-&gt;flags
+op_and_assign
+op_complement
+id|SIGNAL_STOP_CONTINUED
 suffix:semicolon
 id|spin_unlock_irq
 c_func
