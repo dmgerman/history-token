@@ -4038,7 +4038,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_sendmsg (iocb, sock, msg, len, scm)&n; *&n; *    Send message down to TinyTP. This function is used for both STREAM and&n; *    SEQPACK services. This is possible since it forces the client to&n; *    fragment the message if necessary&n; */
+multiline_comment|/*&n; * Function irda_sendmsg (iocb, sock, msg, len)&n; *&n; *    Send message down to TinyTP. This function is used for both STREAM and&n; *    SEQPACK services. This is possible since it forces the client to&n; *    fragment the message if necessary&n; */
 DECL|function|irda_sendmsg
 r_static
 r_int
@@ -4062,11 +4062,6 @@ id|msg
 comma
 r_int
 id|len
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct
@@ -4346,7 +4341,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_recvmsg_dgram (iocb, sock, msg, size, flags, scm)&n; *&n; *    Try to receive message and copy it to user. The frame is discarded&n; *    after being read, regardless of how much the user actually read&n; */
+multiline_comment|/*&n; * Function irda_recvmsg_dgram (iocb, sock, msg, size, flags)&n; *&n; *    Try to receive message and copy it to user. The frame is discarded&n; *    after being read, regardless of how much the user actually read&n; */
 DECL|function|irda_recvmsg_dgram
 r_static
 r_int
@@ -4373,11 +4368,6 @@ id|size
 comma
 r_int
 id|flags
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct
@@ -4573,7 +4563,7 @@ r_return
 id|copied
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_recvmsg_stream (iocb, sock, msg, size, flags, scm)&n; */
+multiline_comment|/*&n; * Function irda_recvmsg_stream (iocb, sock, msg, size, flags)&n; */
 DECL|function|irda_recvmsg_stream
 r_static
 r_int
@@ -4600,11 +4590,6 @@ id|size
 comma
 r_int
 id|flags
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct
@@ -5089,7 +5074,7 @@ r_return
 id|copied
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_sendmsg_dgram (iocb, sock, msg, len, scm)&n; *&n; *    Send message down to TinyTP for the unreliable sequenced&n; *    packet service...&n; *&n; */
+multiline_comment|/*&n; * Function irda_sendmsg_dgram (iocb, sock, msg, len)&n; *&n; *    Send message down to TinyTP for the unreliable sequenced&n; *    packet service...&n; *&n; */
 DECL|function|irda_sendmsg_dgram
 r_static
 r_int
@@ -5113,11 +5098,6 @@ id|msg
 comma
 r_int
 id|len
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct
@@ -5359,7 +5339,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_sendmsg_ultra (iocb, sock, msg, len, scm)&n; *&n; *    Send message down to IrLMP for the unreliable Ultra&n; *    packet service...&n; */
+multiline_comment|/*&n; * Function irda_sendmsg_ultra (iocb, sock, msg, len)&n; *&n; *    Send message down to IrLMP for the unreliable Ultra&n; *    packet service...&n; */
 macro_line|#ifdef CONFIG_IRDA_ULTRA
 DECL|function|irda_sendmsg_ultra
 r_static
@@ -5384,11 +5364,6 @@ id|msg
 comma
 r_int
 id|len
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct

@@ -370,12 +370,6 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* VCC flags (ATM_VF_*) */
-DECL|member|family
-r_int
-r_char
-id|family
-suffix:semicolon
-multiline_comment|/* address family; 0 if unused */
 DECL|member|vpi
 r_int
 id|vpi
@@ -417,14 +411,6 @@ id|atm_sap
 id|sap
 suffix:semicolon
 multiline_comment|/* SAP */
-DECL|member|tx_inuse
-DECL|member|rx_inuse
-id|atomic_t
-id|tx_inuse
-comma
-id|rx_inuse
-suffix:semicolon
-multiline_comment|/* buffer space in use */
 DECL|member|push
 r_void
 (paren
@@ -531,12 +517,6 @@ op_star
 id|proto_data
 suffix:semicolon
 multiline_comment|/* per-protocol data */
-DECL|member|recvq
-r_struct
-id|sk_buff_head
-id|recvq
-suffix:semicolon
-multiline_comment|/* receive queue */
 DECL|member|stats
 r_struct
 id|k_atm_aal_stats
@@ -767,15 +747,10 @@ id|proc_name
 suffix:semicolon
 multiline_comment|/* proc entry name */
 macro_line|#endif
-DECL|member|prev
-DECL|member|next
+DECL|member|dev_list
 r_struct
-id|atm_dev
-op_star
-id|prev
-comma
-op_star
-id|next
+id|list_head
+id|dev_list
 suffix:semicolon
 multiline_comment|/* linkage */
 )brace
@@ -1366,7 +1341,7 @@ op_plus
 id|ATM_PDU_OVHD
 comma
 op_amp
-id|vcc-&gt;rx_inuse
+id|vcc-&gt;sk-&gt;rmem_alloc
 )paren
 suffix:semicolon
 )brace
@@ -1394,7 +1369,7 @@ op_plus
 id|ATM_PDU_OVHD
 comma
 op_amp
-id|vcc-&gt;rx_inuse
+id|vcc-&gt;sk-&gt;rmem_alloc
 )paren
 suffix:semicolon
 )brace
@@ -1422,7 +1397,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;tx_inuse
+id|vcc-&gt;sk-&gt;wmem_alloc
 )paren
 op_plus
 id|ATM_PDU_OVHD

@@ -37,7 +37,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;rx_inuse
+id|vcc-&gt;sk-&gt;rmem_alloc
 )paren
 op_le
 id|vcc-&gt;sk-&gt;rcvbuf
@@ -107,7 +107,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;rx_inuse
+id|vcc-&gt;sk-&gt;rmem_alloc
 )paren
 op_le
 id|vcc-&gt;sk-&gt;rcvbuf
@@ -140,7 +140,7 @@ op_minus
 id|guess
 comma
 op_amp
-id|vcc-&gt;rx_inuse
+id|vcc-&gt;sk-&gt;rmem_alloc
 )paren
 suffix:semicolon
 r_return

@@ -2615,7 +2615,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_ui_recvmsg - copy received data to the socket user.&n; *&t;@sock: Socket to copy data from.&n; *&t;@msg: Various user space related information.&n; *&t;@size: Size of user buffer.&n; *&t;@flags: User specified flags.&n; *&t;@scm: Unknown.&n; *&n; *&t;Copy received data to the socket user.&n; *&t;Returns non-negative upon success, negative otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_ui_recvmsg - copy received data to the socket user.&n; *&t;@sock: Socket to copy data from.&n; *&t;@msg: Various user space related information.&n; *&t;@size: Size of user buffer.&n; *&t;@flags: User specified flags.&n; *&n; *&t;Copy received data to the socket user.&n; *&t;Returns non-negative upon success, negative otherwise.&n; */
 DECL|function|llc_ui_recvmsg
 r_static
 r_int
@@ -2642,11 +2642,6 @@ id|size
 comma
 r_int
 id|flags
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct
@@ -2921,7 +2916,7 @@ suffix:colon
 id|copied
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_ui_sendmsg - Transmit data provided by the socket user.&n; *&t;@sock: Socket to transmit data from.&n; *&t;@msg: Various user related information.&n; *&t;@len: Length of data to transmit.&n; *&t;@scm: Unknown.&n; *&n; *&t;Transmit data provided by the socket user.&n; *&t;Returns non-negative upon success, negative otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_ui_sendmsg - Transmit data provided by the socket user.&n; *&t;@sock: Socket to transmit data from.&n; *&t;@msg: Various user related information.&n; *&t;@len: Length of data to transmit.&n; *&n; *&t;Transmit data provided by the socket user.&n; *&t;Returns non-negative upon success, negative otherwise.&n; */
 DECL|function|llc_ui_sendmsg
 r_static
 r_int
@@ -2945,11 +2940,6 @@ id|msg
 comma
 r_int
 id|len
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 (brace
 r_struct

@@ -332,6 +332,27 @@ c_func
 id|real_mode_data
 )paren
 suffix:semicolon
+multiline_comment|/* default console: */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strstr
+c_func
+(paren
+id|saved_command_line
+comma
+l_string|&quot;console=&quot;
+)paren
+)paren
+id|strcat
+c_func
+(paren
+id|saved_command_line
+comma
+l_string|&quot; console=tty0&quot;
+)paren
+suffix:semicolon
 id|s
 op_assign
 id|strstr

@@ -7,8 +7,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
 r_extern
 r_struct
-id|atm_dev
-op_star
+id|list_head
 id|atm_devs
 suffix:semicolon
 r_extern

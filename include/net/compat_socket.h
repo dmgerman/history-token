@@ -1,13 +1,14 @@
-macro_line|#ifndef SOCKET32_H
-DECL|macro|SOCKET32_H
-mdefine_line|#define SOCKET32_H 1
+macro_line|#ifndef NET_COMPAT_SOCKET_H
+DECL|macro|NET_COMPAT_SOCKET_H
+mdefine_line|#define NET_COMPAT_SOCKET_H 1
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#if defined(CONFIG_COMPAT)
 multiline_comment|/* XXX This really belongs in some header file... -DaveM */
 DECL|macro|MAX_SOCK_ADDR
 mdefine_line|#define MAX_SOCK_ADDR&t;128&t;&t;/* 108 for Unix domain - &n;&t;&t;&t;&t;&t;   16 for IP, 16 for IPX,&n;&t;&t;&t;&t;&t;   24 for IPv6,&n;&t;&t;&t;&t;&t;   about 80 for AX.25 */
-DECL|struct|msghdr32
+DECL|struct|compat_msghdr
 r_struct
-id|msghdr32
+id|compat_msghdr
 (brace
 DECL|member|msg_name
 id|u32
@@ -39,9 +40,9 @@ id|msg_flags
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|cmsghdr32
+DECL|struct|compat_cmsghdr
 r_struct
-id|cmsghdr32
+id|compat_cmsghdr
 (brace
 DECL|member|cmsg_len
 id|compat_size_t
@@ -58,28 +59,29 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Bleech... */
-DECL|macro|__CMSG32_NXTHDR
-mdefine_line|#define __CMSG32_NXTHDR(ctl, len, cmsg, cmsglen) __cmsg32_nxthdr((ctl),(len),(cmsg),(cmsglen))
-DECL|macro|CMSG32_NXTHDR
-mdefine_line|#define CMSG32_NXTHDR(mhdr, cmsg, cmsglen) cmsg32_nxthdr((mhdr), (cmsg), (cmsglen))
-DECL|macro|CMSG32_ALIGN
-mdefine_line|#define CMSG32_ALIGN(len) ( ((len)+sizeof(int)-1) &amp; ~(sizeof(int)-1) )
-DECL|macro|CMSG32_DATA
-mdefine_line|#define CMSG32_DATA(cmsg)&t;((void *)((char *)(cmsg) + CMSG32_ALIGN(sizeof(struct cmsghdr32))))
-DECL|macro|CMSG32_SPACE
-mdefine_line|#define CMSG32_SPACE(len) (CMSG32_ALIGN(sizeof(struct cmsghdr32)) + CMSG32_ALIGN(len))
-DECL|macro|CMSG32_LEN
-mdefine_line|#define CMSG32_LEN(len) (CMSG32_ALIGN(sizeof(struct cmsghdr32)) + (len))
-DECL|macro|__CMSG32_FIRSTHDR
-mdefine_line|#define __CMSG32_FIRSTHDR(ctl,len) ((len) &gt;= sizeof(struct cmsghdr32) ? &bslash;&n;&t;&t;&t;&t;    (struct cmsghdr32 *)(ctl) : &bslash;&n;&t;&t;&t;&t;    (struct cmsghdr32 *)NULL)
-DECL|macro|CMSG32_FIRSTHDR
-mdefine_line|#define CMSG32_FIRSTHDR(msg)&t;__CMSG32_FIRSTHDR((msg)-&gt;msg_control, (msg)-&gt;msg_controllen)
-DECL|function|__cmsg32_nxthdr
+DECL|macro|__CMSG_COMPAT_NXTHDR
+mdefine_line|#define __CMSG_COMPAT_NXTHDR(ctl, len, cmsg, cmsglen) __cmsg_compat_nxthdr((ctl),(len),(cmsg),(cmsglen))
+DECL|macro|CMSG_COMPAT_NXTHDR
+mdefine_line|#define CMSG_COMPAT_NXTHDR(mhdr, cmsg, cmsglen) cmsg_compat_nxthdr((mhdr), (cmsg), (cmsglen))
+DECL|macro|CMSG_COMPAT_ALIGN
+mdefine_line|#define CMSG_COMPAT_ALIGN(len) ( ((len)+sizeof(int)-1) &amp; ~(sizeof(int)-1) )
+DECL|macro|CMSG_COMPAT_DATA
+mdefine_line|#define CMSG_COMPAT_DATA(cmsg)&t;((void *)((char *)(cmsg) + CMSG_COMPAT_ALIGN(sizeof(struct compat_cmsghdr))))
+DECL|macro|CMSG_COMPAT_SPACE
+mdefine_line|#define CMSG_COMPAT_SPACE(len) (CMSG_COMPAT_ALIGN(sizeof(struct compat_cmsghdr)) + CMSG_COMPAT_ALIGN(len))
+DECL|macro|CMSG_COMPAT_LEN
+mdefine_line|#define CMSG_COMPAT_LEN(len) (CMSG_COMPAT_ALIGN(sizeof(struct compat_cmsghdr)) + (len))
+DECL|macro|__CMSG_COMPAT_FIRSTHDR
+mdefine_line|#define __CMSG_COMPAT_FIRSTHDR(ctl,len) ((len) &gt;= sizeof(struct compat_cmsghdr) ? &bslash;&n;&t;&t;&t;&t;    (struct compat_cmsghdr *)(ctl) : &bslash;&n;&t;&t;&t;&t;    (struct compat_cmsghdr *)NULL)
+DECL|macro|CMSG_COMPAT_FIRSTHDR
+mdefine_line|#define CMSG_COMPAT_FIRSTHDR(msg)&t;__CMSG_COMPAT_FIRSTHDR((msg)-&gt;msg_control, (msg)-&gt;msg_controllen)
+DECL|function|__cmsg_compat_nxthdr
+r_static
 id|__inline__
 r_struct
-id|cmsghdr32
+id|compat_cmsghdr
 op_star
-id|__cmsg32_nxthdr
+id|__cmsg_compat_nxthdr
 c_func
 (paren
 r_void
@@ -90,7 +92,7 @@ id|__kernel_size_t
 id|__size
 comma
 r_struct
-id|cmsghdr32
+id|compat_cmsghdr
 op_star
 id|__cmsg
 comma
@@ -99,7 +101,7 @@ id|__cmsg_len
 )paren
 (brace
 r_struct
-id|cmsghdr32
+id|compat_cmsghdr
 op_star
 id|__ptr
 suffix:semicolon
@@ -107,7 +109,7 @@ id|__ptr
 op_assign
 (paren
 r_struct
-id|cmsghdr32
+id|compat_cmsghdr
 op_star
 )paren
 (paren
@@ -120,7 +122,7 @@ op_star
 id|__cmsg
 )paren
 op_plus
-id|CMSG32_ALIGN
+id|CMSG_COMPAT_ALIGN
 c_func
 (paren
 id|__cmsg_len
@@ -161,12 +163,13 @@ r_return
 id|__ptr
 suffix:semicolon
 )brace
-DECL|function|cmsg32_nxthdr
+DECL|function|cmsg_compat_nxthdr
+r_static
 id|__inline__
 r_struct
-id|cmsghdr32
+id|compat_cmsghdr
 op_star
-id|cmsg32_nxthdr
+id|cmsg_compat_nxthdr
 (paren
 r_struct
 id|msghdr
@@ -174,7 +177,7 @@ op_star
 id|__msg
 comma
 r_struct
-id|cmsghdr32
+id|compat_cmsghdr
 op_star
 id|__cmsg
 comma
@@ -183,7 +186,7 @@ id|__cmsg_len
 )paren
 (brace
 r_return
-id|__cmsg32_nxthdr
+id|__cmsg_compat_nxthdr
 c_func
 (paren
 id|__msg-&gt;msg_control
@@ -196,5 +199,6 @@ id|__cmsg_len
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif
 eof

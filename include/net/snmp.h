@@ -1123,10 +1123,10 @@ DECL|macro|DEFINE_SNMP_STAT
 mdefine_line|#define DEFINE_SNMP_STAT(type, name)&t;&bslash;&n;&t;__typeof__(type) *name[2]
 DECL|macro|DECLARE_SNMP_STAT
 mdefine_line|#define DECLARE_SNMP_STAT(type, name)&t;&bslash;&n;&t;extern __typeof__(type) *name[2]
-DECL|macro|SNMP_STAT_USRPTR
-mdefine_line|#define SNMP_STAT_USRPTR(name)&t;(name[0])
 DECL|macro|SNMP_STAT_BHPTR
-mdefine_line|#define SNMP_STAT_BHPTR(name)&t;(name[1])
+mdefine_line|#define SNMP_STAT_BHPTR(name)&t;(name[0])
+DECL|macro|SNMP_STAT_USRPTR
+mdefine_line|#define SNMP_STAT_USRPTR(name)&t;(name[1])
 DECL|macro|SNMP_INC_STATS_BH
 mdefine_line|#define SNMP_INC_STATS_BH(mib, field) &t;&bslash;&n;&t;(per_cpu_ptr(mib[0], smp_processor_id())-&gt;field++)
 DECL|macro|SNMP_INC_STATS_USER

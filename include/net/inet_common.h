@@ -137,11 +137,6 @@ id|size
 comma
 r_int
 id|flags
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 suffix:semicolon
 r_extern
@@ -166,11 +161,6 @@ id|msg
 comma
 r_int
 id|size
-comma
-r_struct
-id|scm_cookie
-op_star
-id|scm
 )paren
 suffix:semicolon
 r_extern

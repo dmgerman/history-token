@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/debugreg.h&gt;
 macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#include &lt;asm/ia32.h&gt;
 multiline_comment|/*&n; * does not yet catch signals sent when the child dies.&n; * in exit.c or in signal.c.&n; */
 multiline_comment|/* determines which flags the user has access to. */
 multiline_comment|/* 1 = access 0 = no access */
@@ -1501,6 +1502,9 @@ l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_IA32_EMULATION
+multiline_comment|/* This makes only sense with 32bit programs. Allow a&n;&t;&t;   64bit debugger to fully examine them too. Better&n;&t;&t;   don&squot;t use it against 64bit processes, use&n;&t;&t;   PTRACE_ARCH_PRCTL instead. */
 r_case
 id|PTRACE_SET_THREAD_AREA
 suffix:colon
@@ -1656,7 +1660,25 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-)brace
+macro_line|#endif
+multiline_comment|/* normal 64bit interface to access TLS data. &n;&t;&t;   Works just like arch_prctl, except that the arguments&n;&t;&t;   are reversed. */
+r_case
+id|PTRACE_ARCH_PRCTL
+suffix:colon
+id|ret
+op_assign
+id|do_arch_prctl
+c_func
+(paren
+id|child
+comma
+id|data
+comma
+id|addr
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 multiline_comment|/*&n; * make the child exit.  Best I can do is send it a sigkill. &n; * perhaps it should be put in the status that it wants to &n; * exit.&n; */
 r_case
 id|PTRACE_KILL

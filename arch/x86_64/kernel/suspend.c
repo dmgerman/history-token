@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/acpi.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 DECL|variable|saved_context
 r_static
 r_struct
@@ -200,16 +201,10 @@ id|saved_context.ss
 )paren
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;swapgs&quot;
-)paren
-suffix:semicolon
 id|rdmsrl
 c_func
 (paren
-l_int|0xc0000100
+id|MSR_FS_BASE
 comma
 id|saved_context.fs_base
 )paren
@@ -217,15 +212,17 @@ suffix:semicolon
 id|rdmsrl
 c_func
 (paren
-l_int|0xc0000101
+id|MSR_GS_BASE
 comma
 id|saved_context.gs_base
 )paren
 suffix:semicolon
-id|asm
-r_volatile
+id|rdmsrl
+c_func
 (paren
-l_string|&quot;swapgs&quot;
+id|MSR_KERNEL_GS_BASE
+comma
+id|saved_context.gs_kernel_base
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * control registers &n;&t; */
@@ -395,16 +392,10 @@ id|saved_context.ss
 )paren
 )paren
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;swapgs&quot;
-)paren
-suffix:semicolon
 id|wrmsrl
 c_func
 (paren
-l_int|0xc0000100
+id|MSR_FS_BASE
 comma
 id|saved_context.fs_base
 )paren
@@ -412,15 +403,17 @@ suffix:semicolon
 id|wrmsrl
 c_func
 (paren
-l_int|0xc0000101
+id|MSR_GS_BASE
 comma
 id|saved_context.gs_base
 )paren
 suffix:semicolon
-id|asm
-r_volatile
+id|wrmsrl
+c_func
 (paren
-l_string|&quot;swapgs&quot;
+id|MSR_KERNEL_GS_BASE
+comma
+id|saved_context.gs_kernel_base
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * now restore the descriptor tables to their proper values&n;&t; * ltr is done i fix_processor_context().&n;&t; */

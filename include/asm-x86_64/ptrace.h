@@ -190,10 +190,13 @@ DECL|macro|PTRACE_GETFPXREGS
 mdefine_line|#define PTRACE_GETFPXREGS         18
 DECL|macro|PTRACE_SETFPXREGS
 mdefine_line|#define PTRACE_SETFPXREGS         19
+multiline_comment|/* only useful for access 32bit programs */
 DECL|macro|PTRACE_GET_THREAD_AREA
 mdefine_line|#define PTRACE_GET_THREAD_AREA    25
 DECL|macro|PTRACE_SET_THREAD_AREA
 mdefine_line|#define PTRACE_SET_THREAD_AREA    26
+DECL|macro|PTRACE_ARCH_PRCTL
+mdefine_line|#define PTRACE_ARCH_PRCTL&t;  30&t;/* arch_prctl for child */
 macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(__ASSEMBLY__) 
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!!((regs)-&gt;cs &amp; 3))

@@ -208,6 +208,17 @@ id|snum
 suffix:semicolon
 r_extern
 r_void
+id|tcp_bucket_destroy
+c_func
+(paren
+r_struct
+id|tcp_bind_bucket
+op_star
+id|tb
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|tcp_bucket_unlock
 c_func
 (paren
