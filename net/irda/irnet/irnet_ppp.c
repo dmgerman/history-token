@@ -50,12 +50,8 @@ c_func
 (paren
 id|CTRL_TRACE
 comma
-l_string|&quot;(ap=0x%X, count=%d)&bslash;n&quot;
+l_string|&quot;(ap=0x%p, count=%Zd)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 comma
 id|count
@@ -118,7 +114,7 @@ c_func
 (paren
 id|CTRL_INFO
 comma
-l_string|&quot;Command line received is ``%s&squot;&squot; (%d).&bslash;n&quot;
+l_string|&quot;Command line received is ``%s&squot;&squot; (%Zd).&bslash;n&quot;
 comma
 id|command
 comma
@@ -557,18 +553,10 @@ c_func
 (paren
 id|CTRL_TRACE
 comma
-l_string|&quot;(ap=0x%X, event=0x%X)&bslash;n&quot;
+l_string|&quot;(ap=0x%p, event=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 comma
-(paren
-r_int
-r_int
-)paren
 id|event
 )paren
 suffix:semicolon
@@ -646,12 +634,8 @@ c_func
 (paren
 id|CTRL_INFO
 comma
-l_string|&quot;Got the log (0x%X), size is %d&bslash;n&quot;
+l_string|&quot;Got the log (0x%p), size is %d&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap-&gt;discoveries
 comma
 id|ap-&gt;disco_number
@@ -759,12 +743,8 @@ c_func
 (paren
 id|CTRL_INFO
 comma
-l_string|&quot;Cleaning up log (0x%X)&bslash;n&quot;
+l_string|&quot;Cleaning up log (0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap-&gt;discoveries
 )paren
 suffix:semicolon
@@ -850,12 +830,8 @@ c_func
 (paren
 id|CTRL_TRACE
 comma
-l_string|&quot;(ap=0x%X, count=%d)&bslash;n&quot;
+l_string|&quot;(ap=0x%p, count=%Zd)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 comma
 id|count
@@ -1051,7 +1027,7 @@ c_func
 (paren
 id|CTRL_TRACE
 comma
-l_string|&quot; - ret %d&bslash;n&quot;
+l_string|&quot; - ret %Zd&bslash;n&quot;
 comma
 id|ret
 )paren
@@ -1524,12 +1500,8 @@ c_func
 (paren
 id|CTRL_TRACE
 comma
-l_string|&quot;(ap=0x%X)&bslash;n&quot;
+l_string|&quot;(ap=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 )paren
 suffix:semicolon
@@ -1632,12 +1604,8 @@ c_func
 (paren
 id|FS_TRACE
 comma
-l_string|&quot;(file=0x%X)&bslash;n&quot;
+l_string|&quot;(file=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|file
 )paren
 suffix:semicolon
@@ -1826,12 +1794,8 @@ c_func
 (paren
 id|FS_TRACE
 comma
-l_string|&quot; - ap=0x%X&bslash;n&quot;
+l_string|&quot; - ap=0x%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 )paren
 suffix:semicolon
@@ -1874,18 +1838,10 @@ c_func
 (paren
 id|FS_TRACE
 comma
-l_string|&quot;(file=0x%X, ap=0x%X)&bslash;n&quot;
+l_string|&quot;(file=0x%p, ap=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|file
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 )paren
 suffix:semicolon
@@ -2002,18 +1958,10 @@ c_func
 (paren
 id|FS_TRACE
 comma
-l_string|&quot;(file=0x%X, ap=0x%X, count=%d)&bslash;n&quot;
+l_string|&quot;(file=0x%p, ap=0x%p, count=%Zd)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|file
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 comma
 id|count
@@ -2100,18 +2048,10 @@ c_func
 (paren
 id|FS_TRACE
 comma
-l_string|&quot;(file=0x%X, ap=0x%X, count=%d)&bslash;n&quot;
+l_string|&quot;(file=0x%p, ap=0x%p, count=%Zd)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|file
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 comma
 id|count
@@ -2198,18 +2138,10 @@ c_func
 (paren
 id|FS_TRACE
 comma
-l_string|&quot;(file=0x%X, ap=0x%X)&bslash;n&quot;
+l_string|&quot;(file=0x%p, ap=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|file
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 )paren
 suffix:semicolon
@@ -2317,18 +2249,10 @@ c_func
 (paren
 id|FS_TRACE
 comma
-l_string|&quot;(file=0x%X, ap=0x%X, cmd=0x%X)&bslash;n&quot;
+l_string|&quot;(file=0x%p, ap=0x%p, cmd=0x%X)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|file
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 comma
 id|cmd
@@ -2960,18 +2884,10 @@ c_func
 (paren
 id|PPP_TRACE
 comma
-l_string|&quot;(ap=0x%X, skb=0x%X)&bslash;n&quot;
+l_string|&quot;(ap=0x%p, skb=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 comma
-(paren
-r_int
-r_int
-)paren
 id|skb
 )paren
 suffix:semicolon
@@ -3237,18 +3153,10 @@ c_func
 (paren
 id|PPP_TRACE
 comma
-l_string|&quot;(channel=0x%X, ap/self=0x%X)&bslash;n&quot;
+l_string|&quot;(channel=0x%p, ap/self=0x%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|chan
 comma
-(paren
-r_int
-r_int
-)paren
 id|self
 )paren
 suffix:semicolon
@@ -3489,18 +3397,10 @@ c_func
 (paren
 id|PPP_TRACE
 comma
-l_string|&quot;(channel=0x%X, ap=0x%X, cmd=0x%X)&bslash;n&quot;
+l_string|&quot;(channel=0x%p, ap=0x%p, cmd=0x%X)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|chan
 comma
-(paren
-r_int
-r_int
-)paren
 id|ap
 comma
 id|cmd
