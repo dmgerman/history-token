@@ -688,8 +688,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; *&t;Checksum each fragment, and on the first include the headers and final&n; *&t;checksum.&n; */
-r_int
 DECL|function|icmp_glue_bits
+r_int
 id|icmp_glue_bits
 c_func
 (paren
@@ -766,9 +766,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|icmp_push_reply
 r_static
 r_void
-DECL|function|icmp_push_reply
 id|icmp_push_reply
 c_func
 (paren
@@ -2260,7 +2260,7 @@ suffix:colon
 r_case
 id|ICMP_REDIR_NETTOS
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; *&t;As per RFC recommendations now handle it as&n;&t;&t;&t; *&t;a host redirect.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * As per RFC recommendations now handle it as a host redirect.&n;&t;&t; */
 r_case
 id|ICMP_REDIR_HOST
 suffix:colon
@@ -2283,10 +2283,6 @@ comma
 id|skb-&gt;dev
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
 r_break
 suffix:semicolon
 )brace
@@ -2986,14 +2982,13 @@ dot
 id|input_off
 )paren
 suffix:semicolon
-(paren
 id|icmp_pointers
 (braket
 id|icmph-&gt;type
 )braket
 dot
 id|handler
-)paren
+c_func
 (paren
 id|skb
 )paren
@@ -3034,9 +3029,8 @@ l_int|1
 )braket
 op_assign
 (brace
-multiline_comment|/* ECHO REPLY (0) */
 (braket
-l_int|0
+id|ICMP_ECHOREPLY
 )braket
 op_assign
 (brace
@@ -3147,9 +3141,8 @@ l_int|1
 comma
 )brace
 comma
-multiline_comment|/* DEST UNREACH (3) */
 (braket
-l_int|3
+id|ICMP_DEST_UNREACH
 )braket
 op_assign
 (brace
@@ -3187,9 +3180,8 @@ l_int|1
 comma
 )brace
 comma
-multiline_comment|/* SOURCE QUENCH (4) */
 (braket
-l_int|4
+id|ICMP_SOURCE_QUENCH
 )braket
 op_assign
 (brace
@@ -3215,6 +3207,9 @@ comma
 id|IcmpInSrcQuenchs
 )paren
 comma
+dot
+id|handler
+op_assign
 id|icmp_unreach
 comma
 dot
@@ -3224,9 +3219,8 @@ l_int|1
 comma
 )brace
 comma
-multiline_comment|/* REDIRECT (5) */
 (braket
-l_int|5
+id|ICMP_REDIRECT
 )braket
 op_assign
 (brace
@@ -3342,9 +3336,8 @@ l_int|1
 comma
 )brace
 comma
-multiline_comment|/* ECHO (8) */
 (braket
-l_int|8
+id|ICMP_ECHO
 )braket
 op_assign
 (brace
@@ -3374,11 +3367,6 @@ dot
 id|handler
 op_assign
 id|icmp_echo
-comma
-dot
-id|error
-op_assign
-l_int|0
 comma
 )brace
 comma
@@ -3460,9 +3448,8 @@ l_int|1
 comma
 )brace
 comma
-multiline_comment|/* TIME EXCEEDED (11) */
 (braket
-l_int|11
+id|ICMP_TIME_EXCEEDED
 )braket
 op_assign
 (brace
@@ -3500,9 +3487,8 @@ l_int|1
 comma
 )brace
 comma
-multiline_comment|/* PARAMETER PROBLEM (12) */
 (braket
-l_int|12
+id|ICMP_PARAMETERPROB
 )braket
 op_assign
 (brace
@@ -3540,9 +3526,8 @@ l_int|1
 comma
 )brace
 comma
-multiline_comment|/* TIMESTAMP (13) */
 (braket
-l_int|13
+id|ICMP_TIMESTAMP
 )braket
 op_assign
 (brace
@@ -3575,9 +3560,8 @@ id|icmp_timestamp
 comma
 )brace
 comma
-multiline_comment|/* TIMESTAMP REPLY (14) */
 (braket
-l_int|14
+id|ICMP_TIMESTAMPREPLY
 )braket
 op_assign
 (brace
@@ -3610,9 +3594,8 @@ id|icmp_discard
 comma
 )brace
 comma
-multiline_comment|/* INFO (15) */
 (braket
-l_int|15
+id|ICMP_INFO_REQUEST
 )braket
 op_assign
 (brace
@@ -3645,9 +3628,8 @@ id|icmp_discard
 comma
 )brace
 comma
-multiline_comment|/* INFO REPLY (16) */
 (braket
-l_int|16
+id|ICMP_INFO_REPLY
 )braket
 op_assign
 (brace
@@ -3680,9 +3662,8 @@ id|icmp_discard
 comma
 )brace
 comma
-multiline_comment|/* ADDR MASK (17) */
 (braket
-l_int|17
+id|ICMP_ADDRESS
 )braket
 op_assign
 (brace
@@ -3715,9 +3696,8 @@ id|icmp_address
 comma
 )brace
 comma
-multiline_comment|/* ADDR MASK REPLY (18) */
 (braket
-l_int|18
+id|ICMP_ADDRESSREPLY
 )braket
 op_assign
 (brace
@@ -3749,6 +3729,7 @@ op_assign
 id|icmp_address_reply
 comma
 )brace
+comma
 )brace
 suffix:semicolon
 DECL|function|icmp_init
