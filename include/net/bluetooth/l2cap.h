@@ -568,6 +568,10 @@ DECL|member|conf_state
 id|__u8
 id|conf_state
 suffix:semicolon
+DECL|member|conf_retry
+id|__u8
+id|conf_retry
+suffix:semicolon
 DECL|member|conf_mtu
 id|__u16
 id|conf_mtu
@@ -606,6 +610,8 @@ DECL|macro|L2CAP_CONF_INPUT_DONE
 mdefine_line|#define L2CAP_CONF_INPUT_DONE  0x02
 DECL|macro|L2CAP_CONF_OUTPUT_DONE
 mdefine_line|#define L2CAP_CONF_OUTPUT_DONE 0x04
+DECL|macro|L2CAP_CONF_MAX_RETRIES
+mdefine_line|#define L2CAP_CONF_MAX_RETRIES 2
 r_void
 id|l2cap_load
 c_func

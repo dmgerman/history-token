@@ -5,13 +5,13 @@ mdefine_line|#define _LINUX_NETDEVICE_H
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_packet.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 r_struct
 id|divert_blk
 suffix:semicolon

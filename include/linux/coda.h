@@ -5,6 +5,7 @@ multiline_comment|/*&n; *&n; * Based on cfs.h from Mach, but revamped for increa
 macro_line|#ifndef _CODA_HEADER_
 DECL|macro|_CODA_HEADER_
 mdefine_line|#define _CODA_HEADER_
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Catch new _KERNEL defn for NetBSD and DJGPP/__CYGWIN32__ */
 macro_line|#if defined(__NetBSD__) || &bslash;&n;  ((defined(DJGPP) || defined(__CYGWIN32__)) &amp;&amp; !defined(KERNEL))
 macro_line|#include &lt;sys/types.h&gt;
@@ -219,26 +220,22 @@ r_struct
 id|venus_dirent
 (brace
 DECL|member|d_fileno
-r_int
-r_int
+id|u_int32_t
 id|d_fileno
 suffix:semicolon
 multiline_comment|/* file number of entry */
 DECL|member|d_reclen
-r_int
-r_int
+id|u_int16_t
 id|d_reclen
 suffix:semicolon
 multiline_comment|/* length of this record */
 DECL|member|d_type
-r_int
-r_char
+id|u_int8_t
 id|d_type
 suffix:semicolon
 multiline_comment|/* file type, see below */
 DECL|member|d_namlen
-r_int
-r_char
+id|u_int8_t
 id|d_namlen
 suffix:semicolon
 multiline_comment|/* length of string in d_name */
@@ -283,56 +280,34 @@ mdefine_line|#define&t;IFTOCDT(mode)&t;(((mode) &amp; 0170000) &gt;&gt; 12)
 DECL|macro|CDTTOIF
 mdefine_line|#define&t;CDTTOIF(dirtype)&t;((dirtype) &lt;&lt; 12)
 macro_line|#endif
-macro_line|#ifndef&t;_FID_T_
-DECL|macro|_FID_T_
-mdefine_line|#define _FID_T_&t;1
-DECL|typedef|VolumeId
+macro_line|#ifndef _VUID_T_
+DECL|macro|_VUID_T_
+mdefine_line|#define _VUID_T_
+DECL|typedef|vuid_t
 r_typedef
-id|u_long
-id|VolumeId
+id|u_int32_t
+id|vuid_t
 suffix:semicolon
-DECL|typedef|VnodeId
+DECL|typedef|vgid_t
 r_typedef
-id|u_long
-id|VnodeId
+id|u_int32_t
+id|vgid_t
 suffix:semicolon
-DECL|typedef|Unique_t
-r_typedef
-id|u_long
-id|Unique_t
-suffix:semicolon
-DECL|typedef|FileVersion
-r_typedef
-id|u_long
-id|FileVersion
-suffix:semicolon
-macro_line|#endif 
-macro_line|#ifndef&t;_VICEFID_T_
-DECL|macro|_VICEFID_T_
-mdefine_line|#define _VICEFID_T_&t;1
-DECL|struct|ViceFid
-r_typedef
+macro_line|#endif /*_VUID_T_ */
+macro_line|#ifdef CODA_FS_OLD_API
+DECL|struct|CodaFid
 r_struct
-id|ViceFid
+id|CodaFid
 (brace
-DECL|member|Volume
-id|VolumeId
-id|Volume
+DECL|member|opaque
+id|u_int32_t
+id|opaque
+(braket
+l_int|3
+)braket
 suffix:semicolon
-DECL|member|Vnode
-id|VnodeId
-id|Vnode
-suffix:semicolon
-DECL|member|Unique
-id|Unique_t
-id|Unique
-suffix:semicolon
-DECL|typedef|ViceFid
 )brace
-id|ViceFid
 suffix:semicolon
-macro_line|#endif&t;/* VICEFID */
-macro_line|#ifdef __linux__
 DECL|function|coda_f2i
 r_static
 id|__inline__
@@ -341,7 +316,7 @@ id|coda_f2i
 c_func
 (paren
 r_struct
-id|ViceFid
+id|CodaFid
 op_star
 id|fid
 )paren
@@ -358,24 +333,36 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fid-&gt;Vnode
+id|fid-&gt;opaque
+(braket
+l_int|1
+)braket
 op_eq
 l_int|0xfffffffe
 op_logical_or
-id|fid-&gt;Vnode
+id|fid-&gt;opaque
+(braket
+l_int|1
+)braket
 op_eq
 l_int|0xffffffff
 )paren
 r_return
 (paren
 (paren
-id|fid-&gt;Volume
+id|fid-&gt;opaque
+(braket
+l_int|0
+)braket
 op_lshift
 l_int|20
 )paren
 op_or
 (paren
-id|fid-&gt;Unique
+id|fid-&gt;opaque
+(braket
+l_int|2
+)braket
 op_amp
 l_int|0xfffff
 )paren
@@ -384,43 +371,31 @@ suffix:semicolon
 r_else
 r_return
 (paren
-id|fid-&gt;Unique
+id|fid-&gt;opaque
+(braket
+l_int|2
+)braket
 op_plus
 (paren
-id|fid-&gt;Vnode
+id|fid-&gt;opaque
+(braket
+l_int|1
+)braket
 op_lshift
 l_int|10
 )paren
 op_plus
 (paren
-id|fid-&gt;Volume
+id|fid-&gt;opaque
+(braket
+l_int|0
+)braket
 op_lshift
 l_int|20
 )paren
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|coda_f2i
-mdefine_line|#define coda_f2i(fid)&bslash;&n;&t;((fid) ? ((fid)-&gt;Unique + ((fid)-&gt;Vnode&lt;&lt;10) + ((fid)-&gt;Volume&lt;&lt;20)) : 0)
-macro_line|#endif
-macro_line|#ifndef _VUID_T_
-DECL|macro|_VUID_T_
-mdefine_line|#define _VUID_T_
-DECL|typedef|vuid_t
-r_typedef
-id|u_int32_t
-id|vuid_t
-suffix:semicolon
-DECL|typedef|vgid_t
-r_typedef
-id|u_int32_t
-id|vgid_t
-suffix:semicolon
-macro_line|#endif /*_VUID_T_ */
-macro_line|#ifndef _CODACRED_T_
-DECL|macro|_CODACRED_T_
-mdefine_line|#define _CODACRED_T_
 DECL|struct|coda_cred
 r_struct
 id|coda_cred
@@ -455,7 +430,23 @@ suffix:semicolon
 multiline_comment|/* same for groups */
 )brace
 suffix:semicolon
-macro_line|#endif 
+macro_line|#else /* not defined(CODA_FS_OLD_API) */
+DECL|struct|CodaFid
+r_struct
+id|CodaFid
+(brace
+DECL|member|opaque
+id|u_int32_t
+id|opaque
+(braket
+l_int|4
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|coda_f2i
+mdefine_line|#define coda_f2i(fid)&bslash;&n;&t;(fid ? (fid-&gt;opaque[3] ^ (fid-&gt;opaque[2]&lt;&lt;10) ^ (fid-&gt;opaque[1]&lt;&lt;20) ^ fid-&gt;opaque[0]) : 0)
+macro_line|#endif
 macro_line|#ifndef _VENUS_VATTR_T_
 DECL|macro|_VENUS_VATTR_T_
 mdefine_line|#define _VENUS_VATTR_T_
@@ -688,36 +679,40 @@ macro_line|#if 0
 mdefine_line|#define CODA_KERNEL_VERSION 0 /* don&squot;t care about kernel version number */
 mdefine_line|#define CODA_KERNEL_VERSION 1 /* The old venus 4.6 compatible interface */
 macro_line|#endif
+macro_line|#ifdef CODA_FS_OLD_API
 DECL|macro|CODA_KERNEL_VERSION
-mdefine_line|#define CODA_KERNEL_VERSION 2 /* venus_lookup gets an extra parameter */
+mdefine_line|#define CODA_KERNEL_VERSION 2 /* venus_lookup got an extra parameter */
+macro_line|#else
+DECL|macro|CODA_KERNEL_VERSION
+mdefine_line|#define CODA_KERNEL_VERSION 3 /* 128-bit file identifiers */
+macro_line|#endif
 multiline_comment|/*&n; *        Venus &lt;-&gt; Coda  RPC arguments&n; */
 DECL|struct|coda_in_hdr
 r_struct
 id|coda_in_hdr
 (brace
 DECL|member|opcode
-r_int
-r_int
+id|u_int32_t
 id|opcode
 suffix:semicolon
 DECL|member|unique
-r_int
-r_int
+id|u_int32_t
 id|unique
 suffix:semicolon
 multiline_comment|/* Keep multiple outstanding msgs distinct */
+macro_line|#ifdef CODA_FS_OLD_API
 DECL|member|pid
-id|u_short
+id|u_int16_t
 id|pid
 suffix:semicolon
 multiline_comment|/* Common to all */
 DECL|member|pgid
-id|u_short
+id|u_int16_t
 id|pgid
 suffix:semicolon
 multiline_comment|/* Common to all */
 DECL|member|sid
-id|u_short
+id|u_int16_t
 id|sid
 suffix:semicolon
 multiline_comment|/* Common to all */
@@ -727,6 +722,20 @@ id|coda_cred
 id|cred
 suffix:semicolon
 multiline_comment|/* Common to all */
+macro_line|#else
+DECL|member|pid
+id|pid_t
+id|pid
+suffix:semicolon
+DECL|member|pgid
+id|pid_t
+id|pgid
+suffix:semicolon
+DECL|member|uid
+id|vuid_t
+id|uid
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* Really important that opcode and unique are 1st two fields! */
@@ -735,18 +744,15 @@ r_struct
 id|coda_out_hdr
 (brace
 DECL|member|opcode
-r_int
-r_int
+id|u_int32_t
 id|opcode
 suffix:semicolon
 DECL|member|unique
-r_int
-r_int
+id|u_int32_t
 id|unique
 suffix:semicolon
 DECL|member|result
-r_int
-r_int
+id|u_int32_t
 id|result
 suffix:semicolon
 )brace
@@ -762,7 +768,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 )brace
@@ -789,7 +796,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -828,7 +836,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -859,7 +868,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -890,7 +900,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -921,7 +932,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|cmd
@@ -975,7 +987,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 )brace
@@ -1007,7 +1020,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|attr
@@ -1039,7 +1053,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -1075,7 +1090,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|name
@@ -1099,7 +1115,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|vtype
@@ -1119,7 +1136,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|attr
@@ -1152,7 +1170,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|attr
@@ -1173,7 +1192,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|name
@@ -1205,12 +1225,14 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|sourceFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|sourceFid
 suffix:semicolon
 multiline_comment|/* cnode to link *to* */
 DECL|member|destFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|destFid
 suffix:semicolon
 multiline_comment|/* Directory in which to place link */
@@ -1243,7 +1265,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|sourceFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|sourceFid
 suffix:semicolon
 DECL|member|srcname
@@ -1251,7 +1274,8 @@ r_int
 id|srcname
 suffix:semicolon
 DECL|member|destFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|destFid
 suffix:semicolon
 DECL|member|destname
@@ -1282,7 +1306,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|attr
@@ -1307,7 +1332,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|attr
@@ -1328,7 +1354,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|name
@@ -1360,7 +1387,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 multiline_comment|/* Directory to put symlink in */
@@ -1401,7 +1429,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 )brace
@@ -1437,7 +1466,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 )brace
@@ -1464,7 +1494,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 )brace
@@ -1479,7 +1510,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|vtype
@@ -1502,11 +1534,18 @@ r_struct
 id|coda_out_hdr
 id|oh
 suffix:semicolon
+macro_line|#ifdef CODA_FS_OLD_API
 DECL|member|cred
 r_struct
 id|coda_cred
 id|cred
 suffix:semicolon
+macro_line|#else
+DECL|member|uid
+id|vuid_t
+id|uid
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* coda_zapfile: */
@@ -1521,7 +1560,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|CodaFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|CodaFid
 suffix:semicolon
 )brace
@@ -1538,30 +1578,9 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|CodaFid
-id|ViceFid
+r_struct
 id|CodaFid
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* coda_zapnode: */
-multiline_comment|/* CODA_ZAPVNODE is a venus-&gt;kernel call */
-DECL|struct|coda_zapvnode_out
-r_struct
-id|coda_zapvnode_out
-(brace
-DECL|member|oh
-r_struct
-id|coda_out_hdr
-id|oh
-suffix:semicolon
-DECL|member|cred
-r_struct
-id|coda_cred
-id|cred
-suffix:semicolon
-DECL|member|VFid
-id|ViceFid
-id|VFid
+id|CodaFid
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1577,7 +1596,8 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|CodaFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|CodaFid
 suffix:semicolon
 )brace
@@ -1595,11 +1615,13 @@ id|coda_out_hdr
 id|oh
 suffix:semicolon
 DECL|member|NewFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|NewFid
 suffix:semicolon
 DECL|member|OldFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|OldFid
 suffix:semicolon
 )brace
@@ -1615,7 +1637,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -1659,7 +1682,8 @@ id|coda_in_hdr
 id|ih
 suffix:semicolon
 DECL|member|VFid
-id|ViceFid
+r_struct
+id|CodaFid
 id|VFid
 suffix:semicolon
 DECL|member|flags
@@ -1906,11 +1930,6 @@ r_struct
 id|coda_zapdir_out
 id|coda_zapdir
 suffix:semicolon
-DECL|member|coda_zapvnode
-r_struct
-id|coda_zapvnode_out
-id|coda_zapvnode
-suffix:semicolon
 DECL|member|coda_purgefid
 r_struct
 id|coda_purgefid_out
@@ -1958,11 +1977,6 @@ DECL|member|zapdir
 r_struct
 id|coda_zapdir_out
 id|zapdir
-suffix:semicolon
-DECL|member|zapvnode
-r_struct
-id|coda_zapvnode_out
-id|zapvnode
 suffix:semicolon
 DECL|member|purgefid
 r_struct
@@ -2025,21 +2039,11 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|CODA_CONTROL
-mdefine_line|#define&t;CODA_CONTROL&t;&t;&quot;.CONTROL&quot;
+mdefine_line|#define CODA_CONTROL&t;&t;&quot;.CONTROL&quot;
 DECL|macro|CODA_CONTROLLEN
-mdefine_line|#define CODA_CONTROLLEN           8
-DECL|macro|CTL_VOL
-mdefine_line|#define&t;CTL_VOL&t;&t;&t;-1
-DECL|macro|CTL_VNO
-mdefine_line|#define&t;CTL_VNO&t;&t;&t;-1
-DECL|macro|CTL_UNI
-mdefine_line|#define&t;CTL_UNI&t;&t;&t;-1
+mdefine_line|#define CODA_CONTROLLEN&t;&t;8
 DECL|macro|CTL_INO
-mdefine_line|#define CTL_INO                 -1
-DECL|macro|CTL_FILE
-mdefine_line|#define&t;CTL_FILE&t;&t;&quot;/coda/.CONTROL&quot;
-DECL|macro|IS_CTL_FID
-mdefine_line|#define&t;IS_CTL_FID(fidp)&t;((fidp)-&gt;Volume == CTL_VOL &amp;&amp;&bslash;&n;&t;&t;&t;&t; (fidp)-&gt;Vnode == CTL_VNO &amp;&amp;&bslash;&n;&t;&t;&t;&t; (fidp)-&gt;Unique == CTL_UNI)
+mdefine_line|#define CTL_INO&t;&t;&t;-1
 multiline_comment|/* Data passed to mount */
 DECL|macro|CODA_MOUNT_VERSION
 mdefine_line|#define CODA_MOUNT_VERSION 1
