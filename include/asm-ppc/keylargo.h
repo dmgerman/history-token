@@ -17,6 +17,17 @@ DECL|macro|KEYLARGO_FCR4
 mdefine_line|#define KEYLARGO_FCR4&t;&t;0x48
 DECL|macro|KEYLARGO_FCR5
 mdefine_line|#define KEYLARGO_FCR5&t;&t;0x4c&t;/* Pangea only */
+multiline_comment|/* K2 aditional FCRs */
+DECL|macro|K2_FCR6
+mdefine_line|#define K2_FCR6&t;&t;&t;0x34
+DECL|macro|K2_FCR7
+mdefine_line|#define K2_FCR7&t;&t;&t;0x30
+DECL|macro|K2_FCR8
+mdefine_line|#define K2_FCR8&t;&t;&t;0x2c
+DECL|macro|K2_FCR9
+mdefine_line|#define K2_FCR9&t;&t;&t;0x28
+DECL|macro|K2_FCR10
+mdefine_line|#define K2_FCR10&t;&t;0x24
 multiline_comment|/* GPIO registers */
 DECL|macro|KEYLARGO_GPIO_LEVELS0
 mdefine_line|#define KEYLARGO_GPIO_LEVELS0&t;&t;0x50
@@ -38,6 +49,11 @@ DECL|macro|KEYLARGO_GPIO_OUTOUT_DATA
 mdefine_line|#define KEYLARGO_GPIO_OUTOUT_DATA&t;0x01
 DECL|macro|KEYLARGO_GPIO_INPUT_DATA
 mdefine_line|#define KEYLARGO_GPIO_INPUT_DATA&t;0x02
+multiline_comment|/* K2 does only extint GPIOs and does 51 of them */
+DECL|macro|K2_GPIO_EXTINT_0
+mdefine_line|#define K2_GPIO_EXTINT_0&t;&t;0x58
+DECL|macro|K2_GPIO_EXTINT_CNT
+mdefine_line|#define K2_GPIO_EXTINT_CNT&t;&t;51
 multiline_comment|/* Specific GPIO regs */
 DECL|macro|KL_GPIO_MODEM_RESET
 mdefine_line|#define KL_GPIO_MODEM_RESET&t;&t;(KEYLARGO_GPIO_0+0x03)
@@ -82,7 +98,7 @@ DECL|macro|KL_GPIO_AIRPORT_3
 mdefine_line|#define KL_GPIO_AIRPORT_3&t;&t;(KEYLARGO_GPIO_0+0x0e)
 DECL|macro|KL_GPIO_AIRPORT_4
 mdefine_line|#define KL_GPIO_AIRPORT_4&t;&t;(KEYLARGO_GPIO_0+0x0f)
-multiline_comment|/*&n; * Bits in feature control register&n; */
+multiline_comment|/*&n; * Bits in feature control register. Those bits different for K2 are&n; * listed separately&n; */
 DECL|macro|KL_MBCR_MB0_PCI_ENABLE
 mdefine_line|#define KL_MBCR_MB0_PCI_ENABLE&t;&t;0x00000800&t;/* exist ? */
 DECL|macro|KL_MBCR_MB0_IDE_ENABLE
@@ -327,13 +343,48 @@ DECL|macro|KL4_PORT_DISCONNECT_STAT
 mdefine_line|#define KL4_PORT_DISCONNECT_STAT(p)&t;(0x00000010 &lt;&lt; ((p)&lt;&lt;3))
 multiline_comment|/* Pangea and Intrepid only */
 DECL|macro|KL5_VIA_USE_CLK31
-mdefine_line|#define KL5_VIA_USE_CLK31&t;&t;0x000000001&t;/* Pangea Only */
+mdefine_line|#define KL5_VIA_USE_CLK31&t;&t;0000000001&t;/* Pangea Only */
 DECL|macro|KL5_SCC_USE_CLK31
-mdefine_line|#define KL5_SCC_USE_CLK31&t;&t;0x000000002&t;/* Pangea Only */
+mdefine_line|#define KL5_SCC_USE_CLK31&t;&t;0x00000002&t;/* Pangea Only */
 DECL|macro|KL5_PWM_CLK32_EN
-mdefine_line|#define KL5_PWM_CLK32_EN&t;&t;0x000000004
+mdefine_line|#define KL5_PWM_CLK32_EN&t;&t;0x00000004
 DECL|macro|KL5_CLK3_68_EN
-mdefine_line|#define KL5_CLK3_68_EN&t;&t;&t;0x000000010
+mdefine_line|#define KL5_CLK3_68_EN&t;&t;&t;0x00000010
 DECL|macro|KL5_CLK32_EN
-mdefine_line|#define KL5_CLK32_EN&t;&t;&t;0x000000020
+mdefine_line|#define KL5_CLK32_EN&t;&t;&t;0x00000020
+multiline_comment|/* K2 definitions */
+DECL|macro|K2_FCR0_USB0_SWRESET
+mdefine_line|#define K2_FCR0_USB0_SWRESET&t;&t;0x00200000
+DECL|macro|K2_FCR0_USB1_SWRESET
+mdefine_line|#define K2_FCR0_USB1_SWRESET&t;&t;0x02000000
+DECL|macro|K2_FCR0_RING_PME_DISABLE
+mdefine_line|#define K2_FCR0_RING_PME_DISABLE&t;0x08000000
+DECL|macro|K2_FCR1_PCI1_BUS_RESET_N
+mdefine_line|#define K2_FCR1_PCI1_BUS_RESET_N&t;0x00000010
+DECL|macro|K2_FCR1_PCI1_SLEEP_RESET_EN
+mdefine_line|#define K2_FCR1_PCI1_SLEEP_RESET_EN&t;0x00000020
+DECL|macro|K2_FCR1_PCI1_CLK_ENABLE
+mdefine_line|#define K2_FCR1_PCI1_CLK_ENABLE&t;&t;0x00004000
+DECL|macro|K2_FCR1_FW_CLK_ENABLE
+mdefine_line|#define K2_FCR1_FW_CLK_ENABLE&t;&t;0x00008000
+DECL|macro|K2_FCR1_FW_RESET_N
+mdefine_line|#define K2_FCR1_FW_RESET_N&t;&t;0x00010000
+DECL|macro|K2_FCR1_GMAC_CLK_ENABLE
+mdefine_line|#define K2_FCR1_GMAC_CLK_ENABLE&t;&t;0x00400000
+DECL|macro|K2_FCR1_GMAC_POWER_DOWN
+mdefine_line|#define K2_FCR1_GMAC_POWER_DOWN&t;&t;0x00800000
+DECL|macro|K2_FCR1_GMAC_RESET_N
+mdefine_line|#define K2_FCR1_GMAC_RESET_N&t;&t;0x01000000
+DECL|macro|K2_FCR1_SATA_CLK_ENABLE
+mdefine_line|#define K2_FCR1_SATA_CLK_ENABLE&t;&t;0x02000000
+DECL|macro|K2_FCR1_SATA_POWER_DOWN
+mdefine_line|#define K2_FCR1_SATA_POWER_DOWN&t;&t;0x04000000
+DECL|macro|K2_FCR1_SATA_RESET_N
+mdefine_line|#define K2_FCR1_SATA_RESET_N&t;&t;0x08000000
+DECL|macro|K2_FCR1_UATA_CLK_ENABLE
+mdefine_line|#define K2_FCR1_UATA_CLK_ENABLE&t;&t;0x10000000
+DECL|macro|K2_FCR1_UATA_RESET_N
+mdefine_line|#define K2_FCR1_UATA_RESET_N&t;&t;0x40000000
+DECL|macro|K2_FCR1_UATA_CHOOSE_CLK66
+mdefine_line|#define K2_FCR1_UATA_CHOOSE_CLK66&t;0x80000000
 eof

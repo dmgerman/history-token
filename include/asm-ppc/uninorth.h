@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * uninorth.h: definitions for using the &quot;UniNorth&quot; host bridge chip&n; *             from Apple. This chip is used on &quot;Core99&quot; machines&n; *&n; */
+multiline_comment|/*&n; * uninorth.h: definitions for using the &quot;UniNorth&quot; host bridge chip&n; *             from Apple. This chip is used on &quot;Core99&quot; machines&n; *&t;       This also includes U2 used on more recent MacRISC2/3&n; *             machines and U3 (G5) &n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_UNINORTH_H__
 DECL|macro|__ASM_UNINORTH_H__
 mdefine_line|#define __ASM_UNINORTH_H__
-multiline_comment|/*&n; * Uni-N config space reg. definitions&n; *&n; * (Little endian)&n; */
+multiline_comment|/*&n; * Uni-N and U3 config space reg. definitions&n; *&n; * (Little endian)&n; */
 multiline_comment|/* Address ranges selection. This one should work with Bandit too */
+multiline_comment|/* Not U3 */
 DECL|macro|UNI_N_ADDR_SELECT
 mdefine_line|#define UNI_N_ADDR_SELECT&t;&t;0x48
 DECL|macro|UNI_N_ADDR_COARSE_MASK
@@ -12,6 +13,7 @@ mdefine_line|#define UNI_N_ADDR_COARSE_MASK&t;&t;0xffff0000&t;/* 256Mb regions a
 DECL|macro|UNI_N_ADDR_FINE_MASK
 mdefine_line|#define UNI_N_ADDR_FINE_MASK&t;&t;0x0000ffff&t;/*  16Mb regions at f*000000 */
 multiline_comment|/* AGP registers */
+multiline_comment|/* Not U3 */
 DECL|macro|UNI_N_CFG_GART_BASE
 mdefine_line|#define UNI_N_CFG_GART_BASE&t;&t;0x8c
 DECL|macro|UNI_N_CFG_AGP_BASE
@@ -21,6 +23,7 @@ mdefine_line|#define UNI_N_CFG_GART_CTRL&t;&t;0x94
 DECL|macro|UNI_N_CFG_INTERNAL_STATUS
 mdefine_line|#define UNI_N_CFG_INTERNAL_STATUS&t;0x98
 multiline_comment|/* UNI_N_CFG_GART_CTRL bits definitions */
+multiline_comment|/* Not U3 */
 DECL|macro|UNI_N_CFG_GART_INVAL
 mdefine_line|#define UNI_N_CFG_GART_INVAL&t;&t;0x00000001
 DECL|macro|UNI_N_CFG_GART_ENABLE
@@ -34,6 +37,20 @@ multiline_comment|/*&n; * Uni-N memory mapped reg. definitions&n; *&n; * Those r
 multiline_comment|/* Version of the UniNorth chip */
 DECL|macro|UNI_N_VERSION
 mdefine_line|#define UNI_N_VERSION&t;&t;&t;0x0000&t;&t;/* Known versions: 3,7 and 8 */
+DECL|macro|UNI_N_VERSION_107
+mdefine_line|#define UNI_N_VERSION_107&t;&t;0x0003&t;&t;/* 1.0.7 */
+DECL|macro|UNI_N_VERSION_10A
+mdefine_line|#define UNI_N_VERSION_10A&t;&t;0x0007&t;&t;/* 1.0.10 */
+DECL|macro|UNI_N_VERSION_150
+mdefine_line|#define UNI_N_VERSION_150&t;&t;0x0011&t;&t;/* 1.5 */
+DECL|macro|UNI_N_VERSION_200
+mdefine_line|#define UNI_N_VERSION_200&t;&t;0x0024&t;&t;/* 2.0 */
+DECL|macro|UNI_N_VERSION_PANGEA
+mdefine_line|#define UNI_N_VERSION_PANGEA&t;&t;0x00C0&t;&t;/* Integrated U1 + K */
+DECL|macro|UNI_N_VERSION_INTREPID
+mdefine_line|#define UNI_N_VERSION_INTREPID&t;&t;0x00D2&t;&t;/* Integrated U2 + K */
+DECL|macro|UNI_N_VERSION_300
+mdefine_line|#define UNI_N_VERSION_300&t;&t;0x0030&t;&t;/* 3.0 (U3 on G5) */
 multiline_comment|/* This register is used to enable/disable various clocks */
 DECL|macro|UNI_N_CLOCK_CNTL
 mdefine_line|#define UNI_N_CLOCK_CNTL&t;&t;0x0020
@@ -79,6 +96,28 @@ multiline_comment|/* This last bit appear to be used by the bootROM to know the 
 DECL|macro|UNI_N_HWINIT_STATE_CPU1_FLAG
 mdefine_line|#define UNI_N_HWINIT_STATE_CPU1_FLAG&t;0x10000000
 multiline_comment|/* Uninorth 1.5 rev. has additional perf. monitor registers at 0xf00-0xf50 */
+multiline_comment|/*&n; * U3 specific registers&n; */
+multiline_comment|/* U3 Toggle */
+DECL|macro|U3_TOGGLE_REG
+mdefine_line|#define U3_TOGGLE_REG&t;&t;&t;0x00e0
+DECL|macro|U3_PMC_START_STOP
+mdefine_line|#define U3_PMC_START_STOP&t;&t;0x0001
+DECL|macro|U3_MPIC_RESET
+mdefine_line|#define U3_MPIC_RESET&t;&t;&t;0x0002
+DECL|macro|U3_MPIC_OUTPUT_ENABLE
+mdefine_line|#define U3_MPIC_OUTPUT_ENABLE&t;&t;0x0004
+multiline_comment|/* U3 API PHY Config 1 */
+DECL|macro|U3_API_PHY_CONFIG_1
+mdefine_line|#define U3_API_PHY_CONFIG_1&t;&t;0x23030
+multiline_comment|/* U3 HyperTransport registers */
+DECL|macro|U3_HT_CONFIG_BASE
+mdefine_line|#define U3_HT_CONFIG_BASE      &t;&t;0x70000
+DECL|macro|U3_HT_LINK_COMMAND
+mdefine_line|#define U3_HT_LINK_COMMAND&t;&t;0x100
+DECL|macro|U3_HT_LINK_CONFIG
+mdefine_line|#define U3_HT_LINK_CONFIG&t;&t;0x110
+DECL|macro|U3_HT_LINK_FREQ
+mdefine_line|#define U3_HT_LINK_FREQ&t;&t;&t;0x120
 macro_line|#endif /* __ASM_UNINORTH_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

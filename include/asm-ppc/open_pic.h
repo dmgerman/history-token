@@ -8,9 +8,9 @@ DECL|macro|OPENPIC_SIZE
 mdefine_line|#define OPENPIC_SIZE&t;0x40000
 multiline_comment|/*&n; *  Non-offset&squot;ed vector numbers&n; */
 DECL|macro|OPENPIC_VEC_TIMER
-mdefine_line|#define OPENPIC_VEC_TIMER&t;64&t;/* and up */
+mdefine_line|#define OPENPIC_VEC_TIMER&t;110&t;/* and up */
 DECL|macro|OPENPIC_VEC_IPI
-mdefine_line|#define OPENPIC_VEC_IPI&t;&t;72&t;/* and up */
+mdefine_line|#define OPENPIC_VEC_IPI&t;&t;118&t;/* and up */
 DECL|macro|OPENPIC_VEC_SPURIOUS
 mdefine_line|#define OPENPIC_VEC_SPURIOUS&t;127
 multiline_comment|/* OpenPIC IRQ controller structure */
@@ -172,6 +172,15 @@ r_int
 id|wait
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|openpic_set_k2_cascade
+c_func
+(paren
+r_int
+id|irq
+)paren
+suffix:semicolon
 DECL|function|openpic_to_irq
 r_extern
 r_inline
@@ -205,6 +214,95 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*extern int open_pic_irq_offset;*/
+multiline_comment|/* Support for second openpic on G5 macs */
+singleline_comment|// FIXME: To be replaced by sane cascaded controller management */
+DECL|macro|PMAC_OPENPIC2_OFFSET
+mdefine_line|#define PMAC_OPENPIC2_OFFSET&t;128
+DECL|macro|OPENPIC2_VEC_TIMER
+mdefine_line|#define OPENPIC2_VEC_TIMER&t;110&t;/* and up */
+DECL|macro|OPENPIC2_VEC_IPI
+mdefine_line|#define OPENPIC2_VEC_IPI&t;118&t;/* and up */
+DECL|macro|OPENPIC2_VEC_SPURIOUS
+mdefine_line|#define OPENPIC2_VEC_SPURIOUS&t;127
+r_extern
+r_void
+op_star
+id|OpenPIC2_Addr
+suffix:semicolon
+multiline_comment|/* Exported functions */
+r_extern
+r_void
+id|openpic2_set_sources
+c_func
+(paren
+r_int
+id|first_irq
+comma
+r_int
+id|num_irqs
+comma
+r_void
+op_star
+id|isr
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|openpic2_init
+c_func
+(paren
+r_int
+id|linux_irq_offset
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|openpic2_init_nmi_irq
+c_func
+(paren
+id|u_int
+id|irq
+)paren
+suffix:semicolon
+r_extern
+id|u_int
+id|openpic2_irq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|openpic2_eoi
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|openpic2_get_irq
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|openpic2_setup_ISU
+c_func
+(paren
+r_int
+id|isu_num
+comma
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
 macro_line|#endif /* _PPC_KERNEL_OPEN_PIC_H */
 eof

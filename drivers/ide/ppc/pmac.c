@@ -105,7 +105,7 @@ l_int|4
 )braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC
-multiline_comment|/* Those fields are duplicating what is in hwif. We currently&n;&t; * can&squot;t use the hwif ones because of some assumptions that are&n;&t; * being done by the generic code about the kind of dma controller&n;&t; * and format of the dma table. This will have to be fixed though.&n;&t; */
+multiline_comment|/* Those fields are duplicating what is in hwif. We currently&n;&t; * can&squot;t use the hwif ones because of some assumptions that are&n;&t; * beeing done by the generic code about the kind of dma controller&n;&t; * and format of the dma table. This will have to be fixed though.&n;&t; */
 DECL|member|dma_regs
 r_volatile
 r_struct
@@ -176,7 +176,11 @@ comma
 multiline_comment|/* KeyLargo ATA-4 */
 DECL|enumerator|controller_un_ata6
 id|controller_un_ata6
+comma
 multiline_comment|/* UniNorth2 ATA-6 */
+DECL|enumerator|controller_k2_ata6
+id|controller_k2_ata6
+multiline_comment|/* K2 ATA-6 */
 )brace
 suffix:semicolon
 DECL|variable|model_name
@@ -197,12 +201,16 @@ comma
 multiline_comment|/* Heathrow/Paddington */
 l_string|&quot;KeyLargo ATA-3&quot;
 comma
-multiline_comment|/* KeyLargo ATA-3 */
+multiline_comment|/* KeyLargo ATA-3 (MDMA only) */
 l_string|&quot;KeyLargo ATA-4&quot;
 comma
-multiline_comment|/* KeyLargo ATA-4 */
+multiline_comment|/* KeyLargo ATA-4 (UDMA/66) */
 l_string|&quot;UniNorth ATA-6&quot;
-multiline_comment|/* UniNorth2 ATA-6 */
+comma
+multiline_comment|/* UniNorth2 ATA-6 (UDMA/100) */
+l_string|&quot;K2 ATA-6&quot;
+comma
+multiline_comment|/* K2 ATA-6 (UDMA/100) */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Extra registers, both 32-bit little-endian&n; */
@@ -922,9 +930,9 @@ suffix:semicolon
 multiline_comment|/* allow up to 256 DBDMA commands per xfer */
 DECL|macro|MAX_DCMDS
 mdefine_line|#define MAX_DCMDS&t;&t;256
-multiline_comment|/* Wait 2s for disk to answer on IDE bus after&n; * enable operation.&n; * NOTE: There is at least one case I know of a disk that needs about 10sec&n; *       before anwering on the bus. I beleive we could add a kernel command&n; *       line arg to override this delay for such cases.&n; *       &n; * NOTE2: This has to be fixed with a BSY wait loop. I&squot;m working on adding&n; *        that to the generic probe code.&n; */
-DECL|macro|IDE_WAKEUP_DELAY_MS
-mdefine_line|#define IDE_WAKEUP_DELAY_MS&t;2000
+multiline_comment|/* &n; * Wait 1s for disk to answer on IDE bus after a hard reset&n; * of the device (via GPIO/FCR).&n; * &n; * Some devices seem to &quot;pollute&quot; the bus even after dropping&n; * the BSY bit (typically some combo drives slave on the UDMA&n; * bus) after a hard reset. Since we hard reset all drives on&n; * KeyLargo ATA66, we have to keep that delay around. I may end&n; * up not hard resetting anymore on these and keep the delay only&n; * for older interfaces instead (we have to reset when coming&n; * from MacOS...) --BenH. &n; */
+DECL|macro|IDE_WAKEUP_DELAY
+mdefine_line|#define IDE_WAKEUP_DELAY&t;(1*HZ)
 r_static
 r_void
 id|pmac_ide_setup_dma
@@ -1010,8 +1018,9 @@ id|drive
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PMAC */
+multiline_comment|/*&n; * Below is the code for blinking the laptop LED along with hard&n; * disk activity.&n; */
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_PMAC_BLINK
-multiline_comment|/* Set to 50ms */
+multiline_comment|/* Set to 50ms minimum led-on time (also used to limit frequency&n; * of requests sent to the PMU&n; */
 DECL|macro|PMU_HD_BLINK_TIME
 mdefine_line|#define PMU_HD_BLINK_TIME&t;(HZ/50)
 DECL|variable|pmu_blink_on
@@ -1189,6 +1198,7 @@ comma
 id|pmu_blink_stoptime
 )paren
 suffix:semicolon
+multiline_comment|/* Fast path when LED is already ON */
 r_if
 c_cond
 (paren
@@ -1269,6 +1279,7 @@ r_char
 op_star
 id|model
 suffix:semicolon
+multiline_comment|/* Currently, I only enable this feature on KeyLargo based laptops,&n;&t; * older laptops may support it (at least heathrow/paddington) but&n;&t; * I don&squot;t feel like loading those venerable old machines with so&n;&t; * much additional interrupt &amp; PMU activity...&n;&t; */
 r_if
 c_cond
 (paren
@@ -1558,7 +1569,7 @@ dot
 id|irq
 suffix:semicolon
 )brace
-multiline_comment|/* Setup timings for the selected drive (master/slave). I still need to verify if this&n; * is enough, I beleive selectproc will be called whenever an IDE command is started,&n; * but... */
+multiline_comment|/*&n; * Apply the timings of the proper unit (master/slave) to the shared&n; * timing register when selecting that unit. This version is for&n; * ASICs with a single timing register&n; */
 r_static
 r_void
 id|__pmac
@@ -1660,6 +1671,7 @@ id|IDE_TIMING_CONFIG
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Apply the timings of the proper unit (master/slave) to the shared&n; * timing register when selecting that unit. This version is for&n; * ASICs with a dual timing register (Kauai)&n; */
 r_static
 r_void
 id|__pmac
@@ -1803,6 +1815,7 @@ id|IDE_KAUAI_PIO_CONFIG
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Force an update of controller timing values for a given drive&n; */
 r_static
 r_void
 id|__pmac
@@ -1846,6 +1859,10 @@ c_cond
 id|pmif-&gt;kind
 op_eq
 id|controller_un_ata6
+op_logical_or
+id|pmif-&gt;kind
+op_eq
+id|controller_k2_ata6
 )paren
 id|pmac_ide_kauai_selectproc
 c_func
@@ -1861,6 +1878,53 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+r_static
+r_void
+DECL|function|pmac_outbsync
+id|pmac_outbsync
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+id|u8
+id|value
+comma
+r_int
+r_int
+id|port
+)paren
+(brace
+id|u32
+id|tmp
+suffix:semicolon
+id|writeb
+c_func
+(paren
+id|value
+comma
+id|port
+)paren
+suffix:semicolon
+id|tmp
+op_assign
+id|readl
+c_func
+(paren
+(paren
+r_int
+op_star
+)paren
+(paren
+id|IDE_DATA_REG
+op_plus
+id|IDE_TIMING_CONFIG
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Send the SET_FEATURE IDE command to the drive and update drive-&gt;id with&n; * the new state. We currently don&squot;t use the generic routine as it used to&n; * cause various trouble, especially with older mediabays.&n; * This code is sometimes triggering a spurrious interrupt though, I need&n; * to sort that out sooner or later and see if I can finally get the&n; * common version to work properly in all cases&n; */
 r_static
 r_int
 id|__pmac
@@ -2236,7 +2300,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/* Calculate PIO timings */
+multiline_comment|/*&n; * Old tuning functions (called on hdparm -p), sets up drive PIO timings&n; */
 r_static
 r_void
 id|__pmac
@@ -2328,6 +2392,9 @@ id|pmif-&gt;kind
 (brace
 r_case
 id|controller_un_ata6
+suffix:colon
+r_case
+id|controller_k2_ata6
 suffix:colon
 (brace
 multiline_comment|/* 100Mhz cell */
@@ -2696,6 +2763,7 @@ id|drive
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC
+multiline_comment|/*&n; * Calculate KeyLargo ATA/66 UDMA timings&n; */
 r_static
 r_int
 id|__pmac
@@ -2830,6 +2898,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Calculate Kauai ATA/100 UDMA timings&n; */
 r_static
 r_int
 id|__pmac
@@ -2929,6 +2998,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Calculate MDMA timings for all cells&n; */
 r_static
 r_int
 id|__pmac
@@ -3066,6 +3136,9 @@ id|intf_type
 r_case
 id|controller_un_ata6
 suffix:colon
+r_case
+id|controller_k2_ata6
+suffix:colon
 r_break
 suffix:semicolon
 r_case
@@ -3199,6 +3272,9 @@ id|intf_type
 (brace
 r_case
 id|controller_un_ata6
+suffix:colon
+r_case
+id|controller_k2_ata6
 suffix:colon
 (brace
 multiline_comment|/* 100Mhz cell */
@@ -3634,7 +3710,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* #ifdef CONFIG_BLK_DEV_IDEDMA_PMAC */
-multiline_comment|/* You may notice we don&squot;t use this function on normal operation,&n; * our, normal mdma function is supposed to be more precise&n; */
+multiline_comment|/* &n; * Speedproc. This function is called by the core to set any of the standard&n; * timing (PIO, MDMA or UDMA) to both the drive and the controller.&n; * You may notice we don&squot;t use this function on normal &quot;dma check&quot; operation,&n; * our dedicated function is more precise as it uses the drive provided&n; * cycle time value. We should probably fix this one to deal with that too...&n; */
 r_static
 r_int
 id|__pmac
@@ -3730,6 +3806,10 @@ c_cond
 id|pmif-&gt;kind
 op_ne
 id|controller_un_ata6
+op_logical_and
+id|pmif-&gt;kind
+op_ne
+id|controller_k2_ata6
 )paren
 r_return
 l_int|1
@@ -3789,6 +3869,10 @@ c_cond
 id|pmif-&gt;kind
 op_eq
 id|controller_un_ata6
+op_logical_or
+id|pmif-&gt;kind
+op_eq
+id|controller_k2_ata6
 )paren
 id|ret
 op_assign
@@ -3925,6 +4009,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Blast some well known &quot;safe&quot; values to the timing registers at init or&n; * wakeup from sleep time, before we do real calculation&n; */
 r_static
 r_void
 id|__pmac
@@ -3953,6 +4038,9 @@ id|pmif-&gt;kind
 (brace
 r_case
 id|controller_un_ata6
+suffix:colon
+r_case
+id|controller_k2_ata6
 suffix:colon
 id|value
 op_assign
@@ -4445,10 +4533,18 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|mdelay
+id|set_current_state
 c_func
 (paren
-l_int|10
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|100
 )paren
 suffix:semicolon
 id|ppc_md
@@ -4465,10 +4561,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mdelay
+id|set_current_state
 c_func
 (paren
-l_int|100
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|IDE_WAKEUP_DELAY
 )paren
 suffix:semicolon
 )brace
@@ -4483,6 +4585,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Setup, register &amp; probe an IDE channel driven by this driver, this is&n; * called by one of the 2 probe functions (macio or PCI). Note that a channel&n; * that ends up beeing free of any device is not kept around by this driver&n; * (it is kept in 2.4). This introduce an interface numbering change on some&n; * rare machines unfortunately, but it&squot;s better this way.&n; */
 r_static
 r_int
 DECL|function|pmac_ide_setup_device
@@ -4535,6 +4638,22 @@ l_string|&quot;kauai-ata&quot;
 id|pmif-&gt;kind
 op_assign
 id|controller_un_ata6
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|device_is_compatible
+c_func
+(paren
+id|np
+comma
+l_string|&quot;K2-UATA&quot;
+)paren
+)paren
+id|pmif-&gt;kind
+op_assign
+id|controller_k2_ata6
 suffix:semicolon
 r_else
 r_if
@@ -4636,6 +4755,10 @@ op_logical_or
 id|pmif-&gt;kind
 op_eq
 id|controller_un_ata6
+op_logical_or
+id|pmif-&gt;kind
+op_eq
+id|controller_k2_ata6
 )paren
 (brace
 r_char
@@ -4788,10 +4911,18 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|mdelay
+id|set_current_state
 c_func
 (paren
-l_int|10
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|100
 )paren
 suffix:semicolon
 id|ppc_md
@@ -4808,10 +4939,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mdelay
+id|set_current_state
 c_func
 (paren
-l_int|100
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|IDE_WAKEUP_DELAY
 )paren
 suffix:semicolon
 )brace
@@ -4821,6 +4958,10 @@ c_func
 (paren
 id|hwif
 )paren
+suffix:semicolon
+id|hwif-&gt;OUTBSYNC
+op_assign
+id|pmac_outbsync
 suffix:semicolon
 multiline_comment|/* Tell common code _not_ to mess with resources */
 id|hwif-&gt;mmio
@@ -4908,6 +5049,10 @@ c_cond
 id|pmif-&gt;kind
 op_eq
 id|controller_un_ata6
+op_logical_or
+id|pmif-&gt;kind
+op_eq
+id|controller_k2_ata6
 )paren
 id|hwif-&gt;selectproc
 op_assign
@@ -5071,6 +5216,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Attach to a macio probed interface&n; */
 r_static
 r_int
 id|__devinit
@@ -5218,68 +5364,19 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Some older OFs have bogus sizes, causing request_OF_resource&n;&t; * to fail. We fix them up here&n;&t; */
-r_if
-c_cond
-(paren
-id|mdev-&gt;ofdev.node-&gt;addrs
-(braket
-l_int|0
-)braket
-dot
-id|size
-OG
-l_int|0x1000
-)paren
-id|mdev-&gt;ofdev.node-&gt;addrs
-(braket
-l_int|0
-)braket
-dot
-id|size
-op_assign
-l_int|0x1000
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mdev-&gt;ofdev.node-&gt;n_addrs
-OG
-l_int|1
-op_logical_and
-id|mdev-&gt;ofdev.node-&gt;addrs
-(braket
-l_int|1
-)braket
-dot
-id|size
-OG
-l_int|0x100
-)paren
-id|mdev-&gt;ofdev.node-&gt;addrs
-(braket
-l_int|1
-)braket
-dot
-id|size
-op_assign
-l_int|0x100
-suffix:semicolon
 multiline_comment|/* Request memory resource for IO ports */
 r_if
 c_cond
 (paren
-id|request_OF_resource
+id|macio_request_resource
 c_func
 (paren
-id|mdev-&gt;ofdev.node
+id|mdev
 comma
 l_int|0
 comma
-l_string|&quot;  (mac-io ata ports)&quot;
+l_string|&quot;ide-pmac (ports)&quot;
 )paren
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
@@ -5300,7 +5397,11 @@ multiline_comment|/* XXX This is bogus. Should be fixed in the registry by check
 r_if
 c_cond
 (paren
-id|mdev-&gt;ofdev.node-&gt;n_intrs
+id|macio_irq_count
+c_func
+(paren
+id|mdev
+)paren
 op_eq
 l_int|0
 )paren
@@ -5324,12 +5425,13 @@ suffix:semicolon
 r_else
 id|irq
 op_assign
-id|mdev-&gt;ofdev.node-&gt;intrs
-(braket
+id|macio_irq
+c_func
+(paren
+id|mdev
+comma
 l_int|0
-)braket
-dot
-id|line
+)paren
 suffix:semicolon
 id|base
 op_assign
@@ -5340,12 +5442,13 @@ r_int
 id|ioremap
 c_func
 (paren
-id|mdev-&gt;ofdev.node-&gt;addrs
-(braket
+id|macio_resource_start
+c_func
+(paren
+id|mdev
+comma
 l_int|0
-)braket
-dot
-id|address
+)paren
 comma
 l_int|0x400
 )paren
@@ -5383,10 +5486,38 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC
 r_if
 c_cond
 (paren
-id|mdev-&gt;ofdev.node-&gt;n_addrs
+id|macio_resource_count
+c_func
+(paren
+id|mdev
+)paren
 op_ge
 l_int|2
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|macio_request_resource
+c_func
+(paren
+id|mdev
+comma
+l_int|1
+comma
+l_string|&quot;ide-pmac (dma)&quot;
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;ide%d: can&squot;t request DMA resource !&bslash;n&quot;
+comma
+id|i
+)paren
+suffix:semicolon
+r_else
 id|pmif-&gt;dma_regs
 op_assign
 (paren
@@ -5398,16 +5529,18 @@ op_star
 id|ioremap
 c_func
 (paren
-id|mdev-&gt;ofdev.node-&gt;addrs
-(braket
+id|macio_resource_start
+c_func
+(paren
+id|mdev
+comma
 l_int|1
-)braket
-dot
-id|address
+)paren
 comma
 l_int|0x1000
 )paren
 suffix:semicolon
+)brace
 r_else
 id|pmif-&gt;dma_regs
 op_assign
@@ -5490,12 +5623,25 @@ id|pmif
 )paren
 )paren
 suffix:semicolon
-id|release_OF_resource
+id|macio_release_resource
 c_func
 (paren
-id|mdev-&gt;ofdev.node
+id|mdev
 comma
 l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pmif-&gt;dma_regs
+)paren
+id|macio_release_resource
+c_func
+(paren
+id|mdev
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -5638,6 +5784,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Attach to a PCI probed interface&n; */
 r_static
 r_int
 id|__devinit
@@ -6251,20 +6398,51 @@ id|pmac_ide_macio_resume
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|pmac_ide_pci_match
 r_static
 r_struct
 id|pci_device_id
 id|pmac_ide_pci_match
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
 id|PCI_VENDOR_ID_APPLE
 comma
-id|PCI_DEVICE_ID_APPLE_KAUAI_ATA
+id|PCI_DEVIEC_ID_APPLE_UNI_N_ATA
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_APPLE
+comma
+id|PCI_DEVICE_ID_APPLE_IPID_ATA100
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_APPLE
+comma
+id|PCI_DEVICE_ID_APPLE_K2_ATA100
 comma
 id|PCI_ANY_ID
 comma
@@ -6364,6 +6542,7 @@ suffix:semicolon
 macro_line|#endif&t;
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PMAC
+multiline_comment|/*&n; * This is very close to the generic ide-dma version of the function except&n; * that we don&squot;t use the fields in the hwif but our own copies for sg_table&n; * and friends. We build &amp; map the sglist for a given request&n; */
 r_static
 r_int
 id|__pmac
@@ -6467,6 +6646,7 @@ id|pmif-&gt;sg_dma_direction
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Same as above but for a &quot;raw&quot; taskfile request&n; */
 r_static
 r_int
 id|__pmac
@@ -7251,7 +7431,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Calculate MultiWord DMA timings */
+multiline_comment|/*&n; * Pick up best MDMA timing for the drive and apply it&n; */
 r_static
 r_int
 id|__pmac
@@ -7492,7 +7672,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Calculate Ultra DMA timings */
+multiline_comment|/*&n; * Pick up best UDMA timing for the drive and apply it&n; */
 r_static
 r_int
 id|__pmac
@@ -7593,6 +7773,10 @@ c_cond
 id|pmif-&gt;kind
 op_eq
 id|controller_un_ata6
+op_logical_or
+id|pmif-&gt;kind
+op_eq
+id|controller_k2_ata6
 )paren
 id|ret
 op_assign
@@ -7716,6 +7900,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Check what is the best DMA timing setting for the drive and&n; * call appropriate functions to apply it.&n; */
 r_static
 r_int
 id|__pmac
@@ -7838,6 +8023,10 @@ op_logical_or
 id|pmif-&gt;kind
 op_eq
 id|controller_un_ata6
+op_logical_or
+id|pmif-&gt;kind
+op_eq
+id|controller_k2_ata6
 )paren
 (brace
 id|map
@@ -7860,6 +8049,10 @@ c_cond
 id|pmif-&gt;kind
 op_eq
 id|controller_un_ata6
+op_logical_or
+id|pmif-&gt;kind
+op_eq
+id|controller_k2_ata6
 )paren
 id|map
 op_or_assign
@@ -7934,6 +8127,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Prepare a DMA transfer. We build the DMA table, adjust the timings for&n; * a read on KeyLargo ATA/66 and mark us as waiting for DMA completion&n; */
 r_static
 r_int
 id|__pmac
@@ -8097,6 +8291,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Start a DMA READ command&n; */
 r_static
 r_int
 id|__pmac
@@ -8240,6 +8435,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Start a DMA WRITE command&n; */
 r_static
 r_int
 id|__pmac
@@ -8407,6 +8603,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Kick the DMA controller into life after the DMA command has been issued&n; * to the drive.&n; */
 r_static
 r_int
 id|__pmac
@@ -8484,6 +8681,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * After a DMA transfer, make sure the controller is stopped&n; */
 r_static
 r_int
 id|__pmac
@@ -8589,6 +8787,7 @@ op_ne
 id|RUN
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Check out that the interrupt we got was for us. We can&squot;t always know this&n; * for sure with those Apple interfaces (well, we could on the recent ones but&n; * that&squot;s not implemented yet), on the other hand, we don&squot;t have shared interrupts&n; * so it&squot;s not really a problem&n; */
 r_static
 r_int
 id|__pmac
@@ -8829,6 +9028,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Allocate the data structures needed for using DMA with an interface&n; * and fill the proper list of functions pointers&n; */
 r_static
 r_void
 id|__init
@@ -9080,6 +9280,9 @@ id|pmif-&gt;kind
 (brace
 r_case
 id|controller_un_ata6
+suffix:colon
+r_case
+id|controller_k2_ata6
 suffix:colon
 id|hwif-&gt;ultra_mask
 op_assign

@@ -301,6 +301,16 @@ r_char
 id|val
 )paren
 suffix:semicolon
+DECL|member|nvram_sync
+r_void
+(paren
+op_star
+id|nvram_sync
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * optional PCI &quot;hooks&quot;&n;&t; */
 multiline_comment|/* Called after scanning the bus, before allocating resources */
 DECL|member|pcibios_fixup

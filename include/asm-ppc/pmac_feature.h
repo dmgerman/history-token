@@ -87,6 +87,9 @@ mdefine_line|#define PMAC_TYPE_UNKNOWN_PANGEA&t;0x10f
 multiline_comment|/* MacRISC2 machines based on the Intrepid chipset&n; */
 DECL|macro|PMAC_TYPE_UNKNOWN_INTREPID
 mdefine_line|#define PMAC_TYPE_UNKNOWN_INTREPID&t;0x11f&t;/* Generic */
+multiline_comment|/* MacRISC4 / G5 machines&n; */
+DECL|macro|PMAC_TYPE_POWERMAC_G5
+mdefine_line|#define PMAC_TYPE_POWERMAC_G5&t;&t;0x150&t;/* First tower */
 multiline_comment|/*&n; * Motherboard flags&n; */
 DECL|macro|PMAC_MB_CAN_SLEEP
 mdefine_line|#define PMAC_MB_CAN_SLEEP&t;&t;0x00000001
@@ -221,6 +224,9 @@ mdefine_line|#define PMAC_FTR_READ_GPIO&t;&t;PMAC_FTR_DEF(17)
 multiline_comment|/* PMAC_FTR_WRITE_GPIO&t;&t;(NULL, int index, int value)&n; *&n; * write a GPIO of a mac-io controller of type KeyLargo or Pangea.&n; */
 DECL|macro|PMAC_FTR_WRITE_GPIO
 mdefine_line|#define PMAC_FTR_WRITE_GPIO&t;&t;PMAC_FTR_DEF(18)
+multiline_comment|/* PMAC_FTR_ENABLE_MPIC&n; *&n; * Enable the MPIC cell&n; */
+DECL|macro|PMAC_FTR_ENABLE_MPIC
+mdefine_line|#define PMAC_FTR_ENABLE_MPIC&t;&t;PMAC_FTR_DEF(19)
 multiline_comment|/* Don&squot;t use those directly, they are for the sake of pmac_setup.c */
 r_extern
 r_int
@@ -282,6 +288,9 @@ id|macio_pangea
 comma
 DECL|enumerator|macio_intrepid
 id|macio_intrepid
+comma
+DECL|enumerator|macio_keylargo2
+id|macio_keylargo2
 comma
 )brace
 suffix:semicolon
