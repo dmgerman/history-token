@@ -1907,8 +1907,7 @@ id|sock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* API 3.1.3 sendmsg() - UDP Style Syntax&n; *&n; * An application uses sendmsg() and recvmsg() calls to transmit data to&n; * and receive data from its peer.&n; *&n; *  ssize_t sendmsg(int socket, const struct msghdr *message,&n; *                  int flags);&n; *&n; *  socket  - the socket descriptor of the endpoint.&n; *  message - pointer to the msghdr structure which contains a single&n; *            user message and possibly some ancillary data.&n; *&n; *            See Section 5 for complete description of the data&n; *            structures.&n; *&n; *  flags   - flags sent or received with the user message, see Section&n; *            5 for complete description of the flags.&n; *&n; * NB: The argument &squot;msg&squot; is a user space address.&n; */
-multiline_comment|/* BUG:  We do not implement timeouts.  */
+multiline_comment|/* API 3.1.3 sendmsg() - UDP Style Syntax&n; *&n; * An application uses sendmsg() and recvmsg() calls to transmit data to&n; * and receive data from its peer.&n; *&n; *  ssize_t sendmsg(int socket, const struct msghdr *message,&n; *                  int flags);&n; *&n; *  socket  - the socket descriptor of the endpoint.&n; *  message - pointer to the msghdr structure which contains a single&n; *            user message and possibly some ancillary data.&n; *&n; *            See Section 5 for complete description of the data&n; *            structures.&n; *&n; *  flags   - flags sent or received with the user message, see Section&n; *            5 for complete description of the flags.&n; *&n; * Note:  This function could use a rewrite especially when explicit&n; * connect support comes in.&n; */
 multiline_comment|/* BUG:  We do not implement the equivalent of wait_for_tcp_memory(). */
 id|SCTP_STATIC
 r_int
@@ -1953,6 +1952,11 @@ op_star
 id|ep
 suffix:semicolon
 id|sctp_association_t
+op_star
+id|new_asoc
+op_assign
+l_int|NULL
+comma
 op_star
 id|asoc
 op_assign
@@ -2581,7 +2585,7 @@ op_amp
 id|to
 )paren
 suffix:semicolon
-id|asoc
+id|new_asoc
 op_assign
 id|sctp_association_new
 c_func
@@ -2599,7 +2603,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|asoc
+id|new_asoc
 )paren
 (brace
 id|err
@@ -2611,6 +2615,10 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
+id|asoc
+op_assign
+id|new_asoc
+suffix:semicolon
 multiline_comment|/* If the SCTP_INIT ancillary data is specified, set all&n;&t;&t; * the association init values accordingly.&n;&t;&t; */
 r_if
 c_cond
@@ -2700,7 +2708,7 @@ multiline_comment|/* ASSERT: we have a valid association at this point.  */
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;We have a valid association. &bslash;n&quot;
+l_string|&quot;We have a valid association.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* API 7.1.7, the sndbuf size per association bounds the&n;&t; * maximum size of data that can be sent in a single send call.&n;&t; */
@@ -3068,14 +3076,16 @@ r_goto
 id|out_unlock
 suffix:semicolon
 )brace
+multiline_comment|/* If we are already past ASSOCIATE, the lower&n;&t; * layers are responsible for its cleanup.&n;&t; */
+r_goto
+id|out_free_chunk
+suffix:semicolon
 id|out_free
 suffix:colon
 r_if
 c_cond
 (paren
-id|SCTP_STATE_CLOSED
-op_eq
-id|asoc-&gt;state
+id|new_asoc
 )paren
 id|sctp_association_free
 c_func
@@ -3083,6 +3093,8 @@ c_func
 id|asoc
 )paren
 suffix:semicolon
+id|out_free_chunk
+suffix:colon
 r_if
 c_cond
 (paren
