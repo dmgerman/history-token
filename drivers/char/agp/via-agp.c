@@ -520,6 +520,7 @@ multiline_comment|/*&n; * The KT400 does magick to put the AGP bridge compliant 
 DECL|function|via_kt400_enable
 r_static
 r_void
+id|__init
 id|via_kt400_enable
 c_func
 (paren
@@ -1090,6 +1091,7 @@ suffix:semicolon
 DECL|function|agp_via_probe
 r_static
 r_int
+id|__init
 id|agp_via_probe
 (paren
 r_struct
@@ -1243,6 +1245,7 @@ suffix:semicolon
 DECL|variable|agp_via_pci_driver
 r_static
 r_struct
+id|__initdata
 id|pci_driver
 id|agp_via_pci_driver
 op_assign

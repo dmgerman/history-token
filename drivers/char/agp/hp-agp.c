@@ -1472,6 +1472,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|hp_zx1_setup
+r_static
 r_int
 id|__init
 id|hp_zx1_setup
@@ -1642,6 +1643,7 @@ id|ENODEV
 suffix:semicolon
 r_static
 r_int
+id|__init
 id|agp_hp_probe
 (paren
 r_struct
@@ -1744,6 +1746,7 @@ id|agp_pci_table
 suffix:semicolon
 r_static
 r_struct
+id|__initdata
 id|pci_driver
 id|agp_hp_pci_driver
 op_assign

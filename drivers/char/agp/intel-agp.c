@@ -1147,6 +1147,7 @@ id|mask
 suffix:semicolon
 )brace
 DECL|function|intel_i810_setup
+r_static
 r_int
 id|__init
 id|intel_i810_setup
@@ -2388,6 +2389,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|intel_i830_setup
+r_static
 r_int
 id|__init
 id|intel_i830_setup
@@ -6253,6 +6255,7 @@ suffix:semicolon
 DECL|function|agp_intel_probe
 r_static
 r_int
+id|__init
 id|agp_intel_probe
 (paren
 r_struct
@@ -6357,6 +6360,7 @@ suffix:semicolon
 DECL|variable|agp_intel_pci_driver
 r_static
 r_struct
+id|__initdata
 id|pci_driver
 id|agp_intel_pci_driver
 op_assign

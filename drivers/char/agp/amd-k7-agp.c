@@ -1641,6 +1641,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|function|amd_irongate_setup
+r_static
 r_int
 id|__init
 id|amd_irongate_setup
@@ -1996,6 +1997,7 @@ multiline_comment|/* Supported Device Scanning routine */
 DECL|function|agp_amdk7_probe
 r_static
 r_int
+id|__init
 id|agp_amdk7_probe
 (paren
 r_struct
@@ -2149,6 +2151,7 @@ suffix:semicolon
 DECL|variable|agp_amdk7_pci_driver
 r_static
 r_struct
+id|__initdata
 id|pci_driver
 id|agp_amdk7_pci_driver
 op_assign

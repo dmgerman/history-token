@@ -2339,6 +2339,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|serverworks_setup
+r_static
 r_int
 id|__init
 id|serverworks_setup
@@ -2724,6 +2725,7 @@ suffix:semicolon
 DECL|function|agp_serverworks_probe
 r_static
 r_int
+id|__init
 id|agp_serverworks_probe
 (paren
 r_struct
@@ -2832,6 +2834,7 @@ suffix:semicolon
 DECL|variable|agp_serverworks_pci_driver
 r_static
 r_struct
+id|__initdata
 id|pci_driver
 id|agp_serverworks_pci_driver
 op_assign

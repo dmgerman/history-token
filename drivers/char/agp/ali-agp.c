@@ -941,6 +941,7 @@ l_int|3
 )brace
 suffix:semicolon
 DECL|function|ali_generic_setup
+r_static
 r_int
 id|__init
 id|ali_generic_setup
@@ -1507,6 +1508,7 @@ suffix:semicolon
 DECL|function|agp_ali_probe
 r_static
 r_int
+id|__init
 id|agp_ali_probe
 (paren
 r_struct
@@ -1661,6 +1663,7 @@ suffix:semicolon
 DECL|variable|agp_ali_pci_driver
 r_static
 r_struct
+id|__initdata
 id|pci_driver
 id|agp_ali_pci_driver
 op_assign

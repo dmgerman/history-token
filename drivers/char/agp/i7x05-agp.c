@@ -710,6 +710,7 @@ suffix:semicolon
 DECL|function|agp_i7x05_probe
 r_static
 r_int
+id|__init
 id|agp_i7x05_probe
 (paren
 r_struct
@@ -862,6 +863,7 @@ suffix:semicolon
 DECL|variable|agp_i7x05_pci_driver
 r_static
 r_struct
+id|__initdata
 id|pci_driver
 id|agp_i7x05_pci_driver
 op_assign

@@ -2251,6 +2251,7 @@ l_int|12
 suffix:semicolon
 )brace
 DECL|function|intel_i460_setup
+r_static
 r_int
 id|__init
 id|intel_i460_setup
@@ -2398,6 +2399,7 @@ suffix:semicolon
 DECL|function|agp_intel_i460_probe
 r_static
 r_int
+id|__init
 id|agp_intel_i460_probe
 (paren
 r_struct
@@ -2525,6 +2527,7 @@ suffix:semicolon
 DECL|variable|agp_i460_pci_driver
 r_static
 r_struct
+id|__initdata
 id|pci_driver
 id|agp_i460_pci_driver
 op_assign
