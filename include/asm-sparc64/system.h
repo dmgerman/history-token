@@ -156,6 +156,8 @@ DECL|macro|prepare_arch_switch
 mdefine_line|#define prepare_arch_switch(rq, next)&t;&t;&bslash;&n;do {&t;spin_lock(&amp;(next)-&gt;switch_lock);&t;&bslash;&n;&t;spin_unlock(&amp;(rq)-&gt;lock);&t;&t;&bslash;&n;&t;flushw_all();&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|finish_arch_switch
 mdefine_line|#define finish_arch_switch(rq, prev)&t;&t;&bslash;&n;do {&t;spin_unlock_irq(&amp;(prev)-&gt;switch_lock);&t;&bslash;&n;} while (0)
+DECL|macro|task_running
+mdefine_line|#define task_running(rq, p) &bslash;&n;&t;((rq)-&gt;curr == (p) || spin_is_locked(&amp;(p)-&gt;switch_lock))
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|macro|CHECK_LOCKS
 mdefine_line|#define CHECK_LOCKS(PREV)&t;do { } while(0)
