@@ -13,14 +13,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &quot;atmsar.h&quot;
-DECL|variable|udsl_version
-r_const
-r_char
-op_star
-id|udsl_version
-op_assign
-l_string|&quot;1.5A&quot;
-suffix:semicolon
 multiline_comment|/*&n;#define DEBUG 1&n;#define DEBUG_PACKET 1&n;*/
 macro_line|#ifdef DEBUG
 DECL|macro|PDEBUG
@@ -4077,9 +4069,9 @@ id|i
 suffix:semicolon
 id|PDEBUG
 (paren
-l_string|&quot;Initializing SpeedTouch Driver Version %s&bslash;n&quot;
-comma
-id|udsl_version
+l_string|&quot;Initializing SpeedTouch Driver Version &quot;
+id|DRIVER_VERSION
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
