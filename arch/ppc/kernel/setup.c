@@ -2579,7 +2579,7 @@ comma
 id|ppc_setup_l2cr
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NVRAM
+macro_line|#ifdef CONFIG_GENERIC_NVRAM
 multiline_comment|/* Generic nvram hooks used by drivers/char/gen_nvram.c */
 DECL|function|nvram_read_byte
 r_int
