@@ -2661,7 +2661,7 @@ macro_line|#if DEBUG_SIG
 id|printk
 c_func
 (paren
-l_string|&quot;SIG deliver (%s:%d): sig=%d sp=%lx ip=%lx handler=%lx&bslash;n&quot;
+l_string|&quot;SIG deliver (%s:%d): sig=%d sp=%lx ip=%lx handler=%p&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
@@ -2671,9 +2671,9 @@ id|sig
 comma
 id|scr-&gt;pt.r12
 comma
-id|scr-&gt;pt.cr_iip
+id|frame-&gt;sc.sc_ip
 comma
-id|scr-&gt;pt.r3
+id|frame-&gt;handler
 )paren
 suffix:semicolon
 macro_line|#endif
