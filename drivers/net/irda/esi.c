@@ -59,17 +59,35 @@ id|dongle_reg
 id|dongle
 op_assign
 (brace
-id|Q_NULL
-comma
+dot
+id|type
+op_assign
 id|IRDA_ESI_DONGLE
 comma
+dot
+id|open
+op_assign
 id|esi_open
 comma
+dot
+id|close
+op_assign
 id|esi_close
 comma
+dot
+id|reset
+op_assign
 id|esi_reset
 comma
+dot
+id|change_speed
+op_assign
 id|esi_change_speed
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
@@ -137,8 +155,6 @@ op_assign
 l_int|0x01
 suffix:semicolon
 multiline_comment|/* Needs at least 10 ms */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|esi_close
 r_static
@@ -163,8 +179,6 @@ id|FALSE
 comma
 id|FALSE
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function esi_change_speed (task)&n; *&n; *    Set the speed for the Extended Systems JetEye PC ESI-9680 type dongle&n; *&n; */

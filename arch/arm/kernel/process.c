@@ -308,12 +308,6 @@ c_func
 r_void
 )paren
 (brace
-id|leds_event
-c_func
-(paren
-id|led_halted
-)paren
-suffix:semicolon
 )brace
 DECL|function|machine_power_off
 r_void
@@ -323,12 +317,6 @@ c_func
 r_void
 )paren
 (brace
-id|leds_event
-c_func
-(paren
-id|led_halted
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -71,17 +71,35 @@ id|dongle_reg
 id|dongle
 op_assign
 (brace
-id|Q_NULL
-comma
+dot
+id|type
+op_assign
 id|IRDA_MCP2120_DONGLE
 comma
+dot
+id|open
+op_assign
 id|mcp2120_open
 comma
+dot
+id|close
+op_assign
 id|mcp2120_close
 comma
+dot
+id|reset
+op_assign
 id|mcp2120_reset
 comma
+dot
+id|change_speed
+op_assign
 id|mcp2120_change_speed
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
@@ -152,8 +170,6 @@ id|qos-&gt;min_turn_time.bits
 op_assign
 l_int|0x01
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|mcp2120_close
 r_static
@@ -181,8 +197,6 @@ id|TRUE
 )paren
 suffix:semicolon
 singleline_comment|//self-&gt;set_dtr_rts(self-&gt;dev, FALSE, FALSE);
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function mcp2120_change_speed (dev, speed)&n; *&n; *    Set the speed for the MCP2120.&n; *&n; */
 DECL|function|mcp2120_change_speed
