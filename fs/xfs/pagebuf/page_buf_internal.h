@@ -15,59 +15,13 @@ mdefine_line|#define page_buffers(page)&t;((page)-&gt;buffers)
 DECL|macro|page_has_buffers
 mdefine_line|#define page_has_buffers(page)&t;((page)-&gt;buffers)
 macro_line|#endif
-DECL|struct|page_buf_private_s
-r_typedef
-r_struct
-id|page_buf_private_s
-(brace
-DECL|member|pb_common
-id|page_buf_t
-id|pb_common
-suffix:semicolon
-multiline_comment|/* public part of structure */
-DECL|member|pb_sema
-r_struct
-id|semaphore
-id|pb_sema
-suffix:semicolon
-multiline_comment|/* semaphore for lockables  */
-DECL|member|pb_flushtime
-r_int
-r_int
-id|pb_flushtime
-suffix:semicolon
-multiline_comment|/* time to flush pagebuf    */
-DECL|member|pb_pin_count
-id|atomic_t
-id|pb_pin_count
-suffix:semicolon
-multiline_comment|/* pin count&t;&t;    */
-DECL|member|pb_waiters
-id|wait_queue_head_t
-id|pb_waiters
-suffix:semicolon
-multiline_comment|/* unpin waiters&t;    */
-macro_line|#ifdef PAGEBUF_LOCK_TRACKING
-DECL|member|pb_last_holder
-r_int
-id|pb_last_holder
-suffix:semicolon
-macro_line|#endif
-DECL|typedef|page_buf_private_t
-)brace
-id|page_buf_private_t
-suffix:semicolon
-DECL|macro|PBC
-mdefine_line|#define PBC(pb) (&amp;((pb)-&gt;pb_common))
-DECL|macro|PBP
-mdefine_line|#define PBP(pb) ((page_buf_private_t *) (pb))
 macro_line|#ifdef PAGEBUF_LOCK_TRACKING
 DECL|macro|PB_SET_OWNER
-mdefine_line|#define PB_SET_OWNER(pb)&t;(PBP(pb)-&gt;pb_last_holder = current-&gt;pid)
+mdefine_line|#define PB_SET_OWNER(pb)&t;(pb-&gt;pb_last_holder = current-&gt;pid)
 DECL|macro|PB_CLEAR_OWNER
-mdefine_line|#define PB_CLEAR_OWNER(pb)&t;(PBP(pb)-&gt;pb_last_holder = -1)
+mdefine_line|#define PB_CLEAR_OWNER(pb)&t;(pb-&gt;pb_last_holder = -1)
 DECL|macro|PB_GET_OWNER
-mdefine_line|#define PB_GET_OWNER(pb)&t;(PBP(pb)-&gt;pb_last_holder)
+mdefine_line|#define PB_GET_OWNER(pb)&t;(pb-&gt;pb_last_holder)
 macro_line|#else
 DECL|macro|PB_SET_OWNER
 mdefine_line|#define PB_SET_OWNER(pb)
