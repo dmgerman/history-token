@@ -647,6 +647,12 @@ op_assign
 l_int|27
 comma
 multiline_comment|/* legacy/compatibility virtual address space layout */
+DECL|enumerator|VM_SWAP_TOKEN_TIMEOUT
+id|VM_SWAP_TOKEN_TIMEOUT
+op_assign
+l_int|28
+comma
+multiline_comment|/* default time for token time out */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

@@ -34,6 +34,13 @@ DECL|macro|SWAP_TOKEN_CHECK_INTERVAL
 mdefine_line|#define SWAP_TOKEN_CHECK_INTERVAL (HZ * 2)
 DECL|macro|SWAP_TOKEN_TIMEOUT
 mdefine_line|#define SWAP_TOKEN_TIMEOUT (HZ * 300)
+DECL|variable|swap_token_default_timeout
+r_int
+r_int
+id|swap_token_default_timeout
+op_assign
+id|SWAP_TOKEN_TIMEOUT
+suffix:semicolon
 multiline_comment|/*&n; * Take the token away if the process had no page faults&n; * in the last interval, or if it has held the token for&n; * too long.&n; */
 DECL|macro|SWAP_TOKEN_ENOUGH_RSS
 mdefine_line|#define SWAP_TOKEN_ENOUGH_RSS 1
@@ -207,7 +214,7 @@ id|SWAP_TOKEN_TIMED_OUT
 (brace
 id|eligible
 op_add_assign
-id|SWAP_TOKEN_TIMEOUT
+id|swap_token_default_timeout
 suffix:semicolon
 )brace
 id|mm-&gt;swap_token_time
@@ -218,7 +225,7 @@ id|swap_token_timeout
 op_assign
 id|jiffies
 op_plus
-id|SWAP_TOKEN_TIMEOUT
+id|swap_token_default_timeout
 suffix:semicolon
 id|swap_token_mm
 op_assign
