@@ -327,6 +327,19 @@ id|ioctl
 op_assign
 id|ircomm_tty_ioctl
 comma
+multiline_comment|/* ircomm_tty_ioctl.c */
+dot
+id|tiocmget
+op_assign
+id|ircomm_tty_tiocmget
+comma
+multiline_comment|/* ircomm_tty_ioctl.c */
+dot
+id|tiocmset
+op_assign
+id|ircomm_tty_tiocmset
+comma
+multiline_comment|/* ircomm_tty_ioctl.c */
 dot
 id|throttle
 op_assign

@@ -1451,6 +1451,10 @@ id|t
 suffix:semicolon
 id|error
 suffix:colon
+id|t-&gt;km.state
+op_assign
+id|XFRM_STATE_DEAD
+suffix:semicolon
 id|xfrm_state_put
 c_func
 (paren

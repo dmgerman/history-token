@@ -13,6 +13,11 @@ DECL|macro|IF_RA_RCVD
 mdefine_line|#define IF_RA_RCVD&t;0x20
 DECL|macro|IF_RS_SENT
 mdefine_line|#define IF_RS_SENT&t;0x10
+multiline_comment|/* prefix flags */
+DECL|macro|IF_PREFIX_ONLINK
+mdefine_line|#define IF_PREFIX_ONLINK&t;0x01
+DECL|macro|IF_PREFIX_AUTOCONF
+mdefine_line|#define IF_PREFIX_AUTOCONF&t;0x02
 macro_line|#ifdef __KERNEL__
 DECL|struct|inet6_ifaddr
 r_struct
@@ -566,6 +571,12 @@ r_struct
 id|ipv6_devstat
 id|stats
 suffix:semicolon
+DECL|member|tstamp
+r_int
+r_int
+id|tstamp
+suffix:semicolon
+multiline_comment|/* ipv6InterfaceTable update timestamp */
 )brace
 suffix:semicolon
 r_extern
