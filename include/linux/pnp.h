@@ -996,6 +996,11 @@ DECL|struct|pnp_card_driver
 r_struct
 id|pnp_card_driver
 (brace
+DECL|member|global_list
+r_struct
+id|list_head
+id|global_list
+suffix:semicolon
 DECL|member|name
 r_char
 op_star
