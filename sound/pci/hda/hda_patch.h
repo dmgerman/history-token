@@ -15,6 +15,14 @@ id|snd_hda_preset_cmedia
 (braket
 )braket
 suffix:semicolon
+multiline_comment|/* Analog Devices codecs */
+r_extern
+r_struct
+id|hda_codec_preset
+id|snd_hda_preset_analog
+(braket
+)braket
+suffix:semicolon
 DECL|variable|hda_preset_tables
 r_static
 r_const
@@ -29,6 +37,8 @@ op_assign
 id|snd_hda_preset_realtek
 comma
 id|snd_hda_preset_cmedia
+comma
+id|snd_hda_preset_analog
 comma
 l_int|NULL
 )brace
