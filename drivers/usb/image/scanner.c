@@ -1772,7 +1772,6 @@ c_func
 op_amp
 id|scanner_driver
 comma
-op_amp
 id|scn-&gt;scn_dev-&gt;actconfig-&gt;interface
 (braket
 id|scn-&gt;ifnum

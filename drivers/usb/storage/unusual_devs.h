@@ -1329,9 +1329,9 @@ l_string|&quot;Sandisk&quot;
 comma
 l_string|&quot;ImageMate SDDR-31&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
@@ -1938,6 +1938,31 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Submitted by Antoine Mairesse &lt;antoine.mairesse@free.fr&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0ed1
+comma
+l_int|0x6660
+comma
+l_int|0x0100
+comma
+l_int|0x0300
+comma
+l_string|&quot;USB&quot;
+comma
+l_string|&quot;Solid state disk&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Reported by Kevin Cernekee &lt;kpc-usbdev@gelato.uiuc.edu&gt;&n; * Tested on hardware version 1.10.&n; * Entry is needed only for the initializer function override.&n; */
 id|UNUSUAL_DEV
 c_func

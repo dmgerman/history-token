@@ -13,10 +13,22 @@ DECL|macro|FTDI_NF_RIC_PID
 mdefine_line|#define FTDI_NF_RIC_PID&t;0x0001&t;/* Product Id */
 multiline_comment|/* www.crystalfontz.com devices - thanx for providing free devices for evaluation ! */
 multiline_comment|/* they use the ftdi chipset for the USB interface and the vendor id is the same */
-DECL|macro|FTDI_XF_634_PID
-mdefine_line|#define FTDI_XF_634_PID  0xFC09&t;/* Four line device */
 DECL|macro|FTDI_XF_632_PID
-mdefine_line|#define FTDI_XF_632_PID  0xFC08&t;/* Two line device */
+mdefine_line|#define FTDI_XF_632_PID 0xFC08&t;/* 632: 16x2 Character Display */
+DECL|macro|FTDI_XF_634_PID
+mdefine_line|#define FTDI_XF_634_PID 0xFC09&t;/* 634: 20x4 Character Display */
+DECL|macro|FTDI_XF_547_PID
+mdefine_line|#define FTDI_XF_547_PID 0xFC0A&t;/* 547: Two line Display */
+DECL|macro|FTDI_XF_633_PID
+mdefine_line|#define FTDI_XF_633_PID 0xFC0B&t;/* 633: 16x2 Character Display with Keys */
+DECL|macro|FTDI_XF_631_PID
+mdefine_line|#define FTDI_XF_631_PID 0xFC0C&t;/* 631: 20x2 Character Display */
+DECL|macro|FTDI_XF_635_PID
+mdefine_line|#define FTDI_XF_635_PID 0xFC0D&t;/* 635: 20x4 Character Display */
+DECL|macro|FTDI_XF_640_PID
+mdefine_line|#define FTDI_XF_640_PID 0xFC0E&t;/* 640: Two line Display */
+DECL|macro|FTDI_XF_642_PID
+mdefine_line|#define FTDI_XF_642_PID 0xFC0F&t;/* 642: Two line Display */
 multiline_comment|/* Video Networks Limited / Homechoice in the UK use an ftdi-based device for their 1Mb */
 multiline_comment|/* broadband internet service.  The following PID is exhibited by the usb device supplied */
 multiline_comment|/* (the VID is the standard ftdi vid (FTDI_VID) */

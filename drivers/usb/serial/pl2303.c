@@ -31,7 +31,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;pl2303.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.9&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.10&quot;
 DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;Prolific PL2303 USB to serial adaptor driver&quot;
 DECL|variable|id_table
@@ -2701,6 +2701,32 @@ id|TIOCM_DSR
 suffix:colon
 l_int|0
 )paren
+op_or
+(paren
+(paren
+id|status
+op_amp
+id|UART_RING
+)paren
+ques
+c_cond
+id|TIOCM_RI
+suffix:colon
+l_int|0
+)paren
+op_or
+(paren
+(paren
+id|status
+op_amp
+id|UART_DCD
+)paren
+ques
+c_cond
+id|TIOCM_CD
+suffix:colon
+l_int|0
+)paren
 suffix:semicolon
 id|dbg
 c_func
@@ -3109,7 +3135,7 @@ r_if
 c_cond
 (paren
 id|urb-&gt;actual_length
-OG
+OL
 id|UART_STATE
 )paren
 r_goto

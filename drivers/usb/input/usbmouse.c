@@ -1171,6 +1171,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|retval
+op_assign
 id|usb_register
 c_func
 (paren
@@ -1178,6 +1181,13 @@ op_amp
 id|usb_mouse_driver
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+l_int|0
+)paren
 id|info
 c_func
 (paren
@@ -1187,7 +1197,7 @@ id|DRIVER_DESC
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|retval
 suffix:semicolon
 )brace
 DECL|function|usb_mouse_exit
