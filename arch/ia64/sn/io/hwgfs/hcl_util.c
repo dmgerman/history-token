@@ -6,10 +6,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/hwgfs.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 DECL|variable|hwgraph_all_cnodes
@@ -431,45 +429,25 @@ comma
 id|cnodeid_buffer
 )paren
 suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n;** If the specified device represents a CPU, return its cpuid;&n;** otherwise, return CPU_NONE.&n;*/
-id|cpuid_t
-DECL|function|cpuvertex_to_cpuid
-id|cpuvertex_to_cpuid
+id|HWGRAPH_DEBUG
 c_func
 (paren
-id|vertex_hdl_t
-id|vhdl
-)paren
-(brace
-id|arbitrary_info_t
-id|cpuid
-op_assign
-id|CPU_NONE
-suffix:semicolon
 (paren
-r_void
-)paren
-id|labelcl_info_get_LBL
-c_func
-(paren
-id|vhdl
+id|__FILE__
 comma
-id|INFO_LBL_CPUID
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|hwgraph_all_cnodes
 comma
 l_int|NULL
 comma
-op_amp
-id|cpuid
+l_string|&quot;Creating path vhdl1&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
-r_return
-(paren
-id|cpuid_t
-)paren
-id|cpuid
-suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;** dev_to_name converts a vertex_hdl_t into a canonical name.  If the vertex_hdl_t&n;** represents a vertex in the hardware graph, it is converted in the&n;** normal way for vertices.  If the vertex_hdl_t is an old vertex_hdl_t (one which&n;** does not represent a hwgraph vertex), we synthesize a name based&n;** on major/minor number.&n;**&n;** Usually returns a pointer to the original buffer, filled in as&n;** appropriate.  If the buffer is too small to hold the entire name,&n;** or if anything goes wrong while determining the name, dev_to_name&n;** returns &quot;UnknownDevice&quot;.&n;*/
 r_char
