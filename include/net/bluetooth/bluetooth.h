@@ -384,7 +384,7 @@ id|wait
 )paren
 suffix:semicolon
 r_int
-id|bt_sock_w4_connect
+id|bt_sock_wait_state
 c_func
 (paren
 r_struct
@@ -393,7 +393,11 @@ op_star
 id|sk
 comma
 r_int
-id|flags
+id|state
+comma
+r_int
+r_int
+id|timeo
 )paren
 suffix:semicolon
 r_void

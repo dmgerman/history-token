@@ -1,7 +1,7 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
 multiline_comment|/*&n; *  Bluetooth address family and sockets.&n; *&n; * $Id: af_bluetooth.c,v 1.3 2002/04/17 17:37:15 maxk Exp $&n; */
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.2&quot;
+mdefine_line|#define VERSION &quot;2.3&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1157,9 +1157,9 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-DECL|function|bt_sock_w4_connect
+DECL|function|bt_sock_wait_state
 r_int
-id|bt_sock_w4_connect
+id|bt_sock_wait_state
 c_func
 (paren
 r_struct
@@ -1168,7 +1168,11 @@ op_star
 id|sk
 comma
 r_int
-id|flags
+id|state
+comma
+r_int
+r_int
+id|timeo
 )paren
 (brace
 id|DECLARE_WAITQUEUE
@@ -1177,19 +1181,6 @@ c_func
 id|wait
 comma
 id|current
-)paren
-suffix:semicolon
-r_int
-id|timeo
-op_assign
-id|sock_sndtimeo
-c_func
-(paren
-id|sk
-comma
-id|flags
-op_amp
-id|O_NONBLOCK
 )paren
 suffix:semicolon
 r_int
@@ -1219,7 +1210,7 @@ c_loop
 (paren
 id|sk-&gt;sk_state
 op_ne
-id|BT_CONNECTED
+id|state
 )paren
 (brace
 id|set_current_state
@@ -1239,6 +1230,27 @@ id|err
 op_assign
 op_minus
 id|EAGAIN
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
+id|err
+op_assign
+id|sock_intr_errno
+c_func
+(paren
+id|timeo
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1263,19 +1275,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|sk-&gt;sk_state
-op_eq
-id|BT_CONNECTED
-)paren
-r_break
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1288,27 +1287,6 @@ id|sock_error
 c_func
 (paren
 id|sk
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|signal_pending
-c_func
-(paren
-id|current
-)paren
-)paren
-(brace
-id|err
-op_assign
-id|sock_intr_errno
-c_func
-(paren
-id|timeo
 )paren
 suffix:semicolon
 r_break
