@@ -1564,7 +1564,11 @@ l_int|7
 suffix:semicolon
 id|info
 op_or_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 op_lshift
 l_int|16
 suffix:semicolon
@@ -1647,7 +1651,11 @@ id|ed-&gt;type
 op_eq
 id|PIPE_ISOCHRONOUS
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 )paren
 op_div
 l_int|1000

@@ -5297,7 +5297,11 @@ l_int|0x03
 suffix:semicolon
 id|ep-&gt;max_pkt_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|epd-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|spin_lock_init
 c_func

@@ -3915,7 +3915,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 op_eq
 l_int|0
 )paren
@@ -3961,7 +3965,11 @@ id|i
 suffix:semicolon
 id|maxPS
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3989,7 +3997,11 @@ c_cond
 (paren
 id|maxPS
 OL
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 )paren
 (brace
 multiline_comment|/* This one is better! */
@@ -3999,7 +4011,11 @@ id|i
 suffix:semicolon
 id|maxPS
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 r_if
 c_cond

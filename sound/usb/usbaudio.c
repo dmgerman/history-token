@@ -11699,6 +11699,9 @@ id|altsd-&gt;bNumEndpoints
 OL
 l_int|1
 op_logical_or
+id|le16_to_cpu
+c_func
+(paren
 id|get_endpoint
 c_func
 (paren
@@ -11708,6 +11711,7 @@ l_int|0
 )paren
 op_member_access_from_pointer
 id|wMaxPacketSize
+)paren
 op_eq
 l_int|0
 )paren
@@ -12090,6 +12094,9 @@ suffix:semicolon
 multiline_comment|/* FIXME: decode wMaxPacketSize of high bandwith endpoints */
 id|fp-&gt;maxpacksize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|get_endpoint
 c_func
 (paren
@@ -12099,6 +12106,7 @@ l_int|0
 )paren
 op_member_access_from_pointer
 id|wMaxPacketSize
+)paren
 suffix:semicolon
 id|fp-&gt;attributes
 op_assign
@@ -13589,6 +13597,9 @@ id|bmAttributes
 suffix:semicolon
 id|fp-&gt;maxpacksize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|get_endpoint
 c_func
 (paren
@@ -13598,6 +13609,7 @@ l_int|0
 )paren
 op_member_access_from_pointer
 id|wMaxPacketSize
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -13922,6 +13934,9 @@ id|bmAttributes
 suffix:semicolon
 id|fp-&gt;maxpacksize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|get_endpoint
 c_func
 (paren
@@ -13931,6 +13946,7 @@ l_int|0
 )paren
 op_member_access_from_pointer
 id|wMaxPacketSize
+)paren
 suffix:semicolon
 id|fp-&gt;rate_max
 op_assign

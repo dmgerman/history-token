@@ -2385,7 +2385,11 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* NOTE:  only 0x07ff bits are for packet size... */
 r_return
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* -------------------------------------------------------------------------- */

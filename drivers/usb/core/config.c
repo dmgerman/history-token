@@ -338,13 +338,6 @@ comma
 id|n
 )paren
 suffix:semicolon
-id|le16_to_cpus
-c_func
-(paren
-op_amp
-id|endpoint-&gt;desc.wMaxPacketSize
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

@@ -1952,7 +1952,11 @@ id|EINVAL
 suffix:semicolon
 id|subs-&gt;maxpacksize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2027,7 +2031,11 @@ id|EINVAL
 suffix:semicolon
 id|subs-&gt;maxpacksize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* allocate and initialize data urbs */

@@ -425,7 +425,7 @@ id|__u8
 id|bmAttributes
 suffix:semicolon
 DECL|member|wMaxPacketSize
-id|__u16
+id|__le16
 id|wMaxPacketSize
 suffix:semicolon
 DECL|member|bInterval

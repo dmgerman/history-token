@@ -25710,12 +25710,16 @@ id|alt
 )paren
 id|mxps
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|alt-&gt;endpoint
 (braket
 l_int|0
 )braket
 dot
 id|desc.wMaxPacketSize
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Some OV518s have packet numbering by default, some don&squot;t */

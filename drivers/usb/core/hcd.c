@@ -315,7 +315,7 @@ l_int|0x02
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 ep_wMaxPacketSize; 1 + (MAX_ROOT_PORTS / 8) */
+multiline_comment|/*  __le16 ep_wMaxPacketSize; 1 + (MAX_ROOT_PORTS / 8) */
 l_int|0xff
 multiline_comment|/*  __u8  ep_bInterval; (255ms -- usb 2.0 spec) */
 )brace
@@ -402,7 +402,7 @@ l_int|0x02
 comma
 l_int|0x00
 comma
-multiline_comment|/*  __u16 ep_wMaxPacketSize; 1 + (MAX_ROOT_PORTS / 8) */
+multiline_comment|/*  __le16 ep_wMaxPacketSize; 1 + (MAX_ROOT_PORTS / 8) */
 l_int|0x0c
 multiline_comment|/*  __u8  ep_bInterval; (256ms -- usb 2.0 spec) */
 )brace
@@ -2373,7 +2373,11 @@ id|usb_dev
 suffix:semicolon
 id|usb_dev-&gt;ep0.desc.wMaxPacketSize
 op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
 l_int|64
+)paren
 suffix:semicolon
 id|retval
 op_assign

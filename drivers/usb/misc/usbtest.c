@@ -5543,7 +5543,11 @@ id|maxp
 op_assign
 l_int|0x7ff
 op_amp
+id|le16_to_cpu
+c_func
+(paren
 id|desc-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|maxp
 op_mul_assign
@@ -5553,7 +5557,11 @@ op_plus
 l_int|0x3
 op_amp
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|desc-&gt;wMaxPacketSize
+)paren
 op_rshift
 l_int|11
 )paren
@@ -5861,7 +5869,11 @@ l_string|&quot;micro&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|desc-&gt;wMaxPacketSize
+)paren
 )paren
 suffix:semicolon
 r_for

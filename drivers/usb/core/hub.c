@@ -7896,7 +7896,11 @@ suffix:colon
 multiline_comment|/* fixed at 64 */
 id|udev-&gt;ep0.desc.wMaxPacketSize
 op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
 l_int|64
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7907,7 +7911,11 @@ multiline_comment|/* 8, 16, 32, or 64 */
 multiline_comment|/* to determine the ep0 maxpacket size, try to read&n;&t;&t; * the device descriptor to get bMaxPacketSize0 and&n;&t;&t; * then correct our initial guess.&n;&t;&t; */
 id|udev-&gt;ep0.desc.wMaxPacketSize
 op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
 l_int|64
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7917,7 +7925,11 @@ suffix:colon
 multiline_comment|/* fixed at 8 */
 id|udev-&gt;ep0.desc.wMaxPacketSize
 op_assign
+id|__constant_cpu_to_le16
+c_func
+(paren
 l_int|8
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8453,7 +8465,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;ep0.desc.wMaxPacketSize
+)paren
 op_ne
 id|i
 )paren
@@ -8518,7 +8534,11 @@ id|i
 suffix:semicolon
 id|udev-&gt;ep0.desc.wMaxPacketSize
 op_assign
+id|cpu_to_le16
+c_func
+(paren
 id|i
+)paren
 suffix:semicolon
 id|ep0_reinit
 c_func

@@ -3896,7 +3896,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|ati_remote-&gt;endpoint_in-&gt;wMaxPacketSize
+)paren
 op_eq
 l_int|0
 )paren

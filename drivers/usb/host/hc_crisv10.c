@@ -262,7 +262,7 @@ comma
 multiline_comment|/*  __u8  ep_bmAttributes; Interrupt */
 l_int|0x08
 comma
-multiline_comment|/*  __u16 ep_wMaxPacketSize; 8 Bytes */
+multiline_comment|/*  __le16 ep_wMaxPacketSize; 8 Bytes */
 l_int|0x00
 comma
 l_int|0xff
@@ -20113,7 +20113,11 @@ l_int|2
 suffix:semicolon
 id|usb_rh-&gt;ep0.desc.wMaxPacketSize
 op_assign
+id|__const_cpu_to_le16
+c_func
+(paren
 l_int|64
+)paren
 suffix:semicolon
 id|usb_get_device_descriptor
 c_func

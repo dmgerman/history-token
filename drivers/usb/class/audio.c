@@ -23157,12 +23157,16 @@ op_increment
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|alt-&gt;endpoint
 (braket
 id|k
 )braket
 dot
 id|desc.wMaxPacketSize
+)paren
 OG
 l_int|0
 )paren

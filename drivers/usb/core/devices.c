@@ -412,7 +412,11 @@ id|USB_SPEED_HIGH
 r_switch
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|desc-&gt;wMaxPacketSize
+)paren
 op_amp
 (paren
 l_int|0x03
@@ -626,7 +630,11 @@ comma
 id|type
 comma
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|desc-&gt;wMaxPacketSize
+)paren
 op_amp
 l_int|0x07ff
 )paren

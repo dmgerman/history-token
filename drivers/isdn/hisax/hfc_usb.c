@@ -6673,7 +6673,11 @@ id|USB_INT
 suffix:semicolon
 id|packet_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 singleline_comment|// remember max packet size
 macro_line|#ifdef VERBOSE_USB_DEBUG
@@ -6744,7 +6748,11 @@ id|USB_BULK
 suffix:semicolon
 id|packet_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 singleline_comment|// remember max packet size
 macro_line|#ifdef VERBOSE_USB_DEBUG
@@ -6813,7 +6821,11 @@ id|USB_ISOC
 suffix:semicolon
 id|iso_packet_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 singleline_comment|// remember max packet size
 macro_line|#ifdef VERBOSE_USB_DEBUG
@@ -6880,7 +6892,11 @@ id|cidx
 dot
 id|usb_packet_maxlen
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 id|context-&gt;fifos
 (braket

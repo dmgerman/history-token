@@ -3696,12 +3696,16 @@ id|desc.bmAttributes
 suffix:semicolon
 id|psize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint
 (braket
 id|i
 )braket
 dot
 id|desc.wMaxPacketSize
+)paren
 suffix:semicolon
 multiline_comment|/* Is it a bulk endpoint ??? */
 r_if

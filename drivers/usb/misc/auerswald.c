@@ -3941,7 +3941,11 @@ suffix:semicolon
 )brace
 id|irqsize
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc.wMaxPacketSize
+)paren
 suffix:semicolon
 id|cp-&gt;irqsize
 op_assign

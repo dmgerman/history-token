@@ -3448,7 +3448,11 @@ suffix:semicolon
 )brace
 id|buffer_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|port-&gt;bulk_in_size
 op_assign
@@ -3571,7 +3575,11 @@ suffix:semicolon
 )brace
 id|buffer_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|port-&gt;bulk_out_size
 op_assign
@@ -3700,7 +3708,11 @@ suffix:semicolon
 )brace
 id|buffer_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|port-&gt;interrupt_in_endpointAddress
 op_assign
@@ -3842,7 +3854,11 @@ suffix:semicolon
 )brace
 id|buffer_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|endpoint-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|port-&gt;interrupt_out_size
 op_assign

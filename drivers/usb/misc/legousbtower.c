@@ -1194,7 +1194,11 @@ id|dev-&gt;interrupt_in_endpoint-&gt;bEndpointAddress
 comma
 id|dev-&gt;interrupt_in_buffer
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;interrupt_in_endpoint-&gt;wMaxPacketSize
+)paren
 comma
 id|tower_interrupt_in_callback
 comma
@@ -3235,7 +3239,11 @@ id|dev-&gt;interrupt_in_buffer
 op_assign
 id|kmalloc
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|dev-&gt;interrupt_in_endpoint-&gt;wMaxPacketSize
+)paren
 comma
 id|GFP_KERNEL
 )paren

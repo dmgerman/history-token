@@ -673,7 +673,11 @@ id|ESHUTDOWN
 suffix:semicolon
 id|max
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|desc-&gt;wMaxPacketSize
+)paren
 op_amp
 l_int|0x3ff
 suffix:semicolon
@@ -3711,7 +3715,11 @@ suffix:semicolon
 multiline_comment|/* high bandwidth mode */
 id|tmp
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|ep-&gt;desc-&gt;wMaxPacketSize
+)paren
 suffix:semicolon
 id|tmp
 op_assign
