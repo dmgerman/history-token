@@ -18,7 +18,6 @@ macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
-macro_line|#include &lt;asm/sn/nag.h&gt;
 multiline_comment|/*&n; * For ATE allocations&n; */
 id|pciio_dmamap_t
 id|get_free_pciio_dmamap
