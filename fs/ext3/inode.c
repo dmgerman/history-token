@@ -5317,9 +5317,10 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
-id|nr_to_write
+id|wbc
 )paren
 (brace
 r_int
@@ -5343,7 +5344,7 @@ c_func
 (paren
 id|mapping
 comma
-id|nr_to_write
+id|wbc
 comma
 id|ext3_get_block
 )paren

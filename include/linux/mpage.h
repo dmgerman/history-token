@@ -1,5 +1,8 @@
 multiline_comment|/*&n; * include/linux/mpage.h&n; *&n; * Contains declarations related to preparing and submitting BIOS which contain&n; * multiple pagecache pages.&n; */
 multiline_comment|/*&n; * (And no, it doesn&squot;t do the #ifdef __MPAGE_H thing, and it doesn&squot;t do&n; * nested includes.  Get it right in the .c file).&n; */
+r_struct
+id|writeback_control
+suffix:semicolon
 r_int
 id|mpage_readpages
 c_func
@@ -43,9 +46,10 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
-id|nr_to_write
+id|wbc
 comma
 id|get_block_t
 id|get_block
@@ -63,9 +67,10 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
-id|nr_to_write
+id|wbc
 )paren
 (brace
 r_return
@@ -74,7 +79,7 @@ c_func
 (paren
 id|mapping
 comma
-id|nr_to_write
+id|wbc
 comma
 l_int|NULL
 )paren

@@ -482,9 +482,10 @@ id|page
 op_star
 id|page
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
-id|nr_to_write
+id|wbc
 )paren
 (brace
 r_struct
@@ -506,7 +507,7 @@ c_func
 (paren
 id|mapping
 comma
-id|nr_to_write
+id|wbc
 )paren
 suffix:semicolon
 )brace

@@ -67,22 +67,45 @@ comma
 multiline_comment|/* Hold the inode on sb_dirty for sys_sync() */
 )brace
 suffix:semicolon
-r_void
-id|writeback_unlocked_inodes
-c_func
-(paren
-r_int
+multiline_comment|/*&n; * A control structure which tells the writeback code what to do&n; */
+DECL|struct|writeback_control
+r_struct
+id|writeback_control
+(brace
+DECL|member|bdi
+r_struct
+id|backing_dev_info
 op_star
-id|nr_to_write
-comma
+id|bdi
+suffix:semicolon
+multiline_comment|/* If !NULL, only write back this&n;&t;&t;&t;&t;&t;   queue */
+DECL|member|sync_mode
 r_enum
 id|writeback_sync_modes
 id|sync_mode
-comma
+suffix:semicolon
+DECL|member|older_than_this
 r_int
 r_int
 op_star
 id|older_than_this
+suffix:semicolon
+multiline_comment|/* If !NULL, only write back inodes&n;&t;&t;&t;&t;&t;   older than this */
+DECL|member|nr_to_write
+r_int
+id|nr_to_write
+suffix:semicolon
+multiline_comment|/* Write this many pages, and decrement&n;&t;&t;&t;&t;&t;   this for each page written */
+)brace
+suffix:semicolon
+r_void
+id|writeback_inodes
+c_func
+(paren
+r_struct
+id|writeback_control
+op_star
+id|wbc
 )paren
 suffix:semicolon
 r_void
@@ -123,29 +146,6 @@ c_func
 (paren
 r_int
 id|wait
-)paren
-suffix:semicolon
-r_void
-id|writeback_backing_dev
-c_func
-(paren
-r_struct
-id|backing_dev_info
-op_star
-id|bdi
-comma
-r_int
-op_star
-id|nr_to_write
-comma
-r_enum
-id|writeback_sync_modes
-id|sync_mode
-comma
-r_int
-r_int
-op_star
-id|older_than_this
 )paren
 suffix:semicolon
 multiline_comment|/* writeback.h requires fs.h; it, too, is not included from here. */
@@ -246,9 +246,10 @@ id|address_space
 op_star
 id|mapping
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
-id|nr_to_write
+id|wbc
 )paren
 suffix:semicolon
 multiline_comment|/* pdflush.c */

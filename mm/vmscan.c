@@ -484,7 +484,8 @@ r_struct
 id|page
 op_star
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
 )paren
 suffix:semicolon
@@ -494,10 +495,17 @@ id|cluster_size
 op_assign
 id|SWAP_CLUSTER_MAX
 suffix:semicolon
-r_int
+r_struct
+id|writeback_control
+id|wbc
+op_assign
+(brace
+dot
 id|nr_to_write
 op_assign
 id|cluster_size
+comma
+)brace
 suffix:semicolon
 id|writeback
 op_assign
@@ -522,7 +530,7 @@ id|writeback
 id|page
 comma
 op_amp
-id|nr_to_write
+id|wbc
 )paren
 suffix:semicolon
 op_star
@@ -531,7 +539,7 @@ op_sub_assign
 (paren
 id|cluster_size
 op_minus
-id|nr_to_write
+id|wbc.nr_to_write
 )paren
 suffix:semicolon
 r_goto

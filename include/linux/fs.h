@@ -458,6 +458,9 @@ suffix:semicolon
 r_struct
 id|address_space
 suffix:semicolon
+r_struct
+id|writeback_control
+suffix:semicolon
 DECL|struct|address_space_operations
 r_struct
 id|address_space_operations
@@ -514,9 +517,9 @@ r_struct
 id|address_space
 op_star
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
-id|nr_to_write
 )paren
 suffix:semicolon
 multiline_comment|/* Perform a writeback as a memory-freeing operation. */
@@ -531,9 +534,9 @@ r_struct
 id|page
 op_star
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
-id|nr_to_write
 )paren
 suffix:semicolon
 multiline_comment|/* Set a page dirty */
@@ -6175,9 +6178,10 @@ id|page
 op_star
 id|page
 comma
-r_int
+r_struct
+id|writeback_control
 op_star
-id|nr_to_write
+id|wbc
 )paren
 suffix:semicolon
 r_extern
