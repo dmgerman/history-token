@@ -6537,13 +6537,13 @@ mdefine_line|#define USB_DEVICE_ID_WACOM_PL&t;&t;0x0030
 DECL|macro|USB_DEVICE_ID_WACOM_INTUOS2
 mdefine_line|#define USB_DEVICE_ID_WACOM_INTUOS2&t;0x0040
 DECL|macro|USB_DEVICE_ID_WACOM_VOLITO
-mdefine_line|#define USB_DEVICE_ID_WACOM_VOLITO      0x0060
+mdefine_line|#define USB_DEVICE_ID_WACOM_VOLITO&t;0x0060
 DECL|macro|USB_DEVICE_ID_WACOM_PTU
-mdefine_line|#define USB_DEVICE_ID_WACOM_PTU         0x0003
+mdefine_line|#define USB_DEVICE_ID_WACOM_PTU&t;&t;0x0003
 DECL|macro|USB_VENDOR_ID_KBGEAR
-mdefine_line|#define USB_VENDOR_ID_KBGEAR            0x084e
+mdefine_line|#define USB_VENDOR_ID_KBGEAR&t;&t;0x084e
 DECL|macro|USB_DEVICE_ID_KBGEAR_JAMSTUDIO
-mdefine_line|#define USB_DEVICE_ID_KBGEAR_JAMSTUDIO  0x1001
+mdefine_line|#define USB_DEVICE_ID_KBGEAR_JAMSTUDIO&t;0x1001
 DECL|macro|USB_VENDOR_ID_AIPTEK
 mdefine_line|#define USB_VENDOR_ID_AIPTEK&t;&t;0x08ca
 DECL|macro|USB_DEVICE_ID_AIPTEK_01
@@ -6567,47 +6567,47 @@ mdefine_line|#define USB_DEVICE_ID_POWERMATE&t;&t;0x0410
 DECL|macro|USB_DEVICE_ID_SOUNDKNOB
 mdefine_line|#define USB_DEVICE_ID_SOUNDKNOB&t;&t;0x04AA
 DECL|macro|USB_VENDOR_ID_ATEN
-mdefine_line|#define USB_VENDOR_ID_ATEN             0x0557  
+mdefine_line|#define USB_VENDOR_ID_ATEN&t;&t;0x0557
 DECL|macro|USB_DEVICE_ID_ATEN_UC100KM
-mdefine_line|#define USB_DEVICE_ID_ATEN_UC100KM     0x2004
+mdefine_line|#define USB_DEVICE_ID_ATEN_UC100KM&t;0x2004
 DECL|macro|USB_DEVICE_ID_ATEN_CS124U
-mdefine_line|#define USB_DEVICE_ID_ATEN_CS124U      0x2202
+mdefine_line|#define USB_DEVICE_ID_ATEN_CS124U&t;0x2202
 DECL|macro|USB_DEVICE_ID_ATEN_2PORTKVM
-mdefine_line|#define USB_DEVICE_ID_ATEN_2PORTKVM    0x2204
+mdefine_line|#define USB_DEVICE_ID_ATEN_2PORTKVM&t;0x2204
 DECL|macro|USB_DEVICE_ID_ATEN_4PORTKVM
-mdefine_line|#define USB_DEVICE_ID_ATEN_4PORTKVM    0x2205
+mdefine_line|#define USB_DEVICE_ID_ATEN_4PORTKVM&t;0x2205
 DECL|macro|USB_DEVICE_ID_ATEN_4PORTKVMC
-mdefine_line|#define USB_DEVICE_ID_ATEN_4PORTKVMC   0x2208
+mdefine_line|#define USB_DEVICE_ID_ATEN_4PORTKVMC&t;0x2208
 DECL|macro|USB_VENDOR_ID_TOPMAX
-mdefine_line|#define USB_VENDOR_ID_TOPMAX           0x0663
+mdefine_line|#define USB_VENDOR_ID_TOPMAX&t;&t;0x0663
 DECL|macro|USB_DEVICE_ID_TOPMAX_COBRAPAD
-mdefine_line|#define USB_DEVICE_ID_TOPMAX_COBRAPAD  0x0103
+mdefine_line|#define USB_DEVICE_ID_TOPMAX_COBRAPAD&t;0x0103
 DECL|macro|USB_VENDOR_ID_HAPP
-mdefine_line|#define USB_VENDOR_ID_HAPP             0x078b
+mdefine_line|#define USB_VENDOR_ID_HAPP&t;&t;0x078b
 DECL|macro|USB_DEVICE_ID_UGCI_DRIVING
-mdefine_line|#define USB_DEVICE_ID_UGCI_DRIVING     0x0010
+mdefine_line|#define USB_DEVICE_ID_UGCI_DRIVING&t;0x0010
 DECL|macro|USB_DEVICE_ID_UGCI_FLYING
-mdefine_line|#define USB_DEVICE_ID_UGCI_FLYING      0x0020
+mdefine_line|#define USB_DEVICE_ID_UGCI_FLYING&t;0x0020
 DECL|macro|USB_DEVICE_ID_UGCI_FIGHTING
-mdefine_line|#define USB_DEVICE_ID_UGCI_FIGHTING    0x0030
+mdefine_line|#define USB_DEVICE_ID_UGCI_FIGHTING&t;0x0030
 DECL|macro|USB_VENDOR_ID_MGE
-mdefine_line|#define USB_VENDOR_ID_MGE              0x0463
+mdefine_line|#define USB_VENDOR_ID_MGE&t;&t;0x0463
 DECL|macro|USB_DEVICE_ID_MGE_UPS
-mdefine_line|#define USB_DEVICE_ID_MGE_UPS          0xffff
+mdefine_line|#define USB_DEVICE_ID_MGE_UPS&t;&t;0xffff
 DECL|macro|USB_DEVICE_ID_MGE_UPS1
-mdefine_line|#define USB_DEVICE_ID_MGE_UPS1         0x0001
+mdefine_line|#define USB_DEVICE_ID_MGE_UPS1&t;&t;0x0001
 DECL|macro|USB_VENDOR_ID_ONTRAK
 mdefine_line|#define USB_VENDOR_ID_ONTRAK&t;&t;0x0a07
 DECL|macro|USB_DEVICE_ID_ONTRAK_ADU100
 mdefine_line|#define USB_DEVICE_ID_ONTRAK_ADU100&t;0x0064
 DECL|macro|USB_VENDOR_ID_TANGTOP
-mdefine_line|#define USB_VENDOR_ID_TANGTOP          0x0d3d
+mdefine_line|#define USB_VENDOR_ID_TANGTOP&t;&t;0x0d3d
 DECL|macro|USB_DEVICE_ID_TANGTOP_USBPS2
-mdefine_line|#define USB_DEVICE_ID_TANGTOP_USBPS2   0x0001
+mdefine_line|#define USB_DEVICE_ID_TANGTOP_USBPS2&t;0x0001
 DECL|macro|USB_VENDOR_ID_ESSENTIAL_REALITY
 mdefine_line|#define USB_VENDOR_ID_ESSENTIAL_REALITY&t;0x0d7f
 DECL|macro|USB_DEVICE_ID_ESSENTIAL_REALITY_P5
-mdefine_line|#define USB_DEVICE_ID_ESSENTIAL_REALITY_P5&t;0x0100
+mdefine_line|#define USB_DEVICE_ID_ESSENTIAL_REALITY_P5 0x0100
 DECL|macro|USB_VENDOR_ID_A4TECH
 mdefine_line|#define USB_VENDOR_ID_A4TECH&t;&t;0x09DA
 DECL|macro|USB_DEVICE_ID_A4TECH_WCP32PU
@@ -6670,6 +6670,13 @@ DECL|macro|USB_VENDOR_ID_DELORME
 mdefine_line|#define USB_VENDOR_ID_DELORME&t;&t;0x1163
 DECL|macro|USB_DEVICE_ID_DELORME_EARTHMATE
 mdefine_line|#define USB_DEVICE_ID_DELORME_EARTHMATE 0x0100
+DECL|macro|USB_VENDOR_ID_MCC
+mdefine_line|#define USB_VENDOR_ID_MCC&t;&t;0x09db
+DECL|macro|USB_DEVICE_ID_MCC_PMD1024LS
+mdefine_line|#define USB_DEVICE_ID_MCC_PMD1024LS&t;0x0076
+DECL|macro|USB_DEVICE_ID_MCC_PMD1208LS
+mdefine_line|#define USB_DEVICE_ID_MCC_PMD1208LS&t;0x007a
+multiline_comment|/*&n; * Alphabetically sorted blacklist by quirk type.&n; */
 DECL|struct|hid_blacklist
 r_static
 r_struct
@@ -6791,17 +6798,25 @@ id|HID_QUIRK_IGNORE
 )brace
 comma
 (brace
-id|USB_VENDOR_ID_ESSENTIAL_REALITY
+id|USB_VENDOR_ID_CYPRESS
 comma
-id|USB_DEVICE_ID_ESSENTIAL_REALITY_P5
+id|USB_DEVICE_ID_CYPRESS_HIDCOM
 comma
 id|HID_QUIRK_IGNORE
 )brace
 comma
 (brace
-id|USB_VENDOR_ID_KBGEAR
+id|USB_VENDOR_ID_DELORME
 comma
-id|USB_DEVICE_ID_KBGEAR_JAMSTUDIO
+id|USB_DEVICE_ID_DELORME_EARTHMATE
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_ESSENTIAL_REALITY
+comma
+id|USB_DEVICE_ID_ESSENTIAL_REALITY_P5
 comma
 id|HID_QUIRK_IGNORE
 )brace
@@ -6858,6 +6873,30 @@ comma
 id|USB_VENDOR_ID_GRIFFIN
 comma
 id|USB_DEVICE_ID_SOUNDKNOB
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_KBGEAR
+comma
+id|USB_DEVICE_ID_KBGEAR_JAMSTUDIO
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_MCC
+comma
+id|USB_DEVICE_ID_MCC_PMD1024LS
+comma
+id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_MCC
+comma
+id|USB_DEVICE_ID_MCC_PMD1208LS
 comma
 id|HID_QUIRK_IGNORE
 )brace
@@ -7255,14 +7294,6 @@ id|HID_QUIRK_2WHEEL_MOUSE_HACK_5
 )brace
 comma
 (brace
-id|USB_VENDOR_ID_CYPRESS
-comma
-id|USB_DEVICE_ID_CYPRESS_HIDCOM
-comma
-id|HID_QUIRK_IGNORE
-)brace
-comma
-(brace
 id|USB_VENDOR_ID_ALPS
 comma
 id|USB_DEVICE_ID_IBM_GAMEPAD
@@ -7330,46 +7361,6 @@ comma
 id|USB_DEVICE_ID_TOPMAX_COBRAPAD
 comma
 id|HID_QUIRK_BADPAD
-)brace
-comma
-(brace
-id|USB_VENDOR_ID_CODEMERCS
-comma
-id|USB_DEVICE_ID_CODEMERCS_IOW40
-comma
-id|HID_QUIRK_IGNORE
-)brace
-comma
-(brace
-id|USB_VENDOR_ID_CODEMERCS
-comma
-id|USB_DEVICE_ID_CODEMERCS_IOW24
-comma
-id|HID_QUIRK_IGNORE
-)brace
-comma
-(brace
-id|USB_VENDOR_ID_CODEMERCS
-comma
-id|USB_DEVICE_ID_CODEMERCS_IOW48
-comma
-id|HID_QUIRK_IGNORE
-)brace
-comma
-(brace
-id|USB_VENDOR_ID_CODEMERCS
-comma
-id|USB_DEVICE_ID_CODEMERCS_IOW28
-comma
-id|HID_QUIRK_IGNORE
-)brace
-comma
-(brace
-id|USB_VENDOR_ID_DELORME
-comma
-id|USB_DEVICE_ID_DELORME_EARTHMATE
-comma
-id|HID_QUIRK_IGNORE
 )brace
 comma
 (brace
