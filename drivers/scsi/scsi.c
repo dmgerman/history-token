@@ -2744,11 +2744,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-id|scsi_host_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|devfs_mk_dir
 c_func
 (paren
