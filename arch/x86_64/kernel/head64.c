@@ -5,6 +5,8 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
+macro_line|#include &lt;asm/smp.h&gt;
 multiline_comment|/* Don&squot;t add a printk in there. printk relies on the PDA which is not initialized &n;   yet. */
 DECL|function|clear_bss
 r_static
@@ -298,31 +300,6 @@ op_amp
 l_int|0xf
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|start_kernel
-c_func
-(paren
-r_void
-)paren
-comma
-id|pda_init
-c_func
-(paren
-r_int
-)paren
-comma
-id|setup_early_printk
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|disable_apic
-suffix:semicolon
 DECL|function|x86_64_start_kernel
 r_void
 id|__init
@@ -380,6 +357,33 @@ op_plus
 l_int|12
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_DISCONTIGMEM
+id|s
+op_assign
+id|strstr
+c_func
+(paren
+id|saved_command_line
+comma
+l_string|&quot;numa=&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|s
+op_ne
+l_int|NULL
+)paren
+id|numa_setup
+c_func
+(paren
+id|s
+op_plus
+l_int|5
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_IO_APIC
 r_if
 c_cond

@@ -3476,10 +3476,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+DECL|variable|disable_apic
 r_int
 id|disable_apic
-id|__initdata
 suffix:semicolon
 multiline_comment|/*&n; * This initializes the IO-APIC and APIC hardware if this is&n; * a UP kernel.&n; */
 DECL|function|APIC_init_uniprocessor
@@ -3517,10 +3516,16 @@ op_logical_and
 op_logical_neg
 id|cpu_has_apic
 )paren
+(brace
+id|disable_apic
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Complain if the BIOS pretends there is one.&n;&t; */
 r_if
 c_cond
@@ -3546,6 +3551,10 @@ l_string|&quot;BIOS bug, local APIC #%d not detected!...&bslash;n&quot;
 comma
 id|boot_cpu_id
 )paren
+suffix:semicolon
+id|disable_apic
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 op_minus

@@ -80,9 +80,7 @@ multiline_comment|/*&n; * FPU lazy state save handling...&n; */
 DECL|macro|kernel_fpu_end
 mdefine_line|#define kernel_fpu_end() stts()
 DECL|macro|unlazy_fpu
-mdefine_line|#define unlazy_fpu(tsk) do { &bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
-DECL|macro|unlazy_current_fpu
-mdefine_line|#define unlazy_current_fpu() do { &bslash;&n;&t;if (test_thread_flag(TIF_USEDFPU)) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
+mdefine_line|#define unlazy_fpu(tsk) do { &bslash;&n;&t;if ((tsk)-&gt;thread_info-&gt;flags &amp; TIF_USEDFPU) &bslash;&n;&t;&t;save_init_fpu(tsk); &bslash;&n;} while (0)
 DECL|macro|clear_fpu
 mdefine_line|#define clear_fpu(tsk) do { &bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) {&t;&t;&bslash;&n;&t;&t;asm volatile(&quot;fwait&quot;);&t;&t;&t;&t;&bslash;&n;&t;&t;clear_tsk_thread_flag(tsk,TIF_USEDFPU); &t;&bslash;&n;&t;&t;stts();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|load_mxcsr
@@ -330,13 +328,10 @@ id|tsk-&gt;thread.i387.fxsave
 )paren
 )paren
 suffix:semicolon
-id|clear_tsk_thread_flag
-c_func
-(paren
-id|tsk
-comma
+id|tsk-&gt;thread_info-&gt;flags
+op_and_assign
+op_complement
 id|TIF_USEDFPU
-)paren
 suffix:semicolon
 id|stts
 c_func

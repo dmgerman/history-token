@@ -2725,7 +2725,6 @@ comma
 r_int
 id|gfp_mask
 comma
-r_const
 r_int
 id|nr_pages
 comma

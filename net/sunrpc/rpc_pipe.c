@@ -2144,11 +2144,10 @@ c_func
 id|dentry
 )paren
 suffix:semicolon
-id|list_del
+id|__d_drop
 c_func
 (paren
-op_amp
-id|dentry-&gt;d_hash
+id|dentry
 )paren
 suffix:semicolon
 id|list_add
@@ -2195,11 +2194,11 @@ comma
 id|d_hash
 )paren
 suffix:semicolon
-id|list_del_init
+multiline_comment|/* Private list, so no dcache_lock needed and use __d_drop */
+id|__d_drop
 c_func
 (paren
-op_amp
-id|dentry-&gt;d_hash
+id|dentry
 )paren
 suffix:semicolon
 r_if

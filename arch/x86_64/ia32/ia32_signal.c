@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
@@ -567,7 +568,7 @@ r_int
 r_int
 id|extramask
 (braket
-id|_IA32_NSIG_WORDS
+id|_COMPAT_NSIG_WORDS
 op_minus
 l_int|1
 )braket
@@ -1035,7 +1036,7 @@ id|frame-&gt;sc.oldmask
 )paren
 op_logical_or
 (paren
-id|_IA32_NSIG_WORDS
+id|_COMPAT_NSIG_WORDS
 OG
 l_int|1
 op_logical_and
@@ -1913,7 +1914,7 @@ id|k_sigaction
 op_star
 id|ka
 comma
-id|sigset32_t
+id|compat_sigset_t
 op_star
 id|set
 comma
@@ -2049,7 +2050,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_IA32_NSIG_WORDS
+id|_COMPAT_NSIG_WORDS
 OG
 l_int|1
 )paren
@@ -2302,7 +2303,7 @@ id|siginfo_t
 op_star
 id|info
 comma
-id|sigset32_t
+id|compat_sigset_t
 op_star
 id|set
 comma

@@ -8228,11 +8228,15 @@ singleline_comment|// avoid log pollution: limit to 2 infos per minute
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-OG
+comma
 id|last_jiffies
 op_plus
 id|ES___GAMEPORT_LOG_DELAY
+)paren
 )paren
 (brace
 id|last_jiffies

@@ -143,9 +143,11 @@ c_cond
 (paren
 id|p
 )paren
-id|free_bootmem
+id|free_bootmem_node
 c_func
 (paren
+id|nd0
+comma
 (paren
 r_int
 r_int

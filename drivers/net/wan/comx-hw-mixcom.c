@@ -219,12 +219,14 @@ op_ne
 l_int|0
 )paren
 op_logical_and
+id|time_before
+c_func
 (paren
+id|jiffies
+comma
 id|jiffs
 op_plus
 id|HZ
-OG
-id|jiffies
 )paren
 )paren
 (brace

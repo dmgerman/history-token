@@ -424,7 +424,27 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
+id|regs-&gt;eflags
+op_amp
+id|X86_EFLAGS_IF
+)paren
+)paren
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
 id|page_fault_trace
+)paren
 )paren
 id|printk
 c_func
@@ -500,6 +520,9 @@ multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user&n;&t
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|in_atomic
 c_func
 (paren
@@ -507,6 +530,7 @@ c_func
 op_logical_or
 op_logical_neg
 id|mm
+)paren
 )paren
 r_goto
 id|no_context
@@ -542,9 +566,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|vma-&gt;vm_start
 op_le
 id|address
+)paren
 )paren
 r_goto
 id|good_area
@@ -794,6 +822,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s[%d] segfault at rip:%lx rsp:%lx adr:%lx err:%lx&bslash;n&quot;
 comma
 id|tsk-&gt;comm

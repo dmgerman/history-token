@@ -18956,6 +18956,7 @@ id|kdev.value
 op_assign
 (paren
 r_int
+r_int
 )paren
 id|dev-&gt;driver_data
 suffix:semicolon
