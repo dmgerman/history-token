@@ -1229,7 +1229,7 @@ id|skb
 comma
 id|cur_mss
 comma
-l_int|1
+id|TCP_NAGLE_PUSH
 )paren
 )paren
 (brace
@@ -2682,7 +2682,7 @@ ques
 c_cond
 id|nonagle
 suffix:colon
-l_int|1
+id|TCP_NAGLE_PUSH
 )paren
 )paren
 (brace
@@ -4533,7 +4533,7 @@ id|tp
 comma
 id|mss_now
 comma
-l_int|1
+id|TCP_NAGLE_OFF
 )paren
 suffix:semicolon
 )brace

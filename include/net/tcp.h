@@ -802,6 +802,13 @@ DECL|macro|TCP_TIME_PROBE0
 mdefine_line|#define TCP_TIME_PROBE0&t;&t;3&t;/* Zero window probe timer */
 DECL|macro|TCP_TIME_KEEPOPEN
 mdefine_line|#define TCP_TIME_KEEPOPEN&t;4&t;/* Keepalive timer */
+multiline_comment|/* Flags in tp-&gt;nonagle */
+DECL|macro|TCP_NAGLE_OFF
+mdefine_line|#define TCP_NAGLE_OFF&t;&t;1&t;/* Nagle&squot;s algo is disabled */
+DECL|macro|TCP_NAGLE_CORK
+mdefine_line|#define TCP_NAGLE_CORK&t;&t;2&t;/* Socket is corked&t;    */
+DECL|macro|TCP_NAGLE_PUSH
+mdefine_line|#define TCP_NAGLE_PUSH&t;&t;4&t;/* Cork is overriden for already queued data */
 multiline_comment|/* sysctl variables for tcp */
 r_extern
 r_int
@@ -4051,9 +4058,11 @@ id|TCPCB_FLAG_FIN
 )paren
 op_logical_and
 (paren
+(paren
 id|nonagle
-op_eq
-l_int|2
+op_amp
+id|TCP_NAGLE_CORK
+)paren
 op_logical_or
 (paren
 op_logical_neg
@@ -4101,9 +4110,11 @@ multiline_comment|/* Don&squot;t be strict about the congestion window for the&n
 r_return
 (paren
 (paren
+(paren
 id|nonagle
-op_eq
-l_int|1
+op_amp
+id|TCP_NAGLE_PUSH
+)paren
 op_logical_or
 id|tp-&gt;urg_mode
 op_logical_or
@@ -4286,7 +4297,7 @@ id|skb
 )paren
 id|nonagle
 op_assign
-l_int|1
+id|TCP_NAGLE_PUSH
 suffix:semicolon
 r_if
 c_cond
@@ -4420,7 +4431,7 @@ id|skb
 )paren
 ques
 c_cond
-l_int|1
+id|TCP_NAGLE_PUSH
 suffix:colon
 id|tp-&gt;nonagle
 )paren
