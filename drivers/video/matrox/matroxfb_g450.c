@@ -537,16 +537,19 @@ id|matroxfb_driver
 id|g450
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Matrox G450 output #2&quot;
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|matroxfb_g450_probe
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|matroxfb_g450_remove
 )brace
 suffix:semicolon
