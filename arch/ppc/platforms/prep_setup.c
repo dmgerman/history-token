@@ -1719,7 +1719,7 @@ c_func
 l_string|&quot;Could not allocate timer IRQ!&quot;
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -2071,7 +2071,7 @@ id|i
 op_assign
 l_int|10000
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -2147,7 +2147,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -2355,7 +2355,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren

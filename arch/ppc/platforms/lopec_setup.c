@@ -242,7 +242,7 @@ id|LOPEC_SYSSTAT1
 op_assign
 id|reg
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -267,7 +267,7 @@ c_func
 r_void
 )paren
 (brace
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren

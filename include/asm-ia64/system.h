@@ -190,18 +190,14 @@ macro_line|# define local_irq_restore(x)&t;__asm__ __volatile__ (&quot;cmp.ne p6
 macro_line|#endif /* !CONFIG_IA64_DEBUG_IRQ */
 DECL|macro|local_irq_enable
 mdefine_line|#define local_irq_enable()&t;__asm__ __volatile__ (&quot;;; ssm psr.i;; srlz.d&quot; ::: &quot;memory&quot;)
-DECL|macro|__cli
-mdefine_line|#define __cli()&t;&t;&t;local_irq_disable ()
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(flags)&t;__asm__ __volatile__ (&quot;mov %0=psr&quot; : &quot;=r&quot; (flags) :: &quot;memory&quot;)
-DECL|macro|__save_and_cli
-mdefine_line|#define __save_and_cli(flags)&t;local_irq_save(flags)
+DECL|macro|local_irq_disable
+mdefine_line|#define local_irq_disable()&t;&t;&t;local_irq_disable ()
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(flags)&t;__asm__ __volatile__ (&quot;mov %0=psr&quot; : &quot;=r&quot; (flags) :: &quot;memory&quot;)
+DECL|macro|local_irq_save
+mdefine_line|#define local_irq_save(flags)&t;local_irq_save(flags)
 DECL|macro|save_and_cli
-mdefine_line|#define save_and_cli(flags)&t;__save_and_cli(flags)
-DECL|macro|__sti
-mdefine_line|#define __sti()&t;&t;&t;local_irq_enable ()
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(flags)&t;local_irq_restore(flags)
+mdefine_line|#define save_and_cli(flags)&t;local_irq_save(flags)
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -243,13 +239,13 @@ DECL|macro|restore_flags
 macro_line|# define restore_flags(flags)&t;__global_restore_flags(flags)
 macro_line|#else /* !CONFIG_SMP */
 DECL|macro|cli
-macro_line|# define cli()&t;&t;&t;__cli()
+macro_line|# define cli()&t;&t;&t;local_irq_disable()
 DECL|macro|sti
-macro_line|# define sti()&t;&t;&t;__sti()
+macro_line|# define sti()&t;&t;&t;local_irq_enable()
 DECL|macro|save_flags
-macro_line|# define save_flags(flags)&t;__save_flags(flags)
+macro_line|# define save_flags(flags)&t;local_save_flags(flags)
 DECL|macro|restore_flags
-macro_line|# define restore_flags(flags)&t;__restore_flags(flags)
+macro_line|# define restore_flags(flags)&t;local_irq_restore(flags)
 macro_line|#endif /* !CONFIG_SMP */
 multiline_comment|/*&n; * Force an unresolved reference if someone tries to use&n; * ia64_fetch_and_add() with a bad value.&n; */
 r_extern

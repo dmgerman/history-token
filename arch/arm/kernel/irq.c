@@ -594,7 +594,7 @@ op_amp
 id|SA_INTERRUPT
 )paren
 )paren
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

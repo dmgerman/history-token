@@ -1604,13 +1604,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1670,7 +1670,7 @@ comma
 l_int|0xCF8
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1768,7 +1768,7 @@ id|pci_direct_conf2
 )paren
 )paren
 (brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1804,7 +1804,7 @@ id|pci_direct_conf2
 suffix:semicolon
 )brace
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

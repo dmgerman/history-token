@@ -469,7 +469,7 @@ op_amp
 id|init_mm
 suffix:semicolon
 multiline_comment|/* Must have completely accurate bogos.  */
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

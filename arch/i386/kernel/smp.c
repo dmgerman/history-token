@@ -181,13 +181,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -235,7 +235,7 @@ comma
 id|cfg
 )paren
 suffix:semicolon
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -269,13 +269,13 @@ comma
 id|query_mask
 suffix:semicolon
 multiline_comment|/*&n;&t; * Hack. The clustered APIC addressing mode doesn&squot;t allow us to send &n;&t; * to an arbitrary mask, so I do a unicasts to each CPU instead. This &n;&t; * should be modified to do 1 message per cluster ID - mbligh&n;&t; */
-id|__save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -358,7 +358,7 @@ id|cfg
 suffix:semicolon
 )brace
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1497,7 +1497,7 @@ op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1563,7 +1563,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1573,7 +1573,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

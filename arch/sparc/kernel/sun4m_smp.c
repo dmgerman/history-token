@@ -396,7 +396,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -503,7 +503,7 @@ c_func
 l_string|&quot;Entering SMP Mode...&bslash;n&quot;
 )paren
 suffix:semicolon
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 )paren

@@ -45,15 +45,15 @@ DECL|macro|mfmsr
 mdefine_line|#define mfmsr()&t;&t;({unsigned int rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfmsr %0&quot; : &quot;=r&quot; (rval)); rval;})
 DECL|macro|mtmsr
 mdefine_line|#define mtmsr(v)&t;asm volatile(&quot;mtmsr %0&quot; : : &quot;r&quot; (v))
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(flags)&t;((flags) = mfmsr())
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(flags)&t;mtmsr(flags)
-DECL|function|__cli
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(flags)&t;((flags) = mfmsr())
+DECL|macro|local_irq_restore
+mdefine_line|#define local_irq_restore(flags)&t;mtmsr(flags)
+DECL|function|local_irq_disable
 r_static
 r_inline
 r_void
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 r_void
@@ -91,11 +91,11 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|__sti
+DECL|function|local_irq_enable
 r_static
 r_inline
 r_void
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 r_void
@@ -182,12 +182,12 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|macro|__save_and_cli
-mdefine_line|#define __save_and_cli(flags)          __do_save_and_cli(&amp;flags)
+DECL|macro|local_irq_save
+mdefine_line|#define local_irq_save(flags)          __do_save_and_cli(&amp;flags)
 macro_line|#else
 r_extern
 r_void
-id|__sti
+id|local_irq_enable
 c_func
 (paren
 r_void
@@ -195,7 +195,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|__cli
+id|local_irq_disable
 c_func
 (paren
 r_void
@@ -203,7 +203,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 r_int
@@ -212,7 +212,7 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|__save_flags_ptr
+id|local_save_flags_ptr
 c_func
 (paren
 r_int
@@ -223,18 +223,18 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|__sti_end
+id|local_irq_enable_end
 comma
-id|__cli_end
+id|local_irq_disable_end
 comma
-id|__restore_flags_end
+id|local_irq_restore_end
 comma
-id|__save_flags_ptr_end
+id|local_save_flags_ptr_end
 suffix:semicolon
-DECL|macro|__save_flags
-mdefine_line|#define __save_flags(flags) __save_flags_ptr((unsigned long *)&amp;flags)
-DECL|macro|__save_and_cli
-mdefine_line|#define __save_and_cli(flags) ({__save_flags(flags);__cli();})
+DECL|macro|local_save_flags
+mdefine_line|#define local_save_flags(flags) local_save_flags_ptr((unsigned long *)&amp;flags)
+DECL|macro|local_irq_save
+mdefine_line|#define local_irq_save(flags) ({local_save_flags(flags);local_irq_disable();})
 macro_line|#endif
 r_extern
 r_void

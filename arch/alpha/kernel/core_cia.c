@@ -153,7 +153,7 @@ id|type1
 )paren
 )paren
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -349,7 +349,7 @@ id|vip
 id|CIA_IOC_CFG
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -409,7 +409,7 @@ id|type1
 )paren
 )paren
 suffix:semicolon
-id|__save_and_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -578,7 +578,7 @@ id|vip
 id|CIA_IOC_CFG
 suffix:semicolon
 )brace
-id|__restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
