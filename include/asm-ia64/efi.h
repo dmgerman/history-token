@@ -43,29 +43,19 @@ multiline_comment|/* UNICODE character */
 r_typedef
 r_struct
 (brace
-DECL|member|data1
-id|u32
-id|data1
-suffix:semicolon
-DECL|member|data2
-id|u16
-id|data2
-suffix:semicolon
-DECL|member|data3
-id|u16
-id|data3
-suffix:semicolon
-DECL|member|data4
+DECL|member|b
 id|u8
-id|data4
+id|b
 (braket
-l_int|8
+l_int|16
 )braket
 suffix:semicolon
 DECL|typedef|efi_guid_t
 )brace
 id|efi_guid_t
 suffix:semicolon
+DECL|macro|EFI_GUID
+mdefine_line|#define EFI_GUID(a,b,c,d0,d1,d2,d3,d4,d5,d6,d7) &bslash;&n;((efi_guid_t) &bslash;&n;{{ (a) &amp; 0xff, ((a) &gt;&gt; 8) &amp; 0xff, ((a) &gt;&gt; 16) &amp; 0xff, ((a) &gt;&gt; 24) &amp; 0xff, &bslash;&n;  (b) &amp; 0xff, ((b) &gt;&gt; 8) &amp; 0xff, &bslash;&n;  (c) &amp; 0xff, ((c) &gt;&gt; 8) &amp; 0xff, &bslash;&n;  (d0), (d1), (d2), (d3), (d4), (d5), (d6), (d7) }})
 multiline_comment|/*&n; * Generic EFI table header&n; */
 r_typedef
 r_struct
@@ -491,16 +481,18 @@ id|data
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  EFI Configuration Table and GUID definitions&n; */
+DECL|macro|NULL_GUID
+mdefine_line|#define NULL_GUID &bslash;&n;    EFI_GUID(  0x00000000, 0x0000, 0x0000, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 )
 DECL|macro|MPS_TABLE_GUID
-mdefine_line|#define MPS_TABLE_GUID    &bslash;&n;    ((efi_guid_t) { 0xeb9d2d2f, 0x2d88, 0x11d3, { 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d }})
+mdefine_line|#define MPS_TABLE_GUID    &bslash;&n;    EFI_GUID(  0xeb9d2d2f, 0x2d88, 0x11d3, 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d )
 DECL|macro|ACPI_TABLE_GUID
-mdefine_line|#define ACPI_TABLE_GUID    &bslash;&n;    ((efi_guid_t) { 0xeb9d2d30, 0x2d88, 0x11d3, { 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d }})
+mdefine_line|#define ACPI_TABLE_GUID    &bslash;&n;    EFI_GUID(  0xeb9d2d30, 0x2d88, 0x11d3, 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d )
 DECL|macro|ACPI_20_TABLE_GUID
-mdefine_line|#define ACPI_20_TABLE_GUID    &bslash;&n;    ((efi_guid_t) { 0x8868e871, 0xe4f1, 0x11d3, { 0xbc, 0x22, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81 }})
+mdefine_line|#define ACPI_20_TABLE_GUID    &bslash;&n;    EFI_GUID(  0x8868e871, 0xe4f1, 0x11d3, 0xbc, 0x22, 0x0, 0x80, 0xc7, 0x3c, 0x88, 0x81 )
 DECL|macro|SMBIOS_TABLE_GUID
-mdefine_line|#define SMBIOS_TABLE_GUID    &bslash;&n;    ((efi_guid_t) { 0xeb9d2d31, 0x2d88, 0x11d3, { 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d }})
+mdefine_line|#define SMBIOS_TABLE_GUID    &bslash;&n;    EFI_GUID(  0xeb9d2d31, 0x2d88, 0x11d3, 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d )
 DECL|macro|SAL_SYSTEM_TABLE_GUID
-mdefine_line|#define SAL_SYSTEM_TABLE_GUID    &bslash;&n;    ((efi_guid_t) { 0xeb9d2d32, 0x2d88, 0x11d3, { 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d }})
+mdefine_line|#define SAL_SYSTEM_TABLE_GUID    &bslash;&n;    EFI_GUID(  0xeb9d2d32, 0x2d88, 0x11d3, 0x9a, 0x16, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d )
 r_typedef
 r_struct
 (brace
@@ -704,6 +696,115 @@ r_sizeof
 id|efi_guid_t
 )paren
 )paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_char
+op_star
+DECL|function|efi_guid_unparse
+id|efi_guid_unparse
+c_func
+(paren
+id|efi_guid_t
+op_star
+id|guid
+comma
+r_char
+op_star
+id|out
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|out
+comma
+l_string|&quot;%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x&quot;
+comma
+id|guid-&gt;b
+(braket
+l_int|0
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|1
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|2
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|3
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|4
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|5
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|6
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|7
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|8
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|9
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|10
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|11
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|12
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|13
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|14
+)braket
+comma
+id|guid-&gt;b
+(braket
+l_int|15
+)braket
+)paren
+suffix:semicolon
+r_return
+id|out
 suffix:semicolon
 )brace
 r_extern
