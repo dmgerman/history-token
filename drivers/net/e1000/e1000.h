@@ -364,6 +364,10 @@ DECL|member|pcix_82544
 id|boolean_t
 id|pcix_82544
 suffix:semicolon
+DECL|member|detect_tx_hung
+id|boolean_t
+id|detect_tx_hung
+suffix:semicolon
 multiline_comment|/* RX */
 DECL|member|rx_ring
 r_struct
