@@ -4957,12 +4957,7 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;mcdx&quot;
-comma
-op_amp
-id|mcdx_bdops
 )paren
-op_ne
-l_int|0
 )paren
 (brace
 id|release_region
@@ -4975,20 +4970,6 @@ r_int
 id|stuffp-&gt;wreg_data
 comma
 id|MCDX_IO_SIZE
-)paren
-suffix:semicolon
-id|xwarn
-c_func
-(paren
-l_string|&quot;%s=0x%3p,%d: Init failed. Can&squot;t get major %d.&bslash;n&quot;
-comma
-id|MCDX
-comma
-id|stuffp-&gt;wreg_data
-comma
-id|stuffp-&gt;irq
-comma
-id|MAJOR_NR
 )paren
 suffix:semicolon
 id|kfree

@@ -1648,6 +1648,11 @@ id|name
 op_assign
 l_string|&quot;powernow-k7&quot;
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|function|powernow_init

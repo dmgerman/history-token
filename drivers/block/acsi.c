@@ -6295,21 +6295,9 @@ c_func
 id|ACSI_MAJOR
 comma
 l_string|&quot;ad&quot;
-comma
-op_amp
-id|acsi_fops
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Unable to get major %d for ACSI&bslash;n&quot;
-comma
-id|ACSI_MAJOR
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus

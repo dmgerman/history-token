@@ -3085,25 +3085,12 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;hd&quot;
-comma
-op_amp
-id|hd_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;hd: unable to get major %d for hard disk&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|blk_init_queue
 c_func
 (paren

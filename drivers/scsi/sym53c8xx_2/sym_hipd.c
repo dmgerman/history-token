@@ -662,6 +662,8 @@ id|np
 (brace
 id|u_char
 id|istat
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|i

@@ -3281,7 +3281,7 @@ multiline_comment|/*&n;&t;&t;&t; * We found an identical block in the cache.&n;&
 id|ea_bdebug
 c_func
 (paren
-id|old_bh
+id|new_bh
 comma
 l_string|&quot;reusing block %ld&quot;
 comma

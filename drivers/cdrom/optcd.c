@@ -8414,23 +8414,9 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;optcd&quot;
-comma
-op_amp
-id|opt_fops
 )paren
-op_ne
-l_int|0
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;optcd: unable to get major %d&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 id|release_region
 c_func
 (paren

@@ -192,6 +192,10 @@ id|irqaction
 op_star
 id|action
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_int
 id|j
@@ -243,6 +247,12 @@ id|i
 op_increment
 )paren
 (brace
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|action
 op_assign
 op_star
@@ -258,7 +268,8 @@ c_cond
 op_logical_neg
 id|action
 )paren
-r_continue
+r_goto
+id|skip
 suffix:semicolon
 id|seq_printf
 c_func
@@ -398,6 +409,14 @@ c_func
 id|p
 comma
 l_char|&squot;&bslash;n&squot;
+)paren
+suffix:semicolon
+id|skip
+suffix:colon
+id|local_irq_restore
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace

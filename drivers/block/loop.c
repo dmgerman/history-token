@@ -4463,27 +4463,12 @@ c_func
 id|LOOP_MAJOR
 comma
 l_string|&quot;loop&quot;
-comma
-op_amp
-id|lo_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Unable to get major number %d for loop&quot;
-l_string|&quot; device&bslash;n&quot;
-comma
-id|LOOP_MAJOR
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 id|devfs_mk_dir
 c_func
 (paren

@@ -1532,9 +1532,6 @@ c_func
 id|XPRAM_MAJOR
 comma
 id|XPRAM_NAME
-comma
-op_amp
-id|xpram_devops
 )paren
 suffix:semicolon
 r_if
@@ -1544,20 +1541,11 @@ id|rc
 OL
 l_int|0
 )paren
-(brace
-id|PRINT_ERR
-c_func
-(paren
-l_string|&quot;Can&squot;t get xpram major %d&bslash;n&quot;
-comma
-id|XPRAM_MAJOR
-)paren
-suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|devfs_mk_dir
+c_func
 (paren
 l_int|NULL
 comma

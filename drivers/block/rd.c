@@ -1563,20 +1563,9 @@ c_func
 id|RAMDISK_MAJOR
 comma
 l_string|&quot;ramdisk&quot;
-comma
-op_amp
-id|rd_bd_op
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;RAMDISK: Could not get major %d&quot;
-comma
-id|RAMDISK_MAJOR
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus

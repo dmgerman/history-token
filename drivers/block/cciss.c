@@ -12165,31 +12165,9 @@ id|i
 )braket
 op_member_access_from_pointer
 id|devname
-comma
-op_amp
-id|cciss_fops
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;cciss:  Unable to get major number &quot;
-l_string|&quot;%d for %s&bslash;n&quot;
-comma
-id|COMPAQ_CISS_MAJOR
-op_plus
-id|i
-comma
-id|hba
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|devname
-)paren
-suffix:semicolon
 id|release_io_mem
 c_func
 (paren

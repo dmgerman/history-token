@@ -853,6 +853,11 @@ id|name
 op_assign
 l_string|&quot;longrun&quot;
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * longrun_init - initializes the Transmeta Crusoe LongRun CPUFreq driver&n; *&n; * Initializes the LongRun support.&n; */

@@ -1668,26 +1668,10 @@ id|i
 )braket
 op_member_access_from_pointer
 id|devname
-comma
-op_amp
-id|ida_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;cpqarray: Unable to get major number %d for ida&bslash;n&quot;
-comma
-id|COMPAQ_SMART2_MAJOR
-op_plus
-id|i
-)paren
-suffix:semicolon
 r_continue
 suffix:semicolon
-)brace
 id|hba
 (braket
 id|i

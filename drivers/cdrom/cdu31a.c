@@ -12806,24 +12806,11 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;cdu31a&quot;
-comma
-op_amp
-id|scd_bdops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Unable to get major %d for CDU-31a&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 r_goto
 id|errout2
 suffix:semicolon
-)brace
 id|disk
 op_assign
 id|alloc_disk

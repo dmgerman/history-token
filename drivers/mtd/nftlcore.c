@@ -3726,25 +3726,12 @@ c_func
 id|MAJOR_NR
 comma
 l_string|&quot;nftl&quot;
-comma
-op_amp
-id|nftl_fops
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;unable to register NFTL block device on major %d&bslash;n&quot;
-comma
-id|MAJOR_NR
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 id|blk_register_region
 c_func
 (paren
