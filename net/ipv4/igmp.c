@@ -9811,6 +9811,12 @@ c_cond
 id|im
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|src_addr
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -9867,6 +9873,13 @@ id|MCAST_EXCLUDE
 op_ne
 l_int|0
 suffix:semicolon
+)brace
+r_else
+id|rv
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* unspecified source; tentatively allow */
 )brace
 id|read_unlock
 c_func
