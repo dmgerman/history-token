@@ -2877,7 +2877,7 @@ id|fq-&gt;stamp
 suffix:semicolon
 id|head-&gt;nh.ipv6h-&gt;payload_len
 op_assign
-id|ntohs
+id|htons
 c_func
 (paren
 id|payload_len
