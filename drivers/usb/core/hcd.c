@@ -3782,16 +3782,20 @@ id|usb_get_urb
 id|urb
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 (paren
 op_amp
 id|hcd_data_lock
+comma
+id|flags
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irqsave
 (paren
 op_amp
 id|urb-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|tmp
@@ -3811,10 +3815,12 @@ op_assign
 op_minus
 id|ESHUTDOWN
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 (paren
 op_amp
 id|urb-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* kick hcd unless it&squot;s already returning this */
