@@ -2634,6 +2634,7 @@ id|PCI_ANY_ID
 comma
 )brace
 comma
+multiline_comment|/* VIA K8T890 */
 (brace
 dot
 r_class
@@ -2658,7 +2659,7 @@ comma
 dot
 id|device
 op_assign
-id|PCI_DEVICE_ID_VIA_8380_0
+id|PCI_DEVICE_ID_VIA_3238_0
 comma
 dot
 id|subvendor
