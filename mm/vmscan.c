@@ -1867,9 +1867,9 @@ op_amp
 id|zone-&gt;active_list
 )paren
 suffix:semicolon
-r_continue
-suffix:semicolon
 )brace
+r_else
+(brace
 id|page_cache_get
 c_func
 (paren
@@ -1886,6 +1886,7 @@ op_amp
 id|l_hold
 )paren
 suffix:semicolon
+)brace
 id|nr_pages
 op_decrement
 suffix:semicolon
