@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * Bluetooth HCI Core.&n; *&n; * $Id: hci_core.c,v 1.6 2002/04/17 17:37:16 maxk Exp $&n; */
+multiline_comment|/* Bluetooth HCI core. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -25,7 +25,7 @@ macro_line|#ifndef CONFIG_BT_HCI_CORE_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
-mdefine_line|#define BT_DBG( A... )
+mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 r_static
 r_void
@@ -1068,6 +1068,13 @@ r_return
 id|hdev
 suffix:semicolon
 )brace
+DECL|variable|hci_dev_get
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_dev_get
+)paren
+suffix:semicolon
 multiline_comment|/* ---- Inquiry support ---- */
 DECL|function|inquiry_cache_flush
 r_void
@@ -3480,6 +3487,13 @@ r_return
 id|hdev
 suffix:semicolon
 )brace
+DECL|variable|hci_alloc_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_alloc_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Free HCI device */
 DECL|function|hci_free_dev
 r_void
@@ -3501,6 +3515,13 @@ id|hdev-&gt;class_dev
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hci_free_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_free_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Register HCI device */
 DECL|function|hci_register_dev
 r_int
@@ -3804,6 +3825,13 @@ r_return
 id|id
 suffix:semicolon
 )brace
+DECL|variable|hci_register_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_register_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Unregister HCI device */
 DECL|function|hci_unregister_dev
 r_int
@@ -3879,6 +3907,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_unregister_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_unregister_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Suspend HCI device */
 DECL|function|hci_suspend_dev
 r_int
@@ -3903,6 +3938,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_suspend_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_suspend_dev
+)paren
+suffix:semicolon
 multiline_comment|/* Resume HCI device */
 DECL|function|hci_resume_dev
 r_int
@@ -3927,6 +3969,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_resume_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_resume_dev
+)paren
+suffix:semicolon
 multiline_comment|/* ---- Interface to upper protocols ---- */
 multiline_comment|/* Register/Unregister protocols.&n; * hci_task_lock is used to ensure that no tasks are running. */
 DECL|function|hci_register_proto
@@ -4008,6 +4057,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|hci_register_proto
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_register_proto
+)paren
+suffix:semicolon
 DECL|function|hci_unregister_proto
 r_int
 id|hci_unregister_proto
@@ -4086,6 +4142,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|hci_unregister_proto
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_unregister_proto
+)paren
+suffix:semicolon
 DECL|function|hci_send_frame
 r_static
 r_int
@@ -4364,6 +4427,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_send_cmd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_send_cmd
+)paren
+suffix:semicolon
 multiline_comment|/* Get data from the previously sent command */
 DECL|function|hci_sent_cmd_data
 r_void
@@ -4747,6 +4817,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_send_acl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_send_acl
+)paren
+suffix:semicolon
 multiline_comment|/* Send SCO data */
 DECL|function|hci_send_sco
 r_int
@@ -4868,6 +4945,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hci_send_sco
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hci_send_sco
+)paren
+suffix:semicolon
 multiline_comment|/* ---- HCI TX task (outgoing data) ---- */
 multiline_comment|/* HCI Connection scheduler */
 DECL|function|hci_low_sent
