@@ -1,12 +1,8 @@
 multiline_comment|/*&n; * IPVS:        Locality-Based Least-Connection scheduling module&n; *&n; * Version:     $Id: ip_vs_lblc.c,v 1.10 2002/09/15 08:14:08 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@gnuchina.org&gt;&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Changes:&n; *     Martin Hamilton         :    fixed the terrible locking bugs&n; *                                   *lock(tbl-&gt;lock) ==&gt; *lock(&amp;tbl-&gt;lock)&n; *     Wensong Zhang           :    fixed the uninitilized tbl-&gt;lock bug&n; *     Wensong Zhang           :    added doing full expiration check to&n; *                                   collect stale entries of 24+ hours when&n; *                                   no partial expire check in a half hour&n; *     Julian Anastasov        :    replaced del_timer call with del_timer_sync&n; *                                   to avoid the possible race between timer&n; *                                   handler and del_timer thread in SMP&n; *&n; */
 multiline_comment|/*&n; * The lblc algorithm is as follows (pseudo code):&n; *&n; *       if cachenode[dest_ip] is null then&n; *               n, cachenode[dest_ip] &lt;- {weighted least-conn node};&n; *       else&n; *               n &lt;- cachenode[dest_ip];&n; *               if (n is dead) OR&n; *                  (n.conns&gt;n.weight AND&n; *                   there is a node m with m.conns&lt;m.weight/2) then&n; *                 n, cachenode[dest_ip] &lt;- {weighted least-conn node};&n; *&n; *       return n;&n; *&n; * Thanks must go to Wenzhuo Zhang for talking WCCP to me and pushing&n; * me to write this module.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-multiline_comment|/* for systcl */
+multiline_comment|/* for sysctl */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;net/ip_vs.h&gt;
@@ -19,6 +15,7 @@ multiline_comment|/*&n; *    It is for full expiration check.&n; *    When there
 DECL|macro|COUNT_FOR_FULL_EXPIRATION
 mdefine_line|#define COUNT_FOR_FULL_EXPIRATION   30
 DECL|variable|sysctl_ip_vs_lblc_expiration
+r_static
 r_int
 id|sysctl_ip_vs_lblc_expiration
 op_assign
