@@ -1279,10 +1279,9 @@ r_if
 c_cond
 (paren
 (paren
-op_increment
 id|fpu_swa_count
 OL
-l_int|5
+l_int|4
 )paren
 op_logical_and
 op_logical_neg
@@ -1296,6 +1295,9 @@ id|IA64_THREAD_FPEMU_NOPRINT
 id|last_time
 op_assign
 id|jiffies
+suffix:semicolon
+op_increment
+id|fpu_swa_count
 suffix:semicolon
 id|printk
 c_func
