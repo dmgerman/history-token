@@ -497,7 +497,7 @@ id|ACPI_SRAT_MEMORY_AFFINITY
 comma
 id|acpi_parse_memory_affinity
 comma
-id|NR_MEMBLKS
+id|NR_NODE_MEMBLKS
 )paren
 suffix:semicolon
 )brace
