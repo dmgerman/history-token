@@ -2695,6 +2695,11 @@ id|lidp-&gt;lid_flags
 op_or_assign
 id|XFS_LID_DIRTY
 suffix:semicolon
+id|lidp-&gt;lid_flags
+op_and_assign
+op_complement
+id|XFS_LID_BUF_STALE
+suffix:semicolon
 id|bip-&gt;bli_flags
 op_or_assign
 id|XFS_BLI_LOGGED
@@ -2989,6 +2994,8 @@ suffix:semicolon
 id|lidp-&gt;lid_flags
 op_or_assign
 id|XFS_LID_DIRTY
+op_or
+id|XFS_LID_BUF_STALE
 suffix:semicolon
 id|tp-&gt;t_flags
 op_or_assign

@@ -366,6 +366,8 @@ id|iop_unpin
 (paren
 id|xfs_log_item_t
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 DECL|member|iop_unpin_remove
@@ -475,7 +477,7 @@ mdefine_line|#define IOP_FORMAT(ip,vp)&t;(*(ip)-&gt;li_ops-&gt;iop_format)(ip, v
 DECL|macro|IOP_PIN
 mdefine_line|#define IOP_PIN(ip)&t;&t;(*(ip)-&gt;li_ops-&gt;iop_pin)(ip)
 DECL|macro|IOP_UNPIN
-mdefine_line|#define IOP_UNPIN(ip)&t;&t;(*(ip)-&gt;li_ops-&gt;iop_unpin)(ip)
+mdefine_line|#define IOP_UNPIN(ip, flags)&t;(*(ip)-&gt;li_ops-&gt;iop_unpin)(ip, flags)
 DECL|macro|IOP_UNPIN_REMOVE
 mdefine_line|#define IOP_UNPIN_REMOVE(ip,tp) (*(ip)-&gt;li_ops-&gt;iop_unpin_remove)(ip, tp)
 DECL|macro|IOP_TRYLOCK
@@ -539,6 +541,8 @@ DECL|macro|XFS_LID_PINNED
 mdefine_line|#define XFS_LID_PINNED&t;&t;0x2
 DECL|macro|XFS_LID_SYNC_UNLOCK
 mdefine_line|#define XFS_LID_SYNC_UNLOCK&t;0x4
+DECL|macro|XFS_LID_BUF_STALE
+mdefine_line|#define XFS_LID_BUF_STALE&t;0x8
 multiline_comment|/*&n; * This structure is used to maintain a chunk list of log_item_desc&n; * structures. The free field is a bitmask indicating which descriptors&n; * in this chunk&squot;s array are free.  The unused field is the first value&n; * not used since this chunk was allocated.&n; */
 DECL|macro|XFS_LIC_NUM_SLOTS
 mdefine_line|#define XFS_LIC_NUM_SLOTS&t;15
