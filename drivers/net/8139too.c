@@ -7002,9 +7002,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|DPRINTK
+id|printk
 (paren
-l_string|&quot;%s: Transmit timeout, status %2.2x %4.4x &quot;
+id|KERN_DEBUG
+l_string|&quot;%s: Transmit timeout, status %2.2x %4.4x %4.4x &quot;
 l_string|&quot;media %2.2x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7015,54 +7016,22 @@ id|ChipCmd
 )paren
 comma
 id|RTL_R16
+c_func
 (paren
 id|IntrStatus
 )paren
 comma
+id|RTL_R16
+c_func
+(paren
+id|IntrMask
+)paren
+comma
 id|RTL_R8
+c_func
 (paren
 id|MediaStatus
 )paren
-)paren
-suffix:semicolon
-id|tp-&gt;xstats.tx_timeouts
-op_increment
-suffix:semicolon
-multiline_comment|/* disable Tx ASAP, if not already */
-id|tmp8
-op_assign
-id|RTL_R8
-(paren
-id|ChipCmd
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tmp8
-op_amp
-id|CmdTxEnb
-)paren
-id|RTL_W8
-(paren
-id|ChipCmd
-comma
-id|CmdRxEnb
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|tp-&gt;rx_lock
-)paren
-suffix:semicolon
-multiline_comment|/* Disable interrupts by clearing the interrupt mask. */
-id|RTL_W16
-(paren
-id|IntrMask
-comma
-l_int|0x0000
 )paren
 suffix:semicolon
 multiline_comment|/* Emit info to figure out what went wrong. */
@@ -7122,6 +7091,46 @@ c_cond
 l_string|&quot; (queue head)&quot;
 suffix:colon
 l_string|&quot;&quot;
+)paren
+suffix:semicolon
+id|tp-&gt;xstats.tx_timeouts
+op_increment
+suffix:semicolon
+multiline_comment|/* disable Tx ASAP, if not already */
+id|tmp8
+op_assign
+id|RTL_R8
+(paren
+id|ChipCmd
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp8
+op_amp
+id|CmdTxEnb
+)paren
+id|RTL_W8
+(paren
+id|ChipCmd
+comma
+id|CmdRxEnb
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|tp-&gt;rx_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Disable interrupts by clearing the interrupt mask. */
+id|RTL_W16
+(paren
+id|IntrMask
+comma
+l_int|0x0000
 )paren
 suffix:semicolon
 multiline_comment|/* Stop a shared interrupt from scavenging while we are. */
