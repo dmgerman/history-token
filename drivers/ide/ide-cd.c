@@ -2356,6 +2356,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Set up the controller registers. */
+multiline_comment|/* FIXME: for Virtual DMA we must check harder */
 id|HWIF
 c_func
 (paren
