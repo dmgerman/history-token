@@ -2343,7 +2343,7 @@ suffix:semicolon
 multiline_comment|/* xd_interrupt_handler: interrupt service routine */
 DECL|function|xd_interrupt_handler
 r_static
-r_void
+id|irqreturn_t
 id|xd_interrupt_handler
 c_func
 (paren
@@ -2398,6 +2398,9 @@ id|xd_wait_int
 )paren
 suffix:semicolon
 multiline_comment|/* and wake up sleeping processes */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_else
 id|printk
@@ -2405,6 +2408,9 @@ c_func
 (paren
 l_string|&quot;xd: unexpected interrupt&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* xd_setup_dma: set up the DMA controller for a data transfer */

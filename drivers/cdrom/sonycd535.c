@@ -438,7 +438,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cdu535_interrupt
 id|cdu535_interrupt
 c_func
@@ -471,6 +471,7 @@ op_amp
 id|cdu535_irq_wait
 )paren
 )paren
+(brace
 id|wake_up
 c_func
 (paren
@@ -478,13 +479,19 @@ op_amp
 id|cdu535_irq_wait
 )paren
 suffix:semicolon
-r_else
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
 id|CDU535_MESSAGE_NAME
 l_string|&quot;: Got an interrupt but nothing was waiting&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait a little while.&n; */

@@ -150,7 +150,7 @@ id|dma_xmode
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ps2esdi_interrupt_handler
 c_func
 (paren
@@ -3066,7 +3066,7 @@ suffix:semicolon
 multiline_comment|/* prepare for dma */
 DECL|function|ps2esdi_interrupt_handler
 r_static
-r_void
+id|irqreturn_t
 id|ps2esdi_interrupt_handler
 c_func
 (paren
@@ -3141,8 +3141,12 @@ suffix:semicolon
 r_else
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|ps2esdi_initial_reset_int_handler
 r_static
