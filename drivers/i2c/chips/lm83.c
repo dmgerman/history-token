@@ -114,15 +114,11 @@ DECL|macro|LM83_REG_R_TCRIT
 mdefine_line|#define LM83_REG_R_TCRIT&t;&t;0x42
 DECL|macro|LM83_REG_W_TCRIT
 mdefine_line|#define LM83_REG_W_TCRIT&t;&t;0x5A
-multiline_comment|/*&n; * Conversions, initial values and various macros&n; * The LM83 uses signed 8-bit values.&n; */
+multiline_comment|/*&n; * Conversions and various macros&n; * The LM83 uses signed 8-bit values.&n; */
 DECL|macro|TEMP_FROM_REG
 mdefine_line|#define TEMP_FROM_REG(val)&t;((val &gt; 127 ? val-256 : val) * 1000)
 DECL|macro|TEMP_TO_REG
 mdefine_line|#define TEMP_TO_REG(val)&t;((val &lt; 0 ? val+256 : val) / 1000)
-DECL|macro|LM83_INIT_HIGH
-mdefine_line|#define LM83_INIT_HIGH&t;&t;100
-DECL|macro|LM83_INIT_CRIT
-mdefine_line|#define LM83_INIT_CRIT&t;&t;120
 DECL|variable|LM83_REG_R_TEMP
 r_static
 r_const
@@ -204,17 +200,6 @@ id|address
 comma
 r_int
 id|kind
-)paren
-suffix:semicolon
-r_static
-r_void
-id|lm83_init_client
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
 )paren
 suffix:semicolon
 r_static
@@ -1096,13 +1081,7 @@ id|new_client
 r_goto
 id|exit_free
 suffix:semicolon
-multiline_comment|/* Initialize the LM83 chip */
-id|lm83_init_client
-c_func
-(paren
-id|new_client
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Initialize the LM83 chip&n;&t; * (Nothing to do for this one.)&n;&t; */
 multiline_comment|/* Register sysfs hooks */
 id|device_create_file
 c_func
@@ -1219,67 +1198,6 @@ m_exit
 suffix:colon
 r_return
 id|err
-suffix:semicolon
-)brace
-DECL|function|lm83_init_client
-r_static
-r_void
-id|lm83_init_client
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-)paren
-(brace
-r_int
-id|nr
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|nr
-op_assign
-l_int|0
-suffix:semicolon
-id|nr
-OL
-l_int|4
-suffix:semicolon
-id|nr
-op_increment
-)paren
-id|i2c_smbus_write_byte_data
-c_func
-(paren
-id|client
-comma
-id|LM83_REG_W_HIGH
-(braket
-id|nr
-)braket
-comma
-id|TEMP_TO_REG
-c_func
-(paren
-id|LM83_INIT_HIGH
-)paren
-)paren
-suffix:semicolon
-id|i2c_smbus_write_byte_data
-c_func
-(paren
-id|client
-comma
-id|LM83_REG_W_TCRIT
-comma
-id|TEMP_TO_REG
-c_func
-(paren
-id|LM83_INIT_CRIT
-)paren
-)paren
 suffix:semicolon
 )brace
 DECL|function|lm83_detach_client
