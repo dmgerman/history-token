@@ -113,9 +113,8 @@ DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn) ({ &bslash;&n;&t;int nid = phys_to_nid(((unsigned long)(pfn)) &lt;&lt; PAGE_SHIFT); &t;&bslash;&n;&t;((pfn) - node_start_pfn(nid)) + node_mem_map(nid);&t;&t;&bslash;&n;})
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page) &bslash;&n;&t;(long)(((page) - page_zone(page)-&gt;zone_mem_map) + page_zone(page)-&gt;zone_start_pfn)
-multiline_comment|/* AK: !DISCONTIGMEM just forces it to 1. Can&squot;t we too? */
 DECL|macro|pfn_valid
-mdefine_line|#define pfn_valid(pfn)          ((pfn) &lt; num_physpages)
+mdefine_line|#define pfn_valid(pfn) ((pfn) &gt;= num_physpages ? 0 : &bslash;&n;&t;&t;&t;({ u8 nid__ = pfn_to_nid(pfn); &bslash;&n;&t;&t;&t;   nid__ != 0xff &amp;&amp; (pfn) &gt;= node_start_pfn(nid__) &amp;&amp; (pfn) &lt;= node_end_pfn(nid__); }))
 macro_line|#endif
 macro_line|#endif
 eof
