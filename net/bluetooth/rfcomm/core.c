@@ -54,6 +54,7 @@ mdefine_line|#define rfcomm_lock()&t;down(&amp;rfcomm_sem);
 DECL|macro|rfcomm_unlock
 mdefine_line|#define rfcomm_unlock()&t;up(&amp;rfcomm_sem);
 DECL|variable|rfcomm_event
+r_static
 r_int
 r_int
 id|rfcomm_event
