@@ -7,6 +7,10 @@ macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_82801DB_12
+DECL|macro|PCI_DEVICE_ID_INTEL_82801DB_12
+mdefine_line|#define PCI_DEVICE_ID_INTEL_82801DB_12  0x24cc
+macro_line|#endif
 multiline_comment|/* speedstep_chipset:&n; *   It is necessary to know which chipset is used. As accesses to &n; * this device occur at various places in this module, we need a &n; * static struct pci_dev * pointing to that device.&n; */
 DECL|variable|speedstep_chipset
 r_static
@@ -25,6 +29,8 @@ DECL|macro|SPEEDSTEP_CHIPSET_ICH2M
 mdefine_line|#define SPEEDSTEP_CHIPSET_ICH2M         0x00000002
 DECL|macro|SPEEDSTEP_CHIPSET_ICH3M
 mdefine_line|#define SPEEDSTEP_CHIPSET_ICH3M         0x00000003
+DECL|macro|SPEEDSTEP_CHIPSET_ICH4M
+mdefine_line|#define SPEEDSTEP_CHIPSET_ICH4M         0x00000004
 multiline_comment|/* speedstep_processor&n; */
 DECL|variable|speedstep_processor
 r_static
@@ -141,6 +147,9 @@ id|SPEEDSTEP_CHIPSET_ICH2M
 suffix:colon
 r_case
 id|SPEEDSTEP_CHIPSET_ICH3M
+suffix:colon
+r_case
+id|SPEEDSTEP_CHIPSET_ICH4M
 suffix:colon
 multiline_comment|/* get PMBASE */
 id|pci_read_config_dword
@@ -366,6 +375,9 @@ id|SPEEDSTEP_CHIPSET_ICH2M
 suffix:colon
 r_case
 id|SPEEDSTEP_CHIPSET_ICH3M
+suffix:colon
+r_case
+id|SPEEDSTEP_CHIPSET_ICH4M
 suffix:colon
 multiline_comment|/* get PMBASE */
 id|pci_read_config_dword
@@ -651,6 +663,9 @@ suffix:colon
 r_case
 id|SPEEDSTEP_CHIPSET_ICH3M
 suffix:colon
+r_case
+id|SPEEDSTEP_CHIPSET_ICH4M
+suffix:colon
 (brace
 id|u16
 id|value
@@ -727,6 +742,30 @@ id|speedstep_detect_chipset
 r_void
 )paren
 (brace
+id|speedstep_chipset_dev
+op_assign
+id|pci_find_subsys
+c_func
+(paren
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801DB_12
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|speedstep_chipset_dev
+)paren
+r_return
+id|SPEEDSTEP_CHIPSET_ICH4M
+suffix:semicolon
 id|speedstep_chipset_dev
 op_assign
 id|pci_find_subsys
