@@ -416,6 +416,36 @@ op_assign
 l_int|2
 )brace
 suffix:semicolon
+DECL|enum|lock_type4
+r_enum
+id|lock_type4
+(brace
+DECL|enumerator|NFS4_UNLOCK_LT
+id|NFS4_UNLOCK_LT
+op_assign
+l_int|0
+comma
+DECL|enumerator|NFS4_READ_LT
+id|NFS4_READ_LT
+op_assign
+l_int|1
+comma
+DECL|enumerator|NFS4_WRITE_LT
+id|NFS4_WRITE_LT
+op_assign
+l_int|2
+comma
+DECL|enumerator|NFS4_READW_LT
+id|NFS4_READW_LT
+op_assign
+l_int|3
+comma
+DECL|enumerator|NFS4_WRITEW_LT
+id|NFS4_WRITEW_LT
+op_assign
+l_int|4
+)brace
+suffix:semicolon
 multiline_comment|/* Mandatory Attributes */
 DECL|macro|FATTR4_WORD0_SUPPORTED_ATTRS
 mdefine_line|#define FATTR4_WORD0_SUPPORTED_ATTRS    (1)

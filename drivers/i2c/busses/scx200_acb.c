@@ -1706,7 +1706,7 @@ c_func
 (paren
 id|adapter-&gt;name
 comma
-id|DEVICE_NAME_SIZE
+id|I2C_NAME_SIZE
 comma
 l_string|&quot;SCx200 ACB%d&quot;
 comma
