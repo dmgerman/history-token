@@ -568,7 +568,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|up_clock_tick
+id|cpu_data
+c_func
+(paren
+l_int|0
+)paren
+dot
+id|clock_tick
 op_assign
 id|prom_getintdefault
 c_func

@@ -2493,13 +2493,6 @@ id|seq_file
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-DECL|variable|up_clock_tick
-r_int
-r_int
-id|up_clock_tick
-suffix:semicolon
-macro_line|#endif
 DECL|function|show_cpuinfo
 r_static
 r_int
@@ -2592,7 +2585,13 @@ id|HZ
 op_mod
 l_int|100
 comma
-id|up_clock_tick
+id|cpu_data
+c_func
+(paren
+l_int|0
+)paren
+dot
+id|clock_tick
 macro_line|#endif
 )paren
 suffix:semicolon
