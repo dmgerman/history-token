@@ -922,13 +922,6 @@ id|noaccel
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|release_io_ports
-r_static
-r_int
-id|release_io_ports
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n; *    Predefined Video Modes&n; */
 r_static
 r_const
@@ -10363,6 +10356,13 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_ALL_PPC */
 macro_line|#ifdef CONFIG_PCI
+DECL|variable|release_io_ports
+r_static
+r_int
+id|release_io_ports
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Pulled the logic from XFree86 Cirrus driver to get the memory size,&n; * based on the DRAM bandwidth bit and DRAM bank switching bit.  This&n; * works with 1MB, 2MB and 4MB configurations (which the Motorola boards&n; * seem to have. */
 DECL|function|clgen_get_memsize
 r_static
@@ -11322,11 +11322,19 @@ id|BT_PICASSO4
 (brace
 id|iounmap
 (paren
+(paren
+r_void
+op_star
+)paren
 id|info-&gt;board_addr
 )paren
 suffix:semicolon
 id|iounmap
 (paren
+(paren
+r_void
+op_star
+)paren
 id|info-&gt;fbmem_phys
 )paren
 suffix:semicolon
@@ -11342,6 +11350,10 @@ l_int|0x01000000
 )paren
 id|iounmap
 (paren
+(paren
+r_void
+op_star
+)paren
 id|info-&gt;board_addr
 )paren
 suffix:semicolon

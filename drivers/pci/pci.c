@@ -2748,11 +2748,12 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * pdev_set_mwi - helper function for pci_set_mwi&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Helper function for generic implementation of pci_set_mwi&n; * function.  Originally copied from drivers/net/acenic.c.&n; * Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;.&n; *&n; * RETURNS: An appriopriate -ERRNO error value on eror, or zero for success.&n; */
+macro_line|#ifndef HAVE_ARCH_PCI_MWI
+multiline_comment|/**&n; * pci_generic_prep_mwi - helper function for pci_set_mwi&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Helper function for generic implementation of pcibios_prep_mwi&n; * function.  Originally copied from drivers/net/acenic.c.&n; * Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;.&n; *&n; * RETURNS: An appropriate -ERRNO error value on eror, or zero for success.&n; */
 r_static
 r_int
-DECL|function|pdev_set_mwi
-id|pdev_set_mwi
+DECL|function|pci_generic_prep_mwi
+id|pci_generic_prep_mwi
 c_func
 (paren
 r_struct
@@ -2797,8 +2798,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;PCI: %s PCI cache line size set incorrectly &quot;
-l_string|&quot;(%i bytes) by BIOS/FW, &quot;
+l_string|&quot;PCI: %s PCI cache line size set &quot;
+l_string|&quot;incorrectly (%i bytes) by BIOS/FW, &quot;
 comma
 id|dev-&gt;slot_name
 comma
@@ -2855,6 +2856,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif /* !HAVE_ARCH_PCI_MWI */
 multiline_comment|/**&n; * pci_set_mwi - enables memory-write-validate PCI transaction&n; * @dev: the PCI device for which MWI is enabled&n; *&n; * Enables the Memory-Write-Invalidate transaction in %PCI_COMMAND,&n; * and then calls @pcibios_set_mwi to do the needed arch specific&n; * operations or a generic mwi-prep function.&n; *&n; * RETURNS: An appriopriate -ERRNO error value on eror, or zero for success.&n; */
 r_int
 DECL|function|pci_set_mwi
@@ -2876,7 +2878,7 @@ suffix:semicolon
 macro_line|#ifdef HAVE_ARCH_PCI_MWI
 id|rc
 op_assign
-id|pcibios_set_mwi
+id|pcibios_prep_mwi
 c_func
 (paren
 id|dev
@@ -2885,7 +2887,7 @@ suffix:semicolon
 macro_line|#else
 id|rc
 op_assign
-id|pdev_set_mwi
+id|pci_generic_prep_mwi
 c_func
 (paren
 id|dev
