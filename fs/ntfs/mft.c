@@ -2,8 +2,6 @@ multiline_comment|/**&n; * mft.c - NTFS kernel mft record operations. Part of th
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
-DECL|macro|MAX_BUF_PER_PAGE
-mdefine_line|#define MAX_BUF_PER_PAGE (PAGE_CACHE_SIZE / 512)
 multiline_comment|/**&n; * __format_mft_record - initialize an empty mft record&n; * @m:&t;&t;mapped, pinned and locked for writing mft record&n; * @size:&t;size of the mft record&n; * @rec_no:&t;mft record number / inode number&n; *&n; * Private function to initialize an empty mft record. Use one of the two&n; * provided format_mft_record() functions instead.&n; */
 DECL|function|__format_mft_record
 r_static
