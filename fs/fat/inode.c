@@ -3168,10 +3168,6 @@ id|result-&gt;d_op
 op_assign
 id|sb-&gt;s_root-&gt;d_op
 suffix:semicolon
-id|result-&gt;d_vfs_flags
-op_or_assign
-id|DCACHE_REFERENCED
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon

@@ -283,10 +283,6 @@ c_func
 id|result
 )paren
 suffix:semicolon
-id|dentry-&gt;d_vfs_flags
-op_or_assign
-id|DCACHE_REFERENCED
-suffix:semicolon
 r_return
 id|dentry
 suffix:semicolon
@@ -1108,10 +1104,6 @@ c_func
 id|result
 )paren
 suffix:semicolon
-id|dentry-&gt;d_vfs_flags
-op_or_assign
-id|DCACHE_REFERENCED
-suffix:semicolon
 r_return
 id|dentry
 suffix:semicolon
@@ -1683,10 +1675,6 @@ id|ENOMEM
 )paren
 suffix:semicolon
 )brace
-id|result-&gt;d_vfs_flags
-op_or_assign
-id|DCACHE_REFERENCED
-suffix:semicolon
 r_return
 id|result
 suffix:semicolon
