@@ -1596,7 +1596,7 @@ DECL|function|nfs4_increment_seqid
 id|nfs4_increment_seqid
 c_func
 (paren
-id|u32
+r_int
 id|status
 comma
 r_struct
@@ -1615,6 +1615,7 @@ op_logical_or
 id|seqid_mutating_err
 c_func
 (paren
+op_minus
 id|status
 )paren
 )paren

@@ -1805,7 +1805,7 @@ r_void
 id|nfs4_increment_seqid
 c_func
 (paren
-id|u32
+r_int
 id|status
 comma
 r_struct
