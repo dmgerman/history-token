@@ -22589,7 +22589,7 @@ c_func
 id|scsi_host
 comma
 op_amp
-id|pdev-&gt;dev
+id|dev-&gt;dev
 )paren
 suffix:semicolon
 multiline_comment|/* XXX handle failure */
