@@ -5684,12 +5684,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* caller must be able to sleep in order to cope&n;&t; * with startup transients.&n;&t; */
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* enable suspend/resume and reset irqs */
