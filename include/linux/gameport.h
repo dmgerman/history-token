@@ -1,11 +1,10 @@
 macro_line|#ifndef _GAMEPORT_H
 DECL|macro|_GAMEPORT_H
 mdefine_line|#define _GAMEPORT_H
-multiline_comment|/*&n; * $Id: gameport.h,v 1.11 2001/04/26 10:24:46 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
+multiline_comment|/*&n; * $Id: gameport.h,v 1.20 2002/01/03 08:55:05 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 r_struct
 id|gameport
 suffix:semicolon
@@ -18,9 +17,46 @@ r_void
 op_star
 r_private
 suffix:semicolon
+multiline_comment|/* Private pointer for joystick drivers */
+DECL|member|driver
+r_void
+op_star
+id|driver
+suffix:semicolon
+multiline_comment|/* Private pointer for gameport drivers */
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|phys
+r_char
+op_star
+id|phys
+suffix:semicolon
 DECL|member|number
 r_int
 id|number
+suffix:semicolon
+DECL|member|idbus
+r_int
+r_int
+id|idbus
+suffix:semicolon
+DECL|member|idvendor
+r_int
+r_int
+id|idvendor
+suffix:semicolon
+DECL|member|idproduct
+r_int
+r_int
+id|idproduct
+suffix:semicolon
+DECL|member|idversion
+r_int
+r_int
+id|idversion
 suffix:semicolon
 DECL|member|io
 r_int
@@ -144,6 +180,11 @@ r_void
 op_star
 r_private
 suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
 DECL|member|connect
 r_void
 (paren
@@ -242,7 +283,6 @@ id|gameport
 suffix:semicolon
 macro_line|#else
 DECL|function|gameport_register_port
-r_static
 r_void
 id|__inline__
 id|gameport_register_port
@@ -258,7 +298,6 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|gameport_unregister_port
-r_static
 r_void
 id|__inline__
 id|gameport_unregister_port
@@ -318,6 +357,8 @@ DECL|macro|GAMEPORT_ID_VENDOR_THRUSTMASTER
 mdefine_line|#define GAMEPORT_ID_VENDOR_THRUSTMASTER&t;0x0008
 DECL|macro|GAMEPORT_ID_VENDOR_GRAVIS
 mdefine_line|#define GAMEPORT_ID_VENDOR_GRAVIS&t;0x0009
+DECL|macro|GAMEPORT_ID_VENDOR_GUILLEMOT
+mdefine_line|#define GAMEPORT_ID_VENDOR_GUILLEMOT&t;0x000a
 DECL|function|gameport_trigger
 r_static
 id|__inline__
@@ -519,9 +560,11 @@ r_int
 id|ms
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
 id|schedule_timeout
 c_func

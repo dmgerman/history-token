@@ -3143,7 +3143,7 @@ id|effect-&gt;trigger.button
 comma
 id|effect-&gt;trigger.interval
 comma
-id|effect-&gt;u.periodic.direction
+id|effect-&gt;direction
 )paren
 suffix:semicolon
 r_return
@@ -3311,7 +3311,7 @@ id|effect-&gt;trigger.button
 comma
 id|effect-&gt;trigger.interval
 comma
-id|effect-&gt;u.constant.direction
+id|effect-&gt;direction
 )paren
 suffix:semicolon
 r_return
@@ -3506,7 +3506,7 @@ l_int|0xffff
 suffix:semicolon
 id|direction
 op_assign
-id|effect-&gt;u.interactive.direction
+id|effect-&gt;direction
 suffix:semicolon
 id|axes
 op_assign

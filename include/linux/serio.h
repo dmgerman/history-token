@@ -1,8 +1,8 @@
 macro_line|#ifndef _SERIO_H
 DECL|macro|_SERIO_H
 mdefine_line|#define _SERIO_H
-multiline_comment|/*&n; * $Id: serio.h,v 1.11 2001/05/29 02:58:50 jsimmons Exp $&n; *&n; * Copyright (C) 1999 Vojtech Pavlik&n; *&n; * Sponsored by SuSE&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: serio.h,v 1.21 2001/12/19 05:15:21 skids Exp $&n; *&n; * Copyright (C) 1999-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 multiline_comment|/*&n; * The serial port set type ioctl.&n; */
 macro_line|#include &lt;linux/ioctl.h&gt;
 DECL|macro|SPIOCSTYPE
@@ -24,14 +24,44 @@ r_void
 op_star
 id|driver
 suffix:semicolon
-DECL|member|type
-r_int
-r_int
-id|type
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|phys
+r_char
+op_star
+id|phys
 suffix:semicolon
 DECL|member|number
 r_int
 id|number
+suffix:semicolon
+DECL|member|idbus
+r_int
+r_int
+id|idbus
+suffix:semicolon
+DECL|member|idvendor
+r_int
+r_int
+id|idvendor
+suffix:semicolon
+DECL|member|idproduct
+r_int
+r_int
+id|idproduct
+suffix:semicolon
+DECL|member|idversion
+r_int
+r_int
+id|idversion
+suffix:semicolon
+DECL|member|type
+r_int
+r_int
+id|type
 suffix:semicolon
 DECL|member|write
 r_int
@@ -94,6 +124,23 @@ DECL|member|private
 r_void
 op_star
 r_private
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|member|write_wakeup
+r_void
+(paren
+op_star
+id|write_wakeup
+)paren
+(paren
+r_struct
+id|serio
+op_star
+)paren
 suffix:semicolon
 DECL|member|interrupt
 r_void
@@ -254,6 +301,37 @@ id|data
 )paren
 suffix:semicolon
 )brace
+DECL|function|serio_dev_write_wakeup
+r_static
+id|__inline__
+r_void
+id|serio_dev_write_wakeup
+c_func
+(paren
+r_struct
+id|serio
+op_star
+id|serio
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|serio-&gt;dev
+op_logical_and
+id|serio-&gt;dev-&gt;write_wakeup
+)paren
+(brace
+id|serio-&gt;dev
+op_member_access_from_pointer
+id|write_wakeup
+c_func
+(paren
+id|serio
+)paren
+suffix:semicolon
+)brace
+)brace
 DECL|macro|SERIO_TIMEOUT
 mdefine_line|#define SERIO_TIMEOUT&t;1
 DECL|macro|SERIO_PARITY
@@ -266,6 +344,8 @@ DECL|macro|SERIO_8042
 mdefine_line|#define SERIO_8042&t;0x01000000UL
 DECL|macro|SERIO_RS232
 mdefine_line|#define SERIO_RS232&t;0x02000000UL
+DECL|macro|SERIO_HIL_MLC
+mdefine_line|#define SERIO_HIL_MLC&t;0x03000000UL
 DECL|macro|SERIO_PROTO
 mdefine_line|#define SERIO_PROTO&t;0xFFUL
 DECL|macro|SERIO_MSC
@@ -306,6 +386,12 @@ DECL|macro|SERIO_H3600
 mdefine_line|#define SERIO_H3600&t;0x21
 DECL|macro|SERIO_PS2SER
 mdefine_line|#define SERIO_PS2SER&t;0x22
+DECL|macro|SERIO_TWIDKBD
+mdefine_line|#define SERIO_TWIDKBD&t;0x23
+DECL|macro|SERIO_TWIDJOY
+mdefine_line|#define SERIO_TWIDJOY&t;0x24
+DECL|macro|SERIO_HIL
+mdefine_line|#define SERIO_HIL&t;0x25
 DECL|macro|SERIO_ID
 mdefine_line|#define SERIO_ID&t;0xff00UL
 DECL|macro|SERIO_EXTRA
