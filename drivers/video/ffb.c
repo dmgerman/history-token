@@ -2245,7 +2245,7 @@ id|area-&gt;sx
 op_logical_or
 id|area-&gt;dy
 op_eq
-id|area-&gt;dy
+id|area-&gt;sy
 )paren
 (brace
 id|cfb_copyarea
@@ -4292,9 +4292,17 @@ id|all-&gt;par.prom_parent_node
 op_assign
 id|parent
 suffix:semicolon
+multiline_comment|/* Don&squot;t mention copyarea, so SCROLL_REDRAW is always&n;&t; * used.  It is the fastest on this chip.&n;&t; */
 id|all-&gt;info.flags
 op_assign
+(paren
 id|FBINFO_DEFAULT
+op_or
+multiline_comment|/* FBINFO_HWACCEL_COPYAREA | */
+id|FBINFO_HWACCEL_FILLRECT
+op_or
+id|FBINFO_HWACCEL_IMAGEBLIT
+)paren
 suffix:semicolon
 id|all-&gt;info.fbops
 op_assign
