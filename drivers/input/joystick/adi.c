@@ -2386,7 +2386,6 @@ id|adi-&gt;abs
 id|i
 )braket
 comma
-op_amp
 id|adi-&gt;dev.absbit
 )paren
 suffix:semicolon
@@ -2412,7 +2411,6 @@ id|adi-&gt;key
 id|i
 )braket
 comma
-op_amp
 id|adi-&gt;dev.keybit
 )paren
 suffix:semicolon

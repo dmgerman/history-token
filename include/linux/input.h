@@ -1,7 +1,7 @@
 macro_line|#ifndef _INPUT_H
 DECL|macro|_INPUT_H
 mdefine_line|#define _INPUT_H
-multiline_comment|/*&n; * $Id: input.h,v 1.57 2002/01/02 11:59:56 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * $Id: input.h,v 1.68 2002/05/31 10:35:49 fsirl Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/time.h&gt;
@@ -541,12 +541,16 @@ DECL|macro|KEY_SPORT
 mdefine_line|#define KEY_SPORT&t;&t;220
 DECL|macro|KEY_SHOP
 mdefine_line|#define KEY_SHOP&t;&t;221
-DECL|macro|KEY_UNKNOWN
-mdefine_line|#define KEY_UNKNOWN&t;&t;240
+DECL|macro|KEY_ALTERASE
+mdefine_line|#define KEY_ALTERASE&t;&t;222
+DECL|macro|KEY_CANCEL
+mdefine_line|#define KEY_CANCEL&t;&t;223
 DECL|macro|KEY_BRIGHTNESSDOWN
 mdefine_line|#define KEY_BRIGHTNESSDOWN&t;224
 DECL|macro|KEY_BRIGHTNESSUP
 mdefine_line|#define KEY_BRIGHTNESSUP&t;225
+DECL|macro|KEY_UNKNOWN
+mdefine_line|#define KEY_UNKNOWN&t;&t;240
 DECL|macro|BTN_MISC
 mdefine_line|#define BTN_MISC&t;&t;0x100
 DECL|macro|BTN_0
@@ -669,6 +673,12 @@ DECL|macro|BTN_STYLUS
 mdefine_line|#define BTN_STYLUS&t;&t;0x14b
 DECL|macro|BTN_STYLUS2
 mdefine_line|#define BTN_STYLUS2&t;&t;0x14c
+DECL|macro|BTN_WHEEL
+mdefine_line|#define BTN_WHEEL&t;&t;0x150
+DECL|macro|BTN_GEAR_DOWN
+mdefine_line|#define BTN_GEAR_DOWN&t;&t;0x150
+DECL|macro|BTN_GEAR_UP
+mdefine_line|#define BTN_GEAR_UP&t;&t;0x151
 DECL|macro|KEY_MAX
 mdefine_line|#define KEY_MAX&t;&t;&t;0x1ff
 multiline_comment|/*&n; * Relative axes&n; */
@@ -825,7 +835,7 @@ DECL|macro|FF_STATUS_PLAYING
 mdefine_line|#define FF_STATUS_PLAYING&t;0x01
 DECL|macro|FF_STATUS_MAX
 mdefine_line|#define FF_STATUS_MAX&t;&t;0x01
-multiline_comment|/*&n; * Structures used in ioctls to upload effects to a device&n; * The first structures are not passed directly by using ioctls.&n; * They are sub-structures of the actually sent structure (called ff_effect)&n; *&n; * Ranges:&n; *  0 &lt;= __u16 &lt;= 65535&n; *  -32767 &lt;= __s16 &lt;= +32767     ! Not -32768 for lower bound !&n; */
+multiline_comment|/*&n; * Structures used in ioctls to upload effects to a device&n; * The first structures are not passed directly by using ioctls.&n; * They are sub-structures of the actually sent structure (called ff_effect)&n; */
 DECL|struct|ff_replay
 r_struct
 id|ff_replay
@@ -858,9 +868,9 @@ suffix:semicolon
 multiline_comment|/* Time to wait before an effect can be re-triggered (ms) */
 )brace
 suffix:semicolon
-DECL|struct|ff_shape
+DECL|struct|ff_envelope
 r_struct
-id|ff_shape
+id|ff_envelope
 (brace
 DECL|member|attack_length
 id|__u16
@@ -894,23 +904,38 @@ id|__s16
 id|level
 suffix:semicolon
 multiline_comment|/* Strength of effect. Negative values are OK */
-DECL|member|shape
+DECL|member|envelope
 r_struct
-id|ff_shape
-id|shape
+id|ff_envelope
+id|envelope
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* FF_RAMP */
+DECL|struct|ff_ramp_effect
+r_struct
+id|ff_ramp_effect
+(brace
+DECL|member|start_level
+id|__s16
+id|start_level
+suffix:semicolon
+DECL|member|end_level
+id|__s16
+id|end_level
+suffix:semicolon
+DECL|member|envelope
+r_struct
+id|ff_envelope
+id|envelope
 suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* FF_SPRING of FF_FRICTION */
-DECL|struct|ff_interactive_effect
+DECL|struct|ff_condition_effect
 r_struct
-id|ff_interactive_effect
+id|ff_condition_effect
 (brace
-multiline_comment|/* Axis along which effect must be created. If null, the field named direction&n; * is used&n; * It is a bit array (ie to enable axes X and Y, use BIT(ABS_X) | BIT(ABS_Y)&n; * It overrides the value of ff_effect::direction, which is used only if&n; * axis == 0&n; */
-DECL|member|axis
-id|__u16
-id|axis
-suffix:semicolon
 DECL|member|right_saturation
 id|__u16
 id|right_saturation
@@ -940,7 +965,7 @@ DECL|member|center
 id|__s16
 id|center
 suffix:semicolon
-multiline_comment|/* Position of dead dead zone */
+multiline_comment|/* Position of dead zone */
 )brace
 suffix:semicolon
 multiline_comment|/* FF_PERIODIC */
@@ -973,11 +998,42 @@ id|__u16
 id|phase
 suffix:semicolon
 multiline_comment|/* &squot;Horizontal&squot; shift */
-DECL|member|shape
+DECL|member|envelope
 r_struct
-id|ff_shape
-id|shape
+id|ff_envelope
+id|envelope
 suffix:semicolon
+multiline_comment|/* Only used if waveform == FF_CUSTOM */
+DECL|member|custom_len
+id|__u32
+id|custom_len
+suffix:semicolon
+multiline_comment|/* Number of samples  */
+DECL|member|custom_data
+id|__s16
+op_star
+id|custom_data
+suffix:semicolon
+multiline_comment|/* Buffer of samples */
+multiline_comment|/* Note: the data pointed by custom_data is copied by the driver. You can&n; * therefore dispose of the memory after the upload/update */
+)brace
+suffix:semicolon
+multiline_comment|/* FF_RUMBLE */
+multiline_comment|/* Some rumble pads have two motors of different weight.&n;   strong_magnitude represents the magnitude of the vibration generated&n;   by the heavy motor.&n;*/
+DECL|struct|ff_rumble_effect
+r_struct
+id|ff_rumble_effect
+(brace
+DECL|member|strong_magnitude
+id|__u16
+id|strong_magnitude
+suffix:semicolon
+multiline_comment|/* Magnitude of the heavy motor */
+DECL|member|weak_magnitude
+id|__u16
+id|weak_magnitude
+suffix:semicolon
+multiline_comment|/* Magnitude of the light one */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Structure sent through ioctl from the application to the driver&n; */
@@ -1016,15 +1072,29 @@ r_struct
 id|ff_constant_effect
 id|constant
 suffix:semicolon
+DECL|member|ramp
+r_struct
+id|ff_ramp_effect
+id|ramp
+suffix:semicolon
 DECL|member|periodic
 r_struct
 id|ff_periodic_effect
 id|periodic
 suffix:semicolon
-DECL|member|interactive
+DECL|member|condition
 r_struct
-id|ff_interactive_effect
-id|interactive
+id|ff_condition_effect
+id|condition
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* One for each axis */
+DECL|member|rumble
+r_struct
+id|ff_rumble_effect
+id|rumble
 suffix:semicolon
 DECL|member|u
 )brace
@@ -1032,16 +1102,6 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Buttons that can trigger effects. Use for example FF_BTN(BTN_TRIGGER) to&n; * access the bitmap.&n; */
-DECL|macro|FF_BTN
-mdefine_line|#define FF_BTN(x)&t;((x) - BTN_MISC + FF_BTN_OFFSET)
-DECL|macro|FF_BTN_OFFSET
-mdefine_line|#define FF_BTN_OFFSET&t;0x00
-multiline_comment|/*&n; * Force feedback axis mappings. Use FF_ABS() to access the bitmap.&n; */
-DECL|macro|FF_ABS
-mdefine_line|#define FF_ABS(x)&t;((x) + FF_ABS_OFFSET)
-DECL|macro|FF_ABS_OFFSET
-mdefine_line|#define FF_ABS_OFFSET&t;0x40
 multiline_comment|/*&n; * Force feedback effect types&n; */
 DECL|macro|FF_RUMBLE
 mdefine_line|#define FF_RUMBLE&t;0x50
@@ -1053,6 +1113,12 @@ DECL|macro|FF_SPRING
 mdefine_line|#define FF_SPRING&t;0x53
 DECL|macro|FF_FRICTION
 mdefine_line|#define FF_FRICTION&t;0x54
+DECL|macro|FF_DAMPER
+mdefine_line|#define FF_DAMPER&t;0x55
+DECL|macro|FF_INERTIA
+mdefine_line|#define FF_INERTIA&t;0x56
+DECL|macro|FF_RAMP
+mdefine_line|#define FF_RAMP&t;&t;0x57
 multiline_comment|/*&n; * Force feedback periodic effect types&n; */
 DECL|macro|FF_SQUARE
 mdefine_line|#define FF_SQUARE&t;0x58
@@ -1106,10 +1172,6 @@ DECL|member|uniq
 r_char
 op_star
 id|uniq
-suffix:semicolon
-DECL|member|number
-r_int
-id|number
 suffix:semicolon
 DECL|member|idbus
 r_int
@@ -1355,10 +1417,6 @@ id|ABS_MAX
 op_plus
 l_int|1
 )braket
-suffix:semicolon
-DECL|member|only_one_writer
-r_int
-id|only_one_writer
 suffix:semicolon
 DECL|member|open
 r_int
