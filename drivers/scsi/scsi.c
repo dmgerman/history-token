@@ -1843,6 +1843,36 @@ op_assign
 id|scsi_pid
 op_increment
 suffix:semicolon
+multiline_comment|/* &n;&t; * If SCSI-2 or lower, store the LUN value in cmnd.&n;&t; */
+r_if
+c_cond
+(paren
+id|SCpnt-&gt;device-&gt;scsi_level
+op_le
+id|SCSI_2
+)paren
+id|SCpnt-&gt;cmnd
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|SCpnt-&gt;cmnd
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x1f
+)paren
+op_or
+(paren
+id|SCpnt-&gt;lun
+op_lshift
+l_int|5
+op_amp
+l_int|0xe0
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We will wait MIN_RESET_DELAY clock ticks after the last reset so&n;&t; * we can avoid the drive not being ready.&n;&t; */
 id|timeout
 op_assign
