@@ -321,6 +321,11 @@ comma
 r_void
 op_star
 id|d
+comma
+r_char
+op_star
+op_star
+id|dev_out
 )paren
 (brace
 r_struct
@@ -651,6 +656,11 @@ id|data-&gt;pid
 op_assign
 id|pid
 suffix:semicolon
+op_star
+id|dev_out
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 r_new
 suffix:semicolon
@@ -794,6 +804,10 @@ id|chan_ops
 id|xterm_ops
 op_assign
 (brace
+id|type
+suffix:colon
+l_string|&quot;xterm&quot;
+comma
 id|init
 suffix:colon
 id|xterm_init
