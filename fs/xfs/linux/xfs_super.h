@@ -43,6 +43,17 @@ macro_line|# define XFS_ACL_STRING
 DECL|macro|set_posix_acl_flag
 macro_line|# define set_posix_acl_flag(sb)&t;do { } while (0)
 macro_line|#endif
+macro_line|#ifdef CONFIG_XFS_SECURITY
+DECL|macro|XFS_SECURITY_STRING
+macro_line|# define XFS_SECURITY_STRING&t;&quot;security attrs, &quot;
+DECL|macro|ENOSECURITY
+macro_line|# define ENOSECURITY&t;&t;0
+macro_line|#else
+DECL|macro|XFS_SECURITY_STRING
+macro_line|# define XFS_SECURITY_STRING
+DECL|macro|ENOSECURITY
+macro_line|# define ENOSECURITY&t;&t;EOPNOTSUPP
+macro_line|#endif
 macro_line|#ifdef CONFIG_XFS_RT
 DECL|macro|XFS_REALTIME_STRING
 macro_line|# define XFS_REALTIME_STRING&t;&quot;realtime, &quot;
@@ -77,7 +88,7 @@ DECL|macro|XFS_DBG_STRING
 macro_line|# define XFS_DBG_STRING&t;&t;&quot;no debug&quot;
 macro_line|#endif
 DECL|macro|XFS_BUILD_OPTIONS
-mdefine_line|#define XFS_BUILD_OPTIONS&t;XFS_ACL_STRING &bslash;&n;&t;&t;&t;&t;XFS_REALTIME_STRING &bslash;&n;&t;&t;&t;&t;XFS_BIGFS_STRING &bslash;&n;&t;&t;&t;&t;XFS_TRACE_STRING &bslash;&n;&t;&t;&t;&t;XFS_DBG_STRING /* DBG must be last */
+mdefine_line|#define XFS_BUILD_OPTIONS&t;XFS_ACL_STRING &bslash;&n;&t;&t;&t;&t;XFS_SECURITY_STRING &bslash;&n;&t;&t;&t;&t;XFS_REALTIME_STRING &bslash;&n;&t;&t;&t;&t;XFS_BIGFS_STRING &bslash;&n;&t;&t;&t;&t;XFS_TRACE_STRING &bslash;&n;&t;&t;&t;&t;XFS_DBG_STRING /* DBG must be last */
 DECL|macro|LINVFS_GET_VFS
 mdefine_line|#define LINVFS_GET_VFS(s) &bslash;&n;&t;(vfs_t *)((s)-&gt;s_fs_info)
 DECL|macro|LINVFS_SET_VFS

@@ -485,6 +485,54 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef XFS_DIR2_TRACE
+id|ktrace_free
+c_func
+(paren
+id|xfs_dir2_trace_buf
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef XFS_ATTR_TRACE
+id|ktrace_free
+c_func
+(paren
+id|xfs_attr_trace_buf
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef XFS_DIR_TRACE
+id|ktrace_free
+c_func
+(paren
+id|xfs_dir_trace_buf
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef XFS_BMBT_TRACE
+id|ktrace_free
+c_func
+(paren
+id|xfs_bmbt_trace_buf
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef XFS_BMAP_TRACE
+id|ktrace_free
+c_func
+(paren
+id|xfs_bmap_trace_buf
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef XFS_ALLOC_TRACE
+id|ktrace_free
+c_func
+(paren
+id|xfs_alloc_trace_buf
+)paren
+suffix:semicolon
+macro_line|#endif
 id|kmem_cache_destroy
 c_func
 (paren
