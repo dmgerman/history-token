@@ -500,6 +500,10 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|dentry
+op_eq
+id|mnt-&gt;mnt_root
+op_logical_and
 id|follow_up
 c_func
 (paren
