@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
+macro_line|#include &lt;acpi/actypes.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT&t;&t;ACPI_EC_COMPONENT
 id|ACPI_MODULE_NAME
@@ -1453,6 +1454,21 @@ id|return_context
 )paren
 (brace
 multiline_comment|/*&n;&t; * The EC object is in the handler context and is needed&n;&t; * when calling the acpi_ec_space_handler.&n;&t; */
+r_if
+c_cond
+(paren
+id|function
+op_eq
+id|ACPI_REGION_DEACTIVATE
+)paren
+(brace
+op_star
+id|return_context
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+r_else
 op_star
 id|return_context
 op_assign
