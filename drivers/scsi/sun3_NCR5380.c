@@ -1877,22 +1877,12 @@ l_int|0
 suffix:semicolon
 DECL|macro|check_offset
 mdefine_line|#define check_offset()&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (pos - buffer &lt; offset - begin) {&t;&bslash;&n;&t;    begin += pos - buffer;&t;&t;&bslash;&n;&t;    pos = buffer;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;    } while (0)
-r_for
-c_loop
+id|instance
+op_assign
+id|scsi_host_hn_get
+c_func
 (paren
-id|instance
-op_assign
-id|first_instance
-suffix:semicolon
-id|instance
-op_logical_and
-id|HOSTNO
-op_ne
 id|hostno
-suffix:semicolon
-id|instance
-op_assign
-id|instance-&gt;next
 )paren
 suffix:semicolon
 r_if
