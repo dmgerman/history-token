@@ -119,7 +119,7 @@ id|cls
 id|pr_debug
 c_func
 (paren
-l_string|&quot;register interface &squot;%s&squot; with class &squot;%s&bslash;n&quot;
+l_string|&quot;register interface &squot;%s&squot; with class &squot;%s&squot;&bslash;n&quot;
 comma
 id|intf-&gt;name
 comma
