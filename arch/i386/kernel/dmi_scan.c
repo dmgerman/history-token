@@ -10,18 +10,6 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-DECL|variable|dmi_broken
-r_int
-r_int
-id|dmi_broken
-suffix:semicolon
-DECL|variable|dmi_broken
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dmi_broken
-)paren
-suffix:semicolon
 DECL|variable|es7000_plat
 r_int
 id|es7000_plat
