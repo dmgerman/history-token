@@ -860,8 +860,10 @@ r_int
 id|d
 suffix:semicolon
 multiline_comment|/* DriveStruct index: drive number */
+DECL|struct|sbpcd_drive
 r_static
 r_struct
+id|sbpcd_drive
 (brace
 DECL|member|drv_id
 r_char
@@ -1246,6 +1248,15 @@ id|D_S
 (braket
 id|NR_SBPCD
 )braket
+suffix:semicolon
+DECL|variable|current_drive
+r_static
+r_struct
+id|sbpcd_drive
+op_star
+id|current_drive
+op_assign
+id|D_S
 suffix:semicolon
 multiline_comment|/*&n; * drive space ends here (needed separate for each unit)&n; */
 multiline_comment|/*==========================================================================*/
@@ -19845,6 +19856,12 @@ id|i
 (brace
 id|d
 op_assign
+id|i
+suffix:semicolon
+id|current_drive
+op_assign
+id|D_S
+op_plus
 id|i
 suffix:semicolon
 id|OUT
