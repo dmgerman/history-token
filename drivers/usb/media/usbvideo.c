@@ -3,8 +3,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define&t;__NO_VERSION__&t;&t;/* Temporary: usbvideo is not a module yet */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -131,6 +129,185 @@ id|data
 )paren
 suffix:semicolon
 macro_line|#endif
+r_static
+r_void
+id|usbvideo_Disconnect
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|ptr
+)paren
+suffix:semicolon
+r_static
+r_void
+id|usbvideo_CameraRelease
+c_func
+(paren
+id|uvd_t
+op_star
+id|uvd
+)paren
+suffix:semicolon
+r_static
+r_int
+id|usbvideo_v4l_ioctl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+r_static
+r_int
+id|usbvideo_v4l_mmap
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+)paren
+suffix:semicolon
+r_static
+r_int
+id|usbvideo_v4l_open
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+r_static
+r_int
+id|usbvideo_v4l_read
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_char
+op_star
+id|buf
+comma
+r_int
+id|count
+comma
+id|loff_t
+op_star
+id|ppos
+)paren
+suffix:semicolon
+r_static
+r_int
+id|usbvideo_v4l_close
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+suffix:semicolon
+r_static
+r_int
+id|usbvideo_StartDataPump
+c_func
+(paren
+id|uvd_t
+op_star
+id|uvd
+)paren
+suffix:semicolon
+r_static
+r_void
+id|usbvideo_StopDataPump
+c_func
+(paren
+id|uvd_t
+op_star
+id|uvd
+)paren
+suffix:semicolon
+r_static
+r_int
+id|usbvideo_GetFrame
+c_func
+(paren
+id|uvd_t
+op_star
+id|uvd
+comma
+r_int
+id|frameNum
+)paren
+suffix:semicolon
+r_static
+r_int
+id|usbvideo_NewFrame
+c_func
+(paren
+id|uvd_t
+op_star
+id|uvd
+comma
+r_int
+id|framenum
+)paren
+suffix:semicolon
+r_static
+r_void
+id|usbvideo_SoftwareContrastAdjustment
+c_func
+(paren
+id|uvd_t
+op_star
+id|uvd
+comma
+id|usbvideo_frame_t
+op_star
+id|frame
+)paren
+suffix:semicolon
 multiline_comment|/*******************************/
 multiline_comment|/* Memory management functions */
 multiline_comment|/*******************************/
@@ -196,6 +373,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|usbvideo_rvmalloc
+r_static
 r_void
 op_star
 id|usbvideo_rvmalloc
@@ -294,6 +472,7 @@ id|mem
 suffix:semicolon
 )brace
 DECL|function|usbvideo_rvfree
+r_static
 r_void
 id|usbvideo_rvfree
 c_func
@@ -369,6 +548,7 @@ id|mem
 suffix:semicolon
 )brace
 DECL|function|RingQueue_Initialize
+r_static
 r_void
 id|RingQueue_Initialize
 c_func
@@ -394,6 +574,7 @@ id|rq-&gt;wqh
 suffix:semicolon
 )brace
 DECL|function|RingQueue_Allocate
+r_static
 r_void
 id|RingQueue_Allocate
 c_func
@@ -441,6 +622,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|RingQueue_IsAllocated
+r_static
 r_int
 id|RingQueue_IsAllocated
 c_func
@@ -476,6 +658,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|RingQueue_Free
+r_static
 r_void
 id|RingQueue_Free
 c_func
@@ -593,6 +776,13 @@ r_return
 id|len
 suffix:semicolon
 )brace
+DECL|variable|RingQueue_Dequeue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|RingQueue_Dequeue
+)paren
+suffix:semicolon
 DECL|function|RingQueue_Enqueue
 r_int
 id|RingQueue_Enqueue
@@ -736,6 +926,13 @@ r_return
 id|enqueued
 suffix:semicolon
 )brace
+DECL|variable|RingQueue_Enqueue
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|RingQueue_Enqueue
+)paren
+suffix:semicolon
 DECL|function|RingQueue_GetLength
 r_int
 id|RingQueue_GetLength
@@ -801,7 +998,15 @@ id|ri
 )paren
 suffix:semicolon
 )brace
+DECL|variable|RingQueue_GetLength
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|RingQueue_GetLength
+)paren
+suffix:semicolon
 DECL|function|RingQueue_InterruptibleSleepOn
+r_static
 r_void
 id|RingQueue_InterruptibleSleepOn
 c_func
@@ -861,8 +1066,16 @@ id|rq-&gt;wqh
 )paren
 suffix:semicolon
 )brace
+DECL|variable|RingQueue_WakeUpInterruptible
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|RingQueue_WakeUpInterruptible
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * usbvideo_VideosizeToString()&n; *&n; * This procedure converts given videosize value to readable string.&n; *&n; * History:&n; * 07-Aug-2000 Created.&n; * 19-Oct-2000 Reworked for usbvideo module.&n; */
 DECL|function|usbvideo_VideosizeToString
+r_static
 r_void
 id|usbvideo_VideosizeToString
 c_func
@@ -956,6 +1169,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_OverlayChar()&n; *&n; * History:&n; * 01-Feb-2000 Created.&n; */
 DECL|function|usbvideo_OverlayChar
+r_static
 r_void
 id|usbvideo_OverlayChar
 c_func
@@ -1216,6 +1430,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_OverlayString()&n; *&n; * History:&n; * 01-Feb-2000 Created.&n; */
 DECL|function|usbvideo_OverlayString
+r_static
 r_void
 id|usbvideo_OverlayString
 c_func
@@ -1274,6 +1489,7 @@ multiline_comment|/* 3 pixels character + 1 space */
 )brace
 multiline_comment|/*&n; * usbvideo_OverlayStats()&n; *&n; * Overlays important debugging information.&n; *&n; * History:&n; * 01-Feb-2000 Created.&n; */
 DECL|function|usbvideo_OverlayStats
+r_static
 r_void
 id|usbvideo_OverlayStats
 c_func
@@ -2099,6 +2315,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_ReportStatistics()&n; *&n; * This procedure prints packet and transfer statistics.&n; *&n; * History:&n; * 14-Jan-2000 Corrected default multiplier.&n; */
 DECL|function|usbvideo_ReportStatistics
+r_static
 r_void
 id|usbvideo_ReportStatistics
 c_func
@@ -2712,6 +2929,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|usbvideo_DrawLine
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usbvideo_DrawLine
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * usbvideo_TestPattern()&n; *&n; * Procedure forms a test pattern (yellow grid on blue background).&n; *&n; * Parameters:&n; * fullframe: if TRUE then entire frame is filled, otherwise the procedure&n; *&t;      continues from the current scanline.&n; * pmode      0: fill the frame with solid blue color (like on VCR or TV)&n; *&t;      1: Draw a colored grid&n; *&n; * History:&n; * 01-Feb-2000 Created.&n; */
 DECL|function|usbvideo_TestPattern
 r_void
@@ -3099,6 +3323,13 @@ id|frame
 )paren
 suffix:semicolon
 )brace
+DECL|variable|usbvideo_TestPattern
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usbvideo_TestPattern
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * usbvideo_HexDump()&n; *&n; * A debugging tool. Prints hex dumps.&n; *&n; * History:&n; * 29-Jul-2000 Added printing of offsets.&n; */
 DECL|function|usbvideo_HexDump
 r_void
@@ -3247,6 +3478,13 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
+DECL|variable|usbvideo_HexDump
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usbvideo_HexDump
+)paren
+suffix:semicolon
 multiline_comment|/* Debugging aid */
 DECL|function|usbvideo_SayAndWait
 r_void
@@ -3289,6 +3527,13 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* Timeout */
 )brace
+DECL|variable|usbvideo_SayAndWait
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usbvideo_SayAndWait
+)paren
+suffix:semicolon
 multiline_comment|/* ******************************************************************** */
 DECL|function|usbvideo_ClientIncModCount
 r_static
@@ -3987,6 +4232,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|usbvideo_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usbvideo_register
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * usbvideo_Deregister()&n; *&n; * Procedure frees all usbvideo and user data structures. Be warned that&n; * if you had some dynamically allocated components in -&gt;user field then&n; * you should free them before calling here.&n; */
 DECL|function|usbvideo_Deregister
 r_void
@@ -4238,8 +4490,16 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|usbvideo_Deregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usbvideo_Deregister
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * usbvideo_Disconnect()&n; *&n; * This procedure stops all driver activity. Deallocation of&n; * the interface-private structure (pointed by &squot;ptr&squot;) is done now&n; * (if we don&squot;t have any open files) or later, when those files&n; * are closed. After that driver should be removable.&n; *&n; * This code handles surprise removal. The uvd-&gt;user is a counter which&n; * increments on open() and decrements on close(). If we see here that&n; * this counter is not 0 then we have a client who still has us opened.&n; * We set uvd-&gt;remove_pending flag as early as possible, and after that&n; * all access to the camera will gracefully fail. These failures should&n; * prompt client to (eventually) close the video device, and then - in&n; * usbvideo_v4l_close() - we decrement uvd-&gt;uvd_used and usage counter.&n; *&n; * History:&n; * 22-Jan-2000 Added polling of MOD_IN_USE to delay removal until all users gone.&n; * 27-Jan-2000 Reworked to allow pending disconnects; see xxx_close()&n; * 24-May-2000 Corrected to prevent race condition (MOD_xxx_USE_COUNT).&n; * 19-Oct-2000 Moved to usbvideo module.&n; */
 DECL|function|usbvideo_Disconnect
+r_static
 r_void
 id|usbvideo_Disconnect
 c_func
@@ -4456,6 +4716,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_CameraRelease()&n; *&n; * This code does final release of uvd_t. This happens&n; * after the device is disconnected -and- all clients&n; * closed their files.&n; *&n; * History:&n; * 27-Jan-2000 Created.&n; */
 DECL|function|usbvideo_CameraRelease
+r_static
 r_void
 id|usbvideo_CameraRelease
 c_func
@@ -4954,6 +5215,13 @@ r_return
 id|uvd
 suffix:semicolon
 )brace
+DECL|variable|usbvideo_AllocateDevice
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usbvideo_AllocateDevice
+)paren
+suffix:semicolon
 DECL|function|usbvideo_RegisterVideoDevice
 r_int
 id|usbvideo_RegisterVideoDevice
@@ -5269,8 +5537,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|usbvideo_RegisterVideoDevice
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usbvideo_RegisterVideoDevice
+)paren
+suffix:semicolon
 multiline_comment|/* ******************************************************************** */
 DECL|function|usbvideo_v4l_mmap
+r_static
 r_int
 id|usbvideo_v4l_mmap
 c_func
@@ -5432,6 +5708,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_v4l_open()&n; *&n; * This is part of Video 4 Linux API. The driver can be opened by one&n; * client only (checks internal counter &squot;uvdser&squot;). The procedure&n; * then allocates buffers needed for video processing.&n; *&n; * History:&n; * 22-Jan-2000 Rewrote, moved scratch buffer allocation here. Now the&n; *             camera is also initialized here (once per connect), at&n; *             expense of V4L client (it waits on open() call).&n; * 27-Jan-2000 Used USBVIDEO_NUMSBUF as number of URB buffers.&n; * 24-May-2000 Corrected to prevent race condition (MOD_xxx_USE_COUNT).&n; */
 DECL|function|usbvideo_v4l_open
+r_static
 r_int
 id|usbvideo_v4l_open
 c_func
@@ -6043,6 +6320,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_v4l_close()&n; *&n; * This is part of Video 4 Linux API. The procedure&n; * stops streaming and deallocates all buffers that were earlier&n; * allocated in usbvideo_v4l_open().&n; *&n; * History:&n; * 22-Jan-2000 Moved scratch buffer deallocation here.&n; * 27-Jan-2000 Used USBVIDEO_NUMSBUF as number of URB buffers.&n; * 24-May-2000 Moved MOD_DEC_USE_COUNT outside of code that can sleep.&n; */
 DECL|function|usbvideo_v4l_close
+r_static
 r_int
 id|usbvideo_v4l_close
 c_func
@@ -7067,6 +7345,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|usbvideo_v4l_ioctl
+r_static
 r_int
 id|usbvideo_v4l_ioctl
 c_func
@@ -7108,6 +7387,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_v4l_read()&n; *&n; * This is mostly boring stuff. We simply ask for a frame and when it&n; * arrives copy all the video data from it into user space. There is&n; * no obvious need to override this method.&n; *&n; * History:&n; * 20-Oct-2000 Created.&n; * 01-Nov-2000 Added mutex (uvd-&gt;lock).&n; */
 DECL|function|usbvideo_v4l_read
+r_static
 r_int
 id|usbvideo_v4l_read
 c_func
@@ -8015,6 +8295,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_StartDataPump()&n; *&n; * History:&n; * 27-Jan-2000 Used ibmcam-&gt;iface, ibmcam-&gt;ifaceAltActive instead&n; *             of hardcoded values. Simplified by using for loop,&n; *             allowed any number of URBs.&n; */
 DECL|function|usbvideo_StartDataPump
+r_static
 r_int
 id|usbvideo_StartDataPump
 c_func
@@ -8414,6 +8695,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_StopDataPump()&n; *&n; * This procedure stops streaming and deallocates URBs. Then it&n; * activates zero-bandwidth alt. setting of the video interface.&n; *&n; * History:&n; * 22-Jan-2000 Corrected order of actions to work after surprise removal.&n; * 27-Jan-2000 Used uvd-&gt;iface, uvd-&gt;ifaceAltInactive instead of hardcoded values.&n; */
 DECL|function|usbvideo_StopDataPump
+r_static
 r_void
 id|usbvideo_StopDataPump
 c_func
@@ -8621,6 +8903,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_NewFrame()&n; *&n; * History:&n; * 29-Mar-00 Added copying of previous frame into the current one.&n; * 6-Aug-00  Added model 3 video sizes, removed redundant width, height.&n; */
 DECL|function|usbvideo_NewFrame
+r_static
 r_int
 id|usbvideo_NewFrame
 c_func
@@ -8827,6 +9110,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * usbvideo_CollectRawData()&n; *&n; * This procedure can be used instead of &squot;processData&squot; callback if you&n; * only want to dump the raw data from the camera into the output&n; * device (frame buffer). You can look at it with V4L client, but the&n; * image will be unwatchable. The main purpose of this code and of the&n; * mode FLAGS_NO_DECODING is debugging and capturing of datastreams from&n; * new, unknown cameras. This procedure will be automatically invoked&n; * instead of the specified callback handler when uvd-&gt;flags has bit&n; * FLAGS_NO_DECODING set. Therefore, any regular build of any driver&n; * based on usbvideo can use this feature at any time.&n; */
 DECL|function|usbvideo_CollectRawData
+r_static
 r_void
 id|usbvideo_CollectRawData
 c_func
@@ -8939,6 +9223,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|usbvideo_GetFrame
+r_static
 r_int
 id|usbvideo_GetFrame
 c_func
@@ -9781,8 +10066,16 @@ id|frame
 )paren
 suffix:semicolon
 )brace
+DECL|variable|usbvideo_DeinterlaceFrame
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usbvideo_DeinterlaceFrame
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * usbvideo_SoftwareContrastAdjustment()&n; *&n; * This code adjusts the contrast of the frame, assuming RGB24 format.&n; * As most software image processing, this job is CPU-intensive.&n; * Get a camera that supports hardware adjustment!&n; *&n; * History:&n; * 09-Feb-2001  Created.&n; */
 DECL|function|usbvideo_SoftwareContrastAdjustment
+r_static
 r_void
 id|usbvideo_SoftwareContrastAdjustment
 c_func
