@@ -2104,12 +2104,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|xfs_refcache_purge_ip
-c_func
-(paren
-id|target_ip
-)paren
-suffix:semicolon
 id|IRELE
 c_func
 (paren

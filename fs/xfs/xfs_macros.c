@@ -2582,26 +2582,6 @@ id|hash
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if XFS_WANT_FUNCS_C || (XFS_WANT_SPACE_C &amp;&amp; XFSSO_XFS_DA_NODE_ENTRIES)
-r_int
-DECL|function|xfs_da_node_entries
-id|xfs_da_node_entries
-c_func
-(paren
-id|xfs_mount_t
-op_star
-id|mp
-)paren
-(brace
-r_return
-id|XFS_DA_NODE_ENTRIES
-c_func
-(paren
-id|mp
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS_C || (XFS_WANT_SPACE_C &amp;&amp; XFSSO_XFS_DADDR_TO_AGBNO)
 id|xfs_agblock_t
 DECL|function|xfs_daddr_to_agbno

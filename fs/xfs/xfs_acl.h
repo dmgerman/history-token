@@ -78,7 +78,7 @@ mdefine_line|#define SGI_ACL_FILE_SIZE&t;(sizeof(SGI_ACL_FILE)-1)
 DECL|macro|SGI_ACL_DEFAULT_SIZE
 mdefine_line|#define SGI_ACL_DEFAULT_SIZE&t;(sizeof(SGI_ACL_DEFAULT)-1)
 macro_line|#ifdef __KERNEL__
-macro_line|#ifdef CONFIG_FS_POSIX_ACL
+macro_line|#ifdef CONFIG_XFS_POSIX_ACL
 r_struct
 id|vattr
 suffix:semicolon

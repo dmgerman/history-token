@@ -5670,6 +5670,10 @@ id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_dirblksize
 suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_dir_node_ents
+suffix:semicolon
 multiline_comment|/*&n;&t; * Look up the name.  We&squot;re not supposed to find it, but&n;&t; * this gives us the insertion point.&n;&t; */
 id|error
 op_assign
@@ -7520,6 +7524,10 @@ id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_dirblksize
 suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_dir_node_ents
+suffix:semicolon
 multiline_comment|/*&n;&t; * Fill in the path to the entry in the cursor.&n;&t; */
 id|error
 op_assign
@@ -7670,6 +7678,10 @@ suffix:semicolon
 id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_dirblksize
+suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_dir_node_ents
 suffix:semicolon
 multiline_comment|/*&n;&t; * Look up the entry we&squot;re deleting, set up the cursor.&n;&t; */
 id|error
@@ -7905,6 +7917,10 @@ suffix:semicolon
 id|state-&gt;blocksize
 op_assign
 id|state-&gt;mp-&gt;m_dirblksize
+suffix:semicolon
+id|state-&gt;node_ents
+op_assign
+id|state-&gt;mp-&gt;m_dir_node_ents
 suffix:semicolon
 id|inum
 op_assign

@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_SUPER_H__
 DECL|macro|__XFS_SUPER_H__
 mdefine_line|#define __XFS_SUPER_H__
-macro_line|#ifdef CONFIG_FS_POSIX_ACL
+macro_line|#ifdef CONFIG_XFS_POSIX_ACL
 DECL|macro|XFS_ACL_STRING
 macro_line|# define XFS_ACL_STRING&t;&t;&quot;ACLs, &quot;
 macro_line|#else
@@ -50,15 +50,69 @@ DECL|macro|LINVFS_GET_VFS
 mdefine_line|#define LINVFS_GET_VFS(s) &bslash;&n;&t;(vfs_t *)((s)-&gt;s_fs_info)
 DECL|macro|LINVFS_SET_VFS
 mdefine_line|#define LINVFS_SET_VFS(s, vfsp) &bslash;&n;&t;((s)-&gt;s_fs_info = vfsp)
+r_struct
+id|pb_target
+suffix:semicolon
+r_struct
+id|block_device
+suffix:semicolon
 r_extern
 r_void
-id|linvfs_set_inode_ops
-c_func
+id|xfs_initialize_vnode
+(paren
+id|bhv_desc_t
+op_star
+comma
+id|vnode_t
+op_star
+comma
+id|bhv_desc_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|xfs_blkdev_get
+(paren
+r_const
+r_char
+op_star
+comma
+r_struct
+id|block_device
+op_star
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_blkdev_put
 (paren
 r_struct
-id|inode
+id|block_device
 op_star
-id|inode
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|pb_target
+op_star
+id|xfs_alloc_buftarg
+(paren
+r_struct
+id|block_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_free_buftarg
+(paren
+r_struct
+id|pb_target
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* __XFS_SUPER_H__ */
