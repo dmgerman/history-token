@@ -784,7 +784,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 r_if
 c_cond
@@ -817,7 +817,7 @@ id|instance-&gt;irq
 suffix:semicolon
 id|instance-&gt;irq
 op_assign
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 suffix:semicolon
 )brace
 id|printk
@@ -836,7 +836,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_eq
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 id|printk
 (paren
@@ -910,7 +910,7 @@ c_cond
 (paren
 id|shpnt-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 id|free_irq
 (paren

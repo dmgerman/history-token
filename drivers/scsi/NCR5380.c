@@ -1597,7 +1597,7 @@ l_int|1000
 suffix:semicolon
 id|probe_irq
 op_assign
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 suffix:semicolon
 multiline_comment|/*&n;&t; * A interrupt is triggered whenever BSY = false, SEL = true&n;&t; * and a bit set in the SELECT_ENABLE_REG is asserted on the &n;&t; * SCSI bus.&n;&t; *&n;&t; * Note that the bus is only driven when the phase control signals&n;&t; * (I/O, C/D, and MSG) match those in the TCR, so we must reset that&n;&t; * to zero.&n;&t; */
 id|NCR5380_write
@@ -1641,7 +1641,7 @@ c_loop
 (paren
 id|probe_irq
 op_eq
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 op_logical_and
 id|time_before
 c_func
@@ -2226,7 +2226,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_eq
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 id|SPRINTF
 c_func
@@ -3499,7 +3499,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|spin_lock_irqsave
@@ -3944,7 +3944,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|spin_unlock_irqrestore
@@ -4562,7 +4562,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|spin_unlock_irq
@@ -4634,7 +4634,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|spin_unlock_irq
@@ -4668,7 +4668,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|spin_lock_irq
@@ -5094,7 +5094,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|spin_lock_irq
@@ -5230,7 +5230,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|spin_lock_irq
@@ -5375,7 +5375,7 @@ c_func
 (paren
 id|instance-&gt;irq
 op_eq
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 ques
 c_cond
@@ -5392,7 +5392,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|spin_lock_irq
@@ -5479,7 +5479,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|spin_lock_irq

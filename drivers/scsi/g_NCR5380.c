@@ -984,7 +984,7 @@ id|count
 dot
 id|irq
 op_assign
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -1570,7 +1570,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 r_if
 c_cond
@@ -1603,7 +1603,7 @@ id|instance-&gt;irq
 suffix:semicolon
 id|instance-&gt;irq
 op_assign
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -1611,7 +1611,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_eq
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|printk
@@ -1659,7 +1659,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_eq
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 id|printk
 c_func
@@ -1785,7 +1785,7 @@ c_cond
 (paren
 id|instance-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 id|free_irq
 c_func
@@ -3008,7 +3008,7 @@ c_cond
 (paren
 id|scsi_ptr-&gt;irq
 op_eq
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 id|PRINTP
 c_func

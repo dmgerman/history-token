@@ -12151,7 +12151,7 @@ c_cond
 (paren
 id|host-&gt;irq
 op_ne
-id|IRQ_NONE
+id|SCSI_IRQ_NONE
 )paren
 (brace
 id|DEBUG0
