@@ -284,6 +284,11 @@ op_star
 id|flags
 )paren
 suffix:semicolon
+id|preempt_check_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * rq_lock - lock a given runqueue and disable interrupts.&n; */
 DECL|function|rq_lock
