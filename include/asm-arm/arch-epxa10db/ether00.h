@@ -92,7 +92,7 @@ DECL|macro|FDNEXT_EOL_POINTER_OFST
 mdefine_line|#define FDNEXT_EOL_POINTER_OFST&t;&t;&t;&t;&t;(4)
 DECL|macro|ETHER_ARC_SIZE
 mdefine_line|#define ETHER_ARC_SIZE         (21)
-multiline_comment|/*&n;*&t;Regsiter definitions and masks&n;*/
+multiline_comment|/*&n;*&t;Register definitions and masks&n;*/
 DECL|macro|ETHER_DMA_CTL
 mdefine_line|#define ETHER_DMA_CTL(base)&t;&t;&t;&t;&t;&t;&t;(ETHER00_TYPE (base + 0x100))
 DECL|macro|ETHER_DMA_CTL_DMBURST_OFST

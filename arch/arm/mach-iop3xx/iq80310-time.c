@@ -410,7 +410,7 @@ id|timer_en
 op_or_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/*&n;&t; * AHEM..HACK&n;&t; *&n;&t; * Since the timer interrupt is cascaded through the CPLD and&n;&t; * the 80312 and the demux code calls do_IRQ, the irq count is&n;&t; * going to be atleast 2 when we get here and this will cause the&n;&t; * kernel to increment the system tick counter even if we&squot;re&n;&t; * idle. This causes it to look like there&squot;s always 100% system&n;&t; * time, which is not the case.  To get around it, we just decrement&n;&t; * the IRQ count before calling do_timer. We increment it again&n;&t; * b/c otherwise it will go negative and than bad things happen.&n;&t; *&n;&t; * -DS&n;&t; */
+multiline_comment|/*&n;&t; * AHEM..HACK&n;&t; *&n;&t; * Since the timer interrupt is cascaded through the CPLD and&n;&t; * the 80312 and the demux code calls do_IRQ, the irq count is&n;&t; * going to be at least 2 when we get here and this will cause the&n;&t; * kernel to increment the system tick counter even if we&squot;re&n;&t; * idle. This causes it to look like there&squot;s always 100% system&n;&t; * time, which is not the case.  To get around it, we just decrement&n;&t; * the IRQ count before calling do_timer. We increment it again&n;&t; * b/c otherwise it will go negative and than bad things happen.&n;&t; *&n;&t; * -DS&n;&t; */
 id|do_timer
 c_func
 (paren

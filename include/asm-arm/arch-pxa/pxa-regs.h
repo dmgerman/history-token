@@ -1133,11 +1133,11 @@ mdefine_line|#define ICSR0&t;&t;__REG(0x40800014)  /* ICP Status Register 0 */
 DECL|macro|ICSR1
 mdefine_line|#define ICSR1&t;&t;__REG(0x40800018)  /* ICP Status Register 1 */
 DECL|macro|ICCR0_AME
-mdefine_line|#define ICCR0_AME       (1 &lt;&lt; 7)           /* Adress match enable */
+mdefine_line|#define ICCR0_AME       (1 &lt;&lt; 7)           /* Address match enable */
 DECL|macro|ICCR0_TIE
 mdefine_line|#define ICCR0_TIE       (1 &lt;&lt; 6)           /* Transmit FIFO interrupt enable */
 DECL|macro|ICCR0_RIE
-mdefine_line|#define ICCR0_RIE       (1 &lt;&lt; 5)           /* Recieve FIFO interrupt enable */
+mdefine_line|#define ICCR0_RIE       (1 &lt;&lt; 5)           /* Receive FIFO interrupt enable */
 DECL|macro|ICCR0_RXE
 mdefine_line|#define ICCR0_RXE       (1 &lt;&lt; 4)           /* Receive enable */
 DECL|macro|ICCR0_TXE
