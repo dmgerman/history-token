@@ -1,8 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2002 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
-DECL|macro|__E1000_MAIN__
-mdefine_line|#define __E1000_MAIN__
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; *&n; * 4.4.12       10/15/02&n; *   o Clean up: use members of pci_device rather than direct calls to&n; *     pci_read_config_word.&n; *   o Bug fix: changed default flow control settings.&n; *   o Clean up: ethtool file now has an inclusive list for adapters in the&n; *     Wake-On-LAN capabilities instead of an exclusive list.&n; *   o Bug fix: miscellaneous WoL bug fixes.&n; *   o Added software interrupt for clearing rx ring&n; *   o Bug fix: easier to undo &quot;forcing&quot; of 1000/fd using ethtool.&n; *   o Now setting netdev-&gt;mem_end in e1000_probe.&n; *   o Clean up: Moved tx_timeout from interrupt context to process context&n; *     using schedule_task.&n; *&n; *   o Feature: merged in modified NAPI patch from Robert Olsson&n; *     &lt;Robert.Olsson@its.uu.se&gt; Uppsala Univeristy, Sweden.&n; *&n; * 4.3.15      8/9/02&n; *   o Converted from Dual BSD/GPL license to GPL license.&n; *   o Clean up: use pci_[clear|set]_mwi rather than direct calls to&n; *     pci_write_config_word.&n; *   o Bug fix: added read-behind-write calls to post writes before delays.&n; *   o Bug fix: removed mdelay busy-waits in interrupt context.&n; *   o Clean up: direct clear of descriptor bits rather than using memset.&n; *   o Bug fix: added wmb() for ia-64 between descritor writes and advancing&n; *     descriptor tail.&n; *   o Feature: added locking mechanism for asf functionality.&n; *   o Feature: exposed two Tx and one Rx interrupt delay knobs for finer&n; *     control over interurpt rate tuning.&n; *   o Misc ethtool bug fixes.&n; *&n; * 4.3.2       7/5/02&n; */
+multiline_comment|/* Change Log&n; *&n; * 4.4.19       11/27/02&n; *   o Feature: Added user-settable knob for interrupt throttle rate (ITR).&n; *   o Cleanup: removed large static array allocations.&n; *   o Cleanup: C99 struct initializer format.&n; *   o Bug fix: restore VLAN settings when interface is brought up.&n; *   o Bug fix: return cleanly in probe if error in detecting MAC type.&n; *   o Bug fix: Wake up on magic packet by default only if enabled in eeprom.&n; *   o Bug fix: Validate MAC address in set_mac.&n; *   o Bug fix: Throw away zero-length Tx skbs.&n; *   o Bug fix: Make ethtool EEPROM acceses work on older versions of ethtool.&n; * &n; * 4.4.12       10/15/02&n; *   o Clean up: use members of pci_device rather than direct calls to&n; *     pci_read_config_word.&n; *   o Bug fix: changed default flow control settings.&n; *   o Clean up: ethtool file now has an inclusive list for adapters in the&n; *     Wake-On-LAN capabilities instead of an exclusive list.&n; *   o Bug fix: miscellaneous WoL bug fixes.&n; *   o Added software interrupt for clearing rx ring&n; *   o Bug fix: easier to undo &quot;forcing&quot; of 1000/fd using ethtool.&n; *   o Now setting netdev-&gt;mem_end in e1000_probe.&n; *   o Clean up: Moved tx_timeout from interrupt context to process context&n; *     using schedule_task.&n; * &n; * 4.3.15       8/9/02&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -25,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;4.4.12-k1&quot;
+l_string|&quot;4.4.19-k1&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -4571,6 +4569,22 @@ id|addr
 op_assign
 id|p
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_valid_ether_addr
+c_func
+(paren
+id|addr-&gt;sa_data
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|EADDRNOTAVAIL
+suffix:semicolon
+)brace
 multiline_comment|/* 82542 2.0 needs to be in reset to write receive address registers */
 r_if
 c_cond
@@ -6177,6 +6191,24 @@ comma
 id|adapter-&gt;max_data_per_txd
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+op_eq
+l_int|0
+)paren
+(brace
+id|dev_kfree_skb_any
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
