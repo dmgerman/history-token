@@ -407,7 +407,7 @@ macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &quot;pseudo.h&quot;
 multiline_comment|/* constants for faking geometry numbers */
 DECL|macro|PF_FD_MAX
-mdefine_line|#define PF_FD_MAX&t;8192&t;&t;/* use FD geometry under this size */
+mdefine_line|#define PF_FD_MAX&t;8192&t;/* use FD geometry under this size */
 DECL|macro|PF_FD_HDS
 mdefine_line|#define PF_FD_HDS&t;2
 DECL|macro|PF_FD_SPT
@@ -419,9 +419,9 @@ mdefine_line|#define PF_HD_SPT&t;32
 DECL|macro|PF_MAX_RETRIES
 mdefine_line|#define PF_MAX_RETRIES  5
 DECL|macro|PF_TMO
-mdefine_line|#define PF_TMO          800             /* interrupt timeout in jiffies */
+mdefine_line|#define PF_TMO          800&t;/* interrupt timeout in jiffies */
 DECL|macro|PF_SPIN_DEL
-mdefine_line|#define PF_SPIN_DEL     50              /* spin delay in micro-seconds  */
+mdefine_line|#define PF_SPIN_DEL     50&t;/* spin delay in micro-seconds  */
 DECL|macro|PF_SPIN
 mdefine_line|#define PF_SPIN         (1000000*PF_TMO)/(HZ*PF_SPIN_DEL)
 DECL|macro|STAT_ERR
@@ -518,6 +518,7 @@ suffix:semicolon
 r_static
 r_int
 id|pf_release
+c_func
 (paren
 r_struct
 id|inode
@@ -589,6 +590,7 @@ suffix:semicolon
 r_static
 r_int
 id|pf_identify
+c_func
 (paren
 r_int
 id|unit
@@ -935,6 +937,7 @@ DECL|function|pf_open
 r_static
 r_int
 id|pf_open
+c_func
 (paren
 r_struct
 id|inode
@@ -1001,9 +1004,7 @@ id|PF_RO
 )paren
 op_logical_and
 (paren
-id|file
-op_member_access_from_pointer
-id|f_mode
+id|file-&gt;f_mode
 op_amp
 l_int|2
 )paren
@@ -1352,6 +1353,7 @@ DECL|function|pf_release
 r_static
 r_int
 id|pf_release
+c_func
 (paren
 r_struct
 id|inode
@@ -2384,7 +2386,7 @@ l_string|&quot;eject&quot;
 suffix:semicolon
 )brace
 DECL|macro|PF_RESET_TMO
-mdefine_line|#define PF_RESET_TMO   30              /* in tenths of a second */
+mdefine_line|#define PF_RESET_TMO   30&t;/* in tenths of a second */
 DECL|function|pf_sleep
 r_static
 r_void
@@ -2406,6 +2408,7 @@ id|cs
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* the ATAPI standard actually specifies the contents of all 7 registers&n;   after a reset, but the specification is ambiguous concerning the last&n;   two bytes, and different drives interpret the standard differently.&n; */
 DECL|function|pf_reset
 r_static
 r_int
@@ -2415,7 +2418,6 @@ c_func
 r_int
 id|unit
 )paren
-multiline_comment|/* the ATAPI standard actually specifies the contents of all 7 registers&n;   after a reset, but the specification is ambiguous concerning the last&n;   two bytes, and different drives interpret the standard differently.&n;*/
 (brace
 r_int
 id|i
@@ -2528,7 +2530,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|flg
 op_and_assign
 (paren
@@ -2548,7 +2549,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2786,7 +2786,6 @@ op_ne
 id|l
 )paren
 )paren
-(brace
 id|l
 op_assign
 id|targ
@@ -2802,7 +2801,6 @@ op_plus
 id|offs
 )braket
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2858,7 +2856,6 @@ suffix:semicolon
 id|k
 op_increment
 )paren
-(brace
 id|v
 op_assign
 id|v
@@ -2876,7 +2873,6 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
-)brace
 r_return
 id|v
 suffix:semicolon
@@ -3300,6 +3296,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&t;returns  0, with id set if drive is detected&n;&t;        -1, if drive detection failed&n;*/
 DECL|function|pf_probe
 r_static
 r_int
@@ -3309,7 +3306,6 @@ c_func
 r_int
 id|unit
 )paren
-multiline_comment|/*&t;returns  0, with id set if drive is detected&n;&t;        -1, if drive detection failed&n;*/
 (brace
 r_if
 c_cond
@@ -3591,7 +3587,6 @@ r_if
 c_cond
 (paren
 id|pi_init
-c_func
 (paren
 id|PI
 comma
@@ -3856,6 +3851,7 @@ DECL|function|do_pf_request
 r_static
 r_void
 id|do_pf_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -4118,6 +4114,7 @@ id|saved_flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* detach from the calling context - in case the spinlock is held */
 DECL|function|do_pf_read
 r_static
 r_void
@@ -4126,7 +4123,6 @@ c_func
 (paren
 r_void
 )paren
-multiline_comment|/* detach from the calling context - in case the spinlock is held */
 (brace
 id|ps_set_intr
 c_func
@@ -4907,8 +4903,8 @@ c_func
 (paren
 r_void
 )paren
-multiline_comment|/* preliminary initialisation */
 (brace
+multiline_comment|/* preliminary initialisation */
 r_int
 id|i
 suffix:semicolon
