@@ -2941,7 +2941,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|np-&gt;default_port
+id|option
 op_amp
 l_int|0x330
 )paren
@@ -7232,7 +7232,9 @@ op_amp
 id|IntrTxError
 )paren
 op_logical_and
-op_complement
+(paren
+id|intr_status
+op_amp
 (paren
 id|IntrTxAborted
 op_or
@@ -7240,6 +7242,9 @@ id|IntrTxUnderrun
 op_or
 id|IntrTxDescRace
 )paren
+)paren
+op_eq
+l_int|0
 )paren
 (brace
 r_if
