@@ -165,10 +165,8 @@ id|page_table
 suffix:semicolon
 multiline_comment|/* page table (for vmap/vunmap) */
 DECL|member|dev
-r_const
 r_struct
 id|snd_dma_device
-op_star
 id|dev
 suffix:semicolon
 )brace
@@ -230,25 +228,6 @@ op_mod
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-multiline_comment|/* snd_dma_device management */
-r_void
-id|snd_dma_device_init
-c_func
-(paren
-r_const
-r_struct
-id|snd_dma_device
-op_star
-id|dev
-comma
-r_int
-id|type
-comma
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
 multiline_comment|/* allocate/release a buffer */
 r_int
 id|snd_dma_alloc_pages

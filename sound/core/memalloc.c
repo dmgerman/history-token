@@ -164,10 +164,7 @@ DECL|macro|snd_assert
 mdefine_line|#define snd_assert(expr, args...) /**/
 macro_line|#endif
 multiline_comment|/*&n; *  Hacks&n; */
-macro_line|#ifdef CONFIG_PCI
 macro_line|#if defined(__i386__) || defined(__ppc__) || defined(__x86_64__)
-DECL|macro|HACK_PCI_ALLOC_CONSISTENT
-mdefine_line|#define HACK_PCI_ALLOC_CONSISTENT
 multiline_comment|/*&n; * A hack to allocate large buffers via dma_alloc_coherent()&n; *&n; * since dma_alloc_coherent always tries GFP_DMA when the requested&n; * pci memory region is below 32bit, it happens quite often that even&n; * 2 order of pages cannot be allocated.&n; *&n; * so in the following, we allocate at first without dma_mask, so that&n; * allocation will be done without GFP_DMA.  if the area doesn&squot;t match&n; * with the requested region, then realloate with the original dma_mask&n; * again.&n; *&n; * Really, we want to move this type of thing into dma_alloc_coherent()&n; * so dma_mask doesn&squot;t have to be messed with.&n; */
 DECL|function|snd_dma_hack_alloc_coherent
 r_static
@@ -205,6 +202,9 @@ c_cond
 id|dev
 op_eq
 l_int|NULL
+op_logical_or
+op_logical_neg
+id|dev-&gt;dma_mask
 )paren
 r_return
 id|dma_alloc_coherent
@@ -342,7 +342,6 @@ macro_line|#undef dma_alloc_coherent
 DECL|macro|dma_alloc_coherent
 mdefine_line|#define dma_alloc_coherent snd_dma_hack_alloc_coherent
 macro_line|#endif /* arch */
-macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/*&n; *&n; *  Generic memory allocators&n; *&n; */
 DECL|variable|snd_allocated_pages
 r_static
@@ -3694,13 +3693,6 @@ id|snd_mem_setup
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * exports&n; */
-DECL|variable|snd_dma_device_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_dma_device_init
-)paren
-suffix:semicolon
 DECL|variable|snd_dma_alloc_pages
 id|EXPORT_SYMBOL
 c_func
