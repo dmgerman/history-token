@@ -1,144 +1,14 @@
-multiline_comment|/*&n; *  linux/arch/arm/mm/fault-armv.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Modifications for ARM processor (c) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
+multiline_comment|/*&n; *  linux/arch/arm/mm/fault-armv.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Modifications for ARM processor (c) 1995-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-r_extern
-r_void
-id|die_if_kernel
-c_func
-(paren
-r_const
-r_char
-op_star
-id|str
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-r_int
-id|err
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|show_pte
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|addr
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|do_page_fault
-c_func
-(paren
-r_int
-r_int
-id|addr
-comma
-r_int
-id|error_code
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|do_translation_fault
-c_func
-(paren
-r_int
-r_int
-id|addr
-comma
-r_int
-id|error_code
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|do_bad_area
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-comma
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_int
-r_int
-id|addr
-comma
-r_int
-id|error_code
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_ALIGNMENT_TRAP
-r_extern
-r_int
-id|do_alignment
-c_func
-(paren
-r_int
-r_int
-id|addr
-comma
-r_int
-id|error_code
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|do_alignment
-mdefine_line|#define do_alignment do_bad
-macro_line|#endif
+macro_line|#include &quot;fault.h&quot;
 multiline_comment|/*&n; * Some section permission faults need to be handled gracefully.&n; * They can happen due to a __{get,put}_user during an oops.&n; */
 r_static
 r_int
@@ -151,7 +21,8 @@ r_int
 id|addr
 comma
 r_int
-id|error_code
+r_int
+id|fsr
 comma
 r_struct
 id|pt_regs
@@ -175,68 +46,13 @@ id|tsk-&gt;active_mm
 comma
 id|addr
 comma
-id|error_code
+id|fsr
 comma
 id|regs
 )paren
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Hook for things that need to trap external faults.  Note that&n; * we don&squot;t guarantee that this will be the final version of the&n; * interface.&n; */
-DECL|variable|external_fault
-r_int
-(paren
-op_star
-id|external_fault
-)paren
-(paren
-r_int
-r_int
-id|addr
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
-r_int
-DECL|function|do_external_fault
-id|do_external_fault
-c_func
-(paren
-r_int
-r_int
-id|addr
-comma
-r_int
-id|error_code
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|external_fault
-)paren
-r_return
-id|external_fault
-c_func
-(paren
-id|addr
-comma
-id|regs
-)paren
-suffix:semicolon
-r_return
-l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This abort handler always returns &quot;fault&quot;.&n; */
@@ -251,7 +67,8 @@ r_int
 id|addr
 comma
 r_int
-id|error_code
+r_int
+id|fsr
 comma
 r_struct
 id|pt_regs
@@ -265,7 +82,6 @@ suffix:semicolon
 )brace
 DECL|struct|fsr_info
 r_static
-r_const
 r_struct
 id|fsr_info
 (brace
@@ -281,7 +97,8 @@ r_int
 id|addr
 comma
 r_int
-id|error_code
+r_int
+id|fsr
 comma
 r_struct
 id|pt_regs
@@ -315,7 +132,7 @@ l_string|&quot;vector exception&quot;
 )brace
 comma
 (brace
-id|do_alignment
+id|do_bad
 comma
 id|SIGILL
 comma
@@ -331,7 +148,7 @@ l_string|&quot;terminal exception&quot;
 )brace
 comma
 (brace
-id|do_alignment
+id|do_bad
 comma
 id|SIGILL
 comma
@@ -339,7 +156,7 @@ l_string|&quot;alignment exception&quot;
 )brace
 comma
 (brace
-id|do_external_fault
+id|do_bad
 comma
 id|SIGBUS
 comma
@@ -355,7 +172,7 @@ l_string|&quot;section translation fault&quot;
 )brace
 comma
 (brace
-id|do_external_fault
+id|do_bad
 comma
 id|SIGBUS
 comma
@@ -371,7 +188,7 @@ l_string|&quot;page translation fault&quot;
 )brace
 comma
 (brace
-id|do_external_fault
+id|do_bad
 comma
 id|SIGBUS
 comma
@@ -387,7 +204,7 @@ l_string|&quot;section domain fault&quot;
 )brace
 comma
 (brace
-id|do_external_fault
+id|do_bad
 comma
 id|SIGBUS
 comma
@@ -435,6 +252,82 @@ l_string|&quot;page permission fault&quot;
 )brace
 )brace
 suffix:semicolon
+r_void
+id|__init
+DECL|function|hook_fault_code
+id|hook_fault_code
+c_func
+(paren
+r_int
+id|nr
+comma
+r_int
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+comma
+r_int
+id|sig
+comma
+r_const
+r_char
+op_star
+id|name
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|nr
+op_ge
+l_int|0
+op_logical_and
+id|nr
+OL
+l_int|16
+)paren
+(brace
+id|fsr_info
+(braket
+id|nr
+)braket
+dot
+id|fn
+op_assign
+id|fn
+suffix:semicolon
+id|fsr_info
+(braket
+id|nr
+)braket
+dot
+id|sig
+op_assign
+id|sig
+suffix:semicolon
+id|fsr_info
+(braket
+id|nr
+)braket
+dot
+id|name
+op_assign
+id|name
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n; * Dispatch a data abort to the relevant handler.&n; */
 id|asmlinkage
 r_void

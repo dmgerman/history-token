@@ -994,15 +994,19 @@ DECL|macro|SC_LBFADDR
 mdefine_line|#define SC_LBFADDR (IO_ADDRESS(INTEGRATOR_SC_BASE) + 0x20)
 DECL|macro|SC_LBFCODE
 mdefine_line|#define SC_LBFCODE (IO_ADDRESS(INTEGRATOR_SC_BASE) + 0x24)
-DECL|function|v3_fault
 r_static
 r_int
-id|v3_fault
+DECL|function|v3_pci_fault
+id|v3_pci_fault
 c_func
 (paren
 r_int
 r_int
 id|addr
+comma
+r_int
+r_int
+id|fsr
 comma
 r_struct
 id|pt_regs
@@ -1044,9 +1048,11 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;V3 fault: address=0x%08lx, pc=0x%08lx [%08lx] LBFADDR=%08x LBFCODE=%02x ISTAT=%02x&bslash;n&quot;
+l_string|&quot;V3 fault: addr 0x%08lx, FSR 0x%03x, PC 0x%08lx [%08lx] LBFADDR=%08x LBFCODE=%02x ISTAT=%02x&bslash;n&quot;
 comma
 id|addr
+comma
+id|fsr
 comma
 id|pc
 comma
@@ -1370,23 +1376,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-r_extern
-r_int
-(paren
-op_star
-id|external_fault
-)paren
-(paren
-r_int
-r_int
-id|addr
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 DECL|function|pci_v3_setup
 r_int
 id|__init
@@ -1483,9 +1472,53 @@ r_int
 id|ret
 suffix:semicolon
 multiline_comment|/*&n;&t; * Hook in our fault handler for PCI errors&n;&t; */
-id|external_fault
-op_assign
-id|v3_fault
+id|hook_fault_code
+c_func
+(paren
+l_int|4
+comma
+id|v3_pci_fault
+comma
+id|SIGBUS
+comma
+l_string|&quot;external abort on linefetch&quot;
+)paren
+suffix:semicolon
+id|hook_fault_code
+c_func
+(paren
+l_int|6
+comma
+id|v3_pci_fault
+comma
+id|SIGBUS
+comma
+l_string|&quot;external abort on linefetch&quot;
+)paren
+suffix:semicolon
+id|hook_fault_code
+c_func
+(paren
+l_int|8
+comma
+id|v3_pci_fault
+comma
+id|SIGBUS
+comma
+l_string|&quot;external abort on non-linefetch&quot;
+)paren
+suffix:semicolon
+id|hook_fault_code
+c_func
+(paren
+l_int|10
+comma
+id|v3_pci_fault
+comma
+id|SIGBUS
+comma
+l_string|&quot;external abort on non-linefetch&quot;
+)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
