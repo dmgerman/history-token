@@ -2158,13 +2158,6 @@ op_or
 id|NETIF_F_HW_VLAN_FILTER
 suffix:semicolon
 )brace
-r_else
-(brace
-id|netdev-&gt;features
-op_assign
-id|NETIF_F_SG
-suffix:semicolon
-)brace
 macro_line|#ifdef NETIF_F_TSO
 multiline_comment|/* Disbaled for now until root-cause is found for&n;&t; * hangs reported against non-IA archs.  TSO can be&n;&t; * enabled using ethtool -K eth&lt;x&gt; tso on */
 r_if
