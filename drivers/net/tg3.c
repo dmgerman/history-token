@@ -3510,6 +3510,8 @@ c_func
 r_struct
 id|tg3
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 DECL|function|tg3_set_power_state
@@ -3736,6 +3738,8 @@ id|tg3_setup_phy
 c_func
 (paren
 id|tp
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -5348,6 +5352,9 @@ r_struct
 id|tg3
 op_star
 id|tp
+comma
+r_int
+id|force_reset
 )paren
 (brace
 r_int
@@ -5492,6 +5499,16 @@ op_amp
 id|BMSR_LSTATUS
 )paren
 )paren
+id|force_reset
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|force_reset
+)paren
 id|tg3_phy_reset
 c_func
 (paren
@@ -5500,7 +5517,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7599,6 +7615,9 @@ r_struct
 id|tg3
 op_star
 id|tp
+comma
+r_int
+id|force_reset
 )paren
 (brace
 id|u32
@@ -8527,6 +8546,9 @@ r_struct
 id|tg3
 op_star
 id|tp
+comma
+r_int
+id|force_reset
 )paren
 (brace
 r_int
@@ -8546,6 +8568,8 @@ id|tg3_setup_fiber_phy
 c_func
 (paren
 id|tp
+comma
+id|force_reset
 )paren
 suffix:semicolon
 )brace
@@ -8557,6 +8581,8 @@ id|tg3_setup_copper_phy
 c_func
 (paren
 id|tp
+comma
+id|force_reset
 )paren
 suffix:semicolon
 )brace
@@ -10017,6 +10043,8 @@ id|tg3_setup_phy
 c_func
 (paren
 id|tp
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -26234,6 +26262,8 @@ id|tg3_setup_phy
 c_func
 (paren
 id|tp
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -27198,6 +27228,8 @@ id|tg3_setup_phy
 c_func
 (paren
 id|tp
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -27310,6 +27342,8 @@ id|tg3_setup_phy
 c_func
 (paren
 id|tp
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -30789,6 +30823,8 @@ id|tg3_setup_phy
 c_func
 (paren
 id|tp
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|spin_unlock
