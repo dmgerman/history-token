@@ -22,20 +22,7 @@ singleline_comment|// The smallest dma pool
 DECL|macro|MRAID_MM_INIT_BUFF_SIZE
 mdefine_line|#define MRAID_MM_INIT_BUFF_SIZE&t;&t;4096
 multiline_comment|/*&n; * Localizing ioctl32 differences&n; */
-macro_line|#if defined (CONFIG_COMPAT) || defined(__x86_64__) || defined(IA32_EMULATION)
-macro_line|#if !defined(CONFIG_IA64)
-DECL|macro|LSI_CONFIG_COMPAT
-mdefine_line|#define LSI_CONFIG_COMPAT
-macro_line|#endif
-macro_line|#endif
-macro_line|#ifdef LSI_CONFIG_COMPAT
-macro_line|#include &lt;asm/ioctl32.h&gt;
-macro_line|#else
-DECL|macro|register_ioctl32_conversion
-mdefine_line|#define register_ioctl32_conversion(a,b)&t;do{}while(0)
-DECL|macro|unregister_ioctl32_conversion
-mdefine_line|#define unregister_ioctl32_conversion(a)&t;do{}while(0)
-macro_line|#endif /* LSI_CONFIG_COMPAT */
+macro_line|#include &lt;linux/ioctl32.h&gt;
 multiline_comment|/**&n; * mimd_t&t;: Old style ioctl packet structure (deprecated)&n; *&n; * @inlen&t;:&n; * @outlen&t;:&n; * @fca&t;&t;:&n; * @opcode&t;:&n; * @subopcode&t;:&n; * @adapno&t;:&n; * @buffer&t;:&n; * @pad&t;&t;:&n; * @length&t;:&n; * @mbox&t;:&n; * @pthru&t;:&n; * @data&t;:&n; * @pad&t;&t;:&n; *&n; * Note&t;&t;: This structure is DEPRECATED. New applications must use&n; *&t;&t;: uioc_t structure instead. All new hba drivers use the new&n; *&t;&t;: format. If we get this mimd packet, we will convert it into&n; *&t;&t;: new uioc_t format and send it to the hba drivers.&n; */
 DECL|struct|mimd
 r_typedef
@@ -356,7 +343,7 @@ id|mraid_mmadp_t
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef LSI_CONFIG_COMPAT
+macro_line|#ifdef CONFIG_COMPAT
 r_static
 r_int
 id|mraid_mm_compat_ioctl

@@ -3330,7 +3330,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * mraid_mm_compat_ioctl&t;: 32bit to 64bit ioctl conversion routine&n; */
-macro_line|#ifdef LSI_CONFIG_COMPAT
+macro_line|#ifdef CONFIG_COMPAT
 r_static
 r_int
 DECL|function|mraid_mm_compat_ioctl
