@@ -20,6 +20,7 @@ macro_line|#else
 DECL|macro|UFSD
 mdefine_line|#define UFSD(x)
 macro_line|#endif
+r_static
 r_int
 id|ufs_add_fragments
 (paren
@@ -37,6 +38,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ufs_alloc_fragments
 (paren
@@ -54,6 +56,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ufs_alloccg_block
 (paren
@@ -71,6 +74,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ufs_bitmap_search
 (paren
@@ -100,6 +104,7 @@ id|ufs_fragtable_other
 (braket
 )braket
 suffix:semicolon
+r_static
 r_void
 id|ufs_clusteracct
 c_func
@@ -2149,8 +2154,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|ufs_add_fragments
+r_static
 r_int
+DECL|function|ufs_add_fragments
 id|ufs_add_fragments
 (paren
 r_struct
@@ -2669,6 +2675,7 @@ suffix:semicolon
 DECL|macro|UFS_TEST_FREE_SPACE_CG
 mdefine_line|#define UFS_TEST_FREE_SPACE_CG &bslash;&n;&t;ucg = (struct ufs_cylinder_group *) UFS_SB(sb)-&gt;s_ucg[cgno]-&gt;b_data; &bslash;&n;&t;if (fs32_to_cpu(sb, ucg-&gt;cg_cs.cs_nbfree)) &bslash;&n;&t;&t;goto cg_found; &bslash;&n;&t;for (k = count; k &lt; uspi-&gt;s_fpb; k++) &bslash;&n;&t;&t;if (fs32_to_cpu(sb, ucg-&gt;cg_frsum[k])) &bslash;&n;&t;&t;&t;goto cg_found; 
 DECL|function|ufs_alloc_fragments
+r_static
 r_int
 id|ufs_alloc_fragments
 (paren
@@ -3363,6 +3370,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|ufs_alloccg_block
+r_static
 r_int
 id|ufs_alloccg_block
 (paren
@@ -3725,6 +3733,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|ufs_bitmap_search
+r_static
 r_int
 id|ufs_bitmap_search
 (paren
@@ -4154,6 +4163,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|ufs_clusteracct
+r_static
 r_void
 id|ufs_clusteracct
 c_func
