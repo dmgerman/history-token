@@ -2,7 +2,6 @@ multiline_comment|/*&n; *&t;Handle incoming frames&n; *&t;Linux ethernet bridge&
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 DECL|variable|bridge_ula
