@@ -4,25 +4,33 @@ mdefine_line|#define _ASM_X86_64_TOPOLOGY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|#include &lt;asm/mpspec.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
 multiline_comment|/* Map the K8 CPU local memory controllers to a simple 1:1 CPU:NODE topology */
 r_extern
-r_int
-id|fake_node
-suffix:semicolon
-multiline_comment|/* This is actually a cpumask_t, but doesn&squot;t matter because we don&squot;t have&n;   &gt;BITS_PER_LONG CPUs */
-r_extern
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
+r_extern
+r_int
+r_char
+id|cpu_to_node
+(braket
+)braket
+suffix:semicolon
+r_extern
+id|cpumask_t
+id|node_to_cpumask
+(braket
+)braket
+suffix:semicolon
 DECL|macro|cpu_to_node
-mdefine_line|#define cpu_to_node(cpu)&t;&t;(fake_node ? 0 : (cpu))
+mdefine_line|#define cpu_to_node(cpu)&t;&t;(cpu_to_node[cpu])
 DECL|macro|parent_node
 mdefine_line|#define parent_node(node)&t;&t;(node)
 DECL|macro|node_to_first_cpu
-mdefine_line|#define node_to_first_cpu(node) &t;(fake_node ? 0 : (node))
+mdefine_line|#define node_to_first_cpu(node) &t;(__ffs(node_to_cpumask[node]))
 DECL|macro|node_to_cpumask
-mdefine_line|#define node_to_cpumask(node)&t;(fake_node ? cpu_online_map : (1UL &lt;&lt; (node)))
+mdefine_line|#define node_to_cpumask(node)&t;&t;(node_to_cpumask[node])
 DECL|function|pcibus_to_cpumask
 r_static
 r_inline

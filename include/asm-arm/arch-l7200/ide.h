@@ -1,10 +1,10 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-l7200/ide.h&n; *&n; * Copyright (c) 2000 Steve Hill (sjhill@cotw.com)&n; *&n; * Changelog:&n; *  03-29-2000&t;SJH&t;Created file placeholder&n; */
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; * Set up a hw structure for a specified data port, control port and IRQ.&n; * This should follow whatever the default interface uses.&n; */
-r_static
-id|__inline__
-r_void
 DECL|function|ide_init_hwif_ports
+r_static
+r_inline
+r_void
 id|ide_init_hwif_ports
 c_func
 (paren
@@ -13,8 +13,10 @@ op_star
 id|hw
 comma
 r_int
+r_int
 id|data_port
 comma
+r_int
 r_int
 id|ctrl_port
 comma

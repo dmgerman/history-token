@@ -2860,6 +2860,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|x86_cpu_to_apicid
+(braket
+l_int|0
+)braket
+op_assign
+id|boot_cpu_id
+suffix:semicolon
 multiline_comment|/*&n;&t; * Now scan the CPU present map and fire up the other CPUs.&n;&t; */
 id|Dprintk
 c_func

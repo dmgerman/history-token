@@ -8367,8 +8367,6 @@ op_logical_neg
 id|err
 )paren
 (brace
-id|err
-op_assign
 id|ext3_mark_inode_dirty
 c_func
 (paren
@@ -8377,13 +8375,6 @@ comma
 id|inode
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|err
-)paren
-(brace
 id|d_instantiate
 c_func
 (paren
@@ -8395,7 +8386,6 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 id|ext3_dec_count
 c_func

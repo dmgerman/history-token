@@ -1070,6 +1070,14 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|kunmap_atomic
+c_func
+(paren
+id|mapped_data
+comma
+id|KM_USER0
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Do we need to do a data copy?&n;&t; */
 r_if
 c_cond
@@ -1083,14 +1091,6 @@ id|done_copy_out
 r_char
 op_star
 id|tmp
-suffix:semicolon
-id|kunmap_atomic
-c_func
-(paren
-id|mapped_data
-comma
-id|KM_USER0
-)paren
 suffix:semicolon
 id|jbd_unlock_bh_state
 c_func
@@ -1162,7 +1162,14 @@ op_member_access_from_pointer
 id|b_size
 )paren
 suffix:semicolon
-multiline_comment|/* If we get to this path, we&squot;ll always need the new&n;&t;&t;   address kmapped so that we can clear the escaped&n;&t;&t;   magic number below. */
+id|kunmap_atomic
+c_func
+(paren
+id|mapped_data
+comma
+id|KM_USER0
+)paren
+suffix:semicolon
 id|new_page
 op_assign
 id|virt_to_page
@@ -1190,6 +1197,17 @@ c_cond
 (paren
 id|do_escape
 )paren
+(brace
+id|mapped_data
+op_assign
+id|kmap_atomic
+c_func
+(paren
+id|new_page
+comma
+id|KM_USER0
+)paren
+suffix:semicolon
 op_star
 (paren
 (paren
@@ -1214,6 +1232,7 @@ comma
 id|KM_USER0
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* keep subsequent assertions sane */
 id|new_bh-&gt;b_state
 op_assign

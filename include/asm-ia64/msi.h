@@ -2,6 +2,8 @@ multiline_comment|/*&n; * Copyright (C) 2003-2004 Intel&n; * Copyright (C) Tom L
 macro_line|#ifndef ASM_MSI_H
 DECL|macro|ASM_MSI_H
 mdefine_line|#define ASM_MSI_H
+DECL|macro|NR_VECTORS
+mdefine_line|#define NR_VECTORS&t;&t;NR_IRQS
 DECL|macro|FIRST_DEVICE_VECTOR
 mdefine_line|#define FIRST_DEVICE_VECTOR &t;IA64_FIRST_DEVICE_VECTOR
 DECL|macro|LAST_DEVICE_VECTOR

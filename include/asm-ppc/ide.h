@@ -10,7 +10,6 @@ macro_line|#ifndef MAX_HWIFS
 DECL|macro|MAX_HWIFS
 mdefine_line|#define MAX_HWIFS&t;8
 macro_line|#endif
-macro_line|#include &lt;asm/hdreg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;

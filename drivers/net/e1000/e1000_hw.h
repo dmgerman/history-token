@@ -1474,6 +1474,12 @@ DECL|macro|E1000_82542_2_0_REV_ID
 mdefine_line|#define E1000_82542_2_0_REV_ID 2
 DECL|macro|E1000_82542_2_1_REV_ID
 mdefine_line|#define E1000_82542_2_1_REV_ID 3
+DECL|macro|E1000_REVISION_0
+mdefine_line|#define E1000_REVISION_0       0
+DECL|macro|E1000_REVISION_1
+mdefine_line|#define E1000_REVISION_1       1
+DECL|macro|E1000_REVISION_2
+mdefine_line|#define E1000_REVISION_2       2
 DECL|macro|SPEED_10
 mdefine_line|#define SPEED_10    10
 DECL|macro|SPEED_100
@@ -2286,6 +2292,8 @@ DECL|macro|E1000_WUPM
 mdefine_line|#define E1000_WUPM     0x05A00  /* Wakeup Packet Memory - RO A */
 DECL|macro|E1000_FFLT
 mdefine_line|#define E1000_FFLT     0x05F00  /* Flexible Filter Length Table - RW Array */
+DECL|macro|E1000_HOST_IF
+mdefine_line|#define E1000_HOST_IF  0x08800  /* Host Interface */
 DECL|macro|E1000_FFMT
 mdefine_line|#define E1000_FFMT     0x09000  /* Flexible Filter Mask Table - RW Array */
 DECL|macro|E1000_FFVT
@@ -2545,6 +2553,8 @@ DECL|macro|E1000_82542_FFMT
 mdefine_line|#define E1000_82542_FFMT     E1000_FFMT
 DECL|macro|E1000_82542_FFVT
 mdefine_line|#define E1000_82542_FFVT     E1000_FFVT
+DECL|macro|E1000_82542_HOST_IF
+mdefine_line|#define E1000_82542_HOST_IF  E1000_HOST_IF
 multiline_comment|/* Statistics counters collected by the MAC */
 DECL|struct|e1000_hw_stats
 r_struct
@@ -3776,6 +3786,10 @@ DECL|macro|E1000_MANC_RCV_TCO_EN
 mdefine_line|#define E1000_MANC_RCV_TCO_EN    0x00020000 /* Receive TCO Packets Enabled */
 DECL|macro|E1000_MANC_REPORT_STATUS
 mdefine_line|#define E1000_MANC_REPORT_STATUS 0x00040000 /* Status Reporting Enabled */
+DECL|macro|E1000_MANC_EN_MAC_ADDR_FILTER
+mdefine_line|#define E1000_MANC_EN_MAC_ADDR_FILTER   0x00100000 /* Enable MAC address&n;                                                    * filtering */
+DECL|macro|E1000_MANC_EN_MNG2HOST
+mdefine_line|#define E1000_MANC_EN_MNG2HOST   0x00200000 /* Enable MNG packets to host&n;                                             * memory */
 DECL|macro|E1000_MANC_SMB_REQ
 mdefine_line|#define E1000_MANC_SMB_REQ       0x01000000 /* SMBus Request */
 DECL|macro|E1000_MANC_SMB_GNT
@@ -3849,6 +3863,8 @@ DECL|macro|EEPROM_ID_LED_SETTINGS
 mdefine_line|#define EEPROM_ID_LED_SETTINGS        0x0004
 DECL|macro|EEPROM_SERDES_AMPLITUDE
 mdefine_line|#define EEPROM_SERDES_AMPLITUDE       0x0006 /* For SERDES output amplitude adjustment. */
+DECL|macro|EEPROM_PHY_CLASS_WORD
+mdefine_line|#define EEPROM_PHY_CLASS_WORD         0x0007
 DECL|macro|EEPROM_INIT_CONTROL1_REG
 mdefine_line|#define EEPROM_INIT_CONTROL1_REG      0x000A
 DECL|macro|EEPROM_INIT_CONTROL2_REG
@@ -3897,6 +3913,9 @@ mdefine_line|#define IGP_LED3_MODE           0x07000000
 multiline_comment|/* Mask bits for SERDES amplitude adjustment in Word 6 of the EEPROM */
 DECL|macro|EEPROM_SERDES_AMPLITUDE_MASK
 mdefine_line|#define EEPROM_SERDES_AMPLITUDE_MASK  0x000F
+multiline_comment|/* Mask bit for PHY class in Word 7 of the EEPROM */
+DECL|macro|EEPROM_PHY_CLASS_A
+mdefine_line|#define EEPROM_PHY_CLASS_A   0x8000
 multiline_comment|/* Mask bits for fields in Word 0x0a of the EEPROM */
 DECL|macro|EEPROM_WORD0A_ILOS
 mdefine_line|#define EEPROM_WORD0A_ILOS   0x0010

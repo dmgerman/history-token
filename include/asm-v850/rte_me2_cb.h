@@ -207,7 +207,7 @@ DECL|macro|CB_UART_REG_GAP
 mdefine_line|#define CB_UART_REG_GAP &t;0x10
 DECL|macro|CB_UART_CLOCK
 mdefine_line|#define CB_UART_CLOCK   &t;0x16000000
-multiline_comment|/* CompactFlash setting see also asm/ide.h, asm/hdreg.h.  */
+multiline_comment|/* CompactFlash setting */
 DECL|macro|CB_CF_BASE
 mdefine_line|#define CB_CF_BASE     &t;&t;0x0FE0C000
 DECL|macro|CB_CF_CCR_ADDR
