@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
@@ -2142,209 +2143,14 @@ r_int
 id|drq
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/*&n;** External Data Declarations&n;*/
-r_extern
-r_struct
-id|LOCK
-id|spl_atomic
-suffix:semicolon
-multiline_comment|/*&n;** External Function Prototype Declarations&n;*/
-multiline_comment|/* From kernel_alpha.mar */
-r_extern
-id|spinlock
-c_func
-(paren
-r_struct
-id|LOCK
-op_star
-id|spl
-)paren
-suffix:semicolon
-r_extern
-id|spinunlock
-c_func
-(paren
-r_struct
-id|LOCK
-op_star
-id|spl
-)paren
-suffix:semicolon
-multiline_comment|/* From filesys.c */
-r_int
-id|allocinode
-c_func
-(paren
-r_char
-op_star
-id|name
-comma
-r_int
-id|can_create
-comma
-r_struct
-id|INODE
-op_star
-op_star
-id|ipp
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|null_procedure
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|smcc669_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_int
-id|smcc669_open
-c_func
-(paren
-r_struct
-id|FILE
-op_star
-id|fp
-comma
-r_char
-op_star
-id|info
-comma
-r_char
-op_star
-id|next
-comma
-r_char
-op_star
-id|mode
-)paren
-suffix:semicolon
-r_int
-id|smcc669_read
-c_func
-(paren
-r_struct
-id|FILE
-op_star
-id|fp
-comma
-r_int
-id|size
-comma
-r_int
-id|number
-comma
-r_int
-r_char
-op_star
-id|buf
-)paren
-suffix:semicolon
-r_int
-id|smcc669_write
-c_func
-(paren
-r_struct
-id|FILE
-op_star
-id|fp
-comma
-r_int
-id|size
-comma
-r_int
-id|number
-comma
-r_int
-r_char
-op_star
-id|buf
-)paren
-suffix:semicolon
-r_int
-id|smcc669_close
-c_func
-(paren
-r_struct
-id|FILE
-op_star
-id|fp
-)paren
-suffix:semicolon
-r_struct
-id|DDB
-id|smc_ddb
+DECL|variable|__cacheline_aligned
+r_static
+id|spinlock_t
+id|smc_lock
+id|__cacheline_aligned
 op_assign
-(brace
-l_string|&quot;smc&quot;
-comma
-multiline_comment|/* how this routine wants to be called&t;*/
-id|smcc669_read
-comma
-multiline_comment|/* read routine&t;&t;&t;&t;*/
-id|smcc669_write
-comma
-multiline_comment|/* write routine&t;&t;&t;*/
-id|smcc669_open
-comma
-multiline_comment|/* open routine&t;&t;&t;&t;*/
-id|smcc669_close
-comma
-multiline_comment|/* close routine&t;&t;&t;*/
-id|null_procedure
-comma
-multiline_comment|/* name expansion routine&t;&t;*/
-id|null_procedure
-comma
-multiline_comment|/* delete routine&t;&t;&t;*/
-id|null_procedure
-comma
-multiline_comment|/* create routine&t;&t;&t;*/
-id|null_procedure
-comma
-multiline_comment|/* setmode&t;&t;&t;&t;*/
-id|null_procedure
-comma
-multiline_comment|/* validation routine&t;&t;&t;*/
-l_int|0
-comma
-multiline_comment|/* class specific use&t;&t;&t;*/
-l_int|1
-comma
-multiline_comment|/* allows information&t;&t;&t;*/
-l_int|0
-comma
-multiline_comment|/* must be stacked&t;&t;&t;*/
-l_int|0
-comma
-multiline_comment|/* is a flash update driver&t;&t;*/
-l_int|0
-comma
-multiline_comment|/* is a block device&t;&t;&t;*/
-l_int|0
-comma
-multiline_comment|/* not seekable&t;&t;&t;&t;*/
-l_int|0
-comma
-multiline_comment|/* is an Ethernet device&t;&t;*/
-l_int|0
-comma
-multiline_comment|/* is a filesystem driver&t;&t;*/
-)brace
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-macro_line|#endif
-DECL|macro|spinlock
-mdefine_line|#define spinlock(x)
-DECL|macro|spinunlock
-mdefine_line|#define spinunlock(x)
 "&f;"
 multiline_comment|/*&n;**++&n;**  FUNCTIONAL DESCRIPTION:&n;**&n;**      This function detects the presence of an SMC37c669 Super I/O&n;**&t;controller.&n;**&n;**  FORMAL PARAMETERS:&n;**&n;**&t;None&n;**&n;**  RETURN VALUE:&n;**&n;**      Returns a pointer to the device if found, otherwise,&n;**&t;the NULL pointer is returned.&n;**&n;**  SIDE EFFECTS:&n;**&n;**      None&n;**&n;**--&n;*/
 DECL|function|SMC37c669_detect
@@ -3943,11 +3749,11 @@ id|enable
 )paren
 (brace
 multiline_comment|/*&n;** To enter configuration mode, two writes in succession to the index&n;** port are required.  If a write to another address or port occurs&n;** between these two writes, the chip does not enter configuration&n;** mode.  Therefore, a spinlock is placed around the two writes to &n;** guarantee that they complete uninterrupted.&n;*/
-id|spinlock
+id|spin_lock
 c_func
 (paren
 op_amp
-id|spl_atomic
+id|smc_lock
 )paren
 suffix:semicolon
 id|wb
@@ -3968,11 +3774,11 @@ comma
 id|SMC37c669_CONFIG_ON_KEY
 )paren
 suffix:semicolon
-id|spinunlock
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|spl_atomic
+id|smc_lock
 )paren
 suffix:semicolon
 )brace
