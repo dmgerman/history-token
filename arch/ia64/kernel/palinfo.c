@@ -1221,7 +1221,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;%s%s&bslash;n&quot;
+l_string|&quot;%s%s&quot;
 comma
 id|sep
 comma
@@ -1237,6 +1237,16 @@ l_string|&quot;, &quot;
 suffix:semicolon
 )brace
 )brace
+id|p
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|p
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
