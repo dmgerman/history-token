@@ -7834,6 +7834,8 @@ id|zaurus_tx_fixup
 comma
 )brace
 suffix:semicolon
+DECL|macro|ZAURUS_STRONGARM_INFO
+mdefine_line|#define&t;ZAURUS_STRONGARM_INFO&t;((unsigned long)&amp;zaurus_sl5x00_info)
 DECL|variable|zaurus_pxa_info
 r_static
 r_const
@@ -7858,22 +7860,74 @@ op_assign
 id|always_connected
 comma
 dot
+id|bind
+op_assign
+id|generic_cdc_bind
+comma
+dot
+id|unbind
+op_assign
+id|cdc_unbind
+comma
+dot
 id|tx_fixup
 op_assign
 id|zaurus_tx_fixup
 comma
-dot
-id|in
+)brace
+suffix:semicolon
+DECL|macro|ZAURUS_PXA_INFO
+mdefine_line|#define&t;ZAURUS_PXA_INFO&t;&t;((unsigned long)&amp;zaurus_pxa_info)
+DECL|variable|olympus_mxl_info
+r_static
+r_const
+r_struct
+id|driver_info
+id|olympus_mxl_info
 op_assign
-l_int|1
+(brace
+dot
+id|description
+op_assign
+l_string|&quot;Olympus R1000&quot;
 comma
 dot
-id|out
+id|flags
 op_assign
-l_int|2
+id|FLAG_FRAMING_Z
+comma
+dot
+id|check_connect
+op_assign
+id|always_connected
+comma
+dot
+id|bind
+op_assign
+id|generic_cdc_bind
+comma
+dot
+id|unbind
+op_assign
+id|cdc_unbind
+comma
+dot
+id|tx_fixup
+op_assign
+id|zaurus_tx_fixup
 comma
 )brace
 suffix:semicolon
+DECL|macro|OLYMPUS_MXL_INFO
+mdefine_line|#define&t;OLYMPUS_MXL_INFO&t;((unsigned long)&amp;olympus_mxl_info)
+macro_line|#else
+multiline_comment|/* blacklist all those devices */
+DECL|macro|ZAURUS_STRONGARM_INFO
+mdefine_line|#define&t;ZAURUS_STRONGARM_INFO&t;0
+DECL|macro|ZAURUS_PXA_INFO
+mdefine_line|#define&t;ZAURUS_PXA_INFO&t;&t;0
+DECL|macro|OLYMPUS_MXL_INFO
+mdefine_line|#define&t;OLYMPUS_MXL_INFO&t;0
 macro_line|#endif
 "&f;"
 multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * Network Device Driver (peer link to &quot;Host Device&quot;, from USB host)&n; *&n; *-------------------------------------------------------------------------*/
@@ -9751,6 +9805,11 @@ c_cond
 id|status
 OL
 l_int|0
+op_logical_and
+id|status
+op_ne
+op_minus
+id|EPIPE
 )paren
 id|deverr
 (paren
@@ -9813,6 +9872,11 @@ c_cond
 id|status
 OL
 l_int|0
+op_logical_and
+id|status
+op_ne
+op_minus
+id|EPIPE
 )paren
 id|deverr
 (paren
@@ -12221,8 +12285,8 @@ comma
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_ZAURUS
-multiline_comment|/*&n; * SA-1100 based Sharp Zaurus (&quot;collie&quot;), or compatible.&n; * Same idea as above, but different framing.&n; *&n; * PXA-2xx based models are also lying-about-cdc.&n; */
+macro_line|#if&t;defined(CONFIG_USB_ZAURUS) || defined(CONFIG_USB_CDCETHER)
+multiline_comment|/*&n; * SA-1100 based Sharp Zaurus (&quot;collie&quot;), or compatible.&n; * Same idea as above, but different framing.&n; *&n; * PXA-2xx based models are also lying-about-cdc.&n; *&n; * NOTE:  These entries do double-duty, serving as blacklist entries&n; * whenever Zaurus support isn&squot;t enabled, but CDC Ethernet is.&n; */
 (brace
 dot
 id|match_flags
@@ -12261,12 +12325,7 @@ comma
 dot
 id|driver_info
 op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|zaurus_sl5x00_info
+id|ZAURUS_STRONGARM_INFO
 comma
 )brace
 comma
@@ -12292,12 +12351,13 @@ multiline_comment|/* A-300 */
 dot
 id|bInterfaceClass
 op_assign
-l_int|0x02
+id|USB_CLASS_COMM
 comma
 dot
 id|bInterfaceSubClass
 op_assign
-l_int|0x0a
+l_int|6
+multiline_comment|/* Ethernet model */
 comma
 dot
 id|bInterfaceProtocol
@@ -12307,12 +12367,7 @@ comma
 dot
 id|driver_info
 op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|zaurus_pxa_info
+id|ZAURUS_PXA_INFO
 comma
 )brace
 comma
@@ -12338,12 +12393,13 @@ multiline_comment|/* B-500/SL-5600 */
 dot
 id|bInterfaceClass
 op_assign
-l_int|0x02
+id|USB_CLASS_COMM
 comma
 dot
 id|bInterfaceSubClass
 op_assign
-l_int|0x0a
+l_int|6
+multiline_comment|/* Ethernet model */
 comma
 dot
 id|bInterfaceProtocol
@@ -12353,12 +12409,7 @@ comma
 dot
 id|driver_info
 op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|zaurus_pxa_info
+id|ZAURUS_PXA_INFO
 comma
 )brace
 comma
@@ -12384,12 +12435,13 @@ multiline_comment|/* C-700 */
 dot
 id|bInterfaceClass
 op_assign
-l_int|0x02
+id|USB_CLASS_COMM
 comma
 dot
 id|bInterfaceSubClass
 op_assign
-l_int|0x0a
+l_int|6
+multiline_comment|/* Ethernet model */
 comma
 dot
 id|bInterfaceProtocol
@@ -12399,12 +12451,7 @@ comma
 dot
 id|driver_info
 op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|zaurus_pxa_info
+id|ZAURUS_PXA_INFO
 comma
 )brace
 comma
@@ -12430,12 +12477,13 @@ multiline_comment|/* C-750 C-760 */
 dot
 id|bInterfaceClass
 op_assign
-l_int|0x02
+id|USB_CLASS_COMM
 comma
 dot
 id|bInterfaceSubClass
 op_assign
-l_int|0x0a
+l_int|6
+multiline_comment|/* Ethernet model */
 comma
 dot
 id|bInterfaceProtocol
@@ -12445,12 +12493,7 @@ comma
 dot
 id|driver_info
 op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|zaurus_pxa_info
+id|ZAURUS_PXA_INFO
 comma
 )brace
 comma
@@ -12476,12 +12519,13 @@ multiline_comment|/* SL-6000 */
 dot
 id|bInterfaceClass
 op_assign
-l_int|0x02
+id|USB_CLASS_COMM
 comma
 dot
 id|bInterfaceSubClass
 op_assign
-l_int|0x0a
+l_int|6
+multiline_comment|/* Ethernet model */
 comma
 dot
 id|bInterfaceProtocol
@@ -12491,12 +12535,7 @@ comma
 dot
 id|driver_info
 op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|zaurus_pxa_info
+id|ZAURUS_PXA_INFO
 comma
 )brace
 comma
@@ -12522,12 +12561,13 @@ multiline_comment|/* C-860 */
 dot
 id|bInterfaceClass
 op_assign
-l_int|0x02
+id|USB_CLASS_COMM
 comma
 dot
 id|bInterfaceSubClass
 op_assign
-l_int|0x0a
+l_int|6
+multiline_comment|/* Ethernet model */
 comma
 dot
 id|bInterfaceProtocol
@@ -12537,19 +12577,11 @@ comma
 dot
 id|driver_info
 op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|zaurus_pxa_info
+id|ZAURUS_PXA_INFO
 comma
 )brace
 comma
-macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_CDCETHER
-macro_line|#ifndef&t;CONFIG_USB_ZAURUS
-multiline_comment|/* if we couldn&squot;t whitelist Zaurus, we must blacklist it */
+multiline_comment|/* Olympus has some models with a Zaurus-compatible option.&n; * R-1000 uses a FreeScale i.MXL cpu (ARMv4T)&n; */
 (brace
 dot
 id|match_flags
@@ -12561,14 +12593,14 @@ comma
 dot
 id|idVendor
 op_assign
-l_int|0x04DD
+l_int|0x07B4
 comma
 dot
 id|idProduct
 op_assign
-l_int|0x8004
+l_int|0x0F02
 comma
-multiline_comment|/* match the master interface */
+multiline_comment|/* R-1000 */
 dot
 id|bInterfaceClass
 op_assign
@@ -12583,18 +12615,17 @@ comma
 dot
 id|bInterfaceProtocol
 op_assign
-l_int|0
+l_int|0x00
 comma
 dot
 id|driver_info
 op_assign
-l_int|0
+id|OLYMPUS_MXL_INFO
 comma
-multiline_comment|/* BLACKLIST */
 )brace
 comma
-singleline_comment|// FIXME blacklist the other Zaurus models too, sigh
 macro_line|#endif
+macro_line|#ifdef&t;CONFIG_USB_CDCETHER
 (brace
 multiline_comment|/* CDC Ether uses two interfaces, not necessarily consecutive.&n;&t; * We match the main interface, ignoring the optional device&n;&t; * class so we could handle devices that aren&squot;t exclusively&n;&t; * CDC ether.&n;&t; *&n;&t; * NOTE:  this match must come AFTER entries working around&n;&t; * bugs/quirks in a given product (like Zaurus, above).&n;&t; */
 id|USB_INTERFACE_INFO
