@@ -43,8 +43,6 @@ DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE (dest_Fixed)
 DECL|macro|INT_DEST_MODE
 mdefine_line|#define INT_DEST_MODE 1     /* logical delivery broadcast to all procs */
-DECL|macro|APIC_BROADCAST_ID
-mdefine_line|#define APIC_BROADCAST_ID     (0xFF)
 DECL|function|check_apicid_used
 r_static
 r_inline

@@ -8,8 +8,6 @@ DECL|macro|NO_BALANCE_IRQ
 mdefine_line|#define NO_BALANCE_IRQ (genapic-&gt;no_balance_irq)
 DECL|macro|NO_IOAPIC_CHECK
 mdefine_line|#define NO_IOAPIC_CHECK&t;(genapic-&gt;no_ioapic_check)
-DECL|macro|APIC_BROADCAST_ID
-mdefine_line|#define APIC_BROADCAST_ID (genapic-&gt;apic_broadcast_id)
 DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE (genapic-&gt;int_delivery_mode)
 DECL|macro|INT_DEST_MODE
