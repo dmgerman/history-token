@@ -7546,7 +7546,7 @@ op_member_access_from_pointer
 id|mmio
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev

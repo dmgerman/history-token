@@ -6211,7 +6211,7 @@ id|root_myri_dev-&gt;dev
 )paren
 suffix:semicolon
 multiline_comment|/* this will also free the co-allocated &squot;root_myri_dev&squot; */
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|root_myri_dev-&gt;dev

@@ -109,31 +109,6 @@ op_star
 id|data
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_int
-id|irda_device_proc_read
-c_func
-(paren
-r_char
-op_star
-id|buf
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|len
-comma
-r_int
-id|unused
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
 DECL|function|irda_device_init
 r_int
 id|__init
@@ -1167,25 +1142,6 @@ id|task
 )paren
 suffix:semicolon
 )brace
-DECL|function|irda_device_destructor
-r_static
-r_void
-id|irda_device_destructor
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Function irda_device_setup (dev)&n; *&n; *    This function should be used by low level device drivers in a similar way&n; *    as ether_setup() is used by normal network device drivers&n; */
 DECL|function|irda_device_setup
 r_void
@@ -1208,7 +1164,7 @@ l_int|0
 suffix:semicolon
 id|dev-&gt;destructor
 op_assign
-id|irda_device_destructor
+id|free_netdev
 suffix:semicolon
 id|dev-&gt;type
 op_assign

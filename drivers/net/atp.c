@@ -4525,7 +4525,7 @@ id|root_atp_dev
 )paren
 suffix:semicolon
 multiline_comment|/* No need to release_region(), since we never snarf it. */
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|root_atp_dev

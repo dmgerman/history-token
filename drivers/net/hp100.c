@@ -12730,7 +12730,7 @@ id|d-&gt;priv
 op_assign
 l_int|NULL
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|d

@@ -4764,7 +4764,7 @@ op_member_access_from_pointer
 id|buffers_dvma
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|root_qec_dev-&gt;qes
