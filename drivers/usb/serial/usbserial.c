@@ -1010,7 +1010,6 @@ comma
 id|filp
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1032,6 +1031,7 @@ c_func
 id|serial-&gt;type-&gt;owner
 )paren
 suffix:semicolon
+)brace
 )brace
 id|up
 (paren
