@@ -1784,7 +1784,7 @@ suffix:colon
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;tasklet received mf(%x) : msg_id(%x) uid(%x, %x) size(%d)&bslash;n&quot;
+l_string|&quot;tasklet received mf(%x) : msg_id(%x) uid(%x, %x) size(%zd)&bslash;n&quot;
 comma
 id|msg
 comma
