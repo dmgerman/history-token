@@ -1549,15 +1549,15 @@ l_string|&quot;Leaving scsi_init_cmd_from_req()&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Per-CPU I/O completion queue.&n; */
-DECL|variable|__cacheline_aligned
 r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_struct
 id|list_head
-id|done_q
-(braket
-id|NR_CPUS
-)braket
-id|__cacheline_aligned
+comma
+id|scsi_done_q
+)paren
 suffix:semicolon
 multiline_comment|/**&n; * scsi_done - Enqueue the finished SCSI command into the done queue.&n; * @cmd: The SCSI Command for which a low-level device driver (LLDD) gives&n; * ownership back to SCSI Core -- i.e. the LLDD has finished with it.&n; *&n; * This function is the mid-level&squot;s (SCSI Core) interrupt routine, which&n; * regains ownership of the SCSI command (de facto) from a LLDD, and enqueues&n; * the command to the done queue for further processing.&n; *&n; * This is the producer of the done queue who enqueues at the tail.&n; *&n; * This function is interrupt context safe.&n; */
 DECL|function|scsi_done
@@ -1574,9 +1574,6 @@ id|cmd
 r_int
 r_int
 id|flags
-suffix:semicolon
-r_int
-id|cpu
 suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t have to worry about this one timing out any more.&n;&t; * If we are unable to remove the timer, then the command&n;&t; * has already timed out.  In which case, we have no choice but to&n;&t; * let the timeout function run, as we have no idea where in fact&n;&t; * that function could really be.  It might be on another processor,&n;&t; * etc, etc.&n;&t; */
 r_if
@@ -1615,13 +1612,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -1629,10 +1619,11 @@ op_amp
 id|cmd-&gt;eh_entry
 comma
 op_amp
-id|done_q
-(braket
-id|cpu
-)braket
+id|__get_cpu_var
+c_func
+(paren
+id|scsi_done_q
+)paren
 )paren
 suffix:semicolon
 id|raise_softirq_irqoff
@@ -1676,13 +1667,11 @@ id|list_splice_init
 c_func
 (paren
 op_amp
-id|done_q
-(braket
-id|smp_processor_id
+id|__get_cpu_var
 c_func
 (paren
+id|scsi_done_q
 )paren
-)braket
 comma
 op_amp
 id|local_q
@@ -2930,10 +2919,13 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|done_q
-(braket
+id|per_cpu
+c_func
+(paren
+id|scsi_done_q
+comma
 id|i
-)braket
+)paren
 )paren
 suffix:semicolon
 id|devfs_mk_dir
