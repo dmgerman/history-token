@@ -27442,7 +27442,7 @@ macro_line|#endif /* ifdef CONFIG_SYNCLINK_SYNCPPP */
 DECL|function|synclink_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|synclink_init_one
 (paren
 r_struct

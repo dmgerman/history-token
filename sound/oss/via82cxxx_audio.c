@@ -5111,7 +5111,7 @@ suffix:semicolon
 DECL|function|via_ac97_reset
 r_static
 r_int
-id|__init
+id|__devinit
 id|via_ac97_reset
 (paren
 r_struct
@@ -5582,7 +5582,7 @@ suffix:semicolon
 DECL|function|via_ac97_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|via_ac97_init
 (paren
 r_struct
@@ -6682,7 +6682,7 @@ suffix:semicolon
 DECL|function|via_dsp_init
 r_static
 r_int
-id|__init
+id|__devinit
 id|via_dsp_init
 (paren
 r_struct
@@ -12261,7 +12261,7 @@ multiline_comment|/*************************************************************
 DECL|function|via_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|via_init_one
 (paren
 r_struct
@@ -13596,7 +13596,7 @@ suffix:semicolon
 DECL|function|via_card_init_proc
 r_static
 r_int
-id|__init
+id|__devinit
 id|via_card_init_proc
 (paren
 r_struct
