@@ -553,7 +553,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;interrupt_controller    = 0x%d&bslash;n&quot;
+l_string|&quot;naca-&gt;interrupt_controller    = 0x%ld&bslash;n&quot;
 comma
 id|naca-&gt;interrupt_controller
 )paren
@@ -569,7 +569,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;systemcfg-&gt;processorCount     = 0x%x&bslash;n&quot;
+l_string|&quot;systemcfg-&gt;processorCount     = 0x%lx&bslash;n&quot;
 comma
 id|systemcfg-&gt;processorCount
 )paren
