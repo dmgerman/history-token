@@ -1666,7 +1666,7 @@ op_star
 id|dev
 )paren
 (brace
-id|u32
+r_int
 id|gsi
 op_assign
 l_int|0
@@ -1757,8 +1757,9 @@ multiline_comment|/*&n;&t; * If no PRT entry was found, we&squot;ll try to deriv
 r_if
 c_cond
 (paren
-op_logical_neg
 id|gsi
+OL
+l_int|0
 )paren
 id|gsi
 op_assign
@@ -1779,8 +1780,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|gsi
+OL
+l_int|0
 )paren
 id|return_VOID
 suffix:semicolon
