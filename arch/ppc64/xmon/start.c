@@ -174,16 +174,19 @@ id|sysrq_key_op
 id|sysrq_xmon_op
 op_assign
 (brace
+dot
 id|handler
-suffix:colon
+op_assign
 id|sysrq_handle_xmon
 comma
+dot
 id|help_msg
-suffix:colon
+op_assign
 l_string|&quot;xmon&quot;
 comma
+dot
 id|action_msg
-suffix:colon
+op_assign
 l_string|&quot;Entering xmon&bslash;n&quot;
 comma
 )brace

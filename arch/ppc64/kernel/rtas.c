@@ -37,8 +37,9 @@ id|rtas_t
 id|rtas
 op_assign
 (brace
+dot
 id|lock
-suffix:colon
+op_assign
 id|SPIN_LOCK_UNLOCKED
 )brace
 suffix:semicolon
