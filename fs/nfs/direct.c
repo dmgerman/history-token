@@ -343,12 +343,6 @@ OL
 l_int|0
 )paren
 (brace
-id|nfs_release_list
-c_func
-(paren
-id|requests
-)paren
-suffix:semicolon
 r_return
 id|page_count
 suffix:semicolon
@@ -640,13 +634,6 @@ id|inode
 )paren
 op_member_access_from_pointer
 id|rpages
-)paren
-suffix:semicolon
-id|nfs_wait_for_reads
-c_func
-(paren
-op_amp
-id|requests
 )paren
 suffix:semicolon
 r_break
