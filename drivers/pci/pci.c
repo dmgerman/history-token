@@ -2391,7 +2391,7 @@ l_int|NULL
 id|pci_fixup_device
 c_func
 (paren
-id|PCI_FIXUP_FINAL
+id|pci_fixup_final
 comma
 id|dev
 )paren

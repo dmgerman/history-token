@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: quirks.c,v 1.5 1998/05/02 19:24:14 mj Exp $&n; *&n; *  This file contains work-arounds for many known PCI hardware&n; *  bugs.  Devices present only on certain architectures (host&n; *  bridges et cetera) should be handled in arch-specific code.&n; *&n; *  Copyright (c) 1999 Martin Mares &lt;mj@ucw.cz&gt;&n; *&n; *  The bridge optimization stuff has been removed. If you really&n; *  have a silly BIOS which is unable to set your host bridge right,&n; *  use the PowerTweak utility (see http://powertweak.sourceforge.net).&n; */
+multiline_comment|/*&n; *  This file contains work-arounds for many known PCI hardware&n; *  bugs.  Devices present only on certain architectures (host&n; *  bridges et cetera) should be handled in arch-specific code.&n; *&n; *  Note: any quirks for hotpluggable devices must _NOT_ be declared __init.&n; *&n; *  Copyright (c) 1999 Martin Mares &lt;mj@ucw.cz&gt;&n; *&n; *  The bridge optimization stuff has been removed. If you really&n; *  have a silly BIOS which is unable to set your host bridge right,&n; *  use the PowerTweak utility (see http://powertweak.sourceforge.net).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -4012,7 +4012,6 @@ comma
 id|quirk_pciehp_msi
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *  The main table of quirks.&n; *&n; *  Note: any hooks for hotpluggable devices in this table must _NOT_&n; *        be declared __init.&n; */
 DECL|function|pci_do_fixups
 r_static
 r_void
@@ -4137,7 +4136,8 @@ r_void
 id|pci_fixup_device
 c_func
 (paren
-r_int
+r_enum
+id|pci_fixup_pass
 id|pass
 comma
 r_struct
@@ -4161,7 +4161,7 @@ id|pass
 )paren
 (brace
 r_case
-id|PCI_FIXUP_HEADER
+id|pci_fixup_header
 suffix:colon
 id|start
 op_assign
@@ -4174,7 +4174,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PCI_FIXUP_FINAL
+id|pci_fixup_final
 suffix:colon
 id|start
 op_assign
@@ -4185,6 +4185,11 @@ op_assign
 id|__end_pci_fixups_final
 suffix:semicolon
 r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* stupid compiler warning, you would think with an enum... */
+r_return
 suffix:semicolon
 )brace
 id|pci_do_fixups
