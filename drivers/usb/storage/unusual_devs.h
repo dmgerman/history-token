@@ -591,7 +591,7 @@ l_string|&quot;eUSB MMC Adapter&quot;
 comma
 id|US_SC_SCSI
 comma
-id|US_PR_CB
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
