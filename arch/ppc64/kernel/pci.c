@@ -926,6 +926,7 @@ suffix:semicolon
 id|hose-&gt;global_number
 op_assign
 id|global_phb_number
+op_increment
 suffix:semicolon
 op_star
 id|hose_tail
