@@ -1406,7 +1406,7 @@ id|plen
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_dst_release
 suffix:semicolon
 )brace
 id|idev
@@ -1553,6 +1553,14 @@ id|in6_dev_put
 c_func
 (paren
 id|idev
+)paren
+suffix:semicolon
+id|out_dst_release
+suffix:colon
+id|dst_release
+c_func
+(paren
+id|dst
 )paren
 suffix:semicolon
 id|out
@@ -1938,6 +1946,12 @@ id|in6_dev_put
 c_func
 (paren
 id|idev
+)paren
+suffix:semicolon
+id|dst_release
+c_func
+(paren
+id|dst
 )paren
 suffix:semicolon
 id|out

@@ -6789,6 +6789,13 @@ c_cond
 id|np-&gt;cork.rt
 )paren
 (brace
+id|dst_release
+c_func
+(paren
+op_amp
+id|np-&gt;cork.rt-&gt;u.dst
+)paren
+suffix:semicolon
 id|np-&gt;cork.rt
 op_assign
 l_int|NULL
@@ -6902,6 +6909,13 @@ c_cond
 id|np-&gt;cork.rt
 )paren
 (brace
+id|dst_release
+c_func
+(paren
+op_amp
+id|np-&gt;cork.rt-&gt;u.dst
+)paren
+suffix:semicolon
 id|np-&gt;cork.rt
 op_assign
 l_int|NULL
