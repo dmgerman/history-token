@@ -4478,7 +4478,6 @@ id|mv64340_eth_change_mtu
 suffix:semicolon
 macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
 macro_line|#ifdef MAX_SKB_FRAGS
-macro_line|#ifndef CONFIG_JAGUAR_DMALOW
 multiline_comment|/*&n;         * Zero copy can only work if we use Discovery II memory. Else, we will&n;         * have to map the buffers to ISA memory which is only 16 MB&n;         */
 id|dev-&gt;features
 op_assign
@@ -4488,7 +4487,6 @@ id|NETIF_F_IP_CSUM
 op_or
 id|NETIF_F_HW_CSUM
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 id|mp-&gt;port_num
