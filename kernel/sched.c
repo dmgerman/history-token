@@ -2287,7 +2287,7 @@ r_if
 c_cond
 (paren
 id|idx
-op_eq
+op_ge
 id|MAX_PRIO
 )paren
 (brace

@@ -420,7 +420,7 @@ r_if
 c_cond
 (paren
 id|offset
-op_eq
+op_ge
 id|BITS_PER_PAGE
 )paren
 r_goto
