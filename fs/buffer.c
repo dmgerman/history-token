@@ -9575,6 +9575,15 @@ op_logical_neg
 id|offset
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * The page may have dirty, unmapped buffers.  For example,&n;&t;&t; * they may have been added in ext3_writepage().  Make them&n;&t;&t; * freeable here, so the page does not leak.&n;&t;&t; */
+id|block_invalidatepage
+c_func
+(paren
+id|page
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|unlock_page
 c_func
 (paren

@@ -4769,11 +4769,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* And attach them to the current transaction */
+multiline_comment|/*&n;&t; * And attach them to the current transaction.  But only if &n;&t; * block_write_full_page() succeeded.  Otherwise they are unmapped,&n;&t; * and generally junk.&n;&t; */
 r_if
 c_cond
 (paren
 id|order_data
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
 )paren
 (brace
 id|err
@@ -4794,6 +4802,17 @@ comma
 id|ext3_journal_dirty_data
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+id|ret
+op_assign
+id|err
+suffix:semicolon
+)brace
 id|walk_page_buffers
 c_func
 (paren
@@ -4809,16 +4828,6 @@ l_int|NULL
 comma
 id|bput_one
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret
-)paren
-id|ret
-op_assign
-id|err
 suffix:semicolon
 )brace
 id|err
