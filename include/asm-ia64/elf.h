@@ -153,7 +153,7 @@ DECL|macro|ELF_CORE_COPY_FPREGS
 mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
 macro_line|#ifdef CONFIG_FSYS
 DECL|macro|ARCH_DLINFO
-mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern int syscall_via_epc;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, syscall_via_epc);&t;&bslash;&n;} while (0)
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;extern char syscall_via_epc[], __start_gate_section[];&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_SYSINFO, GATE_ADDR + (syscall_via_epc - __start_gate_section));&t;&bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_ELF_H */
