@@ -3029,6 +3029,8 @@ DECL|macro|HUB_RESET_TRIES
 mdefine_line|#define HUB_RESET_TRIES&t;&t;5
 DECL|macro|HUB_PROBE_TRIES
 mdefine_line|#define HUB_PROBE_TRIES&t;&t;2
+DECL|macro|HUB_ROOT_RESET_TIME
+mdefine_line|#define HUB_ROOT_RESET_TIME&t;50&t;/* times are in msec */
 DECL|macro|HUB_SHORT_RESET_TIME
 mdefine_line|#define HUB_SHORT_RESET_TIME&t;10
 DECL|macro|HUB_LONG_RESET_TIME
@@ -3804,6 +3806,17 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* root hub ports have a slightly longer reset period&n;&t; * (from USB 2.0 spec, section 7.1.7.5)&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hub-&gt;parent
+)paren
+id|delay
+op_assign
+id|HUB_ROOT_RESET_TIME
+suffix:semicolon
 multiline_comment|/* Some low speed devices have problems with the quick delay, so */
 multiline_comment|/*  be a bit pessimistic with those devices. RHbug #23670 */
 r_if
