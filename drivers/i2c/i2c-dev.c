@@ -3,10 +3,6 @@ multiline_comment|/* Note that this is a complete rewrite of Simon Vogl&squot;s 
 multiline_comment|/* The I2C_RDWR ioctl code is written by Kolja Waschk &lt;waschk@telos.de&gt; */
 multiline_comment|/* The devfs code is contributed by Philipp Matthias Hahn &n;   &lt;pmhahn@titan.lahn.de&gt; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_CORE
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
