@@ -573,7 +573,7 @@ c_func
 id|ide_build_sglist
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;ide_build_dmatable&t;-&t;build IDE DMA table&n; *&n; *&t;ide_build_dmatable() prepares a dma request. We map the command&n; *&t;to get the pci bus addresses of the buffers and then build up&n; *&t;the PRD table that the IDE layer wants to be fed. The code&n; *&t;knows about the 64K wrap bug in the CS5530.&n; *&n; *&t;Returns 0 if all went okay, returns 1 otherwise.&n; *&t;May also be invoked from trm290.c&n; */
+multiline_comment|/**&n; *&t;ide_build_dmatable&t;-&t;build IDE DMA table&n; *&n; *&t;ide_build_dmatable() prepares a dma request. We map the command&n; *&t;to get the pci bus addresses of the buffers and then build up&n; *&t;the PRD table that the IDE layer wants to be fed. The code&n; *&t;knows about the 64K wrap bug in the CS5530.&n; *&n; *&t;Returns the number of built PRD entries if all went okay,&n; *&t;returns 0 otherwise.&n; *&n; *&t;May also be invoked from trm290.c&n; */
 DECL|function|ide_build_dmatable
 r_int
 id|ide_build_dmatable
