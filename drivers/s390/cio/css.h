@@ -202,6 +202,10 @@ r_int
 id|state
 suffix:semicolon
 multiline_comment|/* device state */
+DECL|member|onoff
+id|atomic_t
+id|onoff
+suffix:semicolon
 DECL|member|devno
 id|__u16
 id|devno
@@ -364,6 +368,29 @@ r_struct
 id|timer_list
 id|timer
 suffix:semicolon
+DECL|member|cmb
+r_void
+op_star
+id|cmb
+suffix:semicolon
+multiline_comment|/* measurement information */
+DECL|member|cmb_list
+r_struct
+id|list_head
+id|cmb_list
+suffix:semicolon
+multiline_comment|/* list of measured devices */
+DECL|member|cmb_start_time
+id|u64
+id|cmb_start_time
+suffix:semicolon
+multiline_comment|/* clock value of cmb reset */
+DECL|member|cmb_wait
+r_void
+op_star
+id|cmb_wait
+suffix:semicolon
+multiline_comment|/* deferred cmb enable/disable */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * A css driver handles all subchannels of one type.&n; * Currently, we only care about I/O subchannels (type 0), these&n; * have a ccw_device connected to them.&n; */
@@ -512,7 +539,7 @@ id|subchannel
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Helper function for vary on/off. */
+multiline_comment|/* Helper functions for vary on/off. */
 r_void
 id|device_set_waiting
 c_func
@@ -521,6 +548,58 @@ r_struct
 id|subchannel
 op_star
 )paren
+suffix:semicolon
+r_void
+id|device_call_nopath_notify
+c_func
+(paren
+r_struct
+id|subchannel
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* Helper functions to build lists for the slow path. */
+r_int
+id|css_enqueue_subchannel_slow
+c_func
+(paren
+r_int
+r_int
+id|schid
+)paren
+suffix:semicolon
+r_void
+id|css_walk_subchannel_slow_list
+c_func
+(paren
+r_void
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_int
+r_int
+)paren
+)paren
+suffix:semicolon
+r_void
+id|css_clear_subchannel_slow_list
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|css_slow_subchannels_exist
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|need_rescan
 suffix:semicolon
 macro_line|#endif
 eof

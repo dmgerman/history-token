@@ -1,8 +1,11 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.52 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.54 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
 macro_line|#ifdef __KERNEL__
+multiline_comment|/* erp debugging in dasd.c and dasd_3990_erp.c */
+DECL|macro|ERP_DEBUG
+mdefine_line|#define ERP_DEBUG
 multiline_comment|/* we keep old device allocation scheme; IOW, minors are still in 0..255 */
 DECL|macro|DASD_PER_MAJOR
 mdefine_line|#define DASD_PER_MAJOR (1U &lt;&lt; (MINORBITS - DASD_PARTN_BITS))
@@ -193,6 +196,12 @@ id|retries
 suffix:semicolon
 multiline_comment|/* A retry counter */
 multiline_comment|/* ... and how */
+DECL|member|starttime
+r_int
+r_int
+id|starttime
+suffix:semicolon
+multiline_comment|/* jiffies time of request start */
 DECL|member|expires
 r_int
 id|expires
@@ -230,6 +239,7 @@ op_star
 id|function
 suffix:semicolon
 multiline_comment|/* originating ERP action */
+multiline_comment|/* these are for statistics only */
 DECL|member|buildclk
 r_int
 r_int

@@ -33,6 +33,36 @@ DECL|typedef|sigp_info
 id|sigp_info
 suffix:semicolon
 r_extern
+r_int
+id|smp_call_function_on
+c_func
+(paren
+r_void
+(paren
+op_star
+id|func
+)paren
+(paren
+r_void
+op_star
+id|info
+)paren
+comma
+r_void
+op_star
+id|info
+comma
+r_int
+id|nonatomic
+comma
+r_int
+id|wait
+comma
+r_int
+id|cpu
+)paren
+suffix:semicolon
+r_extern
 id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
@@ -78,6 +108,10 @@ suffix:semicolon
 )brace
 DECL|macro|cpu_logical_map
 mdefine_line|#define cpu_logical_map(cpu) (cpu)
+macro_line|#endif
+macro_line|#ifndef CONFIG_SMP
+DECL|macro|smp_call_function_on
+mdefine_line|#define smp_call_function_on(func,info,nonatomic,wait,cpu)      ({ 0; })
 macro_line|#endif
 macro_line|#endif
 eof
