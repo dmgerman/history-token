@@ -2,12 +2,6 @@ multiline_comment|/*&n; * include/asm-v850/posix_types.h -- Kernel versions of s
 macro_line|#ifndef __V850_POSIX_TYPES_H__
 DECL|macro|__V850_POSIX_TYPES_H__
 mdefine_line|#define __V850_POSIX_TYPES_H__
-DECL|typedef|__kernel_dev_t
-r_typedef
-r_int
-r_int
-id|__kernel_dev_t
-suffix:semicolon
 DECL|typedef|__kernel_ino_t
 r_typedef
 r_int

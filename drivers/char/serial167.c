@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/serial167.c&n; *&n; * Driver for MVME166/7 board serial ports, which are via a CD2401.&n; * Based very much on cyclades.c.&n; *&n; * MVME166/7 work by Richard Hirst [richard@sleepie.demon.co.uk]&n; *&n; * ==============================================================&n; *&n; * static char rcsid[] =&n; * &quot;$Revision: 1.36.1.4 $$Date: 1995/03/29 06:14:14 $&quot;;&n; *&n; *  linux/kernel/cyclades.c&n; *&n; * Maintained by Marcio Saito (cyclades@netcom.com) and&n; * Randolph Bentson (bentson@grieg.seaslug.org)&n; *&n; * Much of the design and some of the code came from serial.c&n; * which was copyright (C) 1991, 1992  Linus Torvalds.  It was&n; * extensively rewritten by Theodore Ts&squot;o, 8/16/92 -- 9/14/92,&n; * and then fixed as suggested by Michael K. Johnson 12/12/92.&n; *&n; * This version does not support shared irq&squot;s.&n; *&n; * This module exports the following rs232 io functions:&n; *   int cy_init(void);&n; *   int  cy_open(struct tty_struct *tty, struct file *filp);&n; *&n; * $Log: cyclades.c,v $&n; * Revision 1.36.1.4  1995/03/29  06:14:14  bentson&n; * disambiguate between Cyclom-16Y and Cyclom-32Ye;&n; *&n; * Changes:&n; *&n; * 200 lines of changes record removed - RGH 11-10-95, starting work on&n; * converting this to drive serial ports on mvme166 (cd2401).&n; *&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 2000/08/25&n; * - get rid of verify_area&n; * - use get_user to access memory from userspace in set_threshold,&n; *   set_default_threshold and set_timeout&n; * - don&squot;t use the panic function in serial167_init&n; * - do resource release on failure on serial167_init&n; * - include missing restore_flags in mvme167_serial_console_setup&n; */
+multiline_comment|/*&n; * linux/drivers/char/serial167.c&n; *&n; * Driver for MVME166/7 board serial ports, which are via a CD2401.&n; * Based very much on cyclades.c.&n; *&n; * MVME166/7 work by Richard Hirst [richard@sleepie.demon.co.uk]&n; *&n; * ==============================================================&n; *&n; * static char rcsid[] =&n; * &quot;$Revision: 1.36.1.4 $$Date: 1995/03/29 06:14:14 $&quot;;&n; *&n; *  linux/kernel/cyclades.c&n; *&n; * Maintained by Marcio Saito (cyclades@netcom.com) and&n; * Randolph Bentson (bentson@grieg.seaslug.org)&n; *&n; * Much of the design and some of the code came from serial.c&n; * which was copyright (C) 1991, 1992  Linus Torvalds.  It was&n; * extensively rewritten by Theodore Ts&squot;o, 8/16/92 -- 9/14/92,&n; * and then fixed as suggested by Michael K. Johnson 12/12/92.&n; *&n; * This version does not support shared irq&squot;s.&n; *&n; * $Log: cyclades.c,v $&n; * Revision 1.36.1.4  1995/03/29  06:14:14  bentson&n; * disambiguate between Cyclom-16Y and Cyclom-32Ye;&n; *&n; * Changes:&n; *&n; * 200 lines of changes record removed - RGH 11-10-95, starting work on&n; * converting this to drive serial ports on mvme166 (cd2401).&n; *&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 2000/08/25&n; * - get rid of verify_area&n; * - use get_user to access memory from userspace in set_threshold,&n; *   set_default_threshold and set_timeout&n; * - don&squot;t use the panic function in serial167_init&n; * - do resource release on failure on serial167_init&n; * - include missing restore_flags in mvme167_serial_console_setup&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -9718,7 +9718,9 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* The serial driver boot-time initialization code!&n;    Hardware I/O ports are mapped to character special devices on a&n;    first found, first allocated manner.  That is, this code searches&n;    for Cyclom cards in the system.  As each is found, it is probed&n;    to discover how many chips (and thus how many ports) are present.&n;    These ports are mapped to the tty ports 64 and upward in monotonic&n;    fashion.  If an 8-port card is replaced with a 16-port card, the&n;    port mapping on a following card will shift.&n;&n;    This approach is different from what is used in the other serial&n;    device driver because the Cyclom is more properly a multiplexer,&n;    not just an aggregation of serial ports on one card.&n;&n;    If there are more cards with more ports than have been statically&n;    allocated above, a warning is printed and the extra ports are ignored.&n; */
+r_static
 r_int
+id|__init
 DECL|function|serial167_init
 id|serial167_init
 c_func
@@ -10451,6 +10453,13 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* serial167_init */
+DECL|variable|serial167_init
+id|module_init
+c_func
+(paren
+id|serial167_init
+)paren
+suffix:semicolon
 macro_line|#ifdef CYCLOM_SHOW_STATUS
 r_static
 r_void

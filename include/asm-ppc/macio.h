@@ -18,7 +18,7 @@ DECL|macro|MACIO_DEV_COUNT_RESOURCE
 mdefine_line|#define MACIO_DEV_COUNT_RESOURCE&t;8
 DECL|macro|MACIO_DEV_COUNT_IRQS
 mdefine_line|#define MACIO_DEV_COUNT_IRQS&t;&t;8
-multiline_comment|/*&n; * the macio_bus structure is used to describe a &quot;virtual&quot; bus&n; * within a MacIO ASIC. It&squot;s typically provided by a macio_pci_asic&n; * PCI device, but could be provided differently as well (nubus&n; * machines using a fake OF tree).&n; * &n; * The pdev field can be NULL on non-PCI machines&n; */
+multiline_comment|/*&n; * the macio_bus structure is used to describe a &quot;virtual&quot; bus&n; * within a MacIO ASIC. It&squot;s typically provided by a macio_pci_asic&n; * PCI device, but could be provided differently as well (nubus&n; * machines using a fake OF tree).&n; *&n; * The pdev field can be NULL on non-PCI machines&n; */
 DECL|struct|macio_bus
 r_struct
 id|macio_bus
@@ -43,7 +43,7 @@ op_star
 id|pdev
 suffix:semicolon
 multiline_comment|/* PCI device hosting this bus */
-macro_line|#endif&t;
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * the macio_dev structure is used to describe a device&n; * within an Apple MacIO ASIC.&n; */

@@ -457,7 +457,7 @@ op_or_assign
 id|IRQ_LEVEL
 suffix:semicolon
 r_else
-multiline_comment|/* lets hope this works since in linux/irq.h&n;&t;&t; * there is no define for EDGE and it&squot;s assumed&n;&t;&t; * once you set status to LEVEL you would not &n;&t;&t; * want to change it - Armin&n;&t;&t; */
+multiline_comment|/* lets hope this works since in linux/irq.h&n;&t;&t; * there is no define for EDGE and it&squot;s assumed&n;&t;&t; * once you set status to LEVEL you would not&n;&t;&t; * want to change it - Armin&n;&t;&t; */
 id|desc-&gt;status
 op_assign
 id|desc-&gt;status
@@ -517,7 +517,7 @@ op_or_assign
 id|IRQ_LEVEL
 suffix:semicolon
 r_else
-multiline_comment|/* lets hope this works since in linux/irq.h&n;&t;&t; * there is no define for EDGE and it&squot;s assumed&n;&t;&t; * once you set status to LEVEL you would not &n;&t;&t; * want to change it - Armin&n;&t;&t; */
+multiline_comment|/* lets hope this works since in linux/irq.h&n;&t;&t; * there is no define for EDGE and it&squot;s assumed&n;&t;&t; * once you set status to LEVEL you would not&n;&t;&t; * want to change it - Armin&n;&t;&t; */
 id|desc-&gt;status
 op_assign
 id|desc-&gt;status
@@ -1211,7 +1211,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* set polarity &n;&t; * 1 = default/pos/rising  , 0= neg/falling internal&n;&t; * 1 = neg/falling , 0= pos/rising external&n;&t; * Sense&n;&t; * 0 = default level internal&n;&t; * 0 = level, 1 = edge external&n;&t; */
+multiline_comment|/* set polarity&n;&t; * 1 = default/pos/rising  , 0= neg/falling internal&n;&t; * 1 = neg/falling , 0= pos/rising external&n;&t; * Sense&n;&t; * 0 = default level internal&n;&t; * 0 = level, 1 = edge external&n;&t; */
 r_int
 r_int
 id|sense

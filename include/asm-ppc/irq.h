@@ -62,7 +62,7 @@ macro_line|#endif
 macro_line|#if defined (CONFIG_403)
 multiline_comment|/*&n; * The PowerPC 403 cores&squot; Asynchronous Interrupt Controller (AIC) has&n; * 32 possible interrupts, a majority of which are not implemented on&n; * all cores. There are six configurable, external interrupt pins and&n; * there are eight internal interrupts for the on-chip serial port&n; * (SPU), DMA controller, and JTAG controller.&n; *&n; */
 DECL|macro|NR_AIC_IRQS
-mdefine_line|#define&t;NR_AIC_IRQS 32 
+mdefine_line|#define&t;NR_AIC_IRQS 32
 DECL|macro|NR_IRQS
 mdefine_line|#define&t;NR_IRQS&t; (NR_AIC_IRQS + NR_BOARD_IRQS)
 macro_line|#elif !defined (CONFIG_403)
@@ -113,7 +113,7 @@ id|irq
 suffix:semicolon
 )brace
 macro_line|#elif defined(CONFIG_8xx)
-multiline_comment|/* The MPC8xx cores have 16 possible interrupts.  There are eight&n; * possible level sensitive interrupts assigned and generated internally&n; * from such devices as CPM, PCMCIA, RTC, PIT, TimeBase and Decrementer.&n; * There are eight external interrupts (IRQs) that can be configured&n; * as either level or edge sensitive. &n; *&n; * On some implementations, there is also the possibility of an 8259&n; * through the PCI and PCI-ISA bridges.&n; */
+multiline_comment|/* The MPC8xx cores have 16 possible interrupts.  There are eight&n; * possible level sensitive interrupts assigned and generated internally&n; * from such devices as CPM, PCMCIA, RTC, PIT, TimeBase and Decrementer.&n; * There are eight external interrupts (IRQs) that can be configured&n; * as either level or edge sensitive.&n; *&n; * On some implementations, there is also the possibility of an 8259&n; * through the PCI and PCI-ISA bridges.&n; */
 DECL|macro|NR_SIU_INTS
 mdefine_line|#define NR_SIU_INTS&t;16
 DECL|macro|NR_IRQS

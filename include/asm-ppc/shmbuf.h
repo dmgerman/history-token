@@ -1,7 +1,7 @@
 macro_line|#ifndef _PPC_SHMBUF_H
 DECL|macro|_PPC_SHMBUF_H
 mdefine_line|#define _PPC_SHMBUF_H
-multiline_comment|/* &n; * The shmid64_ds structure for PPC architecture.&n; */
+multiline_comment|/*&n; * The shmid64_ds structure for PPC architecture.&n; */
 DECL|struct|shmid64_ds
 r_struct
 id|shmid64_ds

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/syslib/pci_auto.c&n; * &n; * PCI autoconfiguration library&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/syslib/pci_auto.c&n; *&n; * PCI autoconfiguration library&n; *&n; * Author: Matt Porter &lt;mporter@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 multiline_comment|/*&n; * The CardBus support is very preliminary.  Preallocating space is&n; * the way to go but will require some change in card services to&n; * make it useful.  Eventually this will ensure that we can put&n; * multiple CB bridges behind multiple P2P bridges.  For now, at&n; * least it ensures that we place the CB bridge BAR and assigned&n; * initial bus numbers.  I definitely need to do something about&n; * the lack of 16-bit I/O support. -MDP&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -912,7 +912,7 @@ comma
 id|sub_bus
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Reserve an additional 4MB for mem space and 16KB for&n;&t; * I/O space.  This should cover any additional space&n;&t; * requirement of unusual CardBus devices with &n;&t; * additional bridges that can consume more address space.&n;&t; * &n;&t; * Although pcmcia-cs currently will reprogram bridge&n;&t; * windows, the goal is to add an option to leave them&n;&t; * alone and use the bridge window ranges as the regions&n;&t; * that are searched for free resources upon hot-insertion&n;&t; * of a device.  This will allow a PCI&lt;-&gt;CardBus bridge&n;&t; * configured by this routine to happily live behind a&n;&t; * P2P bridge in a system.&n;&t; */
+multiline_comment|/*&n;&t; * Reserve an additional 4MB for mem space and 16KB for&n;&t; * I/O space.  This should cover any additional space&n;&t; * requirement of unusual CardBus devices with&n;&t; * additional bridges that can consume more address space.&n;&t; *&n;&t; * Although pcmcia-cs currently will reprogram bridge&n;&t; * windows, the goal is to add an option to leave them&n;&t; * alone and use the bridge window ranges as the regions&n;&t; * that are searched for free resources upon hot-insertion&n;&t; * of a device.  This will allow a PCI&lt;-&gt;CardBus bridge&n;&t; * configured by this routine to happily live behind a&n;&t; * P2P bridge in a system.&n;&t; */
 id|pciauto_upper_memspc
 op_sub_assign
 l_int|0x00400000

@@ -101,7 +101,7 @@ id|pci_irq_table
 l_int|4
 )braket
 op_assign
-multiline_comment|/*&n;&t;&t; *&t;PCI IDSEL/INTPIN-&gt;INTLINE &n;&t;&t; * &t;   A   B   C   D&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *&t;PCI IDSEL/INTPIN-&gt;INTLINE&n;&t;&t; * &t;   A   B   C   D&n;&t;&t; */
 (brace
 (brace
 l_int|91
@@ -156,7 +156,7 @@ id|pci_irq_table
 l_int|4
 )braket
 op_assign
-multiline_comment|/*&n;&t;&t; *&t;PCI IDSEL/INTPIN-&gt;INTLINE &n;&t;&t; * &t;   A   B   C   D&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *&t;PCI IDSEL/INTPIN-&gt;INTLINE&n;&t;&t; * &t;   A   B   C   D&n;&t;&t; */
 (brace
 (brace
 l_int|93

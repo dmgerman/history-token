@@ -3652,7 +3652,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;
+macro_line|#endif
 )brace
 DECL|typedef|pci_OF_scan_iterator
 r_typedef
@@ -3953,7 +3953,7 @@ id|filter_data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Scans the OF tree for a device node matching a PCI device&n; */
+multiline_comment|/*&n; * Scans the OF tree for a device node matching a PCI device&n; */
 r_struct
 id|device_node
 op_star
@@ -4187,7 +4187,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Returns the PCI device matching a given OF node&n; */
+multiline_comment|/*&n; * Returns the PCI device matching a given OF node&n; */
 r_int
 DECL|function|pci_device_from_OF_node
 id|pci_device_from_OF_node
@@ -5047,7 +5047,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC_OF */
 macro_line|#ifdef CONFIG_PPC_PMAC
-multiline_comment|/*&n; * This set of routines checks for PCI&lt;-&gt;PCI bridges that have closed&n; * IO resources and have child devices. It tries to re-open an IO&n; * window on them. &n; * &n; * This is a _temporary_ fix to workaround a problem with Apple&squot;s OF&n; * closing IO windows on P2P bridges when the OF drivers of cards&n; * below this bridge don&squot;t claim any IO range (typically ATI or&n; * Adaptec).&n; * &n; * A more complete fix would be to use drivers/pci/setup-bus.c, which&n; * involves a working pcibios_fixup_pbus_ranges(), some more care about&n; * ordering when creating the host bus resources, and maybe a few more&n; * minor tweaks&n; */
+multiline_comment|/*&n; * This set of routines checks for PCI&lt;-&gt;PCI bridges that have closed&n; * IO resources and have child devices. It tries to re-open an IO&n; * window on them.&n; *&n; * This is a _temporary_ fix to workaround a problem with Apple&squot;s OF&n; * closing IO windows on P2P bridges when the OF drivers of cards&n; * below this bridge don&squot;t claim any IO range (typically ATI or&n; * Adaptec).&n; *&n; * A more complete fix would be to use drivers/pci/setup-bus.c, which&n; * involves a working pcibios_fixup_pbus_ranges(), some more care about&n; * ordering when creating the host bus resources, and maybe a few more&n; * minor tweaks&n; */
 multiline_comment|/* Initialize bridges with base/limit values we have collected */
 r_static
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;PCI defines and function prototypes&n; *&t;Copyright 2003 Dell Computer Corporation&n; *        by Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; */
+multiline_comment|/*&n; *&t;PCI defines and function prototypes&n; *&t;Copyright 2003 Dell Inc.&n; *        by Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; */
 macro_line|#ifndef LINUX_PCI_DYNIDS_H
 DECL|macro|LINUX_PCI_DYNIDS_H
 mdefine_line|#define LINUX_PCI_DYNIDS_H

@@ -13,6 +13,11 @@ macro_line|#endif
 macro_line|#include &lt;linux/posix_types.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#ifndef __KERNEL_STRICT_NAMES
+DECL|typedef|__kernel_dev_t
+r_typedef
+id|__u32
+id|__kernel_dev_t
+suffix:semicolon
 DECL|typedef|fd_set
 r_typedef
 id|__kernel_fd_set

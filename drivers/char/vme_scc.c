@@ -1635,6 +1635,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|vme_scc_init
+r_static
 r_int
 id|vme_scc_init
 c_func
@@ -1647,24 +1648,6 @@ id|res
 op_assign
 op_minus
 id|ENODEV
-suffix:semicolon
-r_static
-r_int
-id|called
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|called
-)paren
-r_return
-id|res
-suffix:semicolon
-id|called
-op_assign
-l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_MVME147_SCC
 r_if
@@ -1712,6 +1695,13 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|variable|vme_scc_init
+id|module_init
+c_func
+(paren
+id|vme_scc_init
+)paren
+suffix:semicolon
 multiline_comment|/*---------------------------------------------------------------------------&n; * Interrupt handlers&n; *--------------------------------------------------------------------------*/
 DECL|function|scc_rx_int
 r_static

@@ -1429,7 +1429,7 @@ op_star
 id|memavailp
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Set cache mode of (kernel space) address range. &n; */
+multiline_comment|/*&n; * Set cache mode of (kernel space) address range.&n; */
 r_extern
 r_void
 id|kernel_set_cachemode
@@ -1451,7 +1451,7 @@ multiline_comment|/* Needs to be defined here and not in linux/mm.h, as it is ar
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 DECL|macro|io_remap_page_range
-mdefine_line|#define io_remap_page_range remap_page_range 
+mdefine_line|#define io_remap_page_range remap_page_range
 multiline_comment|/*&n; * No page table caches to initialise&n; */
 DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()&t;do { } while (0)

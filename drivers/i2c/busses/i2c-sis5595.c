@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|blacklist
 r_static
 r_int

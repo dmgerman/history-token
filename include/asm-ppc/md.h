@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * md.h: High speed xor_block operation for RAID4/5 &n; *&n; */
+multiline_comment|/*&n; * md.h: High speed xor_block operation for RAID4/5&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_MD_H
 DECL|macro|__ASM_MD_H

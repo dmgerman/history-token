@@ -26,7 +26,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
-multiline_comment|/* -----------------------------------------------------------------------------&n; *  From STB03xxx SICC UART Specification &n; * -----------------------------------------------------------------------------&n; *  UART Register Offsets.&n; */
+multiline_comment|/* -----------------------------------------------------------------------------&n; *  From STB03xxx SICC UART Specification&n; * -----------------------------------------------------------------------------&n; *  UART Register Offsets.&n; */
 DECL|macro|BL_SICC_LSR
 mdefine_line|#define BL_SICC_LSR   0x0000000      /* line status register read/clear */
 DECL|macro|BL_SICC_LSRS

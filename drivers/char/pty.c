@@ -1158,6 +1158,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|pty_init
+r_static
 r_int
 id|__init
 id|pty_init
@@ -1614,4 +1615,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|pty_init
+id|module_init
+c_func
+(paren
+id|pty_init
+)paren
+suffix:semicolon
 eof

@@ -2058,7 +2058,7 @@ id|vec
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Send an IPI to one or more CPUs&n; *  &n; *  Externally called, however, it takes an IPI number (0...OPENPIC_NUM_IPI)&n; *  and not a system-wide interrupt number&n; */
+multiline_comment|/*&n; *  Send an IPI to one or more CPUs&n; *&n; *  Externally called, however, it takes an IPI number (0...OPENPIC_NUM_IPI)&n; *  and not a system-wide interrupt number&n; */
 DECL|function|openpic_cause_IPI
 r_void
 id|openpic_cause_IPI
@@ -2112,7 +2112,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure this matches what is defined in smp.c for &n;&t; * smp_message_{pass|recv}() or what shows up in &n;&t; * /proc/interrupts will be wrong!!! --Troy */
+multiline_comment|/*&n;&t; * Make sure this matches what is defined in smp.c for&n;&t; * smp_message_{pass|recv}() or what shows up in&n;&t; * /proc/interrupts will be wrong!!! --Troy */
 r_if
 c_cond
 (paren
@@ -2586,7 +2586,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/*&n; *  Enable/disable an IPI interrupt source&n; *  &n; *  Externally called, irq is an offseted system-wide interrupt number&n; */
+multiline_comment|/*&n; *  Enable/disable an IPI interrupt source&n; *&n; *  Externally called, irq is an offseted system-wide interrupt number&n; */
 DECL|function|openpic_enable_ipi
 r_void
 id|openpic_enable_ipi
@@ -3858,7 +3858,7 @@ op_assign
 op_amp
 id|openpic_resume
 comma
-macro_line|#endif /* CONFIG_PM */&t;
+macro_line|#endif /* CONFIG_PM */
 )brace
 suffix:semicolon
 DECL|function|init_openpic_sysfs

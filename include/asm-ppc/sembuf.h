@@ -1,7 +1,7 @@
 macro_line|#ifndef _PPC_SEMBUF_H
 DECL|macro|_PPC_SEMBUF_H
 mdefine_line|#define _PPC_SEMBUF_H
-multiline_comment|/* &n; * The semid64_ds structure for PPC architecture.&n; */
+multiline_comment|/*&n; * The semid64_ds structure for PPC architecture.&n; */
 DECL|struct|semid64_ds
 r_struct
 id|semid64_ds

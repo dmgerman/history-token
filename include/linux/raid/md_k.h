@@ -178,11 +178,8 @@ r_struct
 id|mdk_rdev_s
 id|mdk_rdev_t
 suffix:semicolon
-macro_line|#if (MINORBITS != 8)
-macro_line|#error MD does not handle bigger kdev yet
-macro_line|#endif
 DECL|macro|MAX_MD_DEVS
-mdefine_line|#define MAX_MD_DEVS  (1&lt;&lt;MINORBITS)&t;/* Max number of md dev */
+mdefine_line|#define MAX_MD_DEVS  256&t;/* Max number of md dev */
 multiline_comment|/*&n; * options passed in raidrun:&n; */
 DECL|macro|MAX_CHUNK_SIZE
 mdefine_line|#define MAX_CHUNK_SIZE (4096*1024)

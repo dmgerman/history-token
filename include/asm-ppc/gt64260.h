@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-ppc/gt64260.h&n; * &n; * Prototypes, etc. for the Marvell/Galileo GT64260 host bridge routines.&n; *&n; * Author: Mark A. Greer &lt;mgreer@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * include/asm-ppc/gt64260.h&n; *&n; * Prototypes, etc. for the Marvell/Galileo GT64260 host bridge routines.&n; *&n; * Author: Mark A. Greer &lt;mgreer@mvista.com&gt;&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifndef __ASMPPC_GT64260_H
 DECL|macro|__ASMPPC_GT64260_H
 mdefine_line|#define __ASMPPC_GT64260_H
@@ -387,7 +387,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|macro|gt_set_bits
-mdefine_line|#define&t;gt_set_bits(offs, bits) gt_modify(offs, ~0, bits) 
+mdefine_line|#define&t;gt_set_bits(offs, bits) gt_modify(offs, ~0, bits)
 DECL|macro|gt_clr_bits
 mdefine_line|#define&t;gt_clr_bits(offs, bits) gt_modify(offs, 0, bits)
 multiline_comment|/*&n; *****************************************************************************&n; *&n; *&t;Function Prototypes&n; *&n; *****************************************************************************&n; */

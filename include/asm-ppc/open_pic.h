@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  include/asm-ppc/open_pic.h -- OpenPIC Interrupt Handling&n; *&n; *  Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; *  &n; */
+multiline_comment|/*&n; *  include/asm-ppc/open_pic.h -- OpenPIC Interrupt Handling&n; *&n; *  Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; *&n; */
 macro_line|#ifndef _PPC_KERNEL_OPEN_PIC_H
 DECL|macro|_PPC_KERNEL_OPEN_PIC_H
 mdefine_line|#define _PPC_KERNEL_OPEN_PIC_H
@@ -183,7 +183,7 @@ r_int
 id|irq
 )paren
 (brace
-multiline_comment|/* IRQ 0 usually means &squot;disabled&squot;.. don&squot;t mess with it &n;&t; * exceptions to this (sandpoint maybe?) &n;&t; * shouldn&squot;t use openpic_to_irq &n;&t; */
+multiline_comment|/* IRQ 0 usually means &squot;disabled&squot;.. don&squot;t mess with it&n;&t; * exceptions to this (sandpoint maybe?)&n;&t; * shouldn&squot;t use openpic_to_irq&n;&t; */
 r_if
 c_cond
 (paren

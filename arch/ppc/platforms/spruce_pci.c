@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/spruce_pci.c&n; * &n; * PCI support for IBM Spruce&n; *&n; * Author: Johnnie Peters&n; *         jpeters@mvista.com&n; *&n; * 2000 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/spruce_pci.c&n; *&n; * PCI support for IBM Spruce&n; *&n; * Author: Johnnie Peters&n; *         jpeters@mvista.com&n; *&n; * 2000 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -40,7 +40,7 @@ id|pci_irq_table
 l_int|4
 )braket
 op_assign
-multiline_comment|/*&n;&t;&t; * &t;PCI IDSEL/INTPIN-&gt;INTLINE &n;&t;&t; * &t;A&t;B&t;C&t;D&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * &t;PCI IDSEL/INTPIN-&gt;INTLINE&n;&t;&t; * &t;A&t;B&t;C&t;D&n;&t;&t; */
 (brace
 (brace
 l_int|23

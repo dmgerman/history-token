@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/adir_pic.c&n; * &n; * Interrupt controller support for SBS Adirondack&n; *&n; * By Michael Sokolov &lt;msokolov@ivan.Harhan.ORG&gt;&n; * based on the K2 and SCM versions by Matt Porter &lt;mporter@mvista.com&gt;&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/adir_pic.c&n; *&n; * Interrupt controller support for SBS Adirondack&n; *&n; * By Michael Sokolov &lt;msokolov@ivan.Harhan.ORG&gt;&n; * based on the K2 and SCM versions by Matt Porter &lt;mporter@mvista.com&gt;&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

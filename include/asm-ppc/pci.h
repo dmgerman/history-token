@@ -79,7 +79,7 @@ op_star
 id|res
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The PCI bus bridge can translate addresses issued by the processor(s)&n; * into a different address on the PCI bus.  On 32-bit cpus, we assume&n; * this mapping is 1-1, but on 64-bit systems it often isn&squot;t.&n; * &n; * Obsolete ! Drivers should now use pci_resource_to_bus&n; */
+multiline_comment|/*&n; * The PCI bus bridge can translate addresses issued by the processor(s)&n; * into a different address on the PCI bus.  On 32-bit cpus, we assume&n; * this mapping is 1-1, but on 64-bit systems it often isn&squot;t.&n; *&n; * Obsolete ! Drivers should now use pci_resource_to_bus&n; */
 r_extern
 r_int
 r_int

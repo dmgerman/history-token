@@ -8,7 +8,8 @@ r_struct
 id|stat
 (brace
 DECL|member|st_dev
-id|dev_t
+r_int
+r_int
 id|st_dev
 suffix:semicolon
 DECL|member|st_ino
@@ -32,7 +33,8 @@ id|gid_t
 id|st_gid
 suffix:semicolon
 DECL|member|st_rdev
-id|dev_t
+r_int
+r_int
 id|st_rdev
 suffix:semicolon
 DECL|member|st_size

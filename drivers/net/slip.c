@@ -3174,7 +3174,11 @@ op_assign
 id|sl_alloc
 c_func
 (paren
-id|tty-&gt;device
+id|tty_devnum
+c_func
+(paren
+id|tty
+)paren
 )paren
 )paren
 op_eq
@@ -3193,7 +3197,11 @@ id|sl
 suffix:semicolon
 id|sl-&gt;line
 op_assign
-id|tty-&gt;device
+id|tty_devnum
+c_func
+(paren
+id|tty
+)paren
 suffix:semicolon
 id|sl-&gt;pid
 op_assign

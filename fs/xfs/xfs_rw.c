@@ -649,7 +649,7 @@ c_func
 (paren
 id|CE_ALERT
 comma
-l_string|&quot;I/O error in filesystem (&bslash;&quot;%s&bslash;&quot;) meta-data dev 0x%x block 0x%llx&quot;
+l_string|&quot;I/O error in filesystem (&bslash;&quot;%s&bslash;&quot;) meta-data dev %u:%u block 0x%llx&quot;
 l_string|&quot;       (&bslash;&quot;%s&bslash;&quot;) error %d buf count %u&quot;
 comma
 (paren
@@ -665,10 +665,24 @@ l_string|&quot;(fs name not set)&quot;
 suffix:colon
 id|mp-&gt;m_fsname
 comma
+id|MAJOR
+c_func
+(paren
 id|XFS_BUF_TARGET_DEV
 c_func
 (paren
 id|bp
+)paren
+)paren
+comma
+id|MINOR
+c_func
+(paren
+id|XFS_BUF_TARGET_DEV
+c_func
+(paren
+id|bp
+)paren
 )paren
 comma
 (paren

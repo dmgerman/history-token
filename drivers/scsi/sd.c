@@ -4633,29 +4633,51 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|scsi_status_is_good
 c_func
 (paren
 id|res
 )paren
 )paren
-(brace
+r_goto
+id|bad_sense
+suffix:semicolon
 multiline_comment|/* that went OK, now ask for the proper length */
 id|len
 op_assign
 id|data.length
+suffix:semicolon
+multiline_comment|/*&n;&t; * We&squot;re only interested in the first three bytes, actually.&n;&t; * But the data cache page is defined for the first 20.&n;&t; */
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|3
+)paren
+r_goto
+id|bad_sense
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|len
 OG
-l_int|128
+l_int|20
 )paren
 id|len
 op_assign
-l_int|128
+l_int|20
 suffix:semicolon
+multiline_comment|/* Take headers and block descriptors into account */
+id|len
+op_add_assign
+id|data.header_length
+op_plus
+id|data.block_descriptor_length
+suffix:semicolon
+multiline_comment|/* Get the data */
 id|res
 op_assign
 id|sd_do_mode_sense
@@ -4675,7 +4697,6 @@ op_amp
 id|data
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4769,9 +4790,11 @@ id|ct
 )braket
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-r_else
-(brace
+id|bad_sense
+suffix:colon
 r_if
 c_cond
 (paren
@@ -4852,7 +4875,6 @@ id|sdkp-&gt;RCD
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/**&n; *&t;sd_revalidate_disk - called the first time a new disk is seen,&n; *&t;performs disk spin up, read_capacity, etc.&n; *&t;@disk: struct gendisk we care about&n; **/
 DECL|function|sd_revalidate_disk

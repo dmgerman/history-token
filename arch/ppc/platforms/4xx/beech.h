@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * include/asm-ppc/platforms/beech.h   Platform definitions for the IBM Beech&n; *                                     board&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Copyright (C) 2002, International Business Machines Corporation&n; * All Rights Reserved.&n; *&n; * Bishop Brock&n; * IBM Research, Austin Center for Low-Power Computing&n; * bcbrock@us.ibm.com&n; * March, 2002&n; * &n; */
+multiline_comment|/*&n; * include/asm-ppc/platforms/beech.h   Platform definitions for the IBM Beech&n; *                                     board&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Copyright (C) 2002, International Business Machines Corporation&n; * All Rights Reserved.&n; *&n; * Bishop Brock&n; * IBM Research, Austin Center for Low-Power Computing&n; * bcbrock@us.ibm.com&n; * March, 2002&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_BEECH_H__
 DECL|macro|__ASM_BEECH_H__
 mdefine_line|#define __ASM_BEECH_H__
 macro_line|#include &lt;platforms/4xx/ibm405lp.h&gt;
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/*&n; * Data structure defining board information maintained by the standard boot&n; * ROM on the IBM Beech board. An effort has been made to&n; * keep the field names consistent with the 8xx &squot;bd_t&squot; board info&n; * structures.  &n; */
+multiline_comment|/*&n; * Data structure defining board information maintained by the standard boot&n; * ROM on the IBM Beech board. An effort has been made to&n; * keep the field names consistent with the 8xx &squot;bd_t&squot; board info&n; * structures.&n; */
 DECL|struct|board_info
 r_typedef
 r_struct
@@ -193,7 +193,7 @@ DECL|macro|FPGA_REG_4_PCMCIA_5V
 mdefine_line|#define FPGA_REG_4_PCMCIA_5V&t;&t;0x10&t;/* New in Pass 2 */
 DECL|macro|FPGA_REG_4_IRQ3
 mdefine_line|#define FPGA_REG_4_IRQ3&t;&t;&t;0x20&t;/* New in Pass 2 */
-multiline_comment|/* EBC Bank 2 contains the 16 MB &quot;Linux&quot; flash. The FPGA decodes a 32 MB&n;   bank. The lower 16 MB are available for expansion devices.  The upper 16 MB&n;   are used for the &quot;Linux&quot; flash.&n;&n;   Partitioning information is for the benefit of the MTD driver.  See &n;   drivers/mtd/maps/ibm4xx.c. We currently allocate the lower 1 MB for a&n;   kernel, and the other 15 MB for a filesystem.&n;&n;*/
+multiline_comment|/* EBC Bank 2 contains the 16 MB &quot;Linux&quot; flash. The FPGA decodes a 32 MB&n;   bank. The lower 16 MB are available for expansion devices.  The upper 16 MB&n;   are used for the &quot;Linux&quot; flash.&n;&n;   Partitioning information is for the benefit of the MTD driver.  See&n;   drivers/mtd/maps/ibm4xx.c. We currently allocate the lower 1 MB for a&n;   kernel, and the other 15 MB for a filesystem.&n;&n;*/
 multiline_comment|/* Bank 2 mappings changed between Beech Pass 1 and Pass 2 */
 macro_line|#ifdef CONFIG_BEECH_PASS1
 DECL|macro|BEECH_BIGFLASH_OFFSET

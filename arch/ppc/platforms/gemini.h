@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  arch/ppc/platforms/gemini.h&n; *&n; *&n; *  Onboard registers and descriptions for Synergy Microsystems&squot; &n; *  &quot;Gemini&quot; boards.&n; *&n; */
+multiline_comment|/*&n; *  arch/ppc/platforms/gemini.h&n; *&n; *&n; *  Onboard registers and descriptions for Synergy Microsystems&squot;&n; *  &quot;Gemini&quot; boards.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_GEMINI_H
 DECL|macro|__PPC_GEMINI_H

@@ -9661,7 +9661,7 @@ id|super
 )paren
 ques
 c_cond
-id|old_decode_dev
+id|new_decode_dev
 c_func
 (paren
 id|SB_ONDISK_JOURNAL_DEVICE

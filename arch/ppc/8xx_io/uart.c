@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  UART driver for MPC860 CPM SCC or SMC&n; *  Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * I used the serial.c driver as the framework for this driver.&n; * Give credit to those guys.&n; * The original code was written for the MBX860 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs, but this has never been tested, nor is it complete.&n; * Only the SCCs support modem control, so that is not complete either.&n; *&n; * This module exports the following rs232 io functions:&n; *&n; *&t;int rs_8xx_init(void);&n; */
+multiline_comment|/*&n; *  UART driver for MPC860 CPM SCC or SMC&n; *  Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * I used the serial.c driver as the framework for this driver.&n; * Give credit to those guys.&n; * The original code was written for the MBX860 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs, but this has never been tested, nor is it complete.&n; * Only the SCCs support modem control, so that is not complete either.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -871,7 +871,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ----------------------------------------------------------------------&n; *&n; * Here starts the interrupt handling routines.  All of the following&n; * subroutines are declared as inline and are folded into&n; * rs_interrupt().  They were separated out for readability&squot;s sake.&n; *&n; * Note: rs_interrupt() is a &quot;fast&quot; interrupt, which means that it&n; * runs with interrupts turned off.  People who may want to modify&n; * rs_interrupt() should try to keep the interrupt handler as fast as&n; * possible.  After you are done making modifications, it is not a bad&n; * idea to do:&n; * &n; * gcc -S -DKERNEL -Wall -Wstrict-prototypes -O6 -fomit-frame-pointer serial.c&n; *&n; * and look at the resulting assemble code in serial.s.&n; *&n; * &t;&t;&t;&t;- Ted Ts&squot;o (tytso@mit.edu), 7-Mar-93&n; * -----------------------------------------------------------------------&n; */
+multiline_comment|/*&n; * ----------------------------------------------------------------------&n; *&n; * Here starts the interrupt handling routines.  All of the following&n; * subroutines are declared as inline and are folded into&n; * rs_interrupt().  They were separated out for readability&squot;s sake.&n; *&n; * Note: rs_interrupt() is a &quot;fast&quot; interrupt, which means that it&n; * runs with interrupts turned off.  People who may want to modify&n; * rs_interrupt() should try to keep the interrupt handler as fast as&n; * possible.  After you are done making modifications, it is not a bad&n; * idea to do:&n; *&n; * gcc -S -DKERNEL -Wall -Wstrict-prototypes -O6 -fomit-frame-pointer serial.c&n; *&n; * and look at the resulting assemble code in serial.s.&n; *&n; * &t;&t;&t;&t;- Ted Ts&squot;o (tytso@mit.edu), 7-Mar-93&n; * -----------------------------------------------------------------------&n; */
 multiline_comment|/*&n; * This routine is used by the interrupt handler to schedule&n; * processing in the software interrupt portion of the driver.&n; */
 DECL|function|rs_sched_event
 r_static
@@ -1700,7 +1700,7 @@ suffix:colon
 l_string|&quot;off&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2169,7 +2169,7 @@ id|tty-&gt;write_wait
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This routine is called from the scheduler tqueue when the interrupt&n; * routine has signalled that a hangup has occurred.  The path of&n; * hangup processing is:&n; *&n; * &t;serial interrupt routine -&gt; (scheduler tqueue) -&gt;&n; * &t;do_serial_hangup() -&gt; tty-&gt;hangup() -&gt; rs_hangup()&n; * &n; */
+multiline_comment|/*&n; * This routine is called from the scheduler tqueue when the interrupt&n; * routine has signalled that a hangup has occurred.  The path of&n; * hangup processing is:&n; *&n; * &t;serial interrupt routine -&gt; (scheduler tqueue) -&gt;&n; * &t;do_serial_hangup() -&gt; tty-&gt;hangup() -&gt; rs_hangup()&n; *&n; */
 DECL|function|do_serial_hangup
 r_static
 r_void
@@ -3128,7 +3128,7 @@ id|info-&gt;ignore_status_mask
 op_or_assign
 id|BD_SC_BR
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If we&squot;re ignore parity and break indicators, ignore &n;&t;&t; * overruns too.  (For real raw support).&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If we&squot;re ignore parity and break indicators, ignore&n;&t;&t; * overruns too.  (For real raw support).&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4019,7 +4019,7 @@ op_star
 id|bdp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_throttle()&n; * &n; * This routine is called by the upper-layer tty layer to signal that&n; * incoming characters should be throttled.&n; * ------------------------------------------------------------&n; */
+multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_throttle()&n; *&n; * This routine is called by the upper-layer tty layer to signal that&n; * incoming characters should be throttled.&n; * ------------------------------------------------------------&n; */
 DECL|function|rs_8xx_throttle
 r_static
 r_void
@@ -4279,7 +4279,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_ioctl() and friends&n; * ------------------------------------------------------------&n; */
 macro_line|#ifdef maybe
-multiline_comment|/*&n; * get_lsr_info - get line status register info&n; *&n; * Purpose: Let user call ioctl() to get info when the UART physically&n; * &t;    is emptied.  On bus types like RS485, the transmitter must&n; * &t;    release the bus after transmitting. This must be done when&n; * &t;    the transmit shift register is empty, not be done when the&n; * &t;    transmit holding register is empty.  This functionality&n; * &t;    allows an RS485 driver to be written in user space. &n; */
+multiline_comment|/*&n; * get_lsr_info - get line status register info&n; *&n; * Purpose: Let user call ioctl() to get info when the UART physically&n; * &t;    is emptied.  On bus types like RS485, the transmitter must&n; * &t;    release the bus after transmitting. This must be done when&n; * &t;    the transmit shift register is empty, not be done when the&n; * &t;    transmit holding register is empty.  This functionality&n; * &t;    allows an RS485 driver to be written in user space.&n; */
 DECL|function|get_lsr_info
 r_static
 r_int
@@ -5660,7 +5660,7 @@ r_return
 l_int|0
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* &n;&t;&t; * Get counter of input serial line interrupts (DCD,RI,DSR,CTS)&n;&t;&t; * Return: write counters to the user passed counter struct&n;&t;&t; * NB: both 1-&gt;0 and 0-&gt;1 transitions are counted except for&n;&t;&t; *     RI where only 0-&gt;1 is counted.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Get counter of input serial line interrupts (DCD,RI,DSR,CTS)&n;&t;&t; * Return: write counters to the user passed counter struct&n;&t;&t; * NB: both 1-&gt;0 and 0-&gt;1 transitions are counted except for&n;&t;&t; *     RI where only 0-&gt;1 is counted.&n;&t;&t; */
 r_case
 id|TIOCGICOUNT
 suffix:colon
@@ -6004,7 +6004,7 @@ id|info-&gt;open_wait
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_close()&n; * &n; * This routine is called when the serial port gets closed.  First, we&n; * wait for the last remaining data to be sent.  Then, we unlink its&n; * async structure from the interrupt chain if necessary, and we free&n; * that IRQ if nothing is left in the chain.&n; * ------------------------------------------------------------&n; */
+multiline_comment|/*&n; * ------------------------------------------------------------&n; * rs_close()&n; *&n; * This routine is called when the serial port gets closed.  First, we&n; * wait for the last remaining data to be sent.  Then, we unlink its&n; * async structure from the interrupt chain if necessary, and we free&n; * that IRQ if nothing is left in the chain.&n; * ------------------------------------------------------------&n; */
 DECL|function|rs_8xx_close
 r_static
 r_void
@@ -6208,7 +6208,7 @@ id|info-&gt;flags
 op_or_assign
 id|ASYNC_CLOSING
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now we wait for the transmit buffer to clear; and we notify &n;&t; * the line discipline to only process XON/XOFF characters.&n;&t; */
+multiline_comment|/*&n;&t; * Now we wait for the transmit buffer to clear; and we notify&n;&t; * the line discipline to only process XON/XOFF characters.&n;&t; */
 id|tty-&gt;closing
 op_assign
 l_int|1
@@ -6476,7 +6476,7 @@ id|orig_jiffies
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set the check interval to be 1/5 of the estimated time to&n;&t; * send a single character, and make it at least 1.  The check&n;&t; * interval should also be less than the timeout.&n;&t; * &n;&t; * Note: we have to use pretty tight timings here to satisfy&n;&t; * the NIST-PCTS.&n;&t; */
+multiline_comment|/*&n;&t; * Set the check interval to be 1/5 of the estimated time to&n;&t; * send a single character, and make it at least 1.  The check&n;&t; * interval should also be less than the timeout.&n;&t; *&n;&t; * Note: we have to use pretty tight timings here to satisfy&n;&t; * the NIST-PCTS.&n;&t; */
 id|char_time
 op_assign
 l_int|1
@@ -9072,6 +9072,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * The serial driver boot-time initialization code!&n; */
 DECL|function|rs_8xx_init
+r_static
 r_int
 id|__init
 id|rs_8xx_init
@@ -10254,6 +10255,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|rs_8xx_init
+id|module_init
+c_func
+(paren
+id|rs_8xx_init
+)paren
+suffix:semicolon
 multiline_comment|/* This must always be called before the rs_8xx_init() function, otherwise&n; * it blows away the port control information.&n;*/
 DECL|function|serial_console_setup
 r_static

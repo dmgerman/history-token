@@ -435,7 +435,7 @@ id|im_siu_conf.sc_sivec
 op_rshift
 l_int|26
 suffix:semicolon
-multiline_comment|/*&n;&t; * When we read the sivec without an interrupt to process, we will &n;&t; * get back SIU_LEVEL7.  In this case, return -1&n;&t; */
+multiline_comment|/*&n;&t; * When we read the sivec without an interrupt to process, we will&n;&t; * get back SIU_LEVEL7.  In this case, return -1&n;&t; */
 r_if
 c_cond
 (paren

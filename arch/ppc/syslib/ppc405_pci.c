@@ -522,7 +522,7 @@ id|new_pmm_max
 op_assign
 id|tmp_addr
 suffix:semicolon
-singleline_comment|// PPC405_PCI_UPPER_MEM 
+singleline_comment|// PPC405_PCI_UPPER_MEM
 )brace
 r_else
 (brace

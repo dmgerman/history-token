@@ -10,7 +10,7 @@ r_struct
 id|stat
 (brace
 DECL|member|st_dev
-id|dev_t
+r_int
 id|st_dev
 suffix:semicolon
 DECL|member|st_pad1
@@ -42,7 +42,7 @@ id|gid_t
 id|st_gid
 suffix:semicolon
 DECL|member|st_rdev
-id|dev_t
+r_int
 id|st_rdev
 suffix:semicolon
 DECL|member|st_pad2
@@ -218,7 +218,8 @@ r_struct
 id|stat
 (brace
 DECL|member|st_dev
-id|dev_t
+r_int
+r_int
 id|st_dev
 suffix:semicolon
 DECL|member|st_pad0
@@ -252,7 +253,8 @@ id|gid_t
 id|st_gid
 suffix:semicolon
 DECL|member|st_rdev
-id|dev_t
+r_int
+r_int
 id|st_rdev
 suffix:semicolon
 DECL|member|st_pad1
