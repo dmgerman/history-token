@@ -4,49 +4,67 @@ DECL|macro|__XFS_SYSCTL_H__
 mdefine_line|#define __XFS_SYSCTL_H__
 macro_line|#include &lt;linux/sysctl.h&gt;
 multiline_comment|/*&n; * Tunable xfs parameters&n; */
-DECL|macro|XFS_PARAM
-mdefine_line|#define XFS_PARAM&t;(sizeof(struct xfs_param) / sizeof(ulong))
+DECL|struct|xfs_sysctl_val
+r_typedef
+r_struct
+id|xfs_sysctl_val
+(brace
+DECL|member|min
+id|ulong
+id|min
+suffix:semicolon
+DECL|member|val
+id|ulong
+id|val
+suffix:semicolon
+DECL|member|max
+id|ulong
+id|max
+suffix:semicolon
+DECL|typedef|xfs_sysctl_val_t
+)brace
+id|xfs_sysctl_val_t
+suffix:semicolon
 DECL|struct|xfs_param
 r_typedef
 r_struct
 id|xfs_param
 (brace
 DECL|member|restrict_chown
-id|ulong
+id|xfs_sysctl_val_t
 id|restrict_chown
 suffix:semicolon
-multiline_comment|/* Root/non-root can give away files.    */
+multiline_comment|/* Root/non-root can give away files.*/
 DECL|member|sgid_inherit
-id|ulong
+id|xfs_sysctl_val_t
 id|sgid_inherit
 suffix:semicolon
-multiline_comment|/* Inherit ISGID bit if process&squot; GID is  */
-multiline_comment|/*  not a member of the parent dir GID.  */
+multiline_comment|/* Inherit ISGID bit if process&squot; GID &n;&t;&t;&t;&t;&t; * is not a member of the parent dir&n;&t;&t;&t;&t;&t; * GID */
 DECL|member|symlink_mode
-id|ulong
+id|xfs_sysctl_val_t
 id|symlink_mode
 suffix:semicolon
-multiline_comment|/* Symlink creat mode affected by umask. */
+multiline_comment|/* Link creat mode affected by umask */
 DECL|member|panic_mask
-id|ulong
+id|xfs_sysctl_val_t
 id|panic_mask
 suffix:semicolon
-multiline_comment|/* bitmask to specify panics on errors.  */
+multiline_comment|/* bitmask to cause panic on errors. */
 DECL|member|error_level
-id|ulong
+id|xfs_sysctl_val_t
 id|error_level
 suffix:semicolon
-multiline_comment|/* Degree of reporting for internal probs*/
+multiline_comment|/* Degree of reporting for problems  */
 DECL|member|sync_interval
-id|ulong
+id|xfs_sysctl_val_t
 id|sync_interval
 suffix:semicolon
-multiline_comment|/* time between sync calls&t;&t; */
+multiline_comment|/* time between sync calls           */
 DECL|member|stats_clear
-id|ulong
+id|xfs_sysctl_val_t
 id|stats_clear
 suffix:semicolon
-multiline_comment|/* Reset all XFS statistics to zero.     */
+multiline_comment|/* Reset all XFS statistics to zero. */
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t

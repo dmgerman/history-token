@@ -1344,7 +1344,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|xfs_params.sync_interval
+id|xfs_syncd_interval
 )paren
 suffix:semicolon
 multiline_comment|/* swsusp */
