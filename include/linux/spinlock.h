@@ -729,6 +729,10 @@ DECL|macro|write_unlock_bh
 mdefine_line|#define write_unlock_bh(lock)&t;&t;&t;_write_unlock_bh(lock)
 DECL|macro|spin_trylock_bh
 mdefine_line|#define spin_trylock_bh(lock)&t;&t;&t;__cond_lock(_spin_trylock_bh(lock))
+DECL|macro|spin_trylock_irq
+mdefine_line|#define spin_trylock_irq(lock) &bslash;&n;({ &bslash;&n;&t;local_irq_disable(); &bslash;&n;&t;_spin_trylock(lock) ? &bslash;&n;&t;1 : ({local_irq_enable(); 0; }); &bslash;&n;})
+DECL|macro|spin_trylock_irqsave
+mdefine_line|#define spin_trylock_irqsave(lock, flags) &bslash;&n;({ &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_spin_trylock(lock) ? &bslash;&n;&t;1 : ({local_irq_restore(flags); 0;}); &bslash;&n;})
 macro_line|#ifdef CONFIG_LOCKMETER
 r_extern
 r_void
