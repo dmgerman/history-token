@@ -3008,15 +3008,16 @@ id|CSR1212_KV_TYPE_DIRECTORY
 )paren
 (brace
 multiline_comment|/* If the current entry is a directory, then move all&n;&t;&t;&t;&t; * the entries to the destruction list. */
-id|tail-&gt;next
-op_assign
-id|k-&gt;value.directory.dentries_head
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|k-&gt;value.directory.dentries_head
 )paren
+(brace
+id|tail-&gt;next
+op_assign
+id|k-&gt;value.directory.dentries_head
+suffix:semicolon
 id|k-&gt;value.directory.dentries_head-&gt;prev
 op_assign
 id|tail
@@ -3025,6 +3026,7 @@ id|tail
 op_assign
 id|k-&gt;value.directory.dentries_tail
 suffix:semicolon
+)brace
 )brace
 id|free_keyval
 c_func
@@ -5709,6 +5711,16 @@ id|kvi-&gt;data
 (braket
 id|i
 )braket
+suffix:semicolon
+multiline_comment|/* Some devices put null entries in their unit&n;&t;&t;&t; * directories.  If we come across such and entry,&n;&t;&t;&t; * then skip it. */
+r_if
+c_cond
+(paren
+id|ki
+op_eq
+l_int|0x0
+)paren
+r_continue
 suffix:semicolon
 id|ret
 op_assign
