@@ -1,0 +1,132 @@
+multiline_comment|/* File veth.h created by Kyle A. Lucke on Mon Aug  7 2000. */
+macro_line|#ifndef _ISERIES_VETH_H
+DECL|macro|_ISERIES_VETH_H
+mdefine_line|#define _ISERIES_VETH_H
+DECL|macro|VethEventTypeCap
+mdefine_line|#define VethEventTypeCap&t;(0)
+DECL|macro|VethEventTypeFrames
+mdefine_line|#define VethEventTypeFrames&t;(1)
+DECL|macro|VethEventTypeMonitor
+mdefine_line|#define VethEventTypeMonitor&t;(2)
+DECL|macro|VethEventTypeFramesAck
+mdefine_line|#define VethEventTypeFramesAck&t;(3)
+DECL|macro|VETH_MAX_ACKS_PER_MSG
+mdefine_line|#define VETH_MAX_ACKS_PER_MSG&t;(20)
+DECL|macro|VETH_MAX_FRAMES_PER_MSG
+mdefine_line|#define VETH_MAX_FRAMES_PER_MSG&t;(6)
+DECL|struct|VethFramesData
+r_struct
+id|VethFramesData
+(brace
+DECL|member|addr
+id|u32
+id|addr
+(braket
+id|VETH_MAX_FRAMES_PER_MSG
+)braket
+suffix:semicolon
+DECL|member|len
+id|u16
+id|len
+(braket
+id|VETH_MAX_FRAMES_PER_MSG
+)braket
+suffix:semicolon
+DECL|member|eofmask
+id|u32
+id|eofmask
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|VETH_EOF_SHIFT
+mdefine_line|#define VETH_EOF_SHIFT&t;&t;(32-VETH_MAX_FRAMES_PER_MSG)
+DECL|struct|VethFramesAckData
+r_struct
+id|VethFramesAckData
+(brace
+DECL|member|token
+id|u16
+id|token
+(braket
+id|VETH_MAX_ACKS_PER_MSG
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|VethCapData
+r_struct
+id|VethCapData
+(brace
+DECL|member|caps_version
+id|u8
+id|caps_version
+suffix:semicolon
+DECL|member|rsvd1
+id|u8
+id|rsvd1
+suffix:semicolon
+DECL|member|num_buffers
+id|u16
+id|num_buffers
+suffix:semicolon
+DECL|member|ack_threshold
+id|u16
+id|ack_threshold
+suffix:semicolon
+DECL|member|rsvd2
+id|u16
+id|rsvd2
+suffix:semicolon
+DECL|member|ack_timeout
+id|u32
+id|ack_timeout
+suffix:semicolon
+DECL|member|rsvd3
+id|u32
+id|rsvd3
+suffix:semicolon
+DECL|member|rsvd4
+id|u64
+id|rsvd4
+(braket
+l_int|3
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|VethLpEvent
+r_struct
+id|VethLpEvent
+(brace
+DECL|member|base_event
+r_struct
+id|HvLpEvent
+id|base_event
+suffix:semicolon
+r_union
+(brace
+DECL|member|caps_data
+r_struct
+id|VethCapData
+id|caps_data
+suffix:semicolon
+DECL|member|frames_data
+r_struct
+id|VethFramesData
+id|frames_data
+suffix:semicolon
+DECL|member|frames_ack_data
+r_struct
+id|VethFramesAckData
+id|frames_ack_data
+suffix:semicolon
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|HVMAXARCHITECTEDVIRTUALLANS
+mdefine_line|#define HVMAXARCHITECTEDVIRTUALLANS (16)
+macro_line|#endif&t;/* _ISERIES_VETH_H */
+eof
