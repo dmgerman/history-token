@@ -1787,13 +1787,6 @@ op_assign
 id|SIGUSR2
 suffix:semicolon
 )brace
-r_else
-id|clear_singlestep
-c_func
-(paren
-id|task
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case

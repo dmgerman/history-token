@@ -95,11 +95,6 @@ id|current-&gt;thread.singlestep_syscall
 op_assign
 l_int|0
 suffix:semicolon
-id|current-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_DTRACE
-suffix:semicolon
 id|force_sig
 c_func
 (paren

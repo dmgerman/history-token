@@ -133,16 +133,6 @@ id|task
 suffix:semicolon
 r_extern
 r_void
-id|clear_singlestep
-c_func
-(paren
-r_void
-op_star
-id|t
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|syscall_handler
 c_func
 (paren
