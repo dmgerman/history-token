@@ -336,9 +336,9 @@ id|I2C_SMBUS_WRITE
 id|outb_p
 c_func
 (paren
-id|data-&gt;byte
+id|command
 comma
-id|NVIDIA_SMB_DATA
+id|NVIDIA_SMB_CMD
 )paren
 suffix:semicolon
 id|protocol
