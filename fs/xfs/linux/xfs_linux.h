@@ -116,7 +116,7 @@ mdefine_line|#define xfs_panic_mask&t;&t;xfs_params.panic_mask.val
 DECL|macro|xfs_error_level
 mdefine_line|#define xfs_error_level&t;&t;xfs_params.error_level.val
 DECL|macro|xfs_syncd_interval
-mdefine_line|#define xfs_syncd_interval&t;xfs_params.sync_interval.val
+mdefine_line|#define xfs_syncd_interval&t;(xfs_params.sync_interval.val * HZ / USER_HZ)
 DECL|macro|xfs_stats_clear
 mdefine_line|#define xfs_stats_clear&t;&t;xfs_params.stats_clear.val
 DECL|macro|xfs_inherit_sync
@@ -126,9 +126,9 @@ mdefine_line|#define xfs_inherit_nodump&t;xfs_params.inherit_nodump.val
 DECL|macro|xfs_inherit_noatime
 mdefine_line|#define xfs_inherit_noatime&t;xfs_params.inherit_noatim.val
 DECL|macro|xfs_flush_interval
-mdefine_line|#define xfs_flush_interval&t;xfs_params.flush_interval.val
+mdefine_line|#define xfs_flush_interval&t;(xfs_params.flush_interval.val * HZ / USER_HZ)
 DECL|macro|xfs_age_buffer
-mdefine_line|#define xfs_age_buffer&t;&t;xfs_params.age_buffer.val
+mdefine_line|#define xfs_age_buffer&t;&t;(xfs_params.age_buffer.val * HZ / USER_HZ)
 DECL|macro|current_cpu
 mdefine_line|#define current_cpu()&t;&t;smp_processor_id()
 DECL|macro|current_pid
