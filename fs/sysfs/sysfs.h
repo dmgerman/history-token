@@ -50,6 +50,7 @@ r_struct
 id|dentry
 op_star
 comma
+r_const
 r_char
 op_star
 )paren
@@ -64,6 +65,7 @@ id|dentry
 op_star
 id|dir
 comma
+r_const
 r_struct
 id|attribute
 op_star
@@ -97,6 +99,7 @@ r_struct
 id|kobject
 op_star
 comma
+r_const
 r_char
 op_star
 )paren

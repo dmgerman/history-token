@@ -15,6 +15,7 @@ id|dentry
 op_star
 id|dir
 comma
+r_const
 r_struct
 id|attribute_group
 op_star
@@ -24,6 +25,7 @@ id|grp
 r_struct
 id|attribute
 op_star
+r_const
 op_star
 id|attr
 suffix:semicolon
@@ -65,6 +67,7 @@ id|dentry
 op_star
 id|dir
 comma
+r_const
 r_struct
 id|attribute_group
 op_star
@@ -74,6 +77,7 @@ id|grp
 r_struct
 id|attribute
 op_star
+r_const
 op_star
 id|attr
 suffix:semicolon
@@ -138,6 +142,7 @@ id|kobject
 op_star
 id|kobj
 comma
+r_const
 r_struct
 id|attribute_group
 op_star
@@ -246,6 +251,7 @@ id|kobject
 op_star
 id|kobj
 comma
+r_const
 r_struct
 id|attribute_group
 op_star

@@ -1167,6 +1167,7 @@ id|dentry
 op_star
 id|dir
 comma
+r_const
 r_struct
 id|attribute
 op_star
@@ -1267,6 +1268,7 @@ id|kobject
 op_star
 id|kobj
 comma
+r_const
 r_struct
 id|attribute
 op_star
@@ -1305,6 +1307,7 @@ id|kobject
 op_star
 id|kobj
 comma
+r_const
 r_struct
 id|attribute
 op_star
@@ -1424,6 +1427,7 @@ id|kobject
 op_star
 id|kobj
 comma
+r_const
 r_struct
 id|attribute
 op_star
