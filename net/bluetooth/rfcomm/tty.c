@@ -3991,9 +3991,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|rfcomm_tty_driver
 op_assign
 id|alloc_tty_driver
