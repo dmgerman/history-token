@@ -718,6 +718,9 @@ macro_line|#else
 DECL|macro|release_thread
 macro_line|# define release_thread(dead_task)
 macro_line|#endif
+multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
+DECL|macro|prepare_to_copy
+mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
 multiline_comment|/*&n; * This is the mechanism for creating a new kernel thread.&n; *&n; * NOTE 1: Only a kernel-only process (ie the swapper or direct&n; * descendants who haven&squot;t done an &quot;execve()&quot;) should use this: it&n; * will work within a system call from a &quot;real&quot; process, but the&n; * process memory space will not be free&squot;d until both the parent and&n; * the child have exited.&n; *&n; * NOTE 2: This MUST NOT be an inlined function.  Otherwise, we get&n; * into trouble in init/main.c when the child thread returns to&n; * do_basic_setup() and the timing is such that free_initmem() has&n; * been called already.&n; */
 r_extern
 r_int

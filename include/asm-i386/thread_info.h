@@ -32,6 +32,12 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* low level flags */
+DECL|member|status
+r_int
+r_int
+id|status
+suffix:semicolon
+multiline_comment|/* thread-synchronous flags */
 DECL|member|cpu
 id|__u32
 id|cpu
@@ -69,14 +75,16 @@ DECL|macro|TI_EXEC_DOMAIN
 mdefine_line|#define TI_EXEC_DOMAIN&t;0x00000004
 DECL|macro|TI_FLAGS
 mdefine_line|#define TI_FLAGS&t;0x00000008
+DECL|macro|TI_STATUS
+mdefine_line|#define TI_STATUS&t;0x0000000C
 DECL|macro|TI_CPU
-mdefine_line|#define TI_CPU&t;&t;0x0000000C
+mdefine_line|#define TI_CPU&t;&t;0x00000010
 DECL|macro|TI_PRE_COUNT
-mdefine_line|#define TI_PRE_COUNT&t;0x00000010
+mdefine_line|#define TI_PRE_COUNT&t;0x00000014
 DECL|macro|TI_ADDR_LIMIT
-mdefine_line|#define TI_ADDR_LIMIT&t;0x00000014
+mdefine_line|#define TI_ADDR_LIMIT&t;0x00000018
 DECL|macro|TI_RESTART_BLOCK
-mdefine_line|#define TI_RESTART_BLOCK 0x0000018
+mdefine_line|#define TI_RESTART_BLOCK 0x000001C
 macro_line|#endif
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
@@ -156,10 +164,8 @@ DECL|macro|TIF_SINGLESTEP
 mdefine_line|#define TIF_SINGLESTEP&t;&t;4&t;/* restore singlestep on return to user mode */
 DECL|macro|TIF_IRET
 mdefine_line|#define TIF_IRET&t;&t;5&t;/* return with iret */
-DECL|macro|TIF_USEDFPU
-mdefine_line|#define TIF_USEDFPU&t;&t;16&t;/* FPU was used by this task this quantum (SMP) */
 DECL|macro|TIF_POLLING_NRFLAG
-mdefine_line|#define TIF_POLLING_NRFLAG&t;17&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
+mdefine_line|#define TIF_POLLING_NRFLAG&t;16&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME
@@ -172,14 +178,15 @@ DECL|macro|_TIF_SINGLESTEP
 mdefine_line|#define _TIF_SINGLESTEP&t;&t;(1&lt;&lt;TIF_SINGLESTEP)
 DECL|macro|_TIF_IRET
 mdefine_line|#define _TIF_IRET&t;&t;(1&lt;&lt;TIF_IRET)
-DECL|macro|_TIF_USEDFPU
-mdefine_line|#define _TIF_USEDFPU&t;&t;(1&lt;&lt;TIF_USEDFPU)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
 DECL|macro|_TIF_WORK_MASK
 mdefine_line|#define _TIF_WORK_MASK&t;&t;0x0000FFFE&t;/* work to do on interrupt/exception return */
 DECL|macro|_TIF_ALLWORK_MASK
 mdefine_line|#define _TIF_ALLWORK_MASK&t;0x0000FFFF&t;/* work to do on any return to u-space */
+multiline_comment|/*&n; * Thread-synchronous status.&n; *&n; * This is different from the flags in that nobody else&n; * ever touches our thread-synchronous status, so we don&squot;t&n; * have to worry about atomic accesses.&n; */
+DECL|macro|TS_USEDFPU
+mdefine_line|#define TS_USEDFPU&t;&t;0x0001&t;/* FPU was used by this task this quantum (SMP) */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_THREAD_INFO_H */
 eof

@@ -2800,11 +2800,21 @@ id|regs
 )paren
 (brace
 r_struct
+id|thread_info
+op_star
+id|thread
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+suffix:semicolon
+r_struct
 id|task_struct
 op_star
 id|tsk
 op_assign
-id|current
+id|thread-&gt;task
 suffix:semicolon
 id|clts
 c_func
@@ -2830,11 +2840,9 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
-id|set_thread_flag
-c_func
-(paren
-id|TIF_USEDFPU
-)paren
+id|thread-&gt;status
+op_or_assign
+id|TS_USEDFPU
 suffix:semicolon
 multiline_comment|/* So we fnsave on switch_to() */
 )brace

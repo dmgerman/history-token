@@ -216,6 +216,7 @@ id|videobuf_mapping
 (brace
 DECL|member|count
 r_int
+r_int
 id|count
 suffix:semicolon
 DECL|member|highmem_ok
@@ -287,18 +288,22 @@ id|videobuf_buffer
 (brace
 DECL|member|i
 r_int
+r_int
 id|i
 suffix:semicolon
 multiline_comment|/* info about the buffer */
 DECL|member|width
 r_int
+r_int
 id|width
 suffix:semicolon
 DECL|member|height
 r_int
+r_int
 id|height
 suffix:semicolon
 DECL|member|size
+r_int
 r_int
 id|size
 suffix:semicolon
@@ -325,7 +330,7 @@ suffix:semicolon
 multiline_comment|/* QBUF/DQBUF list */
 multiline_comment|/* for mmap&squot;ed buffers */
 DECL|member|boff
-id|off_t
+r_int
 id|boff
 suffix:semicolon
 multiline_comment|/* buffer offset (mmap) */
@@ -358,6 +363,7 @@ id|done
 suffix:semicolon
 DECL|member|field_count
 r_int
+r_int
 id|field_count
 suffix:semicolon
 DECL|member|ts
@@ -384,9 +390,11 @@ op_star
 id|file
 comma
 r_int
+r_int
 op_star
 id|count
 comma
+r_int
 r_int
 op_star
 id|size
@@ -479,6 +487,7 @@ id|type
 suffix:semicolon
 DECL|member|msize
 r_int
+r_int
 id|msize
 suffix:semicolon
 DECL|member|field
@@ -510,6 +519,7 @@ suffix:semicolon
 multiline_comment|/* capture via mmap() + ioctl(QBUF/DQBUF) */
 DECL|member|streaming
 r_int
+r_int
 id|streaming
 suffix:semicolon
 DECL|member|stream
@@ -520,9 +530,11 @@ suffix:semicolon
 multiline_comment|/* capture via read() */
 DECL|member|reading
 r_int
+r_int
 id|reading
 suffix:semicolon
 DECL|member|read_off
+r_int
 r_int
 id|read_off
 suffix:semicolon
@@ -539,6 +551,7 @@ op_star
 id|videobuf_alloc
 c_func
 (paren
+r_int
 r_int
 id|size
 )paren
@@ -605,6 +618,7 @@ r_enum
 id|v4l2_field
 id|field
 comma
+r_int
 r_int
 id|msize
 )paren
@@ -878,8 +892,10 @@ op_star
 id|q
 comma
 r_int
+r_int
 id|bcount
 comma
+r_int
 r_int
 id|bsize
 )paren

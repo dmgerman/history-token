@@ -2044,13 +2044,11 @@ c_cond
 (paren
 id|current-&gt;mm
 )paren
-(brace
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 id|enter_lazy_tlb
 c_func
 (paren
@@ -2177,11 +2175,14 @@ suffix:semicolon
 DECL|macro|CD
 macro_line|#undef CD
 multiline_comment|/*&n;&t; * Force FPU initialization:&n;&t; */
-id|clear_thread_flag
+id|current_thread_info
 c_func
 (paren
-id|TIF_USEDFPU
 )paren
+op_member_access_from_pointer
+id|status
+op_assign
+l_int|0
 suffix:semicolon
 id|current-&gt;used_math
 op_assign

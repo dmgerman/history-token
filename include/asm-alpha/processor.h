@@ -83,6 +83,9 @@ id|task_struct
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
+DECL|macro|prepare_to_copy
+mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
 multiline_comment|/* Create a kernel thread without removing it from tasklists.  */
 r_extern
 r_int
