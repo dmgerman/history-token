@@ -2300,7 +2300,6 @@ r_char
 op_star
 id|name
 comma
-r_const
 r_void
 op_star
 id|value
@@ -2381,7 +2380,7 @@ l_int|0
 (brace
 r_return
 op_minus
-id|ENOTSUP
+id|EOPNOTSUPP
 suffix:semicolon
 )brace
 r_if
@@ -2436,7 +2435,6 @@ r_char
 op_star
 id|name
 comma
-r_const
 r_void
 op_star
 id|value
@@ -3125,7 +3123,6 @@ r_char
 op_star
 id|name
 comma
-r_const
 r_void
 op_star
 id|value
