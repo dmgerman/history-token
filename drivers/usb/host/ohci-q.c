@@ -1647,7 +1647,7 @@ id|ed
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* request unlinking of an endpoint from an operational HC.&n; * put the ep on the rm_list&n; * real work is done at the next start frame (SF) hardware interrupt&n; * caller guarantees HCD is running, so hardware access is safe.&n; */
+multiline_comment|/* request unlinking of an endpoint from an operational HC.&n; * put the ep on the rm_list&n; * real work is done at the next start frame (SF) hardware interrupt&n; * caller guarantees HCD is running, so hardware access is safe,&n; * and that ed-&gt;state is ED_OPER&n; */
 DECL|function|start_ed_unlink
 r_static
 r_void
@@ -3328,36 +3328,6 @@ op_star
 op_star
 id|last
 suffix:semicolon
-id|ed
-op_assign
-id|ohci-&gt;ed_rm_list
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ed
-op_logical_and
-id|ed
-op_eq
-id|ed-&gt;ed_next
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;RM_LIST LOOP!  head %p, ed %p, ed-&gt;next %p&bslash;n&quot;
-comma
-id|ohci-&gt;ed_rm_list
-comma
-id|ed
-comma
-id|ed-&gt;ed_next
-)paren
-suffix:semicolon
-id|ed-&gt;ed_next
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|rescan_all
 suffix:colon
 r_for
@@ -3951,6 +3921,10 @@ id|list_empty
 op_amp
 id|ed-&gt;td_list
 )paren
+op_logical_and
+id|ed-&gt;state
+op_eq
+id|ED_OPER
 )paren
 id|start_ed_unlink
 (paren
