@@ -1505,11 +1505,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|init_hcl
-c_func
-(paren
-)paren
-suffix:semicolon
 id|sgi_master_io_infr_init
 c_func
 (paren
