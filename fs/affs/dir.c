@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/amigaffs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 r_static
 r_int
 id|affs_readdir
@@ -159,6 +160,11 @@ id|stored
 suffix:semicolon
 r_int
 id|res
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|pr_debug
 c_func
@@ -765,6 +771,11 @@ id|affs_unlock_dir
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|pr_debug

@@ -134,13 +134,7 @@ l_string|&quot;subl %2,%0&bslash;n&bslash;t&quot;
 l_string|&quot;sbbl %3,%1&bslash;n&bslash;t&quot;
 l_string|&quot;addl %4,%0&bslash;n&bslash;t&quot;
 l_string|&quot;adcl %5,%1&bslash;n&bslash;t&quot;
-l_string|&quot;subl &quot;
-id|SYMBOL_NAME_STR
-c_func
-(paren
-id|net_profile_adjust
-)paren
-l_string|&quot;+4,%0&bslash;n&bslash;t&quot;
+l_string|&quot;subl net_profile_adjust+4,%0&bslash;n&bslash;t&quot;
 l_string|&quot;sbbl $0,%1&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=r&quot;

@@ -308,9 +308,15 @@ c_func
 id|ide_dma_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 r_struct
@@ -420,6 +426,8 @@ c_func
 id|func
 comma
 id|drive
+comma
+id|rq
 )paren
 )paren
 multiline_comment|/* use standard DMA stuff */
@@ -455,6 +463,8 @@ c_func
 id|ide_dma_off_quietly
 comma
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 multiline_comment|/* Fallthrough... */
@@ -467,6 +477,8 @@ c_func
 id|func
 comma
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 multiline_comment|/* use standard DMA stuff */
@@ -866,9 +878,8 @@ c_cond
 (paren
 id|hwif-&gt;dma_base
 )paren
-id|hwif-&gt;dmaproc
+id|hwif-&gt;udma
 op_assign
-op_amp
 id|ns87415_dmaproc
 suffix:semicolon
 macro_line|#endif

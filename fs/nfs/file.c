@@ -602,7 +602,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The following is used by wait_on_page(), generic_file_readahead()&n; * to initiate the completion of any page readahead operations.&n; */
+multiline_comment|/*&n; * The following is used by wait_on_page_locked(), generic_file_readahead()&n; * to initiate the completion of any page readahead operations.&n; */
 DECL|function|nfs_sync_page
 r_static
 r_int
@@ -1033,11 +1033,29 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Flush all pending writes before doing anything&n;&t; * with locks..&n;&t; */
 id|status
 op_assign
-id|filemap_fdatasync
+id|filemap_fdatawait
 c_func
 (paren
 id|inode-&gt;i_mapping
 )paren
+suffix:semicolon
+id|status2
+op_assign
+id|filemap_fdatawrite
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|status
+)paren
+id|status
+op_assign
+id|status2
 suffix:semicolon
 id|down
 c_func
@@ -1057,8 +1075,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|status2
-op_logical_and
 op_logical_neg
 id|status
 )paren
@@ -1084,8 +1100,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|status2
-op_logical_and
 op_logical_neg
 id|status
 )paren
@@ -1164,7 +1178,13 @@ op_ne
 id|F_UNLCK
 )paren
 (brace
-id|filemap_fdatasync
+id|filemap_fdatawait
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
+id|filemap_fdatawrite
 c_func
 (paren
 id|inode-&gt;i_mapping

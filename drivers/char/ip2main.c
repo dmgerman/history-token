@@ -1677,7 +1677,6 @@ multiline_comment|/* SA_RANDOM   - can be source for cert. random number generat
 DECL|macro|IP2_SA_FLAGS
 mdefine_line|#define IP2_SA_FLAGS&t;0
 r_int
-id|__init
 DECL|function|ip2_loadmain
 id|ip2_loadmain
 c_func
@@ -3488,6 +3487,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|ip2_loadmain
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip2_loadmain
+)paren
+suffix:semicolon
 multiline_comment|/******************************************************************************/
 multiline_comment|/* Function:   ip2_init_board()                                               */
 multiline_comment|/* Parameters: Index of board in configuration structure                      */

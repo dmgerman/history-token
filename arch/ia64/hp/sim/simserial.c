@@ -445,19 +445,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* F1 key */
-r_if
-c_cond
-(paren
-id|ch
-op_eq
-l_char|&squot;Q&squot;
-)paren
-id|show_buffers
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* F2 key */
 macro_line|#ifdef CONFIG_KDB
 r_if
 c_cond

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/jffs2.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_static
 r_int
@@ -519,6 +520,11 @@ id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_ino
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|f
 op_assign
 id|JFFS2_INODE_INFO
@@ -796,6 +802,11 @@ suffix:colon
 id|filp-&gt;f_pos
 op_assign
 id|offset
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0

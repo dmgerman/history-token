@@ -1193,7 +1193,7 @@ suffix:semicolon
 multiline_comment|/* #Specification: notify_change / msdos fs&n;&t; * notify_change operation are done only on the&n;&t; * EMD file. The msdos fs is not even called.&n;&t; */
 id|out_unlock
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page

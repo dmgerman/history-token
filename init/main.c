@@ -1353,13 +1353,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|vfs_caches_init
+id|buffer_init
 c_func
 (paren
-id|mempages
 )paren
 suffix:semicolon
-id|buffer_init
+id|vfs_caches_init
 c_func
 (paren
 id|mempages

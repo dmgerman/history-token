@@ -50,7 +50,7 @@ r_int
 r_int
 id|last_empty_jifs
 suffix:semicolon
-multiline_comment|/*&n; * The pdflush thread.&n; *&n; * Thread pool management algorithm:&n; * &n; * - The minumum and maximum number of pdflush instances are bound&n; *   by MIN_PDFLUSH_THREADS and MAX_PDFLUSH_THREADS.&n; * &n; * - If there have been no idle pdflush instances for 1 second, create&n; *   a new one.&n; * &n; * - If the least-recently-went-to-sleep pdflush thread has been asleep&n; *   for more than one second, terminate a thread.&n; */
+multiline_comment|/*&n; * The pdflush thread.&n; *&n; * Thread pool management algorithm:&n; * &n; * - The minimum and maximum number of pdflush instances are bound&n; *   by MIN_PDFLUSH_THREADS and MAX_PDFLUSH_THREADS.&n; * &n; * - If there have been no idle pdflush instances for 1 second, create&n; *   a new one.&n; * &n; * - If the least-recently-went-to-sleep pdflush thread has been asleep&n; *   for more than one second, terminate a thread.&n; */
 multiline_comment|/*&n; * A structure for passing work to a pdflush thread.  Also for passing&n; * state information between pdflush threads.  Protected by pdflush_lock.&n; */
 DECL|struct|pdflush_work
 r_struct
@@ -366,7 +366,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Of course, my_work wants to be just a local in __pdflush().  It is&n; * separated out in this manner to hopefully prevent the compiler from&n; * performing unfortunate optimisations agains the auto variables.  Because&n; * there are visible to other tasks and CPUs.  (No problem has actually&n; * been observed.  This is just paranoia).&n; */
+multiline_comment|/*&n; * Of course, my_work wants to be just a local in __pdflush().  It is&n; * separated out in this manner to hopefully prevent the compiler from&n; * performing unfortunate optimisations against the auto variables.  Because&n; * these are visible to other tasks and CPUs.  (No problem has actually&n; * been observed.  This is just paranoia).&n; */
 DECL|function|pdflush
 r_static
 r_int

@@ -1,8 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/sysv/namei.c&n; *&n; *  minix/namei.c&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  coh/namei.c&n; *  Copyright (C) 1993  Pascal Haible, Bruno Haible&n; *&n; *  sysv/namei.c&n; *  Copyright (C) 1993  Bruno Haible&n; *  Copyright (C) 1997, 1998  Krzysztof G. Baranowski&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sysv_fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &quot;sysv.h&quot;
 DECL|function|inc_count
 r_static
 r_inline
@@ -619,7 +618,13 @@ c_cond
 (paren
 id|inode-&gt;i_nlink
 op_ge
-id|inode-&gt;i_sb-&gt;sv_link_max
+id|SYSV_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_link_max
 )paren
 r_return
 op_minus
@@ -688,7 +693,13 @@ c_cond
 (paren
 id|dir-&gt;i_nlink
 op_ge
-id|dir-&gt;i_sb-&gt;sv_link_max
+id|SYSV_SB
+c_func
+(paren
+id|dir-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_link_max
 )paren
 r_goto
 id|out
@@ -1240,7 +1251,13 @@ c_cond
 (paren
 id|new_dir-&gt;i_nlink
 op_ge
-id|new_dir-&gt;i_sb-&gt;sv_link_max
+id|SYSV_SB
+c_func
+(paren
+id|new_dir-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_link_max
 )paren
 r_goto
 id|out_dir

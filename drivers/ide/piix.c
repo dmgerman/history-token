@@ -32,10 +32,10 @@ DECL|macro|PIIX_UDMA_33
 mdefine_line|#define PIIX_UDMA_33&t;&t;0x01
 DECL|macro|PIIX_UDMA_66
 mdefine_line|#define PIIX_UDMA_66&t;&t;0x02
-DECL|macro|PIIX_UDMA_V66
-mdefine_line|#define PIIX_UDMA_V66&t;&t;0x03
 DECL|macro|PIIX_UDMA_100
-mdefine_line|#define PIIX_UDMA_100&t;&t;0x04
+mdefine_line|#define PIIX_UDMA_100&t;&t;0x03
+DECL|macro|PIIX_UDMA_133
+mdefine_line|#define PIIX_UDMA_133&t;&t;0x04
 DECL|macro|PIIX_NO_SITRE
 mdefine_line|#define PIIX_NO_SITRE&t;&t;0x08&t;/* Chip doesn&squot;t have separate slave timing */
 DECL|macro|PIIX_PINGPONG
@@ -46,6 +46,12 @@ DECL|macro|PIIX_CHECK_REV
 mdefine_line|#define PIIX_CHECK_REV&t;&t;0x40&t;/* May be a buggy revision of PIIX */
 DECL|macro|PIIX_NODMA
 mdefine_line|#define PIIX_NODMA&t;&t;0x80&t;/* Don&squot;t do DMA with this chip */
+macro_line|#ifdef CONFIG_BLK_DEV_PIIX_TRY133&t;/* I think even the older ICHs should be able to do UDMA133 */
+DECL|macro|PIIX_UDMA_100
+macro_line|#undef PIIX_UDMA_100
+DECL|macro|PIIX_UDMA_100
+mdefine_line|#define PIIX_UDMA_100 PIIX_UDMA_133
+macro_line|#endif
 multiline_comment|/*&n; * Intel IDE chips&n; */
 DECL|struct|piix_ide_chip
 r_static
@@ -70,6 +76,15 @@ id|piix_ide_chips
 op_assign
 (brace
 (brace
+id|PCI_DEVICE_ID_INTEL_82801DB_9
+comma
+id|PIIX_UDMA_133
+op_or
+id|PIIX_PINGPONG
+)brace
+comma
+multiline_comment|/* Intel 82801DB ICH4 */
+(brace
 id|PCI_DEVICE_ID_INTEL_82801CA_11
 comma
 id|PIIX_UDMA_100
@@ -77,7 +92,7 @@ op_or
 id|PIIX_PINGPONG
 )brace
 comma
-multiline_comment|/* Intel 82801CA ICH3 */
+multiline_comment|/* Intel 82801CA ICH3/ICH3-S */
 (brace
 id|PCI_DEVICE_ID_INTEL_82801CA_10
 comma
@@ -87,6 +102,15 @@ id|PIIX_PINGPONG
 )brace
 comma
 multiline_comment|/* Intel 82801CAM ICH3-M */
+(brace
+id|PCI_DEVICE_ID_INTEL_82801E_9
+comma
+id|PIIX_UDMA_100
+op_or
+id|PIIX_PINGPONG
+)brace
+comma
+multiline_comment|/* Intel 82801E C-ICH */
 (brace
 id|PCI_DEVICE_ID_INTEL_82801BA_9
 comma
@@ -143,7 +167,7 @@ comma
 id|PIIX_UDMA_33
 )brace
 comma
-multiline_comment|/* Intel 82371AB/EB PIIX4/4E */
+multiline_comment|/* Intel 82371AB/EB PIIX4/PIIX4E */
 (brace
 id|PCI_DEVICE_ID_INTEL_82371SB_1
 comma
@@ -165,7 +189,7 @@ multiline_comment|/* Intel 82371FB PIIX */
 (brace
 id|PCI_DEVICE_ID_EFAR_SLC90E66_1
 comma
-id|PIIX_UDMA_V66
+id|PIIX_UDMA_66
 op_or
 id|PIIX_VICTORY
 )brace
@@ -216,9 +240,9 @@ l_string|&quot;UDMA33&quot;
 comma
 l_string|&quot;UDMA66&quot;
 comma
-l_string|&quot;UDMA66&quot;
-comma
 l_string|&quot;UDMA100&quot;
+comma
+l_string|&quot;UDMA133&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * PIIX/ICH /proc entry.&n; */
@@ -1914,6 +1938,8 @@ comma
 id|UT
 comma
 id|umul
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -1944,48 +1970,43 @@ id|speed
 r_return
 id|err
 suffix:semicolon
-id|umul
-op_assign
-id|min
-c_func
-(paren
-(paren
-id|speed
-OG
-id|XFER_UDMA_4
-)paren
-ques
+r_if
 c_cond
-l_int|4
-suffix:colon
-(paren
 (paren
 id|speed
 OG
 id|XFER_UDMA_2
-)paren
-ques
-c_cond
-l_int|2
-suffix:colon
-l_int|1
-)paren
-comma
+op_logical_and
+(paren
 id|piix_config-&gt;flags
 op_amp
 id|PIIX_UDMA
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|piix_config-&gt;flags
-op_amp
-id|PIIX_VICTORY
+op_ge
+id|PIIX_UDMA_66
 )paren
 id|umul
 op_assign
 l_int|2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|speed
+OG
+id|XFER_UDMA_4
+op_logical_and
+(paren
+id|piix_config-&gt;flags
+op_amp
+id|PIIX_UDMA
+)paren
+op_ge
+id|PIIX_UDMA_100
+)paren
+id|umul
+op_assign
+l_int|4
 suffix:semicolon
 id|T
 op_assign
@@ -1995,16 +2016,9 @@ id|piix_clock
 suffix:semicolon
 id|UT
 op_assign
-id|umul
-ques
-c_cond
-(paren
 id|T
 op_div
 id|umul
-)paren
-suffix:colon
-l_int|0
 suffix:semicolon
 id|ata_timing_compute
 c_func
@@ -2194,9 +2208,15 @@ c_func
 id|ide_dma_action_t
 id|func
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
+comma
+r_struct
+id|request
+op_star
+id|rq
 )paren
 (brace
 r_if
@@ -2281,6 +2301,23 @@ id|XFER_UDMA_100
 suffix:colon
 l_int|0
 )paren
+op_or
+(paren
+id|w80
+op_logical_and
+(paren
+id|piix_config-&gt;flags
+op_amp
+id|PIIX_UDMA
+)paren
+op_ge
+id|PIIX_UDMA_133
+ques
+c_cond
+id|XFER_UDMA_133
+suffix:colon
+l_int|0
+)paren
 )paren
 )paren
 )paren
@@ -2320,6 +2357,8 @@ c_func
 id|func
 comma
 id|drive
+comma
+id|rq
 )paren
 suffix:semicolon
 )brace
@@ -2519,8 +2558,61 @@ id|PIIX_UDMA
 r_case
 id|PIIX_UDMA_66
 suffix:colon
+r_if
+c_cond
+(paren
+id|piix_config-&gt;flags
+op_logical_and
+id|PIIX_VICTORY
+)paren
+(brace
+id|pci_read_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PIIX_IDESTAT
+comma
+op_amp
+id|t
+)paren
+suffix:semicolon
+id|piix_80w
+op_assign
+(paren
+(paren
+id|t
+op_amp
+l_int|2
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+)paren
+op_or
+(paren
+(paren
+id|t
+op_amp
+l_int|1
+)paren
+ques
+c_cond
+l_int|2
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_case
 id|PIIX_UDMA_100
+suffix:colon
+r_case
+id|PIIX_UDMA_133
 suffix:colon
 id|pci_read_config_dword
 c_func
@@ -2553,50 +2645,6 @@ op_or
 id|u
 op_amp
 l_int|0xc0
-)paren
-ques
-c_cond
-l_int|2
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PIIX_UDMA_V66
-suffix:colon
-id|pci_read_config_byte
-c_func
-(paren
-id|dev
-comma
-id|PIIX_IDESTAT
-comma
-op_amp
-id|t
-)paren
-suffix:semicolon
-id|piix_80w
-op_assign
-(paren
-(paren
-id|t
-op_amp
-l_int|2
-)paren
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
-)paren
-op_or
-(paren
-(paren
-id|t
-op_amp
-l_int|1
 )paren
 ques
 c_cond
@@ -2970,9 +3018,8 @@ id|hwif-&gt;highmem
 op_assign
 l_int|1
 suffix:semicolon
-id|hwif-&gt;dmaproc
+id|hwif-&gt;udma
 op_assign
-op_amp
 id|piix_dmaproc
 suffix:semicolon
 macro_line|#ifdef CONFIG_IDEDMA_AUTO

@@ -185,6 +185,16 @@ r_struct
 id|reiserfs_dir_entry
 id|de
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|reiserfs_check_lock_depth
 c_func
 (paren
@@ -259,9 +269,13 @@ id|IO_ERROR
 (brace
 singleline_comment|// FIXME: we could just skip part of directory which could
 singleline_comment|// not be read
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|entry_num
@@ -541,9 +555,13 @@ op_amp
 id|path_to_entry
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -791,8 +809,15 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* compose directory item containing &quot;.&quot; and &quot;..&quot; entries (entries are&n;   not aligned to 4 byte boundary) */

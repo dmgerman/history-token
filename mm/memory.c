@@ -2791,7 +2791,7 @@ c_cond
 (paren
 id|iobuf-&gt;locked
 )paren
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|map
@@ -2933,7 +2933,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|page
@@ -2961,7 +2961,7 @@ c_cond
 (paren
 id|tmp
 )paren
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|tmp
@@ -3028,7 +3028,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* Try again...  */
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page
@@ -3156,7 +3156,7 @@ id|page
 )paren
 r_continue
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -4284,7 +4284,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|TryLockPage
+id|TestSetPageLocked
 c_func
 (paren
 id|old_page

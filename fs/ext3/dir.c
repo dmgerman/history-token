@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/fs/ext3/dir.c&n; *&n; * Copyright (C) 1992, 199
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#include &lt;linux/ext3_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|variable|ext3_filetype_table
 r_static
 r_int
@@ -57,7 +58,7 @@ id|readdir
 suffix:colon
 id|ext3_readdir
 comma
-multiline_comment|/* BKL held */
+multiline_comment|/* we take BKL. needed?*/
 id|ioctl
 suffix:colon
 id|ext3_ioctl
@@ -321,6 +322,11 @@ op_star
 id|inode
 op_assign
 id|filp-&gt;f_dentry-&gt;d_inode
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|sb
 op_assign
@@ -704,6 +710,11 @@ id|brelse
 id|bh
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|stored
 suffix:semicolon
@@ -827,6 +838,11 @@ id|UPDATE_ATIME
 c_func
 (paren
 id|inode
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

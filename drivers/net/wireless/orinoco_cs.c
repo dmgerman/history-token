@@ -1,5 +1,8 @@
-multiline_comment|/* orinoco_cs.c 0.08a&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
+multiline_comment|/* orinoco_cs.c 0.11a&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef  __IN_PCMCIA_PACKAGE__
+macro_line|#include &lt;pcmcia/k_compat.h&gt;
+macro_line|#endif /* __IN_PCMCIA_PACKAGE__ */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -36,7 +39,7 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;orinoco_cs.c 0.08a (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+l_string|&quot;orinoco_cs.c 0.11a (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -50,12 +53,14 @@ c_func
 l_string|&quot;Driver for PCMCIA Lucent Orinoco, Prism II based and similar wireless cards&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
 multiline_comment|/* The old way: bit map of interrupts to choose from */
 multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4, and 3 */
@@ -86,7 +91,8 @@ r_static
 r_int
 id|reset_cor
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* Some D-Link cards have buggy CIS. They do work at 5v properly, but&n; * don&squot;t have any CIS entry for it. This workaround it... */
 DECL|variable|ignore_cis_vcc
@@ -128,10 +134,9 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Pcmcia specific structure */
-DECL|struct|dldwd_card
-r_typedef
+DECL|struct|orinoco_pccard
 r_struct
-id|dldwd_card
+id|orinoco_pccard
 (brace
 DECL|member|link
 id|dev_link_t
@@ -141,25 +146,13 @@ DECL|member|node
 id|dev_node_t
 id|node
 suffix:semicolon
-DECL|member|instance
-r_int
-id|instance
-suffix:semicolon
-multiline_comment|/* Common structure (fully included), see orinoco.h */
-DECL|member|priv
-r_struct
-id|dldwd_priv
-id|priv
-suffix:semicolon
-DECL|typedef|dldwd_card_t
 )brace
-id|dldwd_card_t
 suffix:semicolon
 multiline_comment|/*&n; * Function prototypes&n; */
 multiline_comment|/* struct net_device methods */
 r_static
 r_int
-id|dldwd_cs_open
+id|orinoco_cs_open
 c_func
 (paren
 r_struct
@@ -170,7 +163,7 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|dldwd_cs_stop
+id|orinoco_cs_stop
 c_func
 (paren
 r_struct
@@ -182,7 +175,7 @@ suffix:semicolon
 multiline_comment|/* PCMCIA gumpf */
 r_static
 r_void
-id|dldwd_cs_config
+id|orinoco_cs_config
 c_func
 (paren
 id|dev_link_t
@@ -192,7 +185,7 @@ id|link
 suffix:semicolon
 r_static
 r_void
-id|dldwd_cs_release
+id|orinoco_cs_release
 c_func
 (paren
 id|u_long
@@ -201,7 +194,7 @@ id|arg
 suffix:semicolon
 r_static
 r_int
-id|dldwd_cs_event
+id|orinoco_cs_event
 c_func
 (paren
 id|event_t
@@ -218,7 +211,7 @@ suffix:semicolon
 r_static
 id|dev_link_t
 op_star
-id|dldwd_cs_attach
+id|orinoco_cs_attach
 c_func
 (paren
 r_void
@@ -226,7 +219,7 @@ r_void
 suffix:semicolon
 r_static
 r_void
-id|dldwd_cs_detach
+id|orinoco_cs_detach
 c_func
 (paren
 id|dev_link_t
@@ -249,12 +242,6 @@ op_star
 id|dev_list
 suffix:semicolon
 multiline_comment|/* = NULL */
-DECL|variable|num_instances
-r_static
-r_int
-id|num_instances
-suffix:semicolon
-multiline_comment|/* = 0 */
 multiline_comment|/*====================================================================*/
 r_static
 r_void
@@ -295,8 +282,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|dldwd_cs_open
-id|dldwd_cs_open
+DECL|function|orinoco_cs_open
+id|orinoco_cs_open
 c_func
 (paren
 r_struct
@@ -305,22 +292,26 @@ op_star
 id|dev
 )paren
 (brace
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 id|priv
 op_assign
 (paren
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|dldwd_card_t
+r_struct
+id|orinoco_pccard
 op_star
 id|card
 op_assign
 (paren
-id|dldwd_card_t
+r_struct
+id|orinoco_pccard
 op_star
 )paren
 id|priv-&gt;card
@@ -338,7 +329,7 @@ suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
-id|priv-&gt;ndev.name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 id|link-&gt;open
@@ -352,7 +343,7 @@ id|dev
 suffix:semicolon
 id|err
 op_assign
-id|dldwd_reset
+id|orinoco_reset
 c_func
 (paren
 id|priv
@@ -363,7 +354,7 @@ c_cond
 (paren
 id|err
 )paren
-id|dldwd_cs_stop
+id|orinoco_cs_stop
 c_func
 (paren
 id|dev
@@ -379,7 +370,7 @@ suffix:semicolon
 id|TRACE_EXIT
 c_func
 (paren
-id|priv-&gt;ndev.name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -388,8 +379,8 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|dldwd_cs_stop
-id|dldwd_cs_stop
+DECL|function|orinoco_cs_stop
+id|orinoco_cs_stop
 c_func
 (paren
 r_struct
@@ -398,22 +389,26 @@ op_star
 id|dev
 )paren
 (brace
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 id|priv
 op_assign
 (paren
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|dldwd_card_t
+r_struct
+id|orinoco_pccard
 op_star
 id|card
 op_assign
 (paren
-id|dldwd_card_t
+r_struct
+id|orinoco_pccard
 op_star
 )paren
 id|priv-&gt;card
@@ -428,7 +423,7 @@ suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
-id|priv-&gt;ndev.name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 id|netif_stop_queue
@@ -437,7 +432,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|dldwd_shutdown
+id|orinoco_shutdown
 c_func
 (paren
 id|priv
@@ -469,7 +464,7 @@ suffix:semicolon
 id|TRACE_EXIT
 c_func
 (paren
-id|priv-&gt;ndev.name
+id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -479,21 +474,24 @@ suffix:semicolon
 multiline_comment|/*&n; * Do a soft reset of the Pcmcia card using the Configuration Option Register&n; * Can&squot;t do any harm, and actually may do some good on some cards...&n; * In fact, this seem necessary for Spectrum cards...&n; */
 r_static
 r_int
-DECL|function|dldwd_cs_cor_reset
-id|dldwd_cs_cor_reset
+DECL|function|orinoco_cs_cor_reset
+id|orinoco_cs_cor_reset
 c_func
 (paren
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 id|priv
 )paren
 (brace
-id|dldwd_card_t
+r_struct
+id|orinoco_pccard
 op_star
 id|card
 op_assign
 (paren
-id|dldwd_card_t
+r_struct
+id|orinoco_pccard
 op_star
 )paren
 id|priv-&gt;card
@@ -514,7 +512,7 @@ suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
-id|priv-&gt;ndev.name
+id|priv-&gt;ndev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* Doing it if hardware is gone is guaranteed crash */
@@ -522,11 +520,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|priv-&gt;hw_ready
+(paren
+id|link-&gt;state
+op_amp
+id|DEV_CONFIG
+)paren
 )paren
 (brace
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* Save original COR value */
@@ -566,7 +569,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;dldwd : dldwd_cs_cor_reset() : cor=0x%X&bslash;n&quot;
+l_string|&quot;orinoco : orinoco_cs_cor_reset() : cor=0x%X&bslash;n&quot;
 comma
 id|default_cor
 )paren
@@ -600,13 +603,79 @@ id|reg
 )paren
 suffix:semicolon
 multiline_comment|/* Wait until the card has acknowledged our reset */
+multiline_comment|/* FIXME: mdelay() is deprecated -dgibson */
 id|mdelay
 c_func
 (paren
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#if 0 /* This seems to help on Symbol cards, but we&squot;re not sure why,&n;       and we don&squot;t know what it will do to other cards */
+id|reg.Action
+op_assign
+id|CS_READ
+suffix:semicolon
+id|reg.Offset
+op_assign
+id|CISREG_CCSR
+suffix:semicolon
+id|CardServices
+c_func
+(paren
+id|AccessConfigurationRegister
+comma
+id|link-&gt;handle
+comma
+op_amp
+id|reg
+)paren
+suffix:semicolon
+multiline_comment|/* Write 7 (RUN) to CCSR, but preserve the original bit 4 */
+id|reg.Action
+op_assign
+id|CS_WRITE
+suffix:semicolon
+id|reg.Offset
+op_assign
+id|CISREG_CCSR
+suffix:semicolon
+id|reg.Value
+op_assign
+l_int|7
+op_or
+(paren
+id|reg.Value
+op_amp
+l_int|0x10
+)paren
+suffix:semicolon
+id|CardServices
+c_func
+(paren
+id|AccessConfigurationRegister
+comma
+id|link-&gt;handle
+comma
+op_amp
+id|reg
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Restore original COR configuration index */
+id|reg.Action
+op_assign
+id|CS_WRITE
+suffix:semicolon
+id|reg.Offset
+op_assign
+id|CISREG_COR
+suffix:semicolon
 id|reg.Value
 op_assign
 (paren
@@ -628,6 +697,7 @@ id|reg
 )paren
 suffix:semicolon
 multiline_comment|/* Wait until the card has finished restarting */
+multiline_comment|/* FIXME: mdelay() is deprecated -dgibson */
 id|mdelay
 c_func
 (paren
@@ -637,12 +707,84 @@ suffix:semicolon
 id|TRACE_EXIT
 c_func
 (paren
-id|priv-&gt;ndev.name
+id|priv-&gt;ndev-&gt;name
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|orinoco_cs_hard_reset
+id|orinoco_cs_hard_reset
+c_func
+(paren
+r_struct
+id|orinoco_private
+op_star
+id|priv
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|priv-&gt;broken_cor_reset
+)paren
+r_return
+id|orinoco_cs_cor_reset
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
+r_else
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#if 0 /* We&squot;d like to use ResetCard, but we can&squot;t for the moment - it sleeps */
+multiline_comment|/* Not sure what the second parameter is supposed to be - the &n;&t;   PCMCIA code doesn&squot;t actually use it */
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Not resetting card, in_interrupt() is true&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Doing ResetCard&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|CardServices
+c_func
+(paren
+id|ResetCard
+comma
+id|link-&gt;handle
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 multiline_comment|/* Remove zombie instances (card removed, detach pending) */
 r_static
@@ -664,7 +806,7 @@ suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 r_for
@@ -692,7 +834,7 @@ id|link-&gt;state
 op_amp
 id|DEV_STALE_LINK
 )paren
-id|dldwd_cs_detach
+id|orinoco_cs_detach
 c_func
 (paren
 id|link
@@ -702,37 +844,39 @@ suffix:semicolon
 id|TRACE_EXIT
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*======================================================================&n;  dldwd_cs_attach() creates an &quot;instance&quot; of the driver, allocating&n;  local data structures for one device.  The device is registered&n;  with Card Services.&n;  &n;  The dev_link structure is initialized, but we don&squot;t actually&n;  configure the card at this point -- we wait until we receive a&n;  card insertion event.&n;  ======================================================================*/
+multiline_comment|/*======================================================================&n;  orinoco_cs_attach() creates an &quot;instance&quot; of the driver, allocating&n;  local data structures for one device.  The device is registered&n;  with Card Services.&n;  &n;  The dev_link structure is initialized, but we don&squot;t actually&n;  configure the card at this point -- we wait until we receive a&n;  card insertion event.&n;  ======================================================================*/
 r_static
 id|dev_link_t
 op_star
-DECL|function|dldwd_cs_attach
-id|dldwd_cs_attach
+DECL|function|orinoco_cs_attach
+id|orinoco_cs_attach
 c_func
 (paren
 r_void
 )paren
 (brace
-id|dldwd_card_t
+r_struct
+id|net_device
 op_star
-id|card
+id|dev
 suffix:semicolon
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 id|priv
+suffix:semicolon
+r_struct
+id|orinoco_pccard
+op_star
+id|card
 suffix:semicolon
 id|dev_link_t
 op_star
 id|link
-suffix:semicolon
-r_struct
-id|net_device
-op_star
-id|ndev
 suffix:semicolon
 id|client_reg_t
 id|client_reg
@@ -745,7 +889,7 @@ suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* A bit of cleanup */
@@ -754,10 +898,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Allocate space for private device-specific data */
-id|card
+id|dev
 op_assign
-id|kmalloc
+id|alloc_orinocodev
 c_func
 (paren
 r_sizeof
@@ -765,66 +908,43 @@ r_sizeof
 op_star
 id|card
 )paren
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|card
+id|dev
 )paren
-(brace
-id|link
-op_assign
+r_return
 l_int|NULL
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-id|memset
-c_func
-(paren
-id|card
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|card
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Link both structure together */
 id|priv
 op_assign
-op_amp
-(paren
-id|card-&gt;priv
-)paren
+id|dev-&gt;priv
 suffix:semicolon
-id|priv-&gt;card
-op_assign
 id|card
-suffix:semicolon
-id|card-&gt;instance
 op_assign
-id|num_instances
-op_increment
+id|priv-&gt;card
 suffix:semicolon
-multiline_comment|/* FIXME: Racy? */
+multiline_comment|/* Overrides */
+id|dev-&gt;open
+op_assign
+id|orinoco_cs_open
+suffix:semicolon
+id|dev-&gt;stop
+op_assign
+id|orinoco_cs_stop
+suffix:semicolon
+id|priv-&gt;hard_reset
+op_assign
+id|orinoco_cs_hard_reset
+suffix:semicolon
+multiline_comment|/* Link both structures together */
 id|link
 op_assign
 op_amp
 id|card-&gt;link
-suffix:semicolon
-id|ndev
-op_assign
-op_amp
-id|priv-&gt;ndev
 suffix:semicolon
 id|link-&gt;priv
 op_assign
@@ -834,7 +954,7 @@ multiline_comment|/* Initialize the dev_link_t structure */
 id|link-&gt;release.function
 op_assign
 op_amp
-id|dldwd_cs_release
+id|orinoco_cs_release
 suffix:semicolon
 id|link-&gt;release.data
 op_assign
@@ -906,42 +1026,6 @@ id|link-&gt;conf.IntType
 op_assign
 id|INT_MEMORY_AND_IO
 suffix:semicolon
-multiline_comment|/* Setup the common part */
-r_if
-c_cond
-(paren
-id|dldwd_setup
-c_func
-(paren
-id|priv
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|card
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-multiline_comment|/* Overrides */
-id|ndev-&gt;open
-op_assign
-id|dldwd_cs_open
-suffix:semicolon
-id|ndev-&gt;stop
-op_assign
-id|dldwd_cs_stop
-suffix:semicolon
-id|priv-&gt;card_reset_handler
-op_assign
-id|dldwd_cs_cor_reset
-suffix:semicolon
 multiline_comment|/* Register with Card Services */
 id|link-&gt;next
 op_assign
@@ -979,7 +1063,7 @@ suffix:semicolon
 id|client_reg.event_handler
 op_assign
 op_amp
-id|dldwd_cs_event
+id|orinoco_cs_event
 suffix:semicolon
 id|client_reg.Version
 op_assign
@@ -1021,7 +1105,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|dldwd_cs_detach
+id|orinoco_cs_detach
 c_func
 (paren
 id|link
@@ -1040,19 +1124,19 @@ suffix:colon
 id|TRACE_EXIT
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 r_return
 id|link
 suffix:semicolon
 )brace
-multiline_comment|/* dldwd_cs_attach */
+multiline_comment|/* orinoco_cs_attach */
 multiline_comment|/*======================================================================&n;  This deletes a driver &quot;instance&quot;.  The device is de-registered&n;  with Card Services.  If it has been released, all local data&n;  structures are freed.  Otherwise, the structures will be freed&n;  when the device is released.&n;  ======================================================================*/
 r_static
 r_void
-DECL|function|dldwd_cs_detach
-id|dldwd_cs_detach
+DECL|function|orinoco_cs_detach
+id|orinoco_cs_detach
 c_func
 (paren
 id|dev_link_t
@@ -1065,7 +1149,8 @@ op_star
 op_star
 id|linkp
 suffix:semicolon
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 id|priv
 op_assign
@@ -1074,7 +1159,7 @@ suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Locate device structure */
@@ -1194,14 +1279,12 @@ l_int|0
 comma
 l_string|&quot;orinoco_cs: About to unregister net device %p&bslash;n&quot;
 comma
-op_amp
 id|priv-&gt;ndev
 )paren
 suffix:semicolon
 id|unregister_netdev
 c_func
 (paren
-op_amp
 id|priv-&gt;ndev
 )paren
 suffix:semicolon
@@ -1212,29 +1295,25 @@ c_func
 id|priv-&gt;card
 )paren
 suffix:semicolon
-id|num_instances
-op_decrement
-suffix:semicolon
-multiline_comment|/* FIXME: Racy? */
 id|out
 suffix:colon
 id|TRACE_EXIT
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* dldwd_cs_detach */
-multiline_comment|/*======================================================================&n;  dldwd_cs_config() is scheduled to run after a CARD_INSERTION event&n;  is received, to configure the PCMCIA socket, and to make the&n;  device available to the system.&n;  ======================================================================*/
+multiline_comment|/* orinoco_cs_detach */
+multiline_comment|/*======================================================================&n;  orinoco_cs_config() is scheduled to run after a CARD_INSERTION event&n;  is received, to configure the PCMCIA socket, and to make the&n;  device available to the system.&n;  ======================================================================*/
 DECL|macro|CS_CHECK
 mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;while ((last_ret=CardServices(last_fn=(fn),args))!=0) goto cs_failed
 DECL|macro|CFG_CHECK
 mdefine_line|#define CFG_CHECK(fn, args...) &bslash;&n;if (CardServices(fn, args) != 0) goto next_entry
 r_static
 r_void
-DECL|function|dldwd_cs_config
-id|dldwd_cs_config
+DECL|function|orinoco_cs_config
+id|orinoco_cs_config
 c_func
 (paren
 id|dev_link_t
@@ -1247,18 +1326,21 @@ id|handle
 op_assign
 id|link-&gt;handle
 suffix:semicolon
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 id|priv
 op_assign
 id|link-&gt;priv
 suffix:semicolon
-id|dldwd_card_t
+r_struct
+id|orinoco_pccard
 op_star
 id|card
 op_assign
 (paren
-id|dldwd_card_t
+r_struct
+id|orinoco_pccard
 op_star
 )paren
 id|priv-&gt;card
@@ -1275,7 +1357,6 @@ id|net_device
 op_star
 id|ndev
 op_assign
-op_amp
 id|priv-&gt;ndev
 suffix:semicolon
 id|tuple_t
@@ -1311,7 +1392,7 @@ suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 id|CS_CHECK
@@ -1422,7 +1503,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;dldwd_cs_config: ConfigBase = 0x%x link-&gt;conf.Vcc = %d&bslash;n&quot;
+l_string|&quot;orinoco_cs_config: ConfigBase = 0x%x link-&gt;conf.Vcc = %d&bslash;n&quot;
 comma
 id|link-&gt;conf.ConfigBase
 comma
@@ -1490,7 +1571,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;dldwd_cs_config: index = 0x%x, flags = 0x%x&bslash;n&quot;
+l_string|&quot;orinoco_cs_config: index = 0x%x, flags = 0x%x&bslash;n&quot;
 comma
 id|cfg-&gt;index
 comma
@@ -1573,7 +1654,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;dldwd_cs_config: Vcc mismatch (conf.Vcc = %d, CIS = %d)&bslash;n&quot;
+l_string|&quot;orinoco_cs_config: Vcc mismatch (conf.Vcc = %d, CIS = %d)&bslash;n&quot;
 comma
 id|conf.Vcc
 comma
@@ -1591,11 +1672,9 @@ c_cond
 op_logical_neg
 id|ignore_cis_vcc
 )paren
-(brace
 r_goto
 id|next_entry
 suffix:semicolon
-)brace
 )brace
 )brace
 r_else
@@ -1629,7 +1708,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;dldwd_cs_config: Vcc mismatch (conf.Vcc = %d, CIS = %d)&bslash;n&quot;
+l_string|&quot;orinoco_cs_config: Vcc mismatch (conf.Vcc = %d, CIS = %d)&bslash;n&quot;
 comma
 id|conf.Vcc
 comma
@@ -1704,7 +1783,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;dldwd_cs_config: We seem to have configured Vcc and Vpp&bslash;n&quot;
+l_string|&quot;orinoco_cs_config: We seem to have configured Vcc and Vpp&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Do we need to allocate an interrupt? */
@@ -1878,7 +1957,9 @@ op_amp
 id|link-&gt;io
 )paren
 suffix:semicolon
-id|CS_CHECK
+id|last_ret
+op_assign
+id|CardServices
 c_func
 (paren
 id|GetNextTuple
@@ -1889,6 +1970,26 @@ op_amp
 id|tuple
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|last_ret
+op_eq
+id|CS_NO_MORE_ITEMS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;GetNextTuple().  No matching CIS configuration, &quot;
+l_string|&quot;maybe you need the ignore_cis_vcc=1 parameter.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|cs_failed
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t;   Allocate an interrupt line.  Note that this does not assign a&n;&t;   handler to the interrupt, unless the &squot;Handler&squot; member of the&n;&t;   irq structure is initialized.&n;&t; */
 r_if
@@ -1955,7 +2056,7 @@ id|i
 suffix:semicolon
 id|link-&gt;irq.Handler
 op_assign
-id|dldwd_interrupt
+id|orinoco_interrupt
 suffix:semicolon
 id|link-&gt;irq.Instance
 op_assign
@@ -1980,6 +2081,10 @@ c_func
 id|hw
 comma
 id|link-&gt;io.BasePort1
+comma
+id|HERMES_IO
+comma
+id|HERMES_16BIT_REGSPACING
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;   This actually configures the PCMCIA socket -- setting up&n;&t;   the I/O windows and the interrupt mapping, and putting the&n;&t;   card and host interface into &quot;Memory and IO&quot; mode.&n;&t; */
@@ -2144,7 +2249,7 @@ multiline_comment|/* And give us the proc nodes for debugging */
 r_if
 c_cond
 (paren
-id|dldwd_proc_dev_init
+id|orinoco_proc_dev_init
 c_func
 (paren
 id|priv
@@ -2173,25 +2278,20 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-multiline_comment|/* Allow cor_reset, /proc &amp; ioctls to act */
-id|priv-&gt;hw_ready
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Do a Pcmcia soft reset of the card (optional) */
+multiline_comment|/* Let reset_cor parameter override determine_firmware()&squot;s guess */
 r_if
 c_cond
 (paren
 id|reset_cor
+op_ne
+op_minus
+l_int|1
 )paren
-(brace
-id|dldwd_cs_cor_reset
-c_func
-(paren
-id|priv
-)paren
+id|priv-&gt;broken_cor_reset
+op_assign
+op_logical_neg
+id|reset_cor
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;   At this point, the dev_node_t structure(s) need to be&n;&t;   initialized and arranged in a linked list at link-&gt;dev.&n;&t; */
 id|card-&gt;node.major
 op_assign
@@ -2212,7 +2312,7 @@ suffix:semicolon
 id|TRACE_EXIT
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2231,7 +2331,7 @@ id|last_ret
 suffix:semicolon
 id|failed
 suffix:colon
-id|dldwd_cs_release
+id|orinoco_cs_release
 c_func
 (paren
 (paren
@@ -2243,16 +2343,16 @@ suffix:semicolon
 id|TRACE_EXIT
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* dldwd_cs_config */
-multiline_comment|/*======================================================================&n;  After a card is removed, dldwd_cs_release() will unregister the&n;  device, and release the PCMCIA configuration.  If the device is&n;  still open, this will be postponed until it is closed.&n;  ======================================================================*/
+multiline_comment|/* orinoco_cs_config */
+multiline_comment|/*======================================================================&n;  After a card is removed, orinoco_cs_release() will unregister the&n;  device, and release the PCMCIA configuration.  If the device is&n;  still open, this will be postponed until it is closed.&n;  ======================================================================*/
 r_static
 r_void
-DECL|function|dldwd_cs_release
-id|dldwd_cs_release
+DECL|function|orinoco_cs_release
+id|orinoco_cs_release
 c_func
 (paren
 id|u_long
@@ -2269,7 +2369,8 @@ op_star
 )paren
 id|arg
 suffix:semicolon
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 id|priv
 op_assign
@@ -2306,7 +2407,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Unregister proc entry */
-id|dldwd_proc_dev_cleanup
+id|orinoco_proc_dev_cleanup
 c_func
 (paren
 id|priv
@@ -2365,12 +2466,12 @@ id|link-&gt;dev-&gt;dev_name
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* dldwd_cs_release */
+multiline_comment|/* orinoco_cs_release */
 multiline_comment|/*======================================================================&n;  The card status event handler.  Mostly, this schedules other&n;  stuff to run after an event is received.&n;&n;  When a CARD_REMOVAL event is received, we immediately set a&n;  private flag to block future accesses to this device.  All the&n;  functions that actually access the device should check this flag&n;  to make sure the card is still present.&n;  ======================================================================*/
 r_static
 r_int
-DECL|function|dldwd_cs_event
-id|dldwd_cs_event
+DECL|function|orinoco_cs_event
+id|orinoco_cs_event
 c_func
 (paren
 id|event_t
@@ -2390,12 +2491,14 @@ id|link
 op_assign
 id|args-&gt;client_data
 suffix:semicolon
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 id|priv
 op_assign
 (paren
-id|dldwd_priv_t
+r_struct
+id|orinoco_private
 op_star
 )paren
 id|link-&gt;priv
@@ -2405,13 +2508,12 @@ id|net_device
 op_star
 id|dev
 op_assign
-op_amp
 id|priv-&gt;ndev
 suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 r_switch
@@ -2423,17 +2525,6 @@ id|event
 r_case
 id|CS_EVENT_CARD_REMOVAL
 suffix:colon
-multiline_comment|/* FIXME: Erg.. this whole hw_ready thing looks racy&n;&t;&t;   to me.  this may not be fixable without changin the&n;&t;&t;   PCMCIA subsystem, though */
-id|priv-&gt;hw_ready
-op_assign
-l_int|0
-suffix:semicolon
-id|dldwd_shutdown
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
 id|link-&gt;state
 op_and_assign
 op_complement
@@ -2453,6 +2544,21 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+)brace
+id|orinoco_shutdown
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;state
+op_amp
+id|DEV_CONFIG
+)paren
+(brace
 id|netif_device_detach
 c_func
 (paren
@@ -2484,7 +2590,7 @@ id|DEV_PRESENT
 op_or
 id|DEV_CONFIG_PENDING
 suffix:semicolon
-id|dldwd_cs_config
+id|orinoco_cs_config
 c_func
 (paren
 id|link
@@ -2503,7 +2609,7 @@ multiline_comment|/* Fall through... */
 r_case
 id|CS_EVENT_RESET_PHYSICAL
 suffix:colon
-id|dldwd_shutdown
+id|orinoco_shutdown
 c_func
 (paren
 id|priv
@@ -2588,7 +2694,7 @@ id|link-&gt;open
 r_if
 c_cond
 (paren
-id|dldwd_reset
+id|orinoco_reset
 c_func
 (paren
 id|priv
@@ -2621,7 +2727,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|dldwd_cs_stop
+id|orinoco_cs_stop
 c_func
 (paren
 id|dev
@@ -2637,19 +2743,19 @@ suffix:semicolon
 id|TRACE_EXIT
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* dldwd_cs_event */
+multiline_comment|/* orinoco_cs_event */
 r_static
 r_int
 id|__init
-DECL|function|init_dldwd_cs
-id|init_dldwd_cs
+DECL|function|init_orinoco_cs
+id|init_orinoco_cs
 c_func
 (paren
 r_void
@@ -2661,7 +2767,7 @@ suffix:semicolon
 id|TRACE_ENTER
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -2710,16 +2816,16 @@ op_amp
 id|dev_info
 comma
 op_amp
-id|dldwd_cs_attach
+id|orinoco_cs_attach
 comma
 op_amp
-id|dldwd_cs_detach
+id|orinoco_cs_detach
 )paren
 suffix:semicolon
 id|TRACE_EXIT
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2729,8 +2835,8 @@ suffix:semicolon
 r_static
 r_void
 id|__exit
-DECL|function|exit_dldwd_cs
-id|exit_dldwd_cs
+DECL|function|exit_orinoco_cs
+id|exit_orinoco_cs
 c_func
 (paren
 r_void
@@ -2739,7 +2845,7 @@ r_void
 id|TRACE_ENTER
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 id|unregister_pccard_driver
@@ -2784,7 +2890,7 @@ id|dev_list-&gt;state
 op_amp
 id|DEV_CONFIG
 )paren
-id|dldwd_cs_release
+id|orinoco_cs_release
 c_func
 (paren
 (paren
@@ -2793,7 +2899,7 @@ id|u_long
 id|dev_list
 )paren
 suffix:semicolon
-id|dldwd_cs_detach
+id|orinoco_cs_detach
 c_func
 (paren
 id|dev_list
@@ -2803,22 +2909,22 @@ suffix:semicolon
 id|TRACE_EXIT
 c_func
 (paren
-l_string|&quot;dldwd&quot;
+l_string|&quot;orinoco&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|variable|init_dldwd_cs
+DECL|variable|init_orinoco_cs
 id|module_init
 c_func
 (paren
-id|init_dldwd_cs
+id|init_orinoco_cs
 )paren
 suffix:semicolon
-DECL|variable|exit_dldwd_cs
+DECL|variable|exit_orinoco_cs
 id|module_exit
 c_func
 (paren
-id|exit_dldwd_cs
+id|exit_orinoco_cs
 )paren
 suffix:semicolon
 eof

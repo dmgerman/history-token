@@ -937,12 +937,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|refile_buffer
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
 id|__brelse
 c_func
 (paren
@@ -1279,7 +1273,7 @@ r_do
 (brace
 id|new_bh
 op_assign
-id|get_unused_buffer_head
+id|alloc_buffer_head
 c_func
 (paren
 l_int|0
@@ -1296,7 +1290,7 @@ id|printk
 (paren
 id|KERN_NOTICE
 id|__FUNCTION__
-l_string|&quot;: ENOMEM at get_unused_buffer_head, &quot;
+l_string|&quot;: ENOMEM at alloc_buffer_head, &quot;
 l_string|&quot;trying again.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1315,14 +1309,6 @@ id|new_bh
 )paren
 suffix:semicolon
 multiline_comment|/* keep subsequent assertions sane */
-id|new_bh-&gt;b_prev_free
-op_assign
-l_int|0
-suffix:semicolon
-id|new_bh-&gt;b_next_free
-op_assign
-l_int|0
-suffix:semicolon
 id|new_bh-&gt;b_state
 op_assign
 l_int|0
@@ -1386,18 +1372,16 @@ id|new_bh-&gt;b_blocknr
 op_assign
 id|blocknr
 suffix:semicolon
-id|new_bh-&gt;b_state
-op_or_assign
+id|set_buffer_mapped
+c_func
 (paren
-l_int|1
-op_lshift
-id|BH_Mapped
+id|new_bh
 )paren
-op_or
+suffix:semicolon
+id|set_buffer_dirty
+c_func
 (paren
-l_int|1
-op_lshift
-id|BH_Dirty
+id|new_bh
 )paren
 suffix:semicolon
 op_star
@@ -2721,12 +2705,10 @@ comma
 l_string|&quot;marking uptodate&quot;
 )paren
 suffix:semicolon
-id|mark_buffer_uptodate
+id|set_buffer_uptodate
 c_func
 (paren
 id|bh
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|unlock_buffer

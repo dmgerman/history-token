@@ -1,11 +1,10 @@
 multiline_comment|/*&n; *  linux/fs/sysv/ialloc.c&n; *&n; *  minix/bitmap.c&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  ext/freelists.c&n; *  Copyright (C) 1992  Remy Card (card@masi.ibp.fr)&n; *&n; *  xenix/alloc.c&n; *  Copyright (C) 1992  Doug Evans&n; *&n; *  coh/alloc.c&n; *  Copyright (C) 1993  Pascal Haible, Bruno Haible&n; *&n; *  sysv/ialloc.c&n; *  Copyright (C) 1993  Bruno Haible&n; *&n; *  This file contains code for allocating/freeing inodes.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sysv_fs.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &quot;sysv.h&quot;
 multiline_comment|/* We don&squot;t trust the value of&n;   sb-&gt;sv_sbd2-&gt;s_tinode = *sb-&gt;sv_sb_total_free_inodes&n;   but we nevertheless keep it up to date. */
 multiline_comment|/* An inode on disk is considered free if both i_mode == 0 and i_nlink == 0. */
 multiline_comment|/* return &amp;sb-&gt;sv_sb_fic_inodes[i] = &amp;sbd-&gt;s_inode[i]; */
@@ -27,16 +26,27 @@ r_int
 id|i
 )paren
 (brace
+r_struct
+id|sysv_sb_info
+op_star
+id|sbi
+op_assign
+id|SYSV_SB
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;sv_bh1
+id|sbi-&gt;s_bh1
 op_eq
-id|sb-&gt;sv_bh2
+id|sbi-&gt;s_bh2
 )paren
 r_return
 op_amp
-id|sb-&gt;sv_sb_fic_inodes
+id|sbi-&gt;s_sb_fic_inodes
 (braket
 id|i
 )braket
@@ -72,7 +82,7 @@ id|sysv_ino_t
 op_star
 )paren
 (paren
-id|sb-&gt;sv_sbd1
+id|sbi-&gt;s_sbd1
 op_plus
 id|offset
 )paren
@@ -84,7 +94,7 @@ id|sysv_ino_t
 op_star
 )paren
 (paren
-id|sb-&gt;sv_sbd2
+id|sbi-&gt;s_sbd2
 op_plus
 id|offset
 )paren
@@ -114,6 +124,17 @@ id|bh
 )paren
 (brace
 r_struct
+id|sysv_sb_info
+op_star
+id|sbi
+op_assign
+id|SYSV_SB
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+r_struct
 id|sysv_inode
 op_star
 id|res
@@ -121,9 +142,9 @@ suffix:semicolon
 r_int
 id|block
 op_assign
-id|sb-&gt;sv_firstinodezone
+id|sbi-&gt;s_firstinodezone
 op_plus
-id|sb-&gt;sv_block_base
+id|sbi-&gt;s_block_base
 suffix:semicolon
 id|block
 op_add_assign
@@ -133,7 +154,7 @@ op_minus
 l_int|1
 )paren
 op_rshift
-id|sb-&gt;sv_inodes_per_block_bits
+id|sbi-&gt;s_inodes_per_block_bits
 suffix:semicolon
 op_star
 id|bh
@@ -180,7 +201,7 @@ op_minus
 l_int|1
 )paren
 op_amp
-id|sb-&gt;sv_inodes_per_block_1
+id|sbi-&gt;s_inodes_per_block_1
 )paren
 suffix:semicolon
 )brace
@@ -196,6 +217,17 @@ op_star
 id|sb
 )paren
 (brace
+r_struct
+id|sysv_sb_info
+op_star
+id|sbi
+op_assign
+id|SYSV_SB
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 r_struct
 id|buffer_head
 op_star
@@ -246,7 +278,7 @@ c_loop
 (paren
 id|ino
 op_le
-id|sb-&gt;sv_ninodes
+id|sbi-&gt;s_ninodes
 )paren
 (brace
 r_if
@@ -274,7 +306,11 @@ op_assign
 id|cpu_to_fs16
 c_func
 (paren
+id|SYSV_SB
+c_func
+(paren
 id|sb
+)paren
 comma
 id|ino
 )paren
@@ -284,7 +320,7 @@ c_cond
 (paren
 id|i
 op_eq
-id|sb-&gt;sv_fic_size
+id|sbi-&gt;s_fic_size
 )paren
 r_break
 suffix:semicolon
@@ -296,7 +332,7 @@ c_cond
 id|ino
 op_increment
 op_amp
-id|sb-&gt;sv_inodes_per_block_1
+id|sbi-&gt;s_inodes_per_block_1
 )paren
 op_eq
 l_int|0
@@ -363,6 +399,19 @@ r_struct
 id|super_block
 op_star
 id|sb
+op_assign
+id|inode-&gt;i_sb
+suffix:semicolon
+r_struct
+id|sysv_sb_info
+op_star
+id|sbi
+op_assign
+id|SYSV_SB
+c_func
+(paren
+id|sb
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -398,7 +447,7 @@ id|SYSV_ROOT_INO
 op_logical_or
 id|ino
 OG
-id|sb-&gt;sv_ninodes
+id|sbi-&gt;s_ninodes
 )paren
 (brace
 id|printk
@@ -459,10 +508,10 @@ op_assign
 id|fs16_to_cpu
 c_func
 (paren
-id|sb
+id|sbi
 comma
 op_star
-id|sb-&gt;sv_sb_fic_count
+id|sbi-&gt;s_sb_fic_count
 )paren
 suffix:semicolon
 r_if
@@ -470,7 +519,7 @@ c_cond
 (paren
 id|count
 OL
-id|sb-&gt;sv_fic_size
+id|sbi-&gt;s_fic_size
 )paren
 (brace
 op_star
@@ -486,18 +535,18 @@ op_assign
 id|cpu_to_fs16
 c_func
 (paren
-id|sb
+id|sbi
 comma
 id|ino
 )paren
 suffix:semicolon
 op_star
-id|sb-&gt;sv_sb_fic_count
+id|sbi-&gt;s_sb_fic_count
 op_assign
 id|cpu_to_fs16
 c_func
 (paren
-id|sb
+id|sbi
 comma
 id|count
 )paren
@@ -506,9 +555,9 @@ suffix:semicolon
 id|fs16_add
 c_func
 (paren
-id|sb
+id|sbi
 comma
-id|sb-&gt;sv_sb_total_free_inodes
+id|sbi-&gt;s_sb_total_free_inodes
 comma
 l_int|1
 )paren
@@ -570,24 +619,33 @@ id|mode
 )paren
 (brace
 r_struct
-id|inode
-op_star
-id|inode
-suffix:semicolon
-r_struct
 id|super_block
 op_star
 id|sb
+op_assign
+id|dir-&gt;i_sb
+suffix:semicolon
+r_struct
+id|sysv_sb_info
+op_star
+id|sbi
+op_assign
+id|SYSV_SB
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+r_struct
+id|inode
+op_star
+id|inode
 suffix:semicolon
 id|u16
 id|ino
 suffix:semicolon
 r_int
 id|count
-suffix:semicolon
-id|sb
-op_assign
-id|dir-&gt;i_sb
 suffix:semicolon
 id|inode
 op_assign
@@ -622,10 +680,10 @@ op_assign
 id|fs16_to_cpu
 c_func
 (paren
-id|sb
+id|sbi
 comma
 op_star
-id|sb-&gt;sv_sb_fic_count
+id|sbi-&gt;s_sb_fic_count
 )paren
 suffix:semicolon
 r_if
@@ -703,12 +761,12 @@ id|count
 )paren
 suffix:semicolon
 op_star
-id|sb-&gt;sv_sb_fic_count
+id|sbi-&gt;s_sb_fic_count
 op_assign
 id|cpu_to_fs16
 c_func
 (paren
-id|sb
+id|sbi
 comma
 id|count
 )paren
@@ -716,9 +774,9 @@ suffix:semicolon
 id|fs16_add
 c_func
 (paren
-id|sb
+id|sbi
 comma
-id|sb-&gt;sv_sb_total_free_inodes
+id|sbi-&gt;s_sb_total_free_inodes
 comma
 op_minus
 l_int|1
@@ -770,7 +828,7 @@ op_assign
 id|fs16_to_cpu
 c_func
 (paren
-id|sb
+id|sbi
 comma
 id|ino
 )paren
@@ -881,6 +939,17 @@ id|sb
 )paren
 (brace
 r_struct
+id|sysv_sb_info
+op_star
+id|sbi
+op_assign
+id|SYSV_SB
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+r_struct
 id|buffer_head
 op_star
 id|bh
@@ -908,10 +977,10 @@ op_assign
 id|fs16_to_cpu
 c_func
 (paren
-id|sb
+id|sbi
 comma
 op_star
-id|sb-&gt;sv_sb_total_free_inodes
+id|sbi-&gt;s_sb_total_free_inodes
 )paren
 suffix:semicolon
 r_if
@@ -960,7 +1029,7 @@ c_loop
 (paren
 id|ino
 op_le
-id|sb-&gt;sv_ninodes
+id|sbi-&gt;s_ninodes
 )paren
 (brace
 r_if
@@ -984,7 +1053,7 @@ c_cond
 id|ino
 op_increment
 op_amp
-id|sb-&gt;sv_inodes_per_block_1
+id|sbi-&gt;s_inodes_per_block_1
 )paren
 op_eq
 l_int|0
@@ -1076,12 +1145,16 @@ id|MS_RDONLY
 )paren
 (brace
 op_star
-id|sb-&gt;sv_sb_total_free_inodes
+id|sbi-&gt;s_sb_total_free_inodes
 op_assign
 id|cpu_to_fs16
 c_func
 (paren
+id|SYSV_SB
+c_func
+(paren
 id|sb
+)paren
 comma
 id|count
 )paren

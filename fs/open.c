@@ -2762,6 +2762,11 @@ r_goto
 id|cleanup_file
 suffix:semicolon
 )brace
+id|f-&gt;f_ra.ra_pages
+op_assign
+op_star
+id|inode-&gt;i_mapping-&gt;ra_pages
+suffix:semicolon
 id|f-&gt;f_dentry
 op_assign
 id|dentry

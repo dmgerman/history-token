@@ -308,7 +308,7 @@ id|page
 )paren
 )paren
 (brace
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page
@@ -323,7 +323,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
