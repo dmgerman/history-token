@@ -388,7 +388,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|pSRB-&gt;next
+id|pSRB-&gt;SCp.ptr
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -405,8 +405,12 @@ op_assign
 id|pSRB
 suffix:semicolon
 r_else
-id|pHCB-&gt;pSRB_tail-&gt;next
+id|pHCB-&gt;pSRB_tail-&gt;SCp.ptr
 op_assign
+(paren
+r_char
+op_star
+)paren
 id|pSRB
 suffix:semicolon
 multiline_comment|/* Pointer to next */
@@ -477,9 +481,13 @@ l_int|NULL
 (brace
 id|pHCB-&gt;pSRB_head
 op_assign
-id|pHCB-&gt;pSRB_head-&gt;next
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+id|pHCB-&gt;pSRB_head-&gt;SCp.ptr
 suffix:semicolon
-id|pSRB-&gt;next
+id|pSRB-&gt;SCp.ptr
 op_assign
 l_int|NULL
 suffix:semicolon
