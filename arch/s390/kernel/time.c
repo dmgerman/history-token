@@ -800,6 +800,17 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|nohz_cpu_mask
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Leave the clock comparator set up for the next timer&n;&t; * tick if either rcu or a softirq is pending.&n;&t; */
 r_if
 c_cond
@@ -818,10 +829,8 @@ c_func
 (paren
 )paren
 )paren
-r_return
-suffix:semicolon
-multiline_comment|/*&n;&t; * This cpu is going really idle. Set up the clock comparator&n;&t; * for the next event.&n;&t; */
-id|cpu_set
+(brace
+id|cpu_clear
 c_func
 (paren
 id|smp_processor_id
@@ -832,6 +841,10 @@ comma
 id|nohz_cpu_mask
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * This cpu is going really idle. Set up the clock comparator&n;&t; * for the next event.&n;&t; */
 id|timer
 op_assign
 (paren
