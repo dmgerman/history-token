@@ -1086,15 +1086,6 @@ r_int
 r_int
 id|size
 suffix:semicolon
-r_int
-id|idx
-op_assign
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1764,6 +1755,9 @@ id|xpram_disks
 id|i
 )braket
 )paren
+suffix:semicolon
+r_return
+id|rc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Finally, the init/exit functions.&n; */
