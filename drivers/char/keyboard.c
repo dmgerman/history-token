@@ -2802,6 +2802,9 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+id|v
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2809,10 +2812,14 @@ id|up_flag
 )paren
 r_return
 suffix:semicolon
+id|v
+op_assign
+id|value
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|value
+id|v
 OL
 id|ARRAY_SIZE
 c_func
