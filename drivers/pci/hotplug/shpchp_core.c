@@ -907,10 +907,8 @@ id|ctrl-&gt;device
 )paren
 suffix:semicolon
 r_return
-(paren
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 )brace
 id|ctrl-&gt;num_slots
@@ -951,9 +949,7 @@ id|ctrl-&gt;device
 )paren
 suffix:semicolon
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * set_attention_status - Turns the Amber LED for a slot on, off or blink&n; */
