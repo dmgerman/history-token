@@ -72,12 +72,6 @@ id|blk_max_low_pfn
 comma
 id|blk_max_pfn
 suffix:semicolon
-DECL|variable|blk_nohighio
-r_int
-id|blk_nohighio
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|congestion_wqh
 r_static
 id|wait_queue_head_t
@@ -7897,13 +7891,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|blk_rq_map_sg
-)paren
-suffix:semicolon
-DECL|variable|blk_nohighio
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|blk_nohighio
 )paren
 suffix:semicolon
 DECL|variable|blk_dump_rq_flags
