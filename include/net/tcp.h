@@ -3190,6 +3190,21 @@ id|timer_bug_msg
 (braket
 )braket
 suffix:semicolon
+multiline_comment|/* tcp_diag.c */
+r_extern
+r_void
+id|tcp_get_info
+c_func
+(paren
+r_struct
+id|sock
+op_star
+comma
+r_struct
+id|tcp_info
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* Read &squot;sendfile()&squot;-style from a TCP socket */
 DECL|typedef|sk_read_actor_t
 r_typedef
