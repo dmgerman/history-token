@@ -663,7 +663,8 @@ id|xid
 comma
 id|rc
 op_assign
-l_int|0
+op_minus
+id|EOPNOTSUPP
 suffix:semicolon
 r_struct
 id|cifs_sb_info
