@@ -6609,6 +6609,7 @@ suffix:semicolon
 multiline_comment|/* set_serial_info */
 multiline_comment|/*&n; * ***************************************************************************&n; * Sysfs Attribute&n; * ***************************************************************************&n; */
 DECL|function|show_latency_timer
+r_static
 id|ssize_t
 id|show_latency_timer
 c_func
@@ -6749,6 +6750,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Write a new value of the latency timer, in units of milliseconds. */
 DECL|function|store_latency_timer
+r_static
 id|ssize_t
 id|store_latency_timer
 c_func
@@ -6895,6 +6897,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Write an event character directly to the FTDI register.  The ASCII&n;   value is in the low 8 bits, with the enable bit in the 9th bit. */
 DECL|function|store_event_char
+r_static
 id|ssize_t
 id|store_event_char
 c_func
@@ -7066,6 +7069,7 @@ id|store_event_char
 )paren
 suffix:semicolon
 DECL|function|create_sysfs_attrs
+r_static
 r_void
 id|create_sysfs_attrs
 c_func
@@ -7146,6 +7150,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|remove_sysfs_attrs
+r_static
 r_void
 id|remove_sysfs_attrs
 c_func

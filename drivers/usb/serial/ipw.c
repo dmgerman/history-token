@@ -1608,6 +1608,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|usb_ipw_init
+r_static
 r_int
 id|usb_ipw_init
 c_func
@@ -1674,6 +1675,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|usb_ipw_exit
+r_static
 r_void
 id|usb_ipw_exit
 c_func

@@ -2234,6 +2234,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Sends a usb packet to the tty&n; *&n; * Assumes, that all packages and at an usb-packet boundary.&n; *&n; * return &lt;0 on error, 0 if packet is incomplete or &gt; 0 if packet was sent&n; */
 DECL|function|gsp_send
+r_static
 r_int
 id|gsp_send
 c_func
