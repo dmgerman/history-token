@@ -1267,7 +1267,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|function|acpi_register_gsi
 r_int
 r_int
@@ -1284,13 +1283,23 @@ r_int
 id|active_high_low
 )paren
 (brace
-r_static
-id|u16
-id|irq_mask
-suffix:semicolon
 r_int
 r_int
 id|irq
+suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+multiline_comment|/*&n;&t; * Make sure all (legacy) PCI IRQs are set as level-triggered.&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_irq_model
+op_eq
+id|ACPI_IRQ_MODEL_PIC
+)paren
+(brace
+r_static
+id|u16
+id|irq_mask
 suffix:semicolon
 r_extern
 r_void
@@ -1302,15 +1311,6 @@ r_int
 id|irq
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure all (legacy) PCI IRQs are set as level-triggered.&n;&t; */
-r_if
-c_cond
-(paren
-id|acpi_irq_model
-op_eq
-id|ACPI_IRQ_MODEL_PIC
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -1358,6 +1358,7 @@ id|gsi
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_X86_IO_APIC
 r_if
 c_cond
@@ -1392,7 +1393,6 @@ r_return
 id|irq
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* CONFIG_ACPI_PCI */
 r_static
 r_int
 r_int
