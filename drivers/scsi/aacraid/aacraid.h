@@ -15,6 +15,8 @@ DECL|macro|AAC_MAX_TARGET
 mdefine_line|#define AAC_MAX_TARGET (MAXIMUM_NUM_CONTAINERS+1)
 DECL|macro|AAC_MAX_LUN
 mdefine_line|#define AAC_MAX_LUN&t;(8)
+DECL|macro|AAC_MAX_HOSTPHYSMEMPAGES
+mdefine_line|#define AAC_MAX_HOSTPHYSMEMPAGES (0xfffff)
 multiline_comment|/*&n; * These macros convert from physical channels to virtual channels&n; */
 DECL|macro|CONTAINER_CHANNEL
 mdefine_line|#define CONTAINER_CHANNEL&t;(0)
