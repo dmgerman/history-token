@@ -32,18 +32,6 @@ macro_line|#endif
 multiline_comment|/*====================================================================*/
 DECL|macro|FIND_FIRST_BIT
 mdefine_line|#define FIND_FIRST_BIT(n)&t;((n) - ((n) &amp; ((n)-1)))
-DECL|macro|pci_readb
-mdefine_line|#define pci_readb&t;&t;pci_read_config_byte
-DECL|macro|pci_writeb
-mdefine_line|#define pci_writeb&t;&t;pci_write_config_byte
-DECL|macro|pci_readw
-mdefine_line|#define pci_readw&t;&t;pci_read_config_word
-DECL|macro|pci_writew
-mdefine_line|#define pci_writew&t;&t;pci_write_config_word
-DECL|macro|pci_readl
-mdefine_line|#define pci_readl&t;&t;pci_read_config_dword
-DECL|macro|pci_writel
-mdefine_line|#define pci_writel&t;&t;pci_write_config_dword
 multiline_comment|/* Offsets in the Expansion ROM Image Header */
 DECL|macro|ROM_SIGNATURE
 mdefine_line|#define ROM_SIGNATURE&t;&t;0x0000&t;/* 2 bytes */
@@ -479,17 +467,13 @@ comma
 id|len
 op_decrement
 )paren
-id|pci_readb
+id|pci_read_config_byte
 c_func
 (paren
 id|dev
 comma
 id|addr
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|ptr
 )paren
 suffix:semicolon
@@ -676,7 +660,7 @@ id|tmp.devfn
 op_assign
 l_int|0
 suffix:semicolon
-id|pci_readw
+id|pci_read_config_word
 c_func
 (paren
 op_amp
@@ -688,7 +672,7 @@ op_amp
 id|vend
 )paren
 suffix:semicolon
-id|pci_readw
+id|pci_read_config_word
 c_func
 (paren
 op_amp
@@ -714,7 +698,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|pci_readb
+id|pci_read_config_byte
 c_func
 (paren
 op_amp
@@ -747,7 +731,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_readw
+id|pci_read_config_word
 c_func
 (paren
 op_amp
@@ -889,7 +873,7 @@ id|dev-&gt;vendor
 op_assign
 id|vend
 suffix:semicolon
-id|pci_readw
+id|pci_read_config_word
 c_func
 (paren
 id|dev
@@ -969,7 +953,7 @@ id|r
 suffix:semicolon
 )brace
 multiline_comment|/* Does this function have an interrupt at all? */
-id|pci_readb
+id|pci_read_config_byte
 c_func
 (paren
 id|dev
@@ -1007,7 +991,7 @@ c_cond
 (paren
 id|irq_pin
 )paren
-id|pci_writeb
+id|pci_write_config_byte
 c_func
 (paren
 id|dev
@@ -1179,7 +1163,7 @@ id|i
 dot
 id|dev
 suffix:semicolon
-id|pci_writeb
+id|pci_write_config_byte
 c_func
 (paren
 id|dev
@@ -1193,7 +1177,7 @@ op_or
 id|PCI_COMMAND_MEMORY
 )paren
 suffix:semicolon
-id|pci_writeb
+id|pci_write_config_byte
 c_func
 (paren
 id|dev
@@ -1237,7 +1221,7 @@ id|i
 dot
 id|dev
 suffix:semicolon
-id|pci_writeb
+id|pci_write_config_byte
 c_func
 (paren
 id|dev
