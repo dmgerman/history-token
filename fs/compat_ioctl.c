@@ -5631,6 +5631,10 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+id|sgio-&gt;dxferp
+op_assign
+id|iov
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
