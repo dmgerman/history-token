@@ -411,7 +411,9 @@ DECL|typedef|special_t
 id|special_t
 suffix:semicolon
 DECL|macro|IDE_MAX_TAG
-mdefine_line|#define IDE_MAX_TAG&t;32&t;&t;/* spec says 32 max */
+mdefine_line|#define IDE_MAX_TAG&t;&t;(32)&t;&t;/* spec says 32 max */
+DECL|macro|IDE_INACTIVE_TAG
+mdefine_line|#define IDE_INACTIVE_TAG&t;(-1)
 r_struct
 id|ata_request
 suffix:semicolon
@@ -466,6 +468,11 @@ DECL|member|immed_comp
 r_int
 id|immed_comp
 suffix:semicolon
+DECL|member|oldest_command
+r_int
+r_int
+id|oldest_command
+suffix:semicolon
 DECL|typedef|ide_tag_info_t
 )brace
 id|ide_tag_info_t
@@ -475,9 +482,9 @@ mdefine_line|#define IDE_GET_AR(drive, tag)&t;((drive)-&gt;tcq-&gt;ar[(tag)])
 DECL|macro|IDE_CUR_TAG
 mdefine_line|#define IDE_CUR_TAG(drive)&t;(IDE_GET_AR((drive), (drive)-&gt;tcq-&gt;active_tag))
 DECL|macro|IDE_SET_CUR_TAG
-mdefine_line|#define IDE_SET_CUR_TAG(drive, tag)&t;((drive)-&gt;tcq-&gt;active_tag = (tag))
+mdefine_line|#define IDE_SET_CUR_TAG(drive, tag)&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;((drive)-&gt;tcq-&gt;active_tag = (tag));&t;&bslash;&n;&t;&t;if ((tag) == IDE_INACTIVE_TAG)&t;&t;&bslash;&n;&t;&t;&t;HWGROUP((drive))-&gt;rq = NULL;&t;&bslash;&n;&t;} while (0);
 DECL|macro|IDE_CUR_AR
-mdefine_line|#define IDE_CUR_AR(drive)&t;&bslash;&n;&t;((drive)-&gt;using_tcq ? IDE_CUR_TAG((drive)) : HWGROUP((drive))-&gt;rq-&gt;special)
+mdefine_line|#define IDE_CUR_AR(drive)&t;(HWGROUP((drive))-&gt;rq-&gt;special)
 r_struct
 id|ide_settings_s
 suffix:semicolon
@@ -710,6 +717,12 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 1=present, 0=default */
+DECL|member|service_pending
+r_int
+id|service_pending
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|addressing
 r_int
 id|addressing
@@ -1520,7 +1533,8 @@ comma
 multiline_comment|/* a drive operation was started, and a handler was set */
 DECL|enumerator|ide_released
 id|ide_released
-multiline_comment|/* started and released bus */
+comma
+multiline_comment|/* started, handler set, bus released */
 DECL|typedef|ide_startstop_t
 )brace
 id|ide_startstop_t
@@ -3274,6 +3288,9 @@ DECL|macro|ATA_AR_SETUP
 mdefine_line|#define ATA_AR_SETUP&t;2
 DECL|macro|ATA_AR_RETURN
 mdefine_line|#define ATA_AR_RETURN&t;4
+multiline_comment|/*&n; * if turn-around time is longer than this, halve queue depth&n; */
+DECL|macro|ATA_AR_MAX_TURNAROUND
+mdefine_line|#define ATA_AR_MAX_TURNAROUND&t;(3 * HZ)
 DECL|macro|list_ata_entry
 mdefine_line|#define list_ata_entry(entry) list_entry((entry), struct ata_request, ar_queue)
 DECL|function|ata_ar_init
@@ -3468,7 +3485,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|ide_get_tag
-r_extern
+r_static
 r_inline
 r_int
 id|ide_get_tag
@@ -3540,14 +3557,74 @@ id|tag
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
-DECL|macro|ide_pending_commands
-macro_line|# define ide_pending_commands(drive)&t;((drive)-&gt;using_tcq &amp;&amp; (drive)-&gt;tcq-&gt;queued)
+DECL|function|ide_pending_commands
+r_static
+r_inline
+r_int
+id|ide_pending_commands
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drive-&gt;tcq
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+id|drive-&gt;tcq-&gt;queued
+suffix:semicolon
+)brace
+DECL|function|ide_can_queue
+r_static
+r_inline
+r_int
+id|ide_can_queue
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drive-&gt;tcq
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+id|drive-&gt;tcq-&gt;queued
+OL
+id|drive-&gt;queue_depth
+suffix:semicolon
+)brace
 macro_line|#else
 DECL|macro|ide_pending_commands
-macro_line|# define ide_pending_commands(drive)&t;0
+mdefine_line|#define ide_pending_commands(drive)&t;(0)
+DECL|macro|ide_can_queue
+mdefine_line|#define ide_can_queue(drive)&t;&t;(1)
 macro_line|#endif
 r_int
 id|ide_build_commandlist
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_int
+id|ide_init_commandlist
 c_func
 (paren
 id|ide_drive_t

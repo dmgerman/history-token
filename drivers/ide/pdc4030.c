@@ -2490,6 +2490,17 @@ id|hd_drive_task_hdr
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* The four drives on the two logical (one physical) interfaces&n;&t;   are distinguished by writing the drive number (0-3) to the&n;&t;   Feature register.&n;&t;   FIXME: Is promise_selectproc now redundant??&n;&t; */
+id|taskfile.feature
+op_assign
+(paren
+id|drive-&gt;channel-&gt;unit
+op_lshift
+l_int|1
+)paren
+op_plus
+id|drive-&gt;select.b.unit
+suffix:semicolon
 id|taskfile.sector_count
 op_assign
 id|rq-&gt;nr_sectors
