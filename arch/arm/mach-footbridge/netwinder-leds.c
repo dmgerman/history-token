@@ -22,12 +22,12 @@ r_static
 r_char
 id|hw_led_state
 suffix:semicolon
-DECL|variable|leds_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|leds_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_extern
 id|spinlock_t

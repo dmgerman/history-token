@@ -2527,12 +2527,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-DECL|variable|bio_dirty_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|bio_dirty_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|bio_dirty_list
 r_static

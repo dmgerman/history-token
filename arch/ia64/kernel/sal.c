@@ -8,12 +8,12 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
-DECL|variable|__cacheline_aligned
-id|spinlock_t
-id|sal_lock
 id|__cacheline_aligned
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|sal_lock
+)paren
 suffix:semicolon
 DECL|variable|sal_platform_features
 r_int

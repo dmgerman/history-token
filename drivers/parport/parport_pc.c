@@ -9404,12 +9404,12 @@ c_func
 id|ports_list
 )paren
 suffix:semicolon
-DECL|variable|ports_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ports_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|parport_pc_probe_port
 r_struct

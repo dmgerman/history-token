@@ -86,12 +86,12 @@ op_star
 id|io_tlb_orig_addr
 suffix:semicolon
 multiline_comment|/*&n; * Protect the above data structures in the map and unmap calls&n; */
-DECL|variable|io_tlb_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|io_tlb_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int

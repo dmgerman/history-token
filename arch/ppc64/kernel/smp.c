@@ -562,13 +562,13 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Structure and data for smp_call_function(). This is designed to minimise&n; * static memory requirements. It also looks cleaner.&n; * Stolen from the i386 version.&n; */
-DECL|variable|__cacheline_aligned_in_smp
 r_static
-id|spinlock_t
-id|call_lock
 id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|call_lock
+)paren
 suffix:semicolon
 DECL|struct|call_data_struct
 r_static
@@ -1737,11 +1737,6 @@ c_func
 (paren
 id|boot_cpuid
 )paren
-suffix:semicolon
-multiline_comment|/* XXX fix this, xics currently relies on it - Anton */
-id|smp_threads_ready
-op_assign
-l_int|1
 suffix:semicolon
 id|set_cpus_allowed
 c_func

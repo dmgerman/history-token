@@ -1209,12 +1209,12 @@ comma
 id|SAFARI_ERR
 )brace
 suffix:semicolon
-DECL|variable|stc_buf_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|stc_buf_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|stc_error_buf
 r_static

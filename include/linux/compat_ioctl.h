@@ -78,6 +78,16 @@ c_func
 (paren
 id|TIOCCBRK
 )paren
+id|ULONG_IOCTL
+c_func
+(paren
+id|TIOCMIWAIT
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCGICOUNT
+)paren
 multiline_comment|/* Little t */
 id|COMPATIBLE_IOCTL
 c_func

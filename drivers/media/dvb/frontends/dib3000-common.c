@@ -374,9 +374,12 @@ comma
 id|num
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|state-&gt;pid_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|memset
 c_func

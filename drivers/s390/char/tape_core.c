@@ -60,12 +60,12 @@ c_func
 id|tape_device_list
 )paren
 suffix:semicolon
-DECL|variable|tape_device_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|tape_device_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Pointer to debug area.&n; */
 DECL|variable|TAPE_DBF_AREA

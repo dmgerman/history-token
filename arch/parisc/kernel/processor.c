@@ -287,9 +287,12 @@ id|txn_addr
 suffix:semicolon
 multiline_comment|/* save CPU IRQ address */
 macro_line|#ifdef CONFIG_SMP
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|p-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** FIXME: review if any other initialization is clobbered&n;&t;**&t;for boot_cpu by the above memset().&n;&t;*/
 multiline_comment|/* stolen from init_percpu_prof() */

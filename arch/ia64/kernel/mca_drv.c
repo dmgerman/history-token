@@ -56,12 +56,12 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|mca_bh_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mca_bh_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_typedef
 r_enum

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/ioctl32.h&gt;
+macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;&t;/* for SIOCDEVPRIVATE */
 macro_line|#include &lt;linux/smb.h&gt;
@@ -29,6 +30,7 @@ macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;net/sock.h&gt;&t;&t;/* siocdevprivate_ioctl */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/ioctls.h&gt;
 multiline_comment|/*&n; * Not all architectures have sys_utime, so implement this in terms&n; * of sys_utimes.&n; */
 DECL|function|compat_sys_utime
 id|asmlinkage
@@ -2181,6 +2183,55 @@ id|filp
 r_goto
 id|out
 suffix:semicolon
+multiline_comment|/*&n;&t; * To allow the compat_ioctl handlers to be self contained&n;&t; * we need to check the common ioctls here first.&n;&t; * Just handle them with the standard handlers below.&n;&t; */
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|FIOCLEX
+suffix:colon
+r_case
+id|FIONCLEX
+suffix:colon
+r_case
+id|FIONBIO
+suffix:colon
+r_case
+id|FIOASYNC
+suffix:colon
+r_case
+id|FIOQSIZE
+suffix:colon
+r_break
+suffix:semicolon
+r_case
+id|FIBMAP
+suffix:colon
+r_case
+id|FIGETBSZ
+suffix:colon
+r_case
+id|FIONREAD
+suffix:colon
+r_if
+c_cond
+(paren
+id|S_ISREG
+c_func
+(paren
+id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_mode
+)paren
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/*FALL THROUGH*/
+r_default
+suffix:colon
+(brace
+)brace
 r_if
 c_cond
 (paren
@@ -2232,6 +2283,10 @@ id|filp-&gt;f_op-&gt;unlocked_ioctl
 r_goto
 id|do_ioctl
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* When register_ioctl32_conversion is finally gone remove&n;&t;   this lock! -AK */
 id|down_read
 c_func
 (paren
@@ -2281,6 +2336,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|S_ISSOCK
+c_func
+(paren
+id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_mode
+)paren
+op_logical_and
 id|cmd
 op_ge
 id|SIOCDEVPRIVATE
@@ -2350,6 +2411,27 @@ c_cond
 id|t-&gt;handler
 )paren
 (brace
+multiline_comment|/* RED-PEN how should LSM module know it&squot;s handling 32bit? */
+id|error
+op_assign
+id|security_file_ioctl
+c_func
+(paren
+id|filp
+comma
+id|cmd
+comma
+id|arg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_goto
+id|out_fput
+suffix:semicolon
 id|lock_kernel
 c_func
 (paren

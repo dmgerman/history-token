@@ -3,7 +3,7 @@ macro_line|#ifndef __MACH_MPC8555CDS_H__
 DECL|macro|__MACH_MPC8555CDS_H__
 mdefine_line|#define __MACH_MPC8555CDS_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;syslib/ppc85xx_setup.h&gt;
 macro_line|#include &lt;platforms/85xx/mpc85xx_cds_common.h&gt;
 DECL|macro|CPM_MAP_ADDR
 mdefine_line|#define CPM_MAP_ADDR&t;(CCSRBAR + MPC85xx_CPM_OFFSET)

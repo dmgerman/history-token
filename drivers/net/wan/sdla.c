@@ -150,12 +150,12 @@ comma
 l_int|0xEE000
 )brace
 suffix:semicolon
-DECL|variable|sdla_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sdla_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*********************************************************&n; *&n; * these are the core routines that access the card itself &n; *&n; *********************************************************/
 DECL|macro|SDLA_WINDOW

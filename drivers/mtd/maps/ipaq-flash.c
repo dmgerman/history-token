@@ -300,12 +300,12 @@ multiline_comment|/* force read-only */
 )brace
 suffix:semicolon
 macro_line|#endif
-DECL|variable|ipaq_vpp_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ipaq_vpp_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|h3xxx_set_vpp
 r_static

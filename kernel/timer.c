@@ -4935,6 +4935,11 @@ r_return
 id|readq
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|time_interpolator-&gt;addr
 )paren
 suffix:semicolon
@@ -4945,6 +4950,11 @@ r_return
 id|readl
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|time_interpolator-&gt;addr
 )paren
 suffix:semicolon

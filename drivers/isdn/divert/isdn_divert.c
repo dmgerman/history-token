@@ -136,10 +136,11 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* maximum wait in s for external process */
 DECL|variable|divert_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/***************************/
 multiline_comment|/* timer callback function */

@@ -60,12 +60,12 @@ id|i2c_dev_array
 id|I2C_MINORS
 )braket
 suffix:semicolon
-DECL|variable|i2c_dev_array_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|i2c_dev_array_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|i2c_dev_get_by_minor
 r_struct

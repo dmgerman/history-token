@@ -44,10 +44,11 @@ id|wall_jiffies
 suffix:semicolon
 multiline_comment|/* this needs a better home */
 DECL|variable|rtc_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SA1100_RTC_MODULE
 DECL|variable|rtc_lock

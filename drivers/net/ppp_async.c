@@ -350,12 +350,12 @@ id|ppp_async_ioctl
 suffix:semicolon
 multiline_comment|/*&n; * Routines implementing the PPP line discipline.&n; */
 multiline_comment|/*&n; * We have a potential race on dereferencing tty-&gt;disc_data,&n; * because the tty layer provides no locking at all - thus one&n; * cpu could be running ppp_asynctty_receive while another&n; * calls ppp_asynctty_close, which zeroes tty-&gt;disc_data and&n; * frees the memory that ppp_asynctty_receive is using.  The best&n; * way to fix this is to use a rwlock in the tty struct, but for now&n; * we use a single global rwlock for all ttys in ppp line discipline.&n; *&n; * FIXME: this is no longer true. The _close path for the ldisc is &n; * now guaranteed to be sane. &n; */
-DECL|variable|disc_data_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|disc_data_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|ap_get
 r_static

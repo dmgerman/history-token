@@ -13,12 +13,12 @@ macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 DECL|macro|HPTE_LOCK_BIT
 mdefine_line|#define HPTE_LOCK_BIT 3
-DECL|variable|native_tlbie_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|native_tlbie_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|native_lock_hpte
 r_static

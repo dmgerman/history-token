@@ -733,12 +733,12 @@ id|velocity_netdev_event
 comma
 )brace
 suffix:semicolon
-DECL|variable|velocity_dev_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|velocity_dev_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

@@ -1041,12 +1041,12 @@ c_func
 id|proc_inum_idr
 )paren
 suffix:semicolon
-DECL|variable|proc_inum_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|proc_inum_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* protects the above */
 DECL|macro|PROC_DYNAMIC_FIRST

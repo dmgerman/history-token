@@ -132,13 +132,13 @@ l_int|4
 )braket
 id|__pmacdata
 suffix:semicolon
-DECL|variable|__pmacdata
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pmac_pic_lock
 id|__pmacdata
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|GATWICK_IRQ_POOL_SIZE
 mdefine_line|#define GATWICK_IRQ_POOL_SIZE        10

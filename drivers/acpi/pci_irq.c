@@ -23,10 +23,11 @@ id|acpi_prt_list
 id|acpi_prt
 suffix:semicolon
 DECL|variable|acpi_prt_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|acpi_prt_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                         PCI IRQ Routing Table (PRT) Support&n;   -------------------------------------------------------------------------- */
 r_static

@@ -28,12 +28,12 @@ r_static
 r_int
 id|saved_state
 suffix:semicolon
-DECL|variable|leds_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|leds_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|sequoia_read
 r_int

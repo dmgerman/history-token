@@ -456,12 +456,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-DECL|variable|gscd_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|gscd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|gscd_queue
 r_static

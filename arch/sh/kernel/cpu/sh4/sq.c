@@ -19,12 +19,12 @@ c_func
 id|sq_mapping_list
 )paren
 suffix:semicolon
-DECL|variable|sq_mapping_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sq_mapping_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/**&n; * sq_flush - Flush (prefetch) the store queue cache&n; * @addr: the store queue address to flush&n; *&n; * Executes a prefetch instruction on the specified store queue cache,&n; * so that the cached data is written to physical memory.&n; */
 DECL|function|sq_flush

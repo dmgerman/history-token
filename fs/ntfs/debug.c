@@ -9,12 +9,12 @@ id|err_buf
 l_int|1024
 )braket
 suffix:semicolon
-DECL|variable|err_buf_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|err_buf_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/**&n; * __ntfs_warning - output a warning to the syslog&n; * @function:&t;name of function outputting the warning&n; * @sb:&t;&t;super block of mounted ntfs filesystem&n; * @fmt:&t;warning string containing format specifications&n; * @...:&t;a variable number of arguments specified in @fmt&n; *&n; * Outputs a warning to the syslog for the mounted ntfs filesystem described&n; * by @sb.&n; *&n; * @fmt and the corresponding @... is printf style format string containing&n; * the warning string and the corresponding format arguments, respectively.&n; *&n; * @function is the name of the function from which __ntfs_warning is being&n; * called.&n; *&n; * Note, you should be using debug.h::ntfs_warning(@sb, @fmt, @...) instead&n; * as this provides the @function parameter automatically.&n; */
 DECL|function|__ntfs_warning

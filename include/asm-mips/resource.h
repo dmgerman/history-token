@@ -31,9 +31,10 @@ DECL|macro|RLIMIT_MSGQUEUE
 mdefine_line|#define RLIMIT_MSGQUEUE 12&t;&t;/* maximum bytes in POSIX mqueues */
 DECL|macro|RLIM_NLIMITS
 mdefine_line|#define RLIM_NLIMITS 13&t;&t;&t;/* Number of limit flavors.  */
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/config.h&gt;
+DECL|macro|__ARCH_RLIMIT_ORDER
+mdefine_line|#define __ARCH_RLIMIT_ORDER
 multiline_comment|/*&n; * SuS says limits have to be unsigned.&n; * Which makes a ton more sense anyway.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|RLIM_INFINITY
 mdefine_line|#define RLIM_INFINITY&t;0x7fffffffUL
@@ -42,8 +43,6 @@ macro_line|#ifdef CONFIG_MIPS64
 DECL|macro|RLIM_INFINITY
 mdefine_line|#define RLIM_INFINITY&t;(~0UL)
 macro_line|#endif
-DECL|macro|INIT_RLIMITS
-mdefine_line|#define INIT_RLIMITS&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ _STK_LIM,      RLIM_INFINITY },&t;&t;&bslash;&n;&t;{        0,      RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ INR_OPEN,      INR_OPEN      },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ MLOCK_LIMIT,     MLOCK_LIMIT },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ RLIM_INFINITY, RLIM_INFINITY },&t;&t;&bslash;&n;&t;{ MAX_SIGPENDING, MAX_SIGPENDING },&t;&t;&bslash;&n;&t;{ MQ_BYTES_MAX, MQ_BYTES_MAX },&t;&t;&t;&bslash;&n;}
-macro_line|#endif /* __KERNEL__ */
+macro_line|#include &lt;asm-generic/resource.h&gt;
 macro_line|#endif /* _ASM_RESOURCE_H */
 eof

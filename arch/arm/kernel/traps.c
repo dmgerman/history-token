@@ -847,10 +847,11 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|die_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|die_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * This function is protected against re-entrancy.&n; */
 DECL|function|die
@@ -1066,12 +1067,12 @@ c_func
 id|undef_hook
 )paren
 suffix:semicolon
-DECL|variable|undef_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|undef_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|register_undef_hook
 r_void

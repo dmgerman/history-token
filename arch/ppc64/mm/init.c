@@ -1887,12 +1887,12 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-DECL|variable|mmu_context_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mmu_context_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|DEFINE_IDR

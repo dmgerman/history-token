@@ -241,10 +241,11 @@ DECL|macro|IRQLIST_14
 macro_line|#undef IRQLIST_14
 multiline_comment|/*&n; * This is the &squot;legacy&squot; 8259A Programmable Interrupt Controller,&n; * present in the majority of PC/AT boxes.&n; * plus some generic x86 specific things if generic specifics makes&n; * any sense at all.&n; * this file should become arch/i386/kernel/irq.c when the old irq.c&n; * moves to arch independent land&n; */
 DECL|variable|i8259A_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|i8259A_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|end_8259A_irq
 r_static

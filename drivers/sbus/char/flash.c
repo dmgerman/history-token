@@ -17,12 +17,12 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#include &lt;asm/upa.h&gt;
-DECL|variable|flash_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|flash_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_struct

@@ -127,12 +127,12 @@ op_star
 r_volatile
 id|smp_call_function_data
 suffix:semicolon
-DECL|variable|smp_call_function_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|smp_call_function_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|__cpu_up
 r_int
@@ -958,12 +958,12 @@ id|data-&gt;unfinished
 )paren
 suffix:semicolon
 )brace
-DECL|variable|stop_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|stop_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * ipi_cpu_stop - handle IPI from smp_send_stop()&n; */
 DECL|function|ipi_cpu_stop

@@ -395,12 +395,12 @@ r_char
 op_star
 id|raw_buf
 suffix:semicolon
-DECL|variable|amiflop_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|amiflop_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|RAW_BUF_SIZE
 mdefine_line|#define RAW_BUF_SIZE 30000  /* size of raw disk data */

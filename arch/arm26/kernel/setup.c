@@ -26,10 +26,11 @@ mdefine_line|#define MEM_SIZE&t;(16*1024*1024)
 macro_line|#endif
 macro_line|#ifdef CONFIG_PREEMPT
 DECL|variable|kernel_flag
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|kernel_flag
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_FPE_NWFPE)

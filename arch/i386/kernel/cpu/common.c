@@ -2279,12 +2279,11 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|variable|__initdata
-r_int
-r_int
+id|cpumask_t
 id|cpu_initialized
 id|__initdata
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 suffix:semicolon
 multiline_comment|/* This is hacky. :)&n; * We&squot;re emulating future behavior.&n; * In the future, the cpu-specific init functions will be called implicitly&n; * via the magic of initcalls.&n; * They will insert themselves into the cpu_devs structure.&n; * Then, when cpu_init() is called, we can just iterate over that array.&n; */
 r_extern
@@ -2483,12 +2482,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_and_set_bit
+id|cpu_test_and_set
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_initialized
 )paren
 )paren

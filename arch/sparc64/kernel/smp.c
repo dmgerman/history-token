@@ -517,12 +517,12 @@ DECL|macro|NUM_ROUNDS
 mdefine_line|#define NUM_ROUNDS&t;64&t;/* magic value */
 DECL|macro|NUM_ITERS
 mdefine_line|#define NUM_ITERS&t;5&t;/* likewise */
-DECL|variable|itc_sync_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|itc_sync_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|go
 r_static
@@ -2298,12 +2298,12 @@ id|wait
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|call_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|call_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|call_data
 r_static
@@ -4636,12 +4636,12 @@ id|cache_decay_ticks
 suffix:semicolon
 )brace
 multiline_comment|/* /proc/profile writes can call this, don&squot;t __init it please. */
-DECL|variable|prof_setup_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|prof_setup_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|setup_profiling_timer
 r_int

@@ -9,10 +9,11 @@ macro_line|#include &quot;oprof.h&quot;
 DECL|macro|OPROFILEFS_MAGIC
 mdefine_line|#define OPROFILEFS_MAGIC 0x6f70726f
 DECL|variable|oprofilefs_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|oprofilefs_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|oprofilefs_get_inode
 r_static

@@ -22,12 +22,12 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* Spinlock protecting the above leds.  */
-DECL|variable|leds_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|leds_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Common body of LED read/write functions, checks POS and LEN for&n;   correctness, declares a variable using IMG_DECL, initialized pointing at&n;   the POS position in the LED image buffer, and and iterates COPY_EXPR&n;   until BUF is equal to the last buffer position; finally, sets LEN to be&n;   the amount actually copied.  IMG should be a variable declaration&n;   (without an initializer or a terminating semicolon); POS, BUF, and LEN&n;   should all be simple variables.  */
 DECL|macro|DO_LED_COPY

@@ -671,9 +671,9 @@ suffix:semicolon
 id|uint
 id|gigabit_support
 op_assign
-id|priv-&gt;einfo-&gt;flags
+id|priv-&gt;einfo-&gt;device_flags
 op_amp
-id|GFAR_HAS_GIGABIT
+id|FSL_GIANFAR_DEV_HAS_GIGABIT
 ques
 c_cond
 id|SUPPORTED_1000baseT_Full
@@ -683,9 +683,9 @@ suffix:semicolon
 id|uint
 id|gigabit_advert
 op_assign
-id|priv-&gt;einfo-&gt;flags
+id|priv-&gt;einfo-&gt;device_flags
 op_amp
-id|GFAR_HAS_GIGABIT
+id|FSL_GIANFAR_DEV_HAS_GIGABIT
 ques
 c_cond
 id|ADVERTISED_1000baseT_Full

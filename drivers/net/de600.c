@@ -165,12 +165,12 @@ r_static
 r_int
 id|was_down
 suffix:semicolon
-DECL|variable|de600_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|de600_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|de600_read_status
 r_static

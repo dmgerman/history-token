@@ -46,12 +46,12 @@ id|topology
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|topology_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|topology_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|numdevs
 r_static

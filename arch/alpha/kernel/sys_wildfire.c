@@ -39,10 +39,11 @@ l_int|8
 )braket
 suffix:semicolon
 DECL|variable|wildfire_irq_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|wildfire_irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|doing_init_irq_hw
 r_static

@@ -1288,7 +1288,7 @@ c_func
 (paren
 id|mutefreq
 comma
-r_int
+id|ulong
 comma
 l_int|0
 )paren

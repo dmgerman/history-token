@@ -3628,12 +3628,12 @@ id|request_queue
 op_star
 id|stram_queue
 suffix:semicolon
-DECL|variable|stram_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|stram_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|stram_device_init
 r_int

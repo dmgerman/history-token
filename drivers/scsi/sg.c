@@ -133,12 +133,12 @@ op_star
 id|dummy_cmdp
 suffix:semicolon
 multiline_comment|/* only used for sizeof */
-DECL|variable|sg_dev_arr_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|sg_dev_arr_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Also used to lock&n;&t;&t;&t;&t;&t;&t;&t;   file descriptor list for device */
 DECL|variable|sg_interface

@@ -51,12 +51,12 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* spinlock for vfsmount related operations, inplace of dcache_lock */
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|vfsmount_lock
 id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
+id|DEFINE_SPINLOCK
+c_func
+(paren
+id|vfsmount_lock
+)paren
 suffix:semicolon
 DECL|variable|mount_hashtable
 r_static

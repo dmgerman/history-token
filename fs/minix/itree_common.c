@@ -21,12 +21,12 @@ DECL|typedef|Indirect
 )brace
 id|Indirect
 suffix:semicolon
-DECL|variable|pointers_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|pointers_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|add_chain
 r_static

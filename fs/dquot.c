@@ -25,18 +25,19 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|__DQUOT_PARANOIA
 mdefine_line|#define __DQUOT_PARANOIA
 multiline_comment|/*&n; * There are two quota SMP locks. dq_list_lock protects all lists with quotas&n; * and quota formats and also dqstats structure containing statistics about the&n; * lists. dq_data_lock protects data from dq_dqb and also mem_dqinfo structures&n; * and also guards consistency of dquot-&gt;dq_dqb with inode-&gt;i_blocks, i_bytes.&n; * i_blocks and i_bytes updates itself are guarded by i_lock acquired directly&n; * in inode_add_bytes() and inode_sub_bytes().&n; *&n; * The spinlock ordering is hence: dq_data_lock &gt; dq_list_lock &gt; i_lock&n; *&n; * Note that some things (eg. sb pointer, type, id) doesn&squot;t change during&n; * the life of the dquot structure and so needn&squot;t to be protected by a lock&n; *&n; * Any operation working on dquots via inode pointers must hold dqptr_sem.  If&n; * operation is just reading pointers from inode (or not using them at all) the&n; * read lock is enough. If pointers are altered function must hold write lock&n; * (these locking rules also apply for S_NOQUOTA flag in the inode - note that&n; * for altering the flag i_sem is also needed).  If operation is holding&n; * reference to dquot in other way (e.g. quotactl ops) it must be guarded by&n; * dqonoff_sem.&n; * This locking assures that:&n; *   a) update/access to dquot pointers in inode is serialized&n; *   b) everyone is guarded against invalidate_dquots()&n; *&n; * Each dquot has its dq_lock semaphore. Locked dquots might not be referenced&n; * from inodes (dquot_alloc_space() and such don&squot;t check the dq_lock).&n; * Currently dquot is locked only when it is being read to memory (or space for&n; * it is being allocated) on the first dqget() and when it is being released on&n; * the last dqput(). The allocation and release oparations are serialized by&n; * the dq_lock and by checking the use count in dquot_release().  Write&n; * operations on dquots don&squot;t hold dq_lock as they copy data under dq_data_lock&n; * spinlock to internal buffers before writing.&n; *&n; * Lock ordering (including related VFS locks) is the following:&n; *   i_sem &gt; dqonoff_sem &gt; iprune_sem &gt; journal_lock &gt; dqptr_sem &gt;&n; *   &gt; dquot-&gt;dq_lock &gt; dqio_sem&n; * i_sem on quota files is special (it&squot;s below dqio_sem)&n; */
-DECL|variable|dq_list_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dq_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dq_data_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dq_data_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|quotatypes
 r_static

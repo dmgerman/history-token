@@ -158,12 +158,12 @@ id|sjcd_error_reported
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|sjcd_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sjcd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|sjcd_open_count
 r_static

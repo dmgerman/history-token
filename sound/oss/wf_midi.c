@@ -108,12 +108,12 @@ id|start_uart_mode
 r_void
 )paren
 suffix:semicolon
-DECL|variable|lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|macro|OUTPUT_READY
 mdefine_line|#define&t;OUTPUT_READY&t;0x40

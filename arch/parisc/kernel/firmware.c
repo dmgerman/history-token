@@ -12,12 +12,12 @@ macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/pdcpat.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;/* for boot_cpu_data */
-DECL|variable|pdc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pdc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|pdc_result
 r_static

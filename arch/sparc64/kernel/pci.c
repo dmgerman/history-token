@@ -128,12 +128,12 @@ r_volatile
 r_int
 id|pci_poke_faulted
 suffix:semicolon
-DECL|variable|pci_poke_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pci_poke_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|pci_config_read8
 r_void

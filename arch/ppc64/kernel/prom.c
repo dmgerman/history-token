@@ -169,12 +169,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* use when traversing tree through the allnext, child, sibling,&n; * or parent members of struct device_node.&n; */
-DECL|variable|devtree_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|devtree_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* export that to outside world */
 DECL|variable|of_chosen
@@ -5408,6 +5408,8 @@ suffix:semicolon
 multiline_comment|/* # pages / 2 */
 id|pteg_count
 op_assign
+id|max
+c_func
 (paren
 id|rnd_mem_size
 op_rshift
@@ -5416,6 +5418,10 @@ l_int|12
 op_plus
 l_int|1
 )paren
+comma
+l_int|1UL
+op_lshift
+l_int|11
 )paren
 suffix:semicolon
 id|ppc64_pft_size

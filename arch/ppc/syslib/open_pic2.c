@@ -1379,12 +1379,12 @@ id|vec
 )paren
 suffix:semicolon
 )brace
-DECL|variable|openpic2_setup_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|openpic2_setup_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *  Initialize a timer interrupt (and disable it)&n; *&n; *  timer: OpenPIC timer number&n; *  pri: interrupt source priority&n; *  vec: the vector it will produce&n; */
 DECL|function|openpic2_inittimer

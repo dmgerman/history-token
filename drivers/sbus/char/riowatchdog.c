@@ -41,12 +41,12 @@ DECL|macro|RIOWD_NAME
 mdefine_line|#define RIOWD_NAME&t;&quot;pmc&quot;
 DECL|macro|RIOWD_MINOR
 mdefine_line|#define RIOWD_MINOR&t;215
-DECL|variable|riowd_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|riowd_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|bbc_regs
 r_static

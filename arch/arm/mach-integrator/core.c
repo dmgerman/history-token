@@ -403,12 +403,12 @@ id|integrator_init
 suffix:semicolon
 DECL|macro|CM_CTRL
 mdefine_line|#define CM_CTRL&t;IO_ADDRESS(INTEGRATOR_HDR_BASE) + INTEGRATOR_HDR_CTRL_OFFSET
-DECL|variable|cm_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|cm_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/**&n; * cm_control - update the CM_CTRL register.&n; * @mask: bits to change&n; * @set: bits to set&n; */
 DECL|function|cm_control

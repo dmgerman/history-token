@@ -56,19 +56,19 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* our stuff */
 macro_line|#include &quot;ltpc.h&quot;
-DECL|variable|txqueue_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|txqueue_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
-DECL|variable|mbox_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mbox_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* function prototypes */
 r_static
