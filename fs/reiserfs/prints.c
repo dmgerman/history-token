@@ -2270,7 +2270,7 @@ suffix:semicolon
 )brace
 id|printk
 (paren
-l_string|&quot;%s&bslash;&squot;s super block in block %ld&bslash;n======================&bslash;n&quot;
+l_string|&quot;%s&bslash;&squot;s super block is in block %ld&bslash;n&quot;
 comma
 id|bdevname
 (paren
