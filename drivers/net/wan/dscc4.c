@@ -3519,11 +3519,11 @@ comma
 id|RLCR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * No address recognition/crc-CCITT/cts enabled&n;&t; * Shared flags transmission disabled - cf errata DS5 p.11&n;&t; * Carrier detect disabled - cf errata p.14&n;&t; */
+multiline_comment|/*&n;&t; * No address recognition/crc-CCITT/cts enabled&n;&t; * Shared flags transmission disabled - cf errata DS5 p.11&n;&t; * Carrier detect disabled - cf errata p.14&n;&t; * FIXME: carrier detection/polarity may be handled more gracefully.&n;&t; */
 id|scc_writel
 c_func
 (paren
-l_int|0x021c8000
+l_int|0x02408000
 comma
 id|dpriv
 comma
