@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Permedia2 framebuffer driver.&n; *&n; * 2.5/2.6 driver:&n; * Copyright (c) 2003 Jim Hague (jim.hague@acm.org)&n; *&n; * based on 2.4 driver:&n; * Copyright (c) 1998-2000 Ilario Nardinocchi (nardinoc@CS.UniBO.IT)&n; * Copyright (c) 1999 Jakub Jelinek (jakub@redhat.com)&n; *&n; * and additional input from James Simmon&squot;s port of Hannu Mallat&squot;s tdfx&n; * driver.&n; *&n; * $Id$&n; *&n; * I have a Creative Graphics Blaster Exxtreme card - pm2fb on x86.&n; * I have no access to other pm2fb implementations, and cannot test&n; * on them. Therefore for now I am omitting Sparc and CVision code.&n; *&n; * Multiple boards support has been on the TODO list for ages.&n; * Don&squot;t expect this to change.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License. See the file COPYING in the main directory of this archive for&n; * more details.&n; *&n; * &n; */
+multiline_comment|/*&n; * Permedia2 framebuffer driver.&n; *&n; * 2.5/2.6 driver:&n; * Copyright (c) 2003 Jim Hague (jim.hague@acm.org)&n; *&n; * based on 2.4 driver:&n; * Copyright (c) 1998-2000 Ilario Nardinocchi (nardinoc@CS.UniBO.IT)&n; * Copyright (c) 1999 Jakub Jelinek (jakub@redhat.com)&n; *&n; * and additional input from James Simmon&squot;s port of Hannu Mallat&squot;s tdfx&n; * driver.&n; *&n; * I have a Creative Graphics Blaster Exxtreme card - pm2fb on x86.  I&n; * have no access to other pm2fb implementations. Sparc (and thus&n; * hopefully other big-endian) devices now work, thanks to a lot of&n; * testing work by Ron Murray. I have no access to CVision hardware,&n; * and therefore for now I am omitting the CVision code.&n; *&n; * Multiple boards support has been on the TODO list for ages.&n; * Don&squot;t expect this to change.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License. See the file COPYING in the main directory of this archive for&n; * more details.&n; *&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -16,10 +16,6 @@ macro_line|#include &lt;video/permedia2.h&gt;
 macro_line|#include &lt;video/cvisionppc.h&gt;
 macro_line|#if !defined(__LITTLE_ENDIAN) &amp;&amp; !defined(__BIG_ENDIAN)
 macro_line|#error&t;&quot;The endianness of the target host has not been defined.&quot;
-macro_line|#endif
-macro_line|#if defined(__BIG_ENDIAN) &amp;&amp; !defined(__sparc__)
-DECL|macro|PM2FB_BE_APERTURE
-mdefine_line|#define PM2FB_BE_APERTURE
 macro_line|#endif
 macro_line|#if !defined(CONFIG_PCI)
 macro_line|#error &quot;Only generic PCI cards supported.&quot;
@@ -2417,6 +2413,7 @@ id|u32
 id|depth
 )paren
 (brace
+multiline_comment|/*&n;&t; * The hardware is little-endian. When used in big-endian&n;&t; * hosts, the on-chip aperture settings are used where&n;&t; * possible to translate from host to card byte order.&n;&t; */
 id|WAIT_FIFO
 c_func
 (paren
@@ -2433,17 +2430,7 @@ id|p
 comma
 id|PM2R_APERTURE_ONE
 comma
-l_int|0
-)paren
-suffix:semicolon
-id|pm2_WR
-c_func
-(paren
-id|p
-comma
-id|PM2R_APERTURE_TWO
-comma
-l_int|0
+id|PM2F_APERTURE_STANDARD
 )paren
 suffix:semicolon
 macro_line|#else
@@ -2454,11 +2441,14 @@ id|depth
 )paren
 (brace
 r_case
-l_int|8
-suffix:colon
-r_case
 l_int|24
 suffix:colon
+multiline_comment|/* RGB-&gt;BGR */
+multiline_comment|/*&n;&t;&t; * We can&squot;t use the aperture to translate host to&n;&t;&t; * card byte order here, so we switch to BGR mode&n;&t;&t; * in pm2fb_set_par().&n;&t;&t; */
+r_case
+l_int|8
+suffix:colon
+multiline_comment|/* B-&gt;B */
 id|pm2_WR
 c_func
 (paren
@@ -2466,17 +2456,7 @@ id|p
 comma
 id|PM2R_APERTURE_ONE
 comma
-l_int|0
-)paren
-suffix:semicolon
-id|pm2_WR
-c_func
-(paren
-id|p
-comma
-id|PM2R_APERTURE_TWO
-comma
-l_int|1
+id|PM2F_APERTURE_STANDARD
 )paren
 suffix:semicolon
 r_break
@@ -2484,6 +2464,7 @@ suffix:semicolon
 r_case
 l_int|16
 suffix:colon
+multiline_comment|/* HL-&gt;LH */
 id|pm2_WR
 c_func
 (paren
@@ -2491,17 +2472,7 @@ id|p
 comma
 id|PM2R_APERTURE_ONE
 comma
-l_int|2
-)paren
-suffix:semicolon
-id|pm2_WR
-c_func
-(paren
-id|p
-comma
-id|PM2R_APERTURE_TWO
-comma
-l_int|1
+id|PM2F_APERTURE_HALFWORDSWAP
 )paren
 suffix:semicolon
 r_break
@@ -2509,6 +2480,7 @@ suffix:semicolon
 r_case
 l_int|32
 suffix:colon
+multiline_comment|/* RGBA-&gt;ABGR */
 id|pm2_WR
 c_func
 (paren
@@ -2516,9 +2488,14 @@ id|p
 comma
 id|PM2R_APERTURE_ONE
 comma
-l_int|1
+id|PM2F_APERTURE_BYTESWAP
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+macro_line|#endif
+singleline_comment|// We don&squot;t use aperture two, so this may be superflous
 id|pm2_WR
 c_func
 (paren
@@ -2526,13 +2503,9 @@ id|p
 comma
 id|PM2R_APERTURE_TWO
 comma
-l_int|1
+id|PM2F_APERTURE_STANDARD
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 DECL|function|set_color
 r_static
@@ -3505,30 +3478,18 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|24
+l_int|32
 suffix:colon
-id|var-&gt;red.offset
+id|var-&gt;transp.offset
 op_assign
-l_int|16
+l_int|24
 suffix:semicolon
-id|var-&gt;green.offset
-op_assign
-l_int|8
-suffix:semicolon
-id|var-&gt;blue.offset
-op_assign
-l_int|0
-suffix:semicolon
-id|var-&gt;red.length
-op_assign
-id|var-&gt;green.length
-op_assign
-id|var-&gt;blue.length
+id|var-&gt;transp.length
 op_assign
 l_int|8
 suffix:semicolon
 r_case
-l_int|32
+l_int|24
 suffix:colon
 id|var-&gt;red.offset
 op_assign
@@ -3649,6 +3610,8 @@ id|u32
 id|clrmode
 op_assign
 id|PM2F_RD_COLOR_MODE_RGB
+op_or
+id|PM2F_RD_GUI_ACTIVE
 suffix:semicolon
 id|u32
 id|txtmap
@@ -4182,7 +4145,7 @@ id|clrmode
 op_or_assign
 id|PM2F_RD_TRUECOLOR
 op_or
-l_int|0x06
+id|PM2F_RD_PIXELFORMAT_RGB565
 suffix:semicolon
 id|txtmap
 op_assign
@@ -4215,7 +4178,7 @@ id|clrmode
 op_or_assign
 id|PM2F_RD_TRUECOLOR
 op_or
-l_int|0x08
+id|PM2F_RD_PIXELFORMAT_RGBA8888
 suffix:semicolon
 id|txtmap
 op_assign
@@ -4248,9 +4211,10 @@ id|clrmode
 op_or_assign
 id|PM2F_RD_TRUECOLOR
 op_or
-l_int|0x09
+id|PM2F_RD_PIXELFORMAT_RGB888
 suffix:semicolon
-macro_line|#ifndef PM2FB_BE_APERTURE
+macro_line|#ifdef __BIG_ENDIAN
+multiline_comment|/* Use BGR not RGB */
 id|clrmode
 op_and_assign
 op_complement
@@ -4519,10 +4483,6 @@ id|par
 comma
 id|PM2I_RD_COLOR_MODE
 comma
-id|PM2F_RD_COLOR_MODE_RGB
-op_or
-id|PM2F_RD_GUI_ACTIVE
-op_or
 id|clrmode
 )paren
 suffix:semicolon
@@ -5371,12 +5331,27 @@ id|pm2fb_fix.mmio_len
 op_assign
 id|PM2_REGS_SIZE
 suffix:semicolon
-macro_line|#ifdef PM2FB_BE_APERTURE
+macro_line|#if defined(__BIG_ENDIAN)
+multiline_comment|/*&n;&t; * PM2 has a 64k register file, mapped twice in 128k. Lower&n;&t; * map is little-endian, upper map is big-endian.&n;&t; */
 id|pm2fb_fix.mmio_start
 op_add_assign
 id|PM2_REGS_SIZE
 suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;Adjusting register base for big-endian.&bslash;n&quot;
+)paren
+suffix:semicolon
 macro_line|#endif
+id|DPRINTK
+c_func
+(paren
+l_string|&quot;Register base at 0x%lx&bslash;n&quot;
+comma
+id|pm2fb_fix.mmio_start
+)paren
+suffix:semicolon
 multiline_comment|/* Registers - request region and map it. */
 r_if
 c_cond
