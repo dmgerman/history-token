@@ -965,7 +965,16 @@ id|info-&gt;fix.visual
 op_eq
 id|FB_VISUAL_DIRECTCOLOR
 )paren
-(brace
+id|display-&gt;dispsw_data
+op_assign
+l_int|NULL
+suffix:semicolon
+r_else
+id|display-&gt;dispsw_data
+op_assign
+id|info-&gt;pseudo_palette
+suffix:semicolon
+multiline_comment|/*&n;         * If we are setting all the virtual consoles, also set&n;         * the defaults used to create new consoles.&n;         *&n;        if (con &lt; 0 || info-&gt;var.activate &amp; FB_ACTIVATE_ALL) {&n;                int unit;&n;&n;                for (unit = 0; unit &lt; MAX_NR_CONSOLES; unit++)&n;        &t;&t;if (fb_display[unit].conp &amp;&amp; con2fb_map[unit] == GET_FB_IDX(info-&gt;node))&n;                                fb_display[unit].var = info-&gt;var;&n;        }&n;        */
 id|display-&gt;can_soft_blank
 op_assign
 id|info-&gt;fbops-&gt;fb_blank
@@ -975,23 +984,6 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|display-&gt;dispsw_data
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_else
-(brace
-id|display-&gt;can_soft_blank
-op_assign
-l_int|0
-suffix:semicolon
-id|display-&gt;dispsw_data
-op_assign
-id|info-&gt;pseudo_palette
-suffix:semicolon
-)brace
-multiline_comment|/*&n;         * If we are setting all the virtual consoles, also set&n;         * the defaults used to create new consoles.&n;         *&n;        if (con &lt; 0 || info-&gt;var.activate &amp; FB_ACTIVATE_ALL) {&n;                int unit;&n;&n;                for (unit = 0; unit &lt; MAX_NR_CONSOLES; unit++)&n;        &t;&t;if (fb_display[unit].conp &amp;&amp; con2fb_map[unit] == GET_FB_IDX(info-&gt;node))&n;                                fb_display[unit].var = info-&gt;var;&n;        }&n;        */
 macro_line|#ifdef FBCON_HAS_ACCEL
 id|display-&gt;scrollmode
 op_assign
