@@ -6842,10 +6842,6 @@ id|srp-&gt;my_cmdp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|srp-&gt;done
-op_assign
-l_int|1
-suffix:semicolon
 id|SCSI_LOG_TIMEOUT
 c_func
 (paren
@@ -7149,13 +7145,6 @@ id|srp
 )paren
 (brace
 multiline_comment|/* Now wake up any sg_read() that is waiting for this packet. */
-id|wake_up_interruptible
-c_func
-(paren
-op_amp
-id|sfp-&gt;read_wait
-)paren
-suffix:semicolon
 id|kill_fasync
 c_func
 (paren
@@ -7165,6 +7154,17 @@ comma
 id|SIGPOLL
 comma
 id|POLL_IN
+)paren
+suffix:semicolon
+id|srp-&gt;done
+op_assign
+l_int|1
+suffix:semicolon
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|sfp-&gt;read_wait
 )paren
 suffix:semicolon
 )brace

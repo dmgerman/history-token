@@ -8,8 +8,6 @@ macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/*&n; * IOMAP_MAX_ORDER defines the largest contiguous block&n; * of dma (tce) space we can get.  IOMAP_MAX_ORDER = 10 &n; * allows up to 2**9 pages (512 * 4096) = 2 MB&n; */
 DECL|macro|IOMAP_MAX_ORDER
 mdefine_line|#define IOMAP_MAX_ORDER 10
-DECL|macro|NO_TCE
-mdefine_line|#define NO_TCE ((dma_addr_t)-1)
 multiline_comment|/*&n; * Tces come in two formats, one for the virtual bus and a different&n; * format for PCI&n; */
 DECL|macro|TCE_VB
 mdefine_line|#define TCE_VB  0
@@ -478,6 +476,10 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|ppc64_iommu_off
 suffix:semicolon
 macro_line|#endif
 eof

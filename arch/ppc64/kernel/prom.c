@@ -2370,39 +2370,26 @@ r_return
 id|mem
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PMAC_DART
-DECL|variable|dart_force_on
+DECL|variable|iommu_force_on
 r_static
 r_int
-id|dart_force_on
+id|iommu_force_on
 suffix:semicolon
-macro_line|#endif
+DECL|variable|ppc64_iommu_off
+r_int
+id|ppc64_iommu_off
+suffix:semicolon
+DECL|function|early_cmdline_parse
 r_static
-r_int
-r_int
-id|__init
-DECL|function|prom_initialize_lmb
-id|prom_initialize_lmb
+r_void
+id|early_cmdline_parse
 c_func
 (paren
-r_int
-r_int
-id|mem
+r_void
 )paren
 (brace
-id|phandle
-id|node
-suffix:semicolon
-r_char
-id|type
-(braket
-l_int|64
-)braket
-suffix:semicolon
 r_int
 r_int
-id|i
-comma
 id|offset
 op_assign
 id|reloc_offset
@@ -2410,18 +2397,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_struct
-id|prom_t
+r_char
 op_star
-id|_prom
-op_assign
-id|PTRRELOC
-c_func
-(paren
-op_amp
-id|prom
-)paren
+id|opt
 suffix:semicolon
+macro_line|#ifndef CONFIG_PMAC_DART
 r_struct
 id|systemcfg
 op_star
@@ -2433,40 +2413,7 @@ c_func
 id|systemcfg
 )paren
 suffix:semicolon
-r_union
-id|lmb_reg_property
-id|reg
-suffix:semicolon
-r_int
-r_int
-id|lmb_base
-comma
-id|lmb_size
-suffix:semicolon
-r_int
-r_int
-id|num_regs
-comma
-id|bytes_per_reg
-op_assign
-(paren
-id|_prom-&gt;encode_phys_size
-op_star
-l_int|2
-)paren
-op_div
-l_int|8
-suffix:semicolon
-r_int
-id|nodart
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef CONFIG_PMAC_DART
-r_char
-op_star
-id|opt
-suffix:semicolon
+macro_line|#endif
 id|opt
 op_assign
 id|strstr
@@ -2553,7 +2500,11 @@ comma
 l_int|3
 )paren
 )paren
-id|nodart
+id|RELOC
+c_func
+(paren
+id|ppc64_iommu_off
+)paren
 op_assign
 l_int|1
 suffix:semicolon
@@ -2579,23 +2530,29 @@ l_int|5
 id|RELOC
 c_func
 (paren
-id|dart_force_on
+id|iommu_force_on
 )paren
 op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#else
-id|nodart
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif /* CONFIG_PMAC_DART */
+macro_line|#ifndef CONFIG_PMAC_DART
 r_if
 c_cond
 (paren
-id|nodart
+id|_systemcfg-&gt;platform
+op_eq
+id|PLATFORM_POWERMAC
 )paren
+(brace
+id|RELOC
+c_func
+(paren
+id|ppc64_iommu_off
+)paren
+op_assign
+l_int|1
+suffix:semicolon
 id|prom_print
 c_func
 (paren
@@ -2605,6 +2562,89 @@ c_func
 l_string|&quot;DART disabled on PowerMac !&bslash;n&quot;
 )paren
 )paren
+suffix:semicolon
+)brace
+macro_line|#endif
+)brace
+r_static
+r_int
+r_int
+id|__init
+DECL|function|prom_initialize_lmb
+id|prom_initialize_lmb
+c_func
+(paren
+r_int
+r_int
+id|mem
+)paren
+(brace
+id|phandle
+id|node
+suffix:semicolon
+r_char
+id|type
+(braket
+l_int|64
+)braket
+suffix:semicolon
+r_int
+r_int
+id|i
+comma
+id|offset
+op_assign
+id|reloc_offset
+c_func
+(paren
+)paren
+suffix:semicolon
+r_struct
+id|prom_t
+op_star
+id|_prom
+op_assign
+id|PTRRELOC
+c_func
+(paren
+op_amp
+id|prom
+)paren
+suffix:semicolon
+r_struct
+id|systemcfg
+op_star
+id|_systemcfg
+op_assign
+id|RELOC
+c_func
+(paren
+id|systemcfg
+)paren
+suffix:semicolon
+r_union
+id|lmb_reg_property
+id|reg
+suffix:semicolon
+r_int
+r_int
+id|lmb_base
+comma
+id|lmb_size
+suffix:semicolon
+r_int
+r_int
+id|num_regs
+comma
+id|bytes_per_reg
+op_assign
+(paren
+id|_prom-&gt;encode_phys_size
+op_star
+l_int|2
+)paren
+op_div
+l_int|8
 suffix:semicolon
 id|lmb_init
 c_func
@@ -2788,30 +2828,6 @@ id|i
 dot
 id|size
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|nodart
-op_logical_and
-id|lmb_base
-OG
-l_int|0x80000000ull
-)paren
-(brace
-id|prom_print
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-l_string|&quot;Skipping memory above 2Gb for &quot;
-l_string|&quot;now, DART support disabled&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 )brace
 r_else
 r_if
@@ -2860,6 +2876,44 @@ id|i
 )braket
 dot
 id|size
+suffix:semicolon
+)brace
+multiline_comment|/* We limit memory to 2GB if the IOMMU is off */
+r_if
+c_cond
+(paren
+id|RELOC
+c_func
+(paren
+id|ppc64_iommu_off
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|lmb_base
+op_ge
+l_int|0x80000000UL
+)paren
+r_continue
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|lmb_base
+op_plus
+id|lmb_size
+)paren
+OG
+l_int|0x80000000UL
+)paren
+id|lmb_size
+op_assign
+l_int|0x80000000UL
+op_minus
+id|lmb_base
 suffix:semicolon
 )brace
 r_if
@@ -3840,7 +3894,7 @@ op_logical_neg
 id|RELOC
 c_func
 (paren
-id|dart_force_on
+id|iommu_force_on
 )paren
 )paren
 r_return
@@ -3996,6 +4050,17 @@ id|tce_entry
 comma
 op_star
 id|tce_entryp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|RELOC
+c_func
+(paren
+id|ppc64_iommu_off
+)paren
+)paren
+r_return
 suffix:semicolon
 macro_line|#ifdef DEBUG_PROM
 id|prom_print
@@ -4712,7 +4777,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;opened &quot;
+l_string|&quot;opening PHB &quot;
 )paren
 )paren
 suffix:semicolon
@@ -4720,11 +4785,6 @@ id|prom_print
 c_func
 (paren
 id|path
-)paren
-suffix:semicolon
-id|prom_print_nl
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -4766,7 +4826,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;open failed&bslash;n&quot;
+l_string|&quot;... failed&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -4779,7 +4839,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;open success&bslash;n&quot;
+l_string|&quot;... done&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5837,7 +5897,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;...&quot;
+l_string|&quot;... &quot;
 )paren
 )paren
 suffix:semicolon
@@ -5907,7 +5967,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;ok&bslash;n&quot;
+l_string|&quot;... done&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5973,7 +6033,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;failed: &quot;
+l_string|&quot;... failed: &quot;
 )paren
 )paren
 suffix:semicolon
@@ -5989,7 +6049,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* prom_panic(RELOC(&quot;cpu failed to start&quot;)); */
 )brace
 )brace
 macro_line|#ifdef CONFIG_SMP
@@ -8777,6 +8836,11 @@ id|cmd_line
 )paren
 suffix:semicolon
 )brace
+id|early_cmdline_parse
+c_func
+(paren
+)paren
+suffix:semicolon
 id|mem
 op_assign
 id|prom_initialize_lmb
@@ -9270,7 +9334,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;OF stdout is   : &quot;
+l_string|&quot;OF stdout is    : &quot;
 )paren
 )paren
 suffix:semicolon
@@ -9753,7 +9817,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;... ok&bslash;n&quot;
+l_string|&quot;... done&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

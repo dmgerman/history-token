@@ -1506,13 +1506,6 @@ c_func
 (paren
 id|TIOCSLTC
 )paren
-macro_line|#if 0
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|FBIOBLANK
-)paren
-macro_line|#endif
 multiline_comment|/* Little p (/dev/rtc, /dev/envctrl, etc.) */
 id|COMPATIBLE_IOCTL
 c_func

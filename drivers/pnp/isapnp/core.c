@@ -185,6 +185,11 @@ r_static
 r_int
 id|isapnp_detected
 suffix:semicolon
+DECL|variable|isapnp_csn_count
+r_static
+r_int
+id|isapnp_csn_count
+suffix:semicolon
 multiline_comment|/* some prototypes */
 DECL|function|write_data
 r_static
@@ -1479,6 +1484,15 @@ suffix:semicolon
 )brace
 id|__next
 suffix:colon
+r_if
+c_cond
+(paren
+id|csn
+op_eq
+l_int|255
+)paren
+r_break
+suffix:semicolon
 id|checksum
 op_assign
 l_int|0x6a
@@ -1496,6 +1510,10 @@ id|isapnp_wait
 c_func
 (paren
 )paren
+suffix:semicolon
+id|isapnp_csn_count
+op_assign
+id|csn
 suffix:semicolon
 r_return
 id|csn
@@ -4216,7 +4234,7 @@ l_int|1
 suffix:semicolon
 id|csn
 op_le
-l_int|10
+id|isapnp_csn_count
 suffix:semicolon
 id|csn
 op_increment
@@ -4307,36 +4325,6 @@ id|checksum
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Don&squot;t be strict on the checksum, here !&n;                   e.g. &squot;SCM SwapBox Plug and Play&squot; has header[8]==0 (should be: b7)*/
-r_if
-c_cond
-(paren
-id|header
-(braket
-l_int|8
-)braket
-op_eq
-l_int|0
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|checksum
-op_eq
-l_int|0x00
-op_logical_or
-id|checksum
-op_ne
-id|header
-(braket
-l_int|8
-)braket
-)paren
-multiline_comment|/* not valid CSN */
-r_continue
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4543,7 +4531,7 @@ c_cond
 (paren
 id|csn
 template_param
-l_int|10
+id|isapnp_csn_count
 op_logical_or
 id|logdev
 OG
@@ -4552,8 +4540,6 @@ l_int|10
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|down
 c_func
@@ -4679,8 +4665,6 @@ c_func
 op_amp
 id|isapnp_cfg_mutex
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -5339,7 +5323,7 @@ op_plus
 (paren
 id|tmp
 op_lshift
-l_int|2
+l_int|3
 )paren
 comma
 (paren

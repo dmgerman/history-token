@@ -62,6 +62,17 @@ id|HCI_DEV_PROTOCOL
 )paren
 )brace
 comma
+multiline_comment|/* AVM BlueFRITZ! USB v2.0 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x057c
+comma
+l_int|0x3800
+)paren
+)brace
+comma
 multiline_comment|/* Ericsson with non-standard id */
 (brace
 id|USB_DEVICE

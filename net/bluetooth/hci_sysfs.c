@@ -295,7 +295,7 @@ id|info-&gt;pscan_mode
 comma
 id|info-&gt;dev_class
 (braket
-l_int|0
+l_int|2
 )braket
 comma
 id|info-&gt;dev_class
@@ -305,7 +305,7 @@ l_int|1
 comma
 id|info-&gt;dev_class
 (braket
-l_int|2
+l_int|0
 )braket
 comma
 id|info-&gt;clock_offset

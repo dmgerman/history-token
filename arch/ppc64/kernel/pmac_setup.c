@@ -150,11 +150,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|ppc_tb_freq
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -367,17 +362,6 @@ c_func
 id|m
 comma
 l_string|&quot;pmac-generation&bslash;t: NewWorld&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Indicate timebase value */
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;timebase&bslash;t: %lu&bslash;n&quot;
-comma
-id|ppc_tb_freq
 )paren
 suffix:semicolon
 )brace

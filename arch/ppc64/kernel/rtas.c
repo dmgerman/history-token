@@ -447,6 +447,8 @@ id|rtas_args
 r_struct
 id|rtas_args
 id|err_args
+comma
+id|temp_args
 suffix:semicolon
 id|err_args.token
 op_assign
@@ -505,6 +507,11 @@ l_int|2
 )braket
 op_assign
 l_int|0
+suffix:semicolon
+id|temp_args
+op_assign
+op_star
+id|rtas_args
 suffix:semicolon
 id|get_paca
 c_func
@@ -586,8 +593,7 @@ c_func
 op_member_access_from_pointer
 id|xRtas
 op_assign
-op_star
-id|rtas_args
+id|temp_args
 suffix:semicolon
 r_if
 c_cond

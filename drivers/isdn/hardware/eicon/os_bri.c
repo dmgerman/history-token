@@ -1,8 +1,7 @@
-multiline_comment|/* $Id: os_bri.c,v 1.18 2003/06/21 17:10:29 schindler Exp $ */
+multiline_comment|/* $Id: os_bri.c,v 1.21 2004/03/21 17:26:01 armin Exp $ */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;debuglib.h&quot;
 macro_line|#include &quot;cardtype.h&quot;
-macro_line|#include &quot;dlist.h&quot;
 macro_line|#include &quot;pc.h&quot;
 macro_line|#include &quot;pr_pc.h&quot;
 macro_line|#include &quot;di_defs.h&quot;

@@ -1354,7 +1354,7 @@ id|kobj
 )paren
 r_return
 op_minus
-id|ENODEV
+id|ENXIO
 suffix:semicolon
 r_new
 op_assign
@@ -1426,7 +1426,7 @@ id|p
 id|ret
 op_assign
 op_minus
-id|ENODEV
+id|ENXIO
 suffix:semicolon
 )brace
 r_else
@@ -1443,7 +1443,7 @@ id|p
 id|ret
 op_assign
 op_minus
-id|ENODEV
+id|ENXIO
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -1489,7 +1489,7 @@ id|p
 suffix:semicolon
 r_return
 op_minus
-id|ENODEV
+id|ENXIO
 suffix:semicolon
 )brace
 r_if

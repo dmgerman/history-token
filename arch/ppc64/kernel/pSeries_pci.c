@@ -3236,6 +3236,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ppc64_iommu_off
+)paren
 id|iommu_setup_pSeries
 c_func
 (paren

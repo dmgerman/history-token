@@ -3724,15 +3724,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|VIOTAPE_KERN_INFO
-l_string|&quot;driver version &quot;
-id|VIOTAPE_VERSION
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
 id|op_struct_list
 op_assign
 l_int|NULL
@@ -3811,15 +3802,6 @@ id|clear_op
 suffix:semicolon
 )brace
 )brace
-id|printk
-c_func
-(paren
-id|VIOTAPE_KERN_INFO
-l_string|&quot;init - open path to hosting (%d)&bslash;n&quot;
-comma
-id|viopath_hostLp
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|viopath_open
@@ -3858,6 +3840,17 @@ r_goto
 id|clear_op
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+id|VIOTAPE_KERN_INFO
+l_string|&quot;vers &quot;
+id|VIOTAPE_VERSION
+l_string|&quot;, hosting partition %d&bslash;n&quot;
+comma
+id|viopath_hostLp
+)paren
+suffix:semicolon
 id|vio_setHandler
 c_func
 (paren

@@ -222,11 +222,9 @@ id|MS_RDONLY
 )paren
 )paren
 (brace
-id|down
+id|lock_kernel
 c_func
 (paren
-op_amp
-id|inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|udf_discard_prealloc
@@ -235,11 +233,9 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|up
+id|unlock_kernel
 c_func
 (paren
-op_amp
-id|inode-&gt;i_sem
 )paren
 suffix:semicolon
 )brace

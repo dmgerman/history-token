@@ -1038,6 +1038,12 @@ comma
 id|pci_bus
 )paren
 suffix:semicolon
+id|eeh_add_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -1130,6 +1136,12 @@ m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* remove the device from the pci core */
+id|eeh_remove_device
+c_func
+(paren
+id|slot-&gt;dev.pci_dev
+)paren
+suffix:semicolon
 id|pci_remove_bus_device
 c_func
 (paren
