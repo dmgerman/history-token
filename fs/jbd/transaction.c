@@ -2842,6 +2842,10 @@ op_logical_and
 id|jh-&gt;b_jlist
 op_ne
 id|BJ_SyncData
+op_logical_and
+id|jh-&gt;b_jlist
+op_ne
+id|BJ_Locked
 )paren
 (brace
 id|JBUFFER_TRACE
@@ -2948,6 +2952,10 @@ c_cond
 id|jh-&gt;b_jlist
 op_ne
 id|BJ_SyncData
+op_logical_and
+id|jh-&gt;b_jlist
+op_ne
+id|BJ_Locked
 )paren
 (brace
 id|JBUFFER_TRACE
@@ -4377,6 +4385,16 @@ id|transaction-&gt;t_reserved_list
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|BJ_Locked
+suffix:colon
+id|list
+op_assign
+op_amp
+id|transaction-&gt;t_locked_list
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 id|__blist_del_buffer
 c_func
@@ -4546,6 +4564,10 @@ c_cond
 id|jh-&gt;b_jlist
 op_eq
 id|BJ_SyncData
+op_logical_or
+id|jh-&gt;b_jlist
+op_eq
+id|BJ_Locked
 )paren
 (brace
 multiline_comment|/* A written-back ordered data buffer */
@@ -5753,6 +5775,16 @@ id|list
 op_assign
 op_amp
 id|transaction-&gt;t_reserved_list
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BJ_Locked
+suffix:colon
+id|list
+op_assign
+op_amp
+id|transaction-&gt;t_locked_list
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -756,6 +756,13 @@ id|journal_head
 op_star
 id|t_reserved_list
 suffix:semicolon
+multiline_comment|/*&n;&t; * Doubly-linked circular list of all buffers under writeout during&n;&t; * commit [j_list_lock]&n;&t; */
+DECL|member|t_locked_list
+r_struct
+id|journal_head
+op_star
+id|t_locked_list
+suffix:semicolon
 multiline_comment|/*&n;&t; * Doubly-linked circular list of all metadata buffers owned by this&n;&t; * transaction [j_list_lock]&n;&t; */
 DECL|member|t_buffers
 r_struct
@@ -2331,8 +2338,10 @@ DECL|macro|BJ_LogCtl
 mdefine_line|#define BJ_LogCtl&t;6&t;/* Buffer contains log descriptors */
 DECL|macro|BJ_Reserved
 mdefine_line|#define BJ_Reserved&t;7&t;/* Buffer is reserved for access by journal */
+DECL|macro|BJ_Locked
+mdefine_line|#define BJ_Locked&t;8&t;/* Locked for I/O during commit */
 DECL|macro|BJ_Types
-mdefine_line|#define BJ_Types&t;8
+mdefine_line|#define BJ_Types&t;9
 r_extern
 r_int
 id|jbd_blocks_per_page
