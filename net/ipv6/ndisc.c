@@ -4409,8 +4409,6 @@ c_cond
 (paren
 op_logical_neg
 id|idev-&gt;cnf.forwarding
-op_logical_or
-id|idev-&gt;cnf.accept_ra
 )paren
 r_goto
 id|out
