@@ -135,9 +135,11 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
+id|eth_hdr
+c_func
 (paren
 op_star
-id|pskb.mac.ethernet
+id|pskb
 )paren
 op_member_access_from_pointer
 id|h_source
@@ -145,12 +147,6 @@ comma
 id|info-&gt;mac
 comma
 id|ETH_ALEN
-op_star
-r_sizeof
-(paren
-r_int
-r_char
-)paren
 )paren
 suffix:semicolon
 r_return
