@@ -4,9 +4,9 @@ multiline_comment|/*************************************************************
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;pcnet32&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.28&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.29&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;02.20.2004&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;04.06.2004&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;DRV_NAME &quot;: &quot;
 DECL|variable|version
@@ -2224,6 +2224,15 @@ id|dev-&gt;name
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|netif_msg_hw
+c_func
+(paren
+id|lp
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -3263,6 +3272,13 @@ OL
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -3299,6 +3315,13 @@ op_logical_neg
 id|ioaddr
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 (paren
 id|KERN_ERR
@@ -3324,6 +3347,13 @@ id|PCNET32_DMA_MASK
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -3353,6 +3383,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -3562,9 +3599,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|pcnet32_debug
 op_amp
 id|NETIF_MSG_PROBE
+)paren
+op_logical_and
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_HW
+)paren
 )paren
 id|printk
 c_func
@@ -3587,6 +3632,13 @@ op_ne
 l_int|0x003
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -3833,6 +3885,15 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -3928,6 +3989,13 @@ op_logical_neg
 id|dev
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -3954,6 +4022,13 @@ op_amp
 id|pdev-&gt;dev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -4111,6 +4186,14 @@ id|promaddr
 )paren
 (brace
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -4124,6 +4207,7 @@ id|KERN_INFO
 l_string|&quot;    using instead PROM address of&quot;
 )paren
 suffix:semicolon
+)brace
 id|memcpy
 c_func
 (paren
@@ -4160,6 +4244,14 @@ id|dev-&gt;dev_addr
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -4185,6 +4277,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* Version 0x2623 and 0x2624 */
 r_if
 c_cond
 (paren
@@ -4201,7 +4294,6 @@ op_eq
 l_int|0x2624
 )paren
 (brace
-multiline_comment|/* Version 0x2623 - 0x2624 */
 id|i
 op_assign
 id|a
@@ -4447,6 +4539,7 @@ l_string|&quot;LowLatRx&quot;
 )paren
 suffix:semicolon
 )brace
+)brace
 id|dev-&gt;base_addr
 op_assign
 id|ioaddr
@@ -4477,6 +4570,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -4662,6 +4762,13 @@ op_logical_neg
 id|a
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -4889,6 +4996,14 @@ id|dev-&gt;irq
 op_ge
 l_int|2
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -4897,6 +5012,7 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 r_int
@@ -4938,6 +5054,13 @@ op_logical_neg
 id|dev-&gt;irq
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -4953,6 +5076,13 @@ r_goto
 id|err_free_consistent
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -5061,7 +5191,7 @@ id|dev-&gt;poll_controller
 op_assign
 id|pcnet32_poll_controller
 suffix:semicolon
-macro_line|#endif    
+macro_line|#endif
 multiline_comment|/* Fill in the generic fields of the device structure. */
 r_if
 c_cond
@@ -5101,6 +5231,13 @@ op_assign
 id|dev
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 id|printk
 c_func
 (paren
@@ -5808,7 +5945,11 @@ id|mii_check_media
 op_amp
 id|lp-&gt;mii_if
 comma
-l_int|1
+id|netif_msg_link
+c_func
+(paren
+id|lp
+)paren
 comma
 l_int|1
 )paren
@@ -6196,6 +6337,13 @@ id|PKT_BUF_SZ
 )paren
 (brace
 multiline_comment|/* there is not much, we can do at this point */
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_DRV
+)paren
 id|printk
 c_func
 (paren
@@ -6550,6 +6698,13 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Transmitter timeout, serious problems. */
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_DRV
+)paren
 id|printk
 c_func
 (paren
@@ -7123,6 +7278,13 @@ op_logical_neg
 id|dev
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_INTR
+)paren
 id|printk
 (paren
 id|KERN_DEBUG
@@ -7393,6 +7555,15 @@ op_increment
 suffix:semicolon
 multiline_comment|/* Ackk!  On FIFO errors the Tx unit is turned off! */
 multiline_comment|/* Remove this verbosity later! */
+r_if
+c_cond
+(paren
+id|netif_msg_tx_err
+c_func
+(paren
+id|lp
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -7431,6 +7602,15 @@ id|lp-&gt;dxsuflo
 multiline_comment|/* If controller doesn&squot;t recover ... */
 multiline_comment|/* Ackk!  On FIFO errors the Tx unit is turned off! */
 multiline_comment|/* Remove this verbosity later! */
+r_if
+c_cond
+(paren
+id|netif_msg_tx_err
+c_func
+(paren
+id|lp
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -7546,6 +7726,15 @@ op_ge
 id|TX_RING_SIZE
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_drv
+c_func
+(paren
+id|lp
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -7644,6 +7833,15 @@ op_amp
 l_int|0x0800
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_drv
+c_func
+(paren
+id|lp
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -7914,6 +8112,15 @@ OL
 l_int|60
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
+c_func
+(paren
+id|lp
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -8080,6 +8287,15 @@ l_int|NULL
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_drv
+c_func
+(paren
+id|lp
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -8901,6 +9117,15 @@ id|IFF_PROMISC
 )paren
 (brace
 multiline_comment|/* Log any net taps. */
+r_if
+c_cond
+(paren
+id|netif_msg_hw
+c_func
+(paren
+id|lp
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -9342,7 +9567,11 @@ id|mii_check_media
 op_amp
 id|lp-&gt;mii_if
 comma
-l_int|1
+id|netif_msg_link
+c_func
+(paren
+id|lp
+)paren
 comma
 l_int|0
 )paren
@@ -9633,6 +9862,8 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|macro|PCNET32_MSG_DEFAULT
+mdefine_line|#define PCNET32_MSG_DEFAULT (NETIF_MSG_DRV | NETIF_MSG_PROBE | NETIF_MSG_LINK)
 multiline_comment|/* An additional parameter that may be passed in... */
 DECL|variable|debug
 r_static
@@ -9674,29 +9905,15 @@ comma
 id|version
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|debug
-op_ge
-l_int|0
-op_logical_and
-id|debug
-OL
-(paren
-r_sizeof
-(paren
-r_int
-)paren
-op_minus
-l_int|1
-)paren
-)paren
 id|pcnet32_debug
 op_assign
-l_int|1
-op_lshift
+id|netif_msg_init
+c_func
+(paren
 id|debug
+comma
+id|PCNET32_MSG_DEFAULT
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -9748,6 +9965,12 @@ r_if
 c_cond
 (paren
 id|cards_found
+op_logical_and
+(paren
+id|pcnet32_debug
+op_amp
+id|NETIF_MSG_PROBE
+)paren
 )paren
 id|printk
 c_func
@@ -9873,5 +10096,5 @@ c_func
 id|pcnet32_cleanup_module
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;gcc -D__KERNEL__ -I/usr/src/linux/net/inet -Wall -Wstrict-prototypes -O6 -m486 -c pcnet32.c&quot;&n; *  c-indent-level: 4&n; *  tab-width: 8&n; * End:&n; */
+multiline_comment|/*&n; * Local variables:&n; *  c-indent-level: 4&n; *  tab-width: 8&n; * End:&n; */
 eof
