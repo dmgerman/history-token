@@ -6849,9 +6849,14 @@ id|tp-&gt;time_to_die
 )paren
 r_break
 suffix:semicolon
-id|rtnl_lock
+r_if
+c_cond
+(paren
+id|rtnl_lock_interruptible
 (paren
 )paren
+)paren
+r_break
 suffix:semicolon
 id|rtl8139_thread_iter
 (paren
