@@ -6663,6 +6663,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_NFS_V4
+macro_line|#include &quot;delegation.h&quot;
 r_static
 r_void
 id|nfs4_clear_inode
@@ -6741,6 +6742,20 @@ op_star
 id|nfsi
 op_assign
 id|NFS_I
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+multiline_comment|/* If we are holding a delegation, return it! */
+r_if
+c_cond
+(paren
+id|nfsi-&gt;delegation
+op_ne
+l_int|NULL
+)paren
+id|nfs_inode_return_delegation
 c_func
 (paren
 id|inode
@@ -8238,6 +8253,31 @@ r_return
 id|s
 suffix:semicolon
 )brace
+DECL|function|nfs4_kill_super
+r_static
+r_void
+id|nfs4_kill_super
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+id|nfs_return_all_delegations
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+id|nfs_kill_super
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+)brace
 DECL|variable|nfs4_fs_type
 r_static
 r_struct
@@ -8263,7 +8303,7 @@ comma
 dot
 id|kill_sb
 op_assign
-id|nfs_kill_super
+id|nfs4_kill_super
 comma
 dot
 id|fs_flags
@@ -8276,15 +8316,15 @@ id|FS_BINARY_MOUNTDATA
 comma
 )brace
 suffix:semicolon
-DECL|macro|nfs4_zero_state
-mdefine_line|#define nfs4_zero_state(nfsi) &bslash;&n;&t;do { &bslash;&n;&t;&t;INIT_LIST_HEAD(&amp;(nfsi)-&gt;open_states); &bslash;&n;&t;} while(0)
+DECL|macro|nfs4_init_once
+mdefine_line|#define nfs4_init_once(nfsi) &bslash;&n;&t;do { &bslash;&n;&t;&t;INIT_LIST_HEAD(&amp;(nfsi)-&gt;open_states); &bslash;&n;&t;&t;nfsi-&gt;delegation = NULL; &bslash;&n;&t;&t;init_rwsem(&amp;nfsi-&gt;rwsem); &bslash;&n;&t;} while(0)
 DECL|macro|register_nfs4fs
 mdefine_line|#define register_nfs4fs() register_filesystem(&amp;nfs4_fs_type)
 DECL|macro|unregister_nfs4fs
 mdefine_line|#define unregister_nfs4fs() unregister_filesystem(&amp;nfs4_fs_type)
 macro_line|#else
-DECL|macro|nfs4_zero_state
-mdefine_line|#define nfs4_zero_state(nfsi) &bslash;&n;&t;do { } while (0)
+DECL|macro|nfs4_init_once
+mdefine_line|#define nfs4_init_once(nfsi) &bslash;&n;&t;do { } while (0)
 DECL|macro|register_nfs4fs
 mdefine_line|#define register_nfs4fs() (0)
 DECL|macro|unregister_nfs4fs
@@ -8390,12 +8430,6 @@ suffix:semicolon
 id|nfsi-&gt;flags
 op_assign
 l_int|0
-suffix:semicolon
-id|nfs4_zero_state
-c_func
-(paren
-id|nfsi
-)paren
 suffix:semicolon
 r_return
 op_amp
@@ -8544,6 +8578,12 @@ c_func
 (paren
 op_amp
 id|nfsi-&gt;nfs_i_wait
+)paren
+suffix:semicolon
+id|nfs4_init_once
+c_func
+(paren
+id|nfsi
 )paren
 suffix:semicolon
 )brace

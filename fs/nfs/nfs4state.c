@@ -231,6 +231,13 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
+id|clp-&gt;cl_delegations
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
 id|clp-&gt;cl_state_owners
 )paren
 suffix:semicolon
@@ -913,6 +920,13 @@ c_func
 (paren
 op_amp
 id|sp-&gt;so_states
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|sp-&gt;so_delegations
 )paren
 suffix:semicolon
 id|atomic_set

@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
 macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfs_xdr.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 multiline_comment|/*&n; * Enable debugging support for nfs client.&n; * Requires RPC_DEBUG.&n; */
 macro_line|#ifdef RPC_DEBUG
@@ -132,6 +133,10 @@ id|wait_queue_head_t
 id|waitq
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/*&n; * NFSv4 delegation&n; */
+r_struct
+id|nfs_delegation
 suffix:semicolon
 multiline_comment|/*&n; * nfs fs inode data in memory&n; */
 DECL|struct|nfs_inode
@@ -252,6 +257,17 @@ DECL|member|open_states
 r_struct
 id|list_head
 id|open_states
+suffix:semicolon
+DECL|member|delegation
+r_struct
+id|nfs_delegation
+op_star
+id|delegation
+suffix:semicolon
+DECL|member|rwsem
+r_struct
+id|rw_semaphore
+id|rwsem
 suffix:semicolon
 macro_line|#endif /* CONFIG_NFS_V4*/
 DECL|member|vfs_inode
@@ -1718,6 +1734,11 @@ r_struct
 id|rw_semaphore
 id|cl_sem
 suffix:semicolon
+DECL|member|cl_delegations
+r_struct
+id|list_head
+id|cl_delegations
+suffix:semicolon
 DECL|member|cl_state_owners
 r_struct
 id|list_head
@@ -1851,6 +1872,11 @@ DECL|member|so_states
 r_struct
 id|list_head
 id|so_states
+suffix:semicolon
+DECL|member|so_delegations
+r_struct
+id|list_head
+id|so_delegations
 suffix:semicolon
 )brace
 suffix:semicolon

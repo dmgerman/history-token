@@ -1168,6 +1168,9 @@ comma
 DECL|enumerator|NFSPROC4_CLNT_SERVER_CAPS
 id|NFSPROC4_CLNT_SERVER_CAPS
 comma
+DECL|enumerator|NFSPROC4_CLNT_DELEGRETURN
+id|NFSPROC4_CLNT_DELEGRETURN
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
