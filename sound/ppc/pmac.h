@@ -554,6 +554,13 @@ op_star
 id|chip
 )paren
 suffix:semicolon
+r_int
+id|snd_pmac_tumbler_post_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* i2c functions */
 DECL|struct|snd_pmac_keywest
 r_typedef
