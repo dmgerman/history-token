@@ -83,6 +83,9 @@ mdefine_line|#define LINVFS_GET_VFS(s) &bslash;&n;&t;(vfs_t *)((s)-&gt;s_fs_info
 DECL|macro|LINVFS_SET_VFS
 mdefine_line|#define LINVFS_SET_VFS(s, vfsp) &bslash;&n;&t;((s)-&gt;s_fs_info = vfsp)
 r_struct
+id|xfs_inode
+suffix:semicolon
+r_struct
 id|xfs_mount
 suffix:semicolon
 r_struct
@@ -115,6 +118,26 @@ id|bhv_desc_t
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_flush_inode
+c_func
+(paren
+r_struct
+id|xfs_inode
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_flush_device
+c_func
+(paren
+r_struct
+id|xfs_inode
+op_star
 )paren
 suffix:semicolon
 r_extern
