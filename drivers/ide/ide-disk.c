@@ -9463,6 +9463,13 @@ id|drive
 op_assign
 id|inode-&gt;i_bdev-&gt;bd_disk-&gt;private_data
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;usage
+op_eq
+l_int|1
+)paren
 id|ide_cacheflush_p
 c_func
 (paren
