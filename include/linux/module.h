@@ -207,12 +207,6 @@ id|subsystem
 id|module_subsys
 suffix:semicolon
 macro_line|#ifdef MODULE
-DECL|macro|___module_cat
-mdefine_line|#define ___module_cat(a,b) __mod_ ## a ## b
-DECL|macro|__module_cat
-mdefine_line|#define __module_cat(a,b) ___module_cat(a,b)
-DECL|macro|__MODULE_INFO
-mdefine_line|#define __MODULE_INFO(tag, name, info)&t;&t;&t;&t;&t;  &bslash;&n;static const char __module_cat(name,__LINE__)[]&t;&t;&t;&t;  &bslash;&n;  __attribute_used__&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;  __attribute__((section(&quot;.modinfo&quot;),unused)) = __stringify(tag) &quot;=&quot; info
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
 r_extern
@@ -225,8 +219,6 @@ mdefine_line|#define THIS_MODULE (&amp;__this_module)
 macro_line|#else  /* !MODULE */
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
-DECL|macro|__MODULE_INFO
-mdefine_line|#define __MODULE_INFO(tag, name, info)
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE ((struct module *)0)
 macro_line|#endif
@@ -1474,7 +1466,7 @@ r_void
 macro_line|#ifdef MODULE
 multiline_comment|/* DEPRECATED: Do not use. */
 DECL|macro|MODULE_PARM
-mdefine_line|#define MODULE_PARM(var,type)&t;&t;&t;&t;&t;&t;    &bslash;&n;struct obsolete_modparm __parm_##var __attribute__((section(&quot;__obsparm&quot;))) = &bslash;&n;{ __stringify(var), type, &amp;MODULE_PARM_ };
+mdefine_line|#define MODULE_PARM(var,type)&t;&t;&t;&t;&t;&t;    &bslash;&n;struct obsolete_modparm __parm_##var __attribute__((section(&quot;__obsparm&quot;))) = &bslash;&n;{ __stringify(var), type, &amp;MODULE_PARM_ }; &bslash;&n;__MODULE_PARM_TYPE(var, type);
 macro_line|#else
 DECL|macro|MODULE_PARM
 mdefine_line|#define MODULE_PARM(var,type) static void __attribute__((__unused__)) *__parm_##var = &amp;MODULE_PARM_;

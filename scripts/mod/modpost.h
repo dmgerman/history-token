@@ -108,7 +108,7 @@ DECL|macro|TO_NATIVE
 mdefine_line|#define TO_NATIVE(x) (x)
 macro_line|#endif
 DECL|macro|NOFAIL
-mdefine_line|#define NOFAIL(ptr)   do_nofail((ptr), __FILE__, __LINE__, #ptr)
+mdefine_line|#define NOFAIL(ptr)   do_nofail((ptr), #ptr)
 r_void
 op_star
 id|do_nofail
@@ -117,14 +117,6 @@ c_func
 r_void
 op_star
 id|ptr
-comma
-r_const
-r_char
-op_star
-id|file
-comma
-r_int
-id|line
 comma
 r_const
 r_char
