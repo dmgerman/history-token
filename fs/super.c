@@ -2202,6 +2202,13 @@ id|MINORBITS
 )paren
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|unnamed_dev_lock
+)paren
+suffix:semicolon
 id|idr_remove
 c_func
 (paren
@@ -2209,6 +2216,13 @@ op_amp
 id|unnamed_dev_idr
 comma
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|unnamed_dev_lock
 )paren
 suffix:semicolon
 r_return
