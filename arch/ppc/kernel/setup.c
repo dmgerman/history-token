@@ -2201,7 +2201,7 @@ id|CONFIG_CMDLINE
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_CMDLINE */
-macro_line|#if defined(CONFIG_6xx) || defined(CONFIG_ALL_PPC)
+macro_line|#if defined(CONFIG_6xx)
 id|ppc_md.power_save
 op_assign
 id|ppc6xx_idle
