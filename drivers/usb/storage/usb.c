@@ -1135,7 +1135,7 @@ suffix:semicolon
 )brace
 id|host
 op_assign
-id|us-&gt;srb-&gt;host
+id|us-&gt;srb-&gt;device-&gt;host
 suffix:semicolon
 multiline_comment|/* lock access to the state */
 id|scsi_lock
@@ -1221,7 +1221,7 @@ r_else
 r_if
 c_cond
 (paren
-id|us-&gt;srb-&gt;target
+id|us-&gt;srb-&gt;device-&gt;id
 op_logical_and
 op_logical_neg
 (paren
@@ -1236,9 +1236,9 @@ c_func
 (paren
 l_string|&quot;Bad target number (%d/%d)&bslash;n&quot;
 comma
-id|us-&gt;srb-&gt;target
+id|us-&gt;srb-&gt;device-&gt;id
 comma
-id|us-&gt;srb-&gt;lun
+id|us-&gt;srb-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|us-&gt;srb-&gt;result
@@ -1252,7 +1252,7 @@ r_else
 r_if
 c_cond
 (paren
-id|us-&gt;srb-&gt;lun
+id|us-&gt;srb-&gt;device-&gt;lun
 OG
 id|us-&gt;max_lun
 )paren
@@ -1262,9 +1262,9 @@ c_func
 (paren
 l_string|&quot;Bad LUN (%d/%d)&bslash;n&quot;
 comma
-id|us-&gt;srb-&gt;target
+id|us-&gt;srb-&gt;device-&gt;id
 comma
-id|us-&gt;srb-&gt;lun
+id|us-&gt;srb-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|us-&gt;srb-&gt;result

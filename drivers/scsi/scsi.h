@@ -1964,11 +1964,11 @@ DECL|member|sc_magic
 r_int
 id|sc_magic
 suffix:semicolon
-DECL|member|host
+DECL|member|device
 r_struct
-id|Scsi_Host
+id|scsi_device
 op_star
-id|host
+id|device
 suffix:semicolon
 DECL|member|state
 r_int
@@ -1979,11 +1979,6 @@ DECL|member|owner
 r_int
 r_int
 id|owner
-suffix:semicolon
-DECL|member|device
-id|Scsi_Device
-op_star
-id|device
 suffix:semicolon
 DECL|member|sc_request
 id|Scsi_Request
@@ -2076,21 +2071,13 @@ op_star
 id|bh_next
 suffix:semicolon
 multiline_comment|/* To enumerate the commands waiting &n;&t;&t;&t;&t;&t;   to be processed. */
-DECL|member|target
-r_int
-r_int
-id|target
-suffix:semicolon
-DECL|member|lun
-r_int
-r_int
-id|lun
-suffix:semicolon
-DECL|member|channel
-r_int
-r_int
-id|channel
-suffix:semicolon
+multiline_comment|/* OBSOLETE, please do not use -- obosolete stuff. */
+multiline_comment|/* Use cmd-&gt;device-&gt;{id, channel, lun} instead */
+multiline_comment|/* &t;unsigned int target; */
+multiline_comment|/* &t;unsigned int lun; */
+multiline_comment|/* &t;unsigned int channel; */
+multiline_comment|/* OBSOLETE, use cmd-&gt;device-&gt;host instead */
+multiline_comment|/* &t;struct Scsi_Host   *host; */
 DECL|member|cmd_len
 r_int
 r_char

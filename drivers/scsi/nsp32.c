@@ -1924,7 +1924,7 @@ l_int|0x40
 op_or
 multiline_comment|/* DiscPriv */
 macro_line|#endif
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 multiline_comment|/* LUNTRN */
 id|data-&gt;msgoutlen
@@ -2165,19 +2165,19 @@ r_int
 r_int
 id|host_id
 op_assign
-id|SCpnt-&gt;host-&gt;this_id
+id|SCpnt-&gt;device-&gt;host-&gt;this_id
 suffix:semicolon
 r_int
 r_int
 id|base
 op_assign
-id|SCpnt-&gt;host-&gt;io_port
+id|SCpnt-&gt;device-&gt;host-&gt;io_port
 suffix:semicolon
 r_int
 r_char
 id|target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 r_int
 r_char
@@ -3132,7 +3132,7 @@ op_or
 (paren
 l_int|1
 op_lshift
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 )paren
 )paren
@@ -4163,7 +4163,7 @@ op_assign
 id|nsp32_hw_data
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_struct
 id|nsp32_target
@@ -4186,9 +4186,9 @@ comma
 l_string|&quot;enter. target: 0x%x LUN: 0x%x cmnd: 0x%x cmndlen: 0x%x &quot;
 l_string|&quot;use_sg: 0x%x reqbuf: 0x%lx reqlen: 0x%x&quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 comma
 id|SCpnt-&gt;cmnd
 (braket
@@ -4244,7 +4244,7 @@ multiline_comment|/* check target ID is not same as this initiator ID */
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 op_eq
 id|NSP32_HOST_SCSIID
 )paren
@@ -4269,7 +4269,7 @@ multiline_comment|/* check target LUN is allowable value */
 r_if
 c_cond
 (paren
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 op_ge
 id|MAX_LUN
 )paren
@@ -4350,10 +4350,10 @@ id|curlunt
 op_assign
 id|data-&gt;lunt
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 (braket
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 )braket
 suffix:semicolon
 id|curlunt-&gt;SCpnt
@@ -4374,11 +4374,11 @@ id|curlunt
 suffix:semicolon
 id|data-&gt;pid
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|data-&gt;plun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 id|ret
 op_assign
@@ -4428,7 +4428,7 @@ op_assign
 op_amp
 id|data-&gt;target
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|data-&gt;curtarget
@@ -4604,7 +4604,7 @@ id|NSP32_DEBUG_TARGETFLAG
 comma
 l_string|&quot;target: %d sync_flag: 0x%x syncreg: 0x%x ackwidth: 0x%x&quot;
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 comma
 id|target-&gt;sync_flag
 comma
@@ -7517,7 +7517,7 @@ op_assign
 id|nsp32_hw_data
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 r_int
@@ -7610,7 +7610,7 @@ op_assign
 id|nsp32_hw_data
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 r_int
@@ -7847,7 +7847,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 suffix:semicolon
 id|nsp32_hw_data
 op_star

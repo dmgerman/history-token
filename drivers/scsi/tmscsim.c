@@ -3826,9 +3826,9 @@ id|dc390_findDCB
 (paren
 id|pACB
 comma
-id|pcmd-&gt;target
+id|pcmd-&gt;device-&gt;id
 comma
-id|pcmd-&gt;lun
+id|pcmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_if
@@ -3927,7 +3927,7 @@ op_assign
 (paren
 id|PACB
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|DEBUG0
 c_func
@@ -3946,9 +3946,9 @@ id|cmd-&gt;cmnd
 l_int|0
 )braket
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|cmd-&gt;pid
 )paren
@@ -4015,19 +4015,19 @@ r_if
 c_cond
 (paren
 (paren
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 op_ge
 id|pACB-&gt;pScsiHost-&gt;max_id
 )paren
 op_logical_or
 (paren
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 op_ge
 id|pACB-&gt;pScsiHost-&gt;max_lun
 )paren
 )paren
 (brace
-multiline_comment|/*&t;printk (&quot;DC390: Ignore target %d lun %d&bslash;n&quot;,&n;&t;&t;cmd-&gt;target, cmd-&gt;lun); */
+multiline_comment|/*&t;printk (&quot;DC390: Ignore target %d lun %d&bslash;n&quot;,&n;&t;&t;cmd-&gt;device-&gt;id, cmd-&gt;device-&gt;lun); */
 id|DC390_UNLOCK_ACB
 suffix:semicolon
 singleline_comment|//return (1);
@@ -4067,13 +4067,13 @@ op_logical_neg
 (paren
 id|pACB-&gt;DCBmap
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_amp
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 )paren
 )paren
@@ -4090,9 +4090,9 @@ comma
 op_amp
 id|pDCB
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_if
@@ -4107,9 +4107,9 @@ id|printk
 id|KERN_ERR
 l_string|&quot;DC390: kmalloc for DCB failed, target %02x lun %02x&bslash;n&quot;
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|DC390_UNLOCK_ACB
@@ -4153,13 +4153,13 @@ op_logical_neg
 (paren
 id|pACB-&gt;DCBmap
 (braket
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 )braket
 op_amp
 (paren
 l_int|1
 op_lshift
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 )paren
 )paren
@@ -4170,9 +4170,9 @@ c_func
 id|KERN_INFO
 l_string|&quot;DC390: Ignore target %02x lun %02x&bslash;n&quot;
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|DC390_UNLOCK_ACB
@@ -4197,9 +4197,9 @@ id|dc390_findDCB
 (paren
 id|pACB
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_if
@@ -4215,9 +4215,9 @@ id|printk
 id|KERN_ERR
 l_string|&quot;DC390: no DCB failed, target %02x lun %02x&bslash;n&quot;
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|DC390_UNLOCK_ACB
@@ -5382,7 +5382,7 @@ op_assign
 (paren
 id|PACB
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|DC390_LOCK_ACB
 suffix:semicolon
@@ -5392,9 +5392,9 @@ l_string|&quot;DC390: Abort command (pid %li, Device %02i-%02i)&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 multiline_comment|/* First scan Query list */
@@ -5521,9 +5521,9 @@ id|dc390_findDCB
 (paren
 id|pACB
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 r_if
@@ -6179,7 +6179,7 @@ op_assign
 (paren
 id|PACB
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|printk
 c_func
@@ -8278,9 +8278,9 @@ id|printk
 id|KERN_INFO
 l_string|&quot;DC390: INQUIRY (ID %02x LUN %02x) returned %08x&bslash;n&quot;
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|cmd-&gt;result
 )paren
@@ -8297,7 +8297,7 @@ op_assign
 (paren
 id|PACB
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|PDCB
 id|pDCB
@@ -8306,9 +8306,9 @@ id|dc390_findDCB
 (paren
 id|pACB
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
 id|printk
@@ -8462,15 +8462,13 @@ id|cmd-&gt;old_cmd_len
 op_assign
 l_int|6
 suffix:semicolon
-id|cmd-&gt;host
-op_assign
-id|pACB-&gt;pScsiHost
-suffix:semicolon
-id|cmd-&gt;target
+multiline_comment|/* TODO FIXME */
+multiline_comment|/*    cmd-&gt;host = pACB-&gt;pScsiHost; */
+id|cmd-&gt;device-&gt;id
 op_assign
 id|pDCB-&gt;TargetID
 suffix:semicolon
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 op_assign
 id|pDCB-&gt;TargetLUN
 suffix:semicolon
@@ -8558,9 +8556,9 @@ id|printk
 id|KERN_INFO
 l_string|&quot;DC390: SENDSTART (ID %02x LUN %02x) returned %08x&bslash;n&quot;
 comma
-id|cmd-&gt;target
+id|cmd-&gt;device-&gt;id
 comma
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 comma
 id|cmd-&gt;result
 )paren
@@ -8685,15 +8683,13 @@ id|cmd-&gt;old_cmd_len
 op_assign
 l_int|6
 suffix:semicolon
-id|cmd-&gt;host
-op_assign
-id|pACB-&gt;pScsiHost
-suffix:semicolon
-id|cmd-&gt;target
+multiline_comment|/* TODO FIXME */
+multiline_comment|/*    cmd-&gt;host = pACB-&gt;pScsiHost; */
+id|cmd-&gt;device-&gt;id
 op_assign
 id|pDCB-&gt;TargetID
 suffix:semicolon
-id|cmd-&gt;lun
+id|cmd-&gt;device-&gt;lun
 op_assign
 id|pDCB-&gt;TargetLUN
 suffix:semicolon
@@ -10594,10 +10590,8 @@ suffix:colon
 id|Scsi_Cmnd
 id|cmd
 suffix:semicolon
-id|cmd.host
-op_assign
-id|pACB-&gt;pScsiHost
-suffix:semicolon
+multiline_comment|/* TODO FIXME */
+multiline_comment|/* cmd.host = pACB-&gt;pScsiHost; */
 id|printk
 (paren
 id|KERN_WARNING
