@@ -2011,6 +2011,13 @@ suffix:semicolon
 )brace
 id|done_locked
 suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_list_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2113,13 +2120,6 @@ id|KM_USER0
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_list_lock
-)paren
-suffix:semicolon
 id|jbd_unlock_bh_state
 c_func
 (paren
