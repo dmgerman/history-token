@@ -2473,6 +2473,9 @@ comma
 l_string|&quot;%ld %u.%u.%u.%u:%u-&gt;%u.%u.%u.%u:%u %u %u %u&bslash;n&quot;
 comma
 (paren
+r_int
+)paren
+(paren
 id|ent-&gt;expires
 op_minus
 id|jiffies

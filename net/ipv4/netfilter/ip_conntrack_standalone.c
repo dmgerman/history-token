@@ -379,7 +379,7 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;%-8s %u %lu &quot;
+l_string|&quot;%-8s %u %ld &quot;
 comma
 id|proto-&gt;name
 comma
@@ -398,6 +398,9 @@ id|conntrack-&gt;timeout
 )paren
 ques
 c_cond
+(paren
+r_int
+)paren
 (paren
 id|conntrack-&gt;timeout.expires
 op_minus
@@ -574,7 +577,7 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;mark=%ld &quot;
+l_string|&quot;mark=%lu &quot;
 comma
 id|conntrack-&gt;mark
 )paren
@@ -955,7 +958,7 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;%lu &quot;
+l_string|&quot;%ld &quot;
 comma
 id|timer_pending
 c_func
@@ -965,6 +968,9 @@ id|expect-&gt;timeout
 )paren
 ques
 c_cond
+(paren
+r_int
+)paren
 (paren
 id|expect-&gt;timeout.expires
 op_minus
