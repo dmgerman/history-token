@@ -2558,9 +2558,16 @@ l_string|&quot;OK: %llu(c%llu+d%lu) usec, %llu (%dbyte,%dfrags)&bslash;n&quot;
 comma
 id|total
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
+(paren
 id|total
 op_minus
 id|idle
+)paren
 comma
 id|idle
 comma
