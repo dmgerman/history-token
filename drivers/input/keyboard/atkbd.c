@@ -2220,7 +2220,6 @@ l_int|0x10
 suffix:colon
 l_int|0
 )paren
-suffix:semicolon
 op_or
 (paren
 id|test_bit
