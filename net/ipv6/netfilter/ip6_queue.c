@@ -1424,7 +1424,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1434,7 +1435,8 @@ op_amp
 id|e-&gt;rt_info.daddr
 )paren
 op_logical_or
-id|ipv6_addr_cmp
+op_logical_neg
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp

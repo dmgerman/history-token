@@ -3948,7 +3948,7 @@ id|ifp-&gt;lst_next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -3956,8 +3956,6 @@ id|ifp-&gt;addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 op_logical_and
 op_logical_neg
 (paren
@@ -4067,7 +4065,7 @@ id|ifp-&gt;lst_next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -4075,8 +4073,6 @@ id|ifp-&gt;addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 r_if
@@ -4169,7 +4165,7 @@ id|ifp-&gt;lst_next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -4177,8 +4173,6 @@ id|ifp-&gt;addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 r_if
@@ -4389,8 +4383,7 @@ c_cond
 (paren
 id|sk2_rcv_saddr6
 op_logical_and
-op_logical_neg
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|sk_rcv_saddr6
@@ -7396,22 +7389,13 @@ id|ifp-&gt;prefix_len
 op_eq
 id|plen
 op_logical_and
-(paren
-op_logical_neg
-id|memcmp
+id|ipv6_addr_equal
 c_func
 (paren
 id|pfx
 comma
 op_amp
 id|ifp-&gt;addr
-comma
-r_sizeof
-(paren
-r_struct
-id|in6_addr
-)paren
-)paren
 )paren
 )paren
 (brace

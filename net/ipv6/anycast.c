@@ -777,7 +777,7 @@ op_eq
 id|ifindex
 )paren
 op_logical_and
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -785,8 +785,6 @@ id|pac-&gt;acl_addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -1113,7 +1111,7 @@ r_continue
 suffix:semicolon
 id|found
 op_assign
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1121,8 +1119,6 @@ id|pac-&gt;acl_addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1281,7 +1277,7 @@ id|aca-&gt;aca_next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1289,8 +1285,6 @@ id|aca-&gt;aca_addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|aca-&gt;aca_users
@@ -1564,7 +1558,7 @@ id|aca-&gt;aca_next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1572,8 +1566,6 @@ id|aca-&gt;aca_addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -1822,7 +1814,7 @@ id|aca-&gt;aca_next
 r_if
 c_cond
 (paren
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1830,8 +1822,6 @@ id|aca-&gt;aca_addr
 comma
 id|addr
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon

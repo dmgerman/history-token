@@ -1222,7 +1222,7 @@ id|iter-&gt;rt6i_idev
 op_eq
 id|rt-&gt;rt6i_idev
 op_logical_and
-id|ipv6_addr_cmp
+id|ipv6_addr_equal
 c_func
 (paren
 op_amp
@@ -1231,8 +1231,6 @@ comma
 op_amp
 id|rt-&gt;rt6i_gateway
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 r_if
