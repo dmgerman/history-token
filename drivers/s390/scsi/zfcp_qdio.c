@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * linux/drivers/s390/scsi/zfcp_qdio.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * QDIO related routines&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Authors:&n; *      Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *      Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *      Wolfgang Taphorn&n; *      Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|ZFCP_QDIO_C_REVISION
-mdefine_line|#define ZFCP_QDIO_C_REVISION &quot;$Revision: 1.18 $&quot;
+mdefine_line|#define ZFCP_QDIO_C_REVISION &quot;$Revision: 1.19 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 r_static
 r_inline
@@ -2318,34 +2318,6 @@ id|sbale-&gt;length
 op_assign
 id|length
 suffix:semicolon
-macro_line|#ifdef ZFCP_STAT_REQSIZES
-r_if
-c_cond
-(paren
-id|sbtype
-op_eq
-id|SBAL_FLAGS0_TYPE_READ
-)paren
-id|zfcp_statistics_inc
-c_func
-(paren
-op_amp
-id|zfcp_data.read_sg_head
-comma
-id|length
-)paren
-suffix:semicolon
-r_else
-id|zfcp_statistics_inc
-c_func
-(paren
-op_amp
-id|zfcp_data.write_sg_head
-comma
-id|length
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/**&n; * zfcp_qdio_sbals_from_segment - map memory segment to SBALE(s)&n; * @fsf_req: request to be processed&n; * @sbtype: SBALE flags&n; * @start_addr: address of memory segment&n; * @total_length: length of memory segment&n; *&n; * Alignment and length of the segment determine how many SBALEs are needed&n; * for the memory segment.&n; */
 r_static
@@ -2638,56 +2610,6 @@ id|SBAL_FLAGS_LAST_ENTRY
 suffix:semicolon
 id|out
 suffix:colon
-macro_line|#ifdef ZFCP_STAT_REQSIZES
-r_if
-c_cond
-(paren
-id|sbtype
-op_eq
-id|SBAL_FLAGS0_TYPE_READ
-)paren
-(brace
-id|zfcp_statistics_inc
-c_func
-(paren
-op_amp
-id|zfcp_data.read_sguse_head
-comma
-id|sg_count
-)paren
-suffix:semicolon
-id|zfcp_statistics_inc
-c_func
-(paren
-op_amp
-id|zfcp_data.read_req_head
-comma
-id|bytes
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|zfcp_statistics_inc
-c_func
-(paren
-op_amp
-id|zfcp_data.write_sguse_head
-comma
-id|sg_count
-)paren
-suffix:semicolon
-id|zfcp_statistics_inc
-c_func
-(paren
-op_amp
-id|zfcp_data.write_req_head
-comma
-id|bytes
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 id|bytes
 suffix:semicolon
