@@ -1886,7 +1886,7 @@ op_ne
 id|type
 )paren
 (brace
-id|retval
+id|result
 op_assign
 op_minus
 id|EPROTO
