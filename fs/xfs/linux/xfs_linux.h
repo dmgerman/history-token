@@ -2,6 +2,39 @@ multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_LINUX__
 DECL|macro|__XFS_LINUX__
 mdefine_line|#define __XFS_LINUX__
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * Some types are conditional depending on the target system.&n; * XFS_BIG_BLKNOS needs block layer disk addresses to be 64 bits.&n; * XFS_BIG_INUMS needs the VFS inode number to be 64 bits, as well&n; * as requiring XFS_BIG_BLKNOS to be set.&n; */
+macro_line|#if defined(CONFIG_LBD) || (BITS_PER_LONG == 64)
+DECL|macro|XFS_BIG_BLKNOS
+macro_line|# define XFS_BIG_BLKNOS&t;1
+macro_line|# if BITS_PER_LONG == 64
+DECL|macro|XFS_BIG_INUMS
+macro_line|#  define XFS_BIG_INUMS&t;1
+macro_line|# else
+DECL|macro|XFS_BIG_INUMS
+macro_line|#  define XFS_BIG_INUMS&t;0
+macro_line|# endif
+macro_line|#else
+DECL|macro|XFS_BIG_BLKNOS
+macro_line|# define XFS_BIG_BLKNOS&t;0
+DECL|macro|XFS_BIG_INUMS
+macro_line|# define XFS_BIG_INUMS&t;0
+macro_line|#endif
+macro_line|#include &lt;xfs_types.h&gt;
+macro_line|#include &lt;xfs_arch.h&gt;
+macro_line|#include &lt;kmem.h&gt;
+macro_line|#include &lt;mrlock.h&gt;
+macro_line|#include &lt;spin.h&gt;
+macro_line|#include &lt;sv.h&gt;
+macro_line|#include &lt;mutex.h&gt;
+macro_line|#include &lt;sema.h&gt;
+macro_line|#include &lt;time.h&gt;
+macro_line|#include &lt;support/qsort.h&gt;
+macro_line|#include &lt;support/ktrace.h&gt;
+macro_line|#include &lt;support/debug.h&gt;
+macro_line|#include &lt;support/move.h&gt;
+macro_line|#include &lt;support/uuid.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -23,13 +56,6 @@ macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
-macro_line|#include &lt;mrlock.h&gt;
-macro_line|#include &lt;spin.h&gt;
-macro_line|#include &lt;sv.h&gt;
-macro_line|#include &lt;mutex.h&gt;
-macro_line|#include &lt;sema.h&gt;
-macro_line|#include &lt;time.h&gt;
-macro_line|#include &lt;kmem.h&gt;
 macro_line|#include &lt;xfs_behavior.h&gt;
 macro_line|#include &lt;xfs_vfs.h&gt;
 macro_line|#include &lt;xfs_cred.h&gt;

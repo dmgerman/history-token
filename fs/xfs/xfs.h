@@ -2,17 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Ri
 macro_line|#ifndef __XFS_H__
 DECL|macro|__XFS_H__
 mdefine_line|#define __XFS_H__
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;xfs_types.h&gt;
-macro_line|#include &lt;xfs_arch.h&gt;
-macro_line|#include &lt;support/qsort.h&gt;
-macro_line|#include &lt;support/ktrace.h&gt;
-macro_line|#include &lt;support/debug.h&gt;
-macro_line|#include &lt;support/move.h&gt;
-macro_line|#include &lt;support/uuid.h&gt;
 macro_line|#include &lt;linux/xfs_linux.h&gt;
 macro_line|#include &lt;xfs_fs.h&gt; 
-macro_line|#include &lt;xfs_buf.h&gt;
 macro_line|#endif&t;/* __XFS_H__ */
 eof
