@@ -1,6 +1,4 @@
-multiline_comment|/*&n; * device driver for Conexant 2388x based TV cards&n; * video4linux video interface&n; *&n; * (c) 2003 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__ 1
+multiline_comment|/*&n; * device driver for Conexant 2388x based TV cards&n; * video4linux video interface&n; *&n; * (c) 2003-04 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -10,6 +8,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &quot;cx88.h&quot;
+DECL|macro|V4L2_I2C_CLIENTS
+mdefine_line|#define V4L2_I2C_CLIENTS 1
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -901,12 +901,35 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;SECAM&quot;
+l_string|&quot;SECAM-L&quot;
 comma
 dot
 id|id
 op_assign
-id|V4L2_STD_SECAM
+id|V4L2_STD_SECAM_L
+comma
+dot
+id|cxiformat
+op_assign
+id|VideoFormatSECAM
+comma
+dot
+id|cxoformat
+op_assign
+l_int|0x181f0008
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;SECAM-DK&quot;
+comma
+dot
+id|id
+op_assign
+id|V4L2_STD_SECAM_DK
 comma
 dot
 id|cxiformat
@@ -2266,15 +2289,14 @@ id|type
 r_return
 l_int|0
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
+id|V4L2_STD_PAL_BG
+op_amp
 id|dev-&gt;tvnorm-&gt;id
 )paren
 (brace
-r_case
-id|V4L2_STD_PAL_BG
-suffix:colon
 id|dev-&gt;tvaudio
 op_assign
 id|nicam
@@ -2284,11 +2306,16 @@ id|WW_NICAM_BGDKL
 suffix:colon
 id|WW_A2_BG
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|V4L2_STD_PAL_DK
-suffix:colon
+op_amp
+id|dev-&gt;tvnorm-&gt;id
+)paren
+(brace
 id|dev-&gt;tvaudio
 op_assign
 id|nicam
@@ -2298,53 +2325,93 @@ id|WW_NICAM_BGDKL
 suffix:colon
 id|WW_A2_DK
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|V4L2_STD_PAL_I
-suffix:colon
+op_amp
+id|dev-&gt;tvnorm-&gt;id
+)paren
+(brace
 id|dev-&gt;tvaudio
 op_assign
 id|WW_NICAM_I
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|V4L2_STD_SECAM
-suffix:colon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|V4L2_STD_SECAM_L
+op_amp
+id|dev-&gt;tvnorm-&gt;id
+)paren
+(brace
 id|dev-&gt;tvaudio
 op_assign
 id|WW_SYSTEM_L_AM
 suffix:semicolon
-multiline_comment|/* FIXME: fr != ru */
-r_break
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|V4L2_STD_SECAM_DK
+op_amp
+id|dev-&gt;tvnorm-&gt;id
+)paren
+(brace
+id|dev-&gt;tvaudio
+op_assign
+id|WW_A2_DK
 suffix:semicolon
-r_case
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
 id|V4L2_STD_NTSC_M
-suffix:colon
+op_amp
+id|dev-&gt;tvnorm-&gt;id
+)paren
+op_logical_or
+(paren
+id|V4L2_STD_PAL_M
+op_amp
+id|dev-&gt;tvnorm-&gt;id
+)paren
+)paren
+(brace
 id|dev-&gt;tvaudio
 op_assign
 id|WW_BTSC
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|V4L2_STD_NTSC_M_JP
-suffix:colon
+op_amp
+id|dev-&gt;tvnorm-&gt;id
+)paren
+(brace
 id|dev-&gt;tvaudio
 op_assign
 id|WW_EIAJ
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|dprintk
+)brace
+r_else
+(brace
+id|printk
 c_func
 (paren
-l_int|1
+l_string|&quot;%s: tvaudio support needs work for this tv norm [%s], sorry&bslash;n&quot;
 comma
-l_string|&quot;tvaudio support needs work for this tv norm [%s], sorry&bslash;n&quot;
+id|dev-&gt;name
 comma
 id|dev-&gt;tvnorm-&gt;name
 )paren
@@ -2373,14 +2440,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|cx88_set_stereo
-c_func
-(paren
-id|dev
-comma
-id|V4L2_TUNER_MODE_STEREO
-)paren
-suffix:semicolon
+singleline_comment|// cx88_set_stereo(dev,V4L2_TUNER_MODE_STEREO);
 id|cx_write
 c_func
 (paren
@@ -2451,10 +2511,6 @@ comma
 id|agcdelay
 comma
 id|htotal
-suffix:semicolon
-r_struct
-id|video_channel
-id|c
 suffix:semicolon
 id|dev-&gt;tvnorm
 op_assign
@@ -2874,6 +2930,24 @@ id|dev
 )paren
 suffix:semicolon
 singleline_comment|// tell i2c chips
+macro_line|#ifdef V4L2_I2C_CLIENTS
+id|cx8800_call_i2c_clients
+c_func
+(paren
+id|dev
+comma
+id|VIDIOC_S_STD
+comma
+op_amp
+id|norm-&gt;id
+)paren
+suffix:semicolon
+macro_line|#else
+(brace
+r_struct
+id|video_channel
+id|c
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2935,6 +3009,8 @@ op_amp
 id|c
 )paren
 suffix:semicolon
+)brace
+macro_line|#endif
 singleline_comment|// done
 r_return
 l_int|0
@@ -2959,8 +3035,9 @@ r_int
 r_int
 id|height
 comma
-r_int
-id|interlaced
+r_enum
+id|v4l2_field
+id|field
 )paren
 (brace
 r_int
@@ -2991,14 +3068,50 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;set_scale: %dx%d [%s]&bslash;n&quot;
+l_string|&quot;set_scale: %dx%d [%s%s,%s]&bslash;n&quot;
 comma
 id|width
 comma
 id|height
 comma
+id|V4L2_FIELD_HAS_TOP
+c_func
+(paren
+id|field
+)paren
+ques
+c_cond
+l_string|&quot;T&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|V4L2_FIELD_HAS_BOTTOM
+c_func
+(paren
+id|field
+)paren
+ques
+c_cond
+l_string|&quot;B&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
 id|dev-&gt;tvnorm-&gt;name
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|V4L2_FIELD_HAS_BOTH
+c_func
+(paren
+id|field
+)paren
+)paren
+id|height
+op_mul_assign
+l_int|2
 suffix:semicolon
 singleline_comment|// recalc H delay and scale registers
 id|value
@@ -3014,6 +3127,10 @@ id|dev-&gt;tvnorm
 )paren
 op_div
 id|swidth
+suffix:semicolon
+id|value
+op_and_assign
+l_int|0x3fe
 suffix:semicolon
 id|cx_write
 c_func
@@ -3231,7 +3348,9 @@ singleline_comment|// CFILT (default)
 r_if
 c_cond
 (paren
-id|interlaced
+id|V4L2_FIELD_INTERLACED
+op_eq
+id|field
 )paren
 id|value
 op_or_assign
@@ -3465,28 +3584,40 @@ id|type
 r_case
 id|CX88_VMUX_SVIDEO
 suffix:colon
-id|cx_andor
+id|cx_set
 c_func
 (paren
 id|MO_AFECFG_IO
 comma
-l_int|0x01
+l_int|0x00000001
+)paren
+suffix:semicolon
+id|cx_set
+c_func
+(paren
+id|MO_INPUT_FORMAT
 comma
-l_int|0x01
+l_int|0x00010010
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|cx_andor
+id|cx_clear
 c_func
 (paren
 id|MO_AFECFG_IO
 comma
-l_int|0x01
+l_int|0x00000001
+)paren
+suffix:semicolon
+id|cx_clear
+c_func
+(paren
+id|MO_INPUT_FORMAT
 comma
-l_int|0x00
+l_int|0x00010010
 )paren
 suffix:semicolon
 r_break
@@ -3545,7 +3676,7 @@ id|buf-&gt;vb.width
 comma
 id|buf-&gt;vb.height
 comma
-l_int|1
+id|buf-&gt;vb.field
 )paren
 suffix:semicolon
 id|cx_write
@@ -6942,6 +7073,21 @@ l_int|0x3f
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|V4L2_CID_AUDIO_VOLUME
+suffix:colon
+id|ctl-&gt;value
+op_assign
+l_int|0x3f
+op_minus
+(paren
+id|value
+op_amp
+l_int|0x3f
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|ctl-&gt;value
@@ -7094,6 +7240,21 @@ id|ctl-&gt;value
 )paren
 suffix:colon
 id|ctl-&gt;value
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|V4L2_CID_AUDIO_VOLUME
+suffix:colon
+id|value
+op_assign
+l_int|0x3f
+op_minus
+(paren
+id|ctl-&gt;value
+op_amp
+l_int|0x3f
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -7266,7 +7427,7 @@ comma
 dot
 id|value
 op_assign
-l_int|0
+l_int|0x3f
 comma
 )brace
 suffix:semicolon
@@ -7478,7 +7639,6 @@ c_func
 id|dev-&gt;tvnorm
 )paren
 suffix:semicolon
-macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -7503,12 +7663,6 @@ suffix:colon
 id|V4L2_FIELD_BOTTOM
 suffix:semicolon
 )brace
-macro_line|#else
-id|field
-op_assign
-id|V4L2_FIELD_INTERLACED
-suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -7548,24 +7702,35 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|f-&gt;fmt.pix.width
+id|f-&gt;fmt.pix.height
 OL
-l_int|48
+l_int|32
 )paren
-id|f-&gt;fmt.pix.width
+id|f-&gt;fmt.pix.height
 op_assign
-l_int|48
+l_int|32
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|f-&gt;fmt.pix.height
-OL
-l_int|32
+OG
+id|maxh
 )paren
 id|f-&gt;fmt.pix.height
 op_assign
-l_int|32
+id|maxh
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|f-&gt;fmt.pix.width
+OL
+l_int|48
+)paren
+id|f-&gt;fmt.pix.width
+op_assign
+l_int|48
 suffix:semicolon
 r_if
 c_cond
@@ -7578,16 +7743,10 @@ id|f-&gt;fmt.pix.width
 op_assign
 id|maxw
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|f-&gt;fmt.pix.height
-OG
-id|maxh
-)paren
-id|f-&gt;fmt.pix.height
-op_assign
-id|maxh
+id|f-&gt;fmt.pix.width
+op_and_assign
+op_complement
+l_int|0x03
 suffix:semicolon
 id|f-&gt;fmt.pix.bytesperline
 op_assign
@@ -8933,6 +9092,18 @@ id|dev-&gt;freq
 op_assign
 id|f-&gt;frequency
 suffix:semicolon
+macro_line|#ifdef V4L2_I2C_CLIENTS
+id|cx8800_call_i2c_clients
+c_func
+(paren
+id|dev
+comma
+id|VIDIOC_S_FREQUENCY
+comma
+id|f
+)paren
+suffix:semicolon
+macro_line|#else
 id|cx8800_call_i2c_clients
 c_func
 (paren
@@ -8944,6 +9115,7 @@ op_amp
 id|dev-&gt;freq
 )paren
 suffix:semicolon
+macro_line|#endif
 id|up
 c_func
 (paren
@@ -9478,10 +9650,6 @@ id|t
 op_assign
 id|arg
 suffix:semicolon
-r_struct
-id|video_tuner
-id|vt
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9537,6 +9705,23 @@ op_star
 l_int|16
 )paren
 suffix:semicolon
+macro_line|#ifdef V4L2_I2C_CLIENTS
+id|cx8800_call_i2c_clients
+c_func
+(paren
+id|dev
+comma
+id|VIDIOC_G_TUNER
+comma
+id|t
+)paren
+suffix:semicolon
+macro_line|#else
+(brace
+r_struct
+id|video_tuner
+id|vt
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -9566,6 +9751,8 @@ id|t-&gt;signal
 op_assign
 id|vt.signal
 suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -11465,25 +11652,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* debug that damn oops ... */
-DECL|variable|oops
-r_static
-r_int
-r_int
-id|oops
-op_assign
-l_int|0
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|oops
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-DECL|macro|OOPS
-mdefine_line|#define OOPS(msg) if (oops) printk(&quot;%s: %s&bslash;n&quot;,__FUNCTION__,msg);
 DECL|function|cx8800_initdev
 r_static
 r_int
@@ -11555,12 +11723,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* pci init */
-id|OOPS
-c_func
-(paren
-l_string|&quot;pci init&quot;
-)paren
-suffix:semicolon
 id|dev-&gt;pci
 op_assign
 id|pci_dev
@@ -11597,12 +11759,6 @@ id|cx8800_devcount
 )paren
 suffix:semicolon
 multiline_comment|/* pci quirks */
-id|OOPS
-c_func
-(paren
-l_string|&quot;pci quirks&quot;
-)paren
-suffix:semicolon
 id|cx88_pci_quirks
 c_func
 (paren
@@ -11645,12 +11801,6 @@ id|latency
 suffix:semicolon
 )brace
 multiline_comment|/* print pci info */
-id|OOPS
-c_func
-(paren
-l_string|&quot;pci info&quot;
-)paren
-suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
@@ -11740,12 +11890,6 @@ id|fail1
 suffix:semicolon
 )brace
 multiline_comment|/* board config */
-id|OOPS
-c_func
-(paren
-l_string|&quot;board config&quot;
-)paren
-suffix:semicolon
 id|dev-&gt;board
 op_assign
 id|card
@@ -11808,10 +11952,18 @@ id|UNSET
 op_eq
 id|dev-&gt;board
 )paren
+(brace
 id|dev-&gt;board
 op_assign
 id|CX88_BOARD_UNKNOWN
 suffix:semicolon
+id|cx88_card_list
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -11870,12 +12022,6 @@ dot
 id|tuner_type
 suffix:semicolon
 multiline_comment|/* get mmio */
-id|OOPS
-c_func
-(paren
-l_string|&quot;get mmio&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11960,12 +12106,6 @@ op_star
 id|dev-&gt;lmmio
 suffix:semicolon
 multiline_comment|/* initialize driver struct */
-id|OOPS
-c_func
-(paren
-l_string|&quot;init structs&quot;
-)paren
-suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
@@ -12080,12 +12220,6 @@ l_int|0x00
 )paren
 suffix:semicolon
 multiline_comment|/* initialize hardware */
-id|OOPS
-c_func
-(paren
-l_string|&quot;reset hardware&quot;
-)paren
-suffix:semicolon
 id|cx8800_reset
 c_func
 (paren
@@ -12093,12 +12227,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* get irq */
-id|OOPS
-c_func
-(paren
-l_string|&quot;install irq handler&quot;
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|request_irq
@@ -12141,22 +12269,10 @@ id|fail2
 suffix:semicolon
 )brace
 multiline_comment|/* register i2c bus + load i2c helpers */
-id|OOPS
-c_func
-(paren
-l_string|&quot;i2c setup&quot;
-)paren
-suffix:semicolon
 id|cx8800_i2c_init
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|OOPS
-c_func
-(paren
-l_string|&quot;card setup&quot;
 )paren
 suffix:semicolon
 id|cx88_card_setup
@@ -12166,12 +12282,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* load and configure helper modules */
-id|OOPS
-c_func
-(paren
-l_string|&quot;configure i2c clients&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12220,12 +12330,6 @@ id|dev-&gt;tuner_type
 )paren
 suffix:semicolon
 multiline_comment|/* register v4l devices */
-id|OOPS
-c_func
-(paren
-l_string|&quot;register video&quot;
-)paren
-suffix:semicolon
 id|dev-&gt;video_dev
 op_assign
 id|vdev_init
@@ -12286,12 +12390,6 @@ comma
 id|dev-&gt;video_dev-&gt;minor
 op_amp
 l_int|0x1f
-)paren
-suffix:semicolon
-id|OOPS
-c_func
-(paren
-l_string|&quot;register vbi&quot;
 )paren
 suffix:semicolon
 id|dev-&gt;vbi_dev
@@ -12362,12 +12460,6 @@ c_cond
 id|dev-&gt;has_radio
 )paren
 (brace
-id|OOPS
-c_func
-(paren
-l_string|&quot;register radio&quot;
-)paren
-suffix:semicolon
 id|dev-&gt;radio_dev
 op_assign
 id|vdev_init
@@ -12432,12 +12524,6 @@ l_int|0x1f
 suffix:semicolon
 )brace
 multiline_comment|/* everything worked */
-id|OOPS
-c_func
-(paren
-l_string|&quot;finalize&quot;
-)paren
-suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -12460,12 +12546,6 @@ id|cx8800_devcount
 op_increment
 suffix:semicolon
 multiline_comment|/* initial device configuration */
-id|OOPS
-c_func
-(paren
-l_string|&quot;init device&quot;
-)paren
-suffix:semicolon
 id|down
 c_func
 (paren
@@ -12502,17 +12582,31 @@ op_amp
 id|dev-&gt;lock
 )paren
 suffix:semicolon
+multiline_comment|/* start tvaudio thread */
+id|init_completion
+c_func
+(paren
+op_amp
+id|dev-&gt;texit
+)paren
+suffix:semicolon
+id|dev-&gt;tpid
+op_assign
+id|kernel_thread
+c_func
+(paren
+id|cx88_audio_thread
+comma
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|fail3
 suffix:colon
-id|OOPS
-c_func
-(paren
-l_string|&quot;fail3&quot;
-)paren
-suffix:semicolon
 id|cx8800_unregister_video
 c_func
 (paren
@@ -12543,12 +12637,6 @@ id|dev
 suffix:semicolon
 id|fail2
 suffix:colon
-id|OOPS
-c_func
-(paren
-l_string|&quot;fail2&quot;
-)paren
-suffix:semicolon
 id|release_mem_region
 c_func
 (paren
@@ -12571,12 +12659,6 @@ l_int|0
 suffix:semicolon
 id|fail1
 suffix:colon
-id|OOPS
-c_func
-(paren
-l_string|&quot;fail1&quot;
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -12609,6 +12691,25 @@ id|pci_get_drvdata
 c_func
 (paren
 id|pci_dev
+)paren
+suffix:semicolon
+multiline_comment|/* stop thread */
+id|dev-&gt;shutdown
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;tpid
+op_ge
+l_int|0
+)paren
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|dev-&gt;texit
 )paren
 suffix:semicolon
 id|cx8800_shutdown
