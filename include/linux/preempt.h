@@ -21,7 +21,7 @@ suffix:semicolon
 DECL|macro|preempt_disable
 mdefine_line|#define preempt_disable() &bslash;&n;do { &bslash;&n;&t;inc_preempt_count(); &bslash;&n;&t;barrier(); &bslash;&n;} while (0)
 DECL|macro|preempt_enable_no_resched
-mdefine_line|#define preempt_enable_no_resched() &bslash;&n;do { &bslash;&n;&t;dec_preempt_count(); &bslash;&n;&t;barrier(); &bslash;&n;} while (0)
+mdefine_line|#define preempt_enable_no_resched() &bslash;&n;do { &bslash;&n;&t;barrier(); &bslash;&n;&t;dec_preempt_count(); &bslash;&n;} while (0)
 DECL|macro|preempt_check_resched
 mdefine_line|#define preempt_check_resched() &bslash;&n;do { &bslash;&n;&t;if (unlikely(test_thread_flag(TIF_NEED_RESCHED))) &bslash;&n;&t;&t;preempt_schedule(); &bslash;&n;} while (0)
 DECL|macro|preempt_enable
