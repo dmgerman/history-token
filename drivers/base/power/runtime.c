@@ -13,6 +13,14 @@ op_star
 id|dev
 )paren
 (brace
+id|dev_dbg
+c_func
+(paren
+id|dev
+comma
+l_string|&quot;resuming&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -34,8 +42,6 @@ id|dev
 id|dev-&gt;power.power_state
 op_assign
 l_int|0
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;dpm_runtime_resume - Power one device back on.&n; *&t;@dev:&t;Device.&n; *&n; *&t;Bring one device back to the on state by first powering it &n; *&t;on, then restoring state. We only operate on devices that aren&squot;t&n; *&t;already on. &n; *&t;FIXME: We need to handle devices that are in an unknown state.&n; */
