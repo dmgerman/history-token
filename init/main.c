@@ -1363,6 +1363,14 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/*&n;&t; * Let the per-CPU migration threads start up:&n;&t; */
+macro_line|#if CONFIG_SMP
+id|migration_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t; * Tell the world that we&squot;re going to be the grim&n;&t; * reaper of innocent orphaned children.&n;&t; *&n;&t; * We don&squot;t want people to have to make incorrect&n;&t; * assumptions about where in the task array this&n;&t; * can be found.&n;&t; */
 id|child_reaper
 op_assign

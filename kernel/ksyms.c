@@ -2343,13 +2343,6 @@ c_func
 id|__wake_up
 )paren
 suffix:semicolon
-DECL|variable|__wake_up_sync
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__wake_up_sync
-)paren
-suffix:semicolon
 DECL|variable|wake_up_process
 id|EXPORT_SYMBOL
 c_func
@@ -2436,6 +2429,15 @@ c_func
 id|idle_cpu
 )paren
 suffix:semicolon
+macro_line|#if CONFIG_SMP
+DECL|variable|set_cpus_allowed
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|set_cpus_allowed
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|jiffies
 id|EXPORT_SYMBOL
 c_func
