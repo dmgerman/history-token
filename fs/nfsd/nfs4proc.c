@@ -488,6 +488,9 @@ c_func
 id|rqstp-&gt;rq_client
 comma
 id|current_fh
+comma
+op_amp
+id|rqstp-&gt;rq_chandle
 )paren
 suffix:semicolon
 )brace

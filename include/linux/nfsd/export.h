@@ -286,6 +286,11 @@ r_struct
 id|svc_fh
 op_star
 id|fhp
+comma
+r_struct
+id|cache_req
+op_star
+id|creq
 )paren
 suffix:semicolon
 r_int
