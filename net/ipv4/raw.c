@@ -24,7 +24,7 @@ macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/raw.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
-macro_line|#include &lt;linux/netfilter.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 DECL|variable|raw_v4_htable
 r_struct
 id|sock
