@@ -3026,7 +3026,7 @@ id|arg-&gt;stop
 op_assign
 l_int|1
 suffix:semicolon
-r_break
+r_return
 suffix:semicolon
 )brace
 id|arg-&gt;count
