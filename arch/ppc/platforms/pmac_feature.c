@@ -11023,7 +11023,7 @@ id|macio_keylargo2
 suffix:colon
 id|pmac_mb.model_id
 op_assign
-id|PMAC_TYPE_POWERMAC_G5
+id|PMAC_TYPE_UNKNOWN_K2
 suffix:semicolon
 id|pmac_mb.model_name
 op_assign
