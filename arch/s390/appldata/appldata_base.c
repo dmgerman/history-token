@@ -347,12 +347,12 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-DECL|variable|appldata_timer_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|appldata_timer_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|appldata_interval
 r_static
@@ -374,12 +374,12 @@ id|tasklet_struct
 id|appldata_tasklet_struct
 suffix:semicolon
 multiline_comment|/*&n; * Ops list&n; */
-DECL|variable|appldata_ops_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|appldata_ops_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 id|LIST_HEAD

@@ -189,12 +189,12 @@ id|segcnt
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|dcss_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dcss_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|dcss_list
 r_static
