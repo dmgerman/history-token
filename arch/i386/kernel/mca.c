@@ -38,6 +38,7 @@ id|MCA_bus
 suffix:semicolon
 multiline_comment|/*&n; * Motherboard register spinlock. Untested on SMP at the moment, but&n; * are there any MCA SMP boxes?&n; *&n; * Yes - Alan&n; */
 DECL|variable|mca_lock
+r_static
 id|spinlock_t
 id|mca_lock
 op_assign
@@ -190,6 +191,7 @@ suffix:semicolon
 multiline_comment|/* mca_configure_adapter_status */
 multiline_comment|/*--------------------------------------------------------------------*/
 DECL|variable|mca_standard_resources
+r_static
 r_struct
 id|resource
 id|mca_standard_resources
