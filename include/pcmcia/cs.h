@@ -844,34 +844,6 @@ suffix:semicolon
 multiline_comment|/* Flag to bind to all functions */
 DECL|macro|BIND_FN_ALL
 mdefine_line|#define BIND_FN_ALL&t;0xff
-DECL|struct|mtd_bind_t
-r_typedef
-r_struct
-id|mtd_bind_t
-(brace
-DECL|member|Socket
-r_struct
-id|pcmcia_socket
-op_star
-id|Socket
-suffix:semicolon
-DECL|member|Attributes
-id|u_int
-id|Attributes
-suffix:semicolon
-DECL|member|CardOffset
-id|u_int
-id|CardOffset
-suffix:semicolon
-DECL|member|dev_info
-id|dev_info_t
-op_star
-id|dev_info
-suffix:semicolon
-DECL|typedef|mtd_bind_t
-)brace
-id|mtd_bind_t
-suffix:semicolon
 multiline_comment|/* Events */
 DECL|macro|CS_EVENT_PRI_LOW
 mdefine_line|#define CS_EVENT_PRI_LOW&t;&t;0
