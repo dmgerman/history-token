@@ -1691,6 +1691,8 @@ id|data
 suffix:semicolon
 DECL|macro|RTA_PUT
 mdefine_line|#define RTA_PUT(skb, attrtype, attrlen, data) &bslash;&n;({&t;if (unlikely(skb_tailroom(skb) &lt; (int)RTA_SPACE(attrlen))) &bslash;&n;&t;&t; goto rtattr_failure; &bslash;&n;   &t;__rta_fill(skb, attrtype, attrlen, data); }) 
+DECL|macro|RTA_PUT_NOHDR
+mdefine_line|#define RTA_PUT_NOHDR(skb, attrlen, data) &bslash;&n;({&t;if (unlikely(skb_tailroom(skb) &lt; (int)(attrlen))) &bslash;&n;&t;&t;goto rtattr_failure; &bslash;&n;&t;memcpy(skb_put(skb, RTA_ALIGN(attrlen)), data, attrlen); })
 r_static
 r_inline
 r_struct

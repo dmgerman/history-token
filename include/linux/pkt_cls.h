@@ -605,5 +605,108 @@ id|__TCA_TCINDEX_MAX
 suffix:semicolon
 DECL|macro|TCA_TCINDEX_MAX
 mdefine_line|#define TCA_TCINDEX_MAX     (__TCA_TCINDEX_MAX - 1)
+multiline_comment|/* Extended Matches */
+DECL|struct|tcf_ematch_tree_hdr
+r_struct
+id|tcf_ematch_tree_hdr
+(brace
+DECL|member|nmatches
+id|__u16
+id|nmatches
+suffix:semicolon
+DECL|member|progid
+id|__u16
+id|progid
+suffix:semicolon
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|TCA_EMATCH_TREE_UNSPEC
+id|TCA_EMATCH_TREE_UNSPEC
+comma
+DECL|enumerator|TCA_EMATCH_TREE_HDR
+id|TCA_EMATCH_TREE_HDR
+comma
+DECL|enumerator|TCA_EMATCH_TREE_LIST
+id|TCA_EMATCH_TREE_LIST
+comma
+DECL|enumerator|__TCA_EMATCH_TREE_MAX
+id|__TCA_EMATCH_TREE_MAX
+)brace
+suffix:semicolon
+DECL|macro|TCA_EMATCH_TREE_MAX
+mdefine_line|#define TCA_EMATCH_TREE_MAX (__TCA_EMATCH_TREE_MAX - 1)
+DECL|struct|tcf_ematch_hdr
+r_struct
+id|tcf_ematch_hdr
+(brace
+DECL|member|matchid
+id|__u16
+id|matchid
+suffix:semicolon
+DECL|member|kind
+id|__u16
+id|kind
+suffix:semicolon
+DECL|member|flags
+id|__u16
+id|flags
+suffix:semicolon
+DECL|member|pad
+id|__u16
+id|pad
+suffix:semicolon
+multiline_comment|/* currently unused */
+)brace
+suffix:semicolon
+multiline_comment|/*  0                   1&n; *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 &n; * +-----------------------+-+-+---+&n; * |         Unused        |S|I| R |&n; * +-----------------------+-+-+---+&n; *&n; * R(2) ::= relation to next ematch&n; *          where: 0 0 END (last ematch)&n; *                 0 1 AND&n; *                 1 0 OR&n; *                 1 1 Unused (invalid)&n; * I(1) ::= invert result&n; * S(1) ::= simple payload&n; */
+DECL|macro|TCF_EM_REL_END
+mdefine_line|#define TCF_EM_REL_END&t;0
+DECL|macro|TCF_EM_REL_AND
+mdefine_line|#define TCF_EM_REL_AND&t;(1&lt;&lt;0)
+DECL|macro|TCF_EM_REL_OR
+mdefine_line|#define TCF_EM_REL_OR&t;(1&lt;&lt;1)
+DECL|macro|TCF_EM_INVERT
+mdefine_line|#define TCF_EM_INVERT&t;(1&lt;&lt;2)
+DECL|macro|TCF_EM_SIMPLE
+mdefine_line|#define TCF_EM_SIMPLE&t;(1&lt;&lt;3)
+DECL|macro|TCF_EM_REL_MASK
+mdefine_line|#define TCF_EM_REL_MASK&t;3
+DECL|macro|TCF_EM_REL_VALID
+mdefine_line|#define TCF_EM_REL_VALID(v) (((v) &amp; TCF_EM_REL_MASK) != TCF_EM_REL_MASK)
+r_enum
+(brace
+DECL|enumerator|TCF_LAYER_LINK
+id|TCF_LAYER_LINK
+comma
+DECL|enumerator|TCF_LAYER_NETWORK
+id|TCF_LAYER_NETWORK
+comma
+DECL|enumerator|TCF_LAYER_TRANSPORT
+id|TCF_LAYER_TRANSPORT
+comma
+DECL|enumerator|__TCF_LAYER_MAX
+id|__TCF_LAYER_MAX
+)brace
+suffix:semicolon
+DECL|macro|TCF_LAYER_MAX
+mdefine_line|#define TCF_LAYER_MAX (__TCF_LAYER_MAX - 1)
+multiline_comment|/* Ematch type assignments&n; *   1..32767&t;&t;Reserved for ematches inside kernel tree&n; *   32768..65535&t;Free to use, not reliable&n; */
+r_enum
+(brace
+DECL|enumerator|TCF_EM_CONTAINER
+id|TCF_EM_CONTAINER
+comma
+DECL|enumerator|__TCF_EM_MAX
+id|__TCF_EM_MAX
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|TCF_EM_PROG_TC
+id|TCF_EM_PROG_TC
+)brace
+suffix:semicolon
 macro_line|#endif
 eof
