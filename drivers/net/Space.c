@@ -571,16 +571,6 @@ r_extern
 r_struct
 id|net_device
 op_star
-id|sdla_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|net_device
-op_star
 id|cops_probe
 c_func
 (paren
@@ -1790,13 +1780,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_LTPC
 id|ltpc_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_SDLA
-id|sdla_init
 c_func
 (paren
 )paren
