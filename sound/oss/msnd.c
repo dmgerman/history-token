@@ -737,7 +737,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|io
@@ -791,7 +791,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|io
@@ -848,7 +848,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|cmd
@@ -934,7 +934,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|high
@@ -944,7 +944,7 @@ op_plus
 id|HP_TXH
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|mid
@@ -954,7 +954,7 @@ op_plus
 id|HP_TXM
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|low
@@ -1073,7 +1073,7 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|dev-&gt;io
@@ -1081,7 +1081,7 @@ op_plus
 id|HP_RXL
 )paren
 suffix:semicolon
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|dev-&gt;io
@@ -1145,10 +1145,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|outb
+id|msnd_outb
 c_func
 (paren
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|dev-&gt;io
@@ -1170,7 +1170,7 @@ id|dev-&gt;type
 op_eq
 id|msndClassic
 )paren
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|dev-&gt;irqid
@@ -1180,10 +1180,10 @@ op_plus
 id|HP_IRQM
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|dev-&gt;io
@@ -1199,10 +1199,10 @@ op_plus
 id|HP_ICR
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|dev-&gt;io
@@ -1339,10 +1339,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|outb
+id|msnd_outb
 c_func
 (paren
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|dev-&gt;io
@@ -1365,7 +1365,7 @@ id|dev-&gt;type
 op_eq
 id|msndClassic
 )paren
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPIRQ_NONE

@@ -8961,7 +8961,7 @@ id|printk
 c_func
 (paren
 id|MYIOC_s_ERR_FMT
-l_string|&quot;Invalid IOC facts reply, msgLength=%d offsetof=%d!&bslash;n&quot;
+l_string|&quot;Invalid IOC facts reply, msgLength=%d offsetof=%zd!&bslash;n&quot;
 comma
 id|ioc-&gt;name
 comma

@@ -1552,6 +1552,15 @@ c_cond
 id|nb
 op_ge
 l_int|4
+op_logical_and
+id|adbhid
+(braket
+id|id
+)braket
+op_member_access_from_pointer
+id|mouse_kind
+op_ne
+id|ADBMOUSE_TRACKPAD
 )paren
 id|input_report_key
 c_func

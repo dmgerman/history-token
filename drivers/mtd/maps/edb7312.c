@@ -149,8 +149,6 @@ DECL|variable|mtd_parts_nb
 r_static
 r_int
 id|mtd_parts_nb
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|mtd_parts
 r_static
@@ -158,8 +156,6 @@ r_struct
 id|mtd_partition
 op_star
 id|mtd_parts
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|init_edb7312nor
 r_int
@@ -191,7 +187,7 @@ r_char
 op_star
 id|part_type
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|printk
 c_func
@@ -247,7 +243,7 @@ id|edb7312nor_map
 suffix:semicolon
 id|mymtd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|type
 op_assign

@@ -371,7 +371,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPBLKSEL_1
@@ -393,7 +393,7 @@ op_star
 l_int|3
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPBLKSEL_0
@@ -3741,7 +3741,7 @@ id|DAQDS_wSize
 )paren
 suffix:semicolon
 multiline_comment|/* Read data from the head (unprotected bank 1 access okay&n;           since this is only called inside an interrupt) */
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPBLKSEL_1
@@ -3772,7 +3772,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPBLKSEL_0
@@ -5060,7 +5060,7 @@ id|regs
 )paren
 (brace
 multiline_comment|/* Send ack to DSP */
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|dev.io
@@ -5217,7 +5217,7 @@ id|timeout
 op_assign
 l_int|100
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPDSPRESET_ON
@@ -5236,7 +5236,7 @@ suffix:semicolon
 macro_line|#ifndef MSND_CLASSIC
 id|dev.info
 op_assign
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|dev.io
@@ -5245,7 +5245,7 @@ id|HP_INFO
 )paren
 suffix:semicolon
 macro_line|#endif
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPDSPRESET_OFF
@@ -5273,7 +5273,7 @@ l_int|0
 r_if
 c_cond
 (paren
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|dev.io
@@ -5642,7 +5642,7 @@ r_int
 id|flags
 suffix:semicolon
 macro_line|#ifdef MSND_CLASSIC
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|dev.memid
@@ -5653,7 +5653,7 @@ id|HP_MEMM
 )paren
 suffix:semicolon
 macro_line|#endif
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPBLKSEL_0
@@ -5717,7 +5717,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPBLKSEL_1
@@ -5737,7 +5737,7 @@ comma
 l_int|0x8000
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPBLKSEL_0
@@ -6119,7 +6119,7 @@ c_func
 r_void
 )paren
 (brace
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPBLKSEL_0
@@ -6288,7 +6288,7 @@ c_func
 r_void
 )paren
 (brace
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPPRORESET_ON
@@ -6304,7 +6304,7 @@ c_func
 id|TIME_PRO_RESET
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPPRORESET_OFF
@@ -6337,7 +6337,7 @@ comma
 id|timeout
 suffix:semicolon
 macro_line|#ifdef MSND_CLASSIC
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPWAITSTATE_0
@@ -6347,7 +6347,7 @@ op_plus
 id|HP_WAIT
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|HPBITMODE_16
@@ -6945,7 +6945,7 @@ r_int
 id|value
 )paren
 (brace
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|reg
@@ -6953,7 +6953,7 @@ comma
 id|cfg
 )paren
 suffix:semicolon
-id|outb
+id|msnd_outb
 c_func
 (paren
 id|value
@@ -6968,7 +6968,7 @@ c_cond
 (paren
 id|value
 op_ne
-id|inb
+id|msnd_inb
 c_func
 (paren
 id|cfg

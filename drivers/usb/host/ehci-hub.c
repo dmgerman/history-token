@@ -616,9 +616,9 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|ehci_hub_suspend
-mdefine_line|#define ehci_hub_suspend&t;0
+mdefine_line|#define ehci_hub_suspend&t;NULL
 DECL|macro|ehci_hub_resume
-mdefine_line|#define ehci_hub_resume&t;&t;0
+mdefine_line|#define ehci_hub_resume&t;&t;NULL
 macro_line|#endif&t;/* CONFIG_PM */
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|check_reset_complete

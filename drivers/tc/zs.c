@@ -7111,33 +7111,7 @@ multiline_comment|/*&n;&t;&t;&t; * We&squot;re called early and memory managment
 r_if
 c_cond
 (paren
-id|check_region
-c_func
-(paren
-(paren
-r_int
-r_int
-)paren
-id|zs_channels
-(braket
-id|n_channels
-)braket
-dot
-id|control
-comma
-id|ZS_CHAN_IO_SIZE
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;SCC I/O region is not free&quot;
-)paren
-suffix:semicolon
-)brace
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -7155,6 +7129,12 @@ comma
 id|ZS_CHAN_IO_SIZE
 comma
 l_string|&quot;SCC&quot;
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;SCC I/O region is not free&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -388,6 +388,8 @@ id|regs-&gt;tstate
 op_and_assign
 op_complement
 (paren
+id|TSTATE_ASI
+op_or
 id|TSTATE_ICC
 op_or
 id|TSTATE_XCC
@@ -399,6 +401,8 @@ op_or_assign
 id|tstate
 op_amp
 (paren
+id|TSTATE_ASI
+op_or
 id|TSTATE_ICC
 op_or
 id|TSTATE_XCC
@@ -1017,10 +1021,12 @@ r_return
 suffix:semicolon
 id|do_sigsegv
 suffix:colon
-id|do_exit
+id|force_sig
 c_func
 (paren
 id|SIGSEGV
+comma
+id|current
 )paren
 suffix:semicolon
 )brace
@@ -1917,10 +1923,12 @@ r_return
 suffix:semicolon
 id|do_sigsegv
 suffix:colon
-id|do_exit
+id|force_sig
 c_func
 (paren
 id|SIGSEGV
+comma
+id|current
 )paren
 suffix:semicolon
 )brace
@@ -2775,11 +2783,13 @@ id|regs-&gt;u_regs
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* User can only change condition codes in %tstate. */
+multiline_comment|/* User can only change condition codes and %asi in %tstate. */
 id|regs-&gt;tstate
 op_and_assign
 op_complement
 (paren
+id|TSTATE_ASI
+op_or
 id|TSTATE_ICC
 op_or
 id|TSTATE_XCC
@@ -2791,6 +2801,8 @@ op_or_assign
 id|tstate
 op_amp
 (paren
+id|TSTATE_ASI
+op_or
 id|TSTATE_ICC
 op_or
 id|TSTATE_XCC
@@ -2952,14 +2964,12 @@ r_return
 suffix:semicolon
 id|segv
 suffix:colon
-id|send_sig
+id|force_sig
 c_func
 (paren
 id|SIGSEGV
 comma
 id|current
-comma
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -3704,10 +3714,12 @@ id|SIGILL
 suffix:semicolon
 id|sigsegv
 suffix:colon
-id|do_exit
+id|force_sigsegv
 c_func
 (paren
-id|SIGSEGV
+id|signo
+comma
+id|current
 )paren
 suffix:semicolon
 )brace

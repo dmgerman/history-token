@@ -55,7 +55,7 @@ r_struct
 id|qd65xx_timing_s
 (brace
 DECL|member|offset
-r_char
+id|s8
 id|offset
 suffix:semicolon
 multiline_comment|/* ofset from the beginning of Model Number&quot; */
@@ -68,12 +68,12 @@ l_int|4
 suffix:semicolon
 multiline_comment|/* 4 chars from Model number, no conversion */
 DECL|member|active
-r_int
+id|s16
 id|active
 suffix:semicolon
 multiline_comment|/* active time */
 DECL|member|recovery
-r_int
+id|s16
 id|recovery
 suffix:semicolon
 multiline_comment|/* recovery time */
