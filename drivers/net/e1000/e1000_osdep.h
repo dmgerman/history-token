@@ -65,6 +65,6 @@ mdefine_line|#define E1000_WRITE_REG_ARRAY(a, reg, offset, value) ( &bslash;&n; 
 DECL|macro|E1000_READ_REG_ARRAY
 mdefine_line|#define E1000_READ_REG_ARRAY(a, reg, offset) ( &bslash;&n;    ((a)-&gt;mac_type &gt;= e1000_82543) ? &bslash;&n;        readl((a)-&gt;hw_addr + E1000_##reg + ((offset) &lt;&lt; 2)) : &bslash;&n;        readl((a)-&gt;hw_addr + E1000_82542_##reg + ((offset) &lt;&lt; 2)))
 DECL|macro|E1000_WRITE_FLUSH
-mdefine_line|#define E1000_WRITE_FLUSH(a) E1000_READ_REG(a, STATUS);
+mdefine_line|#define E1000_WRITE_FLUSH(a) ((void)E1000_READ_REG(a, STATUS))
 macro_line|#endif /* _E1000_OSDEP_H_ */
 eof

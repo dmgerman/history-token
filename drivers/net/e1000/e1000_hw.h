@@ -16,10 +16,13 @@ multiline_comment|/* Media Access Controlers */
 r_typedef
 r_enum
 (brace
-DECL|enumerator|e1000_82542_rev2_0
-id|e1000_82542_rev2_0
+DECL|enumerator|e1000_undefined
+id|e1000_undefined
 op_assign
 l_int|0
+comma
+DECL|enumerator|e1000_82542_rev2_0
+id|e1000_82542_rev2_0
 comma
 DECL|enumerator|e1000_82542_rev2_1
 id|e1000_82542_rev2_1
@@ -366,15 +369,17 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Error Codes */
 DECL|macro|E1000_SUCCESS
-mdefine_line|#define E1000_SUCCESS    0
+mdefine_line|#define E1000_SUCCESS      0
 DECL|macro|E1000_ERR_EEPROM
-mdefine_line|#define E1000_ERR_EEPROM 1
+mdefine_line|#define E1000_ERR_EEPROM   1
 DECL|macro|E1000_ERR_PHY
-mdefine_line|#define E1000_ERR_PHY    2
+mdefine_line|#define E1000_ERR_PHY      2
 DECL|macro|E1000_ERR_CONFIG
-mdefine_line|#define E1000_ERR_CONFIG 3
+mdefine_line|#define E1000_ERR_CONFIG   3
 DECL|macro|E1000_ERR_PARAM
-mdefine_line|#define E1000_ERR_PARAM  4
+mdefine_line|#define E1000_ERR_PARAM    4
+DECL|macro|E1000_ERR_MAC_TYPE
+mdefine_line|#define E1000_ERR_MAC_TYPE 5
 multiline_comment|/* Function prototypes */
 multiline_comment|/* Initialization */
 r_void
@@ -389,6 +394,16 @@ id|hw
 suffix:semicolon
 r_int32
 id|e1000_init_hw
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
+r_int32
+id|e1000_set_mac_type
 c_func
 (paren
 r_struct
@@ -3040,6 +3055,8 @@ DECL|macro|E1000_TXDCTL_GRAN
 mdefine_line|#define E1000_TXDCTL_GRAN    0x01000000 /* TXDCTL Granularity */
 DECL|macro|E1000_TXDCTL_LWTHRESH
 mdefine_line|#define E1000_TXDCTL_LWTHRESH 0xFE000000 /* TXDCTL Low Threshold */
+DECL|macro|E1000_TXDCTL_FULL_TX_DESC_WB
+mdefine_line|#define E1000_TXDCTL_FULL_TX_DESC_WB 0x01010000 /* GRAN=1, WTHRESH=1 */
 multiline_comment|/* Transmit Configuration Word */
 DECL|macro|E1000_TXCW_FD
 mdefine_line|#define E1000_TXCW_FD         0x00000020        /* TXCW full duplex */
@@ -3417,6 +3434,10 @@ DECL|macro|PCIX_STATUS_HI_MMRBC_MASK
 mdefine_line|#define PCIX_STATUS_HI_MMRBC_MASK    0x0060
 DECL|macro|PCIX_STATUS_HI_MMRBC_SHIFT
 mdefine_line|#define PCIX_STATUS_HI_MMRBC_SHIFT   0x5
+DECL|macro|PCIX_STATUS_HI_MMRBC_4K
+mdefine_line|#define PCIX_STATUS_HI_MMRBC_4K      0x3
+DECL|macro|PCIX_STATUS_HI_MMRBC_2K
+mdefine_line|#define PCIX_STATUS_HI_MMRBC_2K      0x2
 multiline_comment|/* The number of bits that we need to shift right to move the &quot;pause&quot;&n; * bits from the EEPROM (bits 13:12) to the &quot;pause&quot; (bits 8:7) field&n; * in the TXCW register &n; */
 DECL|macro|PAUSE_SHIFT
 mdefine_line|#define PAUSE_SHIFT 5

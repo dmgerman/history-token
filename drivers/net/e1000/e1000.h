@@ -59,13 +59,8 @@ mdefine_line|#define E1000_DBG(args...)
 macro_line|#endif
 DECL|macro|E1000_ERR
 mdefine_line|#define E1000_ERR(args...) printk(KERN_ERR &quot;e1000: &quot; args)
-macro_line|#ifdef CONFIG_PPC
-DECL|macro|E1000_MAX_INTR
-mdefine_line|#define E1000_MAX_INTR 1
-macro_line|#else
 DECL|macro|E1000_MAX_INTR
 mdefine_line|#define E1000_MAX_INTR 10
-macro_line|#endif
 multiline_comment|/* Supported Rx Buffer Sizes */
 DECL|macro|E1000_RXBUFFER_2048
 mdefine_line|#define E1000_RXBUFFER_2048  2048
