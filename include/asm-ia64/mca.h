@@ -143,6 +143,8 @@ DECL|typedef|ia64_mc_info_t
 )brace
 id|ia64_mc_info_t
 suffix:semicolon
+DECL|macro|PERCPU_MCA_SIZE
+mdefine_line|#define PERCPU_MCA_SIZE sizeof(struct ia64_mc_info_s)
 DECL|struct|ia64_mca_sal_to_os_state_s
 r_typedef
 r_struct

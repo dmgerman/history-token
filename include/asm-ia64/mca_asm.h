@@ -28,6 +28,8 @@ mdefine_line|#define DATA_PA_TO_VA(addr,temp)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;
 multiline_comment|/*&n; * This macro gets the physical address of this cpu&squot;s cpuinfo structure.&n; */
 DECL|macro|GET_PERCPU_PADDR
 mdefine_line|#define GET_PERCPU_PADDR(reg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mov&t;reg&t;= ar.k3;;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;addl&t;reg&t;= IA64_CPUINFO_PERCPU_PADDR,reg
+DECL|macro|GET_CPUINFO_PAL_PADDR
+mdefine_line|#define GET_CPUINFO_PAL_PADDR(reg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mov&t;reg&t;= ar.k3;;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;addl&t;reg&t;= IA64_CPUINFO_PAL_PADDR,reg
 multiline_comment|/*&n; * This macro gets the physical address of this cpu&squot;s MCA save structure.&n; */
 DECL|macro|GET_CPUINFO_MCA_PADDR
 mdefine_line|#define GET_CPUINFO_MCA_PADDR(reg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mov&t;reg&t;= ar.k3;;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;addl&t;reg&t;= IA64_CPUINFO_PA_MCA_INFO,reg;;&t;&t;&t;&bslash;&n;&t;ld8&t;reg&t;= [reg]
