@@ -578,7 +578,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
+id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceNumber
 op_ne
 l_int|0
 )paren
