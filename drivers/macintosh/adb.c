@@ -145,6 +145,7 @@ suffix:semicolon
 DECL|variable|adb_probe_task_flag
 r_static
 r_int
+r_int
 id|adb_probe_task_flag
 suffix:semicolon
 DECL|variable|adb_probe_task_wq
@@ -1656,6 +1657,7 @@ id|adb_sreq
 suffix:semicolon
 DECL|variable|adb_sreq_lock
 r_static
+r_int
 r_int
 id|adb_sreq_lock
 suffix:semicolon

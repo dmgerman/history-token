@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAX_BUF_PER_PAGE
 mdefine_line|#define MAX_BUF_PER_PAGE (PAGE_CACHE_SIZE / 512)
@@ -778,10 +779,6 @@ id|file-&gt;f_pos
 id|file-&gt;f_pos
 op_assign
 id|offset
-suffix:semicolon
-id|file-&gt;f_reada
-op_assign
-l_int|0
 suffix:semicolon
 id|file-&gt;f_version
 op_assign
@@ -3264,12 +3261,55 @@ r_int
 id|arg
 )paren
 (brace
+r_int
+id|ret
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cmd
+)paren
+(brace
+r_case
+id|BLKRAGET
+suffix:colon
+r_case
+id|BLKFRAGET
+suffix:colon
+r_case
+id|BLKRASET
+suffix:colon
+r_case
+id|BLKFRASET
+suffix:colon
+id|ret
+op_assign
+id|blk_ioctl
+c_func
+(paren
+id|inode-&gt;i_bdev
+comma
+id|cmd
+comma
+id|arg
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+(brace
+)brace
 r_if
 c_cond
 (paren
 id|inode-&gt;i_bdev-&gt;bd_op-&gt;ioctl
 )paren
-r_return
+id|ret
+op_assign
 id|inode-&gt;i_bdev-&gt;bd_op
 op_member_access_from_pointer
 id|ioctl
@@ -3284,9 +3324,11 @@ comma
 id|arg
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_return
-op_minus
-id|EINVAL
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|def_blk_aops
