@@ -1587,6 +1587,13 @@ id|ebda_hpc_bus
 op_star
 id|buses
 suffix:semicolon
+DECL|member|ctrl_dev
+r_struct
+id|pci_dev
+op_star
+id|ctrl_dev
+suffix:semicolon
+multiline_comment|/* in case where controller is PCI */
 DECL|member|starting_slot_num
 id|u8
 id|starting_slot_num
