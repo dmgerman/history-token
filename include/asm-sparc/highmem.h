@@ -39,11 +39,13 @@ r_void
 )paren
 id|__init
 suffix:semicolon
-multiline_comment|/*&n; * Right now we initialize only a single pte table. It can be extended&n; * easily, subsequent pte tables have to be allocated in one physical&n; * chunk of RAM.&n; */
-DECL|macro|PKMAP_BASE
-mdefine_line|#define PKMAP_BASE (SRMMU_NOCACHE_VADDR + (SRMMU_MAX_NOCACHE_PAGES &lt;&lt; PAGE_SHIFT))
+multiline_comment|/*&n; * Right now we initialize only a single pte table. It can be extended&n; * easily, subsequent pte tables have to be allocated in one physical&n; * chunk of RAM.  Currently the simplest way to do this is to align the&n; * pkmap region on a pagetable boundary (4MB).&n; */
 DECL|macro|LAST_PKMAP
 mdefine_line|#define LAST_PKMAP 1024
+DECL|macro|PKMAP_SIZE
+mdefine_line|#define PKMAP_SIZE (LAST_PKMAP &lt;&lt; PAGE_SHIFT)
+DECL|macro|PKMAP_BASE
+mdefine_line|#define PKMAP_BASE SRMMU_PMD_ALIGN_SOFT(SRMMU_NOCACHE_VADDR + (SRMMU_MAX_NOCACHE_PAGES &lt;&lt; PAGE_SHIFT))
 DECL|macro|LAST_PKMAP_MASK
 mdefine_line|#define LAST_PKMAP_MASK (LAST_PKMAP - 1)
 DECL|macro|PKMAP_NR

@@ -38,6 +38,21 @@ DECL|macro|SRMMU_PMD_TABLE_SIZE
 mdefine_line|#define SRMMU_PMD_TABLE_SIZE    0x100 /* 64 entries, 4 bytes a piece */
 DECL|macro|SRMMU_PGD_TABLE_SIZE
 mdefine_line|#define SRMMU_PGD_TABLE_SIZE    0x400 /* 256 entries, 4 bytes a piece */
+multiline_comment|/*&n; * To support pagetables in highmem, Linux introduces APIs which&n; * return struct page* and generally manipulate page tables when&n; * they are not mapped into kernel space. Our hardware page tables&n; * are smaller than pages. We lump hardware tabes into big, page sized&n; * software tables.&n; *&n; * PMD_SHIFT determines the size of the area a second-level page table entry&n; * can map, and our pmd_t is 16 times larger than normal.&n; */
+DECL|macro|SRMMU_PTRS_PER_PTE_SOFT
+mdefine_line|#define SRMMU_PTRS_PER_PTE_SOFT&t;(PAGE_SIZE/4)&t;/* 16 hard tables per 4K page */
+DECL|macro|SRMMU_PTRS_PER_PMD_SOFT
+mdefine_line|#define SRMMU_PTRS_PER_PMD_SOFT&t;4&t;/* Each pmd_t contains 16 hard PTPs */
+DECL|macro|SRMMU_PTE_SZ_SOFT
+mdefine_line|#define SRMMU_PTE_SZ_SOFT       PAGE_SIZE&t;/* same as above, in bytes */
+DECL|macro|SRMMU_PMD_SHIFT_SOFT
+mdefine_line|#define SRMMU_PMD_SHIFT_SOFT&t;22
+DECL|macro|SRMMU_PMD_SIZE_SOFT
+mdefine_line|#define SRMMU_PMD_SIZE_SOFT&t;(1UL &lt;&lt; SRMMU_PMD_SHIFT_SOFT)
+DECL|macro|SRMMU_PMD_MASK_SOFT
+mdefine_line|#define SRMMU_PMD_MASK_SOFT&t;(~(SRMMU_PMD_SIZE_SOFT-1))
+DECL|macro|SRMMU_PMD_ALIGN_SOFT
+mdefine_line|#define SRMMU_PMD_ALIGN_SOFT(addr)  (((addr)+SRMMU_PMD_SIZE_SOFT-1)&amp;SRMMU_PMD_MASK_SOFT)
 multiline_comment|/* Definition of the values in the ET field of PTD&squot;s and PTE&squot;s */
 DECL|macro|SRMMU_ET_MASK
 mdefine_line|#define SRMMU_ET_MASK         0x3
