@@ -673,7 +673,7 @@ id|size
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Get/Allocate a free Tx Data Buffer&n; *&n; *  *--------------*-----------------*----------------------------------*&n; *  |    PLCP      |    MAC Header   |  DST  SRC         Data ...       |&n; *  |  (24 bytes)  |    (30 bytes)   |  (6)  (6)  (Ethernet Row Data)   |&n; *  *--------------*-----------------*----------------------------------*&n; *  &bslash;               &bslash;- IEEE 802.11 -/ &bslash;------------ uDataLen -----------/&n; *   &bslash;-struct wl3501_80211_tx_hdr--/   &bslash;-------- Ethernet Frame -------/&n; *&n; * Return = Postion in Card&n; */
+multiline_comment|/*&n; * Get/Allocate a free Tx Data Buffer&n; *&n; *  *--------------*-----------------*----------------------------------*&n; *  |    PLCP      |    MAC Header   |  DST  SRC         Data ...       |&n; *  |  (24 bytes)  |    (30 bytes)   |  (6)  (6)  (Ethernet Row Data)   |&n; *  *--------------*-----------------*----------------------------------*&n; *  &bslash;               &bslash;- IEEE 802.11 -/ &bslash;-------------- len --------------/&n; *   &bslash;-struct wl3501_80211_tx_hdr--/   &bslash;-------- Ethernet Frame -------/&n; *&n; * Return = Postion in Card&n; */
 DECL|function|wl3501_get_tx_buffer
 r_static
 id|u16

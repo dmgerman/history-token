@@ -2,6 +2,7 @@ macro_line|#ifndef __WL3501_H__
 DECL|macro|__WL3501_H__
 mdefine_line|#define __WL3501_H__
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &quot;ieee802_11.h&quot;
 multiline_comment|/* define for WLA 2.0 */
 DECL|macro|WL3501_BLKSZ
 mdefine_line|#define WL3501_BLKSZ 256
@@ -1660,51 +1661,6 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Data Frame MAC Header (IEEE 802.11)&n; */
-DECL|struct|wl3501_80211_data_mac_hdr
-r_struct
-id|wl3501_80211_data_mac_hdr
-(brace
-DECL|member|frame_ctrl
-id|u16
-id|frame_ctrl
-suffix:semicolon
-DECL|member|duration_id
-id|u16
-id|duration_id
-suffix:semicolon
-DECL|member|addr1
-r_struct
-id|wl3501_mac_addr
-id|addr1
-suffix:semicolon
-DECL|member|addr2
-r_struct
-id|wl3501_mac_addr
-id|addr2
-suffix:semicolon
-DECL|member|addr3
-r_struct
-id|wl3501_mac_addr
-id|addr3
-suffix:semicolon
-DECL|member|seq_ctrl
-id|u16
-id|seq_ctrl
-suffix:semicolon
-DECL|member|addr4
-r_struct
-id|wl3501_mac_addr
-id|addr4
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 DECL|struct|wl3501_80211_tx_hdr
 r_struct
 id|wl3501_80211_tx_hdr
@@ -1716,7 +1672,7 @@ id|pclp_hdr
 suffix:semicolon
 DECL|member|mac_hdr
 r_struct
-id|wl3501_80211_data_mac_hdr
+id|ieee802_11_hdr
 id|mac_hdr
 suffix:semicolon
 )brace
