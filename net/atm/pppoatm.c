@@ -298,7 +298,7 @@ id|atmvcc-&gt;pop
 op_assign
 id|pvcc-&gt;old_pop
 suffix:semicolon
-id|tasklet_disable
+id|tasklet_kill
 c_func
 (paren
 op_amp
