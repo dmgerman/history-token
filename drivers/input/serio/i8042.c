@@ -2593,6 +2593,70 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Reset the controller.&n; */
+DECL|function|i8042_controller_reset
+r_void
+id|i8042_controller_reset
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|i8042_reset
+)paren
+(brace
+r_int
+r_char
+id|param
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i8042_command
+c_func
+(paren
+op_amp
+id|param
+comma
+id|I8042_CMD_CTL_TEST
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i8042.c: i8042 controller reset timeout.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Restore the original control register setting.&n; */
+id|i8042_ctr
+op_assign
+id|i8042_initial_ctr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i8042_command
+c_func
+(paren
+op_amp
+id|i8042_ctr
+comma
+id|I8042_CMD_CTL_WCTR
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;i8042.c: Can&squot;t restore CTR.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Here we try to reset everything back to a state in which the BIOS will be&n; * able to talk to the hardware when rebooting.&n; */
 DECL|function|i8042_controller_cleanup
 r_void
@@ -2667,60 +2731,36 @@ op_plus
 id|i
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Reset the controller.&n; */
-r_if
-c_cond
-(paren
-id|i8042_reset
-)paren
-(brace
-r_int
-r_char
-id|param
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i8042_command
+id|i8042_controller_reset
 c_func
 (paren
-op_amp
-id|param
-comma
-id|I8042_CMD_CTL_TEST
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;i8042.c: i8042 controller reset timeout.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Restore the original control register setting.&n; */
-id|i8042_ctr
-op_assign
-id|i8042_initial_ctr
-suffix:semicolon
-r_if
-c_cond
+multiline_comment|/*&n; * Here we try to restore the original BIOS settings&n; */
+DECL|function|i8042_controller_suspend
+r_static
+r_int
+id|i8042_controller_suspend
+c_func
 (paren
-id|i8042_command
+r_void
+)paren
+(brace
+id|del_timer_sync
 c_func
 (paren
 op_amp
-id|i8042_ctr
-comma
-id|I8042_CMD_CTL_WCTR
+id|i8042_timer
 )paren
-)paren
-id|printk
+suffix:semicolon
+id|i8042_controller_reset
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i8042.c: Can&squot;t restore CTR.&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Here we try to reset everything back to a state in which suspended&n; */
@@ -2786,7 +2826,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i8042: failed to resume active multiplexor, mouse won&squot;t wotk.&bslash;n&quot;
+l_string|&quot;i8042: failed to resume active multiplexor, mouse won&squot;t work.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2875,6 +2915,18 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Restart timer (for polling &quot;stuck&quot; data)&n; */
+id|mod_timer
+c_func
+(paren
+op_amp
+id|i8042_timer
+comma
+id|jiffies
+op_plus
+id|I8042_POLL_PERIOD
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2934,7 +2986,29 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Resume handler for the new PM scheme (driver model)&n; */
+multiline_comment|/*&n; * Suspend/resume handlers for the new PM scheme (driver model)&n; */
+DECL|function|i8042_suspend
+r_static
+r_int
+id|i8042_suspend
+c_func
+(paren
+r_struct
+id|sys_device
+op_star
+id|dev
+comma
+id|u32
+id|state
+)paren
+(brace
+r_return
+id|i8042_controller_suspend
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|i8042_resume
 r_static
 r_int
@@ -2968,6 +3042,11 @@ l_string|&quot;i8042&quot;
 )paren
 comma
 dot
+id|suspend
+op_assign
+id|i8042_suspend
+comma
+dot
 id|resume
 op_assign
 id|i8042_resume
@@ -2994,7 +3073,7 @@ id|kbc_sysclass
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Resume handler for the old PM scheme (APM)&n; */
+multiline_comment|/*&n; * Suspend/resume handler for the old PM scheme (APM)&n; */
 DECL|function|i8042_pm_callback
 r_static
 r_int
@@ -3014,19 +3093,31 @@ op_star
 id|dummy
 )paren
 (brace
-r_if
+r_switch
 c_cond
 (paren
 id|request
-op_eq
-id|PM_RESUME
 )paren
+(brace
+r_case
+id|PM_SUSPEND
+suffix:colon
+r_return
+id|i8042_controller_suspend
+c_func
+(paren
+)paren
+suffix:semicolon
+r_case
+id|PM_RESUME
+suffix:colon
 r_return
 id|i8042_controller_resume
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -3448,7 +3539,7 @@ id|kbc_sysclass
 )paren
 suffix:semicolon
 )brace
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
