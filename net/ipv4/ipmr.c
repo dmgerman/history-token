@@ -4675,6 +4675,7 @@ id|skb
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Processing handlers for ipmr_forward&n; */
+DECL|function|ipmr_queue_xmit
 r_static
 r_void
 id|ipmr_queue_xmit
@@ -4693,7 +4694,6 @@ comma
 r_int
 id|vifi
 )paren
-suffix:semicolon
 (brace
 r_struct
 id|iphdr
