@@ -2816,6 +2816,9 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -2829,6 +2832,10 @@ id|pnt
 comma
 id|count
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|read
 op_add_assign

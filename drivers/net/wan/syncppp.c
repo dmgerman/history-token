@@ -393,6 +393,7 @@ r_void
 id|sppp_flush_xmit
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
