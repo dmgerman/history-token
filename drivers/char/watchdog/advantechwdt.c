@@ -24,6 +24,11 @@ r_static
 r_int
 id|advwdt_is_open
 suffix:semicolon
+DECL|variable|adv_expect_close
+r_static
+r_char
+id|adv_expect_close
+suffix:semicolon
 DECL|variable|advwdt_lock
 r_static
 id|spinlock_t
@@ -420,7 +425,7 @@ c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
-op_assign
+op_eq
 id|WATCHDOG_MINOR
 )paren
 (brace
@@ -665,7 +670,7 @@ id|advwdt_notifier
 op_assign
 (brace
 dot
-id|self
+id|notifier_call
 op_assign
 id|advwdt_notify_sys
 comma
