@@ -2395,9 +2395,6 @@ c_loop
 id|mcount
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * promise_write_pollfunc() is the handler for disk write completion polling.&n; */
@@ -2421,6 +2418,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
 r_struct
 id|request
 op_star
@@ -2428,6 +2426,7 @@ id|rq
 op_assign
 id|hwgroup-&gt;rq
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3296,17 +3295,21 @@ id|block
 )paren
 (brace
 multiline_comment|/* The four drives on the two logical (one physical) interfaces&n;&t;   are distinguished by writing the drive number (0-3) to the&n;&t;   Feature register.&n;&t;   FIXME: Is promise_selectproc now redundant??&n;&t;*/
-r_int
-id|drive_number
+id|ide_hwif_t
+op_star
+id|hwif
 op_assign
-(paren
 id|HWIF
 c_func
 (paren
 id|drive
 )paren
-op_member_access_from_pointer
-id|channel
+suffix:semicolon
+r_int
+id|drive_number
+op_assign
+(paren
+id|hwif-&gt;channel
 op_lshift
 l_int|1
 )paren
