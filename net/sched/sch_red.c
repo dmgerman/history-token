@@ -337,7 +337,7 @@ r_else
 (brace
 id|q-&gt;qave
 op_add_assign
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_minus
 (paren
 id|q-&gt;qave
@@ -345,7 +345,7 @@ op_rshift
 id|q-&gt;Wlog
 )paren
 suffix:semicolon
-multiline_comment|/* NOTE:&n;&t;&t;   q-&gt;qave is fixed point number with point at Wlog.&n;&t;&t;   The formulae above is equvalent to floating point&n;&t;&t;   version:&n;&n;&t;&t;   qave = qave*(1-W) + sch-&gt;stats.backlog*W;&n;&t;&t;                                           --ANK (980924)&n;&t;&t; */
+multiline_comment|/* NOTE:&n;&t;&t;   q-&gt;qave is fixed point number with point at Wlog.&n;&t;&t;   The formulae above is equvalent to floating point&n;&t;&t;   version:&n;&n;&t;&t;   qave = qave*(1-W) + sch-&gt;qstats.backlog*W;&n;&t;&t;                                           --ANK (980924)&n;&t;&t; */
 )brace
 r_if
 c_cond
@@ -365,7 +365,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_plus
 id|skb-&gt;len
 op_le
@@ -381,15 +381,15 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
 r_return
@@ -408,7 +408,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -428,7 +428,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|sch-&gt;stats.overlimits
+id|sch-&gt;qstats.overlimits
 op_increment
 suffix:semicolon
 id|mark
@@ -506,7 +506,7 @@ c_func
 op_amp
 id|q-&gt;Rmask
 suffix:semicolon
-id|sch-&gt;stats.overlimits
+id|sch-&gt;qstats.overlimits
 op_increment
 suffix:semicolon
 r_goto
@@ -533,7 +533,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -583,7 +583,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -636,7 +636,7 @@ c_cond
 id|skb
 )paren
 (brace
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_sub_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -704,11 +704,11 @@ id|len
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_sub_assign
 id|len
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|q-&gt;st.other
@@ -764,7 +764,7 @@ op_amp
 id|sch-&gt;q
 )paren
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_assign
 l_int|0
 suffix:semicolon

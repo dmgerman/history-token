@@ -368,7 +368,7 @@ id|sch-&gt;handle
 comma
 id|q-&gt;backlog
 comma
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 )paren
 suffix:semicolon
 multiline_comment|/* sum up all the qaves of prios &lt;= to ours to get the new qave*/
@@ -553,7 +553,7 @@ id|t-&gt;eqp
 (brace
 id|q-&gt;qave
 op_add_assign
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_minus
 (paren
 id|q-&gt;qave
@@ -636,15 +636,15 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.bytes
+id|sch-&gt;bstats.bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.packets
+id|sch-&gt;bstats.packets
 op_increment
 suffix:semicolon
 r_return
@@ -665,7 +665,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 r_return
@@ -689,7 +689,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|sch-&gt;stats.overlimits
+id|sch-&gt;qstats.overlimits
 op_increment
 suffix:semicolon
 id|q-&gt;forced
@@ -743,7 +743,7 @@ c_func
 op_amp
 id|q-&gt;Rmask
 suffix:semicolon
-id|sch-&gt;stats.overlimits
+id|sch-&gt;qstats.overlimits
 op_increment
 suffix:semicolon
 id|q-&gt;early
@@ -826,7 +826,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -888,7 +888,7 @@ c_cond
 id|skb
 )paren
 (brace
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_sub_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -1039,11 +1039,11 @@ id|len
 op_assign
 id|skb-&gt;len
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_sub_assign
 id|len
 suffix:semicolon
-id|sch-&gt;stats.drops
+id|sch-&gt;qstats.drops
 op_increment
 suffix:semicolon
 id|q
@@ -1181,7 +1181,7 @@ op_amp
 id|sch-&gt;q
 )paren
 suffix:semicolon
-id|sch-&gt;stats.backlog
+id|sch-&gt;qstats.backlog
 op_assign
 l_int|0
 suffix:semicolon

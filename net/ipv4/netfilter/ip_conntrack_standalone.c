@@ -3588,7 +3588,7 @@ suffix:colon
 id|proc_net_remove
 c_func
 (paren
-l_string|&quot;ip_conntrack_exp&quot;
+l_string|&quot;ip_conntrack_expect&quot;
 )paren
 suffix:semicolon
 id|cleanup_proc
@@ -3983,4 +3983,13 @@ c_func
 id|ip_conntrack_put
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
+DECL|variable|ip_conntrack_tcp_update
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_conntrack_tcp_update
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
