@@ -3052,6 +3052,7 @@ suffix:semicolon
 id|mask
 op_assign
 (paren
+(paren
 id|status
 op_amp
 id|TIOCM_DSR
@@ -3061,7 +3062,9 @@ c_cond
 id|RFCOMM_V24_RTC
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|status
 op_amp
@@ -3072,7 +3075,9 @@ c_cond
 id|RFCOMM_V24_RTC
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|status
 op_amp
@@ -3083,7 +3088,9 @@ c_cond
 id|RFCOMM_V24_RTR
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|status
 op_amp
@@ -3094,7 +3101,9 @@ c_cond
 id|RFCOMM_V24_RTR
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|status
 op_amp
@@ -3105,7 +3114,9 @@ c_cond
 id|RFCOMM_V24_IC
 suffix:colon
 l_int|0
+)paren
 op_or
+(paren
 (paren
 id|status
 op_amp
@@ -3116,6 +3127,7 @@ c_cond
 id|RFCOMM_V24_DV
 suffix:colon
 l_int|0
+)paren
 suffix:semicolon
 r_if
 c_cond
