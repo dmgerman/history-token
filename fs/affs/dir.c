@@ -520,7 +520,13 @@ c_loop
 suffix:semicolon
 id|hash_pos
 OL
-id|AFFS_SB-&gt;s_hashsize
+id|AFFS_SB
+c_func
+(paren
+id|sb
+)paren
+op_member_access_from_pointer
+id|s_hashsize
 suffix:semicolon
 id|hash_pos
 op_increment

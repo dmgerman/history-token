@@ -2020,7 +2020,6 @@ macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ntfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/sysv_fs_sb.h&gt;
-macro_line|#include &lt;linux/affs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
 macro_line|#include &lt;linux/romfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/adfs_fs_sb.h&gt;
@@ -2190,11 +2189,6 @@ DECL|member|sysv_sb
 r_struct
 id|sysv_sb_info
 id|sysv_sb
-suffix:semicolon
-DECL|member|affs_sb
-r_struct
-id|affs_sb_info
-id|affs_sb
 suffix:semicolon
 DECL|member|ufs_sb
 r_struct
