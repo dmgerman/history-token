@@ -9601,6 +9601,7 @@ id|dv32
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -9846,6 +9847,7 @@ c_func
 (paren
 r_struct
 id|dv1394_status32
+id|__user
 op_star
 )paren
 id|arg
