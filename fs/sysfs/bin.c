@@ -1,4 +1,6 @@
 multiline_comment|/*&n; * bin.c - binary file operations for sysfs.&n; */
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
@@ -201,7 +203,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;offs = %lld, *off = %lld, count = %zd&bslash;n&quot;
