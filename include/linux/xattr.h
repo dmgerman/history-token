@@ -6,5 +6,7 @@ DECL|macro|XATTR_CREATE
 mdefine_line|#define XATTR_CREATE&t;0x1&t;/* set value, fail if attr already exists */
 DECL|macro|XATTR_REPLACE
 mdefine_line|#define XATTR_REPLACE&t;0x2&t;/* set value, fail if attr does not exist */
+DECL|macro|XATTR_SECURITY_PREFIX
+mdefine_line|#define XATTR_SECURITY_PREFIX&t;&quot;security.&quot;
 macro_line|#endif&t;/* _LINUX_XATTR_H */
 eof
