@@ -7470,14 +7470,6 @@ r_int
 id|__initdata
 id|probe_pdc4030
 suffix:semicolon
-r_extern
-r_void
-id|init_pdc4030
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
 DECL|variable|probe_ali14xx
@@ -9165,16 +9157,21 @@ macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
 (brace
 r_extern
 r_int
-id|ide_probe_for_pdc4030
+id|pdc4030_init
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|probe_pdc4030
+)paren
 (paren
 r_void
 )paren
-id|ide_probe_for_pdc4030
+id|pdc4030_init
 c_func
 (paren
 )paren
@@ -10653,18 +10650,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
-r_if
-c_cond
-(paren
-id|probe_pdc4030
-)paren
-id|init_pdc4030
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_ALI14XX
 r_if
 c_cond

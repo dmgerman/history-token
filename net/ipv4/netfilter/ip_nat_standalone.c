@@ -367,11 +367,6 @@ id|maniptype
 )paren
 (brace
 r_int
-id|in_hashes
-op_assign
-id|info-&gt;initialized
-suffix:semicolon
-r_int
 r_int
 id|ret
 suffix:semicolon
@@ -429,12 +424,18 @@ id|hooknum
 op_eq
 id|NF_IP_LOCAL_IN
 )paren
-(brace
 id|ret
 op_assign
-id|NF_ACCEPT
+id|alloc_null_binding
+c_func
+(paren
+id|ct
+comma
+id|info
+comma
+id|hooknum
+)paren
 suffix:semicolon
-)brace
 r_else
 macro_line|#endif
 id|ret
@@ -473,38 +474,6 @@ id|ip_nat_lock
 suffix:semicolon
 r_return
 id|ret
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|in_hashes
-)paren
-(brace
-id|IP_NF_ASSERT
-c_func
-(paren
-id|info-&gt;bysource.conntrack
-)paren
-suffix:semicolon
-id|replace_in_hashes
-c_func
-(paren
-id|ct
-comma
-id|info
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|place_in_hashes
-c_func
-(paren
-id|ct
-comma
-id|info
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -715,6 +684,7 @@ id|okfn
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 r_static
 r_int
 r_int
@@ -883,6 +853,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* We must be after connection tracking and before packet filtering. */
 multiline_comment|/* Before packet filtering, change destination */
 DECL|variable|ip_nat_in_ops
@@ -954,6 +925,7 @@ id|NF_IP_PRI_NAT_SRC
 comma
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 multiline_comment|/* Before packet filtering, change destination */
 DECL|variable|ip_nat_local_out_ops
 r_static
@@ -989,7 +961,7 @@ id|NF_IP_PRI_NAT_DST
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
+multiline_comment|/* After packet filtering, change source for reply packets of LOCAL_OUT DNAT */
 DECL|variable|ip_nat_local_in_ops
 r_static
 r_struct
@@ -1287,6 +1259,7 @@ r_goto
 id|cleanup_inops
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 id|ret
 op_assign
 id|nf_register_hook
@@ -1314,7 +1287,6 @@ r_goto
 id|cleanup_outops
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
 id|ret
 op_assign
 id|nf_register_hook
@@ -1358,7 +1330,6 @@ id|ip_nat_local_in_ops
 suffix:semicolon
 id|cleanup_localoutops
 suffix:colon
-macro_line|#endif
 id|nf_unregister_hook
 c_func
 (paren
@@ -1368,6 +1339,7 @@ id|ip_nat_local_out_ops
 suffix:semicolon
 id|cleanup_outops
 suffix:colon
+macro_line|#endif
 id|nf_unregister_hook
 c_func
 (paren
