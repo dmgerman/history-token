@@ -6355,8 +6355,6 @@ suffix:semicolon
 id|channel
 OL
 id|NUM_CHANNELS
-op_minus
-l_int|1
 suffix:semicolon
 id|channel
 op_increment
