@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
+macro_line|#include &lt;asm/fbio.h&gt;
 macro_line|#include &quot;sbuslib.h&quot;
 DECL|function|sbusfb_fill_var
 r_void
@@ -386,6 +387,10 @@ r_int
 r_int
 id|cmd
 comma
+r_int
+r_int
+id|arg
+comma
 r_struct
 id|fb_info
 op_star
@@ -533,8 +538,6 @@ comma
 id|count
 comma
 id|i
-comma
-id|err
 suffix:semicolon
 r_if
 c_cond
@@ -622,6 +625,9 @@ id|i
 op_increment
 )paren
 (brace
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -689,11 +695,12 @@ c_cond
 (paren
 id|err
 )paren
-r_break
+r_return
+id|err
 suffix:semicolon
 )brace
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 r_case
@@ -737,8 +744,6 @@ comma
 id|count
 comma
 id|i
-comma
-id|err
 suffix:semicolon
 r_if
 c_cond
@@ -880,7 +885,7 @@ id|EFAULT
 suffix:semicolon
 )brace
 r_return
-id|err
+l_int|0
 suffix:semicolon
 )brace
 r_default

@@ -83,6 +83,10 @@ r_int
 r_int
 id|cmd
 comma
+r_int
+r_int
+id|arg
+comma
 r_struct
 id|fb_info
 op_star

@@ -891,6 +891,8 @@ c_func
 (paren
 id|cmd
 comma
+id|arg
+comma
 id|info
 comma
 id|FBTYPE_SUN3COLOR
