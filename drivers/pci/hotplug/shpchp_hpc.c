@@ -96,17 +96,17 @@ mdefine_line|#define PCIX_100MHZ_ECC&t;&t;0x6
 DECL|macro|PCIX_133MHZ_ECC
 mdefine_line|#define PCIX_133MHZ_ECC&t;&t;0x7
 DECL|macro|PCIX_66MHZ_266
-mdefine_line|#define PCIX_66MHZ_266&t;&t;0x8
+mdefine_line|#define PCIX_66MHZ_266&t;&t;0x9
 DECL|macro|PCIX_100MHZ_266
-mdefine_line|#define PCIX_100MHZ_266&t;&t;0x9
+mdefine_line|#define PCIX_100MHZ_266&t;&t;0xa
 DECL|macro|PCIX_133MHZ_266
-mdefine_line|#define PCIX_133MHZ_266&t;&t;0x0a
+mdefine_line|#define PCIX_133MHZ_266&t;&t;0xb
 DECL|macro|PCIX_66MHZ_533
-mdefine_line|#define PCIX_66MHZ_533&t;&t;0x0b
+mdefine_line|#define PCIX_66MHZ_533&t;&t;0x11
 DECL|macro|PCIX_100MHZ_533
-mdefine_line|#define PCIX_100MHZ_533&t;&t;0x0c
+mdefine_line|#define PCIX_100MHZ_533&t;&t;0x12
 DECL|macro|PCIX_133MHZ_533
-mdefine_line|#define PCIX_133MHZ_533&t;&t;0x0d
+mdefine_line|#define PCIX_133MHZ_533&t;&t;0x13
 multiline_comment|/* Slot Configuration */
 DECL|macro|SLOT_NUM
 mdefine_line|#define SLOT_NUM&t;&t;0x0000001F
@@ -1255,10 +1255,11 @@ l_int|0
 )paren
 ques
 c_cond
-l_int|1
-suffix:colon
 l_int|0
+suffix:colon
+l_int|1
 suffix:semicolon
+multiline_comment|/* 0 -&gt; close; 1 -&gt; open */
 id|DBG_LEAVE_ROUTINE
 r_return
 l_int|0

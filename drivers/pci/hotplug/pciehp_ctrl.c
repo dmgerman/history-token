@@ -479,7 +479,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|getstatus
 )paren
 (brace
@@ -6481,7 +6480,6 @@ c_cond
 (paren
 id|rc
 op_logical_or
-op_logical_neg
 id|getstatus
 )paren
 (brace
@@ -6906,7 +6904,6 @@ c_cond
 (paren
 id|ret
 op_logical_or
-op_logical_neg
 id|getstatus
 )paren
 (brace
