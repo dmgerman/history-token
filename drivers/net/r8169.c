@@ -7177,7 +7177,7 @@ c_func
 id|mapping
 )paren
 suffix:semicolon
-multiline_comment|/* anti gcc 2.95.3 bugware */
+multiline_comment|/* anti gcc 2.95.[3/4] bugware - do not merge these lines */
 id|status
 op_assign
 id|DescOwn
