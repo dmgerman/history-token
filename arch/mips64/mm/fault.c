@@ -392,7 +392,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;do_page_fault() #2: sending SIGSEGV to %s for illegal %s&bslash;n&quot;
+l_string|&quot;do_page_fault() #2: sending SIGSEGV to %s for invalid %s&bslash;n&quot;
 l_string|&quot;%08lx (epc == %08lx, ra == %08lx)&bslash;n&quot;
 comma
 id|tsk-&gt;comm
