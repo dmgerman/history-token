@@ -314,7 +314,7 @@ comma
 id|msg
 )paren
 suffix:semicolon
-singleline_comment|//        while(jiffies &lt; j+10)
+singleline_comment|//        while(time_before(jiffies, j+10))
 singleline_comment|//            ;
 )brace
 r_else
@@ -332,9 +332,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|j
+)paren
 )paren
 (brace
 id|schedule
