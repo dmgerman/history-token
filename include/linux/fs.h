@@ -561,7 +561,7 @@ id|offset
 )paren
 suffix:semicolon
 DECL|macro|touch_buffer
-mdefine_line|#define touch_buffer(bh)&t;SetPageReferenced(bh-&gt;b_page)
+mdefine_line|#define touch_buffer(bh)&t;mark_page_accessed(bh-&gt;b_page)
 macro_line|#include &lt;linux/pipe_fs_i.h&gt;
 macro_line|#include &lt;linux/minix_fs_i.h&gt;
 macro_line|#include &lt;linux/ext2_fs_i.h&gt;
@@ -1029,6 +1029,11 @@ suffix:semicolon
 DECL|member|i_ctime
 id|time_t
 id|i_ctime
+suffix:semicolon
+DECL|member|i_blkbits
+r_int
+r_int
+id|i_blkbits
 suffix:semicolon
 DECL|member|i_blksize
 r_int
@@ -5803,6 +5808,10 @@ id|inode-&gt;i_dev
 op_assign
 id|sb-&gt;s_dev
 suffix:semicolon
+id|inode-&gt;i_blkbits
+op_assign
+id|sb-&gt;s_blocksize_bits
+suffix:semicolon
 )brace
 r_return
 id|inode
@@ -6001,7 +6010,7 @@ id|buf
 suffix:semicolon
 )brace
 r_extern
-r_void
+r_int
 id|set_blocksize
 c_func
 (paren
@@ -6170,6 +6179,23 @@ comma
 r_int
 r_int
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|block_commit_write
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|from
+comma
+r_int
+id|to
 )paren
 suffix:semicolon
 r_extern

@@ -1402,9 +1402,10 @@ op_logical_neg
 (paren
 id|inode
 op_assign
-id|get_empty_inode
+id|new_inode
 c_func
 (paren
+id|sb
 )paren
 )paren
 )paren
@@ -1462,14 +1463,6 @@ c_func
 (paren
 id|bh
 )paren
-suffix:semicolon
-id|inode-&gt;i_sb
-op_assign
-id|sb
-suffix:semicolon
-id|inode-&gt;i_dev
-op_assign
-id|sb-&gt;s_dev
 suffix:semicolon
 id|inode-&gt;i_uid
 op_assign

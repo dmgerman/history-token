@@ -2080,9 +2080,10 @@ id|th
 suffix:semicolon
 id|inode
 op_assign
-id|get_empty_inode
+id|new_inode
 c_func
 (paren
+id|dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -2332,9 +2333,10 @@ l_int|3
 suffix:semicolon
 id|inode
 op_assign
-id|get_empty_inode
+id|new_inode
 c_func
 (paren
+id|dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -2579,9 +2581,10 @@ l_int|3
 suffix:semicolon
 id|inode
 op_assign
-id|get_empty_inode
+id|new_inode
 c_func
 (paren
+id|dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -3513,9 +3516,10 @@ l_int|3
 suffix:semicolon
 id|inode
 op_assign
-id|get_empty_inode
+id|new_inode
 c_func
 (paren
+id|dir-&gt;i_sb
 )paren
 suffix:semicolon
 r_if

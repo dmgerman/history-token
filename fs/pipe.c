@@ -2198,9 +2198,10 @@ id|inode
 op_star
 id|inode
 op_assign
-id|get_empty_inode
+id|new_inode
 c_func
 (paren
+id|pipe_mnt-&gt;mnt_sb
 )paren
 suffix:semicolon
 r_if
@@ -2247,10 +2248,6 @@ id|inode-&gt;i_fop
 op_assign
 op_amp
 id|rdwr_pipe_fops
-suffix:semicolon
-id|inode-&gt;i_sb
-op_assign
-id|pipe_mnt-&gt;mnt_sb
 suffix:semicolon
 multiline_comment|/*&n;&t; * Mark the inode dirty from the very beginning,&n;&t; * that way it will never be moved to the dirty&n;&t; * list because &quot;mark_inode_dirty()&quot; will think&n;&t; * that it already _is_ on the dirty list.&n;&t; */
 id|inode-&gt;i_state

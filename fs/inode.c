@@ -2959,6 +2959,10 @@ id|inode-&gt;i_dev
 op_assign
 l_int|0
 suffix:semicolon
+id|inode-&gt;i_blkbits
+op_assign
+l_int|0
+suffix:semicolon
 id|inode-&gt;i_ino
 op_assign
 op_increment
@@ -3113,6 +3117,10 @@ suffix:semicolon
 id|inode-&gt;i_dev
 op_assign
 id|sb-&gt;s_dev
+suffix:semicolon
+id|inode-&gt;i_blkbits
+op_assign
+id|sb-&gt;s_blocksize_bits
 suffix:semicolon
 id|inode-&gt;i_ino
 op_assign

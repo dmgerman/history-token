@@ -6068,10 +6068,6 @@ id|sb
 op_assign
 id|dir-&gt;i_sb
 suffix:semicolon
-id|inode-&gt;i_sb
-op_assign
-id|sb
-suffix:semicolon
 id|inode-&gt;i_flags
 op_assign
 l_int|0

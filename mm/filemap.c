@@ -4677,6 +4677,22 @@ c_func
 id|page
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Mark the page accessed if we read the&n;&t;&t; * beginning or we just did an lseek.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|offset
+op_logical_or
+op_logical_neg
+id|filp-&gt;f_reada
+)paren
+id|mark_page_accessed
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Ok, we have the page, and it&squot;s up-to-date, so&n;&t;&t; * now we can copy it to user space...&n;&t;&t; *&n;&t;&t; * The actor routine returns how many bytes were actually used..&n;&t;&t; * NOTE! This may not be the same as how much of a user buffer&n;&t;&t; * we filled up (we may be padding etc), so we can only update&n;&t;&t; * &quot;pos&quot; here (the actor routine has to update the user buffer&n;&t;&t; * pointers and the remaining count).&n;&t;&t; */
 id|ret
 op_assign
@@ -4706,12 +4722,6 @@ id|offset
 op_and_assign
 op_complement
 id|PAGE_CACHE_MASK
-suffix:semicolon
-id|mark_page_accessed
-c_func
-(paren
-id|page
-)paren
 suffix:semicolon
 id|page_cache_release
 c_func
