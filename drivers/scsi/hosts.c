@@ -681,6 +681,13 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
+id|shost-&gt;__targets
+)paren
+suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
 id|shost-&gt;eh_cmd_q
 )paren
 suffix:semicolon
