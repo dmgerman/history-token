@@ -1521,14 +1521,10 @@ op_minus
 id|ENOIOCTLCMD
 suffix:semicolon
 )brace
-multiline_comment|/* the following avoids some spurious warnings from the compiler */
-DECL|macro|UNUSED
-mdefine_line|#define UNUSED __attribute__((unused))
 DECL|function|pppoatm_init
 r_static
 r_int
 id|__init
-id|UNUSED
 id|pppoatm_init
 c_func
 (paren
@@ -1549,7 +1545,6 @@ DECL|function|pppoatm_exit
 r_static
 r_void
 id|__exit
-id|UNUSED
 id|pppoatm_exit
 c_func
 (paren
