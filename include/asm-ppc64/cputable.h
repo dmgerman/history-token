@@ -235,8 +235,16 @@ mdefine_line|#define FW_FTR_                         0x0000000000000001
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|COMMON_USER_PPC64
 mdefine_line|#define COMMON_USER_PPC64&t;(PPC_FEATURE_32 | PPC_FEATURE_64 | &bslash;&n;&t;&t;&t;         PPC_FEATURE_HAS_FPU | PPC_FEATURE_HAS_MMU)
+DECL|macro|CPU_FTR_PPCAS_ARCH_V2_BASE
+mdefine_line|#define CPU_FTR_PPCAS_ARCH_V2_BASE (CPU_FTR_SLB | &bslash;&n;                                 CPU_FTR_TLBIEL | CPU_FTR_NOEXECUTE | &bslash;&n;                                 CPU_FTR_NODSISRALIGN)
+multiline_comment|/* iSeries doesn&squot;t support large pages */
+macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|macro|CPU_FTR_PPCAS_ARCH_V2
-mdefine_line|#define CPU_FTR_PPCAS_ARCH_V2   (CPU_FTR_SLB | CPU_FTR_16M_PAGE | &bslash;&n;                                 CPU_FTR_TLBIEL | CPU_FTR_NOEXECUTE | &bslash;&n;                                 CPU_FTR_NODSISRALIGN)
+mdefine_line|#define CPU_FTR_PPCAS_ARCH_V2&t;(CPU_FTR_PPCAS_ARCH_V2_BASE)
+macro_line|#else
+DECL|macro|CPU_FTR_PPCAS_ARCH_V2
+mdefine_line|#define CPU_FTR_PPCAS_ARCH_V2&t;(CPU_FTR_PPCAS_ARCH_V2_BASE | CPU_FTR_16M_PAGE)
+macro_line|#endif
 DECL|macro|COMMON_PPC64_FW
 mdefine_line|#define COMMON_PPC64_FW&t;(0)
 macro_line|#endif
