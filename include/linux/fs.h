@@ -815,6 +815,10 @@ id|block_device
 op_star
 id|bd_contains
 suffix:semicolon
+DECL|member|bd_block_size
+r_int
+id|bd_block_size
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|inode
@@ -5769,7 +5773,9 @@ r_int
 id|set_blocksize
 c_func
 (paren
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 )paren

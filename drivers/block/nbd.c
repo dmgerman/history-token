@@ -2237,13 +2237,6 @@ id|MAJOR_NR
 )paren
 suffix:semicolon
 macro_line|#endif
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|nbd_blksizes
-suffix:semicolon
 id|blk_size
 (braket
 id|MAJOR_NR

@@ -1692,20 +1692,37 @@ id|ASYNC_CLOSING
 )paren
 )paren
 (brace
+multiline_comment|/* Hm, why are we blocking on ASYNC_CLOSING if we&n;&t;&t; * do return -EAGAIN/-ERESTARTSYS below anyway?&n;&t;&t; * IMHO it&squot;s either not needed in the first place&n;&t;&t; * or for some reason we need to make sure the async&n;&t;&t; * closing has been finished - if so, wouldn&squot;t we&n;&t;&t; * probably better sleep uninterruptible?&n;&t;&t; */
 r_if
 c_cond
+(paren
+id|wait_event_interruptible
+c_func
+(paren
+id|self-&gt;close_wait
+comma
+op_logical_neg
 (paren
 id|self-&gt;flags
 op_amp
 id|ASYNC_CLOSING
 )paren
-id|interruptible_sleep_on
+)paren
+)paren
+(brace
+id|WARNING
 c_func
 (paren
-op_amp
-id|self-&gt;close_wait
+l_string|&quot;%s - got signal while blocking on ASYNC_CLOSING!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ERESTARTSYS
+suffix:semicolon
+)brace
 multiline_comment|/* MOD_DEC_USE_COUNT; &quot;info-&gt;tty&quot; will cause this? */
 macro_line|#ifdef SERIAL_DO_RESTART
 r_return

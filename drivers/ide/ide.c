@@ -8423,15 +8423,6 @@ comma
 id|ch-&gt;name
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|blksize_size
-(braket
-id|ch-&gt;major
-)braket
-)paren
-suffix:semicolon
 id|blk_dev
 (braket
 id|ch-&gt;major

@@ -242,14 +242,6 @@ l_int|256
 op_assign
 initialization_block
 suffix:semicolon
-DECL|variable|floppy_blocksizes
-r_static
-r_int
-id|floppy_blocksizes
-(braket
-l_int|256
-)braket
-suffix:semicolon
 multiline_comment|/* hardsector size assumed to be 512 */
 r_static
 r_int
@@ -9853,13 +9845,6 @@ comma
 op_amp
 id|amiflop_lock
 )paren
-suffix:semicolon
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|floppy_blocksizes
 suffix:semicolon
 id|blk_size
 (braket

@@ -923,13 +923,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Allow the block size to default to BLOCK_SIZE. */
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
 id|blk_size
 (braket
 id|MAJOR_NR
@@ -971,13 +964,6 @@ id|MAJOR_NR
 comma
 id|DEVICE_NAME
 )paren
-suffix:semicolon
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-l_int|NULL
 suffix:semicolon
 id|blk_cleanup_queue
 c_func

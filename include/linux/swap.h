@@ -168,6 +168,10 @@ id|file
 op_star
 id|swap_file
 suffix:semicolon
+DECL|member|old_block_size
+r_int
+id|old_block_size
+suffix:semicolon
 DECL|member|swap_map
 r_int
 r_int
