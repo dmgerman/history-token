@@ -1212,7 +1212,7 @@ id|to
 )paren
 (brace
 r_return
-id|block_prepare_write
+id|nobh_prepare_write
 c_func
 (paren
 id|page
@@ -1355,7 +1355,7 @@ comma
 dot
 id|commit_write
 op_assign
-id|generic_commit_write
+id|nobh_commit_write
 comma
 dot
 id|bmap
@@ -1578,14 +1578,12 @@ id|ip-&gt;i_size
 )paren
 )paren
 suffix:semicolon
-id|block_truncate_page
+id|nobh_truncate_page
 c_func
 (paren
 id|ip-&gt;i_mapping
 comma
 id|ip-&gt;i_size
-comma
-id|jfs_get_block
 )paren
 suffix:semicolon
 id|IWRITE_LOCK
