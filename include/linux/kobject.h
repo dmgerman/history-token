@@ -142,6 +142,13 @@ id|sysfs_ops
 op_star
 id|sysfs_ops
 suffix:semicolon
+DECL|member|default_attrs
+r_struct
+id|attribute
+op_star
+op_star
+id|default_attrs
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
