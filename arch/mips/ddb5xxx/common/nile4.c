@@ -1,9 +1,7 @@
-multiline_comment|/***********************************************************************&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * arch/mips/ddb5xxx/common/nile4.c&n; *     misc low-level routines for vrc-5xxx controllers.&n; *&n; * derived from original code by Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; ***********************************************************************&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * arch/mips/ddb5xxx/common/nile4.c&n; *     misc low-level routines for vrc-5xxx controllers.&n; *&n; * derived from original code by Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
-macro_line|#include &lt;asm/ddb5xxx/debug.h&gt;
 id|u32
 DECL|function|ddb_calc_pdar
 id|ddb_calc_pdar
@@ -174,7 +172,7 @@ suffix:colon
 id|panic
 c_func
 (paren
-l_string|&quot;nile4_set_pdar: unsupported size %p&bslash;n&quot;
+l_string|&quot;nile4_set_pdar: unsupported size %p&quot;
 comma
 (paren
 r_void
@@ -231,7 +229,7 @@ suffix:colon
 id|panic
 c_func
 (paren
-l_string|&quot;nile4_set_pdar: unsupported width %d&bslash;n&quot;
+l_string|&quot;nile4_set_pdar: unsupported width %d&quot;
 comma
 id|width
 )paren
@@ -394,7 +392,7 @@ suffix:colon
 id|panic
 c_func
 (paren
-l_string|&quot;nile4_set_pmr: invalid type %d&bslash;n&quot;
+l_string|&quot;nile4_set_pmr: invalid type %d&quot;
 comma
 id|type
 )paren

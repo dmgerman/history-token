@@ -8,18 +8,20 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
-macro_line|#include &lt;linux/pc_keyb.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bcache.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/gdb-stub.h&gt;
+macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/nile4.h&gt;
-macro_line|#include &lt;asm/ddb5074.h&gt;
-macro_line|#ifdef CONFIG_REMOTE_DEBUG
+macro_line|#include &lt;asm/ddb5xxx/ddb5074.h&gt;
+macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
+macro_line|#ifdef CONFIG_KGDB
 r_extern
 r_void
 id|rs_kgdb_hook
@@ -52,6 +54,11 @@ r_extern
 r_struct
 id|ide_ops
 id|std_ide_ops
+suffix:semicolon
+r_extern
+r_struct
+id|kbd_ops
+id|std_kbd_ops
 suffix:semicolon
 r_extern
 r_struct
@@ -205,11 +212,21 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|board_time_init
+r_extern
+r_void
+id|rtc_ds1386_init
+c_func
+(paren
+r_int
+r_int
+id|base
+)paren
+suffix:semicolon
+r_extern
 r_void
 (paren
 op_star
-id|board_time_init
+id|board_timer_setup
 )paren
 (paren
 r_struct
@@ -218,11 +235,11 @@ op_star
 id|irq
 )paren
 suffix:semicolon
-DECL|function|ddb_time_init
+DECL|function|ddb_timer_init
 r_static
 r_void
 id|__init
-id|ddb_time_init
+id|ddb_timer_init
 c_func
 (paren
 r_struct
@@ -261,13 +278,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* enable interrupt */
-id|nile4_enable_irq
-c_func
-(paren
-id|NILE4_INT_GPT
-)paren
-suffix:semicolon
-id|i8259_setup_irq
+id|setup_irq
 c_func
 (paren
 id|nile4_to_irq
@@ -279,7 +290,17 @@ comma
 id|irq
 )paren
 suffix:semicolon
-id|change_cp0_status
+id|nile4_enable_irq
+c_func
+(paren
+id|nile4_to_irq
+c_func
+(paren
+id|NILE4_INT_GPT
+)paren
+)paren
+suffix:semicolon
+id|change_c0_status
 c_func
 (paren
 id|ST0_IM
@@ -293,6 +314,28 @@ op_or
 id|IE_IRQ3
 op_or
 id|IE_IRQ4
+)paren
+suffix:semicolon
+)brace
+DECL|function|ddb_time_init
+r_static
+r_void
+id|__init
+id|ddb_time_init
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* we have ds1396 RTC chip */
+id|rtc_ds1386_init
+c_func
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|DDB_PCI_MEM_BASE
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -313,63 +356,19 @@ id|irq_setup
 op_assign
 id|ddb_irq_setup
 suffix:semicolon
-id|mips_io_port_base
-op_assign
+id|set_io_port_base
+c_func
+(paren
 id|NILE4_PCI_IO_BASE
+)paren
 suffix:semicolon
 id|isa_slot_offset
 op_assign
 id|NILE4_PCI_MEM_BASE
 suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0x00
-comma
-l_int|0x20
-comma
-l_string|&quot;dma1&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0x40
-comma
-l_int|0x20
-comma
-l_string|&quot;timer&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0x70
-comma
-l_int|0x10
-comma
-l_string|&quot;rtc&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0x80
-comma
-l_int|0x10
-comma
-l_string|&quot;dma page reg&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0xc0
-comma
-l_int|0x20
-comma
-l_string|&quot;dma2&quot;
-)paren
+id|board_timer_setup
+op_assign
+id|ddb_timer_init
 suffix:semicolon
 id|board_time_init
 op_assign
@@ -399,6 +398,45 @@ op_assign
 op_amp
 id|ddb_rtc_ops
 suffix:semicolon
+id|ddb_out32
+c_func
+(paren
+id|DDB_BAR0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ddb_set_pmr
+c_func
+(paren
+id|DDB_PCIINIT0
+comma
+id|DDB_PCICMD_IO
+comma
+l_int|0
+comma
+l_int|0x10
+)paren
+suffix:semicolon
+id|ddb_set_pmr
+c_func
+(paren
+id|DDB_PCIINIT1
+comma
+id|DDB_PCICMD_MEM
+comma
+id|DDB_PCI_MEM_BASE
+comma
+l_int|0x10
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_FB
+id|conswitchp
+op_assign
+op_amp
+id|dummy_con
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Reboot on panic */
 id|panic_timeout
 op_assign

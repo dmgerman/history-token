@@ -1,6 +1,8 @@
-multiline_comment|/*&n; *  arch/mips/ddb5074/time.c -- Timer routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; */
+multiline_comment|/*&n; *  arch/mips/ddb5074/time.c -- Timer routines&n; *&n; *  Copyright (C) 2000 Geert Uytterhoeven &lt;geert@sonycom.com&gt;&n; *                     Sony Software Development Center Europe (SDCE), Brussels&n; *&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/mc146818rtc.h&gt;
+macro_line|#include &lt;asm/ddb5xxx/ddb5074.h&gt;
+macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
 DECL|function|ddb_rtc_read_data
 r_static
 r_int
@@ -13,27 +15,22 @@ r_int
 id|addr
 )paren
 (brace
-id|outb_p
-c_func
-(paren
-id|addr
-comma
-id|RTC_PORT
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
 r_return
-id|inb_p
-c_func
+op_star
 (paren
-id|RTC_PORT
-c_func
-(paren
-l_int|1
+r_volatile
+r_int
+r_char
+op_star
 )paren
+(paren
+id|KSEG1ADDR
+c_func
+(paren
+id|DDB_PCI_MEM_BASE
+)paren
+op_plus
+id|addr
 )paren
 suffix:semicolon
 )brace
@@ -52,29 +49,24 @@ r_int
 id|addr
 )paren
 (brace
-id|outb_p
+op_star
+(paren
+r_volatile
+r_int
+r_char
+op_star
+)paren
+(paren
+id|KSEG1ADDR
 c_func
 (paren
+id|DDB_PCI_MEM_BASE
+)paren
+op_plus
 id|addr
-comma
-id|RTC_PORT
-c_func
-(paren
-l_int|0
 )paren
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
+op_assign
 id|data
-comma
-id|RTC_PORT
-c_func
-(paren
-l_int|1
-)paren
-)paren
 suffix:semicolon
 )brace
 DECL|function|ddb_rtc_bcd_mode

@@ -1,8 +1,25 @@
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if (defined(CONFIG_DDB5476) &amp;&amp; defined(CONFIG_REMOTE_DEBUG))
-multiline_comment|/* --- CONFIG --- */
-multiline_comment|/* we need uint32 uint8 */
-multiline_comment|/* #include &quot;types.h&quot; */
+multiline_comment|/*&n; * kgdb io functions for DDB5476.  We use the second serial port.&n; *&n; * Copyright (C) 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/* ======================= CONFIG ======================== */
+multiline_comment|/* [jsun] we use the second serial port for kdb */
+DECL|macro|BASE
+mdefine_line|#define         BASE                    0xa60002f8
+DECL|macro|MAX_BAUD
+mdefine_line|#define         MAX_BAUD                115200
+multiline_comment|/* distance in bytes between two serial registers */
+DECL|macro|REG_OFFSET
+mdefine_line|#define         REG_OFFSET              1
+multiline_comment|/*&n; * 0 - kgdb does serial init&n; * 1 - kgdb skip serial init&n; */
+DECL|variable|remoteDebugInitialized
+r_static
+r_int
+id|remoteDebugInitialized
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n; * the default baud rate *if* kgdb does serial init&n; */
+DECL|macro|BAUD_DEFAULT
+mdefine_line|#define&t;&t;BAUD_DEFAULT&t;&t;UART16550_BAUD_38400
+multiline_comment|/* ======================= END OF CONFIG ======================== */
 DECL|typedef|uint8
 r_typedef
 r_int
@@ -15,7 +32,6 @@ r_int
 r_int
 id|uint32
 suffix:semicolon
-multiline_comment|/* --- END OF CONFIG --- */
 DECL|macro|UART16550_BAUD_2400
 mdefine_line|#define         UART16550_BAUD_2400             2400
 DECL|macro|UART16550_BAUD_4800
@@ -52,14 +68,6 @@ DECL|macro|UART16550_STOP_1BIT
 mdefine_line|#define         UART16550_STOP_1BIT             0x0
 DECL|macro|UART16550_STOP_2BIT
 mdefine_line|#define         UART16550_STOP_2BIT             0x4
-multiline_comment|/* ----------------------------------------------------- */
-multiline_comment|/* === CONFIG === */
-multiline_comment|/* [jsun] we use the second serial port for kdb */
-DECL|macro|BASE
-mdefine_line|#define         BASE                    0xa60002f8
-DECL|macro|MAX_BAUD
-mdefine_line|#define         MAX_BAUD                115200
-multiline_comment|/* === END OF CONFIG === */
 multiline_comment|/* register offset */
 DECL|macro|OFS_RCV_BUFFER
 mdefine_line|#define         OFS_RCV_BUFFER          0
@@ -68,29 +76,29 @@ mdefine_line|#define         OFS_TRANS_HOLD          0
 DECL|macro|OFS_SEND_BUFFER
 mdefine_line|#define         OFS_SEND_BUFFER         0
 DECL|macro|OFS_INTR_ENABLE
-mdefine_line|#define         OFS_INTR_ENABLE         1
+mdefine_line|#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
 DECL|macro|OFS_INTR_ID
-mdefine_line|#define         OFS_INTR_ID             2
+mdefine_line|#define         OFS_INTR_ID             (2*REG_OFFSET)
 DECL|macro|OFS_DATA_FORMAT
-mdefine_line|#define         OFS_DATA_FORMAT         3
+mdefine_line|#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
 DECL|macro|OFS_LINE_CONTROL
-mdefine_line|#define         OFS_LINE_CONTROL        3
+mdefine_line|#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
 DECL|macro|OFS_MODEM_CONTROL
-mdefine_line|#define         OFS_MODEM_CONTROL       4
+mdefine_line|#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
 DECL|macro|OFS_RS232_OUTPUT
-mdefine_line|#define         OFS_RS232_OUTPUT        4
+mdefine_line|#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
 DECL|macro|OFS_LINE_STATUS
-mdefine_line|#define         OFS_LINE_STATUS         5
+mdefine_line|#define         OFS_LINE_STATUS         (5*REG_OFFSET)
 DECL|macro|OFS_MODEM_STATUS
-mdefine_line|#define         OFS_MODEM_STATUS        6
+mdefine_line|#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
 DECL|macro|OFS_RS232_INPUT
-mdefine_line|#define         OFS_RS232_INPUT         6
+mdefine_line|#define         OFS_RS232_INPUT         (6*REG_OFFSET)
 DECL|macro|OFS_SCRATCH_PAD
-mdefine_line|#define         OFS_SCRATCH_PAD         7
+mdefine_line|#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
 DECL|macro|OFS_DIVISOR_LSB
-mdefine_line|#define         OFS_DIVISOR_LSB         0
+mdefine_line|#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
 DECL|macro|OFS_DIVISOR_MSB
-mdefine_line|#define         OFS_DIVISOR_MSB         1
+mdefine_line|#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
 multiline_comment|/* memory-mapped read/write of the port */
 DECL|macro|UART16550_READ
 mdefine_line|#define         UART16550_READ(y)    (*((volatile uint8*)(BASE + y)))
@@ -192,13 +200,6 @@ id|stop
 )paren
 suffix:semicolon
 )brace
-DECL|variable|remoteDebugInitialized
-r_static
-r_int
-id|remoteDebugInitialized
-op_assign
-l_int|0
-suffix:semicolon
 DECL|function|getDebugChar
 id|uint8
 id|getDebugChar
@@ -221,7 +222,7 @@ suffix:semicolon
 id|debugInit
 c_func
 (paren
-id|UART16550_BAUD_38400
+id|BAUD_DEFAULT
 comma
 id|UART16550_DATA_8BIT
 comma
@@ -278,7 +279,7 @@ suffix:semicolon
 id|debugInit
 c_func
 (paren
-id|UART16550_BAUD_9600
+id|BAUD_DEFAULT
 comma
 id|UART16550_DATA_8BIT
 comma
@@ -316,5 +317,4 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
 eof
