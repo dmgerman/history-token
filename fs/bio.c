@@ -972,7 +972,7 @@ c_func
 (paren
 id|bv-&gt;bv_page
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 id|vto
@@ -982,7 +982,7 @@ c_func
 (paren
 id|bbv-&gt;bv_page
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_DST_IRQ
 )paren
 suffix:semicolon
 )brace
@@ -1028,7 +1028,7 @@ c_func
 (paren
 id|vto
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_DST_IRQ
 )paren
 suffix:semicolon
 id|kunmap_atomic
@@ -1036,7 +1036,7 @@ c_func
 (paren
 id|vfrom
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 id|local_irq_restore

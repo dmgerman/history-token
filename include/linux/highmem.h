@@ -123,7 +123,7 @@ c_func
 id|bio
 )paren
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 r_if
@@ -191,7 +191,7 @@ op_star
 )paren
 id|ptr
 comma
-id|KM_BIO_IRQ
+id|KM_BIO_SRC_IRQ
 )paren
 suffix:semicolon
 id|__restore_flags
