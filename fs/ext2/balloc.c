@@ -2258,12 +2258,16 @@ id|n
 suffix:semicolon
 )brace
 id|write_unlock
+c_func
 (paren
 op_amp
 id|EXT2_I
 c_func
 (paren
-id|inode-&gt;i_meta_lock
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_meta_lock
 )paren
 suffix:semicolon
 id|mark_buffer_dirty
