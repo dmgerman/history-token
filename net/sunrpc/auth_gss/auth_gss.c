@@ -2641,7 +2641,7 @@ id|out_dec
 suffix:semicolon
 id|gss_auth-&gt;mech
 op_assign
-id|gss_pseudoflavor_to_mech
+id|gss_mech_get_by_pseudoflavor
 c_func
 (paren
 id|flavor
@@ -2733,7 +2733,7 @@ l_string|&quot;%s/%s&quot;
 comma
 id|clnt-&gt;cl_pathname
 comma
-id|gss_auth-&gt;mech-&gt;gm_ops-&gt;name
+id|gss_auth-&gt;mech-&gt;gm_name
 )paren
 suffix:semicolon
 id|gss_auth-&gt;dentry
@@ -3219,6 +3219,8 @@ op_assign
 id|gss_pseudoflavor_to_service
 c_func
 (paren
+id|ctx-&gt;gc_gss_ctx-&gt;mech_type
+comma
 id|gss_cred-&gt;gc_flavor
 )paren
 suffix:semicolon
@@ -3725,6 +3727,8 @@ op_assign
 id|gss_pseudoflavor_to_service
 c_func
 (paren
+id|ctx-&gt;gc_gss_ctx-&gt;mech_type
+comma
 id|gss_cred-&gt;gc_flavor
 )paren
 suffix:semicolon
@@ -3980,6 +3984,8 @@ op_assign
 id|gss_pseudoflavor_to_service
 c_func
 (paren
+id|ctx-&gt;gc_gss_ctx-&gt;mech_type
+comma
 id|gss_cred-&gt;gc_flavor
 )paren
 suffix:semicolon
@@ -4368,6 +4374,8 @@ op_assign
 id|gss_pseudoflavor_to_service
 c_func
 (paren
+id|ctx-&gt;gc_gss_ctx-&gt;mech_type
+comma
 id|gss_cred-&gt;gc_flavor
 )paren
 suffix:semicolon
@@ -4758,11 +4766,6 @@ r_void
 )paren
 (brace
 id|gss_svc_shutdown
-c_func
-(paren
-)paren
-suffix:semicolon
-id|gss_mech_unregister_all
 c_func
 (paren
 )paren
