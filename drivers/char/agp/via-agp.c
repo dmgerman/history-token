@@ -328,7 +328,7 @@ r_struct
 id|aper_size_info_8
 id|via_generic_sizes
 (braket
-l_int|7
+l_int|9
 )braket
 op_assign
 (brace
@@ -401,6 +401,7 @@ l_int|0
 comma
 l_int|252
 )brace
+comma
 (brace
 l_int|2
 comma
@@ -410,6 +411,7 @@ l_int|0
 comma
 l_int|254
 )brace
+comma
 (brace
 l_int|1
 comma
@@ -833,7 +835,7 @@ comma
 dot
 id|num_aperture_sizes
 op_assign
-l_int|7
+l_int|9
 comma
 dot
 id|configure
