@@ -1,6 +1,10 @@
 multiline_comment|/*&n;    sis96x.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;&n;    Copyright (c) 2003 Mark M. Hoffman &lt;mhoffman@lightlink.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    This module must be considered BETA unless and until&n;    the chipset manufacturer releases a datasheet.&n;    The register definitions are based on the SiS630.&n;&n;    This module relies on quirk_sis_96x_smbus (drivers/pci/quirks.c)&n;    for just about every machine for which users have reported.&n;    If this module isn&squot;t detecting your 96x south bridge, have a &n;    look there.&n;&n;    We assume there can only be one SiS96x with one SMBus interface.&n;*/
-multiline_comment|/* #define DEBUG */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

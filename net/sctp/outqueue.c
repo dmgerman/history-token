@@ -391,7 +391,6 @@ comma
 id|count_of_newacks
 )paren
 )paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

@@ -50,5 +50,7 @@ DECL|macro|cpu_mask_to_apicid
 mdefine_line|#define cpu_mask_to_apicid (genapic-&gt;cpu_mask_to_apicid)
 DECL|macro|enable_apic_mode
 mdefine_line|#define enable_apic_mode (genapic-&gt;enable_apic_mode)
+DECL|macro|phys_pkg_id
+mdefine_line|#define phys_pkg_id (genapic-&gt;phys_pkg_id)
 macro_line|#endif /* __ASM_MACH_APIC_H */
 eof

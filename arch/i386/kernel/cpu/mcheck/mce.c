@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * mce.c - x86 Machine Check Exception Reporting&n; */
+multiline_comment|/*&n; * mce.c - x86 Machine Check Exception Reporting&n; * (c) 2002 Alan Cox &lt;alan@redhat.com&gt;, Dave Jones &lt;davej@codemonkey.org.uk&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

@@ -739,6 +739,15 @@ c_func
 id|MCA_PRIMARY_BUS
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bus
+)paren
+r_goto
+id|out_nomem
+suffix:semicolon
 id|bus-&gt;default_dma_mask
 op_assign
 l_int|0xffffffffLL

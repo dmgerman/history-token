@@ -748,6 +748,15 @@ id|jb
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|jb-&gt;bitmaps
+op_eq
+l_int|NULL
+)paren
+r_return
+suffix:semicolon
 r_for
 c_loop
 (paren

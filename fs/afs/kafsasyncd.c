@@ -192,6 +192,14 @@ op_star
 id|arg
 )paren
 (brace
+r_struct
+id|afs_async_op
+op_star
+id|op
+suffix:semicolon
+r_int
+id|die
+suffix:semicolon
 id|DECLARE_WAITQUEUE
 c_func
 (paren
@@ -199,14 +207,6 @@ id|myself
 comma
 id|current
 )paren
-suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|_p
-suffix:semicolon
-r_int
-id|die
 suffix:semicolon
 id|kafsasyncd_task
 op_assign
@@ -318,7 +318,7 @@ id|die
 op_assign
 id|kafsasyncd_die
 suffix:semicolon
-multiline_comment|/* deal with the next asynchronous operation requiring attention */
+multiline_comment|/* deal with the next asynchronous operation requiring&n;&t;&t; * attention */
 r_if
 c_cond
 (paren
@@ -372,7 +372,8 @@ c_func
 (paren
 id|kafsasyncd_async_attnq.next
 comma
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 comma
 id|link
 )paren
@@ -447,7 +448,7 @@ id|die
 (brace
 suffix:semicolon
 )brace
-multiline_comment|/* need to kill all outstanding asynchronous operations before exiting */
+multiline_comment|/* need to kill all outstanding asynchronous operations before&n;&t; * exiting */
 id|kafsasyncd_task
 op_assign
 l_int|NULL
@@ -471,29 +472,17 @@ id|kafsasyncd_async_attnq
 )paren
 suffix:semicolon
 multiline_comment|/* dequeue kafsasyncd from all their wait queues */
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|_p
+id|op
 comma
 op_amp
 id|kafsasyncd_async_attnq
-)paren
-(brace
-id|afs_async_op_t
-op_star
-id|op
-op_assign
-id|list_entry
-c_func
-(paren
-id|_p
-comma
-id|afs_async_op_t
 comma
 id|link
 )paren
-suffix:semicolon
+(brace
 id|op-&gt;call-&gt;app_attn_func
 op_assign
 id|kafsasyncd_null_call_attn_func
@@ -533,16 +522,15 @@ id|kafsasyncd_async_attnq
 )paren
 )paren
 (brace
-id|afs_async_op_t
-op_star
 id|op
 op_assign
 id|list_entry
 c_func
 (paren
-id|_p
+id|kafsasyncd_async_attnq.next
 comma
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 comma
 id|link
 )paren
@@ -607,7 +595,8 @@ r_void
 id|afs_kafsasyncd_begin_op
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren
@@ -683,7 +672,8 @@ r_void
 id|afs_kafsasyncd_attend_op
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren
@@ -747,7 +737,8 @@ r_void
 id|afs_kafsasyncd_terminate_op
 c_func
 (paren
-id|afs_async_op_t
+r_struct
+id|afs_async_op
 op_star
 id|op
 )paren

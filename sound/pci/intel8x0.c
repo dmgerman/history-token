@@ -13276,6 +13276,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|card-&gt;dev
+op_assign
+op_amp
+id|pci-&gt;dev
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -13,6 +13,10 @@ macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/fpu32.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+multiline_comment|/* determines which flags the user has access to. */
+multiline_comment|/* 1 = access 0 = no access */
+DECL|macro|FLAG_MASK
+mdefine_line|#define FLAG_MASK 0x44dd5UL
 DECL|macro|R32
 mdefine_line|#define R32(l,q) &bslash;&n;&t;case offsetof(struct user32, regs.l): stack[offsetof(struct pt_regs, q)/8] = val; break
 DECL|function|putreg32
@@ -354,6 +358,12 @@ comma
 id|regs.eflags
 )paren
 suffix:colon
+(brace
+id|__u64
+op_star
+id|flags
+op_assign
+op_amp
 id|stack
 (braket
 m_offsetof
@@ -366,13 +376,27 @@ id|eflags
 op_div
 l_int|8
 )braket
+suffix:semicolon
+id|val
+op_and_assign
+id|FLAG_MASK
+suffix:semicolon
+op_star
+id|flags
 op_assign
 id|val
+op_or
+(paren
+op_star
+id|flags
 op_amp
-l_int|0x44dd5
+op_complement
+id|FLAG_MASK
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 r_case
 m_offsetof
 (paren

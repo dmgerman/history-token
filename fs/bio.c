@@ -902,7 +902,7 @@ r_return
 id|nr_pages
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;bio_add_page&t;-&t;attempt to add page to bio&n; *&t;@bio: destination bio&n; *&t;@page: page to add&n; *&t;@len: vec entry length&n; *&t;@offset: vec entry offset&n; *&n; *&t;Attempt to add a page to the bio_vec maplist. This can fail for a&n; *&t;number of reasons, such as the bio being full or target block&n; *&t;device limitations.&n; */
+multiline_comment|/**&n; *&t;bio_add_page&t;-&t;attempt to add page to bio&n; *&t;@bio: destination bio&n; *&t;@page: page to add&n; *&t;@len: vec entry length&n; *&t;@offset: vec entry offset&n; *&n; *&t;Attempt to add a page to the bio_vec maplist. This can fail for a&n; *&t;number of reasons, such as the bio being full or target block&n; *&t;device limitations. The target block device must allow bio&squot;s&n; *      smaller than PAGE_SIZE, so it is always possible to add a single&n; *      page to an empty bio.&n; */
 DECL|function|bio_add_page
 r_int
 id|bio_add_page
@@ -1856,8 +1856,6 @@ r_struct
 id|bio
 op_star
 id|bio_dirty_list
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * This runs in process context&n; */
 DECL|function|bio_dirty_fn

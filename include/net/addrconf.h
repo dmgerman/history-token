@@ -159,6 +159,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+id|strict
 )paren
 suffix:semicolon
 r_extern
@@ -177,6 +180,9 @@ r_struct
 id|net_device
 op_star
 id|dev
+comma
+r_int
+id|strict
 )paren
 suffix:semicolon
 r_extern

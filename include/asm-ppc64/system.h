@@ -397,8 +397,6 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-DECL|macro|irqs_disabled
-mdefine_line|#define irqs_disabled()&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&t;&bslash;&n;&t;!(flags &amp; MSR_EE);&t;&t;&t;&bslash;&n;})
 DECL|function|__is_processor
 r_static
 r_inline

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;AMD 766/768 TCO Timer Driver&n; *&t;(c) Copyright 2002 Zwane Mwaikambo &lt;zwane@holomorphy.com&gt;&n; *&t;All Rights Reserved.&n; *&n; *&t;Parts from;&n; *&t;Hardware driver for the AMD 768 Random Number Generator (RNG)&n; *&t;(c) Copyright 2001 Red Hat Inc &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License version 2&n; *&t;as published by the Free Software Foundation.&n; *&n; *&t;The author(s) of this software shall not be held liable for damages&n; *&t;of any nature resulting due to the use of this software. This&n; *&t;software is provided AS-IS with no warranties.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
@@ -33,7 +34,7 @@ mdefine_line|#define TCO_STATUS1_REG 0x44
 DECL|macro|TCO_STATUS2_REG
 mdefine_line|#define TCO_STATUS2_REG&t;0x46
 DECL|macro|NDTO_STS2
-mdefine_line|#define NDTO_STS2&t;(1 &lt;&lt; 1)&t;/* we&squot;re interested in the second timeout */ 
+mdefine_line|#define NDTO_STS2&t;(1 &lt;&lt; 1)&t;/* we&squot;re interested in the second timeout */
 DECL|macro|BOOT_STS
 mdefine_line|#define BOOT_STS&t;(1 &lt;&lt; 2)&t;/* will be set if NDTO_STS2 was set before reboot */
 DECL|macro|TCO_CTRL1_REG
@@ -89,17 +90,17 @@ suffix:semicolon
 multiline_comment|/* only for device access */
 DECL|variable|expect_close
 r_static
-r_int
+r_char
 id|expect_close
-op_assign
-l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -108,6 +109,41 @@ c_func
 id|timeout
 comma
 l_string|&quot;range is 0-38 seconds, default is 38&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|module_param
+c_func
+(paren
+id|nowayout
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
 DECL|function|seconds_to_ticks
@@ -602,6 +638,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;AMD 766/768&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -614,7 +651,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|ENOTTY
+id|ENOIOCTLCMD
 suffix:semicolon
 r_case
 id|WDIOC_GETSUPPORT
@@ -826,6 +863,8 @@ r_if
 c_cond
 (paren
 id|expect_close
+op_eq
+l_int|42
 )paren
 (brace
 id|amdtco_disable
@@ -860,6 +899,10 @@ id|timeout
 )paren
 suffix:semicolon
 )brace
+id|expect_close
+op_assign
+l_int|0
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -913,7 +956,13 @@ c_cond
 id|len
 )paren
 (brace
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
+(brace
 r_int
 id|i
 suffix:semicolon
@@ -965,10 +1014,10 @@ l_char|&squot;V&squot;
 )paren
 id|expect_close
 op_assign
-l_int|1
+l_int|42
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 id|amdtco_ping
 c_func
 (paren
@@ -1030,6 +1079,7 @@ dot
 id|notifier_call
 op_assign
 id|amdtco_notify_sys
+comma
 )brace
 suffix:semicolon
 DECL|variable|amdtco_fops
@@ -1063,6 +1113,7 @@ dot
 id|release
 op_assign
 id|amdtco_fop_release
+comma
 )brace
 suffix:semicolon
 DECL|variable|amdtco_miscdev
@@ -1087,6 +1138,7 @@ id|fops
 op_assign
 op_amp
 id|amdtco_fops
+comma
 )brace
 suffix:semicolon
 DECL|variable|amdtco_pci_tbl
@@ -1114,6 +1166,7 @@ comma
 l_int|0
 comma
 )brace
+comma
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE

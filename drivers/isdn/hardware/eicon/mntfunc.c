@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: mntfunc.c,v 1.16 2003/09/18 06:57:17 schindler Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: mntfunc.c,v 1.19 2004/01/09 21:22:03 armin Exp $&n; *&n; * Driver for Eicon DIVA Server ISDN cards.&n; * Maint module&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
@@ -635,6 +635,9 @@ c_func
 r_void
 op_star
 id|buf
+comma
+r_int
+id|count
 )paren
 (brace
 id|byte
@@ -654,6 +657,26 @@ r_int
 id|ret
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+OL
+(paren
+l_int|3
+op_star
+r_sizeof
+(paren
+id|dword
+)paren
+)paren
+)paren
+r_return
+(paren
+op_minus
+id|EFAULT
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -768,6 +791,12 @@ l_int|0
 r_if
 c_cond
 (paren
+(paren
+id|count
+OL
+id|ret
+)paren
+op_logical_or
 id|diva_os_copy_to_user
 (paren
 l_int|NULL
@@ -831,6 +860,12 @@ l_int|0
 r_if
 c_cond
 (paren
+(paren
+id|count
+OL
+id|ret
+)paren
+op_logical_or
 id|diva_os_copy_to_user
 (paren
 l_int|NULL
@@ -1016,6 +1051,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|count
+OL
+id|size
+)paren
+op_logical_or
 id|diva_os_copy_to_user
 (paren
 l_int|NULL
@@ -1290,6 +1331,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|count
+OL
+id|written
+)paren
+op_logical_or
 id|diva_os_copy_to_user
 c_func
 (paren

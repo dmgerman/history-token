@@ -201,6 +201,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/* This does the right thing across a fork (I hope) */
+r_int
+r_int
+id|low_hpages
+op_assign
+id|mm-&gt;context
+op_amp
+id|CONTEXT_LOW_HPAGES
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -242,6 +251,10 @@ id|mmu_context_queue.elements
 (braket
 id|head
 )braket
+suffix:semicolon
+id|mm-&gt;context
+op_or_assign
+id|low_hpages
 suffix:semicolon
 id|head
 op_assign

@@ -2,6 +2,23 @@ multiline_comment|/*&n; * Kernel exception handling table support.  Derived from
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
+DECL|function|sort_extable
+r_void
+id|sort_extable
+c_func
+(paren
+r_struct
+id|exception_table_entry
+op_star
+id|start
+comma
+r_struct
+id|exception_table_entry
+op_star
+id|finish
+)paren
+(brace
+)brace
 r_const
 r_struct
 id|exception_table_entry

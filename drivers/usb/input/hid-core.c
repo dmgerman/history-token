@@ -6145,6 +6145,10 @@ DECL|macro|USB_VENDOR_ID_BERKSHIRE
 mdefine_line|#define USB_VENDOR_ID_BERKSHIRE&t;&t;0x0c98
 DECL|macro|USB_DEVICE_ID_BERKSHIRE_PCWD
 mdefine_line|#define USB_DEVICE_ID_BERKSHIRE_PCWD&t;0x1140
+DECL|macro|USB_VENDOR_ID_ALPS
+mdefine_line|#define USB_VENDOR_ID_ALPS&t;&t;0x0433
+DECL|macro|USB_DEVICE_ID_IBM_GAMEPAD
+mdefine_line|#define USB_DEVICE_ID_IBM_GAMEPAD&t;0x1101
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6572,6 +6576,14 @@ comma
 id|USB_DEVICE_ID_BERKSHIRE_PCWD
 comma
 id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_ALPS
+comma
+id|USB_DEVICE_ID_IBM_GAMEPAD
+comma
+id|HID_QUIRK_BADPAD
 )brace
 comma
 (brace
@@ -7365,7 +7377,7 @@ id|fail
 suffix:semicolon
 id|pipe
 op_assign
-id|usb_sndbulkpipe
+id|usb_sndintpipe
 c_func
 (paren
 id|dev
@@ -7373,7 +7385,7 @@ comma
 id|endpoint-&gt;bEndpointAddress
 )paren
 suffix:semicolon
-id|usb_fill_bulk_urb
+id|usb_fill_int_urb
 c_func
 (paren
 id|hid-&gt;urbout
@@ -7389,6 +7401,8 @@ comma
 id|hid_irq_out
 comma
 id|hid
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|hid-&gt;urbout-&gt;transfer_dma
@@ -7448,6 +7462,10 @@ suffix:semicolon
 id|hid-&gt;dev
 op_assign
 id|dev
+suffix:semicolon
+id|hid-&gt;intf
+op_assign
+id|intf
 suffix:semicolon
 id|hid-&gt;ifnum
 op_assign

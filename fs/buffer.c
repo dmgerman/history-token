@@ -612,6 +612,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
+(brace
 id|buffer_io_error
 c_func
 (paren
@@ -622,7 +631,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;lost page write due to I/O error on %s&bslash;n&quot;
+l_string|&quot;lost page write due to &quot;
+l_string|&quot;I/O error on %s&bslash;n&quot;
 comma
 id|bdevname
 c_func
@@ -633,6 +643,7 @@ id|b
 )paren
 )paren
 suffix:semicolon
+)brace
 id|set_buffer_write_io_error
 c_func
 (paren
@@ -1984,6 +1995,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
+(brace
 id|buffer_io_error
 c_func
 (paren
@@ -1994,7 +2014,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;lost page write due to I/O error on %s&bslash;n&quot;
+l_string|&quot;lost page write due to &quot;
+l_string|&quot;I/O error on %s&bslash;n&quot;
 comma
 id|bdevname
 c_func
@@ -2005,6 +2026,7 @@ id|b
 )paren
 )paren
 suffix:semicolon
+)brace
 id|set_bit
 c_func
 (paren

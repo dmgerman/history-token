@@ -3,9 +3,11 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-99 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;.&n;   All SMBus-related things are written by Frodo Looijaard &lt;frodol@dds.nl&gt;&n;   SMBus 2.0 support by Mark Studebaker &lt;mdsxyz123@yahoo.com&gt;                */
-multiline_comment|/* $Id: i2c-core.c,v 1.95 2003/01/22 05:25:08 kmalkki Exp $ */
-multiline_comment|/* #define DEBUG 1 */
-multiline_comment|/* needed to pick up the dev_dbg() calls */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_CORE
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -14,10 +16,6 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|DEB
-mdefine_line|#define DEB(x) if (i2c_debug&gt;=1) x;
-DECL|macro|DEB2
-mdefine_line|#define DEB2(x) if (i2c_debug&gt;=2) x;
 r_static
 id|LIST_HEAD
 c_func
@@ -38,12 +36,6 @@ c_func
 (paren
 id|core_lists
 )paren
-suffix:semicolon
-multiline_comment|/**** debug level */
-DECL|variable|i2c_debug
-r_static
-r_int
-id|i2c_debug
 suffix:semicolon
 DECL|function|i2c_device_probe
 r_int
@@ -560,9 +552,6 @@ op_amp
 id|core_lists
 )paren
 suffix:semicolon
-id|DEB
-c_func
-(paren
 id|dev_dbg
 c_func
 (paren
@@ -572,7 +561,6 @@ comma
 l_string|&quot;registered as adapter #%d&bslash;n&quot;
 comma
 id|adap-&gt;nr
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -802,9 +790,6 @@ op_amp
 id|adap-&gt;class_dev_released
 )paren
 suffix:semicolon
-id|DEB
-c_func
-(paren
 id|dev_dbg
 c_func
 (paren
@@ -812,7 +797,6 @@ op_amp
 id|adap-&gt;dev
 comma
 l_string|&quot;adapter unregistered&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|out_unlock
@@ -907,17 +891,12 @@ op_amp
 id|drivers
 )paren
 suffix:semicolon
-id|DEB
+id|pr_debug
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: driver %s registered.&bslash;n&quot;
+l_string|&quot;i2c-core: driver %s registered.&bslash;n&quot;
 comma
 id|driver-&gt;name
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* now look for instances of driver on our adapters */
@@ -1019,15 +998,10 @@ id|core_lists
 )paren
 suffix:semicolon
 multiline_comment|/* Have a look at each adapter, if clients of this driver are still&n;&t; * attached. If so, detach them to be able to kill the driver &n;&t; * afterwards.&n;&t; */
-id|DEB2
+id|pr_debug
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: unregister_driver - looking for clients.&bslash;n&quot;
-)paren
+l_string|&quot;i2c-core: unregister_driver - looking for clients.&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* removing clients does not depend on the notify flag, else &n;&t; * invalid operation might (will!) result, when using stale client&n;&t; * pointers.&n;&t; */
@@ -1053,9 +1027,6 @@ comma
 id|list
 )paren
 suffix:semicolon
-id|DEB2
-c_func
-(paren
 id|dev_dbg
 c_func
 (paren
@@ -1063,7 +1034,6 @@ op_amp
 id|adap-&gt;dev
 comma
 l_string|&quot;examining adapter&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1142,18 +1112,12 @@ id|driver
 )paren
 r_continue
 suffix:semicolon
-id|DEB2
+id|pr_debug
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: &quot;
-l_string|&quot;detaching client %s:&bslash;n&quot;
+l_string|&quot;i2c-core.o: detaching client %s:&bslash;n&quot;
 comma
 id|client-&gt;name
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1212,17 +1176,12 @@ op_amp
 id|driver-&gt;list
 )paren
 suffix:semicolon
-id|DEB
+id|pr_debug
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: driver unregistered: %s&bslash;n&quot;
+l_string|&quot;i2c-core: driver unregistered: %s&bslash;n&quot;
 comma
 id|driver-&gt;name
-)paren
 )paren
 suffix:semicolon
 id|out_unlock
@@ -1445,9 +1404,6 @@ id|client-&gt;addr
 suffix:semicolon
 )brace
 )brace
-id|DEB
-c_func
-(paren
 id|dev_dbg
 c_func
 (paren
@@ -1456,8 +1412,7 @@ id|adapter-&gt;dev
 comma
 l_string|&quot;client [%s] registered to adapter&bslash;n&quot;
 comma
-id|client-&gt;dev.name
-)paren
+id|client-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -1516,7 +1471,7 @@ comma
 id|client-&gt;addr
 )paren
 suffix:semicolon
-id|printk
+id|pr_debug
 c_func
 (paren
 l_string|&quot;registering %s&bslash;n&quot;
@@ -1609,11 +1564,13 @@ c_cond
 id|res
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-core.o: client_unregister [%s] failed, &quot;
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;client_unregister [%s] failed, &quot;
 l_string|&quot;client not detached&quot;
 comma
 id|client-&gt;name
@@ -1867,11 +1824,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
+id|pr_debug
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot; i2c-core.o: dec_use_client used one too many times&bslash;n&quot;
+l_string|&quot;i2c-core: %s used one too many times&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -2182,9 +2140,6 @@ c_cond
 id|adap-&gt;algo-&gt;master_xfer
 )paren
 (brace
-id|DEB2
-c_func
-(paren
 id|dev_dbg
 c_func
 (paren
@@ -2194,7 +2149,6 @@ comma
 l_string|&quot;master_xfer: with %d msgs.&bslash;n&quot;
 comma
 id|num
-)paren
 )paren
 suffix:semicolon
 id|down
@@ -2231,9 +2185,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|DEB2
-c_func
-(paren
 id|dev_dbg
 c_func
 (paren
@@ -2241,7 +2192,6 @@ op_amp
 id|adap-&gt;dev
 comma
 l_string|&quot;I2C level transfers not supported&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -2311,9 +2261,6 @@ op_star
 )paren
 id|buf
 suffix:semicolon
-id|DEB2
-c_func
-(paren
 id|dev_dbg
 c_func
 (paren
@@ -2323,7 +2270,6 @@ comma
 l_string|&quot;master_send: writing %d bytes.&bslash;n&quot;
 comma
 id|count
-)paren
 )paren
 suffix:semicolon
 id|down
@@ -2446,9 +2392,6 @@ id|msg.buf
 op_assign
 id|buf
 suffix:semicolon
-id|DEB2
-c_func
-(paren
 id|dev_dbg
 c_func
 (paren
@@ -2458,7 +2401,6 @@ comma
 l_string|&quot;master_recv: reading %d bytes.&bslash;n&quot;
 comma
 id|count
-)paren
 )paren
 suffix:semicolon
 id|down
@@ -2490,21 +2432,19 @@ op_amp
 id|adap-&gt;bus_lock
 )paren
 suffix:semicolon
-id|DEB2
+id|dev_dbg
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: master_recv: return:%d (count:%d, addr:0x%02x)&bslash;n&quot;
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;master_recv: return:%d (count:%d, addr:0x%02x)&bslash;n&quot;
 comma
 id|ret
 comma
 id|count
 comma
 id|client-&gt;addr
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* if everything went ok (i.e. 1 msg transmitted), return #bytes&n;&t; &t;* transmitted, else error code.&n;&t; &t;*/
@@ -2569,19 +2509,17 @@ id|adap
 op_assign
 id|client-&gt;adapter
 suffix:semicolon
-id|DEB2
+id|dev_dbg
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: i2c ioctl, cmd: 0x%x, arg: %#lx&bslash;n&quot;
+op_amp
+id|client-&gt;dev
+comma
+l_string|&quot;i2c ioctl, cmd: 0x%x, arg: %#lx&bslash;n&quot;
 comma
 id|cmd
 comma
 id|arg
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -2798,19 +2736,17 @@ l_int|1
 )paren
 )paren
 (brace
-id|DEB2
+id|dev_dbg
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: found force parameter for adapter %d, addr %04x&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found force parameter for adapter %d, addr %04x&bslash;n&quot;
 comma
 id|adap_id
 comma
 id|addr
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2908,20 +2844,18 @@ l_int|1
 )paren
 )paren
 (brace
-id|DEB2
+id|dev_dbg
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: found ignore parameter for adapter %d, &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found ignore parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
 id|adap_id
 comma
 id|addr
-)paren
 )paren
 suffix:semicolon
 id|found
@@ -3002,20 +2936,18 @@ l_int|2
 )paren
 )paren
 (brace
-id|DEB2
+id|dev_dbg
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: found ignore_range parameter for adapter %d, &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found ignore_range parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
 id|adap_id
 comma
 id|addr
-)paren
 )paren
 suffix:semicolon
 id|found
@@ -3071,20 +3003,18 @@ id|found
 op_assign
 l_int|1
 suffix:semicolon
-id|DEB2
+id|dev_dbg
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: found normal i2c entry for adapter %d, &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found normal i2c entry for adapter %d, &quot;
 l_string|&quot;addr %02x&quot;
 comma
 id|adap_id
 comma
 id|addr
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3141,20 +3071,18 @@ id|found
 op_assign
 l_int|1
 suffix:semicolon
-id|DEB2
+id|dev_dbg
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: found normal i2c_range entry for adapter %d, &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found normal i2c_range entry for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
 id|adap_id
 comma
 id|addr
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3224,20 +3152,18 @@ id|found
 op_assign
 l_int|1
 suffix:semicolon
-id|DEB2
+id|dev_dbg
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: found probe parameter for adapter %d, &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found probe parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
 id|adap_id
 comma
 id|addr
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3316,20 +3242,18 @@ id|found
 op_assign
 l_int|1
 suffix:semicolon
-id|DEB2
+id|dev_dbg
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: found probe_range parameter for adapter %d, &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;found probe_range parameter for adapter %d, &quot;
 l_string|&quot;addr %04x&bslash;n&quot;
 comma
 id|adap_id
 comma
 id|addr
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -4122,19 +4046,14 @@ op_ne
 id|cpec
 )paren
 (brace
-id|DEB
+id|pr_debug
 c_func
 (paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-core.o: Bad PEC 0x%02x vs. 0x%02x&bslash;n&quot;
+l_string|&quot;i2c-core: Bad PEC 0x%02x vs. 0x%02x&bslash;n&quot;
 comma
 id|rpec
 comma
 id|cpec
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -5367,11 +5286,13 @@ op_eq
 id|I2C_SMBUS_READ
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-core.o: Block read not supported &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Block read not supported &quot;
 l_string|&quot;under I2C emulation!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5411,11 +5332,13 @@ op_plus
 l_int|2
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-core.o: smbus_access called with &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;smbus_access called with &quot;
 l_string|&quot;invalid block write size (%d)&bslash;n&quot;
 comma
 id|data-&gt;block
@@ -5488,11 +5411,13 @@ suffix:colon
 r_case
 id|I2C_SMBUS_BLOCK_PROC_CALL_PEC
 suffix:colon
-id|printk
+id|dev_dbg
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-core.o: Block process call not supported &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Block process call not supported &quot;
 l_string|&quot;under I2C emulation!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5552,10 +5477,13 @@ op_plus
 l_int|1
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;i2c-core.o: i2c_smbus_xfer_emulated called with &quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;i2c_smbus_xfer_emulated called with &quot;
 l_string|&quot;invalid block write size (%d)&bslash;n&quot;
 comma
 id|data-&gt;block
@@ -5601,11 +5529,13 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|dev_err
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;i2c-core.o: smbus_access called with invalid size (%d)&bslash;n&quot;
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;smbus_access called with invalid size (%d)&bslash;n&quot;
 comma
 id|size
 )paren
@@ -6349,22 +6279,6 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|i2c_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|i2c_debug
-comma
-l_string|&quot;debug level&quot;
 )paren
 suffix:semicolon
 eof

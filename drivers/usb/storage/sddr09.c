@@ -2913,14 +2913,6 @@ comma
 r_int
 r_int
 id|sectors
-comma
-r_int
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|use_sg
 )paren
 (brace
 r_struct
@@ -2934,6 +2926,11 @@ id|sddr09_card_info
 op_star
 )paren
 id|us-&gt;extra
+suffix:semicolon
+r_int
+r_char
+op_star
+id|buffer
 suffix:semicolon
 r_int
 r_int
@@ -2961,17 +2958,8 @@ r_int
 id|result
 suffix:semicolon
 singleline_comment|// Since we only read in one block at a time, we have to create
-singleline_comment|// a bounce buffer if the transfer uses scatter-gather.  We will
-singleline_comment|// move the data a piece at a time between the bounce buffer and
-singleline_comment|// the actual transfer buffer.  If we&squot;re not using scatter-gather,
-singleline_comment|// we can simply update the transfer buffer pointer to get the
-singleline_comment|// same effect.
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
-(brace
+singleline_comment|// a bounce buffer and move the data a piece at a time between the
+singleline_comment|// bounce buffer and the actual transfer buffer.
 id|len
 op_assign
 id|min
@@ -3015,7 +3003,6 @@ suffix:semicolon
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
-)brace
 )brace
 singleline_comment|// Figure out the initial LBA and page
 id|lba
@@ -3210,12 +3197,7 @@ id|USB_STOR_TRANSPORT_GOOD
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// Store the data (s-g) or update the pointer (!s-g)
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
+singleline_comment|// Store the data in the transfer buffer
 id|usb_stor_access_xfer_buf
 c_func
 (paren
@@ -3234,11 +3216,6 @@ comma
 id|TO_XFER_BUF
 )paren
 suffix:semicolon
-r_else
-id|buffer
-op_add_assign
-id|len
-suffix:semicolon
 id|page
 op_assign
 l_int|0
@@ -3251,11 +3228,6 @@ op_sub_assign
 id|pages
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
 id|kfree
 c_func
 (paren
@@ -4052,14 +4024,6 @@ comma
 r_int
 r_int
 id|sectors
-comma
-r_int
-r_char
-op_star
-id|buffer
-comma
-r_int
-id|use_sg
 )paren
 (brace
 r_struct
@@ -4092,6 +4056,11 @@ r_int
 r_char
 op_star
 id|blockbuffer
+suffix:semicolon
+r_int
+r_char
+op_star
+id|buffer
 suffix:semicolon
 r_int
 r_int
@@ -4157,17 +4126,8 @@ id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 singleline_comment|// Since we don&squot;t write the user data directly to the device,
-singleline_comment|// we have to create a bounce buffer if the transfer uses
-singleline_comment|// scatter-gather.  We will move the data a piece at a time
-singleline_comment|// between the bounce buffer and the actual transfer buffer.
-singleline_comment|// If we&squot;re not using scatter-gather, we can simply update
-singleline_comment|// the transfer buffer pointer to get the same effect.
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
-(brace
+singleline_comment|// we have to create a bounce buffer and move the data a piece
+singleline_comment|// at a time between the bounce buffer and the actual transfer buffer.
 id|len
 op_assign
 id|min
@@ -4217,7 +4177,6 @@ suffix:semicolon
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
-)brace
 )brace
 singleline_comment|// Figure out the initial LBA and page
 id|lba
@@ -4273,12 +4232,7 @@ op_lshift
 id|info-&gt;pageshift
 )paren
 suffix:semicolon
-singleline_comment|// Get the data from the transfer buffer (s-g)
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
+singleline_comment|// Get the data from the transfer buffer
 id|usb_stor_access_xfer_buf
 c_func
 (paren
@@ -4324,17 +4278,6 @@ id|USB_STOR_TRANSPORT_GOOD
 )paren
 r_break
 suffix:semicolon
-singleline_comment|// Update the transfer buffer pointer (!s-g)
-r_if
-c_cond
-(paren
-op_logical_neg
-id|use_sg
-)paren
-id|buffer
-op_add_assign
-id|len
-suffix:semicolon
 id|page
 op_assign
 l_int|0
@@ -4347,11 +4290,6 @@ op_sub_assign
 id|pages
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|use_sg
-)paren
 id|kfree
 c_func
 (paren
@@ -6273,6 +6211,8 @@ r_int
 r_char
 op_star
 id|ptr
+op_assign
+id|us-&gt;iobuf
 suffix:semicolon
 r_int
 r_int
@@ -6284,22 +6224,17 @@ id|page
 comma
 id|pages
 suffix:semicolon
-r_char
-id|string
-(braket
-l_int|64
-)braket
-suffix:semicolon
 r_struct
 id|sddr09_card_info
 op_star
 id|info
 suffix:semicolon
+r_static
 r_int
 r_char
 id|inquiry_response
 (braket
-l_int|36
+l_int|8
 )braket
 op_assign
 (brace
@@ -6320,19 +6255,27 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
+multiline_comment|/* note: no block descriptor support */
+r_static
 r_int
 r_char
 id|mode_page_01
 (braket
-l_int|16
+l_int|19
 )braket
 op_assign
 (brace
+l_int|0x00
+comma
 l_int|0x0F
 comma
 l_int|0x00
 comma
-l_int|0
+l_int|0x0
+comma
+l_int|0x0
+comma
+l_int|0x0
 comma
 l_int|0x00
 comma
@@ -6407,15 +6350,6 @@ r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
-id|ptr
-op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-id|srb-&gt;request_buffer
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6437,17 +6371,9 @@ id|ptr
 comma
 l_int|0
 comma
-id|srb-&gt;request_bufflen
+l_int|18
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|srb-&gt;request_bufflen
-OG
-l_int|7
-)paren
-(brace
 id|ptr
 (braket
 l_int|0
@@ -6467,24 +6393,24 @@ id|ptr
 l_int|7
 )braket
 op_assign
-id|srb-&gt;request_bufflen
-op_minus
-l_int|7
+l_int|11
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|srb-&gt;request_bufflen
-OG
-l_int|12
-)paren
 id|ptr
 (braket
 l_int|12
 )braket
 op_assign
 id|sensecode
+suffix:semicolon
+id|usb_stor_set_xfer_buf
+c_func
+(paren
+id|ptr
+comma
+l_int|18
+comma
+id|srb
+)paren
 suffix:semicolon
 id|sensekey
 op_assign
@@ -6514,16 +6440,14 @@ op_eq
 id|INQUIRY
 )paren
 (brace
-id|memset
+id|memcpy
 c_func
 (paren
+id|ptr
+comma
 id|inquiry_response
-op_plus
+comma
 l_int|8
-comma
-l_int|0
-comma
-l_int|28
 )paren
 suffix:semicolon
 id|fill_inquiry_response
@@ -6531,7 +6455,7 @@ c_func
 (paren
 id|us
 comma
-id|inquiry_response
+id|ptr
 comma
 l_int|36
 )paren
@@ -6664,109 +6588,49 @@ id|info-&gt;blockshift
 op_minus
 l_int|1
 suffix:semicolon
+(paren
+(paren
+id|u32
+op_star
+)paren
 id|ptr
+)paren
 (braket
 l_int|0
 )braket
 op_assign
-id|MSB_of
+id|cpu_to_be32
 c_func
 (paren
 id|capacity
-op_rshift
-l_int|16
 )paren
 suffix:semicolon
+singleline_comment|// Report page size
+(paren
+(paren
+id|u32
+op_star
+)paren
 id|ptr
+)paren
 (braket
 l_int|1
 )braket
 op_assign
-id|LSB_of
-c_func
-(paren
-id|capacity
-op_rshift
-l_int|16
-)paren
-suffix:semicolon
-id|ptr
-(braket
-l_int|2
-)braket
-op_assign
-id|MSB_of
-c_func
-(paren
-id|capacity
-op_amp
-l_int|0xFFFF
-)paren
-suffix:semicolon
-id|ptr
-(braket
-l_int|3
-)braket
-op_assign
-id|LSB_of
-c_func
-(paren
-id|capacity
-op_amp
-l_int|0xFFFF
-)paren
-suffix:semicolon
-singleline_comment|// Report page size
-id|ptr
-(braket
-l_int|4
-)braket
-op_assign
-id|MSB_of
+id|cpu_to_be32
 c_func
 (paren
 id|info-&gt;pagesize
-op_rshift
-l_int|16
 )paren
 suffix:semicolon
-id|ptr
-(braket
-l_int|5
-)braket
-op_assign
-id|LSB_of
+id|usb_stor_set_xfer_buf
 c_func
 (paren
-id|info-&gt;pagesize
-op_rshift
-l_int|16
-)paren
-suffix:semicolon
 id|ptr
-(braket
-l_int|6
-)braket
-op_assign
-id|MSB_of
-c_func
-(paren
-id|info-&gt;pagesize
-op_amp
-l_int|0xFFFF
-)paren
-suffix:semicolon
-id|ptr
-(braket
-l_int|7
-)braket
-op_assign
-id|LSB_of
-c_func
-(paren
-id|info-&gt;pagesize
-op_amp
-l_int|0xFFFF
+comma
+l_int|8
+comma
+id|srb
 )paren
 suffix:semicolon
 r_return
@@ -6776,13 +6640,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|srb-&gt;cmnd
-(braket
-l_int|0
-)braket
-op_eq
-id|MODE_SENSE
-op_logical_or
 id|srb-&gt;cmnd
 (braket
 l_int|0
@@ -6803,10 +6660,7 @@ op_amp
 l_int|0x3F
 )paren
 suffix:semicolon
-r_int
-id|len
-suffix:semicolon
-multiline_comment|/* They ask for the Read/Write error recovery page,&n;&t;&t;   or for all pages. Give as much as they have room for. */
+multiline_comment|/* They ask for the Read/Write error recovery page,&n;&t;&t;   or for all pages. */
 multiline_comment|/* %% We should check DBD %% */
 r_if
 c_cond
@@ -6829,38 +6683,26 @@ comma
 id|modepage
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|memcpy
+c_func
 (paren
 id|ptr
-op_eq
-l_int|NULL
-)paren
-r_return
-id|USB_STOR_TRANSPORT_ERROR
-suffix:semicolon
-id|len
-op_assign
-id|srb-&gt;request_bufflen
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OG
+comma
+id|mode_page_01
+comma
 r_sizeof
 (paren
 id|mode_page_01
 )paren
 )paren
-id|len
-op_assign
-r_sizeof
-(paren
-id|mode_page_01
-)paren
 suffix:semicolon
-id|mode_page_01
+(paren
+(paren
+id|u16
+op_star
+)paren
+id|ptr
+)paren
 (braket
 l_int|0
 )braket
@@ -6870,11 +6712,11 @@ r_sizeof
 id|mode_page_01
 )paren
 op_minus
-l_int|1
-suffix:semicolon
-id|mode_page_01
-(braket
 l_int|2
+suffix:semicolon
+id|ptr
+(braket
+l_int|3
 )braket
 op_assign
 (paren
@@ -6888,14 +6730,17 @@ l_int|0x80
 suffix:colon
 l_int|0
 suffix:semicolon
-id|memcpy
+id|usb_stor_set_xfer_buf
 c_func
 (paren
 id|ptr
 comma
+r_sizeof
+(paren
 id|mode_page_01
+)paren
 comma
-id|len
+id|srb
 )paren
 suffix:semicolon
 r_return
@@ -7015,10 +6860,6 @@ comma
 id|page
 comma
 id|pages
-comma
-id|ptr
-comma
-id|srb-&gt;use_sg
 )paren
 suffix:semicolon
 )brace
@@ -7104,14 +6945,10 @@ comma
 id|page
 comma
 id|pages
-comma
-id|ptr
-comma
-id|srb-&gt;use_sg
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// Pass TEST_UNIT_READY and REQUEST_SENSE through
+multiline_comment|/* catch-all for all other commands, except&n;&t; * pass TEST_UNIT_READY and REQUEST_SENSE through&n;&t; */
 r_if
 c_cond
 (paren
@@ -7173,7 +7010,7 @@ l_int|1
 op_assign
 id|LUNBITS
 suffix:semicolon
-id|string
+id|ptr
 (braket
 l_int|0
 )braket
@@ -7197,12 +7034,12 @@ op_increment
 id|sprintf
 c_func
 (paren
-id|string
+id|ptr
 op_plus
 id|strlen
 c_func
 (paren
-id|string
+id|ptr
 )paren
 comma
 l_string|&quot;%02X &quot;
@@ -7218,7 +7055,7 @@ c_func
 (paren
 l_string|&quot;SDDR09: Send control for command %s&bslash;n&quot;
 comma
-id|string
+id|ptr
 )paren
 suffix:semicolon
 id|result

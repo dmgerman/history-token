@@ -1,9 +1,14 @@
-multiline_comment|/*&n;    eeprom.c - Part of lm_sensors, Linux kernel modules for hardware&n;               monitoring&n;    Copyright (C) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;&t;&t;&t;       Philip Edelbrock &lt;phil@netroedge.com&gt;&n;    Copyright (C) 2003 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n;    Copyright (C) 2003 IBM Corp.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-multiline_comment|/* #define DEBUG */
+multiline_comment|/*&n;    eeprom.c - Part of lm_sensors, Linux kernel modules for hardware&n;               monitoring&n;    Copyright (C) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;&t;&t;&t;       Philip Edelbrock &lt;phil@netroedge.com&gt;&n;    Copyright (C) 2003 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n;    Copyright (C) 2003 IBM Corp.&n;&n;    2004-01-16  Jean Delvare &lt;khali@linux-fr.org&gt;&n;    Divide the eeprom in 32-byte (arbitrary) slices. This significantly&n;    speeds sensors up, as well as various scripts using the eeprom&n;    module.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-sensor.h&gt;
 multiline_comment|/* Addresses to scan */
@@ -120,16 +125,19 @@ id|semaphore
 id|update_lock
 suffix:semicolon
 DECL|member|valid
-r_char
+id|u8
 id|valid
 suffix:semicolon
-multiline_comment|/* !=0 if following fields are valid */
+multiline_comment|/* bitfield, bit!=0 if slice is valid */
 DECL|member|last_updated
 r_int
 r_int
 id|last_updated
+(braket
+l_int|8
+)braket
 suffix:semicolon
-multiline_comment|/* In jiffies */
+multiline_comment|/* In jiffies, 8 slices */
 DECL|member|data
 id|u8
 id|data
@@ -138,6 +146,11 @@ id|EEPROM_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* Register values */
+DECL|member|nature
+r_enum
+id|eeprom_nature
+id|nature
+suffix:semicolon
 )brace
 suffix:semicolon
 r_static
@@ -236,6 +249,9 @@ r_struct
 id|i2c_client
 op_star
 id|client
+comma
+id|u8
+id|slice
 )paren
 (brace
 r_struct
@@ -264,24 +280,38 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
+id|data-&gt;valid
+op_amp
+(paren
+l_int|1
+op_lshift
+id|slice
+)paren
+)paren
+op_logical_or
 (paren
 id|jiffies
 op_minus
 id|data-&gt;last_updated
+(braket
+id|slice
+)braket
 OG
 l_int|300
 op_star
 id|HZ
 )paren
-op_or
+op_logical_or
 (paren
 id|jiffies
 OL
 id|data-&gt;last_updated
+(braket
+id|slice
+)braket
 )paren
-op_logical_or
-op_logical_neg
-id|data-&gt;valid
 )paren
 (brace
 id|dev_dbg
@@ -290,7 +320,9 @@ c_func
 op_amp
 id|client-&gt;dev
 comma
-l_string|&quot;Starting eeprom update&bslash;n&quot;
+l_string|&quot;Starting eeprom update, slice %u&bslash;n&quot;
+comma
+id|slice
 )paren
 suffix:semicolon
 r_if
@@ -310,11 +342,19 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+id|slice
+op_lshift
+l_int|5
 suffix:semicolon
 id|i
 OL
-id|EEPROM_SIZE
+(paren
+id|slice
+op_plus
+l_int|1
+)paren
+op_lshift
+l_int|5
 suffix:semicolon
 id|i
 op_add_assign
@@ -351,7 +391,9 @@ c_func
 (paren
 id|client
 comma
-l_int|0
+id|slice
+op_lshift
+l_int|5
 )paren
 )paren
 (brace
@@ -373,11 +415,19 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|0
+id|slice
+op_lshift
+l_int|5
 suffix:semicolon
 id|i
 OL
-id|EEPROM_SIZE
+(paren
+id|slice
+op_plus
+l_int|1
+)paren
+op_lshift
+l_int|5
 suffix:semicolon
 id|i
 op_increment
@@ -414,12 +464,19 @@ suffix:semicolon
 )brace
 )brace
 id|data-&gt;last_updated
+(braket
+id|slice
+)braket
 op_assign
 id|jiffies
 suffix:semicolon
 id|data-&gt;valid
-op_assign
+op_or_assign
+(paren
 l_int|1
+op_lshift
+id|slice
+)paren
 suffix:semicolon
 )brace
 m_exit
@@ -485,11 +542,8 @@ c_func
 id|client
 )paren
 suffix:semicolon
-id|eeprom_update_client
-c_func
-(paren
-id|client
-)paren
+id|u8
+id|slice
 suffix:semicolon
 r_if
 c_cond
@@ -516,6 +570,106 @@ id|EEPROM_SIZE
 op_minus
 id|off
 suffix:semicolon
+multiline_comment|/* Only refresh slices which contain requested bytes */
+r_for
+c_loop
+(paren
+id|slice
+op_assign
+id|off
+op_rshift
+l_int|5
+suffix:semicolon
+id|slice
+op_le
+(paren
+id|off
+op_plus
+id|count
+op_minus
+l_int|1
+)paren
+op_rshift
+l_int|5
+suffix:semicolon
+id|slice
+op_increment
+)paren
+id|eeprom_update_client
+c_func
+(paren
+id|client
+comma
+id|slice
+)paren
+suffix:semicolon
+multiline_comment|/* Hide Vaio security settings to regular users (16 first bytes) */
+r_if
+c_cond
+(paren
+id|data-&gt;nature
+op_eq
+id|VAIO
+op_logical_and
+id|off
+OL
+l_int|16
+op_logical_and
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_ADMIN
+)paren
+)paren
+(brace
+r_int
+id|in_row1
+op_assign
+l_int|16
+op_minus
+id|off
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|buf
+comma
+l_int|0
+comma
+id|in_row1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+op_minus
+id|in_row1
+OG
+l_int|0
+)paren
+id|memcpy
+c_func
+(paren
+id|buf
+op_plus
+id|in_row1
+comma
+op_amp
+id|data-&gt;data
+(braket
+l_int|16
+)braket
+comma
+id|count
+op_minus
+id|in_row1
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|memcpy
 c_func
 (paren
@@ -530,6 +684,7 @@ comma
 id|count
 )paren
 suffix:semicolon
+)brace
 r_return
 id|count
 suffix:semicolon
@@ -626,12 +781,6 @@ r_struct
 id|eeprom_data
 op_star
 id|data
-suffix:semicolon
-r_enum
-id|eeprom_nature
-id|nature
-op_assign
-id|UNKNOWN
 suffix:semicolon
 r_int
 id|err
@@ -848,6 +997,10 @@ r_goto
 id|exit_kfree
 suffix:semicolon
 )brace
+id|data-&gt;nature
+op_assign
+id|UNKNOWN
+suffix:semicolon
 multiline_comment|/* Detect the Vaio nature of EEPROMs.&n;&t;   We use the &quot;PCG-&quot; prefix as the signature. */
 r_if
 c_cond
@@ -900,32 +1053,9 @@ l_int|0x83
 op_eq
 l_char|&squot;-&squot;
 )paren
-id|nature
+id|data-&gt;nature
 op_assign
 id|VAIO
-suffix:semicolon
-)brace
-multiline_comment|/* If this is a VIAO, then we only allow root to read from this file,&n;&t;   as BIOS passwords can be present here in plaintext */
-r_switch
-c_cond
-(paren
-id|nature
-)paren
-(brace
-r_case
-id|VAIO
-suffix:colon
-id|eeprom_attr.attr.mode
-op_assign
-id|S_IRUSR
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|eeprom_attr.attr.mode
-op_assign
-id|S_IRUGO
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the remaining client fields */

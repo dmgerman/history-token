@@ -15,7 +15,7 @@ mdefine_line|#define CSW fd_routine[can_use_virtual_dma &amp; 1]
 DECL|macro|fd_inb
 mdefine_line|#define fd_inb(port)&t;&t;&t;inb_p(port)
 DECL|macro|fd_outb
-mdefine_line|#define fd_outb(port,value)&t;&t;outb_p(port,value)
+mdefine_line|#define fd_outb(value,port)&t;&t;outb_p(value,port)
 DECL|macro|fd_request_dma
 mdefine_line|#define fd_request_dma()        CSW._request_dma(FLOPPY_DMA,&quot;floppy&quot;)
 DECL|macro|fd_free_dma

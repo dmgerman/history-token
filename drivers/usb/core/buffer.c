@@ -330,6 +330,14 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|addr
+)paren
+r_return
+suffix:semicolon
 r_for
 c_loop
 (paren
