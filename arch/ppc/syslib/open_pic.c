@@ -2117,6 +2117,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* IPIs are marked SA_INTERRUPT as they must run with irqs disabled */
 id|request_irq
 c_func
 (paren
@@ -2126,7 +2127,7 @@ id|open_pic_irq_offset
 comma
 id|openpic_ipi_action
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;IPI0 (call function)&quot;
 comma
@@ -2144,7 +2145,7 @@ l_int|1
 comma
 id|openpic_ipi_action
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;IPI1 (reschedule)&quot;
 comma
@@ -2162,7 +2163,7 @@ l_int|2
 comma
 id|openpic_ipi_action
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;IPI2 (invalidate tlb)&quot;
 comma
@@ -2180,7 +2181,7 @@ l_int|3
 comma
 id|openpic_ipi_action
 comma
-l_int|0
+id|SA_INTERRUPT
 comma
 l_string|&quot;IPI3 (xmon break)&quot;
 comma
