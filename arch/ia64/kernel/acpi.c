@@ -2026,6 +2026,11 @@ id|smp_boot_data.cpu_count
 op_assign
 id|total_cpus
 suffix:semicolon
+id|smp_build_cpu_map
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Make boot-up look pretty */
 id|printk

@@ -359,6 +359,15 @@ suffix:semicolon
 r_extern
 r_void
 id|__init
+id|smp_build_cpu_map
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__init
 id|init_smp_config
 (paren
 r_void
