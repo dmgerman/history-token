@@ -1258,12 +1258,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-id|NOTIFY_OK
-suffix:semicolon
 )brace
 r_return
-id|NOTIFY_BAD
+id|NOTIFY_OK
 suffix:semicolon
 )brace
 DECL|variable|cpu_nfb
