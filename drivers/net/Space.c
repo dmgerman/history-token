@@ -1321,6 +1321,12 @@ multiline_comment|/* &n;&t; * Backwards compatibility - historically an I/O base
 r_if
 c_cond
 (paren
+id|__dev_get_by_name
+c_func
+(paren
+id|dev-&gt;name
+)paren
+op_logical_or
 id|dev-&gt;base_addr
 op_eq
 l_int|1
