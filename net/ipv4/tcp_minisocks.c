@@ -1469,9 +1469,6 @@ r_struct
 id|hlist_node
 op_star
 id|node
-comma
-op_star
-id|safe
 suffix:semicolon
 r_int
 r_int
@@ -1489,14 +1486,14 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+id|rescan
+suffix:colon
 id|tw_for_each_inmate
 c_func
 (paren
 id|tw
 comma
 id|node
-comma
-id|safe
 comma
 op_amp
 id|tcp_tw_death_row
@@ -1555,6 +1552,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* While we dropped tw_death_lock, another cpu may have&n;&t;&t; * killed off the next TW bucket in the list, therefore&n;&t;&t; * do a fresh re-read of the hlist head node with the&n;&t;&t; * lock reacquired.  We still use the hlist traversal&n;&t;&t; * macro in order to get the prefetches.&n;&t;&t; */
+r_goto
+id|rescan
+suffix:semicolon
 )brace
 id|tcp_tw_count
 op_sub_assign
@@ -2359,7 +2360,7 @@ id|tcp_tw_bucket
 op_star
 id|tw
 suffix:semicolon
-id|tw_for_each_inmate
+id|tw_for_each_inmate_safe
 c_func
 (paren
 id|tw
