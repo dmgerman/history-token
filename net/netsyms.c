@@ -314,13 +314,6 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
 macro_line|#ifdef CONFIG_INET
 multiline_comment|/* Internet layer registration */
-DECL|variable|inetdev_lock
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inetdev_lock
-)paren
-suffix:semicolon
 DECL|variable|inet_add_protocol
 id|EXPORT_SYMBOL
 c_func
@@ -461,32 +454,11 @@ c_func
 id|inet_addr_type
 )paren
 suffix:semicolon
-DECL|variable|inet_select_addr
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inet_select_addr
-)paren
-suffix:semicolon
 DECL|variable|ip_dev_find
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_dev_find
-)paren
-suffix:semicolon
-DECL|variable|inetdev_by_index
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|inetdev_by_index
-)paren
-suffix:semicolon
-DECL|variable|in_dev_finish_destroy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|in_dev_finish_destroy
 )paren
 suffix:semicolon
 DECL|variable|ip_defrag
@@ -509,27 +481,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_rt_ioctl
-)paren
-suffix:semicolon
-DECL|variable|devinet_ioctl
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|devinet_ioctl
-)paren
-suffix:semicolon
-DECL|variable|register_inetaddr_notifier
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_inetaddr_notifier
-)paren
-suffix:semicolon
-DECL|variable|unregister_inetaddr_notifier
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_inetaddr_notifier
 )paren
 suffix:semicolon
 multiline_comment|/* needed for ip_gre -cw */
