@@ -342,17 +342,77 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* One thing to note is that the way the symbols of the mul/div&n; * support routines are named is a mess, they all start with&n; * a &squot;.&squot; which makes it a bitch to export, here is the trick:&n; */
-multiline_comment|/* If the interface of any of these special functions does ever&n; * change in an incompatible way, you must modify this.&n; */
-DECL|macro|DOT_PROTO
-mdefine_line|#define DOT_PROTO(sym) extern int __dot_##sym(int, int)
-macro_line|#ifdef __GENKSYMS__
-DECL|macro|EXPORT_SYMBOL_DOT
-mdefine_line|#define EXPORT_SYMBOL_DOT(sym)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DOT_PROTO(sym);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;EXPORT_SYMBOL(__dot_ ## sym)
-macro_line|#else /* !__GENKSYMS__ */
-DECL|macro|EXPORT_SYMBOL_DOT
-mdefine_line|#define EXPORT_SYMBOL_DOT(sym)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DOT_PROTO(sym) __asm__(&quot;.&quot; # sym);&t;&t;&t;&t;&bslash;&n;&t;__CRC_SYMBOL(__dot_##sym, &quot;&quot;)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __kstrtab___dot_##sym[]&t;&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab_strings&quot;)))&t;&t;&t;&bslash;&n;&t;= &quot;.&quot; #sym;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static const struct kernel_symbol __ksymtab___dot_##sym&t;&t;&bslash;&n;&t;__attribute__((section(&quot;__ksymtab&quot;)))&t;&t;&t;&t;&bslash;&n;&t;= { (unsigned long)&amp;__dot_##sym, __kstrtab___dot_##sym }
-macro_line|#endif
+multiline_comment|/* Alias functions whose names begin with &quot;.&quot; and export the aliases.&n; * The module references will be fixed up by module_frob_arch_sections.&n; */
+DECL|macro|DOT_ALIAS2
+mdefine_line|#define DOT_ALIAS2(__ret, __x, __arg1, __arg2) &bslash;&n;&t;extern __ret __x(__arg1, __arg2) &bslash;&n;&t;             __attribute__((weak, alias(&quot;.&quot; # __x)));
+id|DOT_ALIAS2
+c_func
+(paren
+r_int
+comma
+id|div
+comma
+r_int
+comma
+r_int
+)paren
+id|DOT_ALIAS2
+c_func
+(paren
+r_int
+comma
+id|mul
+comma
+r_int
+comma
+r_int
+)paren
+id|DOT_ALIAS2
+c_func
+(paren
+r_int
+comma
+id|rem
+comma
+r_int
+comma
+r_int
+)paren
+id|DOT_ALIAS2
+c_func
+(paren
+r_int
+comma
+id|udiv
+comma
+r_int
+comma
+r_int
+)paren
+id|DOT_ALIAS2
+c_func
+(paren
+r_int
+comma
+id|umul
+comma
+r_int
+comma
+r_int
+)paren
+id|DOT_ALIAS2
+c_func
+(paren
+r_int
+comma
+id|urem
+comma
+r_int
+comma
+r_int
+)paren
+DECL|macro|DOT_ALIAS2
+macro_line|#undef DOT_ALIAS2
 multiline_comment|/* used by various drivers */
 DECL|variable|sparc_cpu_model
 id|EXPORT_SYMBOL
@@ -1424,42 +1484,42 @@ id|__divdi3
 )paren
 suffix:semicolon
 DECL|variable|rem
-id|EXPORT_SYMBOL_DOT
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|rem
 )paren
 suffix:semicolon
 DECL|variable|urem
-id|EXPORT_SYMBOL_DOT
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|urem
 )paren
 suffix:semicolon
 DECL|variable|mul
-id|EXPORT_SYMBOL_DOT
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|mul
 )paren
 suffix:semicolon
 DECL|variable|umul
-id|EXPORT_SYMBOL_DOT
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|umul
 )paren
 suffix:semicolon
 DECL|variable|div
-id|EXPORT_SYMBOL_DOT
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|div
 )paren
 suffix:semicolon
 DECL|variable|udiv
-id|EXPORT_SYMBOL_DOT
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|udiv
