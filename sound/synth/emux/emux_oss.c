@@ -1426,6 +1426,7 @@ c_cond
 id|cmd
 )paren
 (brace
+macro_line|#if 0 /* don&squot;t do this atomically */
 r_case
 id|_EMUX_OSS_REMOVE_LAST_SAMPLES
 suffix:colon
@@ -1437,6 +1438,7 @@ id|emu-&gt;sflist
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_case
 id|_EMUX_OSS_SEND_EFFECT
 suffix:colon
