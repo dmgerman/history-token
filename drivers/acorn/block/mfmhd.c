@@ -680,7 +680,7 @@ suffix:semicolon
 id|va_list
 id|ap
 suffix:semicolon
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -716,7 +716,7 @@ c_func
 id|fmt
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -6018,7 +6018,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -6044,7 +6044,7 @@ OG
 l_int|1
 )paren
 (brace
-id|restore_flags
+id|local_irq_restore
 (paren
 id|flags
 )paren
@@ -6063,7 +6063,7 @@ id|busy
 op_assign
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 (paren
 id|flags
 )paren

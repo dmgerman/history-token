@@ -858,7 +858,6 @@ suffix:semicolon
 DECL|function|cleanup_elan_104nc
 r_static
 r_void
-id|__exit
 id|cleanup_elan_104nc
 c_func
 (paren

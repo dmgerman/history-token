@@ -1492,7 +1492,11 @@ id|tdfxfb_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|tdfxfb_remove
+)paren
 comma
 )brace
 suffix:semicolon

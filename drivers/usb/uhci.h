@@ -224,12 +224,14 @@ mdefine_line|#define uhci_actual_length(ctrl_sts)&t;((ctrl_sts + 1) &amp; TD_CTR
 multiline_comment|/*&n; * for TD &lt;info&gt;: (a.k.a. Token)&n; */
 DECL|macro|TD_TOKEN_TOGGLE
 mdefine_line|#define TD_TOKEN_TOGGLE&t;&t;19
-DECL|macro|TD_PID
-mdefine_line|#define TD_PID&t;&t;&t;0xFF
+DECL|macro|TD_TOKEN_PID_MASK
+mdefine_line|#define TD_TOKEN_PID_MASK&t;0xFF
+DECL|macro|TD_TOKEN_EXPLEN_MASK
+mdefine_line|#define TD_TOKEN_EXPLEN_MASK&t;0x7FF&t;&t;/* expected length, encoded as n - 1 */
 DECL|macro|uhci_maxlen
 mdefine_line|#define uhci_maxlen(token)&t;((token) &gt;&gt; 21)
 DECL|macro|uhci_expected_length
-mdefine_line|#define uhci_expected_length(info) (((info &gt;&gt; 21) + 1) &amp; TD_CTRL_ACTLEN_MASK) /* 1-based */
+mdefine_line|#define uhci_expected_length(info) (((info &gt;&gt; 21) + 1) &amp; TD_TOKEN_EXPLEN_MASK) /* 1-based */
 DECL|macro|uhci_toggle
 mdefine_line|#define uhci_toggle(token)&t;(((token) &gt;&gt; TD_TOKEN_TOGGLE) &amp; 1)
 DECL|macro|uhci_endpoint
@@ -239,7 +241,7 @@ mdefine_line|#define uhci_devaddr(token)&t;(((token) &gt;&gt; 8) &amp; 0x7f)
 DECL|macro|uhci_devep
 mdefine_line|#define uhci_devep(token)&t;(((token) &gt;&gt; 8) &amp; 0x7ff)
 DECL|macro|uhci_packetid
-mdefine_line|#define uhci_packetid(token)&t;((token) &amp; 0xff)
+mdefine_line|#define uhci_packetid(token)&t;((token) &amp; TD_TOKEN_PID_MASK)
 DECL|macro|uhci_packetout
 mdefine_line|#define uhci_packetout(token)&t;(uhci_packetid(token) != USB_PID_IN)
 DECL|macro|uhci_packetin
@@ -298,7 +300,7 @@ r_struct
 id|list_head
 id|fl_list
 suffix:semicolon
-multiline_comment|/* P: frame_list_lock */
+multiline_comment|/* P: uhci-&gt;frame_list_lock */
 )brace
 id|__attribute__
 c_func
@@ -587,7 +589,7 @@ id|uhci_frame_list
 op_star
 id|fl
 suffix:semicolon
-multiline_comment|/* Frame list */
+multiline_comment|/* P: uhci-&gt;frame_list_lock */
 DECL|member|fsbr
 r_int
 id|fsbr
@@ -597,24 +599,7 @@ DECL|member|is_suspended
 r_int
 id|is_suspended
 suffix:semicolon
-DECL|member|qh_remove_list_lock
-id|spinlock_t
-id|qh_remove_list_lock
-suffix:semicolon
-DECL|member|qh_remove_list
-r_struct
-id|list_head
-id|qh_remove_list
-suffix:semicolon
-DECL|member|urb_remove_list_lock
-id|spinlock_t
-id|urb_remove_list_lock
-suffix:semicolon
-DECL|member|urb_remove_list
-r_struct
-id|list_head
-id|urb_remove_list
-suffix:semicolon
+multiline_comment|/* Main list of URB&squot;s currently controlled by this HC */
 DECL|member|urb_list_lock
 id|spinlock_t
 id|urb_list_lock
@@ -624,6 +609,30 @@ r_struct
 id|list_head
 id|urb_list
 suffix:semicolon
+multiline_comment|/* P: uhci-&gt;urb_list_lock */
+multiline_comment|/* List of QH&squot;s that are done, but waiting to be unlinked (race) */
+DECL|member|qh_remove_list_lock
+id|spinlock_t
+id|qh_remove_list_lock
+suffix:semicolon
+DECL|member|qh_remove_list
+r_struct
+id|list_head
+id|qh_remove_list
+suffix:semicolon
+multiline_comment|/* P: uhci-&gt;qh_remove_list_lock */
+multiline_comment|/* List of asynchronously unlinked URB&squot;s */
+DECL|member|urb_remove_list_lock
+id|spinlock_t
+id|urb_remove_list_lock
+suffix:semicolon
+DECL|member|urb_remove_list
+r_struct
+id|list_head
+id|urb_remove_list
+suffix:semicolon
+multiline_comment|/* P: uhci-&gt;urb_remove_list_lock */
+multiline_comment|/* List of URB&squot;s awaiting completion callback */
 DECL|member|complete_list_lock
 id|spinlock_t
 id|complete_list_lock
@@ -633,6 +642,7 @@ r_struct
 id|list_head
 id|complete_list
 suffix:semicolon
+multiline_comment|/* P: uhci-&gt;complete_list_lock */
 DECL|member|rh
 r_struct
 id|virt_root_hub
@@ -677,6 +687,7 @@ r_struct
 id|list_head
 id|td_list
 suffix:semicolon
+multiline_comment|/* P: urb-&gt;lock */
 DECL|member|fsbr
 r_int
 id|fsbr
@@ -729,13 +740,16 @@ r_struct
 id|list_head
 id|queue_list
 suffix:semicolon
+multiline_comment|/* P: uhci-&gt;frame_list_lock */
 DECL|member|complete_list
 r_struct
 id|list_head
 id|complete_list
 suffix:semicolon
+multiline_comment|/* P: uhci-&gt;complete_list_lock */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Locking in uhci.c&n; *&n; * spinlocks are used extensively to protect the many lists and data&n; * structures we have. It&squot;s not that pretty, but it&squot;s necessary. We&n; * need to be done with all of the locks (except complete_list_lock) when&n; * we call urb-&gt;complete. I&squot;ve tried to make it simple enough so I don&squot;t&n; * have to spend hours racking my brain trying to figure out if the&n; * locking is safe.&n; *&n; * Here&squot;s the safe locking order to prevent deadlocks:&n; *&n; * #1 uhci-&gt;urb_list_lock&n; * #2 urb-&gt;lock&n; * #3 uhci-&gt;urb_remove_list_lock, uhci-&gt;frame_list_lock, &n; *   uhci-&gt;qh_remove_list_lock&n; * #4 uhci-&gt;complete_list_lock&n; *&n; * If you&squot;re going to grab 2 or more locks at once, ALWAYS grab the lock&n; * at the lowest level FIRST and NEVER grab locks at the same level at the&n; * same time.&n; * &n; * So, if you need uhci-&gt;urb_list_lock, grab it before you grab urb-&gt;lock&n; */
 multiline_comment|/* -------------------------------------------------------------------------&n;   Virtual Root HUB&n;   ------------------------------------------------------------------------- */
 multiline_comment|/* destination of request */
 DECL|macro|RH_DEVICE

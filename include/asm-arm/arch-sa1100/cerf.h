@@ -1,6 +1,7 @@
 macro_line|#ifndef _INCLUDE_CERF_H_
 DECL|macro|_INCLUDE_CERF_H_
 mdefine_line|#define _INCLUDE_CERF_H_
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_SA1100_CERF_CPLD
 singleline_comment|// Map sa1100fb.c to sa1100_frontlight.c - Not pretty, but necessary.
 DECL|macro|CERF_BACKLIGHT_ENABLE

@@ -740,7 +740,11 @@ id|pcigame_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|pcigame_remove
+)paren
 comma
 )brace
 suffix:semicolon

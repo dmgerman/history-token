@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/include/asm-arm/arch-sa1100/pangolin.h&n; *&n; *
 macro_line|#ifndef __ASM_ARCH_HARDWARE_H
 macro_line|#error &quot;include &lt;asm/hardware.h&gt; instead&quot;
 macro_line|#endif
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef CONFIG_SA1100_PANGOLIN_PCMCIA_IDE
 multiline_comment|/* GPIOs for which the generic definition doesn&squot;t say much */
 DECL|macro|GPIO_CF_BUS_ON

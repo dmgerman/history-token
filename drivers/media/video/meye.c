@@ -8087,7 +8087,11 @@ id|meye_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|meye_remove
+)paren
 comma
 )brace
 suffix:semicolon

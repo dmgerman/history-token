@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/flexanet.c&n; *&n; * Author: Jordi Colomer &lt;jco@ict.es&gt;&n; *&n; * This file contains all FlexaNet-specific tweaks.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -278,7 +277,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * machine-specific serial port functions&n; *&n; * get_mctrl : set state of modem control lines&n; * set_mctrl : set the modem control lines&n; * enable_ms : enable modem-status interrupts&n; * pm        : power-management. Turn device on/off.&n; *&n; */
+multiline_comment|/*&n; * machine-specific serial port functions&n; *&n; * get_mctrl : set state of modem control lines&n; * set_mctrl : set the modem control lines&n; * pm        : power-management. Turn device on/off.&n; *&n; */
 DECL|variable|__initdata
 r_static
 r_struct
@@ -294,10 +293,6 @@ comma
 id|get_mctrl
 suffix:colon
 id|flexanet_get_mctrl
-comma
-id|enable_ms
-suffix:colon
-l_int|NULL
 comma
 id|pm
 suffix:colon
@@ -429,7 +424,7 @@ suffix:semicolon
 multiline_comment|/* setup ramdisk */
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR

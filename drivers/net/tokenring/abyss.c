@@ -1901,7 +1901,7 @@ suffix:semicolon
 DECL|function|abyss_detach
 r_static
 r_void
-id|__exit
+id|__devexit
 id|abyss_detach
 (paren
 r_struct
@@ -1998,7 +1998,11 @@ id|abyss_attach
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|abyss_detach
+)paren
 comma
 )brace
 suffix:semicolon

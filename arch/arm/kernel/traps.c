@@ -521,7 +521,7 @@ op_plus
 r_int
 r_int
 )paren
-id|tsk
+id|tsk-&gt;thread_info
 )paren
 suffix:semicolon
 )brace
@@ -671,7 +671,11 @@ r_int
 r_int
 id|fp
 op_assign
-id|tsk-&gt;thread.save-&gt;fp
+id|thread_saved_fp
+c_func
+(paren
+id|tsk
+)paren
 suffix:semicolon
 id|c_backtrace
 c_func
@@ -1282,6 +1286,16 @@ op_star
 id|regs
 )paren
 (brace
+r_struct
+id|thread_info
+op_star
+id|thread
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
@@ -1293,11 +1307,11 @@ id|current-&gt;personality
 op_ne
 id|PER_LINUX
 op_logical_and
-id|current-&gt;exec_domain-&gt;handler
+id|thread-&gt;exec_domain-&gt;handler
 )paren
 (brace
 multiline_comment|/* Hand it off to iBCS.  The extra parameter and consequent type &n;&t;&t; * forcing is necessary because of the weird ARM calling convention.&n;&t;&t; */
-id|current-&gt;exec_domain
+id|thread-&gt;exec_domain
 op_member_access_from_pointer
 id|handler
 c_func

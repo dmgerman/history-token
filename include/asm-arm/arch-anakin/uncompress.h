@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/include/asm-arm/arch-anakin/uncompress.h&n; *&n
 macro_line|#ifndef __ASM_ARCH_UNCOMPRESS_H
 DECL|macro|__ASM_ARCH_UNCOMPRESS_H
 mdefine_line|#define __ASM_ARCH_UNCOMPRESS_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/arch/serial_reg.h&gt;
 macro_line|#ifndef CONFIG_ANAKIN_DEFAULT_BAUDRATE

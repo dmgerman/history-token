@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
-macro_line|#include &lt;asm/arch/irq.h&gt;
 macro_line|#include &quot;generic.h&quot;
 macro_line|#include &quot;sa1111.h&quot;
 DECL|function|adsbitsy_init
@@ -235,7 +234,7 @@ l_int|1
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR

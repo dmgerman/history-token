@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-anakin/ide.h&n; *&n; * Copyright 2001 Blue Mug Inc. for Acunia N.V.&n; *&n; * 08-jun-2001: Initial clone of arch-sa1100/ide.h by Jon McClintock&n; *              (jonm@bluemug.com).&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 multiline_comment|/*&n; * Set up a hw structure for a specified data port, control port and IRQ.&n; * This should follow whatever the default interface uses.&n; */

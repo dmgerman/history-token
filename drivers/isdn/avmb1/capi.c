@@ -7017,7 +7017,6 @@ multiline_comment|/* -------- init function and module interface ---------------
 DECL|function|alloc_exit
 r_static
 r_void
-id|__exit
 id|alloc_exit
 c_func
 (paren

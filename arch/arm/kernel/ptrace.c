@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/kernel/ptrace.c&n; *&n; *  By Ross Biro 1/23/92&n; * edited by Linus Torvalds&n; * ARM modifications Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1961,15 +1962,22 @@ id|request
 op_eq
 id|PTRACE_SYSCALL
 )paren
-id|child-&gt;ptrace
-op_or_assign
-id|PT_TRACESYS
+id|set_tsk_thread_flag
+c_func
+(paren
+id|child
+comma
+id|TIF_SYSCALL_TRACE
+)paren
 suffix:semicolon
 r_else
-id|child-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_TRACESYS
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|child
+comma
+id|TIF_SYSCALL_TRACE
+)paren
 suffix:semicolon
 id|child-&gt;exit_code
 op_assign
@@ -2062,10 +2070,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|child-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_TRACESYS
+id|clear_tsk_thread_flag
+c_func
+(paren
+id|child
+comma
+id|TIF_SYSCALL_TRACE
+)paren
 suffix:semicolon
 id|child-&gt;exit_code
 op_assign
@@ -2275,7 +2286,7 @@ op_star
 id|data
 comma
 op_amp
-id|child-&gt;thread.fpstate
+id|child-&gt;thread_info-&gt;fpstate
 comma
 r_sizeof
 (paren
@@ -2335,7 +2346,7 @@ id|__copy_from_user
 c_func
 (paren
 op_amp
-id|child-&gt;thread.fpstate
+id|child-&gt;thread_info-&gt;fpstate
 comma
 (paren
 r_void
@@ -2582,7 +2593,7 @@ id|data
 suffix:semicolon
 id|out_tsk
 suffix:colon
-id|free_task_struct
+id|put_task_struct
 c_func
 (paren
 id|child
@@ -2621,20 +2632,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|test_thread_flag
+c_func
+(paren
+id|TIF_SYSCALL_TRACE
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 (paren
 id|current-&gt;ptrace
 op_amp
-(paren
 id|PT_PTRACED
-op_or
-id|PT_TRACESYS
-)paren
-)paren
-op_ne
-(paren
-id|PT_PTRACED
-op_or
-id|PT_TRACESYS
 )paren
 )paren
 r_return

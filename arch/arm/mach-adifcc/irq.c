@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-xscale/irq.c&n; *&n; * Author:  Deepak Saxena&n; * Copyright:   (C) 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Based on IOP80310 code.  Currently there&squot;s nothing more than the&n; * 80200 on chip interrupts. That&squot;ll change once the hardware adds&n; * support for PCI though.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

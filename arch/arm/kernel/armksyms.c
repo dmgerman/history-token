@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1124,4 +1125,13 @@ c_func
 id|get_wchan
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|variable|kernel_flag
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kernel_flag
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

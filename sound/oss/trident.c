@@ -20298,7 +20298,7 @@ suffix:semicolon
 DECL|function|trident_remove
 r_static
 r_void
-id|__exit
+id|__devexit
 id|trident_remove
 c_func
 (paren
@@ -20511,7 +20511,11 @@ id|trident_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|trident_remove
+)paren
 comma
 id|suspend
 suffix:colon

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-sa1100/huw_webpanel.c&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -200,7 +199,7 @@ l_int|1
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * include/asm-arm/arch-adifcc/serial.h&n; *&n; * Author: Deepak Saxena &lt;dsaxena@mvista.com&gt;&n; *&n; * Copyright (c) 2001 MontaVista Software, Inc.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * This assumes you have a 1.8432 MHz clock for your UART.&n; *&n; * It&squot;d be nice if someone built a serial card with a 24.576 MHz&n; * clock, since the 16550A is capable of handling a top speed of 1.5&n; * megabits/second; but this requires the faster clock.&n; */
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD ( 1852000 / 16 )

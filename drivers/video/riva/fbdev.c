@@ -7123,8 +7123,7 @@ id|rinfo-&gt;drvr_name
 suffix:semicolon
 id|info-&gt;node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|info-&gt;flags
 op_assign
@@ -8385,7 +8384,11 @@ id|rivafb_init_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|rivafb_remove_one
+)paren
 comma
 )brace
 suffix:semicolon

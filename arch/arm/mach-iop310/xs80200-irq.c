@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-iop310/xs80200-irq.c&n; *&n; * Generic IRQ handling for the XS80200 XScale core.&n; *&n; * Author:  Nicolas Pitre&n; * Copyright:   (C) 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

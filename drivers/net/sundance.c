@@ -7242,7 +7242,11 @@ id|sundance_probe1
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|sundance_remove1
+)paren
 comma
 )brace
 suffix:semicolon

@@ -211,13 +211,11 @@ c_cond
 (paren
 id|svflgs
 )paren
-(brace
-id|save_flags_cli
+id|local_irq_save
 (paren
 id|flags
 )paren
 suffix:semicolon
-)brace
 id|outb
 (paren
 id|addr
@@ -249,7 +247,7 @@ c_cond
 (paren
 id|svflgs
 )paren
-id|restore_flags
+id|local_irq_restore
 (paren
 id|flags
 )paren
@@ -289,13 +287,11 @@ c_cond
 (paren
 id|svflgs
 )paren
-(brace
-id|save_flags_cli
+id|local_irq_save
 (paren
 id|flags
 )paren
 suffix:semicolon
-)brace
 id|outb
 (paren
 id|addr
@@ -327,7 +323,7 @@ c_cond
 (paren
 id|svflgs
 )paren
-id|restore_flags
+id|local_irq_restore
 (paren
 id|flags
 )paren
@@ -3373,7 +3369,7 @@ id|nop.nop_link
 op_assign
 id|nopaddr
 suffix:semicolon
-id|save_flags_cli
+id|local_irq_save
 c_func
 (paren
 id|flags
@@ -3450,7 +3446,7 @@ comma
 id|NORMALIRQS
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

@@ -1,5 +1,4 @@
 multiline_comment|/* &n; * Driver for PS/2 mouse on IOMD interface&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;

@@ -9142,7 +9142,11 @@ id|starfire_init_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|starfire_remove_one
+)paren
 comma
 id|id_table
 suffix:colon

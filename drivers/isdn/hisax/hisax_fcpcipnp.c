@@ -4524,7 +4524,11 @@ id|fcpci_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|fcpci_remove
+)paren
 comma
 id|id_table
 suffix:colon
@@ -4549,7 +4553,11 @@ id|fcpnp_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|fcpnp_remove
+)paren
 comma
 id|id_table
 suffix:colon
