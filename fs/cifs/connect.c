@@ -938,6 +938,13 @@ id|server-&gt;tcpStatus
 op_assign
 id|CifsExiting
 suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|server-&gt;response_q
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -960,6 +967,13 @@ suffix:semicolon
 id|csocket
 op_assign
 id|server-&gt;ssocket
+suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|server-&gt;response_q
+)paren
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -1077,13 +1091,13 @@ l_int|5
 )paren
 (brace
 multiline_comment|/* we get this from Windows 98 instead of error on SMB negprot response */
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;Negative RFC 1002 Session response. Error = 0x%x&quot;
+l_string|&quot;Negative RFC 1002 Session Response Error 0x%x)&quot;
 comma
 id|temp
 (braket
@@ -1092,8 +1106,64 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|server-&gt;tcpStatus
+op_eq
+id|CifsNew
+)paren
+(brace
+multiline_comment|/* if nack on negprot (rather than &n;&t;&t;&t;&t;&t;ret of smb negprot error) reconnecting&n;&t;&t;&t;&t;&t;not going to help, ret error to mount */
+id|server-&gt;tcpStatus
+op_assign
+id|CifsExiting
+suffix:semicolon
+multiline_comment|/* wake up thread doing negprot */
+id|wake_up
+c_func
+(paren
+op_amp
+id|server-&gt;response_q
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* give server a second to&n;&t;&t;&t;&t;&t;clean up before reconnect attempt */
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+multiline_comment|/* always try 445 first on reconnect&n;&t;&t;&t;&t;&t;since we get NACK on some if we ever&n;&t;&t;&t;&t;&t;connected to port 139 (the NACK is &n;&t;&t;&t;&t;&t;since we do not begin with RFC1001&n;&t;&t;&t;&t;&t;session initialize frame) */
+id|server-&gt;addr.sockAddr.sin_port
+op_assign
+id|CIFS_PORT
+suffix:semicolon
+id|cifs_reconnect
+c_func
+(paren
+id|server
+)paren
+suffix:semicolon
+id|csocket
+op_assign
+id|server-&gt;ssocket
+suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|server-&gt;response_q
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -4303,6 +4373,13 @@ id|connected
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+r_int
+id|orig_port
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4431,6 +4508,11 @@ op_logical_neg
 id|connected
 )paren
 (brace
+multiline_comment|/* save original port so we can retry user specified port  &n;&t;&t;&t;later if fall back ports fail this time  */
+id|orig_port
+op_assign
+id|psin_server-&gt;sin_port
+suffix:semicolon
 multiline_comment|/* do not retry on the same port we just failed on */
 r_if
 c_cond
@@ -4562,6 +4644,17 @@ op_logical_neg
 id|connected
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|orig_port
+)paren
+(brace
+id|psin_server-&gt;sin_port
+op_assign
+id|orig_port
+suffix:semicolon
+)brace
 id|cFYI
 c_func
 (paren
