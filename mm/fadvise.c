@@ -93,6 +93,19 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|len
+op_eq
+l_int|0
+)paren
+multiline_comment|/* 0 == &quot;all data following offset&quot; */
+id|len
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|bdi
 op_assign
 id|mapping-&gt;backing_dev_info
