@@ -6090,6 +6090,9 @@ suffix:semicolon
 r_int
 id|datalen
 suffix:semicolon
+id|sctp_verb_t
+id|deliver
+suffix:semicolon
 r_int
 id|tmp
 suffix:semicolon
@@ -6294,6 +6297,41 @@ r_sizeof
 id|sctp_data_chunk_t
 )paren
 suffix:semicolon
+id|deliver
+op_assign
+id|SCTP_CMD_CHUNK_ULP
+suffix:semicolon
+multiline_comment|/* Think about partial delivery. */
+r_if
+c_cond
+(paren
+(paren
+id|datalen
+op_ge
+id|asoc-&gt;rwnd
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|asoc-&gt;ulpq.pd_mode
+)paren
+)paren
+(brace
+multiline_comment|/* Even if we don&squot;t accept this chunk there is&n;&t;&t; * memory pressure.&n;&t;&t; */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_CHUNK_PD
+comma
+id|SCTP_NULL
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6308,10 +6346,35 @@ id|asoc-&gt;frag_point
 )paren
 )paren
 (brace
+multiline_comment|/* There is absolutely no room, but this is the most&n;&t;&t; * important tsn that we are waiting on, try to &n;&t;&t; * to partial deliver or renege to make room. &n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|sctp_tsnmap_get_ctsn
+c_func
+(paren
+op_amp
+id|asoc-&gt;peer.tsn_map
+)paren
+op_plus
+l_int|1
+)paren
+op_eq
+id|tsn
+)paren
+(brace
+id|deliver
+op_assign
+id|SCTP_CMD_CHUNK_PD
+suffix:semicolon
+)brace
+r_else
+(brace
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;Discarding tsn: %u datalen: %Zd, &quot;
+l_string|&quot;Discard tsn: %u len: %Zd, &quot;
 l_string|&quot;rwnd: %d&bslash;n&quot;
 comma
 id|tsn
@@ -6324,6 +6387,7 @@ suffix:semicolon
 r_goto
 id|discard_force
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Section 3.3.10.9 No User Data (9)&n;&t; *&n;&t; * Cause of error&n;&t; * ---------------&n;&t; * No User Data:  This error cause is returned to the originator of a&n;&t; * DATA chunk if a received DATA chunk has no user data.&n;&t; */
 r_if
@@ -6402,8 +6466,14 @@ r_return
 id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 )brace
-multiline_comment|/* We are accepting this DATA chunk.  */
-multiline_comment|/* Record the fact that we have received this TSN.  */
+multiline_comment|/* If definately accepting the DATA chunk, record its TSN, otherwise&n;&t; * wait for renege processing. &n;&t; */
+r_if
+c_cond
+(paren
+id|deliver
+op_ne
+id|SCTP_CMD_CHUNK_PD
+)paren
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -6456,7 +6526,6 @@ c_cond
 (paren
 id|err
 )paren
-(brace
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -6471,7 +6540,6 @@ id|err
 )paren
 )paren
 suffix:semicolon
-)brace
 r_goto
 id|discard_noforce
 suffix:semicolon
@@ -6482,7 +6550,7 @@ c_func
 (paren
 id|commands
 comma
-id|SCTP_CMD_CHUNK_ULP
+id|deliver
 comma
 id|SCTP_CHUNK
 c_func

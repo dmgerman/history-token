@@ -145,7 +145,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_opt_t
+r_struct
+id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
@@ -949,7 +950,8 @@ id|sctp_transport
 op_star
 id|peer
 suffix:semicolon
-id|sctp_opt_t
+r_struct
+id|sctp_opt
 op_star
 id|sp
 suffix:semicolon
@@ -2247,7 +2249,8 @@ op_star
 id|newsk
 )paren
 (brace
-id|sctp_opt_t
+r_struct
+id|sctp_opt
 op_star
 id|newsp
 op_assign
@@ -2763,7 +2766,7 @@ comma
 id|asoc-&gt;a_rwnd
 )paren
 suffix:semicolon
-multiline_comment|/* Send a window update SACK if the rwnd has increased by at least the&n;&t; * minimum of the association&squot;s PMTU and half of the receive buffer.&n;&t; * The algorithm used is similar to the one described in &n;&t; * Section 4.2.3.3 of RFC 1122.&n;&t; */
+multiline_comment|/* Send a window update SACK if the rwnd has increased by at least the&n;&t; * minimum of the association&squot;s PMTU and half of the receive buffer.&n;&t; * The algorithm used is similar to the one described in&n;&t; * Section 4.2.3.3 of RFC 1122.&n;&t; */
 r_if
 c_cond
 (paren

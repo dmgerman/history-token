@@ -159,12 +159,6 @@ r_struct
 id|sctp_bind_addr
 id|sctp_bind_addr_t
 suffix:semicolon
-DECL|typedef|sctp_opt_t
-r_typedef
-r_struct
-id|sctp_opt
-id|sctp_opt_t
-suffix:semicolon
 DECL|typedef|sctp_endpoint_common_t
 r_typedef
 r_struct
@@ -476,7 +470,8 @@ op_star
 id|get_dst
 )paren
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -498,7 +493,8 @@ op_star
 id|get_saddr
 )paren
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -875,6 +871,13 @@ DECL|member|type
 id|sctp_socket_type_t
 id|type
 suffix:semicolon
+multiline_comment|/* PF_ family specific functions.  */
+DECL|member|pf
+r_struct
+id|sctp_pf
+op_star
+id|pf
+suffix:semicolon
 multiline_comment|/* What is our base endpointer? */
 DECL|member|ep
 id|sctp_endpoint_t
@@ -922,11 +925,15 @@ DECL|member|disable_fragments
 id|__u8
 id|disable_fragments
 suffix:semicolon
-DECL|member|pf
+DECL|member|pd_mode
+id|__u8
+id|pd_mode
+suffix:semicolon
+multiline_comment|/* Receive to here while partial delivery is in effect. */
+DECL|member|pd_lobby
 r_struct
-id|sctp_pf
-op_star
-id|pf
+id|sk_buff_head
+id|pd_lobby
 suffix:semicolon
 )brace
 suffix:semicolon

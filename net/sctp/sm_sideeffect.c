@@ -1794,6 +1794,23 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SCTP_CMD_CHUNK_PD
+suffix:colon
+multiline_comment|/* Send a chunk to the sockets layer.  */
+id|sctp_ulpq_partial_delivery
+c_func
+(paren
+op_amp
+id|asoc-&gt;ulpq
+comma
+id|command-&gt;obj.ptr
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|printk
@@ -3108,6 +3125,16 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Cancel any partial delivery in progress. */
+id|sctp_ulpq_abort_pd
+c_func
+(paren
+op_amp
+id|asoc-&gt;ulpq
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
 id|event
 op_assign
 id|sctp_ulpevent_make_assoc_change

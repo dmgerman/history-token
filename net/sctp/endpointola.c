@@ -133,7 +133,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_opt_t
+r_struct
+id|sctp_opt
 op_star
 id|sp
 op_assign

@@ -185,6 +185,10 @@ DECL|enumerator|SCTP_CMD_RTO_PENDING
 id|SCTP_CMD_RTO_PENDING
 comma
 multiline_comment|/* Set transport&squot;s rto_pending. */
+DECL|enumerator|SCTP_CMD_CHUNK_PD
+id|SCTP_CMD_CHUNK_PD
+comma
+multiline_comment|/* Partial data delivery considerations. */
 DECL|enumerator|SCTP_CMD_LAST
 id|SCTP_CMD_LAST
 DECL|typedef|sctp_verb_t
