@@ -148,6 +148,16 @@ r_struct
 id|percpu_counter
 id|s_freeblocks_counter
 suffix:semicolon
+DECL|member|s_freeinodes_counter
+r_struct
+id|percpu_counter
+id|s_freeinodes_counter
+suffix:semicolon
+DECL|member|s_dirs_counter
+r_struct
+id|percpu_counter
+id|s_dirs_counter
+suffix:semicolon
 DECL|member|s_blockgroup_lock
 r_struct
 id|blockgroup_lock
