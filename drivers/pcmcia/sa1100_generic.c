@@ -235,7 +235,7 @@ c_func
 (paren
 l_int|4
 comma
-l_string|&quot;%s(): FAST%u %lx  BSM%u %lx  BSA%u %lx  BSIO%u %lx&bslash;n&quot;
+l_string|&quot;%s(): FAST%u %X  BSM%u %X  BSA%u %X  BSIO%u %X&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
