@@ -5635,8 +5635,8 @@ r_if
 c_cond
 (paren
 id|rqstp-&gt;rq_vers
-op_eq
-l_int|3
+OG
+l_int|2
 )paren
 (paren
 r_void
