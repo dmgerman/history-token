@@ -38564,6 +38564,12 @@ c_func
 id|tp
 )paren
 suffix:semicolon
+multiline_comment|/* Always use host TXDs, it performs better in particular&n;&t; * with multi-frag packets.  The tests below are kept here&n;&t; * as documentation should we change this decision again&n;&t; * in the future.&n;&t; */
+id|tp-&gt;tg3_flags
+op_or_assign
+id|TG3_FLAG_HOST_TXDS
+suffix:semicolon
+macro_line|#if 0
 multiline_comment|/* Determine if TX descriptors will reside in&n;&t; * main memory or in the chip SRAM.&n;&t; */
 r_if
 c_cond
@@ -38596,6 +38602,7 @@ id|tp-&gt;tg3_flags
 op_or_assign
 id|TG3_FLAG_HOST_TXDS
 suffix:semicolon
+macro_line|#endif
 id|grc_misc_cfg
 op_assign
 id|tr32
