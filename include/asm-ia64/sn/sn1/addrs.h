@@ -1,22 +1,13 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_SN1_ADDRS_H
-DECL|macro|_ASM_SN_SN1_ADDRS_H
-mdefine_line|#define _ASM_SN_SN1_ADDRS_H
-multiline_comment|/*&n; * IP35 (on a TRex) Address map&n; *&n; * This file contains a set of definitions and macros which are used&n; * to reference into the major address spaces (CAC, HSPEC, IO, MSPEC,&n; * and UNCAC) used by the IP35 architecture.  It also contains addresses&n; * for &quot;major&quot; statically locatable PROM/Kernel data structures, such as&n; * the partition table, the configuration data structure, etc.&n; * We make an implicit assumption that the processor using this file&n; * follows the R12K&squot;s provisions for specifying uncached attributes;&n; * should this change, the base registers may very well become processor-&n; * dependent.&n; *&n; * For more information on the address spaces, see the &quot;Local Resources&quot;&n; * chapter of the Hub specification.&n; *&n; * NOTE: This header file is included both by C and by assembler source&n; *&t; files.  Please bracket any language-dependent definitions&n; *&t; appropriately.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_SN1_ADDRS_H
+DECL|macro|_ASM_IA64_SN_SN1_ADDRS_H
+mdefine_line|#define _ASM_IA64_SN_SN1_ADDRS_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
+multiline_comment|/*&n; * SN1 (on a TRex) Address map&n; *&n; * This file contains a set of definitions and macros which are used&n; * to reference into the major address spaces (CAC, HSPEC, IO, MSPEC,&n; * and UNCAC) used by the SN1 architecture.  It also contains addresses&n; * for &quot;major&quot; statically locatable PROM/Kernel data structures, such as&n; * the partition table, the configuration data structure, etc.&n; * We make an implicit assumption that the processor using this file&n; * follows the R12K&squot;s provisions for specifying uncached attributes;&n; * should this change, the base registers may very well become processor-&n; * dependent.&n; *&n; * For more information on the address spaces, see the &quot;Local Resources&quot;&n; * chapter of the Hub specification.&n; *&n; * NOTE: This header file is included both by C and by assembler source&n; *&t; files.  Please bracket any language-dependent definitions&n; *&t; appropriately.&n; */
 multiline_comment|/*&n; * Some of the macros here need to be casted to appropriate types when used&n; * from C.  They definitely must not be casted from assembly language so we&n; * use some new ANSI preprocessor stuff to paste these on where needed.&n; */
-macro_line|#if defined(_RUN_UNCACHED)
-DECL|macro|CAC_BASE
-mdefine_line|#define CAC_BASE&t;&t;0x9600000000000000
-macro_line|#else
-macro_line|#ifndef __ia64
-DECL|macro|CAC_BASE
-mdefine_line|#define CAC_BASE&t;&t;0xa800000000000000
-macro_line|#else
 DECL|macro|CAC_BASE
 mdefine_line|#define CAC_BASE                0xe000000000000000
-macro_line|#endif
-macro_line|#endif
 DECL|macro|HSPEC_BASE
 mdefine_line|#define HSPEC_BASE              0xc0000b0000000000
 DECL|macro|HSPEC_SWIZ_BASE
@@ -26,9 +17,11 @@ mdefine_line|#define IO_BASE                 0xc0000a0000000000
 DECL|macro|IO_SWIZ_BASE
 mdefine_line|#define IO_SWIZ_BASE            0xc000020000000000
 DECL|macro|MSPEC_BASE
-mdefine_line|#define MSPEC_BASE              0xc000000000000000
+mdefine_line|#define MSPEC_BASE              0xc000090000000000
 DECL|macro|UNCAC_BASE
 mdefine_line|#define UNCAC_BASE              0xc000000000000000
+DECL|macro|TO_PHYS_MASK
+mdefine_line|#define TO_PHYS_MASK&t;&t;0x000000ffffffffff
 DECL|macro|TO_PHYS
 mdefine_line|#define TO_PHYS(x)&t;&t;(&t;      ((x) &amp; TO_PHYS_MASK))
 DECL|macro|TO_CAC
@@ -85,18 +78,13 @@ DECL|macro|NASID_MASK
 mdefine_line|#define NASID_MASK&t;&t;(UINT64_CAST NASID_BITMASK &lt;&lt; NASID_SHFT)
 DECL|macro|NASID_GET
 mdefine_line|#define NASID_GET(_pa)&t;&t;(int) ((UINT64_CAST (_pa) &gt;&gt;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;NASID_SHFT) &amp; NASID_BITMASK)
-macro_line|#if _LANGUAGE_C &amp;&amp; !defined(_STANDALONE)
-macro_line|#ifndef REAL_HARDWARE
-DECL|macro|NODE_SWIN_BASE
-mdefine_line|#define NODE_SWIN_BASE(nasid, widget) RAW_NODE_SWIN_BASE(nasid, widget)
-macro_line|#else
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|NODE_SWIN_BASE
 mdefine_line|#define NODE_SWIN_BASE(nasid, widget)&t;&t;&t;&t;&t;&bslash;&n;&t;((widget == 0) ? NODE_BWIN_BASE((nasid), SWIN0_BIGWIN)&t;&t;&bslash;&n;&t;: RAW_NODE_SWIN_BASE(nasid, widget))
-macro_line|#endif
 macro_line|#else
 DECL|macro|NODE_SWIN_BASE
 mdefine_line|#define NODE_SWIN_BASE(nasid, widget) &bslash;&n;     (NODE_IO_BASE(nasid) + (UINT64_CAST (widget) &lt;&lt; SWIN_SIZE_BITS))
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * The following definitions pertain to the IO special address&n; * space.  They define the location of the big and little windows&n; * of any given node.&n; */
 DECL|macro|BWIN_INDEX_BITS
 mdefine_line|#define BWIN_INDEX_BITS&t;&t;3
@@ -117,17 +105,13 @@ mdefine_line|#define&t;BWIN_WINDOWNUM(addr)&t;(((addr) &gt;&gt; BWIN_SIZE_BITS) 
 multiline_comment|/*&n; * Verify if addr belongs to large window address of node with &quot;nasid&quot;&n; *&n; *&n; * NOTE: &quot;addr&quot; is expected to be XKPHYS address, and NOT physical&n; * address&n; *&n; *&n; */
 DECL|macro|NODE_BWIN_ADDR
 mdefine_line|#define&t;NODE_BWIN_ADDR(nasid, addr)&t;&bslash;&n;&t;&t;(((addr) &gt;= NODE_BWIN_BASE0(nasid)) &amp;&amp; &bslash;&n;&t;&t; ((addr) &lt; (NODE_BWIN_BASE(nasid, HUB_NUM_BIG_WINDOW) + &bslash;&n;&t;&t;&t;&t;BWIN_SIZE)))
-multiline_comment|/*&n; * The following define the major position-independent aliases used&n; * in IP27.&n; *&t;CALIAS -- Varies in size, points to the first n bytes of memory&n; *&t;&t;  &t;on the reader&squot;s node.&n; */
+multiline_comment|/*&n; * The following define the major position-independent aliases used&n; * in SN1.&n; *&t;CALIAS -- Varies in size, points to the first n bytes of memory&n; *&t;&t;  &t;on the reader&squot;s node.&n; */
 DECL|macro|CALIAS_BASE
 mdefine_line|#define CALIAS_BASE&t;&t;CAC_BASE
 DECL|macro|BRIDGE_REG_PTR
 mdefine_line|#define BRIDGE_REG_PTR(_base, _off)&t;((volatile bridgereg_t *) &bslash;&n;&t;((__psunsigned_t)(_base) + (__psunsigned_t)(_off)))
 DECL|macro|SN0_WIDGET_BASE
 mdefine_line|#define SN0_WIDGET_BASE(_nasid, _wid)&t;(NODE_SWIN_BASE((_nasid), (_wid)))
-macro_line|#if _LANGUAGE_C
-DECL|macro|KERN_NMI_ADDR
-mdefine_line|#define KERN_NMI_ADDR(nasid, slice)&t;&t;&t;&t;&t;&bslash;&n;                    TO_NODE_UNCAC((nasid), IP27_NMI_KREGS_OFFSET + &t;&bslash;&n;&t;&t;&t;&t;  (IP27_NMI_KREGS_CPU_SIZE * (slice)))
-macro_line|#endif /* _LANGUAGE_C */
 multiline_comment|/*&n; * needed by symmon so it needs to be outside #if PROM&n; * (see also POD_ELSCSIZE)&n; */
 DECL|macro|IP27PROM_ELSC_BASE_A
 mdefine_line|#define IP27PROM_ELSC_BASE_A&t;PHYS_TO_K0(0x020e0000)
@@ -153,7 +137,7 @@ DECL|macro|KL_UART_CMD
 mdefine_line|#define KL_UART_CMD&t;LOCAL_HSPEC(HSPEC_UART_0)&t;/* UART command reg */
 DECL|macro|KL_UART_DATA
 mdefine_line|#define KL_UART_DATA&t;LOCAL_HSPEC(HSPEC_UART_1)&t;/* UART data reg */
-macro_line|#if !_LANGUAGE_ASSEMBLY
+macro_line|#if !__ASSEMBLY__
 multiline_comment|/* Address 0x400 to 0x1000 ualias points to cache error eframe + misc&n; * CACHE_ERR_SP_PTR could either contain an address to the stack, or&n; * the stack could start at CACHE_ERR_SP_PTR&n; */
 DECL|macro|CACHE_ERR_EFRAME
 mdefine_line|#define CACHE_ERR_EFRAME&t;0x400
@@ -167,35 +151,12 @@ DECL|macro|CACHE_ERR_SP
 mdefine_line|#define CACHE_ERR_SP&t;&t;(CACHE_ERR_SP_PTR - 16)
 DECL|macro|CACHE_ERR_AREA_SIZE
 mdefine_line|#define CACHE_ERR_AREA_SIZE&t;(ARCS_SPB_OFFSET - CACHE_ERR_EFRAME)
-macro_line|#endif&t;/* !_LANGUAGE_ASSEMBLY */
-multiline_comment|/* Each CPU accesses UALIAS at a different physaddr, on 32k boundaries&n; * This determines the locations of the exception vectors&n; */
-DECL|macro|UALIAS_FLIP_BASE
-mdefine_line|#define UALIAS_FLIP_BASE&t;UALIAS_BASE
-DECL|macro|UALIAS_FLIP_SHIFT
-mdefine_line|#define UALIAS_FLIP_SHIFT&t;15
-DECL|macro|UALIAS_FLIP_ADDR
-mdefine_line|#define UALIAS_FLIP_ADDR(_x)&t;((_x) ^ (cputoslice(getcpuid())&lt;&lt;UALIAS_FLIP_SHIFT))
-macro_line|#if !defined(CONFIG_IA64_SGI_SN1) &amp;&amp; !defined(CONFIG_IA64_GENERIC)
-DECL|macro|EX_HANDLER_OFFSET
-mdefine_line|#define EX_HANDLER_OFFSET(slice) ((slice) &lt;&lt; UALIAS_FLIP_SHIFT)
-macro_line|#endif
-DECL|macro|EX_HANDLER_ADDR
-mdefine_line|#define EX_HANDLER_ADDR(nasid, slice)&t;&t;&t;&t;&t;&bslash;&n;&t;PHYS_TO_K0(NODE_OFFSET(nasid) | EX_HANDLER_OFFSET(slice))
-DECL|macro|EX_HANDLER_SIZE
-mdefine_line|#define EX_HANDLER_SIZE&t;&t;0x0400
-macro_line|#if !defined(CONFIG_IA64_SGI_SN1) &amp;&amp; !defined(CONFIG_IA64_GENERIC)
-DECL|macro|EX_FRAME_OFFSET
-mdefine_line|#define EX_FRAME_OFFSET(slice)&t;((slice) &lt;&lt; UALIAS_FLIP_SHIFT | 0x400)
-macro_line|#endif
-DECL|macro|EX_FRAME_ADDR
-mdefine_line|#define EX_FRAME_ADDR(nasid, slice)&t;&t;&t;&t;&t;&bslash;&n;&t;PHYS_TO_K0(NODE_OFFSET(nasid) | EX_FRAME_OFFSET(slice))
-DECL|macro|EX_FRAME_SIZE
-mdefine_line|#define EX_FRAME_SIZE&t;&t;0x0c00
+macro_line|#endif&t;/* !__ASSEMBLY__ */
 DECL|macro|_ARCSPROM
 mdefine_line|#define _ARCSPROM
 macro_line|#ifdef _STANDALONE
-multiline_comment|/*&n; * The PROM needs to pass the device base address and the&n; * device pci cfg space address to the device drivers during&n; * install. The COMPONENT-&gt;Key field is used for this purpose.&n; * Macros needed by IP27 device drivers to convert the&n; * COMPONENT-&gt;Key field to the respective base address.&n; * Key field looks as follows:&n; *&n; *  +----------------------------------------------------+&n; *  |devnasid | widget  |pciid |hubwidid|hstnasid | adap |&n; *  |   2     |   1     |  1   |   1    |    2    |   1  |&n; *  +----------------------------------------------------+&n; *  |         |         |      |        |         |      |&n; *  64        48        40     32       24        8      0&n; *&n; * These are used by standalone drivers till the io infrastructure&n; * is in place.&n; */
-macro_line|#if _LANGUAGE_C
+multiline_comment|/*&n; * The PROM needs to pass the device base address and the&n; * device pci cfg space address to the device drivers during&n; * install. The COMPONENT-&gt;Key field is used for this purpose.&n; * Macros needed by SN1 device drivers to convert the&n; * COMPONENT-&gt;Key field to the respective base address.&n; * Key field looks as follows:&n; *&n; *  +----------------------------------------------------+&n; *  |devnasid | widget  |pciid |hubwidid|hstnasid | adap |&n; *  |   2     |   1     |  1   |   1    |    2    |   1  |&n; *  +----------------------------------------------------+&n; *  |         |         |      |        |         |      |&n; *  64        48        40     32       24        8      0&n; *&n; * These are used by standalone drivers till the io infrastructure&n; * is in place.&n; */
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|uchar
 mdefine_line|#define uchar unsigned char
 DECL|macro|KEY_DEVNASID_SHFT
@@ -236,7 +197,8 @@ DECL|macro|PUT_INSTALL_STATUS
 mdefine_line|#define PUT_INSTALL_STATUS(c,s)&t;&t;c-&gt;Revision = s
 DECL|macro|GET_INSTALL_STATUS
 mdefine_line|#define GET_INSTALL_STATUS(c)&t;&t;c-&gt;Revision
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _STANDALONE */
-macro_line|#endif /* _ASM_SN_SN1_ADDRS_H */
+macro_line|#endif /* CONFIG_IA64_SGI_SN1 */
+macro_line|#endif /* _ASM_IA64_SN_SN1_ADDRS_H */
 eof

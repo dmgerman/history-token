@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_UNISTD_H
 DECL|macro|_ASM_IA64_UNISTD_H
 mdefine_line|#define _ASM_IA64_UNISTD_H
-multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * IA-64 Linux syscall numbers and inline-functions.&n; *&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/break.h&gt;
 DECL|macro|__BREAK_SYSCALL
 mdefine_line|#define __BREAK_SYSCALL&t;&t;&t;__IA64_BREAK_SYSCALL
@@ -198,12 +198,9 @@ DECL|macro|__NR_setitimer
 mdefine_line|#define __NR_setitimer&t;&t;&t;1118
 DECL|macro|__NR_getitimer
 mdefine_line|#define __NR_getitimer&t;&t;&t;1119
-DECL|macro|__NR_old_stat
-mdefine_line|#define __NR_old_stat&t;&t;&t;1120
-DECL|macro|__NR_old_lstat
-mdefine_line|#define __NR_old_lstat&t;&t;&t;1121
-DECL|macro|__NR_old_fstat
-mdefine_line|#define __NR_old_fstat&t;&t;&t;1122
+multiline_comment|/* 1120 was __NR_old_stat */
+multiline_comment|/* 1121 was __NR_old_lstat */
+multiline_comment|/* 1122 was __NR_old_fstat */
 DECL|macro|__NR_vhangup
 mdefine_line|#define __NR_vhangup&t;&t;&t;1123
 DECL|macro|__NR_lchown
@@ -391,8 +388,32 @@ DECL|macro|__NR_getunwind
 mdefine_line|#define __NR_getunwind&t;&t;&t;1215
 DECL|macro|__NR_readahead
 mdefine_line|#define __NR_readahead&t;&t;&t;1216
+DECL|macro|__NR_setxattr
+mdefine_line|#define __NR_setxattr&t;&t;&t;1217
+DECL|macro|__NR_lsetxattr
+mdefine_line|#define __NR_lsetxattr&t;&t;&t;1218
+DECL|macro|__NR_fsetxattr
+mdefine_line|#define __NR_fsetxattr&t;&t;&t;1219
+DECL|macro|__NR_getxattr
+mdefine_line|#define __NR_getxattr&t;&t;&t;1220
+DECL|macro|__NR_lgetxattr
+mdefine_line|#define __NR_lgetxattr&t;&t;&t;1221
+DECL|macro|__NR_fgetxattr
+mdefine_line|#define __NR_fgetxattr&t;&t;&t;1222
+DECL|macro|__NR_listxattr
+mdefine_line|#define __NR_listxattr&t;&t;&t;1223
+DECL|macro|__NR_llistxattr
+mdefine_line|#define __NR_llistxattr&t;&t;&t;1224
+DECL|macro|__NR_flistxattr
+mdefine_line|#define __NR_flistxattr&t;&t;&t;1225
+DECL|macro|__NR_removexattr
+mdefine_line|#define __NR_removexattr&t;&t;1226
+DECL|macro|__NR_lremovexattr
+mdefine_line|#define __NR_lremovexattr&t;&t;1227
+DECL|macro|__NR_fremovexattr
+mdefine_line|#define __NR_fremovexattr&t;&t;1228
 DECL|macro|__NR_tkill
-mdefine_line|#define __NR_tkill&t;&t;&t;1217
+mdefine_line|#define __NR_tkill&t;&t;&t;1229
 macro_line|#if !defined(__ASSEMBLY__) &amp;&amp; !defined(ASSEMBLER)
 r_extern
 r_int
@@ -430,6 +451,9 @@ mdefine_line|#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,
 DECL|macro|_syscall5
 mdefine_line|#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5)&t;&bslash;&n;type&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;name (type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return __ia64_syscall((long) arg1, (long) arg2, (long) arg3,&t;&t;&t;&bslash;&n;&t;&t;&t;      (long) arg4, (long) arg5, __NR_##name);&t;&t;&t;&bslash;&n;}
 macro_line|#ifdef __KERNEL_SYSCALLS__
+r_struct
+id|rusage
+suffix:semicolon
 r_static
 r_inline
 id|_syscall0

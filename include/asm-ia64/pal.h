@@ -105,13 +105,13 @@ suffix:semicolon
 DECL|macro|PAL_STATUS_SUCCESS
 mdefine_line|#define PAL_STATUS_SUCCESS&t;&t;0&t;/* No error */
 DECL|macro|PAL_STATUS_UNIMPLEMENTED
-mdefine_line|#define PAL_STATUS_UNIMPLEMENTED&t;-1&t;/* Unimplemented procedure */
+mdefine_line|#define PAL_STATUS_UNIMPLEMENTED&t;(-1)&t;/* Unimplemented procedure */
 DECL|macro|PAL_STATUS_EINVAL
-mdefine_line|#define PAL_STATUS_EINVAL&t;&t;-2&t;/* Invalid argument */
+mdefine_line|#define PAL_STATUS_EINVAL&t;&t;(-2)&t;/* Invalid argument */
 DECL|macro|PAL_STATUS_ERROR
-mdefine_line|#define PAL_STATUS_ERROR&t;&t;-3&t;/* Error */
+mdefine_line|#define PAL_STATUS_ERROR&t;&t;(-3)&t;/* Error */
 DECL|macro|PAL_STATUS_CACHE_INIT_FAIL
-mdefine_line|#define PAL_STATUS_CACHE_INIT_FAIL&t;-4&t;/* Could not initialize the&n;&t;&t;&t;&t;&t;&t; * specified level and type of&n;&t;&t;&t;&t;&t;&t; * cache without sideeffects&n;&t;&t;&t;&t;&t;&t; * and &quot;restrict&quot; was 1&n;&t;&t;&t;&t;&t;&t; */
+mdefine_line|#define PAL_STATUS_CACHE_INIT_FAIL&t;(-4)&t;/* Could not initialize the&n;&t;&t;&t;&t;&t;&t; * specified level and type of&n;&t;&t;&t;&t;&t;&t; * cache without sideeffects&n;&t;&t;&t;&t;&t;&t; * and &quot;restrict&quot; was 1&n;&t;&t;&t;&t;&t;&t; */
 multiline_comment|/* Processor cache level in the heirarchy */
 DECL|typedef|pal_cache_level_t
 r_typedef

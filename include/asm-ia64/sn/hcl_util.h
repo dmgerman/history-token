@@ -1,7 +1,8 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_HCL_UTIL_H
-DECL|macro|_ASM_SN_HCL_UTIL_H
-mdefine_line|#define _ASM_SN_HCL_UTIL_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_HCL_UTIL_H
+DECL|macro|_ASM_IA64_SN_HCL_UTIL_H
+mdefine_line|#define _ASM_IA64_SN_HCL_UTIL_H
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 r_extern
 r_char
 op_star
@@ -60,25 +61,5 @@ comma
 id|cnodeid_t
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|device_info_set
-c_func
-(paren
-id|devfs_handle_t
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|device_info_get
-c_func
-(paren
-id|devfs_handle_t
-)paren
-suffix:semicolon
-macro_line|#endif _ASM_SN_HCL_UTIL_H
+macro_line|#endif /* _ASM_IA64_SN_HCL_UTIL_H */
 eof

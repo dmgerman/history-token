@@ -1,23 +1,23 @@
-multiline_comment|/*&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Jack Steiner (steiner@sgi.com)&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 multiline_comment|/*&n; * WARNING:     There is more than one copy of this file in different isms.&n; *              All copies must be kept exactly in sync.&n; *              Do not modify this file without also updating the following:&n; *&n; *              irix/kern/io/eeprom.c&n; *              stand/arcs/lib/libsk/ml/eeprom.c&n; *&t;&t;stand/arcs/lib/libkl/io/eeprom.c&n; *&n; *      (from time to time they might not be in sync but that&squot;s due to bringup&n; *       activity - this comment is to remind us that they eventually have to&n; *       get back together)&n; *&n; * eeprom.c&n; *&n; * access to board-mounted EEPROMs via the L1 system controllers&n; *&n; */
-multiline_comment|/**************************************************************************&n; *                                                                        *&n; *  Copyright (C) 1999 Silicon Graphics, Inc.                             *&n; *                                                                        *&n; *  These coded instructions, statements, and computer programs  contain  *&n; *  unpublished  proprietary  information of Silicon Graphics, Inc., and  *&n; *  are protected by Federal copyright law.  They  may  not be disclosed  *&n; *  to  third  parties  or copied or duplicated in any form, in whole or  *&n; *  in part, without the prior written consent of Silicon Graphics, Inc.  *&n; *                                                                        *&n; **************************************************************************&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/eeprom.h&gt;
-macro_line|#include &lt;asm/sn/ksys/i2c.h&gt;
-multiline_comment|/* #include &lt;sys/SN/SN1/ip27log.h&gt; */
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/clksupport.h&gt;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
+macro_line|#include &lt;asm/sn/simulator.h&gt;
 macro_line|#if defined(EEPROM_DEBUG)
 DECL|macro|db_printf
 mdefine_line|#define db_printf(x) printk x
@@ -1510,7 +1510,7 @@ id|sc
 comma
 id|nasid
 comma
-id|BRL1_LOCALUART
+id|BRL1_LOCALHUB_UART
 )paren
 suffix:semicolon
 )brace
@@ -1721,9 +1721,7 @@ c_func
 r_return
 id|EEP_L1
 suffix:semicolon
-macro_line|#ifdef BRINGUP
 mdefine_line|#define FAIL&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*uid = rtc_time();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;printk( &quot;rbrick_uid_get failed; using current time as uid&bslash;n&quot; );&t;&bslash;&n;&t;return EEP_OK;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    }
-macro_line|#endif /* BRINGUP */
 id|ROUTER_LOCK
 c_func
 (paren
@@ -2168,7 +2166,6 @@ r_char
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef BRINGUP
 multiline_comment|/* the following were lifted from nic.c - change later? */
 DECL|macro|MAX_INFO
 mdefine_line|#define MAX_INFO 2048
@@ -2176,7 +2173,6 @@ DECL|macro|NEWSZ
 mdefine_line|#define NEWSZ(ptr,sz)   ((ptr) = kern_malloc((sz)))
 DECL|macro|DEL
 mdefine_line|#define DEL(ptr) (kern_free((ptr)))
-macro_line|#endif /* BRINGUP */
 DECL|function|eeprom_vertex_info_set
 r_char
 op_star
@@ -4025,7 +4021,7 @@ id|db_printf
 c_func
 (paren
 (paren
-l_string|&quot;read_chassis_ia: target 0x%x  uart 0x%x&bslash;n&quot;
+l_string|&quot;read_chassis_ia: target 0x%x  uart 0x%lx&bslash;n&quot;
 comma
 id|sc-&gt;subch
 (braket
@@ -4628,7 +4624,7 @@ id|db_printf
 c_func
 (paren
 (paren
-l_string|&quot;read_board_ia: target 0x%x  uart 0x%x&bslash;n&quot;
+l_string|&quot;read_board_ia: target 0x%x  uart 0x%lx&bslash;n&quot;
 comma
 id|sc-&gt;subch
 (braket

@@ -1,31 +1,31 @@
 macro_line|#ifndef _ASM_IA64_PTRACE_H
 DECL|macro|_ASM_IA64_PTRACE_H
 mdefine_line|#define _ASM_IA64_PTRACE_H
-multiline_comment|/*&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1998, 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 12/07/98&t;S. Eranian&t;added pt_regs &amp; switch_stack&n; * 12/21/98&t;D. Mosberger&t;updated to match latest code&n; *  6/17/99&t;D. Mosberger&t;added second unat member to &quot;struct switch_stack&quot;&n; *&n; */
-multiline_comment|/*&n; * When a user process is blocked, its state looks as follows:&n; *&n; *            +----------------------+&t;-------&t;IA64_STK_OFFSET&n; *     &t;      |&t;&t;&t;     |&t; ^&n; *            | struct pt_regs       |&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *            +----------------------+&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *     &t;      |&t;   memory stack&t;     |&t; |&n; *&t;      |&t;(growing downwards)  |&t; |&n; *&t;      //.....................//&t; |&n; *&t;&t;&t;&t;&t; |&n; *&t;      //.....................//&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *            +----------------------+&t; |&n; *            | struct switch_stack  |&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      +----------------------+&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      //.....................//&t; |&n; *&t;&t;&t;&t;&t; |&n; *&t;      //.....................//&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      |&t; register stack&t;     |&t; |&n; *&t;      |&t;(growing upwards)    |&t; |&n; *            |&t;&t;&t;     |&t; |&n; *&t;      +----------------------+&t; |  ---&t;IA64_RBS_OFFSET&n; *&t;      |&t;&t;&t;     |&t; |  ^&n; *            |  struct task_struct  |&t; |  |&n; * current -&gt; |&t;&t;&t;     |   |  |&n; *&t;      +----------------------+ -------&n; *&n; * Note that ar.ec is not saved explicitly in pt_reg or switch_stack.&n; * This is because ar.ec is saved as part of ar.pfs.&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 12/07/98&t;S. Eranian&t;added pt_regs &amp; switch_stack&n; * 12/21/98&t;D. Mosberger&t;updated to match latest code&n; *  6/17/99&t;D. Mosberger&t;added second unat member to &quot;struct switch_stack&quot;&n; *&n; */
+multiline_comment|/*&n; * When a user process is blocked, its state looks as follows:&n; *&n; *            +----------------------+&t;-------&t;IA64_STK_OFFSET&n; *     &t;      |&t;&t;&t;     |&t; ^&n; *            | struct pt_regs       |&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *            +----------------------+&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *     &t;      |&t;   memory stack&t;     |&t; |&n; *&t;      |&t;(growing downwards)  |&t; |&n; *&t;      //.....................//&t; |&n; *&t;&t;&t;&t;&t; |&n; *&t;      //.....................//&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *            +----------------------+&t; |&n; *            | struct switch_stack  |&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      +----------------------+&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      //.....................//&t; |&n; *&t;&t;&t;&t;&t; |&n; *&t;      //.....................//&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      |&t; register stack&t;     |&t; |&n; *&t;      |&t;(growing upwards)    |&t; |&n; *            |&t;&t;&t;     |&t; |&n; *&t;      +----------------------+&t; |  ---&t;IA64_RBS_OFFSET&n; *            |  struct thread_info  |&t; |  ^&n; *&t;      +----------------------+&t; |  |&n; *&t;      |&t;&t;&t;     |&t; |  |&n; *            |  struct task_struct  |&t; |  |&n; * current -&gt; |&t;&t;&t;     |   |  |&n; *&t;      +----------------------+ -------&n; *&n; * Note that ar.ec is not saved explicitly in pt_reg or switch_stack.&n; * This is because ar.ec is saved as part of ar.pfs.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/offsets.h&gt;
 multiline_comment|/*&n; * Base-2 logarithm of number of pages to allocate per task structure&n; * (including register backing store and memory stack):&n; */
 macro_line|#if defined(CONFIG_IA64_PAGE_SIZE_4KB)
-DECL|macro|IA64_TASK_STRUCT_LOG_NUM_PAGES
-macro_line|# define IA64_TASK_STRUCT_LOG_NUM_PAGES&t;&t;3
+DECL|macro|KERNEL_STACK_SIZE_ORDER
+macro_line|# define KERNEL_STACK_SIZE_ORDER&t;&t;3
 macro_line|#elif defined(CONFIG_IA64_PAGE_SIZE_8KB)
-DECL|macro|IA64_TASK_STRUCT_LOG_NUM_PAGES
-macro_line|# define IA64_TASK_STRUCT_LOG_NUM_PAGES&t;&t;2
+DECL|macro|KERNEL_STACK_SIZE_ORDER
+macro_line|# define KERNEL_STACK_SIZE_ORDER&t;&t;2
 macro_line|#elif defined(CONFIG_IA64_PAGE_SIZE_16KB)
-DECL|macro|IA64_TASK_STRUCT_LOG_NUM_PAGES
-macro_line|# define IA64_TASK_STRUCT_LOG_NUM_PAGES&t;&t;1
+DECL|macro|KERNEL_STACK_SIZE_ORDER
+macro_line|# define KERNEL_STACK_SIZE_ORDER&t;&t;1
 macro_line|#else
-DECL|macro|IA64_TASK_STRUCT_LOG_NUM_PAGES
-macro_line|# define IA64_TASK_STRUCT_LOG_NUM_PAGES&t;&t;0
+DECL|macro|KERNEL_STACK_SIZE_ORDER
+macro_line|# define KERNEL_STACK_SIZE_ORDER&t;&t;0
 macro_line|#endif
 DECL|macro|IA64_RBS_OFFSET
-mdefine_line|#define IA64_RBS_OFFSET&t;&t;&t;((IA64_TASK_SIZE + 15) &amp; ~15)
+mdefine_line|#define IA64_RBS_OFFSET&t;&t;&t;((IA64_TASK_SIZE + IA64_THREAD_INFO_SIZE + 15) &amp; ~15)
 DECL|macro|IA64_STK_OFFSET
-mdefine_line|#define IA64_STK_OFFSET&t;&t;&t;((1 &lt;&lt; IA64_TASK_STRUCT_LOG_NUM_PAGES)*PAGE_SIZE)
-DECL|macro|INIT_TASK_SIZE
-mdefine_line|#define INIT_TASK_SIZE&t;&t;&t;IA64_STK_OFFSET
+mdefine_line|#define IA64_STK_OFFSET&t;&t;&t;((1 &lt;&lt; KERNEL_STACK_SIZE_ORDER)*PAGE_SIZE)
+DECL|macro|KERNEL_STACK_SIZE
+mdefine_line|#define KERNEL_STACK_SIZE&t;&t;IA64_STK_OFFSET
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -774,7 +774,92 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* !__KERNEL__ */
+multiline_comment|/* pt_all_user_regs is used for PTRACE_GETREGS PTRACE_SETREGS */
+DECL|struct|pt_all_user_regs
+r_struct
+id|pt_all_user_regs
+(brace
+DECL|member|nat
+r_int
+r_int
+id|nat
+suffix:semicolon
+DECL|member|cr_iip
+r_int
+r_int
+id|cr_iip
+suffix:semicolon
+DECL|member|cfm
+r_int
+r_int
+id|cfm
+suffix:semicolon
+DECL|member|cr_ipsr
+r_int
+r_int
+id|cr_ipsr
+suffix:semicolon
+DECL|member|pr
+r_int
+r_int
+id|pr
+suffix:semicolon
+DECL|member|gr
+r_int
+r_int
+id|gr
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|br
+r_int
+r_int
+id|br
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|ar
+r_int
+r_int
+id|ar
+(braket
+l_int|128
+)braket
+suffix:semicolon
+DECL|member|fr
+r_struct
+id|ia64_fpreg
+id|fr
+(braket
+l_int|128
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
+multiline_comment|/* indices to application-registers array in pt_all_user_regs */
+DECL|macro|PT_AUR_RSC
+mdefine_line|#define PT_AUR_RSC&t;16
+DECL|macro|PT_AUR_BSP
+mdefine_line|#define PT_AUR_BSP&t;17
+DECL|macro|PT_AUR_BSPSTORE
+mdefine_line|#define PT_AUR_BSPSTORE&t;18
+DECL|macro|PT_AUR_RNAT
+mdefine_line|#define PT_AUR_RNAT&t;19
+DECL|macro|PT_AUR_CCV
+mdefine_line|#define PT_AUR_CCV&t;32
+DECL|macro|PT_AUR_UNAT
+mdefine_line|#define PT_AUR_UNAT&t;36
+DECL|macro|PT_AUR_FPSR
+mdefine_line|#define PT_AUR_FPSR&t;40
+DECL|macro|PT_AUR_PFS
+mdefine_line|#define PT_AUR_PFS&t;64
+DECL|macro|PT_AUR_LC
+mdefine_line|#define PT_AUR_LC&t;65
+DECL|macro|PT_AUR_EC
+mdefine_line|#define PT_AUR_EC&t;66
 multiline_comment|/*&n; * The numbers chosen here are somewhat arbitrary but absolutely MUST&n; * not overlap with any of the number assigned in &lt;linux/ptrace.h&gt;.&n; */
 DECL|macro|PTRACE_SINGLEBLOCK
 mdefine_line|#define PTRACE_SINGLEBLOCK&t;12&t;/* resume execution until next branch */
@@ -782,5 +867,14 @@ DECL|macro|PTRACE_GETSIGINFO
 mdefine_line|#define PTRACE_GETSIGINFO&t;13&t;/* get child&squot;s siginfo structure */
 DECL|macro|PTRACE_SETSIGINFO
 mdefine_line|#define PTRACE_SETSIGINFO&t;14&t;/* set child&squot;s siginfo structure */
+DECL|macro|PTRACE_GETREGS
+mdefine_line|#define PTRACE_GETREGS&t;&t;18&t;/* get all registers (pt_all_user_regs) in one shot */
+DECL|macro|PTRACE_SETREGS
+mdefine_line|#define PTRACE_SETREGS&t;&t;19&t;/* set all registers (pt_all_user_regs) in one shot */
+DECL|macro|PTRACE_SETOPTIONS
+mdefine_line|#define PTRACE_SETOPTIONS&t;21
+multiline_comment|/* options set using PTRACE_SETOPTIONS */
+DECL|macro|PTRACE_O_TRACESYSGOOD
+mdefine_line|#define PTRACE_O_TRACESYSGOOD&t;0x00000001
 macro_line|#endif /* _ASM_IA64_PTRACE_H */
 eof

@@ -1,12 +1,12 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
 macro_line|#ifndef __ASM_SN_XTALK_XWIDGET_H__
 DECL|macro|__ASM_SN_XTALK_XWIDGET_H__
 mdefine_line|#define __ASM_SN_XTALK_XWIDGET_H__
 multiline_comment|/*&n; * xwidget.h - generic crosstalk widget header file&n; */
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
-macro_line|#if LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/sn/cdl.h&gt;
-macro_line|#endif /* LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef LITTLE_ENDIAN
 DECL|macro|WIDGET_ID
 mdefine_line|#define WIDGET_ID&t;&t;&t;0x00
@@ -156,7 +156,7 @@ mdefine_line|#define WIDGET_LLP_MAXBURST&t;&t;0x000003ff
 DECL|macro|WIDGET_LLP_MAXBURST_SHFT
 mdefine_line|#define WIDGET_LLP_MAXBURST_SHFT&t;0
 multiline_comment|/*&n; * according to the crosstalk spec, only 32-bits access to the widget&n; * configuration registers is allowed.  some widgets may allow 64-bits&n; * access but software should not depend on it.  registers beyond the&n; * widget target flush register are widget dependent thus will not be&n; * defined here&n; */
-macro_line|#if _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|widgetreg_t
 r_typedef
 r_uint32
@@ -683,22 +683,6 @@ id|devfs_handle_t
 suffix:semicolon
 r_extern
 r_void
-id|xwidget_error_register
-c_func
-(paren
-id|devfs_handle_t
-id|xwidget
-comma
-id|error_handler_f
-op_star
-id|efunc
-comma
-id|error_handler_arg_t
-id|einfo
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|xwidget_reset
 c_func
 (paren
@@ -837,6 +821,14 @@ id|xwidget_info_t
 id|xwidget_info
 )paren
 suffix:semicolon
+r_extern
+id|xwidgetnum_t
+id|hub_widget_id
+c_func
+(paren
+id|nasid_t
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * TBD: DELETE THIS ENTIRE STRUCTURE!  Equivalent is now in&n; * xtalk_private.h: xwidget_info_s&n; * This is just here for now because we still have a lot of&n; * junk referencing it.&n; * However, since nobody looks inside ...&n; */
 DECL|struct|v_widget_s
 r_typedef
@@ -854,6 +846,6 @@ DECL|typedef|v_widget_t
 id|v_widget_t
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* _KERNEL */
-macro_line|#endif&t;&t;&t;&t;/* _LANGUAGE_C */
+macro_line|#endif&t;&t;&t;&t;/* __ASSEMBLY__ */
 macro_line|#endif&t;&t;&t;&t;/* __ASM_SN_XTALK_XWIDGET_H__ */
 eof

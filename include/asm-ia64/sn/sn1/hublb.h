@@ -1,8 +1,8 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
 multiline_comment|/************************************************************************&n; *                                                                      *&n; *      WARNING!!!  WARNING!!!  WARNING!!!  WARNING!!!  WARNING!!!      *&n; *                                                                      *&n; * This file is created by an automated script. Any (minimal) changes   *&n; * made manually to this  file should be made with care.                *&n; *                                                                      *&n; *               MAKE ALL ADDITIONS TO THE END OF THIS FILE             *&n; *                                                                      *&n; ************************************************************************/
-macro_line|#ifndef _ASM_SN_SN1_HUBLB_H
-DECL|macro|_ASM_SN_SN1_HUBLB_H
-mdefine_line|#define _ASM_SN_SN1_HUBLB_H
+macro_line|#ifndef _ASM_IA64_SN_SN1_HUBLB_H
+DECL|macro|_ASM_IA64_SN_SN1_HUBLB_H
+mdefine_line|#define _ASM_IA64_SN_SN1_HUBLB_H
 DECL|macro|LB_REV_ID
 mdefine_line|#define    LB_REV_ID                 0x00600000    /*&n;                                                    * Bedrock Revision&n;                                                    * and ID&n;                                                    */
 DECL|macro|LB_CPU_PERMISSION
@@ -71,7 +71,7 @@ DECL|macro|LB_VECTOR_READ_DATA
 mdefine_line|#define    LB_VECTOR_READ_DATA       0x0060C030    /*&n;                                                    * Vector PIO Read&n;                                                    * Data&n;                                                    */
 DECL|macro|LB_VECTOR_STATUS_CLEAR
 mdefine_line|#define    LB_VECTOR_STATUS_CLEAR    0x0060C038    /*&n;                                                    * Clear Vector PIO&n;                                                    * Return Status&n;                                                    */
-macro_line|#ifdef _LANGUAGE_C
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/************************************************************************&n; *                                                                      *&n; * Description:  This register contains information that allows         *&n; * exploratory software to probe for chip type. This is also the        *&n; * register that sets this node&squot;s ID and the size of each region        *&n; * (which affects the maximum possible system size). IBM assigns the    *&n; * values for the REVISION, PART_NUMBER and MANUFACTURER fields, in     *&n; * accordance with the IEEE 1149.1 standard; SGI is not at liberty to   *&n; * unilaterally change the values of these fields.                      *&n; *  .                                                                   *&n; *                                                                      *&n; ************************************************************************/
 macro_line|#ifdef LITTLE_ENDIAN
 DECL|union|lb_rev_id_u
@@ -2748,7 +2748,7 @@ DECL|typedef|lb_vector_status_clear_u_t
 id|lb_vector_status_clear_u_t
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /* _LANGUAGE_C */
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/************************************************************************&n; *                                                                      *&n; *               MAKE ALL ADDITIONS AFTER THIS LINE                     *&n; *                                                                      *&n; ************************************************************************/
-macro_line|#endif /* _ASM_SN_SN1_HUBLB_H */
+macro_line|#endif /* _ASM_IA64_SN_SN1_HUBLB_H */
 eof

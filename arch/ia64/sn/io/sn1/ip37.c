@@ -1,0 +1,90 @@
+multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/*&n; * ip37.c&n; *&t;Support for IP35/IP37 machines&n; */
+macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/klconfig.h&gt;
+macro_line|#include &lt;asm/sn/pci/bridge.h&gt;     /* for bridge_t */
+id|xwidgetnum_t
+DECL|function|hub_widget_id
+id|hub_widget_id
+c_func
+(paren
+id|nasid_t
+id|nasid
+)paren
+(brace
+id|hubii_wcr_t
+id|ii_wcr
+suffix:semicolon
+multiline_comment|/* the control status register */
+id|ii_wcr.wcr_reg_value
+op_assign
+id|REMOTE_HUB_L
+c_func
+(paren
+id|nasid
+comma
+id|IIO_WCR
+)paren
+suffix:semicolon
+r_return
+id|ii_wcr.wcr_fields_s.wcr_widget_id
+suffix:semicolon
+)brace
+r_int
+DECL|function|is_fine_dirmode
+id|is_fine_dirmode
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+(paren
+(paren
+(paren
+id|LOCAL_HUB_L
+c_func
+(paren
+id|LB_REV_ID
+)paren
+op_amp
+id|LRI_SYSTEM_SIZE_MASK
+)paren
+op_rshift
+id|LRI_SYSTEM_SIZE_SHFT
+)paren
+op_eq
+id|SYSTEM_SIZE_SMALL
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|ni_reset_port
+id|ni_reset_port
+c_func
+(paren
+r_void
+)paren
+(brace
+id|LOCAL_HUB_S
+c_func
+(paren
+id|NI_RESET_ENABLE
+comma
+id|NRE_RESETOK
+)paren
+suffix:semicolon
+id|LOCAL_HUB_S
+c_func
+(paren
+id|NI_PORT_RESET
+comma
+id|NPR_PORTRESET
+op_or
+id|NPR_LOCALRESET
+)paren
+suffix:semicolon
+)brace
+eof

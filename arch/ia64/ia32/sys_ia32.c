@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sys_ia32.c: Conversion between 32bit and 64bit native syscalls. Derived from sys_sparc32.c.&n; *&n; * Copyright (C) 2000&t;&t;VA Linux Co&n; * Copyright (C) 2000&t;&t;Don Dugger &lt;n0ano@valinux.com&gt;&n; * Copyright (C) 1999&t;&t;Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 1997,1998&t;Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997&t;&t;David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 2000-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
+multiline_comment|/*&n; * sys_ia32.c: Conversion between 32bit and 64bit native syscalls. Derived from sys_sparc32.c.&n; *&n; * Copyright (C) 2000&t;&t;VA Linux Co&n; * Copyright (C) 2000&t;&t;Don Dugger &lt;n0ano@valinux.com&gt;&n; * Copyright (C) 1999&t;&t;Arun Sharma &lt;arun.sharma@intel.com&gt;&n; * Copyright (C) 1997,1998&t;Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997&t;&t;David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 2000-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
@@ -63,6 +63,10 @@ DECL|macro|PAGE_START
 mdefine_line|#define PAGE_START(addr)&t;((addr) &amp; PAGE_MASK)
 DECL|macro|PAGE_OFF
 mdefine_line|#define PAGE_OFF(addr)&t;&t;((addr) &amp; ~PAGE_MASK)
+DECL|macro|high2lowuid
+mdefine_line|#define high2lowuid(uid) ((uid) &gt; 65535 ? 65534 : (uid))
+DECL|macro|high2lowgid
+mdefine_line|#define high2lowgid(gid) ((gid) &gt; 65535 ? 65534 : (gid))
 r_extern
 id|asmlinkage
 r_int
@@ -142,6 +146,16 @@ comma
 r_int
 r_int
 comma
+r_int
+)paren
+suffix:semicolon
+id|asmlinkage
+r_int
+r_int
+id|sys_brk
+c_func
+(paren
+r_int
 r_int
 )paren
 suffix:semicolon
@@ -1997,6 +2011,7 @@ OL
 l_int|0
 )paren
 r_return
+op_minus
 id|EINVAL
 suffix:semicolon
 )brace
@@ -13925,6 +13940,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * sys_time() can be implemented in user-level using&n; * sys_gettimeofday().  IA64 did this but i386 Linux did not&n; * so we have to implement this system call here.&n; */
 id|asmlinkage
@@ -20802,6 +20821,71 @@ id|PER_LINUX32
 id|ret
 op_assign
 id|PER_LINUX
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+id|asmlinkage
+r_int
+r_int
+DECL|function|sys32_brk
+id|sys32_brk
+(paren
+r_int
+r_int
+id|brk
+)paren
+(brace
+r_int
+r_int
+id|ret
+comma
+id|obrk
+suffix:semicolon
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|current-&gt;mm
+suffix:semicolon
+id|obrk
+op_assign
+id|mm-&gt;brk
+suffix:semicolon
+id|ret
+op_assign
+id|sys_brk
+c_func
+(paren
+id|brk
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+id|obrk
+)paren
+id|clear_user
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|ret
+comma
+id|PAGE_ALIGN
+c_func
+(paren
+id|ret
+)paren
+op_minus
+id|ret
+)paren
 suffix:semicolon
 r_return
 id|ret

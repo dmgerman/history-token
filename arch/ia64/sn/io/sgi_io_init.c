@@ -1,12 +1,13 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/agent.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
-macro_line|#include &lt;asm/sn/synergy.h&gt;
+macro_line|#include &lt;asm/sn/pci/pciba.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 r_extern
 r_void
@@ -34,23 +35,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|per_hub_init
-c_func
-(paren
-id|cnodeid_t
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|hubspc_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pciba_init
 c_func
 (paren
 r_void
@@ -128,17 +113,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|init_platform_nodepda
-c_func
-(paren
-id|nodepda_t
-op_star
-comma
-id|cnodeid_t
-)paren
-suffix:semicolon
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 r_extern
 r_void
 id|intr_clear_all
@@ -147,6 +122,7 @@ c_func
 id|nasid_t
 )paren
 suffix:semicolon
+macro_line|#endif
 r_extern
 r_void
 id|klhwg_add_all_modules
@@ -183,12 +159,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-id|cnodeid_t
-id|nasid_to_compact_node
-(braket
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|pci_bus_cvlink_init
 c_func
@@ -205,15 +175,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|init_platform_pda
-c_func
-(paren
-id|cpuid_t
-id|cpu
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|pci_bus_to_hcl_cvlink
 c_func
@@ -221,15 +182,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-id|synergy_da_t
-op_star
-id|Synergy_da_indr
-(braket
-)braket
-suffix:semicolon
-DECL|macro|DEBUG_IO_INIT
-mdefine_line|#define DEBUG_IO_INIT
+multiline_comment|/* #define DEBUG_IO_INIT */
 macro_line|#ifdef DEBUG_IO_INIT
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) printk(x)
@@ -237,7 +190,175 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif /* DEBUG_IO_INIT */
-multiline_comment|/*&n; * kern/ml/csu.s calls mlsetup&n; *   mlsetup calls mlreset(master) - kern/os/startup.c&n; *   j main&n; *&n; &n; * SN/slave.s start_slave_loop calls slave_entry&n; * SN/slave.s slave_entry calls slave_loop&n; * SN/slave.s slave_loop calls bootstrap&n; * bootstrap in SN1/SN1asm.s calls cboot&n; * cboot calls mlreset(slave) - ml/SN/mp.c&n; *&n; * sgi_io_infrastructure_init() gets called right before pci_init() &n; * in Linux mainline.  This routine actually mirrors the IO Infrastructure &n; * call sequence in IRIX, ofcourse, nicely modified for Linux.&n; *&n; * It is very IMPORTANT that this call is only made by the Master CPU!&n; *&n; */
+multiline_comment|/*&n; * per_hub_init&n; *&n; * &t;This code is executed once for each Hub chip.&n; */
+r_static
+r_void
+DECL|function|per_hub_init
+id|per_hub_init
+c_func
+(paren
+id|cnodeid_t
+id|cnode
+)paren
+(brace
+id|nasid_t
+id|nasid
+suffix:semicolon
+id|nodepda_t
+op_star
+id|npdap
+suffix:semicolon
+id|ii_icmr_u_t
+id|ii_icmr
+suffix:semicolon
+id|ii_ibcr_u_t
+id|ii_ibcr
+suffix:semicolon
+id|nasid
+op_assign
+id|COMPACT_TO_NASID_NODEID
+c_func
+(paren
+id|cnode
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|nasid
+op_ne
+id|INVALID_NASID
+)paren
+suffix:semicolon
+id|ASSERT
+c_func
+(paren
+id|NASID_TO_COMPACT_NODEID
+c_func
+(paren
+id|nasid
+)paren
+op_eq
+id|cnode
+)paren
+suffix:semicolon
+id|npdap
+op_assign
+id|NODEPDA
+c_func
+(paren
+id|cnode
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
+multiline_comment|/* initialize per-node synergy perf instrumentation */
+id|npdap-&gt;synergy_perf_enabled
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* off by default */
+id|npdap-&gt;synergy_perf_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+id|npdap-&gt;synergy_perf_freq
+op_assign
+id|SYNERGY_PERF_FREQ_DEFAULT
+suffix:semicolon
+id|npdap-&gt;synergy_inactive_intervals
+op_assign
+l_int|0
+suffix:semicolon
+id|npdap-&gt;synergy_active_intervals
+op_assign
+l_int|0
+suffix:semicolon
+id|npdap-&gt;synergy_perf_data
+op_assign
+l_int|NULL
+suffix:semicolon
+id|npdap-&gt;synergy_perf_first
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif /* CONFIG_IA64_SGI_SN1 */
+multiline_comment|/*&n;&t; * Set the total number of CRBs that can be used.&n;&t; */
+id|ii_icmr.ii_icmr_regval
+op_assign
+l_int|0x0
+suffix:semicolon
+id|ii_icmr.ii_icmr_fld_s.i_c_cnt
+op_assign
+l_int|0xF
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|nasid
+comma
+id|IIO_ICMR
+comma
+id|ii_icmr.ii_icmr_regval
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set the number of CRBs that both of the BTEs combined&n;&t; * can use minus 1.&n;&t; */
+id|ii_ibcr.ii_ibcr_regval
+op_assign
+l_int|0x0
+suffix:semicolon
+id|ii_ibcr.ii_ibcr_fld_s.i_count
+op_assign
+l_int|0x8
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|nasid
+comma
+id|IIO_IBCR
+comma
+id|ii_ibcr.ii_ibcr_regval
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set CRB timeout to be 10ms.&n;&t; */
+id|REMOTE_HUB_S
+c_func
+(paren
+id|nasid
+comma
+id|IIO_ICTP
+comma
+l_int|0x1000
+)paren
+suffix:semicolon
+id|REMOTE_HUB_S
+c_func
+(paren
+id|nasid
+comma
+id|IIO_ICTO
+comma
+l_int|0xff
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
+multiline_comment|/* Reserve all of the hardwired interrupt levels. */
+id|intr_reserve_hardwired
+c_func
+(paren
+id|cnode
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Initialize error interrupts for this hub. */
+id|hub_error_init
+c_func
+(paren
+id|cnode
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This routine is responsible for the setup of all the IRIX hwgraph style&n; * stuff that&squot;s been pulled into linux.  It&squot;s called by sn1_pci_find_bios which&n; * is called just before the generic Linux PCI layer does its probing (by &n; * platform_pci_fixup aka sn1_pci_fixup).&n; *&n; * It is very IMPORTANT that this call is only made by the Master CPU!&n; *&n; */
 r_void
 DECL|function|sgi_master_io_infr_init
 id|sgi_master_io_infr_init
@@ -248,10 +369,6 @@ r_void
 (brace
 r_int
 id|cnode
-suffix:semicolon
-r_extern
-r_int
-id|maxnodes
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do any early init stuff .. einit_tbl[] etc.&n;&t; */
 id|DBG
@@ -278,6 +395,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef BRINGUP
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 multiline_comment|/*&n;&t; * Hack to provide statically initialzed klgraph entries.&n;&t; */
 id|DBG
 c_func
@@ -290,6 +409,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IA64_SGI_SN1 */
+macro_line|#endif /* BRINGUP */
 multiline_comment|/*&n;&t; * This is the Master CPU.  Emulate mlsetup and main.c in Irix.&n;&t; */
 id|DBG
 c_func
@@ -331,7 +452,7 @@ l_int|0
 suffix:semicolon
 id|cnode
 OL
-id|maxnodes
+id|numnodes
 suffix:semicolon
 id|cnode
 op_increment
@@ -353,17 +474,6 @@ l_string|&quot;--&gt; sgi_master_io_infr_init: calling hubspc_init()&bslash;n&qu
 )paren
 suffix:semicolon
 id|hubspc_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;--&gt; sgi_master_io_infr_init: calling pciba_init()&bslash;n&quot;
-)paren
-suffix:semicolon
-id|pciba_init
 c_func
 (paren
 )paren
@@ -479,6 +589,19 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCIBA
+id|DBG
+c_func
+(paren
+l_string|&quot;--&gt; sgi_master_io_infr_init: calling pciba_init()&bslash;n&quot;
+)paren
+suffix:semicolon
+id|pciba_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|DBG
 c_func
 (paren
@@ -518,221 +641,9 @@ r_void
 id|cnodeid_t
 id|cnode
 suffix:semicolon
-r_extern
-r_int
-id|maxnodes
-suffix:semicolon
 id|cpuid_t
 id|cpu
 suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;sn_mp_setup: Entered.&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * NODEPDA(x) Macro depends on nodepda&n;&t; * subnodepda is also statically set to calias space which we &n;&t; * do not currently support yet .. just a hack for now.&n;&t; */
-macro_line|#ifdef NUMA_BASE
-id|maxnodes
-op_assign
-id|numnodes
-suffix:semicolon
-id|DBG
-c_func
-(paren
-l_string|&quot;sn_mp_setup(): maxnodes= %d  numnodes= %d&bslash;n&quot;
-comma
-id|maxnodes
-comma
-id|numnodes
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;sn_mp_setup(): Allocating backing store for *Nodepdaindr[%2d] &bslash;n&quot;
-comma
-id|maxnodes
-)paren
-suffix:semicolon
-multiline_comment|/*&n;         * Initialize Nodpdaindr and per-node nodepdaindr array&n;         */
-op_star
-id|Nodepdaindr
-op_assign
-(paren
-id|nodepda_t
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-id|nodepda_t
-op_star
-)paren
-op_star
-id|numnodes
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|cnode
-op_assign
-l_int|0
-suffix:semicolon
-id|cnode
-OL
-id|maxnodes
-suffix:semicolon
-id|cnode
-op_increment
-)paren
-(brace
-id|Nodepdaindr
-(braket
-id|cnode
-)braket
-op_assign
-(paren
-id|nodepda_t
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|nodepda_s
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|Synergy_da_indr
-(braket
-id|cnode
-op_star
-l_int|2
-)braket
-op_assign
-(paren
-id|synergy_da_t
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-id|synergy_da_t
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|Synergy_da_indr
-(braket
-(paren
-id|cnode
-op_star
-l_int|2
-)paren
-op_plus
-l_int|1
-)braket
-op_assign
-(paren
-id|synergy_da_t
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-id|synergy_da_t
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|Nodepdaindr
-(braket
-id|cnode
-)braket
-op_member_access_from_pointer
-id|pernode_pdaindr
-op_assign
-id|Nodepdaindr
-suffix:semicolon
-id|subnodepda
-op_assign
-op_amp
-id|Nodepdaindr
-(braket
-id|cnode
-)braket
-op_member_access_from_pointer
-id|snpda
-(braket
-id|cnode
-)braket
-suffix:semicolon
-)brace
-id|nodepda
-op_assign
-id|Nodepdaindr
-(braket
-l_int|0
-)braket
-suffix:semicolon
-macro_line|#else
-id|Nodepdaindr
-op_assign
-(paren
-id|nodepda_t
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|nodepda_s
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|nodepda
-op_assign
-id|Nodepdaindr
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|subnodepda
-op_assign
-op_amp
-id|Nodepdaindr
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|snpda
-(braket
-l_int|0
-)braket
-suffix:semicolon
-macro_line|#endif /* NUMA_BASE */
-multiline_comment|/*&n;&t; * Before we let the other processors run, set up the platform specific&n;&t; * stuff in the nodepda.&n;&t; *&n;&t; * ???? maxnodes set in mlreset .. who sets it now ????&n;&t; * ???? cpu_node_probe() called in mlreset to set up the following:&n;&t; *      compact_to_nasid_node[] - cnode id gives nasid&n;&t; *      nasid_to_compact_node[] - nasid gives cnode id&n;&t; *&n;&t; *&t;do_cpumask() sets the following:&n;&t; *      cpuid_to_compact_node[] - cpuid gives cnode id&n;&t; *&n;&t; *      nasid comes from gdap-&gt;g_nasidtable[]&n;&t; *      ml/SN/promif.c&n;&t; */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
 r_for
 c_loop
 (paren
@@ -766,43 +677,6 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
-)brace
-macro_line|#endif
-r_for
-c_loop
-(paren
-id|cnode
-op_assign
-l_int|0
-suffix:semicolon
-id|cnode
-OL
-id|maxnodes
-suffix:semicolon
-id|cnode
-op_increment
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Set up platform-dependent nodepda fields.&n;&t;&t; * The following routine actually sets up the hubinfo struct&n;&t;&t; * in nodepda.&n;&t;&t; */
-id|DBG
-c_func
-(paren
-l_string|&quot;sn_mp_io_setup: calling init_platform_nodepda(%2d)&bslash;n&quot;
-comma
-id|cnode
-)paren
-suffix:semicolon
-id|init_platform_nodepda
-c_func
-(paren
-id|Nodepdaindr
-(braket
-id|cnode
-)braket
-comma
-id|cnode
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Initialize platform-dependent vertices in the hwgraph:&n;&t; *&t;module&n;&t; *&t;node&n;&t; *&t;cpu&n;&t; *&t;memory&n;&t; *&t;slot&n;&t; *&t;hub&n;&t; *&t;router&n;&t; *&t;xbow&n;&t; */
 id|DBG
@@ -850,15 +724,15 @@ l_int|0
 suffix:semicolon
 id|cnode
 OL
-id|maxnodes
+id|numnodes
 suffix:semicolon
 id|cnode
 op_increment
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * This routine clears the Hub&squot;s Interrupt registers.&n;&t;&t; */
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
 multiline_comment|/*&n;&t;&t; * We need to move this intr_clear_all() routine &n;&t;&t; * from SN/intr.c to a more appropriate file.&n;&t;&t; * Talk to Al Mayer.&n;&t;&t; */
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 id|intr_clear_all
 c_func
 (paren
@@ -869,16 +743,16 @@ id|cnode
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* now init the hub */
 singleline_comment|//&t;per_hub_init(cnode);
-macro_line|#endif
 )brace
-macro_line|#if defined(CONFIG_IA64_SGI_SYNERGY_PERF)
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 id|synergy_perf_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IA64_SGI_SYNERGY_PERF */
+macro_line|#endif
 )brace
 eof

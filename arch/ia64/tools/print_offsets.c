@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Utility to generate asm-ia64/offsets.h.&n; *&n; * Copyright (C) 1999-2001 Hewlett-Packard Co&n; * Copyright (C) 1999-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Note that this file has dual use: when building the kernel&n; * natively, the file is translated into a binary and executed.  When&n; * building the kernel in a cross-development environment, this file&n; * gets translated into an assembly file which, in turn, is processed&n; * by awk to generate offsets.h.  So if you make any changes to this&n; * file, be sure to verify that the awk procedure still works (see&n; * prin_offsets.awk).&n; */
+multiline_comment|/*&n; * Utility to generate asm-ia64/offsets.h.&n; *&n; * Copyright (C) 1999-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Note that this file has dual use: when building the kernel&n; * natively, the file is translated into a binary and executed.  When&n; * building the kernel in a cross-development environment, this file&n; * gets translated into an assembly file which, in turn, is processed&n; * by awk to generate offsets.h.  So if you make any changes to this&n; * file, be sure to verify that the awk procedure still works (see&n; * prin_offsets.awk).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm-ia64/processor.h&gt;
@@ -55,6 +55,16 @@ r_sizeof
 (paren
 r_struct
 id|task_struct
+)paren
+)brace
+comma
+(brace
+l_string|&quot;IA64_THREAD_INFO_SIZE&quot;
+comma
+r_sizeof
+(paren
+r_struct
+id|thread_info
 )paren
 )brace
 comma
@@ -125,18 +135,15 @@ l_int|0
 )brace
 comma
 multiline_comment|/* spacer */
-macro_line|#error    { &quot;IA64_TASK_PTRACE_OFFSET&quot;,&t;offsetof (struct task_struct, ptrace) },
-macro_line|#error    { &quot;IA64_TASK_SIGPENDING_OFFSET&quot;,&t;offsetof (struct task_struct, sigpending) },
-macro_line|#error    { &quot;IA64_TASK_NEED_RESCHED_OFFSET&quot;,&t;offsetof (struct task_struct, need_resched) },
 (brace
-l_string|&quot;IA64_TASK_PROCESSOR_OFFSET&quot;
+l_string|&quot;IA64_TASK_PTRACE_OFFSET&quot;
 comma
 m_offsetof
 (paren
 r_struct
 id|task_struct
 comma
-id|processor
+id|ptrace
 )paren
 )brace
 comma
@@ -166,14 +173,14 @@ id|thread.ksp
 comma
 macro_line|#ifdef CONFIG_PERFMON
 (brace
-l_string|&quot;IA64_TASK_PFM_MUST_BLOCK_OFFSET&quot;
+l_string|&quot;IA64_TASK_PFM_OVFL_BLOCK_RESET_OFFSET&quot;
 comma
 m_offsetof
 (paren
 r_struct
 id|task_struct
 comma
-id|thread.pfm_must_block
+id|thread.pfm_ovfl_block_reset
 )paren
 )brace
 comma
@@ -1609,18 +1616,20 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#if 0
 id|printf
 (paren
-l_string|&quot;#define PT_TRACESYS_BIT&bslash;t&bslash;t&bslash;t%u&bslash;n&bslash;n&quot;
+l_string|&quot;#define PT_SYSCALLTRACE_BIT&bslash;t&bslash;t&bslash;t%u&bslash;n&bslash;n&quot;
 comma
 id|ffs
 (paren
-id|PT_TRACESYS
+id|PT_SYSCALLTRACE
 )paren
 op_minus
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_ASMMACRO_H
 DECL|macro|_ASM_IA64_ASMMACRO_H
 mdefine_line|#define _ASM_IA64_ASMMACRO_H
-multiline_comment|/*&n; * Copyright (C) 2000-2001 Hewlett-Packard Co&n; * Copyright (C) 2000-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 2000-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|ENTRY
 mdefine_line|#define ENTRY(name)&t;&t;&t;&t;&bslash;&n;&t;.align 32;&t;&t;&t;&t;&bslash;&n;&t;.proc name;&t;&t;&t;&t;&bslash;&n;name:
 DECL|macro|GLOBAL_ENTRY

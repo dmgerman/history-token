@@ -419,7 +419,7 @@ id|current-&gt;thread.fdr
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Setup GDTD.  Note: GDTD is the descrambled version of the pseudo-descriptor&n;&t; * format defined by Figure 3-11 &quot;Pseudo-Descriptor Format&quot; in the IA-32&n;&t; * architecture manual.&n;&t; */
+multiline_comment|/*&n;&t; * Setup GDTD.  Note: GDTD is the descrambled version of the pseudo-descriptor&n;&t; * format defined by Figure 3-11 &quot;Pseudo-Descriptor Format&quot; in the IA-32&n;&t; * architecture manual. Also note that the only fields that are not ignored are&n;&t; * `base&squot;, `limit&squot;, &squot;G&squot;, `P&squot; (must be 1) and `S&squot; (must be 0).&n;&t; */
 id|regs-&gt;r31
 op_assign
 id|IA32_SEG_UNSCRAMBLE
@@ -440,7 +440,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+l_int|1
 comma
 l_int|0
 comma
@@ -712,6 +712,11 @@ op_assign
 id|IA32_PAGE_OFFSET
 suffix:semicolon
 multiline_comment|/* use what Linux/x86 uses... */
+id|current-&gt;thread.flags
+op_or_assign
+id|IA64_THREAD_XSTACK
+suffix:semicolon
+multiline_comment|/* data must be executable */
 id|set_fs
 c_func
 (paren

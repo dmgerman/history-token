@@ -1,9 +1,12 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/sn_sal.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
@@ -20,10 +23,6 @@ macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk_private.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalkaddrs.h&gt;
-r_extern
-r_int
-id|maxnodes
-suffix:semicolon
 multiline_comment|/* #define IOGRAPH_DEBUG */
 macro_line|#ifdef IOGRAPH_DEBUG
 DECL|macro|DBG
@@ -244,18 +243,20 @@ id|master
 )paren
 (brace
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|PRINT_WARNING
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;volunteer for widgets: vertex %v has no info label&quot;
 comma
 id|xswitch
 )paren
 suffix:semicolon
 macro_line|#else
-id|PRINT_WARNING
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;volunteer for widgets: vertex 0x%x has no info label&quot;
 comma
 id|xswitch
@@ -417,9 +418,10 @@ id|hubv
 )paren
 (brace
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|PRINT_WARNING
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;assign_widgets_to_volunteers:vertex %v has &quot;
 l_string|&quot; no info label&quot;
 comma
@@ -427,9 +429,10 @@ id|xswitch
 )paren
 suffix:semicolon
 macro_line|#else
-id|PRINT_WARNING
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;assign_widgets_to_volunteers:vertex 0x%x has &quot;
 l_string|&quot; no info label&quot;
 comma
@@ -504,11 +507,6 @@ id|widgetnum
 op_increment
 )paren
 (brace
-macro_line|#ifndef BRINGUP
-r_int
-id|i
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Ignore disabled/empty ports.&n;&t;&t; */
 r_if
 c_cond
@@ -744,141 +742,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef LATER
-multiline_comment|/* There is an identical definition of this in os/scheduler/runq.c */
-DECL|macro|INIT_COOKIE
-mdefine_line|#define INIT_COOKIE(cookie) cookie.must_run = 0; cookie.cpu = PDA_RUNANYWHERE
-multiline_comment|/*&n; * These functions absolutely doesn&squot;t belong here.  It&squot;s  here, though, &n; * until the scheduler provides a platform-independent version&n; * that works the way it should.  The interface will definitely change, &n; * too.  Currently used only in this file and by io/cdl.c in order to&n; * bind various I/O threads to a CPU on the proper node.&n; */
-id|cpu_cookie_t
-DECL|function|setnoderun
-id|setnoderun
-c_func
-(paren
-id|cnodeid_t
-id|cnodeid
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-id|cpuid_t
-id|cpunum
-suffix:semicolon
-id|cpu_cookie_t
-id|cookie
-suffix:semicolon
-id|INIT_COOKIE
-c_func
-(paren
-id|cookie
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cnodeid
-op_eq
-id|CNODEID_NONE
-)paren
-r_return
-id|cookie
-suffix:semicolon
-multiline_comment|/*&n;&t; * Do a setmustrun to one of the CPUs on the specified&n;&t; * node.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|cpunum
-op_assign
-id|CNODE_TO_CPU_BASE
-c_func
-(paren
-id|cnodeid
-)paren
-)paren
-op_eq
-id|CPU_NONE
-)paren
-(brace
-r_return
-id|cookie
-suffix:semicolon
-)brace
-id|cpunum
-op_add_assign
-id|CNODE_NUM_CPUS
-c_func
-(paren
-id|cnodeid
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|CNODE_NUM_CPUS
-c_func
-(paren
-id|cnodeid
-)paren
-suffix:semicolon
-id|i
-op_increment
-comma
-id|cpunum
-op_decrement
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cpu_enabled
-c_func
-(paren
-id|cpunum
-)paren
-)paren
-(brace
-id|cookie
-op_assign
-id|setmustrun
-c_func
-(paren
-id|cpunum
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_return
-id|cookie
-suffix:semicolon
-)brace
-r_void
-DECL|function|restorenoderun
-id|restorenoderun
-c_func
-(paren
-id|cpu_cookie_t
-id|cookie
-)paren
-(brace
-id|restoremustrun
-c_func
-(paren
-id|cookie
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* LATER */
 macro_line|#ifdef LINUX_KERNEL_THREADS
 DECL|variable|io_init_sema
 r_static
@@ -1211,6 +1074,17 @@ id|buffer
 l_int|16
 )braket
 suffix:semicolon
+id|slotid_t
+id|get_widget_slotnum
+c_func
+(paren
+r_int
+id|xbow
+comma
+r_int
+id|widget
+)paren
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -1468,7 +1342,7 @@ id|dummy
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t;&t; * BRINGUP&n;&t; &t;&t; * Make sure we really want to say xbrick, pbrick,&n;&t;&t;&t; * etc. rather than XIO, graphics, etc.&n;&t; &t;&t; */
+multiline_comment|/*&n;&t; &t;&t; * Make sure we really want to say xbrick, pbrick,&n;&t;&t;&t; * etc. rather than XIO, graphics, etc.&n;&t; &t;&t; */
 macro_line|#ifdef SUPPORT_PRINTING_M_FORMAT
 id|sprintf
 (paren
@@ -1527,7 +1401,6 @@ comma
 id|buffer
 comma
 macro_line|#endif
-macro_line|#ifdef BRINGUP
 (paren
 id|board-&gt;brd_type
 op_eq
@@ -1557,24 +1430,6 @@ l_char|&squot;X&squot;
 suffix:colon
 l_char|&squot;?&squot;
 comma
-macro_line|#else
-id|toupper
-c_func
-(paren
-id|MODULE_GET_BTCHAR
-c_func
-(paren
-id|NODEPDA
-c_func
-(paren
-id|cnode
-)paren
-op_member_access_from_pointer
-id|module_id
-)paren
-)paren
-comma
-macro_line|#endif /* BRINGUP */
 id|EDGE_LBL_XTALK
 comma
 id|widgetnum
@@ -1642,7 +1497,6 @@ id|cnode
 op_member_access_from_pointer
 id|module_id
 comma
-macro_line|#ifdef BRINGUP
 id|get_widget_slotnum
 c_func
 (paren
@@ -1653,22 +1507,6 @@ id|widgetnum
 )paren
 )paren
 (brace
-macro_line|#else
-op_lshift
-template_param
-id|Need
-id|a
-r_new
-id|way
-id|to
-id|get
-id|slot
-id|numbers
-id|on
-id|IP35
-op_div
-id|IP37
-macro_line|#endif
 r_extern
 r_void
 id|klhwg_baseio_inventory_add
@@ -1738,7 +1576,7 @@ comma
 id|module
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; &t; * BRINGUP&n;&t;&t;&t;&t; * Change iobrick to correct i/o brick&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Change iobrick to correct i/o brick&n;&t;&t;&t;&t; */
 macro_line|#ifdef SUPPORT_PRINTING_M_FORMAT
 id|sprintf
 (paren
@@ -1774,7 +1612,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef BRINGUP
 id|slot
 op_assign
 id|get_widget_slotnum
@@ -1785,24 +1622,6 @@ comma
 id|widgetnum
 )paren
 suffix:semicolon
-macro_line|#else
-op_lshift
-OL
-id|BOMB
-op_logical_neg
-id|Need
-id|a
-r_new
-id|way
-id|to
-id|get
-id|slot
-id|numbers
-id|on
-id|IP35
-op_div
-id|IP37
-macro_line|#endif
 id|board
 op_assign
 id|get_board_name
@@ -2253,7 +2072,6 @@ id|GRAPH_SUCCESS
 )paren
 r_continue
 suffix:semicolon
-macro_line|#if defined (CONFIG_SGI_IP35) || defined (CONFIG_IA64_SGI_SN1) || defined (CONFIG_IA64_GENERIC)
 id|board
 op_assign
 id|find_lboard_module
@@ -2278,49 +2096,6 @@ op_member_access_from_pointer
 id|module_id
 )paren
 suffix:semicolon
-macro_line|#else
-(brace
-id|slotid_t
-id|slot
-suffix:semicolon
-id|slot
-op_assign
-id|get_widget_slotnum
-c_func
-(paren
-id|xbow_num
-comma
-id|widgetnum
-)paren
-suffix:semicolon
-id|board
-op_assign
-id|find_lboard_modslot
-c_func
-(paren
-(paren
-id|lboard_t
-op_star
-)paren
-id|KL_CONFIG_INFO
-c_func
-(paren
-id|nasid
-)paren
-comma
-id|NODEPDA
-c_func
-(paren
-id|cnodeid
-)paren
-op_member_access_from_pointer
-id|module_id
-comma
-id|slot
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 */
 r_if
 c_cond
 (paren
@@ -2334,7 +2109,6 @@ id|INVALID_NASID
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Try to find the board on our peer&n;&t;&t;&t; */
-macro_line|#if defined (CONFIG_SGI_IP35) || defined (CONFIG_IA64_SGI_SN1) || defined (CONFIG_IA64_GENERIC)
 id|board
 op_assign
 id|find_lboard_module
@@ -2359,34 +2133,6 @@ op_member_access_from_pointer
 id|module_id
 )paren
 suffix:semicolon
-macro_line|#else
-id|board
-op_assign
-id|find_lboard_modslot
-c_func
-(paren
-(paren
-id|lboard_t
-op_star
-)paren
-id|KL_CONFIG_INFO
-c_func
-(paren
-id|peer_nasid
-)paren
-comma
-id|NODEPDA
-c_func
-(paren
-id|cnodeid
-)paren
-op_member_access_from_pointer
-id|module_id
-comma
-id|slot
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 */
 )brace
 r_if
 c_cond
@@ -2397,9 +2143,10 @@ l_int|NULL
 )paren
 (brace
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|PRINT_WARNING
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Could not find PROM info for vertex %v, &quot;
 l_string|&quot;FRU analyzer may fail&quot;
 comma
@@ -2407,12 +2154,17 @@ id|vhdl
 )paren
 suffix:semicolon
 macro_line|#else
-id|PRINT_WARNING
+id|printk
 c_func
 (paren
-l_string|&quot;Could not find PROM info for vertex 0x%x, &quot;
+id|KERN_WARNING
+l_string|&quot;Could not find PROM info for vertex 0x%p, &quot;
 l_string|&quot;FRU analyzer may fail&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|vhdl
 )paren
 suffix:semicolon
@@ -2875,7 +2627,6 @@ id|npdap-&gt;basew_id
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(BRINGUP)
 )brace
 r_else
 r_if
@@ -2923,7 +2674,6 @@ op_amp
 id|WIDGET_WIDGET_ID
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -2968,6 +2718,10 @@ id|widget_partnum
 comma
 id|npdap-&gt;basew_id
 comma
+(paren
+r_void
+op_star
+)paren
 id|hubv
 )paren
 suffix:semicolon
@@ -3267,8 +3021,11 @@ DECL|macro|__DEVSTR3
 mdefine_line|#define __DEVSTR3 &t;&quot;/lun/0/disk/partition/&quot;
 DECL|macro|__DEVSTR4
 mdefine_line|#define&t;__DEVSTR4&t;&quot;/../ef&quot;
-macro_line|#if CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 || CONFIG_IA64_GENERIC
+macro_line|#if defined(CONFIG_IA64_SGI_SN1)
 multiline_comment|/*&n; * Currently, we need to allow for 5 IBrick slots with 1 FC each&n; * plus an internal 1394.&n; *&n; * ioconfig starts numbering SCSI&squot;s at NUM_BASE_IO_SCSI_CTLR.&n; */
+DECL|macro|NUM_BASE_IO_SCSI_CTLR
+mdefine_line|#define NUM_BASE_IO_SCSI_CTLR 6
+macro_line|#else
 DECL|macro|NUM_BASE_IO_SCSI_CTLR
 mdefine_line|#define NUM_BASE_IO_SCSI_CTLR 6
 macro_line|#endif
@@ -3337,7 +3094,6 @@ op_assign
 id|GRAPH_VERTEX_NONE
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 || CONFIG_IA64_GENERIC
 (brace
 multiline_comment|/*&n;&t; * May want to consider changing the SN0 code, above, to work more like&n;&t; * the way this works.&n;&t; */
 id|devfs_handle_t
@@ -3583,19 +3339,8 @@ id|base_ibrick_xbridge_vhdl
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-macro_line|#pragma error Bomb!
-macro_line|#endif
 )brace
 macro_line|#include &lt;asm/sn/ioerror_handling.h&gt;
-r_extern
-id|devfs_handle_t
-id|ioc3_console_vhdl_get
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|sys_critical_graph_root
 id|devfs_handle_t
 id|sys_critical_graph_root
@@ -3988,6 +3733,13 @@ id|pci_vhdl
 comma
 id|enet_vhdl
 suffix:semicolon
+id|devfs_handle_t
+id|ioc3_console_vhdl_get
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -4194,9 +3946,10 @@ c_cond
 (paren
 id|rtn_val
 )paren
-id|PRINT_WARNING
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;sn00_rrb_alloc: pcibr_alloc_all_rrbs failed&quot;
 )paren
 suffix:semicolon
@@ -4365,9 +4118,10 @@ c_cond
 (paren
 id|rtn_val
 )paren
-id|PRINT_WARNING
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;sn00_rrb_alloc: pcibr_alloc_all_rrbs failed&quot;
 )paren
 suffix:semicolon
@@ -4418,7 +4172,7 @@ l_int|0
 suffix:semicolon
 id|cnodeid
 OL
-id|maxnodes
+id|numnodes
 suffix:semicolon
 id|cnodeid
 op_increment
@@ -4588,7 +4342,7 @@ l_int|0
 suffix:semicolon
 id|cnodeid
 OL
-id|maxnodes
+id|numnodes
 suffix:semicolon
 id|cnodeid
 op_increment

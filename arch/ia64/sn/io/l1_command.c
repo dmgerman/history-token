@@ -1,14 +1,14 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 - 2001 Silicon Graphics, Inc.&n; * All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/eeprom.h&gt;
-macro_line|#include &lt;asm/sn/ksys/i2c.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
@@ -18,8 +18,6 @@ DECL|macro|ELSC_TIMEOUT
 mdefine_line|#define ELSC_TIMEOUT&t;1000000&t;&t;/* ELSC response timeout (usec) */
 DECL|macro|LOCK_TIMEOUT
 mdefine_line|#define LOCK_TIMEOUT&t;5000000&t;&t;/* Hub lock timeout (usec) */
-DECL|macro|LOCAL_HUB
-mdefine_line|#define LOCAL_HUB&t;LOCAL_HUB_ADDR
 DECL|macro|LD
 mdefine_line|#define LD(x)&t;&t;(*(volatile uint64_t *)(x))
 DECL|macro|SD
@@ -112,7 +110,7 @@ id|e
 comma
 id|nasid
 comma
-id|BRL1_LOCALUART
+id|BRL1_LOCALHUB_UART
 )paren
 suffix:semicolon
 )brace
@@ -4762,243 +4760,6 @@ id|bugfix
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* elscuart routines &n; *&n; * Most of the elscuart functionality is implemented in l1.c.  The following&n; * is directly &quot;recycled&quot; from elsc.c.&n; */
-multiline_comment|/*&n; * _elscuart_puts&n; */
-DECL|function|_elscuart_puts
-r_int
-id|_elscuart_puts
-c_func
-(paren
-id|elsc_t
-op_star
-id|e
-comma
-r_char
-op_star
-id|s
-)paren
-(brace
-r_int
-id|c
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|s
-op_eq
-l_int|0
-)paren
-id|s
-op_assign
-l_string|&quot;&lt;NULL&gt;&quot;
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|c
-op_assign
-id|LBYTE
-c_func
-(paren
-id|s
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|_elscuart_putc
-c_func
-(paren
-id|e
-comma
-id|c
-)paren
-OL
-l_int|0
-)paren
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-id|s
-op_increment
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * elscuart wrapper routines&n; *&n; *   The following routines are similar to their counterparts in l1.c,&n; *   except instead of taking an elsc_t pointer directly, they call&n; *   a global routine &quot;get_elsc&quot; to obtain the pointer.&n; *   This is useful when the elsc is employed for stdio.&n; */
-DECL|function|elscuart_probe
-r_int
-id|elscuart_probe
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|_elscuart_probe
-c_func
-(paren
-id|get_elsc
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|elscuart_init
-r_void
-id|elscuart_init
-c_func
-(paren
-r_void
-op_star
-id|init_data
-)paren
-(brace
-id|_elscuart_init
-c_func
-(paren
-id|get_elsc
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* dummy variable included for driver compatability */
-id|init_data
-op_assign
-id|init_data
-suffix:semicolon
-)brace
-DECL|function|elscuart_poll
-r_int
-id|elscuart_poll
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|_elscuart_poll
-c_func
-(paren
-id|get_elsc
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|elscuart_readc
-r_int
-id|elscuart_readc
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|_elscuart_readc
-c_func
-(paren
-id|get_elsc
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|elscuart_getc
-r_int
-id|elscuart_getc
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|_elscuart_getc
-c_func
-(paren
-id|get_elsc
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|elscuart_puts
-r_int
-id|elscuart_puts
-c_func
-(paren
-r_char
-op_star
-id|s
-)paren
-(brace
-r_return
-id|_elscuart_puts
-c_func
-(paren
-id|get_elsc
-c_func
-(paren
-)paren
-comma
-id|s
-)paren
-suffix:semicolon
-)brace
-DECL|function|elscuart_putc
-r_int
-id|elscuart_putc
-c_func
-(paren
-r_int
-id|c
-)paren
-(brace
-r_return
-id|_elscuart_putc
-c_func
-(paren
-id|get_elsc
-c_func
-(paren
-)paren
-comma
-id|c
-)paren
-suffix:semicolon
-)brace
-DECL|function|elscuart_flush
-r_int
-id|elscuart_flush
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|_elscuart_flush
-c_func
-(paren
-id|get_elsc
-c_func
-(paren
-)paren
-)paren
 suffix:semicolon
 )brace
 eof

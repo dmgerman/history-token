@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2000 Hewlett-Packard Co&n; * Copyright (C) 2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Kernel unwind support.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Kernel unwind support.&n; */
 DECL|macro|UNW_VER
 mdefine_line|#define UNW_VER(x)&t;&t;((x) &gt;&gt; 48)
 DECL|macro|UNW_FLAG_MASK
@@ -303,6 +303,52 @@ suffix:semicolon
 multiline_comment|/* when the register gets saved */
 )brace
 suffix:semicolon
+DECL|struct|unw_reg_state
+r_struct
+id|unw_reg_state
+(brace
+DECL|member|next
+r_struct
+id|unw_reg_state
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* next (outer) element on state stack */
+DECL|member|reg
+r_struct
+id|unw_reg_info
+id|reg
+(braket
+id|UNW_NUM_REGS
+)braket
+suffix:semicolon
+multiline_comment|/* register save locations */
+)brace
+suffix:semicolon
+DECL|struct|unw_labeled_state
+r_struct
+id|unw_labeled_state
+(brace
+DECL|member|next
+r_struct
+id|unw_labeled_state
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* next labeled state (or NULL) */
+DECL|member|label
+r_int
+r_int
+id|label
+suffix:semicolon
+multiline_comment|/* label for this state */
+DECL|member|saved_state
+r_struct
+id|unw_reg_state
+id|saved_state
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|unw_state_record
 r_struct
 id|unw_state_record
@@ -398,42 +444,19 @@ id|u8
 id|return_link_reg
 suffix:semicolon
 multiline_comment|/* branch register in which the return link is passed */
-DECL|struct|unw_reg_state
+DECL|member|labeled_states
 r_struct
-id|unw_reg_state
-(brace
-DECL|member|next
-r_struct
-id|unw_reg_state
+id|unw_labeled_state
 op_star
-id|next
+id|labeled_states
 suffix:semicolon
-DECL|member|label
-r_int
-r_int
-id|label
-suffix:semicolon
-multiline_comment|/* label of this state record */
-DECL|member|reg
-r_struct
-id|unw_reg_info
-id|reg
-(braket
-id|UNW_NUM_REGS
-)braket
-suffix:semicolon
+multiline_comment|/* list of all labeled states */
 DECL|member|curr
-DECL|member|stack
-DECL|member|reg_state_list
-)brace
+r_struct
+id|unw_reg_state
 id|curr
-comma
-op_star
-id|stack
-comma
-op_star
-id|reg_state_list
 suffix:semicolon
+multiline_comment|/* current state */
 )brace
 suffix:semicolon
 DECL|enum|unw_nat_type
@@ -525,7 +548,7 @@ l_int|19
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Preserved general static registers (r2-r5) give rise to two script&n; * instructions; everything else yields at most one instruction; at&n; * the end of the script, the psp gets popped, accounting for one more&n; * instruction.&n; */
+multiline_comment|/*&n; * Preserved general static registers (r4-r7) give rise to two script&n; * instructions; everything else yields at most one instruction; at&n; * the end of the script, the psp gets popped, accounting for one more&n; * instruction.&n; */
 DECL|macro|UNW_MAX_SCRIPT_LEN
 mdefine_line|#define UNW_MAX_SCRIPT_LEN&t;(UNW_NUM_REGS + 5)
 DECL|struct|unw_script

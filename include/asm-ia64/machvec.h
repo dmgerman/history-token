@@ -27,6 +27,15 @@ op_star
 op_star
 )paren
 suffix:semicolon
+DECL|typedef|ia64_mv_cpu_init_t
+r_typedef
+r_void
+id|ia64_mv_cpu_init_t
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|typedef|ia64_mv_irq_init_t
 r_typedef
 r_void
@@ -373,6 +382,14 @@ r_int
 r_int
 )paren
 suffix:semicolon
+DECL|typedef|ia64_mv_mmiob_t
+r_typedef
+r_void
+id|ia64_mv_mmiob_t
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|machvec_noop
@@ -396,6 +413,8 @@ DECL|macro|platform_name
 macro_line|#  define platform_name&t;&t;ia64_mv.name
 DECL|macro|platform_setup
 macro_line|#  define platform_setup&t;ia64_mv.setup
+DECL|macro|platform_cpu_init
+macro_line|#  define platform_cpu_init&t;ia64_mv.cpu_init
 DECL|macro|platform_irq_init
 macro_line|#  define platform_irq_init&t;ia64_mv.irq_init
 DECL|macro|platform_map_nr
@@ -452,6 +471,8 @@ DECL|macro|platform_outw
 macro_line|#  define platform_outw&t;&t;ia64_mv.outw
 DECL|macro|platform_outl
 macro_line|#  define platform_outl&t;&t;ia64_mv.outl
+DECL|macro|platofrm_mmiob
+macro_line|#  define platofrm_mmiob        ia64_mv.mmiob
 macro_line|# endif
 DECL|struct|ia64_machine_vector
 r_struct
@@ -467,6 +488,11 @@ DECL|member|setup
 id|ia64_mv_setup_t
 op_star
 id|setup
+suffix:semicolon
+DECL|member|cpu_init
+id|ia64_mv_cpu_init_t
+op_star
+id|cpu_init
 suffix:semicolon
 DECL|member|irq_init
 id|ia64_mv_irq_init_t
@@ -603,10 +629,15 @@ id|ia64_mv_outl_t
 op_star
 id|outl
 suffix:semicolon
+DECL|member|mmiob
+id|ia64_mv_mmiob_t
+op_star
+id|mmiob
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_pci_fixup,&t;&t;&t;&bslash;&n;&t;platform_map_nr,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_address,&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_pci_fixup,&t;&t;&t;&bslash;&n;&t;platform_map_nr,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_global_tlb_purge,&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_address,&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl,&t;&t;&t;&t;&bslash;&n;        platform_mmiob                          &bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -670,6 +701,10 @@ multiline_comment|/*&n; * Define default versions so we can extend machvec for n
 macro_line|#ifndef platform_setup
 DECL|macro|platform_setup
 macro_line|# define platform_setup&t;&t;((ia64_mv_setup_t *) machvec_noop)
+macro_line|#endif
+macro_line|#ifndef platform_cpu_init
+DECL|macro|platform_cpu_init
+macro_line|# define platform_cpu_init&t;((ia64_mv_cpu_init_t *) machvec_noop)
 macro_line|#endif
 macro_line|#ifndef platform_irq_init
 DECL|macro|platform_irq_init
@@ -778,6 +813,10 @@ macro_line|#endif
 macro_line|#ifndef platform_outl
 DECL|macro|platform_outl
 macro_line|# define platform_outl&t;&t;__ia64_outl
+macro_line|#endif
+macro_line|#ifndef platform_mmiob
+DECL|macro|platform_mmiob
+macro_line|# define platform_mmiob         __ia64_mmiob
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_MACHVEC_H */
 eof

@@ -1,7 +1,7 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef _ASM_SN_IOGRAPH_H
-DECL|macro|_ASM_SN_IOGRAPH_H
-mdefine_line|#define _ASM_SN_IOGRAPH_H
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+macro_line|#ifndef _ASM_IA64_SN_IOGRAPH_H
+DECL|macro|_ASM_IA64_SN_IOGRAPH_H
+mdefine_line|#define _ASM_IA64_SN_IOGRAPH_H
 multiline_comment|/*&n; * During initialization, platform-dependent kernel code establishes some&n; * basic elements of the hardware graph.  This file contains edge and&n; * info labels that are used across various platforms -- it serves as an&n; * ad-hoc registry.&n; */
 multiline_comment|/* edges names */
 DECL|macro|EDGE_LBL_BUS
@@ -100,6 +100,8 @@ DECL|macro|EDGE_LBL_GFX
 mdefine_line|#define EDGE_LBL_GFX&t;&t;&t;&quot;gfx&quot;
 DECL|macro|EDGE_LBL_HUB
 mdefine_line|#define EDGE_LBL_HUB&t;&t;&t;&quot;hub&quot;&t;&t;/* For SN0 */
+DECL|macro|EDGE_LBL_SYNERGY
+mdefine_line|#define EDGE_LBL_SYNERGY&t;&t;&quot;synergy&quot;&t;/* For SNIA only */
 DECL|macro|EDGE_LBL_IBUS
 mdefine_line|#define EDGE_LBL_IBUS&t;&t;&t;&quot;ibus&quot;&t;&t;/* For EVEREST */
 DECL|macro|EDGE_LBL_INTERCONNECT
@@ -367,5 +369,5 @@ suffix:semicolon
 multiline_comment|/* wid to int map */
 )brace
 suffix:semicolon
-macro_line|#endif /* _ASM_SN_IOGRAPH_H */
+macro_line|#endif /* _ASM_IA64_SN_IOGRAPH_H */
 eof

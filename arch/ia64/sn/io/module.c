@@ -1,7 +1,9 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/sn_sal.h&gt;
+macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
@@ -14,7 +16,7 @@ macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-multiline_comment|/* #define LDEBUG&t;1&t;*/
+multiline_comment|/* #define LDEBUG&t;1 */
 macro_line|#ifdef LDEBUG
 DECL|macro|DPRINTF
 mdefine_line|#define DPRINTF&t;&t;printk
@@ -738,6 +740,13 @@ r_int
 id|count
 )paren
 suffix:semicolon
+r_char
+id|serial_number
+(braket
+l_int|16
+)braket
+suffix:semicolon
+multiline_comment|/*&n;     * record brick serial number&n;     */
 id|board
 op_assign
 id|find_lboard
@@ -753,7 +762,100 @@ c_func
 id|nasid
 )paren
 comma
-id|KLTYPE_MIDPLANE8
+id|KLTYPE_SNIA
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|board
+op_logical_or
+id|KL_CONFIG_DUPLICATE_BOARD
+c_func
+(paren
+id|board
+)paren
+)paren
+(brace
+macro_line|#if&t;LDEBUG
+id|printf
+(paren
+l_string|&quot;module_probe_snum: no IP35 board found!&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|board_serial_number_get
+c_func
+(paren
+id|board
+comma
+id|serial_number
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|serial_number
+(braket
+l_int|0
+)braket
+op_ne
+l_char|&squot;&bslash;0&squot;
+)paren
+(brace
+id|encode_str_serial
+c_func
+(paren
+id|serial_number
+comma
+id|m-&gt;snum.snum_str
+)paren
+suffix:semicolon
+id|m-&gt;snum_valid
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#if&t;LDEBUG
+r_else
+(brace
+id|printf
+c_func
+(paren
+l_string|&quot;module_probe_snum: brick serial number is null!&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|printf
+c_func
+(paren
+l_string|&quot;module_probe_snum: brick serial number == %s&bslash;n&quot;
+comma
+id|serial_number
+)paren
+suffix:semicolon
+macro_line|#endif /* DEBUG */
+id|board
+op_assign
+id|find_lboard
+c_func
+(paren
+(paren
+id|lboard_t
+op_star
+)paren
+id|KL_CONFIG_INFO
+c_func
+(paren
+id|nasid
+)paren
+comma
+id|KLTYPE_IOBRICK_XBOW
 )paren
 suffix:semicolon
 r_if
@@ -846,12 +948,12 @@ c_func
 (paren
 id|comp-&gt;snum.snum_str
 comma
-id|m-&gt;snum.snum_str
+id|m-&gt;sys_snum
 comma
 id|MAX_SERIAL_NUM_SIZE
 )paren
 suffix:semicolon
-id|m-&gt;snum_valid
+id|m-&gt;sys_snum_valid
 op_assign
 l_int|1
 suffix:semicolon
@@ -860,7 +962,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|m-&gt;snum_valid
+id|m-&gt;sys_snum_valid
 )paren
 r_return
 l_int|1
@@ -954,7 +1056,7 @@ c_func
 id|nasid
 )paren
 comma
-id|KLTYPE_IP27
+id|KLTYPE_SNIA
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1006,9 +1108,10 @@ id|nserial
 op_eq
 l_int|0
 )paren
-id|PRINT_WARNING
+id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;io_module_init: No serial number found.&bslash;n&quot;
 )paren
 suffix:semicolon

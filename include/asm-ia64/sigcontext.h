@@ -150,12 +150,24 @@ r_int
 id|sc_loadrs
 suffix:semicolon
 multiline_comment|/* see description above */
+DECL|member|sc_ar25
+r_int
+r_int
+id|sc_ar25
+suffix:semicolon
+multiline_comment|/* rsvd for scratch use */
+DECL|member|sc_ar26
+r_int
+r_int
+id|sc_ar26
+suffix:semicolon
+multiline_comment|/* rsvd for scratch use */
 DECL|member|sc_rsvd
 r_int
 r_int
 id|sc_rsvd
 (braket
-l_int|14
+l_int|12
 )braket
 suffix:semicolon
 multiline_comment|/* reserved for future use */

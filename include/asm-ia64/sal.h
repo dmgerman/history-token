@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_SAL_H
 DECL|macro|_ASM_IA64_SAL_H
 mdefine_line|#define _ASM_IA64_SAL_H
-multiline_comment|/*&n; * System Abstraction Layer definitions.&n; *&n; * This is based on version 2.5 of the manual &quot;IA-64 System&n; * Abstraction Layer&quot;.&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) 2001 Fred Lewis &lt;frederick.v.lewis@intel.com&gt;&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999, 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Srinivasa Prasad Thirumalachar &lt;sprasad@sprasad.engr.sgi.com&gt;&n; *&n; * 01/01/03 fvlewis Updated Error Record Structures to conform with Nov. 2000&n; *                  revision of the SAL spec.&n; * 99/09/29 davidm&t;Updated for SAL 2.6.&n; * 00/03/29 cfleck      Updated SAL Error Logging info for processor (SAL 2.6) &n; *                      (plus examples of platform error info structures from smariset @ Intel)&n; */
+multiline_comment|/*&n; * System Abstraction Layer definitions.&n; *&n; * This is based on version 2.5 of the manual &quot;IA-64 System&n; * Abstraction Layer&quot;.&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) 2002 Jenna Hall &lt;jenna.s.hall@intel.com&gt;&n; * Copyright (C) 2001 Fred Lewis &lt;frederick.v.lewis@intel.com&gt;&n; * Copyright (C) 1998, 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999, 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Srinivasa Prasad Thirumalachar &lt;sprasad@sprasad.engr.sgi.com&gt;&n; *&n; * 02/01/04 J. Hall Updated Error Record Structures to conform to July 2001&n; *&t;&t;    revision of the SAL spec.&n; * 01/01/03 fvlewis Updated Error Record Structures to conform with Nov. 2000&n; *                  revision of the SAL spec.&n; * 99/09/29 davidm&t;Updated for SAL 2.6.&n; * 00/03/29 cfleck      Updated SAL Error Logging info for processor (SAL 2.6) &n; *                      (plus examples of platform error info structures from smariset @ Intel)&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/pal.h&gt;
 macro_line|#include &lt;asm/efi.h&gt;
@@ -333,6 +333,8 @@ DECL|macro|IA64_SAL_PLATFORM_FEATURE_IRQ_REDIR_HINT
 mdefine_line|#define IA64_SAL_PLATFORM_FEATURE_IRQ_REDIR_HINT&t;(1 &lt;&lt; 1)
 DECL|macro|IA64_SAL_PLATFORM_FEATURE_IPI_REDIR_HINT
 mdefine_line|#define IA64_SAL_PLATFORM_FEATURE_IPI_REDIR_HINT&t;(1 &lt;&lt; 2)
+DECL|macro|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
+mdefine_line|#define IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT&t; &t;(1 &lt;&lt; 3)
 DECL|struct|ia64_sal_desc_platform_feature
 r_typedef
 r_struct
@@ -623,6 +625,11 @@ op_assign
 l_int|2
 )brace
 suffix:semicolon
+multiline_comment|/* Encodings for mca_opt parameter sent to SAL_MC_SET_PARAMS */
+DECL|macro|SAL_MC_PARAM_RZ_ALWAYS
+mdefine_line|#define&t;SAL_MC_PARAM_RZ_ALWAYS&t;&t;0x1
+DECL|macro|SAL_MC_PARAM_BINIT_ESCALATE
+mdefine_line|#define&t;SAL_MC_PARAM_BINIT_ESCALATE&t;0x10
 multiline_comment|/*&n;** Definition of the SAL Error Log from the SAL spec&n;*/
 multiline_comment|/* SAL Error Record Section GUID Definitions */
 DECL|macro|SAL_PROC_DEV_ERR_SECT_GUID
@@ -1652,8 +1659,11 @@ id|u16
 id|device_id
 suffix:semicolon
 DECL|member|class_code
-id|u16
+id|u8
 id|class_code
+(braket
+l_int|3
+)braket
 suffix:semicolon
 DECL|member|func_num
 id|u8
@@ -1675,7 +1685,7 @@ DECL|member|reserved
 id|u8
 id|reserved
 (braket
-l_int|6
+l_int|5
 )braket
 suffix:semicolon
 DECL|member|comp_info
@@ -2665,5 +2675,10 @@ r_return
 id|isrv.status
 suffix:semicolon
 )brace
+r_extern
+r_int
+r_int
+id|sal_platform_features
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_PAL_H */
 eof
