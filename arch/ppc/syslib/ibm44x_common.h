@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/kernel/ibm44x_common.h&n; *&n; * PPC44x system library&n; *&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; * Copyright (c) 2003 Zultys Technologies&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
+multiline_comment|/*&n; * arch/ppc/kernel/ibm44x_common.h&n; *&n; * PPC44x system library&n; *&n; * Eugene Surovegin &lt;eugene.surovegin@zultys.com&gt; or &lt;ebs@ebshome.net&gt;&n; * Copyright (c) 2003, 2004 Zultys Technologies&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __PPC_SYSLIB_IBM44x_COMMON_H
 DECL|macro|__PPC_SYSLIB_IBM44x_COMMON_H
@@ -50,6 +50,26 @@ r_int
 id|uart1
 suffix:semicolon
 )brace
+suffix:semicolon
+multiline_comment|/* common 44x platform init */
+r_void
+id|ibm44x_platform_init
+c_func
+(paren
+r_void
+)paren
+id|__init
+suffix:semicolon
+multiline_comment|/* initialize decrementer and tick-related variables */
+r_void
+id|ibm44x_calibrate_decr
+c_func
+(paren
+r_int
+r_int
+id|freq
+)paren
+id|__init
 suffix:semicolon
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __PPC_SYSLIB_IBM44x_COMMON_H */

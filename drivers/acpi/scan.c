@@ -778,6 +778,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|element
+)paren
+r_return
+id|AE_BAD_PARAMETER
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|element-&gt;type
 op_eq
 id|ACPI_TYPE_PACKAGE
