@@ -277,6 +277,21 @@ id|page
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Used by swapoff to help locate where page is expected in vma.&n; */
+r_int
+r_int
+id|page_address_in_vma
+c_func
+(paren
+r_struct
+id|page
+op_star
+comma
+r_struct
+id|vm_area_struct
+op_star
+)paren
+suffix:semicolon
 macro_line|#else&t;/* !CONFIG_MMU */
 DECL|macro|anon_vma_init
 mdefine_line|#define anon_vma_init()&t;&t;do {} while (0)
