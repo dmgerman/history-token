@@ -63,9 +63,9 @@ l_int|0x10000
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* for io_db and mem_db */
-DECL|struct|resource_map_t
+DECL|struct|resource_map
 r_struct
-id|resource_map_t
+id|resource_map
 (brace
 DECL|member|base
 DECL|member|num
@@ -76,17 +76,11 @@ id|num
 suffix:semicolon
 DECL|member|next
 r_struct
-id|resource_map_t
+id|resource_map
 op_star
 id|next
 suffix:semicolon
 )brace
-suffix:semicolon
-DECL|typedef|resource_map_t
-r_typedef
-r_struct
-id|resource_map_t
-id|resource_map_t
 suffix:semicolon
 DECL|struct|socket_data
 r_struct
@@ -94,12 +88,12 @@ id|socket_data
 (brace
 DECL|member|mem_db
 r_struct
-id|resource_map_t
+id|resource_map
 id|mem_db
 suffix:semicolon
 DECL|member|io_db
 r_struct
-id|resource_map_t
+id|resource_map
 id|io_db
 suffix:semicolon
 DECL|member|rsrc_mem_probe
@@ -368,7 +362,8 @@ r_int
 id|add_interval
 c_func
 (paren
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|map
 comma
@@ -379,7 +374,8 @@ id|u_long
 id|num
 )paren
 (brace
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|p
 comma
@@ -451,7 +447,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|resource_map_t
+r_struct
+id|resource_map
 )paren
 comma
 id|GFP_KERNEL
@@ -493,7 +490,8 @@ r_int
 id|sub_interval
 c_func
 (paren
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|map
 comma
@@ -504,7 +502,8 @@ id|u_long
 id|num
 )paren
 (brace
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|p
 comma
@@ -646,7 +645,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|resource_map_t
+r_struct
+id|resource_map
 )paren
 comma
 id|GFP_KERNEL
@@ -2021,7 +2021,8 @@ id|u_long
 id|inv_probe
 c_func
 (paren
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|m
 comma
@@ -2128,7 +2129,8 @@ r_int
 id|probe_mask
 )paren
 (brace
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|m
 comma
@@ -2368,7 +2370,8 @@ r_int
 id|probe_mask
 )paren
 (brace
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|m
 comma
@@ -2540,7 +2543,8 @@ r_int
 id|offset
 suffix:semicolon
 DECL|member|map
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|map
 suffix:semicolon
@@ -2642,7 +2646,8 @@ id|data
 op_assign
 id|align_data
 suffix:semicolon
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|m
 suffix:semicolon
@@ -2781,7 +2786,8 @@ op_star
 id|s
 )paren
 (brace
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|m
 suffix:semicolon
@@ -3809,7 +3815,8 @@ id|data
 op_assign
 id|s-&gt;resource_data
 suffix:semicolon
-id|resource_map_t
+r_struct
+id|resource_map
 op_star
 id|p
 comma
