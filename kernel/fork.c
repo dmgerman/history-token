@@ -797,7 +797,6 @@ id|VM_DONTCOPY
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * FIXME: shared writable map accounting should be one off&n;&t;&t; */
 r_if
 c_cond
 (paren
