@@ -6,7 +6,7 @@ r_static
 r_int
 id|rx_copybreak
 op_assign
-l_int|0
+l_int|200
 suffix:semicolon
 multiline_comment|/* end user-configurable values */
 multiline_comment|/* Maximum number of multicast addresses to filter (vs. rx-all-multicast).&n; */
