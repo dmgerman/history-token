@@ -3618,7 +3618,7 @@ id|hint
 )paren
 (brace
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 op_assign
@@ -3827,7 +3827,7 @@ id|hint
 )paren
 (brace
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 op_assign

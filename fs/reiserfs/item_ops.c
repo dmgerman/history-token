@@ -67,7 +67,7 @@ r_int
 id|sd_is_left_mergeable
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 comma
@@ -554,7 +554,7 @@ r_int
 id|direct_is_left_mergeable
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 comma
@@ -958,7 +958,7 @@ r_int
 id|indirect_is_left_mergeable
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 comma
@@ -1599,7 +1599,7 @@ r_int
 id|direntry_is_left_mergeable
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 comma
@@ -2920,7 +2920,7 @@ r_int
 id|errcatch_is_left_mergeable
 (paren
 r_struct
-id|key
+id|reiserfs_key
 op_star
 id|key
 comma
