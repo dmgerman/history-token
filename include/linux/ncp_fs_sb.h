@@ -9,6 +9,9 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|macro|NCP_DEFAULT_OPTIONS
 mdefine_line|#define NCP_DEFAULT_OPTIONS 0&t;&t;/* 2 for packet signatures */
+r_struct
+id|sock
+suffix:semicolon
 DECL|struct|ncp_server
 r_struct
 id|ncp_server
