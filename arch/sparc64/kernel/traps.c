@@ -26,9 +26,76 @@ macro_line|#include &lt;asm/chafsr.h&gt;
 macro_line|#include &lt;asm/psrcompat.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
+DECL|variable|sparc64die_chain
+r_struct
+id|notifier_block
+op_star
+id|sparc64die_chain
+suffix:semicolon
+DECL|variable|die_notifier_lock
+r_static
+id|spinlock_t
+id|die_notifier_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|function|register_die_notifier
+r_int
+id|register_die_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|die_notifier_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|notifier_chain_register
+c_func
+(paren
+op_amp
+id|sparc64die_chain
+comma
+id|nb
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|die_notifier_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 multiline_comment|/* When an irrecoverable trap occurs at tl &gt; 0, the trap entry&n; * code logs the trap state registers at every level in the trap&n; * stack.  It is found at (pt_regs + sizeof(pt_regs)) and the layout&n; * is as follows:&n; */
 DECL|struct|tl1_traplog
 r_struct
