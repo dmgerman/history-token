@@ -510,23 +510,8 @@ id|obj
 op_eq
 l_int|NULL
 )paren
-(brace
-id|snd_printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;null kfree (called from %p)&bslash;n&quot;
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|t
 op_assign
 id|snd_alloc_track_entry
@@ -725,23 +710,8 @@ id|obj
 op_eq
 l_int|NULL
 )paren
-(brace
-id|snd_printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;null vfree (called from %p)&bslash;n&quot;
-comma
-id|__builtin_return_address
-c_func
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|t
 op_assign
 id|snd_alloc_track_entry
