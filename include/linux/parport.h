@@ -1117,6 +1117,15 @@ r_struct
 id|list_head
 id|full_list
 suffix:semicolon
+DECL|member|slaves
+r_struct
+id|parport
+op_star
+id|slaves
+(braket
+l_int|3
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|DEFAULT_SPIN_TIME
