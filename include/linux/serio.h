@@ -63,6 +63,11 @@ r_int
 r_int
 id|type
 suffix:semicolon
+DECL|member|event
+r_int
+r_int
+id|event
+suffix:semicolon
 DECL|member|write
 r_int
 (paren
