@@ -184,7 +184,7 @@ mdefine_line|#define IPS_VERSION_LOW         &quot;.00-BETA&quot;
 macro_line|#if !defined(__i386__) &amp;&amp; !defined(__ia64__)
 macro_line|#error &quot;This driver has only been tested on the x86/ia64 platforms&quot;
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt;= LinuxVersionCode(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,0)
 macro_line|#include &quot;sd.h&quot;
 DECL|macro|IPS_SG_ADDRESS
 mdefine_line|#define IPS_SG_ADDRESS(sg)       ((sg)-&gt;address)
@@ -4764,7 +4764,7 @@ multiline_comment|/*                                                            
 multiline_comment|/****************************************************************************/
 r_static
 r_int
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 DECL|function|ips_biosparam
 id|ips_biosparam
 c_func
@@ -4985,7 +4985,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                                                                          */
 multiline_comment|/* Routine Name: ips_select_queue_depth                                     */
@@ -26683,7 +26683,7 @@ id|sh-&gt;use_clustering
 op_assign
 id|sh-&gt;hostt-&gt;use_clustering
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,7)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,7)
 id|sh-&gt;max_sectors
 op_assign
 l_int|128
@@ -28228,7 +28228,7 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,9)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,9)
 id|MODULE_LICENSE
 c_func
 (paren

@@ -120,11 +120,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n;    * Some handy macros&n;    */
-macro_line|#ifndef LinuxVersionCode
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(x,y,z)  (((x)&lt;&lt;16)+((y)&lt;&lt;8)+(z))
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,20) || defined CONFIG_HIGHIO
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,20) || defined CONFIG_HIGHIO
 DECL|macro|IPS_HIGHIO
 mdefine_line|#define IPS_HIGHIO
 DECL|macro|IPS_HIGHMEM_IO
@@ -155,13 +151,13 @@ DECL|macro|IPS_USE_ENH_SGLIST
 mdefine_line|#define IPS_USE_ENH_SGLIST(ha)    ((ha)-&gt;flags &amp; IPS_HA_ENH_SG)
 DECL|macro|IPS_SGLIST_SIZE
 mdefine_line|#define IPS_SGLIST_SIZE(ha)       (IPS_USE_ENH_SGLIST(ha) ? &bslash;&n;                                         sizeof(IPS_ENH_SG_LIST) : sizeof(IPS_STD_SG_LIST))
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,4)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,4)
 DECL|macro|pci_set_dma_mask
 mdefine_line|#define pci_set_dma_mask(dev,mask) (1)
 DECL|macro|scsi_set_pci_device
 mdefine_line|#define scsi_set_pci_device(sh,dev) (0)
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 DECL|macro|scsi_register_host
 mdefine_line|#define scsi_register_host(x)    scsi_register_module(MODULE_SCSI_HA,x)
 DECL|macro|scsi_unregister_host
@@ -663,7 +659,7 @@ mdefine_line|#define IPS_DAYS_LEAP_YEAR           366
 DECL|macro|IPS_EPOCH_YEAR
 mdefine_line|#define IPS_EPOCH_YEAR               1970
 multiline_comment|/*&n;    * Scsi_Host Template&n;    */
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 r_static
 r_void
 id|ips_select_queue_depth
