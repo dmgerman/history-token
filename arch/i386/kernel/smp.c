@@ -136,6 +136,7 @@ suffix:semicolon
 )brace
 DECL|function|send_IPI_self
 r_void
+id|fastcall
 id|send_IPI_self
 c_func
 (paren

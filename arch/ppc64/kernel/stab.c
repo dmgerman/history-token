@@ -865,7 +865,7 @@ id|ea
 suffix:semicolon
 id|context
 op_assign
-id|REGION_ID
+id|KERNEL_CONTEXT
 c_func
 (paren
 id|ea
@@ -892,7 +892,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|context
+id|context.id
 comma
 id|ea
 )paren
@@ -1053,7 +1053,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|pc
 )paren
@@ -1102,7 +1102,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|stack
 )paren
@@ -1155,7 +1155,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|unmapped_base
 )paren
@@ -1771,7 +1771,7 @@ id|KERNEL_REGION_ID
 (brace
 id|context
 op_assign
-id|REGION_ID
+id|KERNEL_CONTEXT
 c_func
 (paren
 id|ea
@@ -1810,7 +1810,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|context
+id|context.id
 comma
 id|ea
 )paren
@@ -1963,7 +1963,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|pc
 )paren
@@ -2014,7 +2014,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|stack
 )paren
@@ -2069,7 +2069,7 @@ op_assign
 id|get_vsid
 c_func
 (paren
-id|mm-&gt;context
+id|mm-&gt;context.id
 comma
 id|unmapped_base
 )paren

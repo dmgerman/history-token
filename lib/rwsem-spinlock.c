@@ -79,6 +79,7 @@ macro_line|#endif
 multiline_comment|/*&n; * initialise the semaphore&n; */
 DECL|function|init_rwsem
 r_void
+id|fastcall
 id|init_rwsem
 c_func
 (paren
@@ -366,6 +367,7 @@ suffix:semicolon
 multiline_comment|/*&n; * get a read lock on the semaphore&n; */
 DECL|function|__down_read
 r_void
+id|fastcall
 id|__down_read
 c_func
 (paren
@@ -516,6 +518,7 @@ suffix:semicolon
 multiline_comment|/*&n; * trylock for reading -- returns 1 if successful, 0 if contention&n; */
 DECL|function|__down_read_trylock
 r_int
+id|fastcall
 id|__down_read_trylock
 c_func
 (paren
@@ -591,6 +594,7 @@ suffix:semicolon
 multiline_comment|/*&n; * get a write lock on the semaphore&n; * - note that we increment the waiting count anyway to indicate an exclusive lock&n; */
 DECL|function|__down_write
 r_void
+id|fastcall
 id|__down_write
 c_func
 (paren
@@ -743,6 +747,7 @@ suffix:semicolon
 multiline_comment|/*&n; * trylock for writing -- returns 1 if successful, 0 if contention&n; */
 DECL|function|__down_write_trylock
 r_int
+id|fastcall
 id|__down_write_trylock
 c_func
 (paren
@@ -820,6 +825,7 @@ suffix:semicolon
 multiline_comment|/*&n; * release a read lock on the semaphore&n; */
 DECL|function|__up_read
 r_void
+id|fastcall
 id|__up_read
 c_func
 (paren
@@ -887,6 +893,7 @@ suffix:semicolon
 multiline_comment|/*&n; * release a write lock on the semaphore&n; */
 DECL|function|__up_write
 r_void
+id|fastcall
 id|__up_write
 c_func
 (paren
@@ -955,6 +962,7 @@ suffix:semicolon
 multiline_comment|/*&n; * downgrade a write lock into a read lock&n; * - just wake up any readers at the front of the queue&n; */
 DECL|function|__downgrade_write
 r_void
+id|fastcall
 id|__downgrade_write
 c_func
 (paren

@@ -1441,6 +1441,7 @@ suffix:semicolon
 )brace
 DECL|function|put_files_struct
 r_void
+id|fastcall
 id|put_files_struct
 c_func
 (paren
@@ -3133,6 +3134,7 @@ suffix:semicolon
 )brace
 DECL|function|next_thread
 id|task_t
+id|fastcall
 op_star
 id|next_thread
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core I2O structure management &n; * &n; * (C) Copyright 1999-2002   Red Hat Software &n; *&n; * Written by Alan Cox, Building Number Three Ltd &n; * &n; * This program is free software; you can redistribute it and/or &n; * modify it under the terms of the GNU General Public License &n; * as published by the Free Software Foundation; either version &n; * 2 of the License, or (at your option) any later version.  &n; * &n; * A lot of the I2O message side code from this is taken from the &n; * Red Creek RCPCI45 adapter driver by Red Creek Communications &n; * &n; * Fixes by: &n; *&t;&t;Philipp Rumpf &n; *&t;&t;Juha Siev&#xfffd;nen &lt;Juha.Sievanen@cs.Helsinki.FI&gt; &n; *&t;&t;Auvo H&#xfffd;kkinen &lt;Auvo.Hakkinen@cs.Helsinki.FI&gt; &n; *&t;&t;Deepak Saxena &lt;deepak@plexity.net&gt; &n; *&t;&t;Boji T Kannanthanam &lt;boji.t.kannanthanam@intel.com&gt;&n; *&n; * Ported to Linux 2.5 by&n; *&t;&t;Alan Cox&t;&lt;alan@redhat.com&gt;&n; * &n; */
+multiline_comment|/*&n; * Core I2O structure management &n; * &n; * (C) Copyright 1999-2002   Red Hat Software &n; *&n; * Written by Alan Cox, Building Number Three Ltd &n; * &n; * This program is free software; you can redistribute it and/or &n; * modify it under the terms of the GNU General Public License &n; * as published by the Free Software Foundation; either version &n; * 2 of the License, or (at your option) any later version.  &n; * &n; * A lot of the I2O message side code from this is taken from the &n; * Red Creek RCPCI45 adapter driver by Red Creek Communications &n; * &n; * Fixes/additions:&n; *&t;Philipp Rumpf&n; *&t;Juha Siev&#xfffd;nen &lt;Juha.Sievanen@cs.Helsinki.FI&gt;&n; *&t;Auvo H&#xfffd;kkinen &lt;Auvo.Hakkinen@cs.Helsinki.FI&gt;&n; *&t;Deepak Saxena &lt;deepak@plexity.net&gt;&n; *&t;Boji T Kannanthanam &lt;boji.t.kannanthanam@intel.com&gt;&n; *&t;Alan Cox &lt;alan@redhat.com&gt;:&n; *&t;&t;Ported to Linux 2.5.&n; *&t;Markus Lidel &lt;Markus.Lidel@shadowconnect.com&gt;:&n; *&t;&t;Minor fixes for 2.6.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1425,6 +1425,10 @@ id|c-&gt;hrt
 op_assign
 l_int|NULL
 suffix:semicolon
+id|c-&gt;hrt_len
+op_assign
+l_int|0
+suffix:semicolon
 id|c-&gt;lct
 op_assign
 l_int|NULL
@@ -1650,7 +1654,7 @@ c_func
 (paren
 id|c-&gt;lct_pid
 comma
-id|SIGTERM
+id|SIGKILL
 comma
 l_int|1
 )paren
@@ -6427,9 +6431,16 @@ r_sizeof
 id|i2o_hrt
 )paren
 suffix:semicolon
+r_int
+id|loops
+op_assign
+l_int|3
+suffix:semicolon
+multiline_comment|/* we only try 3 times to get the HRT, this should be&n;&t;&t;&t;   more then enough. Worst case should be 2 times.*/
 multiline_comment|/* First read just the header to figure out the real size */
 r_do
 (brace
+multiline_comment|/* first we allocate the memory for the HRT */
 r_if
 c_cond
 (paren
@@ -6473,6 +6484,10 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|c-&gt;hrt_len
+op_assign
+id|size
+suffix:semicolon
 )brace
 id|msg
 (braket
@@ -6513,7 +6528,7 @@ op_assign
 (paren
 l_int|0xD0000000
 op_or
-id|size
+id|c-&gt;hrt_len
 )paren
 suffix:semicolon
 multiline_comment|/* Simple transaction */
@@ -6549,7 +6564,7 @@ id|c-&gt;hrt_phys
 comma
 l_int|0
 comma
-id|size
+id|c-&gt;hrt_len
 comma
 l_int|0
 )paren
@@ -6567,6 +6582,10 @@ multiline_comment|/* The HRT block we used is in limbo somewhere. When the iop w
 id|c-&gt;hrt
 op_assign
 l_int|NULL
+suffix:semicolon
+id|c-&gt;hrt_len
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|ret
@@ -6605,11 +6624,10 @@ id|c-&gt;hrt-&gt;entry_len
 op_lshift
 l_int|2
 OG
-id|size
+id|c-&gt;hrt_len
 )paren
 (brace
-r_int
-id|new_size
+id|size
 op_assign
 id|c-&gt;hrt-&gt;num_entries
 op_star
@@ -6622,22 +6640,25 @@ c_func
 (paren
 id|c-&gt;pdev
 comma
-id|size
+id|c-&gt;hrt_len
 comma
 id|c-&gt;hrt
 comma
 id|c-&gt;hrt_phys
 )paren
 suffix:semicolon
-id|size
+id|c-&gt;hrt_len
 op_assign
-id|new_size
+l_int|0
 suffix:semicolon
 id|c-&gt;hrt
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|loops
+op_decrement
+suffix:semicolon
 )brace
 r_while
 c_loop
@@ -6645,8 +6666,34 @@ c_loop
 id|c-&gt;hrt
 op_eq
 l_int|NULL
+op_logical_and
+id|loops
+OG
+l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;hrt
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Unable to get HRT after three tries, giving up&bslash;n&quot;
+comma
+id|c-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|i2o_parse_hrt
 c_func
 (paren
@@ -13412,11 +13459,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|dpt
-r_static
-r_int
-id|dpt
-suffix:semicolon
 multiline_comment|/**&n; *&t;i2o_pci_scan&t;-&t;Scan the pci bus for controllers&n; *&t;&n; *&t;Scan the PCI devices on the system looking for any device which is a &n; *&t;memory of the Intelligent, I2O class. We attempt to set up each such device&n; *&t;and register it with the core.&n; *&n; *&t;Returns the number of controllers registered&n; *&n; *&t;Note; Do not change this to a hot plug interface. I2O 1.5 itself&n; *&t;does not support hot plugging.&n; */
 DECL|function|i2o_pci_scan
 r_int
@@ -13482,40 +13524,6 @@ id|PCI_CLASS_INTELLIGENT_I2O
 (brace
 r_continue
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|dev-&gt;vendor
-op_eq
-id|PCI_VENDOR_ID_DPT
-op_logical_and
-op_logical_neg
-id|dpt
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|dev-&gt;device
-op_eq
-l_int|0xA501
-op_logical_or
-id|dev-&gt;device
-op_eq
-l_int|0xA511
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;i2o: Skipping Adaptec/DPT I2O raid with preferred native driver.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -13827,7 +13835,7 @@ c_func
 (paren
 id|evt_pid
 comma
-id|SIGTERM
+id|SIGKILL
 comma
 l_int|1
 )paren
@@ -13842,7 +13850,7 @@ id|stat
 id|printk
 c_func
 (paren
-l_string|&quot;waiting...&quot;
+l_string|&quot;waiting...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|wait_for_completion
@@ -13867,13 +13875,6 @@ op_amp
 id|i2o_core_handler
 )paren
 suffix:semicolon
-id|unregister_reboot_notifier
-c_func
-(paren
-op_amp
-id|i2o_reboot_notifier
-)paren
-suffix:semicolon
 )brace
 DECL|variable|i2o_core_init
 id|module_init
@@ -13887,22 +13888,6 @@ id|module_exit
 c_func
 (paren
 id|i2o_core_exit
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|dpt
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|dpt
-comma
-l_string|&quot;Set this if you want to drive DPT cards normally handled by dpt_i2o&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

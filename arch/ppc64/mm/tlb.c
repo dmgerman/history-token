@@ -135,7 +135,7 @@ id|USER_REGION_ID
 )paren
 id|context
 op_assign
-id|mm-&gt;context
+id|mm-&gt;context.id
 suffix:semicolon
 id|i
 op_assign

@@ -1881,9 +1881,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
-id|FASTCALL
-c_func
-(paren
 id|kick_process
 c_func
 (paren
@@ -1891,7 +1888,6 @@ r_struct
 id|task_struct
 op_star
 id|tsk
-)paren
 )paren
 suffix:semicolon
 macro_line|#else

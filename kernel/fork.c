@@ -237,6 +237,7 @@ suffix:semicolon
 )brace
 DECL|function|add_wait_queue
 r_void
+id|fastcall
 id|add_wait_queue
 c_func
 (paren
@@ -294,6 +295,7 @@ id|add_wait_queue
 suffix:semicolon
 DECL|function|add_wait_queue_exclusive
 r_void
+id|fastcall
 id|add_wait_queue_exclusive
 c_func
 (paren
@@ -350,6 +352,7 @@ id|add_wait_queue_exclusive
 suffix:semicolon
 DECL|function|remove_wait_queue
 r_void
+id|fastcall
 id|remove_wait_queue
 c_func
 (paren
@@ -403,6 +406,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Note: we use &quot;set_current_state()&quot; _after_ the wait-queue add,&n; * because we need a memory barrier there on SMP, so that any&n; * wake-function that tests for the wait-queue being active&n; * will be guaranteed to see waitqueue addition _or_ subsequent&n; * tests in this thread will see the wakeup having taken place.&n; *&n; * The spin_unlock() itself is semi-permeable and only protects&n; * one way (it only protects stuff inside the critical region and&n; * stops them from bleeding out - it would still allow subsequent&n; * loads to move into the the critical region).&n; */
 DECL|function|prepare_to_wait
 r_void
+id|fastcall
 id|prepare_to_wait
 c_func
 (paren
@@ -478,6 +482,7 @@ id|prepare_to_wait
 )paren
 suffix:semicolon
 r_void
+id|fastcall
 DECL|function|prepare_to_wait_exclusive
 id|prepare_to_wait_exclusive
 c_func
@@ -554,6 +559,7 @@ id|prepare_to_wait_exclusive
 suffix:semicolon
 DECL|function|finish_wait
 r_void
+id|fastcall
 id|finish_wait
 c_func
 (paren
@@ -1528,6 +1534,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Called when the last reference to the mm&n; * is dropped: either by a lazy thread or by&n; * mmput. Free the page directory and the mm.&n; */
 DECL|function|__mmdrop
 r_void
+id|fastcall
 id|__mmdrop
 c_func
 (paren
