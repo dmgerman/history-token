@@ -770,7 +770,11 @@ id|desc
 id|DESC_EXTSTS
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|extsts
+)paren
 suffix:semicolon
 id|mb
 c_func
@@ -782,7 +786,11 @@ id|desc
 id|DESC_CMDSTS
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|cmdsts
+)paren
 suffix:semicolon
 )brace
 DECL|macro|nr_rx_empty
