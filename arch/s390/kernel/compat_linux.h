@@ -509,8 +509,6 @@ suffix:semicolon
 multiline_comment|/* mask last for extensibility */
 )brace
 suffix:semicolon
-DECL|macro|SIGEV_PAD_SIZE32
-mdefine_line|#define SIGEV_PAD_SIZE32 ((SIGEV_MAX_SIZE/sizeof(int)) - 3)
 DECL|struct|sigevent32
 r_struct
 id|sigevent32
@@ -543,7 +541,7 @@ DECL|member|_pad
 r_int
 id|_pad
 (braket
-id|SIGEV_PAD_SIZE32
+id|COMPAT_SIGEV_PAD_SIZE
 )braket
 suffix:semicolon
 DECL|member|_tid

@@ -329,6 +329,8 @@ DECL|typedef|compat_sigval_t
 )brace
 id|compat_sigval_t
 suffix:semicolon
+DECL|macro|COMPAT_SIGEV_PAD_SIZE
+mdefine_line|#define COMPAT_SIGEV_PAD_SIZE&t;((SIGEV_MAX_SIZE/sizeof(int)) - 3)
 DECL|struct|compat_sigevent
 r_typedef
 r_struct
@@ -352,7 +354,7 @@ DECL|member|_pad
 id|compat_int_t
 id|_pad
 (braket
-id|SIGEV_PAD_SIZE
+id|COMPAT_SIGEV_PAD_SIZE
 )braket
 suffix:semicolon
 DECL|member|_tid

@@ -5,8 +5,6 @@ DECL|macro|SI_PAD_SIZE32
 mdefine_line|#define SI_PAD_SIZE32&t;((SI_MAX_SIZE/sizeof(int)) - 3)
 DECL|macro|SIGEV_PAD_SIZE
 mdefine_line|#define SIGEV_PAD_SIZE&t;((SIGEV_MAX_SIZE/sizeof(int)) - 4)
-DECL|macro|SIGEV_PAD_SIZE32
-mdefine_line|#define SIGEV_PAD_SIZE32 ((SIGEV_MAX_SIZE/sizeof(int)) - 3)
 DECL|macro|__ARCH_SI_PREAMBLE_SIZE
 mdefine_line|#define __ARCH_SI_PREAMBLE_SIZE&t;(4 * sizeof(int))
 DECL|macro|__ARCH_SI_TRAPNO
@@ -72,7 +70,7 @@ DECL|member|_pad
 r_int
 id|_pad
 (braket
-id|SIGEV_PAD_SIZE32
+id|COMPAT_SIGEV_PAD_SIZE
 )braket
 suffix:semicolon
 r_struct

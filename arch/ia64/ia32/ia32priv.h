@@ -762,8 +762,6 @@ DECL|typedef|sigval_t32
 )brace
 id|sigval_t32
 suffix:semicolon
-DECL|macro|SIGEV_PAD_SIZE32
-mdefine_line|#define SIGEV_PAD_SIZE32 ((SIGEV_MAX_SIZE/sizeof(int)) - 3)
 DECL|struct|compat_siginfo
 r_typedef
 r_struct
@@ -978,7 +976,7 @@ DECL|member|_pad
 r_int
 id|_pad
 (braket
-id|SIGEV_PAD_SIZE32
+id|COMPAT_SIGEV_PAD_SIZE
 )braket
 suffix:semicolon
 r_struct
