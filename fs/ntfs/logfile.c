@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &quot;logfile.h&quot;
 macro_line|#include &quot;volume.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
@@ -1550,9 +1551,10 @@ id|log_page_size
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/*&n;&t; * Use generic_ffs() instead of ffs() to enable the compiler to&n;&t; * optimize log_page_size and log_page_bits into constants.&n;&t; */
 id|log_page_bits
 op_assign
-id|ffs
+id|generic_ffs
 c_func
 (paren
 id|log_page_size
