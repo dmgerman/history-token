@@ -135,7 +135,6 @@ suffix:semicolon
 DECL|function|init_etherdev
 r_static
 r_inline
-id|__deprecated
 r_struct
 id|net_device
 op_star
