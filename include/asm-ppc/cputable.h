@@ -19,6 +19,12 @@ DECL|macro|PPC_FEATURE_HAS_4xxMAC
 mdefine_line|#define PPC_FEATURE_HAS_4xxMAC&t;&t;0x02000000
 DECL|macro|PPC_FEATURE_UNIFIED_CACHE
 mdefine_line|#define PPC_FEATURE_UNIFIED_CACHE&t;0x01000000
+DECL|macro|PPC_FEATURE_HAS_SPE
+mdefine_line|#define PPC_FEATURE_HAS_SPE&t;&t;0x00800000
+DECL|macro|PPC_FEATURE_HAS_EFP_SINGLE
+mdefine_line|#define PPC_FEATURE_HAS_EFP_SINGLE&t;0x00400000
+DECL|macro|PPC_FEATURE_HAS_EFP_DOUBLE
+mdefine_line|#define PPC_FEATURE_HAS_EFP_DOUBLE&t;0x00200000
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* This structure can grow, it&squot;s real size is used by head.S code&n; * via the mkdefs mecanism.&n; */
@@ -88,6 +94,12 @@ DECL|member|dcache_bsize
 r_int
 r_int
 id|dcache_bsize
+suffix:semicolon
+multiline_comment|/* number of performance monitor counters */
+DECL|member|num_pmcs
+r_int
+r_int
+id|num_pmcs
 suffix:semicolon
 multiline_comment|/* this is called to initialize various CPU bits like L1 cache,&n;&t; * BHT, SPD, etc... from head.S before branching to identify_machine&n;&t; */
 DECL|member|cpu_setup
