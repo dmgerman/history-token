@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/netdevice.h&gt; /* for pkt_sched */
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;net/dsfield.h&gt;
+macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#if 1 /* control */
 DECL|macro|DPRINTK
@@ -854,6 +855,9 @@ c_func
 (paren
 id|skb-&gt;nh.iph
 )paren
+op_amp
+op_complement
+id|INET_ECN_MASK
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -871,6 +875,9 @@ c_func
 (paren
 id|skb-&gt;nh.ipv6h
 )paren
+op_amp
+op_complement
+id|INET_ECN_MASK
 suffix:semicolon
 r_break
 suffix:semicolon
