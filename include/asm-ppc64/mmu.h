@@ -20,10 +20,11 @@ id|mm_context_id_t
 id|id
 suffix:semicolon
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
-DECL|member|low_hpages
-r_int
-id|low_hpages
+DECL|member|htlb_segs
+id|u16
+id|htlb_segs
 suffix:semicolon
+multiline_comment|/* bitmask */
 macro_line|#endif
 DECL|typedef|mm_context_t
 )brace
@@ -31,7 +32,7 @@ id|mm_context_t
 suffix:semicolon
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
 DECL|macro|KERNEL_LOW_HPAGES
-mdefine_line|#define KERNEL_LOW_HPAGES&t;.low_hpages = 0,
+mdefine_line|#define KERNEL_LOW_HPAGES&t;.htlb_segs = 0,
 macro_line|#else
 DECL|macro|KERNEL_LOW_HPAGES
 mdefine_line|#define KERNEL_LOW_HPAGES
