@@ -389,7 +389,7 @@ id|md5cksum.data
 suffix:semicolon
 id|token-&gt;data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|token-&gt;len
 op_assign

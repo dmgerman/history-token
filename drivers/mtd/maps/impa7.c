@@ -181,7 +181,7 @@ r_char
 op_star
 id|part_type
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|i
@@ -340,7 +340,7 @@ id|impa7_mtd
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|type
 op_assign
