@@ -223,27 +223,6 @@ r_int
 id|recv_intr_pipe
 suffix:semicolon
 multiline_comment|/* information about the device */
-DECL|member|vendor
-r_char
-id|vendor
-(braket
-id|USB_STOR_STRING_LEN
-)braket
-suffix:semicolon
-DECL|member|product
-r_char
-id|product
-(braket
-id|USB_STOR_STRING_LEN
-)braket
-suffix:semicolon
-DECL|member|serial
-r_char
-id|serial
-(braket
-id|USB_STOR_STRING_LEN
-)braket
-suffix:semicolon
 DECL|member|transport_name
 r_char
 op_star
