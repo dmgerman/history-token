@@ -5235,6 +5235,7 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
+r_return
 id|copy_from_user
 c_func
 (paren
@@ -5246,8 +5247,10 @@ id|count
 op_star
 id|K1212_FRAME_SIZE
 )paren
-suffix:semicolon
-r_return
+suffix:colon
+op_minus
+id|EFAULT
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -5330,6 +5333,7 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
+r_return
 id|copy_to_user
 c_func
 (paren
@@ -5341,8 +5345,11 @@ id|count
 op_star
 id|K1212_FRAME_SIZE
 )paren
-suffix:semicolon
-r_return
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
