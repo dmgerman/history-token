@@ -906,6 +906,11 @@ id|ch
 comma
 r_int
 id|is_break
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_if
@@ -1006,6 +1011,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|kbd_pt_regs
+op_assign
+id|regs
+suffix:semicolon
 macro_line|#ifdef CONFIG_SERIO
 id|serio_interrupt
 c_func
@@ -1281,6 +1290,8 @@ comma
 id|ch
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 r_goto
@@ -1634,6 +1645,11 @@ r_struct
 id|zilog_channel
 op_star
 id|channel
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -1697,6 +1713,8 @@ comma
 l_int|0
 comma
 l_int|1
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -2175,6 +2193,8 @@ c_func
 id|up
 comma
 id|channel
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -2285,6 +2305,8 @@ c_func
 id|up
 comma
 id|channel
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if

@@ -2,7 +2,15 @@ multiline_comment|/* suncore.h&n; *&n; * Generic SUN serial/kbd/ms layer.  Based
 macro_line|#ifndef _SERIAL_SUN_H
 DECL|macro|_SERIAL_SUN_H
 mdefine_line|#define _SERIAL_SUN_H
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* Serial keyboard defines for L1-A processing... */
+DECL|macro|SUNKBD_RESET
+mdefine_line|#define SUNKBD_RESET&t;&t;0xff
+DECL|macro|SUNKBD_L1
+mdefine_line|#define SUNKBD_L1&t;&t;0x01
+DECL|macro|SUNKBD_UP
+mdefine_line|#define SUNKBD_UP&t;&t;0x80
+DECL|macro|SUNKBD_A
+mdefine_line|#define SUNKBD_A&t;&t;0x4d
 r_extern
 r_void
 id|sun_do_break
@@ -34,6 +42,12 @@ r_char
 comma
 r_int
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|pt_regs
+op_star
+id|kbd_pt_regs
 suffix:semicolon
 r_extern
 r_int
