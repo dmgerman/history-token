@@ -735,7 +735,7 @@ r_static
 r_char
 id|string
 (braket
-l_int|100
+l_int|150
 )braket
 comma
 op_star
