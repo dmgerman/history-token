@@ -31,13 +31,6 @@ id|dispsw
 suffix:semicolon
 multiline_comment|/* low level operations */
 multiline_comment|/* Filled in by the low-level console driver */
-DECL|member|conp
-r_struct
-id|vc_data
-op_star
-id|conp
-suffix:semicolon
-multiline_comment|/* pointer to console data */
 DECL|member|fb_info
 r_struct
 id|fb_info
