@@ -585,6 +585,10 @@ macro_line|#ifdef&t;CONFIG_USB_GADGET_GOKU
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;goku_udc&quot;
 macro_line|#endif
+macro_line|#ifdef&t;CONFIG_USB_GADGET_OMAP
+DECL|macro|CHIP
+mdefine_line|#define CHIP&t;&t;&t;&quot;omap_udc&quot;
+macro_line|#endif
 macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;sa1100&quot;
@@ -2630,6 +2634,7 @@ id|fd
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3514,6 +3519,7 @@ op_star
 id|fd
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -4350,6 +4356,7 @@ id|fd
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -6720,6 +6727,7 @@ id|fd
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
