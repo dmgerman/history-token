@@ -681,20 +681,24 @@ id|pci_driver
 id|s2io_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;S2IO&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|s2io_tbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|s2io_init_nic
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|__devexit_p
 c_func
 (paren
@@ -18459,6 +18463,16 @@ id|config_param
 op_star
 id|config
 suffix:semicolon
+id|DBG_PRINT
+c_func
+(paren
+id|ERR_DBG
+comma
+l_string|&quot;Loading S2IO driver with %s&bslash;n&quot;
+comma
+id|s2io_driver_version
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -19015,6 +19029,11 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|mem_alloc_failed
 suffix:semicolon
@@ -19061,6 +19080,11 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|bar0_remap_failed
 suffix:semicolon
@@ -19106,6 +19130,11 @@ l_string|&quot;%s: S2IO: cannot remap io mem2&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_goto
 id|bar1_remap_failed
@@ -19195,7 +19224,6 @@ op_assign
 op_amp
 id|s2io_change_mtu
 suffix:semicolon
-macro_line|#ifdef SET_ETHTOOL_OPS
 id|SET_ETHTOOL_OPS
 c_func
 (paren
@@ -19205,7 +19233,6 @@ op_amp
 id|netdev_ethtool_ops
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * will use eth_mac_addr() for  dev-&gt;set_mac_address&n;&t; * mac address will be set every time dev-&gt;open() is called&n;&t; */
 macro_line|#ifdef CONFIG_S2IO_NAPI
 id|dev-&gt;poll
@@ -19320,6 +19347,11 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EAGAIN
+suffix:semicolon
 r_goto
 id|set_swap_failed
 suffix:semicolon
@@ -19357,6 +19389,11 @@ l_string|&quot;%s: S2IO: swapper settings are wrong&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EAGAIN
 suffix:semicolon
 r_goto
 id|set_swap_failed
@@ -19773,6 +19810,11 @@ comma
 l_string|&quot;Device registration failed&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|register_failed
 suffix:semicolon
@@ -19846,8 +19888,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENODEV
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * s2io_rem_nic - Free the PCI device &n; * @pdev: structure containing the PCI related information of the device.&n; * Description: This function is called by the Pci subsystem to release a &n; * PCI device and free up all resource held up by the device. This could&n; * be in response to a Hot plug event or when the driver is to be removed &n; * from memory.&n; */

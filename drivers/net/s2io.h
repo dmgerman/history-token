@@ -86,10 +86,6 @@ DECL|macro|ALIGN_SIZE
 mdefine_line|#define ALIGN_SIZE  &t;&t;&t;127
 DECL|macro|PCIX_COMMAND_REGISTER
 mdefine_line|#define&t;PCIX_COMMAND_REGISTER&t;0x62
-macro_line|#ifndef SET_ETHTOOL_OPS
-DECL|macro|SUPPORTED_10000baseT_Full
-mdefine_line|#define SUPPORTED_10000baseT_Full (1 &lt;&lt; 12)
-macro_line|#endif
 multiline_comment|/*&n; * Debug related variables.&n; */
 multiline_comment|/* different debug levels. */
 DECL|macro|ERR_DBG
@@ -2476,14 +2472,12 @@ r_int
 id|flag
 )paren
 suffix:semicolon
-macro_line|#ifdef SET_ETHTOOL_OPS
 DECL|variable|netdev_ethtool_ops
 r_static
 r_struct
 id|ethtool_ops
 id|netdev_ethtool_ops
 suffix:semicolon
-macro_line|#endif
 r_static
 r_void
 id|s2io_set_link
