@@ -2183,6 +2183,13 @@ id|err
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__ide_error
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|__ide_error
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;ide_error&t;-&t;handle an error on the IDE&n; *&t;@drive: drive the error occurred on&n; *&t;@msg: message to report&n; *&t;@stat: status bits&n; *&n; *&t;ide_error() takes action based on the error returned by the drive.&n; *&t;For normal I/O that may well include retries. We deal with&n; *&t;both new-style (taskfile) and old style command handling here.&n; *&t;In the case of taskfile command handling there is work left to&n; *&t;do&n; */
 DECL|function|ide_error
 id|ide_startstop_t
@@ -2343,6 +2350,13 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
+DECL|variable|__ide_abort
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|__ide_abort
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;ide_abort&t;-&t;abort pending IDE operatins&n; *&t;@drive: drive the error occurred on&n; *&t;@msg: message to report&n; *&n; *&t;ide_abort kills and cleans up when we are about to do a &n; *&t;host initiated reset on active commands. Longer term we&n; *&t;want handlers to have sensible abort handling themselves&n; *&n; *&t;This differs fundamentally from ide_error because in &n; *&t;this case the command is doing just fine when we&n; *&t;blow it away.&n; */
 DECL|function|ide_abort
 id|ide_startstop_t

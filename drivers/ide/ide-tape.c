@@ -18097,6 +18097,16 @@ op_assign
 id|idetape_end_request
 comma
 dot
+id|error
+op_assign
+id|__ide_error
+comma
+dot
+m_abort
+op_assign
+id|__ide_abort
+comma
+dot
 id|proc
 op_assign
 id|idetape_proc
