@@ -4736,6 +4736,25 @@ c_cond
 id|spdif
 )paren
 (brace
+multiline_comment|/* enable AC97_ALC650_GPIO_SETUP, AC97_ALC650_CLOCK for R/W */
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+id|AC97_ALC650_GPIO_STATUS
+comma
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
+id|AC97_ALC650_GPIO_STATUS
+)paren
+op_or
+l_int|0x8000
+)paren
+suffix:semicolon
 multiline_comment|/* enable spdif in */
 id|snd_ac97_write_cache
 c_func
@@ -4824,7 +4843,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x76
+id|AC97_ALC650_GPIO_SETUP
 )paren
 suffix:semicolon
 r_if
@@ -4847,7 +4866,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x76
+id|AC97_ALC650_GPIO_SETUP
 comma
 id|val
 )paren
@@ -4859,7 +4878,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x78
+id|AC97_ALC650_GPIO_STATUS
 )paren
 suffix:semicolon
 r_if
@@ -4884,7 +4903,7 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0x78
+id|AC97_ALC650_GPIO_STATUS
 comma
 id|val
 )paren
