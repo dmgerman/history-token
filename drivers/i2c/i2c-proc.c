@@ -266,8 +266,6 @@ id|adapter
 comma
 id|addr
 comma
-l_int|0
-comma
 id|this_force-&gt;kind
 )paren
 )paren
@@ -975,8 +973,6 @@ c_func
 id|adapter
 comma
 id|addr
-comma
-l_int|0
 comma
 op_minus
 l_int|1
