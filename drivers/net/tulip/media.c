@@ -2361,13 +2361,13 @@ id|MediaIsFx
 (brace
 id|new_csr6
 op_assign
-l_int|0x028600000
+l_int|0x02860000
 suffix:semicolon
 )brace
 r_else
 id|new_csr6
 op_assign
-l_int|0x038600000
+l_int|0x03860000
 suffix:semicolon
 r_if
 c_cond

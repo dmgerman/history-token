@@ -110,6 +110,10 @@ DECL|macro|SONYPI_EVENT_MEYE_FACE
 mdefine_line|#define SONYPI_EVENT_MEYE_FACE&t;&t;&t;52
 DECL|macro|SONYPI_EVENT_MEYE_OPPOSITE
 mdefine_line|#define SONYPI_EVENT_MEYE_OPPOSITE&t;&t;53
+DECL|macro|SONYPI_EVENT_MEMORYSTICK_INSERT
+mdefine_line|#define SONYPI_EVENT_MEMORYSTICK_INSERT&t;&t;54
+DECL|macro|SONYPI_EVENT_MEMORYSTICK_EJECT
+mdefine_line|#define SONYPI_EVENT_MEMORYSTICK_EJECT&t;&t;55
 multiline_comment|/* get/set brightness */
 DECL|macro|SONYPI_IOCGBRT
 mdefine_line|#define SONYPI_IOCGBRT&t;&t;_IOR(&squot;v&squot;, 0, __u8)

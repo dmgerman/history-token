@@ -75,6 +75,20 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|complete_all
+c_func
+(paren
+r_struct
+id|completion
+op_star
+)paren
+)paren
+suffix:semicolon
 DECL|macro|INIT_COMPLETION
 mdefine_line|#define INIT_COMPLETION(x)&t;((x).done = 0)
 macro_line|#endif
