@@ -15771,6 +15771,11 @@ id|ES1371_REG_STATUS
 )paren
 suffix:semicolon
 multiline_comment|/* register gameport */
+r_if
+c_cond
+(paren
+id|s-&gt;gameport.io
+)paren
 id|gameport_register_port
 c_func
 (paren
