@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/statfs.h&gt;
+macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;hostfs.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
@@ -970,6 +971,8 @@ id|file_type
 c_func
 (paren
 id|name
+comma
+l_int|NULL
 comma
 l_int|NULL
 )paren
@@ -2610,8 +2613,16 @@ id|err
 op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_int
+id|maj
 comma
+id|min
+suffix:semicolon
+id|dev_t
 id|rdev
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2649,7 +2660,21 @@ c_func
 id|name
 comma
 op_amp
+id|maj
+comma
+op_amp
+id|min
+)paren
+suffix:semicolon
+multiline_comment|/*Reencode maj and min with the kernel encoding.*/
 id|rdev
+op_assign
+id|MKDEV
+c_func
+(paren
+id|maj
+comma
+id|min
 )paren
 suffix:semicolon
 id|kfree
