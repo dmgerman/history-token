@@ -1369,9 +1369,7 @@ id|drive
 )paren
 )paren
 r_return
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
@@ -1716,7 +1714,8 @@ c_func
 id|__ide_dma_off_quietly
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;__ide_dma_host_off&t;-&t;Generic DMA kill&n; *&t;@drive: drive to control&n; *&n; *&t;Turn off the current DMA on this IDE controller. Inform the&n; *&t;user that DMA has been disabled. &n; */
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
+multiline_comment|/**&n; *&t;__ide_dma_off&t;-&t;disable DMA on a device&n; *&t;@drive: drive to disable DMA on&n; *&n; *&t;Disable IDE DMA for a device on this IDE controller.&n; *&t;Inform the user that DMA has been disabled.&n; */
 DECL|function|__ide_dma_off
 r_int
 id|__ide_dma_off
@@ -1756,6 +1755,7 @@ c_func
 id|__ide_dma_off
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 multiline_comment|/**&n; *&t;__ide_dma_host_on&t;-&t;Enable DMA on a host&n; *&t;@drive: drive to enable for DMA&n; *&n; *&t;Enable DMA on an IDE controller following generic bus mastering&n; *&t;IDE controller behaviour&n; */
 DECL|function|__ide_dma_host_on
 r_int
@@ -4127,17 +4127,6 @@ id|hwif-&gt;dma_base
 op_plus
 l_int|4
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwif-&gt;ide_dma_off
-)paren
-id|hwif-&gt;ide_dma_off
-op_assign
-op_amp
-id|__ide_dma_off
 suffix:semicolon
 r_if
 c_cond

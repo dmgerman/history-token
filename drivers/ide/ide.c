@@ -3011,10 +3011,6 @@ id|hwif-&gt;ide_dma_on
 op_assign
 id|old_hwif.ide_dma_on
 suffix:semicolon
-id|hwif-&gt;ide_dma_off
-op_assign
-id|old_hwif.ide_dma_off
-suffix:semicolon
 id|hwif-&gt;ide_dma_off_quietly
 op_assign
 id|old_hwif.ide_dma_off_quietly
@@ -4808,13 +4804,7 @@ r_else
 r_if
 c_cond
 (paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive

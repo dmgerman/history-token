@@ -9152,11 +9152,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|hwif-&gt;ide_dma_off
-op_assign
-op_amp
-id|__ide_dma_off
-suffix:semicolon
 id|hwif-&gt;ide_dma_off_quietly
 op_assign
 op_amp
