@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * core module and version information&n; */
 DECL|macro|RNG_VERSION
-mdefine_line|#define RNG_VERSION &quot;0.9.7&quot;
+mdefine_line|#define RNG_VERSION &quot;0.9.8&quot;
 DECL|macro|RNG_MODULE_NAME
 mdefine_line|#define RNG_MODULE_NAME &quot;i810_rng&quot;
 DECL|macro|RNG_DRIVER_NAME
@@ -958,6 +958,17 @@ comma
 l_int|0x8086
 comma
 l_int|0x244e
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+l_int|0x8086
+comma
+l_int|0x245e
 comma
 id|PCI_ANY_ID
 comma
