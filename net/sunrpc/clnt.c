@@ -2492,6 +2492,12 @@ l_int|0
 r_return
 suffix:semicolon
 multiline_comment|/* Encode here so that rpcsec_gss can use correct sequence number. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|task-&gt;tk_rqstp-&gt;rq_bytes_sent
+)paren
 id|call_encode
 c_func
 (paren

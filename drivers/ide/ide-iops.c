@@ -4169,6 +4169,7 @@ c_func
 id|hwif-&gt;irq
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; *&t;FIXME: we race against the running IRQ here if&n;&t; *&t;this is called from non IRQ context. If we use&n;&t; *&t;disable_irq() we hang on the error path. Work&n;&t; *&t;is needed.&n;&t; */
 id|udelay
 c_func
 (paren

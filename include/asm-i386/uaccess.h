@@ -706,7 +706,7 @@ r_int
 id|count
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * strlen_user: - Get the size of a string in user space.&n; * @str: The string to measure.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Get the size of a NULL-terminated string in user space.&n; *&n; * Returns the size of the string INCLUDING the terminating NULL.&n; * On exception, returns 0.&n; *&n; * If there is a limit on the length of a valid string, you may wish to&n; * consider using strnlen_user() instead.&n; */
+multiline_comment|/**&n; * strlen_user: - Get the size of a string in user space.&n; * @str: The string to measure.&n; *&n; * Context: User context only.  This function may sleep.&n; *&n; * Get the size of a NUL-terminated string in user space.&n; *&n; * Returns the size of the string INCLUDING the terminating NUL.&n; * On exception, returns 0.&n; *&n; * If there is a limit on the length of a valid string, you may wish to&n; * consider using strnlen_user() instead.&n; */
 DECL|macro|strlen_user
 mdefine_line|#define strlen_user(str) strnlen_user(str, ~0UL &gt;&gt; 1)
 r_int

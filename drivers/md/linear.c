@@ -51,10 +51,10 @@ id|sector
 op_rshift
 l_int|1
 suffix:semicolon
-id|hash
-op_assign
-id|conf-&gt;hash_table
-op_plus
+multiline_comment|/*&n;&t; * sector_div(a,b) returns the remainer and sets a to a/b&n;&t; */
+(paren
+r_void
+)paren
 id|sector_div
 c_func
 (paren
@@ -62,6 +62,12 @@ id|block
 comma
 id|conf-&gt;smallest-&gt;size
 )paren
+suffix:semicolon
+id|hash
+op_assign
+id|conf-&gt;hash_table
+op_plus
+id|block
 suffix:semicolon
 r_if
 c_cond
@@ -206,8 +212,6 @@ r_struct
 id|list_head
 op_star
 id|tmp
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|conf
 op_assign
@@ -557,8 +561,6 @@ c_func
 id|conf
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -594,8 +596,6 @@ c_func
 (paren
 id|conf
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -657,8 +657,9 @@ id|tmp_dev
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;linear_make_request : hash-&gt;dev1==NULL for block %llu&bslash;n&quot;
+l_string|&quot;linear_make_request: hash-&gt;dev1==NULL for block %llu&bslash;n&quot;
 comma
 (paren
 r_int
@@ -707,6 +708,7 @@ id|BDEVNAME_SIZE
 )braket
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;linear_make_request: Block %llu out of bounds on &quot;
 l_string|&quot;dev %s size %ld offset %ld&bslash;n&quot;
@@ -907,6 +909,11 @@ dot
 id|name
 op_assign
 l_string|&quot;linear&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|make_request

@@ -2555,6 +2555,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;raid5: unsupported algorithm %d&bslash;n&quot;
 comma
@@ -2717,6 +2718,7 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;raid5: unsupported algorithm %d&bslash;n&quot;
 comma
@@ -3199,7 +3201,8 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;compute_block() %d, stripe %llu, %d not present&bslash;n&quot;
+l_string|&quot;compute_block() %d, stripe %llu, %d&quot;
+l_string|&quot; not present&bslash;n&quot;
 comma
 id|dd_idx
 comma
@@ -4587,7 +4590,8 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;locked=%d uptodate=%d to_read=%d to_write=%d failed=%d failed_num=%d&bslash;n&quot;
+l_string|&quot;locked=%d uptodate=%d to_read=%d&quot;
+l_string|&quot; to_write=%d failed=%d failed_num=%d&bslash;n&quot;
 comma
 id|locked
 comma
@@ -7632,8 +7636,6 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7659,8 +7661,6 @@ id|mddev
 comma
 id|mddev-&gt;level
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -7865,7 +7865,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;raid5: device %s operational as raid disk %d&bslash;n&quot;
+l_string|&quot;raid5: device %s operational as raid&quot;
+l_string|&quot; disk %d&bslash;n&quot;
 comma
 id|bdev_partition_name
 c_func
@@ -7983,7 +7984,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid5: not enough operational devices for md%d (%d/%d failed)&bslash;n&quot;
+l_string|&quot;raid5: not enough operational devices for md%d&quot;
+l_string|&quot; (%d/%d failed)&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -8158,7 +8160,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;raid5: raid level %d set md%d active with %d out of %d devices, algorithm %d&bslash;n&quot;
+l_string|&quot;raid5: raid level %d set md%d active with %d out of %d&quot;
+l_string|&quot; devices, algorithm %d&bslash;n&quot;
 comma
 id|conf-&gt;level
 comma
@@ -8182,7 +8185,8 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;raid5: raid level %d set md%d active with %d out of %d devices, algorithm %d&bslash;n&quot;
+l_string|&quot;raid5: raid level %d set md%d active with %d&quot;
+l_string|&quot; out of %d devices, algorithm %d&bslash;n&quot;
 comma
 id|conf-&gt;level
 comma
@@ -8270,8 +8274,6 @@ id|mddev
 )paren
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -8338,8 +8340,6 @@ op_member_access_from_pointer
 r_private
 op_assign
 l_int|NULL
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -9084,6 +9084,11 @@ dot
 id|name
 op_assign
 l_string|&quot;raid5&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|make_request
