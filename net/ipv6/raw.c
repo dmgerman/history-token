@@ -3813,6 +3813,8 @@ id|val
 op_assign
 id|opt-&gt;offset
 suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 r_return

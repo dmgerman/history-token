@@ -120,53 +120,47 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Host name set by us? */
-DECL|variable|__initdata
+DECL|variable|ic_myaddr
 id|u32
 id|ic_myaddr
-id|__initdata
 op_assign
 id|INADDR_NONE
 suffix:semicolon
 multiline_comment|/* My IP address */
-DECL|variable|__initdata
+DECL|variable|ic_netmask
 id|u32
 id|ic_netmask
-id|__initdata
 op_assign
 id|INADDR_NONE
 suffix:semicolon
 multiline_comment|/* Netmask for local subnet */
-DECL|variable|__initdata
+DECL|variable|ic_gateway
 id|u32
 id|ic_gateway
-id|__initdata
 op_assign
 id|INADDR_NONE
 suffix:semicolon
 multiline_comment|/* Gateway IP address */
-DECL|variable|__initdata
+DECL|variable|ic_servaddr
 id|u32
 id|ic_servaddr
-id|__initdata
 op_assign
 id|INADDR_NONE
 suffix:semicolon
 multiline_comment|/* Boot server IP address */
-DECL|variable|__initdata
+DECL|variable|root_server_addr
 id|u32
 id|root_server_addr
-id|__initdata
 op_assign
 id|INADDR_NONE
 suffix:semicolon
 multiline_comment|/* Address of NFS server */
-DECL|variable|__initdata
+DECL|variable|root_server_path
 id|u8
 id|root_server_path
 (braket
 l_int|256
 )braket
-id|__initdata
 op_assign
 (brace
 l_int|0
