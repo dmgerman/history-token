@@ -143,6 +143,13 @@ r_int
 id|ifnum
 suffix:semicolon
 multiline_comment|/* Interface number */
+DECL|member|intf
+r_struct
+id|usb_interface
+op_star
+id|intf
+suffix:semicolon
+multiline_comment|/* The interface */
 multiline_comment|/* Alternate-setting numbers and endpoints for each protocol&n;&t; * (7/1/{index=1,2,3}) that the device supports: */
 r_struct
 (brace
@@ -2418,6 +2425,11 @@ id|file-&gt;f_flags
 op_amp
 id|O_NONBLOCK
 )paren
+(brace
+id|writecount
+op_add_assign
+id|transfer_length
+suffix:semicolon
 r_return
 id|writecount
 ques
@@ -2427,6 +2439,7 @@ suffix:colon
 op_minus
 id|EAGAIN
 suffix:semicolon
+)brace
 id|timeout
 op_assign
 id|USBLP_WRITE_TIMEOUT
@@ -3383,7 +3396,11 @@ id|usblp-&gt;wait
 suffix:semicolon
 id|usblp-&gt;ifnum
 op_assign
-id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
+id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceNumber
+suffix:semicolon
+id|usblp-&gt;intf
+op_assign
+id|intf
 suffix:semicolon
 id|usblp-&gt;writeurb
 op_assign
@@ -3856,10 +3873,7 @@ id|e
 suffix:semicolon
 id|if_alt
 op_assign
-id|usblp-&gt;dev-&gt;actconfig-&gt;interface
-(braket
-id|usblp-&gt;ifnum
-)braket
+id|usblp-&gt;intf
 suffix:semicolon
 r_for
 c_loop
@@ -4074,7 +4088,7 @@ id|ifd-&gt;desc.bInterfaceProtocol
 dot
 id|alt_setting
 op_assign
-id|i
+id|ifd-&gt;desc.bAlternateSetting
 suffix:semicolon
 id|usblp-&gt;protocol
 (braket

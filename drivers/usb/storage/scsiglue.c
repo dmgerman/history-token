@@ -30,6 +30,7 @@ DECL|function|slave_configure
 r_static
 r_int
 id|slave_configure
+c_func
 (paren
 r_struct
 id|scsi_device
@@ -37,6 +38,21 @@ op_star
 id|sdev
 )paren
 (brace
+r_struct
+id|us_data
+op_star
+id|us
+op_assign
+(paren
+r_struct
+id|us_data
+op_star
+)paren
+id|sdev-&gt;host-&gt;hostdata
+(braket
+l_int|0
+)braket
+suffix:semicolon
 multiline_comment|/* Scatter-gather buffers (all but the last) must have a length&n;&t; * divisible by the bulk maxpacket size.  Otherwise a data packet&n;&t; * would end up being short, causing a premature end to the data&n;&t; * transfer.  Since high-speed bulk pipes have a maxpacket size&n;&t; * of 512, we&squot;ll use that as the scsi device queue&squot;s DMA alignment&n;&t; * mask.  Guaranteeing proper alignment of the first buffer will&n;&t; * have the desired effect because, except at the beginning and&n;&t; * the end, scatter-gather buffers follow page boundaries. */
 id|blk_queue_dma_alignment
 c_func
@@ -48,6 +64,29 @@ l_int|512
 op_minus
 l_int|1
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* Devices using Genesys Logic chips cause a lot of trouble for&n;&t; * high-speed transfers; they die unpredictably when given more&n;&t; * than 64 KB of data at a time.  If we detect such a device,&n;&t; * reduce the maximum transfer size to 64 KB = 128 sectors. */
+DECL|macro|USB_VENDOR_ID_GENESYS
+mdefine_line|#define USB_VENDOR_ID_GENESYS&t;0x05e3&t;&t;
+singleline_comment|// Needs a standard location
+r_if
+c_cond
+(paren
+id|us-&gt;pusb_dev-&gt;descriptor.idVendor
+op_eq
+id|USB_VENDOR_ID_GENESYS
+op_logical_and
+id|us-&gt;pusb_dev-&gt;speed
+op_eq
+id|USB_SPEED_HIGH
+)paren
+id|blk_queue_max_sectors
+c_func
+(paren
+id|sdev-&gt;request_queue
+comma
+l_int|128
 )paren
 suffix:semicolon
 multiline_comment|/* this is to satisify the compiler, tho I don&squot;t think the &n;&t; * return code is ever checked anywhere. */

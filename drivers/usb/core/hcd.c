@@ -3583,7 +3583,7 @@ id|urb-&gt;urb_list
 id|retval
 op_assign
 op_minus
-id|EINVAL
+id|EIDRM
 suffix:semicolon
 r_goto
 id|done
@@ -3858,6 +3858,9 @@ r_if
 c_cond
 (paren
 id|retval
+op_ne
+op_minus
+id|EIDRM
 op_logical_and
 id|sys
 op_logical_and

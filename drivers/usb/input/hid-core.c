@@ -7071,9 +7071,7 @@ id|usb_host_interface
 op_star
 id|interface
 op_assign
-id|intf-&gt;altsetting
-op_plus
-id|intf-&gt;act_altsetting
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 r_struct
 id|usb_device

@@ -2187,11 +2187,7 @@ suffix:semicolon
 multiline_comment|/* get the active interface descriptor */
 id|iface_desc
 op_assign
-op_amp
-id|interface-&gt;altsetting
-(braket
-id|interface-&gt;act_altsetting
-)braket
+id|interface-&gt;cur_altsetting
 suffix:semicolon
 multiline_comment|/* check out that we have a HID device */
 r_if
