@@ -2325,7 +2325,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     * If the device is currently configured and active, we won&squot;t&n;     * actually delete it yet.&t;Instead, it is marked so that when&n;     * the release() function is called, that will trigger a proper&n;     * detach().&n;     */
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp

@@ -1269,7 +1269,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -5922,7 +5922,7 @@ suffix:semicolon
 id|link-&gt;open
 op_decrement
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
