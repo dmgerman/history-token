@@ -439,11 +439,6 @@ DECL|member|b_wait
 id|wait_queue_head_t
 id|b_wait
 suffix:semicolon
-DECL|member|b_inode
-r_int
-id|b_inode
-suffix:semicolon
-multiline_comment|/* will go away */
 DECL|member|b_inode_buffers
 r_struct
 id|list_head
