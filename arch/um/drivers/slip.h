@@ -36,6 +36,7 @@ DECL|member|slave
 r_int
 id|slave
 suffix:semicolon
+multiline_comment|/* two bytes each for a (pathological) max packet of escaped chars + &n;&t; * terminating END char + inital END char&n;&t; */
 DECL|member|buf
 r_char
 id|buf
@@ -43,6 +44,8 @@ id|buf
 l_int|2
 op_star
 id|BUF_SIZE
+op_plus
+l_int|2
 )braket
 suffix:semicolon
 DECL|member|pos

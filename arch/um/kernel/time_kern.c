@@ -12,6 +12,7 @@ macro_line|#include &quot;asm/param.h&quot;
 macro_line|#include &quot;asm/current.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;user_util.h&quot;
+macro_line|#include &quot;time_user.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
