@@ -1619,6 +1619,24 @@ DECL|macro|QETH_BROADCAST_WITH_ECHO
 mdefine_line|#define QETH_BROADCAST_WITH_ECHO    1
 DECL|macro|QETH_BROADCAST_WITHOUT_ECHO
 mdefine_line|#define QETH_BROADCAST_WITHOUT_ECHO 2
+DECL|struct|qeth_card_blkt
+r_struct
+id|qeth_card_blkt
+(brace
+DECL|member|time_total
+r_int
+id|time_total
+suffix:semicolon
+DECL|member|inter_packet
+r_int
+id|inter_packet
+suffix:semicolon
+DECL|member|inter_packet_jumbo
+r_int
+id|inter_packet_jumbo
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|qeth_card_info
 r_struct
 id|qeth_card_info
@@ -1703,6 +1721,11 @@ suffix:semicolon
 DECL|member|unique_id
 r_int
 id|unique_id
+suffix:semicolon
+DECL|member|blkt
+r_struct
+id|qeth_card_blkt
+id|blkt
 suffix:semicolon
 DECL|member|csum_mask
 id|__u32
