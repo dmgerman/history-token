@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: eicon_pci.c,v 1.15.6.3 2001/09/23 22:24:37 kai Exp $&n; *&n; * ISDN low-level module for Eicon active ISDN-Cards.&n; * Hardware-specific code for PCI cards.&n; *&n; * Copyright 1998-2000 by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to&t;Eicon Networks for &n; *&t;&t;documents, informations and hardware. &n; *&n; */
+multiline_comment|/* $Id: eicon_pci.c,v 1.1.4.1.2.3 2002/10/01 11:29:13 armin Exp $&n; *&n; * ISDN low-level module for Eicon active ISDN-Cards.&n; * Hardware-specific code for PCI cards.&n; *&n; * Copyright 1998-2000 by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Thanks to&t;Eicon Networks for &n; *&t;&t;documents, informations and hardware. &n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;eicon.h&quot;
@@ -12,7 +12,7 @@ r_char
 op_star
 id|eicon_pci_revision
 op_assign
-l_string|&quot;$Revision: 1.15.6.3 $&quot;
+l_string|&quot;$Revision: 1.1.4.1.2.3 $&quot;
 suffix:semicolon
 macro_line|#if CONFIG_PCI&t;         /* intire stuff is only for PCI */
 macro_line|#ifdef CONFIG_ISDN_DRV_EICON_PCI
