@@ -7853,7 +7853,7 @@ id|skb
 )paren
 )paren
 r_goto
-id|discard_it
+id|discard_and_relse
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
