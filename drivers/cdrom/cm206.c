@@ -5657,6 +5657,11 @@ op_assign
 op_amp
 id|cm206_bdops
 comma
+dot
+id|flags
+op_assign
+id|GENHD_FL_CD
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* This function probes for the adapter card. It returns the base&n;   address if it has found the adapter card. One can specify a base &n;   port to probe specifically, or 0 which means span all possible&n;   bases. &n;&n;   Linus says it is too dangerous to use writes for probing, so we&n;   stick with pure reads for a while. Hope that 8 possible ranges,&n;   check_region, 15 bits of one port and 6 of another make things&n;   likely enough to accept the region on the first hit...&n; */
@@ -6272,15 +6277,6 @@ r_goto
 id|out_cdrom
 suffix:semicolon
 )brace
-id|devfs_plain_cdrom
-c_func
-(paren
-op_amp
-id|cm206_info
-comma
-id|disk-&gt;fops
-)paren
-suffix:semicolon
 id|add_gendisk
 c_func
 (paren

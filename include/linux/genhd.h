@@ -217,6 +217,8 @@ DECL|macro|GENHD_FL_DRIVERFS
 mdefine_line|#define GENHD_FL_DRIVERFS  2
 DECL|macro|GENHD_FL_DEVFS
 mdefine_line|#define GENHD_FL_DEVFS&t;4
+DECL|macro|GENHD_FL_CD
+mdefine_line|#define GENHD_FL_CD&t;8
 DECL|struct|gendisk
 r_struct
 id|gendisk

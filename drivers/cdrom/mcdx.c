@@ -5045,6 +5045,10 @@ op_assign
 op_amp
 id|mcdx_bdops
 suffix:semicolon
+id|disk-&gt;flags
+op_assign
+id|GENHD_FL_CD
+suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -5159,15 +5163,6 @@ r_return
 l_int|2
 suffix:semicolon
 )brace
-id|devfs_plain_cdrom
-c_func
-(paren
-op_amp
-id|stuffp-&gt;info
-comma
-id|disk-&gt;fops
-)paren
-suffix:semicolon
 id|add_gendisk
 c_func
 (paren

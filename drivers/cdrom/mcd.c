@@ -663,6 +663,11 @@ op_assign
 op_amp
 id|mcd_bdops
 comma
+dot
+id|flags
+op_assign
+id|GENHD_FL_CD
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifndef MODULE
@@ -4783,15 +4788,6 @@ r_goto
 id|out_cdrom
 suffix:semicolon
 )brace
-id|devfs_plain_cdrom
-c_func
-(paren
-op_amp
-id|mcd_info
-comma
-id|disk-&gt;fops
-)paren
-suffix:semicolon
 id|add_gendisk
 c_func
 (paren

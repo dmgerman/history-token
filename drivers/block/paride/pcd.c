@@ -4786,15 +4786,6 @@ op_amp
 id|cd-&gt;info
 )paren
 suffix:semicolon
-id|devfs_plain_cdrom
-c_func
-(paren
-op_amp
-id|cd-&gt;info
-comma
-id|disk-&gt;fops
-)paren
-suffix:semicolon
 id|add_gendisk
 c_func
 (paren

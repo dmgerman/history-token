@@ -12061,6 +12061,11 @@ op_assign
 op_amp
 id|scd_bdops
 comma
+dot
+id|flags
+op_assign
+id|GENHD_FL_CD
+comma
 )brace
 multiline_comment|/* The different types of disc loading mechanisms supported */
 r_static
@@ -13053,15 +13058,6 @@ id|scd_info
 )paren
 r_goto
 id|errout0
-suffix:semicolon
-id|devfs_plain_cdrom
-c_func
-(paren
-op_amp
-id|scd_info
-comma
-id|disk-&gt;fops
-)paren
 suffix:semicolon
 id|add_gendisk
 c_func
