@@ -155,6 +155,7 @@ multiline_comment|/* Type of a signal handler.  */
 DECL|typedef|__sighandler_t
 r_typedef
 r_void
+id|__user
 (paren
 op_star
 id|__sighandler_t
@@ -170,6 +171,7 @@ id|sigaltstack
 (brace
 DECL|member|ss_sp
 r_void
+id|__user
 op_star
 id|ss_sp
 suffix:semicolon

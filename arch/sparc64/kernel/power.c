@@ -547,11 +547,7 @@ id|SA_SHIRQ
 comma
 l_string|&quot;power&quot;
 comma
-(paren
-r_void
-op_star
-)paren
-id|power_reg
+l_int|NULL
 )paren
 OL
 l_int|0

@@ -158,6 +158,7 @@ id|layout_size
 suffix:semicolon
 DECL|member|regs
 r_void
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
