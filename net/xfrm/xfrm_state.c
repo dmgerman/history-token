@@ -975,7 +975,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* All xfrm_state objects are created by one of two possible&n;&t;&t; * paths:&n;&t;&t; *&n;&t;&t; * 2) xfrm_state_lookup --&gt; xfrm_state_insert&n;&t;&t; *&n;&t;&t; * The xfrm_state_lookup or xfrm_state_alloc call gives a&n;&t;&t; * reference, and that is what we are dropping here.&n;&t;&t; */
+multiline_comment|/* All xfrm_state objects are created by xfrm_state_alloc.&n;&t;&t; * The xfrm_state_alloc call gives a reference, and that&n;&t;&t; * is what we are dropping here.&n;&t;&t; */
 id|atomic_dec
 c_func
 (paren
