@@ -473,7 +473,7 @@ op_star
 id|task
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PERFMON)
+macro_line|#ifdef CONFIG_PERFMON
 id|DECLARE_PER_CPU
 c_func
 (paren
@@ -489,7 +489,7 @@ DECL|macro|PERFMON_IS_SYSWIDE
 macro_line|# define PERFMON_IS_SYSWIDE() (0)
 macro_line|#endif
 DECL|macro|__switch_to
-mdefine_line|#define __switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((prev)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(prev)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((next)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(next)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(last) = ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define __switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((prev)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(prev)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((next)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(next)) || PERFMON_IS_SYSWIDE())&t;&t;&bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(last) = ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Return true if this CPU can call the console drivers in printk() */
 DECL|macro|arch_consoles_callable
