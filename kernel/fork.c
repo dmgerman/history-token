@@ -315,6 +315,7 @@ l_int|2
 suffix:semicolon
 )brace
 DECL|function|dup_task_struct
+r_static
 r_struct
 id|task_struct
 op_star
