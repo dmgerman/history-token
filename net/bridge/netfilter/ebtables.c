@@ -835,11 +835,9 @@ suffix:semicolon
 singleline_comment|// base for chain jumps
 id|base
 op_assign
-(paren
-r_char
-op_star
-)paren
-id|chaininfo
+r_private
+op_member_access_from_pointer
+id|entries
 suffix:semicolon
 id|i
 op_assign
