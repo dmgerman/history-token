@@ -3,6 +3,7 @@ multiline_comment|/*&n; * This file contains the routines setting up the linux p
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
@@ -685,7 +686,7 @@ c_cond
 (paren
 id|mem_init_done
 )paren
-id|vfree
+id|vunmap
 c_func
 (paren
 (paren
@@ -759,7 +760,7 @@ id|addr
 OL
 id|ioremap_bot
 )paren
-id|vfree
+id|vunmap
 c_func
 (paren
 (paren
