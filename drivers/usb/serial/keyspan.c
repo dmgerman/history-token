@@ -1583,11 +1583,11 @@ c_cond
 (paren
 id|port-&gt;open_count
 )paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|port-&gt;tqueue
+id|port-&gt;work
 )paren
 suffix:semicolon
 )brace

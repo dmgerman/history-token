@@ -1635,7 +1635,7 @@ l_int|20
 suffix:semicolon
 DECL|member|int_task_event
 r_struct
-id|tq_struct
+id|work_struct
 id|int_task_event
 suffix:semicolon
 DECL|member|queue

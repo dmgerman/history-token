@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -235,7 +235,7 @@ l_int|4
 suffix:semicolon
 DECL|member|remove
 r_struct
-id|tq_struct
+id|work_struct
 id|remove
 suffix:semicolon
 DECL|typedef|serial_info_t
@@ -486,7 +486,7 @@ id|link-&gt;state
 op_amp
 id|DEV_CONFIG
 )paren
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -576,7 +576,7 @@ id|link-&gt;priv
 op_assign
 id|info
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -843,7 +843,7 @@ l_int|NULL
 r_return
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure any outstanding scheduled tasks are completed.&n;&t; */
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren

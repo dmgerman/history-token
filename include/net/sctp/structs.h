@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/in6.h&gt;          /* We get struct in6_addr     *
 macro_line|#include &lt;asm/param.h&gt;&t;&t;/* We get MAXHOSTNAMELEN.     */
 macro_line|#include &lt;asm/atomic.h&gt;&t;&t;/* This gets us atomic counters.  */
 macro_line|#include &lt;linux/skbuff.h&gt;&t;/* We need sk_buff_head. */
-macro_line|#include &lt;linux/tqueue.h&gt;&t;/* We need tq_struct.    */
+macro_line|#include &lt;linux/workqueue.h&gt;&t;/* We need tq_struct.    */
 macro_line|#include &lt;linux/sctp.h&gt;         /* We need sctp* header structs.  */
 multiline_comment|/*&n; * This is (almost) a direct quote from RFC 2553.&n; */
 multiline_comment|/*&n; * Desired design of maximum size and alignment&n; */
@@ -1684,7 +1684,7 @@ suffix:semicolon
 multiline_comment|/* This is the delayed task to finish delivering inbound&n;&t; * messages.&n;&t; */
 DECL|member|immediate
 r_struct
-id|tq_struct
+id|work_struct
 id|immediate
 suffix:semicolon
 DECL|member|malloced

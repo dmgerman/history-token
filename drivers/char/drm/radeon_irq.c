@@ -79,11 +79,11 @@ id|dev_priv-&gt;irq_received
 )paren
 suffix:semicolon
 macro_line|#ifdef __linux__
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|dev-&gt;tq
+id|dev-&gt;work
 )paren
 suffix:semicolon
 macro_line|#endif /* __linux__ */

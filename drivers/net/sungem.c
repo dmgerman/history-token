@@ -21,7 +21,7 @@ macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2354,7 +2354,7 @@ id|gp-&gt;reset_task_pending
 op_assign
 l_int|2
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -3560,7 +3560,7 @@ id|gp-&gt;reset_task_pending
 op_assign
 l_int|2
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -4291,7 +4291,7 @@ id|gp-&gt;reset_task_pending
 op_assign
 l_int|1
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -4305,7 +4305,7 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren
@@ -6214,7 +6214,7 @@ id|gp-&gt;reset_task_pending
 op_assign
 l_int|2
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -10685,7 +10685,7 @@ op_star
 )paren
 id|data
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -10734,7 +10734,7 @@ op_amp
 id|gp-&gt;pm_timer
 )paren
 suffix:semicolon
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren
@@ -11182,7 +11182,7 @@ op_amp
 id|gp-&gt;pm_timer
 )paren
 suffix:semicolon
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren
@@ -13521,7 +13521,7 @@ r_int
 )paren
 id|gp
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -13532,7 +13532,7 @@ comma
 id|gp
 )paren
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -13951,7 +13951,7 @@ op_amp
 id|gp-&gt;pm_timer
 )paren
 suffix:semicolon
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren
@@ -14063,7 +14063,7 @@ op_amp
 id|gp-&gt;pm_timer
 )paren
 suffix:semicolon
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren

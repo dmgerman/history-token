@@ -510,20 +510,11 @@ id|dev-&gt;dma_flag
 )paren
 suffix:semicolon
 multiline_comment|/* Dispatch new buffer */
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|dev-&gt;tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace

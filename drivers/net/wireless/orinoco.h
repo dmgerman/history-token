@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;hermes.h&quot;
 multiline_comment|/* To enable debug messages */
 singleline_comment|//#define ORINOCO_DEBUG&t;&t;3
@@ -79,7 +79,7 @@ id|hw_unavailable
 suffix:semicolon
 DECL|member|timeout_task
 r_struct
-id|tq_struct
+id|work_struct
 id|timeout_task
 suffix:semicolon
 DECL|member|open

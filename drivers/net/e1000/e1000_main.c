@@ -2173,7 +2173,7 @@ r_int
 )paren
 id|adapter
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -6263,7 +6263,7 @@ op_assign
 id|netdev-&gt;priv
 suffix:semicolon
 multiline_comment|/* Do the reset outside of interrupt context */
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -1143,12 +1143,6 @@ id|batch_head
 comma
 id|batch_tail
 suffix:semicolon
-DECL|variable|batch_tqueue
-r_static
-r_struct
-id|tq_struct
-id|batch_tqueue
-suffix:semicolon
 r_static
 r_void
 id|batch_entropy_process
@@ -1157,6 +1151,17 @@ c_func
 r_void
 op_star
 id|private_
+)paren
+suffix:semicolon
+r_static
+id|DECLARE_WORK
+c_func
+(paren
+id|batch_work
+comma
+id|batch_entropy_process
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* note: the size must be a power of 2 */
@@ -1246,11 +1251,7 @@ id|batch_max
 op_assign
 id|size
 suffix:semicolon
-id|batch_tqueue.routine
-op_assign
-id|batch_entropy_process
-suffix:semicolon
-id|batch_tqueue.data
+id|batch_work.data
 op_assign
 id|r
 suffix:semicolon
@@ -1336,12 +1337,14 @@ op_ne
 id|batch_tail
 )paren
 (brace
-singleline_comment|// FIXME: is this correct?
-id|schedule_task
+multiline_comment|/*&n;&t;&t; * Schedule it for the next timer tick:&n;&t;&t; */
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|batch_tqueue
+id|batch_work
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|batch_head
@@ -8933,7 +8936,7 @@ id|random_state
 suffix:semicolon
 id|random_state
 op_assign
-id|batch_tqueue.data
+id|batch_work.data
 op_assign
 id|new_store
 suffix:semicolon

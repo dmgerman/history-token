@@ -160,13 +160,6 @@ DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (0)
 DECL|macro|JIFFIES_DIFF
 mdefine_line|#define&t;JIFFIES_DIFF(n, j)&t;((j) - (n))
-r_static
-id|DECLARE_TASK_QUEUE
-c_func
-(paren
-id|tq_cyclades
-)paren
-suffix:semicolon
 DECL|variable|cy_serial_driver
 DECL|variable|cy_callout_driver
 r_static
@@ -1155,45 +1148,16 @@ op_lshift
 id|event
 suffix:semicolon
 multiline_comment|/* remember what kind of event and who */
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
 id|info-&gt;tqueue
-comma
-op_amp
-id|tq_cyclades
 )paren
 suffix:semicolon
-multiline_comment|/* it belongs to */
-id|mark_bh
-c_func
-(paren
-id|CYCLADES_BH
-)paren
-suffix:semicolon
-multiline_comment|/* then trigger event */
 )brace
 multiline_comment|/* cy_sched_event */
-multiline_comment|/*&n; * This routine is used to handle the &quot;bottom half&quot; processing for the&n; * serial driver, known also the &quot;software interrupt&quot; processing.&n; * This processing is done at the kernel interrupt level, after the&n; * cy#/_interrupt() has returned, BUT WITH INTERRUPTS TURNED ON.  This&n; * is where time-consuming activities which can not be done in the&n; * interrupt driver proper are done; the interrupt driver schedules&n; * them using cy_sched_event(), and they get done here.&n; *&n; * This is done through one level of indirection--the task queue.&n; * When a hardware interrupt service routine wants service by the&n; * driver&squot;s bottom half, it enqueues the appropriate tq_struct (one&n; * per port) to the tq_cyclades work queue and sets a request flag&n; * via mark_bh for processing that queue.  When the time is right,&n; * do_cyclades_bh is called (because of the mark_bh) and it requests&n; * that the work queue be processed.&n; *&n; * Although this may seem unwieldy, it gives the system a way to&n; * pass an argument (in this case the pointer to the cyclades_port&n; * structure) to the bottom half of the driver.  Previous kernels&n; * had to poll every port to see if that port needed servicing.&n; */
-r_static
-r_void
-DECL|function|do_cyclades_bh
-id|do_cyclades_bh
-c_func
-(paren
-r_void
-)paren
-(brace
-id|run_task_queue
-c_func
-(paren
-op_amp
-id|tq_cyclades
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* do_cyclades_bh */
+multiline_comment|/*&n; * This routine is used to handle the &quot;bottom half&quot; processing for the&n; * serial driver, known also the &quot;software interrupt&quot; processing.&n; * This processing is done at the kernel interrupt level, after the&n; * cy#/_interrupt() has returned, BUT WITH INTERRUPTS TURNED ON.  This&n; * is where time-consuming activities which can not be done in the&n; * interrupt driver proper are done; the interrupt driver schedules&n; * them using cy_sched_event(), and they get done here.&n; *&n; * This is done through one level of indirection--the task queue.&n; * When a hardware interrupt service routine wants service by the&n; * driver&squot;s bottom half, it enqueues the appropriate tq_struct (one&n; * per port) to the keventd work queue and sets a request flag&n; * that the work queue be processed.&n; *&n; * Although this may seem unwieldy, it gives the system a way to&n; * pass an argument (in this case the pointer to the cyclades_port&n; * structure) to the bottom half of the driver.  Previous kernels&n; * had to poll every port to see if that port needed servicing.&n; */
 r_static
 r_void
 DECL|function|do_softint
@@ -2802,14 +2766,13 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
-id|queue_task
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|tty-&gt;flip.tqueue
+id|tty-&gt;flip.work
 comma
-op_amp
-id|tq_timer
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -4946,14 +4909,13 @@ id|info-&gt;idle_stats.recv_idle
 op_assign
 id|jiffies
 suffix:semicolon
-id|queue_task
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|tty-&gt;flip.tqueue
+id|tty-&gt;flip.work
 comma
-op_amp
-id|tq_timer
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -5978,14 +5940,13 @@ c_cond
 id|special_count
 )paren
 (brace
-id|queue_task
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|tty-&gt;flip.tqueue
+id|tty-&gt;flip.work
 comma
-op_amp
-id|tq_timer
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -24431,14 +24392,6 @@ suffix:semicolon
 r_int
 id|nports
 suffix:semicolon
-id|init_bh
-c_func
-(paren
-id|CYCLADES_BH
-comma
-id|do_cyclades_bh
-)paren
-suffix:semicolon
 id|show_version
 c_func
 (paren
@@ -25094,13 +25047,16 @@ id|info-&gt;default_timeout
 op_assign
 l_int|0
 suffix:semicolon
-id|info-&gt;tqueue.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|info-&gt;tqueue
+comma
 id|do_softint
-suffix:semicolon
-id|info-&gt;tqueue.data
-op_assign
+comma
 id|info
+)paren
 suffix:semicolon
 id|info-&gt;callout_termios
 op_assign
@@ -25478,13 +25434,16 @@ id|info-&gt;default_timeout
 op_assign
 l_int|0
 suffix:semicolon
-id|info-&gt;tqueue.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|info-&gt;tqueue
+comma
 id|do_softint
-suffix:semicolon
-id|info-&gt;tqueue.data
-op_assign
+comma
 id|info
+)paren
 suffix:semicolon
 id|info-&gt;callout_termios
 op_assign
@@ -25633,12 +25592,6 @@ suffix:semicolon
 id|cli
 c_func
 (paren
-)paren
-suffix:semicolon
-id|remove_bh
-c_func
-(paren
-id|CYCLADES_BH
 )paren
 suffix:semicolon
 r_if

@@ -915,7 +915,7 @@ op_amp
 id|tt-&gt;clear_list
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 (paren
 op_amp
 id|tt-&gt;kevent
@@ -1376,7 +1376,7 @@ op_amp
 id|hub-&gt;tt.clear_list
 )paren
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 (paren
 op_amp
 id|hub-&gt;tt.kevent
@@ -1880,7 +1880,7 @@ c_cond
 (paren
 id|hub-&gt;tt.hub
 )paren
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 (paren
 )paren
 suffix:semicolon

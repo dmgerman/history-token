@@ -149,7 +149,7 @@ suffix:semicolon
 DECL|macro|my_iounmap
 mdefine_line|#define my_iounmap(x, b)             (((long)x&lt;0x100000)?0:vfree ((void*)x))
 DECL|macro|tty_flip_buffer_push
-mdefine_line|#define tty_flip_buffer_push(tty)    queue_task(&amp;tty-&gt;flip.tqueue, &amp;tq_timer)
+mdefine_line|#define tty_flip_buffer_push(tty)    schedule_delayed_work(&amp;tty-&gt;flip.work, 1)
 DECL|macro|signal_pending
 mdefine_line|#define signal_pending(current)      (current-&gt;signal &amp; ~current-&gt;blocked)
 DECL|macro|schedule_timeout

@@ -74,7 +74,7 @@ suffix:semicolon
 multiline_comment|/* Current queued command       */
 DECL|member|imm_tq
 r_struct
-id|tq_struct
+id|work_struct
 id|imm_tq
 suffix:semicolon
 multiline_comment|/* Polling interrupt stuff       */
@@ -117,7 +117,7 @@ DECL|typedef|imm_struct
 id|imm_struct
 suffix:semicolon
 DECL|macro|IMM_EMPTY
-mdefine_line|#define IMM_EMPTY &bslash;&n;{&t;dev:&t;&t;NULL,&t;&t;&bslash;&n;&t;base:&t;&t;-1,&t;&t;&bslash;&n;&t;base_hi:&t;0,&t;&t;&bslash;&n;&t;mode:&t;&t;IMM_AUTODETECT,&t;&bslash;&n;&t;host:&t;&t;-1,&t;&t;&bslash;&n;&t;cur_cmd:&t;NULL,&t;&t;&bslash;&n;&t;imm_tq:&t;&t;{ routine: imm_interrupt },    &bslash;&n;&t;jstart:&t;&t;0,&t;&t;&bslash;&n;&t;failed:&t;&t;0,&t;&t;&bslash;&n;&t;dp:&t;&t;0,&t;&t;&bslash;&n;&t;rd:&t;&t;0,&t;&t;&bslash;&n;&t;p_busy:&t;&t;0&t;&t;&bslash;&n;}
+mdefine_line|#define IMM_EMPTY &bslash;&n;{&t;dev:&t;&t;NULL,&t;&t;&bslash;&n;&t;base:&t;&t;-1,&t;&t;&bslash;&n;&t;base_hi:&t;0,&t;&t;&bslash;&n;&t;mode:&t;&t;IMM_AUTODETECT,&t;&bslash;&n;&t;host:&t;&t;-1,&t;&t;&bslash;&n;&t;cur_cmd:&t;NULL,&t;&t;&bslash;&n;&t;jstart:&t;&t;0,&t;&t;&bslash;&n;&t;failed:&t;&t;0,&t;&t;&bslash;&n;&t;dp:&t;&t;0,&t;&t;&bslash;&n;&t;rd:&t;&t;0,&t;&t;&bslash;&n;&t;p_busy:&t;&t;0&t;&t;&bslash;&n;}
 macro_line|#include &quot;imm.h&quot;
 DECL|macro|NO_HOSTS
 mdefine_line|#define NO_HOSTS 4
@@ -3713,26 +3713,28 @@ id|cmd
 )paren
 )paren
 (brace
-id|tmp-&gt;imm_tq.data
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|tmp
-suffix:semicolon
-id|tmp-&gt;imm_tq.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|queue_task
+id|INIT_WORK
 c_func
 (paren
 op_amp
 id|tmp-&gt;imm_tq
 comma
+id|imm_interrupt
+comma
+(paren
+r_void
+op_star
+)paren
+id|tmp
+)paren
+suffix:semicolon
+id|schedule_delayed_work
+c_func
+(paren
 op_amp
-id|tq_timer
+id|tmp-&gt;imm_tq
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -4676,27 +4678,7 @@ c_func
 id|host_no
 )paren
 suffix:semicolon
-id|imm_hosts
-(braket
-id|host_no
-)braket
-dot
-id|imm_tq.data
-op_assign
-id|imm_hosts
-op_plus
-id|host_no
-suffix:semicolon
-id|imm_hosts
-(braket
-id|host_no
-)braket
-dot
-id|imm_tq.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|queue_task
+id|INIT_WORK
 c_func
 (paren
 op_amp
@@ -4707,14 +4689,23 @@ id|host_no
 dot
 id|imm_tq
 comma
-op_amp
-id|tq_immediate
+id|imm_interrupt
+comma
+id|imm_hosts
+op_plus
+id|host_no
 )paren
 suffix:semicolon
-id|mark_bh
+id|schedule_work
 c_func
 (paren
-id|IMMEDIATE_BH
+op_amp
+id|imm_hosts
+(braket
+id|host_no
+)braket
+dot
+id|imm_tq
 )paren
 suffix:semicolon
 r_return

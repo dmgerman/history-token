@@ -1058,7 +1058,7 @@ id|pm_sem
 suffix:semicolon
 DECL|member|pm_task
 r_struct
-id|tq_struct
+id|work_struct
 id|pm_task
 suffix:semicolon
 DECL|member|pm_timer
@@ -1174,7 +1174,7 @@ id|wake_on_lan
 suffix:semicolon
 DECL|member|reset_task
 r_struct
-id|tq_struct
+id|work_struct
 id|reset_task
 suffix:semicolon
 DECL|member|reset_task_pending

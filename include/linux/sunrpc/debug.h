@@ -4,7 +4,7 @@ DECL|macro|_LINUX_SUNRPC_DEBUG_H_
 mdefine_line|#define _LINUX_SUNRPC_DEBUG_H_
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 multiline_comment|/*&n; * Enable RPC debugging/profiling.&n; */
 macro_line|#ifdef CONFIG_SYSCTL
 DECL|macro|RPC_DEBUG

@@ -3911,7 +3911,7 @@ multiline_comment|/* Logical unit queues */
 multiline_comment|/* bottom half run queue */
 DECL|member|run_qla_bh
 r_struct
-id|tq_struct
+id|work_struct
 id|run_qla_bh
 suffix:semicolon
 multiline_comment|/* Received ISP mailbox data. */

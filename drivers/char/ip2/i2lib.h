@@ -16,6 +16,7 @@ macro_line|#include &quot;ip2types.h&quot;
 macro_line|#include &quot;i2ellis.h&quot;
 macro_line|#include &quot;i2pack.h&quot;
 macro_line|#include &quot;i2cmd.h&quot;
+macro_line|#include &lt;linux/workqueue.h&gt;
 singleline_comment|//------------------------------------------------------------------------------
 singleline_comment|// i2ChanStr -- Channel Structure:
 singleline_comment|// Used to track per-channel information for the library routines using standard
@@ -425,17 +426,17 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Task queues for processing input packets from the board.&n;&t; */
 DECL|member|tqueue_input
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue_input
 suffix:semicolon
 DECL|member|tqueue_status
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue_status
 suffix:semicolon
 DECL|member|tqueue_hangup
 r_struct
-id|tq_struct
+id|work_struct
 id|tqueue_hangup
 suffix:semicolon
 DECL|member|Ibuf_spinlock

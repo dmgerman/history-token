@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#if defined(CONFIG_ARCH_S390)
@@ -1668,7 +1669,7 @@ id|__initcall_end
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure there is no pending stuff from the initcall sequence */
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren
@@ -1706,7 +1707,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|start_context_thread
+id|init_workqueues
 c_func
 (paren
 )paren

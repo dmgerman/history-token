@@ -200,12 +200,12 @@ DECL|member|write_wait
 id|wait_queue_head_t
 id|write_wait
 suffix:semicolon
-DECL|member|tqueue
+DECL|member|work
 r_struct
-id|tq_struct
-id|tqueue
+id|work_struct
+id|work
 suffix:semicolon
-multiline_comment|/* task queue for line discipline waking up */
+multiline_comment|/* work queue entry for line discipline waking up */
 DECL|member|int_packet_pos
 r_int
 r_int
@@ -3757,11 +3757,11 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* wake up our little function to let the tty layer know that something happened */
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|bluetooth-&gt;tqueue
+id|bluetooth-&gt;work
 )paren
 suffix:semicolon
 )brace
@@ -4255,13 +4255,16 @@ id|bluetooth-&gt;minor
 op_assign
 id|minor
 suffix:semicolon
-id|bluetooth-&gt;tqueue.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|bluetooth-&gt;work
+comma
 id|bluetooth_softint
-suffix:semicolon
-id|bluetooth-&gt;tqueue.data
-op_assign
+comma
 id|bluetooth
+)paren
 suffix:semicolon
 id|init_MUTEX
 c_func

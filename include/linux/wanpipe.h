@@ -725,7 +725,7 @@ macro_line|#ifdef&t;__KERNEL__
 multiline_comment|/****** Kernel Interface ****************************************************/
 macro_line|#include &lt;linux/sdladrv.h&gt;&t;/* SDLA support module API definitions */
 macro_line|#include &lt;linux/sdlasfm.h&gt;&t;/* SDLA firmware module definitions */
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#ifdef LINUX_2_4
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
@@ -977,10 +977,10 @@ r_char
 op_star
 id|tty_rx
 suffix:semicolon
-DECL|member|tty_task_queue
+DECL|member|tty_work
 r_struct
-id|tq_struct
-id|tty_task_queue
+id|work_struct
+id|tty_work
 suffix:semicolon
 r_union
 (brace
@@ -1104,10 +1104,10 @@ id|u16
 id|num_of_ch
 suffix:semicolon
 multiline_comment|/* Number of channels configured by the user */
-DECL|member|x25_poll_task
+DECL|member|x25_poll_work
 r_struct
-id|tq_struct
-id|x25_poll_task
+id|work_struct
+id|x25_poll_work
 suffix:semicolon
 DECL|member|x25_timer
 r_struct
@@ -1800,10 +1800,10 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|wanpipe_queue_tq
+id|wanpipe_queue_work
 (paren
 r_struct
-id|tq_struct
+id|work_struct
 op_star
 )paren
 suffix:semicolon

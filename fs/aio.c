@@ -19,8 +19,8 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#if DEBUG &gt; 1
@@ -62,6 +62,13 @@ id|kmem_cache_t
 op_star
 id|kioctx_cachep
 suffix:semicolon
+DECL|variable|aio_wq
+r_static
+r_struct
+id|workqueue_struct
+op_star
+id|aio_wq
+suffix:semicolon
 multiline_comment|/* Used for rare fput completion. */
 r_static
 r_void
@@ -72,19 +79,16 @@ r_void
 op_star
 )paren
 suffix:semicolon
-DECL|variable|fput_tqueue
 r_static
-r_struct
-id|tq_struct
-id|fput_tqueue
-op_assign
-(brace
-dot
-id|routine
-op_assign
+id|DECLARE_WORK
+c_func
+(paren
+id|fput_work
+comma
 id|aio_fput_routine
 comma
-)brace
+l_int|NULL
+)paren
 suffix:semicolon
 DECL|variable|fput_lock
 r_static
@@ -177,6 +181,14 @@ id|panic
 c_func
 (paren
 l_string|&quot;unable to create kioctx cache&quot;
+)paren
+suffix:semicolon
+id|aio_wq
+op_assign
+id|create_workqueue
+c_func
+(paren
+l_string|&quot;aio&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -800,10 +812,9 @@ id|km_type
 id|km
 )paren
 (brace
-r_void
-op_star
-id|p
-op_assign
+id|kunmap_atomic
+c_func
+(paren
 (paren
 r_void
 op_star
@@ -817,11 +828,6 @@ id|event
 op_amp
 id|PAGE_MASK
 )paren
-suffix:semicolon
-id|kunmap_atomic
-c_func
-(paren
-id|p
 comma
 id|km
 )paren
@@ -2077,7 +2083,7 @@ id|req-&gt;ki_cancel
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Must be done under the lock to serialise against cancellation.&n;&t; * Call this aio_fput as it duplicates fput via the fput_tqueue.&n;&t; */
+multiline_comment|/* Must be done under the lock to serialise against cancellation.&n;&t; * Call this aio_fput as it duplicates fput via the fput_work.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2123,11 +2129,13 @@ op_amp
 id|fput_lock
 )paren
 suffix:semicolon
-id|schedule_task
+id|queue_work
 c_func
 (paren
+id|aio_wq
+comma
 op_amp
-id|fput_tqueue
+id|fput_work
 )paren
 suffix:semicolon
 )brace

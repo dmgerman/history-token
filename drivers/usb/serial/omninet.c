@@ -1273,11 +1273,11 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|port-&gt;tqueue
+id|port-&gt;work
 )paren
 suffix:semicolon
 singleline_comment|//&t;dbg(&quot;omninet_write_bulk_callback, tty %0x&bslash;n&quot;, tty);

@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -396,10 +396,10 @@ DECL|member|rx_ptr
 r_int
 id|rx_ptr
 suffix:semicolon
-DECL|member|rx_task
+DECL|member|rx_work
 r_struct
-id|tq_struct
-id|rx_task
+id|work_struct
+id|rx_work
 suffix:semicolon
 DECL|member|rx_head
 DECL|member|rx_tail
@@ -2622,13 +2622,16 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|priv-&gt;rx_task.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|priv-&gt;rx_work
+comma
 id|rx_bh
-suffix:semicolon
-id|priv-&gt;rx_task.data
-op_assign
+comma
 id|priv
+)paren
 suffix:semicolon
 id|dev-&gt;priv
 op_assign
@@ -5156,21 +5159,11 @@ suffix:semicolon
 id|priv-&gt;rx_count
 op_increment
 suffix:semicolon
-multiline_comment|/* Mark bottom half handler */
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
-id|priv-&gt;rx_task
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
+id|priv-&gt;rx_work
 )paren
 suffix:semicolon
 )brace

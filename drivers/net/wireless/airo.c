@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -3275,7 +3275,7 @@ id|task
 suffix:semicolon
 DECL|member|promisc_task
 r_struct
-id|tq_struct
+id|work_struct
 id|promisc_task
 suffix:semicolon
 r_struct
@@ -3292,7 +3292,7 @@ id|fid
 suffix:semicolon
 DECL|member|task
 r_struct
-id|tq_struct
+id|work_struct
 id|task
 suffix:semicolon
 DECL|member|xmit
@@ -3323,7 +3323,7 @@ suffix:semicolon
 multiline_comment|/* Time started to scan */
 DECL|member|event_task
 r_struct
-id|tq_struct
+id|work_struct
 id|event_task
 suffix:semicolon
 macro_line|#ifdef WIRELESS_SPY
@@ -3365,7 +3365,7 @@ id|micstats
 suffix:semicolon
 DECL|member|mic_task
 r_struct
-id|tq_struct
+id|work_struct
 id|mic_task
 suffix:semicolon
 )brace
@@ -5252,7 +5252,7 @@ op_star
 )paren
 id|dev
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -5598,7 +5598,7 @@ op_star
 )paren
 id|dev
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -6098,7 +6098,7 @@ op_star
 )paren
 id|ai
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -6206,7 +6206,7 @@ op_star
 )paren
 id|ai
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -6498,7 +6498,7 @@ id|ai
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|flush_scheduled_tasks
+id|flush_scheduled_work
 c_func
 (paren
 )paren
@@ -7866,7 +7866,7 @@ op_star
 )paren
 id|dev
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -7980,7 +7980,7 @@ op_star
 )paren
 id|ai
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp

@@ -60,7 +60,7 @@ suffix:semicolon
 multiline_comment|/* Current queued command       */
 DECL|member|ppa_tq
 r_struct
-id|tq_struct
+id|work_struct
 id|ppa_tq
 suffix:semicolon
 multiline_comment|/* Polling interrupt stuff       */
@@ -3564,14 +3564,13 @@ id|tmp-&gt;ppa_tq.sync
 op_assign
 l_int|0
 suffix:semicolon
-id|queue_task
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
 id|tmp-&gt;ppa_tq
 comma
-op_amp
-id|tq_timer
+l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -4417,7 +4416,7 @@ id|ppa_tq.sync
 op_assign
 l_int|0
 suffix:semicolon
-id|queue_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -4427,15 +4426,6 @@ id|host_no
 )braket
 dot
 id|ppa_tq
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 r_return

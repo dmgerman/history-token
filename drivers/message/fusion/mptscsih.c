@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/blk.h&gt;&t;&t;/* for io_request_lock (spinlock) d
 macro_line|#include &lt;linux/delay.h&gt;&t;/* for mdelay */
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* needed for in_interrupt() proto */
 macro_line|#include &lt;linux/reboot.h&gt;&t;/* notifier code */
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
 macro_line|#include &quot;../../scsi/sd.h&quot;
@@ -948,7 +949,7 @@ suffix:semicolon
 DECL|variable|mptscsih_ptaskfoo
 r_static
 r_struct
-id|tq_struct
+id|work_struct
 id|mptscsih_ptaskfoo
 suffix:semicolon
 DECL|variable|mpt_taskQdepth
@@ -983,7 +984,7 @@ suffix:semicolon
 DECL|variable|mptscsih_dvTask
 r_static
 r_struct
-id|tq_struct
+id|work_struct
 id|mptscsih_dvTask
 suffix:semicolon
 macro_line|#endif
@@ -7228,21 +7229,20 @@ comma
 id|lflags
 )paren
 suffix:semicolon
-id|mptscsih_dvTask.sync
-op_assign
-l_int|0
-suffix:semicolon
-id|mptscsih_dvTask.routine
-op_assign
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|mptscsih_dvTask
+comma
 id|mptscsih_domainValidation
-suffix:semicolon
-id|mptscsih_dvTask.data
-op_assign
+comma
 (paren
 r_void
 op_star
 )paren
 id|hd
+)paren
 suffix:semicolon
 id|SCHEDULE_TASK
 c_func
@@ -10602,7 +10602,7 @@ op_star
 id|mf
 suffix:semicolon
 r_struct
-id|tq_struct
+id|work_struct
 op_star
 id|ptaskfoo
 suffix:semicolon
@@ -11043,7 +11043,7 @@ id|ptaskfoo
 op_assign
 (paren
 r_struct
-id|tq_struct
+id|work_struct
 op_star
 )paren
 op_amp
@@ -11109,7 +11109,7 @@ op_star
 id|mf
 suffix:semicolon
 r_struct
-id|tq_struct
+id|work_struct
 op_star
 id|ptaskfoo
 suffix:semicolon
@@ -11535,7 +11535,7 @@ id|ptaskfoo
 op_assign
 (paren
 r_struct
-id|tq_struct
+id|work_struct
 op_star
 )paren
 op_amp
