@@ -646,12 +646,6 @@ r_int
 id|line
 suffix:semicolon
 multiline_comment|/* Minor number */
-DECL|member|normal_termios
-r_struct
-id|termios
-id|normal_termios
-suffix:semicolon
-multiline_comment|/* Terminal settings */
 DECL|member|open_wait
 id|wait_queue_head_t
 id|open_wait

@@ -6329,20 +6329,6 @@ comma
 id|CMD_RTSFL_DSAB
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_SPLIT_TERMIOS
-)paren
-(brace
-op_star
-id|tty-&gt;termios
-op_assign
-id|pCh-&gt;NormalTermios
-suffix:semicolon
-)brace
 multiline_comment|/* Now we must send the termios settings to the loadware */
 id|set_params
 c_func
@@ -6504,19 +6490,6 @@ op_or_assign
 id|ASYNC_CLOSING
 suffix:semicolon
 singleline_comment|// last close actually
-multiline_comment|/*&n;&t; * Save the termios structure, since this port may have separate termios&n;&t; * for callout and dialin.&n;&t; */
-r_if
-c_cond
-(paren
-id|pCh-&gt;flags
-op_amp
-id|ASYNC_NORMAL_ACTIVE
-)paren
-id|pCh-&gt;NormalTermios
-op_assign
-op_star
-id|tty-&gt;termios
-suffix:semicolon
 id|tty-&gt;closing
 op_assign
 l_int|1

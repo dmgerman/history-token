@@ -879,12 +879,6 @@ id|timer_list
 id|read_timer
 suffix:semicolon
 multiline_comment|/* read incoming data             */
-DECL|member|normal_termios
-r_struct
-id|termios
-id|normal_termios
-suffix:semicolon
-multiline_comment|/* For saving termios structs     */
 DECL|member|open_wait
 DECL|member|close_wait
 id|wait_queue_head_t

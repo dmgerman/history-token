@@ -1368,11 +1368,6 @@ r_int
 r_int
 id|rflush_count
 suffix:semicolon
-DECL|member|normal_termios
-r_struct
-id|termios
-id|normal_termios
-suffix:semicolon
 DECL|member|mon
 r_struct
 id|cyclades_monitor

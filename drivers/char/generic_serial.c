@@ -2586,19 +2586,6 @@ id|port-&gt;flags
 op_or_assign
 id|ASYNC_CLOSING
 suffix:semicolon
-multiline_comment|/*&n;&t; * Save the termios structure, since this port may have&n;&t; * separate termios for callout and dialin.&n;&t; */
-r_if
-c_cond
-(paren
-id|port-&gt;flags
-op_amp
-id|ASYNC_NORMAL_ACTIVE
-)paren
-id|port-&gt;normal_termios
-op_assign
-op_star
-id|tty-&gt;termios
-suffix:semicolon
 multiline_comment|/*&n;&t; * Now we wait for the transmit buffer to clear; and we notify &n;&t; * the line discipline to only process XON/XOFF characters.&n;&t; */
 id|tty-&gt;closing
 op_assign

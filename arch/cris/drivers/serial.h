@@ -267,11 +267,6 @@ id|async_icount
 id|icount
 suffix:semicolon
 multiline_comment|/* error-statistics etc.*/
-DECL|member|normal_termios
-r_struct
-id|termios
-id|normal_termios
-suffix:semicolon
 macro_line|#ifdef DECLARE_WAITQUEUE
 DECL|member|open_wait
 id|wait_queue_head_t

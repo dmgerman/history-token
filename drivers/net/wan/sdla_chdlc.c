@@ -15733,10 +15733,6 @@ l_int|30
 op_star
 id|HZ
 suffix:semicolon
-id|state-&gt;normal_termios
-op_assign
-id|serial_driver.init_termios
-suffix:semicolon
 id|state-&gt;icount.cts
 op_assign
 id|state-&gt;icount.dsr

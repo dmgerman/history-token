@@ -5891,19 +5891,6 @@ id|info-&gt;flags
 op_or_assign
 id|ASYNC_CLOSING
 suffix:semicolon
-multiline_comment|/*&n;&t; * Save the termios structure, since this port may have&n;&t; * separate termios for callout and dialin.&n;&t; */
-r_if
-c_cond
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_NORMAL_ACTIVE
-)paren
-id|info-&gt;state-&gt;normal_termios
-op_assign
-op_star
-id|tty-&gt;termios
-suffix:semicolon
 multiline_comment|/*&n;&t; * Now we wait for the transmit buffer to clear; and we notify &n;&t; * the line discipline to only process XON/XOFF characters.&n;&t; */
 id|tty-&gt;closing
 op_assign
@@ -7017,34 +7004,6 @@ suffix:semicolon
 macro_line|#endif
 r_return
 id|retval
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|info-&gt;state-&gt;count
-op_eq
-l_int|1
-)paren
-op_logical_and
-(paren
-id|info-&gt;flags
-op_amp
-id|ASYNC_SPLIT_TERMIOS
-)paren
-)paren
-(brace
-op_star
-id|tty-&gt;termios
-op_assign
-id|info-&gt;state-&gt;normal_termios
-suffix:semicolon
-id|change_speed
-c_func
-(paren
-id|info
-)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef SERIAL_DEBUG_OPEN
@@ -9161,10 +9120,6 @@ op_assign
 l_int|30
 op_star
 id|HZ
-suffix:semicolon
-id|state-&gt;normal_termios
-op_assign
-id|serial_driver.init_termios
 suffix:semicolon
 id|state-&gt;icount.cts
 op_assign

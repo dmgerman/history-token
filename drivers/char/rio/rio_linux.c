@@ -3111,10 +3111,6 @@ id|port-&gt;PortNum
 op_assign
 id|i
 suffix:semicolon
-id|port-&gt;gs.normal_termios
-op_assign
-id|tty_std_termios
-suffix:semicolon
 id|port-&gt;gs.magic
 op_assign
 id|RIO_MAGIC

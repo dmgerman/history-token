@@ -143,11 +143,6 @@ id|wait_queue_head_t
 id|pBookmarkWait
 suffix:semicolon
 singleline_comment|// Used by i2DrainOutput
-DECL|member|NormalTermios
-r_struct
-id|termios
-id|NormalTermios
-suffix:semicolon
 DECL|member|BaudBase
 r_int
 id|BaudBase

@@ -2241,19 +2241,6 @@ id|ch-&gt;asyncflags
 op_or_assign
 id|ASYNC_CLOSING
 suffix:semicolon
-multiline_comment|/* -------------------------------------------------------------&n;&t;&t;&t;Save the termios structure, since this port may have&n;&t;&t;&t;separate termios for callout and dialin.&n;&t;&t;--------------------------------------------------------------- */
-r_if
-c_cond
-(paren
-id|ch-&gt;asyncflags
-op_amp
-id|ASYNC_NORMAL_ACTIVE
-)paren
-id|ch-&gt;normal_termios
-op_assign
-op_star
-id|tty-&gt;termios
-suffix:semicolon
 id|tty-&gt;closing
 op_assign
 l_int|1
@@ -4421,21 +4408,6 @@ op_assign
 id|ch
 suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------&n;&t;&t;If this is the first time the channel has been opened, initialize&n;&t;&t;the tty-&gt;termios struct otherwise let pc_close handle it.&n;&t;-------------------------------------------------------------------- */
-multiline_comment|/* Should this be here except for SPLIT termios ? */
-r_if
-c_cond
-(paren
-id|ch-&gt;count
-op_eq
-l_int|1
-)paren
-(brace
-op_star
-id|tty-&gt;termios
-op_assign
-id|ch-&gt;normal_termios
-suffix:semicolon
-)brace
 id|save_flags
 c_func
 (paren
@@ -6515,10 +6487,6 @@ suffix:semicolon
 id|ch-&gt;blocked_open
 op_assign
 l_int|0
-suffix:semicolon
-id|ch-&gt;normal_termios
-op_assign
-id|pc_driver.init_termios
 suffix:semicolon
 id|init_waitqueue_head
 c_func
