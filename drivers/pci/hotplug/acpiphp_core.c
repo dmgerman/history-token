@@ -557,6 +557,7 @@ r_static
 r_int
 id|__init
 id|init_acpi
+c_func
 (paren
 r_void
 )paren
@@ -706,7 +707,8 @@ suffix:semicolon
 r_int
 id|retval
 op_assign
-l_int|0
+op_minus
+id|ENOMEM
 suffix:semicolon
 r_int
 id|i
@@ -952,14 +954,8 @@ comma
 id|retval
 )paren
 suffix:semicolon
-id|release_slot
-c_func
-(paren
-id|slot-&gt;hotplug_slot
-)paren
-suffix:semicolon
-r_return
-id|retval
+r_goto
+id|error_name
 suffix:semicolon
 )brace
 multiline_comment|/* add slot to our internal list */
@@ -983,7 +979,15 @@ id|slot-&gt;hotplug_slot-&gt;name
 suffix:semicolon
 )brace
 r_return
-id|retval
+l_int|0
+suffix:semicolon
+id|error_name
+suffix:colon
+id|kfree
+c_func
+(paren
+id|slot-&gt;hotplug_slot-&gt;name
+)paren
 suffix:semicolon
 id|error_info
 suffix:colon
@@ -1012,8 +1016,7 @@ suffix:semicolon
 id|error
 suffix:colon
 r_return
-op_minus
-id|ENOMEM
+id|retval
 suffix:semicolon
 )brace
 DECL|function|cleanup_slots
