@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * linux/fs/nfsd/nfsfh.c&n; *&n; * NFS server file handle treatment.&n; *&n; * Copyright (C) 1995, 1996 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; * Portions Copyright (C) 1999 G. Allen Morris III &lt;gam3@acm.org&gt;&n; * Extensive rewrite by Neil Brown &lt;neilb@cse.unsw.edu.au&gt; Southern-Spring 1999&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1068,6 +1069,13 @@ id|ENOMEM
 )paren
 suffix:semicolon
 multiline_comment|/* I&squot;m going to assume that if the returned dentry is different, then&n;&t; * it is well connected.  But nobody returns different dentrys do they?&n;&t; */
+id|down
+c_func
+(paren
+op_amp
+id|child-&gt;d_inode-&gt;i_sem
+)paren
+suffix:semicolon
 id|pdentry
 op_assign
 id|child-&gt;d_inode-&gt;i_op
@@ -1078,6 +1086,13 @@ c_func
 id|child-&gt;d_inode
 comma
 id|tdentry
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|child-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 id|d_drop
@@ -1689,6 +1704,11 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2031,6 +2051,11 @@ op_amp
 id|sb-&gt;s_nfsd_free_path_sem
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_goto
 id|retry
 suffix:semicolon
@@ -2059,6 +2084,11 @@ op_amp
 id|sb-&gt;s_nfsd_free_path_sem
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -2083,6 +2113,11 @@ c_func
 (paren
 op_amp
 id|sb-&gt;s_nfsd_free_path_sem
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|err_out
