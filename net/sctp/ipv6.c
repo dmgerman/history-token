@@ -527,6 +527,8 @@ op_amp
 id|fl
 comma
 id|np-&gt;opt
+comma
+id|ipfragok
 )paren
 suffix:semicolon
 )brace

@@ -877,6 +877,9 @@ r_struct
 id|ipv6_txoptions
 op_star
 id|opt
+comma
+r_int
+id|ipfragok
 )paren
 suffix:semicolon
 r_extern
@@ -956,7 +959,7 @@ id|flags
 suffix:semicolon
 r_extern
 r_int
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 r_struct

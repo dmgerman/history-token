@@ -357,7 +357,7 @@ c_func
 id|skb-&gt;len
 )paren
 suffix:semicolon
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 id|skb
@@ -695,7 +695,7 @@ r_else
 (brace
 id|hdr_len
 op_assign
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 id|skb
@@ -939,7 +939,7 @@ op_assign
 id|skb-&gt;data
 suffix:semicolon
 multiline_comment|/* top_iph */
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 id|skb

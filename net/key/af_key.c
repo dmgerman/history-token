@@ -10382,7 +10382,7 @@ l_int|0
 suffix:semicolon
 id|xp
 op_assign
-id|xfrm_policy_delete
+id|xfrm_policy_bysel
 c_func
 (paren
 id|pol-&gt;sadb_x_policy_dir
@@ -10391,6 +10391,8 @@ l_int|1
 comma
 op_amp
 id|sel
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if

@@ -692,6 +692,9 @@ r_struct
 id|ipv6_txoptions
 op_star
 id|opt
+comma
+r_int
+id|ipfragok
 )paren
 (brace
 r_struct
@@ -1027,9 +1030,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|skb-&gt;len
 op_le
 id|mtu
+)paren
+op_logical_or
+id|ipfragok
 )paren
 (brace
 id|IP6_INC_STATS
@@ -1070,6 +1077,10 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;IPv6: sending pkt_too_big to self&bslash;n&quot;
 )paren
+suffix:semicolon
+id|skb-&gt;dev
+op_assign
+id|dst-&gt;dev
 suffix:semicolon
 id|icmpv6_send
 c_func
@@ -1572,7 +1583,7 @@ op_add_assign
 id|opt-&gt;opt_flen
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *&t;Length of fragmented part on every packet but &n;&t; *&t;the last must be an:&n;&t; *&t;&quot;integer multiple of 8 octects&quot;.&n;&t; */
+multiline_comment|/*&n;&t; *&t;Length of fragmented part on every packet but &n;&t; *&t;the last must be an:&n;&t; *&t;&quot;integer multiple of 8 octets&quot;.&n;&t; */
 id|frag_len
 op_assign
 (paren
@@ -2444,7 +2455,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;ip6_build_xmit: &quot;
-l_string|&quot;no availiable source address&bslash;n&quot;
+l_string|&quot;no available source address&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3753,9 +3764,9 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
-DECL|function|ip6_found_nexthdr
+DECL|function|ip6_find_1stfragopt
 r_int
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 r_struct
@@ -4002,7 +4013,7 @@ id|rt-&gt;u.dst.dev
 suffix:semicolon
 id|hlen
 op_assign
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 c_func
 (paren
 id|skb
@@ -5130,7 +5141,7 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;ip6_build_xmit: &quot;
-l_string|&quot;no availiable source address&bslash;n&quot;
+l_string|&quot;no available source address&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

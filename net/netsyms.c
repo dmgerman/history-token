@@ -1506,11 +1506,11 @@ c_func
 id|xfrm_policy_kill
 )paren
 suffix:semicolon
-DECL|variable|xfrm_policy_delete
+DECL|variable|xfrm_policy_bysel
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|xfrm_policy_delete
+id|xfrm_policy_bysel
 )paren
 suffix:semicolon
 DECL|variable|xfrm_policy_insert

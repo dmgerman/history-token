@@ -4573,6 +4573,8 @@ op_amp
 id|fl
 comma
 id|opt
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -5194,6 +5196,8 @@ op_amp
 id|fl
 comma
 l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|TCP_INC_STATS_BH
@@ -5578,6 +5582,8 @@ op_amp
 id|fl
 comma
 l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|TCP_INC_STATS_BH
@@ -8832,6 +8838,8 @@ op_amp
 id|fl
 comma
 id|np-&gt;opt
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

@@ -189,11 +189,11 @@ c_func
 id|in6_dev_finish_destroy
 )paren
 suffix:semicolon
-DECL|variable|ip6_found_nexthdr
+DECL|variable|ip6_find_1stfragopt
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ip6_found_nexthdr
+id|ip6_find_1stfragopt
 )paren
 suffix:semicolon
 DECL|variable|xfrm6_rcv

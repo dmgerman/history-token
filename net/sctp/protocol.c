@@ -3213,9 +3213,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 id|sctp_statistics
 (braket
 l_int|0
