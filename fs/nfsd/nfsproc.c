@@ -882,7 +882,7 @@ multiline_comment|/* FALLTHROUGH */
 r_case
 id|S_IFIFO
 suffix:colon
-multiline_comment|/* this is probably a permission check..&n;&t;&t;&t;&t;&t; * at least IRIX implements perm checking on&n;&t;&t;&t;&t;&t; *   echo thing &gt; device-special-file-or-pipe&n;&t;&t;&t;&t;&t; * by does a CREATE with type==0&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* this is probably a permission check..&n;&t;&t;&t;&t;&t; * at least IRIX implements perm checking on&n;&t;&t;&t;&t;&t; *   echo thing &gt; device-special-file-or-pipe&n;&t;&t;&t;&t;&t; * by doing a CREATE with type==0&n;&t;&t;&t;&t;&t; */
 id|nfserr
 op_assign
 id|nfsd_permission
@@ -893,6 +893,8 @@ comma
 id|newfhp-&gt;fh_dentry
 comma
 id|MAY_WRITE
+op_or
+id|MAY_LOCAL_ACCESS
 )paren
 suffix:semicolon
 r_if

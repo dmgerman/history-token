@@ -6186,20 +6186,15 @@ id|current-&gt;fsgid
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* only care about readonly exports for files and&n;&t; * directories. links don&squot;t have meaningful write access,&n;&t; * and all else is local to the client&n;&t; */
+multiline_comment|/* Normally we reject any write/sattr etc access on a read-only file&n;&t; * system.  But if it is IRIX doing check on write-access for a &n;&t; * device special file, we ignore rofs.&n;&t; */
 r_if
 c_cond
 (paren
-id|S_ISREG
-c_func
+op_logical_neg
 (paren
-id|inode-&gt;i_mode
-)paren
-op_logical_or
-id|S_ISDIR
-c_func
-(paren
-id|inode-&gt;i_mode
+id|acc
+op_amp
+id|MAY_LOCAL_ACCESS
 )paren
 )paren
 r_if
