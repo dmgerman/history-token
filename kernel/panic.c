@@ -161,44 +161,9 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;Kernel panic: %s&bslash;n&quot;
+l_string|&quot;Kernel panic - not syncing: %s&bslash;n&quot;
 comma
 id|buf
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_EMERG
-l_string|&quot;In interrupt handler - not syncing&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|current-&gt;pid
-)paren
-id|printk
-c_func
-(paren
-id|KERN_EMERG
-l_string|&quot;In idle task - not syncing&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-id|sys_sync
-c_func
-(paren
 )paren
 suffix:semicolon
 id|bust_spinlocks
