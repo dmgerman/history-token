@@ -582,22 +582,25 @@ r_int
 id|vga_base
 suffix:semicolon
 DECL|member|video_vbase
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|video_vbase
 suffix:semicolon
 DECL|member|mmio_vbase
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mmio_vbase
 suffix:semicolon
 DECL|member|bios_vbase
-r_char
+r_void
+id|__iomem
 op_star
 id|bios_vbase
 suffix:semicolon
 DECL|member|bios_abase
-r_char
+r_void
 op_star
 id|bios_abase
 suffix:semicolon
@@ -693,14 +696,16 @@ id|heapstart
 suffix:semicolon
 multiline_comment|/* offset  */
 DECL|member|sisfb_heap_start
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|sisfb_heap_start
 suffix:semicolon
 multiline_comment|/* address */
 DECL|member|sisfb_heap_end
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|sisfb_heap_end
 suffix:semicolon
 multiline_comment|/* address */
@@ -937,8 +942,9 @@ id|u8
 id|detectedlcda
 suffix:semicolon
 DECL|member|hwcursor_vbase
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|hwcursor_vbase
 suffix:semicolon
 DECL|member|chronteltype
