@@ -1065,6 +1065,14 @@ DECL|macro|S3C2410_MISCCR_USBSUSPND1
 mdefine_line|#define S3C2410_MISCCR_USBSUSPND1   (1&lt;&lt;13)
 DECL|macro|S3C2410_MISCCR_nRSTCON
 mdefine_line|#define S3C2410_MISCCR_nRSTCON&t;    (1&lt;&lt;16)
+DECL|macro|S3C2410_MISCCR_nEN_SCLK0
+mdefine_line|#define S3C2410_MISCCR_nEN_SCLK0    (1&lt;&lt;17)
+DECL|macro|S3C2410_MISCCR_nEN_SCLK1
+mdefine_line|#define S3C2410_MISCCR_nEN_SCLK1    (1&lt;&lt;18)
+DECL|macro|S3C2410_MISCCR_nEN_SCLKE
+mdefine_line|#define S3C2410_MISCCR_nEN_SCLKE    (1&lt;&lt;19)
+DECL|macro|S3C2410_MISCCR_SDSLEEP
+mdefine_line|#define S3C2410_MISCCR_SDSLEEP&t;    (7&lt;&lt;17)
 multiline_comment|/* external interrupt control... */
 multiline_comment|/* S3C2410_EXTINT0 -&gt; irq sense control for EINT0..EINT7&n; * S3C2410_EXTINT1 -&gt; irq sense control for EINT8..EINT15&n; * S3C2410_EXTINT2 -&gt; irq sense control for EINT16..EINT23&n; *&n; * note S3C2410_EXTINT2 has filtering options for EINT16..EINT23&n; *&n; * Samsung datasheet p9-25&n;*/
 DECL|macro|S3C2410_EXTINT0
