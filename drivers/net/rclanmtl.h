@@ -17,10 +17,10 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Debug stuff. Define for debug output */
 DECL|macro|RCDEBUG
-mdefine_line|#define RCDEBUG
+macro_line|#undef RCDEBUG
 macro_line|#ifdef RCDEBUG
 DECL|macro|dprintk
-mdefine_line|#define dprintk(args...) printk(KERN_DEBUG &quot;(rcpci45 driver:) &quot; args)
+mdefine_line|#define dprintk(args...) printk(KERN_DEBUG &quot;rc: &quot; args)
 macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(args...) { }
