@@ -1821,7 +1821,7 @@ DECL|macro|dev_dbg
 mdefine_line|#define dev_dbg(dev, format, arg...)&t;&t;&bslash;&n;&t;dev_printk(KERN_DEBUG , dev , format , ## arg)
 macro_line|#else
 DECL|macro|dev_dbg
-mdefine_line|#define dev_dbg(dev, format, arg...) do {} while (0)
+mdefine_line|#define dev_dbg(dev, format, arg...) do { (void)(dev); } while (0)
 macro_line|#endif
 DECL|macro|dev_err
 mdefine_line|#define dev_err(dev, format, arg...)&t;&t;&bslash;&n;&t;dev_printk(KERN_ERR , dev , format , ## arg)
