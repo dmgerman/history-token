@@ -844,12 +844,20 @@ comma
 id|self-&gt;settings.service_type
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Now the line is ready for some communication. Check if we are a&n;         * server, and send over some initial parameters &n;&t; */
+multiline_comment|/* &n;&t; * Now the line is ready for some communication. Check if we are a&n;         * server, and send over some initial parameters.&n;&t; * Client do it in ircomm_tty_state_setup().&n;&t; * Note : we may get called from ircomm_tty_getvalue_confirm(),&n;&t; * therefore before we even have open any socket. And self-&gt;client&n;&t; * is initialised to TRUE only later. So, we check if the link is&n;&t; * really initialised. - Jean II&n;&t; */
 r_if
 c_cond
 (paren
+(paren
+id|self-&gt;max_header_size
+op_ne
+id|IRCOMM_TTY_HDR_UNINITIALISED
+)paren
+op_logical_and
+(paren
 op_logical_neg
 id|self-&gt;client
+)paren
 op_logical_and
 (paren
 id|self-&gt;settings.service_type

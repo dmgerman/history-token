@@ -284,9 +284,9 @@ id|u8
 id|control_kbd_repeat_delay
 suffix:semicolon
 multiline_comment|/* 0x28 */
-DECL|member|control_kbd_repeat_rate
+DECL|member|control_kbd_repeat_period
 id|u8
-id|control_kbd_repeat_rate
+id|control_kbd_repeat_period
 suffix:semicolon
 multiline_comment|/* 0x29 */
 DECL|member|control_screen_contrast

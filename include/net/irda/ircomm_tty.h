@@ -18,8 +18,11 @@ mdefine_line|#define IRCOMM_TTY_MAJOR 161
 DECL|macro|IRCOMM_TTY_MINOR
 mdefine_line|#define IRCOMM_TTY_MINOR 0
 multiline_comment|/* This is used as an initial value to max_header_size before the proper&n; * value is filled in (5 for ttp, 4 for lmp). This allow us to detect&n; * the state of the underlying connection. - Jean II */
-DECL|macro|IRCOMM_TTY_HDR_UNITIALISED
-mdefine_line|#define IRCOMM_TTY_HDR_UNITIALISED&t;32
+DECL|macro|IRCOMM_TTY_HDR_UNINITIALISED
+mdefine_line|#define IRCOMM_TTY_HDR_UNINITIALISED&t;16
+multiline_comment|/* Same for payload size. See qos.c for the smallest max data size */
+DECL|macro|IRCOMM_TTY_DATA_UNINITIALISED
+mdefine_line|#define IRCOMM_TTY_DATA_UNINITIALISED&t;(64 - IRCOMM_TTY_HDR_UNINITIALISED)
 multiline_comment|/*&n; * IrCOMM TTY driver state&n; */
 DECL|struct|ircomm_tty_cb
 r_struct
@@ -121,6 +124,11 @@ id|__u32
 id|max_header_size
 suffix:semicolon
 multiline_comment|/* The amount of header space we must reserve */
+DECL|member|tx_data_size
+id|__u32
+id|tx_data_size
+suffix:semicolon
+multiline_comment|/* Max data size of current tx_skb */
 DECL|member|iriap
 r_struct
 id|iriap_cb

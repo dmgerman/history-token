@@ -1353,18 +1353,8 @@ r_char
 id|current_tag
 suffix:semicolon
 multiline_comment|/* current tag */
-DECL|member|sync_min_period
-r_int
-r_char
-id|sync_min_period
-suffix:semicolon
-multiline_comment|/* Not less than this period */
-DECL|member|sync_max_offset
-r_int
-r_char
-id|sync_max_offset
-suffix:semicolon
-multiline_comment|/* Not greater than this offset */
+singleline_comment|//&t;unsigned char sync_min_period;&t;/* Not less than this period */
+singleline_comment|//&t;unsigned char sync_max_offset;&t;/* Not greater than this offset */
 DECL|member|online
 r_int
 id|online
@@ -1417,13 +1407,7 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Tell the Seagate driver to be &n;&t;&t;&t;&t; * painfully slow on this device */
-DECL|member|disconnect
-r_int
-id|disconnect
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* can disconnect */
+singleline_comment|//&t;unsigned disconnect:1;&t;/* can disconnect */
 DECL|member|soft_reset
 r_int
 id|soft_reset
@@ -1465,21 +1449,21 @@ id|tagged_queue
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* SCSI-II tagged queuing enabled */
+multiline_comment|/* This is going away!!!!  Look at simple_tags&n;&t;&t;&t;&t;   instead!!!  Please fix your driver now!! */
 DECL|member|simple_tags
 r_int
 id|simple_tags
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Device supports simple queue tag messages */
+multiline_comment|/* simple queue tag messages are enabled */
 DECL|member|ordered_tags
 r_int
 id|ordered_tags
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Device supports ordered queue tag messages */
+multiline_comment|/* ordered queue tag messages are enabled */
 DECL|member|single_lun
 r_int
 id|single_lun
@@ -1522,20 +1506,8 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* unable to process commands because&n;&t;&t;&t;&t;   host busy */
-DECL|member|sync
-r_int
-id|sync
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* Sync transfer state, managed by host */
-DECL|member|wide
-r_int
-id|wide
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* WIDE transfer state, managed by host */
+singleline_comment|//&t;unsigned sync:1;&t;/* Sync transfer state, managed by host */
+singleline_comment|//&t;unsigned wide:1;&t;/* WIDE transfer state, managed by host */
 DECL|member|device_blocked
 r_int
 r_int

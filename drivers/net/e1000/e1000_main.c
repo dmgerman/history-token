@@ -557,7 +557,7 @@ id|pdev
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|e1000_sw_init
 c_func
 (paren
@@ -1970,12 +1970,20 @@ id|ent-&gt;driver_data
 )braket
 suffix:semicolon
 multiline_comment|/* setup the private structure */
+r_if
+c_cond
+(paren
 id|e1000_sw_init
 c_func
 (paren
 id|adapter
 )paren
+)paren
+(brace
+r_goto
+id|err_sw_init
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2278,6 +2286,8 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_sw_init
+suffix:colon
 id|err_eeprom
 suffix:colon
 id|iounmap
@@ -2426,7 +2436,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_sw_init - Initialize general software structures (struct e1000_adapter)&n; * @adapter: board private structure to initialize&n; *&n; * e1000_sw_init initializes the Adapter private data structure.&n; * Fields are initialized based on PCI device information and&n; * OS network device settings (MTU size).&n; **/
 r_static
-r_void
+r_int
 id|__devinit
 DECL|function|e1000_sw_init
 id|e1000_sw_init
@@ -2461,49 +2471,21 @@ op_assign
 id|adapter-&gt;pdev
 suffix:semicolon
 multiline_comment|/* PCI config space info */
-id|pci_read_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_VENDOR_ID
-comma
-op_amp
 id|hw-&gt;vendor_id
-)paren
+op_assign
+id|pdev-&gt;vendor
 suffix:semicolon
-id|pci_read_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_DEVICE_ID
-comma
-op_amp
 id|hw-&gt;device_id
-)paren
+op_assign
+id|pdev-&gt;device
 suffix:semicolon
-id|pci_read_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_SUBSYSTEM_VENDOR_ID
-comma
-op_amp
 id|hw-&gt;subsystem_vendor_id
-)paren
+op_assign
+id|pdev-&gt;subsystem_vendor
 suffix:semicolon
-id|pci_read_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_SUBSYSTEM_ID
-comma
-op_amp
 id|hw-&gt;subsystem_id
-)paren
+op_assign
+id|pdev-&gt;subsystem_device
 suffix:semicolon
 id|pci_read_config_byte
 c_func
@@ -2560,10 +2542,9 @@ c_func
 l_string|&quot;Unknown MAC Type&bslash;n&quot;
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* flow control settings */
@@ -2692,6 +2673,9 @@ c_func
 op_amp
 id|adapter-&gt;stats_lock
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_open - Called when a network interface is made active&n; * @netdev: network interface device structure&n; *&n; * Returns 0 on success, negative value on failure&n; *&n; * The open entry point is called when a network interface is made&n; * active by the system (IFF_UP).  At this point all resources needed&n; * for transmit and receive operations are allocated, the interrupt&n; * handler is registered with the OS, the watchdog timer is started,&n; * and the stack is notified that the interface is ready.&n; **/

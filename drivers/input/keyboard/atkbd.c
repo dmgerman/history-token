@@ -1977,6 +1977,11 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|param
+)paren
 r_for
 c_loop
 (paren

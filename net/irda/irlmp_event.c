@@ -1551,16 +1551,6 @@ comma
 id|LSAP_SETUP_PEND
 )paren
 suffix:semicolon
-id|irlmp_do_lap_event
-c_func
-(paren
-id|self-&gt;lap
-comma
-id|LM_LAP_CONNECT_REQUEST
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/* Start watchdog timer (5 secs for now) */
 id|irlmp_start_watchdog_timer
 c_func
@@ -1570,6 +1560,16 @@ comma
 l_int|5
 op_star
 id|HZ
+)paren
+suffix:semicolon
+id|irlmp_do_lap_event
+c_func
+(paren
+id|self-&gt;lap
+comma
+id|LM_LAP_CONNECT_REQUEST
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_break
@@ -1608,16 +1608,6 @@ comma
 id|LSAP_CONNECT_PEND
 )paren
 suffix:semicolon
-id|irlmp_do_lap_event
-c_func
-(paren
-id|self-&gt;lap
-comma
-id|LM_LAP_CONNECT_REQUEST
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 multiline_comment|/* Start watchdog timer&n;&t;&t; * This is not mentionned in the spec, but there is a rare&n;&t;&t; * race condition that can get the socket stuck.&n;&t;&t; * If we receive this event while our LAP is closing down,&n;&t;&t; * the LM_LAP_CONNECT_REQUEST get lost and we get stuck in&n;&t;&t; * CONNECT_PEND state forever.&n;&t;&t; * The other cause of getting stuck down there is if the&n;&t;&t; * higher layer never reply to the CONNECT_INDICATION.&n;&t;&t; * Anyway, it make sense to make sure that we always have&n;&t;&t; * a backup plan. 1 second is plenty (should be immediate).&n;&t;&t; * Jean II */
 id|irlmp_start_watchdog_timer
 c_func
@@ -1629,6 +1619,16 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
+id|irlmp_do_lap_event
+c_func
+(paren
+id|self-&gt;lap
+comma
+id|LM_LAP_CONNECT_REQUEST
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -1636,9 +1636,9 @@ suffix:colon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|2
+l_int|1
 comma
-l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+l_string|&quot;%s(), Unknown event %s on LSAP %#02x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1646,6 +1646,8 @@ id|irlmp_event
 (braket
 id|event
 )braket
+comma
+id|self-&gt;slsap_sel
 )paren
 suffix:semicolon
 r_if
@@ -1883,7 +1885,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+l_string|&quot;%s(), Unknown event %s on LSAP %#02x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1891,6 +1893,8 @@ id|irlmp_event
 (braket
 id|event
 )braket
+comma
+id|self-&gt;slsap_sel
 )paren
 suffix:semicolon
 r_if
@@ -2111,7 +2115,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+l_string|&quot;%s(), Unknown event %s on LSAP %#02x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2119,6 +2123,8 @@ id|irlmp_event
 (braket
 id|event
 )braket
+comma
+id|self-&gt;slsap_sel
 )paren
 suffix:semicolon
 r_if
@@ -2532,7 +2538,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+l_string|&quot;%s(), Unknown event %s on LSAP %#02x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2540,6 +2546,8 @@ id|irlmp_event
 (braket
 id|event
 )braket
+comma
+id|self-&gt;slsap_sel
 )paren
 suffix:semicolon
 r_if
@@ -2889,7 +2897,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+l_string|&quot;%s(), Unknown event %s on LSAP %#02x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2897,6 +2905,8 @@ id|irlmp_event
 (braket
 id|event
 )braket
+comma
+id|self-&gt;slsap_sel
 )paren
 suffix:semicolon
 r_if
@@ -3138,7 +3148,7 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s(), Unknown event %s&bslash;n&quot;
+l_string|&quot;%s(), Unknown event %s on LSAP %#02x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3146,6 +3156,8 @@ id|irlmp_event
 (braket
 id|event
 )braket
+comma
+id|self-&gt;slsap_sel
 )paren
 suffix:semicolon
 r_if

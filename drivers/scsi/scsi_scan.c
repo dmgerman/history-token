@@ -5621,6 +5621,7 @@ id|sdev-&gt;host-&gt;hostt-&gt;slave_attach
 op_ne
 l_int|NULL
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -5639,12 +5640,33 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;scsi_add_lun: failed low level driver attach, setting device offline&quot;
+l_string|&quot;%s: scsi_add_lun: failed low level driver attach, setting device offline&quot;
+comma
+id|devname
 )paren
 suffix:semicolon
 id|sdev-&gt;online
 op_assign
 id|FALSE
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|sdev-&gt;host-&gt;cmd_per_lun
+)paren
+(brace
+id|scsi_adjust_queue_depth
+c_func
+(paren
+id|sdev
+comma
+l_int|0
+comma
+id|sdev-&gt;host-&gt;cmd_per_lun
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -7313,23 +7335,6 @@ c_func
 id|sdev
 op_eq
 l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * FIXME calling select_queue_depths is wrong for adapters&n;&t;&t; * that modify queue depths of all scsi devices - the&n;&t;&t; * adapter might change a queue depth (not for this sdev),&n;&t;&t; * but the mid-layer will not change the queue depth. This&n;&t;&t; * does not cause an oops, but queue_depth will not match&n;&t;&t; * the actual queue depth used.&n;&t;&t; *&n;&t;&t; * Perhaps use a default queue depth, and allow them to be&n;&t;&t; * modified at boot/insmod time, and/or via sysctl/ioctl/proc;&n;&t;&t; * plus have dynamic queue depth adjustment like the&n;&t;&t; * aic7xxx driver.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|shost-&gt;select_queue_depths
-op_ne
-l_int|NULL
-)paren
-(paren
-id|shost-&gt;select_queue_depths
-)paren
-(paren
-id|shost
-comma
-id|shost-&gt;host_queue
 )paren
 suffix:semicolon
 r_for

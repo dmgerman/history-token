@@ -1215,6 +1215,16 @@ DECL|member|linger2
 r_int
 id|linger2
 suffix:semicolon
+DECL|member|frto_counter
+r_int
+id|frto_counter
+suffix:semicolon
+multiline_comment|/* Number of new acks after RTO */
+DECL|member|frto_highmark
+id|__u32
+id|frto_highmark
+suffix:semicolon
+multiline_comment|/* snd_nxt when RTO occurred */
 DECL|member|last_synq_overflow
 r_int
 r_int

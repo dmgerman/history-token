@@ -326,11 +326,12 @@ r_int
 id|delay
 suffix:semicolon
 multiline_comment|/* in msec; &lt;= 0: don&squot;t change */
-DECL|member|rate
+DECL|member|period
 r_int
-id|rate
+id|period
 suffix:semicolon
 multiline_comment|/* in msec; &lt;= 0: don&squot;t change */
+multiline_comment|/* earlier this field was misnamed &quot;rate&quot; */
 )brace
 suffix:semicolon
 DECL|macro|KDKBDREP

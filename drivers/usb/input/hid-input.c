@@ -2229,11 +2229,11 @@ c_func
 (paren
 id|bit
 comma
+id|usage-&gt;code
+comma
 id|max
 op_plus
 l_int|1
-comma
-id|usage-&gt;code
 )paren
 suffix:semicolon
 )brace

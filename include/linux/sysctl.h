@@ -1102,6 +1102,11 @@ DECL|enumerator|NET_TCP_TW_REUSE
 id|NET_TCP_TW_REUSE
 op_assign
 l_int|91
+comma
+DECL|enumerator|NET_TCP_FRTO
+id|NET_TCP_FRTO
+op_assign
+l_int|92
 )brace
 suffix:semicolon
 r_enum

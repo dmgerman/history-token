@@ -1434,6 +1434,7 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The next two ioctls either need to go or need to be changed to&n;&t; * pass tagged queueing changes through the low level drivers.&n;&t; * Simply enabling or disabling tagged queueing without the knowledge&n;&t; * of the low level driver is a *BAD* thing.&n;&t; *&n;&t; * Oct. 10, 2002 - Doug Ledford &lt;dledford@redhat.com&gt;&n;&t; */
 r_case
 id|SCSI_IOCTL_TAGGED_ENABLE
 suffix:colon

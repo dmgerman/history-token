@@ -6449,11 +6449,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 id|rq
 op_assign
 id|task_rq_lock
@@ -6495,8 +6490,7 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * If the task is not on a runqueue (and not running), then&n;&t; * it is sufficient to simply update the task&squot;s cpu field.&n;&t; */
@@ -6537,8 +6531,7 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_return
 suffix:semicolon
 )brace
 id|init_completion
@@ -6582,13 +6575,6 @@ c_func
 (paren
 op_amp
 id|req.done
-)paren
-suffix:semicolon
-id|out
-suffix:colon
-id|preempt_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -6650,6 +6636,7 @@ c_func
 id|KERNEL_DS
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Either we are running on the right CPU, or there&squot;s a&n;&t; * a migration thread on the target CPU, guaranteed.&n;&t; */
 id|set_cpus_allowed
 c_func
 (paren
@@ -6658,30 +6645,6 @@ comma
 l_int|1UL
 op_lshift
 id|cpu
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Migration can happen without a migration thread on the&n;&t; * target CPU because here we remove the thread from the&n;&t; * runqueue and the helper thread then moves this thread&n;&t; * to the target CPU - we&squot;ll wake up there.&n;&t; */
-r_if
-c_cond
-(paren
-id|smp_processor_id
-c_func
-(paren
-)paren
-op_ne
-id|cpu
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;migration_task %d on cpu=%d&bslash;n&quot;
-comma
-id|cpu
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 suffix:semicolon
 id|ret
@@ -6947,6 +6910,19 @@ c_func
 id|p
 comma
 id|rq_dest
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;prio
+OL
+id|rq_dest-&gt;curr-&gt;prio
+)paren
+id|resched_task
+c_func
+(paren
+id|rq_dest-&gt;curr
 )paren
 suffix:semicolon
 )brace

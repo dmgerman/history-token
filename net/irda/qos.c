@@ -26,12 +26,19 @@ id|sysctl_min_tx_turn_time
 op_assign
 l_int|10
 suffix:semicolon
-multiline_comment|/*&n; * Maximum data size to be used in transmission in payload of LAP frame.&n; * There is a bit of confusion in the IrDA spec :&n; * The LAP spec defines the payload of a LAP frame (I field) to be&n; * 2048 bytes max (IrLAP 1.1, chapt 6.6.5, p40).&n; * On the other hand, the PHY mention frames of 2048 bytes max (IrPHY&n; * 1.2, chapt 5.3.2.1, p41). But, this number includes the LAP header&n; * (2 bytes), and CRC (32 bits at 4 Mb/s). So, for the I field (LAP&n; * payload), that&squot;s only 2042 bytes. Oups !&n; * I&squot;ve had trouble trouble transmitting 2048 bytes frames with USB&n; * dongles and nsc-ircc at 4 Mb/s, so adjust to 2042... I don&squot;t know&n; * if this bug applies only for 2048 bytes frames or all negociated&n; * frame sizes, but all hardware seem to support &quot;2048 bytes&quot; frames.&n; * You can use the sysctl to play with this value anyway.&n; * Jean II */
+multiline_comment|/*&n; * Maximum data size to be used in transmission in payload of LAP frame.&n; * There is a bit of confusion in the IrDA spec :&n; * The LAP spec defines the payload of a LAP frame (I field) to be&n; * 2048 bytes max (IrLAP 1.1, chapt 6.6.5, p40).&n; * On the other hand, the PHY mention frames of 2048 bytes max (IrPHY&n; * 1.2, chapt 5.3.2.1, p41). But, this number includes the LAP header&n; * (2 bytes), and CRC (32 bits at 4 Mb/s). So, for the I field (LAP&n; * payload), that&squot;s only 2042 bytes. Oups !&n; * My nsc-ircc hardware has troubles receiving 2048 bytes frames at 4 Mb/s,&n; * so adjust to 2042... I don&squot;t know if this bug applies only for 2048&n; * bytes frames or all negociated frame sizes, but you can use the sysctl&n; * to play with this value anyway.&n; * Jean II */
 DECL|variable|sysctl_max_tx_data_size
 r_int
 id|sysctl_max_tx_data_size
 op_assign
 l_int|2042
+suffix:semicolon
+multiline_comment|/*&n; * Maximum transmit window, i.e. number of LAP frames between turn-around.&n; * This allow to override what the peer told us. Some peers are buggy and&n; * don&squot;t always support what they tell us.&n; * Jean II */
+DECL|variable|sysctl_max_tx_window
+r_int
+id|sysctl_max_tx_window
+op_assign
+l_int|7
 suffix:semicolon
 r_static
 r_int
@@ -676,6 +683,29 @@ op_assign
 l_int|15
 suffix:semicolon
 multiline_comment|/* Current MSB */
+multiline_comment|/* Check for buggy peers.&n;&t; * Note : there is a small probability that it could be us, but I&n;&t; * would expect driver authors to catch that pretty early and be&n;&t; * able to check precisely what&squot;s going on. If a end user sees this,&n;&t; * it&squot;s very likely the peer. - Jean II */
+r_if
+c_cond
+(paren
+id|word
+op_eq
+l_int|0
+)paren
+(brace
+id|WARNING
+c_func
+(paren
+l_string|&quot;%s(), Detected buggy peer, adjust null PV to 0x1!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/* The only safe choice (we don&squot;t know the array size) */
+id|word
+op_assign
+l_int|0x1
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -1171,7 +1201,7 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Make sure the mintt is sensible.&n;&t; */
+multiline_comment|/*&n;&t; * Make sure the mintt is sensible.&n;&t; * Main culprit : Ericsson T39. - Jean II&n;&t; */
 r_if
 c_cond
 (paren
@@ -1182,6 +1212,16 @@ id|qos-&gt;min_turn_time.value
 (brace
 r_int
 id|i
+suffix:semicolon
+id|WARNING
+c_func
+(paren
+l_string|&quot;%s(), Detected buggy peer, adjust mtt to %dus!&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|sysctl_min_tx_turn_time
+)paren
 suffix:semicolon
 multiline_comment|/* We don&squot;t really need bits, but easier this way */
 id|i
@@ -1413,6 +1453,18 @@ multiline_comment|/* Allow non discrete adjustement to avoid loosing capacity */
 id|qos-&gt;data_size.value
 op_assign
 id|sysctl_max_tx_data_size
+suffix:semicolon
+multiline_comment|/*&n;&t; * Override Tx window if user request it. - Jean II&n;&t; */
+r_if
+c_cond
+(paren
+id|qos-&gt;window_size.value
+OG
+id|sysctl_max_tx_window
+)paren
+id|qos-&gt;window_size.value
+op_assign
+id|sysctl_max_tx_window
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irlap_negotiate (qos_device, qos_session, skb)&n; *&n; *    Negotiate QoS values, not really that much negotiation :-)&n; *    We just set the QoS capabilities for the peer station&n; *&n; */

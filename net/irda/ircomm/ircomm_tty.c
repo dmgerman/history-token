@@ -1592,13 +1592,11 @@ id|self
 suffix:semicolon
 id|self-&gt;max_header_size
 op_assign
-id|IRCOMM_TTY_HDR_UNITIALISED
+id|IRCOMM_TTY_HDR_UNINITIALISED
 suffix:semicolon
 id|self-&gt;max_data_size
 op_assign
-l_int|64
-op_minus
-id|self-&gt;max_header_size
+id|IRCOMM_TTY_DATA_UNINITIALISED
 suffix:semicolon
 id|self-&gt;close_delay
 op_assign
@@ -2618,29 +2616,31 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* We may receive packets from the TTY even before we have finished&n;&t; * our setup. Not cool.&n;&t; * The problem is that we would allocate a skb with bogus header and&n;&t; * data size, and when adding data to it later we would get&n;&t; * confused.&n;&t; * Better to not accept data until we are properly setup. Use bogus&n;&t; * header size to check that (safest way to detect it).&n;&t; * Jean II */
+multiline_comment|/* We may receive packets from the TTY even before we have finished&n;&t; * our setup. Not cool.&n;&t; * The problem is that we don&squot;t know the final header and data size&n;&t; * to create the proper skb, so any skb we would create would have&n;&t; * bogus header and data size, so need care.&n;&t; * We use a bogus header size to safely detect this condition.&n;&t; * Another problem is that hw_stopped was set to 0 way before it&n;&t; * should be, so we would drop this skb. It should now be fixed.&n;&t; * One option is to not accept data until we are properly setup.&n;&t; * But, I suspect that when it happens, the ppp line discipline&n;&t; * just &quot;drops&quot; the data, which might screw up connect scripts.&n;&t; * The second option is to create a &quot;safe skb&quot;, with large header&n;&t; * and small size (see ircomm_tty_open() for values).&n;&t; * We just need to make sure that when the real values get filled,&n;&t; * we don&squot;t mess up the original &quot;safe skb&quot; (see tx_data_size).&n;&t; * Jean II */
 r_if
 c_cond
 (paren
 id|self-&gt;max_header_size
 op_eq
-id|IRCOMM_TTY_HDR_UNITIALISED
+id|IRCOMM_TTY_HDR_UNINITIALISED
 )paren
 (brace
-multiline_comment|/* TTY will retry */
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|2
+l_int|1
 comma
 l_string|&quot;%s() : not initialised&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+macro_line|#ifdef IRCOMM_NO_TX_BEFORE_INIT
+multiline_comment|/* We didn&squot;t consume anything, TTY will retry */
 r_return
-id|len
+l_int|0
 suffix:semicolon
+macro_line|#endif
 )brace
 id|spin_lock_irqsave
 c_func
@@ -2686,7 +2686,7 @@ c_cond
 id|skb
 )paren
 (brace
-multiline_comment|/* &n;&t;&t;&t; * Any room for more data at the end of the current &n;&t;&t;&t; * transmit buffer? Cannot use skb_tailroom, since&n;&t;&t;&t; * dev_alloc_skb gives us a larger skb than we &n;&t;&t;&t; * requested&n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * Any room for more data at the end of the current &n;&t;&t;&t; * transmit buffer? Cannot use skb_tailroom, since&n;&t;&t;&t; * dev_alloc_skb gives us a larger skb than we &n;&t;&t;&t; * requested&n;&t;&t;&t; * Note : use tx_data_size, because max_data_size&n;&t;&t;&t; * may have changed and we don&squot;t want to overwrite&n;&t;&t;&t; * the skb. - Jean II&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2694,7 +2694,7 @@ c_cond
 id|tailroom
 op_assign
 (paren
-id|self-&gt;max_data_size
+id|self-&gt;tx_data_size
 op_minus
 id|skb-&gt;len
 )paren
@@ -2768,6 +2768,11 @@ suffix:semicolon
 id|self-&gt;tx_skb
 op_assign
 id|skb
+suffix:semicolon
+multiline_comment|/* Remember skb size because max_data_size may&n;&t;&t;&t; * change later on - Jean II */
+id|self-&gt;tx_data_size
+op_assign
+id|self-&gt;max_data_size
 suffix:semicolon
 )brace
 multiline_comment|/* Copy data */
@@ -2901,19 +2906,25 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* Check if we are allowed to transmit any data.&n;&t; * hw_stopped is the regular flow control.&n;&t; * max_header_size tells us if the channel is initialised or not.&n;&t; * Jean II */
+macro_line|#ifdef IRCOMM_NO_TX_BEFORE_INIT
+multiline_comment|/* max_header_size tells us if the channel is initialised or not. */
 r_if
 c_cond
 (paren
-(paren
-id|tty-&gt;hw_stopped
-)paren
-op_logical_or
-(paren
 id|self-&gt;max_header_size
 op_eq
-id|IRCOMM_TTY_HDR_UNITIALISED
+id|IRCOMM_TTY_HDR_UNINITIALISED
 )paren
+multiline_comment|/* Don&squot;t bother us yet */
+r_return
+l_int|0
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Check if we are allowed to transmit any data.&n;&t; * hw_stopped is the regular flow control.&n;&t; * Jean II */
+r_if
+c_cond
+(paren
+id|tty-&gt;hw_stopped
 )paren
 id|ret
 op_assign
@@ -2937,7 +2948,7 @@ id|self-&gt;tx_skb
 )paren
 id|ret
 op_assign
-id|self-&gt;max_data_size
+id|self-&gt;tx_data_size
 op_minus
 id|self-&gt;tx_skb-&gt;len
 suffix:semicolon

@@ -59,7 +59,7 @@ suffix:semicolon
 multiline_comment|/* Recompute the FCS with len bytes appended. */
 r_int
 r_int
-id|crc_calc
+id|irda_calc_crc16
 c_func
 (paren
 id|__u16

@@ -16,6 +16,7 @@ macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/timer.h&gt;
 macro_line|#include &lt;net/irda/parameters.h&gt;
+macro_line|#include &lt;net/irda/crc.h&gt;
 r_extern
 r_struct
 id|proc_dir_entry
@@ -729,6 +730,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|async_unwrap_char
+)paren
+suffix:semicolon
+DECL|variable|irda_calc_crc16
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|irda_calc_crc16
 )paren
 suffix:semicolon
 DECL|variable|irda_start_timer
