@@ -1447,6 +1447,13 @@ id|len
 )paren
 suffix:semicolon
 )brace
+id|flush_dcache_page
+c_func
+(paren
+op_star
+id|ppage
+)paren
+suffix:semicolon
 id|kunmap_atomic
 c_func
 (paren
