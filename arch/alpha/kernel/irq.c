@@ -2163,12 +2163,15 @@ id|p
 comma
 l_string|&quot;%10u &quot;
 comma
-id|kstat.irqs
+id|kstat_cpu
+c_func
+(paren
+id|i
+)paren
+dot
+id|irqs
 (braket
 id|j
-)braket
-(braket
-id|i
 )braket
 )paren
 suffix:semicolon
@@ -2414,10 +2417,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kstat.irqs
-(braket
-id|cpu
-)braket
+id|kstat_cpu
+c_func
+(paren
+id|i
+)paren
+dot
+id|irqs
 (braket
 id|irq
 )braket
