@@ -1050,13 +1050,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * A miss - lseek, pagefault, pread, etc.  Shrink the readahead&n;&t;&t; * window by 25%.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * A miss - lseek, pagefault, pread, etc.  Shrink the readahead&n;&t;&t; * window.&n;&t;&t; */
 id|ra-&gt;next_size
 op_sub_assign
-id|ra-&gt;next_size
-op_div
-l_int|4
-op_plus
 l_int|2
 suffix:semicolon
 )brace
@@ -1301,7 +1297,7 @@ c_func
 id|ra
 )paren
 op_star
-l_int|2
+l_int|4
 suffix:semicolon
 r_int
 r_int
