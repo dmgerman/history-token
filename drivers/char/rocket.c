@@ -123,37 +123,6 @@ macro_line|#if defined(LOCAL_ROCKET_H) || (LINUX_VERSION_CODE &lt; VERSION_CODE(
 macro_line|#include &quot;rocket_compat.h&quot;
 macro_line|#endif
 multiline_comment|/****** RocketPort Local Variables ******/
-DECL|variable|rocket_table
-r_static
-r_struct
-id|tty_struct
-op_star
-id|rocket_table
-(braket
-id|MAX_RP_PORTS
-)braket
-suffix:semicolon
-multiline_comment|/*  TTY required variables */
-DECL|variable|rocket_termios
-r_static
-r_struct
-id|termios
-op_star
-id|rocket_termios
-(braket
-id|MAX_RP_PORTS
-)braket
-suffix:semicolon
-DECL|variable|rocket_termios_locked
-r_static
-r_struct
-id|termios
-op_star
-id|rocket_termios_locked
-(braket
-id|MAX_RP_PORTS
-)braket
-suffix:semicolon
 DECL|variable|rocket_driver
 r_static
 r_struct
@@ -12234,18 +12203,6 @@ op_or
 id|TTY_DRIVER_NO_DEVFS
 suffix:semicolon
 macro_line|#endif
-id|rocket_driver.table
-op_assign
-id|rocket_table
-suffix:semicolon
-id|rocket_driver.termios
-op_assign
-id|rocket_termios
-suffix:semicolon
-id|rocket_driver.termios_locked
-op_assign
-id|rocket_termios_locked
-suffix:semicolon
 id|rocket_driver.open
 op_assign
 id|rp_open

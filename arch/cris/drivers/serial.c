@@ -425,36 +425,6 @@ macro_line|#endif
 suffix:semicolon
 DECL|macro|NR_PORTS
 mdefine_line|#define NR_PORTS (sizeof(rs_table)/sizeof(struct e100_serial))
-DECL|variable|serial_table
-r_static
-r_struct
-id|tty_struct
-op_star
-id|serial_table
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
-DECL|variable|serial_termios
-r_static
-r_struct
-id|termios
-op_star
-id|serial_termios
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
-DECL|variable|serial_termios_locked
-r_static
-r_struct
-id|termios
-op_star
-id|serial_termios_locked
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
 macro_line|#ifdef CONFIG_ETRAX_SERIAL_PROC_ENTRY
 DECL|macro|PROCSTAT
 mdefine_line|#define PROCSTAT(x) x
@@ -11371,18 +11341,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
-suffix:semicolon
-id|serial_driver.table
-op_assign
-id|serial_table
-suffix:semicolon
-id|serial_driver.termios
-op_assign
-id|serial_termios
-suffix:semicolon
-id|serial_driver.termios_locked
-op_assign
-id|serial_termios_locked
 suffix:semicolon
 id|serial_driver.open
 op_assign

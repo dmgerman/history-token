@@ -297,36 +297,6 @@ mdefine_line|#define BASE_BAUD ((1843200 / 16) * (1 &lt;&lt; ESPC_SCALE))
 multiline_comment|/* Standard COM flags (except for COM4, because of the 8514 problem) */
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
-DECL|variable|serial_table
-r_static
-r_struct
-id|tty_struct
-op_star
-id|serial_table
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
-DECL|variable|serial_termios
-r_static
-r_struct
-id|termios
-op_star
-id|serial_termios
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
-DECL|variable|serial_termios_locked
-r_static
-r_struct
-id|termios
-op_star
-id|serial_termios_locked
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
@@ -10957,18 +10927,6 @@ suffix:semicolon
 id|esp_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|esp_driver.table
-op_assign
-id|serial_table
-suffix:semicolon
-id|esp_driver.termios
-op_assign
-id|serial_termios
-suffix:semicolon
-id|esp_driver.termios_locked
-op_assign
-id|serial_termios_locked
 suffix:semicolon
 id|esp_driver.open
 op_assign

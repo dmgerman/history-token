@@ -301,36 +301,6 @@ mdefine_line|#define DEACTIVATE_FUNC(dev)  (dev-&gt;deactivate)
 macro_line|#endif
 DECL|macro|HIGH_BITS_OFFSET
 mdefine_line|#define HIGH_BITS_OFFSET ((sizeof(long)-sizeof(int))*8)
-DECL|variable|serial_table
-r_static
-r_struct
-id|tty_struct
-op_star
-id|serial_table
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
-DECL|variable|serial_termios
-r_static
-r_struct
-id|termios
-op_star
-id|serial_termios
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
-DECL|variable|serial_termios_locked
-r_static
-r_struct
-id|termios
-op_star
-id|serial_termios_locked
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
 macro_line|#if defined(MODULE) &amp;&amp; defined(SERIAL_DEBUG_MCOUNT)
 DECL|macro|DBG_CNT
 mdefine_line|#define DBG_CNT(s) printk(&quot;(%s): [%x], refc=%d, serc=%d, ttyc=%d -&gt; %s&bslash;n&quot;, &bslash;&n; tty-&gt;name, (info-&gt;flags), serial_driver.refcount, info-&gt;count,tty-&gt;count,s)
@@ -10520,18 +10490,6 @@ op_assign
 id|TTY_DRIVER_REAL_RAW
 op_or
 id|TTY_DRIVER_NO_DEVFS
-suffix:semicolon
-id|serial_driver.table
-op_assign
-id|serial_table
-suffix:semicolon
-id|serial_driver.termios
-op_assign
-id|serial_termios
-suffix:semicolon
-id|serial_driver.termios_locked
-op_assign
-id|serial_termios_locked
 suffix:semicolon
 id|serial_driver.open
 op_assign

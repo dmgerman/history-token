@@ -104,12 +104,12 @@ id|other
 suffix:semicolon
 multiline_comment|/* only used for the PTY driver */
 multiline_comment|/*&n;&t; * Pointer to the tty data structures&n;&t; */
-DECL|member|table
+DECL|member|ttys
 r_struct
 id|tty_struct
 op_star
 op_star
-id|table
+id|ttys
 suffix:semicolon
 DECL|member|termios
 r_struct

@@ -253,36 +253,6 @@ DECL|macro|PORT_NUM
 mdefine_line|#define PORT_NUM(P)&t;(((P) &lt; (SCC_NUM_BASE)) ? (P) : (P)-(SCC_NUM_BASE))
 DECL|macro|NR_PORTS
 mdefine_line|#define NR_PORTS&t;(sizeof(rs_table)/sizeof(struct serial_state))
-DECL|variable|serial_table
-r_static
-r_struct
-id|tty_struct
-op_star
-id|serial_table
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
-DECL|variable|serial_termios
-r_static
-r_struct
-id|termios
-op_star
-id|serial_termios
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
-DECL|variable|serial_termios_locked
-r_static
-r_struct
-id|termios
-op_star
-id|serial_termios_locked
-(braket
-id|NR_PORTS
-)braket
-suffix:semicolon
 multiline_comment|/* The number of buffer descriptors and their sizes.&n;*/
 DECL|macro|RX_NUM_FIFO
 mdefine_line|#define RX_NUM_FIFO&t;4
@@ -8871,18 +8841,6 @@ suffix:semicolon
 id|serial_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|serial_driver.table
-op_assign
-id|serial_table
-suffix:semicolon
-id|serial_driver.termios
-op_assign
-id|serial_termios
-suffix:semicolon
-id|serial_driver.termios_locked
-op_assign
-id|serial_termios_locked
 suffix:semicolon
 id|serial_driver.open
 op_assign

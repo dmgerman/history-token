@@ -105,38 +105,6 @@ r_struct
 id|tty_driver
 id|pc_info
 suffix:semicolon
-multiline_comment|/* The below structures are used to initialize the tty_driver structures. */
-multiline_comment|/*&t;-------------------------------------------------------------------------&n;&t;Note : MAX_ALLOC is currently limited to 0x100.  This restriction is &n;&t;placed on us by Linux not Digi.&n;----------------------------------------------------------------------------*/
-DECL|variable|pc_table
-r_static
-r_struct
-id|tty_struct
-op_star
-id|pc_table
-(braket
-id|MAX_ALLOC
-)braket
-suffix:semicolon
-DECL|variable|pc_termios
-r_static
-r_struct
-id|termios
-op_star
-id|pc_termios
-(braket
-id|MAX_ALLOC
-)braket
-suffix:semicolon
-DECL|variable|pc_termios_locked
-r_static
-r_struct
-id|termios
-op_star
-id|pc_termios_locked
-(braket
-id|MAX_ALLOC
-)braket
-suffix:semicolon
 multiline_comment|/* ------------------ Begin Digi specific structures -------------------- */
 multiline_comment|/* ------------------------------------------------------------------------&n;&t;digi_channels represents an array of structures that keep track of&n;&t;each channel of the Digi product.  Information such as transmit and&n;&t;receive pointers, termio data, and signal definitions (DTR, CTS, etc ...)&n;&t;are stored here.  This structure is NOT used to overlay the cards &n;&t;physical channel structure.&n;-------------------------------------------------------------------------- */
 DECL|variable|digi_channels
@@ -5082,20 +5050,6 @@ suffix:semicolon
 id|pc_driver.flags
 op_assign
 id|TTY_DRIVER_REAL_RAW
-suffix:semicolon
-id|pc_driver.table
-op_assign
-id|pc_table
-suffix:semicolon
-multiline_comment|/* pc_termios is an array of pointers pointing at termios structs */
-multiline_comment|/* The below should get the first pointer */
-id|pc_driver.termios
-op_assign
-id|pc_termios
-suffix:semicolon
-id|pc_driver.termios_locked
-op_assign
-id|pc_termios_locked
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------&n;&t;&t;Setup entry points for the driver.  These are primarily called by &n;&t;&t;the kernel in tty_io.c and n_tty.c&n;&t;--------------------------------------------------------------------- */
 id|pc_driver.open
