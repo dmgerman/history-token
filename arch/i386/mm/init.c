@@ -88,7 +88,7 @@ c_func
 id|__pa
 c_func
 (paren
-id|md_table
+id|pmd_table
 )paren
 op_or
 id|_PAGE_PRESENT
