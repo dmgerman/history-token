@@ -2481,18 +2481,6 @@ op_rshift
 l_int|4
 )braket
 suffix:semicolon
-id|wipe_partitions
-c_func
-(paren
-id|mk_kdev
-c_func
-(paren
-id|MAJOR_NR
-comma
-id|unit
-)paren
-)paren
-suffix:semicolon
 id|del_gendisk
 c_func
 (paren
@@ -5902,18 +5890,6 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* &n;&t; * This will force errors when i2ob_get_queue() is called&n;&t; * by the kenrel.&n;&t; */
-id|wipe_partitions
-c_func
-(paren
-id|mk_kdev
-c_func
-(paren
-id|MAJOR_NR
-comma
-id|unit
-)paren
-)paren
-suffix:semicolon
 id|del_gendisk
 c_func
 (paren

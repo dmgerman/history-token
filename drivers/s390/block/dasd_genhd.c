@@ -1113,27 +1113,6 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|wipe_partitions
-c_func
-(paren
-id|device-&gt;kdev
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * This is confusing. The funcions is devfs_register_partitions&n;&t; * but the 1 as third parameter makes it do an unregister...&n;&t; * FIXME: there must be a better way to get rid of the devfs entries&n;&t; */
-id|devfs_register_partitions
-c_func
-(paren
-id|disk
-comma
-id|minor
-c_func
-(paren
-id|device-&gt;kdev
-)paren
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|del_gendisk
 c_func
 (paren
