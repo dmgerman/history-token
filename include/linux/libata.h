@@ -279,6 +279,7 @@ op_lshift
 l_int|0
 )paren
 comma
+multiline_comment|/* enable 48-bit LBA and &quot;HOB&quot; */
 DECL|enumerator|ATA_TFLAG_ISADDR
 id|ATA_TFLAG_ISADDR
 op_assign
@@ -299,16 +300,16 @@ l_int|2
 )paren
 comma
 multiline_comment|/* enable r/w to device reg */
-DECL|enumerator|ATA_QCFLAG_WRITE
-id|ATA_QCFLAG_WRITE
+DECL|enumerator|ATA_TFLAG_WRITE
+id|ATA_TFLAG_WRITE
 op_assign
 (paren
 l_int|1
 op_lshift
-l_int|0
+l_int|3
 )paren
 comma
-multiline_comment|/* read==0, write==1 */
+multiline_comment|/* data dir: host-&gt;dev==1 (write) */
 DECL|enumerator|ATA_QCFLAG_ACTIVE
 id|ATA_QCFLAG_ACTIVE
 op_assign
@@ -1118,16 +1119,11 @@ l_int|32
 suffix:semicolon
 multiline_comment|/* WARNING: shorter than&n;&t;&t;&t;&t;&t;&t; * ATAPI7 spec size, 40 ASCII&n;&t;&t;&t;&t;&t;&t; * characters&n;&t;&t;&t;&t;&t;&t; */
 multiline_comment|/* cache info about current transfer mode */
-DECL|member|r_protocol
+DECL|member|xfer_protocol
 id|u8
-id|r_protocol
+id|xfer_protocol
 suffix:semicolon
-multiline_comment|/* taskfile read protocol */
-DECL|member|w_protocol
-id|u8
-id|w_protocol
-suffix:semicolon
-multiline_comment|/* taskfile write protocol */
+multiline_comment|/* taskfile xfer protocol */
 DECL|member|read_cmd
 id|u8
 id|read_cmd
