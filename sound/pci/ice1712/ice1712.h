@@ -902,6 +902,12 @@ id|pcm_reserved
 l_int|4
 )braket
 suffix:semicolon
+DECL|member|hw_rates
+id|snd_pcm_hw_constraint_list_t
+op_star
+id|hw_rates
+suffix:semicolon
+multiline_comment|/* card-specific rate constraints */
 DECL|member|akm_codecs
 r_int
 r_int
