@@ -4476,9 +4476,9 @@ l_string|&quot;OS2 level of SetPathInfo not implemented&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Need to convert time_buf into old format, &n;&t;&t;&t;but probably better to do that inside the function&n;&t;&t;&t;below rather than here */
-multiline_comment|/* Better to return EOPNOTSUPP until function&n;&t;&t;&t;below is ready */
-multiline_comment|/* CIFSSMBSetTimesLegacy(xid, pTcon, full_path,&n;        &t;        FILE_INFO_STANDARD * data, cifs_sb-&gt;local_nls); */
+multiline_comment|/* For older servers converts time_buf into old DOS style&n;&t;&t;&t;level which uses two second granularity */
+multiline_comment|/* return EOPNOTSUPP until function below is ready */
+multiline_comment|/* CIFSSMBSetTimesLegacy(xid, pTcon, full_path,&n;        &t;        &amp;time_buf, cifs_sb-&gt;local_nls); */
 )brace
 )brace
 multiline_comment|/* do not  need local check to inode_check_ok since the server does that */
