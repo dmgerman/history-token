@@ -918,22 +918,6 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-DECL|function|sync_timers
-r_void
-id|sync_timers
-c_func
-(paren
-r_void
-)paren
-(brace
-id|spin_unlock_wait
-c_func
-(paren
-op_amp
-id|global_bh_lock
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * SMP specific function to delete periodic timer.&n; * Caller must disable by some means restarting the timer&n; * for new. Upon exit the timer is not queued and handler is not running&n; * on any CPU. It returns number of times, which timer was deleted&n; * (for reference counting).&n; */
 DECL|function|del_timer_sync
 r_int
