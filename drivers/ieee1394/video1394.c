@@ -596,7 +596,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|d-&gt;list
+id|d-&gt;link
 )paren
 suffix:semicolon
 id|init_waitqueue_head
