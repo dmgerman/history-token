@@ -3349,6 +3349,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|rmtp
+op_logical_and
 id|copy_to_user
 c_func
 (paren
@@ -3502,6 +3504,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|rmtp
+op_logical_and
 id|copy_to_user
 c_func
 (paren
