@@ -40,31 +40,6 @@ macro_line|#include &quot;xfs_log_priv.h&quot;
 multiline_comment|/*&n; * The maximum pathlen is 1024 bytes. Since the minimum file system&n; * blocksize is 512 bytes, we can get a max of 2 extents back from&n; * bmapi.&n; */
 DECL|macro|SYMLINK_MAPS
 mdefine_line|#define SYMLINK_MAPS 2
-r_extern
-r_int
-id|xfs_ioctl
-c_func
-(paren
-id|bhv_desc_t
-op_star
-comma
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|file
-op_star
-comma
-r_int
-comma
-r_int
-r_int
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * For xfs, we check that the file isn&squot;t too big to be opened by this kernel.&n; * No other open action is required for regular files.  Devices are handled&n; * through the specfs file system, pipes through fifofs.  Device and&n; * fifo vnodes are &quot;wrapped&quot; by specfs and fifofs vnodes, respectively,&n; * when a new vnode is first looked up or created.&n; */
 id|STATIC
 r_int
