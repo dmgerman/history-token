@@ -489,14 +489,9 @@ id|handle_t
 op_star
 id|handle
 op_assign
-id|jbd_kmalloc
+id|jbd_alloc_handle
 c_func
 (paren
-r_sizeof
-(paren
-id|handle_t
-)paren
-comma
 id|GFP_NOFS
 )paren
 suffix:semicolon
@@ -518,7 +513,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|handle_t
+op_star
+id|handle
 )paren
 )paren
 suffix:semicolon
@@ -647,7 +643,7 @@ OL
 l_int|0
 )paren
 (brace
-id|kfree
+id|jbd_free_handle
 c_func
 (paren
 id|handle
@@ -3904,7 +3900,7 @@ id|tid
 )paren
 suffix:semicolon
 )brace
-id|kfree
+id|jbd_free_handle
 c_func
 (paren
 id|handle
