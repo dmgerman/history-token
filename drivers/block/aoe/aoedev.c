@@ -715,7 +715,6 @@ id|d
 suffix:semicolon
 )brace
 r_void
-id|__exit
 DECL|function|aoedev_exit
 id|aoedev_exit
 c_func

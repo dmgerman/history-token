@@ -680,7 +680,6 @@ l_int|0
 suffix:semicolon
 )brace
 r_void
-id|__exit
 DECL|function|aoenet_exit
 id|aoenet_exit
 c_func
