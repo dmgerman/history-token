@@ -8,6 +8,7 @@ macro_line|#include &lt;sys/signal.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
+macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|struct|helper_data
 r_struct
@@ -493,6 +494,11 @@ op_ne
 l_int|0
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
+id|n
+op_assign
 id|waitpid
 c_func
 (paren
@@ -501,6 +507,7 @@ comma
 l_int|NULL
 comma
 l_int|0
+)paren
 )paren
 suffix:semicolon
 id|pid

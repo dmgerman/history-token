@@ -899,6 +899,9 @@ comma
 id|init_proc
 )paren
 suffix:semicolon
+id|CATCH_EINTR
+c_func
+(paren
 id|n
 op_assign
 id|waitpid
@@ -910,6 +913,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1148,6 +1152,9 @@ c_loop
 l_int|1
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
 id|pid
 op_assign
 id|waitpid
@@ -1160,6 +1167,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if

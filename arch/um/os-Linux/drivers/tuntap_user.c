@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/if_tun.h&gt;
 macro_line|#include &quot;net_user.h&quot;
 macro_line|#include &quot;tuntap.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
+macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;helper.h&quot;
 macro_line|#include &quot;os.h&quot;
@@ -464,6 +465,9 @@ op_minus
 id|errno
 suffix:semicolon
 )brace
+id|CATCH_EINTR
+c_func
+(paren
 id|waitpid
 c_func
 (paren
@@ -472,6 +476,7 @@ comma
 l_int|NULL
 comma
 l_int|0
+)paren
 )paren
 suffix:semicolon
 id|cmsg

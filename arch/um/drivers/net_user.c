@@ -967,6 +967,11 @@ comma
 id|output_len
 )paren
 suffix:semicolon
+id|CATCH_EINTR
+c_func
+(paren
+id|err
+op_assign
 id|waitpid
 c_func
 (paren
@@ -975,6 +980,7 @@ comma
 l_int|NULL
 comma
 l_int|0
+)paren
 )paren
 suffix:semicolon
 r_return

@@ -1209,6 +1209,9 @@ op_eq
 l_int|1
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
 id|pid
 op_assign
 id|waitpid
@@ -1220,6 +1223,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1251,6 +1255,9 @@ id|debugger.pid
 )paren
 suffix:semicolon
 )brace
+id|CATCH_EINTR
+c_func
+(paren
 id|pid
 op_assign
 id|waitpid
@@ -1262,6 +1269,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -300,6 +300,9 @@ id|errno
 )paren
 suffix:semicolon
 )brace
+id|CATCH_EINTR
+c_func
+(paren
 id|err
 op_assign
 id|waitpid
@@ -311,6 +314,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -540,6 +544,9 @@ suffix:semicolon
 )brace
 r_do
 (brace
+id|CATCH_EINTR
+c_func
+(paren
 id|n
 op_assign
 id|waitpid
@@ -551,6 +558,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -758,6 +766,9 @@ c_loop
 l_int|1
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
 id|err
 op_assign
 id|waitpid
@@ -769,6 +780,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -8,6 +8,7 @@ macro_line|#include &lt;sys/mman.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &quot;os.h&quot;
 macro_line|#include &quot;user.h&quot;
+macro_line|#include &quot;user_util.h&quot;
 DECL|macro|ARBITRARY_ADDR
 mdefine_line|#define ARBITRARY_ADDR -1
 DECL|macro|FAILURE_PID
@@ -412,6 +413,9 @@ c_cond
 id|reap_child
 )paren
 (brace
+id|CATCH_EINTR
+c_func
+(paren
 id|waitpid
 c_func
 (paren
@@ -420,6 +424,7 @@ comma
 l_int|NULL
 comma
 l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace

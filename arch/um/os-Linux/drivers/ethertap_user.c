@@ -10,6 +10,7 @@ macro_line|#include &lt;sys/un.h&gt;
 macro_line|#include &lt;net/if.h&gt;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
+macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;net_user.h&quot;
 macro_line|#include &quot;etap.h&quot;
 macro_line|#include &quot;helper.h&quot;
@@ -656,9 +657,11 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-r_if
-c_cond
+id|CATCH_EINTR
+c_func
 (paren
+id|n
+op_assign
 id|waitpid
 c_func
 (paren
@@ -669,6 +672,12 @@ id|status
 comma
 l_int|0
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
 OL
 l_int|0
 )paren

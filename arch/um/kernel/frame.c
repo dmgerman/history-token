@@ -17,6 +17,7 @@ macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;frame_user.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
+macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;ptrace_user.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|function|capture_stack
@@ -110,6 +111,9 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Wait for it to stop itself and continue it with a SIGUSR1 to force &n;&t; * it into the signal handler.&n;&t; */
+id|CATCH_EINTR
+c_func
+(paren
 id|n
 op_assign
 id|waitpid
@@ -121,6 +125,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -216,6 +221,9 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Wait for it to stop itself again and grab its registers again.  &n;&t; * At this point, the handler has stuffed the addresses of&n;&t; * sig, sc, and SA_RESTORER in raw.&n;&t; */
+id|CATCH_EINTR
+c_func
+(paren
 id|n
 op_assign
 id|waitpid
@@ -227,6 +235,7 @@ op_amp
 id|status
 comma
 id|WUNTRACED
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -354,9 +363,11 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
+id|CATCH_EINTR
+c_func
 (paren
+id|n
+op_assign
 id|waitpid
 c_func
 (paren
@@ -367,6 +378,12 @@ id|status
 comma
 l_int|0
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
 OL
 l_int|0
 )paren

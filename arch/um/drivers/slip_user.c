@@ -4,7 +4,7 @@ macro_line|#include &lt;unistd.h&gt;
 macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;sched.h&gt;
 macro_line|#include &lt;string.h&gt;
-macro_line|#include &lt;sys/errno.h&gt;
+macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;sys/termios.h&gt;
 macro_line|#include &lt;sys/wait.h&gt;
 macro_line|#include &lt;sys/signal.h&gt;
@@ -469,9 +469,11 @@ id|output
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
+id|CATCH_EINTR
+c_func
 (paren
+id|err
+op_assign
 id|waitpid
 c_func
 (paren
@@ -482,6 +484,12 @@ id|status
 comma
 l_int|0
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 OL
 l_int|0
 )paren
