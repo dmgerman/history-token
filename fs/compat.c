@@ -5703,11 +5703,6 @@ suffix:semicolon
 id|iov_fn_t
 id|fnv
 suffix:semicolon
-r_struct
-id|inode
-op_star
-id|inode
-suffix:semicolon
 multiline_comment|/*&n;&t; * SuS says &quot;The readv() function *may* fail if the iovcnt argument&n;&t; * was less than or equal to 0, or greater than {IOV_MAX}.  Linux has&n;&t; * traditionally returned zero for zero segments, so...&n;&t; */
 id|ret
 op_assign
@@ -5957,32 +5952,15 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|inode
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
-multiline_comment|/* VERIFY_WRITE actually means a read, as we write to user space */
 id|ret
 op_assign
-id|locks_verify_area
+id|rw_verify_area
 c_func
 (paren
-(paren
 id|type
-op_eq
-id|READ
-ques
-c_cond
-id|FLOCK_VERIFY_READ
-suffix:colon
-id|FLOCK_VERIFY_WRITE
-)paren
-comma
-id|inode
 comma
 id|file
 comma
-op_star
 id|pos
 comma
 id|tot_len

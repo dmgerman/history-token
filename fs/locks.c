@@ -3360,7 +3360,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * locks_mandatory_area - Check for a conflicting lock&n; * @read_write: %FLOCK_VERIFY_WRITE for exclusive access, %FLOCK_VERIFY_READ&n; *&t;&t;for shared&n; * @inode:      the file to check&n; * @filp:       how the file was opened (if it was)&n; * @offset:     start of area to check&n; * @count:      length of area to check&n; *&n; * Searches the inode&squot;s list of locks to find any POSIX locks which conflict.&n; * This function is called from locks_verify_area() and&n; * locks_verify_truncate().&n; */
+multiline_comment|/**&n; * locks_mandatory_area - Check for a conflicting lock&n; * @read_write: %FLOCK_VERIFY_WRITE for exclusive access, %FLOCK_VERIFY_READ&n; *&t;&t;for shared&n; * @inode:      the file to check&n; * @filp:       how the file was opened (if it was)&n; * @offset:     start of area to check&n; * @count:      length of area to check&n; *&n; * Searches the inode&squot;s list of locks to find any POSIX locks which conflict.&n; * This function is called from rw_verify_area() and&n; * locks_verify_truncate().&n; */
 DECL|function|locks_mandatory_area
 r_int
 id|locks_mandatory_area
