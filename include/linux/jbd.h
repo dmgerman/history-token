@@ -1095,6 +1095,18 @@ id|j_revoke_table
 l_int|2
 )braket
 suffix:semicolon
+multiline_comment|/*&n;&t; * array of bhs for journal_commit_transaction&n;&t; */
+DECL|member|j_wbuf
+r_struct
+id|buffer_head
+op_star
+op_star
+id|j_wbuf
+suffix:semicolon
+DECL|member|j_wbufsize
+r_int
+id|j_wbufsize
+suffix:semicolon
 multiline_comment|/*&n;&t; * An opaque pointer to fs-private information.  ext3 puts its&n;&t; * superblock pointer here&n;&t; */
 DECL|member|j_private
 r_void
