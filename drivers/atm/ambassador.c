@@ -8966,7 +8966,8 @@ r_int
 id|err
 suffix:semicolon
 singleline_comment|// read resources from PCI configuration space
-id|u8
+r_int
+r_int
 id|irq
 op_assign
 id|pci_dev-&gt;irq
