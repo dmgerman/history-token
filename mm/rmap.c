@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * mm/rmap.c - physical to virtual reverse mappings&n; *&n; * Copyright 2001, Rik van Riel &lt;riel@conectiva.com.br&gt;&n; * Released under the General Public License (GPL).&n; *&n; * Simple, low overhead reverse mapping scheme.&n; * Please try to keep this thing as modular as possible.&n; *&n; * Provides methods for unmapping each kind of mapped page:&n; * the anon methods track anonymous pages, and&n; * the file methods track pages belonging to an inode.&n; *&n; * Original design by Rik van Riel &lt;riel@conectiva.com.br&gt; 2001&n; * File methods by Dave McCracken &lt;dmccr@us.ibm.com&gt; 2003, 2004&n; * Anonymous methods by Andrea Arcangeli &lt;andrea@suse.de&gt; 2004&n; * Contributions by Hugh Dickins &lt;hugh@veritas.com&gt; 2003, 2004&n; */
-multiline_comment|/*&n; * Locking:&n; * - the page-&gt;mapcount field is protected by the PG_maplock bit,&n; *   which nests within the mm-&gt;page_table_lock,&n; *   which nests within the page lock.&n; * - because swapout locking is opposite to the locking order&n; *   in the page fault path, the swapout path uses trylocks&n; *   on the mm-&gt;page_table_lock&n; */
+multiline_comment|/*&n; * Locking: see &quot;Lock ordering&quot; summary in filemap.c.&n; * In swapout, page_map_lock is held on entry to page_referenced and&n; * try_to_unmap, so they trylock for i_mmap_lock and page_table_lock.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -203,6 +203,19 @@ id|vma-&gt;anon_vma
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|allocated
+)paren
+id|spin_lock
+c_func
+(paren
+op_amp
+id|anon_vma-&gt;lock
+)paren
+suffix:semicolon
 id|vma-&gt;anon_vma
 op_assign
 id|anon_vma
@@ -215,6 +228,19 @@ id|vma-&gt;anon_vma_node
 comma
 op_amp
 id|anon_vma-&gt;head
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|allocated
+)paren
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|anon_vma-&gt;lock
 )paren
 suffix:semicolon
 id|allocated
