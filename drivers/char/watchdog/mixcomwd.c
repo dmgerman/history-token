@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * MixCom Watchdog: A Simple Hardware Watchdog Device&n; * Based on Softdog driver by Alan Cox and PC Watchdog driver by Ken Hollis&n; *&n; * Author: Gergely Madarasz &lt;gorgo@itc.hu&gt;&n; *&n; * Copyright (c) 1999 ITConsult-Pro Co. &lt;info@itc.hu&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Version 0.1 (99/04/15):&n; *&t;&t;- first version&n; *&n; * Version 0.2 (99/06/16):&n; *&t;&t;- added kernel timer watchdog ping after close&n; *&t;&t;  since the hardware does not support watchdog shutdown&n; *&n; * Version 0.3 (99/06/21):&n; *&t;&t;- added WDIOC_GETSTATUS and WDIOC_GETSUPPORT ioctl calls&n; *&n; * Version 0.3.1 (99/06/22):&n; *&t;&t;- allow module removal while internal timer is active,&n; *&t;&t;  print warning about probable reset&n; *&n; * Version 0.4 (99/11/15):&n; *&t;&t;- support for one more type board&n; *&n; * Version 0.5 (2001/12/14) Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *              - added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&t;&n; */
+multiline_comment|/*&n; * MixCom Watchdog: A Simple Hardware Watchdog Device&n; * Based on Softdog driver by Alan Cox and PC Watchdog driver by Ken Hollis&n; *&n; * Author: Gergely Madarasz &lt;gorgo@itc.hu&gt;&n; *&n; * Copyright (c) 1999 ITConsult-Pro Co. &lt;info@itc.hu&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Version 0.1 (99/04/15):&n; *&t;&t;- first version&n; *&n; * Version 0.2 (99/06/16):&n; *&t;&t;- added kernel timer watchdog ping after close&n; *&t;&t;  since the hardware does not support watchdog shutdown&n; *&n; * Version 0.3 (99/06/21):&n; *&t;&t;- added WDIOC_GETSTATUS and WDIOC_GETSUPPORT ioctl calls&n; *&n; * Version 0.3.1 (99/06/22):&n; *&t;&t;- allow module removal while internal timer is active,&n; *&t;&t;  print warning about probable reset&n; *&n; * Version 0.4 (99/11/15):&n; *&t;&t;- support for one more type board&n; *&n; * Version 0.5 (2001/12/14) Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *              - added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&n; */
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;0.5&quot; 
+mdefine_line|#define VERSION &quot;0.5&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -513,6 +513,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;MixCOM watchdog&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -664,12 +665,22 @@ id|miscdevice
 id|mixcomwd_miscdev
 op_assign
 (brace
+dot
+id|minor
+op_assign
 id|WATCHDOG_MINOR
 comma
+dot
+id|name
+op_assign
 l_string|&quot;watchdog&quot;
 comma
+dot
+id|fops
+op_assign
 op_amp
 id|mixcomwd_fops
+comma
 )brace
 suffix:semicolon
 DECL|function|mixcomwd_checkcard

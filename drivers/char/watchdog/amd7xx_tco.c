@@ -33,7 +33,7 @@ mdefine_line|#define TCO_STATUS1_REG 0x44
 DECL|macro|TCO_STATUS2_REG
 mdefine_line|#define TCO_STATUS2_REG&t;0x46
 DECL|macro|NDTO_STS2
-mdefine_line|#define NDTO_STS2&t;(1 &lt;&lt; 1)&t;/* we&squot;re interested in the second timeout */ 
+mdefine_line|#define NDTO_STS2&t;(1 &lt;&lt; 1)&t;/* we&squot;re interested in the second timeout */
 DECL|macro|BOOT_STS
 mdefine_line|#define BOOT_STS&t;(1 &lt;&lt; 2)&t;/* will be set if NDTO_STS2 was set before reboot */
 DECL|macro|TCO_CTRL1_REG
@@ -600,6 +600,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;AMD 766/768&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -1034,6 +1035,7 @@ dot
 id|notifier_call
 op_assign
 id|amdtco_notify_sys
+comma
 )brace
 suffix:semicolon
 DECL|variable|amdtco_fops
@@ -1067,6 +1069,7 @@ dot
 id|release
 op_assign
 id|amdtco_fop_release
+comma
 )brace
 suffix:semicolon
 DECL|variable|amdtco_miscdev
@@ -1091,6 +1094,7 @@ id|fops
 op_assign
 op_amp
 id|amdtco_fops
+comma
 )brace
 suffix:semicolon
 DECL|variable|amdtco_pci_tbl
@@ -1118,6 +1122,7 @@ comma
 l_int|0
 comma
 )brace
+comma
 )brace
 suffix:semicolon
 id|MODULE_DEVICE_TABLE

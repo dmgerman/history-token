@@ -521,6 +521,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;PC87307/PC97307&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -999,9 +1000,11 @@ id|notifier_block
 id|sc1200wdt_notifier
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|sc1200wdt_notify_sys
+comma
 )brace
 suffix:semicolon
 DECL|variable|sc1200wdt_fops
@@ -1035,6 +1038,7 @@ dot
 id|release
 op_assign
 id|sc1200wdt_release
+comma
 )brace
 suffix:semicolon
 DECL|variable|sc1200wdt_miscdev
@@ -1133,6 +1137,7 @@ id|id
 op_assign
 l_string|&quot;&quot;
 )brace
+comma
 )brace
 suffix:semicolon
 DECL|function|scl200wdt_pnp_probe

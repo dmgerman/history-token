@@ -797,6 +797,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;Winbond 83977&quot;
+comma
 )brace
 suffix:semicolon
 DECL|function|wdt977_ioctl
@@ -1119,6 +1120,7 @@ id|fops
 op_assign
 op_amp
 id|wdt977_fops
+comma
 )brace
 suffix:semicolon
 DECL|function|nwwatchdog_init

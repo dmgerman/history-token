@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IB700 Single Board Computer WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Charles Howes &lt;chowes@vsol.net&gt;&n; *&n; *      Based on advantechwdt.c which is based on acquirewdt.c which&n; *       is based on wdt.c.&n; *&n; *&t;(c) Copyright 2000-2001 Marek Michalkiewicz &lt;marekm@linux.org.pl&gt;&n; *&n; *&t;Based on acquirewdt.c which is based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *           Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *           Added timeout module option to override default&n; * &n; */
+multiline_comment|/*&n; *&t;IB700 Single Board Computer WDT driver for Linux 2.4.x&n; *&n; *&t;(c) Copyright 2001 Charles Howes &lt;chowes@vsol.net&gt;&n; *&n; *      Based on advantechwdt.c which is based on acquirewdt.c which&n; *       is based on wdt.c.&n; *&n; *&t;(c) Copyright 2000-2001 Marek Michalkiewicz &lt;marekm@linux.org.pl&gt;&n; *&n; *&t;Based on acquirewdt.c which is based on wdt.c.&n; *&t;Original copyright messages:&n; *&n; *&t;(c) Copyright 1996 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *      14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *           Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *           Added timeout module option to override default&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -333,6 +333,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;IB700 WDT&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -767,6 +768,7 @@ id|fops
 op_assign
 op_amp
 id|ibwdt_fops
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;The WDT needs to learn about soft shutdowns in order to&n; *&t;turn the timebomb registers off.&n; */
@@ -791,6 +793,7 @@ dot
 id|priority
 op_assign
 l_int|0
+comma
 )brace
 suffix:semicolon
 DECL|function|ibwdt_init

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  MachZ ZF-Logic Watchdog Timer driver for Linux&n; *  &n; * &n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  The author does NOT admit liability nor provide warranty for&n; *  any of this software. This material is provided &quot;AS-IS&quot; in&n; *  the hope that it may be useful for others.&n; *&n; *  Author: Fernando Fuganti &lt;fuganti@conectiva.com.br&gt;&n; *&n; *  Based on sbc60xxwdt.c by Jakob Oestergaard&n; * &n; *&n; *  We have two timers (wd#1, wd#2) driven by a 32 KHz clock with the &n; *  following periods:&n; *      wd#1 - 2 seconds;&n; *      wd#2 - 7.2 ms;&n; *  After the expiration of wd#1, it can generate a NMI, SCI, SMI, or &n; *  a system RESET and it starts wd#2 that unconditionaly will RESET &n; *  the system when the counter reaches zero.&n; *&n; *  14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *      Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; */
+multiline_comment|/*&n; *  MachZ ZF-Logic Watchdog Timer driver for Linux&n; *&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  The author does NOT admit liability nor provide warranty for&n; *  any of this software. This material is provided &quot;AS-IS&quot; in&n; *  the hope that it may be useful for others.&n; *&n; *  Author: Fernando Fuganti &lt;fuganti@conectiva.com.br&gt;&n; *&n; *  Based on sbc60xxwdt.c by Jakob Oestergaard&n; *&n; *&n; *  We have two timers (wd#1, wd#2) driven by a 32 KHz clock with the&n; *  following periods:&n; *      wd#1 - 2 seconds;&n; *      wd#2 - 7.2 ms;&n; *  After the expiration of wd#1, it can generate a NMI, SCI, SMI, or&n; *  a system RESET and it starts wd#2 that unconditionaly will RESET&n; *  the system when the counter reaches zero.&n; *&n; *  14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *      Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -31,7 +31,7 @@ multiline_comment|/* size */
 DECL|macro|ZFL_VERSION
 mdefine_line|#define ZFL_VERSION&t;0x02&t;/* 16   */
 DECL|macro|CONTROL
-mdefine_line|#define CONTROL &t;0x10&t;/* 16   */&t;
+mdefine_line|#define CONTROL &t;0x10&t;/* 16   */
 DECL|macro|STATUS
 mdefine_line|#define STATUS&t;&t;0x12&t;/* 8    */
 DECL|macro|COUNTER_1
@@ -202,6 +202,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;ZF-Logic watchdog&quot;
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * action refers to action taken when watchdog resets&n; * 0 = GEN_RESET&n; * 1 = GEN_SMI&n; * 2 = GEN_NMI&n; * 3 = GEN_SCI&n; * defaults to GEN_RESET (0)&n; */
@@ -563,7 +564,7 @@ l_string|&quot;: Watchdog timer is now disabled&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * start hardware timer &n; */
+multiline_comment|/*&n; * start hardware timer&n; */
 DECL|function|zf_timer_on
 r_static
 r_void
@@ -720,7 +721,7 @@ op_minus
 id|jiffies
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * reset event is activated by transition from 0 to 1 on&n;&t;&t; * RESET_WD1 bit and we assume that it is already zero...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * reset event is activated by transition from 0 to 1 on&n;&t;&t; * RESET_WD1 bit and we assume that it is already zero...&n;&t;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -851,7 +852,7 @@ id|nowayout
 r_int
 id|ofs
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; * note: just in case someone wrote the magic character&n;&t;&t;&t; * five months ago...&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * note: just in case someone wrote the magic character&n;&t;&t;&t; * five months ago...&n;&t;&t;&t; */
 id|zf_expect_close
 op_assign
 l_int|0
@@ -1288,6 +1289,7 @@ id|fops
 op_assign
 op_amp
 id|zf_fops
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The device needs to learn about soft shutdowns in order to&n; * turn the timebomb registers off.&n; */
@@ -1312,6 +1314,7 @@ dot
 id|priority
 op_assign
 l_int|0
+comma
 )brace
 suffix:semicolon
 DECL|function|zf_show_action

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Industrial Computer Source WDT500/501 driver for Linux 2.1.x&n; *&n; *&t;(c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;Release 0.09.&n; *&n; *&t;Fixes&n; *&t;&t;Dave Gregorich&t;:&t;Modularisation and minor bugs&n; *&t;&t;Alan Cox&t;:&t;Added the watchdog ioctl() stuff&n; *&t;&t;Alan Cox&t;:&t;Fixed the reboot problem (as noted by&n; *&t;&t;&t;&t;&t;Matt Crocker).&n; *&t;&t;Alan Cox&t;:&t;Added wdt= boot option&n; *&t;&t;Alan Cox&t;:&t;Cleaned up copy/user stuff&n; *&t;&t;Tim Hockin&t;:&t;Added insmod parameters, comment cleanup&n; *&t;&t;&t;&t;&t;Parameterized timeout&n; *&t;&t;JP Nollmann&t;:&t;Added support for PCI wdt501p&n; *&t;&t;Alan Cox&t;:&t;Split ISA and PCI cards into two drivers&n; *&t;&t;Jeff Garzik&t;:&t;PCI cleanups&n; *&t;&t;Tigran Aivazian&t;:&t;Restructured wdtpci_init_one() to handle failures&n; *&t;&t;Joel Becker &t;:&t;Added WDIOC_GET/SETTIMEOUT&n; *&t;&t;Zwane Mwaikambo&t;:&t;Magic char closing, locking changes, cleanups&n; *&t;&t;Matt Domsch&t;:&t;nowayout module option&n; */
+multiline_comment|/*&n; *&t;Industrial Computer Source WDT500/501 driver for Linux 2.1.x&n; *&n; *&t;(c) Copyright 1996-1997 Alan Cox &lt;alan@redhat.com&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.redhat.com&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Neither Alan Cox nor CymruNet Ltd. admit liability nor provide&n; *&t;warranty for any of this software. This material is provided&n; *&t;&quot;AS-IS&quot; and at no charge.&n; *&n; *&t;(c) Copyright 1995    Alan Cox &lt;alan@lxorguk.ukuu.org.uk&gt;&n; *&n; *&t;Release 0.09.&n; *&n; *&t;Fixes&n; *&t;&t;Dave Gregorich&t;:&t;Modularisation and minor bugs&n; *&t;&t;Alan Cox&t;:&t;Added the watchdog ioctl() stuff&n; *&t;&t;Alan Cox&t;:&t;Fixed the reboot problem (as noted by&n; *&t;&t;&t;&t;&t;Matt Crocker).&n; *&t;&t;Alan Cox&t;:&t;Added wdt= boot option&n; *&t;&t;Alan Cox&t;:&t;Cleaned up copy/user stuff&n; *&t;&t;Tim Hockin&t;:&t;Added insmod parameters, comment cleanup&n; *&t;&t;&t;&t;&t;Parameterized timeout&n; *&t;&t;JP Nollmann&t;:&t;Added support for PCI wdt501p&n; *&t;&t;Alan Cox&t;:&t;Split ISA and PCI cards into two drivers&n; *&t;&t;Jeff Garzik&t;:&t;PCI cleanups&n; *&t;&t;Tigran Aivazian&t;:&t;Restructured wdtpci_init_one() to handle failures&n; *&t;&t;Joel Becker &t;:&t;Added WDIOC_GET/SETTIMEOUT&n; *&t;&t;Zwane Mwaikambo&t;:&t;Magic char closing, locking changes, cleanups&n; *&t;&t;Matt Domsch&t;:&t;nowayout module option&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -179,7 +179,7 @@ id|ctr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Kernel methods.&n; */
-multiline_comment|/**&n; *&t;wdtpci_status:&n; *&t;&n; *&t;Extract the status information from a WDT watchdog device. There are&n; *&t;several board variants so we have to know which bits are valid. Some&n; *&t;bits default to one and some to zero in order to be maximally painful.&n; *&n; *&t;we then map the bits onto the status ioctl flags.&n; */
+multiline_comment|/**&n; *&t;wdtpci_status:&n; *&n; *&t;Extract the status information from a WDT watchdog device. There are&n; *&t;several board variants so we have to know which bits are valid. Some&n; *&t;bits default to one and some to zero in order to be maximally painful.&n; *&n; *&t;we then map the bits onto the status ioctl flags.&n; */
 DECL|function|wdtpci_status
 r_static
 r_int
@@ -328,7 +328,7 @@ op_star
 id|regs
 )paren
 (brace
-multiline_comment|/*&n;&t; *&t;Read the status register see what is up and&n;&t; *&t;then printk it. &n;&t; */
+multiline_comment|/*&n;&t; *&t;Read the status register see what is up and&n;&t; *&t;then printk it.&n;&t; */
 r_int
 r_char
 id|status
@@ -460,7 +460,7 @@ l_string|&quot;Would Reboot.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#else&t;&t;
+macro_line|#else
 id|printk
 c_func
 (paren
@@ -474,7 +474,7 @@ c_func
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;
+macro_line|#endif
 macro_line|#else
 id|printk
 c_func
@@ -488,7 +488,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;wdtpci_ping:&n; *&n; *&t;Reload counter one with the watchdog timeout. We don&squot;t bother reloading&n; *&t;the cascade counter. &n; */
+multiline_comment|/**&n; *&t;wdtpci_ping:&n; *&n; *&t;Reload counter one with the watchdog timeout. We don&squot;t bother reloading&n; *&t;the cascade counter.&n; */
 DECL|function|wdtpci_ping
 r_static
 r_void
@@ -553,7 +553,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;wdtpci_write:&n; *&t;@file: file handle to the watchdog&n; *&t;@buf: buffer to write (unused as data does not matter here &n; *&t;@count: count of bytes&n; *&t;@ppos: pointer to the position to write. No seeks allowed&n; *&n; *&t;A write to a watchdog device is defined as a keepalive signal. Any&n; *&t;write of data will do, as we we don&squot;t define content meaning.&n; */
+multiline_comment|/**&n; *&t;wdtpci_write:&n; *&t;@file: file handle to the watchdog&n; *&t;@buf: buffer to write (unused as data does not matter here&n; *&t;@count: count of bytes&n; *&t;@ppos: pointer to the position to write. No seeks allowed&n; *&n; *&t;A write to a watchdog device is defined as a keepalive signal. Any&n; *&t;write of data will do, as we we don&squot;t define content meaning.&n; */
 DECL|function|wdtpci_write
 r_static
 id|ssize_t
@@ -780,7 +780,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;wdtpci_ioctl:&n; *&t;@inode: inode of the device&n; *&t;@file: file handle to the device&n; *&t;@cmd: watchdog command&n; *&t;@arg: argument pointer&n; *&n; *&t;The watchdog API defines a common set of functions for all watchdogs&n; *&t;according to their available features. We only actually usefully support&n; *&t;querying capabilities and current status. &n; */
+multiline_comment|/**&n; *&t;wdtpci_ioctl:&n; *&t;@inode: inode of the device&n; *&t;@file: file handle to the device&n; *&t;@cmd: watchdog command&n; *&t;@arg: argument pointer&n; *&n; *&t;The watchdog API defines a common set of functions for all watchdogs&n; *&t;according to their available features. We only actually usefully support&n; *&t;querying capabilities and current status.&n; */
 DECL|function|wdtpci_ioctl
 r_static
 r_int
@@ -1013,7 +1013,7 @@ id|arg
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;wdtpci_open:&n; *&t;@inode: inode of device&n; *&t;@file: file handle to device&n; *&n; *&t;One of our two misc devices has been opened. The watchdog device is&n; *&t;single open and on opening we load the counters. Counter zero is a &n; *&t;100Hz cascade, into counter 1 which downcounts to reboot. When the&n; *&t;counter triggers counter 2 downcounts the length of the reset pulse&n; *&t;which set set to be as long as possible. &n; */
+multiline_comment|/**&n; *&t;wdtpci_open:&n; *&t;@inode: inode of device&n; *&t;@file: file handle to device&n; *&n; *&t;One of our two misc devices has been opened. The watchdog device is&n; *&t;single open and on opening we load the counters. Counter zero is a&n; *&t;100Hz cascade, into counter 1 which downcounts to reboot. When the&n; *&t;counter triggers counter 2 downcounts the length of the reset pulse&n; *&t;which set set to be as long as possible.&n; */
 DECL|function|wdtpci_open
 r_static
 r_int
@@ -1075,7 +1075,7 @@ id|THIS_MODULE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; *&t;Activate &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *&t;Activate&n;&t;&t;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1230,7 +1230,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;wdtpci_close:&n; *&t;@inode: inode to board&n; *&t;@file: file handle to board&n; *&n; *&t;The watchdog has a configurable API. There is a religious dispute &n; *&t;between people who want their watchdog to be able to shut down and &n; *&t;those who want to be sure if the watchdog manager dies the machine&n; *&t;reboots. In the former case we disable the counters, in the latter&n; *&t;case you have to open it again very soon.&n; */
+multiline_comment|/**&n; *&t;wdtpci_close:&n; *&t;@inode: inode to board&n; *&t;@file: file handle to board&n; *&n; *&t;The watchdog has a configurable API. There is a religious dispute&n; *&t;between people who want their watchdog to be able to shut down and&n; *&t;those who want to be sure if the watchdog manager dies the machine&n; *&t;reboots. In the former case we disable the counters, in the latter&n; *&t;case you have to open it again very soon.&n; */
 DECL|function|wdtpci_release
 r_static
 r_int
@@ -1511,7 +1511,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; *&t;The WDT card needs to learn about soft shutdowns in order to&n; *&t;turn the timebomb registers off. &n; */
+multiline_comment|/*&n; *&t;The WDT card needs to learn about soft shutdowns in order to&n; *&t;turn the timebomb registers off.&n; */
 DECL|variable|wdtpci_notifier
 r_static
 r_struct
@@ -1854,7 +1854,7 @@ op_amp
 id|temp_miscdev
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 id|misc_deregister
 c_func
 (paren

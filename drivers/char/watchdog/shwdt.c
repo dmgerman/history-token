@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/watchdog.h&gt;
-multiline_comment|/*&n; * Default clock division ratio is 5.25 msecs. For an additional table of&n; * values, consult the asm-sh/watchdog.h. Overload this at module load&n; * time. &n; *&n; * In order for this to work reliably we need to have HZ set to 1000 or&n; * something quite higher than 100 (or we need a proper high-res timer&n; * implementation that will deal with this properly), otherwise the 10ms&n; * resolution of a jiffy is enough to trigger the overflow. For things like&n; * the SH-4 and SH-5, this isn&squot;t necessarily that big of a problem, though&n; * for the SH-2 and SH-3, this isn&squot;t recommended unless the WDT is absolutely&n; * necssary.&n; *&n; * As a result of this timing problem, the only modes that are particularly&n; * feasible are the 4096 and the 2048 divisors, which yeild 5.25 and 2.62ms&n; * overflow periods respectively.&n; *&n; * Also, since we can&squot;t really expect userspace to be responsive enough&n; * before the overflow happens, we maintain two seperate timers .. One in&n; * the kernel for clearing out WOVF every 2ms or so (again, this depends on&n; * HZ == 1000), and another for monitoring userspace writes to the WDT device.&n; *&n; * As such, we currently use a configurable heartbeat interval which defaults&n; * to 30s. In this case, the userspace daemon is only responsible for periodic&n; * writes to the device before the next heartbeat is scheduled. If the daemon&n; * misses its deadline, the kernel timer will allow the WDT to overflow.&n; */
+multiline_comment|/*&n; * Default clock division ratio is 5.25 msecs. For an additional table of&n; * values, consult the asm-sh/watchdog.h. Overload this at module load&n; * time.&n; *&n; * In order for this to work reliably we need to have HZ set to 1000 or&n; * something quite higher than 100 (or we need a proper high-res timer&n; * implementation that will deal with this properly), otherwise the 10ms&n; * resolution of a jiffy is enough to trigger the overflow. For things like&n; * the SH-4 and SH-5, this isn&squot;t necessarily that big of a problem, though&n; * for the SH-2 and SH-3, this isn&squot;t recommended unless the WDT is absolutely&n; * necssary.&n; *&n; * As a result of this timing problem, the only modes that are particularly&n; * feasible are the 4096 and the 2048 divisors, which yeild 5.25 and 2.62ms&n; * overflow periods respectively.&n; *&n; * Also, since we can&squot;t really expect userspace to be responsive enough&n; * before the overflow happens, we maintain two seperate timers .. One in&n; * the kernel for clearing out WOVF every 2ms or so (again, this depends on&n; * HZ == 1000), and another for monitoring userspace writes to the WDT device.&n; *&n; * As such, we currently use a configurable heartbeat interval which defaults&n; * to 30s. In this case, the userspace daemon is only responsible for periodic&n; * writes to the device before the next heartbeat is scheduled. If the daemon&n; * misses its deadline, the kernel timer will allow the WDT to overflow.&n; */
 DECL|variable|clock_division_ratio
 r_static
 r_int
@@ -182,7 +182,7 @@ c_func
 id|csr
 )paren
 suffix:semicolon
-macro_line|#endif&t;
+macro_line|#endif
 )brace
 multiline_comment|/**&n; * &t;sh_wdt_stop - Stop the Watchdog&n; *&n; * &t;Stops the watchdog.&n; */
 DECL|function|sh_wdt_stop
@@ -777,7 +777,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * &t;sh_wdt_notify_sys - Notifier Handler&n; * &t;&n; * &t;@this: notifier block&n; * &t;@code: notifier event&n; * &t;@unused: unused&n; *&n; * &t;Handles specific events, such as turning off the watchdog during a&n; * &t;shutdown event.&n; */
+multiline_comment|/**&n; * &t;sh_wdt_notify_sys - Notifier Handler&n; *&n; * &t;@this: notifier block&n; * &t;@code: notifier event&n; * &t;@unused: unused&n; *&n; * &t;Handles specific events, such as turning off the watchdog during a&n; * &t;shutdown event.&n; */
 DECL|function|sh_wdt_notify_sys
 r_static
 r_int

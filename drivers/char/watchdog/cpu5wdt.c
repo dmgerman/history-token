@@ -463,6 +463,7 @@ dot
 id|identity
 op_assign
 l_string|&quot;CPU5 WDT&quot;
+comma
 )brace
 suffix:semicolon
 r_switch
@@ -738,6 +739,7 @@ id|fops
 op_assign
 op_amp
 id|cpu5wdt_fops
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* init/exit function */

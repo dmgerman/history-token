@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IndyDog&t;0.2&t;A Hardware Watchdog Device for SGI IP22&n; *&n; *&t;(c) Copyright 2002 Guido Guenther &lt;agx@sigxcpu.org&gt;, All Rights Reserved.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; */
+multiline_comment|/*&n; *&t;IndyDog&t;0.2&t;A Hardware Watchdog Device for SGI IP22&n; *&n; *&t;(c) Copyright 2002 Guido Guenther &lt;agx@sigxcpu.org&gt;, All Rights Reserved.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;

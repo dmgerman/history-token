@@ -1,4 +1,4 @@
-multiline_comment|/* linux/drivers/char/scx200_wdt.c &n;&n;   National Semiconductor SCx200 Watchdog support&n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   Som code taken from:&n;   National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n;   (c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&n;   This program is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU General Public License as&n;   published by the Free Software Foundation; either version 2 of the&n;   License, or (at your option) any later version.&n;&n;   The author(s) of this software shall not be held liable for damages&n;   of any nature resulting due to the use of this software. This&n;   software is provided AS-IS with no warranties. */
+multiline_comment|/* drivers/char/watchdog/scx200_wdt.c&n;&n;   National Semiconductor SCx200 Watchdog support&n;&n;   Copyright (c) 2001,2002 Christer Weinigel &lt;wingel@nano-system.com&gt;&n;&n;   Som code taken from:&n;   National Semiconductor PC87307/PC97307 (ala SC1200) WDT driver&n;   (c) Copyright 2002 Zwane Mwaikambo &lt;zwane@commfireservices.com&gt;&n;&n;   This program is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU General Public License as&n;   published by the Free Software Foundation; either version 2 of the&n;   License, or (at your option) any later version.&n;&n;   The author(s) of this software shall not be held liable for damages&n;   of any nature resulting due to the use of this software. This&n;   software is provided AS-IS with no warranties. */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -420,6 +420,7 @@ dot
 id|notifier_call
 op_assign
 id|scx200_wdt_notify_sys
+comma
 )brace
 suffix:semicolon
 DECL|function|scx200_wdt_write
