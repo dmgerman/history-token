@@ -785,7 +785,7 @@ id|event
 op_member_access_from_pointer
 id|list
 )paren
-id|skb_queue_purge
+id|sctp_queue_purge_ulpevents
 c_func
 (paren
 id|sctp_event2skb
@@ -798,14 +798,10 @@ id|list
 )paren
 suffix:semicolon
 r_else
-id|kfree_skb
-c_func
-(paren
-id|sctp_event2skb
+id|sctp_ulpevent_free
 c_func
 (paren
 id|event
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -983,7 +979,6 @@ suffix:semicolon
 multiline_comment|/* Helper function to return an event corresponding to the reassembled&n; * datagram.&n; * This routine creates a re-assembled skb given the first and last skb&squot;s&n; * as stored in the reassembly queue. The skb&squot;s may be non-linear if the sctp&n; * payload was fragmented on the way and ip had to reassemble them.&n; * We add the rest of skb&squot;s to the first skb&squot;s fraglist.&n; */
 DECL|function|sctp_make_reassembled_event
 r_static
-r_inline
 r_struct
 id|sctp_ulpevent
 op_star

@@ -747,6 +747,12 @@ r_struct
 id|sctp_association
 op_star
 id|asoc
+comma
+r_const
+r_struct
+id|sctp_chunk
+op_star
+id|chunk
 )paren
 suffix:semicolon
 r_struct
