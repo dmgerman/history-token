@@ -402,22 +402,26 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-DECL|struct|drm_pci_list
+DECL|struct|drm_pci_id_list
 r_typedef
 r_struct
-id|drm_pci_list
+id|drm_pci_id_list
 (brace
 DECL|member|vendor
-id|u16
+r_int
 id|vendor
 suffix:semicolon
 DECL|member|device
-id|u16
+r_int
 id|device
 suffix:semicolon
-DECL|typedef|drm_pci_list_t
+DECL|member|driver_private
+r_int
+id|driver_private
+suffix:semicolon
+DECL|typedef|drm_pci_id_list_t
 )brace
-id|drm_pci_list_t
+id|drm_pci_id_list_t
 suffix:semicolon
 DECL|struct|drm_ioctl_desc
 r_typedef
@@ -1348,6 +1352,11 @@ op_star
 id|devname
 suffix:semicolon
 multiline_comment|/**&lt; For /proc/interrupts */
+DECL|member|minor
+r_int
+id|minor
+suffix:semicolon
+multiline_comment|/**&lt; Minor device number */
 DECL|member|blocked
 r_int
 id|blocked

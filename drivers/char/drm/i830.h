@@ -31,6 +31,8 @@ DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;2
 DECL|macro|DRIVER_IOCTLS
 mdefine_line|#define DRIVER_IOCTLS&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_INIT)]   = { i830_dma_init,    1, 1 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_VERTEX)] = { i830_dma_vertex,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_CLEAR)]  = { i830_clear_bufs,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_FLUSH)]  = { i830_flush_ioctl, 1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_GETAGE)] = { i830_getage,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_GETBUF)] = { i830_getbuf,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_SWAP)]   = { i830_swap_bufs,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_COPY)]   = { i830_copybuf,     1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_DOCOPY)] = { i830_docopy,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_FLIP)]   = { i830_flip_bufs,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_IRQ_EMIT)] = { i830_irq_emit,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_IRQ_WAIT)] = { i830_irq_wait,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_GETPARAM)] = { i830_getparam,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_SETPARAM)] = { i830_setparam,  1, 0 } 
+DECL|macro|DRIVER_PCI_IDS
+mdefine_line|#define DRIVER_PCI_IDS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x8086, 0x3577, 0},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x8086, 0x2562, 0},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x8086, 0x3582, 0},&t;&t;&t;&t;&t;&t;&bslash;&n; &t;{0x8086, 0x2572, 0},&t;&t;&t;&t; &t;&t;&bslash;&n;&t;{0, 0, 0}
 DECL|macro|__HAVE_COUNTERS
 mdefine_line|#define __HAVE_COUNTERS         4
 DECL|macro|__HAVE_COUNTER6
