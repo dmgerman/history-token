@@ -2,10 +2,12 @@ multiline_comment|/*&n; * drivers/base/core.c - core driver model code (device r
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG 0
 macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;base.h&quot;
 DECL|variable|global_device_list
 id|LIST_HEAD

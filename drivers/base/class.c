@@ -2,6 +2,7 @@ multiline_comment|/*&n; * class.c - basic device class management&n; */
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
 r_static
 id|LIST_HEAD
