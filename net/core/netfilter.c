@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/route.h&gt;
@@ -25,7 +24,7 @@ macro_line|#else
 DECL|macro|NFDEBUG
 mdefine_line|#define NFDEBUG(format, args...)
 macro_line|#endif
-multiline_comment|/* Sockopts only registered and called from user context, so&n;   BR_NETPROTO_LOCK would be overkill.  Also, [gs]etsockopt calls may&n;   sleep. */
+multiline_comment|/* Sockopts only registered and called from user context, so&n;   net locking would be overkill.  Also, [gs]etsockopt calls may&n;   sleep. */
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -51,6 +50,13 @@ c_func
 id|nf_sockopts
 )paren
 suffix:semicolon
+DECL|variable|nf_hook_lock
+r_static
+id|spinlock_t
+id|nf_hook_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* &n; * A queue handler may be registered for each protocol.  Each is protected by&n; * long term mutex.  The handler must provide an an outfn() to accept packets&n; * for queueing and must reinject all packets it receives, no matter what.&n; */
 DECL|struct|nf_queue_handler_t
 r_static
@@ -73,6 +79,13 @@ id|queue_handler
 id|NPROTO
 )braket
 suffix:semicolon
+DECL|variable|queue_handler_lock
+r_static
+id|rwlock_t
+id|queue_handler_lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|nf_register_hook
 r_int
 id|nf_register_hook
@@ -89,29 +102,18 @@ id|list_head
 op_star
 id|i
 suffix:semicolon
-id|br_write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|nf_hook_lock
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each
+c_func
 (paren
 id|i
-op_assign
-id|nf_hooks
-(braket
-id|reg-&gt;pf
-)braket
-(braket
-id|reg-&gt;hooknum
-)braket
-dot
-id|next
-suffix:semicolon
-id|i
-op_ne
+comma
 op_amp
 id|nf_hooks
 (braket
@@ -120,10 +122,6 @@ id|reg-&gt;pf
 (braket
 id|reg-&gt;hooknum
 )braket
-suffix:semicolon
-id|i
-op_assign
-id|i-&gt;next
 )paren
 (brace
 r_if
@@ -145,7 +143,7 @@ id|priority
 r_break
 suffix:semicolon
 )brace
-id|list_add
+id|list_add_rcu
 c_func
 (paren
 op_amp
@@ -154,10 +152,16 @@ comma
 id|i-&gt;prev
 )paren
 suffix:semicolon
-id|br_write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|nf_hook_lock
+)paren
+suffix:semicolon
+id|synchronize_net
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -175,23 +179,30 @@ op_star
 id|reg
 )paren
 (brace
-id|br_write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|nf_hook_lock
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_rcu
 c_func
 (paren
 op_amp
 id|reg-&gt;list
 )paren
 suffix:semicolon
-id|br_write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|nf_hook_lock
+)paren
+suffix:semicolon
+id|synchronize_net
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1559,33 +1570,14 @@ r_int
 id|hook_thresh
 )paren
 (brace
-r_for
-c_loop
+multiline_comment|/*&n;&t; * The caller must not block between calls to this&n;&t; * function because of risk of continuing from deleted element.&n;&t; */
+id|list_for_each_continue_rcu
+c_func
 (paren
 op_star
 id|i
-op_assign
-(paren
-op_star
-id|i
-)paren
-op_member_access_from_pointer
-id|next
-suffix:semicolon
-op_star
-id|i
-op_ne
+comma
 id|head
-suffix:semicolon
-op_star
-id|i
-op_assign
-(paren
-op_star
-id|i
-)paren
-op_member_access_from_pointer
-id|next
 )paren
 (brace
 r_struct
@@ -1708,10 +1700,11 @@ id|data
 r_int
 id|ret
 suffix:semicolon
-id|br_write_lock_bh
+id|write_lock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|queue_handler_lock
 )paren
 suffix:semicolon
 r_if
@@ -1754,10 +1747,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|br_write_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|queue_handler_lock
 )paren
 suffix:semicolon
 r_return
@@ -1774,10 +1768,11 @@ r_int
 id|pf
 )paren
 (brace
-id|br_write_lock_bh
+id|write_lock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|queue_handler_lock
 )paren
 suffix:semicolon
 id|queue_handler
@@ -1798,10 +1793,11 @@ id|data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|br_write_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
-id|BR_NETPROTO_LOCK
+op_amp
+id|queue_handler_lock
 )paren
 suffix:semicolon
 r_return
@@ -1879,6 +1875,13 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* QUEUE == DROP if noone is waiting, to be safe. */
+id|read_lock
+c_func
+(paren
+op_amp
+id|queue_handler_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1891,6 +1894,13 @@ dot
 id|outfn
 )paren
 (brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|queue_handler_lock
+)paren
+suffix:semicolon
 id|kfree_skb
 c_func
 (paren
@@ -1937,6 +1947,13 @@ id|KERN_ERR
 l_string|&quot;OOM queueing packet %p&bslash;n&quot;
 comma
 id|skb
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|queue_handler_lock
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -1986,9 +2003,24 @@ c_func
 id|info-&gt;elem-&gt;owner
 )paren
 )paren
+(brace
+id|read_unlock
+c_func
+(paren
+op_amp
+id|queue_handler_lock
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 multiline_comment|/* Bump dev refs so they don&squot;t vanish while packet is out */
 r_if
 c_cond
@@ -2071,6 +2103,13 @@ id|pf
 )braket
 dot
 id|data
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|queue_handler_lock
 )paren
 suffix:semicolon
 r_if
@@ -2242,10 +2281,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* We may already have this, but read-locks nest anyway */
-id|br_read_lock_bh
+id|rcu_read_lock
 c_func
 (paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
@@ -2407,10 +2445,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|br_read_unlock_bh
+id|rcu_read_unlock
 c_func
 (paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 r_return
@@ -2445,11 +2482,9 @@ op_assign
 op_amp
 id|info-&gt;elem-&gt;list
 suffix:semicolon
-multiline_comment|/* We don&squot;t have BR_NETPROTO_LOCK here */
-id|br_read_lock_bh
+id|rcu_read_lock
 c_func
 (paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 multiline_comment|/* Drop reference to owner of hook which queued us. */
@@ -2459,6 +2494,60 @@ c_func
 id|info-&gt;elem-&gt;owner
 )paren
 suffix:semicolon
+id|list_for_each_rcu
+c_func
+(paren
+id|i
+comma
+op_amp
+id|nf_hooks
+(braket
+id|info-&gt;pf
+)braket
+(braket
+id|info-&gt;hook
+)braket
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|elem
+)paren
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|elem
+op_eq
+op_amp
+id|nf_hooks
+(braket
+id|info-&gt;pf
+)braket
+(braket
+id|info-&gt;hook
+)braket
+)paren
+(brace
+multiline_comment|/* The module which sent it to userspace is gone. */
+id|NFDEBUG
+c_func
+(paren
+l_string|&quot;%s: module disappeared, dropping packet.&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|verdict
+op_assign
+id|NF_DROP
+suffix:semicolon
+)brace
 multiline_comment|/* Continue traversal iff userspace said ok... */
 r_if
 c_cond
@@ -2580,10 +2669,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|br_read_unlock_bh
+id|rcu_read_unlock
 c_func
 (paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 multiline_comment|/* Release those devices we held, or Alexey will kill me. */

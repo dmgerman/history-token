@@ -38,8 +38,6 @@ multiline_comment|/*&n; *      Shall we try to damage output packets if routing 
 DECL|variable|sysctl_ip_dynaddr
 r_int
 id|sysctl_ip_dynaddr
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|sysctl_ip_default_ttl
 r_int

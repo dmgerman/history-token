@@ -3903,7 +3903,7 @@ r_else
 id|nd_tbl.stats.rcv_probes_ucast
 op_increment
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; *&t;update / create cache entry&n;&t;&t;&t; *&t;for the source adddress&n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; *&t;update / create cache entry&n;&t;&t;&t; *&t;for the source address&n;&t;&t;&t; */
 id|neigh
 op_assign
 id|neigh_event_ns
@@ -4108,7 +4108,7 @@ r_else
 id|nd_tbl.stats.rcv_probes_ucast
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *   update / create cache entry&n;&t;&t;&t; *   for the source adddress&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *   update / create cache entry&n;&t;&t;&t; *   for the source address&n;&t;&t;&t; */
 id|neigh
 op_assign
 id|neigh_event_ns

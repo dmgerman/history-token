@@ -579,7 +579,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_ui_autoport - provide dynamicly allocate SAP number&n; *&n; *&t;Provide the caller with a dynamicly allocated SAP number according&n; *&t;to the rules that are set in this function. Returns: 0, upon failure,&n; *&t;SAP number otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_ui_autoport - provide dynamically allocate SAP number&n; *&n; *&t;Provide the caller with a dynamically allocated SAP number according&n; *&t;to the rules that are set in this function. Returns: 0, upon failure,&n; *&t;SAP number otherwise.&n; */
 DECL|function|llc_ui_autoport
 r_static
 r_int

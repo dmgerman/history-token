@@ -1021,7 +1021,7 @@ op_minus
 id|EMSGSIZE
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;To avoid extra problems ND packets are send through this&n; *&t;routine. It&squot;s code duplication but I really want to avoid&n; *&t;extra checks since ipv6_build_header is used by TCP (which&n; *&t;is for us performace critical)&n; */
+multiline_comment|/*&n; *&t;To avoid extra problems ND packets are send through this&n; *&t;routine. It&squot;s code duplication but I really want to avoid&n; *&t;extra checks since ipv6_build_header is used by TCP (which&n; *&t;is for us performance critical)&n; */
 DECL|function|ip6_nd_hdr
 r_int
 id|ip6_nd_hdr

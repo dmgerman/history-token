@@ -1289,7 +1289,7 @@ r_return
 id|nbr_acked
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_conn_send_pdus - Sends queued PDUs&n; *&t;@sk: active connection&n; *&n; *&t;Sends queued pdus to MAC layer for transmition.&n; */
+multiline_comment|/**&n; *&t;llc_conn_send_pdus - Sends queued PDUs&n; *&t;@sk: active connection&n; *&n; *&t;Sends queued pdus to MAC layer for transmission.&n; */
 DECL|function|llc_conn_send_pdus
 r_static
 r_void

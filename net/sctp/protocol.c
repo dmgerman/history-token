@@ -1263,7 +1263,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Returns a valid dst cache entry for the given source and destination ip&n; * addresses. If an association is passed, trys to get a dst entry with a&n; * source adddress that matches an address in the bind address list.&n; */
+multiline_comment|/* Returns a valid dst cache entry for the given source and destination ip&n; * addresses. If an association is passed, trys to get a dst entry with a&n; * source address that matches an address in the bind address list.&n; */
 DECL|function|sctp_v4_get_dst
 r_struct
 id|dst_entry

@@ -2,7 +2,7 @@ multiline_comment|/*&n; *&t;IrNET protocol module : Synchronous PPP over an IrDA
 macro_line|#include &quot;irnet_ppp.h&quot;&t;&t;/* Private header */
 multiline_comment|/* Please put other headers in irnet.h - Thanks */
 multiline_comment|/************************* CONTROL CHANNEL *************************/
-multiline_comment|/*&n; * When a pppd instance is not active on /dev/irnet, it acts as a control&n; * channel.&n; * Writting allow to set up the IrDA destination of the IrNET channel,&n; * and any application may be read events happening in IrNET...&n; */
+multiline_comment|/*&n; * When a pppd instance is not active on /dev/irnet, it acts as a control&n; * channel.&n; * Writing allow to set up the IrDA destination of the IrNET channel,&n; * and any application may be read events happening in IrNET...&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Write is used to send a command to configure a IrNET channel&n; * before it is open by pppd. The syntax is : &quot;command argument&quot;&n; * Currently there is only two defined commands :&n; *&t;o name : set the requested IrDA nickname of the IrNET peer.&n; *&t;o addr : set the requested IrDA address of the IrNET peer.&n; * Note : the code is crude, but effective...&n; */
 r_static
@@ -35,7 +35,7 @@ r_char
 op_star
 id|start
 suffix:semicolon
-multiline_comment|/* Current command beeing processed */
+multiline_comment|/* Current command being processed */
 r_char
 op_star
 id|next

@@ -1396,7 +1396,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Mismatch */
 )brace
-multiline_comment|/* This looks stupid, because we scan almost static&n;&t;&t;   list, searching for static key. However, this way seems&n;&t;&t;   to be only reasonable way of handling fw_via rules&n;&t;&t;   (btw bsd makes the same thing).&n;&n;&t;&t;   It will not affect performance if you will follow&n;&t;&t;   the following simple rules:&n;&n;&t;&t;   - if inteface is aliased, ALWAYS specify fw_viadev,&n;&t;&t;     so that previous check will guarantee, that we will&n;&t;&t;     not waste time when packet arrive on another interface.&n;&n;&t;&t;   - avoid using fw_via.s_addr if fw_via.s_addr is owned&n;&t;&t;     by an aliased interface.&n;&n;&t;&t;                                                       --ANK&n;&t;&t; */
+multiline_comment|/* This looks stupid, because we scan almost static&n;&t;&t;   list, searching for static key. However, this way seems&n;&t;&t;   to be only reasonable way of handling fw_via rules&n;&t;&t;   (btw bsd makes the same thing).&n;&n;&t;&t;   It will not affect performance if you will follow&n;&t;&t;   the following simple rules:&n;&n;&t;&t;   - if interface is aliased, ALWAYS specify fw_viadev,&n;&t;&t;     so that previous check will guarantee, that we will&n;&t;&t;     not waste time when packet arrive on another interface.&n;&n;&t;&t;   - avoid using fw_via.s_addr if fw_via.s_addr is owned&n;&t;&t;     by an aliased interface.&n;&n;&t;&t;                                                       --ANK&n;&t;&t; */
 r_if
 c_cond
 (paren
