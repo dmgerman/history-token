@@ -2891,6 +2891,22 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|lec_set_multicast_list
+r_static
+r_void
+id|lec_set_multicast_list
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+multiline_comment|/* by default, all multicast frames arrive over the bus.&n;         * eventually support selective multicast service&n;         */
+r_return
+suffix:semicolon
+)brace
 r_static
 r_void
 DECL|function|lec_init
@@ -2925,7 +2941,7 @@ id|lec_get_stats
 suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
-l_int|NULL
+id|lec_set_multicast_list
 suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
