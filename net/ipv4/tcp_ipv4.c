@@ -8829,7 +8829,7 @@ id|sk
 )paren
 suffix:semicolon
 multiline_comment|/* Cleanup up the write buffer. */
-id|tcp_writequeue_purge
+id|sk_stream_writequeue_purge
 c_func
 (paren
 id|sk
@@ -11237,6 +11237,11 @@ l_int|87380
 op_star
 l_int|2
 )brace
+comma
+dot
+id|max_header
+op_assign
+id|MAX_TCP_HEADER
 comma
 )brace
 suffix:semicolon

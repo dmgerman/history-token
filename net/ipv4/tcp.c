@@ -1665,7 +1665,7 @@ id|wait_for_sndbuf
 suffix:semicolon
 id|skb
 op_assign
-id|tcp_alloc_pskb
+id|sk_stream_alloc_pskb
 c_func
 (paren
 id|sk
@@ -2495,7 +2495,7 @@ id|wait_for_sndbuf
 suffix:semicolon
 id|skb
 op_assign
-id|tcp_alloc_pskb
+id|sk_stream_alloc_pskb
 c_func
 (paren
 id|sk
@@ -2787,7 +2787,7 @@ op_logical_neg
 (paren
 id|page
 op_assign
-id|tcp_alloc_page
+id|sk_stream_alloc_page
 c_func
 (paren
 id|sk
@@ -6251,7 +6251,7 @@ op_amp
 id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
-id|tcp_writequeue_purge
+id|sk_stream_writequeue_purge
 c_func
 (paren
 id|sk
