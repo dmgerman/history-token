@@ -17852,7 +17852,7 @@ op_lshift
 id|tindex
 )paren
 suffix:semicolon
-multiline_comment|/*&n;   * Parse as much of the message as is availible,&n;   * rejecting it if we don&squot;t support it.  When&n;   * the entire message is availible and has been&n;   * handled, return TRUE indicating that we have&n;   * parsed an entire message.&n;   */
+multiline_comment|/*&n;   * Parse as much of the message as is available,&n;   * rejecting it if we don&squot;t support it.  When&n;   * the entire message is available and has been&n;   * handled, return TRUE indicating that we have&n;   * parsed an entire message.&n;   */
 r_if
 c_cond
 (paren

@@ -2516,7 +2516,7 @@ c_func
 l_string|&quot;BRKADRINT&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Tell everyone that this HBA is no longer availible */
+multiline_comment|/* Tell everyone that this HBA is no longer available */
 id|ahd_abort_scbs
 c_func
 (paren
@@ -16496,7 +16496,7 @@ op_amp
 id|tstate
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Parse as much of the message as is availible,&n;&t; * rejecting it if we don&squot;t support it.  When&n;&t; * the entire message is availible and has been&n;&t; * handled, return MSGLOOP_MSGCOMPLETE, indicating&n;&t; * that we have parsed an entire message.&n;&t; *&n;&t; * In the case of extended messages, we accept the length&n;&t; * byte outright and perform more checking once we know the&n;&t; * extended message type.&n;&t; */
+multiline_comment|/*&n;&t; * Parse as much of the message as is available,&n;&t; * rejecting it if we don&squot;t support it.  When&n;&t; * the entire message is available and has been&n;&t; * handled, return MSGLOOP_MSGCOMPLETE, indicating&n;&t; * that we have parsed an entire message.&n;&t; *&n;&t; * In the case of extended messages, we accept the length&n;&t; * byte outright and perform more checking once we know the&n;&t; * extended message type.&n;&t; */
 r_switch
 c_cond
 (paren

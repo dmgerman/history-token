@@ -27637,7 +27637,7 @@ comma
 id|dsa
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Fix Up. Some disks respond to a PPR negotation with&n;&t; * a bus free instead of a message reject. &n;&t; * Disable ppr negotiation if this is first time&n;&t; * tried ppr negotiation.&n;&t; */
+multiline_comment|/*&n;&t; * Fix Up. Some disks respond to a PPR negotiation with&n;&t; * a bus free instead of a message reject. &n;&t; * Disable ppr negotiation if this is first time&n;&t; * tried ppr negotiation.&n;&t; */
 r_if
 c_cond
 (paren
