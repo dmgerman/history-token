@@ -19,6 +19,19 @@ DECL|typedef|spinlock_t
 )brace
 id|spinlock_t
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|lock
+r_volatile
+r_int
+r_int
+id|lock
+suffix:semicolon
+DECL|typedef|rwlock_t
+)brace
+id|rwlock_t
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED&t;(spinlock_t) { 0 }
@@ -74,7 +87,7 @@ r_void
 id|__rw_yield
 c_func
 (paren
-id|spinlock_t
+id|rwlock_t
 op_star
 id|lock
 )paren
@@ -354,19 +367,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Read-write spinlocks, allowing multiple readers&n; * but only one writer.&n; *&n; * NOTE! it is quite common to have readers in interrupts&n; * but no interrupt writers. For those circumstances we&n; * can &quot;mix&quot; irq-safe locks - any writer needs to get a&n; * irq-safe write-lock, but readers can get non-irqsafe&n; * read-locks.&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|lock
-r_volatile
-r_int
-r_int
-id|lock
-suffix:semicolon
-DECL|typedef|rwlock_t
-)brace
-id|rwlock_t
-suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 }
 DECL|macro|rwlock_init

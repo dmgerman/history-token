@@ -2144,6 +2144,21 @@ comma
 id|p-&gt;exit_signal
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|p-&gt;state
+op_eq
+id|TASK_TRACED
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * If it was at a trace stop, turn it into&n;&t;&t;&t; * a normal stop since it&squot;s no longer being&n;&t;&t;&t; * traced.&n;&t;&t;&t; */
+id|p-&gt;state
+op_assign
+id|TASK_STOPPED
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * process group orphan check&n;&t; * Case ii: Our child is in a different pgrp&n;&t; * than we are, and it was the only connection&n;&t; * outside, so the child pgrp is now orphaned.&n;&t; */
 r_if
@@ -4683,8 +4698,8 @@ id|unlikely
 c_func
 (paren
 id|p-&gt;state
-OG
-id|TASK_STOPPED
+op_ge
+id|TASK_ZOMBIE
 )paren
 )paren
 (brace
@@ -5101,6 +5116,22 @@ c_cond
 id|p-&gt;state
 )paren
 (brace
+r_case
+id|TASK_TRACED
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|p-&gt;ptrace
+op_amp
+id|PT_PTRACED
+)paren
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/*FALLTHROUGH*/
 r_case
 id|TASK_STOPPED
 suffix:colon

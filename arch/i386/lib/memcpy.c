@@ -51,7 +51,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|variable|memcpy
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memcpy
@@ -87,7 +87,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|variable|memset
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memset
@@ -205,7 +205,7 @@ id|dest
 suffix:semicolon
 )brace
 DECL|variable|memmove
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|memmove

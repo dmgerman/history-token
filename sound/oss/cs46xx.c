@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &quot;cs46xxpm-24.h&quot;
 macro_line|#include &quot;cs46xx_wrapper-24.h&quot;
 macro_line|#include &quot;cs461x.h&quot;

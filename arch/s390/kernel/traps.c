@@ -519,10 +519,10 @@ c_func
 id|sp
 comma
 id|S390_lowcore.thread_info
-op_minus
-id|THREAD_SIZE
 comma
 id|S390_lowcore.thread_info
+op_plus
+id|THREAD_SIZE
 )paren
 suffix:semicolon
 id|printk

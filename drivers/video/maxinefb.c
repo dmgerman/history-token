@@ -617,6 +617,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|maxinefb_init
 id|module_init
 c_func
@@ -624,7 +625,6 @@ c_func
 id|maxinefb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|maxinefb_exit
 id|module_exit
 c_func

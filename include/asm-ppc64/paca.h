@@ -2,6 +2,7 @@ macro_line|#ifndef _PPC64_PACA_H
 DECL|macro|_PPC64_PACA_H
 mdefine_line|#define _PPC64_PACA_H
 multiline_comment|/*&n; * include/asm-ppc64/paca.h&n; *&n; * This control block defines the PACA which defines the processor &n; * specific data for each logical processor on the system.  &n; * There are some pointers defined that are utilized by PLIC.&n; *&n; * C 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+macro_line|#include&t;&lt;linux/config.h&gt;
 macro_line|#include&t;&lt;asm/types.h&gt;
 macro_line|#include&t;&lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include&t;&lt;asm/iSeries/ItLpRegSave.h&gt;
@@ -144,11 +145,6 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* used for SLB/segment table misses&n;&t;&t;&t;&t; * on the linear mapping */
-DECL|member|slb_r3
-id|u64
-id|slb_r3
-suffix:semicolon
-multiline_comment|/* spot to save R3 on SLB miss */
 DECL|member|context
 id|mm_context_t
 id|context
@@ -233,11 +229,13 @@ l_int|0x80
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|member|reg_save
 r_struct
 id|ItLpRegSave
 id|reg_save
 suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#endif /* _PPC64_PACA_H */

@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/syscall.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;net/sock.h&gt;&t;&t;/* siocdevprivate_ioctl */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -1264,6 +1265,7 @@ multiline_comment|/* ioctl32 stuff, used by sparc64, parisc, s390x, ppc64, x86_6
 DECL|macro|IOCTL_HASHSIZE
 mdefine_line|#define IOCTL_HASHSIZE 256
 DECL|variable|ioctl32_hash_table
+r_static
 r_struct
 id|ioctl_trans
 op_star
@@ -1271,6 +1273,13 @@ id|ioctl32_hash_table
 (braket
 id|IOCTL_HASHSIZE
 )braket
+suffix:semicolon
+r_static
+id|DECLARE_RWSEM
+c_func
+(paren
+id|ioctl32_sem
+)paren
 suffix:semicolon
 r_extern
 r_struct
@@ -1523,9 +1532,11 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|lock_kernel
+id|down_write
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 r_for
@@ -1563,9 +1574,11 @@ comma
 id|cmd
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|up_write
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 id|kfree
@@ -1598,9 +1611,11 @@ c_func
 id|new_t
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|up_write
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 r_return
@@ -1670,9 +1685,11 @@ comma
 op_star
 id|t1
 suffix:semicolon
-id|lock_kernel
+id|down_write
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 id|t
@@ -1689,9 +1706,11 @@ op_logical_neg
 id|t
 )paren
 (brace
-id|unlock_kernel
+id|up_write
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 r_return
@@ -1741,9 +1760,11 @@ id|hash
 op_assign
 id|t-&gt;next
 suffix:semicolon
-id|unlock_kernel
+id|up_write
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 id|kfree
@@ -1810,9 +1831,11 @@ id|t-&gt;next
 op_assign
 id|t1-&gt;next
 suffix:semicolon
-id|unlock_kernel
+id|up_write
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 id|kfree
@@ -1842,9 +1865,11 @@ id|cmd
 suffix:semicolon
 id|out
 suffix:colon
-id|unlock_kernel
+id|up_write
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 r_return
@@ -1938,9 +1963,11 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|lock_kernel
+id|down_read
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 id|t
@@ -1978,6 +2005,11 @@ c_cond
 id|t-&gt;handler
 )paren
 (brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|t
@@ -1999,12 +2031,21 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|up_read
+c_func
+(paren
+op_amp
+id|ioctl32_sem
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
-id|unlock_kernel
+id|up_read
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 id|error
@@ -2023,9 +2064,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|unlock_kernel
+id|up_read
 c_func
 (paren
+op_amp
+id|ioctl32_sem
 )paren
 suffix:semicolon
 r_if

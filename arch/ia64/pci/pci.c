@@ -1388,7 +1388,7 @@ id|PCI_HEADER_TYPE_NORMAL
 ques
 c_cond
 "&bslash;"
-id|PCI_ROM_RESOURCE
+id|PCI_BRIDGE_RESOURCES
 suffix:colon
 id|PCI_NUM_RESOURCES
 suffix:semicolon

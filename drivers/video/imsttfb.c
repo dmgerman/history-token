@@ -9477,6 +9477,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|imsttfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;imsttfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func
@@ -9511,6 +9523,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|imsttfb_init
 id|module_init
 c_func
@@ -9518,7 +9531,6 @@ c_func
 id|imsttfb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|imsttfb_exit
 id|module_exit
 c_func

@@ -1453,7 +1453,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|macro|MAY_PTRACE
-mdefine_line|#define MAY_PTRACE(task) &bslash;&n;&t;(task == current || &bslash;&n;&t;(task-&gt;parent == current &amp;&amp; &bslash;&n;&t;(task-&gt;ptrace &amp; PT_PTRACED) &amp;&amp;  task-&gt;state == TASK_STOPPED &amp;&amp; &bslash;&n;&t; security_ptrace(current,task) == 0))
+mdefine_line|#define MAY_PTRACE(task) &bslash;&n;&t;(task == current || &bslash;&n;&t;(task-&gt;parent == current &amp;&amp; &bslash;&n;&t;(task-&gt;ptrace &amp; PT_PTRACED) &amp;&amp; &bslash;&n;&t; (task-&gt;state == TASK_STOPPED || task-&gt;state == TASK_TRACED) &amp;&amp; &bslash;&n;&t; security_ptrace(current,task) == 0))
 DECL|function|may_ptrace_attach
 r_static
 r_int
@@ -7909,6 +7909,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|p
+op_logical_and
 op_logical_neg
 id|thread_group_leader
 c_func
@@ -8191,6 +8193,9 @@ id|nr_tgids
 comma
 id|i
 suffix:semicolon
+r_int
+id|next_tgid
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8240,7 +8245,22 @@ id|nr
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * f_version caches the last tgid which was returned from readdir&n;&t; */
+multiline_comment|/* f_version caches the tgid value that the last readdir call couldn&squot;t&n;&t; * return. lseek aka telldir automagically resets f_version to 0.&n;&t; */
+id|next_tgid
+op_assign
+id|filp-&gt;f_version
+suffix:semicolon
+id|filp-&gt;f_version
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+suffix:semicolon
+)paren
+(brace
 id|nr_tgids
 op_assign
 id|get_tgid_list
@@ -8248,11 +8268,46 @@ c_func
 (paren
 id|nr
 comma
-id|filp-&gt;f_version
+id|next_tgid
 comma
 id|tgid_array
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nr_tgids
+)paren
+(brace
+multiline_comment|/* no more entries ! */
+r_break
+suffix:semicolon
+)brace
+id|next_tgid
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* do not use the last found pid, reserve it for next_tgid */
+r_if
+c_cond
+(paren
+id|nr_tgids
+op_eq
+id|PROC_MAXPIDS
+)paren
+(brace
+id|nr_tgids
+op_decrement
+suffix:semicolon
+id|next_tgid
+op_assign
+id|tgid_array
+(braket
+id|nr_tgids
+)braket
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -8346,17 +8401,28 @@ OL
 l_int|0
 )paren
 (brace
+multiline_comment|/* returning this tgid failed, save it as the first&n;&t;&t;&t;&t; * pid for the next readir call */
 id|filp-&gt;f_version
 op_assign
-id|tgid
+id|tgid_array
+(braket
+id|i
+)braket
 suffix:semicolon
-r_break
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|filp-&gt;f_pos
 op_increment
 suffix:semicolon
+id|nr
+op_increment
+suffix:semicolon
 )brace
+)brace
+id|out
+suffix:colon
 r_return
 l_int|0
 suffix:semicolon

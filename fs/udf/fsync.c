@@ -2,6 +2,18 @@ multiline_comment|/*&n; * fsync.c&n; *&n; * PURPOSE&n; *  Fsync handling routine
 macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+r_static
+r_int
+id|udf_fsync_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;File may be NULL when we are called. Perhaps we shouldn&squot;t&n; *&t;even pass file to fsync ?&n; */
 DECL|function|udf_fsync_file
 r_int
@@ -40,6 +52,7 @@ id|datasync
 suffix:semicolon
 )brace
 DECL|function|udf_fsync_inode
+r_static
 r_int
 id|udf_fsync_inode
 c_func

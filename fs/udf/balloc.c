@@ -26,7 +26,7 @@ mdefine_line|#define uintBPL_t uint(BITS_PER_LONG)
 DECL|macro|uint
 mdefine_line|#define uint(x) xuint(x)
 DECL|macro|xuint
-mdefine_line|#define xuint(x) uint ## x ## _t
+mdefine_line|#define xuint(x) __le ## x
 DECL|function|find_next_one_bit
 r_extern
 r_inline
@@ -269,7 +269,7 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|loc
 suffix:semicolon
 id|loc.logicalBlockNum
@@ -503,7 +503,7 @@ id|udf_bitmap
 op_star
 id|bitmap
 comma
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 r_uint32
@@ -2122,7 +2122,7 @@ id|inode
 op_star
 id|table
 comma
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 r_uint32
@@ -2144,7 +2144,7 @@ id|oextoffset
 comma
 id|elen
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|nbloc
 comma
 id|obloc
@@ -3365,7 +3365,7 @@ id|elen
 comma
 id|adsize
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 id|eloc
@@ -3783,7 +3783,7 @@ id|goal_elen
 op_assign
 l_int|0
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 id|goal_bloc
@@ -4260,7 +4260,7 @@ id|inode
 op_star
 id|inode
 comma
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 r_uint32

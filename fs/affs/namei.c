@@ -127,6 +127,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|affs_intl_dentry_operations
+r_static
 r_struct
 id|dentry_operations
 id|affs_intl_dentry_operations

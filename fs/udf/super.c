@@ -132,7 +132,7 @@ r_struct
 id|super_block
 op_star
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 )paren
 suffix:semicolon
@@ -149,7 +149,7 @@ r_struct
 id|buffer_head
 op_star
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 )paren
 suffix:semicolon
@@ -162,7 +162,7 @@ r_struct
 id|super_block
 op_star
 comma
-id|extent_ad
+id|kernel_extent_ad
 )paren
 suffix:semicolon
 r_static
@@ -184,10 +184,10 @@ r_struct
 id|super_block
 op_star
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 )paren
 suffix:semicolon
@@ -218,7 +218,7 @@ r_struct
 id|buffer_head
 op_star
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 )paren
 suffix:semicolon
@@ -3178,11 +3178,11 @@ id|super_block
 op_star
 id|sb
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 id|fileset
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 id|root
 )paren
@@ -3265,7 +3265,7 @@ id|bh
 )paren
 multiline_comment|/* Search backwards through the partitions */
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|newfileset
 suffix:semicolon
 r_return
@@ -3579,7 +3579,7 @@ id|pvoldesc-&gt;recordingDateAndTime
 )paren
 )paren
 (brace
-id|timestamp
+id|kernel_timestamp
 id|ts
 suffix:semicolon
 id|ts
@@ -3755,7 +3755,7 @@ id|buffer_head
 op_star
 id|bh
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 id|root
 )paren
@@ -4060,7 +4060,7 @@ c_cond
 id|phd-&gt;unallocSpaceTable.extLength
 )paren
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|loc
 op_assign
 (brace
@@ -4239,7 +4239,7 @@ c_cond
 id|phd-&gt;freedSpaceTable.extLength
 )paren
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|loc
 op_assign
 (brace
@@ -4487,7 +4487,7 @@ id|buffer_head
 op_star
 id|bh
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 id|fileset
 )paren
@@ -4726,7 +4726,7 @@ c_func
 (paren
 (paren
 (paren
-r_uint16
+id|__le16
 op_star
 )paren
 id|upm2-&gt;partIdent.identSuffix
@@ -4769,7 +4769,7 @@ c_func
 (paren
 (paren
 (paren
-r_uint16
+id|__le16
 op_star
 )paren
 id|upm2-&gt;partIdent.identSuffix
@@ -5184,7 +5184,7 @@ id|super_block
 op_star
 id|sb
 comma
-id|extent_ad
+id|kernel_extent_ad
 id|loc
 )paren
 (brace
@@ -5325,7 +5325,7 @@ comma
 r_int
 id|lastblock
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 id|fileset
 )paren
@@ -6063,7 +6063,7 @@ id|super_block
 op_star
 id|sb
 comma
-id|lb_addr
+id|kernel_lb_addr
 op_star
 id|fileset
 )paren
@@ -6364,7 +6364,7 @@ r_case
 id|UDF_VIRTUAL_MAP20
 suffix:colon
 (brace
-id|lb_addr
+id|kernel_lb_addr
 id|ino
 suffix:semicolon
 r_if
@@ -6798,7 +6798,7 @@ id|sb
 r_int
 id|i
 suffix:semicolon
-id|timestamp
+id|kernel_timestamp
 id|cpu_time
 suffix:semicolon
 id|UDF_SB_LVIDIU
@@ -7014,7 +7014,7 @@ id|LVID_INTEGRITY_TYPE_OPEN
 r_int
 id|i
 suffix:semicolon
-id|timestamp
+id|kernel_timestamp
 id|cpu_time
 suffix:semicolon
 id|UDF_SB_LVIDIU
@@ -7342,7 +7342,7 @@ r_struct
 id|udf_options
 id|uopt
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|rootdir
 comma
 id|fileset
@@ -7979,7 +7979,7 @@ op_logical_neg
 id|silent
 )paren
 (brace
-id|timestamp
+id|kernel_timestamp
 id|ts
 suffix:semicolon
 id|udf_time_to_stamp
@@ -9046,7 +9046,7 @@ l_int|0
 comma
 id|newblock
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|loc
 suffix:semicolon
 r_uint32
@@ -9345,7 +9345,7 @@ id|extoffset
 comma
 id|elen
 suffix:semicolon
-id|lb_addr
+id|kernel_lb_addr
 id|bloc
 comma
 id|eloc

@@ -800,6 +800,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This routine actually transmits TCP packets queued in by&n; * tcp_do_sendmsg().  This is used by both the initial&n; * transmission and possible later retransmissions.&n; * All SKB&squot;s seen here are completely headerless.  It is our&n; * job to build the TCP header, and pass the packet down to&n; * IP so it can do the same plus pass the packet off to the&n; * device.&n; *&n; * We are working here with either a clone of the original&n; * SKB, or a fresh unique copy made by the retransmit engine.&n; */
 DECL|function|tcp_transmit_skb
+r_static
 r_int
 id|tcp_transmit_skb
 c_func
@@ -1550,10 +1551,6 @@ id|skb
 comma
 r_int
 r_int
-id|mss
-comma
-r_int
-r_int
 id|mss_std
 )paren
 (brace
@@ -1595,7 +1592,7 @@ l_int|1
 suffix:semicolon
 id|factor
 op_div_assign
-id|mss
+id|mss_std
 suffix:semicolon
 id|TCP_SKB_CB
 c_func
@@ -1984,8 +1981,6 @@ c_func
 (paren
 id|skb
 comma
-id|tp-&gt;mss_cache
-comma
 id|tp-&gt;mss_cache_std
 )paren
 suffix:semicolon
@@ -1993,8 +1988,6 @@ id|tcp_set_skb_tso_factor
 c_func
 (paren
 id|buff
-comma
-id|tp-&gt;mss_cache
 comma
 id|tp-&gt;mss_cache_std
 )paren
@@ -4338,7 +4331,7 @@ id|tp-&gt;sack_ok
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* Yeah, we have to make difficult choice between forward transmission&n;&t; * and retransmission... Both ways have their merits...&n;&t; *&n;&t; * For now we do not retrnamsit anything, while we have some new&n;&t; * segments to send.&n;&t; */
+multiline_comment|/* Yeah, we have to make difficult choice between forward transmission&n;&t; * and retransmission... Both ways have their merits...&n;&t; *&n;&t; * For now we do not retransmit anything, while we have some new&n;&t; * segments to send.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6657,8 +6650,6 @@ c_func
 (paren
 id|skb
 comma
-id|mss
-comma
 id|tp-&gt;mss_cache_std
 )paren
 suffix:semicolon
@@ -6943,13 +6934,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|tcp_sync_mss
-)paren
-suffix:semicolon
-DECL|variable|tcp_transmit_skb
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_transmit_skb
 )paren
 suffix:semicolon
 DECL|variable|tcp_write_wakeup

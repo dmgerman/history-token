@@ -4013,6 +4013,18 @@ r_void
 r_int
 id|ret
 suffix:semicolon
+macro_line|#ifndef MODULE
+id|sgivwfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;sgivwfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ret
 op_assign
 id|driver_register
@@ -4055,6 +4067,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|sgivwfb_init
+id|module_init
+c_func
+(paren
+id|sgivwfb_init
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 id|MODULE_LICENSE
 c_func
@@ -4087,13 +4106,6 @@ id|sgivwfb_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sgivwfb_init
-id|module_init
-c_func
-(paren
-id|sgivwfb_init
-)paren
-suffix:semicolon
 DECL|variable|sgivwfb_exit
 id|module_exit
 c_func

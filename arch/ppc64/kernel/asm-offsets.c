@@ -8,11 +8,11 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
@@ -588,20 +588,6 @@ r_struct
 id|paca_struct
 comma
 id|context.id
-)paren
-)paren
-suffix:semicolon
-id|DEFINE
-c_func
-(paren
-id|PACASLBR3
-comma
-m_offsetof
-(paren
-r_struct
-id|paca_struct
-comma
-id|slb_r3
 )paren
 )paren
 suffix:semicolon

@@ -3,8 +3,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &quot;linux/firmware.h&quot;
+macro_line|#include &lt;linux/firmware.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren

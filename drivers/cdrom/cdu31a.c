@@ -2890,7 +2890,7 @@ c_func
 (paren
 l_int|100
 )paren
-suffix:colon
+suffix:semicolon
 r_goto
 id|retry_cd_operation
 suffix:semicolon

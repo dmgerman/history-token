@@ -876,7 +876,7 @@ DECL|member|srtt
 id|__u32
 id|srtt
 suffix:semicolon
-multiline_comment|/* smothed round trip time &lt;&lt; 3&t;&t;*/
+multiline_comment|/* smoothed round trip time &lt;&lt; 3&t;*/
 DECL|member|mdev
 id|__u32
 id|mdev

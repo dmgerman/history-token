@@ -1231,6 +1231,16 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+id|valkyriefb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;valkyriefb&quot;
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_MAC
 r_if
 c_cond
@@ -2412,6 +2422,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|valkyriefb_init
+id|module_init
+c_func
+(paren
+id|valkyriefb_init
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

@@ -11,7 +11,7 @@ id|u32
 id|rdb_ID
 suffix:semicolon
 DECL|member|rdb_SummedLongs
-id|u32
+id|__be32
 id|rdb_SummedLongs
 suffix:semicolon
 DECL|member|rdb_ChkSum
@@ -23,7 +23,7 @@ id|u32
 id|rdb_HostID
 suffix:semicolon
 DECL|member|rdb_BlockBytes
-id|u32
+id|__be32
 id|rdb_BlockBytes
 suffix:semicolon
 DECL|member|rdb_Flags
@@ -35,7 +35,7 @@ id|u32
 id|rdb_BadBlockList
 suffix:semicolon
 DECL|member|rdb_PartitionList
-id|u32
+id|__be32
 id|rdb_PartitionList
 suffix:semicolon
 DECL|member|rdb_FileSysHeaderList
@@ -189,11 +189,11 @@ r_struct
 id|PartitionBlock
 (brace
 DECL|member|pb_ID
-id|u32
+id|__be32
 id|pb_ID
 suffix:semicolon
 DECL|member|pb_SummedLongs
-id|u32
+id|__be32
 id|pb_SummedLongs
 suffix:semicolon
 DECL|member|pb_ChkSum
@@ -205,7 +205,7 @@ id|u32
 id|pb_HostID
 suffix:semicolon
 DECL|member|pb_Next
-id|u32
+id|__be32
 id|pb_Next
 suffix:semicolon
 DECL|member|pb_Flags
@@ -238,7 +238,7 @@ l_int|15
 )braket
 suffix:semicolon
 DECL|member|pb_Environment
-id|u32
+id|__be32
 id|pb_Environment
 (braket
 l_int|17

@@ -773,6 +773,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_int
+id|__init
+id|tx3912fb_setup
+c_func
+(paren
+r_char
+op_star
+id|options
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Initialization of the framebuffer&n; */
 DECL|function|tx3912fb_init
 r_int
@@ -801,6 +811,16 @@ c_cond
 l_int|256
 suffix:colon
 l_int|16
+suffix:semicolon
+id|tx3912fb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;tx3912fb&quot;
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Disable the video logic */
 id|outl
@@ -1288,6 +1308,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|tx3912fb_init
+id|module_init
+c_func
+(paren
+id|tx3912fb_init
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

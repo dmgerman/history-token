@@ -2732,6 +2732,12 @@ c_func
 id|hwif
 )paren
 suffix:semicolon
+multiline_comment|/* Create /proc/ide entries */
+id|create_proc_ide_interfaces
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

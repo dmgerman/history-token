@@ -9474,6 +9474,26 @@ id|mem
 comma
 id|chip_id
 suffix:semicolon
+macro_line|#else
+id|u16
+id|tmp
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
+macro_line|#ifndef MODULE
+id|atyfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;atyfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_PCI)
+macro_line|#ifdef __sparc__
 multiline_comment|/* Do not attach when we have a serial console. */
 r_if
 c_cond
@@ -9487,10 +9507,6 @@ c_func
 r_return
 op_minus
 id|ENXIO
-suffix:semicolon
-macro_line|#else
-id|u16
-id|tmp
 suffix:semicolon
 macro_line|#endif
 r_while
@@ -11813,6 +11829,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|atyfb_init
+id|module_init
+c_func
+(paren
+id|atyfb_init
+)paren
+suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* !MODULE */
 macro_line|#ifdef CONFIG_ATARI
 DECL|function|store_video_par

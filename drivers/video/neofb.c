@@ -9181,6 +9181,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|neofb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;neofb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_register_driver
 c_func
@@ -9190,6 +9202,13 @@ id|neofb_driver
 )paren
 suffix:semicolon
 )brace
+DECL|variable|neofb_init
+id|module_init
+c_func
+(paren
+id|neofb_init
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|neofb_exit
 r_static
@@ -9209,13 +9228,6 @@ id|neofb_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|neofb_init
-id|module_init
-c_func
-(paren
-id|neofb_init
-)paren
-suffix:semicolon
 DECL|variable|neofb_exit
 id|module_exit
 c_func

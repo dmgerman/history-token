@@ -1038,8 +1038,6 @@ DECL|macro|OVRN
 mdefine_line|#define OVRN&t;BIT3
 DECL|macro|CRCE
 mdefine_line|#define CRCE&t;BIT2
-DECL|macro|jiffies_from_ms
-mdefine_line|#define jiffies_from_ms(a) ((((a) * HZ)/1000)+1)
 multiline_comment|/*&n; * Global linked list of SyncLink devices&n; */
 DECL|variable|synclinkmp_device_list
 r_static
@@ -11739,7 +11737,7 @@ id|info-&gt;status_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -18686,7 +18684,7 @@ id|info-&gt;tx_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|5000
@@ -21815,7 +21813,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -22367,7 +22365,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10
@@ -23590,7 +23588,7 @@ id|info-&gt;status_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10

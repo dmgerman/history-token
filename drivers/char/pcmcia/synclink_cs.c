@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -1361,8 +1362,6 @@ op_star
 id|mask
 )paren
 suffix:semicolon
-DECL|macro|jiffies_from_ms
-mdefine_line|#define jiffies_from_ms(a) ((((a) * HZ)/1000)+1)
 DECL|variable|mgslpc_device_list
 r_static
 id|MGSLPC_INFO
@@ -15299,7 +15298,7 @@ id|info-&gt;tx_timer.expires
 op_assign
 id|jiffies
 op_plus
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|5000
@@ -16916,7 +16915,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|jiffies_from_ms
+id|msecs_to_jiffies
 c_func
 (paren
 l_int|10

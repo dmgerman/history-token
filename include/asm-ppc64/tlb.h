@@ -6,30 +6,6 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 r_struct
 id|mmu_gather
 suffix:semicolon
-r_static
-r_inline
-r_void
-id|tlb_flush
-c_func
-(paren
-r_struct
-id|mmu_gather
-op_star
-id|tlb
-)paren
-suffix:semicolon
-multiline_comment|/* Avoid pulling in another include just for this */
-DECL|macro|check_pgt_cache
-mdefine_line|#define check_pgt_cache()&t;do { } while (0)
-multiline_comment|/* Get the generic bits... */
-macro_line|#include &lt;asm-generic/tlb.h&gt;
-multiline_comment|/* Nothing needed here in fact... */
-DECL|macro|tlb_start_vma
-mdefine_line|#define tlb_start_vma(tlb, vma)&t;do { } while (0)
-DECL|macro|tlb_end_vma
-mdefine_line|#define tlb_end_vma(tlb, vma)&t;do { } while (0)
-DECL|macro|__tlb_remove_tlb_entry
-mdefine_line|#define __tlb_remove_tlb_entry(tlb, pte, address) do { } while (0)
 r_extern
 r_void
 id|pte_free_finish
@@ -62,5 +38,17 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Avoid pulling in another include just for this */
+DECL|macro|check_pgt_cache
+mdefine_line|#define check_pgt_cache()&t;do { } while (0)
+multiline_comment|/* Get the generic bits... */
+macro_line|#include &lt;asm-generic/tlb.h&gt;
+multiline_comment|/* Nothing needed here in fact... */
+DECL|macro|tlb_start_vma
+mdefine_line|#define tlb_start_vma(tlb, vma)&t;do { } while (0)
+DECL|macro|tlb_end_vma
+mdefine_line|#define tlb_end_vma(tlb, vma)&t;do { } while (0)
+DECL|macro|__tlb_remove_tlb_entry
+mdefine_line|#define __tlb_remove_tlb_entry(tlb, pte, address) do { } while (0)
 macro_line|#endif /* _PPC64_TLB_H */
 eof

@@ -2194,6 +2194,13 @@ c_func
 id|schedule_delayed_work
 )paren
 suffix:semicolon
+DECL|variable|schedule_delayed_work_on
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|schedule_delayed_work_on
+)paren
+suffix:semicolon
 DECL|variable|flush_scheduled_work
 id|EXPORT_SYMBOL
 c_func

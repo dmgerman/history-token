@@ -4592,6 +4592,18 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifndef MODULE
+id|gbefb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;gbefb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5145,7 +5157,6 @@ id|gbe
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|gbefb_init
 id|module_init
 c_func
@@ -5153,6 +5164,7 @@ c_func
 id|gbefb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|gbefb_exit
 id|module_exit
 c_func

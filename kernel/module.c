@@ -204,26 +204,6 @@ id|mod
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Stub function for modules which don&squot;t have an initfn */
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|init_module
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|init_module
-)paren
-suffix:semicolon
 multiline_comment|/* A thread that wants to hold a reference to a module only while it&n; * is running can call ths to safely exit.&n; * nfsd and lockd use this.&n; */
 DECL|function|__module_put_and_exit
 r_void
@@ -2470,23 +2450,6 @@ op_star
 id|mod
 )paren
 suffix:semicolon
-multiline_comment|/* Stub function for modules which don&squot;t have an exitfn */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-DECL|variable|cleanup_module
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|cleanup_module
-)paren
-suffix:semicolon
 DECL|function|wait_for_zero_refcount
 r_static
 r_void
@@ -2732,13 +2695,13 @@ c_cond
 (paren
 id|mod-&gt;init
 op_ne
-id|init_module
+l_int|NULL
 op_logical_and
 id|mod
 op_member_access_from_pointer
 m_exit
 op_eq
-id|cleanup_module
+l_int|NULL
 )paren
 op_logical_or
 id|mod-&gt;unsafe
@@ -2811,6 +2774,16 @@ id|mod
 )paren
 suffix:semicolon
 multiline_comment|/* Final destruction now noone is using it. */
+r_if
+c_cond
+(paren
+id|mod
+op_member_access_from_pointer
+m_exit
+op_ne
+l_int|NULL
+)paren
+(brace
 id|up
 c_func
 (paren
@@ -2831,6 +2804,7 @@ op_amp
 id|module_mutex
 )paren
 suffix:semicolon
+)brace
 id|free_module
 c_func
 (paren
@@ -2942,13 +2916,13 @@ c_cond
 (paren
 id|mod-&gt;init
 op_ne
-id|init_module
+l_int|NULL
 op_logical_and
 id|mod
 op_member_access_from_pointer
 m_exit
 op_eq
-id|cleanup_module
+l_int|NULL
 )paren
 (brace
 id|printed_something
@@ -9354,6 +9328,8 @@ id|mod
 suffix:semicolon
 r_int
 id|ret
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Must have permission */
 r_if
@@ -9526,6 +9502,13 @@ id|notify_mutex
 )paren
 suffix:semicolon
 multiline_comment|/* Start the module */
+r_if
+c_cond
+(paren
+id|mod-&gt;init
+op_ne
+l_int|NULL
+)paren
 id|ret
 op_assign
 id|mod

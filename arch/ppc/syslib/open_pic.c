@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -15,7 +16,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
 macro_line|#include &lt;asm/i8259.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &quot;open_pic_defs.h&quot;
 macro_line|#if defined(CONFIG_PRPMC800) || defined(CONFIG_85xx)
 DECL|macro|OPENPIC_BIG_ENDIAN

@@ -878,6 +878,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|hpfb_init
+id|module_init
+c_func
+(paren
+id|hpfb_init
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

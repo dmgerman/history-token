@@ -7368,6 +7368,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|sstfb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;sstfb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 id|pci_module_init
 c_func
@@ -8074,7 +8086,6 @@ id|idx
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|sstfb_init
 id|module_init
 c_func
@@ -8082,6 +8093,7 @@ c_func
 id|sstfb_init
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 DECL|variable|sstfb_exit
 id|module_exit
 c_func

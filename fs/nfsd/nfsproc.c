@@ -2490,6 +2490,13 @@ comma
 id|nfserr_jukebox
 comma
 op_minus
+id|EWOULDBLOCK
+)brace
+comma
+(brace
+id|nfserr_jukebox
+comma
+op_minus
 id|ETIMEDOUT
 )brace
 comma

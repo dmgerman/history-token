@@ -2296,6 +2296,22 @@ op_star
 )paren
 id|data8
 suffix:semicolon
+id|bg
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|bg
+)paren
+suffix:semicolon
+id|fg
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|fg
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -5897,6 +5913,43 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|riva_common_setup
+c_func
+(paren
+id|par
+)paren
+suffix:semicolon
+id|RivaGetConfig
+c_func
+(paren
+op_amp
+id|par-&gt;riva
+comma
+id|par-&gt;Chipset
+)paren
+suffix:semicolon
+multiline_comment|/* vgaHWunlock() + riva unlock (0x7F) */
+id|CRTCout
+c_func
+(paren
+id|par
+comma
+l_int|0x11
+comma
+l_int|0xFF
+)paren
+suffix:semicolon
+id|par-&gt;riva
+dot
+id|LockUnlock
+c_func
+(paren
+op_amp
+id|par-&gt;riva
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|riva_load_video_mode
 c_func
 (paren
@@ -9491,10 +9544,6 @@ id|rivafb_fix.accel
 op_assign
 id|FB_ACCEL_NV3
 suffix:semicolon
-id|default_par-&gt;bus
-op_assign
-l_int|1
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -9505,6 +9554,9 @@ id|NV_ARCH_10
 suffix:colon
 r_case
 id|NV_ARCH_20
+suffix:colon
+r_case
+id|NV_ARCH_30
 suffix:colon
 id|default_par-&gt;riva.PCRTC0
 op_assign
@@ -9533,10 +9585,6 @@ suffix:semicolon
 id|rivafb_fix.accel
 op_assign
 id|FB_ACCEL_NV4
-suffix:semicolon
-id|default_par-&gt;bus
-op_assign
-l_int|2
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -10309,6 +10357,18 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifndef MODULE
+id|rivafb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;rivafb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -10336,6 +10396,13 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|variable|rivafb_init
+id|module_init
+c_func
+(paren
+id|rivafb_init
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 DECL|function|rivafb_exit
 r_static
@@ -10355,13 +10422,6 @@ id|rivafb_driver
 )paren
 suffix:semicolon
 )brace
-DECL|variable|rivafb_init
-id|module_init
-c_func
-(paren
-id|rivafb_init
-)paren
-suffix:semicolon
 DECL|variable|rivafb_exit
 id|module_exit
 c_func
@@ -10418,6 +10478,7 @@ comma
 l_string|&quot;Disables MTRR support (0 or 1=disabled) (default=0)&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
@@ -10434,7 +10495,6 @@ comma
 l_string|&quot;Only use video modes from EDID&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* MODULE */
 id|MODULE_AUTHOR
 c_func

@@ -7832,6 +7832,18 @@ suffix:semicolon
 id|u_int
 id|defmode
 suffix:semicolon
+macro_line|#ifndef MODULE
+id|amifb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;amifb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -16458,6 +16470,13 @@ id|CEND
 suffix:semicolon
 )brace
 )brace
+DECL|variable|amifb_init
+id|module_init
+c_func
+(paren
+id|amifb_init
+)paren
+suffix:semicolon
 macro_line|#ifdef MODULE
 id|MODULE_LICENSE
 c_func
@@ -16465,21 +16484,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|amifb_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|cleanup_module
 r_void
 id|cleanup_module

@@ -4107,6 +4107,9 @@ comma
 id|DRM_MEM_CTXLIST
 )paren
 suffix:semicolon
+op_decrement
+id|dev-&gt;ctx_count
+suffix:semicolon
 )brace
 )brace
 )brace

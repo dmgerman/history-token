@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/ibm4xx.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
-macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/* Default cmdline */
 macro_line|#ifdef CONFIG_CMDLINE
 DECL|macro|CMDLINE
@@ -894,7 +893,7 @@ suffix:semicolon
 id|gunzip
 c_func
 (paren
-l_int|NULL
+l_int|0x0
 comma
 l_int|0x400000
 comma

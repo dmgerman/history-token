@@ -3993,6 +3993,24 @@ suffix:semicolon
 r_case
 id|DHCPACK
 suffix:colon
+r_if
+c_cond
+(paren
+id|memcmp
+c_func
+(paren
+id|dev-&gt;dev_addr
+comma
+id|b-&gt;hw_addr
+comma
+id|dev-&gt;addr_len
+)paren
+op_ne
+l_int|0
+)paren
+r_goto
+id|drop_unlock
+suffix:semicolon
 multiline_comment|/* Yeah! */
 r_break
 suffix:semicolon

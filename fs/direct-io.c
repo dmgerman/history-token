@@ -631,9 +631,15 @@ id|dio-&gt;result
 op_eq
 id|dio-&gt;size
 op_logical_or
+(paren
+(paren
 id|dio-&gt;rw
 op_eq
 id|READ
+)paren
+op_logical_and
+id|dio-&gt;result
+)paren
 )paren
 (brace
 id|aio_complete

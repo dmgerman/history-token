@@ -32,4 +32,8 @@ macro_line|#if __GNUC_MINOR__ &gt;= 4
 DECL|macro|__must_check
 mdefine_line|#define __must_check __attribute__((warn_unused_result))
 macro_line|#endif
+macro_line|#if __GNUC_MINOR__ &gt;= 5
+DECL|macro|__compiler_offsetof
+mdefine_line|#define __compiler_offsetof(a,b) __builtin_offsetof(a,b)
+macro_line|#endif
 eof

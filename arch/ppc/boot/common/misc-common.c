@@ -2,7 +2,7 @@ multiline_comment|/*&n; * arch/ppc/boot/common/misc-common.c&n; *&n; * Misc. boo
 macro_line|#include &lt;stdarg.h&gt;&t;/* for va_ bits */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &quot;zlib.h&quot;
+macro_line|#include &lt;linux/zlib.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
 multiline_comment|/* If we&squot;re on a PReP, assume we have a keyboard controller&n; * Also note, if we&squot;re not PReP, we assume you are a serial&n; * console - Tom */
 macro_line|#if defined(CONFIG_PPC_PREP) &amp;&amp; defined(CONFIG_VGA_CONSOLE)
@@ -862,18 +862,12 @@ suffix:semicolon
 multiline_comment|/* Halt */
 )brace
 DECL|function|zalloc
+r_static
 r_void
 op_star
 id|zalloc
 c_func
 (paren
-r_void
-op_star
-id|x
-comma
-r_int
-id|items
-comma
 r_int
 id|size
 )paren
@@ -883,10 +877,6 @@ op_star
 id|p
 op_assign
 id|avail_ram
-suffix:semicolon
-id|size
-op_mul_assign
-id|items
 suffix:semicolon
 id|size
 op_assign
@@ -927,24 +917,6 @@ r_return
 id|p
 suffix:semicolon
 )brace
-DECL|function|zfree
-r_void
-id|zfree
-c_func
-(paren
-r_void
-op_star
-id|x
-comma
-r_void
-op_star
-id|addr
-comma
-r_int
-id|nb
-)paren
-(brace
-)brace
 DECL|macro|HEAD_CRC
 mdefine_line|#define HEAD_CRC&t;2
 DECL|macro|EXTRA_FIELD
@@ -955,8 +927,6 @@ DECL|macro|COMMENT
 mdefine_line|#define COMMENT&t;&t;0x10
 DECL|macro|RESERVED
 mdefine_line|#define RESERVED&t;0xe0
-DECL|macro|DEFLATED
-mdefine_line|#define DEFLATED&t;8
 DECL|function|gunzip
 r_void
 id|gunzip
@@ -1009,7 +979,7 @@ id|src
 l_int|2
 )braket
 op_ne
-id|DEFLATED
+id|Z_DEFLATED
 op_logical_or
 (paren
 id|flags
@@ -1141,17 +1111,21 @@ m_exit
 )paren
 suffix:semicolon
 )brace
-id|s.zalloc
+multiline_comment|/* Initialize ourself. */
+id|s.workspace
 op_assign
 id|zalloc
-suffix:semicolon
-id|s.zfree
-op_assign
-id|zfree
+c_func
+(paren
+id|zlib_inflate_workspacesize
+c_func
+(paren
+)paren
+)paren
 suffix:semicolon
 id|r
 op_assign
-id|inflateInit2
+id|zlib_inflateInit2
 c_func
 (paren
 op_amp
@@ -1172,7 +1146,7 @@ id|Z_OK
 id|puts
 c_func
 (paren
-l_string|&quot;inflateInit2 returned &quot;
+l_string|&quot;zlib_inflateInit2 returned &quot;
 )paren
 suffix:semicolon
 id|puthex
@@ -1215,7 +1189,7 @@ id|dstlen
 suffix:semicolon
 id|r
 op_assign
-id|inflate
+id|zlib_inflate
 c_func
 (paren
 op_amp
@@ -1271,7 +1245,7 @@ op_star
 )paren
 id|dst
 suffix:semicolon
-id|inflateEnd
+id|zlib_inflateEnd
 c_func
 (paren
 op_amp

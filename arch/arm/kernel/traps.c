@@ -2466,7 +2466,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|__div0
-id|EXPORT_SYMBOL_NOVERS
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|__div0

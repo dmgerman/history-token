@@ -322,7 +322,7 @@ c_func
 (paren
 (paren
 (paren
-r_uint32
+id|__le32
 op_star
 )paren
 id|bh-&gt;b_data

@@ -1509,7 +1509,6 @@ id|PLD_S1_ON
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|clps711xfb_init
 id|module_init
 c_func
@@ -1517,7 +1516,6 @@ c_func
 id|clps711xfb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|clps711xfb_exit
 id|module_exit
 c_func

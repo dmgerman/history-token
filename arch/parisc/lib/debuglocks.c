@@ -3,8 +3,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/hardirq.h&gt;&t;/* in_interrupt() */
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;&t;/* in_interrupt() */
 DECL|macro|INIT_STUCK
 macro_line|#undef INIT_STUCK
 DECL|macro|INIT_STUCK

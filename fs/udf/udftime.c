@@ -92,6 +92,7 @@ mdefine_line|#define SPD 0x15180 /*3600*24*/
 DECL|macro|SPY
 mdefine_line|#define SPY(y,l,s) (SPD * (365*y+l)+s)
 DECL|variable|year_seconds
+r_static
 id|time_t
 id|year_seconds
 (braket
@@ -831,7 +832,7 @@ r_int
 op_star
 id|dest_usec
 comma
-id|timestamp
+id|kernel_timestamp
 id|src
 )paren
 (brace
@@ -1006,13 +1007,13 @@ r_return
 id|dest
 suffix:semicolon
 )brace
-id|timestamp
+id|kernel_timestamp
 op_star
 DECL|function|udf_time_to_stamp
 id|udf_time_to_stamp
 c_func
 (paren
-id|timestamp
+id|kernel_timestamp
 op_star
 id|dest
 comma

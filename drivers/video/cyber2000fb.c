@@ -6732,7 +6732,7 @@ id|cyberpro_pci_table
 )brace
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * I don&squot;t think we can use the &quot;module_init&quot; stuff here because&n; * the fbcon stuff may not be initialised yet.  Hence the #ifdef&n; * around module_init.&n; */
+multiline_comment|/*&n; * I don&squot;t think we can use the &quot;module_init&quot; stuff here because&n; * the fbcon stuff may not be initialised yet.  Hence the #ifdef&n; * around module_init.&n; *&n; * Tony: &quot;module_init&quot; is now required&n; */
 DECL|function|cyber2000fb_init
 r_int
 id|__init
@@ -6750,6 +6750,18 @@ l_int|1
 comma
 id|err
 suffix:semicolon
+macro_line|#ifndef MODULE
+id|cyber2000fb_setup
+c_func
+(paren
+id|fb_get_options
+c_func
+(paren
+l_string|&quot;cyber200fb&quot;
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_ARCH_SHARK
 id|err
 op_assign
@@ -6825,7 +6837,6 @@ id|cyberpro_driver
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|cyber2000fb_init
 id|module_init
 c_func
@@ -6833,7 +6844,6 @@ c_func
 id|cyber2000fb_init
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|cyberpro_exit
 id|module_exit
 c_func
