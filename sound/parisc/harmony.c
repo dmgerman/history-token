@@ -4373,16 +4373,19 @@ id|parisc_driver
 id|snd_card_harmony_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Lasi ALSA Harmony&quot;
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|snd_card_harmony_devicetbl
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|snd_card_harmony_probe
 comma
 )brace
