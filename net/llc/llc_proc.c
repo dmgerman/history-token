@@ -161,14 +161,6 @@ op_amp
 id|sap-&gt;sk_list.lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pos
-)paren
-r_break
-suffix:semicolon
 )brace
 id|sk
 op_assign

@@ -581,7 +581,7 @@ op_ne
 id|sk2
 op_logical_and
 op_logical_neg
-id|ipv6_only_sock
+id|tcp_v6_ipv6only
 c_func
 (paren
 id|sk2

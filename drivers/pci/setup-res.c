@@ -83,7 +83,11 @@ id|res-&gt;flags
 comma
 id|resno
 comma
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 )paren
 suffix:semicolon
