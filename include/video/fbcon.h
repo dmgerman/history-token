@@ -7,6 +7,9 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/console_struct.h&gt;
 macro_line|#include &lt;linux/vt_buffer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+r_struct
+id|display
+suffix:semicolon
 multiline_comment|/*                                  &n;     *  `switch&squot; for the Low Level Operations&n;     */
 DECL|struct|display_switch
 r_struct
@@ -247,19 +250,6 @@ r_struct
 id|display
 (brace
 multiline_comment|/* Filled in by the frame buffer device */
-DECL|member|var
-r_struct
-id|fb_var_screeninfo
-id|var
-suffix:semicolon
-multiline_comment|/* variable infos. yoffset and vmode */
-multiline_comment|/* are updated by fbcon.c */
-DECL|member|cmap
-r_struct
-id|fb_cmap
-id|cmap
-suffix:semicolon
-multiline_comment|/* colormap */
 DECL|member|can_soft_blank
 id|u_short
 id|can_soft_blank
@@ -545,53 +535,6 @@ multiline_comment|/* SCROLL_YNOPARTIAL, used in combination with the above, is f
 multiline_comment|/* Namespace consistency */
 DECL|macro|SCROLL_YNOPARTIAL
 mdefine_line|#define SCROLL_YNOPARTIAL&t;__SCROLL_YNOPARTIAL
-macro_line|#if defined(__sparc__)
-multiline_comment|/* We map all of our framebuffers such that big-endian accesses&n; * are what we want, so the following is sufficient.&n; */
-DECL|macro|fb_readb
-mdefine_line|#define fb_readb sbus_readb
-DECL|macro|fb_readw
-mdefine_line|#define fb_readw sbus_readw
-DECL|macro|fb_readl
-mdefine_line|#define fb_readl sbus_readl
-DECL|macro|fb_writeb
-mdefine_line|#define fb_writeb sbus_writeb
-DECL|macro|fb_writew
-mdefine_line|#define fb_writew sbus_writew
-DECL|macro|fb_writel
-mdefine_line|#define fb_writel sbus_writel
-DECL|macro|fb_memset
-mdefine_line|#define fb_memset sbus_memset_io
-macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__)
-DECL|macro|fb_readb
-mdefine_line|#define fb_readb __raw_readb
-DECL|macro|fb_readw
-mdefine_line|#define fb_readw __raw_readw
-DECL|macro|fb_readl
-mdefine_line|#define fb_readl __raw_readl
-DECL|macro|fb_writeb
-mdefine_line|#define fb_writeb __raw_writeb
-DECL|macro|fb_writew
-mdefine_line|#define fb_writew __raw_writew
-DECL|macro|fb_writel
-mdefine_line|#define fb_writel __raw_writel
-DECL|macro|fb_memset
-mdefine_line|#define fb_memset memset_io
-macro_line|#else
-DECL|macro|fb_readb
-mdefine_line|#define fb_readb(addr) (*(volatile u8 *) (addr))
-DECL|macro|fb_readw
-mdefine_line|#define fb_readw(addr) (*(volatile u16 *) (addr))
-DECL|macro|fb_readl
-mdefine_line|#define fb_readl(addr) (*(volatile u32 *) (addr))
-DECL|macro|fb_writeb
-mdefine_line|#define fb_writeb(b,addr) (*(volatile u8 *) (addr) = (b))
-DECL|macro|fb_writew
-mdefine_line|#define fb_writew(b,addr) (*(volatile u16 *) (addr) = (b))
-DECL|macro|fb_writel
-mdefine_line|#define fb_writel(b,addr) (*(volatile u32 *) (addr) = (b))
-DECL|macro|fb_memset
-mdefine_line|#define fb_memset memset
-macro_line|#endif
 r_extern
 r_void
 id|fbcon_redraw_clear

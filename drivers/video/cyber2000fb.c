@@ -4910,16 +4910,6 @@ id|fb_blank
 op_assign
 id|cyber2000fb_blank
 comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
-comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * This is the only &quot;static&quot; reference to the internal data structures&n; * of this driver.  It is here solely at the moment to support the other&n; * CyberPro modules external to this driver.&n; */

@@ -3,6 +3,7 @@ DECL|macro|_LINUX_FB_H
 mdefine_line|#define _LINUX_FB_H
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Definitions of frame buffers&t;&t;&t;&t;&t;&t;*/
 DECL|macro|FB_MAJOR
 mdefine_line|#define FB_MAJOR&t;&t;29
@@ -648,14 +649,6 @@ DECL|member|sy
 id|__u32
 id|sy
 suffix:semicolon
-DECL|member|width
-id|__u32
-id|width
-suffix:semicolon
-DECL|member|height
-id|__u32
-id|height
-suffix:semicolon
 DECL|member|dx
 id|__u32
 id|dx
@@ -663,6 +656,14 @@ suffix:semicolon
 DECL|member|dy
 id|__u32
 id|dy
+suffix:semicolon
+DECL|member|width
+id|__u32
+id|width
+suffix:semicolon
+DECL|member|height
+id|__u32
+id|height
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -701,6 +702,15 @@ DECL|struct|fb_image
 r_struct
 id|fb_image
 (brace
+DECL|member|dx
+id|__u32
+id|dx
+suffix:semicolon
+multiline_comment|/* Where to place image */
+DECL|member|dy
+id|__u32
+id|dy
+suffix:semicolon
 DECL|member|width
 id|__u32
 id|width
@@ -709,15 +719,6 @@ multiline_comment|/* Size of image */
 DECL|member|height
 id|__u32
 id|height
-suffix:semicolon
-DECL|member|dx
-id|__u16
-id|dx
-suffix:semicolon
-multiline_comment|/* Where to place image */
-DECL|member|dy
-id|__u16
-id|dy
 suffix:semicolon
 DECL|member|fg_color
 id|__u32
@@ -825,56 +826,6 @@ r_struct
 id|fb_var_screeninfo
 op_star
 id|var
-comma
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-multiline_comment|/* get colormap */
-DECL|member|fb_get_cmap
-r_int
-(paren
-op_star
-id|fb_get_cmap
-)paren
-(paren
-r_struct
-id|fb_cmap
-op_star
-id|cmap
-comma
-r_int
-id|kspc
-comma
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-multiline_comment|/* set colormap */
-DECL|member|fb_set_cmap
-r_int
-(paren
-op_star
-id|fb_set_cmap
-)paren
-(paren
-r_struct
-id|fb_cmap
-op_star
-id|cmap
-comma
-r_int
-id|kspc
 comma
 r_int
 id|con
@@ -1143,14 +1094,6 @@ DECL|struct|fb_info
 r_struct
 id|fb_info
 (brace
-DECL|member|modename
-r_char
-id|modename
-(braket
-l_int|40
-)braket
-suffix:semicolon
-multiline_comment|/* default video mode */
 DECL|member|node
 id|kdev_t
 id|node
@@ -1202,13 +1145,6 @@ op_star
 id|screen_base
 suffix:semicolon
 multiline_comment|/* Virtual address */
-DECL|member|disp
-r_struct
-id|display
-op_star
-id|disp
-suffix:semicolon
-multiline_comment|/* initial display variable */
 DECL|member|display_fg
 r_struct
 id|vc_data
@@ -1239,32 +1175,6 @@ id|devfs_handle_t
 id|devfs_lhandle
 suffix:semicolon
 multiline_comment|/* Devfs handle for compat. symlink  */
-DECL|member|changevar
-r_int
-(paren
-op_star
-id|changevar
-)paren
-(paren
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* tell console var has changed */
-DECL|member|switch_con
-r_int
-(paren
-op_star
-id|switch_con
-)paren
-(paren
-r_int
-comma
-r_struct
-id|fb_info
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* tell fb to switch consoles */
 DECL|member|updatevar
 r_int
 (paren
@@ -1301,6 +1211,53 @@ macro_line|#else
 DECL|macro|FBINFO_FLAG_DEFAULT
 mdefine_line|#define FBINFO_FLAG_DEFAULT&t;0
 macro_line|#endif
+macro_line|#if defined(__sparc__)
+multiline_comment|/* We map all of our framebuffers such that big-endian accesses&n; * are what we want, so the following is sufficient.&n; */
+DECL|macro|fb_readb
+mdefine_line|#define fb_readb sbus_readb
+DECL|macro|fb_readw
+mdefine_line|#define fb_readw sbus_readw
+DECL|macro|fb_readl
+mdefine_line|#define fb_readl sbus_readl
+DECL|macro|fb_writeb
+mdefine_line|#define fb_writeb sbus_writeb
+DECL|macro|fb_writew
+mdefine_line|#define fb_writew sbus_writew
+DECL|macro|fb_writel
+mdefine_line|#define fb_writel sbus_writel
+DECL|macro|fb_memset
+mdefine_line|#define fb_memset sbus_memset_io
+macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__)
+DECL|macro|fb_readb
+mdefine_line|#define fb_readb __raw_readb
+DECL|macro|fb_readw
+mdefine_line|#define fb_readw __raw_readw
+DECL|macro|fb_readl
+mdefine_line|#define fb_readl __raw_readl
+DECL|macro|fb_writeb
+mdefine_line|#define fb_writeb __raw_writeb
+DECL|macro|fb_writew
+mdefine_line|#define fb_writew __raw_writew
+DECL|macro|fb_writel
+mdefine_line|#define fb_writel __raw_writel
+DECL|macro|fb_memset
+mdefine_line|#define fb_memset memset_io
+macro_line|#else
+DECL|macro|fb_readb
+mdefine_line|#define fb_readb(addr) (*(volatile u8 *) (addr))
+DECL|macro|fb_readw
+mdefine_line|#define fb_readw(addr) (*(volatile u16 *) (addr))
+DECL|macro|fb_readl
+mdefine_line|#define fb_readl(addr) (*(volatile u32 *) (addr))
+DECL|macro|fb_writeb
+mdefine_line|#define fb_writeb(b,addr) (*(volatile u8 *) (addr) = (b))
+DECL|macro|fb_writew
+mdefine_line|#define fb_writew(b,addr) (*(volatile u16 *) (addr) = (b))
+DECL|macro|fb_writel
+mdefine_line|#define fb_writel(b,addr) (*(volatile u32 *) (addr) = (b))
+DECL|macro|fb_memset
+mdefine_line|#define fb_memset memset
+macro_line|#endif
 multiline_comment|/*&n;     *  `Generic&squot; versions of the frame buffer device operations&n;     */
 r_extern
 r_int
@@ -1311,50 +1268,6 @@ r_struct
 id|fb_var_screeninfo
 op_star
 id|var
-comma
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|gen_get_cmap
-c_func
-(paren
-r_struct
-id|fb_cmap
-op_star
-id|cmap
-comma
-r_int
-id|kspc
-comma
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|gen_set_cmap
-c_func
-(paren
-r_struct
-id|fb_cmap
-op_star
-id|cmap
-comma
-r_int
-id|kspc
 comma
 r_int
 id|con
@@ -1413,7 +1326,7 @@ comma
 r_struct
 id|fb_copyarea
 op_star
-id|region
+id|area
 )paren
 suffix:semicolon
 r_extern
@@ -1468,20 +1381,6 @@ c_func
 (paren
 r_int
 id|blank
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|gen_switch
-c_func
-(paren
-r_int
-id|con
 comma
 r_struct
 id|fb_info
