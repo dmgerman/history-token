@@ -2061,8 +2061,9 @@ r_int
 id|cfg_reg
 suffix:semicolon
 DECL|member|membase
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|membase
 suffix:semicolon
 DECL|member|phymem
