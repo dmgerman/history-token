@@ -5807,7 +5807,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * context is locked when coming here and interrupts are disabled&n; */
+multiline_comment|/*&n; * interrupt cannot be masked when coming here&n; */
 r_static
 r_inline
 r_int
@@ -7666,7 +7666,7 @@ id|rlim_cur
 )paren
 r_return
 op_minus
-id|EAGAIN
+id|ENOMEM
 suffix:semicolon
 multiline_comment|/*&n;&t; * We do the easy to undo allocations first.&n; &t; *&n;&t; * pfm_rvmalloc(), clears the buffer, so there is no leak&n;&t; */
 id|smpl_buf
@@ -7752,7 +7752,7 @@ id|vma
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * partially initialize the vma for the sampling buffer&n;&t; *&n;&t; * The VM_DONTCOPY flag is very important as it ensures that the mapping&n;&t; * will never be inherited for any child process (via fork()) which is always&n;&t; * what we want.&n;&t; */
+multiline_comment|/*&n;&t; * partially initialize the vma for the sampling buffer&n;&t; */
 id|vma-&gt;vm_mm
 op_assign
 id|mm
@@ -7843,6 +7843,12 @@ op_assign
 id|vma-&gt;vm_start
 op_plus
 id|size
+suffix:semicolon
+id|vma-&gt;vm_pgoff
+op_assign
+id|vma-&gt;vm_start
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 id|DPRINT
 c_func
@@ -10606,7 +10612,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;pmc[%u]=0x%lx loaded=%d access_pmu=%d all_pmcs=0x%lx used_pmds=0x%lx eventid=%ld smpl_pmds=0x%lx reset_pmds=0x%lx reloads_pmcs=0x%lx used_monitors=0x%lx ovfl_regs=0x%lx&bslash;n&quot;
+l_string|&quot;pmc[%u]=0x%lx ld=%d apmu=%d flags=0x%lx all_pmcs=0x%lx used_pmds=0x%lx eventid=%ld smpl_pmds=0x%lx reset_pmds=0x%lx reloads_pmcs=0x%lx used_monitors=0x%lx ovfl_regs=0x%lx&bslash;n&quot;
 comma
 id|cnum
 comma
@@ -10615,6 +10621,8 @@ comma
 id|is_loaded
 comma
 id|can_access_pmu
+comma
+id|flags
 comma
 id|ctx-&gt;ctx_all_pmcs
 (braket
@@ -11211,8 +11219,8 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;pmd[%u]=0x%lx loaded=%d access_pmu=%d, hw_value=0x%lx ctx_pmd=0x%lx  short_reset=0x%lx &quot;
-l_string|&quot;long_reset=0x%lx notify=%c used_pmds=0x%lx reset_pmds=0x%lx reload_pmds=0x%lx all_pmds=0x%lx ovfl_regs=0x%lx&bslash;n&quot;
+l_string|&quot;pmd[%u]=0x%lx ld=%d apmu=%d, hw_value=0x%lx ctx_pmd=0x%lx  short_reset=0x%lx &quot;
+l_string|&quot;long_reset=0x%lx notify=%c seed=0x%lx mask=0x%lx used_pmds=0x%lx reset_pmds=0x%lx reload_pmds=0x%lx all_pmds=0x%lx ovfl_regs=0x%lx&bslash;n&quot;
 comma
 id|cnum
 comma
@@ -11257,6 +11265,20 @@ c_cond
 l_char|&squot;Y&squot;
 suffix:colon
 l_char|&squot;N&squot;
+comma
+id|ctx-&gt;ctx_pmds
+(braket
+id|cnum
+)braket
+dot
+id|seed
+comma
+id|ctx-&gt;ctx_pmds
+(braket
+id|cnum
+)braket
+dot
+id|mask
 comma
 id|ctx-&gt;ctx_used_pmds
 (braket
@@ -11536,7 +11558,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;loaded=%d access_pmu=%d ctx_state=%d&bslash;n&quot;
+l_string|&quot;ld=%d apmu=%d ctx_state=%d&bslash;n&quot;
 comma
 id|is_loaded
 comma
@@ -13324,7 +13346,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;write ibr%u=0x%lx used_ibrs=0x%x is_loaded=%d access_pmu=%d&bslash;n&quot;
+l_string|&quot;write ibr%u=0x%lx used_ibrs=0x%x ld=%d apmu=%d&bslash;n&quot;
 comma
 id|rnum
 comma
@@ -13383,7 +13405,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;write dbr%u=0x%lx used_dbrs=0x%x is_loaded=%d access_pmu=%d&bslash;n&quot;
+l_string|&quot;write dbr%u=0x%lx used_dbrs=0x%x ld=%d apmu=%d&bslash;n&quot;
 comma
 id|rnum
 comma
@@ -20210,29 +20232,6 @@ id|pfm_context_free
 c_func
 (paren
 id|ctx
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * sanity check&n;&t; */
-r_if
-c_cond
-(paren
-id|ctx-&gt;ctx_last_activation
-op_ne
-id|GET_ACTIVATION
-c_func
-(paren
-)paren
-)paren
-(brace
-id|pfm_unprotect_ctx_ctxsw
-c_func
-(paren
-id|ctx
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return

@@ -77,8 +77,19 @@ DECL|macro|sn_hwp_is_shared
 mdefine_line|#define sn_hwp_is_shared&t;f.fields.is_shared
 DECL|macro|sn_hwp_flags
 mdefine_line|#define sn_hwp_flags&t;&t;f.b.flags
+multiline_comment|/* macros for object classification */
+DECL|macro|SN_HWPERF_IS_NODE
+mdefine_line|#define SN_HWPERF_IS_NODE(x)&t;&t;((x) &amp;&amp; strstr((x)-&gt;name, &quot;SHub&quot;))
+DECL|macro|SN_HWPERF_IS_IONODE
+mdefine_line|#define SN_HWPERF_IS_IONODE(x)&t;&t;((x) &amp;&amp; strstr((x)-&gt;name, &quot;TIO&quot;))
+DECL|macro|SN_HWPERF_IS_ROUTER
+mdefine_line|#define SN_HWPERF_IS_ROUTER(x)&t;&t;((x) &amp;&amp; strstr((x)-&gt;name, &quot;Router&quot;))
+DECL|macro|SN_HWPERF_IS_NL3ROUTER
+mdefine_line|#define SN_HWPERF_IS_NL3ROUTER(x)&t;((x) &amp;&amp; strstr((x)-&gt;name, &quot;NL3Router&quot;))
 DECL|macro|SN_HWPERF_FOREIGN
-mdefine_line|#define SN_HWPERF_FOREIGN(x)&t;(!(x)-&gt;sn_hwp_this_part &amp;&amp; !(x)-&gt;sn_hwp_is_shared)
+mdefine_line|#define SN_HWPERF_FOREIGN(x)&t;&t;((x) &amp;&amp; !(x)-&gt;sn_hwp_this_part &amp;&amp; !(x)-&gt;sn_hwp_is_shared)
+DECL|macro|SN_HWPERF_SAME_OBJTYPE
+mdefine_line|#define SN_HWPERF_SAME_OBJTYPE(x,y)&t;((SN_HWPERF_IS_NODE(x) &amp;&amp; SN_HWPERF_IS_NODE(y)) ||&bslash;&n;&t;&t;&t;&t;&t;(SN_HWPERF_IS_IONODE(x) &amp;&amp; SN_HWPERF_IS_IONODE(y)) ||&bslash;&n;&t;&t;&t;&t;&t;(SN_HWPERF_IS_ROUTER(x) &amp;&amp; SN_HWPERF_IS_ROUTER(y)))
 multiline_comment|/* numa port structure, SN_HWPERF_ENUM_PORTS returns an array of these */
 DECL|struct|sn_hwperf_port_info
 r_struct
