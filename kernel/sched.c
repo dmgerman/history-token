@@ -2666,6 +2666,9 @@ suffix:semicolon
 id|runqueue_t
 op_star
 id|rq
+comma
+op_star
+id|old_rq
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_int
@@ -2683,6 +2686,8 @@ r_int
 id|new_cpu
 suffix:semicolon
 macro_line|#endif
+id|old_rq
+op_assign
 id|rq
 op_assign
 id|task_rq_lock
@@ -3081,7 +3086,7 @@ op_eq
 id|TASK_UNINTERRUPTIBLE
 )paren
 (brace
-id|rq-&gt;nr_uninterruptible
+id|old_rq-&gt;nr_uninterruptible
 op_decrement
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Tasks on involuntary sleep don&squot;t earn&n;&t;&t; * sleep_avg beyond just interactive state.&n;&t;&t; */
