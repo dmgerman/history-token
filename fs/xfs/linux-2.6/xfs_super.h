@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_SUPER_H__
 DECL|macro|__XFS_SUPER_H__
 mdefine_line|#define __XFS_SUPER_H__
@@ -96,6 +96,13 @@ macro_line|#else
 DECL|macro|XFS_TRACE_STRING
 macro_line|# define XFS_TRACE_STRING
 macro_line|#endif
+macro_line|#ifdef CONFIG_XFS_DMAPI
+DECL|macro|XFS_DMAPI_STRING
+macro_line|# define XFS_DMAPI_STRING&t;&quot;dmapi support, &quot;
+macro_line|#else
+DECL|macro|XFS_DMAPI_STRING
+macro_line|# define XFS_DMAPI_STRING
+macro_line|#endif
 macro_line|#ifdef DEBUG
 DECL|macro|XFS_DBG_STRING
 macro_line|# define XFS_DBG_STRING&t;&t;&quot;debug&quot;
@@ -104,7 +111,7 @@ DECL|macro|XFS_DBG_STRING
 macro_line|# define XFS_DBG_STRING&t;&t;&quot;no debug&quot;
 macro_line|#endif
 DECL|macro|XFS_BUILD_OPTIONS
-mdefine_line|#define XFS_BUILD_OPTIONS&t;XFS_ACL_STRING &bslash;&n;&t;&t;&t;&t;XFS_SECURITY_STRING &bslash;&n;&t;&t;&t;&t;XFS_REALTIME_STRING &bslash;&n;&t;&t;&t;&t;XFS_BIGFS_STRING &bslash;&n;&t;&t;&t;&t;XFS_TRACE_STRING &bslash;&n;&t;&t;&t;&t;XFS_DBG_STRING /* DBG must be last */
+mdefine_line|#define XFS_BUILD_OPTIONS&t;XFS_ACL_STRING &bslash;&n;&t;&t;&t;&t;XFS_SECURITY_STRING &bslash;&n;&t;&t;&t;&t;XFS_REALTIME_STRING &bslash;&n;&t;&t;&t;&t;XFS_BIGFS_STRING &bslash;&n;&t;&t;&t;&t;XFS_TRACE_STRING &bslash;&n;&t;&t;&t;&t;XFS_DMAPI_STRING &bslash;&n;&t;&t;&t;&t;XFS_DBG_STRING /* DBG must be last */
 DECL|macro|LINVFS_GET_VFS
 mdefine_line|#define LINVFS_GET_VFS(s) &bslash;&n;&t;(vfs_t *)((s)-&gt;s_fs_info)
 DECL|macro|LINVFS_SET_VFS
