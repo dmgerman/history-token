@@ -14,11 +14,42 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+DECL|member|alloced
+r_int
+r_int
+id|alloced
+suffix:semicolon
+multiline_comment|/* data pages alloced to file */
+DECL|member|swapped
+r_int
+r_int
+id|swapped
+suffix:semicolon
+multiline_comment|/* subtotal assigned to swap */
 DECL|member|next_index
 r_int
 r_int
 id|next_index
 suffix:semicolon
+multiline_comment|/* highest alloced index + 1 */
+DECL|member|policy
+r_struct
+id|shared_policy
+id|policy
+suffix:semicolon
+multiline_comment|/* NUMA memory alloc policy */
+DECL|member|i_indirect
+r_struct
+id|page
+op_star
+id|i_indirect
+suffix:semicolon
+multiline_comment|/* top indirect blocks page */
 DECL|member|i_direct
 id|swp_entry_t
 id|i_direct
@@ -26,41 +57,13 @@ id|i_direct
 id|SHMEM_NR_DIRECT
 )braket
 suffix:semicolon
-multiline_comment|/* for the first blocks */
-DECL|member|i_indirect
-r_struct
-id|page
-op_star
-id|i_indirect
-suffix:semicolon
-multiline_comment|/* indirect blocks */
-DECL|member|alloced
-r_int
-r_int
-id|alloced
-suffix:semicolon
-multiline_comment|/* data pages allocated to file */
-DECL|member|swapped
-r_int
-r_int
-id|swapped
-suffix:semicolon
-multiline_comment|/* subtotal assigned to swap */
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-DECL|member|policy
-r_struct
-id|shared_policy
-id|policy
-suffix:semicolon
-DECL|member|list
+multiline_comment|/* first blocks */
+DECL|member|swaplist
 r_struct
 id|list_head
-id|list
+id|swaplist
 suffix:semicolon
+multiline_comment|/* chain of maybes on swap */
 DECL|member|vfs_inode
 r_struct
 id|inode

@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
-macro_line|#ifndef CONFIG_SPINLINE
 multiline_comment|/* waiting for a spinlock... */
 macro_line|#if defined(CONFIG_PPC_SPLPAR) || defined(CONFIG_PPC_ISERIES)
 DECL|function|__spin_yield
@@ -315,5 +314,4 @@ c_func
 id|spin_unlock_wait
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SPINLINE */
 eof

@@ -30,9 +30,14 @@ macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;os.h&quot;
 multiline_comment|/* CPU online map, set by smp_boot_cpus */
 DECL|variable|cpu_online_map
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
+op_assign
+id|CPU_MASK_NONE
+suffix:semicolon
+DECL|variable|cpu_possible_map
+id|cpumask_t
+id|cpu_possible_map
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
@@ -41,6 +46,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|cpu_online_map
+)paren
+suffix:semicolon
+DECL|variable|cpu_possible_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_possible_map
 )paren
 suffix:semicolon
 multiline_comment|/* Per CPU bogomips and other parameters&n; * The only piece used here is the ipi pipe, which is set before SMP is&n; * started and never changed.&n; */
@@ -500,6 +512,31 @@ op_assign
 id|smp_processor_id
 c_func
 (paren
+)paren
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ncpus
+suffix:semicolon
+op_increment
+id|i
+)paren
+id|cpu_set
+c_func
+(paren
+id|i
+comma
+id|cpu_possible_map
 )paren
 suffix:semicolon
 id|cpu_clear

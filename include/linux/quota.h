@@ -23,10 +23,6 @@ suffix:semicolon
 multiline_comment|/* Type in which we store sizes */
 r_extern
 id|spinlock_t
-id|dq_list_lock
-suffix:semicolon
-r_extern
-id|spinlock_t
 id|dq_data_lock
 suffix:semicolon
 multiline_comment|/* Size of blocks in which are counted size limits */

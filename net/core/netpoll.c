@@ -955,7 +955,7 @@ multiline_comment|/* iph-&gt;version = 4; iph-&gt;ihl = 5; */
 id|put_unaligned
 c_func
 (paren
-l_int|0x54
+l_int|0x45
 comma
 (paren
 r_int
@@ -972,7 +972,7 @@ suffix:semicolon
 id|put_unaligned
 c_func
 (paren
-id|htonl
+id|htons
 c_func
 (paren
 id|ip_len

@@ -1416,6 +1416,8 @@ r_struct
 id|nvram_partition
 op_star
 id|free_part
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|seq_init

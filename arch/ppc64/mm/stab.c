@@ -538,20 +538,6 @@ r_int
 r_int
 id|offset
 suffix:semicolon
-multiline_comment|/* Check for invalid effective addresses. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|IS_VALID_EA
-c_func
-(paren
-id|ea
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
 multiline_comment|/* Kernel or user address? */
 r_if
 c_cond
@@ -575,8 +561,16 @@ r_else
 r_if
 c_cond
 (paren
+(paren
+id|ea
+op_ge
+id|TASK_SIZE_USER64
+)paren
+op_logical_or
+(paren
 op_logical_neg
 id|mm
+)paren
 )paren
 r_return
 l_int|1

@@ -7434,6 +7434,9 @@ suffix:semicolon
 r_case
 id|UPIO_MEM
 suffix:colon
+r_case
+id|UPIO_MEM32
+suffix:colon
 id|printk
 c_func
 (paren

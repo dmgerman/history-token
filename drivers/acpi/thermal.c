@@ -2677,8 +2677,6 @@ suffix:semicolon
 r_struct
 id|acpi_thermal_state
 id|state
-op_assign
-id|tz-&gt;state
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
@@ -2706,6 +2704,10 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+id|state
+op_assign
+id|tz-&gt;state
+suffix:semicolon
 id|result
 op_assign
 id|acpi_thermal_get_temperature

@@ -93,12 +93,5 @@ DECL|macro|HMT_MEDIUM_HIGH
 mdefine_line|#define HMT_MEDIUM_HIGH &quot;&bslash;tor   5,5,5           # medium high priority&bslash;n&quot;
 DECL|macro|HMT_HIGH
 mdefine_line|#define HMT_HIGH&t;&quot;&bslash;tor&t;3,3,3&t;&t;# high priority&bslash;n&quot;
-multiline_comment|/* &n; * Various operational modes for SMT&n; * Off    : never run threaded&n; * On     : always run threaded&n; * Dynamic: Allow the system to switch modes as needed&n; */
-DECL|macro|SMT_OFF
-mdefine_line|#define SMT_OFF      0
-DECL|macro|SMT_ON
-mdefine_line|#define SMT_ON       1
-DECL|macro|SMT_DYNAMIC
-mdefine_line|#define SMT_DYNAMIC  2
 macro_line|#endif
 eof

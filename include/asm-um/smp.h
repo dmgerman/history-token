@@ -10,6 +10,10 @@ r_extern
 id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
+r_extern
+id|cpumask_t
+id|cpu_possible_map
+suffix:semicolon
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread-&gt;cpu)
 DECL|macro|cpu_logical_map

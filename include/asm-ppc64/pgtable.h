@@ -43,11 +43,16 @@ DECL|macro|FIRST_USER_PGD_NR
 mdefine_line|#define FIRST_USER_PGD_NR&t;0
 DECL|macro|EADDR_SIZE
 mdefine_line|#define EADDR_SIZE (PTE_INDEX_SIZE + PMD_INDEX_SIZE + &bslash;&n;                    PGD_INDEX_SIZE + PAGE_SHIFT) 
+multiline_comment|/*&n; * Size of EA range mapped by our pagetables.&n; */
+DECL|macro|PGTABLE_EA_BITS
+mdefine_line|#define PGTABLE_EA_BITS&t;41
+DECL|macro|PGTABLE_EA_MASK
+mdefine_line|#define PGTABLE_EA_MASK&t;((1UL&lt;&lt;PGTABLE_EA_BITS)-1)
 multiline_comment|/*&n; * Define the address range of the vmalloc VM area.&n; */
 DECL|macro|VMALLOC_START
 mdefine_line|#define VMALLOC_START (0xD000000000000000ul)
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END   (VMALLOC_START + VALID_EA_BITS)
+mdefine_line|#define VMALLOC_END   (VMALLOC_START + PGTABLE_EA_MASK)
 multiline_comment|/*&n; * Define the address range of the imalloc VM area.&n; * (used for ioremap)&n; */
 DECL|macro|IMALLOC_START
 mdefine_line|#define IMALLOC_START     (ioremap_bot)
@@ -58,17 +63,17 @@ mdefine_line|#define PHBS_IO_BASE  &t;  (0xE000000000000000ul)&t;/* Reserve 2 gi
 DECL|macro|IMALLOC_BASE
 mdefine_line|#define IMALLOC_BASE      (0xE000000080000000ul)  
 DECL|macro|IMALLOC_END
-mdefine_line|#define IMALLOC_END       (IMALLOC_BASE + VALID_EA_BITS)
+mdefine_line|#define IMALLOC_END       (IMALLOC_BASE + PGTABLE_EA_MASK)
 multiline_comment|/*&n; * Define the address range mapped virt &lt;-&gt; physical&n; */
 DECL|macro|KRANGE_START
 mdefine_line|#define KRANGE_START KERNELBASE
 DECL|macro|KRANGE_END
-mdefine_line|#define KRANGE_END   (KRANGE_START + VALID_EA_BITS)
+mdefine_line|#define KRANGE_END   (KRANGE_START + PGTABLE_EA_MASK)
 multiline_comment|/*&n; * Define the user address range&n; */
 DECL|macro|USER_START
 mdefine_line|#define USER_START (0UL)
 DECL|macro|USER_END
-mdefine_line|#define USER_END   (USER_START + VALID_EA_BITS)
+mdefine_line|#define USER_END   (USER_START + PGTABLE_EA_MASK)
 multiline_comment|/*&n; * Bits in a linux-style PTE.  These match the bits in the&n; * (hardware-defined) PowerPC PTE as closely as possible.&n; */
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x0001 /* software: pte contains a translation */

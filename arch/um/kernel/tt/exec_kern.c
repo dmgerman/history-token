@@ -104,11 +104,7 @@ op_assign
 id|start_fork_tramp
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|current-&gt;thread.kernel_stack
+id|current-&gt;thread_info
 comma
 id|stack
 comma

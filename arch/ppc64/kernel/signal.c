@@ -586,6 +586,8 @@ suffix:semicolon
 r_int
 r_int
 id|save_r13
+op_assign
+l_int|0
 suffix:semicolon
 id|elf_greg_t
 op_star

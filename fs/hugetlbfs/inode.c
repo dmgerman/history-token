@@ -3659,7 +3659,7 @@ id|hugetlbfs_inode_info
 comma
 l_int|0
 comma
-id|SLAB_RECLAIM_ACCOUNT
+l_int|0
 comma
 id|init_once
 comma

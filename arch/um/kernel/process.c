@@ -77,8 +77,6 @@ l_int|1
 op_lshift
 id|UML_CONFIG_KERNEL_STACK_ORDER
 )paren
-op_minus
-l_int|2
 suffix:semicolon
 id|set_sigstack
 c_func

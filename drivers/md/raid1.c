@@ -3076,9 +3076,11 @@ op_rshift
 l_int|9
 )paren
 )paren
-id|mddev-&gt;queue-&gt;max_sectors
-op_assign
+id|blk_queue_max_sectors
+c_func
 (paren
+id|mddev-&gt;queue
+comma
 id|PAGE_SIZE
 op_rshift
 l_int|9
@@ -5129,9 +5131,11 @@ op_rshift
 l_int|9
 )paren
 )paren
-id|mddev-&gt;queue-&gt;max_sectors
-op_assign
+id|blk_queue_max_sectors
+c_func
 (paren
+id|mddev-&gt;queue
+comma
 id|PAGE_SIZE
 op_rshift
 l_int|9

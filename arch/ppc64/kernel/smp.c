@@ -149,6 +149,12 @@ r_int
 id|vpa
 )paren
 suffix:semicolon
+DECL|variable|smt_enabled_at_boot
+r_int
+id|smt_enabled_at_boot
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Low level assembly function used to backup CPU 0 state */
 r_extern
 r_void
@@ -3399,6 +3405,11 @@ id|current
 comma
 id|old_mask
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We know at boot the maximum number of cpus we can add to&n;&t; * a partition and set cpu_possible_map accordingly. cpu_present_map&n;&t; * needs to match for the hotplug code to allow us to hot add&n;&t; * any offline cpus.&n;&t; */
+id|cpu_present_map
+op_assign
+id|cpu_possible_map
 suffix:semicolon
 )brace
 eof

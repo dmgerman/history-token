@@ -1,26 +1,14 @@
 multiline_comment|/*&n; * Idle daemon for PowerPC.  Idle daemon will handle any action&n; * that needs to be taken when the system becomes idle.&n; *&n; * Originally Written by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * iSeries supported added by Mike Corrigan &lt;mikejc@us.ibm.com&gt;&n; *&n; * Additional shared processor, SMT, and firmware support&n; *    Copyright (c) 2003 Dave Engebretsen &lt;engebret@us.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
-macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 r_extern
@@ -48,6 +36,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|variable|idle_loop
+r_static
 r_int
 (paren
 op_star
@@ -59,6 +48,7 @@ r_void
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|variable|maxYieldTime
+r_static
 r_int
 r_int
 id|maxYieldTime
@@ -66,6 +56,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|minYieldTime
+r_static
 r_int
 r_int
 id|minYieldTime
@@ -167,6 +158,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|iSeries_idle
+r_static
 r_int
 id|iSeries_idle
 c_func
@@ -214,13 +206,6 @@ comma
 id|CTRL
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|lpaca
 op_assign
 id|get_paca
@@ -228,11 +213,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_for
+r_while
 c_loop
 (paren
-suffix:semicolon
-suffix:semicolon
+l_int|1
 )paren
 (brace
 r_if
@@ -359,8 +343,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#else
 DECL|function|default_idle
+r_static
 r_int
 id|default_idle
 c_func
@@ -429,7 +414,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * Go into low thread priority and possibly&n;&t;&t;&t;&t; * low power mode.&n;&t;&t;&t;&t; */
 id|HMT_low
+c_func
+(paren
+)paren
+suffix:semicolon
+id|HMT_very_low
 c_func
 (paren
 )paren
@@ -483,7 +474,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PPC_PSERIES
 id|DECLARE_PER_CPU
 c_func
 (paren
@@ -558,7 +548,7 @@ c_loop
 l_int|1
 )paren
 (brace
-multiline_comment|/* Indicate to the HV that we are idle.  Now would be&n;&t;&t; * a good time to find other work to dispatch. */
+multiline_comment|/*&n;&t;&t; * Indicate to the HV that we are idle. Now would be&n;&t;&t; * a good time to find other work to dispatch.&n;&t;&t; */
 id|lpaca-&gt;lppaca.xIdle
 op_assign
 l_int|1
@@ -613,7 +603,17 @@ id|cpu
 )paren
 )paren
 (brace
-multiline_comment|/* need_resched could be 1 or 0 at this &n;&t;&t;&t;&t; * point.  If it is 0, set it to 0, so&n;&t;&t;&t;&t; * an IPI/Prod is sent.  If it is 1, keep&n;&t;&t;&t;&t; * it that way &amp; schedule work.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Go into low thread priority and possibly&n;&t;&t;&t;&t; * low power mode.&n;&t;&t;&t;&t; */
+id|HMT_low
+c_func
+(paren
+)paren
+suffix:semicolon
+id|HMT_very_low
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -629,79 +629,51 @@ c_func
 OL
 id|start_snooze
 )paren
-(brace
-id|HMT_low
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Low thread priority */
 r_continue
 suffix:semicolon
-)brace
-id|HMT_very_low
+id|HMT_medium
 c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Low power mode */
-multiline_comment|/* If the SMT mode is system controlled &amp; the &n;&t;&t;&t;&t; * partner thread is doing work, switch into&n;&t;&t;&t;&t; * ST mode.&n;&t;&t;&t;&t; */
 r_if
 c_cond
-(paren
-(paren
-id|naca-&gt;smt_state
-op_eq
-id|SMT_DYNAMIC
-)paren
-op_logical_and
 (paren
 op_logical_neg
 (paren
 id|ppaca-&gt;lppaca.xIdle
 )paren
 )paren
-)paren
 (brace
-multiline_comment|/* Indicate we are no longer polling for&n;&t;&t;&t;&t;&t; * work, and then clear need_resched.  If&n;&t;&t;&t;&t;&t; * need_resched was 1, set it back to 1&n;&t;&t;&t;&t;&t; * and schedule work&n;&t;&t;&t;&t;&t; */
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * We are about to sleep the thread&n;&t;&t;&t;&t;&t; * and so wont be polling any&n;&t;&t;&t;&t;&t; * more.&n;&t;&t;&t;&t;&t; */
 id|clear_thread_flag
 c_func
 (paren
 id|TIF_POLLING_NRFLAG
 )paren
 suffix:semicolon
-id|oldval
-op_assign
-id|test_and_clear_thread_flag
-c_func
-(paren
-id|TIF_NEED_RESCHED
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * SMT dynamic mode. Cede will result&n;&t;&t;&t;&t;&t; * in this thread going dormant, if the&n;&t;&t;&t;&t;&t; * partner thread is still doing work.&n;&t;&t;&t;&t;&t; * Thread wakes up if partner goes idle,&n;&t;&t;&t;&t;&t; * an interrupt is presented, or a prod&n;&t;&t;&t;&t;&t; * occurs.  Returning from the cede&n;&t;&t;&t;&t;&t; * enables external interrupts.&n;&t;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|oldval
-op_eq
-l_int|1
-)paren
-(brace
-id|set_need_resched
+op_logical_neg
+id|need_resched
 c_func
 (paren
 )paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* DRENG: Go HMT_medium here ? */
-id|local_irq_disable
-c_func
-(paren
 )paren
-suffix:semicolon
-multiline_comment|/* SMT dynamic mode.  Cede will result &n;&t;&t;&t;&t;&t; * in this thread going dormant, if the&n;&t;&t;&t;&t;&t; * partner thread is still doing work.&n;&t;&t;&t;&t;&t; * Thread wakes up if partner goes idle,&n;&t;&t;&t;&t;&t; * an interrupt is presented, or a prod&n;&t;&t;&t;&t;&t; * occurs.  Returning from the cede&n;&t;&t;&t;&t;&t; * enables external interrupts.&n;&t;&t;&t;&t;&t; */
 id|cede_processor
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -709,7 +681,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Give the HV an opportunity at the&n;&t;&t;&t;&t;&t; * processor, since we are not doing&n;&t;&t;&t;&t;&t; * any work.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Give the HV an opportunity at the&n;&t;&t;&t;&t;&t; * processor, since we are not doing&n;&t;&t;&t;&t;&t; * any work.&n;&t;&t;&t;&t;&t; */
 id|poll_pending
 c_func
 (paren
@@ -717,6 +689,12 @@ c_func
 suffix:semicolon
 )brace
 )brace
+id|clear_thread_flag
+c_func
+(paren
+id|TIF_POLLING_NRFLAG
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -764,6 +742,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|shared_idle
+r_static
 r_int
 id|shared_idle
 c_func
@@ -781,12 +760,84 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_int
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
 l_int|1
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Indicate to the HV that we are idle. Now would be&n;&t;&t; * a good time to find other work to dispatch.&n;&t;&t; */
+id|lpaca-&gt;lppaca.xIdle
+op_assign
+l_int|1
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|need_resched
+c_func
+(paren
+)paren
+op_logical_and
+op_logical_neg
+id|cpu_is_offline
+c_func
+(paren
+id|cpu
+)paren
+)paren
+(brace
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Yield the processor to the hypervisor.  We return if&n;&t;&t;&t; * an external interrupt occurs (which are driven prior&n;&t;&t;&t; * to returning here) or if a prod occurs from another &n;&t;&t;&t; * processor. When returning here, external interrupts&n;&t;&t;&t; * are enabled.&n;&t;&t;&t; *&n;&t;&t;&t; * Check need_resched() again with interrupts disabled&n;&t;&t;&t; * to avoid a race.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|need_resched
+c_func
+(paren
+)paren
+)paren
+id|cede_processor
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|HMT_medium
+c_func
+(paren
+)paren
+suffix:semicolon
+id|lpaca-&gt;lppaca.xIdle
+op_assign
+l_int|0
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -808,73 +859,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Indicate to the HV that we are idle.  Now would be&n;&t;&t; * a good time to find other work to dispatch. */
-id|lpaca-&gt;lppaca.xIdle
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|need_resched
-c_func
-(paren
-)paren
-)paren
-(brace
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; * Yield the processor to the hypervisor.  We return if&n;&t;&t;&t; * an external interrupt occurs (which are driven prior&n;&t;&t;&t; * to returning here) or if a prod occurs from another &n;&t;&t;&t; * processor.  When returning here, external interrupts &n;&t;&t;&t; * are enabled.&n;&t;&t;&t; */
-id|cede_processor
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-id|HMT_medium
-c_func
-(paren
-)paren
-suffix:semicolon
-id|lpaca-&gt;lppaca.xIdle
-op_assign
-l_int|0
-suffix:semicolon
-id|schedule
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
-DECL|function|cpu_idle
+DECL|function|powermac_idle
+r_static
 r_int
-id|cpu_idle
-c_func
-(paren
-r_void
-)paren
-(brace
-id|idle_loop
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|native_idle
-r_int
-id|native_idle
+id|powermac_idle
 c_func
 (paren
 r_void
@@ -914,6 +907,24 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
+DECL|function|cpu_idle
+r_int
+id|cpu_idle
+c_func
+(paren
+r_void
+)paren
+(brace
+id|idle_loop
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1010,12 +1021,12 @@ id|PLATFORM_POWERMAC
 id|printk
 c_func
 (paren
-l_string|&quot;idle = native_idle&bslash;n&quot;
+l_string|&quot;idle = powermac_idle&bslash;n&quot;
 )paren
 suffix:semicolon
 id|idle_loop
 op_assign
-id|native_idle
+id|powermac_idle
 suffix:semicolon
 )brace
 r_else

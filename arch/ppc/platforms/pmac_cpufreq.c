@@ -1802,7 +1802,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Currently, we support the following machines:&n; *&n; *  - Titanium PowerBook 1Ghz (PMU based, 667Mhz &amp; 1Ghz)&n; *  - Titanium PowerBook 800 (PMU based, 667Mhz &amp; 800Mhz)&n; *  - Titanium PowerBook 400 (PMU based, 300Mhz &amp; 400Mhz)&n; *  - Titanium PowerBook 500 (PMU based, 300Mhz &amp; 500Mhz)&n; *  - iBook2 500 (PMU based, 400Mhz &amp; 500Mhz)&n; *  - iBook2 700 (CPU based, 400Mhz &amp; 700Mhz, support low voltage)&n; *  - Recent MacRISC3 laptops&n; *  - iBook G4s and PowerBook G4s with 7447A CPUs&n; */
+multiline_comment|/* Currently, we support the following machines:&n; *&n; *  - Titanium PowerBook 1Ghz (PMU based, 667Mhz &amp; 1Ghz)&n; *  - Titanium PowerBook 800 (PMU based, 667Mhz &amp; 800Mhz)&n; *  - Titanium PowerBook 400 (PMU based, 300Mhz &amp; 400Mhz)&n; *  - Titanium PowerBook 500 (PMU based, 300Mhz &amp; 500Mhz)&n; *  - iBook2 500/600 (PMU based, 400Mhz &amp; 500/600Mhz)&n; *  - iBook2 700 (CPU based, 400Mhz &amp; 700Mhz, support low voltage)&n; *  - Recent MacRISC3 laptops&n; *  - iBook G4s and PowerBook G4s with 7447A CPUs&n; */
 DECL|function|pmac_cpufreq_setup
 r_static
 r_int
@@ -1955,7 +1955,7 @@ c_func
 id|cpunode
 )paren
 suffix:semicolon
-multiline_comment|/* Else check for iBook2 500 */
+multiline_comment|/* Else check for iBook2 500/600 */
 )brace
 r_else
 r_if
@@ -1968,17 +1968,6 @@ l_string|&quot;PowerBook4,1&quot;
 )paren
 )paren
 (brace
-multiline_comment|/* We only know about 500Mhz model */
-r_if
-c_cond
-(paren
-id|cur_freq
-template_param
-l_int|550000
-)paren
-r_goto
-id|out
-suffix:semicolon
 id|hi_freq
 op_assign
 id|cur_freq

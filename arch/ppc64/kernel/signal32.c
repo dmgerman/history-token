@@ -655,6 +655,8 @@ suffix:semicolon
 r_int
 r_int
 id|save_r2
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_ALTIVEC
 r_int

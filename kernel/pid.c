@@ -1156,8 +1156,13 @@ id|pidhash_size
 op_star
 r_sizeof
 (paren
-r_struct
-id|list_head
+op_star
+(paren
+id|pid_hash
+(braket
+id|i
+)braket
+)paren
 )paren
 )paren
 suffix:semicolon

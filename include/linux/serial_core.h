@@ -529,6 +529,8 @@ DECL|macro|UPIO_HUB6
 mdefine_line|#define UPIO_HUB6&t;&t;(1)
 DECL|macro|UPIO_MEM
 mdefine_line|#define UPIO_MEM&t;&t;(2)
+DECL|macro|UPIO_MEM32
+mdefine_line|#define UPIO_MEM32&t;&t;(3)
 DECL|member|read_status_mask
 r_int
 r_int

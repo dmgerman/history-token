@@ -11939,6 +11939,7 @@ id|thread
 suffix:semicolon
 )brace
 DECL|function|md_interrupt_thread
+r_static
 r_void
 id|md_interrupt_thread
 c_func
@@ -16151,13 +16152,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|md_print_devices
-)paren
-suffix:semicolon
-DECL|variable|md_interrupt_thread
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|md_interrupt_thread
 )paren
 suffix:semicolon
 DECL|variable|md_check_recovery

@@ -516,9 +516,12 @@ mdefine_line|#define __NR_rtas&t;&t;255
 multiline_comment|/* Number 256 is reserved for sys_debug_setcontext */
 multiline_comment|/* Number 257 is reserved for vserver */
 multiline_comment|/* Number 258 is reserved for new sys_remap_file_pages */
-multiline_comment|/* Number 259 is reserved for new sys_mbind */
-multiline_comment|/* Number 260 is reserved for new sys_get_mempolicy */
-multiline_comment|/* Number 261 is reserved for new sys_set_mempolicy */
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;259
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;260
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;261
 DECL|macro|__NR_mq_open
 mdefine_line|#define __NR_mq_open&t;&t;262
 DECL|macro|__NR_mq_unlink

@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|MODULE_VERS
-mdefine_line|#define MODULE_VERS &quot;1.3&quot;
+mdefine_line|#define MODULE_VERS &quot;1.4&quot;
 DECL|macro|MODULE_NAME
 mdefine_line|#define MODULE_NAME &quot;lparcfg&quot;
 multiline_comment|/* #define LPARCFG_DEBUG */
@@ -516,7 +516,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PPC_ISERIES */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PPC_ISERIES */
 macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* &n; * Methods used to fetch LPAR data when running on a pSeries platform.&n; */
 multiline_comment|/*&n; * H_GET_PPP hcall returns info in 4 parms.&n; *  entitled_capacity,unallocated_capacity,&n; *  aggregation, resource_capability).&n; *&n; *  R4 = Entitled Processor Capacity Percentage. &n; *  R5 = Unallocated Processor Capacity Percentage.&n; *  R6 (AABBCCDDEEFFGGHH).&n; *      XXXX - reserved (0)&n; *          XXXX - reserved (0)&n; *              XXXX - Group Number&n; *                  XXXX - Pool Number.&n; *  R7 (IIJJKKLLMMNNOOPP).&n; *      XX - reserved. (0)&n; *        XX - bit 0-6 reserved (0).   bit 7 is Capped indicator.&n; *          XX - variable processor Capacity Weight&n; *            XX - Unallocated Variable Processor Capacity Weight.&n; *              XXXX - Active processors in Physical Processor Pool.&n; *                  XXXX  - Processors active on platform. &n; */
@@ -1007,7 +1007,7 @@ op_eq
 l_char|&squot;=&squot;
 )paren
 (brace
-multiline_comment|/* code here to replace workbuffer contents&n;&t;&t;&t;&t; with different keyword strings */
+multiline_comment|/* code here to replace workbuffer contents&n;&t;&t;&t;&t;   with different keyword strings */
 r_if
 c_cond
 (paren
@@ -1173,7 +1173,10 @@ id|v
 )paren
 (brace
 r_int
-id|system_active_processors
+id|partition_potential_processors
+suffix:semicolon
+r_int
+id|partition_active_processors
 suffix:semicolon
 r_struct
 id|device_node
@@ -1355,14 +1358,14 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|system_active_processors
+id|partition_potential_processors
 op_assign
 id|systemcfg-&gt;processorCount
 suffix:semicolon
 )brace
 r_else
 (brace
-id|system_active_processors
+id|partition_potential_processors
 op_assign
 op_star
 (paren
@@ -1372,6 +1375,13 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
+id|partition_active_processors
+op_assign
+id|lparcfg_count_active_processors
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1458,16 +1468,6 @@ comma
 id|h_resource
 )paren
 suffix:semicolon
-id|h_pic
-c_func
-(paren
-op_amp
-id|pool_idle_time
-comma
-op_amp
-id|pool_procs
-)paren
-suffix:semicolon
 id|purr
 op_assign
 id|get_purr
@@ -1490,24 +1490,6 @@ comma
 l_string|&quot;partition_entitled_capacity=%ld&bslash;n&quot;
 comma
 id|h_entitled
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;pool=%ld&bslash;n&quot;
-comma
-(paren
-id|h_aggregation
-op_rshift
-l_int|0
-op_star
-l_int|8
-)paren
-op_amp
-l_int|0xffff
 )paren
 suffix:semicolon
 id|seq_printf
@@ -1546,6 +1528,47 @@ op_amp
 l_int|0xffff
 )paren
 suffix:semicolon
+multiline_comment|/* pool related entries are apropriate for shared configs */
+r_if
+c_cond
+(paren
+id|paca
+(braket
+l_int|0
+)braket
+dot
+id|lppaca.xSharedProc
+)paren
+(brace
+id|h_pic
+c_func
+(paren
+op_amp
+id|pool_idle_time
+comma
+op_amp
+id|pool_procs
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;pool=%ld&bslash;n&quot;
+comma
+(paren
+id|h_aggregation
+op_rshift
+l_int|0
+op_star
+l_int|8
+)paren
+op_amp
+l_int|0xffff
+)paren
+suffix:semicolon
+multiline_comment|/* report pool_capacity in percentage */
 id|seq_printf
 c_func
 (paren
@@ -1553,6 +1576,7 @@ id|m
 comma
 l_string|&quot;pool_capacity=%ld&bslash;n&quot;
 comma
+(paren
 (paren
 id|h_resource
 op_rshift
@@ -1563,7 +1587,31 @@ l_int|8
 op_amp
 l_int|0xffff
 )paren
+op_star
+l_int|100
+)paren
 suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;pool_idle_time=%ld&bslash;n&quot;
+comma
+id|pool_idle_time
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;pool_num_procs=%ld&bslash;n&quot;
+comma
+id|pool_procs
+)paren
+suffix:semicolon
+)brace
 id|seq_printf
 c_func
 (paren
@@ -1633,26 +1681,6 @@ c_func
 (paren
 id|m
 comma
-l_string|&quot;pool_idle_time=%ld&bslash;n&quot;
-comma
-id|pool_idle_time
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;pool_num_procs=%ld&bslash;n&quot;
-comma
-id|pool_procs
-)paren
-suffix:semicolon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
 l_string|&quot;purr=%ld&bslash;n&quot;
 comma
 id|purr
@@ -1660,8 +1688,8 @@ id|purr
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* non SPLPAR case */
 (brace
+multiline_comment|/* non SPLPAR case */
 id|seq_printf
 c_func
 (paren
@@ -1669,7 +1697,7 @@ id|m
 comma
 l_string|&quot;system_active_processors=%d&bslash;n&quot;
 comma
-id|system_active_processors
+id|partition_potential_processors
 )paren
 suffix:semicolon
 id|seq_printf
@@ -1679,7 +1707,7 @@ id|m
 comma
 l_string|&quot;system_potential_processors=%d&bslash;n&quot;
 comma
-id|system_active_processors
+id|partition_potential_processors
 )paren
 suffix:semicolon
 id|seq_printf
@@ -1689,9 +1717,9 @@ id|m
 comma
 l_string|&quot;partition_max_entitled_capacity=%d&bslash;n&quot;
 comma
-l_int|100
+id|partition_potential_processors
 op_star
-id|system_active_processors
+l_int|100
 )paren
 suffix:semicolon
 id|seq_printf
@@ -1701,7 +1729,7 @@ id|m
 comma
 l_string|&quot;partition_entitled_capacity=%d&bslash;n&quot;
 comma
-id|system_active_processors
+id|partition_active_processors
 op_star
 l_int|100
 )paren
@@ -1714,13 +1742,7 @@ id|m
 comma
 l_string|&quot;partition_active_processors=%d&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
-id|lparcfg_count_active_processors
-c_func
-(paren
-)paren
+id|partition_active_processors
 )paren
 suffix:semicolon
 id|seq_printf
@@ -1730,7 +1752,7 @@ id|m
 comma
 l_string|&quot;partition_potential_processors=%d&bslash;n&quot;
 comma
-id|system_active_processors
+id|partition_potential_processors
 )paren
 suffix:semicolon
 id|seq_printf
@@ -2189,7 +2211,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PPC_PSERIES */
 DECL|function|lparcfg_open
 r_static
 r_int

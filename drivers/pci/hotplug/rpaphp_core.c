@@ -2010,6 +2010,9 @@ id|hotplug_slot
 (brace
 r_int
 id|retval
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 r_struct
 id|slot

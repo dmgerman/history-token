@@ -777,11 +777,7 @@ suffix:semicolon
 id|new_thread
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|p-&gt;thread.kernel_stack
+id|p-&gt;thread_info
 comma
 op_amp
 id|p-&gt;thread.mode.skas.switch_buf
@@ -935,11 +931,7 @@ r_return
 id|start_idle_thread
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|init_task.thread.kernel_stack
+id|init_task.thread_info
 comma
 op_amp
 id|init_task.thread.mode.skas.switch_buf

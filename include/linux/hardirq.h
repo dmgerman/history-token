@@ -2,9 +2,7 @@ macro_line|#ifndef LINUX_HARDIRQ_H
 DECL|macro|LINUX_HARDIRQ_H
 mdefine_line|#define LINUX_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_PREEPT
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/hardirq.h&gt;
 DECL|macro|__IRQ_MASK
 mdefine_line|#define __IRQ_MASK(x)&t;((1UL &lt;&lt; (x))-1)
@@ -33,10 +31,6 @@ DECL|macro|in_softirq
 mdefine_line|#define in_softirq()&t;&t;(softirq_count())
 DECL|macro|in_interrupt
 mdefine_line|#define in_interrupt()&t;&t;(irq_count())
-DECL|macro|hardirq_trylock
-mdefine_line|#define hardirq_trylock()&t;(!in_interrupt())
-DECL|macro|hardirq_endlock
-mdefine_line|#define hardirq_endlock()&t;do { } while (0)
 macro_line|#ifdef CONFIG_PREEMPT
 DECL|macro|in_atomic
 macro_line|# define in_atomic()&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != kernel_locked())

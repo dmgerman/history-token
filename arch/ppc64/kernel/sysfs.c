@@ -357,16 +357,6 @@ id|setup_smt_snooze_delay
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* PMC stuff */
-multiline_comment|/*&n; * Enabling PMCs will slow partition context switch times so we only do&n; * it the first time we write to the PMCs.&n; */
-r_static
-id|DEFINE_PER_CPU
-c_func
-(paren
-r_char
-comma
-id|pmcs_enabled
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|ppc64_enable_pmcs
 r_void
@@ -379,6 +369,16 @@ r_void
 multiline_comment|/* XXX Implement for iseries */
 )brace
 macro_line|#else
+multiline_comment|/*&n; * Enabling PMCs will slow partition context switch times so we only do&n; * it the first time we write to the PMCs.&n; */
+r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_char
+comma
+id|pmcs_enabled
+)paren
+suffix:semicolon
 DECL|function|ppc64_enable_pmcs
 r_void
 id|ppc64_enable_pmcs
