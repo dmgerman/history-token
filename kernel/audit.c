@@ -1800,6 +1800,16 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* possible resubmission */
+r_if
+c_cond
+(paren
+id|ab-&gt;len
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
 id|skb
 op_assign
 id|skb_peek
@@ -2030,6 +2040,15 @@ l_int|5
 (brace
 op_increment
 id|ab-&gt;count
+suffix:semicolon
+id|skb_queue_tail
+c_func
+(paren
+op_amp
+id|ab-&gt;sklist
+comma
+id|skb
+)paren
 suffix:semicolon
 id|audit_log_end_irq
 c_func
