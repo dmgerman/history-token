@@ -579,13 +579,13 @@ id|cdev
 suffix:semicolon
 DECL|member|nt
 r_struct
-id|cdev
+id|tape_class_device
 op_star
 id|nt
 suffix:semicolon
 DECL|member|rt
 r_struct
-id|cdev
+id|tape_class_device
 op_star
 id|rt
 suffix:semicolon
