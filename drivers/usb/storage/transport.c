@@ -2072,9 +2072,14 @@ multiline_comment|/* if the command gets aborted by the higher layers, we need t
 r_if
 c_cond
 (paren
-id|result
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
 op_eq
-id|USB_STOR_TRANSPORT_ABORTED
+id|US_STATE_ABORTING
 )paren
 (brace
 id|US_DEBUGP
@@ -2093,6 +2098,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* if there is a transport error, reset and don&squot;t auto-sense */
+multiline_comment|/* What if we want to abort during the reset? */
 r_if
 c_cond
 (paren
@@ -2459,9 +2465,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|temp_result
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
 op_eq
-id|USB_STOR_TRANSPORT_ABORTED
+id|US_STATE_ABORTING
 )paren
 (brace
 id|US_DEBUGP
@@ -2505,6 +2516,7 @@ id|US_FL_SCM_MULT_TARG
 )paren
 )paren
 (brace
+multiline_comment|/* What if we try to abort during the reset? */
 id|us
 op_member_access_from_pointer
 id|transport_reset
