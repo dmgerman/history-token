@@ -1714,7 +1714,7 @@ op_minus
 id|pba
 )paren
 op_lshift
-id|E1000_TX_FIFO_SIZE_SHIFT
+id|E1000_PBA_BYTES_SHIFT
 suffix:semicolon
 id|atomic_set
 c_func
@@ -1740,13 +1740,21 @@ suffix:semicolon
 multiline_comment|/* flow control settings */
 id|adapter-&gt;hw.fc_high_water
 op_assign
+(paren
 id|pba
+op_lshift
+id|E1000_PBA_BYTES_SHIFT
+)paren
 op_minus
 id|E1000_FC_HIGH_DIFF
 suffix:semicolon
 id|adapter-&gt;hw.fc_low_water
 op_assign
+(paren
 id|pba
+op_lshift
+id|E1000_PBA_BYTES_SHIFT
+)paren
 op_minus
 id|E1000_FC_LOW_DIFF
 suffix:semicolon
