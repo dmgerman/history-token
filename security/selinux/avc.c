@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/un.h&gt;
 macro_line|#include &lt;net/af_unix.h&gt;
@@ -24,11 +25,18 @@ macro_line|#include &quot;av_inherit.h&quot;
 macro_line|#include &quot;av_perm_to_string.h&quot;
 macro_line|#include &quot;objsec.h&quot;
 DECL|macro|AVC_CACHE_SLOTS
-mdefine_line|#define AVC_CACHE_SLOTS&t;&t;512
-DECL|macro|AVC_CACHE_THRESHOLD
-mdefine_line|#define AVC_CACHE_THRESHOLD&t;512
+mdefine_line|#define AVC_CACHE_SLOTS&t;&t;&t;512
+DECL|macro|AVC_DEF_CACHE_THRESHOLD
+mdefine_line|#define AVC_DEF_CACHE_THRESHOLD&t;&t;512
 DECL|macro|AVC_CACHE_RECLAIM
-mdefine_line|#define AVC_CACHE_RECLAIM&t;16
+mdefine_line|#define AVC_CACHE_RECLAIM&t;&t;16
+macro_line|#ifdef CONFIG_SECURITY_SELINUX_AVC_STATS
+DECL|macro|avc_cache_stats_incr
+mdefine_line|#define avc_cache_stats_incr(field) &t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;per_cpu(avc_cache_stats, get_cpu()).field++;&t;&t;&bslash;&n;&t;put_cpu();&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|avc_cache_stats_incr
+mdefine_line|#define avc_cache_stats_incr(field)&t;do {} while (0)
+macro_line|#endif
 DECL|struct|avc_entry
 r_struct
 id|avc_entry
@@ -173,19 +181,34 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Exported via selinufs */
+DECL|variable|avc_cache_threshold
+r_int
+r_int
+id|avc_cache_threshold
+op_assign
+id|AVC_DEF_CACHE_THRESHOLD
+suffix:semicolon
+macro_line|#ifdef CONFIG_SECURITY_SELINUX_AVC_STATS
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_struct
+id|avc_cache_stats
+comma
+id|avc_cache_stats
+)paren
+op_assign
+(brace
+l_int|0
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|variable|avc_cache
 r_static
 r_struct
 id|avc_cache
 id|avc_cache
-suffix:semicolon
-DECL|variable|avc_cache_stats
-r_static
-r_int
-id|avc_cache_stats
-(braket
-id|AVC_NSTATS
-)braket
 suffix:semicolon
 DECL|variable|avc_callbacks
 r_static
@@ -241,76 +264,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef AVC_CACHE_STATS
-DECL|function|avc_cache_stats_incr
-r_static
-r_inline
-r_void
-id|avc_cache_stats_incr
-c_func
-(paren
-r_int
-id|type
-)paren
-(brace
-id|avc_cache_stats
-(braket
-id|type
-)braket
-op_increment
-suffix:semicolon
-)brace
-DECL|function|avc_cache_stats_add
-r_static
-r_inline
-r_void
-id|avc_cache_stats_add
-c_func
-(paren
-r_int
-id|type
-comma
-r_int
-id|val
-)paren
-(brace
-id|avc_cache_stats
-(braket
-id|type
-)braket
-op_add_assign
-id|val
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|function|avc_cache_stats_incr
-r_static
-r_inline
-r_void
-id|avc_cache_stats_incr
-c_func
-(paren
-r_int
-id|type
-)paren
-(brace
-)brace
-DECL|function|avc_cache_stats_add
-r_static
-r_inline
-r_void
-id|avc_cache_stats_add
-c_func
-(paren
-r_int
-id|type
-comma
-r_int
-id|val
-)paren
-(brace
-)brace
-macro_line|#endif
 multiline_comment|/**&n; * avc_dump_av - Display an access vector in human-readable form.&n; * @tclass: target security class&n; * @av: access vector&n; */
 DECL|function|avc_dump_av
 r_void
@@ -821,15 +774,14 @@ l_string|&quot;AVC INITIALIZED&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-r_static
-r_void
-id|avc_hash_eval
+DECL|function|avc_get_hash_stats
+r_int
+id|avc_get_hash_stats
 c_func
 (paren
 r_char
 op_star
-id|tag
+id|page
 )paren
 (brace
 r_int
@@ -930,21 +882,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|printk
+r_return
+id|scnprintf
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s avc:  %d entries and %d/%d buckets used, longest &quot;
-l_string|&quot;chain length %d&bslash;n&quot;
+id|page
 comma
-id|tag
+id|PAGE_SIZE
+comma
+l_string|&quot;entries: %d&bslash;nbuckets used: %d/%d&bslash;n&quot;
+l_string|&quot;longest chain: %d&bslash;n&quot;
 comma
 id|atomic_read
 c_func
@@ -961,21 +908,6 @@ id|max_chain_len
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|avc_hash_eval
-r_static
-r_inline
-r_void
-id|avc_hash_eval
-c_func
-(paren
-r_char
-op_star
-id|tag
-)paren
-(brace
-)brace
-macro_line|#endif
 DECL|function|avc_node_free
 r_static
 r_void
@@ -1010,6 +942,12 @@ c_func
 id|avc_node_cachep
 comma
 id|node
+)paren
+suffix:semicolon
+id|avc_cache_stats_incr
+c_func
+(paren
+id|frees
 )paren
 suffix:semicolon
 )brace
@@ -1239,6 +1177,12 @@ c_func
 id|node
 )paren
 suffix:semicolon
+id|avc_cache_stats_incr
+c_func
+(paren
+id|reclaims
+)paren
+suffix:semicolon
 id|ecx
 op_increment
 suffix:semicolon
@@ -1359,6 +1303,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|avc_cache_stats_incr
+c_func
+(paren
+id|allocations
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1369,7 +1319,7 @@ op_amp
 id|avc_cache.active_nodes
 )paren
 OG
-id|AVC_CACHE_THRESHOLD
+id|avc_cache_threshold
 )paren
 id|avc_reclaim_node
 c_func
@@ -1453,10 +1403,6 @@ id|tsid
 comma
 id|u16
 id|tclass
-comma
-r_int
-op_star
-id|probes
 )paren
 (brace
 r_struct
@@ -1471,11 +1417,6 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|hvalue
-suffix:semicolon
-r_int
-id|tprobes
-op_assign
-l_int|1
 suffix:semicolon
 id|hvalue
 op_assign
@@ -1526,9 +1467,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|tprobes
-op_increment
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1544,16 +1482,6 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/* cache hit */
-r_if
-c_cond
-(paren
-id|probes
-)paren
-op_star
-id|probes
-op_assign
-id|tprobes
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1608,13 +1536,10 @@ id|avc_node
 op_star
 id|node
 suffix:semicolon
-r_int
-id|probes
-suffix:semicolon
 id|avc_cache_stats_incr
 c_func
 (paren
-id|AVC_CAV_LOOKUPS
+id|lookups
 )paren
 suffix:semicolon
 id|node
@@ -1627,9 +1552,6 @@ comma
 id|tsid
 comma
 id|tclass
-comma
-op_amp
-id|probes
 )paren
 suffix:semicolon
 r_if
@@ -1651,15 +1573,7 @@ id|requested
 id|avc_cache_stats_incr
 c_func
 (paren
-id|AVC_CAV_HITS
-)paren
-suffix:semicolon
-id|avc_cache_stats_add
-c_func
-(paren
-id|AVC_CAV_PROBES
-comma
-id|probes
+id|hits
 )paren
 suffix:semicolon
 r_goto
@@ -1673,7 +1587,7 @@ suffix:semicolon
 id|avc_cache_stats_incr
 c_func
 (paren
-id|AVC_CAV_MISSES
+id|misses
 )paren
 suffix:semicolon
 id|out
@@ -3899,12 +3813,6 @@ id|avc_node
 op_star
 id|node
 suffix:semicolon
-id|avc_hash_eval
-c_func
-(paren
-l_string|&quot;reset&quot;
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3964,27 +3872,6 @@ id|flag
 )paren
 suffix:semicolon
 )brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|AVC_NSTATS
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|avc_cache_stats
-(braket
-id|i
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4238,12 +4125,6 @@ suffix:semicolon
 id|rcu_read_lock
 c_func
 (paren
-)paren
-suffix:semicolon
-id|avc_cache_stats_incr
-c_func
-(paren
-id|AVC_ENTRY_LOOKUPS
 )paren
 suffix:semicolon
 id|node

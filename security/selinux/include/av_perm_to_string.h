@@ -637,6 +637,14 @@ l_string|&quot;setbool&quot;
 )brace
 comma
 (brace
+id|SECCLASS_SECURITY
+comma
+id|SECURITY__SETSECPARAM
+comma
+l_string|&quot;setsecparam&quot;
+)brace
+comma
+(brace
 id|SECCLASS_SYSTEM
 comma
 id|SYSTEM__IPC_INFO

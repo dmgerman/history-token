@@ -180,24 +180,42 @@ multiline_comment|/* Initialize an AVC audit data structure. */
 DECL|macro|AVC_AUDIT_DATA_INIT
 mdefine_line|#define AVC_AUDIT_DATA_INIT(_d,_t) &bslash;&n;        { memset((_d), 0, sizeof(struct avc_audit_data)); (_d)-&gt;type = AVC_AUDIT_DATA_##_t; }
 multiline_comment|/*&n; * AVC statistics&n; */
-DECL|macro|AVC_ENTRY_LOOKUPS
-mdefine_line|#define AVC_ENTRY_LOOKUPS        0
-DECL|macro|AVC_ENTRY_HITS
-mdefine_line|#define AVC_ENTRY_HITS&t;         1
-DECL|macro|AVC_ENTRY_MISSES
-mdefine_line|#define AVC_ENTRY_MISSES         2
-DECL|macro|AVC_ENTRY_DISCARDS
-mdefine_line|#define AVC_ENTRY_DISCARDS       3
-DECL|macro|AVC_CAV_LOOKUPS
-mdefine_line|#define AVC_CAV_LOOKUPS          4
-DECL|macro|AVC_CAV_HITS
-mdefine_line|#define AVC_CAV_HITS             5
-DECL|macro|AVC_CAV_PROBES
-mdefine_line|#define AVC_CAV_PROBES           6
-DECL|macro|AVC_CAV_MISSES
-mdefine_line|#define AVC_CAV_MISSES           7
-DECL|macro|AVC_NSTATS
-mdefine_line|#define AVC_NSTATS               8
+DECL|struct|avc_cache_stats
+r_struct
+id|avc_cache_stats
+(brace
+DECL|member|lookups
+r_int
+r_int
+id|lookups
+suffix:semicolon
+DECL|member|hits
+r_int
+r_int
+id|hits
+suffix:semicolon
+DECL|member|misses
+r_int
+r_int
+id|misses
+suffix:semicolon
+DECL|member|allocations
+r_int
+r_int
+id|allocations
+suffix:semicolon
+DECL|member|reclaims
+r_int
+r_int
+id|reclaims
+suffix:semicolon
+DECL|member|frees
+r_int
+r_int
+id|frees
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * AVC display support&n; */
 r_struct
 id|audit_buffer
@@ -382,5 +400,31 @@ id|u32
 id|perms
 )paren
 suffix:semicolon
+multiline_comment|/* Exported to selinuxfs */
+r_int
+id|avc_get_hash_stats
+c_func
+(paren
+r_char
+op_star
+id|page
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|avc_cache_threshold
+suffix:semicolon
+macro_line|#ifdef CONFIG_SECURITY_SELINUX_AVC_STATS
+id|DECLARE_PER_CPU
+c_func
+(paren
+r_struct
+id|avc_cache_stats
+comma
+id|avc_cache_stats
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* _SELINUX_AVC_H_ */
 eof
