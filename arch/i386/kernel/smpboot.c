@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/smpboot.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &quot;smpboot_hooks.h&quot;
-macro_line|#include &quot;mach_apic.h&quot;
+macro_line|#include &lt;mach_apic.h&gt;
 multiline_comment|/* Set if we find a B stepping CPU */
 DECL|variable|smp_b_stepping
 r_static
@@ -2928,23 +2928,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Starting actual IPI sequence...&n;&t; */
-r_if
-c_cond
-(paren
-id|clustered_apic_mode
-)paren
-id|boot_error
-op_assign
-id|wakeup_secondary_via_NMI
-c_func
-(paren
-id|apicid
-)paren
-suffix:semicolon
-r_else
-id|boot_error
-op_assign
-id|wakeup_secondary_via_INIT
+id|wakeup_secondary_cpu
 c_func
 (paren
 id|apicid
@@ -3742,56 +3726,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|clustered_apic_mode
-op_logical_and
-(paren
-id|numnodes
-OG
-l_int|1
-)paren
-)paren
-(brace
-id|printk
+id|setup_portio_remap
 c_func
 (paren
-l_string|&quot;Remapping cross-quad port I/O for %d quads&bslash;n&quot;
-comma
-id|numnodes
 )paren
 suffix:semicolon
-id|xquad_portio
-op_assign
-id|ioremap
-(paren
-id|XQUAD_PORTIO_BASE
-comma
-id|numnodes
-op_star
-id|XQUAD_PORTIO_QUAD
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;xquad_portio vaddr 0x%08lx, len %08lx&bslash;n&quot;
-comma
-(paren
-id|u_long
-)paren
-id|xquad_portio
-comma
-(paren
-id|u_long
-)paren
-id|numnodes
-op_star
-id|XQUAD_PORTIO_QUAD
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Scan the CPU present map and fire up the other CPUs via do_boot_cpu&n;&t; *&n;&t; * In clustered apic mode, phys_cpu_present_map is a constructed thus:&n;&t; * bits 0-3 are quad0, 4-7 are quad1, etc. A perverse twist on the &n;&t; * clustered apic ID.&n;&t; */
 id|Dprintk
 c_func
