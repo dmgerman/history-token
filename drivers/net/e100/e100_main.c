@@ -373,7 +373,7 @@ op_assign
 l_string|&quot;Copyright (c) 2002 Intel Corporation&quot;
 suffix:semicolon
 DECL|macro|E100_VERSION
-mdefine_line|#define E100_VERSION  &quot;2.0.27-pre2&quot;
+mdefine_line|#define E100_VERSION  &quot;2.0.27-pre3&quot;
 DECL|macro|E100_FULL_DRIVER_NAME
 mdefine_line|#define E100_FULL_DRIVER_NAME &t;&quot;Intel(R) PRO/100 Fast Ethernet Adapter - Loadable driver, ver &quot;
 DECL|variable|e100_version
@@ -1840,7 +1840,7 @@ id|bdp
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_DEBUG
 l_string|&quot;%s e100_wait_exec_simple: Wait failed&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
@@ -8659,6 +8659,7 @@ id|bdp
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s cu_start: timeout waiting for cu&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
@@ -8687,6 +8688,7 @@ id|SCB_CUC_START
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s cu_start: timeout waiting for scb&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
@@ -9153,6 +9155,7 @@ id|SCB_RUC_START
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s start_ru: wait_scb failed&bslash;n&quot;
 comma
 id|bdp-&gt;device-&gt;name
