@@ -3113,11 +3113,12 @@ id|local
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|cpu
-suffix:semicolon
 id|cpumask_t
 id|tmp
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 multiline_comment|/* handle i-cache coherency */
 r_if
@@ -3266,11 +3267,10 @@ comma
 id|ea
 )paren
 suffix:semicolon
-id|cpu
-op_assign
-id|get_cpu
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 id|tmp
@@ -3278,7 +3278,10 @@ op_assign
 id|cpumask_of_cpu
 c_func
 (paren
-id|cpu
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -3322,9 +3325,10 @@ comma
 id|local
 )paren
 suffix:semicolon
-id|put_cpu
+id|local_irq_restore
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 )brace
