@@ -1956,7 +1956,7 @@ comma
 dot
 id|channels_min
 op_assign
-l_int|2
+l_int|1
 comma
 dot
 id|channels_max
@@ -3674,7 +3674,7 @@ comma
 dot
 id|channels_min
 op_assign
-l_int|2
+l_int|1
 comma
 dot
 id|channels_max
