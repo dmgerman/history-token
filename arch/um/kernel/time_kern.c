@@ -587,7 +587,6 @@ op_star
 id|regs
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
 id|local_irq_disable
 c_func
 (paren
@@ -612,7 +611,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren

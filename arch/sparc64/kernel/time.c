@@ -1400,6 +1400,16 @@ comma
 id|regs
 )paren
 suffix:semicolon
+id|update_process_times
+c_func
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+suffix:semicolon
 macro_line|#endif
 id|do_timer
 c_func
