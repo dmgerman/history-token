@@ -294,18 +294,6 @@ op_star
 id|name
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|menu
-op_star
-id|current_entry
-suffix:semicolon
-r_extern
-r_struct
-id|menu
-op_star
-id|current_menu
-suffix:semicolon
 multiline_comment|/* symbol.c */
 r_void
 id|sym_init

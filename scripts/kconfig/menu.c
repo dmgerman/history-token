@@ -9,16 +9,6 @@ r_struct
 id|menu
 id|rootmenu
 suffix:semicolon
-DECL|variable|current_menu
-DECL|variable|current_entry
-r_struct
-id|menu
-op_star
-id|current_menu
-comma
-op_star
-id|current_entry
-suffix:semicolon
 DECL|variable|last_entry_ptr
 r_static
 r_struct
