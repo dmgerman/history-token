@@ -21,7 +21,7 @@ macro_line|# define MINSTATE_END_SAVE_MIN&t;&t;MINSTATE_END_SAVE_MIN_VIRT
 macro_line|#endif
 macro_line|#ifdef MINSTATE_PHYS
 DECL|macro|MINSTATE_GET_CURRENT
-macro_line|# define MINSTATE_GET_CURRENT(reg)&t;mov reg=IA64_KR(CURRENT);; dep reg=0,reg,61,3
+macro_line|# define MINSTATE_GET_CURRENT(reg)&t;mov reg=IA64_KR(CURRENT);; tpa reg=reg
 DECL|macro|MINSTATE_START_SAVE_MIN
 macro_line|# define MINSTATE_START_SAVE_MIN&t;MINSTATE_START_SAVE_MIN_PHYS
 DECL|macro|MINSTATE_END_SAVE_MIN
