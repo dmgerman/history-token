@@ -1107,6 +1107,8 @@ DECL|macro|PF_FREE_PAGES
 mdefine_line|#define PF_FREE_PAGES&t;0x00002000&t;/* per process page freeing */
 DECL|macro|PF_NOIO
 mdefine_line|#define PF_NOIO&t;&t;0x00004000&t;/* avoid generating further I/O */
+DECL|macro|PF_FLUSHER
+mdefine_line|#define PF_FLUSHER&t;0x00008000&t;/* responsible for disk writeback */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001
