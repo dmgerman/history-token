@@ -106,10 +106,8 @@ r_int
 id|ucache_bsize
 suffix:semicolon
 multiline_comment|/*&n; * The requirements here are:&n; * - keep the final alignment of sp (sp &amp; 0xf)&n; * - make sure the 32-bit value at the first 16 byte aligned position of&n; *   AUXV is greater than 16 for glibc compatibility.&n; *   AT_IGNOREPPC is used for that.&n; * - for compatibility with glibc ARCH_DLINFO must always be defined on PPC,&n; *   even if DLINFO_ARCH_ITEMS goes to zero or is undefined.&n; */
-DECL|macro|DLINFO_ARCH_ITEMS
-mdefine_line|#define DLINFO_ARCH_ITEMS&t;3
 DECL|macro|ARCH_DLINFO
-mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sp -= DLINFO_ARCH_ITEMS * 2;&t;&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(0, AT_DCACHEBSIZE, dcache_bsize);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(1, AT_ICACHEBSIZE, icache_bsize);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(2, AT_UCACHEBSIZE, ucache_bsize);&t;&t;&t;&bslash;&n;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; * Now handle glibc compatibility.&t;&t;&t;&t;&bslash;&n;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sp -= 2*2;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(0, AT_IGNOREPPC, AT_IGNOREPPC);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(1, AT_IGNOREPPC, AT_IGNOREPPC);&t;&t;&t;&bslash;&n; } while (0)
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_DCACHEBSIZE, dcache_bsize);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_ICACHEBSIZE, icache_bsize);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_UCACHEBSIZE, ucache_bsize);&t;&t;&t;&bslash;&n;&t;/* Now handle glibc compatibility. */&t;&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);&t;&t;&t;&bslash;&n;&t;NEW_AUX_ENT(AT_IGNOREPPC, AT_IGNOREPPC);&t;&t;&t;&bslash;&n; } while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

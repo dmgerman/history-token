@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for try_to_release_page() */
+macro_line|#include &lt;linux/mm_inline.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -145,10 +146,6 @@ comma
 r_int
 id|nr_pages
 comma
-id|zone_t
-op_star
-id|classzone
-comma
 r_int
 r_int
 id|gfp_mask
@@ -232,25 +229,6 @@ c_func
 op_amp
 id|page-&gt;lru
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|memclass
-c_func
-(paren
-id|page_zone
-c_func
-(paren
-id|page
-)paren
-comma
-id|classzone
-)paren
-)paren
-r_goto
-id|keep
 suffix:semicolon
 r_if
 c_cond
@@ -824,7 +802,7 @@ r_return
 id|nr_pages
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * pagemap_lru_lock is heavily contented.  We relieve it by quickly privatising&n; * a batch of pages and working on them outside the lock.  Any pages which were&n; * not freed will be added back to the LRU.&n; *&n; * shrink_cache() is passed the number of pages to try to free, and returns&n; * the number which are yet-to-free.&n; *&n; * For pagecache intensive workloads, the first loop here is the hottest spot&n; * in the kernel (apart from the copy_*_user functions).&n; */
+multiline_comment|/*&n; * zone-&gt;lru_lock is heavily contented.  We relieve it by quickly privatising&n; * a batch of pages and working on them outside the lock.  Any pages which were&n; * not freed will be added back to the LRU.&n; *&n; * shrink_cache() is passed the number of pages to try to free, and returns&n; * the number which are yet-to-free.&n; *&n; * For pagecache intensive workloads, the first loop here is the hottest spot&n; * in the kernel (apart from the copy_*_user functions).&n; */
 r_static
 multiline_comment|/* inline */
 r_int
@@ -835,9 +813,10 @@ c_func
 r_int
 id|nr_pages
 comma
-id|zone_t
+r_struct
+id|zone
 op_star
-id|classzone
+id|zone
 comma
 r_int
 r_int
@@ -895,7 +874,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 r_while
@@ -932,7 +911,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|inactive_list
+id|zone-&gt;inactive_list
 )paren
 )paren
 (brace
@@ -941,7 +920,7 @@ op_assign
 id|list_entry
 c_func
 (paren
-id|inactive_list.prev
+id|zone-&gt;inactive_list.prev
 comma
 r_struct
 id|page
@@ -955,7 +934,7 @@ c_func
 id|page
 comma
 op_amp
-id|inactive_list
+id|zone-&gt;inactive_list
 comma
 id|flags
 )paren
@@ -1008,7 +987,7 @@ op_amp
 id|page-&gt;lru
 comma
 op_amp
-id|inactive_list
+id|zone-&gt;inactive_list
 )paren
 suffix:semicolon
 r_continue
@@ -1034,11 +1013,15 @@ id|n
 op_increment
 suffix:semicolon
 )brace
+id|zone-&gt;nr_inactive
+op_sub_assign
+id|n
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 r_if
@@ -1058,15 +1041,6 @@ id|max_scan
 op_sub_assign
 id|n
 suffix:semicolon
-id|mod_page_state
-c_func
-(paren
-id|nr_inactive
-comma
-op_minus
-id|n
-)paren
-suffix:semicolon
 id|KERNEL_STAT_ADD
 c_func
 (paren
@@ -1084,8 +1058,6 @@ op_amp
 id|page_list
 comma
 id|nr_pages
-comma
-id|classzone
 comma
 id|gfp_mask
 comma
@@ -1116,7 +1088,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Put back any unfreeable pages.&n;&t;&t; */
@@ -1175,9 +1147,11 @@ c_func
 id|page
 )paren
 )paren
-id|__add_page_to_active_list
+id|add_page_to_active_list
 c_func
 (paren
+id|zone
+comma
 id|page
 )paren
 suffix:semicolon
@@ -1185,6 +1159,8 @@ r_else
 id|add_page_to_inactive_list
 c_func
 (paren
+id|zone
+comma
 id|page
 )paren
 suffix:semicolon
@@ -1206,7 +1182,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 id|__pagevec_release
@@ -1220,7 +1196,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 )brace
@@ -1230,7 +1206,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 id|done
@@ -1246,14 +1222,19 @@ r_return
 id|nr_pages
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This moves pages from the active list to the inactive list.&n; *&n; * We move them the other way if the page is referenced by one or more&n; * processes, from rmap.&n; *&n; * If the pages are mostly unmapped, the processing is fast and it is&n; * appropriate to hold pagemap_lru_lock across the whole operation.  But if&n; * the pages are mapped, the processing is slow (page_referenced()) so we&n; * should drop pagemap_lru_lock around each page.  It&squot;s impossible to balance&n; * this, so instead we remove the pages from the LRU while processing them.&n; * It is safe to rely on PG_active against the non-LRU pages in here because&n; * nobody will play with that bit on a non-LRU page.&n; *&n; * The downside is that we have to touch page-&gt;count against each page.&n; * But we had to alter page-&gt;flags anyway.&n; */
-DECL|function|refill_inactive
+multiline_comment|/*&n; * This moves pages from the active list to the inactive list.&n; *&n; * We move them the other way if the page is referenced by one or more&n; * processes, from rmap.&n; *&n; * If the pages are mostly unmapped, the processing is fast and it is&n; * appropriate to hold zone-&gt;lru_lock across the whole operation.  But if&n; * the pages are mapped, the processing is slow (page_referenced()) so we&n; * should drop zone-&gt;lru_lock around each page.  It&squot;s impossible to balance&n; * this, so instead we remove the pages from the LRU while processing them.&n; * It is safe to rely on PG_active against the non-LRU pages in here because&n; * nobody will play with that bit on a non-LRU page.&n; *&n; * The downside is that we have to touch page-&gt;count against each page.&n; * But we had to alter page-&gt;flags anyway.&n; */
 r_static
 multiline_comment|/* inline */
 r_void
-id|refill_inactive
+DECL|function|refill_inactive_zone
+id|refill_inactive_zone
 c_func
 (paren
+r_struct
+id|zone
+op_star
+id|zone
+comma
 r_const
 r_int
 id|nr_pages_in
@@ -1308,7 +1289,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 r_while
@@ -1321,7 +1302,7 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|active_list
+id|zone-&gt;active_list
 )paren
 )paren
 (brace
@@ -1330,7 +1311,7 @@ op_assign
 id|list_entry
 c_func
 (paren
-id|active_list.prev
+id|zone-&gt;active_list.prev
 comma
 r_struct
 id|page
@@ -1344,7 +1325,7 @@ c_func
 id|page
 comma
 op_amp
-id|active_list
+id|zone-&gt;active_list
 comma
 id|flags
 )paren
@@ -1397,7 +1378,7 @@ op_amp
 id|page-&gt;lru
 comma
 op_amp
-id|active_list
+id|zone-&gt;active_list
 )paren
 suffix:semicolon
 r_continue
@@ -1427,7 +1408,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 r_while
@@ -1537,7 +1518,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 r_while
@@ -1612,7 +1593,7 @@ op_amp
 id|page-&gt;lru
 comma
 op_amp
-id|inactive_list
+id|zone-&gt;inactive_list
 )paren
 suffix:semicolon
 r_if
@@ -1633,7 +1614,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 id|__pagevec_release
@@ -1647,7 +1628,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 )brace
@@ -1720,7 +1701,7 @@ op_amp
 id|page-&gt;lru
 comma
 op_amp
-id|active_list
+id|zone-&gt;active_list
 )paren
 suffix:semicolon
 r_if
@@ -1741,7 +1722,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 id|__pagevec_release
@@ -1755,16 +1736,24 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 )brace
 )brace
+id|zone-&gt;nr_active
+op_sub_assign
+id|pgdeactivate
+suffix:semicolon
+id|zone-&gt;nr_inactive
+op_add_assign
+id|pgdeactivate
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|_pagemap_lru_lock
+id|zone-&gt;lru_lock
 )paren
 suffix:semicolon
 id|pagevec_release
@@ -1772,23 +1761,6 @@ c_func
 (paren
 op_amp
 id|pvec
-)paren
-suffix:semicolon
-id|mod_page_state
-c_func
-(paren
-id|nr_active
-comma
-op_minus
-id|pgdeactivate
-)paren
-suffix:semicolon
-id|mod_page_state
-c_func
-(paren
-id|nr_inactive
-comma
-id|pgdeactivate
 )paren
 suffix:semicolon
 id|KERNEL_STAT_ADD
@@ -1813,13 +1785,14 @@ suffix:semicolon
 r_static
 multiline_comment|/* inline */
 r_int
-DECL|function|shrink_caches
-id|shrink_caches
+DECL|function|shrink_zone
+id|shrink_zone
 c_func
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
-id|classzone
+id|zone
 comma
 r_int
 id|priority
@@ -1836,23 +1809,10 @@ r_int
 r_int
 id|ratio
 suffix:semicolon
-r_struct
-id|page_state
-id|ps
-suffix:semicolon
 r_int
 id|max_scan
 suffix:semicolon
-r_static
-id|atomic_t
-id|nr_to_refill
-op_assign
-id|ATOMIC_INIT
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
+multiline_comment|/* This is bogus for ZONE_HIGHMEM? */
 r_if
 c_cond
 (paren
@@ -1868,13 +1828,6 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Try to keep the active list 2/3 of the size of the cache.  And&n;&t; * make sure that refill_inactive is given a decent number of pages.&n;&t; *&n;&t; * The &quot;ratio+1&quot; here is important.  With pagecache-intensive workloads&n;&t; * the inactive list is huge, and `ratio&squot; evaluates to zero all the&n;&t; * time.  Which pins the active list memory.  So we add one to `ratio&squot;&n;&t; * just to make sure that the kernel will slowly sift through the&n;&t; * active list.&n;&t; */
-id|get_page_state
-c_func
-(paren
-op_amp
-id|ps
-)paren
-suffix:semicolon
 id|ratio
 op_assign
 (paren
@@ -1883,11 +1836,11 @@ r_int
 )paren
 id|nr_pages
 op_star
-id|ps.nr_active
+id|zone-&gt;nr_active
 op_div
 (paren
 (paren
-id|ps.nr_inactive
+id|zone-&gt;nr_inactive
 op_or
 l_int|1
 )paren
@@ -1903,7 +1856,7 @@ op_plus
 l_int|1
 comma
 op_amp
-id|nr_to_refill
+id|zone-&gt;refill_counter
 )paren
 suffix:semicolon
 r_if
@@ -1913,7 +1866,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|nr_to_refill
+id|zone-&gt;refill_counter
 )paren
 OG
 id|SWAP_CLUSTER_MAX
@@ -1925,19 +1878,21 @@ c_func
 id|SWAP_CLUSTER_MAX
 comma
 op_amp
-id|nr_to_refill
+id|zone-&gt;refill_counter
 )paren
 suffix:semicolon
-id|refill_inactive
+id|refill_inactive_zone
 c_func
 (paren
+id|zone
+comma
 id|SWAP_CLUSTER_MAX
 )paren
 suffix:semicolon
 )brace
 id|max_scan
 op_assign
-id|ps.nr_inactive
+id|zone-&gt;nr_inactive
 op_div
 id|priority
 suffix:semicolon
@@ -1948,7 +1903,7 @@ c_func
 (paren
 id|nr_pages
 comma
-id|classzone
+id|zone
 comma
 id|gfp_mask
 comma
@@ -2003,12 +1958,92 @@ r_return
 id|nr_pages
 suffix:semicolon
 )brace
-DECL|function|try_to_free_pages
+r_static
 r_int
+DECL|function|shrink_caches
+id|shrink_caches
+c_func
+(paren
+r_struct
+id|zone
+op_star
+id|classzone
+comma
+r_int
+id|priority
+comma
+r_int
+id|gfp_mask
+comma
+r_int
+id|nr_pages
+)paren
+(brace
+r_struct
+id|zone
+op_star
+id|first_classzone
+suffix:semicolon
+r_struct
+id|zone
+op_star
+id|zone
+suffix:semicolon
+id|first_classzone
+op_assign
+id|classzone-&gt;zone_pgdat-&gt;node_zones
+suffix:semicolon
+id|zone
+op_assign
+id|classzone
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|zone
+op_ge
+id|first_classzone
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|zone-&gt;free_pages
+op_le
+id|zone-&gt;pages_high
+)paren
+(brace
+id|nr_pages
+op_assign
+id|shrink_zone
+c_func
+(paren
+id|zone
+comma
+id|priority
+comma
+id|gfp_mask
+comma
+id|nr_pages
+)paren
+suffix:semicolon
+)brace
+id|zone
+op_decrement
+suffix:semicolon
+)brace
+r_return
+id|nr_pages
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * This is the main entry point to page reclaim.&n; */
+r_int
+DECL|function|try_to_free_pages
 id|try_to_free_pages
 c_func
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
 id|classzone
 comma
@@ -2071,7 +2106,6 @@ op_decrement
 id|priority
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Hmm.. Cache shrink failed - time to kill something?&n;&t; * Mhwahahhaha! This is the part I really like. Giggle.&n;&t; */
 id|out_of_memory
 c_func
 (paren
@@ -2094,12 +2128,14 @@ r_int
 id|check_classzone_need_balance
 c_func
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
 id|classzone
 )paren
 (brace
-id|zone_t
+r_struct
+id|zone
 op_star
 id|first_classzone
 suffix:semicolon
@@ -2151,7 +2187,8 @@ l_int|0
 comma
 id|i
 suffix:semicolon
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 suffix:semicolon
@@ -2312,7 +2349,8 @@ op_star
 id|pgdat
 )paren
 (brace
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 suffix:semicolon

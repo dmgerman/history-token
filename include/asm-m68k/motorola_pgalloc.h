@@ -250,11 +250,11 @@ id|page
 )paren
 suffix:semicolon
 )brace
-DECL|function|pte_free_tlb
+DECL|function|__pte_free_tlb
 r_static
 r_inline
 r_void
-id|pte_free_tlb
+id|__pte_free_tlb
 c_func
 (paren
 id|mmu_gather_t
@@ -335,11 +335,11 @@ id|pmd
 )paren
 suffix:semicolon
 )brace
-DECL|function|pmd_free_tlb
+DECL|function|__pmd_free_tlb
 r_static
 r_inline
 r_int
-id|pmd_free_tlb
+id|__pmd_free_tlb
 c_func
 (paren
 id|mmu_gather_t

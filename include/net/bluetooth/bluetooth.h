@@ -71,19 +71,15 @@ r_int
 id|count
 )paren
 suffix:semicolon
-macro_line|#if __GNUC__ &lt;= 2 &amp;&amp; __GNUC_MINOR__ &lt; 95
-DECL|macro|__func__
-mdefine_line|#define __func__ __FUNCTION__
-macro_line|#endif
 DECL|macro|BT_INFO
 mdefine_line|#define BT_INFO(fmt, arg...) printk(KERN_INFO fmt &quot;&bslash;n&quot; , ## arg)
 DECL|macro|BT_DBG
-mdefine_line|#define BT_DBG(fmt, arg...)  printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot; , __func__ , ## arg)
+mdefine_line|#define BT_DBG(fmt, arg...)  printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot; , __FUNCTION__ , ## arg)
 DECL|macro|BT_ERR
-mdefine_line|#define BT_ERR(fmt, arg...)  printk(KERN_ERR  &quot;%s: &quot; fmt &quot;&bslash;n&quot; , __func__ , ## arg)
+mdefine_line|#define BT_ERR(fmt, arg...)  printk(KERN_ERR  &quot;%s: &quot; fmt &quot;&bslash;n&quot; , __FUNCTION__ , ## arg)
 macro_line|#ifdef HCI_DATA_DUMP
 DECL|macro|BT_DMP
-mdefine_line|#define BT_DMP(buf, len)    bluez_dump(__func__, buf, len)
+mdefine_line|#define BT_DMP(buf, len)    bluez_dump(__FUNCTION__, buf, len)
 macro_line|#else
 DECL|macro|BT_DMP
 mdefine_line|#define BT_DMP(D...)

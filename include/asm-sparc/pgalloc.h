@@ -147,8 +147,8 @@ DECL|macro|free_pmd_fast
 mdefine_line|#define free_pmd_fast(pmd)&t;BTFIXUP_CALL(free_pmd_fast)(pmd)
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(pmd)           free_pmd_fast(pmd)
-DECL|macro|pmd_free_tlb
-mdefine_line|#define pmd_free_tlb(tlb, pmd)&t;pmd_free(pmd)
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb, pmd) pmd_free(pmd)
 id|BTFIXUPDEF_CALL
 c_func
 (paren
@@ -240,7 +240,7 @@ op_star
 )paren
 DECL|macro|pte_free
 mdefine_line|#define pte_free(pte)&t;&t;BTFIXUP_CALL(pte_free)(pte)
-DECL|macro|pte_free_tlb
-mdefine_line|#define pte_free_tlb(tlb, pte)&t;pte_free(pte)
+DECL|macro|__pte_free_tlb
+mdefine_line|#define __pte_free_tlb(tlb, pte)&t;pte_free(pte)
 macro_line|#endif /* _SPARC_PGALLOC_H */
 eof

@@ -9,12 +9,12 @@ DECL|macro|tlb_start_vma
 mdefine_line|#define tlb_start_vma(tlb,vma)&t;&bslash;&n;&t;flush_cache_range(vma, vma-&gt;vm_start, vma-&gt;vm_end)
 DECL|macro|tlb_end_vma
 mdefine_line|#define tlb_end_vma(tlb,vma)&t;&bslash;&n;&t;flush_tlb_range(vma, vma-&gt;vm_start, vma-&gt;vm_end)
-DECL|macro|tlb_remove_tlb_entry
-mdefine_line|#define tlb_remove_tlb_entry(tlb, ptep, address) do { } while (0)
+DECL|macro|__tlb_remove_tlb_entry
+mdefine_line|#define __tlb_remove_tlb_entry(tlb, ptep, address) do { } while (0)
 macro_line|#include &lt;asm-generic/tlb.h&gt;
-DECL|macro|pmd_free_tlb
-mdefine_line|#define pmd_free_tlb(tlb, pmd)&t;pmd_free(pmd)
-DECL|macro|pte_free_tlb
-mdefine_line|#define pte_free_tlb(tlb, pte)&t;pte_free(pte)
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb, pmd)&t;pmd_free(pmd)
+DECL|macro|__pte_free_tlb
+mdefine_line|#define __pte_free_tlb(tlb, pte)&t;pte_free(pte)
 macro_line|#endif
 eof

@@ -20,13 +20,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 multiline_comment|/*&n; * Shared mappings implemented 30.11.1994. It&squot;s not fully working yet,&n; * though.&n; *&n; * Shared mappings now work. 15.8.1995  Bruno.&n; *&n; * finished &squot;unifying&squot; the page and buffer cache and SMP-threaded the&n; * page-cache, 21.05.1999, Ingo Molnar &lt;mingo@redhat.com&gt;&n; *&n; * SMP-threaded pagemap-LRU 1999, Andrea Arcangeli &lt;andrea@suse.de&gt;&n; */
 multiline_comment|/*&n; * Lock ordering:&n; *&n; *  -&gt;i_shared_lock&t;&t;(vmtruncate)&n; *    -&gt;private_lock&t;&t;(__free_pte-&gt;__set_page_dirty_buffers)&n; *      -&gt;swap_list_lock&n; *        -&gt;swap_device_lock&t;(exclusive_swap_page, others)&n; *          -&gt;mapping-&gt;page_lock&n; *      -&gt;inode_lock&t;&t;(__mark_inode_dirty)&n; *        -&gt;sb_lock&t;&t;(fs/fs-writeback.c)&n; */
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|_pagemap_lru_lock
-id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/*&n; * Remove a page from the page cache and free it. Caller has to make&n; * sure the page is locked and that nobody else uses it - or that usage&n; * is safe.  The caller must hold a write_lock on the mapping&squot;s page_lock.&n; */
 DECL|function|__remove_from_page_cache
 r_void
@@ -2271,7 +2264,8 @@ id|page
 )paren
 (brace
 r_const
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 op_assign
@@ -4374,9 +4368,13 @@ r_int
 r_int
 id|max
 suffix:semicolon
-r_struct
-id|page_state
-id|ps
+r_int
+r_int
+id|active
+suffix:semicolon
+r_int
+r_int
+id|inactive
 suffix:semicolon
 r_if
 c_cond
@@ -4395,16 +4393,19 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* Limit it to a sane percentage of the inactive list.. */
-id|get_page_state
+id|get_zone_counts
 c_func
 (paren
 op_amp
-id|ps
+id|active
+comma
+op_amp
+id|inactive
 )paren
 suffix:semicolon
 id|max
 op_assign
-id|ps.nr_inactive
+id|inactive
 op_div
 l_int|2
 suffix:semicolon

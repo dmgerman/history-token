@@ -15,5 +15,7 @@ macro_line|#else
 DECL|macro|__cacheline_aligned
 mdefine_line|#define __cacheline_aligned&t;&t;&t;&t;&t;&bslash;&n;  __attribute__((__aligned__(L1_CACHE_BYTES),&t;&t;&t;&bslash;&n;&t;&t; __section__(&quot;.data.cacheline_aligned&quot;)))
 macro_line|#endif
+DECL|macro|L1_CACHE_SHIFT_MAX
+mdefine_line|#define L1_CACHE_SHIFT_MAX 5&t;/* largest L1 which this arch supports */
 macro_line|#endif
 eof
