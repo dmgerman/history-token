@@ -2448,7 +2448,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tcp_prot.memory_pressure
+id|tcp_memory_pressure
 )paren
 id|tp-&gt;rcv_ssthresh
 op_assign

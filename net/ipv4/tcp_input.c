@@ -586,7 +586,7 @@ id|sk
 )paren
 op_logical_and
 op_logical_neg
-id|tcp_prot.memory_pressure
+id|tcp_memory_pressure
 )paren
 (brace
 r_int
@@ -967,7 +967,7 @@ id|SOCK_RCVBUF_LOCK
 )paren
 op_logical_and
 op_logical_neg
-id|tcp_prot.memory_pressure
+id|tcp_memory_pressure
 op_logical_and
 id|atomic_read
 c_func
@@ -14404,7 +14404,7 @@ r_else
 r_if
 c_cond
 (paren
-id|tcp_prot.memory_pressure
+id|tcp_memory_pressure
 )paren
 id|tp-&gt;rcv_ssthresh
 op_assign
@@ -14680,7 +14680,7 @@ id|SOCK_SNDBUF_LOCK
 )paren
 op_logical_and
 op_logical_neg
-id|tcp_prot.memory_pressure
+id|tcp_memory_pressure
 op_logical_and
 id|atomic_read
 c_func

@@ -3232,6 +3232,11 @@ c_func
 (paren
 id|smc
 comma
+(paren
+r_struct
+id|fddi_addr
+op_star
+)paren
 id|dmi-&gt;dmi_addr
 comma
 l_int|1

@@ -6461,7 +6461,7 @@ id|hotdrop
 )paren
 (brace
 multiline_comment|/* tcp.doff is only 4 bits, ie. max 15 * 4 bytes */
-r_char
+id|u_int8_t
 id|opt
 (braket
 l_int|60

@@ -865,9 +865,7 @@ macro_line|#ifdef CONFIG_X86_PAE
 multiline_comment|/*&n;&t; * Chop off the NX bit (if present), and add the NX portion of&n;&t; * the newprot (if present):&n;&t; */
 id|pte.pte_high
 op_and_assign
-op_minus
-l_int|1
-op_xor
+op_complement
 (paren
 l_int|1
 op_lshift
@@ -929,6 +927,54 @@ DECL|macro|pte_index
 mdefine_line|#define pte_index(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
 DECL|macro|pte_offset_kernel
 mdefine_line|#define pte_offset_kernel(dir, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) +  pte_index(address))
+multiline_comment|/*&n; * Helper function that returns the kernel pagetable entry controlling&n; * the virtual address &squot;address&squot;. NULL means no pagetable entry present.&n; * NOTE: the return type is pte_t but if the pmd is PSE then we return it&n; * as a pte too.&n; */
+r_extern
+id|pte_t
+op_star
+id|lookup_address
+c_func
+(paren
+r_int
+r_int
+id|address
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Make a given kernel text page executable/non-executable.&n; * Returns the previous executability setting of that page (which&n; * is used to restore the previous state). Used by the SMP bootup code.&n; * NOTE: this is an __init function for security reasons.&n; */
+macro_line|#ifdef CONFIG_X86_PAE
+r_extern
+r_int
+id|set_kernel_exec
+c_func
+(paren
+r_int
+r_int
+id|vaddr
+comma
+r_int
+id|enable
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|set_kernel_exec
+r_static
+r_inline
+r_int
+id|set_kernel_exec
+c_func
+(paren
+r_int
+r_int
+id|vaddr
+comma
+r_int
+id|enable
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#if defined(CONFIG_HIGHPTE)
 DECL|macro|pte_offset_map
 mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE0) + pte_index(address))

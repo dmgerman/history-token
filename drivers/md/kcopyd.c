@@ -12,8 +12,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;kcopyd.h&quot;
-multiline_comment|/* FIXME: this is only needed for the DMERR macros */
-macro_line|#include &quot;dm.h&quot;
 DECL|variable|_kcopyd_wq
 r_static
 r_struct
@@ -1959,7 +1957,7 @@ id|_clients
 suffix:semicolon
 DECL|function|client_add
 r_static
-r_int
+r_void
 id|client_add
 c_func
 (paren
@@ -1992,9 +1990,6 @@ c_func
 op_amp
 id|_client_lock
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|client_del
@@ -2368,47 +2363,12 @@ r_return
 id|r
 suffix:semicolon
 )brace
-id|r
-op_assign
 id|client_add
 c_func
 (paren
 id|kc
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|r
-)paren
-(brace
-id|dm_io_put
-c_func
-(paren
-id|nr_pages
-)paren
-suffix:semicolon
-id|client_free_pages
-c_func
-(paren
-id|kc
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|kc
-)paren
-suffix:semicolon
-id|kcopyd_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|r
-suffix:semicolon
-)brace
 op_star
 id|result
 op_assign

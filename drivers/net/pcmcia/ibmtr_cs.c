@@ -1614,12 +1614,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ibmtr_release
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
 )brace
 r_break
 suffix:semicolon

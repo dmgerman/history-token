@@ -30,7 +30,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* In this order: vendor, device, subvendor, subdevice, class, class_mask,&n; * driver_data &n; * Note: for driver_data we put the device&squot;s name &n; * If you have an update for this please contact prism54-devel@prism54.org &n; * The latest list can be found at http://prism54.org/supported_cards.php */
+multiline_comment|/* In this order: vendor, device, subvendor, subdevice, class, class_mask,&n; * driver_data &n; * If you have an update for this please contact prism54-devel@prism54.org &n; * The latest list can be found at http://prism54.org/supported_cards.php */
 DECL|variable|prism54_id_tbl
 r_static
 r_const
@@ -41,6 +41,7 @@ id|prism54_id_tbl
 )braket
 op_assign
 (brace
+multiline_comment|/* 3COM 3CRWE154G72 Wireless LAN adapter */
 (brace
 id|PCIVENDOR_3COM
 comma
@@ -54,13 +55,10 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;3COM 3CRWE154G72 Wireless LAN adapter&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* D-Link Air Plus Xtreme G A1 - DWL-g650 A1 */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
@@ -74,13 +72,10 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;D-Link Air Plus Xtreme G A1 - DWL-g650 A1&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* I-O Data WN-G54/CB - WN-G54/CB */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
@@ -94,13 +89,10 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;I-O Data WN-G54/CB - WN-G54/CB&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* Netgear WG511 */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
@@ -114,33 +106,27 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;Netgear WG511&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* Tekram Technology clones, Allnet, Netcomm, Zyxel */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
 id|PCIDEVICE_ISL3890
 comma
-id|PCIVENDOR_I4
+id|PCIVENDOR_TTL
 comma
-l_int|0x0020UL
+l_int|0x1605UL
+comma
+l_int|0
 comma
 l_int|0
 comma
 l_int|0
-comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;PLANEX GW-DS54G&quot;
 )brace
 comma
+multiline_comment|/* SMC2802W */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
@@ -154,13 +140,10 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;EZ Connect g 2.4GHz 54 Mbps Wireless PCI Card - SMC2802W&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* SMC2835W */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
@@ -174,34 +157,27 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;EZ Connect g 2.4GHz 54 Mbps Wireless Cardbus Adapter - SMC2835W&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* Corega CG-WLCB54GT */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
 id|PCIDEVICE_ISL3890
 comma
-id|PCIVENDOR_INTERSIL
+id|PCIVENDOR_ATI
 comma
-l_int|0x0000UL
-comma
-multiline_comment|/* This was probably a bogus reading... */
-l_int|0
+l_int|0xc104UL
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;SparkLAN WL-850F&quot;
+l_int|0
+comma
+l_int|0
 )brace
 comma
+multiline_comment|/* I4 Z-Com XG-600 */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
@@ -215,13 +191,11 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;I4 Z-Com XG-600&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* I4 Z-Com XG-900  and clones Macer, Ovislink, Planex, Peabird, */
+multiline_comment|/* Sitecom, Xterasys */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
@@ -235,13 +209,10 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;I4 Z-Com XG-900/PLANEX GW-DS54G&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* SMC 2802W V2 */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
@@ -255,13 +226,10 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;SMC 2802Wv2&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* SMC 2835W V2 */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
@@ -275,13 +243,10 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;SMC 2835Wv2&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* Intersil PRISM Indigo Wireless LAN adapter */
 (brace
 id|PCIVENDOR_INTERSIL
 comma
@@ -295,15 +260,12 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;Intersil PRISM Indigo Wireless LAN adapter&quot;
+l_int|0
 )brace
 comma
-(brace
+multiline_comment|/* Intersil PRISM Duette/Prism GT Wireless LAN adapter */
 multiline_comment|/* Default */
+(brace
 id|PCIVENDOR_INTERSIL
 comma
 id|PCIDEVICE_ISL3890
@@ -316,16 +278,24 @@ l_int|0
 comma
 l_int|0
 comma
-(paren
-r_int
-r_int
-)paren
-l_string|&quot;Intersil PRISM Duette/Prism GT Wireless LAN adapter&quot;
+l_int|0
 )brace
 comma
+multiline_comment|/* End of list */
 (brace
 l_int|0
 comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
 )brace
 )brace
 suffix:semicolon
@@ -446,6 +416,11 @@ r_char
 op_star
 id|modelp
 suffix:semicolon
+r_int
+id|notwork
+op_assign
+l_int|0
+suffix:semicolon
 id|priv
 op_assign
 id|netdev_priv
@@ -466,6 +441,15 @@ suffix:colon
 id|modelp
 op_assign
 l_string|&quot;PRISM Indigo&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCIDEVICE_ISL3886
+suffix:colon
+id|modelp
+op_assign
+l_string|&quot;PRISM Javelin / Xbow&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -521,6 +505,10 @@ id|modelp
 op_assign
 l_string|&quot;SMC2802W V2&quot;
 suffix:semicolon
+id|notwork
+op_assign
+l_int|1
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -539,6 +527,28 @@ id|modelp
 op_assign
 l_string|&quot;SMC2835W V2&quot;
 suffix:semicolon
+id|notwork
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0xc104UL
+suffix:colon
+id|modelp
+op_assign
+l_string|&quot;CG-WLCB54GT&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x1605UL
+suffix:colon
+id|modelp
+op_assign
+l_string|&quot;Tekram Technology clone&quot;
+suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* Let&squot;s leave this one out for now since it seems bogus/wrong &n;&t; * Even if the manufacturer did use 0x0000UL it may not be correct&n;&t; * by their part, therefore deserving no name ;) */
@@ -549,7 +559,7 @@ l_int|0x0014UL
 suffix:colon
 id|modelp
 op_assign
-l_string|&quot;XG-600&quot;
+l_string|&quot;I4 Z-Com XG-600 and clones&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -558,7 +568,7 @@ l_int|0x0020UL
 suffix:colon
 id|modelp
 op_assign
-l_string|&quot;XG-900/GW-DS54G&quot;
+l_string|&quot;I4 Z-Com XG-900 and clones&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -584,6 +594,24 @@ comma
 id|modelp
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|notwork
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: %s Warning - This may not work&bslash;n&quot;
+comma
+id|ndev-&gt;name
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace
@@ -720,26 +748,8 @@ id|do_pci_disable_device
 suffix:semicolon
 )brace
 multiline_comment|/* 0x40 is the programmable timer to configure the response timeout (TRDY_TIMEOUT)&n;&t; * 0x41 is the programmable timer to configure the retry timeout (RETRY_TIMEOUT)&n;&t; * &t;The RETRY_TIMEOUT is used to set the number of retries that the core, as a&n;&t; * &t;Master, will perform before abandoning a cycle. The default value for&n;&t; * &t;RETRY_TIMEOUT is 0x80, which far exceeds the PCI 2.1 requirement for new&n;&t; * &t;devices. A write of zero to the RETRY_TIMEOUT register disables this&n;&t; * &t;function to allow use with any non-compliant legacy devices that may&n;&t; * &t;execute more retries.&n;&t; *&n;&t; * &t;Writing zero to both these two registers will disable both timeouts and&n;&t; * &t;*can* solve problems caused by devices that are slow to respond.&n;&t; */
-id|pci_write_config_byte
-c_func
-(paren
-id|pdev
-comma
-l_int|0x40
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|pci_write_config_byte
-c_func
-(paren
-id|pdev
-comma
-l_int|0x41
-comma
-l_int|0
-)paren
-suffix:semicolon
+multiline_comment|/*&t;I am taking these out, we should not be poking around in the&n;&t; *&t;programmable timers - MSW&n;&t;*/
+multiline_comment|/*&t;Do not zero the programmable timers&n;&t;pci_write_config_byte(pdev, 0x40, 0);&n;&t;pci_write_config_byte(pdev, 0x41, 0);&n;*/
 multiline_comment|/* request the pci device I/O regions */
 id|rvalue
 op_assign
@@ -820,6 +830,13 @@ id|DRV_NAME
 )paren
 suffix:semicolon
 id|pci_set_master
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+multiline_comment|/* enable MWI */
+id|pci_set_mwi
 c_func
 (paren
 id|pdev

@@ -926,7 +926,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|tcp_prot.memory_pressure
+id|tcp_memory_pressure
 )paren
 id|sk_stream_mem_reclaim
 c_func
