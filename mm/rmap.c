@@ -1311,6 +1311,14 @@ id|out_unlock
 suffix:semicolon
 )brace
 multiline_comment|/* Nuke the page table entry. */
+id|flush_cache_page
+c_func
+(paren
+id|vma
+comma
+id|address
+)paren
+suffix:semicolon
 id|pte
 op_assign
 id|ptep_get_and_clear
@@ -1320,14 +1328,6 @@ id|ptep
 )paren
 suffix:semicolon
 id|flush_tlb_page
-c_func
-(paren
-id|vma
-comma
-id|address
-)paren
-suffix:semicolon
-id|flush_cache_page
 c_func
 (paren
 id|vma
