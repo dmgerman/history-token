@@ -1723,10 +1723,6 @@ DECL|member|esbq_confirm
 id|u16
 id|esbq_confirm
 suffix:semicolon
-DECL|member|llc_type
-id|u8
-id|llc_type
-suffix:semicolon
 DECL|member|essid
 id|u8
 id|essid
