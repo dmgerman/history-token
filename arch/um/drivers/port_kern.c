@@ -6,6 +6,7 @@ macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;linux/irq.h&quot;
 macro_line|#include &quot;linux/spinlock.h&quot;
 macro_line|#include &quot;linux/errno.h&quot;
+macro_line|#include &quot;asm/atomic.h&quot;
 macro_line|#include &quot;asm/semaphore.h&quot;
 macro_line|#include &quot;asm/errno.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
@@ -23,6 +24,10 @@ DECL|member|list
 r_struct
 id|list_head
 id|list
+suffix:semicolon
+DECL|member|wait_count
+id|atomic_t
+id|wait_count
 suffix:semicolon
 DECL|member|has_connection
 r_int
@@ -226,6 +231,8 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+DECL|macro|NO_WAITER_MSG
+mdefine_line|#define NO_WAITER_MSG &bslash;&n;    &quot;****&bslash;n&quot; &bslash;&n;    &quot;There are currently no UML consoles waiting for port connections.&bslash;n&quot; &bslash;&n;    &quot;Either disconnect from one to make it available or activate some more&bslash;n&quot; &bslash;&n;    &quot;by enabling more consoles in the UML /etc/inittab.&bslash;n&quot; &bslash;&n;    &quot;****&bslash;n&quot;
 DECL|function|port_accept
 r_static
 r_int
@@ -426,6 +433,39 @@ l_string|&quot;telnetd&bslash;n&quot;
 suffix:semicolon
 r_goto
 id|out_free
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|port-&gt;wait_count
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|os_write_file
+c_func
+(paren
+id|fd
+comma
+id|NO_WAITER_MSG
+comma
+r_sizeof
+(paren
+id|NO_WAITER_MSG
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;No one waiting for port&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 id|list_add
@@ -843,6 +883,15 @@ id|port-&gt;list
 )paren
 comma
 dot
+id|wait_count
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|0
+)paren
+comma
+dot
 id|has_connection
 op_assign
 l_int|0
@@ -1030,12 +1079,24 @@ suffix:semicolon
 r_int
 id|fd
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|port-&gt;wait_count
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
 l_int|1
 )paren
 (brace
+id|fd
+op_assign
+op_minus
+id|ERESTARTSYS
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1047,9 +1108,8 @@ id|port-&gt;sem
 )paren
 )paren
 (brace
-r_return
-op_minus
-id|ERESTARTSYS
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|spin_lock
@@ -1187,6 +1247,15 @@ id|kfree
 c_func
 (paren
 id|conn
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|port-&gt;wait_count
 )paren
 suffix:semicolon
 r_return

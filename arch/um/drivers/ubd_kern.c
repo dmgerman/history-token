@@ -1710,6 +1710,50 @@ l_string|&quot;    to be mounted read-only. For example ubd1r=./ext_fs. Appendin
 l_string|&quot;    an &squot;s&squot; will cause data to be written to disk on the host immediately.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
+DECL|function|udb_setup
+r_static
+r_int
+id|udb_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;udb%s specified on command line is almost certainly a ubd -&gt; &quot;
+l_string|&quot;udb TYPO&bslash;n&quot;
+comma
+id|str
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;udb&quot;
+comma
+id|udb_setup
+)paren
+suffix:semicolon
+id|__uml_help
+c_func
+(paren
+id|udb_setup
+comma
+l_string|&quot;udb&bslash;n&quot;
+l_string|&quot;    This option is here solely to catch ubd -&gt; udb typos, which can be&bslash;n&bslash;n&quot;
+l_string|&quot;    to impossible to catch visually unless you specifically look for&bslash;n&bslash;n&quot;
+l_string|&quot;    them.  The only result of any option starting with &squot;udb&squot; is an error&bslash;n&bslash;n&quot;
+l_string|&quot;    in the boot output.&bslash;n&bslash;n&quot;
+)paren
+suffix:semicolon
 DECL|variable|fakehd_set
 r_static
 r_int
@@ -2445,6 +2489,17 @@ OL
 l_int|0
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;Failed to open &squot;%s&squot;, errno = %d&bslash;n&quot;
+comma
+id|dev-&gt;file
+comma
+op_minus
+id|dev-&gt;fd
+)paren
+suffix:semicolon
 r_return
 id|dev-&gt;fd
 suffix:semicolon
