@@ -310,6 +310,17 @@ id|q-&gt;make_request_fn
 op_assign
 id|mfn
 suffix:semicolon
+id|q-&gt;ra_sectors
+op_assign
+id|VM_MAX_READAHEAD
+op_lshift
+(paren
+l_int|10
+op_minus
+l_int|9
+)paren
+suffix:semicolon
+multiline_comment|/* kbytes-&gt;sectors */
 id|blk_queue_max_sectors
 c_func
 (paren
@@ -2656,11 +2667,6 @@ id|q-&gt;queue_lock
 op_assign
 id|lock
 suffix:semicolon
-id|q-&gt;ra_sectors
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Use VM default */
 id|blk_queue_segment_boundary
 c_func
 (paren
