@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresop - AML Interpreter operand/object resolution&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; * Copyright (C) 2000 - 2004, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000 - 2005, R. Byron Moore&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/amlcode.h&gt;
 macro_line|#include &lt;acpi/acparser.h&gt;
@@ -1254,6 +1254,91 @@ id|ACPI_DEBUG_PRINT
 id|ACPI_DB_ERROR
 comma
 l_string|&quot;Needed [Region/region_field], found [%s] %p&bslash;n&quot;
+comma
+id|acpi_ut_get_object_type_name
+(paren
+id|obj_desc
+)paren
+comma
+id|obj_desc
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
+r_goto
+id|next_operand
+suffix:semicolon
+r_case
+id|ARGI_DATAREFOBJ
+suffix:colon
+multiline_comment|/* Used by the Store() operator only */
+r_switch
+c_cond
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
+)paren
+(brace
+r_case
+id|ACPI_TYPE_INTEGER
+suffix:colon
+r_case
+id|ACPI_TYPE_PACKAGE
+suffix:colon
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER_FIELD
+suffix:colon
+r_case
+id|ACPI_TYPE_LOCAL_REFERENCE
+suffix:colon
+r_case
+id|ACPI_TYPE_LOCAL_REGION_FIELD
+suffix:colon
+r_case
+id|ACPI_TYPE_LOCAL_BANK_FIELD
+suffix:colon
+r_case
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
+suffix:colon
+r_case
+id|ACPI_TYPE_DDB_HANDLE
+suffix:colon
+multiline_comment|/* Valid operand */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|acpi_gbl_enable_interpreter_slack
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Enable original behavior of Store(), allowing any and all&n;&t;&t;&t;&t;&t; * objects as the source operand.  The ACPI spec does not&n;&t;&t;&t;&t;&t; * allow this, however.&n;&t;&t;&t;&t;&t; */
+r_break
+suffix:semicolon
+)brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Needed Integer/Buffer/String/Package/Ref/Ddb], found [%s] %p&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren
