@@ -380,13 +380,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|variable|balance_dirty_pages
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|balance_dirty_pages
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * balance_dirty_pages_ratelimited - balance dirty memory state&n; * @mapping - address_space which was dirtied&n; *&n; * Processes which are dirtying memory should call in here once for each page&n; * which was newly dirtied.  The function will periodically check the system&squot;s&n; * dirty state and will initiate writeback if needed.&n; *&n; * On really big machines, get_page_state is expensive, so try to avoid calling&n; * it too often (ratelimiting).  But once we&squot;re over the dirty memory limit we&n; * decrease the ratelimiting by a lot, to prevent individual processes from&n; * overshooting the limit by (ratelimit_pages) each.&n; */
 DECL|function|balance_dirty_pages_ratelimited
 r_void
@@ -481,6 +474,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|balance_dirty_pages_ratelimited
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|balance_dirty_pages_ratelimited
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * writeback at least _min_pages, and keep writing until the amount of dirty&n; * memory is less than the background threshold, or until we&squot;re all clean.&n; */
 DECL|function|background_writeout
 r_static
