@@ -197,6 +197,9 @@ r_struct
 id|timer_list
 id|i8042_timer
 suffix:semicolon
+multiline_comment|/*&n; * Shared IRQ&squot;s require a device pointer, but this driver doesn&squot;t support&n; * multiple devices&n; */
+DECL|macro|i8042_request_irq_cookie
+mdefine_line|#define i8042_request_irq_cookie (&amp;i8042_timer)
 DECL|variable|i8042_unxlate_seen
 r_static
 r_int
@@ -1143,11 +1146,11 @@ id|values-&gt;irq
 comma
 id|i8042_interrupt
 comma
-l_int|0
+id|SA_SHIRQ
 comma
 l_string|&quot;i8042&quot;
 comma
-l_int|NULL
+id|i8042_request_irq_cookie
 )paren
 )paren
 (brace
@@ -1293,7 +1296,7 @@ c_func
 (paren
 id|values-&gt;irq
 comma
-l_int|NULL
+id|i8042_request_irq_cookie
 )paren
 suffix:semicolon
 id|i8042_flush
@@ -2387,11 +2390,11 @@ id|values-&gt;irq
 comma
 id|i8042_interrupt
 comma
-l_int|0
+id|SA_SHIRQ
 comma
 l_string|&quot;i8042&quot;
 comma
-l_int|NULL
+id|i8042_request_irq_cookie
 )paren
 )paren
 r_return
@@ -2403,7 +2406,7 @@ c_func
 (paren
 id|values-&gt;irq
 comma
-l_int|NULL
+id|i8042_request_irq_cookie
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Get rid of bytes in the queue.&n; */
@@ -2607,11 +2610,11 @@ id|values-&gt;irq
 comma
 id|i8042_interrupt
 comma
-l_int|0
+id|SA_SHIRQ
 comma
 l_string|&quot;i8042&quot;
 comma
-l_int|NULL
+id|i8042_request_irq_cookie
 )paren
 )paren
 r_return
@@ -2623,7 +2626,7 @@ c_func
 (paren
 id|values-&gt;irq
 comma
-l_int|NULL
+id|i8042_request_irq_cookie
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Get rid of bytes in the queue.&n; */
