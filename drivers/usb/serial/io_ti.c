@@ -1693,9 +1693,11 @@ op_logical_neg
 id|oedb
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory&quot;
+id|port-&gt;port-&gt;dev
+comma
+l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2127,9 +2129,11 @@ op_ne
 l_int|1
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - bNumInterfaces is not 1, ERROR!&quot;
+id|dev-&gt;dev
+comma
+l_string|&quot;%s - bNumInterfaces is not 1, ERROR!&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2471,6 +2475,14 @@ op_star
 id|serial
 )paren
 (brace
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+op_amp
+id|serial-&gt;serial-&gt;dev-&gt;dev
+suffix:semicolon
 r_int
 id|status
 op_assign
@@ -2510,9 +2522,12 @@ op_logical_neg
 id|rom_desc
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2538,9 +2553,12 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory when allocating buffer&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - out of memory when allocating buffer&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2586,9 +2604,12 @@ op_ne
 l_int|0x52
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - invalid buffer signature&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - invalid buffer signature&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2850,9 +2871,11 @@ op_logical_neg
 id|rom_desc
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory&quot;
+id|serial-&gt;serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3017,6 +3040,11 @@ id|BuildI2CFirmwareHeader
 id|__u8
 op_star
 id|header
+comma
+r_struct
+id|device
+op_star
+id|dev
 )paren
 (brace
 id|__u8
@@ -3092,9 +3120,12 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3622,6 +3653,14 @@ op_star
 id|serial
 )paren
 (brace
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+op_amp
+id|serial-&gt;serial-&gt;dev-&gt;dev
+suffix:semicolon
 r_int
 id|status
 op_assign
@@ -3683,8 +3722,10 @@ op_logical_neg
 id|interface
 )paren
 (brace
-id|err
+id|dev_err
 (paren
+id|serial-&gt;serial-&gt;dev-&gt;dev
+comma
 l_string|&quot;%s - no interface set, error!&quot;
 comma
 id|__FUNCTION__
@@ -3795,9 +3836,12 @@ op_logical_neg
 id|ti_manuf_desc
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory.&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - out of memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3894,9 +3938,12 @@ op_logical_neg
 id|rom_desc
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory.&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - out of memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3966,9 +4013,12 @@ op_logical_neg
 id|firmware_version
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory.&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - out of memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4211,9 +4261,12 @@ op_ne
 id|I2C_DESC_TYPE_FIRMWARE_BLANK
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - error resetting device&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - error resetting device&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4331,9 +4384,12 @@ op_logical_neg
 id|header
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory.&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - out of memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4369,9 +4425,12 @@ op_logical_neg
 id|vheader
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory.&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - out of memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4415,6 +4474,8 @@ id|BuildI2CFirmwareHeader
 c_func
 (paren
 id|header
+comma
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -4818,9 +4879,12 @@ op_logical_neg
 id|ti_manuf_desc
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory.&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - out of memory.&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4945,9 +5009,12 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -6242,9 +6309,11 @@ suffix:semicolon
 )brace
 id|edge_port
 op_assign
+id|usb_get_serial_port_data
+c_func
+(paren
 id|port
-op_member_access_from_pointer
-r_private
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6373,8 +6442,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|err
+id|dev_err
 (paren
+id|urb-&gt;dev-&gt;dev
+comma
 l_string|&quot;%s - Unknown Interrupt code from UMP %x&bslash;n&quot;
 comma
 id|__FUNCTION__
@@ -6404,9 +6475,11 @@ c_cond
 (paren
 id|status
 )paren
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb failed with result %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -6686,9 +6759,11 @@ c_cond
 (paren
 id|status
 )paren
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb failed with result %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -6869,14 +6944,11 @@ id|edgeport_port
 op_star
 id|edge_port
 op_assign
+id|usb_get_serial_port_data
+c_func
 (paren
-r_struct
-id|edgeport_port
-op_star
-)paren
 id|port
-op_member_access_from_pointer
-r_private
+)paren
 suffix:semicolon
 r_struct
 id|edgeport_serial
@@ -6990,9 +7062,11 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|err
+id|dev_err
 (paren
-l_string|&quot;Unknown port number!!!&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;Unknown port number!!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7271,9 +7345,11 @@ op_logical_neg
 id|urb
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - no interrupt urb present, exiting&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - no interrupt urb present, exiting&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -7310,9 +7386,11 @@ c_cond
 id|status
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - usb_submit_urb failed with value %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb failed with value %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -7351,9 +7429,11 @@ op_logical_neg
 id|urb
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - no read urb present, exiting&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - no read urb present, exiting&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -7390,9 +7470,11 @@ c_cond
 id|status
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - read bulk usb_submit_urb failed with value %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - read bulk usb_submit_urb failed with value %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -7496,25 +7578,19 @@ r_return
 suffix:semicolon
 id|edge_serial
 op_assign
+id|usb_get_serial_data
+c_func
 (paren
-r_struct
-id|edgeport_serial
-op_star
-)paren
 id|serial
-op_member_access_from_pointer
-r_private
+)paren
 suffix:semicolon
 id|edge_port
 op_assign
+id|usb_get_serial_port_data
+c_func
 (paren
-r_struct
-id|edgeport_port
-op_star
-)paren
 id|port
-op_member_access_from_pointer
-r_private
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7670,9 +7746,11 @@ id|edgeport_port
 op_star
 id|edge_port
 op_assign
+id|usb_get_serial_port_data
+c_func
+(paren
 id|port
-op_member_access_from_pointer
-r_private
+)paren
 suffix:semicolon
 r_int
 id|result
@@ -7844,10 +7922,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting write urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting write urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -7890,15 +7970,10 @@ id|edgeport_port
 op_star
 id|edge_port
 op_assign
-(paren
-r_struct
-id|edgeport_port
-op_star
-)paren
+id|usb_get_serial_port_data
+c_func
 (paren
 id|port
-op_member_access_from_pointer
-r_private
 )paren
 suffix:semicolon
 r_int
@@ -7988,15 +8063,10 @@ id|edgeport_port
 op_star
 id|edge_port
 op_assign
-(paren
-r_struct
-id|edgeport_port
-op_star
-)paren
+id|usb_get_serial_port_data
+c_func
 (paren
 id|port
-op_member_access_from_pointer
-r_private
 )paren
 suffix:semicolon
 r_int
@@ -8085,15 +8155,10 @@ id|edgeport_port
 op_star
 id|edge_port
 op_assign
-(paren
-r_struct
-id|edgeport_port
-op_star
-)paren
+id|usb_get_serial_port_data
+c_func
 (paren
 id|port
-op_member_access_from_pointer
-r_private
 )paren
 suffix:semicolon
 r_struct
@@ -8230,15 +8295,10 @@ id|edgeport_port
 op_star
 id|edge_port
 op_assign
-(paren
-r_struct
-id|edgeport_port
-op_star
-)paren
+id|usb_get_serial_port_data
+c_func
 (paren
 id|port
-op_member_access_from_pointer
-r_private
 )paren
 suffix:semicolon
 r_struct
@@ -8372,9 +8432,11 @@ c_cond
 id|status
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - usb_submit_urb failed with value %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb failed with value %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -8487,9 +8549,11 @@ op_logical_neg
 id|config
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;%s - out of memory&quot;
+id|edge_port-&gt;port-&gt;dev
+comma
+l_string|&quot;%s - out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -9063,15 +9127,10 @@ id|edgeport_port
 op_star
 id|edge_port
 op_assign
-(paren
-r_struct
-id|edgeport_port
-op_star
-)paren
+id|usb_get_serial_port_data
+c_func
 (paren
 id|port
-op_member_access_from_pointer
-r_private
 )paren
 suffix:semicolon
 r_struct
@@ -9733,15 +9792,10 @@ id|edgeport_port
 op_star
 id|edge_port
 op_assign
-(paren
-r_struct
-id|edgeport_port
-op_star
-)paren
+id|usb_get_serial_port_data
+c_func
 (paren
 id|port
-op_member_access_from_pointer
-r_private
 )paren
 suffix:semicolon
 r_struct
@@ -10125,15 +10179,10 @@ id|edgeport_port
 op_star
 id|edge_port
 op_assign
-(paren
-r_struct
-id|edgeport_port
-op_star
-)paren
+id|usb_get_serial_port_data
+c_func
 (paren
 id|port
-op_member_access_from_pointer
-r_private
 )paren
 suffix:semicolon
 r_int
@@ -10256,10 +10305,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - Out of memory&quot;
+id|serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - Out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -10286,11 +10337,13 @@ id|edge_serial-&gt;serial
 op_assign
 id|serial
 suffix:semicolon
+id|usb_set_serial_data
+c_func
+(paren
 id|serial
-op_member_access_from_pointer
-r_private
-op_assign
+comma
 id|edge_serial
+)paren
 suffix:semicolon
 id|status
 op_assign
@@ -10351,10 +10404,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - Out of memory&quot;
+id|serial-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - Out of memory&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -10389,14 +10444,17 @@ id|edge_port-&gt;edge_serial
 op_assign
 id|edge_serial
 suffix:semicolon
+id|usb_set_serial_port_data
+c_func
+(paren
+op_amp
 id|serial-&gt;port
 (braket
 id|i
 )braket
-dot
-r_private
-op_assign
+comma
 id|edge_port
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -10441,36 +10499,46 @@ id|i
 (brace
 id|kfree
 (paren
+id|usb_get_serial_port_data
+c_func
+(paren
+op_amp
 id|serial-&gt;port
 (braket
 id|i
 )braket
-dot
-r_private
+)paren
 )paren
 suffix:semicolon
+id|usb_set_serial_port_data
+c_func
+(paren
+op_amp
 id|serial-&gt;port
 (braket
 id|i
 )braket
-dot
-r_private
-op_assign
+comma
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 id|kfree
 (paren
+id|usb_get_serial_data
+c_func
+(paren
 id|serial
-op_member_access_from_pointer
-r_private
+)paren
 )paren
 suffix:semicolon
+id|usb_set_serial_data
+c_func
+(paren
 id|serial
-op_member_access_from_pointer
-r_private
-op_assign
+comma
 l_int|NULL
+)paren
 suffix:semicolon
 )brace
 DECL|variable|edgeport_1port_device

@@ -956,9 +956,12 @@ id|port-&gt;read_urb
 )paren
 (brace
 multiline_comment|/* this is needed for some brain dead Sony devices */
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;Device lied about number of ports, please use a lower one.&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;Device lied about number of ports, please use a lower one.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1023,10 +1026,12 @@ c_cond
 id|result
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1066,10 +1071,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting interrupt urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting interrupt urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1171,10 +1178,12 @@ op_logical_neg
 id|transfer_buffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - kmalloc(%d) failed.&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1236,7 +1245,7 @@ id|port-&gt;interrupt_in_urb
 suffix:semicolon
 )brace
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
-multiline_comment|/* info (&quot;Bytes In = %d  Bytes Out = %d&quot;, bytes_in, bytes_out); */
+multiline_comment|/* dev_info (port-&gt;dev, &quot;Bytes In = %d  Bytes Out = %d&bslash;n&quot;, bytes_in, bytes_out); */
 )brace
 DECL|function|visor_write
 r_static
@@ -1307,9 +1316,12 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;out of memory&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1334,9 +1346,12 @@ op_logical_neg
 id|urb
 )paren
 (brace
-id|err
+id|dev_err
+c_func
 (paren
-l_string|&quot;no more free urbs&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;no more free urbs&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -1446,10 +1461,12 @@ c_cond
 id|status
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - usb_submit_urb(write bulk) failed with status = %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - usb_submit_urb(write bulk) failed with status = %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1848,10 +1865,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed resubmitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1961,10 +1980,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - Error %d submitting interrupt urb&quot;
+id|urb-&gt;dev-&gt;dev
+comma
+l_string|&quot;%s - Error %d submitting interrupt urb&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2042,10 +2063,12 @@ c_cond
 (paren
 id|result
 )paren
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - failed submitting read urb, error %d&quot;
+id|port-&gt;dev
+comma
+l_string|&quot;%s - failed submitting read urb, error %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2064,6 +2087,14 @@ op_star
 id|serial
 )paren
 (brace
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+op_amp
+id|serial-&gt;dev-&gt;dev
+suffix:semicolon
 r_int
 id|response
 suffix:semicolon
@@ -2092,10 +2123,13 @@ op_logical_neg
 id|transfer_buffer
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - kmalloc(%d) failed.&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - kmalloc(%d) failed.&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2168,10 +2202,13 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - error getting connection information&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - error getting connection information&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2206,10 +2243,13 @@ id|num_ports
 op_assign
 id|connection_info-&gt;num_ports
 suffix:semicolon
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;%s: Number of ports: %d&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s: Number of ports: %d&bslash;n&quot;
 comma
 id|serial-&gt;type-&gt;name
 comma
@@ -2296,10 +2336,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|info
+id|dev_info
 c_func
 (paren
-l_string|&quot;%s: port %d, is for %s use&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s: port %d, is for %s use&bslash;n&quot;
 comma
 id|serial-&gt;type-&gt;name
 comma
@@ -2314,10 +2357,11 @@ id|string
 )paren
 suffix:semicolon
 multiline_comment|/* save off our num_ports info so that we can use it in the calc_num_ports call */
+id|usb_set_serial_data
+c_func
+(paren
 id|serial
-op_member_access_from_pointer
-r_private
-op_assign
+comma
 (paren
 r_void
 op_star
@@ -2326,6 +2370,7 @@ op_star
 r_int
 )paren
 id|num_ports
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -2391,10 +2436,13 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - error getting first unknown palm command&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - error getting first unknown palm command&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2451,10 +2499,13 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - error getting second unknown palm command&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - error getting second unknown palm command&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2513,10 +2564,13 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s - error getting bytes available request&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s - error getting bytes available request&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2546,35 +2600,33 @@ id|serial
 r_int
 id|num_ports
 op_assign
-l_int|0
+(paren
+r_int
+)paren
+(paren
+r_int
+)paren
+(paren
+id|usb_get_serial_data
+c_func
+(paren
+id|serial
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|serial
-op_member_access_from_pointer
-r_private
-)paren
-(brace
 id|num_ports
-op_assign
-(paren
-r_int
 )paren
+id|usb_set_serial_data
+c_func
 (paren
-r_int
-)paren
 id|serial
-op_member_access_from_pointer
-r_private
-suffix:semicolon
-id|serial
-op_member_access_from_pointer
-r_private
-op_assign
+comma
 l_int|NULL
+)paren
 suffix:semicolon
-)brace
 r_return
 id|num_ports
 suffix:semicolon
@@ -2590,6 +2642,14 @@ op_star
 id|serial
 )paren
 (brace
+r_struct
+id|device
+op_star
+id|dev
+op_assign
+op_amp
+id|serial-&gt;dev-&gt;dev
+suffix:semicolon
 r_int
 id|result
 suffix:semicolon
@@ -2646,10 +2706,13 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s: get config number failed: %d&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s: get config number failed: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2668,10 +2731,13 @@ op_ne
 l_int|1
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s: get config number bad return length: %d&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s: get config number bad return length: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2726,10 +2792,13 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s: get interface number failed: %d&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s: get interface number failed: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2748,10 +2817,13 @@ op_ne
 l_int|1
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;%s: get interface number bad return length: %d&quot;
+op_star
+id|dev
+comma
+l_string|&quot;%s: get interface number bad return length: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
