@@ -1432,6 +1432,17 @@ op_star
 id|tmp
 )paren
 (brace
+id|u32
+id|origcmd
+op_assign
+op_star
+id|cmd
+comma
+id|origtmp
+op_assign
+op_star
+id|tmp
+suffix:semicolon
 multiline_comment|/* ARQSZ - Set the value to the maximum one.&n;&t; * Don&squot;t allow the mode register to override values. */
 op_star
 id|cmd
@@ -1649,10 +1660,17 @@ id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Badness. Don&squot;t know which AGP mode to set. [cmd:%x tmp:%x]&bslash;n&quot;
+l_string|&quot;Badness. Don&squot;t know which AGP mode to set. &quot;
+l_string|&quot;[cmd:%x tmp:%x fell back to:- cmd:%x tmp:%x]&bslash;n&quot;
 comma
+id|origcmd
+comma
+id|origtmp
+comma
+op_star
 id|cmd
 comma
+op_star
 id|tmp
 )paren
 suffix:semicolon
