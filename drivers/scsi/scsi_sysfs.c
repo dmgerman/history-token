@@ -1591,6 +1591,9 @@ l_int|20
 comma
 l_string|&quot;%d&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|atomic_t
@@ -1614,7 +1617,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 DECL|macro|show_sdev_iostat
-mdefine_line|#define show_sdev_iostat(field)&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_iostat_##field(struct device *dev, char *buf)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = to_scsi_device(dev);&t;&t;&t;&bslash;&n;&t;u64 count = (u64)atomic_read(&amp;sdev-&gt;field);&t;&t;&t;&bslash;&n;&t;return snprintf(buf, 20, &quot;0x%llx&bslash;n&quot;, count);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO, show_iostat_##field, NULL)
+mdefine_line|#define show_sdev_iostat(field)&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;show_iostat_##field(struct device *dev, char *buf)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct scsi_device *sdev = to_scsi_device(dev);&t;&t;&t;&bslash;&n;&t;unsigned long long count = atomic_read(&amp;sdev-&gt;field);&t;&t;&bslash;&n;&t;return snprintf(buf, 20, &quot;0x%llx&bslash;n&quot;, count);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO, show_iostat_##field, NULL)
 DECL|variable|iorequest_cnt
 id|show_sdev_iostat
 c_func
