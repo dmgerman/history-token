@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/reiserfs_xattr.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
@@ -2958,26 +2959,6 @@ id|write_bytes
 op_sub_assign
 id|count
 suffix:semicolon
-id|SetPageReferenced
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|unlock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-singleline_comment|// We unlock the page as it was locked by earlier call
-singleline_comment|// to grab_cache_page
-id|page_cache_release
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* now that we&squot;ve gotten all the ordered buffers marked dirty,&n;     * we can safely update i_size and close any running transaction&n;     */
 r_if
@@ -3177,6 +3158,51 @@ id|th-&gt;t_trans_id
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* &n;     * we have to unlock the pages after updating i_size, otherwise&n;     * we race with writepage&n;     */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|num_pages
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|prepared_pages
+(braket
+id|i
+)braket
+suffix:semicolon
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|mark_page_accessed
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 r_return
 id|retval
 suffix:semicolon
