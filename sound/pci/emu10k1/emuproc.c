@@ -1582,6 +1582,8 @@ id|entry
 comma
 id|emu
 comma
+l_int|1024
+comma
 id|snd_emu10k1_proc_read
 )paren
 suffix:semicolon

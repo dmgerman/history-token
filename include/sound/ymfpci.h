@@ -5,6 +5,7 @@ multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt
 macro_line|#include &quot;pcm.h&quot;
 macro_line|#include &quot;rawmidi.h&quot;
 macro_line|#include &quot;ac97_codec.h&quot;
+macro_line|#include &quot;timer.h&quot;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#ifndef PCI_VENDOR_ID_YAMAHA
 DECL|macro|PCI_VENDOR_ID_YAMAHA
@@ -752,16 +753,6 @@ r_int
 id|old_legacy_ctrl
 suffix:semicolon
 macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
-DECL|member|joystick_port
-r_int
-r_int
-id|joystick_port
-suffix:semicolon
-DECL|member|joystick_mutex
-r_struct
-id|semaphore
-id|joystick_mutex
-suffix:semicolon
 DECL|member|joystick_res
 r_struct
 id|resource
@@ -906,6 +897,11 @@ id|voices
 l_int|64
 )braket
 suffix:semicolon
+DECL|member|ac97_bus
+id|ac97_bus_t
+op_star
+id|ac97_bus
+suffix:semicolon
 DECL|member|ac97
 id|ac97_t
 op_star
@@ -915,6 +911,11 @@ DECL|member|rawmidi
 id|snd_rawmidi_t
 op_star
 id|rawmidi
+suffix:semicolon
+DECL|member|timer
+id|snd_timer_t
+op_star
+id|timer
 suffix:semicolon
 DECL|member|pci
 r_struct
@@ -1140,17 +1141,18 @@ r_int
 id|rear_switch
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_int
-id|snd_ymfpci_joystick
+id|snd_ymfpci_timer
 c_func
 (paren
 id|ymfpci_t
 op_star
 id|chip
+comma
+r_int
+id|device
 )paren
 suffix:semicolon
-macro_line|#endif
 r_int
 id|snd_ymfpci_voice_alloc
 c_func
@@ -1203,6 +1205,10 @@ op_star
 id|chip
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
+DECL|macro|SUPPORT_JOYSTICK
+mdefine_line|#define SUPPORT_JOYSTICK
 macro_line|#endif
 macro_line|#endif /* __SOUND_YMFPCI_H */
 eof

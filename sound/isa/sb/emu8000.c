@@ -6267,6 +6267,13 @@ id|i
 op_increment
 )paren
 (brace
+id|down_write
+c_func
+(paren
+op_amp
+id|card-&gt;controls_rwsem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6284,6 +6291,13 @@ id|emu-&gt;controls
 (braket
 id|i
 )braket
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|card-&gt;controls_rwsem
 )paren
 suffix:semicolon
 )brace

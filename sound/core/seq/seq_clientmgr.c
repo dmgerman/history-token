@@ -418,6 +418,8 @@ id|client_requested
 (braket
 id|clientid
 )braket
+op_logical_and
+id|current-&gt;fs-&gt;root
 )paren
 (brace
 id|client_requested

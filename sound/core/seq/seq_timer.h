@@ -97,7 +97,7 @@ r_int
 r_int
 id|preferred_resolution
 suffix:semicolon
-multiline_comment|/* timer resolution */
+multiline_comment|/* timer resolution, ticks/sec */
 DECL|member|skew
 r_int
 r_int

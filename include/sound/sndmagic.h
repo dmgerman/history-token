@@ -182,6 +182,8 @@ DECL|macro|fm801_t_magic
 mdefine_line|#define fm801_t_magic&t;&t;&t;&t;0xa15a1801
 DECL|macro|ac97_t_magic
 mdefine_line|#define ac97_t_magic&t;&t;&t;&t;0xa15a1901
+DECL|macro|ac97_bus_t_magic
+mdefine_line|#define ac97_bus_t_magic&t;&t;&t;0xa15a1902
 DECL|macro|ak4531_t_magic
 mdefine_line|#define ak4531_t_magic&t;&t;&t;&t;0xa15a1a01
 DECL|macro|snd_uart16550_t_magic
