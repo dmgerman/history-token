@@ -1433,6 +1433,12 @@ id|sch-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
+id|dev_hold
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|atomic_set
 c_func
 (paren
