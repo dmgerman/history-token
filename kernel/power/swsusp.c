@@ -3363,7 +3363,10 @@ l_string|&quot;not necessary&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|check_pagedir
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_while
