@@ -32,6 +32,14 @@ c_cond
 id|base
 )paren
 (brace
+macro_line|#ifdef CONFIG_X86_PC9800
+r_case
+l_int|0x640
+suffix:colon
+r_return
+l_int|9
+suffix:semicolon
+macro_line|#endif
 r_case
 l_int|0x1f0
 suffix:colon
@@ -93,6 +101,17 @@ c_cond
 id|index
 )paren
 (brace
+macro_line|#ifdef CONFIG_X86_PC9800
+r_case
+l_int|0
+suffix:colon
+r_case
+l_int|1
+suffix:colon
+r_return
+l_int|0x640
+suffix:semicolon
+macro_line|#else
 r_case
 l_int|0
 suffix:colon
@@ -129,6 +148,7 @@ suffix:colon
 r_return
 l_int|0x160
 suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 r_return
@@ -169,6 +189,21 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_PC9800
+r_int
+r_int
+id|increment
+op_assign
+id|data_port
+op_eq
+l_int|0x640
+ques
+c_cond
+l_int|2
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -191,10 +226,17 @@ id|i
 op_assign
 id|reg
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_PC9800
+id|reg
+op_add_assign
+id|increment
+suffix:semicolon
+macro_line|#else
 id|reg
 op_add_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond
@@ -209,6 +251,25 @@ id|IDE_CONTROL_OFFSET
 op_assign
 id|ctrl_port
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_PC9800
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|data_port
+op_eq
+l_int|0x640
+)paren
+(brace
+id|hw-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
+op_assign
+l_int|0x74c
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace

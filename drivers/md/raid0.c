@@ -762,8 +762,6 @@ id|raid0_conf_t
 op_star
 id|conf
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|conf
 op_assign
 id|vmalloc
@@ -1122,8 +1120,6 @@ l_int|NULL
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1176,8 +1172,6 @@ op_member_access_from_pointer
 r_private
 op_assign
 l_int|NULL
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -1477,8 +1471,10 @@ suffix:semicolon
 id|bad_map
 suffix:colon
 id|printk
+c_func
 (paren
-l_string|&quot;raid0_make_request bug: can&squot;t convert block across chunks or bigger than %dk %llu %d&bslash;n&quot;
+l_string|&quot;raid0_make_request bug: can&squot;t convert block across chunks&quot;
+l_string|&quot; or bigger than %dk %llu %d&bslash;n&quot;
 comma
 id|chunk_size
 comma
@@ -1518,6 +1514,7 @@ suffix:semicolon
 id|bad_zone0
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;raid0_make_request bug: hash-&gt;zone0==NULL for block %llu&bslash;n&quot;
 comma
@@ -1535,6 +1532,7 @@ suffix:semicolon
 id|bad_zone1
 suffix:colon
 id|printk
+c_func
 (paren
 l_string|&quot;raid0_make_request bug: hash-&gt;zone1==NULL for block %llu&bslash;n&quot;
 comma
@@ -1800,6 +1798,11 @@ dot
 id|name
 op_assign
 l_string|&quot;raid0&quot;
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|make_request

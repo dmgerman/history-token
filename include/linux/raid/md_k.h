@@ -765,6 +765,12 @@ r_char
 op_star
 id|name
 suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|make_request
 r_int
 (paren
