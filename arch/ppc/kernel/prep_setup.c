@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.20 05/21/01 09:19:50 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.23 07/18/01 22:56:39 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -261,14 +261,6 @@ r_int
 id|ppc_cs4232_dma
 comma
 id|ppc_cs4232_dma2
-suffix:semicolon
-DECL|variable|empty_zero_page
-r_int
-r_int
-id|empty_zero_page
-(braket
-l_int|1024
-)braket
 suffix:semicolon
 r_extern
 id|PTE

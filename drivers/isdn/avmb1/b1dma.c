@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: b1dma.c,v 1.11.6.6 2001/05/17 21:15:33 kai Exp $&n; * &n; * Common module for AVM B1 cards that support dma with AMCC&n; * &n; * (c) Copyright 2000 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; */
+multiline_comment|/*&n; * $Id: b1dma.c,v 1.11.6.7 2001/07/18 16:02:15 kai Exp $&n; * &n; * Common module for AVM B1 cards that support dma with AMCC&n; * &n; * (c) Copyright 2000 by Carsten Paeth (calle@calle.in-berlin.de)&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -26,7 +26,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.11.6.6 $&quot;
+l_string|&quot;$Revision: 1.11.6.7 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 id|MODULE_AUTHOR

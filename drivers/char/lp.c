@@ -2371,6 +2371,7 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+macro_line|#ifndef MODULE
 DECL|function|lp_setup
 r_static
 r_int
@@ -2561,6 +2562,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|lp_register
 r_static
 r_int

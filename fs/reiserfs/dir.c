@@ -724,7 +724,7 @@ id|filldir
 (paren
 id|dirent
 comma
-id|d_name
+id|local_buf
 comma
 id|d_reclen
 comma
@@ -795,12 +795,6 @@ id|path_to_entry
 )paren
 )paren
 (brace
-id|reiserfs_warning
-(paren
-l_string|&quot;vs-9020: reiserfs_readdir &quot;
-l_string|&quot;things are moving under hands. Researching..&bslash;n&quot;
-)paren
-suffix:semicolon
 r_goto
 id|research
 suffix:semicolon
@@ -848,14 +842,6 @@ id|MIN_KEY
 )paren
 )paren
 (brace
-macro_line|#ifdef CONFIG_REISERFS_CHECK
-id|reiserfs_warning
-(paren
-l_string|&quot;vs-9025: reiserfs_readdir:&quot;
-l_string|&quot;get_rkey failed. Researching..&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* set pos_key to key, that is the smallest and greater&n;&t;       that key of the last entry in the item */
 id|set_cpu_key_k_offset
 (paren

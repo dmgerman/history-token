@@ -1,4 +1,4 @@
-singleline_comment|// $Id: nj_s.c,v 2.7.6.4 2001/02/16 16:43:28 kai Exp $
+singleline_comment|// $Id: nj_s.c,v 2.7.6.5 2001/07/18 16:25:12 kai Exp $
 singleline_comment|//
 singleline_comment|// This file is (c) under GNU General Public License
 singleline_comment|//
@@ -19,7 +19,7 @@ r_char
 op_star
 id|NETjet_S_revision
 op_assign
-l_string|&quot;$Revision: 2.7.6.4 $&quot;
+l_string|&quot;$Revision: 2.7.6.5 $&quot;
 suffix:semicolon
 DECL|function|dummyrr
 r_static
@@ -1049,7 +1049,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;NETjet-S: PCI card configured at 0x%x IRQ %d&bslash;n&quot;
+l_string|&quot;NETjet-S: PCI card configured at %#lx IRQ %d&bslash;n&quot;
 comma
 id|cs-&gt;hw.njet.base
 comma
@@ -1072,7 +1072,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HiSax: %s config port %x-%x already in use&bslash;n&quot;
+l_string|&quot;HiSax: %s config port %#lx-%#lx already in use&bslash;n&quot;
 comma
 id|CardType
 (braket

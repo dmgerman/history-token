@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: nj_u.c,v 2.8.6.4 2001/02/16 16:43:28 kai Exp $ &n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: nj_u.c,v 2.8.6.5 2001/07/18 16:25:12 kai Exp $ &n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -16,7 +16,7 @@ r_char
 op_star
 id|NETjet_U_revision
 op_assign
-l_string|&quot;$Revision: 2.8.6.4 $&quot;
+l_string|&quot;$Revision: 2.8.6.5 $&quot;
 suffix:semicolon
 DECL|function|dummyrr
 r_static
@@ -1064,7 +1064,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;NETspider-U: PCI card configured at 0x%x IRQ %d&bslash;n&quot;
+l_string|&quot;NETspider-U: PCI card configured at %#lx IRQ %d&bslash;n&quot;
 comma
 id|cs-&gt;hw.njet.base
 comma
@@ -1087,7 +1087,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HiSax: %s config port %x-%x already in use&bslash;n&quot;
+l_string|&quot;HiSax: %s config port %#lx-%#lx already in use&bslash;n&quot;
 comma
 id|CardType
 (braket

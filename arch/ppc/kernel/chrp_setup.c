@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.chrp_setup.c 1.20 06/05/01 21:22:02 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.chrp_setup.c 1.22 07/18/01 22:56:39 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -323,14 +323,6 @@ DECL|variable|max_width
 r_static
 r_int
 id|max_width
-suffix:semicolon
-DECL|variable|empty_zero_page
-r_int
-r_int
-id|empty_zero_page
-(braket
-l_int|1024
-)braket
 suffix:semicolon
 DECL|variable|gg2_memtypes
 r_static

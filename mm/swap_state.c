@@ -703,7 +703,7 @@ op_assign
 id|alloc_page
 c_func
 (paren
-id|GFP_USER
+id|GFP_HIGHUSER
 )paren
 suffix:semicolon
 r_if

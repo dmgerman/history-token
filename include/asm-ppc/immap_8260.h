@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.immap_8260.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.immap_8260.h 1.8 07/18/01 15:46:50 trini&n; */
 multiline_comment|/*&n; * MPC8260 Internal Memory Map&n; * Copyright (c) 1999 Dan Malek (dmalek@jlc.net)&n; *&n; * The Internal Memory Map of the 8260.  I don&squot;t know how generic&n; * this will be, as I don&squot;t have any knowledge of the subsequent&n; * parts at this time.  I copied this from the 8xx_immap.h.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __IMMAP_82XX__
@@ -1757,8 +1757,7 @@ DECL|typedef|immap_t
 )brace
 id|immap_t
 suffix:semicolon
-multiline_comment|/* The 8260 relies heavily on the IMMR, so we keep it around as a&n; * kernel global symbol now.  Should have done this for the 8xx......&n; */
-DECL|variable|immr
+r_extern
 id|immap_t
 op_star
 id|immr

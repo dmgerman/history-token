@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.misc.c 1.9 05/18/01 07:54:04 patch&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.misc.c 1.11 07/18/01 15:46:50 trini&n; */
 multiline_comment|/*&n; * Adapted for PowerPC by Gary Thomas&n; *&n; * Rewritten by Cort Dougan (cort@cs.nmt.edu)&n; * One day to be replaced by a single bootloader for chrp/prep/pmac. -- Cort&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -57,6 +57,14 @@ op_star
 id|cmd_line
 op_assign
 id|cmd_buf
+suffix:semicolon
+multiline_comment|/* We need to pass along a &squot;dummy&squot; com_port. */
+DECL|variable|com_port
+r_int
+r_int
+id|com_port
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* This is the default cmdline that will be given to the user at boot time..&n; * If none was specified at compile time, we&squot;ll give it one that should work.&n; * -- Tom */
 macro_line|#ifdef CONFIG_CMDLINE_BOOL

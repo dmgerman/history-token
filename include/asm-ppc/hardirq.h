@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.hardirq.h 1.10 06/09/01 22:16:38 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.hardirq.h 1.12 07/10/01 11:26:58 trini&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_HARDIRQ_H
 DECL|macro|__ASM_HARDIRQ_H
@@ -30,6 +30,12 @@ DECL|member|__syscall_count
 r_int
 r_int
 id|__syscall_count
+suffix:semicolon
+DECL|member|__ksoftirqd_task
+r_struct
+id|task_struct
+op_star
+id|__ksoftirqd_task
 suffix:semicolon
 DECL|member|__last_jiffy_stamp
 r_int

@@ -136,11 +136,15 @@ DECL|member|s_reserved
 id|__u16
 id|s_reserved
 suffix:semicolon
+DECL|member|s_inode_generation
+id|__u32
+id|s_inode_generation
+suffix:semicolon
 DECL|member|s_unused
 r_char
 id|s_unused
 (braket
-l_int|128
+l_int|124
 )braket
 suffix:semicolon
 multiline_comment|/* zero filled by mkreiserfs */
@@ -700,6 +704,11 @@ DECL|member|j_bitmap_nodes
 r_struct
 id|list_head
 id|j_bitmap_nodes
+suffix:semicolon
+DECL|member|j_dummy_inode
+r_struct
+id|inode
+id|j_dummy_inode
 suffix:semicolon
 DECL|member|j_list_bitmap
 r_struct

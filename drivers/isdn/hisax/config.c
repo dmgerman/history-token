@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: config.c,v 2.57.6.15 2001/06/09 15:14:17 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: config.c,v 2.57.6.16 2001/07/13 09:01:00 kai Exp $&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *              based on the teles driver from Jan den Ouden&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;

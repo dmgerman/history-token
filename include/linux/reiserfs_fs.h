@@ -22,6 +22,8 @@ mdefine_line|#define DIRTY_LATER
 multiline_comment|/* enable journalling */
 DECL|macro|ENABLE_JOURNAL
 mdefine_line|#define ENABLE_JOURNAL
+DECL|macro|USE_INODE_GENERATION_COUNTER
+mdefine_line|#define USE_INODE_GENERATION_COUNTER
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* #define REISERFS_CHECK */
 DECL|macro|REISERFS_PREALLOCATE
@@ -1268,6 +1270,10 @@ DECL|member|sd_rdev
 id|__u32
 id|sd_rdev
 suffix:semicolon
+DECL|member|sd_generation
+id|__u32
+id|sd_generation
+suffix:semicolon
 singleline_comment|//__u32 sd_first_direct_byte; 
 multiline_comment|/* first byte of file which is stored in a&n;&t;&t;&t;&t;       direct item: except that if it equals 1&n;&t;&t;&t;&t;       it is a symlink and if it equals&n;&t;&t;&t;&t;       ~(__u32)0 there is no direct item.  The&n;&t;&t;&t;&t;       existence of this field really grates&n;&t;&t;&t;&t;       on me. Let&squot;s replace it with a macro&n;&t;&t;&t;&t;       based on sd_size and our tail&n;&t;&t;&t;&t;       suppression policy? */
 DECL|member|u
@@ -2205,8 +2211,8 @@ DECL|macro|PATH_H_B_ITEM_ORDER
 mdefine_line|#define PATH_H_B_ITEM_ORDER(path, h) PATH_H_POSITION(path, h + 1)&t;&t;/* tb-&gt;S[h]-&gt;b_item_order */
 DECL|macro|PATH_H_PATH_OFFSET
 mdefine_line|#define PATH_H_PATH_OFFSET(p_s_path, n_h) ((p_s_path)-&gt;path_length - (n_h))
-DECL|macro|get_bh
-mdefine_line|#define get_bh(path) PATH_PLAST_BUFFER(path)
+DECL|macro|get_last_bh
+mdefine_line|#define get_last_bh(path) PATH_PLAST_BUFFER(path)
 DECL|macro|get_ih
 mdefine_line|#define get_ih(path) PATH_PITEM_HEAD(path)
 DECL|macro|get_item_pos
@@ -3351,42 +3357,6 @@ multiline_comment|/* offset in the log of where to start replay after a crash */
 DECL|member|j_mount_id
 id|__u32
 id|j_mount_id
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* these are used to keep flush pages that contain converted direct items.&n;** if the page is not flushed before the transaction that converted it&n;** is committed, we risk losing data&n;**&n;** note, while a page is in this list, its counter is incremented.&n;*/
-DECL|struct|reiserfs_page_list
-r_struct
-id|reiserfs_page_list
-(brace
-DECL|member|next
-r_struct
-id|reiserfs_page_list
-op_star
-id|next
-suffix:semicolon
-DECL|member|prev
-r_struct
-id|reiserfs_page_list
-op_star
-id|prev
-suffix:semicolon
-DECL|member|page
-r_struct
-id|page
-op_star
-id|page
-suffix:semicolon
-DECL|member|blocknr
-r_int
-r_int
-id|blocknr
-suffix:semicolon
-multiline_comment|/* block number holding converted data */
-multiline_comment|/* if a transaction writer has the page locked the flush_page_list&n;  ** function doesn&squot;t need to (and can&squot;t) get the lock while flushing&n;  ** the page.  do_not_lock needs to be set by anyone who calls journal_end&n;  ** with a page lock held.  They have to look in the inode and see&n;  ** if the inode has the page they have locked in the flush list.&n;  **&n;  ** this sucks.&n;  */
-DECL|member|do_not_lock
-r_int
-id|do_not_lock
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: bkm_a8.c,v 1.14.6.5 2001/04/15 14:51:09 keil Exp $&n; * bkm_a8.c     low level stuff for Scitel Quadro (4*S0, passive)&n; *              derived from the original file sedlbauer.c&n; *              derived from the original file niccy.c&n; *              derived from the original file netjet.c&n; *&n; * Author       Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: bkm_a8.c,v 1.14.6.6 2001/07/18 16:02:15 kai Exp $&n; * bkm_a8.c     low level stuff for Scitel Quadro (4*S0, passive)&n; *              derived from the original file sedlbauer.c&n; *              derived from the original file niccy.c&n; *              derived from the original file netjet.c&n; *&n; * Author       Roland Klabunde (R.Klabunde@Berkom.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
@@ -28,7 +28,7 @@ id|sct_quadro_revision
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.14.6.5 $&quot;
+l_string|&quot;$Revision: 1.14.6.6 $&quot;
 suffix:semicolon
 DECL|variable|sct_quadro_subtypes
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: elsa.c,v 2.26.6.3 2001/02/16 16:43:25 kai Exp $&n; *&n; * elsa.c     low level stuff for Elsa isdn cards&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Elsa GmbH for documents and informations&n; *&n; *              Klaus Lichtenwalder (Klaus.Lichtenwalder@WebForum.DE)&n; *              for ELSA PCMCIA support&n; *&n; */
+multiline_comment|/* $Id: elsa.c,v 2.26.6.5 2001/07/18 16:25:12 kai Exp $&n; *&n; * elsa.c     low level stuff for Elsa isdn cards&n; *&n; * Author     Karsten Keil (keil@isdn4linux.de)&n; *&n; *&t;&t;This file is (c) under GNU General Public License&n; *&t;&t;For changes and modifications please read&n; *&t;&t;../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Elsa GmbH for documents and informations&n; *&n; *              Klaus Lichtenwalder (Klaus.Lichtenwalder@WebForum.DE)&n; *              for ELSA PCMCIA support&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -26,7 +26,7 @@ r_char
 op_star
 id|Elsa_revision
 op_assign
-l_string|&quot;$Revision: 2.26.6.3 $&quot;
+l_string|&quot;$Revision: 2.26.6.5 $&quot;
 suffix:semicolon
 DECL|variable|Elsa_Types
 r_const
@@ -4554,7 +4554,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Elsa: no Elsa Microlink at 0x%x&bslash;n&quot;
+l_string|&quot;Elsa: no Elsa Microlink at %#lx&bslash;n&quot;
 comma
 id|cs-&gt;hw.elsa.base
 )paren
@@ -4838,7 +4838,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Elsa: %s found at 0x%x Rev.:%c IRQ %d&bslash;n&quot;
+l_string|&quot;Elsa: %s found at %#lx Rev.:%c IRQ %d&bslash;n&quot;
 comma
 id|Elsa_Types
 (braket
@@ -4970,7 +4970,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Elsa: %s defined at 0x%x IRQ %d&bslash;n&quot;
+l_string|&quot;Elsa: %s defined at %#lx IRQ %d&bslash;n&quot;
 comma
 id|Elsa_Types
 (braket
@@ -5112,7 +5112,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Elsa: %s defined at 0x%x IRQ %d&bslash;n&quot;
+l_string|&quot;Elsa: %s defined at %#lx IRQ %d&bslash;n&quot;
 comma
 id|Elsa_Types
 (braket
@@ -5442,7 +5442,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Elsa: %s defined at 0x%x/0x%x IRQ %d&bslash;n&quot;
+l_string|&quot;Elsa: %s defined at %#lx/0x%x IRQ %d&bslash;n&quot;
 comma
 id|Elsa_Types
 (braket
@@ -5576,7 +5576,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;HiSax: %s config port %x-%x already in use&bslash;n&quot;
+l_string|&quot;HiSax: %s config port %#lx-%#lx already in use&bslash;n&quot;
 comma
 id|CardType
 (braket

@@ -172,7 +172,7 @@ id|path
 (brace
 id|de-&gt;de_bh
 op_assign
-id|get_bh
+id|get_last_bh
 (paren
 id|path
 )paren

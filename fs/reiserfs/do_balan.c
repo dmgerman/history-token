@@ -8632,14 +8632,13 @@ id|i
 op_assign
 id|bh
 suffix:semicolon
-id|atomic_inc
+id|get_bh
 c_func
 (paren
-op_amp
-id|bh-&gt;b_count
+id|bh
 )paren
 suffix:semicolon
-multiline_comment|/* decremented in free_thrown */
+multiline_comment|/* free_thrown puts this */
 r_return
 suffix:semicolon
 )brace

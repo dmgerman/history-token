@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_setup.c 1.20 06/27/01 14:49:58 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.m8xx_setup.c 1.23 07/18/01 22:56:39 paulus&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  Modified for MBX using prep/chrp/pmac functions by Dan (dmalek@jlc.net)&n; *  Further modified for generic 8xx by Dan.&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -66,14 +66,6 @@ r_sizeof
 (paren
 id|bd_t
 )paren
-)braket
-suffix:semicolon
-DECL|variable|empty_zero_page
-r_int
-r_int
-id|empty_zero_page
-(braket
-l_int|1024
 )braket
 suffix:semicolon
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
@@ -729,7 +721,6 @@ suffix:semicolon
 )brace
 r_int
 r_int
-id|__init
 DECL|function|m8xx_get_rtc_time
 id|m8xx_get_rtc_time
 c_func
