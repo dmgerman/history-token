@@ -944,8 +944,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
@@ -971,8 +969,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* Reported by wim@geeks.nl */
@@ -1073,8 +1069,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* Submitted by Rajesh Kumble Nayak &lt;nayak@obs-nice.fr&gt; */
@@ -1100,8 +1094,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1546,8 +1538,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_NEED_OVERRIDE
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 macro_line|#endif
@@ -1599,8 +1589,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 id|UNUSUAL_DEV
@@ -2023,10 +2011,10 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
-multiline_comment|/*&n;&t; * The following Datafab-based devices may or may not work&n;&t; * using the current driver...the 0xffff is arbitrary since I&n;&t; * don&squot;t know what device versions exist for these guys.&n;&t; *&n;&t; * The 0xa003 and 0xa004 devices in particular I&squot;m curious about.&n;&t; * I&squot;m told they exist but so far nobody has come forward to say that&n;&t; * they work with this driver.  Given the success we&squot;ve had getting&n;&t; * other Datafab-based cards operational with this driver, I&squot;ve decided&n;&t; * to leave these two devices in the list.&n;&t; */
+multiline_comment|/*&n; * The following Datafab-based devices may or may not work&n; * using the current driver...the 0xffff is arbitrary since I&n; * don&squot;t know what device versions exist for these guys.&n; *&n; * The 0xa003 and 0xa004 devices in particular I&squot;m curious about.&n; * I&squot;m told they exist but so far nobody has come forward to say that&n; * they work with this driver.  Given the success we&squot;ve had getting&n; * other Datafab-based cards operational with this driver, I&squot;ve decided&n; * to leave these two devices in the list.&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -2048,7 +2036,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 id|UNUSUAL_DEV
@@ -2072,7 +2060,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 id|UNUSUAL_DEV
@@ -2096,7 +2084,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 id|UNUSUAL_DEV
@@ -2120,7 +2108,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 id|UNUSUAL_DEV
@@ -2144,7 +2132,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 macro_line|#endif
@@ -2198,7 +2186,7 @@ id|US_PR_DATAFAB
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 macro_line|#endif
@@ -2353,7 +2341,7 @@ id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 multiline_comment|/* Entry needed for flags. Moreover, all devices with this ID use&n; * bulk-only transport, but _some_ falsely report Control/Bulk instead.&n; * One example is &quot;Trumpion Digital Research MYMP3&quot;.&n; * Submitted by Bjoern Brill &lt;brill(at)fs.math.uni-frankfurt.de&gt;&n; */
@@ -2379,8 +2367,6 @@ comma
 l_int|NULL
 comma
 id|US_FL_NEED_OVERRIDE
-op_or
-id|US_FL_MODE_XLATE
 )paren
 comma
 multiline_comment|/* Trumpion Microelectronics MP3 player (felipe_alfaro@linuxmail.org) */
@@ -2405,7 +2391,7 @@ id|US_PR_BULK
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 multiline_comment|/* aeb */
@@ -2454,7 +2440,7 @@ id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 multiline_comment|/* This Pentax still camera is not conformant&n; * to the USB storage specification: -&n; * - It does not like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; * Tested on Rev. 10.00 (0x1000)&n; * Submitted by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; */
@@ -2782,7 +2768,7 @@ id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
-id|US_FL_MODE_XLATE
+l_int|0
 )paren
 comma
 multiline_comment|/* Reported by Kotrla Vitezslav &lt;kotrla@ceb.cz&gt; */
