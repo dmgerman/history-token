@@ -22,24 +22,11 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|variable|pppoe_debug
-r_static
-r_int
-id|__attribute__
-c_func
-(paren
-(paren
-id|unused
-)paren
-)paren
-id|pppoe_debug
-op_assign
-l_int|7
-suffix:semicolon
 DECL|macro|PPPOE_HASH_BITS
 mdefine_line|#define PPPOE_HASH_BITS 4
 DECL|macro|PPPOE_HASH_SIZE
 mdefine_line|#define PPPOE_HASH_SIZE (1&lt;&lt;PPPOE_HASH_BITS)
+r_static
 r_int
 id|pppoe_ioctl
 c_func
@@ -58,6 +45,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+r_static
 r_int
 id|pppoe_xmit
 c_func
@@ -73,6 +61,7 @@ op_star
 id|skb
 )paren
 suffix:semicolon
+r_static
 r_int
 id|__pppoe_xmit
 c_func
@@ -89,19 +78,11 @@ id|skb
 )paren
 suffix:semicolon
 DECL|variable|pppoe_ops
+r_static
 r_struct
 id|proto_ops
 id|pppoe_ops
 suffix:semicolon
-macro_line|#if 0
-mdefine_line|#define CHECKPTR(x,y) do { if (!(x) &amp;&amp; pppoe_debug &amp;7 ){ printk(KERN_CRIT &quot;PPPoE Invalid pointer : %s , %p&bslash;n&quot;,#x,(x)); error=-EINVAL; goto y; }} while (0)
-mdefine_line|#define DEBUG(s,args...) do { if( pppoe_debug &amp; (s) ) printk(KERN_CRIT args ); } while (0)
-macro_line|#else
-DECL|macro|CHECKPTR
-mdefine_line|#define CHECKPTR(x,y) do { } while (0)
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(s,args...) do { } while (0)
-macro_line|#endif
 DECL|variable|pppoe_hash_lock
 r_static
 id|rwlock_t
@@ -779,16 +760,12 @@ id|dev
 r_int
 id|hash
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|dev
 op_eq
 l_int|NULL
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|read_lock_bh
@@ -1035,6 +1012,7 @@ comma
 suffix:semicolon
 multiline_comment|/************************************************************************&n; *&n; * Do the real work of receiving a PPPoE Session frame.&n; *&n; ***********************************************************************/
 DECL|function|pppoe_rcv_core
+r_static
 r_int
 id|pppoe_rcv_core
 c_func
@@ -1475,6 +1453,7 @@ suffix:semicolon
 multiline_comment|/* Lies... :-) */
 )brace
 DECL|variable|pppoes_ptype
+r_static
 r_struct
 id|packet_type
 id|pppoes_ptype
@@ -1497,6 +1476,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|pppoed_ptype
+r_static
 r_struct
 id|packet_type
 id|pppoed_ptype
@@ -1724,6 +1704,7 @@ id|out
 suffix:semicolon
 )brace
 DECL|function|pppoe_release
+r_static
 r_int
 id|pppoe_release
 c_func
@@ -1852,6 +1833,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|pppoe_connect
+r_static
 r_int
 id|pppoe_connect
 c_func
@@ -2202,6 +2184,7 @@ id|end
 suffix:semicolon
 )brace
 DECL|function|pppoe_getname
+r_static
 r_int
 id|pppoe_getname
 c_func
@@ -2288,6 +2271,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pppoe_ioctl
+r_static
 r_int
 id|pppoe_ioctl
 c_func
@@ -2668,6 +2652,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|pppoe_sendmsg
+r_static
 r_int
 id|pppoe_sendmsg
 c_func
@@ -3003,6 +2988,7 @@ suffix:semicolon
 )brace
 multiline_comment|/************************************************************************&n; *&n; * xmit function for internal use.&n; *&n; ***********************************************************************/
 DECL|function|__pppoe_xmit
+r_static
 r_int
 id|__pppoe_xmit
 c_func
@@ -3308,6 +3294,7 @@ suffix:semicolon
 )brace
 multiline_comment|/************************************************************************&n; *&n; * xmit function called by generic PPP driver&n; * sends PPP frame over PPPoE socket&n; *&n; ***********************************************************************/
 DECL|function|pppoe_xmit
+r_static
 r_int
 id|pppoe_xmit
 c_func
@@ -3348,17 +3335,21 @@ id|skb
 suffix:semicolon
 )brace
 DECL|variable|pppoe_chan_ops
+r_static
 r_struct
 id|ppp_channel_ops
 id|pppoe_chan_ops
 op_assign
 (brace
+dot
+id|start_xmit
+op_assign
 id|pppoe_xmit
 comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|pppoe_recvmsg
+r_static
 r_int
 id|pppoe_recvmsg
 c_func
@@ -4003,6 +3994,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* -&gt;ioctl are set at pppox_create */
 DECL|variable|pppoe_ops
+r_static
 r_struct
 id|proto_ops
 id|pppoe_ops
@@ -4090,6 +4082,7 @@ id|sock_no_mmap
 )brace
 suffix:semicolon
 DECL|variable|pppoe_proto
+r_static
 r_struct
 id|pppox_proto
 id|pppoe_proto
@@ -4113,6 +4106,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|pppoe_init
+r_static
 r_int
 id|__init
 id|pppoe_init
@@ -4222,6 +4216,7 @@ id|out
 suffix:semicolon
 )brace
 DECL|function|pppoe_exit
+r_static
 r_void
 id|__exit
 id|pppoe_exit
