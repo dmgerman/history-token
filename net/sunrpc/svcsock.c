@@ -4760,6 +4760,12 @@ id|iov_len
 op_assign
 l_int|0
 suffix:semicolon
+id|try_to_freeze
+c_func
+(paren
+id|PF_FREEZE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
