@@ -7322,6 +7322,16 @@ c_func
 (paren
 id|mp-&gt;m_logdev_targp-&gt;pbr_bdev
 )paren
+op_logical_or
+(paren
+id|mp-&gt;m_rtdev_targp
+op_logical_and
+id|bdev_read_only
+c_func
+(paren
+id|mp-&gt;m_rtdev_targp-&gt;pbr_bdev
+)paren
+)paren
 )paren
 (brace
 id|cmn_err
