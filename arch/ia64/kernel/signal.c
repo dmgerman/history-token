@@ -3105,17 +3105,11 @@ id|errno
 op_eq
 id|ERESTART_RESTARTBLOCK
 )paren
-(brace
 id|scr-&gt;pt.r8
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* x86 version of __NR_restart_syscall */
-id|scr-&gt;pt.cr_iip
-op_sub_assign
-l_int|2
-suffix:semicolon
-)brace
 )brace
 r_else
 (brace
