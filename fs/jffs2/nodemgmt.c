@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodemgmt.c,v 1.111 2004/11/16 20:36:11 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodemgmt.c,v 1.115 2004/11/22 11:07:21 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -1706,6 +1706,39 @@ id|c-&gt;blocks
 id|blocknr
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|jffs2_can_mark_obsolete
+c_func
+(paren
+id|c
+)paren
+op_logical_and
+op_logical_neg
+id|jffs2_is_readonly
+c_func
+(paren
+id|c
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|c-&gt;flags
+op_amp
+id|JFFS2_SB_FLAG_MOUNTING
+)paren
+)paren
+(brace
+multiline_comment|/* Hm. This may confuse static lock analysis. If any of the above &n;&t;&t;   three conditions is false, we&squot;re going to return from this &n;&t;&t;   function without actually obliterating any nodes or freeing&n;&t;&t;   any jffs2_raw_node_refs. So we don&squot;t need to stop erases from&n;&t;&t;   happening, or protect against people holding an obsolete&n;&t;&t;   jffs2_raw_node_ref without the erase_completion_lock. */
+id|down
+c_func
+(paren
+op_amp
+id|c-&gt;erase_free_sem
+)paren
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren
@@ -2175,6 +2208,7 @@ op_amp
 id|c-&gt;erase_completion_lock
 )paren
 suffix:semicolon
+multiline_comment|/* We didn&squot;t lock the erase_free_sem */
 r_return
 suffix:semicolon
 )brace
@@ -2561,20 +2595,19 @@ c_func
 (paren
 id|c
 )paren
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_or
 id|jffs2_is_readonly
 c_func
 (paren
 id|c
 )paren
 )paren
+(brace
+multiline_comment|/* We didn&squot;t lock the erase_free_sem */
 r_return
 suffix:semicolon
+)brace
+multiline_comment|/* The erase_free_sem is locked, and has been since before we marked the node obsolete&n;&t;   and potentially put its eraseblock onto the erase_pending_list. Thus, we know that&n;&t;   the block hasn&squot;t _already_ been erased, and that &squot;ref&squot; itself hasn&squot;t been freed yet&n;&t;   by jffs2_free_all_node_refs() in erase.c. Which is nice. */
 id|D1
 c_func
 (paren
@@ -2642,7 +2675,8 @@ comma
 id|ret
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_erase_sem
 suffix:semicolon
 )brace
 r_if
@@ -2671,7 +2705,8 @@ comma
 id|retlen
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_erase_sem
 suffix:semicolon
 )brace
 r_if
@@ -2725,7 +2760,8 @@ id|ref
 )paren
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_erase_sem
 suffix:semicolon
 )brace
 r_if
@@ -2766,7 +2802,8 @@ id|n.nodetype
 )paren
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_erase_sem
 suffix:semicolon
 )brace
 multiline_comment|/* XXX FIXME: This is ugly now */
@@ -2835,7 +2872,8 @@ comma
 id|ret
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_erase_sem
 suffix:semicolon
 )brace
 r_if
@@ -2864,10 +2902,11 @@ comma
 id|retlen
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_erase_sem
 suffix:semicolon
 )brace
-multiline_comment|/* Nodes which have been marked obsolete no longer need to be&n;&t;   associated with any inode. Remove them from the per-inode list */
+multiline_comment|/* Nodes which have been marked obsolete no longer need to be&n;&t;   associated with any inode. Remove them from the per-inode list.&n;&t;   &n;&t;   Note we can&squot;t do this for NAND at the moment because we need &n;&t;   obsolete dirent nodes to stay on the lists, because of the&n;&t;   horridness in jffs2_garbage_collect_deletion_dirent(). Also&n;&t;   because we delete the inocache, and on NAND we need that to &n;&t;   stay around until all the nodes are actually erased, in order&n;&t;   to stop us from giving the same inode number to another newly&n;&t;   created inode. */
 r_if
 c_cond
 (paren
@@ -2884,6 +2923,13 @@ id|jffs2_raw_node_ref
 op_star
 op_star
 id|p
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
 suffix:semicolon
 id|ic
 op_assign
@@ -2930,8 +2976,55 @@ id|ref-&gt;next_in_ino
 op_assign
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ic-&gt;nodes
+op_eq
+(paren
+r_void
+op_star
+)paren
+id|ic
+)paren
+(brace
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;inocache for ino #%u is all gone now. Freeing&bslash;n&quot;
+comma
+id|ic-&gt;ino
+)paren
+)paren
+suffix:semicolon
+id|jffs2_del_ino_cache
+c_func
+(paren
+id|c
+comma
+id|ic
+)paren
+suffix:semicolon
+id|jffs2_free_inode_cache
+c_func
+(paren
+id|ic
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* Merge with the next node in the physical list, if there is one&n;&t;   and if it&squot;s also obsolete. */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Merge with the next node in the physical list, if there is one&n;&t;   and if it&squot;s also obsolete and if it doesn&squot;t belong to any inode */
 r_if
 c_cond
 (paren
@@ -2942,6 +3035,9 @@ c_func
 (paren
 id|ref-&gt;next_phys
 )paren
+op_logical_and
+op_logical_neg
+id|ref-&gt;next_phys-&gt;next_in_ino
 )paren
 (brace
 r_struct
@@ -2950,6 +3046,13 @@ op_star
 id|n
 op_assign
 id|ref-&gt;next_phys
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
 suffix:semicolon
 id|ref-&gt;__totlen
 op_add_assign
@@ -2984,10 +3087,11 @@ op_assign
 id|ref
 suffix:semicolon
 )brace
-id|BUG_ON
+id|spin_unlock
 c_func
 (paren
-id|n-&gt;next_in_ino
+op_amp
+id|c-&gt;erase_completion_lock
 )paren
 suffix:semicolon
 id|jffs2_free_raw_node_ref
@@ -3013,6 +3117,13 @@ id|p
 op_assign
 id|jeb-&gt;first_node
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -3032,6 +3143,9 @@ c_func
 (paren
 id|p
 )paren
+op_logical_and
+op_logical_neg
+id|ref-&gt;next_in_ino
 )paren
 (brace
 id|p-&gt;__totlen
@@ -3076,7 +3190,23 @@ id|ref
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|c-&gt;erase_completion_lock
+)paren
+suffix:semicolon
 )brace
+id|out_erase_sem
+suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|c-&gt;erase_free_sem
+)paren
+suffix:semicolon
 )brace
 macro_line|#if CONFIG_JFFS2_FS_DEBUG &gt;= 2
 DECL|function|jffs2_dump_block_lists

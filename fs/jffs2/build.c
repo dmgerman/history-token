@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.64 2004/11/20 10:44:07 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.65 2004/11/20 16:19:38 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -790,13 +790,13 @@ id|ic-&gt;ino
 )paren
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
 id|raw
 op_assign
 id|ic-&gt;nodes
 suffix:semicolon
+r_while
+c_loop
+(paren
 id|raw
 op_ne
 (paren
@@ -804,12 +804,15 @@ r_void
 op_star
 )paren
 id|ic
-suffix:semicolon
-id|raw
-op_assign
-id|raw-&gt;next_in_ino
 )paren
 (brace
+r_struct
+id|jffs2_raw_node_ref
+op_star
+id|next
+op_assign
+id|raw-&gt;next_in_ino
+suffix:semicolon
 id|D1
 c_func
 (paren
@@ -834,6 +837,10 @@ id|c
 comma
 id|raw
 )paren
+suffix:semicolon
+id|raw
+op_assign
+id|next
 suffix:semicolon
 )brace
 r_if
