@@ -897,13 +897,13 @@ DECL|struct|ipr_ioasa_gpdd
 r_struct
 id|ipr_ioasa_gpdd
 (brace
-DECL|member|device_end_state
+DECL|member|end_state
 id|u8
-id|device_end_state
+id|end_state
 suffix:semicolon
-DECL|member|device_bus_phase
+DECL|member|bus_phase
 id|u8
-id|device_bus_phase
+id|bus_phase
 suffix:semicolon
 DECL|member|reserved
 id|u16
@@ -1040,7 +1040,9 @@ r_struct
 id|ipr_ioasa_raw
 id|raw
 suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 )brace
 id|__attribute__
@@ -1858,7 +1860,9 @@ r_struct
 id|ipr_hostrcb_type_04_error
 id|type_04_error
 suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 )brace
 id|__attribute__
@@ -2006,7 +2010,9 @@ r_struct
 id|ipr_hostrcb_raw
 id|raw
 suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 )brace
 id|__attribute__
@@ -2477,7 +2483,9 @@ DECL|member|res_addr
 id|u32
 id|res_addr
 suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -3068,7 +3076,9 @@ id|scsi_device
 op_star
 id|sdev
 suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 DECL|member|ioa_cfg
 r_struct

@@ -1558,7 +1558,7 @@ id|trace_entry-&gt;res_handle
 op_assign
 id|ipr_cmd-&gt;ioarcb.res_handle
 suffix:semicolon
-id|trace_entry-&gt;add_data
+id|trace_entry-&gt;u.add_data
 op_assign
 id|add_data
 suffix:semicolon
@@ -1670,7 +1670,7 @@ c_func
 id|ipr_cmd
 )paren
 suffix:semicolon
-id|ipr_cmd-&gt;scratch
+id|ipr_cmd-&gt;u.scratch
 op_assign
 l_int|0
 suffix:semicolon
@@ -2319,9 +2319,9 @@ id|ipr_cmd
 r_if
 c_cond
 (paren
-id|ipr_cmd-&gt;sibling
+id|ipr_cmd-&gt;u.sibling
 )paren
-id|ipr_cmd-&gt;sibling
+id|ipr_cmd-&gt;u.sibling
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2473,7 +2473,7 @@ op_amp
 id|ioa_cfg-&gt;hostrcb_pending_q
 )paren
 suffix:semicolon
-id|ipr_cmd-&gt;hostrcb
+id|ipr_cmd-&gt;u.hostrcb
 op_assign
 id|hostrcb
 suffix:semicolon
@@ -2732,7 +2732,7 @@ suffix:semicolon
 id|cfgte
 op_assign
 op_amp
-id|hostrcb-&gt;hcam.ccn.cfgte
+id|hostrcb-&gt;hcam.u.ccn.cfgte
 suffix:semicolon
 id|list_for_each_entry
 c_func
@@ -2963,7 +2963,7 @@ id|ipr_hostrcb
 op_star
 id|hostrcb
 op_assign
-id|ipr_cmd-&gt;hostrcb
+id|ipr_cmd-&gt;u.hostrcb
 suffix:semicolon
 id|u32
 id|ioasc
@@ -3158,7 +3158,7 @@ op_star
 id|error
 op_assign
 op_amp
-id|hostrcb-&gt;hcam.error.type_02_error
+id|hostrcb-&gt;hcam.u.error.u.type_02_error
 suffix:semicolon
 id|ipr_err
 c_func
@@ -3294,12 +3294,22 @@ id|ipr_hostrcb_device_data_entry
 op_star
 id|dev_entry
 suffix:semicolon
+r_struct
+id|ipr_hostrcb_type_03_error
+op_star
+id|error
+suffix:semicolon
+id|error
+op_assign
+op_amp
+id|hostrcb-&gt;hcam.u.error.u.type_03_error
+suffix:semicolon
 id|errors_logged
 op_assign
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;hcam.error.type_03_error.errors_logged
+id|error-&gt;errors_logged
 )paren
 suffix:semicolon
 id|ipr_err
@@ -3310,7 +3320,7 @@ comma
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;hcam.error.type_03_error.errors_detected
+id|error-&gt;errors_detected
 )paren
 comma
 id|errors_logged
@@ -3318,7 +3328,7 @@ id|errors_logged
 suffix:semicolon
 id|dev_entry
 op_assign
-id|hostrcb-&gt;hcam.error.type_03_error.dev_entry
+id|error-&gt;dev_entry
 suffix:semicolon
 r_for
 c_loop
@@ -3537,7 +3547,7 @@ suffix:semicolon
 id|error
 op_assign
 op_amp
-id|hostrcb-&gt;hcam.error.type_04_error
+id|hostrcb-&gt;hcam.u.error.u.type_04_error
 suffix:semicolon
 id|ipr_err_separator
 suffix:semicolon
@@ -3795,7 +3805,7 @@ comma
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;hcam.raw.data
+id|hostrcb-&gt;hcam.u.raw.data
 (braket
 id|i
 )braket
@@ -3804,7 +3814,7 @@ comma
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;hcam.raw.data
+id|hostrcb-&gt;hcam.u.raw.data
 (braket
 id|i
 op_plus
@@ -3815,7 +3825,7 @@ comma
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;hcam.raw.data
+id|hostrcb-&gt;hcam.u.raw.data
 (braket
 id|i
 op_plus
@@ -3826,7 +3836,7 @@ comma
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;hcam.raw.data
+id|hostrcb-&gt;hcam.u.raw.data
 (braket
 id|i
 op_plus
@@ -3942,7 +3952,7 @@ op_assign
 id|be32_to_cpu
 c_func
 (paren
-id|hostrcb-&gt;hcam.error.failing_dev_ioasc
+id|hostrcb-&gt;hcam.u.error.failing_dev_ioasc
 )paren
 suffix:semicolon
 r_if
@@ -3963,7 +3973,7 @@ c_func
 (paren
 id|ioa_cfg-&gt;host
 comma
-id|hostrcb-&gt;hcam.error.failing_dev_res_addr.bus
+id|hostrcb-&gt;hcam.u.error.failing_dev_res_addr.bus
 )paren
 suffix:semicolon
 )brace
@@ -3995,7 +4005,7 @@ id|ipr_is_device
 c_func
 (paren
 op_amp
-id|hostrcb-&gt;hcam.error.failing_dev_res_addr
+id|hostrcb-&gt;hcam.u.error.failing_dev_res_addr
 )paren
 )paren
 (brace
@@ -4004,7 +4014,7 @@ c_func
 (paren
 id|ioa_cfg
 comma
-id|hostrcb-&gt;hcam.error.failing_dev_res_addr
+id|hostrcb-&gt;hcam.u.error.failing_dev_res_addr
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -4165,7 +4175,7 @@ id|ipr_hostrcb
 op_star
 id|hostrcb
 op_assign
-id|ipr_cmd-&gt;hostrcb
+id|ipr_cmd-&gt;u.hostrcb
 suffix:semicolon
 id|u32
 id|ioasc
@@ -10912,19 +10922,19 @@ multiline_comment|/*&n;&t; * If abort has not completed, indicate the reset has,
 r_if
 c_cond
 (paren
-id|ipr_cmd-&gt;sibling-&gt;sibling
+id|ipr_cmd-&gt;u.sibling-&gt;u.sibling
 )paren
-id|ipr_cmd-&gt;sibling-&gt;sibling
+id|ipr_cmd-&gt;u.sibling-&gt;u.sibling
 op_assign
 l_int|NULL
 suffix:semicolon
 r_else
-id|ipr_cmd-&gt;sibling
+id|ipr_cmd-&gt;u.sibling
 op_member_access_from_pointer
 id|done
 c_func
 (paren
-id|ipr_cmd-&gt;sibling
+id|ipr_cmd-&gt;u.sibling
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -11008,7 +11018,7 @@ suffix:semicolon
 id|ipr_sdev_err
 c_func
 (paren
-id|ipr_cmd-&gt;sdev
+id|ipr_cmd-&gt;u.sdev
 comma
 l_string|&quot;Abort timed out. Resetting bus&bslash;n&quot;
 )paren
@@ -11021,11 +11031,11 @@ c_func
 id|ioa_cfg
 )paren
 suffix:semicolon
-id|ipr_cmd-&gt;sibling
+id|ipr_cmd-&gt;u.sibling
 op_assign
 id|reset_cmd
 suffix:semicolon
-id|reset_cmd-&gt;sibling
+id|reset_cmd-&gt;u.sibling
 op_assign
 id|ipr_cmd
 suffix:semicolon
@@ -11288,7 +11298,7 @@ id|ioarcb_addr
 op_amp
 l_int|0xff
 suffix:semicolon
-id|ipr_cmd-&gt;sdev
+id|ipr_cmd-&gt;u.sdev
 op_assign
 id|scsi_cmd-&gt;device
 suffix:semicolon
@@ -12981,7 +12991,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ioasa-&gt;gpdd.device_end_state
+id|ioasa-&gt;u.gpdd.end_state
 op_le
 id|ARRAY_SIZE
 c_func
@@ -12991,7 +13001,7 @@ id|ipr_gpdd_dev_end_states
 )paren
 op_logical_and
 (paren
-id|ioasa-&gt;gpdd.device_bus_phase
+id|ioasa-&gt;u.gpdd.bus_phase
 op_le
 id|ARRAY_SIZE
 c_func
@@ -13010,12 +13020,12 @@ l_string|&quot;Device End state: %s Phase: %s&bslash;n&quot;
 comma
 id|ipr_gpdd_dev_end_states
 (braket
-id|ioasa-&gt;gpdd.device_end_state
+id|ioasa-&gt;u.gpdd.end_state
 )braket
 comma
 id|ipr_gpdd_dev_bus_phases
 (braket
-id|ioasa-&gt;gpdd.device_bus_phase
+id|ioasa-&gt;u.gpdd.bus_phase
 )braket
 )paren
 suffix:semicolon
@@ -13212,7 +13222,7 @@ id|ioasc
 op_eq
 id|IPR_IOASC_MED_DO_NOT_REALLOC
 op_logical_and
-id|ioasa-&gt;vset.failing_lba_hi
+id|ioasa-&gt;u.vset.failing_lba_hi
 op_ne
 l_int|0
 )paren
@@ -13290,7 +13300,7 @@ op_assign
 id|be32_to_cpu
 c_func
 (paren
-id|ioasa-&gt;vset.failing_lba_hi
+id|ioasa-&gt;u.vset.failing_lba_hi
 )paren
 suffix:semicolon
 id|sense_buf
@@ -13346,7 +13356,7 @@ op_assign
 id|be32_to_cpu
 c_func
 (paren
-id|ioasa-&gt;vset.failing_lba_lo
+id|ioasa-&gt;u.vset.failing_lba_lo
 )paren
 suffix:semicolon
 id|sense_buf
@@ -13564,7 +13574,7 @@ op_assign
 id|be32_to_cpu
 c_func
 (paren
-id|ioasa-&gt;vset.failing_lba_lo
+id|ioasa-&gt;u.vset.failing_lba_lo
 )paren
 suffix:semicolon
 r_else
@@ -13573,7 +13583,7 @@ op_assign
 id|be32_to_cpu
 c_func
 (paren
-id|ioasa-&gt;dasd.failing_lba
+id|ioasa-&gt;u.dasd.failing_lba
 )paren
 suffix:semicolon
 id|sense_buf
@@ -15191,7 +15201,7 @@ id|ipr_resource_entry
 op_star
 id|res
 op_assign
-id|ipr_cmd-&gt;res
+id|ipr_cmd-&gt;u.res
 suffix:semicolon
 id|ipr_cmd-&gt;job_step
 op_assign
@@ -15220,7 +15230,7 @@ id|res
 )paren
 r_continue
 suffix:semicolon
-id|ipr_cmd-&gt;res
+id|ipr_cmd-&gt;u.res
 op_assign
 id|res
 suffix:semicolon
@@ -16098,7 +16108,7 @@ id|ipr_cmd-&gt;job_step
 op_assign
 id|ipr_set_supported_devs
 suffix:semicolon
-id|ipr_cmd-&gt;res
+id|ipr_cmd-&gt;u.res
 op_assign
 id|list_entry
 c_func
@@ -18311,10 +18321,10 @@ c_func
 id|ioa_cfg
 )paren
 op_logical_and
-id|ipr_cmd-&gt;time_left
+id|ipr_cmd-&gt;u.time_left
 )paren
 (brace
-id|ipr_cmd-&gt;time_left
+id|ipr_cmd-&gt;u.time_left
 op_sub_assign
 id|IPR_CHECK_FOR_RESET_TIMEOUT
 suffix:semicolon
@@ -18428,7 +18438,7 @@ op_assign
 id|ipr_reset_start_bist
 suffix:semicolon
 )brace
-id|ipr_cmd-&gt;time_left
+id|ipr_cmd-&gt;u.time_left
 op_assign
 id|IPR_WAIT_FOR_RESET_TIMEOUT
 suffix:semicolon
@@ -18669,7 +18679,7 @@ r_enum
 id|ipr_shutdown_type
 id|shutdown_type
 op_assign
-id|ipr_cmd-&gt;shutdown_type
+id|ipr_cmd-&gt;u.shutdown_type
 suffix:semicolon
 r_int
 r_int
@@ -18801,7 +18811,7 @@ r_int
 r_int
 id|scratch
 op_assign
-id|ipr_cmd-&gt;scratch
+id|ipr_cmd-&gt;u.scratch
 suffix:semicolon
 r_struct
 id|ipr_ioa_cfg
@@ -18895,7 +18905,7 @@ c_func
 id|ipr_cmd
 )paren
 suffix:semicolon
-id|ipr_cmd-&gt;scratch
+id|ipr_cmd-&gt;u.scratch
 op_assign
 id|scratch
 suffix:semicolon
@@ -18984,7 +18994,7 @@ id|ipr_cmd-&gt;job_step
 op_assign
 id|job_step
 suffix:semicolon
-id|ipr_cmd-&gt;shutdown_type
+id|ipr_cmd-&gt;u.shutdown_type
 op_assign
 id|shutdown_type
 suffix:semicolon
