@@ -596,11 +596,13 @@ r_if
 c_cond
 (paren
 id|phys_addr
-OL
+op_le
 id|virt_to_phys
 c_func
 (paren
 id|high_memory
+op_minus
+l_int|1
 )paren
 )paren
 (brace
@@ -845,6 +847,8 @@ c_func
 (paren
 id|high_memory
 )paren
+op_minus
+l_int|1
 )paren
 (brace
 r_struct
@@ -1009,6 +1013,8 @@ c_func
 (paren
 id|high_memory
 )paren
+op_minus
+l_int|1
 )paren
 (brace
 id|change_page_attr

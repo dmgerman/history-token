@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.39 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_diag.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Based on.......: linux/drivers/s390/block/mdisk.c&n; * ...............: by Hartmunt Penner &lt;hpenner@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.40 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1084,6 +1084,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/* try all sizes - needed for ECKD devices */
 r_for
 c_loop
 (paren
@@ -1240,19 +1241,23 @@ id|PAGE_SIZE
 op_logical_and
 id|label
 (braket
-l_int|3
-)braket
-op_eq
-id|bsize
-op_logical_and
-id|label
-(braket
 l_int|0
 )braket
 op_eq
 l_int|0xc3d4e2f1
 )paren
 (brace
+multiline_comment|/* get formatted blocksize from label block */
+id|bsize
+op_assign
+(paren
+r_int
+)paren
+id|label
+(braket
+l_int|3
+)braket
+suffix:semicolon
 id|device-&gt;blocks
 op_assign
 id|label
@@ -1320,6 +1325,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|bsize
+OG
+id|PAGE_SIZE
+)paren
 id|DEV_MESSAGE
 c_func
 (paren
@@ -1329,7 +1341,20 @@ id|device
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;volume has incompatible disk layout&quot;
+l_string|&quot;DIAG access failed&quot;
+)paren
+suffix:semicolon
+r_else
+id|DEV_MESSAGE
+c_func
+(paren
+id|KERN_WARNING
+comma
+id|device
+comma
+l_string|&quot;%s&quot;
+comma
+l_string|&quot;volume is not CMS formatted&quot;
 )paren
 suffix:semicolon
 id|rc

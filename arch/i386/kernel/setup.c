@@ -194,6 +194,11 @@ id|pci_mem_start
 op_assign
 l_int|0x10000000
 suffix:semicolon
+multiline_comment|/* Boot loader ID as an integer, for the benefit of proc_dointvec */
+DECL|variable|bootloader_type
+r_int
+id|bootloader_type
+suffix:semicolon
 multiline_comment|/* user-defined highmem size */
 DECL|variable|highmem_pages
 r_static
@@ -3057,6 +3062,29 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;noexec=&quot;
+comma
+l_int|7
+)paren
+)paren
+id|noexec_setup
+c_func
+(paren
+id|from
+op_plus
+l_int|7
+)paren
+suffix:semicolon
 macro_line|#ifdef  CONFIG_X86_SMP
 multiline_comment|/*&n;&t;&t; * If the BIOS enumerates physical processors before logical,&n;&t;&t; * maxcpus=N at enumeration-time can be used to disable HT.&n;&t;&t; */
 r_else
@@ -5656,6 +5684,10 @@ id|aux_device_present
 op_assign
 id|AUX_DEVICE_INFO
 suffix:semicolon
+id|bootloader_type
+op_assign
+id|LOADER_TYPE
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 id|rd_image_start
 op_assign
@@ -5898,6 +5930,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Parse the ACPI tables for possible boot-time SMP configuration.&n;&t; */
+id|acpi_boot_table_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|acpi_boot_init
 c_func
 (paren

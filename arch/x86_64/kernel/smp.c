@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/mach_apic.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 multiline_comment|/*&n; *&t;Smarter SMP flushing macros. &n; *&t;&t;c/o Linus Torvalds.&n; *&n; *&t;These mean you can really definitely utterly forget about&n; *&t;writing to user space from interrupts. (Its not allowed anyway).&n; *&n; *&t;Optimizations Manfred Spraul &lt;manfred@colorfullife.com&gt;&n; */
 DECL|variable|flush_cpumask
 r_static
@@ -1042,6 +1043,13 @@ r_int
 id|nolock
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|reboot_force
+)paren
+r_return
 suffix:semicolon
 multiline_comment|/* Don&squot;t deadlock on the call lock in panic */
 r_if

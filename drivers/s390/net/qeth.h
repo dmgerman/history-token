@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.124 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.129 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -1623,13 +1623,6 @@ DECL|struct|qeth_card_info
 r_struct
 id|qeth_card_info
 (brace
-DECL|member|if_name
-r_char
-id|if_name
-(braket
-id|IF_NAME_LEN
-)braket
-suffix:semicolon
 DECL|member|unit_addr2
 r_int
 r_int
@@ -2011,6 +2004,8 @@ id|list_head
 id|qeth_notify_list
 suffix:semicolon
 multiline_comment|/*some helper functions*/
+DECL|macro|QETH_CARD_IFNAME
+mdefine_line|#define QETH_CARD_IFNAME(card) (((card)-&gt;dev)? (card)-&gt;dev-&gt;name : &quot;&quot;)
 r_inline
 r_static
 id|__u8
@@ -3312,6 +3307,37 @@ id|qeth_card
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|qeth_fake_header
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|type
+comma
+r_void
+op_star
+id|daddr
+comma
+r_void
+op_star
+id|saddr
+comma
+r_int
+id|len
 )paren
 suffix:semicolon
 macro_line|#endif /* __QETH_H__ */

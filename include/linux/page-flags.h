@@ -45,6 +45,8 @@ DECL|macro|PG_mappedtodisk
 mdefine_line|#define PG_mappedtodisk&t;&t;17&t;/* Has blocks allocated on-disk */
 DECL|macro|PG_reclaim
 mdefine_line|#define PG_reclaim&t;&t;18&t;/* To be reclaimed asap */
+DECL|macro|PG_nosave_free
+mdefine_line|#define PG_nosave_free&t;&t;19&t;/* Free, should not be written */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.  Only unsigned longs are&n; * allowed.&n; */
 DECL|struct|page_state
 r_struct
@@ -440,6 +442,12 @@ DECL|macro|ClearPageNosave
 mdefine_line|#define ClearPageNosave(page)&t;&t;clear_bit(PG_nosave, &amp;(page)-&gt;flags)
 DECL|macro|TestClearPageNosave
 mdefine_line|#define TestClearPageNosave(page)&t;test_and_clear_bit(PG_nosave, &amp;(page)-&gt;flags)
+DECL|macro|PageNosaveFree
+mdefine_line|#define PageNosaveFree(page)&t;test_bit(PG_nosave_free, &amp;(page)-&gt;flags)
+DECL|macro|SetPageNosaveFree
+mdefine_line|#define SetPageNosaveFree(page)&t;set_bit(PG_nosave_free, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageNosaveFree
+mdefine_line|#define ClearPageNosaveFree(page)&t;&t;clear_bit(PG_nosave_free, &amp;(page)-&gt;flags)
 DECL|macro|PageMappedToDisk
 mdefine_line|#define PageMappedToDisk(page)&t;test_bit(PG_mappedtodisk, &amp;(page)-&gt;flags)
 DECL|macro|SetPageMappedToDisk

@@ -144,5 +144,47 @@ DECL|macro|MCE_GET_LOG_LEN
 mdefine_line|#define MCE_GET_LOG_LEN      _IOR(&squot;M&squot;, 2, int)
 DECL|macro|MCE_GETCLEAR_FLAGS
 mdefine_line|#define MCE_GETCLEAR_FLAGS   _IOR(&squot;M&squot;, 3, int)
+multiline_comment|/* Software defined banks */
+DECL|macro|MCE_EXTENDED_BANK
+mdefine_line|#define MCE_EXTENDED_BANK&t;128
+DECL|macro|MCE_THERMAL_BANK
+mdefine_line|#define MCE_THERMAL_BANK&t;MCE_EXTENDED_BANK + 0
+r_void
+id|mce_log
+c_func
+(paren
+r_struct
+id|mce
+op_star
+id|m
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_X86_MCE_INTEL
+r_void
+id|mce_intel_feature_init
+c_func
+(paren
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|mce_intel_feature_init
+r_static
+r_inline
+r_void
+id|mce_intel_feature_init
+c_func
+(paren
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+)paren
+(brace
+)brace
+macro_line|#endif
 macro_line|#endif
 eof

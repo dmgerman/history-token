@@ -510,18 +510,6 @@ id|NR_NODE_MEMBLKS
 suffix:semicolon
 singleline_comment|// IA64 specific
 )brace
-r_else
-(brace
-multiline_comment|/* FIXME */
-id|printk
-c_func
-(paren
-l_string|&quot;Warning: acpi_table_parse(ACPI_SRAT) returned %d!&bslash;n&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* SLIT: System Locality Information Table */
 id|result
 op_assign
@@ -533,24 +521,6 @@ comma
 id|acpi_parse_slit
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-OL
-l_int|1
-)paren
-(brace
-multiline_comment|/* FIXME */
-id|printk
-c_func
-(paren
-l_string|&quot;Warning: acpi_table_parse(ACPI_SLIT) returned %d!&bslash;n&quot;
-comma
-id|result
-)paren
-suffix:semicolon
-)brace
 id|acpi_numa_arch_fixup
 c_func
 (paren

@@ -172,19 +172,19 @@ macro_line|#if defined(__KERNEL__) || !defined(__GLIBC__) || (__GLIBC__ &lt; 2)
 DECL|macro|__FD_SET
 macro_line|#undef&t;__FD_SET
 DECL|macro|__FD_SET
-mdefine_line|#define __FD_SET(fd, fdsetp) &bslash;&n;&t;&t;(((fd_set *)fdsetp)-&gt;fds_bits[fd &gt;&gt; 5] |= (1&lt;&lt;(fd &amp; 31)))
+mdefine_line|#define __FD_SET(fd, fdsetp) &bslash;&n;&t;&t;(((fd_set *)(fdsetp))-&gt;fds_bits[(fd) &gt;&gt; 5] |= (1&lt;&lt;((fd) &amp; 31)))
 DECL|macro|__FD_CLR
 macro_line|#undef&t;__FD_CLR
 DECL|macro|__FD_CLR
-mdefine_line|#define __FD_CLR(fd, fdsetp) &bslash;&n;&t;&t;(((fd_set *)fdsetp)-&gt;fds_bits[fd &gt;&gt; 5] &amp;= ~(1&lt;&lt;(fd &amp; 31)))
+mdefine_line|#define __FD_CLR(fd, fdsetp) &bslash;&n;&t;&t;(((fd_set *)(fdsetp))-&gt;fds_bits[(fd) &gt;&gt; 5] &amp;= ~(1&lt;&lt;((fd) &amp; 31)))
 DECL|macro|__FD_ISSET
 macro_line|#undef&t;__FD_ISSET
 DECL|macro|__FD_ISSET
-mdefine_line|#define __FD_ISSET(fd, fdsetp) &bslash;&n;&t;&t;((((fd_set *)fdsetp)-&gt;fds_bits[fd &gt;&gt; 5] &amp; (1&lt;&lt;(fd &amp; 31))) != 0)
+mdefine_line|#define __FD_ISSET(fd, fdsetp) &bslash;&n;&t;&t;((((fd_set *)(fdsetp))-&gt;fds_bits[(fd) &gt;&gt; 5] &amp; (1&lt;&lt;((fd) &amp; 31))) != 0)
 DECL|macro|__FD_ZERO
 macro_line|#undef&t;__FD_ZERO
 DECL|macro|__FD_ZERO
-mdefine_line|#define __FD_ZERO(fdsetp) &bslash;&n;&t;&t;(memset (fdsetp, 0, sizeof (*(fd_set *)fdsetp)))
+mdefine_line|#define __FD_ZERO(fdsetp) &bslash;&n;&t;&t;(memset ((fdsetp), 0, sizeof (*(fd_set *)(fdsetp))))
 macro_line|#endif
 macro_line|#endif
 eof

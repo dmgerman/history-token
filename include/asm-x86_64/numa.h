@@ -2,10 +2,7 @@ macro_line|#ifndef _ASM_X8664_NUMA_H
 DECL|macro|_ASM_X8664_NUMA_H
 mdefine_line|#define _ASM_X8664_NUMA_H 1
 macro_line|#include &lt;linux/nodemask.h&gt;
-DECL|macro|MAXNODE
-mdefine_line|#define MAXNODE 8 
-DECL|macro|NODEMASK
-mdefine_line|#define NODEMASK 0xff
+macro_line|#include &lt;asm/numnodes.h&gt;
 DECL|struct|node
 r_struct
 id|node
@@ -50,6 +47,10 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_int
+id|numa_off
 suffix:semicolon
 macro_line|#endif
 eof

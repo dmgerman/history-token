@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_devmap.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Device mapping and dasd= parameter parsing functions. All devmap&n; * functions may not be called from interrupt context. In particular&n; * dasd_get_device is a no-no from interrupt context.&n; *&n; * $Revision: 1.34 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_devmap.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Device mapping and dasd= parameter parsing functions. All devmap&n; * functions may not be called from interrupt context. In particular&n; * dasd_get_device is a no-no from interrupt context.&n; *&n; * $Revision: 1.35 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2251,6 +2251,20 @@ c_func
 id|device-&gt;cdev-&gt;dev.bus_id
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|devmap
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -2471,12 +2485,21 @@ id|ro_flag
 suffix:semicolon
 id|devmap
 op_assign
-id|dev-&gt;driver_data
+id|dasd_find_busid
+c_func
+(paren
+id|dev-&gt;bus_id
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|devmap
+)paren
 )paren
 id|ro_flag
 op_assign
@@ -2554,6 +2577,22 @@ c_func
 (paren
 id|dev
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|devmap
+)paren
+)paren
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|devmap
 )paren
 suffix:semicolon
 id|ro_flag
@@ -2656,7 +2695,6 @@ id|dasd_ro_store
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * use_diag controls whether the driver should use diag rather than ssch&n; * to talk to the device&n; */
-multiline_comment|/* TODO: Implement */
 r_static
 id|ssize_t
 DECL|function|dasd_use_diag_show
@@ -2683,12 +2721,21 @@ id|use_diag
 suffix:semicolon
 id|devmap
 op_assign
-id|dev-&gt;driver_data
+id|dasd_find_busid
+c_func
+(paren
+id|dev-&gt;bus_id
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|devmap
+)paren
 )paren
 id|use_diag
 op_assign
@@ -2751,6 +2798,9 @@ id|dasd_devmap
 op_star
 id|devmap
 suffix:semicolon
+id|ssize_t
+id|rc
+suffix:semicolon
 r_int
 id|use_diag
 suffix:semicolon
@@ -2764,6 +2814,22 @@ c_func
 (paren
 id|dev
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|devmap
+)paren
+)paren
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|devmap
 )paren
 suffix:semicolon
 id|use_diag
@@ -2783,6 +2849,10 @@ id|dasd_devmap_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Changing diag discipline flag is only allowed in offline state. */
+id|rc
+op_assign
+id|count
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2807,7 +2877,7 @@ id|DASD_FEATURE_USEDIAG
 suffix:semicolon
 )brace
 r_else
-id|count
+id|rc
 op_assign
 op_minus
 id|EPERM
@@ -2820,7 +2890,7 @@ id|dasd_devmap_lock
 )paren
 suffix:semicolon
 r_return
-id|count
+id|rc
 suffix:semicolon
 )brace
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.65 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.66 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -6068,9 +6068,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_ERR
+c_func
+(paren
 id|cqr
-op_eq
-l_int|NULL
+)paren
 )paren
 (brace
 id|MESSAGE
@@ -6080,12 +6082,15 @@ id|KERN_WARNING
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;No memory to allocate initialization request&quot;
+l_string|&quot;Could not allocate initialization request&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+id|PTR_ERR
+c_func
+(paren
+id|cqr
+)paren
 suffix:semicolon
 )brace
 id|cqr-&gt;cpaddr-&gt;cmd_code
@@ -6242,9 +6247,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_ERR
+c_func
+(paren
 id|cqr
-op_eq
-l_int|NULL
+)paren
 )paren
 (brace
 id|MESSAGE
@@ -6254,12 +6261,15 @@ id|KERN_WARNING
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;No memory to allocate initialization request&quot;
+l_string|&quot;Could not allocate initialization request&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+id|PTR_ERR
+c_func
+(paren
+id|cqr
+)paren
 suffix:semicolon
 )brace
 id|cqr-&gt;cpaddr-&gt;cmd_code
@@ -6416,9 +6426,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_ERR
+c_func
+(paren
 id|cqr
-op_eq
-l_int|NULL
+)paren
 )paren
 (brace
 id|MESSAGE
@@ -6428,12 +6440,15 @@ id|KERN_WARNING
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;No memory to allocate initialization request&quot;
+l_string|&quot;Could not allocate initialization request&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+id|PTR_ERR
+c_func
+(paren
+id|cqr
+)paren
 suffix:semicolon
 )brace
 id|cqr-&gt;cpaddr-&gt;cmd_code
@@ -6607,9 +6622,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|IS_ERR
+c_func
+(paren
 id|cqr
-op_eq
-l_int|NULL
+)paren
 )paren
 (brace
 id|MESSAGE
@@ -6619,12 +6636,15 @@ id|KERN_WARNING
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;No memory to allocate initialization request&quot;
+l_string|&quot;Could not allocate initialization request&quot;
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+id|PTR_ERR
+c_func
+(paren
+id|cqr
+)paren
 suffix:semicolon
 )brace
 id|cqr-&gt;device

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/init_task.c&n; *&n; * Copyright (C) 2003 Ian Molton&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/arm26/kernel/init_task.c&n; *&n; * Copyright (C) 2003 Ian Molton&n; *&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -66,7 +66,7 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Initial thread structure.&n; *&n; * We need to make sure that this is 8192-byte aligned due to the&n; * way process stacks are handled. This is done by making sure&n; * the linker maps this in the .text segment right after head.S,&n; * and making head.S ensure the proper alignment.&n; *&n; * The things we do for performance...&n; */
+multiline_comment|/*&n; * Initial thread structure.&n; *&n; * We need to make sure that this is 8192-byte aligned due to the&n; * way process stacks are handled. This is done by making sure&n; * the linker maps this in the .text segment right after head.S,&n; * and making the linker scripts ensure the proper alignment.&n; *&n; * FIXME - should this be 32K alignment on arm26?&n; *&n; * The things we do for performance...&n; */
 DECL|variable|init_thread_union
 r_union
 id|thread_union

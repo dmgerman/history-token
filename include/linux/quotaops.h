@@ -939,6 +939,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sb_any_quota_enabled
+c_func
+(paren
+id|sb
+)paren
+op_logical_and
 id|sb-&gt;s_qcop
 op_logical_and
 id|sb-&gt;s_qcop-&gt;quota_off

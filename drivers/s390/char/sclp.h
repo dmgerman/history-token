@@ -223,6 +223,11 @@ r_char
 id|status
 suffix:semicolon
 multiline_comment|/* status of this request */
+DECL|member|start_count
+r_int
+id|start_count
+suffix:semicolon
+multiline_comment|/* number of SVCs done for this req */
 multiline_comment|/* Callback that is called after reaching final status. */
 DECL|member|callback
 r_void
@@ -315,7 +320,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* externals from sclp.c */
-r_void
+r_int
 id|sclp_add_request
 c_func
 (paren
@@ -352,15 +357,6 @@ op_star
 id|reg
 )paren
 suffix:semicolon
-r_char
-op_star
-id|sclp_error_message
-c_func
-(paren
-id|u16
-id|response_code
-)paren
-suffix:semicolon
 r_int
 id|sclp_remove_processed
 c_func
@@ -369,6 +365,20 @@ r_struct
 id|sccb_header
 op_star
 id|sccb
+)paren
+suffix:semicolon
+r_int
+id|sclp_deactivate
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|sclp_reactivate
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/* useful inlines */

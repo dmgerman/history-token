@@ -1,18 +1,19 @@
-multiline_comment|/*&n; * Copyright 1995, Russell King.&n; * Various bits and pieces copyrights include:&n; *  Linus Torvalds (test_bit).&n; * Big endian support: Copyright 2001, Nicolas Pitre&n; *  reworked by rmk.&n; *&n; * bit 0 is the LSB of addr; bit 32 is the LSB of (addr+1).&n; *&n; * Please note that the code in this file should never be included&n; * from user space.  Many of these are not implemented in assembler&n; * since they would be too costly.  Also, they require priviledged&n; * instructions (which are not available from user mode) to ensure&n; * that they are atomic.&n; */
+multiline_comment|/*&n; * Copyright 1995, Russell King.&n; *&n; * Based on the arm32 version by RMK (and others). Their copyrights apply to&n; * Those parts.&n; * Modified for arm26 by Ian Molton on 25/11/04&n; *&n; * bit 0 is the LSB of an &quot;unsigned long&quot; quantity.&n; *&n; * Please note that the code in this file should never be included&n; * from user space.  Many of these are not implemented in assembler&n; * since they would be too costly.  Also, they require privileged&n; * instructions (which are not available from user mode) to ensure&n; * that they are atomic.&n; */
 macro_line|#ifndef __ASM_ARM_BITOPS_H
 DECL|macro|__ASM_ARM_BITOPS_H
 mdefine_line|#define __ASM_ARM_BITOPS_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|smp_mb__before_clear_bit
 mdefine_line|#define smp_mb__before_clear_bit()&t;do { } while (0)
 DECL|macro|smp_mb__after_clear_bit
 mdefine_line|#define smp_mb__after_clear_bit()&t;do { } while (0)
-multiline_comment|/*&n; * These functions are the basis of our bit ops.&n; * First, the atomic bitops.&n; *&n; * The endian issue for these functions is handled by the macros below.&n; */
+multiline_comment|/*&n; * These functions are the basis of our bit ops.&n; *&n; * First, the atomic bitops. These use native endian.&n; */
+DECL|function|____atomic_set_bit
 r_static
 r_inline
 r_void
-DECL|function|____atomic_set_bit
 id|____atomic_set_bit
 c_func
 (paren
@@ -67,10 +68,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|____atomic_clear_bit
 r_static
 r_inline
 r_void
-DECL|function|____atomic_clear_bit
 id|____atomic_clear_bit
 c_func
 (paren
@@ -126,10 +127,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|____atomic_change_bit
 r_static
 r_inline
 r_void
-DECL|function|____atomic_change_bit
 id|____atomic_change_bit
 c_func
 (paren
@@ -336,8 +337,8 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-DECL|function|____atomic_test_and_change_bit_mask
-id|____atomic_test_and_change_bit_mask
+DECL|function|____atomic_test_and_change_bit
+id|____atomic_test_and_change_bit
 c_func
 (paren
 r_int
@@ -692,6 +693,7 @@ r_int
 id|nr
 comma
 r_const
+r_volatile
 r_int
 r_int
 op_star
@@ -699,25 +701,24 @@ id|p
 )paren
 (brace
 r_return
+(paren
 id|p
 (braket
 id|nr
 op_rshift
 l_int|5
 )braket
-op_amp
-(paren
-l_int|1UL
-op_lshift
+op_rshift
 (paren
 id|nr
 op_amp
 l_int|31
 )paren
 )paren
+op_amp
+l_int|1UL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  A note about Endian-ness.&n; *  -------------------------&n; *&n; *          ------------ physical data bus bits -----------&n; *          D31 ... D24  D23 ... D16  D15 ... D8  D7 ... D0&n; *            byte 3       byte 2       byte 1      byte 0&n; *&n; * Note that bit 0 is defined to be 32-bit word bit 0, not byte 0 bit 0.&n; */
 multiline_comment|/*&n; * Little endian assembly bitops.  nr = 0 -&gt; byte 0 bit 0.&n; */
 r_extern
 r_void
@@ -838,11 +839,42 @@ r_int
 id|offset
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|_find_first_bit_le
+c_func
+(paren
+r_const
+r_int
+r_int
+op_star
+id|p
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|_find_next_bit_le
+c_func
+(paren
+r_const
+r_int
+r_int
+op_star
+id|p
+comma
+r_int
+id|size
+comma
+r_int
+id|offset
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * The __* form of bitops are non-atomic and may be reordered.&n; */
 DECL|macro|ATOMIC_BITOP_LE
 mdefine_line|#define&t;ATOMIC_BITOP_LE(name,nr,p)&t;&t;&bslash;&n;&t;(__builtin_constant_p(nr) ?&t;&t;&bslash;&n;&t; ____atomic_##name(nr, p) :&t;&t;&bslash;&n;&t; _##name##_le(nr,p))
-DECL|macro|ATOMIC_BITOP_BE
-mdefine_line|#define&t;ATOMIC_BITOP_BE(name,nr,p)&t;&t;&bslash;&n;&t;(__builtin_constant_p(nr) ?&t;&t;&bslash;&n;&t; ____atomic_##name(nr, p) :&t;&t;&bslash;&n;&t; _##name##_be(nr,p))
 DECL|macro|NONATOMIC_BITOP
 mdefine_line|#define NONATOMIC_BITOP(name,nr,p)&t;&t;&bslash;&n;&t;(____nonatomic_##name(nr, p))
 multiline_comment|/*&n; * These are the little endian, atomic definitions.&n; */
@@ -864,6 +896,10 @@ DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(p,sz)&t;_find_first_zero_bit_le(p,sz)
 DECL|macro|find_next_zero_bit
 mdefine_line|#define find_next_zero_bit(p,sz,off)&t;_find_next_zero_bit_le(p,sz,off)
+DECL|macro|find_first_bit
+mdefine_line|#define find_first_bit(p,sz)&t;&t;_find_first_bit_le(p,sz)
+DECL|macro|find_next_bit
+mdefine_line|#define find_next_bit(p,sz,off)&t;&t;_find_next_bit_le(p,sz,off)
 DECL|macro|WORD_BITOFF_TO_LE
 mdefine_line|#define WORD_BITOFF_TO_LE(x)&t;&t;((x))
 multiline_comment|/*&n; * ffz = Find First Zero in word. Undefined if no zero exists,&n; * so code should check against ~0UL first..&n; */
@@ -1166,28 +1202,28 @@ DECL|macro|hweight8
 mdefine_line|#define hweight8(x) generic_hweight8(x)
 multiline_comment|/*&n; * Ext2 is defined to use little-endian byte ordering.&n; * These do not need to be atomic.&n; */
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_and_set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)p)
+mdefine_line|#define ext2_set_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_and_set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_set_bit_atomic
-mdefine_line|#define ext2_set_bit_atomic(lock,nr,p)&t;&t;&bslash;&n;&t;&t;test_and_set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
+mdefine_line|#define ext2_set_bit_atomic(lock,nr,p)          &bslash;&n;                test_and_set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_and_clear_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)p)
+mdefine_line|#define ext2_clear_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_and_clear_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_clear_bit_atomic
-mdefine_line|#define ext2_clear_bit_atomic(lock,nr,p)        &bslash;&n;&t;&t;test_and_clear_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
+mdefine_line|#define ext2_clear_bit_atomic(lock,nr,p)        &bslash;&n;                test_and_clear_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_test_bit
-mdefine_line|#define ext2_test_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)p)
+mdefine_line|#define ext2_test_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|ext2_find_first_zero_bit
 mdefine_line|#define ext2_find_first_zero_bit(p,sz)&t;&t;&bslash;&n;&t;&t;_find_first_zero_bit_le(p,sz)
 DECL|macro|ext2_find_next_zero_bit
 mdefine_line|#define ext2_find_next_zero_bit(p,sz,off)&t;&bslash;&n;&t;&t;_find_next_zero_bit_le(p,sz,off)
 multiline_comment|/*&n; * Minix is defined to use little-endian byte ordering.&n; * These do not need to be atomic.&n; */
 DECL|macro|minix_set_bit
-mdefine_line|#define minix_set_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)p)
+mdefine_line|#define minix_set_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|minix_test_bit
-mdefine_line|#define minix_test_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)p)
+mdefine_line|#define minix_test_bit(nr,p)&t;&t;&t;&bslash;&n;&t;&t;__test_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|minix_test_and_set_bit
-mdefine_line|#define minix_test_and_set_bit(nr,p)&t;&t;&bslash;&n;&t;&t;__test_and_set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)p)
+mdefine_line|#define minix_test_and_set_bit(nr,p)&t;&t;&bslash;&n;&t;&t;__test_and_set_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|minix_test_and_clear_bit
-mdefine_line|#define minix_test_and_clear_bit(nr,p)&t;&t;&bslash;&n;&t;&t;__test_and_clear_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)p)
+mdefine_line|#define minix_test_and_clear_bit(nr,p)&t;&t;&bslash;&n;&t;&t;__test_and_clear_bit(WORD_BITOFF_TO_LE(nr), (unsigned long *)(p))
 DECL|macro|minix_find_first_zero_bit
 mdefine_line|#define minix_find_first_zero_bit(p,sz)&t;&t;&bslash;&n;&t;&t;_find_first_zero_bit_le(p,sz)
 macro_line|#endif /* __KERNEL__ */

@@ -10,6 +10,7 @@ suffix:semicolon
 r_struct
 id|exec_domain
 suffix:semicolon
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/fpstate.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
@@ -179,7 +180,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* FIXME - PAGE_SIZE &lt; 32K */
 DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE&t;&t;(8192)
+mdefine_line|#define THREAD_SIZE&t;&t;(8*32768) 
+singleline_comment|// FIXME - this needs attention (see kernel/fork.c which gets a nice div by zero if this is lower than 8*32768
 DECL|macro|__get_user_regs
 mdefine_line|#define __get_user_regs(x) (((struct pt_regs *)((unsigned long)(x) + THREAD_SIZE - 8)) - 1)
 r_extern

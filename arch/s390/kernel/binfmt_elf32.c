@@ -338,19 +338,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
-r_int
-id|setup_arg_pages32
-c_func
-(paren
-r_struct
-id|linux_binprm
-op_star
-id|bprm
-comma
-r_int
-id|executable_stack
-)paren
-suffix:semicolon
 DECL|macro|elf_prstatus
 mdefine_line|#define elf_prstatus elf_prstatus32
 DECL|struct|elf_prstatus32
@@ -517,8 +504,6 @@ DECL|macro|start_thread
 macro_line|#undef start_thread
 DECL|macro|start_thread
 mdefine_line|#define start_thread                    start_thread31 
-DECL|macro|setup_arg_pages
-mdefine_line|#define setup_arg_pages(bprm, exec)     setup_arg_pages32(bprm, exec)
 id|MODULE_DESCRIPTION
 c_func
 (paren

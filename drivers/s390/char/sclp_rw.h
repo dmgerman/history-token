@@ -3,7 +3,6 @@ macro_line|#ifndef __SCLP_RW_H__
 DECL|macro|__SCLP_RW_H__
 mdefine_line|#define __SCLP_RW_H__
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 DECL|struct|mto
 r_struct
 id|mto
@@ -255,11 +254,6 @@ DECL|member|retry_count
 r_int
 id|retry_count
 suffix:semicolon
-DECL|member|retry_timer
-r_struct
-id|timer_list
-id|retry_timer
-suffix:semicolon
 multiline_comment|/* output format settings */
 DECL|member|columns
 r_int
@@ -360,7 +354,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_void
+r_int
 id|sclp_emit_buffer
 c_func
 (paren

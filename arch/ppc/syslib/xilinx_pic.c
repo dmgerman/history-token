@@ -41,13 +41,6 @@ mdefine_line|#define intc_out_be32(addr, mask)     mtdcr((addr), (mask))
 DECL|macro|intc_in_be32
 mdefine_line|#define intc_in_be32(addr)            mfdcr((addr))
 macro_line|#endif
-multiline_comment|/* Global Variables */
-DECL|variable|ppc4xx_pic
-r_struct
-id|hw_interrupt_type
-op_star
-id|ppc4xx_pic
-suffix:semicolon
 r_static
 r_void
 DECL|function|xilinx_intc_enable
@@ -378,6 +371,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 macro_line|#if XPAR_XINTC_USE_DCR == 0
 id|intc
 op_assign
@@ -460,14 +456,33 @@ comma
 l_int|0x3UL
 )paren
 suffix:semicolon
-id|ppc4xx_pic
-op_assign
-op_amp
-id|xilinx_intc
-suffix:semicolon
 id|ppc_md.get_irq
 op_assign
 id|xilinx_pic_get_irq
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_IRQS
+suffix:semicolon
+op_increment
+id|i
+)paren
+id|irq_desc
+(braket
+id|i
+)braket
+dot
+id|handler
+op_assign
+op_amp
+id|xilinx_intc
 suffix:semicolon
 )brace
 eof

@@ -2397,7 +2397,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* quota utility function, call if you&squot;ve had to abort after calling&n;** new_inode_init, and have not called reiserfs_new_inode yet.&n;** This should only be called on inodes that do not hav stat data&n;** inserted into the tree yet.&n;*/
+multiline_comment|/* quota utility function, call if you&squot;ve had to abort after calling&n;** new_inode_init, and have not called reiserfs_new_inode yet.&n;** This should only be called on inodes that do not have stat data&n;** inserted into the tree yet.&n;*/
 DECL|function|drop_new_inode
 r_static
 r_int
@@ -2436,7 +2436,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* utility function that does setup for reiserfs_new_inode.  &n;** DQUOT_ALLOC_INODE cannot be called inside a transaction, so we had&n;** to pull some bits of reiserfs_new_inode out into this func.&n;** Yes, the actual quota calls are missing, they are part of the quota&n;** patch.&n;*/
+multiline_comment|/* utility function that does setup for reiserfs_new_inode.  &n;** DQUOT_INIT needs lots of credits so it&squot;s better to have it&n;** outside of a transaction, so we had to pull some bits of&n;** reiserfs_new_inode out into this func.&n;*/
 DECL|function|new_inode_init
 r_static
 r_int
@@ -2505,27 +2505,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|DQUOT_ALLOC_INODE
-c_func
-(paren
-id|inode
-)paren
-)paren
-(brace
-id|drop_new_inode
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EDQUOT
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2562,12 +2541,21 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
+multiline_comment|/* We need blocks for transaction + (user+group)*(quotas for new inode + update of quota for directory owner) */
 r_int
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|2
+op_plus
+l_int|2
+op_star
+(paren
+id|REISERFS_QUOTA_INIT_BLOCKS
+op_plus
+id|REISERFS_QUOTA_TRANS_BLOCKS
+)paren
 suffix:semicolon
 r_struct
 id|reiserfs_transaction_handle
@@ -2596,8 +2584,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|retval
-op_assign
 id|new_inode_init
 c_func
 (paren
@@ -2607,14 +2593,6 @@ id|dir
 comma
 id|mode
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-r_return
-id|retval
 suffix:semicolon
 id|locked
 op_assign
@@ -2886,12 +2864,21 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
+multiline_comment|/* We need blocks for transaction + (user+group)*(quotas for new inode + update of quota for directory owner) */
 r_int
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
+op_plus
+l_int|2
+op_star
+(paren
+id|REISERFS_QUOTA_INIT_BLOCKS
+op_plus
+id|REISERFS_QUOTA_TRANS_BLOCKS
+)paren
 suffix:semicolon
 r_int
 id|locked
@@ -2930,8 +2917,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|retval
-op_assign
 id|new_inode_init
 c_func
 (paren
@@ -2941,14 +2926,6 @@ id|dir
 comma
 id|mode
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-r_return
-id|retval
 suffix:semicolon
 id|locked
 op_assign
@@ -3228,12 +3205,21 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
+multiline_comment|/* We need blocks for transaction + (user+group)*(quotas for new inode + update of quota for directory owner) */
 r_int
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
+op_plus
+l_int|2
+op_star
+(paren
+id|REISERFS_QUOTA_INIT_BLOCKS
+op_plus
+id|REISERFS_QUOTA_TRANS_BLOCKS
+)paren
 suffix:semicolon
 r_int
 id|locked
@@ -3277,8 +3263,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|retval
-op_assign
 id|new_inode_init
 c_func
 (paren
@@ -3288,14 +3272,6 @@ id|dir
 comma
 id|mode
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-r_return
-id|retval
 suffix:semicolon
 id|locked
 op_assign
@@ -3640,7 +3616,7 @@ r_struct
 id|reiserfs_dir_entry
 id|de
 suffix:semicolon
-multiline_comment|/* we will be doing 2 balancings and update 2 stat data */
+multiline_comment|/* we will be doing 2 balancings and update 2 stat data, we change quotas&n;     * of the owner of the directory and of the owner of the parent directory */
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
@@ -3648,6 +3624,14 @@ op_star
 l_int|2
 op_plus
 l_int|2
+op_plus
+l_int|2
+op_star
+(paren
+id|REISERFS_QUOTA_INIT_BLOCKS
+op_plus
+id|REISERFS_QUOTA_TRANS_BLOCKS
+)paren
 suffix:semicolon
 id|reiserfs_write_lock
 c_func
@@ -4016,7 +4000,7 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-multiline_comment|/* in this transaction we can be doing at max two balancings and update&n;       two stat datas */
+multiline_comment|/* in this transaction we can be doing at max two balancings and update&n;       two stat datas, we change quotas of the owner of the directory and of&n;       the owner of the parent directory */
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
@@ -4024,6 +4008,14 @@ op_star
 l_int|2
 op_plus
 l_int|2
+op_plus
+l_int|2
+op_star
+(paren
+id|REISERFS_QUOTA_INIT_BLOCKS
+op_plus
+id|REISERFS_QUOTA_TRANS_BLOCKS
+)paren
 suffix:semicolon
 id|reiserfs_write_lock
 c_func
@@ -4392,12 +4384,21 @@ id|S_IFLNK
 op_or
 id|S_IRWXUGO
 suffix:semicolon
+multiline_comment|/* We need blocks for transaction + (user+group)*(quotas for new inode + update of quota for directory owner) */
 r_int
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
+op_plus
+l_int|2
+op_star
+(paren
+id|REISERFS_QUOTA_INIT_BLOCKS
+op_plus
+id|REISERFS_QUOTA_TRANS_BLOCKS
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4419,8 +4420,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|retval
-op_assign
 id|new_inode_init
 c_func
 (paren
@@ -4431,16 +4430,6 @@ comma
 id|mode
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-)paren
-(brace
-r_return
-id|retval
-suffix:semicolon
-)brace
 id|reiserfs_write_lock
 c_func
 (paren
@@ -4784,12 +4773,17 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
+multiline_comment|/* We need blocks for transaction + update of quotas for the owners of the directory */
 r_int
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
+op_plus
+l_int|2
+op_star
+id|REISERFS_QUOTA_TRANS_BLOCKS
 suffix:semicolon
 id|reiserfs_write_lock
 c_func
@@ -5276,7 +5270,7 @@ r_struct
 id|timespec
 id|ctime
 suffix:semicolon
-multiline_comment|/* three balancings: (1) old name removal, (2) new name insertion&n;       and (3) maybe &quot;save&quot; link insertion&n;       stat data updates: (1) old directory,&n;       (2) new directory and (3) maybe old object stat data (when it is&n;       directory) and (4) maybe stat data of object to which new entry&n;       pointed initially and (5) maybe block containing &quot;..&quot; of&n;       renamed directory */
+multiline_comment|/* three balancings: (1) old name removal, (2) new name insertion&n;       and (3) maybe &quot;save&quot; link insertion&n;       stat data updates: (1) old directory,&n;       (2) new directory and (3) maybe old object stat data (when it is&n;       directory) and (4) maybe stat data of object to which new entry&n;       pointed initially and (5) maybe block containing &quot;..&quot; of&n;       renamed directory&n;       quota updates: two parent directories */
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
@@ -5284,6 +5278,10 @@ op_star
 l_int|3
 op_plus
 l_int|5
+op_plus
+l_int|4
+op_star
+id|REISERFS_QUOTA_TRANS_BLOCKS
 suffix:semicolon
 id|old_inode
 op_assign
