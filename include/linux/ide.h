@@ -1931,6 +1931,9 @@ r_struct
 id|gendisk
 op_star
 id|gd
+(braket
+id|MAX_DRIVES
+)braket
 suffix:semicolon
 multiline_comment|/* gendisk structure */
 multiline_comment|/*&n;&t; * Routines to tune PIO and DMA mode for drives.&n;&t; *&n;&t; * A value of 255 indicates that the function should choose the optimal&n;&t; * mode itself.&n;&t; */

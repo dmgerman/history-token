@@ -69,8 +69,14 @@ op_eq
 id|gp
 )paren
 (brace
-singleline_comment|//&t;&t;&t;printk(KERN_ERR &quot;add_gendisk: device major %d is buggy and added a live gendisk!&bslash;n&quot;,
-singleline_comment|//&t;&t;&t;&t;sgp-&gt;major)
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;add_gendisk: device major %d is buggy and added a live gendisk!&bslash;n&quot;
+comma
+id|sgp-&gt;major
+)paren
 r_goto
 id|out
 suffix:semicolon
