@@ -1,5 +1,5 @@
 macro_line|#ifndef _dmasound_h_
-multiline_comment|/*&n; *  linux/drivers/sound/dmasound/dmasound.h&n; *&n; *&n; *  Minor numbers for the sound driver.&n; *&n; *  Unfortunately Creative called the codec chip of SB as a DSP. For this&n; *  reason the /dev/dsp is reserved for digitized audio use. There is a&n; *  device for true DSP processors but it will be called something else.&n; *  In v3.0 it&squot;s /dev/sndproc but this could be a temporary solution.&n; */
+multiline_comment|/*&n; *  linux/sound/oss/dmasound/dmasound.h&n; *&n; *&n; *  Minor numbers for the sound driver.&n; *&n; *  Unfortunately Creative called the codec chip of SB as a DSP. For this&n; *  reason the /dev/dsp is reserved for digitized audio use. There is a&n; *  device for true DSP processors but it will be called something else.&n; *  In v3.0 it&squot;s /dev/sndproc but this could be a temporary solution.&n; */
 DECL|macro|_dmasound_h_
 mdefine_line|#define _dmasound_h_
 macro_line|#include &lt;linux/types.h&gt;

@@ -34,6 +34,18 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+multiline_comment|/* first argument is ignored for now*/
+r_void
+id|pSeriesLP_cppr_info
+c_func
+(paren
+r_int
+id|n_cpu
+comma
+id|u8
+id|value
+)paren
+suffix:semicolon
 DECL|struct|xics_ipi_struct
 r_struct
 id|xics_ipi_struct

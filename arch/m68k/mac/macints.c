@@ -1612,7 +1612,6 @@ OL
 id|VIA1_SOURCE_BASE
 )paren
 (brace
-r_return
 id|cpu_free_irq
 c_func
 (paren
@@ -1620,6 +1619,8 @@ id|irq
 comma
 id|dev_id
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 r_if

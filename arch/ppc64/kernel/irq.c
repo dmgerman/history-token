@@ -2157,7 +2157,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|function|do_IRQ
-r_int
+r_void
 id|do_IRQ
 c_func
 (paren
@@ -2317,14 +2317,10 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* lets ret_from_int know we can do checks */
 )brace
 macro_line|#else&t;/* CONFIG_PPC_ISERIES */
 DECL|function|do_IRQ
-r_int
+r_void
 id|do_IRQ
 c_func
 (paren
@@ -2336,10 +2332,6 @@ id|regs
 (brace
 r_int
 id|irq
-comma
-id|first
-op_assign
-l_int|1
 suffix:semicolon
 id|irq_enter
 c_func
@@ -2407,11 +2399,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * Every arch is required to implement ppc_md.get_irq.&n;&t; * This function will either return an irq number or -1 to&n;&t; * indicate there are no more pending.  But the first time&n;&t; * through the loop this means there wasn&squot;t an IRQ pending.&n;&t; * The value -2 is for buggy hardware and means that this IRQ&n;&t; * has already been handled. -- Tom&n;&t; */
-r_while
-c_loop
-(paren
-(paren
 id|irq
 op_assign
 id|ppc_md
@@ -2421,11 +2408,14 @@ c_func
 (paren
 id|regs
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|irq
 op_ge
 l_int|0
 )paren
-(brace
 id|ppc_irq_dispatch_handler
 c_func
 (paren
@@ -2434,21 +2424,7 @@ comma
 id|irq
 )paren
 suffix:semicolon
-id|first
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|irq
-op_ne
-op_minus
-l_int|2
-op_logical_and
-id|first
-)paren
+r_else
 multiline_comment|/* That&squot;s not SMP safe ... but who cares ? */
 id|ppc_spurious_interrupts
 op_increment
@@ -2458,10 +2434,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* lets ret_from_int know we can do checks */
 )brace
 macro_line|#endif&t;/* CONFIG_PPC_ISERIES */
 DECL|function|probe_irq_on

@@ -1523,15 +1523,6 @@ op_lshift
 id|BIO_RW
 )paren
 suffix:semicolon
-id|blk_queue_bounce
-c_func
-(paren
-id|q
-comma
-op_amp
-id|bio
-)paren
-suffix:semicolon
 r_return
 id|bio
 suffix:semicolon

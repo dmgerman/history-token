@@ -18,6 +18,9 @@ macro_line|#ifdef CONFIG_PPC_OF
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
+macro_line|#include &lt;asm/backlight.h&gt;
+macro_line|#endif
 macro_line|#include &quot;rivafb.h&quot;
 macro_line|#include &quot;nvreg.h&quot;
 macro_line|#ifndef CONFIG_PCI&t;&t;/* sanity check */
@@ -27,16 +30,18 @@ multiline_comment|/* version number of this driver */
 DECL|macro|RIVAFB_VERSION
 mdefine_line|#define RIVAFB_VERSION &quot;0.9.5b&quot;
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * various helpful macros and constants&n; *&n; * ------------------------------------------------------------------------- */
-DECL|macro|RIVAFBDEBUG
-macro_line|#undef RIVAFBDEBUG
-macro_line|#ifdef RIVAFBDEBUG
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(fmt, args...) printk(KERN_DEBUG &quot;%s: &quot; fmt, __FUNCTION__ , ## args)
+macro_line|#ifdef CONFIG_FB_RIVA_DEBUG
+DECL|macro|NVTRACE
+mdefine_line|#define NVTRACE          printk
 macro_line|#else
-DECL|macro|DPRINTK
-mdefine_line|#define DPRINTK(fmt, args...)
+DECL|macro|NVTRACE
+mdefine_line|#define NVTRACE          if(0) printk
 macro_line|#endif
-macro_line|#ifndef RIVA_NDEBUG
+DECL|macro|NVTRACE_ENTER
+mdefine_line|#define NVTRACE_ENTER(...)  NVTRACE(&quot;%s START&bslash;n&quot;, __FUNCTION__)
+DECL|macro|NVTRACE_LEAVE
+mdefine_line|#define NVTRACE_LEAVE(...)  NVTRACE(&quot;%s END&bslash;n&quot;, __FUNCTION__)
+macro_line|#ifdef CONFIG_FB_RIVA_DEBUG
 DECL|macro|assert
 mdefine_line|#define assert(expr) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;printk( &quot;Assertion failed! %s,%s,%s,line=%d&bslash;n&quot;,&bslash;&n;&t;#expr,__FILE__,__FUNCTION__,__LINE__); &bslash;&n;&t;BUG(); &bslash;&n;&t;}
 macro_line|#else
@@ -333,73 +338,73 @@ comma
 (brace
 l_string|&quot;GeForce4-MX-460&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;GeForce4-MX-440&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;GeForce4-MX-420&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;GeForce4-440-GO&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;GeForce4-420-GO&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;GeForce4-420-GO-M32&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;Quadro4-500-XGL&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;GeForce4-440-GO-M64&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;Quadro4-200&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;Quadro4-550-XGL&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;Quadro4-500-GOGL&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
 l_string|&quot;GeForce2&quot;
 comma
-id|NV_ARCH_20
+id|NV_ARCH_10
 )brace
 comma
 (brace
@@ -1580,6 +1585,92 @@ l_int|0xEB
 multiline_comment|/* MISC */
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Backlight control&n; */
+macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
+DECL|variable|riva_backlight_levels
+r_static
+r_int
+id|riva_backlight_levels
+(braket
+)braket
+op_assign
+(brace
+l_int|0x158
+comma
+l_int|0x192
+comma
+l_int|0x1c6
+comma
+l_int|0x200
+comma
+l_int|0x234
+comma
+l_int|0x268
+comma
+l_int|0x2a2
+comma
+l_int|0x2d6
+comma
+l_int|0x310
+comma
+l_int|0x344
+comma
+l_int|0x378
+comma
+l_int|0x3b2
+comma
+l_int|0x3e6
+comma
+l_int|0x41a
+comma
+l_int|0x454
+comma
+l_int|0x534
+comma
+)brace
+suffix:semicolon
+r_static
+r_int
+id|riva_set_backlight_enable
+c_func
+(paren
+r_int
+id|on
+comma
+r_int
+id|level
+comma
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+r_static
+r_int
+id|riva_set_backlight_level
+c_func
+(paren
+r_int
+id|level
+comma
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+DECL|variable|riva_backlight_controller
+r_static
+r_struct
+id|backlight_controller
+id|riva_backlight_controller
+op_assign
+(brace
+id|riva_set_backlight_enable
+comma
+id|riva_set_backlight_level
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * MMIO access macros&n; *&n; * ------------------------------------------------------------------------- */
 DECL|function|CRTCout
 r_static
@@ -2937,6 +3028,11 @@ id|regs
 r_int
 id|i
 suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
+suffix:semicolon
 id|par-&gt;riva
 dot
 id|LockUnlock
@@ -3076,6 +3172,11 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * riva_load_state - loads current chip state&n; * @par: pointer to riva_par object containing info for current riva board&n; * @regs: pointer to riva_regs object&n; *&n; * DESCRIPTION:&n; * Loads chip state from @regs.&n; *&n; * CALLED FROM:&n; * riva_load_video_mode()&n; * rivafb_probe()&n; * rivafb_remove()&n; */
 multiline_comment|/* from GGI */
@@ -3105,6 +3206,11 @@ id|regs-&gt;ext
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
 suffix:semicolon
 id|CRTCout
 c_func
@@ -3277,6 +3383,11 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * riva_load_video_mode - calculate timings&n; * @info: pointer to fb_info object containing info for current riva board&n; *&n; * DESCRIPTION:&n; * Calculate some timings and then send em off to riva_load_state().&n; *&n; * CALLED FROM:&n; * rivafb_set_par()&n; */
 DECL|function|riva_load_video_mode
@@ -3342,6 +3453,11 @@ suffix:semicolon
 r_struct
 id|riva_regs
 id|newmode
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* time to calculate */
 id|rivafb_blank
@@ -4391,6 +4507,11 @@ comma
 id|info
 )paren
 suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|riva_update_var
 r_static
@@ -4409,6 +4530,11 @@ op_star
 id|modedb
 )paren
 (brace
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
+suffix:semicolon
 id|var-&gt;xres
 op_assign
 id|var-&gt;xres_virtual
@@ -4471,6 +4597,11 @@ suffix:semicolon
 id|var-&gt;vmode
 op_assign
 id|modedb-&gt;vmode
+suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * rivafb_do_maximize - &n; * @info: pointer to fb_info object containing info for current riva board&n; * @var:&n; * @nom:&n; * @den:&n; *&n; * DESCRIPTION:&n; * .&n; *&n; * RETURNS:&n; * -EINVAL on failure, 0 on success&n; * &n; *&n; * CALLED FROM:&n; * rivafb_check_var()&n; */
@@ -4552,6 +4683,11 @@ l_int|1
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* use highest possible virtual resolution */
 r_if
@@ -4645,7 +4781,7 @@ id|PFX
 l_string|&quot;could not find a virtual resolution that fits into video memory!!&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DPRINTK
+id|NVTRACE
 c_func
 (paren
 l_string|&quot;EXIT - EINVAL error&bslash;n&quot;
@@ -4810,7 +4946,7 @@ comma
 id|var-&gt;bits_per_pixel
 )paren
 suffix:semicolon
-id|DPRINTK
+id|NVTRACE
 c_func
 (paren
 l_string|&quot;EXIT - EINVAL error&bslash;n&quot;
@@ -4938,6 +5074,11 @@ op_assign
 l_int|0x7fff
 op_div
 id|nom
+suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -5204,6 +5345,151 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * Backlight operations&n; *&n; * ------------------------------------------------------------------------- */
+macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
+DECL|function|riva_set_backlight_enable
+r_static
+r_int
+id|riva_set_backlight_enable
+c_func
+(paren
+r_int
+id|on
+comma
+r_int
+id|level
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_struct
+id|riva_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|riva_par
+op_star
+)paren
+id|data
+suffix:semicolon
+id|U032
+id|tmp_pcrt
+comma
+id|tmp_pmc
+suffix:semicolon
+id|tmp_pmc
+op_assign
+id|par-&gt;riva.PMC
+(braket
+l_int|0x10F0
+op_div
+l_int|4
+)braket
+op_amp
+l_int|0x0000FFFF
+suffix:semicolon
+id|tmp_pcrt
+op_assign
+id|par-&gt;riva.PCRTC0
+(braket
+l_int|0x081C
+op_div
+l_int|4
+)braket
+op_amp
+l_int|0xFFFFFFFC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|on
+op_logical_and
+(paren
+id|level
+OG
+id|BACKLIGHT_OFF
+)paren
+)paren
+(brace
+id|tmp_pcrt
+op_or_assign
+l_int|0x1
+suffix:semicolon
+id|tmp_pmc
+op_or_assign
+(paren
+l_int|1
+op_lshift
+l_int|31
+)paren
+suffix:semicolon
+singleline_comment|// backlight bit
+id|tmp_pmc
+op_or_assign
+id|riva_backlight_levels
+(braket
+id|level
+op_minus
+l_int|1
+)braket
+op_lshift
+l_int|16
+suffix:semicolon
+singleline_comment|// level
+)brace
+id|par-&gt;riva.PCRTC0
+(braket
+l_int|0x081C
+op_div
+l_int|4
+)braket
+op_assign
+id|tmp_pcrt
+suffix:semicolon
+id|par-&gt;riva.PMC
+(braket
+l_int|0x10F0
+op_div
+l_int|4
+)braket
+op_assign
+id|tmp_pmc
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|riva_set_backlight_level
+r_static
+r_int
+id|riva_set_backlight_level
+c_func
+(paren
+r_int
+id|level
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_return
+id|riva_set_backlight_enable
+c_func
+(paren
+l_int|1
+comma
+id|level
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * framebuffer operations&n; *&n; * ------------------------------------------------------------------------- */
 DECL|function|rivafb_open
 r_static
@@ -5240,6 +5526,11 @@ c_func
 (paren
 op_amp
 id|par-&gt;ref_count
+)paren
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -5337,6 +5628,11 @@ op_amp
 id|par-&gt;ref_count
 )paren
 suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5376,6 +5672,11 @@ c_func
 (paren
 op_amp
 id|par-&gt;ref_count
+)paren
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if
@@ -5454,6 +5755,11 @@ op_amp
 id|par-&gt;ref_count
 )paren
 suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5493,6 +5799,11 @@ r_int
 id|mode_valid
 op_assign
 l_int|0
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -5683,7 +5994,7 @@ comma
 id|var-&gt;bits_per_pixel
 )paren
 suffix:semicolon
-id|DPRINTK
+id|NVTRACE
 c_func
 (paren
 l_string|&quot;EXIT, returning -EINVAL&bslash;n&quot;
@@ -6196,6 +6507,11 @@ id|var-&gt;transp.msb_right
 op_assign
 l_int|0
 suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6223,6 +6539,11 @@ id|riva_par
 op_star
 )paren
 id|info-&gt;par
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
 suffix:semicolon
 id|riva_common_setup
 c_func
@@ -6312,6 +6633,11 @@ id|FB_VISUAL_PSEUDOCOLOR
 suffix:colon
 id|FB_VISUAL_DIRECTCOLOR
 suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6349,6 +6675,11 @@ suffix:semicolon
 r_int
 r_int
 id|base
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6472,6 +6803,11 @@ op_and_assign
 op_complement
 id|FB_VMODE_YWRAP
 suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6537,6 +6873,11 @@ op_complement
 l_int|0xc0
 suffix:semicolon
 multiline_comment|/* sync on/off */
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6607,6 +6948,31 @@ comma
 l_int|0x1a
 comma
 id|vesa
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
+r_if
+c_cond
+(paren
+id|par-&gt;FlatPanel
+op_logical_and
+id|_machine
+op_eq
+id|_MACH_Pmac
+)paren
+(brace
+id|set_backlight_enable
+c_func
+(paren
+op_logical_neg
+id|blank
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+id|NVTRACE_LEAVE
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -8469,6 +8835,11 @@ r_int
 r_int
 id|cmap_len
 suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
+suffix:semicolon
 id|info-&gt;flags
 op_assign
 id|FBINFO_DEFAULT
@@ -8548,6 +8919,11 @@ id|info-&gt;var.yres_virtual
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 (paren
@@ -8636,6 +9012,11 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
 suffix:semicolon
 id|dp
 op_assign
@@ -8757,6 +9138,11 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8790,6 +9176,11 @@ suffix:semicolon
 r_struct
 id|fb_videomode
 id|modedb
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* respect mode options */
 r_if
@@ -8907,6 +9298,11 @@ id|var-&gt;accel_flags
 op_or_assign
 id|FB_ACCELF_TEXT
 suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|riva_get_EDID
 r_static
@@ -8925,6 +9321,19 @@ op_star
 id|pdev
 )paren
 (brace
+r_struct
+id|riva_par
+op_star
+id|par
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_OF
 r_if
 c_cond
@@ -8947,9 +9356,6 @@ suffix:semicolon
 macro_line|#else
 multiline_comment|/* XXX use other methods later */
 macro_line|#ifdef CONFIG_FB_RIVA_I2C
-r_struct
-id|riva_par
-op_star
 id|par
 op_assign
 (paren
@@ -8958,9 +9364,6 @@ id|riva_par
 op_star
 )paren
 id|info-&gt;par
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 id|riva_create_i2c_busses
 c_func
@@ -9020,6 +9423,11 @@ id|par
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|riva_get_edidinfo
 r_static
@@ -9123,6 +9531,11 @@ r_struct
 id|fb_info
 op_star
 id|info
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
 suffix:semicolon
 m_assert
 (paren
@@ -9785,6 +10198,33 @@ comma
 id|info-&gt;fix.smem_start
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
+r_if
+c_cond
+(paren
+id|default_par-&gt;FlatPanel
+op_logical_and
+id|_machine
+op_eq
+id|_MACH_Pmac
+)paren
+id|register_backlight_controller
+c_func
+(paren
+op_amp
+id|riva_backlight_controller
+comma
+id|default_par
+comma
+l_string|&quot;mnca&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9905,6 +10345,11 @@ op_star
 )paren
 id|info-&gt;par
 suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10008,6 +10453,11 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * initialization&n; *&n; * ------------------------------------------------------------------------- */
 macro_line|#ifndef MODULE
@@ -10025,6 +10475,11 @@ id|options
 r_char
 op_star
 id|this_opt
+suffix:semicolon
+id|NVTRACE_ENTER
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -10190,6 +10645,11 @@ op_assign
 id|this_opt
 suffix:semicolon
 )brace
+id|NVTRACE_LEAVE
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

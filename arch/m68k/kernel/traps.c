@@ -2472,7 +2472,7 @@ id|_sun3_map_test_start
 comma
 id|_sun3_map_test_end
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
@@ -3030,7 +3030,7 @@ id|ssw
 op_assign
 id|fp-&gt;un.fmtb.ssw
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 r_int
 r_int
 id|desc
@@ -3141,7 +3141,7 @@ id|addr
 op_assign
 id|fp-&gt;un.fmtb.daddr
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|asm
 r_volatile
 (paren
@@ -3200,7 +3200,7 @@ id|mmusr
 op_assign
 id|temp
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -3552,7 +3552,7 @@ id|tlong
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -3754,7 +3754,7 @@ multiline_comment|/* Insn fault on same page as data fault.  But we&n;&t;&t;   s
 r_goto
 id|create_atc_entry
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|asm
 r_volatile
 (paren
@@ -3880,7 +3880,7 @@ comma
 id|fp-&gt;ptregs.pc
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -3960,7 +3960,7 @@ r_int
 )paren
 id|fp
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 (paren
 l_string|&quot;*** Bus Error *** Format is %x&bslash;n&quot;
@@ -4029,7 +4029,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -4537,7 +4537,6 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|show_stack
-r_extern
 r_void
 id|show_stack
 c_func

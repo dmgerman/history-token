@@ -8627,6 +8627,9 @@ suffix:colon
 r_case
 id|ATA_PROT_ATAPI_DMA
 suffix:colon
+r_case
+id|ATA_PROT_ATAPI
+suffix:colon
 multiline_comment|/* check status of DMA engine */
 id|host_stat
 op_assign

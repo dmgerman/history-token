@@ -3978,6 +3978,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|__initdata
 r_static
 r_struct
@@ -3988,6 +3989,7 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef __ISAPNP__
 DECL|variable|__initdata
 r_static
@@ -4290,7 +4292,7 @@ l_string|&quot;FritzPnP: no ISA PnP present&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren

@@ -5968,7 +5968,7 @@ c_func
 id|blk_insert_request
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * blk_rq_map_user - map user data to a request, for REQ_BLOCK_PC usage&n; * @q:&t;&t;request queue where request should be inserted&n; * @rw:&t;&t;READ or WRITE data&n; * @ubuf:&t;the user buffer&n; * @len:&t;length of user data&n; *&n; * Description:&n; *    Data will be mapped directly for zero copy io, if possible. Otherwise&n; *    a kernel bounce buffer is used.&n; *&n; *    A matching blk_rq_unmap_user() must be issued at the end of io, while&n; *    still in process context.&n; */
+multiline_comment|/**&n; * blk_rq_map_user - map user data to a request, for REQ_BLOCK_PC usage&n; * @q:&t;&t;request queue where request should be inserted&n; * @rw:&t;&t;READ or WRITE data&n; * @ubuf:&t;the user buffer&n; * @len:&t;length of user data&n; *&n; * Description:&n; *    Data will be mapped directly for zero copy io, if possible. Otherwise&n; *    a kernel bounce buffer is used.&n; *&n; *    A matching blk_rq_unmap_user() must be issued at the end of io, while&n; *    still in process context.&n; *&n; *    Note: The mapped bio may need to be bounced through blk_queue_bounce()&n; *    before being submitted to the device, as pages mapped may be out of&n; *    reach. It&squot;s the callers responsibility to make sure this happens. The&n; *    original bio must be passed back in to blk_rq_unmap_user() for proper&n; *    unmapping.&n; */
 DECL|function|blk_rq_map_user
 r_struct
 id|request

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/sound/dmasound/trans_16.c&n; *&n; *  16 bit translation routines.  Only used by Power mac at present.&n; *&n; *  See linux/drivers/sound/dmasound/dmasound_core.c for copyright and&n; *  history prior to 08/02/2001.&n; *&n; *  08/02/2001 Iain Sandoe&n; *&t;&t;split from dmasound_awacs.c&n; *  11/29/2003 Renzo Davoli (King Enzo)&n; *  &t;- input resampling (for soft rate &lt; hard rate)&n; *  &t;- software line in gain control&n; */
+multiline_comment|/*&n; *  linux/sound/oss/dmasound/trans_16.c&n; *&n; *  16 bit translation routines.  Only used by Power mac at present.&n; *&n; *  See linux/sound/oss/dmasound/dmasound_core.c for copyright and&n; *  history prior to 08/02/2001.&n; *&n; *  08/02/2001 Iain Sandoe&n; *&t;&t;split from dmasound_awacs.c&n; *  11/29/2003 Renzo Davoli (King Enzo)&n; *  &t;- input resampling (for soft rate &lt; hard rate)&n; *  &t;- software line in gain control&n; */
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;dmasound.h&quot;

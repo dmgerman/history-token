@@ -2570,7 +2570,6 @@ suffix:semicolon
 DECL|function|fb_set_logocmap
 r_static
 r_void
-id|__init
 id|fb_set_logocmap
 c_func
 (paren
@@ -2778,7 +2777,6 @@ suffix:semicolon
 DECL|function|fb_set_logo_truepalette
 r_static
 r_void
-id|__init
 id|fb_set_logo_truepalette
 c_func
 (paren
@@ -3003,7 +3001,6 @@ suffix:semicolon
 DECL|function|fb_set_logo_directpalette
 r_static
 r_void
-id|__init
 id|fb_set_logo_directpalette
 c_func
 (paren
@@ -3080,7 +3077,6 @@ suffix:semicolon
 DECL|function|fb_set_logo
 r_static
 r_void
-id|__init
 id|fb_set_logo
 c_func
 (paren

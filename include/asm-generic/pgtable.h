@@ -229,5 +229,9 @@ macro_line|#ifndef __HAVE_ARCH_PAGE_TEST_AND_CLEAR_YOUNG
 DECL|macro|page_test_and_clear_young
 mdefine_line|#define page_test_and_clear_young(page) (0)
 macro_line|#endif
+macro_line|#ifndef __HAVE_ARCH_PGD_OFFSET_GATE
+DECL|macro|pgd_offset_gate
+mdefine_line|#define pgd_offset_gate(mm, addr)&t;pgd_offset(mm, addr)
+macro_line|#endif
 macro_line|#endif /* _ASM_GENERIC_PGTABLE_H */
 eof

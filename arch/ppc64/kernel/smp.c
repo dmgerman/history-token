@@ -987,6 +987,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Some hardware requires clearing the CPPR, while other hardware does not&n;&t; * it is safe either way&n;&t; */
+id|pSeriesLP_cppr_info
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|rtas_stop_self
 c_func
 (paren
@@ -1504,7 +1513,18 @@ op_plus
 id|num_size_cell
 )braket
 suffix:semicolon
-multiline_comment|/* DRENG need to account for threads here too */
+multiline_comment|/* Double maxcpus for processors which have SMT capability */
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SMT
+)paren
+id|maxcpus
+op_mul_assign
+l_int|2
+suffix:semicolon
 r_if
 c_cond
 (paren

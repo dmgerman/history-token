@@ -7260,7 +7260,7 @@ suffix:semicolon
 id|panic
 c_func
 (paren
-l_string|&quot;IO-APIC + timer doesn&squot;t work! pester mingo@redhat.com&quot;
+l_string|&quot;IO-APIC + timer doesn&squot;t work! Try using the &squot;noapic&squot; kernel parameter&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

@@ -337,7 +337,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Apple MacRISC (U3, UniNorth, Bandit, Chaos) PCI controllers.&n; *&n; * The &quot;Bandit&quot; version is present in all early PCI PowerMacs,&n; * and up to the first ones using Grackle. Some machines may&n; * have 2 bandit controllers (2 PCI busses).&n; *&n; * &quot;Chaos&quot; is used in some &quot;Bandit&quot;-type machines as a bridge&n; * for the separate display bus. It is accessed the same&n; * way as bandit, but cannot be probed for devices. It therefore&n; * has its own config access functions.&n; *&n; * The &quot;UniNorth&quot; version is present in all Core99 machines&n; * (iBook, G4, new IMacs, and all the recent Apple machines).&n; * It contains 3 controllers in one ASIC.&n; *&n; * The U3 is the bridge used on G5 machines. It contains on&n; * AGP bus which is dealt with the old UniNorth access routines&n; * and an HyperTransport bus which uses its own set of access&n; * functions.&n; */
+multiline_comment|/*&n; * Apple MacRISC (U3, UniNorth, Bandit, Chaos) PCI controllers.&n; *&n; * The &quot;Bandit&quot; version is present in all early PCI PowerMacs,&n; * and up to the first ones using Grackle. Some machines may&n; * have 2 bandit controllers (2 PCI busses).&n; *&n; * &quot;Chaos&quot; is used in some &quot;Bandit&quot;-type machines as a bridge&n; * for the separate display bus. It is accessed the same&n; * way as bandit, but cannot be probed for devices. It therefore&n; * has its own config access functions.&n; *&n; * The &quot;UniNorth&quot; version is present in all Core99 machines&n; * (iBook, G4, new IMacs, and all the recent Apple machines).&n; * It contains 3 controllers in one ASIC.&n; *&n; * The U3 is the bridge used on G5 machines. It contains an&n; * AGP bus which is dealt with the old UniNorth access routines&n; * and a HyperTransport bus which uses its own set of access&n; * functions.&n; */
 DECL|macro|MACRISC_CFA0
 mdefine_line|#define MACRISC_CFA0(devfn, off)&t;&bslash;&n;&t;((1 &lt;&lt; (unsigned long)PCI_SLOT(dev_fn)) &bslash;&n;&t;| (((unsigned long)PCI_FUNC(dev_fn)) &lt;&lt; 8) &bslash;&n;&t;| (((unsigned long)(off)) &amp; 0xFCUL))
 DECL|macro|MACRISC_CFA1
@@ -3036,7 +3036,7 @@ comma
 l_int|0x02000000
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * /ht node doesn&squot;t expose a &quot;ranges&quot; property, so we &quot;remove&quot; regions that&n;&t; * have been allocated to AGP. So far, this version of the code doesn&squot;t assign&n;&t; * any of the 0xfxxxxxxx &quot;fine&quot; memory regions to /ht.&n;&t; * We need to fix that sooner or later by either parsing all child &quot;ranges&quot;&n;&t; * properties or figuring out the U3 address space decoding logic and&n;&t; * then read it&squot;s configuration register (if any).&n;&t; */
+multiline_comment|/*&n;&t; * /ht node doesn&squot;t expose a &quot;ranges&quot; property, so we &quot;remove&quot; regions that&n;&t; * have been allocated to AGP. So far, this version of the code doesn&squot;t assign&n;&t; * any of the 0xfxxxxxxx &quot;fine&quot; memory regions to /ht.&n;&t; * We need to fix that sooner or later by either parsing all child &quot;ranges&quot;&n;&t; * properties or figuring out the U3 address space decoding logic and&n;&t; * then read its configuration register (if any).&n;&t; */
 id|hose-&gt;io_base_phys
 op_assign
 l_int|0xf4000000
@@ -4159,7 +4159,7 @@ id|updatecfg
 id|u16
 id|cmd
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Make sure PCI is correctly configured&n;&t;&t; *&n;&t;&t; * We use old pci_bios versions of the function since, by&n;&t;&t; * default, gmac is not powered up, and so will be absent&n;&t;&t; * from the kernel initial PCI lookup.&n;&t;&t; *&n;&t;&t; * Should be replaced by 2.4 new PCI mecanisms and really&n;&t;&t; * regiser the device.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Make sure PCI is correctly configured&n;&t;&t; *&n;&t;&t; * We use old pci_bios versions of the function since, by&n;&t;&t; * default, gmac is not powered up, and so will be absent&n;&t;&t; * from the kernel initial PCI lookup.&n;&t;&t; *&n;&t;&t; * Should be replaced by 2.4 new PCI mechanisms and really&n;&t;&t; * register the device.&n;&t;&t; */
 id|pci_read_config_word
 c_func
 (paren

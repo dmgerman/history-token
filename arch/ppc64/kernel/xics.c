@@ -691,7 +691,6 @@ id|val64
 suffix:semicolon
 )brace
 DECL|function|pSeriesLP_cppr_info
-r_static
 r_void
 id|pSeriesLP_cppr_info
 c_func

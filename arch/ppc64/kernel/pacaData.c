@@ -28,7 +28,7 @@ r_int
 r_int
 id|__toc_start
 suffix:semicolon
-multiline_comment|/* Stack space used when we detect a bad kernel stack pointer, and&n; * early in SMP boots before relocation is enabled.&n; */
+multiline_comment|/* Stack space used when we detect a bad kernel stack pointer, and&n; * early in SMP boots before relocation is enabled.&n; *&n; * ABI requires stack to be 128-byte aligned&n; */
 DECL|variable|emergency_stack
 r_char
 id|emergency_stack
@@ -37,6 +37,17 @@ id|PAGE_SIZE
 op_star
 id|NR_CPUS
 )braket
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|128
+)paren
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* The Paca is an array with one entry per processor.  Each contains an &n; * ItLpPaca, which contains the information shared between the &n; * hypervisor and Linux.  Each also contains an ItLpRegSave area which&n; * is used by the hypervisor to save registers.&n; * On systems with hardware multi-threading, there are two threads&n; * per processor.  The Paca array must contain an entry for each thread.&n; * The VPD Areas will give a max logical processors = 2 * max physical&n; * processors.  The processor VPD array needs one entry per physical&n; * processor (not thread).&n; */
 DECL|macro|PACAINITDATA

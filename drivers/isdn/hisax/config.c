@@ -8183,6 +8183,7 @@ id|skb
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
 DECL|variable|__initdata
 r_static
@@ -8601,6 +8602,7 @@ comma
 id|hisax_pci_tbl
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PCI */
 DECL|variable|HiSax_init
 id|module_init
 c_func

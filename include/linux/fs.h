@@ -920,6 +920,7 @@ id|hd_struct
 op_star
 id|bd_part
 suffix:semicolon
+multiline_comment|/* number of times partitions within this device have been opened. */
 DECL|member|bd_part_count
 r_int
 id|bd_part_count

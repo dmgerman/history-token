@@ -2429,7 +2429,7 @@ suffix:semicolon
 id|prom_printf
 c_func
 (paren
-l_string|&quot;    memory.cnt                  = 0x%x&bslash;n&quot;
+l_string|&quot;    memory.cnt&t;&t;  = 0x%x&bslash;n&quot;
 comma
 id|_lmb-&gt;memory.cnt
 )paren
@@ -2437,7 +2437,7 @@ suffix:semicolon
 id|prom_printf
 c_func
 (paren
-l_string|&quot;    memory.size                 = 0x%x&bslash;n&quot;
+l_string|&quot;    memory.size&t;&t; = 0x%x&bslash;n&quot;
 comma
 id|_lmb-&gt;memory.size
 )paren
@@ -2475,7 +2475,7 @@ suffix:semicolon
 id|prom_printf
 c_func
 (paren
-l_string|&quot;                      .physbase = 0x%x&bslash;n&quot;
+l_string|&quot;&t;&t;      .physbase = 0x%x&bslash;n&quot;
 comma
 id|_lmb-&gt;memory.region
 (braket
@@ -2488,7 +2488,7 @@ suffix:semicolon
 id|prom_printf
 c_func
 (paren
-l_string|&quot;                      .size     = 0x%x&bslash;n&quot;
+l_string|&quot;&t;&t;      .size     = 0x%x&bslash;n&quot;
 comma
 id|_lmb-&gt;memory.region
 (braket
@@ -2502,7 +2502,7 @@ suffix:semicolon
 id|prom_printf
 c_func
 (paren
-l_string|&quot;&bslash;n    reserved.cnt                  = 0x%x&bslash;n&quot;
+l_string|&quot;&bslash;n    reserved.cnt&t;&t;  = 0x%x&bslash;n&quot;
 comma
 id|_lmb-&gt;reserved.cnt
 )paren
@@ -2510,7 +2510,7 @@ suffix:semicolon
 id|prom_printf
 c_func
 (paren
-l_string|&quot;    reserved.size                 = 0x%x&bslash;n&quot;
+l_string|&quot;    reserved.size&t;&t; = 0x%x&bslash;n&quot;
 comma
 id|_lmb-&gt;reserved.size
 )paren
@@ -2548,7 +2548,7 @@ suffix:semicolon
 id|prom_printf
 c_func
 (paren
-l_string|&quot;                      .physbase = 0x%x&bslash;n&quot;
+l_string|&quot;&t;&t;      .physbase = 0x%x&bslash;n&quot;
 comma
 id|_lmb-&gt;reserved.region
 (braket
@@ -2561,7 +2561,7 @@ suffix:semicolon
 id|prom_printf
 c_func
 (paren
-l_string|&quot;                      .size     = 0x%x&bslash;n&quot;
+l_string|&quot;&t;&t;      .size     = 0x%x&bslash;n&quot;
 comma
 id|_lmb-&gt;reserved.region
 (braket
@@ -3266,7 +3266,7 @@ suffix:semicolon
 id|prom_debug
 c_func
 (paren
-l_string|&quot;rtas-&gt;base                = 0x%x&bslash;n&quot;
+l_string|&quot;rtas-&gt;base&t;&t;= 0x%x&bslash;n&quot;
 comma
 id|_rtas-&gt;base
 )paren
@@ -3274,7 +3274,7 @@ suffix:semicolon
 id|prom_debug
 c_func
 (paren
-l_string|&quot;rtas-&gt;entry               = 0x%x&bslash;n&quot;
+l_string|&quot;rtas-&gt;entry&t;       = 0x%x&bslash;n&quot;
 comma
 id|_rtas-&gt;entry
 )paren
@@ -3282,7 +3282,7 @@ suffix:semicolon
 id|prom_debug
 c_func
 (paren
-l_string|&quot;rtas-&gt;size                = 0x%x&bslash;n&quot;
+l_string|&quot;rtas-&gt;size&t;&t;= 0x%x&bslash;n&quot;
 comma
 id|_rtas-&gt;size
 )paren
@@ -3666,10 +3666,8 @@ op_eq
 l_int|NULL
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 )brace
 r_else
 r_if
@@ -4588,7 +4586,7 @@ comma
 id|secondary_hold
 )paren
 suffix:semicolon
-multiline_comment|/* Set the common spinloop variable, so all of the secondary cpus&n;&t; * will block when they are awakened from their OF spinloop.&n;&t; * This must occur for both SMP and non SMP kernels, since OF will&n;&t; * be trashed when we move the kernel.&n;         */
+multiline_comment|/* Set the common spinloop variable, so all of the secondary cpus&n;&t; * will block when they are awakened from their OF spinloop.&n;&t; * This must occur for both SMP and non SMP kernels, since OF will&n;&t; * be trashed when we move the kernel.&n;&t; */
 op_star
 id|spinloop
 op_assign
@@ -9438,7 +9436,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* If we are on an SMP machine, then we *MUST* do the&n;         * following, regardless of whether we have an SMP&n;         * kernel or not.&n;         */
+multiline_comment|/* If we are on an SMP machine, then we *MUST* do the&n;&t; * following, regardless of whether we have an SMP&n;&t; * kernel or not.&n;&t; */
 id|prom_hold_cpus
 c_func
 (paren
@@ -9887,10 +9885,9 @@ id|parp
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find out the size of each entry of the interrupts property&n; * for a node.&n; */
-r_static
+DECL|function|prom_n_intr_cells
 r_int
 id|__devinit
-DECL|function|prom_n_intr_cells
 id|prom_n_intr_cells
 c_func
 (paren
@@ -12438,7 +12435,7 @@ r_return
 id|mem_start
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * finish_device_tree is called once things are running normally&n; * (i.e. with text and data mapped to the address they were linked at).&n; * It traverses the device tree and fills in the name, type,&n; * {n_}addrs and {n_}intrs fields of each node.&n; */
+multiline_comment|/**&n; * finish_device_tree is called once things are running normally&n; * (i.e. with text and data mapped to the address they were linked at).&n; * It traverses the device tree and fills in the name, type,&n; * {n_}addrs and {n_}intrs fields of each node.&n; */
 r_void
 id|__init
 DECL|function|finish_device_tree
@@ -12668,7 +12665,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Work out the sense (active-low level / active-high edge)&n; * of each interrupt from the device tree.&n; */
+multiline_comment|/**&n; * Work out the sense (active-low level / active-high edge)&n; * of each interrupt from the device tree.&n; */
 r_void
 id|__init
 DECL|function|prom_get_irq_senses
@@ -12778,7 +12775,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * Construct and return a list of the device_nodes with a given name.&n; */
+multiline_comment|/**&n; * Construct and return a list of the device_nodes with a given name.&n; */
 r_struct
 id|device_node
 op_star
@@ -12864,7 +12861,7 @@ r_return
 id|head
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Construct and return a list of the device_nodes with a given type.&n; */
+multiline_comment|/**&n; * Construct and return a list of the device_nodes with a given type.&n; */
 r_struct
 id|device_node
 op_star
@@ -12950,7 +12947,7 @@ r_return
 id|head
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Returns all nodes linked together&n; */
+multiline_comment|/**&n; * Returns all nodes linked together&n; */
 r_struct
 id|device_node
 op_star
@@ -13014,7 +13011,7 @@ r_return
 id|head
 suffix:semicolon
 )brace
-multiline_comment|/* Checks if the given &quot;compat&quot; string matches one of the strings in&n; * the device&squot;s &quot;compatible&quot; property&n; */
+multiline_comment|/** Checks if the given &quot;compat&quot; string matches one of the strings in&n; * the device&squot;s &quot;compatible&quot; property&n; */
 r_int
 DECL|function|device_is_compatible
 id|device_is_compatible
@@ -13121,7 +13118,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Indicates whether the root node has a given value in its&n; * compatible property.&n; */
+multiline_comment|/**&n; * Indicates whether the root node has a given value in its&n; * compatible property.&n; */
 r_int
 DECL|function|machine_is_compatible
 id|machine_is_compatible
@@ -13178,7 +13175,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Construct and return a list of the device_nodes with a given type&n; * and compatible property.&n; */
+multiline_comment|/**&n; * Construct and return a list of the device_nodes with a given type&n; * and compatible property.&n; */
 r_struct
 id|device_node
 op_star
@@ -13289,7 +13286,7 @@ r_return
 id|head
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Find the device_node with a given full_name.&n; */
+multiline_comment|/**&n; * Find the device_node with a given full_name.&n; */
 r_struct
 id|device_node
 op_star
@@ -15163,7 +15160,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* now do the rough equivalent of update_dn_pci_info, this&n;        * probably is not correct for phb&squot;s, but should work for&n;&t;* IOAs and slots.&n;        */
+multiline_comment|/* now do the rough equivalent of update_dn_pci_info, this&n;&t; * probably is not correct for phb&squot;s, but should work for&n;&t; * IOAs and slots.&n;&t; */
 id|node-&gt;phb
 op_assign
 id|parent-&gt;phb

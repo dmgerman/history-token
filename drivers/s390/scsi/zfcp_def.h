@@ -4,7 +4,7 @@ DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.75 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.78 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -3087,11 +3087,6 @@ r_int
 suffix:semicolon
 DECL|macro|ZFCP_HEX_DUMP
 mdefine_line|#define ZFCP_HEX_DUMP(level, addr, count) &bslash;&n;&t;&t;if (ZFCP_LOG_CHECK(level)) { &bslash;&n;&t;&t;&t;_zfcp_hex_dump(addr, count); &bslash;&n;&t;&t;}
-multiline_comment|/*&n; * Not yet optimal but useful:&n; * Waits until the condition is met or the timeout occurs.&n; * The condition may be a function call. This allows to&n; * execute some additional instructions in addition&n; * to a simple condition check.&n; * The timeout is modified on exit and holds the remaining time.&n; * Thus it is zero if a timeout ocurred, i.e. the condition was &n; * not met in the specified interval.&n; */
-DECL|macro|__ZFCP_WAIT_EVENT_TIMEOUT
-mdefine_line|#define __ZFCP_WAIT_EVENT_TIMEOUT(timeout, condition) &bslash;&n;do { &bslash;&n;&t;set_current_state(TASK_UNINTERRUPTIBLE); &bslash;&n;&t;while (!(condition) &amp;&amp; timeout) &bslash;&n;&t;&t;timeout = schedule_timeout(timeout); &bslash;&n;&t;current-&gt;state = TASK_RUNNING; &bslash;&n;} while (0);
-DECL|macro|ZFCP_WAIT_EVENT_TIMEOUT
-mdefine_line|#define ZFCP_WAIT_EVENT_TIMEOUT(waitqueue, timeout, condition) &bslash;&n;do { &bslash;&n;&t;wait_queue_t entry; &bslash;&n;&t;init_waitqueue_entry(&amp;entry, current); &bslash;&n;&t;add_wait_queue(&amp;waitqueue, &amp;entry); &bslash;&n;&t;__ZFCP_WAIT_EVENT_TIMEOUT(timeout, condition) &bslash;&n;&t;remove_wait_queue(&amp;waitqueue, &amp;entry); &bslash;&n;} while (0);
 DECL|macro|zfcp_get_busid_by_adapter
 mdefine_line|#define zfcp_get_busid_by_adapter(adapter) (adapter-&gt;ccw_device-&gt;dev.bus_id)
 DECL|macro|zfcp_get_busid_by_port

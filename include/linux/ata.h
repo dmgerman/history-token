@@ -884,9 +884,9 @@ mdefine_line|#define ata_id_has_wcache(dev)&t;((dev)-&gt;id[82] &amp; (1 &lt;&lt
 DECL|macro|ata_id_has_pm
 mdefine_line|#define ata_id_has_pm(dev)&t;((dev)-&gt;id[82] &amp; (1 &lt;&lt; 3))
 DECL|macro|ata_id_has_lba
-mdefine_line|#define ata_id_has_lba(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 8))
+mdefine_line|#define ata_id_has_lba(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 9))
 DECL|macro|ata_id_has_dma
-mdefine_line|#define ata_id_has_dma(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 9))
+mdefine_line|#define ata_id_has_dma(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 8))
 DECL|macro|ata_id_removeable
 mdefine_line|#define ata_id_removeable(dev)&t;((dev)-&gt;id[0] &amp; (1 &lt;&lt; 7))
 DECL|macro|ata_id_u32

@@ -515,7 +515,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if DEBUG_INVALID_PTOV
+macro_line|#ifdef DEBUG_INVALID_PTOV
 DECL|variable|mm_inv_cnt
 r_int
 id|mm_inv_cnt
@@ -737,7 +737,7 @@ OL
 id|m68k_num_memory
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_INVALID_PTOV
+macro_line|#ifdef DEBUG_INVALID_PTOV
 r_if
 c_cond
 (paren
