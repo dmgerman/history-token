@@ -1,6 +1,7 @@
 multiline_comment|/* $Id: math.c,v 1.11 1999/12/20 05:02:25 davem Exp $&n; * arch/sparc64/math-emu/math.c&n; *&n; * Copyright (C) 1997,1999 Jakub Jelinek (jj@ultra.linux.cz)&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; *&n; * Emulation routines originate from soft-fp package, which is part&n; * of glibc and has appropriate copyrights in it.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
