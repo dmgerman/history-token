@@ -8876,7 +8876,7 @@ id|queue
 suffix:semicolon
 id|startio
 suffix:colon
-id|blk_stop_queue
+id|__blk_stop_queue
 c_func
 (paren
 id|q
