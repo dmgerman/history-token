@@ -10380,7 +10380,7 @@ comma
 dot
 id|action
 op_assign
-id|VIA_DXS_ENABLE
+id|VIA_DXS_48K
 )brace
 comma
 multiline_comment|/* m680x machines */
