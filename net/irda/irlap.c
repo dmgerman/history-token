@@ -17,6 +17,7 @@ macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/timer.h&gt;
 macro_line|#include &lt;net/irda/qos.h&gt;
 DECL|variable|irlap
+r_static
 id|hashbin_t
 op_star
 id|irlap
