@@ -9407,6 +9407,32 @@ c_func
 id|tty_devclass
 )paren
 suffix:semicolon
+DECL|function|tty_devclass_init
+r_static
+r_int
+id|__init
+id|tty_devclass_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|devclass_register
+c_func
+(paren
+op_amp
+id|tty_devclass
+)paren
+suffix:semicolon
+)brace
+DECL|variable|tty_devclass_init
+id|postcore_initcall
+c_func
+(paren
+id|tty_devclass_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Ok, now we can initialize the rest of the tty devices and can count&n; * on memory allocations, interrupts etc..&n; */
 DECL|function|tty_init
 r_void
@@ -9417,13 +9443,6 @@ c_func
 r_void
 )paren
 (brace
-id|devclass_register
-c_func
-(paren
-op_amp
-id|tty_devclass
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * dev_tty_driver and dev_console_driver are actually magic&n;&t; * devices which get redirected at open time.  Nevertheless,&n;&t; * we register them so that register_chrdev is called&n;&t; * appropriately.&n;&t; */
 id|memset
 c_func
