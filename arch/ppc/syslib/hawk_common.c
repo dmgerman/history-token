@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/syslib/pplus_common.c&n; *&n; * Common Motorola PowerPlus Platform--really Falcon/Raven or HAWK.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/syslib/hawk_common.c&n; *&n; * Common Motorola PowerPlus Platform--really Falcon/Raven or HAWK.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -13,8 +13,8 @@ multiline_comment|/*&n; * The Falcon/Raven and HAWK has 4 sets of registers:&n; 
 multiline_comment|/*&n; * Initialize the Motorola MCG Raven or HAWK host bridge.&n; *&n; * This means setting up the PPC bus to PCI memory and I/O space mappings,&n; * setting the PCI memory space address of the MPIC (mapped straight&n; * through), and ioremap&squot;ing the mpic registers.&n; * This routine will set the PCI_CONFIG_ADDR or PCI_CONFIG_DATA&n; * addresses based on the PCI I/O address that is passed in.&n; * &squot;OpenPIC_Addr&squot; will be set correctly by this routine.&n; */
 r_int
 id|__init
-DECL|function|pplus_init
-id|pplus_init
+DECL|function|hawk_init
+id|hawk_init
 c_func
 (paren
 r_struct
@@ -74,7 +74,7 @@ id|processor_pci_io_start
 id|printk
 c_func
 (paren
-l_string|&quot;pplus_init: %s&bslash;n&quot;
+l_string|&quot;hawk_init: %s&bslash;n&quot;
 comma
 l_string|&quot;PPC to PCI mappings must start on 64 KB boundaries&quot;
 )paren
@@ -111,7 +111,7 @@ l_int|0x0000ffff
 id|printk
 c_func
 (paren
-l_string|&quot;pplus_init: PPC to PCI mappings %s&bslash;n&quot;
+l_string|&quot;hawk_init: PPC to PCI mappings %s&bslash;n&quot;
 comma
 l_string|&quot;must end just before a 64 KB boundaries&quot;
 )paren
@@ -156,7 +156,7 @@ id|hose-&gt;io_space.start
 id|printk
 c_func
 (paren
-l_string|&quot;pplus_init: %s&bslash;n&quot;
+l_string|&quot;hawk_init: %s&bslash;n&quot;
 comma
 l_string|&quot;PPC and PCI memory or I/O space sizes don&squot;t match&quot;
 )paren
@@ -181,7 +181,7 @@ id|processor_mpic_base
 id|printk
 c_func
 (paren
-l_string|&quot;pplus_init: %s&bslash;n&quot;
+l_string|&quot;hawk_init: %s&bslash;n&quot;
 comma
 l_string|&quot;MPIC address must start on 256 MB boundary&quot;
 )paren
@@ -206,7 +206,7 @@ id|pci_dram_offset
 id|printk
 c_func
 (paren
-l_string|&quot;pplus_init: %s&bslash;n&quot;
+l_string|&quot;hawk_init: %s&bslash;n&quot;
 comma
 l_string|&quot;pci_dram_offset must be multiple of 64 KB&quot;
 )paren
@@ -693,8 +693,8 @@ multiline_comment|/*&n; * *** WARNING: You MUST have a BAT set up to map in the 
 r_int
 r_int
 id|__init
-DECL|function|pplus_get_mem_size
-id|pplus_get_mem_size
+DECL|function|hawk_get_mem_size
+id|hawk_get_mem_size
 c_func
 (paren
 id|uint
@@ -755,7 +755,7 @@ id|PCI_VENDOR_ID_MOTOROLA
 id|printk
 c_func
 (paren
-l_string|&quot;pplus_get_mem_size: %s (0x%x)&bslash;n&quot;
+l_string|&quot;hawk_get_mem_size: %s (0x%x)&bslash;n&quot;
 comma
 l_string|&quot;Not a Motorola Memory Controller&quot;
 comma
@@ -840,7 +840,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;pplus_get_mem_size: %s (0x%x)&bslash;n&quot;
+l_string|&quot;hawk_get_mem_size: %s (0x%x)&bslash;n&quot;
 comma
 l_string|&quot;Not a Falcon or HAWK&quot;
 comma
@@ -930,114 +930,6 @@ suffix:semicolon
 )brace
 r_return
 id|total
-suffix:semicolon
-)brace
-r_int
-id|__init
-DECL|function|pplus_mpic_init
-id|pplus_mpic_init
-c_func
-(paren
-r_int
-r_int
-id|pci_mem_offset
-)paren
-(brace
-r_int
-r_int
-id|devid
-suffix:semicolon
-r_int
-r_int
-id|pci_membase
-suffix:semicolon
-multiline_comment|/* Check the first PCI device to see if it is a Raven or Hawk. */
-id|early_read_config_word
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|PCI_DEVICE_ID
-comma
-op_amp
-id|devid
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|devid
-)paren
-(brace
-r_case
-id|PCI_DEVICE_ID_MOTOROLA_RAVEN
-suffix:colon
-r_case
-id|PCI_DEVICE_ID_MOTOROLA_HAWK
-suffix:colon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|OpenPIC_Addr
-op_assign
-l_int|NULL
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* Read the memory base register. */
-id|early_read_config_dword
-c_func
-(paren
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|PCI_BASE_ADDRESS_1
-comma
-op_amp
-id|pci_membase
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_membase
-op_eq
-l_int|0
-)paren
-(brace
-id|OpenPIC_Addr
-op_assign
-l_int|NULL
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* Map the MPIC registers to virtual memory. */
-id|OpenPIC_Addr
-op_assign
-id|ioremap
-c_func
-(paren
-id|pci_membase
-op_plus
-id|pci_mem_offset
-comma
-l_int|0x22000
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 eof

@@ -1045,13 +1045,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;TASK = %p[%d] &squot;%s&squot; &quot;
+l_string|&quot;TASK = %p[%d] &squot;%s&squot; THREAD: %p&quot;
 comma
 id|current
 comma
 id|current-&gt;pid
 comma
 id|current-&gt;comm
+comma
+id|current-&gt;thread_info
 )paren
 suffix:semicolon
 id|printk
@@ -1214,6 +1216,41 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_KALLSYMS
+multiline_comment|/*&n;&t; * Lookup NIP late so we have the best change of getting the&n;&t; * above info out without failing&n;&t; */
+id|printk
+c_func
+(paren
+l_string|&quot;NIP [%08lx] &quot;
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;LR [%08lx] &quot;
+comma
+id|regs-&gt;link
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|regs-&gt;link
+)paren
+suffix:semicolon
+macro_line|#endif
 id|show_stack
 c_func
 (paren
