@@ -2327,7 +2327,7 @@ id|retval
 r_goto
 id|nodata
 suffix:semicolon
-multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; * &n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, etc.) to the same destination transport&n;&t; * address from which it received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; */
+multiline_comment|/* RFC 2960 6.4 Multi-homed SCTP Endpoints&n;&t; *&n;&t; * An endpoint SHOULD transmit reply chunks (e.g., SACK,&n;&t; * HEARTBEAT ACK, etc.) to the same destination transport&n;&t; * address from which it received the DATA or control chunk&n;&t; * to which it is replying.&n;&t; *&n;&t; */
 r_if
 c_cond
 (paren
@@ -4275,7 +4275,7 @@ r_uint8
 op_star
 id|end
 suffix:semicolon
-multiline_comment|/* FIXME - Verify the fixed fields of the INIT chunk. Also, verify&n;&t; * the mandatory parameters somewhere here and generate either the &n;&t; * &quot;Missing mandatory parameter&quot; error or the &quot;Invalid mandatory&n;&t; * parameter&quot; error. */
+multiline_comment|/* FIXME - Verify the fixed fields of the INIT chunk. Also, verify&n;&t; * the mandatory parameters somewhere here and generate either the&n;&t; * &quot;Missing mandatory parameter&quot; error or the &quot;Invalid mandatory&n;&t; * parameter&quot; error. */
 multiline_comment|/* Find unrecognized parameters. */
 id|end
 op_assign
@@ -4344,7 +4344,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Find unrecognized parameters in the chunk.  &n; * Return values:&n; * &t;0 - discard the chunk&n; * &t;1 - continue with the chunk &n; */
+multiline_comment|/* Find unrecognized parameters in the chunk.&n; * Return values:&n; * &t;0 - discard the chunk&n; * &t;1 - continue with the chunk&n; */
 DECL|function|sctp_verify_param
 r_int
 id|sctp_verify_param
@@ -4376,7 +4376,7 @@ id|retval
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* FIXME - This routine is not looking at each parameter per the &n;&t; * chunk type, i.e., unrecognized parameters should be further &n;&t; * identified based on the chunk id.&n; &t; */
+multiline_comment|/* FIXME - This routine is not looking at each parameter per the&n;&t; * chunk type, i.e., unrecognized parameters should be further&n;&t; * identified based on the chunk id.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -4392,7 +4392,7 @@ suffix:colon
 r_case
 id|SCTP_PARAM_COOKIE_PRESERVATIVE
 suffix:colon
-multiline_comment|/* FIXME - If we don&squot;t support the host name parameter, we should &n;&t; * generate an error for this - Unresolvable address.&n;&t; */
+multiline_comment|/* FIXME - If we don&squot;t support the host name parameter, we should&n;&t; * generate an error for this - Unresolvable address.&n;&t; */
 r_case
 id|SCTP_PARAM_HOST_NAME_ADDRESS
 suffix:colon
@@ -4449,7 +4449,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* RFC 3.2.1 &amp; the Implementers Guide 2.2.&n; *&n; * The Parameter Types are encoded such that the &n; * highest-order two bits specify the action that must be &n; * taken if the processing endpoint does not recognize the &n; * Parameter Type.&n; *&n; * 00 - Stop processing this SCTP chunk and discard it, &n; *&t;do not process any further chunks within it.&n; *&n; * 01 - Stop processing this SCTP chunk and discard it, &n; *&t;do not process any further chunks within it, and report &n; *&t;the unrecognized parameter in an &squot;Unrecognized &n; *&t;Parameter Type&squot; (in either an ERROR or in the INIT ACK).&n; *&n; * 10 - Skip this parameter and continue processing.&n; *&n; * 11 - Skip this parameter and continue processing but &n; *&t;report the unrecognized parameter in an &n; *&t;&squot;Unrecognized Parameter Type&squot; (in either an ERROR or in &n; *&t;the INIT ACK).&n; *&n; * Return value:&n; * &t;0 - discard the chunk&n; * &t;1 - continue with the chunk&n; */
+multiline_comment|/* RFC 3.2.1 &amp; the Implementers Guide 2.2.&n; *&n; * The Parameter Types are encoded such that the&n; * highest-order two bits specify the action that must be&n; * taken if the processing endpoint does not recognize the&n; * Parameter Type.&n; *&n; * 00 - Stop processing this SCTP chunk and discard it,&n; *&t;do not process any further chunks within it.&n; *&n; * 01 - Stop processing this SCTP chunk and discard it, &n; *&t;do not process any further chunks within it, and report&n; *&t;the unrecognized parameter in an &squot;Unrecognized&n; *&t;Parameter Type&squot; (in either an ERROR or in the INIT ACK).&n; *&n; * 10 - Skip this parameter and continue processing.&n; *&n; * 11 - Skip this parameter and continue processing but&n; *&t;report the unrecognized parameter in an&n; *&t;&squot;Unrecognized Parameter Type&squot; (in either an ERROR or in&n; *&t;the INIT ACK).&n; *&n; * Return value:&n; * &t;0 - discard the chunk&n; * &t;1 - continue with the chunk&n; */
 DECL|function|sctp_process_unk_param
 r_int
 id|sctp_process_unk_param
@@ -4632,7 +4632,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* If there is no memory for generating the ERROR &n;&t;&t;&t; * report as specified, an ABORT will be triggered &n;&t;&t;&t; * to the peer and the association won&squot;t be established.&n;&t;&t;&t; */
+multiline_comment|/* If there is no memory for generating the ERROR&n;&t;&t;&t; * report as specified, an ABORT will be triggered&n;&t;&t;&t; * to the peer and the association won&squot;t be established.&n;&t;&t;&t; */
 id|retval
 op_assign
 l_int|0
