@@ -1,9 +1,25 @@
 multiline_comment|/*&n; * Virtual EISA root driver.&n; * Acts as a placeholder if we don&squot;t have a proper EISA bridge.&n; *&n; * (C) 2003 Marc Zyngier &lt;maz@wild-wind.fr.eu.org&gt;&n; *&n; * This code is released under the GPL version 2.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#if defined(CONFIG_ALPHA_JENSEN) || defined(CONFIG_EISA_VLB_PRIMING)
+DECL|macro|EISA_FORCE_PROBE_DEFAULT
+mdefine_line|#define EISA_FORCE_PROBE_DEFAULT 1
+macro_line|#else
+DECL|macro|EISA_FORCE_PROBE_DEFAULT
+mdefine_line|#define EISA_FORCE_PROBE_DEFAULT 0
+macro_line|#endif
+DECL|variable|force_probe
+r_static
+r_int
+id|force_probe
+op_assign
+id|EISA_FORCE_PROBE_DEFAULT
+suffix:semicolon
 multiline_comment|/* The default EISA device parent (virtual root device).&n; * Now use a platform device, since that&squot;s the obvious choice. */
 DECL|variable|eisa_root_dev
 r_static
@@ -64,6 +80,11 @@ id|slots
 op_assign
 id|EISA_MAX_SLOTS
 comma
+dot
+id|dma_mask
+op_assign
+l_int|0xffffffff
+comma
 )brace
 suffix:semicolon
 DECL|function|virtual_eisa_root_init
@@ -95,6 +116,10 @@ r_return
 id|r
 suffix:semicolon
 )brace
+id|eisa_bus_root.force_probe
+op_assign
+id|force_probe
+suffix:semicolon
 id|eisa_root_dev.dev.driver_data
 op_assign
 op_amp
@@ -126,6 +151,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|module_param
+(paren
+id|force_probe
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
 DECL|variable|virtual_eisa_root_init
 id|device_initcall
 (paren
