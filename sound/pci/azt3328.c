@@ -3928,7 +3928,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if WIN9X
+macro_line|#ifdef WIN9X
 multiline_comment|/* FIXME: enable playback/recording??? */
 id|status1
 op_or_assign
@@ -4363,7 +4363,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if WIN9X
+macro_line|#ifdef WIN9X
 multiline_comment|/* FIXME: enable playback/recording??? */
 id|status1
 op_or_assign
@@ -4639,7 +4639,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if QUERY_HARDWARE
+macro_line|#ifdef QUERY_HARDWARE
 id|bufptr
 op_assign
 id|inl
@@ -4756,7 +4756,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if QUERY_HARDWARE
+macro_line|#ifdef QUERY_HARDWARE
 id|bufptr
 op_assign
 id|inl

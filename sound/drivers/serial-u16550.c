@@ -2928,7 +2928,7 @@ l_int|1
 )paren
 r_break
 suffix:semicolon
-macro_line|#if SNDRV_SERIAL_MS124W_MB_NOCOMBO
+macro_line|#ifdef SNDRV_SERIAL_MS124W_MB_NOCOMBO
 multiline_comment|/* select exactly one of the four ports */
 id|addr_byte
 op_assign
