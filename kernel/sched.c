@@ -15572,6 +15572,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
 DECL|function|arch_destroy_sched_domains
 r_static
 r_void
@@ -15584,6 +15585,7 @@ r_void
 (brace
 multiline_comment|/* Do nothing: everything is statically allocated. */
 )brace
+macro_line|#endif
 DECL|macro|SCHED_DOMAIN_DEBUG
 macro_line|#undef SCHED_DOMAIN_DEBUG
 macro_line|#ifdef SCHED_DOMAIN_DEBUG
