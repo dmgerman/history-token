@@ -4314,23 +4314,7 @@ id|type
 r_case
 id|ICMP_SOURCE_QUENCH
 suffix:colon
-multiline_comment|/* This is deprecated, but if someone generated it,&n;&t;&t; * we have no reasons to ignore it.&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sock_owned_by_user
-c_func
-(paren
-id|sk
-)paren
-)paren
-id|tcp_enter_cwr
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
+multiline_comment|/* Just silently ignore these. */
 r_goto
 id|out
 suffix:semicolon
