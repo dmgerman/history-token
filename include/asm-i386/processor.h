@@ -1024,6 +1024,9 @@ DECL|typedef|mm_segment_t
 )brace
 id|mm_segment_t
 suffix:semicolon
+r_struct
+id|thread_struct
+suffix:semicolon
 DECL|struct|tss_struct
 r_struct
 id|tss_struct
@@ -1200,13 +1203,25 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/*&n;&t; * Cache the current maximum and the last task that used the bitmap:&n;&t; */
+DECL|member|io_bitmap_max
+r_int
+r_int
+id|io_bitmap_max
+suffix:semicolon
+DECL|member|io_bitmap_owner
+r_struct
+id|thread_struct
+op_star
+id|io_bitmap_owner
+suffix:semicolon
 multiline_comment|/*&n;&t; * pads the TSS to be cacheline-aligned (size is 0x100)&n;&t; */
 DECL|member|__cacheline_filler
 r_int
 r_int
 id|__cacheline_filler
 (braket
-l_int|37
+l_int|35
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * .. and then another 0x100 bytes for emergency kernel stack&n;&t; */
@@ -1351,7 +1366,7 @@ DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.vm86_info = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.sysenter_cs = __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_ptr = NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Note that the .io_bitmap member must be extra-big. This is because&n; * the CPU will access an additional byte beyond the end of the IO&n; * permission bitmap. The extra byte must be all 1 bits, and must&n; * be within the limit.&n; */
 DECL|macro|INIT_TSS
-mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.esp0&t;&t;= sizeof(init_stack) + (long)&amp;init_stack,&t;&bslash;&n;&t;.ss0&t;&t;= __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ss1&t;&t;= __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ldt&t;&t;= GDT_ENTRY_LDT,&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_base&t;= offsetof(struct tss_struct,io_bitmap),&t;&bslash;&n;&t;.io_bitmap&t;= { [ 0 ... IO_BITMAP_LONGS] = ~0 },&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_TSS  {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.esp0&t;&t;= sizeof(init_stack) + (long)&amp;init_stack,&t;&bslash;&n;&t;.ss0&t;&t;= __KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ss1&t;&t;= __KERNEL_CS,&t;&t;&t;&t;&t;&bslash;&n;&t;.ldt&t;&t;= GDT_ENTRY_LDT,&t;&t;&t;&t;&bslash;&n;&t;.io_bitmap_base&t;= INVALID_IO_BITMAP_OFFSET,&t;&t;&t;&bslash;&n;&t;.io_bitmap&t;= { [ 0 ... IO_BITMAP_LONGS] = ~0 },&t;&t;&bslash;&n;}
 DECL|function|load_esp0
 r_static
 r_inline
