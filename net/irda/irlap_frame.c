@@ -2865,6 +2865,14 @@ id|sk_buff
 op_star
 id|tx_skb
 suffix:semicolon
+multiline_comment|/* Stop P timer */
+id|del_timer
+c_func
+(paren
+op_amp
+id|self-&gt;poll_timer
+)paren
+suffix:semicolon
 multiline_comment|/* Is this reliable or unreliable data? */
 r_if
 c_cond
@@ -2928,14 +2936,6 @@ id|skb
 )paren
 suffix:semicolon
 multiline_comment|/*  &n;&t;&t; *  Set poll bit if necessary. We do this to the copied&n;&t;&t; *  skb, since retransmitted need to set or clear the poll&n;&t;&t; *  bit depending on when they are sent.  &n;&t;&t; */
-multiline_comment|/* Stop P timer */
-id|del_timer
-c_func
-(paren
-op_amp
-id|self-&gt;poll_timer
-)paren
-suffix:semicolon
 id|tx_skb-&gt;data
 (braket
 l_int|1
@@ -2957,18 +2957,6 @@ id|self-&gt;ack_required
 op_assign
 id|FALSE
 suffix:semicolon
-id|self-&gt;window
-op_assign
-id|self-&gt;window_size
-suffix:semicolon
-id|irlap_start_final_timer
-c_func
-(paren
-id|self
-comma
-id|self-&gt;final_timeout
-)paren
-suffix:semicolon
 id|irlap_send_i_frame
 c_func
 (paren
@@ -2989,13 +2977,6 @@ l_int|4
 comma
 id|__FUNCTION__
 l_string|&quot;(), sending unreliable frame&bslash;n&quot;
-)paren
-suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|self-&gt;poll_timer
 )paren
 suffix:semicolon
 r_if
@@ -3059,10 +3040,18 @@ id|CMD_FRAME
 )paren
 suffix:semicolon
 )brace
+)brace
 id|self-&gt;window
 op_assign
 id|self-&gt;window_size
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
+multiline_comment|/* We are allowed to transmit a maximum number of bytes again. */
+id|self-&gt;bytes_left
+op_assign
+id|self-&gt;line_capacity
+suffix:semicolon
+macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
 id|irlap_start_final_timer
 c_func
 (paren
@@ -3071,7 +3060,6 @@ comma
 id|self-&gt;final_timeout
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Function irlap_send_data_secondary_final (self, skb)&n; *&n; *    Send I(nformation) frame as secondary with final bit set&n; *&n; */
 DECL|function|irlap_send_data_secondary_final
@@ -3208,21 +3196,9 @@ l_int|1
 op_mod
 l_int|8
 suffix:semicolon
-id|self-&gt;window
-op_assign
-id|self-&gt;window_size
-suffix:semicolon
 id|self-&gt;ack_required
 op_assign
 id|FALSE
-suffix:semicolon
-id|irlap_start_wd_timer
-c_func
-(paren
-id|self
-comma
-id|self-&gt;wd_timeout
-)paren
 suffix:semicolon
 id|irlap_send_i_frame
 c_func
@@ -3298,10 +3274,18 @@ id|RSP_FRAME
 )paren
 suffix:semicolon
 )brace
+)brace
 id|self-&gt;window
 op_assign
 id|self-&gt;window_size
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
+multiline_comment|/* We are allowed to transmit a maximum number of bytes again. */
+id|self-&gt;bytes_left
+op_assign
+id|self-&gt;line_capacity
+suffix:semicolon
+macro_line|#endif /* CONFIG_IRDA_DYNAMIC_WINDOW */
 id|irlap_start_wd_timer
 c_func
 (paren
@@ -3310,7 +3294,6 @@ comma
 id|self-&gt;wd_timeout
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Function irlap_send_data_secondary (self, skb)&n; *&n; *    Send I(nformation) frame as secondary without final bit set&n; *&n; */
 DECL|function|irlap_send_data_secondary
