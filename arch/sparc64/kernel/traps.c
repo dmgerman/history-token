@@ -10482,19 +10482,5 @@ op_assign
 op_amp
 id|init_mm
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|cpu
-op_assign
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 eof
