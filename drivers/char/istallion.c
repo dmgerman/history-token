@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_PCI
@@ -3946,9 +3947,12 @@ suffix:semicolon
 id|portp-&gt;refcount
 op_increment
 suffix:semicolon
-r_while
-c_loop
+id|wait_event_interruptible
+c_func
 (paren
+id|portp-&gt;raw_wait
+comma
+op_logical_neg
 id|test_bit
 c_func
 (paren
@@ -3958,7 +3962,7 @@ op_amp
 id|portp-&gt;state
 )paren
 )paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3972,14 +3976,6 @@ r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|portp-&gt;raw_wait
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4900,9 +4896,12 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Slave is already closing this port. This can happen if a hangup&n; *&t;occurs on this port. So we must wait until it is complete. The&n; *&t;order of opens and closes may not be preserved across shared&n; *&t;memory, so we must wait until it is complete.&n; */
-r_while
-c_loop
+id|wait_event_interruptible
+c_func
 (paren
+id|portp-&gt;raw_wait
+comma
+op_logical_neg
 id|test_bit
 c_func
 (paren
@@ -4912,7 +4911,7 @@ op_amp
 id|portp-&gt;state
 )paren
 )paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4932,14 +4931,6 @@ suffix:semicolon
 r_return
 op_minus
 id|ERESTARTSYS
-suffix:semicolon
-)brace
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|portp-&gt;raw_wait
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Everything is ready now, so write the open message into shared&n; *&t;memory. Once the message is in set the service bits to say that&n; *&t;this port wants service.&n; */
@@ -5051,9 +5042,12 @@ op_amp
 id|portp-&gt;state
 )paren
 suffix:semicolon
-r_while
-c_loop
+id|wait_event_interruptible
+c_func
 (paren
+id|portp-&gt;raw_wait
+comma
+op_logical_neg
 id|test_bit
 c_func
 (paren
@@ -5063,7 +5057,7 @@ op_amp
 id|portp-&gt;state
 )paren
 )paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5073,23 +5067,11 @@ c_func
 id|current
 )paren
 )paren
-(brace
 id|rc
 op_assign
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|portp-&gt;raw_wait
-)paren
-suffix:semicolon
-)brace
 id|restore_flags
 c_func
 (paren
@@ -5210,9 +5192,12 @@ c_cond
 id|wait
 )paren
 (brace
-r_while
-c_loop
+id|wait_event_interruptible
+c_func
 (paren
+id|portp-&gt;raw_wait
+comma
+op_logical_neg
 id|test_bit
 c_func
 (paren
@@ -5222,7 +5207,7 @@ op_amp
 id|portp-&gt;state
 )paren
 )paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5242,14 +5227,6 @@ suffix:semicolon
 r_return
 op_minus
 id|ERESTARTSYS
-suffix:semicolon
-)brace
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|portp-&gt;raw_wait
-)paren
 suffix:semicolon
 )brace
 )brace
@@ -5362,9 +5339,12 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-r_while
-c_loop
+id|wait_event_interruptible
+c_func
 (paren
+id|portp-&gt;raw_wait
+comma
+op_logical_neg
 id|test_bit
 c_func
 (paren
@@ -5374,7 +5354,7 @@ op_amp
 id|portp-&gt;state
 )paren
 )paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5384,23 +5364,11 @@ c_func
 id|current
 )paren
 )paren
-(brace
 id|rc
 op_assign
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|portp-&gt;raw_wait
-)paren
-suffix:semicolon
-)brace
 id|restore_flags
 c_func
 (paren
@@ -5510,9 +5478,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_while
-c_loop
+id|wait_event_interruptible
+c_func
 (paren
+id|portp-&gt;raw_wait
+comma
+op_logical_neg
 id|test_bit
 c_func
 (paren
@@ -5522,7 +5493,7 @@ op_amp
 id|portp-&gt;state
 )paren
 )paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5542,14 +5513,6 @@ suffix:semicolon
 r_return
 op_minus
 id|ERESTARTSYS
-suffix:semicolon
-)brace
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|portp-&gt;raw_wait
-)paren
 suffix:semicolon
 )brace
 id|stli_sendcmd
@@ -5568,9 +5531,12 @@ comma
 id|copyback
 )paren
 suffix:semicolon
-r_while
-c_loop
+id|wait_event_interruptible
+c_func
 (paren
+id|portp-&gt;raw_wait
+comma
+op_logical_neg
 id|test_bit
 c_func
 (paren
@@ -5580,7 +5546,7 @@ op_amp
 id|portp-&gt;state
 )paren
 )paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5600,14 +5566,6 @@ suffix:semicolon
 r_return
 op_minus
 id|ERESTARTSYS
-suffix:semicolon
-)brace
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|portp-&gt;raw_wait
-)paren
 suffix:semicolon
 )brace
 id|restore_flags
