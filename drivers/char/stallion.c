@@ -19093,7 +19093,7 @@ op_amp
 id|portp-&gt;istate
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -22561,7 +22561,7 @@ op_amp
 id|portp-&gt;istate
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
@@ -23584,7 +23584,7 @@ op_amp
 id|portp-&gt;istate
 )paren
 suffix:semicolon
-id|schedule_task
+id|schedule_work
 c_func
 (paren
 op_amp
