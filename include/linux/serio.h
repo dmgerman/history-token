@@ -38,6 +38,11 @@ id|phys
 l_int|32
 )braket
 suffix:semicolon
+DECL|member|manual_bind
+r_int
+r_int
+id|manual_bind
+suffix:semicolon
 DECL|member|idbus
 r_int
 r_int
@@ -158,6 +163,7 @@ op_star
 id|description
 suffix:semicolon
 DECL|member|manual_bind
+r_int
 r_int
 id|manual_bind
 suffix:semicolon
