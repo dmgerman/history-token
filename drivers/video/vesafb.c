@@ -1090,7 +1090,7 @@ id|VIDEO_TYPE_VLFB
 )paren
 r_return
 op_minus
-id|ENXIO
+id|ENODEV
 suffix:semicolon
 id|vesafb_fix.smem_start
 op_assign
@@ -1881,7 +1881,7 @@ l_int|0
 id|err
 op_assign
 op_minus
-id|ENXIO
+id|ENOMEM
 suffix:semicolon
 r_goto
 id|err
