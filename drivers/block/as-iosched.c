@@ -2405,6 +2405,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|aic-&gt;seek_samples
+op_eq
+l_int|0
+op_logical_or
+id|aic-&gt;ttime_samples
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Process has just started IO so default to not anticipate.&n;&t;&t; * Maybe should be smarter.&n;&t;&t; */
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|aic-&gt;ttime_mean
 OG
 id|ad-&gt;antic_expire
