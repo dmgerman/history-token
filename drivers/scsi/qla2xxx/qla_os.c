@@ -3471,8 +3471,10 @@ op_star
 id|cmd
 )paren
 (brace
+DECL|macro|ABORT_POLLING_PERIOD
+mdefine_line|#define ABORT_POLLING_PERIOD&t;HZ
 DECL|macro|ABORT_WAIT_TIME
-mdefine_line|#define ABORT_WAIT_TIME&t;10 /* seconds */
+mdefine_line|#define ABORT_WAIT_TIME&t;&t;((10 * HZ) / (ABORT_POLLING_PERIOD))
 r_int
 id|found
 op_assign
@@ -3486,6 +3488,8 @@ suffix:semicolon
 id|srb_t
 op_star
 id|rp
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|list_head
@@ -3503,13 +3507,6 @@ suffix:semicolon
 r_do
 (brace
 multiline_comment|/* Check on done queue */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|found
-)paren
-(brace
 id|spin_lock
 c_func
 (paren
@@ -3540,7 +3537,7 @@ comma
 id|list
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;* Found command.  Just exit and wait for the&n;&t;&t;&t;&t;* cmd sent to OS.&n;&t;&t;&t; &t;*/
+multiline_comment|/*&n;&t;&t;&t; * Found command. Just exit and wait for the cmd sent&n;&t;&t;&t; * to OS.&n;&t;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -3558,8 +3555,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;%s: found in done &quot;
-l_string|&quot;queue.&bslash;n&quot;
+l_string|&quot;%s: found in done queue.&bslash;n&quot;
 comma
 id|__func__
 )paren
@@ -3576,28 +3572,29 @@ op_amp
 id|ha-&gt;list_lock
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Checking to see if its returned to OS */
-id|rp
-op_assign
-(paren
-id|srb_t
-op_star
-)paren
-id|CMD_SP
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
+multiline_comment|/* Complete the cmd right away. */
 r_if
 c_cond
 (paren
-id|rp
-op_eq
-l_int|NULL
+id|found
 )paren
 (brace
+id|qla2x00_delete_from_done_queue
+c_func
+(paren
+id|ha
+comma
+id|rp
+)paren
+suffix:semicolon
+id|sp_put
+c_func
+(paren
+id|ha
+comma
+id|rp
+)paren
+suffix:semicolon
 id|done
 op_increment
 suffix:semicolon
@@ -3619,9 +3616,7 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-l_int|2
-op_star
-id|HZ
+id|ABORT_POLLING_PERIOD
 )paren
 suffix:semicolon
 id|spin_lock_irq
@@ -3645,7 +3640,6 @@ c_cond
 (paren
 id|done
 )paren
-(brace
 id|DEBUG2
 c_func
 (paren
@@ -3661,35 +3655,6 @@ id|cmd
 )paren
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|found
-)paren
-(brace
-multiline_comment|/* Immediately return command to the mid-layer */
-id|qla2x00_delete_from_done_queue
-c_func
-(paren
-id|ha
-comma
-id|rp
-)paren
-suffix:semicolon
-id|sp_put
-c_func
-(paren
-id|ha
-comma
-id|rp
-)paren
-suffix:semicolon
-id|done
-op_increment
-suffix:semicolon
-)brace
 r_return
 (paren
 id|done

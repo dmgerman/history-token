@@ -5605,7 +5605,9 @@ suffix:semicolon
 DECL|macro|MBX_INTERRUPT
 mdefine_line|#define MBX_INTERRUPT&t;1
 DECL|macro|MBX_INTR_WAIT
-mdefine_line|#define MBX_INTR_WAIT   2
+mdefine_line|#define MBX_INTR_WAIT&t;2
+DECL|macro|MBX_UPDATE_FLASH_ACTIVE
+mdefine_line|#define MBX_UPDATE_FLASH_ACTIVE&t;3
 DECL|member|mbx_reg_lock
 id|spinlock_t
 id|mbx_reg_lock
