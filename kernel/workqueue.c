@@ -648,6 +648,15 @@ id|cwq-&gt;thread
 op_assign
 id|current
 suffix:semicolon
+id|set_user_nice
+c_func
+(paren
+id|current
+comma
+op_minus
+l_int|10
+)paren
+suffix:semicolon
 id|set_cpus_allowed
 c_func
 (paren
