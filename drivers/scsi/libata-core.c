@@ -9355,13 +9355,12 @@ c_cond
 id|qc
 op_logical_and
 (paren
+op_logical_neg
 (paren
-id|qc-&gt;flags
+id|qc-&gt;tf.ctl
 op_amp
-id|ATA_QCFLAG_POLL
+id|ATA_NIEN
 )paren
-op_eq
-l_int|0
 )paren
 )paren
 id|handled

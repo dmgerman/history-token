@@ -310,16 +310,6 @@ l_int|4
 )paren
 comma
 multiline_comment|/* have s/g table? */
-DECL|enumerator|ATA_QCFLAG_POLL
-id|ATA_QCFLAG_POLL
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|5
-)paren
-comma
-multiline_comment|/* polling, no interrupts */
 multiline_comment|/* various lengths of time */
 DECL|enumerator|ATA_TMOUT_EDD
 id|ATA_TMOUT_EDD
@@ -2353,10 +2343,6 @@ op_star
 id|qc
 )paren
 (brace
-id|qc-&gt;flags
-op_or_assign
-id|ATA_QCFLAG_POLL
-suffix:semicolon
 id|qc-&gt;flags
 op_and_assign
 op_complement
