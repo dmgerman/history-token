@@ -1504,6 +1504,14 @@ r_int
 id|timeout
 suffix:semicolon
 multiline_comment|/* &n;&t; * Create an idle task for this CPU.  Note the address wed* give &n;&t; * to kernel_thread is irrelevant -- it&squot;s going to start&n;&t; * where OS_BOOT_RENDEVZ vector in SAL says to start.  But&n;&t; * this gets all the other task-y sort of data structures set&n;&t; * up like we wish.   We need to pull the just created idle task &n;&t; * off the run queue and stuff it into the init_tasks[] array.  &n;&t; * Sheesh . . .&n;&t; */
+id|idle
+op_assign
+id|fork_idle
+c_func
+(paren
+id|cpuid
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1519,14 +1527,6 @@ c_func
 l_string|&quot;SMP: fork failed for CPU:%d&quot;
 comma
 id|cpuid
-)paren
-suffix:semicolon
-id|idle
-op_assign
-id|fork_idle
-c_func
-(paren
-id|cpunum
 )paren
 suffix:semicolon
 id|idle-&gt;thread_info-&gt;cpu
