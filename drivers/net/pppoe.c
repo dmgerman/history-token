@@ -1177,6 +1177,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
 id|sock_queue_rcv_skb
 c_func
 (paren
@@ -1184,6 +1187,9 @@ id|sk
 comma
 id|skb
 )paren
+)paren
+r_goto
+id|abort_kfree
 suffix:semicolon
 )brace
 r_return
