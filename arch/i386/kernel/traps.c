@@ -3519,6 +3519,7 @@ op_amp
 id|alignment_check
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_MCE
 id|set_trap_gate
 c_func
 (paren
@@ -3528,6 +3529,7 @@ op_amp
 id|machine_check
 )paren
 suffix:semicolon
+macro_line|#endif
 id|set_trap_gate
 c_func
 (paren

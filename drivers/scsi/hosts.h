@@ -242,7 +242,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Old EH handlers, no longer used. Make them warn the user of old&n;     * drivers by using a wrogn type&n;     */
+multiline_comment|/*&n;     * Old EH handlers, no longer used. Make them warn the user of old&n;     * drivers by using a wrong type&n;     */
 DECL|member|abort
 r_int
 (paren

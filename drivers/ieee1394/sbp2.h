@@ -2011,17 +2011,23 @@ op_star
 id|ints
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,28)
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,44)
 r_static
 r_int
 id|sbp2scsi_biosparam
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -2038,9 +2044,7 @@ id|Scsi_Disk
 op_star
 id|disk
 comma
-r_struct
-id|block_device
-op_star
+id|kdev_t
 id|dev
 comma
 r_int
