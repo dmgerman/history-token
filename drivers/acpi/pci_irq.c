@@ -922,7 +922,6 @@ id|pin
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren

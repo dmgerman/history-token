@@ -1248,10 +1248,10 @@ r_extern
 r_int
 id|acpi_mp_config
 suffix:semicolon
-macro_line|#else /*!CONFIG_ACPI_BOOT*/
+macro_line|#else
 DECL|macro|acpi_mp_config
 mdefine_line|#define acpi_mp_config&t;0
-macro_line|#endif /*CONFIG_ACPI_BOOT*/
+macro_line|#endif
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|struct|acpi_prt_entry
 r_struct

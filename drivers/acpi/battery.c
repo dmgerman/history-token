@@ -530,7 +530,7 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
-id|kfree
+id|acpi_os_free
 c_func
 (paren
 id|buffer.pointer
@@ -827,7 +827,7 @@ suffix:semicolon
 )brace
 id|end
 suffix:colon
-id|kfree
+id|acpi_os_free
 c_func
 (paren
 id|buffer.pointer
