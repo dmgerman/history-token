@@ -31,7 +31,7 @@ DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG(D...)
 macro_line|#endif
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.5&quot;
+mdefine_line|#define VERSION &quot;2.6&quot;
 DECL|variable|l2cap_sock_ops
 r_static
 r_struct
@@ -6816,6 +6816,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|l2cap_pi
 c_func
 (paren
@@ -6825,6 +6826,19 @@ op_member_access_from_pointer
 id|link_mode
 op_amp
 id|L2CAP_LM_ENCRYPT
+)paren
+op_logical_or
+(paren
+id|l2cap_pi
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|link_mode
+op_amp
+id|L2CAP_LM_SECURE
+)paren
 )paren
 (brace
 r_if
@@ -9446,6 +9460,18 @@ id|link_mode
 op_amp
 id|L2CAP_LM_ENCRYPT
 )paren
+op_logical_or
+(paren
+id|l2cap_pi
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|link_mode
+op_amp
+id|L2CAP_LM_SECURE
+)paren
 )paren
 (brace
 id|bh_unlock_sock
@@ -9796,6 +9822,25 @@ id|rsp
 comma
 op_amp
 id|rsp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|l2cap_pi
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|link_mode
+op_amp
+id|L2CAP_LM_SECURE
+)paren
+id|hci_conn_change_link_key
+c_func
+(paren
+id|hcon
 )paren
 suffix:semicolon
 id|bh_unlock_sock

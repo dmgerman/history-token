@@ -237,6 +237,10 @@ DECL|macro|HCI_LM_ENCRYPT
 mdefine_line|#define HCI_LM_ENCRYPT&t;0x0004
 DECL|macro|HCI_LM_TRUSTED
 mdefine_line|#define HCI_LM_TRUSTED&t;0x0008
+DECL|macro|HCI_LM_RELIABLE
+mdefine_line|#define HCI_LM_RELIABLE&t;0x0010
+DECL|macro|HCI_LM_SECURE
+mdefine_line|#define HCI_LM_SECURE&t;0x0020
 multiline_comment|/* -----  HCI Commands ---- */
 multiline_comment|/* OGF &amp; OCF values */
 multiline_comment|/* Informational Parameters */
