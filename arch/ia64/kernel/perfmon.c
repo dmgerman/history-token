@@ -958,16 +958,22 @@ r_static
 id|pfm_stats_t
 id|pfm_stats
 suffix:semicolon
-DECL|variable|pfm_syst_wide
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_int
-id|__per_cpu_data
+comma
 id|pfm_syst_wide
+)paren
 suffix:semicolon
-DECL|variable|pfm_dcr_pp
 r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_int
-id|__per_cpu_data
+comma
 id|pfm_dcr_pp
+)paren
 suffix:semicolon
 multiline_comment|/* sysctl() controls */
 DECL|variable|pfm_sysctl
