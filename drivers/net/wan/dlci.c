@@ -220,6 +220,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|register_frad
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|register_frad
+)paren
+suffix:semicolon
 DECL|function|unregister_frad
 r_int
 id|unregister_frad
