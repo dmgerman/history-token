@@ -8934,7 +8934,6 @@ suffix:semicolon
 DECL|function|cirrusfb_pci_unmap
 r_static
 r_void
-id|__devexit
 id|cirrusfb_pci_unmap
 (paren
 r_struct
