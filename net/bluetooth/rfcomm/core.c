@@ -8719,6 +8719,14 @@ op_or
 id|CLONE_SIGHAND
 )paren
 suffix:semicolon
+id|BT_INFO
+c_func
+(paren
+l_string|&quot;RFCOMM ver %s&quot;
+comma
+id|VERSION
+)paren
+suffix:semicolon
 id|rfcomm_init_sockets
 c_func
 (paren
@@ -8743,26 +8751,6 @@ comma
 id|rfcomm_read_proc
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|BT_INFO
-c_func
-(paren
-l_string|&quot;Bluetooth RFCOMM ver %s&quot;
-comma
-id|VERSION
-)paren
-suffix:semicolon
-id|BT_INFO
-c_func
-(paren
-l_string|&quot;Copyright (C) 2002 Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
-)paren
-suffix:semicolon
-id|BT_INFO
-c_func
-(paren
-l_string|&quot;Copyright (C) 2002 Marcel Holtmann &lt;marcel@holtmann.org&gt;&quot;
 )paren
 suffix:semicolon
 r_return

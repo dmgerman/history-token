@@ -1352,15 +1352,9 @@ r_void
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;Bluetooth Core ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;Core ver %s&quot;
 comma
 id|VERSION
-)paren
-suffix:semicolon
-id|BT_INFO
-c_func
-(paren
-l_string|&quot;Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
 )paren
 suffix:semicolon
 id|proc_mkdir
@@ -1404,7 +1398,7 @@ id|bt_sock_cache
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Bluetooth socket cache creation failed&quot;
+l_string|&quot;Socket cache creation failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1417,6 +1411,12 @@ c_func
 (paren
 op_amp
 id|bt_sock_family_ops
+)paren
+suffix:semicolon
+id|BT_INFO
+c_func
+(paren
+l_string|&quot;HCI device and connection manager initialized&quot;
 )paren
 suffix:semicolon
 id|hci_sock_init

@@ -3603,13 +3603,21 @@ id|rfcomm_sock_family_ops
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t register RFCOMM socket layer&quot;
+l_string|&quot;RFCOMM socket layer registration failed. %d&quot;
+comma
+id|err
 )paren
 suffix:semicolon
 r_return
 id|err
 suffix:semicolon
 )brace
+id|BT_INFO
+c_func
+(paren
+l_string|&quot;RFCOMM socket layer initialized&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3642,7 +3650,7 @@ id|BTPROTO_RFCOMM
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t unregister RFCOMM socket layer %d&quot;
+l_string|&quot;RFCOMM socket layer unregistration failed. %d&quot;
 comma
 id|err
 )paren

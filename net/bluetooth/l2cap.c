@@ -10007,7 +10007,7 @@ id|l2cap_sock_family_ops
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t register L2CAP socket&quot;
+l_string|&quot;L2CAP socket registration failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10032,7 +10032,7 @@ id|l2cap_hci_proto
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t register L2CAP protocol&quot;
+l_string|&quot;L2CAP protocol registration failed&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10056,7 +10056,7 @@ suffix:semicolon
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;Bluetooth L2CAP ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;L2CAP ver %s&quot;
 comma
 id|VERSION
 )paren
@@ -10064,7 +10064,7 @@ suffix:semicolon
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
+l_string|&quot;L2CAP socket layer initialized&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10100,7 +10100,7 @@ id|BTPROTO_L2CAP
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t unregister L2CAP socket&quot;
+l_string|&quot;L2CAP socket unregistration failed&quot;
 )paren
 suffix:semicolon
 r_if
@@ -10116,7 +10116,7 @@ id|l2cap_hci_proto
 id|BT_ERR
 c_func
 (paren
-l_string|&quot;Can&squot;t unregister L2CAP protocol&quot;
+l_string|&quot;L2CAP protocol unregistration failed&quot;
 )paren
 suffix:semicolon
 )brace
