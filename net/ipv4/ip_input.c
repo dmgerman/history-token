@@ -380,21 +380,6 @@ id|skb
 )paren
 suffix:semicolon
 macro_line|#endif /*CONFIG_NETFILTER_DEBUG*/
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pskb_may_pull
-c_func
-(paren
-id|skb
-comma
-id|ihl
-)paren
-)paren
-r_goto
-id|out
-suffix:semicolon
 id|__skb_pull
 c_func
 (paren
@@ -605,8 +590,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|out
-suffix:colon
 id|kfree_skb
 c_func
 (paren
@@ -852,10 +835,6 @@ suffix:semicolon
 id|iph
 op_assign
 id|skb-&gt;nh.iph
-suffix:semicolon
-id|skb-&gt;ip_summed
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
