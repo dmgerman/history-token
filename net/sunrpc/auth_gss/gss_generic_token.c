@@ -575,9 +575,6 @@ op_star
 id|buf_in
 comma
 r_int
-id|tok_type
-comma
-r_int
 id|toksize
 )paren
 (brace
