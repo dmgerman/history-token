@@ -4,104 +4,16 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#endif
-DECL|variable|x86_udelay_tsc
-r_int
-id|x86_udelay_tsc
-op_assign
-l_int|0
+r_extern
+r_struct
+id|timer_opts
+op_star
+id|timer
 suffix:semicolon
-multiline_comment|/* Delay via TSC */
-multiline_comment|/*&n; *&t;Do a udelay using the TSC for any CPU that happens&n; *&t;to have one that we trust.&n; */
-DECL|function|__rdtsc_delay
-r_static
-r_void
-id|__rdtsc_delay
-c_func
-(paren
-r_int
-r_int
-id|loops
-)paren
-(brace
-r_int
-r_int
-id|bclock
-comma
-id|now
-suffix:semicolon
-id|rdtscl
-c_func
-(paren
-id|bclock
-)paren
-suffix:semicolon
-r_do
-(brace
-id|rep_nop
-c_func
-(paren
-)paren
-suffix:semicolon
-id|rdtscl
-c_func
-(paren
-id|now
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|now
-op_minus
-id|bclock
-)paren
-OL
-id|loops
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; *&t;Non TSC based delay loop for 386, 486, MediaGX&n; */
-DECL|function|__loop_delay
-r_static
-r_void
-id|__loop_delay
-c_func
-(paren
-r_int
-r_int
-id|loops
-)paren
-(brace
-r_int
-id|d0
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&bslash;tjmp 1f&bslash;n&quot;
-l_string|&quot;.align 16&bslash;n&quot;
-l_string|&quot;1:&bslash;tjmp 2f&bslash;n&quot;
-l_string|&quot;.align 16&bslash;n&quot;
-l_string|&quot;2:&bslash;tdecl %0&bslash;n&bslash;tjns 2b&quot;
-suffix:colon
-l_string|&quot;=&amp;a&quot;
-(paren
-id|d0
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|loops
-)paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|__delay
 r_void
 id|__delay
@@ -112,19 +24,9 @@ r_int
 id|loops
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|x86_udelay_tsc
-)paren
-id|__rdtsc_delay
-c_func
-(paren
-id|loops
-)paren
-suffix:semicolon
-r_else
-id|__loop_delay
+id|timer
+op_member_access_from_pointer
+id|delay
 c_func
 (paren
 id|loops
