@@ -30,6 +30,11 @@ macro_line|#ifdef CONFIG_8139TOO_PIO
 DECL|macro|USE_IO_OPS
 mdefine_line|#define USE_IO_OPS 1
 macro_line|#endif
+multiline_comment|/* use a 16K rx ring buffer instead of the default 32K */
+macro_line|#ifdef CONFIG_SH_DREAMCAST
+DECL|macro|USE_BUF16K
+mdefine_line|#define USE_BUF16K 1
+macro_line|#endif
 multiline_comment|/* define to 1 to enable copious debugging info */
 DECL|macro|RTL8139_DEBUG
 macro_line|#undef RTL8139_DEBUG
@@ -149,8 +154,13 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Size of the in-memory receive ring. */
+macro_line|#ifdef USE_BUF16K
+DECL|macro|RX_BUF_LEN_IDX
+mdefine_line|#define RX_BUF_LEN_IDX&t;1&t;/* 0==8K, 1==16K, 2==32K, 3==64K */
+macro_line|#else
 DECL|macro|RX_BUF_LEN_IDX
 mdefine_line|#define RX_BUF_LEN_IDX&t;2&t;/* 0==8K, 1==16K, 2==32K, 3==64K */
+macro_line|#endif
 DECL|macro|RX_BUF_LEN
 mdefine_line|#define RX_BUF_LEN&t;(8192 &lt;&lt; RX_BUF_LEN_IDX)
 DECL|macro|RX_BUF_PAD
@@ -546,6 +556,41 @@ comma
 id|FNW3800TX
 )brace
 comma
+(brace
+l_int|0x11db
+comma
+l_int|0x1234
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|RTL8139
+)brace
+comma
+macro_line|#ifdef CONFIG_SH_SECUREEDGE5410
+multiline_comment|/* Bogus 8139 silicon reports 8129 without external PROM :-( */
+(brace
+l_int|0x10ec
+comma
+l_int|0x8129
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|RTL8139
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_8139TOO_8129
 (brace
 l_int|0x10ec
@@ -2583,6 +2628,31 @@ id|RxErr
 op_or
 id|RxOK
 suffix:semicolon
+macro_line|#ifdef USE_BUF16K 
+DECL|variable|rtl8139_rx_config
+r_static
+r_const
+r_int
+r_int
+id|rtl8139_rx_config
+op_assign
+id|RxCfgRcv16K
+op_or
+id|RxNoWrap
+op_or
+(paren
+id|RX_FIFO_THRESH
+op_lshift
+id|RxCfgFIFOShift
+)paren
+op_or
+(paren
+id|RX_DMA_BURST
+op_lshift
+id|RxCfgDMAShift
+)paren
+suffix:semicolon
+macro_line|#else
 DECL|variable|rtl8139_rx_config
 r_static
 r_const
@@ -2606,6 +2676,7 @@ op_lshift
 id|RxCfgDMAShift
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|rtl8139_tx_config
 r_static
 r_const
