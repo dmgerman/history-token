@@ -1065,6 +1065,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1088,6 +1089,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1169,6 +1171,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -1193,6 +1196,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -1471,8 +1475,9 @@ id|notifier_block
 id|pktgen_notifier_block
 op_assign
 (brace
+dot
 id|notifier_call
-suffix:colon
+op_assign
 id|pktgen_device_event
 comma
 )brace
@@ -1526,6 +1531,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1653,6 +1659,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2660,6 +2667,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -2757,6 +2765,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -2859,6 +2868,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -2958,6 +2968,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -6866,6 +6877,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|user_buffer
 comma
@@ -14589,7 +14601,7 @@ id|pkt_dev-&gt;fname
 comma
 l_int|0600
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -14901,7 +14913,7 @@ id|t-&gt;fname
 comma
 l_int|0600
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -15238,7 +15250,7 @@ id|module_fname
 comma
 l_int|0600
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
