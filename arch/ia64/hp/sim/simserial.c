@@ -2275,8 +2275,6 @@ l_string|&quot;rs_close: hung_up&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|local_irq_restore
 c_func
 (paren
@@ -2361,8 +2359,6 @@ c_cond
 id|state-&gt;count
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|local_irq_restore
 c_func
 (paren
@@ -2469,8 +2465,6 @@ c_func
 op_amp
 id|info-&gt;close_wait
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * rs_wait_until_sent() --- wait until the transmitter is empty&n; */
@@ -3221,8 +3215,6 @@ r_int
 r_int
 id|page
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|line
 op_assign
 id|tty-&gt;index
@@ -3242,14 +3234,10 @@ op_ge
 id|NR_PORTS
 )paren
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 id|retval
 op_assign
 id|get_async_struct
@@ -3266,13 +3254,9 @@ c_cond
 (paren
 id|retval
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
-)brace
 id|tty-&gt;driver_data
 op_assign
 id|info
@@ -3327,13 +3311,10 @@ c_cond
 op_logical_neg
 id|page
 )paren
-(brace
-multiline_comment|/* MOD_DEC_USE_COUNT; &quot;info-&gt;tty&quot; will cause this? */
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3387,7 +3368,6 @@ op_amp
 id|info-&gt;close_wait
 )paren
 suffix:semicolon
-multiline_comment|/* MOD_DEC_USE_COUNT; &quot;info-&gt;tty&quot; will cause this? */
 macro_line|#ifdef SERIAL_DO_RESTART
 r_return
 (paren
@@ -3427,7 +3407,6 @@ c_cond
 id|retval
 )paren
 (brace
-multiline_comment|/* MOD_DEC_USE_COUNT; &quot;info-&gt;tty&quot; will cause this? */
 r_return
 id|retval
 suffix:semicolon
@@ -3889,6 +3868,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize the tty_driver structure */
+id|hp_simserial_driver-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|hp_simserial_driver-&gt;driver_name
 op_assign
 l_string|&quot;simserial&quot;
