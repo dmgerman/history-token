@@ -1198,10 +1198,14 @@ id|task-&gt;tty-&gt;pgrp
 suffix:semicolon
 id|tty_nr
 op_assign
+id|new_encode_dev
+c_func
+(paren
 id|tty_devnum
 c_func
 (paren
 id|task-&gt;tty
+)paren
 )paren
 suffix:semicolon
 )brace

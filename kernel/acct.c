@@ -997,6 +997,7 @@ c_func
 id|current-&gt;stime
 )paren
 suffix:semicolon
+multiline_comment|/* we really need to bite the bullet and change layout */
 id|ac.ac_uid
 op_assign
 id|current-&gt;uid
@@ -1010,10 +1011,14 @@ op_assign
 id|current-&gt;tty
 ques
 c_cond
+id|old_encode_dev
+c_func
+(paren
 id|tty_devnum
 c_func
 (paren
 id|current-&gt;tty
+)paren
 )paren
 suffix:colon
 l_int|0
