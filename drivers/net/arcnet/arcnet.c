@@ -937,8 +937,11 @@ id|lp-&gt;first_free_buf
 suffix:semicolon
 id|i
 op_assign
-op_increment
+(paren
 id|i
+op_plus
+l_int|1
+)paren
 op_mod
 l_int|5
 )paren
@@ -1091,8 +1094,11 @@ id|lp-&gt;first_free_buf
 suffix:semicolon
 id|i
 op_assign
-op_increment
+(paren
 id|i
+op_plus
+l_int|1
+)paren
 op_mod
 l_int|5
 )paren
