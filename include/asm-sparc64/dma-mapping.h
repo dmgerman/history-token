@@ -5,6 +5,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;asm-generic/dma-mapping.h&gt;
 macro_line|#else
+r_struct
+id|device
+suffix:semicolon
 DECL|function|dma_alloc_coherent
 r_static
 r_inline
