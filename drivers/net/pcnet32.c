@@ -3379,6 +3379,19 @@ op_star
 id|HZ
 )paren
 suffix:semicolon
+multiline_comment|/* Fill in the generic fields of the device structure. */
+r_if
+c_cond
+(paren
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+)paren
+r_goto
+id|err_free_consistent
+suffix:semicolon
 id|lp-&gt;next
 op_assign
 id|pcnet32_dev
@@ -3386,13 +3399,6 @@ suffix:semicolon
 id|pcnet32_dev
 op_assign
 id|dev
-suffix:semicolon
-multiline_comment|/* Fill in the generic fields of the device structure. */
-id|register_netdev
-c_func
-(paren
-id|dev
-)paren
 suffix:semicolon
 id|printk
 c_func
