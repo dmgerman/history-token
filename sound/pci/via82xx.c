@@ -7329,6 +7329,29 @@ id|AC97_TUNE_ALC_JACK
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x161f
+comma
+dot
+id|device
+op_assign
+l_int|0x202b
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Arima Notebook&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+comma
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* terminator */
 )brace
@@ -9796,6 +9819,24 @@ id|VIA_DXS_ENABLE
 )brace
 comma
 multiline_comment|/* Gericom/Targa/Vobis/Uniwill laptop */
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x161f
+comma
+dot
+id|device
+op_assign
+l_int|0x202b
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* Amira Note book */
 (brace
 dot
 id|vendor
