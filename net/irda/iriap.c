@@ -4238,8 +4238,12 @@ l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
+id|IRDA_ASSERT_LABEL
+c_func
+(paren
 id|outloop
 suffix:colon
+)paren
 id|spin_unlock
 c_func
 (paren

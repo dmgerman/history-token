@@ -47,14 +47,18 @@ multiline_comment|/* use 0 for production, 1 for verification, &gt;2 for debug *
 DECL|macro|IRDA_DEBUG_LEVEL
 mdefine_line|#define IRDA_DEBUG_LEVEL 0
 DECL|macro|IRDA_DEBUG
-mdefine_line|#define IRDA_DEBUG(n, args...) ( (irda_debug &gt;= (n)) ? &bslash;&n;&t;&t;&t;&t; (printk(KERN_DEBUG args)) : &bslash;&n;&t;&t;&t;&t; 0 )
+mdefine_line|#define IRDA_DEBUG(n, args...) &bslash;&n;do {&t;if (irda_debug &gt;= (n)) &bslash;&n;&t;&t;printk(KERN_DEBUG args); &bslash;&n;} while (0)
 DECL|macro|IRDA_ASSERT
 mdefine_line|#define IRDA_ASSERT(expr, func) &bslash;&n;do { if(!(expr)) { &bslash;&n;&t;printk( &quot;Assertion failed! %s:%s:%d %s&bslash;n&quot;, &bslash;&n;&t;&t;__FILE__,__FUNCTION__,__LINE__,(#expr) ); &bslash;&n;&t;func } } while (0)
+DECL|macro|IRDA_ASSERT_LABEL
+mdefine_line|#define IRDA_ASSERT_LABEL(label)&t;label
 macro_line|#else
 DECL|macro|IRDA_DEBUG
-mdefine_line|#define IRDA_DEBUG(n, args...) 0
+mdefine_line|#define IRDA_DEBUG(n, args...) do { } while (0)
 DECL|macro|IRDA_ASSERT
-mdefine_line|#define IRDA_ASSERT(expr, func) 0
+mdefine_line|#define IRDA_ASSERT(expr, func) do { (void)(expr); } while (0)
+DECL|macro|IRDA_ASSERT_LABEL
+mdefine_line|#define IRDA_ASSERT_LABEL(label)
 macro_line|#endif /* CONFIG_IRDA_DEBUG */
 DECL|macro|IRDA_WARNING
 mdefine_line|#define IRDA_WARNING(args...) printk(KERN_WARNING args)

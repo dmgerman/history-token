@@ -6266,8 +6266,12 @@ op_amp
 id|lap-&gt;lsaps-&gt;hb_spinlock
 )paren
 suffix:semicolon
+id|IRDA_ASSERT_LABEL
+c_func
+(paren
 id|errlap
 suffix:colon
+)paren
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -7221,8 +7225,12 @@ l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
+id|IRDA_ASSERT_LABEL
+c_func
+(paren
 id|outloop
 suffix:colon
+)paren
 id|spin_unlock
 c_func
 (paren
