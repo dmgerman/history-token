@@ -972,6 +972,11 @@ op_star
 id|mix
 suffix:semicolon
 macro_line|#ifdef CONFIG_KMOD
+r_if
+c_cond
+(paren
+id|current-&gt;fs-&gt;root
+)paren
 id|request_module
 c_func
 (paren

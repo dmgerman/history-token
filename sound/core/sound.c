@@ -30,7 +30,7 @@ r_static
 r_int
 id|cards_limit
 op_assign
-id|SNDRV_CARDS
+l_int|1
 suffix:semicolon
 DECL|variable|device_mode
 r_static
@@ -110,7 +110,7 @@ c_func
 (paren
 id|cards_limit
 comma
-l_string|&quot;Count of soundcards installed in the system.&quot;
+l_string|&quot;Count of auto-loadable soundcards.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -154,6 +154,14 @@ l_string|&quot;default:0666,base:8&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|CONFIG_SND_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|CONFIG_SND_MAJOR
+)paren
+suffix:semicolon
+multiline_comment|/* this one holds the actual max. card number currently available.&n; * as default, it&squot;s identical with cards_limit option.  when more&n; * modules are loaded manually, this limit number increases, too.&n; */
 DECL|variable|snd_ecards_limit
 r_int
 id|snd_ecards_limit
@@ -193,6 +201,14 @@ id|card
 (brace
 r_int
 id|locked
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|current-&gt;fs-&gt;root
+)paren
+r_return
 suffix:semicolon
 id|read_lock
 c_func
@@ -260,6 +276,14 @@ id|minor
 r_char
 op_star
 id|str
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|current-&gt;fs-&gt;root
+)paren
+r_return
 suffix:semicolon
 r_switch
 c_cond
@@ -916,9 +940,12 @@ l_string|&quot;controlC&quot;
 comma
 l_int|8
 )paren
+op_logical_or
+id|card-&gt;number
+op_ge
+id|cards_limit
 )paren
 (brace
-multiline_comment|/* created in sound.c */
 id|devfs_mk_cdev
 c_func
 (paren
@@ -1069,6 +1096,10 @@ l_string|&quot;controlC&quot;
 comma
 l_int|8
 )paren
+op_logical_or
+id|card-&gt;number
+op_ge
+id|cards_limit
 )paren
 (brace
 multiline_comment|/* created in sound.c */
@@ -1312,10 +1343,6 @@ c_cond
 id|entry
 )paren
 (brace
-id|entry-&gt;content
-op_assign
-id|SNDRV_INFO_CONTENT_TEXT
-suffix:semicolon
 id|entry-&gt;c.text.read_size
 op_assign
 id|PAGE_SIZE

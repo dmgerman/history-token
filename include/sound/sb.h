@@ -94,18 +94,6 @@ id|resource
 op_star
 id|res_port
 suffix:semicolon
-DECL|member|alt_port
-r_int
-r_int
-id|alt_port
-suffix:semicolon
-multiline_comment|/* alternate port (ALS4000) */
-DECL|member|res_alt_port
-r_struct
-id|resource
-op_star
-id|res_alt_port
-suffix:semicolon
 DECL|member|mpu_port
 r_int
 r_int
@@ -139,6 +127,12 @@ id|sb_hw_type
 id|hardware
 suffix:semicolon
 multiline_comment|/* see to SB_HW_XXXX */
+DECL|member|alt_port
+r_int
+r_int
+id|alt_port
+suffix:semicolon
+multiline_comment|/* alternate port (ALS4000) */
 DECL|member|pci
 r_struct
 id|pci_dev

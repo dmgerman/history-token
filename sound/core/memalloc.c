@@ -34,7 +34,7 @@ r_static
 r_int
 id|enable
 (braket
-l_int|8
+id|SNDRV_CARDS
 )braket
 op_assign
 (brace
@@ -162,7 +162,7 @@ id|dma_mask
 suffix:semicolon
 r_int
 r_int
-id|rmask
+id|mask
 suffix:semicolon
 r_if
 c_cond
@@ -184,20 +184,17 @@ id|dma_handle
 suffix:semicolon
 id|dma_mask
 op_assign
-id|hwdev-&gt;dma_mask
+id|hwdev-&gt;consistent_dma_mask
 suffix:semicolon
-id|rmask
+id|mask
 op_assign
-op_complement
-(paren
 (paren
 r_int
 r_int
 )paren
 id|dma_mask
-)paren
 suffix:semicolon
-id|hwdev-&gt;dma_mask
+id|hwdev-&gt;consistent_dma_mask
 op_assign
 l_int|0xffffffff
 suffix:semicolon
@@ -214,7 +211,7 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
-id|hwdev-&gt;dma_mask
+id|hwdev-&gt;consistent_dma_mask
 op_assign
 id|dma_mask
 suffix:semicolon
@@ -242,7 +239,8 @@ op_minus
 l_int|1
 )paren
 op_amp
-id|rmask
+op_complement
+id|mask
 )paren
 (brace
 multiline_comment|/* reallocate with the proper mask */
@@ -279,9 +277,9 @@ multiline_comment|/* wish to success now with the proper mask... */
 r_if
 c_cond
 (paren
-id|dma_mask
+id|mask
 op_ne
-l_int|0xffffffff
+l_int|0xffffffffUL
 )paren
 id|ret
 op_assign
@@ -2045,23 +2043,20 @@ id|addr
 suffix:semicolon
 r_int
 r_int
-id|rmask
+id|mask
 suffix:semicolon
-id|rmask
+id|mask
 op_assign
-op_complement
-(paren
-r_int
-r_int
-)paren
-(paren
 id|pci
 ques
 c_cond
-id|pci-&gt;dma_mask
-suffix:colon
-l_int|0x00ffffff
+(paren
+r_int
+r_int
 )paren
+id|pci-&gt;consistent_dma_mask
+suffix:colon
+l_int|0x00ffffffUL
 suffix:semicolon
 id|ptr
 op_assign
@@ -2104,7 +2099,8 @@ op_minus
 l_int|1
 )paren
 op_amp
-id|rmask
+op_complement
+id|mask
 )paren
 (brace
 multiline_comment|/* try to reallocate with the GFP_DMA */
@@ -2526,6 +2522,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SBUS */
 multiline_comment|/*&n; * allocation of buffers for pre-defined devices&n; */
+macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* FIXME: for pci only - other bus? */
 DECL|struct|prealloc_dev
 r_struct
@@ -2735,7 +2732,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_set_dma_mask
+id|pci_set_consistent_dma_mask
 c_func
 (paren
 id|pci
@@ -2877,6 +2874,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#else
+DECL|macro|preallocate_cards
+mdefine_line|#define preallocate_cards()&t;/* NOP */
+macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/*&n; * proc file interface&n; */
 DECL|function|snd_mem_proc_read
