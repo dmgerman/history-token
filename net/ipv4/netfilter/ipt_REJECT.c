@@ -12,6 +12,9 @@ macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_REJECT.h&gt;
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
+macro_line|#include &lt;linux/netfilter_bridge.h&gt;
+macro_line|#endif
 id|MODULE_LICENSE
 c_func
 (paren
@@ -142,12 +145,23 @@ id|rtable
 op_star
 id|rt
 suffix:semicolon
+multiline_comment|/* We don&squot;t require ip forwarding to be enabled to be able to&n;&t; * send a RST reply for bridged traffic. */
 r_if
 c_cond
 (paren
 id|hook
 op_ne
 id|NF_IP_FORWARD
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
+op_logical_or
+(paren
+id|skb-&gt;nf_bridge
+op_logical_and
+id|skb-&gt;nf_bridge-&gt;mask
+op_amp
+id|BRNF_BRIDGED
+)paren
+macro_line|#endif
 )paren
 (brace
 id|fl.nl_u.ip4_u.daddr
