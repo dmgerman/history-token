@@ -2127,7 +2127,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * On a machine this small we won&squot;t get&n;&t;&t; * anywhere without overcommit, so turn&n;&t;&t; * it on by default.&n;&t;&t; */
 id|sysctl_overcommit_memory
 op_assign
-l_int|1
+id|OVERCOMMIT_ALWAYS
 suffix:semicolon
 )brace
 )brace
