@@ -207,14 +207,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|val
-op_eq
-l_int|NULL
 )paren
+(brace
 id|val
 op_assign
 id|init_val-&gt;val
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; * Entry requests an initial value, allocate a&n;&t;&t;&t; * descriptor for it.&n;&t;&t;&t; */
 id|obj_desc
 op_assign

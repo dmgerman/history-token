@@ -30,14 +30,14 @@ macro_line|#include &lt;ctype.h&gt;
 macro_line|#include &lt;unistd.h&gt;
 macro_line|#if defined(__ia64__) || defined(__x86_64__)
 DECL|macro|ACPI_MACHINE_WIDTH
-mdefine_line|#define ACPI_MACHINE_WIDTH&t;    64
+mdefine_line|#define ACPI_MACHINE_WIDTH          64
 DECL|macro|COMPILER_DEPENDENT_INT64
 mdefine_line|#define COMPILER_DEPENDENT_INT64    long
 DECL|macro|COMPILER_DEPENDENT_UINT64
 mdefine_line|#define COMPILER_DEPENDENT_UINT64   unsigned long
 macro_line|#else
 DECL|macro|ACPI_MACHINE_WIDTH
-mdefine_line|#define ACPI_MACHINE_WIDTH&t;    32
+mdefine_line|#define ACPI_MACHINE_WIDTH          32
 DECL|macro|COMPILER_DEPENDENT_INT64
 mdefine_line|#define COMPILER_DEPENDENT_INT64    long long
 DECL|macro|COMPILER_DEPENDENT_UINT64
