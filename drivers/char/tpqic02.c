@@ -40,8 +40,8 @@ r_struct
 id|mtconfiginfo
 id|qic02_tape_dynconf
 op_assign
-multiline_comment|/* user settable */
 (brace
+multiline_comment|/* user settable */
 l_int|0
 comma
 l_int|0
@@ -65,6 +65,7 @@ suffix:semicolon
 multiline_comment|/* private stuff */
 macro_line|#else
 DECL|variable|qic02_tape_debug
+r_static
 r_int
 r_int
 id|qic02_tape_debug
@@ -77,7 +78,6 @@ macro_line|# endif
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_QIC02_DYNCONF */
 DECL|variable|ctlbits
 r_static
-r_volatile
 r_int
 id|ctlbits
 suffix:semicolon
@@ -90,7 +90,6 @@ suffix:semicolon
 multiline_comment|/* sync rw with interrupts */
 DECL|variable|ioctl_status
 r_static
-r_volatile
 r_struct
 id|mtget
 id|ioctl_status
@@ -98,7 +97,6 @@ suffix:semicolon
 multiline_comment|/* current generic status */
 DECL|variable|tperror
 r_static
-r_volatile
 r_struct
 id|tpstatus
 id|tperror
@@ -125,7 +123,6 @@ suffix:semicolon
 multiline_comment|/* Flag bits for status and outstanding requests.&n; * (Could all be put in one bit-field-struct.)&n; * Some variables need `volatile&squot; because they may be modified&n; * by an interrupt.&n; */
 DECL|variable|status_dead
 r_static
-r_volatile
 id|flag
 id|status_dead
 op_assign
@@ -142,7 +139,6 @@ suffix:semicolon
 multiline_comment|/* it&squot;s `zombie&squot; until irq/dma allocated */
 DECL|variable|status_bytes_wr
 r_static
-r_volatile
 id|flag
 id|status_bytes_wr
 op_assign
@@ -151,7 +147,6 @@ suffix:semicolon
 multiline_comment|/* write FM at close or not */
 DECL|variable|status_bytes_rd
 r_static
-r_volatile
 id|flag
 id|status_bytes_rd
 op_assign
@@ -168,7 +163,6 @@ suffix:semicolon
 multiline_comment|/* cmd in progress */
 DECL|variable|status_expect_int
 r_static
-r_volatile
 id|flag
 id|status_expect_int
 op_assign
@@ -177,7 +171,6 @@ suffix:semicolon
 multiline_comment|/* ready for interrupts */
 DECL|variable|status_timer_on
 r_static
-r_volatile
 id|flag
 id|status_timer_on
 op_assign
@@ -186,14 +179,12 @@ suffix:semicolon
 multiline_comment|/* using time-out */
 DECL|variable|status_error
 r_static
-r_volatile
 r_int
 id|status_error
 suffix:semicolon
 multiline_comment|/* int handler may detect error */
 DECL|variable|status_eof_detected
 r_static
-r_volatile
 id|flag
 id|status_eof_detected
 op_assign
@@ -202,7 +193,6 @@ suffix:semicolon
 multiline_comment|/* end of file */
 DECL|variable|status_eom_detected
 r_static
-r_volatile
 id|flag
 id|status_eom_detected
 op_assign
@@ -211,7 +201,6 @@ suffix:semicolon
 multiline_comment|/* end of recorded media */
 DECL|variable|status_eot_detected
 r_static
-r_volatile
 id|flag
 id|status_eot_detected
 op_assign
@@ -220,7 +209,6 @@ suffix:semicolon
 multiline_comment|/* end of tape */
 DECL|variable|doing_read
 r_static
-r_volatile
 id|flag
 id|doing_read
 op_assign
@@ -228,7 +216,6 @@ id|NO
 suffix:semicolon
 DECL|variable|doing_write
 r_static
-r_volatile
 id|flag
 id|doing_write
 op_assign
@@ -236,14 +223,12 @@ id|NO
 suffix:semicolon
 DECL|variable|dma_bytes_todo
 r_static
-r_volatile
 r_int
 r_int
 id|dma_bytes_todo
 suffix:semicolon
 DECL|variable|dma_bytes_done
 r_static
-r_volatile
 r_int
 r_int
 id|dma_bytes_done
@@ -280,6 +265,21 @@ r_struct
 id|timer_list
 id|tp_timer
 suffix:semicolon
+DECL|variable|tape_open
+r_static
+r_int
+r_int
+id|tape_open
+suffix:semicolon
+multiline_comment|/* Guard open one only */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|tape_op
+)paren
+suffix:semicolon
+multiline_comment|/* Serialize tape operations */
 multiline_comment|/* return_*_eof:&n; *&t;NO:&t;not at EOF,&n; *&t;YES:&t;tell app EOF was reached (return 0).&n; *&n; * return_*_eof==YES &amp;&amp; reported_*_eof==NO  ==&gt;&n; *&t;return current buffer, next time(s) return EOF.&n; *&n; * return_*_eof==YES &amp;&amp; reported_*_eof==YES  ==&gt;&n; *&t;at EOF and application knows it, so we can&n; *&t;move on to the next file.&n; *&n; */
 DECL|variable|return_read_eof
 r_static
@@ -775,47 +775,6 @@ id|s
 suffix:semicolon
 )brace
 multiline_comment|/* tpqputs */
-multiline_comment|/* Perform byte order swapping for a 16-bit word.&n; *&n; * [FIXME] This should probably be in include/asm/&n; * ([FIXME] i486 can do this faster)&n; */
-DECL|function|byte_swap_w
-r_static
-r_inline
-r_void
-id|byte_swap_w
-c_func
-(paren
-r_volatile
-r_int
-r_int
-op_star
-id|w
-)paren
-(brace
-r_int
-id|t
-op_assign
-op_star
-id|w
-suffix:semicolon
-op_star
-id|w
-op_assign
-(paren
-id|t
-op_rshift
-l_int|8
-)paren
-op_or
-(paren
-(paren
-id|t
-op_amp
-l_int|0xff
-)paren
-op_lshift
-l_int|8
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Init control register bits on interface card.&n; * For Archive, interrupts must be enabled explicitly.&n; * Wangtek interface card requires ONLINE to be set, Archive SC402/SC499R&n; * cards keep it active all the time.&n; */
 DECL|function|ifc_init
 r_static
@@ -944,7 +903,6 @@ id|n
 op_eq
 l_int|0
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -959,7 +917,6 @@ dot
 id|msg
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* report_qic_exception */
 multiline_comment|/* Try to map the drive-exception bits `s&squot; to a predefined &quot;exception number&quot;,&n; * by comparing the significant exception bits for each entry in the&n; * exception table (`exception_list[]&squot;).&n; * It is assumed that s!=0.&n; */
@@ -1322,7 +1279,6 @@ id|status_dead
 op_eq
 id|YES
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -1330,14 +1286,12 @@ id|TPQIC02_NAME
 l_string|&quot;: reset failed!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|verbose
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -1345,7 +1299,6 @@ id|TPQIC02_NAME
 l_string|&quot;: reset successful&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
 (paren
 id|status_dead
@@ -1493,7 +1446,11 @@ OG
 l_int|0
 )paren
 )paren
-multiline_comment|/*skip */
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* wait for ready */
 r_if
@@ -1561,7 +1518,11 @@ OG
 l_int|0
 )paren
 )paren
-multiline_comment|/*skip */
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* wait for not ready */
 r_if
@@ -1642,7 +1603,11 @@ OG
 l_int|0
 )paren
 )paren
-multiline_comment|/*SKIP*/
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1712,12 +1677,21 @@ comma
 id|spin_t
 )paren
 )paren
-id|schedule
+(brace
+id|set_current_state
 c_func
 (paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* don&squot;t waste all the CPU time */
+)brace
 r_if
 c_cond
 (paren
@@ -2116,9 +2090,8 @@ suffix:semicolon
 multiline_comment|/* Try to busy-wait a few (700) usec, after that de-schedule.&n;&t; *&n;&t; * The problem is, if we don&squot;t de-schedule, performance will&n;&t; * drop to zero when the drive is not responding and if we&n;&t; * de-schedule immediately, we waste a lot of time because a&n;&t; * task switch is much longer than we usually have to wait here.&n;&t; */
 id|n
 op_assign
-l_int|1000
+l_int|700
 suffix:semicolon
-multiline_comment|/* 500 is not enough on a 486/33 */
 r_while
 c_loop
 (paren
@@ -2142,10 +2115,18 @@ op_eq
 id|QIC02_STAT_MASK
 )paren
 )paren
+(brace
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|n
 op_decrement
 suffix:semicolon
 multiline_comment|/* wait for ready or exception or timeout */
+)brace
 r_if
 c_cond
 (paren
@@ -2179,11 +2160,20 @@ id|QIC02_STAT_MASK
 op_eq
 id|QIC02_STAT_MASK
 )paren
-id|schedule
+(brace
+id|set_current_state
 c_func
 (paren
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|tpqputs
 c_func
 (paren
@@ -2357,6 +2347,10 @@ id|QIC02_STAT_READY
 op_eq
 l_int|0
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* wait for not ready */
 id|udelay
@@ -2391,7 +2385,10 @@ id|QIC02_STAT_PORT
 op_amp
 id|QIC02_STAT_READY
 )paren
-multiline_comment|/*skip */
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* wait for ready */
 r_if
@@ -2445,29 +2442,22 @@ comma
 id|QCMD_RD_STAT
 )paren
 suffix:semicolon
-macro_line|#if defined(__i386__) || defined (__x86_64__)
-id|byte_swap_w
+id|stp-&gt;dec
+op_assign
+id|be16_to_cpu
 c_func
-(paren
-op_amp
 (paren
 id|stp-&gt;dec
 )paren
-)paren
 suffix:semicolon
-id|byte_swap_w
+id|stp-&gt;urc
+op_assign
+id|be16_to_cpu
 c_func
-(paren
-op_amp
 (paren
 id|stp-&gt;urc
 )paren
-)paren
 suffix:semicolon
-macro_line|#else
-macro_line|#warning Undefined architecture
-multiline_comment|/* should probably swap status bytes #definition */
-macro_line|#endif
 r_return
 id|stat
 suffix:semicolon
@@ -3229,6 +3219,10 @@ id|QIC02_STAT_READY
 op_ne
 l_int|0
 )paren
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 id|stat
@@ -3571,10 +3565,11 @@ r_if
 c_cond
 (paren
 id|doing_read
-op_eq
+op_ne
 id|YES
 )paren
-(brace
+r_return
+suffix:semicolon
 id|doing_read
 op_assign
 id|NO
@@ -3583,11 +3578,12 @@ r_if
 c_cond
 (paren
 id|cmd
-op_ne
+op_eq
 id|QCMD_RD_FM
 )paren
-(brace
-multiline_comment|/* if the command is a RFM, there is no need to do this&n;&t;&t;&t; * because a RFM will legally terminate the read-cycle.&n;&t;&t;&t; */
+r_return
+suffix:semicolon
+multiline_comment|/* if the command is a RFM, there is no need to do this&n;&t; * because a RFM will legally terminate the read-cycle.&n;&t; */
 id|tpqputs
 c_func
 (paren
@@ -3649,6 +3645,7 @@ r_if
 c_cond
 (paren
 id|tp_sense
+c_func
 (paren
 id|TP_ILL
 op_or
@@ -3672,8 +3669,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-)brace
-)brace
 multiline_comment|/* terminate_read */
 DECL|function|terminate_write
 r_static
@@ -3692,10 +3687,11 @@ r_if
 c_cond
 (paren
 id|doing_write
-op_eq
+op_ne
 id|YES
 )paren
-(brace
+r_return
+suffix:semicolon
 id|doing_write
 op_assign
 id|NO
@@ -3745,12 +3741,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* If there is an EOF token waiting to be returned to&n;&t;&t; * the (writing) application, discard it now.&n;&t;&t; * We could be at EOT, so don&squot;t reset return_write_eof.&n;&t;&t; */
+multiline_comment|/* If there is an EOF token waiting to be returned to&n;&t; * the (writing) application, discard it now.&n;&t; * We could be at EOT, so don&squot;t reset return_write_eof.&n;&t; */
 id|reported_write_eof
 op_assign
 id|YES
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* terminate_write */
 multiline_comment|/* terminate read or write cycle because of command `cmd&squot; */
@@ -4865,7 +4860,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* do_ioctl_cmd */
-multiline_comment|/* dma_transfer(): This routine is called for every 512 bytes to be read&n; * from/written to the tape controller. Speed is important here!&n; * (There must be enough time left for the hd controller!)&n; * When other devices use DMA they must ensure they use un-interruptible&n; * double byte accesses to the DMA controller. Floppy.c is ok.&n; * Must have interrupts disabled when this function is invoked,&n; * otherwise, the double-byte transfers to the DMA controller will not&n; * be atomic. That could lead to nasty problems when they are interrupted&n; * by other DMA interrupt-routines.&n; *&n; * This routine merely does the least possible to keep&n; * the transfers going:&n; *&t;- set the DMA count register for the next 512 bytes&n; *&t;- adjust the DMA address and page registers&n; *&t;- adjust the timeout&n; *&t;- tell the tape controller to start transferring&n; * We assume the dma address and mode are, and remain, valid.&n; */
+multiline_comment|/* dma_transfer(): This routine is called for every 512 bytes to be read&n; * from/written to the tape controller. Speed is important here!&n; * (There must be enough time left for the hd controller!)&n; * The dma lock protects the DMA controller&n; *&n; * This routine merely does the least possible to keep&n; * the transfers going:&n; *&t;- set the DMA count register for the next 512 bytes&n; *&t;- adjust the DMA address and page registers&n; *&t;- adjust the timeout&n; *&t;- tell the tape controller to start transferring&n; * We assume the dma address and mode are, and remain, valid.&n; */
 DECL|function|dma_transfer
 r_static
 r_inline
@@ -5100,10 +5095,6 @@ multiline_comment|/* assume &squot;bytes_todo&squot;&gt;0 */
 (brace
 r_int
 id|stat
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|tpqputs
 c_func
@@ -5425,26 +5416,9 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* initiate first data block read from/write to the tape controller */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|dma_transfer
 c_func
 (paren
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|TPQPUTS
@@ -6094,9 +6068,6 @@ op_star
 id|ppos
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
 id|kdev_t
 id|dev
 op_assign
@@ -6151,13 +6122,11 @@ c_func
 id|current_tape_dev
 )paren
 )paren
-multiline_comment|/* can&squot;t print a ``long long&squot;&squot; (for filp-&gt;f_pos), so chop it */
 id|printk
 c_func
 (paren
 id|TPQIC02_NAME
-l_string|&quot;: request READ, minor=%x, buf=%p, count=%lx&quot;
-l_string|&quot;, pos=%lx, flags=%x&bslash;n&quot;
+l_string|&quot;: request READ, minor=%x, buf=%p, count=%lx, pos=%Lx, flags=%x&bslash;n&quot;
 comma
 id|minor
 c_func
@@ -6172,10 +6141,6 @@ r_int
 )paren
 id|count
 comma
-(paren
-r_int
-r_int
-)paren
 id|filp-&gt;f_pos
 comma
 id|flags
@@ -6270,6 +6235,7 @@ id|DEBUG
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;read: return_read_eof==%d, reported_read_eof==%d, total_bytes_done==%lu&bslash;n&quot;
 comma
@@ -6351,7 +6317,6 @@ multiline_comment|/*fall through */
 )brace
 )brace
 )brace
-multiline_comment|/*****************************/
 r_if
 c_cond
 (paren
@@ -6382,7 +6347,6 @@ c_func
 )paren
 )paren
 (brace
-multiline_comment|/****************************************/
 id|tpqputs
 c_func
 (paren
@@ -6412,33 +6376,25 @@ id|TE_OK
 )paren
 (brace
 multiline_comment|/* Wait for transfer to complete, interrupt should wake us */
-r_while
-c_loop
+id|wait_event
+c_func
 (paren
+id|qic02_tape_transfer
+comma
 id|dma_mode
 op_ne
 l_int|0
 )paren
-(brace
-id|sleep_on
-c_func
-(paren
-op_amp
-id|qic02_tape_transfer
-)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|status_error
 )paren
-(brace
 id|return_read_eof
 op_assign
 id|YES
 suffix:semicolon
-)brace
 )brace
 r_else
 r_if
@@ -6649,9 +6605,6 @@ op_star
 id|ppos
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
 id|kdev_t
 id|dev
 op_assign
@@ -6704,13 +6657,11 @@ id|current_tape_dev
 )paren
 )paren
 (brace
-multiline_comment|/* can&squot;t print a ``long long&squot;&squot; (for filp-&gt;f_pos), so chop it */
 id|printk
 c_func
 (paren
 id|TPQIC02_NAME
-l_string|&quot;: request WRITE, minor=%x, buf=%p&quot;
-l_string|&quot;, count=%lx, pos=%lx, flags=%x&bslash;n&quot;
+l_string|&quot;: request WRITE, minor=%x, buf=%p, count=%lx, pos=%Lx, flags=%x&bslash;n&quot;
 comma
 id|minor
 c_func
@@ -6725,10 +6676,6 @@ r_int
 )paren
 id|count
 comma
-(paren
-r_int
-r_int
-)paren
 id|filp-&gt;f_pos
 comma
 id|flags
@@ -6980,30 +6927,22 @@ suffix:semicolon
 multiline_comment|/*********** FIXTHIS **************/
 )brace
 multiline_comment|/* Wait for write to complete, interrupt should wake us. */
-r_while
-c_loop
+id|wait_event
+c_func
 (paren
+id|qic02_tape_transfer
+comma
 (paren
 id|status_error
 op_eq
 l_int|0
-)paren
 op_logical_and
-(paren
 id|dma_mode
 op_ne
 l_int|0
 )paren
 )paren
-(brace
-id|sleep_on
-c_func
-(paren
-op_amp
-id|qic02_tape_transfer
-)paren
 suffix:semicolon
-)brace
 id|end_dma
 c_func
 (paren
@@ -7342,20 +7281,19 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Only one at a time from here on... */
 r_if
 c_cond
 (paren
-id|file_count
+id|test_and_set_bit
 c_func
 (paren
-id|filp
+l_int|0
+comma
+op_amp
+id|tape_open
 )paren
-OG
-l_int|1
 )paren
 (brace
-multiline_comment|/* filp-&gt;f_count==1 for the first open() */
 r_return
 op_minus
 id|EBUSY
@@ -7519,6 +7457,15 @@ comma
 l_string|&quot;open: sense() failed&quot;
 )paren
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|tape_open
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -7547,6 +7494,15 @@ c_func
 id|TPQD_ALWAYS
 comma
 l_string|&quot;No tape present.&quot;
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|tape_open
 )paren
 suffix:semicolon
 r_return
@@ -7792,7 +7748,6 @@ r_char
 op_star
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -7816,9 +7771,7 @@ id|dens
 )braket
 )paren
 suffix:semicolon
-)brace
 r_else
-(brace
 id|tpqputs
 c_func
 (paren
@@ -7827,7 +7780,6 @@ comma
 l_string|&quot;Wait for retensioning...&quot;
 )paren
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -8099,6 +8051,15 @@ id|TIM_R
 suffix:semicolon
 )brace
 )brace
+id|clear_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|tape_open
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8467,15 +8428,6 @@ r_int
 id|error
 suffix:semicolon
 r_int
-id|dev_maj
-op_assign
-id|major
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-suffix:semicolon
-r_int
 id|c
 suffix:semicolon
 r_struct
@@ -8502,58 +8454,28 @@ c_func
 id|current_tape_dev
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
 id|TPQIC02_NAME
-l_string|&quot;: ioctl(%4x, %4x, %4lx)&bslash;n&quot;
-comma
-id|dev_maj
+l_string|&quot;: ioctl(%4x, %4lx)&bslash;n&quot;
 comma
 id|iocmd
 comma
 id|ioarg
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 op_logical_neg
 id|inode
-op_logical_or
-op_logical_neg
-id|ioarg
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 multiline_comment|/* check iocmd first */
-r_if
-c_cond
-(paren
-id|dev_maj
-op_ne
-id|QIC02_TAPE_MAJOR
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|TPQIC02_NAME
-l_string|&quot;: Oops! Wrong device?&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* A panic() would be appropriate here */
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 id|c
 op_assign
 id|_IOC_NR
@@ -8585,6 +8507,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 (paren
 r_char
@@ -8605,12 +8528,10 @@ id|qic02_tape_dynconf
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -8642,36 +8563,28 @@ op_logical_neg
 id|capable
 c_func
 (paren
-id|CAP_SYS_ADMIN
+id|CAP_SYS_RAWIO
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EPERM
 suffix:semicolon
-)brace
 r_if
 c_cond
-(paren
 (paren
 id|doing_read
 op_ne
 id|NO
-)paren
 op_logical_or
-(paren
 id|doing_write
 op_ne
 id|NO
 )paren
-)paren
-(brace
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8679,19 +8592,18 @@ id|status_zombie
 op_eq
 id|NO
 )paren
-(brace
 id|qic02_release_resources
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* and go zombie */
-)brace
 multiline_comment|/* copy struct from user space to kernel space */
 r_if
 c_cond
 (paren
 id|copy_from_user
+c_func
 (paren
 (paren
 r_char
@@ -8712,12 +8624,10 @@ id|qic02_tape_dynconf
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 id|update_ifc_masks
 c_func
@@ -8771,6 +8681,7 @@ r_if
 c_cond
 (paren
 id|copy_from_user
+c_func
 (paren
 (paren
 r_char
@@ -8791,12 +8702,10 @@ id|operation
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 multiline_comment|/* ---note: mt_count is signed, negative seeks must be&n;&t;&t; * ---      translated to seeks in opposite direction!&n;&t;&t; * (only needed for Sun-programs, I think.)&n;&t;&t; */
 multiline_comment|/* ---note: MTFSF with count 0 should position the&n;&t;&t; * ---      tape at the beginning of the current file.&n;&t;&t; */
 r_if
@@ -8808,7 +8717,6 @@ c_func
 id|current_tape_dev
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -8819,7 +8727,6 @@ comma
 id|operation.mt_count
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8827,7 +8734,6 @@ id|operation.mt_count
 OL
 l_int|0
 )paren
-(brace
 id|tpqputs
 c_func
 (paren
@@ -8836,7 +8742,6 @@ comma
 l_string|&quot;Warning: negative mt_count ignored&quot;
 )paren
 suffix:semicolon
-)brace
 id|ioctl_status.mt_resid
 op_assign
 id|operation.mt_count
@@ -8855,12 +8760,10 @@ c_cond
 op_logical_neg
 id|TP_HAVE_SEEK
 )paren
-(brace
 r_return
 op_minus
 id|ENOTTY
 suffix:semicolon
-)brace
 id|seek_addr_buf
 (braket
 l_int|0
@@ -8905,12 +8808,10 @@ id|operation.mt_count
 op_rshift
 l_int|24
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -8926,11 +8827,9 @@ id|operation.mt_op
 op_ne
 l_int|0
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 id|ioctl_status.mt_resid
 op_assign
 l_int|0
@@ -8964,11 +8863,9 @@ id|operation.mt_op
 op_ne
 l_int|0
 )paren
-(brace
 r_return
 id|error
 suffix:semicolon
-)brace
 id|ioctl_status.mt_resid
 op_assign
 id|operation.mt_count
@@ -9001,14 +8898,12 @@ c_func
 id|current_tape_dev
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;GET &quot;
 )paren
 suffix:semicolon
-)brace
 id|CHECK_IOC_SIZE
 c_func
 (paren
@@ -9021,6 +8916,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 (paren
 r_char
@@ -9041,12 +8937,10 @@ id|ioctl_status
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -9077,14 +8971,12 @@ c_func
 id|current_tape_dev
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;POS &quot;
 )paren
 suffix:semicolon
-)brace
 id|CHECK_IOC_SIZE
 c_func
 (paren
@@ -9102,26 +8994,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|doing_read
 op_eq
 id|YES
-)paren
 op_logical_or
-(paren
 id|doing_write
 op_eq
 id|YES
 )paren
-)paren
-(brace
 id|finish_rw
 c_func
 (paren
 id|AR_QCMDV_TELL_BLK
 )paren
 suffix:semicolon
-)brace
 id|c
 op_assign
 id|rdstatus
@@ -9148,12 +9034,10 @@ id|c
 op_ne
 id|TE_OK
 )paren
-(brace
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 id|ioctl_tell.mt_blkno
 op_assign
 (paren
@@ -9184,6 +9068,7 @@ r_if
 c_cond
 (paren
 id|copy_to_user
+c_func
 (paren
 (paren
 r_char
@@ -9204,26 +9089,199 @@ id|ioctl_tell
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
 r_else
-(brace
 r_return
 op_minus
 id|ENOTTY
 suffix:semicolon
 multiline_comment|/* Other cmds not supported. */
 )brace
-)brace
 multiline_comment|/* qic02_tape_ioctl */
+DECL|function|qic02_do_tape_read
+r_static
+id|ssize_t
+id|qic02_do_tape_read
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_char
+op_star
+id|buf
+comma
+r_int
+id|count
+comma
+id|loff_t
+op_star
+id|ppos
+)paren
+(brace
+r_int
+id|err
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|tape_op
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|qic02_tape_read
+c_func
+(paren
+id|filp
+comma
+id|buf
+comma
+id|count
+comma
+id|ppos
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tape_op
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+DECL|function|qic02_do_tape_write
+r_static
+id|ssize_t
+id|qic02_do_tape_write
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+id|count
+comma
+id|loff_t
+op_star
+id|ppos
+)paren
+(brace
+r_int
+id|err
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|tape_op
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|qic02_tape_write
+c_func
+(paren
+id|filp
+comma
+id|buf
+comma
+id|count
+comma
+id|ppos
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tape_op
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+DECL|function|qic02_do_tape_ioctl
+r_static
+r_int
+id|qic02_do_tape_ioctl
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|file
+op_star
+id|filp
+comma
+r_int
+r_int
+id|iocmd
+comma
+r_int
+r_int
+id|ioarg
+)paren
+(brace
+r_int
+id|err
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|tape_op
+)paren
+suffix:semicolon
+id|err
+op_assign
+id|qic02_tape_ioctl
+c_func
+(paren
+id|inode
+comma
+id|filp
+comma
+id|iocmd
+comma
+id|ioarg
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|tape_op
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
 multiline_comment|/* These are (most) of the interface functions: */
 DECL|variable|qic02_tape_fops
 r_static
@@ -9242,15 +9300,15 @@ id|no_llseek
 comma
 id|read
 suffix:colon
-id|qic02_tape_read
+id|qic02_do_tape_read
 comma
 id|write
 suffix:colon
-id|qic02_tape_write
+id|qic02_do_tape_write
 comma
 id|ioctl
 suffix:colon
-id|qic02_tape_ioctl
+id|qic02_do_tape_ioctl
 comma
 id|open
 suffix:colon
@@ -9298,7 +9356,6 @@ c_cond
 (paren
 id|buffaddr
 )paren
-(brace
 id|free_pages
 c_func
 (paren
@@ -9315,7 +9372,6 @@ id|TPQBUF_SIZE
 )paren
 )paren
 suffix:semicolon
-)brace
 id|buffaddr
 op_assign
 l_int|0
@@ -9337,27 +9393,6 @@ r_void
 )paren
 (brace
 multiline_comment|/* First perform some checks. If one of them fails,&n;&t; * the tape driver will not be registered to the system.&n;&t; */
-r_if
-c_cond
-(paren
-id|QIC02_TAPE_IRQ
-OG
-l_int|16
-)paren
-(brace
-id|tpqputs
-c_func
-(paren
-id|TPQD_ALWAYS
-comma
-l_string|&quot;Bogus interrupt number.&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-)brace
 multiline_comment|/* for DYNCONF, allocating IO, DMA and IRQ should not be done until &n;&t; * the config parameters have been set using MTSETCONFIG.&n;&t; */
 multiline_comment|/* Grab the IO region. */
 r_if
@@ -9396,6 +9431,7 @@ r_if
 c_cond
 (paren
 id|request_irq
+c_func
 (paren
 id|QIC02_TAPE_IRQ
 comma
@@ -9739,12 +9775,10 @@ c_func
 (paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 macro_line|#else
 id|printk
 c_func
@@ -9772,6 +9806,7 @@ r_if
 c_cond
 (paren
 id|register_chrdev
+c_func
 (paren
 id|QIC02_TAPE_MAJOR
 comma
@@ -10184,6 +10219,14 @@ c_func
 r_void
 )paren
 (brace
+id|unregister_chrdev
+c_func
+(paren
+id|QIC02_TAPE_MAJOR
+comma
+id|TPQIC02_NAME
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10191,19 +10234,9 @@ id|status_zombie
 op_eq
 id|NO
 )paren
-(brace
 id|qic02_release_resources
 c_func
 (paren
-)paren
-suffix:semicolon
-)brace
-id|unregister_chrdev
-c_func
-(paren
-id|QIC02_TAPE_MAJOR
-comma
-id|TPQIC02_NAME
 )paren
 suffix:semicolon
 id|devfs_find_and_unregister
