@@ -224,7 +224,7 @@ r_int
 r_int
 id|default_server
 op_assign
-l_int|0
+l_int|0xFF
 suffix:semicolon
 DECL|variable|default_distrib_server
 r_int
