@@ -6133,13 +6133,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|down
-c_func
-(paren
-op_amp
-id|ps-&gt;dev-&gt;serialize
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6325,13 +6318,6 @@ id|usb_bus_type.subsys.rwsem
 )paren
 suffix:semicolon
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|ps-&gt;dev-&gt;serialize
-)paren
-suffix:semicolon
 multiline_comment|/* cleanup and return */
 r_if
 c_cond
