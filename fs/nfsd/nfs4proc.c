@@ -861,12 +861,16 @@ id|status
 )paren
 id|status
 op_assign
+id|nfserrno
+c_func
+(paren
 id|nfsd_setuser
 c_func
 (paren
 id|rqstp
 comma
 id|current_fh-&gt;fh_export
+)paren
 )paren
 suffix:semicolon
 r_return
