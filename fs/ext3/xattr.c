@@ -1555,7 +1555,6 @@ c_cond
 (paren
 id|handler
 )paren
-(brace
 id|size
 op_add_assign
 id|handler
@@ -1571,10 +1570,7 @@ id|entry-&gt;e_name
 comma
 id|entry-&gt;e_name_len
 )paren
-op_plus
-l_int|1
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -1676,7 +1672,6 @@ c_cond
 (paren
 id|handler
 )paren
-(brace
 id|buf
 op_add_assign
 id|handler
@@ -1693,13 +1688,6 @@ comma
 id|entry-&gt;e_name_len
 )paren
 suffix:semicolon
-op_star
-id|buf
-op_increment
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-)brace
 )brace
 id|error
 op_assign
