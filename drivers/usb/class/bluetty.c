@@ -3757,23 +3757,12 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* wake up our little function to let the tty layer know that something happened */
-id|queue_task
+id|schedule_task
 c_func
 (paren
 op_amp
 id|bluetooth-&gt;tqueue
-comma
-op_amp
-id|tq_immediate
 )paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|bluetooth_softint
