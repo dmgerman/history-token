@@ -215,7 +215,7 @@ r_int
 id|j
 )paren
 (brace
-macro_line|#if HZ &lt;= 1000 &amp;&amp; !(1000 % HZ)
+macro_line|#if HZ &lt;= 1000000 &amp;&amp; !(1000000 % HZ)
 r_return
 (paren
 l_int|1000000
@@ -225,24 +225,24 @@ id|HZ
 op_star
 id|j
 suffix:semicolon
-macro_line|#elif HZ &gt; 1000 &amp;&amp; !(HZ % 1000)
+macro_line|#elif HZ &gt; 1000000 &amp;&amp; !(HZ % 1000000)
 r_return
 (paren
 id|j
-op_star
-l_int|1000
 op_plus
 (paren
 id|HZ
-op_minus
-l_int|1000
+op_div
+l_int|1000000
 )paren
+op_minus
+l_int|1
 )paren
 op_div
 (paren
 id|HZ
 op_div
-l_int|1000
+l_int|1000000
 )paren
 suffix:semicolon
 macro_line|#else
@@ -357,7 +357,7 @@ id|MAX_JIFFY_OFFSET
 r_return
 id|MAX_JIFFY_OFFSET
 suffix:semicolon
-macro_line|#if HZ &lt;= 1000 &amp;&amp; !(1000 % HZ)
+macro_line|#if HZ &lt;= 1000000 &amp;&amp; !(1000000 % HZ)
 r_return
 (paren
 id|u
@@ -368,7 +368,7 @@ op_div
 id|HZ
 )paren
 op_minus
-l_int|1000
+l_int|1
 )paren
 op_div
 (paren
@@ -377,7 +377,7 @@ op_div
 id|HZ
 )paren
 suffix:semicolon
-macro_line|#elif HZ &gt; 1000 &amp;&amp; !(HZ % 1000)
+macro_line|#elif HZ &gt; 1000000 &amp;&amp; !(HZ % 1000000)
 r_return
 id|u
 op_star
