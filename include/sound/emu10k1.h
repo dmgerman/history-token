@@ -3489,25 +3489,17 @@ l_int|0x100
 suffix:semicolon
 multiline_comment|/* bitmask of valid initializers */
 DECL|member|tram_data_map
-r_int
-r_int
+id|u_int32_t
 id|__user
 op_star
 id|tram_data_map
-(braket
-l_int|0x100
-)braket
 suffix:semicolon
 multiline_comment|/* data initializers */
 DECL|member|tram_addr_map
-r_int
-r_int
+id|u_int32_t
 id|__user
 op_star
 id|tram_addr_map
-(braket
-l_int|0x100
-)braket
 suffix:semicolon
 multiline_comment|/* map initializers */
 id|DECLARE_BITMAP
