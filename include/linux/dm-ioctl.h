@@ -101,7 +101,7 @@ r_int32
 id|status
 suffix:semicolon
 multiline_comment|/* used when reading from kernel only */
-multiline_comment|/*&n;&t; * Offset in bytes (from the start of this struct) to&n;&t; * next target_spec.&n;&t; */
+multiline_comment|/*&n;&t; * Location of the next dm_target_spec.&n;&t; * - When specifying targets on a DM_TABLE_LOAD command, this value is&n;&t; *   the number of bytes from the start of the &quot;current&quot; dm_target_spec&n;&t; *   to the start of the &quot;next&quot; dm_target_spec.&n;&t; * - When retrieving targets on a DM_TABLE_STATUS command, this value&n;&t; *   is the number of bytes from the start of the first dm_target_spec&n;&t; *   (that follows the dm_ioctl struct) to the start of the &quot;next&quot;&n;&t; *   dm_target_spec.&n;&t; */
 DECL|member|next
 r_uint32
 id|next
