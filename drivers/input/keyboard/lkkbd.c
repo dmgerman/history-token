@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  Copyright (C) 2004 by Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&n; */
 multiline_comment|/*&n; * LK keyboard driver for Linux, based on sunkbd.c (C) by Vojtech Pavlik&n; */
-multiline_comment|/*&n; * DEC LK201 and LK401 keyboard driver for Linux (primary for DECstations&n; * and VAXstations, but can also be used on any standard RS232 with an&n; * adaptor).&n; *&n; * DISCLAUNER: This works for _me_. If you break anything by using the&n; * information given below, I will _not_ be lieable!&n; *&n; * RJ11 pinout:&t;&t;To DB9:&t;&t;Or DB25:&n; * &t;1 - RxD &lt;----&gt;&t;Pin 3 (TxD) &lt;-&gt;&t;Pin 2 (TxD)&n; * &t;2 - GND &lt;----&gt;&t;Pin 5 (GND) &lt;-&gt;&t;Pin 7 (GND)&n; * &t;4 - TxD &lt;----&gt;&t;Pin 2 (RxD) &lt;-&gt;&t;Pin 3 (RxD)&n; * &t;3 - +12V (from HDD drive connector), DON&squot;T connect to DB9 or DB25!!!&n; *&n; * Pin numbers for DB9 and DB25 are noted on the plug (quite small:). For&n; * RJ11, it&squot;s like this:&n; *&n; *      __=__&t;Hold the plug in front of you, cable downwards,&n; *     /___/|&t;nose is hidden behind the plug. Now, pin 1 is at&n; *    |1234||&t;the left side, pin 4 at the right and 2 and 3 are&n; *    |IIII||&t;in between, of course:)&n; *    |    ||&n; *    |____|/&n; *      ||&t;So the adaptor consists of three connected cables&n; *      ||&t;for data transmission (RxD and TxD) and signal ground.&n; *&t;&t;Additionally, you have to get +12V from somewhere.&n; * Most easily, you&squot;ll get that from a floppy or HDD power connector.&n; * It&squot;s the yellow cable there (black is ground and red is +5V).&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * email or by paper mail:&n; * Jan-Benedict Glaw, Lilienstra&#xfffd;e 16, 33790 H&#xfffd;rste (near Halle/Westf.),&n; * Germany.&n; */
+multiline_comment|/*&n; * DEC LK201 and LK401 keyboard driver for Linux (primary for DECstations&n; * and VAXstations, but can also be used on any standard RS232 with an&n; * adaptor).&n; *&n; * DISCLAIMER: This works for _me_. If you break anything by using the&n; * information given below, I will _not_ be liable!&n; *&n; * RJ11 pinout:&t;&t;To DB9:&t;&t;Or DB25:&n; * &t;1 - RxD &lt;----&gt;&t;Pin 3 (TxD) &lt;-&gt;&t;Pin 2 (TxD)&n; * &t;2 - GND &lt;----&gt;&t;Pin 5 (GND) &lt;-&gt;&t;Pin 7 (GND)&n; * &t;4 - TxD &lt;----&gt;&t;Pin 2 (RxD) &lt;-&gt;&t;Pin 3 (RxD)&n; * &t;3 - +12V (from HDD drive connector), DON&squot;T connect to DB9 or DB25!!!&n; *&n; * Pin numbers for DB9 and DB25 are noted on the plug (quite small:). For&n; * RJ11, it&squot;s like this:&n; *&n; *      __=__&t;Hold the plug in front of you, cable downwards,&n; *     /___/|&t;nose is hidden behind the plug. Now, pin 1 is at&n; *    |1234||&t;the left side, pin 4 at the right and 2 and 3 are&n; *    |IIII||&t;in between, of course:)&n; *    |    ||&n; *    |____|/&n; *      ||&t;So the adaptor consists of three connected cables&n; *      ||&t;for data transmission (RxD and TxD) and signal ground.&n; *&t;&t;Additionally, you have to get +12V from somewhere.&n; * Most easily, you&squot;ll get that from a floppy or HDD power connector.&n; * It&squot;s the yellow cable there (black is ground and red is +5V).&n; *&n; * The keyboard and all the commands it understands are documented in&n; * &quot;VCB02 Video Subsystem - Technical Manual&quot;, EK-104AA-TM-001. This&n; * document is LK201 specific, but LK401 is mostly compatible. It comes&n; * up in LK201 mode and doesn&squot;t report any of the additional keys it&n; * has. These need to be switched on with the LK_CMD_ENABLE_LK401&n; * command. You&squot;ll find this document (scanned .pdf file) on MANX,&n; * a search engine specific to DEC documentation. Try&n; * http://www.vt100.net/manx/details?pn=EK-104AA-TM-001;id=21;cp=1&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * email or by paper mail:&n; * Jan-Benedict Glaw, Lilienstra&#xfffd;e 16, 33790 H&#xfffd;rste (near Halle/Westf.),&n; * Germany.&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 id|MODULE_AUTHOR
 (paren
-l_string|&quot;Jan-Benedict Glaw &lt;jblaw@lug-owl.de&gt;&quot;
+l_string|&quot;Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -99,6 +99,30 @@ comma
 l_string|&quot;Ctrlclick volume (in %), default is 100%&quot;
 )paren
 suffix:semicolon
+DECL|variable|lk201_compose_is_alt
+r_static
+r_int
+id|lk201_compose_is_alt
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+(paren
+id|lk201_compose_is_alt
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|lk201_compose_is_alt
+comma
+l_string|&quot;If set non-zero, LK201&squot; Compose key &quot;
+l_string|&quot;will act as an Alt key&quot;
+)paren
+suffix:semicolon
 DECL|macro|LKKBD_DEBUG
 macro_line|#undef LKKBD_DEBUG
 macro_line|#ifdef LKKBD_DEBUG
@@ -151,7 +175,13 @@ DECL|macro|LK_CMD_POWERCYCLE_RESET
 mdefine_line|#define LK_CMD_POWERCYCLE_RESET&t;0xfd
 DECL|macro|LK_CMD_ENABLE_LK401
 mdefine_line|#define LK_CMD_ENABLE_LK401&t;0xe9
+DECL|macro|LK_CMD_REQUEST_ID
+mdefine_line|#define LK_CMD_REQUEST_ID&t;0xab
 multiline_comment|/* Misc responses from keyboard */
+DECL|macro|LK_STUCK_KEY
+mdefine_line|#define LK_STUCK_KEY&t;&t;0x3d
+DECL|macro|LK_SELFTEST_FAILED
+mdefine_line|#define LK_SELFTEST_FAILED&t;0x3e
 DECL|macro|LK_ALL_KEYS_UP
 mdefine_line|#define LK_ALL_KEYS_UP&t;&t;0xb3
 DECL|macro|LK_METRONOME
@@ -172,6 +202,8 @@ DECL|macro|LK_RESPONSE_RESERVED
 mdefine_line|#define LK_RESPONSE_RESERVED&t;0xbb
 DECL|macro|LK_NUM_KEYCODES
 mdefine_line|#define LK_NUM_KEYCODES&t;&t;256
+DECL|macro|LK_NUM_IGNORE_BYTES
+mdefine_line|#define LK_NUM_IGNORE_BYTES&t;6
 DECL|typedef|lk_keycode_t
 r_typedef
 id|u_int16_t
@@ -857,6 +889,14 @@ DECL|member|ignore_bytes
 r_int
 id|ignore_bytes
 suffix:semicolon
+DECL|member|id
+r_int
+r_char
+id|id
+(braket
+id|LK_NUM_IGNORE_BYTES
+)braket
+suffix:semicolon
 DECL|member|dev
 r_struct
 id|input_dev
@@ -1045,6 +1085,246 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_static
+r_void
+DECL|function|lkkbd_detection_done
+id|lkkbd_detection_done
+(paren
+r_struct
+id|lkkbd
+op_star
+id|lk
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/*&n;&t; * Reset setting for Compose key. Let Compose be KEY_COMPOSE.&n;&t; */
+id|lk-&gt;keycode
+(braket
+l_int|0xb1
+)braket
+op_assign
+id|KEY_COMPOSE
+suffix:semicolon
+multiline_comment|/*&n;&t; * Print keyboard name and modify Compose=Alt on user&squot;s request.&n;&t; */
+r_switch
+c_cond
+(paren
+id|lk-&gt;id
+(braket
+l_int|4
+)braket
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+id|sprintf
+(paren
+id|lk-&gt;name
+comma
+l_string|&quot;DEC LK201 keyboard&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lk201_compose_is_alt
+)paren
+id|lk-&gt;keycode
+(braket
+l_int|0xb1
+)braket
+op_assign
+id|KEY_LEFTALT
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|sprintf
+(paren
+id|lk-&gt;name
+comma
+l_string|&quot;DEC LK401 keyboard&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|sprintf
+(paren
+id|lk-&gt;name
+comma
+l_string|&quot;Unknown DEC keyboard&quot;
+)paren
+suffix:semicolon
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;lkkbd: keyboard on %s is unknown, &quot;
+l_string|&quot;please report to Jan-Benedict Glaw &quot;
+l_string|&quot;&lt;jbglaw@lug-owl.de&gt;&bslash;n&quot;
+comma
+id|lk-&gt;phys
+)paren
+suffix:semicolon
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;lkkbd: keyboard ID&squot;ed as:&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|LK_NUM_IGNORE_BYTES
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+(paren
+l_string|&quot; 0x%02x&quot;
+comma
+id|lk-&gt;id
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|printk
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;lkkbd: keyboard on %s identified as: %s&bslash;n&quot;
+comma
+id|lk-&gt;phys
+comma
+id|lk-&gt;name
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Report errors during keyboard boot-up.&n;&t; */
+r_switch
+c_cond
+(paren
+id|lk-&gt;id
+(braket
+l_int|2
+)braket
+)paren
+(brace
+r_case
+l_int|0x00
+suffix:colon
+multiline_comment|/* All okay */
+r_break
+suffix:semicolon
+r_case
+id|LK_STUCK_KEY
+suffix:colon
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;lkkbd: Stuck key on keyboard at &quot;
+l_string|&quot;%s&bslash;n&quot;
+comma
+id|lk-&gt;phys
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|LK_SELFTEST_FAILED
+suffix:colon
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;lkkbd: Selftest failed on keyboard &quot;
+l_string|&quot;at %s, keyboard may not work &quot;
+l_string|&quot;properly&bslash;n&quot;
+comma
+id|lk-&gt;phys
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;lkkbd: Unknown error %02x on &quot;
+l_string|&quot;keyboard at %s&bslash;n&quot;
+comma
+id|lk-&gt;id
+(braket
+l_int|2
+)braket
+comma
+id|lk-&gt;phys
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Try to hint user if there&squot;s a stuck key.&n;&t; */
+r_if
+c_cond
+(paren
+id|lk-&gt;id
+(braket
+l_int|2
+)braket
+op_eq
+id|LK_STUCK_KEY
+op_logical_and
+id|lk-&gt;id
+(braket
+l_int|3
+)braket
+op_ne
+l_int|0
+)paren
+id|printk
+(paren
+id|KERN_ERR
+l_string|&quot;Scancode of stuck key is 0x%02x, keycode &quot;
+l_string|&quot;is 0x%04x&bslash;n&quot;
+comma
+id|lk-&gt;id
+(braket
+l_int|3
+)braket
+comma
+id|lk-&gt;keycode
+(braket
+id|lk-&gt;id
+(braket
+l_int|3
+)braket
+)braket
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * lkkbd_interrupt() is called by the low level driver when a character&n; * is received.&n; */
 r_static
 id|irqreturn_t
@@ -1106,8 +1386,27 @@ comma
 id|lk-&gt;name
 )paren
 suffix:semicolon
+id|lk-&gt;id
+(braket
+id|LK_NUM_IGNORE_BYTES
+op_minus
 id|lk-&gt;ignore_bytes
 op_decrement
+)braket
+op_assign
+id|data
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lk-&gt;ignore_bytes
+op_eq
+l_int|0
+)paren
+id|lkkbd_detection_done
+(paren
+id|lk
+)paren
 suffix:semicolon
 r_return
 id|IRQ_HANDLED
@@ -1285,7 +1584,17 @@ l_string|&quot;Got 0x01, scheduling re-initialization&bslash;n&quot;
 suffix:semicolon
 id|lk-&gt;ignore_bytes
 op_assign
-l_int|3
+id|LK_NUM_IGNORE_BYTES
+suffix:semicolon
+id|lk-&gt;id
+(braket
+id|LK_NUM_IGNORE_BYTES
+op_minus
+id|lk-&gt;ignore_bytes
+op_decrement
+)braket
+op_assign
+id|data
 suffix:semicolon
 id|schedule_work
 (paren
@@ -1371,7 +1680,7 @@ id|printk
 (paren
 id|KERN_WARNING
 l_string|&quot;%s: Unknown key with &quot;
-l_string|&quot;scancode %02x on %s.&bslash;n&quot;
+l_string|&quot;scancode 0x%02x on %s.&bslash;n&quot;
 comma
 id|__FILE__
 comma
@@ -1682,6 +1991,14 @@ id|leds_off
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Ask for ID */
+id|lk-&gt;serio-&gt;write
+(paren
+id|lk-&gt;serio
+comma
+id|LK_CMD_REQUEST_ID
+)paren
+suffix:semicolon
 multiline_comment|/* Reset parameters */
 id|lk-&gt;serio-&gt;write
 (paren
@@ -1942,24 +2259,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|serio-&gt;type
-op_amp
-id|SERIO_PROTO
-)paren
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|serio-&gt;type
-op_amp
-id|SERIO_PROTO
-)paren
-op_logical_and
 (paren
 id|serio-&gt;type
 op_amp
@@ -2010,69 +2309,74 @@ op_amp
 id|lk-&gt;dev
 )paren
 suffix:semicolon
-id|lk-&gt;dev.evbit
-(braket
-l_int|0
-)braket
-op_assign
-id|BIT
+id|set_bit
 (paren
 id|EV_KEY
+comma
+id|lk-&gt;dev.evbit
 )paren
-op_or
-id|BIT
+suffix:semicolon
+id|set_bit
 (paren
 id|EV_LED
+comma
+id|lk-&gt;dev.evbit
 )paren
-op_or
-id|BIT
+suffix:semicolon
+id|set_bit
 (paren
 id|EV_SND
+comma
+id|lk-&gt;dev.evbit
 )paren
-op_or
-id|BIT
+suffix:semicolon
+id|set_bit
 (paren
 id|EV_REP
+comma
+id|lk-&gt;dev.evbit
 )paren
 suffix:semicolon
-id|lk-&gt;dev.ledbit
-(braket
-l_int|0
-)braket
-op_assign
-id|BIT
+id|set_bit
 (paren
 id|LED_CAPSL
-)paren
-op_or
-id|BIT
-(paren
-id|LED_COMPOSE
-)paren
-op_or
-id|BIT
-(paren
-id|LED_SCROLLL
-)paren
-op_or
-id|BIT
-(paren
-id|LED_SLEEP
+comma
+id|lk-&gt;dev.ledbit
 )paren
 suffix:semicolon
-id|lk-&gt;dev.sndbit
-(braket
-l_int|0
-)braket
-op_assign
-id|BIT
+id|set_bit
 (paren
-id|SND_CLICK
+id|LED_SLEEP
+comma
+id|lk-&gt;dev.ledbit
 )paren
-op_or
-id|BIT
+suffix:semicolon
+id|set_bit
+(paren
+id|LED_COMPOSE
+comma
+id|lk-&gt;dev.ledbit
+)paren
+suffix:semicolon
+id|set_bit
+(paren
+id|LED_SCROLLL
+comma
+id|lk-&gt;dev.ledbit
+)paren
+suffix:semicolon
+id|set_bit
 (paren
 id|SND_BELL
+comma
+id|lk-&gt;dev.sndbit
+)paren
+suffix:semicolon
+id|set_bit
+(paren
+id|SND_CLICK
+comma
+id|lk-&gt;dev.sndbit
 )paren
 suffix:semicolon
 id|lk-&gt;serio
@@ -2155,7 +2459,16 @@ id|sprintf
 (paren
 id|lk-&gt;name
 comma
-l_string|&quot;LK keyboard&quot;
+l_string|&quot;DEC LK keyboard&quot;
+)paren
+suffix:semicolon
+id|sprintf
+(paren
+id|lk-&gt;phys
+comma
+l_string|&quot;%s/input0&quot;
+comma
+id|serio-&gt;phys
 )paren
 suffix:semicolon
 id|memcpy
@@ -2194,15 +2507,6 @@ id|i
 )braket
 comma
 id|lk-&gt;dev.keybit
-)paren
-suffix:semicolon
-id|sprintf
-(paren
-id|lk-&gt;name
-comma
-l_string|&quot;%s/input0&quot;
-comma
-id|serio-&gt;phys
 )paren
 suffix:semicolon
 id|lk-&gt;dev.name
@@ -2299,11 +2603,6 @@ id|lkkbd_dev
 op_assign
 (brace
 dot
-id|interrupt
-op_assign
-id|lkkbd_interrupt
-comma
-dot
 id|connect
 op_assign
 id|lkkbd_connect
@@ -2312,6 +2611,11 @@ dot
 id|disconnect
 op_assign
 id|lkkbd_disconnect
+comma
+dot
+id|interrupt
+op_assign
+id|lkkbd_interrupt
 comma
 )brace
 suffix:semicolon
