@@ -1601,11 +1601,9 @@ id|cpu
 )braket
 )paren
 suffix:semicolon
-id|cpu_raise_softirq
+id|raise_softirq_irqoff
 c_func
 (paren
-id|cpu
-comma
 id|SCSI_SOFTIRQ
 )paren
 suffix:semicolon
