@@ -3,9 +3,51 @@ DECL|macro|__ASM_MSR_H
 mdefine_line|#define __ASM_MSR_H
 multiline_comment|/*&n; * Access to machine-specific registers (available on 586 and better only)&n; * Note: the rd* operations modify the parameters directly (without using&n; * pointer indirection), this allows gcc to optimize better&n; */
 DECL|macro|rdmsr
-mdefine_line|#define rdmsr(msr,val1,val2) &bslash;&n;     __asm__ __volatile__(&quot;rdmsr&quot; &bslash;&n;&t;&t;&t;  : &quot;=a&quot; (val1), &quot;=d&quot; (val2) &bslash;&n;&t;&t;&t;  : &quot;c&quot; (msr))
+mdefine_line|#define rdmsr(msr,val1,val2) &bslash;&n;&t;__asm__ __volatile__(&quot;rdmsr&quot; &bslash;&n;&t;&t;&t;  : &quot;=a&quot; (val1), &quot;=d&quot; (val2) &bslash;&n;&t;&t;&t;  : &quot;c&quot; (msr))
 DECL|macro|wrmsr
-mdefine_line|#define wrmsr(msr,val1,val2) &bslash;&n;     __asm__ __volatile__(&quot;wrmsr&quot; &bslash;&n;&t;&t;&t;  : /* no outputs */ &bslash;&n;&t;&t;&t;  : &quot;c&quot; (msr), &quot;a&quot; (val1), &quot;d&quot; (val2))
+mdefine_line|#define wrmsr(msr,val1,val2) &bslash;&n;&t;__asm__ __volatile__(&quot;wrmsr&quot; &bslash;&n;&t;&t;&t;  : /* no outputs */ &bslash;&n;&t;&t;&t;  : &quot;c&quot; (msr), &quot;a&quot; (val1), &quot;d&quot; (val2))
+DECL|macro|rdmsrl
+mdefine_line|#define rdmsrl(msr,val) do {unsigned long l__,h__; &bslash;&n;&t;rdmsr (msr, l__, h__);  &bslash;&n;&t;val = l__;  &bslash;&n;&t;val |= ((u64)h__&lt;&lt;32);  &bslash;&n;} while(0)
+DECL|function|wrmsrl
+r_static
+r_void
+id|wrmsrl
+(paren
+id|u32
+id|msr
+comma
+id|u64
+id|val
+)paren
+(brace
+id|u32
+id|lo
+comma
+id|hi
+suffix:semicolon
+id|lo
+op_assign
+(paren
+id|u32
+)paren
+id|val
+suffix:semicolon
+id|hi
+op_assign
+id|val
+op_rshift
+l_int|32
+suffix:semicolon
+id|wrmsr
+(paren
+id|msr
+comma
+id|lo
+comma
+id|hi
+)paren
+suffix:semicolon
+)brace
 DECL|macro|rdtsc
 mdefine_line|#define rdtsc(low,high) &bslash;&n;     __asm__ __volatile__(&quot;rdtsc&quot; : &quot;=a&quot; (low), &quot;=d&quot; (high))
 DECL|macro|rdtscl
