@@ -1,10 +1,10 @@
-multiline_comment|/* 3c527.c: 3Com Etherlink/MC32 driver for Linux 2.4&n; *&n; *&t;(c) Copyright 1998 Red Hat Software Inc&n; *&t;Written by Alan Cox. &n; *&t;Further debugging by Carl Drougge.&n; *      Modified by Richard Procter (rnp@netlink.co.nz)&n; *&n; *&t;Based on skeleton.c written 1993-94 by Donald Becker and ne2.c&n; *&t;(for the MCA stuff) written by Wim Dumon.&n; *&n; *&t;Thanks to 3Com for making this possible by providing me with the&n; *&t;documentation.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* 3c527.c: 3Com Etherlink/MC32 driver for Linux 2.4 and 2.6.&n; *&n; *&t;(c) Copyright 1998 Red Hat Software Inc&n; *&t;Written by Alan Cox. &n; *&t;Further debugging by Carl Drougge.&n; *      Initial SMP support by Felipe W Damasio &lt;felipewd@terra.com.br&gt;&n; *      Heavily modified by Richard Procter &lt;rnp@paradise.net.nz&gt;&n; *&n; *&t;Based on skeleton.c written 1993-94 by Donald Becker and ne2.c&n; *&t;(for the MCA stuff) written by Wim Dumon.&n; *&n; *&t;Thanks to 3Com for making this possible by providing me with the&n; *&t;documentation.&n; *&n; *&t;This software may be used and distributed according to the terms&n; *&t;of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;3c527&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&quot;0.6a&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&quot;0.7-SMP&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&t;&quot;2001/11/17&quot;
+mdefine_line|#define DRV_RELDATE&t;&t;&quot;2003/10/06&quot;
 DECL|variable|version
 r_static
 r_const
@@ -17,7 +17,7 @@ l_string|&quot;.c:v&quot;
 id|DRV_VERSION
 l_string|&quot; &quot;
 id|DRV_RELDATE
-l_string|&quot; Richard Proctor (rnp@netlink.co.nz)&bslash;n&quot;
+l_string|&quot; Richard Procter &lt;rnp@paradise.net.nz&gt;&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/**&n; * DOC: Traps for the unwary&n; *&n; *&t;The diagram (Figure 1-1) and the POS summary disagree with the&n; *&t;&quot;Interrupt Level&quot; section in the manual.&n; *&n; *&t;The manual contradicts itself when describing the minimum number &n; *&t;buffers in the &squot;configure lists&squot; command. &n; *&t;My card accepts a buffer config of 4/4. &n; *&n; *&t;Setting the SAV BP bit does not save bad packets, but&n; *&t;only enables RX on-card stats collection. &n; *&n; *&t;The documentation in places seems to miss things. In actual fact&n; *&t;I&squot;ve always eventually found everything is documented, it just&n; *&t;requires careful study.&n; *&n; * DOC: Theory Of Operation&n; *&n; *&t;The 3com 3c527 is a 32bit MCA bus mastering adapter with a large&n; *&t;amount of on board intelligence that housekeeps a somewhat dumber&n; *&t;Intel NIC. For performance we want to keep the transmit queue deep&n; *&t;as the card can transmit packets while fetching others from main&n; *&t;memory by bus master DMA. Transmission and reception are driven by&n; *&t;circular buffer queues.&n; *&n; *&t;The mailboxes can be used for controlling how the card traverses&n; *&t;its buffer rings, but are used only for inital setup in this&n; *&t;implementation.  The exec mailbox allows a variety of commands to&n; *&t;be executed. Each command must complete before the next is&n; *&t;executed. Primarily we use the exec mailbox for controlling the&n; *&t;multicast lists.  We have to do a certain amount of interesting&n; *&t;hoop jumping as the multicast list changes can occur in interrupt&n; *&t;state when the card has an exec command pending. We defer such&n; *&t;events until the command completion interrupt.&n; *&n; *&t;A copy break scheme (taken from 3c59x.c) is employed whereby&n; *&t;received frames exceeding a configurable length are passed&n; *&t;directly to the higher networking layers without incuring a copy,&n; *&t;in what amounts to a time/space trade-off.&n; *&t; &n; *&t;The card also keeps a large amount of statistical information&n; *&t;on-board. In a perfect world, these could be used safely at no&n; *&t;cost. However, lacking information to the contrary, processing&n; *&t;them without races would involve so much extra complexity as to&n; *&t;make it unworthwhile to do so. In the end, a hybrid SW/HW&n; *&t;implementation was made necessary --- see mc32_update_stats().  &n; *&n; * DOC: Notes&n; *&t;&n; *&t;It should be possible to use two or more cards, but at this stage&n; *&t;only by loading two copies of the same module.&n; *&n; *&t;The on-board 82586 NIC has trouble receiving multiple&n; *&t;back-to-back frames and so is likely to drop packets from fast&n; *&t;senders.&n;**/
 macro_line|#include &lt;linux/module.h&gt;
@@ -38,6 +38,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -120,14 +122,18 @@ DECL|struct|mc32_local
 r_struct
 id|mc32_local
 (brace
+DECL|member|slot
+r_int
+id|slot
+suffix:semicolon
+DECL|member|base
+id|u32
+id|base
+suffix:semicolon
 DECL|member|net_stats
 r_struct
 id|net_device_stats
 id|net_stats
-suffix:semicolon
-DECL|member|slot
-r_int
-id|slot
 suffix:semicolon
 DECL|member|rx_box
 r_volatile
@@ -178,43 +184,26 @@ id|u16
 id|rx_len
 suffix:semicolon
 multiline_comment|/* Receive list count */
-DECL|member|base
-id|u32
-id|base
-suffix:semicolon
-DECL|member|exec_pending
+DECL|member|xceiver_desired_state
 id|u16
-id|exec_pending
+id|xceiver_desired_state
 suffix:semicolon
+multiline_comment|/* HALTED or RUNNING */
+DECL|member|cmd_nonblocking
+id|u16
+id|cmd_nonblocking
+suffix:semicolon
+multiline_comment|/* Thread is uninterested in command result */
 DECL|member|mc_reload_wait
 id|u16
 id|mc_reload_wait
 suffix:semicolon
-multiline_comment|/* a multicast load request is pending */
+multiline_comment|/* A multicast load request is pending */
 DECL|member|mc_list_valid
 id|u32
 id|mc_list_valid
 suffix:semicolon
 multiline_comment|/* True when the mclist is set */
-DECL|member|xceiver_state
-id|u16
-id|xceiver_state
-suffix:semicolon
-multiline_comment|/* Current transceiver state. bitmapped */
-DECL|member|desired_state
-id|u16
-id|desired_state
-suffix:semicolon
-multiline_comment|/* The state we want the transceiver to be in */
-DECL|member|tx_count
-id|atomic_t
-id|tx_count
-suffix:semicolon
-multiline_comment|/* buffers left */
-DECL|member|event
-id|wait_queue_head_t
-id|event
-suffix:semicolon
 DECL|member|tx_ring
 r_struct
 id|mc32_ring_desc
@@ -233,21 +222,45 @@ id|RX_RING_LEN
 )braket
 suffix:semicolon
 multiline_comment|/* Host Receive ring */
+DECL|member|tx_count
+id|atomic_t
+id|tx_count
+suffix:semicolon
+multiline_comment|/* buffers left */
+DECL|member|tx_ring_head
+r_volatile
+id|u16
+id|tx_ring_head
+suffix:semicolon
+multiline_comment|/* index to tx en-queue end */
 DECL|member|tx_ring_tail
 id|u16
 id|tx_ring_tail
 suffix:semicolon
 multiline_comment|/* index to tx de-queue end */
-DECL|member|tx_ring_head
-id|u16
-id|tx_ring_head
-suffix:semicolon
-multiline_comment|/* index to tx en-queue end */
 DECL|member|rx_ring_tail
 id|u16
 id|rx_ring_tail
 suffix:semicolon
 multiline_comment|/* index to rx de-queue end */
+DECL|member|cmd_mutex
+r_struct
+id|semaphore
+id|cmd_mutex
+suffix:semicolon
+multiline_comment|/* Serialises issuing of execute commands */
+DECL|member|execution_cmd
+r_struct
+id|completion
+id|execution_cmd
+suffix:semicolon
+multiline_comment|/* Card has completed an execute command */
+DECL|member|xceiver_cmd
+r_struct
+id|completion
+id|xceiver_cmd
+suffix:semicolon
+multiline_comment|/* Card has completed a tx or rx command */
 )brace
 suffix:semicolon
 multiline_comment|/* The station (ethernet) address prefix, used for a sanity check. */
@@ -558,11 +571,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_int
-id|adapter_found
-op_assign
-l_int|0
-suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
 (paren
@@ -588,9 +596,6 @@ id|name
 op_ne
 l_int|NULL
 )paren
-op_logical_and
-op_logical_neg
-id|adapter_found
 suffix:semicolon
 id|i
 op_increment
@@ -614,14 +619,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|current_mca_slot
 op_ne
 id|MCA_NOTFOUND
-)paren
-op_logical_and
-op_logical_neg
-id|adapter_found
 )paren
 (brace
 r_if
@@ -1160,6 +1160,8 @@ op_amp
 id|mc32_interrupt
 comma
 id|SA_SHIRQ
+op_or
+id|SA_SAMPLE_RANDOM
 comma
 id|dev-&gt;name
 comma
@@ -1597,11 +1599,25 @@ l_int|11
 )braket
 suffix:semicolon
 multiline_comment|/* Receive list count */
-id|init_waitqueue_head
+id|init_MUTEX_LOCKED
 c_func
 (paren
 op_amp
-id|lp-&gt;event
+id|lp-&gt;cmd_mutex
+)paren
+suffix:semicolon
+id|init_completion
+c_func
+(paren
+op_amp
+id|lp-&gt;execution_cmd
+)paren
+suffix:semicolon
+id|init_completion
+c_func
+(paren
+op_amp
+id|lp-&gt;xceiver_cmd
 )paren
 suffix:semicolon
 id|printk
@@ -1659,16 +1675,6 @@ op_assign
 op_amp
 id|netdev_ethtool_ops
 suffix:semicolon
-id|lp-&gt;xceiver_state
-op_assign
-id|HALTED
-suffix:semicolon
-id|lp-&gt;tx_ring_tail
-op_assign
-id|lp-&gt;tx_ring_head
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Fill in the fields of the device structure with ethernet values. */
 id|ether_setup
 c_func
@@ -1712,6 +1718,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;mc32_ready_poll&t;&t;-&t;wait until we can feed it a command&n; *&t;@dev:&t;The device to wait for&n; *&t;&n; *&t;Wait until the card becomes ready to accept a command via the&n; *&t;command register. This tells us nothing about the completion&n; *&t;status of any pending commands and takes very little time at all.&n; */
 DECL|function|mc32_ready_poll
 r_static
+r_inline
 r_void
 id|mc32_ready_poll
 c_func
@@ -1747,7 +1754,7 @@ id|HOST_STATUS_CRR
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;mc32_command_nowait&t;-&t;send a command non blocking&n; *&t;@dev: The 3c527 to issue the command to&n; *&t;@cmd: The command word to write to the mailbox&n; *&t;@data: A data block if the command expects one&n; *&t;@len: Length of the data block&n; *&n; *&t;Send a command from interrupt state. If there is a command&n; *&t;currently being executed then we return an error of -1. It simply&n; *&t;isn&squot;t viable to wait around as commands may be slow. Providing we&n; *&t;get in, we busy wait for the board to become ready to accept the&n; *&t;command and issue it. We do not wait for the command to complete&n; *&t;--- the card will interrupt us when it&squot;s done.&n; */
+multiline_comment|/**&n; *&t;mc32_command_nowait&t;-&t;send a command non blocking&n; *&t;@dev: The 3c527 to issue the command to&n; *&t;@cmd: The command word to write to the mailbox&n; *&t;@data: A data block if the command expects one&n; *&t;@len: Length of the data block&n; *&n; *&t;Send a command from interrupt state. If there is a command&n; *&t;currently being executed then we return an error of -1. It&n; *&t;simply isn&squot;t viable to wait around as commands may be&n; *&t;slow. This can theoretically be starved on SMP, but it&squot;s hard&n; *&t;to see a realistic situation.  We do not wait for the command&n; *&t;to complete --- we rely on the interrupt handler to tidy up&n; *&t;after us.&n; */
 DECL|function|mc32_command_nowait
 r_static
 r_int
@@ -1787,20 +1794,28 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lp-&gt;exec_pending
-)paren
-(brace
-r_return
+r_int
+id|ret
+op_assign
 op_minus
 l_int|1
 suffix:semicolon
-)brace
-id|lp-&gt;exec_pending
+r_if
+c_cond
+(paren
+id|down_trylock
+c_func
+(paren
+op_amp
+id|lp-&gt;cmd_mutex
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|lp-&gt;cmd_nonblocking
 op_assign
-l_int|3
+l_int|1
 suffix:semicolon
 id|lp-&gt;exec_box-&gt;mbox
 op_assign
@@ -1831,25 +1846,12 @@ c_func
 suffix:semicolon
 multiline_comment|/* the memcpy forgot the volatile so be sure */
 multiline_comment|/* Send the command */
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|inb
+id|mc32_ready_poll
 c_func
 (paren
-id|ioaddr
-op_plus
-id|HOST_STATUS
+id|dev
 )paren
-op_amp
-id|HOST_STATUS_CRR
-)paren
-)paren
-(brace
 suffix:semicolon
-)brace
 id|outb
 c_func
 (paren
@@ -1862,11 +1864,17 @@ op_plus
 id|HOST_CMD
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Interrupt handler will signal mutex on completion */
 )brace
-multiline_comment|/**&n; *&t;mc32_command&t;-&t;send a command and sleep until completion&n; *&t;@dev: The 3c527 card to issue the command to&n; *&t;@cmd: The command word to write to the mailbox&n; *&t;@data: A data block if the command expects one&n; *&t;@len: Length of the data block&n; *&n; *&t;Sends exec commands in a user context. This permits us to wait around&n; *&t;for the replies and also to wait for the command buffer to complete&n; *&t;from a previous command before we execute our command. After our &n; *&t;command completes we will complete any pending multicast reload&n; *&t;we blocked off by hogging the exec buffer.&n; *&n; *&t;You feed the card a command, you wait, it interrupts you get a &n; *&t;reply. All well and good. The complication arises because you use&n; *&t;commands for filter list changes which come in at bh level from things&n; *&t;like IPV6 group stuff.&n; *&n; *&t;We have a simple state machine&n; *&n; *&t;0&t;- nothing issued&n; *&n; *&t;1&t;- command issued, wait reply&n; *&n; *&t;2&t;- reply waiting - reader then goes to state 0&n; *&n; *&t;3&t;- command issued, trash reply. In which case the irq&n; *&t;&t;  takes it back to state 0&n; *&n; */
+r_return
+id|ret
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;mc32_command&t;-&t;send a command and sleep until completion&n; *&t;@dev: The 3c527 card to issue the command to&n; *&t;@cmd: The command word to write to the mailbox&n; *&t;@data: A data block if the command expects one&n; *&t;@len: Length of the data block&n; *&n; *&t;Sends exec commands in a user context. This permits us to wait around&n; *&t;for the replies and also to wait for the command buffer to complete&n; *&t;from a previous command before we execute our command. After our &n; *&t;command completes we will attempt any pending multicast reload&n; *&t;we blocked off by hogging the exec buffer.&n; *&n; *&t;You feed the card a command, you wait, it interrupts you get a &n; *&t;reply. All well and good. The complication arises because you use&n; *&t;commands for filter list changes which come in at bh level from things&n; *&t;like IPV6 group stuff.&n; *&n; */
 DECL|function|mc32_command
 r_static
 r_int
@@ -1907,50 +1915,21 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|ret
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Wait for a command&n;&t; */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|lp-&gt;exec_pending
-)paren
-(brace
-id|sleep_on
+id|down
 c_func
 (paren
 op_amp
-id|lp-&gt;event
+id|lp-&gt;cmd_mutex
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; *&t;Issue mine&n;&t; */
-id|lp-&gt;exec_pending
+multiline_comment|/*&n;&t; *&t;My turn&n;&t; */
+id|lp-&gt;cmd_nonblocking
 op_assign
-l_int|1
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
+l_int|0
 suffix:semicolon
 id|lp-&gt;exec_box-&gt;mbox
 op_assign
@@ -1980,26 +1959,12 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* the memcpy forgot the volatile so be sure */
-multiline_comment|/* Send the command */
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|inb
+id|mc32_ready_poll
 c_func
 (paren
-id|ioaddr
-op_plus
-id|HOST_STATUS
+id|dev
 )paren
-op_amp
-id|HOST_STATUS_CRR
-)paren
-)paren
-(brace
 suffix:semicolon
-)brace
 id|outb
 c_func
 (paren
@@ -2012,41 +1977,11 @@ op_plus
 id|HOST_CMD
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|lp-&gt;exec_pending
-op_ne
-l_int|2
-)paren
-(brace
-id|sleep_on
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|lp-&gt;event
-)paren
-suffix:semicolon
-)brace
-id|lp-&gt;exec_pending
-op_assign
-l_int|0
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
+id|lp-&gt;execution_cmd
 )paren
 suffix:semicolon
 r_if
@@ -2067,7 +2002,14 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *&t;A multicast set got blocked - do it now&n;&t; */
+id|up
+c_func
+(paren
+op_amp
+id|lp-&gt;cmd_mutex
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;A multicast set got blocked - try it now&n;&t; */
 r_if
 c_cond
 (paren
@@ -2085,7 +2027,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_start_transceiver&t;-&t;tell board to restart tx/rx&n; *&t;@dev: The 3c527 card to issue the command to&n; *&n; *&t;This may be called from the interrupt state, where it is used&n; *&t;to restart the rx ring if the card runs out of rx buffers. &n; *&t;&n; * &t;First, we check if it&squot;s ok to start the transceiver. We then show&n; * &t;the card where to start in the rx ring and issue the&n; * &t;commands to start reception and transmission. We don&squot;t wait&n; * &t;around for these to complete.&n; */
+multiline_comment|/**&n; *&t;mc32_start_transceiver&t;-&t;tell board to restart tx/rx&n; *&t;@dev: The 3c527 card to issue the command to&n; *&n; *&t;This may be called from the interrupt state, where it is used&n; *&t;to restart the rx ring if the card runs out of rx buffers. &n; *&t;&n; *&t;We must first check if it&squot;s ok to (re)start the transceiver. See&n; *&t;mc32_close for details.&n; */
 DECL|function|mc32_start_transceiver
 r_static
 r_void
@@ -2119,27 +2061,23 @@ multiline_comment|/* Ignore RX overflow on device closure */
 r_if
 c_cond
 (paren
-id|lp-&gt;desired_state
+id|lp-&gt;xceiver_desired_state
 op_eq
 id|HALTED
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* Give the card the offset to the post-EOL-bit RX descriptor */
 id|mc32_ready_poll
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|lp-&gt;tx_box-&gt;mbox
-op_assign
-l_int|0
-suffix:semicolon
 id|lp-&gt;rx_box-&gt;mbox
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Give the card the offset to the post-EOL-bit RX descriptor */
 id|lp-&gt;rx_box-&gt;data
 (braket
 l_int|0
@@ -2172,6 +2110,10 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|lp-&gt;tx_box-&gt;mbox
+op_assign
+l_int|0
+suffix:semicolon
 id|outb
 c_func
 (paren
@@ -2184,10 +2126,6 @@ id|HOST_CMD
 suffix:semicolon
 multiline_comment|/* card ignores this on RX restart */
 multiline_comment|/* We are not interrupted on start completion */
-id|lp-&gt;xceiver_state
-op_assign
-id|RUNNING
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;mc32_halt_transceiver&t;-&t;tell board to stop tx/rx&n; *&t;@dev: The 3c527 card to issue the command to&n; *&n; *&t;We issue the commands to halt the card&squot;s transceiver. In fact,&n; *&t;after some experimenting we now simply tell the card to&n; *&t;suspend. When issuing aborts occasionally odd things happened.&n; *&n; *&t;We then sleep until the card has notified us that both rx and&n; *&t;tx have been suspended.&n; */
 DECL|function|mc32_halt_transceiver
@@ -2219,19 +2157,11 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|mc32_ready_poll
 c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|lp-&gt;tx_box-&gt;mbox
-op_assign
-l_int|0
 suffix:semicolon
 id|lp-&gt;rx_box-&gt;mbox
 op_assign
@@ -2247,11 +2177,22 @@ op_plus
 id|HOST_CMD
 )paren
 suffix:semicolon
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|lp-&gt;xceiver_cmd
+)paren
+suffix:semicolon
 id|mc32_ready_poll
 c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+id|lp-&gt;tx_box-&gt;mbox
+op_assign
+l_int|0
 suffix:semicolon
 id|outb
 c_func
@@ -2263,41 +2204,15 @@ op_plus
 id|HOST_CMD
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|lp-&gt;xceiver_state
-op_ne
-id|HALTED
-)paren
-(brace
-id|sleep_on
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|lp-&gt;event
+id|lp-&gt;xceiver_cmd
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;mc32_load_rx_ring&t;-&t;load the ring of receive buffers&n; *&t;@dev: 3c527 to build the ring for&n; *&n; *&t;This initalises the on-card and driver datastructures to&n; *&t;the point where mc32_start_transceiver() can be called.&n; *&n; *&t;The card sets up the receive ring for us. We are required to use the&n; *&t;ring it provides although we can change the size of the ring.&n; *&n; * &t;We allocate an sk_buff for each ring entry in turn and&n; * &t;initalise its house-keeping info. At the same time, we read&n; * &t;each &squot;next&squot; pointer in our rx_ring array. This reduces slow&n; * &t;shared-memory reads and makes it easy to access predecessor&n; * &t;descriptors.&n; *&n; *&t;We then set the end-of-list bit for the last entry so that the&n; * &t;card will know when it has run out of buffers.&n; */
+multiline_comment|/**&n; *&t;mc32_load_rx_ring&t;-&t;load the ring of receive buffers&n; *&t;@dev: 3c527 to build the ring for&n; *&n; *&t;This initalises the on-card and driver datastructures to&n; *&t;the point where mc32_start_transceiver() can be called.&n; *&n; *&t;The card sets up the receive ring for us. We are required to use the&n; *&t;ring it provides, although the size of the ring is configurable.&n; *&n; * &t;We allocate an sk_buff for each ring entry in turn and&n; * &t;initalise its house-keeping info. At the same time, we read&n; * &t;each &squot;next&squot; pointer in our rx_ring array. This reduces slow&n; * &t;shared-memory reads and makes it easy to access predecessor&n; * &t;descriptors.&n; *&n; *&t;We then set the end-of-list bit for the last entry so that the&n; * &t;card will know when it has run out of buffers.&n; */
 DECL|function|mc32_load_rx_ring
 r_static
 r_int
@@ -2491,7 +2406,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_flush_rx_ring&t;-&t;free the ring of receive buffers&n; *&t;@lp: Local data of 3c527 to flush the rx ring of&n; *&n; *&t;Free the buffer for each ring slot. This may be called &n; *      before mc32_load_rx_ring(), eg. on error in mc32_open().&n; */
+multiline_comment|/**&n; *&t;mc32_flush_rx_ring&t;-&t;free the ring of receive buffers&n; *&t;@lp: Local data of 3c527 to flush the rx ring of&n; *&n; *&t;Free the buffer for each ring slot. This may be called &n; *      before mc32_load_rx_ring(), eg. on error in mc32_open().&n; *      Requires rx skb pointers to point to a valid skb, or NULL. &n; */
 DECL|function|mc32_flush_rx_ring
 r_static
 r_void
@@ -2516,11 +2431,6 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -2539,29 +2449,33 @@ id|i
 op_increment
 )paren
 (brace
-id|skb
-op_assign
+r_if
+c_cond
+(paren
 id|lp-&gt;rx_ring
 (braket
 id|i
 )braket
 dot
 id|skb
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb
-op_ne
-l_int|NULL
 )paren
 (brace
-id|kfree_skb
+id|dev_kfree_skb
 c_func
 (paren
+id|lp-&gt;rx_ring
+(braket
+id|i
+)braket
+dot
 id|skb
 )paren
 suffix:semicolon
+id|lp-&gt;rx_ring
+(braket
+id|i
+)braket
+dot
 id|skb
 op_assign
 l_int|NULL
@@ -2631,7 +2545,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|lp-&gt;tx_len
+id|TX_RING_LEN
 suffix:semicolon
 id|i
 op_increment
@@ -2671,7 +2585,7 @@ id|p-&gt;next
 suffix:semicolon
 )brace
 multiline_comment|/* -1 so that tx_ring_head cannot &quot;lap&quot; tx_ring_tail,           */
-multiline_comment|/* which would be bad news for mc32_tx_ring as cur. implemented */
+multiline_comment|/* see mc32_tx_ring */
 id|atomic_set
 c_func
 (paren
@@ -2690,7 +2604,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_flush_tx_ring &t;-&t;free transmit ring&n; *&t;@lp: Local data of 3c527 to flush the tx ring of&n; *&n; *&t;We have to consider two cases here. We want to free the pending&n; *&t;buffers only. If the ring buffer head is past the start then the&n; *&t;ring segment we wish to free wraps through zero. The tx ring &n; *&t;house-keeping variables are then reset.&n; */
+multiline_comment|/**&n; *&t;mc32_flush_tx_ring &t;-&t;free transmit ring&n; *&t;@lp: Local data of 3c527 to flush the tx ring of&n; *&t;&n; *      If the ring is non-empty, zip over the it, freeing any&n; *      allocated skb_buffs.  The tx ring house-keeping variables are&n; *      then reset. Requires rx skb pointers to point to a valid skb,&n; *      or NULL.&n; */
 DECL|function|mc32_flush_tx_ring
 r_static
 r_void
@@ -2715,118 +2629,9 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lp-&gt;tx_ring_tail
-op_ne
-id|lp-&gt;tx_ring_head
-)paren
-(brace
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|lp-&gt;tx_ring_tail
-OL
-id|lp-&gt;tx_ring_head
-)paren
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-id|lp-&gt;tx_ring_tail
-suffix:semicolon
-id|i
-OL
-id|lp-&gt;tx_ring_head
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|dev_kfree_skb
-c_func
-(paren
-id|lp-&gt;tx_ring
-(braket
-id|i
-)braket
-dot
-id|skb
-)paren
-suffix:semicolon
-id|lp-&gt;tx_ring
-(braket
-id|i
-)braket
-dot
-id|skb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|lp-&gt;tx_ring
-(braket
-id|i
-)braket
-dot
-id|p
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-id|lp-&gt;tx_ring_tail
-suffix:semicolon
-id|i
-OL
-id|TX_RING_LEN
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|dev_kfree_skb
-c_func
-(paren
-id|lp-&gt;tx_ring
-(braket
-id|i
-)braket
-dot
-id|skb
-)paren
-suffix:semicolon
-id|lp-&gt;tx_ring
-(braket
-id|i
-)braket
-dot
-id|skb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|lp-&gt;tx_ring
-(braket
-id|i
-)braket
-dot
-id|p
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -2836,10 +2641,21 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|lp-&gt;tx_ring_head
+id|TX_RING_LEN
 suffix:semicolon
 id|i
 op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|lp-&gt;tx_ring
+(braket
+id|i
+)braket
+dot
+id|skb
 )paren
 (brace
 id|dev_kfree_skb
@@ -2862,16 +2678,6 @@ id|skb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|lp-&gt;tx_ring
-(braket
-id|i
-)braket
-dot
-id|p
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 )brace
 )brace
 id|atomic_set
@@ -2963,6 +2769,14 @@ comma
 id|ioaddr
 op_plus
 id|HOST_CTRL
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * &t;Allow ourselves to issue commands&n;&t; */
+id|up
+c_func
+(paren
+op_amp
+id|lp-&gt;cmd_mutex
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Send the indications on command&n;&t; */
@@ -3148,7 +2962,7 @@ op_minus
 id|ENOBUFS
 suffix:semicolon
 )brace
-id|lp-&gt;desired_state
+id|lp-&gt;xceiver_desired_state
 op_assign
 id|RUNNING
 suffix:semicolon
@@ -3199,7 +3013,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;mc32_send_packet&t;-&t;queue a frame for transmit&n; *&t;@skb: buffer to transmit&n; *&t;@dev: 3c527 to send it out of&n; *&n; *&t;Transmit a buffer. This normally means throwing the buffer onto&n; *&t;the transmit queue as the queue is quite large. If the queue is&n; *&t;full then we set tx_busy and return. Once the interrupt handler&n; *&t;gets messages telling it to reclaim transmit queue entries we will&n; *&t;clear tx_busy and the kernel will start calling this again.&n; *&n; *&t;We use cli rather than spinlocks. Since I have no access to an SMP&n; *&t;MCA machine I don&squot;t plan to change it. It is probably the top &n; *&t;performance hit for this driver on SMP however.&n; */
+multiline_comment|/**&n; *&t;mc32_send_packet&t;-&t;queue a frame for transmit&n; *&t;@skb: buffer to transmit&n; *&t;@dev: 3c527 to send it out of&n; *&n; *&t;Transmit a buffer. This normally means throwing the buffer onto&n; *&t;the transmit queue as the queue is quite large. If the queue is&n; *&t;full then we set tx_busy and return. Once the interrupt handler&n; *&t;gets messages telling it to reclaim transmit queue entries, we will&n; *&t;clear tx_busy and the kernel will start calling this again.&n; *&n; *&t;We do not disable interrupts or acquire any locks; this can&n; *&t;run concurrently with mc32_tx_ring(), and the function itself&n; *&t;is serialised at a higher layer. However, this makes it&n; *&t;crucial that we update lp-&gt;tx_ring_head only after we&squot;ve&n; *&t;established a valid packet in the tx ring (and is why we mark&n; *&t;tx_ring_head volatile).&n; */
 DECL|function|mc32_send_packet
 r_static
 r_int
@@ -3229,9 +3043,10 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-r_int
-r_int
-id|flags
+id|u16
+id|head
+op_assign
+id|lp-&gt;tx_ring_head
 suffix:semicolon
 r_volatile
 r_struct
@@ -3248,17 +3063,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3272,59 +3076,10 @@ op_eq
 l_int|0
 )paren
 (brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|lp-&gt;tx_count
-)paren
-suffix:semicolon
-multiline_comment|/* P is the last sending/sent buffer as a pointer */
-id|p
-op_assign
-id|lp-&gt;tx_ring
-(braket
-id|lp-&gt;tx_ring_head
-)braket
-dot
-id|p
-suffix:semicolon
-id|lp-&gt;tx_ring_head
-op_assign
-id|next_tx
-c_func
-(paren
-id|lp-&gt;tx_ring_head
-)paren
-suffix:semicolon
-multiline_comment|/* NP is the buffer we will be loading */
-id|np
-op_assign
-id|lp-&gt;tx_ring
-(braket
-id|lp-&gt;tx_ring_head
-)braket
-dot
-id|p
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb-&gt;len
-OL
-id|ETH_ZLEN
-)paren
-(brace
 id|skb
 op_assign
 id|skb_padto
@@ -3342,14 +3097,56 @@ id|skb
 op_eq
 l_int|NULL
 )paren
-r_goto
-id|out
+(brace
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|lp-&gt;tx_count
+)paren
+suffix:semicolon
+multiline_comment|/* P is the last sending/sent buffer as a pointer */
+id|p
+op_assign
+id|lp-&gt;tx_ring
+(braket
+id|head
+)braket
+dot
+id|p
+suffix:semicolon
+id|head
+op_assign
+id|next_tx
+c_func
+(paren
+id|head
+)paren
+suffix:semicolon
+multiline_comment|/* NP is the buffer we will be loading */
+id|np
+op_assign
+id|lp-&gt;tx_ring
+(braket
+id|head
+)braket
+dot
+id|p
+suffix:semicolon
 multiline_comment|/* We will need this to flush the buffer out */
 id|lp-&gt;tx_ring
 (braket
-id|lp-&gt;tx_ring_head
+id|head
 )braket
 dot
 id|skb
@@ -3358,6 +3155,8 @@ id|skb
 suffix:semicolon
 id|np-&gt;length
 op_assign
+id|unlikely
+c_func
 (paren
 id|skb-&gt;len
 OL
@@ -3392,19 +3191,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The new frame has been setup; we can now&n;&t; * let the card and interrupt handler &quot;see&quot; it&n;&t; */
 id|p-&gt;control
 op_and_assign
 op_complement
 id|CONTROL_EOL
 suffix:semicolon
-multiline_comment|/* Clear EOL on p */
-id|out
-suffix:colon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
+id|lp-&gt;tx_ring_head
+op_assign
+id|head
 suffix:semicolon
 id|netif_wake_queue
 c_func
@@ -3567,18 +3362,20 @@ id|p
 suffix:semicolon
 id|u16
 id|rx_ring_tail
-op_assign
-id|lp-&gt;rx_ring_tail
 suffix:semicolon
 id|u16
 id|rx_old_tail
-op_assign
-id|rx_ring_tail
 suffix:semicolon
 r_int
 id|x
 op_assign
 l_int|0
+suffix:semicolon
+id|rx_old_tail
+op_assign
+id|rx_ring_tail
+op_assign
+id|lp-&gt;rx_ring_tail
 suffix:semicolon
 r_do
 (brace
@@ -3899,7 +3696,7 @@ id|skb_header
 op_star
 id|np
 suffix:semicolon
-multiline_comment|/* NB: lp-&gt;tx_count=TX_RING_LEN-1 so that tx_ring_head cannot &quot;lap&quot; tail here */
+multiline_comment|/*&n;&t; * We rely on head==tail to mean &squot;queue empty&squot;. &n;&t; * This is why lp-&gt;tx_count=TX_RING_LEN-1: in order to prevent&n;&t; * tx_ring_head wrapping to tail and confusing a &squot;queue empty&squot;&n;&t; * condition with &squot;queue full&squot; &n;&t; */
 r_while
 c_loop
 (paren
@@ -4265,15 +4062,11 @@ r_case
 l_int|4
 suffix:colon
 multiline_comment|/* Abort */
-id|lp-&gt;xceiver_state
-op_or_assign
-id|TX_HALTED
-suffix:semicolon
-id|wake_up
+id|complete
 c_func
 (paren
 op_amp
-id|lp-&gt;event
+id|lp-&gt;xceiver_cmd
 )paren
 suffix:semicolon
 r_break
@@ -4328,15 +4121,11 @@ r_case
 l_int|4
 suffix:colon
 multiline_comment|/* Abort */
-id|lp-&gt;xceiver_state
-op_or_assign
-id|RX_HALTED
-suffix:semicolon
-id|wake_up
+id|complete
 c_func
 (paren
 op_amp
-id|lp-&gt;event
+id|lp-&gt;xceiver_cmd
 )paren
 suffix:semicolon
 r_break
@@ -4390,34 +4179,20 @@ op_amp
 l_int|1
 )paren
 (brace
-multiline_comment|/* 0=no 1=yes 2=replied, get cmd, 3 = wait reply &amp; dump it */
+multiline_comment|/*&n;&t;&t;&t; * No thread is waiting: we need to tidy&n;&t;&t;&t; * up ourself.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
-id|lp-&gt;exec_pending
-op_ne
-l_int|3
+id|lp-&gt;cmd_nonblocking
 )paren
 (brace
-id|lp-&gt;exec_pending
-op_assign
-l_int|2
-suffix:semicolon
-id|wake_up
+id|up
 c_func
 (paren
 op_amp
-id|lp-&gt;event
+id|lp-&gt;cmd_mutex
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|lp-&gt;exec_pending
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* A new multicast set may have been&n;&t;&t;&t;&t;   blocked while the old one was&n;&t;&t;&t;&t;   running. If so, do it now. */
 r_if
 c_cond
 (paren
@@ -4429,15 +4204,15 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+)brace
 r_else
-id|wake_up
+id|complete
 c_func
 (paren
 op_amp
-id|lp-&gt;event
+id|lp-&gt;execution_cmd
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -4525,7 +4300,7 @@ id|one
 op_assign
 l_int|1
 suffix:semicolon
-id|lp-&gt;desired_state
+id|lp-&gt;xceiver_desired_state
 op_assign
 id|HALTED
 suffix:semicolon
@@ -4556,23 +4331,14 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* Catch any waiting commands */
-r_while
-c_loop
-(paren
-id|lp-&gt;exec_pending
-op_eq
-l_int|1
-)paren
-(brace
-id|sleep_on
+multiline_comment|/* Ensure we issue no more commands beyond this point */
+id|down
 c_func
 (paren
 op_amp
-id|lp-&gt;event
+id|lp-&gt;cmd_mutex
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* Ok the card is now stopping */
 id|regs
 op_assign
@@ -4640,14 +4406,6 @@ r_struct
 id|mc32_local
 op_star
 id|lp
-suffix:semicolon
-id|mc32_update_stats
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|lp
 op_assign
 (paren
 r_struct
@@ -4655,6 +4413,13 @@ id|mc32_local
 op_star
 )paren
 id|dev-&gt;priv
+suffix:semicolon
+suffix:semicolon
+id|mc32_update_stats
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_return
 op_amp
