@@ -2006,6 +2006,11 @@ id|init
 op_assign
 id|speedstep_cpu_init
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * speedstep_init - initializes the SpeedStep CPUFreq driver&n; *&n; *   Initializes the SpeedStep support. Returns -ENODEV on unsupported&n; * devices, -EINVAL on problems during initiatization, and zero on&n; * success.&n; */

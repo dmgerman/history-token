@@ -947,6 +947,11 @@ id|name
 op_assign
 l_string|&quot;p4-clockmod&quot;
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|function|cpufreq_p4_init

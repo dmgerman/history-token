@@ -2508,6 +2508,11 @@ id|name
 op_assign
 l_string|&quot;acpi-cpufreq&quot;
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 r_static

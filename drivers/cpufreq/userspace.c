@@ -205,7 +205,7 @@ id|cpu
 suffix:semicolon
 id|ret
 op_assign
-id|cpufreq_driver_target_l
+id|cpufreq_driver_target
 c_func
 (paren
 op_amp

@@ -137,6 +137,12 @@ r_struct
 id|kobject
 id|kobj
 suffix:semicolon
+DECL|member|lock
+r_struct
+id|semaphore
+id|lock
+suffix:semicolon
+multiline_comment|/* CPU -&gt;setpolicy or -&gt;target may&n;&t;&t;&t;&t;&t;   only be called once a time */
 )brace
 suffix:semicolon
 DECL|macro|CPUFREQ_ADJUST
@@ -285,7 +291,7 @@ id|owner
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* pass a target to the cpufreq driver &n; * _l : (cpufreq_driver_sem is not held)&n; */
+multiline_comment|/* pass a target to the cpufreq driver &n; */
 r_inline
 r_int
 id|cpufreq_driver_target
@@ -305,28 +311,9 @@ r_int
 id|relation
 )paren
 suffix:semicolon
-r_inline
-r_int
-id|cpufreq_driver_target_l
-c_func
-(paren
-r_struct
-id|cpufreq_policy
-op_star
-id|policy
-comma
-r_int
-r_int
-id|target_freq
-comma
-r_int
-r_int
-id|relation
-)paren
-suffix:semicolon
 multiline_comment|/* pass an event to the cpufreq governor */
 r_int
-id|cpufreq_governor_l
+id|cpufreq_governor
 c_func
 (paren
 r_int
@@ -428,6 +415,12 @@ r_int
 r_int
 id|relation
 )paren
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
 suffix:semicolon
 multiline_comment|/* optional, for the moment */
 DECL|member|init
