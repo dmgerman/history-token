@@ -10551,7 +10551,6 @@ suffix:semicolon
 DECL|function|uhci_stop
 r_static
 r_void
-id|__devexit
 id|uhci_stop
 c_func
 (paren
@@ -10864,11 +10863,7 @@ comma
 macro_line|#endif
 id|stop
 suffix:colon
-id|__devexit_p
-c_func
-(paren
 id|uhci_stop
-)paren
 comma
 id|hcd_alloc
 suffix:colon
