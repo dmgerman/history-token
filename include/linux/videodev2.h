@@ -147,6 +147,11 @@ id|V4L2_TUNER_ANALOG_TV
 op_assign
 l_int|2
 comma
+DECL|enumerator|V4L2_TUNER_DIGITAL_TV
+id|V4L2_TUNER_DIGITAL_TV
+op_assign
+l_int|3
+comma
 )brace
 suffix:semicolon
 DECL|enum|v4l2_memory
