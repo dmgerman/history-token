@@ -1981,9 +1981,9 @@ op_logical_and
 id|piix_config-&gt;flags
 op_amp
 id|PIIX_UDMA
+)paren
 op_ge
 id|PIIX_UDMA_66
-)paren
 )paren
 id|umul
 op_assign
@@ -2000,9 +2000,9 @@ op_logical_and
 id|piix_config-&gt;flags
 op_amp
 id|PIIX_UDMA
+)paren
 op_ge
 id|PIIX_UDMA_100
-)paren
 )paren
 id|umul
 op_assign
@@ -2561,7 +2561,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|piix-&gt;config
+id|piix_config-&gt;flags
 op_logical_and
 id|PIIX_VICTORY
 )paren
