@@ -25,7 +25,6 @@ DECL|macro|skipbl
 mdefine_line|#define skipbl&t;xmon_skipbl
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|cpus_in_xmon
-r_static
 r_int
 r_int
 id|cpus_in_xmon
