@@ -218,7 +218,6 @@ id|mutex_t
 id|qi_quotaofflock
 suffix:semicolon
 multiline_comment|/* to serialize quotaoff */
-multiline_comment|/* Some useful precalculated constants */
 DECL|member|qi_dqchunklen
 id|xfs_filblks_t
 id|qi_dqchunklen
@@ -229,6 +228,36 @@ id|uint
 id|qi_dqperchunk
 suffix:semicolon
 multiline_comment|/* # ondisk dqs in above chunk */
+DECL|member|qi_bhardlimit
+id|xfs_qcnt_t
+id|qi_bhardlimit
+suffix:semicolon
+multiline_comment|/* default data blk hard limit */
+DECL|member|qi_bsoftlimit
+id|xfs_qcnt_t
+id|qi_bsoftlimit
+suffix:semicolon
+multiline_comment|/* default data blk soft limit */
+DECL|member|qi_ihardlimit
+id|xfs_qcnt_t
+id|qi_ihardlimit
+suffix:semicolon
+multiline_comment|/* default inode count hard limit */
+DECL|member|qi_isoftlimit
+id|xfs_qcnt_t
+id|qi_isoftlimit
+suffix:semicolon
+multiline_comment|/* default inode count soft limit */
+DECL|member|qi_rtbhardlimit
+id|xfs_qcnt_t
+id|qi_rtbhardlimit
+suffix:semicolon
+multiline_comment|/* default realtime blk hard limit */
+DECL|member|qi_rtbsoftlimit
+id|xfs_qcnt_t
+id|qi_rtbsoftlimit
+suffix:semicolon
+multiline_comment|/* default realtime blk soft limit */
 DECL|typedef|xfs_quotainfo_t
 )brace
 id|xfs_quotainfo_t

@@ -1375,7 +1375,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
+id|xfs_agnumber_t
 DECL|function|xfs_initialize_perag
 id|xfs_initialize_perag
 c_func
@@ -1384,11 +1384,11 @@ id|xfs_mount_t
 op_star
 id|mp
 comma
-r_int
+id|xfs_agnumber_t
 id|agcount
 )paren
 (brace
-r_int
+id|xfs_agnumber_t
 id|index
 comma
 id|max_metadata
@@ -1630,8 +1630,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-id|mp-&gt;m_maxagi
-op_assign
+r_return
 id|index
 suffix:semicolon
 )brace
@@ -3925,6 +3924,8 @@ comma
 id|KM_SLEEP
 )paren
 suffix:semicolon
+id|mp-&gt;m_maxagi
+op_assign
 id|xfs_initialize_perag
 c_func
 (paren
