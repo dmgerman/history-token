@@ -1617,7 +1617,7 @@ id|nls_codepage
 )paren
 suffix:semicolon
 r_extern
-r_int
+id|ssize_t
 id|CIFSSMBQAllEAs
 c_func
 (paren
@@ -1641,7 +1641,7 @@ op_star
 id|EAData
 comma
 r_int
-id|size
+id|bufsize
 comma
 r_const
 r_struct

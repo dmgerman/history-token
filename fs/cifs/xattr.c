@@ -251,7 +251,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* return dosattributes as pseudo xattr */
+multiline_comment|/* return dos attributes as pseudo xattr */
 multiline_comment|/* return alt name if available as pseudo attr */
 multiline_comment|/* if proc/fs/cifs/streamstoxattr is set then&n;&t;&t;search server for EAs or streams to &n;&t;&t;returns as xattrs */
 id|rc
