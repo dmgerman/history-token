@@ -588,11 +588,6 @@ op_star
 id|dev
 )paren
 (brace
-r_struct
-id|usb_device
-op_star
-id|hub
-suffix:semicolon
 r_void
 op_star
 id|base
@@ -617,10 +612,6 @@ id|BUG
 (paren
 )paren
 suffix:semicolon
-id|hub
-op_assign
-id|hcd-&gt;self.root_hub
-suffix:semicolon
 id|hcd-&gt;state
 op_assign
 id|USB_STATE_QUIESCING
@@ -635,7 +626,7 @@ suffix:semicolon
 id|usb_disconnect
 (paren
 op_amp
-id|hub
+id|hcd-&gt;self.root_hub
 )paren
 suffix:semicolon
 id|hcd-&gt;driver-&gt;stop
