@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 88 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 89 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -613,7 +613,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INTERNAL_TYPE_BANK_FIELD
+id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:colon
 multiline_comment|/* Ensure that the Bank_value is not beyond the capacity of the register */
 r_if
@@ -670,7 +670,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Now that the Bank has been selected, fall through to the&n;&t;&t; * Region_field case and write the datum to the Operation Region&n;&t;&t; */
 multiline_comment|/*lint -fallthrough */
 r_case
-id|INTERNAL_TYPE_REGION_FIELD
+id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 multiline_comment|/*&n;&t;&t; * For simple Region_fields, we just directly access the owning&n;&t;&t; * Operation Region.&n;&t;&t; */
 id|status
@@ -713,7 +713,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|INTERNAL_TYPE_INDEX_FIELD
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 multiline_comment|/* Ensure that the Index_value is not beyond the capacity of the register */
 r_if

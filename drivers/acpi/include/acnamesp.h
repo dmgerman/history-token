@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 127 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acnamesp.h - Namespace subcomponent prototypes and defines&n; *       $Revision: 129 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACNAMESP_H__
 DECL|macro|__ACNAMESP_H__
@@ -268,6 +268,18 @@ op_star
 id|parent
 )paren
 suffix:semicolon
+r_int
+id|acpi_ns_compare_names
+(paren
+r_char
+op_star
+id|name1
+comma
+r_char
+op_star
+id|name2
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Namespace modification - nsmodify&n; */
 id|acpi_status
 id|acpi_ns_unload_namespace
@@ -485,21 +497,13 @@ op_star
 id|return_obj_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Parent/Child/Peer utility functions - nsfamily&n; */
+multiline_comment|/*&n; * Parent/Child/Peer utility functions&n; */
 id|acpi_name
 id|acpi_ns_find_parent_name
 (paren
 id|acpi_namespace_node
 op_star
 id|node_to_search
-)paren
-suffix:semicolon
-id|u8
-id|acpi_ns_exist_downstream_sibling
-(paren
-id|acpi_namespace_node
-op_star
-id|this_node
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Name and Scope manipulation - nsnames&n; */
@@ -730,12 +734,10 @@ id|acpi_namespace_node
 op_star
 id|parent_node
 comma
-multiline_comment|/* Parent */
 id|acpi_namespace_node
 op_star
 id|node
 comma
-multiline_comment|/* New Child*/
 id|acpi_object_type
 id|type
 )paren
