@@ -59,7 +59,6 @@ id|usb_interface
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_touch_bit
 c_func
@@ -74,7 +73,6 @@ id|u8
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_read_byte
 c_func
@@ -87,7 +85,6 @@ id|u8
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_read_bit
 c_func
@@ -100,7 +97,6 @@ id|u8
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_write_byte
 c_func
@@ -112,7 +108,6 @@ comma
 id|u8
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_write_bit
 c_func
@@ -124,7 +119,6 @@ comma
 id|u8
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_start_pulse
 c_func
@@ -136,7 +130,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_set_speed
 c_func
@@ -148,7 +141,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_reset
 c_func
@@ -162,7 +154,6 @@ id|ds_status
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_detect
 c_func
@@ -176,7 +167,6 @@ id|ds_status
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_stop_pulse
 c_func
@@ -188,7 +178,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_send_data
 c_func
@@ -204,7 +193,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_recv_data
 c_func
@@ -220,7 +208,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_inline
 r_int
 id|ds_recv_status
 c_func
@@ -234,7 +221,6 @@ id|ds_status
 op_star
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|ds_device
 op_star
@@ -244,7 +230,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_inline
 r_void
 id|ds_put_device
 c_func
@@ -272,7 +257,6 @@ r_int
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|ds_send_control
 c_func
@@ -287,7 +271,6 @@ id|u16
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|ds_send_control_mode
 c_func
@@ -302,7 +285,6 @@ id|u16
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|ds_send_control_cmd
 c_func
@@ -2723,7 +2705,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ds_read_block
-r_inline
 r_int
 id|ds_read_block
 c_func
@@ -2853,7 +2834,6 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|ds_write_block
-r_inline
 r_int
 id|ds_write_block
 c_func
