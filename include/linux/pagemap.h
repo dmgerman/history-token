@@ -19,6 +19,20 @@ DECL|macro|page_cache_get
 mdefine_line|#define page_cache_get(page)&t;&t;get_page(page)
 DECL|macro|page_cache_release
 mdefine_line|#define page_cache_release(page)&t;put_page(page)
+r_void
+id|release_pages
+c_func
+(paren
+r_struct
+id|page
+op_star
+op_star
+id|pages
+comma
+r_int
+id|nr
+)paren
+suffix:semicolon
 DECL|function|page_cache_alloc
 r_static
 r_inline
