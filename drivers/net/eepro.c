@@ -2818,8 +2818,6 @@ id|EBUSY
 r_int
 r_int
 id|irq_mask
-comma
-id|delay
 suffix:semicolon
 multiline_comment|/* Twinkle the interrupt, and check if it&squot;s seen */
 id|irq_mask
@@ -2836,24 +2834,10 @@ id|ioaddr
 )paren
 suffix:semicolon
 multiline_comment|/* RESET the 82595 */
-id|delay
-op_assign
-id|jiffies
-op_plus
-id|HZ
-op_div
-l_int|50
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before
+id|mdelay
 c_func
 (paren
-id|jiffies
-comma
-id|delay
-)paren
+l_int|20
 )paren
 suffix:semicolon
 r_if

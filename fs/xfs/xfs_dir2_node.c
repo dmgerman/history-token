@@ -6839,6 +6839,10 @@ id|CE_ALERT
 comma
 l_string|&quot;xfs_dir2_node_addname_int: needed block %lld, got %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|XFS_DIR2_DB_TO_FDB
 c_func
 (paren
@@ -6847,6 +6851,10 @@ comma
 id|dbno
 )paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|fbno
 )paren
 suffix:semicolon

@@ -4,7 +4,6 @@ DECL|macro|_LINUX_
 mdefine_line|#define&t;_LINUX_
 macro_line|#if&t;defined(_LINUX_)&t;/****** Linux *******************************/
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */

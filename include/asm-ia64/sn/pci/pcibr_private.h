@@ -3,11 +3,9 @@ macro_line|#ifndef _ASM_SN_PCI_PCIBR_PRIVATE_H
 DECL|macro|_ASM_SN_PCI_PCIBR_PRIVATE_H
 mdefine_line|#define _ASM_SN_PCI_PCIBR_PRIVATE_H
 multiline_comment|/*&n; * pcibr_private.h -- private definitions for pcibr&n; * only the pcibr driver (and its closest friends)&n; * should ever peek into this file.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio_private.h&gt;
-macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
 multiline_comment|/*&n; * convenience typedefs&n; */
 DECL|typedef|pcibr_DMattr_t
 r_typedef

@@ -6806,7 +6806,7 @@ id|pb_params.flush_interval.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -6814,7 +6814,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_ms_jiffies_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -6838,7 +6838,7 @@ id|pb_params.age_buffer.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -6846,7 +6846,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_ms_jiffies_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec
@@ -6870,7 +6870,7 @@ id|pb_params.stats_clear.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -6903,7 +6903,7 @@ id|pb_params.debug.val
 comma
 r_sizeof
 (paren
-id|ulong
+r_int
 )paren
 comma
 l_int|0644
@@ -6911,7 +6911,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|proc_doulongvec_minmax
+id|proc_dointvec_minmax
 comma
 op_amp
 id|sysctl_intvec

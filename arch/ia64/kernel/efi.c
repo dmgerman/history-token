@@ -1159,6 +1159,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#if EFI_DEBUG
 id|printk
 c_func
 (paren
@@ -1193,6 +1194,7 @@ op_plus
 id|IA64_GRANULE_SIZE
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Cannot write to CRx with PSR.ic=1&n;&t;&t; */
 id|psr
 op_assign

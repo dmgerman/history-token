@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Hardware-level driver for the COMX and HICOMX cards&n;
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;0.87&quot;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;

@@ -169,16 +169,6 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|depca_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|i82596_probe
 c_func
 (paren
@@ -1051,14 +1041,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_EEXPRESS_PRO&t;/* Intel EtherExpress Pro/10 */
 (brace
 id|eepro_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_DEPCA&t;&t;/* DEC DEPCA */
-(brace
-id|depca_probe
 comma
 l_int|0
 )brace

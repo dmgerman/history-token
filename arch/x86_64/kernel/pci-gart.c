@@ -155,14 +155,6 @@ suffix:semicolon
 DECL|macro|EMERGENCY_PAGES
 mdefine_line|#define EMERGENCY_PAGES 32 /* = 128KB */ 
 macro_line|#ifdef CONFIG_AGP
-r_extern
-r_int
-id|agp_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|AGPEXTERN
 mdefine_line|#define AGPEXTERN extern
 macro_line|#else

@@ -10,7 +10,6 @@ op_assign
 l_string|&quot;ne2.c:v0.91 Nov 16 1998 Wim Dumon &lt;wimpie@kotnet.org&gt;&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
