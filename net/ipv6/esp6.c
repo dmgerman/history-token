@@ -1623,6 +1623,7 @@ id|esp
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* null auth and encryption can have zero length keys */
 r_if
 c_cond
 (paren
@@ -1632,10 +1633,6 @@ id|x-&gt;aalg
 r_if
 c_cond
 (paren
-id|x-&gt;aalg-&gt;alg_key_len
-op_eq
-l_int|0
-op_logical_or
 id|x-&gt;aalg-&gt;alg_key_len
 OG
 l_int|512
