@@ -1563,10 +1563,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pm_suspend
+id|software_suspend
 c_func
 (paren
-id|PM_SUSPEND_DISK
 )paren
 )paren
 r_break
