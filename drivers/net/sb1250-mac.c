@@ -6835,6 +6835,7 @@ multiline_comment|/* Make sure there is no irq-handler running on a different CP
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|free_irq

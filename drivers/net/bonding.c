@@ -2182,7 +2182,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function counts the the number of attached &n; * slaves for use by bond_xmit_xor.&n; */
+multiline_comment|/*&n; * This function counts the number of attached &n; * slaves for use by bond_xmit_xor.&n; */
 DECL|function|update_slave_cnt
 r_static
 r_void

@@ -8,6 +8,8 @@ DECL|macro|L1_CACHE_SHIFT
 mdefine_line|#define L1_CACHE_SHIFT&t;&t;CONFIG_IA64_L1_CACHE_SHIFT
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES&t;&t;(1 &lt;&lt; L1_CACHE_SHIFT)
+DECL|macro|L1_CACHE_SHIFT_MAX
+mdefine_line|#define L1_CACHE_SHIFT_MAX 7&t;/* largest L1 which this arch supports */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|SMP_CACHE_SHIFT
 macro_line|# define SMP_CACHE_SHIFT&t;L1_CACHE_SHIFT

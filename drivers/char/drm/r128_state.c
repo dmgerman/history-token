@@ -35,7 +35,7 @@ c_func
 (paren
 l_string|&quot;    %s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|BEGIN_RING
@@ -331,7 +331,7 @@ c_func
 (paren
 l_string|&quot;    %s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|BEGIN_RING
@@ -396,7 +396,7 @@ c_func
 (paren
 l_string|&quot;    %s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|BEGIN_RING
@@ -527,7 +527,7 @@ c_func
 (paren
 l_string|&quot;    %s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|BEGIN_RING
@@ -598,7 +598,7 @@ c_func
 (paren
 l_string|&quot;    %s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|BEGIN_RING
@@ -687,7 +687,7 @@ c_func
 (paren
 l_string|&quot;    %s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|BEGIN_RING
@@ -765,7 +765,7 @@ c_func
 (paren
 l_string|&quot;    %s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|BEGIN_RING
@@ -901,7 +901,7 @@ c_func
 (paren
 l_string|&quot;    %s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|BEGIN_RING
@@ -1016,7 +1016,7 @@ c_func
 (paren
 l_string|&quot;%s: dirty=0x%08x&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 comma
 id|dirty
 )paren
@@ -1673,7 +1673,7 @@ c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_if
@@ -2179,7 +2179,7 @@ c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 macro_line|#if R128_PERFORMANCE_BOXES
@@ -5174,7 +5174,7 @@ c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|count
@@ -5505,7 +5505,7 @@ c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|BEGIN_RING
@@ -5676,7 +5676,7 @@ c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|LOCK_TEST_WITH_RETURN
@@ -5788,7 +5788,7 @@ c_func
 (paren
 l_string|&quot;%s called with no initialization&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -6035,7 +6035,7 @@ c_func
 (paren
 l_string|&quot;%s called with no initialization&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -6678,7 +6678,7 @@ c_func
 (paren
 l_string|&quot;%s called with no initialization&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return

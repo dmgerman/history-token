@@ -452,6 +452,9 @@ mdefine_line|#define list_for_each_prev(pos, head) &bslash;&n;&t;for (pos = (hea
 multiline_comment|/**&n; * list_for_each_safe&t;-&t;iterate over a list safe against removal of list entry&n; * @pos:&t;the &amp;list_t to use as a loop counter.&n; * @n:&t;&t;another &amp;list_t to use as temporary storage&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each_safe
 mdefine_line|#define list_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, n = pos-&gt;next)
+multiline_comment|/**&n; * list_for_each_entry&t;-&t;iterate over list of given type&n; * @pos:&t;the type * to use as a loop counter.&n; * @head:&t;the head for your list.&n; * @member:&t;the name of the list_struct within the struct.&n; */
+DECL|macro|list_for_each_entry
+mdefine_line|#define list_for_each_entry(pos, head, member)&t;&t;&t;&t;&bslash;&n;&t;for (pos = list_entry((head)-&gt;next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next);&t;&t;&t;&bslash;&n;&t;     &amp;pos-&gt;member != (head); &t;&t;&t;&t;&t;&bslash;&n;&t;     pos = list_entry(pos-&gt;member.next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next))
 macro_line|#endif /* __KERNEL__ || _LVM_H_INCLUDE */
 macro_line|#endif
 eof

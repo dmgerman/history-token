@@ -9,5 +9,7 @@ DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES&t;(1 &lt;&lt; L1_CACHE_SHIFT)
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define SMP_CACHE_BYTES L1_CACHE_BYTES
+DECL|macro|L1_CACHE_SHIFT_MAX
+mdefine_line|#define L1_CACHE_SHIFT_MAX 7&t;/* largest L1 which this arch supports */
 macro_line|#endif
 eof

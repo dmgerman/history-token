@@ -897,7 +897,7 @@ id|mips_cpu.tlbsize
 op_assign
 l_int|384
 suffix:semicolon
-multiline_comment|/* has wierd TLB: 3-way x 128 */
+multiline_comment|/* has weird TLB: 3-way x 128 */
 r_break
 suffix:semicolon
 r_case

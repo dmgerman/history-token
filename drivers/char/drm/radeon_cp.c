@@ -5991,7 +5991,7 @@ c_func
 (paren
 l_string|&quot;%s while CP running&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -6011,7 +6011,7 @@ c_func
 (paren
 l_string|&quot;%s called with bogus CP mode (%d)&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 comma
 id|dev_priv-&gt;cp_mode
 )paren
@@ -6179,7 +6179,7 @@ c_func
 (paren
 l_string|&quot;%s called before init done&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
