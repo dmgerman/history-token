@@ -257,7 +257,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-r_return
 id|dma_unmap_single
 c_func
 (paren
