@@ -446,10 +446,8 @@ DECL|macro|ISDN_TIMER_RES
 mdefine_line|#define ISDN_TIMER_RES         4                         /* Main Timer-Resolution   */
 DECL|macro|ISDN_TIMER_MODEMREAD
 mdefine_line|#define ISDN_TIMER_MODEMREAD   1
-DECL|macro|ISDN_TIMER_MODEMXMIT
-mdefine_line|#define ISDN_TIMER_MODEMXMIT   8
 DECL|macro|ISDN_TIMER_FAST
-mdefine_line|#define ISDN_TIMER_FAST      (ISDN_TIMER_MODEMREAD | ISDN_TIMER_MODEMXMIT)
+mdefine_line|#define ISDN_TIMER_FAST      (ISDN_TIMER_MODEMREAD)
 multiline_comment|/* GLOBAL_FLAGS */
 DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1
