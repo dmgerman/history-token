@@ -597,6 +597,7 @@ suffix:semicolon
 multiline_comment|/* Counter for +++ sequence           */
 DECL|member|lastplus
 r_int
+r_int
 id|lastplus
 suffix:semicolon
 multiline_comment|/* Timestamp of last +                */
