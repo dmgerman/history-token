@@ -789,7 +789,7 @@ macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &quot;cciss_scsi.c&quot;&t;&t;/* For SCSI tape support */
 multiline_comment|/*&n; * Report information about this controller.&n; */
 DECL|macro|ENG_GIG
-mdefine_line|#define ENG_GIG 1048576000
+mdefine_line|#define ENG_GIG 1000000000
 DECL|macro|ENG_GIG_FACTOR
 mdefine_line|#define ENG_GIG_FACTOR (ENG_GIG/512)
 DECL|macro|RAID_UNKNOWN
@@ -808,7 +808,7 @@ l_string|&quot;0&quot;
 comma
 l_string|&quot;4&quot;
 comma
-l_string|&quot;1(0+1)&quot;
+l_string|&quot;1(1+0)&quot;
 comma
 l_string|&quot;5&quot;
 comma
@@ -891,8 +891,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_int
-r_int
+id|sector_t
 id|vol_sz
 comma
 id|vol_sz_frac
@@ -1057,9 +1056,6 @@ id|i
 op_increment
 )paren
 (brace
-id|sector_t
-id|tmp
-suffix:semicolon
 id|drv
 op_assign
 op_amp
@@ -1081,6 +1077,8 @@ id|vol_sz
 op_assign
 id|drv-&gt;nr_blocks
 suffix:semicolon
+id|vol_sz_frac
+op_assign
 id|sector_div
 c_func
 (paren
@@ -1089,22 +1087,6 @@ comma
 id|ENG_GIG_FACTOR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Awkwardly do this:&n;&t;&t; * vol_sz_frac =&n;&t;&t; *     (drv-&gt;nr_blocks%ENG_GIG_FACTOR)*100/ENG_GIG_FACTOR;&n;&t;&t; */
-id|tmp
-op_assign
-id|drv-&gt;nr_blocks
-suffix:semicolon
-id|vol_sz_frac
-op_assign
-id|sector_div
-c_func
-(paren
-id|tmp
-comma
-id|ENG_GIG_FACTOR
-)paren
-suffix:semicolon
-multiline_comment|/* Now, vol_sz_frac = (drv-&gt;nr_blocks%ENG_GIG_FACTOR) */
 id|vol_sz_frac
 op_mul_assign
 l_int|100
@@ -1138,14 +1120,20 @@ op_plus
 id|len
 comma
 l_string|&quot;cciss/c%dd%d:&quot;
-l_string|&quot;&bslash;t%4d.%02dGB&bslash;tRAID %s&bslash;n&quot;
+l_string|&quot;&bslash;t%4u.%02uGB&bslash;tRAID %s&bslash;n&quot;
 comma
 id|ctlr
 comma
 id|i
 comma
+(paren
+r_int
+)paren
 id|vol_sz
 comma
+(paren
+r_int
+)paren
 id|vol_sz_frac
 comma
 id|raid_label
@@ -7269,6 +7257,13 @@ op_add_assign
 id|inq_buff-&gt;data_byte
 (braket
 l_int|5
+)braket
+suffix:semicolon
+id|drv-&gt;raid_level
+op_assign
+id|inq_buff-&gt;data_byte
+(braket
+l_int|8
 )braket
 suffix:semicolon
 )brace
