@@ -148,6 +148,16 @@ op_assign
 op_minus
 id|pages
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|newflags
+op_amp
+id|VM_IO
+)paren
+)paren
 id|ret
 op_assign
 id|make_pages_present

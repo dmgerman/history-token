@@ -3323,13 +3323,9 @@ op_logical_neg
 id|vma
 op_logical_or
 (paren
-id|pages
-op_logical_and
-(paren
 id|vma-&gt;vm_flags
 op_amp
 id|VM_IO
-)paren
 )paren
 op_logical_or
 op_logical_neg
