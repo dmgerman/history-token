@@ -4338,11 +4338,6 @@ op_star
 id|__hub
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * This thread doesn&squot;t need any user-level access,&n;&t; * so get rid of all our resources&n;&t; */
 id|daemonize
 c_func
@@ -4409,11 +4404,6 @@ id|dbg
 c_func
 (paren
 l_string|&quot;usb_hub_thread exiting&quot;
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|complete_and_exit

@@ -7108,7 +7108,8 @@ c_func
 l_string|&quot;pwc_disconnect() Called without private pointer.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 r_if
@@ -7127,7 +7128,8 @@ comma
 id|pdev
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 r_if
@@ -7144,7 +7146,8 @@ c_func
 l_string|&quot;pwc_disconnect() Woops: pointer mismatch udev/pdev.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
 macro_line|#ifdef PWC_MAGIC&t;
@@ -7162,10 +7165,11 @@ c_func
 l_string|&quot;pwc_disconnect() Magic number failed. Consult your scrolls and try again.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out_err
 suffix:semicolon
 )brace
-macro_line|#endif&t;
+macro_line|#endif
 id|pdev-&gt;unplugged
 op_assign
 l_int|1
@@ -7204,7 +7208,7 @@ op_amp
 id|pdev-&gt;frameq
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until we get a &squot;go&squot; from _close(). This used&n;&t;&t;&t;   to have a gigantic race condition, since we kfree()&n;&t;&t;&t;   stuff here, but we have to wait until close() &n;&t;&t;&t;   is finished. &n;&t;&t;&t; */
+multiline_comment|/* Wait until we get a &squot;go&squot; from _close(). This used&n;&t;&t;&t;   to have a gigantic race condition, since we kfree()&n;&t;&t;&t;   stuff here, but we have to wait until close()&n;&t;&t;&t;   is finished.&n;&t;&t;&t; */
 id|Trace
 c_func
 (paren
@@ -7333,6 +7337,8 @@ id|pdev-&gt;udev
 op_assign
 l_int|NULL
 suffix:semicolon
+id|out_err
+suffix:colon
 id|unlock_kernel
 c_func
 (paren

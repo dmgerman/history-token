@@ -261,15 +261,15 @@ c_func
 r_void
 )paren
 (brace
+id|conndiscevcnt
+op_increment
+suffix:semicolon
 id|wake_up
 c_func
 (paren
 op_amp
 id|deviceconndiscwq
 )paren
-suffix:semicolon
-id|conndiscevcnt
-op_increment
 suffix:semicolon
 )brace
 DECL|function|class_decode
@@ -688,6 +688,12 @@ id|end
 r_return
 id|start
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* driver might be unloaded */
 id|start
 op_add_assign
 id|sprintf
@@ -721,6 +727,11 @@ c_cond
 id|iface-&gt;driver-&gt;name
 suffix:colon
 l_string|&quot;(none)&quot;
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2442,6 +2453,23 @@ r_return
 id|POLLIN
 suffix:semicolon
 )brace
+multiline_comment|/* we may have dropped BKL - need to check for having lost the race */
+r_if
+c_cond
+(paren
+id|file-&gt;private_data
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|st
+)paren
+suffix:semicolon
+r_goto
+id|lost_race
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * need to prevent the module from being unloaded, since&n;&t;&t; * proc_unregister does not call the release method and&n;&t;&t; * we would have a memory leak&n;&t;&t; */
 id|st-&gt;lastev
 op_assign
@@ -2456,6 +2484,8 @@ op_assign
 id|POLLIN
 suffix:semicolon
 )brace
+id|lost_race
+suffix:colon
 r_if
 c_cond
 (paren

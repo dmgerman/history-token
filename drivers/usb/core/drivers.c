@@ -139,6 +139,12 @@ op_assign
 op_star
 id|ppos
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* else drivers might be unloaded */
 r_for
 c_loop
 (paren
@@ -262,6 +268,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
