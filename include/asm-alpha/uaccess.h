@@ -13,11 +13,11 @@ mdefine_line|#define VERIFY_READ&t;0
 DECL|macro|VERIFY_WRITE
 mdefine_line|#define VERIFY_WRITE&t;1
 DECL|macro|get_fs
-mdefine_line|#define get_fs()  (current-&gt;thread.fs)
+mdefine_line|#define get_fs()  (current_thread_info()-&gt;addr_limit)
 DECL|macro|get_ds
 mdefine_line|#define get_ds()  (KERNEL_DS)
 DECL|macro|set_fs
-mdefine_line|#define set_fs(x) (current-&gt;thread.fs = (x))
+mdefine_line|#define set_fs(x) (current_thread_info()-&gt;addr_limit = (x))
 DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
 multiline_comment|/*&n; * Is a address valid? This does a straighforward calculation rather&n; * than tests.&n; *&n; * Address valid if:&n; *  - &quot;addr&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;size&quot; doesn&squot;t have any high-bits set&n; *  - AND &quot;addr+size&quot; doesn&squot;t have any high-bits set&n; *  - OR we are in kernel mode.&n; */

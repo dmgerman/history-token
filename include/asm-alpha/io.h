@@ -18,6 +18,7 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 multiline_comment|/*&n; * We try to avoid hae updates (thus the cache), but when we&n; * do need to update the hae, we need to do it atomically, so&n; * that any interrupts wouldn&squot;t get confused with the hae&n; * register not being up-to-date with respect to the hardware&n; * value.&n; */
 DECL|function|__set_hae
@@ -145,7 +146,10 @@ id|IDENT_ADDR
 suffix:semicolon
 )brace
 DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;(((page) - (page)-&gt;zone-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define page_to_phys(page)&t;PAGE_TO_PA(page)
+multiline_comment|/* This depends on working iommu.  */
+DECL|macro|BIO_VMERGE_BOUNDARY
+mdefine_line|#define BIO_VMERGE_BOUNDARY&t;(alpha_mv.mv_pci_tbi ? PAGE_SIZE : 0)
 multiline_comment|/*&n; * Change addresses as seen by the kernel (virtual) to addresses as&n; * seen by a device (bus), and vice versa.&n; *&n; * Note that this only works for a limited range of kernel addresses,&n; * and very well may not span all memory.  Consider this interface &n; * deprecated in favour of the mapping functions in &lt;asm/pci.h&gt;.&n; */
 r_extern
 r_int

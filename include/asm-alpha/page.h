@@ -148,8 +148,9 @@ mdefine_line|#define __pgd(x)&t;(x)
 DECL|macro|__pgprot
 mdefine_line|#define __pgprot(x)&t;(x)
 macro_line|#endif /* STRICT_MM_TYPECHECKS */
+multiline_comment|/* ??? Would be nice to use .gprel32 here, but we can&squot;t be sure that the&n;   function loaded the GP, so this could fail in modules.  */
 DECL|macro|BUG
-mdefine_line|#define BUG()&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&bslash;n&quot;, __FILE__, __LINE__);&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&quot;call_pal %0  # bugchk&quot; : : &quot;i&quot; (PAL_bugchk));&t;&bslash;&n;} while (0)
+mdefine_line|#define BUG() &bslash;&n;  __asm__ __volatile__(&quot;call_pal %0  # bugchk&bslash;n&bslash;t&quot;&quot;.long %1&bslash;n&bslash;t.8byte %2&quot; &bslash;&n;&t;&t;       : : &quot;i&quot; (PAL_bugchk), &quot;i&quot;(__LINE__), &quot;i&quot;(__FILE__))
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page)&t;BUG()
 multiline_comment|/* Pure 2^n version of get_order */

@@ -363,7 +363,7 @@ mdefine_line|#define __halt() __asm__ __volatile__ (&quot;call_pal %0 #halt&quot
 DECL|macro|prepare_to_switch
 mdefine_line|#define prepare_to_switch()&t;do { } while(0)
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long pcbb;&t;&t;&t;&t;&bslash;&n;&t;current = (next);&t;&t;&t;&t;&bslash;&n;&t;pcbb = virt_to_phys(&amp;current-&gt;thread);&t;&t;&bslash;&n;&t;(last) = alpha_switch_to(pcbb, (prev));&t;&t;&bslash;&n;&t;check_mmu_context();&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define switch_to(prev,next,last)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long pcbb;&t;&t;&t;&t;&bslash;&n;&t;pcbb = virt_to_phys(&amp;(next)-&gt;thread_info-&gt;pcb);&t;&bslash;&n;&t;(last) = alpha_switch_to(pcbb, (prev));&t;&t;&bslash;&n;&t;check_mmu_context();&t;&t;&t;&t;&bslash;&n;} while (0)
 r_extern
 r_struct
 id|task_struct

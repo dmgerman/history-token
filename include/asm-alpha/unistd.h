@@ -624,6 +624,7 @@ macro_line|#endif /* __LIBRARY__ &amp;&amp; __GNUC__ */
 macro_line|#ifdef __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 r_extern
 r_void
 id|sys_idle
@@ -1023,6 +1024,28 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_struct
+id|rusage
+suffix:semicolon
+r_extern
+id|asmlinkage
+r_int
+id|sys_wait4
+c_func
+(paren
+id|pid_t
+comma
+r_int
+r_int
+op_star
+comma
+r_int
+comma
+r_struct
+id|rusage
+op_star
+)paren
+suffix:semicolon
 DECL|function|waitpid
 r_static
 r_inline

@@ -414,7 +414,12 @@ op_assign
 id|swcr_update_status
 c_func
 (paren
-id|current-&gt;thread.flags
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|ieee_state
 comma
 id|fpcr
 )paren
@@ -1230,7 +1235,12 @@ op_lshift
 id|IEEE_STATUS_TO_EXCSUM_SHIFT
 )paren
 suffix:semicolon
-id|current-&gt;thread.flags
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|ieee_state
 op_or_assign
 (paren
 id|_fex
