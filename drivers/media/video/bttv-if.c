@@ -1345,7 +1345,7 @@ suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|btv-&gt;i2c_adap.dev.name
+id|btv-&gt;i2c_adap.name
 comma
 l_string|&quot;bt848 #%d&quot;
 comma
