@@ -5,7 +5,6 @@ multiline_comment|/* &t;&t;&t;&t;&t;&t;&t;&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*   Copyright (C) 1995-1999 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* $Id: i2c-id.h,v 1.68 2003/02/25 02:55:18 mds Exp $ */
 macro_line|#ifndef LINUX_I2C_ID_H
 DECL|macro|LINUX_I2C_ID_H
 mdefine_line|#define LINUX_I2C_ID_H
@@ -283,14 +282,20 @@ DECL|macro|I2C_ALGO_BITHS
 mdefine_line|#define I2C_ALGO_BITHS&t;0x130000&t;/* enhanced bit style adapters&t;*/
 DECL|macro|I2C_ALGO_IOP3XX
 mdefine_line|#define I2C_ALGO_IOP3XX&t;0x140000&t;/* XSCALE IOP3XX On-chip I2C alg */
-DECL|macro|I2C_ALGO_PCA
-mdefine_line|#define I2C_ALGO_PCA&t;0x150000&t;/* PCA 9564 style adapters&t;*/
 DECL|macro|I2C_ALGO_SIBYTE
 mdefine_line|#define I2C_ALGO_SIBYTE 0x150000&t;/* Broadcom SiByte SOCs&t;&t;*/
 DECL|macro|I2C_ALGO_SGI
-mdefine_line|#define I2C_ALGO_SGI&t;0x160000        /* SGI algorithm                */
+mdefine_line|#define I2C_ALGO_SGI&t;0x160000&t;/* SGI algorithm&t;&t;*/
+DECL|macro|I2C_ALGO_USB
+mdefine_line|#define I2C_ALGO_USB&t;0x170000&t;/* USB algorithm&t;&t;*/
+DECL|macro|I2C_ALGO_VIRT
+mdefine_line|#define I2C_ALGO_VIRT&t;0x180000&t;/* Virtual bus adapter&t;&t;*/
+DECL|macro|I2C_ALGO_MV64XXX
+mdefine_line|#define I2C_ALGO_MV64XXX 0x190000&t;/* Marvell mv64xxx i2c ctlr&t;*/
+DECL|macro|I2C_ALGO_PCA
+mdefine_line|#define I2C_ALGO_PCA&t;0x1a0000&t;/* PCA 9564 style adapters&t;*/
 DECL|macro|I2C_ALGO_AU1550
-mdefine_line|#define I2C_ALGO_AU1550&t;0x170000        /* Au1550 PSC algorithm&t;&t;*/
+mdefine_line|#define I2C_ALGO_AU1550&t;0x1b0000        /* Au1550 PSC algorithm&t;&t;*/
 DECL|macro|I2C_ALGO_EXP
 mdefine_line|#define I2C_ALGO_EXP&t;0x800000&t;/* experimental&t;&t;&t;*/
 DECL|macro|I2C_ALGO_MASK
@@ -353,6 +358,8 @@ DECL|macro|I2C_HW_B_S3VIA
 mdefine_line|#define I2C_HW_B_S3VIA&t;0x18&t;/* S3Via ProSavage adapter&t;&t;*/
 DECL|macro|I2C_HW_B_ZR36067
 mdefine_line|#define I2C_HW_B_ZR36067 0x19&t;/* Zoran-36057/36067 based boards&t;*/
+DECL|macro|I2C_HW_B_PCILYNX
+mdefine_line|#define I2C_HW_B_PCILYNX 0x1a&t;/* TI PCILynx I2C adapter&t;&t;*/
 DECL|macro|I2C_HW_B_CX2388x
 mdefine_line|#define I2C_HW_B_CX2388x 0x1b&t;/* connexant 2388x based tv cards&t;*/
 multiline_comment|/* --- PCF 8584 based algorithms&t;&t;&t;&t;&t;*/
