@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
+macro_line|#include &lt;linux/rmap-locking.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -206,6 +207,13 @@ id|pmd_t
 op_star
 id|pmd
 suffix:semicolon
+r_struct
+id|pte_chain
+op_star
+id|pte_chain
+op_assign
+l_int|NULL
+suffix:semicolon
 id|pgd
 op_assign
 id|pgd_offset
@@ -243,6 +251,14 @@ id|pmd
 )paren
 r_goto
 id|err_unlock
+suffix:semicolon
+id|pte_chain
+op_assign
+id|pte_chain_alloc
+c_func
+(paren
+id|GFP_KERNEL
+)paren
 suffix:semicolon
 id|pte
 op_assign
@@ -330,12 +346,16 @@ comma
 id|entry
 )paren
 suffix:semicolon
+id|pte_chain
+op_assign
 id|page_add_rmap
 c_func
 (paren
 id|page
 comma
 id|pte
+comma
+id|pte_chain
 )paren
 suffix:semicolon
 id|pte_unmap
@@ -359,6 +379,12 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+id|pte_chain_free
+c_func
+(paren
+id|pte_chain
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -369,6 +395,12 @@ c_func
 (paren
 op_amp
 id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
+id|pte_chain_free
+c_func
+(paren
+id|pte_chain
 )paren
 suffix:semicolon
 r_return
