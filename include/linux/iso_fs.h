@@ -1436,8 +1436,6 @@ DECL|macro|ISOFS_BUFFER_SIZE
 mdefine_line|#define ISOFS_BUFFER_SIZE(INODE) ((INODE)-&gt;i_sb-&gt;s_blocksize)
 DECL|macro|ISOFS_BUFFER_BITS
 mdefine_line|#define ISOFS_BUFFER_BITS(INODE) ((INODE)-&gt;i_sb-&gt;s_blocksize_bits)
-DECL|macro|ISOFS_ZONE_BITS
-mdefine_line|#define ISOFS_ZONE_BITS(INODE)   ((INODE)-&gt;i_sb-&gt;u.isofs_sb.s_log_zone_size)
 DECL|macro|ISOFS_SUPER_MAGIC
 mdefine_line|#define ISOFS_SUPER_MAGIC 0x9660
 macro_line|#ifdef __KERNEL__
@@ -1445,6 +1443,26 @@ multiline_comment|/* Number conversion inlines, named after the section in ISO 9
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/iso_fs_i.h&gt;
+macro_line|#include &lt;linux/iso_fs_sb.h&gt;
+DECL|function|ISOFS_SB
+r_static
+r_inline
+r_struct
+id|isofs_sb_info
+op_star
+id|ISOFS_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|function|ISOFS_I
 r_static
 r_inline

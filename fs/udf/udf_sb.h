@@ -50,10 +50,27 @@ DECL|macro|UDF_PART_FLAG_REWRITABLE
 mdefine_line|#define UDF_PART_FLAG_REWRITABLE&t;0x0040
 DECL|macro|UDF_PART_FLAG_OVERWRITABLE
 mdefine_line|#define UDF_PART_FLAG_OVERWRITABLE&t;0x0080
+DECL|function|UDF_SB
+r_static
+r_inline
+r_struct
+id|udf_sb_info
+op_star
+id|UDF_SB
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+(brace
+r_return
+id|sb-&gt;u.generic_sbp
+suffix:semicolon
+)brace
 DECL|macro|UDF_SB_FREE
 mdefine_line|#define UDF_SB_FREE(X)&bslash;&n;{&bslash;&n;&t;if (UDF_SB(X))&bslash;&n;&t;{&bslash;&n;&t;&t;if (UDF_SB_PARTMAPS(X))&bslash;&n;&t;&t;&t;kfree(UDF_SB_PARTMAPS(X));&bslash;&n;&t;&t;UDF_SB_PARTMAPS(X) = NULL;&bslash;&n;&t;}&bslash;&n;}
-DECL|macro|UDF_SB
-mdefine_line|#define UDF_SB(X)&t;(&amp;((X)-&gt;u.udf_sb))
 DECL|macro|UDF_SB_ALLOC_PARTMAPS
 mdefine_line|#define UDF_SB_ALLOC_PARTMAPS(X,Y)&bslash;&n;{&bslash;&n;&t;UDF_SB_PARTMAPS(X) = kmalloc(sizeof(struct udf_part_map) * Y, GFP_KERNEL);&bslash;&n;&t;if (UDF_SB_PARTMAPS(X) != NULL)&bslash;&n;&t;{&bslash;&n;&t;&t;UDF_SB_NUMPARTS(X) = Y;&bslash;&n;&t;&t;memset(UDF_SB_PARTMAPS(X), 0x00, sizeof(struct udf_part_map) * Y);&bslash;&n;&t;}&bslash;&n;&t;else&bslash;&n;&t;{&bslash;&n;&t;&t;UDF_SB_NUMPARTS(X) = 0;&bslash;&n;&t;&t;udf_error(X, __FUNCTION__, &quot;Unable to allocate space for %d partition maps&quot;, Y);&bslash;&n;&t;}&bslash;&n;}
 DECL|macro|UDF_SB_ALLOC_BITMAP

@@ -32,7 +32,7 @@ mdefine_line|#define&t;RS(inst)&t;(((inst) &amp; 0x03E00000) &gt;&gt; 21)
 DECL|macro|RA
 mdefine_line|#define&t;RA(inst)&t;(((inst) &amp; 0x001F0000) &gt;&gt; 16)
 DECL|macro|IS_DFORM
-mdefine_line|#define&t;IS_DFORM(code)&t;((code) &gt;= 32 &amp;&amp; (code) &lt;= 47)
+mdefine_line|#define&t;IS_DFORM(code)&t;((code) &gt;= 32 &amp;&amp; (code) &lt;= 55)
 macro_line|#endif
 DECL|macro|INVALID
 mdefine_line|#define INVALID&t;{ 0, 0 }

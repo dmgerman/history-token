@@ -2020,7 +2020,6 @@ mdefine_line|#define MNT_DETACH&t;0x00000002&t;/* Just detach from the tree */
 macro_line|#include &lt;linux/ext3_fs_sb.h&gt;
 macro_line|#include &lt;linux/hpfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ntfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/iso_fs_sb.h&gt;
 macro_line|#include &lt;linux/sysv_fs_sb.h&gt;
 macro_line|#include &lt;linux/affs_fs_sb.h&gt;
 macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
@@ -2029,7 +2028,6 @@ macro_line|#include &lt;linux/hfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/adfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
-macro_line|#include &lt;linux/udf_fs_sb.h&gt;
 r_extern
 r_struct
 id|list_head
@@ -2190,11 +2188,6 @@ r_struct
 id|ntfs_sb_info
 id|ntfs_sb
 suffix:semicolon
-DECL|member|isofs_sb
-r_struct
-id|isofs_sb_info
-id|isofs_sb
-suffix:semicolon
 DECL|member|sysv_sb
 r_struct
 id|sysv_sb_info
@@ -2239,11 +2232,6 @@ DECL|member|bfs_sb
 r_struct
 id|bfs_sb_info
 id|bfs_sb
-suffix:semicolon
-DECL|member|udf_sb
-r_struct
-id|udf_sb_info
-id|udf_sb
 suffix:semicolon
 DECL|member|generic_sbp
 r_void
