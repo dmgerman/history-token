@@ -1298,12 +1298,6 @@ DECL|struct|sbp2scsi_host_info
 r_struct
 id|sbp2scsi_host_info
 (brace
-multiline_comment|/*&n;&t; * For use in keeping track of hosts&n;&t; */
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
 DECL|member|host
 r_struct
 id|hpsb_host
@@ -1440,19 +1434,6 @@ r_struct
 id|sbp2scsi_host_info
 op_star
 id|sbp2_add_host
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-)paren
-suffix:semicolon
-r_static
-r_struct
-id|sbp2scsi_host_info
-op_star
-id|sbp2_find_host_info
 c_func
 (paren
 r_struct
