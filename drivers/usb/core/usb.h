@@ -90,6 +90,17 @@ id|intf
 suffix:semicolon
 r_extern
 r_void
+id|usb_release_interface_cache
+c_func
+(paren
+r_struct
+id|kref
+op_star
+id|ref
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|usb_disable_device
 (paren
 r_struct
