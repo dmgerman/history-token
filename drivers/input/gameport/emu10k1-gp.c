@@ -1,6 +1,6 @@
-multiline_comment|/*&n; * $Id: emu10k1-gp.c,v 1.2 2001/04/24 07:48:56 vojtech Exp $&n; *&n; *  Copyright (c) 2001 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
-multiline_comment|/*&n; * EMU10k1 - SB Live! - gameport driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * $Id: emu10k1-gp.c,v 1.8 2002/01/22 20:40:46 vojtech Exp $&n; *&n; *  Copyright (c) 2001 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * EMU10k1 - SB Live / Audigy - gameport driver for Linux&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -13,6 +13,12 @@ id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;EMU10k1 gameport driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -46,6 +52,13 @@ DECL|member|size
 r_int
 id|size
 suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata
@@ -68,7 +81,18 @@ comma
 id|PCI_ANY_ID
 )brace
 comma
-multiline_comment|/* SB Live! gameport */
+multiline_comment|/* SB Live gameport */
+(brace
+l_int|0x1102
+comma
+l_int|0x7003
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+)brace
+comma
+multiline_comment|/* Audigy gameport */
 (brace
 l_int|0
 comma
@@ -107,45 +131,24 @@ id|ioport
 comma
 id|iolen
 suffix:semicolon
-r_int
-id|rc
-suffix:semicolon
 r_struct
 id|emu
 op_star
-id|port
+id|emu
 suffix:semicolon
-id|rc
-op_assign
+r_if
+c_cond
+(paren
 id|pci_enable_device
 c_func
 (paren
 id|pdev
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;emu10k1-gp: Cannot enable emu10k1 gameport (bus %d, devfn %d) error=%d&bslash;n&quot;
-comma
-id|pdev-&gt;bus-&gt;number
-comma
-id|pdev-&gt;devfn
-comma
-id|rc
-)paren
-suffix:semicolon
 r_return
-id|rc
+op_minus
+id|EBUSY
 suffix:semicolon
-)brace
 id|ioport
 op_assign
 id|pci_resource_start
@@ -189,7 +192,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|port
+id|emu
 op_assign
 id|kmalloc
 c_func
@@ -228,7 +231,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|port
+id|emu
 comma
 l_int|0
 comma
@@ -239,46 +242,74 @@ id|emu
 )paren
 )paren
 suffix:semicolon
-id|port-&gt;gameport.io
-op_assign
-id|ioport
+id|sprintf
+c_func
+(paren
+id|emu-&gt;phys
+comma
+l_string|&quot;pci%s/gameport0&quot;
+comma
+id|pdev-&gt;slot_name
+)paren
 suffix:semicolon
-id|port-&gt;size
+id|emu-&gt;size
 op_assign
 id|iolen
 suffix:semicolon
-id|port-&gt;dev
+id|emu-&gt;dev
 op_assign
 id|pdev
+suffix:semicolon
+id|emu-&gt;gameport.io
+op_assign
+id|ioport
+suffix:semicolon
+id|emu-&gt;gameport.name
+op_assign
+id|pdev-&gt;name
+suffix:semicolon
+id|emu-&gt;gameport.phys
+op_assign
+id|emu-&gt;phys
+suffix:semicolon
+id|emu-&gt;gameport.idbus
+op_assign
+id|BUS_PCI
+suffix:semicolon
+id|emu-&gt;gameport.idvendor
+op_assign
+id|pdev-&gt;vendor
+suffix:semicolon
+id|emu-&gt;gameport.idproduct
+op_assign
+id|pdev-&gt;device
 suffix:semicolon
 id|pci_set_drvdata
 c_func
 (paren
 id|pdev
 comma
-id|port
+id|emu
 )paren
 suffix:semicolon
 id|gameport_register_port
 c_func
 (paren
 op_amp
-id|port-&gt;gameport
+id|emu-&gt;gameport
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;gameport%d: Emu10k1 Gameport at %#x size %d speed %d kHz&bslash;n&quot;
+l_string|&quot;gameport: %s at pci%s speed %d kHz&bslash;n&quot;
 comma
-id|port-&gt;gameport.number
+id|pdev-&gt;name
 comma
-id|port-&gt;gameport.io
+id|pdev-&gt;slot_name
 comma
-id|iolen
-comma
-id|port-&gt;gameport.speed
+id|emu-&gt;gameport.speed
 )paren
 suffix:semicolon
 r_return
@@ -301,7 +332,7 @@ id|pdev
 r_struct
 id|emu
 op_star
-id|port
+id|emu
 op_assign
 id|pci_get_drvdata
 c_func
@@ -313,21 +344,21 @@ id|gameport_unregister_port
 c_func
 (paren
 op_amp
-id|port-&gt;gameport
+id|emu-&gt;gameport
 )paren
 suffix:semicolon
 id|release_region
 c_func
 (paren
-id|port-&gt;gameport.io
+id|emu-&gt;gameport.io
 comma
-id|port-&gt;size
+id|emu-&gt;size
 )paren
 suffix:semicolon
 id|kfree
 c_func
 (paren
-id|port
+id|emu
 )paren
 suffix:semicolon
 )brace

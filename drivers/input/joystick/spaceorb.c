@@ -1,12 +1,30 @@
-multiline_comment|/*&n; * $Id: spaceorb.c,v 1.7 2000/05/29 11:19:51 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2000 Vojtech Pavlik&n; * &n; *  Based on the work of:&n; *  &t;David Thompson&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: spaceorb.c,v 1.15 2002/01/22 20:29:19 vojtech Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; * &n; *  Based on the work of:&n; *  &t;David Thompson&n; */
 multiline_comment|/*&n; * SpaceTec SpaceOrb 360 and Avenger 6dof controller driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; *  Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; *  Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;SpaceTec SpaceOrb 360 and Avenger 6dof controller driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Constants.&n; */
 DECL|macro|SPACEORB_MAX_LENGTH
 mdefine_line|#define SPACEORB_MAX_LENGTH&t;64
@@ -29,8 +47,6 @@ comma
 id|BTN_B
 comma
 id|BTN_A
-comma
-id|BTN_MODE
 )brace
 suffix:semicolon
 DECL|variable|spaceorb_axes
@@ -60,7 +76,7 @@ r_char
 op_star
 id|spaceorb_name
 op_assign
-l_string|&quot;SpaceTec SpaceOrb 360&quot;
+l_string|&quot;SpaceTec SpaceOrb 360 / Avenger&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Per-Orb data.&n; */
 DECL|struct|spaceorb
@@ -88,6 +104,13 @@ r_char
 id|data
 (braket
 id|SPACEORB_MAX_LENGTH
+)braket
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
 )braket
 suffix:semicolon
 )brace
@@ -255,9 +278,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s [%s] on serio%d&bslash;n&quot;
-comma
-id|spaceorb-&gt;dev.number
+l_string|&quot;input: %s [%s] on %s&bslash;n&quot;
 comma
 id|spaceorb_name
 comma
@@ -265,7 +286,7 @@ id|spaceorb-&gt;data
 op_plus
 id|i
 comma
-id|spaceorb-&gt;serio-&gt;number
+id|spaceorb-&gt;serio-&gt;phys
 )paren
 suffix:semicolon
 r_break
@@ -540,7 +561,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|8
+l_int|6
 suffix:semicolon
 id|i
 op_increment
@@ -906,7 +927,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|7
+l_int|6
 suffix:semicolon
 id|i
 op_increment
@@ -919,7 +940,6 @@ id|spaceorb_buttons
 id|i
 )braket
 comma
-op_amp
 id|spaceorb-&gt;dev.keybit
 )paren
 suffix:semicolon
@@ -979,9 +999,23 @@ r_private
 op_assign
 id|spaceorb
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|spaceorb-&gt;phys
+comma
+l_string|&quot;%s/input0&quot;
+comma
+id|serio-&gt;phys
+)paren
+suffix:semicolon
 id|spaceorb-&gt;dev.name
 op_assign
 id|spaceorb_name
+suffix:semicolon
+id|spaceorb-&gt;dev.phys
+op_assign
+id|spaceorb-&gt;phys
 suffix:semicolon
 id|spaceorb-&gt;dev.idbus
 op_assign
@@ -1106,12 +1140,6 @@ id|module_exit
 c_func
 (paren
 id|spaceorb_exit
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

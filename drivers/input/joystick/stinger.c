@@ -1,12 +1,30 @@
-multiline_comment|/*&n; * $Id: stinger.c,v 1.4 2001/05/23 09:25:02 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *  Copyright (c) 2000 Mark Fletcher&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: stinger.c,v 1.10 2002/01/22 20:29:31 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *  Copyright (c) 2000 Mark Fletcher&n; */
 multiline_comment|/*&n; * Gravis Stinger gamepad driver for Linux&n; */
-multiline_comment|/*&n; * This program is free warftware; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; *  Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free warftware; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; *  Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Gravis Stinger gamepad driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Constants.&n; */
 DECL|macro|STINGER_MAX_LENGTH
 mdefine_line|#define STINGER_MAX_LENGTH 8
@@ -38,6 +56,13 @@ r_char
 id|data
 (braket
 id|STINGER_MAX_LENGTH
+)braket
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
 )braket
 suffix:semicolon
 )brace
@@ -637,9 +662,23 @@ c_func
 id|ABS_Y
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|stinger-&gt;phys
+comma
+l_string|&quot;%s/serio0&quot;
+comma
+id|serio-&gt;phys
+)paren
+suffix:semicolon
 id|stinger-&gt;dev.name
 op_assign
 id|stinger_name
+suffix:semicolon
+id|stinger-&gt;dev.phys
+op_assign
+id|stinger-&gt;phys
 suffix:semicolon
 id|stinger-&gt;dev.idbus
 op_assign
@@ -745,13 +784,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s on serio%d&bslash;n&quot;
-comma
-id|stinger-&gt;dev.number
+l_string|&quot;input: %s on %s&bslash;n&quot;
 comma
 id|stinger_name
 comma
-id|serio-&gt;number
+id|serio-&gt;phys
 )paren
 suffix:semicolon
 )brace
@@ -827,12 +864,6 @@ id|module_exit
 c_func
 (paren
 id|stinger_exit
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

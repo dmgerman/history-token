@@ -140,6 +140,13 @@ id|i8253_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|i8253_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|i8253_lock
+)paren
+suffix:semicolon
 r_extern
 id|spinlock_t
 id|i8259A_lock

@@ -1,12 +1,30 @@
-multiline_comment|/*&n; * $Id: a3d.c,v 1.14 2001/04/26 10:24:46 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: a3d.c,v 1.21 2002/01/22 20:11:50 vojtech Exp $&n; *&n; *  Copyright (c) 1998-2001 Vojtech Pavlik&n; */
 multiline_comment|/*&n; * FP-Gaming Assasin 3D joystick driver for Linux&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;FP-Gaming Assasin 3D joystick driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|A3D_MAX_START
 mdefine_line|#define A3D_MAX_START&t;&t;400&t;/* 400 us */ 
 DECL|macro|A3D_MAX_STROBE
@@ -101,6 +119,20 @@ suffix:semicolon
 DECL|member|bads
 r_int
 id|bads
+suffix:semicolon
+DECL|member|phys
+r_char
+id|phys
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|adcphys
+r_char
+id|adcphys
+(braket
+l_int|32
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1330,9 +1362,7 @@ id|a3d
 op_star
 id|a3d
 op_assign
-id|gameport
-op_member_access_from_pointer
-r_private
+id|gameport-&gt;driver
 suffix:semicolon
 r_int
 id|i
@@ -1403,9 +1433,7 @@ id|a3d
 op_star
 id|a3d
 op_assign
-id|gameport
-op_member_access_from_pointer
-r_private
+id|gameport-&gt;driver
 suffix:semicolon
 r_if
 c_cond
@@ -1458,9 +1486,7 @@ id|a3d
 op_star
 id|a3d
 op_assign
-id|gameport
-op_member_access_from_pointer
-r_private
+id|gameport-&gt;driver
 suffix:semicolon
 r_if
 c_cond
@@ -1723,9 +1749,9 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;a3d.c: Unknown A3D device detected &quot;
-l_string|&quot;(gameport%d, id=%d), contact &lt;vojtech@suse.cz&gt;&bslash;n&quot;
+l_string|&quot;(%s, id=%d), contact &lt;vojtech@ucw.cz&gt;&bslash;n&quot;
 comma
-id|gameport-&gt;number
+id|gameport-&gt;phys
 comma
 id|a3d-&gt;mode
 )paren
@@ -1734,6 +1760,26 @@ r_goto
 id|fail2
 suffix:semicolon
 )brace
+id|sprintf
+c_func
+(paren
+id|a3d-&gt;phys
+comma
+l_string|&quot;%s/input0&quot;
+comma
+id|gameport-&gt;phys
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|a3d-&gt;adcphys
+comma
+l_string|&quot;%s/gameport0&quot;
+comma
+id|gameport-&gt;phys
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2109,9 +2155,7 @@ c_func
 id|BTN_MIDDLE
 )paren
 suffix:semicolon
-id|a3d-&gt;adc
-dot
-r_private
+id|a3d-&gt;adc.driver
 op_assign
 id|a3d
 suffix:semicolon
@@ -2130,6 +2174,33 @@ suffix:semicolon
 id|a3d-&gt;adc.fuzz
 op_assign
 l_int|1
+suffix:semicolon
+id|a3d-&gt;adc.name
+op_assign
+id|a3d_names
+(braket
+id|a3d-&gt;mode
+)braket
+suffix:semicolon
+id|a3d-&gt;adc.phys
+op_assign
+id|a3d-&gt;adcphys
+suffix:semicolon
+id|a3d-&gt;adc.idbus
+op_assign
+id|BUS_GAMEPORT
+suffix:semicolon
+id|a3d-&gt;adc.idvendor
+op_assign
+id|GAMEPORT_ID_VENDOR_MADCATZ
+suffix:semicolon
+id|a3d-&gt;adc.idproduct
+op_assign
+id|a3d-&gt;mode
+suffix:semicolon
+id|a3d-&gt;adc.idversion
+op_assign
+l_int|0x0100
 suffix:semicolon
 id|a3d_read
 c_func
@@ -2150,16 +2221,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;gameport%d: %s on gameport%d.0&bslash;n&quot;
-comma
-id|a3d-&gt;adc.number
+l_string|&quot;gameport: %s on %s&bslash;n&quot;
 comma
 id|a3d_names
 (braket
 id|a3d-&gt;mode
 )braket
 comma
-id|gameport-&gt;number
+id|gameport-&gt;phys
 )paren
 suffix:semicolon
 )brace
@@ -2183,6 +2252,10 @@ id|a3d_names
 (braket
 id|a3d-&gt;mode
 )braket
+suffix:semicolon
+id|a3d-&gt;dev.phys
+op_assign
+id|a3d-&gt;phys
 suffix:semicolon
 id|a3d-&gt;dev.idbus
 op_assign
@@ -2211,16 +2284,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s on gameport%d.0&bslash;n&quot;
-comma
-id|a3d-&gt;dev.number
+l_string|&quot;input: %s on %s&bslash;n&quot;
 comma
 id|a3d_names
 (braket
 id|a3d-&gt;mode
 )braket
 comma
-id|gameport-&gt;number
+id|a3d-&gt;phys
 )paren
 suffix:semicolon
 r_return
@@ -2363,12 +2434,6 @@ id|module_exit
 c_func
 (paren
 id|a3d_exit
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof
