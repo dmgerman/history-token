@@ -12,8 +12,10 @@ DECL|macro|HCI_RESET
 mdefine_line|#define HCI_RESET&t;&t;0x02
 DECL|macro|HCI_DIGIANSWER
 mdefine_line|#define HCI_DIGIANSWER&t;&t;0x04
+DECL|macro|HCI_SNIFFER
+mdefine_line|#define HCI_SNIFFER&t;&t;0x08
 DECL|macro|HCI_BROKEN_ISOC
-mdefine_line|#define HCI_BROKEN_ISOC&t;&t;0x08
+mdefine_line|#define HCI_BROKEN_ISOC&t;&t;0x10
 DECL|macro|HCI_MAX_IFACE_NUM
 mdefine_line|#define HCI_MAX_IFACE_NUM&t;3
 DECL|macro|HCI_MAX_BULK_TX
