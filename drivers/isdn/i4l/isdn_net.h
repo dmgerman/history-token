@@ -2,30 +2,6 @@ multiline_comment|/* $Id: isdn_net.h,v 1.19.6.4 2001/09/28 08:05:29 kai Exp $&n;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
-multiline_comment|/* Definitions for hupflags:                */
-DECL|macro|ISDN_CHARGEHUP
-mdefine_line|#define ISDN_CHARGEHUP   4      /* We want to use the charge mechanism      */
-DECL|macro|ISDN_INHUP
-mdefine_line|#define ISDN_INHUP       8      /* Even if incoming, close after huptimeout */
-DECL|macro|ISDN_MANCHARGE
-mdefine_line|#define ISDN_MANCHARGE  16      /* Charge Interval manually set             */
-multiline_comment|/*&n; * Definitions for Cisco-HDLC header.&n; */
-DECL|macro|CISCO_ADDR_UNICAST
-mdefine_line|#define CISCO_ADDR_UNICAST    0x0f
-DECL|macro|CISCO_ADDR_BROADCAST
-mdefine_line|#define CISCO_ADDR_BROADCAST  0x8f
-DECL|macro|CISCO_CTRL
-mdefine_line|#define CISCO_CTRL            0x00
-DECL|macro|CISCO_TYPE_CDP
-mdefine_line|#define CISCO_TYPE_CDP        0x2000
-DECL|macro|CISCO_TYPE_SLARP
-mdefine_line|#define CISCO_TYPE_SLARP      0x8035
-DECL|macro|CISCO_SLARP_REQUEST
-mdefine_line|#define CISCO_SLARP_REQUEST   0
-DECL|macro|CISCO_SLARP_REPLY
-mdefine_line|#define CISCO_SLARP_REPLY     1
-DECL|macro|CISCO_SLARP_KEEPALIVE
-mdefine_line|#define CISCO_SLARP_KEEPALIVE 2
 r_void
 id|isdn_net_init
 c_func
@@ -201,39 +177,6 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|ST_CHARGE_NULL
-id|ST_CHARGE_NULL
-comma
-DECL|enumerator|ST_CHARGE_GOT_CINF
-id|ST_CHARGE_GOT_CINF
-comma
-multiline_comment|/* got a first charge info */
-DECL|enumerator|ST_CHARGE_HAVE_CINT
-id|ST_CHARGE_HAVE_CINT
-comma
-multiline_comment|/* got a second chare info and thus the timing */
-)brace
-suffix:semicolon
-r_static
-r_inline
-r_int
-DECL|function|isdn_net_bound
-id|isdn_net_bound
-c_func
-(paren
-id|isdn_net_dev
-op_star
-id|idev
-)paren
-(brace
-r_return
-id|idev-&gt;isdn_slot
-op_ge
-l_int|0
-suffix:semicolon
-)brace
 r_static
 r_inline
 r_int

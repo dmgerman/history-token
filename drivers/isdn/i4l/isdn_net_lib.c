@@ -357,6 +357,28 @@ l_string|&quot;EV_DO_ACCEPT&quot;
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Definitions for hupflags: */
+DECL|macro|ISDN_CHARGEHUP
+mdefine_line|#define ISDN_CHARGEHUP   4      /* We want to use the charge mechanism      */
+DECL|macro|ISDN_INHUP
+mdefine_line|#define ISDN_INHUP       8      /* Even if incoming, close after huptimeout */
+DECL|macro|ISDN_MANCHARGE
+mdefine_line|#define ISDN_MANCHARGE  16      /* Charge Interval manually set             */
+r_enum
+(brace
+DECL|enumerator|ST_CHARGE_NULL
+id|ST_CHARGE_NULL
+comma
+DECL|enumerator|ST_CHARGE_GOT_CINF
+id|ST_CHARGE_GOT_CINF
+comma
+multiline_comment|/* got a first charge info */
+DECL|enumerator|ST_CHARGE_HAVE_CINT
+id|ST_CHARGE_HAVE_CINT
+comma
+multiline_comment|/* got a second chare info and thus the timing */
+)brace
+suffix:semicolon
 multiline_comment|/* ====================================================================== */
 multiline_comment|/* Registration of ISDN network interface types                           */
 multiline_comment|/* ====================================================================== */
@@ -7537,26 +7559,6 @@ op_amp
 id|idev-&gt;dial_timer
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|isdn_net_bound
-c_func
-(paren
-id|idev
-)paren
-)paren
-(brace
-id|isdn_BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 id|printk
 c_func
 (paren
