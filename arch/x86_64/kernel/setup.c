@@ -2184,6 +2184,13 @@ suffix:semicolon
 id|init_memory_mapping
 c_func
 (paren
+l_int|0
+comma
+(paren
+id|end_pfn_map
+op_lshift
+id|PAGE_SHIFT
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
