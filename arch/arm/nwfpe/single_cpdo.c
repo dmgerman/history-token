@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.COM, 1998,1999&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.COM, 1998,1999&n;    (c) Philip Blundell, 2001&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &quot;fpa11.h&quot;
 macro_line|#include &quot;softfloat.h&quot;
 macro_line|#include &quot;fpopcode.h&quot;
@@ -397,7 +397,7 @@ r_int
 r_int
 id|Fm
 comma
-id|opc
+id|opc_mask_shift
 suffix:semicolon
 id|Fm
 op_assign
@@ -454,11 +454,15 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|opc
+id|opc_mask_shift
 op_assign
+(paren
 id|opcode
 op_amp
 id|MASK_ARITHMETIC_OPCODE
+)paren
+op_rshift
+l_int|20
 suffix:semicolon
 r_if
 c_cond
@@ -496,9 +500,7 @@ id|typeSingle
 op_logical_and
 id|dyadic_single
 (braket
-id|opc
-op_rshift
-l_int|20
+id|opc_mask_shift
 )braket
 )paren
 (brace
@@ -515,9 +517,7 @@ id|rFd-&gt;fSingle
 op_assign
 id|dyadic_single
 (braket
-id|opc
-op_rshift
-l_int|20
+id|opc_mask_shift
 )braket
 (paren
 id|rFn
@@ -540,9 +540,7 @@ c_cond
 (paren
 id|monadic_single
 (braket
-id|opc
-op_rshift
-l_int|20
+id|opc_mask_shift
 )braket
 )paren
 (brace
@@ -550,9 +548,7 @@ id|rFd-&gt;fSingle
 op_assign
 id|monadic_single
 (braket
-id|opc
-op_rshift
-l_int|20
+id|opc_mask_shift
 )braket
 (paren
 id|rFm
