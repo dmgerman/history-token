@@ -1895,6 +1895,7 @@ op_star
 id|str
 )paren
 (brace
+r_int
 r_char
 id|ch
 suffix:semicolon

@@ -1,6 +1,6 @@
 multiline_comment|/* Simple code to turn various tables in an ELF file into alias definitions.&n; * This deals with kernel datastructures where they should be&n; * dealt with: in the kernel source.&n; *&n; * Copyright 2002-2003  Rusty Russell, IBM Corporation&n; *           2003       Kai Germaschewski&n; *           &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;modpost.h&quot;
-multiline_comment|/* We use the ELF typedefs, since we can&squot;t rely on stdint.h being present. */
+multiline_comment|/* We use the ELF typedefs for kernel_ulong_t but bite the bullet and&n; * use either stdint.h or inttypes.h for the rest. */
 macro_line|#if KERNEL_ELFCLASS == ELFCLASS32
 DECL|typedef|kernel_ulong_t
 r_typedef
@@ -14,14 +14,19 @@ id|Elf64_Addr
 id|kernel_ulong_t
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef __sun__
+macro_line|#include &lt;inttypes.h&gt;
+macro_line|#else
+macro_line|#include &lt;stdint.h&gt;
+macro_line|#endif
 DECL|typedef|__u32
 r_typedef
-id|Elf32_Word
+r_uint32
 id|__u32
 suffix:semicolon
 DECL|typedef|__u16
 r_typedef
-id|Elf32_Half
+r_uint16
 id|__u16
 suffix:semicolon
 DECL|typedef|__u8

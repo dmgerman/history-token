@@ -58,6 +58,7 @@ id|conf_expand_value
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|in
@@ -69,6 +70,7 @@ op_star
 id|sym
 suffix:semicolon
 r_const
+r_int
 r_char
 op_star
 id|src
@@ -1298,6 +1300,15 @@ suffix:semicolon
 id|time_t
 id|now
 suffix:semicolon
+r_int
+id|use_timestamp
+op_assign
+l_int|1
+suffix:semicolon
+r_char
+op_star
+id|env
+suffix:semicolon
 id|dirname
 (braket
 l_int|0
@@ -1448,6 +1459,9 @@ l_string|&quot;%s.tmpconfig.%d&quot;
 comma
 id|dirname
 comma
+(paren
+r_int
+)paren
 id|getpid
 c_func
 (paren
@@ -1527,6 +1541,26 @@ op_amp
 id|now
 )paren
 suffix:semicolon
+id|env
+op_assign
+id|getenv
+c_func
+(paren
+l_string|&quot;KCONFIG_NOTIMESTAMP&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|env
+op_logical_and
+op_star
+id|env
+)paren
+id|use_timestamp
+op_assign
+l_int|0
+suffix:semicolon
 id|fprintf
 c_func
 (paren
@@ -1535,7 +1569,7 @@ comma
 l_string|&quot;#&bslash;n&quot;
 l_string|&quot;# Automatically generated make config: don&squot;t edit&bslash;n&quot;
 l_string|&quot;# Linux kernel version: %s&bslash;n&quot;
-l_string|&quot;# %s&quot;
+l_string|&quot;%s%s&quot;
 l_string|&quot;#&bslash;n&quot;
 comma
 id|sym_get_string_value
@@ -1544,12 +1578,24 @@ c_func
 id|sym
 )paren
 comma
+id|use_timestamp
+ques
+c_cond
+l_string|&quot;# &quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|use_timestamp
+ques
+c_cond
 id|ctime
 c_func
 (paren
 op_amp
 id|now
 )paren
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1565,7 +1611,7 @@ comma
 l_string|&quot;/*&bslash;n&quot;
 l_string|&quot; * Automatically generated C config: don&squot;t edit&bslash;n&quot;
 l_string|&quot; * Linux kernel version: %s&bslash;n&quot;
-l_string|&quot; * %s&quot;
+l_string|&quot;%s%s&quot;
 l_string|&quot; */&bslash;n&quot;
 l_string|&quot;#define AUTOCONF_INCLUDED&bslash;n&quot;
 comma
@@ -1575,12 +1621,24 @@ c_func
 id|sym
 )paren
 comma
+id|use_timestamp
+ques
+c_cond
+l_string|&quot; * &quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+id|use_timestamp
+ques
+c_cond
 id|ctime
 c_func
 (paren
 op_amp
 id|now
 )paren
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 r_if
