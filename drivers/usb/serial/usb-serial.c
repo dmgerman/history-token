@@ -2848,19 +2848,15 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* check out the endpoints of the other interface*/
-singleline_comment|//interface = &amp;dev-&gt;actconfig-&gt;interface[ifnum ^ 1];
-id|interface
+id|iface_desc
 op_assign
 op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
 )braket
-suffix:semicolon
-id|iface_desc
-op_assign
-op_amp
-id|interface-&gt;altsetting
+dot
+id|altsetting
 (braket
 l_int|0
 )braket
