@@ -2292,6 +2292,9 @@ id|dir
 )paren
 op_member_access_from_pointer
 id|i_flags
+op_amp
+op_complement
+id|EXT2_BTREE_FL
 suffix:semicolon
 r_if
 c_cond
