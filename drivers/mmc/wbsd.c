@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/mmc/wbsd.c&n; *&n; *  Copyright (C) 2004 Pierre Ossman, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/drivers/mmc/wbsd.c - Winbond W83L51xD SD/MMC driver&n; *&n; *  Copyright (C) 2004-2005 Pierre Ossman, All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *&n; * Warning!&n; *&n; * Changes to the FIFO system should be done with extreme care since&n; * the hardware is full of bugs related to the FIFO. Known issues are:&n; *&n; * - FIFO size field in FSR is always zero.&n; *&n; * - FIFO interrupts tend not to work as they should. Interrupts are&n; *   triggered only for full/empty events, not for threshold values.&n; *&n; * - On APIC systems the FIFO empty interrupt is sometimes lost.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -17,7 +17,7 @@ macro_line|#include &quot;wbsd.h&quot;
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;wbsd&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;1.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;1.1&quot;
 macro_line|#ifdef CONFIG_MMC_DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(x...) &bslash;&n;&t;printk(KERN_DEBUG DRIVER_NAME &quot;: &quot; x)
@@ -722,7 +722,8 @@ op_star
 id|host
 )paren
 (brace
-r_return
+id|host-&gt;mapped_sg
+op_assign
 id|kmap_atomic
 c_func
 (paren
@@ -732,6 +733,9 @@ id|KM_BIO_SRC_IRQ
 )paren
 op_plus
 id|host-&gt;cur_sg-&gt;offset
+suffix:semicolon
+r_return
+id|host-&gt;mapped_sg
 suffix:semicolon
 )brace
 DECL|function|wbsd_kunmap_sg
@@ -750,7 +754,7 @@ id|host
 id|kunmap_atomic
 c_func
 (paren
-id|host-&gt;cur_sg-&gt;page
+id|host-&gt;mapped_sg
 comma
 id|KM_BIO_SRC_IRQ
 )paren
@@ -888,12 +892,7 @@ suffix:semicolon
 id|kunmap_atomic
 c_func
 (paren
-id|sg
-(braket
-id|i
-)braket
-dot
-id|page
+id|sgbuf
 comma
 id|KM_BIO_SRC_IRQ
 )paren
@@ -1089,12 +1088,7 @@ suffix:semicolon
 id|kunmap_atomic
 c_func
 (paren
-id|sg
-(braket
-id|i
-)braket
-dot
-id|page
+id|sgbuf
 comma
 id|KM_BIO_SRC_IRQ
 )paren
@@ -1452,8 +1446,6 @@ suffix:semicolon
 id|u8
 id|status
 comma
-id|eir
-comma
 id|isr
 suffix:semicolon
 id|DBGF
@@ -1464,26 +1456,10 @@ comma
 id|cmd-&gt;opcode
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Disable interrupts as the interrupt routine&n;&t; * will destroy the contents of ISR.&n;&t; */
-id|eir
+multiline_comment|/*&n;&t; * Clear accumulated ISR. The interrupt routine&n;&t; * will fill this one with events that occur during&n;&t; * transfer.&n;&t; */
+id|host-&gt;isr
 op_assign
-id|inb
-c_func
-(paren
-id|host-&gt;base
-op_plus
-id|WBSD_EIR
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
 l_int|0
-comma
-id|host-&gt;base
-op_plus
-id|WBSD_EIR
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Send the command (CRC calculated by host).&n;&t; */
 id|outb
@@ -1572,13 +1548,7 @@ id|MMC_RSP_NONE
 multiline_comment|/*&n;&t;&t; * Read back status.&n;&t;&t; */
 id|isr
 op_assign
-id|inb
-c_func
-(paren
-id|host-&gt;base
-op_plus
-id|WBSD_ISR
-)paren
+id|host-&gt;isr
 suffix:semicolon
 multiline_comment|/* Card removed? */
 r_if
@@ -1659,28 +1629,6 @@ id|cmd
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Restore interrupt mask to previous value.&n;&t; */
-id|outb
-c_func
-(paren
-id|eir
-comma
-id|host-&gt;base
-op_plus
-id|WBSD_EIR
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Call the interrupt routine to jump start&n;&t; * interrupts.&n;&t; */
-id|wbsd_irq
-c_func
-(paren
-l_int|0
-comma
-id|host
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|DBGF
 c_func
 (paren
@@ -1716,6 +1664,13 @@ r_char
 op_star
 id|buffer
 suffix:semicolon
+r_int
+id|i
+comma
+id|fsr
+comma
+id|fifo
+suffix:semicolon
 multiline_comment|/*&n;&t; * Handle excessive data.&n;&t; */
 r_if
 c_cond
@@ -1742,6 +1697,9 @@ c_loop
 (paren
 op_logical_neg
 (paren
+(paren
+id|fsr
+op_assign
 id|inb
 c_func
 (paren
@@ -1749,9 +1707,54 @@ id|host-&gt;base
 op_plus
 id|WBSD_FSR
 )paren
+)paren
 op_amp
 id|WBSD_FIFO_EMPTY
 )paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * The size field in the FSR is broken so we have to&n;&t;&t; * do some guessing.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|fsr
+op_amp
+id|WBSD_FIFO_FULL
+)paren
+id|fifo
+op_assign
+l_int|16
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|fsr
+op_amp
+id|WBSD_FIFO_FUTHRE
+)paren
+id|fifo
+op_assign
+l_int|8
+suffix:semicolon
+r_else
+id|fifo
+op_assign
+l_int|1
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|fifo
+suffix:semicolon
+id|i
+op_increment
 )paren
 (brace
 op_star
@@ -1777,7 +1780,7 @@ suffix:semicolon
 id|data-&gt;bytes_xfered
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Transfer done?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Transfer done?&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1795,7 +1798,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * End of scatter list entry?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * End of scatter list entry?&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1810,7 +1813,7 @@ c_func
 id|host
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Get next entry. Check if last.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Get next entry. Check if last.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1822,7 +1825,7 @@ id|host
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * We should never reach this point.&n;&t;&t;&t;&t; * It means that we&squot;re trying to&n;&t;&t;&t;&t; * transfer more blocks than can fit&n;&t;&t;&t;&t; * into the scatter list.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * We should never reach this point.&n;&t;&t;&t;&t;&t; * It means that we&squot;re trying to&n;&t;&t;&t;&t;&t; * transfer more blocks than can fit&n;&t;&t;&t;&t;&t; * into the scatter list.&n;&t;&t;&t;&t;&t; */
 id|BUG_ON
 c_func
 (paren
@@ -1846,10 +1849,30 @@ id|host
 suffix:semicolon
 )brace
 )brace
+)brace
 id|wbsd_kunmap_sg
 c_func
 (paren
 id|host
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * This is a very dirty hack to solve a&n;&t; * hardware problem. The chip doesn&squot;t trigger&n;&t; * FIFO threshold interrupts properly.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|host-&gt;size
+op_minus
+id|data-&gt;bytes_xfered
+)paren
+OL
+l_int|16
+)paren
+id|tasklet_schedule
+c_func
+(paren
+op_amp
+id|host-&gt;fifo_tasklet
 )paren
 suffix:semicolon
 )brace
@@ -1875,6 +1898,13 @@ suffix:semicolon
 r_char
 op_star
 id|buffer
+suffix:semicolon
+r_int
+id|i
+comma
+id|fsr
+comma
+id|fifo
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check that we aren&squot;t being called after the&n;&t; * entire buffer has been transfered.&n;&t; */
 r_if
@@ -1902,6 +1932,9 @@ c_loop
 (paren
 op_logical_neg
 (paren
+(paren
+id|fsr
+op_assign
 id|inb
 c_func
 (paren
@@ -1909,9 +1942,54 @@ id|host-&gt;base
 op_plus
 id|WBSD_FSR
 )paren
+)paren
 op_amp
 id|WBSD_FIFO_FULL
 )paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * The size field in the FSR is broken so we have to&n;&t;&t; * do some guessing.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|fsr
+op_amp
+id|WBSD_FIFO_EMPTY
+)paren
+id|fifo
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|fsr
+op_amp
+id|WBSD_FIFO_EMTHRE
+)paren
+id|fifo
+op_assign
+l_int|8
+suffix:semicolon
+r_else
+id|fifo
+op_assign
+l_int|15
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|16
+suffix:semicolon
+id|i
+OG
+id|fifo
+suffix:semicolon
+id|i
+op_decrement
 )paren
 (brace
 id|outb
@@ -1937,7 +2015,7 @@ suffix:semicolon
 id|data-&gt;bytes_xfered
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Transfer done?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Transfer done?&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1955,7 +2033,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * End of scatter list entry?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * End of scatter list entry?&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1970,7 +2048,7 @@ c_func
 id|host
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Get next entry. Check if last.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Get next entry. Check if last.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1982,7 +2060,7 @@ id|host
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * We should never reach this point.&n;&t;&t;&t;&t; * It means that we&squot;re trying to&n;&t;&t;&t;&t; * transfer more blocks than can fit&n;&t;&t;&t;&t; * into the scatter list.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * We should never reach this point.&n;&t;&t;&t;&t;&t; * It means that we&squot;re trying to&n;&t;&t;&t;&t;&t; * transfer more blocks than can fit&n;&t;&t;&t;&t;&t; * into the scatter list.&n;&t;&t;&t;&t;&t; */
 id|BUG_ON
 c_func
 (paren
@@ -2004,6 +2082,7 @@ c_func
 id|host
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 id|wbsd_kunmap_sg
@@ -2278,6 +2357,9 @@ c_func
 id|host-&gt;dma
 comma
 id|DMA_MODE_READ
+op_amp
+op_complement
+l_int|0x40
 )paren
 suffix:semicolon
 r_else
@@ -2287,6 +2369,9 @@ c_func
 id|host-&gt;dma
 comma
 id|DMA_MODE_WRITE
+op_amp
+op_complement
+l_int|0x40
 )paren
 suffix:semicolon
 id|set_dma_addr
@@ -2325,8 +2410,6 @@ id|host
 comma
 id|WBSD_IDX_DMA
 comma
-id|WBSD_DMA_SINGLE
-op_or
 id|WBSD_DMA_ENABLE
 )paren
 suffix:semicolon
@@ -2431,6 +2514,9 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
+id|u8
+id|status
+suffix:semicolon
 id|WARN_ON
 c_func
 (paren
@@ -2451,6 +2537,32 @@ c_func
 id|host
 comma
 id|data-&gt;stop
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Wait for the controller to leave data&n;&t; * transfer state.&n;&t; */
+r_do
+(brace
+id|status
+op_assign
+id|wbsd_read_index
+c_func
+(paren
+id|host
+comma
+id|WBSD_IDX_STATUS
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|status
+op_amp
+(paren
+id|WBSD_BLOCK_READ
+op_or
+id|WBSD_BLOCK_WRITE
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * DMA transfer?&n;&t; */
@@ -2702,6 +2814,22 @@ id|MMC_ERR_NONE
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Dirty fix for hardware bug.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|host-&gt;dma
+op_eq
+op_minus
+l_int|1
+)paren
+id|tasklet_schedule
+c_func
+(paren
+op_amp
+id|host-&gt;fifo_tasklet
+)paren
+suffix:semicolon
 id|spin_unlock_bh
 c_func
 (paren
@@ -3292,13 +3420,6 @@ op_amp
 id|host-&gt;lock
 )paren
 suffix:semicolon
-id|WARN_ON
-c_func
-(paren
-op_logical_neg
-id|host-&gt;mrq
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3385,13 +3506,6 @@ c_func
 (paren
 op_amp
 id|host-&gt;lock
-)paren
-suffix:semicolon
-id|WARN_ON
-c_func
-(paren
-op_logical_neg
-id|host-&gt;mrq
 )paren
 suffix:semicolon
 r_if
@@ -3686,6 +3800,10 @@ l_int|0x00
 r_return
 id|IRQ_NONE
 suffix:semicolon
+id|host-&gt;isr
+op_or_assign
+id|isr
+suffix:semicolon
 multiline_comment|/*&n;&t; * Schedule tasklets as needed.&n;&t; */
 r_if
 c_cond
@@ -3708,7 +3826,7 @@ id|isr
 op_amp
 id|WBSD_INT_FIFO_THRE
 )paren
-id|tasklet_hi_schedule
+id|tasklet_schedule
 c_func
 (paren
 op_amp
@@ -4665,11 +4783,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Maximum number of segments. Worst case is one sector per segment&n;&t; * so this will be 64kB/512.&n;&t; */
 id|mmc-&gt;max_hw_segs
 op_assign
-id|NR_SG
+l_int|128
 suffix:semicolon
 id|mmc-&gt;max_phys_segs
 op_assign
-id|NR_SG
+l_int|128
 suffix:semicolon
 multiline_comment|/*&n;&t; * Maximum number of sectors in one transfer. Also limited by 64kB&n;&t; * buffer.&n;&t; */
 id|mmc-&gt;max_sectors
@@ -5273,6 +5391,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Winbond W83L51xD SD/MMC card interface driver&quot;
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRIVER_VERSION
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
