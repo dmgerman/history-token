@@ -9549,6 +9549,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|mddev-&gt;persistent
+)paren
 id|rdev-&gt;sb_offset
 op_assign
 id|calc_dev_sboffset
@@ -9556,6 +9561,13 @@ c_func
 (paren
 id|rdev-&gt;bdev
 )paren
+suffix:semicolon
+r_else
+id|rdev-&gt;sb_offset
+op_assign
+id|rdev-&gt;bdev-&gt;bd_inode-&gt;i_size
+op_rshift
+id|BLOCK_SIZE_BITS
 suffix:semicolon
 id|size
 op_assign
