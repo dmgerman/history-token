@@ -1,6 +1,7 @@
 macro_line|#ifndef __ASM_MACH_APIC_H
 DECL|macro|__ASM_MACH_APIC_H
 mdefine_line|#define __ASM_MACH_APIC_H
+macro_line|#include &lt;mach_apicdef.h&gt;
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_FLAT)
 DECL|function|target_cpus
@@ -351,36 +352,6 @@ id|phys_cpu_present_map
 )paren
 suffix:semicolon
 )brace
-DECL|macro|APIC_ID_MASK
-mdefine_line|#define&t;&t;APIC_ID_MASK&t;&t;(0xF&lt;&lt;24)
-DECL|function|get_apic_id
-r_static
-r_inline
-r_int
-id|get_apic_id
-c_func
-(paren
-r_int
-r_int
-id|x
-)paren
-(brace
-r_return
-(paren
-(paren
-(paren
-id|x
-)paren
-op_rshift
-l_int|24
-)paren
-op_amp
-l_int|0xF
-)paren
-suffix:semicolon
-)brace
-DECL|macro|GET_APIC_ID
-mdefine_line|#define&t;&t;GET_APIC_ID(x)&t;get_apic_id(x)
 DECL|function|apic_id_registered
 r_static
 r_inline
