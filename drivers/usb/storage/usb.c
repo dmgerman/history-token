@@ -2459,6 +2459,10 @@ id|ss-&gt;protocol
 op_assign
 id|protocol
 suffix:semicolon
+id|ss-&gt;flags
+op_assign
+id|flags
+suffix:semicolon
 id|ss-&gt;unusual_dev
 op_assign
 id|unusual_dev
