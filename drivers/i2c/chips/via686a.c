@@ -3251,11 +3251,11 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
-multiline_comment|/* Alarm */
-DECL|function|show_alarm
+multiline_comment|/* Alarms */
+DECL|function|show_alarms
 r_static
 id|ssize_t
-id|show_alarm
+id|show_alarms
 c_func
 (paren
 r_struct
@@ -3316,13 +3316,13 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|alarm
+id|alarms
 comma
 id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
-id|show_alarm
+id|show_alarms
 comma
 l_int|NULL
 )paren
@@ -4075,7 +4075,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_alarm
+id|dev_attr_alarms
 )paren
 suffix:semicolon
 r_return
