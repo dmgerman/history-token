@@ -3684,14 +3684,6 @@ id|retval
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PCI
-r_if
-c_cond
-(paren
-id|pci_present
-(paren
-)paren
-)paren
-(brace
 multiline_comment|/* First look for the JET devices: */
 macro_line|#ifndef TWO_ZERO
 r_while
@@ -4550,7 +4542,6 @@ macro_line|#else
 )brace
 multiline_comment|/* Emacs from getting confused we have two closing braces too. */
 macro_line|#endif
-)brace
 macro_line|#endif /* PCI */
 multiline_comment|/* Now probe for ISA cards... */
 r_for
