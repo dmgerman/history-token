@@ -1589,7 +1589,7 @@ comma
 id|ADM1021_REG_STATUS
 )paren
 op_amp
-l_int|0xec
+l_int|0x7c
 suffix:semicolon
 r_if
 c_cond
