@@ -216,6 +216,10 @@ DECL|macro|BTTV_NGSTV_PLUS
 mdefine_line|#define BTTV_NGSTV_PLUS     0x75
 DECL|macro|BTTV_LMLBT4
 mdefine_line|#define BTTV_LMLBT4         0x76
+DECL|macro|BTTV_PICOLO_TETRA_CHIP
+mdefine_line|#define BTTV_PICOLO_TETRA_CHIP 0x79
+DECL|macro|BTTV_AVDVBT_771
+mdefine_line|#define BTTV_AVDVBT_771     0x7b
 multiline_comment|/* i2c address list */
 DECL|macro|I2C_TSA5522
 mdefine_line|#define I2C_TSA5522        0xc2
