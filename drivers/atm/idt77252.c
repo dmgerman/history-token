@@ -9835,8 +9835,6 @@ id|atomic_add
 c_func
 (paren
 id|skb-&gt;truesize
-op_plus
-id|ATM_PDU_OVHD
 comma
 op_amp
 id|vcc-&gt;sk-&gt;wmem_alloc

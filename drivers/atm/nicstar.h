@@ -83,6 +83,8 @@ mdefine_line|#define PCR_TOLERANCE (1.0001)
 multiline_comment|/* ESI stuff ******************************************************************/
 DECL|macro|NICSTAR_EPROM_MAC_ADDR_OFFSET
 mdefine_line|#define NICSTAR_EPROM_MAC_ADDR_OFFSET 0x6C
+DECL|macro|NICSTAR_EPROM_MAC_ADDR_OFFSET_ALT
+mdefine_line|#define NICSTAR_EPROM_MAC_ADDR_OFFSET_ALT 0xF6
 multiline_comment|/* #defines *******************************************************************/
 DECL|macro|NS_IOREMAP_SIZE
 mdefine_line|#define NS_IOREMAP_SIZE 4096
