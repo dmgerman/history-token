@@ -9,8 +9,10 @@ DECL|macro|CRYPTO_WEAK_KEY
 mdefine_line|#define CRYPTO_WEAK_KEY&t;&t;0x0008
 DECL|macro|CRYPTO_BAD_KEY_LEN
 mdefine_line|#define CRYPTO_BAD_KEY_LEN&t;0x0010
+DECL|macro|CRYPTO_BAD_KEY_SCHED
+mdefine_line|#define CRYPTO_BAD_KEY_SCHED&t;0x0020
 DECL|macro|CRYPTO_BAD_BLOCK_LEN
-mdefine_line|#define CRYPTO_BAD_BLOCK_LEN&t;0x0020
+mdefine_line|#define CRYPTO_BAD_BLOCK_LEN&t;0x0040
 DECL|macro|CRYPTO_ATOMIC
 mdefine_line|#define CRYPTO_ATOMIC&t;&t;0x1000
 multiline_comment|/*&n; * Algorithm identifiers.  These may be expanded later to 64 bits&n; * and include vendor id info, so we can have multiple versions&n; * (e.g. asm, various hardware versions etc).&n; *&n; * Todo: sadb translation.&n; */
@@ -42,12 +44,12 @@ DECL|macro|CRYPTO_ALG_DES_ECB
 mdefine_line|#define CRYPTO_ALG_DES_ECB&t;(CRYPTO_ALG_DES|CRYPTO_MODE_ECB)
 DECL|macro|CRYPTO_ALG_DES_CBC
 mdefine_line|#define CRYPTO_ALG_DES_CBC&t;(CRYPTO_ALG_DES|CRYPTO_MODE_CBC)
-DECL|macro|CRYPTO_ALG_3DES_EDE
-mdefine_line|#define CRYPTO_ALG_3DES_EDE&t;(0x00000002|CRYPTO_TYPE_CIPHER)
-DECL|macro|CRYPTO_ALG_3DES_EDE_ECB
-mdefine_line|#define CRYPTO_ALG_3DES_EDE_ECB&t;(CRYPTO_ALG_3DES_EDE|CRYPTO_MODE_ECB)
-DECL|macro|CRYPTO_ALG_3DES_EDE_CBC
-mdefine_line|#define CRYPTO_ALG_3DES_EDE_CBC&t;(CRYPTO_ALG_3DES_EDE|CRYPTO_MODE_CBC)
+DECL|macro|CRYPTO_ALG_DES3_EDE
+mdefine_line|#define CRYPTO_ALG_DES3_EDE&t;(0x00000002|CRYPTO_TYPE_CIPHER)
+DECL|macro|CRYPTO_ALG_DES3_EDE_ECB
+mdefine_line|#define CRYPTO_ALG_DES3_EDE_ECB&t;(CRYPTO_ALG_DES3_EDE|CRYPTO_MODE_ECB)
+DECL|macro|CRYPTO_ALG_DES3_EDE_CBC
+mdefine_line|#define CRYPTO_ALG_DES3_EDE_CBC&t;(CRYPTO_ALG_DES3_EDE|CRYPTO_MODE_CBC)
 DECL|macro|CRYPTO_ALG_MD5
 mdefine_line|#define CRYPTO_ALG_MD5&t;&t;(0x00000f00|CRYPTO_TYPE_DIGEST)
 DECL|macro|CRYPTO_ALG_SHA1
@@ -56,12 +58,6 @@ DECL|macro|CRYPTO_MAX_ALG_NAME
 mdefine_line|#define CRYPTO_MAX_ALG_NAME&t;64
 DECL|macro|CRYPTO_MAX_BLOCK_SIZE
 mdefine_line|#define CRYPTO_MAX_BLOCK_SIZE&t;16
-DECL|macro|cra_cipher
-mdefine_line|#define cra_cipher&t;cra_u.cipher
-DECL|macro|cra_digest
-mdefine_line|#define cra_digest&t;cra_u.digest
-DECL|macro|cra_compress
-mdefine_line|#define cra_compress&t;cra_u.compress
 r_struct
 id|scatterlist
 suffix:semicolon
