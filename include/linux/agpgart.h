@@ -74,7 +74,8 @@ id|agp_mode
 suffix:semicolon
 multiline_comment|/* mode info of bridge          */
 DECL|member|aper_base
-id|off_t
+r_int
+r_int
 id|aper_base
 suffix:semicolon
 multiline_comment|/* base of aperture             */
@@ -257,7 +258,8 @@ id|agp_mode
 suffix:semicolon
 multiline_comment|/* mode info of bridge          */
 DECL|member|aper_base
-id|off_t
+r_int
+r_int
 id|aper_base
 suffix:semicolon
 multiline_comment|/* base of aperture             */
