@@ -18059,6 +18059,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
 id|driver_template
@@ -18148,5 +18149,6 @@ l_int|1
 comma
 macro_line|#endif
 )brace
+suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 eof
