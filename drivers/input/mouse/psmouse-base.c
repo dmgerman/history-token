@@ -245,8 +245,6 @@ l_string|&quot;PS/2&quot;
 comma
 l_string|&quot;PS2++&quot;
 comma
-l_string|&quot;PS2T++&quot;
-comma
 l_string|&quot;ThinkPS/2&quot;
 comma
 l_string|&quot;GenPS/2&quot;
@@ -325,10 +323,6 @@ c_cond
 id|psmouse-&gt;type
 op_eq
 id|PSMOUSE_PS2PP
-op_logical_or
-id|psmouse-&gt;type
-op_eq
-id|PSMOUSE_PS2TPP
 )paren
 id|ps2pp_process_packet
 c_func
@@ -1940,11 +1934,7 @@ c_cond
 id|max_proto
 OG
 id|PSMOUSE_IMEX
-)paren
-(brace
-r_int
-id|type
-op_assign
+op_logical_and
 id|ps2pp_init
 c_func
 (paren
@@ -1952,18 +1942,10 @@ id|psmouse
 comma
 id|set_properties
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|type
-OG
-id|PSMOUSE_PS2
 )paren
 r_return
-id|type
+id|PSMOUSE_PS2PP
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Reset to defaults in case the device got confused by extended&n; * protocol probes.&n; */
 id|ps2_command
 c_func

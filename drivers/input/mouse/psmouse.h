@@ -290,9 +290,6 @@ comma
 DECL|enumerator|PSMOUSE_PS2PP
 id|PSMOUSE_PS2PP
 comma
-DECL|enumerator|PSMOUSE_PS2TPP
-id|PSMOUSE_PS2TPP
-comma
 DECL|enumerator|PSMOUSE_THINKPS
 id|PSMOUSE_THINKPS
 comma
