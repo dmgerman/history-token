@@ -45,61 +45,34 @@ DECL|macro|RCU_HEAD
 mdefine_line|#define RCU_HEAD(head) struct rcu_head head = RCU_HEAD_INIT(head)
 DECL|macro|INIT_RCU_HEAD
 mdefine_line|#define INIT_RCU_HEAD(ptr) do { &bslash;&n;       INIT_LIST_HEAD(&amp;(ptr)-&gt;list); (ptr)-&gt;func = NULL; (ptr)-&gt;arg = NULL; &bslash;&n;} while (0)
-multiline_comment|/* Control variables for rcupdate callback mechanism. */
+multiline_comment|/* Global control variables for rcupdate callback mechanism. */
 DECL|struct|rcu_ctrlblk
 r_struct
 id|rcu_ctrlblk
-(brace
-multiline_comment|/* &quot;const&quot; members: only changed when starting/ending a grace period  */
-r_struct
 (brace
 DECL|member|cur
 r_int
 id|cur
 suffix:semicolon
-multiline_comment|/* Current batch number.&t;      */
+multiline_comment|/* Current batch number.                      */
 DECL|member|completed
 r_int
 id|completed
 suffix:semicolon
-multiline_comment|/* Number of the last completed batch */
+multiline_comment|/* Number of the last completed batch         */
 DECL|member|next_pending
 r_int
 id|next_pending
 suffix:semicolon
-multiline_comment|/* Is the next batch already waiting? */
+multiline_comment|/* Is the next batch already waiting?         */
 DECL|member|lock
 id|seqcount_t
 id|lock
 suffix:semicolon
-multiline_comment|/* for atomically reading cur and     */
-multiline_comment|/* next_pending. Spinlock not used,   */
-multiline_comment|/* protected by state.mutex           */
-DECL|member|____cacheline_maxaligned_in_smp
+multiline_comment|/* For atomic reads of cur and next_pending.  */
+DECL|variable|____cacheline_maxaligned_in_smp
 )brace
-id|batch
 id|____cacheline_maxaligned_in_smp
-suffix:semicolon
-multiline_comment|/* remaining members: bookkeeping of the progress of the grace period */
-r_struct
-(brace
-DECL|member|mutex
-id|spinlock_t
-id|mutex
-suffix:semicolon
-multiline_comment|/* Guard this struct                  */
-DECL|member|rcu_cpu_mask
-id|cpumask_t
-id|rcu_cpu_mask
-suffix:semicolon
-multiline_comment|/* CPUs that need to switch   */
-multiline_comment|/* in order for current batch to proceed.     */
-DECL|member|____cacheline_maxaligned_in_smp
-)brace
-id|state
-id|____cacheline_maxaligned_in_smp
-suffix:semicolon
-)brace
 suffix:semicolon
 multiline_comment|/* Is batch a before batch b ? */
 DECL|function|rcu_batch_before
@@ -255,7 +228,7 @@ op_logical_neg
 id|rcu_batch_before
 c_func
 (paren
-id|rcu_ctrlblk.batch.completed
+id|rcu_ctrlblk.completed
 comma
 id|RCU_batch
 c_func
@@ -307,7 +280,7 @@ c_func
 id|cpu
 )paren
 op_ne
-id|rcu_ctrlblk.batch.cur
+id|rcu_ctrlblk.cur
 op_logical_or
 id|RCU_qs_pending
 c_func

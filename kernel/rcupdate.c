@@ -22,10 +22,6 @@ id|rcu_ctrlblk
 op_assign
 (brace
 dot
-id|batch
-op_assign
-(brace
-dot
 id|cur
 op_assign
 op_minus
@@ -42,9 +38,25 @@ id|lock
 op_assign
 id|SEQCNT_ZERO
 )brace
-comma
-dot
-id|state
+suffix:semicolon
+multiline_comment|/* Bookkeeping of the progress of the grace period */
+r_struct
+(brace
+DECL|member|mutex
+id|spinlock_t
+id|mutex
+suffix:semicolon
+multiline_comment|/* Guard this struct and writes to rcu_ctrlblk */
+DECL|member|rcu_cpu_mask
+id|cpumask_t
+id|rcu_cpu_mask
+suffix:semicolon
+multiline_comment|/* CPUs that need to switch in order    */
+multiline_comment|/* for current batch to proceed.        */
+DECL|variable|____cacheline_maxaligned_in_smp
+)brace
+id|rcu_state
+id|____cacheline_maxaligned_in_smp
 op_assign
 (brace
 dot
@@ -56,7 +68,6 @@ dot
 id|rcu_cpu_mask
 op_assign
 id|CPU_MASK_NONE
-)brace
 )brace
 suffix:semicolon
 id|DEFINE_PER_CPU
@@ -233,8 +244,8 @@ id|head-&gt;arg
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Grace period handling:&n; * The grace period handling consists out of two steps:&n; * - A new grace period is started.&n; *   This is done by rcu_start_batch. The start is not broadcasted to&n; *   all cpus, they must pick this up by comparing rcu_ctrlblk.batch.cur with&n; *   RCU_quiescbatch(cpu). All cpus are recorded  in the&n; *   rcu_ctrlblk.state.rcu_cpu_mask bitmap.&n; * - All cpus must go through a quiescent state.&n; *   Since the start of the grace period is not broadcasted, at least two&n; *   calls to rcu_check_quiescent_state are required:&n; *   The first call just notices that a new grace period is running. The&n; *   following calls check if there was a quiescent state since the beginning&n; *   of the grace period. If so, it updates rcu_ctrlblk.state.rcu_cpu_mask. If&n; *   the bitmap is empty, then the grace period is completed.&n; *   rcu_check_quiescent_state calls rcu_start_batch(0) to start the next grace&n; *   period (if necessary).&n; */
-multiline_comment|/*&n; * Register a new batch of callbacks, and start it up if there is currently no&n; * active batch and the batch to be registered has not already occurred.&n; * Caller must hold the rcu_ctrlblk.state lock.&n; */
+multiline_comment|/*&n; * Grace period handling:&n; * The grace period handling consists out of two steps:&n; * - A new grace period is started.&n; *   This is done by rcu_start_batch. The start is not broadcasted to&n; *   all cpus, they must pick this up by comparing rcu_ctrlblk.cur with&n; *   RCU_quiescbatch(cpu). All cpus are recorded  in the&n; *   rcu_state.rcu_cpu_mask bitmap.&n; * - All cpus must go through a quiescent state.&n; *   Since the start of the grace period is not broadcasted, at least two&n; *   calls to rcu_check_quiescent_state are required:&n; *   The first call just notices that a new grace period is running. The&n; *   following calls check if there was a quiescent state since the beginning&n; *   of the grace period. If so, it updates rcu_state.rcu_cpu_mask. If&n; *   the bitmap is empty, then the grace period is completed.&n; *   rcu_check_quiescent_state calls rcu_start_batch(0) to start the next grace&n; *   period (if necessary).&n; */
+multiline_comment|/*&n; * Register a new batch of callbacks, and start it up if there is currently no&n; * active batch and the batch to be registered has not already occurred.&n; * Caller must hold rcu_state.mutex.&n; */
 DECL|function|rcu_start_batch
 r_static
 r_void
@@ -253,18 +264,18 @@ c_cond
 (paren
 id|next_pending
 )paren
-id|rcu_ctrlblk.batch.next_pending
+id|rcu_ctrlblk.next_pending
 op_assign
 l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|rcu_ctrlblk.batch.next_pending
+id|rcu_ctrlblk.next_pending
 op_logical_and
-id|rcu_ctrlblk.batch.completed
+id|rcu_ctrlblk.completed
 op_eq
-id|rcu_ctrlblk.batch.cur
+id|rcu_ctrlblk.cur
 )paren
 (brace
 multiline_comment|/* Can&squot;t change, since spin lock held. */
@@ -281,7 +292,7 @@ suffix:semicolon
 id|cpus_and
 c_func
 (paren
-id|rcu_ctrlblk.state.rcu_cpu_mask
+id|rcu_state.rcu_cpu_mask
 comma
 id|cpu_online_map
 comma
@@ -292,21 +303,21 @@ id|write_seqcount_begin
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.batch.lock
+id|rcu_ctrlblk.lock
 )paren
 suffix:semicolon
-id|rcu_ctrlblk.batch.next_pending
+id|rcu_ctrlblk.next_pending
 op_assign
 l_int|0
 suffix:semicolon
-id|rcu_ctrlblk.batch.cur
+id|rcu_ctrlblk.cur
 op_increment
 suffix:semicolon
 id|write_seqcount_end
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.batch.lock
+id|rcu_ctrlblk.lock
 )paren
 suffix:semicolon
 )brace
@@ -327,7 +338,7 @@ c_func
 (paren
 id|cpu
 comma
-id|rcu_ctrlblk.state.rcu_cpu_mask
+id|rcu_state.rcu_cpu_mask
 )paren
 suffix:semicolon
 r_if
@@ -336,14 +347,14 @@ c_cond
 id|cpus_empty
 c_func
 (paren
-id|rcu_ctrlblk.state.rcu_cpu_mask
+id|rcu_state.rcu_cpu_mask
 )paren
 )paren
 (brace
 multiline_comment|/* batch completed ! */
-id|rcu_ctrlblk.batch.completed
+id|rcu_ctrlblk.completed
 op_assign
-id|rcu_ctrlblk.batch.cur
+id|rcu_ctrlblk.cur
 suffix:semicolon
 id|rcu_start_batch
 c_func
@@ -380,7 +391,7 @@ c_func
 id|cpu
 )paren
 op_ne
-id|rcu_ctrlblk.batch.cur
+id|rcu_ctrlblk.cur
 )paren
 (brace
 multiline_comment|/* new grace period: record qsctr value. */
@@ -410,7 +421,7 @@ c_func
 id|cpu
 )paren
 op_assign
-id|rcu_ctrlblk.batch.cur
+id|rcu_ctrlblk.cur
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -458,7 +469,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.state.mutex
+id|rcu_state.mutex
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * RCU_quiescbatch/batch.cur and the cpu bitmap can come out of sync&n;&t; * during cpu startup. Ignore the quiescent state.&n;&t; */
@@ -474,7 +485,7 @@ c_func
 id|cpu
 )paren
 op_eq
-id|rcu_ctrlblk.batch.cur
+id|rcu_ctrlblk.cur
 )paren
 )paren
 id|cpu_quiet
@@ -487,7 +498,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.state.mutex
+id|rcu_state.mutex
 )paren
 suffix:semicolon
 )brace
@@ -579,15 +590,15 @@ id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.state.mutex
+id|rcu_state.mutex
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|rcu_ctrlblk.batch.cur
+id|rcu_ctrlblk.cur
 op_ne
-id|rcu_ctrlblk.batch.completed
+id|rcu_ctrlblk.completed
 )paren
 id|cpu_quiet
 c_func
@@ -601,7 +612,7 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.state.mutex
+id|rcu_state.mutex
 )paren
 suffix:semicolon
 id|rcu_move_batch
@@ -654,7 +665,7 @@ id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.state.mutex
+id|rcu_state.mutex
 )paren
 suffix:semicolon
 id|RCU_quiescbatch
@@ -663,7 +674,7 @@ c_func
 id|cpu
 )paren
 op_assign
-id|rcu_ctrlblk.batch.completed
+id|rcu_ctrlblk.completed
 suffix:semicolon
 id|RCU_qs_pending
 c_func
@@ -677,7 +688,7 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.state.mutex
+id|rcu_state.mutex
 )paren
 suffix:semicolon
 )brace
@@ -726,7 +737,7 @@ op_logical_neg
 id|rcu_batch_before
 c_func
 (paren
-id|rcu_ctrlblk.batch.completed
+id|rcu_ctrlblk.completed
 comma
 id|RCU_batch
 c_func
@@ -842,7 +853,7 @@ id|read_seqcount_begin
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.batch.lock
+id|rcu_ctrlblk.lock
 )paren
 suffix:semicolon
 multiline_comment|/* determine batch number */
@@ -852,13 +863,13 @@ c_func
 id|cpu
 )paren
 op_assign
-id|rcu_ctrlblk.batch.cur
+id|rcu_ctrlblk.cur
 op_plus
 l_int|1
 suffix:semicolon
 id|next_pending
 op_assign
-id|rcu_ctrlblk.batch.next_pending
+id|rcu_ctrlblk.next_pending
 suffix:semicolon
 )brace
 r_while
@@ -868,7 +879,7 @@ id|read_seqcount_retry
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.batch.lock
+id|rcu_ctrlblk.lock
 comma
 id|seq
 )paren
@@ -886,7 +897,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.state.mutex
+id|rcu_state.mutex
 )paren
 suffix:semicolon
 id|rcu_start_batch
@@ -899,7 +910,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|rcu_ctrlblk.state.mutex
+id|rcu_state.mutex
 )paren
 suffix:semicolon
 )brace
@@ -1072,7 +1083,7 @@ c_func
 id|cpu
 )paren
 op_assign
-id|rcu_ctrlblk.batch.completed
+id|rcu_ctrlblk.completed
 suffix:semicolon
 id|RCU_qs_pending
 c_func
