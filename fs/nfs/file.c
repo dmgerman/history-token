@@ -1355,6 +1355,10 @@ comma
 id|fl
 )paren
 suffix:semicolon
+id|fl-&gt;fl_type
+op_assign
+id|F_UNLCK
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1362,7 +1366,6 @@ id|cfl
 op_ne
 l_int|NULL
 )paren
-(brace
 id|memcpy
 c_func
 (paren
@@ -1377,11 +1380,6 @@ id|fl
 )paren
 )paren
 suffix:semicolon
-id|fl-&gt;fl_type
-op_assign
-id|F_UNLCK
-suffix:semicolon
-)brace
 )brace
 id|unlock_kernel
 c_func
