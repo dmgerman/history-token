@@ -9133,19 +9133,6 @@ c_func
 id|tty_unregister_device
 )paren
 suffix:semicolon
-DECL|variable|tty_kobj
-r_static
-r_struct
-id|kobject
-id|tty_kobj
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;tty&quot;
-)brace
-suffix:semicolon
 DECL|function|alloc_tty_driver
 r_struct
 id|tty_driver
@@ -9618,11 +9605,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|driver-&gt;cdev.kobj.parent
-op_assign
-op_amp
-id|tty_kobj
-suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -10117,6 +10099,7 @@ c_func
 id|tty_class_init
 )paren
 suffix:semicolon
+multiline_comment|/* 3/2004 jmc: why do these devices exist? */
 DECL|variable|tty_cdev
 DECL|variable|console_cdev
 r_static
@@ -10351,17 +10334,6 @@ comma
 l_int|NULL
 comma
 l_string|&quot;console&quot;
-)paren
-suffix:semicolon
-id|tty_kobj.kset
-op_assign
-id|tty_cdev.kobj.kset
-suffix:semicolon
-id|kobject_register
-c_func
-(paren
-op_amp
-id|tty_kobj
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_UNIX98_PTYS
