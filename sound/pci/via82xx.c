@@ -9300,6 +9300,24 @@ multiline_comment|/* Gigabyte GA-7VAXP */
 dot
 id|vendor
 op_assign
+l_int|0x14ff
+comma
+dot
+id|device
+op_assign
+l_int|0x0403
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* Twinhead mobo */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1462
 comma
 dot
