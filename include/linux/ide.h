@@ -18,29 +18,30 @@ multiline_comment|/*&n; * This is the multiple IDE interface driver, as evolved 
 multiline_comment|/******************************************************************************&n; * IDE driver configuration options (play with these as desired):&n; */
 DECL|macro|INITIAL_MULT_COUNT
 mdefine_line|#define INITIAL_MULT_COUNT&t;0&t;/* off=0; on=2,4,8,16,32, etc.. */
-macro_line|#ifndef SUPPORT_SLOW_DATA_PORTS&t;&t;/* 1 to support slow data ports */
+macro_line|#ifndef SUPPORT_SLOW_DATA_PORTS&t;&t;&t;/* 1 to support slow data ports */
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
-mdefine_line|#define SUPPORT_SLOW_DATA_PORTS&t;1&t;/* 0 to reduce kernel size */
+macro_line|# define SUPPORT_SLOW_DATA_PORTS&t;1&t;/* 0 to reduce kernel size */
 macro_line|#endif
+multiline_comment|/* Right now this is only needed by a promise controlled.&n; */
 macro_line|#ifndef SUPPORT_VLB_SYNC&t;&t;/* 1 to support weird 32-bit chips */
 DECL|macro|SUPPORT_VLB_SYNC
-mdefine_line|#define SUPPORT_VLB_SYNC&t;1&t;/* 0 to reduce kernel size */
+macro_line|# define SUPPORT_VLB_SYNC&t;1&t;/* 0 to reduce kernel size */
 macro_line|#endif
 macro_line|#ifndef DISK_RECOVERY_TIME&t;&t;/* off=0; on=access_delay_time */
 DECL|macro|DISK_RECOVERY_TIME
-mdefine_line|#define DISK_RECOVERY_TIME&t;0&t;/*  for hardware that needs it */
+macro_line|# define DISK_RECOVERY_TIME&t;0&t;/*  for hardware that needs it */
 macro_line|#endif
 macro_line|#ifndef OK_TO_RESET_CONTROLLER&t;&t;/* 1 needed for good error recovery */
 DECL|macro|OK_TO_RESET_CONTROLLER
-mdefine_line|#define OK_TO_RESET_CONTROLLER&t;1&t;/* 0 for use with AH2372A/B interface */
+macro_line|# define OK_TO_RESET_CONTROLLER&t;1&t;/* 0 for use with AH2372A/B interface */
 macro_line|#endif
 macro_line|#ifndef FANCY_STATUS_DUMPS&t;&t;/* 1 for human-readable drive errors */
 DECL|macro|FANCY_STATUS_DUMPS
-mdefine_line|#define FANCY_STATUS_DUMPS&t;1&t;/* 0 to reduce kernel size */
+macro_line|# define FANCY_STATUS_DUMPS&t;1&t;/* 0 to reduce kernel size */
 macro_line|#endif
 macro_line|#ifndef DISABLE_IRQ_NOSYNC
 DECL|macro|DISABLE_IRQ_NOSYNC
-mdefine_line|#define DISABLE_IRQ_NOSYNC&t;0
+macro_line|# define DISABLE_IRQ_NOSYNC&t;0
 macro_line|#endif
 multiline_comment|/*&n; *  &quot;No user-serviceable parts&quot; beyond this point&n; *****************************************************************************/
 DECL|typedef|byte
@@ -356,135 +357,6 @@ DECL|macro|ATA_SCSI
 mdefine_line|#define ATA_SCSI&t;0x21
 DECL|macro|ATA_NO_LUN
 mdefine_line|#define ATA_NO_LUN      0x7f
-r_typedef
-r_union
-(brace
-r_int
-id|all
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* all of the bits together */
-r_struct
-(brace
-DECL|member|set_geometry
-r_int
-id|set_geometry
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* respecify drive geometry */
-DECL|member|recalibrate
-r_int
-id|recalibrate
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* seek to cyl 0      */
-DECL|member|set_multmode
-r_int
-id|set_multmode
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* set multmode count */
-DECL|member|set_tune
-r_int
-id|set_tune
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* tune interface for drive */
-DECL|member|reserved
-r_int
-id|reserved
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* unused */
-DECL|member|b
-)brace
-id|b
-suffix:semicolon
-DECL|typedef|special_t
-)brace
-id|special_t
-suffix:semicolon
-DECL|macro|IDE_MAX_TAG
-mdefine_line|#define IDE_MAX_TAG&t;&t;(32)&t;&t;/* spec says 32 max */
-DECL|macro|IDE_INACTIVE_TAG
-mdefine_line|#define IDE_INACTIVE_TAG&t;(-1)
-r_struct
-id|ata_request
-suffix:semicolon
-DECL|struct|ide_tag_info_s
-r_typedef
-r_struct
-id|ide_tag_info_s
-(brace
-DECL|member|tag_mask
-r_int
-r_int
-id|tag_mask
-suffix:semicolon
-multiline_comment|/* next tag bit mask */
-DECL|member|ar
-r_struct
-id|ata_request
-op_star
-id|ar
-(braket
-id|IDE_MAX_TAG
-)braket
-suffix:semicolon
-multiline_comment|/* in-progress requests */
-DECL|member|active_tag
-r_int
-id|active_tag
-suffix:semicolon
-multiline_comment|/* current active tag */
-DECL|member|queued
-r_int
-id|queued
-suffix:semicolon
-multiline_comment|/* current depth */
-multiline_comment|/*&n;&t; * stats -&gt;&n;&t; */
-DECL|member|max_depth
-r_int
-id|max_depth
-suffix:semicolon
-multiline_comment|/* max depth ever */
-DECL|member|max_last_depth
-r_int
-id|max_last_depth
-suffix:semicolon
-multiline_comment|/* max since last check */
-multiline_comment|/*&n;&t; * Either the command completed immediately after being started&n;&t; * (immed_comp), or the device did a bus release before dma was&n;&t; * started (immed_rel).&n;&t; */
-DECL|member|immed_rel
-r_int
-id|immed_rel
-suffix:semicolon
-DECL|member|immed_comp
-r_int
-id|immed_comp
-suffix:semicolon
-DECL|member|oldest_command
-r_int
-r_int
-id|oldest_command
-suffix:semicolon
-DECL|typedef|ide_tag_info_t
-)brace
-id|ide_tag_info_t
-suffix:semicolon
-DECL|macro|IDE_GET_AR
-mdefine_line|#define IDE_GET_AR(drive, tag)&t;((drive)-&gt;tcq-&gt;ar[(tag)])
-DECL|macro|IDE_CUR_TAG
-mdefine_line|#define IDE_CUR_TAG(drive)&t;(IDE_GET_AR((drive), (drive)-&gt;tcq-&gt;active_tag))
-DECL|macro|IDE_SET_CUR_TAG
-mdefine_line|#define IDE_SET_CUR_TAG(drive, tag)&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;((drive)-&gt;tcq-&gt;active_tag = (tag));&t;&bslash;&n;&t;&t;if ((tag) == IDE_INACTIVE_TAG)&t;&t;&bslash;&n;&t;&t;&t;HWGROUP((drive))-&gt;rq = NULL;&t;&bslash;&n;&t;} while (0);
-DECL|macro|IDE_CUR_AR
-mdefine_line|#define IDE_CUR_AR(drive)&t;(HWGROUP((drive))-&gt;rq-&gt;special)
 r_struct
 id|ide_settings_s
 suffix:semicolon
@@ -525,12 +397,6 @@ id|request_queue_t
 id|queue
 suffix:semicolon
 multiline_comment|/* per device request queue */
-DECL|member|free_req
-r_struct
-id|list_head
-id|free_req
-suffix:semicolon
-multiline_comment|/* free ata requests */
 DECL|member|next
 r_struct
 id|ata_device
@@ -563,21 +429,35 @@ r_int
 id|PADAM_timeout
 suffix:semicolon
 multiline_comment|/* max time to wait for irq */
-DECL|member|special
-id|special_t
-id|special
+multiline_comment|/* Flags requesting/indicating one of the following special commands&n;&t; * executed on the request queue.&n;&t; */
+DECL|macro|ATA_SPECIAL_GEOMETRY
+mdefine_line|#define ATA_SPECIAL_GEOMETRY&t;&t;0x01
+DECL|macro|ATA_SPECIAL_RECALIBRATE
+mdefine_line|#define ATA_SPECIAL_RECALIBRATE&t;&t;0x02
+DECL|macro|ATA_SPECIAL_MMODE
+mdefine_line|#define ATA_SPECIAL_MMODE&t;&t;0x04
+DECL|macro|ATA_SPECIAL_TUNE
+mdefine_line|#define ATA_SPECIAL_TUNE&t;&t;0x08
+DECL|member|special_cmd
+r_int
+r_char
+id|special_cmd
 suffix:semicolon
-multiline_comment|/* special action flags */
+DECL|member|mult_req
+id|u8
+id|mult_req
+suffix:semicolon
+multiline_comment|/* requested multiple sector setting */
+DECL|member|tune_req
+id|u8
+id|tune_req
+suffix:semicolon
+multiline_comment|/* requested drive tuning setting */
 DECL|member|using_dma
 id|byte
 id|using_dma
 suffix:semicolon
 multiline_comment|/* disk is using dma for read/write */
-DECL|member|using_tcq
-id|byte
-id|using_tcq
-suffix:semicolon
-multiline_comment|/* disk is using queued dma operations*/
 DECL|member|retry_pio
 id|byte
 id|retry_pio
@@ -721,16 +601,6 @@ id|byte
 id|mult_count
 suffix:semicolon
 multiline_comment|/* current multiple sector setting */
-DECL|member|mult_req
-id|byte
-id|mult_req
-suffix:semicolon
-multiline_comment|/* requested multiple sector setting */
-DECL|member|tune_req
-id|byte
-id|tune_req
-suffix:semicolon
-multiline_comment|/* requested drive tuning setting */
 DECL|member|bad_wstat
 id|byte
 id|bad_wstat
@@ -779,16 +649,8 @@ id|cyl
 suffix:semicolon
 multiline_comment|/* &quot;real&quot; number of cyls */
 DECL|member|capacity
-r_int
-r_int
+id|u64
 id|capacity
-suffix:semicolon
-multiline_comment|/* total number of sectors */
-DECL|member|capacity48
-r_int
-r_int
-r_int
-id|capacity48
 suffix:semicolon
 multiline_comment|/* total number of sectors */
 DECL|member|drive_data
@@ -928,16 +790,6 @@ id|device
 id|device
 suffix:semicolon
 multiline_comment|/* global device tree handle */
-DECL|member|queue_depth
-r_int
-r_int
-id|queue_depth
-suffix:semicolon
-DECL|member|tcq
-id|ide_tag_info_t
-op_star
-id|tcq
-suffix:semicolon
 DECL|typedef|ide_drive_t
 )brace
 id|ide_drive_t
@@ -990,22 +842,6 @@ DECL|enumerator|ide_dma_timeout
 id|ide_dma_lostirq
 comma
 id|ide_dma_timeout
-comma
-DECL|enumerator|ide_dma_read_queued
-DECL|enumerator|ide_dma_write_queued
-id|ide_dma_read_queued
-comma
-id|ide_dma_write_queued
-comma
-DECL|enumerator|ide_dma_queued_start
-DECL|enumerator|ide_dma_queued_on
-id|ide_dma_queued_start
-comma
-id|ide_dma_queued_on
-comma
-DECL|enumerator|ide_dma_queued_off
-id|ide_dma_queued_off
-comma
 DECL|typedef|ide_dma_action_t
 )brace
 id|ide_dma_action_t
@@ -1282,6 +1118,35 @@ op_star
 id|dmaproc
 suffix:semicolon
 multiline_comment|/* dma read/write/abort routine */
+DECL|member|dmatable_cpu
+r_int
+r_int
+op_star
+id|dmatable_cpu
+suffix:semicolon
+multiline_comment|/* dma physical region descriptor table (cpu view) */
+DECL|member|dmatable_dma
+id|dma_addr_t
+id|dmatable_dma
+suffix:semicolon
+multiline_comment|/* dma physical region descriptor table (dma view) */
+DECL|member|sg_table
+r_struct
+id|scatterlist
+op_star
+id|sg_table
+suffix:semicolon
+multiline_comment|/* Scatter-gather list used to build the above */
+DECL|member|sg_nents
+r_int
+id|sg_nents
+suffix:semicolon
+multiline_comment|/* Current number of entries in it */
+DECL|member|sg_dma_direction
+r_int
+id|sg_dma_direction
+suffix:semicolon
+multiline_comment|/* dma transfer direction */
 DECL|member|dma_base
 r_int
 r_int
@@ -1396,11 +1261,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* can do full 32-bit dma */
-DECL|member|slow
-id|byte
-id|slow
-suffix:semicolon
-multiline_comment|/* flag: slow data port */
 DECL|member|no_io_32bit
 r_int
 id|no_io_32bit
@@ -1408,11 +1268,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* disallow enabling 32bit I/O */
-DECL|member|io_32bit
-id|byte
-id|io_32bit
-suffix:semicolon
-multiline_comment|/* 0=16-bit, 1=32-bit, 2/3=32bit+sync */
 DECL|member|no_unmask
 r_int
 id|no_unmask
@@ -1420,18 +1275,21 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* disallow setting unmask bit */
+DECL|member|io_32bit
+id|byte
+id|io_32bit
+suffix:semicolon
+multiline_comment|/* 0=16-bit, 1=32-bit, 2/3=32bit+sync */
 DECL|member|unmask
 id|byte
 id|unmask
 suffix:semicolon
 multiline_comment|/* flag: okay to unmask other irqs */
-DECL|member|auto_poll
-r_int
-id|auto_poll
-suffix:colon
-l_int|1
+DECL|member|slow
+id|byte
+id|slow
 suffix:semicolon
-multiline_comment|/* supports nop auto-poll */
+multiline_comment|/* flag: slow data port */
 macro_line|#if (DISK_RECOVERY_TIME &gt; 0)
 DECL|member|last_time
 r_int
@@ -1508,8 +1366,7 @@ comma
 multiline_comment|/* a drive operation was started, and a handler was set */
 DECL|enumerator|ide_released
 id|ide_released
-comma
-multiline_comment|/* started, handler set, bus released */
+multiline_comment|/* started and released bus */
 DECL|typedef|ide_startstop_t
 )brace
 id|ide_startstop_t
@@ -1627,6 +1484,7 @@ DECL|typedef|ide_hwgroup_t
 )brace
 id|ide_hwgroup_t
 suffix:semicolon
+multiline_comment|/* structure attached to the request for IDE_TASK_CMDS */
 multiline_comment|/*&n; * configurable drive settings&n; */
 DECL|macro|TYPE_INT
 mdefine_line|#define TYPE_INT&t;0
@@ -1942,7 +1800,8 @@ op_star
 id|cleanup
 )paren
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 )paren
 suffix:semicolon
@@ -1953,7 +1812,8 @@ op_star
 id|standby
 )paren
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 )paren
 suffix:semicolon
@@ -1964,15 +1824,15 @@ op_star
 id|do_request
 )paren
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 comma
 r_struct
 id|request
 op_star
 comma
-r_int
-r_int
+id|sector_t
 )paren
 suffix:semicolon
 DECL|member|end_request
@@ -1982,12 +1842,11 @@ op_star
 id|end_request
 )paren
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
-id|drive
 comma
 r_int
-id|uptodate
 )paren
 suffix:semicolon
 DECL|member|ioctl
@@ -1997,7 +1856,8 @@ op_star
 id|ioctl
 )paren
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 comma
 r_struct
@@ -2030,7 +1890,8 @@ r_struct
 id|file
 op_star
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 )paren
 suffix:semicolon
@@ -2049,7 +1910,8 @@ r_struct
 id|file
 op_star
 comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 )paren
 suffix:semicolon
@@ -2060,7 +1922,8 @@ op_star
 id|check_media_change
 )paren
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 )paren
 suffix:semicolon
@@ -2071,7 +1934,8 @@ op_star
 id|revalidate
 )paren
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 )paren
 suffix:semicolon
@@ -2082,19 +1946,20 @@ op_star
 id|pre_reset
 )paren
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 )paren
 suffix:semicolon
 DECL|member|capacity
-r_int
-r_int
+id|sector_t
 (paren
 op_star
 id|capacity
 )paren
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 )paren
 suffix:semicolon
@@ -2105,7 +1970,8 @@ op_star
 id|special
 )paren
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 )paren
 suffix:semicolon
@@ -2122,12 +1988,12 @@ mdefine_line|#define ata_get(ata) &bslash;&n;&t;(((ata) &amp;&amp; (ata)-&gt;own
 DECL|macro|ata_put
 mdefine_line|#define ata_put(ata) &bslash;&n;do {&t;&bslash;&n;&t;if ((ata) &amp;&amp; (ata)-&gt;owner) &bslash;&n;&t;&t;__MOD_DEC_USE_COUNT((ata)-&gt;owner);&t;&bslash;&n;} while(0)
 r_extern
-r_int
-r_int
+id|sector_t
 id|ata_capacity
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
@@ -2210,22 +2076,6 @@ id|drive
 comma
 r_int
 id|uptodate
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|ide_end_queued_request
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_int
-comma
-r_struct
-id|request
-op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * This is used on exit from the driver, to designate the next irq handler&n; * and also to start the safety timer.&n; */
@@ -2411,17 +2261,6 @@ op_star
 id|rq
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|init_taskfile_request
-c_func
-(paren
-r_struct
-id|request
-op_star
-id|rq
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * &quot;action&quot; parameter type for ide_do_drive_cmd() below.&n; */
 r_typedef
 r_enum
@@ -2509,91 +2348,8 @@ id|ide_handler_t
 op_star
 id|handler
 suffix:semicolon
-DECL|member|ar
-r_struct
-id|ata_request
-op_star
-id|ar
-suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Merge this with the above struct soon.&n; */
-DECL|struct|ata_request
-r_struct
-id|ata_request
-(brace
-DECL|member|ar_rq
-r_struct
-id|request
-op_star
-id|ar_rq
-suffix:semicolon
-multiline_comment|/* real request */
-DECL|member|ar_drive
-r_struct
-id|ata_device
-op_star
-id|ar_drive
-suffix:semicolon
-multiline_comment|/* associated drive */
-DECL|member|ar_flags
-r_int
-r_int
-id|ar_flags
-suffix:semicolon
-multiline_comment|/* ATA_AR_* flags */
-DECL|member|ar_tag
-r_int
-id|ar_tag
-suffix:semicolon
-multiline_comment|/* tag number, if any */
-DECL|member|ar_queue
-r_struct
-id|list_head
-id|ar_queue
-suffix:semicolon
-multiline_comment|/* pending list */
-DECL|member|ar_task
-r_struct
-id|ata_taskfile
-id|ar_task
-suffix:semicolon
-multiline_comment|/* associated taskfile */
-DECL|member|ar_time
-r_int
-r_int
-id|ar_time
-suffix:semicolon
-multiline_comment|/* DMA stuff, PCI layer */
-DECL|member|ar_sg_table
-r_struct
-id|scatterlist
-op_star
-id|ar_sg_table
-suffix:semicolon
-DECL|member|ar_sg_nents
-r_int
-id|ar_sg_nents
-suffix:semicolon
-DECL|member|ar_sg_ddir
-r_int
-id|ar_sg_ddir
-suffix:semicolon
-multiline_comment|/* CPU related DMA stuff  */
-DECL|member|ar_dmatable_cpu
-r_int
-r_int
-op_star
-id|ar_dmatable_cpu
-suffix:semicolon
-DECL|member|ar_dmatable
-id|dma_addr_t
-id|ar_dmatable
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|AR_TASK_CMD
-mdefine_line|#define AR_TASK_CMD(ar)&t;((ar)-&gt;ar_task.taskfile.command)
 r_extern
 r_void
 id|ata_read
@@ -2744,7 +2500,8 @@ r_int
 id|ide_raw_taskfile
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -2763,21 +2520,8 @@ r_int
 id|ide_cmd_ioctl
 c_func
 (paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ide_task_ioctl
-c_func
-(paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -3083,8 +2827,6 @@ macro_line|# else
 DECL|macro|OFF_BOARD
 macro_line|#  define OFF_BOARD&t;&t;NEVER_BOARD
 macro_line|# endif
-multiline_comment|/* FIXME: This should go away possible. */
-r_extern
 r_void
 id|__init
 id|ide_scan_pcibus
@@ -3096,63 +2838,35 @@ id|scan_direction
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-r_extern
 r_int
 id|ide_build_dmatable
-c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 comma
 id|ide_dma_action_t
 id|func
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|ide_destroy_dmatable
-c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ide_start_dma
-c_func
-(paren
-r_struct
-id|ata_channel
-op_star
-comma
-id|ide_drive_t
-op_star
-comma
-id|ide_dma_action_t
-)paren
-suffix:semicolon
-r_extern
 id|ide_startstop_t
 id|ide_dma_intr
-c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|check_drive_lists
-c_func
 (paren
 id|ide_drive_t
 op_star
@@ -3162,10 +2876,8 @@ r_int
 id|good_bad
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|ide_dmaproc
-c_func
 (paren
 id|ide_dma_action_t
 id|func
@@ -3229,400 +2941,6 @@ id|revalidate_drives
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * Tagged Command Queueing:&n; */
-multiline_comment|/*&n; * ata_request flag bits&n; */
-DECL|macro|ATA_AR_QUEUED
-mdefine_line|#define ATA_AR_QUEUED&t;1&t;/* was queued */
-DECL|macro|ATA_AR_SETUP
-mdefine_line|#define ATA_AR_SETUP&t;2&t;/* dma table mapped */
-DECL|macro|ATA_AR_POOL
-mdefine_line|#define ATA_AR_POOL&t;4&t;/* originated from drive pool */
-multiline_comment|/*&n; * if turn-around time is longer than this, halve queue depth&n; */
-DECL|macro|ATA_AR_MAX_TURNAROUND
-mdefine_line|#define ATA_AR_MAX_TURNAROUND&t;(3 * HZ)
-DECL|macro|list_ata_entry
-mdefine_line|#define list_ata_entry(entry) list_entry((entry), struct ata_request, ar_queue)
-DECL|function|ata_ar_init
-r_static
-r_inline
-r_void
-id|ata_ar_init
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_struct
-id|ata_request
-op_star
-id|ar
-)paren
-(brace
-id|ar-&gt;ar_rq
-op_assign
-l_int|NULL
-suffix:semicolon
-id|ar-&gt;ar_drive
-op_assign
-id|drive
-suffix:semicolon
-id|ar-&gt;ar_flags
-op_assign
-l_int|0
-suffix:semicolon
-id|ar-&gt;ar_tag
-op_assign
-l_int|0
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|ar-&gt;ar_task
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|ar-&gt;ar_task
-)paren
-)paren
-suffix:semicolon
-id|ar-&gt;ar_sg_nents
-op_assign
-l_int|0
-suffix:semicolon
-id|ar-&gt;ar_sg_ddir
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Return a free command, automatically add it to busy list.&n; */
-DECL|function|ata_ar_get
-r_static
-r_inline
-r_struct
-id|ata_request
-op_star
-id|ata_ar_get
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_struct
-id|ata_request
-op_star
-id|ar
-op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|drive-&gt;tcq
-op_logical_and
-id|drive-&gt;tcq-&gt;queued
-op_ge
-id|drive-&gt;queue_depth
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|drive-&gt;free_req
-)paren
-)paren
-(brace
-id|ar
-op_assign
-id|list_ata_entry
-c_func
-(paren
-id|drive-&gt;free_req.next
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|ar-&gt;ar_queue
-)paren
-suffix:semicolon
-id|ata_ar_init
-c_func
-(paren
-id|drive
-comma
-id|ar
-)paren
-suffix:semicolon
-id|ar-&gt;ar_flags
-op_or_assign
-id|ATA_AR_POOL
-suffix:semicolon
-)brace
-r_return
-id|ar
-suffix:semicolon
-)brace
-DECL|function|ata_ar_put
-r_static
-r_inline
-r_void
-id|ata_ar_put
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_struct
-id|ata_request
-op_star
-id|ar
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ar-&gt;ar_flags
-op_amp
-id|ATA_AR_POOL
-)paren
-id|list_add
-c_func
-(paren
-op_amp
-id|ar-&gt;ar_queue
-comma
-op_amp
-id|drive-&gt;free_req
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ar-&gt;ar_flags
-op_amp
-id|ATA_AR_QUEUED
-)paren
-(brace
-multiline_comment|/* clear the tag */
-id|drive-&gt;tcq-&gt;ar
-(braket
-id|ar-&gt;ar_tag
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-id|__clear_bit
-c_func
-(paren
-id|ar-&gt;ar_tag
-comma
-op_amp
-id|drive-&gt;tcq-&gt;tag_mask
-)paren
-suffix:semicolon
-id|drive-&gt;tcq-&gt;queued
-op_decrement
-suffix:semicolon
-)brace
-id|ar-&gt;ar_rq
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-DECL|function|ide_get_tag
-r_static
-r_inline
-r_int
-id|ide_get_tag
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_int
-id|tag
-op_assign
-id|ffz
-c_func
-(paren
-id|drive-&gt;tcq-&gt;tag_mask
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|drive-&gt;tcq-&gt;tag_mask
-op_eq
-l_int|0xffffffff
-)paren
-suffix:semicolon
-id|__set_bit
-c_func
-(paren
-id|tag
-comma
-op_amp
-id|drive-&gt;tcq-&gt;tag_mask
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tag
-op_plus
-l_int|1
-OG
-id|drive-&gt;tcq-&gt;max_depth
-)paren
-id|drive-&gt;tcq-&gt;max_depth
-op_assign
-id|tag
-op_plus
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tag
-op_plus
-l_int|1
-OG
-id|drive-&gt;tcq-&gt;max_last_depth
-)paren
-id|drive-&gt;tcq-&gt;max_last_depth
-op_assign
-id|tag
-op_plus
-l_int|1
-suffix:semicolon
-r_return
-id|tag
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
-DECL|function|ide_pending_commands
-r_static
-r_inline
-r_int
-id|ide_pending_commands
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drive-&gt;tcq
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-id|drive-&gt;tcq-&gt;queued
-suffix:semicolon
-)brace
-DECL|function|ide_can_queue
-r_static
-r_inline
-r_int
-id|ide_can_queue
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drive-&gt;tcq
-)paren
-r_return
-l_int|1
-suffix:semicolon
-r_return
-id|drive-&gt;tcq-&gt;queued
-OL
-id|drive-&gt;queue_depth
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|macro|ide_pending_commands
-mdefine_line|#define ide_pending_commands(drive)&t;(0)
-DECL|macro|ide_can_queue
-mdefine_line|#define ide_can_queue(drive)&t;&t;(1)
-macro_line|#endif
-r_int
-id|ide_build_commandlist
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_int
-id|ide_init_commandlist
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_void
-id|ide_teardown_commandlist
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_int
-id|ide_tcq_dmaproc
-c_func
-(paren
-id|ide_dma_action_t
-comma
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-id|ide_startstop_t
-id|ide_start_tag
-c_func
-(paren
-id|ide_dma_action_t
-comma
-id|ide_drive_t
-op_star
-comma
-r_struct
-id|ata_request
-op_star
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -44,15 +44,6 @@ suffix:semicolon
 id|Sector
 id|sect
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
-suffix:semicolon
 r_struct
 id|sun_disklabel
 (brace
@@ -210,7 +201,7 @@ op_ne
 id|SUN_LABEL_MAGIC
 )paren
 (brace
-multiline_comment|/*&t;&t;printk(KERN_INFO &quot;Dev %s Sun disklabel: bad magic %04x&bslash;n&quot;,&n;&t;&t;       bdevname(dev), be16_to_cpu(label-&gt;magic)); */
+multiline_comment|/*&t;&t;printk(KERN_INFO &quot;Dev %s Sun disklabel: bad magic %04x&bslash;n&quot;,&n;&t;&t;       bdevname(bdev), be16_to_cpu(label-&gt;magic)); */
 id|put_dev_sector
 c_func
 (paren
@@ -278,7 +269,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 )paren
 suffix:semicolon

@@ -426,8 +426,7 @@ r_int
 id|xa_flag
 suffix:semicolon
 DECL|member|capacity
-r_int
-r_int
+id|u32
 id|capacity
 suffix:semicolon
 DECL|member|hdr
@@ -445,7 +444,7 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* One extra for the leadout. */
+multiline_comment|/* one extra for the leadout. */
 )brace
 suffix:semicolon
 multiline_comment|/* This structure is annoyingly close to, but not identical with,&n;   the cdrom_subchnl structure from cdrom.h. */

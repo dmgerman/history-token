@@ -15,14 +15,6 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;ataraid.h&quot;
-DECL|variable|ataraid_hardsect_size
-r_static
-r_int
-id|ataraid_hardsect_size
-(braket
-l_int|256
-)braket
-suffix:semicolon
 DECL|variable|ataraid_blksize_size
 r_static
 r_int
@@ -1090,13 +1082,6 @@ id|i
 op_increment
 )paren
 (brace
-id|ataraid_hardsect_size
-(braket
-id|i
-)braket
-op_assign
-l_int|512
-suffix:semicolon
 id|ataraid_blksize_size
 (braket
 id|i
@@ -1128,23 +1113,6 @@ id|ATAMAJOR
 )braket
 op_assign
 id|ataraid_blksize_size
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hardsect_size
-(braket
-id|ATAMAJOR
-)braket
-op_eq
-l_int|NULL
-)paren
-id|hardsect_size
-(braket
-id|ATAMAJOR
-)braket
-op_assign
-id|ataraid_hardsect_size
 suffix:semicolon
 multiline_comment|/* setup the gendisk structure */
 id|ataraid_gendisk.part
@@ -1301,13 +1269,6 @@ id|ATAMAJOR
 comma
 l_string|&quot;ataraid&quot;
 )paren
-suffix:semicolon
-id|hardsect_size
-(braket
-id|ATAMAJOR
-)braket
-op_assign
-l_int|NULL
 suffix:semicolon
 id|blk_size
 (braket

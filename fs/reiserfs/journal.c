@@ -4302,10 +4302,10 @@ l_string|&quot;clm-2084: pinned buffer %lu:%s sent to disk&bslash;n&quot;
 comma
 id|bh-&gt;b_blocknr
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|bh-&gt;b_dev
+id|bh-&gt;b_bdev
 )paren
 )paren
 suffix:semicolon
@@ -8369,7 +8369,7 @@ c_func
 (paren
 l_string|&quot;reiserfs: checking transaction log (%s) for (%s)&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|SB_JOURNAL_DEV
