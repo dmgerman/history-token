@@ -336,8 +336,10 @@ id|td
 suffix:semicolon
 id|td-&gt;hwNextTD
 op_assign
-id|cpu_to_le32
+id|cpu_to_hc32
 (paren
+id|hc
+comma
 id|dma
 )paren
 suffix:semicolon
@@ -421,9 +423,11 @@ c_cond
 (paren
 id|td-&gt;hwINFO
 op_amp
-id|cpu_to_le32
+id|cpu_to_hc32
 c_func
 (paren
+id|hc
+comma
 id|TD_DONE
 )paren
 )paren
