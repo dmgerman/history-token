@@ -2717,8 +2717,9 @@ comma
 id|np-&gt;dev_name
 )paren
 suffix:semicolon
-r_goto
-id|release
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 r_if
