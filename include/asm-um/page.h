@@ -29,6 +29,11 @@ DECL|macro|PAGE_OFFSET
 macro_line|#undef PAGE_OFFSET
 DECL|macro|KERNELBASE
 macro_line|#undef KERNELBASE
+r_extern
+r_int
+r_int
+id|uml_physmem
+suffix:semicolon
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET (uml_physmem)
 DECL|macro|KERNELBASE
