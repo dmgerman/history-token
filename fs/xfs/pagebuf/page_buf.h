@@ -13,24 +13,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
-DECL|enum|xfs_buffer_state
-DECL|enumerator|BH_Delay
-r_enum
-id|xfs_buffer_state
-(brace
-id|BH_Delay
-op_assign
-id|BH_PrivateStart
-)brace
-suffix:semicolon
-id|BUFFER_FNS
-c_func
-(paren
-id|Delay
-comma
-id|delay
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Turn this on to get pagebuf lock ownership&n;#define PAGEBUF_LOCK_TRACKING&n;*/
 multiline_comment|/*&n; *&t;Base types&n; */
 multiline_comment|/* daddr must be signed since -1 is used for bmaps that are not yet allocated */
