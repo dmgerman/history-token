@@ -11885,7 +11885,9 @@ c_func
 (paren
 id|ac97
 comma
-l_int|0
+id|HZ
+op_div
+l_int|2
 comma
 l_int|1
 )paren
