@@ -1506,6 +1506,16 @@ c_func
 id|dev
 )paren
 (brace
+id|mcapndx
+op_assign
+id|pci_find_capability
+c_func
+(paren
+id|dev
+comma
+id|PCI_CAP_ID_AGP
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -1521,9 +1531,39 @@ l_int|0xff00
 )paren
 (brace
 r_case
+l_int|0x0600
+suffix:colon
+multiline_comment|/* Bridge */
+multiline_comment|/* Skip bridges. We should call this function for each one. */
+r_continue
+suffix:semicolon
+r_case
 l_int|0x0001
 suffix:colon
 multiline_comment|/* Unclassified device */
+multiline_comment|/* Don&squot;t know what this is, but log it for investigation. */
+r_if
+c_cond
+(paren
+id|mcapndx
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Wacky, found unclassified AGP device. %x:%x&bslash;n&quot;
+comma
+id|dev-&gt;vendor
+comma
+id|dev-&gt;device
+)paren
+suffix:semicolon
+)brace
+r_continue
+suffix:semicolon
 r_case
 l_int|0x0300
 suffix:colon
@@ -1532,20 +1572,6 @@ r_case
 l_int|0x0400
 suffix:colon
 multiline_comment|/* Multimedia controller */
-r_case
-l_int|0x0600
-suffix:colon
-multiline_comment|/* Bridge */
-id|mcapndx
-op_assign
-id|pci_find_capability
-c_func
-(paren
-id|dev
-comma
-id|PCI_CAP_ID_AGP
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
