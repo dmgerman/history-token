@@ -12997,12 +12997,8 @@ r_int
 r_int
 )paren
 id|capacity
-op_div
-(paren
-id|heads
-op_star
-id|sectors
-)paren
+op_rshift
+l_int|11
 suffix:semicolon
 multiline_comment|/* Handle extended translation size for logical drives &gt; 1Gb */
 r_if
@@ -13363,6 +13359,10 @@ suffix:semicolon
 )brace
 id|cyls
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|capacity
 op_div
 (paren
