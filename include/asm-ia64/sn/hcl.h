@@ -558,5 +558,13 @@ c_func
 id|vertex_hdl_t
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|init_hcl
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_SN_HCL_H */
 eof

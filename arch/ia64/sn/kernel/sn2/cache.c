@@ -25,6 +25,17 @@ op_plus
 id|bytes
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The last call may have returned before the caches&n;&t; * were actually flushed, so we call it again to make&n;&t; * sure.&n;&t; */
+id|flush_icache_range
+c_func
+(paren
+id|flush_addr
+comma
+id|flush_addr
+op_plus
+id|bytes
+)paren
+suffix:semicolon
 id|mb
 c_func
 (paren
