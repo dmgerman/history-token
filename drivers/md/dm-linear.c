@@ -59,7 +59,7 @@ l_int|2
 (brace
 id|ti-&gt;error
 op_assign
-l_string|&quot;dm-linear: Not enough arguments&quot;
+l_string|&quot;dm-linear: Invalid argument count&quot;
 suffix:semicolon
 r_return
 op_minus
