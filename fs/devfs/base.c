@@ -6905,6 +6905,7 @@ id|wait_queue
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* XXX: this doesn&squot;t handle the case where we got a negative dentry&n;        but a devfs entry has been registered in the meanwhile */
 DECL|function|devfs_d_revalidate_wait
 r_static
 r_int
@@ -7139,6 +7140,15 @@ id|parent-&gt;u.dir.lock
 suffix:semicolon
 id|schedule
 (paren
+)paren
+suffix:semicolon
+id|remove_wait_queue
+(paren
+op_amp
+id|lookup_info-&gt;wait_queue
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 )brace
