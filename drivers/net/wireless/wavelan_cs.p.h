@@ -45,9 +45,7 @@ macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#ifdef CONFIG_NET_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Wireless extensions */
-macro_line|#if WIRELESS_EXT &gt; 12
-macro_line|#include &lt;net/iw_handler.h&gt;
-macro_line|#endif&t;/* WIRELESS_EXT &gt; 12 */
+macro_line|#include &lt;net/iw_handler.h&gt;&t;&t;/* New driver API */
 macro_line|#endif
 multiline_comment|/* Pcmcia headers that we need */
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
@@ -160,11 +158,6 @@ DECL|macro|IW_ESSID_MAX_SIZE
 mdefine_line|#define IW_ESSID_MAX_SIZE&t;32
 macro_line|#endif
 multiline_comment|/* ------------------------ PRIVATE IOCTL ------------------------ */
-multiline_comment|/* Wireless Extension Backward compatibility - Jean II&n; * If the new wireless device private ioctl range is not defined,&n; * default to standard device private ioctl range */
-macro_line|#ifndef SIOCIWFIRSTPRIV
-DECL|macro|SIOCIWFIRSTPRIV
-mdefine_line|#define SIOCIWFIRSTPRIV&t;SIOCDEVPRIVATE
-macro_line|#endif /* SIOCIWFIRSTPRIV */
 DECL|macro|SIOCSIPQTHR
 mdefine_line|#define SIOCSIPQTHR&t;SIOCIWFIRSTPRIV&t;&t;/* Set quality threshold */
 DECL|macro|SIOCGIPQTHR
@@ -393,26 +386,6 @@ r_struct
 id|timer_list
 id|timer_list
 suffix:semicolon
-macro_line|#if WIRELESS_EXT &lt;= 12
-multiline_comment|/* Wireless extensions backward compatibility */
-multiline_comment|/* Part of iw_handler prototype we need */
-DECL|struct|iw_request_info
-r_struct
-id|iw_request_info
-(brace
-DECL|member|cmd
-id|__u16
-id|cmd
-suffix:semicolon
-multiline_comment|/* Wireless Extension command */
-DECL|member|flags
-id|__u16
-id|flags
-suffix:semicolon
-multiline_comment|/* More to come ;-) */
-)brace
-suffix:semicolon
-macro_line|#endif&t;/* WIRELESS_EXT &lt;= 12 */
 multiline_comment|/* Basic types */
 DECL|typedef|mac_addr
 r_typedef
@@ -506,30 +479,12 @@ id|iw_stats
 id|wstats
 suffix:semicolon
 multiline_comment|/* Wireless specific stats */
+DECL|member|spy_data
+r_struct
+id|iw_spy_data
+id|spy_data
+suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef WIRELESS_SPY
-DECL|member|spy_number
-r_int
-id|spy_number
-suffix:semicolon
-multiline_comment|/* Number of addresses to spy */
-DECL|member|spy_address
-id|mac_addr
-id|spy_address
-(braket
-id|IW_MAX_SPY
-)braket
-suffix:semicolon
-multiline_comment|/* The addresses to spy */
-DECL|member|spy_stat
-id|iw_qual
-id|spy_stat
-(braket
-id|IW_MAX_SPY
-)braket
-suffix:semicolon
-multiline_comment|/* Statistics gathered */
-macro_line|#endif&t;/* WIRELESS_SPY */
 macro_line|#ifdef HISTOGRAM
 DECL|member|his_number
 r_int
