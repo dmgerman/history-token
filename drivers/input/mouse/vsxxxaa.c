@@ -9,14 +9,17 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Serial DEC VSXXX-AA/GA mouse / DEC tablet driver&quot;
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;Jan-Benedict Glaw &lt;jbglaw@lug-owl.de&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 (paren
-l_string|&quot;Serial DEC VSXXX-AA/GA mouse / DEC tablet driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1598,9 +1601,9 @@ op_star
 id|serio
 comma
 r_struct
-id|serio_dev
+id|serio_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -1833,7 +1836,7 @@ id|serio_open
 (paren
 id|serio
 comma
-id|dev
+id|drv
 )paren
 )paren
 (brace
@@ -1871,13 +1874,29 @@ id|mouse-&gt;phys
 )paren
 suffix:semicolon
 )brace
-DECL|variable|vsxxxaa_dev
+DECL|variable|vsxxxaa_drv
 r_static
 r_struct
-id|serio_dev
-id|vsxxxaa_dev
+id|serio_driver
+id|vsxxxaa_drv
 op_assign
 (brace
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;vsxxxaa&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
 dot
 id|connect
 op_assign
@@ -1903,10 +1922,11 @@ id|vsxxxaa_init
 r_void
 )paren
 (brace
-id|serio_register_device
+id|serio_register_driver
+c_func
 (paren
 op_amp
-id|vsxxxaa_dev
+id|vsxxxaa_drv
 )paren
 suffix:semicolon
 r_return
@@ -1921,10 +1941,11 @@ id|vsxxxaa_exit
 r_void
 )paren
 (brace
-id|serio_unregister_device
+id|serio_unregister_driver
+c_func
 (paren
 op_amp
-id|vsxxxaa_dev
+id|vsxxxaa_drv
 )paren
 suffix:semicolon
 )brace
