@@ -329,6 +329,10 @@ c_func
 id|tables
 )paren
 suffix:semicolon
+id|amd_irongate_private.gatt_pages
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 DECL|function|amd_create_gatt_pages
 r_static
