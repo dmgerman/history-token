@@ -6,10 +6,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_extern
-id|spinlock_t
-id|pci_controller_lock
-suffix:semicolon
-r_extern
 r_struct
 id|pci_controller_info
 op_star

@@ -78,6 +78,13 @@ DECL|macro|BTRAPTL1
 mdefine_line|#define BTRAPTL1(lvl) TRAPTL1_ARG(bad_trap_tl1, lvl)
 DECL|macro|FLUSH_WINDOW_TRAP
 mdefine_line|#define FLUSH_WINDOW_TRAP&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, etrap;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; rd&t;%pc, %g7;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;flushw;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ldx&t;[%sp + PTREGS_OFF + PT_V9_TNPC], %l1;&t;&t;&t;&bslash;&n;&t;add&t;%l1, 4, %l2;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;stx&t;%l1, [%sp + PTREGS_OFF + PT_V9_TPC];&t;&t;&t;&bslash;&n;&t;ba,pt&t;%xcc, rtrap_clr_l6;&t;&t;&t;&t;&t;&bslash;&n;&t; stx&t;%l2, [%sp + PTREGS_OFF + PT_V9_TNPC];
+macro_line|#ifdef CONFIG_KPROBES
+DECL|macro|KPROBES_TRAP
+mdefine_line|#define KPROBES_TRAP(lvl) TRAP_IRQ(kprobe_trap, lvl)
+macro_line|#else
+DECL|macro|KPROBES_TRAP
+mdefine_line|#define KPROBES_TRAP(lvl) TRAP_ARG(bad_trap, lvl)
+macro_line|#endif
 multiline_comment|/* Before touching these macros, you owe it to yourself to go and&n; * see how arch/sparc64/kernel/winfixup.S works... -DaveM&n; *&n; * For the user cases we used to use the %asi register, but&n; * it turns out that the &quot;wr xxx, %asi&quot; costs ~5 cycles, so&n; * now we use immediate ASI loads and stores instead.  Kudos&n; * to Greg Onufer for pointing out this performance anomaly.&n; *&n; * Further note that we cannot use the g2, g4, g5, and g7 alternate&n; * globals in the spill routines, check out the save instruction in&n; * arch/sparc64/kernel/etrap.S to see what I mean about g2, and&n; * g4/g5 are the globals which are preserved by etrap processing&n; * for the caller of it.  The g7 register is the return pc for&n; * etrap.  Finally, g6 is the current thread register so we cannot&n; * us it in the spill handlers either.  Most of these rules do not&n; * apply to fill processing, only g6 is not usable.&n; */
 multiline_comment|/* Normal kernel spill */
 DECL|macro|SPILL_0_NORMAL

@@ -2,7 +2,7 @@ multiline_comment|/*&n; * kref.c - library routines for handling generic referen
 macro_line|#ifndef _KREF_H_
 DECL|macro|_KREF_H_
 mdefine_line|#define _KREF_H_
-macro_line|#if __KERNEL__
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|struct|kref
