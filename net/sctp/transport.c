@@ -194,7 +194,7 @@ id|jiffies
 suffix:semicolon
 id|peer-&gt;active
 op_assign
-l_int|1
+id|SCTP_ACTIVE
 suffix:semicolon
 id|peer-&gt;hb_allowed
 op_assign
