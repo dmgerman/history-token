@@ -21,6 +21,9 @@ mdefine_line|#define journal_oom_retry 1
 multiline_comment|/*&n; * Define JBD_PARANIOD_IOFAIL to cause a kernel BUG() if ext3 finds&n; * certain classes of error which can occur due to failed IOs.  Under&n; * normal use we want ext3 to continue after such errors, because&n; * hardware _can_ fail, but for debugging purposes when running tests on&n; * known-good hardware we may want to trap these errors.&n; */
 DECL|macro|JBD_PARANOID_IOFAIL
 macro_line|#undef JBD_PARANOID_IOFAIL
+multiline_comment|/*&n; * The default maximum commit age, in seconds.&n; */
+DECL|macro|JBD_DEFAULT_MAX_COMMIT_AGE
+mdefine_line|#define JBD_DEFAULT_MAX_COMMIT_AGE 5
 macro_line|#ifdef CONFIG_JBD_DEBUG
 multiline_comment|/*&n; * Define JBD_EXPENSIVE_CHECKING to enable more expensive internal&n; * consistency checks.  By default we don&squot;t do this unless&n; * CONFIG_JBD_DEBUG is on.&n; */
 DECL|macro|JBD_EXPENSIVE_CHECKING
