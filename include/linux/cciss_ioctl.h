@@ -516,6 +516,29 @@ DECL|typedef|IOCTL_Command_struct
 )brace
 id|IOCTL_Command_struct
 suffix:semicolon
+DECL|struct|_LogvolInfo_struct
+r_typedef
+r_struct
+id|_LogvolInfo_struct
+(brace
+DECL|member|LunID
+id|__u32
+id|LunID
+suffix:semicolon
+DECL|member|num_opens
+r_int
+id|num_opens
+suffix:semicolon
+multiline_comment|/* number of opens on the logical volume */
+DECL|member|num_parts
+r_int
+id|num_parts
+suffix:semicolon
+multiline_comment|/* number of partitions configured on logvol */
+DECL|typedef|LogvolInfo_struct
+)brace
+id|LogvolInfo_struct
+suffix:semicolon
 DECL|macro|CCISS_GETPCIINFO
 mdefine_line|#define CCISS_GETPCIINFO _IOR(CCISS_IOC_MAGIC, 1, cciss_pci_info_struct)
 DECL|macro|CCISS_GETINTINFO
@@ -545,5 +568,7 @@ DECL|macro|CCISS_REGNEWDISK
 mdefine_line|#define CCISS_REGNEWDISK  _IOW(CCISS_IOC_MAGIC, 13, int)
 DECL|macro|CCISS_REGNEWD
 mdefine_line|#define CCISS_REGNEWD&t;   _IO(CCISS_IOC_MAGIC, 14)
+DECL|macro|CCISS_GETLUNINFO
+mdefine_line|#define CCISS_GETLUNINFO   _IOR(CCISS_IOC_MAGIC, 17, LogvolInfo_struct)
 macro_line|#endif  
 eof
