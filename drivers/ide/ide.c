@@ -913,13 +913,7 @@ comma
 id|rq
 )paren
 suffix:semicolon
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
+id|drive-&gt;rq
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2255,13 +2249,7 @@ c_func
 id|rq
 )paren
 suffix:semicolon
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
+id|drive-&gt;rq
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3631,10 +3619,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/* bail early if we&squot;ve exceeded max_failures */
 r_if
 c_cond
@@ -3679,19 +3663,6 @@ op_amp
 id|BUSY_STAT
 )paren
 (brace
-id|__save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
-id|ide__sti
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 id|timeout
 op_add_assign
 id|jiffies
@@ -3717,19 +3688,12 @@ c_cond
 id|time_after
 c_func
 (paren
-id|timeout
-comma
 id|jiffies
+comma
+id|timeout
 )paren
 )paren
 (brace
-id|__restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 op_star
 id|startstop
 op_assign
@@ -3750,15 +3714,8 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-id|__restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 )brace
-multiline_comment|/*&n;&t; * Allow status to settle, then read it again.&n;&t; * A few rare drives vastly violate the 400ns spec here,&n;&t; * so we&squot;ll wait up to 10usec for a &quot;good&quot; status&n;&t; * rather than expensively fail things immediately.&n;&t; * This fix courtesy of Matthew Faupel &amp; Niccolo Rigacci.&n;&t; */
+multiline_comment|/*&n;&t; * Allow status to settle, then read it again.  A few rare drives&n;&t; * vastly violate the 400ns spec here, so we&squot;ll wait up to 10usec for a&n;&t; * &quot;good&quot; status rather than expensively fail things immediately.  This&n;&t; * fix courtesy of Matthew Faupel &amp; Niccolo Rigacci.&n;&t; */
 r_for
 c_loop
 (paren
@@ -4489,11 +4446,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-r_struct
-id|request
-op_star
-id|rq
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -4514,10 +4466,6 @@ op_amp
 id|ch-&gt;timer
 )paren
 suffix:semicolon
-id|rq
-op_assign
-id|hwgroup-&gt;rq
-suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4533,7 +4481,7 @@ c_func
 (paren
 id|drive
 comma
-id|rq
+id|drive-&gt;rq
 )paren
 suffix:semicolon
 )brace
@@ -4894,10 +4842,6 @@ id|choice
 r_return
 id|choice
 suffix:semicolon
-id|channel-&gt;hwgroup-&gt;rq
-op_assign
-l_int|NULL
-suffix:semicolon
 id|sleep
 op_assign
 id|longest_sleep
@@ -4957,7 +4901,7 @@ c_func
 id|IDE_SLEEP
 comma
 op_amp
-id|channel-&gt;hwgroup-&gt;flags
+id|channel-&gt;active
 )paren
 suffix:semicolon
 id|mod_timer
@@ -4988,7 +4932,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|channel-&gt;hwgroup-&gt;flags
+id|channel-&gt;active
 )paren
 suffix:semicolon
 )brace
@@ -5012,11 +4956,12 @@ r_int
 id|masked_irq
 )paren
 (brace
-id|ide_hwgroup_t
+r_struct
+id|ata_channel
 op_star
-id|hwgroup
+id|ch
 op_assign
-id|drive-&gt;channel-&gt;hwgroup
+id|drive-&gt;channel
 suffix:semicolon
 id|ide_startstop_t
 id|startstop
@@ -5048,7 +4993,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 )paren
 id|printk
@@ -5088,7 +5033,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 suffix:semicolon
 r_break
@@ -5107,7 +5052,7 @@ c_func
 id|IDE_DMA
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 )paren
 (brace
@@ -5174,10 +5119,10 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 suffix:semicolon
-id|hwgroup-&gt;rq
+id|drive-&gt;rq
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -5203,7 +5148,7 @@ id|drive
 )paren
 r_break
 suffix:semicolon
-id|hwgroup-&gt;rq
+id|drive-&gt;rq
 op_assign
 id|rq
 suffix:semicolon
@@ -5315,12 +5260,6 @@ r_int
 id|masked_irq
 )paren
 (brace
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|channel-&gt;hwgroup
-suffix:semicolon
 id|ide_get_lock
 c_func
 (paren
@@ -5349,7 +5288,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|channel-&gt;active
 )paren
 )paren
 (brace
@@ -5517,13 +5456,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * un-busy drive etc (hwgroup-&gt;busy is cleared on return) and&n;&t; * make sure request is sane&n;&t; */
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
+id|drive-&gt;rq
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -5643,7 +5576,7 @@ c_func
 id|IDE_SLEEP
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 )paren
 id|clear_bit
@@ -5652,7 +5585,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 suffix:semicolon
 )brace
@@ -5699,7 +5632,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 )paren
 id|printk
@@ -5734,13 +5667,7 @@ c_func
 (paren
 id|drive
 comma
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
+id|drive-&gt;rq
 )paren
 )paren
 op_ne
@@ -5827,7 +5754,7 @@ c_func
 (paren
 id|drive
 comma
-id|ch-&gt;hwgroup-&gt;rq
+id|drive-&gt;rq
 )paren
 suffix:semicolon
 )brace
@@ -5877,7 +5804,7 @@ c_func
 (paren
 id|drive
 comma
-id|ch-&gt;hwgroup-&gt;rq
+id|drive-&gt;rq
 )paren
 suffix:semicolon
 )brace
@@ -5898,7 +5825,7 @@ c_func
 (paren
 id|drive
 comma
-id|ch-&gt;hwgroup-&gt;rq
+id|drive-&gt;rq
 )paren
 suffix:semicolon
 )brace
@@ -5910,7 +5837,7 @@ c_func
 (paren
 id|drive
 comma
-id|ch-&gt;hwgroup-&gt;rq
+id|drive-&gt;rq
 comma
 l_string|&quot;irq timeout&quot;
 comma
@@ -5953,7 +5880,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 suffix:semicolon
 )brace
@@ -6276,7 +6203,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 )paren
 id|printk
@@ -6327,7 +6254,7 @@ c_func
 (paren
 id|drive
 comma
-id|hwgroup-&gt;rq
+id|drive-&gt;rq
 )paren
 suffix:semicolon
 id|spin_lock_irq
@@ -6367,7 +6294,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|ch-&gt;active
 )paren
 suffix:semicolon
 id|ide_do_request
@@ -6692,13 +6619,7 @@ id|action
 op_eq
 id|ide_preempt
 )paren
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
+id|drive-&gt;rq
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -8750,16 +8671,6 @@ op_star
 id|drive
 )paren
 (brace
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 multiline_comment|/* FIXME: Wait on a proper timer. Instead of playing games on the&n;&t; * spin_lock().&n;&t; */
 r_int
 r_int
@@ -8789,7 +8700,7 @@ c_func
 id|IDE_BUSY
 comma
 op_amp
-id|hwgroup-&gt;flags
+id|drive-&gt;channel-&gt;active
 )paren
 )paren
 (brace
@@ -9332,6 +9243,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|drive-&gt;channel-&gt;no_unmask
+)paren
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|ide_spin_wait_hwgroup
 c_func
 (paren
@@ -9341,15 +9261,6 @@ id|drive
 r_return
 op_minus
 id|EBUSY
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|drive-&gt;channel-&gt;no_unmask
-)paren
-r_return
-op_minus
-id|EIO
 suffix:semicolon
 id|drive-&gt;channel-&gt;unmask
 op_assign
@@ -9735,20 +9646,6 @@ r_case
 id|BLKRRPART
 suffix:colon
 multiline_comment|/* Re-read partition tables */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
 r_return
 id|ide_revalidate_disk
 c_func
@@ -9849,13 +9746,6 @@ op_logical_neg
 id|capable
 c_func
 (paren
-id|CAP_SYS_ADMIN
-)paren
-op_logical_or
-op_logical_neg
-id|capable
-c_func
-(paren
 id|CAP_SYS_RAWIO
 )paren
 )paren
@@ -9875,20 +9765,6 @@ suffix:semicolon
 r_case
 id|HDIO_SET_NICE
 suffix:colon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10018,20 +9894,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|put_user
 c_func
 (paren
@@ -10057,20 +9919,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-r_return
-op_minus
-id|EACCES
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|drive-&gt;channel-&gt;busproc
 )paren
 id|drive-&gt;channel
@@ -10089,7 +9937,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Now check whatever this particular ioctl has a special&n;&t;&t; * implementation.&n;&t;&t; */
+multiline_comment|/* Now check whatever this particular ioctl has a device type&n;&t;&t; * specific implementation.&n;&t;&t; */
 r_default
 suffix:colon
 (brace

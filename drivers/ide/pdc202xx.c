@@ -8714,7 +8714,7 @@ id|init_channel
 suffix:colon
 id|ide_init_pdc202xx
 comma
-id|exnablebits
+id|enablebits
 suffix:colon
 (brace
 (brace

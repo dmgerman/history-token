@@ -228,12 +228,6 @@ DECL|macro|SUPPORT_VLB_SYNC
 macro_line|#undef  SUPPORT_VLB_SYNC
 DECL|macro|SUPPORT_VLB_SYNC
 mdefine_line|#define SUPPORT_VLB_SYNC 0
-DECL|macro|ide_ack_intr
-mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
-DECL|macro|ide_release_lock
-mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
-DECL|macro|ide_get_lock
-mdefine_line|#define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_IDE_H */
 eof

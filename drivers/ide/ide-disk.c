@@ -4422,7 +4422,8 @@ r_case
 id|HDIO_GET_ACOUSTIC
 suffix:colon
 (brace
-id|u8
+r_int
+r_int
 id|val
 op_assign
 id|drive-&gt;acoustic
@@ -4596,7 +4597,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *      IDE subdriver functions, registered with ide.c&n; */
+multiline_comment|/*&n; * Subdriver functions.&n; */
 DECL|variable|idedisk_driver
 r_static
 r_struct
@@ -4709,6 +4710,7 @@ id|drive
 )paren
 (brace
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;%s: cleanup_module() called while still busy&bslash;n&quot;
@@ -4716,11 +4718,10 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
-id|failed
 op_increment
+id|failed
 suffix:semicolon
 )brace
-multiline_comment|/* We must remove proc entries defined in this module.&n;&t;&t;   Otherwise we oops while accessing these entries */
 )brace
 )brace
 DECL|function|idedisk_init
@@ -4831,8 +4832,8 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|failed
 op_decrement
+id|failed
 suffix:semicolon
 )brace
 id|revalidate_drives

@@ -328,6 +328,21 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/ide.h&gt;
+multiline_comment|/* Currently only m68k, apus and m8xx need it */
+macro_line|#ifdef ATA_ARCH_ACK_INTR
+DECL|macro|ide_ack_intr
+macro_line|# define ide_ack_intr(hwif) (hwif-&gt;hw.ack_intr ? hwif-&gt;hw.ack_intr(hwif) : 1)
+macro_line|#else
+DECL|macro|ide_ack_intr
+macro_line|# define ide_ack_intr(hwif) (1)
+macro_line|#endif
+multiline_comment|/* Currently only Atari needs it */
+macro_line|#ifndef ATA_ARCH_LOCK
+DECL|macro|ide_release_lock
+macro_line|# define ide_release_lock(lock)&t;&t;do {} while (0)
+DECL|macro|ide_get_lock
+macro_line|# define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
+macro_line|#endif
 multiline_comment|/*&n; * If the arch-dependant ide.h did not declare/define any OUT_BYTE or IN_BYTE&n; * functions, we make some defaults here. The only architecture currently&n; * needing this is Cris.&n; */
 macro_line|#ifndef HAVE_ARCH_IN_OUT
 DECL|macro|OUT_BYTE
@@ -569,22 +584,19 @@ id|request_queue_t
 id|queue
 suffix:semicolon
 multiline_comment|/* per device request queue */
+DECL|member|rq
+r_struct
+id|request
+op_star
+id|rq
+suffix:semicolon
+multiline_comment|/* current request */
 DECL|member|sleep
 r_int
 r_int
 id|sleep
 suffix:semicolon
 multiline_comment|/* sleep until this time */
-DECL|member|using_dma
-id|byte
-id|using_dma
-suffix:semicolon
-multiline_comment|/* disk is using dma for read/write */
-DECL|member|using_tcq
-id|byte
-id|using_tcq
-suffix:semicolon
-multiline_comment|/* disk is using queueing */
 DECL|member|retry_pio
 id|byte
 id|retry_pio
@@ -595,9 +607,25 @@ id|byte
 id|state
 suffix:semicolon
 multiline_comment|/* retry state */
+DECL|member|using_dma
+r_int
+id|using_dma
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* disk is using dma for read/write */
+DECL|member|using_tcq
+r_int
+id|using_tcq
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* disk is using queueing */
 DECL|member|dsc_overlap
-id|byte
+r_int
 id|dsc_overlap
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* flag: DSC overlap */
 DECL|member|waiting_for_dma
@@ -931,6 +959,58 @@ DECL|typedef|ide_drive_t
 )brace
 id|ide_drive_t
 suffix:semicolon
+multiline_comment|/*&n; * Status returned by various functions.&n; */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|ide_stopped
+id|ide_stopped
+comma
+multiline_comment|/* no drive operation was started */
+DECL|enumerator|ide_started
+id|ide_started
+comma
+multiline_comment|/* a drive operation was started, and a handler was set */
+DECL|enumerator|ide_released
+id|ide_released
+multiline_comment|/* started and released bus */
+DECL|typedef|ide_startstop_t
+)brace
+id|ide_startstop_t
+suffix:semicolon
+multiline_comment|/*&n; *  Interrupt and timeout handler type.&n; */
+DECL|typedef|ata_handler_t
+r_typedef
+id|ide_startstop_t
+(paren
+id|ata_handler_t
+)paren
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ata_expiry_t
+r_typedef
+r_int
+(paren
+id|ata_expiry_t
+)paren
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
 r_enum
 (brace
 DECL|enumerator|ATA_PRIMARY
@@ -943,6 +1023,47 @@ id|ATA_SECONDARY
 op_assign
 l_int|1
 )brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|IDE_BUSY
+id|IDE_BUSY
+comma
+multiline_comment|/* awaiting an interrupt */
+DECL|enumerator|IDE_SLEEP
+id|IDE_SLEEP
+comma
+DECL|enumerator|IDE_DMA
+id|IDE_DMA
+multiline_comment|/* DMA in progress */
+)brace
+suffix:semicolon
+DECL|struct|hwgroup_s
+r_typedef
+r_struct
+id|hwgroup_s
+(brace
+multiline_comment|/* FIXME: We should look for busy request queues instead of looking at&n;&t; * the !NULL state of this field.&n;&t; */
+DECL|member|handler
+id|ide_startstop_t
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* irq handler, if active */
+DECL|typedef|ide_hwgroup_t
+)brace
+id|ide_hwgroup_t
 suffix:semicolon
 DECL|struct|ata_channel
 r_struct
@@ -989,6 +1110,12 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* irq handler, if active */
+DECL|member|poll_timeout
+r_int
+r_int
+id|poll_timeout
+suffix:semicolon
+multiline_comment|/* timeout value during polled operations */
 DECL|member|drive
 r_struct
 id|ata_device
@@ -996,6 +1123,12 @@ op_star
 id|drive
 suffix:semicolon
 multiline_comment|/* last serviced drive */
+DECL|member|active
+r_int
+r_int
+id|active
+suffix:semicolon
+multiline_comment|/* active processing request */
 DECL|member|io_ports
 id|ide_ioreg_t
 id|io_ports
@@ -1546,12 +1679,6 @@ id|byte
 id|bus_state
 suffix:semicolon
 multiline_comment|/* power state of the IDE bus */
-DECL|member|poll_timeout
-r_int
-r_int
-id|poll_timeout
-suffix:semicolon
-multiline_comment|/* timeout value during polled operations */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Register new hardware with ide&n; */
@@ -1582,67 +1709,9 @@ op_star
 id|hwif
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Status returned by various functions.&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|ide_stopped
-id|ide_stopped
-comma
-multiline_comment|/* no drive operation was started */
-DECL|enumerator|ide_started
-id|ide_started
-comma
-multiline_comment|/* a drive operation was started, and a handler was set */
-DECL|enumerator|ide_released
-id|ide_released
-multiline_comment|/* started and released bus */
-DECL|typedef|ide_startstop_t
-)brace
-id|ide_startstop_t
-suffix:semicolon
-multiline_comment|/*&n; *  Interrupt and timeout handler type.&n; */
-DECL|typedef|ata_handler_t
-r_typedef
-id|ide_startstop_t
-(paren
-id|ata_handler_t
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-DECL|typedef|ata_expiry_t
-r_typedef
-r_int
-(paren
-id|ata_expiry_t
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
 r_struct
 id|ata_taskfile
 suffix:semicolon
-DECL|macro|IDE_BUSY
-mdefine_line|#define IDE_BUSY&t;0&t;/* awaiting an interrupt */
-DECL|macro|IDE_SLEEP
-mdefine_line|#define IDE_SLEEP&t;1
-DECL|macro|IDE_DMA
-mdefine_line|#define IDE_DMA&t;&t;2&t;/* DMA in progress */
 DECL|macro|IDE_MAX_TAG
 mdefine_line|#define IDE_MAX_TAG&t;32
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
@@ -1712,46 +1781,6 @@ macro_line|# define ata_pending_commands(drive)&t;(0)
 DECL|macro|ata_can_queue
 macro_line|# define ata_can_queue(drive)&t;&t;(1)
 macro_line|#endif
-DECL|struct|hwgroup_s
-r_typedef
-r_struct
-id|hwgroup_s
-(brace
-multiline_comment|/* FIXME: We should look for busy request queues instead of looking at&n;&t; * the !NULL state of this field.&n;&t; */
-DECL|member|handler
-id|ide_startstop_t
-(paren
-op_star
-id|handler
-)paren
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* irq handler, if active */
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* BUSY, SLEEPING */
-DECL|member|rq
-r_struct
-id|request
-op_star
-id|rq
-suffix:semicolon
-multiline_comment|/* current request */
-DECL|typedef|ide_hwgroup_t
-)brace
-id|ide_hwgroup_t
-suffix:semicolon
 multiline_comment|/* FIXME: kill this as soon as possible */
 DECL|macro|PROC_IDE_READ_RETURN
 mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;

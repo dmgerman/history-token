@@ -276,9 +276,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|drive-&gt;using_dma
-op_eq
-l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If we are actually using MW DMA, then we can not&n;&t;&t; * reprogram the interface drive control register.&n;&t;&t; */

@@ -1335,15 +1335,9 @@ comma
 id|dma_stat
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG */
+macro_line|#endif
 macro_line|#if 0
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|expiry
+id|drive-&gt;expiry
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -349,16 +349,9 @@ suffix:semicolon
 macro_line|#endif
 )brace
 macro_line|#if (defined CONFIG_APUS || defined CONFIG_BLK_DEV_MPC8xx_IDE )
-DECL|macro|ide_ack_intr
-mdefine_line|#define ide_ack_intr(hwif) (hwif-&gt;hw.ack_intr ? hwif-&gt;hw.ack_intr(hwif) : 1)
-macro_line|#else
-DECL|macro|ide_ack_intr
-mdefine_line|#define ide_ack_intr(hwif)&t;&t;(1)
+DECL|macro|ATA_ARCH_ACK_INTR
+mdefine_line|#define ATA_ARCH_ACK_INTR
 macro_line|#endif
-DECL|macro|ide_release_lock
-mdefine_line|#define ide_release_lock(lock)&t;&t;do {} while (0)
-DECL|macro|ide_get_lock
-mdefine_line|#define ide_get_lock(lock, hdlr, data)&t;do {} while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASMPPC_IDE_H */
 eof
