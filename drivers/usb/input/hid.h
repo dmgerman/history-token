@@ -683,6 +683,13 @@ op_star
 id|dev
 suffix:semicolon
 multiline_comment|/* USB device */
+DECL|member|intf
+r_struct
+id|usb_interface
+op_star
+id|intf
+suffix:semicolon
+multiline_comment|/* USB interface */
 DECL|member|ifnum
 r_int
 id|ifnum
