@@ -400,11 +400,13 @@ comma
 id|rinfo-&gt;dp_gui_master_cntl
 multiline_comment|/* i.e. GMC_DST_32BPP */
 op_or
+id|GMC_BRUSH_NONE
+op_or
 id|GMC_SRC_DSTCOLOR
 op_or
 id|ROP3_S
 op_or
-id|DP_SRC_RECT
+id|DP_SRC_SOURCE_MEMORY
 )paren
 suffix:semicolon
 id|OUTREG
