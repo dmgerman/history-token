@@ -2011,7 +2011,7 @@ r_struct
 id|edd_info
 id|edd
 (braket
-id|EDDNR
+id|EDDMAXNR
 )braket
 suffix:semicolon
 multiline_comment|/**&n; * copy_edd() - Copy the BIOS EDD information&n; *              from empty_zero_page into a safe place.&n; *&n; */

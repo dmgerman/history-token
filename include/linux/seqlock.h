@@ -203,6 +203,6 @@ mdefine_line|#define write_sequnlock_bh(lock)&t;&t;&t;&t;&t;&bslash;&n;&t;do { w
 DECL|macro|read_seqbegin_irqsave
 mdefine_line|#define read_seqbegin_irqsave(lock, flags)&t;&t;&t;&t;&bslash;&n;&t;({ local_irq_save(flags);   read_seqbegin(lock); })
 DECL|macro|read_seqretry_irqrestore
-mdefine_line|#define read_seqretry_irqrestore(lock, iv, flags)&t;&t;&t;&bslash;&n;&t;({int ret = read_seqretry(&amp;(lock)-&gt;seq, iv);&t;&t;&t;&bslash;&n;&t;&t;local_irq_restore(flags);&t;&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define read_seqretry_irqrestore(lock, iv, flags)&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int ret = read_seqretry(lock, iv);&t;&t;&t;&bslash;&n;&t;&t;local_irq_restore(flags);&t;&t;&t;&t;&bslash;&n;&t;&t;ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 macro_line|#endif /* __LINUX_SEQLOCK_H */
 eof
