@@ -573,6 +573,7 @@ id|saved_context
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Needed by apm.c */
 DECL|variable|save_processor_state
 id|EXPORT_SYMBOL
 c_func

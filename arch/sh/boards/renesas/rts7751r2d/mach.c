@@ -63,7 +63,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|voyagergx_consistent_free
 c_func
 (paren
@@ -209,6 +209,7 @@ id|mv_irq_demux
 op_assign
 id|rts7751r2d_irq_demux
 comma
+macro_line|#ifdef CONFIG_USB_OHCI_HCD
 dot
 id|mv_consistent_alloc
 op_assign
@@ -219,6 +220,7 @@ id|mv_consistent_free
 op_assign
 id|voyagergx_consistent_free
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
 id|ALIAS_MV

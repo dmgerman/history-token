@@ -1,13 +1,9 @@
-multiline_comment|/**************************************************************************&n; * Initio A100 device driver for Linux.&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; **************************************************************************&n; *&n; * Module: inia100.h&n; * Description: INI-A100U2W LINUX device driver header&n; * Revision History:&n; *&t;06/18/98 HL, Initial production Version 1.02&n; *&t;12/19/98 bv, Use spinlocks for 2.1.95 and up&n; *&t;06/25/02 Doug Ledford &lt;dledford@redhat.com&gt;&n; *&t;&t; - This and the i60uscsi.h file are almost identical,&n; *&t;&t;   merged them into a single header used by both .c files.&n; ****************************************************************************/
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
+multiline_comment|/*&n; * Initio A100 device driver for Linux.&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * Revision History:&n; * 06/18/98 HL, Initial production Version 1.02&n; * 12/19/98 bv, Use spinlocks for 2.1.95 and up&n; * 06/25/02 Doug Ledford &lt;dledford@redhat.com&gt;&n; *&t; - This and the i60uscsi.h file are almost identical,&n; *&t;   merged them into a single header used by both .c files.&n; */
 DECL|macro|inia100_REVID
 mdefine_line|#define inia100_REVID &quot;Initio INI-A100U2W SCSI device driver; Revision: 1.02d&quot;
 DECL|macro|ULONG
 mdefine_line|#define ULONG   unsigned long
-DECL|macro|PVOID
-mdefine_line|#define PVOID   void *
 DECL|macro|USHORT
 mdefine_line|#define USHORT  unsigned short
 DECL|macro|UCHAR
@@ -26,10 +22,6 @@ DECL|macro|UDWORD
 mdefine_line|#define UDWORD  unsigned long
 DECL|macro|U32
 mdefine_line|#define U32     u32
-macro_line|#ifndef FAILURE
-DECL|macro|FAILURE
-mdefine_line|#define FAILURE  (-1)
-macro_line|#endif
 macro_line|#if 1
 DECL|macro|ORC_MAXQUEUE
 mdefine_line|#define ORC_MAXQUEUE&t;&t;245
@@ -49,10 +41,6 @@ DECL|macro|IMAX_CDB
 mdefine_line|#define IMAX_CDB&t;&t;&t;15
 DECL|macro|SENSE_SIZE
 mdefine_line|#define SENSE_SIZE&t;&t;14
-DECL|macro|SUCCESSFUL
-mdefine_line|#define SUCCESSFUL              0x00
-DECL|macro|I920_DEVICE_ID
-mdefine_line|#define I920_DEVICE_ID&t;0x0002&t;/* Initio&squot;s inic-950 product ID   */
 multiline_comment|/************************************************************************/
 multiline_comment|/*              Scatter-Gather Element Structure                        */
 multiline_comment|/************************************************************************/
@@ -90,35 +78,6 @@ DECL|macro|MAX_ESCB_ELE
 mdefine_line|#define MAX_ESCB_ELE&t;&t;&t;&t;64
 DECL|macro|TCF_DRV_255_63
 mdefine_line|#define TCF_DRV_255_63     0x0400
-multiline_comment|/********************************************************/
-multiline_comment|/*      Orchid Configuration Register Set               */
-multiline_comment|/********************************************************/
-DECL|macro|ORC_PVID
-mdefine_line|#define ORC_PVID&t;0x00&t;/* Vendor ID                      */
-DECL|macro|ORC_VENDOR_ID
-mdefine_line|#define ORC_VENDOR_ID&t;0x1101&t;/* Orchid vendor ID               */
-DECL|macro|ORC_PDID
-mdefine_line|#define ORC_PDID        0x02&t;/* Device ID                    */
-DECL|macro|ORC_DEVICE_ID
-mdefine_line|#define ORC_DEVICE_ID&t;0x1060&t;/* Orchid device ID               */
-DECL|macro|ORC_COMMAND
-mdefine_line|#define ORC_COMMAND&t;0x04&t;/* Command                        */
-DECL|macro|BUSMS
-mdefine_line|#define BUSMS&t;&t;0x04&t;/* BUS MASTER Enable              */
-DECL|macro|IOSPA
-mdefine_line|#define IOSPA&t;&t;0x01&t;/* IO Space Enable                */
-DECL|macro|ORC_STATUS
-mdefine_line|#define ORC_STATUS&t;0x06&t;/* Status register                */
-DECL|macro|ORC_REVISION
-mdefine_line|#define ORC_REVISION&t;0x08&t;/* Revision number                */
-DECL|macro|ORC_BASE
-mdefine_line|#define ORC_BASE&t;0x10&t;/* Base address                   */
-DECL|macro|ORC_BIOS
-mdefine_line|#define ORC_BIOS&t;0x50&t;/* Expansion ROM base address     */
-DECL|macro|ORC_INT_NUM
-mdefine_line|#define ORC_INT_NUM&t;0x3C&t;/* Interrupt line         */
-DECL|macro|ORC_INT_PIN
-mdefine_line|#define ORC_INT_PIN&t;0x3D&t;/* Interrupt pin          */
 multiline_comment|/********************************************************/
 multiline_comment|/*      Orchid Host Command Set                         */
 multiline_comment|/********************************************************/
@@ -428,36 +387,6 @@ DECL|macro|TARGET_BUSY
 mdefine_line|#define TARGET_BUSY&t;0x08
 DECL|macro|TARGET_TAG_FULL
 mdefine_line|#define TARGET_TAG_FULL&t;0x28
-multiline_comment|/* Queue tag msg: Simple_quque_tag, Head_of_queue_tag, Ordered_queue_tag */
-DECL|macro|MSG_STAG
-mdefine_line|#define MSG_STAG&t;0x20
-DECL|macro|MSG_HTAG
-mdefine_line|#define MSG_HTAG&t;0x21
-DECL|macro|MSG_OTAG
-mdefine_line|#define MSG_OTAG&t;0x22
-DECL|macro|MSG_IGNOREWIDE
-mdefine_line|#define MSG_IGNOREWIDE&t;0x23
-DECL|macro|MSG_IDENT
-mdefine_line|#define MSG_IDENT&t;0x80
-DECL|macro|MSG_DISC
-mdefine_line|#define MSG_DISC&t;0x40&t;/* Disconnect allowed             */
-multiline_comment|/* SCSI MESSAGE */
-DECL|macro|MSG_EXTEND
-mdefine_line|#define&t;MSG_EXTEND&t;0x01
-DECL|macro|MSG_SDP
-mdefine_line|#define&t;MSG_SDP&t;&t;0x02
-DECL|macro|MSG_ABORT
-mdefine_line|#define&t;MSG_ABORT&t;0x06
-DECL|macro|MSG_REJ
-mdefine_line|#define&t;MSG_REJ&t;&t;0x07
-DECL|macro|MSG_NOP
-mdefine_line|#define&t;MSG_NOP&t;&t;0x08
-DECL|macro|MSG_PARITY
-mdefine_line|#define&t;MSG_PARITY&t;0x09
-DECL|macro|MSG_DEVRST
-mdefine_line|#define&t;MSG_DEVRST&t;0x0C
-DECL|macro|MSG_STAG
-mdefine_line|#define&t;MSG_STAG&t;0x20
 multiline_comment|/***********************************************************************&n;&t;&t;Target Device Control Structure&n;**********************************************************************/
 DECL|struct|ORC_Tar_Ctrl_Struc
 r_typedef
@@ -490,12 +419,8 @@ id|TCS_DrvSector
 suffix:semicolon
 multiline_comment|/* 7 */
 DECL|typedef|ORC_TCS
-DECL|typedef|PORC_TCS
 )brace
 id|ORC_TCS
-comma
-op_star
-id|PORC_TCS
 suffix:semicolon
 multiline_comment|/* Bit Definition for TCF_DrvFlags */
 DECL|macro|TCS_DF_NODASD_SUPT
@@ -564,17 +489,19 @@ id|HCS_Timeout
 suffix:semicolon
 multiline_comment|/* Adapter timeout value   */
 DECL|member|HCS_virScbArray
-id|PVOID
+id|ORC_SCB
+op_star
 id|HCS_virScbArray
 suffix:semicolon
-multiline_comment|/* 28 Virtual Pointer to SCB array     */
+multiline_comment|/* 28 Virtual Pointer to SCB array */
 DECL|member|HCS_physScbArray
 id|dma_addr_t
 id|HCS_physScbArray
 suffix:semicolon
 multiline_comment|/* Scb Physical address */
 DECL|member|HCS_virEscbArray
-id|PVOID
+id|ESCB
+op_star
 id|HCS_virEscbArray
 suffix:semicolon
 multiline_comment|/* Virtual pointer to ESCB Scatter list */
@@ -633,22 +560,6 @@ DECL|member|BitAllocFlagLock
 id|spinlock_t
 id|BitAllocFlagLock
 suffix:semicolon
-DECL|member|pSRB_head
-r_struct
-id|scsi_cmnd
-op_star
-id|pSRB_head
-suffix:semicolon
-DECL|member|pSRB_tail
-r_struct
-id|scsi_cmnd
-op_star
-id|pSRB_tail
-suffix:semicolon
-DECL|member|pSRB_lock
-id|spinlock_t
-id|pSRB_lock
-suffix:semicolon
 DECL|member|pdev
 r_struct
 id|pci_dev
@@ -684,81 +595,6 @@ DECL|macro|HCS_AF_DISABLE_RESET
 mdefine_line|#define&t;HCS_AF_DISABLE_RESET&t;0x10&t;/* Adapter disable reset  */
 DECL|macro|HCS_AF_DISABLE_ADPT
 mdefine_line|#define&t;HCS_AF_DISABLE_ADPT&t;0x80&t;/* Adapter disable                */
-multiline_comment|/*---------------------------------------*/
-multiline_comment|/* TimeOut for RESET to complete (30s)   */
-multiline_comment|/*                                       */
-multiline_comment|/* After a RESET the drive is checked    */
-multiline_comment|/* every 200ms.                          */
-multiline_comment|/*---------------------------------------*/
-DECL|macro|DELAYED_RESET_MAX
-mdefine_line|#define DELAYED_RESET_MAX       (30*1000L)
-DECL|macro|DELAYED_RESET_INTERVAL
-mdefine_line|#define DELAYED_RESET_INTERVAL  200L
-multiline_comment|/*----------------------------------------------*/
-multiline_comment|/* TimeOut for IRQ from last interrupt (5s)     */
-multiline_comment|/*----------------------------------------------*/
-DECL|macro|IRQ_TIMEOUT_INTERVAL
-mdefine_line|#define IRQ_TIMEOUT_INTERVAL    (5*1000L)
-multiline_comment|/*----------------------------------------------*/
-multiline_comment|/* Retry Delay interval (200ms)                 */
-multiline_comment|/*----------------------------------------------*/
-DECL|macro|DELAYED_RETRY_INTERVAL
-mdefine_line|#define DELAYED_RETRY_INTERVAL  200L
-DECL|macro|INQUIRY_SIZE
-mdefine_line|#define&t;INQUIRY_SIZE&t;&t;36
-DECL|macro|CAPACITY_SIZE
-mdefine_line|#define&t;CAPACITY_SIZE&t;&t;8
-DECL|macro|DEFAULT_SENSE_LEN
-mdefine_line|#define&t;DEFAULT_SENSE_LEN&t;14
-DECL|macro|DEVICE_NOT_FOUND
-mdefine_line|#define&t;DEVICE_NOT_FOUND&t;0x86
-multiline_comment|/*----------------------------------------------*/
-multiline_comment|/* Definition for PCI device                    */
-multiline_comment|/*----------------------------------------------*/
-DECL|macro|MAX_PCI_DEVICES
-mdefine_line|#define&t;MAX_PCI_DEVICES&t;21
-DECL|macro|MAX_PCI_BUSES
-mdefine_line|#define&t;MAX_PCI_BUSES&t;8
-DECL|struct|Adpt_Struc
-r_typedef
-r_struct
-id|Adpt_Struc
-(brace
-DECL|member|ADPT_BIOS
-id|USHORT
-id|ADPT_BIOS
-suffix:semicolon
-multiline_comment|/* 0 */
-DECL|member|ADPT_BASE
-id|UBYTE
-id|ADPT_BASE
-suffix:semicolon
-multiline_comment|/* 1 */
-DECL|member|ADPT_Bus
-id|UBYTE
-id|ADPT_Bus
-suffix:semicolon
-multiline_comment|/* 2 */
-DECL|member|ADPT_Device
-id|UBYTE
-id|ADPT_Device
-suffix:semicolon
-multiline_comment|/* 3 */
-DECL|member|ADPT_Reserved
-id|UBYTE
-id|ADPT_Reserved
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|typedef|JACS
-DECL|typedef|PJACS
-)brace
-id|JACS
-comma
-op_star
-id|PJACS
-suffix:semicolon
 DECL|struct|_NVRAM
 r_typedef
 r_struct
@@ -1137,99 +973,10 @@ DECL|macro|NCC_RESET_TIME
 mdefine_line|#define NCC_RESET_TIME  0x0A    /* SCSI RESET recovering time     */
 DECL|macro|NTC_DEFAULT
 mdefine_line|#define NTC_DEFAULT     (NTC_1GIGA | NTC_NO_WIDESYNC | NTC_DISC_ENABLE)
-r_typedef
-r_union
-(brace
-multiline_comment|/* Union define for mechanism 1   */
-r_struct
-(brace
-DECL|member|RegNum
-r_int
-r_char
-id|RegNum
-suffix:semicolon
-DECL|member|FcnNum
-r_int
-r_char
-id|FcnNum
-suffix:colon
-l_int|3
-suffix:semicolon
-DECL|member|DeviceNum
-r_int
-r_char
-id|DeviceNum
-suffix:colon
-l_int|5
-suffix:semicolon
-DECL|member|BusNum
-r_int
-r_char
-id|BusNum
-suffix:semicolon
-DECL|member|Reserved
-r_int
-r_char
-id|Reserved
-suffix:colon
-l_int|7
-suffix:semicolon
-DECL|member|Enable
-r_int
-r_char
-id|Enable
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|sConfigAdr
-)brace
-id|sConfigAdr
-suffix:semicolon
-DECL|member|lConfigAdr
-r_int
-r_int
-id|lConfigAdr
-suffix:semicolon
-DECL|typedef|CONFIG_ADR
-)brace
-id|CONFIG_ADR
-suffix:semicolon
-r_typedef
-r_union
-(brace
-multiline_comment|/* Union define for mechanism 2   */
-r_struct
-(brace
-DECL|member|RegNum
-r_int
-r_char
-id|RegNum
-suffix:semicolon
-DECL|member|DeviceNum
-r_int
-r_char
-id|DeviceNum
-suffix:semicolon
-DECL|member|Reserved
-r_int
-r_int
-id|Reserved
-suffix:semicolon
-DECL|member|sHostAdr
-)brace
-id|sHostAdr
-suffix:semicolon
-DECL|member|lHostAdr
-r_int
-r_int
-id|lHostAdr
-suffix:semicolon
-DECL|typedef|HOST_ADR
-)brace
-id|HOST_ADR
-suffix:semicolon
 DECL|macro|ORC_RD
 mdefine_line|#define ORC_RD(x,y)             (UCHAR)(inb(  (int)((ULONG)((ULONG)x+(UCHAR)y)) ))
+DECL|macro|ORC_RDWORD
+mdefine_line|#define ORC_RDWORD(x,y)         (short)(inl((int)((ULONG)((ULONG)x+(UCHAR)y)) ))
 DECL|macro|ORC_RDLONG
 mdefine_line|#define ORC_RDLONG(x,y)         (long)(inl((int)((ULONG)((ULONG)x+(UCHAR)y)) ))
 DECL|macro|ORC_WR

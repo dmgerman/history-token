@@ -1,10 +1,10 @@
-multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_def.h&n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt; &n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
+multiline_comment|/* &n; * &n; * linux/drivers/s390/scsi/zfcp_def.h&n; * &n; * FCP adapter driver for IBM eServer zSeries &n; * &n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt; &n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt; &n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt; &n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt; &n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; * &n; * This program is free software; you can redistribute it and/or modify &n; * it under the terms of the GNU General Public License as published by &n; * the Free Software Foundation; either version 2, or (at your option) &n; * any later version. &n; * &n; * This program is distributed in the hope that it will be useful, &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the &n; * GNU General Public License for more details. &n; * &n; * You should have received a copy of the GNU General Public License &n; * along with this program; if not, write to the Free Software &n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; */
 macro_line|#ifndef ZFCP_DEF_H
 DECL|macro|ZFCP_DEF_H
 mdefine_line|#define ZFCP_DEF_H
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_DEF_REVISION
-mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.91 $&quot;
+mdefine_line|#define ZFCP_DEF_REVISION &quot;$Revision: 1.98 $&quot;
 multiline_comment|/*************************** INCLUDES *****************************************/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -38,7 +38,7 @@ mdefine_line|#define&t;ZFCP_PRINT_FLAGS
 multiline_comment|/********************* GENERAL DEFINES *********************************/
 multiline_comment|/* zfcp version number, it consists of major, minor, and patch-level number */
 DECL|macro|ZFCP_VERSION
-mdefine_line|#define ZFCP_VERSION&t;&t;&quot;4.1.3&quot;
+mdefine_line|#define ZFCP_VERSION&t;&t;&quot;4.1.4&quot;
 multiline_comment|/**&n; * zfcp_sg_to_address - determine kernel address from struct scatterlist&n; * @list: struct scatterlist&n; * Return: kernel address&n; */
 r_static
 r_inline
@@ -1227,7 +1227,9 @@ DECL|macro|ZFCP_STATUS_PORT_WKA
 mdefine_line|#define ZFCP_STATUS_PORT_WKA &bslash;&n;&t;&t;(ZFCP_STATUS_PORT_NO_WWPN | &bslash;&n;&t;&t; ZFCP_STATUS_PORT_NO_SCSI_ID)
 multiline_comment|/* logical unit status */
 DECL|macro|ZFCP_STATUS_UNIT_NOTSUPPUNITRESET
-mdefine_line|#define ZFCP_STATUS_UNIT_NOTSUPPUNITRESET&t;0x00000001
+mdefine_line|#define ZFCP_STATUS_UNIT_NOTSUPPUNITRESET       0x00000001
+DECL|macro|ZFCP_STATUS_UNIT_TEMPORARY
+mdefine_line|#define ZFCP_STATUS_UNIT_TEMPORARY&t;&t;0x00000010
 multiline_comment|/* FSF request status (this does not have a common part) */
 DECL|macro|ZFCP_STATUS_FSFREQ_NOT_INIT
 mdefine_line|#define ZFCP_STATUS_FSFREQ_NOT_INIT&t;&t;0x00000000
@@ -1806,16 +1808,20 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * struct zfcp_send_els - used to pass parameters to function zfcp_fsf_send_els&n; * @port: port where the request is sent to&n; * @req: scatter-gather list for request&n; * @resp: scatter-gather list for response&n; * @req_count: number of elements in request scatter-gather list&n; * @resp_count: number of elements in response scatter-gather list&n; * @handler: handler function (called for response to the request)&n; * @handler_data: data passed to handler function&n; * @timer: timer (e.g. for request initiated by erp)&n; * @completion: completion for synchronization purposes&n; * @ls_code: hex code of ELS command&n; * @status: used to pass error status to calling function&n; */
+multiline_comment|/**&n; * struct zfcp_send_els - used to pass parameters to function zfcp_fsf_send_els&n; * @adapter: adapter where request is sent from&n; * @d_id: destiniation id of port where request is sent to&n; * @req: scatter-gather list for request&n; * @resp: scatter-gather list for response&n; * @req_count: number of elements in request scatter-gather list&n; * @resp_count: number of elements in response scatter-gather list&n; * @handler: handler function (called for response to the request)&n; * @handler_data: data passed to handler function&n; * @timer: timer (e.g. for request initiated by erp)&n; * @completion: completion for synchronization purposes&n; * @ls_code: hex code of ELS command&n; * @status: used to pass error status to calling function&n; */
 DECL|struct|zfcp_send_els
 r_struct
 id|zfcp_send_els
 (brace
-DECL|member|port
+DECL|member|adapter
 r_struct
-id|zfcp_port
+id|zfcp_adapter
 op_star
-id|port
+id|adapter
+suffix:semicolon
+DECL|member|d_id
+id|fc_id_t
+id|d_id
 suffix:semicolon
 DECL|member|req
 r_struct
@@ -2712,6 +2718,11 @@ suffix:semicolon
 DECL|member|init_fcp_lun
 id|fcp_lun_t
 id|init_fcp_lun
+suffix:semicolon
+DECL|member|driver_version
+r_char
+op_star
+id|driver_version
 suffix:semicolon
 )brace
 suffix:semicolon

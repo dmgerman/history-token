@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pci-sh7751.h&gt;
+macro_line|#include &quot;../../../drivers/pci/pci-sh7751.h&quot;
 DECL|macro|PCIMCR_MRSET_OFF
 mdefine_line|#define PCIMCR_MRSET_OFF&t;0xBFFFFFFF
 DECL|macro|PCIMCR_RFSH_OFF

@@ -60,24 +60,6 @@ mdefine_line|#define SCSI_SENSE_VALID(scmd) &bslash;&n;&t;(((scmd)-&gt;sense_buf
 multiline_comment|/*&n; * Special value for scanning to specify scanning or rescanning of all&n; * possible channels, (target) ids, or luns on a given shost.&n; */
 DECL|macro|SCAN_WILD_CARD
 mdefine_line|#define SCAN_WILD_CARD&t;~0
-multiline_comment|/*&n; * scsi_target: representation of a scsi target, for now, this is only&n; * used for single_lun devices. If no one has active IO to the target,&n; * starget_sdev_user is NULL, else it points to the active sdev.&n; */
-DECL|struct|scsi_target
-r_struct
-id|scsi_target
-(brace
-DECL|member|starget_sdev_user
-r_struct
-id|scsi_device
-op_star
-id|starget_sdev_user
-suffix:semicolon
-DECL|member|starget_refcnt
-r_int
-r_int
-id|starget_refcnt
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* hosts.c */
 r_extern
 r_int
@@ -651,6 +633,26 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|scsi_sysfs_device_initialize
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_sysfs_target_initialize
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|scsi_transport_template
 id|blank_transport_template
@@ -664,6 +666,31 @@ r_extern
 r_struct
 id|bus_type
 id|scsi_bus_type
+suffix:semicolon
+multiline_comment|/* &n; * internal scsi timeout functions: for use by mid-layer and transport&n; * classes.&n; */
+DECL|macro|SCSI_DEVICE_BLOCK_MAX_TIMEOUT
+mdefine_line|#define SCSI_DEVICE_BLOCK_MAX_TIMEOUT&t;(HZ*60)
+r_extern
+r_int
+id|scsi_internal_device_block
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|scsi_internal_device_unblock
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+)paren
 suffix:semicolon
 macro_line|#endif /* _SCSI_PRIV_H */
 eof

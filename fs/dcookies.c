@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * dcookies.c&n; *&n; * Copyright 2002 John Levon &lt;levon@movementarian.org&gt;&n; *&n; * Persistent cookie-path mappings. These are used by&n; * profilers to convert a per-task EIP value into something&n; * non-transitory that can be processed at a later date.&n; * This is done by locking the dentry/vfsmnt pair in the&n; * kernel until released by the tasks needing the persistent&n; * objects. The tag is simply an unsigned long that refers&n; * to the pair and can be looked up from userspace.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/list.h&gt;

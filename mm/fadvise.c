@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/fadvise.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/*&n; * POSIX_FADV_WILLNEED could set PG_Referenced, and POSIX_FADV_NOREUSE could&n; * deactivate the pages and clear PG_Referenced.&n; */
 DECL|function|sys_fadvise64_64

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Mobile CPU support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     24-Aug-2004 BJD  Start of s3c2440 support&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/s3c2440.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Samsung S3C2440 Mobile CPU support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;24-Aug-2004 BJD  Start of s3c2440 support&n; *&t;12-Oct-2004 BJD&t; Moved clock info out to clock.c&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/arch/regs-clock.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2440.h&quot;
+macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;cpu.h&quot;
 DECL|variable|s3c2440_clock_tick_rate
 r_int
@@ -28,37 +29,10 @@ l_int|1000
 suffix:semicolon
 multiline_comment|/* current timers at 12MHz */
 multiline_comment|/* clock info */
-DECL|variable|s3c2440_baseclk
-r_int
-r_int
-id|s3c2440_baseclk
-op_assign
-l_int|12
-op_star
-l_int|1000
-op_star
-l_int|1000
-suffix:semicolon
-multiline_comment|/* assume base is 12MHz */
 DECL|variable|s3c2440_hdiv
 r_int
 r_int
 id|s3c2440_hdiv
-suffix:semicolon
-DECL|variable|s3c2440_fclk
-r_int
-r_int
-id|s3c2440_fclk
-suffix:semicolon
-DECL|variable|s3c2440_hclk
-r_int
-r_int
-id|s3c2440_hclk
-suffix:semicolon
-DECL|variable|s3c2440_pclk
-r_int
-r_int
-id|s3c2440_pclk
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -408,7 +382,7 @@ id|size
 (brace
 r_int
 r_int
-id|tmp
+id|clkdiv
 suffix:semicolon
 r_int
 r_int
@@ -436,7 +410,7 @@ id|size
 )paren
 suffix:semicolon
 multiline_comment|/* now we&squot;ve got our machine bits initialised, work out what&n;&t; * clocks we&squot;ve got */
-id|s3c2440_fclk
+id|s3c24xx_fclk
 op_assign
 id|s3c2410_get_pll
 c_func
@@ -447,10 +421,12 @@ c_func
 id|S3C2410_MPLLCON
 )paren
 comma
-id|s3c2440_baseclk
+id|s3c24xx_xtal
 )paren
+op_star
+l_int|2
 suffix:semicolon
-id|tmp
+id|clkdiv
 op_assign
 id|__raw_readl
 c_func
@@ -470,7 +446,7 @@ multiline_comment|/* work out clock scalings */
 r_switch
 c_cond
 (paren
-id|tmp
+id|clkdiv
 op_amp
 id|S3C2440_CLKDIVN_HDIVN_MASK
 )paren
@@ -519,7 +495,7 @@ op_assign
 (paren
 id|camdiv
 op_amp
-id|S3C2440_CAMDIVN_HCLK4_HALF
+id|S3C2440_CAMDIVN_HCLK3_HALF
 )paren
 ques
 c_cond
@@ -530,19 +506,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|s3c2440_hclk
+id|s3c24xx_hclk
 op_assign
-id|s3c2440_fclk
+id|s3c24xx_fclk
 op_div
 id|s3c2440_hdiv
 suffix:semicolon
-id|s3c2440_pclk
+id|s3c24xx_pclk
 op_assign
-id|s3c2440_hclk
+id|s3c24xx_hclk
 op_div
 (paren
 (paren
-id|tmp
+id|clkdiv
 op_amp
 id|S3C2440_CLKDIVN_PDIVN
 )paren
@@ -562,19 +538,19 @@ comma
 id|print_mhz
 c_func
 (paren
-id|s3c2440_fclk
+id|s3c24xx_fclk
 )paren
 comma
 id|print_mhz
 c_func
 (paren
-id|s3c2440_hclk
+id|s3c24xx_hclk
 )paren
 comma
 id|print_mhz
 c_func
 (paren
-id|s3c2440_pclk
+id|s3c24xx_pclk
 )paren
 )paren
 suffix:semicolon

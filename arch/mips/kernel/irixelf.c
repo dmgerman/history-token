@@ -4763,7 +4763,7 @@ suffix:semicolon
 r_int
 id|limit
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_CORE
 )braket

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Implement the default iomap interfaces&n; */
+multiline_comment|/*&n; * Implement the default iomap interfaces&n; *&n; * (C) Copyright 2004 Linus Torvalds&n; */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;

@@ -380,6 +380,16 @@ id|BLIST_NOLUN
 )brace
 comma
 (brace
+l_string|&quot;SONY&quot;
+comma
+l_string|&quot;SDT-5000&quot;
+comma
+l_string|&quot;3.17&quot;
+comma
+id|BLIST_SELECT_NO_ATN
+)brace
+comma
+(brace
 l_string|&quot;TANDBERG&quot;
 comma
 l_string|&quot;TDC 3600&quot;
@@ -609,7 +619,7 @@ id|BLIST_NOLUN
 )brace
 comma
 multiline_comment|/* locks up */
-multiline_comment|/*&n;&t; * Other types of devices that have special flags.&n;&t; */
+multiline_comment|/*&n;&t; * Other types of devices that have special flags.&n;&t; * Note that all USB devices should have the BLIST_INQUIRY_36 flag.&n;&t; */
 (brace
 l_string|&quot;ADAPTEC&quot;
 comma
@@ -648,6 +658,8 @@ comma
 l_string|&quot;1.95&quot;
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -668,6 +680,8 @@ comma
 l_string|&quot;300A&quot;
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -898,6 +912,8 @@ comma
 l_string|&quot;1.00&quot;
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -908,6 +924,8 @@ comma
 l_string|&quot;0180&quot;
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -918,6 +936,8 @@ comma
 l_string|&quot;0207&quot;
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -1006,6 +1026,16 @@ comma
 l_int|NULL
 comma
 id|BLIST_FORCELUN
+)brace
+comma
+(brace
+l_string|&quot;HP&quot;
+comma
+l_string|&quot;C3323-300&quot;
+comma
+l_string|&quot;4269&quot;
+comma
+id|BLIST_NOTQ
 )brace
 comma
 (brace
@@ -1301,6 +1331,27 @@ id|BLIST_FORCELUN
 )brace
 comma
 (brace
+l_string|&quot;SEAGATE&quot;
+comma
+l_string|&quot;ST34555N&quot;
+comma
+l_string|&quot;0930&quot;
+comma
+id|BLIST_NOTQ
+)brace
+comma
+multiline_comment|/* Chokes on tagged INQUIRY */
+(brace
+l_string|&quot;SEAGATE&quot;
+comma
+l_string|&quot;ST3390N&quot;
+comma
+l_string|&quot;9546&quot;
+comma
+id|BLIST_NOTQ
+)brace
+comma
+(brace
 l_string|&quot;SGI&quot;
 comma
 l_string|&quot;RAID3&quot;
@@ -1331,6 +1382,16 @@ id|BLIST_REPORTLUN2
 )brace
 comma
 (brace
+l_string|&quot;SGI&quot;
+comma
+l_string|&quot;Universal Xport&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_NO_ULD_ATTACH
+)brace
+comma
+(brace
 l_string|&quot;SMSC&quot;
 comma
 l_string|&quot;USB 2 HS-CF&quot;
@@ -1338,6 +1399,8 @@ comma
 l_int|NULL
 comma
 id|BLIST_SPARSELUN
+op_or
+id|BLIST_INQUIRY_36
 )brace
 comma
 (brace
@@ -1419,6 +1482,38 @@ comma
 l_int|NULL
 comma
 id|BLIST_FORCELUN
+op_or
+id|BLIST_INQUIRY_36
+)brace
+comma
+(brace
+l_string|&quot;WangDAT&quot;
+comma
+l_string|&quot;Model 2600&quot;
+comma
+l_string|&quot;01.7&quot;
+comma
+id|BLIST_SELECT_NO_ATN
+)brace
+comma
+(brace
+l_string|&quot;WangDAT&quot;
+comma
+l_string|&quot;Model 3200&quot;
+comma
+l_string|&quot;02.2&quot;
+comma
+id|BLIST_SELECT_NO_ATN
+)brace
+comma
+(brace
+l_string|&quot;WangDAT&quot;
+comma
+l_string|&quot;Model 1300&quot;
+comma
+l_string|&quot;02.4&quot;
+comma
+id|BLIST_SELECT_NO_ATN
 )brace
 comma
 (brace

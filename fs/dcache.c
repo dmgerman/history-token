@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * fs/dcache.c&n; *&n; * Complete reimplementation&n; * (C) 1997 Thomas Schoebel-Theuer,&n; * with heavy changes by Linus Torvalds&n; */
 multiline_comment|/*&n; * Notes on the allocation strategy:&n; *&n; * The dcache is a master of the icache - whenever a dcache entry&n; * exists, the inode will always exist. &quot;iput()&quot; is done either when&n; * the dcache entry is deleted or garbage collected.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;

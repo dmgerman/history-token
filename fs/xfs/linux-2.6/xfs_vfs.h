@@ -945,5 +945,9 @@ comma
 r_int
 )paren
 suffix:semicolon
+DECL|macro|fs_frozen
+mdefine_line|#define fs_frozen(vfsp)&t;&t;((vfsp)-&gt;vfs_super-&gt;s_frozen)
+DECL|macro|fs_check_frozen
+mdefine_line|#define fs_check_frozen(vfsp, level) &bslash;&n;&t;vfs_check_frozen(vfsp-&gt;vfs_super, level);
 macro_line|#endif&t;/* __XFS_VFS_H__ */
 eof

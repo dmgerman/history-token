@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: extable.c,v 1.3 2003/05/06 23:28:50 lethal Exp $&n; *&n; * linux/arch/sh/mm/extable.c&n; *  Taken from:&n; *   linux/arch/i386/mm/extable.c&n; */
+multiline_comment|/*&n; * linux/arch/sh/mm/extable.c&n; *  Taken from:&n; *   linux/arch/i386/mm/extable.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

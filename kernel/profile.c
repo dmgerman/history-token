@@ -67,7 +67,7 @@ l_int|8
 (brace
 id|prof_on
 op_assign
-l_int|2
+id|SCHED_PROFILING
 suffix:semicolon
 id|printk
 c_func
@@ -111,7 +111,7 @@ id|par
 suffix:semicolon
 id|prof_on
 op_assign
-l_int|1
+id|CPU_PROFILING
 suffix:semicolon
 id|printk
 c_func

@@ -1,7 +1,7 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_aux.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/scsi/zfcp_aux.c&n; *&n; * FCP adapter driver for IBM eServer zSeries&n; *&n; * (C) Copyright IBM Corp. 2002, 2004&n; *&n; * Author(s): Martin Peschke &lt;mpeschke@de.ibm.com&gt;&n; *            Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;&n; *            Aron Zeh&n; *            Wolfgang Taphorn&n; *            Stefan Bader &lt;stefan.bader@de.ibm.com&gt;&n; *            Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;&n; *            Andreas Herrmann &lt;aherrman@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this drivers version (do not edit !!! generated and updated by cvs) */
 DECL|macro|ZFCP_AUX_REVISION
-mdefine_line|#define ZFCP_AUX_REVISION &quot;$Revision: 1.129 $&quot;
+mdefine_line|#define ZFCP_AUX_REVISION &quot;$Revision: 1.135 $&quot;
 macro_line|#include &quot;zfcp_ext.h&quot;
 multiline_comment|/* accumulated log level (module parameter) */
 DECL|variable|loglevel
@@ -189,6 +189,7 @@ id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Heiko Carstens &lt;heiko.carstens@de.ibm.com&gt;, &quot;
+l_string|&quot;Andreas Herrman &lt;aherrman@de.ibm.com&gt;, &quot;
 l_string|&quot;Martin Peschke &lt;mpeschke@de.ibm.com&gt;, &quot;
 l_string|&quot;Raimund Schroeder &lt;raimund.schroeder@de.ibm.com&gt;, &quot;
 l_string|&quot;Wolfgang Taphorn &lt;taphorn@de.ibm.com&gt;, &quot;
@@ -1543,6 +1544,7 @@ id|buffer
 (brace
 r_struct
 id|zfcp_cfdc_sense_data
+op_star
 id|sense_data
 comma
 id|__user
@@ -1586,6 +1588,37 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+id|sense_data
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|zfcp_cfdc_sense_data
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sense_data
+op_eq
+l_int|NULL
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|sg_list
 op_assign
 id|kmalloc
@@ -1693,7 +1726,6 @@ op_assign
 id|copy_from_user
 c_func
 (paren
-op_amp
 id|sense_data
 comma
 id|sense_data_user
@@ -1723,7 +1755,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sense_data.signature
+id|sense_data-&gt;signature
 op_ne
 id|ZFCP_CFDC_SIGNATURE
 )paren
@@ -1748,7 +1780,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|sense_data.command
+id|sense_data-&gt;command
 )paren
 (brace
 r_case
@@ -1823,7 +1855,7 @@ c_func
 (paren
 l_string|&quot;invalid command code 0x%08x&bslash;n&quot;
 comma
-id|sense_data.command
+id|sense_data-&gt;command
 )paren
 suffix:semicolon
 id|retval
@@ -1872,13 +1904,13 @@ comma
 l_string|&quot;%d.%d.%04x&quot;
 comma
 (paren
-id|sense_data.devno
+id|sense_data-&gt;devno
 op_rshift
 l_int|24
 )paren
 comma
 (paren
-id|sense_data.devno
+id|sense_data-&gt;devno
 op_rshift
 l_int|16
 )paren
@@ -1886,7 +1918,7 @@ op_amp
 l_int|0xFF
 comma
 (paren
-id|sense_data.devno
+id|sense_data-&gt;devno
 op_amp
 l_int|0xFFFF
 )paren
@@ -1957,7 +1989,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sense_data.command
+id|sense_data-&gt;command
 op_amp
 id|ZFCP_CFDC_WITH_CONTROL_FILE
 )paren
@@ -1992,13 +2024,13 @@ r_if
 c_cond
 (paren
 (paren
-id|sense_data.command
+id|sense_data-&gt;command
 op_amp
 id|ZFCP_CFDC_DOWNLOAD
 )paren
 op_logical_and
 (paren
-id|sense_data.command
+id|sense_data-&gt;command
 op_amp
 id|ZFCP_CFDC_WITH_CONTROL_FILE
 )paren
@@ -2054,54 +2086,9 @@ r_if
 c_cond
 (paren
 id|retval
-op_eq
-op_minus
-id|EOPNOTSUPP
 )paren
-(brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;adapter does not support cfdc&bslash;n&quot;
-)paren
-suffix:semicolon
 r_goto
 id|out
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|retval
-op_ne
-l_int|0
-)paren
-(brace
-id|ZFCP_LOG_INFO
-c_func
-(paren
-l_string|&quot;initiation of cfdc up/download failed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|EPERM
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-id|wait_event
-c_func
-(paren
-id|fsf_req-&gt;completion_wq
-comma
-id|fsf_req-&gt;status
-op_amp
-id|ZFCP_STATUS_FSFREQ_COMPLETED
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2128,7 +2115,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|sense_data.fsf_status
+id|sense_data-&gt;fsf_status
 op_assign
 id|fsf_req-&gt;qtcb-&gt;header.fsf_status
 suffix:semicolon
@@ -2136,7 +2123,7 @@ id|memcpy
 c_func
 (paren
 op_amp
-id|sense_data.fsf_status_qual
+id|sense_data-&gt;fsf_status_qual
 comma
 op_amp
 id|fsf_req-&gt;qtcb-&gt;header.fsf_status_qual
@@ -2152,7 +2139,7 @@ id|memcpy
 c_func
 (paren
 op_amp
-id|sense_data.payloads
+id|sense_data-&gt;payloads
 comma
 op_amp
 id|fsf_req-&gt;qtcb-&gt;bottom.support.els
@@ -2167,7 +2154,6 @@ c_func
 (paren
 id|sense_data_user
 comma
-op_amp
 id|sense_data
 comma
 r_sizeof
@@ -2195,7 +2181,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sense_data.command
+id|sense_data-&gt;command
 op_amp
 id|ZFCP_CFDC_UPLOAD
 )paren
@@ -2287,6 +2273,19 @@ id|sg_list
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|sense_data
+op_ne
+l_int|NULL
+)paren
+id|kfree
+c_func
+(paren
+id|sense_data
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -2388,6 +2387,22 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|memset
+c_func
+(paren
+id|sg_list-&gt;sg
+comma
+id|sg_list-&gt;count
+op_star
+r_sizeof
+(paren
+r_struct
+id|scatterlist
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2436,18 +2451,10 @@ c_func
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|zfcp_address_to_sg
-c_func
-(paren
-id|address
-comma
-id|sg
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|sg-&gt;page
+id|address
 op_eq
 l_int|NULL
 )paren
@@ -2471,6 +2478,14 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+id|zfcp_address_to_sg
+c_func
+(paren
+id|address
+comma
+id|sg
+)paren
+suffix:semicolon
 id|size
 op_sub_assign
 id|sg-&gt;length
@@ -2534,12 +2549,18 @@ comma
 id|sg
 op_increment
 )paren
-id|__free_pages
+id|free_page
 c_func
 (paren
-id|sg-&gt;page
-comma
-l_int|0
+(paren
+r_int
+r_int
+)paren
+id|zfcp_sg_to_address
+c_func
+(paren
+id|sg
+)paren
 )paren
 suffix:semicolon
 id|sg_list-&gt;count

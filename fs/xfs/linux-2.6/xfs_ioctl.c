@@ -3407,6 +3407,13 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode-&gt;i_sb-&gt;s_frozen
+op_eq
+id|SB_UNFROZEN
+)paren
 id|freeze_bdev
 c_func
 (paren
@@ -3433,6 +3440,13 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode-&gt;i_sb-&gt;s_frozen
+op_ne
+id|SB_UNFROZEN
+)paren
 id|thaw_bdev
 c_func
 (paren

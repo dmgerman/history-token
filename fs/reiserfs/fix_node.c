@@ -3153,8 +3153,7 @@ comma
 l_string|&quot;PAP-8141: busy slot for new buffer&quot;
 )paren
 suffix:semicolon
-id|mark_buffer_journal_new
-c_func
+id|set_buffer_journal_new
 (paren
 id|p_s_new_bh
 )paren

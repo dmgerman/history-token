@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: time.c,v 1.21 2004/04/21 00:09:15 lethal Exp $&n; *&n; *  linux/arch/sh/kernel/time.c&n; *&n; *  Copyright (C) 1999  Tetsuya Okada &amp; Niibe Yutaka&n; *  Copyright (C) 2000  Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *  Copyright (C) 2002, 2003, 2004  Paul Mundt&n; *  Copyright (C) 2002  M. R. Brown  &lt;mrbrown@linux-sh.org&gt;&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; */
+multiline_comment|/*&n; *  arch/sh/kernel/time.c&n; *&n; *  Copyright (C) 1999  Tetsuya Okada &amp; Niibe Yutaka&n; *  Copyright (C) 2000  Philipp Rumpf &lt;prumpf@tux.org&gt;&n; *  Copyright (C) 2002, 2003, 2004  Paul Mundt&n; *  Copyright (C) 2002  M. R. Brown  &lt;mrbrown@linux-sh.org&gt;&n; *&n; *  Some code taken from i386 version.&n; *    Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -149,8 +149,6 @@ r_struct
 id|timespec
 op_star
 )paren
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|rtc_set_time
 r_int
@@ -162,8 +160,6 @@ id|rtc_set_time
 r_const
 id|time_t
 )paren
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7300)
@@ -347,6 +343,66 @@ l_int|0
 )brace
 suffix:semicolon
 macro_line|#elif defined(CONFIG_CPU_SH4)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH73180)
+DECL|variable|ifc_divisors
+r_static
+r_int
+id|ifc_divisors
+(braket
+)braket
+op_assign
+(brace
+l_int|1
+comma
+l_int|2
+comma
+l_int|3
+comma
+l_int|4
+comma
+l_int|6
+comma
+l_int|8
+comma
+l_int|12
+comma
+l_int|16
+)brace
+suffix:semicolon
+DECL|variable|ifc_values
+r_static
+r_int
+id|ifc_values
+(braket
+)braket
+op_assign
+(brace
+l_int|0
+comma
+l_int|1
+comma
+l_int|2
+comma
+l_int|3
+comma
+l_int|4
+comma
+l_int|5
+comma
+l_int|6
+comma
+l_int|7
+)brace
+suffix:semicolon
+DECL|macro|bfc_divisors
+mdefine_line|#define bfc_divisors ifc_divisors&t;/* Same */
+DECL|macro|bfc_values
+mdefine_line|#define bfc_values ifc_values
+DECL|macro|pfc_divisors
+mdefine_line|#define pfc_divisors ifc_divisors&t;/* Same */
+DECL|macro|pfc_values
+mdefine_line|#define pfc_values ifc_values
+macro_line|#else
 DECL|variable|ifc_divisors
 r_static
 r_int
@@ -451,6 +507,7 @@ comma
 l_int|4
 )brace
 suffix:semicolon
+macro_line|#endif
 macro_line|#else
 macro_line|#error &quot;Unknown ifc/bfc/pfc/stc values for this processor&quot;
 macro_line|#endif
@@ -511,7 +568,7 @@ id|jiffies_p
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * cache volatile jiffies temporarily; we have IRQs turned off. &n;&t; */
+multiline_comment|/*&n;&t; * cache volatile jiffies temporarily; we have IRQs turned off.&n;&t; */
 r_int
 r_int
 id|jiffies_t
@@ -570,7 +627,7 @@ l_int|0x100
 )paren
 (brace
 multiline_comment|/* Check UNF bit */
-multiline_comment|/*&n;&t;&t;&t;&t; * We cannot detect lost timer interrupts ... &n;&t;&t;&t;&t; * well, that&squot;s why we call them lost, don&squot;t we? :)&n;&t;&t;&t;&t; * [hmm, on the Pentium and Alpha we can ... sort of]&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * We cannot detect lost timer interrupts ...&n;&t;&t;&t;&t; * well, that&squot;s why we call them lost, don&squot;t we? :)&n;&t;&t;&t;&t; * [hmm, on the Pentium and Alpha we can ... sort of]&n;&t;&t;&t;&t; */
 id|count
 op_sub_assign
 id|LATCH
@@ -1343,8 +1400,6 @@ id|board_time_init
 (paren
 r_void
 )paren
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|board_timer_setup
 r_void
@@ -1358,8 +1413,6 @@ id|irqaction
 op_star
 id|irq
 )paren
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -1636,6 +1689,46 @@ id|tmp
 suffix:semicolon
 macro_line|#endif
 macro_line|#elif defined(CONFIG_CPU_SH4)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH73180)
+op_star
+id|ifc
+op_assign
+id|ifc_divisors
+(braket
+(paren
+id|frqcr
+op_rshift
+l_int|20
+)paren
+op_amp
+l_int|0x0007
+)braket
+suffix:semicolon
+op_star
+id|bfc
+op_assign
+id|bfc_divisors
+(braket
+(paren
+id|frqcr
+op_rshift
+l_int|12
+)paren
+op_amp
+l_int|0x0007
+)braket
+suffix:semicolon
+op_star
+id|pfc
+op_assign
+id|pfc_divisors
+(braket
+id|frqcr
+op_amp
+l_int|0x0007
+)braket
+suffix:semicolon
+macro_line|#else
 op_star
 id|ifc
 op_assign
@@ -1675,10 +1768,11 @@ l_int|0x0007
 )braket
 suffix:semicolon
 macro_line|#endif
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * This bit of ugliness builds up accessor routines to get at both&n; * the divisors and the physical values.&n; */
 DECL|macro|_FREQ_TABLE
-mdefine_line|#define _FREQ_TABLE(x) &bslash;&n;&t;unsigned int get_##x##_divisor(unsigned int value) &t;&bslash;&n;&t;&t;{ return x##_divisors[value]; }&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int get_##x##_value(unsigned int divisor)&t;&bslash;&n;&t;&t;{ return x##_values[(divisor - 1)]; }
+mdefine_line|#define _FREQ_TABLE(x) &bslash;&n;&t;unsigned int get_##x##_divisor(unsigned int value)&t;&bslash;&n;&t;&t;{ return x##_divisors[value]; }&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int get_##x##_value(unsigned int divisor)&t;&bslash;&n;&t;&t;{ return x##_values[(divisor - 1)]; }
 DECL|variable|ifc
 id|_FREQ_TABLE
 c_func
@@ -1701,7 +1795,7 @@ id|pfc
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
-multiline_comment|/* The ST40 divisors are totally different so we set the cpu data&n;** clocks using a different algorithm&n;**&n;** I&squot;ve just plugged this from the 2.4 code - Alex Bennee &lt;kernel-hacker@bennee.com&gt;&n;*/
+multiline_comment|/*&n; * The ST40 divisors are totally different so we set the cpu data&n; * clocks using a different algorithm&n; *&n; * I&squot;ve just plugged this from the 2.4 code&n; *&t;- Alex Bennee &lt;kernel-hacker@bennee.com&gt;&n; */
 DECL|macro|CCN_PVR_CHIP_SHIFT
 mdefine_line|#define CCN_PVR_CHIP_SHIFT 24
 DECL|macro|CCN_PVR_CHIP_MASK
@@ -2582,7 +2676,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ERROR: Unrecognised FRQCR value (0x%x), using default multipliers&bslash;n&quot;
+l_string|&quot;ERROR: Unrecognised FRQCR value (0x%x), &quot;
+l_string|&quot;using default multipliers&bslash;n&quot;
 comma
 id|frqcr
 )paren
@@ -2609,7 +2704,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Clock multipliers: CPU: %d/%d Bus: %d/%d Mem: %d/%d Periph: %d/%d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Clock multipliers: CPU: %d/%d Bus: %d/%d &quot;
+l_string|&quot;Mem: %d/%d Periph: %d/%d&bslash;n&quot;
 comma
 id|d-&gt;factor
 (braket
@@ -2801,7 +2898,7 @@ r_int
 r_int
 id|freq
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * If we&squot;ve specified a peripheral clock frequency, and we have&n;&t;&t; * an RTC, compare it against the autodetected value. Complain&n;&t;&t; * if there&squot;s a mismatch.&n;&t;&t; *&n;&t;&t; * Note: We should allow for some high and low watermarks for&n;&t;&t; * the frequency here (compensating for potential drift), as&n;&t;&t; * otherwise we&squot;ll likely end up triggering this essentially&n;&t;&t; * on every boot.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If we&squot;ve specified a peripheral clock frequency, and we have&n;&t;&t; * an RTC, compare it against the autodetected value. Complain&n;&t;&t; * if there&squot;s a mismatch.&n;&t;&t; */
 id|timer_freq
 op_assign
 id|get_timer_frequency
@@ -2859,6 +2956,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_SUBTYPE_ST40STB1
+multiline_comment|/* XXX: Update ST40 code to use board_time_init() */
 id|pvr
 op_assign
 id|ctrl_inl
@@ -2928,6 +3026,7 @@ c_cond
 (paren
 id|rtc_get_time
 )paren
+(brace
 id|rtc_get_time
 c_func
 (paren
@@ -2935,6 +3034,7 @@ op_amp
 id|xtime
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 id|xtime.tv_sec
@@ -2999,7 +3099,7 @@ id|irq0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;** for ST40 chips the current_cpu_data should already be set&n;&t;** so not having valid pfc/bfc/ifc shouldn&squot;t be a problem&n;&t;*/
+multiline_comment|/*&n;&t; * for ST40 chips the current_cpu_data should already be set&n;&t; * so not having valid pfc/bfc/ifc shouldn&squot;t be a problem&n;&t; */
 r_if
 c_cond
 (paren
@@ -3118,26 +3218,6 @@ op_div
 l_int|10000
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SH_HS7751RVOIP) || defined(CONFIG_SH_RTS7751R2D)
-id|interval
-op_assign
-(paren
-(paren
-id|current_cpu_data.module_clock
-op_div
-l_int|4
-op_plus
-id|HZ
-op_div
-l_int|2
-)paren
-op_div
-id|HZ
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#else
 id|interval
 op_assign
 (paren
@@ -3152,7 +3232,6 @@ l_int|2
 op_div
 id|HZ
 suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren

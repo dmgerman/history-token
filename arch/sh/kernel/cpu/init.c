@@ -17,7 +17,7 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * Generic wrapper for command line arguments to disable on-chip&n; * peripherals (nofpu, nodsp, and so forth).&n; */
 DECL|macro|onchip_setup
-mdefine_line|#define onchip_setup(x) &t;&t;&t;&bslash;&n;static int x##_disabled __initdata = 0; &t;&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;&n;static int __init x##_setup(char *opts)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;x##_disabled = 1;&t;&t;&t;&bslash;&n;&t;return 0;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&bslash;&n;__setup(&quot;no&quot; __stringify(x), x##_setup);
+mdefine_line|#define onchip_setup(x)&t;&t;&t;&t;&bslash;&n;static int x##_disabled __initdata = 0;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&bslash;&n;static int __init x##_setup(char *opts)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;x##_disabled = 1;&t;&t;&t;&bslash;&n;&t;return 0;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&bslash;&n;__setup(&quot;no&quot; __stringify(x), x##_setup);
 DECL|variable|fpu
 id|onchip_setup
 c_func
@@ -182,7 +182,7 @@ id|ways
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Default CCR values .. enable the caches&n;&t; * and invalidate them immediately..&n;&t; */
+multiline_comment|/*&n;&t; * Default CCR values .. enable the caches&n;&t; * and invalidate them immediately..&n;&t; */
 id|flags
 op_assign
 id|CCR_CACHE_ENABLE
@@ -332,7 +332,7 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SH_DSP */
-multiline_comment|/*&n; * sh_cpu_init&n; *&n; * This is our initial entry point for each CPU, and is invoked on the boot&n; * CPU prior to calling start_kernel(). For SMP, a combination of this and&n; * start_secondary() will bring up each processor to a ready state prior&n; * to hand forking the idle loop.&n; *&n; * We do all of the basic processor init here, including setting up the&n; * caches, FPU, DSP, kicking the UBC, etc. By the time start_kernel() is&n; * hit (and subsequently platform_setup()) things like determining the&n; * CPU subtype and initial configuration will all be done.&n; *&n; * Each processor family is still responsible for doing its own probing&n; * and cache configuration in detect_cpu_and_cache_system().&n; */
+multiline_comment|/**&n; * sh_cpu_init&n; *&n; * This is our initial entry point for each CPU, and is invoked on the boot&n; * CPU prior to calling start_kernel(). For SMP, a combination of this and&n; * start_secondary() will bring up each processor to a ready state prior&n; * to hand forking the idle loop.&n; *&n; * We do all of the basic processor init here, including setting up the&n; * caches, FPU, DSP, kicking the UBC, etc. By the time start_kernel() is&n; * hit (and subsequently platform_setup()) things like determining the&n; * CPU subtype and initial configuration will all be done.&n; *&n; * Each processor family is still responsible for doing its own probing&n; * and cache configuration in detect_cpu_and_cache_system().&n; */
 DECL|function|sh_cpu_init
 id|asmlinkage
 r_void

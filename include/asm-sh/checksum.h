@@ -3,6 +3,7 @@ DECL|macro|__ASM_SH_CHECKSUM_H
 mdefine_line|#define __ASM_SH_CHECKSUM_H
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1999 by Kaz Kojima &amp; Niibe Yutaka&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/in6.h&gt;
 multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 32-bit boundary&n; */
 id|asmlinkage
 r_int
@@ -479,7 +480,6 @@ suffix:semicolon
 )brace
 DECL|macro|_HAVE_ARCH_IPV6_CSUM
 mdefine_line|#define _HAVE_ARCH_IPV6_CSUM
-macro_line|#ifdef CONFIG_IPV6
 DECL|function|csum_ipv6_magic
 r_static
 id|__inline__
@@ -594,7 +594,6 @@ id|sum
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* &n; *&t;Copy and checksum to user&n; */
 DECL|macro|HAVE_CSUM_COPY_USER
 mdefine_line|#define HAVE_CSUM_COPY_USER

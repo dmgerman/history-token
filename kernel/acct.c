@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt; /* sector_div */
@@ -1109,6 +1110,13 @@ suffix:semicolon
 id|u64
 id|elapsed
 suffix:semicolon
+id|u64
+id|run_time
+suffix:semicolon
+r_struct
+id|timespec
+id|uptime
+suffix:semicolon
 multiline_comment|/*&n;&t; * First check to see if there is enough free_space to continue&n;&t; * the process accounting system.&n;&t; */
 r_if
 c_cond
@@ -1159,17 +1167,43 @@ id|ac.ac_comm
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* calculate run_time in nsec*/
+id|do_posix_clock_monotonic_gettime
+c_func
+(paren
+op_amp
+id|uptime
+)paren
+suffix:semicolon
+id|run_time
+op_assign
+(paren
+id|u64
+)paren
+id|uptime.tv_sec
+op_star
+id|NSEC_PER_SEC
+op_plus
+id|uptime.tv_nsec
+suffix:semicolon
+id|run_time
+op_sub_assign
+(paren
+id|u64
+)paren
+id|current-&gt;start_time.tv_sec
+op_star
+id|NSEC_PER_SEC
+op_plus
+id|current-&gt;start_time.tv_nsec
+suffix:semicolon
+multiline_comment|/* convert nsec -&gt; AHZ */
 id|elapsed
 op_assign
-id|jiffies_64_to_AHZ
+id|nsec_to_AHZ
 c_func
 (paren
-id|get_jiffies_64
-c_func
-(paren
-)paren
-op_minus
-id|current-&gt;start_time
+id|run_time
 )paren
 suffix:semicolon
 macro_line|#if ACCT_VERSION==3
@@ -1523,14 +1557,14 @@ suffix:semicolon
 multiline_comment|/*&n; &t; * Accounting records are not subject to resource limits.&n; &t; */
 id|flim
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket
 dot
 id|rlim_cur
 suffix:semicolon
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket
@@ -1562,7 +1596,7 @@ op_amp
 id|file-&gt;f_pos
 )paren
 suffix:semicolon
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_FSIZE
 )braket

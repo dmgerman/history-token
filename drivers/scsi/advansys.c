@@ -30,6 +30,7 @@ multiline_comment|/* FIXME: (by jejb@steeleye.com) This warning is present for t
 macro_line|#warning this driver is still not properly converted to the DMA API
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;advansys.h&quot;

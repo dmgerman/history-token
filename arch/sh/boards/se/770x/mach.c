@@ -52,6 +52,12 @@ id|mv_nr_irqs
 op_assign
 l_int|61
 comma
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7705)
+dot
+id|mv_nr_irqs
+op_assign
+l_int|86
+comma
 macro_line|#endif
 dot
 id|mv_inb

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/sh/kernel/early_printk.c&n; *&n; *  Copyright (C) 1999, 2000  Niibe Yutaka&n; *  Copyright (C) 2002  M. R. Brown&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * arch/sh/kernel/early_printk.c&n; *&n; *  Copyright (C) 1999, 2000  Niibe Yutaka&n; *  Copyright (C) 2002  M. R. Brown&n; *  Copyright (C) 2004  Paul Mundt&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -399,13 +399,17 @@ id|ctrl_outb
 c_func
 (paren
 (paren
-l_int|50000000
+id|CONFIG_SH_PCLK_FREQ
+op_plus
+l_int|16
+op_star
+id|baud
+)paren
 op_div
 (paren
 l_int|32
 op_star
 id|baud
-)paren
 )paren
 op_minus
 l_int|1

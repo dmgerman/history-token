@@ -26,7 +26,7 @@ id|sq_mapping_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/**&n; * sq_flush - Flush (prefetch) the store queue cache&n; *&n; * @addr: the store queue address to flush&n; *&n; * Executes a prefetch instruction on the specified store queue cache,&n; * so that the cached data is written to physical memory.&n; */
+multiline_comment|/**&n; * sq_flush - Flush (prefetch) the store queue cache&n; * @addr: the store queue address to flush&n; *&n; * Executes a prefetch instruction on the specified store queue cache,&n; * so that the cached data is written to physical memory.&n; */
 DECL|function|sq_flush
 r_inline
 r_void
@@ -53,7 +53,7 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sq_flush_range - Flush (prefetch) a specific SQ range&n; *&n; * @start: the store queue address to start flushing from&n; * @len: the length to flush&n; *&n; * Flushes the store queue cache from @start to @start + @len in a&n; * linear fashion.&n; */
+multiline_comment|/**&n; * sq_flush_range - Flush (prefetch) a specific SQ range&n; * @start: the store queue address to start flushing from&n; * @len: the length to flush&n; *&n; * Flushes the store queue cache from @start to @start + @len in a&n; * linear fashion.&n; */
 DECL|function|sq_flush_range
 r_void
 id|sq_flush_range
@@ -330,7 +330,7 @@ r_return
 id|P4SEG_STORE_QUE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * __sq_remap - Perform a translation from the SQ to a phys addr&n; *&n; * @phys: Physical address to map store queues too.&n; * @virt: Associated store queue address.&n; *&n; * Maps the store queue address @virt to the physical address @phys.&n; */
+multiline_comment|/**&n; * __sq_remap - Perform a translation from the SQ to a phys addr&n; * @map: sq mapping containing phys and store queue addresses.&n; *&n; * Maps the store queue address specified in the mapping to the physical&n; * address specified in the mapping.&n; */
 DECL|function|__sq_remap
 r_static
 r_struct
@@ -577,7 +577,7 @@ r_return
 id|map
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sq_remap - Map a physical address through the Store Queues&n; *&n; * @phys: Physical address of mapping.&n; * @size: Length of mapping.&n; * @name: User invoking mapping.&n; *&n; * Remaps the physical address @phys through the next available store queue&n; * address of @size length. @name is logged at boot time as well as through&n; * the procfs interface.&n; *&n; * A pre-allocated and filled sq_mapping pointer is returned, and must be&n; * cleaned up with a call to sq_unmap() when the user is done with the&n; * mapping.&n; */
+multiline_comment|/**&n; * sq_remap - Map a physical address through the Store Queues&n; * @phys: Physical address of mapping.&n; * @size: Length of mapping.&n; * @name: User invoking mapping.&n; *&n; * Remaps the physical address @phys through the next available store queue&n; * address of @size length. @name is logged at boot time as well as through&n; * the procfs interface.&n; *&n; * A pre-allocated and filled sq_mapping pointer is returned, and must be&n; * cleaned up with a call to sq_unmap() when the user is done with the&n; * mapping.&n; */
 DECL|function|sq_remap
 r_struct
 id|sq_mapping
@@ -738,7 +738,7 @@ id|map
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sq_unmap - Unmap a Store Queue allocation&n; *&n; * @map: Pre-allocated Store Queue mapping.&n; *&n; * Unmaps the store queue allocation @map that was previously created by&n; * sq_remap(). Also frees up the pte that was previously inserted into&n; * the kernel page table and discards the UTLB translation.&n; */
+multiline_comment|/**&n; * sq_unmap - Unmap a Store Queue allocation&n; * @map: Pre-allocated Store Queue mapping.&n; *&n; * Unmaps the store queue allocation @map that was previously created by&n; * sq_remap(). Also frees up the pte that was previously inserted into&n; * the kernel page table and discards the UTLB translation.&n; */
 DECL|function|sq_unmap
 r_void
 id|sq_unmap
@@ -789,7 +789,7 @@ id|map
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sq_clear - Clear a store queue range&n; *&n; * @addr: Address to start clearing from.&n; * @len: Length to clear.&n; *&n; * A quick zero-fill implementation for clearing out memory that has been&n; * remapped through the store queues.&n; */
+multiline_comment|/**&n; * sq_clear - Clear a store queue range&n; * @addr: Address to start clearing from.&n; * @len: Length to clear.&n; *&n; * A quick zero-fill implementation for clearing out memory that has been&n; * remapped through the store queues.&n; */
 DECL|function|sq_clear
 r_void
 id|sq_clear
@@ -857,7 +857,7 @@ id|len
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sq_vma_unmap - Unmap a VMA range&n; *&n; * @area: VMA containing range.&n; * @addr: Start of range.&n; * @len: Length of range.&n; *&n; * Searches the sq_mapping_list for a mapping matching the sq addr @addr,&n; * and subsequently frees up the entry. Further cleanup is done by generic&n; * code.&n; */
+multiline_comment|/**&n; * sq_vma_unmap - Unmap a VMA range&n; * @area: VMA containing range.&n; * @addr: Start of range.&n; * @len: Length of range.&n; *&n; * Searches the sq_mapping_list for a mapping matching the sq addr @addr,&n; * and subsequently frees up the entry. Further cleanup is done by generic&n; * code.&n; */
 DECL|function|sq_vma_unmap
 r_static
 r_void
@@ -926,7 +926,7 @@ op_eq
 id|addr
 )paren
 (brace
-multiline_comment|/* &n;&t;&t;&t; * We could probably get away without doing the tlb flush&n;&t;&t;&t; * here, as generic code should take care of most of this&n;&t;&t;&t; * when unmapping the rest of the VMA range for us. Leave&n;&t;&t;&t; * it in for added sanity for the time being..&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * We could probably get away without doing the tlb flush&n;&t;&t;&t; * here, as generic code should take care of most of this&n;&t;&t;&t; * when unmapping the rest of the VMA range for us. Leave&n;&t;&t;&t; * it in for added sanity for the time being..&n;&t;&t;&t; */
 id|__flush_tlb_page
 c_func
 (paren
@@ -958,7 +958,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; * sq_vma_sync - Sync a VMA range&n; *&n; * @area: VMA containing range.&n; * @start: Start of range.&n; * @len: Length of range.&n; * @flags: Additional flags.&n; *&n; * Synchronizes an sq mapped range by flushing the store queue cache for&n; * the duration of the mapping.&n; *&n; * Used internally for user mappings, which must use msync() to prefetch&n; * the store queue cache.&n; */
+multiline_comment|/**&n; * sq_vma_sync - Sync a VMA range&n; * @area: VMA containing range.&n; * @start: Start of range.&n; * @len: Length of range.&n; * @flags: Additional flags.&n; *&n; * Synchronizes an sq mapped range by flushing the store queue cache for&n; * the duration of the mapping.&n; *&n; * Used internally for user mappings, which must use msync() to prefetch&n; * the store queue cache.&n; */
 DECL|function|sq_vma_sync
 r_static
 r_int
@@ -1013,7 +1013,7 @@ id|sq_vma_sync
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * sq_mmap - mmap() for /dev/cpu/sq&n; *&n; * @file: unused.&n; * @vma: VMA to remap.&n; *&n; * Remap the specified vma @vma through the store queues, and setup associated&n; * information for the new mapping. Also build up the page tables for the new&n; * area.&n; */
+multiline_comment|/**&n; * sq_mmap - mmap() for /dev/cpu/sq&n; * @file: unused.&n; * @vma: VMA to remap.&n; *&n; * Remap the specified vma @vma through the store queues, and setup associated&n; * information for the new mapping. Also build up the page tables for the new&n; * area.&n; */
 DECL|function|sq_mmap
 r_static
 r_int
@@ -1052,7 +1052,7 @@ id|sq_mapping
 op_star
 id|map
 suffix:semicolon
-multiline_comment|/* &n;&t; * We&squot;re not interested in any arbitrary virtual address that has&n;&t; * been stuck in the VMA, as we already know what addresses we&n;&t; * want. Save off the size, and reposition the VMA to begin at&n;&t; * the next available sq address.&n;&t; */
+multiline_comment|/*&n;&t; * We&squot;re not interested in any arbitrary virtual address that has&n;&t; * been stuck in the VMA, as we already know what addresses we&n;&t; * want. Save off the size, and reposition the VMA to begin at&n;&t; * the next available sq address.&n;&t; */
 id|vma-&gt;vm_start
 op_assign
 id|__sq_get_next_addr

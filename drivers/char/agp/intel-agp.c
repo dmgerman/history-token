@@ -7868,7 +7868,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|agp_intel_remove
+)paren
 comma
 dot
 id|resume

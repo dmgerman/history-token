@@ -137,13 +137,17 @@ mdefine_line|#define SYS_POWER_OFF&t;0x0003&t;/* Notify of system power off */
 DECL|macro|NETLINK_URELEASE
 mdefine_line|#define NETLINK_URELEASE&t;0x0001&t;/* Unicast netlink socket released */
 DECL|macro|CPU_ONLINE
-mdefine_line|#define CPU_ONLINE&t;0x0002 /* CPU (unsigned)v is up */
+mdefine_line|#define CPU_ONLINE&t;&t;0x0002 /* CPU (unsigned)v is up */
 DECL|macro|CPU_UP_PREPARE
-mdefine_line|#define CPU_UP_PREPARE&t;0x0003 /* CPU (unsigned)v coming up */
+mdefine_line|#define CPU_UP_PREPARE&t;&t;0x0003 /* CPU (unsigned)v coming up */
 DECL|macro|CPU_UP_CANCELED
-mdefine_line|#define CPU_UP_CANCELED&t;0x0004 /* CPU (unsigned)v NOT coming up */
+mdefine_line|#define CPU_UP_CANCELED&t;&t;0x0004 /* CPU (unsigned)v NOT coming up */
+DECL|macro|CPU_DOWN_PREPARE
+mdefine_line|#define CPU_DOWN_PREPARE&t;0x0005 /* CPU (unsigned)v going down */
+DECL|macro|CPU_DOWN_FAILED
+mdefine_line|#define CPU_DOWN_FAILED&t;&t;0x0006 /* CPU (unsigned)v NOT going down */
 DECL|macro|CPU_DEAD
-mdefine_line|#define CPU_DEAD&t;0x0006 /* CPU (unsigned)v dead */
+mdefine_line|#define CPU_DEAD&t;&t;0x0007 /* CPU (unsigned)v dead */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_NOTIFIER_H */
 eof

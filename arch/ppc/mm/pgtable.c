@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * This file contains the routines setting up the linux page tables.&n; *  -- paulus&n; *&n; *  Derived from arch/ppc/mm/init.c:&n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)&n; *  and Cort Dougan (PReP) (cort@cs.nmt.edu)&n; *    Copyright (C) 1996 Paul Mackerras&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *&n; *  Derived from &quot;arch/i386/mm/init.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -948,6 +949,62 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|function|ioport_map
+r_void
+id|__iomem
+op_star
+id|ioport_map
+c_func
+(paren
+r_int
+r_int
+id|port
+comma
+r_int
+r_int
+id|len
+)paren
+(brace
+r_return
+(paren
+r_void
+id|__iomem
+op_star
+)paren
+(paren
+id|port
+op_plus
+id|_IO_BASE
+)paren
+suffix:semicolon
+)brace
+DECL|function|ioport_unmap
+r_void
+id|ioport_unmap
+c_func
+(paren
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+multiline_comment|/* Nothing to do */
+)brace
+DECL|variable|ioport_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioport_map
+)paren
+suffix:semicolon
+DECL|variable|ioport_unmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioport_unmap
+)paren
+suffix:semicolon
 r_int
 DECL|function|map_page
 id|map_page

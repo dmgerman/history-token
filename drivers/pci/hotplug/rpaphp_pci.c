@@ -1528,6 +1528,9 @@ r_struct
 id|list_head
 op_star
 id|ln
+comma
+op_star
+id|tmp
 suffix:semicolon
 id|dbg
 c_func
@@ -1570,9 +1573,11 @@ m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* remove the devices from the pci core */
-id|list_for_each
+id|list_for_each_safe
 (paren
 id|ln
+comma
+id|tmp
 comma
 op_amp
 id|slot-&gt;dev.pci_funcs

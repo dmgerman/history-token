@@ -2806,9 +2806,9 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|child-&gt;state
+id|child-&gt;exit_state
 op_eq
-id|TASK_ZOMBIE
+id|EXIT_ZOMBIE
 )paren
 (brace
 multiline_comment|/* already dead */

@@ -1,10 +1,11 @@
-multiline_comment|/* &n; * arch/sh/boards/dreamcast/setup.c&n; *&n; * Hardware support for the Sega Dreamcast.&n; *&n; * Copyright (c) 2001, 2002 M. R. Brown &lt;mrbrown@linuxdc.org&gt;&n; * Copyright (c) 2002, 2003 Paul Mundt &lt;lethal@linux-sh.org&gt;&n; *&n; * This file is part of the LinuxDC project (www.linuxdc.org)&n; *&n; * Released under the terms of the GNU GPL v2.0.&n; * &n; * This file originally bore the message (with enclosed-$):&n; *&t;Id: setup_dc.c,v 1.5 2001/05/24 05:09:16 mrbrown Exp&n; *&t;SEGA Dreamcast support&n; */
+multiline_comment|/*&n; * arch/sh/boards/dreamcast/setup.c&n; *&n; * Hardware support for the Sega Dreamcast.&n; *&n; * Copyright (c) 2001, 2002 M. R. Brown &lt;mrbrown@linuxdc.org&gt;&n; * Copyright (c) 2002, 2003, 2004 Paul Mundt &lt;lethal@linux-sh.org&gt;&n; *&n; * This file is part of the LinuxDC project (www.linuxdc.org)&n; *&n; * Released under the terms of the GNU GPL v2.0.&n; *&n; * This file originally bore the message (with enclosed-$):&n; *&t;Id: setup_dc.c,v 1.5 2001/05/24 05:09:16 mrbrown Exp&n; *&t;SEGA Dreamcast support&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -50,6 +51,39 @@ c_func
 r_int
 )paren
 suffix:semicolon
+r_void
+op_star
+id|dreamcast_consistent_alloc
+c_func
+(paren
+r_struct
+id|device
+op_star
+comma
+r_int
+comma
+id|dma_addr_t
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_int
+id|dreamcast_consistent_free
+c_func
+(paren
+r_struct
+id|device
+op_star
+comma
+r_int
+comma
+r_void
+op_star
+comma
+id|dma_addr_t
+)paren
+suffix:semicolon
 DECL|function|get_system_type
 r_const
 r_char
@@ -81,6 +115,18 @@ id|mv_irq_demux
 op_assign
 id|systemasic_irq_demux
 comma
+macro_line|#ifdef CONFIG_PCI
+dot
+id|mv_consistent_alloc
+op_assign
+id|dreamcast_consistent_alloc
+comma
+dot
+id|mv_consistent_free
+op_assign
+id|dreamcast_consistent_free
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|function|ALIAS_MV

@@ -313,7 +313,7 @@ DECL|macro|IRDA_IPR_POS
 mdefine_line|#define IRDA_IPR_POS&t;2
 DECL|macro|IRDA_PRIORITY
 mdefine_line|#define IRDA_PRIORITY&t;3
-macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_SH7751) || &bslash;&n;      defined(CONFIG_CPU_SUBTYPE_ST40STB1)
+macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_SH7751) || &bslash;&n;      defined(CONFIG_CPU_SUBTYPE_ST40STB1) || defined(CONFIG_CPU_SUBTYPE_SH4_202)
 DECL|macro|SCIF_ERI_IRQ
 mdefine_line|#define SCIF_ERI_IRQ&t;40
 DECL|macro|SCIF_RXI_IRQ
@@ -379,6 +379,9 @@ macro_line|#  define ONCHIP_NR_IRQS 72
 macro_line|# elif defined(CONFIG_CPU_SUBTYPE_SH7760)
 DECL|macro|ONCHIP_NR_IRQS
 macro_line|#  define ONCHIP_NR_IRQS 110
+macro_line|# elif defined(CONFIG_CPU_SUBTYPE_SH4_202)
+DECL|macro|ONCHIP_NR_IRQS
+macro_line|#  define ONCHIP_NR_IRQS 72
 macro_line|# elif defined(CONFIG_CPU_SUBTYPE_ST40STB1)
 DECL|macro|ONCHIP_NR_IRQS
 macro_line|#  define ONCHIP_NR_IRQS 144
@@ -872,7 +875,7 @@ macro_line|#else
 DECL|macro|__irq_demux
 mdefine_line|#define __irq_demux(irq) irq
 macro_line|#endif /* CONFIG_CPU_SUBTYPE_SH7707 || CONFIG_CPU_SUBTYPE_SH7709 */
-macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_SH7751) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_ST40STB1)
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_SH7751) || &bslash;&n;    defined(CONFIG_CPU_SUBTYPE_ST40STB1) || defined(CONFIG_CPU_SUBTYPE_SH4_202)
 DECL|macro|INTC_ICR
 mdefine_line|#define INTC_ICR        0xffd00000
 DECL|macro|INTC_ICR_NMIL
@@ -891,10 +894,10 @@ DECL|macro|INTC2_FIRST_IRQ
 mdefine_line|#define INTC2_FIRST_IRQ 64
 DECL|macro|NR_INTC2_IRQS
 mdefine_line|#define NR_INTC2_IRQS 25
-DECL|macro|INTC2_BASE0
-mdefine_line|#define INTC2_BASE0 0xfe080000
+DECL|macro|INTC2_BASE
+mdefine_line|#define INTC2_BASE&t;0xfe080000
 DECL|macro|INTC2_INTC2MODE
-mdefine_line|#define INTC2_INTC2MODE  (INTC2_BASE0+0x80)
+mdefine_line|#define INTC2_INTC2MODE&t;(INTC2_BASE+0x80)
 DECL|macro|INTC2_INTPRI_OFFSET
 mdefine_line|#define INTC2_INTPRI_OFFSET&t;0x00
 DECL|macro|INTC2_INTREQ_OFFSET
@@ -903,7 +906,6 @@ DECL|macro|INTC2_INTMSK_OFFSET
 mdefine_line|#define INTC2_INTMSK_OFFSET&t;0x40
 DECL|macro|INTC2_INTMSKCLR_OFFSET
 mdefine_line|#define INTC2_INTMSKCLR_OFFSET&t;0x60
-r_extern
 r_void
 id|make_intc2_irq
 c_func
@@ -914,20 +916,50 @@ id|irq
 comma
 r_int
 r_int
-id|addr
+id|ipr_offset
 comma
 r_int
 r_int
-id|group
+id|ipr_shift
 comma
 r_int
-id|pos
+r_int
+id|msk_offset
 comma
+r_int
+r_int
+id|msk_shift
+comma
+r_int
 r_int
 id|priority
 )paren
 suffix:semicolon
-macro_line|#endif
+r_void
+id|init_IRQ_intc2
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|intc2_add_clear_irq
+c_func
+(paren
+r_int
+id|irq
+comma
+r_int
+(paren
+op_star
+id|fn
+)paren
+(paren
+r_int
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif&t;/* CONFIG_CPU_SUBTYPE_ST40STB1 */
 DECL|function|generic_irq_demux
 r_static
 r_inline
@@ -969,5 +1001,8 @@ id|irqaction
 op_star
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH73180)
+macro_line|#include &lt;asm/irq-sh73180.h&gt;
+macro_line|#endif
 macro_line|#endif /* __ASM_SH_IRQ_H */
 eof

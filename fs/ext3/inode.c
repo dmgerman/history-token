@@ -5844,6 +5844,14 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Reacquire the handle: ext3_direct_io_get_block() can restart the&n;&t; * transaction&n;&t; */
+id|handle
+op_assign
+id|journal_current_handle
+c_func
+(paren
+)paren
+suffix:semicolon
 id|out_stop
 suffix:colon
 r_if

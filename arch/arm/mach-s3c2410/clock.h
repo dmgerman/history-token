@@ -42,4 +42,25 @@ id|ctrlbit
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* processor clock settings, in Hz */
+r_extern
+r_int
+r_int
+id|s3c24xx_xtal
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|s3c24xx_pclk
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|s3c24xx_hclk
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|s3c24xx_fclk
+suffix:semicolon
 eof

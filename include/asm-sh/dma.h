@@ -2,6 +2,7 @@ multiline_comment|/*&n; * include/asm-sh/dma.h&n; *&n; * Copyright (C) 2003, 200
 macro_line|#ifndef __ASM_SH_DMA_H
 DECL|macro|__ASM_SH_DMA_H
 mdefine_line|#define __ASM_SH_DMA_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -405,5 +406,6 @@ macro_line|#else
 DECL|macro|isa_dma_bridge_buggy
 mdefine_line|#define isa_dma_bridge_buggy&t;(0)
 macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_DMA_H */
 eof

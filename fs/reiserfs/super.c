@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/namespace.h&gt;
 DECL|variable|reiserfs_fs_type
 r_struct
 id|file_system_type
@@ -214,6 +215,10 @@ c_func
 id|s
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|journal_begin
 c_func
 (paren
@@ -224,7 +229,11 @@ id|s
 comma
 l_int|1
 )paren
-suffix:semicolon
+)paren
+r_if
+c_cond
+(paren
+op_logical_neg
 id|journal_end_sync
 c_func
 (paren
@@ -235,7 +244,7 @@ id|s
 comma
 l_int|1
 )paren
-suffix:semicolon
+)paren
 id|reiserfs_flush_old_commits
 c_func
 (paren
@@ -246,11 +255,19 @@ id|s-&gt;s_dirt
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Even if it&squot;s not true.&n;                        * We&squot;ll loop forever in sync_supers otherwise */
 id|reiserfs_write_unlock
 c_func
 (paren
 id|s
 )paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|s-&gt;s_dirt
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -305,6 +322,9 @@ id|MS_RDONLY
 )paren
 )paren
 (brace
+r_int
+id|err
+op_assign
 id|journal_begin
 c_func
 (paren
@@ -316,6 +336,22 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|reiserfs_block_writes
+c_func
+(paren
+op_amp
+id|th
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|reiserfs_prepare_for_journal
 c_func
 (paren
@@ -363,6 +399,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+)brace
 id|s-&gt;s_dirt
 op_assign
 l_int|0
@@ -401,7 +438,7 @@ suffix:semicolon
 multiline_comment|/* this is used to delete &quot;save link&quot; when there are no items of a&n;   file it points to. It can either happen if unlink is completed but&n;   &quot;save unlink&quot; removal, or if file has both unlink and truncate&n;   pending and as unlink completes first (because key of &quot;save link&quot;&n;   protecting unlink is bigger that a key lf &quot;save link&quot; which&n;   protects truncate), so there left no items to make truncate&n;   completion on */
 DECL|function|remove_save_link_only
 r_static
-r_void
+r_int
 id|remove_save_link_only
 (paren
 r_struct
@@ -422,7 +459,12 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 multiline_comment|/* we are going to do one balancing */
+id|err
+op_assign
 id|journal_begin
 (paren
 op_amp
@@ -432,6 +474,14 @@ id|s
 comma
 id|JOURNAL_PER_BALANCE_CNT
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|reiserfs_delete_solid_item
 (paren
@@ -460,6 +510,7 @@ id|key-&gt;k_objectid
 )paren
 )paren
 suffix:semicolon
+r_return
 id|journal_end
 (paren
 op_amp
@@ -474,7 +525,7 @@ suffix:semicolon
 multiline_comment|/* look for uncompleted unlinks and truncates and complete them */
 DECL|function|finish_unfinished
 r_static
-r_void
+r_int
 id|finish_unfinished
 (paren
 r_struct
@@ -500,6 +551,8 @@ id|save_link_key
 suffix:semicolon
 r_int
 id|retval
+op_assign
+l_int|0
 suffix:semicolon
 r_struct
 id|item_head
@@ -559,7 +612,8 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-l_int|1
+op_logical_neg
+id|retval
 )paren
 (brace
 id|retval
@@ -749,6 +803,8 @@ op_amp
 id|obj_key
 )paren
 suffix:semicolon
+id|retval
+op_assign
 id|remove_save_link_only
 (paren
 id|s
@@ -782,6 +838,8 @@ op_amp
 id|obj_key
 )paren
 suffix:semicolon
+id|retval
+op_assign
 id|remove_save_link_only
 (paren
 id|s
@@ -820,6 +878,8 @@ id|inode
 )paren
 )paren
 suffix:semicolon
+id|retval
+op_assign
 id|remove_save_link_only
 (paren
 id|s
@@ -881,6 +941,8 @@ l_int|0
 multiline_comment|/*don&squot;t update modification time*/
 )paren
 suffix:semicolon
+id|retval
+op_assign
 id|remove_save_link
 (paren
 id|inode
@@ -915,6 +977,10 @@ id|inode
 )paren
 suffix:semicolon
 multiline_comment|/* removal gets completed in iput */
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 id|iput
 (paren
@@ -961,6 +1027,9 @@ comma
 id|done
 )paren
 suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
 )brace
 multiline_comment|/* to protect file being unlinked from getting lost we &quot;safe&quot; link files&n;   being unlinked. This link will be deleted in the same transaction with last&n;   item of file. mounting the filesytem we scan all these links and remove&n;   files which almost got lost */
 DECL|function|add_save_link
@@ -999,6 +1068,12 @@ id|ih
 suffix:semicolon
 id|__u32
 id|link
+suffix:semicolon
+id|BUG_ON
+(paren
+op_logical_neg
+id|th-&gt;t_trans_id
+)paren
 suffix:semicolon
 multiline_comment|/* file can only get one &quot;save link&quot; of each kind */
 id|RFALSE
@@ -1334,7 +1409,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* this opens transaction unlike add_save_link */
 DECL|function|remove_save_link
-r_void
+r_int
 id|remove_save_link
 (paren
 r_struct
@@ -1354,7 +1429,12 @@ r_struct
 id|key
 id|key
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 multiline_comment|/* we are going to do one balancing only */
+id|err
+op_assign
 id|journal_begin
 (paren
 op_amp
@@ -1364,6 +1444,14 @@ id|inode-&gt;i_sb
 comma
 id|JOURNAL_PER_BALANCE_CNT
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 multiline_comment|/* setup key of &quot;save&quot; link */
 id|key.k_dir_id
@@ -1526,6 +1614,7 @@ op_and_assign
 op_complement
 id|i_link_saved_truncate_mask
 suffix:semicolon
+r_return
 id|journal_end
 (paren
 op_amp
@@ -1554,6 +1643,10 @@ suffix:semicolon
 r_struct
 id|reiserfs_transaction_handle
 id|th
+suffix:semicolon
+id|th.t_trans_id
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1637,6 +1730,10 @@ id|MS_RDONLY
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|journal_begin
 c_func
 (paren
@@ -1647,7 +1744,8 @@ id|s
 comma
 l_int|10
 )paren
-suffix:semicolon
+)paren
+(brace
 id|reiserfs_prepare_for_journal
 c_func
 (paren
@@ -1694,6 +1792,7 @@ id|s
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* note, journal_release checks for readonly mount, and can decide not&n;  ** to do a journal_end&n;  */
 id|journal_release
@@ -2073,6 +2172,11 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
+r_int
+id|err
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2101,6 +2205,8 @@ id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* this is really only used for atime updates, so they don&squot;t have&n;    ** to be included in O_SYNC or fsync&n;    */
+id|err
+op_assign
 id|journal_begin
 c_func
 (paren
@@ -2112,6 +2218,20 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+(brace
+id|reiserfs_write_unlock
+(paren
+id|inode-&gt;i_sb
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|reiserfs_update_sd
 (paren
 op_amp
@@ -2631,6 +2751,81 @@ l_int|0
 comma
 l_int|0
 )brace
+)brace
+suffix:semicolon
+DECL|variable|error_actions
+r_static
+r_const
+id|arg_desc_t
+id|error_actions
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_string|&quot;panic&quot;
+comma
+l_int|1
+op_lshift
+id|REISERFS_ERROR_PANIC
+comma
+(paren
+l_int|1
+op_lshift
+id|REISERFS_ERROR_RO
+op_or
+l_int|1
+op_lshift
+id|REISERFS_ERROR_CONTINUE
+)paren
+)brace
+comma
+(brace
+l_string|&quot;ro-remount&quot;
+comma
+l_int|1
+op_lshift
+id|REISERFS_ERROR_RO
+comma
+(paren
+l_int|1
+op_lshift
+id|REISERFS_ERROR_PANIC
+op_or
+l_int|1
+op_lshift
+id|REISERFS_ERROR_CONTINUE
+)paren
+)brace
+comma
+macro_line|#ifdef REISERFS_JOURNAL_ERROR_ALLOWS_NO_LOG
+(brace
+l_string|&quot;continue&quot;
+comma
+l_int|1
+op_lshift
+id|REISERFS_ERROR_CONTINUE
+comma
+(paren
+l_int|1
+op_lshift
+id|REISERFS_ERROR_PANIC
+op_or
+l_int|1
+op_lshift
+id|REISERFS_ERROR_RO
+)paren
+)brace
+comma
+macro_line|#endif
+(brace
+l_int|NULL
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|variable|reiserfs_default_io_size
@@ -3329,6 +3524,20 @@ comma
 (brace
 l_string|&quot;grpquota&quot;
 comma
+)brace
+comma
+(brace
+l_string|&quot;errors&quot;
+comma
+dot
+id|arg_required
+op_assign
+l_char|&squot;e&squot;
+comma
+dot
+id|values
+op_assign
+id|error_actions
 )brace
 comma
 (brace
@@ -4125,6 +4334,20 @@ r_int
 op_minus
 l_int|1
 suffix:semicolon
+r_struct
+id|reiserfs_journal
+op_star
+id|journal
+op_assign
+id|SB_JOURNAL
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|rs
 op_assign
 id|SB_DISK_SUPER_BLOCK
@@ -4232,6 +4455,24 @@ l_int|1
 op_lshift
 id|REISERFS_BARRIER_NONE
 suffix:semicolon
+id|safe_mask
+op_or_assign
+l_int|1
+op_lshift
+id|REISERFS_ERROR_RO
+suffix:semicolon
+id|safe_mask
+op_or_assign
+l_int|1
+op_lshift
+id|REISERFS_ERROR_CONTINUE
+suffix:semicolon
+id|safe_mask
+op_or_assign
+l_int|1
+op_lshift
+id|REISERFS_ERROR_PANIC
+suffix:semicolon
 multiline_comment|/* Update the bitmask, taking care to keep&n;   * the bits we&squot;re not allowed to change here */
 id|REISERFS_SB
 c_func
@@ -4277,19 +4518,11 @@ op_minus
 l_int|1
 )paren
 (brace
-id|SB_JOURNAL_MAX_COMMIT_AGE
-c_func
-(paren
-id|s
-)paren
+id|journal-&gt;j_max_commit_age
 op_assign
 id|commit_max_age
 suffix:semicolon
-id|SB_JOURNAL_MAX_TRANS_AGE
-c_func
-(paren
-id|s
-)paren
+id|journal-&gt;j_max_trans_age
 op_assign
 id|commit_max_age
 suffix:semicolon
@@ -4304,23 +4537,11 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* 0 means restore defaults. */
-id|SB_JOURNAL_MAX_COMMIT_AGE
-c_func
-(paren
-id|s
-)paren
+id|journal-&gt;j_max_commit_age
 op_assign
-id|SB_JOURNAL_DEFAULT_MAX_COMMIT_AGE
-c_func
-(paren
-id|s
-)paren
+id|journal-&gt;j_default_max_commit_age
 suffix:semicolon
-id|SB_JOURNAL_MAX_TRANS_AGE
-c_func
-(paren
-id|s
-)paren
+id|journal-&gt;j_max_trans_age
 op_assign
 id|JOURNAL_MAX_TRANS_AGE
 suffix:semicolon
@@ -4409,6 +4630,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|err
+op_assign
 id|journal_begin
 c_func
 (paren
@@ -4419,6 +4642,14 @@ id|s
 comma
 l_int|10
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 multiline_comment|/* Mounting a rw partition read-only. */
 id|reiserfs_prepare_for_journal
@@ -4491,6 +4722,17 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* We are read-write already */
 )brace
+r_if
+c_cond
+(paren
+id|reiserfs_is_journal_aborted
+(paren
+id|journal
+)paren
+)paren
+r_return
+id|journal-&gt;j_errno
+suffix:semicolon
 id|handle_data_mode
 c_func
 (paren
@@ -4527,6 +4769,8 @@ op_complement
 id|MS_RDONLY
 suffix:semicolon
 multiline_comment|/* now it is safe to call journal_begin */
+id|err
+op_assign
 id|journal_begin
 c_func
 (paren
@@ -4537,6 +4781,14 @@ id|s
 comma
 l_int|10
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 multiline_comment|/* Mount a partition which is read-only, read-write */
 id|reiserfs_prepare_for_journal
@@ -4617,6 +4869,8 @@ id|j_must_wait
 op_assign
 l_int|1
 suffix:semicolon
+id|err
+op_assign
 id|journal_end
 c_func
 (paren
@@ -4627,6 +4881,14 @@ id|s
 comma
 l_int|10
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_return
+id|err
 suffix:semicolon
 id|s-&gt;s_dirt
 op_assign
@@ -6884,7 +7146,7 @@ id|reiserfs_sb_info
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set default values for options: non-aggressive tails */
+multiline_comment|/* Set default values for options: non-aggressive tails, RO on errors */
 id|REISERFS_SB
 c_func
 (paren
@@ -6892,11 +7154,25 @@ id|s
 )paren
 op_member_access_from_pointer
 id|s_mount_opt
-op_assign
+op_or_assign
 (paren
 l_int|1
 op_lshift
 id|REISERFS_SMALLTAIL
+)paren
+suffix:semicolon
+id|REISERFS_SB
+c_func
+(paren
+id|s
+)paren
+op_member_access_from_pointer
+id|s_mount_opt
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|REISERFS_ERROR_RO
 )paren
 suffix:semicolon
 multiline_comment|/* no preallocation minimum, be smart in&n;       reiserfs_file_write instead */
@@ -7584,6 +7860,8 @@ id|MS_RDONLY
 )paren
 )paren
 (brace
+id|errval
+op_assign
 id|journal_begin
 c_func
 (paren
@@ -7595,6 +7873,25 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|errval
+)paren
+(brace
+id|dput
+(paren
+id|s-&gt;s_root
+)paren
+suffix:semicolon
+id|s-&gt;s_root
+op_assign
+l_int|NULL
+suffix:semicolon
+r_goto
+id|error
+suffix:semicolon
+)brace
 id|reiserfs_prepare_for_journal
 c_func
 (paren
@@ -7749,6 +8046,8 @@ id|s
 )paren
 )paren
 suffix:semicolon
+id|errval
+op_assign
 id|journal_end
 c_func
 (paren
@@ -7763,11 +8062,34 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|errval
+)paren
+(brace
+id|dput
+(paren
+id|s-&gt;s_root
+)paren
+suffix:semicolon
+id|s-&gt;s_root
+op_assign
+l_int|NULL
+suffix:semicolon
+r_goto
+id|error
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|errval
+op_assign
 id|reiserfs_xattr_init
 (paren
 id|s
 comma
 id|s-&gt;s_flags
+)paren
 )paren
 )paren
 (brace
@@ -7817,11 +8139,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|errval
+op_assign
 id|reiserfs_xattr_init
 (paren
 id|s
 comma
 id|s-&gt;s_flags
+)paren
 )paren
 )paren
 (brace

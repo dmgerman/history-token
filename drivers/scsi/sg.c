@@ -2864,6 +2864,53 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+multiline_comment|/*&n;&t; * SG_DXFER_TO_FROM_DEV is functionally equivalent to SG_DXFER_FROM_DEV,&n;&t; * but is is possible that the app intended SG_DXFER_TO_DEV, because there&n;&t; * is a non-zero input_size, so emit a warning.&n;&t; */
+r_if
+c_cond
+(paren
+id|hp-&gt;dxfer_direction
+op_eq
+id|SG_DXFER_TO_FROM_DEV
+)paren
+r_if
+c_cond
+(paren
+id|printk_ratelimit
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;sg_write: data in/out %d/%d bytes for SCSI command 0x%x--&quot;
+l_string|&quot;guessing data in;&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;   &quot;
+l_string|&quot;program %s not setting count and/or reply_len properly&bslash;n&quot;
+comma
+id|old_hdr.reply_len
+op_minus
+(paren
+r_int
+)paren
+id|SZ_SG_HEADER
+comma
+id|input_size
+comma
+(paren
+r_int
+r_int
+)paren
+id|cmnd
+(braket
+l_int|0
+)braket
+comma
+id|current-&gt;comm
+)paren
+suffix:semicolon
 id|k
 op_assign
 id|sg_common_write
@@ -2947,6 +2994,10 @@ id|dummy_cmdp-&gt;sr_cmnd
 suffix:semicolon
 r_int
 id|timeout
+suffix:semicolon
+r_int
+r_int
+id|ul_timeout
 suffix:semicolon
 r_if
 c_cond
@@ -3147,13 +3198,26 @@ suffix:semicolon
 multiline_comment|/* reserve buffer already being used */
 )brace
 )brace
-id|timeout
+id|ul_timeout
 op_assign
 id|msecs_to_jiffies
 c_func
 (paren
 id|srp-&gt;header.timeout
 )paren
+suffix:semicolon
+id|timeout
+op_assign
+(paren
+id|ul_timeout
+OL
+id|INT_MAX
+)paren
+ques
+c_cond
+id|ul_timeout
+suffix:colon
+id|INT_MAX
 suffix:semicolon
 r_if
 c_cond

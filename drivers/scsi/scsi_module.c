@@ -2,7 +2,6 @@ multiline_comment|/*&n; * Copyright (C) 2003 Christoph Hellwig.&n; *&t;Released 
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 DECL|function|init_this_scsi_driver
 r_static
