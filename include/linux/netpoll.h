@@ -4,7 +4,6 @@ DECL|macro|_LINUX_NETPOLL_H
 mdefine_line|#define _LINUX_NETPOLL_H
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 r_struct
 id|netpoll
