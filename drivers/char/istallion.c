@@ -143,8 +143,6 @@ macro_line|#ifndef&t;STL_CALLOUTMAJOR
 DECL|macro|STL_CALLOUTMAJOR
 mdefine_line|#define&t;STL_CALLOUTMAJOR&t;25
 macro_line|#endif
-DECL|macro|STL_DRVTYPSERIAL
-mdefine_line|#define&t;STL_DRVTYPSERIAL&t;1
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Define our local driver identity first. Set up stuff to deal with&n; *&t;all the local structures required by a serial tty driver.&n; */
 DECL|variable|stli_drvtitle
@@ -22987,7 +22985,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|stli_serial.subtype
 op_assign
-id|STL_DRVTYPSERIAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|stli_serial.init_termios
 op_assign

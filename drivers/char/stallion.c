@@ -109,8 +109,6 @@ macro_line|#ifndef&t;STL_CALLOUTMAJOR
 DECL|macro|STL_CALLOUTMAJOR
 mdefine_line|#define&t;STL_CALLOUTMAJOR&t;25
 macro_line|#endif
-DECL|macro|STL_DRVTYPSERIAL
-mdefine_line|#define&t;STL_DRVTYPSERIAL&t;1
 multiline_comment|/*&n; *&t;Set the TX buffer size. Bigger is better, but we don&squot;t want&n; *&t;to chew too much memory with buffers!&n; */
 DECL|macro|STL_TXBUFLOW
 mdefine_line|#define&t;STL_TXBUFLOW&t;&t;512
@@ -14028,7 +14026,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|stl_serial.subtype
 op_assign
-id|STL_DRVTYPSERIAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|stl_serial.init_termios
 op_assign

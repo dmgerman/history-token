@@ -2511,7 +2511,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|a2232_driver.subtype
 op_assign
-id|A2232_TTY_SUBTYPE_NORMAL
+id|SERIAL_TTY_NORMAL
 suffix:semicolon
 id|a2232_driver.init_termios
 op_assign

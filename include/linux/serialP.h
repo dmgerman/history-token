@@ -97,11 +97,6 @@ r_struct
 id|termios
 id|normal_termios
 suffix:semicolon
-DECL|member|callout_termios
-r_struct
-id|termios
-id|callout_termios
-suffix:semicolon
 DECL|member|io_type
 r_int
 id|io_type
@@ -232,16 +227,6 @@ r_int
 id|blocked_open
 suffix:semicolon
 multiline_comment|/* # of blocked opens */
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-multiline_comment|/* Session of opening process */
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
-multiline_comment|/* pgrp of opening process */
 DECL|member|xmit
 r_struct
 id|circ_buf

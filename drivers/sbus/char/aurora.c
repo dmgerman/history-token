@@ -55,8 +55,6 @@ macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
 macro_line|#endif
-DECL|macro|AURORA_TYPE_NORMAL
-mdefine_line|#define AURORA_TYPE_NORMAL&t;1
 DECL|variable|aurora_driver
 r_static
 r_struct
@@ -11696,7 +11694,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|aurora_driver.subtype
 op_assign
-id|AURORA_TYPE_NORMAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|aurora_driver.init_termios
 op_assign

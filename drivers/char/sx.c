@@ -42,9 +42,6 @@ macro_line|#include &lt;linux/generic_serial.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;sx.h&quot;
 multiline_comment|/* I don&squot;t think that this driver can handle more than 256 ports on&n;   one machine. You&squot;ll have to increase the number of boards in sx.h&n;   if you want more than 4 boards.  */
-multiline_comment|/* Why the hell am I defining these here? */
-DECL|macro|SX_TYPE_NORMAL
-mdefine_line|#define SX_TYPE_NORMAL 1
 macro_line|#ifndef PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
 DECL|macro|PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
 mdefine_line|#define PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8 0x2000
@@ -8661,7 +8658,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|sx_driver.subtype
 op_assign
-id|SX_TYPE_NORMAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|sx_driver.init_termios
 op_assign

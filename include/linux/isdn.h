@@ -663,16 +663,6 @@ r_int
 id|blocked_open
 suffix:semicolon
 multiline_comment|/* # of blocked opens             */
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-multiline_comment|/* Session of opening process     */
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
-multiline_comment|/* pgrp of opening process        */
 DECL|member|online
 r_int
 id|online

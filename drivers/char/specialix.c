@@ -91,8 +91,6 @@ DECL|macro|RS_EVENT_WRITE_WAKEUP
 macro_line|#undef RS_EVENT_WRITE_WAKEUP
 DECL|macro|RS_EVENT_WRITE_WAKEUP
 mdefine_line|#define RS_EVENT_WRITE_WAKEUP&t;0
-DECL|macro|SPECIALIX_TYPE_NORMAL
-mdefine_line|#define SPECIALIX_TYPE_NORMAL&t;1
 DECL|variable|specialix_driver
 r_static
 r_struct
@@ -9765,7 +9763,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|specialix_driver.subtype
 op_assign
-id|SPECIALIX_TYPE_NORMAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|specialix_driver.init_termios
 op_assign

@@ -41,8 +41,6 @@ c_func
 id|tq_riscom
 )paren
 suffix:semicolon
-DECL|macro|RISCOM_TYPE_NORMAL
-mdefine_line|#define RISCOM_TYPE_NORMAL&t;1
 DECL|variable|IRQ_to_board
 r_static
 r_struct
@@ -8592,7 +8590,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|riscom_driver.subtype
 op_assign
-id|RISCOM_TYPE_NORMAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|riscom_driver.init_termios
 op_assign

@@ -65,9 +65,6 @@ macro_line|#include &quot;protsts.h&quot;
 macro_line|#include &quot;rioboard.h&quot;
 macro_line|#include &quot;rio_linux.h&quot;
 multiline_comment|/* I don&squot;t think that this driver can handle more than 512 ports on&n;one machine.  Specialix specifies max 4 boards in one machine. I don&squot;t&n;know why. If you want to try anyway you&squot;ll have to increase the number&n;of boards in rio.h.  You&squot;ll have to allocate more majors if you need&n;more than 512 ports.... */
-multiline_comment|/* Why the hell am I defining these here? */
-DECL|macro|RIO_TYPE_NORMAL
-mdefine_line|#define RIO_TYPE_NORMAL 1
 macro_line|#ifndef RIO_NORMAL_MAJOR0
 multiline_comment|/* This allows overriding on the compiler commandline, or in a &quot;major.h&quot; &n;   include or something like that */
 DECL|macro|RIO_NORMAL_MAJOR0
@@ -2843,7 +2840,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|rio_driver.subtype
 op_assign
-id|RIO_TYPE_NORMAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|rio_driver.init_termios
 op_assign
