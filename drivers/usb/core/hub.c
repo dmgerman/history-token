@@ -1169,10 +1169,12 @@ id|tt
 (brace
 r_return
 id|usb_control_msg
+c_func
 (paren
 id|hdev
 comma
 id|usb_rcvctrlpipe
+c_func
 (paren
 id|hdev
 comma
@@ -1187,7 +1189,7 @@ id|devinfo
 comma
 id|tt
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma

@@ -1706,7 +1706,7 @@ id|i
 op_increment
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -2591,7 +2591,7 @@ op_logical_neg
 id|dev-&gt;bus-&gt;op-&gt;buffer_alloc
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|dev-&gt;bus-&gt;op-&gt;buffer_alloc
@@ -2703,7 +2703,7 @@ id|bus-&gt;controller
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

@@ -371,7 +371,7 @@ id|len
 comma
 id|usb_api_blocking_completion
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|retv
@@ -615,7 +615,7 @@ id|len
 comma
 id|usb_api_blocking_completion
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -669,7 +669,7 @@ id|io-&gt;urbs
 suffix:semicolon
 id|io-&gt;urbs
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -692,7 +692,7 @@ id|io-&gt;nents
 suffix:semicolon
 id|io-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|sg_complete
@@ -894,7 +894,7 @@ suffix:semicolon
 )brace
 id|urb-&gt;dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* on the last completion, signal usb_sg_wait() */
 id|io-&gt;bytes
@@ -1168,7 +1168,7 @@ id|i
 op_member_access_from_pointer
 id|dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|io-&gt;urbs
 (braket
@@ -1489,7 +1489,7 @@ id|i
 op_member_access_from_pointer
 id|dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|retval
 op_assign
@@ -1567,7 +1567,7 @@ id|i
 op_member_access_from_pointer
 id|dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|io-&gt;urbs
 (braket
@@ -2601,7 +2601,7 @@ suffix:semicolon
 )brace
 id|dev-&gt;actconfig
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

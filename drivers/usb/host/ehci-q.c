@@ -737,7 +737,7 @@ id|urb-&gt;lock
 suffix:semicolon
 id|urb-&gt;hcpriv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_switch
 c_cond
@@ -902,7 +902,7 @@ id|ehci_qtd
 op_star
 id|last
 op_assign
-l_int|0
+l_int|NULL
 comma
 op_star
 id|end
@@ -1047,7 +1047,7 @@ id|last
 suffix:semicolon
 id|last
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* ignore urbs submitted during completions we reported */
@@ -1415,7 +1415,7 @@ id|qh-&gt;hw_current
 )paren
 id|end
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -1584,7 +1584,7 @@ id|qtd
 )paren
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|list_add_tail
 (paren
@@ -2081,7 +2081,7 @@ id|head
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
@@ -2651,7 +2651,7 @@ id|qh
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* NOTE:  if (PIPE_INTERRUPT) { scheduler sets s-mask } */
@@ -2881,7 +2881,7 @@ id|ehci_qh
 op_star
 id|qh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|qh
 op_assign
@@ -2900,7 +2900,7 @@ id|unlikely
 (paren
 id|qh
 op_eq
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -2929,7 +2929,7 @@ id|likely
 (paren
 id|qh
 op_ne
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -2951,7 +2951,7 @@ id|qtd_list
 )paren
 id|qtd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_else
 id|qtd
@@ -3369,7 +3369,7 @@ id|ehci_qh
 op_star
 id|qh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|qtd
 op_assign
@@ -3621,7 +3621,7 @@ id|QH_STATE_IDLE
 suffix:semicolon
 id|qh-&gt;qh_next.qh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|qh_put
 (paren
@@ -3644,7 +3644,7 @@ l_int|0
 suffix:semicolon
 id|qh-&gt;reclaim
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|qh_completions
 (paren
@@ -3714,7 +3714,7 @@ id|next
 (brace
 id|ehci-&gt;reclaim
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|start_unlink_async
 (paren
