@@ -666,11 +666,11 @@ id|arg
 suffix:semicolon
 id|regs.xds
 op_assign
-id|__KERNEL_DS
+id|__USER_DS
 suffix:semicolon
 id|regs.xes
 op_assign
-id|__KERNEL_DS
+id|__USER_DS
 suffix:semicolon
 id|regs.orig_eax
 op_assign
