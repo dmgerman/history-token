@@ -15,7 +15,7 @@ mdefine_line|#define VER_MAJOR                 1
 DECL|macro|VER_MINOR
 mdefine_line|#define VER_MINOR                 6
 DECL|macro|VER_LEVEL
-mdefine_line|#define VER_LEVEL                 0
+mdefine_line|#define VER_LEVEL                 1
 macro_line|#include &quot;sis.h&quot;
 multiline_comment|/* TW: To be included in pci_ids.h */
 macro_line|#ifndef PCI_DEVICE_ID_SI_650_VGA
@@ -6162,7 +6162,7 @@ id|vma
 suffix:semicolon
 r_extern
 r_void
-id|sisfb_fillrect
+id|fbcon_sis_fillrect
 c_func
 (paren
 r_struct
@@ -6179,7 +6179,7 @@ id|rect
 suffix:semicolon
 r_extern
 r_void
-id|sisfb_copyarea
+id|fbcon_sis_copyarea
 c_func
 (paren
 r_struct
@@ -6194,9 +6194,28 @@ op_star
 id|area
 )paren
 suffix:semicolon
+macro_line|#if 0&t;&t;&t;&t;   
+r_extern
+r_void
+id|cfb_imageblit
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_const
+r_struct
+id|fb_image
+op_star
+id|image
+)paren
+suffix:semicolon
+macro_line|#endif&t;&t;&t;      
 r_extern
 r_int
-id|sisfb_sync
+id|fbcon_sis_sync
 c_func
 (paren
 r_struct

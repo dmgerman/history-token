@@ -1084,9 +1084,9 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,34)  /* --- KERNEL 2.5.34 and later --- */
-DECL|function|sisfb_sync
+DECL|function|fbcon_sis_sync
 r_int
-id|sisfb_sync
+id|fbcon_sis_sync
 c_func
 (paren
 r_struct
@@ -1134,9 +1134,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|sisfb_fillrect
+DECL|function|fbcon_sis_fillrect
 r_void
-id|sisfb_fillrect
+id|fbcon_sis_fillrect
 c_func
 (paren
 r_struct
@@ -1160,7 +1160,7 @@ id|CRITFLAGS
 id|TWDEBUG
 c_func
 (paren
-l_string|&quot;Inside sisfb_fillrect&quot;
+l_string|&quot;Inside sis_fillrect&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1327,9 +1327,9 @@ c_func
 suffix:semicolon
 )brace
 )brace
-DECL|function|sisfb_copyarea
+DECL|function|fbcon_sis_copyarea
 r_void
-id|sisfb_copyarea
+id|fbcon_sis_copyarea
 c_func
 (paren
 r_struct

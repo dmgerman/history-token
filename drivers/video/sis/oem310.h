@@ -333,10 +333,10 @@ comma
 l_int|0x02
 )brace
 suffix:semicolon
-DECL|variable|SiS310_LCDDelayCompensation_LVDS
+DECL|variable|SiS310_LCDDelayCompensation_LVDS650
 r_const
 id|UCHAR
-id|SiS310_LCDDelayCompensation_LVDS
+id|SiS310_LCDDelayCompensation_LVDS650
 (braket
 )braket
 op_assign
@@ -417,6 +417,117 @@ comma
 l_int|0x00
 comma
 l_int|0x00
+comma
+multiline_comment|/* 1600x1200 */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+)brace
+suffix:semicolon
+DECL|variable|SiS310_LCDDelayCompensation_LVDS740
+r_const
+id|UCHAR
+id|SiS310_LCDDelayCompensation_LVDS740
+(braket
+)braket
+op_assign
+multiline_comment|/* LVDS */
+(brace
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+multiline_comment|/*   800x600 */
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+multiline_comment|/*  1024x768 */
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+multiline_comment|/* 1280x1024 */
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+multiline_comment|/*   640x480 (unknown) */
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+multiline_comment|/*  1024x600 (unknown) */
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+multiline_comment|/*  1152x864 (unknown) */
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+multiline_comment|/*  1280x960 (guessed) */
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+multiline_comment|/*  1152x768 (unknown) */
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+multiline_comment|/* 1400x1050 */
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+multiline_comment|/*  1280x768  (guessed) */
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
 comma
 multiline_comment|/* 1600x1200 */
 l_int|0x00

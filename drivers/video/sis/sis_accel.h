@@ -488,7 +488,7 @@ r_int
 id|sisfb_accel
 suffix:semicolon
 r_void
-id|sisfb_fillrect
+id|fbcon_sis_fillrect
 c_func
 (paren
 r_struct
@@ -504,7 +504,7 @@ id|rect
 )paren
 suffix:semicolon
 r_void
-id|sisfb_copyarea
+id|fbcon_sis_copyarea
 c_func
 (paren
 r_struct
