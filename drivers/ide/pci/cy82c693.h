@@ -87,7 +87,7 @@ DECL|typedef|pio_clocks_t
 )brace
 id|pio_clocks_t
 suffix:semicolon
-r_extern
+r_static
 r_int
 r_int
 id|init_chipset_cy82c693
@@ -102,7 +102,7 @@ r_char
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_void
 id|init_hwif_cy82c693
 c_func
@@ -111,7 +111,7 @@ id|ide_hwif_t
 op_star
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_void
 id|init_iops_cy82c693
 c_func
