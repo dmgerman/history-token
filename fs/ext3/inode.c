@@ -4592,7 +4592,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|set_page_dirty
+multiline_comment|/*&n;&t; * We have to fail this writepage to avoid cross-fs transactions.&n;&t; * Put the page back on mapping-&gt;dirty_pages, but leave its buffer&squot;s&n;&t; * dirty state as-is.&n;&t; */
+id|__set_page_dirty_nobuffers
 c_func
 (paren
 id|page
