@@ -4767,25 +4767,6 @@ multiline_comment|/* still in use by diag; deny actions */
 )brace
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|try_module_get
-c_func
-(paren
-id|THIS_MODULE
-)paren
-)paren
-(brace
-r_return
-(paren
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-multiline_comment|/* increase of usage count not possible */
-)brace
 multiline_comment|/* Set blink mode */
 r_if
 c_cond
@@ -4831,13 +4812,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
-multiline_comment|/* decrease usage count */
 id|printk
 c_func
 (paren
@@ -4942,13 +4916,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
-multiline_comment|/* decrease usage count */
 id|printk
 c_func
 (paren
@@ -5361,12 +5328,6 @@ op_eq
 id|SK_FALSE
 )paren
 (brace
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
 multiline_comment|/* &n;&t;&t;&t;** notify that the interface which has been closed&n;&t;&t;&t;** by operator interaction must not be started up &n;&t;&t;&t;** again when the DIAG has finished. &n;&t;&t;&t;*/
 id|newPtrNet
 op_assign
@@ -5854,12 +5815,6 @@ suffix:semicolon
 id|pNet-&gt;Up
 op_assign
 l_int|0
-suffix:semicolon
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
-)paren
 suffix:semicolon
 r_return
 (paren
@@ -19119,25 +19074,7 @@ id|pAC-&gt;dev
 id|devNbr
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t;** Function SkGeClose() uses MOD_DEC_USE_COUNT (2.2/2.4)&n;&t;** or module_put() (2.6) to decrease the number of users for&n;&t;** a device, but if a device is to be put under control of &n;&t;** the DIAG, that count is OK already and does not need to &n;&t;** be adapted! Hence the opposite MOD_INC_USE_COUNT or &n;&t;** try_module_get() needs to be used again to correct that.&n;&t;*/
-r_if
-c_cond
-(paren
-op_logical_neg
-id|try_module_get
-c_func
-(paren
-id|THIS_MODULE
-)paren
-)paren
-(brace
-r_return
-(paren
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* On Linux 2.6 the network driver does NOT mess with reference&n;&t;** counts.  The driver MUST be able to be unloaded at any time&n;&t;** due to the possibility of hotplug.&n;&t;*/
 r_if
 c_cond
 (paren
@@ -19150,12 +19087,6 @@ op_ne
 l_int|0
 )paren
 (brace
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
 r_return
 (paren
 op_minus
@@ -19215,16 +19146,6 @@ r_return
 (paren
 op_minus
 l_int|1
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;** Function SkGeOpen() uses MOD_INC_USE_COUNT (2.2/2.4) &n;&t;&t;** or try_module_get() (2.6) to increase the number of &n;&t;&t;** users for a device, but if a device was just under &n;&t;&t;** control of the DIAG, that count is OK already and &n;&t;&t;** does not need to be adapted! Hence the opposite &n;&t;&t;** MOD_DEC_USE_COUNT or module_put() needs to be used &n;&t;&t;** again to correct that.&n;&t;&t;*/
-id|module_put
-c_func
-(paren
-id|THIS_MODULE
 )paren
 suffix:semicolon
 )brace
