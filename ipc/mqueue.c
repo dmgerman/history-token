@@ -39,13 +39,13 @@ DECL|macro|CTL_MSGSIZEMAX
 mdefine_line|#define CTL_MSGSIZEMAX &t;4
 multiline_comment|/* default values */
 DECL|macro|DFLT_QUEUESMAX
-mdefine_line|#define DFLT_QUEUESMAX&t;64&t;/* max number of message queues */
+mdefine_line|#define DFLT_QUEUESMAX&t;256&t;/* max number of message queues */
 DECL|macro|DFLT_MSGMAX
-mdefine_line|#define DFLT_MSGMAX &t;40&t;/* max number of messages in each queue */
+mdefine_line|#define DFLT_MSGMAX &t;10&t;/* max number of messages in each queue */
 DECL|macro|HARD_MSGMAX
 mdefine_line|#define HARD_MSGMAX &t;(131072/sizeof(void*))
 DECL|macro|DFLT_MSGSIZEMAX
-mdefine_line|#define DFLT_MSGSIZEMAX 16384&t;/* max message size */
+mdefine_line|#define DFLT_MSGSIZEMAX 8192&t;/* max message size */
 DECL|macro|NOTIFY_COOKIE_LEN
 mdefine_line|#define NOTIFY_COOKIE_LEN&t;32
 DECL|struct|ext_wait_queue
