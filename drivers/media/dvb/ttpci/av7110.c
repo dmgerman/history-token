@@ -24689,12 +24689,6 @@ id|firmware
 op_star
 id|fw
 suffix:semicolon
-macro_line|#else
-r_struct
-id|firmware
-op_star
-id|fw
-suffix:semicolon
 macro_line|#endif
 r_struct
 id|av7110
@@ -24769,50 +24763,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#else
-id|fw
-op_assign
-id|vmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|firmware
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|fw
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;dvb-ttpci: not enough memory&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|fw-&gt;size
-op_assign
-r_sizeof
-(paren
-id|dvb_ttpci_fw
-)paren
-suffix:semicolon
-id|fw-&gt;data
-op_assign
-id|dvb_ttpci_fw
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -24832,6 +24782,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* prepare the av7110 device struct */
 r_if
 c_cond
@@ -24879,6 +24830,7 @@ id|av7110
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE 
 multiline_comment|/* check if the firmware is available */
 id|av7110-&gt;bin_fw
 op_assign
@@ -24934,6 +24886,17 @@ id|av7110-&gt;size_fw
 op_assign
 id|fw-&gt;size
 suffix:semicolon
+macro_line|#else
+id|av7110-&gt;bin_fw
+op_assign
+id|dvb_ttpci_fw
+suffix:semicolon
+id|av7110-&gt;size_fw
+op_assign
+r_sizeof
+id|dvb_ttpci_fw
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* check for firmware magic */
 id|ptr
 op_assign
@@ -25181,14 +25144,6 @@ id|av7110-&gt;size_root
 op_assign
 id|len
 suffix:semicolon
-macro_line|#ifdef CONFIG_DVB_AV7110_FIRMWARE_FILE
-id|vfree
-c_func
-(paren
-id|fw
-)paren
-suffix:semicolon
-macro_line|#endif&t;
 multiline_comment|/* go on with regular device initialization */
 id|av7110-&gt;card_name
 op_assign
@@ -26803,12 +26758,14 @@ id|ret
 suffix:semicolon
 id|fw_error
 suffix:colon
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE 
 id|vfree
 c_func
 (paren
 id|av7110-&gt;bin_fw
 )paren
 suffix:semicolon
+macro_line|#endif
 id|kfree
 c_func
 (paren
@@ -27013,6 +26970,7 @@ suffix:semicolon
 id|av7110_num
 op_decrement
 suffix:semicolon
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE 
 r_if
 c_cond
 (paren
@@ -27028,6 +26986,7 @@ id|av7110-&gt;bin_fw
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|kfree
 (paren
 id|av7110
