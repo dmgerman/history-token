@@ -1674,17 +1674,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_else
-(brace
-id|kmem_cache_free
-c_func
-(paren
-id|kiocb_cachep
-comma
-id|req
-)paren
-suffix:semicolon
-)brace
 id|kunmap_atomic
 c_func
 (paren
