@@ -1400,6 +1400,20 @@ op_star
 id|status
 )paren
 suffix:semicolon
+r_int
+id|mthca_NOP
+c_func
+(paren
+r_struct
+id|mthca_dev
+op_star
+id|dev
+comma
+id|u8
+op_star
+id|status
+)paren
+suffix:semicolon
 DECL|macro|MAILBOX_ALIGN
 mdefine_line|#define MAILBOX_ALIGN(x) ((void *) ALIGN((unsigned long) (x), MTHCA_CMD_MAILBOX_ALIGN))
 macro_line|#endif /* MTHCA_CMD_H */
