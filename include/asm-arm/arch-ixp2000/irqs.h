@@ -4,8 +4,8 @@ DECL|macro|_IRQS_H
 mdefine_line|#define _IRQS_H
 multiline_comment|/*&n; * Do NOT add #ifdef MACHINE_FOO in here.&n; * Simpy add your machine IRQs here and increase NR_IRQS if needed to&n; * hold your machine&squot;s IRQ table.&n; */
 multiline_comment|/*&n; * Some interrupt numbers go unused b/c the IRQ mask/ummask/status&n; * register has those bit reserved. We just mark those interrupts&n; * as invalid and this allows us to do mask/unmask with a single&n; * shift operation instead of having to map the IRQ number to&n; * a HW IRQ number.&n; */
-DECL|macro|IRQ_IXP2000_SWI
-mdefine_line|#define&t;IRQ_IXP2000_SWI&t;&t;&t;0 /* soft interrupt */
+DECL|macro|IRQ_IXP2000_SOFT_INT
+mdefine_line|#define&t;IRQ_IXP2000_SOFT_INT&t;&t;0 /* soft interrupt */
 DECL|macro|IRQ_IXP2000_ERRSUM
 mdefine_line|#define&t;IRQ_IXP2000_ERRSUM&t;&t;1 /* OR of all bits in ErrorStatus reg*/
 DECL|macro|IRQ_IXP2000_UART

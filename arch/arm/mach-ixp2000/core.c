@@ -1448,7 +1448,7 @@ c_loop
 (paren
 id|irq
 op_assign
-id|IRQ_IXP2000_SWI
+id|IRQ_IXP2000_SOFT_INT
 suffix:semicolon
 id|irq
 op_le
