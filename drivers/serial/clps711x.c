@@ -19,22 +19,12 @@ macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/hardware/clps7111.h&gt;
 DECL|macro|UART_NR
 mdefine_line|#define UART_NR&t;&t;2
-macro_line|#ifndef CONFIG_SERIAL_CLPS711X_OLD_NAME
 DECL|macro|SERIAL_CLPS711X_MAJOR
 mdefine_line|#define SERIAL_CLPS711X_MAJOR&t;204
 DECL|macro|SERIAL_CLPS711X_MINOR
 mdefine_line|#define SERIAL_CLPS711X_MINOR&t;40
 DECL|macro|SERIAL_CLPS711X_NR
 mdefine_line|#define SERIAL_CLPS711X_NR&t;UART_NR
-macro_line|#else
-macro_line|#warning The old names/device number for this driver if compatabity is needed
-DECL|macro|SERIAL_CLPS711X_MAJOR
-mdefine_line|#define SERIAL_CLPS711X_MAJOR   204
-DECL|macro|SERIAL_CLPS711X_MINOR
-mdefine_line|#define SERIAL_CLPS711X_MINOR   16
-DECL|macro|SERIAL_CLPS711X_NR
-mdefine_line|#define SERIAL_CLPS711X_NR      UART_NR
-macro_line|#endif
 multiline_comment|/*&n; * We use the relevant SYSCON register as a base address for these ports.&n; */
 DECL|macro|UBRLCR
 mdefine_line|#define UBRLCR(port)&t;&t;((port)-&gt;iobase + UBRLCR1 - SYSCON1)
