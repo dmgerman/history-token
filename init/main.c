@@ -936,17 +936,6 @@ r_void
 )paren
 (brace
 )brace
-DECL|function|setup_per_cpu_areas
-r_static
-r_inline
-r_void
-id|setup_per_cpu_areas
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 macro_line|#else
 macro_line|#ifdef __GENERIC_PER_CPU
 DECL|variable|__per_cpu_offset
