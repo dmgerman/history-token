@@ -3506,7 +3506,7 @@ op_and_assign
 op_complement
 id|FMODE_WRITE
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|m-&gt;mout.ep-&gt;urb
@@ -3566,7 +3566,7 @@ id|m-&gt;min.ep-&gt;urbSubmitted
 op_assign
 l_int|0
 suffix:semicolon
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|m-&gt;min.ep-&gt;urb
@@ -3920,7 +3920,7 @@ op_star
 id|min
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|min-&gt;urb
@@ -4178,7 +4178,7 @@ op_star
 id|mout
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|mout-&gt;urb
