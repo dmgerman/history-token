@@ -134,6 +134,7 @@ id|cpufreq_frequency_table
 op_star
 id|longhaul_table
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_FREQ_DEBUG
 DECL|variable|speedbuffer
 r_static
 r_char
@@ -216,6 +217,7 @@ r_return
 id|speedbuffer
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|calc_speed
 r_static
 r_int
