@@ -1304,14 +1304,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: replace with a timeout-able wake_event_interruptible */
 id|timeleft
 op_assign
-id|interruptible_sleep_on_timeout
+id|wait_event_interruptible_timeout
 c_func
 (paren
-op_amp
 id|req-&gt;rq_wait
+comma
+id|req-&gt;rq_flags
+op_amp
+id|SMB_REQ_RECEIVED
 comma
 l_int|30
 op_star
@@ -3172,7 +3174,7 @@ comma
 id|req
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Response completely read. Drop any extra bytes sent by the server.&n;&t; * (Yes, servers sometimes add extra bytes to requests)&n;&t; */
+multiline_comment|/*&n;&t; * Response completely read. Drop any extra bytes sent by the server.&n;&t; * (Yes, servers sometimes add extra bytes to responses)&n;&t; */
 id|VERBOSE
 c_func
 (paren

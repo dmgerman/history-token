@@ -1788,12 +1788,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|smbiod_unregister_server
-c_func
-(paren
-id|server
-)paren
-suffix:semicolon
 id|smb_lock_server
 c_func
 (paren
@@ -1803,6 +1797,12 @@ suffix:semicolon
 id|server-&gt;state
 op_assign
 id|CONN_INVALID
+suffix:semicolon
+id|smbiod_unregister_server
+c_func
+(paren
+id|server
+)paren
 suffix:semicolon
 id|smb_close_socket
 c_func

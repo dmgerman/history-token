@@ -4797,6 +4797,10 @@ id|mode
 op_assign
 id|read_only
 suffix:semicolon
+id|req-&gt;rq_flags
+op_assign
+l_int|0
+suffix:semicolon
 r_goto
 id|retry
 suffix:semicolon
@@ -7657,6 +7661,10 @@ l_int|0
 id|flag
 op_assign
 l_int|1
+suffix:semicolon
+id|req-&gt;rq_flags
+op_assign
+l_int|0
 suffix:semicolon
 r_goto
 id|retry
