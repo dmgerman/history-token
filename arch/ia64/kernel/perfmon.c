@@ -6931,11 +6931,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* reload state, may have changed during  opening of critical section */
-id|state
-op_assign
-id|ctx-&gt;ctx_state
-suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
@@ -7007,6 +7002,11 @@ macro_line|#endif
 id|doit
 suffix:colon
 multiline_comment|/* cannot assume task is defined from now on */
+multiline_comment|/* reload state, may have changed during  opening of critical section */
+id|state
+op_assign
+id|ctx-&gt;ctx_state
+suffix:semicolon
 multiline_comment|/*&n;&t; * the context is still attached to a task (possibly current)&n;&t; * we cannot destroy it right now&n;&t; */
 multiline_comment|/*&n;&t; * remove virtual mapping, if any. will be NULL when&n;&t; * called from exit_files().&n;&t; */
 r_if
@@ -7057,7 +7057,7 @@ l_string|&quot;[%d] ctx_state=%d free_possible=%d vaddr=%p addr=%p size=%lu&bsla
 comma
 id|current-&gt;pid
 comma
-id|ctx-&gt;ctx_state
+id|state
 comma
 id|free_possible
 comma
@@ -8131,36 +8131,75 @@ op_star
 id|task
 )paren
 (brace
-multiline_comment|/* stolen from bad_signal() */
+multiline_comment|/* inspired by ptrace_attach() */
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;[%d] cur: uid=%d gid=%d task: euid=%d suid=%d uid=%d egid=%d sgid=%d&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|current-&gt;uid
+comma
+id|current-&gt;gid
+comma
+id|task-&gt;euid
+comma
+id|task-&gt;suid
+comma
+id|task-&gt;uid
+comma
+id|task-&gt;egid
+comma
+id|task-&gt;sgid
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
-id|current-&gt;session
+(paren
+id|current-&gt;uid
 op_ne
-id|task-&gt;session
+id|task-&gt;euid
 )paren
-op_logical_and
-(paren
-id|current-&gt;euid
-op_xor
-id|task-&gt;suid
-)paren
-op_logical_and
-(paren
-id|current-&gt;euid
-op_xor
-id|task-&gt;uid
-)paren
-op_logical_and
+op_logical_or
 (paren
 id|current-&gt;uid
-op_xor
+op_ne
 id|task-&gt;suid
 )paren
-op_logical_and
+op_logical_or
 (paren
 id|current-&gt;uid
-op_xor
+op_ne
 id|task-&gt;uid
+)paren
+op_logical_or
+(paren
+id|current-&gt;gid
+op_ne
+id|task-&gt;egid
+)paren
+op_logical_or
+(paren
+id|current-&gt;gid
+op_ne
+id|task-&gt;sgid
+)paren
+op_logical_or
+(paren
+id|current-&gt;gid
+op_ne
+id|task-&gt;gid
+)paren
+)paren
+op_logical_and
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_SYS_PTRACE
 )paren
 suffix:semicolon
 )brace
