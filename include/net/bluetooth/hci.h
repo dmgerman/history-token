@@ -474,6 +474,46 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+DECL|macro|OCF_READ_VOICE_SETTING
+mdefine_line|#define OCF_READ_VOICE_SETTING&t;0x0025
+DECL|struct|hci_rp_read_voice_setting
+r_struct
+id|hci_rp_read_voice_setting
+(brace
+DECL|member|status
+id|__u8
+id|status
+suffix:semicolon
+DECL|member|voice_setting
+id|__u16
+id|voice_setting
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|macro|OCF_WRITE_VOICE_SETTING
+mdefine_line|#define OCF_WRITE_VOICE_SETTING&t;0x0026
+DECL|struct|hci_cp_write_voice_setting
+r_struct
+id|hci_cp_write_voice_setting
+(brace
+DECL|member|voice_setting
+id|__u16
+id|voice_setting
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
 DECL|macro|OCF_HOST_BUFFER_SIZE
 mdefine_line|#define OCF_HOST_BUFFER_SIZE&t;0x0033
 DECL|struct|hci_cp_host_buffer_size

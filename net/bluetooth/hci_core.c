@@ -835,6 +835,21 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* Read Voice Setting */
+id|hci_send_cmd
+c_func
+(paren
+id|hdev
+comma
+id|OGF_HOST_CTL
+comma
+id|OCF_READ_VOICE_SETTING
+comma
+l_int|0
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 multiline_comment|/* Optional initialization */
 multiline_comment|/* Clear Event Filters */
 (brace
