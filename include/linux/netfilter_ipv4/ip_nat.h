@@ -98,6 +98,14 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
+multiline_comment|/* Protects NAT hash tables, and NAT-private part of conntracks. */
+DECL|variable|ip_nat_lock
+id|DECLARE_RWLOCK_EXTERN
+c_func
+(paren
+id|ip_nat_lock
+)paren
+suffix:semicolon
 multiline_comment|/* The structure embedded in the conntrack structure. */
 DECL|struct|ip_nat_info
 r_struct
