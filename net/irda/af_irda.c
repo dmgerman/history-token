@@ -417,8 +417,16 @@ id|sk
 op_eq
 l_int|NULL
 )paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 id|dev_kfree_skb
 c_func
 (paren
@@ -630,8 +638,16 @@ id|sk
 op_eq
 l_int|NULL
 )paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 multiline_comment|/* How much header space do we need to reserve */
 id|self-&gt;max_header_size
 op_assign
