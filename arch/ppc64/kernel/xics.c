@@ -912,6 +912,18 @@ r_int
 id|irq
 )paren
 (brace
+r_int
+r_int
+id|server
+suffix:semicolon
+macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
+multiline_comment|/* For the moment only implement delivery to all cpus or one cpu */
+r_if
+c_cond
+(paren
+id|smp_threads_ready
+)paren
+(brace
 id|cpumask_t
 id|cpumask
 op_assign
@@ -925,18 +937,6 @@ id|tmp
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
-r_int
-r_int
-id|server
-suffix:semicolon
-macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
-multiline_comment|/* For the moment only implement delivery to all cpus or one cpu */
-r_if
-c_cond
-(paren
-id|smp_threads_ready
-)paren
-(brace
 r_if
 c_cond
 (paren
