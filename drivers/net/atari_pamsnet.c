@@ -406,7 +406,7 @@ op_assign
 id|TIMER_INITIALIZER
 c_func
 (paren
-id|amsnet_tick
+id|pamsnet_tick
 comma
 l_int|0
 comma

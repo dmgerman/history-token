@@ -1601,6 +1601,11 @@ id|elevator_add_req_fn
 op_assign
 id|elevator_noop_add_request
 comma
+dot
+id|elevator_name
+op_assign
+l_string|&quot;noop&quot;
+comma
 )brace
 suffix:semicolon
 DECL|variable|elevator_global_init

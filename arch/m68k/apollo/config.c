@@ -797,16 +797,6 @@ id|mach_process_int
 op_assign
 id|dn_process_int
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_FD
-id|mach_floppy_init
-op_assign
-id|dn_dummy_floppy_init
-suffix:semicolon
-id|mach_floppy_setup
-op_assign
-id|dn_dummy_floppy_setup
-suffix:semicolon
-macro_line|#endif
 id|mach_reset
 op_assign
 id|dn_dummy_reset

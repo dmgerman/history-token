@@ -3832,9 +3832,20 @@ id|elevator_t
 op_star
 id|chosen_elevator
 op_assign
+macro_line|#if defined(CONFIG_IOSCHED_AS)
 op_amp
 id|iosched_as
 suffix:semicolon
+macro_line|#elif defined(CONFIG_IOSCHED_DEADLINE)
+op_amp
+id|iosched_deadline
+suffix:semicolon
+macro_line|#else
+op_amp
+id|elevator_noop
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_IOSCHED_AS) || defined(CONFIG_IOSCHED_DEADLINE)
 DECL|function|elevator_setup
 r_static
 r_int
@@ -3847,6 +3858,7 @@ op_star
 id|str
 )paren
 (brace
+macro_line|#ifdef CONFIG_IOSCHED_DEADLINE
 r_if
 c_cond
 (paren
@@ -3864,6 +3876,8 @@ op_assign
 op_amp
 id|iosched_deadline
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_IOSCHED_AS
 r_if
 c_cond
 (paren
@@ -3881,6 +3895,7 @@ op_assign
 op_amp
 id|iosched_as
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -3893,6 +3908,7 @@ comma
 id|elevator_setup
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_IOSCHED_AS || CONFIG_IOSCHED_DEADLINE */
 multiline_comment|/**&n; * blk_init_queue  - prepare a request queue for use with a block device&n; * @q:    The &amp;request_queue_t to be initialised&n; * @rfn:  The function to be called to process requests that have been&n; *        placed on the queue.&n; *&n; * Description:&n; *    If a block device wishes to use the standard request handling procedures,&n; *    which sorts requests and coalesces adjacent requests, then it must&n; *    call blk_init_queue().  The function @rfn will be called when there&n; *    are requests on the queue that need to be processed.  If the device&n; *    supports plugging, then @rfn may not be called immediately when requests&n; *    are available on the queue, but may be called at some time later instead.&n; *    Plugged queues are generally unplugged when a buffer belonging to one&n; *    of the requests on the queue is needed, or due to memory pressure.&n; *&n; *    @rfn is not required, or even expected, to remove all requests off the&n; *    queue, but only as many as it can handle at a time.  If it does leave&n; *    requests on the queue, it is responsible for arranging that the requests&n; *    get dealt with eventually.&n; *&n; *    The queue spin lock must be held while manipulating the requests on the&n; *    request queue.&n; *&n; * Note:&n; *    blk_init_queue() must be paired with a blk_cleanup_queue() call&n; *    when the block device is deactivated (such as at module unload).&n; **/
 DECL|function|blk_init_queue
 r_int
@@ -3943,33 +3959,12 @@ id|printed
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|chosen_elevator
-op_eq
-op_amp
-id|iosched_deadline
-)paren
 id|printk
 c_func
 (paren
-l_string|&quot;deadline elevator&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|chosen_elevator
-op_eq
-op_amp
-id|iosched_as
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;anticipatory scheduling elevator&bslash;n&quot;
+l_string|&quot;Using %s elevator&bslash;n&quot;
+comma
+id|chosen_elevator-&gt;elevator_name
 )paren
 suffix:semicolon
 )brace
@@ -7594,20 +7589,24 @@ id|nr_bytes
 )paren
 )paren
 (brace
-id|bio_iovec
+id|bio_iovec_idx
 c_func
 (paren
 id|bio
+comma
+id|idx
 )paren
 op_member_access_from_pointer
 id|bv_offset
 op_add_assign
 id|nr_bytes
 suffix:semicolon
-id|bio_iovec
+id|bio_iovec_idx
 c_func
 (paren
 id|bio
+comma
+id|idx
 )paren
 op_member_access_from_pointer
 id|bv_len
