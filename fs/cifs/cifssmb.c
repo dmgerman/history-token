@@ -875,9 +875,17 @@ multiline_comment|/* BB might be helpful to save off the domain of server here *
 r_if
 c_cond
 (paren
+(paren
 id|pSMBr-&gt;hdr.Flags2
 op_amp
 id|SMBFLG2_EXT_SEC
+)paren
+op_logical_and
+(paren
+id|server-&gt;capabilities
+op_amp
+id|CAP_EXTENDED_SECURITY
+)paren
 )paren
 (brace
 r_if
@@ -16043,6 +16051,9 @@ c_cond
 (paren
 id|rc
 OL
+(paren
+r_int
+)paren
 id|buf_size
 )paren
 (brace
@@ -16179,6 +16190,9 @@ r_goto
 id|QAllEAsRetry
 suffix:semicolon
 r_return
+(paren
+id|ssize_t
+)paren
 id|rc
 suffix:semicolon
 )brace
@@ -16740,6 +16754,9 @@ c_cond
 (paren
 id|rc
 op_le
+(paren
+r_int
+)paren
 id|buf_size
 )paren
 (brace
@@ -16843,6 +16860,9 @@ r_goto
 id|QEARetry
 suffix:semicolon
 r_return
+(paren
+id|ssize_t
+)paren
 id|rc
 suffix:semicolon
 )brace
