@@ -1783,7 +1783,7 @@ id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cpuinfo.transition_latency
 op_assign
-l_int|10
+l_int|10000
 suffix:semicolon
 multiline_comment|/* 10uS transition latency */
 id|policy-&gt;cur
