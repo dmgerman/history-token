@@ -1,5 +1,6 @@
 multiline_comment|/* xfrm4_tunnel.c: Generic IP tunnel transformer.&n; *&n; * Copyright (C) 2003 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
@@ -149,6 +150,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|xfrm4_tunnel_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm4_tunnel_register
+)paren
+suffix:semicolon
 DECL|function|xfrm4_tunnel_deregister
 r_int
 id|xfrm4_tunnel_deregister
@@ -212,6 +220,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|xfrm4_tunnel_deregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm4_tunnel_deregister
+)paren
+suffix:semicolon
 DECL|function|ipip_rcv
 r_static
 r_int
