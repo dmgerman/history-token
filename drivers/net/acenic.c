@@ -10207,7 +10207,7 @@ c_cond
 (paren
 id|link
 op_amp
-id|LNK_100MB
+id|LNK_10MB
 )paren
 id|ecmd-&gt;speed
 op_assign
@@ -10387,7 +10387,7 @@ c_cond
 (paren
 id|link
 op_amp
-id|LNK_100MB
+id|LNK_10MB
 )paren
 id|speed
 op_assign
