@@ -11870,10 +11870,47 @@ id|getChild
 suffix:semicolon
 multiline_comment|/*&n;&t; *      leaf page&n;&t; */
 multiline_comment|/* Since this is the rightmost leaf, and we may have already freed&n;&t; * a page that was formerly to the right, let&squot;s make sure that the&n;&t; * next pointer is zero.&n;&t; */
+r_if
+c_cond
+(paren
+id|p-&gt;header.next
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|log
+)paren
+multiline_comment|/*&n;&t;&t;&t; * Make sure this change to the header is logged.&n;&t;&t;&t; * If we really truncate this leaf, the flag&n;&t;&t;&t; * will be changed to tlckTRUNCATE&n;&t;&t;&t; */
+id|tlck
+op_assign
+id|txLock
+c_func
+(paren
+id|tid
+comma
+id|ip
+comma
+id|mp
+comma
+id|tlckXTREE
+op_or
+id|tlckGROW
+)paren
+suffix:semicolon
+id|BT_MARK_DIRTY
+c_func
+(paren
+id|mp
+comma
+id|ip
+)paren
+suffix:semicolon
 id|p-&gt;header.next
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|freed
 op_assign
 l_int|0
