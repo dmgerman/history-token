@@ -1442,11 +1442,6 @@ l_int|1
 multiline_comment|/* this one isn&squot;t an aligned length, so we&squot;ll make a new entry&n;&t;&t; * and split it up.&n;&t;&t; */
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -1536,10 +1531,6 @@ id|head
 op_assign
 id|node-&gt;next
 suffix:semicolon
-id|node-&gt;next
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -1563,11 +1554,11 @@ id|prevnode-&gt;next
 op_assign
 id|node-&gt;next
 suffix:semicolon
+)brace
 id|node-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 r_return
 id|node
 suffix:semicolon
@@ -1920,11 +1911,6 @@ r_continue
 suffix:semicolon
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -1987,11 +1973,6 @@ id|size
 multiline_comment|/* this one is longer than we need&n;&t;&t;&t;   so we&squot;ll make a new entry and split it up */
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2272,11 +2253,6 @@ r_continue
 suffix:semicolon
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2345,11 +2321,6 @@ l_int|1
 multiline_comment|/* this one isn&squot;t end aligned properly at the top&n;&t;&t;&t;   so we&squot;ll make a new entry and split it up */
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2455,11 +2426,6 @@ id|i
 (brace
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2747,11 +2713,6 @@ r_continue
 suffix:semicolon
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2822,11 +2783,6 @@ suffix:semicolon
 multiline_comment|/* this one is longer than we need&n;&t;&t;&t;   so we&squot;ll make a new entry and split it up */
 id|split_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -3270,11 +3226,6 @@ id|busnumber
 suffix:semicolon
 id|new_slot
 op_assign
-(paren
-r_struct
-id|pci_func
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -5454,6 +5405,7 @@ suffix:semicolon
 id|info
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
