@@ -3271,8 +3271,40 @@ r_int
 id|vol-&gt;serial_no
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Determine MFT zone size. This is not strictly the right place to do&n;&t; * this, but I am too lazy to create a function especially for it...&n;&t; */
-id|vol-&gt;mft_zone_end
+r_return
+id|TRUE
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * setup_lcn_allocator - initialize the cluster allocator&n; * @vol:&t;volume structure for which to setup the lcn allocator&n; *&n; * Setup the cluster (lcn) allocator to the starting values.&n; */
+DECL|function|setup_lcn_allocator
+r_static
+r_void
+id|setup_lcn_allocator
+c_func
+(paren
+id|ntfs_volume
+op_star
+id|vol
+)paren
+(brace
+macro_line|#ifdef NTFS_RW
+id|LCN
+id|mft_zone_size
+comma
+id|mft_lcn
+suffix:semicolon
+macro_line|#endif /* NTFS_RW */
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;vol-&gt;mft_zone_multiplier = 0x%x&quot;
+comma
+id|vol-&gt;mft_zone_multiplier
+)paren
+suffix:semicolon
+macro_line|#ifdef NTFS_RW
+multiline_comment|/* Determine the size of the MFT zone. */
+id|mft_zone_size
 op_assign
 id|vol-&gt;nr_clusters
 suffix:semicolon
@@ -3286,10 +3318,8 @@ multiline_comment|/* % of volume size in clusters */
 r_case
 l_int|4
 suffix:colon
-id|vol-&gt;mft_zone_end
-op_assign
-id|vol-&gt;mft_zone_end
-op_rshift
+id|mft_zone_size
+op_rshift_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* 50%   */
@@ -3298,13 +3328,13 @@ suffix:semicolon
 r_case
 l_int|3
 suffix:colon
-id|vol-&gt;mft_zone_end
+id|mft_zone_size
 op_assign
 (paren
-id|vol-&gt;mft_zone_end
+id|mft_zone_size
 op_plus
 (paren
-id|vol-&gt;mft_zone_end
+id|mft_zone_size
 op_rshift
 l_int|1
 )paren
@@ -3318,50 +3348,94 @@ suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|vol-&gt;mft_zone_end
-op_assign
-id|vol-&gt;mft_zone_end
-op_rshift
+id|mft_zone_size
+op_rshift_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* 25%   */
 r_break
 suffix:semicolon
+multiline_comment|/* case 1: */
 r_default
 suffix:colon
-id|vol-&gt;mft_zone_multiplier
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Fall through into case 1. */
-r_case
-l_int|1
-suffix:colon
-id|vol-&gt;mft_zone_end
-op_assign
-id|vol-&gt;mft_zone_end
-op_rshift
+id|mft_zone_size
+op_rshift_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/* 12.5% */
 r_break
 suffix:semicolon
 )brace
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;vol-&gt;mft_zone_multiplier = 0x%x&quot;
-comma
-id|vol-&gt;mft_zone_multiplier
-)paren
-suffix:semicolon
+multiline_comment|/* Setup the mft zone. */
 id|vol-&gt;mft_zone_start
+op_assign
+id|vol-&gt;mft_zone_pos
 op_assign
 id|vol-&gt;mft_lcn
 suffix:semicolon
-id|vol-&gt;mft_zone_end
-op_add_assign
-id|vol-&gt;mft_lcn
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;vol-&gt;mft_zone_pos = 0x%llx&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|vol-&gt;mft_zone_pos
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Calculate the mft_lcn for an unmodified NTFS volume (see mkntfs&n;&t; * source) and if the actual mft_lcn is in the expected place or even&n;&t; * further to the front of the volume, extend the mft_zone to cover the&n;&t; * beginning of the volume as well.  This is in order to protect the&n;&t; * area reserved for the mft bitmap as well within the mft_zone itself.&n;&t; * On non-standard volumes we do not protect it as the overhead would&n;&t; * be higher than the speed increase we would get by doing it.&n;&t; */
+id|mft_lcn
+op_assign
+(paren
+l_int|8192
+op_plus
+l_int|2
+op_star
+id|vol-&gt;cluster_size
+op_minus
+l_int|1
+)paren
+op_div
+id|vol-&gt;cluster_size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mft_lcn
+op_star
+id|vol-&gt;cluster_size
+OL
+l_int|16
+op_star
+l_int|1024
+)paren
+id|mft_lcn
+op_assign
+(paren
+l_int|16
+op_star
+l_int|1024
+op_plus
+id|vol-&gt;cluster_size
+op_minus
+l_int|1
+)paren
+op_div
+id|vol-&gt;cluster_size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vol-&gt;mft_zone_start
+op_le
+id|mft_lcn
+)paren
+id|vol-&gt;mft_zone_start
+op_assign
+l_int|0
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -3371,10 +3445,37 @@ comma
 (paren
 r_int
 r_int
+r_int
 )paren
 id|vol-&gt;mft_zone_start
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Need to cap the mft zone on non-standard volumes so that it does&n;&t; * not point outside the boundaries of the volume.  We do this by&n;&t; * halving the zone size until we are inside the volume.&n;&t; */
+id|vol-&gt;mft_zone_end
+op_assign
+id|vol-&gt;mft_lcn
+op_plus
+id|mft_zone_size
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|vol-&gt;mft_zone_end
+op_ge
+id|vol-&gt;nr_clusters
+)paren
+(brace
+id|mft_zone_size
+op_rshift_assign
+l_int|1
+suffix:semicolon
+id|vol-&gt;mft_zone_end
+op_assign
+id|vol-&gt;mft_lcn
+op_plus
+id|mft_zone_size
+suffix:semicolon
+)brace
 id|ntfs_debug
 c_func
 (paren
@@ -3383,13 +3484,47 @@ comma
 (paren
 r_int
 r_int
+r_int
 )paren
 id|vol-&gt;mft_zone_end
 )paren
 suffix:semicolon
-r_return
-id|TRUE
+multiline_comment|/*&n;&t; * Set the current position within each data zone to the start of the&n;&t; * respective zone.&n;&t; */
+id|vol-&gt;data1_zone_pos
+op_assign
+id|vol-&gt;mft_zone_end
 suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;vol-&gt;data1_zone_pos = 0x%llx&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|vol-&gt;data1_zone_pos
+)paren
+suffix:semicolon
+id|vol-&gt;data2_zone_pos
+op_assign
+l_int|0
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;vol-&gt;data2_zone_pos = 0x%llx&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|vol-&gt;data2_zone_pos
+)paren
+suffix:semicolon
+macro_line|#endif /* NTFS_RW */
 )brace
 macro_line|#ifdef NTFS_RW
 multiline_comment|/**&n; * load_and_init_mft_mirror - load and setup the mft mirror inode for a volume&n; * @vol:&t;ntfs super block describing device whose mft mirror to load&n; *&n; * Return TRUE on success or FALSE on error.&n; */
@@ -8772,6 +8907,13 @@ id|NTFS_BOOT_SECTOR
 op_star
 )paren
 id|bh-&gt;b_data
+)paren
+suffix:semicolon
+multiline_comment|/* Initialize the cluster allocator. */
+id|setup_lcn_allocator
+c_func
+(paren
+id|vol
 )paren
 suffix:semicolon
 id|brelse

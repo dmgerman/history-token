@@ -147,6 +147,8 @@ op_star
 id|upcase
 suffix:semicolon
 multiline_comment|/* The upcase table. */
+macro_line|#ifdef NTFS_RW
+multiline_comment|/* Variables used by the cluster and mft allocators. */
 DECL|member|mft_zone_start
 id|LCN
 id|mft_zone_start
@@ -157,6 +159,22 @@ id|LCN
 id|mft_zone_end
 suffix:semicolon
 multiline_comment|/* First cluster beyond the mft zone. */
+DECL|member|mft_zone_pos
+id|LCN
+id|mft_zone_pos
+suffix:semicolon
+multiline_comment|/* Current position in the mft zone. */
+DECL|member|data1_zone_pos
+id|LCN
+id|data1_zone_pos
+suffix:semicolon
+multiline_comment|/* Current position in the first data&n;&t;&t;&t;&t;&t;   zone. */
+DECL|member|data2_zone_pos
+id|LCN
+id|data2_zone_pos
+suffix:semicolon
+multiline_comment|/* Current position in the second data&n;&t;&t;&t;&t;&t;   zone. */
+macro_line|#endif /* NTFS_RW */
 DECL|member|mft_ino
 r_struct
 id|inode

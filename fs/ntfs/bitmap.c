@@ -75,7 +75,7 @@ id|ntfs_debug
 c_func
 (paren
 l_string|&quot;Entering for i_ino 0x%lx, start_bit 0x%llx, count 0x%llx, &quot;
-l_string|&quot;value %u.&quot;
+l_string|&quot;value %u.%s&quot;
 comma
 id|vi-&gt;i_ino
 comma
@@ -98,6 +98,13 @@ r_int
 r_int
 )paren
 id|value
+comma
+id|is_rollback
+ques
+c_cond
+l_string|&quot; (rollback)&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 id|BUG_ON
