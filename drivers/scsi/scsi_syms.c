@@ -271,6 +271,13 @@ c_func
 id|scsi_adjust_queue_depth
 )paren
 suffix:semicolon
+DECL|variable|scsi_track_queue_full
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_track_queue_full
+)paren
+suffix:semicolon
 DECL|variable|scsi_get_host_dev
 id|EXPORT_SYMBOL
 c_func
