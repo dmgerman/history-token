@@ -534,7 +534,7 @@ r_default
 suffix:colon
 r_return
 op_minus
-id|ENOTTY
+id|ENOIOCTLCMD
 suffix:semicolon
 multiline_comment|/* Keep Pavel Machek amused ;) */
 r_case
