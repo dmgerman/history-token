@@ -410,6 +410,74 @@ DECL|typedef|special_t
 )brace
 id|special_t
 suffix:semicolon
+DECL|macro|IDE_MAX_TAG
+mdefine_line|#define IDE_MAX_TAG&t;32&t;&t;/* spec says 32 max */
+r_struct
+id|ata_request
+suffix:semicolon
+DECL|struct|ide_tag_info_s
+r_typedef
+r_struct
+id|ide_tag_info_s
+(brace
+DECL|member|tag_mask
+r_int
+r_int
+id|tag_mask
+suffix:semicolon
+multiline_comment|/* next tag bit mask */
+DECL|member|ar
+r_struct
+id|ata_request
+op_star
+id|ar
+(braket
+id|IDE_MAX_TAG
+)braket
+suffix:semicolon
+multiline_comment|/* in-progress requests */
+DECL|member|active_tag
+r_int
+id|active_tag
+suffix:semicolon
+multiline_comment|/* current active tag */
+DECL|member|queued
+r_int
+id|queued
+suffix:semicolon
+multiline_comment|/* current depth */
+multiline_comment|/*&n;&t; * stats -&gt;&n;&t; */
+DECL|member|max_depth
+r_int
+id|max_depth
+suffix:semicolon
+multiline_comment|/* max depth ever */
+DECL|member|max_last_depth
+r_int
+id|max_last_depth
+suffix:semicolon
+multiline_comment|/* max since last check */
+multiline_comment|/*&n;&t; * Either the command completed immediately after being started&n;&t; * (immed_comp), or the device did a bus release before dma was&n;&t; * started (immed_rel).&n;&t; */
+DECL|member|immed_rel
+r_int
+id|immed_rel
+suffix:semicolon
+DECL|member|immed_comp
+r_int
+id|immed_comp
+suffix:semicolon
+DECL|typedef|ide_tag_info_t
+)brace
+id|ide_tag_info_t
+suffix:semicolon
+DECL|macro|IDE_GET_AR
+mdefine_line|#define IDE_GET_AR(drive, tag)&t;((drive)-&gt;tcq-&gt;ar[(tag)])
+DECL|macro|IDE_CUR_TAG
+mdefine_line|#define IDE_CUR_TAG(drive)&t;(IDE_GET_AR((drive), (drive)-&gt;tcq-&gt;active_tag))
+DECL|macro|IDE_SET_CUR_TAG
+mdefine_line|#define IDE_SET_CUR_TAG(drive, tag)&t;((drive)-&gt;tcq-&gt;active_tag = (tag))
+DECL|macro|IDE_CUR_AR
+mdefine_line|#define IDE_CUR_AR(drive)&t;&bslash;&n;&t;((drive)-&gt;using_tcq ? IDE_CUR_TAG((drive)) : HWGROUP((drive))-&gt;rq-&gt;special)
 r_struct
 id|ide_settings_s
 suffix:semicolon
@@ -442,6 +510,12 @@ id|request_queue_t
 id|queue
 suffix:semicolon
 multiline_comment|/* per device request queue */
+DECL|member|free_req
+r_struct
+id|list_head
+id|free_req
+suffix:semicolon
+multiline_comment|/* free ata requests */
 DECL|member|next
 r_struct
 id|ide_drive_s
@@ -489,6 +563,11 @@ id|byte
 id|using_dma
 suffix:semicolon
 multiline_comment|/* disk is using dma for read/write */
+DECL|member|using_tcq
+id|byte
+id|using_tcq
+suffix:semicolon
+multiline_comment|/* disk is using queued dma operations*/
 DECL|member|retry_pio
 id|byte
 id|retry_pio
@@ -765,7 +844,7 @@ DECL|member|name
 r_char
 id|name
 (braket
-l_int|4
+l_int|6
 )braket
 suffix:semicolon
 multiline_comment|/* drive name, such as &quot;hda&quot; */
@@ -881,6 +960,16 @@ id|device
 id|device
 suffix:semicolon
 multiline_comment|/* global device tree handle */
+DECL|member|queue_depth
+r_int
+r_int
+id|queue_depth
+suffix:semicolon
+DECL|member|tcq
+id|ide_tag_info_t
+op_star
+id|tcq
+suffix:semicolon
 DECL|typedef|ide_drive_t
 )brace
 id|ide_drive_t
@@ -933,6 +1022,22 @@ DECL|enumerator|ide_dma_timeout
 id|ide_dma_lostirq
 comma
 id|ide_dma_timeout
+comma
+DECL|enumerator|ide_dma_read_queued
+DECL|enumerator|ide_dma_write_queued
+id|ide_dma_read_queued
+comma
+id|ide_dma_write_queued
+comma
+DECL|enumerator|ide_dma_queued_start
+DECL|enumerator|ide_dma_queued_on
+id|ide_dma_queued_start
+comma
+id|ide_dma_queued_on
+comma
+DECL|enumerator|ide_dma_queued_off
+id|ide_dma_queued_off
+comma
 DECL|typedef|ide_dma_action_t
 )brace
 id|ide_dma_action_t
@@ -1225,35 +1330,6 @@ op_star
 id|dmaproc
 suffix:semicolon
 multiline_comment|/* dma read/write/abort routine */
-DECL|member|dmatable_cpu
-r_int
-r_int
-op_star
-id|dmatable_cpu
-suffix:semicolon
-multiline_comment|/* dma physical region descriptor table (cpu view) */
-DECL|member|dmatable_dma
-id|dma_addr_t
-id|dmatable_dma
-suffix:semicolon
-multiline_comment|/* dma physical region descriptor table (dma view) */
-DECL|member|sg_table
-r_struct
-id|scatterlist
-op_star
-id|sg_table
-suffix:semicolon
-multiline_comment|/* Scatter-gather list used to build the above */
-DECL|member|sg_nents
-r_int
-id|sg_nents
-suffix:semicolon
-multiline_comment|/* Current number of entries in it */
-DECL|member|sg_dma_direction
-r_int
-id|sg_dma_direction
-suffix:semicolon
-multiline_comment|/* dma transfer direction */
 DECL|member|dma_base
 r_int
 r_int
@@ -1562,7 +1638,6 @@ DECL|typedef|ide_hwgroup_t
 )brace
 id|ide_hwgroup_t
 suffix:semicolon
-multiline_comment|/* structure attached to the request for IDE_TASK_CMDS */
 multiline_comment|/*&n; * configurable drive settings&n; */
 DECL|macro|TYPE_INT
 mdefine_line|#define TYPE_INT&t;0
@@ -1858,7 +1933,7 @@ DECL|macro|PROC_IDE_READ_RETURN
 mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) &bslash;&n;{&t;&t;&t;&t;&t;&bslash;&n;&t;len -= off;&t;&t;&t;&bslash;&n;&t;if (len &lt; count) {&t;&t;&bslash;&n;&t;&t;*eof = 1;&t;&t;&bslash;&n;&t;&t;if (len &lt;= 0)&t;&t;&bslash;&n;&t;&t;&t;return 0;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&bslash;&n;&t;&t;len = count;&t;&t;&bslash;&n;&t;*start = page + off;&t;&t;&bslash;&n;&t;return len;&t;&t;&t;&bslash;&n;}
 macro_line|#else
 DECL|macro|PROC_IDE_READ_RETURN
-mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
+macro_line|# define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
 macro_line|#endif
 multiline_comment|/*&n; * This structure describes the operations possible on a particular device type&n; * (CD-ROM, tape, DISK and so on).&n; *&n; * This is the main hook for device type support submodules.&n; */
 DECL|struct|ata_operations
@@ -2148,6 +2223,22 @@ r_int
 id|uptodate
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ide_end_queued_request
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_int
+comma
+r_struct
+id|request
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is used on exit from the driver, to designate the next irq handler&n; * and also to start the safety timer.&n; */
 r_void
 id|ide_set_handler
@@ -2206,6 +2297,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Issue a simple drive command&n; * The drive must be selected beforehand.&n; */
 r_void
 id|ide_cmd
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2225,6 +2317,7 @@ suffix:semicolon
 multiline_comment|/*&n; * ide_fixstring() cleans up and (optionally) byte-swaps a text string,&n; * removing leading/trailing blanks and compressing internal blanks.&n; * It is primarily used to tidy up the model name/number fields as&n; * returned by the WIN_[P]IDENTIFY commands.&n; */
 r_void
 id|ide_fixstring
+c_func
 (paren
 id|byte
 op_star
@@ -2242,6 +2335,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This routine busy-waits for the drive status to be not &quot;busy&quot;.&n; * It then checks the status for all of the &quot;good&quot; bits and none&n; * of the &quot;bad&quot; bits, and if all is okay it returns 0.  All other&n; * cases return 1 after doing &quot;*startstop = ide_error()&quot;, and the&n; * caller should return the updated value of &quot;startstop&quot; in this case.&n; * &quot;startstop&quot; is unchanged when the function returns 0;&n; */
 r_int
 id|ide_wait_stat
+c_func
 (paren
 id|ide_startstop_t
 op_star
@@ -2264,6 +2358,7 @@ id|timeout
 suffix:semicolon
 r_int
 id|ide_wait_noerr
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2283,6 +2378,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This routine is called from the partition-table code in genhd.c&n; * to &quot;convert&quot; a drive to a logical geometry with fewer than 1024 cyls.&n; */
 r_int
 id|ide_xlate_1024
+c_func
 (paren
 id|kdev_t
 comma
@@ -2299,6 +2395,7 @@ multiline_comment|/*&n; * Convert kdev_t structure into ide_drive_t * one.&n; */
 id|ide_drive_t
 op_star
 id|get_info_ptr
+c_func
 (paren
 id|kdev_t
 id|i_rdev
@@ -2307,6 +2404,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Re-Start an operation for an IDE interface.&n; * The caller should return immediately after invoking this.&n; */
 id|ide_startstop_t
 id|restart_request
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -2316,6 +2414,18 @@ multiline_comment|/*&n; * This function is intended to be used prior to invoking
 r_extern
 r_void
 id|ide_init_drive_cmd
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|rq
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|init_taskfile_request
+c_func
 (paren
 r_struct
 id|request
@@ -2410,8 +2520,91 @@ id|ide_handler_t
 op_star
 id|handler
 suffix:semicolon
+DECL|member|ar
+r_struct
+id|ata_request
+op_star
+id|ar
+suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Merge this with the above struct soon.&n; */
+DECL|struct|ata_request
+r_struct
+id|ata_request
+(brace
+DECL|member|ar_rq
+r_struct
+id|request
+op_star
+id|ar_rq
+suffix:semicolon
+multiline_comment|/* real request */
+DECL|member|ar_drive
+r_struct
+id|ide_drive_s
+op_star
+id|ar_drive
+suffix:semicolon
+multiline_comment|/* associated drive */
+DECL|member|ar_flags
+r_int
+r_int
+id|ar_flags
+suffix:semicolon
+multiline_comment|/* ATA_AR_* flags */
+DECL|member|ar_tag
+r_int
+id|ar_tag
+suffix:semicolon
+multiline_comment|/* tag number, if any */
+DECL|member|ar_queue
+r_struct
+id|list_head
+id|ar_queue
+suffix:semicolon
+multiline_comment|/* pending list */
+DECL|member|ar_task
+r_struct
+id|ata_taskfile
+id|ar_task
+suffix:semicolon
+multiline_comment|/* associated taskfile */
+DECL|member|ar_time
+r_int
+r_int
+id|ar_time
+suffix:semicolon
+multiline_comment|/* DMA stuff, PCI layer */
+DECL|member|ar_sg_table
+r_struct
+id|scatterlist
+op_star
+id|ar_sg_table
+suffix:semicolon
+DECL|member|ar_sg_nents
+r_int
+id|ar_sg_nents
+suffix:semicolon
+DECL|member|ar_sg_ddir
+r_int
+id|ar_sg_ddir
+suffix:semicolon
+multiline_comment|/* CPU related DMA stuff  */
+DECL|member|ar_dmatable_cpu
+r_int
+r_int
+op_star
+id|ar_dmatable_cpu
+suffix:semicolon
+DECL|member|ar_dmatable
+id|dma_addr_t
+id|ar_dmatable
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|AR_TASK_CMD
+mdefine_line|#define AR_TASK_CMD(ar)&t;((ar)-&gt;ar_task.taskfile.command)
 r_void
 id|ata_input_data
 (paren
@@ -2958,16 +3151,18 @@ id|drive
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 DECL|macro|ON_BOARD
-mdefine_line|#define ON_BOARD&t;&t;1
+macro_line|# define ON_BOARD&t;&t;1
 DECL|macro|NEVER_BOARD
-mdefine_line|#define NEVER_BOARD&t;&t;0
-macro_line|#ifdef CONFIG_BLK_DEV_OFFBOARD
+macro_line|# define NEVER_BOARD&t;&t;0
+macro_line|# ifdef CONFIG_BLK_DEV_OFFBOARD
 DECL|macro|OFF_BOARD
-macro_line|# define OFF_BOARD&t;&t;ON_BOARD
-macro_line|#else
+macro_line|#  define OFF_BOARD&t;&t;ON_BOARD
+macro_line|# else
 DECL|macro|OFF_BOARD
-macro_line|# define OFF_BOARD&t;&t;NEVER_BOARD
-macro_line|#endif
+macro_line|#  define OFF_BOARD&t;&t;NEVER_BOARD
+macro_line|# endif
+multiline_comment|/* FIXME: This should go away possible. */
+r_extern
 r_void
 id|__init
 id|ide_scan_pcibus
@@ -2979,35 +3174,63 @@ id|scan_direction
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
+r_extern
 r_int
 id|ide_build_dmatable
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 comma
+r_struct
+id|request
+op_star
+id|rq
+comma
 id|ide_dma_action_t
 id|func
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_destroy_dmatable
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ide_start_dma
+c_func
+(paren
+r_struct
+id|ata_channel
+op_star
+comma
+id|ide_drive_t
+op_star
+comma
+id|ide_dma_action_t
+)paren
+suffix:semicolon
+r_extern
 id|ide_startstop_t
 id|ide_dma_intr
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|check_drive_lists
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -3017,8 +3240,10 @@ r_int
 id|good_bad
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_dmaproc
+c_func
 (paren
 id|ide_dma_action_t
 id|func
@@ -3084,5 +3309,325 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* _IDE_H */
+multiline_comment|/*&n; * Tagged Command Queueing:&n; */
+multiline_comment|/*&n; * ata_request flag bits&n; */
+DECL|macro|ATA_AR_QUEUED
+mdefine_line|#define ATA_AR_QUEUED&t;1
+DECL|macro|ATA_AR_SETUP
+mdefine_line|#define ATA_AR_SETUP&t;2
+DECL|macro|ATA_AR_RETURN
+mdefine_line|#define ATA_AR_RETURN&t;4
+DECL|macro|list_ata_entry
+mdefine_line|#define list_ata_entry(entry) list_entry((entry), struct ata_request, ar_queue)
+DECL|function|ata_ar_init
+r_static
+r_inline
+r_void
+id|ata_ar_init
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|ata_request
+op_star
+id|ar
+)paren
+(brace
+id|ar-&gt;ar_rq
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ar-&gt;ar_drive
+op_assign
+id|drive
+suffix:semicolon
+id|ar-&gt;ar_flags
+op_assign
+l_int|0
+suffix:semicolon
+id|ar-&gt;ar_tag
+op_assign
+l_int|0
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|ar-&gt;ar_task
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|ar-&gt;ar_task
+)paren
+)paren
+suffix:semicolon
+id|ar-&gt;ar_sg_nents
+op_assign
+l_int|0
+suffix:semicolon
+id|ar-&gt;ar_sg_ddir
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Return a free command, automatically add it to busy list.&n; */
+DECL|function|ata_ar_get
+r_static
+r_inline
+r_struct
+id|ata_request
+op_star
+id|ata_ar_get
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_struct
+id|ata_request
+op_star
+id|ar
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;tcq
+op_logical_and
+id|drive-&gt;tcq-&gt;queued
+op_ge
+id|drive-&gt;queue_depth
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|drive-&gt;free_req
+)paren
+)paren
+(brace
+id|ar
+op_assign
+id|list_ata_entry
+c_func
+(paren
+id|drive-&gt;free_req.next
+)paren
+suffix:semicolon
+id|list_del
+c_func
+(paren
+op_amp
+id|ar-&gt;ar_queue
+)paren
+suffix:semicolon
+id|ata_ar_init
+c_func
+(paren
+id|drive
+comma
+id|ar
+)paren
+suffix:semicolon
+)brace
+r_return
+id|ar
+suffix:semicolon
+)brace
+DECL|function|ata_ar_put
+r_static
+r_inline
+r_void
+id|ata_ar_put
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+comma
+r_struct
+id|ata_request
+op_star
+id|ar
+)paren
+(brace
+id|list_add
+c_func
+(paren
+op_amp
+id|ar-&gt;ar_queue
+comma
+op_amp
+id|drive-&gt;free_req
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ar-&gt;ar_flags
+op_amp
+id|ATA_AR_QUEUED
+)paren
+(brace
+multiline_comment|/* clear the tag */
+id|drive-&gt;tcq-&gt;ar
+(braket
+id|ar-&gt;ar_tag
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+id|__clear_bit
+c_func
+(paren
+id|ar-&gt;ar_tag
+comma
+op_amp
+id|drive-&gt;tcq-&gt;tag_mask
+)paren
+suffix:semicolon
+id|drive-&gt;tcq-&gt;queued
+op_decrement
+suffix:semicolon
+)brace
+id|ar-&gt;ar_rq
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|ide_get_tag
+r_extern
+r_inline
+r_int
+id|ide_get_tag
+c_func
+(paren
+id|ide_drive_t
+op_star
+id|drive
+)paren
+(brace
+r_int
+id|tag
+op_assign
+id|ffz
+c_func
+(paren
+id|drive-&gt;tcq-&gt;tag_mask
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|drive-&gt;tcq-&gt;tag_mask
+op_eq
+l_int|0xffffffff
+)paren
+suffix:semicolon
+id|__set_bit
+c_func
+(paren
+id|tag
+comma
+op_amp
+id|drive-&gt;tcq-&gt;tag_mask
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tag
+op_plus
+l_int|1
+OG
+id|drive-&gt;tcq-&gt;max_depth
+)paren
+id|drive-&gt;tcq-&gt;max_depth
+op_assign
+id|tag
+op_plus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tag
+op_plus
+l_int|1
+OG
+id|drive-&gt;tcq-&gt;max_last_depth
+)paren
+id|drive-&gt;tcq-&gt;max_last_depth
+op_assign
+id|tag
+op_plus
+l_int|1
+suffix:semicolon
+r_return
+id|tag
+suffix:semicolon
+)brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
+DECL|macro|ide_pending_commands
+macro_line|# define ide_pending_commands(drive)&t;((drive)-&gt;using_tcq &amp;&amp; (drive)-&gt;tcq-&gt;queued)
+macro_line|#else
+DECL|macro|ide_pending_commands
+macro_line|# define ide_pending_commands(drive)&t;0
+macro_line|#endif
+r_int
+id|ide_build_commandlist
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_void
+id|ide_teardown_commandlist
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_int
+id|ide_tcq_dmaproc
+c_func
+(paren
+id|ide_dma_action_t
+comma
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|ide_start_tag
+c_func
+(paren
+id|ide_dma_action_t
+comma
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|ata_request
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

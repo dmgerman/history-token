@@ -23,16 +23,6 @@ macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#endif
 macro_line|#include &quot;ata-timing.h&quot;
 r_extern
-r_char
-op_star
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|ide_dma_action_t
-id|dmafunc
-)paren
-suffix:semicolon
-r_extern
 id|spinlock_t
 id|ide_lock
 suffix:semicolon
@@ -6774,13 +6764,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ide_pmac_dmaproc: chipset supported %s func only: %d&bslash;n&quot;
-comma
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|func
-)paren
+l_string|&quot;ide_pmac_dmaproc: chipset supported func only: %d&bslash;n&quot;
 comma
 id|func
 )paren
@@ -6794,13 +6778,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;ide_pmac_dmaproc: unsupported %s func: %d&bslash;n&quot;
-comma
-id|ide_dmafunc_verbose
-c_func
-(paren
-id|func
-)paren
+l_string|&quot;ide_pmac_dmaproc: unsupported func: %d&bslash;n&quot;
 comma
 id|func
 )paren
