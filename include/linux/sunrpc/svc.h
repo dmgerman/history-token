@@ -273,6 +273,11 @@ op_star
 id|rq_resp
 suffix:semicolon
 multiline_comment|/* xdr&squot;d results */
+DECL|member|rq_reserved
+r_int
+id|rq_reserved
+suffix:semicolon
+multiline_comment|/* space on socket outq&n;&t;&t;&t;&t;&t;&t; * reserved for this request&n;&t;&t;&t;&t;&t;&t; */
 multiline_comment|/* Catering to nfsd */
 DECL|member|rq_client
 r_struct
@@ -456,6 +461,12 @@ r_int
 id|pc_cachetype
 suffix:semicolon
 multiline_comment|/* cache info (NFS) */
+DECL|member|pc_xdrressize
+r_int
+r_int
+id|pc_xdrressize
+suffix:semicolon
+multiline_comment|/* maximum size of XDR reply */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * This is the RPC server thread function prototype&n; */
@@ -553,6 +564,19 @@ c_func
 r_struct
 id|svc_serv
 op_star
+)paren
+suffix:semicolon
+r_void
+id|svc_reserve
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+r_int
+id|space
 )paren
 suffix:semicolon
 macro_line|#endif /* SUNRPC_SVC_H */

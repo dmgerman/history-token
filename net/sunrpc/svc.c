@@ -207,8 +207,16 @@ id|serv-&gt;sv_nrthreads
 op_ne
 l_int|0
 )paren
+(brace
+id|svc_sock_update_bufs
+c_func
+(paren
+id|serv
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 )brace
 r_else
 id|printk
@@ -565,6 +573,12 @@ l_int|0
 )paren
 r_goto
 id|out_thread
+suffix:semicolon
+id|svc_sock_update_bufs
+c_func
+(paren
+id|serv
+)paren
 suffix:semicolon
 id|error
 op_assign
@@ -1189,6 +1203,22 @@ comma
 l_int|0
 comma
 id|procp-&gt;pc_ressize
+)paren
+suffix:semicolon
+multiline_comment|/* un-reserve some of the out-queue now that we have a &n;&t; * better idea of reply size&n;&t; */
+r_if
+c_cond
+(paren
+id|procp-&gt;pc_xdrressize
+)paren
+id|svc_reserve
+c_func
+(paren
+id|rqstp
+comma
+id|procp-&gt;pc_xdrressize
+op_lshift
+l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Call the function that processes the request. */

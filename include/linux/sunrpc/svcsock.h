@@ -66,6 +66,11 @@ DECL|macro|SK_QUED
 mdefine_line|#define&t;SK_QUED&t;&t;5&t;&t;&t;/* on serv-&gt;sk_sockets */
 DECL|macro|SK_DEAD
 mdefine_line|#define&t;SK_DEAD&t;&t;6&t;&t;&t;/* socket closed */
+DECL|member|sk_reserved
+r_int
+id|sk_reserved
+suffix:semicolon
+multiline_comment|/* space on outq that is reserved */
 DECL|member|sk_recvfrom
 r_int
 (paren
@@ -118,6 +123,18 @@ op_star
 comma
 r_int
 id|bytes
+)paren
+suffix:semicolon
+DECL|member|sk_owspace
+r_void
+(paren
+op_star
+id|sk_owspace
+)paren
+(paren
+r_struct
+id|sock
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* private TCP part */
@@ -193,6 +210,16 @@ c_func
 r_struct
 id|svc_rqst
 op_star
+)paren
+suffix:semicolon
+r_void
+id|svc_sock_update_bufs
+c_func
+(paren
+r_struct
+id|svc_serv
+op_star
+id|serv
 )paren
 suffix:semicolon
 macro_line|#endif /* SUNRPC_SVCSOCK_H */
