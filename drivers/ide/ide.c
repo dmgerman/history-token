@@ -2097,7 +2097,8 @@ c_func
 l_string|&quot;, LBAsect=%llu, high=%d, low=%d&quot;
 comma
 (paren
-id|u64
+r_int
+r_int
 )paren
 id|sectors
 comma
