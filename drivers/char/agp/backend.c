@@ -36,6 +36,13 @@ op_assign
 op_amp
 id|agp_bridge_dummy
 suffix:semicolon
+DECL|variable|agp_bridge
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|agp_bridge
+)paren
+suffix:semicolon
 DECL|function|agp_backend_acquire
 r_int
 id|agp_backend_acquire
