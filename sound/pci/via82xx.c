@@ -355,6 +355,8 @@ DECL|macro|VIA_REV_8233A
 mdefine_line|#define VIA_REV_8233A&t;&t;0x40&t;/* 1 rec, 1 multi-pb, spdf */
 DECL|macro|VIA_REV_8235
 mdefine_line|#define VIA_REV_8235&t;&t;0x50&t;/* 2 rec, 4 pb, 1 multi-pb, spdif */
+DECL|macro|VIA_REV_8237
+mdefine_line|#define VIA_REV_8237&t;&t;0x60
 multiline_comment|/*&n; *  Direct registers&n; */
 DECL|macro|VIAREG
 mdefine_line|#define VIAREG(via, x) ((via)-&gt;port + VIA_REG_##x)
@@ -9654,6 +9656,14 @@ comma
 id|TYPE_VIA8233
 )brace
 comma
+(brace
+id|VIA_REV_8237
+comma
+l_string|&quot;VIA 8237&quot;
+comma
+id|TYPE_VIA8233
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * auto detection of DXS channel supports.&n; */
@@ -10628,6 +10638,23 @@ comma
 l_string|&quot;VIA8233A&quot;
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|revision
+op_ge
+id|VIA_REV_8237
+)paren
+id|strcpy
+c_func
+(paren
+id|card-&gt;driver
+comma
+l_string|&quot;VIA8237&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* no slog assignment */
 r_else
 id|strcpy
 c_func
