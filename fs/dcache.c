@@ -1934,7 +1934,7 @@ id|this-&gt;d_lru
 id|dentry_stat.nr_unused
 op_decrement
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp

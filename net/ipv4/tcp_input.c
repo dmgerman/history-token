@@ -888,6 +888,35 @@ op_assign
 id|tcp_time_stamp
 suffix:semicolon
 )brace
+DECL|function|init_bictcp
+r_static
+r_void
+id|init_bictcp
+c_func
+(paren
+r_struct
+id|tcp_opt
+op_star
+id|tp
+)paren
+(brace
+id|tp-&gt;bictcp.cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|tp-&gt;bictcp.last_max_cwnd
+op_assign
+l_int|0
+suffix:semicolon
+id|tp-&gt;bictcp.last_cwnd
+op_assign
+l_int|0
+suffix:semicolon
+id|tp-&gt;bictcp.last_stamp
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* 5. Recalculate window clamp after socket hit its memory bounds. */
 DECL|function|tcp_clamp_window
 r_static
@@ -3042,7 +3071,7 @@ id|ts
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPTSReorder
+id|LINUX_MIB_TCPTSREORDER
 )paren
 suffix:semicolon
 r_else
@@ -3058,7 +3087,7 @@ id|tp
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPRenoReorder
+id|LINUX_MIB_TCPRENOREORDER
 )paren
 suffix:semicolon
 r_else
@@ -3074,14 +3103,14 @@ id|tp
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPFACKReorder
+id|LINUX_MIB_TCPFACKREORDER
 )paren
 suffix:semicolon
 r_else
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPSACKReorder
+id|LINUX_MIB_TCPSACKREORDER
 )paren
 suffix:semicolon
 macro_line|#if FASTRETRANS_DEBUG &gt; 1
@@ -3347,7 +3376,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPDSACKRecv
+id|LINUX_MIB_TCPDSACKRECV
 )paren
 suffix:semicolon
 )brace
@@ -3407,7 +3436,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPDSACKOfoRecv
+id|LINUX_MIB_TCPDSACKOFORECV
 )paren
 suffix:semicolon
 )brace
@@ -4084,7 +4113,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPLostRetransmit
+id|LINUX_MIB_TCPLOSTRETRANSMIT
 )paren
 suffix:semicolon
 )brace
@@ -4506,6 +4535,12 @@ c_func
 id|tp
 )paren
 suffix:semicolon
+id|init_bictcp
+c_func
+(paren
+id|tp
+)paren
+suffix:semicolon
 )brace
 DECL|function|tcp_clear_retrans
 r_void
@@ -4842,7 +4877,7 @@ id|TCPCB_SACKED_ACKED
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPSACKReneging
+id|LINUX_MIB_TCPSACKRENEGING
 )paren
 suffix:semicolon
 id|tcp_enter_loss
@@ -5937,14 +5972,14 @@ id|TCP_CA_Loss
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPLossUndo
+id|LINUX_MIB_TCPLOSSUNDO
 )paren
 suffix:semicolon
 r_else
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPFullUndo
+id|LINUX_MIB_TCPFULLUNDO
 )paren
 suffix:semicolon
 id|tp-&gt;undo_marker
@@ -6041,7 +6076,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPDSACKUndo
+id|LINUX_MIB_TCPDSACKUNDO
 )paren
 suffix:semicolon
 )brace
@@ -6140,7 +6175,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPPartialUndo
+id|LINUX_MIB_TCPPARTIALUNDO
 )paren
 suffix:semicolon
 multiline_comment|/* So... Do not make Hoe&squot;s retransmit yet.&n;&t;&t; * If the first packet was delayed, the rest&n;&t;&t; * ones are most probably delayed as well.&n;&t;&t; */
@@ -6235,7 +6270,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPLossUndo
+id|LINUX_MIB_TCPLOSSUNDO
 )paren
 suffix:semicolon
 id|tp-&gt;retransmits
@@ -6570,7 +6605,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPLoss
+id|LINUX_MIB_TCPLOSS
 )paren
 suffix:semicolon
 )brace
@@ -6989,14 +7024,14 @@ id|tp
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPRenoRecovery
+id|LINUX_MIB_TCPRENORECOVERY
 )paren
 suffix:semicolon
 r_else
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPSackRecovery
+id|LINUX_MIB_TCPSACKRECOVERY
 )paren
 suffix:semicolon
 id|tp-&gt;high_seq
@@ -7291,14 +7326,32 @@ c_cond
 id|tp-&gt;bictcp.last_cwnd
 op_eq
 id|tp-&gt;snd_cwnd
+op_logical_and
+(paren
+id|s32
+)paren
+(paren
+id|tcp_time_stamp
+op_minus
+id|tp-&gt;bictcp.last_stamp
+)paren
+op_le
+(paren
+id|HZ
+op_rshift
+l_int|5
+)paren
 )paren
 r_return
 id|tp-&gt;bictcp.cnt
 suffix:semicolon
-multiline_comment|/*  same cwnd, no update */
 id|tp-&gt;bictcp.last_cwnd
 op_assign
 id|tp-&gt;snd_cwnd
+suffix:semicolon
+id|tp-&gt;bictcp.last_stamp
+op_assign
+id|tcp_time_stamp
 suffix:semicolon
 multiline_comment|/* start off normal */
 r_if
@@ -9644,7 +9697,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPHPAcks
+id|LINUX_MIB_TCPHPACKS
 )paren
 suffix:semicolon
 )brace
@@ -9671,7 +9724,7 @@ r_else
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPPureAcks
+id|LINUX_MIB_TCPPUREACKS
 )paren
 suffix:semicolon
 id|flag
@@ -11298,14 +11351,14 @@ id|tp-&gt;rcv_nxt
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPDSACKOldSent
+id|LINUX_MIB_TCPDSACKOLDSENT
 )paren
 suffix:semicolon
 r_else
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPDSACKOfoSent
+id|LINUX_MIB_TCPDSACKOFOSENT
 )paren
 suffix:semicolon
 id|tp-&gt;dsack
@@ -11458,7 +11511,7 @@ id|tp-&gt;rcv_nxt
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|DelayedACKLost
+id|LINUX_MIB_DELAYEDACKLOST
 )paren
 suffix:semicolon
 id|tcp_enter_quickack_mode
@@ -12819,7 +12872,7 @@ multiline_comment|/* A retransmit, 2nd most common case.  Force an immediate ack
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|DelayedACKLost
+id|LINUX_MIB_DELAYEDACKLOST
 )paren
 suffix:semicolon
 id|tcp_dsack_set
@@ -13623,7 +13676,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPRcvCollapsed
+id|LINUX_MIB_TCPRCVCOLLAPSED
 )paren
 suffix:semicolon
 id|skb
@@ -14069,7 +14122,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPRcvCollapsed
+id|LINUX_MIB_TCPRCVCOLLAPSED
 )paren
 suffix:semicolon
 id|skb
@@ -14377,7 +14430,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|PruneCalled
+id|LINUX_MIB_PRUNECALLED
 )paren
 suffix:semicolon
 r_if
@@ -14481,7 +14534,7 @@ id|tp-&gt;out_of_order_queue
 id|NET_ADD_STATS_BH
 c_func
 (paren
-id|OfoPruned
+id|LINUX_MIB_OFOPRUNED
 comma
 id|skb_queue_len
 c_func
@@ -14536,7 +14589,7 @@ multiline_comment|/* If we are really being abused, tell the caller to silently&
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|RcvPruned
+id|LINUX_MIB_RCVPRUNED
 )paren
 suffix:semicolon
 multiline_comment|/* Massive buffer overcommit. */
@@ -15884,7 +15937,7 @@ multiline_comment|/* Header too small */
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInErrs
+id|TCP_MIB_INERRS
 )paren
 suffix:semicolon
 r_goto
@@ -15999,7 +16052,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPHPHitsToUser
+id|LINUX_MIB_TCPHPHITSTOUSER
 )paren
 suffix:semicolon
 id|eaten
@@ -16079,7 +16132,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPHPHits
+id|LINUX_MIB_TCPHPHITS
 )paren
 suffix:semicolon
 multiline_comment|/* Bulk data transfer: receiver */
@@ -16306,7 +16359,7 @@ id|th-&gt;rst
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|PAWSEstabRejected
+id|LINUX_MIB_PAWSESTABREJECTED
 )paren
 suffix:semicolon
 id|tcp_send_dupack
@@ -16424,13 +16477,13 @@ id|tp-&gt;rcv_nxt
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInErrs
+id|TCP_MIB_INERRS
 )paren
 suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPAbortOnSyn
+id|LINUX_MIB_TCPABORTONSYN
 )paren
 suffix:semicolon
 id|tcp_reset
@@ -16510,7 +16563,7 @@ suffix:colon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInErrs
+id|TCP_MIB_INERRS
 )paren
 suffix:semicolon
 id|discard
@@ -16621,7 +16674,7 @@ id|tcp_time_stamp
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|PAWSActiveRejected
+id|LINUX_MIB_PAWSACTIVEREJECTED
 )paren
 suffix:semicolon
 r_goto
@@ -17359,6 +17412,12 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+id|init_bictcp
+c_func
+(paren
+id|tp
+)paren
+suffix:semicolon
 multiline_comment|/* Now we have several options: In theory there is &n;&t;&t;&t; * nothing else in the frame. KA9Q has an option to &n;&t;&t;&t; * send data with the syn, BSD accepts data with the&n;&t;&t;&t; * syn up to the [to be] advertised window and &n;&t;&t;&t; * Solaris 2.1 gives you a protocol error. For now &n;&t;&t;&t; * we just ignore it, that fits the spec precisely &n;&t;&t;&t; * and avoids incompatibilities. It would be nice in&n;&t;&t;&t; * future to drop through and process the data.&n;&t;&t;&t; *&n;&t;&t;&t; * Now that TTCP is starting to be used we ought to &n;&t;&t;&t; * queue this data.&n;&t;&t;&t; * But, this leaves one open to an easy denial of&n;&t;&t; &t; * service attack, and SYN cookies can&squot;t defend&n;&t;&t;&t; * against this problem. So, we drop the data&n;&t;&t;&t; * in the interest of security over speed.&n;&t;&t;&t; */
 r_goto
 id|discard
@@ -17374,6 +17433,12 @@ id|init_westwood
 c_func
 (paren
 id|sk
+)paren
+suffix:semicolon
+id|init_bictcp
+c_func
+(paren
+id|tp
 )paren
 suffix:semicolon
 id|queued
@@ -17461,7 +17526,7 @@ id|th-&gt;rst
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|PAWSEstabRejected
+id|LINUX_MIB_PAWSESTABREJECTED
 )paren
 suffix:semicolon
 id|tcp_send_dupack
@@ -17581,7 +17646,7 @@ id|tp-&gt;rcv_nxt
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPAbortOnSyn
+id|LINUX_MIB_TCPABORTONSYN
 )paren
 suffix:semicolon
 id|tcp_reset
@@ -17895,7 +17960,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPAbortOnData
+id|LINUX_MIB_TCPABORTONDATA
 )paren
 suffix:semicolon
 r_return
@@ -18135,7 +18200,7 @@ id|tp-&gt;rcv_nxt
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TCPAbortOnData
+id|LINUX_MIB_TCPABORTONDATA
 )paren
 suffix:semicolon
 id|tcp_reset

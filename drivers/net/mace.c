@@ -2234,7 +2234,7 @@ id|mp-&gt;rx_bufs
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -2488,7 +2488,7 @@ id|mp-&gt;rx_bufs
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|st_le16
 c_func
@@ -5241,7 +5241,7 @@ id|mp-&gt;rx_bufs
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 op_increment
 id|mp-&gt;stats.rx_packets

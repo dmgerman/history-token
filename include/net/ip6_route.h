@@ -517,7 +517,7 @@ r_extern
 id|rwlock_t
 id|rt6_lock
 suffix:semicolon
-multiline_comment|/*&n; *&t;Store a destination cache entry in a socket&n; *&t;For UDP/RAW sockets this is done on udp_connect.&n; */
+multiline_comment|/*&n; *&t;Store a destination cache entry in a socket&n; */
 DECL|function|ip6_dst_store
 r_static
 r_inline

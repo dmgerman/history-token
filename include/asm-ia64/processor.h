@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PROCESSOR_H
 DECL|macro|_ASM_IA64_PROCESSOR_H
 mdefine_line|#define _ASM_IA64_PROCESSOR_H
-multiline_comment|/*&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; *&n; * 11/24/98&t;S.Eranian&t;added ia64_set_iva()&n; * 12/03/99&t;D. Mosberger&t;implement thread_saved_pc() via kernel unwind API&n; * 06/16/00&t;A. Mallick&t;added csd/ssd/tssd for ia32 support&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; *&n; * 11/24/98&t;S.Eranian&t;added ia64_set_iva()&n; * 12/03/99&t;D. Mosberger&t;implement thread_saved_pc() via kernel unwind API&n; * 06/16/00&t;A. Mallick&t;added csd/ssd/tssd for ia32 support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
@@ -42,8 +42,6 @@ DECL|macro|IA64_THREAD_FPEMU_NOPRINT
 mdefine_line|#define IA64_THREAD_FPEMU_NOPRINT (__IA64_UL(1) &lt;&lt; 6)&t;/* don&squot;t log any fpswa faults */
 DECL|macro|IA64_THREAD_FPEMU_SIGFPE
 mdefine_line|#define IA64_THREAD_FPEMU_SIGFPE  (__IA64_UL(1) &lt;&lt; 7)&t;/* send a SIGFPE for fpswa faults */
-DECL|macro|IA64_THREAD_XSTACK
-mdefine_line|#define IA64_THREAD_XSTACK&t;(__IA64_UL(1) &lt;&lt; 8)&t;/* stack executable by default? */
 DECL|macro|IA64_THREAD_UAC_SHIFT
 mdefine_line|#define IA64_THREAD_UAC_SHIFT&t;3
 DECL|macro|IA64_THREAD_UAC_MASK

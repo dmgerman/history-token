@@ -1438,7 +1438,7 @@ id|of_node
 comma
 l_string|&quot;interrupts&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

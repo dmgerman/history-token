@@ -3097,7 +3097,7 @@ id|aac_common
 id|aac_config
 suffix:semicolon
 multiline_comment|/*&n; *&t;The following macro is used when sending and receiving FIBs. It is&n; *&t;only used for debugging.&n; */
-macro_line|#if DBG
+macro_line|#ifdef DBG
 DECL|macro|FIB_COUNTER_INCREMENT
 mdefine_line|#define&t;FIB_COUNTER_INCREMENT(counter)&t;&t;(counter)++
 macro_line|#else

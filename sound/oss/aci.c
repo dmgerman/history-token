@@ -160,7 +160,7 @@ l_string|&quot;change between ACI/WSS-mixer; use 0 and 1 - untested&quot;
 l_string|&quot; default: do nothing; for PCM1-pro only&quot;
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 DECL|function|print_bits
 r_static
 r_void
@@ -410,7 +410,7 @@ op_ge
 l_int|0
 )paren
 (brace
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
@@ -472,7 +472,7 @@ c_func
 id|STATUS_REGISTER
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren

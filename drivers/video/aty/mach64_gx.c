@@ -2958,12 +2958,9 @@ op_increment
 (brace
 id|tempA
 op_assign
-(paren
-l_float|14.31818
-op_star
-l_int|65536
-)paren
+l_int|938356
 suffix:semicolon
+multiline_comment|/* 14.31818 * 65536 */
 id|tempA
 op_mul_assign
 (paren

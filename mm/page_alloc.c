@@ -3542,41 +3542,6 @@ c_func
 id|nr_free_pages
 )paren
 suffix:semicolon
-DECL|function|nr_used_zone_pages
-r_int
-r_int
-id|nr_used_zone_pages
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|pages
-op_assign
-l_int|0
-suffix:semicolon
-r_struct
-id|zone
-op_star
-id|zone
-suffix:semicolon
-id|for_each_zone
-c_func
-(paren
-id|zone
-)paren
-id|pages
-op_add_assign
-id|zone-&gt;nr_active
-op_plus
-id|zone-&gt;nr_inactive
-suffix:semicolon
-r_return
-id|pages
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_NUMA
 DECL|function|nr_free_pages_pgdat
 r_int
@@ -5837,6 +5802,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;On node %d totalpages: %lu&bslash;n&quot;
 comma
 id|pgdat-&gt;node_id
@@ -5938,7 +5904,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|is_highmem
+id|is_highmem_idx
 c_func
 (paren
 id|zone
@@ -6324,6 +6290,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;  %s zone: %lu pages, LIFO batch:%lu&bslash;n&quot;
 comma
 id|zone_names

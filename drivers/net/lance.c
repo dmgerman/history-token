@@ -3626,7 +3626,7 @@ id|lp-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|lp-&gt;rx_ring
 (braket
@@ -3869,7 +3869,7 @@ id|lp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|lp-&gt;tx_ring
 (braket
@@ -4976,7 +4976,7 @@ id|lp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|dirty_tx

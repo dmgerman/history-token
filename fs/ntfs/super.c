@@ -4832,7 +4832,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Read %llu bytes from $UpCase (expected %u bytes).&quot;
+l_string|&quot;Read %llu bytes from $UpCase (expected %zu bytes).&quot;
 comma
 id|ino-&gt;i_size
 comma

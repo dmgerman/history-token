@@ -1154,7 +1154,7 @@ suffix:semicolon
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpReasmUsrMsgs
+id|SCTP_MIB_REASMUSRMSGS
 )paren
 suffix:semicolon
 r_return

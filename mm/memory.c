@@ -3118,7 +3118,7 @@ id|EFAULT
 suffix:semicolon
 id|pgd
 op_assign
-id|pgd_offset
+id|pgd_offset_gate
 c_func
 (paren
 id|mm

@@ -42,7 +42,7 @@ id|smc
 (brace
 id|smc-&gt;t.st_queue
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|smc-&gt;t.st_fast.tm_active
 op_assign
@@ -50,7 +50,7 @@ id|FALSE
 suffix:semicolon
 id|smc-&gt;t.st_fast.tm_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hwt_init
 c_func
@@ -245,7 +245,7 @@ id|timer
 suffix:semicolon
 id|timer-&gt;tm_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|timer-&gt;tm_delta
 op_assign
@@ -511,7 +511,7 @@ suffix:semicolon
 op_star
 id|last
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|next
 op_assign

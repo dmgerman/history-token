@@ -995,7 +995,12 @@ op_ne
 l_int|0
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 id|info
 op_assign
@@ -1019,7 +1024,12 @@ op_eq
 l_int|NULL
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 id|info-&gt;alignment
 op_assign
@@ -1440,7 +1450,12 @@ op_le
 l_int|0
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 multiline_comment|/* The region must be aligned */
 id|s
@@ -1497,7 +1512,12 @@ OL
 l_int|0
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 id|blk
 op_assign
@@ -1569,7 +1589,12 @@ op_eq
 l_int|NULL
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 multiline_comment|/* Perfect fit */
 r_if
@@ -1737,7 +1762,12 @@ op_le
 l_int|0
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 multiline_comment|/* Align to configured alignment */
 id|size
@@ -1773,7 +1803,12 @@ OL
 l_int|0
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 id|blk
 op_assign
@@ -1822,7 +1857,12 @@ op_eq
 l_int|NULL
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 multiline_comment|/* Just fits */
 r_if
@@ -1970,7 +2010,12 @@ op_le
 l_int|0
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|EINVAL
+)paren
 suffix:semicolon
 multiline_comment|/* The region must be aligned */
 id|s
@@ -2027,7 +2072,12 @@ OL
 l_int|0
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 id|blk
 op_assign
@@ -2095,7 +2145,12 @@ op_eq
 l_int|NULL
 )paren
 r_return
-l_int|NULL
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
 suffix:semicolon
 multiline_comment|/* Perfect fit */
 r_if

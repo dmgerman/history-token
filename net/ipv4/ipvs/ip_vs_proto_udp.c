@@ -746,7 +746,7 @@ c_func
 (paren
 l_int|11
 comma
-l_string|&quot;O-pkt: %s O-csum=%d (+%d)&bslash;n&quot;
+l_string|&quot;O-pkt: %s O-csum=%d (+%zd)&bslash;n&quot;
 comma
 id|pp-&gt;name
 comma

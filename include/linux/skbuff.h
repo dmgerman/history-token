@@ -394,7 +394,7 @@ DECL|member|cb
 r_char
 id|cb
 (braket
-l_int|48
+l_int|40
 )braket
 suffix:semicolon
 DECL|member|len

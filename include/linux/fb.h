@@ -20,8 +20,13 @@ DECL|macro|FBIOPUTCMAP
 mdefine_line|#define FBIOPUTCMAP&t;&t;0x4605
 DECL|macro|FBIOPAN_DISPLAY
 mdefine_line|#define FBIOPAN_DISPLAY&t;&t;0x4606
+macro_line|#ifdef __KERNEL__
+DECL|macro|FBIO_CURSOR
+mdefine_line|#define FBIO_CURSOR            _IOWR(&squot;F&squot;, 0x08, struct fb_cursor_user)
+macro_line|#else
 DECL|macro|FBIO_CURSOR
 mdefine_line|#define FBIO_CURSOR            _IOWR(&squot;F&squot;, 0x08, struct fb_cursor)
+macro_line|#endif
 multiline_comment|/* 0x4607-0x460B are defined below */
 multiline_comment|/* #define FBIOGET_MONITORSPEC&t;0x460C */
 multiline_comment|/* #define FBIOPUT_MONITORSPEC&t;0x460D */
@@ -1054,6 +1059,141 @@ id|device
 suffix:semicolon
 r_struct
 id|file
+suffix:semicolon
+DECL|struct|fb_cmap_user
+r_struct
+id|fb_cmap_user
+(brace
+DECL|member|start
+id|__u32
+id|start
+suffix:semicolon
+multiline_comment|/* First entry&t;*/
+DECL|member|len
+id|__u32
+id|len
+suffix:semicolon
+multiline_comment|/* Number of entries */
+DECL|member|red
+id|__u16
+id|__user
+op_star
+id|red
+suffix:semicolon
+multiline_comment|/* Red values&t;*/
+DECL|member|green
+id|__u16
+id|__user
+op_star
+id|green
+suffix:semicolon
+DECL|member|blue
+id|__u16
+id|__user
+op_star
+id|blue
+suffix:semicolon
+DECL|member|transp
+id|__u16
+id|__user
+op_star
+id|transp
+suffix:semicolon
+multiline_comment|/* transparency, can be NULL */
+)brace
+suffix:semicolon
+DECL|struct|fb_image_user
+r_struct
+id|fb_image_user
+(brace
+DECL|member|dx
+id|__u32
+id|dx
+suffix:semicolon
+multiline_comment|/* Where to place image */
+DECL|member|dy
+id|__u32
+id|dy
+suffix:semicolon
+DECL|member|width
+id|__u32
+id|width
+suffix:semicolon
+multiline_comment|/* Size of image */
+DECL|member|height
+id|__u32
+id|height
+suffix:semicolon
+DECL|member|fg_color
+id|__u32
+id|fg_color
+suffix:semicolon
+multiline_comment|/* Only used when a mono bitmap */
+DECL|member|bg_color
+id|__u32
+id|bg_color
+suffix:semicolon
+DECL|member|depth
+id|__u8
+id|depth
+suffix:semicolon
+multiline_comment|/* Depth of the image */
+DECL|member|data
+r_const
+r_char
+id|__user
+op_star
+id|data
+suffix:semicolon
+multiline_comment|/* Pointer to image data */
+DECL|member|cmap
+r_struct
+id|fb_cmap_user
+id|cmap
+suffix:semicolon
+multiline_comment|/* color map info */
+)brace
+suffix:semicolon
+DECL|struct|fb_cursor_user
+r_struct
+id|fb_cursor_user
+(brace
+DECL|member|set
+id|__u16
+id|set
+suffix:semicolon
+multiline_comment|/* what to set */
+DECL|member|enable
+id|__u16
+id|enable
+suffix:semicolon
+multiline_comment|/* cursor on/off */
+DECL|member|rop
+id|__u16
+id|rop
+suffix:semicolon
+multiline_comment|/* bitop operation */
+DECL|member|mask
+r_const
+r_char
+id|__user
+op_star
+id|mask
+suffix:semicolon
+multiline_comment|/* cursor mask bits */
+DECL|member|hot
+r_struct
+id|fbcurpos
+id|hot
+suffix:semicolon
+multiline_comment|/* cursor hot spot */
+DECL|member|image
+r_struct
+id|fb_image_user
+id|image
+suffix:semicolon
+multiline_comment|/* Cursor image */
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * Register/unregister for framebuffer events&n; */
 multiline_comment|/*&t;The resolution of the passed in fb_info about to change */
@@ -2395,9 +2535,22 @@ r_struct
 id|fb_cmap
 op_star
 id|to
-comma
+)paren
+suffix:semicolon
+r_extern
 r_int
-id|fsfromto
+id|fb_cmap_to_user
+c_func
+(paren
+r_struct
+id|fb_cmap
+op_star
+id|from
+comma
+r_struct
+id|fb_cmap_user
+op_star
+id|to
 )paren
 suffix:semicolon
 r_extern
@@ -2410,8 +2563,21 @@ id|fb_cmap
 op_star
 id|cmap
 comma
+r_struct
+id|fb_info
+op_star
+id|fb_info
+)paren
+suffix:semicolon
+r_extern
 r_int
-id|kspc
+id|fb_set_user_cmap
+c_func
+(paren
+r_struct
+id|fb_cmap_user
+op_star
+id|cmap
 comma
 r_struct
 id|fb_info

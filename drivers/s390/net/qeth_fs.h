@@ -3,7 +3,7 @@ macro_line|#ifndef __QETH_FS_H__
 DECL|macro|__QETH_FS_H__
 mdefine_line|#define __QETH_FS_H__
 DECL|macro|VERSION_QETH_FS_H
-mdefine_line|#define VERSION_QETH_FS_H &quot;$Revision: 1.8 $&quot;
+mdefine_line|#define VERSION_QETH_FS_H &quot;$Revision: 1.9 $&quot;
 r_extern
 r_const
 r_char
@@ -419,6 +419,12 @@ id|QETH_LINK_TYPE_GBIT_ETH
 suffix:colon
 r_return
 l_string|&quot;OSD_1000&quot;
+suffix:semicolon
+r_case
+id|QETH_LINK_TYPE_10GBIT_ETH
+suffix:colon
+r_return
+l_string|&quot;OSD_10GIG&quot;
 suffix:semicolon
 r_case
 id|QETH_LINK_TYPE_LANE_ETH100

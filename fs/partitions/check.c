@@ -1739,7 +1739,8 @@ id|bdev
 )paren
 )paren
 r_return
-id|res
+op_minus
+id|EIO
 suffix:semicolon
 r_for
 c_loop
@@ -1824,7 +1825,7 @@ id|state
 )paren
 suffix:semicolon
 r_return
-id|res
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|read_dev_sector

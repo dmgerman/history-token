@@ -2647,7 +2647,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TimeWaitRecycled
+id|LINUX_MIB_TIMEWAITRECYCLED
 )paren
 suffix:semicolon
 )brace
@@ -2668,7 +2668,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TimeWaitRecycled
+id|LINUX_MIB_TIMEWAITRECYCLED
 )paren
 suffix:semicolon
 id|tcp_tw_put
@@ -4164,7 +4164,7 @@ l_int|8
 id|ICMP_INC_STATS_BH
 c_func
 (paren
-id|IcmpInErrors
+id|ICMP_MIB_INERRORS
 )paren
 suffix:semicolon
 r_return
@@ -4200,7 +4200,7 @@ id|sk
 id|ICMP_INC_STATS_BH
 c_func
 (paren
-id|IcmpInErrors
+id|ICMP_MIB_INERRORS
 )paren
 suffix:semicolon
 r_return
@@ -4247,7 +4247,7 @@ id|sk
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|LockDroppedIcmps
+id|LINUX_MIB_LOCKDROPPEDICMPS
 )paren
 suffix:semicolon
 r_if
@@ -4298,7 +4298,7 @@ id|tp-&gt;snd_nxt
 id|NET_INC_STATS
 c_func
 (paren
-id|OutOfWindowIcmps
+id|LINUX_MIB_OUTOFWINDOWICMPS
 )paren
 suffix:semicolon
 r_goto
@@ -4490,7 +4490,7 @@ id|req-&gt;snt_isn
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|OutOfWindowIcmps
+id|LINUX_MIB_OUTOFWINDOWICMPS
 )paren
 suffix:semicolon
 r_goto
@@ -4532,7 +4532,7 @@ id|sk
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpAttemptFails
+id|TCP_MIB_ATTEMPTFAILS
 )paren
 suffix:semicolon
 id|sk-&gt;sk_err
@@ -4950,13 +4950,13 @@ suffix:semicolon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpOutSegs
+id|TCP_MIB_OUTSEGS
 )paren
 suffix:semicolon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpOutRsts
+id|TCP_MIB_OUTRSTS
 )paren
 suffix:semicolon
 )brace
@@ -5238,7 +5238,7 @@ suffix:semicolon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpOutSegs
+id|TCP_MIB_OUTSEGS
 )paren
 suffix:semicolon
 )brace
@@ -5464,7 +5464,7 @@ l_int|0
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|OutNoRoutes
+id|IPSTATS_MIB_OUTNOROUTES
 )paren
 suffix:semicolon
 r_return
@@ -5492,7 +5492,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|OutNoRoutes
+id|IPSTATS_MIB_OUTNOROUTES
 )paren
 suffix:semicolon
 r_return
@@ -6257,7 +6257,7 @@ id|TCP_PAWS_WINDOW
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|PAWSPassiveRejected
+id|LINUX_MIB_PAWSPASSIVEREJECTED
 )paren
 suffix:semicolon
 id|dst_release
@@ -6434,7 +6434,7 @@ suffix:colon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpAttemptFails
+id|TCP_MIB_ATTEMPTFAILS
 )paren
 suffix:semicolon
 r_return
@@ -6676,7 +6676,7 @@ suffix:colon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|ListenOverflows
+id|LINUX_MIB_LISTENOVERFLOWS
 )paren
 suffix:semicolon
 m_exit
@@ -6684,7 +6684,7 @@ suffix:colon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|ListenDrops
+id|LINUX_MIB_LISTENDROPS
 )paren
 suffix:semicolon
 id|dst_release
@@ -7225,7 +7225,7 @@ suffix:colon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInErrs
+id|TCP_MIB_INERRS
 )paren
 suffix:semicolon
 r_goto
@@ -7271,7 +7271,7 @@ multiline_comment|/* Count it even if it&squot;s bad */
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInSegs
+id|TCP_MIB_INSEGS
 )paren
 suffix:semicolon
 r_if
@@ -7633,7 +7633,7 @@ suffix:colon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInErrs
+id|TCP_MIB_INERRS
 )paren
 suffix:semicolon
 )brace
@@ -7722,7 +7722,7 @@ id|skb
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInErrs
+id|TCP_MIB_INERRS
 )paren
 suffix:semicolon
 id|tcp_tw_put

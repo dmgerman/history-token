@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/sound/dmasound/trans_16.c&n; *&n; *  16 bit translation routines.  Only used by Power mac at present.&n; *&n; *  See linux/drivers/sound/dmasound/dmasound_core.c for copyright and&n; *  history prior to 08/02/2001.&n; *&n; *  08/02/2001 Iain Sandoe&n; *&t;&t;split from dmasound_awacs.c&n; *  11/29/2003 Renzo Davoli (King Enzo)&n; *  &t;- input resampling (for soft rate &lt; hard rate)&n; *  &t;- software line in gain control&n; */
+multiline_comment|/*&n; *  linux/sound/oss/dmasound/trans_16.c&n; *&n; *  16 bit translation routines.  Only used by Power mac at present.&n; *&n; *  See linux/sound/oss/dmasound/dmasound_core.c for copyright and&n; *  history prior to 08/02/2001.&n; *&n; *  08/02/2001 Iain Sandoe&n; *&t;&t;split from dmasound_awacs.c&n; *  11/29/2003 Renzo Davoli (King Enzo)&n; *  &t;- input resampling (for soft rate &lt; hard rate)&n; *  &t;- software line in gain control&n; */
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;dmasound.h&quot;
@@ -23,6 +23,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -49,6 +50,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -75,6 +77,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -101,6 +104,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -127,6 +131,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -153,6 +158,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -179,6 +185,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -205,6 +212,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -231,6 +239,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -257,6 +266,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -283,6 +293,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -309,6 +320,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -343,6 +355,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -536,6 +549,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -714,6 +728,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -900,6 +915,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -982,11 +998,13 @@ id|stereo
 )paren
 (brace
 r_int
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|userPtr
@@ -1085,6 +1103,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -1144,11 +1163,13 @@ id|frameUsed
 )braket
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|userPtr
@@ -1285,6 +1306,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -1553,6 +1575,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -1800,6 +1823,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -2055,6 +2079,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -2099,12 +2124,14 @@ id|expand_data
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|userPtr
@@ -2309,6 +2336,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -2367,12 +2395,14 @@ id|expand_data
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|userPtr
@@ -2586,6 +2616,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -2703,6 +2734,7 @@ id|data
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|userPtr
@@ -2750,6 +2782,7 @@ id|data
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|userPtr
@@ -2794,6 +2827,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -2915,6 +2949,7 @@ id|data
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|userPtr
@@ -2966,6 +3001,7 @@ id|data
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|userPtr
@@ -3010,6 +3046,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -3055,11 +3092,13 @@ id|frameUsed
 )braket
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|userPtr
@@ -3210,6 +3249,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -3269,11 +3309,13 @@ id|frameUsed
 )braket
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|userPtr
@@ -3433,6 +3475,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -3603,6 +3646,7 @@ id|data
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|userPtr
@@ -3635,6 +3679,7 @@ id|data
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|userPtr
@@ -3700,6 +3745,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -3874,6 +3920,7 @@ id|data
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|userPtr
@@ -3910,6 +3957,7 @@ id|data
 comma
 (paren
 id|u_char
+id|__user
 op_star
 )paren
 id|userPtr
@@ -3975,6 +4023,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -4015,11 +4064,13 @@ id|frameUsed
 )braket
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|userPtr
@@ -4234,6 +4285,7 @@ c_func
 (paren
 r_const
 id|u_char
+id|__user
 op_star
 id|userPtr
 comma
@@ -4288,11 +4340,13 @@ id|frameUsed
 )braket
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|up
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|userPtr

@@ -1027,7 +1027,7 @@ id|proc_mkdir
 (paren
 l_string|&quot;driver/emu10k1&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1064,7 +1064,7 @@ id|proc_mkdir
 (paren
 id|s
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -1105,7 +1105,7 @@ id|s
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|emu10k1_info_proc
 comma
@@ -1157,7 +1157,7 @@ id|s
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|ac97_read_proc
 comma

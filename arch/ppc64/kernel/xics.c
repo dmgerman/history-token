@@ -691,7 +691,6 @@ id|val64
 suffix:semicolon
 )brace
 DECL|function|pSeriesLP_cppr_info
-r_static
 r_void
 id|pSeriesLP_cppr_info
 c_func
@@ -2019,7 +2018,7 @@ id|np
 comma
 l_string|&quot;ibm,interrupt-server-ranges&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2403,7 +2402,7 @@ id|np
 comma
 l_string|&quot;interrupts&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2681,7 +2680,7 @@ l_int|0
 comma
 l_string|&quot;8259 cascade&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 id|printk
@@ -2740,7 +2739,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;IPI&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|get_irq_desc
@@ -2992,22 +2991,14 @@ r_int
 r_int
 id|irq
 comma
+id|virq
+comma
 id|cpu
 op_assign
 id|smp_processor_id
 c_func
 (paren
 )paren
-suffix:semicolon
-r_int
-id|xics_status
-(braket
-l_int|2
-)braket
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -3080,40 +3071,70 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HOTPLUG: Migrating IRQs away&bslash;n&quot;
-)paren
-suffix:semicolon
 id|for_each_irq
 c_func
 (paren
-id|irq
+id|virq
 )paren
 (brace
 id|irq_desc_t
 op_star
 id|desc
+suffix:semicolon
+r_int
+id|xics_status
+(braket
+l_int|2
+)braket
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* We cant set affinity on ISA interrupts */
+r_if
+c_cond
+(paren
+id|virq
+OL
+id|irq_offset_value
+c_func
+(paren
+)paren
+)paren
+r_continue
+suffix:semicolon
+id|desc
 op_assign
 id|get_irq_desc
 c_func
 (paren
+id|virq
+)paren
+suffix:semicolon
 id|irq
+op_assign
+id|virt_irq_to_real
+c_func
+(paren
+id|irq_offset_down
+c_func
+(paren
+id|virq
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* We need to get IPIs still. */
 r_if
 c_cond
 (paren
-id|irq_offset_down
-c_func
-(paren
 id|irq
-)paren
 op_eq
 id|XICS_IPI
+op_logical_or
+id|irq
+op_eq
+id|NO_IRQ
 )paren
 r_continue
 suffix:semicolon
@@ -3177,7 +3198,7 @@ id|KERN_ERR
 l_string|&quot;migrate_irqs_away: irq=%d &quot;
 l_string|&quot;ibm,get-xive returns %d&bslash;n&quot;
 comma
-id|irq
+id|virq
 comma
 id|status
 )paren
@@ -3210,7 +3231,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;IRQ %d affinity broken off cpu %u&bslash;n&quot;
 comma
-id|irq
+id|virq
 comma
 id|cpu
 )paren
@@ -3261,7 +3282,7 @@ id|KERN_ERR
 l_string|&quot;migrate_irqs_away irq=%d &quot;
 l_string|&quot;ibm,set-xive returns %d&bslash;n&quot;
 comma
-id|irq
+id|virq
 comma
 id|status
 )paren

@@ -535,7 +535,7 @@ op_star
 id|dp_mem
 suffix:semicolon
 id|uint
-id|dp_addr
+id|dp_offset
 suffix:semicolon
 id|u8
 op_star
@@ -567,9 +567,9 @@ op_plus
 id|pinfo-&gt;tx_nrfifos
 )paren
 suffix:semicolon
-id|dp_mem
+id|dp_offset
 op_assign
-id|cpm2_dpalloc
+id|cpm_dpalloc
 c_func
 (paren
 id|dpmemsz
@@ -580,16 +580,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dp_mem
-op_eq
-l_int|NULL
+id|IS_DPERR
+c_func
+(paren
+id|dp_offset
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cpm_uart_cpm1.c: could not allocate buffer descriptors&bslash;n&quot;
+l_string|&quot;cpm_uart_cpm.c: could not allocate buffer descriptors&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -597,12 +599,12 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|dp_addr
+id|dp_mem
 op_assign
-id|cpm2_dpram_offset
+id|cpm_dpram_addr
 c_func
 (paren
-id|dp_mem
+id|dp_offset
 )paren
 suffix:semicolon
 id|memsz
@@ -660,17 +662,17 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|cpm2_dpfree
+id|cpm_dpfree
 c_func
 (paren
-id|dp_mem
+id|dp_offset
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cpm_uart_cpm1.c: could not allocate coherent memory&bslash;n&quot;
+l_string|&quot;cpm_uart_cpm.c: could not allocate coherent memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -680,7 +682,7 @@ suffix:semicolon
 )brace
 id|pinfo-&gt;dp_addr
 op_assign
-id|dp_addr
+id|dp_offset
 suffix:semicolon
 id|pinfo-&gt;mem_addr
 op_assign
@@ -762,10 +764,9 @@ comma
 id|pinfo-&gt;dma_addr
 )paren
 suffix:semicolon
-id|cpm2_dpfree
+id|cpm_dpfree
 c_func
 (paren
-op_amp
 id|pinfo-&gt;dp_addr
 )paren
 suffix:semicolon

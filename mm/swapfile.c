@@ -305,6 +305,7 @@ id|si-&gt;highest_bit
 )paren
 (brace
 r_int
+r_int
 id|nr
 suffix:semicolon
 r_for
@@ -2285,6 +2286,25 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Go through process&squot; page directory.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|down_read_trylock
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Our reference to the page stops try_to_unmap_one from&n;&t;&t; * unmapping its ptes, so swapoff can make progress.&n;&t;&t; */
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|down_read
 c_func
 (paren
@@ -2292,6 +2312,13 @@ op_amp
 id|mm-&gt;mmap_sem
 )paren
 suffix:semicolon
+id|lock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren

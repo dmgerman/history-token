@@ -8681,8 +8681,6 @@ id|con
 dot
 id|cmap
 comma
-l_int|1
-comma
 id|sisfb_setcolreg
 comma
 id|info
@@ -8714,8 +8712,6 @@ c_func
 (paren
 id|size
 )paren
-comma
-l_int|1
 comma
 id|sisfb_setcolreg
 comma

@@ -193,22 +193,6 @@ r_int
 id|direction
 )paren
 suffix:semicolon
-multiline_comment|/* map_page and map_single cannot fail */
-DECL|function|pci_dma_mapping_error
-r_static
-r_inline
-r_int
-id|pci_dma_mapping_error
-c_func
-(paren
-id|dma_addr_t
-id|dma_addr
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Map a set of buffers described by scatterlist in streaming&n; * mode for DMA.  This is the scather-gather version of the&n; * above pci_map_single interface.  Here the scatter gather list&n; * elements are each tagged with the appropriate dma address&n; * and length.  They are obtained via sg_dma_{address,length}(SG).&n; *&n; * NOTE: An implementation may be able to use a smaller number of&n; *       DMA address/length pairs than there are SG table elements.&n; *       (for example via virtual mapping capabilities)&n; *       The routine returns the number of addr/length pairs actually&n; *       used, at most nents.&n; *&n; * Device ownership issues as mentioned above for pci_map_single are&n; * the same here.&n; */
 r_extern
 r_int
@@ -377,6 +361,27 @@ op_star
 id|dev
 )paren
 (brace
+)brace
+DECL|macro|PCI_DMA_ERROR_CODE
+mdefine_line|#define PCI_DMA_ERROR_CODE      (~(dma_addr_t)0x0)
+DECL|function|pci_dma_mapping_error
+r_static
+r_inline
+r_int
+id|pci_dma_mapping_error
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+)paren
+(brace
+r_return
+(paren
+id|dma_addr
+op_eq
+id|PCI_DMA_ERROR_CODE
+)paren
+suffix:semicolon
 )brace
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* generic pci stuff */

@@ -1300,7 +1300,6 @@ id|page
 op_star
 id|page
 suffix:semicolon
-multiline_comment|/*&n;&t; * We scan the hash list read-only. Addition to and removal from&n;&t; * the hash-list needs a held write-lock.&n;&t; */
 id|spin_lock_irq
 c_func
 (paren
@@ -5013,21 +5012,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * If a nonlinear mapping then store the file page offset&n;&t;&t; * in the pte.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|pgoff
-op_ne
-id|linear_page_index
-c_func
-(paren
-id|vma
-comma
-id|addr
-)paren
-)paren
-(brace
 id|err
 op_assign
 id|install_file_pte
@@ -5052,7 +5036,6 @@ id|err
 r_return
 id|err
 suffix:semicolon
-)brace
 )brace
 id|len
 op_sub_assign

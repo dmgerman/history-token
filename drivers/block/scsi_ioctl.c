@@ -612,6 +612,21 @@ id|bio
 op_assign
 id|rq-&gt;bio
 suffix:semicolon
+multiline_comment|/*&n;&t; * bounce this after holding a reference to the original bio, it&squot;s&n;&t; * needed for proper unmapping&n;&t; */
+r_if
+c_cond
+(paren
+id|rq-&gt;bio
+)paren
+id|blk_queue_bounce
+c_func
+(paren
+id|q
+comma
+op_amp
+id|rq-&gt;bio
+)paren
+suffix:semicolon
 id|rq-&gt;timeout
 op_assign
 (paren
@@ -772,8 +787,6 @@ id|blk_rq_unmap_user
 c_func
 (paren
 id|rq
-comma
-id|hdr-&gt;dxferp
 comma
 id|bio
 comma

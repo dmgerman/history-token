@@ -3314,18 +3314,12 @@ c_func
 (paren
 id|bcs-&gt;cs
 comma
-l_string|&quot;tiger write_raw: c%d %x-%x %d/%d %d %x&quot;
+l_string|&quot;tiger write_raw: c%d %p-%p %d/%d %d %x&quot;
 comma
 id|bcs-&gt;channel
 comma
-(paren
-id|u_int
-)paren
 id|buf
 comma
-(paren
-id|u_int
-)paren
 id|p
 comma
 id|s_cnt
@@ -4808,11 +4802,8 @@ c_func
 (paren
 id|cs
 comma
-l_string|&quot;tiger: send buf %x - %x&quot;
+l_string|&quot;tiger: send buf %p - %p&quot;
 comma
-(paren
-id|u_int
-)paren
 id|cs-&gt;bcs
 (braket
 l_int|0
@@ -4820,10 +4811,6 @@ l_int|0
 dot
 id|hw.tiger.send
 comma
-(paren
-id|u_int
-)paren
-(paren
 id|cs-&gt;bcs
 (braket
 l_int|0
@@ -4834,7 +4821,6 @@ op_plus
 id|NETJET_DMA_TXSIZE
 op_minus
 l_int|1
-)paren
 )paren
 suffix:semicolon
 id|outl
@@ -4939,11 +4925,8 @@ c_func
 (paren
 id|cs
 comma
-l_string|&quot;tiger: rec buf %x - %x&quot;
+l_string|&quot;tiger: rec buf %p - %p&quot;
 comma
-(paren
-id|u_int
-)paren
 id|cs-&gt;bcs
 (braket
 l_int|0
@@ -4951,10 +4934,6 @@ l_int|0
 dot
 id|hw.tiger.rec
 comma
-(paren
-id|u_int
-)paren
-(paren
 id|cs-&gt;bcs
 (braket
 l_int|0
@@ -4965,7 +4944,6 @@ op_plus
 id|NETJET_DMA_RXSIZE
 op_minus
 l_int|1
-)paren
 )paren
 suffix:semicolon
 id|cs-&gt;bcs

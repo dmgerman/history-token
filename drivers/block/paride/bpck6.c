@@ -21,7 +21,7 @@ macro_line|#endif
 macro_line|#include &quot;ppc6lnx.c&quot;
 macro_line|#include &quot;paride.h&quot;
 DECL|macro|PPCSTRUCT
-mdefine_line|#define PPCSTRUCT(pi) ((PPC *)(pi-&gt;private))
+mdefine_line|#define PPCSTRUCT(pi) ((Interface *)(pi-&gt;private))
 multiline_comment|/****************************************************************/
 multiline_comment|/*&n; ATAPI CDROM DRIVE REGISTERS&n;*/
 DECL|macro|ATAPI_DATA
@@ -783,7 +783,7 @@ op_star
 id|pi
 )paren
 (brace
-id|PPC
+id|Interface
 op_star
 id|p
 op_assign
@@ -792,7 +792,7 @@ c_func
 (paren
 r_sizeof
 (paren
-id|PPC
+id|Interface
 )paren
 comma
 id|GFP_KERNEL
@@ -813,7 +813,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|PPC
+id|Interface
 )paren
 )paren
 suffix:semicolon

@@ -426,7 +426,7 @@ id|mm
 suffix:semicolon
 r_extern
 r_void
-id|flush_slb
+id|switch_slb
 c_func
 (paren
 r_struct
@@ -523,7 +523,7 @@ id|cur_cpu_spec-&gt;cpu_features
 op_amp
 id|CPU_FTR_SLB
 )paren
-id|flush_slb
+id|switch_slb
 c_func
 (paren
 id|tsk
@@ -589,10 +589,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|macro|VSID_RANDOMIZER
-mdefine_line|#define VSID_RANDOMIZER 42470972311UL
-DECL|macro|VSID_MASK
-mdefine_line|#define VSID_MASK&t;0xfffffffffUL
 multiline_comment|/* This is only valid for kernel (including vmalloc, imalloc and bolted) EA&squot;s&n; */
 r_static
 r_inline

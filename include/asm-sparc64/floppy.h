@@ -538,7 +538,7 @@ r_char
 op_star
 id|pdma_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 DECL|variable|pdma_areasize
 r_int
@@ -575,7 +575,7 @@ id|pdma_areasize
 suffix:semicolon
 id|pdma_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -2328,7 +2328,7 @@ id|linux_ebus_device
 op_star
 id|edev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int

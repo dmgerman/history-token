@@ -408,10 +408,6 @@ id|adbhid
 (braket
 l_int|16
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 r_static
 r_void
@@ -3935,7 +3931,7 @@ id|adbhid
 id|id
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_static

@@ -7708,7 +7708,7 @@ r_volatile
 op_star
 id|t2
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|SMbuf
 op_star

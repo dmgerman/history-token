@@ -676,6 +676,9 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * find_first_bit - find the first set bit in a memory region&n; */
+DECL|macro|find_first_bit
+mdefine_line|#define find_first_bit(addr, size) &bslash;&n;&t;find_next_bit((addr), (size), 0)
 DECL|macro|ffs
 mdefine_line|#define ffs(x) generic_ffs (x)
 DECL|macro|fls

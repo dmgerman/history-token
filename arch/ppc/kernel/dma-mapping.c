@@ -739,6 +739,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|__dma_alloc_coherent
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__dma_alloc_coherent
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * free a page as defined by the above mapping.&n; */
 DECL|function|__dma_free_coherent
 r_void
@@ -1014,11 +1021,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|dma_free_coherent
+DECL|variable|__dma_free_coherent
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|dma_free_coherent
+id|__dma_free_coherent
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Initialise the consistent memory allocation.&n; */

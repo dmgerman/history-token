@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2002, 2003, 2004 Hewlett-Packard Co.&n; *&t;Khalid Aziz &lt;khalid_aziz@hp.com&gt;&n; *&t;Alex Williamson &lt;alex.williamson@hp.com&gt;&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; *&n; * Parse the EFI PCDP table to locate the console device.&n; */
+multiline_comment|/*&n; * Parse the EFI PCDP table to locate the console device.&n; *&n; * (c) Copyright 2002, 2003, 2004 Hewlett-Packard Development Company, L.P.&n; *&t;Khalid Aziz &lt;khalid.aziz@hp.com&gt;&n; *&t;Alex Williamson &lt;alex.williamson@hp.com&gt;&n; *&t;Bjorn Helgaas &lt;bjorn.helgaas@hp.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;

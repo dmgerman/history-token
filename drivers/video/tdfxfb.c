@@ -6031,8 +6031,6 @@ id|cmap
 comma
 op_amp
 id|info-&gt;cursor.image.cmap
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

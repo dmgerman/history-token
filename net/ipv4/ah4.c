@@ -1,6 +1,5 @@
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ah.h&gt;
@@ -292,10 +291,6 @@ id|iph-&gt;frag_off
 op_assign
 id|top_iph-&gt;frag_off
 suffix:semicolon
-id|iph-&gt;daddr
-op_assign
-id|top_iph-&gt;daddr
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -304,6 +299,10 @@ op_ne
 l_int|5
 )paren
 (brace
+id|iph-&gt;daddr
+op_assign
+id|top_iph-&gt;daddr
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -468,10 +467,6 @@ id|top_iph-&gt;frag_off
 op_assign
 id|iph-&gt;frag_off
 suffix:semicolon
-id|top_iph-&gt;daddr
-op_assign
-id|iph-&gt;daddr
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -479,6 +474,11 @@ id|top_iph-&gt;ihl
 op_ne
 l_int|5
 )paren
+(brace
+id|top_iph-&gt;daddr
+op_assign
+id|iph-&gt;daddr
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -501,6 +501,7 @@ id|iphdr
 )paren
 )paren
 suffix:semicolon
+)brace
 id|ip_send_check
 c_func
 (paren

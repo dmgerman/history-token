@@ -636,7 +636,7 @@ id|DontUseEeprom
 )brace
 comma
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 comma
@@ -3657,7 +3657,7 @@ id|yp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|yp-&gt;tx_ring
 (braket
@@ -4648,7 +4648,7 @@ id|yp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -6635,7 +6635,7 @@ id|yp-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_for
@@ -6675,7 +6675,7 @@ id|yp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef YF_PROTOTYPE&t;&t;&t;/* Support for prototype hardware errata. */

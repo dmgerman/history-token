@@ -1011,6 +1011,10 @@ id|org_vec
 suffix:semicolon
 r_int
 id|i
+comma
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1025,17 +1029,10 @@ op_amp
 id|bio-&gt;bi_flags
 )paren
 )paren
-r_goto
-id|out_eio
-suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|BIO_UPTODATE
-comma
-op_amp
-id|bio_orig-&gt;bi_flags
-)paren
+id|err
+op_assign
+op_minus
+id|EIO
 suffix:semicolon
 multiline_comment|/*&n;&t; * free up bounce indirect pages used&n;&t; */
 id|bio_for_each_segment
@@ -1072,8 +1069,6 @@ id|pool
 )paren
 suffix:semicolon
 )brace
-id|out_eio
-suffix:colon
 id|bio_endio
 c_func
 (paren
@@ -1081,7 +1076,7 @@ id|bio_orig
 comma
 id|bio_orig-&gt;bi_size
 comma
-l_int|0
+id|err
 )paren
 suffix:semicolon
 id|bio_put

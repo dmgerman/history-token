@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/device_ops.c&n; *&n; *   $Revision: 1.47 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/device_ops.c&n; *&n; *   $Revision: 1.49 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *               Cornelia Huck (cohuck@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
 macro_line|#include &lt;asm/qdio.h&gt;
@@ -1183,10 +1184,10 @@ op_amp
 id|sch-&gt;lock
 )paren
 suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-l_int|1
+l_int|10
 )paren
 suffix:semicolon
 id|spin_lock_irq

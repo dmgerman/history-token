@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;Ethertap: A network device for bouncing packets via user space&n; *&n; *&t;This is a very simple ethernet driver. It bounces ethernet frames&n; *&t;to user space on /dev/tap0-&gt;/dev/tap15 and expects ethernet frames&n; *&t;to be written back to it. By default it does not ARP. If you turn ARP&n; *&t;on it will attempt to ARP the user space and reply to ARPS from the&n; *&t;user space.&n; *&n; *&t;As this is an ethernet device you can use it for appletalk, IPX etc&n; *&t;even for building bridging tunnels.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -104,12 +105,14 @@ id|max_taps
 op_assign
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|max_taps
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

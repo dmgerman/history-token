@@ -224,6 +224,7 @@ op_star
 id|filp
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -6025,7 +6026,7 @@ id|data
 )paren
 (brace
 DECL|macro|TMPBUFLEN
-mdefine_line|#define TMPBUFLEN 20
+mdefine_line|#define TMPBUFLEN 21
 r_int
 op_star
 id|i
@@ -7185,7 +7186,7 @@ id|convdiv
 )paren
 (brace
 DECL|macro|TMPBUFLEN
-mdefine_line|#define TMPBUFLEN 20
+mdefine_line|#define TMPBUFLEN 21
 r_int
 r_int
 op_star

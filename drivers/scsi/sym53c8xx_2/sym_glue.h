@@ -583,7 +583,7 @@ r_void
 op_star
 id|vaddr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dma_addr_t
 id|baddr

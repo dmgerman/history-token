@@ -144,8 +144,6 @@ id|cursor-&gt;image.cmap
 comma
 op_amp
 id|info-&gt;cursor.image.cmap
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace

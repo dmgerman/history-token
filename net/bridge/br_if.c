@@ -503,7 +503,7 @@ id|br-&gt;port_list
 suffix:semicolon
 id|br-&gt;hash_lock
 op_assign
-id|RW_LOCK_UNLOCKED
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|br-&gt;bridge_id.prio
 (braket
@@ -1139,6 +1139,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/* Mtu of the bridge pseudo-device 1500 or the minimum of the ports */
 DECL|function|br_min_mtu
 r_int
 id|br_min_mtu
@@ -1400,6 +1401,12 @@ id|dev-&gt;flags
 op_amp
 id|IFF_UP
 )paren
+op_logical_and
+id|netif_carrier_ok
+c_func
+(paren
+id|dev
+)paren
 )paren
 id|br_stp_enable_port
 c_func
@@ -1414,12 +1421,16 @@ op_amp
 id|br-&gt;lock
 )paren
 suffix:semicolon
-id|br-&gt;dev-&gt;mtu
-op_assign
+id|dev_set_mtu
+c_func
+(paren
+id|br-&gt;dev
+comma
 id|br_min_mtu
 c_func
 (paren
 id|br
+)paren
 )paren
 suffix:semicolon
 )brace

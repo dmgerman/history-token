@@ -693,6 +693,13 @@ id|__write_trylock
 )paren
 suffix:semicolon
 multiline_comment|/* Out of line spin-locking implementation. */
+DECL|variable|_raw_spin_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_spin_lock
+)paren
+suffix:semicolon
 DECL|variable|_raw_spin_lock_flags
 id|EXPORT_SYMBOL
 c_func
@@ -712,17 +719,17 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_MCOUNT)
 r_extern
 r_void
-id|mcount
+id|_mcount
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-DECL|variable|mcount
+DECL|variable|_mcount
 id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|mcount
+id|_mcount
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1727,13 +1734,6 @@ id|sys_close
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Special internal versions of library functions. */
-DECL|variable|__memcpy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__memcpy
-)paren
-suffix:semicolon
 DECL|variable|__memset
 id|EXPORT_SYMBOL
 c_func
@@ -1832,7 +1832,7 @@ c_func
 id|ip_fast_csum
 )paren
 suffix:semicolon
-multiline_comment|/* Moving data to/from userspace. */
+multiline_comment|/* Moving data to/from/in userspace. */
 DECL|variable|__copy_to_user
 id|EXPORT_SYMBOL
 c_func
@@ -1845,6 +1845,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__copy_from_user
+)paren
+suffix:semicolon
+DECL|variable|__copy_in_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__copy_in_user
 )paren
 suffix:semicolon
 DECL|variable|__strncpy_from_user

@@ -12355,7 +12355,7 @@ id|tp-&gt;nego_cp
 )paren
 id|tp-&gt;nego_cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;If auto-sense performed, change scsi status.&n;&t;*/
 r_if
@@ -12405,7 +12405,7 @@ id|lp-&gt;skip_ccbq
 suffix:semicolon
 id|lp-&gt;held_ccb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -16266,7 +16266,7 @@ l_int|0
 suffix:semicolon
 id|script_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|script_name
 op_assign
@@ -17845,7 +17845,7 @@ id|dsa
 )paren
 id|cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -17878,7 +17878,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;**&t;try to find the interrupted script command,&n;&t;**&t;and the address at which to continue.&n;&t;*/
 id|vdsp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|nxtdsp
 op_assign
@@ -19493,7 +19493,7 @@ id|ccb
 op_star
 id|cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|u_long
 id|dsa
@@ -20938,7 +20938,7 @@ id|cp
 suffix:semicolon
 id|cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -21604,7 +21604,7 @@ id|ccb
 op_star
 id|cp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t;**&t;Allocate memory for this CCB.&n;&t;*/
 id|cp
@@ -24956,7 +24956,7 @@ id|np-&gt;done_list
 suffix:semicolon
 id|np-&gt;done_list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|NCR_UNLOCK_NCB
 c_func
@@ -25064,7 +25064,7 @@ id|np-&gt;done_list
 suffix:semicolon
 id|np-&gt;done_list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|NCR_UNLOCK_NCB
 c_func
@@ -25171,7 +25171,7 @@ id|np-&gt;done_list
 suffix:semicolon
 id|np-&gt;done_list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|NCR_UNLOCK_NCB
 c_func
@@ -25299,7 +25299,7 @@ id|np-&gt;done_list
 suffix:semicolon
 id|np-&gt;done_list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|NCR_UNLOCK_NCB
 c_func
@@ -25365,7 +25365,7 @@ suffix:semicolon
 macro_line|#endif
 id|cmd-&gt;next_wcmd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -25476,7 +25476,7 @@ id|cmd-&gt;next_wcmd
 suffix:semicolon
 id|cmd-&gt;next_wcmd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG_WAITING_LIST
@@ -25520,7 +25520,7 @@ id|next_wcmd
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|process_waiting_list
@@ -25552,7 +25552,7 @@ id|np-&gt;waiting_list
 suffix:semicolon
 id|np-&gt;waiting_list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef DEBUG_WAITING_LIST
 r_if
@@ -25603,7 +25603,7 @@ id|wcmd-&gt;next_wcmd
 suffix:semicolon
 id|wcmd-&gt;next_wcmd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -26943,7 +26943,7 @@ id|ncb
 op_star
 id|ncb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|retv
@@ -27047,8 +27047,6 @@ DECL|variable|ncr53c8xx
 r_char
 op_star
 id|ncr53c8xx
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* command line passed by insmod */
 id|MODULE_PARM
@@ -27139,14 +27137,14 @@ id|ncb
 op_star
 id|np
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|Scsi_Host
 op_star
 id|instance
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|u_long
 id|flags

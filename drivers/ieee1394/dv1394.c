@@ -4691,7 +4691,7 @@ r_int
 id|on
 )paren
 (brace
-multiline_comment|/* I just copied this code verbatim from Alan Cox&squot;s mouse driver example&n;&t;   (linux/Documentation/DocBook/) */
+multiline_comment|/* I just copied this code verbatim from Alan Cox&squot;s mouse driver example&n;&t;   (Documentation/DocBook/) */
 r_struct
 id|video_card
 op_star
@@ -9601,6 +9601,7 @@ id|dv32
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -9846,6 +9847,7 @@ c_func
 (paren
 r_struct
 id|dv1394_status32
+id|__user
 op_star
 )paren
 id|arg

@@ -124,9 +124,14 @@ id|cmd
 r_case
 id|_IOC_NONE
 suffix:colon
+multiline_comment|/*&n;&t;&t; * For this command, the pointer is actually an integer&n;&t;&t; * argument.&n;&t;&t; */
 id|parg
 op_assign
-l_int|NULL
+(paren
+r_void
+op_star
+)paren
+id|arg
 suffix:semicolon
 r_break
 suffix:semicolon

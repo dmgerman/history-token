@@ -557,6 +557,9 @@ DECL|macro|CHA
 mdefine_line|#define CHA     0x00   /* channel A offset */
 DECL|macro|CHB
 mdefine_line|#define CHB     0x40   /* channel B offset */
+multiline_comment|/*&n; *  FIXME: PPC has PVR defined in asm/reg.h.  For now we just undef it.&n; */
+DECL|macro|PVR
+macro_line|#undef PVR
 DECL|macro|RXFIFO
 mdefine_line|#define RXFIFO  0
 DECL|macro|TXFIFO
@@ -3215,17 +3218,10 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_char
-id|status
-suffix:semicolon
 multiline_comment|/* wait for command completion */
 r_while
 c_loop
 (paren
-(paren
-id|status
-op_assign
 id|read_reg
 c_func
 (paren
@@ -3243,7 +3239,6 @@ id|STAR
 )paren
 op_amp
 id|BIT2
-)paren
 )paren
 (brace
 id|udelay

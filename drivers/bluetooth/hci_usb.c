@@ -33,7 +33,7 @@ DECL|macro|URB_ZERO_PACKET
 mdefine_line|#define URB_ZERO_PACKET 0
 macro_line|#endif
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;2.6&quot;
+mdefine_line|#define VERSION &quot;2.7&quot;
 DECL|variable|hci_usb_driver
 r_static
 r_struct
@@ -73,18 +73,28 @@ l_int|0x3800
 )paren
 )brace
 comma
-multiline_comment|/* Ericsson with non-standard id */
+multiline_comment|/* Bluetooth Ultraport Module from IBM */
 (brace
 id|USB_DEVICE
 c_func
 (paren
-l_int|0x0bdb
+l_int|0x04bf
 comma
-l_int|0x1002
+l_int|0x030a
 )paren
 )brace
 comma
-multiline_comment|/* ALPS Module with non-standard id */
+multiline_comment|/* ALPS Modules with non-standard id */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x044e
+comma
+l_int|0x3001
+)paren
+)brace
+comma
 (brace
 id|USB_DEVICE
 c_func
@@ -95,14 +105,14 @@ l_int|0x3002
 )paren
 )brace
 comma
-multiline_comment|/* Bluetooth Ultraport Module from IBM */
+multiline_comment|/* Ericsson with non-standard id */
 (brace
 id|USB_DEVICE
 c_func
 (paren
-l_int|0x04bf
+l_int|0x0bdb
 comma
-l_int|0x030a
+l_int|0x1002
 )paren
 )brace
 comma
@@ -151,6 +161,22 @@ c_func
 l_int|0x0a5c
 comma
 l_int|0x200a
+)paren
+comma
+dot
+id|driver_info
+op_assign
+id|HCI_RESET
+)brace
+comma
+multiline_comment|/* ISSC Bluetooth Adapter v3.1 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x1131
+comma
+l_int|0x1001
 )paren
 comma
 dot
@@ -1425,52 +1451,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|hci_usb_wait_for_urb
-r_static
-r_inline
-r_void
-id|hci_usb_wait_for_urb
-c_func
-(paren
-r_struct
-id|urb
-op_star
-id|urb
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|urb-&gt;kref.refcount
-)paren
-OG
-l_int|1
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_UNINTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-l_int|5
-op_star
-id|HZ
-op_plus
-l_int|999
-)paren
-op_div
-l_int|1000
-)paren
-suffix:semicolon
-)brace
-)brace
 DECL|function|hci_usb_unlink_urbs
 r_static
 r_void
@@ -1557,13 +1537,7 @@ comma
 id|urb
 )paren
 suffix:semicolon
-id|usb_unlink_urb
-c_func
-(paren
-id|urb
-)paren
-suffix:semicolon
-id|hci_usb_wait_for_urb
+id|usb_kill_urb
 c_func
 (paren
 id|urb

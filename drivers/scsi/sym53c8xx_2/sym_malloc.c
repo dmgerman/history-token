@@ -52,7 +52,7 @@ OG
 id|SYM_MEM_CLUSTER_SIZE
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -126,7 +126,7 @@ id|j
 dot
 id|next-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -210,7 +210,7 @@ id|j
 dot
 id|next-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -680,7 +680,7 @@ id|sym_m_pool
 id|mp0
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 id|___mp0_get_mem_cluster
 comma
@@ -695,7 +695,7 @@ id|sym_m_pool
 id|mp0
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 id|___mp0_get_mem_cluster
 )brace
@@ -1043,7 +1043,7 @@ id|dev_dmat
 id|m_pool_p
 id|mp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mp
 op_assign
@@ -1129,7 +1129,7 @@ l_string|&quot;MPOOL&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#ifdef&t;SYM_MEM_FREE_UNUSED
@@ -1240,7 +1240,7 @@ r_void
 op_star
 id|m
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mp
 op_assign
@@ -1396,7 +1396,7 @@ suffix:semicolon
 id|m_vtob_p
 id|vp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|m_addr_t
 id|a

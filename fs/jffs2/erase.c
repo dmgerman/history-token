@@ -2007,7 +2007,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Short write to newly-erased block at 0x%08x: Wanted %d, got %zd&bslash;n&quot;
+l_string|&quot;Short write to newly-erased block at 0x%08x: Wanted %zd, got %zd&bslash;n&quot;
 comma
 id|jeb-&gt;offset
 comma

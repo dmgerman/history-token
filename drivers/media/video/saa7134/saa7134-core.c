@@ -1852,7 +1852,7 @@ id|next
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#if DEBUG_SPINLOCKS
+macro_line|#ifdef DEBUG_SPINLOCKS
 id|BUG_ON
 c_func
 (paren
@@ -2007,7 +2007,7 @@ r_int
 id|state
 )paren
 (brace
-macro_line|#if DEBUG_SPINLOCKS
+macro_line|#ifdef DEBUG_SPINLOCKS
 id|BUG_ON
 c_func
 (paren
@@ -2079,7 +2079,7 @@ id|next
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#if DEBUG_SPINLOCKS
+macro_line|#ifdef DEBUG_SPINLOCKS
 id|BUG_ON
 c_func
 (paren
@@ -2373,7 +2373,7 @@ id|ov
 op_assign
 id|V4L2_FIELD_ANY
 suffix:semicolon
-macro_line|#if DEBUG_SPINLOCKS
+macro_line|#ifdef DEBUG_SPINLOCKS
 id|BUG_ON
 c_func
 (paren

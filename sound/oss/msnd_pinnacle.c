@@ -5347,12 +5347,15 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|dev.io
 comma
 id|dev.numio
+comma
+l_string|&quot;probing&quot;
 )paren
 )paren
 (brace
@@ -5369,16 +5372,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|dev.io
-comma
-id|dev.numio
-comma
-l_string|&quot;probing&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8876,12 +8869,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|cfg
 comma
 l_int|2
+comma
+l_string|&quot;Pinnacle/Fiji Config&quot;
 )paren
 )paren
 (brace
@@ -8900,16 +8896,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|request_region
-c_func
-(paren
-id|cfg
-comma
-l_int|2
-comma
-l_string|&quot;Pinnacle/Fiji Config&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -51,7 +51,8 @@ op_plus
 (paren
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|addr
 )paren

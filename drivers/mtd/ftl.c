@@ -223,6 +223,9 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|part-&gt;header.FormattedSize
 op_assign
 l_int|0
@@ -268,7 +271,7 @@ suffix:colon
 l_int|0x2000
 )paren
 (brace
-id|ret
+id|err
 op_assign
 id|part-&gt;mbd.mtd
 op_member_access_from_pointer
@@ -299,10 +302,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret
+id|err
 )paren
 r_return
-id|ret
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -4051,7 +4054,7 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;ftl_cs:   log_addr = 0x%x, virt_addr&quot;
-l_string|&quot; = 0x%x, Offset = 0x%x&bslash;n&quot;
+l_string|&quot; = 0x%x, Offset = 0x%zx&bslash;n&quot;
 comma
 id|log_addr
 comma

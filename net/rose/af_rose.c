@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * Copyright (C) Jonathan Naylor G4KLX (g4klx@g4klx.demon.co.uk)&n; * Copyright (C) Alan Cox GW4PTS (alan@lxorguk.ukuu.org.uk)&n; * Copyright (C) Terry Dawson VK2KTJ (terry@animats.net)&n; * Copyright (C) Tomi Manninen OH2BNS (oh2bns@sral.fi)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -100,7 +101,7 @@ id|sysctl_rose_window_size
 op_assign
 id|ROSE_DEFAULT_WINDOW_SIZE
 suffix:semicolon
-DECL|variable|rose_list
+r_static
 id|HLIST_HEAD
 c_func
 (paren
@@ -7000,12 +7001,14 @@ c_func
 id|rose_proto_init
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|rose_ndevs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -1027,6 +1027,7 @@ r_struct
 id|list_head
 id|tasks
 suffix:semicolon
+multiline_comment|/*&n;&t; * ptrace_list/ptrace_children forms the list of my children&n;&t; * that were stolen by a ptracer.&n;&t; */
 DECL|member|ptrace_children
 r_struct
 id|list_head
@@ -1101,6 +1102,7 @@ op_star
 id|parent
 suffix:semicolon
 multiline_comment|/* parent process */
+multiline_comment|/*&n;&t; * children/sibling forms the list of my children plus the&n;&t; * tasks I&squot;m ptracing.&n;&t; */
 DECL|member|children
 r_struct
 id|list_head

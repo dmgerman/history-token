@@ -85,6 +85,9 @@ mdefine_line|#define PORT_LH7A40X&t;57
 multiline_comment|/* PPC CPM type number */
 DECL|macro|PORT_CPM
 mdefine_line|#define PORT_CPM        58
+multiline_comment|/* MPC52xx type numbers */
+DECL|macro|PORT_MPC52xx
+mdefine_line|#define PORT_MPC52xx&t;59
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

@@ -168,7 +168,7 @@ id|alloc-&gt;memory_mutex
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|pblock

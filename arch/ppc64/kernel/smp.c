@@ -987,6 +987,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Some hardware requires clearing the CPPR, while other hardware does not&n;&t; * it is safe either way&n;&t; */
+id|pSeriesLP_cppr_info
+c_func
+(paren
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|rtas_stop_self
 c_func
 (paren
@@ -1322,16 +1331,6 @@ id|__current-&gt;thread_info-&gt;preempt_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Fixup SLB round-robin so next segment (kernel) goes in segment 0 */
-id|paca
-(braket
-id|lcpu
-)braket
-dot
-id|stab_next_rr
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* At boot this is done in prom.c. */
 id|paca
 (braket
@@ -1504,7 +1503,18 @@ op_plus
 id|num_size_cell
 )braket
 suffix:semicolon
-multiline_comment|/* DRENG need to account for threads here too */
+multiline_comment|/* Double maxcpus for processors which have SMT capability */
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SMT
+)paren
+id|maxcpus
+op_mul_assign
+l_int|2
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2643,7 +2653,7 @@ suffix:semicolon
 id|debugger
 c_func
 (paren
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_goto
@@ -2717,7 +2727,7 @@ suffix:semicolon
 id|debugger
 c_func
 (paren
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_goto
@@ -3455,12 +3465,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|cpu_set
+multiline_comment|/* Wait until cpu puts itself in the online map */
+r_while
+c_loop
+(paren
+op_logical_neg
+id|cpu_online
 c_func
 (paren
 id|cpu
-comma
-id|cpu_online_map
+)paren
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -3580,6 +3598,28 @@ l_int|1
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+id|spin_lock
+c_func
+(paren
+op_amp
+id|call_lock
+)paren
+suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|cpu
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|call_lock
+)paren
+suffix:semicolon
 id|local_irq_enable
 c_func
 (paren

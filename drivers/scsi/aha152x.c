@@ -703,12 +703,6 @@ id|aha152x_host
 (braket
 l_int|2
 )braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 DECL|variable|aha152x_driver_template
 r_static
@@ -1409,11 +1403,11 @@ op_assign
 (brace
 l_string|&quot;idle&quot;
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )brace
@@ -1421,11 +1415,11 @@ comma
 (brace
 l_string|&quot;unknown&quot;
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )brace
@@ -1433,11 +1427,11 @@ comma
 (brace
 l_string|&quot;seldo&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 id|seldo_run
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )brace
@@ -1445,11 +1439,11 @@ comma
 (brace
 l_string|&quot;seldi&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 id|seldi_run
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )brace
@@ -1457,11 +1451,11 @@ comma
 (brace
 l_string|&quot;selto&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 id|selto_run
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )brace
@@ -1469,11 +1463,11 @@ comma
 (brace
 l_string|&quot;busfree&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 id|busfree_run
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )brace
@@ -1505,7 +1499,7 @@ comma
 (brace
 l_string|&quot;msgi&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 id|msgi_run
 comma
@@ -1517,11 +1511,11 @@ comma
 (brace
 l_string|&quot;status&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 id|status_run
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 )brace
@@ -1553,11 +1547,11 @@ comma
 (brace
 l_string|&quot;parerr&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 id|parerr_run
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )brace
@@ -1565,11 +1559,11 @@ comma
 (brace
 l_string|&quot;rsti&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 id|rsti_run
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )brace
@@ -2083,7 +2077,7 @@ id|i
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|swintr
@@ -2686,7 +2680,7 @@ c_func
 (paren
 id|shpnt
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -2730,7 +2724,7 @@ id|aha152x_host
 id|registered_count
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|scsi_host_put
 c_func
@@ -2739,7 +2733,7 @@ id|shpnt
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|aha152x_release
@@ -3328,7 +3322,7 @@ c_func
 id|SCpnt
 )paren
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|SCSEM
 c_func
@@ -3536,7 +3530,7 @@ c_func
 (paren
 id|SCpnt
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -3758,7 +3752,7 @@ id|SCpnt-&gt;host_scribble
 suffix:semicolon
 id|SCpnt-&gt;host_scribble
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|SUCCESS
@@ -4011,7 +4005,7 @@ l_int|0
 suffix:semicolon
 id|SCpnt-&gt;request_buffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|SCpnt-&gt;request_bufflen
 op_assign
@@ -4156,7 +4150,7 @@ id|SCpnt-&gt;host_scribble
 suffix:semicolon
 id|SCpnt-&gt;host_scribble
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ret
 op_assign
@@ -4295,7 +4289,7 @@ id|ptr
 suffix:semicolon
 id|next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -4347,7 +4341,7 @@ id|ptr-&gt;host_scribble
 suffix:semicolon
 id|ptr-&gt;host_scribble
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|ptr
@@ -4944,7 +4938,7 @@ id|KERN_NOTICE
 l_string|&quot;aha152x: unable to verify geometry for disk with &gt;1GB.&bslash;n&quot;
 l_string|&quot;         Using default translation. Please verify yourself.&bslash;n&quot;
 l_string|&quot;         Perhaps you need to enable extended translation in the driver.&bslash;n&quot;
-l_string|&quot;         See /usr/src/linux/Documentation/scsi/aha152x.txt for details.&bslash;n&quot;
+l_string|&quot;         See Documentation/scsi/aha152x.txt for details.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5060,7 +5054,7 @@ id|CURRENT_SC
 suffix:semicolon
 id|CURRENT_SC
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|DONE_SC-&gt;result
 op_assign
@@ -5602,7 +5596,7 @@ l_int|16
 suffix:semicolon
 id|CURRENT_SC
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -5825,7 +5819,7 @@ id|DONE_SC
 suffix:semicolon
 id|DONE_SC
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#if 0
 id|DPRINTK
@@ -5919,7 +5913,7 @@ c_func
 (paren
 id|ptr
 comma
-l_int|0
+l_int|NULL
 comma
 id|check_condition
 comma
@@ -5991,7 +5985,7 @@ id|DONE_SC
 suffix:semicolon
 id|DONE_SC
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* turn led off, when no commands are in the driver */
 id|HOSTDATA
@@ -6040,7 +6034,7 @@ id|ptr-&gt;host_scribble
 suffix:semicolon
 id|ptr-&gt;host_scribble
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|DO_UNLOCK
@@ -6100,7 +6094,7 @@ suffix:semicolon
 )brace
 id|DONE_SC
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#if defined(AHA152X_STAT)
 )brace
@@ -6780,7 +6774,7 @@ id|flags
 suffix:semicolon
 id|CURRENT_SC
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -10402,7 +10396,7 @@ id|ptr-&gt;host_scribble
 suffix:semicolon
 id|ptr-&gt;host_scribble
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ptr-&gt;result
 op_assign
@@ -12848,7 +12842,7 @@ c_func
 id|ptr
 )paren
 suffix:colon
-l_int|0
+l_int|NULL
 )paren
 id|show_command
 c_func
@@ -15675,7 +15669,7 @@ suffix:semicolon
 op_star
 id|start
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -16478,7 +16472,7 @@ id|pnp_dev
 op_star
 id|dev
 op_assign
-l_int|0
+l_int|NULL
 comma
 op_star
 id|pnpdev
@@ -16487,9 +16481,9 @@ l_int|2
 )braket
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 macro_line|#endif
@@ -18378,7 +18372,7 @@ id|pnpdev
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -18474,7 +18468,7 @@ id|aha152x_host
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

@@ -2252,6 +2252,7 @@ r_int
 id|pmu_probe
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if
@@ -3857,6 +3858,7 @@ DECL|function|recv_byte
 id|recv_byte
 c_func
 (paren
+r_void
 )paren
 (brace
 r_char
@@ -3902,6 +3904,7 @@ DECL|function|pmu_start
 id|pmu_start
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -3990,6 +3993,7 @@ DECL|function|pmu_poll
 id|pmu_poll
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int

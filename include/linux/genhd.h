@@ -287,6 +287,7 @@ DECL|member|minors
 r_int
 id|minors
 suffix:semicolon
+multiline_comment|/* maximum number of minors, =1 for&n;                                         * disks that can&squot;t be partitioned. */
 DECL|member|disk_name
 r_char
 id|disk_name

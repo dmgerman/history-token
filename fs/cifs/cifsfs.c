@@ -20,9 +20,6 @@ macro_line|#include &quot;cifs_fs_sb.h&quot;
 macro_line|#include &lt;linux/mm.h&gt;
 DECL|macro|CIFS_MAGIC_NUMBER
 mdefine_line|#define CIFS_MAGIC_NUMBER 0xFF534D42&t;/* the first four bytes of SMB PDUs */
-multiline_comment|/* BB when mempool_resize is added back in, we will resize pool on new mount */
-DECL|macro|CIFS_MIN_RCV_POOL
-mdefine_line|#define CIFS_MIN_RCV_POOL 11 /* enough for progress to five servers */
 macro_line|#ifdef CONFIG_CIFS_QUOTA
 DECL|variable|cifs_quotactl_ops
 r_static
@@ -685,12 +682,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cifs_sb-&gt;tcon-&gt;ses-&gt;capabilities
+id|cifs_sb-&gt;mnt_cifs_flags
 op_amp
-id|CAP_UNIX
+id|CIFS_MOUNT_NO_PERM
 )paren
 (brace
-multiline_comment|/* the server supports the Unix-like mode bits and does its&n;&t;&t;own permission checks, and therefore we do not allow the file&n;&t;&t;mode to be overriden on these mounts - so do not do perm&n;&t;&t;check on client side */
 r_return
 l_int|0
 suffix:semicolon
@@ -2993,6 +2989,15 @@ c_func
 (paren
 op_amp
 id|tconInfoAllocCount
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|tcpSesAllocCount
 comma
 l_int|0
 )paren
