@@ -9868,7 +9868,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|igmp_mc_seq_private
-mdefine_line|#define&t;igmp_mc_seq_private(seq)&t;((struct igmp_mc_iter_state *)&amp;seq-&gt;private)
+mdefine_line|#define&t;igmp_mc_seq_private(seq)&t;((struct igmp_mc_iter_state *)(seq)-&gt;private)
 DECL|function|igmp_mc_get_first
 r_static
 r_inline
@@ -10664,7 +10664,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|igmp_mcf_seq_private
-mdefine_line|#define igmp_mcf_seq_private(seq)&t;((struct igmp_mcf_iter_state *)&amp;seq-&gt;private)
+mdefine_line|#define igmp_mcf_seq_private(seq)&t;((struct igmp_mcf_iter_state *)(seq)-&gt;private)
 DECL|function|igmp_mcf_get_first
 r_static
 r_inline

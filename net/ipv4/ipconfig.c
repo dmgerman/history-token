@@ -4511,6 +4511,24 @@ id|i
 )paren
 suffix:semicolon
 )brace
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buffer
+op_plus
+id|len
+comma
+l_string|&quot;bootserver %u.%u.%u.%u&bslash;n&quot;
+comma
+id|NIPQUAD
+c_func
+(paren
+id|ic_servaddr
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -2542,6 +2542,21 @@ l_string|&quot;kgdb default breakpoint deactivated on command line&bslash;n&quot
 suffix:semicolon
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|ppc_md.progress
+)paren
+id|ppc_md
+dot
+id|progress
+c_func
+(paren
+l_string|&quot;setup_arch: kgdb breakpoint&quot;
+comma
+l_int|0x4000
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

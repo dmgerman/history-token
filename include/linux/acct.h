@@ -144,7 +144,7 @@ id|sb
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|acct_process
 c_func
 (paren

@@ -4180,7 +4180,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|raw6_seq_private
-mdefine_line|#define raw6_seq_private(seq) ((struct raw6_iter_state *)&amp;seq-&gt;private)
+mdefine_line|#define raw6_seq_private(seq) ((struct raw6_iter_state *)(seq)-&gt;private)
 DECL|function|raw6_get_first
 r_static
 r_struct

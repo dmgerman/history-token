@@ -2903,7 +2903,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|raw_seq_private
-mdefine_line|#define raw_seq_private(seq) ((struct raw_iter_state *)&amp;seq-&gt;private)
+mdefine_line|#define raw_seq_private(seq) ((struct raw_iter_state *)(seq)-&gt;private)
 DECL|function|raw_get_first
 r_static
 r_struct

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/ipc/sem.c&n; * Copyright (C) 1992 Krishna Balasubramanian&n; * Copyright (C) 1995 Eric Schenk, Bruno Haible&n; *&n; * IMPLEMENTATION NOTES ON CODE REWRITE (Eric Schenk, January 1995):&n; * This code underwent a massive rewrite in order to solve some problems&n; * with the original code. In particular the original code failed to&n; * wake up processes that were waiting for semval to go to 0 if the&n; * value went to 0 and was then incremented rapidly enough. In solving&n; * this problem I have also modified the implementation so that it&n; * processes pending operations in a FIFO manner, thus give a guarantee&n; * that processes waiting for a lock on the semaphore won&squot;t starve&n; * unless another locking process fails to unlock.&n; * In addition the following two changes in behavior have been introduced:&n; * - The original implementation of semop returned the value&n; *   last semaphore element examined on success. This does not&n; *   match the manual page specifications, and effectively&n; *   allows the user to read the semaphore even if they do not&n; *   have read permissions. The implementation now returns 0&n; *   on success as stated in the manual page.&n; * - There is some confusion over whether the set of undo adjustments&n; *   to be performed at exit should be done in an atomic manner.&n; *   That is, if we are attempting to decrement the semval should we queue&n; *   up and wait until we can do so legally?&n; *   The original implementation attempted to do this.&n; *   The current implementation does not do so. This is because I don&squot;t&n; *   think it is the right thing (TM) to do, and because I couldn&squot;t&n; *   see a clean way to get the old behavior with the new design.&n; *   The POSIX standard and SVID should be consulted to determine&n; *   what behavior is mandated.&n; *&n; * Further notes on refinement (Christoph Rohland, December 1998):&n; * - The POSIX standard says, that the undo adjustments simply should&n; *   redo. So the current implementation is o.K.&n; * - The previous code had two flaws:&n; *   1) It actively gave the semaphore to the next waiting process&n; *      sleeping on the semaphore. Since this process did not have the&n; *      cpu this led to many unnecessary context switches and bad&n; *      performance. Now we only check which process should be able to&n; *      get the semaphore and if this process wants to reduce some&n; *      semaphore value we simply wake it up without doing the&n; *      operation. So it has to try to get it later. Thus e.g. the&n; *      running process may reacquire the semaphore during the current&n; *      time slice. If it only waits for zero or increases the semaphore,&n; *      we do the operation in advance and wake it up.&n; *   2) It did not wake up all zero waiting processes. We try to do&n; *      better but only get the semops right which only wait for zero or&n; *      increase. If there are decrement operations in the operations&n; *      array we do the same as before.&n; *&n; * /proc/sysvipc/sem support (c) 1999 Dragos Acostachioaie &lt;dragos@iname.com&gt;&n; *&n; * SMP-threaded, sysctl&squot;s added&n; * (c) 1999 Manfred Spraul &lt;manfreds@colorfullife.com&gt;&n; * Enforced range limit on SEM_UNDO&n; * (c) 2001 Red Hat Inc &lt;alan@redhat.com&gt;&n; */
+multiline_comment|/*&n; * linux/ipc/sem.c&n; * Copyright (C) 1992 Krishna Balasubramanian&n; * Copyright (C) 1995 Eric Schenk, Bruno Haible&n; *&n; * IMPLEMENTATION NOTES ON CODE REWRITE (Eric Schenk, January 1995):&n; * This code underwent a massive rewrite in order to solve some problems&n; * with the original code. In particular the original code failed to&n; * wake up processes that were waiting for semval to go to 0 if the&n; * value went to 0 and was then incremented rapidly enough. In solving&n; * this problem I have also modified the implementation so that it&n; * processes pending operations in a FIFO manner, thus give a guarantee&n; * that processes waiting for a lock on the semaphore won&squot;t starve&n; * unless another locking process fails to unlock.&n; * In addition the following two changes in behavior have been introduced:&n; * - The original implementation of semop returned the value&n; *   last semaphore element examined on success. This does not&n; *   match the manual page specifications, and effectively&n; *   allows the user to read the semaphore even if they do not&n; *   have read permissions. The implementation now returns 0&n; *   on success as stated in the manual page.&n; * - There is some confusion over whether the set of undo adjustments&n; *   to be performed at exit should be done in an atomic manner.&n; *   That is, if we are attempting to decrement the semval should we queue&n; *   up and wait until we can do so legally?&n; *   The original implementation attempted to do this.&n; *   The current implementation does not do so. This is because I don&squot;t&n; *   think it is the right thing (TM) to do, and because I couldn&squot;t&n; *   see a clean way to get the old behavior with the new design.&n; *   The POSIX standard and SVID should be consulted to determine&n; *   what behavior is mandated.&n; *&n; * Further notes on refinement (Christoph Rohland, December 1998):&n; * - The POSIX standard says, that the undo adjustments simply should&n; *   redo. So the current implementation is o.K.&n; * - The previous code had two flaws:&n; *   1) It actively gave the semaphore to the next waiting process&n; *      sleeping on the semaphore. Since this process did not have the&n; *      cpu this led to many unnecessary context switches and bad&n; *      performance. Now we only check which process should be able to&n; *      get the semaphore and if this process wants to reduce some&n; *      semaphore value we simply wake it up without doing the&n; *      operation. So it has to try to get it later. Thus e.g. the&n; *      running process may reacquire the semaphore during the current&n; *      time slice. If it only waits for zero or increases the semaphore,&n; *      we do the operation in advance and wake it up.&n; *   2) It did not wake up all zero waiting processes. We try to do&n; *      better but only get the semops right which only wait for zero or&n; *      increase. If there are decrement operations in the operations&n; *      array we do the same as before.&n; *&n; * With the incarnation of O(1) scheduler, it becomes unnecessary to perform&n; * check/retry algorithm for waking up blocked processes as the new scheduler&n; * is better at handling thread switch than the old one.&n; *&n; * /proc/sysvipc/sem support (c) 1999 Dragos Acostachioaie &lt;dragos@iname.com&gt;&n; *&n; * SMP-threaded, sysctl&squot;s added&n; * (c) 1999 Manfred Spraul &lt;manfreds@colorfullife.com&gt;&n; * Enforced range limit on SEM_UNDO&n; * (c) 2001 Red Hat Inc &lt;alan@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -895,9 +895,6 @@ id|un
 comma
 r_int
 id|pid
-comma
-r_int
-id|do_undo
 )paren
 (brace
 r_int
@@ -1014,20 +1011,6 @@ suffix:semicolon
 id|curr-&gt;semval
 op_assign
 id|result
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|do_undo
-)paren
-(brace
-id|result
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|undo
 suffix:semicolon
 )brace
 id|sop
@@ -1171,16 +1154,6 @@ op_assign
 id|q-&gt;next
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|q-&gt;status
-op_eq
-l_int|1
-)paren
-r_continue
-suffix:semicolon
-multiline_comment|/* this one was woken up before */
 id|error
 op_assign
 id|try_atomic_semop
@@ -1195,8 +1168,6 @@ comma
 id|q-&gt;undo
 comma
 id|q-&gt;pid
-comma
-id|q-&gt;alter
 )paren
 suffix:semicolon
 multiline_comment|/* Does q-&gt;sleeper still need to sleep? */
@@ -1208,31 +1179,6 @@ op_le
 l_int|0
 )paren
 (brace
-multiline_comment|/* Found one, wake it up */
-id|wake_up_process
-c_func
-(paren
-id|q-&gt;sleeper
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_eq
-l_int|0
-op_logical_and
-id|q-&gt;alter
-)paren
-(brace
-multiline_comment|/* if q-&gt; alter let it self try */
-id|q-&gt;status
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|q-&gt;status
 op_assign
 id|error
@@ -1243,6 +1189,12 @@ c_func
 id|sma
 comma
 id|q
+)paren
+suffix:semicolon
+id|wake_up_process
+c_func
+(paren
+id|q-&gt;sleeper
 )paren
 suffix:semicolon
 )brace
@@ -4633,8 +4585,6 @@ comma
 id|un
 comma
 id|current-&gt;pid
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -4668,10 +4618,6 @@ id|queue.pid
 op_assign
 id|current-&gt;pid
 suffix:semicolon
-id|queue.alter
-op_assign
-id|decrease
-suffix:semicolon
 id|queue.id
 op_assign
 id|semid
@@ -4700,13 +4646,6 @@ op_amp
 id|queue
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-suffix:semicolon
-suffix:semicolon
-)paren
-(brace
 id|queue.status
 op_assign
 op_minus
@@ -4784,44 +4723,7 @@ r_goto
 id|out_free
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * If queue.status == 1 we where woken up and&n;&t;&t; * have to retry else we simply return.&n;&t;&t; * If an interrupt occurred we have to clean up the&n;&t;&t; * queue&n;&t;&t; *&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|queue.status
-op_eq
-l_int|1
-)paren
-(brace
-id|error
-op_assign
-id|try_atomic_semop
-(paren
-id|sma
-comma
-id|sops
-comma
-id|nsops
-comma
-id|un
-comma
-id|current-&gt;pid
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_le
-l_int|0
-)paren
-r_break
-suffix:semicolon
-)brace
-r_else
-(brace
+multiline_comment|/*&n;&t; * If queue.status != -EINTR we are woken up by another process&n;&t; */
 id|error
 op_assign
 id|queue.status
@@ -4829,11 +4731,20 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
-op_eq
+id|queue.status
+op_ne
 op_minus
 id|EINTR
-op_logical_and
+)paren
+(brace
+r_goto
+id|out_unlock_free
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * If an interrupt occurred we have to clean up the queue&n;&t; */
+r_if
+c_cond
+(paren
 id|timeout
 op_logical_and
 id|jiffies_left
@@ -4845,20 +4756,6 @@ op_assign
 op_minus
 id|EAGAIN
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|queue.prev
-)paren
-multiline_comment|/* got Interrupt */
-r_break
-suffix:semicolon
-multiline_comment|/* Everything done by update_queue */
-r_goto
-id|out_unlock_free
-suffix:semicolon
-)brace
-)brace
 id|remove_from_queue
 c_func
 (paren
@@ -4867,6 +4764,9 @@ comma
 op_amp
 id|queue
 )paren
+suffix:semicolon
+r_goto
+id|out_unlock_free
 suffix:semicolon
 id|update
 suffix:colon

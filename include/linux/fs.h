@@ -1208,6 +1208,18 @@ r_int
 id|ra_pages
 suffix:semicolon
 multiline_comment|/* Maximum readahead window */
+DECL|member|mmap_hit
+r_int
+r_int
+id|mmap_hit
+suffix:semicolon
+multiline_comment|/* Cache hit stat for mmap accesses */
+DECL|member|mmap_miss
+r_int
+r_int
+id|mmap_miss
+suffix:semicolon
+multiline_comment|/* Cache miss stat for mmap accesses */
 )brace
 suffix:semicolon
 DECL|struct|file
