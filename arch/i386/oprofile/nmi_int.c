@@ -209,7 +209,6 @@ suffix:semicolon
 DECL|function|exit_driverfs
 r_static
 r_void
-id|__exit
 id|exit_driverfs
 c_func
 (paren
@@ -1769,7 +1768,6 @@ suffix:semicolon
 )brace
 DECL|function|nmi_exit
 r_void
-id|__exit
 id|nmi_exit
 c_func
 (paren
