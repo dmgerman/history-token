@@ -5062,7 +5062,7 @@ c_func
 r_struct
 id|pci_dev
 op_star
-id|dev
+id|pdev
 )paren
 (brace
 macro_line|#ifdef CONFIG_PPC_OF
