@@ -1019,10 +1019,6 @@ id|set_state
 r_int
 r_int
 id|state
-comma
-r_int
-r_int
-id|notify
 )paren
 )paren
 (brace
@@ -1097,8 +1093,6 @@ id|set_state
 c_func
 (paren
 id|SPEEDSTEP_LOW
-comma
-l_int|0
 )paren
 suffix:semicolon
 op_star
@@ -1132,8 +1126,6 @@ id|set_state
 c_func
 (paren
 id|SPEEDSTEP_HIGH
-comma
-l_int|0
 )paren
 suffix:semicolon
 op_star
@@ -1194,8 +1186,6 @@ id|set_state
 c_func
 (paren
 id|SPEEDSTEP_LOW
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|out
