@@ -602,22 +602,17 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* need to guarantee 400ns since last command was issued */
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* FIXME: promote this to the general status read method perhaps */
+multiline_comment|/*&n;&t; * Need to guarantee 400ns since last command was issued?&n;&t; */
+multiline_comment|/* FIXME: promote this to the general status read method perhaps.&n;&t; */
 macro_line|#ifdef CONFIG_IDEPCI_SHARE_IRQ
 multiline_comment|/*&n;&t; * We do a passive status test under shared PCI interrupts on&n;&t; * cards that truly share the ATA side interrupt, but may also share&n;&t; * an interrupt with another pci card/device.  We make no assumptions&n;&t; * about possible isa-pnp and pci-pnp issues yet.&n;&t; */
 r_if
 c_cond
 (paren
-id|IDE_CONTROL_REG
+id|drive-&gt;channel-&gt;io_ports
+(braket
+id|IDE_CONTROL_OFFSET
+)braket
 )paren
 id|drive-&gt;status
 op_assign
@@ -638,7 +633,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Note: this may clear a pending IRQ!! */
+multiline_comment|/* Note: this may clear a pending IRQ! */
 r_if
 c_cond
 (paren
@@ -843,7 +838,7 @@ id|DRQ_STAT
 (brace
 id|startstop
 op_assign
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -851,8 +846,6 @@ comma
 id|rq
 comma
 id|__FUNCTION__
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 r_return
@@ -1120,68 +1113,6 @@ l_int|0xE0
 suffix:colon
 l_int|0xEF
 suffix:semicolon
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;ata_taskfile ... %p&bslash;n&quot;
-comma
-id|args-&gt;handler
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;   sector feature          %02x&bslash;n&quot;
-comma
-id|args-&gt;taskfile.feature
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;   sector count            %02x&bslash;n&quot;
-comma
-id|args-&gt;taskfile.sector_count
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;   drive/head              %02x&bslash;n&quot;
-comma
-id|args-&gt;taskfile.device_head
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;   command                 %02x&bslash;n&quot;
-comma
-id|args-&gt;taskfile.command
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rq
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;   rq-&gt;nr_sectors          %2li&bslash;n&quot;
-comma
-id|rq-&gt;nr_sectors
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;   rq-&gt;                   = null&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* (ks/hs): Moved to start, do not use for multiple out commands */
 r_if
 c_cond
@@ -1191,20 +1122,14 @@ op_ne
 id|task_mulout_intr
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|IDE_CONTROL_REG
-)paren
-id|OUT_BYTE
+id|ata_irq_enable
 c_func
 (paren
-id|drive-&gt;ctl
+id|drive
 comma
-id|IDE_CONTROL_REG
+l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* clear nIEN */
 id|ata_mask
 c_func
 (paren
@@ -1518,16 +1443,14 @@ id|BAD_STAT
 )paren
 )paren
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
 comma
 id|rq
 comma
-l_string|&quot;recal_intr&quot;
-comma
-id|drive-&gt;status
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -1590,16 +1513,14 @@ op_ne
 id|WIN_NOP
 )paren
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
 comma
 id|rq
 comma
-l_string|&quot;task_no_data_intr&quot;
-comma
-id|drive-&gt;status
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -1645,7 +1566,7 @@ id|rq
 (brace
 r_char
 op_star
-id|pBuf
+id|buf
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1680,7 +1601,7 @@ id|DRQ_STAT
 )paren
 )paren
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -1688,8 +1609,6 @@ comma
 id|rq
 comma
 id|__FUNCTION__
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 r_if
@@ -1734,7 +1653,7 @@ comma
 id|drive-&gt;status
 )paren
 suffix:semicolon
-id|pBuf
+id|buf
 op_assign
 id|ide_map_rq
 c_func
@@ -1750,7 +1669,7 @@ c_func
 (paren
 l_string|&quot;Read: %p, rq-&gt;current_nr_sectors: %d&bslash;n&quot;
 comma
-id|pBuf
+id|buf
 comma
 (paren
 r_int
@@ -1763,7 +1682,7 @@ c_func
 (paren
 id|drive
 comma
-id|pBuf
+id|buf
 comma
 id|SECTOR_WORDS
 )paren
@@ -1773,7 +1692,7 @@ c_func
 (paren
 id|rq
 comma
-id|pBuf
+id|buf
 comma
 op_amp
 id|flags
@@ -2004,7 +1923,7 @@ id|rq
 (brace
 r_char
 op_star
-id|pBuf
+id|buf
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2027,7 +1946,7 @@ id|drive-&gt;bad_wstat
 )paren
 )paren
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -2035,8 +1954,6 @@ comma
 id|rq
 comma
 id|__FUNCTION__
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 r_if
@@ -2078,7 +1995,7 @@ id|DRQ_STAT
 )paren
 )paren
 (brace
-id|pBuf
+id|buf
 op_assign
 id|ide_map_rq
 c_func
@@ -2094,7 +2011,7 @@ c_func
 (paren
 l_string|&quot;write: %p, rq-&gt;current_nr_sectors: %d&bslash;n&quot;
 comma
-id|pBuf
+id|buf
 comma
 (paren
 r_int
@@ -2107,7 +2024,7 @@ c_func
 (paren
 id|drive
 comma
-id|pBuf
+id|buf
 comma
 id|SECTOR_WORDS
 )paren
@@ -2117,7 +2034,7 @@ c_func
 (paren
 id|rq
 comma
-id|pBuf
+id|buf
 comma
 op_amp
 id|flags
@@ -2167,7 +2084,7 @@ id|rq
 (brace
 r_char
 op_star
-id|pBuf
+id|buf
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2207,9 +2124,8 @@ op_or
 id|DRQ_STAT
 )paren
 )paren
-(brace
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -2217,11 +2133,8 @@ comma
 id|rq
 comma
 id|__FUNCTION__
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* no data yet, so wait for another interrupt */
 id|ide_set_handler
 c_func
@@ -2261,7 +2174,7 @@ id|nsect
 op_assign
 id|msect
 suffix:semicolon
-id|pBuf
+id|buf
 op_assign
 id|ide_map_rq
 c_func
@@ -2277,7 +2190,7 @@ c_func
 (paren
 l_string|&quot;Multiread: %p, nsect: %d , rq-&gt;current_nr_sectors: %d&bslash;n&quot;
 comma
-id|pBuf
+id|buf
 comma
 id|nsect
 comma
@@ -2289,7 +2202,7 @@ c_func
 (paren
 id|drive
 comma
-id|pBuf
+id|buf
 comma
 id|nsect
 op_star
@@ -2301,7 +2214,7 @@ c_func
 (paren
 id|rq
 comma
-id|pBuf
+id|buf
 comma
 op_amp
 id|flags

@@ -23,11 +23,6 @@ macro_line|#ifndef SUPPORT_SLOW_DATA_PORTS&t;&t;&t;/* 1 to support slow data por
 DECL|macro|SUPPORT_SLOW_DATA_PORTS
 macro_line|# define SUPPORT_SLOW_DATA_PORTS&t;1&t;/* 0 to reduce kernel size */
 macro_line|#endif
-multiline_comment|/* Right now this is only needed by a promise controlled.&n; */
-macro_line|#ifndef OK_TO_RESET_CONTROLLER&t;&t;/* 1 needed for good error recovery */
-DECL|macro|OK_TO_RESET_CONTROLLER
-macro_line|# define OK_TO_RESET_CONTROLLER&t;0&t;/* 0 for use with AH2372A/B interface */
-macro_line|#endif
 macro_line|#ifndef FANCY_STATUS_DUMPS&t;&t;/* 1 for human-readable drive errors */
 DECL|macro|FANCY_STATUS_DUMPS
 macro_line|# define FANCY_STATUS_DUMPS&t;1&t;/* 0 to reduce kernel size */
@@ -67,6 +62,11 @@ id|IDE_ERROR_OFFSET
 op_assign
 l_int|1
 comma
+DECL|enumerator|IDE_FEATURE_OFFSET
+id|IDE_FEATURE_OFFSET
+op_assign
+l_int|1
+comma
 DECL|enumerator|IDE_NSECTOR_OFFSET
 id|IDE_NSECTOR_OFFSET
 op_assign
@@ -97,8 +97,18 @@ id|IDE_STATUS_OFFSET
 op_assign
 l_int|7
 comma
+DECL|enumerator|IDE_COMMAND_OFFSET
+id|IDE_COMMAND_OFFSET
+op_assign
+l_int|7
+comma
 DECL|enumerator|IDE_CONTROL_OFFSET
 id|IDE_CONTROL_OFFSET
+op_assign
+l_int|8
+comma
+DECL|enumerator|IDE_ALTSTATUS_OFFSET
+id|IDE_ALTSTATUS_OFFSET
 op_assign
 l_int|8
 comma
@@ -113,10 +123,6 @@ op_assign
 l_int|10
 )brace
 suffix:semicolon
-DECL|macro|IDE_FEATURE_OFFSET
-mdefine_line|#define IDE_FEATURE_OFFSET&t;IDE_ERROR_OFFSET
-DECL|macro|IDE_COMMAND_OFFSET
-mdefine_line|#define IDE_COMMAND_OFFSET&t;IDE_STATUS_OFFSET
 DECL|macro|IDE_DATA_REG
 mdefine_line|#define IDE_DATA_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_DATA_OFFSET])
 DECL|macro|IDE_ERROR_REG
@@ -131,18 +137,12 @@ DECL|macro|IDE_HCYL_REG
 mdefine_line|#define IDE_HCYL_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_HCYL_OFFSET])
 DECL|macro|IDE_SELECT_REG
 mdefine_line|#define IDE_SELECT_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_SELECT_OFFSET])
-DECL|macro|IDE_STATUS_REG
-mdefine_line|#define IDE_STATUS_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_STATUS_OFFSET])
-DECL|macro|IDE_CONTROL_REG
-mdefine_line|#define IDE_CONTROL_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_CONTROL_OFFSET])
+DECL|macro|IDE_COMMAND_REG
+mdefine_line|#define IDE_COMMAND_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_STATUS_OFFSET])
 DECL|macro|IDE_IRQ_REG
 mdefine_line|#define IDE_IRQ_REG&t;&t;(drive-&gt;channel-&gt;io_ports[IDE_IRQ_OFFSET])
 DECL|macro|IDE_FEATURE_REG
 mdefine_line|#define IDE_FEATURE_REG&t;&t;IDE_ERROR_REG
-DECL|macro|IDE_COMMAND_REG
-mdefine_line|#define IDE_COMMAND_REG&t;&t;IDE_STATUS_REG
-DECL|macro|IDE_ALTSTATUS_REG
-mdefine_line|#define IDE_ALTSTATUS_REG&t;IDE_CONTROL_REG
 DECL|macro|IDE_IREASON_REG
 mdefine_line|#define IDE_IREASON_REG&t;&t;IDE_NSECTOR_REG
 DECL|macro|IDE_BCOUNTL_REG
@@ -151,10 +151,8 @@ DECL|macro|IDE_BCOUNTH_REG
 mdefine_line|#define IDE_BCOUNTH_REG&t;&t;IDE_HCYL_REG
 DECL|macro|GET_ERR
 mdefine_line|#define GET_ERR()&t;&t;IN_BYTE(IDE_ERROR_REG)
-DECL|macro|GET_STAT
-mdefine_line|#define GET_STAT()&t;&t;IN_BYTE(IDE_STATUS_REG)
 DECL|macro|GET_ALTSTAT
-mdefine_line|#define GET_ALTSTAT()&t;&t;IN_BYTE(IDE_CONTROL_REG)
+mdefine_line|#define GET_ALTSTAT()&t;&t;IN_BYTE(drive-&gt;channel-&gt;io_ports[IDE_CONTROL_OFFSET])
 DECL|macro|GET_FEAT
 mdefine_line|#define GET_FEAT()&t;&t;IN_BYTE(IDE_NSECTOR_REG)
 DECL|macro|BAD_R_STAT
@@ -763,11 +761,6 @@ id|select_t
 id|select
 suffix:semicolon
 multiline_comment|/* basic drive/head select reg value */
-DECL|member|ctl
-id|u8
-id|ctl
-suffix:semicolon
-multiline_comment|/* &quot;normal&quot; value for IDE_CONTROL_REG */
 DECL|member|status
 id|u8
 id|status
@@ -2170,7 +2163,7 @@ id|u8
 suffix:semicolon
 r_extern
 id|ide_startstop_t
-id|ide_error
+id|ata_error
 c_func
 (paren
 r_struct
@@ -2185,16 +2178,14 @@ comma
 r_const
 r_char
 op_star
-comma
-id|byte
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ide_fixstring() cleans up and (optionally) byte-swaps a text string,&n; * removing leading/trailing blanks and compressing internal blanks.&n; * It is primarily used to tidy up the model name/number fields as&n; * returned by the WIN_[P]IDENTIFY commands.&n; */
+r_extern
 r_void
 id|ide_fixstring
 c_func
 (paren
-id|byte
+r_char
 op_star
 id|s
 comma
@@ -2207,7 +2198,6 @@ r_int
 id|byteswap
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This routine busy-waits for the drive status to be not &quot;busy&quot;.&n; * It then checks the status for all of the &quot;good&quot; bits and none&n; * of the &quot;bad&quot; bits, and if all is okay it returns 0.  All other&n; * cases return 1 after doing &quot;*startstop = ide_error()&quot;, and the&n; * caller should return the updated value of &quot;startstop&quot; in this case.&n; * &quot;startstop&quot; is unchanged when the function returns 0;&n; */
 r_extern
 r_int
 id|ide_wait_stat
@@ -3316,6 +3306,28 @@ comma
 id|u8
 comma
 id|u8
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ata_irq_enable
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ata_reset
+c_func
+(paren
+r_struct
+id|ata_channel
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -1201,7 +1201,7 @@ suffix:semicolon
 op_star
 id|startstop
 op_assign
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -1209,8 +1209,6 @@ comma
 id|rq
 comma
 l_string|&quot;request sense failure&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 r_return
@@ -1524,7 +1522,7 @@ multiline_comment|/* Go to the default handler&n;&t;&t;&t;   for other errors. *
 op_star
 id|startstop
 op_assign
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -1532,8 +1530,6 @@ comma
 id|rq
 comma
 id|__FUNCTION__
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 r_return
@@ -1819,16 +1815,12 @@ comma
 id|IDE_HCYL_REG
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|ata_irq_enable
+c_func
 (paren
-id|IDE_CONTROL_REG
-)paren
-id|OUT_BYTE
-(paren
-id|drive-&gt;ctl
+id|drive
 comma
-id|IDE_CONTROL_REG
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -2456,15 +2448,14 @@ suffix:semicolon
 )brace
 r_else
 r_return
-id|ide_error
+id|ata_error
+c_func
 (paren
 id|drive
 comma
 id|rq
 comma
 l_string|&quot;dma error&quot;
-comma
-id|stat
 )paren
 suffix:semicolon
 )brace
@@ -4680,7 +4671,7 @@ c_cond
 id|dma_error
 )paren
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -4688,8 +4679,6 @@ comma
 id|rq
 comma
 l_string|&quot;dma error&quot;
-comma
-id|stat
 )paren
 suffix:semicolon
 id|__ide_end_request

@@ -650,17 +650,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|IDE_CONTROL_REG
-)paren
-id|outb
+id|ata_irq_enable
 c_func
 (paren
-l_int|0x08
+id|drive
 comma
-id|IDE_CONTROL_REG
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1389,16 +1384,14 @@ id|BAD_R_STAT
 )paren
 )paren
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
 comma
 id|rq
 comma
-l_string|&quot;promise_read_intr&quot;
-comma
-id|drive-&gt;status
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|read_again
@@ -1659,7 +1652,7 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -1667,8 +1660,6 @@ comma
 id|rq
 comma
 l_string|&quot;promise read intr&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace
@@ -1761,7 +1752,7 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -1769,8 +1760,6 @@ comma
 id|rq
 comma
 l_string|&quot;busy timeout&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace
@@ -2058,7 +2047,7 @@ l_int|0
 )paren
 suffix:semicolon
 r_return
-id|ide_error
+id|ata_error
 c_func
 (paren
 id|drive
@@ -2066,8 +2055,6 @@ comma
 id|rq
 comma
 l_string|&quot;write timeout&quot;
-comma
-id|drive-&gt;status
 )paren
 suffix:semicolon
 )brace
@@ -2345,17 +2332,12 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|IDE_CONTROL_REG
-)paren
-id|outb
+id|ata_irq_enable
 c_func
 (paren
-id|drive-&gt;ctl
+id|drive
 comma
-id|IDE_CONTROL_REG
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* clear nIEN */

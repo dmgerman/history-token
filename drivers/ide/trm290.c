@@ -418,7 +418,6 @@ c_func
 (paren
 id|drive
 comma
-op_amp
 id|ide_dma_intr
 comma
 id|WAIT_CMD

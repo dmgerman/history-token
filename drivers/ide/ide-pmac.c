@@ -1522,14 +1522,12 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|ata_irq_enale
 c_func
 (paren
-id|drive-&gt;ctl
-op_or
-l_int|2
+id|drive
 comma
-id|IDE_CONTROL_REG
+l_int|0
 )paren
 suffix:semicolon
 id|OUT_BYTE
@@ -1590,12 +1588,12 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* local CPU only */
-id|OUT_BYTE
+id|ata_irq_enable
 c_func
 (paren
-id|drive-&gt;ctl
+id|drive
 comma
-id|IDE_CONTROL_REG
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -6247,12 +6245,12 @@ id|idx
 )paren
 suffix:semicolon
 )brace
-id|OUT_BYTE
+id|ata_irq_enable
 c_func
 (paren
-l_int|0
+id|drive
 comma
-id|IDE_CONTROL_REG
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Apply settings to controller */

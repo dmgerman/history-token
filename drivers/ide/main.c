@@ -607,10 +607,6 @@ id|drive-&gt;channel
 op_assign
 id|ch
 suffix:semicolon
-id|drive-&gt;ctl
-op_assign
-l_int|0x08
-suffix:semicolon
 id|drive-&gt;ready_stat
 op_assign
 id|READY_STAT

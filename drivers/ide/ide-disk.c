@@ -1014,6 +1014,10 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* hi  lba */
+id|args.taskfile.device_head
+op_assign
+id|drive-&gt;select.all
+suffix:semicolon
 id|args.hobfile.sector_number
 op_assign
 (paren
@@ -1041,21 +1045,13 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* hi  lba */
-id|args.taskfile.device_head
+id|args.hobfile.device_head
 op_assign
 id|drive-&gt;select.all
 suffix:semicolon
-id|args.hobfile.device_head
-op_assign
-id|args.taskfile.device_head
-suffix:semicolon
 id|args.hobfile.control
 op_assign
-(paren
-id|drive-&gt;ctl
-op_or
 l_int|0x80
-)paren
 suffix:semicolon
 id|args.taskfile.command
 op_assign
@@ -2951,11 +2947,7 @@ l_int|0x40
 suffix:semicolon
 id|args.hobfile.control
 op_assign
-(paren
-id|drive-&gt;ctl
-op_or
 l_int|0x80
-)paren
 suffix:semicolon
 id|args.handler
 op_assign
