@@ -128,7 +128,7 @@ id|sctp_sockaddr_af
 c_func
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 comma
@@ -946,7 +946,7 @@ id|sctp_sockaddr_af
 c_func
 (paren
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|opt
 comma
@@ -1042,7 +1042,7 @@ id|len
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -1633,7 +1633,7 @@ id|addrcnt
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon
@@ -1971,7 +1971,7 @@ id|addrcnt
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -2252,7 +2252,7 @@ id|addrcnt
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon
@@ -3287,7 +3287,7 @@ id|msg_len
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon
@@ -4882,7 +4882,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -5421,7 +5421,7 @@ id|optlen
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -5744,7 +5744,7 @@ id|sctp_initmsg
 id|sinit
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -5858,7 +5858,7 @@ op_star
 id|asoc
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -6318,7 +6318,7 @@ r_else
 (brace
 multiline_comment|/* If there is no association or the association-id = 0&n;&t;&t; * set the values to the endpoint.&n;&t;&t; */
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -6507,7 +6507,7 @@ r_else
 (brace
 multiline_comment|/* Set the values to the endpoint */
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -6569,7 +6569,7 @@ r_int
 id|val
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -6663,7 +6663,7 @@ op_star
 id|pos
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -6802,7 +6802,7 @@ id|optlen
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon
@@ -7516,7 +7516,7 @@ id|addr_len
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon
@@ -8021,7 +8021,7 @@ id|err
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon
@@ -8258,7 +8258,7 @@ op_star
 id|ep
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 suffix:semicolon
@@ -10174,7 +10174,7 @@ id|sctp_addr
 id|temp
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -10974,7 +10974,7 @@ id|sctp_addr
 id|temp
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -11378,7 +11378,7 @@ op_star
 id|asoc
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -11666,7 +11666,7 @@ op_star
 id|asoc
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -12058,7 +12058,7 @@ r_else
 (brace
 multiline_comment|/* Values corresponding to the endpoint. */
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -12287,7 +12287,7 @@ r_else
 (brace
 multiline_comment|/* Values corresponding to the endpoint */
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -12387,7 +12387,7 @@ r_int
 id|val
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -13768,7 +13768,7 @@ id|backlog
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -13903,7 +13903,7 @@ id|backlog
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -14225,7 +14225,7 @@ op_assign
 id|sock-&gt;sk
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|sp
 op_assign
@@ -16425,7 +16425,7 @@ id|type
 )paren
 (brace
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|oldsp
 op_assign
@@ -16436,7 +16436,7 @@ id|oldsk
 )paren
 suffix:semicolon
 r_struct
-id|sctp_opt
+id|sctp_sock
 op_star
 id|newsp
 op_assign
@@ -16482,18 +16482,12 @@ op_assign
 id|oldsk-&gt;sk_rcvbuf
 suffix:semicolon
 multiline_comment|/* Brute force copy old sctp opt. */
-id|memcpy
+id|inet_sk_copy_descendant
 c_func
 (paren
-id|newsp
+id|newsk
 comma
-id|oldsp
-comma
-r_sizeof
-(paren
-r_struct
-id|sctp_opt
-)paren
+id|oldsk
 )paren
 suffix:semicolon
 multiline_comment|/* Restore the ep value that was overwritten with the above structure&n;&t; * copy.&n;&t; */
