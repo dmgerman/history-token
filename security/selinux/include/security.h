@@ -248,15 +248,17 @@ id|out_sid
 )paren
 suffix:semicolon
 DECL|macro|SECURITY_FS_USE_XATTR
-mdefine_line|#define SECURITY_FS_USE_XATTR 1 /* use xattr */
+mdefine_line|#define SECURITY_FS_USE_XATTR&t;&t;1 /* use xattr */
 DECL|macro|SECURITY_FS_USE_TRANS
-mdefine_line|#define SECURITY_FS_USE_TRANS 2 /* use transition SIDs, e.g. devpts/tmpfs */
+mdefine_line|#define SECURITY_FS_USE_TRANS&t;&t;2 /* use transition SIDs, e.g. devpts/tmpfs */
 DECL|macro|SECURITY_FS_USE_TASK
-mdefine_line|#define SECURITY_FS_USE_TASK  3 /* use task SIDs, e.g. pipefs/sockfs */
+mdefine_line|#define SECURITY_FS_USE_TASK&t;&t;3 /* use task SIDs, e.g. pipefs/sockfs */
 DECL|macro|SECURITY_FS_USE_GENFS
-mdefine_line|#define SECURITY_FS_USE_GENFS 4 /* use the genfs support */
+mdefine_line|#define SECURITY_FS_USE_GENFS&t;&t;4 /* use the genfs support */
 DECL|macro|SECURITY_FS_USE_NONE
-mdefine_line|#define SECURITY_FS_USE_NONE  5 /* no labeling support */
+mdefine_line|#define SECURITY_FS_USE_NONE&t;&t;5 /* no labeling support */
+DECL|macro|SECURITY_FS_USE_MNTPOINT
+mdefine_line|#define SECURITY_FS_USE_MNTPOINT&t;6 /* use mountpoint labeling */
 r_int
 id|security_fs_use
 c_func

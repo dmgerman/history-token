@@ -3334,6 +3334,10 @@ c_cond
 id|prop-&gt;type
 op_eq
 id|P_CHOICE
+op_logical_or
+id|prop-&gt;type
+op_eq
+id|P_SELECT
 )paren
 r_continue
 suffix:semicolon

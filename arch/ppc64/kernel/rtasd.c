@@ -1278,6 +1278,12 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+id|daemonize
+c_func
+(paren
+l_string|&quot;rtasd&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1329,6 +1335,13 @@ id|no_more_logging
 op_assign
 l_int|0
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;RTAS daemon started&bslash;n&quot;
+)paren
+suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -1345,29 +1358,6 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-id|daemonize
-c_func
-(paren
-l_string|&quot;rtasd&quot;
-)paren
-suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* Rusty unreal time task */
-id|current-&gt;policy
-op_assign
-id|SCHED_FIFO
-suffix:semicolon
-id|current-&gt;nice
-op_assign
-id|sys_sched_get_priority_max
-c_func
-(paren
-id|SCHED_FIFO
-)paren
-op_plus
-l_int|1
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* See if we have any error stored in NVRAM */
 id|memset
 c_func
@@ -1640,11 +1630,20 @@ id|repeat
 suffix:semicolon
 id|error_vfree
 suffix:colon
+r_if
+c_cond
+(paren
+id|rtas_log_buf
+)paren
 id|vfree
 c_func
 (paren
 id|rtas_log_buf
 )paren
+suffix:semicolon
+id|rtas_log_buf
+op_assign
+l_int|NULL
 suffix:semicolon
 id|error
 suffix:colon
@@ -1753,13 +1752,6 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Failed to start RTAS daemon&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;RTAS daemon started&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Make room for the sequence number */

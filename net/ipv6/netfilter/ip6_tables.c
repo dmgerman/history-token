@@ -6763,7 +6763,7 @@ c_cond
 id|tcp-&gt;doff
 op_star
 l_int|4
-OG
+template_param
 id|datalen
 )paren
 (brace

@@ -3938,6 +3938,12 @@ suffix:semicolon
 singleline_comment|//&t;while (HWGROUP(drive)-&gt;busy)
 singleline_comment|//&t;&t;ide_delay_50ms();
 macro_line|#if defined(CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !defined(CONFIG_DMA_NONPCI)
+r_if
+c_cond
+(paren
+id|hwif-&gt;ide_dma_check
+)paren
+multiline_comment|/* check if host supports DMA */
 id|hwif
 op_member_access_from_pointer
 id|ide_dma_host_off
@@ -4252,6 +4258,7 @@ id|speed
 op_ge
 id|XFER_SW_DMA_0
 )paren
+(brace
 id|hwif
 op_member_access_from_pointer
 id|ide_dma_host_on
@@ -4260,7 +4267,15 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
+r_if
+c_cond
+(paren
+id|hwif-&gt;ide_dma_check
+)paren
+multiline_comment|/* check if host supports DMA */
 id|hwif
 op_member_access_from_pointer
 id|ide_dma_off_quietly
@@ -4269,6 +4284,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif /* (CONFIG_BLK_DEV_IDEDMA) &amp;&amp; !(CONFIG_DMA_NONPCI) */
 r_switch
 c_cond
@@ -5201,14 +5217,17 @@ id|ide_stopped
 suffix:semicolon
 )brace
 DECL|function|check_dma_crc
+r_static
 r_void
 id|check_dma_crc
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 )paren
 (brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
@@ -5266,23 +5285,16 @@ id|drive
 suffix:semicolon
 )brace
 r_else
-(brace
 (paren
 r_void
 )paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
 )paren
 suffix:semicolon
-)brace
+macro_line|#endif
 )brace
 DECL|function|pre_reset
 r_void

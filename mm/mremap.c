@@ -610,6 +610,13 @@ comma
 id|old_addr
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Since alloc_one_pte_map can drop and re-acquire&n;&t;&t; * page_table_lock, we should re-check the src entry...&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|src
+)paren
+(brace
 id|error
 op_assign
 id|copy_one_pte
@@ -633,6 +640,7 @@ c_func
 id|src
 )paren
 suffix:semicolon
+)brace
 id|pte_unmap
 c_func
 (paren
@@ -640,16 +648,6 @@ id|dst
 )paren
 suffix:semicolon
 )brace
-r_else
-multiline_comment|/*&n;&t;&t; * Why do we need this flush ? If there is no pte for&n;&t;&t; * old_addr, then there must not be a pte for it as well.&n;&t;&t; */
-id|flush_tlb_page
-c_func
-(paren
-id|vma
-comma
-id|old_addr
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren

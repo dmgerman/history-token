@@ -2400,7 +2400,15 @@ r_if
 c_cond
 (paren
 id|dma_addr
-template_param
+OL
+id|iommu_bus_base
+op_plus
+id|EMERGENCY_PAGES
+op_star
+id|PAGE_SIZE
+op_logical_or
+id|dma_addr
+op_ge
 id|iommu_bus_base
 op_plus
 id|iommu_size

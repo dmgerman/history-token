@@ -820,6 +820,11 @@ r_int
 r_int
 id|video_ram
 suffix:semicolon
+DECL|member|mapped_vram
+r_int
+r_int
+id|mapped_vram
+suffix:semicolon
 DECL|member|pitch
 DECL|member|bpp
 DECL|member|depth
@@ -958,8 +963,13 @@ suffix:semicolon
 DECL|macro|PRIMARY_MONITOR
 mdefine_line|#define PRIMARY_MONITOR(rinfo)&t;(rinfo-&gt;mon1_type)
 multiline_comment|/*&n; * Debugging stuffs&n; */
+macro_line|#ifdef CONFIG_FB_RADEON_DEBUG
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;&t;1
+macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG&t;&t;0
+macro_line|#endif
 macro_line|#if DEBUG
 DECL|macro|RTRACE
 mdefine_line|#define RTRACE&t;&t;printk

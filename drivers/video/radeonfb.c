@@ -970,6 +970,7 @@ id|reg_val
 suffix:semicolon
 multiline_comment|/* these common regs are cleared before mode setting so they do not&n; * interfere with anything&n; */
 DECL|variable|common_regs
+r_static
 id|reg_val
 id|common_regs
 (braket
@@ -1033,6 +1034,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|common_regs_m6
+r_static
 id|reg_val
 id|common_regs_m6
 (braket
@@ -14198,10 +14200,10 @@ id|radeonfb_pci_unregister
 comma
 )brace
 suffix:semicolon
-DECL|function|radeonfb_init
+DECL|function|radeonfb_old_init
 r_int
 id|__init
-id|radeonfb_init
+id|radeonfb_old_init
 (paren
 r_void
 )paren
@@ -14214,10 +14216,10 @@ id|radeonfb_driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|radeonfb_exit
+DECL|function|radeonfb_old_exit
 r_void
 id|__exit
-id|radeonfb_exit
+id|radeonfb_old_exit
 (paren
 r_void
 )paren
@@ -14229,10 +14231,10 @@ id|radeonfb_driver
 )paren
 suffix:semicolon
 )brace
-DECL|function|radeonfb_setup
+DECL|function|radeonfb_old_setup
 r_int
 id|__init
-id|radeonfb_setup
+id|radeonfb_old_setup
 (paren
 r_char
 op_star
@@ -14410,18 +14412,18 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-DECL|variable|radeonfb_init
+DECL|variable|radeonfb_old_init
 id|module_init
 c_func
 (paren
-id|radeonfb_init
+id|radeonfb_old_init
 )paren
 suffix:semicolon
-DECL|variable|radeonfb_exit
+DECL|variable|radeonfb_old_exit
 id|module_exit
 c_func
 (paren
-id|radeonfb_exit
+id|radeonfb_old_exit
 )paren
 suffix:semicolon
 macro_line|#endif

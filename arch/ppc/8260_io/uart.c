@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  UART driver for MPC8260 CPM SCC or SMC&n; *  Copyright (c) 1999 Dan Malek (dmalek@jlc.net)&n; *  Copyright (c) 2000 MontaVista Software, Inc. (source@mvista.com)&n; *&t;2.3.99 updates&n; *  Copyright (c) 2002 Allen Curtis, Ones and Zeros, Inc. (acurtis@onz.com)&n; *&t;2.5.50 updates&n; *&n; * I used the 8xx uart.c driver as the framework for this driver.&n; * The original code was written for the EST8260 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; *&n; * The 8xx and 8260 are similar, but not identical.  Over time we&n; * could probably merge these two drivers.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs.&n; * Only the SCCs support modem control, so that is not complete either.&n; */
+multiline_comment|/*&n; *  UART driver for MPC8260 CPM SCC or SMC&n; *  Copyright (c) 1999 Dan Malek (dmalek@jlc.net)&n; *  Copyright (c) 2000 MontaVista Software, Inc. (source@mvista.com)&n; *&t;2.3.99 updates&n; *  Copyright (c) 2002 Allen Curtis, Ones and Zeros, Inc. (acurtis@onz.com)&n; *&t;2.5.50 updates&n; *  Fix the console driver to be registered with initcalls and some minor fixup&n; *  for 2.6.2, by Petter Larsen, moreCom as (petter.larsen@morecom.no) and&n; *  Miguel Valero, AxxessIT ASA (miguel.valero@axxessit.no)&n; *&n; * I used the 8xx uart.c driver as the framework for this driver.&n; * The original code was written for the EST8260 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; *&n; * The 8xx and 8260 are similar, but not identical.  Over time we&n; * could probably merge these two drivers.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs.&n; * Only the SCCs support modem control, so that is not complete either.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -69,6 +69,7 @@ id|serial_driver
 suffix:semicolon
 r_static
 r_int
+id|__init
 id|serial_console_setup
 c_func
 (paren
@@ -102,7 +103,9 @@ id|count
 )paren
 suffix:semicolon
 r_static
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 id|serial_console_device
 c_func
 (paren
@@ -110,6 +113,10 @@ r_struct
 id|console
 op_star
 id|c
+comma
+r_int
+op_star
+id|index
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
@@ -1455,16 +1462,6 @@ l_int|0
 suffix:semicolon
 id|tty-&gt;flip.count
 op_increment
-suffix:semicolon
-id|queue_task
-c_func
-(paren
-op_amp
-id|tty-&gt;flip.tqueue
-comma
-op_amp
-id|tq_timer
-)paren
 suffix:semicolon
 )brace
 DECL|function|transmit_chars
@@ -6695,7 +6692,6 @@ comma
 id|current
 )paren
 suffix:semicolon
-macro_line|#endif
 r_struct
 id|serial_state
 op_star
@@ -6703,6 +6699,7 @@ id|state
 op_assign
 id|info-&gt;state
 suffix:semicolon
+macro_line|#endif
 r_int
 id|retval
 suffix:semicolon
@@ -8878,16 +8875,13 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Register console.&n; */
 DECL|function|console_8xx_init
+r_static
 r_int
 id|__init
 id|console_8xx_init
 c_func
 (paren
-r_int
-id|kmem_start
-comma
-r_int
-id|kmem_end
+r_void
 )paren
 (brace
 id|register_console
@@ -8898,9 +8892,16 @@ id|sercons
 )paren
 suffix:semicolon
 r_return
-id|kmem_start
+l_int|0
 suffix:semicolon
 )brace
+DECL|variable|console_8xx_init
+id|console_initcall
+c_func
+(paren
+id|console_8xx_init
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Default console baud rate as determined by the board information&n; * structure.&n; */
 DECL|variable|baud_idx
@@ -10350,6 +10351,7 @@ op_star
 id|up
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef SCC_CONSOLE
 r_volatile
 id|scc_t
 op_star
@@ -10360,6 +10362,7 @@ id|scc_uart_t
 op_star
 id|sup
 suffix:semicolon
+macro_line|#endif
 r_volatile
 id|iop8260_t
 op_star

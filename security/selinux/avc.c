@@ -657,6 +657,7 @@ suffix:semicolon
 multiline_comment|/**&n; * avc_init - Initialize the AVC.&n; *&n; * Initialize the access vector cache.&n; */
 DECL|function|avc_init
 r_void
+id|__init
 id|avc_init
 c_func
 (paren

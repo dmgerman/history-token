@@ -15358,6 +15358,12 @@ op_star
 id|args
 )paren
 (brace
+macro_line|#ifndef CONFIG_SYSCTL
+r_return
+op_minus
+id|ENOSYS
+suffix:semicolon
+macro_line|#else
 r_struct
 id|__sysctl_args32
 id|tmp
@@ -15588,6 +15594,7 @@ suffix:semicolon
 r_return
 id|error
 suffix:semicolon
+macro_line|#endif
 )brace
 r_extern
 r_int

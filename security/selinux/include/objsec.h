@@ -186,6 +186,11 @@ id|u32
 id|sid
 suffix:semicolon
 multiline_comment|/* SID of file system */
+DECL|member|def_sid
+id|u32
+id|def_sid
+suffix:semicolon
+multiline_comment|/* default SID for labeling */
 DECL|member|behavior
 r_int
 r_int

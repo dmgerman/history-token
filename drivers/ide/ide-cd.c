@@ -3388,13 +3388,7 @@ id|drive
 )paren
 )paren
 )paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
@@ -5862,13 +5856,7 @@ c_func
 l_string|&quot;ide-cd: dma error&bslash;n&quot;
 )paren
 suffix:semicolon
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive
@@ -6419,13 +6407,7 @@ c_func
 l_string|&quot;ide-cd: write dma error&bslash;n&quot;
 )paren
 suffix:semicolon
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|ide_dma_off
+id|__ide_dma_off
 c_func
 (paren
 id|drive

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;flask.h&quot;
 macro_line|#include &quot;av_permissions.h&quot;
@@ -306,6 +307,7 @@ id|tag
 suffix:semicolon
 multiline_comment|/*&n; * AVC operations&n; */
 r_void
+id|__init
 id|avc_init
 c_func
 (paren

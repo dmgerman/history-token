@@ -423,6 +423,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_PCI
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA_FORCED
 multiline_comment|/*&n; * Long lost data from 2.0.34 that is now in 2.0.39&n; *&n; * This was used in ./drivers/block/triton.c to do DMA Base address setup&n; * when PnP failed.  Oh the things we forget.  I believe this was part&n; * of SFF-8038i that has been withdrawn from public access... :-((&n; */
 DECL|macro|DEFAULT_BMIBA
@@ -832,6 +833,7 @@ r_return
 id|dma_base
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
 DECL|function|ide_setup_pci_noise
 r_void
 id|ide_setup_pci_noise

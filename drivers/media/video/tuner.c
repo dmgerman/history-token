@@ -5913,6 +5913,10 @@ OL
 id|TUNERS
 )paren
 (brace
+id|t-&gt;type
+op_assign
+id|type
+suffix:semicolon
 id|printk
 c_func
 (paren

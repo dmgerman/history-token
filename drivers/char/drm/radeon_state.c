@@ -9551,6 +9551,8 @@ id|dev_priv-&gt;ring_rptr_offset
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#if BITS_PER_LONG == 32
+multiline_comment|/*&n;&t; * This ioctl() doesn&squot;t work on 64-bit platforms because hw_lock is a&n;&t; * pointer which can&squot;t fit into an int-sized variable.  According to&n;&t; * Michel D&#xfffd;nzer, the ioctl() is only used on embedded platforms, so&n;&t; * not supporting it shouldn&squot;t be a problem.  If the same functionality&n;&t; * is needed on 64-bit platforms, a new ioctl() would have to be added,&n;&t; * so backwards-compatibility for the embedded platforms can be&n;&t; * maintained.  --davidm 4-Feb-2004.&n;&t; */
 r_case
 id|RADEON_PARAM_SAREA_HANDLE
 suffix:colon
@@ -9564,6 +9566,7 @@ id|dev-&gt;lock.hw_lock
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_case
 id|RADEON_PARAM_GART_TEX_HANDLE
 suffix:colon

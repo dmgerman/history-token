@@ -696,9 +696,7 @@ id|drive-&gt;autodma
 r_if
 c_cond
 (paren
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_bad_drive
+id|__ide_dma_bad_drive
 c_func
 (paren
 id|drive
