@@ -129,22 +129,6 @@ DECL|macro|AUTONEG_ADV_MASK
 mdefine_line|#define AUTONEG_ADV_MASK     0x2F
 DECL|macro|FLOW_CONTROL_DEFAULT
 mdefine_line|#define FLOW_CONTROL_DEFAULT FLOW_CONTROL_FULL
-DECL|macro|DEFAULT_TXD
-mdefine_line|#define DEFAULT_TXD                  256
-DECL|macro|MAX_TXD
-mdefine_line|#define MAX_TXD                      256
-DECL|macro|MIN_TXD
-mdefine_line|#define MIN_TXD                       80
-DECL|macro|MAX_82544_TXD
-mdefine_line|#define MAX_82544_TXD               4096
-DECL|macro|DEFAULT_RXD
-mdefine_line|#define DEFAULT_RXD                  256
-DECL|macro|MAX_RXD
-mdefine_line|#define MAX_RXD                      256
-DECL|macro|MIN_RXD
-mdefine_line|#define MIN_RXD                       80
-DECL|macro|MAX_82544_RXD
-mdefine_line|#define MAX_82544_RXD               4096
 DECL|macro|DEFAULT_RDTR
 mdefine_line|#define DEFAULT_RDTR                   0
 DECL|macro|MAX_RXDELAY
@@ -576,13 +560,13 @@ l_string|&quot;using default of &quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|DEFAULT_TXD
+id|E1000_DEFAULT_TXD
 )paren
 comma
 dot
 id|def
 op_assign
-id|DEFAULT_TXD
+id|E1000_DEFAULT_TXD
 comma
 dot
 id|arg
@@ -595,7 +579,7 @@ op_assign
 dot
 id|min
 op_assign
-id|MIN_TXD
+id|E1000_MIN_TXD
 )brace
 )brace
 )brace
@@ -620,9 +604,9 @@ OL
 id|e1000_82544
 ques
 c_cond
-id|MAX_TXD
+id|E1000_MAX_TXD
 suffix:colon
-id|MAX_82544_TXD
+id|E1000_MAX_82544_TXD
 suffix:semicolon
 id|tx_ring-&gt;count
 op_assign
@@ -674,13 +658,13 @@ l_string|&quot;using default of &quot;
 id|__MODULE_STRING
 c_func
 (paren
-id|DEFAULT_RXD
+id|E1000_DEFAULT_RXD
 )paren
 comma
 dot
 id|def
 op_assign
-id|DEFAULT_RXD
+id|E1000_DEFAULT_RXD
 comma
 dot
 id|arg
@@ -693,7 +677,7 @@ op_assign
 dot
 id|min
 op_assign
-id|MIN_RXD
+id|E1000_MIN_RXD
 )brace
 )brace
 )brace
@@ -718,9 +702,9 @@ OL
 id|e1000_82544
 ques
 c_cond
-id|MAX_RXD
+id|E1000_MAX_RXD
 suffix:colon
-id|MAX_82544_RXD
+id|E1000_MAX_82544_RXD
 suffix:semicolon
 id|rx_ring-&gt;count
 op_assign
@@ -1258,14 +1242,25 @@ id|InterruptThrottleRate
 id|bd
 )braket
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
 id|adapter-&gt;itr
-op_eq
-l_int|0
 )paren
 (brace
+r_case
+op_minus
+l_int|1
+suffix:colon
+id|adapter-&gt;itr
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0
+suffix:colon
 id|printk
 c_func
 (paren
@@ -1275,29 +1270,24 @@ comma
 id|opt.name
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|adapter-&gt;itr
-op_eq
-l_int|1
-op_logical_or
-id|adapter-&gt;itr
-op_eq
-op_minus
-l_int|1
-)paren
-(brace
-multiline_comment|/* Dynamic mode */
-id|adapter-&gt;itr
-op_assign
-l_int|1
+r_break
 suffix:semicolon
-)brace
-r_else
-(brace
+r_case
+l_int|1
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s set to dynamic mode&bslash;n&quot;
+comma
+id|opt.name
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|e1000_validate_option
 c_func
 (paren
@@ -1307,6 +1297,8 @@ comma
 op_amp
 id|opt
 )paren
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 )brace
