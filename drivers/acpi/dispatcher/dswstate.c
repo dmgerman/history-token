@@ -1863,6 +1863,13 @@ id|status
 )paren
 )paren
 (brace
+id|acpi_ut_release_to_cache
+(paren
+id|ACPI_MEM_LIST_WALK
+comma
+id|walk_state
+)paren
+suffix:semicolon
 id|return_PTR
 (paren
 l_int|NULL

@@ -44,7 +44,7 @@ id|u32
 id|acpi_gbl_nesting_level
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *&n; * Runtime configuration (static defaults that can be overriden at runtime)&n; *&n; ****************************************************************************/
-multiline_comment|/*&n; * Enable &quot;slack&quot; in the AML interpreter?  Default is FALSE, and the&n; * interpreter strictly follows the ACPI specification.  Setting to TRUE&n; * allows the interpreter to forgive certain bad AML constructs.&n; */
+multiline_comment|/*&n; * Enable &quot;slack&quot; in the AML interpreter?  Default is FALSE, and the&n; * interpreter strictly follows the ACPI specification.  Setting to TRUE&n; * allows the interpreter to forgive certain bad AML constructs.  Currently:&n; * 1) Allow &quot;implicit return&quot; of last value in a control method&n; * 2) Allow access beyond end of operation region&n; * 3) Allow access to uninitialized locals/args (auto-init to integer 0)&n; */
 id|ACPI_EXTERN
 id|u8
 id|ACPI_INIT_GLOBAL
