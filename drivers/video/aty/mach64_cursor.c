@@ -637,7 +637,7 @@ id|c-&gt;pos.x
 op_minus
 id|c-&gt;hot.x
 op_minus
-id|par-&gt;crtc.xoffset
+id|info-&gt;var.xoffset
 suffix:semicolon
 r_if
 c_cond
@@ -670,7 +670,7 @@ id|c-&gt;pos.y
 op_minus
 id|c-&gt;hot.y
 op_minus
-id|par-&gt;crtc.yoffset
+id|info-&gt;var.yoffset
 suffix:semicolon
 r_if
 c_cond

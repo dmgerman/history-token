@@ -820,7 +820,7 @@ macro_line|# ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_syst_wide
@@ -911,7 +911,7 @@ macro_line|# ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_syst_wide

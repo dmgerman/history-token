@@ -292,7 +292,6 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * CPU type, hardware bug flags, and per-CPU state.  Frequently used&n; * state comes earlier:&n; */
 DECL|struct|cpuinfo_ia64
-r_extern
 r_struct
 id|cpuinfo_ia64
 (brace
@@ -463,12 +462,19 @@ id|prof_multiplier
 suffix:semicolon
 macro_line|#endif
 )brace
+suffix:semicolon
+id|DECLARE_PER_CPU
+c_func
+(paren
+r_struct
+id|cpuinfo_ia64
+comma
 id|cpu_info
-id|__per_cpu_data
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * The &quot;local&quot; data pointer.  It points to the per-CPU data of the currently executing&n; * CPU, much like &quot;current&quot; points to the per-task data of the currently executing task.&n; */
 DECL|macro|local_cpu_data
-mdefine_line|#define local_cpu_data&t;&t;(&amp;this_cpu(cpu_info))
+mdefine_line|#define local_cpu_data&t;&t;(&amp;__get_cpu_var(cpu_info))
 DECL|macro|cpu_data
 mdefine_line|#define cpu_data(cpu)&t;&t;(&amp;per_cpu(cpu_info, cpu))
 r_extern

@@ -2192,5 +2192,5 @@ DECL|macro|PM3_READ_DAC_REG
 mdefine_line|#define PM3_READ_DAC_REG(r) pm3fb_read_dac_reg(l_fb_info, r)
 DECL|macro|PM3_COLOR
 mdefine_line|#define PM3_COLOR(c) &bslash;&n;do { &bslash;&n;  if (l_fb_info-&gt;current_par-&gt;depth == 8) &bslash;&n;    { &bslash;&n;      c = (c &amp; 0xFF); &bslash;&n;      c = c | (c &lt;&lt; 8); &bslash;&n;    } &bslash;&n;  if ((l_fb_info-&gt;current_par-&gt;depth == 8) || (depth2bpp(l_fb_info-&gt;current_par-&gt;depth) == 16)) &bslash;&n;    { &bslash;&n;      c = (c &amp; 0xFFFF); &bslash;&n;      c = c | (c &lt;&lt; 16); &bslash;&n;    } &bslash;&n;} while (0)
-macro_line|#endif PM3FB_H
+macro_line|#endif /* PM3FB_H */
 eof

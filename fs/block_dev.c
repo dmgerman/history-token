@@ -3802,7 +3802,6 @@ op_amp
 id|bdev-&gt;bd_sem
 )paren
 )paren
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -4132,7 +4131,7 @@ id|generic_file_read
 comma
 id|write
 suffix:colon
-id|generic_file_write
+id|generic_file_write_nolock
 comma
 id|mmap
 suffix:colon

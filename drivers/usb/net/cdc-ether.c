@@ -1,4 +1,4 @@
-singleline_comment|// Portions of this file taken from 
+singleline_comment|// Portions of this file taken from
 singleline_comment|// Petko Manolov - Petkan (petkan@dce.bg)
 singleline_comment|// from his driver pegasus.c
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
@@ -4039,17 +4039,11 @@ id|rc
 (brace
 singleline_comment|// Nope we couldn&squot;t find one we liked.
 singleline_comment|// This device was not meant for us to control.
-id|kfree
-c_func
-(paren
-id|ether_dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|error_all
 suffix:semicolon
 )brace
-singleline_comment|// Now that we FOUND a configuration. let&squot;s try to make the 
+singleline_comment|// Now that we FOUND a configuration. let&squot;s try to make the
 singleline_comment|// device go into it.
 r_if
 c_cond
@@ -4069,14 +4063,8 @@ c_func
 l_string|&quot;usb_set_configuration() failed&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ether_dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|error_all
 suffix:semicolon
 )brace
 singleline_comment|// Now set the communication interface up as required.
@@ -4100,14 +4088,8 @@ c_func
 l_string|&quot;usb_set_interface() failed&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ether_dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|error_all
 suffix:semicolon
 )brace
 singleline_comment|// Only turn traffic on right now if we must...
@@ -4142,14 +4124,8 @@ c_func
 l_string|&quot;usb_set_interface() failed&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ether_dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|error_all
 suffix:semicolon
 )brace
 )brace
@@ -4178,14 +4154,8 @@ c_func
 l_string|&quot;usb_set_interface() failed&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ether_dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|error_all
 suffix:semicolon
 )brace
 )brace
@@ -4215,14 +4185,8 @@ c_func
 l_string|&quot;Unable to initialize ethernet device&quot;
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ether_dev
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
+r_goto
+id|error_all
 suffix:semicolon
 )brace
 singleline_comment|// Now that we have an ethernet device, let&squot;s set it up
@@ -4358,6 +4322,36 @@ op_assign
 l_int|5
 suffix:semicolon
 singleline_comment|// Okay, we are finally done...
+r_return
+l_int|NULL
+suffix:semicolon
+singleline_comment|// bailing out with our tail between our knees
+id|error_all
+suffix:colon
+id|usb_free_urb
+c_func
+(paren
+id|ether_dev-&gt;tx_urb
+)paren
+suffix:semicolon
+id|usb_free_urb
+c_func
+(paren
+id|ether_dev-&gt;rx_urb
+)paren
+suffix:semicolon
+id|usb_free_urb
+c_func
+(paren
+id|ether_dev-&gt;intr_urb
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ether_dev
+)paren
+suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon

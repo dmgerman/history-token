@@ -958,16 +958,22 @@ r_static
 id|pfm_stats_t
 id|pfm_stats
 suffix:semicolon
-DECL|variable|pfm_syst_wide
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_int
-id|__per_cpu_data
+comma
 id|pfm_syst_wide
+)paren
 suffix:semicolon
-DECL|variable|pfm_dcr_pp
 r_static
+id|DEFINE_PER_CPU
+c_func
+(paren
 r_int
-id|__per_cpu_data
+comma
 id|pfm_dcr_pp
+)paren
 suffix:semicolon
 multiline_comment|/* sysctl() controls */
 DECL|variable|pfm_sysctl
@@ -5944,7 +5950,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_dcr_pp
@@ -7504,7 +7510,7 @@ id|ctx-&gt;ctx_fl_system
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_dcr_pp
@@ -7736,7 +7742,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_syst_wide
@@ -7744,7 +7750,7 @@ id|pfm_syst_wide
 op_assign
 l_int|1
 suffix:semicolon
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_dcr_pp
@@ -10121,7 +10127,7 @@ c_func
 (paren
 )paren
 comma
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_syst_wide
@@ -10132,7 +10138,7 @@ c_func
 (paren
 )paren
 comma
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_dcr_pp
@@ -10495,7 +10501,7 @@ op_assign
 id|mode
 ques
 c_cond
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_dcr_pp
@@ -11962,7 +11968,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_syst_wide
@@ -11970,7 +11976,7 @@ id|pfm_syst_wide
 op_assign
 l_int|0
 suffix:semicolon
-id|this_cpu
+id|__get_cpu_var
 c_func
 (paren
 id|pfm_dcr_pp

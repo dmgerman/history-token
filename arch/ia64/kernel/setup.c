@@ -45,11 +45,14 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 macro_line|#endif
-DECL|variable|__per_cpu_data
+id|DECLARE_PER_CPU
+c_func
+(paren
 r_struct
 id|cpuinfo_ia64
+comma
 id|cpu_info
-id|__per_cpu_data
+)paren
 suffix:semicolon
 DECL|variable|ia64_phys_stacked_size_p8
 r_int
