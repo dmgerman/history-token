@@ -12353,19 +12353,6 @@ id|ide_cdrom_driver.drives
 comma
 )brace
 suffix:semicolon
-DECL|variable|ide_cdrom_module
-r_static
-id|ide_module_t
-id|ide_cdrom_module
-op_assign
-(brace
-id|info
-suffix:colon
-op_amp
-id|ide_cdrom_driver
-comma
-)brace
-suffix:semicolon
 multiline_comment|/* options */
 DECL|variable|ignore
 r_char
@@ -12647,10 +12634,11 @@ c_func
 r_void
 )paren
 (brace
-id|ide_unregister_module
+id|ide_unregister_driver
+c_func
 (paren
 op_amp
-id|ide_cdrom_module
+id|ide_cdrom_driver
 )paren
 suffix:semicolon
 )brace
@@ -12663,11 +12651,11 @@ c_func
 r_void
 )paren
 (brace
-id|ide_register_module
+id|ide_register_driver
 c_func
 (paren
 op_amp
-id|ide_cdrom_module
+id|ide_cdrom_driver
 )paren
 suffix:semicolon
 r_return

@@ -27081,19 +27081,6 @@ id|idetape_driver.drives
 comma
 )brace
 suffix:semicolon
-DECL|variable|idetape_module
-r_static
-id|ide_module_t
-id|idetape_module
-op_assign
-(brace
-id|info
-suffix:colon
-op_amp
-id|idetape_driver
-comma
-)brace
-suffix:semicolon
 multiline_comment|/*&n; *&t;Our character device supporting functions, passed to register_chrdev.&n; */
 DECL|variable|idetape_fops
 r_static
@@ -27457,11 +27444,11 @@ id|idetape_exit
 r_void
 )paren
 (brace
-id|ide_unregister_module
+id|ide_unregister_driver
 c_func
 (paren
 op_amp
-id|idetape_module
+id|idetape_driver
 )paren
 suffix:semicolon
 id|unregister_chrdev
@@ -27509,11 +27496,11 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|ide_register_module
+id|ide_register_driver
 c_func
 (paren
 op_amp
-id|idetape_module
+id|idetape_driver
 )paren
 suffix:semicolon
 r_return

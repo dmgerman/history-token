@@ -3093,6 +3093,11 @@ r_struct
 id|list_head
 id|drives
 suffix:semicolon
+DECL|member|drivers
+r_struct
+id|list_head
+id|drivers
+suffix:semicolon
 DECL|typedef|ide_driver_t
 )brace
 id|ide_driver_t
@@ -3152,11 +3157,6 @@ id|ide_hwifs
 )braket
 suffix:semicolon
 multiline_comment|/* master data repository */
-r_extern
-id|ide_module_t
-op_star
-id|ide_modules
-suffix:semicolon
 r_extern
 id|ide_module_t
 op_star
@@ -4205,19 +4205,21 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_BLK_DEV_IDE */
 macro_line|#endif /* _IDE_C */
 r_int
-id|ide_register_module
+id|ide_register_driver
+c_func
 (paren
-id|ide_module_t
+id|ide_driver_t
 op_star
-id|module
+id|driver
 )paren
 suffix:semicolon
 r_void
-id|ide_unregister_module
+id|ide_unregister_driver
+c_func
 (paren
-id|ide_module_t
+id|ide_driver_t
 op_star
-id|module
+id|driver
 )paren
 suffix:semicolon
 r_int
