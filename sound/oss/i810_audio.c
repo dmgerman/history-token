@@ -5825,12 +5825,6 @@ id|cnt
 op_assign
 id|count
 suffix:semicolon
-multiline_comment|/* Lop off the last two bits to force the code to always&n;&t;&t; * write in full samples.  This keeps software that sets&n;&t;&t; * O_NONBLOCK but doesn&squot;t check the return value of the&n;&t;&t; * write call from getting things out of state where they&n;&t;&t; * think a full 4 byte sample was written when really only&n;&t;&t; * a portion was, resulting in odd sound and stereo&n;&t;&t; * hysteresis.&n;&t;&t; */
-id|cnt
-op_and_assign
-op_complement
-l_int|0x3
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6469,12 +6463,6 @@ id|count
 id|cnt
 op_assign
 id|count
-suffix:semicolon
-multiline_comment|/* Lop off the last two bits to force the code to always&n;&t;&t; * write in full samples.  This keeps software that sets&n;&t;&t; * O_NONBLOCK but doesn&squot;t check the return value of the&n;&t;&t; * write call from getting things out of state where they&n;&t;&t; * think a full 4 byte sample was written when really only&n;&t;&t; * a portion was, resulting in odd sound and stereo&n;&t;&t; * hysteresis.&n;&t;&t; */
-id|cnt
-op_and_assign
-op_complement
-l_int|0x3
 suffix:semicolon
 r_if
 c_cond
