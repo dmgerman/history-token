@@ -1071,16 +1071,6 @@ c_func
 id|get_property
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_PPC_ISERIES
-DECL|variable|sys_ctrler
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|sys_ctrler
-)paren
-suffix:semicolon
-multiline_comment|/* tibit */
-macro_line|#endif
 macro_line|#ifdef CONFIG_NVRAM
 DECL|variable|nvram_read_byte
 id|EXPORT_SYMBOL
