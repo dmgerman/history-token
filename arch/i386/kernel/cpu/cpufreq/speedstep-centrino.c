@@ -23,11 +23,6 @@ DECL|struct|cpu_id
 r_struct
 id|cpu_id
 (brace
-DECL|member|x86_vendor
-id|__u8
-id|x86_vendor
-suffix:semicolon
-multiline_comment|/* CPU vendor */
 DECL|member|x86
 id|__u8
 id|x86
@@ -73,8 +68,6 @@ id|CPU_BANIAS
 )braket
 op_assign
 (brace
-id|X86_VENDOR_INTEL
-comma
 l_int|6
 comma
 l_int|9
@@ -87,8 +80,6 @@ id|CPU_DOTHAN_A1
 )braket
 op_assign
 (brace
-id|X86_VENDOR_INTEL
-comma
 l_int|6
 comma
 l_int|13
@@ -101,8 +92,6 @@ id|CPU_DOTHAN_B0
 )braket
 op_assign
 (brace
-id|X86_VENDOR_INTEL
-comma
 l_int|6
 comma
 l_int|13
@@ -1019,12 +1008,6 @@ c_cond
 id|c-&gt;x86
 op_eq
 id|x-&gt;x86
-)paren
-op_logical_and
-(paren
-id|c-&gt;x86_vendor
-op_eq
-id|x-&gt;x86_vendor
 )paren
 op_logical_and
 (paren
