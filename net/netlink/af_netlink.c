@@ -5003,6 +5003,12 @@ id|create
 op_assign
 id|netlink_create
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+multiline_comment|/* for consistency 8) */
 )brace
 suffix:semicolon
 DECL|function|netlink_proto_init
@@ -5070,6 +5076,19 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* The netlink device handler may be needed early. */
+id|rtnetlink_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_NETLINK_DEV
+id|init_netlink
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -5100,7 +5119,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|netlink_proto_init
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|netlink_proto_init
