@@ -8224,9 +8224,6 @@ comma
 id|lockt-&gt;lt_owner
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|find_lockstateowner_str
 c_func
 (paren
@@ -8241,18 +8238,7 @@ comma
 op_amp
 id|lockt-&gt;lt_stateowner
 )paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;NFSD: nsfd4_lockt: lookup_lockowner() failed!&bslash;n&quot;
-)paren
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|sop
 op_assign
 id|lockt-&gt;lt_stateowner
