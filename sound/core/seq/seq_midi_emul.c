@@ -2278,7 +2278,7 @@ l_int|0x30
 multiline_comment|/* reverb mode */
 id|parsed
 op_assign
-id|SNDRV_MIDI_SYSEX_GS_CHORUS_MODE
+id|SNDRV_MIDI_SYSEX_GS_REVERB_MODE
 suffix:semicolon
 id|chset-&gt;gs_reverb_mode
 op_assign
@@ -2310,7 +2310,7 @@ l_int|0x38
 multiline_comment|/* chorus mode */
 id|parsed
 op_assign
-id|SNDRV_MIDI_SYSEX_GS_REVERB_MODE
+id|SNDRV_MIDI_SYSEX_GS_CHORUS_MODE
 suffix:semicolon
 id|chset-&gt;gs_chorus_mode
 op_assign
