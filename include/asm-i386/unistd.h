@@ -486,6 +486,8 @@ DECL|macro|__NR_sched_setaffinity
 mdefine_line|#define __NR_sched_setaffinity&t;241
 DECL|macro|__NR_sched_getaffinity
 mdefine_line|#define __NR_sched_getaffinity&t;242
+DECL|macro|__NR_set_thread_area
+mdefine_line|#define __NR_set_thread_area&t;243
 multiline_comment|/* user-visible error numbers are in the range -1 - -124: see &lt;asm-i386/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;&t;errno = -(res); &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)
