@@ -8784,6 +8784,8 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef &t;CONFIG_PROC_FS
+id|p
+op_assign
 id|proc_net_create
 c_func
 (paren
@@ -8794,27 +8796,25 @@ comma
 id|rt6_proc_info
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|p
+)paren
+id|p-&gt;owner
 op_assign
-id|create_proc_entry
+id|THIS_MODULE
+suffix:semicolon
+id|proc_net_fops_create
 c_func
 (paren
 l_string|&quot;rt6_stats&quot;
 comma
 id|S_IRUGO
 comma
-id|proc_net
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-)paren
-id|p-&gt;proc_fops
-op_assign
 op_amp
 id|rt6_stats_seq_fops
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_XFRM
@@ -8848,11 +8848,13 @@ l_string|&quot;rt6_stats&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_XFRM
 id|xfrm6_fini
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 id|rt6_ifdown
 c_func
 (paren

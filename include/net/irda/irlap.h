@@ -430,11 +430,6 @@ suffix:semicolon
 multiline_comment|/* Negotiated extra BOFs after next frame */
 )brace
 suffix:semicolon
-r_extern
-id|hashbin_t
-op_star
-id|irlap
-suffix:semicolon
 multiline_comment|/* &n; *  Function prototypes &n; */
 r_int
 id|irlap_init
@@ -466,6 +461,7 @@ id|qos_info
 op_star
 id|qos
 comma
+r_const
 r_char
 op_star
 id|hw_name
