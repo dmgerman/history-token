@@ -96,6 +96,17 @@ op_star
 id|slave
 suffix:semicolon
 multiline_comment|/* the slave assigned to this client */
+DECL|member|tag
+id|u8
+id|tag
+suffix:semicolon
+multiline_comment|/* flag - need to tag skb */
+DECL|member|vlan_id
+r_int
+r_int
+id|vlan_id
+suffix:semicolon
+multiline_comment|/* VLAN tag associated with IP address */
 )brace
 suffix:semicolon
 DECL|struct|tlb_slave_info
