@@ -2434,7 +2434,7 @@ mdefine_line|#define NIC_SRAM_MBUF_POOL_BASE&t;&t;0x00008000
 DECL|macro|NIC_SRAM_MBUF_POOL_SIZE96
 mdefine_line|#define  NIC_SRAM_MBUF_POOL_SIZE96&t; 0x00018000
 DECL|macro|NIC_SRAM_MBUF_POOL_SIZE64
-mdefine_line|#define  NIC_SRAM_MBUF_POOL_SIZE64&t; 0x00018000
+mdefine_line|#define  NIC_SRAM_MBUF_POOL_SIZE64&t; 0x00010000
 multiline_comment|/* Currently this is fixed. */
 DECL|macro|PHY_ADDR
 mdefine_line|#define PHY_ADDR&t;&t;0x01
