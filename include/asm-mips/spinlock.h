@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_SPINLOCK_H
 DECL|macro|_ASM_SPINLOCK_H
 mdefine_line|#define _ASM_SPINLOCK_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/war.h&gt;
 multiline_comment|/*&n; * Your basic SMP spinlocks, allowing only a single CPU anywhere&n; */
 r_typedef

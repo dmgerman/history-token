@@ -222,7 +222,7 @@ id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
@@ -474,7 +474,7 @@ id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
@@ -748,7 +748,7 @@ id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
@@ -1059,7 +1059,7 @@ id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
@@ -1142,7 +1142,7 @@ id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
@@ -1403,7 +1403,7 @@ id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr
@@ -1752,7 +1752,7 @@ id|SZLONG_LOG
 suffix:semicolon
 id|mask
 op_assign
-l_int|1
+l_int|1UL
 op_lshift
 (paren
 id|nr

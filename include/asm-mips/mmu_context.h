@@ -8,17 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-multiline_comment|/*&n; * For the fast tlb miss handlers, we currently keep a per cpu array&n; * of pointers to the current pgd for each processor. Also, the proc.&n; * id is stuffed into the context register. This should be changed to&n; * use the processor id via current-&gt;processor, where current is stored&n; * in watchhi/lo. The context register should be used to contiguously&n; * map the page tables.&n; */
-DECL|macro|TLBMISS_HANDLER_SETUP_PGD
-mdefine_line|#define TLBMISS_HANDLER_SETUP_PGD(pgd) &bslash;&n;&t;pgd_current[smp_processor_id()] = (unsigned long)(pgd)
-macro_line|#ifdef CONFIG_MIPS32
-DECL|macro|TLBMISS_HANDLER_SETUP
-mdefine_line|#define TLBMISS_HANDLER_SETUP() &bslash;&n;&t;write_c0_context((unsigned long) smp_processor_id() &lt;&lt; 23); &bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
-macro_line|#endif
-macro_line|#ifdef CONFIG_MIPS64
-DECL|macro|TLBMISS_HANDLER_SETUP
-mdefine_line|#define TLBMISS_HANDLER_SETUP() &bslash;&n;&t;write_c0_context((unsigned long) &amp;pgd_current[smp_processor_id()] &lt;&lt; 23); &bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
-macro_line|#endif
+multiline_comment|/*&n; * For the fast tlb miss handlers, we keep a per cpu array of pointers&n; * to the current pgd for each processor. Also, the proc. id is stuffed&n; * into the context register.&n; */
 r_extern
 r_int
 r_int
@@ -26,6 +16,20 @@ id|pgd_current
 (braket
 )braket
 suffix:semicolon
+DECL|macro|TLBMISS_HANDLER_SETUP_PGD
+mdefine_line|#define TLBMISS_HANDLER_SETUP_PGD(pgd) &bslash;&n;&t;pgd_current[smp_processor_id()] = (unsigned long)(pgd)
+macro_line|#ifdef CONFIG_MIPS32
+DECL|macro|TLBMISS_HANDLER_SETUP
+mdefine_line|#define TLBMISS_HANDLER_SETUP()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_context((unsigned long) smp_processor_id() &lt;&lt; 23);&t;&bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
+macro_line|#endif
+macro_line|#if defined(CONFIG_MIPS64) &amp;&amp; !defined(CONFIG_BUILD_ELF64)
+DECL|macro|TLBMISS_HANDLER_SETUP
+mdefine_line|#define TLBMISS_HANDLER_SETUP()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_context((unsigned long) &amp;pgd_current[smp_processor_id()] &lt;&lt; 23); &bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
+macro_line|#endif
+macro_line|#if defined(CONFIG_MIPS64) &amp;&amp; defined(CONFIG_BUILD_ELF64)
+DECL|macro|TLBMISS_HANDLER_SETUP
+mdefine_line|#define TLBMISS_HANDLER_SETUP()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;write_c0_context((unsigned long) smp_processor_id() &lt;&lt; 23);&t;&bslash;&n;&t;TLBMISS_HANDLER_SETUP_PGD(swapper_pg_dir)
+macro_line|#endif
 macro_line|#if defined(CONFIG_CPU_R3000) || defined(CONFIG_CPU_TX39XX)
 DECL|macro|ASID_INC
 mdefine_line|#define ASID_INC&t;0x40
@@ -371,6 +375,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
 r_int
 id|cpu
 op_assign

@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; * Copyright (C) 2000, 2001 Kanoj Sarcar&n; * Copyright (C) 2000, 2001 Ralf Baechle&n; * Copyright (C) 2000, 2001 Silicon Graphics, Inc.&n; * Copyright (C) 2000, 2001, 2003 Broadcom Corporation&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -228,6 +227,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+id|ATTRIB_NORET
+r_void
+id|cpu_idle
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * First C code run on the secondary CPUs after being started up by&n; * the master.&n; */
 DECL|function|start_secondary
 id|asmlinkage
@@ -302,10 +310,11 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|smp_call_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|smp_call_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|call_data
 r_struct
