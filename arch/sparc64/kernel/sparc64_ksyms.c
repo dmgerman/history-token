@@ -943,6 +943,13 @@ c_func
 id|flush_dcache_page
 )paren
 suffix:semicolon
+DECL|variable|__flush_dcache_range
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__flush_dcache_range
+)paren
+suffix:semicolon
 DECL|variable|mostek_lock
 id|EXPORT_SYMBOL
 c_func
