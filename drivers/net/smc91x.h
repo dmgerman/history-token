@@ -239,6 +239,35 @@ DECL|macro|SMC_insl
 mdefine_line|#define SMC_insl(a, r, p, l)&t;readsl((a) + (r), p, l)
 DECL|macro|SMC_outsl
 mdefine_line|#define SMC_outsl(a, r, p, l)&t;writesl((a) + (r), p, l)
+macro_line|#elif&t;defined(CONFIG_SH_SH4202_MICRODEV)
+DECL|macro|SMC_CAN_USE_8BIT
+mdefine_line|#define SMC_CAN_USE_8BIT&t;0
+DECL|macro|SMC_CAN_USE_16BIT
+mdefine_line|#define SMC_CAN_USE_16BIT&t;1
+DECL|macro|SMC_CAN_USE_32BIT
+mdefine_line|#define SMC_CAN_USE_32BIT&t;0
+DECL|macro|SMC_inb
+mdefine_line|#define SMC_inb(a, r)&t;&t;inb((a) + (r) - 0xa0000000)
+DECL|macro|SMC_inw
+mdefine_line|#define SMC_inw(a, r)&t;&t;inw((a) + (r) - 0xa0000000)
+DECL|macro|SMC_inl
+mdefine_line|#define SMC_inl(a, r)&t;&t;inl((a) + (r) - 0xa0000000)
+DECL|macro|SMC_outb
+mdefine_line|#define SMC_outb(v, a, r)&t;outb(v, (a) + (r) - 0xa0000000)
+DECL|macro|SMC_outw
+mdefine_line|#define SMC_outw(v, a, r)&t;outw(v, (a) + (r) - 0xa0000000)
+DECL|macro|SMC_outl
+mdefine_line|#define SMC_outl(v, a, r)&t;outl(v, (a) + (r) - 0xa0000000)
+DECL|macro|SMC_insl
+mdefine_line|#define SMC_insl(a, r, p, l)&t;insl((a) + (r) - 0xa0000000, p, l)
+DECL|macro|SMC_outsl
+mdefine_line|#define SMC_outsl(a, r, p, l)&t;outsl((a) + (r) - 0xa0000000, p, l)
+DECL|macro|SMC_insw
+mdefine_line|#define SMC_insw(a, r, p, l)&t;insw((a) + (r) - 0xa0000000, p, l)
+DECL|macro|SMC_outsw
+mdefine_line|#define SMC_outsw(a, r, p, l)&t;outsw((a) + (r) - 0xa0000000, p, l)
+DECL|macro|set_irq_type
+mdefine_line|#define set_irq_type(irq, type)&t;do {} while(0)
 macro_line|#elif&t;defined(CONFIG_ISA)
 DECL|macro|SMC_CAN_USE_8BIT
 mdefine_line|#define SMC_CAN_USE_8BIT&t;1

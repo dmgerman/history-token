@@ -3,21 +3,6 @@ macro_line|#ifndef _SK_MCA_INCLUDE_
 DECL|macro|_SK_MCA_INCLUDE_
 mdefine_line|#define _SK_MCA_INCLUDE_
 macro_line|#ifdef _SK_MCA_DRIVER_
-multiline_comment|/* version-dependent functions/structures */
-DECL|macro|SKMCA_READB
-mdefine_line|#define SKMCA_READB(addr) isa_readb(addr)
-DECL|macro|SKMCA_READW
-mdefine_line|#define SKMCA_READW(addr) isa_readw(addr)
-DECL|macro|SKMCA_WRITEB
-mdefine_line|#define SKMCA_WRITEB(data, addr) isa_writeb(data, addr)
-DECL|macro|SKMCA_WRITEW
-mdefine_line|#define SKMCA_WRITEW(data, addr) isa_writew(data, addr)
-DECL|macro|SKMCA_TOIO
-mdefine_line|#define SKMCA_TOIO(dest, src, len) isa_memcpy_toio(dest, src, len)
-DECL|macro|SKMCA_FROMIO
-mdefine_line|#define SKMCA_FROMIO(dest, src, len) isa_memcpy_fromio(dest, src, len)
-DECL|macro|SKMCA_SETIO
-mdefine_line|#define SKMCA_SETIO(dest, val, len) isa_memset_io(dest, val, len)
 multiline_comment|/* Adapter ID&squot;s */
 DECL|macro|SKNET_MCA_ID
 mdefine_line|#define SKNET_MCA_ID 0x6afd
@@ -55,27 +40,37 @@ r_int
 id|slot
 suffix:semicolon
 multiline_comment|/* MCA-Slot-#                       */
+DECL|member|base
+r_void
+id|__iomem
+op_star
+id|base
+suffix:semicolon
 DECL|member|macbase
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|macbase
 suffix:semicolon
 multiline_comment|/* base address of MAC address PROM */
 DECL|member|ioregaddr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|ioregaddr
 suffix:semicolon
 multiline_comment|/* address of I/O-register (Lo)     */
 DECL|member|ctrladdr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|ctrladdr
 suffix:semicolon
 multiline_comment|/* address of control/stat register */
 DECL|member|cmdaddr
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|cmdaddr
 suffix:semicolon
 multiline_comment|/* address of I/O-command register  */

@@ -4212,9 +4212,7 @@ id|slave_dev-&gt;type
 suffix:semicolon
 id|res
 op_assign
-id|slave_dev
-op_member_access_from_pointer
-id|set_mac_address
+id|dev_set_mac_address
 c_func
 (paren
 id|slave_dev
@@ -4667,8 +4665,8 @@ c_func
 (paren
 id|KERN_WARNING
 id|DRV_NAME
-l_string|&quot;: Warning: failed to get speed/duplex from %s, speed &quot;
-l_string|&quot;forced to 100Mbps, duplex forced to Full.&bslash;n&quot;
+l_string|&quot;: Warning: failed to get speed and duplex from %s, &quot;
+l_string|&quot;assumed to be 100Mb/sec and Full.&bslash;n&quot;
 comma
 id|new_slave-&gt;dev-&gt;name
 )paren
@@ -5104,9 +5102,7 @@ id|addr.sa_family
 op_assign
 id|slave_dev-&gt;type
 suffix:semicolon
-id|slave_dev
-op_member_access_from_pointer
-id|set_mac_address
+id|dev_set_mac_address
 c_func
 (paren
 id|slave_dev
@@ -5680,9 +5676,7 @@ id|addr.sa_family
 op_assign
 id|slave_dev-&gt;type
 suffix:semicolon
-id|slave_dev
-op_member_access_from_pointer
-id|set_mac_address
+id|dev_set_mac_address
 c_func
 (paren
 id|slave_dev
@@ -5971,9 +5965,7 @@ id|addr.sa_family
 op_assign
 id|slave_dev-&gt;type
 suffix:semicolon
-id|slave_dev
-op_member_access_from_pointer
-id|set_mac_address
+id|dev_set_mac_address
 c_func
 (paren
 id|slave_dev
@@ -11793,17 +11785,9 @@ comma
 id|slave-&gt;dev-&gt;change_mtu
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|slave-&gt;dev-&gt;change_mtu
-)paren
-(brace
 id|res
 op_assign
-id|slave-&gt;dev
-op_member_access_from_pointer
-id|change_mtu
+id|dev_set_mtu
 c_func
 (paren
 id|slave-&gt;dev
@@ -11811,18 +11795,6 @@ comma
 id|new_mtu
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|slave-&gt;dev-&gt;mtu
-op_assign
-id|new_mtu
-suffix:semicolon
-id|res
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -11876,17 +11848,9 @@ id|stop_at
 r_int
 id|tmp_res
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|slave-&gt;dev-&gt;change_mtu
-)paren
-(brace
 id|tmp_res
 op_assign
-id|slave-&gt;dev
-op_member_access_from_pointer
-id|change_mtu
+id|dev_set_mtu
 c_func
 (paren
 id|slave-&gt;dev
@@ -11909,14 +11873,6 @@ id|tmp_res
 comma
 id|slave-&gt;dev-&gt;name
 )paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|slave-&gt;dev-&gt;mtu
-op_assign
-id|bond_dev-&gt;mtu
 suffix:semicolon
 )brace
 )brace
@@ -12054,9 +12010,7 @@ suffix:semicolon
 )brace
 id|res
 op_assign
-id|slave-&gt;dev
-op_member_access_from_pointer
-id|set_mac_address
+id|dev_set_mac_address
 c_func
 (paren
 id|slave-&gt;dev
@@ -12140,9 +12094,7 @@ id|tmp_res
 suffix:semicolon
 id|tmp_res
 op_assign
-id|slave-&gt;dev
-op_member_access_from_pointer
-id|set_mac_address
+id|dev_set_mac_address
 c_func
 (paren
 id|slave-&gt;dev

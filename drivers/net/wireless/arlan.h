@@ -54,9 +54,9 @@ r_void
 suffix:semicolon
 macro_line|#else
 DECL|macro|init_arlan_proc
-mdefine_line|#define init_arlan_proc()&t;(0)
+mdefine_line|#define init_arlan_proc()&t;({ 0; })
 DECL|macro|cleanup_arlan_proc
-mdefine_line|#define cleanup_arlan_proc()&t;do { } while (0);
+mdefine_line|#define cleanup_arlan_proc()&t;do { } while (0)
 macro_line|#endif
 r_extern
 r_struct

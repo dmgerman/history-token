@@ -8942,7 +8942,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace

@@ -7992,7 +7992,7 @@ id|typhoon
 op_star
 id|tp
 comma
-r_int
+id|pci_power_t
 id|state
 comma
 id|u16
@@ -9430,7 +9430,7 @@ c_func
 (paren
 id|tp
 comma
-l_int|3
+id|PCI_D3hot
 comma
 l_int|0
 )paren
@@ -9566,7 +9566,7 @@ c_func
 (paren
 id|tp
 comma
-l_int|3
+id|PCI_D3hot
 comma
 l_int|0
 )paren
@@ -9733,7 +9733,7 @@ id|pci_dev
 op_star
 id|pdev
 comma
-id|u32
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -11261,7 +11261,7 @@ c_func
 (paren
 id|tp
 comma
-l_int|3
+id|PCI_D3hot
 comma
 l_int|0
 )paren
