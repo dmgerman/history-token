@@ -9471,6 +9471,18 @@ id|conf-&gt;max_nr_stripes
 op_assign
 id|NR_STRIPES
 suffix:semicolon
+multiline_comment|/* device size must be a multiple of chunk size */
+id|mddev-&gt;size
+op_and_assign
+op_complement
+(paren
+id|mddev-&gt;chunk_size
+op_div
+l_int|1024
+op_minus
+l_int|1
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
