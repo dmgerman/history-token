@@ -48,9 +48,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;2.2&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;2.3&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;August 24, 2003&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;November 5, 2003&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -31025,6 +31025,24 @@ id|tp-&gt;link_config.phy_is_low_power
 r_return
 op_minus
 id|EAGAIN
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|tp-&gt;lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|tp-&gt;tx_lock
+)paren
+suffix:semicolon
+id|tp-&gt;link_config.autoneg
+op_assign
+id|cmd-&gt;autoneg
 suffix:semicolon
 r_if
 c_cond
