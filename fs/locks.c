@@ -1254,10 +1254,6 @@ r_struct
 id|file_lock
 op_star
 id|blocker
-comma
-r_int
-r_int
-id|wait
 )paren
 (brace
 r_while
@@ -1288,28 +1284,7 @@ comma
 id|fl_block
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|wait
-)paren
-(brace
-id|locks_notify_blocked
-c_func
-(paren
-id|waiter
-)paren
-suffix:semicolon
-multiline_comment|/* Let the blocked process remove waiter from the&n;&t;&t;&t; * block list when it gets scheduled.&n;&t;&t;&t; */
-id|yield
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Remove waiter from the block list, because by the&n;&t;&t;&t; * time it wakes up blocker won&squot;t exist any more.&n;&t;&t;&t; */
+multiline_comment|/* Remove waiter from the block list, because by the&n;&t;&t; * time it wakes up blocker won&squot;t exist any more.&n;&t;&t; */
 id|locks_delete_block
 c_func
 (paren
@@ -1322,7 +1297,6 @@ c_func
 id|waiter
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/* Insert file lock fl into an inode&squot;s lock list at the position indicated&n; * by pos. At the same time add the lock to the global file lock list.&n; */
@@ -1431,10 +1405,6 @@ r_struct
 id|file_lock
 op_star
 id|fl
-comma
-r_int
-r_int
-id|wait
 )paren
 (brace
 id|fasync_helper
@@ -1489,8 +1459,6 @@ id|locks_wake_up_blocks
 c_func
 (paren
 id|fl
-comma
-id|wait
 )paren
 suffix:semicolon
 id|locks_free_lock
@@ -1512,10 +1480,6 @@ id|file_lock
 op_star
 op_star
 id|thisfl_p
-comma
-r_int
-r_int
-id|wait
 )paren
 (brace
 r_struct
@@ -1536,8 +1500,6 @@ id|_delete_lock
 c_func
 (paren
 id|fl
-comma
-id|wait
 )paren
 suffix:semicolon
 )brace
@@ -1620,8 +1582,6 @@ id|_delete_lock
 c_func
 (paren
 id|fl
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2733,21 +2693,25 @@ id|locks_delete_lock
 c_func
 (paren
 id|before
-comma
-op_logical_neg
-id|unlock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If we waited, another lock may have been added ...&n;&t;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|unlock
 )paren
+(brace
+id|yield
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * If we waited, another lock may have been added ...&n;&t;&t;&t; */
 r_goto
 id|search
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -3226,8 +3190,6 @@ id|locks_delete_lock
 c_func
 (paren
 id|before
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_continue
@@ -3321,8 +3283,6 @@ id|locks_delete_lock
 c_func
 (paren
 id|before
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_continue
@@ -3333,11 +3293,8 @@ id|locks_wake_up_blocks
 c_func
 (paren
 id|fl
-comma
-l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* This cannot schedule()! */
 id|fl-&gt;fl_start
 op_assign
 id|caller-&gt;fl_start
@@ -3465,8 +3422,6 @@ id|locks_wake_up_blocks
 c_func
 (paren
 id|right
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3486,8 +3441,6 @@ id|locks_wake_up_blocks
 c_func
 (paren
 id|left
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3923,8 +3876,6 @@ c_func
 (paren
 op_amp
 id|inode-&gt;i_flock
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|printk
@@ -4138,8 +4089,6 @@ id|locks_wake_up_blocks
 c_func
 (paren
 id|fl
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -4170,8 +4119,6 @@ id|locks_delete_lock
 c_func
 (paren
 id|before
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|fasync_helper
@@ -6128,8 +6075,6 @@ id|locks_delete_lock
 c_func
 (paren
 id|before
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_continue
