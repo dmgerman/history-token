@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sleep.c - ACPI sleep support.&n; * &n; *  Copyright (c) 2000-2003 Patrick Mochel&n; *&n; *  Portions are&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; */
+multiline_comment|/*&n; * sleep.c - ACPI sleep support.&n; *&n; * Copyright (c) 2000-2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; *&n; * This file is released under the GPLv2.&n; *&n; */
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -63,7 +63,7 @@ id|ACPI_STATE_S4
 comma
 )brace
 suffix:semicolon
-multiline_comment|/**&n; *&t;acpi_pm_prepare - Do preliminary suspend work.&n; *&t;@state:&t;&t;suspend state we&squot;re entering.&n; *&n; */
+multiline_comment|/**&n; *&t;acpi_pm_prepare - Do preliminary suspend work.&n; *&t;@state:&t;&t;suspend state we&squot;re entering.&n; *&n; *&t;Make sure we support the state. If we do, and we need it, set the&n; *&t;firmware waking vector and do arch-specific nastiness to get the &n; *&t;wakeup code to the waking vector. &n; */
 DECL|function|acpi_pm_prepare
 r_static
 r_int
@@ -186,6 +186,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;acpi_pm_enter - Actually enter a sleep state.&n; *&t;@state:&t;&t;State we&squot;re entering.&n; *&n; *&t;Flush caches and go to sleep. For STR or STD, we have to call &n; *&t;arch-specific assembly, which in turn call acpi_enter_sleep_state().&n; *&t;It&squot;s unfortunate, but it works. Please fix if you&squot;re feeling frisky.&n; */
 DECL|function|acpi_pm_enter
 r_static
 r_int
@@ -301,6 +302,7 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;acpi_pm_finish - Finish up suspend sequence.&n; *&t;@state:&t;&t;State we&squot;re coming out of.&n; *&n; *&t;This is called after we wake back up (or if entering the sleep state&n; *&t;failed). &n; */
 DECL|function|acpi_pm_finish
 r_static
 r_int
