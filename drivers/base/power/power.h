@@ -163,7 +163,7 @@ op_star
 suffix:semicolon
 multiline_comment|/*&n; * resume.c &n; */
 r_extern
-r_int
+r_void
 id|dpm_resume
 c_func
 (paren
