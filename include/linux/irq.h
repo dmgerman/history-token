@@ -142,16 +142,15 @@ r_typedef
 r_struct
 id|irq_desc
 (brace
-DECL|member|status
-r_int
-r_int
-id|status
-suffix:semicolon
-multiline_comment|/* IRQ status */
 DECL|member|handler
 id|hw_irq_controller
 op_star
 id|handler
+suffix:semicolon
+DECL|member|handler_data
+r_void
+op_star
+id|handler_data
 suffix:semicolon
 DECL|member|action
 r_struct
@@ -160,6 +159,12 @@ op_star
 id|action
 suffix:semicolon
 multiline_comment|/* IRQ action list */
+DECL|member|status
+r_int
+r_int
+id|status
+suffix:semicolon
+multiline_comment|/* IRQ status */
 DECL|member|depth
 r_int
 r_int

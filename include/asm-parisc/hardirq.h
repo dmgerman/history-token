@@ -5,6 +5,7 @@ mdefine_line|#define _PARISC_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 r_typedef
 r_struct
 (brace
@@ -22,9 +23,18 @@ suffix:semicolon
 macro_line|#include &lt;linux/irq_cpustat.h&gt;&t;/* Standard mappings for irq_cpustat_t above */
 DECL|macro|HARDIRQ_BITS
 mdefine_line|#define HARDIRQ_BITS&t;16
-multiline_comment|/*&n; * The hardirq mask has to be large enough to have space for potentially all IRQ sources&n; * in the system nesting on a single CPU:&n; */
+multiline_comment|/*&n; * The hardirq mask has to be large enough to have space for potentially all&n; * IRQ sources in the system nesting on a single CPU:&n; */
 macro_line|#if (1 &lt;&lt; HARDIRQ_BITS) &lt; NR_IRQS
 macro_line|# error HARDIRQ_BITS is too low!
 macro_line|#endif
+r_void
+id|ack_bad_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
 macro_line|#endif /* _PARISC_HARDIRQ_H */
 eof

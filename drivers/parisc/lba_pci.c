@@ -9,11 +9,9 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;&t;&t;/* for struct irq_region support */
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/pdcpat.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;&t;/* for register_parisc_driver() stuff */
 macro_line|#include &lt;asm/parisc-device.h&gt;
