@@ -1,6 +1,6 @@
-multiline_comment|/*&n; *  toshiba_acpi.c - Toshiba Laptop ACPI Extras&n; *&n; *&n; *  Copyright (C) 2002-2003 John Belmonte&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; *  The devolpment page for this driver is located at&n; *  http://memebeam.org/toys/ToshibaAcpiDriver.&n; *&n; *  Credits:&n; *&t;Jonathan A. Buzzard - Toshiba HCI info, and critical tips on reverse&n; *&t;&t;engineering the Windows drivers&n; *&t;Yasushi Nagato - changes for linux kernel 2.4 -&gt; 2.5&n; *&t;Rob Miller - TV out and hotkeys help&n; *&n; *&n; *  TODO&n; *&n; */
+multiline_comment|/*&n; *  toshiba_acpi.c - Toshiba Laptop ACPI Extras&n; *&n; *&n; *  Copyright (C) 2002-2004 John Belmonte&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; *  The devolpment page for this driver is located at&n; *  http://memebeam.org/toys/ToshibaAcpiDriver.&n; *&n; *  Credits:&n; *&t;Jonathan A. Buzzard - Toshiba HCI info, and critical tips on reverse&n; *&t;&t;engineering the Windows drivers&n; *&t;Yasushi Nagato - changes for linux kernel 2.4 -&gt; 2.5&n; *&t;Rob Miller - TV out and hotkeys help&n; *&n; *&n; *  TODO&n; *&n; */
 DECL|macro|TOSHIBA_ACPI_VERSION
-mdefine_line|#define TOSHIBA_ACPI_VERSION&t;&quot;0.16&quot;
+mdefine_line|#define TOSHIBA_ACPI_VERSION&t;&quot;0.17&quot;
 DECL|macro|PROC_INTERFACE_VERSION
 mdefine_line|#define PROC_INTERFACE_VERSION&t;1
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -27,11 +27,21 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|macro|MY_LOGPREFIX
+mdefine_line|#define MY_LOGPREFIX &quot;toshiba_acpi: &quot;
+DECL|macro|MY_ERR
+mdefine_line|#define MY_ERR KERN_ERR MY_LOGPREFIX
+DECL|macro|MY_NOTICE
+mdefine_line|#define MY_NOTICE KERN_NOTICE MY_LOGPREFIX
+DECL|macro|MY_INFO
+mdefine_line|#define MY_INFO KERN_INFO MY_LOGPREFIX
 multiline_comment|/* Toshiba ACPI method paths */
 DECL|macro|METHOD_LCD_BRIGHTNESS
 mdefine_line|#define METHOD_LCD_BRIGHTNESS&t;&quot;&bslash;&bslash;_SB_.PCI0.VGA_.LCD_._BCM&quot;
-DECL|macro|METHOD_HCI
-mdefine_line|#define METHOD_HCI&t;&t;&quot;&bslash;&bslash;_SB_.VALD.GHCI&quot;
+DECL|macro|METHOD_HCI_1
+mdefine_line|#define METHOD_HCI_1&t;&t;&quot;&bslash;&bslash;_SB_.VALD.GHCI&quot;
+DECL|macro|METHOD_HCI_2
+mdefine_line|#define METHOD_HCI_2&t;&t;&quot;&bslash;&bslash;_SB_.VALZ.GHCI&quot;
 DECL|macro|METHOD_VIDEO_OUT
 mdefine_line|#define METHOD_VIDEO_OUT&t;&quot;&bslash;&bslash;_SB_.VALX.DSSX&quot;
 multiline_comment|/* Toshiba HCI interface definitions&n; *&n; * HCI is Toshiba&squot;s &quot;Hardware Control Interface&quot; which is supposed to&n; * be uniform across all their models.  Ideally we would just call&n; * dedicated ACPI methods instead of using this primitive interface.&n; * However the ACPI methods seem to be incomplete in some areas (for&n; * example they allow setting, but not reading, the LCD brightness value),&n; * so this is still useful.&n; */
@@ -224,6 +234,50 @@ suffix:semicolon
 multiline_comment|/* acpi interface wrappers&n; */
 r_static
 r_int
+DECL|function|is_valid_acpi_path
+id|is_valid_acpi_path
+c_func
+(paren
+r_const
+r_char
+op_star
+id|methodName
+)paren
+(brace
+id|acpi_handle
+id|handle
+suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
+id|status
+op_assign
+id|acpi_get_handle
+c_func
+(paren
+l_int|0
+comma
+(paren
+r_char
+op_star
+)paren
+id|methodName
+comma
+op_amp
+id|handle
+)paren
+suffix:semicolon
+r_return
+op_logical_neg
+id|ACPI_FAILURE
+c_func
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+r_static
+r_int
 DECL|function|write_acpi_int
 id|write_acpi_int
 c_func
@@ -405,6 +459,14 @@ id|ACPI_TYPE_INTEGER
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|variable|method_hci
+r_static
+r_const
+r_char
+op_star
+id|method_hci
+multiline_comment|/*= 0*/
+suffix:semicolon
 multiline_comment|/* Perform a raw HCI call.  Here we don&squot;t care about input or output buffer&n; * format.&n; */
 r_static
 id|acpi_status
@@ -519,7 +581,11 @@ c_func
 (paren
 l_int|0
 comma
-id|METHOD_HCI
+(paren
+r_char
+op_star
+)paren
+id|method_hci
 comma
 op_amp
 id|params
@@ -743,6 +809,7 @@ r_struct
 id|proc_dir_entry
 op_star
 id|toshiba_proc_dir
+multiline_comment|/*= 0*/
 suffix:semicolon
 DECL|variable|force_fan
 r_static
@@ -1027,14 +1094,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|p
-op_add_assign
-id|sprintf
+id|printk
 c_func
 (paren
-id|p
-comma
-l_string|&quot;ERROR&bslash;n&quot;
+id|MY_ERR
+l_string|&quot;Error reading LCD brightness&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1251,14 +1315,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|p
-op_add_assign
-id|sprintf
+id|printk
 c_func
 (paren
-id|p
-comma
-l_string|&quot;ERROR&bslash;n&quot;
+id|MY_ERR
+l_string|&quot;Error reading video out status&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1286,13 +1347,9 @@ id|count
 r_int
 id|value
 suffix:semicolon
-r_const
-r_char
-op_star
-id|buffer_end
+r_int
+id|remain
 op_assign
-id|buffer
-op_plus
 id|count
 suffix:semicolon
 r_int
@@ -1319,8 +1376,12 @@ suffix:semicolon
 r_int
 id|video_out
 suffix:semicolon
-multiline_comment|/* scan expression.  Multiple expressions may be delimited with ; */
-r_do
+multiline_comment|/* scan expression.  Multiple expressions may be delimited with ;&n;&t; *&n;&t; *  NOTE: to keep scanning simple, invalid fields are ignored&n;&t; */
+r_while
+c_loop
+(paren
+id|remain
+)paren
 (brace
 r_if
 c_cond
@@ -1330,7 +1391,7 @@ c_func
 (paren
 id|buffer
 comma
-id|count
+id|remain
 comma
 l_string|&quot; lcd_out : %i&quot;
 comma
@@ -1355,7 +1416,7 @@ c_func
 (paren
 id|buffer
 comma
-id|count
+id|remain
 comma
 l_string|&quot; crt_out : %i&quot;
 comma
@@ -1380,7 +1441,7 @@ c_func
 (paren
 id|buffer
 comma
-id|count
+id|remain
 comma
 l_string|&quot; tv_out : %i&quot;
 comma
@@ -1398,19 +1459,19 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* advance to one character past the next ; */
 r_do
+(brace
 op_increment
 id|buffer
 suffix:semicolon
+op_decrement
+id|remain
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
-(paren
-id|buffer
-OL
-id|buffer_end
-)paren
+id|remain
 op_logical_and
-(paren
 op_star
 (paren
 id|buffer
@@ -1420,17 +1481,8 @@ l_int|1
 op_ne
 l_char|&squot;;&squot;
 )paren
-)paren
 suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-id|buffer
-OL
-id|buffer_end
-)paren
-suffix:semicolon
 id|hci_read1
 c_func
 (paren
@@ -1530,6 +1582,13 @@ id|new_video_out
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 r_return
 id|count
 suffix:semicolon
@@ -1603,14 +1662,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|p
-op_add_assign
-id|sprintf
+id|printk
 c_func
 (paren
-id|p
-comma
-l_string|&quot;ERROR&bslash;n&quot;
+id|MY_ERR
+l_string|&quot;Error reading fan status&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1793,17 +1849,21 @@ op_amp
 id|hci_result
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|MY_NOTICE
+l_string|&quot;Re-enabled hotkeys&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
-id|p
-op_add_assign
-id|sprintf
+id|printk
 c_func
 (paren
-id|p
-comma
-l_string|&quot;ERROR&bslash;n&quot;
+id|MY_ERR
+l_string|&quot;Error reading hotkey status&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2002,6 +2062,7 @@ comma
 suffix:semicolon
 r_static
 id|acpi_status
+id|__init
 DECL|function|add_device
 id|add_device
 c_func
@@ -2077,6 +2138,7 @@ suffix:semicolon
 )brace
 r_static
 id|acpi_status
+id|__exit
 DECL|function|remove_device
 id|remove_device
 c_func
@@ -2127,32 +2189,38 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-r_int
-id|value
-suffix:semicolon
 id|u32
 id|hci_result
 suffix:semicolon
-multiline_comment|/* simple device detection: try reading an HCI register */
-id|hci_read1
-c_func
-(paren
-id|HCI_LCD_BRIGHTNESS
-comma
-op_amp
-id|value
-comma
-op_amp
-id|hci_result
-)paren
-suffix:semicolon
+multiline_comment|/* simple device detection: look for HCI method */
 r_if
 c_cond
 (paren
-id|hci_result
-op_ne
-id|HCI_SUCCESS
+id|is_valid_acpi_path
+c_func
+(paren
+id|METHOD_HCI_1
 )paren
+)paren
+id|method_hci
+op_assign
+id|METHOD_HCI_1
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|is_valid_acpi_path
+c_func
+(paren
+id|METHOD_HCI_2
+)paren
+)paren
+id|method_hci
+op_assign
+id|METHOD_HCI_2
+suffix:semicolon
+r_else
 r_return
 op_minus
 id|ENODEV
@@ -2160,9 +2228,19 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|MY_INFO
 l_string|&quot;Toshiba Laptop ACPI Extras version %s&bslash;n&quot;
 comma
 id|TOSHIBA_ACPI_VERSION
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|MY_INFO
+l_string|&quot;    HCI method: %s&bslash;n&quot;
+comma
+id|method_hci
 )paren
 suffix:semicolon
 id|force_fan
