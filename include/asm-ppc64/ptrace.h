@@ -143,10 +143,9 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|STACK_FRAME_OVERHEAD
 mdefine_line|#define STACK_FRAME_OVERHEAD&t;112&t;/* size of minimum stack frame */
-multiline_comment|/* Size of stack frame allocated when calling signal handler. */
-multiline_comment|/* FIXME: What should this be on 64-bit kernel (64 for 32-bit) */
+multiline_comment|/* Size of dummy stack frame allocated when calling signal handler. */
 DECL|macro|__SIGNAL_FRAMESIZE
-mdefine_line|#define __SIGNAL_FRAMESIZE&t;64
+mdefine_line|#define __SIGNAL_FRAMESIZE&t;128
 DECL|macro|__SIGNAL_FRAMESIZE32
 mdefine_line|#define __SIGNAL_FRAMESIZE32&t;64
 DECL|macro|instruction_pointer

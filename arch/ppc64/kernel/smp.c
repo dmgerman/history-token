@@ -584,7 +584,7 @@ op_assign
 id|smp_iSeries_setup_cpu
 suffix:semicolon
 macro_line|#warning fix for iseries
-id|naca-&gt;processorCount
+id|systemcfg-&gt;processorCount
 op_assign
 id|smp_iSeries_numProcs
 c_func
@@ -1271,7 +1271,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|naca-&gt;platform
+id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_PSERIES
 )paren

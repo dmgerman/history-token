@@ -6,23 +6,46 @@ multiline_comment|/* Change Activity: */
 multiline_comment|/* tgall -- merge of iSeries/iSeries_proc.h and proc_pmc.h */
 multiline_comment|/* End Change Activity */
 macro_line|#include &lt;linux/proc_fs.h&gt;
-r_void
-id|pmc_proc_init
-c_func
-(paren
+DECL|struct|proc_ppc64_t
+r_struct
+id|proc_ppc64_t
+(brace
+DECL|member|root
 r_struct
 id|proc_dir_entry
 op_star
-id|iSeries_proc
-)paren
+id|root
 suffix:semicolon
-r_void
-id|proc_ppc64_init
-c_func
-(paren
-r_void
-)paren
+DECL|member|naca
+r_struct
+id|proc_dir_entry
+op_star
+id|naca
 suffix:semicolon
-macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
-macro_line|#endif
+DECL|member|paca
+r_struct
+id|proc_dir_entry
+op_star
+id|paca
+suffix:semicolon
+DECL|member|systemcfg
+r_struct
+id|proc_dir_entry
+op_star
+id|systemcfg
+suffix:semicolon
+DECL|member|rtas
+r_struct
+id|proc_dir_entry
+op_star
+id|rtas
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|proc_ppc64_t
+id|proc_ppc64
+suffix:semicolon
+macro_line|#endif /* _PPC64_PROC_FS_H */
 eof
