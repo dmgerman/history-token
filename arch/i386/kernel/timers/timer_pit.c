@@ -476,7 +476,7 @@ op_assign
 id|set_kset_name
 c_func
 (paren
-l_string|&quot;timer&quot;
+l_string|&quot;timer_pit&quot;
 )paren
 comma
 dot
