@@ -17,7 +17,7 @@ macro_line|#endif /* CONFIG_PPC_OF */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_svw&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.04&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.05&quot;
 multiline_comment|/* Taskfile registers offsets */
 DECL|macro|K2_SATA_TF_CMD_OFFSET
 mdefine_line|#define K2_SATA_TF_CMD_OFFSET&t;&t;0x00
@@ -1814,6 +1814,13 @@ c_func
 id|pci
 comma
 id|k2_sata_pci_tbl
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|variable|k2_sata_init

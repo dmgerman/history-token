@@ -15,7 +15,7 @@ macro_line|#include &quot;sata_promise.h&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_sx4&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.50&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.7&quot;
 r_enum
 (brace
 DECL|enumerator|PDC_PRD_TBL
@@ -7646,6 +7646,13 @@ c_func
 id|pci
 comma
 id|pdc_sata_pci_tbl
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|variable|pdc_sata_init

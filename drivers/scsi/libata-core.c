@@ -171,6 +171,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;ata_tf_load - send taskfile registers to host controller&n; *&t;@ap: Port to which output is sent&n; *&t;@tf: ATA taskfile register set&n; *&n; *&t;Outputs ATA taskfile to standard ATA host controller.&n; *&n; *&t;LOCKING:&n; *&t;Inherited from caller.&n; */
 DECL|function|ata_tf_load_pio
 r_static

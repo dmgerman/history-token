@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;ata_piix&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.02&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.03&quot;
 r_enum
 (brace
 DECL|enumerator|PIIX_IOCFG
@@ -1025,6 +1025,13 @@ c_func
 id|pci
 comma
 id|piix_pci_tbl
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;piix_pata_cbl_detect - Probe host controller cable detect info&n; *&t;@ap: Port for which cable detect info is desired&n; *&n; *&t;Read 80c cable indicator from ATA PCI device&squot;s PCI config&n; *&t;register.  This register is normally set by firmware (BIOS).&n; *&n; *&t;LOCKING:&n; *&t;None (inherited from caller).&n; */

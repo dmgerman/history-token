@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&t;&quot;sata_nv&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&t;&t;&quot;0.03&quot;
+mdefine_line|#define DRV_VERSION&t;&t;&t;&quot;0.5&quot;
 DECL|macro|NV_PORTS
 mdefine_line|#define NV_PORTS&t;&t;&t;2
 DECL|macro|NV_PIO_MASK
@@ -825,6 +825,13 @@ c_func
 id|pci
 comma
 id|nv_pci_tbl
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|function|nv_interrupt

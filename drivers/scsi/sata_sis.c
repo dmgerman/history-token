@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/libata.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_sis&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.10&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.5&quot;
 r_enum
 (brace
 DECL|enumerator|sis_180
@@ -446,6 +446,13 @@ c_func
 id|pci
 comma
 id|sis_pci_tbl
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|function|get_scr_cfg_addr
