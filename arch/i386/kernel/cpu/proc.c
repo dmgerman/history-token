@@ -403,7 +403,6 @@ c_func
 (paren
 id|X86_FEATURE_TSC
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 )paren
@@ -547,7 +546,6 @@ c_func
 (paren
 id|i
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 op_logical_and

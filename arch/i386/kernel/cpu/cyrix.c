@@ -1,6 +1,7 @@
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/pci_ids.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -828,7 +829,6 @@ comma
 l_int|NULL
 )paren
 )paren
-(brace
 id|clear_bit
 c_func
 (paren
@@ -837,7 +837,6 @@ comma
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
-)brace
 r_return
 suffix:semicolon
 )brace

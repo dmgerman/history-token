@@ -1277,7 +1277,6 @@ c_func
 (paren
 id|X86_FEATURE_HT
 comma
-op_amp
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
