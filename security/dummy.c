@@ -369,7 +369,7 @@ c_cond
 (paren
 id|sysctl_overcommit_memory
 op_eq
-l_int|1
+id|OVERCOMMIT_ALWAYS
 )paren
 r_return
 l_int|0
@@ -379,7 +379,7 @@ c_cond
 (paren
 id|sysctl_overcommit_memory
 op_eq
-l_int|0
+id|OVERCOMMIT_GUESS
 )paren
 (brace
 id|free

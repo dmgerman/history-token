@@ -1269,7 +1269,7 @@ l_int|128
 (brace
 id|sysctl_overcommit_memory
 op_assign
-l_int|1
+id|OVERCOMMIT_ALWAYS
 suffix:semicolon
 id|printk
 c_func
