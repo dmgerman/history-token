@@ -575,7 +575,6 @@ id|snd_kctl_ioctl_func_t
 id|fcn
 )paren
 suffix:semicolon
-multiline_comment|/* for ioctl32 */
 r_int
 id|snd_ctl_elem_read
 c_func
@@ -593,6 +592,10 @@ r_int
 id|snd_ctl_elem_write
 c_func
 (paren
+id|snd_card_t
+op_star
+id|card
+comma
 id|snd_ctl_file_t
 op_star
 id|file

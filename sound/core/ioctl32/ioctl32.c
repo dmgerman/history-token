@@ -1550,6 +1550,8 @@ op_assign
 id|snd_ctl_elem_write
 c_func
 (paren
+id|ctl-&gt;card
+comma
 id|ctl
 comma
 id|data

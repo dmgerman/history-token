@@ -3115,6 +3115,10 @@ r_int
 id|snd_ctl_elem_write
 c_func
 (paren
+id|snd_card_t
+op_star
+id|card
+comma
 id|snd_ctl_file_t
 op_star
 id|file
@@ -3124,12 +3128,6 @@ op_star
 id|control
 )paren
 (brace
-id|snd_card_t
-op_star
-id|card
-op_assign
-id|file-&gt;card
-suffix:semicolon
 id|snd_kcontrol_t
 op_star
 id|kctl
@@ -3242,6 +3240,8 @@ op_eq
 l_int|NULL
 op_logical_or
 (paren
+id|file
+op_logical_and
 id|vd-&gt;owner
 op_ne
 l_int|NULL
@@ -3409,6 +3409,8 @@ op_assign
 id|snd_ctl_elem_write
 c_func
 (paren
+id|file-&gt;card
+comma
 id|file
 comma
 id|control
