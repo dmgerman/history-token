@@ -197,6 +197,8 @@ DECL|macro|FILE__EXECUTE_NO_TRANS
 mdefine_line|#define FILE__EXECUTE_NO_TRANS                    0x00020000UL
 DECL|macro|FILE__ENTRYPOINT
 mdefine_line|#define FILE__ENTRYPOINT                          0x00040000UL
+DECL|macro|FILE__EXECMOD
+mdefine_line|#define FILE__EXECMOD                             0x00080000UL
 DECL|macro|LNK_FILE__IOCTL
 mdefine_line|#define LNK_FILE__IOCTL                           0x00000001UL
 DECL|macro|LNK_FILE__READ
@@ -859,6 +861,8 @@ DECL|macro|PROCESS__DYNTRANSITION
 mdefine_line|#define PROCESS__DYNTRANSITION                    0x00800000UL
 DECL|macro|PROCESS__SETCURRENT
 mdefine_line|#define PROCESS__SETCURRENT                       0x01000000UL
+DECL|macro|PROCESS__EXECMEM
+mdefine_line|#define PROCESS__EXECMEM                          0x02000000UL
 DECL|macro|IPC__CREATE
 mdefine_line|#define IPC__CREATE                               0x00000001UL
 DECL|macro|IPC__DESTROY
