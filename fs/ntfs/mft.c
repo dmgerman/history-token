@@ -8,75 +8,6 @@ macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;mft.h&quot;
 macro_line|#include &quot;malloc.h&quot;
 macro_line|#include &quot;ntfs.h&quot;
-multiline_comment|/**&n; * ntfs_readpage - external declaration, function is in fs/ntfs/aops.c&n; */
-r_extern
-r_int
-id|ntfs_readpage
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_struct
-id|page
-op_star
-)paren
-suffix:semicolon
-macro_line|#ifdef NTFS_RW
-multiline_comment|/**&n; * ntfs_mft_writepage - forward declaration, function is further below&n; */
-r_static
-r_int
-id|ntfs_mft_writepage
-c_func
-(paren
-r_struct
-id|page
-op_star
-id|page
-comma
-r_struct
-id|writeback_control
-op_star
-id|wbc
-)paren
-suffix:semicolon
-macro_line|#endif /* NTFS_RW */
-multiline_comment|/**&n; * ntfs_mft_aops - address space operations for access to $MFT&n; *&n; * Address space operations for access to $MFT. This allows us to simply use&n; * ntfs_map_page() in map_mft_record_page().&n; */
-DECL|variable|ntfs_mft_aops
-r_struct
-id|address_space_operations
-id|ntfs_mft_aops
-op_assign
-(brace
-dot
-id|readpage
-op_assign
-id|ntfs_readpage
-comma
-multiline_comment|/* Fill page with data. */
-dot
-id|sync_page
-op_assign
-id|block_sync_page
-comma
-multiline_comment|/* Currently, just unplugs the&n;&t;&t;&t;&t;&t;&t;   disk request queue. */
-macro_line|#ifdef NTFS_RW
-dot
-id|writepage
-op_assign
-id|ntfs_mft_writepage
-comma
-multiline_comment|/* Write out the dirty mft&n;&t;&t;&t;&t;&t;&t;   records in a page. */
-dot
-id|set_page_dirty
-op_assign
-id|__set_page_dirty_nobuffers
-comma
-multiline_comment|/* Set the page dirty&n;&t;&t;&t;&t;&t;&t;   without touching the buffers&n;&t;&t;&t;&t;&t;&t;   belonging to the page. */
-macro_line|#endif /* NTFS_RW */
-)brace
-suffix:semicolon
 multiline_comment|/**&n; * map_mft_record_page - map the page in which a specific mft record resides&n; * @ni:&t;&t;ntfs inode whose mft record page to map&n; *&n; * This maps the page in which the mft record of the ntfs inode @ni is situated&n; * and returns a pointer to the mft record within the mapped page.&n; *&n; * Return value needs to be checked with IS_ERR() and if that is true PTR_ERR()&n; * contains the negative error code returned.&n; */
 DECL|function|map_mft_record_page
 r_static
@@ -271,134 +202,6 @@ r_void
 op_star
 )paren
 id|page
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * try_map_mft_record - attempt to map, pin and lock an mft record&n; * @ni:&t;&t;ntfs inode whose MFT record to map&n; *&n; * First, attempt to take the mrec_lock semaphore.  If the semaphore is already&n; * taken by someone else, return the error code -EALREADY.  Otherwise continue&n; * as described below.&n; *&n; * The page of the record is mapped using map_mft_record_page() before being&n; * returned to the caller.&n; *&n; * This in turn uses ntfs_map_page() to get the page containing the wanted mft&n; * record (it in turn calls read_cache_page() which reads it in from disk if&n; * necessary, increments the use count on the page so that it cannot disappear&n; * under us and returns a reference to the page cache page).&n; *&n; * The mft record is now ours and we return a pointer to it.  You need to check&n; * the returned pointer with IS_ERR() and if that is true, PTR_ERR() will return&n; * the error code.&n; *&n; * For further details see the description of map_mft_record() below.&n; */
-DECL|function|try_map_mft_record
-id|MFT_RECORD
-op_star
-id|try_map_mft_record
-c_func
-(paren
-id|ntfs_inode
-op_star
-id|ni
-)paren
-(brace
-id|MFT_RECORD
-op_star
-id|m
-suffix:semicolon
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Entering for mft_no 0x%lx.&quot;
-comma
-id|ni-&gt;mft_no
-)paren
-suffix:semicolon
-multiline_comment|/* Make sure the ntfs inode doesn&squot;t go away. */
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|ni-&gt;count
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Serialize access to this mft record.  If someone else is already&n;&t; * holding the lock, abort instead of waiting for the lock.&n;&t; */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|down_trylock
-c_func
-(paren
-op_amp
-id|ni-&gt;mrec_lock
-)paren
-)paren
-)paren
-(brace
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Mft record is already locked, aborting.&quot;
-)paren
-suffix:semicolon
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|ni-&gt;count
-)paren
-suffix:semicolon
-r_return
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|EALREADY
-)paren
-suffix:semicolon
-)brace
-id|m
-op_assign
-id|map_mft_record_page
-c_func
-(paren
-id|ni
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-op_logical_neg
-id|IS_ERR
-c_func
-(paren
-id|m
-)paren
-)paren
-)paren
-r_return
-id|m
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|ni-&gt;mrec_lock
-)paren
-suffix:semicolon
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|ni-&gt;count
-)paren
-suffix:semicolon
-id|ntfs_error
-c_func
-(paren
-id|ni-&gt;vol-&gt;sb
-comma
-l_string|&quot;Failed with error code %lu.&quot;
-comma
-op_minus
-id|PTR_ERR
-c_func
-(paren
-id|m
-)paren
-)paren
-suffix:semicolon
-r_return
-id|m
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * map_mft_record - map, pin and lock an mft record&n; * @ni:&t;&t;ntfs inode whose MFT record to map&n; *&n; * First, take the mrec_lock semaphore. We might now be sleeping, while waiting&n; * for the semaphore if it was already locked by someone else.&n; *&n; * The page of the record is mapped using map_mft_record_page() before being&n; * returned to the caller.&n; *&n; * This in turn uses ntfs_map_page() to get the page containing the wanted mft&n; * record (it in turn calls read_cache_page() which reads it in from disk if&n; * necessary, increments the use count on the page so that it cannot disappear&n; * under us and returns a reference to the page cache page).&n; *&n; * If read_cache_page() invokes ntfs_readpage() to load the page from disk, it&n; * sets PG_locked and clears PG_uptodate on the page. Once I/O has completed&n; * and the post-read mst fixups on each mft record in the page have been&n; * performed, the page gets PG_uptodate set and PG_locked cleared (this is done&n; * in our asynchronous I/O completion handler end_buffer_read_mft_async()).&n; * ntfs_map_page() waits for PG_locked to become clear and checks if&n; * PG_uptodate is set and returns an error code if not. This provides&n; * sufficient protection against races when reading/using the page.&n; *&n; * However there is the write mapping to think about. Doing the above described&n; * checking here will be fine, because when initiating the write we will set&n; * PG_locked and clear PG_uptodate making sure nobody is touching the page&n; * contents. Doing the locking this way means that the commit to disk code in&n; * the page cache code paths is automatically sufficiently locked with us as&n; * we will not touch a page that has been locked or is not uptodate. The only&n; * locking problem then is them locking the page while we are accessing it.&n; *&n; * So that code will end up having to own the mrec_lock of all mft&n; * records/inodes present in the page before I/O can proceed. In that case we&n; * wouldn&squot;t need to bother with PG_locked and PG_uptodate as nobody will be&n; * accessing anything without owning the mrec_lock semaphore. But we do need&n; * to use them because of the read_cache_page() invocation and the code becomes&n; * so much simpler this way that it is well worth it.&n; *&n; * The mft record is now ours and we return a pointer to it. You need to check&n; * the returned pointer with IS_ERR() and if that is true, PTR_ERR() will return&n; * the error code.&n; *&n; * NOTE: Caller is responsible for setting the mft record dirty before calling&n; * unmap_mft_record(). This is obviously only necessary if the caller really&n; * modified the mft record...&n; * Q: Do we want to recycle one of the VFS inode state bits instead?&n; * A: No, the inode ones mean we want to change the mft record, not we want to&n; * write it out.&n; */
@@ -1267,7 +1070,11 @@ suffix:semicolon
 id|mark_ntfs_record_dirty
 c_func
 (paren
-id|ni
+id|NTFS_I
+c_func
+(paren
+id|ni-&gt;vol-&gt;mft_ino
+)paren
 comma
 id|ni-&gt;page
 comma
@@ -1335,28 +1142,27 @@ l_string|&quot;Please email &quot;
 l_string|&quot;linux-ntfs-dev@lists.sourceforge.net and say that you saw &quot;
 l_string|&quot;this message.  Thank you.&quot;
 suffix:semicolon
-multiline_comment|/**&n; * sync_mft_mirror_umount - synchronise an mft record to the mft mirror&n; * @ni:&t;&t;ntfs inode whose mft record to synchronize&n; * @m:&t;&t;mapped, mst protected (extent) mft record to synchronize&n; *&n; * Write the mapped, mst protected (extent) mft record @m described by the&n; * (regular or extent) ntfs inode @ni to the mft mirror ($MFTMirr) bypassing&n; * the page cache and the $MFTMirr inode itself.&n; *&n; * This function is only for use at umount time when the mft mirror inode has&n; * already been disposed off.  We BUG() if we are called while the mft mirror&n; * inode is still attached to the volume.&n; *&n; * On success return 0.  On error return -errno.&n; *&n; * NOTE:  This function is not implemented yet as I am not convinced it can&n; * actually be triggered considering the sequence of commits we do in super.c::&n; * ntfs_put_super().  But just in case we provide this place holder as the&n; * alternative would be either to BUG() or to get a NULL pointer dereference&n; * and Oops.&n; */
-DECL|function|sync_mft_mirror_umount
+multiline_comment|/**&n; * ntfs_sync_mft_mirror_umount - synchronise an mft record to the mft mirror&n; * @vol:&t;ntfs volume on which the mft record to synchronize resides&n; * @mft_no:&t;mft record number of mft record to synchronize&n; * @m:&t;&t;mapped, mst protected (extent) mft record to synchronize&n; *&n; * Write the mapped, mst protected (extent) mft record @m with mft record&n; * number @mft_no to the mft mirror ($MFTMirr) of the ntfs volume @vol,&n; * bypassing the page cache and the $MFTMirr inode itself.&n; *&n; * This function is only for use at umount time when the mft mirror inode has&n; * already been disposed off.  We BUG() if we are called while the mft mirror&n; * inode is still attached to the volume.&n; *&n; * On success return 0.  On error return -errno.&n; *&n; * NOTE:  This function is not implemented yet as I am not convinced it can&n; * actually be triggered considering the sequence of commits we do in super.c::&n; * ntfs_put_super().  But just in case we provide this place holder as the&n; * alternative would be either to BUG() or to get a NULL pointer dereference&n; * and Oops.&n; */
+DECL|function|ntfs_sync_mft_mirror_umount
 r_static
 r_int
-id|sync_mft_mirror_umount
+id|ntfs_sync_mft_mirror_umount
 c_func
 (paren
-id|ntfs_inode
+id|ntfs_volume
 op_star
-id|ni
+id|vol
+comma
+r_const
+r_int
+r_int
+id|mft_no
 comma
 id|MFT_RECORD
 op_star
 id|m
 )paren
 (brace
-id|ntfs_volume
-op_star
-id|vol
-op_assign
-id|ni-&gt;vol
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -1379,16 +1185,20 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sync_mft_mirror - synchronize an mft record to the mft mirror&n; * @ni:&t;&t;ntfs inode whose mft record to synchronize&n; * @m:&t;&t;mapped, mst protected (extent) mft record to synchronize&n; * @sync:&t;if true, wait for i/o completion&n; *&n; * Write the mapped, mst protected (extent) mft record @m described by the&n; * (regular or extent) ntfs inode @ni to the mft mirror ($MFTMirr).&n; *&n; * On success return 0.  On error return -errno and set the volume errors flag&n; * in the ntfs_volume to which @ni belongs.&n; *&n; * NOTE:  We always perform synchronous i/o and ignore the @sync parameter.&n; *&n; * TODO:  If @sync is false, want to do truly asynchronous i/o, i.e. just&n; * schedule i/o via -&gt;writepage or do it via kntfsd or whatever.&n; */
-DECL|function|sync_mft_mirror
-r_static
+multiline_comment|/**&n; * ntfs_sync_mft_mirror - synchronize an mft record to the mft mirror&n; * @vol:&t;ntfs volume on which the mft record to synchronize resides&n; * @mft_no:&t;mft record number of mft record to synchronize&n; * @m:&t;&t;mapped, mst protected (extent) mft record to synchronize&n; * @sync:&t;if true, wait for i/o completion&n; *&n; * Write the mapped, mst protected (extent) mft record @m with mft record&n; * number @mft_no to the mft mirror ($MFTMirr) of the ntfs volume @vol.&n; *&n; * On success return 0.  On error return -errno and set the volume errors flag&n; * in the ntfs volume @vol.&n; *&n; * NOTE:  We always perform synchronous i/o and ignore the @sync parameter.&n; *&n; * TODO:  If @sync is false, want to do truly asynchronous i/o, i.e. just&n; * schedule i/o via -&gt;writepage or do it via kntfsd or whatever.&n; */
+DECL|function|ntfs_sync_mft_mirror
 r_int
-id|sync_mft_mirror
+id|ntfs_sync_mft_mirror
 c_func
 (paren
-id|ntfs_inode
+id|ntfs_volume
 op_star
-id|ni
+id|vol
+comma
+r_const
+r_int
+r_int
+id|mft_no
 comma
 id|MFT_RECORD
 op_star
@@ -1398,12 +1208,6 @@ r_int
 id|sync
 )paren
 (brace
-id|ntfs_volume
-op_star
-id|vol
-op_assign
-id|ni-&gt;vol
-suffix:semicolon
 r_struct
 id|page
 op_star
@@ -1466,7 +1270,7 @@ c_func
 (paren
 l_string|&quot;Entering for inode 0x%lx.&quot;
 comma
-id|ni-&gt;mft_no
+id|mft_no
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -1490,10 +1294,12 @@ id|vol-&gt;mftmirr_ino
 multiline_comment|/* This could happen during umount... */
 id|err
 op_assign
-id|sync_mft_mirror_umount
+id|ntfs_sync_mft_mirror_umount
 c_func
 (paren
-id|ni
+id|vol
+comma
+id|mft_no
 comma
 id|m
 )paren
@@ -1523,7 +1329,7 @@ c_func
 (paren
 id|vol-&gt;mftmirr_ino-&gt;i_mapping
 comma
-id|ni-&gt;mft_no
+id|mft_no
 op_rshift
 (paren
 id|PAGE_CACHE_SHIFT
@@ -1569,6 +1375,23 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+id|ClearPageUptodate
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 multiline_comment|/* The address in the page of the mirror copy of the mft record @m. */
 id|kmirr
 op_assign
@@ -1580,7 +1403,7 @@ id|page
 op_plus
 (paren
 (paren
-id|ni-&gt;mft_no
+id|mft_no
 op_lshift
 id|vol-&gt;mft_record_size_bits
 )paren
@@ -1601,8 +1424,8 @@ id|vol-&gt;mft_record_size
 )paren
 suffix:semicolon
 multiline_comment|/* Make sure we have mapped buffers. */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|page_has_buffers
@@ -1611,29 +1434,7 @@ c_func
 id|page
 )paren
 )paren
-(brace
-id|no_buffers_err_out
-suffix:colon
-id|ntfs_error
-c_func
-(paren
-id|vol-&gt;sb
-comma
-l_string|&quot;Writing mft mirror records without &quot;
-l_string|&quot;existing buffers is not implemented yet.  %s&quot;
-comma
-id|ntfs_please_email
-)paren
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-r_goto
-id|unlock_err_out
-suffix:semicolon
-)brace
 id|bh
 op_assign
 id|head
@@ -1644,14 +1445,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|bh
 )paren
-r_goto
-id|no_buffers_err_out
 suffix:semicolon
 id|nr_bhs
 op_assign
@@ -1707,8 +1506,8 @@ id|m_end
 )paren
 r_continue
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|buffer_mapped
@@ -1717,29 +1516,9 @@ c_func
 id|bh
 )paren
 )paren
-(brace
-id|ntfs_error
+suffix:semicolon
+id|BUG_ON
 c_func
-(paren
-id|vol-&gt;sb
-comma
-l_string|&quot;Writing mft mirror records &quot;
-l_string|&quot;without existing mapped buffers is &quot;
-l_string|&quot;not implemented yet.  %s&quot;
-comma
-id|ntfs_please_email
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-r_if
-c_cond
 (paren
 op_logical_neg
 id|buffer_uptodate
@@ -1748,27 +1527,7 @@ c_func
 id|bh
 )paren
 )paren
-(brace
-id|ntfs_error
-c_func
-(paren
-id|vol-&gt;sb
-comma
-l_string|&quot;Writing mft mirror records &quot;
-l_string|&quot;without existing uptodate buffers is &quot;
-l_string|&quot;not implemented yet.  %s&quot;
-comma
-id|ntfs_please_email
-)paren
 suffix:semicolon
-id|err
-op_assign
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 id|BUG_ON
 c_func
 (paren
@@ -1983,16 +1742,7 @@ op_assign
 op_minus
 id|EIO
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Set the buffer uptodate so the page &amp; buffer&n;&t;&t;&t;&t; * states don&squot;t become out of sync.&n;&t;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|PageUptodate
-c_func
-(paren
-id|page
-)paren
-)paren
+multiline_comment|/*&n;&t;&t;&t;&t; * Set the buffer uptodate so the page and&n;&t;&t;&t;&t; * buffer states do not become out of sync.&n;&t;&t;&t;&t; */
 id|set_buffer_uptodate
 c_func
 (paren
@@ -2030,8 +1780,6 @@ id|i_bhs
 )paren
 suffix:semicolon
 )brace
-id|unlock_err_out
-suffix:colon
 multiline_comment|/* Current state: all buffers are clean, unlocked, and uptodate. */
 multiline_comment|/* Remove the mst protection fixups again. */
 id|post_write_mst_fixup
@@ -2045,6 +1793,12 @@ id|kmirr
 )paren
 suffix:semicolon
 id|flush_dcache_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|SetPageUptodate
 c_func
 (paren
 id|page
@@ -2065,38 +1819,33 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
+id|likely
 c_func
 (paren
+op_logical_neg
 id|err
 )paren
 )paren
 (brace
-multiline_comment|/* I/O error during writing.  This is really bad! */
-id|ntfs_error
-c_func
-(paren
-id|vol-&gt;sb
-comma
-l_string|&quot;I/O error while writing mft mirror &quot;
-l_string|&quot;record 0x%lx!  You should unmount the volume &quot;
-l_string|&quot;and run chkdsk or ntfsfix.&quot;
-comma
-id|ni-&gt;mft_no
-)paren
-suffix:semicolon
-r_goto
-id|err_out
-suffix:semicolon
-)brace
 id|ntfs_debug
 c_func
 (paren
 l_string|&quot;Done.&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
+)brace
+r_else
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vol-&gt;sb
+comma
+l_string|&quot;I/O error while writing mft mirror &quot;
+l_string|&quot;record 0x%lx!&quot;
+comma
+id|mft_no
+)paren
 suffix:semicolon
 id|err_out
 suffix:colon
@@ -2105,22 +1854,22 @@ c_func
 (paren
 id|vol-&gt;sb
 comma
-l_string|&quot;Failed to synchronize $MFTMirr (error code %i).  &quot;
-l_string|&quot;Volume will be left marked dirty on umount.  Run &quot;
-l_string|&quot;ntfsfix on the partition after umounting to correct &quot;
-l_string|&quot;this.&quot;
+l_string|&quot;Failed to synchronize $MFTMirr (error &quot;
+l_string|&quot;code %i).  Volume will be left marked dirty &quot;
+l_string|&quot;on umount.  Run ntfsfix on the partition &quot;
+l_string|&quot;after umounting to correct this.&quot;
 comma
 op_minus
 id|err
 )paren
 suffix:semicolon
-multiline_comment|/* We don&squot;t want to clear the dirty bit on umount. */
 id|NVolSetErrors
 c_func
 (paren
 id|vol
 )paren
 suffix:semicolon
+)brace
 r_return
 id|err
 suffix:semicolon
@@ -2611,10 +2360,12 @@ id|ni-&gt;mft_no
 OL
 id|vol-&gt;mftmirr_size
 )paren
-id|sync_mft_mirror
+id|ntfs_sync_mft_mirror
 c_func
 (paren
-id|ni
+id|vol
+comma
+id|ni-&gt;mft_no
 comma
 id|m
 comma
@@ -2701,10 +2452,12 @@ id|ni-&gt;mft_no
 OL
 id|vol-&gt;mftmirr_size
 )paren
-id|sync_mft_mirror
+id|ntfs_sync_mft_mirror
 c_func
 (paren
-id|ni
+id|vol
+comma
+id|ni-&gt;mft_no
 comma
 id|m
 comma
@@ -2828,194 +2581,46 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_mft_writepage - check if a metadata page contains dirty mft records&n; * @page:&t;metadata page possibly containing dirty mft records&n; * @wbc:&t;writeback control structure&n; *&n; * This is called from the VM when it wants to have a dirty $MFT/$DATA metadata&n; * page cache page cleaned.  The VM has already locked the page and marked it&n; * clean.  Instead of writing the page as a conventional -&gt;writepage function&n; * would do, we check if the page still contains any dirty mft records (it must&n; * have done at some point in the past since the page was marked dirty) and if&n; * none are found, i.e. all mft records are clean, we unlock the page and&n; * return.  The VM is then free to do with the page as it pleases.  If on the&n; * other hand we do find any dirty mft records in the page, we redirty the page&n; * before unlocking it and returning so the VM knows that the page is still&n; * busy and cannot be thrown out.&n; *&n; * Note, we do not actually write any dirty mft records here because they are&n; * dirty inodes and hence will be written by the VFS inode dirty code paths.&n; * There is no need to write them from the VM page dirty code paths, too and in&n; * fact once we implement journalling it would be a complete nightmare having&n; * two code paths leading to mft record writeout.&n; */
-DECL|function|ntfs_mft_writepage
-r_static
-r_int
-id|ntfs_mft_writepage
+multiline_comment|/**&n; * ntfs_may_write_mft_record - check if an mft record may be written out&n; * @vol:&t;[IN]  ntfs volume on which the mft record to check resides&n; * @mft_no:&t;[IN]  mft record number of the mft record to check&n; * @m:&t;&t;[IN]  mapped mft record to check&n; * @locked_ni:&t;[OUT] caller has to unlock this ntfs inode if one is returned&n; *&n; * Check if the mapped (base or extent) mft record @m with mft record number&n; * @mft_no belonging to the ntfs volume @vol may be written out.  If necessary&n; * and possible the ntfs inode of the mft record is locked and the base vfs&n; * inode is pinned.  The locked ntfs inode is then returned in @locked_ni.  The&n; * caller is responsible for unlocking the ntfs inode and unpinning the base&n; * vfs inode.&n; *&n; * Return TRUE if the mft record may be written out and FALSE if not.&n; *&n; * The caller has locked the page and cleared the uptodate flag on it which&n; * means that we can safely write out any dirty mft records that do not have&n; * their inodes in icache as determined by ilookup5() as anyone&n; * opening/creating such an inode would block when attempting to map the mft&n; * record in read_cache_page() until we are finished with the write out.&n; *&n; * Here is a description of the tests we perform:&n; *&n; * If the inode is found in icache we know the mft record must be a base mft&n; * record.  If it is dirty, we do not write it and return FALSE as the vfs&n; * inode write paths will result in the access times being updated which would&n; * cause the base mft record to be redirtied and written out again.  (We know&n; * the access time update will modify the base mft record because Windows&n; * chkdsk complains if the standard information attribute is not in the base&n; * mft record.)&n; *&n; * If the inode is in icache and not dirty, we attempt to lock the mft record&n; * and if we find the lock was already taken, it is not safe to write the mft&n; * record and we return FALSE.&n; *&n; * If we manage to obtain the lock we have exclusive access to the mft record,&n; * which also allows us safe writeout of the mft record.  We then set&n; * @locked_ni to the locked ntfs inode and return TRUE.&n; *&n; * Note we cannot just lock the mft record and sleep while waiting for the lock&n; * because this would deadlock due to lock reversal (normally the mft record is&n; * locked before the page is locked but we already have the page locked here&n; * when we try to lock the mft record).&n; *&n; * If the inode is not in icache we need to perform further checks.&n; *&n; * If the mft record is not a FILE record or it is a base mft record, we can&n; * safely write it and return TRUE.&n; *&n; * We now know the mft record is an extent mft record.  We check if the inode&n; * corresponding to its base mft record is in icache and obtain a reference to&n; * it if it is.  If it is not, we can safely write it and return TRUE.&n; *&n; * We now have the base inode for the extent mft record.  We check if it has an&n; * ntfs inode for the extent mft record attached and if not it is safe to write&n; * the extent mft record and we return TRUE.&n; *&n; * The ntfs inode for the extent mft record is attached to the base inode so we&n; * attempt to lock the extent mft record and if we find the lock was already&n; * taken, it is not safe to write the extent mft record and we return FALSE.&n; *&n; * If we manage to obtain the lock we have exclusive access to the extent mft&n; * record, which also allows us safe writeout of the extent mft record.  We&n; * set the ntfs inode of the extent mft record clean and then set @locked_ni to&n; * the now locked ntfs inode and return TRUE.&n; *&n; * Note, the reason for actually writing dirty mft records here and not just&n; * relying on the vfs inode dirty code paths is that we can have mft records&n; * modified without them ever having actual inodes in memory.  Also we can have&n; * dirty mft records with clean ntfs inodes in memory.  None of the described&n; * cases would result in the dirty mft records being written out if we only&n; * relied on the vfs inode dirty code paths.  And these cases can really occur&n; * during allocation of new mft records and in particular when the&n; * initialized_size of the $MFT/$DATA attribute is extended and the new space&n; * is initialized using ntfs_mft_record_format().  The clean inode can then&n; * appear if the mft record is reused for a new inode before it got written&n; * out.&n; */
+DECL|function|ntfs_may_write_mft_record
+id|BOOL
+id|ntfs_may_write_mft_record
 c_func
 (paren
-r_struct
-id|page
+id|ntfs_volume
 op_star
-id|page
+id|vol
 comma
-r_struct
-id|writeback_control
+r_const
+r_int
+r_int
+id|mft_no
+comma
+r_const
+id|MFT_RECORD
 op_star
-id|wbc
+id|m
+comma
+id|ntfs_inode
+op_star
+op_star
+id|locked_ni
 )paren
 (brace
-r_struct
-id|inode
-op_star
-id|mft_vi
-op_assign
-id|page-&gt;mapping-&gt;host
-suffix:semicolon
 r_struct
 id|super_block
 op_star
 id|sb
 op_assign
-id|mft_vi-&gt;i_sb
+id|vol-&gt;sb
 suffix:semicolon
-id|ntfs_volume
+r_struct
+id|inode
 op_star
-id|vol
-op_assign
-id|NTFS_SB
-c_func
-(paren
-id|sb
-)paren
-suffix:semicolon
-id|u8
-op_star
-id|maddr
-suffix:semicolon
-id|MFT_RECORD
-op_star
-id|m
-suffix:semicolon
-id|ntfs_inode
-op_star
-op_star
-id|extent_nis
-suffix:semicolon
-r_int
-r_int
-id|mft_no
-suffix:semicolon
-r_int
-id|nr
-comma
-id|i
-comma
-id|j
-suffix:semicolon
-id|BOOL
-id|is_dirty
-op_assign
-id|FALSE
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|PageLocked
-c_func
-(paren
-id|page
-)paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|PageWriteback
-c_func
-(paren
-id|page
-)paren
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
 id|mft_vi
-op_ne
+op_assign
 id|vol-&gt;mft_ino
-)paren
 suffix:semicolon
-multiline_comment|/* The first mft record number in the page. */
-id|mft_no
-op_assign
-id|page-&gt;index
-op_lshift
-(paren
-id|PAGE_CACHE_SHIFT
-op_minus
-id|vol-&gt;mft_record_size_bits
-)paren
-suffix:semicolon
-multiline_comment|/* Number of mft records in the page. */
-id|nr
-op_assign
-id|PAGE_CACHE_SIZE
-op_rshift
-id|vol-&gt;mft_record_size_bits
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|nr
-)paren
-suffix:semicolon
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Entering for %i inodes starting at 0x%lx.&quot;
-comma
-id|nr
-comma
-id|mft_no
-)paren
-suffix:semicolon
-multiline_comment|/* Iterate over the mft records in the page looking for a dirty one. */
-id|maddr
-op_assign
-(paren
-id|u8
-op_star
-)paren
-id|kmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Clear the page uptodate flag.  This will cause anyone trying to get&n;&t; * hold of the page to block on the page lock in read_cache_page().&n;&t; */
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|PageUptodate
-c_func
-(paren
-id|page
-)paren
-)paren
-suffix:semicolon
-id|ClearPageUptodate
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|nr
-suffix:semicolon
-op_increment
-id|i
-comma
-op_increment
-id|mft_no
-comma
-id|maddr
-op_add_assign
-id|vol-&gt;mft_record_size
-)paren
-(brace
 r_struct
 id|inode
 op_star
@@ -3027,9 +2632,46 @@ id|ni
 comma
 op_star
 id|eni
+comma
+op_star
+op_star
+id|extent_nis
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 id|ntfs_attr
 id|na
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Entering for inode 0x%lx.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Normally we do not return a locked inode so set @locked_ni to NULL.&n;&t; */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|locked_ni
+)paren
+suffix:semicolon
+op_star
+id|locked_ni
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/*&n;&t; * Check if the inode corresponding to this mft record is in the VFS&n;&t; * inode cache and obtain a reference to it if it is.&n;&t; */
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Looking for inode 0x%lx in icache.&quot;
+comma
+id|mft_no
+)paren
 suffix:semicolon
 id|na.mft_no
 op_assign
@@ -3047,16 +2689,7 @@ id|na.type
 op_assign
 id|AT_UNUSED
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Check if the inode corresponding to this mft record is in&n;&t;&t; * the VFS inode cache and obtain a reference to it if it is.&n;&t;&t; */
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Looking for inode 0x%lx in icache.&quot;
-comma
-id|mft_no
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * For inode 0, i.e. $MFT itself, we cannot use ilookup5() from&n;&t;&t; * here or we deadlock because the inode is already locked by&n;&t;&t; * the kernel (fs/fs-writeback.c::__sync_single_inode()) and&n;&t;&t; * ilookup5() waits until the inode is unlocked before&n;&t;&t; * returning it and it never gets unlocked because&n;&t;&t; * ntfs_mft_writepage() never returns.  )-:  Fortunately, we&n;&t;&t; * have inode 0 pinned in icache for the duration of the mount&n;&t;&t; * so we can access it directly.&n;&t;&t; */
+multiline_comment|/*&n;&t; * For inode 0, i.e. $MFT itself, we cannot use ilookup5() from here or&n;&t; * we deadlock because the inode is already locked by the kernel&n;&t; * (fs/fs-writeback.c::__sync_single_inode()) and ilookup5() waits&n;&t; * until the inode is unlocked before returning it and it never gets&n;&t; * unlocked because ntfs_should_write_mft_record() never returns.  )-:&n;&t; * Fortunately, we have inode 0 pinned in icache for the duration of&n;&t; * the mount so we can access it directly.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3110,12 +2743,12 @@ id|vi
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Inode 0x%lx is in icache.&quot;
+l_string|&quot;Base inode 0x%lx is in icache.&quot;
 comma
 id|mft_no
 )paren
 suffix:semicolon
-multiline_comment|/* The inode is in icache.  Check if it is dirty. */
+multiline_comment|/* The inode is in icache. */
 id|ni
 op_assign
 id|NTFS_I
@@ -3124,10 +2757,18 @@ c_func
 id|vi
 )paren
 suffix:semicolon
+multiline_comment|/* Take a reference to the ntfs inode. */
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|ni-&gt;count
+)paren
+suffix:semicolon
+multiline_comment|/* If the inode is dirty, do not write this record. */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|NInoDirty
 c_func
 (paren
@@ -3135,14 +2776,19 @@ id|ni
 )paren
 )paren
 (brace
-multiline_comment|/* The inode is not dirty, skip this record. */
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Inode 0x%lx is not dirty, &quot;
-l_string|&quot;continuing search.&quot;
+l_string|&quot;Inode 0x%lx is dirty, do not write it.&quot;
 comma
 id|mft_no
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|ni-&gt;count
 )paren
 suffix:semicolon
 id|iput
@@ -3151,29 +2797,76 @@ c_func
 id|vi
 )paren
 suffix:semicolon
-r_continue
+r_return
+id|FALSE
 suffix:semicolon
 )brace
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Inode 0x%lx is dirty, aborting search.&quot;
+l_string|&quot;Inode 0x%lx is not dirty.&quot;
 comma
 id|mft_no
 )paren
 suffix:semicolon
-multiline_comment|/* The inode is dirty, no need to search further. */
+multiline_comment|/* The inode is not dirty, try to take the mft record lock. */
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|down_trylock
+c_func
+(paren
+op_amp
+id|ni-&gt;mrec_lock
+)paren
+)paren
+)paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Mft record 0x%lx is already locked, do &quot;
+l_string|&quot;not write it.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|ni-&gt;count
+)paren
+suffix:semicolon
 id|iput
 c_func
 (paren
 id|vi
 )paren
 suffix:semicolon
-id|is_dirty
-op_assign
-id|TRUE
+r_return
+id|FALSE
 suffix:semicolon
-r_break
+)brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Managed to lock mft record 0x%lx, write it.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * The write has to occur while we hold the mft record lock so&n;&t;&t; * return the locked ntfs inode.&n;&t;&t; */
+op_star
+id|locked_ni
+op_assign
+id|ni
+suffix:semicolon
+r_return
+id|TRUE
 suffix:semicolon
 )brace
 id|ntfs_debug
@@ -3185,67 +2878,31 @@ id|mft_no
 )paren
 suffix:semicolon
 multiline_comment|/* The inode is not in icache. */
-multiline_comment|/* Skip the record if it is not a mft record (type &quot;FILE&quot;). */
+multiline_comment|/* Write the record if it is not a mft record (type &quot;FILE&quot;). */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|ntfs_is_mft_recordp
+id|ntfs_is_mft_record
 c_func
 (paren
-(paren
-id|le32
-op_star
-)paren
-id|maddr
+id|m-&gt;magic
 )paren
 )paren
 (brace
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Mft record 0x%lx is not a FILE record, &quot;
-l_string|&quot;continuing search.&quot;
+l_string|&quot;Mft record 0x%lx is not a FILE record, write it.&quot;
 comma
 id|mft_no
 )paren
 suffix:semicolon
-r_continue
+r_return
+id|TRUE
 suffix:semicolon
 )brace
-id|m
-op_assign
-(paren
-id|MFT_RECORD
-op_star
-)paren
-id|maddr
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Skip the mft record if it is not in use.  FIXME:  What about&n;&t;&t; * deleted/deallocated (extent) inodes?  (AIA)&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|m-&gt;flags
-op_amp
-id|MFT_RECORD_IN_USE
-)paren
-)paren
-(brace
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Mft record 0x%lx is not in use, &quot;
-l_string|&quot;continuing search.&quot;
-comma
-id|mft_no
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/* Skip the mft record if it is a base inode. */
+multiline_comment|/* Write the mft record if it is a base inode. */
 r_if
 c_cond
 (paren
@@ -3256,16 +2913,16 @@ id|m-&gt;base_mft_record
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Mft record 0x%lx is a base record, &quot;
-l_string|&quot;continuing search.&quot;
+l_string|&quot;Mft record 0x%lx is a base record, write it.&quot;
 comma
 id|mft_no
 )paren
 suffix:semicolon
-r_continue
+r_return
+id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * This is an extent mft record.  Check if the inode&n;&t;&t; * corresponding to its base mft record is in icache.&n;&t;&t; */
+multiline_comment|/*&n;&t; * This is an extent mft record.  Check if the inode corresponding to&n;&t; * its base mft record is in icache and obtain a reference to it if it&n;&t; * is.&n;&t; */
 id|na.mft_no
 op_assign
 id|MREF_LE
@@ -3277,8 +2934,8 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Mft record 0x%lx is an extent record.  Looking &quot;
-l_string|&quot;for base inode 0x%lx in icache.&quot;
+l_string|&quot;Mft record 0x%lx is an extent record.  Looking for base &quot;
+l_string|&quot;inode 0x%lx in icache.&quot;
 comma
 id|mft_no
 comma
@@ -3310,17 +2967,18 @@ op_logical_neg
 id|vi
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * The base inode is not in icache.  Skip this extent&n;&t;&t;&t; * mft record.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The base inode is not in icache, write this extent mft&n;&t;&t; * record.&n;&t;&t; */
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Base inode 0x%lx is not in icache, &quot;
-l_string|&quot;continuing search.&quot;
+l_string|&quot;Base inode 0x%lx is not in icache, write the &quot;
+l_string|&quot;extent record.&quot;
 comma
 id|na.mft_no
 )paren
 suffix:semicolon
-r_continue
+r_return
+id|TRUE
 suffix:semicolon
 )brace
 id|ntfs_debug
@@ -3331,7 +2989,7 @@ comma
 id|na.mft_no
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The base inode is in icache.  Check if it has the extent&n;&t;&t; * inode corresponding to this extent mft record attached.&n;&t;&t; */
+multiline_comment|/*&n;&t; * The base inode is in icache.  Check if it has the extent inode&n;&t; * corresponding to this extent mft record attached.&n;&t; */
 id|ni
 op_assign
 id|NTFS_I
@@ -3355,7 +3013,7 @@ op_le
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * The base inode has no attached extent inodes.  Skip&n;&t;&t;&t; * this extent mft record.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The base inode has no attached extent inodes, write this&n;&t;&t; * extent mft record.&n;&t;&t; */
 id|up
 c_func
 (paren
@@ -3369,7 +3027,17 @@ c_func
 id|vi
 )paren
 suffix:semicolon
-r_continue
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Base inode 0x%lx has no attached extent inodes, &quot;
+l_string|&quot;write the extent record.&quot;
+comma
+id|na.mft_no
+)paren
+suffix:semicolon
+r_return
+id|TRUE
 suffix:semicolon
 )brace
 multiline_comment|/* Iterate over the attached extent inodes. */
@@ -3384,16 +3052,16 @@ id|eni
 op_assign
 l_int|NULL
 comma
-id|j
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|j
+id|i
 OL
 id|ni-&gt;nr_extents
 suffix:semicolon
 op_increment
-id|j
+id|i
 )paren
 (brace
 r_if
@@ -3403,25 +3071,25 @@ id|mft_no
 op_eq
 id|extent_nis
 (braket
-id|j
+id|i
 )braket
 op_member_access_from_pointer
 id|mft_no
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Found the extent inode corresponding to this&n;&t;&t;&t;&t; * extent mft record.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Found the extent inode corresponding to this extent&n;&t;&t;&t; * mft record.&n;&t;&t;&t; */
 id|eni
 op_assign
 id|extent_nis
 (braket
-id|j
+id|i
 )braket
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * If the extent inode was not attached to the base inode, skip&n;&t;&t; * this extent mft record.&n;&t;&t; */
+multiline_comment|/*&n;&t; * If the extent inode was not attached to the base inode, write this&n;&t; * extent mft record.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3442,146 +3110,121 @@ c_func
 id|vi
 )paren
 suffix:semicolon
-r_continue
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Extent inode 0x%lx is not attached to its base &quot;
+l_string|&quot;inode 0x%lx, write the extent record.&quot;
+comma
+id|mft_no
+comma
+id|na.mft_no
+)paren
+suffix:semicolon
+r_return
+id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Found the extent inode corrsponding to this extent mft&n;&t;&t; * record.  If it is dirty, no need to search further.&n;&t;&t; */
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Extent inode 0x%lx is attached to its base inode 0x%lx.&quot;
+comma
+id|mft_no
+comma
+id|na.mft_no
+)paren
+suffix:semicolon
+multiline_comment|/* Take a reference to the extent ntfs inode. */
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|eni-&gt;count
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|ni-&gt;extent_lock
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Found the extent inode coresponding to this extent mft record.&n;&t; * Try to take the mft record lock.&n;&t; */
 r_if
 c_cond
 (paren
-id|NInoDirty
+id|unlikely
+c_func
+(paren
+id|down_trylock
+c_func
+(paren
+op_amp
+id|eni-&gt;mrec_lock
+)paren
+)paren
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|eni-&gt;count
+)paren
+suffix:semicolon
+id|iput
+c_func
+(paren
+id|vi
+)paren
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Extent mft record 0x%lx is already locked, do &quot;
+l_string|&quot;not write it.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
+r_return
+id|FALSE
+suffix:semicolon
+)brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Managed to lock extent mft record 0x%lx, write it.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|NInoTestClearDirty
 c_func
 (paren
 id|eni
 )paren
 )paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-id|ni-&gt;extent_lock
-)paren
-suffix:semicolon
-id|iput
-c_func
-(paren
-id|vi
-)paren
-suffix:semicolon
-id|is_dirty
-op_assign
-id|TRUE
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/* The extent inode is not dirty, so do the next record. */
-id|up
-c_func
-(paren
-op_amp
-id|ni-&gt;extent_lock
-)paren
-suffix:semicolon
-id|iput
-c_func
-(paren
-id|vi
-)paren
-suffix:semicolon
-)brace
-id|SetPageUptodate
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-multiline_comment|/* If a dirty mft record was found, redirty the page. */
-r_if
-c_cond
-(paren
-id|is_dirty
-)paren
-(brace
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Inode 0x%lx is dirty.  Redirtying the page &quot;
-l_string|&quot;starting at inode 0x%lx.&quot;
+l_string|&quot;Extent inode 0x%lx is dirty, marking it clean.&quot;
 comma
 id|mft_no
-comma
-id|page-&gt;index
-op_lshift
-(paren
-id|PAGE_CACHE_SHIFT
-op_minus
-id|vol-&gt;mft_record_size_bits
-)paren
 )paren
 suffix:semicolon
-id|redirty_page_for_writepage
-c_func
-(paren
-id|wbc
-comma
-id|page
-)paren
-suffix:semicolon
-id|unlock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t; * Keep the VM happy.  This must be done otherwise the&n;&t;&t; * radix-tree tag PAGECACHE_TAG_DIRTY remains set even though&n;&t;&t; * the page is clean.&n;&t;&t; */
-id|BUG_ON
-c_func
-(paren
-id|PageWriteback
-c_func
-(paren
-id|page
-)paren
-)paren
-suffix:semicolon
-id|set_page_writeback
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|unlock_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|end_page_writeback
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Done.&quot;
-)paren
+multiline_comment|/*&n;&t; * The write has to occur while we hold the mft record lock so return&n;&t; * the locked extent ntfs inode.&n;&t; */
+op_star
+id|locked_ni
+op_assign
+id|eni
 suffix:semicolon
 r_return
-l_int|0
+id|TRUE
 suffix:semicolon
 )brace
 DECL|variable|es

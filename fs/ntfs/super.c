@@ -3666,11 +3666,11 @@ op_assign
 op_amp
 id|ntfs_empty_file_ops
 suffix:semicolon
-multiline_comment|/* Put back our special address space operations. */
+multiline_comment|/* Put in our special address space operations. */
 id|tmp_ino-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
-id|ntfs_mft_aops
+id|ntfs_mst_aops
 suffix:semicolon
 id|tmp_ni
 op_assign

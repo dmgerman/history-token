@@ -3244,11 +3244,6 @@ op_assign
 op_amp
 id|ntfs_dir_ops
 suffix:semicolon
-id|vi-&gt;i_mapping-&gt;a_ops
-op_assign
-op_amp
-id|ntfs_mst_aops
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -3719,12 +3714,27 @@ op_assign
 op_amp
 id|ntfs_file_ops
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|NInoMstProtected
+c_func
+(paren
+id|ni
+)paren
+)paren
+id|vi-&gt;i_mapping-&gt;a_ops
+op_assign
+op_amp
+id|ntfs_mst_aops
+suffix:semicolon
+r_else
 id|vi-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
 id|ntfs_aops
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * The number of 512-byte blocks used on disk (for stat). This is in so&n;&t; * far inaccurate as it doesn&squot;t account for any named streams or other&n;&t; * special non-resident attributes, but that is how Windows works, too,&n;&t; * so we are at least consistent with Windows, if not entirely&n;&t; * consistent with the Linux Way. Doing it the Linux Way would cause a&n;&t; * significant slowdown as it would involve iterating over all&n;&t; * attributes in the mft record and adding the allocated/compressed&n;&t; * sizes of all non-resident attributes present to give us the Linux&n;&t; * correct size that should go into i_blocks (after division by 512).&n;&t; */
 r_if
 c_cond
@@ -6083,7 +6093,7 @@ multiline_comment|/* Provides readpage() and sync_page() for map_mft_record(). *
 id|vi-&gt;i_mapping-&gt;a_ops
 op_assign
 op_amp
-id|ntfs_mft_aops
+id|ntfs_mst_aops
 suffix:semicolon
 id|ctx
 op_assign
@@ -7011,12 +7021,6 @@ id|vi-&gt;i_fop
 op_assign
 op_amp
 id|ntfs_empty_file_ops
-suffix:semicolon
-multiline_comment|/* Put back our special address space operations. */
-id|vi-&gt;i_mapping-&gt;a_ops
-op_assign
-op_amp
-id|ntfs_mft_aops
 suffix:semicolon
 )brace
 multiline_comment|/* Get the lowest vcn for the next extent. */
@@ -8792,7 +8796,11 @@ id|ctx-&gt;ntfs_ino
 id|mark_ntfs_record_dirty
 c_func
 (paren
-id|ctx-&gt;ntfs_ino
+id|NTFS_I
+c_func
+(paren
+id|ni-&gt;vol-&gt;mft_ino
+)paren
 comma
 id|ctx-&gt;ntfs_ino-&gt;page
 comma
