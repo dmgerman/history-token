@@ -52,9 +52,6 @@ r_static
 r_int
 id|sab82532_refcount
 suffix:semicolon
-multiline_comment|/* number of characters left in xmit buffer before we ask for more */
-DECL|macro|WAKEUP_CHARS
-mdefine_line|#define WAKEUP_CHARS 256
 DECL|macro|SERIAL_PARANOIA_CHECK
 macro_line|#undef SERIAL_PARANOIA_CHECK
 DECL|macro|SERIAL_DO_RESTART
@@ -11499,14 +11496,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_int
-id|con_is_present
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|su_console_registered
