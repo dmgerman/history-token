@@ -1239,6 +1239,6 @@ id|count
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif _NSP32_IO_H
+macro_line|#endif&t;/* _NSP32_IO_H */
 multiline_comment|/* end */
 eof

@@ -357,10 +357,6 @@ id|fb_info.fix
 op_assign
 id|q40fb_fix
 suffix:semicolon
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.fbops
 op_assign
 op_amp
@@ -433,11 +429,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: Q40 frame buffer alive and kicking !&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.node
-)paren
 )paren
 suffix:semicolon
 r_return

@@ -115,7 +115,7 @@ op_assign
 l_string|&quot;2.0&quot;
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|diva_os_irq_wrapper
 c_func
 (paren

@@ -5255,10 +5255,6 @@ id|cfb-&gt;fb.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-id|cfb-&gt;fb.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|cfb-&gt;fb.pseudo_palette
 op_assign
 (paren

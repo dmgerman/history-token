@@ -141,7 +141,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-id|kdev_t
+id|dev_t
 id|boot_dev
 suffix:semicolon
 r_extern

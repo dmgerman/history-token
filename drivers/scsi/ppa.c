@@ -861,12 +861,6 @@ c_func
 l_string|&quot;  happened.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|hreg-&gt;host_lock
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -880,18 +874,10 @@ id|retry_entry
 suffix:semicolon
 )brace
 r_else
-(brace
-id|spin_lock_irq
-c_func
-(paren
-id|hreg-&gt;host_lock
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 multiline_comment|/* return number of hosts detected */
-)brace
 )brace
 multiline_comment|/* This is to give the ppa driver a way to modify the timings (and other&n; * parameters) by writing to the /proc/scsi/ppa/0 file.&n; * Very simple method really... (To simple, no error checking :( )&n; * Reason: Kernel hackers HATE having to unload and reload modules for&n; * testing...&n; * Also gives a method to use a script to obtain optimum timings (TODO)&n; */
 DECL|function|ppa_proc_write

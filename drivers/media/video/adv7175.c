@@ -17,7 +17,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -547,7 +546,10 @@ id|client
 suffix:semicolon
 r_int
 id|rv
-comma
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|i
 comma
 id|x_common

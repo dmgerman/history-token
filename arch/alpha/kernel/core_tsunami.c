@@ -1616,11 +1616,6 @@ op_assign
 op_complement
 l_int|0UL
 suffix:semicolon
-id|iomem_resource.end
-op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
 multiline_comment|/* Find how many hoses we have, and initialize them.  TSUNAMI&n;&t;   and TYPHOON can have 2, but might only have 1 (DS10).  */
 id|tsunami_init_one_pchip
 c_func

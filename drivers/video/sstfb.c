@@ -6942,10 +6942,6 @@ comma
 id|info-&gt;screen_base
 )paren
 suffix:semicolon
-id|info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -7127,11 +7123,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device at 0x%p&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|info-&gt;node
-)paren
 comma
 id|fix-&gt;id
 comma

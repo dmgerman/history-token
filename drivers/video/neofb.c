@@ -8018,11 +8018,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|info-&gt;node
-)paren
 comma
 id|info-&gt;fix.id
 )paren

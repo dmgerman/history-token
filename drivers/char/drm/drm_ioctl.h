@@ -942,10 +942,6 @@ c_cond
 id|idx
 OL
 l_int|0
-op_logical_or
-id|idx
-op_ge
-id|dev-&gt;map_count
 )paren
 (brace
 id|up

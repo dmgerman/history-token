@@ -2266,8 +2266,8 @@ suffix:semicolon
 multiline_comment|/* Relocated SCSI script */
 )brace
 suffix:semicolon
-DECL|macro|IRQ_NONE
-mdefine_line|#define IRQ_NONE&t;255
+DECL|macro|SCSI_IRQ_NONE
+mdefine_line|#define SCSI_IRQ_NONE&t;255
 DECL|macro|DMA_NONE
 mdefine_line|#define DMA_NONE&t;255
 DECL|macro|IRQ_AUTO

@@ -10,13 +10,14 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aacraid.h&quot;
 DECL|function|aac_rx_intr
 r_static
-r_void
+id|irqreturn_t
 id|aac_rx_intr
 c_func
 (paren
@@ -251,7 +252,13 @@ id|DoorBellAdapterNormRespNotFull
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;aac_rx_enable_interrupt&t;-&t;Enable event reporting&n; *&t;@dev: Adapter&n; *&t;@event: Event to enable&n; *&n; *&t;Enable event reporting from the i960 for a given event.&n; */
 DECL|function|aac_rx_enable_interrupt

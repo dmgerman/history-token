@@ -2,7 +2,6 @@ multiline_comment|/*&n; *      Copyright (C) 1997 Claus-Justus Heine&n;&n; This 
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/ftape.h&gt;
 macro_line|#include &quot;../lowlevel/ftape-rw.h&quot;

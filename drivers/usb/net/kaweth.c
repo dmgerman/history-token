@@ -2699,6 +2699,10 @@ suffix:semicolon
 )brace
 id|private_header
 op_assign
+(paren
+id|u16
+op_star
+)paren
 id|__skb_push
 c_func
 (paren

@@ -2542,7 +2542,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This is the serial driver&squot;s interrupt routine&n; */
 DECL|function|rs_interrupt_single
 r_static
-r_void
+id|irqreturn_t
 id|rs_interrupt_single
 c_func
 (paren
@@ -2622,6 +2622,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -3071,6 +3072,9 @@ id|sti
 c_func
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * -------------------------------------------------------------------&n; * Here ends the serial interrupt routines.&n; * -------------------------------------------------------------------&n; */

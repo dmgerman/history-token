@@ -246,11 +246,6 @@ DECL|macro|PRD_BYTES
 mdefine_line|#define PRD_BYTES       8
 DECL|macro|PRD_ENTRIES
 mdefine_line|#define PRD_ENTRIES     (PAGE_SIZE / (2 * PRD_BYTES))
-multiline_comment|/*&n; * Our Physical Region Descriptor (PRD) table should be large enough&n; * to handle the biggest I/O request we are likely to see.  Since requests&n; * can have no more than 256 sectors, and since the typical blocksize is&n; * two or more sectors, we could get by with a limit of 128 entries here for&n; * the usual worst case.  Most requests seem to include some contiguous blocks,&n; * further reducing the number of table entries required.&n; *&n; * The driver reverts to PIO mode for individual requests that exceed&n; * this limit (possible with 512 byte blocksizes, eg. MSDOS f/s), so handling&n; * 100% of all crazy scenarios here is not necessary.&n; *&n; * As it turns out though, we must allocate a full 4KB page for this,&n; * so the two PRD tables (ide0 &amp; ide1) will each get half of that,&n; * allowing each to have about 256 entries (8 bytes each) from this.&n; */
-DECL|macro|PRD_BYTES
-mdefine_line|#define PRD_BYTES&t;8
-DECL|macro|PRD_ENTRIES
-mdefine_line|#define PRD_ENTRIES&t;(PAGE_SIZE / (2 * PRD_BYTES))
 multiline_comment|/*&n; * Some more useful definitions&n; */
 DECL|macro|IDE_MAJOR_NAME
 mdefine_line|#define IDE_MAJOR_NAME&t;&quot;hd&quot;&t;/* the same for all i/f; see also genhd.c */

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * USB NB Camera driver&n; *&n; * HISTORY:&n; * 25-Dec-2002 Dmitri      Removed lighting, sharpness parameters, methods.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;usbvideo.h&quot;

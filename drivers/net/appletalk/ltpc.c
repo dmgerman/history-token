@@ -5146,6 +5146,7 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|timeout
 suffix:semicolon
 id|ltpc_timer.data

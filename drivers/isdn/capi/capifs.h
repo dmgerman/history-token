@@ -10,7 +10,7 @@ r_int
 r_int
 id|num
 comma
-id|kdev_t
+id|dev_t
 id|device
 )paren
 suffix:semicolon

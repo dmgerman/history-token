@@ -685,14 +685,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* __LP64__ */
-macro_line|#if 1
-multiline_comment|/* KLUGE! this really belongs in kernel/resource.c! */
-id|iomem_resource.end
-op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
-macro_line|#endif
 id|sysram_resource_count
 op_assign
 id|npmem_ranges

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;hid.h&quot;
 macro_line|#include &lt;linux/hiddev.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
 DECL|macro|HIDDEV_MINOR_BASE
 mdefine_line|#define HIDDEV_MINOR_BASE&t;0

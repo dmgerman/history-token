@@ -12821,7 +12821,7 @@ macro_line|#endif
 multiline_comment|/**&n; *&t;i2o_pci_interrupt&t;-&t;Bus specific interrupt handler&n; *&t;@irq: interrupt line&n; *&t;@dev_id: cookie&n; *&n; *&t;Handle an interrupt from a PCI based I2O controller. This turns out&n; *&t;to be rather simple. We keep the controller pointer in the cookie.&n; */
 DECL|function|i2o_pci_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|i2o_pci_interrupt
 c_func
 (paren
@@ -12850,6 +12850,9 @@ c_func
 (paren
 id|c
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;i2o_pci_install&t;&t;-&t;Install a PCI i2o controller&n; *&t;@dev: PCI device of the I2O controller&n; *&n; *&t;Install a PCI (or in theory AGP) i2o controller. Devices are&n; *&t;initialized, configured and registered with the i2o core subsystem. Be&n; *&t;very careful with ordering. There may be pending interrupts.&n; *&n; *&t;To Do: Add support for polled controllers&n; */

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
@@ -1077,6 +1078,7 @@ r_void
 id|nsp32_message
 c_func
 (paren
+r_const
 r_char
 op_star
 comma
@@ -1098,6 +1100,7 @@ r_void
 id|nsp32_dmessage
 c_func
 (paren
+r_const
 r_char
 op_star
 comma
@@ -1415,21 +1418,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
-id|do_nsp32_isr
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_static
 r_int
 id|nsp32_getprom_param
 c_func
@@ -1693,6 +1681,7 @@ r_void
 id|nsp32_message
 c_func
 (paren
+r_const
 r_char
 op_star
 id|func
@@ -1780,6 +1769,7 @@ r_void
 id|nsp32_dmessage
 c_func
 (paren
+r_const
 r_char
 op_star
 id|func
@@ -5128,7 +5118,7 @@ suffix:semicolon
 multiline_comment|/* interrupt routine */
 DECL|function|do_nsp32_isr
 r_static
-r_void
+id|irqreturn_t
 id|do_nsp32_isr
 c_func
 (paren
@@ -5183,6 +5173,11 @@ id|flags
 suffix:semicolon
 r_int
 id|ret
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,0)
 r_struct
@@ -5261,6 +5256,10 @@ r_goto
 id|out2
 suffix:semicolon
 )brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|nsp32_write2
 c_func
 (paren
@@ -6144,6 +6143,11 @@ l_string|&quot;exit&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|macro|SPRINTF

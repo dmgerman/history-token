@@ -6710,10 +6710,6 @@ op_assign
 id|i
 suffix:semicolon
 multiline_comment|/* name should not depend on EGA/VGA */
-id|vga16fb.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|vga16fb.fbops
 op_assign
 op_amp
@@ -6814,11 +6810,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|vga16fb.node
-)paren
 comma
 id|vga16fb.fix.id
 )paren
