@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|DEFLATE_DEF_LEVEL
 mdefine_line|#define DEFLATE_DEF_LEVEL&t;&t;Z_DEFAULT_COMPRESSION
 DECL|macro|DEFLATE_DEF_WINBITS
