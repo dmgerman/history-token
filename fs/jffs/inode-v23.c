@@ -7081,6 +7081,7 @@ comma
 (paren
 r_struct
 id|jffs_flash_status
+id|__user
 op_star
 )paren
 id|arg
@@ -7160,6 +7161,7 @@ c_func
 (paren
 r_struct
 id|jffs_flash_status
+id|__user
 op_star
 )paren
 id|arg
