@@ -12303,7 +12303,7 @@ id|sctp_sackhdr
 )paren
 suffix:semicolon
 id|len
-op_assign
+op_add_assign
 (paren
 id|num_blocks
 op_plus
