@@ -1150,7 +1150,8 @@ id|protocol
 )paren
 (brace
 suffix:semicolon
-)paren
+)brace
+DECL|function|pnp_init_device
 r_static
 r_inline
 r_int
@@ -1168,6 +1169,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_add_device
 r_static
 r_inline
 r_int
@@ -1185,6 +1187,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_remove_device
 r_static
 r_inline
 r_void
@@ -1199,6 +1202,7 @@ id|dev
 (brace
 suffix:semicolon
 )brace
+DECL|function|pnp_build_resource
 r_static
 r_inline
 r_struct
@@ -1220,6 +1224,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|pnp_find_resources
 r_static
 r_inline
 r_struct
@@ -1241,6 +1246,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|pnp_get_max_depnum
 r_static
 r_inline
 r_int
@@ -1258,6 +1264,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_add_irq_resource
 r_static
 r_inline
 r_int
@@ -1283,6 +1290,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_add_dma_resource
 r_static
 r_inline
 r_int
@@ -1308,6 +1316,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_add_port_resource
 r_static
 r_inline
 r_int
@@ -1333,6 +1342,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_add_mem_resource
 r_static
 r_inline
 r_int
@@ -1358,6 +1368,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_add_mem32_resource
 r_static
 r_inline
 r_int
@@ -1383,6 +1394,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_activate_dev
 r_static
 r_inline
 r_int
@@ -1400,6 +1412,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_disable_dev
 r_static
 r_inline
 r_int
@@ -1417,6 +1430,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_raw_set_dev
 r_static
 r_inline
 r_int
@@ -1440,6 +1454,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_add_id
 r_static
 r_inline
 r_int
@@ -1462,6 +1477,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_register_driver
 r_static
 r_inline
 r_int
@@ -1479,6 +1495,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|pnp_unregister_driver
 r_static
 r_inline
 r_void
@@ -1493,6 +1510,7 @@ id|drv
 (brace
 suffix:semicolon
 )brace
+DECL|function|pnp_find_card
 r_static
 r_inline
 r_struct
@@ -1519,6 +1537,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|pnp_find_dev
 r_static
 r_inline
 r_struct
@@ -1555,6 +1574,7 @@ macro_line|#ifdef DEBUG
 DECL|macro|pnp_dbg
 mdefine_line|#define pnp_dbg(format, arg...) printk(KERN_DEBUG &quot;pnp: &quot; format &quot;&bslash;n&quot; , ## arg)
 macro_line|#else
+DECL|macro|pnp_dbg
 mdefine_line|#define pnp_dbg(format, arg...) do {} while (0)
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
