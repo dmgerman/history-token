@@ -5477,7 +5477,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|fbmem_init
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|fbmem_init
