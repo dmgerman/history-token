@@ -40,7 +40,8 @@ r_void
 id|usbvideo_procfs_level1_create
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|ut
 )paren
@@ -50,7 +51,8 @@ r_void
 id|usbvideo_procfs_level1_destroy
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|ut
 )paren
@@ -3820,7 +3822,8 @@ r_int
 id|usbvideo_register
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 op_star
 id|pCams
@@ -3856,7 +3859,8 @@ op_star
 id|id_table
 )paren
 (brace
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|cams
 suffix:semicolon
@@ -3935,13 +3939,15 @@ id|uvd
 op_plus
 r_sizeof
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 )paren
 suffix:semicolon
 id|cams
 op_assign
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 )paren
 id|kmalloc
@@ -3963,7 +3969,7 @@ l_int|NULL
 id|err
 c_func
 (paren
-l_string|&quot;Failed to allocate %d. bytes for usbvideo_t&quot;
+l_string|&quot;Failed to allocate %d. bytes for usbvideo struct&quot;
 comma
 id|base_size
 )paren
@@ -4124,7 +4130,7 @@ c_func
 (paren
 l_string|&quot;%s: /proc fs support requested but not configured!&quot;
 comma
-id|proc
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -4362,13 +4368,15 @@ r_void
 id|usbvideo_Deregister
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 op_star
 id|pCams
 )paren
 (brace
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|cams
 suffix:semicolon
@@ -4913,7 +4921,8 @@ r_int
 id|usbvideo_find_struct
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|cams
 )paren
@@ -4937,7 +4946,7 @@ l_int|NULL
 id|err
 c_func
 (paren
-l_string|&quot;No usbvideo_t handle?&quot;
+l_string|&quot;No usbvideo handle?&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5103,7 +5112,8 @@ op_star
 id|usbvideo_AllocateDevice
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|cams
 )paren
@@ -5131,7 +5141,7 @@ l_int|NULL
 id|err
 c_func
 (paren
-l_string|&quot;No usbvideo_t handle?&quot;
+l_string|&quot;No usbvideo handle?&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10375,7 +10385,8 @@ r_void
 id|usbvideo_procfs_level1_create
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|ut
 )paren
@@ -10470,7 +10481,8 @@ r_void
 id|usbvideo_procfs_level1_destroy
 c_func
 (paren
-id|usbvideo_t
+r_struct
+id|usbvideo
 op_star
 id|ut
 )paren
