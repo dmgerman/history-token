@@ -2871,13 +2871,18 @@ id|current
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/* if suspending, then power off and wait */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|current-&gt;flags
 op_amp
 id|PF_FREEZE
+)paren
 )paren
 (brace
 r_if
@@ -2933,6 +2938,7 @@ id|stir-&gt;speed
 r_break
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* if something to send? */
 id|skb
 op_assign
@@ -4201,6 +4207,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/* Power management suspend, so power off the transmitter/receiver */
 DECL|function|stir_suspend
 r_static
@@ -4273,6 +4280,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * USB device callbacks&n; */
 DECL|variable|irda_driver
 r_static
@@ -4306,6 +4314,7 @@ id|id_table
 op_assign
 id|dongles
 comma
+macro_line|#ifdef CONFIG_PM
 dot
 id|suspend
 op_assign
@@ -4316,6 +4325,7 @@ id|resume
 op_assign
 id|stir_resume
 comma
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Module insertion&n; */
