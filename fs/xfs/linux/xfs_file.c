@@ -1114,12 +1114,6 @@ comma
 id|error
 )paren
 suffix:semicolon
-id|UPDATE_ATIME
-c_func
-(paren
-id|ip
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
