@@ -568,6 +568,9 @@ r_struct
 id|saa7146_dev
 op_star
 id|dev
+comma
+r_int
+id|nobusyloop
 )paren
 suffix:semicolon
 multiline_comment|/* some memory sizes */

@@ -1,6 +1,7 @@
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;media/saa7146_vv.h&gt;
 DECL|function|saa7146_i2c_func
+r_static
 id|u32
 id|saa7146_i2c_func
 c_func
