@@ -6,6 +6,25 @@ DECL|macro|__RIVA_HW_H__
 mdefine_line|#define __RIVA_HW_H__
 DECL|macro|RIVA_SW_VERSION
 mdefine_line|#define RIVA_SW_VERSION 0x00010003
+macro_line|#ifndef Bool
+DECL|typedef|Bool
+r_typedef
+r_int
+id|Bool
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifndef TRUE
+DECL|macro|TRUE
+mdefine_line|#define TRUE 1
+macro_line|#endif
+macro_line|#ifndef FALSE
+DECL|macro|FALSE
+mdefine_line|#define FALSE 0
+macro_line|#endif
+macro_line|#ifndef NULL
+DECL|macro|NULL
+mdefine_line|#define NULL 0
+macro_line|#endif
 multiline_comment|/*&n; * Typedefs to force certain sized values.&n; */
 DECL|typedef|U008
 r_typedef
@@ -26,10 +45,18 @@ r_int
 id|U032
 suffix:semicolon
 multiline_comment|/*&n; * HW access macros.&n; */
+macro_line|#if defined(__powerpc__)
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|NV_WR08
-mdefine_line|#define NV_WR08(p,i,d)  (((U008 *)(p))[i]=(d))
+mdefine_line|#define NV_WR08(p,i,d)&t;out_8(p+i, d)
 DECL|macro|NV_RD08
-mdefine_line|#define NV_RD08(p,i)    (((U008 *)(p))[i])
+mdefine_line|#define NV_RD08(p,i)&t;in_8(p+i)
+macro_line|#else
+DECL|macro|NV_WR08
+mdefine_line|#define NV_WR08(p,i,d)&t;(((U008 *)(p))[i]=(d))
+DECL|macro|NV_RD08
+mdefine_line|#define NV_RD08(p,i)&t;(((U008 *)(p))[i])
+macro_line|#endif
 DECL|macro|NV_WR16
 mdefine_line|#define NV_WR16(p,i,d)  (((U016 *)(p))[(i)/2]=(d))
 DECL|macro|NV_RD16
@@ -64,6 +91,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -72,6 +105,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -99,6 +133,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -107,6 +147,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -156,6 +197,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -164,6 +211,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -195,6 +243,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -206,6 +260,7 @@ id|Nop
 l_int|1
 )braket
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -248,6 +303,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -256,6 +317,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -291,6 +353,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -302,6 +370,7 @@ id|Nop
 l_int|1
 )braket
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -348,6 +417,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -356,6 +431,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -592,6 +668,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -600,6 +682,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -690,6 +773,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -698,6 +787,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -806,6 +896,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -817,6 +913,7 @@ id|Nop
 l_int|1
 )braket
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -954,6 +1051,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -962,6 +1065,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -988,6 +1092,12 @@ id|reserved00
 l_int|4
 )braket
 suffix:semicolon
+macro_line|#ifdef __BIG_ENDIAN
+DECL|member|FifoFree
+id|U032
+id|FifoFree
+suffix:semicolon
+macro_line|#else
 DECL|member|FifoFree
 id|U016
 id|FifoFree
@@ -996,6 +1106,7 @@ DECL|member|Nop
 id|U016
 id|Nop
 suffix:semicolon
+macro_line|#endif
 DECL|member|reserved01
 id|U032
 id|reserved01
@@ -1020,6 +1131,10 @@ DECL|typedef|RivaSurface3D
 id|RivaSurface3D
 suffix:semicolon
 multiline_comment|/***************************************************************************&bslash;&n;*                                                                           *&n;*                        Virtualized RIVA H/W interface.                    *&n;*                                                                           *&n;&bslash;***************************************************************************/
+DECL|macro|FP_ENABLE
+mdefine_line|#define FP_ENABLE  1
+DECL|macro|FP_DITHER
+mdefine_line|#define FP_DITHER  2
 r_struct
 id|_riva_hw_inst
 suffix:semicolon
@@ -1040,6 +1155,10 @@ suffix:semicolon
 DECL|member|Version
 id|U032
 id|Version
+suffix:semicolon
+DECL|member|Chipset
+id|U032
+id|Chipset
 suffix:semicolon
 DECL|member|CrystalFreqKHz
 id|U032
@@ -1077,18 +1196,36 @@ DECL|member|FifoEmptyCount
 id|U032
 id|FifoEmptyCount
 suffix:semicolon
+DECL|member|CursorStart
+id|U032
+id|CursorStart
+suffix:semicolon
+DECL|member|flatPanel
+id|U032
+id|flatPanel
+suffix:semicolon
+DECL|member|twoHeads
+id|Bool
+id|twoHeads
+suffix:semicolon
 multiline_comment|/*&n;     * Non-FIFO registers.&n;     */
+DECL|member|PCRTC0
+r_volatile
+id|U032
+op_star
+id|PCRTC0
+suffix:semicolon
 DECL|member|PCRTC
 r_volatile
 id|U032
 op_star
 id|PCRTC
 suffix:semicolon
-DECL|member|PRAMDAC
+DECL|member|PRAMDAC0
 r_volatile
 id|U032
 op_star
-id|PRAMDAC
+id|PRAMDAC0
 suffix:semicolon
 DECL|member|PFB
 r_volatile
@@ -1162,6 +1299,12 @@ id|U032
 op_star
 id|VBLANK
 suffix:semicolon
+DECL|member|PCIO0
+r_volatile
+id|U008
+op_star
+id|PCIO0
+suffix:semicolon
 DECL|member|PCIO
 r_volatile
 id|U008
@@ -1174,11 +1317,23 @@ id|U008
 op_star
 id|PVIO
 suffix:semicolon
+DECL|member|PDIO0
+r_volatile
+id|U008
+op_star
+id|PDIO0
+suffix:semicolon
 DECL|member|PDIO
 r_volatile
 id|U008
 op_star
 id|PDIO
+suffix:semicolon
+DECL|member|PRAMDAC
+r_volatile
+id|U032
+op_star
+id|PRAMDAC
 suffix:semicolon
 multiline_comment|/*&n;     * Common chip functions.&n;     */
 DECL|member|Busy
@@ -1416,6 +1571,10 @@ DECL|member|height
 id|U032
 id|height
 suffix:semicolon
+DECL|member|interlace
+id|U032
+id|interlace
+suffix:semicolon
 DECL|member|repaint0
 id|U032
 id|repaint0
@@ -1427,6 +1586,18 @@ suffix:semicolon
 DECL|member|screen
 id|U032
 id|screen
+suffix:semicolon
+DECL|member|scale
+id|U032
+id|scale
+suffix:semicolon
+DECL|member|dither
+id|U032
+id|dither
+suffix:semicolon
+DECL|member|extra
+id|U032
+id|extra
 suffix:semicolon
 DECL|member|pixel
 id|U032
@@ -1448,6 +1619,10 @@ DECL|member|vpll
 id|U032
 id|vpll
 suffix:semicolon
+DECL|member|vpll2
+id|U032
+id|vpll2
+suffix:semicolon
 DECL|member|pllsel
 id|U032
 id|pllsel
@@ -1456,9 +1631,25 @@ DECL|member|general
 id|U032
 id|general
 suffix:semicolon
+DECL|member|crtcOwner
+id|U032
+id|crtcOwner
+suffix:semicolon
+DECL|member|head
+id|U032
+id|head
+suffix:semicolon
+DECL|member|head2
+id|U032
+id|head2
+suffix:semicolon
 DECL|member|config
 id|U032
 id|config
+suffix:semicolon
+DECL|member|cursorConfig
+id|U032
+id|cursorConfig
 suffix:semicolon
 DECL|member|cursor0
 id|U032
