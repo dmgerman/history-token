@@ -9134,6 +9134,9 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -9146,6 +9149,11 @@ r_sizeof
 id|tmp.__unused
 )paren
 )paren
+)paren
+id|error
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_return
