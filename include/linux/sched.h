@@ -772,15 +772,6 @@ op_star
 id|vfork_done
 suffix:semicolon
 multiline_comment|/* for vfork() */
-DECL|member|migration_list
-id|list_t
-id|migration_list
-suffix:semicolon
-DECL|member|migration_sem
-r_struct
-id|semaphore
-id|migration_sem
-suffix:semicolon
 DECL|member|rt_priority
 r_int
 r_int
