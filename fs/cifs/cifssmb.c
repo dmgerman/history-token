@@ -1575,6 +1575,11 @@ op_amp
 id|GlobalMid_Lock
 )paren
 suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|ESHUTDOWN
+suffix:semicolon
 )brace
 )brace
 r_if
@@ -3789,6 +3794,14 @@ op_assign
 id|smb_file_id
 suffix:semicolon
 multiline_comment|/* netfid stays le */
+r_if
+c_cond
+(paren
+id|numLock
+op_ne
+l_int|0
+)paren
+(brace
 id|pSMB-&gt;Locks
 (braket
 l_int|0
@@ -3802,6 +3815,7 @@ c_func
 id|current-&gt;tgid
 )paren
 suffix:semicolon
+multiline_comment|/* BB where to store pid high? */
 id|temp
 op_assign
 id|cpu_to_le64
@@ -3821,7 +3835,7 @@ op_assign
 id|__u32
 )paren
 (paren
-id|len
+id|temp
 op_amp
 l_int|0xFFFFFFFF
 )paren
@@ -3837,7 +3851,7 @@ op_assign
 id|__u32
 )paren
 (paren
-id|len
+id|temp
 op_rshift
 l_int|32
 )paren
@@ -3861,7 +3875,7 @@ op_assign
 id|__u32
 )paren
 (paren
-id|offset
+id|temp
 op_amp
 l_int|0xFFFFFFFF
 )paren
@@ -3877,7 +3891,7 @@ op_assign
 id|__u32
 )paren
 (paren
-id|offset
+id|temp
 op_rshift
 l_int|32
 )paren
@@ -3889,6 +3903,15 @@ r_sizeof
 id|LOCKING_ANDX_RANGE
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* oplock break */
+id|pSMB-&gt;ByteCount
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|pSMB-&gt;hdr.smb_buf_length
 op_add_assign
 id|pSMB-&gt;ByteCount
@@ -4525,6 +4548,18 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CIFS_STATS
+r_else
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_renames
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4986,6 +5021,18 @@ id|rc
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_CIFS_STATS
+r_else
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|pTcon-&gt;num_t2renames
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if.h&gt;
