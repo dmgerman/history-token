@@ -144,6 +144,7 @@ r_void
 id|sis_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem

@@ -1007,6 +1007,7 @@ r_void
 id|serverworks_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|temp
@@ -1387,6 +1388,7 @@ r_int
 id|serverworks_insert_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -1618,6 +1620,7 @@ r_int
 id|serverworks_remove_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem

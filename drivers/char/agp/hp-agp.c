@@ -920,6 +920,7 @@ r_void
 id|hp_zx1_tlbflush
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -1141,6 +1142,7 @@ r_int
 id|hp_zx1_insert_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -1358,6 +1360,7 @@ r_int
 id|hp_zx1_remove_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem

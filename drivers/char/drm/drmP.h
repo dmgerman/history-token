@@ -1071,6 +1071,7 @@ r_int
 id|handle
 suffix:semicolon
 DECL|member|memory
+r_struct
 id|agp_memory
 op_star
 id|memory
@@ -1107,6 +1108,7 @@ r_struct
 id|drm_agp_head
 (brace
 DECL|member|agp_info
+r_struct
 id|agp_kern_info
 id|agp_info
 suffix:semicolon
@@ -2279,6 +2281,7 @@ id|size
 suffix:semicolon
 macro_line|#if __REALLY_HAVE_AGP
 r_extern
+r_struct
 id|agp_memory
 op_star
 id|DRM
@@ -2302,6 +2305,7 @@ c_func
 id|free_agp
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle
@@ -2318,6 +2322,7 @@ c_func
 id|bind_agp
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle
@@ -2335,6 +2340,7 @@ c_func
 id|unbind_agp
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle
@@ -3773,6 +3779,7 @@ id|arg
 )paren
 suffix:semicolon
 r_extern
+r_struct
 id|agp_memory
 op_star
 id|DRM
@@ -3796,6 +3803,7 @@ c_func
 id|agp_free_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle
@@ -3809,6 +3817,7 @@ c_func
 id|agp_bind_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle
@@ -3825,6 +3834,7 @@ c_func
 id|agp_unbind_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle

@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * AGPGART module version 0.100&n; * Copyright (C) 2002-2003 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
+multiline_comment|/*&n; * AGPGART backend specific includes. Not for userspace consumption.&n; *&n; * Copyright (C) 2002-2003 Dave Jones&n; * Copyright (C) 1999 Jeff Hartmann&n; * Copyright (C) 1999 Precision Insight, Inc.&n; * Copyright (C) 1999 Xi Graphics, Inc.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice shall be included&n; * in all copies or substantial portions of the Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n; * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * JEFF HARTMANN, OR ANY OTHER CONTRIBUTORS BE LIABLE FOR ANY CLAIM, &n; * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR &n; * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE &n; * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&n; *&n; */
 macro_line|#ifndef _AGP_BACKEND_H
 DECL|macro|_AGP_BACKEND_H
 mdefine_line|#define _AGP_BACKEND_H 1
+macro_line|#ifdef __KERNEL__
 macro_line|#ifndef TRUE
 DECL|macro|TRUE
 mdefine_line|#define TRUE 1
@@ -36,10 +37,9 @@ id|minor
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|_agp_kern_info
-r_typedef
+DECL|struct|agp_kern_info
 r_struct
-id|_agp_kern_info
+id|agp_kern_info
 (brace
 DECL|member|version
 r_struct
@@ -94,15 +94,12 @@ id|vm_operations_struct
 op_star
 id|vm_ops
 suffix:semicolon
-DECL|typedef|agp_kern_info
 )brace
-id|agp_kern_info
 suffix:semicolon
 multiline_comment|/* &n; * The agp_memory structure has information about the block of agp memory&n; * allocated.  A caller may manipulate the next and prev pointers to link&n; * each allocated item into a list.  These pointers are ignored by the backend.&n; * Everything else should never be written to, but the caller may read any of&n; * the items to detrimine the status of this block of agp memory. &n; */
-DECL|struct|_agp_memory
-r_typedef
+DECL|struct|agp_memory
 r_struct
-id|_agp_memory
+id|agp_memory
 (brace
 DECL|member|key
 r_int
@@ -110,13 +107,13 @@ id|key
 suffix:semicolon
 DECL|member|next
 r_struct
-id|_agp_memory
+id|agp_memory
 op_star
 id|next
 suffix:semicolon
 DECL|member|prev
 r_struct
-id|_agp_memory
+id|agp_memory
 op_star
 id|prev
 suffix:semicolon
@@ -154,9 +151,7 @@ DECL|member|is_flushed
 id|u8
 id|is_flushed
 suffix:semicolon
-DECL|typedef|agp_memory
 )brace
-id|agp_memory
 suffix:semicolon
 DECL|macro|AGP_NORMAL_MEMORY
 mdefine_line|#define AGP_NORMAL_MEMORY 0
@@ -165,11 +160,13 @@ r_void
 id|agp_free_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 )paren
 suffix:semicolon
 r_extern
+r_struct
 id|agp_memory
 op_star
 id|agp_allocate_memory
@@ -185,6 +182,7 @@ r_int
 id|agp_copy_info
 c_func
 (paren
+r_struct
 id|agp_kern_info
 op_star
 )paren
@@ -194,6 +192,7 @@ r_int
 id|agp_bind_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 comma
@@ -205,6 +204,7 @@ r_int
 id|agp_unbind_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 )paren
@@ -244,11 +244,13 @@ op_star
 id|free_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 )paren
 suffix:semicolon
 DECL|member|allocate_memory
+r_struct
 id|agp_memory
 op_star
 (paren
@@ -268,6 +270,7 @@ op_star
 id|bind_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 comma
@@ -281,6 +284,7 @@ op_star
 id|unbind_memory
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 )paren
@@ -322,6 +326,7 @@ op_star
 id|copy_info
 )paren
 (paren
+r_struct
 id|agp_kern_info
 op_star
 )paren
@@ -336,5 +341,6 @@ id|drm_agp_t
 op_star
 id|drm_agp_p
 suffix:semicolon
+macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_H */
 eof

@@ -463,6 +463,7 @@ suffix:semicolon
 )brace
 macro_line|#if __REALLY_HAVE_AGP
 DECL|function|alloc_agp
+r_struct
 id|agp_memory
 op_star
 id|DRM
@@ -499,6 +500,7 @@ c_func
 id|free_agp
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle
@@ -532,6 +534,7 @@ c_func
 id|bind_agp
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle
@@ -562,6 +565,7 @@ c_func
 id|unbind_agp
 )paren
 (paren
+r_struct
 id|agp_memory
 op_star
 id|handle

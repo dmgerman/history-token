@@ -472,6 +472,7 @@ r_int
 id|num_clients
 suffix:semicolon
 DECL|member|pool
+r_struct
 id|agp_memory
 op_star
 id|pool

@@ -108,6 +108,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|agp_create_memory
+r_struct
 id|agp_memory
 op_star
 id|agp_create_memory
@@ -117,6 +118,7 @@ r_int
 id|scratch_pages
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 r_new
@@ -128,6 +130,7 @@ c_func
 (paren
 r_sizeof
 (paren
+r_struct
 id|agp_memory
 )paren
 comma
@@ -153,6 +156,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_memory
 )paren
 )paren
@@ -249,6 +253,7 @@ r_void
 id|agp_free_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|curr
@@ -376,6 +381,7 @@ DECL|macro|ENTRIES_PER_PAGE
 mdefine_line|#define ENTRIES_PER_PAGE&t;&t;(PAGE_SIZE / sizeof(unsigned long))
 multiline_comment|/**&n; *&t;agp_allocate_memory  -  allocate a group of pages of a certain type.&n; *&n; *&t;@page_count:&t;size_t argument of the number of pages&n; *&t;@type:&t;u32 argument of the type of memory to be allocated.  &n; *&n; *&t;Every agp bridge device will allow you to allocate AGP_NORMAL_MEMORY which&n; *&t;maps to physical ram.  Any other type is device dependent.&n; *&n; *&t;It returns NULL whenever memory is unavailable. &n; */
 DECL|function|agp_allocate_memory
+r_struct
 id|agp_memory
 op_star
 id|agp_allocate_memory
@@ -391,6 +397,7 @@ id|type
 r_int
 id|scratch_pages
 suffix:semicolon
+r_struct
 id|agp_memory
 op_star
 r_new
@@ -841,6 +848,7 @@ r_int
 id|agp_copy_info
 c_func
 (paren
+r_struct
 id|agp_kern_info
 op_star
 id|info
@@ -855,6 +863,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|agp_kern_info
 )paren
 )paren
@@ -958,6 +967,7 @@ r_int
 id|agp_bind_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|curr
@@ -1079,6 +1089,7 @@ r_int
 id|agp_unbind_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|curr
@@ -2991,6 +3002,7 @@ r_int
 id|agp_generic_insert_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -3279,6 +3291,7 @@ r_int
 id|agp_generic_remove_memory
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|mem
@@ -3363,6 +3376,7 @@ id|agp_generic_remove_memory
 )paren
 suffix:semicolon
 DECL|function|agp_generic_alloc_by_type
+r_struct
 id|agp_memory
 op_star
 id|agp_generic_alloc_by_type
@@ -3391,6 +3405,7 @@ r_void
 id|agp_generic_free_by_type
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|curr

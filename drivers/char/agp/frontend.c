@@ -21,6 +21,7 @@ id|agp_fe
 suffix:semicolon
 DECL|function|agp_find_mem_by_key
 r_static
+r_struct
 id|agp_memory
 op_star
 id|agp_find_mem_by_key
@@ -30,6 +31,7 @@ r_int
 id|key
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 id|curr
@@ -90,15 +92,18 @@ r_void
 id|agp_remove_from_pool
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|temp
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 id|prev
 suffix:semicolon
+r_struct
 id|agp_memory
 op_star
 id|next
@@ -805,11 +810,13 @@ r_void
 id|agp_insert_into_pool
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|temp
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 id|prev
@@ -1008,6 +1015,7 @@ r_void
 id|agp_free_memory_wrap
 c_func
 (paren
+r_struct
 id|agp_memory
 op_star
 id|memory
@@ -1028,6 +1036,7 @@ suffix:semicolon
 )brace
 DECL|function|agp_allocate_memory_wrap
 r_static
+r_struct
 id|agp_memory
 op_star
 id|agp_allocate_memory_wrap
@@ -1040,6 +1049,7 @@ id|u32
 id|type
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 id|memory
@@ -1345,10 +1355,12 @@ op_star
 id|controller
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 id|memory
 suffix:semicolon
+r_struct
 id|agp_memory
 op_star
 id|temp
@@ -2119,6 +2131,7 @@ id|priv
 op_assign
 id|file-&gt;private_data
 suffix:semicolon
+r_struct
 id|agp_kern_info
 id|kerninfo
 suffix:semicolon
@@ -2905,6 +2918,7 @@ r_struct
 id|agp_info
 id|userinfo
 suffix:semicolon
+r_struct
 id|agp_kern_info
 id|kerninfo
 suffix:semicolon
@@ -3628,6 +3642,7 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 id|memory
@@ -3751,6 +3766,7 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 id|memory
@@ -3813,6 +3829,7 @@ r_struct
 id|agp_bind
 id|bind_info
 suffix:semicolon
+r_struct
 id|agp_memory
 op_star
 id|memory
@@ -3894,6 +3911,7 @@ r_int
 id|arg
 )paren
 (brace
+r_struct
 id|agp_memory
 op_star
 id|memory
