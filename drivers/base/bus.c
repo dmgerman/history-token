@@ -877,6 +877,18 @@ id|dev-&gt;kobj
 )paren
 )paren
 suffix:semicolon
+id|sysfs_create_link
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+comma
+op_amp
+id|dev-&gt;driver-&gt;kobj
+comma
+l_string|&quot;driver&quot;
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;driver_probe_device - attempt to bind device &amp; driver.&n; *&t;@drv:&t;driver.&n; *&t;@dev:&t;device.&n; *&n; *&t;First, we call the bus&squot;s match function, if one present, which&n; *&t;should compare the device IDs the driver supports with the&n; *&t;device IDs of the device. Note we don&squot;t do this ourselves&n; *&t;because we don&squot;t know the format of the ID structures, nor what&n; *&t;is to be considered a match and what is not.&n; *&n; *&t;If we find a match, we call @drv-&gt;probe(@dev) if it exists, and&n; *&t;call device_bind_driver() above.&n; */
 DECL|function|driver_probe_device
@@ -1221,6 +1233,15 @@ c_func
 op_amp
 id|dev-&gt;kobj
 )paren
+)paren
+suffix:semicolon
+id|sysfs_remove_link
+c_func
+(paren
+op_amp
+id|dev-&gt;kobj
+comma
+l_string|&quot;driver&quot;
 )paren
 suffix:semicolon
 id|list_del_init
