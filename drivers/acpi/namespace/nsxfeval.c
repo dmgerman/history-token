@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfeval - Public interfaces to the ACPI subsystem&n; *                         ACPI Object evaluation interfaces&n; *              $Revision: 6 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsxfeval - Public interfaces to the ACPI subsystem&n; *                         ACPI Object evaluation interfaces&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsxfeval&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_evaluate_object_typed&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              *Pathname           - Object pathname (optional)&n; *              **External_params   - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              *Return_buffer      - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *              Return_type         - Expected type of return object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_evaluate_object_typed&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              *Pathname           - Object pathname (optional)&n; *              **external_params   - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              *return_buffer      - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *              return_type         - Expected type of return object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_evaluate_object_typed
 id|acpi_evaluate_object_typed
@@ -41,7 +41,7 @@ id|FALSE
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_evaluate_object_typed&quot;
+l_string|&quot;acpi_evaluate_object_typed&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Return buffer must be valid */
@@ -139,7 +139,7 @@ id|AE_NULL_OBJECT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Examine the object type returned from Evaluate_object */
+multiline_comment|/* Examine the object type returned from evaluate_object */
 r_if
 c_cond
 (paren
@@ -217,7 +217,7 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_evaluate_object&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              *Pathname           - Object pathname (optional)&n; *              **External_params   - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              *Return_buffer      - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_evaluate_object&n; *&n; * PARAMETERS:  Handle              - Object handle (optional)&n; *              *Pathname           - Object pathname (optional)&n; *              **external_params   - List of parameters to pass to method,&n; *                                    terminated by NULL.  May be NULL&n; *                                    if no parameters are being passed.&n; *              *return_buffer      - Where to put method&squot;s return value (if&n; *                                    any).  If NULL, no value is returned.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find and evaluate the given object, passing the given&n; *              parameters if necessary.  One of &quot;Handle&quot; or &quot;Pathname&quot; must&n; *              be valid (non-null)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_evaluate_object
 id|acpi_evaluate_object
@@ -253,7 +253,7 @@ id|internal_return_obj
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|buffer_space_needed
 suffix:semicolon
 id|u32
@@ -261,7 +261,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_evaluate_object&quot;
+l_string|&quot;acpi_evaluate_object&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If there are parameters to be passed to the object&n;&t; * (which must be a control method), the external objects&n;&t; * must be converted to internal objects&n;&t; */
@@ -280,7 +280,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|external_params-&gt;count
 op_plus
@@ -655,7 +655,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_walk_namespace&n; *&n; * PARAMETERS:  Type                - acpi_object_type to search for&n; *              Start_object        - Handle in namespace where search begins&n; *              Max_depth           - Depth to which search is to reach&n; *              User_function       - Called when an object of &quot;Type&quot; is found&n; *              Context             - Passed to user function&n; *              Return_value        - Location where return value of&n; *                                    User_function is put if terminated early&n; *&n; * RETURNS      Return value from the User_function if terminated early.&n; *              Otherwise, returns NULL.&n; *&n; * DESCRIPTION: Performs a modified depth-first walk of the namespace tree,&n; *              starting (and ending) at the object specified by Start_handle.&n; *              The User_function is called whenever an object that matches&n; *              the type parameter is found.  If the user function returns&n; *              a non-zero value, the search is terminated immediately and this&n; *              value is returned to the caller.&n; *&n; *              The point of this procedure is to provide a generic namespace&n; *              walk routine that can be called from multiple places to&n; *              provide multiple services;  the User Function can be tailored&n; *              to each task, whether it is a print function, a compare&n; *              function, etc.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_walk_namespace&n; *&n; * PARAMETERS:  Type                - acpi_object_type to search for&n; *              start_object        - Handle in namespace where search begins&n; *              max_depth           - Depth to which search is to reach&n; *              user_function       - Called when an object of &quot;Type&quot; is found&n; *              Context             - Passed to user function&n; *              return_value        - Location where return value of&n; *                                    user_function is put if terminated early&n; *&n; * RETURNS      Return value from the user_function if terminated early.&n; *              Otherwise, returns NULL.&n; *&n; * DESCRIPTION: Performs a modified depth-first walk of the namespace tree,&n; *              starting (and ending) at the object specified by start_handle.&n; *              The user_function is called whenever an object that matches&n; *              the type parameter is found.  If the user function returns&n; *              a non-zero value, the search is terminated immediately and this&n; *              value is returned to the caller.&n; *&n; *              The point of this procedure is to provide a generic namespace&n; *              walk routine that can be called from multiple places to&n; *              provide multiple services;  the User Function can be tailored&n; *              to each task, whether it is a print function, a compare&n; *              function, etc.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_walk_namespace
 id|acpi_walk_namespace
@@ -687,7 +687,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_walk_namespace&quot;
+l_string|&quot;acpi_walk_namespace&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -773,7 +773,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_get_device_callback&n; *&n; * PARAMETERS:  Callback from Acpi_get_device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes callbacks from Walk_namespace and filters out all non-&n; *              present devices, or if they specified a HID, it filters based&n; *              on that.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_device_callback&n; *&n; * PARAMETERS:  Callback from acpi_get_device&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Takes callbacks from walk_namespace and filters out all non-&n; *              present devices, or if they specified a HID, it filters based&n; *              on that.&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
 DECL|function|acpi_ns_get_device_callback
@@ -1080,7 +1080,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_devices&n; *&n; * PARAMETERS:  HID                 - HID to search for. Can be NULL.&n; *              User_function       - Called when a matching object is found&n; *              Context             - Passed to user function&n; *              Return_value        - Location where return value of&n; *                                    User_function is put if terminated early&n; *&n; * RETURNS      Return value from the User_function if terminated early.&n; *              Otherwise, returns NULL.&n; *&n; * DESCRIPTION: Performs a modified depth-first walk of the namespace tree,&n; *              starting (and ending) at the object specified by Start_handle.&n; *              The User_function is called whenever an object that matches&n; *              the type parameter is found.  If the user function returns&n; *              a non-zero value, the search is terminated immediately and this&n; *              value is returned to the caller.&n; *&n; *              This is a wrapper for Walk_namespace, but the callback performs&n; *              additional filtering. Please see Acpi_get_device_callback.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_devices&n; *&n; * PARAMETERS:  HID                 - HID to search for. Can be NULL.&n; *              user_function       - Called when a matching object is found&n; *              Context             - Passed to user function&n; *              return_value        - Location where return value of&n; *                                    user_function is put if terminated early&n; *&n; * RETURNS      Return value from the user_function if terminated early.&n; *              Otherwise, returns NULL.&n; *&n; * DESCRIPTION: Performs a modified depth-first walk of the namespace tree,&n; *              starting (and ending) at the object specified by start_handle.&n; *              The user_function is called whenever an object that matches&n; *              the type parameter is found.  If the user function returns&n; *              a non-zero value, the search is terminated immediately and this&n; *              value is returned to the caller.&n; *&n; *              This is a wrapper for walk_namespace, but the callback performs&n; *              additional filtering. Please see acpi_get_device_callback.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_devices
 id|acpi_get_devices
@@ -1110,7 +1110,7 @@ id|info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_get_devices&quot;
+l_string|&quot;acpi_get_devices&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -1197,7 +1197,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_attach_data&n; *&n; * PARAMETERS:  Obj_handle          - Namespace node&n; *              Handler             - Handler for this attachment&n; *              Data                - Pointer to data to be attached&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Attach arbitrary data and handler to a namespace node.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_attach_data&n; *&n; * PARAMETERS:  obj_handle          - Namespace node&n; *              Handler             - Handler for this attachment&n; *              Data                - Pointer to data to be attached&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Attach arbitrary data and handler to a namespace node.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_attach_data
 id|acpi_attach_data
@@ -1205,7 +1205,7 @@ id|acpi_attach_data
 id|acpi_handle
 id|obj_handle
 comma
-id|ACPI_OBJECT_HANDLER
+id|acpi_object_handler
 id|handler
 comma
 r_void
@@ -1312,7 +1312,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_detach_data&n; *&n; * PARAMETERS:  Obj_handle          - Namespace node handle&n; *              Handler             - Handler used in call to Acpi_attach_data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove data that was previously attached to a node.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_detach_data&n; *&n; * PARAMETERS:  obj_handle          - Namespace node handle&n; *              Handler             - Handler used in call to acpi_attach_data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove data that was previously attached to a node.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_detach_data
 id|acpi_detach_data
@@ -1320,7 +1320,7 @@ id|acpi_detach_data
 id|acpi_handle
 id|obj_handle
 comma
-id|ACPI_OBJECT_HANDLER
+id|acpi_object_handler
 id|handler
 )paren
 (brace
@@ -1418,7 +1418,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_data&n; *&n; * PARAMETERS:  Obj_handle          - Namespace node&n; *              Handler             - Handler used in call to Attach_data&n; *              Data                - Where the data is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve data that was previously attached to a namespace node.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_data&n; *&n; * PARAMETERS:  obj_handle          - Namespace node&n; *              Handler             - Handler used in call to attach_data&n; *              Data                - Where the data is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve data that was previously attached to a namespace node.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_data
 id|acpi_get_data
@@ -1426,7 +1426,7 @@ id|acpi_get_data
 id|acpi_handle
 id|obj_handle
 comma
-id|ACPI_OBJECT_HANDLER
+id|acpi_object_handler
 id|handler
 comma
 r_void

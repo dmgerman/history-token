@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *              $Revision: 174 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstore - AML Interpreter object store support&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -11,7 +11,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exstore&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store&n; *&n; * PARAMETERS:  *Source_desc        - Value to be stored&n; *              *Dest_desc          - Where to store it.  Must be an NS node&n; *                                    or an acpi_operand_object of type&n; *                                    Reference;&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the value described by Source_desc into the location&n; *              described by Dest_desc. Called by various interpreter&n; *              functions to store the result of an operation into&n; *              the destination operand -- not just simply the actual &quot;Store&quot;&n; *              ASL operator.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store&n; *&n; * PARAMETERS:  *source_desc        - Value to be stored&n; *              *dest_desc          - Where to store it.  Must be an NS node&n; *                                    or an acpi_operand_object of type&n; *                                    Reference;&n; *              walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the value described by source_desc into the location&n; *              described by dest_desc. Called by various interpreter&n; *              functions to store the result of an operation into&n; *              the destination operand -- not just simply the actual &quot;Store&quot;&n; *              ASL operator.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store
 id|acpi_ex_store
@@ -42,7 +42,7 @@ id|dest_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_store&quot;
+l_string|&quot;ex_store&quot;
 comma
 id|dest_desc
 )paren
@@ -73,7 +73,7 @@ id|AE_AML_NO_OPERAND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Dest_desc can be either a namespace node or an ACPI object */
+multiline_comment|/* dest_desc can be either a namespace node or an ACPI object */
 r_if
 c_cond
 (paren
@@ -172,7 +172,7 @@ id|dest_desc
 comma
 id|ACPI_IMODE_EXECUTE
 comma
-l_string|&quot;Ex_store&quot;
+l_string|&quot;ex_store&quot;
 comma
 l_int|2
 comma
@@ -427,7 +427,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_object_to_index&n; *&n; * PARAMETERS:  *Source_desc            - Value to be stored&n; *              *Dest_desc              - Named object to receive the value&n; *              Walk_state              - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the object to indexed Buffer or Package element&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store_object_to_index&n; *&n; * PARAMETERS:  *source_desc            - Value to be stored&n; *              *dest_desc              - Named object to receive the value&n; *              walk_state              - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the object to indexed Buffer or Package element&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store_object_to_index
 id|acpi_ex_store_object_to_index
@@ -465,7 +465,7 @@ l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_store_object_to_index&quot;
+l_string|&quot;ex_store_object_to_index&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Destination must be a reference pointer, and&n;&t; * must point to either a buffer or a package&n;&t; */
@@ -479,7 +479,7 @@ r_case
 id|ACPI_TYPE_PACKAGE
 suffix:colon
 multiline_comment|/*&n;&t;&t; * Storing to a package element is not simple.  The source must be&n;&t;&t; * evaluated and converted to the type of the destination and then the&n;&t;&t; * source is copied into the destination - we can&squot;t just point to the&n;&t;&t; * source object.&n;&t;&t; */
-multiline_comment|/*&n;&t;&t; * The object at *(Index_desc-&gt;Reference.Where) is the&n;&t;&t; * element within the package that is to be modified.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The object at *(index_desc-&gt;Reference.Where) is the&n;&t;&t; * element within the package that is to be modified.&n;&t;&t; */
 id|obj_desc
 op_assign
 op_star
@@ -568,7 +568,7 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Store into a Buffer (not actually a real Buffer_field) at a&n;&t;&t; * location defined by an Index.&n;&t;&t; *&n;&t;&t; * The first 8-bit element of the source object is written to the&n;&t;&t; * 8-bit Buffer location defined by the Index destination object,&n;&t;&t; * according to the ACPI 2.0 specification.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Store into a Buffer (not actually a real buffer_field) at a&n;&t;&t; * location defined by an Index.&n;&t;&t; *&n;&t;&t; * The first 8-bit element of the source object is written to the&n;&t;&t; * 8-bit Buffer location defined by the Index destination object,&n;&t;&t; * according to the ACPI 2.0 specification.&n;&t;&t; */
 multiline_comment|/*&n;&t;&t; * Make sure the target is a Buffer&n;&t;&t; */
 id|obj_desc
 op_assign
@@ -683,7 +683,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Target is not a Package or Buffer_field&bslash;n&quot;
+l_string|&quot;Target is not a Package or buffer_field&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -700,7 +700,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_object_to_node&n; *&n; * PARAMETERS:  Source_desc             - Value to be stored&n; *              Node                    - Named object to receive the value&n; *              Walk_state              - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the object to the named object.&n; *&n; *              The Assignment of an object to a named object is handled here&n; *              The value passed in will replace the current value (if any)&n; *              with the input value.&n; *&n; *              When storing into an object the data is converted to the&n; *              target object type then stored in the object.  This means&n; *              that the target object type (for an initialized target) will&n; *              not be changed by a store operation.&n; *&n; *              Assumes parameters are already validated.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store_object_to_node&n; *&n; * PARAMETERS:  source_desc             - Value to be stored&n; *              Node                    - Named object to receive the value&n; *              walk_state              - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the object to the named object.&n; *&n; *              The Assignment of an object to a named object is handled here&n; *              The value passed in will replace the current value (if any)&n; *              with the input value.&n; *&n; *              When storing into an object the data is converted to the&n; *              target object type then stored in the object.  This means&n; *              that the target object type (for an initialized target) will&n; *              not be changed by a store operation.&n; *&n; *              Assumes parameters are already validated.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store_object_to_node
 id|acpi_ex_store_object_to_node
@@ -736,7 +736,7 @@ id|target_type
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_store_object_to_node&quot;
+l_string|&quot;ex_store_object_to_node&quot;
 comma
 id|source_desc
 )paren
@@ -888,7 +888,7 @@ op_ne
 id|target_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Store the new New_desc as the new value of the Name, and set&n;&t;&t;&t; * the Name&squot;s type to that of the value being stored in it.&n;&t;&t;&t; * Source_desc reference count is incremented by Attach_object.&n;&t;&t;&t; *&n;&t;&t;&t; * Note: This may change the type of the node if an explicit store&n;&t;&t;&t; * has been performed such that the node/object type has been&n;&t;&t;&t; * changed.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Store the new new_desc as the new value of the Name, and set&n;&t;&t;&t; * the Name&squot;s type to that of the value being stored in it.&n;&t;&t;&t; * source_desc reference count is incremented by attach_object.&n;&t;&t;&t; *&n;&t;&t;&t; * Note: This may change the type of the node if an explicit store&n;&t;&t;&t; * has been performed such that the node/object type has been&n;&t;&t;&t; * changed.&n;&t;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_attach_object

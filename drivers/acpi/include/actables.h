@@ -1,9 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: actables.h - ACPI table management&n; *       $Revision: 43 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: actables.h - ACPI table management&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTABLES_H__
 DECL|macro|__ACTABLES_H__
 mdefine_line|#define __ACTABLES_H__
-multiline_comment|/* Used in Acpi_tb_map_acpi_table for size parameter if table header is to be used */
+multiline_comment|/* Used in acpi_tb_map_acpi_table for size parameter if table header is to be used */
 DECL|macro|SIZE_IN_HEADER
 mdefine_line|#define SIZE_IN_HEADER          0
 id|acpi_status
@@ -44,7 +44,7 @@ suffix:semicolon
 id|u32
 id|acpi_tb_get_table_count
 (paren
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 op_star
 id|RSDP
 comma
@@ -57,7 +57,7 @@ multiline_comment|/*&n; * tbget - Table &quot;get&quot; routines&n; */
 id|acpi_status
 id|acpi_tb_get_table
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 comma
@@ -69,7 +69,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_table_header
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 comma
@@ -81,7 +81,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_table_body
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 comma
@@ -97,7 +97,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_this_table
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 comma
@@ -140,7 +140,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_verify_rsdp
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 )paren
@@ -148,7 +148,7 @@ suffix:semicolon
 r_void
 id|acpi_tb_get_rsdt_address
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|out_address
 )paren
@@ -170,7 +170,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_primary_table
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 comma
@@ -182,7 +182,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_secondary_table
 (paren
-id|ACPI_POINTER
+id|acpi_pointer
 op_star
 id|address
 comma

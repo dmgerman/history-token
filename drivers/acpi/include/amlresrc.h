@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: amlresrc.h - AML resource descriptors&n; *              $Revision: 22 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: amlresrc.h - AML resource descriptors&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __AMLRESRC_H
 DECL|macro|__AMLRESRC_H
@@ -24,9 +24,9 @@ mdefine_line|#define ASL_RESNAME_GRANULARITY                 &quot;_GRA&quot;
 DECL|macro|ASL_RESNAME_INTERRUPT
 mdefine_line|#define ASL_RESNAME_INTERRUPT                   &quot;_INT&quot;
 DECL|macro|ASL_RESNAME_INTERRUPTLEVEL
-mdefine_line|#define ASL_RESNAME_INTERRUPTLEVEL              &quot;_LL_&quot;  /* Active_lo(1), Active_hi(0) */
+mdefine_line|#define ASL_RESNAME_INTERRUPTLEVEL              &quot;_LL_&quot;  /* active_lo(1), active_hi(0) */
 DECL|macro|ASL_RESNAME_INTERRUPTSHARE
-mdefine_line|#define ASL_RESNAME_INTERRUPTSHARE              &quot;_SHR&quot;  /* Shareable(1), No_share(0) */
+mdefine_line|#define ASL_RESNAME_INTERRUPTSHARE              &quot;_SHR&quot;  /* Shareable(1), no_share(0) */
 DECL|macro|ASL_RESNAME_INTERRUPTTYPE
 mdefine_line|#define ASL_RESNAME_INTERRUPTTYPE               &quot;_HE_&quot;  /* Edge(1), Level(0) */
 DECL|macro|ASL_RESNAME_LENGTH
@@ -34,7 +34,7 @@ mdefine_line|#define ASL_RESNAME_LENGTH                      &quot;_LEN&quot;
 DECL|macro|ASL_RESNAME_MEMATTRIBUTES
 mdefine_line|#define ASL_RESNAME_MEMATTRIBUTES               &quot;_MTP&quot;  /* Memory(0), Reserved(1), ACPI(2), NVS(3) */
 DECL|macro|ASL_RESNAME_MEMTYPE
-mdefine_line|#define ASL_RESNAME_MEMTYPE                     &quot;_MEM&quot;  /* Non_cache(0), Cacheable(1) Cache+combine(2), Cache+prefetch(3) */
+mdefine_line|#define ASL_RESNAME_MEMTYPE                     &quot;_MEM&quot;  /* non_cache(0), Cacheable(1) Cache+combine(2), Cache+prefetch(3) */
 DECL|macro|ASL_RESNAME_MAXADDR
 mdefine_line|#define ASL_RESNAME_MAXADDR                     &quot;_MAX&quot;
 DECL|macro|ASL_RESNAME_MINADDR
@@ -50,7 +50,7 @@ mdefine_line|#define ASL_RESNAME_REGISTERBITWIDTH            &quot;_RBW&quot;
 DECL|macro|ASL_RESNAME_RANGETYPE
 mdefine_line|#define ASL_RESNAME_RANGETYPE                   &quot;_RNG&quot;
 DECL|macro|ASL_RESNAME_READWRITETYPE
-mdefine_line|#define ASL_RESNAME_READWRITETYPE               &quot;_RW_&quot;  /* Read_only(0), Writeable (1) */
+mdefine_line|#define ASL_RESNAME_READWRITETYPE               &quot;_RW_&quot;  /* read_only(0), Writeable (1) */
 DECL|macro|ASL_RESNAME_TRANSLATION
 mdefine_line|#define ASL_RESNAME_TRANSLATION                 &quot;_TRA&quot;
 DECL|macro|ASL_RESNAME_TRANSTYPE
@@ -58,7 +58,7 @@ mdefine_line|#define ASL_RESNAME_TRANSTYPE                   &quot;_TRS&quot;  /
 DECL|macro|ASL_RESNAME_TYPE
 mdefine_line|#define ASL_RESNAME_TYPE                        &quot;_TTP&quot;  /* Translation(1), Static (0) */
 DECL|macro|ASL_RESNAME_XFERTYPE
-mdefine_line|#define ASL_RESNAME_XFERTYPE                    &quot;_SIZ&quot;  /* 8(0), 8_and16(1), 16(2) */
+mdefine_line|#define ASL_RESNAME_XFERTYPE                    &quot;_SIz&quot;  /* 8(0), 8_and16(1), 16(2) */
 multiline_comment|/* Default sizes for &quot;small&quot; resource descriptors */
 DECL|macro|ASL_RDESC_IRQ_SIZE
 mdefine_line|#define ASL_RDESC_IRQ_SIZE                      0x02
@@ -94,9 +94,9 @@ id|asl_resource_node
 op_star
 id|next
 suffix:semicolon
-DECL|typedef|ASL_RESOURCE_NODE
+DECL|typedef|asl_resource_node
 )brace
-id|ASL_RESOURCE_NODE
+id|asl_resource_node
 suffix:semicolon
 multiline_comment|/*&n; * Resource descriptors defined in the ACPI specification.&n; *&n; * Alignment must be BYTE because these descriptors&n; * are used to overlay the AML byte stream.&n; */
 macro_line|#pragma pack(1)
@@ -117,9 +117,9 @@ DECL|member|flags
 id|u8
 id|flags
 suffix:semicolon
-DECL|typedef|ASL_IRQ_FORMAT_DESC
+DECL|typedef|asl_irq_format_desc
 )brace
-id|ASL_IRQ_FORMAT_DESC
+id|asl_irq_format_desc
 suffix:semicolon
 DECL|struct|asl_irq_noflags_desc
 r_typedef
@@ -134,9 +134,9 @@ DECL|member|irq_mask
 id|u16
 id|irq_mask
 suffix:semicolon
-DECL|typedef|ASL_IRQ_NOFLAGS_DESC
+DECL|typedef|asl_irq_noflags_desc
 )brace
-id|ASL_IRQ_NOFLAGS_DESC
+id|asl_irq_noflags_desc
 suffix:semicolon
 DECL|struct|asl_dma_format_desc
 r_typedef
@@ -155,9 +155,9 @@ DECL|member|flags
 id|u8
 id|flags
 suffix:semicolon
-DECL|typedef|ASL_DMA_FORMAT_DESC
+DECL|typedef|asl_dma_format_desc
 )brace
-id|ASL_DMA_FORMAT_DESC
+id|asl_dma_format_desc
 suffix:semicolon
 DECL|struct|asl_start_dependent_desc
 r_typedef
@@ -172,9 +172,9 @@ DECL|member|flags
 id|u8
 id|flags
 suffix:semicolon
-DECL|typedef|ASL_START_DEPENDENT_DESC
+DECL|typedef|asl_start_dependent_desc
 )brace
-id|ASL_START_DEPENDENT_DESC
+id|asl_start_dependent_desc
 suffix:semicolon
 DECL|struct|asl_start_dependent_noprio_desc
 r_typedef
@@ -185,9 +185,9 @@ DECL|member|descriptor_type
 id|u8
 id|descriptor_type
 suffix:semicolon
-DECL|typedef|ASL_START_DEPENDENT_NOPRIO_DESC
+DECL|typedef|asl_start_dependent_noprio_desc
 )brace
-id|ASL_START_DEPENDENT_NOPRIO_DESC
+id|asl_start_dependent_noprio_desc
 suffix:semicolon
 DECL|struct|asl_end_dependent_desc
 r_typedef
@@ -198,9 +198,9 @@ DECL|member|descriptor_type
 id|u8
 id|descriptor_type
 suffix:semicolon
-DECL|typedef|ASL_END_DEPENDENT_DESC
+DECL|typedef|asl_end_dependent_desc
 )brace
-id|ASL_END_DEPENDENT_DESC
+id|asl_end_dependent_desc
 suffix:semicolon
 DECL|struct|asl_io_port_desc
 r_typedef
@@ -231,9 +231,9 @@ DECL|member|length
 id|u8
 id|length
 suffix:semicolon
-DECL|typedef|ASL_IO_PORT_DESC
+DECL|typedef|asl_io_port_desc
 )brace
-id|ASL_IO_PORT_DESC
+id|asl_io_port_desc
 suffix:semicolon
 DECL|struct|asl_fixed_io_port_desc
 r_typedef
@@ -252,9 +252,9 @@ DECL|member|length
 id|u8
 id|length
 suffix:semicolon
-DECL|typedef|ASL_FIXED_IO_PORT_DESC
+DECL|typedef|asl_fixed_io_port_desc
 )brace
-id|ASL_FIXED_IO_PORT_DESC
+id|asl_fixed_io_port_desc
 suffix:semicolon
 DECL|struct|asl_small_vendor_desc
 r_typedef
@@ -272,9 +272,9 @@ id|vendor_defined
 l_int|7
 )braket
 suffix:semicolon
-DECL|typedef|ASL_SMALL_VENDOR_DESC
+DECL|typedef|asl_small_vendor_desc
 )brace
-id|ASL_SMALL_VENDOR_DESC
+id|asl_small_vendor_desc
 suffix:semicolon
 DECL|struct|asl_end_tag_desc
 r_typedef
@@ -289,9 +289,9 @@ DECL|member|checksum
 id|u8
 id|checksum
 suffix:semicolon
-DECL|typedef|ASL_END_TAG_DESC
+DECL|typedef|asl_end_tag_desc
 )brace
-id|ASL_END_TAG_DESC
+id|asl_end_tag_desc
 suffix:semicolon
 multiline_comment|/* LARGE descriptors */
 DECL|struct|asl_memory_24_desc
@@ -327,9 +327,9 @@ DECL|member|range_length
 id|u16
 id|range_length
 suffix:semicolon
-DECL|typedef|ASL_MEMORY_24_DESC
+DECL|typedef|asl_memory_24_desc
 )brace
-id|ASL_MEMORY_24_DESC
+id|asl_memory_24_desc
 suffix:semicolon
 DECL|struct|asl_large_vendor_desc
 r_typedef
@@ -351,9 +351,9 @@ id|vendor_defined
 l_int|1
 )braket
 suffix:semicolon
-DECL|typedef|ASL_LARGE_VENDOR_DESC
+DECL|typedef|asl_large_vendor_desc
 )brace
-id|ASL_LARGE_VENDOR_DESC
+id|asl_large_vendor_desc
 suffix:semicolon
 DECL|struct|asl_memory_32_desc
 r_typedef
@@ -388,9 +388,9 @@ DECL|member|range_length
 id|u32
 id|range_length
 suffix:semicolon
-DECL|typedef|ASL_MEMORY_32_DESC
+DECL|typedef|asl_memory_32_desc
 )brace
-id|ASL_MEMORY_32_DESC
+id|asl_memory_32_desc
 suffix:semicolon
 DECL|struct|asl_fixed_memory_32_desc
 r_typedef
@@ -417,9 +417,9 @@ DECL|member|range_length
 id|u32
 id|range_length
 suffix:semicolon
-DECL|typedef|ASL_FIXED_MEMORY_32_DESC
+DECL|typedef|asl_fixed_memory_32_desc
 )brace
-id|ASL_FIXED_MEMORY_32_DESC
+id|asl_fixed_memory_32_desc
 suffix:semicolon
 DECL|struct|asl_qword_address_desc
 r_typedef
@@ -473,9 +473,9 @@ id|optional_fields
 l_int|2
 )braket
 suffix:semicolon
-DECL|typedef|ASL_QWORD_ADDRESS_DESC
+DECL|typedef|asl_qword_address_desc
 )brace
-id|ASL_QWORD_ADDRESS_DESC
+id|asl_qword_address_desc
 suffix:semicolon
 DECL|struct|asl_dword_address_desc
 r_typedef
@@ -529,9 +529,9 @@ id|optional_fields
 l_int|2
 )braket
 suffix:semicolon
-DECL|typedef|ASL_DWORD_ADDRESS_DESC
+DECL|typedef|asl_dword_address_desc
 )brace
-id|ASL_DWORD_ADDRESS_DESC
+id|asl_dword_address_desc
 suffix:semicolon
 DECL|struct|asl_word_address_desc
 r_typedef
@@ -585,9 +585,9 @@ id|optional_fields
 l_int|2
 )braket
 suffix:semicolon
-DECL|typedef|ASL_WORD_ADDRESS_DESC
+DECL|typedef|asl_word_address_desc
 )brace
-id|ASL_WORD_ADDRESS_DESC
+id|asl_word_address_desc
 suffix:semicolon
 DECL|struct|asl_extended_xrupt_desc
 r_typedef
@@ -617,10 +617,10 @@ id|interrupt_number
 l_int|1
 )braket
 suffix:semicolon
-multiline_comment|/* Res_source_index, Res_source optional fields follow */
-DECL|typedef|ASL_EXTENDED_XRUPT_DESC
+multiline_comment|/* res_source_index, res_source optional fields follow */
+DECL|typedef|asl_extended_xrupt_desc
 )brace
-id|ASL_EXTENDED_XRUPT_DESC
+id|asl_extended_xrupt_desc
 suffix:semicolon
 DECL|struct|asl_general_register_desc
 r_typedef
@@ -655,9 +655,9 @@ DECL|member|address
 id|u64
 id|address
 suffix:semicolon
-DECL|typedef|ASL_GENERAL_REGISTER_DESC
+DECL|typedef|asl_general_register_desc
 )brace
-id|ASL_GENERAL_REGISTER_DESC
+id|asl_general_register_desc
 suffix:semicolon
 multiline_comment|/* restore default alignment */
 macro_line|#pragma pack()
@@ -668,88 +668,88 @@ r_union
 id|asl_resource_desc
 (brace
 DECL|member|irq
-id|ASL_IRQ_FORMAT_DESC
+id|asl_irq_format_desc
 id|irq
 suffix:semicolon
 DECL|member|dma
-id|ASL_DMA_FORMAT_DESC
+id|asl_dma_format_desc
 id|dma
 suffix:semicolon
 DECL|member|std
-id|ASL_START_DEPENDENT_DESC
+id|asl_start_dependent_desc
 id|std
 suffix:semicolon
 DECL|member|end
-id|ASL_END_DEPENDENT_DESC
+id|asl_end_dependent_desc
 id|end
 suffix:semicolon
 DECL|member|iop
-id|ASL_IO_PORT_DESC
+id|asl_io_port_desc
 id|iop
 suffix:semicolon
 DECL|member|fio
-id|ASL_FIXED_IO_PORT_DESC
+id|asl_fixed_io_port_desc
 id|fio
 suffix:semicolon
 DECL|member|smv
-id|ASL_SMALL_VENDOR_DESC
+id|asl_small_vendor_desc
 id|smv
 suffix:semicolon
 DECL|member|et
-id|ASL_END_TAG_DESC
+id|asl_end_tag_desc
 id|et
 suffix:semicolon
 DECL|member|M24
-id|ASL_MEMORY_24_DESC
+id|asl_memory_24_desc
 id|M24
 suffix:semicolon
 DECL|member|lgv
-id|ASL_LARGE_VENDOR_DESC
+id|asl_large_vendor_desc
 id|lgv
 suffix:semicolon
 DECL|member|M32
-id|ASL_MEMORY_32_DESC
+id|asl_memory_32_desc
 id|M32
 suffix:semicolon
 DECL|member|F32
-id|ASL_FIXED_MEMORY_32_DESC
+id|asl_fixed_memory_32_desc
 id|F32
 suffix:semicolon
 DECL|member|qas
-id|ASL_QWORD_ADDRESS_DESC
+id|asl_qword_address_desc
 id|qas
 suffix:semicolon
 DECL|member|das
-id|ASL_DWORD_ADDRESS_DESC
+id|asl_dword_address_desc
 id|das
 suffix:semicolon
 DECL|member|was
-id|ASL_WORD_ADDRESS_DESC
+id|asl_word_address_desc
 id|was
 suffix:semicolon
 DECL|member|exx
-id|ASL_EXTENDED_XRUPT_DESC
+id|asl_extended_xrupt_desc
 id|exx
 suffix:semicolon
 DECL|member|grg
-id|ASL_GENERAL_REGISTER_DESC
+id|asl_general_register_desc
 id|grg
 suffix:semicolon
-DECL|member|U32_item
+DECL|member|u32_item
 id|u32
-id|U32_item
+id|u32_item
 suffix:semicolon
-DECL|member|U16_item
+DECL|member|u16_item
 id|u16
-id|U16_item
+id|u16_item
 suffix:semicolon
 DECL|member|U8item
 id|u8
 id|U8item
 suffix:semicolon
-DECL|typedef|ASL_RESOURCE_DESC
+DECL|typedef|asl_resource_desc
 )brace
-id|ASL_RESOURCE_DESC
+id|asl_resource_desc
 suffix:semicolon
 macro_line|#endif
 eof

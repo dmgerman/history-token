@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *              $Revision: 109 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utcopy - Internal to external object translation utilities&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utcopy&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_isimple_to_esimple&n; *&n; * PARAMETERS:  *Internal_object    - Pointer to the object we are examining&n; *              *Buffer             - Where the object is returned&n; *              *Space_used         - Where the data length is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to place a simple object in a user&n; *              buffer.&n; *&n; *              The buffer is assumed to have sufficient space for the object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_isimple_to_esimple&n; *&n; * PARAMETERS:  *internal_object    - Pointer to the object we are examining&n; *              *Buffer             - Where the object is returned&n; *              *space_used         - Where the data length is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to place a simple object in a user&n; *              buffer.&n; *&n; *              The buffer is assumed to have sufficient space for the object.&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
 DECL|function|acpi_ut_copy_isimple_to_esimple
@@ -26,7 +26,7 @@ id|u8
 op_star
 id|data_space
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|buffer_space_used
 )paren
@@ -38,7 +38,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_copy_isimple_to_esimple&quot;
+l_string|&quot;ut_copy_isimple_to_esimple&quot;
 )paren
 suffix:semicolon
 op_star
@@ -112,7 +112,7 @@ op_assign
 id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|internal_object-&gt;string.length
 op_plus
@@ -134,7 +134,7 @@ op_star
 id|internal_object-&gt;string.pointer
 comma
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|internal_object-&gt;string.length
 op_plus
@@ -265,7 +265,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_ielement_to_eelement&n; *&n; * PARAMETERS:  ACPI_PKG_CALLBACK&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy one package element to another package element&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_ielement_to_eelement&n; *&n; * PARAMETERS:  acpi_pkg_callback&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy one package element to another package element&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_ielement_to_eelement
 id|acpi_ut_copy_ielement_to_eelement
@@ -301,7 +301,7 @@ op_star
 )paren
 id|context
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|object_space
 suffix:semicolon
 id|u32
@@ -414,7 +414,7 @@ op_assign
 id|ACPI_ROUND_UP_TO_NATIVE_WORD
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|target_object-&gt;package.count
 op_star
@@ -448,7 +448,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_ipackage_to_epackage&n; *&n; * PARAMETERS:  *Internal_object    - Pointer to the object we are returning&n; *              *Buffer             - Where the object is returned&n; *              *Space_used         - Where the object length is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to place a package object in a user&n; *              buffer.  A package object by definition contains other objects.&n; *&n; *              The buffer is assumed to have sufficient space for the object.&n; *              The caller must have verified the buffer length needed using the&n; *              Acpi_ut_get_object_size function before calling this function.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_ipackage_to_epackage&n; *&n; * PARAMETERS:  *internal_object    - Pointer to the object we are returning&n; *              *Buffer             - Where the object is returned&n; *              *space_used         - Where the object length is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to place a package object in a user&n; *              buffer.  A package object by definition contains other objects.&n; *&n; *              The buffer is assumed to have sufficient space for the object.&n; *              The caller must have verified the buffer length needed using the&n; *              acpi_ut_get_object_size function before calling this function.&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
 DECL|function|acpi_ut_copy_ipackage_to_epackage
@@ -462,7 +462,7 @@ id|u8
 op_star
 id|buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|space_used
 )paren
@@ -479,7 +479,7 @@ id|info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_copy_ipackage_to_epackage&quot;
+l_string|&quot;ut_copy_ipackage_to_epackage&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * First package at head of the buffer&n;&t; */
@@ -547,7 +547,7 @@ multiline_comment|/*&n;&t; * Leave room for an array of ACPI_OBJECTS in the buff
 id|info.length
 op_add_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|external_object-&gt;package.count
 op_star
@@ -596,7 +596,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_iobject_to_eobject&n; *&n; * PARAMETERS:  *Internal_object    - The internal object to be converted&n; *              *Buffer_ptr         - Where the object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to build an API object to be returned to&n; *              the caller.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_iobject_to_eobject&n; *&n; * PARAMETERS:  *internal_object    - The internal object to be converted&n; *              *buffer_ptr         - Where the object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to build an API object to be returned to&n; *              the caller.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_iobject_to_eobject
 id|acpi_ut_copy_iobject_to_eobject
@@ -615,7 +615,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_copy_iobject_to_eobject&quot;
+l_string|&quot;ut_copy_iobject_to_eobject&quot;
 )paren
 suffix:semicolon
 r_if
@@ -693,7 +693,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_esimple_to_isimple&n; *&n; * PARAMETERS:  *External_object   - The external object to be converted&n; *              *Internal_object   - Where the internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function copies an external object to an internal one.&n; *              NOTE: Pointers can be copied, we don&squot;t need to copy data.&n; *              (The pointers have to be valid in our address space no matter&n; *              what we do with them!)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_esimple_to_isimple&n; *&n; * PARAMETERS:  *external_object   - The external object to be converted&n; *              *internal_object   - Where the internal object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function copies an external object to an internal one.&n; *              NOTE: Pointers can be copied, we don&squot;t need to copy data.&n; *              (The pointers have to be valid in our address space no matter&n; *              what we do with them!)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_esimple_to_isimple
 id|acpi_ut_copy_esimple_to_isimple
@@ -714,7 +714,7 @@ id|internal_object
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_copy_esimple_to_isimple&quot;
+l_string|&quot;ut_copy_esimple_to_isimple&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Simple types supported are: String, Buffer, Integer&n;&t; */
@@ -782,7 +782,7 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|external_object-&gt;string.length
 op_plus
@@ -883,7 +883,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef ACPI_FUTURE_IMPLEMENTATION
 multiline_comment|/* Code to convert packages that are parameters to control methods */
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_epackage_to_ipackage&n; *&n; * PARAMETERS:  *Internal_object   - Pointer to the object we are returning&n; *              *Buffer            - Where the object is returned&n; *              *Space_used        - Where the length of the object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to place a package object in a user&n; *              buffer.  A package object by definition contains other objects.&n; *&n; *              The buffer is assumed to have sufficient space for the object.&n; *              The caller must have verified the buffer length needed using the&n; *              Acpi_ut_get_object_size function before calling this function.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_epackage_to_ipackage&n; *&n; * PARAMETERS:  *internal_object   - Pointer to the object we are returning&n; *              *Buffer            - Where the object is returned&n; *              *space_used        - Where the length of the object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to place a package object in a user&n; *              buffer.  A package object by definition contains other objects.&n; *&n; *              The buffer is assumed to have sufficient space for the object.&n; *              The caller must have verified the buffer length needed using the&n; *              acpi_ut_get_object_size function before calling this function.&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
 DECL|function|acpi_ut_copy_epackage_to_ipackage
@@ -933,7 +933,7 @@ id|this_external_obj
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_copy_epackage_to_ipackage&quot;
+l_string|&quot;ut_copy_epackage_to_ipackage&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * First package at head of the buffer&n;&t; */
@@ -984,10 +984,10 @@ r_sizeof
 id|acpi_object
 )paren
 suffix:semicolon
-multiline_comment|/* Call Walk_package */
+multiline_comment|/* Call walk_package */
 )brace
 macro_line|#endif /* Future implementation */
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_eobject_to_iobject&n; *&n; * PARAMETERS:  *Internal_object   - The external object to be converted&n; *              *Buffer_ptr     - Where the internal object is returned&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: Converts an external object to an internal object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_eobject_to_iobject&n; *&n; * PARAMETERS:  *internal_object   - The external object to be converted&n; *              *buffer_ptr     - Where the internal object is returned&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: Converts an external object to an internal object.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_eobject_to_iobject
 id|acpi_ut_copy_eobject_to_iobject
@@ -1007,7 +1007,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_copy_eobject_to_iobject&quot;
+l_string|&quot;ut_copy_eobject_to_iobject&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1053,7 +1053,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_simple_object&n; *&n; * PARAMETERS:  Source_desc         - The internal object to be copied&n; *              Dest_desc           - New target object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Simple copy of one internal object to another.  Reference count&n; *              of the destination object is preserved.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_simple_object&n; *&n; * PARAMETERS:  source_desc         - The internal object to be copied&n; *              dest_desc           - New target object&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Simple copy of one internal object to another.  Reference count&n; *              of the destination object is preserved.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_simple_object
 id|acpi_ut_copy_simple_object
@@ -1253,7 +1253,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_ielement_to_ielement&n; *&n; * PARAMETERS:  ACPI_PKG_CALLBACK&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy one package element to another package element&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_ielement_to_ielement&n; *&n; * PARAMETERS:  acpi_pkg_callback&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy one package element to another package element&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_ielement_to_ielement
 id|acpi_ut_copy_ielement_to_ielement
@@ -1432,7 +1432,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|source_object-&gt;package.count
 op_plus
@@ -1491,7 +1491,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_ipackage_to_ipackage&n; *&n; * PARAMETERS:  *Source_obj     - Pointer to the source package object&n; *              *Dest_obj       - Where the internal object is returned&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: This function is called to copy an internal package object&n; *              into another internal package object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_ipackage_to_ipackage&n; *&n; * PARAMETERS:  *source_obj     - Pointer to the source package object&n; *              *dest_obj       - Where the internal object is returned&n; *&n; * RETURN:      Status          - the status of the call&n; *&n; * DESCRIPTION: This function is called to copy an internal package object&n; *              into another internal package object.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_ipackage_to_ipackage
 id|acpi_ut_copy_ipackage_to_ipackage
@@ -1516,7 +1516,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_copy_ipackage_to_ipackage&quot;
+l_string|&quot;ut_copy_ipackage_to_ipackage&quot;
 )paren
 suffix:semicolon
 id|dest_obj-&gt;common.type
@@ -1541,7 +1541,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|source_obj-&gt;package.count
 op_plus
@@ -1565,7 +1565,7 @@ id|dest_obj-&gt;package.elements
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Aml_build_copy_internal_package_object: Package allocation failure&bslash;n&quot;
+l_string|&quot;aml_build_copy_internal_package_object: Package allocation failure&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1611,7 +1611,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_copy_iobject_to_iobject&n; *&n; * PARAMETERS:  Walk_state          - Current walk state&n; *              Source_desc         - The internal object to be copied&n; *              Dest_desc           - Where the copied object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy an internal object to a new internal object&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_copy_iobject_to_iobject&n; *&n; * PARAMETERS:  walk_state          - Current walk state&n; *              source_desc         - The internal object to be copied&n; *              dest_desc           - Where the copied object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy an internal object to a new internal object&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_copy_iobject_to_iobject
 id|acpi_ut_copy_iobject_to_iobject
@@ -1637,7 +1637,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_copy_iobject_to_iobject&quot;
+l_string|&quot;ut_copy_iobject_to_iobject&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Create the top level object */

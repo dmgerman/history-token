@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg2 - AML execution - opcodes with 2 arguments&n; *              $Revision: 116 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exoparg2 - AML execution - opcodes with 2 arguments&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -12,7 +12,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;exoparg2&quot;
 )paren
 multiline_comment|/*!&n; * Naming convention for AML interpreter execution routines.&n; *&n; * The routines that begin execution of AML opcodes are named with a common&n; * convention based upon the number of arguments, the number of target operands,&n; * and whether or not a value is returned:&n; *&n; *      AcpiExOpcode_xA_yT_zR&n; *&n; * Where:&n; *&n; * xA - ARGUMENTS:    The number of arguments (input operands) that are&n; *                    required for this opcode type (1 through 6 args).&n; * yT - TARGETS:      The number of targets (output operands) that are required&n; *                    for this opcode type (0, 1, or 2 targets).&n; * zR - RETURN VALUE: Indicates whether this opcode type returns a value&n; *                    as the function return (0 or 1).&n; *&n; * The AcpiExOpcode* functions are called via the Dispatcher component with&n; * fully resolved operands.&n;!*/
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_opcode_2A_0T_0R&n; *&n; * PARAMETERS:  Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute opcode with two arguments, no target, and no return&n; *              value.&n; *&n; * ALLOCATION:  Deletes both operands&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_2A_0T_0R&n; *&n; * PARAMETERS:  walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute opcode with two arguments, no target, and no return&n; *              value.&n; *&n; * ALLOCATION:  Deletes both operands&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_opcode_2A_0T_0R
 id|acpi_ex_opcode_2A_0T_0R
@@ -44,7 +44,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
 (paren
-l_string|&quot;Ex_opcode_2A_0T_0R&quot;
+l_string|&quot;ex_opcode_2A_0T_0R&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
@@ -62,7 +62,7 @@ id|walk_state-&gt;opcode
 r_case
 id|AML_NOTIFY_OP
 suffix:colon
-multiline_comment|/* Notify (Notify_object, Notify_value) */
+multiline_comment|/* Notify (notify_object, notify_value) */
 multiline_comment|/* The first operand is a namespace node */
 id|node
 op_assign
@@ -132,7 +132,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ex_opcode_2A_0T_0R: Unknown opcode %X&bslash;n&quot;
+l_string|&quot;acpi_ex_opcode_2A_0T_0R: Unknown opcode %X&bslash;n&quot;
 comma
 id|walk_state-&gt;opcode
 )paren
@@ -149,7 +149,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_opcode_2A_2T_1R&n; *&n; * PARAMETERS:  Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a dyadic operator (2 operands) with 2 output targets&n; *              and one implicit return value.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_2A_2T_1R&n; *&n; * PARAMETERS:  walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a dyadic operator (2 operands) with 2 output targets&n; *              and one implicit return value.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_opcode_2A_2T_1R
 id|acpi_ex_opcode_2A_2T_1R
@@ -187,7 +187,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
 (paren
-l_string|&quot;Ex_opcode_2A_2T_1R&quot;
+l_string|&quot;ex_opcode_2A_2T_1R&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
@@ -205,7 +205,7 @@ id|walk_state-&gt;opcode
 r_case
 id|AML_DIVIDE_OP
 suffix:colon
-multiline_comment|/* Divide (Dividend, Divisor, Remainder_result Quotient_result) */
+multiline_comment|/* Divide (Dividend, Divisor, remainder_result quotient_result) */
 id|return_desc1
 op_assign
 id|acpi_ut_create_internal_object
@@ -250,7 +250,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/* Quotient to Return_desc1, remainder to Return_desc2 */
+multiline_comment|/* Quotient to return_desc1, remainder to return_desc2 */
 id|status
 op_assign
 id|acpi_ut_divide
@@ -298,7 +298,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ex_opcode_2A_2T_1R: Unknown opcode %X&bslash;n&quot;
+l_string|&quot;acpi_ex_opcode_2A_2T_1R: Unknown opcode %X&bslash;n&quot;
 comma
 id|walk_state-&gt;opcode
 )paren
@@ -402,7 +402,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_opcode_2A_1T_1R&n; *&n; * PARAMETERS:  Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute opcode with two arguments, one target, and a return&n; *              value.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_2A_1T_1R&n; *&n; * PARAMETERS:  walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute opcode with two arguments, one target, and a return&n; *              value.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_opcode_2A_1T_1R
 id|acpi_ex_opcode_2A_1T_1R
@@ -443,12 +443,12 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|length
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
 (paren
-l_string|&quot;Ex_opcode_2A_1T_1R&quot;
+l_string|&quot;ex_opcode_2A_1T_1R&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
@@ -522,7 +522,7 @@ id|walk_state-&gt;opcode
 r_case
 id|AML_MOD_OP
 suffix:colon
-multiline_comment|/* Mod (Dividend, Divisor, Remainder_result (ACPI 2.0) */
+multiline_comment|/* Mod (Dividend, Divisor, remainder_result (ACPI 2.0) */
 id|return_desc
 op_assign
 id|acpi_ut_create_internal_object
@@ -545,7 +545,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/* Return_desc will contain the remainder */
+multiline_comment|/* return_desc will contain the remainder */
 id|status
 op_assign
 id|acpi_ut_divide
@@ -715,7 +715,7 @@ suffix:semicolon
 r_case
 id|AML_TO_STRING_OP
 suffix:colon
-multiline_comment|/* To_string (Buffer, Length, Result) (ACPI 2.0) */
+multiline_comment|/* to_string (Buffer, Length, Result) (ACPI 2.0) */
 multiline_comment|/*&n;&t;&t; * Input object is guaranteed to be a buffer at this point (it may have&n;&t;&t; * been converted.)  Copy the raw buffer data to a new object of type String.&n;&t;&t; */
 multiline_comment|/* Get the length of the new string */
 id|length
@@ -880,7 +880,7 @@ suffix:semicolon
 r_case
 id|AML_CONCAT_RES_OP
 suffix:colon
-multiline_comment|/* Concatenate_res_template (Buffer, Buffer, Result) (ACPI 2.0) */
+multiline_comment|/* concatenate_res_template (Buffer, Buffer, Result) (ACPI 2.0) */
 id|status
 op_assign
 id|acpi_ex_concat_template
@@ -1118,7 +1118,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ex_opcode_2A_1T_1R: Unknown opcode %X&bslash;n&quot;
+l_string|&quot;acpi_ex_opcode_2A_1T_1R: Unknown opcode %X&bslash;n&quot;
 comma
 id|walk_state-&gt;opcode
 )paren
@@ -1142,7 +1142,7 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Store the result of the operation (which is now in Return_desc) into&n;&t;&t; * the Target descriptor.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Store the result of the operation (which is now in return_desc) into&n;&t;&t; * the Target descriptor.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_store
@@ -1207,7 +1207,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_opcode_2A_0T_1R&n; *&n; * PARAMETERS:  Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute opcode with 2 arguments, no target, and a return value&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_2A_0T_1R&n; *&n; * PARAMETERS:  walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute opcode with 2 arguments, no target, and a return value&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_opcode_2A_0T_1R
 id|acpi_ex_opcode_2A_0T_1R
@@ -1246,7 +1246,7 @@ id|FALSE
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_STR
 (paren
-l_string|&quot;Ex_opcode_2A_0T_1R&quot;
+l_string|&quot;ex_opcode_2A_0T_1R&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
@@ -1285,7 +1285,7 @@ id|walk_state-&gt;op_info-&gt;flags
 op_amp
 id|AML_LOGICAL
 )paren
-multiline_comment|/* Logical_op (Operand0, Operand1) */
+multiline_comment|/* logical_op (Operand0, Operand1) */
 (brace
 id|logical_result
 op_assign
@@ -1321,7 +1321,7 @@ id|walk_state-&gt;opcode
 r_case
 id|AML_ACQUIRE_OP
 suffix:colon
-multiline_comment|/* Acquire (Mutex_object, Timeout) */
+multiline_comment|/* Acquire (mutex_object, Timeout) */
 id|status
 op_assign
 id|acpi_ex_acquire_mutex
@@ -1362,7 +1362,7 @@ suffix:semicolon
 r_case
 id|AML_WAIT_OP
 suffix:colon
-multiline_comment|/* Wait (Event_object, Timeout) */
+multiline_comment|/* Wait (event_object, Timeout) */
 id|status
 op_assign
 id|acpi_ex_system_wait_event
@@ -1403,7 +1403,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ex_opcode_2A_0T_1R: Unknown opcode %X&bslash;n&quot;
+l_string|&quot;acpi_ex_opcode_2A_0T_1R: Unknown opcode %X&bslash;n&quot;
 comma
 id|walk_state-&gt;opcode
 )paren
@@ -1419,7 +1419,7 @@ suffix:semicolon
 )brace
 id|store_logical_result
 suffix:colon
-multiline_comment|/*&n;&t; * Set return value to according to Logical_result. logical TRUE (all ones)&n;&t; * Default is FALSE (zero)&n;&t; */
+multiline_comment|/*&n;&t; * Set return value to according to logical_result. logical TRUE (all ones)&n;&t; * Default is FALSE (zero)&n;&t; */
 r_if
 c_cond
 (paren

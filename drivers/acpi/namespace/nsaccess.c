@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *              $Revision: 167 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsaccess - Top-level functions for accessing ACPI namespace&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsaccess&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_root_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Allocate and initialize the default root named objects&n; *&n; * MUTEX:       Locks namespace for entire execution&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_root_initialize&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Allocate and initialize the default root named objects&n; *&n; * MUTEX:       Locks namespace for entire execution&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_root_initialize
 id|acpi_ns_root_initialize
@@ -38,7 +38,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_root_initialize&quot;
+l_string|&quot;ns_root_initialize&quot;
 )paren
 suffix:semicolon
 id|status
@@ -63,7 +63,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The global root ptr is initially NULL, so a non-NULL value indicates&n;&t; * that Acpi_ns_root_initialize() has already been called; just return.&n;&t; */
+multiline_comment|/*&n;&t; * The global root ptr is initially NULL, so a non-NULL value indicates&n;&t; * that acpi_ns_root_initialize() has already been called; just return.&n;&t; */
 r_if
 c_cond
 (paren
@@ -159,7 +159,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Name entered successfully.&n;&t;&t; * If entry in Pre_defined_names[] specifies an&n;&t;&t; * initial value, create the initial value.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Name entered successfully.&n;&t;&t; * If entry in pre_defined_names[] specifies an&n;&t;&t; * initial value, create the initial value.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -218,7 +218,7 @@ op_or_assign
 id|AOPOBJ_DATA_VALID
 suffix:semicolon
 macro_line|#if defined (ACPI_NO_METHOD_EXECUTION) || defined (ACPI_CONSTANT_EVAL_ONLY)
-multiline_comment|/* Compiler cheats by putting parameter count in the Owner_iD */
+multiline_comment|/* Compiler cheats by putting parameter count in the owner_iD */
 id|new_node-&gt;owner_id
 op_assign
 id|obj_desc-&gt;method.param_count
@@ -428,7 +428,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_lookup&n; *&n; * PARAMETERS:  Prefix_node     - Search scope if name is not fully qualified&n; *              Pathname        - Search pathname, in internal format&n; *                                (as represented in the AML stream)&n; *              Type            - Type associated with name&n; *              Interpreter_mode - IMODE_LOAD_PASS2 =&gt; add name if not found&n; *              Flags           - Flags describing the search restrictions&n; *              Walk_state      - Current state of the walk&n; *              Return_node     - Where the Node is placed (if found&n; *                                or created successfully)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find or enter the passed name in the name space.&n; *              Log an error if name not found in Exec mode.&n; *&n; * MUTEX:       Assumes namespace is locked.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_lookup&n; *&n; * PARAMETERS:  prefix_node     - Search scope if name is not fully qualified&n; *              Pathname        - Search pathname, in internal format&n; *                                (as represented in the AML stream)&n; *              Type            - Type associated with name&n; *              interpreter_mode - IMODE_LOAD_PASS2 =&gt; add name if not found&n; *              Flags           - Flags describing the search restrictions&n; *              walk_state      - Current state of the walk&n; *              return_node     - Where the Node is placed (if found&n; *                                or created successfully)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Find or enter the passed name in the name space.&n; *              Log an error if name not found in Exec mode.&n; *&n; * MUTEX:       Assumes namespace is locked.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_lookup
 id|acpi_ns_lookup
@@ -519,7 +519,7 @@ id|ACPI_NS_SEARCH_PARENT
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_lookup&quot;
+l_string|&quot;ns_lookup&quot;
 )paren
 suffix:semicolon
 r_if
@@ -658,7 +658,7 @@ op_logical_neg
 id|pathname
 )paren
 (brace
-multiline_comment|/* A Null Name_path is allowed and refers to the root */
+multiline_comment|/* A Null name_path is allowed and refers to the root */
 id|num_segments
 op_assign
 l_int|0
@@ -825,7 +825,7 @@ id|num_carats
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t;&t; * Determine the number of ACPI name segments in this pathname.&n;&t;&t; *&n;&t;&t; * The segment part consists of either:&n;&t;&t; *  - A Null name segment (0)&n;&t;&t; *  - A Dual_name_prefix followed by two 4-byte name segments&n;&t;&t; *  - A Multi_name_prefix followed by a byte indicating the&n;&t;&t; *      number of segments and the segments themselves.&n;&t;&t; *  - A single 4-byte name segment&n;&t;&t; *&n;&t;&t; * Examine the name prefix opcode, if any, to determine the number of&n;&t;&t; * segments.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Determine the number of ACPI name segments in this pathname.&n;&t;&t; *&n;&t;&t; * The segment part consists of either:&n;&t;&t; *  - A Null name segment (0)&n;&t;&t; *  - A dual_name_prefix followed by two 4-byte name segments&n;&t;&t; *  - A multi_name_prefix followed by a byte indicating the&n;&t;&t; *      number of segments and the segments themselves.&n;&t;&t; *  - A single 4-byte name segment&n;&t;&t; *&n;&t;&t; * Examine the name prefix opcode, if any, to determine the number of&n;&t;&t; * segments.&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -861,7 +861,7 @@ suffix:semicolon
 r_case
 id|AML_DUAL_NAME_PREFIX
 suffix:colon
-multiline_comment|/* More than one Name_seg, search rules do not apply */
+multiline_comment|/* More than one name_seg, search rules do not apply */
 id|search_parent_flag
 op_assign
 id|ACPI_NS_NO_UPSEARCH
@@ -890,7 +890,7 @@ suffix:semicolon
 r_case
 id|AML_MULTI_NAME_PREFIX_OP
 suffix:colon
-multiline_comment|/* More than one Name_seg, search rules do not apply */
+multiline_comment|/* More than one name_seg, search rules do not apply */
 id|search_parent_flag
 op_assign
 id|ACPI_NS_NO_UPSEARCH
@@ -992,7 +992,7 @@ id|this_search_type
 op_assign
 id|type
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Only allow automatic parent search (search rules) if the caller&n;&t;&t;&t; * requested it AND we have a single, non-fully-qualified Name_seg&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Only allow automatic parent search (search rules) if the caller&n;&t;&t;&t; * requested it AND we have a single, non-fully-qualified name_seg&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1114,7 +1114,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Sanity typecheck of the target object:&n;&t;&t; *&n;&t;&t; * If 1) This is the last segment (Num_segments == 0)&n;&t;&t; *    2) And we are looking for a specific type&n;&t;&t; *       (Not checking for TYPE_ANY)&n;&t;&t; *    3) Which is not an alias&n;&t;&t; *    4) Which is not a local type (TYPE_SCOPE)&n;&t;&t; *    5) And the type of target object is known (not TYPE_ANY)&n;&t;&t; *    6) And target object does not match what we are looking for&n;&t;&t; *&n;&t;&t; * Then we have a type mismatch.  Just warn and ignore it.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Sanity typecheck of the target object:&n;&t;&t; *&n;&t;&t; * If 1) This is the last segment (num_segments == 0)&n;&t;&t; *    2) And we are looking for a specific type&n;&t;&t; *       (Not checking for TYPE_ANY)&n;&t;&t; *    3) Which is not an alias&n;&t;&t; *    4) Which is not a local type (TYPE_SCOPE)&n;&t;&t; *    5) And the type of target object is known (not TYPE_ANY)&n;&t;&t; *    6) And target object does not match what we are looking for&n;&t;&t; *&n;&t;&t; * Then we have a type mismatch.  Just warn and ignore it.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1159,7 +1159,7 @@ multiline_comment|/* Complain about a type mismatch */
 id|ACPI_REPORT_WARNING
 (paren
 (paren
-l_string|&quot;Ns_lookup: Type mismatch on %4.4s (%s), searching for (%s)&bslash;n&quot;
+l_string|&quot;ns_lookup: Type mismatch on %4.4s (%s), searching for (%s)&bslash;n&quot;
 comma
 (paren
 r_char

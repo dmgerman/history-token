@@ -1,14 +1,14 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *       $Revision: 150 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACUTILS_H
 DECL|macro|_ACUTILS_H
 mdefine_line|#define _ACUTILS_H
 r_typedef
-DECL|typedef|ACPI_PKG_CALLBACK
+DECL|typedef|acpi_pkg_callback
 id|acpi_status
 (paren
 op_star
-id|ACPI_PKG_CALLBACK
+id|acpi_pkg_callback
 )paren
 (paren
 id|u8
@@ -38,7 +38,7 @@ r_void
 op_star
 id|target_object
 comma
-id|ACPI_PKG_CALLBACK
+id|acpi_pkg_callback
 id|walk_callback
 comma
 r_void
@@ -57,7 +57,7 @@ op_star
 id|free_space
 suffix:semicolon
 DECL|member|length
-id|ACPI_SIZE
+id|acpi_size
 id|length
 suffix:semicolon
 DECL|member|object_space
@@ -78,7 +78,7 @@ DECL|macro|REF_DECREMENT
 mdefine_line|#define REF_DECREMENT       (u16) 1
 DECL|macro|REF_FORCE_DELETE
 mdefine_line|#define REF_FORCE_DELETE    (u16) 2
-multiline_comment|/* Acpi_ut_dump_buffer */
+multiline_comment|/* acpi_ut_dump_buffer */
 DECL|macro|DB_BYTE_DISPLAY
 mdefine_line|#define DB_BYTE_DISPLAY     1
 DECL|macro|DB_WORD_DISPLAY
@@ -100,7 +100,7 @@ id|acpi_ut_terminate
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_init - miscellaneous initialization and shutdown&n; */
+multiline_comment|/*&n; * ut_init - miscellaneous initialization and shutdown&n; */
 id|acpi_status
 id|acpi_ut_hardware_initialize
 (paren
@@ -119,7 +119,7 @@ id|acpi_ut_validate_fadt
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_global - Global data structures and procedures&n; */
+multiline_comment|/*&n; * ut_global - Global data structures and procedures&n; */
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
 r_char
 op_star
@@ -187,9 +187,9 @@ id|u32
 id|id_type
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_clib - Local implementations of C library functions&n; */
+multiline_comment|/*&n; * ut_clib - Local implementations of C library functions&n; */
 macro_line|#ifndef ACPI_USE_SYSTEM_CLIBRARY
-id|ACPI_SIZE
+id|acpi_size
 id|acpi_ut_strlen
 (paren
 r_const
@@ -225,7 +225,7 @@ r_char
 op_star
 id|src_string
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|count
 )paren
 suffix:semicolon
@@ -242,7 +242,7 @@ r_char
 op_star
 id|string2
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|count
 )paren
 suffix:semicolon
@@ -287,7 +287,7 @@ r_char
 op_star
 id|src_string
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|count
 )paren
 suffix:semicolon
@@ -334,7 +334,7 @@ r_void
 op_star
 id|src
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|count
 )paren
 suffix:semicolon
@@ -346,10 +346,10 @@ r_void
 op_star
 id|dest
 comma
-id|NATIVE_UINT
+id|acpi_native_uint
 id|value
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|count
 )paren
 suffix:semicolon
@@ -411,7 +411,7 @@ mdefine_line|#define ACPI_IS_ALPHA(c)  (_acpi_ctype[(unsigned char)(c)] &amp; (_
 DECL|macro|ACPI_IS_ASCII
 mdefine_line|#define ACPI_IS_ASCII(c)  ((c) &lt; 0x80)
 macro_line|#endif /* ACPI_USE_SYSTEM_CLIBRARY */
-multiline_comment|/*&n; * Ut_copy - Object construction and conversion interfaces&n; */
+multiline_comment|/*&n; * ut_copy - Object construction and conversion interfaces&n; */
 id|acpi_status
 id|acpi_ut_build_simple_object
 c_func
@@ -583,7 +583,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_create - Object creation&n; */
+multiline_comment|/*&n; * ut_create - Object creation&n; */
 id|acpi_status
 id|acpi_ut_update_object_reference
 (paren
@@ -595,7 +595,7 @@ id|u16
 id|action
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_debug - Debug interfaces&n; */
+multiline_comment|/*&n; * ut_debug - Debug interfaces&n; */
 r_void
 id|acpi_ut_init_stack_ptr_trace
 (paren
@@ -824,7 +824,7 @@ dot
 )paren
 id|ACPI_PRINTF_LIKE_FUNC
 suffix:semicolon
-multiline_comment|/*&n; * Ut_delete - Object deletion&n; */
+multiline_comment|/*&n; * ut_delete - Object deletion&n; */
 r_void
 id|acpi_ut_delete_internal_obj
 (paren
@@ -858,7 +858,7 @@ op_star
 id|obj_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_eval - object evaluation&n; */
+multiline_comment|/*&n; * ut_eval - object evaluation&n; */
 multiline_comment|/* Method name strings */
 DECL|macro|METHOD_NAME__HID
 mdefine_line|#define METHOD_NAME__HID        &quot;_HID&quot;
@@ -962,7 +962,7 @@ op_star
 id|uid
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_mutex - mutual exclusion interfaces&n; */
+multiline_comment|/*&n; * ut_mutex - mutual exclusion interfaces&n; */
 id|acpi_status
 id|acpi_ut_mutex_initialize
 (paren
@@ -978,32 +978,32 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_create_mutex
 (paren
-id|ACPI_MUTEX_HANDLE
+id|acpi_mutex_handle
 id|mutex_id
 )paren
 suffix:semicolon
 id|acpi_status
 id|acpi_ut_delete_mutex
 (paren
-id|ACPI_MUTEX_HANDLE
+id|acpi_mutex_handle
 id|mutex_id
 )paren
 suffix:semicolon
 id|acpi_status
 id|acpi_ut_acquire_mutex
 (paren
-id|ACPI_MUTEX_HANDLE
+id|acpi_mutex_handle
 id|mutex_id
 )paren
 suffix:semicolon
 id|acpi_status
 id|acpi_ut_release_mutex
 (paren
-id|ACPI_MUTEX_HANDLE
+id|acpi_mutex_handle
 id|mutex_id
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_object - internal object create/delete/cache routines&n; */
+multiline_comment|/*&n; * ut_object - internal object create/delete/cache routines&n; */
 id|acpi_operand_object
 op_star
 id|acpi_ut_create_internal_object_dbg
@@ -1061,11 +1061,11 @@ id|acpi_operand_object
 op_star
 id|acpi_ut_create_buffer_object
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|buffer_size
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_ref_cnt - Object reference count management&n; */
+multiline_comment|/*&n; * ut_ref_cnt - Object reference count management&n; */
 r_void
 id|acpi_ut_add_reference
 (paren
@@ -1082,7 +1082,7 @@ op_star
 id|object
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_size - Object size routines&n; */
+multiline_comment|/*&n; * ut_size - Object size routines&n; */
 id|acpi_status
 id|acpi_ut_get_simple_object_size
 (paren
@@ -1090,7 +1090,7 @@ id|acpi_operand_object
 op_star
 id|obj
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|obj_length
 )paren
@@ -1102,7 +1102,7 @@ id|acpi_operand_object
 op_star
 id|obj
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|obj_length
 )paren
@@ -1115,7 +1115,7 @@ id|acpi_operand_object
 op_star
 id|obj
 comma
-id|ACPI_SIZE
+id|acpi_size
 op_star
 id|obj_length
 )paren
@@ -1139,7 +1139,7 @@ op_star
 id|context
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Ut_state - Generic state creation/cache routines&n; */
+multiline_comment|/*&n; * ut_state - Generic state creation/cache routines&n; */
 r_void
 id|acpi_ut_push_generic_state
 (paren
@@ -1170,7 +1170,7 @@ id|acpi_ut_create_generic_state
 r_void
 )paren
 suffix:semicolon
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|acpi_ut_create_thread_state
 (paren
@@ -1450,7 +1450,7 @@ id|acpi_buffer
 op_star
 id|buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|required_length
 )paren
 suffix:semicolon
@@ -1459,7 +1459,7 @@ r_void
 op_star
 id|acpi_ut_allocate
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -1477,7 +1477,7 @@ r_void
 op_star
 id|acpi_ut_callocate
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -1496,7 +1496,7 @@ r_void
 op_star
 id|acpi_ut_allocate_and_track
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -1514,7 +1514,7 @@ r_void
 op_star
 id|acpi_ut_callocate_and_track
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -1568,7 +1568,7 @@ id|acpi_debug_mem_block
 op_star
 id|address
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u8

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *              $Revision: 164 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exdump - Interpreter debug output routines&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -13,7 +13,7 @@ l_string|&quot;exdump&quot;
 )paren
 multiline_comment|/*&n; * The following routines are used for debug output only&n; */
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_dump_operand&n; *&n; * PARAMETERS:  *Obj_desc         - Pointer to entry to be dumped&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Dump an operand object&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_dump_operand&n; *&n; * PARAMETERS:  *obj_desc         - Pointer to entry to be dumped&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Dump an operand object&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ex_dump_operand
 id|acpi_ex_dump_operand
@@ -42,7 +42,7 @@ id|element_index
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ex_dump_operand&quot;
+l_string|&quot;ex_dump_operand&quot;
 )paren
 r_if
 c_cond
@@ -149,7 +149,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*  Obj_desc is a valid object */
+multiline_comment|/*  obj_desc is a valid object */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -229,7 +229,7 @@ id|AML_REF_OF_OP
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Reference: (Ref_of) %p&bslash;n&quot;
+l_string|&quot;Reference: (ref_of) %p&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.object
 )paren
@@ -597,7 +597,7 @@ id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Bank_field&bslash;n&quot;
+l_string|&quot;bank_field&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -607,7 +607,7 @@ id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Region_field: Bits=%X Acc_width=%X Lock=%X Update=%X at byte=%X bit=%X of below:&bslash;n&quot;
+l_string|&quot;region_field: Bits=%X acc_width=%X Lock=%X Update=%X at byte=%X bit=%X of below:&bslash;n&quot;
 comma
 id|obj_desc-&gt;field.bit_length
 comma
@@ -638,7 +638,7 @@ id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Index_field&bslash;n&quot;
+l_string|&quot;index_field&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -648,7 +648,7 @@ id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Buffer_field: %X bits at byte %X bit %X of &bslash;n&quot;
+l_string|&quot;buffer_field: %X bits at byte %X bit %X of &bslash;n&quot;
 comma
 id|obj_desc-&gt;buffer_field.bit_length
 comma
@@ -797,7 +797,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_dump_operands&n; *&n; * PARAMETERS:  Interpreter_mode     - Load or Exec&n; *              *Ident              - Identification&n; *              Num_levels          - # of stack entries to dump above line&n; *              *Note               - Output notation&n; *&n; * DESCRIPTION: Dump the object stack&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_dump_operands&n; *&n; * PARAMETERS:  interpreter_mode     - Load or Exec&n; *              *Ident              - Identification&n; *              num_levels          - # of stack entries to dump above line&n; *              *Note               - Output notation&n; *&n; * DESCRIPTION: Dump the object stack&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ex_dump_operands
 id|acpi_ex_dump_operands
@@ -829,7 +829,7 @@ id|u32
 id|line_number
 )paren
 (brace
-id|NATIVE_UINT
+id|acpi_native_uint
 id|i
 suffix:semicolon
 id|acpi_operand_object
@@ -839,7 +839,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ex_dump_operands&quot;
+l_string|&quot;ex_dump_operands&quot;
 )paren
 suffix:semicolon
 r_if
@@ -944,7 +944,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_out*&n; *&n; * PARAMETERS:  Title               - Descriptive text&n; *              Value               - Value to be displayed&n; *&n; * DESCRIPTION: Object dump output formatting functions.  These functions&n; *              reduce the number of format strings required and keeps them&n; *              all in one place for easy modification.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_out*&n; *&n; * PARAMETERS:  Title               - Descriptive text&n; *              Value               - Value to be displayed&n; *&n; * DESCRIPTION: Object dump output formatting functions.  These functions&n; *              reduce the number of format strings required and keeps them&n; *              all in one place for easy modification.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ex_out_string
 id|acpi_ex_out_string
@@ -1021,7 +1021,7 @@ r_char
 op_star
 id|title
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|value
 )paren
 (brace
@@ -1055,7 +1055,7 @@ id|value
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_dump_node&n; *&n; * PARAMETERS:  *Node           - Descriptor to dump&n; *              Flags               - Force display&n; *&n; * DESCRIPTION: Dumps the members of the given.Node&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_dump_node&n; *&n; * PARAMETERS:  *Node           - Descriptor to dump&n; *              Flags               - Force display&n; *&n; * DESCRIPTION: Dumps the members of the given.Node&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ex_dump_node
 id|acpi_ex_dump_node
@@ -1154,14 +1154,14 @@ id|node
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Child_list&quot;
+l_string|&quot;child_list&quot;
 comma
 id|node-&gt;child
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Next_peer&quot;
+l_string|&quot;next_peer&quot;
 comma
 id|node-&gt;peer
 )paren
@@ -1177,7 +1177,7 @@ id|node
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_dump_object_descriptor&n; *&n; * PARAMETERS:  *Object             - Descriptor to dump&n; *              Flags               - Force display&n; *&n; * DESCRIPTION: Dumps the members of the object descriptor given.&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_dump_object_descriptor&n; *&n; * PARAMETERS:  *Object             - Descriptor to dump&n; *              Flags               - Force display&n; *&n; * DESCRIPTION: Dumps the members of the object descriptor given.&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ex_dump_object_descriptor
 id|acpi_ex_dump_object_descriptor
@@ -1195,7 +1195,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_dump_object_descriptor&quot;
+l_string|&quot;ex_dump_object_descriptor&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1296,7 +1296,7 @@ id|ACPI_DESC_TYPE_OPERAND
 (brace
 id|acpi_os_printf
 (paren
-l_string|&quot;Ex_dump_object_descriptor: %p is not a valid ACPI object&bslash;n&quot;
+l_string|&quot;ex_dump_object_descriptor: %p is not a valid ACPI object&bslash;n&quot;
 comma
 id|obj_desc
 )paren
@@ -1522,21 +1522,21 @@ id|ACPI_TYPE_DEVICE
 suffix:colon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Addr_handler&quot;
+l_string|&quot;addr_handler&quot;
 comma
 id|obj_desc-&gt;device.addr_handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Sys_handler&quot;
+l_string|&quot;sys_handler&quot;
 comma
 id|obj_desc-&gt;device.sys_handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Drv_handler&quot;
+l_string|&quot;drv_handler&quot;
 comma
 id|obj_desc-&gt;device.drv_handler
 )paren
@@ -1560,7 +1560,7 @@ id|ACPI_TYPE_METHOD
 suffix:colon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Param_count&quot;
+l_string|&quot;param_count&quot;
 comma
 id|obj_desc-&gt;method.param_count
 )paren
@@ -1581,21 +1581,21 @@ id|obj_desc-&gt;method.semaphore
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Owning_id&quot;
+l_string|&quot;owning_id&quot;
 comma
 id|obj_desc-&gt;method.owning_id
 )paren
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Aml_length&quot;
+l_string|&quot;aml_length&quot;
 comma
 id|obj_desc-&gt;method.aml_length
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Aml_start&quot;
+l_string|&quot;aml_start&quot;
 comma
 id|obj_desc-&gt;method.aml_start
 )paren
@@ -1607,21 +1607,21 @@ id|ACPI_TYPE_MUTEX
 suffix:colon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Sync_level&quot;
+l_string|&quot;sync_level&quot;
 comma
 id|obj_desc-&gt;mutex.sync_level
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Owner_thread&quot;
+l_string|&quot;owner_thread&quot;
 comma
 id|obj_desc-&gt;mutex.owner_thread
 )paren
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Acquisition_depth&quot;
+l_string|&quot;acquisition_depth&quot;
 comma
 id|obj_desc-&gt;mutex.acquisition_depth
 )paren
@@ -1640,7 +1640,7 @@ id|ACPI_TYPE_REGION
 suffix:colon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Space_id&quot;
+l_string|&quot;space_id&quot;
 comma
 id|obj_desc-&gt;region.space_id
 )paren
@@ -1668,7 +1668,7 @@ id|obj_desc-&gt;region.length
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Addr_handler&quot;
+l_string|&quot;addr_handler&quot;
 comma
 id|obj_desc-&gt;region.addr_handler
 )paren
@@ -1687,28 +1687,28 @@ id|ACPI_TYPE_POWER
 suffix:colon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;System_level&quot;
+l_string|&quot;system_level&quot;
 comma
 id|obj_desc-&gt;power_resource.system_level
 )paren
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Resource_order&quot;
+l_string|&quot;resource_order&quot;
 comma
 id|obj_desc-&gt;power_resource.resource_order
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Sys_handler&quot;
+l_string|&quot;sys_handler&quot;
 comma
 id|obj_desc-&gt;power_resource.sys_handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Drv_handler&quot;
+l_string|&quot;drv_handler&quot;
 comma
 id|obj_desc-&gt;power_resource.drv_handler
 )paren
@@ -1737,28 +1737,28 @@ id|acpi_ex_out_address
 l_string|&quot;Address&quot;
 comma
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|obj_desc-&gt;processor.address
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Sys_handler&quot;
+l_string|&quot;sys_handler&quot;
 comma
 id|obj_desc-&gt;processor.sys_handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Drv_handler&quot;
+l_string|&quot;drv_handler&quot;
 comma
 id|obj_desc-&gt;processor.drv_handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Addr_handler&quot;
+l_string|&quot;addr_handler&quot;
 comma
 id|obj_desc-&gt;processor.addr_handler
 )paren
@@ -1770,21 +1770,21 @@ id|ACPI_TYPE_THERMAL
 suffix:colon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Sys_handler&quot;
+l_string|&quot;sys_handler&quot;
 comma
 id|obj_desc-&gt;thermal_zone.sys_handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Drv_handler&quot;
+l_string|&quot;drv_handler&quot;
 comma
 id|obj_desc-&gt;thermal_zone.drv_handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Addr_handler&quot;
+l_string|&quot;addr_handler&quot;
 comma
 id|obj_desc-&gt;thermal_zone.addr_handler
 )paren
@@ -1805,63 +1805,63 @@ id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Field_flags&quot;
+l_string|&quot;field_flags&quot;
 comma
 id|obj_desc-&gt;common_field.field_flags
 )paren
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Access_byte_width&quot;
+l_string|&quot;access_byte_width&quot;
 comma
 id|obj_desc-&gt;common_field.access_byte_width
 )paren
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Bit_length&quot;
+l_string|&quot;bit_length&quot;
 comma
 id|obj_desc-&gt;common_field.bit_length
 )paren
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Fld_bit_offset&quot;
+l_string|&quot;fld_bit_offset&quot;
 comma
 id|obj_desc-&gt;common_field.start_field_bit_offset
 )paren
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Base_byte_offset&quot;
+l_string|&quot;base_byte_offset&quot;
 comma
 id|obj_desc-&gt;common_field.base_byte_offset
 )paren
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Datum_valid_bits&quot;
+l_string|&quot;datum_valid_bits&quot;
 comma
 id|obj_desc-&gt;common_field.datum_valid_bits
 )paren
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;End_fld_valid_bits&quot;
+l_string|&quot;end_fld_valid_bits&quot;
 comma
 id|obj_desc-&gt;common_field.end_field_valid_bits
 )paren
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;End_buf_valid_bits&quot;
+l_string|&quot;end_buf_valid_bits&quot;
 comma
 id|obj_desc-&gt;common_field.end_buffer_valid_bits
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Parent_node&quot;
+l_string|&quot;parent_node&quot;
 comma
 id|obj_desc-&gt;common_field.node
 )paren
@@ -1880,7 +1880,7 @@ id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Buffer_obj&quot;
+l_string|&quot;buffer_obj&quot;
 comma
 id|obj_desc-&gt;buffer_field.buffer_obj
 )paren
@@ -1892,7 +1892,7 @@ id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Region_obj&quot;
+l_string|&quot;region_obj&quot;
 comma
 id|obj_desc-&gt;field.region_obj
 )paren
@@ -1911,14 +1911,14 @@ id|obj_desc-&gt;bank_field.value
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Region_obj&quot;
+l_string|&quot;region_obj&quot;
 comma
 id|obj_desc-&gt;bank_field.region_obj
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Bank_obj&quot;
+l_string|&quot;bank_obj&quot;
 comma
 id|obj_desc-&gt;bank_field.bank_obj
 )paren
@@ -1964,7 +1964,7 @@ id|ACPI_TYPE_LOCAL_REFERENCE
 suffix:colon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Target_type&quot;
+l_string|&quot;target_type&quot;
 comma
 id|obj_desc-&gt;reference.target_type
 )paren
@@ -1992,7 +1992,7 @@ id|obj_desc-&gt;reference.offset
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Obj_desc&quot;
+l_string|&quot;obj_desc&quot;
 comma
 id|obj_desc-&gt;reference.object
 )paren
@@ -2018,7 +2018,7 @@ id|ACPI_TYPE_LOCAL_ADDRESS_HANDLER
 suffix:colon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;Space_id&quot;
+l_string|&quot;space_id&quot;
 comma
 id|obj_desc-&gt;addr_handler.space_id
 )paren
@@ -2032,7 +2032,7 @@ id|obj_desc-&gt;addr_handler.next
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;Region_list&quot;
+l_string|&quot;region_list&quot;
 comma
 id|obj_desc-&gt;addr_handler.region_list
 )paren
@@ -2085,7 +2085,7 @@ r_default
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Ex_dump_object_descriptor: Display not implemented for object type %s&bslash;n&quot;
+l_string|&quot;ex_dump_object_descriptor: Display not implemented for object type %s&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren

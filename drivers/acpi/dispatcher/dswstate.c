@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *              $Revision: 73 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswstate - Dispatcher parse tree walk management routines&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dswstate&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_insert&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto this walk&squot;s result stack&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_insert&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto this walk&squot;s result stack&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_insert
 id|acpi_ds_result_insert
@@ -33,7 +33,7 @@ id|state
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_result_insert&quot;
+l_string|&quot;ds_result_insert&quot;
 )paren
 suffix:semicolon
 id|state
@@ -172,7 +172,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_remove&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off the bottom of this walk&squot;s result stack.  In&n; *              other words, this is a FIFO.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_remove&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off the bottom of this walk&squot;s result stack.  In&n; *              other words, this is a FIFO.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_remove
 id|acpi_ds_result_remove
@@ -196,7 +196,7 @@ id|state
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_result_remove&quot;
+l_string|&quot;ds_result_remove&quot;
 )paren
 suffix:semicolon
 id|state
@@ -340,7 +340,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_pop&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off the bottom of this walk&squot;s result stack.  In&n; *              other words, this is a FIFO.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_pop&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off the bottom of this walk&squot;s result stack.  In&n; *              other words, this is a FIFO.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_pop
 id|acpi_ds_result_pop
@@ -355,7 +355,7 @@ op_star
 id|walk_state
 )paren
 (brace
-id|NATIVE_UINT
+id|acpi_native_uint
 id|index
 suffix:semicolon
 id|acpi_generic_state
@@ -364,7 +364,7 @@ id|state
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_result_pop&quot;
+l_string|&quot;ds_result_pop&quot;
 )paren
 suffix:semicolon
 id|state
@@ -517,7 +517,7 @@ id|AE_AML_NO_RETURN_VALUE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_pop_from_bottom&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off the bottom of this walk&squot;s result stack.  In&n; *              other words, this is a FIFO.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_pop_from_bottom&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off the bottom of this walk&squot;s result stack.  In&n; *              other words, this is a FIFO.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_pop_from_bottom
 id|acpi_ds_result_pop_from_bottom
@@ -532,7 +532,7 @@ op_star
 id|walk_state
 )paren
 (brace
-id|NATIVE_UINT
+id|acpi_native_uint
 id|index
 suffix:semicolon
 id|acpi_generic_state
@@ -541,7 +541,7 @@ id|state
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_result_pop_from_bottom&quot;
+l_string|&quot;ds_result_pop_from_bottom&quot;
 )paren
 suffix:semicolon
 id|state
@@ -706,7 +706,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_push&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto the current result stack&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_push&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto the current result stack&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_push
 id|acpi_ds_result_push
@@ -726,7 +726,7 @@ id|state
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_result_push&quot;
+l_string|&quot;ds_result_push&quot;
 )paren
 suffix:semicolon
 id|state
@@ -859,7 +859,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_stack_push&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto the Walk_state result stack.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_stack_push&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto the walk_state result stack.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_stack_push
 id|acpi_ds_result_stack_push
@@ -875,7 +875,7 @@ id|state
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_result_stack_push&quot;
+l_string|&quot;ds_result_stack_push&quot;
 )paren
 suffix:semicolon
 id|state
@@ -928,7 +928,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_result_stack_pop&n; *&n; * PARAMETERS:  Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off of the Walk_state result stack.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_stack_pop&n; *&n; * PARAMETERS:  walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off of the walk_state result stack.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_stack_pop
 id|acpi_ds_result_stack_pop
@@ -944,7 +944,7 @@ id|state
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_result_stack_pop&quot;
+l_string|&quot;ds_result_stack_pop&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check for stack underflow */
@@ -986,7 +986,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Result=%p Remaining_results=%X State=%p&bslash;n&quot;
+l_string|&quot;Result=%p remaining_results=%X State=%p&bslash;n&quot;
 comma
 id|state
 comma
@@ -1007,7 +1007,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_obj_stack_delete_all&n; *&n; * PARAMETERS:  Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear the object stack by deleting all objects that are on it.&n; *              Should be used with great care, if at all!&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_obj_stack_delete_all&n; *&n; * PARAMETERS:  walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear the object stack by deleting all objects that are on it.&n; *              Should be used with great care, if at all!&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_obj_stack_delete_all
 id|acpi_ds_obj_stack_delete_all
@@ -1022,7 +1022,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_obj_stack_delete_all&quot;
+l_string|&quot;ds_obj_stack_delete_all&quot;
 comma
 id|walk_state
 )paren
@@ -1075,7 +1075,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_obj_stack_push&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto this walk&squot;s object/operand stack&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_obj_stack_push&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto this walk&squot;s object/operand stack&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_obj_stack_push
 id|acpi_ds_obj_stack_push
@@ -1091,7 +1091,7 @@ id|walk_state
 (brace
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_obj_stack_push&quot;
+l_string|&quot;ds_obj_stack_push&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check for stack overflow */
@@ -1166,7 +1166,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 macro_line|#if 0
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_obj_stack_pop_object&n; *&n; * PARAMETERS:  Pop_count           - Number of objects/entries to pop&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop this walk&squot;s object stack.  Objects on the stack are NOT&n; *              deleted by this routine.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_obj_stack_pop_object&n; *&n; * PARAMETERS:  pop_count           - Number of objects/entries to pop&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop this walk&squot;s object stack.  Objects on the stack are NOT&n; *              deleted by this routine.&n; *&n; ******************************************************************************/
 id|acpi_status
 id|acpi_ds_obj_stack_pop_object
 (paren
@@ -1182,7 +1182,7 @@ id|walk_state
 (brace
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_obj_stack_pop_object&quot;
+l_string|&quot;ds_obj_stack_pop_object&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Check for stack underflow */
@@ -1302,7 +1302,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_obj_stack_pop&n; *&n; * PARAMETERS:  Pop_count           - Number of objects/entries to pop&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop this walk&squot;s object stack.  Objects on the stack are NOT&n; *              deleted by this routine.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_obj_stack_pop&n; *&n; * PARAMETERS:  pop_count           - Number of objects/entries to pop&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop this walk&squot;s object stack.  Objects on the stack are NOT&n; *              deleted by this routine.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_obj_stack_pop
 id|acpi_ds_obj_stack_pop
@@ -1320,7 +1320,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_obj_stack_pop&quot;
+l_string|&quot;ds_obj_stack_pop&quot;
 )paren
 suffix:semicolon
 r_for
@@ -1401,7 +1401,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_obj_stack_pop_and_delete&n; *&n; * PARAMETERS:  Pop_count           - Number of objects/entries to pop&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop this walk&squot;s object stack and delete each object that is&n; *              popped off.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_obj_stack_pop_and_delete&n; *&n; * PARAMETERS:  pop_count           - Number of objects/entries to pop&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop this walk&squot;s object stack and delete each object that is&n; *              popped off.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_obj_stack_pop_and_delete
 id|acpi_ds_obj_stack_pop_and_delete
@@ -1423,7 +1423,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_obj_stack_pop_and_delete&quot;
+l_string|&quot;ds_obj_stack_pop_and_delete&quot;
 )paren
 suffix:semicolon
 r_for
@@ -1526,7 +1526,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_obj_stack_get_value&n; *&n; * PARAMETERS:  Index               - Stack index whose value is desired.  Based&n; *                                    on the top of the stack (index=0 == top)&n; *              Walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve an object from this walk&squot;s object stack.  Index must&n; *              be within the range of the current stack pointer.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_obj_stack_get_value&n; *&n; * PARAMETERS:  Index               - Stack index whose value is desired.  Based&n; *                                    on the top of the stack (index=0 == top)&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve an object from this walk&squot;s object stack.  Index must&n; *              be within the range of the current stack pointer.&n; *&n; ******************************************************************************/
 r_void
 op_star
 DECL|function|acpi_ds_obj_stack_get_value
@@ -1542,7 +1542,7 @@ id|walk_state
 (brace
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_obj_stack_get_value&quot;
+l_string|&quot;ds_obj_stack_get_value&quot;
 comma
 id|walk_state
 )paren
@@ -1589,7 +1589,7 @@ id|return_PTR
 id|walk_state-&gt;operands
 (braket
 (paren
-id|NATIVE_UINT
+id|acpi_native_uint
 )paren
 (paren
 id|walk_state-&gt;num_operands
@@ -1602,20 +1602,20 @@ id|index
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_get_current_walk_state&n; *&n; * PARAMETERS:  Thread          - Get current active state for this Thread&n; *&n; * RETURN:      Pointer to the current walk state&n; *&n; * DESCRIPTION: Get the walk state that is at the head of the list (the &quot;current&quot;&n; *              walk state.)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_get_current_walk_state&n; *&n; * PARAMETERS:  Thread          - Get current active state for this Thread&n; *&n; * RETURN:      Pointer to the current walk state&n; *&n; * DESCRIPTION: Get the walk state that is at the head of the list (the &quot;current&quot;&n; *              walk state.)&n; *&n; ******************************************************************************/
 id|acpi_walk_state
 op_star
 DECL|function|acpi_ds_get_current_walk_state
 id|acpi_ds_get_current_walk_state
 (paren
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 )paren
 (brace
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_get_current_walk_state&quot;
+l_string|&quot;ds_get_current_walk_state&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1636,7 +1636,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_PARSE
 comma
-l_string|&quot;Current Walk_state %p&bslash;n&quot;
+l_string|&quot;Current walk_state %p&bslash;n&quot;
 comma
 id|thread-&gt;walk_state_list
 )paren
@@ -1648,7 +1648,7 @@ id|thread-&gt;walk_state_list
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_push_walk_state&n; *&n; * PARAMETERS:  Walk_state      - State to push&n; *              Walk_list       - The list that owns the walk stack&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Place the Walk_state at the head of the state list.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_push_walk_state&n; *&n; * PARAMETERS:  walk_state      - State to push&n; *              walk_list       - The list that owns the walk stack&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Place the walk_state at the head of the state list.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ds_push_walk_state
 id|acpi_ds_push_walk_state
@@ -1657,14 +1657,14 @@ id|acpi_walk_state
 op_star
 id|walk_state
 comma
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 )paren
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_push_walk_state&quot;
+l_string|&quot;ds_push_walk_state&quot;
 )paren
 suffix:semicolon
 id|walk_state-&gt;next
@@ -1678,13 +1678,13 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_pop_walk_state&n; *&n; * PARAMETERS:  Walk_list       - The list that owns the walk stack&n; *&n; * RETURN:      A Walk_state object popped from the stack&n; *&n; * DESCRIPTION: Remove and return the walkstate object that is at the head of&n; *              the walk stack for the given walk list.  NULL indicates that&n; *              the list is empty.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_pop_walk_state&n; *&n; * PARAMETERS:  walk_list       - The list that owns the walk stack&n; *&n; * RETURN:      A walk_state object popped from the stack&n; *&n; * DESCRIPTION: Remove and return the walkstate object that is at the head of&n; *              the walk stack for the given walk list.  NULL indicates that&n; *              the list is empty.&n; *&n; ******************************************************************************/
 id|acpi_walk_state
 op_star
 DECL|function|acpi_ds_pop_walk_state
 id|acpi_ds_pop_walk_state
 (paren
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 )paren
@@ -1695,7 +1695,7 @@ id|walk_state
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_pop_walk_state&quot;
+l_string|&quot;ds_pop_walk_state&quot;
 )paren
 suffix:semicolon
 id|walk_state
@@ -1713,7 +1713,7 @@ id|thread-&gt;walk_state_list
 op_assign
 id|walk_state-&gt;next
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Don&squot;t clear the NEXT field, this serves as an indicator&n;&t;&t; * that there is a parent WALK STATE&n;&t;&t; *     NO: Walk_state-&gt;Next = NULL;&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Don&squot;t clear the NEXT field, this serves as an indicator&n;&t;&t; * that there is a parent WALK STATE&n;&t;&t; *     NO: walk_state-&gt;Next = NULL;&n;&t;&t; */
 )brace
 id|return_PTR
 (paren
@@ -1721,7 +1721,7 @@ id|walk_state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_walk_state&n; *&n; * PARAMETERS:  Origin          - Starting point for this walk&n; *              Thread          - Current thread state&n; *&n; * RETURN:      Pointer to the new walk state.&n; *&n; * DESCRIPTION: Allocate and initialize a new walk state.  The current walk&n; *              state is set to this new state.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_walk_state&n; *&n; * PARAMETERS:  Origin          - Starting point for this walk&n; *              Thread          - Current thread state&n; *&n; * RETURN:      Pointer to the new walk state.&n; *&n; * DESCRIPTION: Allocate and initialize a new walk state.  The current walk&n; *              state is set to this new state.&n; *&n; ******************************************************************************/
 id|acpi_walk_state
 op_star
 DECL|function|acpi_ds_create_walk_state
@@ -1738,7 +1738,7 @@ id|acpi_operand_object
 op_star
 id|mth_desc
 comma
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 )paren
@@ -1752,7 +1752,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_create_walk_state&quot;
+l_string|&quot;ds_create_walk_state&quot;
 )paren
 suffix:semicolon
 id|walk_state
@@ -1851,7 +1851,7 @@ id|walk_state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_init_aml_walk&n; *&n; * PARAMETERS:  Walk_state      - New state to be initialized&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Initialize a walk state for a pass 1 or 2 parse tree walk&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_init_aml_walk&n; *&n; * PARAMETERS:  walk_state      - New state to be initialized&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Initialize a walk state for a pass 1 or 2 parse tree walk&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_init_aml_walk
 id|acpi_ds_init_aml_walk
@@ -1905,7 +1905,7 @@ id|extra_op
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_init_aml_walk&quot;
+l_string|&quot;ds_init_aml_walk&quot;
 )paren
 suffix:semicolon
 id|walk_state-&gt;parser_state.aml
@@ -1922,7 +1922,7 @@ id|aml_start
 op_plus
 id|aml_length
 suffix:semicolon
-multiline_comment|/* The Next_op of the Next_walk will be the beginning of the method */
+multiline_comment|/* The next_op of the next_walk will be the beginning of the method */
 id|walk_state-&gt;next_op
 op_assign
 l_int|NULL
@@ -2130,7 +2130,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_delete_walk_state&n; *&n; * PARAMETERS:  Walk_state      - State to delete&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete a walk state including all internal data structures&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_delete_walk_state&n; *&n; * PARAMETERS:  walk_state      - State to delete&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete a walk state including all internal data structures&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ds_delete_walk_state
 id|acpi_ds_delete_walk_state
@@ -2146,7 +2146,7 @@ id|state
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_delete_walk_state&quot;
+l_string|&quot;ds_delete_walk_state&quot;
 comma
 id|walk_state
 )paren
@@ -2274,7 +2274,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_delete_walk_state_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Purge the global state object cache.  Used during subsystem&n; *              termination.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_delete_walk_state_cache&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Purge the global state object cache.  Used during subsystem&n; *              termination.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ds_delete_walk_state_cache
 id|acpi_ds_delete_walk_state_cache
@@ -2284,7 +2284,7 @@ r_void
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_delete_walk_state_cache&quot;
+l_string|&quot;ds_delete_walk_state_cache&quot;
 )paren
 suffix:semicolon
 id|acpi_ut_delete_generic_cache

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *              $Revision: 118 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresolv - AML Interpreter object resolution&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -11,7 +11,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exresolv&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_to_value&n; *&n; * PARAMETERS:  **Stack_ptr         - Points to entry on Obj_stack, which can&n; *                                    be either an (acpi_operand_object *)&n; *                                    or an acpi_handle.&n; *              Walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert Reference objects to values&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_resolve_to_value&n; *&n; * PARAMETERS:  **stack_ptr         - Points to entry on obj_stack, which can&n; *                                    be either an (acpi_operand_object *)&n; *                                    or an acpi_handle.&n; *              walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert Reference objects to values&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_resolve_to_value
 id|acpi_ex_resolve_to_value
@@ -31,7 +31,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_resolve_to_value&quot;
+l_string|&quot;ex_resolve_to_value&quot;
 comma
 id|stack_ptr
 )paren
@@ -62,7 +62,7 @@ id|AE_AML_NO_OPERAND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The entity pointed to by the Stack_ptr can be either&n;&t; * 1) A valid acpi_operand_object, or&n;&t; * 2) A acpi_namespace_node (Named_obj)&n;&t; */
+multiline_comment|/*&n;&t; * The entity pointed to by the stack_ptr can be either&n;&t; * 1) A valid acpi_operand_object, or&n;&t; * 2) A acpi_namespace_node (named_obj)&n;&t; */
 r_if
 c_cond
 (paren
@@ -100,7 +100,7 @@ id|status
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Object on the stack may have changed if Acpi_ex_resolve_object_to_value()&n;&t; * was called (i.e., we can&squot;t use an _else_ here.)&n;&t; */
+multiline_comment|/*&n;&t; * Object on the stack may have changed if acpi_ex_resolve_object_to_value()&n;&t; * was called (i.e., we can&squot;t use an _else_ here.)&n;&t; */
 r_if
 c_cond
 (paren
@@ -161,7 +161,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_object_to_value&n; *&n; * PARAMETERS:  Stack_ptr       - Pointer to a stack location that contains a&n; *                                ptr to an internal object.&n; *              Walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve the value from an internal object.  The Reference type&n; *              uses the associated AML opcode to determine the value.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_resolve_object_to_value&n; *&n; * PARAMETERS:  stack_ptr       - Pointer to a stack location that contains a&n; *                                ptr to an internal object.&n; *              walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve the value from an internal object.  The Reference type&n; *              uses the associated AML opcode to determine the value.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_resolve_object_to_value
 id|acpi_ex_resolve_object_to_value
@@ -198,7 +198,7 @@ id|opcode
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_resolve_object_to_value&quot;
+l_string|&quot;ex_resolve_object_to_value&quot;
 )paren
 suffix:semicolon
 id|stack_desc
@@ -232,7 +232,7 @@ id|opcode
 r_case
 id|AML_NAME_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Convert indirect name ptr to a direct name ptr.&n;&t;&t;&t; * Then, Acpi_ex_resolve_node_to_value can be used to get the value&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Convert indirect name ptr to a direct name ptr.&n;&t;&t;&t; * Then, acpi_ex_resolve_node_to_value can be used to get the value&n;&t;&t;&t; */
 id|temp_node
 op_assign
 id|stack_desc-&gt;reference.object
@@ -305,7 +305,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[Arg/Local %d] Value_obj is %p&bslash;n&quot;
+l_string|&quot;[Arg/Local %d] value_obj is %p&bslash;n&quot;
 comma
 id|stack_desc-&gt;reference.offset
 comma
@@ -390,7 +390,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown Target_type %X in Index/Reference obj %p&bslash;n&quot;
+l_string|&quot;Unknown target_type %X in Index/Reference obj %p&bslash;n&quot;
 comma
 id|stack_desc-&gt;reference.target_type
 comma
@@ -482,7 +482,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;Field_read Source_desc=%p Type=%X&bslash;n&quot;
+l_string|&quot;field_read source_desc=%p Type=%X&bslash;n&quot;
 comma
 id|stack_desc
 comma
@@ -527,7 +527,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_multiple&n; *&n; * PARAMETERS:  Walk_state          - Current state (contains AML opcode)&n; *              Operand             - Starting point for resolution&n; *              Return_type         - Where the object type is returned&n; *              Return_desc         - Where the resolved object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Return the base object and type.  Traverse a reference list if&n; *              necessary to get to the base object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_resolve_multiple&n; *&n; * PARAMETERS:  walk_state          - Current state (contains AML opcode)&n; *              Operand             - Starting point for resolution&n; *              return_type         - Where the object type is returned&n; *              return_desc         - Where the resolved object is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Return the base object and type.  Traverse a reference list if&n; *              necessary to get to the base object.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_resolve_multiple
 id|acpi_ex_resolve_multiple
@@ -569,10 +569,10 @@ id|type
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_ex_resolve_multiple&quot;
+l_string|&quot;acpi_ex_resolve_multiple&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * For reference objects created via the Ref_of or Index operators,&n;&t; * we need to get to the base object (as per the ACPI specification&n;&t; * of the Object_type and Size_of operators). This means traversing&n;&t; * the list of possibly many nested references.&n;&t; */
+multiline_comment|/*&n;&t; * For reference objects created via the ref_of or Index operators,&n;&t; * we need to get to the base object (as per the ACPI specification&n;&t; * of the object_type and size_of operators). This means traversing&n;&t; * the list of possibly many nested references.&n;&t; */
 r_while
 c_loop
 (paren
@@ -763,7 +763,7 @@ suffix:semicolon
 r_case
 id|AML_DEBUG_OP
 suffix:colon
-multiline_comment|/* The Debug Object is of type &quot;Debug_object&quot; */
+multiline_comment|/* The Debug Object is of type &quot;debug_object&quot; */
 id|type
 op_assign
 id|ACPI_TYPE_DEBUG_OBJECT
@@ -776,7 +776,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ex_resolve_multiple: Unknown Reference subtype %X&bslash;n&quot;
+l_string|&quot;acpi_ex_resolve_multiple: Unknown Reference subtype %X&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.opcode
 )paren
@@ -789,7 +789,7 @@ id|AE_AML_INTERNAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Now we are guaranteed to have an object that has not been created&n;&t; * via the Ref_of or Index operators.&n;&t; */
+multiline_comment|/*&n;&t; * Now we are guaranteed to have an object that has not been created&n;&t; * via the ref_of or Index operators.&n;&t; */
 id|type
 op_assign
 id|ACPI_GET_OBJECT_TYPE

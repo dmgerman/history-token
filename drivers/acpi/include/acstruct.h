@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *       $Revision: 22 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acstruct.h - Internal structs&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACSTRUCT_H__
 DECL|macro|__ACSTRUCT_H__
@@ -49,7 +49,7 @@ DECL|member|next_op_info
 id|u8
 id|next_op_info
 suffix:semicolon
-multiline_comment|/* Info about Next_op */
+multiline_comment|/* Info about next_op */
 DECL|member|num_operands
 id|u8
 id|num_operands
@@ -155,7 +155,7 @@ id|acpi_parse_object
 op_star
 id|method_call_op
 suffix:semicolon
-multiline_comment|/* Method_call Op if running a method */
+multiline_comment|/* method_call Op if running a method */
 DECL|member|method_desc
 r_union
 id|acpi_operand_obj
@@ -259,7 +259,7 @@ id|acpi_parse_upwards
 id|ascending_callback
 suffix:semicolon
 DECL|member|thread
-id|ACPI_THREAD_STATE
+id|acpi_thread_state
 op_star
 id|thread
 suffix:semicolon
@@ -269,12 +269,12 @@ id|acpi_walk_state
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/* Next Walk_state in list */
+multiline_comment|/* Next walk_state in list */
 DECL|typedef|acpi_walk_state
 )brace
 id|acpi_walk_state
 suffix:semicolon
-multiline_comment|/* Info used by Acpi_ps_init_objects */
+multiline_comment|/* Info used by acpi_ps_init_objects */
 DECL|struct|acpi_init_walk_info
 r_typedef
 r_struct
@@ -333,7 +333,7 @@ DECL|typedef|acpi_init_walk_info
 )brace
 id|acpi_init_walk_info
 suffix:semicolon
-multiline_comment|/* Info used by Acpi_ns_initialize_devices */
+multiline_comment|/* Info used by acpi_ns_initialize_devices */
 DECL|struct|acpi_device_walk_info
 r_typedef
 r_struct
@@ -426,17 +426,17 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|type
-id|ACPI_OBJECT_INTEGER
+id|acpi_object_integer
 op_star
 id|type
 suffix:semicolon
 DECL|member|code
-id|ACPI_OBJECT_INTEGER
+id|acpi_object_integer
 op_star
 id|code
 suffix:semicolon
 DECL|member|argument
-id|ACPI_OBJECT_INTEGER
+id|acpi_object_integer
 op_star
 id|argument
 suffix:semicolon
@@ -452,7 +452,7 @@ op_star
 id|source
 suffix:semicolon
 DECL|member|index
-id|ACPI_OBJECT_INTEGER
+id|acpi_object_integer
 op_star
 id|index
 suffix:semicolon
@@ -473,12 +473,12 @@ op_star
 id|source
 suffix:semicolon
 DECL|member|index
-id|ACPI_OBJECT_INTEGER
+id|acpi_object_integer
 op_star
 id|index
 suffix:semicolon
 DECL|member|length
-id|ACPI_OBJECT_INTEGER
+id|acpi_object_integer
 op_star
 id|length
 suffix:semicolon
@@ -491,9 +491,9 @@ DECL|member|mid
 )brace
 id|mid
 suffix:semicolon
-DECL|typedef|ACPI_AML_OPERANDS
+DECL|typedef|acpi_aml_operands
 )brace
-id|ACPI_AML_OPERANDS
+id|acpi_aml_operands
 suffix:semicolon
 macro_line|#endif
 eof

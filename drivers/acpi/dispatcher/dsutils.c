@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 98 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -14,7 +14,7 @@ id|ACPI_MODULE_NAME
 l_string|&quot;dsutils&quot;
 )paren
 macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_is_result_used&n; *&n; * PARAMETERS:  Op&n; *              Result_obj&n; *              Walk_state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check if a result object will be used by the parent&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_is_result_used&n; *&n; * PARAMETERS:  Op&n; *              result_obj&n; *              walk_state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check if a result object will be used by the parent&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ds_is_result_used
 id|acpi_ds_is_result_used
@@ -35,7 +35,7 @@ id|parent_info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_is_result_used&quot;
+l_string|&quot;ds_is_result_used&quot;
 comma
 id|op
 )paren
@@ -179,7 +179,7 @@ suffix:semicolon
 r_case
 id|AML_CLASS_CREATE
 suffix:colon
-multiline_comment|/*&n;&t;&t; * These opcodes allow Term_arg(s) as operands and therefore&n;&t;&t; * the operands can be method calls.  The result is used.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * These opcodes allow term_arg(s) as operands and therefore&n;&t;&t; * the operands can be method calls.  The result is used.&n;&t;&t; */
 r_goto
 id|result_used
 suffix:semicolon
@@ -226,7 +226,7 @@ id|AML_INT_EVAL_SUBTREE_OP
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * These opcodes allow Term_arg(s) as operands and therefore&n;&t;&t;&t; * the operands can be method calls.  The result is used.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * These opcodes allow term_arg(s) as operands and therefore&n;&t;&t;&t; * the operands can be method calls.  The result is used.&n;&t;&t;&t; */
 r_goto
 id|result_used
 suffix:semicolon
@@ -298,7 +298,7 @@ id|FALSE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_delete_result_if_not_used&n; *&n; * PARAMETERS:  Op&n; *              Result_obj&n; *              Walk_state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Used after interpretation of an opcode.  If there is an internal&n; *              result descriptor, check if the parent opcode will actually use&n; *              this result.  If not, delete the result now so that it will&n; *              not become orphaned.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_delete_result_if_not_used&n; *&n; * PARAMETERS:  Op&n; *              result_obj&n; *              walk_state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Used after interpretation of an opcode.  If there is an internal&n; *              result descriptor, check if the parent opcode will actually use&n; *              this result.  If not, delete the result now so that it will&n; *              not become orphaned.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ds_delete_result_if_not_used
 id|acpi_ds_delete_result_if_not_used
@@ -325,7 +325,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_delete_result_if_not_used&quot;
+l_string|&quot;ds_delete_result_if_not_used&quot;
 comma
 id|result_obj
 )paren
@@ -371,7 +371,7 @@ id|walk_state
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Must pop the result stack (Obj_desc should be equal to Result_obj)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Must pop the result stack (obj_desc should be equal to result_obj)&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ds_result_pop
@@ -401,7 +401,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_resolve_operands&n; *&n; * PARAMETERS:  Walk_state          - Current walk state with operands on stack&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Resolve all operands to their values.  Used to prepare&n; *              arguments to a control method invocation (a call from one&n; *              method to another.)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_resolve_operands&n; *&n; * PARAMETERS:  walk_state          - Current walk state with operands on stack&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Resolve all operands to their values.  Used to prepare&n; *              arguments to a control method invocation (a call from one&n; *              method to another.)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_resolve_operands
 id|acpi_ds_resolve_operands
@@ -421,7 +421,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_resolve_operands&quot;
+l_string|&quot;ds_resolve_operands&quot;
 comma
 id|walk_state
 )paren
@@ -474,7 +474,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_clear_operands&n; *&n; * PARAMETERS:  Walk_state          - Current walk state with operands on stack&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Clear all operands on the current walk state operand stack.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_clear_operands&n; *&n; * PARAMETERS:  walk_state          - Current walk state with operands on stack&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Clear all operands on the current walk state operand stack.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ds_clear_operands
 id|acpi_ds_clear_operands
@@ -489,7 +489,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Acpi_ds_clear_operands&quot;
+l_string|&quot;acpi_ds_clear_operands&quot;
 comma
 id|walk_state
 )paren
@@ -535,7 +535,7 @@ id|return_VOID
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_operand&n; *&n; * PARAMETERS:  Walk_state&n; *              Arg&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parse tree object that is an argument to an AML&n; *              opcode to the equivalent interpreter object.  This may include&n; *              looking up a name or entering a new name into the internal&n; *              namespace.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_operand&n; *&n; * PARAMETERS:  walk_state&n; *              Arg&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a parse tree object that is an argument to an AML&n; *              opcode to the equivalent interpreter object.  This may include&n; *              looking up a name or entering a new name into the internal&n; *              namespace.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_create_operand
 id|acpi_ds_create_operand
@@ -585,7 +585,7 @@ id|op_info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_create_operand&quot;
+l_string|&quot;ds_create_operand&quot;
 comma
 id|arg
 )paren
@@ -647,7 +647,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * All prefixes have been handled, and the name is&n;&t;&t; * in Name_string&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * All prefixes have been handled, and the name is&n;&t;&t; * in name_string&n;&t;&t; */
 multiline_comment|/*&n;&t;&t; * Differentiate between a namespace &quot;create&quot; operation&n;&t;&t; * versus a &quot;lookup&quot; operation (IMODE_LOAD_PASS2 vs.&n;&t;&t; * IMODE_EXECUTE) in order to support the creation of&n;&t;&t; * namespace objects during the execution of control methods.&n;&t;&t; */
 id|parent_op
 op_assign
@@ -729,7 +729,7 @@ id|obj_desc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The only case where we pass through (ignore) a NOT_FOUND&n;&t;&t; * error is for the Cond_ref_of opcode.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The only case where we pass through (ignore) a NOT_FOUND&n;&t;&t; * error is for the cond_ref_of opcode.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1078,7 +1078,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_create_operands&n; *&n; * PARAMETERS:  First_arg           - First argument of a parser argument tree&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an operator&squot;s arguments from a parse tree format to&n; *              namespace objects and place those argument object on the object&n; *              stack in preparation for evaluation by the interpreter.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_create_operands&n; *&n; * PARAMETERS:  first_arg           - First argument of a parser argument tree&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an operator&squot;s arguments from a parse tree format to&n; *              namespace objects and place those argument object on the object&n; *              stack in preparation for evaluation by the interpreter.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_create_operands
 id|acpi_ds_create_operands
@@ -1108,7 +1108,7 @@ l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ds_create_operands&quot;
+l_string|&quot;ds_create_operands&quot;
 comma
 id|first_arg
 )paren

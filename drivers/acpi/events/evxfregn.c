@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfregn - External Interfaces, ACPI Operation Regions and&n; *                         Address Spaces.&n; *              $Revision: 52 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxfregn - External Interfaces, ACPI Operation Regions and&n; *                         Address Spaces.&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evxfregn&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_install_address_space_handler&n; *&n; * PARAMETERS:  Device          - Handle for the device&n; *              Space_id        - The address space ID&n; *              Handler         - Address of the handler&n; *              Setup           - Address of the setup function&n; *              Context         - Value passed to the handler on each access&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for all Op_regions of a given Space_id.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_address_space_handler&n; *&n; * PARAMETERS:  Device          - Handle for the device&n; *              space_id        - The address space ID&n; *              Handler         - Address of the handler&n; *              Setup           - Address of the setup function&n; *              Context         - Value passed to the handler on each access&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for all op_regions of a given space_id.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_address_space_handler
 id|acpi_install_address_space_handler
@@ -18,7 +18,7 @@ id|acpi_install_address_space_handler
 id|acpi_handle
 id|device
 comma
-id|ACPI_ADR_SPACE_TYPE
+id|acpi_adr_space_type
 id|space_id
 comma
 id|acpi_adr_space_handler
@@ -57,7 +57,7 @@ l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_install_address_space_handler&quot;
+l_string|&quot;acpi_install_address_space_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -339,7 +339,7 @@ id|node
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Obj_desc does not exist, create one */
+multiline_comment|/* obj_desc does not exist, create one */
 r_if
 c_cond
 (paren
@@ -555,7 +555,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_remove_address_space_handler&n; *&n; * PARAMETERS:  Space_id        - The address space ID&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for accesses on an Operation Region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_address_space_handler&n; *&n; * PARAMETERS:  space_id        - The address space ID&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for accesses on an Operation Region&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_address_space_handler
 id|acpi_remove_address_space_handler
@@ -563,7 +563,7 @@ id|acpi_remove_address_space_handler
 id|acpi_handle
 id|device
 comma
-id|ACPI_ADR_SPACE_TYPE
+id|acpi_adr_space_type
 id|space_id
 comma
 id|acpi_adr_space_handler
@@ -596,7 +596,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_remove_address_space_handler&quot;
+l_string|&quot;acpi_remove_address_space_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -792,7 +792,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_OPREGION
 comma
-l_string|&quot;Unable to remove address handler %p for %s(%X), Dev_node %p, obj %p&bslash;n&quot;
+l_string|&quot;Unable to remove address handler %p for %s(%X), dev_node %p, obj %p&bslash;n&quot;
 comma
 id|handler
 comma

@@ -484,6 +484,12 @@ r_int
 r_char
 id|clk_mask
 suffix:semicolon
+DECL|member|caddr
+r_int
+r_char
+id|caddr
+suffix:semicolon
+multiline_comment|/* C0 and C1 bits */
 DECL|member|cs_mask
 r_int
 r_char
@@ -556,7 +562,7 @@ id|ice1712_t
 op_star
 comma
 r_int
-r_char
+r_int
 )paren
 suffix:semicolon
 DECL|member|ops
@@ -976,10 +982,14 @@ multiline_comment|/* additional i2c devices */
 DECL|member|gpio_direction
 DECL|member|gpio_write_mask
 r_int
-r_char
+r_int
 id|gpio_direction
 comma
 id|gpio_write_mask
+suffix:semicolon
+DECL|member|vt1724
+r_int
+id|vt1724
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *              $Revision: 78 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsalloc - Namespace allocation and deletion utilities&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsalloc&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_create_node&n; *&n; * PARAMETERS:  Acpi_name       - Name of the new node&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create a namespace node&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_create_node&n; *&n; * PARAMETERS:  acpi_name       - Name of the new node&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Create a namespace node&n; *&n; ******************************************************************************/
 id|acpi_namespace_node
 op_star
 DECL|function|acpi_ns_create_node
@@ -24,7 +24,7 @@ id|node
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_create_node&quot;
+l_string|&quot;ns_create_node&quot;
 )paren
 suffix:semicolon
 id|node
@@ -82,7 +82,7 @@ id|node
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_node&n; *&n; * PARAMETERS:  Node            - Node to be deleted&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Delete a namespace node&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_delete_node&n; *&n; * PARAMETERS:  Node            - Node to be deleted&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Delete a namespace node&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_delete_node
 id|acpi_ns_delete_node
@@ -106,7 +106,7 @@ id|next_node
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ns_delete_node&quot;
+l_string|&quot;ns_delete_node&quot;
 comma
 id|node
 )paren
@@ -200,7 +200,7 @@ id|return_VOID
 suffix:semicolon
 )brace
 macro_line|#ifdef ACPI_ALPHABETIC_NAMESPACE
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_compare_names&n; *&n; * PARAMETERS:  Name1           - First name to compare&n; *              Name2           - Second name to compare&n; *&n; * RETURN:      value from strncmp&n; *&n; * DESCRIPTION: Compare two ACPI names.  Names that are prefixed with an&n; *              underscore are forced to be alphabetically first.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_compare_names&n; *&n; * PARAMETERS:  Name1           - First name to compare&n; *              Name2           - Second name to compare&n; *&n; * RETURN:      value from strncmp&n; *&n; * DESCRIPTION: Compare two ACPI names.  Names that are prefixed with an&n; *              underscore are forced to be alphabetically first.&n; *&n; ******************************************************************************/
 r_int
 DECL|function|acpi_ns_compare_names
 id|acpi_ns_compare_names
@@ -337,7 +337,7 @@ id|reversed_name2
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_install_node&n; *&n; * PARAMETERS:  Walk_state      - Current state of the walk&n; *              Parent_node     - The parent of the new Node&n; *              Node            - The new Node to install&n; *              Type            - ACPI object type of the new Node&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Initialize a new namespace node and install it amongst&n; *              its peers.&n; *&n; *              Note: Current namespace lookup is linear search.  However, the&n; *              nodes are linked in alphabetical order to 1) put all reserved&n; *              names (start with underscore) first, and to 2) make a readable&n; *              namespace dump.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_install_node&n; *&n; * PARAMETERS:  walk_state      - Current state of the walk&n; *              parent_node     - The parent of the new Node&n; *              Node            - The new Node to install&n; *              Type            - ACPI object type of the new Node&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Initialize a new namespace node and install it amongst&n; *              its peers.&n; *&n; *              Note: Current namespace lookup is linear search.  However, the&n; *              nodes are linked in alphabetical order to 1) put all reserved&n; *              names (start with underscore) first, and to 2) make a readable&n; *              namespace dump.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_install_node
 id|acpi_ns_install_node
@@ -377,7 +377,7 @@ suffix:semicolon
 macro_line|#endif
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_install_node&quot;
+l_string|&quot;ns_install_node&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the owner ID from the Walk state&n;&t; * The owner ID is used to track table deletion and&n;&t; * deletion of objects created by methods&n;&t; */
@@ -620,7 +620,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_children&n; *&n; * PARAMETERS:  Parent_node     - Delete this objects children&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete all children of the parent object. In other words,&n; *              deletes a &quot;scope&quot;.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_delete_children&n; *&n; * PARAMETERS:  parent_node     - Delete this objects children&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete all children of the parent object. In other words,&n; *              deletes a &quot;scope&quot;.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_delete_children
 id|acpi_ns_delete_children
@@ -643,7 +643,7 @@ id|flags
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ns_delete_children&quot;
+l_string|&quot;ns_delete_children&quot;
 comma
 id|parent_node
 )paren
@@ -767,7 +767,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_namespace_subtree&n; *&n; * PARAMETERS:  Parent_node     - Root of the subtree to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete a subtree of the namespace.  This includes all objects&n; *              stored within the subtree.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_delete_namespace_subtree&n; *&n; * PARAMETERS:  parent_node     - Root of the subtree to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete a subtree of the namespace.  This includes all objects&n; *              stored within the subtree.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_delete_namespace_subtree
 id|acpi_ns_delete_namespace_subtree
@@ -790,7 +790,7 @@ l_int|1
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_delete_namespace_subtree&quot;
+l_string|&quot;ns_delete_namespace_subtree&quot;
 )paren
 suffix:semicolon
 r_if
@@ -894,7 +894,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_remove_reference&n; *&n; * PARAMETERS:  Node           - Named node whose reference count is to be&n; *                               decremented&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Remove a Node reference.  Decrements the reference count&n; *              of all parent Nodes up to the root.  Any node along&n; *              the way that reaches zero references is freed.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_remove_reference&n; *&n; * PARAMETERS:  Node           - Named node whose reference count is to be&n; *                               decremented&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Remove a Node reference.  Decrements the reference count&n; *              of all parent Nodes up to the root.  Any node along&n; *              the way that reaches zero references is freed.&n; *&n; ******************************************************************************/
 r_static
 r_void
 DECL|function|acpi_ns_remove_reference
@@ -966,7 +966,7 @@ id|parent_node
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_delete_namespace_by_owner&n; *&n; * PARAMETERS:  Owner_id    - All nodes with this owner will be deleted&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete entries within the namespace that are owned by a&n; *              specific ID.  Used to delete entire ACPI tables.  All&n; *              reference counts are updated.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_delete_namespace_by_owner&n; *&n; * PARAMETERS:  owner_id    - All nodes with this owner will be deleted&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Delete entries within the namespace that are owned by a&n; *              specific ID.  Used to delete entire ACPI tables.  All&n; *              reference counts are updated.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_delete_namespace_by_owner
 id|acpi_ns_delete_namespace_by_owner
@@ -992,7 +992,7 @@ id|parent_node
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Ns_delete_namespace_by_owner&quot;
+l_string|&quot;ns_delete_namespace_by_owner&quot;
 comma
 id|owner_id
 )paren
@@ -1022,7 +1022,7 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Get the next child of this parent node. When Child_node is NULL,&n;&t;&t; * the first child of the parent is returned&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Get the next child of this parent node. When child_node is NULL,&n;&t;&t; * the first child of the parent is returned&n;&t;&t; */
 id|child_node
 op_assign
 id|acpi_ns_get_next_node

@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 138 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwregs&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_clear_acpi_status&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Clears all fixed and general purpose status bits&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_acpi_status&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Clears all fixed and general purpose status bits&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_clear_acpi_status
 id|acpi_hw_clear_acpi_status
@@ -16,10 +16,10 @@ id|acpi_hw_clear_acpi_status
 r_void
 )paren
 (brace
-id|NATIVE_UINT_MAX32
+id|acpi_native_uint
 id|i
 suffix:semicolon
-id|NATIVE_UINT
+id|acpi_native_uint
 id|gpe_block
 suffix:semicolon
 id|acpi_status
@@ -27,7 +27,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Hw_clear_acpi_status&quot;
+l_string|&quot;hw_clear_acpi_status&quot;
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -42,7 +42,7 @@ comma
 (paren
 id|u16
 )paren
-id|acpi_gbl_FADT-&gt;Xpm1a_evt_blk.address
+id|acpi_gbl_FADT-&gt;xpm1a_evt_blk.address
 )paren
 )paren
 suffix:semicolon
@@ -96,7 +96,7 @@ multiline_comment|/* Clear the fixed events */
 r_if
 c_cond
 (paren
-id|acpi_gbl_FADT-&gt;Xpm1b_evt_blk.address
+id|acpi_gbl_FADT-&gt;xpm1b_evt_blk.address
 )paren
 (brace
 id|status
@@ -108,7 +108,7 @@ comma
 id|ACPI_BITMASK_ALL_FIXED_STATUS
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1b_evt_blk
+id|acpi_gbl_FADT-&gt;xpm1b_evt_blk
 comma
 l_int|0
 )paren
@@ -178,6 +178,9 @@ id|gpe_block
 dot
 id|block_address
 comma
+(paren
+id|u32
+)paren
 id|i
 )paren
 suffix:semicolon
@@ -212,7 +215,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_sleep_type_data&n; *&n; * PARAMETERS:  Sleep_state         - Numeric sleep state&n; *              *Sleep_type_a        - Where SLP_TYPa is returned&n; *              *Sleep_type_b        - Where SLP_TYPb is returned&n; *&n; * RETURN:      Status - ACPI status&n; *&n; * DESCRIPTION: Obtain the SLP_TYPa and SLP_TYPb values for the requested sleep&n; *              state.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_sleep_type_data&n; *&n; * PARAMETERS:  sleep_state         - Numeric sleep state&n; *              *sleep_type_a        - Where SLP_TYPa is returned&n; *              *sleep_type_b        - Where SLP_TYPb is returned&n; *&n; * RETURN:      Status - ACPI status&n; *&n; * DESCRIPTION: Obtain the SLP_TYPa and SLP_TYPb values for the requested sleep&n; *              state.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_sleep_type_data
 id|acpi_get_sleep_type_data
@@ -240,7 +243,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_get_sleep_type_data&quot;
+l_string|&quot;acpi_get_sleep_type_data&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Validate parameters&n;&t; */
@@ -300,7 +303,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;%s while evaluating Sleep_state [%s]&bslash;n&quot;
+l_string|&quot;%s while evaluating sleep_state [%s]&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -493,7 +496,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;While evaluating Sleep_state [%s], bad Sleep object %p type %s&bslash;n&quot;
+l_string|&quot;While evaluating sleep_state [%s], bad Sleep object %p type %s&bslash;n&quot;
 comma
 id|acpi_gbl_db_sleep_states
 (braket
@@ -521,8 +524,8 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_get_register_bit_mask&n; *&n; * PARAMETERS:  Register_id         - Index of ACPI Register to access&n; *&n; * RETURN:      The bit mask to be used when accessing the register&n; *&n; * DESCRIPTION: Map Register_id into a register bit mask.&n; *&n; ******************************************************************************/
-id|ACPI_BIT_REGISTER_INFO
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_get_register_bit_mask&n; *&n; * PARAMETERS:  register_id         - Index of ACPI Register to access&n; *&n; * RETURN:      The bit mask to be used when accessing the register&n; *&n; * DESCRIPTION: Map register_id into a register bit mask.&n; *&n; ******************************************************************************/
+id|acpi_bit_register_info
 op_star
 DECL|function|acpi_hw_get_bit_register_info
 id|acpi_hw_get_bit_register_info
@@ -533,7 +536,7 @@ id|register_id
 (brace
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Hw_get_bit_register_info&quot;
+l_string|&quot;hw_get_bit_register_info&quot;
 )paren
 suffix:semicolon
 r_if
@@ -549,7 +552,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Invalid Bit_register ID: %X&bslash;n&quot;
+l_string|&quot;Invalid bit_register ID: %X&bslash;n&quot;
 comma
 id|register_id
 )paren
@@ -571,7 +574,7 @@ id|register_id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_register&n; *&n; * PARAMETERS:  Register_id         - Index of ACPI Register to access&n; *              Use_lock            - Lock the hardware&n; *&n; * RETURN:      Value is read from specified Register.  Value returned is&n; *              normalized to bit0 (is shifted all the way right)&n; *&n; * DESCRIPTION: ACPI Bit_register read function.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_register&n; *&n; * PARAMETERS:  register_id         - Index of ACPI Register to access&n; *              use_lock            - Lock the hardware&n; *&n; * RETURN:      Value is read from specified Register.  Value returned is&n; *              normalized to bit0 (is shifted all the way right)&n; *&n; * DESCRIPTION: ACPI bit_register read function.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_register
 id|acpi_get_register
@@ -592,7 +595,7 @@ id|register_value
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_BIT_REGISTER_INFO
+id|acpi_bit_register_info
 op_star
 id|bit_reg_info
 suffix:semicolon
@@ -601,7 +604,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_get_register&quot;
+l_string|&quot;acpi_get_register&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Get the info structure corresponding to the requested ACPI Register */
@@ -730,7 +733,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_set_register&n; *&n; * PARAMETERS:  Register_id     - ID of ACPI Bit_register to access&n; *              Value           - (only used on write) value to write to the&n; *                                Register, NOT pre-normalized to the bit pos.&n; *              Flags           - Lock the hardware or not&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: ACPI Bit Register write function.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_set_register&n; *&n; * PARAMETERS:  register_id     - ID of ACPI bit_register to access&n; *              Value           - (only used on write) value to write to the&n; *                                Register, NOT pre-normalized to the bit pos.&n; *              Flags           - Lock the hardware or not&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: ACPI Bit Register write function.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_set_register
 id|acpi_set_register
@@ -750,7 +753,7 @@ id|register_value
 op_assign
 l_int|0
 suffix:semicolon
-id|ACPI_BIT_REGISTER_INFO
+id|acpi_bit_register_info
 op_star
 id|bit_reg_info
 suffix:semicolon
@@ -759,7 +762,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Acpi_set_register&quot;
+l_string|&quot;acpi_set_register&quot;
 comma
 id|register_id
 )paren
@@ -782,7 +785,7 @@ id|bit_reg_info
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Bad ACPI HW Register_id: %X&bslash;n&quot;
+l_string|&quot;Bad ACPI HW register_id: %X&bslash;n&quot;
 comma
 id|register_id
 )paren
@@ -1011,12 +1014,12 @@ id|register_value
 comma
 id|ACPI_HIDWORD
 (paren
-id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
+id|acpi_gbl_FADT-&gt;xpm2_cnt_blk.address
 )paren
 comma
 id|ACPI_LODWORD
 (paren
-id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
+id|acpi_gbl_FADT-&gt;xpm2_cnt_blk.address
 )paren
 )paren
 )paren
@@ -1043,12 +1046,12 @@ id|register_value
 comma
 id|ACPI_HIDWORD
 (paren
-id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
+id|acpi_gbl_FADT-&gt;xpm2_cnt_blk.address
 )paren
 comma
 id|ACPI_LODWORD
 (paren
-id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk.address
+id|acpi_gbl_FADT-&gt;xpm2_cnt_blk.address
 )paren
 )paren
 )paren
@@ -1128,7 +1131,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_register_read&n; *&n; * PARAMETERS:  Use_lock               - Mutex hw access.&n; *              Register_id            - Register_iD + Offset.&n; *&n; * RETURN:      Value read or written.&n; *&n; * DESCRIPTION: Acpi register read function.  Registers are read at the&n; *              given offset.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_register_read&n; *&n; * PARAMETERS:  use_lock               - Mutex hw access.&n; *              register_id            - register_iD + Offset.&n; *&n; * RETURN:      Value read or written.&n; *&n; * DESCRIPTION: Acpi register read function.  Registers are read at the&n; *              given offset.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_register_read
 id|acpi_hw_register_read
@@ -1162,7 +1165,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Hw_register_read&quot;
+l_string|&quot;hw_register_read&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1216,7 +1219,7 @@ op_amp
 id|value1
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1a_evt_blk
+id|acpi_gbl_FADT-&gt;xpm1a_evt_blk
 comma
 l_int|0
 )paren
@@ -1244,7 +1247,7 @@ op_amp
 id|value2
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1b_evt_blk
+id|acpi_gbl_FADT-&gt;xpm1b_evt_blk
 comma
 l_int|0
 )paren
@@ -1276,7 +1279,7 @@ op_amp
 id|value1
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1a_evt_blk
+id|acpi_gbl_FADT-&gt;xpm1a_evt_blk
 comma
 id|bank_offset
 )paren
@@ -1304,7 +1307,7 @@ op_amp
 id|value2
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1b_evt_blk
+id|acpi_gbl_FADT-&gt;xpm1b_evt_blk
 comma
 id|bank_offset
 )paren
@@ -1329,7 +1332,7 @@ op_amp
 id|value1
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1a_cnt_blk
+id|acpi_gbl_FADT-&gt;xpm1a_cnt_blk
 comma
 l_int|0
 )paren
@@ -1357,7 +1360,7 @@ op_amp
 id|value2
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1b_cnt_blk
+id|acpi_gbl_FADT-&gt;xpm1b_cnt_blk
 comma
 l_int|0
 )paren
@@ -1382,7 +1385,7 @@ op_amp
 id|value1
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk
+id|acpi_gbl_FADT-&gt;xpm2_cnt_blk
 comma
 l_int|0
 )paren
@@ -1403,7 +1406,7 @@ op_amp
 id|value1
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm_tmr_blk
+id|acpi_gbl_FADT-&gt;xpm_tmr_blk
 comma
 l_int|0
 )paren
@@ -1488,7 +1491,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_register_write&n; *&n; * PARAMETERS:  Use_lock               - Mutex hw access.&n; *              Register_id            - Register_iD + Offset.&n; *&n; * RETURN:      Value read or written.&n; *&n; * DESCRIPTION: Acpi register Write function.  Registers are written at the&n; *              given offset.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_register_write&n; *&n; * PARAMETERS:  use_lock               - Mutex hw access.&n; *              register_id            - register_iD + Offset.&n; *&n; * RETURN:      Value read or written.&n; *&n; * DESCRIPTION: Acpi register Write function.  Registers are written at the&n; *              given offset.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_register_write
 id|acpi_hw_register_write
@@ -1511,7 +1514,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Hw_register_write&quot;
+l_string|&quot;hw_register_write&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1564,7 +1567,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1a_evt_blk
+id|acpi_gbl_FADT-&gt;xpm1a_evt_blk
 comma
 l_int|0
 )paren
@@ -1591,7 +1594,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1b_evt_blk
+id|acpi_gbl_FADT-&gt;xpm1b_evt_blk
 comma
 l_int|0
 )paren
@@ -1618,7 +1621,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1a_evt_blk
+id|acpi_gbl_FADT-&gt;xpm1a_evt_blk
 comma
 id|bank_offset
 )paren
@@ -1645,7 +1648,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1b_evt_blk
+id|acpi_gbl_FADT-&gt;xpm1b_evt_blk
 comma
 id|bank_offset
 )paren
@@ -1665,7 +1668,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1a_cnt_blk
+id|acpi_gbl_FADT-&gt;xpm1a_cnt_blk
 comma
 l_int|0
 )paren
@@ -1692,7 +1695,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1b_cnt_blk
+id|acpi_gbl_FADT-&gt;xpm1b_cnt_blk
 comma
 l_int|0
 )paren
@@ -1712,7 +1715,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1a_cnt_blk
+id|acpi_gbl_FADT-&gt;xpm1a_cnt_blk
 comma
 l_int|0
 )paren
@@ -1732,7 +1735,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm1b_cnt_blk
+id|acpi_gbl_FADT-&gt;xpm1b_cnt_blk
 comma
 l_int|0
 )paren
@@ -1752,7 +1755,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm2_cnt_blk
+id|acpi_gbl_FADT-&gt;xpm2_cnt_blk
 comma
 l_int|0
 )paren
@@ -1772,7 +1775,7 @@ comma
 id|value
 comma
 op_amp
-id|acpi_gbl_FADT-&gt;Xpm_tmr_blk
+id|acpi_gbl_FADT-&gt;xpm_tmr_blk
 comma
 l_int|0
 )paren
@@ -1834,7 +1837,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_low_level_read&n; *&n; * PARAMETERS:  Register            - GAS register structure&n; *              Offset              - Offset from the base address in the GAS&n; *              Width               - 8, 16, or 32&n; *&n; * RETURN:      Value read&n; *&n; * DESCRIPTION: Read from either memory, IO, or PCI config space.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_low_level_read&n; *&n; * PARAMETERS:  Register            - GAS register structure&n; *              Offset              - Offset from the base address in the GAS&n; *              Width               - 8, 16, or 32&n; *&n; * RETURN:      Value read&n; *&n; * DESCRIPTION: Read from either memory, IO, or PCI config space.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_low_level_read
 id|acpi_hw_low_level_read
@@ -1854,10 +1857,10 @@ id|u32
 id|offset
 )paren
 (brace
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|mem_address
 suffix:semicolon
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 id|io_address
 suffix:semicolon
 id|acpi_pci_id
@@ -1871,7 +1874,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Hw_low_level_read&quot;
+l_string|&quot;hw_low_level_read&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Must have a valid pointer to a GAS structure, and&n;&t; * a non-zero address within. However, don&squot;t return an error&n;&t; * because the PM1A/B code must not fail if B isn&squot;t present.&n;&t; */
@@ -1916,7 +1919,7 @@ op_assign
 id|reg-&gt;address
 op_plus
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|offset
 )paren
@@ -1940,13 +1943,13 @@ suffix:colon
 id|io_address
 op_assign
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 )paren
 (paren
 id|reg-&gt;address
 op_plus
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|offset
 )paren
@@ -2045,7 +2048,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_low_level_write&n; *&n; * PARAMETERS:  Width               - 8, 16, or 32&n; *              Value               - To be written&n; *              Register            - GAS register structure&n; *              Offset              - Offset from the base address in the GAS&n; *&n; *&n; * RETURN:      Value read&n; *&n; * DESCRIPTION: Read from either memory, IO, or PCI config space.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_low_level_write&n; *&n; * PARAMETERS:  Width               - 8, 16, or 32&n; *              Value               - To be written&n; *              Register            - GAS register structure&n; *              Offset              - Offset from the base address in the GAS&n; *&n; *&n; * RETURN:      Value read&n; *&n; * DESCRIPTION: Read from either memory, IO, or PCI config space.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_low_level_write
 id|acpi_hw_low_level_write
@@ -2064,10 +2067,10 @@ id|u32
 id|offset
 )paren
 (brace
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|mem_address
 suffix:semicolon
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 id|io_address
 suffix:semicolon
 id|acpi_pci_id
@@ -2081,7 +2084,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Hw_low_level_write&quot;
+l_string|&quot;hw_low_level_write&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Must have a valid pointer to a GAS structure, and&n;&t; * a non-zero address within. However, don&squot;t return an error&n;&t; * because the PM1A/B code must not fail if B isn&squot;t present.&n;&t; */
@@ -2121,7 +2124,7 @@ op_assign
 id|reg-&gt;address
 op_plus
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|offset
 )paren
@@ -2148,13 +2151,13 @@ suffix:colon
 id|io_address
 op_assign
 (paren
-id|ACPI_IO_ADDRESS
+id|acpi_io_address
 )paren
 (paren
 id|reg-&gt;address
 op_plus
 (paren
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 )paren
 id|offset
 )paren

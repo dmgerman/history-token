@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - Miscellaneous event manager support functions&n; *              $Revision: 60 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - Miscellaneous event manager support functions&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evmisc&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_is_notify_object&n; *&n; * PARAMETERS:  Node            - Node to check&n; *&n; * RETURN:      TRUE if notifies allowed on this object&n; *&n; * DESCRIPTION: Check type of node for a object that supports notifies.&n; *&n; *              TBD: This could be replaced by a flag bit in the node.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_is_notify_object&n; *&n; * PARAMETERS:  Node            - Node to check&n; *&n; * RETURN:      TRUE if notifies allowed on this object&n; *&n; * DESCRIPTION: Check type of node for a object that supports notifies.&n; *&n; *              TBD: This could be replaced by a flag bit in the node.&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ev_is_notify_object
 id|acpi_ev_is_notify_object
@@ -53,7 +53,7 @@ id|FALSE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_get_gpe_register_index&n; *&n; * PARAMETERS:  Gpe_number      - Raw GPE number&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Returns the register index (index into the GPE register info&n; *              table) associated with this GPE.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_get_gpe_register_index&n; *&n; * PARAMETERS:  gpe_number      - Raw GPE number&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Returns the register index (index into the GPE register info&n; *              table) associated with this GPE.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_get_gpe_register_index
 id|acpi_ev_get_gpe_register_index
@@ -90,7 +90,7 @@ id|number_index
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_get_gpe_number_index&n; *&n; * PARAMETERS:  Gpe_number      - Raw GPE number&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Returns the number index (index into the GPE number info table)&n; *              associated with this GPE.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_get_gpe_number_index&n; *&n; * PARAMETERS:  gpe_number      - Raw GPE number&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Returns the number index (index into the GPE number info table)&n; *              associated with this GPE.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_get_gpe_number_index
 id|acpi_ev_get_gpe_number_index
@@ -124,7 +124,7 @@ id|number_index
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_queue_notify_request&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_queue_notify_request&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_queue_notify_request
 id|acpi_ev_queue_notify_request
@@ -158,7 +158,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ev_queue_notify_request&quot;
+l_string|&quot;ev_queue_notify_request&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * For value 1 (Ejection Request), some device method may need to be run.&n;&t; * For value 2 (Device Wake) if _PRW exists, the _PS0 method may need to be run.&n;&t; * For value 0x80 (Status Change) on the power button or sleep button,&n;&t; * initiate soft-off or sleep operation?&n;&t; */
@@ -438,7 +438,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_notify_dispatch&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_notify_dispatch&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Dispatch a device notification event to a previously&n; *              installed handler.&n; *&n; ******************************************************************************/
 r_void
 id|ACPI_SYSTEM_XFACE
 DECL|function|acpi_ev_notify_dispatch
@@ -568,7 +568,7 @@ id|notify_info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_global_lock_thread&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Invoked by SCI interrupt handler upon acquisition of the&n; *              Global Lock.  Simply signal all threads that are waiting&n; *              for the lock.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_global_lock_thread&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Invoked by SCI interrupt handler upon acquisition of the&n; *              Global Lock.  Simply signal all threads that are waiting&n; *              for the lock.&n; *&n; ******************************************************************************/
 r_static
 r_void
 id|ACPI_SYSTEM_XFACE
@@ -619,7 +619,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_global_lock_handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Invoked directly from the SCI handler when a global lock&n; *              release interrupt occurs.  Grab the global lock and queue&n; *              the global lock thread for execution&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_global_lock_handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Invoked directly from the SCI handler when a global lock&n; *              release interrupt occurs.  Grab the global lock and queue&n; *              the global lock thread for execution&n; *&n; ******************************************************************************/
 r_static
 id|u32
 DECL|function|acpi_ev_global_lock_handler
@@ -703,7 +703,7 @@ id|ACPI_INTERRUPT_HANDLED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_init_global_lock_handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for the global lock release event&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_init_global_lock_handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for the global lock release event&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_init_global_lock_handler
 id|acpi_ev_init_global_lock_handler
@@ -716,7 +716,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_init_global_lock_handler&quot;
+l_string|&quot;ev_init_global_lock_handler&quot;
 )paren
 suffix:semicolon
 id|acpi_gbl_global_lock_present
@@ -758,7 +758,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_acquire_global_lock&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Attempt to gain ownership of the Global Lock.&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_acquire_global_lock&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Attempt to gain ownership of the Global Lock.&n; *&n; *****************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_acquire_global_lock
 id|acpi_ev_acquire_global_lock
@@ -779,7 +779,7 @@ id|FALSE
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_acquire_global_lock&quot;
+l_string|&quot;ev_acquire_global_lock&quot;
 )paren
 suffix:semicolon
 macro_line|#ifndef ACPI_APPLICATION
@@ -875,7 +875,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_release_global_lock&n; *&n; * DESCRIPTION: Releases ownership of the Global Lock.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_release_global_lock&n; *&n; * DESCRIPTION: Releases ownership of the Global Lock.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_release_global_lock
 id|acpi_ev_release_global_lock
@@ -895,7 +895,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_release_global_lock&quot;
+l_string|&quot;ev_release_global_lock&quot;
 )paren
 suffix:semicolon
 r_if
@@ -973,7 +973,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Disable events and free memory allocated for table storage.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_terminate&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Disable events and free memory allocated for table storage.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ev_terminate
 id|acpi_ev_terminate
@@ -981,7 +981,7 @@ id|acpi_ev_terminate
 r_void
 )paren
 (brace
-id|NATIVE_UINT_MAX32
+id|acpi_native_uint
 id|i
 suffix:semicolon
 id|acpi_status
@@ -989,7 +989,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ev_terminate&quot;
+l_string|&quot;ev_terminate&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1018,8 +1018,10 @@ op_increment
 id|status
 op_assign
 id|acpi_disable_event
-c_func
 (paren
+(paren
+id|u32
+)paren
 id|i
 comma
 id|ACPI_EVENT_FIXED
@@ -1043,6 +1045,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Could not disable fixed event %d&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|i
 )paren
 )paren
@@ -1069,8 +1074,10 @@ r_if
 c_cond
 (paren
 id|acpi_ev_get_gpe_number_index
-c_func
 (paren
+(paren
+id|u32
+)paren
 id|i
 )paren
 op_ne
@@ -1082,6 +1089,9 @@ op_assign
 id|acpi_hw_disable_gpe
 c_func
 (paren
+(paren
+id|u32
+)paren
 id|i
 )paren
 suffix:semicolon
@@ -1101,6 +1111,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Could not disable GPE %d&bslash;n&quot;
 comma
+(paren
+id|u32
+)paren
 id|i
 )paren
 )paren
@@ -1112,7 +1125,6 @@ multiline_comment|/*&n;&t;&t; * Remove SCI handler&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ev_remove_sci_handler
-c_func
 (paren
 )paren
 suffix:semicolon
@@ -1166,7 +1178,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_WARN
 comma
-l_string|&quot;Acpi_disable failed&bslash;n&quot;
+l_string|&quot;acpi_disable failed&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

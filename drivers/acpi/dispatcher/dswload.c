@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *              $Revision: 82 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: dswload - Dispatcher namespace load callbacks&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -13,7 +13,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dswload&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_init_callbacks&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *              Pass_number     - 1, 2, or 3&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Init walk state callbacks&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_init_callbacks&n; *&n; * PARAMETERS:  walk_state      - Current state of the parse tree walk&n; *              pass_number     - 1, 2, or 3&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Init walk state callbacks&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_init_callbacks
 id|acpi_ds_init_callbacks
@@ -105,7 +105,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_load1_begin_op&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been reached in the&n; *                                walk;  Arguments have not been evaluated yet.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Descending callback used during the loading of ACPI tables.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_load1_begin_op&n; *&n; * PARAMETERS:  walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been reached in the&n; *                                walk;  Arguments have not been evaluated yet.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Descending callback used during the loading of ACPI tables.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_load1_begin_op
 id|acpi_ds_load1_begin_op
@@ -143,7 +143,7 @@ id|flags
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_load1_begin_op&quot;
+l_string|&quot;ds_load1_begin_op&quot;
 )paren
 suffix:semicolon
 id|op
@@ -425,7 +425,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/*&n;&t;&t; * For all other named opcodes, we will enter the name into the namespace.&n;&t;&t; *&n;&t;&t; * Setup the search flags.&n;&t;&t; * Since we are entering a name into the namespace, we do not want to&n;&t;&t; * enable the search-to-root upsearch.&n;&t;&t; *&n;&t;&t; * There are only two conditions where it is acceptable that the name&n;&t;&t; * already exists:&n;&t;&t; *    1) the Scope() operator can reopen a scoping object that was&n;&t;&t; *       previously defined (Scope, Method, Device, etc.)&n;&t;&t; *    2) Whenever we are parsing a deferred opcode (Op_region, Buffer,&n;&t;&t; *       Buffer_field, or Package), the name of the object is already&n;&t;&t; *       in the namespace.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * For all other named opcodes, we will enter the name into the namespace.&n;&t;&t; *&n;&t;&t; * Setup the search flags.&n;&t;&t; * Since we are entering a name into the namespace, we do not want to&n;&t;&t; * enable the search-to-root upsearch.&n;&t;&t; *&n;&t;&t; * There are only two conditions where it is acceptable that the name&n;&t;&t; * already exists:&n;&t;&t; *    1) the Scope() operator can reopen a scoping object that was&n;&t;&t; *       previously defined (Scope, Method, Device, etc.)&n;&t;&t; *    2) Whenever we are parsing a deferred opcode (op_region, Buffer,&n;&t;&t; *       buffer_field, or Package), the name of the object is already&n;&t;&t; *       in the namespace.&n;&t;&t; */
 id|flags
 op_assign
 id|ACPI_NS_NO_UPSEARCH
@@ -595,7 +595,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_load1_end_op&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been completed in the&n; *                                walk;  Arguments have now been evaluated.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Ascending callback used during the loading of the namespace,&n; *              both control methods and everything else.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_load1_end_op&n; *&n; * PARAMETERS:  walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been completed in the&n; *                                walk;  Arguments have now been evaluated.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Ascending callback used during the loading of the namespace,&n; *              both control methods and everything else.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_load1_end_op
 id|acpi_ds_load1_end_op
@@ -619,7 +619,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ds_load1_end_op&quot;
+l_string|&quot;ds_load1_end_op&quot;
 )paren
 suffix:semicolon
 id|op
@@ -724,7 +724,7 @@ comma
 id|op-&gt;named.length
 comma
 (paren
-id|ACPI_ADR_SPACE_TYPE
+id|acpi_adr_space_type
 )paren
 (paren
 (paren
@@ -801,13 +801,13 @@ op_eq
 id|AML_METHOD_OP
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Method_op Pkg_length Name_string Method_flags Term_list&n;&t;&t; *&n;&t;&t; * Note: We must create the method node/object pair as soon as we&n;&t;&t; * see the method declaration.  This allows later pass1 parsing&n;&t;&t; * of invocations of the method (need to know the number of&n;&t;&t; * arguments.)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * method_op pkg_length name_string method_flags term_list&n;&t;&t; *&n;&t;&t; * Note: We must create the method node/object pair as soon as we&n;&t;&t; * see the method declaration.  This allows later pass1 parsing&n;&t;&t; * of invocations of the method (need to know the number of&n;&t;&t; * arguments.)&n;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;LOADING-Method: State=%p Op=%p Named_obj=%p&bslash;n&quot;
+l_string|&quot;LOADING-Method: State=%p Op=%p named_obj=%p&bslash;n&quot;
 comma
 id|walk_state
 comma
@@ -940,7 +940,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_load2_begin_op&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been reached in the&n; *                                walk;  Arguments have not been evaluated yet.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Descending callback used during the loading of ACPI tables.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_load2_begin_op&n; *&n; * PARAMETERS:  walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been reached in the&n; *                                walk;  Arguments have not been evaluated yet.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Descending callback used during the loading of ACPI tables.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_load2_begin_op
 id|acpi_ds_load2_begin_op
@@ -975,7 +975,7 @@ id|buffer_ptr
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_load2_begin_op&quot;
+l_string|&quot;ds_load2_begin_op&quot;
 )paren
 suffix:semicolon
 id|op
@@ -1139,7 +1139,7 @@ suffix:semicolon
 r_case
 id|AML_INT_NAMEPATH_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t; * The Name_path is an object reference to an existing object. Don&squot;t enter the&n;&t;&t; * name into the namespace, but look it up for use later&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The name_path is an object reference to an existing object. Don&squot;t enter the&n;&t;&t; * name into the namespace, but look it up for use later&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_lookup
@@ -1469,7 +1469,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ds_load2_end_op&n; *&n; * PARAMETERS:  Walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been completed in the&n; *                                walk;  Arguments have now been evaluated.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Ascending callback used during the loading of the namespace,&n; *              both control methods and everything else.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_load2_end_op&n; *&n; * PARAMETERS:  walk_state      - Current state of the parse tree walk&n; *              Op              - Op that has been just been completed in the&n; *                                walk;  Arguments have now been evaluated.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Ascending callback used during the loading of the namespace,&n; *              both control methods and everything else.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_load2_end_op
 id|acpi_ds_load2_end_op
@@ -1510,7 +1510,7 @@ suffix:semicolon
 macro_line|#endif
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ds_load2_end_op&quot;
+l_string|&quot;ds_load2_end_op&quot;
 )paren
 suffix:semicolon
 id|op
@@ -1656,7 +1656,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Create-Load [%s] State=%p Op=%p Named_obj=%p&bslash;n&quot;
+l_string|&quot;Create-Load [%s] State=%p Op=%p named_obj=%p&bslash;n&quot;
 comma
 id|acpi_ps_get_opcode_name
 (paren
@@ -1928,7 +1928,7 @@ macro_line|#ifndef ACPI_NO_METHOD_EXECUTION
 r_case
 id|AML_REGION_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * The Op_region is not fully parsed at this time. Only valid argument is the Space_id.&n;&t;&t;&t; * (We must save the address of the AML of the address and length operands)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The op_region is not fully parsed at this time. Only valid argument is the space_id.&n;&t;&t;&t; * (We must save the address of the AML of the address and length operands)&n;&t;&t;&t; */
 multiline_comment|/*&n;&t;&t;&t; * If we have a valid region, initialize it&n;&t;&t;&t; * Namespace is NOT locked at this point.&n;&t;&t;&t; */
 id|status
 op_assign
@@ -2008,7 +2008,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;RESOLVING-Method_call: State=%p Op=%p Named_obj=%p&bslash;n&quot;
+l_string|&quot;RESOLVING-method_call: State=%p Op=%p named_obj=%p&bslash;n&quot;
 comma
 id|walk_state
 comma

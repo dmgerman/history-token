@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *              $Revision: 65 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbinstal&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_match_signature&n; *&n; * PARAMETERS:  Signature           - Table signature to match&n; *              Table_info          - Return data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Compare signature against the list of &quot;ACPI-subsystem-owned&quot;&n; *              tables (DSDT/FADT/SSDT, etc.) Returns the Table_type_iD on match.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_match_signature&n; *&n; * PARAMETERS:  Signature           - Table signature to match&n; *              table_info          - Return data&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Compare signature against the list of &quot;ACPI-subsystem-owned&quot;&n; *              tables (DSDT/FADT/SSDT, etc.) Returns the table_type_iD on match.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_match_signature
 id|acpi_tb_match_signature
@@ -25,12 +25,12 @@ id|u8
 id|search_type
 )paren
 (brace
-id|NATIVE_UINT
+id|acpi_native_uint
 id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_match_signature&quot;
+l_string|&quot;tb_match_signature&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Search for a signature match among the known table types&n;&t; */
@@ -156,7 +156,7 @@ id|AE_TABLE_NOT_SUPPORTED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_install_table&n; *&n; * PARAMETERS:  Table_info          - Return value from Acpi_tb_get_table_body&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate all tables other than the RSDT.  The RSDT must&n; *              already be loaded and validated.&n; *              Install the table into the global data structs.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_install_table&n; *&n; * PARAMETERS:  table_info          - Return value from acpi_tb_get_table_body&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Load and validate all tables other than the RSDT.  The RSDT must&n; *              already be loaded and validated.&n; *              Install the table into the global data structs.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_install_table
 id|acpi_tb_install_table
@@ -171,7 +171,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_install_table&quot;
+l_string|&quot;tb_install_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Lock tables while installing */
@@ -277,7 +277,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_recognize_table&n; *&n; * PARAMETERS:  Table_info          - Return value from Acpi_tb_get_table_body&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check a table signature for a match against known table types&n; *&n; * NOTE:  All table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *             which has no checksum for some odd reason)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_recognize_table&n; *&n; * PARAMETERS:  table_info          - Return value from acpi_tb_get_table_body&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Check a table signature for a match against known table types&n; *&n; * NOTE:  All table pointers are validated as follows:&n; *          1) Table pointer must point to valid physical memory&n; *          2) Signature must be 4 ASCII chars, even if we don&squot;t recognize the&n; *             name&n; *          3) Table must be readable for length specified in the header&n; *          4) Table checksum must be valid (with the exception of the FACS&n; *             which has no checksum for some odd reason)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_recognize_table
 id|acpi_tb_recognize_table
@@ -299,7 +299,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Tb_recognize_table&quot;
+l_string|&quot;tb_recognize_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Ensure that we have a valid table pointer */
@@ -377,7 +377,7 @@ multiline_comment|/* Return the table type and length via the info struct */
 id|table_info-&gt;length
 op_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|table_header-&gt;length
 suffix:semicolon
@@ -387,7 +387,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_init_table_descriptor&n; *&n; * PARAMETERS:  Table_type          - The type of the table&n; *              Table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Install a table into the global data structs.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_init_table_descriptor&n; *&n; * PARAMETERS:  table_type          - The type of the table&n; *              table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Install a table into the global data structs.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_tb_init_table_descriptor
 id|acpi_tb_init_table_descriptor
@@ -410,7 +410,7 @@ id|table_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Tb_init_table_descriptor&quot;
+l_string|&quot;tb_init_table_descriptor&quot;
 comma
 id|table_type
 )paren
@@ -629,7 +629,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_delete_acpi_tables&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete all internal ACPI tables&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_delete_acpi_tables&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete all internal ACPI tables&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_tb_delete_acpi_tables
 id|acpi_tb_delete_acpi_tables
@@ -663,7 +663,7 @@ id|type
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_delete_acpi_table&n; *&n; * PARAMETERS:  Type                - The table type to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete an internal ACPI table&n; *              Locks the ACPI table mutex&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_delete_acpi_table&n; *&n; * PARAMETERS:  Type                - The table type to be deleted&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Delete an internal ACPI table&n; *              Locks the ACPI table mutex&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_tb_delete_acpi_table
 id|acpi_tb_delete_acpi_table
@@ -674,7 +674,7 @@ id|type
 (brace
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Tb_delete_acpi_table&quot;
+l_string|&quot;tb_delete_acpi_table&quot;
 comma
 id|type
 )paren
@@ -789,7 +789,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_free_acpi_tables_of_type&n; *&n; * PARAMETERS:  Table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Free the memory associated with an internal ACPI table&n; *              Table mutex should be locked.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_free_acpi_tables_of_type&n; *&n; * PARAMETERS:  table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Free the memory associated with an internal ACPI table&n; *              Table mutex should be locked.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_tb_free_acpi_tables_of_type
 id|acpi_tb_free_acpi_tables_of_type
@@ -811,7 +811,7 @@ id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Tb_free_acpi_tables_of_type&quot;
+l_string|&quot;tb_free_acpi_tables_of_type&quot;
 comma
 id|list_head
 )paren
@@ -852,7 +852,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_delete_single_table&n; *&n; * PARAMETERS:  Table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Low-level free for a single ACPI table.  Handles cases where&n; *              the table was allocated a buffer or was mapped.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_delete_single_table&n; *&n; * PARAMETERS:  table_info          - A table info struct&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Low-level free for a single ACPI table.  Handles cases where&n; *              the table was allocated a buffer or was mapped.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_tb_delete_single_table
 id|acpi_tb_delete_single_table
@@ -919,7 +919,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_tb_uninstall_table&n; *&n; * PARAMETERS:  Table_info          - A table info struct&n; *&n; * RETURN:      Pointer to the next table in the list (of same type)&n; *&n; * DESCRIPTION: Free the memory associated with an internal ACPI table that&n; *              is either installed or has never been installed.&n; *              Table mutex should be locked.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_uninstall_table&n; *&n; * PARAMETERS:  table_info          - A table info struct&n; *&n; * RETURN:      Pointer to the next table in the list (of same type)&n; *&n; * DESCRIPTION: Free the memory associated with an internal ACPI table that&n; *              is either installed or has never been installed.&n; *              Table mutex should be locked.&n; *&n; ******************************************************************************/
 id|acpi_table_desc
 op_star
 DECL|function|acpi_tb_uninstall_table
@@ -936,7 +936,7 @@ id|next_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Acpi_tb_uninstall_table&quot;
+l_string|&quot;acpi_tb_uninstall_table&quot;
 comma
 id|table_desc
 )paren

@@ -1490,7 +1490,7 @@ id|acpi_ec_space_handler
 id|u32
 id|function
 comma
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 comma
 id|u32

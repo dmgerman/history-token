@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utalloc - local cache and memory allocation routines&n; *              $Revision: 130 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utalloc - local cache and memory allocation routines&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 DECL|macro|_COMPONENT
@@ -7,7 +7,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;utalloc&quot;
 )paren
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_release_to_cache&n; *&n; * PARAMETERS:  List_id             - Memory list/cache ID&n; *              Object              - The object to be released&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Release an object to the specified cache.  If cache is full,&n; *              the object is deleted.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_release_to_cache&n; *&n; * PARAMETERS:  list_id             - Memory list/cache ID&n; *              Object              - The object to be released&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Release an object to the specified cache.  If cache is full,&n; *              the object is deleted.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_release_to_cache
 id|acpi_ut_release_to_cache
@@ -20,7 +20,7 @@ op_star
 id|object
 )paren
 (brace
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 op_star
 id|cache_info
 suffix:semicolon
@@ -134,7 +134,7 @@ id|ACPI_MTX_CACHES
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_acquire_from_cache&n; *&n; * PARAMETERS:  List_id             - Memory list ID&n; *&n; * RETURN:      A requested object.  NULL if the object could not be&n; *              allocated.&n; *&n; * DESCRIPTION: Get an object from the specified cache.  If cache is empty,&n; *              the object is allocated.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_acquire_from_cache&n; *&n; * PARAMETERS:  list_id             - Memory list ID&n; *&n; * RETURN:      A requested object.  NULL if the object could not be&n; *              allocated.&n; *&n; * DESCRIPTION: Get an object from the specified cache.  If cache is empty,&n; *              the object is allocated.&n; *&n; ******************************************************************************/
 r_void
 op_star
 DECL|function|acpi_ut_acquire_from_cache
@@ -144,7 +144,7 @@ id|u32
 id|list_id
 )paren
 (brace
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 op_star
 id|cache_info
 suffix:semicolon
@@ -154,7 +154,7 @@ id|object
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ut_acquire_from_cache&quot;
+l_string|&quot;ut_acquire_from_cache&quot;
 )paren
 suffix:semicolon
 id|cache_info
@@ -325,7 +325,7 @@ id|object
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_delete_generic_cache&n; *&n; * PARAMETERS:  List_id         - Memory list ID&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Free all objects within the requested cache.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_delete_generic_cache&n; *&n; * PARAMETERS:  list_id         - Memory list ID&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Free all objects within the requested cache.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_delete_generic_cache
 id|acpi_ut_delete_generic_cache
@@ -334,7 +334,7 @@ id|u32
 id|list_id
 )paren
 (brace
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 op_star
 id|cache_info
 suffix:semicolon
@@ -399,7 +399,7 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_validate_buffer&n; *&n; * PARAMETERS:  Buffer              - Buffer descriptor to be validated&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform parameter validation checks on an acpi_buffer&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_validate_buffer&n; *&n; * PARAMETERS:  Buffer              - Buffer descriptor to be validated&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Perform parameter validation checks on an acpi_buffer&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_validate_buffer
 id|acpi_ut_validate_buffer
@@ -472,7 +472,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_initialize_buffer&n; *&n; * PARAMETERS:  Required_length     - Length needed&n; *              Buffer              - Buffer to be validated&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate that the buffer is of the required length or&n; *              allocate a new buffer.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_initialize_buffer&n; *&n; * PARAMETERS:  required_length     - Length needed&n; *              Buffer              - Buffer to be validated&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Validate that the buffer is of the required length or&n; *              allocate a new buffer.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_initialize_buffer
 id|acpi_ut_initialize_buffer
@@ -481,7 +481,7 @@ id|acpi_buffer
 op_star
 id|buffer
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|required_length
 )paren
 (brace
@@ -609,13 +609,13 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_allocate&n; *&n; * PARAMETERS:  Size                - Size of the allocation&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      Address of the allocated memory on success, NULL on failure.&n; *&n; * DESCRIPTION: The subsystem&squot;s equivalent of malloc.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_allocate&n; *&n; * PARAMETERS:  Size                - Size of the allocation&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      Address of the allocated memory on success, NULL on failure.&n; *&n; * DESCRIPTION: The subsystem&squot;s equivalent of malloc.&n; *&n; ******************************************************************************/
 r_void
 op_star
 DECL|function|acpi_ut_allocate
 id|acpi_ut_allocate
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -635,7 +635,7 @@ id|allocation
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Ut_allocate&quot;
+l_string|&quot;ut_allocate&quot;
 comma
 id|size
 )paren
@@ -657,7 +657,7 @@ comma
 id|component
 comma
 (paren
-l_string|&quot;Ut_allocate: Attempt to allocate zero bytes&bslash;n&quot;
+l_string|&quot;ut_allocate: Attempt to allocate zero bytes&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -690,7 +690,7 @@ comma
 id|component
 comma
 (paren
-l_string|&quot;Ut_allocate: Could not allocate size %X&bslash;n&quot;
+l_string|&quot;ut_allocate: Could not allocate size %X&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -711,13 +711,13 @@ id|allocation
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_callocate&n; *&n; * PARAMETERS:  Size                - Size of the allocation&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      Address of the allocated memory on success, NULL on failure.&n; *&n; * DESCRIPTION: Subsystem equivalent of calloc.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_callocate&n; *&n; * PARAMETERS:  Size                - Size of the allocation&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      Address of the allocated memory on success, NULL on failure.&n; *&n; * DESCRIPTION: Subsystem equivalent of calloc.&n; *&n; ******************************************************************************/
 r_void
 op_star
 DECL|function|acpi_ut_callocate
 id|acpi_ut_callocate
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -737,7 +737,7 @@ id|allocation
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Ut_callocate&quot;
+l_string|&quot;ut_callocate&quot;
 comma
 id|size
 )paren
@@ -759,7 +759,7 @@ comma
 id|component
 comma
 (paren
-l_string|&quot;Ut_callocate: Attempt to allocate zero bytes&bslash;n&quot;
+l_string|&quot;ut_callocate: Attempt to allocate zero bytes&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -793,7 +793,7 @@ comma
 id|component
 comma
 (paren
-l_string|&quot;Ut_callocate: Could not allocate size %X&bslash;n&quot;
+l_string|&quot;ut_callocate: Could not allocate size %X&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -825,14 +825,14 @@ id|allocation
 suffix:semicolon
 )brace
 macro_line|#ifdef ACPI_DBG_TRACK_ALLOCATIONS
-multiline_comment|/*&n; * These procedures are used for tracking memory leaks in the subsystem, and&n; * they get compiled out when the ACPI_DBG_TRACK_ALLOCATIONS is not set.&n; *&n; * Each memory allocation is tracked via a doubly linked list.  Each&n; * element contains the caller&squot;s component, module name, function name, and&n; * line number.  Acpi_ut_allocate and Acpi_ut_callocate call&n; * Acpi_ut_track_allocation to add an element to the list; deletion&n; * occurs in the body of Acpi_ut_free.&n; */
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_allocate_and_track&n; *&n; * PARAMETERS:  Size                - Size of the allocation&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      Address of the allocated memory on success, NULL on failure.&n; *&n; * DESCRIPTION: The subsystem&squot;s equivalent of malloc.&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; * These procedures are used for tracking memory leaks in the subsystem, and&n; * they get compiled out when the ACPI_DBG_TRACK_ALLOCATIONS is not set.&n; *&n; * Each memory allocation is tracked via a doubly linked list.  Each&n; * element contains the caller&squot;s component, module name, function name, and&n; * line number.  acpi_ut_allocate and acpi_ut_callocate call&n; * acpi_ut_track_allocation to add an element to the list; deletion&n; * occurs in the body of acpi_ut_free.&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_allocate_and_track&n; *&n; * PARAMETERS:  Size                - Size of the allocation&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      Address of the allocated memory on success, NULL on failure.&n; *&n; * DESCRIPTION: The subsystem&squot;s equivalent of malloc.&n; *&n; ******************************************************************************/
 r_void
 op_star
 DECL|function|acpi_ut_allocate_and_track
 id|acpi_ut_allocate_and_track
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -954,13 +954,13 @@ id|allocation-&gt;user_space
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_callocate_and_track&n; *&n; * PARAMETERS:  Size                - Size of the allocation&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      Address of the allocated memory on success, NULL on failure.&n; *&n; * DESCRIPTION: Subsystem equivalent of calloc.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_callocate_and_track&n; *&n; * PARAMETERS:  Size                - Size of the allocation&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      Address of the allocated memory on success, NULL on failure.&n; *&n; * DESCRIPTION: Subsystem equivalent of calloc.&n; *&n; ******************************************************************************/
 r_void
 op_star
 DECL|function|acpi_ut_callocate_and_track
 id|acpi_ut_callocate_and_track
 (paren
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u32
@@ -1016,7 +1016,7 @@ comma
 id|component
 comma
 (paren
-l_string|&quot;Ut_callocate: Could not allocate size %X&bslash;n&quot;
+l_string|&quot;ut_callocate: Could not allocate size %X&bslash;n&quot;
 comma
 (paren
 id|u32
@@ -1101,7 +1101,7 @@ id|allocation-&gt;user_space
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_free_and_track&n; *&n; * PARAMETERS:  Allocation          - Address of the memory to deallocate&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Frees the memory at Allocation&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_free_and_track&n; *&n; * PARAMETERS:  Allocation          - Address of the memory to deallocate&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Frees the memory at Allocation&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_free_and_track
 id|acpi_ut_free_and_track
@@ -1130,7 +1130,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ut_free&quot;
+l_string|&quot;ut_free&quot;
 comma
 id|allocation
 )paren
@@ -1152,7 +1152,7 @@ comma
 id|component
 comma
 (paren
-l_string|&quot;Acpi_ut_free: Attempt to delete a NULL address&bslash;n&quot;
+l_string|&quot;acpi_ut_free: Attempt to delete a NULL address&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1256,7 +1256,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_find_allocation&n; *&n; * PARAMETERS:  Allocation             - Address of allocated memory&n; *&n; * RETURN:      A list element if found; NULL otherwise.&n; *&n; * DESCRIPTION: Searches for an element in the global allocation tracking list.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_find_allocation&n; *&n; * PARAMETERS:  Allocation             - Address of allocated memory&n; *&n; * RETURN:      A list element if found; NULL otherwise.&n; *&n; * DESCRIPTION: Searches for an element in the global allocation tracking list.&n; *&n; ******************************************************************************/
 id|acpi_debug_mem_block
 op_star
 DECL|function|acpi_ut_find_allocation
@@ -1333,7 +1333,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_track_allocation&n; *&n; * PARAMETERS:  Allocation          - Address of allocated memory&n; *              Size                - Size of the allocation&n; *              Alloc_type          - MEM_MALLOC or MEM_CALLOC&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Inserts an element into the global allocation tracking list.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_track_allocation&n; *&n; * PARAMETERS:  Allocation          - Address of allocated memory&n; *              Size                - Size of the allocation&n; *              alloc_type          - MEM_MALLOC or MEM_CALLOC&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Inserts an element into the global allocation tracking list.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_track_allocation
 id|acpi_ut_track_allocation
@@ -1345,7 +1345,7 @@ id|acpi_debug_mem_block
 op_star
 id|allocation
 comma
-id|ACPI_SIZE
+id|acpi_size
 id|size
 comma
 id|u8
@@ -1362,7 +1362,7 @@ id|u32
 id|line
 )paren
 (brace
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 op_star
 id|mem_list
 suffix:semicolon
@@ -1377,7 +1377,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ut_track_allocation&quot;
+l_string|&quot;ut_track_allocation&quot;
 comma
 id|allocation
 )paren
@@ -1445,7 +1445,7 @@ id|element
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Ut_track_allocation: Allocation already present in list! (%p)&bslash;n&quot;
+l_string|&quot;ut_track_allocation: Allocation already present in list! (%p)&bslash;n&quot;
 comma
 id|allocation
 )paren
@@ -1546,7 +1546,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_remove_allocation&n; *&n; * PARAMETERS:  Allocation          - Address of allocated memory&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Deletes an element from the global allocation tracking list.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_remove_allocation&n; *&n; * PARAMETERS:  Allocation          - Address of allocated memory&n; *              Component           - Component type of caller&n; *              Module              - Source file name of caller&n; *              Line                - Line number of caller&n; *&n; * RETURN:&n; *&n; * DESCRIPTION: Deletes an element from the global allocation tracking list.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_remove_allocation
 id|acpi_ut_remove_allocation
@@ -1569,7 +1569,7 @@ id|u32
 id|line
 )paren
 (brace
-id|ACPI_MEMORY_LIST
+id|acpi_memory_list
 op_star
 id|mem_list
 suffix:semicolon
@@ -1578,7 +1578,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_remove_allocation&quot;
+l_string|&quot;ut_remove_allocation&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1621,7 +1621,7 @@ comma
 id|component
 comma
 (paren
-l_string|&quot;Ut_remove_allocation: Empty allocation list, nothing to free!&bslash;n&quot;
+l_string|&quot;ut_remove_allocation: Empty allocation list, nothing to free!&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1726,7 +1726,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_dump_allocation_info&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print some info about the outstanding allocations.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_dump_allocation_info&n; *&n; * PARAMETERS:&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print some info about the outstanding allocations.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_dump_allocation_info
 id|acpi_ut_dump_allocation_info
@@ -1734,17 +1734,17 @@ id|acpi_ut_dump_allocation_info
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t;ACPI_MEMORY_LIST        *Mem_list;&n;*/
+multiline_comment|/*&n;&t;acpi_memory_list        *mem_list;&n;*/
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_dump_allocation_info&quot;
+l_string|&quot;ut_dump_allocation_info&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Current allocations&quot;,&n;&t;&t;&t;  Mem_list-&gt;Current_count,&n;&t;&t;&t;  ROUND_UP_TO_1K (Mem_list-&gt;Current_size)));&n;&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Max concurrent allocations&quot;,&n;&t;&t;&t;  Mem_list-&gt;Max_concurrent_count,&n;&t;&t;&t;  ROUND_UP_TO_1K (Mem_list-&gt;Max_concurrent_size)));&n;&n;&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Total (all) internal objects&quot;,&n;&t;&t;&t;  Running_object_count,&n;&t;&t;&t;  ROUND_UP_TO_1K (Running_object_size)));&n;&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Total (all) allocations&quot;,&n;&t;&t;&t;  Running_alloc_count,&n;&t;&t;&t;  ROUND_UP_TO_1K (Running_alloc_size)));&n;&n;&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Current Nodes&quot;,&n;&t;&t;&t;  Acpi_gbl_Current_node_count,&n;&t;&t;&t;  ROUND_UP_TO_1K (Acpi_gbl_Current_node_size)));&n;&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Max Nodes&quot;,&n;&t;&t;&t;  Acpi_gbl_Max_concurrent_node_count,&n;&t;&t;&t;  ROUND_UP_TO_1K ((Acpi_gbl_Max_concurrent_node_count * sizeof (acpi_namespace_node)))));&n;*/
+multiline_comment|/*&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Current allocations&quot;,&n;&t;&t;&t;  mem_list-&gt;current_count,&n;&t;&t;&t;  ROUND_UP_TO_1K (mem_list-&gt;current_size)));&n;&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Max concurrent allocations&quot;,&n;&t;&t;&t;  mem_list-&gt;max_concurrent_count,&n;&t;&t;&t;  ROUND_UP_TO_1K (mem_list-&gt;max_concurrent_size)));&n;&n;&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Total (all) internal objects&quot;,&n;&t;&t;&t;  running_object_count,&n;&t;&t;&t;  ROUND_UP_TO_1K (running_object_size)));&n;&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Total (all) allocations&quot;,&n;&t;&t;&t;  running_alloc_count,&n;&t;&t;&t;  ROUND_UP_TO_1K (running_alloc_size)));&n;&n;&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Current Nodes&quot;,&n;&t;&t;&t;  acpi_gbl_current_node_count,&n;&t;&t;&t;  ROUND_UP_TO_1K (acpi_gbl_current_node_size)));&n;&n;&t;ACPI_DEBUG_PRINT (TRACE_ALLOCATIONS | TRACE_TABLES,&n;&t;&t;&t;  (&quot;%30s: %4d (%3d Kb)&bslash;n&quot;, &quot;Max Nodes&quot;,&n;&t;&t;&t;  acpi_gbl_max_concurrent_node_count,&n;&t;&t;&t;  ROUND_UP_TO_1K ((acpi_gbl_max_concurrent_node_count * sizeof (acpi_namespace_node)))));&n;*/
 id|return_VOID
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_dump_allocations&n; *&n; * PARAMETERS:  Component           - Component(s) to dump info for.&n; *              Module              - Module to dump info for.  NULL means all.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print a list of all outstanding allocations.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_dump_allocations&n; *&n; * PARAMETERS:  Component           - Component(s) to dump info for.&n; *              Module              - Module to dump info for.  NULL means all.&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Print a list of all outstanding allocations.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ut_dump_allocations
 id|acpi_ut_dump_allocations
@@ -1761,7 +1761,7 @@ id|acpi_debug_mem_block
 op_star
 id|element
 suffix:semicolon
-id|ACPI_DESCRIPTOR
+id|acpi_descriptor
 op_star
 id|descriptor
 suffix:semicolon
@@ -1772,7 +1772,7 @@ l_int|0
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_dump_allocations&quot;
+l_string|&quot;ut_dump_allocations&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Walk the allocation list.&n;&t; */
@@ -1840,7 +1840,7 @@ id|descriptor
 op_assign
 id|ACPI_CAST_PTR
 (paren
-id|ACPI_DESCRIPTOR
+id|acpi_descriptor
 comma
 op_amp
 id|element-&gt;user_space
@@ -1882,7 +1882,7 @@ id|ACPI_DESC_TYPE_OPERAND
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Obj_type %12.12s R%hd&quot;
+l_string|&quot;obj_type %12.12s R%hd&quot;
 comma
 id|acpi_ut_get_type_name
 (paren
@@ -1899,7 +1899,7 @@ id|ACPI_DESC_TYPE_PARSER
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Parse_obj Aml_opcode %04hX&quot;
+l_string|&quot;parse_obj aml_opcode %04hX&quot;
 comma
 id|descriptor-&gt;op.asl.aml_opcode
 )paren
@@ -1923,7 +1923,7 @@ id|ACPI_DESC_TYPE_STATE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;Untyped State_obj&quot;
+l_string|&quot;Untyped state_obj&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1933,7 +1933,7 @@ id|ACPI_DESC_TYPE_STATE_UPDATE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;UPDATE State_obj&quot;
+l_string|&quot;UPDATE state_obj&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1943,7 +1943,7 @@ id|ACPI_DESC_TYPE_STATE_PACKAGE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;PACKAGE State_obj&quot;
+l_string|&quot;PACKAGE state_obj&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1953,7 +1953,7 @@ id|ACPI_DESC_TYPE_STATE_CONTROL
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;CONTROL State_obj&quot;
+l_string|&quot;CONTROL state_obj&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1963,7 +1963,7 @@ id|ACPI_DESC_TYPE_STATE_RPSCOPE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;ROOT-PARSE-SCOPE State_obj&quot;
+l_string|&quot;ROOT-PARSE-SCOPE state_obj&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1973,7 +1973,7 @@ id|ACPI_DESC_TYPE_STATE_PSCOPE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;PARSE-SCOPE State_obj&quot;
+l_string|&quot;PARSE-SCOPE state_obj&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1983,7 +1983,7 @@ id|ACPI_DESC_TYPE_STATE_WSCOPE
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;WALK-SCOPE State_obj&quot;
+l_string|&quot;WALK-SCOPE state_obj&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1993,7 +1993,7 @@ id|ACPI_DESC_TYPE_STATE_RESULT
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;RESULT State_obj&quot;
+l_string|&quot;RESULT state_obj&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2003,7 +2003,7 @@ id|ACPI_DESC_TYPE_STATE_NOTIFY
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;NOTIFY State_obj&quot;
+l_string|&quot;NOTIFY state_obj&quot;
 )paren
 suffix:semicolon
 r_break
@@ -2013,7 +2013,7 @@ id|ACPI_DESC_TYPE_STATE_THREAD
 suffix:colon
 id|acpi_os_printf
 (paren
-l_string|&quot;THREAD State_obj&quot;
+l_string|&quot;THREAD state_obj&quot;
 )paren
 suffix:semicolon
 r_break

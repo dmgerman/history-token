@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *              $Revision: 54 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsinit - namespace initialization&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsinit&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_initialize_objects&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Walk the entire namespace and perform any necessary&n; *              initialization on the objects found therein&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_initialize_objects&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Walk the entire namespace and perform any necessary&n; *              initialization on the objects found therein&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_initialize_objects
 id|acpi_ns_initialize_objects
@@ -26,7 +26,7 @@ id|info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_initialize_objects&quot;
+l_string|&quot;ns_initialize_objects&quot;
 )paren
 suffix:semicolon
 id|ACPI_DEBUG_PRINT
@@ -94,7 +94,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Walk_namespace failed! %s&bslash;n&quot;
+l_string|&quot;walk_namespace failed! %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -159,7 +159,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_initialize_devices&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      acpi_status&n; *&n; * DESCRIPTION: Walk the entire namespace and initialize all ACPI devices.&n; *              This means running _INI on all present devices.&n; *&n; *              Note: We install PCI config space handler on region access,&n; *              not here.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_initialize_devices&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      acpi_status&n; *&n; * DESCRIPTION: Walk the entire namespace and initialize all ACPI devices.&n; *              This means running _INI on all present devices.&n; *&n; *              Note: We install PCI config space handler on region access,&n; *              not here.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_initialize_devices
 id|acpi_ns_initialize_devices
@@ -175,7 +175,7 @@ id|info
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_initialize_devices&quot;
+l_string|&quot;ns_initialize_devices&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Init counters */
@@ -235,7 +235,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Walk_namespace failed! %s&bslash;n&quot;
+l_string|&quot;walk_namespace failed! %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -266,7 +266,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_init_one_object&n; *&n; * PARAMETERS:  Obj_handle      - Node&n; *              Level           - Current nesting level&n; *              Context         - Points to a init info struct&n; *              Return_value    - Not used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Callback from Acpi_walk_namespace. Invoked for every object&n; *              within the  namespace.&n; *&n; *              Currently, the only objects that require initialization are:&n; *              1) Methods&n; *              2) Op Regions&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_init_one_object&n; *&n; * PARAMETERS:  obj_handle      - Node&n; *              Level           - Current nesting level&n; *              Context         - Points to a init info struct&n; *              return_value    - Not used&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Callback from acpi_walk_namespace. Invoked for every object&n; *              within the  namespace.&n; *&n; *              Currently, the only objects that require initialization are:&n; *              1) Methods&n; *              2) Op Regions&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_init_one_object
 id|acpi_ns_init_one_object
@@ -319,7 +319,7 @@ id|obj_desc
 suffix:semicolon
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ns_init_one_object&quot;
+l_string|&quot;ns_init_one_object&quot;
 )paren
 suffix:semicolon
 id|info-&gt;object_count
@@ -584,7 +584,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ns_init_one_device&n; *&n; * PARAMETERS:  acpi_walk_callback&n; *&n; * RETURN:      acpi_status&n; *&n; * DESCRIPTION: This is called once per device soon after ACPI is enabled&n; *              to initialize each device. It determines if the device is&n; *              present, and if so, calls _INI.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_init_one_device&n; *&n; * PARAMETERS:  acpi_walk_callback&n; *&n; * RETURN:      acpi_status&n; *&n; * DESCRIPTION: This is called once per device soon after ACPI is enabled&n; *              to initialize each device. It determines if the device is&n; *              present, and if so, calls _INI.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ns_init_one_device
 id|acpi_ns_init_one_device
@@ -627,7 +627,7 @@ id|context
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ns_init_one_device&quot;
+l_string|&quot;ns_init_one_device&quot;
 )paren
 suffix:semicolon
 r_if

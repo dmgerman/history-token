@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstorob - AML Interpreter object store support, store to object&n; *              $Revision: 49 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstorob - AML Interpreter object store support, store to object&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exstorob&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_buffer_to_buffer&n; *&n; * PARAMETERS:  Source_desc         - Source object to copy&n; *              Target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a buffer object to another buffer object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store_buffer_to_buffer&n; *&n; * PARAMETERS:  source_desc         - Source object to copy&n; *              target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a buffer object to another buffer object.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store_buffer_to_buffer
 id|acpi_ex_store_buffer_to_buffer
@@ -31,12 +31,12 @@ id|buffer
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_store_buffer_to_buffer&quot;
+l_string|&quot;ex_store_buffer_to_buffer&quot;
 comma
 id|source_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We know that Source_desc is a buffer by now&n;&t; */
+multiline_comment|/*&n;&t; * We know that source_desc is a buffer by now&n;&t; */
 id|buffer
 op_assign
 (paren
@@ -162,7 +162,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_string_to_string&n; *&n; * PARAMETERS:  Source_desc         - Source object to copy&n; *              Target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a String object to another String object&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store_string_to_string&n; *&n; * PARAMETERS:  source_desc         - Source object to copy&n; *              target_desc         - Destination object of the copy&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Copy a String object to another String object&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store_string_to_string
 id|acpi_ex_store_string_to_string
@@ -185,12 +185,12 @@ id|buffer
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_store_string_to_string&quot;
+l_string|&quot;ex_store_string_to_string&quot;
 comma
 id|source_desc
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We know that Source_desc is a string by now.&n;&t; */
+multiline_comment|/*&n;&t; * We know that source_desc is a string by now.&n;&t; */
 id|buffer
 op_assign
 (paren
@@ -231,7 +231,7 @@ comma
 l_int|0
 comma
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|target_desc-&gt;string.length
 op_plus
@@ -278,7 +278,7 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|length
 op_plus

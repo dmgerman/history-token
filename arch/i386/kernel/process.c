@@ -32,6 +32,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#ifdef CONFIG_MATH_EMULATION
 macro_line|#include &lt;asm/math_emu.h&gt;
@@ -873,6 +874,12 @@ c_func
 suffix:semicolon
 )brace
 )brace
+id|release_x86_irqs
+c_func
+(paren
+id|dead_task
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Save a segment.&n; */
 DECL|macro|savesegment

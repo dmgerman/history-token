@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 75 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -28,7 +28,7 @@ DECL|macro|MAX_INTERNAL_OPCODE
 mdefine_line|#define MAX_INTERNAL_OPCODE
 DECL|macro|NUM_INTERNAL_OPCODE
 mdefine_line|#define NUM_INTERNAL_OPCODE         (MAX_INTERNAL_OPCODE + 1)
-multiline_comment|/*******************************************************************************&n; *&n; * NAME:        Acpi_gbl_Aml_op_info&n; *&n; * DESCRIPTION: Opcode table. Each entry contains &lt;opcode, type, name, operands&gt;&n; *              The name is a simple ascii string, the operand specifier is an&n; *              ascii string with one letter per operand.  The letter specifies&n; *              the operand type.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * NAME:        acpi_gbl_aml_op_info&n; *&n; * DESCRIPTION: Opcode table. Each entry contains &lt;opcode, type, name, operands&gt;&n; *              The name is a simple ascii string, the operand specifier is an&n; *              ascii string with one letter per operand.  The letter specifies&n; *              the operand type.&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; * All AML opcodes and the parse-time arguments for each.  Used by the AML parser  Each list is compressed&n; * into a 32-bit number and stored in the master opcode table at the end of this file.&n; */
 DECL|macro|ARGP_ACCESSFIELD_OP
 mdefine_line|#define ARGP_ACCESSFIELD_OP             ARGP_LIST1 (ARGP_NAMESTRING)
@@ -272,7 +272,7 @@ DECL|macro|ARGP_WORD_OP
 mdefine_line|#define ARGP_WORD_OP                    ARGP_LIST1 (ARGP_WORDDATA)
 DECL|macro|ARGP_ZERO_OP
 mdefine_line|#define ARGP_ZERO_OP                    ARG_NONE
-multiline_comment|/*&n; * All AML opcodes and the runtime arguments for each.  Used by the AML interpreter  Each list is compressed&n; * into a 32-bit number and stored in the master opcode table at the end of this file.&n; *&n; * (Used by Prep_operands procedure and the ASL Compiler)&n; */
+multiline_comment|/*&n; * All AML opcodes and the runtime arguments for each.  Used by the AML interpreter  Each list is compressed&n; * into a 32-bit number and stored in the master opcode table at the end of this file.&n; *&n; * (Used by prep_operands procedure and the ASL Compiler)&n; */
 DECL|macro|ARGI_ACCESSFIELD_OP
 mdefine_line|#define ARGI_ACCESSFIELD_OP             ARGI_INVALID_OPCODE
 DECL|macro|ARGI_ACQUIRE_OP
@@ -3969,7 +3969,7 @@ l_int|0x7C
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_opcode_info&n; *&n; * PARAMETERS:  Opcode              - The AML opcode&n; *&n; * RETURN:      A pointer to the info about the opcode.  NULL if the opcode was&n; *              not found in the table.&n; *&n; * DESCRIPTION: Find AML opcode description based on the opcode.&n; *              NOTE: This procedure must ALWAYS return a valid pointer!&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_opcode_info&n; *&n; * PARAMETERS:  Opcode              - The AML opcode&n; *&n; * RETURN:      A pointer to the info about the opcode.  NULL if the opcode was&n; *              not found in the table.&n; *&n; * DESCRIPTION: Find AML opcode description based on the opcode.&n; *              NOTE: This procedure must ALWAYS return a valid pointer!&n; *&n; ******************************************************************************/
 r_const
 id|acpi_opcode_info
 op_star
@@ -3982,7 +3982,7 @@ id|opcode
 (brace
 id|ACPI_FUNCTION_NAME
 (paren
-l_string|&quot;Ps_get_opcode_info&quot;
+l_string|&quot;ps_get_opcode_info&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Detect normal 8-bit opcode or extended 16-bit opcode&n;&t; */
@@ -4080,7 +4080,7 @@ id|_UNK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ps_get_opcode_name&n; *&n; * PARAMETERS:  Opcode              - The AML opcode&n; *&n; * RETURN:      A pointer to the name of the opcode (ASCII String)&n; *              Note: Never returns NULL.&n; *&n; * DESCRIPTION: Translate an opcode into a human-readable string&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ps_get_opcode_name&n; *&n; * PARAMETERS:  Opcode              - The AML opcode&n; *&n; * RETURN:      A pointer to the name of the opcode (ASCII String)&n; *              Note: Never returns NULL.&n; *&n; * DESCRIPTION: Translate an opcode into a human-readable string&n; *&n; ******************************************************************************/
 r_char
 op_star
 DECL|function|acpi_ps_get_opcode_name

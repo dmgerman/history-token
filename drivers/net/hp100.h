@@ -573,12 +573,10 @@ DECL|macro|HP100_LAN_100
 mdefine_line|#define HP100_LAN_100&t;&t;100&t;/* lan_type value for VG */
 DECL|macro|HP100_LAN_10
 mdefine_line|#define HP100_LAN_10&t;&t;10&t;/* lan_type value for 10BaseT */
+DECL|macro|HP100_LAN_COAX
+mdefine_line|#define HP100_LAN_COAX&t;&t;9&t;/* lan_type value for Coax */
 DECL|macro|HP100_LAN_ERR
 mdefine_line|#define HP100_LAN_ERR&t;&t;(-1)&t;/* lan_type value for link down */
-DECL|macro|TRUE
-mdefine_line|#define TRUE 1
-DECL|macro|FALSE
-mdefine_line|#define FALSE 0
 multiline_comment|/* &n; * Bus Master Data Structures  ----------------------------------------------&n; */
 DECL|macro|MAX_RX_PDL
 mdefine_line|#define MAX_RX_PDL              30&t;/* Card limit = 31 */

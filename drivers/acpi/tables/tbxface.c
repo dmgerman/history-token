@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *              $Revision: 60 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;tbxface&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_load_tables&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to load the ACPI tables from the&n; *              provided RSDT&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_load_tables&n; *&n; * PARAMETERS:  None&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to load the ACPI tables from the&n; *              provided RSDT&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_load_tables
 id|acpi_load_tables
@@ -17,7 +17,7 @@ id|acpi_load_tables
 r_void
 )paren
 (brace
-id|ACPI_POINTER
+id|acpi_pointer
 id|rsdp_address
 suffix:semicolon
 id|acpi_status
@@ -25,7 +25,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_load_tables&quot;
+l_string|&quot;acpi_load_tables&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Get the RSDP */
@@ -51,7 +51,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_load_tables: Could not get RSDP, %s&bslash;n&quot;
+l_string|&quot;acpi_load_tables: Could not get RSDP, %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -89,7 +89,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_load_tables: RSDP Failed validation: %s&bslash;n&quot;
+l_string|&quot;acpi_load_tables: RSDP Failed validation: %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -121,7 +121,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_load_tables: Could not load RSDT: %s&bslash;n&quot;
+l_string|&quot;acpi_load_tables: Could not load RSDT: %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -153,7 +153,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_load_tables: Error getting required tables (DSDT/FADT/FACS): %s&bslash;n&quot;
+l_string|&quot;acpi_load_tables: Error getting required tables (DSDT/FADT/FACS): %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -194,7 +194,7 @@ id|status
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_load_tables: Could not load namespace: %s&bslash;n&quot;
+l_string|&quot;acpi_load_tables: Could not load namespace: %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -217,7 +217,7 @@ suffix:colon
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_load_tables: Could not load tables: %s&bslash;n&quot;
+l_string|&quot;acpi_load_tables: Could not load tables: %s&bslash;n&quot;
 comma
 id|acpi_format_exception
 (paren
@@ -232,7 +232,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_load_table&n; *&n; * PARAMETERS:  Table_ptr       - pointer to a buffer containing the entire&n; *                                table to be loaded&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to load a table from the caller&squot;s&n; *              buffer.  The buffer must contain an entire ACPI Table including&n; *              a valid header.  The header fields will be verified, and if it&n; *              is determined that the table is invalid, the call will fail.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_load_table&n; *&n; * PARAMETERS:  table_ptr       - pointer to a buffer containing the entire&n; *                                table to be loaded&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to load a table from the caller&squot;s&n; *              buffer.  The buffer must contain an entire ACPI Table including&n; *              a valid header.  The header fields will be verified, and if it&n; *              is determined that the table is invalid, the call will fail.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_load_table
 id|acpi_load_table
@@ -248,12 +248,12 @@ suffix:semicolon
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
-id|ACPI_POINTER
+id|acpi_pointer
 id|address
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_load_table&quot;
+l_string|&quot;acpi_load_table&quot;
 )paren
 suffix:semicolon
 r_if
@@ -326,7 +326,7 @@ id|status
 )paren
 )paren
 (brace
-multiline_comment|/* Free table allocated by Acpi_tb_get_table_body */
+multiline_comment|/* Free table allocated by acpi_tb_get_table_body */
 id|acpi_tb_delete_single_table
 (paren
 op_amp
@@ -410,7 +410,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_unload_table&n; *&n; * PARAMETERS:  Table_type    - Type of table to be unloaded&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This routine is used to force the unload of a table&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_unload_table&n; *&n; * PARAMETERS:  table_type    - Type of table to be unloaded&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This routine is used to force the unload of a table&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_unload_table
 id|acpi_unload_table
@@ -425,7 +425,7 @@ id|list_head
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_unload_table&quot;
+l_string|&quot;acpi_unload_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -485,7 +485,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_table_header&n; *&n; * PARAMETERS:  Table_type      - one of the defined table types&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *                                see Acpi_gbl_Acpi_table_flag&n; *              Out_table_header - pointer to the acpi_table_header if successful&n; *&n; * DESCRIPTION: This function is called to get an ACPI table header.  The caller&n; *              supplies an pointer to a data area sufficient to contain an ACPI&n; *              acpi_table_header structure.&n; *&n; *              The header contains a length field that can be used to determine&n; *              the size of the buffer needed to contain the entire table.  This&n; *              function is not valid for the RSD PTR table since it does not&n; *              have a standard header and is fixed length.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_table_header&n; *&n; * PARAMETERS:  table_type      - one of the defined table types&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *                                see acpi_gbl_acpi_table_flag&n; *              out_table_header - pointer to the acpi_table_header if successful&n; *&n; * DESCRIPTION: This function is called to get an ACPI table header.  The caller&n; *              supplies an pointer to a data area sufficient to contain an ACPI&n; *              acpi_table_header structure.&n; *&n; *              The header contains a length field that can be used to determine&n; *              the size of the buffer needed to contain the entire table.  This&n; *              function is not valid for the RSD PTR table since it does not&n; *              have a standard header and is fixed length.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_table_header
 id|acpi_get_table_header
@@ -510,7 +510,7 @@ id|status
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_get_table_header&quot;
+l_string|&quot;acpi_get_table_header&quot;
 )paren
 suffix:semicolon
 r_if
@@ -643,7 +643,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_table&n; *&n; * PARAMETERS:  Table_type      - one of the defined table types&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *                                see Acpi_gbl_Acpi_table_flag&n; *              Ret_buffer      - pointer to a structure containing a buffer to&n; *                                receive the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get an ACPI table.  The caller&n; *              supplies an Out_buffer large enough to contain the entire ACPI&n; *              table.  The caller should call the Acpi_get_table_header function&n; *              first to determine the buffer size needed.  Upon completion&n; *              the Out_buffer-&gt;Length field will indicate the number of bytes&n; *              copied into the Out_buffer-&gt;Buf_ptr buffer. This table will be&n; *              a complete table including the header.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_table&n; *&n; * PARAMETERS:  table_type      - one of the defined table types&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *                                see acpi_gbl_acpi_table_flag&n; *              ret_buffer      - pointer to a structure containing a buffer to&n; *                                receive the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get an ACPI table.  The caller&n; *              supplies an out_buffer large enough to contain the entire ACPI&n; *              table.  The caller should call the acpi_get_table_header function&n; *              first to determine the buffer size needed.  Upon completion&n; *              the out_buffer-&gt;Length field will indicate the number of bytes&n; *              copied into the out_buffer-&gt;buf_ptr buffer. This table will be&n; *              a complete table including the header.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_table
 id|acpi_get_table
@@ -666,12 +666,12 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|table_length
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Acpi_get_table&quot;
+l_string|&quot;acpi_get_table&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Parameter validation */
@@ -772,7 +772,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Acpi_tb_get_table_ptr will return a NULL pointer if the&n;&t; * table is not loaded.&n;&t; */
+multiline_comment|/*&n;&t; * acpi_tb_get_table_ptr will return a NULL pointer if the&n;&t; * table is not loaded.&n;&t; */
 r_if
 c_cond
 (paren
@@ -801,7 +801,7 @@ id|table_length
 op_assign
 r_sizeof
 (paren
-id|RSDP_DESCRIPTOR
+id|rsdp_descriptor
 )paren
 suffix:semicolon
 )brace
@@ -810,7 +810,7 @@ r_else
 id|table_length
 op_assign
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|tbl_ptr-&gt;length
 suffix:semicolon

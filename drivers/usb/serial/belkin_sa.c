@@ -281,6 +281,11 @@ op_assign
 l_string|&quot;Belkin / Peracom / GoHubs USB Serial Adapter&quot;
 comma
 dot
+id|short_name
+op_assign
+l_string|&quot;belkin&quot;
+comma
+dot
 id|id_table
 op_assign
 id|id_table_combined

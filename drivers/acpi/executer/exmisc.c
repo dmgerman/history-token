@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *              $Revision: 114 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exmisc - ACPI AML (p-code) execution - specific opcodes&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exmisc&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_get_object_reference&n; *&n; * PARAMETERS:  Obj_desc            - Create a reference to this object&n; *              Return_desc         - Where to store the reference&n; *              Walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtain and return a &quot;reference&quot; to the target object&n; *              Common code for the Ref_of_op and the Cond_ref_of_op.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_get_object_reference&n; *&n; * PARAMETERS:  obj_desc            - Create a reference to this object&n; *              return_desc         - Where to store the reference&n; *              walk_state          - Current state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtain and return a &quot;reference&quot; to the target object&n; *              Common code for the ref_of_op and the cond_ref_of_op.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_get_object_reference
 id|acpi_ex_get_object_reference
@@ -38,7 +38,7 @@ id|referenced_obj
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_get_object_reference&quot;
+l_string|&quot;ex_get_object_reference&quot;
 comma
 id|obj_desc
 )paren
@@ -211,7 +211,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_concat_template&n; *&n; * PARAMETERS:  *Obj_desc           - Object to be converted.  Must be an&n; *                                    Integer, Buffer, or String&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Concatenate two resource templates&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_concat_template&n; *&n; * PARAMETERS:  *obj_desc           - Object to be converted.  Must be an&n; *                                    Integer, Buffer, or String&n; *              walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Concatenate two resource templates&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_concat_template
 id|acpi_ex_concat_template
@@ -250,18 +250,18 @@ id|u8
 op_star
 id|end_tag2
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|length1
 suffix:semicolon
-id|ACPI_SIZE
+id|acpi_size
 id|length2
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_concat_template&quot;
+l_string|&quot;ex_concat_template&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Find the End_tags in each resource template */
+multiline_comment|/* Find the end_tags in each resource template */
 id|end_tag1
 op_assign
 id|acpi_ut_get_resource_end_tag
@@ -393,7 +393,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_do_concatenate&n; *&n; * PARAMETERS:  Obj_desc1           - First source object&n; *              Obj_desc2           - Second source object&n; *              Actual_return_desc  - Where to place the return object&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Concatenate two objects OF THE SAME TYPE.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_do_concatenate&n; *&n; * PARAMETERS:  obj_desc1           - First source object&n; *              obj_desc2           - Second source object&n; *              actual_return_desc  - Where to place the return object&n; *              walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Concatenate two objects OF THE SAME TYPE.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_do_concatenate
 id|acpi_ex_do_concatenate
@@ -586,12 +586,12 @@ op_assign
 id|ACPI_MEM_CALLOCATE
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|obj_desc1-&gt;string.length
 op_plus
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|obj_desc2-&gt;string.length
 op_plus
@@ -608,7 +608,7 @@ id|new_buf
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Ex_do_concatenate: String allocation failure&bslash;n&quot;
+l_string|&quot;ex_do_concatenate: String allocation failure&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -659,12 +659,12 @@ op_assign
 id|acpi_ut_create_buffer_object
 (paren
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|obj_desc1-&gt;buffer.length
 op_plus
 (paren
-id|ACPI_SIZE
+id|acpi_size
 )paren
 id|obj_desc2-&gt;buffer.length
 )paren
@@ -748,7 +748,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_do_math_op&n; *&n; * PARAMETERS:  Opcode              - AML opcode&n; *              Operand0            - Integer operand #0&n; *              Operand1            - Integer operand #1&n; *&n; * RETURN:      Integer result of the operation&n; *&n; * DESCRIPTION: Execute a math AML opcode. The purpose of having all of the&n; *              math functions here is to prevent a lot of pointer dereferencing&n; *              to obtain the operands.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_do_math_op&n; *&n; * PARAMETERS:  Opcode              - AML opcode&n; *              Operand0            - Integer operand #0&n; *              Operand1            - Integer operand #1&n; *&n; * RETURN:      Integer result of the operation&n; *&n; * DESCRIPTION: Execute a math AML opcode. The purpose of having all of the&n; *              math functions here is to prevent a lot of pointer dereferencing&n; *              to obtain the operands.&n; *&n; ******************************************************************************/
 id|acpi_integer
 DECL|function|acpi_ex_do_math_op
 id|acpi_ex_do_math_op
@@ -855,7 +855,7 @@ suffix:semicolon
 r_case
 id|AML_SHIFT_LEFT_OP
 suffix:colon
-multiline_comment|/* Shift_left (Operand, Shift_count, Result) */
+multiline_comment|/* shift_left (Operand, shift_count, Result) */
 r_return
 (paren
 id|operand0
@@ -866,7 +866,7 @@ suffix:semicolon
 r_case
 id|AML_SHIFT_RIGHT_OP
 suffix:colon
-multiline_comment|/* Shift_right (Operand, Shift_count, Result) */
+multiline_comment|/* shift_right (Operand, shift_count, Result) */
 r_return
 (paren
 id|operand0
@@ -894,7 +894,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_do_logical_op&n; *&n; * PARAMETERS:  Opcode              - AML opcode&n; *              Operand0            - Integer operand #0&n; *              Operand1            - Integer operand #1&n; *&n; * RETURN:      TRUE/FALSE result of the operation&n; *&n; * DESCRIPTION: Execute a logical AML opcode. The purpose of having all of the&n; *              functions here is to prevent a lot of pointer dereferencing&n; *              to obtain the operands and to simplify the generation of the&n; *              logical value.&n; *&n; *              Note: cleanest machine code seems to be produced by the code&n; *              below, rather than using statements of the form:&n; *                  Result = (Operand0 == Operand1);&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_do_logical_op&n; *&n; * PARAMETERS:  Opcode              - AML opcode&n; *              Operand0            - Integer operand #0&n; *              Operand1            - Integer operand #1&n; *&n; * RETURN:      TRUE/FALSE result of the operation&n; *&n; * DESCRIPTION: Execute a logical AML opcode. The purpose of having all of the&n; *              functions here is to prevent a lot of pointer dereferencing&n; *              to obtain the operands and to simplify the generation of the&n; *              logical value.&n; *&n; *              Note: cleanest machine code seems to be produced by the code&n; *              below, rather than using statements of the form:&n; *                  Result = (Operand0 == Operand1);&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ex_do_logical_op
 id|acpi_ex_do_logical_op

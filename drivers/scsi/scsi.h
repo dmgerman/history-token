@@ -409,6 +409,9 @@ DECL|macro|ASKED_FOR_SENSE
 mdefine_line|#define ASKED_FOR_SENSE 0x20
 DECL|macro|SYNC_RESET
 mdefine_line|#define SYNC_RESET      0x40
+multiline_comment|/*&n; * This specifies &quot;machine infinity&quot; for host templates which don&squot;t&n; * limit the transfer size.  Note this limit represents an absolute&n; * maximum, and may be over the transfer limits allowed for individual&n; * devices (e.g. 256 for SCSI-1)&n; */
+DECL|macro|SCSI_DEFAULT_MAX_SECTORS
+mdefine_line|#define SCSI_DEFAULT_MAX_SECTORS&t;1024
 multiline_comment|/*&n; * This is the crap from the old error handling code.  We have it in a special&n; * place so that we can more easily delete it later on.&n; */
 macro_line|#include &quot;scsi_obsolete.h&quot;
 multiline_comment|/*&n; * Forward-declaration of structs for prototypes.&n; */

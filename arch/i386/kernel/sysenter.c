@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/arch/i386/kernel/sysenter.c&n; *&n; * (C) Copyri
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/cpufeature.h&gt;
@@ -16,6 +17,136 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Create a per-cpu fake &quot;SEP thread&quot; stack, so that we can&n; * enter the kernel without having to worry about things like&n; * &quot;current&quot; etc not working (debug traps and NMI&squot;s can happen&n; * before we can switch over to the &quot;real&quot; thread).&n; *&n; * Return the resulting fake stack pointer.&n; */
+DECL|struct|fake_sep_struct
+r_struct
+id|fake_sep_struct
+(brace
+DECL|member|thread
+r_struct
+id|thread_info
+id|thread
+suffix:semicolon
+DECL|member|task
+r_struct
+id|task_struct
+id|task
+suffix:semicolon
+DECL|member|trampoline
+r_int
+r_char
+id|trampoline
+(braket
+l_int|32
+)braket
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|1024
+)paren
+)paren
+)paren
+suffix:semicolon
+DECL|member|stack
+r_int
+r_char
+id|stack
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|8192
+)paren
+)paren
+)paren
+suffix:semicolon
+DECL|function|alloc_sep_thread
+r_static
+r_struct
+id|fake_sep_struct
+op_star
+id|alloc_sep_thread
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_struct
+id|fake_sep_struct
+op_star
+id|entry
+suffix:semicolon
+id|entry
+op_assign
+(paren
+r_struct
+id|fake_sep_struct
+op_star
+)paren
+id|__get_free_pages
+c_func
+(paren
+id|GFP_ATOMIC
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|entry
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|entry
+comma
+l_int|0
+comma
+id|PAGE_SIZE
+op_lshift
+l_int|1
+)paren
+suffix:semicolon
+id|entry-&gt;thread.task
+op_assign
+op_amp
+id|entry-&gt;task
+suffix:semicolon
+id|entry-&gt;task.thread_info
+op_assign
+op_amp
+id|entry-&gt;thread
+suffix:semicolon
+id|entry-&gt;thread.preempt_count
+op_assign
+l_int|1
+suffix:semicolon
+id|entry-&gt;thread.cpu
+op_assign
+id|cpu
+suffix:semicolon
+r_return
+id|entry
+suffix:semicolon
+)brace
 DECL|function|enable_sep_cpu
 r_static
 r_void
@@ -29,21 +160,22 @@ id|info
 )paren
 (brace
 r_int
-r_int
-id|page
-op_assign
-id|__get_free_page
-c_func
-(paren
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_int
 id|cpu
 op_assign
 id|get_cpu
 c_func
 (paren
+)paren
+suffix:semicolon
+r_struct
+id|fake_sep_struct
+op_star
+id|sep
+op_assign
+id|alloc_sep_thread
+c_func
+(paren
+id|cpu
 )paren
 suffix:semicolon
 r_int
@@ -73,7 +205,11 @@ r_int
 id|sysenter_entry
 op_minus
 (paren
-id|page
+r_int
+r_int
+)paren
+(paren
+id|sep-&gt;trampoline
 op_plus
 l_int|11
 )paren
@@ -84,7 +220,7 @@ r_int
 op_star
 )paren
 (paren
-id|page
+id|sep-&gt;trampoline
 op_plus
 l_int|0
 )paren
@@ -99,7 +235,7 @@ op_star
 op_star
 )paren
 (paren
-id|page
+id|sep-&gt;trampoline
 op_plus
 l_int|2
 )paren
@@ -112,7 +248,7 @@ r_char
 op_star
 )paren
 (paren
-id|page
+id|sep-&gt;trampoline
 op_plus
 l_int|6
 )paren
@@ -126,7 +262,7 @@ r_int
 op_star
 )paren
 (paren
-id|page
+id|sep-&gt;trampoline
 op_plus
 l_int|7
 )paren
@@ -149,9 +285,15 @@ c_func
 (paren
 l_int|0x175
 comma
-id|page
-op_plus
 id|PAGE_SIZE
+op_star
+l_int|2
+op_plus
+(paren
+r_int
+r_int
+)paren
+id|sep
 comma
 l_int|0
 )paren
@@ -162,7 +304,12 @@ c_func
 (paren
 l_int|0x176
 comma
-id|page
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|sep-&gt;trampoline
 comma
 l_int|0
 )paren
@@ -217,15 +364,18 @@ id|sysent
 )braket
 op_assign
 (brace
-l_int|0x55
+l_int|0x9c
 comma
-multiline_comment|/* push %ebp */
+multiline_comment|/* pushf */
 l_int|0x51
 comma
 multiline_comment|/* push %ecx */
 l_int|0x52
 comma
 multiline_comment|/* push %edx */
+l_int|0x55
+comma
+multiline_comment|/* push %ebp */
 l_int|0x89
 comma
 l_int|0xe5
@@ -236,15 +386,25 @@ comma
 l_int|0x34
 comma
 multiline_comment|/* sysenter */
+multiline_comment|/* System call restart point is here! (SYSENTER_RETURN - 2) */
+l_int|0xeb
+comma
+l_int|0xfa
+comma
+multiline_comment|/* jmp to &quot;movl %esp,%ebp&quot; */
+multiline_comment|/* System call normal return point is here! (SYSENTER_RETURN in entry.S) */
+l_int|0x5d
+comma
+multiline_comment|/* pop %ebp */
 l_int|0x5a
 comma
 multiline_comment|/* pop %edx */
 l_int|0x59
 comma
 multiline_comment|/* pop %ecx */
-l_int|0x5d
+l_int|0x9d
 comma
-multiline_comment|/* pop %ebp */
+multiline_comment|/* popf - restore TF */
 l_int|0xc3
 multiline_comment|/* ret */
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *              $Revision: 91 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfldio - Aml Field I/O&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -11,7 +11,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exfldio&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_setup_region&n; *&n; * PARAMETERS:  *Obj_desc               - Field to be read or written&n; *              Field_datum_byte_offset - Byte offset of this datum within the&n; *                                        parent field&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Common processing for Acpi_ex_extract_from_field and&n; *              Acpi_ex_insert_into_field. Initialize the&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_setup_region&n; *&n; * PARAMETERS:  *obj_desc               - Field to be read or written&n; *              field_datum_byte_offset - Byte offset of this datum within the&n; *                                        parent field&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Common processing for acpi_ex_extract_from_field and&n; *              acpi_ex_insert_into_field. Initialize the&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_setup_region
 id|acpi_ex_setup_region
@@ -35,7 +35,7 @@ id|rgn_desc
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Ex_setup_region&quot;
+l_string|&quot;ex_setup_region&quot;
 comma
 id|field_datum_byte_offset
 )paren
@@ -154,7 +154,7 @@ OL
 id|obj_desc-&gt;common_field.access_byte_width
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * This is the case where the Access_type (Acc_word, etc.) is wider&n;&t;&t;&t; * than the region itself.  For example, a region of length one&n;&t;&t;&t; * byte, and a field with Dword access specified.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * This is the case where the access_type (acc_word, etc.) is wider&n;&t;&t;&t; * than the region itself.  For example, a region of length one&n;&t;&t;&t; * byte, and a field with Dword access specified.&n;&t;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -207,7 +207,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_access_region&n; *&n; * PARAMETERS:  *Obj_desc               - Field to be read&n; *              Field_datum_byte_offset - Byte offset of this datum within the&n; *                                        parent field&n; *              *Value                  - Where to store value (must at least&n; *                                        the size of acpi_integer)&n; *              Function                - Read or Write flag plus other region-&n; *                                        dependent flags&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or Write a single field datum to an Operation Region.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_access_region&n; *&n; * PARAMETERS:  *obj_desc               - Field to be read&n; *              field_datum_byte_offset - Byte offset of this datum within the&n; *                                        parent field&n; *              *Value                  - Where to store value (must at least&n; *                                        the size of acpi_integer)&n; *              Function                - Read or Write flag plus other region-&n; *                                        dependent flags&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or Write a single field datum to an Operation Region.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_access_region
 id|acpi_ex_access_region
@@ -234,12 +234,12 @@ id|acpi_operand_object
 op_star
 id|rgn_desc
 suffix:semicolon
-id|ACPI_PHYSICAL_ADDRESS
+id|acpi_physical_address
 id|address
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_access_region&quot;
+l_string|&quot;ex_access_region&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure that the region operands are fully evaluated and verify&n;&t; * the validity of the request&n;&t; */
@@ -346,7 +346,7 @@ id|address
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Invoke the appropriate Address_space/Op_region handler */
+multiline_comment|/* Invoke the appropriate address_space/op_region handler */
 id|status
 op_assign
 id|acpi_ev_address_space_dispatch
@@ -432,7 +432,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_register_overflow&n; *&n; * PARAMETERS:  *Obj_desc               - Register(Field) to be written&n; *              Value                   - Value to be stored&n; *&n; * RETURN:      TRUE if value overflows the field, FALSE otherwise&n; *&n; * DESCRIPTION: Check if a value is out of range of the field being written.&n; *              Used to check if the values written to Index and Bank registers&n; *              are out of range.  Normally, the value is simply truncated&n; *              to fit the field, but this case is most likely a serious&n; *              coding error in the ASL.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_register_overflow&n; *&n; * PARAMETERS:  *obj_desc               - Register(Field) to be written&n; *              Value                   - Value to be stored&n; *&n; * RETURN:      TRUE if value overflows the field, FALSE otherwise&n; *&n; * DESCRIPTION: Check if a value is out of range of the field being written.&n; *              Used to check if the values written to Index and Bank registers&n; *              are out of range.  Normally, the value is simply truncated&n; *              to fit the field, but this case is most likely a serious&n; *              coding error in the ASL.&n; *&n; ******************************************************************************/
 id|u8
 DECL|function|acpi_ex_register_overflow
 id|acpi_ex_register_overflow
@@ -489,7 +489,7 @@ id|FALSE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_field_datum_io&n; *&n; * PARAMETERS:  *Obj_desc               - Field to be read&n; *              Field_datum_byte_offset - Byte offset of this datum within the&n; *                                        parent field&n; *              *Value                  - Where to store value (must be 64 bits)&n; *              Read_write              - Read or Write flag&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or Write a single datum of a field.  The Field_type is&n; *              demultiplexed here to handle the different types of fields&n; *              (Buffer_field, Region_field, Index_field, Bank_field)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_field_datum_io&n; *&n; * PARAMETERS:  *obj_desc               - Field to be read&n; *              field_datum_byte_offset - Byte offset of this datum within the&n; *                                        parent field&n; *              *Value                  - Where to store value (must be 64 bits)&n; *              read_write              - Read or Write flag&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read or Write a single datum of a field.  The field_type is&n; *              demultiplexed here to handle the different types of fields&n; *              (buffer_field, region_field, index_field, bank_field)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_field_datum_io
 id|acpi_ex_field_datum_io
@@ -517,7 +517,7 @@ id|local_value
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Ex_field_datum_io&quot;
+l_string|&quot;ex_field_datum_io&quot;
 comma
 id|field_datum_byte_offset
 )paren
@@ -555,7 +555,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The four types of fields are:&n;&t; *&n;&t; * Buffer_fields - Read/write from/to a Buffer&n;&t; * Region_fields - Read/write from/to a Operation Region.&n;&t; * Bank_fields  - Write to a Bank Register, then read/write from/to an Op_region&n;&t; * Index_fields - Write to an Index Register, then read/write from/to a Data Register&n;&t; */
+multiline_comment|/*&n;&t; * The four types of fields are:&n;&t; *&n;&t; * buffer_fields - Read/write from/to a Buffer&n;&t; * region_fields - Read/write from/to a Operation Region.&n;&t; * bank_fields  - Write to a Bank Register, then read/write from/to an op_region&n;&t; * index_fields - Write to an Index Register, then read/write from/to a Data Register&n;&t; */
 r_switch
 c_cond
 (paren
@@ -568,7 +568,7 @@ id|obj_desc
 r_case
 id|ACPI_TYPE_BUFFER_FIELD
 suffix:colon
-multiline_comment|/*&n;&t;&t; * If the Buffer_field arguments have not been previously evaluated,&n;&t;&t; * evaluate them now and save the results.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the buffer_field arguments have not been previously evaluated,&n;&t;&t; * evaluate them now and save the results.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -660,7 +660,7 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_LOCAL_BANK_FIELD
 suffix:colon
-multiline_comment|/* Ensure that the Bank_value is not beyond the capacity of the register */
+multiline_comment|/* Ensure that the bank_value is not beyond the capacity of the register */
 r_if
 c_cond
 (paren
@@ -681,7 +681,7 @@ id|AE_AML_REGISTER_LIMIT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * For Bank_fields, we must write the Bank_value to the Bank_register&n;&t;&t; * (itself a Region_field) before we can access the data.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * For bank_fields, we must write the bank_value to the bank_register&n;&t;&t; * (itself a region_field) before we can access the data.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_insert_into_field
@@ -712,12 +712,12 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Now that the Bank has been selected, fall through to the&n;&t;&t; * Region_field case and write the datum to the Operation Region&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Now that the Bank has been selected, fall through to the&n;&t;&t; * region_field case and write the datum to the Operation Region&n;&t;&t; */
 multiline_comment|/*lint -fallthrough */
 r_case
 id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
-multiline_comment|/*&n;&t;&t; * For simple Region_fields, we just directly access the owning&n;&t;&t; * Operation Region.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * For simple region_fields, we just directly access the owning&n;&t;&t; * Operation Region.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_access_region
@@ -736,7 +736,7 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_LOCAL_INDEX_FIELD
 suffix:colon
-multiline_comment|/* Ensure that the Index_value is not beyond the capacity of the register */
+multiline_comment|/* Ensure that the index_value is not beyond the capacity of the register */
 r_if
 c_cond
 (paren
@@ -757,7 +757,7 @@ id|AE_AML_REGISTER_LIMIT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Write the index value to the Index_register (itself a Region_field) */
+multiline_comment|/* Write the index value to the index_register (itself a region_field) */
 id|status
 op_assign
 id|acpi_ex_insert_into_field
@@ -796,7 +796,7 @@ op_eq
 id|ACPI_READ
 )paren
 (brace
-multiline_comment|/* Read the datum from the Data_register */
+multiline_comment|/* Read the datum from the data_register */
 id|status
 op_assign
 id|acpi_ex_extract_from_field
@@ -921,7 +921,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_write_with_update_rule&n; *&n; * PARAMETERS:  *Obj_desc           - Field to be set&n; *              Value               - Value to store&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Apply the field update rule to a field write&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_write_with_update_rule&n; *&n; * PARAMETERS:  *obj_desc           - Field to be set&n; *              Value               - Value to store&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Apply the field update rule to a field write&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_write_with_update_rule
 id|acpi_ex_write_with_update_rule
@@ -953,7 +953,7 @@ id|current_value
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_U32
 (paren
-l_string|&quot;Ex_write_with_update_rule&quot;
+l_string|&quot;ex_write_with_update_rule&quot;
 comma
 id|mask
 )paren
@@ -1066,7 +1066,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Write_with_update_rule: Unknown Update_rule setting: %X&bslash;n&quot;
+l_string|&quot;write_with_update_rule: Unknown update_rule setting: %X&bslash;n&quot;
 comma
 (paren
 id|obj_desc-&gt;common_field.field_flags
@@ -1103,7 +1103,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Mask %8.8X%8.8X Datum_offset %X Value %8.8X%8.8X, Merged_value %8.8X%8.8X&bslash;n&quot;
+l_string|&quot;Mask %8.8X%8.8X datum_offset %X Value %8.8X%8.8X, merged_value %8.8X%8.8X&bslash;n&quot;
 comma
 id|ACPI_HIDWORD
 (paren
@@ -1145,7 +1145,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_get_buffer_datum&n; *&n; * PARAMETERS:  Datum               - Where the Datum is returned&n; *              Buffer              - Raw field buffer&n; *              Byte_granularity    - 1/2/4/8 Granularity of the field&n; *                                    (aka Datum Size)&n; *              Offset              - Datum offset into the buffer&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Get a datum from the buffer according to the buffer field&n; *              byte granularity&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_get_buffer_datum&n; *&n; * PARAMETERS:  Datum               - Where the Datum is returned&n; *              Buffer              - Raw field buffer&n; *              byte_granularity    - 1/2/4/8 Granularity of the field&n; *                                    (aka Datum Size)&n; *              Offset              - Datum offset into the buffer&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Get a datum from the buffer according to the buffer field&n; *              byte granularity&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_get_buffer_datum
 id|acpi_ex_get_buffer_datum
@@ -1274,7 +1274,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_set_buffer_datum&n; *&n; * PARAMETERS:  Merged_datum        - Value to store&n; *              Buffer              - Receiving buffer&n; *              Byte_granularity    - 1/2/4/8 Granularity of the field&n; *                                    (aka Datum Size)&n; *              Offset              - Datum offset into the buffer&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Store the merged datum to the buffer according to the&n; *              byte granularity&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_set_buffer_datum&n; *&n; * PARAMETERS:  merged_datum        - Value to store&n; *              Buffer              - Receiving buffer&n; *              byte_granularity    - 1/2/4/8 Granularity of the field&n; *                                    (aka Datum Size)&n; *              Offset              - Datum offset into the buffer&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Store the merged datum to the buffer according to the&n; *              byte granularity&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ex_set_buffer_datum
 id|acpi_ex_set_buffer_datum
@@ -1406,7 +1406,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_extract_from_field&n; *&n; * PARAMETERS:  *Obj_desc           - Field to be read&n; *              *Value              - Where to store value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve the value of the given field&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_extract_from_field&n; *&n; * PARAMETERS:  *obj_desc           - Field to be read&n; *              *Value              - Where to store value&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve the value of the given field&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_extract_from_field
 id|acpi_ex_extract_from_field
@@ -1453,7 +1453,7 @@ id|datum_count
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_extract_from_field&quot;
+l_string|&quot;ex_extract_from_field&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The field must fit within the caller&squot;s buffer&n;&t; */
@@ -1506,7 +1506,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Byte_len=%X, Datum_len=%X, Byte_gran=%X&bslash;n&quot;
+l_string|&quot;byte_len=%X, datum_len=%X, byte_gran=%X&bslash;n&quot;
 comma
 id|byte_field_length
 comma
@@ -1789,7 +1789,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_insert_into_field&n; *&n; * PARAMETERS:  *Obj_desc           - Field to be set&n; *              Buffer              - Value to store&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the value into the given field&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_insert_into_field&n; *&n; * PARAMETERS:  *obj_desc           - Field to be set&n; *              Buffer              - Value to store&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Store the value into the given field&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_insert_into_field
 id|acpi_ex_insert_into_field
@@ -1835,7 +1835,7 @@ id|datum_count
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_insert_into_field&quot;
+l_string|&quot;ex_insert_into_field&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Incoming buffer must be at least as long as the field, we do not&n;&t; * allow &quot;partial&quot; field writes.  We do not care if the buffer is&n;&t; * larger than the field, this typically happens when an integer is&n;&t; * written to a field that is actually smaller than an integer.&n;&t; */
@@ -1888,7 +1888,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_BFIELD
 comma
-l_string|&quot;Byte_len=%X, Datum_len=%X, Byte_gran=%X&bslash;n&quot;
+l_string|&quot;byte_len=%X, datum_len=%X, byte_gran=%X&bslash;n&quot;
 comma
 id|byte_field_length
 comma
@@ -1920,7 +1920,7 @@ comma
 id|datum_offset
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Part1:&n;&t; * Write a partial field datum if field does not begin on a datum boundary&n;&t; * Note: The code in this section also handles the aligned case&n;&t; *&n;&t; * Construct Mask with 1 bits where the field is, 0 bits elsewhere&n;&t; * (Only the bottom 5 bits of Bit_length are valid for a shift operation)&n;&t; *&n;&t; * Mask off bits that are &quot;below&quot; the field (if any)&n;&t; */
+multiline_comment|/*&n;&t; * Part1:&n;&t; * Write a partial field datum if field does not begin on a datum boundary&n;&t; * Note: The code in this section also handles the aligned case&n;&t; *&n;&t; * Construct Mask with 1 bits where the field is, 0 bits elsewhere&n;&t; * (Only the bottom 5 bits of bit_length are valid for a shift operation)&n;&t; *&n;&t; * Mask off bits that are &quot;below&quot; the field (if any)&n;&t; */
 id|mask
 op_assign
 id|ACPI_MASK_BITS_BELOW

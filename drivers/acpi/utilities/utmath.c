@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmath - Integer math support routines&n; *              $Revision: 11 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmath - Integer math support routines&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 DECL|macro|_COMPONENT
@@ -9,7 +9,7 @@ l_string|&quot;utmath&quot;
 )paren
 multiline_comment|/*&n; * Support for double-precision integer divide.  This code is included here&n; * in order to support kernel environments where the double-precision math&n; * library is not available.&n; */
 macro_line|#ifndef ACPI_USE_NATIVE_DIVIDE
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_short_divide&n; *&n; * PARAMETERS:  In_dividend         - Pointer to the dividend&n; *              Divisor             - 32-bit divisor&n; *              Out_quotient        - Pointer to where the quotient is returned&n; *              Out_remainder       - Pointer to where the remainder is returned&n; *&n; * RETURN:      Status (Checks for divide-by-zero)&n; *&n; * DESCRIPTION: Perform a short (maximum 64 bits divided by 32 bits)&n; *              divide and modulo.  The result is a 64-bit quotient and a&n; *              32-bit remainder.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_short_divide&n; *&n; * PARAMETERS:  in_dividend         - Pointer to the dividend&n; *              Divisor             - 32-bit divisor&n; *              out_quotient        - Pointer to where the quotient is returned&n; *              out_remainder       - Pointer to where the remainder is returned&n; *&n; * RETURN:      Status (Checks for divide-by-zero)&n; *&n; * DESCRIPTION: Perform a short (maximum 64 bits divided by 32 bits)&n; *              divide and modulo.  The result is a 64-bit quotient and a&n; *              32-bit remainder.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_short_divide
 id|acpi_ut_short_divide
@@ -41,7 +41,7 @@ id|remainder32
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_short_divide&quot;
+l_string|&quot;ut_short_divide&quot;
 )paren
 suffix:semicolon
 id|dividend.full
@@ -61,7 +61,7 @@ l_int|0
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ut_short_divide: Divide by zero&bslash;n&quot;
+l_string|&quot;acpi_ut_short_divide: Divide by zero&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -129,7 +129,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_divide&n; *&n; * PARAMETERS:  In_dividend         - Pointer to the dividend&n; *              In_divisor          - Pointer to the divisor&n; *              Out_quotient        - Pointer to where the quotient is returned&n; *              Out_remainder       - Pointer to where the remainder is returned&n; *&n; * RETURN:      Status (Checks for divide-by-zero)&n; *&n; * DESCRIPTION: Perform a divide and modulo.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_divide&n; *&n; * PARAMETERS:  in_dividend         - Pointer to the dividend&n; *              in_divisor          - Pointer to the divisor&n; *              out_quotient        - Pointer to where the quotient is returned&n; *              out_remainder       - Pointer to where the remainder is returned&n; *&n; * RETURN:      Status (Checks for divide-by-zero)&n; *&n; * DESCRIPTION: Perform a divide and modulo.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ut_divide
 id|acpi_ut_divide
@@ -180,7 +180,7 @@ id|partial3
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_divide&quot;
+l_string|&quot;ut_divide&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Always check for a zero divisor */
@@ -196,7 +196,7 @@ l_int|0
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ut_divide: Divide by zero&bslash;n&quot;
+l_string|&quot;acpi_ut_divide: Divide by zero&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -473,7 +473,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 macro_line|#else
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_short_divide, Acpi_ut_divide&n; *&n; * DESCRIPTION: Native versions of the Ut_divide functions. Use these if either&n; *              1) The target is a 64-bit platform and therefore 64-bit&n; *                 integer math is supported directly by the machine.&n; *              2) The target is a 32-bit or 16-bit platform, and the&n; *                 double-precision integer math library is available to&n; *                 perform the divide.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ut_short_divide, acpi_ut_divide&n; *&n; * DESCRIPTION: Native versions of the ut_divide functions. Use these if either&n; *              1) The target is a 64-bit platform and therefore 64-bit&n; *                 integer math is supported directly by the machine.&n; *              2) The target is a 32-bit or 16-bit platform, and the&n; *                 double-precision integer math library is available to&n; *                 perform the divide.&n; *&n; ******************************************************************************/
 id|acpi_status
 id|acpi_ut_short_divide
 (paren
@@ -495,7 +495,7 @@ id|out_remainder
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_short_divide&quot;
+l_string|&quot;ut_short_divide&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Always check for a zero divisor */
@@ -510,7 +510,7 @@ l_int|0
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ut_short_divide: Divide by zero&bslash;n&quot;
+l_string|&quot;acpi_ut_short_divide: Divide by zero&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -582,7 +582,7 @@ id|out_remainder
 (brace
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ut_divide&quot;
+l_string|&quot;ut_divide&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Always check for a zero divisor */
@@ -598,7 +598,7 @@ l_int|0
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Acpi_ut_divide: Divide by zero&bslash;n&quot;
+l_string|&quot;acpi_ut_divide: Divide by zero&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

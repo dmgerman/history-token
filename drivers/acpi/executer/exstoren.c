@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstoren - AML Interpreter object store support,&n; *                        Store to Node (namespace object)&n; *              $Revision: 54 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstoren - AML Interpreter object store support,&n; *                        Store to Node (namespace object)&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exstoren&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_resolve_object&n; *&n; * PARAMETERS:  Source_desc_ptr     - Pointer to the source object&n; *              Target_type         - Current type of the target&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status, resolved object in Source_desc_ptr.&n; *&n; * DESCRIPTION: Resolve an object.  If the object is a reference, dereference&n; *              it and return the actual object in the Source_desc_ptr.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_resolve_object&n; *&n; * PARAMETERS:  source_desc_ptr     - Pointer to the source object&n; *              target_type         - Current type of the target&n; *              walk_state          - Current walk state&n; *&n; * RETURN:      Status, resolved object in source_desc_ptr.&n; *&n; * DESCRIPTION: Resolve an object.  If the object is a reference, dereference&n; *              it and return the actual object in the source_desc_ptr.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_resolve_object
 id|acpi_ex_resolve_object
@@ -40,7 +40,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
-l_string|&quot;Ex_resolve_object&quot;
+l_string|&quot;ex_resolve_object&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure we have a Target that can be stored to&n;&t; */
@@ -169,7 +169,7 @@ suffix:semicolon
 r_case
 id|ACPI_TYPE_LOCAL_ALIAS
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Aliases are resolved by Acpi_ex_prep_operands&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Aliases are resolved by acpi_ex_prep_operands&n;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -200,7 +200,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_store_object_to_object&n; *&n; * PARAMETERS:  Source_desc         - Object to store&n; *              Dest_desc           - Object to receive a copy of the source&n; *              New_desc            - New object if Dest_desc is obsoleted&n; *              Walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: &quot;Store&quot; an object to another object.  This may include&n; *              converting the source type to the target type (implicit&n; *              conversion), and a copy of the value of the source to&n; *              the target.&n; *&n; *              The Assignment of an object to another (not named) object&n; *              is handled here.&n; *              The Source passed in will replace the current value (if any)&n; *              with the input value.&n; *&n; *              When storing into an object the data is converted to the&n; *              target object type then stored in the object.  This means&n; *              that the target object type (for an initialized target) will&n; *              not be changed by a store operation.&n; *&n; *              This module allows destination types of Number, String,&n; *              Buffer, and Package.&n; *&n; *              Assumes parameters are already validated.  NOTE: Source_desc&n; *              resolution (from a reference object) must be performed by&n; *              the caller if necessary.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_store_object_to_object&n; *&n; * PARAMETERS:  source_desc         - Object to store&n; *              dest_desc           - Object to receive a copy of the source&n; *              new_desc            - New object if dest_desc is obsoleted&n; *              walk_state          - Current walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: &quot;Store&quot; an object to another object.  This may include&n; *              converting the source type to the target type (implicit&n; *              conversion), and a copy of the value of the source to&n; *              the target.&n; *&n; *              The Assignment of an object to another (not named) object&n; *              is handled here.&n; *              The Source passed in will replace the current value (if any)&n; *              with the input value.&n; *&n; *              When storing into an object the data is converted to the&n; *              target object type then stored in the object.  This means&n; *              that the target object type (for an initialized target) will&n; *              not be changed by a store operation.&n; *&n; *              This module allows destination types of Number, String,&n; *              Buffer, and Package.&n; *&n; *              Assumes parameters are already validated.  NOTE: source_desc&n; *              resolution (from a reference object) must be performed by&n; *              the caller if necessary.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_store_object_to_object
 id|acpi_ex_store_object_to_object
@@ -234,7 +234,7 @@ id|AE_OK
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
-l_string|&quot;Ex_store_object_to_object&quot;
+l_string|&quot;ex_store_object_to_object&quot;
 comma
 id|source_desc
 )paren
@@ -282,7 +282,7 @@ id|dest_desc
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The source type does not match the type of the destination.&n;&t;&t; * Perform the &quot;implicit conversion&quot; of the source to the current type&n;&t;&t; * of the target as per the ACPI specification.&n;&t;&t; *&n;&t;&t; * If no conversion performed, Actual_src_desc = Source_desc.&n;&t;&t; * Otherwise, Actual_src_desc is a temporary object to hold the&n;&t;&t; * converted object.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The source type does not match the type of the destination.&n;&t;&t; * Perform the &quot;implicit conversion&quot; of the source to the current type&n;&t;&t; * of the target as per the ACPI specification.&n;&t;&t; *&n;&t;&t; * If no conversion performed, actual_src_desc = source_desc.&n;&t;&t; * Otherwise, actual_src_desc is a temporary object to hold the&n;&t;&t; * converted object.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_convert_to_target_type
@@ -323,7 +323,7 @@ op_eq
 id|actual_src_desc
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * No conversion was performed.  Return the Source_desc as the&n;&t;&t;&t; * new object.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * No conversion was performed.  Return the source_desc as the&n;&t;&t;&t; * new object.&n;&t;&t;&t; */
 op_star
 id|new_desc
 op_assign

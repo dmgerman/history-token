@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *              $Revision: 93 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsxfname - Public interfaces to the ACPI subsystem&n; *                         ACPI Namespace oriented interfaces&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -8,7 +8,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;nsxfname&quot;
 )paren
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_handle&n; *&n; * PARAMETERS:  Parent          - Object to search under (search scope).&n; *              Path_name       - Pointer to an asciiz string containing the&n; *                                  name&n; *              Ret_handle      - Where the return handle is placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This routine will search for a caller specified name in the&n; *              name space.  The caller can restrict the search region by&n; *              specifying a non NULL parent.  The parent value is itself a&n; *              namespace handle.&n; *&n; ******************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    acpi_get_handle&n; *&n; * PARAMETERS:  Parent          - Object to search under (search scope).&n; *              path_name       - Pointer to an asciiz string containing the&n; *                                  name&n; *              ret_handle      - Where the return handle is placed&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This routine will search for a caller specified name in the&n; *              name space.  The caller can restrict the search region by&n; *              specifying a non NULL parent.  The parent value is itself a&n; *              namespace handle.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_handle
 id|acpi_get_handle
@@ -212,7 +212,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_name&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to a pathname&n; *              Name_type       - Full pathname or single segment&n; *              Buffer          - Buffer for returned path&n; *&n; * RETURN:      Pointer to a string containing the fully qualified Name.&n; *&n; * DESCRIPTION: This routine returns the fully qualified name associated with&n; *              the Handle parameter.  This and the Acpi_pathname_to_handle are&n; *              complementary functions.&n; *&n; ******************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    acpi_get_name&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to a pathname&n; *              name_type       - Full pathname or single segment&n; *              Buffer          - Buffer for returned path&n; *&n; * RETURN:      Pointer to a string containing the fully qualified Name.&n; *&n; * DESCRIPTION: This routine returns the fully qualified name associated with&n; *              the Handle parameter.  This and the acpi_pathname_to_handle are&n; *              complementary functions.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_name
 id|acpi_get_name
@@ -407,7 +407,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    Acpi_get_object_info&n; *&n; * PARAMETERS:  Handle          - Object Handle&n; *              Info            - Where the info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Returns information about an object as gleaned from the&n; *              namespace node and possibly by running several standard&n; *              control methods (Such as in the case of a device.)&n; *&n; ******************************************************************************/
+multiline_comment|/****************************************************************************&n; *&n; * FUNCTION:    acpi_get_object_info&n; *&n; * PARAMETERS:  Handle          - Object Handle&n; *              Info            - Where the info is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Returns information about an object as gleaned from the&n; *              namespace node and possibly by running several standard&n; *              control methods (Such as in the case of a device.)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_object_info
 id|acpi_get_object_info
