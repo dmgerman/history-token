@@ -164,8 +164,14 @@ DECL|macro|MAX_NR_ZONES
 mdefine_line|#define MAX_NR_ZONES&t;&t;3&t;/* Sync this with ZONES_SHIFT */
 DECL|macro|ZONES_SHIFT
 mdefine_line|#define ZONES_SHIFT&t;&t;2&t;/* ceil(log2(MAX_NR_ZONES)) */
+multiline_comment|/*&n; * When a memory allocation must conform to specific limitations (such&n; * as being suitable for DMA) the caller will pass in hints to the&n; * allocator in the gfp_mask, in the zone modifier bits.  These bits&n; * are used to select a priority ordered list of memory zones which&n; * match the requested limits.  GFP_ZONEMASK defines which bits within&n; * the gfp_mask should be considered as zone modifiers.  Each valid&n; * combination of the zone modifier bits has a corresponding list&n; * of zones (in node_zonelists).  Thus for two zone modifiers there&n; * will be a maximum of 4 (2 ** 2) zonelists, for 3 modifiers there will&n; * be 8 (2 ** 3) zonelists.  GFP_ZONETYPES defines the number of possible&n; * combinations of zone modifiers in &quot;zone modifier space&quot;.&n; */
 DECL|macro|GFP_ZONEMASK
 mdefine_line|#define GFP_ZONEMASK&t;0x03
+multiline_comment|/*&n; * As an optimisation any zone modifier bits which are only valid when&n; * no other zone modifier bits are set (loners) should be placed in&n; * the highest order bits of this field.  This allows us to reduce the&n; * extent of the zonelists thus saving space.  For example in the case&n; * of three zone modifier bits, we could require up to eight zonelists.&n; * If the left most zone modifier is a &quot;loner&quot; then the highest valid&n; * zonelist would be four allowing us to allocate only five zonelists.&n; * Use the first form when the left most bit is not a &quot;loner&quot;, otherwise&n; * use the second.&n; */
+multiline_comment|/* #define GFP_ZONETYPES&t;(GFP_ZONEMASK + 1) */
+multiline_comment|/* Non-loner */
+DECL|macro|GFP_ZONETYPES
+mdefine_line|#define GFP_ZONETYPES&t;((GFP_ZONEMASK + 1) / 2 + 1)&t;&t;/* Loner */
 multiline_comment|/*&n; * On machines where it is needed (eg PCs) we divide physical memory&n; * into multiple physical zones. On a PC we have 3 zones:&n; *&n; * ZONE_DMA&t;  &lt; 16 MB&t;ISA DMA capable memory&n; * ZONE_NORMAL&t;16-896 MB&t;direct mapped by the kernel&n; * ZONE_HIGHMEM&t; &gt; 896 MB&t;only page cache and user processes&n; */
 DECL|struct|zone
 r_struct
@@ -387,7 +393,7 @@ r_struct
 id|zonelist
 id|node_zonelists
 (braket
-id|MAX_NR_ZONES
+id|GFP_ZONETYPES
 )braket
 suffix:semicolon
 DECL|member|nr_zones
