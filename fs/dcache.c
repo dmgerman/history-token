@@ -71,13 +71,10 @@ id|dentry_stat_t
 id|dentry_stat
 op_assign
 (brace
-l_int|0
-comma
-l_int|0
-comma
+dot
+id|age_limit
+op_assign
 l_int|45
-comma
-l_int|0
 comma
 )brace
 suffix:semicolon
@@ -4488,7 +4485,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Dentry-cache hash table entries: %d (order: %ld, %ld bytes)&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;Dentry cache hash table entries: %d (order: %ld, %ld bytes)&bslash;n&quot;
 comma
 id|nr_hash
 comma
