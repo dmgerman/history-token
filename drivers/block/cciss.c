@@ -11099,11 +11099,6 @@ id|subsystem_device_id
 comma
 id|command
 suffix:semicolon
-id|unchar
-id|irq
-op_assign
-id|pdev-&gt;irq
-suffix:semicolon
 id|__u32
 id|board_id
 comma
@@ -11366,7 +11361,7 @@ c_func
 (paren
 l_string|&quot;irq = %x&bslash;n&quot;
 comma
-id|irq
+id|pdev-&gt;irq
 )paren
 suffix:semicolon
 id|printk
@@ -11380,7 +11375,7 @@ suffix:semicolon
 macro_line|#endif /* CCISS_DEBUG */ 
 id|c-&gt;intr
 op_assign
-id|irq
+id|pdev-&gt;irq
 suffix:semicolon
 multiline_comment|/*&n;&t; * Memory base addr is first addr , the second points to the config&n;         *   table&n;&t; */
 id|c-&gt;paddr
