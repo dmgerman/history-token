@@ -494,10 +494,11 @@ id|ip_vs_service
 op_star
 id|svc
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
+id|skb
 )paren
 (brace
 r_struct
@@ -509,6 +510,13 @@ r_struct
 id|ip_vs_sh_bucket
 op_star
 id|tbl
+suffix:semicolon
+r_struct
+id|iphdr
+op_star
+id|iph
+op_assign
+id|skb-&gt;nh.iph
 suffix:semicolon
 id|IP_VS_DBG
 c_func
