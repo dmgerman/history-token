@@ -1319,7 +1319,7 @@ c_func
 )braket
 suffix:semicolon
 )brace
-multiline_comment|/* Initialisation - setup the `cache&squot; cache. */
+multiline_comment|/* Initialisation.&n; * Called after the gfp() functions have been enabled, and before smp_init().&n; */
 DECL|function|kmem_cache_init
 r_void
 id|__init
@@ -1332,6 +1332,36 @@ r_void
 r_int
 id|left_over
 suffix:semicolon
+r_struct
+id|cache_sizes
+op_star
+id|sizes
+suffix:semicolon
+r_struct
+id|cache_names
+op_star
+id|names
+suffix:semicolon
+multiline_comment|/*&n;&t; * Fragmentation resistance on low memory - only use bigger&n;&t; * page orders on machines with more than 32MB of memory.&n;&t; */
+r_if
+c_cond
+(paren
+id|num_physpages
+OG
+(paren
+l_int|32
+op_lshift
+l_int|20
+)paren
+op_rshift
+id|PAGE_SHIFT
+)paren
+id|slab_break_gfp_order
+op_assign
+id|BREAK_GFP_ORDER_HI
+suffix:semicolon
+multiline_comment|/* Bootstrap is tricky, because several objects are allocated&n;&t; * from caches that do not exist yet:&n;&t; * 1) initialize the cache_cache cache: it contains the kmem_cache_t&n;&t; *    structures of all caches, except cache_cache itself: cache_cache&n;&t; *    is statically allocated.&n;&t; *    Initially an __init data area is used for the head array, it&squot;s&n;&t; *    replaced with a kmalloc allocated array at the end of the bootstrap.&n;&t; * 2) Create the first kmalloc cache.&n;&t; *    The kmem_cache_t for the new cache is allocated normally. An __init&n;&t; *    data area is used for the head array.&n;&t; * 3) Create the remaining kmalloc caches, with minimally sized head arrays.&n;&t; * 4) Replace the __init data head arrays for cache_cache and the first&n;&t; *    kmalloc cache with kmalloc allocated arrays.&n;&t; * 5) Resize the head arrays of the kmalloc caches to their final sizes.&n;&t; */
+multiline_comment|/* 1) create the cache_cache */
 id|init_MUTEX
 c_func
 (paren
@@ -1404,56 +1434,14 @@ id|cache_cache.colour_next
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Register a cpu startup notifier callback&n;&t; * that initializes ac_data for all new cpus&n;&t; */
-id|register_cpu_notifier
-c_func
-(paren
-op_amp
-id|cpucache_notifier
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Initialisation - setup remaining internal and general caches.&n; * Called after the gfp() functions have been enabled, and before smp_init().&n; */
-DECL|function|kmem_cache_sizes_init
-r_void
-id|__init
-id|kmem_cache_sizes_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|cache_sizes
-op_star
+multiline_comment|/* 2+3) create the kmalloc caches */
 id|sizes
 op_assign
 id|malloc_sizes
 suffix:semicolon
-r_struct
-id|cache_names
-op_star
 id|names
 op_assign
 id|cache_names
-suffix:semicolon
-multiline_comment|/*&n;&t; * Fragmentation resistance on low memory - only use bigger&n;&t; * page orders on machines with more than 32MB of memory.&n;&t; */
-r_if
-c_cond
-(paren
-id|num_physpages
-OG
-(paren
-l_int|32
-op_lshift
-l_int|20
-)paren
-op_rshift
-id|PAGE_SHIFT
-)paren
-id|slab_break_gfp_order
-op_assign
-id|BREAK_GFP_ORDER_HI
 suffix:semicolon
 r_while
 c_loop
@@ -1561,7 +1549,7 @@ id|names
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The generic caches are running - time to kick out the&n;&t; * bootstrap cpucaches.&n;&t; */
+multiline_comment|/* 4) Replace the bootstrap head arrays */
 (brace
 r_void
 op_star
@@ -1715,22 +1703,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-)brace
-DECL|function|cpucache_init
-r_int
-id|__init
-id|cpucache_init
-c_func
-(paren
-r_void
-)paren
+multiline_comment|/* 5) resize the head arrays to their final sizes */
 (brace
 id|kmem_cache_t
 op_star
 id|cachep
-suffix:semicolon
-r_int
-id|cpu
 suffix:semicolon
 id|down
 c_func
@@ -1738,10 +1715,6 @@ c_func
 op_amp
 id|cache_chain_sem
 )paren
-suffix:semicolon
-id|g_cpucache_up
-op_assign
-id|FULL
 suffix:semicolon
 id|list_for_each_entry
 c_func
@@ -1758,6 +1731,41 @@ c_func
 (paren
 id|cachep
 )paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|cache_chain_sem
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Done! */
+id|g_cpucache_up
+op_assign
+id|FULL
+suffix:semicolon
+multiline_comment|/* Register a cpu startup notifier callback&n;&t; * that initializes ac_data for all new cpus&n;&t; */
+id|register_cpu_notifier
+c_func
+(paren
+op_amp
+id|cpucache_notifier
+)paren
+suffix:semicolon
+multiline_comment|/* The reap timers are started later, with a module init call:&n;&t; * That part of the kernel is not yet operational.&n;&t; */
+)brace
+DECL|function|cpucache_init
+r_int
+id|__init
+id|cpucache_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|cpu
 suffix:semicolon
 multiline_comment|/* &n;&t; * Register the timers that return unneeded&n;&t; * pages to gfp.&n;&t; */
 r_for
@@ -1791,13 +1799,6 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|cache_chain_sem
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
