@@ -49,7 +49,7 @@ DECL|member|blkfactor
 r_int
 id|blkfactor
 suffix:semicolon
-multiline_comment|/* When we&squot;re using an aligment which&n;&t;&t;&t;&t;&t;   is finer than the filesystem&squot;s soft&n;&t;&t;&t;&t;&t;   blocksize, this specifies how much&n;&t;&t;&t;&t;&t;   finer.  blkfactor=2 means 1/4-block&n;&t;&t;&t;&t;&t;   alignment.  Does not change */
+multiline_comment|/* When we&squot;re using an alignment which&n;&t;&t;&t;&t;&t;   is finer than the filesystem&squot;s soft&n;&t;&t;&t;&t;&t;   blocksize, this specifies how much&n;&t;&t;&t;&t;&t;   finer.  blkfactor=2 means 1/4-block&n;&t;&t;&t;&t;&t;   alignment.  Does not change */
 DECL|member|start_zero_done
 r_int
 id|start_zero_done
@@ -2343,6 +2343,29 @@ id|map_bh
 r_char
 op_star
 id|kaddr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dio-&gt;block_in_file
+op_ge
+id|dio-&gt;inode-&gt;i_size
+op_rshift
+id|blkbits
+)paren
+(brace
+multiline_comment|/* We hit eof */
+id|page_cache_release
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|kaddr
 op_assign
 id|kmap_atomic
 c_func
@@ -3107,10 +3130,34 @@ l_int|0
 op_logical_and
 id|dio-&gt;result
 )paren
+(brace
 id|ret
 op_assign
 id|dio-&gt;result
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * Adjust the return value if the read crossed a&n;&t;&t;&t; * non-block-aligned EOF.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|rw
+op_eq
+id|READ
+op_logical_and
+(paren
+id|offset
+op_plus
+id|ret
+OG
+id|inode-&gt;i_size
+)paren
+)paren
+id|ret
+op_assign
+id|inode-&gt;i_size
+op_minus
+id|offset
+suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
