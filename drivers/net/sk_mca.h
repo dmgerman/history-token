@@ -135,6 +135,10 @@ id|skmca_medium
 id|medium
 suffix:semicolon
 multiline_comment|/* physical cannector               */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|typedef|skmca_priv
 )brace
 id|skmca_priv
