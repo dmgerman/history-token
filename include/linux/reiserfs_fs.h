@@ -22,8 +22,10 @@ DECL|macro|USE_INODE_GENERATION_COUNTER
 mdefine_line|#define USE_INODE_GENERATION_COUNTER
 DECL|macro|REISERFS_PREALLOCATE
 mdefine_line|#define REISERFS_PREALLOCATE
+DECL|macro|DISPLACE_NEW_PACKING_LOCALITIES
+mdefine_line|#define DISPLACE_NEW_PACKING_LOCALITIES
 DECL|macro|PREALLOCATION_SIZE
-mdefine_line|#define PREALLOCATION_SIZE 8
+mdefine_line|#define PREALLOCATION_SIZE 9
 multiline_comment|/* n must be power of 2 */
 DECL|macro|_ROUND_UP
 mdefine_line|#define _ROUND_UP(x,n) (((x)+(n)-1u) &amp; ~((n)-1u))
@@ -487,8 +489,11 @@ mdefine_line|#define get_inode_sd_version(inode)                                
 DECL|macro|set_inode_sd_version
 mdefine_line|#define set_inode_sd_version(inode, version)                                   &bslash;&n;         ({ if((version)==STAT_DATA_V2)                                        &bslash;&n;                REISERFS_I(inode)-&gt;i_flags |= i_stat_data_version_mask;     &bslash;&n;            else                                                               &bslash;&n;                REISERFS_I(inode)-&gt;i_flags &amp;= ~i_stat_data_version_mask; })
 multiline_comment|/* This is an aggressive tail suppression policy, I am hoping it&n;   improves our benchmarks. The principle behind it is that percentage&n;   space saving is what matters, not absolute space saving.  This is&n;   non-intuitive, but it helps to understand it if you consider that the&n;   cost to access 4 blocks is not much more than the cost to access 1&n;   block, if you have to do a seek and rotate.  A tail risks a&n;   non-linear disk access that is significant as a percentage of total&n;   time cost for a 4 block file and saves an amount of space that is&n;   less significant as a percentage of space, or so goes the hypothesis.&n;   -Hans */
-DECL|macro|STORE_TAIL_IN_UNFM
-mdefine_line|#define STORE_TAIL_IN_UNFM(n_file_size,n_tail_size,n_block_size) &bslash;&n;(&bslash;&n;  (!(n_tail_size)) || &bslash;&n;  (((n_tail_size) &gt; MAX_DIRECT_ITEM_LEN(n_block_size)) || &bslash;&n;   ( (n_file_size) &gt;= (n_block_size) * 4 ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) * 3 ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size))/4) ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) * 2 ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size))/2) ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size) * 3)/4) ) ) &bslash;&n;)
+DECL|macro|STORE_TAIL_IN_UNFM_S1
+mdefine_line|#define STORE_TAIL_IN_UNFM_S1(n_file_size,n_tail_size,n_block_size) &bslash;&n;(&bslash;&n;  (!(n_tail_size)) || &bslash;&n;  (((n_tail_size) &gt; MAX_DIRECT_ITEM_LEN(n_block_size)) || &bslash;&n;   ( (n_file_size) &gt;= (n_block_size) * 4 ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) * 3 ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size))/4) ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) * 2 ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size))/2) ) || &bslash;&n;   ( ( (n_file_size) &gt;= (n_block_size) ) &amp;&amp; &bslash;&n;     ( (n_tail_size) &gt;=   (MAX_DIRECT_ITEM_LEN(n_block_size) * 3)/4) ) ) &bslash;&n;)
+multiline_comment|/* Another strategy for tails, this one means only create a tail if all the&n;   file would fit into one DIRECT item.&n;   Primary intention for this one is to increase performance by decreasing&n;   seeking.&n;*/
+DECL|macro|STORE_TAIL_IN_UNFM_S2
+mdefine_line|#define STORE_TAIL_IN_UNFM_S2(n_file_size,n_tail_size,n_block_size) &bslash;&n;(&bslash;&n;  (!(n_tail_size)) || &bslash;&n;  (((n_file_size) &gt; MAX_DIRECT_ITEM_LEN(n_block_size)) ) &bslash;&n;)
 multiline_comment|/*&n; * values for s_umount_state field&n; */
 DECL|macro|REISERFS_VALID_FS
 mdefine_line|#define REISERFS_VALID_FS    1
@@ -3019,6 +3024,14 @@ r_int
 id|fs_gen
 suffix:semicolon
 multiline_comment|/* saved value of `reiserfs_generation&squot; counter&n;&t;&t;&t;          see FILESYSTEM_CHANGED() macro in reiserfs_fs.h */
+macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
+DECL|member|key
+r_struct
+id|key
+id|key
+suffix:semicolon
+multiline_comment|/* key pointer, to pass to block allocator or&n;&t;&t;&t;&t; another low-level subsystem */
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* These are modes of balancing */
@@ -3760,8 +3773,10 @@ op_star
 id|p_s_sb
 comma
 r_int
+id|bmap_nr
+comma
 r_int
-id|bl
+id|bit_nr
 comma
 r_int
 id|searchall
@@ -4651,7 +4666,7 @@ mdefine_line|#define file_size(inode) ((inode)-&gt;i_size)
 DECL|macro|tail_size
 mdefine_line|#define tail_size(inode) (file_size (inode) &amp; (i_block_size (inode) - 1))
 DECL|macro|tail_has_to_be_packed
-mdefine_line|#define tail_has_to_be_packed(inode) (!dont_have_tails ((inode)-&gt;i_sb) &amp;&amp;&bslash;&n;!STORE_TAIL_IN_UNFM(file_size (inode), tail_size(inode), i_block_size (inode)))
+mdefine_line|#define tail_has_to_be_packed(inode) (have_large_tails ((inode)-&gt;i_sb)?&bslash;&n;!STORE_TAIL_IN_UNFM_S1(file_size (inode), tail_size(inode), inode-&gt;i_sb-&gt;s_blocksize):have_small_tails ((inode)-&gt;i_sb)?!STORE_TAIL_IN_UNFM_S2(file_size (inode), tail_size(inode), inode-&gt;i_sb-&gt;s_blocksize):0 )
 r_void
 id|padd_item
 (paren
@@ -6143,6 +6158,91 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* bitmap.c */
+multiline_comment|/* structure contains hints for block allocator, and it is a container for&n; * arguments, such as node, search path, transaction_handle, etc. */
+DECL|struct|__reiserfs_blocknr_hint
+r_struct
+id|__reiserfs_blocknr_hint
+(brace
+DECL|member|inode
+r_struct
+id|inode
+op_star
+id|inode
+suffix:semicolon
+multiline_comment|/* inode passed to allocator, if we allocate unf. nodes */
+DECL|member|block
+r_int
+id|block
+suffix:semicolon
+multiline_comment|/* file offset, in blocks */
+DECL|member|key
+r_struct
+id|key
+id|key
+suffix:semicolon
+DECL|member|path
+r_struct
+id|path
+op_star
+id|path
+suffix:semicolon
+multiline_comment|/* search path, used by allocator to deternine search_start by&n;&t;&t;&t;&t;&t; * various ways */
+DECL|member|th
+r_struct
+id|reiserfs_transaction_handle
+op_star
+id|th
+suffix:semicolon
+multiline_comment|/* transaction handle is needed to log super blocks and&n;&t;&t;&t;&t;&t;       * bitmap blocks changes  */
+DECL|member|beg
+DECL|member|end
+id|b_blocknr_t
+id|beg
+comma
+id|end
+suffix:semicolon
+DECL|member|search_start
+id|b_blocknr_t
+id|search_start
+suffix:semicolon
+multiline_comment|/* a field used to transfer search start value (block number)&n;&t;&t;&t;&t;&t; * between different block allocator procedures&n;&t;&t;&t;&t;&t; * (determine_search_start() and others) */
+DECL|member|prealloc_size
+r_int
+id|prealloc_size
+suffix:semicolon
+multiline_comment|/* is set in determine_prealloc_size() function, used by underlayed&n;&t;&t;&t;&t;&t; * function that do actual allocation */
+DECL|member|formatted_node
+r_int
+id|formatted_node
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* the allocator uses different polices for getting disk space for&n;&t;&t;&t;&t;&t; * formatted/unformatted blocks with/without preallocation */
+DECL|member|preallocate
+r_int
+id|preallocate
+suffix:colon
+l_int|1
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|typedef|reiserfs_blocknr_hint_t
+r_typedef
+r_struct
+id|__reiserfs_blocknr_hint
+id|reiserfs_blocknr_hint_t
+suffix:semicolon
+r_int
+id|reiserfs_parse_alloc_options
+(paren
+r_struct
+id|super_block
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
 r_int
 id|is_reusable
 (paren
@@ -6172,26 +6272,86 @@ r_int
 )paren
 suffix:semicolon
 r_int
-id|reiserfs_new_blocknrs
+id|reiserfs_allocate_blocknrs
+c_func
+(paren
+id|reiserfs_blocknr_hint_t
+op_star
+comma
+id|b_blocknr_t
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|function|reiserfs_new_form_blocknrs
+r_extern
+r_inline
+r_int
+id|reiserfs_new_form_blocknrs
 (paren
 r_struct
-id|reiserfs_transaction_handle
+id|tree_balance
 op_star
-id|th
+id|tb
 comma
-r_int
-r_int
+id|b_blocknr_t
 op_star
-id|pblocknrs
-comma
-r_int
-r_int
-id|start_from
+id|new_blocknrs
 comma
 r_int
 id|amount_needed
 )paren
+(brace
+id|reiserfs_blocknr_hint_t
+id|hint
+op_assign
+(brace
+id|th
+suffix:colon
+id|tb-&gt;transaction_handle
+comma
+id|path
+suffix:colon
+id|tb-&gt;tb_path
+comma
+id|inode
+suffix:colon
+l_int|NULL
+comma
+id|key
+suffix:colon
+id|tb-&gt;key
+comma
+id|block
+suffix:colon
+l_int|0
+comma
+id|formatted_node
+suffix:colon
+l_int|1
+)brace
 suffix:semicolon
+r_return
+id|reiserfs_allocate_blocknrs
+c_func
+(paren
+op_amp
+id|hint
+comma
+id|new_blocknrs
+comma
+id|amount_needed
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|reiserfs_new_unf_blocknrs
+r_extern
+r_inline
 r_int
 id|reiserfs_new_unf_blocknrs
 (paren
@@ -6200,19 +6360,70 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
-r_int
-r_int
+id|b_blocknr_t
 op_star
-id|pblocknr
+id|new_blocknrs
+comma
+r_struct
+id|path
+op_star
+id|path
 comma
 r_int
-r_int
-id|start_from
+id|block
+)paren
+(brace
+id|reiserfs_blocknr_hint_t
+id|hint
+op_assign
+(brace
+id|th
+suffix:colon
+id|th
+comma
+id|path
+suffix:colon
+id|path
+comma
+id|inode
+suffix:colon
+l_int|NULL
+comma
+id|block
+suffix:colon
+id|block
+comma
+id|formatted_node
+suffix:colon
+l_int|0
+comma
+id|preallocate
+suffix:colon
+l_int|0
+)brace
+suffix:semicolon
+r_return
+id|reiserfs_allocate_blocknrs
+c_func
+(paren
+op_amp
+id|hint
+comma
+id|new_blocknrs
+comma
+l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
+)brace
 macro_line|#ifdef REISERFS_PREALLOCATE
+DECL|function|reiserfs_new_unf_blocknrs2
+r_extern
+r_inline
 r_int
 id|reiserfs_new_unf_blocknrs2
+c_func
 (paren
 r_struct
 id|reiserfs_transaction_handle
@@ -6224,16 +6435,63 @@ id|inode
 op_star
 id|inode
 comma
-r_int
-r_int
+id|b_blocknr_t
 op_star
-id|pblocknr
+id|new_blocknrs
+comma
+r_struct
+id|path
+op_star
+id|path
 comma
 r_int
-r_int
-id|start_from
+id|block
+)paren
+(brace
+id|reiserfs_blocknr_hint_t
+id|hint
+op_assign
+(brace
+id|th
+suffix:colon
+id|th
+comma
+id|path
+suffix:colon
+id|path
+comma
+id|inode
+suffix:colon
+id|inode
+comma
+id|block
+suffix:colon
+id|block
+comma
+id|formatted_node
+suffix:colon
+l_int|0
+comma
+id|preallocate
+suffix:colon
+l_int|1
+)brace
+suffix:semicolon
+r_return
+id|reiserfs_allocate_blocknrs
+c_func
+(paren
+op_amp
+id|hint
+comma
+id|new_blocknrs
+comma
+l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
+)brace
 r_void
 id|reiserfs_discard_prealloc
 (paren
@@ -6258,6 +6516,32 @@ id|th
 )paren
 suffix:semicolon
 macro_line|#endif
+r_void
+id|reiserfs_claim_blocks_to_be_allocated
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|blocks
+)paren
+suffix:semicolon
+r_void
+id|reiserfs_release_claimed_blocks
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+r_int
+id|blocks
+)paren
+suffix:semicolon
 multiline_comment|/* hashes.c */
 id|__u32
 id|keyed_hash

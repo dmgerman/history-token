@@ -4853,6 +4853,14 @@ id|REPEAT_SEARCH
 )paren
 r_break
 suffix:semicolon
+id|PROC_INFO_INC
+c_func
+(paren
+id|p_s_sb
+comma
+id|delete_item_restarted
+)paren
+suffix:semicolon
 singleline_comment|// file system changed, repeat search
 id|n_ret_value
 op_assign
@@ -5239,8 +5247,20 @@ id|retval
 op_eq
 id|REPEAT_SEARCH
 )paren
+(brace
+id|PROC_INFO_INC
+c_func
+(paren
+id|th
+op_member_access_from_pointer
+id|t_super
+comma
+id|delete_solid_item_restarted
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6042,6 +6062,14 @@ id|REPEAT_SEARCH
 )paren
 r_break
 suffix:semicolon
+id|PROC_INFO_INC
+c_func
+(paren
+id|p_s_sb
+comma
+id|cut_from_item_restarted
+)paren
+suffix:semicolon
 id|n_ret_value
 op_assign
 id|search_for_position_by_key
@@ -6361,7 +6389,7 @@ c_cond
 id|n_is_inode_locked
 )paren
 (brace
-multiline_comment|/* we&squot;ve done an indirect-&gt;direct conversion.  when the data block &n;&t;** was freed, it was removed from the list of blocks that must &n;&t;** be flushed before the transaction commits, so we don&squot;t need to &n;&t;** deal with it here.&n;&t;*/
+multiline_comment|/* we&squot;ve done an indirect-&gt;direct conversion.  when the data block&n;&t;** was freed, it was removed from the list of blocks that must&n;&t;** be flushed before the transaction commits, so we don&squot;t need to&n;&t;** deal with it here.&n;&t;*/
 id|REISERFS_I
 c_func
 (paren
@@ -7188,6 +7216,12 @@ comma
 id|n_pasted_size
 )paren
 suffix:semicolon
+macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
+id|s_paste_balance.key
+op_assign
+id|p_s_key-&gt;on_disk_key
+suffix:semicolon
+macro_line|#endif
 r_while
 c_loop
 (paren
@@ -7212,6 +7246,16 @@ id|REPEAT_SEARCH
 )paren
 (brace
 multiline_comment|/* file system changed while we were in the fix_nodes */
+id|PROC_INFO_INC
+c_func
+(paren
+id|th
+op_member_access_from_pointer
+id|t_super
+comma
+id|paste_into_item_restarted
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|search_for_position_by_key
@@ -7250,7 +7294,7 @@ id|POSITION_FOUND
 (brace
 id|reiserfs_warning
 (paren
-l_string|&quot;PAP-5710: reiserfs_paste_into_item: entry or pasted byte (%K) exists&quot;
+l_string|&quot;PAP-5710: reiserfs_paste_into_item: entry or pasted byte (%K) exists&bslash;n&quot;
 comma
 id|p_s_key
 )paren
@@ -7394,6 +7438,12 @@ id|p_s_ih
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
+id|s_ins_balance.key
+op_assign
+id|key-&gt;on_disk_key
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;    if (p_c_body == 0)&n;      n_zeros_num = ih_item_len(p_s_ih);&n;    */
 singleline_comment|//    le_key2cpu_key (&amp;key, &amp;(p_s_ih-&gt;ih_key));
 r_while
@@ -7420,6 +7470,16 @@ id|REPEAT_SEARCH
 )paren
 (brace
 multiline_comment|/* file system changed while we were in the fix_nodes */
+id|PROC_INFO_INC
+c_func
+(paren
+id|th
+op_member_access_from_pointer
+id|t_super
+comma
+id|insert_item_restarted
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|search_item
