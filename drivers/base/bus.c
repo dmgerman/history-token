@@ -206,11 +206,11 @@ c_func
 id|kobj
 )paren
 suffix:semicolon
-id|up
+id|complete
 c_func
 (paren
 op_amp
-id|drv-&gt;unload_sem
+id|drv-&gt;unloaded
 )paren
 suffix:semicolon
 )brace

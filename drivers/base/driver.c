@@ -165,7 +165,7 @@ id|drv-&gt;kobj
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;driver_register - register driver with bus&n; *&t;@drv:&t;driver to register&n; *&n; *&t;We pass off most of the work to the bus_add_driver() call,&n; *&t;since most of the things we have to do deal with the bus&n; *&t;structures.&n; *&n; *&t;The one interesting aspect is that we initialize @drv-&gt;unload_sem&n; *&t;to a locked state here. It will be unlocked when the driver&n; *&t;reference count reaches 0.&n; */
+multiline_comment|/**&n; *&t;driver_register - register driver with bus&n; *&t;@drv:&t;driver to register&n; *&n; *&t;We pass off most of the work to the bus_add_driver() call,&n; *&t;since most of the things we have to do deal with the bus&n; *&t;structures.&n; *&n; *&t;The one interesting aspect is that we setup @drv-&gt;unloaded&n; *&t;as a completion that gets complete when the driver reference&n; *&t;count reaches 0.&n; */
 DECL|function|driver_register
 r_int
 id|driver_register
@@ -184,11 +184,11 @@ op_amp
 id|drv-&gt;devices
 )paren
 suffix:semicolon
-id|init_MUTEX_LOCKED
+id|init_completion
 c_func
 (paren
 op_amp
-id|drv-&gt;unload_sem
+id|drv-&gt;unloaded
 )paren
 suffix:semicolon
 r_return
@@ -199,7 +199,7 @@ id|drv
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;driver_unregister - remove driver from system.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Again, we pass off most of the work to the bus-level call.&n; *&n; *&t;Though, once that is done, we attempt to take @drv-&gt;unload_sem.&n; *&t;This will block until the driver refcount reaches 0, and it is&n; *&t;released. Only modular drivers will call this function, and we&n; *&t;have to guarantee that it won&squot;t complete, letting the driver&n; *&t;unload until all references are gone.&n; */
+multiline_comment|/**&n; *&t;driver_unregister - remove driver from system.&n; *&t;@drv:&t;driver.&n; *&n; *&t;Again, we pass off most of the work to the bus-level call.&n; *&n; *&t;Though, once that is done, we wait until @drv-&gt;unloaded is completed.&n; *&t;This will block until the driver refcount reaches 0, and it is&n; *&t;released. Only modular drivers will call this function, and we&n; *&t;have to guarantee that it won&squot;t complete, letting the driver&n; *&t;unload until all references are gone.&n; */
 DECL|function|driver_unregister
 r_void
 id|driver_unregister
@@ -217,18 +217,11 @@ c_func
 id|drv
 )paren
 suffix:semicolon
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|drv-&gt;unload_sem
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|drv-&gt;unload_sem
+id|drv-&gt;unloaded
 )paren
 suffix:semicolon
 )brace

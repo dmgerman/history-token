@@ -412,10 +412,10 @@ id|bus_type
 op_star
 id|bus
 suffix:semicolon
-DECL|member|unload_sem
+DECL|member|unloaded
 r_struct
-id|semaphore
-id|unload_sem
+id|completion
+id|unloaded
 suffix:semicolon
 DECL|member|kobj
 r_struct
