@@ -1253,6 +1253,7 @@ multiline_comment|/* Any cleanup work */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Brought up %ld CPUs&bslash;n&quot;
 comma
 (paren
@@ -1517,6 +1518,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
 id|linux_banner
 )paren
 suffix:semicolon
@@ -1563,6 +1570,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;Kernel command line: %s&bslash;n&quot;
 comma
 id|saved_command_line
@@ -2037,6 +2045,7 @@ id|msg
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;error in initcall at 0x%p: &quot;
 l_string|&quot;returned with %s&bslash;n&quot;
 comma
@@ -2358,6 +2367,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;Warning: unable to open an initial console.&bslash;n&quot;
 )paren
 suffix:semicolon
