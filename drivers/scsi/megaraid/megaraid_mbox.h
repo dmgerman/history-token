@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid.h&n; */
+multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mbox.h&n; */
 macro_line|#ifndef _MEGARAID_H_
 DECL|macro|_MEGARAID_H_
 mdefine_line|#define _MEGARAID_H_
@@ -6,9 +6,9 @@ macro_line|#include &quot;mega_common.h&quot;
 macro_line|#include &quot;mbox_defs.h&quot;
 macro_line|#include &quot;megaraid_ioctl.h&quot;
 DECL|macro|MEGARAID_VERSION
-mdefine_line|#define MEGARAID_VERSION&t;&quot;2.20.3.0&quot;
+mdefine_line|#define MEGARAID_VERSION&t;&quot;2.20.3.1&quot;
 DECL|macro|MEGARAID_EXT_VERSION
-mdefine_line|#define MEGARAID_EXT_VERSION&t;&quot;(Release Date: Thu Aug 19 09:58:33 EDT 2004)&quot;
+mdefine_line|#define MEGARAID_EXT_VERSION&t;&quot;(Release Date: Tue Aug 24 09:43:35 EDT 2004)&quot;
 multiline_comment|/*&n; * Define some PCI values here until they are put in the kernel&n; */
 DECL|macro|PCI_DEVICE_ID_PERC4_DI_DISCOVERY
 mdefine_line|#define PCI_DEVICE_ID_PERC4_DI_DISCOVERY&t;&t;0x000E
