@@ -98,6 +98,7 @@ op_assign
 id|rb_entry
 c_func
 (paren
+op_star
 id|n
 comma
 r_struct
@@ -195,6 +196,7 @@ r_return
 id|rb_entry
 c_func
 (paren
+op_star
 id|n
 comma
 r_struct
