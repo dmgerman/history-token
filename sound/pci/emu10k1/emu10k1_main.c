@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
+macro_line|#include &quot;p16v.h&quot;
 macro_line|#if 0
 id|MODULE_AUTHOR
 c_func
@@ -876,45 +877,54 @@ id|tmp
 )paren
 suffix:semicolon
 multiline_comment|/* Setup SRCSel (Enable Spdif,I2S SRCMulti) */
-id|outl
+id|snd_emu10k1_ptr20_write
 c_func
 (paren
-l_int|0x600000
+id|emu
 comma
-id|emu-&gt;port
-op_plus
-l_int|0x20
-)paren
-suffix:semicolon
-id|outl
-c_func
-(paren
+id|SRCSel
+comma
+l_int|0
+comma
 l_int|0x14
-comma
-id|emu-&gt;port
-op_plus
-l_int|0x24
 )paren
 suffix:semicolon
 multiline_comment|/* Setup SRCMulti Input Audio Enable */
-id|outl
+multiline_comment|/* Use 0xFFFFFFFF to enable P16V sounds. */
+id|snd_emu10k1_ptr20_write
 c_func
 (paren
-l_int|0x6E0000
+id|emu
 comma
-id|emu-&gt;port
-op_plus
-l_int|0x20
+id|SRCMULTI_ENABLE
+comma
+l_int|0
+comma
+l_int|0xFFFFFFFF
 )paren
 suffix:semicolon
+multiline_comment|/* Enabled Phased (8-channel) P16V playback */
 id|outl
 c_func
 (paren
-l_int|0xFF00FF00
+l_int|0x0201
 comma
 id|emu-&gt;port
 op_plus
-l_int|0x24
+id|HCFG2
+)paren
+suffix:semicolon
+multiline_comment|/* Set playback routing. */
+id|snd_emu10k1_ptr_write
+c_func
+(paren
+id|emu
+comma
+id|CAPTURE_P16V_SOURCE
+comma
+l_int|0
+comma
+l_float|78e4
 )paren
 suffix:semicolon
 )brace
@@ -2719,6 +2729,12 @@ id|pci_disable_device
 c_func
 (paren
 id|emu-&gt;pci
+)paren
+suffix:semicolon
+id|snd_p16v_free
+c_func
+(paren
+id|emu
 )paren
 suffix:semicolon
 id|kfree

@@ -369,6 +369,55 @@ DECL|macro|AC97ADDRESS_READY
 mdefine_line|#define AC97ADDRESS_READY&t;0x80&t;&t;/* Read-only bit, reflects CODEC READY signal&t;*/
 DECL|macro|AC97ADDRESS_ADDRESS
 mdefine_line|#define AC97ADDRESS_ADDRESS&t;0x7f&t;&t;/* Address of indexed AC97 register&t;&t;*/
+multiline_comment|/* Available on the Audigy 2 and Audigy 4 only. This is the P16V chip. */
+DECL|macro|PTR2
+mdefine_line|#define PTR2&t;&t;&t;0x20&t;&t;/* Indexed register set pointer register&t;*/
+DECL|macro|DATA2
+mdefine_line|#define DATA2&t;&t;&t;0x24&t;&t;/* Indexed register set data register&t;&t;*/
+DECL|macro|IPR2
+mdefine_line|#define IPR2&t;&t;&t;0x28&t;&t;/* P16V interrupt pending register&t;&t;*/
+DECL|macro|IPR2_PLAYBACK_CH_0_LOOP
+mdefine_line|#define IPR2_PLAYBACK_CH_0_LOOP      0x00001000 /* Playback Channel 0 loop                               */
+DECL|macro|IPR2_PLAYBACK_CH_0_HALF_LOOP
+mdefine_line|#define IPR2_PLAYBACK_CH_0_HALF_LOOP 0x00000100 /* Playback Channel 0 half loop                          */
+DECL|macro|IPR2_CAPTURE_CH_0_LOOP
+mdefine_line|#define IPR2_CAPTURE_CH_0_LOOP       0x00100000 /* Capture Channel 0 loop                               */
+DECL|macro|IPR2_CAPTURE_CH_0_HALF_LOOP
+mdefine_line|#define IPR2_CAPTURE_CH_0_HALF_LOOP  0x00010000 /* Capture Channel 0 half loop                          */
+multiline_comment|/* 0x00000100 Playback. Only in once per period.&n;&t;&t;&t;&t;&t;&t; * 0x00110000 Capture. Int on half buffer.&n;&t;&t;&t;&t;&t;&t; */
+DECL|macro|INTE2
+mdefine_line|#define INTE2&t;&t;&t;0x2c&t;&t;/* P16V Interrupt enable register. &t;*/
+DECL|macro|INTE2_PLAYBACK_CH_0_LOOP
+mdefine_line|#define INTE2_PLAYBACK_CH_0_LOOP      0x00001000 /* Playback Channel 0 loop                               */
+DECL|macro|INTE2_PLAYBACK_CH_0_HALF_LOOP
+mdefine_line|#define INTE2_PLAYBACK_CH_0_HALF_LOOP 0x00000100 /* Playback Channel 0 half loop                          */
+DECL|macro|INTE2_PLAYBACK_CH_1_LOOP
+mdefine_line|#define INTE2_PLAYBACK_CH_1_LOOP      0x00002000 /* Playback Channel 1 loop                               */
+DECL|macro|INTE2_PLAYBACK_CH_1_HALF_LOOP
+mdefine_line|#define INTE2_PLAYBACK_CH_1_HALF_LOOP 0x00000200 /* Playback Channel 1 half loop                          */
+DECL|macro|INTE2_PLAYBACK_CH_2_LOOP
+mdefine_line|#define INTE2_PLAYBACK_CH_2_LOOP      0x00004000 /* Playback Channel 2 loop                               */
+DECL|macro|INTE2_PLAYBACK_CH_2_HALF_LOOP
+mdefine_line|#define INTE2_PLAYBACK_CH_2_HALF_LOOP 0x00000400 /* Playback Channel 2 half loop                          */
+DECL|macro|INTE2_PLAYBACK_CH_3_LOOP
+mdefine_line|#define INTE2_PLAYBACK_CH_3_LOOP      0x00008000 /* Playback Channel 3 loop                               */
+DECL|macro|INTE2_PLAYBACK_CH_3_HALF_LOOP
+mdefine_line|#define INTE2_PLAYBACK_CH_3_HALF_LOOP 0x00000800 /* Playback Channel 3 half loop                          */
+DECL|macro|INTE2_CAPTURE_CH_0_LOOP
+mdefine_line|#define INTE2_CAPTURE_CH_0_LOOP       0x00100000 /* Capture Channel 0 loop                               */
+DECL|macro|INTE2_CAPTURE_CH_0_HALF_LOOP
+mdefine_line|#define INTE2_CAPTURE_CH_0_HALF_LOOP  0x00010000 /* Caputre Channel 0 half loop                          */
+DECL|macro|HCFG2
+mdefine_line|#define HCFG2&t;&t;&t;0x34&t;&t;/* Defaults: 0, win2000 sets it to 00004201 */
+multiline_comment|/* 0x00000000 2-channel output. */
+multiline_comment|/* 0x00000200 8-channel output. */
+multiline_comment|/* 0x00000004 pauses stream/irq fail. */
+multiline_comment|/* Rest of bits no nothing to sound output */
+multiline_comment|/* bit 0: Enable P16V audio.&n;&t;&t;&t;&t;&t;&t; * bit 1: Lock P16V record memory cache.&n;&t;&t;&t;&t;&t;&t; * bit 2: Lock P16V playback memory cache.&n;&t;&t;&t;&t;&t;&t; * bit 3: Dummy record insert zero samples.&n;&t;&t;&t;&t;&t;&t; * bit 8: Record 8-channel in phase.&n;&t;&t;&t;&t;&t;&t; * bit 9: Playback 8-channel in phase.&n;&t;&t;&t;&t;&t;&t; * bit 11-12: Playback mixer attenuation: 0=0dB, 1=-6dB, 2=-12dB, 3=Mute.&n;&t;&t;&t;&t;&t;&t; * bit 13: Playback mixer enable.&n;&t;&t;&t;&t;&t;&t; * bit 14: Route SRC48 mixer output to fx engine.&n;&t;&t;&t;&t;&t;&t; * bit 15: Enable IEEE 1394 chip.&n;&t;&t;&t;&t;&t;&t; */
+DECL|macro|IPR3
+mdefine_line|#define IPR3&t;&t;&t;0x38&t;&t;/* Cdif interrupt pending register&t;&t;*/
+DECL|macro|INTE3
+mdefine_line|#define INTE3&t;&t;&t;0x3c&t;&t;/* Cdif interrupt enable register. &t;*/
 multiline_comment|/************************************************************************************************/
 multiline_comment|/* PCI function 1 registers, address = &lt;val&gt; + PCIBASE1&t;&t;&t;&t;&t;&t;*/
 multiline_comment|/************************************************************************************************/
@@ -1997,6 +2046,16 @@ id|snd_dma_buffer
 id|ptb_pages
 suffix:semicolon
 multiline_comment|/* page table pages */
+DECL|member|p16v_dma_dev
+r_struct
+id|snd_dma_device
+id|p16v_dma_dev
+suffix:semicolon
+DECL|member|p16v_buffer
+r_struct
+id|snd_dma_buffer
+id|p16v_buffer
+suffix:semicolon
 DECL|member|memhdr
 id|snd_util_memhdr_t
 op_star
@@ -2084,6 +2143,11 @@ id|snd_pcm_t
 op_star
 id|pcm_efx
 suffix:semicolon
+DECL|member|pcm_p16v
+id|snd_pcm_t
+op_star
+id|pcm_p16v
+suffix:semicolon
 DECL|member|synth_lock
 id|spinlock_t
 id|synth_lock
@@ -2128,6 +2192,17 @@ id|voices
 (braket
 id|NUM_G
 )braket
+suffix:semicolon
+DECL|member|p16v_voices
+id|emu10k1_voice_t
+id|p16v_voices
+(braket
+l_int|4
+)braket
+suffix:semicolon
+DECL|member|p16v_device_offset
+r_int
+id|p16v_device_offset
 suffix:semicolon
 DECL|member|pcm_mixer
 id|emu10k1_pcm_mixer_t
@@ -2399,6 +2474,41 @@ id|rpcm
 )paren
 suffix:semicolon
 r_int
+id|snd_p16v_pcm
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+r_int
+id|device
+comma
+id|snd_pcm_t
+op_star
+op_star
+id|rpcm
+)paren
+suffix:semicolon
+r_int
+id|snd_p16v_free
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+)paren
+suffix:semicolon
+r_int
+id|snd_p16v_mixer
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+)paren
+suffix:semicolon
+r_int
 id|snd_emu10k1_pcm_multi
 c_func
 (paren
@@ -2551,6 +2661,45 @@ id|chn
 suffix:semicolon
 r_void
 id|snd_emu10k1_ptr_write
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+r_int
+r_int
+id|reg
+comma
+r_int
+r_int
+id|chn
+comma
+r_int
+r_int
+id|data
+)paren
+suffix:semicolon
+r_int
+r_int
+id|snd_emu10k1_ptr20_read
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+r_int
+r_int
+id|reg
+comma
+r_int
+r_int
+id|chn
+)paren
+suffix:semicolon
+r_void
+id|snd_emu10k1_ptr20_write
 c_func
 (paren
 id|emu10k1_t
