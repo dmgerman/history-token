@@ -1910,7 +1910,7 @@ id|mm
 )paren
 )paren
 r_goto
-id|free_pt
+id|fail_nocontext
 suffix:semicolon
 id|retval
 op_assign
@@ -1953,6 +1953,24 @@ id|mm
 suffix:semicolon
 id|fail_nomem
 suffix:colon
+r_return
+id|retval
+suffix:semicolon
+id|fail_nocontext
+suffix:colon
+multiline_comment|/*&n;&t; * If init_new_context() failed, we cannot use mmput() to free the mm&n;&t; * because it calls destroy_context()&n;&t; */
+id|mm_free_pgd
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+id|free_mm
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
