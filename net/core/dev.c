@@ -8111,6 +8111,10 @@ comma
 l_string|&quot;register&quot;
 )paren
 suffix:semicolon
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|out
 suffix:colon
 r_return
