@@ -44,8 +44,6 @@ op_assign
 id|SNDRV_DEFAULT_STR1
 suffix:semicolon
 multiline_comment|/* ID for this card */
-multiline_comment|/* static int enable = 1; */
-macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 DECL|variable|enable_beep
 r_static
 r_int
@@ -53,7 +51,6 @@ id|enable_beep
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
 id|module_param
 c_func
 (paren
@@ -94,7 +91,25 @@ id|CHIP_NAME
 l_string|&quot; soundchip.&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* module_param(enable, bool, 0444);&n;   MODULE_PARM_DESC(enable, &quot;Enable this soundchip.&quot;);&n;#ifdef PMAC_SUPPORT_PCM_BEEP&n;module_param(enable_beep, bool, 0444);&n;MODULE_PARM_DESC(enable_beep, &quot;Enable beep using PCM.&quot;);&n;#endif&n;&n;&n;/*&n; * card entry&n; */
+id|module_param
+c_func
+(paren
+id|enable_beep
+comma
+r_bool
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|enable_beep
+comma
+l_string|&quot;Enable beep using PCM.&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * card entry&n; */
 DECL|variable|snd_pmac_card
 r_static
 id|snd_card_t
@@ -497,7 +512,6 @@ id|chip-&gt;initialized
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
 r_if
 c_cond
 (paren
@@ -509,7 +523,6 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -575,20 +588,9 @@ c_func
 OL
 l_int|0
 )paren
-(brace
-macro_line|#ifdef MODULE
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;no PMac soundchip found&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

@@ -517,6 +517,70 @@ op_star
 id|chip
 )paren
 suffix:semicolon
+r_void
+id|snd_pmac_detach_beep
+c_func
+(paren
+id|pmac_t
+op_star
+id|chip
+)paren
+suffix:semicolon
+r_void
+id|snd_pmac_beep_stop
+c_func
+(paren
+id|pmac_t
+op_star
+id|chip
+)paren
+suffix:semicolon
+r_int
+r_int
+id|snd_pmac_rate_index
+c_func
+(paren
+id|pmac_t
+op_star
+id|chip
+comma
+id|pmac_stream_t
+op_star
+id|rec
+comma
+r_int
+r_int
+id|rate
+)paren
+suffix:semicolon
+r_void
+id|snd_pmac_beep_dma_start
+c_func
+(paren
+id|pmac_t
+op_star
+id|chip
+comma
+r_int
+id|bytes
+comma
+r_int
+r_int
+id|addr
+comma
+r_int
+id|speed
+)paren
+suffix:semicolon
+r_void
+id|snd_pmac_beep_dma_stop
+c_func
+(paren
+id|pmac_t
+op_star
+id|chip
+)paren
+suffix:semicolon
 multiline_comment|/* initialize mixer */
 r_int
 id|snd_pmac_awacs_init
@@ -663,11 +727,5 @@ id|chip
 suffix:semicolon
 DECL|macro|big_mdelay
 mdefine_line|#define big_mdelay(msec) do {&bslash;&n;&t;set_current_state(TASK_UNINTERRUPTIBLE);&bslash;&n;&t;schedule_timeout(((msec) * HZ + 999) / 1000);&bslash;&n;} while (0)
-macro_line|#ifndef PMAC_SUPPORT_PCM_BEEP
-DECL|macro|snd_pmac_attach_beep
-mdefine_line|#define snd_pmac_attach_beep(chip) 0
-DECL|macro|snd_pmac_beep_stop
-mdefine_line|#define snd_pmac_beep_stop(chip)  /**/
-macro_line|#endif
 macro_line|#endif /* __PMAC_H */
 eof
