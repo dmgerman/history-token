@@ -41,8 +41,6 @@ id|fscpos
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * The FSCPOS registers&n; */
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
 multiline_comment|/* chip identification */
 DECL|macro|FSCPOS_REG_IDENT_0
 mdefine_line|#define FSCPOS_REG_IDENT_0&t;&t;0x00
@@ -2540,6 +2538,9 @@ op_logical_neg
 id|data-&gt;valid
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 id|dev_dbg
 c_func
 (paren
@@ -2548,9 +2549,6 @@ id|client-&gt;dev
 comma
 l_string|&quot;Starting fscpos update&bslash;n&quot;
 )paren
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 r_for
 c_loop
