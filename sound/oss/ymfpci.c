@@ -12255,6 +12255,14 @@ l_int|0x8000
 suffix:semicolon
 id|out_free
 suffix:colon
+r_if
+c_cond
+(paren
+id|codec-&gt;ac97_codec
+(braket
+l_int|0
+)braket
+)paren
 id|ac97_release_codec
 c_func
 (paren
