@@ -638,15 +638,6 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-r_int
-id|cpufreq_restore
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* the proc_intf.c needs this */
 r_int
 id|cpufreq_parse_governor
