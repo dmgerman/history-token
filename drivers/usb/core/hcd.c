@@ -3603,6 +3603,8 @@ c_cond
 id|retval
 op_logical_and
 id|sys
+op_logical_and
+id|sys-&gt;driver
 )paren
 id|dev_dbg
 (paren
