@@ -4319,7 +4319,6 @@ c_cond
 (paren
 id|uurb.endpoint
 op_amp
-op_complement
 id|USB_ENDPOINT_DIR_MASK
 )paren
 op_ne

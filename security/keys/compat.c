@@ -56,7 +56,7 @@ c_func
 id|compat_ptr
 c_func
 (paren
-id|arg3
+id|arg2
 )paren
 )paren
 suffix:semicolon

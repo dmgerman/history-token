@@ -7871,7 +7871,9 @@ comma
 )brace
 suffix:semicolon
 DECL|function|cfq_init
+r_static
 r_int
+id|__init
 id|cfq_init
 c_func
 (paren

@@ -373,9 +373,21 @@ id|to
 op_assign
 id|tty-&gt;link
 suffix:semicolon
+id|ssize_t
+(paren
+op_star
+id|chars_in_buffer
+)paren
+(paren
+r_struct
+id|tty_struct
+op_star
+)paren
+suffix:semicolon
 r_int
 id|count
 suffix:semicolon
+multiline_comment|/* We should get the line discipline lock for &quot;tty-&gt;link&quot; */
 r_if
 c_cond
 (paren
@@ -383,7 +395,11 @@ op_logical_neg
 id|to
 op_logical_or
 op_logical_neg
+(paren
+id|chars_in_buffer
+op_assign
 id|to-&gt;ldisc.chars_in_buffer
+)paren
 )paren
 r_return
 l_int|0
@@ -391,8 +407,6 @@ suffix:semicolon
 multiline_comment|/* The ldisc must report 0 if no characters available to be read */
 id|count
 op_assign
-id|to-&gt;ldisc
-dot
 id|chars_in_buffer
 c_func
 (paren

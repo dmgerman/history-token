@@ -566,6 +566,17 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|keycode
+template_param
+id|KEY_MAX
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|oldkey
 op_assign
 id|SET_INPUT_KEYCODE
