@@ -5,6 +5,7 @@ macro_line|#include &quot;timer.h&quot;
 macro_line|#include &quot;recmgr.h&quot;
 macro_line|#include &quot;audio.h&quot;
 macro_line|#include &quot;cardwi.h&quot;
+multiline_comment|/**&n; * query_format - returns a valid sound format&n; *&n; * This function will return a valid sound format as close&n; * to the requested one as possible. &n; */
 DECL|function|query_format
 r_void
 id|query_format
@@ -177,25 +178,43 @@ id|wave_fmt-&gt;samplingrate
 op_assign
 l_int|0x1F40
 suffix:semicolon
-r_if
+r_switch
 c_cond
 (paren
-(paren
-id|wave_fmt-&gt;bitsperchannel
-op_ne
-l_int|8
+id|wave_fmt-&gt;id
 )paren
-op_logical_and
-(paren
-id|wave_fmt-&gt;bitsperchannel
-op_ne
-l_int|16
-)paren
-)paren
+(brace
+r_case
+id|AFMT_S16_LE
+suffix:colon
 id|wave_fmt-&gt;bitsperchannel
 op_assign
 l_int|16
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AFMT_U8
+suffix:colon
+id|wave_fmt-&gt;bitsperchannel
+op_assign
+l_int|8
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|wave_fmt-&gt;id
+op_assign
+id|AFMT_S16_LE
+suffix:semicolon
+id|wave_fmt-&gt;bitsperchannel
+op_assign
+l_int|16
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 multiline_comment|/* these can&squot;t be changed from the original values */
@@ -235,8 +254,6 @@ id|wave_fmt-&gt;bytespersample
 op_star
 id|wave_fmt-&gt;samplingrate
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|alloc_buffer
 r_static
@@ -255,10 +272,6 @@ op_star
 id|buffer
 )paren
 (brace
-r_if
-c_cond
-(paren
-(paren
 id|buffer-&gt;addr
 op_assign
 id|pci_alloc_consistent
@@ -273,7 +286,11 @@ comma
 op_amp
 id|buffer-&gt;dma_handle
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|buffer-&gt;addr
 op_eq
 l_int|NULL
 )paren
@@ -322,8 +339,6 @@ id|buffer-&gt;addr
 comma
 id|buffer-&gt;dma_handle
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|emu10k1_wavein_open
@@ -703,8 +718,6 @@ id|wiinst-&gt;state
 op_assign
 id|WAVE_STATE_CLOSED
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|emu10k1_wavein_start
 r_void
@@ -772,8 +785,6 @@ suffix:semicolon
 id|wiinst-&gt;state
 op_or_assign
 id|WAVE_STATE_STARTED
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|emu10k1_wavein_stop
@@ -843,8 +854,6 @@ id|wiinst-&gt;state
 op_and_assign
 op_complement
 id|WAVE_STATE_STARTED
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 DECL|function|emu10k1_wavein_setformat
@@ -1038,6 +1047,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|wiinst-&gt;mmapped
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_star
 id|size
 OG
@@ -1066,8 +1082,6 @@ l_string|&quot;buffer overrun&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|copy_block
 r_static
@@ -1100,7 +1114,7 @@ id|cov
 op_eq
 l_int|1
 )paren
-id|copy_to_user
+id|__copy_to_user
 c_func
 (paren
 id|dst
@@ -1154,7 +1168,7 @@ id|i
 op_xor
 l_int|0x80
 suffix:semicolon
-id|copy_to_user
+id|__copy_to_user
 c_func
 (paren
 id|dst
@@ -1169,8 +1183,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|emu10k1_wavein_xferdata
 r_void
@@ -1334,8 +1346,6 @@ id|buffer-&gt;cov
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|emu10k1_wavein_update
 r_void
@@ -1417,8 +1427,6 @@ suffix:semicolon
 id|wiinst-&gt;buffer.hw_pos
 op_assign
 id|hw_pos
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 eof

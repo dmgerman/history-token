@@ -6,6 +6,10 @@ DECL|struct|wave_format
 r_struct
 id|wave_format
 (brace
+DECL|member|id
+r_int
+id|id
+suffix:semicolon
 DECL|member|samplingrate
 r_int
 id|samplingrate
@@ -18,10 +22,14 @@ DECL|member|channels
 id|u8
 id|channels
 suffix:semicolon
-multiline_comment|/* 1 = Mono, 2 = Stereo */
+multiline_comment|/* 1 = Mono, 2 = Stereo, 3, ... = Multichannel */
 DECL|member|bytesperchannel
 id|u8
 id|bytesperchannel
+suffix:semicolon
+DECL|member|bytespervoicesample
+id|u8
+id|bytespervoicesample
 suffix:semicolon
 DECL|member|bytespersample
 id|u8
@@ -30,6 +38,10 @@ suffix:semicolon
 DECL|member|bytespersec
 r_int
 id|bytespersec
+suffix:semicolon
+DECL|member|passthrough
+id|u8
+id|passthrough
 suffix:semicolon
 )brace
 suffix:semicolon

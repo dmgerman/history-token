@@ -396,20 +396,20 @@ DECL|member|nfract
 r_int
 id|nfract
 suffix:semicolon
-multiline_comment|/* Percentage of buffer cache dirty to &n;&t;&t;&t;&t;activate bdflush */
-DECL|member|ndirty
-r_int
-id|ndirty
-suffix:semicolon
-multiline_comment|/* Maximum number of dirty blocks to write out per&n;&t;&t;&t;&t;wake-cycle */
-DECL|member|nrefill
-r_int
-id|nrefill
-suffix:semicolon
-multiline_comment|/* Number of clean buffers to try to obtain&n;&t;&t;&t;&t;each time we call refill */
+multiline_comment|/* Percentage of buffer cache dirty to &n;&t;&t;&t;&t;   activate bdflush */
 DECL|member|dummy1
 r_int
 id|dummy1
+suffix:semicolon
+multiline_comment|/* old &quot;ndirty&quot; */
+DECL|member|dummy2
+r_int
+id|dummy2
+suffix:semicolon
+multiline_comment|/* old &quot;nrefill&quot; */
+DECL|member|dummy3
+r_int
+id|dummy3
 suffix:semicolon
 multiline_comment|/* unused */
 DECL|member|interval
@@ -426,15 +426,15 @@ DECL|member|nfract_sync
 r_int
 id|nfract_sync
 suffix:semicolon
-multiline_comment|/* Percentage of buffer cache dirty to &n;&t;&t;&t;&t;    activate bdflush synchronously */
-DECL|member|dummy2
+multiline_comment|/* Percentage of buffer cache dirty to &n;&t;&t;&t;&t;   activate bdflush synchronously */
+DECL|member|dummy4
 r_int
-id|dummy2
+id|dummy4
 suffix:semicolon
 multiline_comment|/* unused */
-DECL|member|dummy3
+DECL|member|dummy5
 r_int
-id|dummy3
+id|dummy5
 suffix:semicolon
 multiline_comment|/* unused */
 DECL|member|b_un
@@ -4318,12 +4318,6 @@ op_amp
 id|lru_list_lock
 )paren
 suffix:semicolon
-id|touch_buffer
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
 r_return
 id|bh
 suffix:semicolon
@@ -4906,6 +4900,12 @@ comma
 id|block
 comma
 id|size
+)paren
+suffix:semicolon
+id|touch_buffer
+c_func
+(paren
+id|bh
 )paren
 suffix:semicolon
 r_if
@@ -10644,28 +10644,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|lru_list_lock
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
 suffix:semicolon
 suffix:semicolon
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|write_some_buffers
-c_func
-(paren
-id|NODEV
-)paren
 )paren
 (brace
 r_struct
@@ -10690,9 +10673,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bh
-op_logical_and
 op_logical_neg
+id|bh
+op_logical_or
 id|time_before
 c_func
 (paren
@@ -10701,8 +10684,23 @@ comma
 id|bh-&gt;b_flushtime
 )paren
 )paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|write_some_buffers
+c_func
+(paren
+id|NODEV
+)paren
+)paren
 r_continue
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|spin_unlock
 c_func
 (paren
@@ -10710,18 +10708,9 @@ op_amp
 id|lru_list_lock
 )paren
 suffix:semicolon
-)brace
-id|run_task_queue
-c_func
-(paren
-op_amp
-id|tq_disk
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 DECL|function|block_sync_page
 r_int

@@ -5,8 +5,11 @@ mdefine_line|#define _HWACCESS_H
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
+macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &quot;emu_wrapper.h&quot;
+macro_line|#include &quot;passthrough.h&quot;
+macro_line|#include &quot;efxmgr.h&quot;
+macro_line|#include &quot;midi.h&quot;
 DECL|macro|EMUPAGESIZE
 mdefine_line|#define EMUPAGESIZE     4096            /* don&squot;t change */
 DECL|macro|NUM_G
@@ -134,6 +137,79 @@ id|fxwc
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|CMD_READ
+mdefine_line|#define CMD_READ 1
+DECL|macro|CMD_WRITE
+mdefine_line|#define CMD_WRITE 2
+DECL|struct|mixer_private_ioctl
+r_struct
+id|mixer_private_ioctl
+(brace
+DECL|member|cmd
+id|u32
+id|cmd
+suffix:semicolon
+DECL|member|val
+id|u32
+id|val
+(braket
+l_int|90
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* bogus ioctls numbers to escape from OSS mixer limitations */
+DECL|macro|CMD_WRITEFN0
+mdefine_line|#define CMD_WRITEFN0            _IOW(&squot;D&squot;, 0, struct mixer_private_ioctl)
+DECL|macro|CMD_READFN0
+mdefine_line|#define CMD_READFN0&t;&t;_IOR(&squot;D&squot;, 1, struct mixer_private_ioctl) 
+DECL|macro|CMD_WRITEPTR
+mdefine_line|#define CMD_WRITEPTR&t;&t;_IOW(&squot;D&squot;, 2, struct mixer_private_ioctl) 
+DECL|macro|CMD_READPTR
+mdefine_line|#define CMD_READPTR&t;&t;_IOR(&squot;D&squot;, 3, struct mixer_private_ioctl) 
+DECL|macro|CMD_SETRECSRC
+mdefine_line|#define CMD_SETRECSRC&t;&t;_IOW(&squot;D&squot;, 4, struct mixer_private_ioctl) 
+DECL|macro|CMD_GETRECSRC
+mdefine_line|#define CMD_GETRECSRC&t;&t;_IOR(&squot;D&squot;, 5, struct mixer_private_ioctl) 
+DECL|macro|CMD_GETVOICEPARAM
+mdefine_line|#define CMD_GETVOICEPARAM&t;_IOR(&squot;D&squot;, 6, struct mixer_private_ioctl) 
+DECL|macro|CMD_SETVOICEPARAM
+mdefine_line|#define CMD_SETVOICEPARAM&t;_IOW(&squot;D&squot;, 7, struct mixer_private_ioctl) 
+DECL|macro|CMD_GETPATCH
+mdefine_line|#define CMD_GETPATCH&t;&t;_IOR(&squot;D&squot;, 8, struct mixer_private_ioctl) 
+DECL|macro|CMD_GETGPR
+mdefine_line|#define CMD_GETGPR&t;&t;_IOR(&squot;D&squot;, 9, struct mixer_private_ioctl) 
+DECL|macro|CMD_GETCTLGPR
+mdefine_line|#define CMD_GETCTLGPR           _IOR(&squot;D&squot;, 10, struct mixer_private_ioctl)
+DECL|macro|CMD_SETPATCH
+mdefine_line|#define CMD_SETPATCH&t;&t;_IOW(&squot;D&squot;, 11, struct mixer_private_ioctl) 
+DECL|macro|CMD_SETGPR
+mdefine_line|#define CMD_SETGPR&t;&t;_IOW(&squot;D&squot;, 12, struct mixer_private_ioctl) 
+DECL|macro|CMD_SETCTLGPR
+mdefine_line|#define CMD_SETCTLGPR&t;&t;_IOW(&squot;D&squot;, 13, struct mixer_private_ioctl)
+DECL|macro|CMD_SETGPOUT
+mdefine_line|#define CMD_SETGPOUT&t;&t;_IOW(&squot;D&squot;, 14, struct mixer_private_ioctl)
+DECL|macro|CMD_GETGPR2OSS
+mdefine_line|#define CMD_GETGPR2OSS&t;&t;_IOR(&squot;D&squot;, 15, struct mixer_private_ioctl)
+DECL|macro|CMD_SETGPR2OSS
+mdefine_line|#define CMD_SETGPR2OSS&t;&t;_IOW(&squot;D&squot;, 16, struct mixer_private_ioctl)
+DECL|macro|CMD_SETMCH_FX
+mdefine_line|#define CMD_SETMCH_FX&t;&t;_IOW(&squot;D&squot;, 17, struct mixer_private_ioctl)
+DECL|macro|CMD_SETPASSTHROUGH
+mdefine_line|#define CMD_SETPASSTHROUGH&t;_IOW(&squot;D&squot;, 18, struct mixer_private_ioctl)
+DECL|struct|oss_scaling
+r_struct
+id|oss_scaling
+(brace
+DECL|member|scale
+DECL|member|muting
+r_char
+id|scale
+comma
+id|muting
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|emu10k1_card
 r_struct
 id|emu10k1_card
@@ -215,21 +291,47 @@ r_int
 r_int
 id|irq
 suffix:semicolon
-DECL|member|audio_num
+DECL|member|audio_dev
 r_int
-id|audio_num
+id|audio_dev
 suffix:semicolon
-DECL|member|audio1_num
+DECL|member|audio_dev1
 r_int
-id|audio1_num
+id|audio_dev1
 suffix:semicolon
-DECL|member|mixer_num
+DECL|member|midi_dev
 r_int
-id|mixer_num
+id|midi_dev
 suffix:semicolon
-DECL|member|midi_num
+macro_line|#ifdef EMU10K1_SEQUENCER
+DECL|member|seq_dev
 r_int
-id|midi_num
+id|seq_dev
+suffix:semicolon
+DECL|member|seq_mididev
+r_struct
+id|emu10k1_mididevice
+op_star
+id|seq_mididev
+suffix:semicolon
+macro_line|#endif
+DECL|member|ac97
+r_struct
+id|ac97_codec
+id|ac97
+suffix:semicolon
+DECL|member|ac97_supported_mixers
+r_int
+id|ac97_supported_mixers
+suffix:semicolon
+DECL|member|ac97_stereo_mixers
+r_int
+id|ac97_stereo_mixers
+suffix:semicolon
+multiline_comment|/* Number of first fx voice for multichannel output */
+DECL|member|mchannel_fx
+id|u8
+id|mchannel_fx
 suffix:semicolon
 DECL|member|waveout
 r_struct
@@ -252,32 +354,6 @@ r_struct
 id|emu10k1_mpuin
 op_star
 id|mpuin
-suffix:semicolon
-DECL|member|arrwVol
-id|u16
-id|arrwVol
-(braket
-id|SOUND_MIXER_NRDEVICES
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* array is used from the member 1 to save (-1) operation */
-DECL|member|digmix
-id|u32
-id|digmix
-(braket
-l_int|9
-op_star
-l_int|6
-op_star
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|modcnt
-r_int
-r_int
-id|modcnt
 suffix:semicolon
 DECL|member|open_sem
 r_struct
@@ -311,6 +387,16 @@ DECL|member|isaps
 r_int
 id|isaps
 suffix:semicolon
+DECL|member|mgr
+r_struct
+id|patch_manager
+id|mgr
+suffix:semicolon
+DECL|member|pt
+r_struct
+id|pt_data
+id|pt
+suffix:semicolon
 )brace
 suffix:semicolon
 r_int
@@ -335,64 +421,61 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#ifdef PRIVATE_PCM_VOLUME
-DECL|macro|MAX_PCM_CHANNELS
-mdefine_line|#define MAX_PCM_CHANNELS NUM_G 
-DECL|struct|sblive_pcm_volume_rec
-r_struct
-id|sblive_pcm_volume_rec
-(brace
-DECL|member|files
-r_struct
-id|files_struct
-op_star
-id|files
-suffix:semicolon
-singleline_comment|// identification of the same thread
-DECL|member|attn_l
-id|u8
-id|attn_l
-suffix:semicolon
-singleline_comment|// attenuation for left channel
-DECL|member|attn_r
-id|u8
-id|attn_r
-suffix:semicolon
-singleline_comment|// attenuation for right channel
-DECL|member|mixer
-id|u16
-id|mixer
-suffix:semicolon
-singleline_comment|// saved mixer value for return
-DECL|member|channel_l
-id|u8
-id|channel_l
-suffix:semicolon
-singleline_comment|// idx of left channel
-DECL|member|channel_r
-id|u8
-id|channel_r
-suffix:semicolon
-singleline_comment|// idx of right channel
-DECL|member|opened
 r_int
-id|opened
-suffix:semicolon
-singleline_comment|// counter - locks element
-)brace
-suffix:semicolon
-r_extern
+id|emu10k1_find_control_gpr
+c_func
+(paren
 r_struct
-id|sblive_pcm_volume_rec
-id|sblive_pcm_volume
-(braket
-)braket
+id|patch_manager
+op_star
+comma
+r_const
+r_char
+op_star
+comma
+r_const
+r_char
+op_star
+)paren
 suffix:semicolon
-r_extern
-id|u16
-id|pcm_last_mixer
+r_void
+id|emu10k1_set_control_gpr
+c_func
+(paren
+r_struct
+id|emu10k1_card
+op_star
+comma
+r_int
+comma
+id|s32
+comma
+r_int
+)paren
 suffix:semicolon
-macro_line|#endif
+r_void
+id|emu10k1_set_volume_gpr
+c_func
+(paren
+r_struct
+id|emu10k1_card
+op_star
+comma
+r_int
+comma
+id|s32
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|macro|VOL_6BIT
+mdefine_line|#define VOL_6BIT 0x40,0x40
+DECL|macro|VOL_5BIT
+mdefine_line|#define VOL_5BIT 0x20,0x20
+DECL|macro|VOL_4BIT
+mdefine_line|#define VOL_4BIT 0x10,0x7f
 DECL|macro|TIMEOUT
 mdefine_line|#define TIMEOUT &t;&t;    16384
 id|u32
@@ -530,45 +613,27 @@ comma
 id|u32
 )paren
 suffix:semicolon
-multiline_comment|/* AC97 Mixer access function */
-r_int
-id|sblive_readac97
+multiline_comment|/* AC97 Codec register access function */
+id|u16
+id|emu10k1_ac97_read
 c_func
 (paren
 r_struct
-id|emu10k1_card
+id|ac97_codec
 op_star
 comma
 id|u8
-comma
-id|u16
-op_star
 )paren
 suffix:semicolon
-r_int
-id|sblive_writeac97
+r_void
+id|emu10k1_ac97_write
 c_func
 (paren
 r_struct
-id|emu10k1_card
+id|ac97_codec
 op_star
 comma
 id|u8
-comma
-id|u16
-)paren
-suffix:semicolon
-r_int
-id|sblive_rmwac97
-c_func
-(paren
-r_struct
-id|emu10k1_card
-op_star
-comma
-id|u8
-comma
-id|u16
 comma
 id|u16
 )paren

@@ -153,7 +153,7 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|emu10k1_voice_start
+id|emu10k1_voices_start
 c_func
 (paren
 r_struct
@@ -161,15 +161,20 @@ id|emu_voice
 op_star
 comma
 r_int
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 r_void
-id|emu10k1_voice_stop
+id|emu10k1_voices_stop
 c_func
 (paren
 r_struct
 id|emu_voice
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 macro_line|#endif /* _VOICEMGR_H */

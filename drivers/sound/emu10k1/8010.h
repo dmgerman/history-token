@@ -3,40 +3,6 @@ macro_line|#ifndef _8010_H
 DECL|macro|_8010_H
 mdefine_line|#define _8010_H
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/* ------------------- DEFINES -------------------- */
-DECL|macro|CMD_WRITEFN0
-mdefine_line|#define CMD_WRITEFN0&t;&t;0x0
-DECL|macro|CMD_READFN0
-mdefine_line|#define CMD_READFN0&t;&t;0x1
-DECL|macro|CMD_WRITEPTR
-mdefine_line|#define CMD_WRITEPTR&t;&t;0x2
-DECL|macro|CMD_READPTR
-mdefine_line|#define CMD_READPTR&t;&t;0x3
-DECL|macro|CMD_SETRECSRC
-mdefine_line|#define CMD_SETRECSRC&t;&t;0x4
-DECL|macro|CMD_GETRECSRC
-mdefine_line|#define CMD_GETRECSRC&t;&t;0x5
-DECL|macro|CMD_GETVOICEPARAM
-mdefine_line|#define CMD_GETVOICEPARAM&t;0x6
-DECL|macro|CMD_SETVOICEPARAM
-mdefine_line|#define CMD_SETVOICEPARAM&t;0x7
-DECL|struct|mixer_private_ioctl
-r_struct
-id|mixer_private_ioctl
-(brace
-DECL|member|cmd
-id|u32
-id|cmd
-suffix:semicolon
-DECL|member|val
-id|u32
-id|val
-(braket
-l_int|10
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/************************************************************************************************/
 multiline_comment|/* PCI function 0 registers, address = &lt;val&gt; + PCIBASE0&t;&t;&t;&t;&t;&t;*/
 multiline_comment|/************************************************************************************************/
@@ -228,6 +194,8 @@ DECL|macro|HCFG_GPINPUT1
 mdefine_line|#define HCFG_GPINPUT1&t;&t;0x00002000&t;/* External pin110&t;&t;&t;&t;*/
 DECL|macro|HCFG_GPOUTPUT_MASK
 mdefine_line|#define HCFG_GPOUTPUT_MASK&t;0x00001c00&t;/* External pins which may be controlled&t;*/
+DECL|macro|HCFG_GPOUT0
+mdefine_line|#define HCFG_GPOUT0&t;&t;0x00001000&t;/* set to enable digital out on 5.1 cards&t;*/
 DECL|macro|HCFG_JOYENABLE
 mdefine_line|#define HCFG_JOYENABLE      &t;0x00000200&t;/* Internal joystick enable    &t;&t;&t;*/
 DECL|macro|HCFG_PHASETRACKENABLE
@@ -299,82 +267,6 @@ DECL|macro|AC97ADDRESS_READY
 mdefine_line|#define AC97ADDRESS_READY&t;0x80&t;&t;/* Read-only bit, reflects CODEC READY signal&t;*/
 DECL|macro|AC97ADDRESS_ADDRESS
 mdefine_line|#define AC97ADDRESS_ADDRESS&t;0x7f&t;&t;/* Address of indexed AC97 register&t;&t;*/
-multiline_comment|/************************************************************************************************/
-multiline_comment|/* PCI function 1 registers, address = &lt;val&gt; + PCIBASE1&t;&t;&t;&t;&t;&t;*/
-multiline_comment|/************************************************************************************************/
-DECL|macro|JOYSTICK1
-mdefine_line|#define JOYSTICK1&t;&t;0x00&t;&t;/* Analog joystick port register&t;&t;*/
-DECL|macro|JOYSTICK2
-mdefine_line|#define JOYSTICK2&t;&t;0x01&t;&t;/* Analog joystick port register&t;&t;*/
-DECL|macro|JOYSTICK3
-mdefine_line|#define JOYSTICK3&t;&t;0x02&t;&t;/* Analog joystick port register&t;&t;*/
-DECL|macro|JOYSTICK4
-mdefine_line|#define JOYSTICK4&t;&t;0x03&t;&t;/* Analog joystick port register&t;&t;*/
-DECL|macro|JOYSTICK5
-mdefine_line|#define JOYSTICK5&t;&t;0x04&t;&t;/* Analog joystick port register&t;&t;*/
-DECL|macro|JOYSTICK6
-mdefine_line|#define JOYSTICK6&t;&t;0x05&t;&t;/* Analog joystick port register&t;&t;*/
-DECL|macro|JOYSTICK7
-mdefine_line|#define JOYSTICK7&t;&t;0x06&t;&t;/* Analog joystick port register&t;&t;*/
-DECL|macro|JOYSTICK8
-mdefine_line|#define JOYSTICK8&t;&t;0x07&t;&t;/* Analog joystick port register&t;&t;*/
-multiline_comment|/* When writing, any write causes JOYSTICK_COMPARATOR output enable to be pulsed on write.&t;*/
-multiline_comment|/* When reading, use these bitfields: */
-DECL|macro|JOYSTICK_BUTTONS
-mdefine_line|#define JOYSTICK_BUTTONS&t;0x0f&t;&t;/* Joystick button data&t;&t;&t;&t;*/
-DECL|macro|JOYSTICK_COMPARATOR
-mdefine_line|#define JOYSTICK_COMPARATOR&t;0xf0&t;&t;/* Joystick comparator data&t;&t;&t;*/
-multiline_comment|/********************************************************************************************************/
-multiline_comment|/* AC97 pointer-offset register set, accessed through the AC97ADDRESS and AC97DATA registers&t;&t;*/
-multiline_comment|/********************************************************************************************************/
-DECL|macro|AC97_RESET
-mdefine_line|#define AC97_RESET&t;&t;0x00
-DECL|macro|AC97_MASTERVOLUME
-mdefine_line|#define AC97_MASTERVOLUME&t;0x02&t;&t;/* Master volume&t;&t;&t;&t;&t;*/
-DECL|macro|AC97_HEADPHONEVOLUME
-mdefine_line|#define AC97_HEADPHONEVOLUME&t;0x04&t;&t;/* Headphone volume&t;&t;&t;&t;&t;*/
-DECL|macro|AC97_MASTERVOLUMEMONO
-mdefine_line|#define AC97_MASTERVOLUMEMONO&t;0x06&t;&t;/* Mast volume mono&t;&t;&t;&t;&t;*/
-DECL|macro|AC97_MASTERTONE
-mdefine_line|#define AC97_MASTERTONE&t;&t;0x08
-DECL|macro|AC97_PCBEEPVOLUME
-mdefine_line|#define AC97_PCBEEPVOLUME&t;0x0a&t;&t;/* PC speaker system beep volume&t;&t;&t;*/
-DECL|macro|AC97_PHONEVOLUME
-mdefine_line|#define AC97_PHONEVOLUME&t;0x0c
-DECL|macro|AC97_MICVOLUME
-mdefine_line|#define AC97_MICVOLUME&t;&t;0x0e
-DECL|macro|AC97_LINEINVOLUME
-mdefine_line|#define AC97_LINEINVOLUME&t;0x10
-DECL|macro|AC97_CDVOLUME
-mdefine_line|#define AC97_CDVOLUME&t;&t;0x12
-DECL|macro|AC97_VIDEOVOLUME
-mdefine_line|#define AC97_VIDEOVOLUME&t;0x14
-DECL|macro|AC97_AUXVOLUME
-mdefine_line|#define AC97_AUXVOLUME&t;&t;0x16
-DECL|macro|AC97_PCMOUTVOLUME
-mdefine_line|#define AC97_PCMOUTVOLUME&t;0x18
-DECL|macro|AC97_RECORDSELECT
-mdefine_line|#define AC97_RECORDSELECT&t;0x1a
-DECL|macro|AC97_RECORDGAIN
-mdefine_line|#define AC97_RECORDGAIN&t;&t;0x1c
-DECL|macro|AC97_RECORDGAINMIC
-mdefine_line|#define AC97_RECORDGAINMIC&t;0x1e
-DECL|macro|AC97_GENERALPURPOSE
-mdefine_line|#define AC97_GENERALPURPOSE&t;0x20
-DECL|macro|AC97_3DCONTROL
-mdefine_line|#define AC97_3DCONTROL&t;&t;0x22
-DECL|macro|AC97_MODEMRATE
-mdefine_line|#define AC97_MODEMRATE&t;&t;0x24
-DECL|macro|AC97_POWERDOWN
-mdefine_line|#define AC97_POWERDOWN&t;&t;0x26
-DECL|macro|AC97_VENDORID1
-mdefine_line|#define AC97_VENDORID1&t;&t;0x7c
-DECL|macro|AC97_VENDORID2
-mdefine_line|#define AC97_VENDORID2&t;&t;0x7e
-DECL|macro|AC97_ZVIDEOVOLUME
-mdefine_line|#define AC97_ZVIDEOVOLUME&t;0xec
-DECL|macro|AC97_AC3VOLUME
-mdefine_line|#define AC97_AC3VOLUME&t;&t;0xed
 multiline_comment|/********************************************************************************************************/
 multiline_comment|/* Emu10k1 pointer-offset register set, accessed through the PTR and DATA registers&t;&t;&t;*/
 multiline_comment|/********************************************************************************************************/
@@ -822,6 +714,21 @@ DECL|macro|GPSCS
 mdefine_line|#define GPSCS&t;&t;&t;0x51&t;&t;/* General Purpose SPDIF channel status register*/
 DECL|macro|DBG
 mdefine_line|#define DBG&t;&t;&t;0x52&t;&t;/* DO NOT PROGRAM THIS REGISTER!!! MAY DESTROY CHIP */
+multiline_comment|/* definitions for debug register - taken from the alsa drivers */
+DECL|macro|DBG_ZC
+mdefine_line|#define DBG_ZC                  0x80000000      /* zero tram counter */
+DECL|macro|DBG_SATURATION_OCCURED
+mdefine_line|#define DBG_SATURATION_OCCURED  0x02000000      /* saturation control */
+DECL|macro|DBG_SATURATION_ADDR
+mdefine_line|#define DBG_SATURATION_ADDR     0x01ff0000      /* saturation address */
+DECL|macro|DBG_SINGLE_STEP
+mdefine_line|#define DBG_SINGLE_STEP         0x00008000      /* single step mode */
+DECL|macro|DBG_STEP
+mdefine_line|#define DBG_STEP                0x00004000      /* start single step */
+DECL|macro|DBG_CONDITION_CODE
+mdefine_line|#define DBG_CONDITION_CODE      0x00003e00      /* condition code */
+DECL|macro|DBG_SINGLE_STEP_ADDR
+mdefine_line|#define DBG_SINGLE_STEP_ADDR    0x000001ff      /* single step address */
 DECL|macro|REG53
 mdefine_line|#define REG53&t;&t;&t;0x53&t;&t;/* DO NOT PROGRAM THIS REGISTER!!! MAY DESTROY CHIP */
 DECL|macro|SPCS0
@@ -893,6 +800,12 @@ DECL|macro|SPBYPASS
 mdefine_line|#define SPBYPASS&t;&t;0x5e&t;&t;/* SPDIF BYPASS mode register&t;&t;&t;*/
 DECL|macro|SPBYPASS_ENABLE
 mdefine_line|#define SPBYPASS_ENABLE&t;&t;0x00000001&t;/* Enable SPDIF bypass mode&t;&t;&t;*/
+DECL|macro|AC97SLOT
+mdefine_line|#define AC97SLOT&t;&t;0x5f&t;&t;/* additional AC97 slots enable bits */
+DECL|macro|AC97SLOT_CNTR
+mdefine_line|#define AC97SLOT_CNTR&t;&t;0x10&t;&t;/* Center enable */
+DECL|macro|AC97SLOT_LFE
+mdefine_line|#define AC97SLOT_LFE&t;&t;0x20&t;&t;/* LFE enable */
 DECL|macro|CDSRCS
 mdefine_line|#define CDSRCS&t;&t;&t;0x60&t;&t;/* CD-ROM Sample Rate Converter status register&t;*/
 DECL|macro|GPSRCS

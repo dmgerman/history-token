@@ -927,7 +927,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;emu10k1_mpuin_callback: midimsg = %lx&bslash;n&quot;
+l_string|&quot;emu10k1_mpuin_callback: midimsg = %#lx&bslash;n&quot;
 comma
 id|data
 )paren

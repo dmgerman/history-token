@@ -2049,7 +2049,7 @@ op_assign
 id|contig_page_data.node_zonelists
 op_plus
 (paren
-id|GFP_KERNEL
+id|GFP_NOFS
 op_amp
 id|GFP_ZONEMASK
 )paren

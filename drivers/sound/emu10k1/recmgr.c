@@ -365,7 +365,7 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;bus addx: %x&bslash;n&quot;
+l_string|&quot;bus addx: %#x&bslash;n&quot;
 comma
 id|buffer-&gt;dma_handle
 )paren

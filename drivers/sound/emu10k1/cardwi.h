@@ -40,6 +40,10 @@ DECL|member|size
 id|u32
 id|size
 suffix:semicolon
+DECL|member|pages
+id|u32
+id|pages
+suffix:semicolon
 DECL|member|sizereg
 id|u32
 id|sizereg

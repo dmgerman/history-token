@@ -17,6 +17,34 @@ DECL|macro|WAVEOUT_DEFAULTBUFLEN
 mdefine_line|#define WAVEOUT_DEFAULTBUFLEN&t;500 /* Time to play the entire buffer in ms */
 DECL|macro|WAVEOUT_MINFRAGSHIFT
 mdefine_line|#define WAVEOUT_MINFRAGSHIFT&t;6
+DECL|macro|WAVEOUT_MAXVOICES
+mdefine_line|#define WAVEOUT_MAXVOICES 6
+multiline_comment|/* waveout_mem is cardwo internal */
+DECL|struct|waveout_mem
+r_struct
+id|waveout_mem
+(brace
+DECL|member|emupageindex
+r_int
+id|emupageindex
+suffix:semicolon
+DECL|member|addr
+r_void
+op_star
+id|addr
+(braket
+id|BUFMAXPAGES
+)braket
+suffix:semicolon
+DECL|member|dma_handle
+id|dma_addr_t
+id|dma_handle
+(braket
+id|BUFMAXPAGES
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|waveout_buffer
 r_struct
 id|waveout_buffer
@@ -44,40 +72,29 @@ id|u32
 id|pages
 suffix:semicolon
 multiline_comment|/* buffer size in page units*/
-DECL|member|emupageindex
-r_int
-id|emupageindex
-suffix:semicolon
-DECL|member|addr
-r_void
-op_star
-id|addr
+DECL|member|mem
+r_struct
+id|waveout_mem
+id|mem
 (braket
-id|BUFMAXPAGES
-)braket
-suffix:semicolon
-DECL|member|dma_handle
-id|dma_addr_t
-id|dma_handle
-(braket
-id|BUFMAXPAGES
+id|WAVEOUT_MAXVOICES
 )braket
 suffix:semicolon
 DECL|member|silence_pos
 id|u32
 id|silence_pos
 suffix:semicolon
-multiline_comment|/* software cursor position (including silence) */
+multiline_comment|/* software cursor position (including silence bytes) */
 DECL|member|hw_pos
 id|u32
 id|hw_pos
 suffix:semicolon
 multiline_comment|/* hardware cursor position */
-DECL|member|bytestocopy
+DECL|member|free_bytes
 id|u32
-id|bytestocopy
+id|free_bytes
 suffix:semicolon
-multiline_comment|/* free space on buffer (including silence) */
+multiline_comment|/* free bytes available on the buffer (not including silence bytes) */
 DECL|member|fill_silence
 id|u8
 id|fill_silence
@@ -86,7 +103,7 @@ DECL|member|silence_bytes
 id|u32
 id|silence_bytes
 suffix:semicolon
-multiline_comment|/* silence bytes in buffer */
+multiline_comment|/* silence bytes on the buffer */
 )brace
 suffix:semicolon
 DECL|struct|woinst
@@ -97,10 +114,17 @@ DECL|member|state
 id|u8
 id|state
 suffix:semicolon
+DECL|member|num_voices
+id|u8
+id|num_voices
+suffix:semicolon
 DECL|member|voice
 r_struct
 id|emu_voice
 id|voice
+(braket
+id|WAVEOUT_MAXVOICES
+)braket
 suffix:semicolon
 DECL|member|timer
 r_struct

@@ -3,7 +3,6 @@ macro_line|#ifndef _CARDMI_H
 DECL|macro|_CARDMI_H
 mdefine_line|#define _CARDMI_H
 macro_line|#include &quot;icardmid.h&quot;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 r_typedef
 r_enum

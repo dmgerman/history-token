@@ -576,6 +576,14 @@ suffix:semicolon
 multiline_comment|/* linux/mm/swapfile.c */
 r_extern
 r_int
+id|vm_swap_full
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
 r_int
 id|nr_swapfiles
 suffix:semicolon
