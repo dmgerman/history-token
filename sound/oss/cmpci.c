@@ -16398,6 +16398,9 @@ r_int
 r_char
 id|reg_mask
 suffix:semicolon
+r_int
+id|timeout
+suffix:semicolon
 r_struct
 (brace
 r_int
@@ -17413,55 +17416,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_SOUND_CMPCI_MIDI
-multiline_comment|/* disable MPU-401 */
-id|maskb
-c_func
-(paren
-id|s-&gt;iobase
-op_plus
-id|CODEC_CMI_FUNCTRL1
-comma
-op_complement
-l_int|0x04
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|s-&gt;mpu_data.name
-op_assign
-l_string|&quot;cmpci mpu&quot;
-suffix:semicolon
-id|s-&gt;mpu_data.io_base
-op_assign
-id|s-&gt;iomidi
-suffix:semicolon
-id|s-&gt;mpu_data.irq
-op_assign
-op_minus
-id|s-&gt;irq
-suffix:semicolon
-singleline_comment|// tell mpu401 to share irq
-r_if
-c_cond
-(paren
-id|probe_mpu401
-c_func
-(paren
-op_amp
-id|s-&gt;mpu_data
-)paren
-)paren
-id|s-&gt;iomidi
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|s-&gt;iomidi
-)paren
-(brace
-multiline_comment|/* set IO based at 0x330 */
 r_switch
 c_cond
 (paren
@@ -17510,7 +17464,55 @@ id|s-&gt;iomidi
 op_assign
 l_int|0
 suffix:semicolon
-r_break
+r_goto
+id|skip_mpu
+suffix:semicolon
+)brace
+multiline_comment|/* disable MPU-401 */
+id|maskb
+c_func
+(paren
+id|s-&gt;iobase
+op_plus
+id|CODEC_CMI_FUNCTRL1
+comma
+op_complement
+l_int|0x04
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|s-&gt;mpu_data.name
+op_assign
+l_string|&quot;cmpci mpu&quot;
+suffix:semicolon
+id|s-&gt;mpu_data.io_base
+op_assign
+id|s-&gt;iomidi
+suffix:semicolon
+id|s-&gt;mpu_data.irq
+op_assign
+op_minus
+id|s-&gt;irq
+suffix:semicolon
+singleline_comment|// tell mpu401 to share irq
+r_if
+c_cond
+(paren
+id|probe_mpu401
+c_func
+(paren
+op_amp
+id|s-&gt;mpu_data
+)paren
+)paren
+(brace
+id|s-&gt;iomidi
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|skip_mpu
 suffix:semicolon
 )brace
 id|maskb
@@ -17529,15 +17531,6 @@ id|reg_mask
 )paren
 suffix:semicolon
 multiline_comment|/* enable MPU-401 */
-r_if
-c_cond
-(paren
-id|s-&gt;iomidi
-)paren
-(brace
-r_int
-id|timeout
-suffix:semicolon
 id|maskb
 c_func
 (paren
@@ -17643,8 +17636,8 @@ l_int|1
 )braket
 suffix:semicolon
 )brace
-)brace
-)brace
+id|skip_mpu
+suffix:colon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SOUND_CMPCI_JOYSTICK
 multiline_comment|/* enable joystick */
