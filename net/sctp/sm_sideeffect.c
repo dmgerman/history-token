@@ -241,7 +241,7 @@ mdefine_line|#define DEBUG_PRE &bslash;&n;&t;SCTP_DEBUG_PRINTK(&quot;sctp_do_sm 
 DECL|macro|DEBUG_POST
 mdefine_line|#define DEBUG_POST &bslash;&n;&t;SCTP_DEBUG_PRINTK(&quot;sctp_do_sm postfn: &quot; &bslash;&n;&t;&t;&t;  &quot;asoc %p, status: %s&bslash;n&quot;, &bslash;&n;&t;&t;&t;  asoc, sctp_status_tbl[status])
 DECL|macro|DEBUG_POST_SFX
-mdefine_line|#define DEBUG_POST_SFX &bslash;&n;&t;SCTP_DEBUG_PRINTK(&quot;sctp_do_sm post sfx: error %d, asoc %p[%s]&bslash;n&quot;, &bslash;&n;&t;&t;&t;  error, asoc, &bslash;&n;&t;&t;&t;  sctp_state_tbl[asoc?asoc-&gt;state:SCTP_STATE_CLOSED])
+mdefine_line|#define DEBUG_POST_SFX &bslash;&n;&t;SCTP_DEBUG_PRINTK(&quot;sctp_do_sm post sfx: error %d, asoc %p[%s]&bslash;n&quot;, &bslash;&n;&t;&t;&t;  error, asoc, &bslash;&n;&t;&t;&t;  sctp_state_tbl[(asoc &amp;&amp; sctp_id2assoc(ep-&gt;base.sk, &bslash;&n;&t;&t;&t;  sctp_assoc2id(asoc)))?asoc-&gt;state:SCTP_STATE_CLOSED])
 multiline_comment|/*&n; * This is the master state machine processing function.&n; *&n; * If you want to understand all of lksctp, this is a&n; * good place to start.&n; */
 DECL|function|sctp_do_sm
 r_int
