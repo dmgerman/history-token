@@ -848,6 +848,11 @@ id|u32
 id|agp_collect_device_status
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 comma

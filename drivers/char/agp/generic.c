@@ -1868,12 +1868,17 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; * agp_collect_device_status - determine correct agp_cmd from various agp_stat&squot;s&n; * @requested_mode: requested agp_stat from userspace (Typically from X)&n; * @bridge_agpstat: current agp_stat from AGP bridge.&n; *&n; * This function will hunt for an AGP graphics card, and try to match&n; * the requested mode to the capabilities of both the bridge and the card.&n; */
+multiline_comment|/**&n; * agp_collect_device_status - determine correct agp_cmd from various agp_stat&squot;s&n; * @bridge: an agp_bridge_data struct allocated for the AGP host bridge.&n; * @requested_mode: requested agp_stat from userspace (Typically from X)&n; * @bridge_agpstat: current agp_stat from AGP bridge.&n; *&n; * This function will hunt for an AGP graphics card, and try to match&n; * the requested mode to the capabilities of both the bridge and the card.&n; */
 DECL|function|agp_collect_device_status
 id|u32
 id|agp_collect_device_status
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|requested_mode
 comma
@@ -2051,7 +2056,7 @@ multiline_comment|/* Check to see if we are operating in 3.0 mode */
 id|pci_read_config_dword
 c_func
 (paren
-id|device
+id|agp_bridge-&gt;dev
 comma
 id|cap_ptr
 op_plus
@@ -2340,6 +2345,8 @@ op_assign
 id|agp_collect_device_status
 c_func
 (paren
+id|agp_bridge
+comma
 id|requested_mode
 comma
 id|bridge_agpstat
