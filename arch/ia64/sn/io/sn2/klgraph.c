@@ -2447,7 +2447,7 @@ c_func
 (paren
 id|buffer
 comma
-id|modules
+id|sn_modules
 (braket
 id|cm
 )braket
@@ -2517,7 +2517,7 @@ comma
 (paren
 id|arbitrary_info_t
 )paren
-id|modules
+id|sn_modules
 (braket
 id|cm
 )braket

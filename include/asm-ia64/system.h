@@ -193,7 +193,7 @@ DECL|macro|local_irq_restore
 macro_line|# define local_irq_restore(x)&t;__local_irq_restore(x)
 macro_line|#endif /* !CONFIG_IA64_DEBUG_IRQ */
 DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()&t;({ ia64_ssm(IA64_PSR_I); ia64_srlz_d(); })
+mdefine_line|#define local_irq_enable()&t;({ ia64_stop(); ia64_ssm(IA64_PSR_I); ia64_srlz_d(); })
 DECL|macro|local_save_flags
 mdefine_line|#define local_save_flags(flags)&t;({ ia64_stop(); (flags) = ia64_getreg(_IA64_REG_PSR); })
 DECL|macro|irqs_disabled

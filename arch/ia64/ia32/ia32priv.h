@@ -1,15 +1,14 @@
-macro_line|#ifndef _ASM_IA64_IA32_H
-DECL|macro|_ASM_IA64_IA32_H
-mdefine_line|#define _ASM_IA64_IA32_H
+macro_line|#ifndef _ASM_IA64_IA32_PRIV_H
+DECL|macro|_ASM_IA64_IA32_PRIV_H
+mdefine_line|#define _ASM_IA64_IA32_PRIV_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#ifdef CONFIG_IA32_SUPPORT
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#include &lt;linux/rbtree.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * 32 bit structures for IA32 support.&n; */
-DECL|macro|IA32_PAGE_SHIFT
-mdefine_line|#define IA32_PAGE_SHIFT&t;&t;12&t;/* 4KB pages */
 DECL|macro|IA32_PAGE_SIZE
 mdefine_line|#define IA32_PAGE_SIZE&t;&t;(1UL &lt;&lt; IA32_PAGE_SHIFT)
 DECL|macro|IA32_PAGE_MASK
@@ -18,6 +17,79 @@ DECL|macro|IA32_PAGE_ALIGN
 mdefine_line|#define IA32_PAGE_ALIGN(addr)&t;(((addr) + IA32_PAGE_SIZE - 1) &amp; IA32_PAGE_MASK)
 DECL|macro|IA32_CLOCKS_PER_SEC
 mdefine_line|#define IA32_CLOCKS_PER_SEC&t;100&t;/* Cast in stone for IA32 Linux */
+multiline_comment|/*&n; * partially mapped pages provide precise accounting of which 4k sub pages&n; * are mapped and which ones are not, thereby improving IA-32 compatibility.&n; */
+DECL|struct|partial_page
+r_struct
+id|partial_page
+(brace
+DECL|member|next
+r_struct
+id|partial_page
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* linked list, sorted by address */
+DECL|member|pp_rb
+r_struct
+id|rb_node
+id|pp_rb
+suffix:semicolon
+multiline_comment|/* 64K is the largest &quot;normal&quot; page supported by ia64 ABI. So 4K*32&n;&t; * should suffice.*/
+DECL|member|bitmap
+r_int
+r_int
+id|bitmap
+suffix:semicolon
+DECL|member|base
+r_int
+r_int
+id|base
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|partial_page_list
+r_struct
+id|partial_page_list
+(brace
+DECL|member|pp_head
+r_struct
+id|partial_page
+op_star
+id|pp_head
+suffix:semicolon
+multiline_comment|/* list head, points to the lowest&n;&t;&t;&t;&t;&t;   * addressed partial page */
+DECL|member|ppl_rb
+r_struct
+id|rb_root
+id|ppl_rb
+suffix:semicolon
+DECL|member|pp_hint
+r_struct
+id|partial_page
+op_star
+id|pp_hint
+suffix:semicolon
+multiline_comment|/* pp_hint-&gt;next is the last&n;&t;&t;&t;&t;&t;   * accessed partial page */
+DECL|member|pp_count
+id|atomic_t
+id|pp_count
+suffix:semicolon
+multiline_comment|/* reference count */
+)brace
+suffix:semicolon
+macro_line|#if PAGE_SHIFT &gt; IA32_PAGE_SHIFT
+r_struct
+id|partial_page_list
+op_star
+id|ia32_init_pp_list
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|ia32_init_pp_list
+macro_line|# define ia32_init_pp_list()&t;0
+macro_line|#endif
 multiline_comment|/* sigcontext.h */
 multiline_comment|/*&n; * As documented in the iBCS2 standard..&n; *&n; * The first part of &quot;struct _fpstate&quot; is just the&n; * normal i387 hardware setup, the extra &quot;status&quot;&n; * word is used to save the coprocessor status word&n; * before entering the handler.&n; */
 DECL|struct|_fpreg_ia32
@@ -1452,5 +1524,5 @@ id|save
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */
-macro_line|#endif /* _ASM_IA64_IA32_H */
+macro_line|#endif /* _ASM_IA64_IA32_PRIV_H */
 eof

@@ -1874,6 +1874,22 @@ op_ne
 id|GRAPH_VERTEX_NONE
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t; * attach our hub_provider information to hubv,&n;&t; * so we can use it as a crosstalk provider &quot;master&quot;&n;&t; * vertex.&n;&t; */
+id|xtalk_provider_register
+c_func
+(paren
+id|hubv
+comma
+op_amp
+id|hub_provider
+)paren
+suffix:semicolon
+id|xtalk_provider_startup
+c_func
+(paren
+id|hubv
+)paren
+suffix:semicolon
 multiline_comment|/* &n;&t; * If nothing connected to this hub&squot;s xtalk port, we&squot;re done.&n;&t; */
 id|early_probe_for_widget
 c_func
@@ -1904,22 +1920,6 @@ r_return
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
 )brace
-multiline_comment|/* &n;&t; * attach our hub_provider information to hubv,&n;&t; * so we can use it as a crosstalk provider &quot;master&quot;&n;&t; * vertex.&n;&t; */
-id|xtalk_provider_register
-c_func
-(paren
-id|hubv
-comma
-op_amp
-id|hub_provider
-)paren
-suffix:semicolon
-id|xtalk_provider_startup
-c_func
-(paren
-id|hubv
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Create a vertex to represent the crosstalk bus&n;&t; * attached to this hub, and a vertex to be used&n;&t; * as the connect point for whatever is out there&n;&t; * on the other side of our crosstalk connection.&n;&t; *&n;&t; * Crosstalk Switch drivers &quot;climb up&quot; from their&n;&t; * connection point to try and take over the switch&n;&t; * point.&n;&t; *&n;&t; * Of course, the edges and verticies may already&n;&t; * exist, in which case our net effect is just to&n;&t; * associate the &quot;xtalk_&quot; driver with the connection&n;&t; * point for the device.&n;&t; */
 (paren
 r_void

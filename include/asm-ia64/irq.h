@@ -71,6 +71,20 @@ r_int
 id|redir
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_void
+id|move_irq
+c_func
+(paren
+r_int
+id|irq
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|move_irq
+mdefine_line|#define move_irq(irq)
+macro_line|#endif
 r_struct
 id|irqaction
 suffix:semicolon
