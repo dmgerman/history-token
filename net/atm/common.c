@@ -5482,7 +5482,6 @@ r_goto
 id|failure
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
 (paren
@@ -5511,7 +5510,6 @@ r_goto
 id|failure
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -5541,13 +5539,11 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
 id|atm_proc_exit
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|atmsvc_exit
 c_func
 (paren

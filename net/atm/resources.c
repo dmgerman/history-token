@@ -460,13 +460,6 @@ op_amp
 id|atm_dev_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-id|ops-&gt;proc_read
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -520,8 +513,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-)brace
-macro_line|#endif
 r_return
 id|dev
 suffix:semicolon
@@ -541,19 +532,12 @@ r_int
 r_int
 id|warning_time
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-id|dev-&gt;ops-&gt;proc_read
-)paren
 id|atm_proc_dev_deregister
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 id|spin_lock
 c_func
 (paren
