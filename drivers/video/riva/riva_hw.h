@@ -45,26 +45,19 @@ r_int
 id|U032
 suffix:semicolon
 multiline_comment|/*&n; * HW access macros.&n; */
-macro_line|#if defined(__powerpc__)
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|NV_WR08
-mdefine_line|#define NV_WR08(p,i,d)&t;out_8(p+i, d)
+mdefine_line|#define NV_WR08(p,i,d)  (__raw_writeb((d), (void __iomem *)(p) + (i)))
 DECL|macro|NV_RD08
-mdefine_line|#define NV_RD08(p,i)&t;in_8(p+i)
-macro_line|#else
-DECL|macro|NV_WR08
-mdefine_line|#define NV_WR08(p,i,d)  (writeb((d), (u8 __iomem *)(p) + (i)))
-DECL|macro|NV_RD08
-mdefine_line|#define NV_RD08(p,i)    (readb((u8 __iomem *)(p) + (i)))
-macro_line|#endif
+mdefine_line|#define NV_RD08(p,i)    (__raw_readb((void __iomem *)(p) + (i)))
 DECL|macro|NV_WR16
-mdefine_line|#define NV_WR16(p,i,d)  (writew((d), (u16 __iomem *)(p) + (i)/2))
+mdefine_line|#define NV_WR16(p,i,d)  (__raw_writew((d), (void __iomem *)(p) + (i)))
 DECL|macro|NV_RD16
-mdefine_line|#define NV_RD16(p,i)    (readw((u16 __iomem *)(p) + (i)/2))
+mdefine_line|#define NV_RD16(p,i)    (__raw_readw((void __iomem *)(p) + (i)))
 DECL|macro|NV_WR32
-mdefine_line|#define NV_WR32(p,i,d)  (writel((d), (u32 __iomem *)(p) + (i)/4))
+mdefine_line|#define NV_WR32(p,i,d)  (__raw_writel((d), (void __iomem *)(p) + (i)))
 DECL|macro|NV_RD32
-mdefine_line|#define NV_RD32(p,i)    (readl((u32 __iomem *)(p) + (i)/4))
+mdefine_line|#define NV_RD32(p,i)    (__raw_readl((void __iomem *)(p) + (i)))
 DECL|macro|VGA_WR08
 mdefine_line|#define VGA_WR08(p,i,d) NV_WR08(p,i,d)
 DECL|macro|VGA_RD08

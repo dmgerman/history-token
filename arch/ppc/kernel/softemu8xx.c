@@ -522,6 +522,10 @@ id|PAGE_MASK
 suffix:semicolon
 id|pa
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|__va
 c_func
 (paren
