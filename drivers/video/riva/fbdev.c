@@ -5784,13 +5784,7 @@ c_cond
 op_logical_neg
 id|mode_valid
 op_logical_and
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|info-&gt;modelist
-)paren
+id|info-&gt;monspecs.modedb_len
 )paren
 r_return
 op_minus
@@ -9918,10 +9912,6 @@ c_func
 (paren
 id|info-&gt;monspecs.modedb
 )paren
-suffix:semicolon
-id|info-&gt;monspecs.modedb_len
-op_assign
-l_int|0
 suffix:semicolon
 id|info-&gt;monspecs.modedb
 op_assign
