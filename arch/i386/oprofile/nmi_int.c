@@ -738,11 +738,6 @@ id|nmi_enabled
 op_assign
 l_int|0
 suffix:semicolon
-id|unset_nmi_callback
-c_func
-(paren
-)paren
-suffix:semicolon
 id|on_each_cpu
 c_func
 (paren
@@ -753,6 +748,11 @@ comma
 l_int|0
 comma
 l_int|1
+)paren
+suffix:semicolon
+id|unset_nmi_callback
+c_func
+(paren
 )paren
 suffix:semicolon
 id|enable_lapic_nmi_watchdog
