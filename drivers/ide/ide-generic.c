@@ -62,13 +62,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* for atari only */
-macro_line|#ifdef CONFIG_PROC_FS
 id|create_proc_ide_interfaces
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

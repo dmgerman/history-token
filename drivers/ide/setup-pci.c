@@ -2676,6 +2676,11 @@ id|index_list.b.high
 )braket
 )paren
 suffix:semicolon
+id|create_proc_ide_interfaces
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|variable|ide_setup_pci_device
 id|EXPORT_SYMBOL_GPL
@@ -2811,6 +2816,11 @@ id|ide_hwifs
 (braket
 id|index_list2.b.high
 )braket
+)paren
+suffix:semicolon
+id|create_proc_ide_interfaces
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

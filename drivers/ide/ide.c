@@ -3585,13 +3585,11 @@ c_func
 id|hwif
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|create_proc_ide_interfaces
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_if
 c_cond
