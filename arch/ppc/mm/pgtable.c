@@ -90,6 +90,14 @@ mdefine_line|#define v_mapped_by_bats(x)&t;(0UL)
 DECL|macro|p_mapped_by_bats
 mdefine_line|#define p_mapped_by_bats(x)&t;(0UL)
 macro_line|#endif /* HAVE_BATS */
+macro_line|#ifdef CONFIG_44x
+multiline_comment|/* 44x uses an 8kB pgdir because it has 8-byte Linux PTEs. */
+DECL|macro|PGDIR_ORDER
+mdefine_line|#define PGDIR_ORDER&t;1
+macro_line|#else
+DECL|macro|PGDIR_ORDER
+mdefine_line|#define PGDIR_ORDER&t;0
+macro_line|#endif
 DECL|function|pgd_alloc
 id|pgd_t
 op_star
@@ -116,10 +124,12 @@ op_assign
 id|pgd_t
 op_star
 )paren
-id|__get_free_page
+id|__get_free_pages
 c_func
 (paren
 id|GFP_KERNEL
+comma
+id|PGDIR_ORDER
 )paren
 )paren
 op_ne
@@ -340,12 +350,41 @@ id|pte
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_44x
 r_void
 op_star
 DECL|function|ioremap
 id|ioremap
 c_func
 (paren
+id|phys_addr_t
+id|addr
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|__ioremap
+c_func
+(paren
+id|addr
+comma
+id|size
+comma
+id|_PAGE_NO_CACHE
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* CONFIG_44x */
+r_void
+op_star
+DECL|function|ioremap64
+id|ioremap64
+c_func
+(paren
+r_int
 r_int
 r_int
 id|addr
@@ -369,12 +408,48 @@ suffix:semicolon
 )brace
 r_void
 op_star
+DECL|function|ioremap
+id|ioremap
+c_func
+(paren
+id|phys_addr_t
+id|addr
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+id|phys_addr_t
+id|addr64
+op_assign
+id|fixup_bigphys_addr
+c_func
+(paren
+id|addr
+comma
+id|size
+)paren
+suffix:semicolon
+suffix:semicolon
+r_return
+id|ioremap64
+c_func
+(paren
+id|addr64
+comma
+id|size
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_44x */
+r_void
+op_star
 DECL|function|__ioremap
 id|__ioremap
 c_func
 (paren
-r_int
-r_int
+id|phys_addr_t
 id|addr
 comma
 r_int
@@ -388,11 +463,12 @@ id|flags
 (brace
 r_int
 r_int
-id|p
-comma
 id|v
 comma
 id|i
+suffix:semicolon
+id|phys_addr_t
+id|p
 suffix:semicolon
 r_int
 id|err
@@ -452,7 +528,9 @@ id|high_memory
 id|printk
 c_func
 (paren
-l_string|&quot;__ioremap(): phys addr %0lx is RAM lr %p&bslash;n&quot;
+l_string|&quot;__ioremap(): phys addr &quot;
+id|PTE_FMT
+l_string|&quot; is RAM lr %p&bslash;n&quot;
 comma
 id|p
 comma
@@ -648,6 +726,10 @@ op_star
 id|v
 op_plus
 (paren
+(paren
+r_int
+r_int
+)paren
 id|addr
 op_amp
 op_complement
@@ -725,8 +807,7 @@ r_int
 r_int
 id|va
 comma
-r_int
-r_int
+id|phys_addr_t
 id|pa
 comma
 r_int
@@ -961,8 +1042,7 @@ r_int
 r_int
 id|virt
 comma
-r_int
-r_int
+id|phys_addr_t
 id|phys
 comma
 r_int

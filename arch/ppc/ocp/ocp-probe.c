@@ -143,14 +143,6 @@ id|dev-&gt;pm
 )paren
 suffix:semicolon
 multiline_comment|/* now put in global tree */
-id|strcpy
-c_func
-(paren
-id|dev-&gt;dev.name
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
 id|sprintf
 c_func
 (paren
@@ -242,14 +234,6 @@ c_func
 id|b-&gt;bus_id
 comma
 l_string|&quot;ocp&quot;
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|b-&gt;name
-comma
-l_string|&quot;Host/OCP Bridge&quot;
 )paren
 suffix:semicolon
 id|device_register
