@@ -1586,6 +1586,10 @@ id|size
 suffix:semicolon
 id|high_memory
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|PAGE_OFFSET
 suffix:semicolon
 r_for
