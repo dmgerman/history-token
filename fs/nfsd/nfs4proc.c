@@ -3330,6 +3330,11 @@ op_amp
 id|op-&gt;u.locku
 )paren
 suffix:semicolon
+id|op-&gt;replay
+op_assign
+op_amp
+id|op-&gt;u.locku.lu_stateowner-&gt;so_replay
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
