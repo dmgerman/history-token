@@ -969,6 +969,10 @@ DECL|macro|LED_MUTE
 mdefine_line|#define LED_MUTE&t;&t;0x07
 DECL|macro|LED_MISC
 mdefine_line|#define LED_MISC&t;&t;0x08
+DECL|macro|LED_MAIL
+mdefine_line|#define LED_MAIL&t;&t;0x09
+DECL|macro|LED_CHARGING
+mdefine_line|#define LED_CHARGING&t;&t;0x0a
 DECL|macro|LED_MAX
 mdefine_line|#define LED_MAX&t;&t;&t;0x0f
 multiline_comment|/*&n; * Autorepeat values&n; */
