@@ -8797,12 +8797,16 @@ id|mapping
 suffix:semicolon
 id|txd-&gt;opts2
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 id|rtl8169_tx_vlan_tag
 c_func
 (paren
 id|tp
 comma
 id|skb
+)paren
 )paren
 suffix:semicolon
 id|wmb
