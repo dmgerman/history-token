@@ -447,6 +447,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ecmd-&gt;advertising
+op_amp
 id|ADVERTISED_10baseT_Half
 )paren
 id|tmp
@@ -456,6 +458,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ecmd-&gt;advertising
+op_amp
 id|ADVERTISED_10baseT_Full
 )paren
 id|tmp
@@ -465,6 +469,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ecmd-&gt;advertising
+op_amp
 id|ADVERTISED_100baseT_Half
 )paren
 id|tmp
@@ -474,6 +480,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ecmd-&gt;advertising
+op_amp
 id|ADVERTISED_100baseT_Full
 )paren
 id|tmp

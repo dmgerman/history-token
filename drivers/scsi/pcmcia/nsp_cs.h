@@ -3,6 +3,7 @@ multiline_comment|/* $Id: nsp_cs.h,v 1.4 2002/11/05 12:06:29 elca Exp $ */
 macro_line|#ifndef  __nsp_cs__
 DECL|macro|__nsp_cs__
 mdefine_line|#define  __nsp_cs__
+macro_line|#include &lt;linux/version.h&gt;
 multiline_comment|/* for debugging */
 singleline_comment|//#define PCMCIA_DEBUG 9
 multiline_comment|/*&n;#define static&n;#define inline&n;*/

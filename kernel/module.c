@@ -4008,7 +4008,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* Lay out the SHF_ALLOC sections in a way not dissimilar to how ld&n;   might -- code, read-only data, read-write data, small data.  Tally&n;   sizes, and place the offsets into sh_link fields: high bit means it&n;   belongs in init. */
+multiline_comment|/* Lay out the SHF_ALLOC sections in a way not dissimilar to how ld&n;   might -- code, read-only data, read-write data, small data.  Tally&n;   sizes, and place the offsets into sh_entsize fields: high bit means it&n;   belongs in init. */
 DECL|function|layout_sections
 r_static
 r_void
@@ -4105,7 +4105,7 @@ id|sechdrs
 id|i
 )braket
 dot
-id|sh_link
+id|sh_entsize
 op_assign
 op_complement
 l_int|0UL
@@ -4195,7 +4195,7 @@ l_int|1
 )braket
 )paren
 op_logical_or
-id|s-&gt;sh_link
+id|s-&gt;sh_entsize
 op_ne
 op_complement
 l_int|0UL
@@ -4212,7 +4212,7 @@ l_string|&quot;.init&quot;
 )paren
 r_continue
 suffix:semicolon
-id|s-&gt;sh_link
+id|s-&gt;sh_entsize
 op_assign
 id|get_offset
 c_func
@@ -4318,7 +4318,7 @@ l_int|1
 )braket
 )paren
 op_logical_or
-id|s-&gt;sh_link
+id|s-&gt;sh_entsize
 op_ne
 op_complement
 l_int|0UL
@@ -4336,7 +4336,7 @@ l_string|&quot;.init&quot;
 )paren
 r_continue
 suffix:semicolon
-id|s-&gt;sh_link
+id|s-&gt;sh_entsize
 op_assign
 (paren
 id|get_offset
@@ -5105,7 +5105,7 @@ l_int|0
 r_goto
 id|free_mod
 suffix:semicolon
-multiline_comment|/* Determine total sizes, and put offsets in sh_link.  For now&n;&t;   this is done generically; there doesn&squot;t appear to be any&n;&t;   special cases for the architectures. */
+multiline_comment|/* Determine total sizes, and put offsets in sh_entsize.  For now&n;&t;   this is done generically; there doesn&squot;t appear to be any&n;&t;   special cases for the architectures. */
 id|layout_sections
 c_func
 (paren
@@ -5242,7 +5242,7 @@ id|sechdrs
 id|i
 )braket
 dot
-id|sh_link
+id|sh_entsize
 op_amp
 id|INIT_OFFSET_MASK
 )paren
@@ -5256,7 +5256,7 @@ id|sechdrs
 id|i
 )braket
 dot
-id|sh_link
+id|sh_entsize
 op_amp
 op_complement
 id|INIT_OFFSET_MASK
@@ -5272,7 +5272,7 @@ id|sechdrs
 id|i
 )braket
 dot
-id|sh_link
+id|sh_entsize
 suffix:semicolon
 r_if
 c_cond

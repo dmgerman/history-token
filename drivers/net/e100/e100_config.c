@@ -1523,7 +1523,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; * e100_config_wol&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This sets configuration options for Wake On LAN functionality (WOL) in the&n; * config record. WOL options are retrieved from wolinfo_wolopts in @bdp&n; */
+multiline_comment|/**&n; * e100_config_wol&n; * @bdp: atapter&squot;s private data struct&n; *&n; * This sets configuration options for PHY and Magic Packet WoL &n; */
 r_void
 DECL|function|e100_config_wol
 id|e100_config_wol
@@ -1559,26 +1559,39 @@ l_int|9
 op_or_assign
 id|CB_LINK_STATUS_WOL
 suffix:semicolon
-id|E100_CONFIG
-c_func
-(paren
-id|bdp
-comma
+)brace
+r_else
+(brace
+multiline_comment|/* Disable PHY WoL */
+id|bdp-&gt;config
+(braket
 l_int|9
-)paren
+)braket
+op_and_assign
+op_complement
+id|CB_LINK_STATUS_WOL
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
 id|bdp-&gt;wolopts
 op_amp
 id|WAKE_MAGIC
 )paren
-)paren
 (brace
+id|bdp-&gt;config
+(braket
+l_int|19
+)braket
+op_and_assign
+op_complement
+id|CB_DISABLE_MAGPAK_WAKE
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Disable Magic Packet WoL */
 id|bdp-&gt;config
 (braket
 l_int|19
@@ -1586,6 +1599,7 @@ l_int|19
 op_or_assign
 id|CB_DISABLE_MAGPAK_WAKE
 suffix:semicolon
+)brace
 id|E100_CONFIG
 c_func
 (paren
@@ -1594,7 +1608,6 @@ comma
 l_int|19
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock_bh
 c_func
 (paren

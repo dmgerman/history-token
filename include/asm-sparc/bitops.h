@@ -2,9 +2,8 @@ multiline_comment|/* $Id: bitops.h,v 1.67 2001/11/19 18:36:34 davem Exp $&n; * b
 macro_line|#ifndef _SPARC_BITOPS_H
 DECL|macro|_SPARC_BITOPS_H
 mdefine_line|#define _SPARC_BITOPS_H
-macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Set bit &squot;nr&squot; in 32-bit quantity at address &squot;addr&squot; where bit &squot;0&squot;&n; * is in the highest of the four bytes and bit &squot;31&squot; is the high bit&n; * within the first byte. Sparc is BIG-Endian. Unless noted otherwise&n; * all bit-ops return 0 if bit was previously clear and != 0 otherwise.&n; */
 DECL|function|test_and_set_bit

@@ -459,13 +459,11 @@ macro_line|# define IACK_SC&t;TITAN_IACK_SC
 macro_line|#elif defined(CONFIG_ALPHA_TSUNAMI)
 DECL|macro|IACK_SC
 macro_line|# define IACK_SC&t;TSUNAMI_IACK_SC
-macro_line|#elif defined(CONFIG_ALPHA_POLARIS)
-DECL|macro|IACK_SC
-macro_line|# define IACK_SC&t;POLARIS_IACK_SC
 macro_line|#elif defined(CONFIG_ALPHA_IRONGATE)
 DECL|macro|IACK_SC
 macro_line|# define IACK_SC        IRONGATE_IACK_SC
 macro_line|#endif
+multiline_comment|/* Note that CONFIG_ALPHA_POLARIS is intentionally left out here, since&n;   sys_rx164 wants to use isa_no_iack_sc_device_interrupt for some reason.  */
 macro_line|#if defined(IACK_SC)
 r_void
 DECL|function|isa_device_interrupt

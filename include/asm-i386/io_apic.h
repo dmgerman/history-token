@@ -9,7 +9,7 @@ macro_line|#ifdef CONFIG_X86_IO_APIC
 DECL|macro|APIC_MISMATCH_DEBUG
 mdefine_line|#define APIC_MISMATCH_DEBUG
 DECL|macro|IO_APIC_BASE
-mdefine_line|#define IO_APIC_BASE(idx) &bslash;&n;&t;&t;((volatile int *)__fix_to_virt(FIX_IO_APIC_BASE_0 + idx))
+mdefine_line|#define IO_APIC_BASE(idx) &bslash;&n;&t;&t;((volatile int *)(__fix_to_virt(FIX_IO_APIC_BASE_0 + idx) &bslash;&n;&t;&t;+ (mp_ioapics[idx].mpc_apicaddr &amp; ~PAGE_MASK)))
 multiline_comment|/*&n; * The structure of the IO-APIC:&n; */
 DECL|struct|IO_APIC_reg_00
 r_struct
