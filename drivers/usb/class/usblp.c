@@ -2425,6 +2425,11 @@ id|file-&gt;f_flags
 op_amp
 id|O_NONBLOCK
 )paren
+(brace
+id|writecount
+op_add_assign
+id|transfer_length
+suffix:semicolon
 r_return
 id|writecount
 ques
@@ -2434,6 +2439,7 @@ suffix:colon
 op_minus
 id|EAGAIN
 suffix:semicolon
+)brace
 id|timeout
 op_assign
 id|USBLP_WRITE_TIMEOUT
