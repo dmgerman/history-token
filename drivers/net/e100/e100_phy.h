@@ -3,7 +3,6 @@ macro_line|#ifndef _E100_PHY_INC_
 DECL|macro|_E100_PHY_INC_
 mdefine_line|#define _E100_PHY_INC_
 macro_line|#include &quot;e100.h&quot;
-macro_line|#include &lt;linux/mii.h&gt;
 multiline_comment|/*&n; * Auto-polarity enable/disable&n; * e100_autopolarity = 0 =&gt; disable auto-polarity&n; * e100_autopolarity = 1 =&gt; enable auto-polarity&n; * e100_autopolarity = 2 =&gt; let software determine&n; */
 DECL|macro|E100_AUTOPOLARITY
 mdefine_line|#define E100_AUTOPOLARITY 2

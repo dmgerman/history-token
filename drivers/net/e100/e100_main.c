@@ -341,7 +341,6 @@ id|ifreq
 op_star
 )paren
 suffix:semicolon
-macro_line|#include &lt;linux/mii.h&gt;
 r_static
 r_int
 id|e100_mii_ioctl
