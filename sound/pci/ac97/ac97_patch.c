@@ -4642,7 +4642,6 @@ macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
-op_amp
 id|ad18xx_resume
 macro_line|#endif
 )brace
@@ -5153,7 +5152,6 @@ macro_line|#ifdef CONFIG_PM
 dot
 id|resume
 op_assign
-op_amp
 id|ad18xx_resume
 macro_line|#endif
 )brace
