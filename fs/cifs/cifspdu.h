@@ -5155,15 +5155,15 @@ DECL|member|ExtFileAttributes
 id|__le32
 id|ExtFileAttributes
 suffix:semicolon
+DECL|member|FileNameLength
+id|__le32
+id|FileNameLength
+suffix:semicolon
 DECL|member|EaSize
 id|__le32
 id|EaSize
 suffix:semicolon
 multiline_comment|/* length of the xattrs */
-DECL|member|FileNameLength
-id|__le32
-id|FileNameLength
-suffix:semicolon
 DECL|member|FileName
 r_char
 id|FileName
@@ -5215,20 +5215,24 @@ DECL|member|ExtFileAttributes
 id|__le32
 id|ExtFileAttributes
 suffix:semicolon
+DECL|member|FileNameLength
+id|__le32
+id|FileNameLength
+suffix:semicolon
 DECL|member|EaSize
 id|__le32
 id|EaSize
 suffix:semicolon
-multiline_comment|/* length of the xattrs */
+multiline_comment|/* EA size */
+DECL|member|Reserved
+id|__le32
+id|Reserved
+suffix:semicolon
 DECL|member|UniqueId
 id|__le64
 id|UniqueId
 suffix:semicolon
 multiline_comment|/* inode num - le since Samba puts ino in low 32 bit*/
-DECL|member|FileNameLength
-id|__le32
-id|FileNameLength
-suffix:semicolon
 DECL|member|FileName
 r_char
 id|FileName
@@ -5284,7 +5288,6 @@ DECL|member|FileNameLength
 id|__le32
 id|FileNameLength
 suffix:semicolon
-multiline_comment|/* this should be right before FileName despite what spec says - spec probably wrong */
 DECL|member|EaSize
 id|__le32
 id|EaSize
