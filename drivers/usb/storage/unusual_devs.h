@@ -351,7 +351,7 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* From Yukihiro Nakai, via zaitcev@yahoo.com. */
+multiline_comment|/* From Yukihiro Nakai, via zaitcev@yahoo.com.&n; * This is needed for CB instead of CBI */
 id|UNUSUAL_DEV
 c_func
 (paren
