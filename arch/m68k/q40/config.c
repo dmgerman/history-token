@@ -53,7 +53,7 @@ r_extern
 id|irqreturn_t
 (paren
 op_star
-id|q40_sys_default_handler
+id|q40_default_handler
 (braket
 )braket
 )paren
@@ -776,7 +776,7 @@ suffix:semicolon
 id|mach_default_handler
 op_assign
 op_amp
-id|q40_sys_default_handler
+id|q40_default_handler
 suffix:semicolon
 id|mach_get_model
 op_assign

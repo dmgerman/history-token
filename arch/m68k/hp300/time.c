@@ -266,7 +266,7 @@ id|CLOCKBASE
 )paren
 )paren
 suffix:semicolon
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 l_int|6
