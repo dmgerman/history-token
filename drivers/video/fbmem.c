@@ -1569,7 +1569,7 @@ op_star
 id|fi
 )paren
 op_member_access_from_pointer
-id|modename
+id|fix.id
 )paren
 suffix:semicolon
 op_star
@@ -2144,9 +2144,7 @@ r_else
 (brace
 id|i
 op_assign
-id|fb
-op_member_access_from_pointer
-id|fb_set_var
+id|gen_set_var
 c_func
 (paren
 op_amp
@@ -2381,12 +2379,6 @@ c_func
 (paren
 op_amp
 id|var
-comma
-id|PROC_CONSOLE
-c_func
-(paren
-id|info
-)paren
 comma
 id|info
 )paren
@@ -2677,12 +2669,6 @@ comma
 id|cmd
 comma
 id|arg
-comma
-id|PROC_CONSOLE
-c_func
-(paren
-id|info
-)paren
 comma
 id|info
 )paren

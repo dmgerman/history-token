@@ -3260,18 +3260,15 @@ r_goto
 id|fail_ioremap_fbmem
 suffix:semicolon
 )brace
-multiline_comment|/* turn on default video mode */
-id|gen_set_var
+id|fb_alloc_cmap
 c_func
 (paren
 op_amp
-id|fb_info-&gt;var
+id|fb_info.cmap
 comma
-op_minus
-l_int|1
+l_int|256
 comma
-op_amp
-id|fb_info
+l_int|0
 )paren
 suffix:semicolon
 r_if

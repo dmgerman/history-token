@@ -284,11 +284,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|tx3912fb_setcolreg
@@ -753,6 +748,20 @@ id|u_long
 id|tx3912fb_paddr
 op_assign
 l_int|0
+suffix:semicolon
+r_int
+id|size
+op_assign
+(paren
+id|info-&gt;var.bits_per_pixel
+op_eq
+l_int|8
+)paren
+ques
+c_cond
+l_int|256
+suffix:colon
+l_int|16
 suffix:semicolon
 multiline_comment|/* Disable the video logic */
 id|outl

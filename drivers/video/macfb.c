@@ -853,7 +853,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* fbcon will set an entire colourmap, but X won&squot;t.  Hopefully&n;&t;   this should accomodate both of them */
+multiline_comment|/* fbdev will set an entire colourmap, but X won&squot;t.  Hopefully&n;&t;   this should accomodate both of them */
 r_if
 c_cond
 (paren
@@ -2618,11 +2618,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|macfb_setcolreg
@@ -3832,15 +3827,6 @@ suffix:semicolon
 id|fb_info.fix
 op_assign
 id|macfb_fix
-suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 id|fb_info.pseudo_palette
 op_assign

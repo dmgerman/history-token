@@ -387,11 +387,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|maxinefb_setcolreg
@@ -546,15 +541,6 @@ suffix:semicolon
 id|fb_info.fix
 op_assign
 id|maxinefb_fix
-suffix:semicolon
-id|fb_info.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 id|fb_info.flags
 op_assign

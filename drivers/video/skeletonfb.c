@@ -478,9 +478,6 @@ id|fb_var_screeninfo
 op_star
 id|var
 comma
-r_int
-id|con
-comma
 r_const
 r_struct
 id|fb_info
@@ -819,12 +816,6 @@ op_assign
 id|xxxfb_release
 comma
 multiline_comment|/* only if you need it to do something */
-multiline_comment|/* Stuff to go away. Use generic functions for now */
-dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
 dot
 id|fb_check_var
 op_assign

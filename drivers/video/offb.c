@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -205,11 +204,6 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
-comma
-dot
-id|fb_set_var
-op_assign
-id|gen_set_var
 comma
 dot
 id|fb_setcolreg

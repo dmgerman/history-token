@@ -178,11 +178,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
 id|fb_blank
 op_assign
 id|dnfb_blank

@@ -181,9 +181,6 @@ id|fb_var_screeninfo
 op_star
 id|var
 comma
-r_int
-id|con
-comma
 r_struct
 id|fb_info
 op_star
@@ -728,11 +725,6 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
-comma
-dot
-id|fb_set_var
-op_assign
-id|gen_set_var
 comma
 dot
 id|fb_setcolreg
@@ -1628,10 +1620,6 @@ suffix:semicolon
 id|fb_info.fix
 op_assign
 id|vesafb_fix
-suffix:semicolon
-id|fb_info.updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 id|fb_info.pseudo_palette
 op_assign

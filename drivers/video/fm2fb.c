@@ -336,11 +336,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|fm2fb_setcolreg

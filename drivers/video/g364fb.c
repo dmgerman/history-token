@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/jazz.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
 multiline_comment|/* &n; * Various defines for the G364&n; */
 DECL|macro|G364_MEM_BASE
 mdefine_line|#define G364_MEM_BASE   0xe4400000
@@ -248,9 +247,6 @@ id|fb_var_screeninfo
 op_star
 id|var
 comma
-r_int
-id|con
-comma
 r_struct
 id|fb_info
 op_star
@@ -308,11 +304,6 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
-comma
-dot
-id|fb_set_var
-op_assign
-id|gen_set_var
 comma
 dot
 id|fb_setcolreg
@@ -455,9 +446,6 @@ r_struct
 id|fb_var_screeninfo
 op_star
 id|var
-comma
-r_int
-id|con
 comma
 r_struct
 id|fb_info

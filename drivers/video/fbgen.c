@@ -141,8 +141,6 @@ c_func
 op_amp
 id|info-&gt;var
 comma
-id|con
-comma
 id|info
 )paren
 suffix:semicolon
@@ -173,9 +171,6 @@ r_struct
 id|fb_var_screeninfo
 op_star
 id|var
-comma
-r_int
-id|con
 comma
 r_struct
 id|fb_info
@@ -210,14 +205,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|con
-op_eq
-id|info-&gt;currcon
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|info-&gt;fbops-&gt;fb_pan_display
 )paren
 (brace
@@ -234,8 +221,6 @@ c_func
 (paren
 id|var
 comma
-id|con
-comma
 id|info
 )paren
 )paren
@@ -243,7 +228,6 @@ id|info
 r_return
 id|err
 suffix:semicolon
-)brace
 r_else
 r_return
 op_minus
@@ -324,8 +308,6 @@ c_func
 (paren
 op_amp
 id|info-&gt;var
-comma
-id|con
 comma
 id|info
 )paren

@@ -299,11 +299,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
 id|fb_setcolreg
 op_assign
 id|pmagbbfb_setcolreg
@@ -412,15 +407,6 @@ suffix:semicolon
 id|info-&gt;screen_base
 op_assign
 id|pmagbbfb_fix.smem_start
-suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|info-&gt;updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 id|info-&gt;flags
 op_assign

@@ -814,28 +814,6 @@ r_int
 id|user
 )paren
 suffix:semicolon
-multiline_comment|/* set settable parameters */
-DECL|member|fb_set_var
-r_int
-(paren
-op_star
-id|fb_set_var
-)paren
-(paren
-r_struct
-id|fb_var_screeninfo
-op_star
-id|var
-comma
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
 multiline_comment|/* checks var and creates a par based on it */
 DECL|member|fb_check_var
 r_int
@@ -927,9 +905,6 @@ r_struct
 id|fb_var_screeninfo
 op_star
 id|var
-comma
-r_int
-id|con
 comma
 r_struct
 id|fb_info
@@ -1037,9 +1012,6 @@ comma
 r_int
 r_int
 id|arg
-comma
-r_int
-id|con
 comma
 r_struct
 id|fb_info

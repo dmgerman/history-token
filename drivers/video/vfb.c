@@ -326,9 +326,6 @@ id|fb_var_screeninfo
 op_star
 id|var
 comma
-r_int
-id|con
-comma
 r_struct
 id|fb_info
 op_star
@@ -363,10 +360,6 @@ id|fb_ops
 id|vfb_ops
 op_assign
 (brace
-dot
-id|fb_set_var
-id|gen_set_var
-comma
 dot
 id|fb_check_var
 id|vfb_check_var
@@ -1201,9 +1194,6 @@ r_struct
 id|fb_var_screeninfo
 op_star
 id|var
-comma
-r_int
-id|con
 comma
 r_struct
 id|fb_info
