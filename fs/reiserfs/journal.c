@@ -9648,14 +9648,10 @@ c_func
 (paren
 l_string|&quot;sh-458: journal_init_dev: cannot init journal device&bslash;n &squot;%s&squot;: %i&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|jdev
-)paren
+id|journal-&gt;j_dev_bd
 )paren
 comma
 id|result
@@ -9858,14 +9854,10 @@ c_func
 (paren
 l_string|&quot;journal_init_dev: journal device: %s&quot;
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|jdev
-)paren
+id|journal-&gt;j_dev_bd
 )paren
 )paren
 suffix:semicolon
