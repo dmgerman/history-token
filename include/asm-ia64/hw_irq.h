@@ -181,7 +181,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Default implementations for the irq-descriptor API:&n; */
 r_extern
 id|irq_desc_t
-id|_irq_desc
+id|irq_desc
 (braket
 id|NR_IRQS
 )braket
@@ -200,7 +200,7 @@ id|irq
 )paren
 (brace
 r_return
-id|_irq_desc
+id|irq_desc
 op_plus
 id|irq
 suffix:semicolon

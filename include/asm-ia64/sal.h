@@ -793,6 +793,12 @@ DECL|typedef|sal_log_record_header_t
 )brace
 id|sal_log_record_header_t
 suffix:semicolon
+DECL|macro|sal_log_severity_recoverable
+mdefine_line|#define sal_log_severity_recoverable&t;0
+DECL|macro|sal_log_severity_fatal
+mdefine_line|#define sal_log_severity_fatal&t;&t;1
+DECL|macro|sal_log_severity_corrected
+mdefine_line|#define sal_log_severity_corrected&t;2
 multiline_comment|/* Definition of log section header structures */
 DECL|struct|sal_log_sec_header
 r_typedef

@@ -10100,6 +10100,27 @@ c_func
 id|idle_cpu
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * idle_task - return the idle task for a given cpu.&n; * @cpu: the processor in question.&n; */
+DECL|function|idle_task
+id|task_t
+op_star
+id|idle_task
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_return
+id|cpu_rq
+c_func
+(paren
+id|cpu
+)paren
+op_member_access_from_pointer
+id|idle
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * find_process_by_pid - find a process with a matching PID value.&n; * @pid: the pid in question.&n; */
 DECL|function|find_process_by_pid
 r_static

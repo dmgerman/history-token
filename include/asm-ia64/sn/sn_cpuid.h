@@ -4,6 +4,7 @@ DECL|macro|_ASM_IA64_SN_SN_CPUID_H
 mdefine_line|#define _ASM_IA64_SN_SN_CPUID_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/pda.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
 multiline_comment|/*&n; * Functions for converting between cpuids, nodeids and NASIDs.&n; * &n; * These are for SGI platforms only.&n; *&n; */
@@ -15,8 +16,8 @@ DECL|macro|cpu_physical_id
 mdefine_line|#define cpu_physical_id(cpuid)&t;&t;&t;((ia64_getreg(_IA64_REG_CR_LID) &gt;&gt; 16) &amp; 0xffff)
 macro_line|#endif
 DECL|macro|get_node_number
-mdefine_line|#define get_node_number(addr)&t;&t;&t;(((unsigned long)(addr)&gt;&gt;38) &amp; 0x7ff)
-multiline_comment|/*&n; * NOTE: id &amp; eid refer to Intel&squot;s definitions of the LID register&n; * &n; * NOTE: on non-MP systems, only cpuid 0 exists&n; */
+mdefine_line|#define get_node_number(addr)&t;&t;&t;NASID_GET(addr)
+multiline_comment|/*&n; * NOTE: on non-MP systems, only cpuid 0 exists&n; */
 r_extern
 r_int
 id|physical_node_map
