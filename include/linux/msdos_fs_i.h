@@ -3,6 +3,8 @@ DECL|macro|_MSDOS_FS_I
 mdefine_line|#define _MSDOS_FS_I
 macro_line|#include &lt;linux/fs.h&gt;
 multiline_comment|/*&n; * MS-DOS file system inode data in memory&n; */
+DECL|macro|FAT_CACHE_VALID
+mdefine_line|#define FAT_CACHE_VALID&t;0&t;/* special case for valid cache */
 DECL|struct|msdos_inode_info
 r_struct
 id|msdos_inode_info
@@ -19,6 +21,12 @@ suffix:semicolon
 DECL|member|nr_caches
 r_int
 id|nr_caches
+suffix:semicolon
+multiline_comment|/* for avoiding the race between fat_free() and fat_get_cluster() */
+DECL|member|cache_valid_id
+r_int
+r_int
+id|cache_valid_id
 suffix:semicolon
 DECL|member|mmu_private
 id|loff_t

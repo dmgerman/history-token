@@ -3532,6 +3532,12 @@ id|ei-&gt;nr_caches
 op_assign
 l_int|0
 suffix:semicolon
+id|ei-&gt;cache_valid_id
+op_assign
+id|FAT_CACHE_VALID
+op_plus
+l_int|1
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
