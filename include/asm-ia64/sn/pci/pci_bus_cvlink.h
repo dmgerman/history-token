@@ -1,9 +1,8 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_CVLINK_H
 DECL|macro|_ASM_SN_PCI_CVLINK_H
 mdefine_line|#define _ASM_SN_PCI_CVLINK_H
 macro_line|#include &lt;asm/sn/types.h&gt;
-macro_line|#include &lt;asm/sn/hack.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
@@ -45,7 +44,7 @@ r_struct
 id|sn_widget_sysdata
 (brace
 DECL|member|vhdl
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 suffix:semicolon
 )brace
@@ -55,7 +54,7 @@ r_struct
 id|sn_device_sysdata
 (brace
 DECL|member|vhdl
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 suffix:semicolon
 DECL|member|isa64

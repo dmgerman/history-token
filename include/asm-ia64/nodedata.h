@@ -11,6 +11,10 @@ DECL|struct|ia64_node_data
 r_struct
 id|ia64_node_data
 (brace
+DECL|member|active_cpu_count
+r_int
+id|active_cpu_count
+suffix:semicolon
 DECL|member|node
 r_int
 id|node

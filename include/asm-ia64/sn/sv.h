@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2001 Silicon Graphics, Inc.  All rights reserved&n; *&n; * This implemenation of synchronization variables is heavily based on&n; * one done by Steve Lord &lt;lord@sgi.com&gt;&n; *&n; * Paul Cassella &lt;pwc@sgi.com&gt;&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This implemenation of synchronization variables is heavily based on&n; * one done by Steve Lord &lt;lord@sgi.com&gt;&n; *&n; * Paul Cassella &lt;pwc@sgi.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_SN_SV_H
 DECL|macro|_ASM_IA64_SN_SV_H
 mdefine_line|#define _ASM_IA64_SN_SV_H

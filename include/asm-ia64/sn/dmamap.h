@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2001 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_DMAMAP_H
 DECL|macro|_ASM_IA64_SN_DMAMAP_H
 mdefine_line|#define _ASM_IA64_SN_DMAMAP_H
@@ -131,22 +131,6 @@ comma
 id|caddr_t
 )paren
 suffix:semicolon
-macro_line|#ifdef LATER
-r_extern
-r_int
-id|dma_mapbp
-c_func
-(paren
-id|dmamap_t
-op_star
-comma
-id|buf_t
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|dma_map_alenlist

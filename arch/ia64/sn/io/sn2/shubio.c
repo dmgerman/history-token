@@ -23,7 +23,7 @@ id|error_state_t
 id|error_state_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|v
 )paren
 suffix:semicolon
@@ -31,7 +31,7 @@ id|error_return_code_t
 id|error_state_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|v
 comma
 id|error_state_t
@@ -45,7 +45,7 @@ DECL|function|hub_xp_error_handler
 id|hub_xp_error_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_v
 comma
 id|nasid_t
@@ -66,7 +66,7 @@ multiline_comment|/*REFERENCED*/
 id|hubreg_t
 id|iio_imem
 suffix:semicolon
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xswitch
 suffix:semicolon
 id|error_state_t
@@ -304,7 +304,7 @@ DECL|function|hub_ioerror_handler
 id|hub_ioerror_handler
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hub_v
 comma
 r_int
@@ -334,6 +334,9 @@ suffix:semicolon
 multiline_comment|/*REFERENCED*/
 id|iopaddr_t
 id|p
+suffix:semicolon
+id|caddr_t
+id|cp
 suffix:semicolon
 id|IOERROR_DUMP
 c_func
@@ -387,7 +390,7 @@ multiline_comment|/*&n;&t;&t; * Evaluate the widget number and the widget addres
 id|IOERROR_GETVALUE
 c_func
 (paren
-id|p
+id|cp
 comma
 id|ioerror
 comma
@@ -397,14 +400,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p
+id|cp
 )paren
 (brace
 multiline_comment|/* &n;&t;&t;     * If neither in small window nor in large window range,&n;&t;&t;     * outright reject it.&n;&t;&t;     */
 id|IOERROR_GETVALUE
 c_func
 (paren
-id|p
+id|cp
 comma
 id|ioerror
 comma
@@ -422,7 +425,7 @@ comma
 (paren
 id|paddr_t
 )paren
-id|p
+id|cp
 )paren
 )paren
 (brace
@@ -499,7 +502,7 @@ comma
 (paren
 id|paddr_t
 )paren
-id|p
+id|cp
 )paren
 )paren
 (brace
@@ -1087,14 +1090,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-DECL|macro|L_BITSMINOR
-mdefine_line|#define L_BITSMINOR 18
-DECL|macro|L_MAXMAJ
-mdefine_line|#define L_MAXMAJ 0x1ff
-DECL|macro|emajor
-mdefine_line|#define emajor(x) (int )(((unsigned )(x)&gt;&gt;L_BITSMINOR) &amp; L_MAXMAJ)
-DECL|macro|dev_is_vertex
-mdefine_line|#define dev_is_vertex(dev) (emajor((dev_t)(dev)) == 0)
 DECL|macro|INFO_LBL_ERROR_STATE
 mdefine_line|#define INFO_LBL_ERROR_STATE    &quot;error_state&quot;
 DECL|macro|v_error_state_get
@@ -1109,7 +1104,7 @@ DECL|function|error_state_get
 id|error_state_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|v
 )paren
 (brace
@@ -1120,12 +1115,12 @@ multiline_comment|/* Check if we have a valid hwgraph vertex */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|dev_is_vertex
-c_func
-(paren
 id|v
+op_eq
+(paren
+id|vertex_hdl_t
 )paren
+l_int|0
 )paren
 r_return
 id|ERROR_STATE_NONE
@@ -1159,7 +1154,7 @@ DECL|function|error_state_set
 id|error_state_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|v
 comma
 id|error_state_t
@@ -1178,12 +1173,12 @@ multiline_comment|/* Check if we have a valid hwgraph vertex */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|dev_is_vertex
-c_func
-(paren
 id|v
+op_eq
+(paren
+id|vertex_hdl_t
 )paren
+l_int|0
 )paren
 r_return
 id|ERROR_RETURN_CODE_GENERAL_FAILURE

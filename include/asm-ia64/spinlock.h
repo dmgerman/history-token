@@ -28,7 +28,7 @@ mdefine_line|#define NEW_LOCK
 macro_line|#ifdef NEW_LOCK
 multiline_comment|/*&n; * Try to get the lock.  If we fail to get the lock, make a non-standard call to&n; * ia64_spinlock_contention().  We do not use a normal call because that would force all&n; * callers of spin_lock() to be non-leaf routines.  Instead, ia64_spinlock_contention() is&n; * carefully coded to touch only those registers that spin_lock() marks &quot;clobbered&quot;.&n; */
 DECL|macro|IA64_SPINLOCK_CLOBBERS
-mdefine_line|#define IA64_SPINLOCK_CLOBBERS &quot;ar.pfs&quot;, &quot;p14&quot;, &quot;r28&quot;, &quot;r29&quot;, &quot;r30&quot;, &quot;b6&quot;, &quot;memory&quot;
+mdefine_line|#define IA64_SPINLOCK_CLOBBERS &quot;ar.ccv&quot;, &quot;ar.pfs&quot;, &quot;p14&quot;, &quot;r28&quot;, &quot;r29&quot;, &quot;r30&quot;, &quot;b6&quot;, &quot;memory&quot;
 r_static
 r_inline
 r_void
@@ -206,7 +206,7 @@ mdefine_line|#define rwlock_init(x)&t;&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0
 DECL|macro|rwlock_is_locked
 mdefine_line|#define rwlock_is_locked(x)&t;(*(volatile int *) (x) != 0)
 DECL|macro|_raw_read_lock
-mdefine_line|#define _raw_read_lock(rw)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rwlock_t *__read_lock_ptr = (rw);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (unlikely(ia64_fetchadd(1, (int *) __read_lock_ptr, &quot;acq&quot;) &lt; 0)) {&t;&bslash;&n;&t;&t;ia64_fetchadd(-1, (int *) __read_lock_ptr, &quot;rel&quot;);&t;&t;&t;&bslash;&n;&t;&t;while (*(volatile int *)__read_lock_ptr &lt; 0)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;barrier();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define _raw_read_lock(rw)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rwlock_t *__read_lock_ptr = (rw);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;while (unlikely(ia64_fetchadd(1, (int *) __read_lock_ptr, &quot;acq&quot;) &lt; 0)) {&t;&bslash;&n;&t;&t;ia64_fetchadd(-1, (int *) __read_lock_ptr, &quot;rel&quot;);&t;&t;&t;&bslash;&n;&t;&t;while (*(volatile int *)__read_lock_ptr &lt; 0)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;cpu_relax();&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|_raw_read_unlock
 mdefine_line|#define _raw_read_unlock(rw)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;rwlock_t *__read_lock_ptr = (rw);&t;&t;&t;&bslash;&n;&t;ia64_fetchadd(-1, (int *) __read_lock_ptr, &quot;rel&quot;);&t;&bslash;&n;} while (0)
 DECL|macro|_raw_write_lock

@@ -1512,9 +1512,9 @@ r_void
 DECL|function|init_handler_platform
 id|init_handler_platform
 (paren
-id|sal_log_processor_info_t
+id|pal_min_state_area_t
 op_star
-id|proc_ptr
+id|ms
 comma
 r_struct
 id|pt_regs
@@ -1550,14 +1550,7 @@ suffix:semicolon
 id|show_min_state
 c_func
 (paren
-op_amp
-id|SAL_LPI_PSI_INFO
-c_func
-(paren
-id|proc_ptr
-)paren
-op_member_access_from_pointer
-id|min_state_area
+id|ms
 )paren
 suffix:semicolon
 id|printk
@@ -1573,14 +1566,7 @@ suffix:semicolon
 id|fetch_min_state
 c_func
 (paren
-op_amp
-id|SAL_LPI_PSI_INFO
-c_func
-(paren
-id|proc_ptr
-)paren
-op_member_access_from_pointer
-id|min_state_area
+id|ms
 comma
 id|pt
 comma
@@ -1609,6 +1595,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* read_trylock() would be handy... */
 r_if
 c_cond
 (paren
@@ -1622,6 +1610,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
+macro_line|#endif
 (brace
 r_struct
 id|task_struct
@@ -1661,6 +1650,8 @@ id|show_stack
 c_func
 (paren
 id|t
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1672,6 +1663,7 @@ id|t
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -1685,6 +1677,7 @@ op_amp
 id|tasklist_lock
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -2294,13 +2287,13 @@ l_string|&quot;ia64_mca_init: registered mca rendezvous spinloop and wakeup mech
 suffix:semicolon
 id|ia64_mc_info.imi_mca_handler
 op_assign
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|mca_hldlr_ptr-&gt;fp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * XXX - disable SAL checksum by setting size to 0; should be&n;&t; *&t;__pa(ia64_os_mca_dispatch_end) - __pa(ia64_os_mca_dispatch);&n;&t; */
+multiline_comment|/*&n;&t; * XXX - disable SAL checksum by setting size to 0; should be&n;&t; *&t;ia64_tpa(ia64_os_mca_dispatch_end) - ia64_tpa(ia64_os_mca_dispatch);&n;&t; */
 id|ia64_mc_info.imi_mca_handler_size
 op_assign
 l_int|0
@@ -2319,7 +2312,11 @@ id|SAL_VECTOR_OS_MCA
 comma
 id|ia64_mc_info.imi_mca_handler
 comma
+id|ia64_tpa
+c_func
+(paren
 id|mca_hldlr_ptr-&gt;gp
+)paren
 comma
 id|ia64_mc_info.imi_mca_handler_size
 comma
@@ -2352,13 +2349,17 @@ l_string|&quot;ia64_mca_init: registered os mca handler with SAL at 0x%lx, gp = 
 comma
 id|ia64_mc_info.imi_mca_handler
 comma
+id|ia64_tpa
+c_func
+(paren
 id|mca_hldlr_ptr-&gt;gp
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * XXX - disable SAL checksum by setting size to 0, should be&n;&t; * IA64_INIT_HANDLER_SIZE&n;&t; */
 id|ia64_mc_info.imi_monarch_init_handler
 op_assign
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|mon_init_ptr-&gt;fp
@@ -2370,7 +2371,7 @@ l_int|0
 suffix:semicolon
 id|ia64_mc_info.imi_slave_init_handler
 op_assign
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|slave_init_ptr-&gt;fp
@@ -2402,7 +2403,7 @@ id|SAL_VECTOR_OS_INIT
 comma
 id|ia64_mc_info.imi_monarch_init_handler
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|ia64_get_gp
@@ -2415,7 +2416,7 @@ id|ia64_mc_info.imi_monarch_init_handler_size
 comma
 id|ia64_mc_info.imi_slave_init_handler
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|ia64_get_gp
@@ -3662,95 +3663,40 @@ op_star
 id|sw
 )paren
 (brace
-id|sal_log_processor_info_t
+id|pal_min_state_area_t
 op_star
-id|proc_ptr
-suffix:semicolon
-id|ia64_err_rec_t
-op_star
-id|plog_ptr
+id|ms
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Entered OS INIT handler&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Get the INIT processor log */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ia64_log_get
-c_func
-(paren
-id|SAL_INFO_TYPE_INIT
+l_string|&quot;Entered OS INIT handler. PSP=%lx&bslash;n&quot;
 comma
-(paren
-id|prfunc_t
-)paren
-id|printk
-)paren
-)paren
-r_return
-suffix:semicolon
-singleline_comment|// no record retrieved
-macro_line|#ifdef IA64_DUMP_ALL_PROC_INFO
-id|ia64_log_print
-c_func
-(paren
-id|SAL_INFO_TYPE_INIT
-comma
-(paren
-id|prfunc_t
-)paren
-id|printk
+id|ia64_sal_to_os_handoff_state.proc_state_param
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; * get pointer to min state save area&n;&t; *&n;&t; */
-id|plog_ptr
+multiline_comment|/*&n;&t; * Address of minstate area provided by PAL is physical,&n;&t; * uncacheable (bit 63 set). Convert to Linux virtual&n;&t; * address in region 6.&n;&t; */
+id|ms
 op_assign
 (paren
-id|ia64_err_rec_t
+id|pal_min_state_area_t
 op_star
 )paren
-id|IA64_LOG_CURR_BUFFER
-c_func
 (paren
-id|SAL_INFO_TYPE_INIT
+id|ia64_sal_to_os_handoff_state.pal_min_state
+op_or
+(paren
+l_int|6ul
+op_lshift
+l_int|61
 )paren
-suffix:semicolon
-id|proc_ptr
-op_assign
-op_amp
-id|plog_ptr-&gt;proc_err
-suffix:semicolon
-id|ia64_process_min_state_save
-c_func
-(paren
-op_amp
-id|SAL_LPI_PSI_INFO
-c_func
-(paren
-id|proc_ptr
-)paren
-op_member_access_from_pointer
-id|min_state_area
-)paren
-suffix:semicolon
-multiline_comment|/* Clear the INIT SAL logs now that they have been saved in the OS buffer */
-id|ia64_sal_clear_state_info
-c_func
-(paren
-id|SAL_INFO_TYPE_INIT
 )paren
 suffix:semicolon
 id|init_handler_platform
 c_func
 (paren
-id|proc_ptr
+id|ms
 comma
 id|pt
 comma

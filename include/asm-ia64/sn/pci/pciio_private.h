@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_SN_PCI_PCIIO_PRIVATE_H
 DECL|macro|_ASM_SN_PCI_PCIIO_PRIVATE_H
 mdefine_line|#define _ASM_SN_PCI_PCIIO_PRIVATE_H
@@ -17,7 +17,7 @@ id|pp_flags
 suffix:semicolon
 multiline_comment|/* PCIIO_PIOMAP flags */
 DECL|member|pp_dev
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pp_dev
 suffix:semicolon
 multiline_comment|/* associated pci card */
@@ -59,7 +59,7 @@ id|pd_flags
 suffix:semicolon
 multiline_comment|/* PCIIO_DMAMAP flags */
 DECL|member|pd_dev
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pd_dev
 suffix:semicolon
 multiline_comment|/* associated pci card */
@@ -81,7 +81,7 @@ id|pi_flags
 suffix:semicolon
 multiline_comment|/* PCIIO_INTR flags */
 DECL|member|pi_dev
-id|devfs_handle_t
+id|vertex_hdl_t
 id|pi_dev
 suffix:semicolon
 multiline_comment|/* associated pci card */
@@ -180,7 +180,7 @@ op_star
 id|c_fingerprint
 suffix:semicolon
 DECL|member|c_vertex
-id|devfs_handle_t
+id|vertex_hdl_t
 id|c_vertex
 suffix:semicolon
 multiline_comment|/* back pointer to vertex */
@@ -210,7 +210,7 @@ id|c_device
 suffix:semicolon
 multiline_comment|/* PCI card &quot;device&quot; code */
 DECL|member|c_master
-id|devfs_handle_t
+id|vertex_hdl_t
 id|c_master
 suffix:semicolon
 multiline_comment|/* PCI bus provider */

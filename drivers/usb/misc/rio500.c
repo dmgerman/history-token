@@ -259,6 +259,7 @@ op_amp
 id|rio_instance
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -328,6 +329,7 @@ id|data
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -640,6 +642,7 @@ id|data
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -937,6 +940,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -1321,6 +1325,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma

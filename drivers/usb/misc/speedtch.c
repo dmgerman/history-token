@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *  Written by Johan Verrept, maintained by Duncan Sands (duncan.sands@wanadoo.fr)&n; *&n; *  1.6:&t;- No longer opens a connection if the firmware is not loaded&n; *  &t;&t;- Added support for the speedtouch 330&n; *  &t;&t;- Removed the limit on the number of devices&n; *  &t;&t;- Module now autoloads on device plugin&n; *  &t;&t;- Merged relevant parts of sarlib&n; *  &t;&t;- Replaced the kernel thread with a tasklet&n; *  &t;&t;- New packet transmission code&n; *  &t;&t;- Changed proc file contents&n; *  &t;&t;- Fixed all known SMP races&n; *  &t;&t;- Many fixes and cleanups&n; *  &t;&t;- Various fixes by Oliver Neukum (oliver@neukum.name)&n; *&n; *  1.5A:&t;- Version for inclusion in 2.5 series kernel&n; *&t;&t;- Modifications by Richard Purdie (rpurdie@rpsys.net)&n; *&t;&t;- made compatible with kernel 2.5.6 onwards by changing&n; *&t;&t;udsl_usb_send_data_context-&gt;urb to a pointer and adding code&n; *&t;&t;to alloc and free it&n; *&t;&t;- remove_wait_queue() added to udsl_atm_processqueue_thread()&n; *&n; *  1.5:&t;- fixed memory leak when atmsar_decode_aal5 returned NULL.&n; *&t;&t;(reported by stephen.robinson@zen.co.uk)&n; *&n; *  1.4:&t;- changed the spin_lock() under interrupt to spin_lock_irqsave()&n; *&t;&t;- unlink all active send urbs of a vcc that is being closed.&n; *&n; *  1.3.1:&t;- added the version number&n; *&n; *  1.3:&t;- Added multiple send urb support&n; *&t;&t;- fixed memory leak and vcc-&gt;tx_inuse starvation bug&n; *&t;&t;  when not enough memory left in vcc.&n; *&n; *  1.2:&t;- Fixed race condition in udsl_usb_send_data()&n; *  1.1:&t;- Turned off packet debugging&n; *&n; */
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -63,18 +64,234 @@ DECL|macro|SPEEDTOUCH_VENDORID
 mdefine_line|#define SPEEDTOUCH_VENDORID&t;&t;0x06b9
 DECL|macro|SPEEDTOUCH_PRODUCTID
 mdefine_line|#define SPEEDTOUCH_PRODUCTID&t;&t;0x4061
-DECL|macro|UDSL_NUM_RCV_URBS
-mdefine_line|#define UDSL_NUM_RCV_URBS&t;&t;1
-DECL|macro|UDSL_NUM_SND_URBS
-mdefine_line|#define UDSL_NUM_SND_URBS&t;&t;1
-DECL|macro|UDSL_NUM_RCV_BUFS
-mdefine_line|#define UDSL_NUM_RCV_BUFS&t;&t;(2*UDSL_NUM_RCV_URBS)
-DECL|macro|UDSL_NUM_SND_BUFS
-mdefine_line|#define UDSL_NUM_SND_BUFS&t;&t;(2*UDSL_NUM_SND_URBS)
-DECL|macro|UDSL_RCV_BUF_SIZE
-mdefine_line|#define UDSL_RCV_BUF_SIZE&t;&t;32 /* ATM cells */
-DECL|macro|UDSL_SND_BUF_SIZE
-mdefine_line|#define UDSL_SND_BUF_SIZE&t;&t;64 /* ATM cells */
+DECL|macro|UDSL_MAX_RCV_URBS
+mdefine_line|#define UDSL_MAX_RCV_URBS&t;&t;4
+DECL|macro|UDSL_MAX_SND_URBS
+mdefine_line|#define UDSL_MAX_SND_URBS&t;&t;4
+DECL|macro|UDSL_MAX_RCV_BUFS
+mdefine_line|#define UDSL_MAX_RCV_BUFS&t;&t;8
+DECL|macro|UDSL_MAX_SND_BUFS
+mdefine_line|#define UDSL_MAX_SND_BUFS&t;&t;8
+DECL|macro|UDSL_MAX_RCV_BUF_SIZE
+mdefine_line|#define UDSL_MAX_RCV_BUF_SIZE&t;&t;1024 /* ATM cells */
+DECL|macro|UDSL_MAX_SND_BUF_SIZE
+mdefine_line|#define UDSL_MAX_SND_BUF_SIZE&t;&t;1024 /* ATM cells */
+DECL|macro|UDSL_DEFAULT_RCV_URBS
+mdefine_line|#define UDSL_DEFAULT_RCV_URBS&t;&t;1
+DECL|macro|UDSL_DEFAULT_SND_URBS
+mdefine_line|#define UDSL_DEFAULT_SND_URBS&t;&t;1
+DECL|macro|UDSL_DEFAULT_RCV_BUFS
+mdefine_line|#define UDSL_DEFAULT_RCV_BUFS&t;&t;2
+DECL|macro|UDSL_DEFAULT_SND_BUFS
+mdefine_line|#define UDSL_DEFAULT_SND_BUFS&t;&t;2
+DECL|macro|UDSL_DEFAULT_RCV_BUF_SIZE
+mdefine_line|#define UDSL_DEFAULT_RCV_BUF_SIZE&t;64 /* ATM cells */
+DECL|macro|UDSL_DEFAULT_SND_BUF_SIZE
+mdefine_line|#define UDSL_DEFAULT_SND_BUF_SIZE&t;64 /* ATM cells */
+DECL|variable|num_rcv_urbs
+r_static
+r_int
+r_int
+id|num_rcv_urbs
+op_assign
+id|UDSL_DEFAULT_RCV_URBS
+suffix:semicolon
+DECL|variable|num_snd_urbs
+r_static
+r_int
+r_int
+id|num_snd_urbs
+op_assign
+id|UDSL_DEFAULT_SND_URBS
+suffix:semicolon
+DECL|variable|num_rcv_bufs
+r_static
+r_int
+r_int
+id|num_rcv_bufs
+op_assign
+id|UDSL_DEFAULT_RCV_BUFS
+suffix:semicolon
+DECL|variable|num_snd_bufs
+r_static
+r_int
+r_int
+id|num_snd_bufs
+op_assign
+id|UDSL_DEFAULT_SND_BUFS
+suffix:semicolon
+DECL|variable|rcv_buf_size
+r_static
+r_int
+r_int
+id|rcv_buf_size
+op_assign
+id|UDSL_DEFAULT_RCV_BUF_SIZE
+suffix:semicolon
+DECL|variable|snd_buf_size
+r_static
+r_int
+r_int
+id|snd_buf_size
+op_assign
+id|UDSL_DEFAULT_SND_BUF_SIZE
+suffix:semicolon
+id|module_param
+(paren
+id|num_rcv_urbs
+comma
+id|uint
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|num_rcv_urbs
+comma
+l_string|&quot;Number of urbs used for reception (range: 0-&quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_MAX_RCV_URBS
+)paren
+l_string|&quot;, default: &quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_DEFAULT_RCV_URBS
+)paren
+l_string|&quot;)&quot;
+)paren
+suffix:semicolon
+id|module_param
+(paren
+id|num_snd_urbs
+comma
+id|uint
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|num_snd_urbs
+comma
+l_string|&quot;Number of urbs used for transmission (range: 0-&quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_MAX_SND_URBS
+)paren
+l_string|&quot;, default: &quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_DEFAULT_SND_URBS
+)paren
+l_string|&quot;)&quot;
+)paren
+suffix:semicolon
+id|module_param
+(paren
+id|num_rcv_bufs
+comma
+id|uint
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|num_rcv_bufs
+comma
+l_string|&quot;Number of buffers used for reception (range: 0-&quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_MAX_RCV_BUFS
+)paren
+l_string|&quot;, default: &quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_DEFAULT_RCV_BUFS
+)paren
+l_string|&quot;)&quot;
+)paren
+suffix:semicolon
+id|module_param
+(paren
+id|num_snd_bufs
+comma
+id|uint
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|num_snd_bufs
+comma
+l_string|&quot;Number of buffers used for transmission (range: 0-&quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_MAX_SND_BUFS
+)paren
+l_string|&quot;, default: &quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_DEFAULT_SND_BUFS
+)paren
+l_string|&quot;)&quot;
+)paren
+suffix:semicolon
+id|module_param
+(paren
+id|rcv_buf_size
+comma
+id|uint
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|rcv_buf_size
+comma
+l_string|&quot;Size of the buffers used for reception (range: 0-&quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_MAX_RCV_BUF_SIZE
+)paren
+l_string|&quot;, default: &quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_DEFAULT_RCV_BUF_SIZE
+)paren
+l_string|&quot;)&quot;
+)paren
+suffix:semicolon
+id|module_param
+(paren
+id|snd_buf_size
+comma
+id|uint
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|snd_buf_size
+comma
+l_string|&quot;Size of the buffers used for transmission (range: 0-&quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_MAX_SND_BUF_SIZE
+)paren
+l_string|&quot;, default: &quot;
+id|__MODULE_STRING
+(paren
+id|UDSL_DEFAULT_SND_BUF_SIZE
+)paren
+l_string|&quot;)&quot;
+)paren
+suffix:semicolon
 DECL|macro|UDSL_IOCTL_LINE_UP
 mdefine_line|#define UDSL_IOCTL_LINE_UP&t;&t;1
 DECL|macro|UDSL_IOCTL_LINE_DOWN
@@ -356,7 +573,7 @@ r_struct
 id|udsl_receiver
 id|receivers
 (braket
-id|UDSL_NUM_RCV_URBS
+id|UDSL_MAX_RCV_URBS
 )braket
 suffix:semicolon
 DECL|member|receive_buffers
@@ -364,7 +581,7 @@ r_struct
 id|udsl_receive_buffer
 id|receive_buffers
 (braket
-id|UDSL_NUM_RCV_BUFS
+id|UDSL_MAX_RCV_BUFS
 )braket
 suffix:semicolon
 DECL|member|receive_lock
@@ -397,7 +614,7 @@ r_struct
 id|udsl_sender
 id|senders
 (braket
-id|UDSL_NUM_SND_URBS
+id|UDSL_MAX_SND_URBS
 )braket
 suffix:semicolon
 DECL|member|send_buffers
@@ -405,7 +622,7 @@ r_struct
 id|udsl_send_buffer
 id|send_buffers
 (braket
-id|UDSL_NUM_SND_BUFS
+id|UDSL_MAX_SND_BUFS
 )braket
 suffix:semicolon
 DECL|member|sndqueue
@@ -1922,7 +2139,7 @@ id|BUG_ON
 (paren
 id|buf-&gt;filled_cells
 OG
-id|UDSL_RCV_BUF_SIZE
+id|rcv_buf_size
 )paren
 suffix:semicolon
 multiline_comment|/* may not be in_interrupt() */
@@ -2110,7 +2327,7 @@ id|UDSL_ENDPOINT_DATA_IN
 comma
 id|buf-&gt;base
 comma
-id|UDSL_RCV_BUF_SIZE
+id|rcv_buf_size
 op_star
 id|ATM_CELL_SIZE
 comma
@@ -2540,7 +2757,7 @@ comma
 id|buf-&gt;base
 comma
 (paren
-id|UDSL_SND_BUF_SIZE
+id|snd_buf_size
 op_minus
 id|buf-&gt;free_cells
 )paren
@@ -2558,7 +2775,7 @@ l_string|&quot;udsl_process_send: submitting urb 0x%p (%d cells), snd 0x%p, buf 
 comma
 id|snd-&gt;urb
 comma
-id|UDSL_SND_BUF_SIZE
+id|snd_buf_size
 op_minus
 id|buf-&gt;free_cells
 comma
@@ -2735,7 +2952,7 @@ id|buf-&gt;base
 suffix:semicolon
 id|buf-&gt;free_cells
 op_assign
-id|UDSL_SND_BUF_SIZE
+id|snd_buf_size
 suffix:semicolon
 id|instance-&gt;current_buffer
 op_assign
@@ -2794,7 +3011,7 @@ id|vdbg
 (paren
 l_string|&quot;udsl_process_send: buffer contains %d cells, %d left&quot;
 comma
-id|UDSL_SND_BUF_SIZE
+id|snd_buf_size
 op_minus
 id|buf-&gt;free_cells
 comma
@@ -4440,7 +4657,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_RCV_URBS
+id|num_rcv_urbs
 suffix:semicolon
 id|i
 op_increment
@@ -4509,7 +4726,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_RCV_BUFS
+id|num_rcv_bufs
 suffix:semicolon
 id|i
 op_increment
@@ -4537,7 +4754,7 @@ id|buf-&gt;base
 op_assign
 id|kmalloc
 (paren
-id|UDSL_RCV_BUF_SIZE
+id|rcv_buf_size
 op_star
 id|ATM_CELL_SIZE
 comma
@@ -4577,7 +4794,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_SND_URBS
+id|num_snd_urbs
 suffix:semicolon
 id|i
 op_increment
@@ -4646,7 +4863,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_SND_BUFS
+id|num_snd_bufs
 suffix:semicolon
 id|i
 op_increment
@@ -4674,7 +4891,7 @@ id|buf-&gt;base
 op_assign
 id|kmalloc
 (paren
-id|UDSL_SND_BUF_SIZE
+id|snd_buf_size
 op_star
 id|ATM_CELL_SIZE
 comma
@@ -4972,7 +5189,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_SND_BUFS
+id|num_snd_bufs
 suffix:semicolon
 id|i
 op_increment
@@ -4996,7 +5213,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_SND_URBS
+id|num_snd_urbs
 suffix:semicolon
 id|i
 op_increment
@@ -5020,7 +5237,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_RCV_BUFS
+id|num_rcv_bufs
 suffix:semicolon
 id|i
 op_increment
@@ -5044,7 +5261,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_RCV_URBS
+id|num_rcv_urbs
 suffix:semicolon
 id|i
 op_increment
@@ -5147,7 +5364,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_RCV_URBS
+id|num_rcv_urbs
 suffix:semicolon
 id|i
 op_increment
@@ -5206,7 +5423,7 @@ c_cond
 op_increment
 id|count
 OG
-id|UDSL_NUM_RCV_URBS
+id|num_rcv_urbs
 )paren
 id|panic
 (paren
@@ -5234,7 +5451,7 @@ c_cond
 (paren
 id|count
 op_eq
-id|UDSL_NUM_RCV_URBS
+id|num_rcv_urbs
 )paren
 r_break
 suffix:semicolon
@@ -5282,7 +5499,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_RCV_URBS
+id|num_rcv_urbs
 suffix:semicolon
 id|i
 op_increment
@@ -5306,7 +5523,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_RCV_BUFS
+id|num_rcv_bufs
 suffix:semicolon
 id|i
 op_increment
@@ -5337,7 +5554,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_SND_URBS
+id|num_snd_urbs
 suffix:semicolon
 id|i
 op_increment
@@ -5396,7 +5613,7 @@ c_cond
 op_increment
 id|count
 OG
-id|UDSL_NUM_SND_URBS
+id|num_snd_urbs
 )paren
 id|panic
 (paren
@@ -5424,7 +5641,7 @@ c_cond
 (paren
 id|count
 op_eq
-id|UDSL_NUM_SND_URBS
+id|num_snd_urbs
 )paren
 r_break
 suffix:semicolon
@@ -5476,7 +5693,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_SND_URBS
+id|num_snd_urbs
 suffix:semicolon
 id|i
 op_increment
@@ -5500,7 +5717,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|UDSL_NUM_SND_BUFS
+id|num_snd_bufs
 suffix:semicolon
 id|i
 op_increment
@@ -5580,6 +5797,49 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+id|num_rcv_urbs
+OG
+id|UDSL_MAX_RCV_URBS
+)paren
+op_logical_or
+(paren
+id|num_snd_urbs
+OG
+id|UDSL_MAX_SND_URBS
+)paren
+op_logical_or
+(paren
+id|num_rcv_bufs
+OG
+id|UDSL_MAX_RCV_BUFS
+)paren
+op_logical_or
+(paren
+id|num_snd_bufs
+OG
+id|UDSL_MAX_SND_BUFS
+)paren
+op_logical_or
+(paren
+id|rcv_buf_size
+OG
+id|UDSL_MAX_RCV_BUF_SIZE
+)paren
+op_logical_or
+(paren
+id|snd_buf_size
+OG
+id|UDSL_MAX_SND_BUF_SIZE
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 r_return
 id|usb_register
 (paren

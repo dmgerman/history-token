@@ -11,38 +11,13 @@ macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-macro_line|#include &lt;asm/sn/snconfig.h&gt;
-r_extern
-r_int
-id|numcpus
-suffix:semicolon
-r_extern
-r_char
-id|arg_maxnodes
-(braket
-)braket
-suffix:semicolon
 r_extern
 id|cpuid_t
 id|master_procid
 suffix:semicolon
-r_extern
-r_int
-id|hasmetarouter
-suffix:semicolon
 DECL|variable|maxcpus
 r_int
 id|maxcpus
-suffix:semicolon
-DECL|variable|boot_cpumask
-id|cpumask_t
-id|boot_cpumask
-suffix:semicolon
-DECL|variable|region_mask
-id|hubreg_t
-id|region_mask
-op_assign
-l_int|0
 suffix:semicolon
 r_extern
 id|xwidgetnum_t
@@ -51,25 +26,6 @@ c_func
 (paren
 id|nasid_t
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|valid_icache_reasons
-suffix:semicolon
-multiline_comment|/* Reasons to flush the icache */
-r_extern
-r_int
-id|valid_dcache_reasons
-suffix:semicolon
-multiline_comment|/* Reasons to flush the dcache */
-r_extern
-id|u_char
-id|miniroot
-suffix:semicolon
-r_extern
-r_volatile
-r_int
-id|need_utlbmiss_patch
 suffix:semicolon
 r_extern
 r_void
@@ -146,12 +102,6 @@ c_func
 suffix:semicolon
 multiline_comment|/* early initialization of iograph */
 id|iograph_early_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize Hub Pseudodriver Management */
-id|hubdev_init
 c_func
 (paren
 )paren
@@ -296,18 +246,6 @@ id|npda-&gt;xbow_sema
 )paren
 suffix:semicolon
 multiline_comment|/* init it locked? */
-)brace
-multiline_comment|/* XXX - Move the interrupt stuff to intr.c ? */
-multiline_comment|/*&n; * Set up the platform-dependent fields in the processor pda.&n; * Must be done _after_ init_platform_nodepda().&n; * If we need a lock here, something else is wrong!&n; */
-DECL|function|init_platform_pda
-r_void
-id|init_platform_pda
-c_func
-(paren
-id|cpuid_t
-id|cpu
-)paren
-(brace
 )brace
 r_void
 DECL|function|update_node_information

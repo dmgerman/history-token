@@ -5,16 +5,20 @@ mdefine_line|#define _ASM_IA64_THREAD_INFO_H
 macro_line|#include &lt;asm/offsets.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+DECL|macro|TI_TASK
+mdefine_line|#define TI_TASK&t;&t;&t;0x00
 DECL|macro|TI_EXEC_DOMAIN
-mdefine_line|#define TI_EXEC_DOMAIN&t;0x00
+mdefine_line|#define TI_EXEC_DOMAIN&t;&t;0x08
 DECL|macro|TI_FLAGS
-mdefine_line|#define TI_FLAGS&t;0x08
+mdefine_line|#define TI_FLAGS&t;&t;0x10
 DECL|macro|TI_CPU
-mdefine_line|#define TI_CPU&t;&t;0x0c
+mdefine_line|#define TI_CPU&t;&t;&t;0x14
 DECL|macro|TI_ADDR_LIMIT
-mdefine_line|#define TI_ADDR_LIMIT&t;0x10
+mdefine_line|#define TI_ADDR_LIMIT&t;&t;0x18
 DECL|macro|TI_PRE_COUNT
-mdefine_line|#define TI_PRE_COUNT&t;0x18
+mdefine_line|#define TI_PRE_COUNT&t;&t;0x20
+DECL|macro|TI_RESTART_BLOCK
+mdefine_line|#define TI_RESTART_BLOCK&t;0x28
 DECL|macro|PREEMPT_ACTIVE_BIT
 mdefine_line|#define PREEMPT_ACTIVE_BIT 30
 DECL|macro|PREEMPT_ACTIVE
@@ -25,6 +29,13 @@ DECL|struct|thread_info
 r_struct
 id|thread_info
 (brace
+DECL|member|task
+r_struct
+id|task_struct
+op_star
+id|task
+suffix:semicolon
+multiline_comment|/* XXX not really needed, except for dup_task_struct() */
 DECL|member|exec_domain
 r_struct
 id|exec_domain
@@ -64,12 +75,20 @@ mdefine_line|#define INIT_THREAD_SIZE&t;&t;/* tell sched.h not to declare the th
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE&t;&t;&t;KERNEL_STACK_SIZE
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(ti)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&bslash;&n;&t;.flags&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cpu&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.addr_limit&t;= KERNEL_DS,&t;&t;&bslash;&n;&t;.preempt_count&t;= 0,&t;&t;&t;&bslash;&n;&t;.restart_block = {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&bslash;&n;&t;.flags&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cpu&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.addr_limit&t;= KERNEL_DS,&t;&t;&bslash;&n;&t;.preempt_count&t;= 0,&t;&t;&t;&bslash;&n;&t;.restart_block = {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/* how to get the thread information struct from C */
 DECL|macro|current_thread_info
-mdefine_line|#define current_thread_info() ((struct thread_info *) ((char *) current + IA64_TASK_SIZE))
+mdefine_line|#define current_thread_info()&t;((struct thread_info *) ((char *) current + IA64_TASK_SIZE))
+DECL|macro|alloc_thread_info
+mdefine_line|#define alloc_thread_info(tsk)&t;((struct thread_info *) ((char *) (tsk) + IA64_TASK_SIZE))
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(ti)&t;/* nothing */
+DECL|macro|__HAVE_ARCH_TASK_STRUCT_ALLOCATOR
+mdefine_line|#define __HAVE_ARCH_TASK_STRUCT_ALLOCATOR
+DECL|macro|alloc_task_struct
+mdefine_line|#define alloc_task_struct()&t;((task_t *)__get_free_pages(GFP_KERNEL, KERNEL_STACK_SIZE_ORDER))
+DECL|macro|free_task_struct
+mdefine_line|#define free_task_struct(tsk)&t;free_pages((unsigned long) (tsk), KERNEL_STACK_SIZE_ORDER)
 macro_line|#endif /* !__ASSEMBLY */
 multiline_comment|/*&n; * thread information flags&n; * - these are process state flags that various assembly files may need to access&n; * - pending work-to-be-done flags are in least-significant 16 bits, other flags&n; *   in top 16 bits&n; */
 DECL|macro|TIF_NOTIFY_RESUME

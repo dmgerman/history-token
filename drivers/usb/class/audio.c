@@ -1431,10 +1431,6 @@ id|size
 op_sub_assign
 id|pgrem
 suffix:semicolon
-(paren
-r_char
-op_star
-)paren
 id|buffer
 op_add_assign
 id|pgrem
@@ -1578,10 +1574,6 @@ id|size
 op_sub_assign
 id|pgrem
 suffix:semicolon
-(paren
-r_char
-op_star
-)paren
 id|buffer
 op_add_assign
 id|pgrem
@@ -1620,6 +1612,7 @@ id|ptr
 comma
 r_const
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -1746,10 +1739,6 @@ id|size
 op_sub_assign
 id|pgrem
 suffix:semicolon
-(paren
-r_char
-op_star
-)paren
 id|buffer
 op_add_assign
 id|pgrem
@@ -1787,6 +1776,7 @@ r_int
 id|ptr
 comma
 r_void
+id|__user
 op_star
 id|buffer
 comma
@@ -1913,10 +1903,6 @@ id|size
 op_sub_assign
 id|pgrem
 suffix:semicolon
-(paren
-r_char
-op_star
-)paren
 id|buffer
 op_add_assign
 id|pgrem
@@ -11471,6 +11457,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -11537,6 +11524,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -12351,6 +12339,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -12734,6 +12723,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -14557,6 +14547,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -14660,6 +14651,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -14809,6 +14801,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -14897,6 +14890,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

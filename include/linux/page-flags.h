@@ -328,6 +328,8 @@ DECL|macro|PageChecked
 mdefine_line|#define PageChecked(page)&t;test_bit(PG_checked, &amp;(page)-&gt;flags)
 DECL|macro|SetPageChecked
 mdefine_line|#define SetPageChecked(page)&t;set_bit(PG_checked, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageChecked
+mdefine_line|#define ClearPageChecked(page)&t;clear_bit(PG_checked, &amp;(page)-&gt;flags)
 DECL|macro|PageReserved
 mdefine_line|#define PageReserved(page)&t;test_bit(PG_reserved, &amp;(page)-&gt;flags)
 DECL|macro|SetPageReserved

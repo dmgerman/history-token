@@ -1,9 +1,9 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#ifndef _ASM_IA64_SN_INVENT_H
 DECL|macro|_ASM_IA64_SN_INVENT_H
 mdefine_line|#define _ASM_IA64_SN_INVENT_H
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
 multiline_comment|/*&n; * sys/sn/invent.h --  Kernel Hardware Inventory&n; *&n; * As the system boots, a list of recognized devices is assembled.&n; * This list can then be accessed through syssgi() by user-level programs&n; * so that they can learn about available peripherals and the system&squot;s&n; * hardware configuration.&n; *&n; * The data is organized into a linked list of structures that are composed&n; * of an inventory item class and a class-specific type.  Each instance may&n; * also specify a 32-bit &quot;state&quot; which might be size, readiness, or&n; * anything else that&squot;s relevant.&n; *&n; */
 DECL|macro|major_t
 mdefine_line|#define major_t int
@@ -14,7 +14,7 @@ mdefine_line|#define app32_ptr_t unsigned long
 DECL|macro|graph_vertex_place_t
 mdefine_line|#define graph_vertex_place_t long
 DECL|macro|GRAPH_VERTEX_NONE
-mdefine_line|#define GRAPH_VERTEX_NONE ((devfs_handle_t)-1)
+mdefine_line|#define GRAPH_VERTEX_NONE ((vertex_hdl_t)-1)
 DECL|macro|GRAPH_EDGE_PLACE_NONE
 mdefine_line|#define GRAPH_EDGE_PLACE_NONE ((graph_edge_place_t)0)
 DECL|macro|GRAPH_INFO_PLACE_NONE
@@ -1224,12 +1224,12 @@ r_struct
 id|invplace_s
 (brace
 DECL|member|invplace_vhdl
-id|devfs_handle_t
+id|vertex_hdl_t
 id|invplace_vhdl
 suffix:semicolon
 multiline_comment|/* current vertex */
 DECL|member|invplace_vplace
-id|devfs_handle_t
+id|vertex_hdl_t
 id|invplace_vplace
 suffix:semicolon
 multiline_comment|/* place in vertex list */
@@ -1367,7 +1367,7 @@ r_void
 id|device_inventory_add
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|device
 comma
 r_int
@@ -1392,7 +1392,7 @@ op_star
 id|device_inventory_get_next
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|device
 comma
 id|invplace_t
@@ -1404,7 +1404,7 @@ r_void
 id|device_controller_num_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 comma
 r_int
 )paren
@@ -1414,7 +1414,7 @@ r_int
 id|device_controller_num_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

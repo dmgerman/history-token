@@ -15,14 +15,16 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/mca.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/patch.h&gt;
+macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; (IA64_CPU_SIZE &gt; PAGE_SIZE)
 macro_line|# error &quot;struct cpuinfo_ia64 too big!&quot;
 macro_line|#endif
@@ -106,6 +108,15 @@ op_assign
 l_int|0xaa
 suffix:semicolon
 multiline_comment|/* XXX remove this when legacy I/O is gone */
+multiline_comment|/*&n; * The merge_mask variable needs to be set to (max(iommu_page_size(iommu)) - 1).  This&n; * mask specifies a mask of address bits that must be 0 in order for two buffers to be&n; * mergeable by the I/O MMU (i.e., the end address of the first buffer and the start&n; * address of the second buffer must be aligned to (merge_mask+1) in order to be&n; * mergeable).  By default, we assume there is no I/O MMU which can merge physically&n; * discontiguous buffers, so we set the merge_mask to ~0UL, which corresponds to a iommu&n; * page-size of 2^64.&n; */
+DECL|variable|ia64_max_iommu_merge_mask
+r_int
+r_int
+id|ia64_max_iommu_merge_mask
+op_assign
+op_complement
+l_int|0UL
+suffix:semicolon
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE&t;512
 DECL|variable|saved_command_line
@@ -185,7 +196,7 @@ id|arg
 r_int
 r_int
 op_star
-id|max_pfn
+id|max_pfnp
 op_assign
 id|arg
 comma
@@ -213,10 +224,10 @@ c_cond
 id|pfn
 OG
 op_star
-id|max_pfn
+id|max_pfnp
 )paren
 op_star
-id|max_pfn
+id|max_pfnp
 op_assign
 id|pfn
 suffix:semicolon
@@ -891,14 +902,10 @@ r_void
 )paren
 (brace
 DECL|macro|KERNEL_END
-macro_line|#&t;define KERNEL_END&t;((unsigned long) &amp;_end)
+macro_line|#&t;define KERNEL_END&t;(&amp;_end)
 r_int
 r_int
 id|bootmap_size
-suffix:semicolon
-r_int
-r_int
-id|max_pfn
 suffix:semicolon
 r_int
 id|n
@@ -1033,7 +1040,19 @@ id|n
 dot
 id|start
 op_assign
+(paren
+r_int
+r_int
+)paren
+id|ia64_imva
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
 id|KERNEL_START
+)paren
 suffix:semicolon
 id|rsvd_region
 (braket
@@ -1042,7 +1061,15 @@ id|n
 dot
 id|end
 op_assign
+(paren
+r_int
+r_int
+)paren
+id|ia64_imva
+c_func
+(paren
 id|KERNEL_END
+)paren
 suffix:semicolon
 id|n
 op_increment
@@ -1290,6 +1317,19 @@ id|cmdline_p
 r_extern
 r_int
 r_int
+op_star
+id|__start___vtop_patchlist
+(braket
+)braket
+comma
+op_star
+id|__end____vtop_patchlist
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|ia64_iobase
 suffix:semicolon
 r_int
@@ -1299,6 +1339,20 @@ suffix:semicolon
 id|unw_init
 c_func
 (paren
+)paren
+suffix:semicolon
+id|ia64_patch_vtop
+c_func
+(paren
+(paren
+id|u64
+)paren
+id|__start___vtop_patchlist
+comma
+(paren
+id|u64
+)paren
+id|__end____vtop_patchlist
 )paren
 suffix:semicolon
 op_star
@@ -1635,11 +1689,6 @@ id|cmdline_p
 )paren
 suffix:semicolon
 id|paging_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|unw_create_gate_table
 c_func
 (paren
 )paren
@@ -2860,6 +2909,14 @@ id|pt_regs
 )paren
 )paren
 suffix:semicolon
+id|ia64_set_kr
+c_func
+(paren
+id|IA64_KR_FPU_OWNER
+comma
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize default control register to defer all speculative faults.  The&n;&t; * kernel MUST NOT depend on a particular setting of these bits (in other words,&n;&t; * the kernel must have recovery code for all speculative accesses).  Turn on&n;&t; * dcr.lc as per recommendation by the architecture team.  Most IA-32 apps&n;&t; * shouldn&squot;t be affected by this (moral: keep your ia32 locks aligned and you&squot;ll&n;&t; * be fine).&n;&t; */
 id|ia64_set_dcr
 c_func
@@ -2879,14 +2936,6 @@ op_or
 id|IA64_DCR_LC
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_SMP
-id|ia64_set_fpu_owner
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 id|atomic_inc
 c_func
 (paren
@@ -2912,29 +2961,17 @@ suffix:semicolon
 id|ia64_mmu_init
 c_func
 (paren
+id|ia64_imva
+c_func
+(paren
 id|cpu_data
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA32_SUPPORT
-multiline_comment|/* initialize global ia32 state - CR0 and CR4 */
-id|asm
-r_volatile
+id|ia32_cpu_init
+c_func
 (paren
-l_string|&quot;mov ar.cflg = %0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
-(paren
-(paren
-id|ulong
-)paren
-id|IA32_CR4
-op_lshift
-l_int|32
-)paren
-op_or
-id|IA32_CR0
-)paren
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3131,132 +3168,32 @@ r_void
 )paren
 (brace
 r_extern
-r_int
+r_char
 id|__start___mckinley_e9_bundles
 (braket
 )braket
 suffix:semicolon
 r_extern
-r_int
-id|__end___mckinley_e9_bundles
-(braket
-)braket
-suffix:semicolon
-id|u64
-op_star
-id|bundle
-suffix:semicolon
-r_int
-op_star
-id|wp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|local_cpu_data-&gt;family
-op_eq
-l_int|0x1f
-op_logical_and
-id|local_cpu_data-&gt;model
-op_eq
-l_int|0
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;check_bugs: leaving McKinley Errata 9 workaround enabled&bslash;n&quot;
-)paren
-suffix:semicolon
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;check_bugs: McKinley Errata 9 workaround not needed; &quot;
-l_string|&quot;disabling it&bslash;n&quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|wp
-op_assign
-id|__start___mckinley_e9_bundles
-suffix:semicolon
-id|wp
-OL
-id|__end___mckinley_e9_bundles
-suffix:semicolon
-op_increment
-id|wp
-)paren
-(brace
-id|bundle
-op_assign
-(paren
-id|u64
-op_star
-)paren
-(paren
-(paren
 r_char
-op_star
-)paren
-id|wp
-op_plus
-op_star
-id|wp
-)paren
-suffix:semicolon
-multiline_comment|/* install a bundle of NOPs: */
-id|bundle
+id|__end___mckinley_e9_bundles
 (braket
-l_int|0
 )braket
-op_assign
-l_int|0x0000000100000000
 suffix:semicolon
-id|bundle
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0x0004000000000200
-suffix:semicolon
-id|ia64_fc
+id|ia64_patch_mckinley_e9
 c_func
 (paren
-id|bundle
-)paren
-suffix:semicolon
-)brace
-id|ia64_insn_group_barrier
-c_func
 (paren
+r_int
+r_int
 )paren
-suffix:semicolon
-id|ia64_sync_i
-c_func
+id|__start___mckinley_e9_bundles
+comma
 (paren
+r_int
+r_int
+)paren
+id|__end___mckinley_e9_bundles
 )paren
 suffix:semicolon
-id|ia64_insn_group_barrier
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ia64_srlz_i
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ia64_insn_group_barrier
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 eof

@@ -163,9 +163,9 @@ mdefine_line|#define ADM1021_REG_ONESHOT&t;&t;0x0F
 multiline_comment|/* Conversions. Rounding and limit checking is only done on the TO_REG&n;   variants. Note that you should be a bit careful with which arguments&n;   these macros are called: arguments may be evaluated more than once.&n;   Fixing this is just not worth it. */
 multiline_comment|/* Conversions  note: 1021 uses normal integer signed-byte format*/
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val)&t;(val &gt; 127 ? val-256 : val)
+mdefine_line|#define TEMP_FROM_REG(val)&t;(val &gt; 127 ? (val-256)*1000 : val*1000)
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)&t;(SENSORS_LIMIT((val &lt; 0 ? val+256 : val),0,255))
+mdefine_line|#define TEMP_TO_REG(val)&t;(SENSORS_LIMIT((val &lt; 0 ? (val/1000)+256 : val/1000),0,255))
 multiline_comment|/* Initial values */
 multiline_comment|/* Note: Even though I left the low and high limits named os and hyst, &n;they don&squot;t quite work like a thermostat the way the LM75 does.  I.e., &n;a lower temp than THYST actually triggers an alarm instead of &n;clearing it.  Weird, ey?   --Phil  */
 DECL|macro|adm1021_INIT_TOS
@@ -451,15 +451,17 @@ c_func
 id|remote_temp_input
 )paren
 suffix:semicolon
+DECL|macro|show2
+mdefine_line|#define show2(value)&t;&bslash;&n;static ssize_t show_##value(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev);&t;&t;&bslash;&n;&t;struct adm1021_data *data = i2c_get_clientdata(client);&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;adm1021_update_client(client);&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, data-&gt;value);&t;&t;&bslash;&n;}
 DECL|variable|alarms
-id|show
+id|show2
 c_func
 (paren
 id|alarms
 )paren
 suffix:semicolon
 DECL|variable|die_code
-id|show
+id|show2
 c_func
 (paren
 id|die_code
