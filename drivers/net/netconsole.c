@@ -297,7 +297,8 @@ l_string|&quot;netconsole: not configured, aborting&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -312,7 +313,8 @@ id|np
 )paren
 (brace
 r_return
-l_int|1
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|register_console
