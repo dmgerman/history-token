@@ -250,6 +250,13 @@ r_void
 suffix:semicolon
 r_extern
 r_void
+m_abort
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|ret_from_exception
 c_func
 (paren

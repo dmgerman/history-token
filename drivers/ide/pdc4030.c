@@ -2062,12 +2062,14 @@ multiline_comment|/*&n; * do_pdc4030_io() is called from do_rw_disk, having had 
 DECL|function|do_pdc4030_io
 id|ide_startstop_t
 id|do_pdc4030_io
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 comma
-id|ide_task_t
+r_struct
+id|ata_taskfile
 op_star
 id|task
 )paren
@@ -2469,7 +2471,8 @@ r_struct
 id|hd_drive_task_hdr
 id|taskfile
 suffix:semicolon
-id|ide_task_t
+r_struct
+id|ata_taskfile
 id|args
 suffix:semicolon
 id|memset
@@ -2486,6 +2489,17 @@ r_struct
 id|hd_drive_task_hdr
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* The four drives on the two logical (one physical) interfaces&n;&t;   are distinguished by writing the drive number (0-3) to the&n;&t;   Feature register.&n;&t;   FIXME: Is promise_selectproc now redundant??&n;&t; */
+id|taskfile.feature
+op_assign
+(paren
+id|drive-&gt;channel-&gt;unit
+op_lshift
+l_int|1
+)paren
+op_plus
+id|drive-&gt;select.b.unit
 suffix:semicolon
 id|taskfile.sector_count
 op_assign

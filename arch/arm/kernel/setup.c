@@ -592,7 +592,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s size %dK associativity %d line length %d sets %d&bslash;n&quot;
+l_string|&quot;%s: %d bytes, associativity %d, %d byte lines, %d sets&bslash;n&quot;
 comma
 id|prefix
 comma

@@ -1982,10 +1982,6 @@ id|file-&gt;f_pos
 op_assign
 id|offset
 suffix:semicolon
-id|file-&gt;f_reada
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 id|retval
 op_assign
@@ -2999,10 +2995,6 @@ OG
 l_int|0
 )paren
 (brace
-id|filp-&gt;f_reada
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 r_else
 r_if

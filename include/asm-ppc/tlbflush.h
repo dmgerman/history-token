@@ -28,11 +28,11 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_4xx)
 DECL|macro|__tlbia
 mdefine_line|#define __tlbia()&t;asm volatile (&quot;tlbia; sync&quot; : : : &quot;memory&quot;)
-DECL|function|local_flush_tlb_all
+DECL|function|flush_tlb_all
 r_static
 r_inline
 r_void
-id|local_flush_tlb_all
+id|flush_tlb_all
 c_func
 (paren
 r_void
@@ -44,11 +44,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|local_flush_tlb_mm
+DECL|function|flush_tlb_mm
 r_static
 r_inline
 r_void
-id|local_flush_tlb_mm
+id|flush_tlb_mm
 c_func
 (paren
 r_struct
@@ -63,11 +63,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|local_flush_tlb_page
+DECL|function|flush_tlb_page
 r_static
 r_inline
 r_void
-id|local_flush_tlb_page
+id|flush_tlb_page
 c_func
 (paren
 r_struct
@@ -87,11 +87,11 @@ id|vmaddr
 )paren
 suffix:semicolon
 )brace
-DECL|function|local_flush_tlb_range
+DECL|function|flush_tlb_range
 r_static
 r_inline
 r_void
-id|local_flush_tlb_range
+id|flush_tlb_range
 c_func
 (paren
 r_struct
@@ -114,16 +114,38 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|function|flush_tlb_kernel_range
+r_static
+r_inline
+r_void
+id|flush_tlb_kernel_range
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+(brace
+id|__tlbia
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma, addr, pte)&t;do { } while (0)
 macro_line|#elif defined(CONFIG_8xx)
 DECL|macro|__tlbia
 mdefine_line|#define __tlbia()&t;asm volatile (&quot;tlbia; sync&quot; : : : &quot;memory&quot;)
-DECL|function|local_flush_tlb_all
+DECL|function|flush_tlb_all
 r_static
 r_inline
 r_void
-id|local_flush_tlb_all
+id|flush_tlb_all
 c_func
 (paren
 r_void
@@ -135,11 +157,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|local_flush_tlb_mm
+DECL|function|flush_tlb_mm
 r_static
 r_inline
 r_void
-id|local_flush_tlb_mm
+id|flush_tlb_mm
 c_func
 (paren
 r_struct
@@ -154,11 +176,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|local_flush_tlb_page
+DECL|function|flush_tlb_page
 r_static
 r_inline
 r_void
-id|local_flush_tlb_page
+id|flush_tlb_page
 c_func
 (paren
 r_struct
@@ -178,11 +200,11 @@ id|vmaddr
 )paren
 suffix:semicolon
 )brace
-DECL|function|local_flush_tlb_range
+DECL|function|flush_tlb_range
 r_static
 r_inline
 r_void
-id|local_flush_tlb_range
+id|flush_tlb_range
 c_func
 (paren
 r_struct
@@ -190,6 +212,28 @@ id|mm_struct
 op_star
 id|mm
 comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+(brace
+id|__tlbia
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|flush_tlb_kernel_range
+r_static
+r_inline
+r_void
+id|flush_tlb_kernel_range
+c_func
+(paren
 r_int
 r_int
 id|start
@@ -216,7 +260,7 @@ id|vm_area_struct
 suffix:semicolon
 r_extern
 r_void
-id|local_flush_tlb_all
+id|flush_tlb_all
 c_func
 (paren
 r_void
@@ -224,7 +268,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|local_flush_tlb_mm
+id|flush_tlb_mm
 c_func
 (paren
 r_struct
@@ -235,7 +279,7 @@ id|mm
 suffix:semicolon
 r_extern
 r_void
-id|local_flush_tlb_page
+id|flush_tlb_page
 c_func
 (paren
 r_struct
@@ -250,7 +294,7 @@ id|vmaddr
 suffix:semicolon
 r_extern
 r_void
-id|local_flush_tlb_range
+id|flush_tlb_range
 c_func
 (paren
 r_struct
@@ -258,6 +302,20 @@ id|vm_area_struct
 op_star
 id|vma
 comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|flush_tlb_kernel_range
+c_func
+(paren
 r_int
 r_int
 id|start
@@ -284,14 +342,6 @@ id|pte_t
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|macro|flush_tlb_all
-mdefine_line|#define flush_tlb_all local_flush_tlb_all
-DECL|macro|flush_tlb_mm
-mdefine_line|#define flush_tlb_mm local_flush_tlb_mm
-DECL|macro|flush_tlb_page
-mdefine_line|#define flush_tlb_page local_flush_tlb_page
-DECL|macro|flush_tlb_range
-mdefine_line|#define flush_tlb_range local_flush_tlb_range
 multiline_comment|/*&n; * This is called in munmap when we have freed up some page-table&n; * pages.  We don&squot;t need to do anything here, there&squot;s nothing special&n; * about our page-table pages.  -- paulus&n; */
 DECL|function|flush_tlb_pgtables
 r_static

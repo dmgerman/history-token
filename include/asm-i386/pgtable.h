@@ -586,7 +586,8 @@ c_func
 (paren
 id|_PAGE_BIT_DIRTY
 comma
-id|ptep
+op_amp
+id|ptep-&gt;pte_low
 )paren
 suffix:semicolon
 )brace
@@ -608,7 +609,8 @@ c_func
 (paren
 id|_PAGE_BIT_ACCESSED
 comma
-id|ptep
+op_amp
+id|ptep-&gt;pte_low
 )paren
 suffix:semicolon
 )brace
@@ -629,7 +631,8 @@ c_func
 (paren
 id|_PAGE_BIT_RW
 comma
-id|ptep
+op_amp
+id|ptep-&gt;pte_low
 )paren
 suffix:semicolon
 )brace
@@ -650,7 +653,8 @@ c_func
 (paren
 id|_PAGE_BIT_DIRTY
 comma
-id|ptep
+op_amp
+id|ptep-&gt;pte_low
 )paren
 suffix:semicolon
 )brace

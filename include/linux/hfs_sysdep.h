@@ -571,6 +571,11 @@ c_func
 id|bitnr
 )paren
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 id|lword
 )paren
 suffix:semicolon
@@ -600,6 +605,11 @@ c_func
 id|bitnr
 )paren
 comma
+(paren
+r_int
+r_int
+op_star
+)paren
 id|lword
 )paren
 suffix:semicolon
@@ -632,7 +642,8 @@ id|bitnr
 )paren
 comma
 (paren
-r_void
+r_int
+r_int
 op_star
 )paren
 id|lword

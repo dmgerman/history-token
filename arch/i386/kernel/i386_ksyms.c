@@ -593,6 +593,15 @@ id|flush_tlb_page
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_X86_IO_APIC
+DECL|variable|IO_APIC_get_PCI_irq_vector
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|IO_APIC_get_PCI_irq_vector
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_MCA
 DECL|variable|machine_id
 id|EXPORT_SYMBOL

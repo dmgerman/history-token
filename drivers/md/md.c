@@ -6404,7 +6404,17 @@ id|data_disks
 suffix:semicolon
 id|readahead
 op_assign
-id|MD_READAHEAD
+(paren
+id|blk_get_readahead
+c_func
+(paren
+id|rdev-&gt;dev
+)paren
+op_star
+l_int|512
+)paren
+op_div
+id|PAGE_SIZE
 suffix:semicolon
 r_if
 c_cond
@@ -14062,7 +14072,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Tune reconstruction:&n;&t; */
 id|window
 op_assign
-id|MAX_READAHEAD
+l_int|32
 op_star
 (paren
 id|PAGE_SIZE
@@ -15002,7 +15012,7 @@ id|md_maxreadahead
 id|i
 )braket
 op_assign
-id|MD_READAHEAD
+l_int|32
 suffix:semicolon
 )brace
 id|blksize_size

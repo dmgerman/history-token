@@ -5,6 +5,7 @@ mdefine_line|#define __ASM_ARCH_SYSTEM_H
 macro_line|#include &lt;asm/arch/platform.h&gt;
 DECL|function|arch_idle
 r_static
+r_inline
 r_void
 id|arch_idle
 c_func
@@ -16,7 +17,6 @@ multiline_comment|/*&n;&t; * This should do all the clock switching&n;&t; * and 
 id|cpu_do_idle
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 )brace

@@ -50,6 +50,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;P4/Xeon Thermal transition interrupt handler&n; */
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|function|intel_thermal_interrupt
 r_static
 r_void
@@ -62,7 +63,6 @@ op_star
 id|regs
 )paren
 (brace
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 id|u32
 id|l
 comma
@@ -131,8 +131,8 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
+macro_line|#endif
 DECL|function|unexpected_thermal_interrupt
 r_static
 r_void

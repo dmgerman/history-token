@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_ARM_IO_H
 DECL|macro|__ASM_ARM_IO_H
 mdefine_line|#define __ASM_ARM_IO_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/memory.h&gt;
@@ -557,12 +558,17 @@ r_int
 id|rw
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * FIXME: I&squot;m sure these will need to be changed for DISCONTIG&n; */
 multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
+macro_line|#ifdef CONFIG_DISCONTIG
 DECL|macro|page_to_phys
-mdefine_line|#define page_to_phys(page)&t;(PHYS_OFFSET + ((page - mem_map) &lt;&lt; PAGE_SHIFT))
+mdefine_line|#define page_to_phys(page)&t;&t;&t;&t;&t;  &bslash;&n;&t;((((page) - page_zone(page)-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT) &bslash;&n;&t;&t;  + page_zone(page)-&gt;zone_start_paddr)
+macro_line|#else
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;&t;&t;&t;&t;  &bslash;&n;&t;(PHYS_OFFSET + (((page) - mem_map) &lt;&lt; PAGE_SHIFT))
+macro_line|#endif
+multiline_comment|/*&n; * We should really eliminate virt_to_bus() here - it&squot;s depreciated.&n; */
 DECL|macro|page_to_bus
-mdefine_line|#define page_to_bus(page)&t;(PHYS_OFFSET + ((page - mem_map) &lt;&lt; PAGE_SHIFT))
+mdefine_line|#define page_to_bus(page)&t;&t;&t;&t;&t;  &bslash;&n;&t;(virt_to_bus(page_address(page)))
 multiline_comment|/*&n; * can the hardware map this into one segment or not, given no other&n; * constraints.&n; */
 DECL|macro|BIOVEC_MERGEABLE
 mdefine_line|#define BIOVEC_MERGEABLE(vec1, vec2)&t;&bslash;&n;&t;((bvec_to_phys((vec1)) + (vec1)-&gt;bv_len) == bvec_to_phys((vec2)))

@@ -73,6 +73,7 @@ suffix:semicolon
 )brace
 DECL|function|arch_idle
 r_static
+r_inline
 r_void
 id|arch_idle
 c_func

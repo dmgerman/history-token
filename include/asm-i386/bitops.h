@@ -1325,26 +1325,26 @@ mdefine_line|#define hweight8(x) generic_hweight8(x)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#ifdef __KERNEL__
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit                 __test_and_set_bit
+mdefine_line|#define ext2_set_bit(nr,addr) &bslash;&n;&t;__test_and_set_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit               __test_and_clear_bit
+mdefine_line|#define ext2_clear_bit(nr, addr) &bslash;&n;&t;__test_and_clear_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_test_bit
-mdefine_line|#define ext2_test_bit                test_bit
+mdefine_line|#define ext2_test_bit(nr, addr)      test_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_find_first_zero_bit
-mdefine_line|#define ext2_find_first_zero_bit     find_first_zero_bit
+mdefine_line|#define ext2_find_first_zero_bit(addr, size) &bslash;&n;&t;find_first_zero_bit((unsigned long*)addr, size)
 DECL|macro|ext2_find_next_zero_bit
-mdefine_line|#define ext2_find_next_zero_bit      find_next_zero_bit
+mdefine_line|#define ext2_find_next_zero_bit(addr, size, off) &bslash;&n;&t;find_next_zero_bit((unsigned long*)addr, size, off)
 multiline_comment|/* Bitmap functions for the minix filesystem.  */
 DECL|macro|minix_test_and_set_bit
-mdefine_line|#define minix_test_and_set_bit(nr,addr) __test_and_set_bit(nr,addr)
+mdefine_line|#define minix_test_and_set_bit(nr,addr) __test_and_set_bit(nr,(void*)addr)
 DECL|macro|minix_set_bit
-mdefine_line|#define minix_set_bit(nr,addr) __set_bit(nr,addr)
+mdefine_line|#define minix_set_bit(nr,addr) __set_bit(nr,(void*)addr)
 DECL|macro|minix_test_and_clear_bit
-mdefine_line|#define minix_test_and_clear_bit(nr,addr) __test_and_clear_bit(nr,addr)
+mdefine_line|#define minix_test_and_clear_bit(nr,addr) __test_and_clear_bit(nr,(void*)addr)
 DECL|macro|minix_test_bit
-mdefine_line|#define minix_test_bit(nr,addr) test_bit(nr,addr)
+mdefine_line|#define minix_test_bit(nr,addr) test_bit(nr,(void*)addr)
 DECL|macro|minix_find_first_zero_bit
-mdefine_line|#define minix_find_first_zero_bit(addr,size) find_first_zero_bit(addr,size)
+mdefine_line|#define minix_find_first_zero_bit(addr,size) &bslash;&n;&t;find_first_zero_bit((void*)addr,size)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _I386_BITOPS_H */
 eof

@@ -480,12 +480,20 @@ c_cond
 (paren
 id|page
 op_logical_and
-id|page-&gt;buffers
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
 )paren
 (brace
 id|head
 op_assign
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|bh
 op_assign
@@ -2995,6 +3003,19 @@ c_cond
 (paren
 id|allocated_block_nr
 )paren
+(brace
+multiline_comment|/* the bitmap, the super, and the stat data == 3 */
+id|journal_begin
+c_func
+(paren
+op_amp
+id|th
+comma
+id|inode-&gt;i_sb
+comma
+l_int|3
+)paren
+suffix:semicolon
 id|reiserfs_free_block
 (paren
 op_amp
@@ -3003,6 +3024,11 @@ comma
 id|allocated_block_nr
 )paren
 suffix:semicolon
+id|transaction_started
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 r_goto
 id|failure
 suffix:semicolon
@@ -3028,20 +3054,18 @@ comma
 id|tail_offset
 )paren
 suffix:semicolon
-multiline_comment|/* it is important the mark_buffer_uptodate is done after&n;&t;    ** the direct2indirect.  The buffer might contain valid&n;&t;    ** data newer than the data on disk (read by readpage, changed,&n;&t;    ** and then sent here by writepage).  direct2indirect needs&n;&t;    ** to know if unbh was already up to date, so it can decide&n;&t;    ** if the data in unbh needs to be replaced with data from&n;&t;    ** the disk&n;&t;    */
-id|mark_buffer_uptodate
-(paren
-id|unbh
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|retval
 )paren
 (brace
+id|reiserfs_unmap_buffer
+c_func
+(paren
+id|unbh
+)paren
+suffix:semicolon
 id|reiserfs_free_block
 (paren
 op_amp
@@ -3054,6 +3078,14 @@ r_goto
 id|failure
 suffix:semicolon
 )brace
+multiline_comment|/* it is important the mark_buffer_uptodate is done after&n;&t;    ** the direct2indirect.  The buffer might contain valid&n;&t;    ** data newer than the data on disk (read by readpage, changed,&n;&t;    ** and then sent here by writepage).  direct2indirect needs&n;&t;    ** to know if unbh was already up to date, so it can decide&n;&t;    ** if the data in unbh needs to be replaced with data from&n;&t;    ** the disk&n;&t;    */
+id|mark_buffer_uptodate
+(paren
+id|unbh
+comma
+l_int|1
+)paren
+suffix:semicolon
 multiline_comment|/* we&squot;ve converted the tail, so we must &n;&t;    ** flush unbh before the transaction commits&n;&t;    */
 id|add_to_flushlist
 c_func
@@ -3813,8 +3845,6 @@ comma
 id|ih
 )paren
 suffix:semicolon
-multiline_comment|/* both old and new directories have old keys */
-singleline_comment|//version = (S_ISDIR (sd-&gt;sd_mode) ? ITEM_VERSION_1 : ITEM_VERSION_2);
 id|inode-&gt;i_mode
 op_assign
 id|sd_v2_mode
@@ -3974,6 +4004,13 @@ op_member_access_from_pointer
 id|i_first_direct_byte
 op_assign
 l_int|0
+suffix:semicolon
+id|set_inode_sd_version
+(paren
+id|inode
+comma
+id|STAT_DATA_V2
+)paren
 suffix:semicolon
 )brace
 id|pathrelse
@@ -4725,6 +4762,40 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* reiserfs_read_inode2 is called to read the inode off disk, and it&n;** does a make_bad_inode when things go wrong.  But, we need to make sure&n;** and clear the key in the private portion of the inode, otherwise a&n;** corresponding iput might try to delete whatever object the inode last&n;** represented.&n;*/
+DECL|function|reiserfs_make_bad_inode
+r_static
+r_void
+id|reiserfs_make_bad_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+id|memset
+c_func
+(paren
+id|INODE_PKEY
+c_func
+(paren
+id|inode
+)paren
+comma
+l_int|0
+comma
+id|KEY_SIZE
+)paren
+suffix:semicolon
+id|make_bad_inode
+c_func
+(paren
+id|inode
+)paren
+suffix:semicolon
+)brace
 DECL|function|reiserfs_read_inode
 r_void
 id|reiserfs_read_inode
@@ -4736,7 +4807,7 @@ op_star
 id|inode
 )paren
 (brace
-id|make_bad_inode
+id|reiserfs_make_bad_inode
 c_func
 (paren
 id|inode
@@ -4797,7 +4868,7 @@ op_logical_neg
 id|p
 )paren
 (brace
-id|make_bad_inode
+id|reiserfs_make_bad_inode
 c_func
 (paren
 id|inode
@@ -4862,7 +4933,7 @@ op_amp
 id|key
 )paren
 suffix:semicolon
-id|make_bad_inode
+id|reiserfs_make_bad_inode
 c_func
 (paren
 id|inode
@@ -4886,7 +4957,7 @@ op_amp
 id|path_to_sd
 )paren
 suffix:semicolon
-id|make_bad_inode
+id|reiserfs_make_bad_inode
 c_func
 (paren
 id|inode
@@ -4943,7 +5014,7 @@ op_amp
 id|key
 )paren
 suffix:semicolon
-id|make_bad_inode
+id|reiserfs_make_bad_inode
 c_func
 (paren
 id|inode
@@ -4989,7 +5060,11 @@ id|args
 op_assign
 id|opaque
 suffix:semicolon
+multiline_comment|/* args is already in CPU order */
 r_return
+id|le32_to_cpu
+c_func
+(paren
 id|INODE_PKEY
 c_func
 (paren
@@ -4997,6 +5072,7 @@ id|inode
 )paren
 op_member_access_from_pointer
 id|k_dir_id
+)paren
 op_eq
 id|args
 op_member_access_from_pointer
@@ -7217,7 +7293,11 @@ suffix:semicolon
 multiline_comment|/* mapped by block_prepare_write */
 id|head
 op_assign
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|bh
 op_assign
@@ -8384,7 +8464,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|page-&gt;buffers
+id|page_has_buffers
+c_func
+(paren
+id|page
+)paren
 )paren
 (brace
 id|block_prepare_write
@@ -8485,7 +8569,11 @@ suffix:semicolon
 )brace
 id|head
 op_assign
-id|page-&gt;buffers
+id|page_buffers
+c_func
+(paren
+id|page
+)paren
 suffix:semicolon
 id|bh
 op_assign
