@@ -2695,10 +2695,10 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_connect - pick device address (usbcore-internal)&n; * @dev: newly detected device (in DEFAULT state)&n; *&n; * Picks a device address.  It&squot;s up to the hub (or root hub) driver&n; * to handle and manage enumeration, starting from the DEFAULT state.&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
-DECL|function|usb_connect
+multiline_comment|/**&n; * usb_choose_address - pick device address (usbcore-internal)&n; * @dev: newly detected device (in DEFAULT state)&n; *&n; * Picks a device address.  It&squot;s up to the hub (or root hub) driver&n; * to handle and manage enumeration, starting from the DEFAULT state.&n; * Only hub drivers (but not virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
+DECL|function|usb_choose_address
 r_void
-id|usb_connect
+id|usb_choose_address
 c_func
 (paren
 r_struct
@@ -2711,12 +2711,7 @@ r_int
 id|devnum
 suffix:semicolon
 singleline_comment|// FIXME needs locking for SMP!!
-multiline_comment|/* why? this is called only from the hub thread, &n;&t; * which hopefully doesn&squot;t run on multiple CPU&squot;s simultaneously 8-)&n;&t; * ... it&squot;s also called from modprobe/rmmod/apmd threads as part&n;&t; * of virtual root hub init/reinit.  In the init case, the hub code &n;&t; * won&squot;t have seen this, but not so for reinit ... &n;&t; */
-id|dev-&gt;descriptor.bMaxPacketSize0
-op_assign
-l_int|8
-suffix:semicolon
-multiline_comment|/* Start off at 8 bytes  */
+multiline_comment|/* why? this is called only from the hub thread, &n;&t; * which hopefully doesn&squot;t run on multiple CPU&squot;s simultaneously 8-)&n;&t; */
 multiline_comment|/* Try to allocate the next devnum beginning at bus-&gt;devnum_next. */
 id|devnum
 op_assign
@@ -4883,13 +4878,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_reset_device
-)paren
-suffix:semicolon
-DECL|variable|usb_connect
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|usb_connect
 )paren
 suffix:semicolon
 DECL|variable|usb_disconnect

@@ -3914,7 +3914,7 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Find a new address for it */
-id|usb_connect
+id|usb_choose_address
 c_func
 (paren
 id|dev

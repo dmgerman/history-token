@@ -854,7 +854,7 @@ id|parent
 suffix:semicolon
 r_extern
 r_void
-id|usb_connect
+id|usb_choose_address
 c_func
 (paren
 r_struct

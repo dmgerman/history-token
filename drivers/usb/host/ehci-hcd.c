@@ -1491,11 +1491,6 @@ id|DRIVER_VERSION
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * From here on, khubd concurrently accesses the root&n;&t; * hub; drivers will be talking to enumerated devices.&n;&t; *&n;&t; * Before this point the HC was idle/ready.  After, khubd&n;&t; * and device drivers may start it running.&n;&t; */
-id|usb_connect
-(paren
-id|udev
-)paren
-suffix:semicolon
 id|udev-&gt;speed
 op_assign
 id|USB_SPEED_HIGH
