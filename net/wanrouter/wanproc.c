@@ -54,36 +54,9 @@ id|wan_stat_entry_t
 suffix:semicolon
 multiline_comment|/****** Function Prototypes *************************************************/
 macro_line|#ifdef CONFIG_PROC_FS
-multiline_comment|/* Proc filesystem interface */
-r_static
-r_int
-id|router_proc_perms
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* Miscellaneous */
 multiline_comment|/*&n; *&t;Structures for interfacing with the /proc filesystem.&n; *&t;Router creates its own directory /proc/net/router with the folowing&n; *&t;entries:&n; *&t;config&t;&t;device configuration&n; *&t;status&t;&t;global device statistics&n; *&t;&lt;device&gt;&t;entry for each WAN device&n; */
 multiline_comment|/*&n; *&t;Generic /proc/net/router/&lt;file&gt; file and inode operations &n; */
-DECL|variable|router_inode
-r_static
-r_struct
-id|inode_operations
-id|router_inode
-op_assign
-(brace
-dot
-id|permission
-op_assign
-id|router_proc_perms
-comma
-)brace
-suffix:semicolon
 multiline_comment|/*&n; *&t;/proc/net/router &n; */
 DECL|variable|proc_router
 r_static
@@ -95,25 +68,6 @@ suffix:semicolon
 multiline_comment|/* Strings */
 multiline_comment|/*&n; *&t;Interface functions&n; */
 multiline_comment|/****** Proc filesystem entry points ****************************************/
-multiline_comment|/*&n; *&t;Verify access rights.&n; */
-DECL|function|router_proc_perms
-r_static
-r_int
-id|router_proc_perms
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|op
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;Iterator&n; */
 DECL|function|r_start
 r_static
@@ -1175,7 +1129,7 @@ c_func
 (paren
 l_string|&quot;config&quot;
 comma
-l_int|0
+id|S_IRUGO
 comma
 id|proc_router
 )paren
@@ -1194,11 +1148,6 @@ op_assign
 op_amp
 id|config_fops
 suffix:semicolon
-id|p-&gt;proc_iops
-op_assign
-op_amp
-id|router_inode
-suffix:semicolon
 id|p
 op_assign
 id|create_proc_entry
@@ -1206,7 +1155,7 @@ c_func
 (paren
 l_string|&quot;status&quot;
 comma
-l_int|0
+id|S_IRUGO
 comma
 id|proc_router
 )paren
@@ -1224,11 +1173,6 @@ id|p-&gt;proc_fops
 op_assign
 op_amp
 id|status_fops
-suffix:semicolon
-id|p-&gt;proc_iops
-op_assign
-op_amp
-id|router_inode
 suffix:semicolon
 r_return
 l_int|0
@@ -1321,7 +1265,7 @@ c_func
 (paren
 id|wandev-&gt;name
 comma
-l_int|0
+id|S_IRUGO
 comma
 id|proc_router
 )paren
@@ -1340,11 +1284,6 @@ id|wandev-&gt;dent-&gt;proc_fops
 op_assign
 op_amp
 id|wandev_fops
-suffix:semicolon
-id|wandev-&gt;dent-&gt;proc_iops
-op_assign
-op_amp
-id|router_inode
 suffix:semicolon
 id|wandev-&gt;dent-&gt;data
 op_assign
