@@ -2859,6 +2859,10 @@ id|numrels
 )paren
 suffix:semicolon
 )brace
+id|mod-&gt;arch.core_plt-&gt;sh_type
+op_assign
+id|SHT_NOBITS
+suffix:semicolon
 id|mod-&gt;arch.core_plt-&gt;sh_flags
 op_assign
 id|SHF_EXECINSTR
@@ -2878,6 +2882,10 @@ r_sizeof
 r_struct
 id|plt_entry
 )paren
+suffix:semicolon
+id|mod-&gt;arch.init_plt-&gt;sh_type
+op_assign
+id|SHT_NOBITS
 suffix:semicolon
 id|mod-&gt;arch.init_plt-&gt;sh_flags
 op_assign
@@ -2899,6 +2907,10 @@ r_struct
 id|plt_entry
 )paren
 suffix:semicolon
+id|mod-&gt;arch.got-&gt;sh_type
+op_assign
+id|SHT_NOBITS
+suffix:semicolon
 id|mod-&gt;arch.got-&gt;sh_flags
 op_assign
 id|ARCH_SHF_SMALL
@@ -2918,6 +2930,10 @@ r_sizeof
 r_struct
 id|got_entry
 )paren
+suffix:semicolon
+id|mod-&gt;arch.opd-&gt;sh_type
+op_assign
+id|SHT_NOBITS
 suffix:semicolon
 id|mod-&gt;arch.opd-&gt;sh_flags
 op_assign
@@ -4763,7 +4779,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;module %s: REL relocs unsupported&bslash;n&quot;
+l_string|&quot;module %s: REL relocs in section %u unsupported&bslash;n&quot;
+comma
+id|relsec
 comma
 id|mod-&gt;name
 )paren
