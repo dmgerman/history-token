@@ -1709,7 +1709,7 @@ id|generation
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * export_encode_fh - default export_operations-&gt;encode_fh function&n; * @dentry:  the dentry to encode&n; * @fh:      where to store the file handle fragment&n; * @max_len: maximum length to store there&n; * @connectable: whether to store parent infomation&n; *&n; * This default encode_fh function assumes that the 32 inode number&n; * is suitable for locating an inode, and that the generation number&n; * can be used to check that it is still valid.  It places them in the&n; * filehandle fragment where export_decode_fh expects to find them.&n; */
+multiline_comment|/**&n; * export_encode_fh - default export_operations-&gt;encode_fh function&n; * @dentry:  the dentry to encode&n; * @fh:      where to store the file handle fragment&n; * @max_len: maximum length to store there&n; * @connectable: whether to store parent information&n; *&n; * This default encode_fh function assumes that the 32 inode number&n; * is suitable for locating an inode, and that the generation number&n; * can be used to check that it is still valid.  It places them in the&n; * filehandle fragment where export_decode_fh expects to find them.&n; */
 DECL|function|export_encode_fh
 r_static
 r_int
