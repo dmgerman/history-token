@@ -1266,31 +1266,6 @@ comma
 op_star
 id|back
 suffix:semicolon
-multiline_comment|/* FIXME: Push down to extensions --RR */
-r_if
-c_cond
-(paren
-id|skb_is_nonlinear
-c_func
-(paren
-op_star
-id|pskb
-)paren
-op_logical_and
-id|skb_linearize
-c_func
-(paren
-op_star
-id|pskb
-comma
-id|GFP_ATOMIC
-)paren
-op_ne
-l_int|0
-)paren
-r_return
-id|NF_DROP
-suffix:semicolon
 multiline_comment|/* Initialization */
 id|indev
 op_assign
