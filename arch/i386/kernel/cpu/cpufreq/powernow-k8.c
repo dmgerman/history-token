@@ -14,7 +14,7 @@ mdefine_line|#define PFX &quot;powernow-k8: &quot;
 DECL|macro|BFX
 mdefine_line|#define BFX PFX &quot;BIOS error: &quot;
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;version 1.00.08 - September 26, 2003&quot;
+mdefine_line|#define VERSION &quot;version 1.00.08a&quot;
 macro_line|#include &quot;powernow-k8.h&quot;
 macro_line|#ifdef CONFIG_PREEMPT
 macro_line|#warning this driver has not been tested on a preempt system
@@ -138,8 +138,7 @@ id|fid
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Return 1 if the pending bit is set. Unless we are actually just told the */
-multiline_comment|/* processor to transition a state, seeing this bit set is really bad news. */
+multiline_comment|/*&n; * Return 1 if the pending bit is set. Unless we are actually just told the&n; * processor to transition a state, seeing this bit set is really bad news.&n; */
 r_static
 r_inline
 r_int
@@ -152,8 +151,7 @@ r_void
 (brace
 id|u32
 id|lo
-suffix:semicolon
-id|u32
+comma
 id|hi
 suffix:semicolon
 id|rdmsr
@@ -177,8 +175,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Update the global current fid / vid values from the status msr. Returns 1 */
-multiline_comment|/* on error.                                                                 */
+multiline_comment|/*&n; * Update the global current fid / vid values from the status msr. Returns 1&n; * on error.&n; */
 r_static
 r_int
 DECL|function|query_current_values_with_pending_wait
@@ -190,8 +187,7 @@ r_void
 (brace
 id|u32
 id|lo
-suffix:semicolon
-id|u32
+comma
 id|hi
 suffix:semicolon
 id|u32
@@ -610,9 +606,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Reduce the vid by the max of step or reqvid.                   */
-multiline_comment|/* Decreasing vid codes represent increasing voltages :           */
-multiline_comment|/* vid of 0 is 1.550V, vid of 0x1e is 0.800V, vid of 0x1f is off. */
+multiline_comment|/*&n; * Reduce the vid by the max of step or reqvid.&n; * Decreasing vid codes represent increasing voltages:&n; * vid of 0 is 1.550V, vid of 0x1e is 0.800V, vid of 0x1f is off.&n; */
 r_static
 r_int
 DECL|function|decrease_vid_code_by_step
@@ -778,8 +772,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Phase 1 - core voltage transition ... setup appropriate voltage for the */
-multiline_comment|/* fid transition.                                                         */
+multiline_comment|/*&n; * Phase 1 - core voltage transition ... setup appropriate voltage for the&n; * fid transition.&n; */
 r_static
 r_inline
 r_int
@@ -1505,6 +1498,7 @@ op_ne
 id|X86_VENDOR_AMD
 )paren
 (brace
+macro_line|#ifdef MODULE
 id|printk
 c_func
 (paren
@@ -1513,6 +1507,7 @@ id|PFX
 l_string|&quot;Not an AMD processor&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1682,8 +1677,9 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Found AMD Athlon 64 / Opteron processor &quot;
-l_string|&quot;supporting p-state transitions&bslash;n&quot;
+l_string|&quot;Found AMD64 processor supporting PowerNow (&quot;
+id|VERSION
+l_string|&quot;)&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2097,16 +2093,6 @@ id|vstable
 op_assign
 id|psb-&gt;voltagestabilizationtime
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;voltage stable time: %d (units 20us)&bslash;n&quot;
-comma
-id|vstable
-)paren
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -2170,68 +2156,30 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;p states on battery: %d &quot;
+l_string|&quot;voltage stable in %d usec&quot;
 comma
-id|batps
+id|vstable
+op_star
+l_int|20
 )paren
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
 id|batps
 )paren
-(brace
-r_case
-l_int|0
-suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;- all available&bslash;n&quot;
+l_string|&quot;, only %d lowest states on battery&quot;
+comma
+id|batps
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|1
-suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;- only the minimum&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|2
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot;- only the 2 lowest&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|3
-suffix:colon
-id|printk
-c_func
-(paren
-l_string|&quot;- only the 3 lowest&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;ramp voltage offset: %d&bslash;n&quot;
+l_string|&quot;, ramp voltage offset: %d&quot;
 comma
 id|rvo
 )paren
@@ -2239,9 +2187,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;isochronous relief time: %d&bslash;n&quot;
+l_string|&quot;, isochronous relief time: %d&quot;
 comma
 id|irt
 )paren
@@ -2249,9 +2195,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;maximum voltage step: %d&bslash;n&quot;
+l_string|&quot;, maximum voltage step: %d&bslash;n&quot;
 comma
 id|mvs
 )paren
@@ -2306,7 +2250,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;pll lock time: 0x%x&bslash;n&quot;
+l_string|&quot;pll lock time: 0x%x, &quot;
 comma
 id|plllock
 )paren
@@ -2318,19 +2262,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;maxfid: 0x%x&bslash;n&quot;
+l_string|&quot;maxfid 0x%x (%d MHz), maxvid 0x%x&bslash;n&quot;
 comma
 id|psb-&gt;maxfid
-)paren
-suffix:semicolon
-id|printk
+comma
+id|find_freq_from_fid
 c_func
 (paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;maxvid: 0x%x&bslash;n&quot;
+id|psb-&gt;maxfid
+)paren
 comma
 id|maxvid
 )paren
@@ -2338,16 +2278,6 @@ suffix:semicolon
 id|numps
 op_assign
 id|psb-&gt;numpstates
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;numpstates: 0x%x&bslash;n&quot;
-comma
-id|numps
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2432,17 +2362,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|numps
 op_le
 l_int|1
-)paren
-op_logical_or
-(paren
-id|batps
-op_le
-l_int|1
-)paren
 )paren
 (brace
 id|printk
@@ -2548,7 +2470,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;   %d : fid 0x%x, vid 0x%x&bslash;n&quot;
+l_string|&quot;   %d : fid 0x%x (%d MHz), vid 0x%x&bslash;n&quot;
 comma
 id|j
 comma
@@ -2558,6 +2480,17 @@ id|j
 )braket
 dot
 id|fid
+comma
+id|find_freq_from_fid
+c_func
+(paren
+id|pst
+(braket
+id|j
+)braket
+dot
+id|fid
+)paren
 comma
 id|pst
 (braket
@@ -2663,9 +2596,15 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;currfid 0x%x, currvid 0x%x&bslash;n&quot;
+l_string|&quot;currfid 0x%x (%d MHz), currvid 0x%x&bslash;n&quot;
 comma
 id|currfid
+comma
+id|find_freq_from_fid
+c_func
+(paren
+id|currfid
+)paren
 comma
 id|currvid
 )paren
@@ -3425,15 +3364,6 @@ r_void
 (brace
 r_int
 id|rc
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-id|PFX
-id|VERSION
-l_string|&quot;&bslash;n&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
