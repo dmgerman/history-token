@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  AMD K7 Powernow driver.&n; *  (C) 2003 Dave Jones &lt;davej@codemonkey.org.uk&gt; on behalf of SuSE Labs.&n; *  (C) 2003-2004 Dave Jones &lt;davej@redhat.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt; 
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
@@ -524,6 +524,28 @@ op_amp
 id|edx
 )paren
 suffix:semicolon
+multiline_comment|/* Check we can actually do something before we say anything.*/
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|edx
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|1
+op_or
+l_int|1
+op_lshift
+l_int|2
+)paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
@@ -593,34 +615,6 @@ suffix:semicolon
 id|can_scale_vid
 op_assign
 l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|edx
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|1
-op_or
-l_int|1
-op_lshift
-l_int|2
-)paren
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;nothing.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 id|printk
