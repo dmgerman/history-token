@@ -3764,8 +3764,6 @@ op_assign
 l_int|0x0
 suffix:semicolon
 multiline_comment|/* so IrLMP assign us any link */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3904,10 +3902,6 @@ c_func
 (paren
 id|self
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irda_release (sock)&n; */
@@ -8557,6 +8551,11 @@ dot
 id|create
 op_assign
 id|irda_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
