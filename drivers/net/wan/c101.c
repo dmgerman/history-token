@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Moxa C101 synchronous serial card driver for Linux&n; *&n; * Copyright (C) 2000-2002 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * For information see http://hq.pm.waw.pl/hdlc/&n; *&n; * Sources of information:&n; *    Hitachi HD64570 SCA User&squot;s Manual&n; *    Moxa C101 User&squot;s Manual&n; */
+multiline_comment|/*&n; * Moxa C101 synchronous serial card driver for Linux&n; *&n; * Copyright (C) 2000-2003 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License&n; * as published by the Free Software Foundation.&n; *&n; * For information see http://hq.pm.waw.pl/hdlc/&n; *&n; * Sources of information:&n; *    Hitachi HD64570 SCA User&squot;s Manual&n; *    Moxa C101 User&squot;s Manual&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/hdlc.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -19,7 +20,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;Moxa C101 driver version: 1.10&quot;
+l_string|&quot;Moxa C101 driver version: 1.14&quot;
 suffix:semicolon
 DECL|variable|devname
 r_static
@@ -42,6 +43,10 @@ DECL|macro|C101_MAPPED_RAM_SIZE
 mdefine_line|#define C101_MAPPED_RAM_SIZE 0x4000
 DECL|macro|RAM_SIZE
 mdefine_line|#define RAM_SIZE (256 * 1024)
+DECL|macro|TX_RING_BUFFERS
+mdefine_line|#define TX_RING_BUFFERS 10
+DECL|macro|RX_RING_BUFFERS
+mdefine_line|#define RX_RING_BUFFERS ((RAM_SIZE - C101_WINDOW_SIZE) /&t;&t;&bslash;&n;&t;&t;&t; (sizeof(pkt_desc) + HDLC_MAX_MRU) - TX_RING_BUFFERS)
 DECL|macro|CLOCK_BASE
 mdefine_line|#define CLOCK_BASE 9830400&t;/* 9.8304 MHz */
 DECL|macro|PAGE0_ALWAYS_MAPPED
@@ -79,15 +84,15 @@ id|u32
 id|phy_winbase
 suffix:semicolon
 multiline_comment|/* ISA physical base address */
-DECL|member|buff_offset
-id|u16
-id|buff_offset
-suffix:semicolon
-multiline_comment|/* offset of first buffer of first channel */
 DECL|member|settings
 id|sync_serial_settings
 id|settings
 suffix:semicolon
+DECL|member|rxpart
+r_int
+id|rxpart
+suffix:semicolon
+multiline_comment|/* partial frame received, next frame invalid*/
 DECL|member|encoding
 r_int
 r_int
@@ -97,6 +102,34 @@ DECL|member|parity
 r_int
 r_int
 id|parity
+suffix:semicolon
+DECL|member|rx_ring_buffers
+id|u16
+id|rx_ring_buffers
+suffix:semicolon
+multiline_comment|/* number of buffers in a ring */
+DECL|member|tx_ring_buffers
+id|u16
+id|tx_ring_buffers
+suffix:semicolon
+DECL|member|buff_offset
+id|u16
+id|buff_offset
+suffix:semicolon
+multiline_comment|/* offset of first buffer of first channel */
+DECL|member|rxin
+id|u16
+id|rxin
+suffix:semicolon
+multiline_comment|/* rx ring buffer &squot;in&squot; pointer */
+DECL|member|txin
+id|u16
+id|txin
+suffix:semicolon
+multiline_comment|/* tx ring buffer &squot;in&squot; and &squot;last&squot; pointers */
+DECL|member|txlast
+id|u16
+id|txlast
 suffix:semicolon
 DECL|member|rxs
 DECL|member|txs
@@ -114,34 +147,10 @@ id|u8
 id|irq
 suffix:semicolon
 multiline_comment|/* IRQ (3-15) */
-DECL|member|ring_buffers
-id|u8
-id|ring_buffers
-suffix:semicolon
-multiline_comment|/* number of buffers in a ring */
 DECL|member|page
 id|u8
 id|page
 suffix:semicolon
-DECL|member|rxin
-id|u8
-id|rxin
-suffix:semicolon
-multiline_comment|/* rx ring buffer &squot;in&squot; pointer */
-DECL|member|txin
-id|u8
-id|txin
-suffix:semicolon
-multiline_comment|/* tx ring buffer &squot;in&squot; and &squot;last&squot; pointers */
-DECL|member|txlast
-id|u8
-id|txlast
-suffix:semicolon
-DECL|member|rxpart
-id|u8
-id|rxpart
-suffix:semicolon
-multiline_comment|/* partial frame received, next frame invalid*/
 DECL|member|next_card
 r_struct
 id|card_s
@@ -179,8 +188,9 @@ DECL|macro|sca_out
 mdefine_line|#define sca_out(value, reg, card)  writeb(value, (card)-&gt;win0base + C101_SCA + (reg))
 DECL|macro|sca_inw
 mdefine_line|#define sca_inw(reg, card)&t;   readw((card)-&gt;win0base + C101_SCA + (reg))
+multiline_comment|/* EDA address register must be set in EDAL, EDAH order - 8 bit ISA bus */
 DECL|macro|sca_outw
-mdefine_line|#define sca_outw(value, reg, card) writew(value, (card)-&gt;win0base + C101_SCA + (reg))
+mdefine_line|#define sca_outw(value, reg, card) do { &bslash;&n;&t;writeb(value &amp; 0xFF, (card)-&gt;win0base + C101_SCA + (reg)); &bslash;&n;&t;writeb((value &gt;&gt; 8 ) &amp; 0xFF, (card)-&gt;win0base + C101_SCA + (reg+1));&bslash;&n;} while(0)
 DECL|macro|port_to_card
 mdefine_line|#define port_to_card(port)&t;   (port)
 DECL|macro|log_node
@@ -414,6 +424,21 @@ c_func
 id|hdlc
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+multiline_comment|/* rmmod in progress */
 r_int
 id|result
 op_assign
@@ -428,11 +453,17 @@ c_cond
 (paren
 id|result
 )paren
+(brace
 r_return
 id|result
 suffix:semicolon
-id|MOD_INC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
+)brace
 id|writeb
 c_func
 (paren
@@ -538,7 +569,11 @@ c_func
 id|hdlc
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -815,6 +850,15 @@ op_star
 id|card
 )paren
 (brace
+id|readb
+c_func
+(paren
+id|card-&gt;win0base
+op_plus
+id|C101_PAGE
+)paren
+suffix:semicolon
+multiline_comment|/* Resets SCA? */
 r_if
 c_cond
 (paren
@@ -859,6 +903,7 @@ suffix:semicolon
 DECL|function|c101_run
 r_static
 r_int
+id|__init
 id|c101_run
 c_func
 (paren
@@ -1093,28 +1138,23 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-multiline_comment|/* 2 rings required for 1 port */
-id|card-&gt;ring_buffers
+id|card-&gt;tx_ring_buffers
 op_assign
-(paren
-id|RAM_SIZE
-op_minus
-id|C101_WINDOW_SIZE
-)paren
-op_div
-(paren
-l_int|2
-op_star
-id|HDLC_MAX_MRU
-)paren
+id|TX_RING_BUFFERS
+suffix:semicolon
+id|card-&gt;rx_ring_buffers
+op_assign
+id|RX_RING_BUFFERS
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;c101: using %u packets rings&bslash;n&quot;
+l_string|&quot;c101: using %u TX + %u RX packets rings&bslash;n&quot;
 comma
-id|card-&gt;ring_buffers
+id|card-&gt;tx_ring_buffers
+comma
+id|card-&gt;rx_ring_buffers
 )paren
 suffix:semicolon
 id|card-&gt;buff_offset
@@ -1316,11 +1356,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s (SCA-%s)&bslash;n&quot;
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|version
-comma
-id|sca_version
 )paren
 suffix:semicolon
 r_do
@@ -1398,7 +1436,13 @@ op_eq
 l_char|&squot;&bslash;x0&squot;
 )paren
 r_return
+id|first_card
+ques
+c_cond
 l_int|0
+suffix:colon
+op_minus
+id|ENOSYS
 suffix:semicolon
 )brace
 r_while
@@ -1430,36 +1474,6 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 )brace
-macro_line|#ifndef MODULE
-DECL|function|c101_setup
-r_static
-r_int
-id|__init
-id|c101_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|hw
-op_assign
-id|str
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;c101=&quot;
-comma
-id|c101_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|c101_cleanup
 r_static
 r_void
@@ -1536,15 +1550,17 @@ suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren
-l_string|&quot;GPL&quot;
+l_string|&quot;GPL v2&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|hw
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0444
 )paren
 suffix:semicolon
 multiline_comment|/* hw=irq,ram:irq,... */
