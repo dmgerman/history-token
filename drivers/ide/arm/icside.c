@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/scatterlist.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -663,41 +664,17 @@ id|hwif-&gt;sg_dma_direction
 op_assign
 id|DMA_FROM_DEVICE
 suffix:semicolon
-id|memset
+id|sg_init_one
 c_func
 (paren
 id|sg
 comma
-l_int|0
+id|rq-&gt;buffer
 comma
-r_sizeof
-(paren
-op_star
-id|sg
-)paren
-)paren
-suffix:semicolon
-id|sg-&gt;page
-op_assign
-id|virt_to_page
-c_func
-(paren
-id|rq-&gt;buffer
-)paren
-suffix:semicolon
-id|sg-&gt;offset
-op_assign
-id|offset_in_page
-c_func
-(paren
-id|rq-&gt;buffer
-)paren
-suffix:semicolon
-id|sg-&gt;length
-op_assign
 id|rq-&gt;nr_sectors
 op_star
 id|SECTOR_SIZE
+)paren
 suffix:semicolon
 id|nents
 op_assign

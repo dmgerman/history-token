@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/arch/svinto.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -2490,18 +2491,7 @@ op_amp
 id|REQ_DRIVE_TASKFILE
 )paren
 (brace
-id|u8
-op_star
-id|virt_addr
-op_assign
-id|rq-&gt;buffer
-suffix:semicolon
-r_int
-id|sector_count
-op_assign
-id|rq-&gt;nr_sectors
-suffix:semicolon
-id|memset
+id|sg_init_one
 c_func
 (paren
 op_amp
@@ -2510,51 +2500,12 @@ id|sg
 l_int|0
 )braket
 comma
-l_int|0
+id|rq-&gt;buffer
 comma
-r_sizeof
-(paren
-op_star
-id|sg
-)paren
-)paren
-suffix:semicolon
-id|sg
-(braket
-l_int|0
-)braket
-dot
-id|page
-op_assign
-id|virt_to_page
-c_func
-(paren
-id|virt_addr
-)paren
-suffix:semicolon
-id|sg
-(braket
-l_int|0
-)braket
-dot
-id|offset
-op_assign
-id|offset_in_page
-c_func
-(paren
-id|virt_addr
-)paren
-suffix:semicolon
-id|sg
-(braket
-l_int|0
-)braket
-dot
-id|length
-op_assign
-id|sector_count
+id|rq-&gt;nr_sectors
 op_star
 id|SECTOR_SIZE
+)paren
 suffix:semicolon
 id|hwif-&gt;sg_nents
 op_assign
