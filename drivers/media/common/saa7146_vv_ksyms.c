@@ -1,19 +1,5 @@
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-DECL|variable|saa7146_vbi_uops
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|saa7146_vbi_uops
-)paren
-suffix:semicolon
-DECL|variable|saa7146_video_uops
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|saa7146_video_uops
-)paren
-suffix:semicolon
 DECL|variable|saa7146_start_preview
 id|EXPORT_SYMBOL_GPL
 c_func
