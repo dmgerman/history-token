@@ -200,11 +200,18 @@ c_func
 id|lcopy_from_user
 )paren
 suffix:semicolon
-DECL|variable|lstrnlen_user
+DECL|variable|lcopy_in_user
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|lstrnlen_user
+id|lcopy_in_user
+)paren
+suffix:semicolon
+DECL|variable|lstrncpy_from_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|lstrncpy_from_user
 )paren
 suffix:semicolon
 DECL|variable|lclear_user
@@ -212,6 +219,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|lclear_user
+)paren
+suffix:semicolon
+DECL|variable|lstrnlen_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|lstrnlen_user
 )paren
 suffix:semicolon
 macro_line|#ifndef __LP64__

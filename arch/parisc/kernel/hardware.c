@@ -3545,7 +3545,7 @@ comma
 (brace
 id|HPHW_A_DMA
 comma
-l_int|0x03b
+l_int|0x03B
 comma
 l_int|0x00089
 comma
@@ -3557,7 +3557,19 @@ comma
 (brace
 id|HPHW_A_DMA
 comma
-l_int|0x03d
+l_int|0x03C
+comma
+l_int|0x00089
+comma
+l_int|0x80
+comma
+l_string|&quot;Merlin 132 Core FW-SCSI&quot;
+)brace
+comma
+(brace
+id|HPHW_A_DMA
+comma
+l_int|0x03D
 comma
 l_int|0x00089
 comma

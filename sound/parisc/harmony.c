@@ -815,7 +815,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * interruption routine:&n; * The interrupt routine must provide adresse of next physical pages &n; * used by harmony&n; */
 DECL|function|snd_card_harmony_interrupt
-r_void
+r_static
+r_int
 id|snd_card_harmony_interrupt
 c_func
 (paren
@@ -1028,6 +1029,9 @@ c_func
 (paren
 id|harmony
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * proc entry&n; * this proc file will give some debugging info&n; */

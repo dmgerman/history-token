@@ -481,6 +481,34 @@ id|regs-&gt;gr
 l_int|26
 )braket
 suffix:semicolon
+multiline_comment|/* usp must be word aligned.  This also prevents users from&n;&t; * passing in the value 1 (which is the signal for a special&n;&t; * return for a kernel thread) */
+id|usp
+op_assign
+id|ALIGN
+c_func
+(paren
+id|usp
+comma
+l_int|4
+)paren
+suffix:semicolon
+multiline_comment|/* A zero value for usp means use the current stack */
+r_if
+c_cond
+(paren
+id|usp
+op_eq
+l_int|0
+)paren
+(brace
+id|usp
+op_assign
+id|regs-&gt;gr
+(braket
+l_int|30
+)braket
+suffix:semicolon
+)brace
 r_return
 id|do_fork
 c_func
@@ -629,7 +657,7 @@ c_cond
 (paren
 id|usp
 op_eq
-l_int|0
+l_int|1
 )paren
 (brace
 multiline_comment|/* kernel thread */

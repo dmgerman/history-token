@@ -1,7 +1,7 @@
+multiline_comment|/*    SMP- and interrupt-safe semaphores.&n; *    PA-RISC version by Matthew Wilcox&n; *&n; *    Linux/PA-RISC Project (http://www.parisc-linux.org/)&n; *    Copyright (C) 1996 Linus Torvalds&n; *    Copyright (C) 1999-2001 Matthew Wilcox &lt; willy at debian d0T org &gt;&n; *    Copyright (C) 2000 Grant Grundler &lt; grundler a debian org &gt;&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *    GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ASM_PARISC_SEMAPHORE_H
 DECL|macro|_ASM_PARISC_SEMAPHORE_H
 mdefine_line|#define _ASM_PARISC_SEMAPHORE_H
-multiline_comment|/*&n; * SMP- and interrupt-safe semaphores.&n; *&n; * (C) Copyright 1996 Linus Torvalds&n; *&n; * PA-RISC version by Matthew Wilcox&n; *&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;

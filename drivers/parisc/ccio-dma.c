@@ -6,11 +6,8 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-DECL|macro|PCI_DEBUG
-mdefine_line|#define PCI_DEBUG
 macro_line|#include &lt;linux/pci.h&gt;
-DECL|macro|PCI_DEBUG
-macro_line|#undef PCI_DEBUG
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;&t;&t;/* for L1_CACHE_BYTES */
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -31,6 +28,18 @@ DECL|macro|DEBUG_CCIO_INIT
 macro_line|#undef DEBUG_CCIO_INIT
 DECL|macro|DEBUG_CCIO_RUN_SG
 macro_line|#undef DEBUG_CCIO_RUN_SG
+macro_line|#ifdef CONFIG_PROC_FS
+multiline_comment|/*&n; * CCIO_SEARCH_TIME can help measure how fast the bitmap search is.&n; * impacts performance though - ditch it if you don&squot;t use it.&n; */
+DECL|macro|CCIO_SEARCH_TIME
+mdefine_line|#define CCIO_SEARCH_TIME
+DECL|macro|CCIO_MAP_STATS
+macro_line|#undef CCIO_MAP_STATS
+macro_line|#else
+DECL|macro|CCIO_SEARCH_TIME
+macro_line|#undef CCIO_SEARCH_TIME
+DECL|macro|CCIO_MAP_STATS
+macro_line|#undef CCIO_MAP_STATS
+macro_line|#endif
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/runway.h&gt;&t;&t;/* for proc_runway_root */
 macro_line|#ifdef DEBUG_CCIO_INIT
@@ -243,6 +252,11 @@ op_star
 id|pdir_base
 suffix:semicolon
 multiline_comment|/* physical base address */
+DECL|member|pdir_size
+id|u32
+id|pdir_size
+suffix:semicolon
+multiline_comment|/* bytes, function of IOV Space size */
 DECL|member|res_hint
 id|u32
 id|res_hint
@@ -257,7 +271,7 @@ DECL|member|res_lock
 id|spinlock_t
 id|res_lock
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CCIO_SEARCH_TIME
 DECL|macro|CCIO_SEARCH_SAMPLE
 mdefine_line|#define CCIO_SEARCH_SAMPLE 0x100
 DECL|member|avg_search
@@ -274,6 +288,8 @@ r_int
 id|avg_idx
 suffix:semicolon
 multiline_comment|/* current index into avg_search */
+macro_line|#endif
+macro_line|#ifdef CCIO_MAP_STATS
 DECL|member|used_pages
 r_int
 r_int
@@ -319,18 +335,13 @@ r_int
 r_int
 id|usg_pages
 suffix:semicolon
+macro_line|#endif
 DECL|member|cujo20_bug
 r_int
 r_int
 id|cujo20_bug
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* STUFF We don&squot;t need in performance path */
-DECL|member|pdir_size
-id|u32
-id|pdir_size
-suffix:semicolon
-multiline_comment|/* in bytes, determined by IOV Space size */
 DECL|member|chainid_shift
 id|u32
 id|chainid_shift
@@ -417,9 +428,9 @@ DECL|macro|ROUNDUP
 mdefine_line|#define ROUNDUP(x,y) ((x + ((y)-1)) &amp; ~((y)-1))
 multiline_comment|/*&n;** Don&squot;t worry about the 150% average search length on a miss.&n;** If the search wraps around, and passes the res_hint, it will&n;** cause the kernel to panic anyhow.&n;*/
 DECL|macro|CCIO_SEARCH_LOOP
-mdefine_line|#define CCIO_SEARCH_LOOP(ioc, res_idx, mask_ptr, size)  &bslash;&n;       for(; res_ptr &lt; res_end; ++res_ptr) { &bslash;&n;               if(0 == (*res_ptr &amp; *mask_ptr)) { &bslash;&n;                       *res_ptr |= *mask_ptr; &bslash;&n;                       res_idx = (int)((unsigned long)res_ptr - (unsigned long)ioc-&gt;res_map); &bslash;&n;                       ioc-&gt;res_hint = res_idx + (size &gt;&gt; 3); &bslash;&n;                       goto resource_found; &bslash;&n;               } &bslash;&n;       }
+mdefine_line|#define CCIO_SEARCH_LOOP(ioc, res_idx, mask, size)  &bslash;&n;       for(; res_ptr &lt; res_end; ++res_ptr) { &bslash;&n;               if(0 == (*res_ptr &amp; mask)) { &bslash;&n;                       *res_ptr |= mask; &bslash;&n;                       res_idx = (unsigned int)((unsigned long)res_ptr - (unsigned long)ioc-&gt;res_map); &bslash;&n;                       ioc-&gt;res_hint = res_idx + (size &gt;&gt; 3); &bslash;&n;                       goto resource_found; &bslash;&n;               } &bslash;&n;       }
 DECL|macro|CCIO_FIND_FREE_MAPPING
-mdefine_line|#define CCIO_FIND_FREE_MAPPING(ioa, res_idx, mask, size) &bslash;&n;       u##size *res_ptr = (u##size *)&amp;((ioc)-&gt;res_map[ioa-&gt;res_hint &amp; ~((size &gt;&gt; 3) - 1)]); &bslash;&n;       u##size *res_end = (u##size *)&amp;(ioc)-&gt;res_map[ioa-&gt;res_size]; &bslash;&n;       u##size *mask_ptr = (u##size *)&amp;mask; &bslash;&n;       CCIO_SEARCH_LOOP(ioc, res_idx, mask_ptr, size); &bslash;&n;       res_ptr = (u##size *)&amp;(ioc)-&gt;res_map[0]; &bslash;&n;       CCIO_SEARCH_LOOP(ioa, res_idx, mask_ptr, size);
+mdefine_line|#define CCIO_FIND_FREE_MAPPING(ioa, res_idx, mask, size) &bslash;&n;       u##size *res_ptr = (u##size *)&amp;((ioc)-&gt;res_map[ioa-&gt;res_hint &amp; ~((size &gt;&gt; 3) - 1)]); &bslash;&n;       u##size *res_end = (u##size *)&amp;(ioc)-&gt;res_map[ioa-&gt;res_size]; &bslash;&n;       CCIO_SEARCH_LOOP(ioc, res_idx, mask, size); &bslash;&n;       res_ptr = (u##size *)&amp;(ioc)-&gt;res_map[0]; &bslash;&n;       CCIO_SEARCH_LOOP(ioa, res_idx, mask, size);
 multiline_comment|/*&n;** Find available bit in this ioa&squot;s resource map.&n;** Use a &quot;circular&quot; search:&n;**   o Most IOVA&squot;s are &quot;temporary&quot; - avg search time should be small.&n;** o keep a history of what happened for debugging&n;** o KISS.&n;**&n;** Perf optimizations:&n;** o search for log2(size) bits at a time.&n;** o search for available resource bits using byte/word/whatever.&n;** o use different search for &quot;large&quot; (eg &gt; 4 pages) or &quot;very large&quot;&n;**   (eg &gt; 16 pages) mappings.&n;*/
 multiline_comment|/**&n; * ccio_alloc_range - Allocate pages in the ioc&squot;s resource map.&n; * @ioc: The I/O Controller.&n; * @pages_needed: The requested number of pages to be mapped into the&n; * I/O Pdir...&n; *&n; * This function searches the resource map of the ioc to locate a range&n; * of available pages for the requested size.&n; */
 r_static
@@ -434,18 +445,22 @@ op_star
 id|ioc
 comma
 r_int
-r_int
-id|pages_needed
+id|size
 )paren
 (brace
 r_int
+r_int
+id|pages_needed
+op_assign
+id|size
+op_rshift
+id|IOVP_SHIFT
+suffix:semicolon
+r_int
+r_int
 id|res_idx
 suffix:semicolon
-r_int
-r_int
-id|mask
-suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CCIO_SEARCH_TIME
 r_int
 r_int
 id|cr_start
@@ -457,13 +472,15 @@ l_int|16
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|pages_needed
+op_eq
+l_int|0
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 (paren
@@ -471,40 +488,20 @@ id|pages_needed
 op_star
 id|IOVP_SIZE
 )paren
-op_le
+OG
 id|DMA_CHUNK_SIZE
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|pages_needed
-op_le
-id|BITS_PER_LONG
-)paren
-suffix:semicolon
-id|mask
-op_assign
-op_complement
-(paren
-op_complement
-l_int|0UL
-op_rshift
-id|pages_needed
 )paren
 suffix:semicolon
 id|DBG_RES
 c_func
 (paren
-l_string|&quot;%s() size: %d pages_needed %d mask 0x%08lx&bslash;n&quot;
+l_string|&quot;%s() size: %d pages_needed %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|size
 comma
 id|pages_needed
-comma
-id|mask
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** &quot;seek and ye shall find&quot;...praying never hurts either...&n;&t;** ggg sacrifices another 710 to the computer gods.&n;&t;*/
@@ -516,6 +513,21 @@ op_le
 l_int|8
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * LAN traffic will not thrash the TLB IFF the same NIC&n;&t;&t; * uses 8 adjacent pages to map seperate payload data.&n;&t;&t; * ie the same byte in the resource bit map.&n;&t;&t; */
+macro_line|#if 0
+multiline_comment|/* FIXME: bit search should shift it&squot;s way through&n;&t;&t; * an unsigned long - not byte at a time. As it is now,&n;&t;&t; * we effectively allocate this byte to this mapping.&n;&t;&t; */
+r_int
+r_int
+id|mask
+op_assign
+op_complement
+(paren
+op_complement
+l_int|0UL
+op_rshift
+id|pages_needed
+)paren
+suffix:semicolon
 id|CCIO_FIND_FREE_MAPPING
 c_func
 (paren
@@ -528,6 +540,20 @@ comma
 l_int|8
 )paren
 suffix:semicolon
+macro_line|#else
+id|CCIO_FIND_FREE_MAPPING
+c_func
+(paren
+id|ioc
+comma
+id|res_idx
+comma
+l_int|0xff
+comma
+l_int|8
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 r_if
@@ -545,7 +571,7 @@ id|ioc
 comma
 id|res_idx
 comma
-id|mask
+l_int|0xffff
 comma
 l_int|16
 )paren
@@ -567,7 +593,12 @@ id|ioc
 comma
 id|res_idx
 comma
-id|mask
+op_complement
+(paren
+r_int
+r_int
+)paren
+l_int|0
 comma
 l_int|32
 )paren
@@ -590,7 +621,8 @@ id|ioc
 comma
 id|res_idx
 comma
-id|mask
+op_complement
+l_int|0UL
 comma
 l_int|64
 )paren
@@ -602,7 +634,7 @@ r_else
 id|panic
 c_func
 (paren
-l_string|&quot;%s: %s() Too many pages to map. pages_needed: %ld&bslash;n&quot;
+l_string|&quot;%s: %s() Too many pages to map. pages_needed: %u&bslash;n&quot;
 comma
 id|__FILE__
 comma
@@ -627,18 +659,16 @@ suffix:colon
 id|DBG_RES
 c_func
 (paren
-l_string|&quot;%s() res_idx %d mask 0x%08lx res_hint: %d&bslash;n&quot;
+l_string|&quot;%s() res_idx %d res_hint: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|res_idx
 comma
-id|mask
-comma
 id|ioc-&gt;res_hint
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CCIO_SEARCH_TIME
 (brace
 r_int
 r_int
@@ -692,6 +722,8 @@ id|CCIO_SEARCH_SAMPLE
 op_minus
 l_int|1
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CCIO_MAP_STATS
 id|ioc-&gt;used_pages
 op_add_assign
 id|pages_needed
@@ -705,7 +737,7 @@ l_int|3
 suffix:semicolon
 )brace
 DECL|macro|CCIO_FREE_MAPPINGS
-mdefine_line|#define CCIO_FREE_MAPPINGS(ioc, res_idx, mask, size) &bslash;&n;        u##size *res_ptr = (u##size *)&amp;((ioc)-&gt;res_map[res_idx]); &bslash;&n;&t;u##size *mask_ptr = (u##size *)&amp;mask; &bslash;&n;        ASSERT((*res_ptr &amp; *mask_ptr) == *mask_ptr); &bslash;&n;        *res_ptr &amp;= ~(*mask_ptr);
+mdefine_line|#define CCIO_FREE_MAPPINGS(ioc, res_idx, mask, size) &bslash;&n;        u##size *res_ptr = (u##size *)&amp;((ioc)-&gt;res_map[res_idx]); &bslash;&n;        BUG_ON((*res_ptr &amp; mask) != mask); &bslash;&n;        *res_ptr &amp;= ~(mask);
 multiline_comment|/**&n; * ccio_free_range - Free pages from the ioc&squot;s resource map.&n; * @ioc: The I/O Controller.&n; * @iova: The I/O Virtual Address.&n; * @pages_mapped: The requested number of pages to be freed from the&n; * I/O Pdir.&n; *&n; * This function frees the resouces allocated for the iova.&n; */
 r_static
 r_void
@@ -728,10 +760,6 @@ id|pages_mapped
 (brace
 r_int
 r_int
-id|mask
-suffix:semicolon
-r_int
-r_int
 id|iovp
 op_assign
 id|CCIO_IOVP
@@ -752,13 +780,15 @@ id|iovp
 op_rshift
 l_int|3
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|pages_mapped
+op_eq
+l_int|0
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 (paren
@@ -766,43 +796,31 @@ id|pages_mapped
 op_star
 id|IOVP_SIZE
 )paren
-op_le
+OG
 id|DMA_CHUNK_SIZE
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|pages_mapped
-op_le
+OG
 id|BITS_PER_LONG
-)paren
-suffix:semicolon
-id|mask
-op_assign
-op_complement
-(paren
-op_complement
-l_int|0UL
-op_rshift
-id|pages_mapped
 )paren
 suffix:semicolon
 id|DBG_RES
 c_func
 (paren
-l_string|&quot;%s():  res_idx: %d pages_mapped %d mask 0x%08lx&bslash;n&quot;
+l_string|&quot;%s():  res_idx: %d pages_mapped %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|res_idx
 comma
 id|pages_mapped
-comma
-id|mask
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CCIO_MAP_STATS
 id|ioc-&gt;used_pages
 op_sub_assign
 id|pages_mapped
@@ -816,6 +834,20 @@ op_le
 l_int|8
 )paren
 (brace
+macro_line|#if 0
+multiline_comment|/* see matching comments in alloc_range */
+r_int
+r_int
+id|mask
+op_assign
+op_complement
+(paren
+op_complement
+l_int|0UL
+op_rshift
+id|pages_mapped
+)paren
+suffix:semicolon
 id|CCIO_FREE_MAPPINGS
 c_func
 (paren
@@ -828,6 +860,20 @@ comma
 l_int|8
 )paren
 suffix:semicolon
+macro_line|#else
+id|CCIO_FREE_MAPPINGS
+c_func
+(paren
+id|ioc
+comma
+id|res_idx
+comma
+l_int|0xff
+comma
+l_int|8
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 r_if
@@ -845,7 +891,7 @@ id|ioc
 comma
 id|res_idx
 comma
-id|mask
+l_int|0xffff
 comma
 l_int|16
 )paren
@@ -867,7 +913,12 @@ id|ioc
 comma
 id|res_idx
 comma
-id|mask
+op_complement
+(paren
+r_int
+r_int
+)paren
+l_int|0
 comma
 l_int|32
 )paren
@@ -890,7 +941,8 @@ id|ioc
 comma
 id|res_idx
 comma
-id|mask
+op_complement
+l_int|0UL
 comma
 l_int|64
 )paren
@@ -989,8 +1041,8 @@ comma
 id|space_t
 id|sid
 comma
-r_void
-op_star
+r_int
+r_int
 id|vba
 comma
 r_int
@@ -1017,11 +1069,11 @@ id|ci
 suffix:semicolon
 multiline_comment|/* coherent index */
 multiline_comment|/* We currently only support kernel addresses */
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|sid
-op_eq
+op_ne
 id|KERNEL_SPACE
 )paren
 suffix:semicolon
@@ -1364,11 +1416,11 @@ id|idx
 )braket
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|idx
-OL
+op_ge
 (paren
 id|ioc-&gt;pdir_size
 op_div
@@ -1560,11 +1612,11 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|size
-OG
+op_le
 l_int|0
 )paren
 suffix:semicolon
@@ -1604,7 +1656,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CCIO_MAP_STATS
 id|ioc-&gt;msingle_calls
 op_increment
 suffix:semicolon
@@ -1622,11 +1674,7 @@ c_func
 (paren
 id|ioc
 comma
-(paren
 id|size
-op_rshift
-id|IOVP_SHIFT
-)paren
 )paren
 suffix:semicolon
 id|iovp
@@ -1710,6 +1758,10 @@ id|pdir_start
 comma
 id|KERNEL_SPACE
 comma
+(paren
+r_int
+r_int
+)paren
 id|addr
 comma
 id|hint
@@ -1885,7 +1937,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CCIO_MAP_STATS
 id|ioc-&gt;usingle_calls
 op_increment
 suffix:semicolon
@@ -2087,574 +2139,11 @@ suffix:semicolon
 multiline_comment|/*&n;** Since 0 is a valid pdir_base index value, can&squot;t use that&n;** to determine if a value is valid or not. Use a flag to indicate&n;** the SG list entry contains a valid pdir index.&n;*/
 DECL|macro|PIDE_FLAG
 mdefine_line|#define PIDE_FLAG 0x80000000UL
-multiline_comment|/**&n; * ccio_fill_pdir - Insert coalesced scatter/gather chunks into the I/O Pdir.&n; * @ioc: The I/O Controller.&n; * @startsg: The scatter/gather list of coalesced chunks.&n; * @nents: The number of entries in the scatter/gather list.&n; * @hint: The DMA Hint.&n; *&n; * This function inserts the coalesced scatter/gather list chunks into the&n; * I/O Controller&squot;s I/O Pdir.&n; */
-r_static
-id|CCIO_INLINE
-r_int
-DECL|function|ccio_fill_pdir
-id|ccio_fill_pdir
-c_func
-(paren
-r_struct
-id|ioc
-op_star
-id|ioc
-comma
-r_struct
-id|scatterlist
-op_star
-id|startsg
-comma
-r_int
-id|nents
-comma
-r_int
-r_int
-id|hint
-)paren
-(brace
-r_struct
-id|scatterlist
-op_star
-id|dma_sg
-op_assign
-id|startsg
-suffix:semicolon
-multiline_comment|/* pointer to current DMA */
-r_int
-id|n_mappings
-op_assign
-l_int|0
-suffix:semicolon
-id|u64
-op_star
-id|pdirp
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-r_int
-id|dma_offset
-op_assign
-l_int|0
-suffix:semicolon
-id|dma_sg
-op_decrement
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|nents
-op_decrement
-OG
-l_int|0
-)paren
-(brace
-r_int
-id|cnt
-op_assign
-id|sg_dma_len
-c_func
-(paren
-id|startsg
-)paren
-suffix:semicolon
-id|sg_dma_len
-c_func
-(paren
-id|startsg
-)paren
-op_assign
-l_int|0
-suffix:semicolon
-id|DBG_RUN_SG
-c_func
-(paren
-l_string|&quot; %d : %08lx/%05x %08lx/%05x&bslash;n&quot;
-comma
-id|nents
-comma
-(paren
-r_int
-r_int
-)paren
-id|sg_dma_address
-c_func
-(paren
-id|startsg
-)paren
-comma
-id|cnt
-comma
-id|sg_virt_addr
-c_func
-(paren
-id|startsg
-)paren
-comma
-id|startsg-&gt;length
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;** Look for the start of a new DMA stream&n;&t;&t;*/
-r_if
-c_cond
-(paren
-id|sg_dma_address
-c_func
-(paren
-id|startsg
-)paren
-op_amp
-id|PIDE_FLAG
-)paren
-(brace
-id|u32
-id|pide
-op_assign
-id|sg_dma_address
-c_func
-(paren
-id|startsg
-)paren
-op_amp
-op_complement
-id|PIDE_FLAG
-suffix:semicolon
-id|dma_offset
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|pide
-op_amp
-op_complement
-id|IOVP_MASK
-suffix:semicolon
-id|sg_dma_address
-c_func
-(paren
-id|startsg
-)paren
-op_assign
-l_int|0
-suffix:semicolon
-id|dma_sg
-op_increment
-suffix:semicolon
-id|sg_dma_address
-c_func
-(paren
-id|dma_sg
-)paren
-op_assign
-id|pide
-suffix:semicolon
-id|pdirp
-op_assign
-op_amp
-(paren
-id|ioc-&gt;pdir_base
-(braket
-id|pide
-op_rshift
-id|IOVP_SHIFT
-)braket
-)paren
-suffix:semicolon
-id|n_mappings
-op_increment
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;** Look for a VCONTIG chunk&n;&t;&t;*/
-r_if
-c_cond
-(paren
-id|cnt
-)paren
-(brace
-r_int
-r_int
-id|vaddr
-op_assign
-id|sg_virt_addr
-c_func
-(paren
-id|startsg
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|pdirp
-)paren
-suffix:semicolon
-multiline_comment|/* Since multiple Vcontig blocks could make up&n;&t;&t;&t;** one DMA stream, *add* cnt to dma_len.&n;&t;&t;&t;*/
-id|sg_dma_len
-c_func
-(paren
-id|dma_sg
-)paren
-op_add_assign
-id|cnt
-suffix:semicolon
-id|cnt
-op_add_assign
-id|dma_offset
-suffix:semicolon
-id|dma_offset
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* only want offset on first chunk */
-id|cnt
-op_assign
-id|ROUNDUP
-c_func
-(paren
-id|cnt
-comma
-id|IOVP_SIZE
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|ioc-&gt;msg_pages
-op_add_assign
-id|cnt
-op_rshift
-id|IOVP_SHIFT
-suffix:semicolon
+macro_line|#ifdef CCIO_MAP_STATS
+DECL|macro|IOMMU_MAP_STATS
+mdefine_line|#define IOMMU_MAP_STATS
 macro_line|#endif
-r_do
-(brace
-id|ccio_io_pdir_entry
-c_func
-(paren
-id|pdirp
-comma
-id|KERNEL_SPACE
-comma
-(paren
-r_void
-op_star
-)paren
-id|vaddr
-comma
-id|hint
-)paren
-suffix:semicolon
-id|vaddr
-op_add_assign
-id|IOVP_SIZE
-suffix:semicolon
-id|cnt
-op_sub_assign
-id|IOVP_SIZE
-suffix:semicolon
-id|pdirp
-op_increment
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|cnt
-OG
-l_int|0
-)paren
-suffix:semicolon
-)brace
-id|startsg
-op_increment
-suffix:semicolon
-)brace
-r_return
-id|n_mappings
-suffix:semicolon
-)brace
-multiline_comment|/*&n;** First pass is to walk the SG list and determine where the breaks are&n;** in the DMA stream. Allocates PDIR entries but does not fill them.&n;** Returns the number of DMA chunks.&n;**&n;** Doing the fill separate from the coalescing/allocation keeps the&n;** code simpler. Future enhancement could make one pass through&n;** the sglist do both.&n;*/
-r_static
-id|CCIO_INLINE
-r_int
-DECL|function|ccio_coalesce_chunks
-id|ccio_coalesce_chunks
-c_func
-(paren
-r_struct
-id|ioc
-op_star
-id|ioc
-comma
-r_struct
-id|scatterlist
-op_star
-id|startsg
-comma
-r_int
-id|nents
-)paren
-(brace
-r_struct
-id|scatterlist
-op_star
-id|vcontig_sg
-suffix:semicolon
-multiline_comment|/* VCONTIG chunk head */
-r_int
-r_int
-id|vcontig_len
-suffix:semicolon
-multiline_comment|/* len of VCONTIG chunk */
-r_int
-r_int
-id|vcontig_end
-suffix:semicolon
-r_struct
-id|scatterlist
-op_star
-id|dma_sg
-suffix:semicolon
-multiline_comment|/* next DMA stream head */
-r_int
-r_int
-id|dma_offset
-comma
-id|dma_len
-suffix:semicolon
-multiline_comment|/* start/len of DMA stream */
-r_int
-id|n_mappings
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|nents
-OG
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;** Prepare for first/next DMA stream&n;&t;&t;*/
-id|dma_sg
-op_assign
-id|vcontig_sg
-op_assign
-id|startsg
-suffix:semicolon
-id|dma_len
-op_assign
-id|vcontig_len
-op_assign
-id|vcontig_end
-op_assign
-id|startsg-&gt;length
-suffix:semicolon
-id|vcontig_end
-op_add_assign
-id|sg_virt_addr
-c_func
-(paren
-id|startsg
-)paren
-suffix:semicolon
-id|dma_offset
-op_assign
-id|sg_virt_addr
-c_func
-(paren
-id|startsg
-)paren
-op_amp
-op_complement
-id|IOVP_MASK
-suffix:semicolon
-multiline_comment|/* PARANOID: clear entries */
-id|sg_dma_address
-c_func
-(paren
-id|startsg
-)paren
-op_assign
-l_int|0
-suffix:semicolon
-id|sg_dma_len
-c_func
-(paren
-id|startsg
-)paren
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;** This loop terminates one iteration &quot;early&quot; since&n;&t;&t;** it&squot;s always looking one &quot;ahead&quot;.&n;&t;&t;*/
-r_while
-c_loop
-(paren
-op_decrement
-id|nents
-OG
-l_int|0
-)paren
-(brace
-r_int
-r_int
-id|startsg_end
-suffix:semicolon
-id|startsg
-op_increment
-suffix:semicolon
-id|startsg_end
-op_assign
-id|sg_virt_addr
-c_func
-(paren
-id|startsg
-)paren
-op_plus
-id|startsg-&gt;length
-suffix:semicolon
-multiline_comment|/* PARANOID: clear entries */
-id|sg_dma_address
-c_func
-(paren
-id|startsg
-)paren
-op_assign
-l_int|0
-suffix:semicolon
-id|sg_dma_len
-c_func
-(paren
-id|startsg
-)paren
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;** First make sure current dma stream won&squot;t&n;&t;&t;&t;** exceed DMA_CHUNK_SIZE if we coalesce the&n;&t;&t;&t;** next entry.&n;&t;&t;&t;*/
-r_if
-c_cond
-(paren
-id|ROUNDUP
-c_func
-(paren
-id|dma_len
-op_plus
-id|dma_offset
-op_plus
-id|startsg-&gt;length
-comma
-id|IOVP_SIZE
-)paren
-OG
-id|DMA_CHUNK_SIZE
-)paren
-(brace
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t;** Append the next transaction?&n;&t;&t;&t;*/
-r_if
-c_cond
-(paren
-id|vcontig_end
-op_eq
-id|sg_virt_addr
-c_func
-(paren
-id|startsg
-)paren
-)paren
-(brace
-id|vcontig_len
-op_add_assign
-id|startsg-&gt;length
-suffix:semicolon
-id|vcontig_end
-op_add_assign
-id|startsg-&gt;length
-suffix:semicolon
-id|dma_len
-op_add_assign
-id|startsg-&gt;length
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t;** Not virtually contigous.&n;&t;&t;&t;** Terminate prev chunk.&n;&t;&t;&t;** Start a new chunk.&n;&t;&t;&t;**&n;&t;&t;&t;** Once we start a new VCONTIG chunk, dma_offset&n;&t;&t;&t;** can&squot;t change. And we need the offset from the first&n;&t;&t;&t;** chunk - not the last one. Ergo Successive chunks&n;&t;&t;&t;** must start on page boundaries and dove tail&n;&t;&t;&t;** with its predecessor.&n;&t;&t;&t;*/
-id|sg_dma_len
-c_func
-(paren
-id|vcontig_sg
-)paren
-op_assign
-id|vcontig_len
-suffix:semicolon
-id|vcontig_sg
-op_assign
-id|startsg
-suffix:semicolon
-id|vcontig_len
-op_assign
-id|startsg-&gt;length
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;** End of DMA Stream&n;&t;&t;** Terminate last VCONTIG block.&n;&t;&t;** Allocate space for DMA stream.&n;&t;&t;*/
-id|sg_dma_len
-c_func
-(paren
-id|vcontig_sg
-)paren
-op_assign
-id|vcontig_len
-suffix:semicolon
-id|dma_len
-op_assign
-id|ROUNDUP
-c_func
-(paren
-id|dma_len
-op_plus
-id|dma_offset
-comma
-id|IOVP_SIZE
-)paren
-suffix:semicolon
-id|sg_dma_address
-c_func
-(paren
-id|dma_sg
-)paren
-op_assign
-id|PIDE_FLAG
-op_or
-(paren
-id|ccio_alloc_range
-c_func
-(paren
-id|ioc
-comma
-(paren
-id|dma_len
-op_rshift
-id|IOVP_SHIFT
-)paren
-)paren
-op_lshift
-id|IOVP_SHIFT
-)paren
-op_or
-id|dma_offset
-suffix:semicolon
-id|n_mappings
-op_increment
-suffix:semicolon
-)brace
-r_return
-id|n_mappings
-suffix:semicolon
-)brace
+macro_line|#include &quot;iommu-helpers.h&quot;
 multiline_comment|/**&n; * ccio_map_sg - Map the scatter/gather list into the IOMMU.&n; * @dev: The PCI device.&n; * @sglist: The scatter/gather list to be mapped in the IOMMU.&n; * @nents: The number of entries in the scatter/gather list.&n; * @direction: The direction of the DMA transaction (to/from device).&n; *&n; * This function implements the pci_map_sg function.&n; */
 r_static
 r_int
@@ -2707,6 +2196,19 @@ r_int
 )paren
 id|direction
 )braket
+suffix:semicolon
+r_int
+r_int
+id|prev_len
+op_assign
+l_int|0
+comma
+id|current_len
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|i
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -2780,6 +2282,31 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|nents
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|prev_len
+op_add_assign
+id|sglist
+(braket
+id|i
+)braket
+dot
+id|length
+suffix:semicolon
+)brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2789,7 +2316,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CCIO_MAP_STATS
 id|ioc-&gt;msg_calls
 op_increment
 suffix:semicolon
@@ -2797,7 +2324,7 @@ macro_line|#endif
 multiline_comment|/*&n;&t;** First coalesce the chunks and allocate I/O pdir space&n;&t;**&n;&t;** If this is one DMA stream, we can properly map using the&n;&t;** correct virtual address associated with each DMA page.&n;&t;** w/o this association, we wouldn&squot;t have coherent DMA!&n;&t;** Access to the virtual address is what forces a two pass algorithm.&n;&t;*/
 id|coalesced
 op_assign
-id|ccio_coalesce_chunks
+id|iommu_coalesce_chunks
 c_func
 (paren
 id|ioc
@@ -2805,12 +2332,14 @@ comma
 id|sglist
 comma
 id|nents
+comma
+id|ccio_alloc_range
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;** Program the I/O Pdir&n;&t;**&n;&t;** map the virtual addresses to the I/O Pdir&n;&t;** o dma_address will contain the pdir index&n;&t;** o dma_len will contain the number of bytes to map &n;&t;** o page/offset contain the virtual address.&n;&t;*/
 id|filled
 op_assign
-id|ccio_fill_pdir
+id|iommu_fill_pdir
 c_func
 (paren
 id|ioc
@@ -2820,6 +2349,8 @@ comma
 id|nents
 comma
 id|hint
+comma
+id|ccio_io_pdir_entry
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -2831,11 +2362,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|coalesced
-op_eq
+op_ne
 id|filled
 )paren
 suffix:semicolon
@@ -2847,6 +2378,38 @@ comma
 id|__FUNCTION__
 comma
 id|filled
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|filled
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|current_len
+op_add_assign
+id|sg_dma_len
+c_func
+(paren
+id|sglist
+op_plus
+id|i
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|current_len
+op_ne
+id|prev_len
 )paren
 suffix:semicolon
 r_return
@@ -2916,7 +2479,7 @@ comma
 id|sglist-&gt;length
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CCIO_MAP_STATS
 id|ioc-&gt;usg_calls
 op_increment
 suffix:semicolon
@@ -2934,7 +2497,7 @@ id|nents
 op_decrement
 )paren
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CCIO_MAP_STATS
 id|ioc-&gt;usg_pages
 op_add_assign
 id|sg_dma_len
@@ -3363,6 +2926,7 @@ id|count
 )paren
 r_break
 suffix:semicolon
+macro_line|#ifdef CCIO_MAP_STATS
 id|len
 op_assign
 id|sprintf
@@ -3412,6 +2976,7 @@ id|count
 )paren
 r_break
 suffix:semicolon
+macro_line|#endif
 id|len
 op_assign
 id|sprintf
@@ -3448,6 +3013,7 @@ id|count
 )paren
 r_break
 suffix:semicolon
+macro_line|#ifdef CCIO_SEARCH_TIME
 id|min
 op_assign
 id|max
@@ -3560,6 +3126,8 @@ id|count
 )paren
 r_break
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CCIO_MAP_STATS
 id|len
 op_assign
 id|sprintf
@@ -3769,6 +3337,7 @@ id|count
 )paren
 r_break
 suffix:semicolon
+macro_line|#endif&t;/* CCIO_MAP_STATS */
 id|ioc
 op_assign
 id|ioc-&gt;next
@@ -4080,12 +3649,10 @@ id|u8
 op_star
 id|res_ptr
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
 id|ioc-&gt;cujo20_bug
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif
 id|res_ptr
 op_assign
 id|ioc-&gt;res_map
@@ -4285,11 +3852,11 @@ op_minus
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|iov_order
-op_le
+OG
 (paren
 l_int|30
 op_minus
@@ -4298,11 +3865,11 @@ id|IOVP_SHIFT
 )paren
 suffix:semicolon
 multiline_comment|/* iova_space_size &lt;= 1GB */
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|iov_order
-op_ge
+OL
 (paren
 l_int|20
 op_minus
@@ -4334,11 +3901,11 @@ r_sizeof
 id|u64
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 id|ioc-&gt;pdir_size
-OL
+op_ge
 l_int|4
 op_star
 l_int|1024
@@ -4348,7 +3915,7 @@ l_int|1024
 suffix:semicolon
 multiline_comment|/* max pdir size &lt; 4MB */
 multiline_comment|/* Verify it&squot;s a power of two */
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 (paren
@@ -4360,7 +3927,7 @@ c_func
 id|ioc-&gt;pdir_size
 )paren
 )paren
-op_eq
+op_ne
 (paren
 id|ioc-&gt;pdir_size
 op_rshift
@@ -4439,7 +4006,7 @@ comma
 id|ioc-&gt;pdir_size
 )paren
 suffix:semicolon
-id|ASSERT
+id|BUG_ON
 c_func
 (paren
 (paren
@@ -4453,7 +4020,7 @@ id|ioc-&gt;pdir_base
 op_amp
 id|PAGE_MASK
 )paren
-op_eq
+op_ne
 (paren
 r_int
 r_int
@@ -5737,7 +5304,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/* XXX: Create separate entries for each ioc */
+multiline_comment|/* FIXME: Create separate entries for each ioc */
 id|create_proc_read_entry
 c_func
 (paren
@@ -5768,6 +5335,16 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+id|parisc_vmerge_boundary
+op_assign
+id|IOVP_SIZE
+suffix:semicolon
+id|parisc_vmerge_max_size
+op_assign
+id|BITS_PER_LONG
+op_star
+id|IOVP_SIZE
+suffix:semicolon
 id|ioc_count
 op_increment
 suffix:semicolon

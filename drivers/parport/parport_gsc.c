@@ -1647,7 +1647,7 @@ suffix:semicolon
 )brace
 DECL|function|parport_remove_chip
 r_static
-r_void
+r_int
 id|__devexit
 id|parport_remove_chip
 c_func
@@ -1754,6 +1754,9 @@ id|ops
 suffix:semicolon
 multiline_comment|/* hope no-one cached it */
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|parport_tbl
 r_static
@@ -1813,7 +1816,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|parport_remove_chip
+)paren
 comma
 )brace
 suffix:semicolon

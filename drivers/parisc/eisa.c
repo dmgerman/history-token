@@ -323,6 +323,51 @@ id|port
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifndef CONFIG_PCI
+multiline_comment|/* We call these directly without PCI.  See asm/io.h. */
+DECL|variable|eisa_in8
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|eisa_in8
+)paren
+suffix:semicolon
+DECL|variable|eisa_in16
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|eisa_in16
+)paren
+suffix:semicolon
+DECL|variable|eisa_in32
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|eisa_in32
+)paren
+suffix:semicolon
+DECL|variable|eisa_out8
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|eisa_out8
+)paren
+suffix:semicolon
+DECL|variable|eisa_out16
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|eisa_out16
+)paren
+suffix:semicolon
+DECL|variable|eisa_out32
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|eisa_out32
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Interrupt handling */
 multiline_comment|/* cached interrupt mask registers */
 DECL|variable|master_mask

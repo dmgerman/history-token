@@ -133,6 +133,9 @@ DECL|macro|SUPERIO_USB_FN
 mdefine_line|#define SUPERIO_USB_FN 2 /* Function number of USB controller */
 DECL|macro|is_superio_device
 mdefine_line|#define is_superio_device(x) &bslash;&n;&t;(((x)-&gt;vendor == PCI_VENDOR_ID_NS) &amp;&amp; &bslash;&n;&t;(  ((x)-&gt;device == PCI_DEVICE_ID_NS_87415) &bslash;&n;&t;|| ((x)-&gt;device == PCI_DEVICE_ID_NS_87560_LIO) &bslash;&n;&t;|| ((x)-&gt;device == PCI_DEVICE_ID_NS_87560_USB) ) )
+r_struct
+id|hwif_s
+suffix:semicolon
 r_extern
 r_void
 id|superio_inform_irq
@@ -164,11 +167,24 @@ id|pcidev
 suffix:semicolon
 multiline_comment|/* called by iosapic */
 r_extern
-r_int
-id|superio_get_ide_irq
+r_void
+id|superio_fixup_pci
 c_func
 (paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+r_extern
 r_void
+id|superio_ide_init_iops
+(paren
+r_struct
+id|hwif_s
+op_star
+id|hwif
 )paren
 suffix:semicolon
 macro_line|#endif /* _PARISC_SUPERIO_H */

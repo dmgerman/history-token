@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;&t;&t;/* for L1_CACHE_BYTES */
+macro_line|#include &lt;asm/superio.h&gt;
 DECL|macro|DEBUG_RESOURCES
 mdefine_line|#define DEBUG_RESOURCES 0
 DECL|macro|DEBUG_CONFIG
@@ -235,6 +236,18 @@ id|pcibios_fixups
 )braket
 op_assign
 (brace
+macro_line|#ifdef CONFIG_SUPERIO
+(brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_NS
+comma
+id|PCI_DEVICE_ID_NS_87415
+comma
+id|superio_fixup_pci
+)brace
+comma
+macro_line|#endif
 (brace
 l_int|0
 )brace
