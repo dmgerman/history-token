@@ -964,7 +964,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|tsk
 )paren
 suffix:semicolon
 id|strcpy

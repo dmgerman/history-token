@@ -1843,7 +1843,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|tsk
 )paren
 suffix:semicolon
 id|spin_unlock_irq

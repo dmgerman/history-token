@@ -217,7 +217,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|regs-&gt;d0
@@ -350,7 +349,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 id|regs-&gt;d0
@@ -2505,7 +2503,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 r_if
@@ -2676,7 +2673,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 r_if
@@ -4847,7 +4843,6 @@ suffix:semicolon
 id|recalc_sigpending
 c_func
 (paren
-id|current
 )paren
 suffix:semicolon
 )brace
