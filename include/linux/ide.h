@@ -1406,6 +1406,7 @@ suffix:semicolon
 multiline_comment|/* requests specific driver */
 DECL|member|queue
 id|request_queue_t
+op_star
 id|queue
 suffix:semicolon
 multiline_comment|/* request queue */
@@ -6625,7 +6626,7 @@ id|index
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|export_ide_init_queue
 c_func
 (paren
@@ -6795,7 +6796,6 @@ r_return
 id|blk_queue_tag_depth
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 suffix:semicolon
@@ -6824,7 +6824,6 @@ r_return
 id|blk_queue_tag_queue
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 suffix:semicolon

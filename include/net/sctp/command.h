@@ -189,6 +189,10 @@ DECL|enumerator|SCTP_CMD_RENEGE
 id|SCTP_CMD_RENEGE
 comma
 multiline_comment|/* Renege data on an association. */
+DECL|enumerator|SCTP_CMD_SETUP_T4
+id|SCTP_CMD_SETUP_T4
+comma
+multiline_comment|/* ADDIP, setup T4 RTO timer parms. */
 DECL|enumerator|SCTP_CMD_LAST
 id|SCTP_CMD_LAST
 DECL|typedef|sctp_verb_t

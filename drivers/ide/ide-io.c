@@ -287,7 +287,6 @@ r_else
 id|blk_queue_end_tag
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|rq
@@ -397,7 +396,6 @@ id|rq
 id|blk_stop_queue
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 suffix:semicolon
@@ -411,7 +409,6 @@ suffix:semicolon
 id|blk_start_queue
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 suffix:semicolon
@@ -3210,7 +3207,6 @@ op_logical_neg
 id|elv_queue_empty
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 )paren
@@ -3275,7 +3271,6 @@ op_logical_neg
 id|blk_queue_plugged
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 )paren
@@ -3730,7 +3725,6 @@ c_cond
 id|blk_queue_plugged
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 )paren
@@ -3758,7 +3752,6 @@ op_assign
 id|elv_next_request
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 )paren
 suffix:semicolon
@@ -5223,7 +5216,6 @@ suffix:semicolon
 id|__elv_add_request
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|rq

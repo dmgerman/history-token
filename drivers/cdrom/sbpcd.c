@@ -209,6 +209,7 @@ DECL|variable|sbpcd_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|sbpcd_queue
 suffix:semicolon
 id|MODULE_PARM
@@ -29881,18 +29882,46 @@ id|init_done
 suffix:semicolon
 macro_line|#endif /* MODULE */
 )brace
+multiline_comment|/*&n;&t; * init error handling is broken beyond belief in this driver...&n;&t; */
+id|sbpcd_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|sbpcd_queue
-comma
 id|do_sbpcd_request
 comma
 op_amp
 id|sbpcd_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sbpcd_queue
+)paren
+(brace
+id|release_region
+c_func
+(paren
+id|CDo_command
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|unregister_blkdev
+c_func
+(paren
+id|MAJOR_NR
+comma
+id|major_name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|devfs_mk_dir
 c_func
 (paren
@@ -30054,7 +30083,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|sbpcd_queue
 )paren
 suffix:semicolon
@@ -30157,7 +30185,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|sbpcd_queue
 )paren
 suffix:semicolon
@@ -30281,7 +30308,6 @@ id|p
 suffix:semicolon
 id|disk-&gt;queue
 op_assign
-op_amp
 id|sbpcd_queue
 suffix:semicolon
 id|add_disk
@@ -30294,7 +30320,6 @@ suffix:semicolon
 id|blk_queue_hardsect_size
 c_func
 (paren
-op_amp
 id|sbpcd_queue
 comma
 id|CD_FRAMESIZE
@@ -30362,7 +30387,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|sbpcd_queue
 )paren
 suffix:semicolon

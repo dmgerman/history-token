@@ -1575,10 +1575,14 @@ op_member_access_from_pointer
 id|pci_dev-&gt;dma_mask
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|drive-&gt;queue
+)paren
 id|blk_queue_bounce_limit
 c_func
 (paren
-op_amp
 id|drive-&gt;queue
 comma
 id|addr

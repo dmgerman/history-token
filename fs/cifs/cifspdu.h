@@ -1404,6 +1404,15 @@ DECL|typedef|OPEN_REQ
 )brace
 id|OPEN_REQ
 suffix:semicolon
+multiline_comment|/* open response: oplock levels */
+DECL|macro|OPLOCK_NONE
+mdefine_line|#define OPLOCK_NONE  &t; 0
+DECL|macro|OPLOCK_EXCLUSIVE
+mdefine_line|#define OPLOCK_EXCLUSIVE 1
+DECL|macro|OPLOCK_BATCH
+mdefine_line|#define OPLOCK_BATCH&t; 2
+DECL|macro|OPLOCK_READ
+mdefine_line|#define OPLOCK_READ&t; 3  /* level 2 oplock */
 DECL|struct|smb_com_open_rsp
 r_typedef
 r_struct

@@ -379,6 +379,7 @@ DECL|variable|ps2esdi_queue
 r_static
 r_struct
 id|request_queue
+op_star
 id|ps2esdi_queue
 suffix:semicolon
 DECL|variable|current_req
@@ -566,21 +567,40 @@ l_string|&quot;ed&quot;
 )paren
 r_return
 op_minus
-l_int|1
+id|EBUSY
 suffix:semicolon
 multiline_comment|/* set up some global information - indicating device specific info */
+id|ps2esdi_queue
+op_assign
 id|blk_init_queue
 c_func
 (paren
-op_amp
-id|ps2esdi_queue
-comma
 id|do_ps2esdi_request
 comma
 op_amp
 id|ps2esdi_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ps2esdi_queue
+)paren
+(brace
+id|unregister_blkdev
+c_func
+(paren
+id|PS2ESDI_MAJOR
+comma
+l_string|&quot;ed&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 multiline_comment|/* some minor housekeeping - setup the global gendisk structure */
 id|error
 op_assign
@@ -614,7 +634,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|ps2esdi_queue
 )paren
 suffix:semicolon
@@ -911,7 +930,6 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-op_amp
 id|ps2esdi_queue
 )paren
 suffix:semicolon
@@ -1728,7 +1746,6 @@ suffix:semicolon
 id|blk_queue_max_sectors
 c_func
 (paren
-op_amp
 id|ps2esdi_queue
 comma
 l_int|128
@@ -1863,7 +1880,6 @@ id|cyl
 suffix:semicolon
 id|disk-&gt;queue
 op_assign
-op_amp
 id|ps2esdi_queue
 suffix:semicolon
 id|disk-&gt;private_data
@@ -4677,7 +4693,6 @@ suffix:semicolon
 id|do_ps2esdi_request
 c_func
 (paren
-op_amp
 id|ps2esdi_queue
 )paren
 suffix:semicolon
