@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_TYPES_H
 DECL|macro|_ASM_TYPES_H
 mdefine_line|#define _ASM_TYPES_H
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|umode_t
 r_typedef
 r_int
@@ -76,8 +77,12 @@ id|__u64
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * These aren&squot;t exported outside the kernel to avoid name space clashes&n; */
 macro_line|#ifdef __KERNEL__
+DECL|macro|BITS_PER_LONG
+mdefine_line|#define BITS_PER_LONG _MIPS_SZLONG
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|s8
 r_typedef
 id|__signed
@@ -145,14 +150,13 @@ id|u64
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define BITS_PER_LONG _MIPS_SZLONG
 DECL|typedef|dma_addr_t
 r_typedef
 r_int
 r_int
 id|dma_addr_t
 suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_TYPES_H */
 eof

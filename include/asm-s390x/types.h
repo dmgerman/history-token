@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  include/asm-s390/types.h&n; *&n; *  S390 version&n; *
 macro_line|#ifndef _S390_TYPES_H
 DECL|macro|_S390_TYPES_H
 mdefine_line|#define _S390_TYPES_H
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|umode_t
 r_typedef
 r_int
@@ -70,8 +71,12 @@ r_int
 r_int
 id|saddr_t
 suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/*&n; * These aren&squot;t exported outside the kernel to avoid name space clashes&n; */
 macro_line|#ifdef __KERNEL__
+DECL|macro|BITS_PER_LONG
+mdefine_line|#define BITS_PER_LONG 64
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|s8
 r_typedef
 r_int
@@ -120,13 +125,12 @@ r_int
 r_int
 id|u64
 suffix:semicolon
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define BITS_PER_LONG 64
 DECL|typedef|dma_addr_t
 r_typedef
 id|u32
 id|dma_addr_t
 suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif                                 /* __KERNEL__                       */
 macro_line|#endif
 eof

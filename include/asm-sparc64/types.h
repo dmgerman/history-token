@@ -3,6 +3,7 @@ macro_line|#ifndef _SPARC64_TYPES_H
 DECL|macro|_SPARC64_TYPES_H
 mdefine_line|#define _SPARC64_TYPES_H
 multiline_comment|/*&n; * This file is never included by application software unless&n; * explicitly requested (e.g., via linux/types.h) in which case the&n; * application is Linux specific so (user-) name space pollution is&n; * not a major issue.  However, for interoperability, libraries still&n; * need to be careful to avoid a name clashes.&n; */
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|umode_t
 r_typedef
 r_int
@@ -58,7 +59,11 @@ r_int
 r_int
 id|__u64
 suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#ifdef __KERNEL__
+DECL|macro|BITS_PER_LONG
+mdefine_line|#define BITS_PER_LONG 64
+macro_line|#ifndef __ASSEMBLY__
 DECL|typedef|s8
 r_typedef
 id|__signed__
@@ -107,8 +112,6 @@ r_int
 r_int
 id|u64
 suffix:semicolon
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define BITS_PER_LONG 64
 multiline_comment|/* Dma addresses come in generic and 64-bit flavours.  */
 DECL|typedef|dma_addr_t
 r_typedef
@@ -120,6 +123,7 @@ r_typedef
 id|u64
 id|dma64_addr_t
 suffix:semicolon
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* defined(_SPARC64_TYPES_H) */
 eof

@@ -404,6 +404,54 @@ suffix:semicolon
 id|printf
 c_func
 (paren
+l_string|&quot;#include &lt;asm/types.h&gt;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#if BITS_PER_LONG == 64&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#define PTR .quad&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#define ALGN .align 8&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#else&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#define PTR .long&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#define ALGN .align 4&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
+l_string|&quot;#endif&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
 l_string|&quot;.data&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -416,7 +464,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.align 8&bslash;n&quot;
+l_string|&quot;&bslash;tALGN&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printf
@@ -477,7 +525,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.long&bslash;t%#llx&bslash;n&quot;
+l_string|&quot;&bslash;tPTR&bslash;t%#llx&bslash;n&quot;
 comma
 id|table
 (braket
@@ -515,7 +563,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.align 8&bslash;n&quot;
+l_string|&quot;&bslash;tALGN&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printf
@@ -527,7 +575,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.long&bslash;t%d&bslash;n&quot;
+l_string|&quot;&bslash;tPTR&bslash;t%d&bslash;n&quot;
 comma
 id|valid
 )paren
@@ -547,7 +595,7 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;&bslash;t.align 8&bslash;n&quot;
+l_string|&quot;&bslash;tALGN&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printf
