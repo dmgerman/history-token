@@ -1,6 +1,7 @@
 macro_line|#ifndef _NM256_H_
 DECL|macro|_NM256_H_
 mdefine_line|#define _NM256_H_
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;ac97.h&quot;
 multiline_comment|/* The revisions that we currently handle.  */
 DECL|enum|nm256rev
@@ -61,6 +62,10 @@ suffix:semicolon
 DECL|member|dev_for_record
 r_int
 id|dev_for_record
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
 multiline_comment|/* The mixer device. */
 DECL|member|mixer_oss_dev
