@@ -515,6 +515,13 @@ id|__machine_arch_type
 )paren
 suffix:semicolon
 multiline_comment|/* networking */
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 DECL|variable|csum_partial_copy_nocheck
 id|EXPORT_SYMBOL
 c_func
