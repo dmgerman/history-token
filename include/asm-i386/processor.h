@@ -183,6 +183,11 @@ id|init_tss
 id|NR_CPUS
 )braket
 suffix:semicolon
+r_extern
+r_struct
+id|tss_struct
+id|doublefault_tss
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_struct
