@@ -740,25 +740,6 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: do this some other way! */
-multiline_comment|/* reserve the I/O region */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_region
-c_func
-(paren
-id|ioaddr
-comma
-id|ARCNET_TOTAL_SIZE
-comma
-l_string|&quot;arcnet (COM20020)&quot;
-)paren
-)paren
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
 id|SET_SUBADR
 c_func
 (paren
@@ -873,14 +854,6 @@ comma
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|release_region
-c_func
-(paren
-id|ioaddr
-comma
-id|ARCNET_TOTAL_SIZE
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
@@ -989,14 +962,6 @@ id|dev
 )paren
 )paren
 (brace
-id|release_region
-c_func
-(paren
-id|ioaddr
-comma
-id|ARCNET_TOTAL_SIZE
-)paren
-suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -1423,14 +1388,6 @@ c_func
 id|dev-&gt;irq
 comma
 id|dev
-)paren
-suffix:semicolon
-id|release_region
-c_func
-(paren
-id|dev-&gt;base_addr
-comma
-id|ARCNET_TOTAL_SIZE
 )paren
 suffix:semicolon
 id|kfree
