@@ -1784,21 +1784,13 @@ id|apic_pm_state.active
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* XXX: Pavel needs this for S3 resume, but can&squot;t explain why */
-id|set_fixmap_nocache
-c_func
-(paren
-id|FIX_APIC_BASE
-comma
-id|APIC_DEFAULT_PHYS_BASE
-)paren
-suffix:semicolon
 id|local_irq_save
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Make sure the APICBASE points to the right address&n;&t; *&n;&t; * FIXME! This will be wrong if we ever support suspend on&n;&t; * SMP! We&squot;ll need to do this as part of the CPU restore!&n;&t; */
 id|rdmsr
 c_func
 (paren
@@ -1818,7 +1810,7 @@ id|l
 op_or_assign
 id|MSR_IA32_APICBASE_ENABLE
 op_or
-id|APIC_DEFAULT_PHYS_BASE
+id|mp_lapic_addr
 suffix:semicolon
 id|wrmsr
 c_func
@@ -2417,6 +2409,30 @@ suffix:semicolon
 id|mp_lapic_addr
 op_assign
 id|APIC_DEFAULT_PHYS_BASE
+suffix:semicolon
+multiline_comment|/* The BIOS may have set up the APIC at some other address */
+id|rdmsr
+c_func
+(paren
+id|MSR_IA32_APICBASE
+comma
+id|l
+comma
+id|h
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|l
+op_amp
+id|MSR_IA32_APICBASE_ENABLE
+)paren
+id|mp_lapic_addr
+op_assign
+id|l
+op_amp
+id|MSR_IA32_APICBASE_BASE
 suffix:semicolon
 r_if
 c_cond

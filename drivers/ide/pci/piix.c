@@ -2486,6 +2486,15 @@ r_goto
 id|fast_ata_pio
 suffix:semicolon
 )brace
+r_return
+id|hwif
+op_member_access_from_pointer
+id|ide_dma_on
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -2528,14 +2537,9 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* IORDY not supported */
 r_return
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_on
-c_func
-(paren
-id|drive
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;init_chipset_piix&t;-&t;set up the PIIX chipset&n; *&t;@dev: PCI device to set up&n; *&t;@name: Name of the device&n; *&n; *&t;Initialize the PCI device as required. For the PIIX this turns&n; *&t;out to be nice and simple&n; */
