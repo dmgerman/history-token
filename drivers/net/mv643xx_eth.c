@@ -4072,6 +4072,10 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|stats-&gt;tx_bytes
+op_add_assign
+id|pkt_info.byte_cnt
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -4347,6 +4351,10 @@ l_string|&quot;Tx resource error &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|stats-&gt;tx_bytes
+op_add_assign
+id|pkt_info.byte_cnt
+suffix:semicolon
 multiline_comment|/* Check for the remaining frags */
 r_for
 c_loop
@@ -4522,6 +4530,10 @@ l_string|&quot;Queue is full &bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|stats-&gt;tx_bytes
+op_add_assign
+id|pkt_info.byte_cnt
+suffix:semicolon
 )brace
 )brace
 macro_line|#else
@@ -4597,6 +4609,10 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|stats-&gt;tx_bytes
+op_add_assign
+id|pkt_info.byte_cnt
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Check if TX queue can handle another skb. If not, then&n;&t; * signal higher layers to stop requesting TX&n;&t; */
 r_if
@@ -4618,10 +4634,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Update statistics and start of transmittion time */
-id|stats-&gt;tx_bytes
-op_add_assign
-id|skb-&gt;len
-suffix:semicolon
 id|stats-&gt;tx_packets
 op_increment
 suffix:semicolon
