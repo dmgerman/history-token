@@ -4095,18 +4095,12 @@ c_func
 (paren
 id|corename
 comma
-l_string|&quot;core.&quot;
+l_string|&quot;core&quot;
 comma
 l_int|5
 )paren
 suffix:semicolon
-id|corename
-(braket
-l_int|4
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
+multiline_comment|/* include trailing &bslash;0 */
 r_if
 c_cond
 (paren

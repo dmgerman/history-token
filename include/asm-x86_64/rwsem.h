@@ -158,16 +158,22 @@ c_func
 (paren
 l_string|&quot;# beginning down_read&bslash;n&bslash;t&quot;
 id|LOCK_PREFIX
-l_string|&quot;  incl      (%%rax)&bslash;n&bslash;t&quot;
+l_string|&quot;  incl      (%%rdi)&bslash;n&bslash;t&quot;
 multiline_comment|/* adds 0x00000001, returns the old value */
 l_string|&quot;  js        2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if we weren&squot;t granted the lock */
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
+"&bslash;"
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;  call      rwsem_down_read_failed_thunk&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
-l_string|&quot;.previous&quot;
+id|LOCK_SECTION_END
+"&bslash;"
 l_string|&quot;# ending down_read&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -175,7 +181,7 @@ l_string|&quot;+m&quot;
 id|sem-&gt;count
 )paren
 suffix:colon
-l_string|&quot;a&quot;
+l_string|&quot;D&quot;
 (paren
 id|sem
 )paren
@@ -213,21 +219,25 @@ c_func
 (paren
 l_string|&quot;# beginning down_write&bslash;n&bslash;t&quot;
 id|LOCK_PREFIX
-l_string|&quot;  xadd      %0,(%%rax)&bslash;n&bslash;t&quot;
+l_string|&quot;  xaddl      %0,(%%rdi)&bslash;n&bslash;t&quot;
 multiline_comment|/* subtract 0x0000ffff, returns the old value */
 l_string|&quot;  testl     %0,%0&bslash;n&bslash;t&quot;
 multiline_comment|/* was the count 0 before? */
 l_string|&quot;  jnz       2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if we weren&squot;t granted the lock */
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;  call      rwsem_down_write_failed_thunk&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
+id|LOCK_SECTION_END
 l_string|&quot;# ending down_write&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|tmp
 )paren
@@ -237,7 +247,7 @@ l_string|&quot;0&quot;
 id|tmp
 )paren
 comma
-l_string|&quot;a&quot;
+l_string|&quot;D&quot;
 (paren
 id|sem
 )paren
@@ -274,32 +284,43 @@ c_func
 (paren
 l_string|&quot;# beginning __up_read&bslash;n&bslash;t&quot;
 id|LOCK_PREFIX
-l_string|&quot;  xadd      %%edx,(%%rax)&bslash;n&bslash;t&quot;
+l_string|&quot;  xaddl      %%edx,(%%rdi)&bslash;n&bslash;t&quot;
 multiline_comment|/* subtracts 1, returns the old value */
 l_string|&quot;  js        2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if the lock is being waited upon */
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;  decw      %%dx&bslash;n&bslash;t&quot;
 multiline_comment|/* do nothing if still outstanding active readers */
 l_string|&quot;  jnz       1b&bslash;n&bslash;t&quot;
 l_string|&quot;  call      rwsem_wake_thunk&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
+id|LOCK_SECTION_END
 l_string|&quot;# ending __up_read&bslash;n&quot;
 suffix:colon
+l_string|&quot;+m&quot;
+(paren
+id|sem-&gt;count
+)paren
+comma
 l_string|&quot;+d&quot;
 (paren
 id|tmp
 )paren
 suffix:colon
-l_string|&quot;a&quot;
+l_string|&quot;D&quot;
 (paren
 id|sem
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
@@ -322,14 +343,18 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;# beginning __up_write&bslash;n&bslash;t&quot;
-l_string|&quot;  movl      %1,%%edx&bslash;n&bslash;t&quot;
+l_string|&quot;  movl      %2,%%edx&bslash;n&bslash;t&quot;
 id|LOCK_PREFIX
-l_string|&quot;  xaddl     %%edx,(%%rax)&bslash;n&bslash;t&quot;
+l_string|&quot;  xaddl     %%edx,(%%rdi)&bslash;n&bslash;t&quot;
 multiline_comment|/* tries to transition 0xffff0001 -&gt; 0x00000000 */
 l_string|&quot;  jnz       2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if the lock is being waited upon */
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;  decw      %%dx&bslash;n&bslash;t&quot;
 multiline_comment|/* did the active count reduce to 0? */
@@ -337,11 +362,15 @@ l_string|&quot;  jnz       1b&bslash;n&bslash;t&quot;
 multiline_comment|/* jump back if not */
 l_string|&quot;  call      rwsem_wake_thunk&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
+id|LOCK_SECTION_END
 l_string|&quot;# ending __up_write&bslash;n&quot;
 suffix:colon
+l_string|&quot;+m&quot;
+(paren
+id|sem-&gt;count
+)paren
 suffix:colon
-l_string|&quot;a&quot;
+l_string|&quot;D&quot;
 (paren
 id|sem
 )paren
@@ -356,7 +385,7 @@ l_string|&quot;memory&quot;
 comma
 l_string|&quot;cc&quot;
 comma
-l_string|&quot;edx&quot;
+l_string|&quot;rdx&quot;
 )paren
 suffix:semicolon
 )brace
@@ -428,7 +457,7 @@ id|__volatile__
 c_func
 (paren
 id|LOCK_PREFIX
-l_string|&quot;xadd %0,(%2)&quot;
+l_string|&quot;xaddl %0,(%2)&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -465,5 +494,5 @@ id|delta
 suffix:semicolon
 )brace
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* _I386_RWSEM_H */
+macro_line|#endif /* _X8664_RWSEM_H */
 eof

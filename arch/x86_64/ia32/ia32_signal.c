@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/x86_64/ia32/ia32_signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *  2000-06-20  Pentium III FXSR, SSE support by Gareth Hughes&n; *  2000-12-*   x86-64 compatibility mode signal handling by Andi Kleen&n; * &n; *  $Id: ia32_signal.c,v 1.15 2001/10/16 23:41:42 ak Exp $&n; */
+multiline_comment|/*&n; *  linux/arch/x86_64/ia32/ia32_signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *  2000-06-20  Pentium III FXSR, SSE support by Gareth Hughes&n; *  2000-12-*   x86-64 compatibility mode signal handling by Andi Kleen&n; * &n; *  $Id: ia32_signal.c,v 1.17 2002/03/21 14:16:32 ak Exp $&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -18,6 +18,8 @@ macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/ia32_unistd.h&gt;
 macro_line|#include &lt;asm/user32.h&gt;
+macro_line|#include &lt;asm/sigcontext32.h&gt;
+macro_line|#include &lt;asm/fpu32.h&gt;
 DECL|macro|ptr_to_u32
 mdefine_line|#define ptr_to_u32(x) ((u32)(u64)(x))&t;/* avoid gcc warning */ 
 DECL|macro|DEBUG_SIG
@@ -606,8 +608,8 @@ suffix:semicolon
 suffix:semicolon
 r_static
 r_int
-DECL|function|restore_sigcontext
-id|restore_sigcontext
+DECL|function|ia32_restore_sigcontext
+id|ia32_restore_sigcontext
 c_func
 (paren
 r_struct
@@ -655,12 +657,29 @@ mdefine_line|#define COPY(x)&t;&t;{ &bslash;&n;&t;unsigned int reg;&t;&bslash;&n
 DECL|macro|RELOAD_SEG
 mdefine_line|#define RELOAD_SEG(seg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ unsigned int cur; &t;&t;&t;&t;&bslash;&n;&t;  unsigned short pre;&t;&t;&t;&t;&bslash;&n;&t;  err |= __get_user(pre, &amp;sc-&gt;seg);&t;&t;&t;&t;&bslash;&n;    &t;  asm volatile(&quot;movl %%&quot; #seg &quot;,%0&quot; : &quot;=r&quot; (cur));&t;&t;&bslash;&n;&t;  if (pre != cur) loadsegment(seg,pre); }
 multiline_comment|/* Reload fs and gs if they have changed in the signal handler.&n;&t;   This does not handle long fs/gs base changes in the handler, but does not clobber &n;&t;   them at least in the normal case. */
-id|RELOAD_SEG
+(brace
+r_int
+r_int
+id|gs
+suffix:semicolon
+id|err
+op_or_assign
+id|__get_user
+c_func
+(paren
+id|gs
+comma
+op_amp
+id|sc-&gt;gs
+)paren
+suffix:semicolon
+id|load_gs_index
 c_func
 (paren
 id|gs
 )paren
 suffix:semicolon
+)brace
 id|RELOAD_SEG
 c_func
 (paren
@@ -759,7 +778,7 @@ id|u32
 id|tmp
 suffix:semicolon
 r_struct
-id|_fpstate
+id|_fpstate_ia32
 op_star
 id|buf
 suffix:semicolon
@@ -778,7 +797,7 @@ id|buf
 op_assign
 (paren
 r_struct
-id|_fpstate
+id|_fpstate_ia32
 op_star
 )paren
 (paren
@@ -814,10 +833,14 @@ id|badframe
 suffix:semicolon
 id|err
 op_or_assign
-id|restore_i387
+id|restore_i387_ia32
 c_func
 (paren
+id|current
+comma
 id|buf
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -991,7 +1014,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|restore_sigcontext
+id|ia32_restore_sigcontext
 c_func
 (paren
 op_amp
@@ -1138,7 +1161,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|restore_sigcontext
+id|ia32_restore_sigcontext
 c_func
 (paren
 op_amp
@@ -1229,8 +1252,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Set up a signal frame.&n; */
 r_static
 r_int
-DECL|function|setup_sigcontext
-id|setup_sigcontext
+DECL|function|ia32_setup_sigcontext
+id|ia32_setup_sigcontext
 c_func
 (paren
 r_struct
@@ -1506,10 +1529,16 @@ id|sc-&gt;esp_at_signal
 suffix:semicolon
 id|tmp
 op_assign
-id|save_i387
+id|save_i387_ia32
 c_func
 (paren
+id|current
+comma
 id|fpstate
+comma
+id|regs
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1716,18 +1745,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|exec_domain
-op_star
-id|exec_domain
-op_assign
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|exec_domain
-suffix:semicolon
 id|frame
 op_assign
 id|get_sigframe
@@ -1765,22 +1782,35 @@ id|frame
 r_goto
 id|give_sigsegv
 suffix:semicolon
+(brace
+r_struct
+id|exec_domain
+op_star
+id|ed
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain
+suffix:semicolon
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
 (paren
-id|exec_domain
+id|ed
 op_logical_and
-id|exec_domain-&gt;signal_invmap
+id|ed-&gt;signal_invmap
 op_logical_and
 id|sig
 OL
 l_int|32
 ques
 c_cond
-id|exec_domain-&gt;signal_invmap
+id|ed-&gt;signal_invmap
 (braket
 id|sig
 )braket
@@ -1792,6 +1822,7 @@ op_amp
 id|frame-&gt;sig
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1802,7 +1833,7 @@ id|give_sigsegv
 suffix:semicolon
 id|err
 op_or_assign
-id|setup_sigcontext
+id|ia32_setup_sigcontext
 c_func
 (paren
 op_amp
@@ -2090,18 +2121,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|exec_domain
-op_star
-id|exec_domain
-op_assign
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|exec_domain
-suffix:semicolon
 id|frame
 op_assign
 id|get_sigframe
@@ -2139,22 +2158,35 @@ id|frame
 r_goto
 id|give_sigsegv
 suffix:semicolon
+(brace
+r_struct
+id|exec_domain
+op_star
+id|ed
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|exec_domain
+suffix:semicolon
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
 (paren
-id|exec_domain
+id|ed
 op_logical_and
-id|exec_domain-&gt;signal_invmap
+id|ed-&gt;signal_invmap
 op_logical_and
 id|sig
 OL
 l_int|32
 ques
 c_cond
-id|exec_domain-&gt;signal_invmap
+id|ed-&gt;signal_invmap
 (braket
 id|sig
 )braket
@@ -2166,6 +2198,7 @@ op_amp
 id|frame-&gt;sig
 )paren
 suffix:semicolon
+)brace
 id|err
 op_or_assign
 id|__put_user
@@ -2283,7 +2316,7 @@ id|frame-&gt;uc.uc_stack.ss_size
 suffix:semicolon
 id|err
 op_or_assign
-id|setup_sigcontext
+id|ia32_setup_sigcontext
 c_func
 (paren
 op_amp

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * x86_64 semaphore implementation.&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; *&n; * Portions Copyright 1999 Red Hat, Inc.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; * rw semaphores implemented November 1999 by Benjamin LaHaise &lt;bcrl@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/err.h&gt;
+macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/*&n; * Semaphores are implemented using a two-way counter:&n; * The &quot;count&quot; variable is decremented for each process&n; * that tries to acquire the semaphore, while the &quot;sleeping&quot;&n; * variable is a count of such acquires.&n; *&n; * Notably, the inline &quot;up()&quot; and &quot;down()&quot; functions can&n; * efficiently test if they need to do any extra work (up&n; * needs to do something only if count was negative before&n; * the increment operation.&n; *&n; * &quot;sleeping&quot; and the contention routine ordering is&n; * protected by the semaphore spinlock.&n; *&n; * Note that these functions are only called when there is&n; * contention on the lock, and as such all this is the&n; * &quot;non-critical&quot; part of the whole semaphore business. The&n; * critical part is the inline stuff in &lt;asm/semaphore.h&gt;&n; * where we want to avoid any extra jumps and calls.&n; */
 multiline_comment|/*&n; * Logic:&n; *  - only on a boundary condition do we need to care. When we go&n; *    from a negative count to a non-negative, we wake people up.&n; *  - when we go from a non-negative count to a negative do we&n; *    (a) synchronize with the &quot;sleeper&quot; count and (b) make sure&n; *    that we&squot;re on the wakeup list before we synchronize so that&n; *    we cannot lose wakeup events.&n; */
@@ -431,78 +431,4 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The semaphore operations have a special calling sequence that&n; * allow us to do a simpler in-line version of them. These routines&n; * need to convert that sequence back into the C sequence when&n; * there is contention on the semaphore.&n; *&n; * %rcx contains the semaphore pointer on entry. Save all the callee&n; * clobbered registers.  It would be better if the compiler had a way &n; * to specify that for the callee.&n; */
-DECL|macro|PUSH_CLOBBER
-mdefine_line|#define PUSH_CLOBBER &quot;pushq %rdi ; pushq %rsi ; pushq %rdx ; pushq %rcx ;&quot; &bslash;&n; &quot;pushq %rbx ; pushq %r8 ; push %r9&bslash;n&bslash;t&quot; 
-DECL|macro|POP_CLOBBER
-mdefine_line|#define POP_CLOBBER &quot;popq %r9 ; popq %r8 ; popq %rbx ; popq %rcx ; &quot; &bslash;&n;&t;&quot;popq %rdx ; popq %rsi ; popq %rdi&bslash;n&bslash;t&quot;     
-DECL|macro|SEM_ENTRY
-mdefine_line|#define SEM_ENTRY(label, name) asm( &bslash;&n;&t;&quot;.p2align&bslash;n&bslash;t.globl &quot; #label &quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;#label &quot;:&bslash;n&bslash;t&quot; PUSH_CLOBBER &quot;call &quot; #name &quot;&bslash;n&bslash;t&quot; POP_CLOBBER &quot;ret&quot; )
-id|SEM_ENTRY
-c_func
-(paren
-id|__down_failed
-comma
-id|__down
-)paren
-suffix:semicolon
-id|SEM_ENTRY
-c_func
-(paren
-id|__down_failed_interruptible
-comma
-id|__down_interruptible
-)paren
-suffix:semicolon
-id|SEM_ENTRY
-c_func
-(paren
-id|__down_failed_trylock
-comma
-id|__down_trylock
-)paren
-suffix:semicolon
-id|SEM_ENTRY
-c_func
-(paren
-id|__up_wakeup
-comma
-id|__up
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_SMP)
-id|asm
-c_func
-(paren
-l_string|&quot;.p2align&quot;
-l_string|&quot;&bslash;n.globl&t;__write_lock_failed&quot;
-l_string|&quot;&bslash;n__write_lock_failed:&quot;
-l_string|&quot;&bslash;n&t;&quot;
-id|LOCK
-l_string|&quot;addl&t;$&quot;
-id|RW_LOCK_BIAS_STR
-l_string|&quot;,(%rax)&quot;
-l_string|&quot;&bslash;n1:&t;rep; nop; cmpl&t;$&quot;
-id|RW_LOCK_BIAS_STR
-l_string|&quot;,(%rax)&quot;
-l_string|&quot;&bslash;n&t;jne&t;1b&quot;
-l_string|&quot;&bslash;n&t;&quot;
-id|LOCK
-l_string|&quot;subl&t;$&quot;
-id|RW_LOCK_BIAS_STR
-l_string|&quot;,(%rax)&quot;
-l_string|&quot;&bslash;n&t;jnz&t;__write_lock_failed&quot;
-l_string|&quot;&bslash;n&t;ret&quot;
-l_string|&quot;&bslash;n.p2align&quot;
-l_string|&quot;&bslash;n.globl&t;__read_lock_failed&quot;
-l_string|&quot;&bslash;n__read_lock_failed:&quot;
-l_string|&quot;&bslash;n&t;lock ; incl&t;(%rax)&quot;
-l_string|&quot;&bslash;n1:&t;rep; nop; cmpl&t;$1,(%rax)&quot;
-l_string|&quot;&bslash;n&t;js&t;1b&quot;
-l_string|&quot;&bslash;n&t;lock ; decl&t;(%rax)&quot;
-l_string|&quot;&bslash;n&t;js&t;__read_lock_failed&quot;
-l_string|&quot;&bslash;n&t;ret&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 eof

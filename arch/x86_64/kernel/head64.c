@@ -263,11 +263,12 @@ comma
 op_amp
 id|dummy
 comma
+(paren
+r_int
+op_star
+)paren
 op_amp
 id|boot_cpu_data.x86_capability
-(braket
-l_int|0
-)braket
 )paren
 suffix:semicolon
 id|boot_cpu_data.x86

@@ -1123,6 +1123,8 @@ id|PAGE_SHIFT
 suffix:semicolon
 id|high_pfn
 op_assign
+id|max_pfn
+op_assign
 id|max_low_pfn
 suffix:semicolon
 r_if

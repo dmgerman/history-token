@@ -14,14 +14,8 @@ r_int
 r_int
 id|pgkern_mask
 suffix:semicolon
-multiline_comment|/*&n; * Do not check the PGE bit unnecesserily if this is a PPro+ kernel.&n; */
-macro_line|#ifdef CONFIG_X86_PGE
-DECL|macro|__flush_tlb_all
-macro_line|# define __flush_tlb_all() __flush_tlb_global()
-macro_line|#else
 DECL|macro|__flush_tlb_all
 macro_line|# define __flush_tlb_all()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (cpu_has_pge)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__flush_tlb_global();&t;&t;&t;&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__flush_tlb();&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
-macro_line|#endif
 macro_line|#ifndef CONFIG_X86_INVLPG
 DECL|macro|__flush_tlb_one
 mdefine_line|#define __flush_tlb_one(addr) __flush_tlb()

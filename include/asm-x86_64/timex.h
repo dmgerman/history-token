@@ -10,7 +10,7 @@ mdefine_line|#define CLOCK_TICK_RATE&t;1193180 /* Underlying HZ */
 DECL|macro|CLOCK_TICK_FACTOR
 mdefine_line|#define CLOCK_TICK_FACTOR&t;20&t;/* Factor of both 1000000 and CLOCK_TICK_RATE */
 DECL|macro|FINETUNE
-mdefine_line|#define FINETUNE ((((((long)LATCH * HZ - CLOCK_TICK_RATE) &lt;&lt; SHIFT_HZ) * &bslash;&n;&t;(1000000/CLOCK_TICK_FACTOR) / (CLOCK_TICK_RATE/CLOCK_TICK_FACTOR)) &bslash;&n;&t;&t;&lt;&lt; (SHIFT_SCALE-SHIFT_HZ)) / HZ)
+mdefine_line|#define FINETUNE ((((((int)LATCH * HZ - CLOCK_TICK_RATE) &lt;&lt; SHIFT_HZ) * &bslash;&n;&t;(1000000/CLOCK_TICK_FACTOR) / (CLOCK_TICK_RATE/CLOCK_TICK_FACTOR)) &bslash;&n;&t;&t;&lt;&lt; (SHIFT_SCALE-SHIFT_HZ)) / HZ)
 multiline_comment|/*&n; * Standard way to access the cycle counter on i586+ CPUs.&n; * Currently only used on SMP.&n; *&n; * If you really have a SMP machine with i486 chips or older,&n; * compile for that, and this will just always return zero.&n; * That&squot;s ok, it just means that the nicer scheduling heuristics&n; * won&squot;t work for you.&n; *&n; * We only use the low 32 bits, and we&squot;d simply better make sure&n; * that we reschedule before that wraps. Scheduling at least every&n; * four billion cycles just basically sounds like a good idea,&n; * regardless of how fast the machine is. &n; */
 DECL|typedef|cycles_t
 r_typedef

@@ -3120,6 +3120,10 @@ id|minor
 suffix:colon
 id|SCN_BASE_MNR
 comma
+id|num_minors
+suffix:colon
+id|SCN_MAX_MNR
+comma
 id|id_table
 suffix:colon
 l_int|NULL

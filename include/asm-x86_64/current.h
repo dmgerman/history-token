@@ -33,6 +33,8 @@ r_return
 id|t
 suffix:semicolon
 )brace
+DECL|macro|stack_current
+mdefine_line|#define stack_current() &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ti;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;andq %%rsp,%0; &quot;:&quot;=r&quot; (ti) : &quot;0&quot; (~8191UL));&t;&bslash;&n;&t;ti-&gt;task;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|current
 mdefine_line|#define current get_current()
 macro_line|#else

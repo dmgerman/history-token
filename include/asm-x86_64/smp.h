@@ -16,6 +16,7 @@ macro_line|#ifdef CONFIG_X86_IO_APIC
 macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/apic.h&gt;
+macro_line|#include &lt;asm/thread_info.h&gt;
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
@@ -226,5 +227,13 @@ DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE 1     /* logical delivery */
 DECL|macro|TARGET_CPUS
 mdefine_line|#define TARGET_CPUS 1
+macro_line|#ifndef CONFIG_SMP
+DECL|macro|stack_smp_processor_id
+mdefine_line|#define stack_smp_processor_id() 0
+macro_line|#else
+macro_line|#include &lt;asm/thread_info.h&gt;
+DECL|macro|stack_smp_processor_id
+mdefine_line|#define stack_smp_processor_id() &bslash;&n;({ &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ti;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__(&quot;andq %%rsp,%0; &quot;:&quot;=r&quot; (ti) : &quot;0&quot; (~8191UL));&t;&bslash;&n;&t;ti-&gt;cpu;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#endif
 macro_line|#endif
 eof

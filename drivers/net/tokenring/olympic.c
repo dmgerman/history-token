@@ -3290,21 +3290,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-"&quot;"
-id|Rx_ring_dma_addr
-op_assign
-op_mod
-l_int|08
-id|x
-comma
-id|rx_status_dma_addr
-op_assign
-op_mod
-l_int|08
-id|x
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;Rx_ring_dma_addr = %08x, rx_status_dma_addr = %08x&bslash;n&quot;
 comma
 id|olympic_priv-&gt;rx_ring_dma_addr
 comma

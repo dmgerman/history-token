@@ -3664,6 +3664,7 @@ op_logical_neg
 id|urb
 )paren
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
 multiline_comment|/* sbuf is urb-&gt;transfer_buffer, later gets memcpyed to scratch */

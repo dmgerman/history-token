@@ -2220,9 +2220,18 @@ c_cond
 op_logical_neg
 id|ar
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;DMA without ATA request&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2405,10 +2414,6 @@ id|set_high
 op_assign
 l_int|0
 suffix:semicolon
-id|drive-&gt;using_tcq
-op_assign
-l_int|0
-suffix:semicolon
 id|outb
 c_func
 (paren
@@ -2436,6 +2441,18 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
+id|hwif
+op_member_access_from_pointer
+id|dmaproc
+c_func
+(paren
+id|ide_dma_queued_off
+comma
+id|drive
+)paren
+suffix:semicolon
+macro_line|#endif
 r_case
 id|ide_dma_on
 suffix:colon
@@ -2460,6 +2477,7 @@ c_cond
 (paren
 id|drive-&gt;using_dma
 )paren
+(brace
 id|outb
 c_func
 (paren
@@ -2486,6 +2504,19 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ_DEFAULT
+id|hwif
+op_member_access_from_pointer
+id|dmaproc
+c_func
+(paren
+id|ide_dma_queued_on
+comma
+id|drive
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 r_return
 l_int|0
 suffix:semicolon

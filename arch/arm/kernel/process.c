@@ -146,7 +146,6 @@ r_void
 suffix:semicolon
 multiline_comment|/*&n; * This is our default idle handler.  We need to disable&n; * interrupts here to ensure we don&squot;t miss a wakeup call.&n; */
 DECL|function|default_idle
-r_static
 r_void
 id|default_idle
 c_func

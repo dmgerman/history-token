@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;swab.h&quot;
 macro_line|#include &quot;util.h&quot;
 DECL|macro|UFS_SUPER_DEBUG
@@ -4475,6 +4476,11 @@ suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|UFSD
 c_func
 (paren
@@ -4583,6 +4589,11 @@ c_func
 l_string|&quot;EXIT&bslash;n&quot;
 )paren
 )paren
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|ufs_put_super
 r_void

@@ -1699,6 +1699,7 @@ id|tqueue
 suffix:semicolon
 DECL|member|event
 r_int
+r_int
 id|event
 suffix:semicolon
 DECL|member|BC_SetStack

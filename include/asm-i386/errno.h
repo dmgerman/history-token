@@ -14,7 +14,7 @@ mdefine_line|#define&t;EIO&t;&t; 5&t;/* I/O error */
 DECL|macro|ENXIO
 mdefine_line|#define&t;ENXIO&t;&t; 6&t;/* No such device or address */
 DECL|macro|E2BIG
-mdefine_line|#define&t;E2BIG&t;&t; 7&t;/* Arg list too long */
+mdefine_line|#define&t;E2BIG&t;&t; 7&t;/* Argument list too long */
 DECL|macro|ENOEXEC
 mdefine_line|#define&t;ENOEXEC&t;&t; 8&t;/* Exec format error */
 DECL|macro|EBADF
