@@ -1843,6 +1843,23 @@ op_star
 id|sdev
 )paren
 suffix:semicolon
+r_extern
+r_inline
+r_int
+r_int
+id|ata_host_intr
+(paren
+r_struct
+id|ata_port
+op_star
+id|ap
+comma
+r_struct
+id|ata_queued_cmd
+op_star
+id|qc
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Default driver ops implementations&n; */
 r_extern
 r_void
