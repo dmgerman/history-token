@@ -5053,7 +5053,7 @@ id|MINFO-&gt;limits.pixel.vcomax
 suffix:colon
 id|bd-&gt;pins
 (braket
-l_int|39
+l_int|36
 )braket
 op_star
 id|mult
