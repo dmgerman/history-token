@@ -101,7 +101,7 @@ multiline_comment|/* A mask of PSR bits that we generally don&squot;t want to in
 DECL|macro|IA64_PSR_BITS_TO_CLEAR
 mdefine_line|#define IA64_PSR_BITS_TO_CLEAR&t;(IA64_PSR_MFL | IA64_PSR_MFH | IA64_PSR_DB | IA64_PSR_LP | &bslash;&n;&t;&t;&t;&t; IA64_PSR_TB  | IA64_PSR_ID  | IA64_PSR_DA | IA64_PSR_DD | &bslash;&n;&t;&t;&t;&t; IA64_PSR_SS  | IA64_PSR_ED  | IA64_PSR_IA)
 DECL|macro|IA64_PSR_BITS_TO_SET
-mdefine_line|#define IA64_PSR_BITS_TO_SET&t;(IA64_PSR_DFH)
+mdefine_line|#define IA64_PSR_BITS_TO_SET&t;(IA64_PSR_DFH | IA64_PSR_SP)
 DECL|macro|IA64_PSR_BE
 mdefine_line|#define IA64_PSR_BE&t;(__IA64_UL(1) &lt;&lt; IA64_PSR_BE_BIT)
 DECL|macro|IA64_PSR_UP

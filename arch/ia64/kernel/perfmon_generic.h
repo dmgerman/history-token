@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file contains the architected PMU register description tables&n; * and pmc checker used by perfmon.c.&n; *&n; * Copyright (C) 2002  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the generic PMU register description tables&n; * and pmc checker used by perfmon.c.&n; *&n; * Copyright (C) 2002-2003  Hewlett Packard Co&n; *               Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
 DECL|macro|RDEP
 mdefine_line|#define RDEP(x)&t;(1UL&lt;&lt;(x))
 macro_line|#if defined(CONFIG_ITANIUM) || defined (CONFIG_MCKINLEY)

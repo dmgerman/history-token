@@ -616,50 +616,34 @@ DECL|macro|INIT_THREAD_IA32
 macro_line|# define INIT_THREAD_IA32
 macro_line|#endif /* CONFIG_IA32_SUPPORT */
 macro_line|#ifdef CONFIG_PERFMON
-DECL|member|pmc
+DECL|member|pmcs
 id|__u64
-id|pmc
+id|pmcs
 (braket
 id|IA64_NUM_PMC_REGS
 )braket
 suffix:semicolon
-DECL|member|pmd
+DECL|member|pmds
 id|__u64
-id|pmd
+id|pmds
 (braket
 id|IA64_NUM_PMD_REGS
 )braket
 suffix:semicolon
-DECL|member|pfm_ovfl_block_reset
-r_int
-r_int
-id|pfm_ovfl_block_reset
-suffix:semicolon
-multiline_comment|/* non-zero if we need to block or reset regs on ovfl */
 DECL|member|pfm_context
 r_void
 op_star
 id|pfm_context
 suffix:semicolon
 multiline_comment|/* pointer to detailed PMU context */
-DECL|member|pfm_notifiers_check
-id|atomic_t
-id|pfm_notifiers_check
+DECL|member|pfm_needs_checking
+r_int
+r_int
+id|pfm_needs_checking
 suffix:semicolon
-multiline_comment|/* when &gt;0, will cleanup ctx_notify_task in tasklist */
-DECL|member|pfm_owners_check
-id|atomic_t
-id|pfm_owners_check
-suffix:semicolon
-multiline_comment|/* when &gt;0, will cleanup ctx_owner in tasklist */
-DECL|member|pfm_smpl_buf_list
-r_void
-op_star
-id|pfm_smpl_buf_list
-suffix:semicolon
-multiline_comment|/* list of sampling buffers to vfree */
+multiline_comment|/* when &gt;0, pending perfmon work on kernel exit */
 DECL|macro|INIT_THREAD_PM
-macro_line|# define INIT_THREAD_PM&t;&t;.pmc =&t;&t;&t;{0, },&t;&bslash;&n;&t;&t;&t;&t;.pmd =&t;&t;&t;{0, },&t;&bslash;&n;&t;&t;&t;&t;.pfm_ovfl_block_reset =&t;0,&t;&bslash;&n;&t;&t;&t;&t;.pfm_context =&t;&t;NULL,&t;&bslash;&n;&t;&t;&t;&t;.pfm_notifiers_check =&t;{ 0 },&t;&bslash;&n;&t;&t;&t;&t;.pfm_owners_check =&t;{ 0 },&t;&bslash;&n;&t;&t;&t;&t;.pfm_smpl_buf_list =&t;NULL,
+macro_line|# define INIT_THREAD_PM&t;&t;.pmcs =&t;&t;&t;{0UL, },  &bslash;&n;&t;&t;&t;&t;.pmds =&t;&t;&t;{0UL, },  &bslash;&n;&t;&t;&t;&t;.pfm_context =&t;&t;NULL,     &bslash;&n;&t;&t;&t;&t;.pfm_needs_checking =&t;0UL,
 macro_line|#else
 DECL|macro|INIT_THREAD_PM
 macro_line|# define INIT_THREAD_PM
@@ -701,21 +685,8 @@ r_struct
 id|task_struct
 suffix:semicolon
 multiline_comment|/*&n; * Free all resources held by a thread. This is called after the&n; * parent of DEAD_TASK has collected the exist status of the task via&n; * wait().&n; */
-macro_line|#ifdef CONFIG_PERFMON
-r_extern
-r_void
-id|release_thread
-(paren
-r_struct
-id|task_struct
-op_star
-id|task
-)paren
-suffix:semicolon
-macro_line|#else
 DECL|macro|release_thread
-macro_line|# define release_thread(dead_task)
-macro_line|#endif
+mdefine_line|#define release_thread(dead_task)
 multiline_comment|/* Prepare to copy thread state - unlazy all lazy status */
 DECL|macro|prepare_to_copy
 mdefine_line|#define prepare_to_copy(tsk)&t;do { } while (0)
