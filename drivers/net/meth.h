@@ -1,8 +1,5 @@
 multiline_comment|/*&n; * snull.h -- definitions for the network module&n; *&n; * Copyright (C) 2001 Alessandro Rubini and Jonathan Corbet&n; * Copyright (C) 2001 O&squot;Reilly &amp; Associates&n; *&n; * The source code in this file can be freely used, adapted,&n; * and redistributed in source or binary form, so long as an&n; * acknowledgment appears in derived source files.  The citation&n; * should list that the code comes from the book &quot;Linux Device&n; * Drivers&quot; by Alessandro Rubini and Jonathan Corbet, published&n; * by O&squot;Reilly &amp; Associates.   No warranty is attached;&n; * we cannot take responsibility for errors or fitness for use.&n; */
 multiline_comment|/* version dependencies have been confined to a separate file */
-DECL|macro|SGI_MFE
-mdefine_line|#define SGI_MFE&t;&t;(MACE_BASE+MACE_ENET)
-multiline_comment|/*&t;&t;(0xBF280000)*/
 multiline_comment|/* Tunable parameters */
 DECL|macro|TX_RING_ENTRIES
 mdefine_line|#define TX_RING_ENTRIES 64&t;/* 64-512?*/
@@ -15,10 +12,16 @@ DECL|macro|RX_BUFFER_SIZE
 mdefine_line|#define RX_BUFFER_SIZE 1546 /* ethenet packet size */
 DECL|macro|METH_RX_BUFF_SIZE
 mdefine_line|#define METH_RX_BUFF_SIZE 4096
+DECL|macro|METH_RX_HEAD
+mdefine_line|#define METH_RX_HEAD 34 /* status + 3 quad garbage-fill + 2 byte zero-pad */
 DECL|macro|RX_BUFFER_OFFSET
 mdefine_line|#define RX_BUFFER_OFFSET (sizeof(rx_status_vector)+2) /* staus vector + 2 bytes of padding */
 DECL|macro|RX_BUCKET_SIZE
 mdefine_line|#define RX_BUCKET_SIZE 256
+DECL|macro|BIT
+macro_line|#undef BIT
+DECL|macro|BIT
+mdefine_line|#define BIT(x)&t;(1 &lt;&lt; (x))
 multiline_comment|/* For more detailed explanations of what each field menas,&n;   see Nick&squot;s great comments to #defines below (or docs, if&n;   you are lucky enough toget hold of them :)*/
 multiline_comment|/* tx status vector is written over tx command header upon&n;   dma completion. */
 DECL|struct|tx_status_vector
@@ -226,6 +229,7 @@ r_typedef
 r_union
 id|rx_status_vector
 (brace
+r_volatile
 r_struct
 (brace
 DECL|member|pad1
@@ -332,6 +336,7 @@ DECL|member|parsed
 id|parsed
 suffix:semicolon
 DECL|member|raw
+r_volatile
 id|u64
 id|raw
 suffix:semicolon
@@ -389,219 +394,10 @@ DECL|typedef|rx_packet
 )brace
 id|rx_packet
 suffix:semicolon
-DECL|struct|meth_regs
-r_typedef
-r_struct
-id|meth_regs
-(brace
-DECL|member|mac_ctrl
-id|u64
-id|mac_ctrl
-suffix:semicolon
-multiline_comment|/*0x00,rw,31:0*/
-DECL|member|int_flags
-id|u64
-id|int_flags
-suffix:semicolon
-multiline_comment|/*0x08,rw,30:0*/
-DECL|member|dma_ctrl
-id|u64
-id|dma_ctrl
-suffix:semicolon
-multiline_comment|/*0x10,rw,15:0*/
-DECL|member|timer
-id|u64
-id|timer
-suffix:semicolon
-multiline_comment|/*0x18,rw,5:0*/
-DECL|member|int_tx
-id|u64
-id|int_tx
-suffix:semicolon
-multiline_comment|/*0x20,wo,0:0*/
-DECL|member|int_rx
-id|u64
-id|int_rx
-suffix:semicolon
-multiline_comment|/*0x28,wo,9:4*/
-r_struct
-(brace
-DECL|member|tx_info_pad
-id|u32
-id|tx_info_pad
-suffix:semicolon
-DECL|member|rptr
-DECL|member|wptr
-id|u32
-id|rptr
-suffix:colon
-l_int|16
-comma
-id|wptr
-suffix:colon
-l_int|16
-suffix:semicolon
-DECL|member|tx_info
-)brace
-id|tx_info
-suffix:semicolon
-multiline_comment|/*0x30,rw,31:0*/
-DECL|member|tx_info_al
-id|u64
-id|tx_info_al
-suffix:semicolon
-multiline_comment|/*0x38,rw,31:0*/
-r_struct
-(brace
-DECL|member|rx_buff_pad1
-id|u32
-id|rx_buff_pad1
-suffix:semicolon
-DECL|member|rx_buff_pad2
-id|u32
-id|rx_buff_pad2
-suffix:colon
-l_int|8
-comma
-DECL|member|wptr
-id|wptr
-suffix:colon
-l_int|8
-comma
-DECL|member|rptr
-id|rptr
-suffix:colon
-l_int|8
-comma
-DECL|member|depth
-id|depth
-suffix:colon
-l_int|8
-suffix:semicolon
-DECL|member|rx_buff
-)brace
-id|rx_buff
-suffix:semicolon
-multiline_comment|/*0x40,ro,23:0*/
-DECL|member|rx_buff_al1
-id|u64
-id|rx_buff_al1
-suffix:semicolon
-multiline_comment|/*0x48,ro,23:0*/
-DECL|member|rx_buff_al2
-id|u64
-id|rx_buff_al2
-suffix:semicolon
-multiline_comment|/*0x50,ro,23:0*/
-DECL|member|int_update
-id|u64
-id|int_update
-suffix:semicolon
-multiline_comment|/*0x58,wo,31:0*/
-DECL|member|phy_data_pad
-id|u32
-id|phy_data_pad
-suffix:semicolon
-DECL|member|phy_data
-id|u32
-id|phy_data
-suffix:semicolon
-multiline_comment|/*0x60,rw,16:0*/
-DECL|member|phy_reg_pad
-id|u32
-id|phy_reg_pad
-suffix:semicolon
-DECL|member|phy_registers
-id|u32
-id|phy_registers
-suffix:semicolon
-multiline_comment|/*0x68,rw,9:0*/
-DECL|member|phy_trans_go
-id|u64
-id|phy_trans_go
-suffix:semicolon
-multiline_comment|/*0x70,wo,0:0*/
-DECL|member|backoff_seed
-id|u64
-id|backoff_seed
-suffix:semicolon
-multiline_comment|/*0x78,wo,10:0*/
-DECL|member|imq_reserved
-id|u64
-id|imq_reserved
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/*0x80,ro,64:0(x4)*/
-multiline_comment|/*===================================*/
-DECL|member|mac_addr
-id|u64
-id|mac_addr
-suffix:semicolon
-multiline_comment|/*0xA0,rw,47:0, I think it&squot;s MAC address, but I&squot;m not sure*/
-DECL|member|mcast_addr
-id|u64
-id|mcast_addr
-suffix:semicolon
-multiline_comment|/*0xA8,rw,47:0, This seems like secondary MAC address*/
-DECL|member|mcast_filter
-id|u64
-id|mcast_filter
-suffix:semicolon
-multiline_comment|/*0xB0,rw,63:0*/
-DECL|member|tx_ring_base
-id|u64
-id|tx_ring_base
-suffix:semicolon
-multiline_comment|/*0xB8,rw,31:13*/
-multiline_comment|/* Following are read-only debugging info register */
-DECL|member|tx_pkt1_hdr
-id|u64
-id|tx_pkt1_hdr
-suffix:semicolon
-multiline_comment|/*0xC0,ro,63:0*/
-DECL|member|tx_pkt1_ptr
-id|u64
-id|tx_pkt1_ptr
-(braket
-l_int|3
-)braket
-suffix:semicolon
-multiline_comment|/*0xC8,ro,63:0(x3)*/
-DECL|member|tx_pkt2_hdr
-id|u64
-id|tx_pkt2_hdr
-suffix:semicolon
-multiline_comment|/*0xE0,ro,63:0*/
-DECL|member|tx_pkt2_ptr
-id|u64
-id|tx_pkt2_ptr
-(braket
-l_int|3
-)braket
-suffix:semicolon
-multiline_comment|/*0xE8,ro,63:0(x3)*/
-multiline_comment|/*===================================*/
-DECL|member|rx_pad
-id|u32
-id|rx_pad
-suffix:semicolon
-DECL|member|rx_fifo
-id|u32
-id|rx_fifo
-suffix:semicolon
-DECL|member|reserved
-id|u64
-id|reserved
-(braket
-l_int|31
-)braket
-suffix:semicolon
-DECL|typedef|meth_regs
-)brace
-id|meth_regs
-suffix:semicolon
+DECL|macro|TX_INFO_RPTR
+mdefine_line|#define TX_INFO_RPTR    0x00FF0000
+DECL|macro|TX_INFO_WPTR
+mdefine_line|#define TX_INFO_WPTR    0x000000FF
 multiline_comment|/* Bits in METH_MAC */
 DECL|macro|SGI_MAC_RESET
 mdefine_line|#define SGI_MAC_RESET&t;&t;BIT(0)&t;/* 0: MAC110 active in run mode, 1: Global reset signal to MAC110 core is active */
@@ -657,7 +453,16 @@ DECL|macro|METH_DMA_RX_EN
 mdefine_line|#define METH_DMA_RX_EN BIT(15) /* Enable RX */
 DECL|macro|METH_DMA_RX_INT_EN
 mdefine_line|#define METH_DMA_RX_INT_EN BIT(9) /* Enable interrupt on RX packet */
+multiline_comment|/* RX FIFO MCL Info bits */
+DECL|macro|METH_RX_FIFO_WPTR
+mdefine_line|#define METH_RX_FIFO_WPTR(x)   (((x)&gt;&gt;16)&amp;0xf)
+DECL|macro|METH_RX_FIFO_RPTR
+mdefine_line|#define METH_RX_FIFO_RPTR(x)   (((x)&gt;&gt;8)&amp;0xf)
+DECL|macro|METH_RX_FIFO_DEPTH
+mdefine_line|#define METH_RX_FIFO_DEPTH(x)  ((x)&amp;0x1f)
 multiline_comment|/* RX status bits */
+DECL|macro|METH_RX_ST_VALID
+mdefine_line|#define METH_RX_ST_VALID BIT(63)
 DECL|macro|METH_RX_ST_RCV_CODE_VIOLATION
 mdefine_line|#define METH_RX_ST_RCV_CODE_VIOLATION BIT(16)
 DECL|macro|METH_RX_ST_DRBL_NBL
@@ -702,21 +507,35 @@ DECL|macro|METH_INT_RX_UNDERFLOW
 mdefine_line|#define METH_INT_RX_UNDERFLOW&t;BIT(6)&t;/* 0: No interrupt pending, 1: FIFO was empty, packet could not be queued */
 DECL|macro|METH_INT_RX_OVERFLOW
 mdefine_line|#define METH_INT_RX_OVERFLOW&t;&t;BIT(7)&t;/* 0: No interrupt pending, 1: DMA FIFO Overflow, DMA stopped, FATAL */
+multiline_comment|/*#define METH_INT_RX_RPTR_MASK 0x0001F00*/
+multiline_comment|/* Bits 8 through 12 alias of RX read-pointer */
 DECL|macro|METH_INT_RX_RPTR_MASK
-mdefine_line|#define METH_INT_RX_RPTR_MASK 0x0001F00&t;&t;/* Bits 8 through 12 alias of RX read-pointer */
+mdefine_line|#define METH_INT_RX_RPTR_MASK 0x0000F00&t;&t;/* Bits 8 through 11 alias of RX read-pointer - so, is Rx FIFO 16 or 32 entry?*/
 multiline_comment|/* Bits 13 through 15 are always 0. */
 DECL|macro|METH_INT_TX_RPTR_MASK
-mdefine_line|#define METH_INT_TX_RPTR_MASK 0x1FF0000&t;        /* Bits 16 through 24 alias of TX read-pointer */
-DECL|macro|METH_INT_SEQ_MASK
-mdefine_line|#define METH_INT_SEQ_MASK    0x2E000000&t;        /* Bits 25 through 29 are the starting seq number for the message at the */
+mdefine_line|#define METH_INT_TX_RPTR_MASK&t;0x1FF0000        /* Bits 16 through 24 alias of TX read-pointer */
+DECL|macro|METH_INT_RX_SEQ_MASK
+mdefine_line|#define METH_INT_RX_SEQ_MASK&t;0x2E000000&t;/* Bits 25 through 29 are the starting seq number for the message at the */
 multiline_comment|/* top of the queue */
-DECL|macro|METH_ERRORS
-mdefine_line|#define METH_ERRORS ( &bslash;&n;&t;METH_INT_RX_OVERFLOW|&t;&bslash;&n;&t;METH_INT_RX_UNDERFLOW|&t;&bslash;&n;&t;METH_INT_MEM_ERROR|&t;&t;&t;&bslash;&n;&t;METH_INT_TX_ABORT)
+DECL|macro|METH_INT_ERROR
+mdefine_line|#define METH_INT_ERROR&t;(METH_INT_TX_LINK_FAIL| &bslash;&n;&t;&t;&t;METH_INT_MEM_ERROR| &bslash;&n;&t;&t;&t;METH_INT_TX_ABORT| &bslash;&n;&t;&t;&t;METH_INT_RX_OVERFLOW| &bslash;&n;&t;&t;&t;METH_INT_RX_UNDERFLOW)
 DECL|macro|METH_INT_MCAST_HASH
 mdefine_line|#define METH_INT_MCAST_HASH&t;&t;BIT(30) /* If RX DMA is enabled the hash select logic output is latched here */
 multiline_comment|/* TX status bits */
-DECL|macro|METH_TX_STATUS_DONE
-mdefine_line|#define METH_TX_STATUS_DONE BIT(23) /* Packet was transmitted successfully */
+DECL|macro|METH_TX_ST_DONE
+mdefine_line|#define METH_TX_ST_DONE      BIT(63) /* TX complete */
+DECL|macro|METH_TX_ST_SUCCESS
+mdefine_line|#define METH_TX_ST_SUCCESS   BIT(23) /* Packet was transmitted successfully */
+DECL|macro|METH_TX_ST_TOOLONG
+mdefine_line|#define METH_TX_ST_TOOLONG   BIT(24) /* TX abort due to excessive length */
+DECL|macro|METH_TX_ST_UNDERRUN
+mdefine_line|#define METH_TX_ST_UNDERRUN  BIT(25) /* TX abort due to underrun (?) */
+DECL|macro|METH_TX_ST_EXCCOLL
+mdefine_line|#define METH_TX_ST_EXCCOLL   BIT(26) /* TX abort due to excess collisions */
+DECL|macro|METH_TX_ST_DEFER
+mdefine_line|#define METH_TX_ST_DEFER     BIT(27) /* TX abort due to excess deferals */
+DECL|macro|METH_TX_ST_LATECOLL
+mdefine_line|#define METH_TX_ST_LATECOLL  BIT(28) /* TX abort due to late collision */
 multiline_comment|/* Tx command header bits */
 DECL|macro|METH_TX_CMD_INT_EN
 mdefine_line|#define METH_TX_CMD_INT_EN BIT(24) /* Generate TX interrupt when packet is sent */
@@ -734,4 +553,6 @@ DECL|macro|PHY_ICS1890
 mdefine_line|#define PHY_ICS1890    0x0015F42    /* ICS TX */
 DECL|macro|PHY_DP83840
 mdefine_line|#define PHY_DP83840    0x20005C0    /* National TX */
+DECL|macro|ADVANCE_RX_PTR
+mdefine_line|#define ADVANCE_RX_PTR(x)  x=(x+1)&amp;(RX_RING_ENTRIES-1)
 eof
