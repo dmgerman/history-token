@@ -7121,6 +7121,29 @@ id|AC97_TUNE_HP_ONLY
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
+l_int|0x1849
+comma
+dot
+id|device
+op_assign
+l_int|0x3059
+comma
+dot
+id|name
+op_assign
+l_string|&quot;ASRock K7VM2&quot;
+comma
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+multiline_comment|/* VT1616 */
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* terminator */
 )brace
