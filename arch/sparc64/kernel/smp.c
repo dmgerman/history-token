@@ -4853,11 +4853,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|timer_ticks_per_usec_quotient
-suffix:semicolon
 DECL|function|smp_tune_scheduling
 r_static
 r_void
@@ -5049,107 +5044,29 @@ id|p
 )paren
 suffix:semicolon
 multiline_comment|/* Now the real measurement. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SPARC64_USE_STICK
+)paren
+(brace
 id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|b
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_float|1f
-id|rd
-op_mod
-op_mod
-id|tick
-comma
-op_mod
-l_int|0
-dot
-id|align
-l_int|64
-l_int|1
-suffix:colon
-id|ldx
-(braket
-op_mod
-l_int|2
-op_plus
-l_int|0x000
-)braket
-comma
-op_mod
-op_mod
-id|g1
-id|ldx
-(braket
-op_mod
-l_int|2
-op_plus
-l_int|0x040
-)braket
-comma
-op_mod
-op_mod
-id|g2
-id|ldx
-(braket
-op_mod
-l_int|2
-op_plus
-l_int|0x080
-)braket
-comma
-op_mod
-op_mod
-id|g3
-id|ldx
-(braket
-op_mod
-l_int|2
-op_plus
-l_int|0x0c0
-)braket
-comma
-op_mod
-op_mod
-id|g5
-id|add
-op_mod
-l_int|2
-comma
-l_int|0x100
-comma
-op_mod
-l_int|2
-id|cmp
-op_mod
-l_int|2
-comma
-op_mod
-l_int|4
-id|bne
-comma
-id|pt
-op_mod
-op_mod
-id|xcc
-comma
-l_int|1
-id|b
-id|nop
-id|rd
-op_mod
-op_mod
-id|tick
-comma
-op_mod
-l_int|1
-"&quot;"
+l_string|&quot;b,pt&t;%%xcc, 1f&bslash;n&bslash;t&quot;
+l_string|&quot; rd&t;%%tick, %0&bslash;n&bslash;t&quot;
+l_string|&quot;.align&t;64&bslash;n&quot;
+l_string|&quot;1:&bslash;tldx&t;[%2 + 0x000], %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;ldx&t;[%2 + 0x040], %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;ldx&t;[%2 + 0x080], %%g3&bslash;n&bslash;t&quot;
+l_string|&quot;ldx&t;[%2 + 0x0c0], %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%2, 0x100, %2&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%2, %4&bslash;n&bslash;t&quot;
+l_string|&quot;bne,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
+l_string|&quot; nop&bslash;n&bslash;t&quot;
+l_string|&quot;rd&t;%%tick, %1&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -5187,6 +5104,63 @@ comma
 l_string|&quot;g5&quot;
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;b,pt&t;%%xcc, 1f&bslash;n&bslash;t&quot;
+l_string|&quot; rd&t;%%asr24, %0&bslash;n&bslash;t&quot;
+l_string|&quot;.align&t;64&bslash;n&quot;
+l_string|&quot;1:&bslash;tldx&t;[%2 + 0x000], %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;ldx&t;[%2 + 0x040], %%g2&bslash;n&bslash;t&quot;
+l_string|&quot;ldx&t;[%2 + 0x080], %%g3&bslash;n&bslash;t&quot;
+l_string|&quot;ldx&t;[%2 + 0x0c0], %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;add&t;%2, 0x100, %2&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%2, %4&bslash;n&bslash;t&quot;
+l_string|&quot;bne,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
+l_string|&quot; nop&bslash;n&bslash;t&quot;
+l_string|&quot;rd&t;%%asr24, %1&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tick1
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tick2
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|flush_base
+)paren
+suffix:colon
+l_string|&quot;2&quot;
+(paren
+id|flush_base
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|flush_base
+op_plus
+id|ecache_size
+)paren
+suffix:colon
+l_string|&quot;g1&quot;
+comma
+l_string|&quot;g2&quot;
+comma
+l_string|&quot;g3&quot;
+comma
+l_string|&quot;g5&quot;
+)paren
+suffix:semicolon
+)brace
 id|__restore_flags
 c_func
 (paren
@@ -5244,31 +5218,12 @@ suffix:semicolon
 )brace
 id|report
 suffix:colon
-multiline_comment|/* Convert cpu ticks to jiffie ticks. */
+multiline_comment|/* Convert ticks/sticks to jiffies. */
 id|cache_decay_ticks
 op_assign
-(paren
-(paren
-r_int
-)paren
 id|cacheflush_time
-op_star
-id|timer_ticks_per_usec_quotient
-)paren
-suffix:semicolon
-id|cache_decay_ticks
-op_rshift_assign
-l_int|32UL
-suffix:semicolon
-id|cache_decay_ticks
-op_assign
-(paren
-id|cache_decay_ticks
-op_star
-id|HZ
-)paren
 op_div
-l_int|1000
+id|timer_tick_offset
 suffix:semicolon
 id|printk
 c_func
