@@ -4651,6 +4651,24 @@ id|symindex
 op_assign
 id|i
 suffix:semicolon
+multiline_comment|/* Strings */
+id|strindex
+op_assign
+id|sechdrs
+(braket
+id|i
+)braket
+dot
+id|sh_link
+suffix:semicolon
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;String table found in section %u&bslash;n&quot;
+comma
+id|strindex
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -4720,42 +4738,6 @@ id|i
 )paren
 suffix:semicolon
 id|exportindex
-op_assign
-id|i
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|strcmp
-c_func
-(paren
-id|secstrings
-op_plus
-id|sechdrs
-(braket
-id|i
-)braket
-dot
-id|sh_name
-comma
-l_string|&quot;.strtab&quot;
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* Strings */
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;String table found in section %u&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-id|strindex
 op_assign
 id|i
 suffix:semicolon
