@@ -1409,18 +1409,17 @@ id|host
 suffix:semicolon
 )brace
 multiline_comment|/* for (;;) */
-multiline_comment|/* notify the exit routine that we&squot;re actually exiting now */
-id|complete
+multiline_comment|/* notify the exit routine that we&squot;re actually exiting now &n;&t; *&n;&t; * complete()/wait_for_completion() is similar to up()/down(),&n;&t; * except that complete() is safe in the case where the structure&n;&t; * is getting deleted in a parallel mode of execution (i.e. just&n;&t; * after the down() -- that&squot;s necessary for the thread-shutdown&n;&t; * case.&n;&t; *&n;&t; * complete_and_exit() goes even further than this -- it is safe in&n;&t; * the case that the thread of the caller is going away (not just&n;&t; * the structure) -- this is necessary for the module-remove case.&n;&t; * This is important in preemption kernels, which transfer the flow&n;&t; * of execution immediately upon a complete().&n;&t; */
+id|complete_and_exit
 c_func
 (paren
 op_amp
 (paren
 id|us-&gt;notify
 )paren
-)paren
-suffix:semicolon
-r_return
+comma
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; * Device probing and disconnecting&n; ***********************************************************************/
