@@ -482,7 +482,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|mv_consistent_free
-r_void
+r_int
 (paren
 op_star
 id|mv_consistent_free

@@ -1755,13 +1755,13 @@ comma
 id|noexec_setup
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PAE
 DECL|variable|nx_enabled
 r_int
 id|nx_enabled
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86_PAE
 DECL|function|set_nx
 r_static
 r_void

@@ -737,11 +737,20 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;DMA: Registering %s handler (%d channels).&bslash;n&quot;
+l_string|&quot;DMA: Registering %s handler (%d channel%s).&bslash;n&quot;
 comma
 id|info-&gt;name
 comma
 id|info-&gt;nr_channels
+comma
+id|info-&gt;nr_channels
+OG
+l_int|1
+ques
+c_cond
+l_string|&quot;s&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -1016,13 +1025,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|register_dmac
-)paren
-suffix:semicolon
-DECL|variable|unregister_dmac
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_dmac
 )paren
 suffix:semicolon
 DECL|variable|get_dma_residue

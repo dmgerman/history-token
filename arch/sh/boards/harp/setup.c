@@ -137,4 +137,76 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * pcibios_map_platform_irq&n; *&n; * This is board specific and returns the IRQ for a given PCI device.&n; * It is used by the PCI code (arch/sh/kernel/st40_pci*)&n; *&n; */
+DECL|macro|HARP_PCI_IRQ
+mdefine_line|#define HARP_PCI_IRQ    1
+DECL|macro|HARP_BRIDGE_IRQ
+mdefine_line|#define HARP_BRIDGE_IRQ 2
+DECL|macro|OVERDRIVE_SLOT0_IRQ
+mdefine_line|#define OVERDRIVE_SLOT0_IRQ 0
+DECL|function|pcibios_map_platform_irq
+r_int
+id|__init
+id|pcibios_map_platform_irq
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+id|u8
+id|slot
+comma
+id|u8
+id|pin
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|slot
+)paren
+(brace
+macro_line|#ifdef CONFIG_SH_STB1_HARP
+r_case
+l_int|2
+suffix:colon
+multiline_comment|/*This is the PCI slot on the */
+r_return
+id|HARP_PCI_IRQ
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+multiline_comment|/* this is the bridge */
+r_return
+id|HARP_BRIDGE_IRQ
+suffix:semicolon
+macro_line|#elif defined(CONFIG_SH_STB1_OVERDRIVE)
+r_case
+l_int|1
+suffix:colon
+r_case
+l_int|2
+suffix:colon
+r_case
+l_int|3
+suffix:colon
+r_return
+id|slot
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#else
+macro_line|#error Unknown board
+macro_line|#endif
+r_default
+suffix:colon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+)brace
 eof

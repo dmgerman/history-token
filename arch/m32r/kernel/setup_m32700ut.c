@@ -1858,7 +1858,7 @@ c_func
 id|M32R_IRQ_INT2
 )paren
 suffix:semicolon
-singleline_comment|//#if defined(CONFIG_M32R_AR_VGA)
+singleline_comment|//#if defined(CONFIG_VIDEO_M32R_AR)
 multiline_comment|/*&n;&t; * INT3# is used for AR&n;&t; */
 id|irq_desc
 (braket
@@ -1914,7 +1914,7 @@ c_func
 id|M32R_IRQ_INT3
 )paren
 suffix:semicolon
-singleline_comment|//#endif&t;/* CONFIG_M32R_ARV */
+singleline_comment|//#endif&t;/* CONFIG_VIDEO_M32R_AR */
 )brace
 DECL|macro|LAN_IOSTART
 mdefine_line|#define LAN_IOSTART     0x300

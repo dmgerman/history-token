@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 1999 Niibe Yutaka&n; * Copyright (C) 200
 macro_line|#ifndef __ASM_SH_MMU_CONTEXT_H
 DECL|macro|__ASM_SH_MMU_CONTEXT_H
 mdefine_line|#define __ASM_SH_MMU_CONTEXT_H
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/cpu/mmu_context.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -502,5 +503,6 @@ mdefine_line|#define enable_mmu()&t;do { BUG(); } while (0)
 DECL|macro|disable_mmu
 mdefine_line|#define disable_mmu()&t;do { BUG(); } while (0)
 macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASM_SH_MMU_CONTEXT_H */
 eof

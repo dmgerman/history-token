@@ -55,5 +55,26 @@ macro_line|#ifndef PENALTY_FOR_NODE_WITH_CPUS
 DECL|macro|PENALTY_FOR_NODE_WITH_CPUS
 mdefine_line|#define PENALTY_FOR_NODE_WITH_CPUS&t;(1)
 macro_line|#endif
+multiline_comment|/*&n; * Below are the 3 major initializers used in building sched_domains:&n; * SD_SIBLING_INIT, for SMT domains&n; * SD_CPU_INIT, for SMP domains&n; * SD_NODE_INIT, for NUMA domains&n; *&n; * Any architecture that cares to do any tuning to these values should do so&n; * by defining their own arch-specific initializer in include/asm/topology.h.&n; * A definition there will automagically override these default initializers&n; * and allow arch-specific performance tuning of sched_domains.&n; */
+macro_line|#ifdef CONFIG_SCHED_SMT
+multiline_comment|/* MCD - Do we really need this?  It is always on if CONFIG_SCHED_SMT is,&n; * so can&squot;t we drop this in favor of CONFIG_SCHED_SMT?&n; */
+DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
+mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
+multiline_comment|/* Common values for SMT siblings */
+macro_line|#ifndef SD_SIBLING_INIT
+DECL|macro|SD_SIBLING_INIT
+mdefine_line|#define SD_SIBLING_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 2,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 8,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 110,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 0,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 25,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_LOAD_BALANCE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_IDLE&t;&t;&bslash;&n;&t;&t;&t;&t;| SD_SHARE_CPUPOWER,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
+macro_line|#endif
+macro_line|#endif /* CONFIG_SCHED_SMT */
+multiline_comment|/* Common values for CPUs */
+macro_line|#ifndef SD_CPU_INIT
+DECL|macro|SD_CPU_INIT
+mdefine_line|#define SD_CPU_INIT (struct sched_domain) {&t;&t;&bslash;&n;&t;.span&t;&t;&t;= CPU_MASK_NONE,&t;&bslash;&n;&t;.parent&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.groups&t;&t;&t;= NULL,&t;&t;&t;&bslash;&n;&t;.min_interval&t;&t;= 1,&t;&t;&t;&bslash;&n;&t;.max_interval&t;&t;= 4,&t;&t;&t;&bslash;&n;&t;.busy_factor&t;&t;= 64,&t;&t;&t;&bslash;&n;&t;.imbalance_pct&t;&t;= 125,&t;&t;&t;&bslash;&n;&t;.cache_hot_time&t;&t;= (5*1000/2),&t;&t;&bslash;&n;&t;.cache_nice_tries&t;= 1,&t;&t;&t;&bslash;&n;&t;.per_cpu_gain&t;&t;= 100,&t;&t;&t;&bslash;&n;&t;.flags&t;&t;&t;= SD_LOAD_BALANCE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_NEWIDLE&t;&bslash;&n;&t;&t;&t;&t;| SD_BALANCE_EXEC&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_AFFINE&t;&bslash;&n;&t;&t;&t;&t;| SD_WAKE_BALANCE,&t;&bslash;&n;&t;.last_balance&t;&t;= jiffies,&t;&t;&bslash;&n;&t;.balance_interval&t;= 1,&t;&t;&t;&bslash;&n;&t;.nr_balance_failed&t;= 0,&t;&t;&t;&bslash;&n;}
+macro_line|#endif
+macro_line|#ifdef CONFIG_NUMA
+macro_line|#ifndef SD_NODE_INIT
+macro_line|#error Please define an appropriate SD_NODE_INIT in include/asm/topology.h!!!
+macro_line|#endif
+macro_line|#endif /* CONFIG_NUMA */
 macro_line|#endif /* _LINUX_TOPOLOGY_H */
 eof

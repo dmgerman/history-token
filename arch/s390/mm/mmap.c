@@ -21,7 +21,7 @@ r_int
 r_int
 id|gap
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket
@@ -96,7 +96,7 @@ op_amp
 id|ADDR_COMPAT_LAYOUT
 )paren
 op_logical_or
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket

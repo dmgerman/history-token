@@ -1801,6 +1801,11 @@ c_func
 id|page
 )paren
 suffix:semicolon
+r_struct
+id|address_space
+op_star
+id|mapping2
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1814,7 +1819,7 @@ op_amp
 id|mapping-&gt;tree_lock
 )paren
 suffix:semicolon
-id|mapping
+id|mapping2
 op_assign
 id|page_mapping
 c_func
@@ -1825,22 +1830,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page_mapping
-c_func
-(paren
-id|page
-)paren
+id|mapping2
 )paren
 (brace
 multiline_comment|/* Race with truncate? */
 id|BUG_ON
 c_func
 (paren
-id|page_mapping
-c_func
-(paren
-id|page
-)paren
+id|mapping2
 op_ne
 id|mapping
 )paren

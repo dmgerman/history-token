@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
@@ -2782,13 +2783,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|ticks
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2810,6 +2804,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+)brace
+r_while
+c_loop
+(paren
+id|ticks
+)paren
+suffix:semicolon
 )brace
 DECL|function|do_process_times
 r_static
@@ -2855,11 +2856,26 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|p-&gt;signal
+op_logical_and
+op_logical_neg
+id|unlikely
+c_func
+(paren
+id|p-&gt;state
+op_amp
+(paren
+id|EXIT_DEAD
+op_or
+id|EXIT_ZOMBIE
+)paren
+)paren
+op_logical_and
 id|psecs
 op_div
 id|HZ
 op_ge
-id|p-&gt;rlim
+id|p-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_CPU
 )braket
@@ -2896,7 +2912,7 @@ id|psecs
 op_div
 id|HZ
 op_ge
-id|p-&gt;rlim
+id|p-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_CPU
 )braket

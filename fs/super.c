@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for fsync_super() */
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;&t;&t;/* for the emergency remount stuff */
 macro_line|#include &lt;linux/idr.h&gt;

@@ -92,6 +92,8 @@ DECL|macro|PT_TRACE_VFORK_DONE
 mdefine_line|#define PT_TRACE_VFORK_DONE&t;0x00000100
 DECL|macro|PT_TRACE_EXIT
 mdefine_line|#define PT_TRACE_EXIT&t;0x00000200
+DECL|macro|PT_ATTACHED
+mdefine_line|#define PT_ATTACHED&t;0x00000400&t;/* parent != real_parent */
 DECL|macro|PT_TRACE_MASK
 mdefine_line|#define PT_TRACE_MASK&t;0x000003f4
 multiline_comment|/* single stepping state bits (used on ARM and PA-RISC) */

@@ -204,8 +204,26 @@ comma
 dot
 id|size
 op_assign
-l_int|0x03f00000
+l_int|0x04000000
 comma
+)brace
+comma
+dot
+id|window1
+op_assign
+(brace
+dot
+id|base
+op_assign
+l_int|0x00000000
+comma
+multiline_comment|/* Unused */
+dot
+id|size
+op_assign
+l_int|0x00000000
+comma
+multiline_comment|/* Unused */
 )brace
 comma
 dot

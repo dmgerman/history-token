@@ -322,7 +322,7 @@ r_int
 r_int
 id|stack_size
 op_assign
-id|current-&gt;rlim
+id|current-&gt;signal-&gt;rlim
 (braket
 id|RLIMIT_STACK
 )braket
