@@ -617,6 +617,8 @@ mdefine_line|#define CM_REG_MISC&t;&t;0x27
 DECL|macro|CM_XGPO1
 mdefine_line|#define CM_XGPO1&t;&t;0x20
 singleline_comment|// #define CM_XGPBIO&t;&t;0x04
+DECL|macro|CM_MIC_CENTER_LFE
+mdefine_line|#define CM_MIC_CENTER_LFE&t;0x04&t;/* mic as center/lfe out? (model 039 or later?) */
 DECL|macro|CM_SPDIF_INVERSE
 mdefine_line|#define CM_SPDIF_INVERSE&t;0x04&t;/* spdif input phase inverse (model 037) */
 DECL|macro|CM_SPDVALID
@@ -10184,6 +10186,15 @@ comma
 id|spdi_phase2
 )paren
 comma
+id|DEFINE_MIXER_SWITCH
+c_func
+(paren
+l_string|&quot;Mic As Center/LFE&quot;
+comma
+id|spdi_phase
+)paren
+comma
+multiline_comment|/* same bit as spdi_phase */
 )brace
 suffix:semicolon
 multiline_comment|/* card control switches */

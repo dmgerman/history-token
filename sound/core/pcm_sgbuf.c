@@ -354,6 +354,11 @@ comma
 id|pages
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|substream-&gt;runtime
+)paren
 id|substream-&gt;runtime-&gt;dma_bytes
 op_assign
 id|size
@@ -504,6 +509,11 @@ id|sgbuf-&gt;size
 op_assign
 id|size
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|substream-&gt;runtime
+)paren
 id|substream-&gt;runtime-&gt;dma_bytes
 op_assign
 id|size

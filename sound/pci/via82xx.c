@@ -4595,6 +4595,29 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+id|pci_read_config_byte
+c_func
+(paren
+id|chip-&gt;pci
+comma
+l_int|0x40
+comma
+op_amp
+id|pval
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|pval
+op_amp
+l_int|0x01
+)paren
+)paren
+(brace
+multiline_comment|/* codec not ready? */
 multiline_comment|/* deassert ACLink reset, force SYNC */
 id|pci_write_config_byte
 c_func
@@ -4629,7 +4652,7 @@ c_func
 l_int|2
 )paren
 suffix:semicolon
-multiline_comment|/* pci_write_config_byte(chip-&gt;pci, 0x41, 0x00);&n;&t;   udelay(100);&n;&t;*/
+multiline_comment|/* pci_write_config_byte(chip-&gt;pci, 0x41, 0x00);&n;&t;&t;   udelay(100);&n;&t;&t;*/
 multiline_comment|/* ACLink on, deassert ACLink reset, VSR, SGD data out */
 multiline_comment|/* note - FM data out has trouble with non VRA codecs !! */
 id|pci_write_config_byte
@@ -4648,6 +4671,7 @@ c_func
 l_int|100
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Make sure VRA is enabled, in case we didn&squot;t do a&n;&t; * complete codec reset, above */
 id|pci_read_config_byte
 c_func

@@ -10934,6 +10934,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|chip-&gt;device_type
+op_eq
+id|DEVICE_INTEL_ICH4
+op_logical_and
+(paren
 id|pci_resource_flags
 c_func
 (paren
@@ -10943,6 +10948,7 @@ l_int|2
 )paren
 op_amp
 id|IORESOURCE_MEM
+)paren
 )paren
 (brace
 multiline_comment|/* ICH4 and higher */
