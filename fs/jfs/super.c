@@ -1171,18 +1171,10 @@ id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Initialize blocksize to 4K.&n;&t; */
-id|sb-&gt;s_blocksize
-op_assign
-id|PSIZE
-suffix:semicolon
-id|sb-&gt;s_blocksize_bits
-op_assign
-id|L2PSIZE
-suffix:semicolon
-id|set_blocksize
+id|sb_set_blocksize
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 comma
 id|PSIZE
 )paren
