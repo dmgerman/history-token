@@ -261,7 +261,7 @@ DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x)&t;&t;((x) &gt;&gt; (20-PAGE_SHIFT))
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|function|pte_read
-r_extern
+r_static
 r_inline
 r_int
 id|pte_read
@@ -282,7 +282,7 @@ id|_PAGE_USER
 suffix:semicolon
 )brace
 DECL|function|pte_write
-r_extern
+r_static
 r_inline
 r_int
 id|pte_write
@@ -303,7 +303,7 @@ id|_PAGE_RW
 suffix:semicolon
 )brace
 DECL|function|pte_exec
-r_extern
+r_static
 r_inline
 r_int
 id|pte_exec
@@ -324,7 +324,7 @@ id|_PAGE_EXEC
 suffix:semicolon
 )brace
 DECL|function|pte_dirty
-r_extern
+r_static
 r_inline
 r_int
 id|pte_dirty
@@ -345,7 +345,7 @@ id|_PAGE_DIRTY
 suffix:semicolon
 )brace
 DECL|function|pte_young
-r_extern
+r_static
 r_inline
 r_int
 id|pte_young
@@ -366,7 +366,7 @@ id|_PAGE_ACCESSED
 suffix:semicolon
 )brace
 DECL|function|pte_uncache
-r_extern
+r_static
 r_inline
 r_void
 id|pte_uncache
@@ -386,7 +386,7 @@ id|_PAGE_NO_CACHE
 suffix:semicolon
 )brace
 DECL|function|pte_cache
-r_extern
+r_static
 r_inline
 r_void
 id|pte_cache
@@ -407,7 +407,7 @@ id|_PAGE_NO_CACHE
 suffix:semicolon
 )brace
 DECL|function|pte_rdprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_rdprotect
@@ -431,7 +431,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_exprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_exprotect
@@ -455,7 +455,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_wrprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_wrprotect
@@ -481,7 +481,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkclean
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkclean
@@ -507,7 +507,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkold
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkold
@@ -531,7 +531,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkread
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkread
@@ -554,7 +554,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkexec
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkexec
@@ -579,7 +579,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkwrite
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkwrite
@@ -602,7 +602,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkdirty
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkdirty
@@ -625,7 +625,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkyoung
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkyoung

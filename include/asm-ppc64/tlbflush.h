@@ -55,7 +55,7 @@ mdefine_line|#define flush_tlb_range(vma, start, end) &bslash;&n;&t;__flush_tlb_
 DECL|macro|flush_tlb_kernel_range
 mdefine_line|#define flush_tlb_kernel_range(start, end) &bslash;&n;&t;__flush_tlb_range(&amp;init_mm, (start), (end))
 DECL|function|flush_tlb_pgtables
-r_extern
+r_static
 r_inline
 r_void
 id|flush_tlb_pgtables

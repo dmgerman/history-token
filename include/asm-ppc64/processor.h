@@ -1185,7 +1185,7 @@ mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
 DECL|function|prefetch
-r_extern
+r_static
 r_inline
 r_void
 id|prefetch
@@ -1211,7 +1211,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|prefetchw
-r_extern
+r_static
 r_inline
 r_void
 id|prefetchw

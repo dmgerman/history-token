@@ -32,7 +32,7 @@ mdefine_line|#define __access_ok(addr,size) (__kernel_ok || __user_ok((addr),(si
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size) __access_ok((unsigned long)(addr),(size))
 DECL|function|verify_area
-r_extern
+r_static
 r_inline
 r_int
 id|verify_area
@@ -182,7 +182,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -276,7 +276,7 @@ r_return
 id|n
 suffix:semicolon
 )brace
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -389,7 +389,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -456,7 +456,7 @@ r_int
 id|count
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_inline
 r_int
 DECL|function|strncpy_from_user
@@ -526,8 +526,8 @@ id|top
 suffix:semicolon
 multiline_comment|/*&n; * Returns the length of the string at str (including the null byte),&n; * or 0 if we hit a page we can&squot;t access,&n; * or something &gt; len if we didn&squot;t find a null byte.&n; *&n; * The `top&squot; parameter to __strnlen_user is to make sure that&n; * we can never overflow from the user area into kernel space.&n; */
 DECL|function|strnlen_user
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|strnlen_user
 c_func

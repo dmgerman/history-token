@@ -390,7 +390,7 @@ id|addr
 suffix:semicolon
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv, for&n; * addresses in the area where the kernel has the RAM mapped.&n; */
 DECL|function|virt_to_phys
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -440,7 +440,7 @@ id|address
 suffix:semicolon
 )brace
 DECL|function|phys_to_virt
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -488,7 +488,7 @@ mdefine_line|#define BIO_VMERGE_BOUNDARY&t;4096
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 DECL|function|iosync
-r_extern
+r_static
 r_inline
 r_void
 id|iosync
@@ -517,7 +517,7 @@ DECL|macro|iobarrier_w
 mdefine_line|#define iobarrier_w()  eieio()
 multiline_comment|/*&n; * 8, 16 and 32 bit, big and little endian I/O operations, with barrier.&n; */
 DECL|function|in_8
-r_extern
+r_static
 r_inline
 r_int
 id|in_8
@@ -556,7 +556,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|out_8
-r_extern
+r_static
 r_inline
 r_void
 id|out_8
@@ -592,7 +592,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|in_le16
-r_extern
+r_static
 r_inline
 r_int
 id|in_le16
@@ -636,7 +636,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|in_be16
-r_extern
+r_static
 r_inline
 r_int
 id|in_be16
@@ -675,7 +675,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|out_le16
-r_extern
+r_static
 r_inline
 r_void
 id|out_le16
@@ -716,7 +716,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|out_be16
-r_extern
+r_static
 r_inline
 r_void
 id|out_be16
@@ -752,7 +752,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|in_le32
-r_extern
+r_static
 r_inline
 r_int
 id|in_le32
@@ -795,7 +795,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|in_be32
-r_extern
+r_static
 r_inline
 r_int
 id|in_be32
@@ -833,7 +833,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|out_le32
-r_extern
+r_static
 r_inline
 r_void
 id|out_le32
@@ -873,7 +873,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|out_be32
-r_extern
+r_static
 r_inline
 r_void
 id|out_be32

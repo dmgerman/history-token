@@ -163,7 +163,7 @@ id|sem
 )paren
 suffix:semicolon
 DECL|function|down
-r_extern
+r_static
 r_inline
 r_void
 id|down
@@ -209,7 +209,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|down_interruptible
-r_extern
+r_static
 r_inline
 r_int
 id|down_interruptible
@@ -264,7 +264,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|down_trylock
-r_extern
+r_static
 r_inline
 r_int
 id|down_trylock
@@ -308,7 +308,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|up
-r_extern
+r_static
 r_inline
 r_void
 id|up

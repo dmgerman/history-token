@@ -245,8 +245,8 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|tb_ticks_since
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|tb_ticks_since

@@ -320,8 +320,8 @@ DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { BUG(); } while (0)
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|get_order
 c_func
