@@ -17,7 +17,7 @@ macro_line|#endif /* CONFIG_ALL_PPC */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;ata_k2&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.02&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.03&quot;
 DECL|function|k2_sata_scr_read
 r_static
 id|u32
