@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
+macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 multiline_comment|/*&n; * Common place to define all x86 IRQ vectors&n; *&n; * This builds up the IRQ handler stubs using some ugly macros in irq.h&n; *&n; * These macros create the low-level assembly IRQ routines that save&n; * register context and call do_IRQ(). do_IRQ() then does all the&n; * operations that are needed to keep the AT (or SMP IOAPIC)&n; * interrupt-controller happy.&n; */
 id|BUILD_COMMON_IRQ
@@ -36,7 +37,7 @@ c_func
 (paren
 l_int|0x0
 )paren
-macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifdef CONFIG_X86_EXTRA_IRQS
 multiline_comment|/*&n; * The IO-APIC gives us many more interrupt sources. Most of these &n; * are unused but an SMP system is supposed to have enough memory ...&n; * sometimes (mostly wrt. hw bugs) we get corrupted vectors all&n; * across the spectrum, so we really want to be prepared to get all&n; * of these. Plus, more powerful systems might have more than 64&n; * IO-APIC registers.&n; *&n; * (these are usually mapped into the 0x30-0xff vector range)&n; */
 id|BUILD_16_IRQS
 c_func
@@ -108,58 +109,11 @@ DECL|macro|BUILD_16_IRQS
 macro_line|#undef BUILD_16_IRQS
 DECL|macro|BI
 macro_line|#undef BI
-multiline_comment|/*&n; * The following vectors are part of the Linux architecture, there&n; * is no hardware IRQ pin equivalent for them, they are triggered&n; * through the ICC by us (IPIs)&n; */
-macro_line|#ifdef CONFIG_SMP
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|reschedule_interrupt
-comma
-id|RESCHEDULE_VECTOR
-)paren
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|invalidate_interrupt
-comma
-id|INVALIDATE_TLB_VECTOR
-)paren
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|call_function_interrupt
-comma
-id|CALL_FUNCTION_VECTOR
-)paren
-macro_line|#endif
-multiline_comment|/*&n; * every pentium local APIC has two &squot;local interrupts&squot;, with a&n; * soft-definable vector attached to both interrupts, one of&n; * which is a timer interrupt, the other one is error counter&n; * overflow. Linux uses the local APIC timer interrupt to get&n; * a much simpler SMP time architecture:&n; */
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|apic_timer_interrupt
-comma
-id|LOCAL_TIMER_VECTOR
-)paren
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|error_interrupt
-comma
-id|ERROR_APIC_VECTOR
-)paren
-id|BUILD_SMP_INTERRUPT
-c_func
-(paren
-id|spurious_interrupt
-comma
-id|SPURIOUS_APIC_VECTOR
-)paren
-macro_line|#endif
 DECL|macro|IRQ
 mdefine_line|#define IRQ(x,y) &bslash;&n;&t;IRQ##x##y##_interrupt
 DECL|macro|IRQLIST_16
 mdefine_line|#define IRQLIST_16(x) &bslash;&n;&t;IRQ(x,0), IRQ(x,1), IRQ(x,2), IRQ(x,3), &bslash;&n;&t;IRQ(x,4), IRQ(x,5), IRQ(x,6), IRQ(x,7), &bslash;&n;&t;IRQ(x,8), IRQ(x,9), IRQ(x,a), IRQ(x,b), &bslash;&n;&t;IRQ(x,c), IRQ(x,d), IRQ(x,e), IRQ(x,f)
+DECL|variable|interrupt
 r_void
 (paren
 op_star
@@ -179,7 +133,7 @@ c_func
 l_int|0x0
 )paren
 comma
-macro_line|#ifdef CONFIG_X86_IO_APIC
+macro_line|#ifdef CONFIG_X86_EXTRA_IRQS
 id|IRQLIST_16
 c_func
 (paren
@@ -1205,29 +1159,6 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * IRQ2 is cascade interrupt to second interrupt controller&n; */
-macro_line|#ifndef CONFIG_VISWS
-DECL|variable|irq2
-r_static
-r_struct
-id|irqaction
-id|irq2
-op_assign
-(brace
-id|no_action
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_string|&quot;cascade&quot;
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|function|init_ISA_irqs
 r_void
 id|__init
@@ -1342,19 +1273,11 @@ r_void
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifndef CONFIG_X86_VISWS_APIC
-id|init_ISA_irqs
+id|pre_intr_init_hook
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|init_VISWS_APIC_irqs
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Cover the whole vector space, no vector can escape&n;&t; * us. (some of these will be overridden and become&n;&t; * &squot;special&squot; SMP interrupts)&n;&t; */
 r_for
 c_loop
@@ -1397,75 +1320,11 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/*&n;&t; * IRQ0 must be given a fixed assignment and initialized,&n;&t; * because it&squot;s used before the IO-APIC is set up.&n;&t; */
-id|set_intr_gate
+id|intr_init_hook
 c_func
 (paren
-id|FIRST_DEVICE_VECTOR
-comma
-id|interrupt
-(braket
-l_int|0
-)braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The reschedule interrupt is a CPU-to-CPU reschedule-helper&n;&t; * IPI, driven by wakeup.&n;&t; */
-id|set_intr_gate
-c_func
-(paren
-id|RESCHEDULE_VECTOR
-comma
-id|reschedule_interrupt
-)paren
-suffix:semicolon
-multiline_comment|/* IPI for invalidation */
-id|set_intr_gate
-c_func
-(paren
-id|INVALIDATE_TLB_VECTOR
-comma
-id|invalidate_interrupt
-)paren
-suffix:semicolon
-multiline_comment|/* IPI for generic function call */
-id|set_intr_gate
-c_func
-(paren
-id|CALL_FUNCTION_VECTOR
-comma
-id|call_function_interrupt
-)paren
-suffix:semicolon
-macro_line|#endif&t;
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-multiline_comment|/* self generated IPI for local APIC timer */
-id|set_intr_gate
-c_func
-(paren
-id|LOCAL_TIMER_VECTOR
-comma
-id|apic_timer_interrupt
-)paren
-suffix:semicolon
-multiline_comment|/* IPI vectors for APIC spurious and error interrupts */
-id|set_intr_gate
-c_func
-(paren
-id|SPURIOUS_APIC_VECTOR
-comma
-id|spurious_interrupt
-)paren
-suffix:semicolon
-id|set_intr_gate
-c_func
-(paren
-id|ERROR_APIC_VECTOR
-comma
-id|error_interrupt
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Set the clock to HZ Hz, we already have a valid&n;&t; * vector now:&n;&t; */
 id|outb_p
 c_func
@@ -1498,17 +1357,6 @@ l_int|0x40
 )paren
 suffix:semicolon
 multiline_comment|/* MSB */
-macro_line|#ifndef CONFIG_VISWS
-id|setup_irq
-c_func
-(paren
-l_int|2
-comma
-op_amp
-id|irq2
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * External FPU? Set up irq13 if so, for&n;&t; * original braindamaged IBM FERR coupling.&n;&t; */
 r_if
 c_cond

@@ -151,7 +151,6 @@ r_int
 id|phys_cpu_present_map
 suffix:semicolon
 multiline_comment|/*&n; * Intel MP BIOS table parsing routines:&n; */
-macro_line|#ifndef CONFIG_X86_VISWS_APIC
 multiline_comment|/*&n; * Checksum an MP configuration block.&n; */
 DECL|function|mpf_checksum
 r_static
@@ -3279,10 +3278,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|find_intel_smp
+DECL|function|find_smp_config
 r_void
 id|__init
-id|find_intel_smp
+id|find_smp_config
 (paren
 r_void
 )paren
@@ -3362,70 +3361,5 @@ id|KERN_WARNING
 l_string|&quot;WARNING: MP table in the EBDA can be UNSAFE, contact linux-smp@vger.kernel.org if you experience SMP problems!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-macro_line|#else
-multiline_comment|/*&n; * The Visual Workstation is Intel MP compliant in the hardware&n; * sense, but it doesnt have a BIOS(-configuration table).&n; * No problem for Linux.&n; */
-DECL|function|find_visws_smp
-r_void
-id|__init
-id|find_visws_smp
-c_func
-(paren
-r_void
-)paren
-(brace
-id|smp_found_config
-op_assign
-l_int|1
-suffix:semicolon
-id|phys_cpu_present_map
-op_or_assign
-l_int|2
-suffix:semicolon
-multiline_comment|/* or in id 1 */
-id|apic_version
-(braket
-l_int|1
-)braket
-op_or_assign
-l_int|0x10
-suffix:semicolon
-multiline_comment|/* integrated APIC */
-id|apic_version
-(braket
-l_int|0
-)braket
-op_or_assign
-l_int|0x10
-suffix:semicolon
-id|mp_lapic_addr
-op_assign
-id|APIC_DEFAULT_PHYS_BASE
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/*&n; * - Intel MP Configuration Table&n; * - or SGI Visual Workstation configuration&n; */
-DECL|function|find_smp_config
-r_void
-id|__init
-id|find_smp_config
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-id|find_intel_smp
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_VISWS
-id|find_visws_smp
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 eof
