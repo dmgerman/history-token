@@ -4207,11 +4207,6 @@ c_func
 suffix:semicolon
 )brace
 )brace
-id|check_highmem_ptes
-c_func
-(paren
-)paren
-suffix:semicolon
 id|need_resched
 suffix:colon
 id|preempt_disable

@@ -73,28 +73,6 @@ mdefine_line|#define kunmap_atomic(addr, idx)&t;do { } while (0)
 DECL|macro|kmap_atomic_to_page
 mdefine_line|#define kmap_atomic_to_page(ptr)&t;virt_to_page(ptr)
 macro_line|#endif /* CONFIG_HIGHMEM */
-macro_line|#if defined(CONFIG_DEBUG_HIGHMEM) &amp;&amp; defined(CONFIG_HIGHMEM)
-r_extern
-r_void
-id|check_highmem_ptes
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|function|check_highmem_ptes
-r_static
-r_inline
-r_void
-id|check_highmem_ptes
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
-macro_line|#endif
 multiline_comment|/* when CONFIG_HIGHMEM is not set these will be plain clear/copy_page */
 DECL|function|clear_user_highpage
 r_static
