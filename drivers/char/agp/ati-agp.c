@@ -317,6 +317,15 @@ op_plus
 id|i
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|page_map-&gt;remapped
+op_plus
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 r_return
 l_int|0
@@ -850,16 +859,25 @@ op_star
 id|mem
 )paren
 (brace
-id|OUTREG32
+id|writel
+c_func
+(paren
+l_int|1
+comma
+id|ati_generic_private.registers
+op_plus
+id|ATI_GART_CACHE_CNTRL
+)paren
+suffix:semicolon
+id|readl
 c_func
 (paren
 id|ati_generic_private.registers
-comma
+op_plus
 id|ATI_GART_CACHE_CNTRL
-comma
-l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 DECL|function|ati_cleanup
 r_static
@@ -1064,16 +1082,25 @@ l_int|0x20000
 suffix:semicolon
 multiline_comment|/* address to map too */
 multiline_comment|/*&n;&t;pci_read_config_dword(agp_bridge.dev, AGP_APBASE, &amp;temp);&n;&t;agp_bridge.gart_bus_addr = (temp &amp; PCI_BASE_ADDRESS_MEM_MASK);&n;&t;printk(KERN_INFO PFX &quot;IGP320 gart_bus_addr: %x&bslash;n&quot;, agp_bridge.gart_bus_addr);&n;        */
-id|OUTREG32
+id|writel
+c_func
+(paren
+l_int|0x60000
+comma
+id|ati_generic_private.registers
+op_plus
+id|ATI_GART_FEATURE_ID
+)paren
+suffix:semicolon
+id|readl
 c_func
 (paren
 id|ati_generic_private.registers
-comma
+op_plus
 id|ATI_GART_FEATURE_ID
-comma
-l_int|0x60000
 )paren
 suffix:semicolon
+multiline_comment|/* PCI Posting.*/
 multiline_comment|/* SIGNALED_SYSTEM_ERROR @ NB_STATUS */
 id|pci_read_config_dword
 c_func
@@ -1103,16 +1130,25 @@ l_int|14
 )paren
 suffix:semicolon
 multiline_comment|/* Write out the address of the gatt table */
-id|OUTREG32
+id|writel
+c_func
+(paren
+id|agp_bridge-&gt;gatt_bus_addr
+comma
+id|ati_generic_private.registers
+op_plus
+id|ATI_GART_BASE
+)paren
+suffix:semicolon
+id|readl
 c_func
 (paren
 id|ati_generic_private.registers
-comma
+op_plus
 id|ATI_GART_BASE
-comma
-id|agp_bridge-&gt;gatt_bus_addr
 )paren
 suffix:semicolon
+multiline_comment|/* PCI Posting. */
 r_return
 l_int|0
 suffix:semicolon
@@ -1351,6 +1387,19 @@ id|addr
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|cur_gatt
+op_plus
+id|GET_GATT_OFF
+c_func
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 id|agp_bridge-&gt;driver
 op_member_access_from_pointer
@@ -1463,6 +1512,19 @@ id|addr
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|cur_gatt
+op_plus
+id|GET_GATT_OFF
+c_func
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 id|agp_bridge-&gt;driver
 op_member_access_from_pointer
@@ -1787,6 +1849,19 @@ id|addr
 )paren
 )paren
 suffix:semicolon
+id|readl
+c_func
+(paren
+id|page_dir.remapped
+op_plus
+id|GET_PAGE_DIR_OFF
+c_func
+(paren
+id|addr
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* PCI Posting. */
 )brace
 r_return
 l_int|0
