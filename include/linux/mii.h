@@ -347,6 +347,11 @@ id|mii_data
 comma
 r_int
 id|cmd
+comma
+r_int
+r_int
+op_star
+id|duplex_changed
 )paren
 suffix:semicolon
 multiline_comment|/* This structure is used in all SIOCxMIIxxx ioctl calls */

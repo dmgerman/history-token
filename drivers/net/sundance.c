@@ -7436,6 +7436,8 @@ comma
 id|data
 comma
 id|cmd
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -7444,18 +7446,6 @@ c_func
 op_amp
 id|np-&gt;lock
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|1
-)paren
-multiline_comment|/* don&squot;t care about duplex change, fix up rc */
-id|rc
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_return
