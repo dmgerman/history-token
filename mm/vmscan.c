@@ -3001,7 +3001,6 @@ id|sc-&gt;nr_to_scan
 op_assign
 id|count
 suffix:semicolon
-r_return
 id|shrink_cache
 c_func
 (paren
