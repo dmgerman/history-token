@@ -726,6 +726,13 @@ id|bdev
 )paren
 (brace
 r_return
+id|bdev-&gt;bd_contains
+op_eq
+id|bdev
+ques
+c_cond
+l_int|0
+suffix:colon
 id|bdev-&gt;bd_part-&gt;start_sect
 suffix:semicolon
 )brace
