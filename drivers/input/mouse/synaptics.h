@@ -101,6 +101,8 @@ mdefine_line|#define SYN_MODEL_GEOMETRY(m)&t;&t;((m) &amp; 0x0f)
 multiline_comment|/* synaptics capability bits */
 DECL|macro|SYN_CAP_EXTENDED
 mdefine_line|#define SYN_CAP_EXTENDED(c)&t;&t;((c) &amp; (1 &lt;&lt; 23))
+DECL|macro|SYN_CAP_MIDDLE_BUTTON
+mdefine_line|#define SYN_CAP_MIDDLE_BUTTON(c)&t;((c) &amp; (1 &lt;&lt; 18))
 DECL|macro|SYN_CAP_PASS_THROUGH
 mdefine_line|#define SYN_CAP_PASS_THROUGH(c)&t;&t;((c) &amp; (1 &lt;&lt; 7))
 DECL|macro|SYN_CAP_SLEEP
@@ -185,6 +187,13 @@ DECL|member|right
 r_int
 r_int
 id|right
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|middle
+r_int
+r_int
+id|middle
 suffix:colon
 l_int|1
 suffix:semicolon
