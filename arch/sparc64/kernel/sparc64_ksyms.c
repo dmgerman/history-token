@@ -639,6 +639,13 @@ r_int
 r_int
 id|pfn_base
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|sys_call_table
+(braket
+)braket
+suffix:semicolon
 multiline_comment|/* used by various drivers */
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
@@ -1907,6 +1914,14 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ns87303_lock
+)paren
+suffix:semicolon
+multiline_comment|/* for solaris compat module */
+DECL|variable|sys_call_table
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|sys_call_table
 )paren
 suffix:semicolon
 eof
