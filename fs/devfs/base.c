@@ -7311,7 +7311,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 id|de
 op_assign
@@ -8023,7 +8023,7 @@ id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 id|fs_info
 op_assign
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 id|parent
 op_assign
@@ -8392,7 +8392,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_void
 op_star
@@ -8913,7 +8913,7 @@ suffix:semicolon
 )brace
 id|fs_info
 op_assign
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 id|de
 op_assign
@@ -9079,7 +9079,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 id|devfs_handle_t
 id|parent
@@ -9335,7 +9335,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_struct
 id|devfs_entry
@@ -9747,7 +9747,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 id|de
 op_assign
@@ -9887,7 +9887,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_struct
 id|devfs_entry
@@ -10086,7 +10086,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_struct
 id|devfs_entry
@@ -10305,7 +10305,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_struct
 id|inode
@@ -10317,9 +10317,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 op_ne
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 )paren
 r_return
 op_minus
@@ -10508,7 +10508,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_struct
 id|devfs_entry
@@ -10983,7 +10983,7 @@ id|fs_info.sb
 op_assign
 id|sb
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 op_amp
 id|fs_info
@@ -11048,7 +11048,7 @@ id|DEBUG_S_READ
 comma
 l_string|&quot;(): made devfs ptr: %p&bslash;n&quot;
 comma
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 )paren
 suffix:semicolon
 r_return
@@ -11191,7 +11191,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sb-&gt;u.generic_sbp
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_struct
 id|devfsd_notify_struct
@@ -11713,7 +11713,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_switch
 c_cond
@@ -11978,7 +11978,7 @@ id|fs_info
 op_star
 id|fs_info
 op_assign
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_if
 c_cond

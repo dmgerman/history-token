@@ -198,7 +198,7 @@ c_func
 id|sbi-&gt;s_imap
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -690,7 +690,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon
@@ -1389,7 +1389,7 @@ l_string|&quot;MINIX-fs: unable to read superblock&bslash;n&quot;
 suffix:semicolon
 id|out
 suffix:colon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

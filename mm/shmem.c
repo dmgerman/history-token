@@ -234,7 +234,7 @@ id|sb
 )paren
 (brace
 r_return
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 suffix:semicolon
 )brace
 DECL|variable|shmem_ops
@@ -7254,7 +7254,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 id|sbinfo
 suffix:semicolon
@@ -7457,7 +7457,7 @@ c_func
 id|sbinfo
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -7480,10 +7480,10 @@ id|sb
 id|kfree
 c_func
 (paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -1724,7 +1724,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 id|qs
 suffix:semicolon
@@ -2004,7 +2004,7 @@ c_func
 id|qs
 )paren
 suffix:semicolon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2048,7 +2048,7 @@ c_func
 id|qs
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -300,10 +300,10 @@ id|s
 id|kfree
 c_func
 (paren
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 )paren
 suffix:semicolon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1049,7 +1049,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 id|sb
 suffix:semicolon
@@ -1288,7 +1288,7 @@ id|out_no_fs_ul
 suffix:colon
 id|out_no_fs
 suffix:colon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

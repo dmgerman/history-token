@@ -2279,17 +2279,12 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* Informational name */
-r_union
-(brace
-DECL|member|generic_sbp
+DECL|member|s_fs_info
 r_void
 op_star
-id|generic_sbp
+id|s_fs_info
 suffix:semicolon
-DECL|member|u
-)brace
-id|u
-suffix:semicolon
+multiline_comment|/* Filesystem private info */
 multiline_comment|/*&n;&t; * The next field is for VFS *only*. No filesystems have any business&n;&t; * even looking at it. You had been warned.&n;&t; */
 DECL|member|s_vfs_rename_sem
 r_struct

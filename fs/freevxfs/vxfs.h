@@ -726,6 +726,6 @@ DECL|macro|VXFS_INO
 mdefine_line|#define VXFS_INO(ip) &bslash;&n;&t;((struct vxfs_inode_info *)(ip)-&gt;u.generic_ip)
 multiline_comment|/*&n; * Get filesystem private data from VFS superblock.&n; */
 DECL|macro|VXFS_SBI
-mdefine_line|#define VXFS_SBI(sbp) &bslash;&n;&t;((struct vxfs_sb_info *)(sbp)-&gt;u.generic_sbp)
+mdefine_line|#define VXFS_SBI(sbp) &bslash;&n;&t;((struct vxfs_sb_info *)(sbp)-&gt;s_fs_info)
 macro_line|#endif /* _VXFS_SUPER_H_ */
 eof

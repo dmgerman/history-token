@@ -583,7 +583,7 @@ c_func
 id|asb
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1719,7 +1719,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 id|asb
 suffix:semicolon
@@ -2259,7 +2259,7 @@ id|bh
 suffix:semicolon
 id|error
 suffix:colon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

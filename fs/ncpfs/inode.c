@@ -1788,7 +1788,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 id|server
 suffix:semicolon
@@ -2930,7 +2930,7 @@ id|ncp_filp
 suffix:semicolon
 id|out
 suffix:colon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3087,7 +3087,7 @@ c_func
 id|server-&gt;packet
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

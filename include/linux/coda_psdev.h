@@ -93,7 +93,7 @@ op_star
 id|sb
 )paren
 op_member_access_from_pointer
-id|u.generic_sbp
+id|s_fs_info
 )paren
 )paren
 suffix:semicolon

@@ -324,7 +324,7 @@ op_assign
 id|data
 suffix:semicolon
 multiline_comment|/* For persistence of NFS exports etc. we use the same s_dev&n;&t;   each time we mount the device, don&squot;t just use an anonymous&n;&t;   device */
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 id|p
 suffix:semicolon

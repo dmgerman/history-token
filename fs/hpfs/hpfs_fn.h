@@ -2143,7 +2143,7 @@ id|sb
 )paren
 (brace
 r_return
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 suffix:semicolon
 )brace
 multiline_comment|/* super.c */

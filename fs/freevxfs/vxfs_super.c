@@ -446,7 +446,7 @@ id|sbp-&gt;s_magic
 op_assign
 id|rsbp-&gt;vs_magic
 suffix:semicolon
-id|sbp-&gt;u.generic_sbp
+id|sbp-&gt;s_fs_info
 op_assign
 (paren
 r_void

@@ -758,7 +758,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3224,7 +3224,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon
@@ -4604,7 +4604,7 @@ id|sbi-&gt;private_data
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

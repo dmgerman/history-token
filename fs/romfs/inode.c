@@ -55,7 +55,7 @@ r_return
 r_int
 r_int
 )paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 suffix:semicolon
 )brace
 DECL|function|ROMFS_I
@@ -309,7 +309,7 @@ id|s-&gt;s_magic
 op_assign
 id|ROMFS_MAGIC
 suffix:semicolon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 (paren
 r_void

@@ -4443,7 +4443,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|vfs_sb-&gt;u.generic_sbp
+id|vfs_sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -5372,8 +5372,8 @@ op_or
 id|MS_NODIRATIME
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Allocate a new ntfs_volume and place it in sb-&gt;u.generic_sbp. */
-id|sb-&gt;u.generic_sbp
+multiline_comment|/* Allocate a new ntfs_volume and place it in sb-&gt;s_fs_info. */
+id|sb-&gt;s_fs_info
 op_assign
 id|kmalloc
 c_func
@@ -6205,7 +6205,7 @@ suffix:semicolon
 multiline_comment|/* Errors at this stage are irrelevant. */
 id|err_out_now
 suffix:colon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

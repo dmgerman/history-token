@@ -173,7 +173,7 @@ id|sb-&gt;s_blocksize_bits
 op_assign
 id|PAGE_CACHE_SHIFT
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 (paren
 r_void
@@ -258,7 +258,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 suffix:semicolon
 macro_line|#ifdef CONFIG_JFFS_PROC_FS
 multiline_comment|/* Set up the jffs proc file system.  */
@@ -398,7 +398,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 )paren
 suffix:semicolon
 id|jffs_sb_err1
@@ -440,7 +440,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 suffix:semicolon
 id|D2
 c_func
@@ -512,7 +512,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 )paren
 suffix:semicolon
 id|D1
@@ -621,7 +621,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 id|fmc
 op_assign
@@ -1290,7 +1290,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 suffix:semicolon
 id|inode-&gt;i_ino
 op_assign
@@ -1401,7 +1401,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 suffix:semicolon
 r_struct
 id|jffs_fmcontrol
@@ -1621,7 +1621,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|old_dir-&gt;i_sb-&gt;u.generic_sbp
+id|old_dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 id|ASSERT
 c_func
@@ -2209,7 +2209,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_int
 id|j
@@ -2627,7 +2627,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_int
 id|len
@@ -3215,7 +3215,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_int
 id|r
@@ -4052,7 +4052,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_int
 id|ret
@@ -4155,7 +4155,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|dir-&gt;i_sb-&gt;u.generic_sbp
+id|dir-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 r_int
 id|ret
@@ -6936,7 +6936,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 )paren
 )paren
 (brace
@@ -7436,7 +7436,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 id|D3
 c_func
@@ -7758,7 +7758,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|inode-&gt;i_sb-&gt;u.generic_sbp
+id|inode-&gt;i_sb-&gt;s_fs_info
 suffix:semicolon
 id|f
 op_assign
@@ -7808,7 +7808,7 @@ r_struct
 id|jffs_control
 op_star
 )paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 suffix:semicolon
 id|lock_kernel
 c_func

@@ -9,7 +9,7 @@ mdefine_line|#define JFFS2_INODE_INFO(i) (list_entry(i, struct jffs2_inode_info,
 DECL|macro|OFNI_EDONI_2SFFJ
 mdefine_line|#define OFNI_EDONI_2SFFJ(f)  (&amp;(f)-&gt;vfs_inode)
 DECL|macro|JFFS2_SB_INFO
-mdefine_line|#define JFFS2_SB_INFO(sb) (sb-&gt;u.generic_sbp)
+mdefine_line|#define JFFS2_SB_INFO(sb) (sb-&gt;s_fs_info)
 DECL|macro|OFNI_BS_2SFFJ
 mdefine_line|#define OFNI_BS_2SFFJ(c)  ((struct super_block *)c-&gt;os_priv)
 macro_line|#elif defined(JFFS2_OUT_OF_KERNEL)

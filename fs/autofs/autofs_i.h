@@ -261,7 +261,7 @@ id|autofs_sb_info
 op_star
 )paren
 (paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 )paren
 suffix:semicolon
 )brace

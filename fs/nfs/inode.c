@@ -5099,7 +5099,7 @@ op_star
 id|data
 )paren
 (brace
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 id|data
 suffix:semicolon

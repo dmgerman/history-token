@@ -476,7 +476,7 @@ id|sb
 )paren
 (brace
 r_return
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 suffix:semicolon
 )brace
 multiline_comment|/** this says about version of key of all items (but stat data) the&n;    object consists of */

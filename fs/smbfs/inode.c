@@ -1865,7 +1865,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2012,7 +2012,7 @@ id|server
 r_goto
 id|out_no_server
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 id|server
 suffix:semicolon
@@ -2406,7 +2406,7 @@ id|KERN_ERR
 l_string|&quot;smb_fill_super: allocation failure&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

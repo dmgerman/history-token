@@ -688,7 +688,7 @@ op_amp
 id|sbi-&gt;sbi_cihead
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon

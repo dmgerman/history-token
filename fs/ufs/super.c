@@ -2629,7 +2629,7 @@ id|sbi
 r_goto
 id|failed_nomem
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon
@@ -4621,7 +4621,7 @@ c_func
 id|sbi
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4867,7 +4867,7 @@ id|kfree
 id|sbi
 )paren
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

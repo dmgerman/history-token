@@ -254,7 +254,7 @@ id|vfs_inode
 suffix:semicolon
 )brace
 DECL|macro|NFS_SB
-mdefine_line|#define NFS_SB(s)&t;&t;((struct nfs_server *)(s-&gt;u.generic_sbp))
+mdefine_line|#define NFS_SB(s)&t;&t;((struct nfs_server *)(s-&gt;s_fs_info))
 DECL|macro|NFS_FH
 mdefine_line|#define NFS_FH(inode)&t;&t;&t;(&amp;NFS_I(inode)-&gt;fh)
 DECL|macro|NFS_SERVER

@@ -1812,7 +1812,7 @@ id|sbi-&gt;s_block_base
 op_assign
 l_int|0
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon
@@ -2276,7 +2276,7 @@ id|sbi-&gt;s_bytesex
 op_assign
 id|BYTESEX_PDP
 suffix:semicolon
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon

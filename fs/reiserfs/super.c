@@ -1771,10 +1771,10 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 )paren
 suffix:semicolon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -5474,7 +5474,7 @@ r_goto
 id|error
 suffix:semicolon
 )brace
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon
@@ -6381,7 +6381,7 @@ id|sbi
 )paren
 suffix:semicolon
 )brace
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

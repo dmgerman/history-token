@@ -47,9 +47,9 @@ macro_line|#endif
 DECL|macro|XFS_BUILD_OPTIONS
 mdefine_line|#define XFS_BUILD_OPTIONS&t;XFS_ACL_STRING XFS_DMAPI_STRING &bslash;&n;&t;&t;&t;&t;XFS_RT_STRING &bslash;&n;&t;&t;&t;&t;XFS_QUOTA_STRING XFS_VNTRACE_STRING &bslash;&n;&t;&t;&t;&t;XFS_DBG_STRING /* DBG must be last */
 DECL|macro|LINVFS_GET_VFS
-mdefine_line|#define LINVFS_GET_VFS(s) &bslash;&n;&t;(vfs_t *)((s)-&gt;u.generic_sbp)
+mdefine_line|#define LINVFS_GET_VFS(s) &bslash;&n;&t;(vfs_t *)((s)-&gt;s_fs_info)
 DECL|macro|LINVFS_SET_VFS
-mdefine_line|#define LINVFS_SET_VFS(s, vfsp) &bslash;&n;&t;((s)-&gt;u.generic_sbp = vfsp)
+mdefine_line|#define LINVFS_SET_VFS(s, vfsp) &bslash;&n;&t;((s)-&gt;s_fs_info = vfsp)
 r_struct
 id|xfs_mount_args
 suffix:semicolon

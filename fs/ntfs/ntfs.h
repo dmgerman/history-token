@@ -143,7 +143,7 @@ id|sb
 )paren
 (brace
 r_return
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs_unmap_page - release a page that was mapped using ntfs_map_page()&n; * @page:&t;the page to release&n; *&n; * Unpin, unmap and release a page that was obtained from ntfs_map_page().&n; */

@@ -96,7 +96,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 )paren
 suffix:semicolon
 id|DPRINTK
@@ -685,7 +685,7 @@ id|sbi
 )paren
 )paren
 suffix:semicolon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 id|sbi
 suffix:semicolon

@@ -2546,7 +2546,7 @@ r_goto
 id|jffs_build_fs_fail
 suffix:semicolon
 )brace
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 op_assign
 (paren
 r_void

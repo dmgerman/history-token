@@ -152,7 +152,7 @@ id|capifs_sb_info
 op_star
 )paren
 (paren
-id|sb-&gt;u.generic_sbp
+id|sb-&gt;s_fs_info
 )paren
 suffix:semicolon
 )brace
@@ -1465,7 +1465,7 @@ op_star
 id|sbi-&gt;max_ncci
 )paren
 suffix:semicolon
-id|s-&gt;u.generic_sbp
+id|s-&gt;s_fs_info
 op_assign
 (paren
 r_void
