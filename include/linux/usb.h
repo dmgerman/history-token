@@ -106,6 +106,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;&t;/* for in_interrupt() */
 macro_line|#include &lt;linux/list.h&gt;&t;&t;/* for struct list_head */
 macro_line|#include &lt;linux/device.h&gt;&t;/* for struct device */
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* for struct file_operations */
+macro_line|#include &lt;linux/completion.h&gt;&t;/* for struct completion */
 DECL|function|wait_ms
 r_static
 id|__inline__
@@ -2468,6 +2469,119 @@ mdefine_line|#define USB_CTRL_GET_TIMEOUT&t;3
 macro_line|#endif
 DECL|macro|USB_CTRL_SET_TIMEOUT
 mdefine_line|#define USB_CTRL_SET_TIMEOUT&t;3
+multiline_comment|/**&n; * struct usb_sg_request - support for scatter/gather I/O&n; * @status: zero indicates success, else negative errno&n; * @bytes: counts bytes transferred.&n; *&n; * These requests are initialized using usb_sg_init(), and then are used&n; * as request handles passed to usb_sg_wait() or usb_sg_cancel().  Most&n; * members of the request object aren&squot;t for driver access.&n; *&n; * The status and bytecount values are valid only after usb_sg_wait()&n; * returns.  If the status is zero, then the bytecount matches the total&n; * from the request.&n; *&n; * After an error completion, drivers may need to clear a halt condition&n; * on the endpoint.&n; */
+DECL|struct|usb_sg_request
+r_struct
+id|usb_sg_request
+(brace
+DECL|member|status
+r_int
+id|status
+suffix:semicolon
+DECL|member|bytes
+r_int
+id|bytes
+suffix:semicolon
+singleline_comment|// members not documented above are private to usbcore,
+singleline_comment|// and are not provided for driver access!
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|usb_device
+op_star
+id|dev
+suffix:semicolon
+DECL|member|pipe
+r_int
+id|pipe
+suffix:semicolon
+DECL|member|sg
+r_struct
+id|scatterlist
+op_star
+id|sg
+suffix:semicolon
+DECL|member|nents
+r_int
+id|nents
+suffix:semicolon
+DECL|member|entries
+r_int
+id|entries
+suffix:semicolon
+DECL|member|urbs
+r_struct
+id|urb
+op_star
+op_star
+id|urbs
+suffix:semicolon
+DECL|member|count
+r_int
+id|count
+suffix:semicolon
+DECL|member|complete
+r_struct
+id|completion
+id|complete
+suffix:semicolon
+)brace
+suffix:semicolon
+r_int
+id|usb_sg_init
+(paren
+r_struct
+id|usb_sg_request
+op_star
+id|io
+comma
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_int
+id|pipe
+comma
+r_int
+id|period
+comma
+r_struct
+id|scatterlist
+op_star
+id|sg
+comma
+r_int
+id|nents
+comma
+r_int
+id|length
+comma
+r_int
+id|mem_flags
+)paren
+suffix:semicolon
+r_void
+id|usb_sg_cancel
+(paren
+r_struct
+id|usb_sg_request
+op_star
+id|io
+)paren
+suffix:semicolon
+r_void
+id|usb_sg_wait
+(paren
+r_struct
+id|usb_sg_request
+op_star
+id|io
+)paren
+suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit) [Historical; now gone]&n; *  - direction (1 bit)&n; *  - speed (1 bit) [Historical and specific to USB 1.1; now gone.]&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;[Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out],&n; *&t;&t;&t;&t;&t; 1 = Device-to-Host [In] ...&n; *&t;&t;&t;&t;&t;like endpoint bEndpointAddress)&n; *  - device:&t;&t;bits 8-14       ... bit positions known to uhci-hcd&n; *  - endpoint:&t;&t;bits 15-18      ... bit positions known to uhci-hcd&n; *  - Data0/1:&t;&t;bit 19&t;&t;[Historical; now gone. ]&n; *  - lowspeed:&t;&t;bit 26&t;&t;[Historical; now gone. ]&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt,&n; *&t;&t;&t;&t;&t; 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; */
 multiline_comment|/* NOTE:  these are not the standard USB_ENDPOINT_XFER_* values!! */
