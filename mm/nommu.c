@@ -1456,6 +1456,12 @@ id|ret
 comma
 id|membacked
 suffix:semicolon
+r_int
+r_int
+id|reqprot
+op_assign
+id|prot
+suffix:semicolon
 multiline_comment|/* do the simple checks first */
 r_if
 c_cond
@@ -1887,6 +1893,8 @@ id|security_file_mmap
 c_func
 (paren
 id|file
+comma
+id|reqprot
 comma
 id|prot
 comma
@@ -4024,6 +4032,20 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+)brace
+DECL|function|in_gate_area_no_task
+r_int
+id|in_gate_area_no_task
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof
