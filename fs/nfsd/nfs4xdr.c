@@ -8602,11 +8602,6 @@ id|exp
 op_assign
 id|cd-&gt;rd_fhp-&gt;fh_export
 suffix:semicolon
-id|u32
-id|bmval0
-comma
-id|bmval1
-suffix:semicolon
 r_int
 id|nfserr
 op_assign
@@ -8710,20 +8705,6 @@ id|namlen
 suffix:semicolon
 multiline_comment|/* name length &amp; name */
 multiline_comment|/*&n;&t; * Now we come to the ugly part: writing the fattr for this entry.&n;&t; */
-id|bmval0
-op_assign
-id|cd-&gt;rd_bmval
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|bmval1
-op_assign
-id|cd-&gt;rd_bmval
-(braket
-l_int|1
-)braket
-suffix:semicolon
 id|dentry
 op_assign
 id|lookup_one_len
@@ -8882,7 +8863,10 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|bmval0
+id|cd-&gt;rd_bmval
+(braket
+l_int|0
+)braket
 op_amp
 id|FATTR4_WORD0_RDATTR_ERROR
 )paren
@@ -8897,14 +8881,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|bmval0
-op_assign
-id|FATTR4_WORD0_RDATTR_ERROR
-suffix:semicolon
-id|bmval1
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8932,9 +8908,10 @@ op_assign
 id|htonl
 c_func
 (paren
-id|bmval0
+id|FATTR4_WORD0_RDATTR_ERROR
 )paren
 suffix:semicolon
+multiline_comment|/* bmval0 */
 op_star
 id|p
 op_increment
@@ -8942,9 +8919,10 @@ op_assign
 id|htonl
 c_func
 (paren
-id|bmval1
+l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* bmval1 */
 id|attrlenp
 op_assign
 id|p
