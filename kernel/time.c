@@ -15,6 +15,11 @@ r_extern
 id|rwlock_t
 id|xtime_lock
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|last_time_offset
+suffix:semicolon
 macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__ia64__)
 multiline_comment|/*&n; * sys_time() can be implemented in user-level using&n; * sys_gettimeofday().  Is this for backwards compatibility?  If so,&n; * why not move it into the appropriate arch directory (for those&n; * architectures that need it).&n; *&n; * XXX This function is NOT 64-bit clean!&n; */
 DECL|function|sys_time
@@ -119,6 +124,10 @@ op_assign
 id|value
 suffix:semicolon
 id|xtime.tv_usec
+op_assign
+l_int|0
+suffix:semicolon
+id|last_time_offset
 op_assign
 l_int|0
 suffix:semicolon
@@ -262,6 +271,10 @@ op_add_assign
 id|sys_tz.tz_minuteswest
 op_star
 l_int|60
+suffix:semicolon
+id|last_time_offset
+op_assign
+l_int|0
 suffix:semicolon
 id|write_unlock_irq
 c_func
@@ -1346,6 +1359,10 @@ suffix:semicolon
 id|txc-&gt;stbcnt
 op_assign
 id|pps_stbcnt
+suffix:semicolon
+id|last_time_offset
+op_assign
+l_int|0
 suffix:semicolon
 id|write_unlock_irq
 c_func

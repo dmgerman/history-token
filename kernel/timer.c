@@ -2436,6 +2436,11 @@ id|xtime_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
+DECL|variable|last_time_offset
+r_int
+r_int
+id|last_time_offset
+suffix:semicolon
 DECL|function|update_times
 r_static
 r_inline
@@ -2481,6 +2486,10 @@ id|ticks
 )paren
 suffix:semicolon
 )brace
+id|last_time_offset
+op_assign
+l_int|0
+suffix:semicolon
 id|write_unlock_irq
 c_func
 (paren
