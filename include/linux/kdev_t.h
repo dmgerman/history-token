@@ -41,55 +41,8 @@ r_return
 id|dev.value
 suffix:semicolon
 )brace
-DECL|function|val_to_kdev
-r_static
-r_inline
-id|kdev_t
-id|val_to_kdev
-c_func
-(paren
-r_int
-r_int
-id|val
-)paren
-(brace
-id|kdev_t
-id|dev
-suffix:semicolon
-id|dev.value
-op_assign
-id|val
-suffix:semicolon
-r_return
-id|dev
-suffix:semicolon
-)brace
-DECL|macro|HASHDEV
-mdefine_line|#define HASHDEV(dev)&t;(kdev_val(dev))
 DECL|macro|NODEV
 mdefine_line|#define NODEV&t;&t;(mk_kdev(0,0))
-DECL|function|kdev_same
-r_static
-r_inline
-r_int
-id|kdev_same
-c_func
-(paren
-id|kdev_t
-id|dev1
-comma
-id|kdev_t
-id|dev2
-)paren
-(brace
-r_return
-id|dev1.value
-op_eq
-id|dev2.value
-suffix:semicolon
-)brace
-DECL|macro|kdev_none
-mdefine_line|#define kdev_none(d1)&t;(!kdev_val(d1))
 multiline_comment|/* Mask off the high bits for now.. */
 DECL|macro|minor
 mdefine_line|#define minor(dev)&t;((dev).value &amp; 0xff)
