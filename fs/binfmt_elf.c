@@ -644,6 +644,11 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* And advance past the AT_NULL entry.  */
+id|ei_index
+op_add_assign
+l_int|2
+suffix:semicolon
 id|sp
 op_assign
 id|STACK_ADD
