@@ -1708,193 +1708,261 @@ op_assign
 l_string|&quot;GenuineIntel&quot;
 )brace
 comma
+dot
 id|c_models
-suffix:colon
+op_assign
 (brace
 (brace
+dot
+id|vendor
+op_assign
 id|X86_VENDOR_INTEL
 comma
+dot
+id|family
+op_assign
 l_int|4
 comma
+dot
+id|model_names
+op_assign
 (brace
 (braket
 l_int|0
 )braket
+op_assign
 l_string|&quot;486 DX-25/33&quot;
 comma
 (braket
 l_int|1
 )braket
+op_assign
 l_string|&quot;486 DX-50&quot;
 comma
 (braket
 l_int|2
 )braket
+op_assign
 l_string|&quot;486 SX&quot;
 comma
 (braket
 l_int|3
 )braket
+op_assign
 l_string|&quot;486 DX/2&quot;
 comma
 (braket
 l_int|4
 )braket
+op_assign
 l_string|&quot;486 SL&quot;
 comma
 (braket
 l_int|5
 )braket
+op_assign
 l_string|&quot;486 SX/2&quot;
 comma
 (braket
 l_int|7
 )braket
+op_assign
 l_string|&quot;486 DX/2-WB&quot;
 comma
 (braket
 l_int|8
 )braket
+op_assign
 l_string|&quot;486 DX/4&quot;
 comma
 (braket
 l_int|9
 )braket
+op_assign
 l_string|&quot;486 DX/4-WB&quot;
 )brace
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
 id|X86_VENDOR_INTEL
 comma
+dot
+id|family
+op_assign
 l_int|5
 comma
+dot
+id|model_names
+op_assign
 (brace
 (braket
 l_int|0
 )braket
+op_assign
 l_string|&quot;Pentium 60/66 A-step&quot;
 comma
 (braket
 l_int|1
 )braket
+op_assign
 l_string|&quot;Pentium 60/66&quot;
 comma
 (braket
 l_int|2
 )braket
+op_assign
 l_string|&quot;Pentium 75 - 200&quot;
 comma
 (braket
 l_int|3
 )braket
+op_assign
 l_string|&quot;OverDrive PODP5V83&quot;
 comma
 (braket
 l_int|4
 )braket
+op_assign
 l_string|&quot;Pentium MMX&quot;
 comma
 (braket
 l_int|7
 )braket
+op_assign
 l_string|&quot;Mobile Pentium 75 - 200&quot;
 comma
 (braket
 l_int|8
 )braket
+op_assign
 l_string|&quot;Mobile Pentium MMX&quot;
 )brace
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
 id|X86_VENDOR_INTEL
 comma
+dot
+id|family
+op_assign
 l_int|6
 comma
+dot
+id|model_names
+op_assign
 (brace
 (braket
 l_int|0
 )braket
+op_assign
 l_string|&quot;Pentium Pro A-step&quot;
 comma
 (braket
 l_int|1
 )braket
+op_assign
 l_string|&quot;Pentium Pro&quot;
 comma
 (braket
 l_int|3
 )braket
+op_assign
 l_string|&quot;Pentium II (Klamath)&quot;
 comma
 (braket
 l_int|4
 )braket
+op_assign
 l_string|&quot;Pentium II (Deschutes)&quot;
 comma
 (braket
 l_int|5
 )braket
+op_assign
 l_string|&quot;Pentium II (Deschutes)&quot;
 comma
 (braket
 l_int|6
 )braket
+op_assign
 l_string|&quot;Mobile Pentium II&quot;
 comma
 (braket
 l_int|7
 )braket
+op_assign
 l_string|&quot;Pentium III (Katmai)&quot;
 comma
 (braket
 l_int|8
 )braket
+op_assign
 l_string|&quot;Pentium III (Coppermine)&quot;
 comma
 (braket
 l_int|10
 )braket
+op_assign
 l_string|&quot;Pentium III (Cascades)&quot;
 comma
 (braket
 l_int|11
 )braket
+op_assign
 l_string|&quot;Pentium III (Tualatin)&quot;
 comma
 )brace
 )brace
 comma
 (brace
+dot
+id|vendor
+op_assign
 id|X86_VENDOR_INTEL
 comma
+dot
+id|family
+op_assign
 l_int|15
 comma
+dot
+id|model_names
+op_assign
 (brace
 (braket
 l_int|0
 )braket
+op_assign
 l_string|&quot;Pentium 4 (Unknown)&quot;
 comma
 (braket
 l_int|1
 )braket
+op_assign
 l_string|&quot;Pentium 4 (Willamette)&quot;
 comma
 (braket
 l_int|2
 )braket
+op_assign
 l_string|&quot;Pentium 4 (Northwood)&quot;
 comma
 (braket
 l_int|4
 )braket
+op_assign
 l_string|&quot;Pentium 4 (Foster)&quot;
 comma
 (braket
 l_int|5
 )braket
+op_assign
 l_string|&quot;Pentium 4 (Foster)&quot;
 comma
 )brace

@@ -90,8 +90,9 @@ id|agp_bridge_data
 id|agp_bridge
 op_assign
 (brace
+dot
 id|type
-suffix:colon
+op_assign
 id|NOT_SUPPORTED
 )brace
 suffix:semicolon

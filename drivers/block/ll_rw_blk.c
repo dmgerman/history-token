@@ -4488,12 +4488,6 @@ c_func
 id|rq
 )paren
 suffix:semicolon
-r_int
-r_int
-id|major
-comma
-id|index
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4563,16 +4557,6 @@ id|rq-&gt;rq_disk-&gt;in_flight
 op_increment
 suffix:semicolon
 )brace
-id|major
-op_assign
-id|rq-&gt;rq_disk-&gt;major
-suffix:semicolon
-id|index
-op_assign
-id|rq-&gt;rq_disk-&gt;first_minor
-op_rshift
-id|rq-&gt;rq_disk-&gt;minor_shift
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * add-request adds a request to the linked list.&n; * queue lock is held and interrupts disabled, as we muck with the&n; * request queue list.&n; */
 DECL|function|add_request

@@ -4,6 +4,7 @@ DECL|macro|_LINUX_CPU_H_
 mdefine_line|#define _LINUX_CPU_H_
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|struct|cpu
 r_struct
 id|cpu
@@ -35,6 +36,12 @@ r_struct
 id|node
 op_star
 )paren
+suffix:semicolon
+multiline_comment|/* Stop CPUs going up and down. */
+r_extern
+r_struct
+id|semaphore
+id|cpucontrol
 suffix:semicolon
 macro_line|#endif /* _LINUX_CPU_H_ */
 eof

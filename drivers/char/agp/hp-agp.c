@@ -50,12 +50,14 @@ id|hp_zx1_masks
 op_assign
 (brace
 (brace
+dot
 id|mask
-suffix:colon
+op_assign
 id|HP_ZX1_PDIR_VALID_BIT
 comma
+dot
 id|type
-suffix:colon
+op_assign
 l_int|0
 )brace
 )brace

@@ -1402,12 +1402,14 @@ id|file_operations
 id|rtc_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|rtc_ioctl
 comma
 )brace

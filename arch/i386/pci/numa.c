@@ -510,12 +510,14 @@ id|pci_ops
 id|pci_direct_conf1_mq
 op_assign
 (brace
+dot
 id|read
-suffix:colon
+op_assign
 id|pci_conf1_mq_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|pci_conf1_mq_write
 )brace
 suffix:semicolon

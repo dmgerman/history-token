@@ -24,8 +24,9 @@ id|NR_NODES
 op_assign
 (brace
 (brace
+dot
 id|bdata
-suffix:colon
+op_assign
 op_amp
 id|node_bootmem_data
 (braket
@@ -34,8 +35,9 @@ l_int|0
 )brace
 comma
 (brace
+dot
 id|bdata
-suffix:colon
+op_assign
 op_amp
 id|node_bootmem_data
 (braket
@@ -44,8 +46,9 @@ l_int|1
 )brace
 comma
 (brace
+dot
 id|bdata
-suffix:colon
+op_assign
 op_amp
 id|node_bootmem_data
 (braket
@@ -54,8 +57,9 @@ l_int|2
 )brace
 comma
 (brace
+dot
 id|bdata
-suffix:colon
+op_assign
 op_amp
 id|node_bootmem_data
 (braket

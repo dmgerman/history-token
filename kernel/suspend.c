@@ -163,7 +163,7 @@ suffix:semicolon
 multiline_comment|/* For resume= kernel option */
 DECL|variable|resume_device
 r_static
-id|kdev_t
+id|dev_t
 id|resume_device
 suffix:semicolon
 multiline_comment|/* Local variables that should not be affected by save */
@@ -4884,14 +4884,10 @@ id|error
 suffix:semicolon
 id|resume_device
 op_assign
-id|to_kdev_t
-c_func
-(paren
 id|name_to_dev_t
 c_func
 (paren
 id|specialfile
-)paren
 )paren
 suffix:semicolon
 id|scratch_page
@@ -4938,11 +4934,7 @@ op_assign
 id|bdget
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
 id|resume_device
-)paren
 )paren
 suffix:semicolon
 r_if

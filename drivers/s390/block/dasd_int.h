@@ -1556,14 +1556,6 @@ r_int
 suffix:semicolon
 id|dasd_devmap_t
 op_star
-id|dasd_devmap_from_kdev
-c_func
-(paren
-id|kdev_t
-)paren
-suffix:semicolon
-id|dasd_devmap_t
-op_star
 id|dasd_devmap_from_bdev
 c_func
 (paren

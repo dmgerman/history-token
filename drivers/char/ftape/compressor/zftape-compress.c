@@ -4759,27 +4759,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VER(2,1,18)
-DECL|function|can_unload
-r_static
-r_int
-id|can_unload
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|keep_module_locked
-ques
-c_cond
-op_minus
-id|EBUSY
-suffix:colon
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Called by modules package when installing the driver&n; */
 DECL|function|init_module
 r_int
@@ -4801,6 +4780,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* remove global ftape symbols */
 macro_line|#else
+macro_line|#if 0 /* FIXME --RR */
 r_if
 c_cond
 (paren
@@ -4822,6 +4802,7 @@ id|__this_module.can_unload
 op_assign
 id|can_unload
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 id|result
 op_assign

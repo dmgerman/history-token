@@ -45,6 +45,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|FDPATCHES
 mdefine_line|#define FDPATCHES
 macro_line|#include &lt;linux/fdreg.h&gt;
@@ -13869,15 +13870,10 @@ multiline_comment|/* invalidate the buffer track to force a reread */
 id|set_bit
 c_func
 (paren
-id|DRIVE
-c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
+r_int
 )paren
-)paren
+id|bdev-&gt;bd_disk-&gt;private_data
 comma
 op_amp
 id|fake_change

@@ -245,8 +245,17 @@ id|resume
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|macro|software_suspend
-mdefine_line|#define software_suspend()&t;&t;do { } while(0)
+DECL|function|software_suspend
+r_static
+r_inline
+r_void
+id|software_suspend
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 DECL|macro|software_resume
 mdefine_line|#define software_resume()&t;&t;do { } while(0)
 DECL|macro|register_suspend_notifier
