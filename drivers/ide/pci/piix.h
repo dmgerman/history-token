@@ -1614,11 +1614,6 @@ op_assign
 id|init_hwif_piix
 comma
 dot
-id|init_dma
-op_assign
-id|init_dma_piix
-comma
-dot
 id|channels
 op_assign
 l_int|2
@@ -1697,11 +1692,6 @@ dot
 id|init_hwif
 op_assign
 id|init_hwif_piix
-comma
-dot
-id|init_dma
-op_assign
-id|init_dma_piix
 comma
 dot
 id|channels
