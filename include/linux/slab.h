@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * linux/mm/slab.h&n; * Written by Mark Hemment, 1996.&n; * (markhe@nextd.demon.co.uk)&n; */
-macro_line|#if&t;!defined(_LINUX_SLAB_H)
+macro_line|#ifndef _LINUX_SLAB_H
 DECL|macro|_LINUX_SLAB_H
 mdefine_line|#define&t;_LINUX_SLAB_H
 macro_line|#if&t;defined(__KERNEL__)
