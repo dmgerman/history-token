@@ -1498,6 +1498,7 @@ c_func
 op_amp
 id|mtd_queue
 )paren
+)paren
 op_ne
 l_int|NULL
 )paren
