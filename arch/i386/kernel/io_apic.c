@@ -3019,7 +3019,6 @@ id|ioapic_pirq_setup
 )paren
 suffix:semicolon
 DECL|function|get_physical_broadcast
-r_static
 r_int
 id|get_physical_broadcast
 c_func

@@ -261,7 +261,7 @@ r_return
 id|hweight_long
 c_func
 (paren
-id|i
+id|apicid
 op_amp
 l_int|0xf
 )paren
@@ -269,7 +269,7 @@ op_eq
 l_int|1
 op_logical_and
 (paren
-id|i
+id|apicid
 op_rshift
 l_int|4
 )paren
@@ -859,7 +859,7 @@ c_cond
 id|MP_valid_apicid
 c_func
 (paren
-id|m-&gt;mpc_apicid
+id|apicid
 comma
 id|ver
 )paren
@@ -3620,7 +3620,7 @@ id|processor
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; defined(CONFIG_ACPI_INTERPRETER)
+macro_line|#if defined(CONFIG_X86_IO_APIC) &amp;&amp; (defined(CONFIG_ACPI_INTERPRETER) || defined(CONFIG_ACPI_BOOT))
 DECL|macro|MP_ISA_BUS
 mdefine_line|#define MP_ISA_BUS&t;&t;0
 DECL|macro|MP_MAX_IOAPIC_PIN
@@ -4757,6 +4757,6 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif /*CONFIG_ACPI_PCI*/
-macro_line|#endif /*CONFIG_X86_IO_APIC &amp;&amp; CONFIG_ACPI_INTERPRETER*/
+macro_line|#endif /*CONFIG_X86_IO_APIC &amp;&amp; (CONFIG_ACPI_INTERPRETER || CONFIG_ACPI_BOOT)*/
 macro_line|#endif /*CONFIG_ACPI_BOOT*/
 eof
