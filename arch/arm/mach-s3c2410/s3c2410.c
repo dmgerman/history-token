@@ -121,6 +121,11 @@ c_func
 id|ADC
 )paren
 comma
+id|IODESC_ENT
+c_func
+(paren
+id|WATCHDOG
+)paren
 )brace
 suffix:semicolon
 DECL|variable|s3c_uart0_resource
