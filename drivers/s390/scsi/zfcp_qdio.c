@@ -244,7 +244,7 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Buffers per page %d.&bslash;n&quot;
+l_string|&quot;buffers_per_page=%d&bslash;n&quot;
 comma
 id|qdio_buffers_per_page
 )paren
@@ -302,9 +302,8 @@ l_int|NULL
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Could not allocate &quot;
-l_string|&quot;memory for qdio transfer &quot;
-l_string|&quot;structures.&bslash;n&quot;
+l_string|&quot;error: allocation of &quot;
+l_string|&quot;QDIO buffer failed &bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -382,7 +381,7 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Buffers per page %d.&bslash;n&quot;
+l_string|&quot;buffers_per_page=%d&bslash;n&quot;
 comma
 id|qdio_buffers_per_page
 )paren
@@ -465,9 +464,8 @@ id|QDIO_MAX_BUFFERS_PER_Q
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;error: Out of memory allocating &quot;
-l_string|&quot;request queue, only %d buffers got. &quot;
-l_string|&quot;Binning them.&bslash;n&quot;
+l_string|&quot;only %d QDIO buffers allocated for request &quot;
+l_string|&quot;queue&bslash;n&quot;
 comma
 id|buffer_count
 )paren
@@ -522,9 +520,8 @@ id|QDIO_MAX_BUFFERS_PER_Q
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;error: Out of memory allocating &quot;
-l_string|&quot;response queue, only %d buffers got. &quot;
-l_string|&quot;Binning them.&bslash;n&quot;
+l_string|&quot;only %d QDIO buffers allocated for response &quot;
+l_string|&quot;queue&quot;
 comma
 id|buffer_count
 )paren
@@ -546,7 +543,7 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Deallocating request_queue Buffers.&bslash;n&quot;
+l_string|&quot;freeing request_queue buffers&bslash;n&quot;
 )paren
 suffix:semicolon
 id|zfcp_qdio_buffers_dequeue
@@ -593,7 +590,7 @@ id|adapter
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Deallocating request_queue Buffers.&bslash;n&quot;
+l_string|&quot;freeing request_queue buffers&bslash;n&quot;
 )paren
 suffix:semicolon
 id|zfcp_qdio_buffers_dequeue
@@ -613,7 +610,7 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Deallocating response_queue Buffers.&bslash;n&quot;
+l_string|&quot;freeing response_queue buffers&bslash;n&quot;
 )paren
 suffix:semicolon
 id|zfcp_qdio_buffers_dequeue
@@ -868,8 +865,8 @@ suffix:semicolon
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;A qdio problem occured. The status, qdio_error &quot;
-l_string|&quot;and siga_error are 0x%x, 0x%x and 0x%x&bslash;n&quot;
+l_string|&quot;QDIO problem occurred (status=0x%x, &quot;
+l_string|&quot;qdio_error=0x%x, siga_error=0x%x)&bslash;n&quot;
 comma
 id|status
 comma
@@ -1013,8 +1010,7 @@ suffix:colon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: Unknown qdio error reported &quot;
-l_string|&quot;(debug info 0x%x)&bslash;n&quot;
+l_string|&quot;bug: unknown QDIO error 0x%x&bslash;n&quot;
 comma
 id|qdio_error
 )paren
@@ -1115,7 +1111,7 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;busid=%s, first=%d, count=%d&bslash;n&quot;
+l_string|&quot;adapter %s, first=%d, elements_processed=%d&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -1195,7 +1191,7 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Elements_processed = %d, free count=%d&bslash;n&quot;
+l_string|&quot;elements_processed=%d, free count=%d&bslash;n&quot;
 comma
 id|elements_processed
 comma
@@ -1349,7 +1345,7 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;first BUFFERE flags=0x%x &bslash;n&quot;
+l_string|&quot;first BUFFERE flags=0x%x&bslash;n&quot;
 comma
 id|buffere-&gt;flags
 )paren
@@ -1433,53 +1429,44 @@ id|retval
 )paren
 (brace
 id|ZFCP_LOG_NORMAL
+c_func
 (paren
-l_string|&quot;bug: Inbound packet seems not to &quot;
-l_string|&quot;have been sent at all. It will be &quot;
-l_string|&quot;ignored. (debug info 0x%lx, 0x%lx, &quot;
-l_string|&quot;%d, %d, %s)&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|buffere-&gt;addr
-comma
-(paren
-r_int
-r_int
-)paren
-op_amp
-(paren
-id|buffere-&gt;addr
-)paren
-comma
-id|first_element
-comma
-id|elements_processed
+l_string|&quot;bug: unexpected inbound &quot;
+l_string|&quot;packet on adapter %s &quot;
+l_string|&quot;(reqid=0x%lx, &quot;
+l_string|&quot;first_element=%d, &quot;
+l_string|&quot;elements_processed=%d)&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
 (paren
 id|adapter
 )paren
+comma
+(paren
+r_int
+r_int
+)paren
+id|buffere-&gt;addr
+comma
+id|first_element
+comma
+id|elements_processed
 )paren
 suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Dump of inbound BUFFER %d &quot;
-l_string|&quot;BUFFERE %d at address 0x%lx&bslash;n&quot;
+l_string|&quot;hex dump of inbound buffer &quot;
+l_string|&quot;at address %p &quot;
+l_string|&quot;(buffer_index=%d, &quot;
+l_string|&quot;buffere_index=%d)&bslash;n&quot;
+comma
+id|buffer
 comma
 id|buffer_index
 comma
 id|buffere_index
-comma
-(paren
-r_int
-r_int
-)paren
-id|buffer
 )paren
 suffix:semicolon
 id|ZFCP_HEX_DUMP
@@ -1556,8 +1543,9 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;Calling do QDIO busid=%s, flags=0x%x, queue_no=%i, &quot;
-l_string|&quot;index_in_queue=%i, count=%i, buffers=0x%lx&bslash;n&quot;
+l_string|&quot;calling do_QDIO on adapter %s (flags=0x%x, &quot;
+l_string|&quot;queue_no=%i, index_in_queue=%i, count=%i, &quot;
+l_string|&quot;buffers=0x%lx&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -1628,9 +1616,9 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Inbound data regions could not be cleared &quot;
-l_string|&quot;Transfer queues may be down. &quot;
-l_string|&quot;(info %d, %d, %d)&bslash;n&quot;
+l_string|&quot;clearing of inbound data regions failed, &quot;
+l_string|&quot;queues may be down &quot;
+l_string|&quot;(count=%d, start=%d, retval=%d)&bslash;n&quot;
 comma
 id|count
 comma
@@ -1662,8 +1650,8 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;%i buffers successfully enqueued to response &quot;
-l_string|&quot;queue starting at position %i&bslash;n&quot;
+l_string|&quot;%i buffers enqueued to response &quot;
+l_string|&quot;queue at position %i&bslash;n&quot;
 comma
 id|count
 comma
@@ -1743,8 +1731,9 @@ id|sbale_addr
 )paren
 (brace
 id|ZFCP_LOG_NORMAL
+c_func
 (paren
-l_string|&quot;bug: Inbound data faulty, contains null-pointer!&bslash;n&quot;
+l_string|&quot;bug: invalid reqid&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -1781,25 +1770,13 @@ id|fsf_req-&gt;adapter
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: An inbound FSF acknowledgement was not &quot;
-l_string|&quot;correct (debug info 0x%lx, 0x%lx, 0%lx) &bslash;n&quot;
+l_string|&quot;bug: invalid reqid (fsf_req=%p, &quot;
+l_string|&quot;fsf_req-&gt;adapter=%p, adapter=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req-&gt;adapter
 comma
-(paren
-r_int
-r_int
-)paren
 id|adapter
 )paren
 suffix:semicolon
@@ -1843,18 +1820,10 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;fsf_req at 0x%lx, QTCB at 0x%lx&bslash;n&quot;
+l_string|&quot;fsf_req at %p, QTCB at %p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req
 comma
-(paren
-r_int
-r_int
-)paren
 id|fsf_req-&gt;qtcb
 )paren
 suffix:semicolon
@@ -1871,7 +1840,7 @@ id|fsf_req-&gt;qtcb
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;HEX DUMP OF 1ST BUFFERE PAYLOAD (QTCB):&bslash;n&quot;
+l_string|&quot;hex dump of QTCB:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ZFCP_HEX_DUMP
@@ -3073,14 +3042,10 @@ suffix:semicolon
 id|ZFCP_LOG_TRACE
 c_func
 (paren
-l_string|&quot;zeroing BUFFER %d at address 0x%lx&bslash;n&quot;
+l_string|&quot;zeroing BUFFER %d at address %p&bslash;n&quot;
 comma
 id|index
 comma
-(paren
-r_int
-r_int
-)paren
 id|buf
 (braket
 id|index

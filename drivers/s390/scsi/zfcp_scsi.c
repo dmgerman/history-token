@@ -661,16 +661,12 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|ZFCP_LOG_INFO
+id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;no unit associated with SCSI device at &quot;
-l_string|&quot;address 0x%lx&bslash;n&quot;
+l_string|&quot;bug: no unit associated with SCSI device at &quot;
+l_string|&quot;address %p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|sdpnt
 )paren
 suffix:semicolon
@@ -872,9 +868,8 @@ id|unit-&gt;status
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Stopping SCSI IO on the unit with &quot;
-l_string|&quot;FCP LUN 0x%Lx connected to the port &quot;
-l_string|&quot;with WWPN 0x%Lx at the adapter %s.&bslash;n&quot;
+l_string|&quot;stopping SCSI I/O on unit 0x%016Lx on port &quot;
+l_string|&quot;0x%016Lx on adapter %s&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -920,8 +915,8 @@ id|unit-&gt;status
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;adapter %s not ready or unit with LUN 0x%Lx &quot;
-l_string|&quot;on the port with WWPN 0x%Lx in recovery.&bslash;n&quot;
+l_string|&quot;adapter %s not ready or unit 0x%016Lx &quot;
+l_string|&quot;on port 0x%016Lx in recovery&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_unit
 c_func
@@ -971,7 +966,7 @@ l_int|0
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;error: Could not send a Send FCP Command&bslash;n&quot;
+l_string|&quot;error: initiation of Send FCP Cmnd failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -1459,28 +1454,18 @@ id|ZFCP_ABORT_DBF_LENGTH
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*TRACE*/
 id|ZFCP_LOG_INFO
+c_func
 (paren
-l_string|&quot;Aborting for adapter=0x%lx, busid=%s, scsi_cmnd=0x%lx&bslash;n&quot;
+l_string|&quot;aborting scsi_cmnd=%p on adapter %s&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
-id|adapter
+id|scpnt
 comma
 id|zfcp_get_busid_by_adapter
 c_func
 (paren
 id|adapter
 )paren
-comma
-(paren
-r_int
-r_int
-)paren
-id|scpnt
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -1513,12 +1498,8 @@ multiline_comment|/* DEBUG */
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;req_data=0x%lx&bslash;n&quot;
+l_string|&quot;req_data=%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|req_data
 )paren
 suffix:semicolon
@@ -1586,16 +1567,11 @@ id|req_data-&gt;send_fcp_command_task.start_jiffies
 op_div
 id|HZ
 suffix:semicolon
-multiline_comment|/* DEBUG */
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;old_fsf_req=0x%lx&bslash;n&quot;
+l_string|&quot;old_fsf_req=%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|old_fsf_req
 )paren
 suffix:semicolon
@@ -1618,7 +1594,7 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: No old fsf request found.&bslash;n&quot;
+l_string|&quot;bug: no old fsf request found&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ZFCP_LOG_NORMAL
@@ -1700,15 +1676,11 @@ multiline_comment|/*&n;&t; * We have to collect all information (e.g. unit) need
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;unit=0x%lx, unit_fcp_lun=0x%Lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|unit
+l_string|&quot;unit 0x%016Lx (%p)&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
+comma
+id|unit
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The &squot;Abort FCP Command&squot; routine may block (call schedule)&n;&t; * because it may wait for a free SBAL.&n;&t; * That&squot;s why we must release the lock and enable the&n;&t; * interrupts before.&n;&t; * On the other hand we do not need the lock anymore since&n;&t; * all critical accesses to scsi_req are done.&n;&t; */
@@ -1743,12 +1715,8 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;new_fsf_req=0x%lx&bslash;n&quot;
+l_string|&quot;new_fsf_req=%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|new_fsf_req
 )paren
 suffix:semicolon
@@ -1763,17 +1731,11 @@ id|retval
 op_assign
 id|FAILED
 suffix:semicolon
-id|ZFCP_LOG_DEBUG
+id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;warning: Could not abort SCSI command &quot;
-l_string|&quot;at 0x%lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|scpnt
+l_string|&quot;error: initiation of Abort FCP Cmnd &quot;
+l_string|&quot;failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|strncpy
@@ -1794,10 +1756,10 @@ multiline_comment|/* wait for completion of abort */
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;Waiting for cleanup....&bslash;n&quot;
+l_string|&quot;waiting for cleanup...&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef 1
+macro_line|#if 1
 multiline_comment|/*&n;&t; * FIXME:&n;&t; * copying zfcp_fsf_req_wait_and_cleanup code is not really nice&n;&t; */
 id|__wait_event
 c_func
@@ -2195,7 +2157,7 @@ id|unit
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;bug: Tried to reset a non existant unit.&bslash;n&quot;
+l_string|&quot;bug: Tried reset for nonexistent unit&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -2209,7 +2171,7 @@ suffix:semicolon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Resetting Device fcp_lun=0x%Lx&bslash;n&quot;
+l_string|&quot;resetting unit 0x%016Lx&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 )paren
@@ -2246,13 +2208,10 @@ id|retval
 )paren
 (brace
 id|ZFCP_LOG_DEBUG
+c_func
 (paren
-l_string|&quot;logical unit reset failed (unit=0x%lx)&bslash;n&quot;
+l_string|&quot;unit reset failed (unit=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|unit
 )paren
 suffix:semicolon
@@ -2277,13 +2236,10 @@ multiline_comment|/* fall through and try &squot;target reset&squot; next */
 r_else
 (brace
 id|ZFCP_LOG_DEBUG
+c_func
 (paren
-l_string|&quot;logical unit reset succeeded (unit=0x%lx)&bslash;n&quot;
+l_string|&quot;unit reset succeeded (unit=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|unit
 )paren
 suffix:semicolon
@@ -2316,12 +2272,8 @@ id|retval
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;target reset failed (unit=0x%lx)&bslash;n&quot;
+l_string|&quot;target reset failed (unit=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|unit
 )paren
 suffix:semicolon
@@ -2335,12 +2287,8 @@ r_else
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;target reset succeeded (unit=0x%lx)&bslash;n&quot;
+l_string|&quot;target reset succeeded (unit=%p)&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|unit
 )paren
 suffix:semicolon
@@ -2418,11 +2366,9 @@ id|fsf_req
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: Out of resources. Could not create a &quot;
-l_string|&quot;task management (abort, reset, etc) request &quot;
-l_string|&quot;for the unit with FCP-LUN 0x%Lx connected to &quot;
-l_string|&quot;the port with WWPN 0x%Lx connected to &quot;
-l_string|&quot;the adapter %s.&bslash;n&quot;
+l_string|&quot;error: creation of task management request &quot;
+l_string|&quot;failed for unit 0x%016Lx on port 0x%016Lx on  &quot;
+l_string|&quot;adapter %s&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 comma
@@ -2538,18 +2484,11 @@ op_star
 )paren
 id|scpnt-&gt;device-&gt;hostdata
 suffix:semicolon
-multiline_comment|/*DEBUG*/
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Resetting because of problems with &quot;
-l_string|&quot;unit=0x%lx, unit_fcp_lun=0x%Lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|unit
+l_string|&quot;bus reset because of problems with &quot;
+l_string|&quot;unit 0x%016Lx&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 )paren
@@ -2626,18 +2565,11 @@ op_star
 )paren
 id|scpnt-&gt;device-&gt;hostdata
 suffix:semicolon
-multiline_comment|/*DEBUG*/
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Resetting because of problems with &quot;
-l_string|&quot;unit=0x%lx, unit_fcp_lun=0x%Lx&bslash;n&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|unit
+l_string|&quot;host reset because of problems with &quot;
+l_string|&quot;unit 0x%016Lx&bslash;n&quot;
 comma
 id|unit-&gt;fcp_lun
 )paren
@@ -2721,9 +2653,8 @@ id|adapter-&gt;scsi_host
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;error: Not enough free memory. &quot;
-l_string|&quot;Could not register adapter %s &quot;
-l_string|&quot;with the SCSI-stack.&bslash;n&quot;
+l_string|&quot;error: registration with SCSI stack failed &quot;
+l_string|&quot;for adapter %s &quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -2744,12 +2675,8 @@ suffix:semicolon
 id|ZFCP_LOG_DEBUG
 c_func
 (paren
-l_string|&quot;host registered, scsi_host at 0x%lx&bslash;n&quot;
+l_string|&quot;host registered, scsi_host=%p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|adapter-&gt;scsi_host
 )paren
 suffix:semicolon

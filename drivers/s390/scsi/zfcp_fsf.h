@@ -271,8 +271,6 @@ DECL|macro|FSF_FEATURE_QTCB_SUPPRESSION
 mdefine_line|#define FSF_FEATURE_QTCB_SUPPRESSION            0x00000001
 DECL|macro|FSF_FEATURE_CFDC
 mdefine_line|#define FSF_FEATURE_CFDC&t;&t;&t;0x00000002
-DECL|macro|FSF_FEATURE_LOST_SAN_NOTIFICATION
-mdefine_line|#define FSF_FEATURE_LOST_SAN_NOTIFICATION       0x00000008
 DECL|macro|FSF_FEATURE_HBAAPI_MANAGEMENT
 mdefine_line|#define FSF_FEATURE_HBAAPI_MANAGEMENT           0x00000010
 DECL|macro|FSF_FEATURE_ELS_CT_CHAINED_SBALS
@@ -280,20 +278,11 @@ mdefine_line|#define FSF_FEATURE_ELS_CT_CHAINED_SBALS        0x00000020
 multiline_comment|/* option */
 DECL|macro|FSF_OPEN_LUN_SUPPRESS_BOXING
 mdefine_line|#define FSF_OPEN_LUN_SUPPRESS_BOXING&t;&t;0x00000001
-DECL|macro|FSF_OPEN_LUN_UNSOLICITED_SENSE_DATA
-mdefine_line|#define FSF_OPEN_LUN_UNSOLICITED_SENSE_DATA&t;0x00000002
 multiline_comment|/* adapter types */
 DECL|macro|FSF_ADAPTER_TYPE_FICON
 mdefine_line|#define FSF_ADAPTER_TYPE_FICON                  0x00000001
 DECL|macro|FSF_ADAPTER_TYPE_FICON_EXPRESS
 mdefine_line|#define FSF_ADAPTER_TYPE_FICON_EXPRESS          0x00000002
-multiline_comment|/* flags */
-DECL|macro|FSF_CFDC_OPEN_LUN_ALLOWED
-mdefine_line|#define FSF_CFDC_OPEN_LUN_ALLOWED&t;&t;0x01
-DECL|macro|FSF_CFDC_EXCLUSIVE_ACCESS
-mdefine_line|#define FSF_CFDC_EXCLUSIVE_ACCESS&t;&t;0x02
-DECL|macro|FSF_CFDC_OUTBOUND_TRANSFER_ALLOWED
-mdefine_line|#define FSF_CFDC_OUTBOUND_TRANSFER_ALLOWED&t;0x10
 multiline_comment|/* port types */
 DECL|macro|FSF_HBA_PORTTYPE_UNKNOWN
 mdefine_line|#define FSF_HBA_PORTTYPE_UNKNOWN&t;&t;0x00000001
@@ -725,47 +714,10 @@ id|u32
 )paren
 )braket
 suffix:semicolon
+DECL|member|fsf_queue_designator
 r_struct
-(brace
-DECL|member|this_cmd
-id|u32
-id|this_cmd
-suffix:semicolon
-DECL|member|aborted_cmd
-id|u32
-id|aborted_cmd
-suffix:semicolon
-DECL|member|port_handle
-)brace
-id|port_handle
-suffix:semicolon
-r_struct
-(brace
-DECL|member|this_cmd
-id|u32
-id|this_cmd
-suffix:semicolon
-DECL|member|aborted_cmd
-id|u32
-id|aborted_cmd
-suffix:semicolon
-DECL|member|lun_handle
-)brace
-id|lun_handle
-suffix:semicolon
-r_struct
-(brace
-DECL|member|found
-id|u64
-id|found
-suffix:semicolon
-DECL|member|expected
-id|u64
-id|expected
-suffix:semicolon
-DECL|member|fcp_lun
-)brace
-id|fcp_lun
+id|fsf_queue_designator
+id|fsf_queue_designator
 suffix:semicolon
 )brace
 id|__attribute__
@@ -1045,15 +997,11 @@ DECL|member|timeout
 id|u8
 id|timeout
 suffix:semicolon
-DECL|member|lun_access
-id|u32
-id|lun_access
-suffix:semicolon
 DECL|member|res4
 id|u8
 id|res4
 (braket
-l_int|180
+l_int|184
 )braket
 suffix:semicolon
 DECL|member|els1_length
