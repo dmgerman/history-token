@@ -1887,6 +1887,10 @@ l_int|0
 r_goto
 id|out_fail
 suffix:semicolon
+id|s-&gt;s_flags
+op_or_assign
+id|MS_ACTIVE
+suffix:semicolon
 id|unlock_super
 c_func
 (paren
@@ -2681,6 +2685,10 @@ l_int|0
 r_goto
 id|out_fail
 suffix:semicolon
+id|s-&gt;s_flags
+op_or_assign
+id|MS_ACTIVE
+suffix:semicolon
 id|unlock_super
 c_func
 (paren
@@ -3124,6 +3132,10 @@ l_int|0
 r_goto
 id|out_fail
 suffix:semicolon
+id|s-&gt;s_flags
+op_or_assign
+id|MS_ACTIVE
+suffix:semicolon
 id|unlock_super
 c_func
 (paren
@@ -3333,6 +3345,11 @@ c_func
 (paren
 id|sb
 )paren
+suffix:semicolon
+id|sb-&gt;s_flags
+op_and_assign
+op_complement
+id|MS_ACTIVE
 suffix:semicolon
 id|invalidate_inodes
 c_func

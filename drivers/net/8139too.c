@@ -4987,6 +4987,10 @@ id|tp-&gt;twistie
 op_assign
 l_int|1
 suffix:semicolon
+id|tp-&gt;time_to_die
+op_assign
+l_int|0
+suffix:semicolon
 id|rtl8139_init_ring
 (paren
 id|dev
