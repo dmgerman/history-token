@@ -5994,6 +5994,11 @@ comma
 id|file
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
 id|current-&gt;signal-&gt;group_exit_code
 op_or_assign
 l_int|0x80
