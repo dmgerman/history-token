@@ -2064,6 +2064,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -2199,9 +2204,6 @@ id|ctx-&gt;skb-&gt;data
 comma
 id|ctx-&gt;skb-&gt;len
 comma
-(paren
-id|usb_complete_t
-)paren
 id|udsl_usb_send_data_complete
 comma
 id|ctx
@@ -2618,9 +2620,6 @@ id|skb-&gt;data
 comma
 id|skb-&gt;len
 comma
-(paren
-id|usb_complete_t
-)paren
 id|udsl_usb_send_data_complete
 comma
 op_amp
@@ -2673,6 +2672,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -2897,9 +2901,6 @@ id|ctx-&gt;skb-&gt;data
 comma
 id|UDSL_RECEIVE_BUFFER_SIZE
 comma
-(paren
-id|usb_complete_t
-)paren
 id|udsl_usb_data_receive
 comma
 id|ctx
@@ -3123,9 +3124,6 @@ id|ctx-&gt;skb-&gt;data
 comma
 id|UDSL_RECEIVE_BUFFER_SIZE
 comma
-(paren
-id|usb_complete_t
-)paren
 id|udsl_usb_data_receive
 comma
 id|ctx

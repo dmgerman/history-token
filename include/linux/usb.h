@@ -1065,6 +1065,9 @@ suffix:semicolon
 r_struct
 id|urb
 suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
 DECL|typedef|usb_complete_t
 r_typedef
 r_void
@@ -1075,6 +1078,10 @@ id|usb_complete_t
 (paren
 r_struct
 id|urb
+op_star
+comma
+r_struct
+id|pt_regs
 op_star
 )paren
 suffix:semicolon

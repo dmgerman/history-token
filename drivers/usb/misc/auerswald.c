@@ -671,6 +671,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_static
@@ -702,6 +707,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -743,6 +753,8 @@ multiline_comment|/* call original completion function&n;           NOTE: this f
 id|urb-&gt;complete
 (paren
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 multiline_comment|/* detach element from chain data structure */
@@ -893,6 +905,8 @@ id|auerchain_complete
 c_func
 (paren
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1170,6 +1184,8 @@ id|auerchain_complete
 c_func
 (paren
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1320,6 +1336,8 @@ suffix:semicolon
 id|urb-&gt;complete
 (paren
 id|urb
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1497,6 +1515,8 @@ suffix:semicolon
 id|urbp-&gt;complete
 (paren
 id|urbp
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -1834,6 +1854,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|pauerchain_chs_t
@@ -2236,9 +2261,6 @@ comma
 id|size
 comma
 multiline_comment|/* build urb */
-(paren
-id|usb_complete_t
-)paren
 id|auerchain_blocking_completion
 comma
 l_int|0
@@ -2808,6 +2830,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|pauerbuf_t
@@ -2881,6 +2908,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|pauerbuf_t
@@ -3029,9 +3061,6 @@ id|le16_to_cpu
 id|bp-&gt;dr-&gt;wLength
 )paren
 comma
-(paren
-id|usb_complete_t
-)paren
 id|auerswald_ctrlread_complete
 comma
 id|bp
@@ -3070,6 +3099,8 @@ suffix:semicolon
 id|auerswald_ctrlread_complete
 (paren
 id|bp-&gt;urbp
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -3084,6 +3115,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -3265,9 +3301,6 @@ id|bp-&gt;bufp
 comma
 l_int|32
 comma
-(paren
-id|usb_complete_t
-)paren
 id|auerswald_ctrlread_wretcomplete
 comma
 id|bp
@@ -3306,6 +3339,8 @@ suffix:semicolon
 id|auerswald_ctrlread_wretcomplete
 (paren
 id|bp-&gt;urbp
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace
@@ -3385,6 +3420,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -3753,9 +3793,6 @@ id|bp-&gt;bufp
 comma
 id|bytecount
 comma
-(paren
-id|usb_complete_t
-)paren
 id|auerswald_ctrlread_complete
 comma
 id|bp
@@ -3793,6 +3830,8 @@ id|auerswald_ctrlread_complete
 c_func
 (paren
 id|bp-&gt;urbp
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* here applies the same problem as above: device locking! */
