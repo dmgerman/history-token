@@ -1140,10 +1140,12 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-id|release_resource
+id|release_region
 c_func
 (paren
-id|r
+id|ioaddr
+comma
+id|LANCE_TOTAL_SIZE
 )paren
 suffix:semicolon
 )brace
