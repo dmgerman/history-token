@@ -8988,7 +8988,7 @@ suffix:semicolon
 )brace
 id|raw_inode-&gt;i_generation
 op_assign
-id|le32_to_cpu
+id|cpu_to_le32
 c_func
 (paren
 id|inode-&gt;i_generation
