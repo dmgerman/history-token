@@ -1149,12 +1149,7 @@ id|lo_read_data
 op_star
 id|p
 op_assign
-(paren
-r_struct
-id|lo_read_data
-op_star
-)paren
-id|desc-&gt;buf
+id|desc-&gt;arg.data
 suffix:semicolon
 r_struct
 id|loop_device

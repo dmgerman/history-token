@@ -316,6 +316,7 @@ id|data32
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -362,7 +363,7 @@ id|data32.count
 suffix:semicolon
 id|data.pids
 op_assign
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data32.pids
@@ -444,6 +445,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -643,6 +645,7 @@ id|data32
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -833,6 +836,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -1206,6 +1210,7 @@ id|data32
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -1257,11 +1262,7 @@ id|data-&gt;indirect
 multiline_comment|/* FIXME: this is not correct for long arrays */
 id|data-&gt;value.integer.value_ptr
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|TO_PTR
+id|compat_ptr
 c_func
 (paren
 id|data32-&gt;value.integer.value_ptr
@@ -1636,6 +1637,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

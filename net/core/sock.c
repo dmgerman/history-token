@@ -1202,7 +1202,8 @@ r_sizeof
 (paren
 r_int
 )paren
-comma
+suffix:semicolon
+r_int
 id|len
 suffix:semicolon
 r_if

@@ -6515,6 +6515,13 @@ id|uap-&gt;port.flags
 op_assign
 l_int|0
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|uap-&gt;port.lock
+)paren
+suffix:semicolon
 multiline_comment|/* Setup some valid baud rate information in the register&n;&t; * shadows so we don&squot;t write crap there before baud rate is&n;&t; * first initialized.&n;&t; */
 id|pmz_convert_to_zs
 c_func
@@ -8576,8 +8583,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_PMACZILOG_CONSOLE
-macro_line|#endif
 multiline_comment|/* TODO: Autoprobe console based on OF */
 multiline_comment|/* pmz_console.index = i; */
 id|register_console

@@ -1243,6 +1243,7 @@ id|file
 (brace
 r_struct
 id|fib_ioctl
+id|__user
 op_star
 id|f
 suffix:semicolon
@@ -1295,17 +1296,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|copy_from_user
+id|copy_in_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|f
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg

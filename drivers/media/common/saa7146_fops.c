@@ -362,7 +362,7 @@ op_star
 id|buf
 )paren
 (brace
-macro_line|#if DEBUG_SPINLOCKS
+macro_line|#ifdef DEBUG_SPINLOCKS
 id|BUG_ON
 c_func
 (paren
@@ -495,7 +495,7 @@ r_int
 id|state
 )paren
 (brace
-macro_line|#if DEBUG_SPINLOCKS
+macro_line|#ifdef DEBUG_SPINLOCKS
 id|BUG_ON
 c_func
 (paren
@@ -657,7 +657,7 @@ id|vbi
 )paren
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SPINLOCKS
+macro_line|#ifdef DEBUG_SPINLOCKS
 id|BUG_ON
 c_func
 (paren

@@ -155,6 +155,7 @@ id|csum_partial_copy_generic
 c_func
 (paren
 (paren
+id|__force
 r_void
 op_star
 )paren
@@ -378,6 +379,7 @@ id|src
 comma
 (paren
 r_void
+id|__force
 op_star
 )paren
 id|dst

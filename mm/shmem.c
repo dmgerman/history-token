@@ -6594,7 +6594,7 @@ id|desc.count
 op_assign
 id|count
 suffix:semicolon
-id|desc.buf
+id|desc.arg.buf
 op_assign
 id|buf
 suffix:semicolon
@@ -6649,7 +6649,6 @@ id|read_actor_t
 id|actor
 comma
 r_void
-id|__user
 op_star
 id|target
 )paren
@@ -6674,7 +6673,7 @@ id|desc.count
 op_assign
 id|count
 suffix:semicolon
-id|desc.buf
+id|desc.arg.data
 op_assign
 id|target
 suffix:semicolon

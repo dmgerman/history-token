@@ -406,6 +406,7 @@ id|restore_fpu_checking
 c_func
 (paren
 (paren
+id|__force
 r_struct
 id|i387_fxsave_struct
 op_star

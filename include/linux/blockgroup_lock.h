@@ -1,3 +1,6 @@
+macro_line|#ifndef _LINUX_BLOCKGROUP_LOCK_H
+DECL|macro|_LINUX_BLOCKGROUP_LOCK_H
+mdefine_line|#define _LINUX_BLOCKGROUP_LOCK_H
 multiline_comment|/*&n; * Per-blockgroup locking for ext2 and ext3.&n; *&n; * Simple hashed spinlocking.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -99,4 +102,5 @@ suffix:semicolon
 multiline_comment|/*&n; * The accessor is a macro so we can embed a blockgroup_lock into different&n; * superblock types&n; */
 DECL|macro|sb_bgl_lock
 mdefine_line|#define sb_bgl_lock(sb, block_group) &bslash;&n;&t;(&amp;(sb)-&gt;s_blockgroup_lock.locks[(block_group) &amp; (NR_BG_LOCKS-1)].lock)
+macro_line|#endif
 eof

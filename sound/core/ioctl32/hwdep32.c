@@ -71,7 +71,7 @@ id|sndrv_hwdep_dsp_image
 id|data
 suffix:semicolon
 r_struct
-id|sndrv_hwdep_dsp_image
+id|sndrv_hwdep_dsp_image32
 id|data32
 suffix:semicolon
 id|mm_segment_t
@@ -91,6 +91,7 @@ id|data32
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -138,7 +139,7 @@ id|data.name
 suffix:semicolon
 id|data.image
 op_assign
-id|A
+id|compat_ptr
 c_func
 (paren
 id|data32.image

@@ -2,8 +2,6 @@ macro_line|#ifndef _X86_64_STRING_H_
 DECL|macro|_X86_64_STRING_H_
 mdefine_line|#define _X86_64_STRING_H_
 macro_line|#ifdef __KERNEL__
-DECL|macro|struct_cpy
-mdefine_line|#define struct_cpy(x,y) (*(x)=*(y))
 multiline_comment|/* Written 2002 by Andi Kleen */
 multiline_comment|/* Only used for special circumstances. Stolen from i386/string.h */
 DECL|function|__inline_memcpy

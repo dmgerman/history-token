@@ -1022,16 +1022,6 @@ multiline_comment|/*&n; *&t;No 3D Now!&n; */
 DECL|macro|memcpy
 mdefine_line|#define memcpy(t, f, n) &bslash;&n;(__builtin_constant_p(n) ? &bslash;&n; __constant_memcpy((t),(f),(n)) : &bslash;&n; __memcpy((t),(f),(n)))
 macro_line|#endif
-multiline_comment|/*&n; * struct_cpy(x,y), copy structure *x into (matching structure) *y.&n; *&n; * We get link-time errors if the structure sizes do not match.&n; * There is no runtime overhead, it&squot;s all optimized away at&n; * compile time.&n; */
-r_extern
-r_void
-id|__struct_cpy_bug
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|struct_cpy
-mdefine_line|#define struct_cpy(x,y) &t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(*(x)) != sizeof(*(y))) &t;&bslash;&n;&t;&t;__struct_cpy_bug();&t;&t;&bslash;&n;&t;memcpy(x, y, sizeof(*(x)));&t;&t;&bslash;&n;})
 DECL|macro|__HAVE_ARCH_MEMMOVE
 mdefine_line|#define __HAVE_ARCH_MEMMOVE
 r_void

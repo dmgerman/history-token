@@ -18975,10 +18975,6 @@ id|raw_cmd
 op_assign
 l_int|NULL
 suffix:semicolon
-id|i
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren

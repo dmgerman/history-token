@@ -341,6 +341,7 @@ id|VERIFY_READ
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|START_DATA
@@ -366,6 +367,7 @@ id|VERIFY_READ
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|START_STACK
@@ -502,11 +504,13 @@ multiline_comment|/*&n; * create_aout32_tables() parses the env- and arg-strings
 DECL|function|create_aout32_tables
 r_static
 id|u32
+id|__user
 op_star
 id|create_aout32_tables
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|p
 comma
@@ -517,13 +521,17 @@ id|bprm
 )paren
 (brace
 id|u32
+id|__user
 op_star
 id|argv
-comma
+suffix:semicolon
+id|u32
+id|__user
 op_star
 id|envp
 suffix:semicolon
 id|u32
+id|__user
 op_star
 id|sp
 suffix:semicolon
@@ -541,6 +549,7 @@ id|sp
 op_assign
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -569,6 +578,7 @@ id|sp
 op_assign
 (paren
 id|u32
+id|__user
 op_star
 )paren
 (paren
@@ -608,10 +618,6 @@ l_int|1
 suffix:semicolon
 id|envp
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|sp
 suffix:semicolon
 id|sp
@@ -622,10 +628,6 @@ l_int|1
 suffix:semicolon
 id|argv
 op_assign
-(paren
-id|u32
-op_star
-)paren
 id|sp
 suffix:semicolon
 id|put_user
@@ -1537,6 +1539,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|bprm-&gt;p

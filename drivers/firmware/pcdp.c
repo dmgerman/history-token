@@ -907,7 +907,7 @@ id|i
 dot
 id|guid
 comma
-id|PCDP_TABLE_GUID
+id|HCDP_TABLE_GUID
 )paren
 op_eq
 l_int|0

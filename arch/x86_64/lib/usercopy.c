@@ -444,12 +444,14 @@ id|copy_user_generic
 c_func
 (paren
 (paren
+id|__force
 r_void
 op_star
 )paren
 id|to
 comma
 (paren
+id|__force
 r_void
 op_star
 )paren
