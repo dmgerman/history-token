@@ -1543,7 +1543,7 @@ suffix:colon
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_BRIDGE) || defined(CONFIG_BRIDGE_MODULE)
+macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 r_if
 c_cond
 (paren
