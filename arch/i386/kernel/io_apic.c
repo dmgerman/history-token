@@ -9617,7 +9617,7 @@ l_string|&quot;IO-APIC + timer doesn&squot;t work! pester mingo@redhat.com&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&n; * IRQ&squot;s that are handled by the old PIC in all cases:&n; * - IRQ2 is the cascade IRQ, and cannot be a io-apic IRQ.&n; *   Linux doesn&squot;t really care, as it&squot;s not actually used&n; *   for any interrupt handling anyway.&n; * - There used to be IRQ13 here as well, but all&n; *   MPS-compliant must not use it for FPU coupling and we&n; *   want to use exception 16 anyway.  And there are&n; *   systems who connect it to an I/O APIC for other uses.&n; *   Thus we don&squot;t mark it special any longer.&n; *&n; * Additionally, something is definitely wrong with irq9&n; * on PIIX4 boards.&n; */
+multiline_comment|/*&n; *&n; * IRQ&squot;s that are handled by the PIC in the MPS IOAPIC case.&n; * - IRQ2 is the cascade IRQ, and cannot be a io-apic IRQ.&n; *   Linux doesn&squot;t really care, as it&squot;s not actually used&n; *   for any interrupt handling anyway.&n; */
 DECL|macro|PIC_IRQS
 mdefine_line|#define PIC_IRQS&t;(1 &lt;&lt; PIC_CASCADE_IR)
 DECL|function|setup_IO_APIC
@@ -9634,6 +9634,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_ioapic
+)paren
+id|io_apic_irqs
+op_assign
+op_complement
+l_int|0
+suffix:semicolon
+multiline_comment|/* all IRQs go through IOAPIC */
+r_else
 id|io_apic_irqs
 op_assign
 op_complement
