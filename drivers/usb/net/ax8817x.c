@@ -5069,6 +5069,13 @@ id|ax_int_callback
 comma
 id|ax_info
 comma
+id|usb-&gt;speed
+op_eq
+id|USB_SPEED_HIGH
+ques
+c_cond
+l_int|8
+suffix:colon
 l_int|100
 )paren
 suffix:semicolon
