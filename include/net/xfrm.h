@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/crypto.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;net/ip6_fib.h&gt;
