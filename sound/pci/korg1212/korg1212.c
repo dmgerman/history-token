@@ -8226,6 +8226,8 @@ id|entry
 comma
 id|korg1212
 comma
+l_int|1024
+comma
 id|snd_korg1212_proc_read
 )paren
 suffix:semicolon

@@ -1061,9 +1061,6 @@ c_cond
 (paren
 op_logical_neg
 id|hw-&gt;ops.dsp_load
-op_logical_or
-op_logical_neg
-id|hw-&gt;ops.dsp_status
 )paren
 r_return
 op_minus
@@ -2455,10 +2452,6 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|entry-&gt;content
-op_assign
-id|SNDRV_INFO_CONTENT_TEXT
-suffix:semicolon
 id|entry-&gt;c.text.read_size
 op_assign
 l_int|512

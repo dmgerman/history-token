@@ -7971,6 +7971,8 @@ id|entry
 comma
 id|rme9652
 comma
+l_int|1024
+comma
 id|snd_rme9652_proc_read
 )paren
 suffix:semicolon

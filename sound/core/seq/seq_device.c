@@ -387,6 +387,14 @@ id|list_head
 op_star
 id|head
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|current-&gt;fs-&gt;root
+)paren
+r_return
+suffix:semicolon
 id|down
 c_func
 (paren

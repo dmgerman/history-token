@@ -2803,6 +2803,8 @@ id|entry
 comma
 id|ak4531
 comma
+l_int|1024
+comma
 id|snd_ak4531_proc_read
 )paren
 suffix:semicolon

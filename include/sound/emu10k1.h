@@ -981,6 +981,10 @@ DECL|macro|A_ADCIDX
 mdefine_line|#define A_ADCIDX&t;&t;0x63
 DECL|macro|A_ADCIDX_IDX
 mdefine_line|#define A_ADCIDX_IDX&t;&t;0x10000063
+DECL|macro|A_MICIDX
+mdefine_line|#define A_MICIDX&t;&t;0x64
+DECL|macro|A_MICIDX_IDX
+mdefine_line|#define A_MICIDX_IDX&t;&t;0x10000064
 DECL|macro|FXIDX
 mdefine_line|#define FXIDX&t;&t;&t;0x65&t;&t;/* FX recording buffer index register&t;&t;*/
 DECL|macro|FXIDX_MASK
@@ -3011,14 +3015,18 @@ DECL|macro|FXBUS_PCM_CENTER
 mdefine_line|#define FXBUS_PCM_CENTER&t;0x06
 DECL|macro|FXBUS_PCM_LFE
 mdefine_line|#define FXBUS_PCM_LFE&t;&t;0x07
-DECL|macro|FXBUS_PT_LEFT
-mdefine_line|#define FXBUS_PT_LEFT&t;&t;20
-DECL|macro|FXBUS_PT_RIGHT
-mdefine_line|#define FXBUS_PT_RIGHT&t;&t;21
+DECL|macro|FXBUS_PCM_LEFT_FRONT
+mdefine_line|#define FXBUS_PCM_LEFT_FRONT&t;0x08
+DECL|macro|FXBUS_PCM_RIGHT_FRONT
+mdefine_line|#define FXBUS_PCM_RIGHT_FRONT&t;0x09
 DECL|macro|FXBUS_MIDI_REVERB
 mdefine_line|#define FXBUS_MIDI_REVERB&t;0x0c
 DECL|macro|FXBUS_MIDI_CHORUS
 mdefine_line|#define FXBUS_MIDI_CHORUS&t;0x0d
+DECL|macro|FXBUS_PT_LEFT
+mdefine_line|#define FXBUS_PT_LEFT&t;&t;0x14
+DECL|macro|FXBUS_PT_RIGHT
+mdefine_line|#define FXBUS_PT_RIGHT&t;&t;0x15
 multiline_comment|/* Inputs */
 DECL|macro|EXTIN_AC97_L
 mdefine_line|#define EXTIN_AC97_L&t;   0x00&t;/* AC&squot;97 capture channel - left */
@@ -3096,10 +3104,10 @@ DECL|macro|A_EXTIN_LINE2_L
 mdefine_line|#define A_EXTIN_LINE2_L&t;&t;0x08&t;/* audigy drive line2/mic2 - left */
 DECL|macro|A_EXTIN_LINE2_R
 mdefine_line|#define A_EXTIN_LINE2_R&t;&t;0x09&t;/*                           right */
-DECL|macro|A_EXTIN_RCA_SPDIF_L
-mdefine_line|#define A_EXTIN_RCA_SPDIF_L     0x0a    /* audigy drive RCA SPDIF - left */
-DECL|macro|A_EXTIN_RCA_SPDIF_R
-mdefine_line|#define A_EXTIN_RCA_SPDIF_R     0x0b    /*                          right */
+DECL|macro|A_EXTIN_ADC_L
+mdefine_line|#define A_EXTIN_ADC_L&t;&t;0x0a    /* Philips ADC - left */
+DECL|macro|A_EXTIN_ADC_R
+mdefine_line|#define A_EXTIN_ADC_R&t;&t;0x0b    /*               right */
 DECL|macro|A_EXTIN_AUX2_L
 mdefine_line|#define A_EXTIN_AUX2_L&t;&t;0x0c&t;/* audigy drive aux2 - left */
 DECL|macro|A_EXTIN_AUX2_R
@@ -3143,6 +3151,8 @@ DECL|macro|A_EXTOUT_ADC_CAP_L
 mdefine_line|#define A_EXTOUT_ADC_CAP_L&t;0x16&t;/* ADC capture buffer left */
 DECL|macro|A_EXTOUT_ADC_CAP_R
 mdefine_line|#define A_EXTOUT_ADC_CAP_R&t;0x17&t;/*                    right */
+DECL|macro|A_EXTOUT_MIC_CAP
+mdefine_line|#define A_EXTOUT_MIC_CAP&t;0x18&t;/* Mic capture buffer */
 multiline_comment|/* Audigy constants */
 DECL|macro|A_C_00000000
 mdefine_line|#define A_C_00000000&t;0xc0
@@ -3188,8 +3198,10 @@ DECL|macro|A_C_5a7ef9db
 mdefine_line|#define A_C_5a7ef9db&t;0xd4
 DECL|macro|A_C_00100000
 mdefine_line|#define A_C_00100000&t;0xd5
-multiline_comment|/* 0xd6 = 0x7fffffff  (?) ACCUM? */
-multiline_comment|/* 0xd7 = 0x0000000   CCR */
+DECL|macro|A_GPR_ACCU
+mdefine_line|#define A_GPR_ACCU&t;0xd6&t;&t;/* ACCUM, accumulator */
+DECL|macro|A_GPR_COND
+mdefine_line|#define A_GPR_COND&t;0xd7&t;&t;/* CCR, condition register */
 multiline_comment|/* 0xd8 = noise1 */
 multiline_comment|/* 0xd9 = noise2 */
 multiline_comment|/* definitions for debug register */

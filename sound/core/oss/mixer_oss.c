@@ -27,6 +27,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|SNDRV_MINOR_OSS_MIXER
+id|MODULE_ALIAS_SNDRV_MINOR
+c_func
+(paren
+id|SNDRV_MINOR_OSS_MIXER
+)paren
+suffix:semicolon
 DECL|function|snd_mixer_oss_open
 r_static
 r_int
@@ -5405,6 +5412,7 @@ op_assign
 id|idx
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * build an OSS mixer element.&n; * ptr_allocated means the entry is dynamically allocated (change via proc file).&n; * when replace_old = 1, the old entry is replaced with the new one.&n; */
 DECL|function|snd_mixer_oss_build_input
 r_static
 r_int
@@ -5422,6 +5430,9 @@ id|ptr
 comma
 r_int
 id|ptr_allocated
+comma
+r_int
+id|replace_old
 )paren
 (brace
 r_struct
@@ -5446,6 +5457,23 @@ id|str
 (braket
 l_int|64
 )braket
+suffix:semicolon
+multiline_comment|/* check if already assigned */
+r_if
+c_cond
+(paren
+id|mixer-&gt;slots
+(braket
+id|ptr-&gt;oss_id
+)braket
+dot
+id|get_volume
+op_logical_and
+op_logical_neg
+id|replace_old
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|memset
 c_func
@@ -6779,6 +6807,8 @@ comma
 id|tbl
 comma
 l_int|1
+comma
+l_int|1
 )paren
 op_le
 l_int|0
@@ -6960,6 +6990,15 @@ l_int|0
 )brace
 comma
 (brace
+id|SOUND_MIXER_VOLUME
+comma
+l_string|&quot;Front&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* fallback */
+(brace
 id|SOUND_MIXER_BASS
 comma
 l_string|&quot;Tone Control - Bass&quot;
@@ -6983,6 +7022,15 @@ comma
 l_int|0
 )brace
 comma
+(brace
+id|SOUND_MIXER_SYNTH
+comma
+l_string|&quot;FM&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* fallback */
 (brace
 id|SOUND_MIXER_PCM
 comma
@@ -7039,6 +7087,15 @@ comma
 l_int|1
 )brace
 comma
+(brace
+id|SOUND_MIXER_ALTPCM
+comma
+l_string|&quot;Wave&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* fallback */
 (brace
 id|SOUND_MIXER_RECLEV
 comma
@@ -7152,19 +7209,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-r_static
-r_struct
-id|snd_mixer_oss_assign_table
-id|fm_table
-op_assign
-(brace
-id|SOUND_MIXER_SYNTH
-comma
-l_string|&quot;FM&quot;
-comma
-l_int|0
-)brace
-suffix:semicolon
 r_int
 r_int
 id|idx
@@ -7204,27 +7248,6 @@ id|idx
 )braket
 comma
 l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mixer-&gt;slots
-(braket
-id|SOUND_MIXER_SYNTH
-)braket
-dot
-id|get_volume
-op_eq
-l_int|NULL
-)paren
-id|snd_mixer_oss_build_input
-c_func
-(paren
-id|mixer
-comma
-op_amp
-id|fm_table
 comma
 l_int|0
 )paren
