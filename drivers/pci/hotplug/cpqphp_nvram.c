@@ -359,6 +359,7 @@ r_int
 id|check_for_compaq_ROM
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 )paren
@@ -645,6 +646,7 @@ r_int
 id|load_HRT
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 )paren
@@ -739,6 +741,7 @@ id|u32
 id|store_HRT
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 )paren
@@ -1424,6 +1427,7 @@ r_void
 id|compaq_nvram_init
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 )paren
@@ -1467,6 +1471,7 @@ r_int
 id|compaq_nvram_load
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 comma
@@ -2454,6 +2459,7 @@ r_int
 id|compaq_nvram_store
 (paren
 r_void
+id|__iomem
 op_star
 id|rom_start
 )paren
