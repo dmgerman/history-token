@@ -761,11 +761,6 @@ comma
 op_amp
 id|wq
 comma
-op_amp
-id|inode-&gt;i_state
-comma
-id|__I_LOCK
-comma
 id|inode_wait
 comma
 id|TASK_UNINTERRUPTIBLE

@@ -1166,10 +1166,6 @@ comma
 op_amp
 id|wait
 comma
-id|wait.key.flags
-comma
-id|bit_nr
-comma
 id|sync_page
 comma
 id|TASK_UNINTERRUPTIBLE
@@ -1345,10 +1341,6 @@ id|page
 comma
 op_amp
 id|wait
-comma
-id|wait.key.flags
-comma
-id|PG_locked
 comma
 id|sync_page
 comma

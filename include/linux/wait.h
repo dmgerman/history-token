@@ -509,11 +509,6 @@ r_struct
 id|wait_bit_queue
 op_star
 comma
-r_void
-op_star
-comma
-r_int
-comma
 r_int
 (paren
 op_star
@@ -540,11 +535,6 @@ comma
 r_struct
 id|wait_bit_queue
 op_star
-comma
-r_void
-op_star
-comma
-r_int
 comma
 r_int
 (paren
