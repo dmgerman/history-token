@@ -2808,12 +2808,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|esp_type
-)paren
+id|esp_type.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 r_if
 c_cond

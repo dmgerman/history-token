@@ -1894,12 +1894,9 @@ c_func
 r_void
 )paren
 (brace
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|ipcomp_type
-)paren
+id|ipcomp_type.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 r_if
 c_cond

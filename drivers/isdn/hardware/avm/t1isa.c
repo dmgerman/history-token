@@ -2201,12 +2201,9 @@ comma
 id|card-&gt;name
 )paren
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-op_amp
-id|cinfo-&gt;capi_ctrl
-)paren
+id|cinfo-&gt;capi_ctrl.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|retval
 op_assign
