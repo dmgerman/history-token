@@ -1581,7 +1581,7 @@ mdefine_line|#define MAX_NATIVE_DEVICES 64
 DECL|macro|NATIVE_DEVICE_OFFSET
 mdefine_line|#define NATIVE_DEVICE_OFFSET 0x1000
 DECL|macro|FLEX_MASK
-mdefine_line|#define FLEX_MASK &t;(unsigned long)0xfffffffffffc0000
+mdefine_line|#define FLEX_MASK &t;F_EXTEND(0xfffc0000)
 DECL|macro|IO_IO_LOW
 mdefine_line|#define IO_IO_LOW&t;offsetof(struct bc_module, io_io_low)
 DECL|macro|IO_IO_HIGH
@@ -1872,7 +1872,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|CENTRAL_BUS_ADDR
-mdefine_line|#define CENTRAL_BUS_ADDR (unsigned long) 0xfffffffffff80000
+mdefine_line|#define CENTRAL_BUS_ADDR F_EXTEND(0xfff80000)
 multiline_comment|/**&n; * walk_central_bus - Find devices attached to the central bus&n; *&n; * PDC doesn&squot;t tell us about all devices in the system.  This routine&n; * finds devices connected to the central bus.&n; */
 DECL|function|walk_central_bus
 r_void

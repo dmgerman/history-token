@@ -23,6 +23,38 @@ mdefine_line|#define get_fs()&t;(current_thread_info()-&gt;addr_limit)
 DECL|macro|set_fs
 mdefine_line|#define set_fs(x)&t;(current_thread_info()-&gt;addr_limit = (x))
 multiline_comment|/*&n; * Note that since kernel addresses are in a separate address space on&n; * parisc, we don&squot;t need to do anything for access_ok() or verify_area().&n; * We just let the page fault handler do the right thing. This also means&n; * that put_user is the same as __put_user, etc.&n; */
+r_extern
+r_int
+id|__get_kernel_bad
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__get_user_bad
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__put_kernel_bad
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__put_user_bad
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size)   (1)
 DECL|macro|verify_area
@@ -33,9 +65,9 @@ DECL|macro|get_user
 mdefine_line|#define get_user __get_user
 macro_line|#if BITS_PER_LONG == 32
 DECL|macro|LDD_KERNEL
-mdefine_line|#define LDD_KERNEL(ptr)&t;&t;BUG()
+mdefine_line|#define LDD_KERNEL(ptr) __get_kernel_bad();
 DECL|macro|LDD_USER
-mdefine_line|#define LDD_USER(ptr)&t;&t;BUG()
+mdefine_line|#define LDD_USER(ptr) __get_user_bad();
 DECL|macro|STD_KERNEL
 mdefine_line|#define STD_KERNEL(x, ptr) __put_kernel_asm64((u32)x,ptr)
 DECL|macro|STD_USER
@@ -69,7 +101,7 @@ multiline_comment|/* pcoq skip | r9 clear flag | r8 -EFAULT flag */
 )brace
 suffix:semicolon
 DECL|macro|__get_user
-mdefine_line|#define __get_user(x,ptr)                               &bslash;&n;({                                                      &bslash;&n;&t;register long __gu_err __asm__ (&quot;r8&quot;) = 0;      &bslash;&n;&t;register long __gu_val __asm__ (&quot;r9&quot;) = 0;      &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (segment_eq(get_fs(),KERNEL_DS)) {           &bslash;&n;&t;    switch (sizeof(*(ptr))) {                   &bslash;&n;&t;    case 1: __get_kernel_asm(&quot;ldb&quot;,ptr); break; &bslash;&n;&t;    case 2: __get_kernel_asm(&quot;ldh&quot;,ptr); break; &bslash;&n;&t;    case 4: __get_kernel_asm(&quot;ldw&quot;,ptr); break; &bslash;&n;&t;    case 8: LDD_KERNEL(ptr); break;&t;&t;&bslash;&n;&t;    default: BUG(); break;                      &bslash;&n;&t;    }                                           &bslash;&n;&t;}                                               &bslash;&n;&t;else {                                          &bslash;&n;&t;    switch (sizeof(*(ptr))) {                   &bslash;&n;&t;    case 1: __get_user_asm(&quot;ldb&quot;,ptr); break;   &bslash;&n;&t;    case 2: __get_user_asm(&quot;ldh&quot;,ptr); break;   &bslash;&n;&t;    case 4: __get_user_asm(&quot;ldw&quot;,ptr); break;   &bslash;&n;&t;    case 8: LDD_USER(ptr);  break;&t;&t;&bslash;&n;&t;    default: BUG(); break;                      &bslash;&n;&t;    }                                           &bslash;&n;&t;}                                               &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr))) __gu_val;            &bslash;&n;&t;__gu_err;                                       &bslash;&n;})
+mdefine_line|#define __get_user(x,ptr)                               &bslash;&n;({                                                      &bslash;&n;&t;register long __gu_err __asm__ (&quot;r8&quot;) = 0;      &bslash;&n;&t;register long __gu_val __asm__ (&quot;r9&quot;) = 0;      &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (segment_eq(get_fs(),KERNEL_DS)) {           &bslash;&n;&t;    switch (sizeof(*(ptr))) {                   &bslash;&n;&t;    case 1: __get_kernel_asm(&quot;ldb&quot;,ptr); break; &bslash;&n;&t;    case 2: __get_kernel_asm(&quot;ldh&quot;,ptr); break; &bslash;&n;&t;    case 4: __get_kernel_asm(&quot;ldw&quot;,ptr); break; &bslash;&n;&t;    case 8: LDD_KERNEL(ptr); break;&t;&t;&bslash;&n;&t;    default: __get_kernel_bad(); break;         &bslash;&n;&t;    }                                           &bslash;&n;&t;}                                               &bslash;&n;&t;else {                                          &bslash;&n;&t;    switch (sizeof(*(ptr))) {                   &bslash;&n;&t;    case 1: __get_user_asm(&quot;ldb&quot;,ptr); break;   &bslash;&n;&t;    case 2: __get_user_asm(&quot;ldh&quot;,ptr); break;   &bslash;&n;&t;    case 4: __get_user_asm(&quot;ldw&quot;,ptr); break;   &bslash;&n;&t;    case 8: LDD_USER(ptr);  break;&t;&t;&bslash;&n;&t;    default: __get_user_bad(); break;           &bslash;&n;&t;    }                                           &bslash;&n;&t;}                                               &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(x) = (__typeof__(*(ptr))) __gu_val;            &bslash;&n;&t;__gu_err;                                       &bslash;&n;})
 macro_line|#ifdef __LP64__
 DECL|macro|__get_kernel_asm
 mdefine_line|#define __get_kernel_asm(ldx,ptr)                       &bslash;&n;&t;__asm__(&quot;&bslash;n1:&bslash;t&quot; ldx &quot;&bslash;t0(%2),%0&bslash;n&quot;             &bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;t.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;         &bslash;&n;&t;&t; &quot;&bslash;t.dword&bslash;t1b&bslash;n&quot;                       &bslash;&n;&t;&t; &quot;&bslash;t.dword&bslash;t(2b-1b)+3&bslash;n&quot;                &bslash;&n;&t;&t; &quot;&bslash;t.previous&quot;                          &bslash;&n;&t;&t;: &quot;=r&quot;(__gu_val), &quot;=r&quot;(__gu_err)        &bslash;&n;&t;&t;: &quot;r&quot;(ptr), &quot;1&quot;(__gu_err));
@@ -82,7 +114,7 @@ DECL|macro|__get_user_asm
 mdefine_line|#define __get_user_asm(ldx,ptr)                         &bslash;&n;&t;__asm__(&quot;&bslash;n1:&bslash;t&quot; ldx &quot;&bslash;t0(%%sr3,%2),%0&bslash;n&quot;       &bslash;&n;&t;&t;&quot;2:&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;&bslash;t.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;         &bslash;&n;&t;&t; &quot;&bslash;t.word&bslash;t1b&bslash;n&quot;                        &bslash;&n;&t;&t; &quot;&bslash;t.word&bslash;t(2b-1b)+3&bslash;n&quot;                 &bslash;&n;&t;&t; &quot;&bslash;t.previous&quot;                          &bslash;&n;&t;&t;: &quot;=r&quot;(__gu_val), &quot;=r&quot;(__gu_err)        &bslash;&n;&t;&t;: &quot;r&quot;(ptr), &quot;1&quot;(__gu_err));
 macro_line|#endif
 DECL|macro|__put_user
-mdefine_line|#define __put_user(x,ptr)                                       &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register long __pu_err __asm__ (&quot;r8&quot;) = 0;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (segment_eq(get_fs(),KERNEL_DS)) {                   &bslash;&n;&t;    switch (sizeof(*(ptr))) {                           &bslash;&n;&t;    case 1: __put_kernel_asm(&quot;stb&quot;,x,ptr); break;       &bslash;&n;&t;    case 2: __put_kernel_asm(&quot;sth&quot;,x,ptr); break;       &bslash;&n;&t;    case 4: __put_kernel_asm(&quot;stw&quot;,x,ptr); break;       &bslash;&n;&t;    case 8: STD_KERNEL(x,ptr); break;&t;&t;&t;&bslash;&n;&t;    default: BUG(); break;                              &bslash;&n;&t;    }                                                   &bslash;&n;&t;}                                                       &bslash;&n;&t;else {                                                  &bslash;&n;&t;    switch (sizeof(*(ptr))) {                           &bslash;&n;&t;    case 1: __put_user_asm(&quot;stb&quot;,x,ptr); break;         &bslash;&n;&t;    case 2: __put_user_asm(&quot;sth&quot;,x,ptr); break;         &bslash;&n;&t;    case 4: __put_user_asm(&quot;stw&quot;,x,ptr); break;         &bslash;&n;&t;    case 8: STD_USER(x,ptr); break;&t;&t;&t;&bslash;&n;&t;    default: BUG(); break;                              &bslash;&n;&t;    }                                                   &bslash;&n;&t;}                                                       &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define __put_user(x,ptr)                                       &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register long __pu_err __asm__ (&quot;r8&quot;) = 0;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (segment_eq(get_fs(),KERNEL_DS)) {                   &bslash;&n;&t;    switch (sizeof(*(ptr))) {                           &bslash;&n;&t;    case 1: __put_kernel_asm(&quot;stb&quot;,x,ptr); break;       &bslash;&n;&t;    case 2: __put_kernel_asm(&quot;sth&quot;,x,ptr); break;       &bslash;&n;&t;    case 4: __put_kernel_asm(&quot;stw&quot;,x,ptr); break;       &bslash;&n;&t;    case 8: STD_KERNEL(x,ptr); break;&t;&t;&t;&bslash;&n;&t;    default: __put_kernel_bad(); break;&t;&t;&t;&bslash;&n;&t;    }                                                   &bslash;&n;&t;}                                                       &bslash;&n;&t;else {                                                  &bslash;&n;&t;    switch (sizeof(*(ptr))) {                           &bslash;&n;&t;    case 1: __put_user_asm(&quot;stb&quot;,x,ptr); break;         &bslash;&n;&t;    case 2: __put_user_asm(&quot;sth&quot;,x,ptr); break;         &bslash;&n;&t;    case 4: __put_user_asm(&quot;stw&quot;,x,ptr); break;         &bslash;&n;&t;    case 8: STD_USER(x,ptr); break;&t;&t;&t;&bslash;&n;&t;    default: __put_user_bad(); break;&t;&t;&t;&bslash;&n;&t;    }                                                   &bslash;&n;&t;}                                                       &bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__pu_err;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * The &quot;__put_user/kernel_asm()&quot; macros tell gcc they read from memory&n; * instead of writing. This is because they do not write to any memory&n; * gcc knows about, so there are no aliasing issues.&n; */
 macro_line|#ifdef __LP64__
 DECL|macro|__put_kernel_asm

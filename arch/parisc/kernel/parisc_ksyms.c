@@ -163,6 +163,13 @@ c_func
 id|disable_irq
 )paren
 suffix:semicolon
+DECL|variable|probe_irq_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_mask
+)paren
+suffix:semicolon
 macro_line|#include &lt;asm/processor.h&gt;
 DECL|variable|kernel_thread
 id|EXPORT_SYMBOL
@@ -1124,6 +1131,23 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__muldi3
+)paren
+suffix:semicolon
+id|asmlinkage
+r_void
+op_star
+id|__canonicalize_funcptr_for_compare
+c_func
+(paren
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|variable|__canonicalize_funcptr_for_compare
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__canonicalize_funcptr_for_compare
 )paren
 suffix:semicolon
 macro_line|#ifdef __LP64__

@@ -1080,6 +1080,10 @@ macro_line|#endif
 r_return
 suffix:semicolon
 )brace
+id|oops_in_progress
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Amuse the user in a SPARC fashion */
 id|printk
 c_func
@@ -1911,6 +1915,10 @@ id|spinlock_t
 id|terminate_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+id|oops_in_progress
+op_assign
+l_int|1
 suffix:semicolon
 id|set_eiem
 c_func

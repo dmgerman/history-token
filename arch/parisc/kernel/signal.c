@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/parisc/kernel/signal.c: Architecture-specific signal&n; *  handling support.&n; *&n; *  Copyright (C) 2000 David Huggins-Daines &lt;dhd@debian.org&gt;&n; *  Copyright (C) 2000 Linuxcare, Inc.&n; *&n; *  Based on the ia64, i386, and alpha versions.&n; *&n; *  Like the IA-64, we are a recent enough port (we are *starting*&n; *  with glibc2.2) that we do not need to support the old non-realtime&n; *  Linux signals.  Therefore we don&squot;t.  HP/UX signals will go in&n; *  arch/parisc/hpux/signal.c when we figure out how to do them.&n; */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -2078,6 +2077,19 @@ l_int|28
 (brace
 r_case
 op_minus
+id|ERESTART_RESTARTBLOCK
+suffix:colon
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
+r_case
+op_minus
 id|ERESTARTNOHAND
 suffix:colon
 id|DBG
@@ -2218,6 +2230,14 @@ multiline_comment|/* Restart the system call - no handlers present */
 r_if
 c_cond
 (paren
+id|regs-&gt;gr
+(braket
+l_int|28
+)braket
+op_eq
+op_minus
+id|ERESTART_RESTARTBLOCK
+op_logical_or
 id|regs-&gt;gr
 (braket
 l_int|28

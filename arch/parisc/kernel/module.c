@@ -13,6 +13,9 @@ mdefine_line|#define DEBUGP(fmt...)
 macro_line|#endif
 DECL|macro|CHECK_RELOC
 mdefine_line|#define CHECK_RELOC(val, bits) &bslash;&n;&t;if ( ( !((val) &amp; (1&lt;&lt;((bits)-1))) &amp;&amp; ((val)&gt;&gt;(bits)) != 0 )  ||&t;&bslash;&n;&t;     ( ((val) &amp; (1&lt;&lt;((bits)-1))) &amp;&amp; ((val)&gt;&gt;(bits)) != (((__typeof__(val))(~0))&gt;&gt;((bits)+2)))) { &bslash;&n;&t;&t;printk(KERN_ERR &quot;module %s relocation of symbol %s is out of range (0x%lx in %d bits)&bslash;n&quot;, &bslash;&n;&t;&t;me-&gt;name, strtab + sym-&gt;st_name, (unsigned long)val, bits); &bslash;&n;&t;&t;return -ENOEXEC;&t;&t;&t;&bslash;&n;&t;}
+multiline_comment|/* Maximum number of GOT entries. We use a long displacement ldd from&n; * the bottom of the table, which has a maximum signed displacement of&n; * 0x3fff; however, since we&squot;re only going forward, this becomes&n; * 0x1fff, and thus, since each GOT entry is 8 bytes long we can have&n; * at most 1023 entries */
+DECL|macro|MAX_GOTS
+mdefine_line|#define MAX_GOTS&t;1023
 multiline_comment|/* three functions to determine where in the module core&n; * or init pieces the location is */
 DECL|function|is_init
 r_static
@@ -1169,14 +1172,8 @@ id|addr
 op_eq
 id|value
 )paren
-r_return
-id|i
-op_star
-r_sizeof
-(paren
-r_struct
-id|got_entry
-)paren
+r_goto
+id|out
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -1195,6 +1192,26 @@ dot
 id|addr
 op_assign
 id|value
+suffix:semicolon
+id|out
+suffix:colon
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;GOT ENTRY %d[%x] val %lx&bslash;n&quot;
+comma
+id|i
+comma
+id|i
+op_star
+r_sizeof
+(paren
+r_struct
+id|got_entry
+)paren
+comma
+id|value
+)paren
 suffix:semicolon
 r_return
 id|i
@@ -1510,9 +1527,6 @@ op_or_assign
 id|reassemble_14
 c_func
 (paren
-id|rrsel
-c_func
-(paren
 id|get_got
 c_func
 (paren
@@ -1522,9 +1536,8 @@ id|value
 comma
 id|addend
 )paren
-comma
-l_int|0
-)paren
+op_amp
+l_int|0x3fff
 )paren
 suffix:semicolon
 )brace
@@ -2237,6 +2250,25 @@ id|loc
 )paren
 )paren
 suffix:semicolon
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;STUB FOR %s loc %lx+%lx at %lx&bslash;n&quot;
+comma
+id|strtab
+op_plus
+id|sym-&gt;st_name
+comma
+(paren
+r_int
+r_int
+)paren
+id|loc
+comma
+id|addend
+comma
+id|val
+)paren
 id|val
 op_assign
 (paren
@@ -2812,6 +2844,24 @@ id|loc
 )paren
 suffix:semicolon
 )brace
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;STUB FOR %s loc %lx, val %lx+%lx at %lx&bslash;n&quot;
+comma
+id|strtab
+op_plus
+id|sym-&gt;st_name
+comma
+id|loc
+comma
+id|sym-&gt;st_value
+comma
+id|addend
+comma
+id|val
+)paren
+suffix:semicolon
 multiline_comment|/* FIXME: local symbols work as long as the&n;&t;&t;&t; * core and init pieces aren&squot;t separated too&n;&t;&t;&t; * far.  If this is ever broken, you will trip&n;&t;&t;&t; * the check below.  The way to fix it would&n;&t;&t;&t; * be to generate local stubs to go between init&n;&t;&t;&t; * and core */
 r_if
 c_cond
@@ -2967,6 +3017,31 @@ comma
 id|val
 op_plus
 id|addend
+)paren
+suffix:semicolon
+id|DEBUGP
+c_func
+(paren
+l_string|&quot;FDESC for %s at %p points to %lx&bslash;n&quot;
+comma
+id|strtab
+op_plus
+id|sym-&gt;st_name
+comma
+op_star
+id|loc64
+comma
+(paren
+(paren
+r_struct
+id|fdesc_entry
+op_star
+)paren
+op_star
+id|loc64
+)paren
+op_member_access_from_pointer
+id|addr
 )paren
 suffix:semicolon
 )brace
@@ -3249,7 +3324,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|printk
+id|DEBUGP
 c_func
 (paren
 l_string|&quot;module %s: strtab %p, symhdr %p&bslash;n&quot;
@@ -3261,6 +3336,32 @@ comma
 id|symhdr
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|me-&gt;arch.got_count
+OG
+id|MAX_GOTS
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: Global Offset Table overflow (used %ld, allowed %d&bslash;n&quot;
+comma
+id|me-&gt;name
+comma
+id|me-&gt;arch.got_count
+comma
+id|MAX_GOTS
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 multiline_comment|/* no symbol table */
 r_if
 c_cond

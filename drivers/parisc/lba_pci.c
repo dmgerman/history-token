@@ -2140,7 +2140,11 @@ c_func
 (paren
 l_string|&quot;lba_fixup_bus() %s&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Virtualize Device/Bridge Resources. */
@@ -3825,23 +3829,6 @@ op_amp
 l_int|0xf
 comma
 id|dev-&gt;hpa
-)paren
-suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|dev-&gt;dev.name
-comma
-r_sizeof
-(paren
-id|dev-&gt;dev.name
-)paren
-comma
-l_string|&quot;%s version %s&quot;
-comma
-id|MODULE_NAME
-comma
-id|version
 )paren
 suffix:semicolon
 multiline_comment|/* Just in case we find some prototypes... */

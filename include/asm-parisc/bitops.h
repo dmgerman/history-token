@@ -1042,49 +1042,8 @@ id|mask
 )paren
 suffix:semicolon
 )brace
-DECL|function|ffz
-r_extern
-id|__inline__
-r_int
-r_int
-id|ffz
-c_func
-(paren
-r_int
-r_int
-id|word
-)paren
-(brace
-r_int
-r_int
-id|result
-suffix:semicolon
-id|result
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|word
-op_amp
-l_int|1
-)paren
-(brace
-id|result
-op_increment
-suffix:semicolon
-id|word
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
-r_return
-id|result
-suffix:semicolon
-)brace
 macro_line|#ifdef __KERNEL__
-multiline_comment|/**&n; * __ffs - find first bit in word.&n; * @word: The word to search&n; *&n; * Undefined if no bit exists, so code should check against 0 first.&n; */
+multiline_comment|/**&n; * __ffs - find first bit in word. returns 0 to &quot;BITS_PER_LONG-1&quot;.&n; * @word: The word to search&n; *&n; * __ffs() return is undefined if no bit is set.&n; *&n; * 32-bit fast __ffs by LaMont Jones &quot;lamont At hp com&quot;.&n; * 64-bit enhancement by Grant Grundler &quot;grundler At parisc-linux org&quot;.&n; * (with help from willy/jejb to get the semantics right)&n; *&n; * This algorithm avoids branches by making use of nullification.&n; * One side effect of &quot;extr&quot; instructions is it sets PSW[N] bit.&n; * How PSW[N] (nullify next insn) gets set is determined by the &n; * &quot;condition&quot; field (eg &quot;&lt;&gt;&quot; or &quot;TR&quot; below) in the extr* insn.&n; * Only the 1st and one of either the 2cd or 3rd insn will get executed.&n; * Each set of 3 insn will get executed in 2 cycles on PA8x00 vs 16 or so&n; * cycles for each mispredicted branch.&n; */
 DECL|function|__ffs
 r_static
 id|__inline__
@@ -1095,39 +1054,58 @@ c_func
 (paren
 r_int
 r_int
-id|word
+id|x
 )paren
 (brace
 r_int
 r_int
-id|result
-op_assign
-l_int|0
+id|ret
 suffix:semicolon
-r_while
-c_loop
+id|__asm__
+c_func
 (paren
-op_logical_neg
+macro_line|#if BITS_PER_LONG &gt; 32
+l_string|&quot; ldi       63,%1&bslash;n&quot;
+l_string|&quot; extrd,u,*&lt;&gt;  %0,63,32,%%r0&bslash;n&quot;
+l_string|&quot; extrd,u,*TR  %0,31,32,%0&bslash;n&quot;
+l_string|&quot; addi    -32,%1,%1&bslash;n&quot;
+macro_line|#else
+l_string|&quot; ldi       31,%1&bslash;n&quot;
+macro_line|#endif
+l_string|&quot; extru,&lt;&gt;  %0,31,16,%%r0&bslash;n&quot;
+l_string|&quot; extru,TR  %0,15,16,%0&bslash;n&quot;
+l_string|&quot; addi    -16,%1,%1&bslash;n&quot;
+l_string|&quot; extru,&lt;&gt;  %0,31,8,%%r0&bslash;n&quot;
+l_string|&quot; extru,TR  %0,23,8,%0&bslash;n&quot;
+l_string|&quot; addi    -8,%1,%1&bslash;n&quot;
+l_string|&quot; extru,&lt;&gt;  %0,31,4,%%r0&bslash;n&quot;
+l_string|&quot; extru,TR  %0,27,4,%0&bslash;n&quot;
+l_string|&quot; addi    -4,%1,%1&bslash;n&quot;
+l_string|&quot; extru,&lt;&gt;  %0,31,2,%%r0&bslash;n&quot;
+l_string|&quot; extru,TR  %0,29,2,%0&bslash;n&quot;
+l_string|&quot; addi    -2,%1,%1&bslash;n&quot;
+l_string|&quot; extru,=  %0,31,1,%%r0&bslash;n&quot;
+l_string|&quot; addi    -1,%1,%1&bslash;n&quot;
+suffix:colon
+l_string|&quot;+r&quot;
 (paren
-id|word
-op_amp
-l_int|1UL
+id|x
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|ret
 )paren
 )paren
-(brace
-id|result
-op_increment
 suffix:semicolon
-id|word
-op_rshift_assign
-l_int|1
-suffix:semicolon
-)brace
 r_return
-id|result
+id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ffs: find first bit set. This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
+multiline_comment|/* Undefined if no bit is zero. */
+DECL|macro|ffz
+mdefine_line|#define ffz(x)&t;__ffs(~x)
+multiline_comment|/*&n; * ffs: find first bit set. returns 1 to BITS_PER_LONG or 0 (if none set)&n; * This is defined the same way as the libc and compiler builtin&n; * ffs routines, therefore differs in spirit from the above ffz (man ffs).&n; */
 DECL|function|ffs
 r_static
 id|__inline__
@@ -1139,16 +1117,11 @@ r_int
 id|x
 )paren
 (brace
-r_if
+r_return
+id|x
+ques
 c_cond
 (paren
-op_logical_neg
-id|x
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
 id|__ffs
 c_func
 (paren
@@ -1158,11 +1131,76 @@ r_int
 )paren
 id|x
 )paren
+op_plus
+l_int|1
+)paren
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * fls: find last bit set.&n; */
-DECL|macro|fls
-mdefine_line|#define fls(x) generic_fls(x)
+multiline_comment|/*&n; * fls: find last (most significant) bit set.&n; * fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.&n; */
+DECL|function|fls
+r_static
+id|__inline__
+r_int
+id|fls
+c_func
+(paren
+r_int
+id|x
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|x
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|__asm__
+c_func
+(paren
+l_string|&quot;&t;ldi&t;&t;1,%1&bslash;n&quot;
+l_string|&quot;&t;extru,&lt;&gt;&t;%0,15,16,%%r0&bslash;n&quot;
+l_string|&quot;&t;zdep,TR&t;&t;%0,15,16,%0&bslash;n&quot;
+multiline_comment|/* xxxx0000 */
+l_string|&quot;&t;addi&t;&t;16,%1,%1&bslash;n&quot;
+l_string|&quot;&t;extru,&lt;&gt;&t;%0,7,8,%%r0&bslash;n&quot;
+l_string|&quot;&t;zdep,TR&t;&t;%0,23,24,%0&bslash;n&quot;
+multiline_comment|/* xx000000 */
+l_string|&quot;&t;addi&t;&t;8,%1,%1&bslash;n&quot;
+l_string|&quot;&t;extru,&lt;&gt;&t;%0,3,4,%%r0&bslash;n&quot;
+l_string|&quot;&t;zdep,TR&t;&t;%0,27,28,%0&bslash;n&quot;
+multiline_comment|/* x0000000 */
+l_string|&quot;&t;addi&t;&t;4,%1,%1&bslash;n&quot;
+l_string|&quot;&t;extru,&lt;&gt;&t;%0,1,2,%%r0&bslash;n&quot;
+l_string|&quot;&t;zdep,TR&t;&t;%0,29,30,%0&bslash;n&quot;
+multiline_comment|/* y0000000 (y&amp;3 = 0 */
+l_string|&quot;&t;addi&t;&t;2,%1,%1&bslash;n&quot;
+l_string|&quot;&t;extru,=&t;&t;%0,0,1,%%r0&bslash;n&quot;
+l_string|&quot;&t;addi&t;&t;1,%1,%1&bslash;n&quot;
+multiline_comment|/* if y &amp; 8, add 1 */
+suffix:colon
+l_string|&quot;+r&quot;
+(paren
+id|x
+)paren
+comma
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * hweightN: returns the hamming weight (i.e. the number&n; * of bits set) of a N-bit word&n; */
 DECL|macro|hweight64
 mdefine_line|#define hweight64(x)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __x = (x);&t;&t;&t;&t;&bslash;&n;&t;unsigned int __w;&t;&t;&t;&t;&t;&bslash;&n;&t;__w = generic_hweight32((unsigned int) __x);&t;&t;&bslash;&n;&t;__w += generic_hweight32((unsigned int) (__x&gt;&gt;32));&t;&bslash;&n;&t;__w;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})

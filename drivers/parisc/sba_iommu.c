@@ -6872,23 +6872,6 @@ comma
 id|dev-&gt;hpa
 )paren
 suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|dev-&gt;dev.name
-comma
-r_sizeof
-(paren
-id|dev-&gt;dev.name
-)paren
-comma
-l_string|&quot;%s version %s&quot;
-comma
-id|MODULE_NAME
-comma
-id|version
-)paren
-suffix:semicolon
 macro_line|#ifdef DEBUG_SBA_INIT
 id|sba_dump_tlb
 c_func

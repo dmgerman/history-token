@@ -15,7 +15,7 @@ DECL|macro|DEBUG_CONFIG
 mdefine_line|#define DEBUG_CONFIG 0
 macro_line|#if DEBUG_CONFIG
 DECL|macro|DBGC
-macro_line|# define DBGC(x...)     printk(KERN_DEBUG x)
+macro_line|# define DBGC(x...)&t;printk(KERN_DEBUG x)
 macro_line|#else
 DECL|macro|DBGC
 macro_line|# define DBGC(x...)
@@ -27,7 +27,7 @@ macro_line|#else
 DECL|macro|DBG_RES
 mdefine_line|#define DBG_RES(x...)
 macro_line|#endif
-multiline_comment|/* To be used as: mdelay(pci_post_reset_delay);&n;**&n;** post_reset is the time the kernel should stall to prevent anyone from&n;** accessing the PCI bus once #RESET is de-asserted. &n;** PCI spec somewhere says 1 second but with multi-PCI bus systems,&n;** this makes the boot time much longer than necessary.&n;** 20ms seems to work for all the HP PCI implementations to date.&n;*/
+multiline_comment|/* To be used as: mdelay(pci_post_reset_delay);&n; *&n; * post_reset is the time the kernel should stall to prevent anyone from&n; * accessing the PCI bus once #RESET is de-asserted. &n; * PCI spec somewhere says 1 second but with multi-PCI bus systems,&n; * this makes the boot time much longer than necessary.&n; * 20ms seems to work for all the HP PCI implementations to date.&n; *&n; * XXX: turn into a #defined constant in &lt;asm/pci.h&gt; ?&n; */
 DECL|variable|pci_post_reset_delay
 r_int
 id|pci_post_reset_delay
@@ -52,7 +52,7 @@ id|pci_hba_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;** parisc_pci_hba used by pci_port-&gt;in/out() ops to lookup bus data.&n;*/
+multiline_comment|/* parisc_pci_hba used by pci_port-&gt;in/out() ops to lookup bus data.  */
 DECL|macro|PCI_HBA_MAX
 mdefine_line|#define PCI_HBA_MAX 32
 DECL|variable|parisc_pci_hba
@@ -184,14 +184,6 @@ op_star
 id|bus
 )paren
 (brace
-id|ASSERT
-c_func
-(paren
-id|pci_bios
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -233,7 +225,7 @@ r_return
 id|str
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** Used in drivers/pci/quirks.c&n;*/
+multiline_comment|/* Used in drivers/pci/quirks.c */
 DECL|variable|pcibios_fixups
 r_struct
 id|pci_fixup
@@ -247,27 +239,9 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/*&n;** called by drivers/pci/setup.c:pdev_fixup_irq()&n;*/
-DECL|function|pcibios_update_irq
-r_void
-id|__devinit
-id|pcibios_update_irq
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_int
-id|irq
-)paren
-(brace
-multiline_comment|/*&n;** updates IRQ_LINE cfg register to reflect PCI-PCI bridge skewing.&n;**&n;** Calling path for Alpha is:&n;**  alpha/kernel/pci.c:common_init_pci(swizzle_func, pci_map_irq_func )&n;**&t;drivers/pci/setup.c:pci_fixup_irqs()&n;**&t;    drivers/pci/setup.c:pci_fixup_irq()&t;(for each PCI device)&n;**&t;&t;invoke swizzle and map functions&n;**&t;        alpha/kernel/pci.c:pcibios_update_irq()&n;**&n;** Don&squot;t need this for PA legacy PDC systems.&n;**&n;** On PAT PDC systems, We only support one &quot;swizzle&quot; for any number&n;** of PCI-PCI bridges deep. That&squot;s how bit3 PCI expansion chassis&n;** are implemented. The IRQ lines are &quot;skewed&quot; for all devices but&n;** *NOT* routed through the PCI-PCI bridge. Ie any device &quot;0&quot; will&n;** share an IRQ line. Legacy PDC is expecting this IRQ line routing&n;** as well.&n;**&n;** Unfortunately, PCI spec allows the IRQ lines to be routed&n;** around the PCI bridge as long as the IRQ lines are skewed&n;** based on the device number...&lt;sigh&gt;...&n;**&n;** Lastly, dino.c might be able to use pci_fixup_irq() to&n;** support RS-232 and PS/2 children. Not sure how but it&squot;s&n;** something to think about.&n;*/
-)brace
-multiline_comment|/*&n;** Called by pci_set_master() - a driver interface.&n;**&n;** Legacy PDC guarantees to set:&n;**      Map Memory BAR&squot;s into PA IO space.&n;**      Map Expansion ROM BAR into one common PA IO space per bus.&n;**      Map IO BAR&squot;s into PCI IO space.&n;**      Command (see below)&n;**      Cache Line Size&n;**      Latency Timer&n;**      Interrupt Line&n;**&t;PPB: secondary latency timer, io/mmio base/limit,&n;**&t;&t;bus numbers, bridge control&n;**&n;*/
-r_void
+multiline_comment|/*&n; * Called by pci_set_master() - a driver interface.&n; *&n; * Legacy PDC guarantees to set:&n; *&t;Map Memory BAR&squot;s into PA IO space.&n; *&t;Map Expansion ROM BAR into one common PA IO space per bus.&n; *&t;Map IO BAR&squot;s into PCI IO space.&n; *&t;Command (see below)&n; *&t;Cache Line Size&n; *&t;Latency Timer&n; *&t;Interrupt Line&n; *&t;PPB: secondary latency timer, io/mmio base/limit,&n; *&t;&t;bus numbers, bridge control&n; *&n; */
 DECL|function|pcibios_set_master
+r_void
 id|pcibios_set_master
 c_func
 (paren
@@ -326,9 +300,9 @@ id|u32
 )paren
 suffix:semicolon
 )brace
+DECL|function|pcibios_init_bus
 r_void
 id|__init
-DECL|function|pcibios_init_bus
 id|pcibios_init_bus
 c_func
 (paren
@@ -345,12 +319,17 @@ id|dev
 op_assign
 id|bus-&gt;self
 suffix:semicolon
+r_int
+r_int
+id|bridge_ctl
+suffix:semicolon
 multiline_comment|/* We deal only with pci controllers and pci-pci bridges. */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev
-op_logical_and
+op_logical_or
 (paren
 id|dev
 op_member_access_from_pointer
@@ -363,17 +342,7 @@ id|PCI_CLASS_BRIDGE_PCI
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev
-)paren
-(brace
-r_int
-r_int
-id|bridge_ctl
-suffix:semicolon
-multiline_comment|/* PCI-PCI bridge - set the cache line and default latency&n;&t;&t;   (32) for primary and secondary buses. */
+multiline_comment|/* PCI-PCI bridge - set the cache line and default latency&n;&t;   (32) for primary and secondary buses. */
 id|pci_write_config_byte
 c_func
 (paren
@@ -384,7 +353,6 @@ comma
 l_int|32
 )paren
 suffix:semicolon
-multiline_comment|/* Read bridge control */
 id|pci_read_config_word
 c_func
 (paren
@@ -396,6 +364,12 @@ op_amp
 id|bridge_ctl
 )paren
 suffix:semicolon
+id|bridge_ctl
+op_or_assign
+id|PCI_BRIDGE_CTL_PARITY
+op_or
+id|PCI_BRIDGE_CTL_SERR
+suffix:semicolon
 id|pci_write_config_word
 c_func
 (paren
@@ -404,15 +378,10 @@ comma
 id|PCI_BRIDGE_CONTROL
 comma
 id|bridge_ctl
-op_or
-id|PCI_BRIDGE_CTL_PARITY
-op_or
-id|PCI_BRIDGE_CTL_SERR
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/*&n;** KLUGE: Link the child and parent resources - generic PCI didn&squot;t&n;*/
+multiline_comment|/* KLUGE: Link the child and parent resources - generic PCI didn&squot;t */
 r_static
 r_void
 DECL|function|pcibios_link_hba_resources
@@ -437,6 +406,13 @@ op_logical_neg
 id|r-&gt;parent
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;PCI: Tell willy he&squot;s wrong&bslash;n&quot;
+)paren
+suffix:semicolon
 id|r-&gt;parent
 op_assign
 id|hba_res
@@ -490,7 +466,7 @@ id|r
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;** called by drivers/pci/setup-res.c:pci_setup_bridge().&n;*/
+multiline_comment|/* called by drivers/pci/setup-bus.c:pci_setup_bridge().  */
 DECL|function|pcibios_resource_to_bus
 r_void
 id|__devinit
@@ -644,10 +620,9 @@ id|pcibios_resource_to_bus
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;** pcibios align resources() is called everytime generic PCI code&n;** wants to generate a new address. The process of looking for&n;** an available address, each candidate is first &quot;aligned&quot; and&n;** then checked if the resource is available until a match is found.&n;**&n;** Since we are just checking candidates, don&squot;t use any fields other&n;** than res-&gt;start.&n;*/
-r_void
-id|__devinit
+multiline_comment|/*&n; * pcibios align resources() is called every time generic PCI code&n; * wants to generate a new address. The process of looking for&n; * an available address, each candidate is first &quot;aligned&quot; and&n; * then checked if the resource is available until a match is found.&n; *&n; * Since we are just checking candidates, don&squot;t use any fields other&n; * than res-&gt;start.&n; */
 DECL|function|pcibios_align_resource
+r_void
 id|pcibios_align_resource
 c_func
 (paren
@@ -709,14 +684,6 @@ comma
 id|alignment
 )paren
 suffix:semicolon
-multiline_comment|/* has resource already been aligned/assigned? */
-r_if
-c_cond
-(paren
-id|res-&gt;parent
-)paren
-r_return
-suffix:semicolon
 multiline_comment|/* If it&squot;s not IO, then it&squot;s gotta be MEM */
 id|align
 op_assign
@@ -753,11 +720,11 @@ op_and_assign
 op_complement
 id|mask
 suffix:semicolon
-multiline_comment|/*&n;&t;** WARNING : caller is expected to update &quot;end&quot; field.&n;&t;** We can&squot;t since it might really represent the *size*.&n;&t;** The difference is &quot;end = start + size&quot; vs &quot;end += start&quot;.&n;&t;*/
+multiline_comment|/* The caller updates the end field, we don&squot;t.  */
 )brace
-r_int
-id|__devinit
+multiline_comment|/*&n; * A driver is enabling the device.  We make sure that all the appropriate&n; * bits are set to allow the device to operate as the driver is expecting.&n; * We enable the port IO and memory IO bits if the device has any BARs of&n; * that type, and we enable the PERR and SERR bits unconditionally.&n; * Drivers that do not need parity (eg graphics and possibly networking)&n; * can clear these bits if they want.&n; */
 DECL|function|pcibios_enable_device
+r_int
 id|pcibios_enable_device
 c_func
 (paren
@@ -776,7 +743,6 @@ suffix:semicolon
 r_int
 id|idx
 suffix:semicolon
-multiline_comment|/*&n;&t;** The various platform PDC&squot;s (aka &quot;BIOS&quot; for PCs) don&squot;t&n;&t;** enable all the same bits. We just make sure they are here.&n;&t;*/
 id|pci_read_config_word
 c_func
 (paren
@@ -788,7 +754,6 @@ op_amp
 id|cmd
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;** See if any resources have been allocated&n;&t;** While &quot;regular&quot; PCI devices only use 0-5, Bridges use a few&n;&t;** beyond that for window registers.&n;&t;*/
 r_for
 c_loop
 (paren
@@ -855,7 +820,6 @@ op_or_assign
 id|PCI_COMMAND_MEMORY
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;** Enable System error and Parity Error reporting by default.&n;&t;** Devices that do NOT want those behaviors should clear them&n;&t;** (eg PCI graphics, possibly networking).&n;&t;** Interfaces like SCSI certainly should not. We want the&n;&t;** system to crash if a system or parity error is detected.&n;&t;** At least until the device driver can recover from such an error.&n;&t;*/
 id|cmd
 op_or_assign
 (paren
@@ -906,52 +870,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_void
-id|__init
-DECL|function|pcibios_setup_host_bridge
-id|pcibios_setup_host_bridge
-c_func
-(paren
-r_struct
-id|pci_bus
-op_star
-id|bus
-)paren
-(brace
-id|ASSERT
-c_func
-(paren
-id|pci_bios
-op_ne
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-id|pci_bios
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|pci_bios-&gt;setup_host_bridge
-)paren
-(brace
-(paren
-op_star
-id|pci_bios-&gt;setup_host_bridge
-)paren
-(paren
-id|bus
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
-)brace
-multiline_comment|/*&n;** PARISC specific (unfortunately)&n;*/
+multiline_comment|/* PA-RISC specific */
 DECL|function|pcibios_register_hba
 r_void
 id|pcibios_register_hba
@@ -963,15 +882,24 @@ op_star
 id|hba
 )paren
 (brace
-id|ASSERT
-c_func
+r_if
+c_cond
 (paren
 id|pci_hba_count
-OL
+op_ge
 id|PCI_HBA_MAX
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;PCI: Too many Host Bus Adapters&bslash;n&quot;
+)paren
 suffix:semicolon
-multiline_comment|/* pci_port-&gt;in/out() uses parisc_pci_hba to lookup parameter. */
+r_return
+suffix:semicolon
+)brace
 id|parisc_pci_hba
 (braket
 id|pci_hba_count

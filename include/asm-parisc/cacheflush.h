@@ -241,7 +241,7 @@ mdefine_line|#define flush_icache_page(vma,page)&t;do { flush_kernel_dcache_page
 DECL|macro|flush_icache_range
 mdefine_line|#define flush_icache_range(s,e)&t;&t;do { flush_kernel_dcache_range_asm(s,e); flush_kernel_icache_range_asm(s,e); } while (0)
 DECL|macro|flush_icache_user_range
-mdefine_line|#define flush_icache_user_range(vma, page, addr, len) &bslash;&n;&t;flush_icache_page((vma), (page))
+mdefine_line|#define flush_icache_user_range(vma, page, addr, len) do { &bslash;&n;        flush_user_dcache_range(addr, addr + len); &bslash;&n;&t;flush_user_icache_range(addr, addr + len); } while (0)
 DECL|function|flush_cache_range
 r_static
 r_inline

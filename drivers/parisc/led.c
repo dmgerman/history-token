@@ -177,7 +177,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* LCD_CMD and LCD_DATA for KittyHawk machines */
 DECL|macro|KITTYHAWK_LCD_CMD
-mdefine_line|#define KITTYHAWK_LCD_CMD  (0xfffffffff0190000UL) /* 64bit-ready */
+mdefine_line|#define KITTYHAWK_LCD_CMD  F_EXTEND(0xf0190000UL) /* 64bit-ready */
 DECL|macro|KITTYHAWK_LCD_DATA
 mdefine_line|#define KITTYHAWK_LCD_DATA (KITTYHAWK_LCD_CMD+1)
 multiline_comment|/* lcd_info is pre-initialized to the values needed to program KittyHawk LCD&squot;s &n; * HP seems to have used Sharp/Hitachi HD44780 LCDs most of the time. */

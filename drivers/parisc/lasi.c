@@ -517,23 +517,6 @@ comma
 id|lasi-&gt;hpa
 )paren
 suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|dev-&gt;dev.name
-comma
-r_sizeof
-(paren
-id|dev-&gt;dev.name
-)paren
-comma
-l_string|&quot;%s version %d&quot;
-comma
-id|lasi-&gt;name
-comma
-id|lasi-&gt;version
-)paren
-suffix:semicolon
 multiline_comment|/* initialize the chassis LEDs really early */
 id|lasi_led_init
 c_func

@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/offsets.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;

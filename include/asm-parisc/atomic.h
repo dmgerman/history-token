@@ -40,20 +40,18 @@ mdefine_line|#define SPIN_LOCK_IRQSAVE(lock, flags)&t;&t;do { local_irq_save(fla
 DECL|macro|SPIN_UNLOCK_IRQRESTORE
 mdefine_line|#define SPIN_UNLOCK_IRQRESTORE(lock, flags)&t;do { SPIN_UNLOCK(lock);  local_irq_restore(flags); } while (0)
 multiline_comment|/* Note that we need not lock read accesses - aligned word writes/reads&n; * are atomic, so a reader never sees unconsistent values.&n; *&n; * Cache-line alignment would conflict with, for example, linux/module.h&n; */
+DECL|member|counter
+DECL|typedef|atomic_t
 r_typedef
 r_struct
 (brace
-DECL|member|counter
 r_volatile
 r_int
 id|counter
 suffix:semicolon
-DECL|typedef|atomic_t
 )brace
 id|atomic_t
 suffix:semicolon
-multiline_comment|/*&n;** xchg/cmpxchg moved from asm/system.h - ggg&n;*/
-macro_line|#if 1
 multiline_comment|/* This should get optimized out since it&squot;s never called.&n;** Or get a link error if xchg is used &quot;wrong&quot;.&n;*/
 r_extern
 r_void
@@ -63,40 +61,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|function|__xchg_called_with_bad_pointer
-r_static
-r_inline
-r_void
-id|__xchg_called_with_bad_pointer
-c_func
-(paren
-r_void
-)paren
-(brace
-r_extern
-r_void
-id|panic
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-id|panic
-c_func
-(paren
-l_string|&quot;xchg called with bad pointer&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* __xchg32/64 defined in arch/parisc/lib/bitops.c */
 r_extern
 r_int
