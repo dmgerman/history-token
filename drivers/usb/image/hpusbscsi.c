@@ -145,8 +145,6 @@ id|ENOMEM
 suffix:semicolon
 r_int
 id|i
-comma
-id|result
 suffix:semicolon
 r_if
 c_cond
