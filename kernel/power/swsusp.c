@@ -838,7 +838,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *    write_suspend_image - Write entire image to disk.&n; *&n; *    After writing suspend signature to the disk, suspend may no&n; *    longer fail: we have ready-to-run image in swap, and rollback&n; *    would happen on next reboot -- corrupting data.&n; *&n; *    Note: The buffer we allocate to use to write the suspend header is&n; *    not freed; its not needed since system is going down anyway&n; *    (plus it causes oops and I&squot;m lazy^H^H^H^Htoo busy).&n; */
+multiline_comment|/**&n; *    write_suspend_image - Write entire image to disk.&n; *&n; *    After writing suspend signature to the disk, suspend may no&n; *    longer fail: we have ready-to-run image in swap, and rollback&n; *    would happen on next reboot -- corrupting data.&n; *&n; *    Note: The buffer we allocate to use to write the suspend header is&n; *    not freed; its not needed since the system is going down anyway&n; *    (plus it causes an oops and I&squot;m lazy^H^H^H^Htoo busy).&n; */
 DECL|function|write_suspend_image
 r_static
 r_int
@@ -1252,6 +1252,17 @@ r_sizeof
 (paren
 r_union
 id|diskpage
+)paren
+op_ne
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+id|BUG_ON
+(paren
+r_sizeof
+(paren
+r_struct
+id|link
 )paren
 op_ne
 id|PAGE_SIZE
@@ -3354,7 +3365,6 @@ id|sh-&gt;version_code
 op_ne
 id|LINUX_VERSION_CODE
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3362,7 +3372,6 @@ c_func
 l_string|&quot;Incorrect kernel version&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3370,7 +3379,6 @@ id|sh-&gt;num_physpages
 op_ne
 id|num_physpages
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3378,7 +3386,6 @@ c_func
 l_string|&quot;Incorrect memory size&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3392,7 +3399,6 @@ comma
 l_int|8
 )paren
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3400,7 +3406,6 @@ c_func
 l_string|&quot;Incorrect machine type&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3414,7 +3419,6 @@ comma
 l_int|20
 )paren
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3422,7 +3426,6 @@ c_func
 l_string|&quot;Incorrect version&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3433,7 +3436,6 @@ c_func
 (paren
 )paren
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3441,7 +3443,6 @@ c_func
 l_string|&quot;Incorrect number of cpus&quot;
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3449,7 +3450,6 @@ id|sh-&gt;page_size
 op_ne
 id|PAGE_SIZE
 )paren
-(brace
 r_return
 id|sanity_check_failed
 c_func
@@ -3457,7 +3457,6 @@ c_func
 l_string|&quot;Incorrect PAGE_SIZE&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
