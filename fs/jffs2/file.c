@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/jffs2.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 r_extern
 r_int
@@ -293,13 +292,6 @@ id|alloclen
 suffix:semicolon
 r_int
 id|ret
-op_assign
-l_int|0
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 id|D1
 c_func
@@ -329,8 +321,8 @@ c_cond
 (paren
 id|ret
 )paren
-r_goto
-id|out
+r_return
+id|ret
 suffix:semicolon
 multiline_comment|/* Special cases - we don&squot;t want more than one data node&n;&t;   for these types on the medium at any time. So setattr&n;&t;   must read the original data associated with the node&n;&t;   (i.e. the device numbers or the target name) and write&n;&t;   it out again with the appropriate data attached */
 r_if
@@ -429,16 +421,10 @@ c_cond
 op_logical_neg
 id|mdata
 )paren
-(brace
-id|ret
-op_assign
+r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 id|ret
 op_assign
 id|jffs2_read_dnode
@@ -467,8 +453,8 @@ c_func
 id|mdata
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_return
+id|ret
 suffix:semicolon
 )brace
 id|D1
@@ -514,13 +500,9 @@ c_func
 id|mdata
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 op_minus
 id|ENOMEM
-suffix:semicolon
-r_goto
-id|out
 suffix:semicolon
 )brace
 id|ret
@@ -576,8 +558,8 @@ c_func
 id|mdata
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_return
+id|ret
 suffix:semicolon
 )brace
 id|down
@@ -899,16 +881,12 @@ op_amp
 id|f-&gt;sem
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 id|PTR_ERR
 c_func
 (paren
 id|new_metadata
 )paren
-suffix:semicolon
-r_goto
-id|out
 suffix:semicolon
 )brace
 multiline_comment|/* It worked. Update the inode */
@@ -1041,15 +1019,8 @@ c_func
 id|c
 )paren
 suffix:semicolon
-id|out
-suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
-id|ret
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|jffs2_do_readpage_nolock

@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 DECL|function|jffs2_statfs
 r_int
@@ -1406,11 +1405,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|sb-&gt;s_dirt
 op_assign
 l_int|0
@@ -1422,15 +1416,8 @@ id|sb-&gt;s_flags
 op_amp
 id|MS_RDONLY
 )paren
-(brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|D1
 c_func
 (paren
@@ -1465,11 +1452,6 @@ id|jffs2_mark_erased_blocks
 c_func
 (paren
 id|c
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
