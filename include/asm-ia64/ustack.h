@@ -2,7 +2,7 @@ macro_line|#ifndef _ASM_IA64_USTACK_H
 DECL|macro|_ASM_IA64_USTACK_H
 mdefine_line|#define _ASM_IA64_USTACK_H
 multiline_comment|/*&n; * Constants for the user stack size&n; */
-macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/* The absolute hard limit for stack size is 1/2 of the mappable space in the region */
 DECL|macro|MAX_USER_STACK_SIZE
 mdefine_line|#define MAX_USER_STACK_SIZE&t;(RGN_MAP_LIMIT/2)
