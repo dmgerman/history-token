@@ -95,7 +95,9 @@ r_struct
 id|rcu_head
 id|rcu
 suffix:semicolon
+DECL|member|u
 )brace
+id|u
 suffix:semicolon
 DECL|member|use_count
 id|atomic_t
