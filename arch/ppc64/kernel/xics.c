@@ -1380,14 +1380,14 @@ id|regs
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_XMON
+macro_line|#ifdef CONFIG_DEBUGGER
 r_if
 c_cond
 (paren
 id|test_and_clear_bit
 c_func
 (paren
-id|PPC_MSG_XMON_BREAK
+id|PPC_MSG_DEBUGGER_BREAK
 comma
 op_amp
 id|xics_ipi_message
@@ -1407,7 +1407,7 @@ suffix:semicolon
 id|smp_message_recv
 c_func
 (paren
-id|PPC_MSG_XMON_BREAK
+id|PPC_MSG_DEBUGGER_BREAK
 comma
 id|regs
 )paren

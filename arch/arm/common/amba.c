@@ -178,7 +178,7 @@ id|buf
 comma
 id|bufsz
 comma
-l_string|&quot;AMBA_ID=%08lx&quot;
+l_string|&quot;AMBA_ID=%08x&quot;
 comma
 id|pcdev-&gt;periphid
 )paren

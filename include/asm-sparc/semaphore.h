@@ -11,7 +11,7 @@ r_struct
 id|semaphore
 (brace
 DECL|member|count
-id|atomic_t
+id|atomic24_t
 id|count
 suffix:semicolon
 DECL|member|sleepers
@@ -62,7 +62,7 @@ r_int
 id|val
 )paren
 (brace
-id|atomic_set
+id|atomic24_set
 c_func
 (paren
 op_amp
@@ -241,7 +241,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
-l_string|&quot;call&t;___atomic_sub&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___atomic24_sub&bslash;n&bslash;t&quot;
 l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&bslash;t&quot;
 l_string|&quot;tst&t;%%g2&bslash;n&bslash;t&quot;
 l_string|&quot;bl&t;2f&bslash;n&bslash;t&quot;
@@ -353,7 +353,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
-l_string|&quot;call&t;___atomic_sub&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___atomic24_sub&bslash;n&bslash;t&quot;
 l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&bslash;t&quot;
 l_string|&quot;tst&t;%%g2&bslash;n&bslash;t&quot;
 l_string|&quot;bl&t;2f&bslash;n&bslash;t&quot;
@@ -464,7 +464,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
-l_string|&quot;call&t;___atomic_sub&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___atomic24_sub&bslash;n&bslash;t&quot;
 l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&bslash;t&quot;
 l_string|&quot;tst&t;%%g2&bslash;n&bslash;t&quot;
 l_string|&quot;bl&t;2f&bslash;n&bslash;t&quot;
@@ -575,7 +575,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;mov&t;%%o7, %%g4&bslash;n&bslash;t&quot;
-l_string|&quot;call&t;___atomic_add&bslash;n&bslash;t&quot;
+l_string|&quot;call&t;___atomic24_add&bslash;n&bslash;t&quot;
 l_string|&quot; add&t;%%o7, 8, %%o7&bslash;n&bslash;t&quot;
 l_string|&quot;tst&t;%%g2&bslash;n&bslash;t&quot;
 l_string|&quot;ble&t;2f&bslash;n&bslash;t&quot;

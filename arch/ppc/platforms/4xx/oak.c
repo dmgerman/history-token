@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *    Copyright (c) 1999-2000 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: oak_setup.c&n; *&n; *    Description:&n; *      Architecture- / platform-specific boot-time initialization code for&n; *      the IBM PowerPC 403GCX &quot;Oak&quot; evaluation board. Adapted from original&n; *      code by Gary Thomas, Cort Dougan &lt;cort@fsmlabs.com&gt;, and Dan Malek&n; *      &lt;dan@net4x.com&gt;.&n; *&n; */
+multiline_comment|/*&n; *&n; *    Copyright (c) 1999-2000 Grant Erickson &lt;grant@lcse.umn.edu&gt;&n; *&n; *    Module name: oak.c&n; *&n; *    Description:&n; *      Architecture- / platform-specific boot-time initialization code for&n; *      the IBM PowerPC 403GCX &quot;Oak&quot; evaluation board. Adapted from original&n; *      code by Gary Thomas, Cort Dougan &lt;cort@fsmlabs.com&gt;, and Dan Malek&n; *      &lt;dan@net4x.com&gt;.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &quot;oak_setup.h&quot;
+macro_line|#include &quot;oak.h&quot;
 multiline_comment|/* Function Prototypes */
 r_extern
 r_void

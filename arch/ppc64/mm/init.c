@@ -37,6 +37,7 @@ macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_dma.h&gt;
 macro_line|#endif
@@ -2948,34 +2949,13 @@ id|PAGE_SIZE
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
+op_logical_neg
 id|start
-op_eq
-l_int|0
-)paren
-(brace
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;do_init_bootmem: failed to allocate a bitmap.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;&bslash;tbootmap_pages = 0x%lx.&bslash;n&quot;
-comma
-id|bootmap_pages
-)paren
-suffix:semicolon
-id|PPCDBG_ENTER_DEBUGGER
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|boot_mapsize
 op_assign
 id|init_bootmem

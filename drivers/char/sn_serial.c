@@ -3014,7 +3014,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;sn_serial: nasid:%d irq:%d tx:%d rx:%d&bslash;n&quot;
+l_string|&quot;sn_serial: nasid:%ld irq:%d tx:%d rx:%d&bslash;n&quot;
 comma
 id|ia64_sn_get_console_nasid
 c_func

@@ -3290,6 +3290,12 @@ op_plus
 id|se-&gt;nr_pages
 op_eq
 id|start_block
+op_logical_and
+id|se-&gt;start_page
+op_plus
+id|se-&gt;nr_pages
+op_eq
+id|start_page
 )paren
 (brace
 multiline_comment|/* Merge it */

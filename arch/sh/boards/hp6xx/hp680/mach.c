@@ -5,6 +5,7 @@ macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/machvec_init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hd64461/hd64461.h&gt;
+macro_line|#include &lt;asm/hp6xx/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|variable|__initmv
 r_struct

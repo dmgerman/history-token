@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * SMP boot-related support&n; *&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 01/05/16 Rohit Seth &lt;rohit.seth@intel.com&gt;&t;Moved SMP booting functions from smp.c to here.&n; * 01/04/27 David Mosberger &lt;davidm@hpl.hp.com&gt;&t;Added ITC synching code.&n; * 02/07/31 David Mosberger &lt;davidm@hpl.hp.com&gt;&t;Switch over to hotplug-CPU boot-sequence.&n; *&t;&t;&t;&t;&t;&t;smp_boot_cpus()/smp_commence() is replaced by&n; *&t;&t;&t;&t;&t;&t;smp_prepare_cpus()/__cpu_up()/smp_cpus_done().&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
@@ -952,12 +950,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Setup vector on AP &amp; enable */
-id|ia64_mca_check_errors
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* For post-failure MCA error logging */
 macro_line|#endif
 macro_line|#ifdef CONFIG_PERFMON
 id|pfm_init_percpu

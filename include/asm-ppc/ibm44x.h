@@ -59,7 +59,7 @@ DECL|macro|PPC44x_PIN_SIZE
 mdefine_line|#define PPC44x_PIN_SIZE&t;&t;(1 &lt;&lt; PPC44x_PIN_SHIFT)
 multiline_comment|/* Lowest TLB slot consumed by the default pinned TLBs */
 DECL|macro|PPC44x_LOW_SLOT
-mdefine_line|#define PPC44x_LOW_SLOT&t;&t;62
+mdefine_line|#define PPC44x_LOW_SLOT&t;&t;63
 multiline_comment|/*&n; * Standard 4GB &quot;page&quot; definitions&n; */
 DECL|macro|PPC44x_IO_PAGE
 mdefine_line|#define&t;PPC44x_IO_PAGE&t;&t;0x0000000100000000ULL

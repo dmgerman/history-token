@@ -67,10 +67,7 @@ DECL|macro|SONET_FRAME_SDH
 mdefine_line|#define SONET_FRAME_SDH   1&t;&t;/* SDH STM-1 framing */
 DECL|macro|SONET_FRSENSE_SIZE
 mdefine_line|#define SONET_FRSENSE_SIZE 6&t;&t;/* C1[3],H1[3] (0xff for unknown) */
-macro_line|#ifndef __KERNEL__
-DECL|macro|__SONET_ITEMS
-macro_line|#undef __SONET_ITEMS
-macro_line|#else
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|struct|k_sonet_stats
 r_struct

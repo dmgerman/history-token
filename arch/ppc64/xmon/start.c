@@ -4,60 +4,14 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/udbg.h&gt;
-r_extern
-r_void
-id|xmon_printf
-c_func
-(paren
-r_const
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-DECL|macro|TB_SPEED
-mdefine_line|#define TB_SPEED&t;25000000
-DECL|function|readtb
-r_static
-r_inline
-r_int
-r_int
-id|readtb
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|ret
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;mftb %0&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|ret
-)paren
-suffix:colon
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|function|sysrq_handle_xmon
 r_static
@@ -79,7 +33,13 @@ op_star
 id|tty
 )paren
 (brace
-id|xmon
+multiline_comment|/* ensure xmon is enabled */
+id|xmon_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|debugger
 c_func
 (paren
 id|pt_regs
@@ -110,17 +70,16 @@ l_string|&quot;Entering xmon&bslash;n&quot;
 comma
 )brace
 suffix:semicolon
-macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
-r_void
-DECL|function|xmon_map_scc
-id|xmon_map_scc
+DECL|function|setup_xmon_sysrq
+r_static
+r_int
+id|__init
+id|setup_xmon_sysrq
 c_func
 (paren
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-multiline_comment|/* This maybe isn&squot;t the best place to register sysrq &squot;x&squot; */
 id|__sysrq_put_key_op
 c_func
 (paren
@@ -130,8 +89,18 @@ op_amp
 id|sysrq_xmon_op
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|setup_xmon_sysrq
+id|__initcall
+c_func
+(paren
+id|setup_xmon_sysrq
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_MAGIC_SYSRQ */
 r_int
 DECL|function|xmon_write
 id|xmon_write
@@ -159,10 +128,6 @@ id|nb
 )paren
 suffix:semicolon
 )brace
-DECL|variable|xmon_wants_key
-r_int
-id|xmon_wants_key
-suffix:semicolon
 r_int
 DECL|function|xmon_read
 id|xmon_read
@@ -220,15 +185,6 @@ r_void
 op_star
 id|xmon_stderr
 suffix:semicolon
-r_void
-DECL|function|xmon_init
-id|xmon_init
-c_func
-(paren
-r_void
-)paren
-(brace
-)brace
 r_int
 DECL|function|xmon_putc
 id|xmon_putc

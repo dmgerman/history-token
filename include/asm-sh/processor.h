@@ -6,6 +6,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ void *pc; __asm__(&quot;mova&t;1f, %0&bslash;n1:&quot;:&quot;=z&quot; (pc)); pc; })
@@ -330,7 +331,7 @@ DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sizeof(init_stack) + (long) &amp;init_stack, /* sp */&t;&bslash;&n;&t;0,&t;&t;&t;&t;&t; /* pc */&t;&bslash;&n;&t;0, 0, &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0, &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0, &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{{{0,}},} &t;&t;&t;&t;/* fpu state */&t;&bslash;&n;}
 multiline_comment|/*&n; * Do necessary setup to start up a newly executed thread.&n; */
 DECL|macro|start_thread
-mdefine_line|#define start_thread(regs, new_pc, new_sp)&t; &bslash;&n;&t;set_fs(USER_DS);&t;&t;&t; &bslash;&n;&t;regs-&gt;pr = 0;   &t;&t; &t; &bslash;&n;&t;regs-&gt;sr = 0;&t;&t;/* User mode. */ &bslash;&n;&t;regs-&gt;pc = new_pc;&t;&t;&t; &bslash;&n;&t;regs-&gt;regs[15] = new_sp
+mdefine_line|#define start_thread(regs, new_pc, new_sp)&t; &bslash;&n;&t;set_fs(USER_DS);&t;&t;&t; &bslash;&n;&t;regs-&gt;pr = 0;   &t;&t; &t; &bslash;&n;&t;regs-&gt;sr = SR_FD;&t;/* User mode. */ &bslash;&n;&t;regs-&gt;pc = new_pc;&t;&t;&t; &bslash;&n;&t;regs-&gt;regs[15] = new_sp
 multiline_comment|/* Forward declaration, a strange C thing */
 r_struct
 id|task_struct
@@ -388,11 +389,11 @@ mdefine_line|#define copy_segments(p, mm)&t;do { } while(0)
 DECL|macro|release_segments
 mdefine_line|#define release_segments(mm)&t;do { } while(0)
 multiline_comment|/*&n; * FPU lazy state save handling.&n; */
-DECL|function|release_fpu
+DECL|function|disable_fpu
 r_static
 id|__inline__
 r_void
-id|release_fpu
+id|disable_fpu
 c_func
 (paren
 r_void
@@ -423,11 +424,11 @@ id|SR_FD
 )paren
 suffix:semicolon
 )brace
-DECL|function|grab_fpu
+DECL|function|enable_fpu
 r_static
 id|__inline__
 r_void
-id|grab_fpu
+id|enable_fpu
 c_func
 (paren
 r_void
@@ -459,6 +460,43 @@ id|SR_FD
 )paren
 suffix:semicolon
 )brace
+DECL|function|release_fpu
+r_static
+id|__inline__
+r_void
+id|release_fpu
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|regs-&gt;sr
+op_or_assign
+id|SR_FD
+suffix:semicolon
+)brace
+DECL|function|grab_fpu
+r_static
+id|__inline__
+r_void
+id|grab_fpu
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|regs-&gt;sr
+op_and_assign
+op_complement
+id|SR_FD
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_CPU_SH4
 r_extern
 r_void
@@ -469,6 +507,11 @@ r_struct
 id|task_struct
 op_star
 id|__tsk
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 macro_line|#else
@@ -476,9 +519,9 @@ DECL|macro|save_fpu
 mdefine_line|#define save_fpu(tsk)&t;do { } while (0)
 macro_line|#endif
 DECL|macro|unlazy_fpu
-mdefine_line|#define unlazy_fpu(tsk) do { &t;&t;&t;&t;&bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) {&t;&bslash;&n;&t;&t;save_fpu(tsk); &t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define unlazy_fpu(tsk, regs) do { &t;&t;&t;&t;&bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) {&t;&bslash;&n;&t;&t;save_fpu(tsk, regs); &t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|clear_fpu
-mdefine_line|#define clear_fpu(tsk) do { &t;&t;&t;&t;&t;&bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) { &t;&t;&bslash;&n;&t;&t;clear_tsk_thread_flag(tsk, TIF_USEDFPU); &t;&bslash;&n;&t;&t;release_fpu();&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define clear_fpu(tsk, regs) do { &t;&t;&t;&t;&t;&bslash;&n;&t;if (test_tsk_thread_flag(tsk, TIF_USEDFPU)) { &t;&t;&bslash;&n;&t;&t;clear_tsk_thread_flag(tsk, TIF_USEDFPU); &t;&bslash;&n;&t;&t;release_fpu(regs);&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Double presision, NANS as NANS, rounding to nearest, no exceptions */
 DECL|macro|FPSCR_INIT
 mdefine_line|#define FPSCR_INIT  0x00080000

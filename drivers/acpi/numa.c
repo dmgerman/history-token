@@ -497,9 +497,10 @@ id|ACPI_SRAT_MEMORY_AFFINITY
 comma
 id|acpi_parse_memory_affinity
 comma
-id|NR_MEMBLKS
+id|NR_NODE_MEMBLKS
 )paren
 suffix:semicolon
+singleline_comment|// IA64 specific
 )brace
 r_else
 (brace

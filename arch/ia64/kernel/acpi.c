@@ -2207,7 +2207,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|# ifdef CONFIG_NUMA
+macro_line|# ifdef CONFIG_ACPI_NUMA
 r_if
 c_cond
 (paren

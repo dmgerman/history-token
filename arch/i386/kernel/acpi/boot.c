@@ -337,6 +337,17 @@ c_func
 id|header
 )paren
 suffix:semicolon
+multiline_comment|/* no utility in registering a disabled processor */
+r_if
+c_cond
+(paren
+id|processor-&gt;flags.enabled
+op_eq
+l_int|0
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|mp_register_lapic
 (paren
 id|processor-&gt;id

@@ -136,7 +136,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rinfo-&gt;asleep
+id|info-&gt;state
+op_ne
+id|FBINFO_STATE_RUNNING
 )paren
 r_return
 suffix:semicolon
@@ -416,7 +418,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rinfo-&gt;asleep
+id|info-&gt;state
+op_ne
+id|FBINFO_STATE_RUNNING
 )paren
 r_return
 suffix:semicolon
@@ -582,7 +586,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rinfo-&gt;asleep
+id|info-&gt;state
+op_ne
+id|FBINFO_STATE_RUNNING
 )paren
 r_return
 suffix:semicolon
@@ -621,7 +627,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rinfo-&gt;asleep
+id|info-&gt;state
+op_ne
+id|FBINFO_STATE_RUNNING
 )paren
 r_return
 l_int|0
@@ -635,9 +643,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|radeon_engine_reset
+DECL|function|radeonfb_engine_reset
 r_void
-id|radeon_engine_reset
+id|radeonfb_engine_reset
 c_func
 (paren
 r_struct
@@ -1005,9 +1013,9 @@ id|rinfo
 )paren
 suffix:semicolon
 )brace
-DECL|function|radeon_engine_init
+DECL|function|radeonfb_engine_init
 r_void
-id|radeon_engine_init
+id|radeonfb_engine_init
 (paren
 r_struct
 id|radeonfb_info
@@ -1028,7 +1036,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|radeon_engine_reset
+id|radeonfb_engine_reset
 c_func
 (paren
 id|rinfo

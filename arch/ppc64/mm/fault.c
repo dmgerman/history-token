@@ -17,15 +17,6 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
-DECL|variable|debugger_kernel_faults
-r_int
-id|debugger_kernel_faults
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 r_void
 id|bad_page_fault
 c_func
@@ -89,12 +80,8 @@ id|error_code
 op_amp
 l_int|0x02000000
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
-(paren
-id|debugger_fault_handler
-op_logical_and
 (paren
 id|regs-&gt;trap
 op_eq
@@ -104,18 +91,19 @@ id|regs-&gt;trap
 op_eq
 l_int|0x380
 )paren
-)paren
 (brace
+r_if
+c_cond
+(paren
 id|debugger_fault_handler
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
+)paren
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* On a kernel SLB miss we can only check for a valid exception entry */
 r_if
 c_cond
@@ -147,7 +135,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
@@ -156,7 +143,6 @@ op_amp
 l_int|0x00400000
 )paren
 (brace
-multiline_comment|/* DABR match */
 r_if
 c_cond
 (paren
@@ -169,7 +155,6 @@ id|regs
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -424,19 +409,6 @@ op_star
 )paren
 id|address
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-id|ifppcdebug
-c_func
-(paren
-id|PPCDBG_SIGNALXMON
-)paren
-id|PPCDBG_ENTER_DEBUGGER_REGS
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-macro_line|#endif
 id|force_sig_info
 c_func
 (paren
@@ -658,19 +630,17 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* kernel has accessed a bad area */
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
 r_if
 c_cond
 (paren
-id|debugger_kernel_faults
-)paren
 id|debugger
 c_func
 (paren
 id|regs
 )paren
+)paren
+r_return
 suffix:semicolon
-macro_line|#endif
 id|die
 c_func
 (paren

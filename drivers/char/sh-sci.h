@@ -1,5 +1,14 @@
-multiline_comment|/* $Id: sh-sci.h,v 1.6 2003/10/13 01:11:11 lethal Exp $&n; *&n; *  linux/drivers/char/sh-sci.h&n; *&n; *  SuperH on-chip serial module support.  (SCI with no FIFO / with FIFO)&n; *  Copyright (C) 1999, 2000  Niibe Yutaka&n; *  Copyright (C) 2000  Greg Banks&n; *  Modified to support multiple serial ports. Stuart Menefy (May 2000).&n; *  Modified to support SH7760 SCIF. Paul Mundt (Oct 2003).&n; *&n; */
+multiline_comment|/* $Id: sh-sci.h,v 1.7 2004/02/10 17:04:17 lethal Exp $&n; *&n; *  linux/drivers/char/sh-sci.h&n; *&n; *  SuperH on-chip serial module support.  (SCI with no FIFO / with FIFO)&n; *  Copyright (C) 1999, 2000  Niibe Yutaka&n; *  Copyright (C) 2000  Greg Banks&n; *  Modified to support multiple serial ports. Stuart Menefy (May 2000).&n; *  Modified to support SH7760 SCIF. Paul Mundt (Oct 2003).&n; *  Modified to support H8/300 Serise Yoshinori Sato (Feb 2004). &n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#if defined(__H8300H__) || defined(__H8300S__)
+macro_line|#include &lt;asm/gpio.h&gt;
+macro_line|#if defined(CONFIG_H83007) || defined(CONFIG_H83068)
+macro_line|#include &lt;asm/regs306x.h&gt;
+macro_line|#endif
+macro_line|#if defined(CONFIG_H8S2678)
+macro_line|#include &lt;asm/regs267x.h&gt;
+macro_line|#endif
+macro_line|#endif
 multiline_comment|/* Values for sci_port-&gt;type */
 DECL|macro|PORT_SCI
 mdefine_line|#define PORT_SCI  0
@@ -31,6 +40,18 @@ DECL|macro|SH7760_SCIF1_IRQS
 mdefine_line|#define SH7760_SCIF1_IRQS { 72, 73, 75, 74 }
 DECL|macro|SH7760_SCIF2_IRQS
 mdefine_line|#define SH7760_SCIF2_IRQS { 76, 77, 79, 78 }
+DECL|macro|H8300H_SCI_IRQS0
+mdefine_line|#define H8300H_SCI_IRQS0 {52, 53, 54,   0 }
+DECL|macro|H8300H_SCI_IRQS1
+mdefine_line|#define H8300H_SCI_IRQS1 {56, 57, 58,   0 }
+DECL|macro|H8300H_SCI_IRQS2
+mdefine_line|#define H8300H_SCI_IRQS2 {60, 61, 62,   0 }
+DECL|macro|H8S_SCI_IRQS0
+mdefine_line|#define H8S_SCI_IRQS0 {88, 89, 90,   0 }
+DECL|macro|H8S_SCI_IRQS1
+mdefine_line|#define H8S_SCI_IRQS1 {92, 93, 94,   0 }
+DECL|macro|H8S_SCI_IRQS2
+mdefine_line|#define H8S_SCI_IRQS2 {96, 97, 98,   0 }
 macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7708)
 DECL|macro|SCI_NPORTS
 macro_line|# define SCI_NPORTS 1
@@ -102,6 +123,28 @@ DECL|macro|SCSCR_INIT
 macro_line|# define SCSCR_INIT(port)          0x38 /* TIE=0,RIE=0,TE=1,RE=1,REIE=1 */
 DECL|macro|SCIF_ONLY
 macro_line|# define SCIF_ONLY
+macro_line|#elif defined(CONFIG_H83007) || defined(CONFIG_H83068)
+DECL|macro|SCI_NPORTS
+macro_line|# define SCI_NPORTS 3
+DECL|macro|SCI_INIT
+macro_line|# define SCI_INIT { &bslash;&n;  { {}, PORT_SCI,  0x00ffffb0, H8300H_SCI_IRQS0, sci_init_pins_sci }, &bslash;&n;  { {}, PORT_SCI,  0x00ffffb8, H8300H_SCI_IRQS1, sci_init_pins_sci }, &bslash;&n;  { {}, PORT_SCI,  0x00ffffc0, H8300H_SCI_IRQS2, sci_init_pins_sci }  &bslash;&n;}
+DECL|macro|SCSCR_INIT
+macro_line|# define SCSCR_INIT(port)          0x30 /* TIE=0,RIE=0,TE=1,RE=1 */
+DECL|macro|SCI_ONLY
+macro_line|# define SCI_ONLY
+DECL|macro|H8300_SCI_DR
+macro_line|# define H8300_SCI_DR(ch) *(volatile char *)(P1DR + h8300_sci_pins[ch].port)
+macro_line|#elif defined(CONFIG_H8S2678)
+DECL|macro|SCI_NPORTS
+macro_line|# define SCI_NPORTS 3
+DECL|macro|SCI_INIT
+macro_line|# define SCI_INIT { &bslash;&n;  { {}, PORT_SCI,  0x00ffff78, H8S_SCI_IRQS0, sci_init_pins_sci }, &bslash;&n;  { {}, PORT_SCI,  0x00ffff80, H8S_SCI_IRQS1, sci_init_pins_sci }, &bslash;&n;  { {}, PORT_SCI,  0x00ffff88, H8S_SCI_IRQS2, sci_init_pins_sci }  &bslash;&n;}
+DECL|macro|SCSCR_INIT
+macro_line|# define SCSCR_INIT(port)          0x30 /* TIE=0,RIE=0,TE=1,RE=1 */
+DECL|macro|SCI_ONLY
+macro_line|# define SCI_ONLY
+DECL|macro|H8300_SCI_DR
+macro_line|# define H8300_SCI_DR(ch) *(volatile char *)(P1DR + h8300_sci_pins[ch].port)
 macro_line|#else
 macro_line|# error CPU subtype not defined
 macro_line|#endif
@@ -328,19 +371,26 @@ DECL|macro|CPU_SCIx_FNS
 mdefine_line|#define CPU_SCIx_FNS(name, sci_offset, sci_size, scif_offset, scif_size)&bslash;&n;  static inline unsigned int sci_##name##_in(struct sci_port* port)&t;&bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    if (port-&gt;type == PORT_SCI) { &t;&t;&t;&t;&t;&bslash;&n;      SCI_IN(sci_size, sci_offset)&t;&t;&t;&t;&t;&bslash;&n;    } else {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;      SCI_IN(scif_size, scif_offset);&t;&t; &t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  static inline void sci_##name##_out(struct sci_port* port, unsigned int value) &bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    if (port-&gt;type == PORT_SCI) {&t;&t;&t;&t;&t;&bslash;&n;      SCI_OUT(sci_size, sci_offset, value)&t;&t;&t;&t;&bslash;&n;    } else {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;      SCI_OUT(scif_size, scif_offset, value);&t;&t;&t;&t;&bslash;&n;    }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  }
 DECL|macro|CPU_SCIF_FNS
 mdefine_line|#define CPU_SCIF_FNS(name, scif_offset, scif_size)&t;&t;&t;&t;&bslash;&n;  static inline unsigned int sci_##name##_in(struct sci_port* port)&t;&bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_IN(scif_size, scif_offset);&t;&t; &t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  static inline void sci_##name##_out(struct sci_port* port, unsigned int value) &bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_OUT(scif_size, scif_offset, value);&t;&t;&t;&t;&bslash;&n;  }
+DECL|macro|CPU_SCI_FNS
+mdefine_line|#define CPU_SCI_FNS(name, sci_offset, sci_size)&t;&t;&t;&t;&bslash;&n;  static inline unsigned int sci_##name##_in(struct sci_port* port)&t;&bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_IN(sci_size, sci_offset);&t;&t; &t;&t;&t;&bslash;&n;  }&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  static inline void sci_##name##_out(struct sci_port* port, unsigned int value) &bslash;&n;  {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    SCI_OUT(sci_size, sci_offset, value);&t;&t;&t;&t;&bslash;&n;  }
 macro_line|#ifdef CONFIG_CPU_SH3
 DECL|macro|SCIx_FNS
-mdefine_line|#define SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh4_sci_offset, sh4_sci_size, &bslash;&n;&t;&t; sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size) &bslash;&n;  CPU_SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh3_scif_offset, sh3_scif_size)
+mdefine_line|#define SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh4_sci_offset, sh4_sci_size, &bslash;&n;&t;&t; sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size, &bslash;&n;                 h8_sci_offset, h8_sci_size) &bslash;&n;  CPU_SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh3_scif_offset, sh3_scif_size)
 DECL|macro|SCIF_FNS
 mdefine_line|#define SCIF_FNS(name, sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size) &bslash;&n;  CPU_SCIF_FNS(name, sh3_scif_offset, sh3_scif_size)
+macro_line|#elif defined(__H8300H__) || defined(__H8300S__)
+DECL|macro|SCIx_FNS
+mdefine_line|#define SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh4_sci_offset, sh4_sci_size, &bslash;&n;&t;&t; sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size, &bslash;&n;                 h8_sci_offset, h8_sci_size) &bslash;&n;  CPU_SCI_FNS(name, h8_sci_offset, h8_sci_size)
+DECL|macro|SCIF_FNS
+mdefine_line|#define SCIF_FNS(name, sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size)
 macro_line|#else
 DECL|macro|SCIx_FNS
-mdefine_line|#define SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh4_sci_offset, sh4_sci_size, &bslash;&n;&t;&t; sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size) &bslash;&n;  CPU_SCIx_FNS(name, sh4_sci_offset, sh4_sci_size, sh4_scif_offset, sh4_scif_size)
+mdefine_line|#define SCIx_FNS(name, sh3_sci_offset, sh3_sci_size, sh4_sci_offset, sh4_sci_size, &bslash;&n;&t;&t; sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size, &bslash;&n;&t;&t; h8_sci_offset, h8_sci_size) &bslash;&n;  CPU_SCIx_FNS(name, sh4_sci_offset, sh4_sci_size, sh4_scif_offset, sh4_scif_size)
 DECL|macro|SCIF_FNS
 mdefine_line|#define SCIF_FNS(name, sh3_scif_offset, sh3_scif_size, sh4_scif_offset, sh4_scif_size) &bslash;&n;  CPU_SCIF_FNS(name, sh4_scif_offset, sh4_scif_size)
 macro_line|#endif
-multiline_comment|/*      reg      SCI/SH3   SCI/SH4  SCIF/SH3   SCIF/SH4  */
-multiline_comment|/*      name     off  sz   off  sz   off  sz   off  sz   */
+multiline_comment|/*      reg      SCI/SH3   SCI/SH4  SCIF/SH3   SCIF/SH4  SCI/H8*/
+multiline_comment|/*      name     off  sz   off  sz   off  sz   off  sz   off  sz*/
 id|SCIx_FNS
 c_func
 (paren
@@ -361,6 +411,10 @@ comma
 l_int|0x00
 comma
 l_int|16
+comma
+l_int|0x00
+comma
+l_int|8
 )paren
 id|SCIx_FNS
 c_func
@@ -380,6 +434,10 @@ comma
 l_int|8
 comma
 l_int|0x04
+comma
+l_int|8
+comma
+l_int|0x01
 comma
 l_int|8
 )paren
@@ -403,6 +461,10 @@ comma
 l_int|0x08
 comma
 l_int|16
+comma
+l_int|0x02
+comma
+l_int|8
 )paren
 id|SCIx_FNS
 c_func
@@ -422,6 +484,10 @@ comma
 l_int|8
 comma
 l_int|0x0C
+comma
+l_int|8
+comma
+l_int|0x03
 comma
 l_int|8
 )paren
@@ -445,6 +511,10 @@ comma
 l_int|0x10
 comma
 l_int|16
+comma
+l_int|0x04
+comma
+l_int|8
 )paren
 id|SCIx_FNS
 c_func
@@ -464,6 +534,10 @@ comma
 l_int|8
 comma
 l_int|0x14
+comma
+l_int|8
+comma
+l_int|0x05
 comma
 l_int|8
 )paren
@@ -510,6 +584,158 @@ DECL|macro|sci_in
 mdefine_line|#define sci_in(port, reg) sci_##reg##_in(port)
 DECL|macro|sci_out
 mdefine_line|#define sci_out(port, reg, value) sci_##reg##_out(port, value)
+multiline_comment|/* H8/300 series SCI pins assignment */
+macro_line|#if defined(__H8300H__) || defined(__H8300S__)
+r_static
+r_const
+r_struct
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+(brace
+DECL|member|port
+r_int
+id|port
+suffix:semicolon
+multiline_comment|/* GPIO port no */
+DECL|member|rx
+DECL|member|tx
+r_int
+r_int
+id|rx
+comma
+id|tx
+suffix:semicolon
+multiline_comment|/* GPIO bit no */
+DECL|variable|h8300_sci_pins
+)brace
+id|h8300_sci_pins
+(braket
+)braket
+op_assign
+(brace
+macro_line|#if defined(CONFIG_H83007) || defined(CONFIG_H83068)
+(brace
+multiline_comment|/* SCI0 */
+dot
+id|port
+op_assign
+id|H8300_GPIO_P9
+comma
+dot
+id|rx
+op_assign
+id|H8300_GPIO_B2
+comma
+dot
+id|tx
+op_assign
+id|H8300_GPIO_B0
+comma
+)brace
+comma
+(brace
+multiline_comment|/* SCI1 */
+dot
+id|port
+op_assign
+id|H8300_GPIO_P9
+comma
+dot
+id|rx
+op_assign
+id|H8300_GPIO_B3
+comma
+dot
+id|tx
+op_assign
+id|H8300_GPIO_B1
+comma
+)brace
+comma
+(brace
+multiline_comment|/* SCI2 */
+dot
+id|port
+op_assign
+id|H8300_GPIO_PB
+comma
+dot
+id|rx
+op_assign
+id|H8300_GPIO_B7
+comma
+dot
+id|tx
+op_assign
+id|H8300_GPIO_B6
+comma
+)brace
+macro_line|#elif defined(CONFIG_H8S2678)
+(brace
+multiline_comment|/* SCI0 */
+dot
+id|port
+op_assign
+id|H8300_GPIO_P3
+comma
+dot
+id|rx
+op_assign
+id|H8300_GPIO_B2
+comma
+dot
+id|tx
+op_assign
+id|H8300_GPIO_B0
+comma
+)brace
+comma
+(brace
+multiline_comment|/* SCI1 */
+dot
+id|port
+op_assign
+id|H8300_GPIO_P3
+comma
+dot
+id|rx
+op_assign
+id|H8300_GPIO_B3
+comma
+dot
+id|tx
+op_assign
+id|H8300_GPIO_B1
+comma
+)brace
+comma
+(brace
+multiline_comment|/* SCI2 */
+dot
+id|port
+op_assign
+id|H8300_GPIO_P5
+comma
+dot
+id|rx
+op_assign
+id|H8300_GPIO_B1
+comma
+dot
+id|tx
+op_assign
+id|H8300_GPIO_B0
+comma
+)brace
+macro_line|#endif
+)brace
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7708)
 DECL|function|sci_rxd_in
 r_static
@@ -551,6 +777,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7707) || defined(CONFIG_CPU_SUBTYPE_SH7709)
+DECL|function|sci_rxd_in
 r_static
 r_inline
 r_int
@@ -634,6 +861,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7750) || defined(CONFIG_CPU_SUBTYPE_SH7751)
+DECL|function|sci_rxd_in
 r_static
 r_inline
 r_int
@@ -699,6 +927,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#elif defined(CONFIG_CPU_SUBTYPE_SH7760)
+DECL|function|sci_rxd_in
 r_static
 r_inline
 r_int
@@ -779,6 +1008,7 @@ suffix:semicolon
 multiline_comment|/* SCIF */
 )brace
 macro_line|#elif defined(CONFIG_CPU_SUBTYPE_ST40STB1)
+DECL|function|sci_rxd_in
 r_static
 r_inline
 r_int
@@ -830,12 +1060,64 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* SCIF */
 )brace
+macro_line|#elif defined(__H8300H__) || defined(__H8300S__)
+DECL|function|sci_rxd_in
+r_static
+r_inline
+r_int
+id|sci_rxd_in
+c_func
+(paren
+r_struct
+id|sci_port
+op_star
+id|port
+)paren
+(brace
+r_int
+id|ch
+op_assign
+(paren
+id|port-&gt;base
+op_minus
+id|SMR0
+)paren
+op_rshift
+l_int|3
+suffix:semicolon
+r_return
+(paren
+id|H8300_SCI_DR
+c_func
+(paren
+id|ch
+)paren
+op_amp
+id|h8300_sci_pins
+(braket
+id|ch
+)braket
+dot
+id|rx
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#endif
 multiline_comment|/*&n; * Values for the BitRate Register (SCBRR)&n; *&n; * The values are actually divisors for a frequency which can&n; * be internal to the SH3 (14.7456MHz) or derived from an external&n; * clock source.  This driver assumes the internal clock is used;&n; * to support using an external clock source, config options or&n; * possibly command-line options would need to be added.&n; *&n; * Also, to support speeds below 2400 (why?) the lower 2 bits of&n; * the SCSMR register would also need to be set to non-zero values.&n; *&n; * -- Greg Banks 27Feb2000&n; *&n; * Answer: The SCBRR register is only eight bits, and the value in&n; * it gets larger with lower baud rates. At around 2400 (depending on&n; * the peripherial module clock) you run out of bits. However the&n; * lower two bits of SCSMR allow the module clock to be divided down,&n; * scaling the value which is needed in SCBRR.&n; *&n; * -- Stuart Menefy - 23 May 2000&n; *&n; * I meant, why would anyone bother with bitrates below 2400.&n; *&n; * -- Greg Banks - 7Jul2000&n; *&n; * You &quot;speedist&quot;!  How will I use my 110bps ASR-33 teletype with paper&n; * tape reader as a console!&n; *&n; * -- Mitch Davis - 15 Jul 2000&n; */
 DECL|macro|PCLK
 mdefine_line|#define PCLK           (current_cpu_data.module_clock)
+macro_line|#if !defined(__H8300H__) &amp;&amp; !defined(__H8300S__)
 DECL|macro|SCBRR_VALUE
 mdefine_line|#define SCBRR_VALUE(bps) ((PCLK+16*bps)/(32*bps)-1)
+macro_line|#else
+DECL|macro|SCBRR_VALUE
+mdefine_line|#define SCBRR_VALUE(bps) (((CONFIG_CPU_CLOCK*1000/32)/bps)-1)
+macro_line|#endif
 DECL|macro|BPS_2400
 mdefine_line|#define BPS_2400       SCBRR_VALUE(2400)
 DECL|macro|BPS_4800

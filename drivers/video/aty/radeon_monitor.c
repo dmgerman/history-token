@@ -3396,7 +3396,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;radeonfb: Asssuming panel size %dx%d&bslash;n&quot;
+l_string|&quot;radeonfb: Assuming panel size %dx%d&bslash;n&quot;
 comma
 id|rinfo-&gt;panel_info.xres
 comma

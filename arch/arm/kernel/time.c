@@ -105,11 +105,18 @@ r_void
 op_assign
 id|dummy_gettimeoffset
 suffix:semicolon
-multiline_comment|/*&n; * Scheduler clock - returns current time in nanosec units.&n; */
+multiline_comment|/*&n; * Scheduler clock - returns current time in nanosec units.&n; * This is the default implementation.  Sub-architecture&n; * implementations can override this.&n; */
 DECL|function|sched_clock
 r_int
 r_int
 r_int
+id|__attribute__
+c_func
+(paren
+(paren
+id|weak
+)paren
+)paren
 id|sched_clock
 c_func
 (paren
@@ -247,6 +254,10 @@ op_logical_and
 id|time_before
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|xtime.tv_sec
 comma
 id|next_rtc_update

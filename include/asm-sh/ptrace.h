@@ -1,7 +1,6 @@
 macro_line|#ifndef __ASM_SH_PTRACE_H
 DECL|macro|__ASM_SH_PTRACE_H
 mdefine_line|#define __ASM_SH_PTRACE_H
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ubc.h&gt;
 multiline_comment|/*&n; * Copyright (C) 1999, 2000  Niibe Yutaka&n; *&n; */
 multiline_comment|/*&n; * GCC defines register number like this:&n; * -----------------------------&n; *&t; 0 - 15 are integer registers&n; *&t;17 - 22 are control/special registers&n; *&t;24 - 39 fp registers&n; *&t;40 - 47 xd registers&n; *&t;48 -    fpscr register&n; * -----------------------------&n; *&n; * We follows above, except:&n; *&t;16 --- program counter (PC)&n; *&t;22 --- syscall #&n; *&t;23 --- floating point communication register&n; */

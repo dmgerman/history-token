@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.19 2004/01/10 01:25:32 lethal Exp $&n; *&n; * linux/arch/sh/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; *&n; * SuperH version:  Copyright (C) 1999  Niibe Yutaka&n; */
+multiline_comment|/* $Id: irq.c,v 1.20 2004/01/13 05:52:11 kkojima Exp $&n; *&n; * linux/arch/sh/kernel/irq.c&n; *&n; *&t;Copyright (C) 1992, 1998 Linus Torvalds, Ingo Molnar&n; *&n; *&n; * SuperH version:  Copyright (C) 1999  Niibe Yutaka&n; */
 multiline_comment|/*&n; * IRQs are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1101,6 +1101,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+multiline_comment|/*&n;&t; * At this point we&squot;re now about to actually call handlers,&n;&t; * and interrupts might get reenabled during them... bump&n;&t; * preempt_count to prevent any preemption while the handler&n;&t; * called here is pending...&n;&t; */
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Get IRQ number */
 id|asm
 r_volatile
@@ -1331,6 +1339,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+multiline_comment|/*&n;&t; * We&squot;re done with the handlers, interrupts should be&n;&t; * currently disabled; decrement preempt_count now so&n;&t; * as we return preemption may be allowed...&n;&t; */
+id|preempt_enable_no_resched
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon

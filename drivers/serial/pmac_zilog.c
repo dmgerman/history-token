@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
-macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &lt;asm/dbdma.h&gt;
 macro_line|#include &lt;asm/macio.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;

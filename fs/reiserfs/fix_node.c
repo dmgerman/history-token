@@ -8768,6 +8768,8 @@ c_func
 id|size
 comma
 id|GFP_ATOMIC
+op_or
+id|__GFP_NOWARN
 comma
 id|tb-&gt;tb_sb
 )paren

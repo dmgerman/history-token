@@ -410,7 +410,7 @@ op_assign
 op_amp
 id|__res
 suffix:semicolon
-macro_line|#if defined(CONFIG_WALNUT) || defined(CONFIG_CEDER)|| defined(CONFIG_ASH) || defined(CONFIG_SYCAMORE)
+macro_line|#if defined(CONFIG_WALNUT) || defined(CONFIG_ASH) || defined(CONFIG_SYCAMORE)
 multiline_comment|/* Walnut boot rom sets DCR CHCR1 (aka CPC0_CR1) bit CETE to 1 */
 id|mtdcr
 c_func

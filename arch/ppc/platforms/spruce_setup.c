@@ -15,6 +15,9 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -25,6 +28,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;platforms/spruce.h&gt;
 macro_line|#include &lt;asm/todc.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/kgdb.h&gt;
 macro_line|#include &lt;syslib/cpc700.h&gt;
 r_extern
 r_void
@@ -337,6 +341,174 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
+r_void
+id|__init
+DECL|function|spruce_early_serial_map
+id|spruce_early_serial_map
+c_func
+(paren
+r_void
+)paren
+(brace
+id|u32
+id|uart_clk
+suffix:semicolon
+r_struct
+id|uart_port
+id|serial_req
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|SPRUCE_UARTCLK_IS_33M
+c_func
+(paren
+id|readb
+c_func
+(paren
+id|SPRUCE_FPGA_REG_A
+)paren
+)paren
+)paren
+id|uart_clk
+op_assign
+id|SPRUCE_BAUD_33M
+op_star
+l_int|16
+suffix:semicolon
+r_else
+id|uart_clk
+op_assign
+id|SPRUCE_BAUD_30M
+op_star
+l_int|16
+suffix:semicolon
+multiline_comment|/* Setup serial port access */
+id|memset
+c_func
+(paren
+op_amp
+id|serial_req
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|serial_req
+)paren
+)paren
+suffix:semicolon
+id|serial_req.uartclk
+op_assign
+id|uart_clk
+suffix:semicolon
+id|serial_req.irq
+op_assign
+id|UART0_INT
+suffix:semicolon
+id|serial_req.flags
+op_assign
+id|ASYNC_BOOT_AUTOCONF
+op_or
+id|ASYNC_SKIP_TEST
+suffix:semicolon
+id|serial_req.iotype
+op_assign
+id|SERIAL_IO_MEM
+suffix:semicolon
+id|serial_req.membase
+op_assign
+(paren
+id|u_char
+op_star
+)paren
+id|UART0_IO_BASE
+suffix:semicolon
+id|serial_req.regshift
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#if defined(CONFIG_KGDB) || defined(CONFIG_SERIAL_TEXT_DEBUG)
+id|gen550_init
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|serial_req
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_8250
+r_if
+c_cond
+(paren
+id|early_serial_setup
+c_func
+(paren
+op_amp
+id|serial_req
+)paren
+op_ne
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Early serial init of port 0 failed&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Assume early_serial_setup() doesn&squot;t modify serial_req */
+id|serial_req.line
+op_assign
+l_int|1
+suffix:semicolon
+id|serial_req.irq
+op_assign
+id|UART1_INT
+suffix:semicolon
+id|serial_req.membase
+op_assign
+(paren
+id|u_char
+op_star
+)paren
+id|UART1_IO_BASE
+suffix:semicolon
+macro_line|#if defined(CONFIG_KGDB) || defined(CONFIG_SERIAL_TEXT_DEBUG)
+id|gen550_init
+c_func
+(paren
+l_int|1
+comma
+op_amp
+id|serial_req
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_8250
+r_if
+c_cond
+(paren
+id|early_serial_setup
+c_func
+(paren
+op_amp
+id|serial_req
+)paren
+op_ne
+l_int|0
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Early serial init of port 1 failed&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 id|TODC_ALLOC
 c_func
 (paren
@@ -403,7 +575,7 @@ op_assign
 id|Root_SDA1
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
+macro_line|#ifdef CONFIG_VT
 id|conswitchp
 op_assign
 op_amp
@@ -447,33 +619,7 @@ multiline_comment|/* rfi restores MSR from SRR1 and sets the PC to the SRR0 valu
 id|__asm__
 id|__volatile__
 (paren
-"&quot;&bslash;"
-id|n
-"&bslash;"
-id|lis
-l_int|3
-comma
-l_int|0xfff0
-id|ori
-l_int|3
-comma
-l_int|3
-comma
-l_int|0x0100
-id|mtspr
-l_int|26
-comma
-l_int|3
-id|li
-l_int|3
-comma
-l_int|0
-id|mtspr
-l_int|27
-comma
-l_int|3
-id|rfi
-"&quot;"
+l_string|&quot;&bslash;n&bslash;&n;&t;lis&t;3,0xfff0&t;&bslash;n&bslash;&n;&t;ori&t;3,3,0x0100&t;&bslash;n&bslash;&n;&t;mtspr&t;26,3&t;&t;&bslash;n&bslash;&n;&t;li&t;3,0&t;&t;&bslash;n&bslash;&n;&t;mtspr&t;27,3&t;&t;&bslash;n&bslash;&n;&t;rfi&t;&t;&t;&bslash;n&bslash;&n;&t;&quot;
 )paren
 suffix:semicolon
 r_for
@@ -544,6 +690,44 @@ id|_PAGE_IO
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Set BAT 3 to map 0xf8000000 to end of physical memory space 1-to-1.&n; */
+r_static
+id|__inline__
+r_void
+DECL|function|spruce_set_bat
+id|spruce_set_bat
+c_func
+(paren
+r_void
+)paren
+(brace
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|DBAT1U
+comma
+l_int|0xf8000ffe
+)paren
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|DBAT1L
+comma
+l_int|0xf800002a
+)paren
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_void
 id|__init
 DECL|function|platform_init
@@ -578,6 +762,12 @@ id|find_bootinfo
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* Map in board regs, etc. */
+id|spruce_set_bat
+c_func
+(paren
 )paren
 suffix:semicolon
 id|isa_io_base
@@ -644,5 +834,22 @@ id|ppc_md.nvram_write_val
 op_assign
 id|todc_direct_write_val
 suffix:semicolon
+id|spruce_early_serial_map
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
+id|ppc_md.progress
+op_assign
+id|gen550_progress
+suffix:semicolon
+macro_line|#endif /* CONFIG_SERIAL_TEXT_DEBUG */
+macro_line|#ifdef CONFIG_KGDB
+id|ppc_md.kgdb_map_scc
+op_assign
+id|gen550_kgdb_map_scc
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

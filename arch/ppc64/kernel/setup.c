@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 r_extern
 r_int
 r_int
@@ -210,16 +211,6 @@ DECL|variable|powersave_nap
 r_int
 id|powersave_nap
 suffix:semicolon
-macro_line|#ifdef CONFIG_XMON
-r_extern
-r_void
-id|xmon_map_scc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|saved_command_line
 r_char
 id|saved_command_line
@@ -466,25 +457,10 @@ id|i
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_XMON_DEFAULT
-id|debugger
-op_assign
-id|xmon
-suffix:semicolon
-id|debugger_bpt
-op_assign
-id|xmon_bpt
-suffix:semicolon
-id|debugger_sstep
-op_assign
-id|xmon_sstep
-suffix:semicolon
-id|debugger_iabr_match
-op_assign
-id|xmon_iabr_match
-suffix:semicolon
-id|debugger_dabr_match
-op_assign
-id|xmon_dabr_match
+id|xmon_init
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PPC_ISERIES
@@ -2352,11 +2328,6 @@ l_string|&quot;Setup Arch&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
-id|xmon_map_scc
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2368,12 +2339,20 @@ comma
 l_string|&quot;xmon&quot;
 )paren
 )paren
-id|xmon
+(brace
+multiline_comment|/* ensure xmon is enabled */
+id|xmon_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|debugger
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_XMON */
 multiline_comment|/*&n;&t; * Set cache line size based on type of cpu as a default.&n;&t; * Systems with OF can look in the properties on the cpu node(s)&n;&t; * for a possibly more accurate value.&n;&t; */
 id|dcache_bsize

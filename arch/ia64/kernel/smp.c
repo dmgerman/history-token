@@ -1,7 +1,4 @@
 multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999, 2001, 2003 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Lots of stuff stolen from arch/alpha/kernel/smp.c&n; *&n; * 01/05/16 Rohit Seth &lt;rohit.seth@intel.com&gt;  IA64-SMP functions. Reorganized&n; * the existing code (on the lines of x86 port).&n; * 00/09/11 David Mosberger &lt;davidm@hpl.hp.com&gt; Do loops_per_jiffy&n; * calibration on each CPU.&n; * 00/08/23 Asit Mallick &lt;asit.k.mallick@intel.com&gt; fixed logical processor id&n; * 00/03/31 Rohit Seth &lt;rohit.seth@intel.com&gt;&t;Fixes for Bootstrap Processor&n; * &amp; cpu_online_map now gets done here (instead of setup.c)&n; * 99/10/05 davidm&t;Update to bring it in sync with new command-line processing&n; *  scheme.&n; * 10/13/00 Goutham Rao &lt;goutham.rao@intel.com&gt; Updated smp_call_function and&n; *&t;&t;smp_call_function_single to resend IPI on timeouts&n; */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fault.c,v 1.13 2003/08/11 11:44:50 lethal Exp $&n; *&n; *  linux/arch/sh/mm/fault.c&n; *  Copyright (C) 1999  Niibe Yutaka&n; *  Copyright (C) 2003  Paul Mundt&n; *&n; *  Based on linux/arch/i386/mm/fault.c:&n; *   Copyright (C) 1995  Linus Torvalds&n; */
+multiline_comment|/* $Id: fault.c,v 1.14 2004/01/13 05:52:11 kkojima Exp $&n; *&n; *  linux/arch/sh/mm/fault.c&n; *  Copyright (C) 1999  Niibe Yutaka&n; *  Copyright (C) 2003  Paul Mundt&n; *&n; *  Based on linux/arch/i386/mm/fault.c:&n; *   Copyright (C) 1995  Linus Torvalds&n; */
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -828,6 +828,17 @@ id|entry
 suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_SH4
 multiline_comment|/*&n;&t; * ITLB is not affected by &quot;ldtlb&quot; instruction.&n;&t; * So, we need to flush the entry by ourselves.&n;&t; */
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|__flush_tlb_page
 c_func
 (paren
@@ -841,6 +852,13 @@ op_amp
 id|PAGE_MASK
 )paren
 suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 id|set_pte
 c_func

@@ -78,6 +78,10 @@ c_cond
 (paren
 op_logical_neg
 id|mapping
+op_logical_or
+id|len
+OL
+l_int|0
 )paren
 (brace
 id|ret

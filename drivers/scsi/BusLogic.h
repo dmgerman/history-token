@@ -571,7 +571,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Bit 7 */
+DECL|member|cr
 )brace
+id|cr
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -643,7 +645,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Bit 7 */
+DECL|member|sr
 )brace
+id|sr
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -702,7 +706,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Bit 7 */
+DECL|member|ir
 )brace
+id|ir
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -747,7 +753,9 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Bit 7 */
+DECL|member|gr
 )brace
+id|gr
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -4094,7 +4102,7 @@ id|ControlRegister.All
 op_assign
 l_int|0
 suffix:semicolon
-id|ControlRegister.SCSIBusReset
+id|ControlRegister.cr.SCSIBusReset
 op_assign
 l_bool|true
 suffix:semicolon
@@ -4130,7 +4138,7 @@ id|ControlRegister.All
 op_assign
 l_int|0
 suffix:semicolon
-id|ControlRegister.InterruptReset
+id|ControlRegister.cr.InterruptReset
 op_assign
 l_bool|true
 suffix:semicolon
@@ -4166,7 +4174,7 @@ id|ControlRegister.All
 op_assign
 l_int|0
 suffix:semicolon
-id|ControlRegister.SoftReset
+id|ControlRegister.cr.SoftReset
 op_assign
 l_bool|true
 suffix:semicolon
@@ -4202,7 +4210,7 @@ id|ControlRegister.All
 op_assign
 l_int|0
 suffix:semicolon
-id|ControlRegister.HardReset
+id|ControlRegister.cr.HardReset
 op_assign
 l_bool|true
 suffix:semicolon

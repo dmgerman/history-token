@@ -32,6 +32,7 @@ macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready
@@ -1572,11 +1573,11 @@ multiline_comment|/* spare */
 r_break
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_XMON
+macro_line|#ifdef CONFIG_DEBUGGER
 r_case
-id|PPC_MSG_XMON_BREAK
+id|PPC_MSG_DEBUGGER_BREAK
 suffix:colon
-id|xmon
+id|debugger
 c_func
 (paren
 id|regs
@@ -1584,7 +1585,7 @@ id|regs
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif /* CONFIG_XMON */
+macro_line|#endif
 r_default
 suffix:colon
 id|printk
@@ -1626,10 +1627,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_XMON
-DECL|function|smp_send_xmon_break
+macro_line|#ifdef CONFIG_DEBUGGER
+DECL|function|smp_send_debugger_break
 r_void
-id|smp_send_xmon_break
+id|smp_send_debugger_break
 c_func
 (paren
 r_int
@@ -1641,7 +1642,7 @@ c_func
 (paren
 id|cpu
 comma
-id|PPC_MSG_XMON_BREAK
+id|PPC_MSG_DEBUGGER_BREAK
 comma
 l_int|0
 comma
@@ -1649,7 +1650,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_XMON */
+macro_line|#endif
 DECL|function|stop_this_cpu
 r_static
 r_void
@@ -1920,19 +1921,12 @@ id|data.started
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
-r_if
-c_cond
-(paren
-id|debugger
-)paren
 id|debugger
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon
@@ -2001,19 +1995,12 @@ id|data.started
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_DEBUG_KERNEL
-r_if
-c_cond
-(paren
-id|debugger
-)paren
 id|debugger
 c_func
 (paren
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|out
 suffix:semicolon

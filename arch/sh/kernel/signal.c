@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: signal.c,v 1.19 2003/10/13 07:21:19 lethal Exp $&n; *&n; *  linux/arch/sh/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; *&n; */
+multiline_comment|/* $Id: signal.c,v 1.20 2004/01/13 05:52:11 kkojima Exp $&n; *&n; *  linux/arch/sh/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; *&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -679,6 +679,11 @@ id|sigcontext
 id|__user
 op_star
 id|sc
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -739,6 +744,8 @@ id|unlazy_fpu
 c_func
 (paren
 id|tsk
+comma
+id|regs
 )paren
 suffix:semicolon
 r_return
@@ -1001,6 +1008,8 @@ id|clear_fpu
 c_func
 (paren
 id|tsk
+comma
+id|regs
 )paren
 suffix:semicolon
 id|tsk-&gt;used_math
@@ -1654,6 +1663,8 @@ id|save_sigcontext_fpu
 c_func
 (paren
 id|sc
+comma
+id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2799,11 +2810,22 @@ op_sub_assign
 l_int|2
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_PREEMPT
 )brace
 r_else
 (brace
 multiline_comment|/* gUSA handling */
+macro_line|#ifdef CONFIG_PREEMPT
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2860,6 +2882,13 @@ op_minus
 l_int|2
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PREEMPT
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* Set up the stack frame */

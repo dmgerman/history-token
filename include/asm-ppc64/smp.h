@@ -31,15 +31,7 @@ id|wait
 suffix:semicolon
 r_extern
 r_void
-id|smp_send_tlb_invalidate
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|smp_send_xmon_break
+id|smp_send_debugger_break
 c_func
 (paren
 r_int
@@ -95,10 +87,12 @@ DECL|macro|PPC_MSG_CALL_FUNCTION
 mdefine_line|#define PPC_MSG_CALL_FUNCTION   0
 DECL|macro|PPC_MSG_RESCHEDULE
 mdefine_line|#define PPC_MSG_RESCHEDULE      1
-DECL|macro|PPC_MSG_MIGRATE_TASK
+multiline_comment|/* This is unused now */
+macro_line|#if 0
 mdefine_line|#define PPC_MSG_MIGRATE_TASK    2
-DECL|macro|PPC_MSG_XMON_BREAK
-mdefine_line|#define PPC_MSG_XMON_BREAK      3
+macro_line|#endif
+DECL|macro|PPC_MSG_DEBUGGER_BREAK
+mdefine_line|#define PPC_MSG_DEBUGGER_BREAK  3
 r_void
 id|smp_init_iSeries
 c_func
@@ -114,11 +108,11 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* !(CONFIG_SMP) */
-macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|get_hard_smp_processor_id
 mdefine_line|#define get_hard_smp_processor_id(CPU) (paca[(CPU)].xHwProcNum)
 DECL|macro|set_hard_smp_processor_id
-mdefine_line|#define set_hard_smp_processor_id(CPU, VAL) do { (paca[(CPU)].xHwProcNum = VAL); } while (0)
+mdefine_line|#define set_hard_smp_processor_id(CPU, VAL) &bslash;&n;&t;do { (paca[(CPU)].xHwProcNum = VAL); } while (0)
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* !(_PPC64_SMP_H) */
 macro_line|#endif /* __KERNEL__ */
 eof

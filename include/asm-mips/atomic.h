@@ -33,20 +33,20 @@ DECL|macro|ATOMIC_INIT
 mdefine_line|#define ATOMIC_INIT(i)    { (i) }
 DECL|macro|ATOMIC64_INIT
 mdefine_line|#define ATOMIC64_INIT(i)    { (i) }
-multiline_comment|/*&n; * atomic_read - read atomic variable&n; * @v: pointer of type atomic_t&n; *&n; * Atomically reads the value of @v.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_read - read atomic variable&n; * @v: pointer of type atomic_t&n; *&n; * Atomically reads the value of @v.&n; */
 DECL|macro|atomic_read
 mdefine_line|#define atomic_read(v)&t;&t;((v)-&gt;counter)
 multiline_comment|/*&n; * atomic64_read - read atomic variable&n; * @v: pointer of type atomic64_t&n; *&n; */
 DECL|macro|atomic64_read
 mdefine_line|#define atomic64_read(v)&t;((v)-&gt;counter)
-multiline_comment|/*&n; * atomic_set - set atomic variable&n; * @v: pointer of type atomic_t&n; * @i: required value&n; *&n; * Atomically sets the value of @v to @i.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_set - set atomic variable&n; * @v: pointer of type atomic_t&n; * @i: required value&n; *&n; * Atomically sets the value of @v to @i.&n; */
 DECL|macro|atomic_set
 mdefine_line|#define atomic_set(v,i)&t;&t;((v)-&gt;counter = (i))
 multiline_comment|/*&n; * atomic64_set - set atomic variable&n; * @v: pointer of type atomic64_t&n; * @i: required value&n; */
 DECL|macro|atomic64_set
 mdefine_line|#define atomic64_set(v,i)&t;((v)-&gt;counter = (i))
 macro_line|#ifndef CONFIG_CPU_HAS_LLSC
-multiline_comment|/*&n; * The MIPS I implementation is only atomic with respect to&n; * interrupts.  R3000 based multiprocessor machines are rare anyway ...&n; *&n; * atomic_add - add integer to atomic variable&n; * @i: integer value to add&n; * @v: pointer of type atomic_t&n; *&n; * Atomically adds @i to @v.  Note that the guaranteed useful range&n; * of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * The MIPS I implementation is only atomic with respect to&n; * interrupts.  R3000 based multiprocessor machines are rare anyway ...&n; *&n; * atomic_add - add integer to atomic variable&n; * @i: integer value to add&n; * @v: pointer of type atomic_t&n; *&n; * Atomically adds @i to @v.&n; */
 DECL|function|atomic_add
 r_static
 id|__inline__
@@ -83,7 +83,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * atomic_sub - subtract the atomic variable&n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; *&n; * Atomically subtracts @i from @v.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_sub - subtract the atomic variable&n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; *&n; * Atomically subtracts @i from @v.&n; */
 DECL|function|atomic_sub
 r_static
 id|__inline__
@@ -222,7 +222,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 multiline_comment|/*&n; * ... while for MIPS II and better we can use ll/sc instruction.  This&n; * implementation is SMP safe ...&n; */
-multiline_comment|/*&n; * atomic_add - add integer to atomic variable&n; * @i: integer value to add&n; * @v: pointer of type atomic_t&n; *&n; * Atomically adds @i to @v.  Note that the guaranteed useful range&n; * of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_add - add integer to atomic variable&n; * @i: integer value to add&n; * @v: pointer of type atomic_t&n; *&n; * Atomically adds @i to @v.&n; */
 DECL|function|atomic_add
 r_static
 id|__inline__
@@ -273,7 +273,7 @@ id|v-&gt;counter
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * atomic_sub - subtract the atomic variable&n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; *&n; * Atomically subtracts @i from @v.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_sub - subtract the atomic variable&n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; *&n; * Atomically subtracts @i from @v.&n; */
 DECL|function|atomic_sub
 r_static
 id|__inline__
@@ -883,37 +883,37 @@ DECL|macro|atomic_inc_return
 mdefine_line|#define atomic_inc_return(v) atomic_add_return(1,(v))
 DECL|macro|atomic64_inc_return
 mdefine_line|#define atomic64_inc_return(v) atomic64_add_return(1,(v))
-multiline_comment|/*&n; * atomic_sub_and_test - subtract value from variable and test result&n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; *&n; * Atomically subtracts @i from @v and returns&n; * true if the result is zero, or false for all&n; * other cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_sub_and_test - subtract value from variable and test result&n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; *&n; * Atomically subtracts @i from @v and returns&n; * true if the result is zero, or false for all&n; * other cases.&n; */
 DECL|macro|atomic_sub_and_test
 mdefine_line|#define atomic_sub_and_test(i,v) (atomic_sub_return((i), (v)) == 0)
 multiline_comment|/*&n; * atomic64_sub_and_test - subtract value from variable and test result&n; * @i: integer value to subtract&n; * @v: pointer of type atomic64_t&n; *&n; * Atomically subtracts @i from @v and returns&n; * true if the result is zero, or false for all&n; * other cases.&n; */
 DECL|macro|atomic64_sub_and_test
 mdefine_line|#define atomic64_sub_and_test(i,v) (atomic64_sub_return((i), (v)) == 0)
-multiline_comment|/*&n; * atomic_inc_and_test - increment and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1&n; * and returns true if the result is zero, or false for all&n; * other cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_inc_and_test - increment and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1&n; * and returns true if the result is zero, or false for all&n; * other cases.&n; */
 DECL|macro|atomic_inc_and_test
 mdefine_line|#define atomic_inc_and_test(v) (atomic_inc_return(v) == 0)
 multiline_comment|/*&n; * atomic64_inc_and_test - increment and test&n; * @v: pointer of type atomic64_t&n; *&n; * Atomically increments @v by 1&n; * and returns true if the result is zero, or false for all&n; * other cases.&n; */
 DECL|macro|atomic64_inc_and_test
 mdefine_line|#define atomic64_inc_and_test(v) (atomic64_inc_return(v) == 0)
-multiline_comment|/*&n; * atomic_dec_and_test - decrement by 1 and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically decrements @v by 1 and&n; * returns true if the result is 0, or false for all other&n; * cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_dec_and_test - decrement by 1 and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically decrements @v by 1 and&n; * returns true if the result is 0, or false for all other&n; * cases.&n; */
 DECL|macro|atomic_dec_and_test
 mdefine_line|#define atomic_dec_and_test(v) (atomic_sub_return(1, (v)) == 0)
 multiline_comment|/*&n; * atomic64_dec_and_test - decrement by 1 and test&n; * @v: pointer of type atomic64_t&n; *&n; * Atomically decrements @v by 1 and&n; * returns true if the result is 0, or false for all other&n; * cases.&n; */
 DECL|macro|atomic64_dec_and_test
 mdefine_line|#define atomic64_dec_and_test(v) (atomic64_sub_return(1, (v)) == 0)
-multiline_comment|/*&n; * atomic_inc - increment atomic variable&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_inc - increment atomic variable&n; * @v: pointer of type atomic_t&n; *&n; * Atomically increments @v by 1.&n; */
 DECL|macro|atomic_inc
 mdefine_line|#define atomic_inc(v) atomic_add(1,(v))
 multiline_comment|/*&n; * atomic64_inc - increment atomic variable&n; * @v: pointer of type atomic64_t&n; *&n; * Atomically increments @v by 1.&n; */
 DECL|macro|atomic64_inc
 mdefine_line|#define atomic64_inc(v) atomic64_add(1,(v))
-multiline_comment|/*&n; * atomic_dec - decrement and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically decrements @v by 1.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_dec - decrement and test&n; * @v: pointer of type atomic_t&n; *&n; * Atomically decrements @v by 1.&n; */
 DECL|macro|atomic_dec
 mdefine_line|#define atomic_dec(v) atomic_sub(1,(v))
 multiline_comment|/*&n; * atomic64_dec - decrement and test&n; * @v: pointer of type atomic64_t&n; *&n; * Atomically decrements @v by 1.&n; */
 DECL|macro|atomic64_dec
 mdefine_line|#define atomic64_dec(v) atomic64_sub(1,(v))
-multiline_comment|/*&n; * atomic_add_negative - add and test if negative&n; * @v: pointer of type atomic_t&n; * @i: integer value to add&n; *&n; * Atomically adds @i to @v and returns true&n; * if the result is negative, or false when&n; * result is greater than or equal to zero.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/*&n; * atomic_add_negative - add and test if negative&n; * @v: pointer of type atomic_t&n; * @i: integer value to add&n; *&n; * Atomically adds @i to @v and returns true&n; * if the result is negative, or false when&n; * result is greater than or equal to zero.&n; */
 DECL|macro|atomic_add_negative
 mdefine_line|#define atomic_add_negative(i,v) (atomic_add_return(i, (v)) &lt; 0)
 multiline_comment|/*&n; * atomic64_add_negative - add and test if negative&n; * @v: pointer of type atomic64_t&n; * @i: integer value to add&n; *&n; * Atomically adds @i to @v and returns true&n; * if the result is negative, or false when&n; * result is greater than or equal to zero.&n; */
