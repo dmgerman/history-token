@@ -62,6 +62,11 @@ suffix:semicolon
 )brace
 id|acpi_sleep_done
 suffix:colon
+id|acpi_restore_register_state
+c_func
+(paren
+)paren
+suffix:semicolon
 id|restore_processor_context
 c_func
 (paren
