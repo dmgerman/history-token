@@ -200,7 +200,6 @@ op_star
 id|cache_type
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|super_operations
 op_star
@@ -213,7 +212,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|inode_operations
 op_star
@@ -226,7 +224,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|inode_operations
 op_star
@@ -239,7 +236,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|inode_operations
 op_star
@@ -252,7 +248,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|file_operations
 op_star
@@ -265,7 +260,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|file_operations
 op_star
@@ -278,7 +272,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|file_operations
 op_star
@@ -291,7 +284,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|super_operations
 op_star
@@ -304,7 +296,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|inode_operations
 op_star
@@ -317,7 +308,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|inode_operations
 op_star
@@ -330,7 +320,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|inode_operations
 op_star
@@ -343,7 +332,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|file_operations
 op_star
@@ -356,7 +344,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|file_operations
 op_star
@@ -369,7 +356,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|file_operations
 op_star
@@ -382,7 +368,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|dentry_operations
 op_star
@@ -395,7 +380,6 @@ op_star
 id|cache
 )paren
 suffix:semicolon
-r_inline
 r_struct
 id|dentry_operations
 op_star
