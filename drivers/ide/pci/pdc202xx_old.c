@@ -4334,13 +4334,6 @@ op_assign
 op_amp
 id|pdc202xx_tune_chipset
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwif-&gt;dma_base
-)paren
-(brace
 id|hwif-&gt;drives
 (braket
 l_int|0
@@ -4357,9 +4350,6 @@ id|autotune
 op_assign
 l_int|1
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 id|hwif-&gt;ultra_mask
 op_assign
 l_int|0x3f
