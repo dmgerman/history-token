@@ -3295,6 +3295,7 @@ c_cond
 (paren
 id|bdev
 )paren
+(brace
 id|res
 op_assign
 id|__invalidate_device
@@ -3311,6 +3312,7 @@ c_func
 id|bdev
 )paren
 suffix:semicolon
+)brace
 r_return
 id|res
 suffix:semicolon
