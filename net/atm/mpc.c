@@ -1308,17 +1308,28 @@ multiline_comment|/* close_shortcuts(mpc);    ??? FIXME */
 r_return
 suffix:semicolon
 )brace
-DECL|function|mpoa_device_type_string
 r_static
 r_const
 r_char
 op_star
+id|mpoa_device_type_string
+c_func
+(paren
+r_char
+id|type
+)paren
 id|__attribute__
 (paren
 (paren
 id|unused
 )paren
 )paren
+suffix:semicolon
+DECL|function|mpoa_device_type_string
+r_static
+r_const
+r_char
+op_star
 id|mpoa_device_type_string
 c_func
 (paren
@@ -1797,7 +1808,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;mpoa: (%s) lane2_assoc_ind: ignoring %d bytes of trailing TLV carbage&bslash;n&quot;
+l_string|&quot;mpoa: (%s) lane2_assoc_ind: ignoring %Zd bytes of trailing TLV carbage&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma

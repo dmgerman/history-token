@@ -192,6 +192,10 @@ comma
 id|scp
 )paren
 suffix:semicolon
+id|fl.proto
+op_assign
+id|DNPROTO_NSP
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1145,16 +1149,12 @@ comma
 id|len
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|len
 OL
 l_int|5
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 op_star
@@ -1260,16 +1260,12 @@ r_int
 op_star
 id|ptr
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|hlen
 OL
 l_int|9
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|scp-&gt;ackxmt_dat
@@ -1800,16 +1796,12 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We don&squot;t expect to see acknowledgements for packets we&n;&t;&t; * haven&squot;t sent yet.&n;&t;&t; */
-r_if
-c_cond
+id|WARN_ON
+c_func
 (paren
 id|xmit_count
 op_eq
 l_int|0
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If the packet has only been sent once, we can use it&n;&t;&t; * to calculate the RTT and also open the window a little&n;&t;&t; * further.&n;&t;&t; */

@@ -2891,7 +2891,12 @@ id|i
 op_assign
 id|tmp
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+multiline_comment|/* We will block in cleanup&squot;s unregister sockopt if unloaded,&n;&t;&t;   so this is safe. */
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -3027,6 +3032,20 @@ c_func
 id|fwc_wlocks
 )paren
 suffix:semicolon
+multiline_comment|/* Are we unloading now?  We will block on nf_unregister_sockopt */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+r_return
+id|ENOPROTOOPT
+suffix:semicolon
 multiline_comment|/* Special case if no rules already present */
 r_if
 c_cond
@@ -3082,8 +3101,6 @@ op_increment
 suffix:semicolon
 id|append_successful
 suffix:colon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3121,6 +3138,20 @@ c_func
 (paren
 id|fwc_wlocks
 )paren
+suffix:semicolon
+multiline_comment|/* Are we unloading now?  We will block on nf_unregister_sockopt */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+r_return
+id|ENOPROTOOPT
 suffix:semicolon
 multiline_comment|/* special case if the position is number 1 */
 r_if
@@ -3196,8 +3227,6 @@ id|frwl
 suffix:semicolon
 id|insert_successful
 suffix:colon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3326,7 +3355,12 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
+multiline_comment|/* We will block in cleanup&squot;s unregister sockopt if unloaded,&n;&t;   so this is safe. */
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -3709,7 +3743,12 @@ c_func
 id|ftmp
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+multiline_comment|/* We will block in cleanup&squot;s unregister sockopt if unloaded,&n;&t;&t;   so this is safe. */
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3846,7 +3885,12 @@ c_func
 id|tmp2
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+multiline_comment|/* We will block in cleanup&squot;s unregister sockopt if unloaded,&n;&t;   so this is safe. */
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -4059,6 +4103,20 @@ l_int|0
 r_return
 id|EEXIST
 suffix:semicolon
+multiline_comment|/* Are we unloading now?  We will block on nf_unregister_sockopt */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+r_return
+id|ENOPROTOOPT
+suffix:semicolon
 id|tmp-&gt;next
 op_assign
 id|ip_init_chain
@@ -4072,8 +4130,6 @@ id|FW_SKIP
 )paren
 suffix:semicolon
 multiline_comment|/* refcount is&n;&t;&t;&t;&t;&t;      * zero since this is a&n;&t;&t;&t;&t;&t;      * user defined chain *&n;&t;&t;&t;&t;&t;      * and therefore can be&n;&t;&t;&t;&t;&t;      * deleted */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

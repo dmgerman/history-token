@@ -2200,7 +2200,12 @@ c_func
 id|ftmp
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
+multiline_comment|/* We will block in cleanup&squot;s unregister sockopt if unloaded,&n;&t;&t;   so this is safe. */
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 )brace
 id|WRITE_UNLOCK
@@ -2238,6 +2243,20 @@ r_struct
 id|ip_fw
 op_star
 id|ftmp
+suffix:semicolon
+multiline_comment|/* Are we unloading now?  We will block on nf_unregister_sockopt */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+r_return
+id|ENOPROTOOPT
 suffix:semicolon
 id|ftmp
 op_assign
@@ -2365,8 +2384,6 @@ op_amp
 id|ip_fw_lock
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2412,6 +2429,20 @@ r_volatile
 id|chtmp_prev
 op_assign
 l_int|NULL
+suffix:semicolon
+multiline_comment|/* Are we unloading now?  We will block on nf_unregister_sockopt */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+r_return
+id|ENOPROTOOPT
 suffix:semicolon
 id|ftmp
 op_assign
@@ -2571,8 +2602,6 @@ c_func
 op_amp
 id|ip_fw_lock
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -2872,7 +2901,12 @@ c_cond
 id|was_found
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
+multiline_comment|/* We will block in cleanup&squot;s unregister sockopt if unloaded,&n;&t;&t;   so this is safe. */
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 l_int|0
