@@ -465,9 +465,16 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot;state:      %lu&bslash;n&quot;
+l_string|&quot;state:      %s&bslash;n&quot;
 comma
+(paren
 id|state
+ques
+c_cond
+l_string|&quot;open&quot;
+suffix:colon
+l_string|&quot;closed&quot;
+)paren
 )paren
 suffix:semicolon
 )brace
