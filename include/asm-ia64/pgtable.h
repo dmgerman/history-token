@@ -987,7 +987,7 @@ DECL|macro|__HAVE_ARCH_PTE_SAME
 mdefine_line|#define __HAVE_ARCH_PTE_SAME
 DECL|macro|__HAVE_ARCH_PGD_OFFSET_GATE
 mdefine_line|#define __HAVE_ARCH_PGD_OFFSET_GATE
-macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#include &lt;asm-generic/pgtable-nopud.h&gt;
+macro_line|#include &lt;asm-generic/pgtable.h&gt;
 macro_line|#endif /* _ASM_IA64_PGTABLE_H */
 eof
