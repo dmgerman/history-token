@@ -9,9 +9,7 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
-macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT
 macro_line|#include &lt;linux/acct.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1691,14 +1689,12 @@ id|tsk-&gt;real_timer
 suffix:semicolon
 id|fake_volatile
 suffix:colon
-macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT
 id|acct_process
 c_func
 (paren
 id|code
 )paren
 suffix:semicolon
-macro_line|#endif
 id|__exit_mm
 c_func
 (paren

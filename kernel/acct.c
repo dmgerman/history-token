@@ -1,12 +1,8 @@
 multiline_comment|/*&n; *  linux/kernel/acct.c&n; *&n; *  BSD Process Accounting for Linux&n; *&n; *  Author: Marco van Wieringen &lt;mvw@planets.elm.net&gt;&n; *&n; *  Some code based on ideas and code from:&n; *  Thomas K. Dyas &lt;tdyas@eden.rutgers.edu&gt;&n; *&n; *  This file implements BSD-style process accounting. Whenever any&n; *  process exits, an accounting record of type &quot;struct acct&quot; is&n; *  written to the file specified with the acct() system call. It is&n; *  up to user-level programs to do useful things with the accounting&n; *  log. The kernel just provides the raw accounting information.&n; *&n; * (C) Copyright 1995 - 1997 Marco van Wieringen - ELM Consultancy B.V.&n; *&n; *  Plugged two leaks. 1) It didn&squot;t return acct_file into the free_filps if&n; *  the file happened to be read-only. 2) If the accounting was suspended&n; *  due to the lack of space it happily allowed to reopen it and completely&n; *  lost the old acct_file. 3/10/98, Al Viro.&n; *&n; *  Now we silently close acct_file on attempt to reopen. Cleaned sys_acct().&n; *  XTerms and EMACS are manifestations of pure evil. 21/10/98, AV.&n; *&n; *  Fixed a nasty interaction with with sys_umount(). If the accointing&n; *  was suspeneded we failed to stop it on umount(). Messy.&n; *  Another one: remount to readonly didn&squot;t stop accounting.&n; *&t;Question: what should we do if we have CAP_SYS_ADMIN but not&n; *  CAP_SYS_PACCT? Current code does the following: umount returns -EBUSY&n; *  unless we are messing with the root. In that case we are getting a&n; *  real mess with do_remount_sb(). 9/11/98, AV.&n; *&n; *  Fixed a bunch of races (and pair of leaks). Probably not the best way,&n; *  but this one obviously doesn&squot;t introduce deadlocks. Later. BTW, found&n; *  one race (and leak) in BSD implementation.&n; *  OK, that&squot;s better. ANOTHER race and leak in BSD variant. There always&n; *  is one more bug... 10/11/98, AV.&n; *&n; *&t;Oh, fsck... Oopsable SMP race in do_process_acct() - we must hold&n; * -&gt;mmap_sem to walk the vma list of current-&gt;mm. Nasty, since it leaks&n; * a struct file opened for write. Fixed. 2/6/2000, AV.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/acct.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1273,24 +1269,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-multiline_comment|/*&n; * Dummy system call when BSD process accounting is not configured&n; * into the kernel.&n; */
-DECL|function|sys_acct
-id|asmlinkage
-r_int
-id|sys_acct
-c_func
-(paren
-r_const
-r_char
-op_star
-id|filename
-)paren
-(brace
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-)brace
-macro_line|#endif
 eof
