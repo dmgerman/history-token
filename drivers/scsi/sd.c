@@ -1405,6 +1405,14 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|SCpnt-&gt;request_bufflen
+op_assign
+id|SCpnt-&gt;bufflen
+op_assign
+id|this_count
+op_star
+id|sdp-&gt;sector_size
+suffix:semicolon
 multiline_comment|/*&n;&t; * We shouldn&squot;t disconnect in the middle of a sector, so with a dumb&n;&t; * host adapter, it&squot;s safe to assume that we can at least transfer&n;&t; * this many bytes between each connect / disconnect.&n;&t; */
 id|SCpnt-&gt;transfersize
 op_assign
