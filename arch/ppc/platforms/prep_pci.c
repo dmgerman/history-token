@@ -108,16 +108,16 @@ multiline_comment|/* Slot 2  - SCSI - NCR825A  */
 l_int|0
 comma
 multiline_comment|/* Slot 3  - unused */
-l_int|1
+l_int|3
 comma
 multiline_comment|/* Slot 4  - Ethernet - DEC2114x */
 l_int|0
 comma
 multiline_comment|/* Slot 5  - unused */
-l_int|3
+l_int|2
 comma
 multiline_comment|/* Slot 6  - PCI Card slot #1 */
-l_int|4
+l_int|3
 comma
 multiline_comment|/* Slot 7  - PCI Card slot #2 */
 l_int|5
