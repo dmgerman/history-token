@@ -1734,6 +1734,14 @@ id|cpu
 r_int
 r_int
 id|flags
+comma
+id|pcpu
+op_assign
+id|get_hard_smp_processor_id
+c_func
+(paren
+id|cpu
+)paren
 suffix:semicolon
 multiline_comment|/* Register the Virtual Processor Area (VPA) */
 id|flags
@@ -1751,7 +1759,7 @@ c_func
 (paren
 id|flags
 comma
-id|cpu
+id|pcpu
 comma
 id|__pa
 c_func
