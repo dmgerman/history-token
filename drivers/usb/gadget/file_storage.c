@@ -15245,6 +15245,12 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Find all the endpoints we will use */
+id|usb_ep_autoconfig_reset
+c_func
+(paren
+id|gadget
+)paren
+suffix:semicolon
 id|ep
 op_assign
 id|usb_ep_autoconfig
