@@ -207,9 +207,6 @@ id|__rq
 )paren
 (brace
 multiline_comment|/* Nothing to be done here. */
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|trm290_udma_stop
 r_static
@@ -335,7 +332,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* select PIO xfer */
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -377,7 +374,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* select PIO xfer */
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 multiline_comment|/* try PIO instead of DMA */
 )brace
@@ -458,7 +455,7 @@ id|IDE_COMMAND_REG
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 )brace
 DECL|function|trm290_udma_irq_status

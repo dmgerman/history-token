@@ -161,7 +161,7 @@ suffix:semicolon
 r_struct
 id|ata_taskfile
 op_star
-id|args
+id|ar
 suffix:semicolon
 r_struct
 id|request
@@ -254,7 +254,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Do some internal stuff -- we really need this command to be&n;&t; * executed before any new commands are started. issue a NOP&n;&t; * to clear internal queue on drive.&n;&t; */
-id|args
+id|ar
 op_assign
 id|kmalloc
 c_func
@@ -262,7 +262,7 @@ c_func
 r_sizeof
 (paren
 op_star
-id|args
+id|ar
 )paren
 comma
 id|GFP_ATOMIC
@@ -272,7 +272,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|args
+id|ar
 )paren
 (brace
 id|printk
@@ -330,17 +330,17 @@ id|rq
 suffix:semicolon
 id|rq-&gt;special
 op_assign
-id|args
+id|ar
 suffix:semicolon
-id|args-&gt;cmd
+id|ar-&gt;cmd
 op_assign
 id|WIN_NOP
 suffix:semicolon
-id|args-&gt;handler
+id|ar-&gt;XXX_handler
 op_assign
 id|tcq_nop_handler
 suffix:semicolon
-id|args-&gt;command_type
+id|ar-&gt;command_type
 op_assign
 id|IDE_DRIVE_TASK_NO_DATA
 suffix:semicolon
@@ -1834,10 +1834,6 @@ comma
 id|ide_dmaq_intr
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
 id|udma_start
 c_func
 (paren
@@ -1845,18 +1841,15 @@ id|drive
 comma
 id|rq
 )paren
-)paren
+suffix:semicolon
 r_return
 id|ide_started
 suffix:semicolon
-r_return
-id|ide_stopped
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Start a queued command from scratch.&n; *&n; * Channel lock should be held.&n; */
-DECL|function|udma_tcq_taskfile
+DECL|function|udma_tcq_init
 id|ide_startstop_t
-id|udma_tcq_taskfile
+id|udma_tcq_init
 c_func
 (paren
 r_struct

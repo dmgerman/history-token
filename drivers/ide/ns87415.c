@@ -424,7 +424,6 @@ multiline_comment|/* select DMA xfer */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|udma_pci_init
 c_func
 (paren
@@ -435,7 +434,7 @@ id|rq
 )paren
 multiline_comment|/* use standard DMA stuff */
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 id|ns87415_prepare_drive
 c_func
@@ -447,7 +446,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* DMA failed: select PIO xfer */
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 )brace
 DECL|function|ns87415_udma_setup

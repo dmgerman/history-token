@@ -855,10 +855,10 @@ r_int
 id|max_failures
 suffix:semicolon
 multiline_comment|/* maximum allowed failure count */
-DECL|member|device
+DECL|member|dev
 r_struct
 id|device
-id|device
+id|dev
 suffix:semicolon
 multiline_comment|/* global device tree handle */
 multiline_comment|/*&n;&t; * tcq statistics&n;&t; */
@@ -1295,7 +1295,7 @@ r_int
 )paren
 suffix:semicolon
 DECL|member|udma_start
-r_int
+r_void
 (paren
 op_star
 id|udma_start
@@ -1308,7 +1308,6 @@ comma
 r_struct
 id|request
 op_star
-id|rq
 )paren
 suffix:semicolon
 DECL|member|udma_stop
@@ -1337,7 +1336,6 @@ comma
 r_struct
 id|request
 op_star
-id|rq
 )paren
 suffix:semicolon
 DECL|member|udma_irq_status
@@ -2186,11 +2184,11 @@ DECL|member|command_type
 r_int
 id|command_type
 suffix:semicolon
-DECL|member|handler
+DECL|member|XXX_handler
 id|ide_startstop_t
 (paren
 op_star
-id|handler
+id|XXX_handler
 )paren
 (paren
 r_struct
@@ -2234,24 +2232,6 @@ op_star
 comma
 r_int
 r_int
-)paren
-suffix:semicolon
-r_extern
-id|ide_startstop_t
-id|ata_taskfile
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|ata_taskfile
-op_star
-comma
-r_struct
-id|request
-op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Special Flagged Register Validation Caller&n; */
@@ -2650,7 +2630,7 @@ suffix:semicolon
 DECL|function|udma_start
 r_static
 r_inline
-r_int
+r_void
 id|udma_start
 c_func
 (paren
@@ -2665,7 +2645,6 @@ op_star
 id|rq
 )paren
 (brace
-r_return
 id|drive-&gt;channel
 op_member_access_from_pointer
 id|udma_start
@@ -2704,7 +2683,7 @@ multiline_comment|/*&n; * Initiate actual DMA data transfer. The direction is en
 DECL|function|udma_init
 r_static
 r_inline
-r_int
+id|ide_startstop_t
 id|udma_init
 c_func
 (paren
@@ -2959,7 +2938,7 @@ op_star
 suffix:semicolon
 r_extern
 id|ide_startstop_t
-id|udma_tcq_taskfile
+id|udma_tcq_init
 c_func
 (paren
 r_struct

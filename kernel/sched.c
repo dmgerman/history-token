@@ -2900,6 +2900,8 @@ id|ti-&gt;preempt_count
 )paren
 r_return
 suffix:semicolon
+id|need_resched
+suffix:colon
 id|ti-&gt;preempt_count
 op_assign
 id|PREEMPT_ACTIVE
@@ -2912,6 +2914,28 @@ suffix:semicolon
 id|ti-&gt;preempt_count
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* we can miss a preemption opportunity between schedule and now */
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|test_thread_flag
+c_func
+(paren
+id|TIF_NEED_RESCHED
+)paren
+)paren
+)paren
+r_goto
+id|need_resched
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PREEMPT */

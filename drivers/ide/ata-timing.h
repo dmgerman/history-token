@@ -218,5 +218,16 @@ r_int
 id|UT
 )paren
 suffix:semicolon
+r_extern
+id|u8
+id|ata_best_pio_mode
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+)paren
+suffix:semicolon
 macro_line|#endif
 eof

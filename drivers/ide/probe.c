@@ -3992,30 +3992,23 @@ id|ch-&gt;present
 r_goto
 id|not_found
 suffix:semicolon
-multiline_comment|/* Register this hardware interface within the global device tree.&n;&t; */
+multiline_comment|/* Register this hardware interface within the global device tree.&n;&t; *&n;&t; * FIXME: This should be handled as a pci subdevice in a generic way.&n;&t; */
 id|sprintf
 c_func
 (paren
 id|ch-&gt;dev.bus_id
 comma
-l_string|&quot;%04lx&quot;
+l_string|&quot;ata@%02x&quot;
 comma
-(paren
-r_int
-r_int
-)paren
-id|ch-&gt;io_ports
-(braket
-id|IDE_DATA_OFFSET
-)braket
+id|ch-&gt;unit
 )paren
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|ch-&gt;dev.name
 comma
-l_string|&quot;ide&quot;
+l_string|&quot;ATA/ATAPI Host-Channel&quot;
 )paren
 suffix:semicolon
 id|ch-&gt;dev.driver_data

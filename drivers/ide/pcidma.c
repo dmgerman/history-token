@@ -1678,7 +1678,7 @@ id|dma_base
 op_assign
 id|ch-&gt;dma_base
 suffix:semicolon
-multiline_comment|/* Note that this is done *after* the cmd has&n;&t; * been issued to the drive, as per the BM-IDE spec.&n;&t; * The Promise Ultra33 doesn&squot;t work correctly when&n;&t; * we do this part before issuing the drive cmd.&n;&t; */
+multiline_comment|/* Note that this is done *after* the cmd has been issued to the drive,&n;&t; * as per the BM-IDE spec.  The Promise Ultra33 doesn&squot;t work correctly&n;&t; * when we do this part before issuing the drive cmd.&n;&t; */
 id|outb
 c_func
 (paren
@@ -1694,9 +1694,6 @@ id|dma_base
 )paren
 suffix:semicolon
 multiline_comment|/* start DMA */
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Channel lock should be held.&n; */
 DECL|function|udma_pci_stop
@@ -2193,7 +2190,7 @@ id|rq
 )paren
 )paren
 r_return
-l_int|1
+id|ide_stopped
 suffix:semicolon
 multiline_comment|/* No DMA transfers on ATAPI devices. */
 r_if
@@ -2204,7 +2201,7 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-l_int|0
+id|ide_started
 suffix:semicolon
 r_if
 c_cond
@@ -2270,7 +2267,6 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-r_return
 id|udma_start
 c_func
 (paren
@@ -2278,6 +2274,9 @@ id|drive
 comma
 id|rq
 )paren
+suffix:semicolon
+r_return
+id|ide_started
 suffix:semicolon
 )brace
 DECL|variable|ide_dma_intr

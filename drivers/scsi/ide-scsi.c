@@ -1949,6 +1949,15 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+multiline_comment|/* FIXME: Move this lock upwards.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1976,19 +1985,13 @@ id|KERN_ERR
 l_string|&quot;ide-scsi: Strange, packet command initiated yet DRQ isn&squot;t asserted&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|startstop
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
+r_else
+(brace
 id|ireason
 op_assign
 id|IN_BYTE
@@ -2056,6 +2059,7 @@ id|ret
 op_assign
 id|ide_started
 suffix:semicolon
+)brace
 )brace
 id|spin_unlock_irqrestore
 c_func
@@ -2153,7 +2157,6 @@ id|rq-&gt;bio
 )paren
 id|dma_ok
 op_assign
-op_logical_neg
 id|udma_init
 c_func
 (paren
@@ -2340,6 +2343,16 @@ id|sector_t
 id|block
 )paren
 (brace
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -2372,6 +2385,13 @@ id|rq-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* FIXME: make this unlocking go away*/
+id|spin_unlock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2380,7 +2400,8 @@ op_amp
 id|REQ_PC
 )paren
 (brace
-r_return
+id|ret
+op_assign
 id|idescsi_issue_pc
 c_func
 (paren
@@ -2397,6 +2418,8 @@ id|rq-&gt;special
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
 id|blk_dump_rq_flags
 c_func
 (paren
@@ -2415,8 +2438,19 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|ide_stopped
+suffix:semicolon
+)brace
+id|spin_lock_irq
+c_func
+(paren
+id|ch-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|idescsi_open

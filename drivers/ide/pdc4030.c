@@ -674,6 +674,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: Make this go away. */
+id|spin_lock_irq
+c_func
+(paren
+id|hwif-&gt;lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -704,10 +711,22 @@ comma
 id|hwif-&gt;name
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+id|hwif-&gt;lock
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
+id|spin_unlock_irq
+c_func
+(paren
+id|hwif-&gt;lock
+)paren
+suffix:semicolon
 id|promise_read
 c_func
 (paren
@@ -2684,7 +2703,27 @@ suffix:colon
 id|ide_startstop_t
 id|startstop
 suffix:semicolon
-multiline_comment|/*&n; * Strategy on write is:&n; *&t;look for the DRQ that should have been immediately asserted&n; *&t;copy the request into the hwgroup&squot;s scratchpad&n; *&t;call the promise_write function to deal with writing the data out&n; * NOTE: No interrupts are generated on writes. Write completion must be polled&n; */
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Strategy on write is: look for the DRQ that should have been&n;&t;&t; * immediately asserted copy the request into the hwgroup&squot;s&n;&t;&t; * scratchpad call the promise_write function to deal with&n;&t;&t; * writing the data out.&n;&t;&t; *&n;&t;&t; * NOTE: No interrupts are generated on writes. Write&n;&t;&t; * completion must be polled&n;&t;&t; */
+multiline_comment|/* FIXME: Move this lock upwards.&n;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2716,6 +2755,14 @@ comma
 id|drive-&gt;name
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|startstop
 suffix:semicolon
@@ -2732,6 +2779,14 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* local CPU only */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|promise_do_write
 c_func
@@ -2870,7 +2925,7 @@ id|PROMISE_READ
 suffix:colon
 id|PROMISE_WRITE
 suffix:semicolon
-id|args.handler
+id|args.XXX_handler
 op_assign
 l_int|NULL
 suffix:semicolon
