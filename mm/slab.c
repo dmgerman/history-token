@@ -2810,7 +2810,11 @@ id|cachep
 suffix:semicolon
 id|size
 op_assign
-id|cachep-&gt;objsize
+id|obj_reallen
+c_func
+(paren
+id|cachep
+)paren
 suffix:semicolon
 r_for
 c_loop
