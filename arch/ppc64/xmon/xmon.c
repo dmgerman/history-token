@@ -3858,6 +3858,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|systemcfg-&gt;platform
+op_ne
+id|PLATFORM_POWERMAC
+op_logical_and
 op_logical_neg
 (paren
 id|systemcfg-&gt;platform
