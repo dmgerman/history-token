@@ -701,19 +701,19 @@ id|__u8
 id|AndXReserved
 suffix:semicolon
 DECL|member|AndXOffset
-id|__u16
+id|__le16
 id|AndXOffset
 suffix:semicolon
 DECL|member|MaxBufferSize
-id|__u16
+id|__le16
 id|MaxBufferSize
 suffix:semicolon
 DECL|member|MaxMpxCount
-id|__u16
+id|__le16
 id|MaxMpxCount
 suffix:semicolon
 DECL|member|VcNumber
-id|__u16
+id|__le16
 id|VcNumber
 suffix:semicolon
 DECL|member|SessionKey
@@ -721,7 +721,7 @@ id|__u32
 id|SessionKey
 suffix:semicolon
 DECL|member|SecurityBlobLength
-id|__u16
+id|__le16
 id|SecurityBlobLength
 suffix:semicolon
 DECL|member|Reserved
@@ -729,12 +729,12 @@ id|__u32
 id|Reserved
 suffix:semicolon
 DECL|member|Capabilities
-id|__u32
+id|__le32
 id|Capabilities
 suffix:semicolon
 multiline_comment|/* see below */
 DECL|member|ByteCount
-id|__u16
+id|__le16
 id|ByteCount
 suffix:semicolon
 DECL|member|SecurityBlob
@@ -771,19 +771,19 @@ id|__u8
 id|AndXReserved
 suffix:semicolon
 DECL|member|AndXOffset
-id|__u16
+id|__le16
 id|AndXOffset
 suffix:semicolon
 DECL|member|MaxBufferSize
-id|__u16
+id|__le16
 id|MaxBufferSize
 suffix:semicolon
 DECL|member|MaxMpxCount
-id|__u16
+id|__le16
 id|MaxMpxCount
 suffix:semicolon
 DECL|member|VcNumber
-id|__u16
+id|__le16
 id|VcNumber
 suffix:semicolon
 DECL|member|SessionKey
@@ -791,12 +791,12 @@ id|__u32
 id|SessionKey
 suffix:semicolon
 DECL|member|CaseInsensitivePasswordLength
-id|__u16
+id|__le16
 id|CaseInsensitivePasswordLength
 suffix:semicolon
 multiline_comment|/* ASCII password length */
 DECL|member|CaseSensitivePasswordLength
-id|__u16
+id|__le16
 id|CaseSensitivePasswordLength
 suffix:semicolon
 multiline_comment|/* Unicode password length */
@@ -806,11 +806,11 @@ id|Reserved
 suffix:semicolon
 multiline_comment|/* see below */
 DECL|member|Capabilities
-id|__u32
+id|__le32
 id|Capabilities
 suffix:semicolon
 DECL|member|ByteCount
-id|__u16
+id|__le16
 id|ByteCount
 suffix:semicolon
 DECL|member|CaseInsensitivePassword
@@ -850,16 +850,16 @@ id|__u8
 id|AndXReserved
 suffix:semicolon
 DECL|member|AndXOffset
-id|__u16
+id|__le16
 id|AndXOffset
 suffix:semicolon
 DECL|member|Action
-id|__u16
+id|__le16
 id|Action
 suffix:semicolon
 multiline_comment|/* see below */
 DECL|member|SecurityBlobLength
-id|__u16
+id|__le16
 id|SecurityBlobLength
 suffix:semicolon
 DECL|member|ByteCount
@@ -901,19 +901,19 @@ id|__u8
 id|AndXReserved
 suffix:semicolon
 DECL|member|AndXOffset
-id|__u16
+id|__le16
 id|AndXOffset
 suffix:semicolon
 DECL|member|MaxBufferSize
-id|__u16
+id|__le16
 id|MaxBufferSize
 suffix:semicolon
 DECL|member|MaxMpxCount
-id|__u16
+id|__le16
 id|MaxMpxCount
 suffix:semicolon
 DECL|member|VcNumber
-id|__u16
+id|__le16
 id|VcNumber
 suffix:semicolon
 DECL|member|SessionKey
@@ -921,7 +921,7 @@ id|__u32
 id|SessionKey
 suffix:semicolon
 DECL|member|PassswordLength
-id|__u16
+id|__le16
 id|PassswordLength
 suffix:semicolon
 DECL|member|Reserved
@@ -929,7 +929,7 @@ id|__u32
 id|Reserved
 suffix:semicolon
 DECL|member|ByteCount
-id|__u16
+id|__le16
 id|ByteCount
 suffix:semicolon
 DECL|member|AccountPassword
@@ -968,11 +968,11 @@ id|__u8
 id|AndXReserved
 suffix:semicolon
 DECL|member|AndXOffset
-id|__u16
+id|__le16
 id|AndXOffset
 suffix:semicolon
 DECL|member|Action
-id|__u16
+id|__le16
 id|Action
 suffix:semicolon
 multiline_comment|/* see below */

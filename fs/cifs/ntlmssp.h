@@ -78,15 +78,15 @@ r_struct
 id|_SECURITY_BUFFER
 (brace
 DECL|member|Length
-id|__u16
+id|__le16
 id|Length
 suffix:semicolon
 DECL|member|MaximumLength
-id|__u16
+id|__le16
 id|MaximumLength
 suffix:semicolon
 DECL|member|Buffer
-id|__u32
+id|__le32
 id|Buffer
 suffix:semicolon
 multiline_comment|/* offset to buffer */
@@ -110,12 +110,12 @@ id|NTLMSSP_SIGNATURE
 )braket
 suffix:semicolon
 DECL|member|MessageType
-id|__u32
+id|__le32
 id|MessageType
 suffix:semicolon
 multiline_comment|/* 1 */
 DECL|member|NegotiateFlags
-id|__u32
+id|__le32
 id|NegotiateFlags
 suffix:semicolon
 DECL|member|DomainName
@@ -160,7 +160,7 @@ id|NTLMSSP_SIGNATURE
 )braket
 suffix:semicolon
 DECL|member|MessageType
-id|__u32
+id|__le32
 id|MessageType
 suffix:semicolon
 multiline_comment|/* 2 */
@@ -169,7 +169,7 @@ id|SECURITY_BUFFER
 id|TargetName
 suffix:semicolon
 DECL|member|NegotiateFlags
-id|__u32
+id|__le32
 id|NegotiateFlags
 suffix:semicolon
 DECL|member|Challenge
@@ -214,7 +214,7 @@ id|NTLMSSP_SIGNATURE
 )braket
 suffix:semicolon
 DECL|member|MessageType
-id|__u32
+id|__le32
 id|MessageType
 suffix:semicolon
 multiline_comment|/* 3 */
@@ -243,7 +243,7 @@ id|SECURITY_BUFFER
 id|SessionKey
 suffix:semicolon
 DECL|member|NegotiateFlags
-id|__u32
+id|__le32
 id|NegotiateFlags
 suffix:semicolon
 DECL|member|UserString
