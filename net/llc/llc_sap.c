@@ -278,7 +278,7 @@ c_func
 (paren
 id|skb
 comma
-id|ev-&gt;primitive
+id|ev-&gt;prim
 )paren
 suffix:semicolon
 multiline_comment|/* queue skb to the user. */
@@ -374,7 +374,7 @@ id|pdu
 r_case
 id|LLC_1_PDU_CMD_TEST
 suffix:colon
-id|ev-&gt;primitive
+id|ev-&gt;prim
 op_assign
 id|LLC_TEST_PRIM
 suffix:semicolon
@@ -383,7 +383,7 @@ suffix:semicolon
 r_case
 id|LLC_1_PDU_CMD_XID
 suffix:colon
-id|ev-&gt;primitive
+id|ev-&gt;prim
 op_assign
 id|LLC_XID_PRIM
 suffix:semicolon
@@ -392,7 +392,7 @@ suffix:semicolon
 r_case
 id|LLC_1_PDU_CMD_UI
 suffix:colon
-id|ev-&gt;primitive
+id|ev-&gt;prim
 op_assign
 id|LLC_DATAUNIT_PRIM
 suffix:semicolon
@@ -402,10 +402,6 @@ suffix:semicolon
 id|ev-&gt;ind_cfm_flag
 op_assign
 id|LLC_IND
-suffix:semicolon
-id|ev-&gt;prim
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_sap_send_pdu - Sends a frame to MAC layer for transmition&n; *&t;@sap: pointer to SAP&n; *&t;@skb: pdu that must be sent&n; */

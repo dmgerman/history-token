@@ -2462,7 +2462,7 @@ id|ev-&gt;type
 op_assign
 id|LLC_STATION_EV_TYPE_SIMPLE
 suffix:semicolon
-id|ev-&gt;data.a.ev
+id|ev-&gt;prim_type
 op_assign
 id|LLC_STATION_EV_ENABLE_WITHOUT_DUP_ADDR_CHECK
 suffix:semicolon

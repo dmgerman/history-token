@@ -1485,7 +1485,7 @@ id|ev-&gt;type
 op_eq
 id|LLC_CONN_EV_TYPE_PRIM
 op_logical_and
-id|ev-&gt;data.prim.prim
+id|ev-&gt;prim
 op_ne
 id|LLC_DATA_PRIM
 )paren
