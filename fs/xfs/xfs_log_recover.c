@@ -14096,7 +14096,11 @@ id|hbp
 comma
 id|bufaddr
 comma
+id|BBTOB
+c_func
+(paren
 id|hblks
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -14373,7 +14377,7 @@ id|dbp
 comma
 id|bufaddr
 comma
-id|XLOG_BIG_RECORD_BSIZE
+id|h_size
 )paren
 suffix:semicolon
 r_if
