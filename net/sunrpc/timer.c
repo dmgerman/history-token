@@ -1,3 +1,5 @@
+multiline_comment|/*&n; * linux/net/sunrpc/timer.c&n; *&n; * Estimate RPC request round trip time.&n; *&n; * Based on packet round-trip and variance estimator algorithms described&n; * in appendix A of &quot;Congestion Avoidance and Control&quot; by Van Jacobson&n; * and Michael J. Karels (ACM Computer Communication Review; Proceedings&n; * of the Sigcomm &squot;88 Symposium in Stanford, CA, August, 1988).&n; *&n; * This RTT estimator is used only for RPC over datagram protocols.&n; *&n; * Copyright (C) 2002 Trond Myklebust &lt;trond.myklebust@fys.uio.no&gt;&n; */
+macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -95,6 +97,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * NB: When computing the smoothed RTT and standard deviation,&n; *     be careful not to produce negative intermediate results.&n; */
 r_void
 DECL|function|rpc_update_rtt
 id|rpc_update_rtt
@@ -149,7 +152,7 @@ l_int|0
 )paren
 id|m
 op_assign
-l_int|1
+l_int|1L
 suffix:semicolon
 id|srtt
 op_assign

@@ -61,6 +61,7 @@ suffix:semicolon
 multiline_comment|/* if !exponential */
 DECL|member|to_retries
 r_int
+r_int
 id|to_retries
 suffix:semicolon
 multiline_comment|/* max # of retries */
