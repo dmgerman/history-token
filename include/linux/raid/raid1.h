@@ -24,13 +24,13 @@ DECL|member|dev
 id|kdev_t
 id|dev
 suffix:semicolon
-DECL|member|sect_limit
-r_int
-id|sect_limit
-suffix:semicolon
 DECL|member|head_position
-r_int
+id|sector_t
 id|head_position
+suffix:semicolon
+DECL|member|nr_pending
+id|atomic_t
+id|nr_pending
 suffix:semicolon
 multiline_comment|/*&n;&t; * State bits:&n;&t; */
 DECL|member|operational
@@ -89,13 +89,9 @@ DECL|member|last_used
 r_int
 id|last_used
 suffix:semicolon
-DECL|member|next_sect
+DECL|member|next_seq_sect
 id|sector_t
-id|next_sect
-suffix:semicolon
-DECL|member|sect_count
-r_int
-id|sect_count
+id|next_seq_sect
 suffix:semicolon
 DECL|member|thread
 DECL|member|resync_thread
@@ -120,55 +116,29 @@ id|spinlock_t
 id|device_lock
 suffix:semicolon
 multiline_comment|/* for use when syncing mirrors: */
-DECL|member|start_active
-DECL|member|start_ready
-r_int
-r_int
-id|start_active
-comma
-id|start_ready
-comma
-DECL|member|start_pending
-DECL|member|start_future
-id|start_pending
-comma
-id|start_future
-suffix:semicolon
-DECL|member|cnt_done
-DECL|member|cnt_active
-DECL|member|cnt_ready
-r_int
-id|cnt_done
-comma
-id|cnt_active
-comma
-id|cnt_ready
-comma
-DECL|member|cnt_pending
-DECL|member|cnt_future
-id|cnt_pending
-comma
-id|cnt_future
-suffix:semicolon
-DECL|member|phase
-r_int
-id|phase
-suffix:semicolon
-DECL|member|window
-r_int
-id|window
-suffix:semicolon
-DECL|member|wait_done
-id|wait_queue_head_t
-id|wait_done
-suffix:semicolon
-DECL|member|wait_ready
-id|wait_queue_head_t
-id|wait_ready
-suffix:semicolon
-DECL|member|segment_lock
+DECL|member|resync_lock
 id|spinlock_t
-id|segment_lock
+id|resync_lock
+suffix:semicolon
+DECL|member|nr_pending
+r_int
+id|nr_pending
+suffix:semicolon
+DECL|member|barrier
+r_int
+id|barrier
+suffix:semicolon
+DECL|member|next_resync
+id|sector_t
+id|next_resync
+suffix:semicolon
+DECL|member|wait_idle
+id|wait_queue_head_t
+id|wait_idle
+suffix:semicolon
+DECL|member|wait_resume
+id|wait_queue_head_t
+id|wait_resume
 suffix:semicolon
 DECL|member|r1bio_pool
 id|mempool_t
@@ -191,7 +161,7 @@ suffix:semicolon
 multiline_comment|/*&n; * this is the only point in the RAID code where we violate&n; * C type safety. mddev-&gt;private is an &squot;opaque&squot; pointer.&n; */
 DECL|macro|mddev_to_conf
 mdefine_line|#define mddev_to_conf(mddev) ((conf_t *) mddev-&gt;private)
-multiline_comment|/*&n; * this is our &squot;private&squot; &squot;collective&squot; RAID1 buffer head.&n; * it contains information about what kind of IO operations were started&n; * for this RAID1 operation, and about their status:&n; */
+multiline_comment|/*&n; * this is our &squot;private&squot; RAID1 bio.&n; *&n; * it contains information about what kind of IO operations were started&n; * for this RAID1 operation, and about their status:&n; */
 DECL|struct|r1bio_s
 r_struct
 id|r1bio_s
@@ -233,6 +203,10 @@ id|bio
 op_star
 id|read_bio
 suffix:semicolon
+DECL|member|read_disk
+r_int
+id|read_disk
+suffix:semicolon
 multiline_comment|/*&n;&t; * if the IO is in WRITE direction, then multiple bios are used:&n;&t; */
 DECL|member|write_bios
 r_struct
@@ -259,7 +233,5 @@ suffix:semicolon
 multiline_comment|/* bits for r1bio.state */
 DECL|macro|R1BIO_Uptodate
 mdefine_line|#define&t;R1BIO_Uptodate&t;1
-DECL|macro|R1BIO_SyncPhase
-mdefine_line|#define&t;R1BIO_SyncPhase&t;2
 macro_line|#endif
 eof

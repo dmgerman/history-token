@@ -5,6 +5,7 @@ multiline_comment|/*&n; * this really is an extension of the vc_cons structure i
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/vt.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 multiline_comment|/*&n; * Presently, a lot of graphics programs do not restore the contents of&n; * the higher font pages.  Defining this flag will avoid use of them, but&n; * will lose support for PIO_FONTRESET.  Note that many font operations are&n; * not likely to work with these programs anyway; they need to be&n; * fixed.  The linux/Documentation directory includes a code snippet&n; * to save and restore the text font.&n; */
 macro_line|#ifdef CONFIG_VGA_CONSOLE
 DECL|macro|BROKEN_GRAPHICS_PROGRAMS

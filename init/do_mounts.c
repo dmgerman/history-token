@@ -4,12 +4,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
@@ -17,7 +13,6 @@ macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;linux/minix_fs.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
 macro_line|#include &lt;linux/romfs_fs.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|BUILD_CRAMDISK
 mdefine_line|#define BUILD_CRAMDISK
 r_extern
@@ -173,21 +168,58 @@ r_int
 id|real_root_dev
 suffix:semicolon
 multiline_comment|/* do_proc_dointvec cannot handle kdev_t */
-macro_line|#endif
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-r_extern
-r_int
-id|rd_doload
-suffix:semicolon
-macro_line|#else
-DECL|variable|rd_doload
+DECL|variable|mount_initrd
 r_static
 r_int
-id|rd_doload
+id|__initdata
+id|mount_initrd
+op_assign
+l_int|1
+suffix:semicolon
+DECL|function|no_initrd
+r_static
+r_int
+id|__init
+id|no_initrd
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|mount_initrd
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;noinitrd&quot;
+comma
+id|no_initrd
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|variable|mount_initrd
+r_static
+r_int
+id|__initdata
+id|mount_initrd
 op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+DECL|variable|rd_doload
+r_int
+id|__initdata
+id|rd_doload
+suffix:semicolon
+multiline_comment|/* 1 = load RAM disk, 0 = don&squot;t load */
 DECL|variable|root_mountflags
 r_int
 id|root_mountflags
@@ -215,6 +247,44 @@ r_int
 id|do_devfs
 op_assign
 l_int|0
+suffix:semicolon
+DECL|function|load_ramdisk
+r_static
+r_int
+id|__init
+id|load_ramdisk
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|rd_doload
+op_assign
+id|simple_strtol
+c_func
+(paren
+id|str
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+op_amp
+l_int|3
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;load_ramdisk=&quot;
+comma
+id|load_ramdisk
+)paren
 suffix:semicolon
 DECL|function|readonly
 r_static
@@ -2059,6 +2129,94 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
+DECL|variable|rd_prompt
+r_int
+id|__initdata
+id|rd_prompt
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1 = prompt for RAM disk, 0 = don&squot;t prompt */
+DECL|function|prompt_ramdisk
+r_static
+r_int
+id|__init
+id|prompt_ramdisk
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|rd_prompt
+op_assign
+id|simple_strtol
+c_func
+(paren
+id|str
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+op_amp
+l_int|1
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;prompt_ramdisk=&quot;
+comma
+id|prompt_ramdisk
+)paren
+suffix:semicolon
+DECL|variable|rd_image_start
+r_int
+id|__initdata
+id|rd_image_start
+suffix:semicolon
+multiline_comment|/* starting block # of image */
+DECL|function|ramdisk_start_setup
+r_static
+r_int
+id|__init
+id|ramdisk_start_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|rd_image_start
+op_assign
+id|simple_strtol
+c_func
+(paren
+id|str
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;ramdisk_start=&quot;
+comma
+id|ramdisk_start_setup
+)paren
+suffix:semicolon
 r_static
 r_int
 id|__init
@@ -2986,10 +3144,6 @@ id|n
 )paren
 (brace
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
-r_extern
-r_int
-id|rd_prompt
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3663,11 +3817,6 @@ r_void
 )paren
 (brace
 r_int
-id|do_initrd
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|is_floppy
 op_assign
 id|MAJOR
@@ -3688,15 +3837,6 @@ id|initrd_start
 id|mount_initrd
 op_assign
 l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mount_initrd
-)paren
-id|do_initrd
-op_assign
-l_int|1
 suffix:semicolon
 id|real_root_dev
 op_assign
@@ -3752,7 +3892,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|do_initrd
+id|mount_initrd
 )paren
 (brace
 r_if

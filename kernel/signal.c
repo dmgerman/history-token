@@ -2404,7 +2404,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * kill_something_info() interprets pid in interesting ways just like kill(2).&n; *&n; * POSIX (2001) specifies &quot;If pid is -1, sig shall be sent to all processes&n; * (excluding an unspecified set of system processes) for which the process&n; * has permission to send that signal.&quot;&n; * So, probably the process should also signal itself.&n; */
+multiline_comment|/*&n; * kill_something_info() interprets pid in interesting ways just like kill(2).&n; *&n; * POSIX specifies that kill(-1,sig) is unspecified, but what we have&n; * is probably wrong.  Should make it like BSD or SYSV.&n; */
 DECL|function|kill_something_info
 r_static
 r_int
@@ -2485,6 +2485,10 @@ c_cond
 id|p-&gt;pid
 OG
 l_int|1
+op_logical_and
+id|p
+op_ne
+id|current
 )paren
 (brace
 r_int

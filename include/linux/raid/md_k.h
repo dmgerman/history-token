@@ -876,6 +876,9 @@ id|mddev
 comma
 id|sector_t
 id|sector_nr
+comma
+r_int
+id|go_faster
 )paren
 suffix:semicolon
 )brace

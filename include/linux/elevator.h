@@ -1,31 +1,6 @@
 macro_line|#ifndef _LINUX_ELEVATOR_H
 DECL|macro|_LINUX_ELEVATOR_H
 mdefine_line|#define _LINUX_ELEVATOR_H
-DECL|typedef|elevator_fn
-r_typedef
-r_void
-(paren
-id|elevator_fn
-)paren
-(paren
-r_struct
-id|request
-op_star
-comma
-id|elevator_t
-op_star
-comma
-r_struct
-id|list_head
-op_star
-comma
-r_struct
-id|list_head
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 DECL|typedef|elevator_merge_fn
 r_typedef
 r_int
@@ -39,10 +14,6 @@ comma
 r_struct
 id|request
 op_star
-op_star
-comma
-r_struct
-id|list_head
 op_star
 comma
 r_struct
@@ -147,13 +118,12 @@ DECL|struct|elevator_s
 r_struct
 id|elevator_s
 (brace
-DECL|member|read_latency
+DECL|member|latency
 r_int
-id|read_latency
-suffix:semicolon
-DECL|member|write_latency
-r_int
-id|write_latency
+id|latency
+(braket
+l_int|2
+)braket
 suffix:semicolon
 DECL|member|elevator_merge_fn
 id|elevator_merge_fn
@@ -205,10 +175,6 @@ op_star
 op_star
 comma
 r_struct
-id|list_head
-op_star
-comma
-r_struct
 id|bio
 op_star
 )paren
@@ -250,10 +216,6 @@ comma
 r_struct
 id|request
 op_star
-op_star
-comma
-r_struct
-id|list_head
 op_star
 comma
 r_struct
@@ -399,48 +361,8 @@ DECL|macro|ELEVATOR_FRONT_MERGE
 mdefine_line|#define ELEVATOR_FRONT_MERGE&t;1
 DECL|macro|ELEVATOR_BACK_MERGE
 mdefine_line|#define ELEVATOR_BACK_MERGE&t;2
-multiline_comment|/*&n; * This is used in the elevator algorithm.  We don&squot;t prioritise reads&n; * over writes any more --- although reads are more time-critical than&n; * writes, by treating them equally we increase filesystem throughput.&n; * This turns out to give better overall performance.  -- sct&n; */
-DECL|macro|IN_ORDER
-mdefine_line|#define IN_ORDER(s1,s2)&t;&t;&t;&t;&bslash;&n;&t;((((s1)-&gt;rq_dev == (s2)-&gt;rq_dev &amp;&amp;&t;&bslash;&n;&t;   (s1)-&gt;sector &lt; (s2)-&gt;sector)) ||&t;&bslash;&n;&t; (s1)-&gt;rq_dev &lt; (s2)-&gt;rq_dev)
-DECL|macro|BHRQ_IN_ORDER
-mdefine_line|#define BHRQ_IN_ORDER(bh, rq)&t;&t;&t;&bslash;&n;&t;((((bh)-&gt;b_rdev == (rq)-&gt;rq_dev &amp;&amp;&t;&bslash;&n;&t;   (bh)-&gt;b_rsector &lt; (rq)-&gt;sector)) ||&t;&bslash;&n;&t; (bh)-&gt;b_rdev &lt; (rq)-&gt;rq_dev)
-DECL|function|elevator_request_latency
-r_static
-r_inline
-r_int
-id|elevator_request_latency
-c_func
-(paren
-id|elevator_t
-op_star
-id|elevator
-comma
-r_int
-id|rw
-)paren
-(brace
-r_int
-id|latency
-suffix:semicolon
-id|latency
-op_assign
-id|elevator-&gt;read_latency
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rw
-op_ne
-id|READ
-)paren
-id|latency
-op_assign
-id|elevator-&gt;write_latency
-suffix:semicolon
-r_return
-id|latency
-suffix:semicolon
-)brace
+DECL|macro|elevator_request_latency
+mdefine_line|#define elevator_request_latency(e, rw)&t;((e)-&gt;latency[(rw) &amp; 1])
 multiline_comment|/*&n; * will change once we move to a more complex data structure than a simple&n; * list for pending requests&n; */
 DECL|macro|elv_queue_empty
 mdefine_line|#define elv_queue_empty(q)&t;list_empty(&amp;(q)-&gt;queue_head)
@@ -463,8 +385,8 @@ mdefine_line|#define ELV_LINUS_BACK_MERGE&t;1
 DECL|macro|ELV_LINUS_FRONT_MERGE
 mdefine_line|#define ELV_LINUS_FRONT_MERGE&t;2
 DECL|macro|ELEVATOR_NOOP
-mdefine_line|#define ELEVATOR_NOOP&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((elevator_t) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;/* read_latency */&t;&t;&bslash;&n;&t;0,&t;&t;&t;&t;/* write_latency */&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elevator_noop_merge,&t;&t;/* elevator_merge_fn */&t;&t;&bslash;&n;&t;elevator_noop_merge_cleanup,&t;/* elevator_merge_cleanup_fn */&t;&bslash;&n;&t;elevator_noop_merge_req,&t;/* elevator_merge_req_fn */&t;&bslash;&n;&t;elv_next_request_fn,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_add_request_fn,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_linus_init,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_linus_exit,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define ELEVATOR_NOOP&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((elevator_t) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, 0},&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elevator_noop_merge,&t;&t;/* elevator_merge_fn */&t;&t;&bslash;&n;&t;elevator_noop_merge_cleanup,&t;/* elevator_merge_cleanup_fn */&t;&bslash;&n;&t;elevator_noop_merge_req,&t;/* elevator_merge_req_fn */&t;&bslash;&n;&t;elv_next_request_fn,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_add_request_fn,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_linus_init,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_linus_exit,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 DECL|macro|ELEVATOR_LINUS
-mdefine_line|#define ELEVATOR_LINUS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((elevator_t) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;8192,&t;&t;&t;&t;/* read passovers */&t;&t;&bslash;&n;&t;16384,&t;&t;&t;&t;/* write passovers */&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elevator_linus_merge,&t;&t;/* elevator_merge_fn */&t;&t;&bslash;&n;&t;elevator_linus_merge_cleanup,&t;/* elevator_merge_cleanup_fn */&t;&bslash;&n;&t;elevator_linus_merge_req,&t;/* elevator_merge_req_fn */&t;&bslash;&n;&t;elv_next_request_fn,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_add_request_fn,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_linus_init,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_linus_exit,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
+mdefine_line|#define ELEVATOR_LINUS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((elevator_t) {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ 8192, 16384 },&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elevator_linus_merge,&t;&t;/* elevator_merge_fn */&t;&t;&bslash;&n;&t;elevator_linus_merge_cleanup,&t;/* elevator_merge_cleanup_fn */&t;&bslash;&n;&t;elevator_linus_merge_req,&t;/* elevator_merge_req_fn */&t;&bslash;&n;&t;elv_next_request_fn,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_add_request_fn,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_linus_init,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;elv_linus_exit,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 macro_line|#endif
 eof

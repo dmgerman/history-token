@@ -45,20 +45,20 @@ id|pers
 id|MAX_PERSONALITY
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * Current RAID-1,4,5 parallel reconstruction &squot;guaranteed speed limit&squot;&n; * is 100 KB/sec, so the extra system load does not show up that much.&n; * Increase it if you want to have more _guaranteed_ speed. Note that&n; * the RAID driver will use the maximum available bandwith if the IO&n; * subsystem is idle. There is also an &squot;absolute maximum&squot; reconstruction&n; * speed limit - in case reconstruction slows down your system despite&n; * idle IO detection.&n; *&n; * you can change it via /proc/sys/dev/raid/speed_limit_min and _max.&n; */
+multiline_comment|/*&n; * Current RAID-1,4,5 parallel reconstruction &squot;guaranteed speed limit&squot;&n; * is 1000 KB/sec, so the extra system load does not show up that much.&n; * Increase it if you want to have more _guaranteed_ speed. Note that&n; * the RAID driver will use the maximum available bandwith if the IO&n; * subsystem is idle. There is also an &squot;absolute maximum&squot; reconstruction&n; * speed limit - in case reconstruction slows down your system despite&n; * idle IO detection.&n; *&n; * you can change it via /proc/sys/dev/raid/speed_limit_min and _max.&n; */
 DECL|variable|sysctl_speed_limit_min
 r_static
 r_int
 id|sysctl_speed_limit_min
 op_assign
-l_int|100
+l_int|1000
 suffix:semicolon
 DECL|variable|sysctl_speed_limit_max
 r_static
 r_int
 id|sysctl_speed_limit_max
 op_assign
-l_int|100000
+l_int|200000
 suffix:semicolon
 DECL|variable|raid_table_header
 r_static
@@ -13792,6 +13792,8 @@ r_int
 id|max_sectors
 comma
 id|currspeed
+op_assign
+l_int|0
 comma
 id|j
 comma
@@ -14126,6 +14128,10 @@ c_func
 id|mddev
 comma
 id|j
+comma
+id|currspeed
+OL
+id|sysctl_speed_limit_min
 )paren
 suffix:semicolon
 r_if

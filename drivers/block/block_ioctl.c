@@ -39,7 +39,7 @@ l_int|0
 suffix:semicolon
 id|rq-&gt;flags
 op_or_assign
-id|REQ_BARRIER
+id|REQ_NOMERGE
 suffix:semicolon
 id|rq-&gt;waiting
 op_assign
@@ -238,4 +238,11 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|block_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|block_ioctl
+)paren
+suffix:semicolon
 eof

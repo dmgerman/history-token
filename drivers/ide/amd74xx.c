@@ -2184,6 +2184,10 @@ op_assign
 op_amp
 id|amd74xx_tune_chipset
 suffix:semicolon
+id|hwif-&gt;highmem
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#ifndef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;drives
 (braket

@@ -1270,7 +1270,11 @@ c_cond
 (paren
 id|rq-&gt;flags
 op_amp
+(paren
 id|REQ_PC
+op_or
+id|REQ_BLOCK_PC
+)paren
 )paren
 (brace
 multiline_comment|/* All other functions, except for READ. */
@@ -10244,6 +10248,15 @@ op_amp
 id|drive-&gt;queue
 comma
 id|CD_FRAMESIZE
+)paren
+suffix:semicolon
+id|blk_queue_prep_rq
+c_func
+(paren
+op_amp
+id|drive-&gt;queue
+comma
+id|ll_10byte_cmd_build
 )paren
 suffix:semicolon
 id|drive-&gt;special.all

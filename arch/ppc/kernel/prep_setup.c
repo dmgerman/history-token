@@ -294,23 +294,6 @@ r_int
 r_int
 id|loops_per_jiffy
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-r_extern
-r_int
-id|rd_doload
-suffix:semicolon
-multiline_comment|/* 1 = load ramdisk, 0 = don&squot;t load */
-r_extern
-r_int
-id|rd_prompt
-suffix:semicolon
-multiline_comment|/* 1 = prompt for ramdisk, 0 = don&squot;t prompt */
-r_extern
-r_int
-id|rd_image_start
-suffix:semicolon
-multiline_comment|/* starting block # of image */
-macro_line|#endif
 macro_line|#ifdef CONFIG_SOUND_MODULE
 DECL|variable|ppc_cs4232_dma
 id|EXPORT_SYMBOL

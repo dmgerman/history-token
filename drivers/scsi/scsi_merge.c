@@ -41,6 +41,9 @@ r_struct
 id|request
 op_star
 id|req
+op_assign
+op_amp
+id|SCpnt-&gt;request
 suffix:semicolon
 r_struct
 id|scatterlist
@@ -51,11 +54,6 @@ r_int
 id|count
 comma
 id|gfp_mask
-suffix:semicolon
-id|req
-op_assign
-op_amp
-id|SCpnt-&gt;request
 suffix:semicolon
 multiline_comment|/*&n;&t; * First we need to know how many scatter gather segments are needed.&n;&t; */
 id|count
@@ -111,19 +109,15 @@ id|sgpnt
 suffix:semicolon
 id|SCpnt-&gt;request_bufflen
 op_assign
-l_int|0
+id|req-&gt;nr_sectors
+op_lshift
+l_int|9
 suffix:semicolon
 id|req-&gt;buffer
 op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* &n;&t; * Next, walk the list, and fill in the addresses and sizes of&n;&t; * each segment.&n;&t; */
-id|SCpnt-&gt;request_bufflen
-op_assign
-id|req-&gt;nr_sectors
-op_lshift
-l_int|9
-suffix:semicolon
 id|count
 op_assign
 id|blk_rq_map_sg
@@ -251,6 +245,7 @@ op_assign
 id|SHpnt-&gt;pci_dev-&gt;dma_mask
 suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren

@@ -678,17 +678,8 @@ DECL|macro|IDEFLOPPY_IOCTL_FORMAT_START
 mdefine_line|#define&t;IDEFLOPPY_IOCTL_FORMAT_START&t;&t;0x4602
 DECL|macro|IDEFLOPPY_IOCTL_FORMAT_GET_PROGRESS
 mdefine_line|#define IDEFLOPPY_IOCTL_FORMAT_GET_PROGRESS&t;0x4603
-multiline_comment|/*&n; *&t;Special requests for our block device strategy routine.&n; */
-DECL|macro|IDEFLOPPY_FIRST_RQ
-mdefine_line|#define&t;IDEFLOPPY_FIRST_RQ&t;&t;90
-multiline_comment|/*&n; * &t;IDEFLOPPY_PC_RQ is used to queue a packet command in the request queue.&n; */
-DECL|macro|IDEFLOPPY_PC_RQ
-mdefine_line|#define&t;IDEFLOPPY_PC_RQ&t;&t;&t;90
-DECL|macro|IDEFLOPPY_LAST_RQ
-mdefine_line|#define IDEFLOPPY_LAST_RQ&t;&t;90
-multiline_comment|/*&n; *&t;A macro which can be used to check if a given request command&n; *&t;originated in the driver or in the buffer cache layer.&n; */
-DECL|macro|IDEFLOPPY_RQ_CMD
-mdefine_line|#define IDEFLOPPY_RQ_CMD(cmd) &t;&t;((cmd &gt;= IDEFLOPPY_FIRST_RQ) &amp;&amp; (cmd &lt;= IDEFLOPPY_LAST_RQ))
+DECL|macro|IDEFLOPPY_RQ
+mdefine_line|#define IDEFLOPPY_RQ&t;&t;&t;(REQ_SPECIAL)
 multiline_comment|/*&n; *&t;Error codes which are returned in rq-&gt;errors to the higher part&n; *&t;of the driver.&n; */
 DECL|macro|IDEFLOPPY_ERROR_GENERAL
 mdefine_line|#define&t;IDEFLOPPY_ERROR_GENERAL&t;&t;101
@@ -1975,11 +1966,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|IDEFLOPPY_RQ_CMD
-(paren
-id|rq-&gt;cmd
-)paren
+id|rq-&gt;flags
+op_amp
+id|IDEFLOPPY_RQ
 )paren
 (brace
 id|ide_end_request
@@ -2393,9 +2382,9 @@ op_star
 )paren
 id|pc
 suffix:semicolon
-id|rq-&gt;cmd
+id|rq-&gt;flags
 op_assign
-id|IDEFLOPPY_PC_RQ
+id|IDEFLOPPY_RQ
 suffix:semicolon
 (paren
 r_void
@@ -4385,6 +4374,15 @@ id|rq-&gt;nr_sectors
 op_div
 id|floppy-&gt;bs_factor
 suffix:semicolon
+r_int
+id|cmd
+op_assign
+id|rq_data_dir
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
 macro_line|#if IDEFLOPPY_DEBUG_LOG
 id|printk
 (paren
@@ -4428,7 +4426,7 @@ id|pc-&gt;c
 l_int|0
 )braket
 op_assign
-id|rq-&gt;cmd
+id|cmd
 op_eq
 id|READ
 ques
@@ -4464,7 +4462,7 @@ id|pc-&gt;c
 l_int|0
 )braket
 op_assign
-id|rq-&gt;cmd
+id|cmd
 op_eq
 id|READ
 ques
@@ -4527,7 +4525,7 @@ id|rq-&gt;buffer
 suffix:semicolon
 id|pc-&gt;b_count
 op_assign
-id|rq-&gt;cmd
+id|cmd
 op_eq
 id|READ
 ques
@@ -4539,9 +4537,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rq-&gt;cmd
-op_eq
-id|WRITE
+id|rq-&gt;flags
+op_amp
+id|REQ_RW
 )paren
 id|set_bit
 (paren
@@ -4606,7 +4604,7 @@ macro_line|#if IDEFLOPPY_DEBUG_LOG
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;rq_status: %d, rq_dev: %u, cmd: %d, errors: %d&bslash;n&quot;
+l_string|&quot;rq_status: %d, rq_dev: %u, flags: %lx, errors: %d&bslash;n&quot;
 comma
 id|rq-&gt;rq_status
 comma
@@ -4616,7 +4614,7 @@ r_int
 )paren
 id|rq-&gt;rq_dev
 comma
-id|rq-&gt;cmd
+id|rq-&gt;flags
 comma
 id|rq-&gt;errors
 )paren
@@ -4624,7 +4622,7 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;sector: %ld, nr_sectors: %ld, current_nr_sectors: %ld&bslash;n&quot;
+l_string|&quot;sector: %ld, nr_sectors: %ld, current_nr_sectors: %d&bslash;n&quot;
 comma
 id|rq-&gt;sector
 comma
@@ -4692,18 +4690,14 @@ r_return
 id|ide_stopped
 suffix:semicolon
 )brace
-r_switch
+r_if
 c_cond
 (paren
-id|rq-&gt;cmd
+id|rq-&gt;flags
+op_amp
+id|REQ_CMD
 )paren
 (brace
-r_case
-id|READ
-suffix:colon
-r_case
-id|WRITE
-suffix:colon
 r_if
 c_cond
 (paren
@@ -4756,11 +4750,16 @@ comma
 id|block
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|IDEFLOPPY_PC_RQ
-suffix:colon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|rq-&gt;flags
+op_amp
+id|IDEFLOPPY_RQ
+)paren
+(brace
 id|pc
 op_assign
 (paren
@@ -4769,16 +4768,15 @@ op_star
 )paren
 id|rq-&gt;buffer
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|printk
+)brace
+r_else
+(brace
+id|blk_dump_rq_flags
+c_func
 (paren
-id|KERN_ERR
-l_string|&quot;ide-floppy: unsupported command %x in request queue&bslash;n&quot;
+id|rq
 comma
-id|rq-&gt;cmd
+l_string|&quot;ide-floppy: unsupported command in queue&quot;
 )paren
 suffix:semicolon
 id|idefloppy_end_request
@@ -4841,9 +4839,9 @@ op_star
 )paren
 id|pc
 suffix:semicolon
-id|rq.cmd
+id|rq.flags
 op_assign
-id|IDEFLOPPY_PC_RQ
+id|IDEFLOPPY_RQ
 suffix:semicolon
 r_return
 id|ide_do_drive_cmd

@@ -382,6 +382,22 @@ DECL|struct|request_queue
 r_struct
 id|request_queue
 (brace
+multiline_comment|/*&n;&t; * Together with queue_head for cacheline sharing&n;&t; */
+DECL|member|queue_head
+r_struct
+id|list_head
+id|queue_head
+suffix:semicolon
+DECL|member|last_merge
+r_struct
+id|list_head
+op_star
+id|last_merge
+suffix:semicolon
+DECL|member|elevator
+id|elevator_t
+id|elevator
+suffix:semicolon
 multiline_comment|/*&n;&t; * the queue request freelist, one for reads and one for writes&n;&t; */
 DECL|member|rq
 r_struct
@@ -390,16 +406,6 @@ id|rq
 (braket
 l_int|2
 )braket
-suffix:semicolon
-multiline_comment|/*&n;&t; * Together with queue_head for cacheline sharing&n;&t; */
-DECL|member|queue_head
-r_struct
-id|list_head
-id|queue_head
-suffix:semicolon
-DECL|member|elevator
-id|elevator_t
-id|elevator
 suffix:semicolon
 DECL|member|request_fn
 id|request_fn_proc
@@ -538,13 +544,21 @@ id|blk_max_low_pfn
 comma
 id|blk_max_pfn
 suffix:semicolon
+multiline_comment|/*&n; * standard bounce addresses:&n; *&n; * BLK_BOUNCE_HIGH&t;: bounce all highmem pages&n; * BLK_BOUNCE_ANY&t;: don&squot;t bounce anything&n; * BLK_BOUNCE_ISA&t;: bounce pages above ISA DMA boundary&n; */
 DECL|macro|BLK_BOUNCE_HIGH
-mdefine_line|#define BLK_BOUNCE_HIGH&t;(blk_max_low_pfn &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define BLK_BOUNCE_HIGH&t;&t;((blk_max_low_pfn + 1) &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ANY
-mdefine_line|#define BLK_BOUNCE_ANY&t;(blk_max_pfn &lt;&lt; PAGE_SHIFT)
+mdefine_line|#define BLK_BOUNCE_ANY&t;&t;((blk_max_pfn + 1) &lt;&lt; PAGE_SHIFT)
 DECL|macro|BLK_BOUNCE_ISA
-mdefine_line|#define BLK_BOUNCE_ISA&t;(ISA_DMA_THRESHOLD)
-macro_line|#ifdef CONFIG_HIGHMEM
+mdefine_line|#define BLK_BOUNCE_ISA&t;&t;(ISA_DMA_THRESHOLD)
+r_extern
+r_int
+id|init_emergency_isa_pool
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|create_bounce
@@ -562,14 +576,6 @@ id|bio
 op_star
 op_star
 id|bio_orig
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|init_emergency_isa_pool
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 DECL|function|blk_queue_bounce
@@ -601,12 +607,6 @@ id|bio
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* CONFIG_HIGHMEM */
-DECL|macro|blk_queue_bounce
-mdefine_line|#define blk_queue_bounce(q, bio)&t;do { } while (0)
-DECL|macro|init_emergency_isa_pool
-mdefine_line|#define init_emergency_isa_pool()&t;do { } while (0)
-macro_line|#endif /* CONFIG_HIGHMEM */
 DECL|macro|rq_for_each_bio
 mdefine_line|#define rq_for_each_bio(bio, rq)&t;&bslash;&n;&t;if ((rq-&gt;bio))&t;&t;&t;&bslash;&n;&t;&t;for (bio = (rq)-&gt;bio; bio; bio = bio-&gt;bi_next)
 DECL|struct|blk_dev_struct
@@ -841,19 +841,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|blk_queue_assign_lock
-c_func
-(paren
-id|request_queue_t
-op_star
-id|q
-comma
-id|spinlock_t
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|block_ioctl
 c_func
@@ -865,6 +852,19 @@ r_int
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ll_10byte_cmd_build
+c_func
+(paren
+id|request_queue_t
+op_star
+comma
+r_struct
+id|request
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Access functions for manipulating queue properties&n; */
@@ -991,6 +991,33 @@ id|q
 comma
 r_int
 r_int
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_queue_assign_lock
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+id|spinlock_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|blk_queue_prep_rq
+c_func
+(paren
+id|request_queue_t
+op_star
+id|q
+comma
+id|prep_rq_fn
+op_star
+id|pfn
 )paren
 suffix:semicolon
 r_extern

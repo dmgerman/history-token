@@ -19,7 +19,6 @@ DECL|macro|DEBUG_SIG
 mdefine_line|#define DEBUG_SIG 0
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
-id|asmlinkage
 r_int
 id|FASTCALL
 c_func

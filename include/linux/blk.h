@@ -48,11 +48,6 @@ id|initrd_end
 suffix:semicolon
 r_extern
 r_int
-id|mount_initrd
-suffix:semicolon
-multiline_comment|/* zero if initrd should not be mounted */
-r_extern
-r_int
 id|initrd_below_start_ok
 suffix:semicolon
 multiline_comment|/* 1 if it is not an error if initrd_start &lt; memory_start */
@@ -163,6 +158,18 @@ id|q
 id|rq-&gt;flags
 op_or_assign
 id|REQ_STARTED
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_amp
+id|rq-&gt;queuelist
+op_eq
+id|q-&gt;last_merge
+)paren
+id|q-&gt;last_merge
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

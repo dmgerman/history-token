@@ -1158,8 +1158,7 @@ DECL|struct|scsi_device
 r_struct
 id|scsi_device
 (brace
-multiline_comment|/* private: */
-multiline_comment|/*&n;&t; * This information is private to the scsi mid-layer.  Wrapping it in a&n;&t; * struct private is a way of marking it in a sort of C++ type of way.&n;&t; */
+multiline_comment|/*&n;&t; * This information is private to the scsi mid-layer.&n;&t; */
 DECL|member|next
 r_struct
 id|scsi_device
@@ -1207,7 +1206,6 @@ op_star
 id|device_queue
 suffix:semicolon
 multiline_comment|/* queue of SCSI Command structures */
-multiline_comment|/* public: */
 DECL|member|id
 DECL|member|lun
 DECL|member|channel
@@ -1643,8 +1641,6 @@ DECL|member|sc_magic
 r_int
 id|sc_magic
 suffix:semicolon
-multiline_comment|/* private: */
-multiline_comment|/*&n;&t; * This information is private to the scsi mid-layer.  Wrapping it in a&n;&t; * struct private is a way of marking it in a sort of C++ type of way.&n;&t; */
 DECL|member|host
 r_struct
 id|Scsi_Host
@@ -1746,7 +1742,6 @@ op_star
 id|bh_next
 suffix:semicolon
 multiline_comment|/* To enumerate the commands waiting &n;&t;&t;&t;&t;&t;   to be processed. */
-multiline_comment|/* public: */
 DECL|member|target
 r_int
 r_int

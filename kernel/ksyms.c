@@ -402,6 +402,13 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
+DECL|variable|create_bounce
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|create_bounce
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
 DECL|variable|kmap_high
 id|EXPORT_SYMBOL
@@ -422,13 +429,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|highmem_start_page
-)paren
-suffix:semicolon
-DECL|variable|create_bounce
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|create_bounce
 )paren
 suffix:semicolon
 DECL|variable|kmap_prot

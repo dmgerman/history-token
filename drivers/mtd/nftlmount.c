@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * NFTL mount code with extensive checks&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: nftlmount.c,v 1.23 2001/09/19 21:42:32 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* &n; * NFTL mount code with extensive checks&n; *&n; * Author: Fabrice Bellard (fabrice.bellard@netgem.com) &n; * Copyright (C) 2000 Netgem S.A.&n; *&n; * $Id: nftlmount.c,v 1.25 2001/11/30 16:46:27 dwmw2 Exp $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -23,7 +23,7 @@ id|nftlmountrev
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.23 $&quot;
+l_string|&quot;$Revision: 1.25 $&quot;
 suffix:semicolon
 multiline_comment|/* find_boot_record: Find the NFTL Media Header and its Spare copy which contains the&n; *&t;various device information of the NFTL partition and Bad Unit Table. Update&n; *&t;the ReplUnitTable[] table accroding to the Bad Unit Table. ReplUnitTable[]&n; *&t;is used for management of Erase Unit in other routines in nftl.c and nftlmount.c&n; */
 DECL|function|find_boot_record
@@ -265,12 +265,12 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-macro_line|#if 1 /* Some people seem to have devices without ECC or erase marks&n;&t; on the Media Header blocks. There are enough other sanity&n;&t; checks in here that we can probably do without it.&n;      */
+macro_line|#if 0 /* Some people seem to have devices without ECC or erase marks&n;&t; on the Media Header blocks. There are enough other sanity&n;&t; checks in here that we can probably do without it.&n;      */
 r_if
 c_cond
 (paren
 id|le16_to_cpu
-(paren
+c_func
 (paren
 id|h1.EraseMark
 op_or
@@ -278,7 +278,6 @@ id|h1.EraseMark1
 )paren
 op_ne
 id|ERASE_MARK
-)paren
 )paren
 (brace
 id|printk
