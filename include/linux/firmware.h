@@ -83,7 +83,6 @@ id|context
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Maybe &squot;device&squot; should be &squot;struct device *&squot; */
 r_void
 id|release_firmware
 c_func

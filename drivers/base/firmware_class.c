@@ -143,6 +143,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
+r_static
 id|CLASS_ATTR
 c_func
 (paren
@@ -192,6 +193,7 @@ id|buffer_size
 )paren
 suffix:semicolon
 DECL|variable|firmware_class
+r_static
 r_struct
 r_class
 id|firmware_class
@@ -479,6 +481,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
+r_static
 id|CLASS_DEVICE_ATTR
 c_func
 (paren
@@ -917,7 +920,7 @@ op_star
 id|dev
 )paren
 (brace
-macro_line|#warning we should watch out for name collisions
+multiline_comment|/* XXX warning we should watch out for name collisions */
 id|strncpy
 c_func
 (paren
@@ -1072,7 +1075,11 @@ suffix:semicolon
 id|strncpy
 c_func
 (paren
+op_amp
 id|fw_priv-&gt;fw_id
+(braket
+l_int|0
+)braket
 comma
 id|fw_name
 comma
