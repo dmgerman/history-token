@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.fads.h 1.14 10/26/01 10:14:09 trini&n; */
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * the Motorola 860T FADS board.  Copied from the MBX stuff.&n; *&n; * Copyright (c) 1998 Dan Malek (dmalek@jlc.net)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_FADS_H__

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; *&n; * Originally adapted by Gary Thomas.  Much additional work by&n; * Cort Dougan &lt;cort@fsmlabs.com&gt;.  On top of that still more work by&n; * Dan Malek &lt;dmalek@jlc.net&gt;.&n; *&n; * Currently maintained by: Tom Rini &lt;trini@kernel.crashing.org&gt;&n; */
+multiline_comment|/*&n; * Originally adapted by Gary Thomas.  Much additional work by&n; * Cort Dougan &lt;cort@fsmlabs.com&gt;.  On top of that still more work by&n; * Dan Malek &lt;dmalek@jlc.net&gt;.&n; *&n; * Currently maintained by: Tom Rini &lt;trini@kernel.crashing.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
@@ -237,7 +237,7 @@ op_amp
 id|bp
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SERIAL_CONSOLE
+macro_line|#if defined(CONFIG_SERIAL_CONSOLE) || defined(CONFIG_SERIAL_8250_CONSOLE)
 id|com_port
 op_assign
 id|serial_init

@@ -1,8 +1,9 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &quot;nonstdio.h&quot;
+macro_line|#include &quot;of1275.h&quot;
+macro_line|#include &quot;zlib.h&quot;
 multiline_comment|/* Passed from the linker */
 r_extern
 r_char
@@ -25,57 +26,25 @@ comma
 id|_end
 suffix:semicolon
 r_extern
-r_int
-id|getprop
-c_func
-(paren
-r_void
-op_star
-comma
-r_const
 r_char
-op_star
+id|image_data
+(braket
+)braket
 comma
-r_void
-op_star
-comma
+id|initrd_data
+(braket
+)braket
+suffix:semicolon
+r_extern
 r_int
-)paren
+id|initrd_len
+comma
+id|image_len
 suffix:semicolon
 r_extern
 r_int
 r_int
 id|heap_max
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|claim
-c_func
-(paren
-r_int
-r_int
-id|virt
-comma
-r_int
-r_int
-id|size
-comma
-r_int
-r_int
-id|align
-)paren
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|finddevice
-c_func
-(paren
-r_const
-r_char
-op_star
-)paren
 suffix:semicolon
 r_extern
 r_void
@@ -133,24 +102,12 @@ id|progend
 suffix:semicolon
 r_extern
 r_void
-id|pause
+id|setup_bats
 c_func
 (paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|release
-c_func
-(paren
-r_void
-op_star
-id|ptr
-comma
 r_int
 r_int
-id|len
+id|start
 )paren
 suffix:semicolon
 DECL|variable|avail_ram
@@ -172,14 +129,24 @@ r_char
 op_star
 id|avail_high
 suffix:semicolon
+DECL|macro|RAM_START
+mdefine_line|#define RAM_START&t;0
 DECL|macro|RAM_END
-mdefine_line|#define RAM_END&t;&t;(16 &lt;&lt; 20)
+mdefine_line|#define RAM_END&t;&t;(RAM_START + 0x800000)&t;/* only 8M mapped with BATs */
 DECL|macro|PROG_START
-mdefine_line|#define PROG_START&t;0x00010000
+mdefine_line|#define PROG_START&t;RAM_START
 DECL|macro|PROG_SIZE
-mdefine_line|#define PROG_SIZE&t;0x003f0000
+mdefine_line|#define PROG_SIZE&t;0x00400000
 DECL|macro|SCRATCH_SIZE
 mdefine_line|#define SCRATCH_SIZE&t;(128 &lt;&lt; 10)
+DECL|variable|heap
+r_static
+r_char
+id|heap
+(braket
+id|SCRATCH_SIZE
+)braket
+suffix:semicolon
 DECL|typedef|kernel_start_t
 r_typedef
 r_void
@@ -234,10 +201,16 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;chrpboot starting: loaded at 0x%p&bslash;n&quot;
+l_string|&quot;coffboot starting: loaded at 0x%p&bslash;n&quot;
 comma
 op_amp
 id|_start
+)paren
+suffix:semicolon
+id|setup_bats
+c_func
+(paren
+id|RAM_START
 )paren
 suffix:semicolon
 id|initrd_size
@@ -374,11 +347,11 @@ op_amp
 id|__image_begin
 )paren
 suffix:semicolon
-multiline_comment|/* claim 3MB starting at PROG_START */
+multiline_comment|/* claim 4MB starting at 0 */
 id|claim
 c_func
 (paren
-id|PROG_START
+l_int|0
 comma
 id|PROG_SIZE
 comma
@@ -391,7 +364,7 @@ op_assign
 r_void
 op_star
 )paren
-id|PROG_START
+id|RAM_START
 suffix:semicolon
 r_if
 c_cond
@@ -411,34 +384,23 @@ op_eq
 l_int|0x8b
 )paren
 (brace
-multiline_comment|/* claim some memory for scratch space */
-id|avail_ram
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|claim
-c_func
-(paren
-l_int|0
-comma
-id|SCRATCH_SIZE
-comma
-l_int|0x10
-)paren
-suffix:semicolon
+multiline_comment|/* set up scratch space */
 id|begin_avail
 op_assign
 id|avail_high
 op_assign
 id|avail_ram
+op_assign
+id|heap
 suffix:semicolon
 id|end_avail
 op_assign
-id|avail_ram
+id|heap
 op_plus
-id|SCRATCH_SIZE
+r_sizeof
+(paren
+id|heap
+)paren
 suffix:semicolon
 id|printf
 c_func
@@ -495,14 +457,6 @@ comma
 id|heap_max
 )paren
 suffix:semicolon
-id|release
-c_func
-(paren
-id|begin_avail
-comma
-id|SCRATCH_SIZE
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -538,7 +492,7 @@ op_plus
 id|len
 )paren
 comma
-l_string|&quot;chrpboot&quot;
+l_string|&quot;coffboot&quot;
 comma
 id|_MACH_Pmac
 comma

@@ -1,9 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
-DECL|typedef|FILE
-r_typedef
-r_int
-id|FILE
-suffix:semicolon
 r_extern
 id|FILE
 op_star

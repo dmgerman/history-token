@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.of1275.h 1.6 05/18/01 15:16:42 cort&n; */
 multiline_comment|/* 6.3.2.1 Client interface */
 DECL|struct|_of_test_service
 r_typedef

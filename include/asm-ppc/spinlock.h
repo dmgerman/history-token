@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef __ASM_SPINLOCK_H
 DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H

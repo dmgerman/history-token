@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.tqm8xx.h 1.8 08/30/01 09:01:04 trini&n; */
 multiline_comment|/*&n; * TQM8xx(L) board specific definitions&n; * &n; * Copyright (c) 1999,2000,2001 Wolfgang Denk (wd@denx.de)&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __MACH_TQM8xx_H

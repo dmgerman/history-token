@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.timex.h 1.8 08/15/01 22:43:07 paulus&n; */
-multiline_comment|/*&n; * linux/include/asm-ppc/timex.h&n; *&n; * ppc architecture timex specifications&n; */
+multiline_comment|/*&n; * include/asm-ppc/timex.h&n; *&n; * ppc architecture timex specifications&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _ASMppc_TIMEX_H
 DECL|macro|_ASMppc_TIMEX_H

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * include/asm-ppc/rwsem.h: R/W semaphores for PPC using the stuff&n; * in lib/rwsem.c.  Adapted largely from include/asm-i386/rwsem.h&n; * by Paul Mackerras &lt;paulus@samba.org&gt;.&n; */
 macro_line|#ifndef _PPC_RWSEM_H
 DECL|macro|_PPC_RWSEM_H

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * PowerPC atomic operations&n; */
 macro_line|#ifndef _ASM_PPC_ATOMIC_H_ 
 DECL|macro|_ASM_PPC_ATOMIC_H_

@@ -1,4 +1,3 @@
-multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 macro_line|#ifndef _PPC_BYTEORDER_H
 DECL|macro|_PPC_BYTEORDER_H
 mdefine_line|#define _PPC_BYTEORDER_H
