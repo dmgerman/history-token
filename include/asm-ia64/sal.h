@@ -2404,6 +2404,9 @@ id|ia64_sal_pci_config_read
 id|u64
 id|pci_config_addr
 comma
+r_int
+id|type
+comma
 id|u64
 id|size
 comma
@@ -2427,7 +2430,7 @@ id|pci_config_addr
 comma
 id|size
 comma
-l_int|0
+id|type
 comma
 l_int|0
 comma
@@ -2462,6 +2465,9 @@ id|ia64_sal_pci_config_write
 id|u64
 id|pci_config_addr
 comma
+r_int
+id|type
+comma
 id|u64
 id|size
 comma
@@ -2486,7 +2492,7 @@ id|size
 comma
 id|value
 comma
-l_int|0
+id|type
 comma
 l_int|0
 comma
