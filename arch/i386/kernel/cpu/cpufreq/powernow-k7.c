@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: powernow-k7.c,v 1.34 2003/02/22 10:23:46 db Exp $&n; *&n; *  (C) 2003 Dave Jones &lt;davej@suse.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
+multiline_comment|/*&n; *  $Id: powernow-k7.c,v 1.34 2003/02/22 10:23:46 db Exp $&n; *&n; *  (C) 2003 Dave Jones &lt;davej@suse.de&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by AMD.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; *&n; * Errata 5: Processor may fail to execute a FID/VID change in presence of interrupt.&n; * - We cli/sti on stepping A0 CPUs around the FID/VID transition.&n; * (ADDENDUM: This seems to be needed on more systems, so we do it unconditionally now).&n; * Errata 15: Processors with half frequency multipliers may hang upon wakeup from disconnect.&n; * - We disable half multipliers if ACPI is used on A0 stepping CPUs.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -1073,14 +1073,6 @@ id|CPUFREQ_PRECHANGE
 )paren
 suffix:semicolon
 multiline_comment|/* Now do the magic poking into the MSRs.  */
-r_if
-c_cond
-(paren
-id|have_a0
-op_eq
-l_int|1
-)paren
-multiline_comment|/* A0 errata 5 */
 id|__asm__
 c_func
 (paren
@@ -1127,13 +1119,6 @@ id|vid
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|have_a0
-op_eq
-l_int|1
-)paren
 id|__asm__
 c_func
 (paren

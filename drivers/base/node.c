@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * drivers/base/node.c - basic Node class support&n; */
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -27,7 +27,7 @@ id|node_read_cpumap
 c_func
 (paren
 r_struct
-id|device
+id|sys_device
 op_star
 id|dev
 comma
@@ -44,11 +44,7 @@ op_assign
 id|to_node
 c_func
 (paren
-id|to_root
-c_func
-(paren
 id|dev
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -85,7 +81,7 @@ id|node_read_meminfo
 c_func
 (paren
 r_struct
-id|device
+id|sys_device
 op_star
 id|dev
 comma
@@ -94,21 +90,10 @@ op_star
 id|buf
 )paren
 (brace
-r_struct
-id|sys_root
-op_star
-id|node
-op_assign
-id|to_root
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_int
 id|nid
 op_assign
-id|node-&gt;id
+id|dev-&gt;id
 suffix:semicolon
 r_struct
 id|sysinfo
@@ -274,21 +259,21 @@ op_logical_neg
 id|error
 )paren
 (brace
-id|sys_device_create_file
+id|sysdev_create_file
 c_func
 (paren
 op_amp
-id|node-&gt;sysroot.dev
+id|node-&gt;sysdev
 comma
 op_amp
 id|attr_cpumap
 )paren
 suffix:semicolon
-id|sys_device_create_file
+id|sysdev_create_file
 c_func
 (paren
 op_amp
-id|node-&gt;sysroot.dev
+id|node-&gt;sysdev
 comma
 op_amp
 id|attr_meminfo

@@ -61,7 +61,10 @@ r_void
 )paren
 (brace
 r_return
-id|XAPIC_DEST_CPUS_MASK
+(paren
+op_complement
+l_int|0UL
+)paren
 suffix:semicolon
 )brace
 DECL|macro|TARGET_CPUS
@@ -529,7 +532,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
-id|TARGET_CPUS
+l_int|0xFF
 suffix:semicolon
 )brace
 id|apicid

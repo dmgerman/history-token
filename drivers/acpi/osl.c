@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef CONFIG_ACPI_EFI
 macro_line|#include &lt;linux/efi.h&gt;
 id|u64
@@ -3102,7 +3103,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * We just have to assume we&squot;re dealing with valid memory&n; */
+multiline_comment|/* Assumes no unreadable holes inbetween */
 id|BOOLEAN
 DECL|function|acpi_os_readable
 id|acpi_os_readable
@@ -3116,6 +3117,42 @@ id|u32
 id|len
 )paren
 (brace
+macro_line|#if defined(__i386__) || defined(__x86_64__) 
+r_char
+id|tmp
+suffix:semicolon
+r_return
+op_logical_neg
+id|__get_user
+c_func
+(paren
+id|tmp
+comma
+(paren
+r_char
+op_star
+)paren
+id|ptr
+)paren
+op_logical_and
+op_logical_neg
+id|__get_user
+c_func
+(paren
+id|tmp
+comma
+(paren
+r_char
+op_star
+)paren
+id|ptr
+op_plus
+id|len
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
@@ -3133,6 +3170,7 @@ id|u32
 id|len
 )paren
 (brace
+multiline_comment|/* could do dummy write (racy) or a kernel page table lookup.&n;&t;   The later may be difficult at early boot when kmap doesn&squot;t work yet. */
 r_return
 l_int|1
 suffix:semicolon

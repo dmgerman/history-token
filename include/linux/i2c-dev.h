@@ -26,6 +26,7 @@ suffix:semicolon
 DECL|member|data
 r_union
 id|i2c_smbus_data
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -39,6 +40,7 @@ id|i2c_rdwr_ioctl_data
 DECL|member|msgs
 r_struct
 id|i2c_msg
+id|__user
 op_star
 id|msgs
 suffix:semicolon

@@ -3817,7 +3817,7 @@ id|pgdat-&gt;node_zones
 id|ZONE_HIGHMEM
 )braket
 dot
-id|spanned_pages
+id|present_pages
 suffix:semicolon
 id|val-&gt;freehigh
 op_assign
@@ -4871,6 +4871,12 @@ op_rshift
 l_int|3
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
+)paren
+(brace
 id|pgdat-&gt;valid_addr_bitmap
 op_assign
 (paren
@@ -4896,6 +4902,7 @@ comma
 id|size
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Initially all pages are reserved - free ones are freed&n; * up by free_all_bootmem() once the early boot process is&n; * done. Non-atomic initialization, single-pass.&n; */
 DECL|function|memmap_init_zone
