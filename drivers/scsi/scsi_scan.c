@@ -4890,9 +4890,9 @@ id|starget-&gt;starget_refcnt
 op_assign
 l_int|0
 suffix:semicolon
-id|starget-&gt;starget_busy
+id|starget-&gt;starget_sdev_user
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|starget-&gt;starget_refcnt

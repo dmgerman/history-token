@@ -1345,15 +1345,16 @@ r_char
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * scsi_target: representation of a scsi target, for now, this is only&n; * used for single_lun devices.&n; */
+multiline_comment|/*&n; * scsi_target: representation of a scsi target, for now, this is only&n; * used for single_lun devices. If no one has active IO to the target,&n; * starget_sdev_user is NULL, else it points to the active sdev.&n; */
 DECL|struct|scsi_target
 r_struct
 id|scsi_target
 (brace
-DECL|member|starget_busy
-r_int
-r_int
-id|starget_busy
+DECL|member|starget_sdev_user
+r_struct
+id|scsi_device
+op_star
+id|starget_sdev_user
 suffix:semicolon
 DECL|member|starget_refcnt
 r_int
