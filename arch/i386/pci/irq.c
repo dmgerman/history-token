@@ -2673,7 +2673,7 @@ suffix:semicolon
 )brace
 DECL|function|pcibios_test_irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|pcibios_test_irq_handler
 c_func
 (paren
@@ -2690,6 +2690,9 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 DECL|function|pcibios_lookup_irq
 r_static

@@ -215,24 +215,6 @@ id|hw_irq_controller
 id|no_irq_type
 suffix:semicolon
 multiline_comment|/* needed in every arch ? */
-r_extern
-r_void
-id|no_action
-c_func
-(paren
-r_int
-id|cpl
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* __irq_h */
 eof

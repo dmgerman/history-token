@@ -670,7 +670,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the same as the above, except we _also_ save the current&n; * Time Stamp Counter value at the time of the timer interrupt, so that&n; * we later on can estimate the time of day more exactly.&n; */
 DECL|function|timer_interrupt
-r_void
+id|irqreturn_t
 id|timer_interrupt
 c_func
 (paren
@@ -723,6 +723,9 @@ c_func
 op_amp
 id|xtime_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* not static: needed by APM */

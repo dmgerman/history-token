@@ -71,7 +71,7 @@ id|irq
 suffix:semicolon
 multiline_comment|/*&n; * Special irq handlers.&n; */
 DECL|function|no_action
-r_void
+id|irqreturn_t
 id|no_action
 c_func
 (paren
@@ -88,6 +88,9 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic no controller code&n; */
 DECL|function|enable_none
@@ -674,6 +677,11 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Force the &quot;do bottom halves&quot; bit */
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -695,6 +703,8 @@ id|status
 op_or_assign
 id|action-&gt;flags
 suffix:semicolon
+id|retval
+op_or_assign
 id|action
 op_member_access_from_pointer
 id|handler
@@ -706,6 +716,8 @@ id|action-&gt;dev_id
 comma
 id|regs
 )paren
+dot
+id|val
 suffix:semicolon
 id|action
 op_assign
@@ -736,6 +748,46 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+l_int|1
+)paren
+(brace
+r_static
+r_int
+id|count
+op_assign
+l_int|100
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|count
+)paren
+(brace
+id|count
+op_decrement
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|retval
+ques
+c_cond
+l_string|&quot;irq event %d: bogus retval mask %x&bslash;n&quot;
+suffix:colon
+l_string|&quot;irq %d: nobody cared!n&quot;
+comma
+id|irq
+comma
+id|retval
+)paren
+suffix:semicolon
+)brace
+)brace
 r_return
 id|status
 suffix:semicolon
@@ -1276,7 +1328,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

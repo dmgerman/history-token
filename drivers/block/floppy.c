@@ -120,7 +120,7 @@ id|virtual_dma_port
 op_assign
 l_int|0x3f0
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|floppy_interrupt
 c_func
 (paren
@@ -7038,7 +7038,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* interrupt handler. Note that this can be called externally on the Sparc */
 DECL|function|floppy_interrupt
-r_void
+id|irqreturn_t
 id|floppy_interrupt
 c_func
 (paren
@@ -7158,6 +7158,7 @@ l_string|&quot;bizarre fdc&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|FDCS-&gt;reset
@@ -7294,6 +7295,10 @@ c_func
 (paren
 l_string|&quot;normal interrupt end&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* FIXME! Was it really for us? */
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|recalibrate_floppy

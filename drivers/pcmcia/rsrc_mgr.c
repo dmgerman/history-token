@@ -2930,7 +2930,7 @@ multiline_comment|/*============================================================
 macro_line|#ifdef CONFIG_PCMCIA_PROBE
 DECL|function|fake_irq
 r_static
-r_void
+id|irqreturn_t
 id|fake_irq
 c_func
 (paren
@@ -2947,6 +2947,9 @@ op_star
 id|r
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 DECL|function|check_irq
 r_static

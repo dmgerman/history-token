@@ -4269,7 +4269,7 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/**&n; * usb_hcd_irq - hook IRQs to HCD framework (bus glue)&n; * @irq: the IRQ being raised&n; * @__hcd: pointer to the HCD whose IRQ is beinng signaled&n; * @r: saved hardware registers&n; *&n; * When registering a USB bus through the HCD framework code, use this&n; * to handle interrupts.  The PCI glue layer does so automatically; only&n; * bus glue for non-PCI system busses will need to use this.&n; */
 DECL|function|usb_hcd_irq
-r_void
+id|irqreturn_t
 id|usb_hcd_irq
 (paren
 r_int
@@ -4309,6 +4309,7 @@ id|USB_STATE_HALT
 )paren
 multiline_comment|/* irq sharing? */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|hcd-&gt;driver-&gt;irq
 (paren
@@ -4332,6 +4333,9 @@ id|usb_hc_died
 (paren
 id|hcd
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|usb_hcd_irq

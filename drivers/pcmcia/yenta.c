@@ -2484,7 +2484,7 @@ suffix:semicolon
 )brace
 DECL|function|yenta_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|yenta_interrupt
 c_func
 (paren
@@ -2554,7 +2554,13 @@ op_amp
 id|socket-&gt;tq_task
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 DECL|function|yenta_interrupt_wrapper
 r_static
