@@ -754,7 +754,7 @@ comma
 id|sk
 )paren
 suffix:semicolon
-id|sock_set_Flag
+id|sock_set_flag
 c_func
 (paren
 id|sk
