@@ -617,6 +617,12 @@ r_int
 id|resume_detect
 suffix:semicolon
 multiline_comment|/* Need a Global Resume */
+DECL|member|saved_framenumber
+r_int
+r_int
+id|saved_framenumber
+suffix:semicolon
+multiline_comment|/* Save during PM suspend */
 multiline_comment|/* Main list of URB&squot;s currently controlled by this HC */
 DECL|member|urb_list_lock
 id|spinlock_t
