@@ -434,9 +434,9 @@ id|parms
 )paren
 suffix:semicolon
 )brace
-DECL|function|iommu_devnode_init
+DECL|function|iommu_devnode_init_iSeries
 r_void
-id|iommu_devnode_init
+id|iommu_devnode_init_iSeries
 c_func
 (paren
 r_struct

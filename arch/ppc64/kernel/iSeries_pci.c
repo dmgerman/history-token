@@ -1032,7 +1032,7 @@ comma
 id|Buffer
 )paren
 suffix:semicolon
-id|iommu_devnode_init
+id|iommu_devnode_init_iSeries
 c_func
 (paren
 id|node
