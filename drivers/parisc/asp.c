@@ -193,6 +193,49 @@ op_amp
 id|dev-&gt;irq
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|dev-&gt;id.sversion
+)paren
+(brace
+r_case
+l_int|0x73
+suffix:colon
+id|irq
+op_assign
+l_int|2
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* i8042 High-priority */
+r_case
+l_int|0x76
+suffix:colon
+id|irq
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* EISA BA */
+r_default
+suffix:colon
+r_return
+suffix:semicolon
+multiline_comment|/* Other */
+)brace
+id|gsc_asic_assign_irq
+c_func
+(paren
+id|ctrl
+comma
+id|irq
+comma
+op_amp
+id|dev-&gt;aux_irq
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* There are two register ranges we&squot;re interested in.  Interrupt /&n; * Status / LED are at 0xf080xxxx and Asp special registers are at&n; * 0xf082fxxx.  PDC only tells us that Asp is at 0xf082f000, so for&n; * the purposes of interrupt handling, we have to tell other bits of&n; * the kernel to look at the other registers.&n; */
 DECL|macro|ASP_INTERRUPT_ADDR
