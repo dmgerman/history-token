@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -2156,9 +2157,33 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|ppc64_boot_msg
+c_func
+(paren
+l_int|0x21
+comma
+l_string|&quot;XICS Done&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * We cant do this in init_IRQ because we need the memory subsystem up for&n; * request_irq()&n; */
+DECL|function|xics_setup_i8259
+r_static
+r_int
+id|__init
+id|xics_setup_i8259
+c_func
+(paren
+r_void
+)paren
+(brace
 r_if
 c_cond
 (paren
+id|naca-&gt;interrupt_controller
+op_eq
+id|IC_PPC_XIC
+op_logical_and
 id|xics_irq_8259_cascade
 op_ne
 op_minus
@@ -2197,7 +2222,26 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|xics_setup_i8259
+id|arch_initcall
+c_func
+(paren
+id|xics_setup_i8259
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
+DECL|function|xics_request_IPIs
+r_void
+id|xics_request_IPIs
+c_func
+(paren
+r_void
+)paren
+(brace
 id|real_irq_to_virt_map
 (braket
 id|XICS_IPI
@@ -2238,16 +2282,8 @@ id|status
 op_or_assign
 id|IRQ_PER_CPU
 suffix:semicolon
-macro_line|#endif
-id|ppc64_boot_msg
-c_func
-(paren
-l_int|0x21
-comma
-l_string|&quot;XICS Done&quot;
-)paren
-suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|xics_set_affinity
 r_void
 id|xics_set_affinity
