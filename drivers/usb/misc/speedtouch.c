@@ -46,7 +46,7 @@ mdefine_line|#define UDSL_NUMBER_RCV_URBS&t;&t;1
 DECL|macro|UDSL_NUMBER_SND_URBS
 mdefine_line|#define UDSL_NUMBER_SND_URBS&t;&t;1
 DECL|macro|UDSL_RCV_BUFFER_SIZE
-mdefine_line|#define UDSL_RCV_BUFFER_SIZE&t;&t;64*53
+mdefine_line|#define UDSL_RCV_BUFFER_SIZE&t;&t;(1*64) /* ATM cells */
 multiline_comment|/* max should be (1500 IP mtu + 2 ppp bytes + 32 * 5 cellheader overhead) for&n; * PPPoA and (1500 + 14 + 32*5 cellheader overhead) for PPPoE */
 DECL|macro|UDSL_MAX_AAL5_MRU
 mdefine_line|#define UDSL_MAX_AAL5_MRU&t;&t;2048
@@ -980,6 +980,8 @@ op_star
 id|rcv-&gt;skb-&gt;data
 comma
 id|UDSL_RCV_BUFFER_SIZE
+op_star
+id|ATM_CELL_SIZE
 comma
 id|udsl_complete_receive
 comma
@@ -1181,6 +1183,8 @@ op_star
 id|rcv-&gt;skb-&gt;data
 comma
 id|UDSL_RCV_BUFFER_SIZE
+op_star
+id|ATM_CELL_SIZE
 comma
 id|udsl_complete_receive
 comma
@@ -3051,6 +3055,8 @@ op_assign
 id|dev_alloc_skb
 (paren
 id|UDSL_RCV_BUFFER_SIZE
+op_star
+id|ATM_CELL_SIZE
 )paren
 )paren
 )paren
@@ -3123,6 +3129,8 @@ comma
 id|rcv-&gt;skb-&gt;truesize
 comma
 id|UDSL_RCV_BUFFER_SIZE
+op_star
+id|ATM_CELL_SIZE
 )paren
 suffix:semicolon
 )brace
