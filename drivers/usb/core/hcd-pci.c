@@ -1026,6 +1026,11 @@ comma
 id|retval
 )paren
 suffix:semicolon
+r_else
+id|hcd-&gt;state
+op_assign
+id|USB_STATE_SUSPENDED
+suffix:semicolon
 )brace
 id|pci_set_power_state
 (paren
