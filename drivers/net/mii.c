@@ -67,6 +67,17 @@ op_or
 id|SUPPORTED_MII
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mii-&gt;supports_gmii
+)paren
+id|ecmd-&gt;supported
+op_or_assign
+id|SUPPORTED_1000baseT_Half
+op_or
+id|SUPPORTED_1000baseT_Full
+suffix:semicolon
 multiline_comment|/* only supports twisted-pair */
 id|ecmd-&gt;port
 op_assign
@@ -369,7 +380,7 @@ id|ecmd-&gt;speed
 op_assign
 (paren
 (paren
-id|bmcr2
+id|bmcr
 op_amp
 id|BMCR_SPEED1000
 op_logical_and
@@ -706,7 +717,7 @@ id|ecmd-&gt;advertising
 op_amp
 id|ADVERTISED_1000baseT_Half
 )paren
-id|advert2
+id|tmp2
 op_or_assign
 id|ADVERTISE_1000HALF
 suffix:semicolon
@@ -717,7 +728,7 @@ id|ecmd-&gt;advertising
 op_amp
 id|ADVERTISED_1000baseT_Full
 )paren
-id|advert2
+id|tmp2
 op_or_assign
 id|ADVERTISE_1000FULL
 suffix:semicolon
