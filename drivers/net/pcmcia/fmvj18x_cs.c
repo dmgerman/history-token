@@ -2475,6 +2475,7 @@ id|memreq_t
 id|mem
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -2784,6 +2785,7 @@ id|memreq_t
 id|mem
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|base
 suffix:semicolon

@@ -165,6 +165,12 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+DECL|member|base
+r_void
+id|__iomem
+op_star
+id|base
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n;  &t;&t;Details of the EtherLink16 Implementation&n;  The 3c507 is a generic shared-memory i82586 implementation.&n;  The host can map 16K, 32K, 48K, or 64K of the 64K memory into&n;  0x0[CD][08]0000, or all 64K into 0xF[02468]0000.&n;  */
@@ -766,6 +772,25 @@ comma
 id|dev
 )paren
 suffix:semicolon
+id|iounmap
+c_func
+(paren
+(paren
+(paren
+r_struct
+id|net_local
+op_star
+)paren
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+)paren
+op_member_access_from_pointer
+id|base
+)paren
+suffix:semicolon
 id|release_region
 c_func
 (paren
@@ -1041,8 +1066,10 @@ id|irqval
 )paren
 (brace
 id|printk
+c_func
 (paren
-l_string|&quot;unable to get IRQ %d (irqval=%d).&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;3c507: unable to get IRQ %d (irqval=%d).&bslash;n&quot;
 comma
 id|irq
 comma
@@ -1327,6 +1354,39 @@ op_amp
 id|lp-&gt;lock
 )paren
 suffix:semicolon
+id|lp-&gt;base
+op_assign
+id|ioremap
+c_func
+(paren
+id|dev-&gt;mem_start
+comma
+id|RX_BUF_END
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lp-&gt;base
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;3c507: unable to remap memory&bslash;n&quot;
+)paren
+suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|EAGAIN
+suffix:semicolon
+r_goto
+id|out1
+suffix:semicolon
+)brace
 id|dev-&gt;open
 op_assign
 id|el16_open
@@ -1364,6 +1424,16 @@ suffix:semicolon
 multiline_comment|/* Multicast doesn&squot;t work */
 r_return
 l_int|0
+suffix:semicolon
+id|out1
+suffix:colon
+id|free_irq
+c_func
+(paren
+id|dev-&gt;irq
+comma
+id|dev
+)paren
 suffix:semicolon
 id|out
 suffix:colon
@@ -1435,11 +1505,12 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|shmem
 op_assign
-id|dev-&gt;mem_start
+id|lp-&gt;base
 suffix:semicolon
 r_if
 c_cond
@@ -1454,7 +1525,8 @@ l_string|&quot;%s: transmit timed out, %s?  &quot;
 comma
 id|dev-&gt;name
 comma
-id|isa_readw
+id|readw
+c_func
 (paren
 id|shmem
 op_plus
@@ -1516,7 +1588,8 @@ id|printk
 l_string|&quot;Kicking board.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
+c_func
 (paren
 l_int|0xf000
 op_or
@@ -1727,8 +1800,9 @@ id|ack_cmd
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|shmem
 suffix:semicolon
 r_if
@@ -1764,7 +1838,7 @@ id|dev
 suffix:semicolon
 id|shmem
 op_assign
-id|dev-&gt;mem_start
+id|lp-&gt;base
 suffix:semicolon
 id|spin_lock
 c_func
@@ -1775,7 +1849,7 @@ id|lp-&gt;lock
 suffix:semicolon
 id|status
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|shmem
@@ -1824,7 +1898,7 @@ r_int
 r_int
 id|tx_status
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|shmem
@@ -2107,7 +2181,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 id|RX_BUF_START
@@ -2122,7 +2196,7 @@ op_or_assign
 id|RX_START
 suffix:semicolon
 )brace
-id|isa_writew
+id|writew
 c_func
 (paren
 id|ack_cmd
@@ -2188,16 +2262,28 @@ op_star
 id|dev
 )paren
 (brace
+r_struct
+id|net_local
+op_star
+id|lp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|shmem
 op_assign
-id|dev-&gt;mem_start
+id|lp-&gt;base
 suffix:semicolon
 id|netif_stop_queue
 c_func
@@ -2206,7 +2292,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Flush the Tx and disable Rx. */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|RX_SUSPEND
@@ -2301,8 +2387,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|write_ptr
 suffix:semicolon
 r_int
@@ -2324,11 +2411,11 @@ r_do
 multiline_comment|/* While there is room for one more. */
 id|write_ptr
 op_assign
-id|dev-&gt;mem_start
+id|lp-&gt;base
 op_plus
 id|cur_rxbuf
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2337,7 +2424,7 @@ id|write_ptr
 )paren
 suffix:semicolon
 multiline_comment|/* Status */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2348,7 +2435,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Command */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|cur_rxbuf
@@ -2361,7 +2448,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Link */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|cur_rxbuf
@@ -2374,7 +2461,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Buffer offset */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2385,7 +2472,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Pad for dest addr. */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2395,7 +2482,7 @@ op_add_assign
 l_int|2
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2405,7 +2492,7 @@ op_add_assign
 l_int|2
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2416,7 +2503,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Pad for source addr. */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2426,7 +2513,7 @@ op_add_assign
 l_int|2
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2436,7 +2523,7 @@ op_add_assign
 l_int|2
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2447,7 +2534,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Pad for protocol. */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2458,7 +2545,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Buffer: Actual count */
-id|isa_writew
+id|writew
 c_func
 (paren
 op_minus
@@ -2470,7 +2557,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Buffer: Next (none). */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|cur_rxbuf
@@ -2485,7 +2572,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Buffer: Address low */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2496,7 +2583,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Finally, the number of bytes in the buffer. */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x8000
@@ -2532,13 +2619,13 @@ suffix:semicolon
 multiline_comment|/* Terminate the list by setting the EOL bit, and wrap the pointer to make&n;&t;   the list a ring. */
 id|write_ptr
 op_assign
-id|dev-&gt;mem_start
+id|lp-&gt;base
 op_plus
 id|lp-&gt;rx_tail
 op_plus
 l_int|2
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0xC000
@@ -2547,7 +2634,7 @@ id|write_ptr
 )paren
 suffix:semicolon
 multiline_comment|/* Command, mark as last. */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|lp-&gt;rx_head
@@ -2587,11 +2674,12 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|shmem
 op_assign
-id|dev-&gt;mem_start
+id|lp-&gt;base
 suffix:semicolon
 multiline_comment|/* Enable loopback to protect the wire while starting up,&n;&t;   and hold the 586 in reset during the memory initialization. */
 id|outb
@@ -2620,10 +2708,12 @@ op_assign
 id|SCB_BASE
 suffix:semicolon
 multiline_comment|/* Write the words at 0xfff6 (address-aliased to 0xfffff6). */
-id|isa_memcpy_toio
+id|memcpy_toio
 c_func
 (paren
-id|dev-&gt;mem_end
+id|lp-&gt;base
+op_plus
+id|RX_BUF_END
 op_minus
 l_int|10
 comma
@@ -2633,10 +2723,10 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* Write the words at 0x0000. */
-id|isa_memcpy_toio
+id|memcpy_toio
 c_func
 (paren
-id|dev-&gt;mem_start
+id|lp-&gt;base
 comma
 id|init_words
 op_plus
@@ -2651,10 +2741,10 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* Fill in the station address. */
-id|isa_memcpy_toio
+id|memcpy_toio
 c_func
 (paren
-id|dev-&gt;mem_start
+id|lp-&gt;base
 op_plus
 id|SA_OFFSET
 comma
@@ -2716,7 +2806,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|isa_readw
+id|readw
 c_func
 (paren
 id|shmem
@@ -2743,7 +2833,7 @@ l_string|&quot;cmd %04x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|isa_readw
+id|readw
 c_func
 (paren
 id|shmem
@@ -2751,7 +2841,7 @@ op_plus
 id|iSCB_STATUS
 )paren
 comma
-id|isa_readw
+id|readw
 c_func
 (paren
 id|shmem
@@ -2800,7 +2890,7 @@ l_string|&quot;%s: Initialized 82586, status %04x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
-id|isa_readw
+id|readw
 c_func
 (paren
 id|shmem
@@ -2855,11 +2945,12 @@ id|tx_block
 op_assign
 id|lp-&gt;tx_head
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|write_ptr
 op_assign
-id|dev-&gt;mem_start
+id|lp-&gt;base
 op_plus
 id|tx_block
 suffix:semicolon
@@ -2871,7 +2962,7 @@ id|ETH_ZLEN
 )braket
 suffix:semicolon
 multiline_comment|/* Set the write pointer to the Tx block, and put out the header. */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2880,7 +2971,7 @@ id|write_ptr
 )paren
 suffix:semicolon
 multiline_comment|/* Tx status */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|CMD_INTR
@@ -2893,7 +2984,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Tx command */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|tx_block
@@ -2906,7 +2997,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Next command is a NoOp. */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|tx_block
@@ -2920,7 +3011,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Data Buffer offset. */
 multiline_comment|/* Output the data buffer descriptor. */
-id|isa_writew
+id|writew
 c_func
 (paren
 (paren
@@ -2937,7 +3028,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Byte count parameter. */
-id|isa_writew
+id|writew
 c_func
 (paren
 op_minus
@@ -2949,7 +3040,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* No next data buffer. */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|tx_block
@@ -2964,7 +3055,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Buffer follows the NoOp command. */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2976,7 +3067,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Buffer address high bits (always zero). */
 multiline_comment|/* Output the Loop-back NoOp command. */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
@@ -2987,7 +3078,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Tx status */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|CmdNOp
@@ -2998,7 +3089,7 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Tx command */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|tx_block
@@ -3012,7 +3103,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* Next is myself. */
 multiline_comment|/* Output the packet at the write pointer. */
-id|isa_memcpy_toio
+id|memcpy_toio
 c_func
 (paren
 id|write_ptr
@@ -3029,7 +3120,7 @@ c_cond
 (paren
 id|pad
 )paren
-id|isa_memcpy_toio
+id|memcpy_toio
 c_func
 (paren
 id|write_ptr
@@ -3044,12 +3135,12 @@ id|pad
 )paren
 suffix:semicolon
 multiline_comment|/* Set the old command link pointing to this send packet. */
-id|isa_writew
+id|writew
 c_func
 (paren
 id|tx_block
 comma
-id|dev-&gt;mem_start
+id|lp-&gt;base
 op_plus
 id|lp-&gt;tx_cmd_link
 )paren
@@ -3144,11 +3235,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|shmem
 op_assign
-id|dev-&gt;mem_start
+id|lp-&gt;base
 suffix:semicolon
 id|ushort
 id|rx_head
@@ -3174,7 +3266,7 @@ c_loop
 (paren
 id|frame_status
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|shmem
@@ -3187,18 +3279,19 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Command complete */
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|read_frame
 op_assign
-id|dev-&gt;mem_start
+id|lp-&gt;base
 op_plus
 id|rx_head
 suffix:semicolon
 id|ushort
 id|rfd_cmd
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|read_frame
@@ -3209,7 +3302,7 @@ suffix:semicolon
 id|ushort
 id|next_rx_frame
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|read_frame
@@ -3220,7 +3313,7 @@ suffix:semicolon
 id|ushort
 id|data_buffer_addr
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|read_frame
@@ -3228,18 +3321,19 @@ op_plus
 l_int|6
 )paren
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|data_frame
 op_assign
-id|dev-&gt;mem_start
+id|lp-&gt;base
 op_plus
 id|data_buffer_addr
 suffix:semicolon
 id|ushort
 id|pkt_len
 op_assign
-id|isa_readw
+id|readw
 c_func
 (paren
 id|data_frame
@@ -3414,7 +3508,7 @@ op_assign
 id|dev
 suffix:semicolon
 multiline_comment|/* &squot;skb-&gt;data&squot; points to the start of sk_buff data area. */
-id|isa_memcpy_fromio
+id|memcpy_fromio
 c_func
 (paren
 id|skb_put
@@ -3461,7 +3555,7 @@ id|pkt_len
 suffix:semicolon
 )brace
 multiline_comment|/* Clear the status word and set End-of-List on the rx frame. */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0
@@ -3469,7 +3563,7 @@ comma
 id|read_frame
 )paren
 suffix:semicolon
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0xC000
@@ -3480,12 +3574,12 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the end-of-list on the prev. RFD. */
-id|isa_writew
+id|writew
 c_func
 (paren
 l_int|0x0000
 comma
-id|dev-&gt;mem_start
+id|lp-&gt;base
 op_plus
 id|rx_tail
 op_plus
@@ -3738,6 +3832,25 @@ c_func
 id|dev-&gt;irq
 comma
 id|dev
+)paren
+suffix:semicolon
+id|iounmap
+c_func
+(paren
+(paren
+(paren
+r_struct
+id|net_local
+op_star
+)paren
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+)paren
+op_member_access_from_pointer
+id|base
 )paren
 suffix:semicolon
 id|release_region

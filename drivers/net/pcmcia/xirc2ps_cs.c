@@ -764,7 +764,9 @@ id|modem
 suffix:semicolon
 multiline_comment|/* is a multi function card (i.e with a modem) */
 DECL|member|dingo_ccr
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|dingo_ccr
 suffix:semicolon
 multiline_comment|/* only used for CEM56 cards */
