@@ -2479,6 +2479,22 @@ op_minus
 id|ENOMEM
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|performance
+comma
+l_int|0
+comma
+id|NR_CPUS
+op_star
+r_sizeof
+(paren
+r_struct
+id|acpi_processor_performance
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* register struct acpi_performance performance */
 r_for
 c_loop
@@ -2825,6 +2841,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+id|kfree
+c_func
+(paren
+id|performance
+)paren
+suffix:semicolon
 id|return_VALUE
 c_func
 (paren
