@@ -1067,25 +1067,6 @@ l_char|&squot;&bslash;r&squot;
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_SERIAL_TEXT_DEBUG */
-r_static
-r_int
-r_int
-id|__init
-DECL|function|lopec_find_end_of_memory
-id|lopec_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|mpc10x_get_mem_size
-c_func
-(paren
-id|MPC10X_MEM_MAP_B
-)paren
-suffix:semicolon
-)brace
 id|TODC_ALLOC
 c_func
 (paren
@@ -1322,10 +1303,6 @@ suffix:semicolon
 id|ppc_md.halt
 op_assign
 id|lopec_halt
-suffix:semicolon
-id|ppc_md.find_end_of_memory
-op_assign
-id|lopec_find_end_of_memory
 suffix:semicolon
 id|ppc_md.setup_io_mappings
 op_assign

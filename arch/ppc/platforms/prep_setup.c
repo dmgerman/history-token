@@ -2737,83 +2737,6 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
-multiline_comment|/*&n; * This finds the amount of physical ram and does necessary&n; * setup for prep.  This is pretty architecture specific so&n; * this will likely stay separate from the pmac.&n; * -- Cort&n; */
-r_static
-r_int
-r_int
-id|__init
-DECL|function|prep_find_end_of_memory
-id|prep_find_end_of_memory
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|total
-op_assign
-l_int|0
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|boot_mem_size
-suffix:semicolon
-macro_line|#ifdef CONFIG_PREP_RESIDUAL&t;
-id|total
-op_assign
-id|res-&gt;TotalMemory
-suffix:semicolon
-macro_line|#endif&t;
-r_if
-c_cond
-(paren
-id|total
-op_eq
-l_int|0
-op_logical_and
-id|boot_mem_size
-op_ne
-l_int|0
-)paren
-id|total
-op_assign
-id|boot_mem_size
-suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|total
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * I need a way to probe the amount of memory if the residual&n;&t;&t; * data doesn&squot;t contain it. -- Cort&n;&t;&t; */
-id|total
-op_assign
-l_int|0x02000000
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Ramsize from residual data was 0&quot;
-l_string|&quot; -- defaulting to %ldM&bslash;n&quot;
-comma
-id|total
-op_rshift
-l_int|20
-)paren
-suffix:semicolon
-)brace
-r_return
-(paren
-id|total
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Setup the bat mappings we&squot;re going to load that cover&n; * the io areas.  RAM was mapped by mapin_ram().&n; * -- Cort&n; */
 r_static
 r_void
@@ -3150,10 +3073,6 @@ op_assign
 id|mk48t59_init
 suffix:semicolon
 )brace
-id|ppc_md.find_end_of_memory
-op_assign
-id|prep_find_end_of_memory
-suffix:semicolon
 id|ppc_md.setup_io_mappings
 op_assign
 id|prep_map_io
