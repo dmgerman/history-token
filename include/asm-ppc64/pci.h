@@ -28,7 +28,7 @@ mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x10000000
 DECL|function|pcibios_set_master
-r_extern
+r_static
 r_inline
 r_void
 id|pcibios_set_master
@@ -43,7 +43,7 @@ id|dev
 multiline_comment|/* No special bus mastering setup handling */
 )brace
 DECL|function|pcibios_penalize_isa_irq
-r_extern
+r_static
 r_inline
 r_void
 id|pcibios_penalize_isa_irq
@@ -291,7 +291,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|function|pci_dma_sync_single
-r_extern
+r_static
 r_inline
 r_void
 id|pci_dma_sync_single
@@ -327,7 +327,7 @@ suffix:semicolon
 multiline_comment|/* nothing to do */
 )brace
 DECL|function|pci_dma_sync_sg
-r_extern
+r_static
 r_inline
 r_void
 id|pci_dma_sync_sg
@@ -366,7 +366,7 @@ multiline_comment|/* nothing to do */
 )brace
 multiline_comment|/* Return whether the given PCI device DMA address mask can&n; * be supported properly.  For example, if your device can&n; * only drive the low 24-bits during PCI bus mastering, then&n; * you would pass 0x00ffffff as the mask to this function.&n; */
 DECL|function|pci_dma_supported
-r_extern
+r_static
 r_inline
 r_int
 id|pci_dma_supported

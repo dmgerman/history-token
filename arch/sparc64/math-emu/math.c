@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: math.c,v 1.12 2002/02/09 19:49:31 davem Exp $&n; * arch/sparc64/math-emu/math.c&n; *&n; * Copyright (C) 1997,1999 Jakub Jelinek (jj@ultra.linux.cz)&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; *&n; * Emulation routines originate from soft-fp package, which is part&n; * of glibc and has appropriate copyrights in it.&n; */
+multiline_comment|/* $Id: math.c,v 1.11 1999/12/20 05:02:25 davem Exp $&n; * arch/sparc64/math-emu/math.c&n; *&n; * Copyright (C) 1997,1999 Jakub Jelinek (jj@ultra.linux.cz)&n; * Copyright (C) 1999 David S. Miller (davem@redhat.com)&n; *&n; * Emulation routines originate from soft-fp package, which is part&n; * of glibc and has appropriate copyrights in it.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -80,6 +80,15 @@ DECL|macro|FSTOI
 mdefine_line|#define FSTOI&t;0x0d1
 DECL|macro|FDTOI
 mdefine_line|#define FDTOI&t;0x0d2
+DECL|macro|FXTOS
+mdefine_line|#define FXTOS&t;0x084 /* Only Ultra-III generates this. */
+DECL|macro|FXTOD
+mdefine_line|#define FXTOD&t;0x088 /* Only Ultra-III generates this. */
+macro_line|#if 0&t;/* Optimized inline in sparc64/kernel/entry.S */
+mdefine_line|#define FITOS&t;0x0c4 /* Only Ultra-III generates this. */
+macro_line|#endif
+DECL|macro|FITOD
+mdefine_line|#define FITOD&t;0x0c8 /* Only Ultra-III generates this. */
 multiline_comment|/* FPOP2 */
 DECL|macro|FCMPQ
 mdefine_line|#define FCMPQ&t;0x053
@@ -216,10 +225,12 @@ id|eflag
 op_amp
 id|FP_EX_INVALID
 )paren
+(brace
 id|eflag
 op_assign
 id|FP_EX_INVALID
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -228,10 +239,12 @@ id|eflag
 op_amp
 id|FP_EX_OVERFLOW
 )paren
+(brace
 id|eflag
 op_assign
 id|FP_EX_OVERFLOW
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -240,10 +253,12 @@ id|eflag
 op_amp
 id|FP_EX_UNDERFLOW
 )paren
+(brace
 id|eflag
 op_assign
 id|FP_EX_UNDERFLOW
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -252,10 +267,12 @@ id|eflag
 op_amp
 id|FP_EX_DIVZERO
 )paren
+(brace
 id|eflag
 op_assign
 id|FP_EX_DIVZERO
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -264,10 +281,12 @@ id|eflag
 op_amp
 id|FP_EX_INEXACT
 )paren
+(brace
 id|eflag
 op_assign
 id|FP_EX_INEXACT
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* Set CEXC, here is the rule:&n;&t; *&n;&t; *    In general all FPU ops will set one and only one&n;&t; *    bit in the CEXC field, this is always the case&n;&t; *    when the IEEE exception trap is enabled in TEM.&n;&t; */
@@ -297,6 +316,7 @@ id|would_trap
 op_eq
 l_int|0
 )paren
+(brace
 id|fsr
 op_or_assign
 (paren
@@ -308,6 +328,7 @@ op_lshift
 id|FSR_AEXC_SHIFT
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* If trapping, indicate fault trap type IEEE. */
 r_if
 c_cond
@@ -316,6 +337,7 @@ id|would_trap
 op_ne
 l_int|0
 )paren
+(brace
 id|fsr
 op_or_assign
 (paren
@@ -324,6 +346,7 @@ op_lshift
 l_int|14
 )paren
 suffix:semicolon
+)brace
 id|current_thread_info
 c_func
 (paren
@@ -522,7 +545,7 @@ id|TSTATE_PRIV
 id|die_if_kernel
 c_func
 (paren
-l_string|&quot;FPQuad from kernel&quot;
+l_string|&quot;unfinished/unimplemented FPop from kernel&quot;
 comma
 id|regs
 )paren
@@ -537,8 +560,11 @@ id|TIF_32BIT
 )paren
 )paren
 id|pc
-op_and_assign
-l_int|0xffffffff
+op_assign
+(paren
+id|u32
+)paren
+id|pc
 suffix:semicolon
 r_if
 c_cond
@@ -1140,6 +1166,101 @@ comma
 l_int|2
 comma
 l_int|1
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* Only Ultra-III generates these */
+r_case
+id|FXTOS
+suffix:colon
+id|TYPE
+c_func
+(paren
+l_int|2
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|2
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FXTOD
+suffix:colon
+id|TYPE
+c_func
+(paren
+l_int|2
+comma
+l_int|2
+comma
+l_int|1
+comma
+l_int|2
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#if 0&t;&t;&t;/* Optimized inline in sparc64/kernel/entry.S */
+r_case
+id|FITOS
+suffix:colon
+id|TYPE
+c_func
+(paren
+l_int|2
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_case
+id|FITOD
+suffix:colon
+id|TYPE
+c_func
+(paren
+l_int|2
+comma
+l_int|2
+comma
+l_int|1
+comma
+l_int|1
+comma
+l_int|0
 comma
 l_int|0
 comma
@@ -3118,6 +3239,89 @@ r_int
 suffix:semicolon
 r_break
 suffix:semicolon
+multiline_comment|/* Only Ultra-III generates these */
+r_case
+id|FXTOS
+suffix:colon
+id|XR
+op_assign
+id|rs2-&gt;d
+suffix:semicolon
+id|FP_FROM_INT_S
+(paren
+id|SR
+comma
+id|XR
+comma
+l_int|64
+comma
+r_int
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FXTOD
+suffix:colon
+id|XR
+op_assign
+id|rs2-&gt;d
+suffix:semicolon
+id|FP_FROM_INT_D
+(paren
+id|DR
+comma
+id|XR
+comma
+l_int|64
+comma
+r_int
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#if 0&t;&t;/* Optimized inline in sparc64/kernel/entry.S */
+r_case
+id|FITOS
+suffix:colon
+id|IR
+op_assign
+id|rs2-&gt;s
+suffix:semicolon
+id|FP_FROM_INT_S
+(paren
+id|SR
+comma
+id|IR
+comma
+l_int|32
+comma
+r_int
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_case
+id|FITOD
+suffix:colon
+id|IR
+op_assign
+id|rs2-&gt;s
+suffix:semicolon
+id|FP_FROM_INT_D
+(paren
+id|DR
+comma
+id|IR
+comma
+l_int|32
+comma
+r_int
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 multiline_comment|/* float to float */
 r_case
 id|FSTOD
@@ -3502,6 +3706,7 @@ id|_fex
 op_ne
 l_int|0
 )paren
+(brace
 r_return
 id|record_exception
 c_func
@@ -3511,6 +3716,7 @@ comma
 id|_fex
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Success and no exceptions detected. */
 id|current_thread_info
 c_func

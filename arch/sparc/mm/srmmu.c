@@ -6026,11 +6026,6 @@ r_extern
 r_int
 id|linux_num_cpus
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|totalhigh_pages
-suffix:semicolon
 r_void
 (paren
 op_star
@@ -10180,9 +10175,9 @@ suffix:semicolon
 id|BTFIXUPSET_CALL
 c_func
 (paren
-id|mk_pte_phys
+id|pfn_pte
 comma
-id|srmmu_mk_pte_phys
+id|srmmu_pfn_pte
 comma
 id|BTFIXUPCALL_NORM
 )paren

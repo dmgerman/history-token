@@ -131,14 +131,6 @@ id|floppy_sizes
 l_int|256
 )braket
 suffix:semicolon
-DECL|variable|floppy_blocksizes
-r_static
-r_int
-id|floppy_blocksizes
-(braket
-l_int|256
-)braket
-suffix:semicolon
 multiline_comment|/* current info on each unit */
 DECL|struct|archy_floppy_struct
 r_static
@@ -788,6 +780,15 @@ r_struct
 id|file
 op_star
 id|filp
+)paren
+suffix:semicolon
+r_static
+r_void
+id|do_fd_request
+c_func
+(paren
+id|request_queue_t
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/************************* End of Prototypes **************************/
@@ -4287,6 +4288,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|do_fd_request
+r_static
 r_void
 id|do_fd_request
 c_func
@@ -5607,13 +5609,6 @@ id|MAJOR_NR
 op_assign
 id|floppy_sizes
 suffix:semicolon
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|floppy_blocksizes
-suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
@@ -5623,7 +5618,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_fd_request
 )paren
 suffix:semicolon
 id|config_types

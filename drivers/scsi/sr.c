@@ -14,6 +14,8 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR SCSI_CDROM_MAJOR
+DECL|macro|LOCAL_END_REQUEST
+mdefine_line|#define LOCAL_END_REQUEST
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -151,12 +153,6 @@ r_static
 r_int
 op_star
 id|sr_sizes
-suffix:semicolon
-DECL|variable|sr_blocksizes
-r_static
-r_int
-op_star
-id|sr_blocksizes
 suffix:semicolon
 r_static
 r_int
@@ -3006,59 +3002,6 @@ r_int
 )paren
 )paren
 suffix:semicolon
-id|sr_blocksizes
-op_assign
-id|kmalloc
-c_func
-(paren
-id|sr_template.dev_max
-op_star
-r_sizeof
-(paren
-r_int
-)paren
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sr_blocksizes
-)paren
-r_goto
-id|cleanup_sizes
-suffix:semicolon
-multiline_comment|/*&n;&t; * These are good guesses for the time being.&n;&t; */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|sr_template.dev_max
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|sr_blocksizes
-(braket
-id|i
-)braket
-op_assign
-l_int|2048
-suffix:semicolon
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|sr_blocksizes
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3492,16 +3435,6 @@ id|sr_sizes
 )paren
 suffix:semicolon
 id|sr_sizes
-op_assign
-l_int|NULL
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|sr_blocksizes
-)paren
-suffix:semicolon
-id|sr_blocksizes
 op_assign
 l_int|NULL
 suffix:semicolon

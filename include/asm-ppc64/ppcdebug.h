@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/udbg.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
 DECL|macro|PPCDBG_BITVAL
 mdefine_line|#define PPCDBG_BITVAL(X)     ((1UL)&lt;&lt;((unsigned long)(X)))
-multiline_comment|/* Defined below are the bit positions of various debug flags in the&n; * debug_switch variable (defined in Naca.h).&n; * -- When adding new values, please enter them into trace names below -- &n; *&n; * Values 62 &amp; 63 can be used to stress the hardware page table management&n; * code.  They must be set statically, any attempt to change them dynamically&n; * would be a very bad idea.&n; */
+multiline_comment|/* Defined below are the bit positions of various debug flags in the&n; * debug_switch variable (defined in naca.h).&n; * -- When adding new values, please enter them into trace names below -- &n; *&n; * Values 62 &amp; 63 can be used to stress the hardware page table management&n; * code.  They must be set statically, any attempt to change them dynamically&n; * would be a very bad idea.&n; */
 DECL|macro|PPCDBG_MMINIT
 mdefine_line|#define PPCDBG_MMINIT        PPCDBG_BITVAL(0)
 DECL|macro|PPCDBG_MM

@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;swab.h&quot;
 macro_line|#include &quot;util.h&quot;
 DECL|macro|UFS_SUPER_DEBUG
@@ -3486,10 +3487,72 @@ comma
 id|usb1-&gt;fs_fshift
 )paren
 suffix:semicolon
-multiline_comment|/* block size must be a power-of-two between 4k and 32k */
 r_if
 c_cond
 (paren
+id|uspi-&gt;s_fsize
+op_amp
+(paren
+id|uspi-&gt;s_fsize
+op_minus
+l_int|1
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ufs_read_super: fragment size %u is not a power of 2&bslash;n&quot;
+comma
+id|uspi-&gt;s_fsize
+)paren
+suffix:semicolon
+r_goto
+id|failed
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|uspi-&gt;s_fsize
+OL
+l_int|512
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ufs_read_super: fragment size %u is too small&bslash;n&quot;
+comma
+id|uspi-&gt;s_fsize
+)paren
+suffix:semicolon
+r_goto
+id|failed
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|uspi-&gt;s_fsize
+OG
+l_int|4096
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ufs_read_super: fragment size %u is too large&bslash;n&quot;
+comma
+id|uspi-&gt;s_fsize
+)paren
+suffix:semicolon
+r_goto
+id|failed
+suffix:semicolon
+)brace
+r_if
+c_cond
 (paren
 id|uspi-&gt;s_bsize
 op_amp
@@ -3499,18 +3562,11 @@ op_minus
 l_int|1
 )paren
 )paren
-op_logical_or
-(paren
-id|uspi-&gt;s_bsize
-template_param
-l_int|32768
-)paren
-)paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;ufs_read_super: fs_bsize %u != {4096, 8192, 16384, 32768}&bslash;n&quot;
+l_string|&quot;ufs_read_super: block size %u is not a power of 2&bslash;n&quot;
 comma
 id|uspi-&gt;s_bsize
 )paren
@@ -3519,32 +3575,43 @@ r_goto
 id|failed
 suffix:semicolon
 )brace
-multiline_comment|/* fragment size must be a power-of-two between 512 and 4096 bytes */
 r_if
 c_cond
 (paren
-(paren
-id|uspi-&gt;s_fsize
-op_amp
-(paren
-id|uspi-&gt;s_fsize
-op_minus
-l_int|1
-)paren
-)paren
-op_logical_or
-(paren
-id|uspi-&gt;s_fsize
-template_param
+id|uspi-&gt;s_bsize
+OL
 l_int|4096
-)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;ufs_read_super: fs_fsize %u != {512, 1024, 2048. 4096}&bslash;n&quot;
+l_string|&quot;ufs_read_super: block size %u is too small&bslash;n&quot;
 comma
+id|uspi-&gt;s_fsize
+)paren
+suffix:semicolon
+r_goto
+id|failed
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|uspi-&gt;s_bsize
+op_div
+id|uspi-&gt;s_fsize
+OG
+l_int|8
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;ufs_read_super: too many fragments per block (%u)&bslash;n&quot;
+comma
+id|uspi-&gt;s_bsize
+op_div
 id|uspi-&gt;s_fsize
 )paren
 suffix:semicolon
@@ -4475,6 +4542,11 @@ suffix:semicolon
 r_int
 id|flags
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|UFSD
 c_func
 (paren
@@ -4583,6 +4655,11 @@ c_func
 l_string|&quot;EXIT&bslash;n&quot;
 )paren
 )paren
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|ufs_put_super
 r_void

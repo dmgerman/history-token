@@ -364,12 +364,8 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;major
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;PCD&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_pcd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device))
-DECL|macro|DEVICE_ON
-mdefine_line|#define DEVICE_ON(device)
 DECL|macro|DEVICE_OFF
 mdefine_line|#define DEVICE_OFF(device)
 macro_line|#include &lt;linux/blk.h&gt;
@@ -591,14 +587,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-DECL|variable|pcd_blocksizes
-r_static
-r_int
-id|pcd_blocksizes
-(braket
-id|PCD_UNITS
-)braket
 suffix:semicolon
 DECL|struct|pcd_unit
 r_struct
@@ -1116,39 +1104,11 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_pcd_request
 comma
 op_amp
 id|pcd_lock
 )paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|PCD_UNITS
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|pcd_blocksizes
-(braket
-id|i
-)braket
-op_assign
-l_int|1024
-suffix:semicolon
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|pcd_blocksizes
 suffix:semicolon
 r_return
 l_int|0

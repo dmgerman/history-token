@@ -2487,7 +2487,7 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-id|ide_dma_off_quietly
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2649,12 +2649,7 @@ suffix:semicolon
 r_else
 (brace
 r_return
-(paren
-(paren
-r_int
-)paren
-id|ide_dma_off_quietly
-)paren
+l_int|0
 suffix:semicolon
 )brace
 id|outb
@@ -2711,7 +2706,7 @@ l_int|3
 )paren
 ques
 c_cond
-id|ide_dma_off
+l_int|0
 suffix:colon
 (paren
 (paren
@@ -2724,7 +2719,7 @@ l_int|7
 )paren
 ques
 c_cond
-id|ide_dma_on
+l_int|1
 suffix:colon
 (paren
 (paren
@@ -2737,7 +2732,7 @@ l_int|7
 )paren
 ques
 c_cond
-id|ide_dma_on
+l_int|1
 suffix:colon
 (paren
 (paren
@@ -2750,9 +2745,9 @@ l_int|7
 )paren
 ques
 c_cond
-id|ide_dma_on
+l_int|1
 suffix:colon
-id|ide_dma_off_quietly
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2821,12 +2816,7 @@ op_ne
 id|ATA_DISK
 )paren
 r_return
-(paren
-(paren
-r_int
-)paren
-id|ide_dma_off_quietly
-)paren
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -3022,12 +3012,7 @@ suffix:semicolon
 r_else
 (brace
 r_return
-(paren
-(paren
-r_int
-)paren
-id|ide_dma_off_quietly
-)paren
+l_int|0
 suffix:semicolon
 )brace
 id|outb
@@ -3084,7 +3069,7 @@ l_int|3
 )paren
 ques
 c_cond
-id|ide_dma_on
+l_int|1
 suffix:colon
 (paren
 (paren
@@ -3097,7 +3082,7 @@ l_int|7
 )paren
 ques
 c_cond
-id|ide_dma_on
+l_int|1
 suffix:colon
 (paren
 (paren
@@ -3110,7 +3095,7 @@ l_int|7
 )paren
 ques
 c_cond
-id|ide_dma_on
+l_int|1
 suffix:colon
 (paren
 (paren
@@ -3123,9 +3108,9 @@ l_int|7
 )paren
 ques
 c_cond
-id|ide_dma_on
+l_int|1
 suffix:colon
-id|ide_dma_off_quietly
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3178,12 +3163,7 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
-(paren
-(paren
-r_int
-)paren
-id|ide_dma_off_quietly
-)paren
+l_int|0
 suffix:semicolon
 )brace
 )brace
@@ -3299,10 +3279,15 @@ id|id
 op_assign
 id|drive-&gt;id
 suffix:semicolon
-id|ide_dma_action_t
-id|dma_func
+r_int
+id|on
 op_assign
-id|ide_dma_on
+l_int|1
+suffix:semicolon
+r_int
+id|verbose
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -3322,26 +3307,28 @@ multiline_comment|/* Consult the list of known &quot;bad&quot; drives */
 r_if
 c_cond
 (paren
-id|ide_dmaproc
+id|udma_black_list
 c_func
 (paren
-id|ide_dma_bad_drive
-comma
 id|drive
 )paren
 )paren
 (brace
-id|dma_func
+id|on
 op_assign
-id|ide_dma_off
+l_int|0
 suffix:semicolon
 r_goto
 id|fast_ata_pio
 suffix:semicolon
 )brace
-id|dma_func
+id|on
 op_assign
-id|ide_dma_off_quietly
+l_int|0
+suffix:semicolon
+id|verbose
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -3360,7 +3347,7 @@ l_int|0x001F
 )paren
 (brace
 multiline_comment|/* Force if Capable UltraDMA */
-id|dma_func
+id|on
 op_assign
 id|config_chipset_for_dma
 c_func
@@ -3380,9 +3367,8 @@ l_int|2
 )paren
 op_logical_and
 (paren
-id|dma_func
-op_ne
-id|ide_dma_on
+op_logical_neg
+id|on
 )paren
 )paren
 r_goto
@@ -3418,7 +3404,7 @@ l_int|0x0007
 )paren
 (brace
 multiline_comment|/* Force if Capable regular DMA modes */
-id|dma_func
+id|on
 op_assign
 id|config_chipset_for_dma
 c_func
@@ -3431,9 +3417,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma_func
-op_ne
-id|ide_dma_on
+op_logical_neg
+id|on
 )paren
 r_goto
 id|no_dma_set
@@ -3444,11 +3429,9 @@ r_else
 r_if
 c_cond
 (paren
-id|ide_dmaproc
+id|udma_white_list
 c_func
 (paren
-id|ide_dma_good_drive
-comma
 id|drive
 )paren
 )paren
@@ -3466,7 +3449,7 @@ id|no_dma_set
 suffix:semicolon
 )brace
 multiline_comment|/* Consult the list of known &quot;good&quot; drives */
-id|dma_func
+id|on
 op_assign
 id|config_chipset_for_dma
 c_func
@@ -3479,9 +3462,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma_func
-op_ne
-id|ide_dma_on
+op_logical_neg
+id|on
 )paren
 r_goto
 id|no_dma_set
@@ -3513,9 +3495,13 @@ l_int|2
 (brace
 id|fast_ata_pio
 suffix:colon
-id|dma_func
+id|on
 op_assign
-id|ide_dma_off_quietly
+l_int|0
+suffix:semicolon
+id|verbose
+op_assign
+l_int|0
 suffix:semicolon
 id|no_dma_set
 suffix:colon
@@ -3528,40 +3514,31 @@ l_int|5
 )paren
 suffix:semicolon
 )brace
-r_return
-id|drive-&gt;channel
-op_member_access_from_pointer
-id|dmaproc
+id|udma_enable
 c_func
 (paren
-id|dma_func
-comma
 id|drive
+comma
+id|on
+comma
+id|verbose
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * aec62xx_dmaproc() initiates/aborts (U)DMA read/write operations on a drive.&n; */
 DECL|function|aec62xx_dmaproc
 r_int
 id|aec62xx_dmaproc
+c_func
 (paren
-id|ide_dma_action_t
-id|func
-comma
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 )paren
 (brace
-r_switch
-c_cond
-(paren
-id|func
-)paren
-(brace
-r_case
-id|ide_dma_check
-suffix:colon
 r_return
 id|config_drive_xfer_rate
 c_func
@@ -3569,56 +3546,9 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-r_case
-id|ide_dma_lostirq
-suffix:colon
-r_case
-id|ide_dma_timeout
-suffix:colon
-r_switch
-c_cond
-(paren
-id|drive-&gt;channel-&gt;pci_dev-&gt;device
-)paren
-(brace
-r_case
-id|PCI_DEVICE_ID_ARTOP_ATP860
-suffix:colon
-r_case
-id|PCI_DEVICE_ID_ARTOP_ATP860R
-suffix:colon
-singleline_comment|//&t;&t;&t;&t;&t;{
-singleline_comment|//&t;&t;&t;&t;&t;&t;int i = 0;
-singleline_comment|//&t;&t;&t;&t;&t;&t;byte reg49h = 0;
-singleline_comment|//&t;&t;&t;&t;&t;&t;pci_read_config_byte(drive-&gt;channel-&gt;pci_dev, 0x49, &amp;reg49h);
-singleline_comment|//&t;&t;&t;&t;&t;&t;for (i=0;i&lt;256;i++)
-singleline_comment|//&t;&t;&t;&t;&t;&t;&t;pci_write_config_byte(drive-&gt;channel-&gt;pci_dev, 0x49, reg49h|0x10);
-singleline_comment|//&t;&t;&t;&t;&t;&t;pci_write_config_byte(drive-&gt;channel-&gt;pci_dev, 0x49, reg49h &amp; ~0x10);
-singleline_comment|//&t;&t;&t;&t;&t;}
-singleline_comment|//&t;&t;&t;&t;&t;return 0;
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
-r_return
-id|ide_dmaproc
-c_func
-(paren
-id|func
-comma
-id|drive
-)paren
-suffix:semicolon
-multiline_comment|/* use standard DMA stuff */
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
-macro_line|#endif /* CONFIG_AEC62XX_TUNING */
+macro_line|#endif
+macro_line|#endif
 DECL|function|pci_init_aec62xx
 r_int
 r_int
@@ -3771,30 +3701,27 @@ id|hwif
 macro_line|#ifdef CONFIG_AEC62XX_TUNING
 id|hwif-&gt;tuneproc
 op_assign
-op_amp
 id|aec62xx_tune_drive
 suffix:semicolon
 id|hwif-&gt;speedproc
 op_assign
-op_amp
 id|aec62xx_tune_chipset
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
+macro_line|# ifdef CONFIG_BLK_DEV_IDEDMA
 r_if
 c_cond
 (paren
 id|hwif-&gt;dma_base
 )paren
-id|hwif-&gt;dmaproc
+id|hwif-&gt;XXX_udma
 op_assign
-op_amp
 id|aec62xx_dmaproc
 suffix:semicolon
 id|hwif-&gt;highmem
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#else /* !CONFIG_BLK_DEV_IDEDMA */
+macro_line|# else
 id|hwif-&gt;drives
 (braket
 l_int|0
@@ -3813,8 +3740,8 @@ id|autotune
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
-macro_line|#endif /* CONFIG_AEC62XX_TUNING */
+macro_line|# endif
+macro_line|#endif
 )brace
 DECL|function|ide_dmacapable_aec62xx
 r_void

@@ -4120,6 +4120,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_TRIZEPS
+id|pcmcia_trizeps_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_XP860
 id|pcmcia_xp860_init
 c_func

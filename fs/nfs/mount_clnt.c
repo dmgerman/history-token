@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/xprt.h&gt;
 macro_line|#include &lt;linux/sunrpc/sched.h&gt;
@@ -211,12 +210,14 @@ comma
 id|path
 )paren
 suffix:semicolon
-id|strcpy
+id|sprintf
 c_func
 (paren
 id|hostname
 comma
-id|in_ntoa
+l_string|&quot;%u.%u.%u.%u&quot;
+comma
+id|NIPQUAD
 c_func
 (paren
 id|addr-&gt;sin_addr.s_addr

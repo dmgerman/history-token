@@ -754,11 +754,11 @@ id|sprintf
 (paren
 id|buf
 comma
-l_string|&quot;dev %s, size %d, blocknr %ld, count %d, list %d, state 0x%lx, page %p, (%s, %s, %s)&quot;
+l_string|&quot;dev %s, size %d, blocknr %ld, count %d, state 0x%lx, page %p, (%s, %s, %s)&quot;
 comma
-id|kdevname
+id|bdevname
 (paren
-id|bh-&gt;b_dev
+id|bh-&gt;b_bdev
 )paren
 comma
 id|bh-&gt;b_size
@@ -772,8 +772,6 @@ op_amp
 id|bh-&gt;b_count
 )paren
 )paren
-comma
-id|bh-&gt;b_list
 comma
 id|bh-&gt;b_state
 comma
@@ -2275,9 +2273,9 @@ id|printk
 (paren
 l_string|&quot;%s&bslash;&squot;s super block in block %ld&bslash;n======================&bslash;n&quot;
 comma
-id|kdevname
+id|bdevname
 (paren
-id|bh-&gt;b_dev
+id|bh-&gt;b_bdev
 )paren
 comma
 id|bh-&gt;b_blocknr

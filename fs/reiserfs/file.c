@@ -300,14 +300,6 @@ c_func
 id|p_s_inode
 )paren
 suffix:semicolon
-id|n_err
-op_or_assign
-id|fsync_inode_data_buffers
-c_func
-(paren
-id|p_s_inode
-)paren
-suffix:semicolon
 id|reiserfs_commit_for_inode
 c_func
 (paren

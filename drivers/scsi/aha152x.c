@@ -1,11 +1,13 @@
-multiline_comment|/* aha152x.c -- Adaptec AHA-152x driver&n; * Author: J&#xfffd;rgen E. Fischer, fischer@norbit.de&n; * Copyright 1993-2000 J&#xfffd;rgen E. Fischer&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; *&n; * $Id: aha152x.c,v 2.4 2000/12/16 12:53:56 fischer Exp $&n; *&n; * $Log: aha152x.c,v $&n; * Revision 2.4  2000/12/16 12:53:56  fischer&n; * - allow REQUEST SENSE to be queued&n; * - handle shared PCI interrupts&n; *&n; * Revision 2.3  2000/11/04 16:40:26  fischer&n; * - handle data overruns&n; * - extend timeout for data phases&n; *&n; * Revision 2.2  2000/08/08 19:54:53  fischer&n; * - minor changes&n; *&n; * Revision 2.1  2000/05/17 16:23:17  fischer&n; * - signature update&n; * - fix for data out w/o scatter gather&n; *&n; * Revision 2.0  1999/12/25 15:07:32  fischer&n; * - interrupt routine completly reworked&n; * - basic support for new eh code&n; *&n; * Revision 1.21  1999/11/10 23:46:36  fischer&n; * - default to synchronous operation&n; * - synchronous negotiation fixed&n; * - added timeout to loops&n; * - debugging output can be controlled through procfs&n; *&n; * Revision 1.20  1999/11/07 18:37:31  fischer&n; * - synchronous operation works&n; * - resid support for sg driver&n; *&n; * Revision 1.19  1999/11/02 22:39:59  fischer&n; * - moved leading comments to README.aha152x&n; * - new additional module parameters&n; * - updates for 2.3&n; * - support for the Tripace TC1550 controller&n; * - interrupt handling changed&n; *&n; * Revision 1.18  1996/09/07 20:10:40  fischer&n; * - fixed can_queue handling (multiple outstanding commands working again)&n; *&n; * Revision 1.17  1996/08/17 16:05:14  fischer&n; * - biosparam improved&n; * - interrupt verification&n; * - updated documentation&n; * - cleanups&n; *&n; * Revision 1.16  1996/06/09 00:04:56  root&n; * - added configuration symbols for insmod (aha152x/aha152x1)&n; *&n; * Revision 1.15  1996/04/30 14:52:06  fischer&n; * - proc info fixed&n; * - support for extended translation for &gt;1GB disks&n; *&n; * Revision 1.14  1996/01/17  15:11:20  fischer&n; * - fixed lockup in MESSAGE IN phase after reconnection&n; *&n; * Revision 1.13  1996/01/09  02:15:53  fischer&n; * - some cleanups&n; * - moved request_irq behind controller initialization&n; *   (to avoid spurious interrupts)&n; *&n; * Revision 1.12  1995/12/16  12:26:07  fischer&n; * - barrier()s added&n; * - configurable RESET delay added&n; *&n; * Revision 1.11  1995/12/06  21:18:35  fischer&n; * - some minor updates&n; *&n; * Revision 1.10  1995/07/22  19:18:45  fischer&n; * - support for 2 controllers&n; * - started synchronous data transfers (not working yet)&n; *&n; * Revision 1.9  1995/03/18  09:20:24  root&n; * - patches for PCMCIA and modules&n; *&n; * Revision 1.8  1995/01/21  22:07:19  root&n; * - snarf_region =&gt; request_region&n; * - aha152x_intr interface change&n; *&n; * Revision 1.7  1995/01/02  23:19:36  root&n; * - updated COMMAND_SIZE to cmd_len&n; * - changed sti() to restore_flags()&n; * - fixed some #ifdef which generated warnings&n; *&n; * Revision 1.6  1994/11/24  20:35:27  root&n; * - problem with odd number of bytes in fifo fixed&n; *&n; * Revision 1.5  1994/10/30  14:39:56  root&n; * - abort code fixed&n; * - debugging improved&n; *&n; * Revision 1.4  1994/09/12  11:33:01  root&n; * - irqaction to request_irq&n; * - abortion updated&n; *&n; * Revision 1.3  1994/08/04  13:53:05  root&n; * - updates for mid-level-driver changes&n; * - accept unexpected BUSFREE phase as error condition&n; * - parity check now configurable&n; *&n; * Revision 1.2  1994/07/03  12:56:36  root&n; * - cleaned up debugging code&n; * - more tweaking on reset delays&n; * - updated abort/reset code (pretty untested...)&n; *&n; * Revision 1.1  1994/05/28  21:18:49  root&n; * - update for mid-level interface change (abort-reset)&n; * - delays after resets adjusted for some slow devices&n; *&n; * Revision 1.0  1994/03/25  12:52:00  root&n; * - Fixed &quot;more data than expected&quot; problem&n; * - added new BIOS signatures&n; *&n; * Revision 0.102  1994/01/31  20:44:12  root&n; * - minor changes in insw/outsw handling&n; *&n; * Revision 0.101  1993/12/13  01:16:27  root&n; * - fixed STATUS phase (non-GOOD stati were dropped sometimes;&n; *   fixes problems with CD-ROM sector size detection &amp; media change)&n; *&n; * Revision 0.100  1993/12/10  16:58:47  root&n; * - fix for unsuccessful selections in case of non-continuous id assignments&n; *   on the scsi bus.&n; *&n; * Revision 0.99  1993/10/24  16:19:59  root&n; * - fixed DATA IN (rare read errors gone)&n; *&n; * Revision 0.98  1993/10/17  12:54:44  root&n; * - fixed some recent fixes (shame on me)&n; * - moved initialization of scratch area to aha152x_queue&n; *&n; * Revision 0.97  1993/10/09  18:53:53  root&n; * - DATA IN fixed. Rarely left data in the fifo.&n; *&n; * Revision 0.96  1993/10/03  00:53:59  root&n; * - minor changes on DATA IN&n; *&n; * Revision 0.95  1993/09/24  10:36:01  root&n; * - change handling of MSGI after reselection&n; * - fixed sti/cli&n; * - minor changes&n; *&n; * Revision 0.94  1993/09/18  14:08:22  root&n; * - fixed bug in multiple outstanding command code&n; * - changed detection&n; * - support for kernel command line configuration&n; * - reset corrected&n; * - changed message handling&n; *&n; * Revision 0.93  1993/09/15  20:41:19  root&n; * - fixed bugs with multiple outstanding commands&n; *&n; * Revision 0.92  1993/09/13  02:46:33  root&n; * - multiple outstanding commands work (no problems with IBM drive)&n; *&n; * Revision 0.91  1993/09/12  20:51:46  root&n; * added multiple outstanding commands&n; * (some problem with this $%&amp;? IBM device remain)&n; *&n; * Revision 0.9  1993/09/12  11:11:22  root&n; * - corrected auto-configuration&n; * - changed the auto-configuration (added some &squot;#define&squot;s)&n; * - added support for dis-/reconnection&n; *&n; * Revision 0.8  1993/09/06  23:09:39  root&n; * - added support for the drive activity light&n; * - minor changes&n; *&n; * Revision 0.7  1993/09/05  14:30:15  root&n; * - improved phase detection&n; * - now using the new snarf_region code of 0.99pl13&n; *&n; * Revision 0.6  1993/09/02  11:01:38  root&n; * first public release; added some signatures and biosparam()&n; *&n; * Revision 0.5  1993/08/30  10:23:30  root&n; * fixed timing problems with my IBM drive&n; *&n; * Revision 0.4  1993/08/29  14:06:52  root&n; * fixed some problems with timeouts due incomplete commands&n; *&n; * Revision 0.3  1993/08/28  15:55:03  root&n; * writing data works too.  mounted and worked on a dos partition&n; *&n; * Revision 0.2  1993/08/27  22:42:07  root&n; * reading data works.  Mounted a msdos partition.&n; *&n; * Revision 0.1  1993/08/25  13:38:30  root&n; * first &quot;damn thing doesn&squot;t work&quot; version&n; *&n; * Revision 0.0  1993/08/14  19:54:25  root&n; * empty function bodies; detect() works.&n; *&n; *&n; **************************************************************************&n; &n; see README.aha152x for configuration details&n;&n; **************************************************************************/
+multiline_comment|/* aha152x.c -- Adaptec AHA-152x driver&n; * Author: J&#xfffd;rgen E. Fischer, fischer@norbit.de&n; * Copyright 1993-2000 J&#xfffd;rgen E. Fischer&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; *&n; * $Id: aha152x.c,v 2.5 2002/04/14 11:24:53 fischer Exp $&n; *&n; * $Log: aha152x.c,v $&n; * Revision 2.5  2002/04/14 11:24:53  fischer&n; * - isapnp support&n; * - abort fixed&n; * - 2.5 support&n; *&n; * Revision 2.4  2000/12/16 12:53:56  fischer&n; * - allow REQUEST SENSE to be queued&n; * - handle shared PCI interrupts&n; *&n; * Revision 2.3  2000/11/04 16:40:26  fischer&n; * - handle data overruns&n; * - extend timeout for data phases&n; *&n; * Revision 2.2  2000/08/08 19:54:53  fischer&n; * - minor changes&n; *&n; * Revision 2.1  2000/05/17 16:23:17  fischer&n; * - signature update&n; * - fix for data out w/o scatter gather&n; *&n; * Revision 2.0  1999/12/25 15:07:32  fischer&n; * - interrupt routine completly reworked&n; * - basic support for new eh code&n; *&n; * Revision 1.21  1999/11/10 23:46:36  fischer&n; * - default to synchronous operation&n; * - synchronous negotiation fixed&n; * - added timeout to loops&n; * - debugging output can be controlled through procfs&n; *&n; * Revision 1.20  1999/11/07 18:37:31  fischer&n; * - synchronous operation works&n; * - resid support for sg driver&n; *&n; * Revision 1.19  1999/11/02 22:39:59  fischer&n; * - moved leading comments to README.aha152x&n; * - new additional module parameters&n; * - updates for 2.3&n; * - support for the Tripace TC1550 controller&n; * - interrupt handling changed&n; *&n; * Revision 1.18  1996/09/07 20:10:40  fischer&n; * - fixed can_queue handling (multiple outstanding commands working again)&n; *&n; * Revision 1.17  1996/08/17 16:05:14  fischer&n; * - biosparam improved&n; * - interrupt verification&n; * - updated documentation&n; * - cleanups&n; *&n; * Revision 1.16  1996/06/09 00:04:56  root&n; * - added configuration symbols for insmod (aha152x/aha152x1)&n; *&n; * Revision 1.15  1996/04/30 14:52:06  fischer&n; * - proc info fixed&n; * - support for extended translation for &gt;1GB disks&n; *&n; * Revision 1.14  1996/01/17  15:11:20  fischer&n; * - fixed lockup in MESSAGE IN phase after reconnection&n; *&n; * Revision 1.13  1996/01/09  02:15:53  fischer&n; * - some cleanups&n; * - moved request_irq behind controller initialization&n; *   (to avoid spurious interrupts)&n; *&n; * Revision 1.12  1995/12/16  12:26:07  fischer&n; * - barrier()s added&n; * - configurable RESET delay added&n; *&n; * Revision 1.11  1995/12/06  21:18:35  fischer&n; * - some minor updates&n; *&n; * Revision 1.10  1995/07/22  19:18:45  fischer&n; * - support for 2 controllers&n; * - started synchronous data transfers (not working yet)&n; *&n; * Revision 1.9  1995/03/18  09:20:24  root&n; * - patches for PCMCIA and modules&n; *&n; * Revision 1.8  1995/01/21  22:07:19  root&n; * - snarf_region =&gt; request_region&n; * - aha152x_intr interface change&n; *&n; * Revision 1.7  1995/01/02  23:19:36  root&n; * - updated COMMAND_SIZE to cmd_len&n; * - changed sti() to restore_flags()&n; * - fixed some #ifdef which generated warnings&n; *&n; * Revision 1.6  1994/11/24  20:35:27  root&n; * - problem with odd number of bytes in fifo fixed&n; *&n; * Revision 1.5  1994/10/30  14:39:56  root&n; * - abort code fixed&n; * - debugging improved&n; *&n; * Revision 1.4  1994/09/12  11:33:01  root&n; * - irqaction to request_irq&n; * - abortion updated&n; *&n; * Revision 1.3  1994/08/04  13:53:05  root&n; * - updates for mid-level-driver changes&n; * - accept unexpected BUSFREE phase as error condition&n; * - parity check now configurable&n; *&n; * Revision 1.2  1994/07/03  12:56:36  root&n; * - cleaned up debugging code&n; * - more tweaking on reset delays&n; * - updated abort/reset code (pretty untested...)&n; *&n; * Revision 1.1  1994/05/28  21:18:49  root&n; * - update for mid-level interface change (abort-reset)&n; * - delays after resets adjusted for some slow devices&n; *&n; * Revision 1.0  1994/03/25  12:52:00  root&n; * - Fixed &quot;more data than expected&quot; problem&n; * - added new BIOS signatures&n; *&n; * Revision 0.102  1994/01/31  20:44:12  root&n; * - minor changes in insw/outsw handling&n; *&n; * Revision 0.101  1993/12/13  01:16:27  root&n; * - fixed STATUS phase (non-GOOD stati were dropped sometimes;&n; *   fixes problems with CD-ROM sector size detection &amp; media change)&n; *&n; * Revision 0.100  1993/12/10  16:58:47  root&n; * - fix for unsuccessful selections in case of non-continuous id assignments&n; *   on the scsi bus.&n; *&n; * Revision 0.99  1993/10/24  16:19:59  root&n; * - fixed DATA IN (rare read errors gone)&n; *&n; * Revision 0.98  1993/10/17  12:54:44  root&n; * - fixed some recent fixes (shame on me)&n; * - moved initialization of scratch area to aha152x_queue&n; *&n; * Revision 0.97  1993/10/09  18:53:53  root&n; * - DATA IN fixed. Rarely left data in the fifo.&n; *&n; * Revision 0.96  1993/10/03  00:53:59  root&n; * - minor changes on DATA IN&n; *&n; * Revision 0.95  1993/09/24  10:36:01  root&n; * - change handling of MSGI after reselection&n; * - fixed sti/cli&n; * - minor changes&n; *&n; * Revision 0.94  1993/09/18  14:08:22  root&n; * - fixed bug in multiple outstanding command code&n; * - changed detection&n; * - support for kernel command line configuration&n; * - reset corrected&n; * - changed message handling&n; *&n; * Revision 0.93  1993/09/15  20:41:19  root&n; * - fixed bugs with multiple outstanding commands&n; *&n; * Revision 0.92  1993/09/13  02:46:33  root&n; * - multiple outstanding commands work (no problems with IBM drive)&n; *&n; * Revision 0.91  1993/09/12  20:51:46  root&n; * added multiple outstanding commands&n; * (some problem with this $%&amp;? IBM device remain)&n; *&n; * Revision 0.9  1993/09/12  11:11:22  root&n; * - corrected auto-configuration&n; * - changed the auto-configuration (added some &squot;#define&squot;s)&n; * - added support for dis-/reconnection&n; *&n; * Revision 0.8  1993/09/06  23:09:39  root&n; * - added support for the drive activity light&n; * - minor changes&n; *&n; * Revision 0.7  1993/09/05  14:30:15  root&n; * - improved phase detection&n; * - now using the new snarf_region code of 0.99pl13&n; *&n; * Revision 0.6  1993/09/02  11:01:38  root&n; * first public release; added some signatures and biosparam()&n; *&n; * Revision 0.5  1993/08/30  10:23:30  root&n; * fixed timing problems with my IBM drive&n; *&n; * Revision 0.4  1993/08/29  14:06:52  root&n; * fixed some problems with timeouts due incomplete commands&n; *&n; * Revision 0.3  1993/08/28  15:55:03  root&n; * writing data works too.  mounted and worked on a dos partition&n; *&n; * Revision 0.2  1993/08/27  22:42:07  root&n; * reading data works.  Mounted a msdos partition.&n; *&n; * Revision 0.1  1993/08/25  13:38:30  root&n; * first &quot;damn thing doesn&squot;t work&quot; version&n; *&n; * Revision 0.0  1993/08/14  19:54:25  root&n; * empty function bodies; detect() works.&n; *&n; *&n; **************************************************************************&n; &n; see README.aha152x for configuration details&n;&n; **************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#if defined(PCMCIA)
 DECL|macro|MODULE
 macro_line|#undef MODULE
 macro_line|#endif
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;sd.h&quot;
@@ -71,7 +73,6 @@ DECL|macro|CMDINFO
 mdefine_line|#define CMDINFO(cmd) &bslash;&n;&t;&t;&t;(cmd) ? ((cmd)-&gt;host-&gt;host_no) : -1, &bslash;&n;                        (cmd) ? ((cmd)-&gt;target &amp; 0x0f) : -1, &bslash;&n;&t;&t;&t;(cmd) ? ((cmd)-&gt;lun &amp; 0x07) : -1
 DECL|macro|DELAY_DEFAULT
 mdefine_line|#define DELAY_DEFAULT 1000
-multiline_comment|/* possible irq range */
 macro_line|#if defined(PCMCIA)
 DECL|macro|IRQ_MIN
 mdefine_line|#define IRQ_MIN 0
@@ -80,11 +81,14 @@ mdefine_line|#define IRQ_MAX 16
 macro_line|#else
 DECL|macro|IRQ_MIN
 mdefine_line|#define IRQ_MIN 9
+macro_line|#if defined(__PPC)
+DECL|macro|IRQ_MAX
+mdefine_line|#define IRQ_MAX (NR_IRQS-1)
+macro_line|#else
 DECL|macro|IRQ_MAX
 mdefine_line|#define IRQ_MAX 12
 macro_line|#endif
-DECL|macro|IRQS
-mdefine_line|#define IRQS    IRQ_MAX-IRQ_MIN+1
+macro_line|#endif
 r_enum
 (brace
 DECL|enumerator|not_issued
@@ -738,7 +742,7 @@ id|Scsi_Host
 op_star
 id|aha152x_host
 (braket
-id|IRQS
+l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * internal states of the host&n; *&n; */
@@ -1130,6 +1134,8 @@ DECL|macro|SCDONE
 mdefine_line|#define SCDONE(SCpnt)&t;&t;SCDATA(SCpnt)-&gt;done
 DECL|macro|SCSEM
 mdefine_line|#define SCSEM(SCpnt)&t;&t;SCDATA(SCpnt)-&gt;sem
+DECL|macro|SG_ADDRESS
+mdefine_line|#define SG_ADDRESS(buffer)&t;((char *) (page_address((buffer)-&gt;page)+(buffer)-&gt;offset))
 multiline_comment|/* state handling */
 r_static
 r_void
@@ -1727,8 +1733,6 @@ comma
 l_int|0x140
 )brace
 suffix:semicolon
-DECL|macro|PORT_COUNT
-mdefine_line|#define PORT_COUNT (sizeof(ports) / sizeof(unsigned short))
 macro_line|#if !defined(SKIP_BIOSTEST)
 multiline_comment|/* possible locations for the Adaptec BIOS; defaults first */
 DECL|variable|addresses
@@ -1762,8 +1766,6 @@ l_int|0xf0000
 comma
 )brace
 suffix:semicolon
-DECL|macro|ADDRESS_COUNT
-mdefine_line|#define ADDRESS_COUNT (sizeof(addresses) / sizeof(unsigned int))
 multiline_comment|/* signatures for various AIC-6[23]60 based controllers.&n;   The point in detecting signatures is to avoid useless and maybe&n;   harmful probes on ports. I&squot;m not sure that all listed boards pass&n;   auto-configuration. For those which fail the BIOS signature is&n;   obsolete, because user intervention to supply the configuration is&n;   needed anyway.  May be an information whether or not the BIOS supports&n;   extended translation could be also useful here. */
 DECL|struct|signature
 r_static
@@ -1910,8 +1912,6 @@ comma
 multiline_comment|/* DTC 3520A ISA SCSI */
 )brace
 suffix:semicolon
-DECL|macro|SIGNATURE_COUNT
-mdefine_line|#define SIGNATURE_COUNT (sizeof(signatures) / sizeof(struct signature))
 macro_line|#endif
 multiline_comment|/*&n; *  queue services:&n; *&n; */
 DECL|function|append_SC
@@ -2277,8 +2277,12 @@ r_if
 c_cond
 (paren
 id|setup_count
-OG
-l_int|2
+op_ge
+id|ARRAY_SIZE
+c_func
+(paren
+id|setup
+)paren
 )paren
 (brace
 id|printk
@@ -2591,14 +2595,10 @@ c_func
 (paren
 id|str
 comma
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|ints
-)paren
-op_div
-r_sizeof
-(paren
-r_int
 )paren
 comma
 id|ints
@@ -2865,7 +2865,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|PORT_COUNT
+id|ARRAY_SIZE
+c_func
+(paren
+id|ports
+)paren
 op_logical_and
 (paren
 id|setup-&gt;io_port
@@ -2885,7 +2889,11 @@ c_cond
 (paren
 id|i
 op_eq
-id|PORT_COUNT
+id|ARRAY_SIZE
+c_func
+(paren
+id|ports
+)paren
 )paren
 r_return
 l_int|0
@@ -3038,6 +3046,69 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|lookup_irq
+r_static
+r_inline
+r_struct
+id|Scsi_Host
+op_star
+id|lookup_irq
+c_func
+(paren
+r_int
+id|irqno
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|aha152x_host
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
+c_cond
+(paren
+id|aha152x_host
+(braket
+id|i
+)braket
+op_logical_and
+id|aha152x_host
+(braket
+id|i
+)braket
+op_member_access_from_pointer
+id|irq
+op_eq
+id|irqno
+)paren
+(brace
+r_return
+id|aha152x_host
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|swintr
 r_static
 r_void
@@ -3062,12 +3133,11 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|aha152x_host
-(braket
+id|lookup_irq
+c_func
+(paren
 id|irqno
-op_minus
-id|IRQ_MIN
-)braket
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3075,15 +3145,21 @@ c_cond
 op_logical_neg
 id|shpnt
 )paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;aha152x%d: catched software interrupt for unknown controller.&bslash;n&quot;
+l_string|&quot;aha152x%d: catched software interrupt %d for unknown controller.&bslash;n&quot;
 comma
 id|HOSTNO
+comma
+id|irqno
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|HOSTDATA
 c_func
 (paren
@@ -3163,7 +3239,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|IRQS
+id|ARRAY_SIZE
+c_func
+(paren
+id|aha152x_host
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -3257,7 +3337,11 @@ c_cond
 (paren
 id|setup_count
 OL
-l_int|2
+id|ARRAY_SIZE
+c_func
+(paren
+id|setup
+)paren
 )paren
 (brace
 r_struct
@@ -3339,7 +3423,11 @@ c_cond
 (paren
 id|setup_count
 OL
-l_int|2
+id|ARRAY_SIZE
+c_func
+(paren
+id|setup
+)paren
 )paren
 (brace
 r_struct
@@ -3421,7 +3509,11 @@ c_cond
 (paren
 id|setup_count
 OL
-l_int|2
+id|ARRAY_SIZE
+c_func
+(paren
+id|setup
+)paren
 op_logical_and
 (paren
 id|aha152x
@@ -3818,7 +3910,11 @@ c_cond
 (paren
 id|setup_count
 OL
-l_int|2
+id|ARRAY_SIZE
+c_func
+(paren
+id|setup
+)paren
 op_logical_and
 (paren
 id|aha152x1
@@ -4217,7 +4313,11 @@ c_loop
 (paren
 id|setup_count
 OL
-l_int|2
+id|ARRAY_SIZE
+c_func
+(paren
+id|setup
+)paren
 op_logical_and
 (paren
 id|dev
@@ -4476,7 +4576,11 @@ c_cond
 (paren
 id|setup_count
 OL
-l_int|2
+id|ARRAY_SIZE
+c_func
+(paren
+id|setup
+)paren
 )paren
 (brace
 macro_line|#if !defined(SKIP_BIOSTEST)
@@ -4493,7 +4597,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|ADDRESS_COUNT
+id|ARRAY_SIZE
+c_func
+(paren
+id|addresses
+)paren
 op_logical_and
 op_logical_neg
 id|ok
@@ -4508,10 +4616,12 @@ id|j
 op_assign
 l_int|0
 suffix:semicolon
-(paren
 id|j
 OL
-id|SIGNATURE_COUNT
+id|ARRAY_SIZE
+c_func
+(paren
+id|signatures
 )paren
 op_logical_and
 op_logical_neg
@@ -4594,7 +4704,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|PORT_COUNT
+id|ARRAY_SIZE
+c_func
+(paren
+id|ports
+)paren
 op_logical_and
 id|setup_count
 OL
@@ -4966,14 +5080,7 @@ id|shpnt
 suffix:semicolon
 id|aha152x_host
 (braket
-id|setup
-(braket
-id|i
-)braket
-dot
-id|irq
-op_minus
-id|IRQ_MIN
+id|registered_count
 )braket
 op_assign
 id|shpnt
@@ -5672,9 +5779,7 @@ id|IO_RANGE
 suffix:semicolon
 id|aha152x_host
 (braket
-id|shpnt-&gt;irq
-op_minus
-id|IRQ_MIN
+id|registered_count
 )braket
 op_assign
 l_int|0
@@ -5715,22 +5820,10 @@ op_or
 id|INTEN
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-id|shpnt-&gt;host_lock
-)paren
-suffix:semicolon
 id|mdelay
 c_func
 (paren
 l_int|1000
-)paren
-suffix:semicolon
-id|spin_lock_irq
-c_func
-(paren
-id|shpnt-&gt;host_lock
 )paren
 suffix:semicolon
 id|free_irq
@@ -5814,9 +5907,7 @@ id|IO_RANGE
 suffix:semicolon
 id|aha152x_host
 (braket
-id|shpnt-&gt;irq
-op_minus
-id|IRQ_MIN
+id|registered_count
 )braket
 op_assign
 l_int|0
@@ -5888,12 +5979,6 @@ comma
 id|HOSTNO
 )paren
 suffix:semicolon
-id|scsi_unregister
-c_func
-(paren
-id|shpnt
-)paren
-suffix:semicolon
 id|registered_count
 op_decrement
 suffix:semicolon
@@ -5905,16 +5990,22 @@ comma
 id|IO_RANGE
 )paren
 suffix:semicolon
-id|shpnt
-op_assign
 id|aha152x_host
 (braket
-id|shpnt-&gt;irq
-op_minus
-id|IRQ_MIN
+id|registered_count
 )braket
 op_assign
 l_int|0
+suffix:semicolon
+id|scsi_unregister
+c_func
+(paren
+id|shpnt
+)paren
+suffix:semicolon
+id|shpnt
+op_assign
+l_int|NULL
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -6486,7 +6577,11 @@ id|SCpnt-&gt;request_buffer
 suffix:semicolon
 id|SCpnt-&gt;SCp.ptr
 op_assign
-id|SCpnt-&gt;SCp.buffer-&gt;address
+id|SG_ADDRESS
+c_func
+(paren
+id|SCpnt-&gt;SCp.buffer
+)paren
 suffix:semicolon
 id|SCpnt-&gt;SCp.this_residual
 op_assign
@@ -6857,12 +6952,6 @@ c_func
 id|shpnt
 )paren
 suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 id|DO_LOCK
@@ -6987,24 +7076,76 @@ r_int
 id|p
 )paren
 (brace
+id|Scsi_Cmnd
+op_star
+id|SCp
+op_assign
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+id|p
+suffix:semicolon
 r_struct
 id|semaphore
 op_star
 id|sem
 op_assign
+id|SCSEM
+c_func
 (paren
-r_void
-op_star
+id|SCp
 )paren
-id|p
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|shpnt
+op_assign
+id|SCp-&gt;host
+suffix:semicolon
+multiline_comment|/* remove command from issue queue */
+r_if
+c_cond
+(paren
+id|remove_SC
+c_func
+(paren
+op_amp
+id|ISSUE_SC
+comma
+id|SCp
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;aha152x: timer expired&bslash;n&quot;
+l_string|&quot;aha152x: ABORT timed out - removed from issue queue&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|SCp-&gt;host_scribble
+)paren
+suffix:semicolon
+id|SCp-&gt;host_scribble
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;aha152x: ABORT timed out - not on issue queue&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -7079,12 +7220,6 @@ c_func
 id|shpnt
 )paren
 suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
 )brace
 macro_line|#endif
 r_if
@@ -7154,7 +7289,7 @@ r_int
 r_int
 )paren
 op_amp
-id|sem
+id|cmnd
 suffix:semicolon
 id|timer.expires
 op_assign
@@ -7179,13 +7314,6 @@ r_int
 )paren
 id|timer_expired
 suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|timer
-)paren
-suffix:semicolon
 id|aha152x_internal_queue
 c_func
 (paren
@@ -7200,6 +7328,13 @@ comma
 l_int|0
 comma
 id|internal_done
+)paren
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|timer
 )paren
 suffix:semicolon
 id|down
@@ -7406,12 +7541,6 @@ id|show_queues
 c_func
 (paren
 id|shpnt
-)paren
-suffix:semicolon
-id|mdelay
-c_func
-(paren
-l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -8088,7 +8217,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|IRQS
+id|ARRAY_SIZE
+c_func
+(paren
+id|aha152x_host
+)paren
 suffix:semicolon
 id|i
 op_increment
@@ -8162,12 +8295,11 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|aha152x_host
-(braket
+id|lookup_irq
+c_func
+(paren
 id|irqno
-op_minus
-id|IRQ_MIN
-)braket
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8180,7 +8312,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;aha152x: catched interrupt for unknown controller.&bslash;n&quot;
+l_string|&quot;aha152x: catched interrupt %d for unknown controller.&bslash;n&quot;
+comma
+id|irqno
 )paren
 suffix:semicolon
 r_return
@@ -12076,7 +12210,11 @@ op_increment
 suffix:semicolon
 id|CURRENT_SC-&gt;SCp.ptr
 op_assign
-id|CURRENT_SC-&gt;SCp.buffer-&gt;address
+id|SG_ADDRESS
+c_func
+(paren
+id|CURRENT_SC-&gt;SCp.buffer
+)paren
 suffix:semicolon
 id|CURRENT_SC-&gt;SCp.this_residual
 op_assign
@@ -12660,7 +12798,11 @@ op_increment
 suffix:semicolon
 id|CURRENT_SC-&gt;SCp.ptr
 op_assign
-id|CURRENT_SC-&gt;SCp.buffer-&gt;address
+id|SG_ADDRESS
+c_func
+(paren
+id|CURRENT_SC-&gt;SCp.buffer
+)paren
 suffix:semicolon
 id|CURRENT_SC-&gt;SCp.this_residual
 op_assign
@@ -12819,7 +12961,11 @@ id|data_count
 op_sub_assign
 id|CURRENT_SC-&gt;SCp.ptr
 op_minus
-id|CURRENT_SC-&gt;SCp.buffer-&gt;address
+id|SG_ADDRESS
+c_func
+(paren
+id|CURRENT_SC-&gt;SCp.buffer
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -12842,7 +12988,11 @@ suffix:semicolon
 )brace
 id|CURRENT_SC-&gt;SCp.ptr
 op_assign
-id|CURRENT_SC-&gt;SCp.buffer-&gt;address
+id|SG_ADDRESS
+c_func
+(paren
+id|CURRENT_SC-&gt;SCp.buffer
+)paren
 op_minus
 id|data_count
 suffix:semicolon
@@ -13425,7 +13575,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* _error never returns.. */
+multiline_comment|/* aha152x_error never returns.. */
 id|aha152x_error
 c_func
 (paren
@@ -17918,7 +18068,11 @@ l_int|NULL
 suffix:semicolon
 id|i
 OL
-id|IRQS
+id|ARRAY_SIZE
+c_func
+(paren
+id|aha152x_host
+)paren
 suffix:semicolon
 id|i
 op_increment

@@ -139,9 +139,9 @@ r_void
 )paren
 (brace
 r_struct
-id|Paca
+id|paca_struct
 op_star
-id|paca
+id|lpaca
 suffix:semicolon
 r_int
 id|oldval
@@ -150,6 +150,8 @@ r_int
 r_int
 id|CTRL
 suffix:semicolon
+macro_line|#warning fix iseries run light
+macro_line|#if 0
 multiline_comment|/* ensure iSeries run light will be out when idle */
 id|current-&gt;thread.flags
 op_and_assign
@@ -177,7 +179,8 @@ comma
 id|CTRL
 )paren
 suffix:semicolon
-id|paca
+macro_line|#endif
+id|lpaca
 op_assign
 id|get_paca
 c_func
@@ -193,7 +196,7 @@ l_int|1
 r_if
 c_cond
 (paren
-id|paca-&gt;xLpPaca.xSharedProc
+id|lpaca-&gt;xLpPaca.xSharedProc
 )paren
 (brace
 r_if
@@ -202,7 +205,7 @@ c_cond
 id|ItLpQueue_isLpIntPending
 c_func
 (paren
-id|paca-&gt;lpQueuePtr
+id|lpaca-&gt;lpQueuePtr
 )paren
 )paren
 id|process_iSeries_events
@@ -269,7 +272,7 @@ c_cond
 id|ItLpQueue_isLpIntPending
 c_func
 (paren
-id|paca-&gt;lpQueuePtr
+id|lpaca-&gt;lpQueuePtr
 )paren
 )paren
 id|process_iSeries_events

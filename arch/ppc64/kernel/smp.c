@@ -25,8 +25,8 @@ macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCall.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallCfg.h&gt;
@@ -179,19 +179,6 @@ r_int
 id|iSeries_smp_message
 (braket
 id|NR_CPUS
-)braket
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
-suffix:semicolon
-r_extern
-r_struct
-id|Paca
-id|xPaca
-(braket
 )braket
 suffix:semicolon
 r_void
@@ -433,7 +420,7 @@ c_func
 (paren
 op_amp
 (paren
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -475,7 +462,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|maxPacas
+id|MAX_PACAS
 suffix:semicolon
 op_increment
 id|i
@@ -483,7 +470,7 @@ id|i
 (brace
 id|lpPaca
 op_assign
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -540,7 +527,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|maxPacas
+id|MAX_PACAS
 suffix:semicolon
 op_increment
 id|i
@@ -548,7 +535,7 @@ id|i
 (brace
 id|lpPaca
 op_assign
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -566,14 +553,14 @@ l_int|2
 op_increment
 id|np
 suffix:semicolon
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
 dot
 id|next_jiffy_update_tb
 op_assign
-id|xPaca
+id|paca
 (braket
 l_int|0
 )braket
@@ -618,7 +605,7 @@ op_logical_or
 (paren
 id|nr
 op_ge
-id|maxPacas
+id|MAX_PACAS
 )paren
 )paren
 r_return
@@ -626,7 +613,7 @@ suffix:semicolon
 multiline_comment|/* Verify that our partition has a processor nr */
 id|lpPaca
 op_assign
-id|xPaca
+id|paca
 (braket
 id|nr
 )braket
@@ -642,8 +629,14 @@ l_int|2
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* The information for processor bringup must&n;&t; * be written out to main store before we release&n;&t; * the processor.&n;&t; */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* The processor is currently spinning, waiting&n;&t; * for the xProcStart field to become non-zero&n;&t; * After we set xProcStart, the processor will&n;&t; * continue on to secondary_start in iSeries_head.S&n;&t; */
-id|xPaca
+id|paca
 (braket
 id|nr
 )braket
@@ -848,13 +841,19 @@ op_logical_or
 (paren
 id|nr
 op_ge
-id|maxPacas
+id|MAX_PACAS
 )paren
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* The information for processor bringup must&n;&t; * be written out to main store before we release&n;&t; * the processor.&n;&t; */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* The processor is currently spinning, waiting&n;&t; * for the xProcStart field to become non-zero&n;&t; * After we set xProcStart, the processor will&n;&t; * continue on to secondary_start in iSeries_head.S&n;&t; */
-id|xPaca
+id|paca
 (braket
 id|nr
 )braket
@@ -906,14 +905,14 @@ op_increment
 id|i
 )paren
 (brace
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
 dot
 id|next_jiffy_update_tb
 op_assign
-id|xPaca
+id|paca
 (braket
 id|i
 op_minus
@@ -956,13 +955,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_pSeriesLP
+id|PLATFORM_PSERIES_LPAR
 )paren
 (brace
 multiline_comment|/* timebases already synced under the hypervisor. */
-id|xPaca
+id|paca
 (braket
 id|cpu_nr
 )braket
@@ -1066,7 +1065,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|xPaca
+id|paca
 (braket
 l_int|0
 )braket
@@ -2073,11 +2072,6 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|Paca
-op_star
-id|paca
-suffix:semicolon
 r_int
 id|i
 comma
@@ -2142,18 +2136,20 @@ op_increment
 )paren
 (brace
 id|paca
-op_assign
-op_amp
-id|xPaca
 (braket
 id|i
 )braket
-suffix:semicolon
-id|paca-&gt;prof_counter
+dot
+id|prof_counter
 op_assign
 l_int|1
 suffix:semicolon
-id|paca-&gt;prof_multiplier
+id|paca
+(braket
+id|i
+)braket
+dot
+id|prof_multiplier
 op_assign
 l_int|1
 suffix:semicolon
@@ -2166,7 +2162,12 @@ l_int|0
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Processor 0&squot;s segment table is statically &n;&t;&t;&t; * initialized to real address 0x5000.  The&n;&t;&t;&t; * Other processor&squot;s tables are created and&n;&t;&t;&t; * initialized here.&n;&t;&t;&t; */
-id|paca-&gt;xStab_data.virt
+id|paca
+(braket
+id|i
+)braket
+dot
+id|xStab_data.virt
 op_assign
 (paren
 r_int
@@ -2191,22 +2192,42 @@ c_func
 r_void
 op_star
 )paren
-id|paca-&gt;xStab_data.virt
+id|paca
+(braket
+id|i
+)braket
+dot
+id|xStab_data.virt
 comma
 l_int|0
 comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
-id|paca-&gt;xStab_data.real
+id|paca
+(braket
+id|i
+)braket
+dot
+id|xStab_data.real
 op_assign
 id|__v2a
 c_func
 (paren
-id|paca-&gt;xStab_data.virt
+id|paca
+(braket
+id|i
+)braket
+dot
+id|xStab_data.virt
 )paren
 suffix:semicolon
-id|paca-&gt;default_decr
+id|paca
+(braket
+id|i
+)braket
+dot
+id|default_decr
 op_assign
 id|tb_ticks_per_jiffy
 op_div
@@ -2379,7 +2400,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
@@ -2552,7 +2573,7 @@ suffix:semicolon
 id|set_dec
 c_func
 (paren
-id|xPaca
+id|paca
 (braket
 id|cpu
 )braket
@@ -2695,7 +2716,7 @@ r_int
 id|id
 )paren
 (brace
-id|xPaca
+id|paca
 (braket
 id|id
 )braket

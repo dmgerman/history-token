@@ -1692,10 +1692,6 @@ id|matrox_switch
 op_star
 id|hw_switch
 suffix:semicolon
-DECL|member|currcon
-r_int
-id|currcon
-suffix:semicolon
 DECL|member|currcon_display
 r_struct
 id|display

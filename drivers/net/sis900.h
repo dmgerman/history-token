@@ -654,6 +654,27 @@ op_assign
 l_int|16
 )brace
 suffix:semicolon
+multiline_comment|/* For SiS962, request the eeprom software access */
+DECL|enum|sis962_eeprom_command
+r_enum
+id|sis962_eeprom_command
+(brace
+DECL|enumerator|EEREQ
+DECL|enumerator|EEDONE
+DECL|enumerator|EEGNT
+id|EEREQ
+op_assign
+l_int|0x00000400
+comma
+id|EEDONE
+op_assign
+l_int|0x00000200
+comma
+id|EEGNT
+op_assign
+l_int|0x00000100
+)brace
+suffix:semicolon
 multiline_comment|/* Manamgement Data I/O (mdio) frame */
 DECL|macro|MIIread
 mdefine_line|#define MIIread         0x6000
@@ -1201,7 +1222,12 @@ id|SIS635A_900_REV
 op_assign
 l_int|0x90
 comma
+DECL|enumerator|SIS962_900_REV
 DECL|enumerator|SIS900B_900_REV
+id|SIS962_900_REV
+op_assign
+l_int|0X91
+comma
 id|SIS900B_900_REV
 op_assign
 l_int|0x03

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/config.h&gt; /* for CONFIG_MAC_PARTITION */
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 id|MODULE_LICENSE
 c_func
 (paren
@@ -417,6 +418,11 @@ id|sb
 op_member_access_from_pointer
 id|s_mdb
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* is this a valid hfs superblock? */
 r_if
 c_cond
@@ -429,6 +435,11 @@ op_ne
 id|HFS_SUPER_MAGIC
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -456,6 +467,11 @@ suffix:semicolon
 id|sb-&gt;s_dirt
 op_assign
 l_int|0
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * hfs_put_super()&n; *&n; * This is the put_super() entry in the super_operations structure for&n; * HFS filesystems.  The purpose is to release the resources&n; * associated with the superblock sb.&n; */

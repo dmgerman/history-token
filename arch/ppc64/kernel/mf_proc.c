@@ -350,8 +350,6 @@ l_string|&quot;vmlinux&quot;
 comma
 id|S_IFREG
 op_or
-id|S_IRUSR
-op_or
 id|S_IWUSR
 comma
 id|mf_a
@@ -377,13 +375,13 @@ op_star
 )paren
 l_int|0
 suffix:semicolon
-id|ent-&gt;read_proc
-op_assign
-id|proc_mf_dump_vmlinux
-suffix:semicolon
 id|ent-&gt;write_proc
 op_assign
 id|proc_mf_change_vmlinux
+suffix:semicolon
+id|ent-&gt;read_proc
+op_assign
+l_int|NULL
 suffix:semicolon
 id|mf_b
 op_assign
@@ -456,8 +454,6 @@ l_string|&quot;vmlinux&quot;
 comma
 id|S_IFREG
 op_or
-id|S_IRUSR
-op_or
 id|S_IWUSR
 comma
 id|mf_b
@@ -483,13 +479,13 @@ op_star
 )paren
 l_int|1
 suffix:semicolon
-id|ent-&gt;read_proc
-op_assign
-id|proc_mf_dump_vmlinux
-suffix:semicolon
 id|ent-&gt;write_proc
 op_assign
 id|proc_mf_change_vmlinux
+suffix:semicolon
+id|ent-&gt;read_proc
+op_assign
+l_int|NULL
 suffix:semicolon
 id|mf_c
 op_assign
@@ -562,8 +558,6 @@ l_string|&quot;vmlinux&quot;
 comma
 id|S_IFREG
 op_or
-id|S_IRUSR
-op_or
 id|S_IWUSR
 comma
 id|mf_c
@@ -589,13 +583,13 @@ op_star
 )paren
 l_int|2
 suffix:semicolon
-id|ent-&gt;read_proc
-op_assign
-id|proc_mf_dump_vmlinux
-suffix:semicolon
 id|ent-&gt;write_proc
 op_assign
 id|proc_mf_change_vmlinux
+suffix:semicolon
+id|ent-&gt;read_proc
+op_assign
+l_int|NULL
 suffix:semicolon
 id|mf_d
 op_assign
@@ -659,6 +653,7 @@ id|ent-&gt;write_proc
 op_assign
 id|proc_mf_change_cmdline
 suffix:semicolon
+macro_line|#if 0
 id|ent
 op_assign
 id|create_proc_entry
@@ -701,6 +696,7 @@ id|ent-&gt;write_proc
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 id|ent
 op_assign
 id|create_proc_entry
@@ -1043,31 +1039,12 @@ id|page
 op_plus
 id|off
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;mf_proc.c: got count %d off %d&bslash;n&quot;
-comma
-id|sizeToGet
-comma
-(paren
-r_int
-)paren
-id|off
-)paren
-suffix:semicolon
 r_return
 id|sizeToGet
 suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;mf_proc.c: eof&bslash;n&quot;
-)paren
-suffix:semicolon
 op_star
 id|eof
 op_assign
@@ -1080,12 +1057,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;mf_proc.c: eof&bslash;n&quot;
-)paren
-suffix:semicolon
 op_star
 id|eof
 op_assign

@@ -49,7 +49,9 @@ mdefine_line|#define ISERIES_DEVICE(DevPtr) DevPtr-&gt;DsaAddr.deviceId
 DECL|macro|ISERIES_DEVFUN
 mdefine_line|#define ISERIES_DEVFUN(DevPtr) DevPtr-&gt;DevFn
 DECL|macro|ISERIES_DSA
-mdefine_line|#define ISERIES_DSA(DevPtr)   (*(u64*)&amp;DevPtr-&gt;DsaAddr)  
+mdefine_line|#define ISERIES_DSA(DevPtr)   (*(u64*)&amp;DevPtr-&gt;DsaAddr)
+DECL|macro|ISERIES_DEVNODE
+mdefine_line|#define ISERIES_DEVNODE(PciDev) ((struct iSeries_Device_Node*)PciDev-&gt;sysdata)
 DECL|macro|EADsMaxAgents
 mdefine_line|#define EADsMaxAgents 7
 multiline_comment|/************************************************************************************/
@@ -153,6 +155,11 @@ id|u16
 id|Vendor
 suffix:semicolon
 multiline_comment|/* Vendor ID                   */
+DECL|member|LogicalSlot
+id|u8
+id|LogicalSlot
+suffix:semicolon
+multiline_comment|/* Hv Slot Index for Tces      */
 DECL|member|DevTceTable
 r_struct
 id|TceTable

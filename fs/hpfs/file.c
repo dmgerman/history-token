@@ -522,11 +522,11 @@ id|mmu_private
 op_add_assign
 l_int|512
 suffix:semicolon
-id|bh_result-&gt;b_state
-op_or_assign
-l_int|1UL
-op_lshift
-id|BH_New
+id|set_buffer_new
+c_func
+(paren
+id|bh_result
+)paren
 suffix:semicolon
 id|map_bh
 c_func

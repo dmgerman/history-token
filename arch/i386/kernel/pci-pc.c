@@ -2201,9 +2201,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Using configuration type 1&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -2213,6 +2218,9 @@ l_int|8
 comma
 l_string|&quot;PCI conf1&quot;
 )paren
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 r_return
 op_amp
@@ -2291,9 +2299,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Using configuration type 2&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -2303,6 +2316,9 @@ l_int|4
 comma
 l_string|&quot;PCI conf2&quot;
 )paren
+)paren
+r_return
+l_int|NULL
 suffix:semicolon
 r_return
 op_amp
@@ -2567,6 +2583,7 @@ multiline_comment|/* Not present */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;bios32_service(0x%lx): not present&bslash;n&quot;
 comma
 id|service
@@ -2581,6 +2598,7 @@ multiline_comment|/* Shouldn&squot;t happen */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;bios32_service(0x%lx): returned 0x%x -- BIOS bug!&bslash;n&quot;
 comma
 id|service
@@ -2822,6 +2840,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: PCI BIOS revision %x.%02x entry at 0x%lx, last bus=%d&bslash;n&quot;
 comma
 id|major_ver
@@ -4301,6 +4320,7 @@ id|pci_devices
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PCI: BIOS reporting unknown device %02x:%02x&bslash;n&quot;
 comma
 id|bus
@@ -4323,6 +4343,7 @@ id|found
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PCI: Device %02x:%02x not found by BIOS&bslash;n&quot;
 comma
 id|dev-&gt;bus-&gt;number
@@ -4624,6 +4645,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Using BIOS Interrupt Routing Table&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4956,6 +4978,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PCI: Ignoring ghost devices on bus %02x&bslash;n&quot;
 comma
 id|b-&gt;number
@@ -5160,6 +5183,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Discovered peer bus %02x&bslash;n&quot;
 comma
 id|n
@@ -5207,6 +5231,7 @@ id|suba
 comma
 id|subb
 suffix:semicolon
+macro_line|#ifdef CONFIG_MULTIQUAD
 r_int
 id|quad
 op_assign
@@ -5216,6 +5241,7 @@ c_func
 id|d-&gt;bus-&gt;number
 )paren
 suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -5379,6 +5405,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: i440KX/GX host bridge %s: secondary bus %02x&bslash;n&quot;
 comma
 id|d-&gt;slot_name
@@ -5422,6 +5449,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;PCI: Fixing base address flags for device %s&bslash;n&quot;
 comma
 id|d-&gt;slot_name
@@ -5450,6 +5478,47 @@ dot
 id|flags
 op_or_assign
 id|PCI_BASE_ADDRESS_SPACE_IO
+suffix:semicolon
+)brace
+)brace
+DECL|function|pci_fixup_ncr53c810
+r_static
+r_void
+id|__devinit
+id|pci_fixup_ncr53c810
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|d
+)paren
+(brace
+multiline_comment|/*&n;     * NCR 53C810 returns class code 0 (at least on some systems).&n;     * Fix class to be PCI_CLASS_STORAGE_SCSI&n;     */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|d
+op_member_access_from_pointer
+r_class
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;PCI: fixing NCR 53C810 class code for %s&bslash;n&quot;
+comma
+id|d-&gt;slot_name
+)paren
+suffix:semicolon
+id|d
+op_member_access_from_pointer
+r_class
+op_assign
+id|PCI_CLASS_STORAGE_SCSI
+op_lshift
+l_int|8
 suffix:semicolon
 )brace
 )brace
@@ -5867,6 +5936,16 @@ id|pci_fixup_via_northbridge_bug
 )brace
 comma
 (brace
+id|PCI_FIXUP_HEADER
+comma
+id|PCI_VENDOR_ID_NCR
+comma
+id|PCI_DEVICE_ID_NCR_53C810
+comma
+id|pci_fixup_ncr53c810
+)brace
+comma
+(brace
 l_int|0
 )brace
 )brace
@@ -5979,6 +6058,13 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|pci_ops
+op_star
+id|tmp
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/*&n;&t; * Try all known PCI access methods. Note that we support using &n;&t; * both PCI BIOS and direct access, with a preference for direct.&n;&t; */
 macro_line|#ifdef CONFIG_PCI_BIOS
 r_if
@@ -6020,6 +6106,10 @@ id|pci_bios_write
 suffix:semicolon
 )brace
 macro_line|#endif
+id|tmp
+op_assign
+id|pci_root_ops
+suffix:semicolon
 macro_line|#ifdef CONFIG_PCI_DIRECT
 r_if
 c_cond
@@ -6075,6 +6165,18 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+multiline_comment|/* if direct access failed, fall back to BIOS access. */
+r_if
+c_cond
+(paren
+id|pci_root_ops
+op_eq
+l_int|NULL
+)paren
+id|pci_root_ops
+op_assign
+id|tmp
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

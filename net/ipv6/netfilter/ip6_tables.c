@@ -161,7 +161,7 @@ DECL|macro|ADD_COUNTER
 mdefine_line|#define ADD_COUNTER(c,b,p) do { (c).bcnt += (b); (c).pcnt += (p); } while(0)
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|TABLE_OFFSET
-mdefine_line|#define TABLE_OFFSET(t,p) (SMP_ALIGN((t)-&gt;size)*cpu_number_map(p))
+mdefine_line|#define TABLE_OFFSET(t,p) (SMP_ALIGN((t)-&gt;size)*(p))
 macro_line|#else
 DECL|macro|TABLE_OFFSET
 mdefine_line|#define TABLE_OFFSET(t,p) 0
@@ -1195,9 +1195,13 @@ id|table
 op_member_access_from_pointer
 r_private
 comma
+id|cpu_number_map
+c_func
+(paren
 id|smp_processor_id
 c_func
 (paren
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1661,9 +1665,15 @@ op_assign
 id|u_int32_t
 op_star
 )paren
+(paren
+(paren
+r_void
+op_star
+)paren
 id|ipv6
 op_plus
 id|IPV6_HDR_LEN
+)paren
 suffix:semicolon
 id|datalen
 op_assign
@@ -3886,9 +3896,9 @@ id|SMP_ALIGN
 c_func
 (paren
 id|newinfo-&gt;size
+)paren
 op_star
 id|i
-)paren
 comma
 id|newinfo-&gt;entries
 comma
@@ -8012,10 +8022,14 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-op_logical_neg
+(brace
+r_struct
+id|proc_dir_entry
+op_star
+id|proc
+suffix:semicolon
+id|proc
+op_assign
 id|proc_net_create
 c_func
 (paren
@@ -8025,6 +8039,12 @@ l_int|0
 comma
 id|ip6t_get_tables
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|proc
 )paren
 (brace
 id|nf_unregister_sockopt
@@ -8037,6 +8057,11 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+)brace
+id|proc-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 macro_line|#endif

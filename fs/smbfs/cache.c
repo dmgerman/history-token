@@ -70,7 +70,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -111,7 +111,7 @@ id|page
 suffix:semicolon
 id|out_unlock
 suffix:colon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -695,7 +695,7 @@ c_func
 id|ctl.page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|ctl.page

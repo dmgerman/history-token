@@ -116,7 +116,8 @@ r_int
 id|ata_timing_mode
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma
@@ -187,7 +188,8 @@ r_int
 id|ata_timing_compute
 c_func
 (paren
-id|ide_drive_t
+r_struct
+id|ata_device
 op_star
 id|drive
 comma

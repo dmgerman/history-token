@@ -687,9 +687,9 @@ l_int|0
 )paren
 op_logical_or
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 )paren
 )paren
 (brace

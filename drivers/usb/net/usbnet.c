@@ -32,7 +32,7 @@ mdefine_line|#define&t;CONFIG_USB_NET1080
 DECL|macro|CONFIG_USB_PL2301
 mdefine_line|#define&t;CONFIG_USB_PL2301
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;06-Apr-2002&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;26-Apr-2002&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Nineteen USB 1.1 max size bulk transactions per frame (ms), max.&n; * Several dozen bytes of IPv4 data can fit in two such transactions.&n; * One maximum size Ethernet packet takes twenty four of them.&n; */
 macro_line|#ifdef REALLY_QUEUE
@@ -947,29 +947,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|genelink_check_connect
-r_static
-r_int
-id|genelink_check_connect
-(paren
-r_struct
-id|usbnet
-op_star
-id|dev
-)paren
-(brace
-id|dbg
-(paren
-l_string|&quot;%s: assuming peer is connected&quot;
-comma
-id|dev-&gt;net.name
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 macro_line|#endif
 singleline_comment|// reset the device status
 DECL|function|genelink_reset
@@ -1517,10 +1494,6 @@ id|reset
 suffix:colon
 id|genelink_reset
 comma
-id|check_connect
-suffix:colon
-id|genelink_check_connect
-comma
 id|rx_fixup
 suffix:colon
 id|genelink_rx_fixup
@@ -1541,12 +1514,34 @@ id|epsize
 suffix:colon
 l_int|64
 comma
+macro_line|#ifdef&t;GENELINK_ACK
+id|check_connect
+suffix:colon
+id|genelink_check_connect
+comma
+macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_USB_GENESYS */
 "&f;"
 macro_line|#ifdef&t;CONFIG_USB_LINUXDEV
 multiline_comment|/*-------------------------------------------------------------------------&n; *&n; * This could talk to a device that uses Linux, such as a PDA or&n; * an embedded system, or in fact to any &quot;smart&quot; device using this&n; * particular mapping of USB and Ethernet.&n; *&n; * Such a Linux host would need a &quot;USB Device Controller&quot; hardware&n; * (not &quot;USB Host Controller&quot;), and a network driver talking to that&n; * hardware.&n; *&n; * One example is Intel&squot;s SA-1100 chip, which integrates basic USB&n; * support (arch/arm/sa1100/usb-eth.c); it&squot;s used in the iPaq PDA.&n; *&n; *-------------------------------------------------------------------------*/
+DECL|function|linuxdev_check_connect
+r_static
+r_int
+id|linuxdev_check_connect
+(paren
+r_struct
+id|usbnet
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+singleline_comment|// by definition, always connected
+)brace
 DECL|variable|linuxdev_info
 r_static
 r_const
@@ -1560,7 +1555,10 @@ suffix:colon
 l_string|&quot;Linux Device&quot;
 comma
 singleline_comment|// no reset defined (yet?)
-singleline_comment|// no check_connect needed!
+id|check_connect
+suffix:colon
+id|linuxdev_check_connect
+comma
 id|in
 suffix:colon
 l_int|2
@@ -3424,31 +3422,6 @@ id|PL_PEER_E
 )paren
 suffix:semicolon
 )brace
-DECL|function|pl_check_connect
-r_static
-r_int
-id|pl_check_connect
-(paren
-r_struct
-id|usbnet
-op_star
-id|dev
-)paren
-(brace
-singleline_comment|// FIXME test interrupt data PL_PEER_E bit
-singleline_comment|// plus, there&squot;s some handshake done by
-singleline_comment|// the prolific win32 driver... 
-id|dbg
-(paren
-l_string|&quot;%s: assuming peer is connected&quot;
-comma
-id|dev-&gt;net.name
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|variable|prolific_info
 r_static
 r_const
@@ -3469,10 +3442,6 @@ multiline_comment|/* some PL-2302 versions seem to fail usb_set_interface() */
 id|reset
 suffix:colon
 id|pl_reset
-comma
-id|check_connect
-suffix:colon
-id|pl_check_connect
 comma
 id|in
 suffix:colon
@@ -5035,6 +5004,8 @@ id|dev-&gt;driver_info-&gt;check_connect
 (paren
 id|dev
 )paren
+op_eq
+l_int|0
 suffix:semicolon
 r_if
 c_cond

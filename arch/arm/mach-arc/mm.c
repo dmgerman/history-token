@@ -395,12 +395,16 @@ id|pte
 l_int|0
 )braket
 op_assign
-id|mk_pte_phys
+id|pfn_pte
 c_func
+(paren
 (paren
 id|PAGE_OFFSET
 op_plus
 l_int|491520
+)paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|PAGE_READONLY
 )paren

@@ -3885,11 +3885,6 @@ c_func
 (paren
 id|BH_JPrepared
 comma
-(paren
-r_struct
-id|buffer_head
-op_star
-)paren
 op_amp
 id|bh-&gt;b_state
 )paren
@@ -3928,11 +3923,6 @@ c_func
 (paren
 id|BH_JDirty_wait
 comma
-(paren
-r_struct
-id|buffer_head
-op_star
-)paren
 op_amp
 id|bh-&gt;b_state
 )paren

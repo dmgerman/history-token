@@ -39,7 +39,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;local_irq.h&quot;
 macro_line|#include &quot;i8259.h&quot;
@@ -52,12 +52,6 @@ r_int
 r_char
 op_star
 id|chrp_int_ack_special
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 r_void
 id|chrp_setup_pci_ptrs
@@ -231,6 +225,34 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_static
+r_void
+id|fwnmi_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|SystemReset_FWNMI
+c_func
+(paren
+r_void
+)paren
+comma
+id|MachineCheck_FWNMI
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* from head.S */
+DECL|variable|fwnmi_active
+r_int
+id|fwnmi_active
+suffix:semicolon
+multiline_comment|/* TRUE if an FWNMI handler is present */
 DECL|variable|boot_dev
 id|kdev_t
 id|boot_dev
@@ -486,6 +508,11 @@ comma
 id|cmd_line
 )paren
 suffix:semicolon
+id|fwnmi_init
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Find and initialize PCI host bridges */
 multiline_comment|/* iSeries needs to be done much later. */
 macro_line|#ifndef CONFIG_PPC_ISERIES
@@ -632,6 +659,84 @@ l_int|0x7777
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Initialize firmware assisted non-maskable interrupts if&n; * the firmware supports this feature.&n; *&n; */
+DECL|function|fwnmi_init
+r_static
+r_void
+id|__init
+id|fwnmi_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|ret
+suffix:semicolon
+r_int
+id|ibm_nmi_register
+op_assign
+id|rtas_token
+c_func
+(paren
+l_string|&quot;ibm,nmi-register&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ibm_nmi_register
+op_eq
+id|RTAS_UNKNOWN_SERVICE
+)paren
+r_return
+suffix:semicolon
+id|ret
+op_assign
+id|rtas_call
+c_func
+(paren
+id|ibm_nmi_register
+comma
+l_int|2
+comma
+l_int|1
+comma
+l_int|NULL
+comma
+id|__pa
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|SystemReset_FWNMI
+)paren
+comma
+id|__pa
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|MachineCheck_FWNMI
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+l_int|0
+)paren
+id|fwnmi_active
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Early initialization.  Relocation is on but do not reference unbolted pages */
 DECL|function|pSeries_init_early
 r_void
@@ -765,7 +870,7 @@ macro_line|#endif /* CONFIG_BLK_DEV_INITRD */
 macro_line|#endif
 id|ppc_md.ppc_machine
 op_assign
-id|_machine
+id|naca-&gt;platform
 suffix:semicolon
 id|ppc_md.setup_arch
 op_assign
@@ -795,10 +900,6 @@ id|ppc_md.get_irq
 op_assign
 id|openpic_get_irq
 suffix:semicolon
-id|ppc_md.post_irq
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -809,10 +910,6 @@ suffix:semicolon
 id|ppc_md.get_irq
 op_assign
 id|xics_get_irq
-suffix:semicolon
-id|ppc_md.post_irq
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
 id|ppc_md.init_ras_IRQ
@@ -979,9 +1076,9 @@ op_logical_neg
 id|rtas.base
 op_logical_or
 (paren
-id|_machine
+id|naca-&gt;platform
 op_ne
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 )paren
 r_return

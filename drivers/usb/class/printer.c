@@ -68,8 +68,13 @@ DECL|macro|USBLP_REQ_RESET
 mdefine_line|#define USBLP_REQ_RESET&t;&t;&t;&t;0x02
 DECL|macro|USBLP_REQ_HP_CHANNEL_CHANGE_REQUEST
 mdefine_line|#define USBLP_REQ_HP_CHANNEL_CHANGE_REQUEST&t;0x00&t;/* HP Vendor-specific */
+macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
+DECL|macro|USBLP_MINORS
+mdefine_line|#define USBLP_MINORS&t;&t;256
+macro_line|#else
 DECL|macro|USBLP_MINORS
 mdefine_line|#define USBLP_MINORS&t;&t;16
+macro_line|#endif
 DECL|macro|USBLP_MINOR_BASE
 mdefine_line|#define USBLP_MINOR_BASE&t;0
 DECL|macro|USBLP_WRITE_TIMEOUT
@@ -617,6 +622,12 @@ id|usblp
 op_star
 id|usblp
 )paren
+suffix:semicolon
+multiline_comment|/* forward reference to make our lives easier */
+r_extern
+r_struct
+id|usb_driver
+id|usblp_driver
 suffix:semicolon
 multiline_comment|/*&n; * Functions for usblp control messages.&n; */
 DECL|function|usblp_ctrl_msg
@@ -1250,6 +1261,16 @@ id|usblp-&gt;minor
 )braket
 op_assign
 l_int|NULL
+suffix:semicolon
+id|usb_deregister_dev
+(paren
+op_amp
+id|usblp_driver
+comma
+l_int|1
+comma
+id|usblp-&gt;minor
+)paren
 suffix:semicolon
 id|info
 c_func
@@ -3133,6 +3154,9 @@ suffix:semicolon
 r_int
 id|protocol
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 r_char
 id|name
 (braket
@@ -3206,7 +3230,46 @@ id|usblp-&gt;ifnum
 op_assign
 id|ifnum
 suffix:semicolon
-multiline_comment|/* Look for a free usblp_table entry. */
+id|retval
+op_assign
+id|usb_register_dev
+c_func
+(paren
+op_amp
+id|usblp_driver
+comma
+l_int|1
+comma
+op_amp
+id|usblp-&gt;minor
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+op_minus
+id|ENODEV
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;Not able to get a minor for this device.&quot;
+)paren
+suffix:semicolon
+r_goto
+m_abort
+suffix:semicolon
+)brace
+multiline_comment|/* Look for a free usblp_table entry on our own. */
 r_while
 c_loop
 (paren
@@ -3236,6 +3299,7 @@ suffix:semicolon
 r_goto
 m_abort
 suffix:semicolon
+)brace
 )brace
 )brace
 id|usblp-&gt;writeurb
@@ -3426,6 +3490,14 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* add a table entry so the device works when advertised */
+id|usblp_table
+(braket
+id|usblp-&gt;minor
+)braket
+op_assign
+id|usblp
+suffix:semicolon
 multiline_comment|/* If we have devfs, create with perms=660. */
 id|sprintf
 c_func
@@ -3504,11 +3576,6 @@ id|usblp-&gt;dev-&gt;descriptor.idProduct
 )paren
 suffix:semicolon
 r_return
-id|usblp_table
-(braket
-id|usblp-&gt;minor
-)braket
-op_assign
 id|usblp
 suffix:semicolon
 m_abort
@@ -4458,6 +4525,10 @@ comma
 id|minor
 suffix:colon
 id|USBLP_MINOR_BASE
+comma
+id|num_minors
+suffix:colon
+id|USBLP_MINORS
 comma
 id|id_table
 suffix:colon

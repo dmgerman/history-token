@@ -997,12 +997,15 @@ macro_line|#ifdef PORT_OVERRIDE
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|PORT_OVERRIDE
 comma
 l_int|0xc
+comma
+l_string|&quot;ultrastor&quot;
 )paren
 )paren
 (brace
@@ -1044,7 +1047,8 @@ op_increment
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|ultrastor_ports_14f
@@ -1053,6 +1057,8 @@ id|i
 )braket
 comma
 l_int|0x0c
+comma
+l_string|&quot;ultrastor&quot;
 )paren
 )paren
 (brace
@@ -1119,10 +1125,18 @@ suffix:semicolon
 macro_line|# endif
 macro_line|#endif
 macro_line|#ifdef PORT_OVERRIDE
-r_return
-id|FALSE
+r_goto
+id|out_release_port
 suffix:semicolon
 macro_line|#else
+id|release_region
+c_func
+(paren
+id|config.port_address
+comma
+l_int|0x0c
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 macro_line|#endif
@@ -1176,10 +1190,18 @@ suffix:semicolon
 macro_line|# endif
 macro_line|#endif
 macro_line|#ifdef PORT_OVERRIDE
-r_return
-id|FALSE
+r_goto
+id|out_release_port
 suffix:semicolon
 macro_line|#else
+id|release_region
+c_func
+(paren
+id|config.port_address
+comma
+l_int|0x0c
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 macro_line|#endif
@@ -1212,6 +1234,7 @@ l_string|&quot;US14F: detect: no port address found!&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|# endif
+multiline_comment|/* all ports probed already released - we can just go straight out */
 r_return
 id|FALSE
 suffix:semicolon
@@ -1246,16 +1269,6 @@ id|config.port_address
 )paren
 suffix:semicolon
 multiline_comment|/* All above tests passed, must be the right thing.  Get some useful&n;       info. */
-id|request_region
-c_func
-(paren
-id|config.port_address
-comma
-l_int|0x0c
-comma
-l_string|&quot;ultrastor&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Register the I/O space that we use */
 op_star
 (paren
@@ -1395,8 +1408,8 @@ l_string|&quot;US14F: detect: not detected.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-id|FALSE
+r_goto
+id|out_release_port
 suffix:semicolon
 )brace
 multiline_comment|/* Final consistency check, verify previous info. */
@@ -1429,8 +1442,8 @@ l_string|&quot;US14F: detect: consistency check failed&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-id|FALSE
+r_goto
+id|out_release_port
 suffix:semicolon
 )brace
 multiline_comment|/* If we were TRULY paranoid, we could issue a host adapter inquiry&n;       command here and verify the data returned.  But frankly, I&squot;m&n;       exhausted! */
@@ -1513,8 +1526,8 @@ comma
 id|config.interrupt
 )paren
 suffix:semicolon
-r_return
-id|FALSE
+r_goto
+id|out_release_port
 suffix:semicolon
 )brace
 r_if
@@ -1547,8 +1560,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_return
-id|FALSE
+r_goto
+id|out_release_port
 suffix:semicolon
 )brace
 id|tpnt-&gt;sg_tablesize
@@ -1567,6 +1580,19 @@ id|ULTRASTOR_14F_MAX_SG
 suffix:semicolon
 r_return
 id|TRUE
+suffix:semicolon
+id|out_release_port
+suffix:colon
+id|release_region
+c_func
+(paren
+id|config.port_address
+comma
+l_int|0x0c
+)paren
+suffix:semicolon
+r_return
+id|FALSE
 suffix:semicolon
 )brace
 DECL|function|ultrastor_24f_detect

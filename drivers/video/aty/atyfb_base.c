@@ -37,6 +37,9 @@ macro_line|#ifdef CONFIG_ADB_PMU
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_BOOTX_TEXT
+macro_line|#include &lt;asm/btext.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_NVRAM
 macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#endif
@@ -203,6 +206,32 @@ id|fb
 suffix:semicolon
 r_static
 r_int
+id|atyfb_setcolreg
+c_func
+(paren
+id|u_int
+id|regno
+comma
+id|u_int
+id|red
+comma
+id|u_int
+id|green
+comma
+id|u_int
+id|blue
+comma
+id|u_int
+id|transp
+comma
+r_struct
+id|fb_info
+op_star
+id|fb
+)paren
+suffix:semicolon
+r_static
+r_int
 id|atyfb_pan_display
 c_func
 (paren
@@ -213,6 +242,20 @@ id|var
 comma
 r_int
 id|con
+comma
+r_struct
+id|fb_info
+op_star
+id|fb
+)paren
+suffix:semicolon
+r_static
+r_int
+id|atyfb_blank
+c_func
+(paren
+r_int
+id|blank
 comma
 r_struct
 id|fb_info
@@ -353,20 +396,6 @@ c_func
 (paren
 r_int
 id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|fb
-)paren
-suffix:semicolon
-r_static
-r_void
-id|atyfbcon_blank
-c_func
-(paren
-r_int
-id|blank
 comma
 r_struct
 id|fb_info
@@ -620,46 +649,6 @@ op_star
 id|fb
 )paren
 suffix:semicolon
-r_static
-r_int
-id|atyfb_setcolreg
-c_func
-(paren
-id|u_int
-id|regno
-comma
-id|u_int
-id|red
-comma
-id|u_int
-id|green
-comma
-id|u_int
-id|blue
-comma
-id|u_int
-id|transp
-comma
-r_struct
-id|fb_info
-op_star
-id|fb
-)paren
-suffix:semicolon
-r_static
-r_void
-id|do_install_cmap
-c_func
-(paren
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PPC
 r_static
 r_int
@@ -692,13 +681,6 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|atyfb_ops
 r_static
 r_struct
@@ -738,9 +720,17 @@ id|fb_set_cmap
 suffix:colon
 id|atyfb_set_cmap
 comma
+id|fb_setcolreg
+suffix:colon
+id|atyfb_setcolreg
+comma
 id|fb_pan_display
 suffix:colon
 id|atyfb_pan_display
+comma
+id|fb_blank
+suffix:colon
+id|atyfb_blank
 comma
 id|fb_ioctl
 suffix:colon
@@ -824,7 +814,6 @@ suffix:semicolon
 macro_line|#ifndef MODULE
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|mode_option
@@ -928,7 +917,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gx
 (braket
@@ -939,7 +927,6 @@ l_string|&quot;mach64GX (ATI888GX00)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_cx
 (braket
@@ -950,7 +937,6 @@ l_string|&quot;mach64CX (ATI888CX00)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_ct
 (braket
@@ -961,7 +947,6 @@ l_string|&quot;mach64CT (ATI264CT)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_et
 (braket
@@ -972,7 +957,6 @@ l_string|&quot;mach64ET (ATI264ET)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_vta3
 (braket
@@ -983,7 +967,6 @@ l_string|&quot;mach64VTA3 (ATI264VT)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_vta4
 (braket
@@ -994,7 +977,6 @@ l_string|&quot;mach64VTA4 (ATI264VT)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_vtb
 (braket
@@ -1005,7 +987,6 @@ l_string|&quot;mach64VTB (ATI264VTB)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_vt4
 (braket
@@ -1016,7 +997,6 @@ l_string|&quot;mach64VT4 (ATI264VT4)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gt
 (braket
@@ -1027,7 +1007,6 @@ l_string|&quot;3D RAGE (GT)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtb
 (braket
@@ -1038,7 +1017,6 @@ l_string|&quot;3D RAGE II+ (GTB)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_iic_p
 (braket
@@ -1049,7 +1027,6 @@ l_string|&quot;3D RAGE IIC (PCI)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_iic_a
 (braket
@@ -1060,7 +1037,6 @@ l_string|&quot;3D RAGE IIC (AGP)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_lt
 (braket
@@ -1071,7 +1047,6 @@ l_string|&quot;3D RAGE LT&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_ltg
 (braket
@@ -1082,7 +1057,6 @@ l_string|&quot;3D RAGE LT-G&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtc_ba
 (braket
@@ -1093,7 +1067,6 @@ l_string|&quot;3D RAGE PRO (BGA, AGP)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtc_ba1
 (braket
@@ -1104,7 +1077,6 @@ l_string|&quot;3D RAGE PRO (BGA, AGP, 1x only)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtc_bp
 (braket
@@ -1115,7 +1087,6 @@ l_string|&quot;3D RAGE PRO (BGA, PCI)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtc_pp
 (braket
@@ -1126,7 +1097,6 @@ l_string|&quot;3D RAGE PRO (PQFP, PCI)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_gtc_ppl
 (braket
@@ -1137,7 +1107,6 @@ l_string|&quot;3D RAGE PRO (PQFP, PCI, limited 3D)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_xl
 (braket
@@ -1148,7 +1117,6 @@ l_string|&quot;3D RAGE (XL)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_ltp_a
 (braket
@@ -1159,7 +1127,6 @@ l_string|&quot;3D RAGE LT PRO (AGP)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_ltp_p
 (braket
@@ -1170,7 +1137,6 @@ l_string|&quot;3D RAGE LT PRO (PCI)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_mob_p
 (braket
@@ -1181,7 +1147,6 @@ l_string|&quot;3D RAGE Mobility (PCI)&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|m64n_mob_a
 (braket
@@ -1191,7 +1156,6 @@ op_assign
 l_string|&quot;3D RAGE Mobility (AGP)&quot;
 suffix:semicolon
 r_static
-r_const
 r_struct
 (brace
 DECL|member|pci_id
@@ -2036,7 +2000,6 @@ macro_line|#endif /* CONFIG_FB_ATY_CT */
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_dram
 (braket
@@ -2047,7 +2010,6 @@ l_string|&quot;DRAM&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_vram
 (braket
@@ -2058,7 +2020,6 @@ l_string|&quot;VRAM&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_edo
 (braket
@@ -2069,7 +2030,6 @@ l_string|&quot;EDO&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_sdram
 (braket
@@ -2080,7 +2040,6 @@ l_string|&quot;SDRAM&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_sgram
 (braket
@@ -2091,7 +2050,6 @@ l_string|&quot;SGRAM&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_wram
 (braket
@@ -2102,7 +2060,6 @@ l_string|&quot;WRAM&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_off
 (braket
@@ -2113,7 +2070,6 @@ l_string|&quot;OFF&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|ram_resv
 (braket
@@ -2125,7 +2081,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_FB_ATY_GX
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|aty_gx_ram
@@ -2156,7 +2111,6 @@ macro_line|#endif /* CONFIG_FB_ATY_GX */
 macro_line|#ifdef CONFIG_FB_ATY_CT
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|aty_ct_ram
@@ -4614,6 +4568,50 @@ id|info-&gt;ati_regbase_phys
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC */
+macro_line|#ifdef CONFIG_BOOTX_TEXT
+id|btext_update_display
+c_func
+(paren
+id|info-&gt;frame_buffer_phys
+comma
+(paren
+(paren
+(paren
+id|par-&gt;crtc.h_tot_disp
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0xff
+)paren
+op_plus
+l_int|1
+)paren
+op_star
+l_int|8
+comma
+(paren
+(paren
+id|par-&gt;crtc.v_tot_disp
+op_rshift
+l_int|16
+)paren
+op_amp
+l_int|0x7ff
+)paren
+op_plus
+l_int|1
+comma
+id|par-&gt;crtc.bpp
+comma
+id|par-&gt;crtc.vxres
+op_star
+id|par-&gt;crtc.bpp
+op_div
+l_int|8
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_BOOTX_TEXT */
 )brace
 DECL|function|atyfb_decode_var
 r_static
@@ -5929,7 +5927,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|display-&gt;screen_base
+id|fb-&gt;screen_base
 op_assign
 (paren
 r_char
@@ -6455,8 +6453,6 @@ c_func
 id|cmap
 comma
 id|kspc
-comma
-id|atyfb_setcolreg
 comma
 id|info
 )paren
@@ -8799,7 +8795,7 @@ id|nb
 )paren
 suffix:semicolon
 multiline_comment|/* Blank display and LCD */
-id|atyfbcon_blank
+id|atyfb_blank
 c_func
 (paren
 id|VESA_POWERDOWN
@@ -8883,7 +8879,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|atyfbcon_blank
+id|atyfb_blank
 c_func
 (paren
 l_int|0
@@ -10439,6 +10435,11 @@ id|info-&gt;fb_info.disp
 op_assign
 id|disp
 suffix:semicolon
+id|info-&gt;fb_info.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -10460,11 +10461,6 @@ id|info-&gt;fb_info.updatevar
 op_assign
 op_amp
 id|atyfbcon_updatevar
-suffix:semicolon
-id|info-&gt;fb_info.blank
-op_assign
-op_amp
-id|atyfbcon_blank
 suffix:semicolon
 id|info-&gt;fb_info.flags
 op_assign
@@ -13693,7 +13689,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -13704,7 +13700,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap
@@ -13722,6 +13718,12 @@ r_if
 c_cond
 (paren
 id|info-&gt;cursor
+op_logical_and
+(paren
+id|fb-&gt;currcon
+op_ge
+l_int|0
+)paren
 )paren
 id|atyfb_cursor
 c_func
@@ -13729,7 +13731,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 comma
 id|CM_ERASE
@@ -13740,7 +13742,7 @@ id|info-&gt;cursor-&gt;pos.y
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_FB_ATY_CT */
-id|currcon
+id|fb-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -13824,10 +13826,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Blank the display.&n;     */
-DECL|function|atyfbcon_blank
+DECL|function|atyfb_blank
 r_static
-r_void
-id|atyfbcon_blank
+r_int
+id|atyfb_blank
 c_func
 (paren
 r_int
@@ -13973,6 +13975,9 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_BACKLIGHT */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n;     *  Read a single color register and split it into&n;     *  colors/transparent. Return != 0 for invalid regno.&n;     */
 DECL|function|atyfb_getcolreg
@@ -14396,95 +14401,6 @@ macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
-)brace
-DECL|function|do_install_cmap
-r_static
-r_void
-id|do_install_cmap
-c_func
-(paren
-r_int
-id|con
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|con
-op_ne
-id|currcon
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fb_display
-(braket
-id|con
-)braket
-dot
-id|cmap.len
-)paren
-id|fb_set_cmap
-c_func
-(paren
-op_amp
-id|fb_display
-(braket
-id|con
-)braket
-dot
-id|cmap
-comma
-l_int|1
-comma
-id|atyfb_setcolreg
-comma
-id|info
-)paren
-suffix:semicolon
-r_else
-(brace
-r_int
-id|size
-op_assign
-id|fb_display
-(braket
-id|con
-)braket
-dot
-id|var.bits_per_pixel
-op_eq
-l_int|16
-ques
-c_cond
-l_int|32
-suffix:colon
-l_int|256
-suffix:semicolon
-id|fb_set_cmap
-c_func
-(paren
-id|fb_default_cmap
-c_func
-(paren
-id|size
-)paren
-comma
-l_int|1
-comma
-id|atyfb_setcolreg
-comma
-id|info
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;     *  Update the `var&squot; structure (called by fbcon.c)&n;     */
 DECL|function|atyfbcon_updatevar

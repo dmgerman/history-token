@@ -217,25 +217,13 @@ id|max2
 )paren
 (brace
 r_return
-(paren
-id|min1
-op_ge
+id|max1
+OG
 id|min2
 op_logical_and
 id|min1
 OL
 id|max2
-)paren
-op_logical_or
-(paren
-id|max1
-OG
-id|min2
-op_logical_and
-id|max1
-op_le
-id|max2
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Functions to register sockopt ranges (exclusive). */

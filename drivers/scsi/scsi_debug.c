@@ -12,12 +12,13 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include&lt;linux/stat.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#ifndef LINUX_VERSION_CODE
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#endif

@@ -1252,9 +1252,6 @@ r_if
 c_cond
 (paren
 id|need_cancel
-op_logical_and
-op_logical_neg
-id|bh-&gt;b_pprev
 )paren
 (brace
 r_struct
@@ -1280,6 +1277,13 @@ c_cond
 id|bh2
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|bh2
+op_ne
+id|bh
+)paren
 id|clear_bit
 c_func
 (paren
@@ -1805,6 +1809,12 @@ c_func
 id|bh
 comma
 l_string|&quot;write&quot;
+)paren
+suffix:semicolon
+id|set_buffer_uptodate
+c_func
+(paren
+id|bh
 )paren
 suffix:semicolon
 id|ll_rw_block

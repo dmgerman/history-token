@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
 macro_line|#include &quot;pci.h&quot;
 multiline_comment|/* Traverse_func that inits the PCI fields of the device node.&n; * NOTE: this *must* be done before read/write config to the device.&n; */

@@ -1,7 +1,7 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ HCI virtual device driver.&n; *&n; * $Id: hci_vhci.c,v 1.3 2001/08/03 04:19:50 maxk Exp $ &n; */
+multiline_comment|/*&n; * BlueZ HCI virtual device driver.&n; *&n; * $Id: hci_vhci.c,v 1.3 2002/04/17 17:37:20 maxk Exp $ &n; */
 DECL|macro|VERSION
-mdefine_line|#define VERSION &quot;1.0&quot;
+mdefine_line|#define VERSION &quot;1.1&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -18,11 +18,11 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
-macro_line|#include &lt;net/bluetooth/bluez.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
-macro_line|#include &lt;net/bluetooth/hci_vhci.h&gt;
+macro_line|#include &quot;hci_vhci.h&quot;
 multiline_comment|/* HCI device part */
 DECL|function|hci_vhci_open
+r_static
 r_int
 id|hci_vhci_open
 c_func
@@ -33,15 +33,21 @@ op_star
 id|hdev
 )paren
 (brace
-id|hdev-&gt;flags
-op_or_assign
+id|set_bit
+c_func
+(paren
 id|HCI_RUNNING
+comma
+op_amp
+id|hdev-&gt;flags
+)paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
 DECL|function|hci_vhci_flush
+r_static
 r_int
 id|hci_vhci_flush
 c_func
@@ -76,6 +82,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|hci_vhci_close
+r_static
 r_int
 id|hci_vhci_close
 c_func
@@ -86,10 +93,21 @@ op_star
 id|hdev
 )paren
 (brace
-id|hdev-&gt;flags
-op_and_assign
-op_complement
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_and_clear_bit
+c_func
+(paren
 id|HCI_RUNNING
+comma
+op_amp
+id|hdev-&gt;flags
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|hci_vhci_flush
 c_func
@@ -101,7 +119,51 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|hci_vhci_destruct
+r_static
+r_void
+id|hci_vhci_destruct
+c_func
+(paren
+r_struct
+id|hci_dev
+op_star
+id|hdev
+)paren
+(brace
+r_struct
+id|hci_vhci_struct
+op_star
+id|vhci
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hdev
+)paren
+r_return
+suffix:semicolon
+id|vhci
+op_assign
+(paren
+r_struct
+id|hci_vhci_struct
+op_star
+)paren
+id|hdev-&gt;driver_data
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|vhci
+)paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+)brace
 DECL|function|hci_vhci_send_frame
+r_static
 r_int
 id|hci_vhci_send_frame
 c_func
@@ -136,7 +198,7 @@ op_logical_neg
 id|hdev
 )paren
 (brace
-id|ERR
+id|BT_ERR
 c_func
 (paren
 l_string|&quot;Frame for uknown device (hdev=NULL)&quot;
@@ -151,10 +213,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|test_bit
+c_func
 (paren
-id|hdev-&gt;flags
-op_amp
 id|HCI_RUNNING
+comma
+op_amp
+id|hdev-&gt;flags
 )paren
 )paren
 r_return
@@ -641,9 +706,11 @@ c_loop
 id|count
 )paren
 (brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_INTERRUPTIBLE
+)paren
 suffix:semicolon
 multiline_comment|/* Read frames from device queue */
 r_if
@@ -748,9 +815,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|current-&gt;state
-op_assign
+id|set_current_state
+c_func
+(paren
 id|TASK_RUNNING
+)paren
 suffix:semicolon
 id|remove_wait_queue
 c_func
@@ -764,6 +833,29 @@ id|wait
 suffix:semicolon
 r_return
 id|ret
+suffix:semicolon
+)brace
+DECL|function|hci_vhci_chr_lseek
+r_static
+id|loff_t
+id|hci_vhci_chr_lseek
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+id|loff_t
+id|offset
+comma
+r_int
+id|origin
+)paren
+(brace
+r_return
+op_minus
+id|ESPIPE
 suffix:semicolon
 )brace
 DECL|function|hci_vhci_chr_ioctl
@@ -984,6 +1076,10 @@ id|hdev-&gt;send
 op_assign
 id|hci_vhci_send_frame
 suffix:semicolon
+id|hdev-&gt;destruct
+op_assign
+id|hci_vhci_destruct
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1007,6 +1103,8 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|file-&gt;private_data
 op_assign
 id|hci_vhci
@@ -1057,7 +1155,7 @@ OL
 l_int|0
 )paren
 (brace
-id|ERR
+id|BT_ERR
 c_func
 (paren
 l_string|&quot;Can&squot;t unregister HCI device %s&quot;
@@ -1066,12 +1164,6 @@ id|hci_vhci-&gt;hdev.name
 )paren
 suffix:semicolon
 )brace
-id|kfree
-c_func
-(paren
-id|hci_vhci
-)paren
-suffix:semicolon
 id|file-&gt;private_data
 op_assign
 l_int|NULL
@@ -1093,7 +1185,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|no_llseek
+id|hci_vhci_chr_lseek
 comma
 id|read
 suffix:colon
@@ -1148,7 +1240,7 @@ c_func
 r_void
 )paren
 (brace
-id|INF
+id|BT_INFO
 c_func
 (paren
 l_string|&quot;BlueZ VHCI driver ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
@@ -1156,7 +1248,7 @@ comma
 id|VERSION
 )paren
 suffix:semicolon
-id|INF
+id|BT_INFO
 c_func
 (paren
 l_string|&quot;Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
@@ -1173,7 +1265,7 @@ id|hci_vhci_miscdev
 )paren
 )paren
 (brace
-id|ERR
+id|BT_ERR
 c_func
 (paren
 l_string|&quot;Can&squot;t register misc device %d&bslash;n&quot;

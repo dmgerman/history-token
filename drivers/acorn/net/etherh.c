@@ -1792,6 +1792,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace
@@ -1824,6 +1825,7 @@ op_eq
 l_int|0
 )paren
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 id|serial

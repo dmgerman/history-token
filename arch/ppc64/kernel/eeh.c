@@ -4,9 +4,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|macro|BUID_HI
@@ -15,11 +15,6 @@ DECL|macro|BUID_LO
 mdefine_line|#define BUID_LO(buid) ((buid) &amp; 0xffffffff)
 DECL|macro|CONFIG_ADDR
 mdefine_line|#define CONFIG_ADDR(busno, devfn) (((((busno) &amp; 0xff) &lt;&lt; 8) | ((devfn) &amp; 0xf8)) &lt;&lt; 8)
-DECL|variable|eeh_total_mmio_reads
-r_int
-r_int
-id|eeh_total_mmio_reads
-suffix:semicolon
 DECL|variable|eeh_total_mmio_ffs
 r_int
 r_int
@@ -47,7 +42,6 @@ r_int
 id|ibm_read_slot_reset_state
 suffix:semicolon
 DECL|variable|eeh_implemented
-r_static
 r_int
 id|eeh_implemented
 suffix:semicolon
@@ -73,6 +67,9 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+r_int
+id|default_state
 )paren
 suffix:semicolon
 DECL|function|eeh_token
@@ -270,9 +267,6 @@ id|phbtab
 id|phbidx
 )braket
 suffix:semicolon
-id|eeh_false_positives
-op_increment
-suffix:semicolon
 id|ret
 op_assign
 id|rtas_call
@@ -317,10 +311,10 @@ l_int|1
 op_logical_and
 id|rets
 (braket
-l_int|2
-)braket
-op_ne
 l_int|0
+)braket
+op_ge
+l_int|2
 )paren
 (brace
 r_struct
@@ -370,14 +364,15 @@ c_cond
 (paren
 id|dev
 )paren
-id|panic
+(brace
+id|udbg_printf
 c_func
 (paren
 l_string|&quot;EEH:  MMIO failure (%ld) on device:&bslash;n  %s %s&bslash;n&quot;
 comma
 id|rets
 (braket
-l_int|2
+l_int|0
 )braket
 comma
 id|dev-&gt;slot_name
@@ -385,7 +380,79 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;EEH:  MMIO failure (%ld) on device:&bslash;n  %s %s&bslash;n&quot;
+comma
+id|rets
+(braket
+l_int|0
+)braket
+comma
+id|dev-&gt;slot_name
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+id|PPCDBG_ENTER_DEBUGGER
+c_func
+(paren
+)paren
+suffix:semicolon
+id|panic
+c_func
+(paren
+l_string|&quot;EEH:  MMIO failure (%ld) on device:&bslash;n  %s %s&bslash;n&quot;
+comma
+id|rets
+(braket
+l_int|0
+)braket
+comma
+id|dev-&gt;slot_name
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
 r_else
+(brace
+id|udbg_printf
+c_func
+(paren
+l_string|&quot;EEH:  MMIO failure (%ld) on device buid %lx, config_addr %lx&bslash;n&quot;
+comma
+id|rets
+(braket
+l_int|0
+)braket
+comma
+id|phb-&gt;buid
+comma
+id|config_addr
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;EEH:  MMIO failure (%ld) on device buid %lx, config_addr %lx&bslash;n&quot;
+comma
+id|rets
+(braket
+l_int|0
+)braket
+comma
+id|phb-&gt;buid
+comma
+id|config_addr
+)paren
+suffix:semicolon
+id|PPCDBG_ENTER_DEBUGGER
+c_func
+(paren
+)paren
+suffix:semicolon
 id|panic
 c_func
 (paren
@@ -393,7 +460,7 @@ l_string|&quot;EEH:  MMIO failure (%ld) on device buid %lx, config_addr %lx&bsla
 comma
 id|rets
 (braket
-l_int|2
+l_int|0
 )braket
 comma
 id|phb-&gt;buid
@@ -402,6 +469,10 @@ id|config_addr
 )paren
 suffix:semicolon
 )brace
+)brace
+id|eeh_false_positives
+op_increment
+suffix:semicolon
 r_return
 id|val
 suffix:semicolon
@@ -415,6 +486,37 @@ c_func
 r_void
 )paren
 (brace
+r_extern
+r_char
+id|cmd_line
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/* Very early cmd line parse.  Cheap, but works. */
+r_char
+op_star
+id|eeh_force_off
+op_assign
+id|strstr
+c_func
+(paren
+id|cmd_line
+comma
+l_string|&quot;eeh-force-off&quot;
+)paren
+suffix:semicolon
+r_char
+op_star
+id|eeh_force_on
+op_assign
+id|strstr
+c_func
+(paren
+id|cmd_line
+comma
+l_string|&quot;eeh-force-on&quot;
+)paren
+suffix:semicolon
 id|ibm_set_eeh_option
 op_assign
 id|rtas_token
@@ -445,19 +547,65 @@ c_cond
 id|ibm_set_eeh_option
 op_ne
 id|RTAS_UNKNOWN_SERVICE
+op_logical_and
+id|naca-&gt;platform
+op_eq
+id|PLATFORM_PSERIES_LPAR
 )paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;PCI Enhanced I/O Error Handling Enabled&bslash;n&quot;
-)paren
-suffix:semicolon
 id|eeh_implemented
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|eeh_force_off
+OG
+id|eeh_force_on
+)paren
+(brace
+multiline_comment|/* User is forcing EEH off.  Be noisy if it is implemented. */
+r_if
+c_cond
+(paren
+id|eeh_implemented
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;EEH: WARNING: PCI Enhanced I/O Error Handling is user disabled&bslash;n&quot;
+)paren
+suffix:semicolon
+id|eeh_implemented
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|eeh_force_on
+OG
+id|eeh_force_off
+)paren
+id|eeh_implemented
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* User is forcing it on. */
+r_if
+c_cond
+(paren
+id|eeh_implemented
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;EEH: PCI Enhanced I/O Error Handling Enabled&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Given a PCI device check if eeh should be configured or not.&n; * This may look at firmware properties and/or kernel cmdline options.&n; */
 DECL|function|is_eeh_configured
@@ -502,6 +650,15 @@ id|rets
 l_int|2
 )braket
 suffix:semicolon
+r_int
+id|eeh_capable
+suffix:semicolon
+r_int
+id|default_state
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* default enable EEH if we can. */
 r_if
 c_cond
 (paren
@@ -513,17 +670,13 @@ id|phb
 op_eq
 l_int|NULL
 op_logical_or
-id|phb-&gt;buid
-op_eq
-l_int|0
-op_logical_or
 op_logical_neg
 id|eeh_implemented
 )paren
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Hack: turn off eeh for display class devices.&n;&t; * This fixes matrox accel framebuffer.&n;&t; */
+multiline_comment|/* Hack: turn off eeh for display class devices by default.&n;&t; * This fixes matrox accel framebuffer.&n;&t; */
 r_if
 c_cond
 (paren
@@ -537,7 +690,30 @@ l_int|16
 op_eq
 id|PCI_BASE_CLASS_DISPLAY
 )paren
-r_return
+id|default_state
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Ignore known PHBs and EADs bridges */
+r_if
+c_cond
+(paren
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_IBM
+op_logical_and
+(paren
+id|dev-&gt;device
+op_eq
+l_int|0x0102
+op_logical_or
+id|dev-&gt;device
+op_eq
+l_int|0x008b
+)paren
+)paren
+id|default_state
+op_assign
 l_int|0
 suffix:semicolon
 r_if
@@ -548,11 +724,30 @@ id|eeh_check_opts_config
 c_func
 (paren
 id|dev
+comma
+id|default_state
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|default_state
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;EEH: %s %s user requested to run without EEH.&bslash;n&quot;
+comma
+id|dev-&gt;slot_name
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|ret
 op_assign
 id|rtas_call
@@ -587,8 +782,8 @@ id|phb-&gt;buid
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|eeh_capable
+op_assign
 (paren
 id|ret
 op_eq
@@ -601,23 +796,26 @@ l_int|1
 op_eq
 l_int|1
 )paren
-(brace
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;EEH: %s %s is EEH capable.&bslash;n&quot;
+l_string|&quot;EEH: %s %s is%s EEH capable.&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 comma
 id|dev-&gt;name
+comma
+id|eeh_capable
+ques
+c_cond
+l_string|&quot;&quot;
+suffix:colon
+l_string|&quot; not&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|1
-suffix:semicolon
-)brace
-r_return
-l_int|0
+id|eeh_capable
 suffix:semicolon
 )brace
 DECL|function|eeh_set_option
@@ -756,13 +954,10 @@ id|page
 comma
 l_string|&quot;eeh_false_positives=%ld&bslash;n&quot;
 l_string|&quot;eeh_total_mmio_ffs=%ld&bslash;n&quot;
-l_string|&quot;eeh_total_mmio_reads=%ld&bslash;n&quot;
 comma
 id|eeh_false_positives
 comma
 id|eeh_total_mmio_ffs
-comma
-id|eeh_total_mmio_reads
 )paren
 suffix:semicolon
 r_return
@@ -771,14 +966,13 @@ suffix:semicolon
 )brace
 multiline_comment|/* Implementation of /proc/ppc64/eeh&n; * For now it is one file showing false positives.&n; */
 DECL|function|eeh_init_proc
-r_void
+r_static
+r_int
+id|__init
 id|eeh_init_proc
 c_func
 (paren
-r_struct
-id|proc_dir_entry
-op_star
-id|top
+r_void
 )paren
 (brace
 r_struct
@@ -789,11 +983,11 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-l_string|&quot;eeh&quot;
+l_string|&quot;ppc64/eeh&quot;
 comma
 id|S_IRUGO
 comma
-id|top
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -819,8 +1013,11 @@ op_star
 id|eeh_proc_falsepositive_read
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * Test if &quot;dev&quot; should be configured on or off.&n; * This processes the options literally from right to left.&n; * This lets the user specify stupid combinations of options,&n; * but at least the result should be very predictable.&n; */
+multiline_comment|/*&n; * Test if &quot;dev&quot; should be configured on or off.&n; * This processes the options literally from left to right.&n; * This lets the user specify stupid combinations of options,&n; * but at least the result should be very predictable.&n; */
 DECL|function|eeh_check_opts_config
 r_static
 r_int
@@ -831,6 +1028,9 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+r_int
+id|default_state
 )paren
 (brace
 r_struct
@@ -889,7 +1089,7 @@ suffix:semicolon
 r_int
 id|ret
 op_assign
-l_int|0
+id|default_state
 suffix:semicolon
 r_if
 c_cond
@@ -901,13 +1101,6 @@ op_logical_or
 id|phb
 op_eq
 l_int|NULL
-op_logical_or
-id|phb-&gt;buid
-op_eq
-l_int|0
-op_logical_or
-op_logical_neg
-id|eeh_implemented
 )paren
 r_return
 l_int|0
@@ -1083,6 +1276,9 @@ op_assign
 (paren
 id|strs
 (braket
+id|i
+)braket
+(braket
 l_int|0
 )braket
 op_eq
@@ -1101,7 +1297,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* Handle kernel eeh-on &amp; eeh-off cmd line options for eeh.&n; *&n; * We support:&n; *&t;eeh-off=loc1,loc2,loc3...&n; *&n; * and this option can be repeated so&n; *      eeh-off=loc1,loc2 eeh=loc3&n; * is the same as eeh-off=loc1,loc2,loc3&n; *&n; * loc is an IBM location code that can be found in a manual or&n; * via openfirmware (or the Hardware Management Console).&n; *&n; * We also support these additional &quot;loc&quot; values:&n; *&n; *&t;dev#:#    vendor:device id in hex (e.g. dev1022:2000)&n; *&t;class#    class id in hex (e.g. class0200)&n; *&t;pci@buid  all devices under phb (e.g. pci@fef00000)&n; *&n; * If no location code is specified all devices are assumed&n; * so eeh-off means eeh by default is off.&n; */
+multiline_comment|/* Handle kernel eeh-on &amp; eeh-off cmd line options for eeh.&n; *&n; * We support:&n; *&t;eeh-off=loc1,loc2,loc3...&n; *&n; * and this option can be repeated so&n; *      eeh-off=loc1,loc2 eeh-off=loc3&n; * is the same as eeh-off=loc1,loc2,loc3&n; *&n; * loc is an IBM location code that can be found in a manual or&n; * via openfirmware (or the Hardware Management Console).&n; *&n; * We also support these additional &quot;loc&quot; values:&n; *&n; *&t;dev#:#    vendor:device id in hex (e.g. dev1022:2000)&n; *&t;class#    class id in hex (e.g. class0200)&n; *&t;pci@buid  all devices under phb (e.g. pci@fef00000)&n; *&n; * If no location code is specified all devices are assumed&n; * so eeh-off means eeh by default is off.&n; */
 multiline_comment|/* This is implemented as a null separated list of strings.&n; * Each string looks like this:  &quot;+X&quot; or &quot;-X&quot;&n; * where X is a loc code, dev, class or pci string (as shown above)&n; * or empty which is used to indicate all.&n; *&n; * We interpret this option string list during the buswalk&n; * so that it will literally behave left-to-right even if&n; * some combinations don&squot;t make sense.  Give the user exactly&n; * what they want! :)&n; */
 DECL|function|eeh_parm
 r_static
@@ -1281,14 +1477,6 @@ id|curend
 op_minus
 id|cur
 suffix:semicolon
-r_char
-op_star
-id|sym
-op_assign
-id|eeh_opts
-op_plus
-id|eeh_opts_last
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1398,6 +1586,13 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|eeh_init_proc
+id|__initcall
+c_func
+(paren
+id|eeh_init_proc
+)paren
+suffix:semicolon
 id|__setup
 c_func
 (paren

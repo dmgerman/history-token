@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pmc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -204,9 +204,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_pSeriesLP
+id|PLATFORM_PSERIES_LPAR
 )paren
 id|pSeries_lpar_make_pte
 c_func
@@ -293,7 +293,7 @@ c_func
 )paren
 suffix:semicolon
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|_naca
 op_assign
@@ -358,9 +358,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 (brace
 multiline_comment|/* Find storage for the HPT.  Must be contiguous in&n;&t;&t; * the absolute address space.&n;&t;&t; */

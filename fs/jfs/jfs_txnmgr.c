@@ -3484,7 +3484,7 @@ c_func
 id|ip
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * BUGBUG - Should we call filemap_fdatasync here instead&n;&t;&t; * of fsync_inode_data?&n;&t;&t; * If we do, we have a deadlock condition since we may end&n;&t;&t; * up recursively calling jfs_get_block with the IWRITELOCK&n;&t;&t; * held.  We may be able to do away with IWRITELOCK while&n;&t;&t; * committing transactions and use i_sem instead.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * BUGBUG - Should we call filemap_fdatawrite here instead&n;&t;&t; * of fsync_inode_data?&n;&t;&t; * If we do, we have a deadlock condition since we may end&n;&t;&t; * up recursively calling jfs_get_block with the IWRITELOCK&n;&t;&t; * held.  We may be able to do away with IWRITELOCK while&n;&t;&t; * committing transactions and use i_sem instead.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3505,12 +3505,26 @@ id|COMMIT_DELETE
 op_eq
 l_int|0
 )paren
-id|fsync_inode_data_buffers
+(brace
+id|filemap_fdatawait
 c_func
 (paren
-id|ip
+id|ip-&gt;i_mapping
 )paren
 suffix:semicolon
+id|filemap_fdatawrite
+c_func
+(paren
+id|ip-&gt;i_mapping
+)paren
+suffix:semicolon
+id|filemap_fdatawait
+c_func
+(paren
+id|ip-&gt;i_mapping
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * Mark inode as not dirty.  It will still be on the dirty&n;&t;&t; * inode list, but we&squot;ll know not to commit it again unless&n;&t;&t; * it gets marked dirty again&n;&t;&t; */
 id|clear_cflag
 c_func

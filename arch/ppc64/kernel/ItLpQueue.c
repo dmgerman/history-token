@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallEvent.h&gt;

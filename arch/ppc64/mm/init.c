@@ -33,10 +33,8 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
-macro_line|#ifdef CONFIG_PPC_EEH
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/eeh.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 DECL|macro|PGTOKB
 mdefine_line|#define&t;PGTOKB(pages)&t;(((pages) * PAGE_SIZE) &gt;&gt; 10)
@@ -63,12 +61,6 @@ DECL|variable|boot_mapsize
 r_static
 r_int
 id|boot_mapsize
-suffix:semicolon
-DECL|variable|totalram_pages
-r_static
-r_int
-r_int
-id|totalram_pages
 suffix:semicolon
 r_extern
 id|pgd_t
@@ -129,12 +121,6 @@ id|current_set
 (braket
 id|NR_CPUS
 )braket
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 r_void
 id|mm_init_ppc64
@@ -445,58 +431,16 @@ comma
 id|cached
 )paren
 suffix:semicolon
-id|show_buffers
+id|printk
+c_func
+(paren
+l_string|&quot;%ld buffermem pages&bslash;n&quot;
+comma
+id|nr_buffermem_pages
 c_func
 (paren
 )paren
-suffix:semicolon
-)brace
-DECL|function|si_meminfo
-r_void
-id|si_meminfo
-c_func
-(paren
-r_struct
-id|sysinfo
-op_star
-id|val
 )paren
-(brace
-id|val-&gt;totalram
-op_assign
-id|totalram_pages
-suffix:semicolon
-id|val-&gt;sharedram
-op_assign
-l_int|0
-suffix:semicolon
-id|val-&gt;freeram
-op_assign
-id|nr_free_pages
-c_func
-(paren
-)paren
-suffix:semicolon
-id|val-&gt;bufferram
-op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|buffermem_pages
-)paren
-suffix:semicolon
-id|val-&gt;totalhigh
-op_assign
-l_int|0
-suffix:semicolon
-id|val-&gt;freehigh
-op_assign
-l_int|0
-suffix:semicolon
-id|val-&gt;mem_unit
-op_assign
-id|PAGE_SIZE
 suffix:semicolon
 )brace
 r_void
@@ -523,7 +467,6 @@ op_star
 id|addr
 suffix:semicolon
 macro_line|#else
-macro_line|#ifdef CONFIG_PPC_EEH
 r_if
 c_cond
 (paren
@@ -546,6 +489,10 @@ id|addr
 )paren
 )paren
 r_return
+(paren
+r_void
+op_star
+)paren
 id|IO_TOKEN_TO_ADDR
 c_func
 (paren
@@ -561,7 +508,6 @@ id|addr
 suffix:semicolon
 multiline_comment|/* already mapped address or EEH token. */
 )brace
-macro_line|#endif
 r_return
 id|__ioremap
 c_func
@@ -891,12 +837,12 @@ c_func
 (paren
 id|ptep
 comma
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 id|pa
-op_amp
-id|PAGE_MASK
+op_rshift
+id|PAGE_SHIFT
 comma
 id|__pgprot
 c_func
@@ -1855,9 +1801,9 @@ r_void
 )paren
 (brace
 r_struct
-id|Paca
+id|paca_struct
 op_star
-id|paca
+id|lpaca
 suffix:semicolon
 r_int
 r_int
@@ -1935,10 +1881,10 @@ id|index
 op_increment
 )paren
 (brace
-id|paca
+id|lpaca
 op_assign
 op_amp
-id|xPaca
+id|paca
 (braket
 id|index
 )braket
@@ -1950,7 +1896,7 @@ op_assign
 r_int
 r_int
 )paren
-id|paca
+id|lpaca
 )paren
 op_plus
 l_int|0x1000

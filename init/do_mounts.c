@@ -2083,6 +2083,8 @@ c_func
 l_string|&quot;/dev/root&quot;
 comma
 id|O_RDWR
+op_or
+id|O_NDELAY
 comma
 l_int|0
 )paren
@@ -4238,6 +4240,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+op_logical_neg
 id|error
 ques
 c_cond

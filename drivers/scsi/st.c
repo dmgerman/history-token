@@ -1,11 +1,11 @@
-multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file README.st for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2002 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Wed Jan 23 20:22:42 2002 by makisara&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n; */
+multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file README.st for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2002 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Tue Feb  5 21:25:55 2002 by makisara&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n; */
 DECL|variable|verstr
 r_static
 r_char
 op_star
 id|verstr
 op_assign
-l_string|&quot;20020123&quot;
+l_string|&quot;20020205&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -10680,7 +10680,7 @@ DECL|macro|MODE_SENSE_OMIT_BDESCS
 mdefine_line|#define MODE_SENSE_OMIT_BDESCS 0x08
 DECL|macro|MODE_SELECT_PAGE_FORMAT
 mdefine_line|#define MODE_SELECT_PAGE_FORMAT 0x10
-multiline_comment|/* Read a mode page into the tape buffer. The block descriptors are included&n;   if incl_block_descs is true. */
+multiline_comment|/* Read a mode page into the tape buffer. The block descriptors are included&n;   if incl_block_descs is true. The page control is ored to the page number&n;   parameter, if necessary. */
 DECL|function|read_mode_page
 r_static
 r_int

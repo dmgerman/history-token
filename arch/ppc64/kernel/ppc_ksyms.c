@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/elfcore.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/nvram.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -39,6 +38,9 @@ macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#ifdef CONFIG_PPC_ISERIES
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
+macro_line|#include &lt;asm/iSeries/mf.h&gt;
+macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
+macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 macro_line|#endif
 multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
 DECL|macro|EXPORT_SYMTAB_STROPS
@@ -620,6 +622,41 @@ c_func
 id|HvCall7
 )paren
 suffix:semicolon
+DECL|variable|HvLpEvent_unregisterHandler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|HvLpEvent_unregisterHandler
+)paren
+suffix:semicolon
+DECL|variable|HvLpEvent_registerHandler
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|HvLpEvent_registerHandler
+)paren
+suffix:semicolon
+DECL|variable|mf_allocateLpEvents
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mf_allocateLpEvents
+)paren
+suffix:semicolon
+DECL|variable|mf_deallocateLpEvents
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mf_deallocateLpEvents
+)paren
+suffix:semicolon
+DECL|variable|HvLpConfig_getLpIndex_outline
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|HvLpConfig_getLpIndex_outline
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|variable|_insb
 id|EXPORT_SYMBOL
@@ -820,7 +857,7 @@ id|iSeries_Write_Byte
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_ISERIES */
-macro_line|#ifdef CONFIG_PPC_EEH
+macro_line|#ifndef CONFIG_PPC_ISERIES
 DECL|variable|eeh_check_failure
 id|EXPORT_SYMBOL
 c_func
@@ -835,14 +872,7 @@ c_func
 id|eeh_total_mmio_ffs
 )paren
 suffix:semicolon
-DECL|variable|eeh_total_mmio_reads
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|eeh_total_mmio_reads
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PPC_EEH */
+macro_line|#endif /* CONFIG_PPC_ISERIES */
 macro_line|#endif /* CONFIG_PCI */
 DECL|variable|iSeries_veth_dev
 id|EXPORT_SYMBOL
@@ -988,15 +1018,6 @@ id|__no_use_cli
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#ifndef CONFIG_MACH_SPECIFIC
-DECL|variable|_machine
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|_machine
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|ppc_md
 id|EXPORT_SYMBOL
 c_func
@@ -1060,22 +1081,6 @@ c_func
 id|get_property
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NVRAM
-DECL|variable|nvram_read_byte
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nvram_read_byte
-)paren
-suffix:semicolon
-DECL|variable|nvram_write_byte
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nvram_write_byte
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_NVRAM */
 DECL|variable|__ashrdi3
 id|EXPORT_SYMBOL_NOVERS
 c_func

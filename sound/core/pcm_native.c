@@ -4598,6 +4598,9 @@ id|state
 op_assign
 id|READY
 suffix:semicolon
+id|snd_pcm_uframes_t
+id|stop_threshold
+suffix:semicolon
 id|snd_assert
 c_func
 (paren
@@ -4642,6 +4645,23 @@ c_func
 op_amp
 id|runtime-&gt;lock
 )paren
+suffix:semicolon
+multiline_comment|/* stop_threshold fixup to avoid endless loop when */
+multiline_comment|/* stop_threshold &gt; buffer_size */
+id|stop_threshold
+op_assign
+id|runtime-&gt;stop_threshold
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|runtime-&gt;stop_threshold
+OG
+id|runtime-&gt;buffer_size
+)paren
+id|runtime-&gt;stop_threshold
+op_assign
+id|runtime-&gt;buffer_size
 suffix:semicolon
 r_switch
 c_cond
@@ -5036,6 +5056,10 @@ suffix:semicolon
 )brace
 id|_end
 suffix:colon
+id|runtime-&gt;stop_threshold
+op_assign
+id|stop_threshold
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren

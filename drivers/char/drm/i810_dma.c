@@ -1011,7 +1011,7 @@ id|address
 )paren
 )paren
 suffix:semicolon
-id|LockPage
+id|SetPageLocked
 c_func
 (paren
 id|virt_to_page
@@ -1063,7 +1063,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|p

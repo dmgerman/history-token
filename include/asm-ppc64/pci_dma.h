@@ -210,11 +210,16 @@ id|u8
 id|virtualBusFlag
 suffix:semicolon
 multiline_comment|/* Flag to indicate virtual bus */
+DECL|member|logicalSlot
+id|u8
+id|logicalSlot
+suffix:semicolon
+multiline_comment|/* IOA Tce Slot Index */
 DECL|member|rsvd
 id|u8
 id|rsvd
 (braket
-l_int|5
+l_int|4
 )braket
 suffix:semicolon
 )brace
@@ -231,6 +236,15 @@ id|create_tce_tables
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|create_pci_bus_tce_table
+c_func
+(paren
+r_int
+r_int
 )paren
 suffix:semicolon
 r_void

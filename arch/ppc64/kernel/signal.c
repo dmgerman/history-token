@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/ppc32.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;

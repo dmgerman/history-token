@@ -30,8 +30,6 @@ mdefine_line|#define MAX_LOOPS 10000
 multiline_comment|/* NFTL block device stuff */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR NFTL_MAJOR
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST nftl_request
 DECL|macro|DEVICE_OFF
 mdefine_line|#define DEVICE_OFF(device)
 macro_line|#include &lt;linux/blk.h&gt;
@@ -42,14 +40,6 @@ DECL|variable|nftl_sizes
 r_static
 r_int
 id|nftl_sizes
-(braket
-l_int|256
-)braket
-suffix:semicolon
-DECL|variable|nftl_blocksizes
-r_static
-r_int
-id|nftl_blocksizes
 (braket
 l_int|256
 )braket
@@ -462,7 +452,6 @@ l_int|16
 op_assign
 id|nftl-&gt;nr_sects
 suffix:semicolon
-singleline_comment|//nftl_blocksizes[firstfree*16] = 512;
 id|part_table
 (braket
 id|firstfree
@@ -4067,37 +4056,6 @@ comma
 op_amp
 id|nftl_request
 )paren
-suffix:semicolon
-multiline_comment|/* set block size to 1kB each */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|256
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|nftl_blocksizes
-(braket
-id|i
-)braket
-op_assign
-l_int|1024
-suffix:semicolon
-)brace
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|nftl_blocksizes
 suffix:semicolon
 id|add_gendisk
 c_func

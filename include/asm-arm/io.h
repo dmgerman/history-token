@@ -559,7 +559,7 @@ id|rw
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
-macro_line|#ifdef CONFIG_DISCONTIG
+macro_line|#ifdef CONFIG_DISCONTIGMEM
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;&t;&t;&t;&t;  &bslash;&n;&t;((((page) - page_zone(page)-&gt;zone_mem_map) &lt;&lt; PAGE_SHIFT) &bslash;&n;&t;&t;  + page_zone(page)-&gt;zone_start_paddr)
 macro_line|#else

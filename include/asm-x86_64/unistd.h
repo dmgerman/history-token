@@ -608,7 +608,7 @@ c_func
 (paren
 id|__NR_semctl
 comma
-id|wrap_sys_semctl
+id|sys_semctl
 )paren
 DECL|macro|__NR_shmdt
 mdefine_line|#define __NR_shmdt                              67

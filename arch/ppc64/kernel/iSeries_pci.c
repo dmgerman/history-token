@@ -12,7 +12,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/flight_recorder.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
@@ -44,12 +44,6 @@ suffix:semicolon
 r_extern
 r_int
 id|panic_timeout
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 r_extern
 r_struct
@@ -1680,7 +1674,7 @@ id|HvRc
 op_assign
 l_int|0
 suffix:semicolon
-r_int
+id|u8
 id|Irq
 op_assign
 l_int|0
@@ -1864,20 +1858,6 @@ l_int|0
 multiline_comment|/**********************************************************/
 multiline_comment|/* FoundDevice: 0x18.28.10 = 0x12AE                       */
 multiline_comment|/**********************************************************/
-id|HvCallPci_configStore8
-c_func
-(paren
-id|Bus
-comma
-id|SubBus
-comma
-id|AgentId
-comma
-id|PCI_INTERRUPT_LINE
-comma
-id|Irq
-)paren
-suffix:semicolon
 id|PPCDBG
 c_func
 (paren
@@ -1894,6 +1874,45 @@ comma
 id|VendorId
 )paren
 suffix:semicolon
+id|HvRc
+op_assign
+id|HvCallPci_configStore8
+c_func
+(paren
+id|Bus
+comma
+id|SubBus
+comma
+id|AgentId
+comma
+id|PCI_INTERRUPT_LINE
+comma
+id|Irq
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|HvRc
+op_ne
+l_int|0
+)paren
+(brace
+id|pci_Log_Error
+c_func
+(paren
+l_string|&quot;PciCfgStore Irq Failed!&quot;
+comma
+id|Bus
+comma
+id|SubBus
+comma
+id|AgentId
+comma
+id|HvRc
+)paren
+suffix:semicolon
+)brace
 op_increment
 id|DeviceCount
 suffix:semicolon

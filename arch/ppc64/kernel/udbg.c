@@ -4,19 +4,9 @@ DECL|macro|WANT_PPCDBG_TAB
 mdefine_line|#define WANT_PPCDBG_TAB /* Only defined here */
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
-suffix:semicolon
-r_extern
-r_int
-id|_machine
-suffix:semicolon
 DECL|struct|NS16550
 r_struct
 id|NS16550
@@ -300,9 +290,9 @@ r_else
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 )paren
 (brace
 multiline_comment|/* ToDo: switch this via ppc_md */
@@ -769,9 +759,9 @@ id|s
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 (brace
 r_int

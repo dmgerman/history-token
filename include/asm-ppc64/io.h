@@ -83,7 +83,6 @@ mdefine_line|#define outl(data,addr)&t;&t;writel(data,((unsigned long)(addr)))
 macro_line|#else
 DECL|macro|IS_MAPPED_VADDR
 mdefine_line|#define IS_MAPPED_VADDR(port)&t;((unsigned long)(port) &gt;&gt; 60UL)
-macro_line|#ifdef CONFIG_PPC_EEH
 DECL|macro|readb
 mdefine_line|#define readb(addr)&t;&t;eeh_readb((void*)(addr))  
 DECL|macro|readw
@@ -102,26 +101,6 @@ DECL|macro|memcpy_fromio
 mdefine_line|#define memcpy_fromio(a,b,c)&t;eeh_memcpy_fromio((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;eeh_memcpy_toio((void *)(a),(b),(c))
-macro_line|#else
-DECL|macro|readb
-mdefine_line|#define readb(addr)&t;&t;in_8((volatile u8 *)(addr))
-DECL|macro|writeb
-mdefine_line|#define writeb(b,addr)&t;&t;out_8((volatile u8 *)(addr), (b))
-DECL|macro|readw
-mdefine_line|#define readw(addr)&t;&t;in_le16((volatile u16 *)(addr))
-DECL|macro|readl
-mdefine_line|#define readl(addr)&t;&t;in_le32((volatile u32 *)(addr))
-DECL|macro|writew
-mdefine_line|#define writew(b,addr)&t;&t;out_le16((volatile u16 *)(addr),(b))
-DECL|macro|writel
-mdefine_line|#define writel(b,addr)&t;&t;out_le32((volatile u32 *)(addr),(b))
-DECL|macro|memset_io
-mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))
-DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(a,b,c)&t;memcpy((a),(void *)(b),(c))
-DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
-macro_line|#endif
 DECL|macro|inb
 mdefine_line|#define inb(port)&t;&t;_inb((unsigned long)port)
 DECL|macro|outb
@@ -411,7 +390,7 @@ id|addr
 suffix:semicolon
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv, for&n; * addresses in the area where the kernel has the RAM mapped.&n; */
 DECL|function|virt_to_phys
-r_extern
+r_static
 r_inline
 r_int
 r_int
@@ -461,7 +440,7 @@ id|address
 suffix:semicolon
 )brace
 DECL|function|phys_to_virt
-r_extern
+r_static
 r_inline
 r_void
 op_star
@@ -509,7 +488,7 @@ mdefine_line|#define BIO_VMERGE_BOUNDARY&t;4096
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 DECL|function|iosync
-r_extern
+r_static
 r_inline
 r_void
 id|iosync
@@ -538,7 +517,7 @@ DECL|macro|iobarrier_w
 mdefine_line|#define iobarrier_w()  eieio()
 multiline_comment|/*&n; * 8, 16 and 32 bit, big and little endian I/O operations, with barrier.&n; */
 DECL|function|in_8
-r_extern
+r_static
 r_inline
 r_int
 id|in_8
@@ -577,7 +556,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|out_8
-r_extern
+r_static
 r_inline
 r_void
 id|out_8
@@ -613,7 +592,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|in_le16
-r_extern
+r_static
 r_inline
 r_int
 id|in_le16
@@ -657,7 +636,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|in_be16
-r_extern
+r_static
 r_inline
 r_int
 id|in_be16
@@ -696,7 +675,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|out_le16
-r_extern
+r_static
 r_inline
 r_void
 id|out_le16
@@ -737,7 +716,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|out_be16
-r_extern
+r_static
 r_inline
 r_void
 id|out_be16
@@ -773,7 +752,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|in_le32
-r_extern
+r_static
 r_inline
 r_int
 id|in_le32
@@ -816,7 +795,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|in_be32
-r_extern
+r_static
 r_inline
 r_int
 id|in_be32
@@ -854,7 +833,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|out_le32
-r_extern
+r_static
 r_inline
 r_void
 id|out_le32
@@ -894,7 +873,7 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|out_be32
-r_extern
+r_static
 r_inline
 r_void
 id|out_be32
@@ -928,10 +907,8 @@ id|val
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PPC_EEH
-macro_line|#include &lt;asm/eeh.h&gt;
-macro_line|#endif
 macro_line|#ifndef CONFIG_PPC_ISERIES 
+macro_line|#include &lt;asm/eeh.h&gt;
 DECL|function|_inb
 r_static
 r_inline

@@ -17,7 +17,6 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;linux/zorro.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ariadne.h&quot;
 macro_line|#ifdef ARIADNE_DEBUG

@@ -238,7 +238,7 @@ id|HvCallHpt_findValid
 c_func
 (paren
 r_struct
-id|_HPTE
+id|HPTE
 op_star
 id|hpte
 comma
@@ -277,7 +277,7 @@ id|HvCallHpt_findNextValid
 c_func
 (paren
 r_struct
-id|_HPTE
+id|HPTE
 op_star
 id|hpte
 comma
@@ -322,7 +322,7 @@ id|HvCallHpt_get
 c_func
 (paren
 r_struct
-id|_HPTE
+id|HPTE
 op_star
 id|hpte
 comma
@@ -359,7 +359,7 @@ id|u32
 id|hBit
 comma
 r_struct
-id|_HPTE
+id|HPTE
 op_star
 id|hpte
 )paren

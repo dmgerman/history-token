@@ -95,13 +95,6 @@ macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(x)
 macro_line|#endif
-DECL|variable|blksize
-r_static
-r_int
-id|blksize
-op_assign
-l_int|2048
-suffix:semicolon
 "&f;"
 multiline_comment|/* Drive hardware/firmware characteristics&n;   Identifiers in accordance with Optics Storage documentation */
 DECL|macro|optcd_port
@@ -8400,14 +8393,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-op_amp
-id|blksize
-suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
@@ -8417,10 +8402,22 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_optcd_request
 comma
 op_amp
 id|optcd_lock
+)paren
+suffix:semicolon
+id|blk_queue_hardsect_size
+c_func
+(paren
+id|BLK_DEFAULT_QUEUE
+c_func
+(paren
+id|MAJOR_NR
+)paren
+comma
+l_int|2048
 )paren
 suffix:semicolon
 id|request_region

@@ -732,10 +732,6 @@ r_struct
 id|sk_buff_head
 id|prequeue
 suffix:semicolon
-DECL|member|memory
-r_int
-id|memory
-suffix:semicolon
 DECL|member|task
 r_struct
 id|task_struct
@@ -747,6 +743,10 @@ r_struct
 id|iovec
 op_star
 id|iov
+suffix:semicolon
+DECL|member|memory
+r_int
+id|memory
 suffix:semicolon
 DECL|member|len
 r_int

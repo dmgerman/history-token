@@ -2950,7 +2950,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|LockPage
+id|SetPageLocked
 c_func
 (paren
 id|page
@@ -3024,7 +3024,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -11532,7 +11532,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|LockPage
+id|SetPageLocked
 c_func
 (paren
 id|page
@@ -11719,7 +11719,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -14633,6 +14633,20 @@ id|ali_generic_setup
 )brace
 comma
 (brace
+id|PCI_DEVICE_ID_AL_M1644_0
+comma
+id|PCI_VENDOR_ID_AL
+comma
+id|ALI_M1644
+comma
+l_string|&quot;Ali&quot;
+comma
+l_string|&quot;M1644&quot;
+comma
+id|ali_generic_setup
+)brace
+comma
+(brace
 id|PCI_DEVICE_ID_AL_M1647_0
 comma
 id|PCI_VENDOR_ID_AL
@@ -14713,7 +14727,7 @@ id|AMD_762
 comma
 l_string|&quot;AMD&quot;
 comma
-l_string|&quot;AMD 760MP&quot;
+l_string|&quot;760MP&quot;
 comma
 id|amd_irongate_setup
 )brace

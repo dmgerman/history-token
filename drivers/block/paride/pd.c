@@ -415,12 +415,8 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR   major
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;PD&quot;
-DECL|macro|DEVICE_REQUEST
-mdefine_line|#define DEVICE_REQUEST do_pd_request
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;PD_BITS)
-DECL|macro|DEVICE_ON
-mdefine_line|#define DEVICE_ON(device)
 DECL|macro|DEVICE_OFF
 mdefine_line|#define DEVICE_OFF(device)
 macro_line|#include &lt;linux/blk.h&gt;
@@ -718,14 +714,6 @@ DECL|variable|pd_sizes
 r_static
 r_int
 id|pd_sizes
-(braket
-id|PD_DEVS
-)braket
-suffix:semicolon
-DECL|variable|pd_blocksizes
-r_static
-r_int
-id|pd_blocksizes
 (braket
 id|PD_DEVS
 )braket
@@ -1222,7 +1210,7 @@ c_func
 (paren
 id|q
 comma
-id|DEVICE_REQUEST
+id|do_pd_request
 comma
 op_amp
 id|pd_lock
@@ -1250,36 +1238,6 @@ c_func
 op_amp
 id|pd_gendisk
 )paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|PD_DEVS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|pd_blocksizes
-(braket
-id|i
-)braket
-op_assign
-l_int|1024
-suffix:semicolon
-)brace
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|pd_blocksizes
 suffix:semicolon
 id|printk
 c_func

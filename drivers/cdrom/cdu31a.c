@@ -12350,11 +12350,6 @@ id|cdu31a_setup
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|cdu31a_block_size
-r_static
-r_int
-id|cdu31a_block_size
-suffix:semicolon
 multiline_comment|/*&n; * Initialize the driver.&n; */
 DECL|function|cdu31a_init
 r_int
@@ -12948,25 +12943,11 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_cdu31a_request
 comma
 op_amp
 id|cdu31a_lock
 )paren
-suffix:semicolon
-id|cdu31a_block_size
-op_assign
-l_int|1024
-suffix:semicolon
-multiline_comment|/* 1kB default block size */
-multiline_comment|/* use &squot;mount -o block=2048&squot; */
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-op_amp
-id|cdu31a_block_size
 suffix:semicolon
 id|init_timer
 c_func

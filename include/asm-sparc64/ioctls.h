@@ -88,10 +88,10 @@ DECL|macro|TIOCMBIS
 mdefine_line|#define TIOCMBIS&t;_IOW(&squot;t&squot;, 108, int)
 DECL|macro|TIOCMSET
 mdefine_line|#define TIOCMSET&t;_IOW(&squot;t&squot;, 109, int)
-DECL|macro|__TIOCSTART
-mdefine_line|#define __TIOCSTART       _IO(&squot;t&squot;, 110) /* SunOS Specific */
-DECL|macro|__TIOCSTOP
-mdefine_line|#define __TIOCSTOP        _IO(&squot;t&squot;, 111) /* SunOS Specific */
+DECL|macro|TIOCSTART
+mdefine_line|#define TIOCSTART       _IO(&squot;t&squot;, 110)
+DECL|macro|TIOCSTOP
+mdefine_line|#define TIOCSTOP        _IO(&squot;t&squot;, 111)
 DECL|macro|TIOCPKT
 mdefine_line|#define TIOCPKT&t;&t;_IOW(&squot;t&squot;, 112, int)
 DECL|macro|TIOCNOTTY

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/limits.h&gt;
 macro_line|#include &lt;linux/umsdos_fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_struct
@@ -225,6 +226,14 @@ r_struct
 id|RDIR_FILLDIR
 id|bufk
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|bufk.filldir
 op_assign
 id|filldir
@@ -243,7 +252,8 @@ op_eq
 id|saved_root-&gt;d_inode
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|fat_readdir
 (paren
 id|filp
@@ -253,6 +263,14 @@ id|bufk
 comma
 id|rdir_filldir
 )paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Lookup into a non promoted directory.&n; * If the result is a directory, make sure we find out if it is&n; * a promoted one or not (calling umsdos_setup_dir_inode(inode)).&n; */

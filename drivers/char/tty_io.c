@@ -7717,6 +7717,18 @@ id|session
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;SAK: killed process %d&quot;
+l_string|&quot; (%s): p-&gt;session==tty-&gt;session&bslash;n&quot;
+comma
+id|p-&gt;pid
+comma
+id|p-&gt;comm
+)paren
+suffix:semicolon
 id|send_sig
 c_func
 (paren
@@ -7793,6 +7805,20 @@ id|tty
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;SAK: killed process %d&quot;
+l_string|&quot; (%s): fd#%d opened to the tty&bslash;n&quot;
+comma
+id|p-&gt;pid
+comma
+id|p-&gt;comm
+comma
+id|i
+)paren
+suffix:semicolon
 id|send_sig
 c_func
 (paren

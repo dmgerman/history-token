@@ -97,6 +97,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+id|EIEIO_ON_SMP
 l_string|&quot;1:&t;lwarx&t;%0,0,%2&t;&t;# atomic_add_return&bslash;n&bslash;&n;&t;add&t;%0,%1,%0&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%2&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 id|ISYNC_ON_SMP
 suffix:colon
@@ -201,6 +202,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+id|EIEIO_ON_SMP
 l_string|&quot;1:&t;lwarx&t;%0,0,%2&t;&t;# atomic_sub_return&bslash;n&bslash;&n;&t;subf&t;%0,%1,%0&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%2&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 id|ISYNC_ON_SMP
 suffix:colon
@@ -294,6 +296,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+id|EIEIO_ON_SMP
 l_string|&quot;1:&t;lwarx&t;%0,0,%1&t;&t;# atomic_inc_return&bslash;n&bslash;&n;&t;addic&t;%0,%0,1&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 id|ISYNC_ON_SMP
 suffix:colon
@@ -382,6 +385,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+id|EIEIO_ON_SMP
 l_string|&quot;1:&t;lwarx&t;%0,0,%1&t;&t;# atomic_dec_return&bslash;n&bslash;&n;&t;addic&t;%0,%0,-1&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 id|ISYNC_ON_SMP
 suffix:colon
@@ -429,6 +433,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+id|EIEIO_ON_SMP
 l_string|&quot;1:&t;lwarx&t;%0,0,%1&t;&t;# atomic_dec_if_positive&bslash;n&bslash;&n;&t;addic.&t;%0,%0,-1&bslash;n&bslash;&n;&t;blt-&t;2f&bslash;n&bslash;&n;&t;stwcx.&t;%0,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&quot;
 id|ISYNC_ON_SMP
 l_string|&quot;&bslash;n&bslash;&n;2:&quot;

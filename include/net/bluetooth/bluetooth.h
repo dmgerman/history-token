@@ -1,24 +1,93 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; *  $Id: bluetooth.h,v 1.6 2001/08/03 04:19:49 maxk Exp $&n; */
+multiline_comment|/*&n; *  $Id: bluetooth.h,v 1.8 2002/04/17 17:37:20 maxk Exp $&n; */
 macro_line|#ifndef __BLUETOOTH_H
 DECL|macro|__BLUETOOTH_H
 mdefine_line|#define __BLUETOOTH_H
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 macro_line|#ifndef AF_BLUETOOTH
 DECL|macro|AF_BLUETOOTH
 mdefine_line|#define AF_BLUETOOTH&t;31
 DECL|macro|PF_BLUETOOTH
 mdefine_line|#define PF_BLUETOOTH&t;AF_BLUETOOTH
 macro_line|#endif
+multiline_comment|/* Reserv for core and drivers use */
+DECL|macro|BLUEZ_SKB_RESERVE
+mdefine_line|#define BLUEZ_SKB_RESERVE       8
+macro_line|#ifndef MIN
+DECL|macro|MIN
+mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
+macro_line|#endif
 DECL|macro|BTPROTO_L2CAP
 mdefine_line|#define BTPROTO_L2CAP   0
 DECL|macro|BTPROTO_HCI
 mdefine_line|#define BTPROTO_HCI     1
+DECL|macro|BTPROTO_SCO
+mdefine_line|#define BTPROTO_SCO   &t;2
+DECL|macro|BTPROTO_RFCOMM
+mdefine_line|#define BTPROTO_RFCOMM&t;3
 DECL|macro|SOL_HCI
 mdefine_line|#define SOL_HCI     0
 DECL|macro|SOL_L2CAP
 mdefine_line|#define SOL_L2CAP   6
+DECL|macro|SOL_SCO
+mdefine_line|#define SOL_SCO     17
+DECL|macro|SOL_RFCOMM
+mdefine_line|#define SOL_RFCOMM  18
+multiline_comment|/* Debugging */
+macro_line|#ifdef CONFIG_BLUEZ_DEBUG
+DECL|macro|HCI_CORE_DEBUG
+mdefine_line|#define HCI_CORE_DEBUG&t;&t;1
+DECL|macro|HCI_SOCK_DEBUG
+mdefine_line|#define HCI_SOCK_DEBUG&t;&t;1
+DECL|macro|HCI_UART_DEBUG
+mdefine_line|#define HCI_UART_DEBUG&t;&t;1
+DECL|macro|HCI_USB_DEBUG
+mdefine_line|#define HCI_USB_DEBUG&t;&t;1
+singleline_comment|//#define HCI_DATA_DUMP&t;&t;1
+DECL|macro|L2CAP_DEBUG
+mdefine_line|#define L2CAP_DEBUG&t;&t;1
+DECL|macro|SCO_DEBUG
+mdefine_line|#define SCO_DEBUG&t;&t;1
+DECL|macro|AF_BLUETOOTH_DEBUG
+mdefine_line|#define AF_BLUETOOTH_DEBUG&t;1
+macro_line|#endif /* CONFIG_BLUEZ_DEBUG */
+r_extern
+r_void
+id|bluez_dump
+c_func
+(paren
+r_char
+op_star
+id|pref
+comma
+id|__u8
+op_star
+id|buf
+comma
+r_int
+id|count
+)paren
+suffix:semicolon
+macro_line|#if __GNUC__ &lt;= 2 &amp;&amp; __GNUC_MINOR__ &lt; 95
+DECL|macro|__func__
+mdefine_line|#define __func__ __FUNCTION__
+macro_line|#endif
+DECL|macro|BT_INFO
+mdefine_line|#define BT_INFO(fmt, arg...) printk(KERN_INFO fmt &quot;&bslash;n&quot; , ## arg)
+DECL|macro|BT_DBG
+mdefine_line|#define BT_DBG(fmt, arg...)  printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot; , __func__ , ## arg)
+DECL|macro|BT_ERR
+mdefine_line|#define BT_ERR(fmt, arg...)  printk(KERN_ERR  &quot;%s: &quot; fmt &quot;&bslash;n&quot; , __func__ , ## arg)
+macro_line|#ifdef HCI_DATA_DUMP
+DECL|macro|BT_DMP
+mdefine_line|#define BT_DMP(buf, len)    bluez_dump(__func__, buf, len)
+macro_line|#else
+DECL|macro|BT_DMP
+mdefine_line|#define BT_DMP(D...)
+macro_line|#endif
 multiline_comment|/* Connection and socket states */
 r_enum
 (brace
@@ -39,6 +108,9 @@ id|BT_LISTEN
 comma
 DECL|enumerator|BT_CONNECT
 id|BT_CONNECT
+comma
+DECL|enumerator|BT_CONNECT2
+id|BT_CONNECT2
 comma
 DECL|enumerator|BT_CONFIG
 id|BT_CONFIG
@@ -82,7 +154,9 @@ id|packed
 id|bdaddr_t
 suffix:semicolon
 DECL|macro|BDADDR_ANY
-mdefine_line|#define BDADDR_ANY ((bdaddr_t *)&quot;&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;)
+mdefine_line|#define BDADDR_ANY   (&amp;(bdaddr_t) {{0, 0, 0, 0, 0, 0}})
+DECL|macro|BDADDR_LOCAL
+mdefine_line|#define BDADDR_LOCAL (&amp;(bdaddr_t) {{0, 0, 0, 0xff, 0xff, 0xff}})
 multiline_comment|/* Copy, swap, convert BD Address */
 DECL|function|bacmp
 r_static
@@ -178,6 +252,448 @@ op_star
 id|str
 )paren
 suffix:semicolon
+multiline_comment|/* Common socket structures and functions */
+DECL|macro|bluez_sk
+mdefine_line|#define bluez_sk(__sk) ((struct bluez_sock *) __sk)
+DECL|struct|bluez_sock
+r_struct
+id|bluez_sock
+(brace
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
+DECL|member|src
+id|bdaddr_t
+id|src
+suffix:semicolon
+DECL|member|dst
+id|bdaddr_t
+id|dst
+suffix:semicolon
+DECL|member|accept_q
+r_struct
+id|list_head
+id|accept_q
+suffix:semicolon
+DECL|member|parent
+r_struct
+id|sock
+op_star
+id|parent
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|bluez_sock_list
+r_struct
+id|bluez_sock_list
+(brace
+DECL|member|head
+r_struct
+id|sock
+op_star
+id|head
+suffix:semicolon
+DECL|member|lock
+id|rwlock_t
+id|lock
+suffix:semicolon
+)brace
+suffix:semicolon
+r_int
+id|bluez_sock_register
+c_func
+(paren
+r_int
+id|proto
+comma
+r_struct
+id|net_proto_family
+op_star
+id|ops
+)paren
+suffix:semicolon
+r_int
+id|bluez_sock_unregister
+c_func
+(paren
+r_int
+id|proto
+)paren
+suffix:semicolon
+r_struct
+id|sock
+op_star
+id|bluez_sock_alloc
+c_func
+(paren
+r_struct
+id|socket
+op_star
+id|sock
+comma
+r_int
+id|proto
+comma
+r_int
+id|pi_size
+comma
+r_int
+id|prio
+)paren
+suffix:semicolon
+r_void
+id|bluez_sock_link
+c_func
+(paren
+r_struct
+id|bluez_sock_list
+op_star
+id|l
+comma
+r_struct
+id|sock
+op_star
+id|s
+)paren
+suffix:semicolon
+r_void
+id|bluez_sock_unlink
+c_func
+(paren
+r_struct
+id|bluez_sock_list
+op_star
+id|l
+comma
+r_struct
+id|sock
+op_star
+id|s
+)paren
+suffix:semicolon
+r_int
+id|bluez_sock_recvmsg
+c_func
+(paren
+r_struct
+id|socket
+op_star
+id|sock
+comma
+r_struct
+id|msghdr
+op_star
+id|msg
+comma
+r_int
+id|len
+comma
+r_int
+id|flags
+comma
+r_struct
+id|scm_cookie
+op_star
+id|scm
+)paren
+suffix:semicolon
+id|uint
+id|bluez_sock_poll
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|file
+comma
+r_struct
+id|socket
+op_star
+id|sock
+comma
+id|poll_table
+op_star
+id|wait
+)paren
+suffix:semicolon
+r_int
+id|bluez_sock_w4_connect
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_void
+id|bluez_accept_enqueue
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|parent
+comma
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+suffix:semicolon
+r_struct
+id|sock
+op_star
+id|bluez_accept_dequeue
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|parent
+comma
+r_struct
+id|socket
+op_star
+id|newsock
+)paren
+suffix:semicolon
+multiline_comment|/* Skb helpers */
+DECL|struct|bluez_skb_cb
+r_struct
+id|bluez_skb_cb
+(brace
+DECL|member|incomming
+r_int
+id|incomming
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|bluez_cb
+mdefine_line|#define bluez_cb(skb)&t;((struct bluez_skb_cb *)(skb-&gt;cb)) 
+DECL|function|bluez_skb_alloc
+r_static
+r_inline
+r_struct
+id|sk_buff
+op_star
+id|bluez_skb_alloc
+c_func
+(paren
+r_int
+r_int
+id|len
+comma
+r_int
+id|how
+)paren
+(brace
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|skb
+op_assign
+id|alloc_skb
+c_func
+(paren
+id|len
+op_plus
+id|BLUEZ_SKB_RESERVE
+comma
+id|how
+)paren
+)paren
+)paren
+(brace
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+id|BLUEZ_SKB_RESERVE
+)paren
+suffix:semicolon
+id|bluez_cb
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|incomming
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+id|skb
+suffix:semicolon
+)brace
+DECL|function|bluez_skb_send_alloc
+r_static
+r_inline
+r_struct
+id|sk_buff
+op_star
+id|bluez_skb_send_alloc
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_int
+r_int
+id|len
+comma
+r_int
+id|nb
+comma
+r_int
+op_star
+id|err
+)paren
+(brace
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|skb
+op_assign
+id|sock_alloc_send_skb
+c_func
+(paren
+id|sk
+comma
+id|len
+op_plus
+id|BLUEZ_SKB_RESERVE
+comma
+id|nb
+comma
+id|err
+)paren
+)paren
+)paren
+(brace
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+id|BLUEZ_SKB_RESERVE
+)paren
+suffix:semicolon
+id|bluez_cb
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|incomming
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+id|skb
+suffix:semicolon
+)brace
+DECL|function|skb_frags_no
+r_static
+r_inline
+r_int
+id|skb_frags_no
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_register
+r_struct
+id|sk_buff
+op_star
+id|frag
+op_assign
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|frag_list
+suffix:semicolon
+r_register
+r_int
+id|n
+op_assign
+l_int|1
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|frag
+suffix:semicolon
+id|frag
+op_assign
+id|frag-&gt;next
+comma
+id|n
+op_increment
+)paren
+suffix:semicolon
+r_return
+id|n
+suffix:semicolon
+)brace
+r_int
+id|hci_core_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|hci_core_cleanup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|hci_sock_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|hci_sock_cleanup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 id|bterr
 c_func
@@ -186,5 +702,13 @@ id|__u16
 id|code
 )paren
 suffix:semicolon
+macro_line|#ifndef MODULE_LICENSE
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(x)
+macro_line|#endif
+macro_line|#ifndef list_for_each_safe
+DECL|macro|list_for_each_safe
+mdefine_line|#define list_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, n = pos-&gt;next)
+macro_line|#endif
 macro_line|#endif /* __BLUETOOTH_H */
 eof

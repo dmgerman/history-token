@@ -30,9 +30,9 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 singleline_comment|//#undef KERN_DEBUG
 singleline_comment|//#define KERN_DEBUG &quot;&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the 0.96 register interface specification.&n; *&n; * There are lots of things to help out with here ... notably&n; * everything &quot;periodic&quot;, and of course testing with all sorts&n; * of usb 2.0 devices and configurations.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by:&n; *&t;Brad Hards&n; *&t;Rory Bolt&n; *&t;...&n; *&n; * HISTORY:&n; *&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
+multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the 0.96 register interface specification.&n; *&n; * There are lots of things to help out with here ... notably&n; * everything &quot;periodic&quot;, and of course testing with all sorts&n; * of usb 2.0 devices and configurations.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by:&n; *&t;Brad Hards&n; *&t;Rory Bolt&n; *&t;...&n; *&n; * HISTORY:&n; *&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;$Revision: 0.27 $&quot;
+mdefine_line|#define DRIVER_VERSION &quot;$Revision: 0.31 $&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -1514,6 +1514,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_return
 id|submit_async
 (paren
 id|ehci
@@ -1525,8 +1526,6 @@ id|qtd_list
 comma
 id|mem_flags
 )paren
-suffix:semicolon
-r_break
 suffix:semicolon
 r_case
 id|PIPE_INTERRUPT
@@ -1607,10 +1606,14 @@ op_minus
 id|ENOSYS
 suffix:semicolon
 macro_line|#endif /* have_split_iso */
-)brace
+r_default
+suffix:colon
+multiline_comment|/* can&squot;t happen */
 r_return
-l_int|0
+op_minus
+id|ENOSYS
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* remove from hardware lists&n; * completions normally happen asynchronously&n; */
 DECL|function|ehci_urb_dequeue
@@ -1841,7 +1844,7 @@ id|PIPE_ISOCHRONOUS
 suffix:colon
 singleline_comment|// itd or sitd ...
 singleline_comment|// wait till next completion, do it then.
-singleline_comment|// completion irqs can wait up to 128 msec,
+singleline_comment|// completion irqs can wait up to 1024 msec,
 id|urb-&gt;transfer_flags
 op_or_assign
 id|EHCI_STATE_UNLINK
@@ -1949,9 +1952,7 @@ id|ehci_qh
 op_star
 id|qh
 suffix:semicolon
-singleline_comment|// FIXME:  this might be an itd/sitd too ...
-singleline_comment|// or an interrupt urb (not on async list)
-singleline_comment|// can use &quot;union ehci_shadow&quot;
+multiline_comment|/* dev-&gt;ep never has ITDs or SITDs */
 id|qh
 op_assign
 (paren

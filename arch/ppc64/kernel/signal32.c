@@ -28,10 +28,12 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/filter.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
+macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/ipc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;asm/ppc32.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -8495,6 +8497,7 @@ id|sc-&gt;signal
 r_goto
 id|badframe
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8558,7 +8561,6 @@ op_amp
 id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 suffix:semicolon

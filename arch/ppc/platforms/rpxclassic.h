@@ -139,9 +139,9 @@ mdefine_line|#define _IO_BASE_SIZE 0x1000
 multiline_comment|/* for pcmcia sandisk */
 macro_line|#ifdef CONFIG_IDE
 DECL|macro|MAX_HWIFS
-mdefine_line|#define MAX_HWIFS 1
-DECL|macro|ide_request_irq
-mdefine_line|#define ide_request_irq(irq,hand,flg,dev,id)    request_8xxirq((irq),(hand),(flg),(dev),(id))
+macro_line|# define MAX_HWIFS 1
+DECL|macro|request_irq
+macro_line|# define request_irq(irq,hand,flg,dev,id)    request_8xxirq((irq),(hand),(flg),(dev),(id))
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Interrupt level assignments.&n;*/

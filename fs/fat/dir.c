@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/msdos_fs.h&gt;
 macro_line|#include &lt;linux/dirent.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|PRINTK
 mdefine_line|#define PRINTK(X)
@@ -2081,6 +2082,16 @@ suffix:semicolon
 id|loff_t
 id|cpos
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|cpos
 op_assign
 id|filp-&gt;f_pos
@@ -2125,8 +2136,8 @@ id|DT_DIR
 OL
 l_int|0
 )paren
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 id|cpos
 op_increment
@@ -2173,10 +2184,16 @@ op_minus
 l_int|1
 )paren
 )paren
-r_return
+(brace
+id|ret
+op_assign
 op_minus
 id|ENOENT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|bh
 op_assign
 l_int|NULL
@@ -2364,9 +2381,13 @@ comma
 id|bh
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
@@ -3504,8 +3525,15 @@ id|unicode
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|fat_readdir

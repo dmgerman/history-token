@@ -24,14 +24,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|mcd_port
 mdefine_line|#define mcd_port mcd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
 macro_line|#include &quot;mcd.h&quot;
-DECL|variable|mcd_blocksizes
-r_static
-r_int
-id|mcd_blocksizes
-(braket
-l_int|1
-)braket
-suffix:semicolon
 multiline_comment|/* I added A flag to drop to 1x speed if too many errors 0 = 1X ; 1 = 2X */
 DECL|variable|mcdDouble
 r_static
@@ -4296,13 +4288,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|mcd_blocksizes
-suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
@@ -4312,7 +4297,7 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_mcd_request
 comma
 op_amp
 id|mcd_spinlock

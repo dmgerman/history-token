@@ -22,7 +22,8 @@ id|nr
 comma
 id|__const__
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -67,7 +68,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -157,7 +159,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -247,7 +250,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -337,7 +341,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -435,7 +440,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -533,7 +539,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -632,7 +639,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -687,7 +695,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -743,7 +752,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -798,7 +808,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -871,7 +882,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -945,7 +957,8 @@ r_int
 id|nr
 comma
 r_volatile
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -1156,7 +1169,8 @@ r_int
 id|find_next_zero_bit
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -1177,7 +1191,8 @@ r_int
 id|find_next_bit
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -1198,7 +1213,8 @@ r_int
 id|find_next_zero_le_bit
 c_func
 (paren
-r_void
+r_int
+r_int
 op_star
 id|addr
 comma
@@ -1225,7 +1241,8 @@ r_int
 id|nr
 comma
 id|__const__
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -1275,7 +1292,8 @@ r_int
 r_int
 id|nr
 comma
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -1321,7 +1339,8 @@ r_int
 r_int
 id|nr
 comma
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -1370,7 +1389,8 @@ r_int
 r_int
 id|nr
 comma
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -1439,7 +1459,8 @@ r_int
 r_int
 id|nr
 comma
-r_void
+r_int
+r_int
 op_star
 id|addr
 )paren
@@ -1499,15 +1520,15 @@ id|retval
 suffix:semicolon
 )brace
 DECL|macro|ext2_set_bit
-mdefine_line|#define ext2_set_bit&t;&t;&t;__test_and_set_le_bit
+mdefine_line|#define ext2_set_bit(nr,addr) &bslash;&n;&t;__test_and_set_le_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_clear_bit
-mdefine_line|#define ext2_clear_bit&t;&t;&t;__test_and_clear_le_bit
+mdefine_line|#define ext2_clear_bit(nr, addr) &bslash;&n;&t;__test_and_clear_le_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_test_bit
-mdefine_line|#define ext2_test_bit&t;&t;&t;test_le_bit
+mdefine_line|#define ext2_test_bit(nr, addr)      test_le_bit((nr),(unsigned long*)addr)
 DECL|macro|ext2_find_first_zero_bit
-mdefine_line|#define ext2_find_first_zero_bit&t;find_first_zero_le_bit
+mdefine_line|#define ext2_find_first_zero_bit(addr, size) &bslash;&n;&t;find_first_zero_le_bit((unsigned long*)addr, size)
 DECL|macro|ext2_find_next_zero_bit
-mdefine_line|#define ext2_find_next_zero_bit&t;&t;find_next_zero_le_bit
+mdefine_line|#define ext2_find_next_zero_bit(addr, size, off) &bslash;&n;&t;find_next_zero_le_bit((unsigned long*)addr, size, off)
 DECL|macro|minix_test_and_set_bit
 mdefine_line|#define minix_test_and_set_bit(nr,addr)&t;&t;test_and_set_bit(nr,addr)
 DECL|macro|minix_set_bit

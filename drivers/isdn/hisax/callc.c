@@ -4,7 +4,7 @@ mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;hisax.h&quot;
-macro_line|#include &quot;../avmb1/capicmd.h&quot;  /* this should be moved in a common place */
+macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 macro_line|#ifdef MODULE
 DECL|macro|MOD_USE_COUNT
 mdefine_line|#define MOD_USE_COUNT ( GET_USE_COUNT (&amp;__this_module))

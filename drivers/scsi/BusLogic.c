@@ -9474,6 +9474,10 @@ id|HostAdapter
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;Register usage of the I/O Address range.  From this point onward, any&n;&t;failure will be assumed to be due to a problem with the Host Adapter,&n;&t;rather than due to having mistakenly identified this port as belonging&n;&t;to a BusLogic Host Adapter.  The I/O Address range will not be&n;&t;released, thereby preventing it from being incorrectly identified as&n;&t;any other type of Host Adapter.&n;      */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -9483,6 +9487,8 @@ id|HostAdapter-&gt;AddressCount
 comma
 l_string|&quot;BusLogic&quot;
 )paren
+)paren
+r_continue
 suffix:semicolon
 multiline_comment|/*&n;&t;Register the SCSI Host structure.&n;      */
 id|Host
@@ -9607,6 +9613,10 @@ comma
 id|HostAdapter-&gt;AddressCount
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -9616,7 +9626,45 @@ id|HostAdapter-&gt;AddressCount
 comma
 id|HostAdapter-&gt;FullModelName
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;BusLogic: Release and re-register of &quot;
+l_string|&quot;port 0x%04lx failed &bslash;n&quot;
+comma
+id|HostAdapter-&gt;IO_Address
+)paren
 suffix:semicolon
+id|BusLogic_DestroyCCBs
+c_func
+(paren
+id|HostAdapter
+)paren
+suffix:semicolon
+id|BusLogic_ReleaseResources
+c_func
+(paren
+id|HostAdapter
+)paren
+suffix:semicolon
+id|BusLogic_UnregisterHostAdapter
+c_func
+(paren
+id|HostAdapter
+)paren
+suffix:semicolon
+id|scsi_unregister
+c_func
+(paren
+id|Host
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|BusLogic_InitializeHostStructure
 c_func
 (paren
@@ -9628,6 +9676,7 @@ suffix:semicolon
 id|BusLogicHostAdapterCount
 op_increment
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace

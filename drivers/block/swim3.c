@@ -18,20 +18,6 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR&t;FLOPPY_MAJOR
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-DECL|variable|floppy_blocksizes
-r_static
-r_int
-id|floppy_blocksizes
-(braket
-l_int|2
-)braket
-op_assign
-(brace
-l_int|512
-comma
-l_int|512
-)brace
-suffix:semicolon
 DECL|variable|floppy_sizes
 r_static
 r_int
@@ -5083,18 +5069,11 @@ c_func
 id|MAJOR_NR
 )paren
 comma
-id|DEVICE_REQUEST
+id|do_fd_request
 comma
 op_amp
 id|swim3_lock
 )paren
-suffix:semicolon
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|floppy_blocksizes
 suffix:semicolon
 id|blk_size
 (braket

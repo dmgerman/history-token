@@ -25,6 +25,32 @@ id|kmem_cache_t
 op_star
 id|task_struct_cachep
 suffix:semicolon
+r_extern
+r_int
+id|copy_semundo
+c_func
+(paren
+r_int
+r_int
+id|clone_flags
+comma
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|exit_semundo
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
 multiline_comment|/* The idle threads do not count.. */
 DECL|variable|nr_threads
 r_int
@@ -1348,6 +1374,14 @@ id|mm
 op_assign
 id|oldmm
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * There are cases where the PTL is held to ensure no&n;&t;&t; * new threads start up in user mode using an mm, which&n;&t;&t; * allows optimizing out ipis; the tlb_gather_mmu code&n;&t;&t; * is an example.&n;&t;&t; */
+id|spin_unlock_wait
+c_func
+(paren
+op_amp
+id|oldmm-&gt;page_table_lock
+)paren
+suffix:semicolon
 r_goto
 id|good_mm
 suffix:semicolon
@@ -1430,15 +1464,6 @@ id|retval
 )paren
 r_goto
 id|free_pt
-suffix:semicolon
-multiline_comment|/*&n;&t; * child gets a private LDT (if there was an LDT in the parent)&n;&t; */
-id|copy_segments
-c_func
-(paren
-id|tsk
-comma
-id|mm
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2651,6 +2676,10 @@ c_func
 id|clone_flags
 )paren
 suffix:semicolon
+id|p-&gt;proc_dentry
+op_assign
+l_int|NULL
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -2859,7 +2888,7 @@ multiline_comment|/* copy all the process information */
 r_if
 c_cond
 (paren
-id|copy_files
+id|copy_semundo
 c_func
 (paren
 id|clone_flags
@@ -2869,6 +2898,20 @@ id|p
 )paren
 r_goto
 id|bad_fork_cleanup
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_files
+c_func
+(paren
+id|clone_flags
+comma
+id|p
+)paren
+)paren
+r_goto
+id|bad_fork_cleanup_semundo
 suffix:semicolon
 r_if
 c_cond
@@ -2951,10 +2994,6 @@ id|retval
 )paren
 r_goto
 id|bad_fork_cleanup_namespace
-suffix:semicolon
-id|p-&gt;semundo
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/* Our parent execution domain becomes current domain&n;&t;   These must match for thread signalling to apply */
 id|p-&gt;parent_exec_id
@@ -3236,6 +3275,14 @@ id|p
 )paren
 suffix:semicolon
 multiline_comment|/* blocking */
+id|bad_fork_cleanup_semundo
+suffix:colon
+id|exit_semundo
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 id|bad_fork_cleanup
 suffix:colon
 id|put_exec_domain

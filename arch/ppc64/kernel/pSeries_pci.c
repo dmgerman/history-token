@@ -15,11 +15,9 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
-macro_line|#ifdef CONFIG_PPC_EEH
 macro_line|#include &lt;asm/eeh.h&gt;
-macro_line|#endif
 macro_line|#include &quot;xics.h&quot;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &quot;pci.h&quot;
@@ -117,7 +115,7 @@ multiline_comment|/*************************************************************
 DECL|macro|RTAS_PCI_READ_OP
 mdefine_line|#define RTAS_PCI_READ_OP(size, type, nbytes) &bslash;&n;int __chrp &bslash;&n;rtas_read_config_##size(struct device_node *dn, int offset, type val) {  &bslash;&n;&t;unsigned long returnval = ~0L; &bslash;&n;&t;unsigned long buid; &bslash;&n;&t;unsigned int addr; &bslash;&n;&t;int ret; &bslash;&n;&t; &bslash;&n;&t;if (dn == NULL) { &bslash;&n;&t;&t;ret = -2; &bslash;&n;&t;} else if (dn-&gt;status) { &bslash;&n;&t;&t;ret = -1; &bslash;&n;&t;} else { &bslash;&n;&t;&t;addr = (dn-&gt;busno &lt;&lt; 16) | (dn-&gt;devfn &lt;&lt; 8) | offset; &bslash;&n;&t;&t;buid = dn-&gt;phb-&gt;buid; &bslash;&n;&t;&t;if (buid) { &bslash;&n;&t;&t;&t;ret = rtas_call(ibm_read_pci_config, 4, 2, &amp;returnval, addr, buid &gt;&gt; 32, buid &amp; 0xffffffff, nbytes); &bslash;&n;                        if (ret &lt; 0) &bslash;&n;                               ret = rtas_fake_read(dn, offset, nbytes, &amp;returnval); &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;ret = rtas_call(read_pci_config, 2, 2, &amp;returnval, addr, nbytes); &bslash;&n;&t;&t;} &bslash;&n;&t;} &bslash;&n;&t;*val = returnval; &bslash;&n;&t;return ret; &bslash;&n;} &bslash;&n;int __chrp &bslash;&n;rtas_pci_read_config_##size(struct pci_dev *dev, int offset, type val) {  &bslash;&n;        struct device_node *dn = pci_device_to_OF_node(dev); &bslash;&n;&t;int ret = rtas_read_config_##size(dn, offset, val); &bslash;&n;        /* udbg_printf(&quot;read bus=%x, devfn=%x, ret=%d phb=%lx, dn=%lx&bslash;n&quot;, dev-&gt;bus-&gt;number, dev-&gt;devfn, ret, dn ? dn-&gt;phb : 0, dn); */ &bslash;&n;        return ret ? PCIBIOS_DEVICE_NOT_FOUND : PCIBIOS_SUCCESSFUL; &bslash;&n;}
 DECL|macro|RTAS_PCI_WRITE_OP
-mdefine_line|#define RTAS_PCI_WRITE_OP(size, type, nbytes) &bslash;&n;int __chrp &bslash;&n;rtas_write_config_##size(struct device_node *dn, int offset, type val) { &bslash;&n;&t;unsigned long buid; &bslash;&n;&t;unsigned int addr; &bslash;&n;&t;int ret; &bslash;&n;&t; &bslash;&n;&t;if (dn == NULL) { &bslash;&n;&t;&t;ret = -2; &bslash;&n;&t;} else if (dn-&gt;status) { &bslash;&n;&t;&t;ret = -1; &bslash;&n;&t;} else { &bslash;&n;&t;&t;buid = dn-&gt;phb-&gt;buid; &bslash;&n;&t;&t;addr = (dn-&gt;busno &lt;&lt; 16) | (dn-&gt;devfn &lt;&lt; 8) | offset; &bslash;&n;&t;&t;if (buid) { &bslash;&n;&t;&t;&t;ret = rtas_call(ibm_write_pci_config, 5, 1, NULL, addr, buid &gt;&gt; 32, buid &amp; 0xffffffff, nbytes, (ulong) val); &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;ret = rtas_call(write_pci_config, 3, 1, NULL, addr, nbytes, (ulong)val); &bslash;&n;&t;&t;} &bslash;&n;&t;} &bslash;&n;&t;return ret; &bslash;&n;} &bslash;&n;int __chrp &bslash;&n;rtas_pci_write_config_##size(struct pci_dev *dev, int offset, type val) { &bslash;&n;&t;return rtas_write_config_##size(pci_device_to_OF_node(dev), offset, val); &bslash;&n;}
+mdefine_line|#define RTAS_PCI_WRITE_OP(size, type, nbytes) &bslash;&n;int __chrp &bslash;&n;rtas_write_config_##size(struct device_node *dn, int offset, type val) { &bslash;&n;&t;unsigned long buid; &bslash;&n;&t;unsigned int addr; &bslash;&n;&t;int ret; &bslash;&n;&t; &bslash;&n;&t;if (dn == NULL) { &bslash;&n;&t;&t;ret = -2; &bslash;&n;&t;} else if (dn-&gt;status) { &bslash;&n;&t;&t;ret = -1; &bslash;&n;&t;} else { &bslash;&n;&t;&t;buid = dn-&gt;phb-&gt;buid; &bslash;&n;&t;&t;addr = (dn-&gt;busno &lt;&lt; 16) | (dn-&gt;devfn &lt;&lt; 8) | offset; &bslash;&n;&t;&t;if (buid) { &bslash;&n;&t;&t;&t;ret = rtas_call(ibm_write_pci_config, 5, 1, NULL, addr, buid &gt;&gt; 32, buid &amp; 0xffffffff, nbytes, (ulong) val); &bslash;&n;&t;&t;} else { &bslash;&n;&t;&t;&t;ret = rtas_call(write_pci_config, 3, 1, NULL, addr, nbytes, (ulong)val); &bslash;&n;&t;&t;} &bslash;&n;&t;} &bslash;&n;&t;return ret; &bslash;&n;} &bslash;&n;int __chrp &bslash;&n;rtas_pci_write_config_##size(struct pci_dev *dev, int offset, type val) { &bslash;&n;&t;struct device_node*  dn = pci_device_to_OF_node(dev); &bslash;&n;&t;int  ret = rtas_write_config_##size(dn, offset, val); &bslash;&n;&t;/* udbg_printf(&quot;write bus=%x, devfn=%x, ret=%d phb=%lx, dn=%lx&bslash;n&quot;, dev-&gt;bus-&gt;number, dev-&gt;devfn, ret, dn ? dn-&gt;phb : 0, dn); */ &bslash;&n;&t;return ret ? PCIBIOS_DEVICE_NOT_FOUND : PCIBIOS_SUCCESSFUL; &bslash;&n;}
 id|RTAS_PCI_READ_OP
 c_func
 (paren
@@ -735,13 +733,11 @@ c_func
 l_string|&quot;ibm,write-pci-config&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
 id|eeh_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1313,7 +1309,15 @@ id|res-&gt;flags
 op_assign
 id|IORESOURCE_IO
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
+r_if
+c_cond
+(paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1371,7 +1375,9 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|phb-&gt;io_base_virt
 op_assign
 id|ioremap
@@ -1443,7 +1449,7 @@ id|range.size
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#endif
+)brace
 id|res-&gt;parent
 op_assign
 l_int|NULL
@@ -1574,7 +1580,15 @@ id|res-&gt;flags
 op_assign
 id|IORESOURCE_MEM
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
+r_if
+c_cond
+(paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
 id|res-&gt;start
 op_assign
 id|eeh_token
@@ -1603,7 +1617,9 @@ comma
 l_int|0xffffffff
 )paren
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|res-&gt;start
 op_assign
 id|range.parent_addr
@@ -1616,7 +1632,7 @@ id|range.size
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#endif
+)brace
 id|res-&gt;parent
 op_assign
 l_int|NULL
@@ -2136,9 +2152,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 (brace
 id|phb-&gt;cfg_addr
@@ -2375,15 +2391,6 @@ c_cond
 id|buid_vals
 op_eq
 l_int|NULL
-op_logical_or
-id|len
-OL
-l_int|2
-op_star
-r_sizeof
-(paren
-r_int
-)paren
 )paren
 (brace
 id|phb-&gt;buid
@@ -2393,7 +2400,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Big bus system.  These systems start new bus numbers under&n;&t;&t; * each phb.  Until pci domains are standard, we depend on a&n;&t;&t; * patch which makes bus numbers ints and we shift the phb&n;&t;&t; * number into the upper bits.&n;&t;&t; */
 r_struct
 id|pci_bus
 id|check
@@ -2447,6 +2453,31 @@ l_string|&quot;number, primary, secondary and subordinate are ints.&bslash;n&quo
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|2
+op_star
+r_sizeof
+(paren
+r_int
+)paren
+)paren
+id|phb-&gt;buid
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|buid_vals
+(braket
+l_int|0
+)braket
+suffix:semicolon
+singleline_comment|// Support for new OF that only has 1 integer for buid.
+r_else
 id|phb-&gt;buid
 op_assign
 (paren
@@ -2538,7 +2569,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_EEH
 r_struct
 id|device_node
 op_star
@@ -2659,6 +2689,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|is_eeh_configured
 c_func
 (paren
@@ -2669,16 +2708,6 @@ id|dev
 id|eeh_disable_bit
 op_assign
 l_int|0
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: eeh configured for %s %s&bslash;n&quot;
-comma
-id|dev-&gt;slot_name
-comma
-id|dev-&gt;name
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2697,7 +2726,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: failed to enable eeh for %s %s&bslash;n&quot;
+l_string|&quot;PCI: failed to enable EEH for %s %s&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
 comma
@@ -2728,7 +2757,7 @@ op_assign
 id|EEH_TOKEN_DISABLED
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 id|PPCDBG
 c_func
 (paren
@@ -2890,7 +2919,15 @@ op_amp
 id|IORESOURCE_IO
 )paren
 (brace
-macro_line|#ifdef CONFIG_PPC_EEH
+r_if
+c_cond
+(paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
 r_int
 r_int
 id|busno
@@ -2994,7 +3031,9 @@ id|start
 op_plus
 id|size
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 r_int
 r_int
 id|offset
@@ -3023,7 +3062,7 @@ id|end
 op_add_assign
 id|offset
 suffix:semicolon
-macro_line|#endif
+)brace
 id|PPCDBG
 c_func
 (paren
@@ -3087,7 +3126,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef CONFIG_PPC_EEH
+r_if
+c_cond
+(paren
+id|is_eeh_implemented
+c_func
+(paren
+)paren
+)paren
+(brace
 r_int
 r_int
 id|busno
@@ -3191,7 +3238,9 @@ id|start
 op_plus
 id|size
 suffix:semicolon
-macro_line|#else
+)brace
+r_else
+(brace
 id|dev-&gt;resource
 (braket
 id|i
@@ -3210,7 +3259,7 @@ id|end
 op_add_assign
 id|phb-&gt;pci_mem_offset
 suffix:semicolon
-macro_line|#endif
+)brace
 )brace
 id|PPCDBG
 c_func

@@ -141,11 +141,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
+id|bdev
 )paren
 )paren
 suffix:semicolon
@@ -1283,7 +1279,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;EXT3: failed to open journal device %s: %d&bslash;n&quot;
 comma
-id|bdevname
+id|__bdevname
 c_func
 (paren
 id|dev
@@ -1712,7 +1708,7 @@ id|sb-&gt;s_bdev
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Invalidate the journal device&squot;s buffers.  We don&squot;t want them&n;&t;&t; * floating about in memory - the physical journal device may&n;&t;&t; * hotswapped, and it breaks the `ro-after&squot; testing code.&n;&t;&t; */
-id|fsync_no_super
+id|sync_blockdev
 c_func
 (paren
 id|sbi-&gt;journal_bdev
@@ -2012,7 +2008,7 @@ id|write_super
 suffix:colon
 id|ext3_write_super
 comma
-multiline_comment|/* BKL held */
+multiline_comment|/* BKL not held. We take it. Needed? */
 id|write_super_lockfs
 suffix:colon
 id|ext3_write_super_lockfs
@@ -3487,17 +3483,13 @@ comma
 id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
 id|EXT3_SB
 c_func
 (paren
 id|sb
 )paren
 op_member_access_from_pointer
-id|s_journal-&gt;j_dev-&gt;bd_dev
-)paren
+id|s_journal-&gt;j_dev
 )paren
 )paren
 suffix:semicolon
@@ -4269,11 +4261,6 @@ id|journal_inum
 op_assign
 l_int|0
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|sb-&gt;s_dev
-suffix:semicolon
 r_int
 id|blocksize
 suffix:semicolon
@@ -4625,10 +4612,10 @@ id|sb-&gt;s_blocksize_bits
 suffix:semicolon
 id|hblock
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|dev
+id|sb-&gt;s_bdev
 )paren
 suffix:semicolon
 r_if
@@ -5958,10 +5945,10 @@ id|sb-&gt;s_blocksize
 suffix:semicolon
 id|hblock
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|j_dev
+id|bdev
 )paren
 suffix:semicolon
 r_if
@@ -5998,7 +5985,7 @@ suffix:semicolon
 id|set_blocksize
 c_func
 (paren
-id|j_dev
+id|bdev
 comma
 id|blocksize
 )paren
@@ -7137,6 +7124,11 @@ id|sb
 id|tid_t
 id|target
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7208,6 +7200,11 @@ id|sb
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * LVM calls this function before a (read-only) snapshot is created.  This&n; * gives us a chance to flush the journal completely and mark the fs clean.&n; */
 DECL|function|ext3_write_super_lockfs

@@ -121,15 +121,6 @@ op_star
 id|skb
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|indev
-suffix:semicolon
-id|indev
-op_assign
-id|skb-&gt;dev
-suffix:semicolon
 id|skb-&gt;dev
 op_assign
 id|to-&gt;dev
@@ -143,7 +134,7 @@ id|NF_BR_LOCAL_OUT
 comma
 id|skb
 comma
-id|indev
+l_int|NULL
 comma
 id|skb-&gt;dev
 comma

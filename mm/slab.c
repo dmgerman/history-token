@@ -1302,7 +1302,7 @@ id|i
 op_decrement
 )paren
 (brace
-id|PageClearSlab
+id|ClearPageSlab
 c_func
 (paren
 id|page
@@ -3869,7 +3869,7 @@ comma
 id|slabp
 )paren
 suffix:semicolon
-id|PageSetSlab
+id|SetPageSlab
 c_func
 (paren
 id|page
@@ -4711,9 +4711,9 @@ suffix:semicolon
 multiline_comment|/*&n; * Release an obj back to its cache. If the obj has a constructed&n; * state, it should be in this state _before_ it is released.&n; * - caller is responsible for the synchronization&n; */
 macro_line|#if DEBUG
 DECL|macro|CHECK_NR
-macro_line|# define CHECK_NR(pg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!VALID_PAGE(pg)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_ERR &quot;kfree: out of range ptr %lxh.&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;(unsigned long)objp);&t;&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;} &bslash;&n;&t;} while (0)
+macro_line|# define CHECK_NR(pg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!virt_addr_valid(pg)) {&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_ERR &quot;kfree: out of range ptr %lxh.&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;(unsigned long)objp);&t;&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;} &bslash;&n;&t;} while (0)
 DECL|macro|CHECK_PAGE
-macro_line|# define CHECK_PAGE(page)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;CHECK_NR(page);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!PageSlab(page)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_ERR &quot;kfree: bad ptr %lxh.&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;(unsigned long)objp);&t;&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+macro_line|# define CHECK_PAGE(addr)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct page *page = virt_to_page(addr);&t;&t;&bslash;&n;&t;&t;CHECK_NR(addr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!PageSlab(page)) {&t;&t;&t;&t;&bslash;&n;&t;&t;&t;printk(KERN_ERR &quot;kfree: bad ptr %lxh.&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;(unsigned long)objp);&t;&t;&bslash;&n;&t;&t;&t;BUG();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#else
 DECL|macro|CHECK_PAGE
 macro_line|# define CHECK_PAGE(pg)&t;do { } while (0)
@@ -4741,11 +4741,7 @@ suffix:semicolon
 id|CHECK_PAGE
 c_func
 (paren
-id|virt_to_page
-c_func
-(paren
 id|objp
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* reduces memory footprint&n;&t; *&n;&t;if (OPTIMIZE(cachep))&n;&t;&t;slabp = (void*)((unsigned long)objp&amp;(~(PAGE_SIZE-1)));&n;&t; else&n;&t; */
@@ -5107,11 +5103,7 @@ suffix:semicolon
 id|CHECK_PAGE
 c_func
 (paren
-id|virt_to_page
-c_func
-(paren
 id|objp
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -5329,11 +5321,7 @@ macro_line|#if DEBUG
 id|CHECK_PAGE
 c_func
 (paren
-id|virt_to_page
-c_func
-(paren
 id|objp
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -5414,11 +5402,7 @@ suffix:semicolon
 id|CHECK_PAGE
 c_func
 (paren
-id|virt_to_page
-c_func
-(paren
 id|objp
-)paren
 )paren
 suffix:semicolon
 id|c

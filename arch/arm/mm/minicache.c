@@ -32,7 +32,7 @@ c_func
 (paren
 id|minicache_pte
 comma
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 id|__pa
@@ -40,12 +40,14 @@ c_func
 (paren
 id|virt
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|minicache_pgprot
 )paren
 )paren
 suffix:semicolon
-id|flush_kern_tlb_page
+id|flush_tlb_kernel_page
 c_func
 (paren
 id|minicache_address

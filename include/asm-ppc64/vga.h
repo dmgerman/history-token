@@ -9,7 +9,7 @@ DECL|macro|VT_BUF_HAVE_RW
 mdefine_line|#define VT_BUF_HAVE_RW
 multiline_comment|/*&n; *  These are only needed for supporting VGA or MDA text mode, which use little&n; *  endian byte ordering.&n; *  In other cases, we can optimize by using native byte ordering and&n; *  &lt;linux/vt_buffer.h&gt; has already done the right job for us.&n; */
 DECL|function|scr_writew
-r_extern
+r_static
 r_inline
 r_void
 id|scr_writew
@@ -34,7 +34,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|scr_readw
-r_extern
+r_static
 r_inline
 id|u16
 id|scr_readw

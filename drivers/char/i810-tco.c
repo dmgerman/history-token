@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;i810-tco 0.03:&t;TCO timer driver for i810 chipsets&n; *&n; *&t;(c) Copyright 2000 kernel concepts &lt;nils@kernelconcepts.de&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.kernelconcepts.de&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither kernel concepts nor Nils Faerber admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 2000&t;kernel concepts &lt;nils@kernelconcepts.de&gt;&n; *&t;&t;&t;&t;developed for&n; *                              Jentro AG, Haar/Munich (Germany)&n; *&n; *&t;TCO timer driver for i810/i815 chipsets&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The TCO timer is implemented in the 82801AA (82801AB) chip,&n; *&t;see intel documentation from http://developer.intel.com,&n; *&t;order number 290655-003&n; *&n; *  20000710 Nils Faerber&n; *&t;Initial Version 0.01&n; *  20000728 Nils Faerber&n; *      0.02 Fix for SMI_EN-&gt;TCO_EN bit, some cleanups&n; *  20011214 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *      0.03 Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *           Didn&squot;t add timeout option as i810_margin already exists.&n; */
+multiline_comment|/*&n; *&t;i810-tco 0.04:&t;TCO timer driver for i8xx chipsets&n; *&n; *&t;(c) Copyright 2000 kernel concepts &lt;nils@kernelconcepts.de&gt;, All Rights Reserved.&n; *&t;&t;&t;&t;http://www.kernelconcepts.de&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&t;&n; *&t;Neither kernel concepts nor Nils Faerber admit liability nor provide &n; *&t;warranty for any of this software. This material is provided &n; *&t;&quot;AS-IS&quot; and at no charge.&t;&n; *&n; *&t;(c) Copyright 2000&t;kernel concepts &lt;nils@kernelconcepts.de&gt;&n; *&t;&t;&t;&t;developed for&n; *                              Jentro AG, Haar/Munich (Germany)&n; *&n; *&t;TCO timer driver for i8xx chipsets&n; *&t;based on softdog.c by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The TCO timer is implemented in the following I/O controller hubs:&n; *&t;(See the intel documentation on http://developer.intel.com.)&n; *&t;82801AA &amp; 82801AB  chip : document number 290655-003, 290677-004,&n; *&t;82801BA &amp; 82801BAM chip : document number 290687-002, 298242-005,&n; *&t;82801CA &amp; 82801CAM chip : document number 290716-001, 290718-001&n; *&n; *  20000710 Nils Faerber&n; *&t;Initial Version 0.01&n; *  20000728 Nils Faerber&n; *      0.02 Fix for SMI_EN-&gt;TCO_EN bit, some cleanups&n; *  20011214 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&t;0.03 Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&t;     Didn&squot;t add timeout option as i810_margin already exists.&n; *  20020224 Joel Becker, Wim Van Sebroeck&n; *&t;0.04 Support for 82801CA(M) chipset, timer margin needs to be &gt; 3,&n; *&t;     add support for WDIOC_SETTIMEOUT and WDIOC_GETTIMEOUT.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,14 +13,16 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;i810-tco.h&quot;
-multiline_comment|/* Just in case that the PCI vendor and device IDs are not yet defined */
-macro_line|#ifndef PCI_DEVICE_ID_INTEL_82801AA_0
-DECL|macro|PCI_DEVICE_ID_INTEL_82801AA_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_82801AA_0&t;0x2410
-macro_line|#endif
+multiline_comment|/* Module and version information */
+DECL|macro|TCO_VERSION
+mdefine_line|#define TCO_VERSION &quot;0.04&quot;
+DECL|macro|TCO_MODULE_NAME
+mdefine_line|#define TCO_MODULE_NAME &quot;i810 TCO timer&quot;
+DECL|macro|TCO_DRIVER_NAME
+mdefine_line|#define TCO_DRIVER_NAME   TCO_MODULE_NAME &quot; , &quot; TCO_VERSION
 multiline_comment|/* Default expire timeout */
 DECL|macro|TIMER_MARGIN
-mdefine_line|#define TIMER_MARGIN&t;50&t;/* steps of 0.6sec, 2&lt;n&lt;64. Default is 30 seconds */
+mdefine_line|#define TIMER_MARGIN&t;50&t;/* steps of 0.6sec, 3&lt;n&lt;64. Default is 30 seconds */
 DECL|variable|ACPIBASE
 r_static
 r_int
@@ -53,7 +55,7 @@ c_func
 (paren
 id|i810_margin
 comma
-l_string|&quot;Watchdog timeout in steps of 0.6sec, 2&lt;n&lt;64. Default = 50 (30 seconds)&quot;
+l_string|&quot;Watchdog timeout in steps of 0.6sec, 3&lt;n&lt;64. Default = 50 (30 seconds)&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
@@ -100,7 +102,7 @@ r_static
 r_int
 id|boot_status
 suffix:semicolon
-multiline_comment|/*&n; * Some i810 specific functions&n; */
+multiline_comment|/*&n; * Some TCO specific functions&n; */
 multiline_comment|/*&n; * Start the timer countdown&n; */
 DECL|function|tco_timer_start
 r_static
@@ -277,7 +279,7 @@ l_int|0x3f
 op_logical_or
 id|tmrval
 OL
-l_int|0x03
+l_int|0x04
 )paren
 r_return
 op_minus
@@ -562,13 +564,20 @@ r_int
 id|arg
 )paren
 (brace
+r_int
+id|new_margin
+comma
+id|u_margin
+suffix:semicolon
 r_static
 r_struct
 id|watchdog_info
 id|ident
 op_assign
 (brace
-l_int|0
+id|WDIOF_SETTIMEOUT
+op_or
+id|WDIOF_KEEPALIVEPING
 comma
 l_int|0
 comma
@@ -664,6 +673,111 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+r_case
+id|WDIOC_SETTIMEOUT
+suffix:colon
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|u_margin
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+id|new_margin
+op_assign
+(paren
+id|u_margin
+op_star
+l_int|10
+op_plus
+l_int|5
+)paren
+op_div
+l_int|6
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|new_margin
+OL
+l_int|4
+)paren
+op_logical_or
+(paren
+id|new_margin
+OG
+l_int|63
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tco_timer_settimer
+c_func
+(paren
+(paren
+r_int
+r_char
+)paren
+id|new_margin
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|i810_margin
+op_assign
+id|new_margin
+suffix:semicolon
+id|tco_timer_reload
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Fall */
+r_case
+id|WDIOC_GETTIMEOUT
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+(paren
+r_int
+)paren
+(paren
+id|i810_margin
+op_star
+l_int|6
+op_div
+l_int|10
+)paren
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Data for PCI driver interface&n; *&n; * This data only exists for exporting the supported&n; * PCI ids via MODULE_DEVICE_TABLE.  We do not actually&n; * register a pci_driver, because someone else might one day&n; * want to register another driver on the same PCI id.&n; */
@@ -714,6 +828,28 @@ comma
 id|PCI_VENDOR_ID_INTEL
 comma
 id|PCI_DEVICE_ID_INTEL_82801BA_10
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801CA_0
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_82801CA_12
 comma
 id|PCI_ANY_ID
 comma
@@ -856,7 +992,8 @@ l_int|0x0000
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;i810tco init: failed to get TCOBASE address&bslash;n&quot;
+id|TCO_MODULE_NAME
+l_string|&quot; init: failed to get TCOBASE address&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -916,7 +1053,8 @@ l_int|0x02
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;i810tco init: failed to reset NO_REBOOT flag, reboot disabled by hardware&bslash;n&quot;
+id|TCO_MODULE_NAME
+l_string|&quot; init: failed to reset NO_REBOOT flag, reboot disabled by hardware&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1074,7 +1212,8 @@ l_string|&quot;i810 TCO&quot;
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;i810 TCO timer: I/O address 0x%04x already in use&bslash;n&quot;
+id|TCO_MODULE_NAME
+l_string|&quot;: I/O address 0x%04x already in use&bslash;n&quot;
 comma
 id|TCOBASE
 )paren
@@ -1106,7 +1245,8 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;i810 TCO timer: cannot register miscdev&bslash;n&quot;
+id|TCO_MODULE_NAME
+l_string|&quot;: cannot register miscdev&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1130,7 +1270,8 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;i810 TCO timer: V0.03, timer margin: %d sec (0x%04x), nowayout: %d&bslash;n&quot;
+id|TCO_DRIVER_NAME
+l_string|&quot;: timer margin: %d sec (0x%04x)&bslash;n&quot;
 comma
 (paren
 r_int
@@ -1144,8 +1285,6 @@ l_int|10
 )paren
 comma
 id|TCOBASE
-comma
-id|nowayout
 )paren
 suffix:semicolon
 r_return

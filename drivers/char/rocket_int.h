@@ -195,7 +195,7 @@ mdefine_line|#define BRD460800&t;  0
 macro_line|#endif
 macro_line|#if 0
 multiline_comment|/* Old clock prescale definition and baud rates associated with it */
-mdefine_line|#define CLOCK_PRESC 0x19  */        /* mod 9 (divide by 10) prescale */
+mdefine_line|#define CLOCK_PRESC 0x19            /* mod 9 (divide by 10) prescale */
 mdefine_line|#define BRD50             4607
 mdefine_line|#define BRD75             3071
 mdefine_line|#define BRD110            2094

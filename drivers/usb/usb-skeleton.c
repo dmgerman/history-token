@@ -95,12 +95,20 @@ comma
 id|skel_table
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
+multiline_comment|/* &n; * if the user wants to use dynamic minor numbers, then we can have up to 256&n; * devices&n; */
+DECL|macro|USB_SKEL_MINOR_BASE
+mdefine_line|#define USB_SKEL_MINOR_BASE&t;0
+DECL|macro|MAX_DEVICES
+mdefine_line|#define MAX_DEVICES&t;&t;256
+macro_line|#else
 multiline_comment|/* Get a minor range for your devices from the usb maintainer */
 DECL|macro|USB_SKEL_MINOR_BASE
-mdefine_line|#define USB_SKEL_MINOR_BASE&t;200&t;
+mdefine_line|#define USB_SKEL_MINOR_BASE&t;200
 multiline_comment|/* we can have up to this number of device plugged in at once */
 DECL|macro|MAX_DEVICES
 mdefine_line|#define MAX_DEVICES&t;&t;16
+macro_line|#endif
 multiline_comment|/* Structure to hold all of our device specific stuff */
 DECL|struct|usb_skel
 r_struct
@@ -440,6 +448,10 @@ comma
 id|minor
 suffix:colon
 id|USB_SKEL_MINOR_BASE
+comma
+id|num_minors
+suffix:colon
+id|MAX_DEVICES
 comma
 id|id_table
 suffix:colon
@@ -1508,6 +1520,9 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 r_char
 id|name
 (braket
@@ -1535,13 +1550,51 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* select a &quot;subminor&quot; number (part of a minor number) */
 id|down
 (paren
 op_amp
 id|minor_table_mutex
 )paren
 suffix:semicolon
+id|retval
+op_assign
+id|usb_register_dev
+(paren
+op_amp
+id|skel_driver
+comma
+l_int|1
+comma
+op_amp
+id|minor
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+op_minus
+id|ENODEV
+)paren
+(brace
+multiline_comment|/* something prevented us from registering this driver */
+id|err
+(paren
+l_string|&quot;Not able to get a minor for this device.&quot;
+)paren
+suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
+multiline_comment|/* we could not get a dynamic minor, so lets find one of our own */
 r_for
 c_loop
 (paren
@@ -1578,7 +1631,7 @@ op_ge
 id|MAX_DEVICES
 )paren
 (brace
-id|info
+id|err
 (paren
 l_string|&quot;Too many devices plugged in, can not handle this device.&quot;
 )paren
@@ -1586,6 +1639,7 @@ suffix:semicolon
 r_goto
 m_exit
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* allocate memory for our device state and intialize it */
 id|dev
@@ -2005,9 +2059,19 @@ id|dev-&gt;minor
 suffix:semicolon
 multiline_comment|/* remove our devfs node */
 id|devfs_unregister
-c_func
 (paren
 id|dev-&gt;devfs
+)paren
+suffix:semicolon
+multiline_comment|/* give back our dynamic minor */
+id|usb_deregister_dev
+(paren
+op_amp
+id|skel_driver
+comma
+l_int|1
+comma
+id|minor
 )paren
 suffix:semicolon
 multiline_comment|/* if the device is not opened, then we clean up right now */

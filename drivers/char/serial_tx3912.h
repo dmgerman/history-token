@@ -21,7 +21,7 @@ mdefine_line|#define UART_EMPTY_INT      2  /* both trans/recv regs empty      (
 DECL|macro|UART_DMAFULL_INT
 mdefine_line|#define UART_DMAFULL_INT    1  /* DMA at end of buffer            (23, 13) */
 DECL|macro|UART_DMAHALF_INT
-mdefine_line|#define UART_DMAHALF_INT    0  /* DMA halfway through buffer */   (22, 12) */
+mdefine_line|#define UART_DMAHALF_INT    0  /* DMA halfway through buffer      (22, 12) */
 DECL|macro|UARTA_SHIFT
 mdefine_line|#define UARTA_SHIFT        22
 DECL|macro|UARTB_SHIFT

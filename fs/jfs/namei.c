@@ -3438,12 +3438,10 @@ id|mp
 )paren
 suffix:semicolon
 macro_line|#if 0
-id|mark_buffer_uptodate
+id|set_buffer_uptodate
 c_func
 (paren
 id|bp
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|mark_buffer_dirty

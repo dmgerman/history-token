@@ -766,7 +766,7 @@ l_int|0
 comma
 l_int|63
 comma
-l_int|0
+l_int|1
 )paren
 comma
 id|AD1848_DOUBLE

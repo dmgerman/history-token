@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -1906,6 +1907,7 @@ id|cheetah_deferred_trap_vector_tl1
 suffix:semicolon
 DECL|function|cheetah_ecache_flush_init
 r_void
+id|__init
 id|cheetah_ecache_flush_init
 c_func
 (paren
@@ -2599,6 +2601,7 @@ macro_line|#ifdef CONFIG_SMP
 DECL|function|cheetah_tune_scheduling
 r_int
 r_int
+id|__init
 id|cheetah_tune_scheduling
 c_func
 (paren
@@ -2613,6 +2616,74 @@ id|tick2
 comma
 id|raw
 suffix:semicolon
+r_int
+r_int
+id|flush_base
+op_assign
+id|ecache_flush_physbase
+suffix:semicolon
+r_int
+r_int
+id|flush_linesize
+op_assign
+id|ecache_flush_linesize
+suffix:semicolon
+r_int
+r_int
+id|flush_size
+op_assign
+id|ecache_flush_size
+suffix:semicolon
+multiline_comment|/* Run through the whole cache to guarentee the timed loop&n;&t; * is really displacing cache lines.&n;&t; */
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;1: subcc&t;%0, %4, %0&bslash;n&bslash;t&quot;
+l_string|&quot;   bne,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;    ldxa&t;[%2 + %0] %3, %%g0&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|flush_size
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|flush_size
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|flush_base
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_PHYS_USE_EC
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|flush_linesize
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* The flush area is 2 X Ecache-size, so cut this in half for&n;&t; * the timed loop.&n;&t; */
+id|flush_base
+op_assign
+id|ecache_flush_physbase
+suffix:semicolon
+id|flush_linesize
+op_assign
+id|ecache_flush_linesize
+suffix:semicolon
+id|flush_size
+op_assign
+id|ecache_flush_size
+op_rshift
+l_int|1
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -2625,9 +2696,38 @@ id|tick1
 )paren
 )paren
 suffix:semicolon
-id|cheetah_flush_ecache
+id|__asm__
+id|__volatile__
 c_func
 (paren
+l_string|&quot;1: subcc&t;%0, %4, %0&bslash;n&bslash;t&quot;
+l_string|&quot;   bne,pt&t;%%xcc, 1b&bslash;n&bslash;t&quot;
+l_string|&quot;    ldxa&t;[%2 + %0] %3, %%g0&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|flush_size
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|flush_size
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|flush_base
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_PHYS_USE_EC
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|flush_linesize
+)paren
 )paren
 suffix:semicolon
 id|__asm__
@@ -6514,7 +6614,7 @@ comma
 id|recoverable
 )paren
 suffix:semicolon
-multiline_comment|/* &quot;Recoverable&quot; here means we try to yank the page from ever&n;&t; * being newly used again.  This depends upon a few things:&n;&t; * 1) Must be main memory, and AFAR must be valid.&n;&t; * 2) If we trapped from use, OK.&n;&t; * 3) Else, if we trapped from kernel we must find exception&n;&t; *    table entry (ie. we have to have been accessing user&n;&t; *    space).&n;&t; *&n;&t; * If AFAR is not in main memory, or we trapped from kernel&n;&t; * and cannot find an exception table entry, it is unacceptable&n;&t; * to try and continue.&n;&t; */
+multiline_comment|/* &quot;Recoverable&quot; here means we try to yank the page from ever&n;&t; * being newly used again.  This depends upon a few things:&n;&t; * 1) Must be main memory, and AFAR must be valid.&n;&t; * 2) If we trapped from user, OK.&n;&t; * 3) Else, if we trapped from kernel we must find exception&n;&t; *    table entry (ie. we have to have been accessing user&n;&t; *    space).&n;&t; *&n;&t; * If AFAR is not in main memory, or we trapped from kernel&n;&t; * and cannot find an exception table entry, it is unacceptable&n;&t; * to try and continue.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6593,34 +6693,27 @@ c_cond
 id|recoverable
 )paren
 (brace
-r_struct
-id|page
-op_star
-id|page
-op_assign
-id|virt_to_page
-c_func
-(paren
-id|__va
-c_func
-(paren
-id|afar
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|VALID_PAGE
+id|pfn_valid
 c_func
 (paren
-id|page
+id|afar
+op_rshift
+id|PAGE_SHIFT
 )paren
 )paren
 id|get_page
 c_func
 (paren
-id|page
+id|pfn_to_page
+c_func
+(paren
+id|afar
+op_rshift
+id|PAGE_SHIFT
+)paren
 )paren
 suffix:semicolon
 r_else
@@ -8518,6 +8611,7 @@ suffix:semicolon
 multiline_comment|/* Only invoked on boot processor. */
 DECL|function|trap_init
 r_void
+id|__init
 id|trap_init
 c_func
 (paren

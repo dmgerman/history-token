@@ -1,4 +1,4 @@
-multiline_comment|/* Mode: C;&n; * ifenslave.c: Configure network interfaces for parallel routing.&n; *&n; *&t;This program controls the Linux implementation of running multiple&n; *&t;network interfaces in parallel.&n; *&n; * Usage:&t;ifenslave [-v] master-interface &lt; slave-interface [metric &lt;N&gt;] &gt; ...&n; *&n; * Author:&t;Donald Becker &lt;becker@cesdis.gsfc.nasa.gov&gt;&n; *&t;&t;Copyright 1994-1996 Donald Becker&n; *&n; *&t;&t;This program is free software; you can redistribute it&n; *&t;&t;and/or modify it under the terms of the GNU General Public&n; *&t;&t;License as published by the Free Software Foundation.&n; *&n; *&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n; *&t;Center of Excellence in Space Data and Information Sciences&n; *&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n; *&n; *  Changes :&n; *    - 2000/10/02 Willy Tarreau &lt;willy at meta-x.org&gt; :&n; *       - few fixes. Master&squot;s MAC address is now correctly taken from&n; *         the first device when not previously set ;&n; *       - detach support : call BOND_RELEASE to detach an enslaved interface.&n; *       - give a mini-howto from command-line help : # ifenslave -h&n; *&n; *    - 2001/02/16 Chad N. Tindel &lt;ctindel at ieee dot org&gt; :&n; *       - Master is now brought down before setting the MAC address.  In&n; *         the 2.4 kernel you can&squot;t change the MAC address while the device is&n; *         up because you get EBUSY.  &n; *&n; *    - 2001/09/13 Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *       - Added the ability to change the active interface on a mode 1 bond&n; *         at runtime.&n; *&n; *    - 2001/10/23 Chad N. Tindel &lt;ctindel at ieee dot org&gt; :&n; *       - No longer set the MAC address of the master.  The bond device will&n; *         take care of this itself&n; *       - Try the SIOC*** versions of the bonding ioctls before using the&n; *         old versions&n; */
+multiline_comment|/* Mode: C;&n; * ifenslave.c: Configure network interfaces for parallel routing.&n; *&n; *&t;This program controls the Linux implementation of running multiple&n; *&t;network interfaces in parallel.&n; *&n; * Usage:&t;ifenslave [-v] master-interface &lt; slave-interface [metric &lt;N&gt;] &gt; ...&n; *&n; * Author:&t;Donald Becker &lt;becker@cesdis.gsfc.nasa.gov&gt;&n; *&t;&t;Copyright 1994-1996 Donald Becker&n; *&n; *&t;&t;This program is free software; you can redistribute it&n; *&t;&t;and/or modify it under the terms of the GNU General Public&n; *&t;&t;License as published by the Free Software Foundation.&n; *&n; *&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n; *&t;Center of Excellence in Space Data and Information Sciences&n; *&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n; *&n; *  Changes :&n; *    - 2000/10/02 Willy Tarreau &lt;willy at meta-x.org&gt; :&n; *       - few fixes. Master&squot;s MAC address is now correctly taken from&n; *         the first device when not previously set ;&n; *       - detach support : call BOND_RELEASE to detach an enslaved interface.&n; *       - give a mini-howto from command-line help : # ifenslave -h&n; *&n; *    - 2001/02/16 Chad N. Tindel &lt;ctindel at ieee dot org&gt; :&n; *       - Master is now brought down before setting the MAC address.  In&n; *         the 2.4 kernel you can&squot;t change the MAC address while the device is&n; *         up because you get EBUSY.  &n; *&n; *    - 2001/09/13 Takao Indoh &lt;indou dot takao at jp dot fujitsu dot com&gt;&n; *       - Added the ability to change the active interface on a mode 1 bond&n; *         at runtime.&n; *&n; *    - 2001/10/23 Chad N. Tindel &lt;ctindel at ieee dot org&gt; :&n; *       - No longer set the MAC address of the master.  The bond device will&n; *         take care of this itself&n; *       - Try the SIOC*** versions of the bonding ioctls before using the&n; *         old versions&n; *    - 2002/02/18 Erik Habbinga &lt;erik_habbinga @ hp dot com&gt; :&n; *       - ifr2.ifr_flags was not initialized in the hwaddr_notset case,&n; *         SIOCGIFFLAGS now called before hwaddr_notset test&n; */
 DECL|variable|version
 r_static
 r_char
@@ -1190,17 +1190,6 @@ r_else
 (brace
 multiline_comment|/* attach a slave interface to the master */
 multiline_comment|/* two possibilities :&n;&t;&t;&t;   - if hwaddr_notset, do nothing.  The bond will assign the&n;&t;&t;&t;     hwaddr from it&squot;s first slave.&n;&t;&t;&t;   - if !hwaddr_notset, assign the master&squot;s hwaddr to each slave&n;&t;&t;&t;*/
-r_if
-c_cond
-(paren
-id|hwaddr_notset
-)paren
-(brace
-multiline_comment|/* we do nothing */
-)brace
-r_else
-(brace
-multiline_comment|/* we&squot;ll assign master&squot;s hwaddr to this slave */
 id|strncpy
 c_func
 (paren
@@ -1253,6 +1242,17 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|hwaddr_notset
+)paren
+(brace
+multiline_comment|/* we do nothing */
+)brace
+r_else
+(brace
+multiline_comment|/* we&squot;ll assign master&squot;s hwaddr to this slave */
 r_if
 c_cond
 (paren

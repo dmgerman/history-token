@@ -54,6 +54,8 @@ DECL|macro|CLONE_THREAD
 mdefine_line|#define CLONE_THREAD&t;0x00010000&t;/* Same thread group? */
 DECL|macro|CLONE_NEWNS
 mdefine_line|#define CLONE_NEWNS&t;0x00020000&t;/* New namespace group? */
+DECL|macro|CLONE_SYSVSEM
+mdefine_line|#define CLONE_SYSVSEM&t;0x00040000&t;/* share system V SEM_UNDO semantics */
 DECL|macro|CLONE_SIGNAL
 mdefine_line|#define CLONE_SIGNAL&t;(CLONE_SIGHAND | CLONE_THREAD)
 multiline_comment|/*&n; * These are the constant used to fake the fixed-point load-average&n; * counting. Some notes:&n; *  - 11 bit fractions expand to 22 bits by the multiplies: this gives&n; *    a load-average precision of 10 bits integer + 11 bits fractional&n; *  - if you want to count load-averages more often, you need more&n; *    precision, or rounding will get you. With 2-second counting freq,&n; *    the EXP_n values would be 1981, 2034 and 2043 if still using only&n; *    11 bit fractions.&n; */
@@ -955,17 +957,10 @@ id|locks
 suffix:semicolon
 multiline_comment|/* How many file locks are being held */
 multiline_comment|/* ipc stuff */
-DECL|member|semundo
+DECL|member|sysvsem
 r_struct
-id|sem_undo
-op_star
-id|semundo
-suffix:semicolon
-DECL|member|semsleeping
-r_struct
-id|sem_queue
-op_star
-id|semsleeping
+id|sysv_sem
+id|sysvsem
 suffix:semicolon
 multiline_comment|/* CPU-specific state of this task */
 DECL|member|thread
@@ -1066,6 +1061,12 @@ r_void
 op_star
 id|journal_info
 suffix:semicolon
+DECL|member|proc_dentry
+r_struct
+id|dentry
+op_star
+id|proc_dentry
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
@@ -1105,10 +1106,10 @@ DECL|macro|PF_MEMDIE
 mdefine_line|#define PF_MEMDIE&t;0x00001000&t;/* Killed for out-of-memory */
 DECL|macro|PF_FREE_PAGES
 mdefine_line|#define PF_FREE_PAGES&t;0x00002000&t;/* per process page freeing */
-DECL|macro|PF_NOIO
-mdefine_line|#define PF_NOIO&t;&t;0x00004000&t;/* avoid generating further I/O */
 DECL|macro|PF_FLUSHER
-mdefine_line|#define PF_FLUSHER&t;0x00008000&t;/* responsible for disk writeback */
+mdefine_line|#define PF_FLUSHER&t;0x00004000&t;/* responsible for disk writeback */
+DECL|macro|PF_RADIX_TREE
+mdefine_line|#define PF_RADIX_TREE&t;0x00008000&t;/* debug: performing radix tree alloc */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001
@@ -2913,9 +2914,7 @@ DECL|macro|next_thread
 mdefine_line|#define next_thread(p) &bslash;&n;&t;list_entry((p)-&gt;thread_group.next, struct task_struct, thread_group)
 DECL|macro|thread_group_leader
 mdefine_line|#define thread_group_leader(p)&t;(p-&gt;pid == p-&gt;tgid)
-DECL|function|unhash_process
-r_static
-r_inline
+r_extern
 r_void
 id|unhash_process
 c_func
@@ -2925,44 +2924,7 @@ id|task_struct
 op_star
 id|p
 )paren
-(brace
-id|write_lock_irq
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
 suffix:semicolon
-id|nr_threads
-op_decrement
-suffix:semicolon
-id|unhash_pid
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|REMOVE_LINKS
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|p-&gt;thread_group
-)paren
-suffix:semicolon
-id|write_unlock_irq
-c_func
-(paren
-op_amp
-id|tasklist_lock
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Protects -&gt;fs, -&gt;files, -&gt;mm, and synchronises with wait4().  Nests inside tasklist_lock */
 DECL|function|task_lock
 r_static

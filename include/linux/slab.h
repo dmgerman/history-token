@@ -242,11 +242,6 @@ suffix:semicolon
 r_extern
 id|kmem_cache_t
 op_star
-id|bh_cachep
-suffix:semicolon
-r_extern
-id|kmem_cache_t
-op_star
 id|fs_cachep
 suffix:semicolon
 r_extern

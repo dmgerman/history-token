@@ -1667,11 +1667,6 @@ id|__init_begin
 comma
 id|__init_end
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|totalram_pages
-suffix:semicolon
 r_int
 r_int
 id|nid
@@ -2109,9 +2104,15 @@ comma
 id|pgtable_cache_size
 )paren
 suffix:semicolon
-id|show_buffers
+id|printk
 c_func
 (paren
+l_string|&quot;%ld buffermem pages&bslash;n&quot;
+comma
+id|nr_buffermem_pages
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 )brace

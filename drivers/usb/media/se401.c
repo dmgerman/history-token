@@ -2536,6 +2536,7 @@ id|urb
 )paren
 (brace
 r_return
+op_minus
 id|ENOMEM
 suffix:semicolon
 )brace

@@ -571,6 +571,11 @@ r_struct
 id|list_head
 id|j_dirty_buffers
 suffix:semicolon
+DECL|member|j_dirty_buffers_lock
+id|spinlock_t
+id|j_dirty_buffers_lock
+suffix:semicolon
+multiline_comment|/* protects j_dirty_buffers */
 DECL|member|j_list_bitmap
 r_struct
 id|reiserfs_list_bitmap

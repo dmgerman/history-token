@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 DECL|variable|swaplock
@@ -1228,7 +1229,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Recheck the page count with the pagecache lock held.. */
-id|read_lock
+id|write_lock
 c_func
 (paren
 op_amp
@@ -1272,7 +1273,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|read_unlock
+id|write_unlock
 c_func
 (paren
 op_amp
@@ -1439,7 +1440,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2368,8 +2369,14 @@ id|init_mm.mm_users
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Wait for and lock page.  When do_swap_page races with&n;&t;&t; * try_to_unuse, do_swap_page can handle the fault much&n;&t;&t; * faster than try_to_unuse can locate the entry.  This&n;&t;&t; * apparently redundant &quot;wait_on_page&quot; lets try_to_unuse&n;&t;&t; * defer to do_swap_page in such a case - in some tests,&n;&t;&t; * do_swap_page and try_to_unuse repeatedly compete.&n;&t;&t; */
-id|wait_on_page
+multiline_comment|/*&n;&t;&t; * Wait for and lock page.  When do_swap_page races with&n;&t;&t; * try_to_unuse, do_swap_page can handle the fault much&n;&t;&t; * faster than try_to_unuse can locate the entry.  This&n;&t;&t; * apparently redundant &quot;wait_on_page_locked&quot; lets try_to_unuse&n;&t;&t; * defer to do_swap_page in such a case - in some tests,&n;&t;&t; * do_swap_page and try_to_unuse repeatedly compete.&n;&t;&t; */
+id|wait_on_page_locked
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|wait_on_page_writeback
 c_func
 (paren
 id|page
@@ -2714,7 +2721,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -3179,12 +3186,31 @@ c_func
 id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_mode
 )paren
 )paren
+(brace
+r_struct
+id|block_device
+op_star
+id|bdev
+suffix:semicolon
+id|bdev
+op_assign
+id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_bdev
+suffix:semicolon
+id|set_blocksize
+c_func
+(paren
+id|bdev
+comma
+id|p-&gt;old_block_size
+)paren
+suffix:semicolon
 id|bd_release
 c_func
 (paren
-id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_bdev
+id|bdev
 )paren
 suffix:semicolon
+)brace
 id|filp_close
 c_func
 (paren
@@ -3630,6 +3656,10 @@ id|p-&gt;swap_file
 op_assign
 l_int|NULL
 suffix:semicolon
+id|p-&gt;old_block_size
+op_assign
+l_int|0
+suffix:semicolon
 id|p-&gt;swap_map
 op_assign
 l_int|NULL
@@ -3808,12 +3838,20 @@ r_goto
 id|bad_swap
 suffix:semicolon
 )brace
+id|p-&gt;old_block_size
+op_assign
+id|block_size
+c_func
+(paren
+id|bdev
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|set_blocksize
 c_func
 (paren
-id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
+id|swap_file-&gt;f_dentry-&gt;d_inode-&gt;i_bdev
 comma
 id|PAGE_SIZE
 )paren
@@ -4617,12 +4655,22 @@ c_cond
 (paren
 id|bdev
 )paren
+(brace
+id|set_blocksize
+c_func
+(paren
+id|bdev
+comma
+id|p-&gt;old_block_size
+)paren
+suffix:semicolon
 id|bd_release
 c_func
 (paren
 id|bdev
 )paren
 suffix:semicolon
+)brace
 id|bad_swap_2
 suffix:colon
 id|swap_list_lock

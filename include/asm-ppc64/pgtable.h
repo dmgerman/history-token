@@ -3,7 +3,6 @@ DECL|macro|_PPC64_PGTABLE_H
 mdefine_line|#define _PPC64_PGTABLE_H
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the ppc64 hashed page table.&n; */
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* For TASK_SIZE */
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -262,7 +261,7 @@ DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x)&t;&t;((x) &gt;&gt; (20-PAGE_SHIFT))
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
 DECL|function|pte_read
-r_extern
+r_static
 r_inline
 r_int
 id|pte_read
@@ -283,7 +282,7 @@ id|_PAGE_USER
 suffix:semicolon
 )brace
 DECL|function|pte_write
-r_extern
+r_static
 r_inline
 r_int
 id|pte_write
@@ -304,7 +303,7 @@ id|_PAGE_RW
 suffix:semicolon
 )brace
 DECL|function|pte_exec
-r_extern
+r_static
 r_inline
 r_int
 id|pte_exec
@@ -325,7 +324,7 @@ id|_PAGE_EXEC
 suffix:semicolon
 )brace
 DECL|function|pte_dirty
-r_extern
+r_static
 r_inline
 r_int
 id|pte_dirty
@@ -346,7 +345,7 @@ id|_PAGE_DIRTY
 suffix:semicolon
 )brace
 DECL|function|pte_young
-r_extern
+r_static
 r_inline
 r_int
 id|pte_young
@@ -367,7 +366,7 @@ id|_PAGE_ACCESSED
 suffix:semicolon
 )brace
 DECL|function|pte_uncache
-r_extern
+r_static
 r_inline
 r_void
 id|pte_uncache
@@ -387,7 +386,7 @@ id|_PAGE_NO_CACHE
 suffix:semicolon
 )brace
 DECL|function|pte_cache
-r_extern
+r_static
 r_inline
 r_void
 id|pte_cache
@@ -408,7 +407,7 @@ id|_PAGE_NO_CACHE
 suffix:semicolon
 )brace
 DECL|function|pte_rdprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_rdprotect
@@ -432,7 +431,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_exprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_exprotect
@@ -456,7 +455,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_wrprotect
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_wrprotect
@@ -482,7 +481,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkclean
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkclean
@@ -508,7 +507,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkold
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkold
@@ -532,7 +531,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkread
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkread
@@ -555,7 +554,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkexec
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkexec
@@ -580,7 +579,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkwrite
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkwrite
@@ -603,7 +602,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkdirty
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkdirty
@@ -626,7 +625,7 @@ id|pte
 suffix:semicolon
 )brace
 DECL|function|pte_mkyoung
-r_extern
+r_static
 r_inline
 id|pte_t
 id|pte_mkyoung
@@ -983,11 +982,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Page tables may have changed.  We don&squot;t need to do anything here&n; * as entries are faulted into the hash table by the low-level&n; * data/instruction access exception handlers.&n; */
-macro_line|#if 0
-multiline_comment|/*&n; * We won&squot;t be able to use update_mmu_cache to update the &n; * hardware page table because we need to update the pte&n; * as well, but we don&squot;t get the address of the pte, only&n; * its value.&n; */
-mdefine_line|#define update_mmu_cache(vma, addr, pte)&t;do { } while (0)
-macro_line|#else
 multiline_comment|/*&n; * This gets called at the end of handling a page fault, when&n; * the kernel has put a new PTE into the page table for the process.&n; * We use it to put a corresponding HPTE into the hash table&n; * ahead of time, instead of waiting for the inevitable extra&n; * hash-table miss exception.&n; */
 r_extern
 r_void
@@ -1004,7 +998,6 @@ comma
 id|pte_t
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|SWP_TYPE
 mdefine_line|#define SWP_TYPE(entry)&t;&t;&t;(((entry).val &gt;&gt; 1) &amp; 0x3f)

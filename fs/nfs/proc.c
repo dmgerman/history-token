@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|macro|NFSDBG_FACILITY
 mdefine_line|#define NFSDBG_FACILITY&t;&t;NFSDBG_PROC
 multiline_comment|/*&n; * Bare-bones access to getattr: this is for nfs_read_super.&n; */
@@ -2067,6 +2068,11 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|arg.fh
 op_assign
 id|NFS_FH
@@ -2130,6 +2136,11 @@ c_func
 l_string|&quot;NFS reply readdir: %d&bslash;n&quot;
 comma
 id|status
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

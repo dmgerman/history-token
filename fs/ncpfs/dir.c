@@ -1824,6 +1824,11 @@ id|mtime
 op_assign
 l_int|0
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ctl.page
 op_assign
 l_int|NULL
@@ -1981,7 +1986,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|page
@@ -2126,7 +2131,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|Page_Uptodate
+id|PageUptodate
 c_func
 (paren
 id|ctl.page
@@ -2245,7 +2250,7 @@ c_func
 id|ctl.page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|ctl.page
@@ -2285,7 +2290,7 @@ c_func
 id|ctl.page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|ctl.page
@@ -2442,7 +2447,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|page
@@ -2473,7 +2478,7 @@ c_func
 id|ctl.page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|ctl.page
@@ -2488,6 +2493,11 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -2836,7 +2846,7 @@ c_func
 id|ctl.page
 )paren
 suffix:semicolon
-id|UnlockPage
+id|unlock_page
 c_func
 (paren
 id|ctl.page

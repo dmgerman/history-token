@@ -6,7 +6,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;sun3lance.c: v1.1 11/17/1999  Sam Creasey (sammy@oh.verio.com)&bslash;n&quot;
+l_string|&quot;sun3lance.c: v1.2 1/12/2001  Sam Creasey (sammy@sammy.net)&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
@@ -19,14 +19,21 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/idprom.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/sun3mmu.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/dvma.h&gt;
+macro_line|#include &lt;asm/idprom.h&gt;
+macro_line|#include &lt;asm/machines.h&gt;
+macro_line|#ifdef CONFIG_SUN3
+macro_line|#include &lt;asm/sun3mmu.h&gt;
+macro_line|#else
+macro_line|#include &lt;asm/sun3xprom.h&gt;
+macro_line|#endif
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -37,7 +44,7 @@ DECL|macro|LANCE_IRQ
 mdefine_line|#define LANCE_IRQ IRQ3
 multiline_comment|/* Debug level:&n; *  0 = silent, print only serious errors&n; *  1 = normal, print error messages&n; *  2 = debug, print debug infos&n; *  3 = debug, print even more debug infos (packet data)&n; */
 DECL|macro|LANCE_DEBUG
-mdefine_line|#define&t;LANCE_DEBUG&t;1
+mdefine_line|#define&t;LANCE_DEBUG&t;0
 macro_line|#ifdef LANCE_DEBUG
 DECL|variable|lance_debug
 r_static
@@ -274,7 +281,7 @@ DECL|member|tx_data
 r_char
 id|tx_data
 (braket
-id|RX_RING_SIZE
+id|TX_RING_SIZE
 )braket
 (braket
 id|PKT_BUF_SZ
@@ -580,6 +587,38 @@ r_static
 r_int
 id|found
 suffix:semicolon
+multiline_comment|/* check that this machine has an onboard lance */
+r_switch
+c_cond
+(paren
+id|idprom-&gt;id_machtype
+)paren
+(brace
+r_case
+id|SM_SUN3
+op_or
+id|SM_3_50
+suffix:colon
+r_case
+id|SM_SUN3
+op_or
+id|SM_3_60
+suffix:colon
+r_case
+id|SM_SUN3X
+op_or
+id|SM_3_80
+suffix:colon
+multiline_comment|/* these machines have lance */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -587,6 +626,7 @@ id|found
 )paren
 (brace
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace
@@ -609,6 +649,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_return
+op_minus
 id|ENODEV
 suffix:semicolon
 )brace
@@ -660,6 +701,7 @@ id|tmp1
 comma
 id|tmp2
 suffix:semicolon
+macro_line|#ifdef CONFIG_SUN3
 multiline_comment|/* LANCE_OBIO can be found within the IO pmeg with some effort */
 r_for
 c_loop
@@ -739,6 +781,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+id|ioaddr
+op_assign
+id|SUN3X_LANCE
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* test to see if there&squot;s really a lance here */
 multiline_comment|/* (CSRO_INIT shouldn&squot;t be readable) */
 id|ioaddr_probe
@@ -864,12 +912,7 @@ id|dev-&gt;priv
 suffix:semicolon
 id|MEM
 op_assign
-(paren
-r_struct
-id|lance_memory
-op_star
-)paren
-id|sun3_dvma_malloc
+id|dvma_malloc_align
 c_func
 (paren
 r_sizeof
@@ -877,6 +920,8 @@ r_sizeof
 r_struct
 id|lance_memory
 )paren
+comma
+l_int|0x10000
 )paren
 suffix:semicolon
 id|lp-&gt;iobase
@@ -1096,7 +1141,7 @@ l_int|0x00000000
 suffix:semicolon
 id|MEM-&gt;init.rdra
 op_assign
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 id|MEM-&gt;rx_head
@@ -1111,7 +1156,7 @@ l_int|13
 )paren
 op_or
 (paren
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 id|MEM-&gt;rx_head
@@ -1122,7 +1167,7 @@ l_int|16
 suffix:semicolon
 id|MEM-&gt;init.tdra
 op_assign
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 id|MEM-&gt;tx_head
@@ -1137,7 +1182,7 @@ l_int|13
 )paren
 op_or
 (paren
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 id|MEM-&gt;tx_head
@@ -1154,7 +1199,7 @@ comma
 (paren
 l_string|&quot;initaddr: %08lx rx_ring: %08lx tx_ring: %08lx&bslash;n&quot;
 comma
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 op_amp
@@ -1163,14 +1208,14 @@ id|MEM-&gt;init
 )paren
 )paren
 comma
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 id|MEM-&gt;rx_head
 )paren
 comma
 (paren
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 id|MEM-&gt;tx_head
@@ -1187,14 +1232,10 @@ op_increment
 op_eq
 l_int|0
 )paren
-id|DPRINTK
+id|printk
 c_func
 (paren
-l_int|1
-comma
-(paren
 id|version
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* The LANCE-specific entries in the device structure. */
@@ -1302,53 +1343,11 @@ id|CSR0
 op_assign
 id|CSR0_STOP
 suffix:semicolon
-multiline_comment|/* tell the lance the address of its init block */
-id|REGA
-c_func
-(paren
-id|CSR1
-)paren
-op_assign
-id|sun3_dvma_vtop
-c_func
-(paren
-op_amp
-(paren
-id|MEM-&gt;init
-)paren
-)paren
-suffix:semicolon
-id|REGA
-c_func
-(paren
-id|CSR2
-)paren
-op_assign
-id|sun3_dvma_vtop
-c_func
-(paren
-op_amp
-(paren
-id|MEM-&gt;init
-)paren
-)paren
-op_rshift
-l_int|16
-suffix:semicolon
 id|lance_init_ring
 c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-multiline_comment|/* Re-initialize the LANCE, and start it when done. */
-id|REGA
-c_func
-(paren
-id|CSR3
-)paren
-op_assign
-id|CSR3_BSWP
 suffix:semicolon
 multiline_comment|/* From now on, AREG is kept to point to CSR0 */
 id|REGA
@@ -1523,7 +1522,7 @@ id|i
 dot
 id|base
 op_assign
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 id|MEM-&gt;tx_data
@@ -1549,7 +1548,7 @@ dot
 id|base_hi
 op_assign
 (paren
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 id|MEM-&gt;tx_data
@@ -1602,7 +1601,7 @@ id|i
 dot
 id|base
 op_assign
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 id|MEM-&gt;rx_data
@@ -1618,7 +1617,7 @@ id|i
 dot
 id|flag
 op_assign
-id|TMD1_OWN_CHIP
+id|RMD1_OWN_CHIP
 suffix:semicolon
 id|MEM-&gt;rx_head
 (braket
@@ -1628,7 +1627,7 @@ dot
 id|base_hi
 op_assign
 (paren
-id|sun3_dvma_vtop
+id|dvma_vtob
 c_func
 (paren
 id|MEM-&gt;rx_data
@@ -1662,6 +1661,193 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* tell the card it&squot;s ether address, bytes swapped */
+id|MEM-&gt;init.hwaddr
+(braket
+l_int|0
+)braket
+op_assign
+id|dev-&gt;dev_addr
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|MEM-&gt;init.hwaddr
+(braket
+l_int|1
+)braket
+op_assign
+id|dev-&gt;dev_addr
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|MEM-&gt;init.hwaddr
+(braket
+l_int|2
+)braket
+op_assign
+id|dev-&gt;dev_addr
+(braket
+l_int|3
+)braket
+suffix:semicolon
+id|MEM-&gt;init.hwaddr
+(braket
+l_int|3
+)braket
+op_assign
+id|dev-&gt;dev_addr
+(braket
+l_int|2
+)braket
+suffix:semicolon
+id|MEM-&gt;init.hwaddr
+(braket
+l_int|4
+)braket
+op_assign
+id|dev-&gt;dev_addr
+(braket
+l_int|5
+)braket
+suffix:semicolon
+id|MEM-&gt;init.hwaddr
+(braket
+l_int|5
+)braket
+op_assign
+id|dev-&gt;dev_addr
+(braket
+l_int|4
+)braket
+suffix:semicolon
+id|MEM-&gt;init.mode
+op_assign
+l_int|0x0000
+suffix:semicolon
+id|MEM-&gt;init.filter
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0x00000000
+suffix:semicolon
+id|MEM-&gt;init.filter
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0x00000000
+suffix:semicolon
+id|MEM-&gt;init.rdra
+op_assign
+id|dvma_vtob
+c_func
+(paren
+id|MEM-&gt;rx_head
+)paren
+suffix:semicolon
+id|MEM-&gt;init.rlen
+op_assign
+(paren
+id|RX_LOG_RING_SIZE
+op_lshift
+l_int|13
+)paren
+op_or
+(paren
+id|dvma_vtob
+c_func
+(paren
+id|MEM-&gt;rx_head
+)paren
+op_rshift
+l_int|16
+)paren
+suffix:semicolon
+id|MEM-&gt;init.tdra
+op_assign
+id|dvma_vtob
+c_func
+(paren
+id|MEM-&gt;tx_head
+)paren
+suffix:semicolon
+id|MEM-&gt;init.tlen
+op_assign
+(paren
+id|TX_LOG_RING_SIZE
+op_lshift
+l_int|13
+)paren
+op_or
+(paren
+id|dvma_vtob
+c_func
+(paren
+id|MEM-&gt;tx_head
+)paren
+op_rshift
+l_int|16
+)paren
+suffix:semicolon
+multiline_comment|/* tell the lance the address of its init block */
+id|REGA
+c_func
+(paren
+id|CSR1
+)paren
+op_assign
+id|dvma_vtob
+c_func
+(paren
+op_amp
+(paren
+id|MEM-&gt;init
+)paren
+)paren
+suffix:semicolon
+id|REGA
+c_func
+(paren
+id|CSR2
+)paren
+op_assign
+id|dvma_vtob
+c_func
+(paren
+op_amp
+(paren
+id|MEM-&gt;init
+)paren
+)paren
+op_rshift
+l_int|16
+suffix:semicolon
+macro_line|#ifdef CONFIG_SUN3X
+id|REGA
+c_func
+(paren
+id|CSR3
+)paren
+op_assign
+id|CSR3_BSWP
+op_or
+id|CSR3_ACON
+op_or
+id|CSR3_BCON
+suffix:semicolon
+macro_line|#else
+id|REGA
+c_func
+(paren
+id|CSR3
+)paren
+op_assign
+id|CSR3_BSWP
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|lance_start_xmit
 r_static
@@ -1963,8 +2149,69 @@ id|AREG
 op_assign
 id|CSR0
 suffix:semicolon
-singleline_comment|//&t;DPRINTK( 2, ( &quot;%s: lance_start_xmit() called, csr0 %4.4x.&bslash;n&quot;,
-singleline_comment|//&t;&t;&t;&t;  dev-&gt;name, DREG ));
+id|DPRINTK
+c_func
+(paren
+l_int|2
+comma
+(paren
+l_string|&quot;%s: lance_start_xmit() called, csr0 %4.4x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|DREG
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_SUN3X
+multiline_comment|/* this weirdness doesn&squot;t appear on sun3... */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|DREG
+op_amp
+id|CSR0_INIT
+)paren
+)paren
+(brace
+id|DPRINTK
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;INIT not set, reinitializing...&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|REGA
+c_func
+(paren
+id|CSR0
+)paren
+op_assign
+id|CSR0_STOP
+suffix:semicolon
+id|lance_init_ring
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|REGA
+c_func
+(paren
+id|CSR0
+)paren
+op_assign
+id|CSR0_INIT
+op_or
+id|CSR0_STRT
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Fill in a Tx ring entry */
 macro_line|#if 0
 r_if
@@ -1972,7 +2219,7 @@ c_cond
 (paren
 id|lance_debug
 op_ge
-l_int|3
+l_int|2
 )paren
 (brace
 id|u_char
@@ -2220,6 +2467,26 @@ op_assign
 id|CSR0_INEA
 op_or
 id|CSR0_TDMD
+op_or
+id|CSR0_STRT
+suffix:semicolon
+id|AREG
+op_assign
+id|CSR0
+suffix:semicolon
+id|DPRINTK
+c_func
+(paren
+l_int|2
+comma
+(paren
+l_string|&quot;%s: lance_start_xmit() exiting, csr0 %4.4x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|DREG
+)paren
+)paren
 suffix:semicolon
 id|dev-&gt;trans_start
 op_assign
@@ -2358,6 +2625,11 @@ l_int|1
 suffix:semicolon
 id|still_more
 suffix:colon
+id|flush_cache_all
+c_func
+(paren
+)paren
+suffix:semicolon
 id|AREG
 op_assign
 id|CSR0
@@ -2375,6 +2647,8 @@ op_amp
 id|CSR0_TINT
 op_or
 id|CSR0_RINT
+op_or
+id|CSR0_IDON
 )paren
 suffix:semicolon
 multiline_comment|/* clear errors */

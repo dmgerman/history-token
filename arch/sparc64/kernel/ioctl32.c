@@ -68,6 +68,7 @@ macro_line|#include &lt;asm/display7seg.h&gt;
 macro_line|#include &lt;asm/watchdog.h&gt;
 macro_line|#include &lt;asm/module.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
+macro_line|#include &lt;linux/lp.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmarp.h&gt;
 macro_line|#include &lt;linux/atmclip.h&gt;
@@ -23389,6 +23390,16 @@ c_func
 (paren
 id|TIOCLINUX
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCSTART
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCSTOP
+)paren
 multiline_comment|/* Little t */
 id|COMPATIBLE_IOCTL
 c_func
@@ -23514,6 +23525,11 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|TIOCSERGETLSR
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|TIOCSLTC
 )paren
 multiline_comment|/* Big F */
 id|COMPATIBLE_IOCTL
@@ -23660,11 +23676,6 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|HDIO_SET_DMA
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|HDIO_SET_KEEPSETTINGS
 )paren
 id|COMPATIBLE_IOCTL
 c_func
@@ -24140,6 +24151,16 @@ id|SCSI_IOCTL_GET_IDLUN
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|SCSI_IOCTL_PROBE_HOST
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|SCSI_IOCTL_GET_PCI
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|SCSI_IOCTL_DOORLOCK
 )paren
 id|COMPATIBLE_IOCTL
@@ -24178,35 +24199,26 @@ c_func
 (paren
 id|TUNSETNOCSUM
 )paren
-suffix:semicolon
-DECL|variable|COMPATIBLE_IOCTL
 id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|TUNSETDEBUG
 )paren
-suffix:semicolon
-DECL|variable|TUNSETIFF
 id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|TUNSETIFF
 )paren
-suffix:semicolon
-DECL|variable|TUNSETPERSIST
 id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|TUNSETPERSIST
 )paren
-suffix:semicolon
-DECL|variable|TUNSETOWNER
 id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|TUNSETOWNER
 )paren
-suffix:semicolon
 multiline_comment|/* Big V */
 id|COMPATIBLE_IOCTL
 c_func
@@ -25026,6 +25038,11 @@ id|PPPIOCGXASYNCMAP
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|LPGETSTATUS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|PPPIOCSXASYNCMAP
 )paren
 id|COMPATIBLE_IOCTL
@@ -25099,14 +25116,11 @@ c_func
 (paren
 id|PPPOEIOCSFWD
 )paren
-suffix:semicolon
-DECL|variable|COMPATIBLE_IOCTL
 id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|PPPOEIOCDFWD
 )paren
-suffix:semicolon
 multiline_comment|/* CDROM stuff */
 id|COMPATIBLE_IOCTL
 c_func
@@ -27119,13 +27133,6 @@ id|fb_ioctl_trans
 id|HANDLE_IOCTL
 c_func
 (paren
-id|HDIO_GET_KEEPSETTINGS
-comma
-id|hdio_ioctl_trans
-)paren
-id|HANDLE_IOCTL
-c_func
-(paren
 id|HDIO_GET_UNMASKINTR
 comma
 id|hdio_ioctl_trans
@@ -27761,8 +27768,6 @@ id|DRM32_IOCTL_VERSION
 comma
 id|drm32_version
 )paren
-suffix:semicolon
-DECL|variable|HANDLE_IOCTL
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -27770,7 +27775,6 @@ id|DRM32_IOCTL_GET_UNIQUE
 comma
 id|drm32_getsetunique
 )paren
-suffix:semicolon
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -27778,7 +27782,6 @@ id|DRM32_IOCTL_SET_UNIQUE
 comma
 id|drm32_getsetunique
 )paren
-suffix:semicolon
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -27786,7 +27789,6 @@ id|DRM32_IOCTL_ADD_MAP
 comma
 id|drm32_addmap
 )paren
-suffix:semicolon
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -27794,7 +27796,6 @@ id|DRM32_IOCTL_INFO_BUFS
 comma
 id|drm32_info_bufs
 )paren
-suffix:semicolon
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -27802,7 +27803,6 @@ id|DRM32_IOCTL_FREE_BUFS
 comma
 id|drm32_free_bufs
 )paren
-suffix:semicolon
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -27810,7 +27810,6 @@ id|DRM32_IOCTL_MAP_BUFS
 comma
 id|drm32_map_bufs
 )paren
-suffix:semicolon
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -27818,7 +27817,6 @@ id|DRM32_IOCTL_DMA
 comma
 id|drm32_dma
 )paren
-suffix:semicolon
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -27826,7 +27824,6 @@ id|DRM32_IOCTL_RES_CTX
 comma
 id|drm32_res_ctx
 )paren
-suffix:semicolon
 macro_line|#endif /* DRM */
 macro_line|#if 0
 id|HANDLE_IOCTL

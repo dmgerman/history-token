@@ -2287,6 +2287,24 @@ id|snd_verbose_printk
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_SND_DEBUG) &amp;&amp; defined(CONFIG_SND_VERBOSE_PRINTK)
+DECL|variable|snd_verbose_printd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_verbose_printd
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_SND_DEBUG) &amp;&amp; !defined(CONFIG_SND_VERBOSE_PRINTK)
+DECL|variable|snd_printd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_printd
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* wrappers */
 macro_line|#ifdef CONFIG_SND_DEBUG_MEMORY
 DECL|variable|snd_wrapper_kmalloc

@@ -86,6 +86,7 @@ l_string|&quot;{IBM,PC 300PL sound},&quot;
 l_string|&quot;{IBM,Aptiva 2137 E24},&quot;
 l_string|&quot;{IBM,IntelliStation M Pro},&quot;
 l_string|&quot;{Intel,Marlin Spike Mobo CS4235},&quot;
+l_string|&quot;{Intel PR440FX Onboard},&quot;
 l_string|&quot;{Guillemot,MaxiSound 16 PnP},&quot;
 l_string|&quot;{NewClear,3D},&quot;
 l_string|&quot;{TerraTec,AudioSystem EWS64L/XL},&quot;
@@ -991,6 +992,25 @@ comma
 l_int|0x0003
 )paren
 comma
+multiline_comment|/* Intel PR440FX Onboard sound */
+id|ISAPNP_CS4232
+c_func
+(paren
+l_char|&squot;C&squot;
+comma
+l_char|&squot;S&squot;
+comma
+l_char|&squot;C&squot;
+comma
+l_int|0x0b36
+comma
+l_int|0x0000
+comma
+l_int|0x0010
+comma
+l_int|0x0003
+)paren
+comma
 multiline_comment|/* CS4235 on mainboard without MPU */
 id|ISAPNP_CS4232_WOMPU
 c_func
@@ -1733,6 +1753,13 @@ id|dev
 )braket
 op_ne
 id|SNDRV_AUTO_PORT
+op_logical_and
+id|snd_fm_port
+(braket
+id|dev
+)braket
+op_ge
+l_int|0
 )paren
 id|isapnp_resource_change
 c_func
@@ -1908,6 +1935,16 @@ l_int|0
 dot
 id|start
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|snd_fm_port
+(braket
+id|dev
+)braket
+op_ge
+l_int|0
+)paren
 id|snd_fm_port
 (braket
 id|dev
@@ -2145,6 +2182,13 @@ r_if
 c_cond
 (paren
 id|acard-&gt;mpu
+op_logical_and
+id|snd_mpu_port
+(braket
+id|dev
+)braket
+op_ge
+l_int|0
 )paren
 (brace
 id|pdev
@@ -2222,6 +2266,13 @@ id|dev
 )braket
 op_ne
 id|SNDRV_AUTO_IRQ
+op_logical_and
+id|snd_mpu_irq
+(braket
+id|dev
+)braket
+op_ge
+l_int|0
 )paren
 id|isapnp_resource_change
 c_func
@@ -2294,6 +2345,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|pdev-&gt;irq_resource
 (braket
 l_int|0
@@ -2302,6 +2354,14 @@ dot
 id|flags
 op_amp
 id|IORESOURCE_IRQ
+)paren
+op_logical_and
+id|snd_mpu_irq
+(braket
+id|dev
+)braket
+op_ge
+l_int|0
 )paren
 (brace
 id|snd_mpu_irq
@@ -3131,19 +3191,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_mpu_irq
-(braket
-id|dev
-)braket
-op_ge
-l_int|0
-op_logical_and
-id|snd_mpu_irq
+id|snd_mpu_port
 (braket
 id|dev
 )braket
 op_ne
-id|SNDRV_AUTO_IRQ
+id|SNDRV_AUTO_PORT
 )paren
 (brace
 r_if

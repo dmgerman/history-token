@@ -110,16 +110,6 @@ id|irq_nr
 suffix:semicolon
 r_static
 r_void
-id|openpic_ack_irq
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-suffix:semicolon
-r_static
-r_void
 id|openpic_set_affinity
 c_func
 (paren
@@ -148,7 +138,7 @@ id|openpic_enable_irq
 comma
 id|openpic_disable_irq
 comma
-id|openpic_ack_irq
+l_int|NULL
 comma
 id|openpic_end_irq
 comma
@@ -159,16 +149,6 @@ macro_line|#ifdef CONFIG_SMP
 r_static
 r_void
 id|openpic_end_ipi
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-suffix:semicolon
-r_static
-r_void
-id|openpic_ack_ipi
 c_func
 (paren
 r_int
@@ -212,11 +192,11 @@ id|openpic_enable_ipi
 comma
 id|openpic_disable_ipi
 comma
-id|openpic_ack_ipi
+l_int|NULL
 comma
 id|openpic_end_ipi
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
@@ -2839,19 +2819,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* No spinlocks, should not be necessary with the OpenPIC&n; * (1 register = 1 interrupt and we have the desc lock).&n; */
-DECL|function|openpic_ack_irq
-r_static
-r_void
-id|openpic_ack_irq
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-(brace
-)brace
 DECL|function|openpic_end_irq
 r_static
 r_void
@@ -2916,18 +2883,6 @@ id|cpumask
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-DECL|function|openpic_ack_ipi
-r_static
-r_void
-id|openpic_ack_ipi
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-(brace
-)brace
 DECL|function|openpic_end_ipi
 r_static
 r_void

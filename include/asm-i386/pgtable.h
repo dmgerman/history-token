@@ -155,13 +155,8 @@ DECL|macro|__PAGE_KERNEL_NOCACHE
 mdefine_line|#define __PAGE_KERNEL_NOCACHE &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | _PAGE_PCD | _PAGE_ACCESSED)
 DECL|macro|__PAGE_KERNEL_RO
 mdefine_line|#define __PAGE_KERNEL_RO &bslash;&n;&t;(_PAGE_PRESENT | _PAGE_DIRTY | _PAGE_ACCESSED)
-macro_line|#ifdef CONFIG_X86_PGE
-DECL|macro|MAKE_GLOBAL
-macro_line|# define MAKE_GLOBAL(x) __pgprot((x) | _PAGE_GLOBAL)
-macro_line|#else
 DECL|macro|MAKE_GLOBAL
 macro_line|# define MAKE_GLOBAL(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;pgprot_t __ret;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (cpu_has_pge)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ret = __pgprot((x) | _PAGE_GLOBAL);&t;&bslash;&n;&t;&t;else&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ret = __pgprot(x);&t;&t;&t;&bslash;&n;&t;&t;__ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;})
-macro_line|#endif
 DECL|macro|PAGE_KERNEL
 mdefine_line|#define PAGE_KERNEL MAKE_GLOBAL(__PAGE_KERNEL)
 DECL|macro|PAGE_KERNEL_RO
@@ -660,10 +655,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page, pgprot)&t;__mk_pte((page) - mem_map, (pgprot))
-multiline_comment|/* This takes a physical page address that is used by the remapping functions */
-DECL|macro|mk_pte_phys
-mdefine_line|#define mk_pte_phys(physpage, pgprot)&t;__mk_pte((physpage) &gt;&gt; PAGE_SHIFT, pgprot)
+mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
 DECL|function|pte_modify
 r_static
 r_inline

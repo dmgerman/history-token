@@ -25,7 +25,7 @@ DECL|macro|BUG_ILLEGAL_INSTR
 mdefine_line|#define BUG_ILLEGAL_INSTR &quot;0x00b00b00&quot; /* For BUG macro */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 DECL|macro|STRICT_MM_TYPECHECKS
 mdefine_line|#define STRICT_MM_TYPECHECKS
 DECL|macro|REGION_SIZE
@@ -318,13 +318,10 @@ mdefine_line|#define BUG() do { &bslash;&n;&t;printk(&quot;kernel BUG at %s:%d!&
 macro_line|#endif
 DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page) do { BUG(); } while (0)
-multiline_comment|/*&n; * XXX A bug in the current ppc64 compiler prevents an optimisation&n; * where a divide is replaced by a multiply by shifted inverse. For&n; * the moment use page-&gt;virtaul&n; */
-DECL|macro|WANT_PAGE_VIRTUAL
-mdefine_line|#define WANT_PAGE_VIRTUAL 1
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|get_order
 c_func

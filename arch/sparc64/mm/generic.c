@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|function|forget_pte
 r_static
 r_inline
@@ -38,12 +39,36 @@ id|page
 )paren
 )paren
 (brace
+r_int
+r_int
+id|pfn
+op_assign
+id|pte_pfn
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_struct
 id|page
 op_star
 id|ptpage
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pfn_valid
+c_func
+(paren
+id|pfn
+)paren
+)paren
+r_return
+suffix:semicolon
+id|ptpage
 op_assign
-id|pte_page
+id|pfn_to_page
 c_func
 (paren
 id|page
@@ -52,15 +77,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-op_logical_neg
-id|VALID_PAGE
-c_func
-(paren
-id|ptpage
-)paren
-)paren
-op_logical_or
 id|PageReserved
 c_func
 (paren

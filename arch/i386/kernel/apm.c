@@ -696,13 +696,7 @@ c_func
 id|APM_DO_ZERO_SEGS
 l_string|&quot;pushl %%edi&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %%ebp&bslash;n&bslash;t&quot;
-l_string|&quot;lcall *%%cs:&quot;
-id|SYMBOL_NAME_STR
-c_func
-(paren
-id|apm_bios_entry
-)paren
-l_string|&quot;&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *%%cs:apm_bios_entry&bslash;n&bslash;t&quot;
 l_string|&quot;setc %%al&bslash;n&bslash;t&quot;
 l_string|&quot;popl %%ebp&bslash;n&bslash;t&quot;
 l_string|&quot;popl %%edi&bslash;n&bslash;t&quot;
@@ -828,13 +822,7 @@ c_func
 id|APM_DO_ZERO_SEGS
 l_string|&quot;pushl %%edi&bslash;n&bslash;t&quot;
 l_string|&quot;pushl %%ebp&bslash;n&bslash;t&quot;
-l_string|&quot;lcall *%%cs:&quot;
-id|SYMBOL_NAME_STR
-c_func
-(paren
-id|apm_bios_entry
-)paren
-l_string|&quot;&bslash;n&bslash;t&quot;
+l_string|&quot;lcall *%%cs:apm_bios_entry&bslash;n&bslash;t&quot;
 l_string|&quot;setc %%bl&bslash;n&bslash;t&quot;
 l_string|&quot;popl %%ebp&bslash;n&bslash;t&quot;
 l_string|&quot;popl %%edi&bslash;n&bslash;t&quot;

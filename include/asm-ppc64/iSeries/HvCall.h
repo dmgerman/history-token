@@ -14,7 +14,7 @@ macro_line|#endif
 macro_line|#ifndef  _HVTYPES_H
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
 macro_line|#endif
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 singleline_comment|//-------------------------------------------------------------------
 singleline_comment|// Constants
 singleline_comment|//-------------------------------------------------------------------
@@ -119,15 +119,13 @@ c_func
 r_void
 )paren
 (brace
-singleline_comment|// Ignore any error return codes - most likely means that the target value for the
-singleline_comment|// LP has been increased and this vary off would bring us below the new target.
+multiline_comment|/* Ignore any error return codes - most likely means that the target value for the&n;&t; * LP has been increased and this vary off would bring us below the new target. */
 id|HvCall0
 c_func
 (paren
 id|HvCallBaseSetVirtualDecr
 )paren
 suffix:semicolon
-singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 )brace
 singleline_comment|//=====================================================================
 DECL|function|HvCall_yieldProcessor
@@ -175,7 +173,6 @@ comma
 id|enabledInterrupts
 )paren
 suffix:semicolon
-singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 )brace
 singleline_comment|//=====================================================================
 DECL|function|HvCall_clearLogBuffer
@@ -197,7 +194,6 @@ comma
 id|lpindex
 )paren
 suffix:semicolon
-singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 )brace
 singleline_comment|//=====================================================================
 DECL|function|HvCall_getLogBufferCodePage
@@ -222,7 +218,6 @@ comma
 id|lpindex
 )paren
 suffix:semicolon
-singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 r_return
 id|retVal
 suffix:semicolon
@@ -250,7 +245,6 @@ comma
 id|lpindex
 )paren
 suffix:semicolon
-singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 r_return
 id|retVal
 suffix:semicolon
@@ -278,7 +272,6 @@ comma
 id|lpindex
 )paren
 suffix:semicolon
-singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 r_return
 id|retVal
 suffix:semicolon
@@ -308,7 +301,6 @@ comma
 id|codePage
 )paren
 suffix:semicolon
-singleline_comment|// getPaca()-&gt;adjustHmtForNoOfSpinLocksHeld();
 )brace
 singleline_comment|//=====================================================================
 r_int
@@ -348,7 +340,7 @@ id|HvCall_sendIPI
 c_func
 (paren
 r_struct
-id|Paca
+id|paca_struct
 op_star
 id|targetPaca
 )paren

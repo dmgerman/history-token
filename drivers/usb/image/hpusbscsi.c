@@ -605,6 +605,16 @@ l_int|0x026a
 comma
 multiline_comment|/*Scan Dual II */
 (brace
+id|USB_DEVICE
+(paren
+l_int|0x0686
+comma
+l_int|0x4004
+)paren
+)brace
+comma
+multiline_comment|/*Minolta Elite II */
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace

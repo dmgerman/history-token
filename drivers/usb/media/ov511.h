@@ -875,7 +875,7 @@ multiline_comment|/* True if frame was a snapshot */
 )brace
 suffix:semicolon
 DECL|macro|DECOMP_INTERFACE_VER
-mdefine_line|#define DECOMP_INTERFACE_VER 3
+mdefine_line|#define DECOMP_INTERFACE_VER 4
 multiline_comment|/* Compression module operations */
 DECL|struct|ov51x_decomp_ops
 r_struct
@@ -959,25 +959,11 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|member|decomp_lock
-r_void
-(paren
+DECL|member|owner
+r_struct
+id|module
 op_star
-id|decomp_lock
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|member|decomp_unlock
-r_void
-(paren
-op_star
-id|decomp_unlock
-)paren
-(paren
-r_void
-)paren
+id|owner
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1072,6 +1058,11 @@ r_int
 id|backlight
 suffix:semicolon
 multiline_comment|/* Backlight exposure algorithm flag */
+DECL|member|mirror
+r_int
+id|mirror
+suffix:semicolon
+multiline_comment|/* Image is reversed horizontally */
 DECL|member|led_policy
 r_int
 id|led_policy
@@ -1215,16 +1206,16 @@ r_int
 id|sclass
 suffix:semicolon
 multiline_comment|/* Type of image sensor chip (SCL_*) */
-DECL|member|tuner
-r_int
-id|tuner
-suffix:semicolon
-multiline_comment|/* Type of TV tuner */
 DECL|member|packet_size
 r_int
 id|packet_size
 suffix:semicolon
 multiline_comment|/* Frame size per isoc desc */
+DECL|member|packet_numbering
+r_int
+id|packet_numbering
+suffix:semicolon
+multiline_comment|/* Is ISO frame numbering enabled? */
 DECL|member|param_lock
 r_struct
 id|semaphore
@@ -1332,6 +1323,11 @@ r_int
 id|tuner_type
 suffix:semicolon
 multiline_comment|/* Specific tuner model */
+DECL|member|pal
+r_int
+id|pal
+suffix:semicolon
+multiline_comment|/* Device is designed for PAL resolution */
 multiline_comment|/* I2C interface to kernel */
 DECL|member|i2c_lock
 r_struct
@@ -1345,6 +1341,18 @@ r_char
 id|primary_i2c_slave
 suffix:semicolon
 multiline_comment|/* I2C write id of sensor */
+DECL|member|tuner_i2c_slave
+r_int
+r_char
+id|tuner_i2c_slave
+suffix:semicolon
+multiline_comment|/* I2C write id of tuner */
+DECL|member|audio_i2c_slave
+r_int
+r_char
+id|audio_i2c_slave
+suffix:semicolon
+multiline_comment|/* I2C write id of audio processor */
 multiline_comment|/* Control transaction stuff */
 DECL|member|cbuf
 r_int
@@ -1447,48 +1455,6 @@ id|NOT_DEFINED_STR
 )paren
 suffix:semicolon
 )brace
-DECL|struct|mode_list_518
-r_struct
-id|mode_list_518
-(brace
-DECL|member|width
-r_int
-id|width
-suffix:semicolon
-DECL|member|height
-r_int
-id|height
-suffix:semicolon
-DECL|member|reg28
-id|u8
-id|reg28
-suffix:semicolon
-DECL|member|reg29
-id|u8
-id|reg29
-suffix:semicolon
-DECL|member|reg2a
-id|u8
-id|reg2a
-suffix:semicolon
-DECL|member|reg2c
-id|u8
-id|reg2c
-suffix:semicolon
-DECL|member|reg2e
-id|u8
-id|reg2e
-suffix:semicolon
-DECL|member|reg24
-id|u8
-id|reg24
-suffix:semicolon
-DECL|member|reg25
-id|u8
-id|reg25
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Compression stuff */
 DECL|macro|OV511_QUANTABLESIZE
 mdefine_line|#define OV511_QUANTABLESIZE&t;64

@@ -42,7 +42,9 @@ mdefine_line|#define&t;WDIOC_SETOPTIONS&t;_IOR(WATCHDOG_IOCTL_BASE, 4, int)
 DECL|macro|WDIOC_KEEPALIVE
 mdefine_line|#define&t;WDIOC_KEEPALIVE&t;&t;_IOR(WATCHDOG_IOCTL_BASE, 5, int)
 DECL|macro|WDIOC_SETTIMEOUT
-mdefine_line|#define&t;WDIOC_SETTIMEOUT        _IOW(WATCHDOG_IOCTL_BASE, 6, int)
+mdefine_line|#define&t;WDIOC_SETTIMEOUT        _IOWR(WATCHDOG_IOCTL_BASE, 6, int)
+DECL|macro|WDIOC_GETTIMEOUT
+mdefine_line|#define&t;WDIOC_GETTIMEOUT        _IOR(WATCHDOG_IOCTL_BASE, 7, int)
 DECL|macro|WDIOF_UNKNOWN
 mdefine_line|#define&t;WDIOF_UNKNOWN&t;&t;-1&t;/* Unknown flag error */
 DECL|macro|WDIOS_UNKNOWN
@@ -61,6 +63,8 @@ DECL|macro|WDIOF_CARDRESET
 mdefine_line|#define&t;WDIOF_CARDRESET&t;&t;0x0020&t;/* Card previously reset the CPU */
 DECL|macro|WDIOF_POWEROVER
 mdefine_line|#define WDIOF_POWEROVER&t;&t;0x0040&t;/* Power over voltage */
+DECL|macro|WDIOF_SETTIMEOUT
+mdefine_line|#define WDIOF_SETTIMEOUT&t;0x0080  /* Set timeout (in seconds) */
 DECL|macro|WDIOF_KEEPALIVEPING
 mdefine_line|#define&t;WDIOF_KEEPALIVEPING&t;0x8000&t;/* Keep alive ping reply */
 DECL|macro|WDIOS_DISABLECARD

@@ -608,9 +608,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|ia_valid
 op_amp
 id|ATTR_MODE
+)paren
 )paren
 (brace
 id|ia_valid
@@ -663,9 +665,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|ia_valid
 op_amp
 id|ATTR_MODE
+)paren
 )paren
 (brace
 id|ia_valid

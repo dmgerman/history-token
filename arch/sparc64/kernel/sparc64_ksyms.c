@@ -35,6 +35,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#ifdef CONFIG_SBUS
 macro_line|#include &lt;asm/sbus.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;

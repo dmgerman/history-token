@@ -48,11 +48,11 @@ suffix:semicolon
 singleline_comment|// Offset in NACA of ItVpdAreas&t;x06-x07
 DECL|member|xSlicNacaAddr
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|xSlicNacaAddr
 suffix:semicolon
-singleline_comment|// Virtual address of SLIC NACA x08-x0F
+singleline_comment|// Virt addr of SLIC NACA  x08-x0F
 DECL|member|xMsNucDataOffset
 id|u32
 id|xMsNucDataOffset

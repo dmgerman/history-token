@@ -37,7 +37,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#include &lt;asm/bootinfo.h&gt;
@@ -264,12 +264,6 @@ r_extern
 r_int
 r_int
 id|embedded_sysmap_end
-suffix:semicolon
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 r_extern
 r_struct
@@ -1212,7 +1206,7 @@ id|prom
 )paren
 suffix:semicolon
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|_naca
 op_assign
@@ -1423,13 +1417,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|RELOC
-c_func
-(paren
-id|_machine
-)paren
+id|_naca-&gt;platform
 op_eq
-id|_MACH_pSeriesLP
+id|PLATFORM_PSERIES_LPAR
 )paren
 (brace
 id|u32
@@ -1935,13 +1925,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|RELOC
-c_func
-(paren
-id|_machine
-)paren
+id|_naca-&gt;platform
 op_eq
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 (brace
 r_int
@@ -2263,18 +2249,14 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;_machine                   = 0x&quot;
+l_string|&quot;naca-&gt;platform             = 0x&quot;
 )paren
 )paren
 suffix:semicolon
 id|prom_print_hex
 c_func
 (paren
-id|RELOC
-c_func
-(paren
-id|_machine
-)paren
+id|_naca-&gt;platform
 )paren
 suffix:semicolon
 id|prom_print_nl
@@ -2763,6 +2745,17 @@ op_amp
 id|rtas
 )paren
 suffix:semicolon
+r_struct
+id|naca_struct
+op_star
+id|_naca
+op_assign
+id|RELOC
+c_func
+(paren
+id|naca
+)paren
+suffix:semicolon
 id|ihandle
 id|prom_rtas
 suffix:semicolon
@@ -2866,13 +2859,9 @@ OG
 l_int|0
 )paren
 (brace
-id|RELOC
-c_func
-(paren
-id|_machine
-)paren
+id|_naca-&gt;platform
 op_assign
-id|_MACH_pSeriesLP
+id|PLATFORM_PSERIES_LPAR
 suffix:semicolon
 )brace
 id|call_prom
@@ -5082,7 +5071,7 @@ id|__secondary_hold
 )paren
 suffix:semicolon
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|_naca
 op_assign
@@ -5093,7 +5082,7 @@ id|naca
 )paren
 suffix:semicolon
 r_struct
-id|Paca
+id|paca_struct
 op_star
 id|_xPaca
 op_assign
@@ -5101,7 +5090,7 @@ id|PTRRELOC
 c_func
 (paren
 op_amp
-id|xPaca
+id|paca
 (braket
 l_int|0
 )braket
@@ -6191,7 +6180,7 @@ id|u32
 id|getprop_rval
 suffix:semicolon
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|_naca
 op_assign
@@ -6202,7 +6191,7 @@ id|naca
 )paren
 suffix:semicolon
 r_struct
-id|Paca
+id|paca_struct
 op_star
 id|_xPaca
 op_assign
@@ -6210,7 +6199,7 @@ id|PTRRELOC
 c_func
 (paren
 op_amp
-id|xPaca
+id|paca
 (braket
 l_int|0
 )braket
@@ -6229,13 +6218,9 @@ id|prom
 )paren
 suffix:semicolon
 multiline_comment|/* Default machine type. */
-id|RELOC
-c_func
-(paren
-id|_machine
-)paren
+id|_naca-&gt;platform
 op_assign
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 suffix:semicolon
 multiline_comment|/* Reset klimit to take into account the embedded system map */
 r_if
@@ -7379,13 +7364,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|RELOC
-c_func
-(paren
-id|_machine
-)paren
+id|_naca-&gt;platform
 op_eq
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 id|prom_initialize_tce_table
 c_func

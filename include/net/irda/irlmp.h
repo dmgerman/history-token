@@ -276,6 +276,13 @@ op_star
 id|lsaps
 suffix:semicolon
 multiline_comment|/* LSAP associated with this link */
+DECL|member|flow_next
+r_struct
+id|lsap_cb
+op_star
+id|flow_next
+suffix:semicolon
+multiline_comment|/* Next lsap to be polled for Tx */
 DECL|member|caddr
 id|__u8
 id|caddr
@@ -834,6 +841,19 @@ id|LOCK_STATUS
 id|lock
 )paren
 suffix:semicolon
+r_void
+id|irlmp_flow_indication
+c_func
+(paren
+r_struct
+id|lap_cb
+op_star
+id|self
+comma
+id|LOCAL_FLOW
+id|flow
+)paren
+suffix:semicolon
 r_int
 id|irlmp_slsap_inuse
 c_func
@@ -921,11 +941,12 @@ r_return
 id|irlmp-&gt;cachelog
 suffix:semicolon
 )brace
-DECL|function|irlmp_get_lap_tx_queue_len
+multiline_comment|/* Check if LAP queue is full.&n; * Used by IrTTP for low control, see comments in irlap.h - Jean II */
+DECL|function|irlmp_lap_tx_queue_full
 r_static
 r_inline
 r_int
-id|irlmp_get_lap_tx_queue_len
+id|irlmp_lap_tx_queue_full
 c_func
 (paren
 r_struct
@@ -970,6 +991,8 @@ c_func
 (paren
 id|self-&gt;lap-&gt;irlap
 )paren
+op_ge
+id|LAP_HIGH_THRESHOLD
 suffix:semicolon
 )brace
 multiline_comment|/* After doing a irlmp_dup(), this get one of the two socket back into&n; * a state where it&squot;s waiting incomming connections.&n; * Note : this can be used *only* if the socket is not yet connected&n; * (i.e. NO irlmp_connect_response() done on this socket).&n; * - Jean II */
@@ -997,6 +1020,14 @@ suffix:semicolon
 id|self-&gt;lsap_state
 op_assign
 id|LSAP_DISCONNECTED
+suffix:semicolon
+multiline_comment|/* Started when we received the LM_CONNECT_INDICATION */
+id|del_timer
+c_func
+(paren
+op_amp
+id|self-&gt;watchdog_timer
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif

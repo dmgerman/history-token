@@ -21,14 +21,29 @@ DECL|macro|TTP_PARAMETERS
 mdefine_line|#define TTP_PARAMETERS         0x80
 DECL|macro|TTP_MORE
 mdefine_line|#define TTP_MORE               0x80
+multiline_comment|/* Transmission queue sizes */
+multiline_comment|/* Worst case scenario, two window of data - Jean II */
+DECL|macro|TTP_TX_MAX_QUEUE
+mdefine_line|#define TTP_TX_MAX_QUEUE&t;14
+multiline_comment|/* We need to keep at least 5 frames to make sure that we can refill&n; * appropriately the LAP layer. LAP keeps only two buffers, and we need&n; * to have 7 to make a full window - Jean II */
+DECL|macro|TTP_TX_LOW_THRESHOLD
+mdefine_line|#define TTP_TX_LOW_THRESHOLD&t;5
+multiline_comment|/* Most clients are synchronous with respect to flow control, so we can&n; * keep a low number of Tx buffers in TTP - Jean II */
+DECL|macro|TTP_TX_HIGH_THRESHOLD
+mdefine_line|#define TTP_TX_HIGH_THRESHOLD&t;7
+multiline_comment|/* Receive queue sizes */
+multiline_comment|/* Minimum of credit that the peer should hold.&n; * If the peer has less credits than 9 frames, we will explicitely send&n; * him some credits (through irttp_give_credit() and a specific frame).&n; * Note that when we give credits it&squot;s likely that it won&squot;t be sent in&n; * this LAP window, but in the next one. So, we make sure that the peer&n; * has something to send while waiting for credits (one LAP window == 7&n; * + 1 frames while he process the credits). - Jean II */
+DECL|macro|TTP_RX_MIN_CREDIT
+mdefine_line|#define TTP_RX_MIN_CREDIT&t;8
+multiline_comment|/* This is the default maximum number of credits held by the peer, so the&n; * default maximum number of frames he can send us before needing flow&n; * control answer from us (this may be negociated differently at TSAP setup).&n; * We want to minimise the number of times we have to explicitely send some&n; * credit to the peer, hoping we can piggyback it on the return data. In&n; * particular, it doesn&squot;t make sense for us to send credit more than once&n; * per LAP window.&n; * Moreover, giving credits has some latency, so we need strictly more than&n; * a LAP window, otherwise we may already have credits in our Tx queue.&n; * But on the other hand, we don&squot;t want to keep too many Rx buffer here&n; * before starting to flow control the other end, so make it exactly one&n; * LAP window + 1 + MIN_CREDITS. - Jean II */
+DECL|macro|TTP_RX_DEFAULT_CREDIT
+mdefine_line|#define TTP_RX_DEFAULT_CREDIT&t;16
+multiline_comment|/* Maximum number of credits we can allow the peer to have, and therefore&n; * maximum Rx queue size.&n; * Note that we try to deliver packets to the higher layer every time we&n; * receive something, so in normal mode the Rx queue will never contains&n; * more than one or two packets. - Jean II */
+DECL|macro|TTP_RX_MAX_CREDIT
+mdefine_line|#define TTP_RX_MAX_CREDIT&t;21
+multiline_comment|/* What clients should use when calling ttp_open_tsap() */
 DECL|macro|DEFAULT_INITIAL_CREDIT
-mdefine_line|#define DEFAULT_INITIAL_CREDIT 14
-DECL|macro|TTP_LOW_THRESHOLD
-mdefine_line|#define TTP_LOW_THRESHOLD       4
-DECL|macro|TTP_HIGH_THRESHOLD
-mdefine_line|#define TTP_HIGH_THRESHOLD     10
-DECL|macro|TTP_MAX_QUEUE
-mdefine_line|#define TTP_MAX_QUEUE          14
+mdefine_line|#define DEFAULT_INITIAL_CREDIT&t;TTP_RX_DEFAULT_CREDIT
 multiline_comment|/* Some priorities for disconnect requests */
 DECL|macro|P_NORMAL
 mdefine_line|#define P_NORMAL    0
@@ -376,6 +391,22 @@ id|LOCK_STATUS
 id|lock
 )paren
 suffix:semicolon
+r_void
+id|irttp_flow_indication
+c_func
+(paren
+r_void
+op_star
+id|instance
+comma
+r_void
+op_star
+id|sap
+comma
+id|LOCAL_FLOW
+id|flow
+)paren
+suffix:semicolon
 r_struct
 id|tsap_cb
 op_star
@@ -474,6 +505,59 @@ suffix:semicolon
 id|self-&gt;dtsap_sel
 op_assign
 id|LSAP_ANY
+suffix:semicolon
+)brace
+multiline_comment|/* Return TRUE if the node is in primary mode (i.e. master)&n; * - Jean II */
+DECL|function|irttp_is_primary
+r_static
+r_inline
+r_int
+id|irttp_is_primary
+c_func
+(paren
+r_struct
+id|tsap_cb
+op_star
+id|self
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|self
+op_eq
+l_int|NULL
+)paren
+op_logical_or
+(paren
+id|self-&gt;lsap
+op_eq
+l_int|NULL
+)paren
+op_logical_or
+(paren
+id|self-&gt;lsap-&gt;lap
+op_eq
+l_int|NULL
+)paren
+op_logical_or
+(paren
+id|self-&gt;lsap-&gt;lap-&gt;irlap
+op_eq
+l_int|NULL
+)paren
+)paren
+r_return
+op_minus
+l_int|2
+suffix:semicolon
+r_return
+id|irlap_is_primary
+c_func
+(paren
+id|self-&gt;lsap-&gt;lap-&gt;irlap
+)paren
 suffix:semicolon
 )brace
 r_extern

@@ -10,7 +10,7 @@ multiline_comment|/* This sets the pointer FPU_info to point to the argument par
 DECL|macro|SETUP_DATA_AREA
 mdefine_line|#define SETUP_DATA_AREA(arg)&t;FPU_info = (struct info *) &amp;arg
 DECL|macro|LDT_DESCRIPTOR
-mdefine_line|#define LDT_DESCRIPTOR(s)&t;(((struct desc_struct *)current-&gt;mm-&gt;context.segments)[(s) &gt;&gt; 3])
+mdefine_line|#define LDT_DESCRIPTOR(s)&t;(((struct desc_struct *)current-&gt;mm-&gt;context.ldt)[(s) &gt;&gt; 3])
 DECL|macro|SEG_D_SIZE
 mdefine_line|#define SEG_D_SIZE(x)&t;&t;((x).b &amp; (3 &lt;&lt; 21))
 DECL|macro|SEG_G_BIT

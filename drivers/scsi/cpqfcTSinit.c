@@ -13,9 +13,9 @@ macro_line|#include &lt;linux/ioport.h&gt;
 singleline_comment|// request_region() prototype
 macro_line|#include &lt;linux/vmalloc.h&gt; 
 singleline_comment|// ioremap()
-macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,7)
+singleline_comment|//#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,7)
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#endif
+singleline_comment|//#endif
 macro_line|#ifdef __alpha__
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -1522,9 +1522,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 (brace

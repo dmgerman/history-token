@@ -658,9 +658,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|timeout
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -736,9 +740,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|timeout
+)paren
 )paren
 suffix:semicolon
 macro_line|#if 1
@@ -832,9 +840,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|timeout
+)paren
 )paren
 suffix:semicolon
 macro_line|#if 1
@@ -10279,9 +10291,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+id|time_before
+c_func
+(paren
 id|jiffies
-OL
+comma
 id|timeout
+)paren
 )paren
 (brace
 id|c

@@ -21,9 +21,9 @@ mdefine_line|#define SNDRV_MINOR_HWDEP&t;&t;4&t;/* 4 - 7 */
 DECL|macro|SNDRV_MINOR_HWDEPS
 mdefine_line|#define SNDRV_MINOR_HWDEPS&t;&t;4
 DECL|macro|SNDRV_MINOR_RAWMIDI
-mdefine_line|#define SNDRV_MINOR_RAWMIDI&t;&t;8&t;/* 8 - 11 */
+mdefine_line|#define SNDRV_MINOR_RAWMIDI&t;&t;8&t;/* 8 - 15 */
 DECL|macro|SNDRV_MINOR_RAWMIDIS
-mdefine_line|#define SNDRV_MINOR_RAWMIDIS&t;&t;4
+mdefine_line|#define SNDRV_MINOR_RAWMIDIS&t;&t;8
 DECL|macro|SNDRV_MINOR_PCM_PLAYBACK
 mdefine_line|#define SNDRV_MINOR_PCM_PLAYBACK&t;16&t;/* 16 - 23 */
 DECL|macro|SNDRV_MINOR_PCM_CAPTURE

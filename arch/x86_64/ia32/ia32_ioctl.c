@@ -19865,11 +19865,6 @@ id|HDIO_SET_DMA
 id|COMPATIBLE_IOCTL
 c_func
 (paren
-id|HDIO_SET_KEEPSETTINGS
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
 id|HDIO_SET_UNMASKINTR
 )paren
 id|COMPATIBLE_IOCTL
@@ -22750,13 +22745,6 @@ c_func
 id|FBIOPUTCMAP
 comma
 id|fb_ioctl_trans
-)paren
-id|HANDLE_IOCTL
-c_func
-(paren
-id|HDIO_GET_KEEPSETTINGS
-comma
-id|hdio_ioctl_trans
 )paren
 id|HANDLE_IOCTL
 c_func

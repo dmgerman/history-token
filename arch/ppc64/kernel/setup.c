@@ -21,8 +21,8 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
-macro_line|#include &lt;asm/Paca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
+macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 r_extern
@@ -212,12 +212,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|_machine
-r_int
-id|_machine
-op_assign
-id|_MACH_unknown
-suffix:semicolon
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|variable|SYSRQ_KEY
 r_int
@@ -229,12 +223,6 @@ DECL|variable|ppc_md
 r_struct
 id|machdep_calls
 id|ppc_md
-suffix:semicolon
-DECL|variable|naca
-r_struct
-id|Naca
-op_star
-id|naca
 suffix:semicolon
 multiline_comment|/*&n; * Perhaps we can put the pmac screen_info[] here&n; * on pmac as well so we don&squot;t need the ifdef&squot;s.&n; * Until we get multiple-console support in here&n; * that is.  -- Cort&n; * Maybe tie it to serial consoles, since this is really what&n; * these processors use on existing boards.  -- Dan&n; */
 DECL|variable|screen_info
@@ -309,7 +297,7 @@ c_func
 )paren
 suffix:semicolon
 r_struct
-id|Naca
+id|naca_struct
 op_star
 id|_naca
 op_assign
@@ -325,90 +313,6 @@ id|PPC_DEBUG_DEFAULT
 suffix:semicolon
 multiline_comment|/* | PPCDBG_BUSWALK | PPCDBG_PHBINIT | PPCDBG_MM | PPCDBG_MMINIT | PPCDBG_TCEINIT | PPCDBG_TCE */
 suffix:semicolon
-)brace
-multiline_comment|/* &n; * Initialize a set of PACA&squot;s, one for each processor.&n; *&n; * At this point, relocation is on, but we have not done any other&n; * setup of the mm subsystem.&n; */
-DECL|function|paca_init
-r_void
-id|paca_init
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#if 0
-r_int
-id|processorCount
-op_assign
-id|naca-&gt;processorCount
-comma
-id|i
-suffix:semicolon
-r_struct
-id|Paca
-op_star
-id|paca
-(braket
-)braket
-suffix:semicolon
-multiline_comment|/* Put the array of paca&squot;s on a page boundary &amp; allocate 1/2 page of */
-multiline_comment|/* storage for each.                                                 */
-id|klimit
-op_add_assign
-(paren
-id|PAGE_SIZE
-op_minus
-l_int|1
-)paren
-op_amp
-id|PAGE_MASK
-suffix:semicolon
-id|naca-&gt;xPaca
-op_assign
-id|paca
-(braket
-l_int|0
-)braket
-op_assign
-id|klimit
-suffix:semicolon
-id|klimit
-op_add_assign
-(paren
-(paren
-id|PAGE_SIZE
-op_rshift
-l_int|1
-)paren
-op_star
-id|processorCount
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|processorCount
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|paca
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|xPacaIndex
-op_assign
-id|i
-suffix:semicolon
-)brace
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Do some initial setup of the system.  The paramters are those which &n; * were passed in from the bootloader.&n; */
 DECL|function|setup_system
@@ -450,18 +354,18 @@ id|itLpNaca.xLparInstalled
 op_eq
 l_int|1
 )paren
-id|_machine
+id|naca-&gt;platform
 op_assign
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 )paren
 (brace
 r_case
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 suffix:colon
 id|iSeries_init_early
 c_func
@@ -472,7 +376,7 @@ r_break
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PSERIES
 r_case
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 suffix:colon
 id|pSeries_init_early
 c_func
@@ -495,7 +399,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|_MACH_pSeriesLP
+id|PLATFORM_PSERIES_LPAR
 suffix:colon
 id|pSeriesLP_init_early
 c_func
@@ -806,9 +710,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_amp
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 (brace
 id|finish_device_tree
@@ -839,11 +743,11 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 )paren
 (brace
 r_case
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 suffix:colon
 id|iSeries_init
 c_func
@@ -1021,7 +925,7 @@ suffix:semicolon
 macro_line|#endif
 id|pvr
 op_assign
-id|xPaca
+id|paca
 (braket
 id|cpu_id
 )braket
@@ -1064,7 +968,7 @@ l_string|&quot;cpu&bslash;t&bslash;t: &quot;
 suffix:semicolon
 id|pvr
 op_assign
-id|xPaca
+id|paca
 (braket
 id|cpu_id
 )braket
@@ -1178,9 +1082,9 @@ multiline_comment|/*&n;&t; * Assume here that all clock rates are the same in a&
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_ne
-id|_MACH_iSeries
+id|PLATFORM_ISERIES_LPAR
 )paren
 (brace
 r_struct
@@ -2229,6 +2133,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|sort_exception_table
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ppc_md
 dot
 id|progress
@@ -3238,7 +3147,7 @@ op_logical_and
 (paren
 id|val
 op_le
-id|maxPacas
+id|MAX_PACAS
 )paren
 )paren
 (brace
@@ -3256,14 +3165,14 @@ suffix:semicolon
 op_increment
 id|i
 )paren
-id|xPaca
+id|paca
 (braket
 id|i
 )braket
 dot
 id|lpQueuePtr
 op_assign
-id|xPaca
+id|paca
 (braket
 l_int|0
 )braket
@@ -3302,19 +3211,13 @@ r_void
 )paren
 (brace
 r_struct
-id|Paca
+id|paca_struct
 op_star
-id|paca
+id|lpaca
 op_assign
-(paren
-r_struct
-id|Paca
-op_star
-)paren
-id|mfspr
+id|get_paca
 c_func
 (paren
-id|SPRG3
 )paren
 suffix:semicolon
 r_if
@@ -3329,13 +3232,13 @@ id|decr_overclock_proc0
 op_assign
 id|decr_overclock
 suffix:semicolon
-id|paca-&gt;default_decr
+id|lpaca-&gt;default_decr
 op_assign
 id|tb_ticks_per_jiffy
 op_div
 id|decr_overclock_proc0
 suffix:semicolon
-id|paca-&gt;next_jiffy_update_tb
+id|lpaca-&gt;next_jiffy_update_tb
 op_assign
 id|get_tb
 c_func

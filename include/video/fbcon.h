@@ -260,13 +260,6 @@ id|fb_cmap
 id|cmap
 suffix:semicolon
 multiline_comment|/* colormap */
-DECL|member|screen_base
-r_char
-op_star
-id|screen_base
-suffix:semicolon
-multiline_comment|/* pointer to top of virtual screen */
-multiline_comment|/* (virtual address) */
 DECL|member|visual
 r_int
 id|visual
@@ -540,6 +533,8 @@ DECL|macro|attr_bgcol
 mdefine_line|#define attr_bgcol(p,s)    &bslash;&n;&t;(((s) &gt;&gt; ((p)-&gt;bgshift)) &amp; 0x0f)
 DECL|macro|attr_bgcol_ec
 mdefine_line|#define&t;attr_bgcol_ec(p,conp) &bslash;&n;&t;((conp) ? (((conp)-&gt;vc_video_erase_char &gt;&gt; ((p)-&gt;bgshift)) &amp; 0x0f) : 0)
+DECL|macro|attr_fgcol_ec
+mdefine_line|#define attr_fgcol_ec(p,vc) &bslash;&n;&t;((vc) ? (((vc)-&gt;vc_video_erase_char &gt;&gt; ((p)-&gt;fgshift)) &amp; 0x0f) : 0)
 multiline_comment|/* Monochrome */
 DECL|macro|attr_bold
 mdefine_line|#define attr_bold(p,s) &bslash;&n;&t;((s) &amp; 0x200)

@@ -36,6 +36,11 @@ r_int
 r_char
 id|lastcmd
 suffix:semicolon
+DECL|member|nostat
+r_int
+r_char
+id|nostat
+suffix:semicolon
 DECL|member|bufsize
 r_int
 id|bufsize
@@ -53,6 +58,8 @@ id|lock
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|SND_MIDI_EVENT_NOSTATUS
+mdefine_line|#define SND_MIDI_EVENT_NOSTATUS&t;&t;(1&lt;&lt;0)&t;/* don&squot;t encode MIDI status */
 r_int
 id|snd_midi_event_new
 c_func
@@ -112,6 +119,18 @@ c_func
 id|snd_midi_event_t
 op_star
 id|dev
+)paren
+suffix:semicolon
+r_void
+id|snd_midi_event_no_status
+c_func
+(paren
+id|snd_midi_event_t
+op_star
+id|dev
+comma
+r_int
+id|on
 )paren
 suffix:semicolon
 multiline_comment|/* encode from byte stream - return number of written bytes if success */

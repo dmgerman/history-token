@@ -8,17 +8,11 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &quot;xics.h&quot;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-r_extern
-r_struct
-id|Naca
-op_star
-id|naca
-suffix:semicolon
 r_void
 id|xics_enable_irq
 c_func
@@ -896,14 +890,9 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;spurious PPC interrupt!&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 r_else
+(brace
 id|irq
 op_assign
 id|real_irq_to_virt
@@ -914,6 +903,7 @@ id|vec
 op_plus
 id|XICS_IRQ_OFFSET
 suffix:semicolon
+)brace
 r_return
 id|irq
 suffix:semicolon
@@ -1686,9 +1676,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_pSeries
+id|PLATFORM_PSERIES
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
@@ -1774,9 +1764,9 @@ r_else
 r_if
 c_cond
 (paren
-id|_machine
+id|naca-&gt;platform
 op_eq
-id|_MACH_pSeriesLP
+id|PLATFORM_PSERIES_LPAR
 )paren
 (brace
 id|ops

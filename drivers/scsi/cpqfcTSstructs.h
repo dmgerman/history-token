@@ -9,7 +9,7 @@ singleline_comment|// task queue sched
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;cpqfcTSioctl.h&quot;
 DECL|macro|DbgDelay
-mdefine_line|#define DbgDelay(secs) { int wait_time; printk( &quot; DbgDelay %ds &quot;, secs); &bslash;&n;                         for( wait_time=jiffies + (secs*HZ); &bslash;&n;&t;&t;         wait_time &gt; jiffies ;) ; }
+mdefine_line|#define DbgDelay(secs) { int wait_time; printk( &quot; DbgDelay %ds &quot;, secs); &bslash;&n;                         for( wait_time=jiffies + (secs*HZ); &bslash;&n;&t;&t;         time_before(jiffies, wait_time) ;) ; }
 DECL|macro|CPQFCTS_DRIVER_VER
 mdefine_line|#define CPQFCTS_DRIVER_VER(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 singleline_comment|// don&squot;t forget to also change MODULE_DESCRIPTION in cpqfcTSinit.c
@@ -362,9 +362,6 @@ DECL|macro|ELS_RJT
 mdefine_line|#define ELS_RJT 0x1000000
 DECL|macro|SCSI_REPORT_LUNS
 mdefine_line|#define SCSI_REPORT_LUNS 0x0A0
-DECL|macro|REPORT_LUNS
-mdefine_line|#define REPORT_LUNS 0xA0 
-singleline_comment|// SCSI-3 command op-code
 DECL|macro|FCP_TARGET_RESET
 mdefine_line|#define FCP_TARGET_RESET 0x200
 DECL|macro|ELS_LILP_FRAME

@@ -1080,9 +1080,9 @@ op_plus
 id|sect_in_chunk
 suffix:semicolon
 multiline_comment|/*&n;&t; * The new BH_Lock semantics in ll_rw_blk.c guarantee that this&n;&t; * is the only IO operation happening on this bh.&n;&t; */
-id|bio-&gt;bi_dev
+id|bio-&gt;bi_bdev
 op_assign
-id|tmp_dev-&gt;dev
+id|tmp_dev-&gt;bdev
 suffix:semicolon
 id|bio-&gt;bi_sector
 op_assign

@@ -1899,40 +1899,6 @@ mdefine_line|#define OUTBYTE(a) {*q++=(Byte)(a);m--;}
 multiline_comment|/*   load local pointers */
 DECL|macro|LOAD
 mdefine_line|#define LOAD {LOADIN LOADOUT}
-multiline_comment|/*&n; * The IBM 150 firmware munges the data right after _etext[].  This&n; * protects it. -- Cort&n; */
-DECL|variable|protect_mask
-id|local
-id|uInt
-id|protect_mask
-(braket
-)braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-suffix:semicolon
 multiline_comment|/* And&squot;ing with mask[n] masks the lower n bits */
 DECL|variable|inflate_mask
 id|local

@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/pci_dma.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/Naca.h&gt;
+macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* Status return values */
 DECL|macro|H_Success
@@ -712,7 +712,7 @@ id|direction
 )paren
 (brace
 id|u64
-id|setTceRc
+id|set_tce_rc
 suffix:semicolon
 r_union
 id|Tce
@@ -773,7 +773,7 @@ id|tce.tceBits.pciWrite
 op_assign
 l_int|1
 suffix:semicolon
-id|setTceRc
+id|set_tce_rc
 op_assign
 id|plpar_tce_put
 c_func
@@ -793,38 +793,23 @@ comma
 id|tce.wholeTce
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure the update is visible to hardware.&n;&t; * ToDo: sync after setting *all* the tce&squot;s.&n;&t; */
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;sync&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|setTceRc
+id|set_tce_rc
 )paren
 (brace
-id|PPCDBG
+id|printk
 c_func
 (paren
-id|PPCDBG_TCE
+l_string|&quot;tce_build_pSeriesLP: plpar_tce_put failed. rc=%ld&bslash;n&quot;
 comma
-l_string|&quot;setTce failed. rc=%ld&bslash;n&quot;
-comma
-id|setTceRc
+id|set_tce_rc
 )paren
 suffix:semicolon
-id|PPCDBG
+id|printk
 c_func
 (paren
-id|PPCDBG_TCE
-comma
 l_string|&quot;&bslash;tindex   = 0x%lx&bslash;n&quot;
 comma
 (paren
@@ -833,11 +818,9 @@ id|u64
 id|tbl-&gt;index
 )paren
 suffix:semicolon
-id|PPCDBG
+id|printk
 c_func
 (paren
-id|PPCDBG_TCE
-comma
 l_string|&quot;&bslash;ttcenum  = 0x%lx&bslash;n&quot;
 comma
 (paren
@@ -846,11 +829,9 @@ id|u64
 id|tcenum
 )paren
 suffix:semicolon
-id|PPCDBG
+id|printk
 c_func
 (paren
-id|PPCDBG_TCE
-comma
 l_string|&quot;&bslash;ttce val = 0x%lx&bslash;n&quot;
 comma
 id|tce.wholeTce
@@ -858,11 +839,10 @@ id|tce.wholeTce
 suffix:semicolon
 )brace
 )brace
-DECL|function|free_tce_range
+DECL|function|tce_free_one_pSeriesLP
 r_static
-r_inline
 r_void
-id|free_tce_range
+id|tce_free_one_pSeriesLP
 c_func
 (paren
 r_struct
@@ -872,235 +852,20 @@ id|tbl
 comma
 r_int
 id|tcenum
-comma
-r_int
-id|order
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* Lock the tce allocation bitmap */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-(paren
-id|tbl-&gt;lock
-)paren
-comma
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* Do the actual work */
-id|free_tce_range_nolock
-c_func
-(paren
-id|tbl
-comma
-id|tcenum
-comma
-id|order
-)paren
-suffix:semicolon
-multiline_comment|/* Unlock the tce allocation bitmap */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-(paren
-id|tbl-&gt;lock
-)paren
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
-DECL|function|tce_free_pSeriesLP
-r_static
-r_void
-id|tce_free_pSeriesLP
-c_func
-(paren
-r_struct
-id|TceTable
-op_star
-id|tbl
-comma
-id|dma_addr_t
-id|dma_addr
-comma
-r_int
-id|order
-comma
-r_int
-id|numPages
 )paren
 (brace
 id|u64
-id|setTceRc
-suffix:semicolon
-r_int
-id|tcenum
-comma
-id|freeTce
-comma
-id|maxTcenum
-suffix:semicolon
-r_int
-id|i
+id|set_tce_rc
 suffix:semicolon
 r_union
 id|Tce
 id|tce
 suffix:semicolon
-id|maxTcenum
-op_assign
-(paren
-id|tbl-&gt;size
-op_star
-(paren
-id|PAGE_SIZE
-op_div
-r_sizeof
-(paren
-r_union
-id|Tce
-)paren
-)paren
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-id|tcenum
-op_assign
-id|dma_addr
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-id|freeTce
-op_assign
-id|tcenum
-op_minus
-id|tbl-&gt;startOffset
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|freeTce
-OG
-id|maxTcenum
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;free_tces: tcenum &gt; maxTcenum&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;ttcenum    = 0x%lx&bslash;n&quot;
-comma
-id|tcenum
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;tfreeTce   = 0x%lx&bslash;n&quot;
-comma
-id|freeTce
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;tmaxTcenum = 0x%lx&bslash;n&quot;
-comma
-id|maxTcenum
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;tTCE Table = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;tbus#      = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;busNumber
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;tsize      = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;size
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;tstartOff  = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;startOffset
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;tindex     = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;index
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numPages
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
 id|tce.wholeTce
 op_assign
 l_int|0
 suffix:semicolon
-id|setTceRc
+id|set_tce_rc
 op_assign
 id|plpar_tce_put
 c_func
@@ -1117,20 +882,19 @@ id|tcenum
 op_lshift
 l_int|12
 comma
-multiline_comment|/* note: not freeTce */
 id|tce.wholeTce
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|setTceRc
+id|set_tce_rc
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;tce_free: setTce failed&bslash;n&quot;
+l_string|&quot;tce_free_one_pSeriesLP: plpar_tce_put failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -1138,7 +902,7 @@ c_func
 (paren
 l_string|&quot;&bslash;trc      = %ld&bslash;n&quot;
 comma
-id|setTceRc
+id|set_tce_rc
 )paren
 suffix:semicolon
 id|printk
@@ -1166,48 +930,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;tfreeTce = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|freeTce
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
 l_string|&quot;&bslash;ttce val = 0x%lx&bslash;n&quot;
 comma
 id|tce.wholeTce
 )paren
 suffix:semicolon
 )brace
-op_increment
-id|tcenum
-suffix:semicolon
-)brace
-multiline_comment|/* Make sure the update is visible to hardware. */
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;sync&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-id|free_tce_range
-c_func
-(paren
-id|tbl
-comma
-id|freeTce
-comma
-id|order
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* PowerPC Interrupts for lpar. */
 multiline_comment|/* NOTE: this typedef is duplicated (for now) from xics.c! */
@@ -1775,9 +1503,9 @@ id|ppc_md.tce_build
 op_assign
 id|tce_build_pSeriesLP
 suffix:semicolon
-id|ppc_md.tce_free
+id|ppc_md.tce_free_one
 op_assign
-id|tce_free_pSeriesLP
+id|tce_free_one_pSeriesLP
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|smp_init_pSeries
