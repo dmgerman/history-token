@@ -221,7 +221,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;kernel faults / second = %d&bslash;n&quot;
+l_string|&quot;kernel faults / second = %ld&bslash;n&quot;
 comma
 id|fps
 )paren
