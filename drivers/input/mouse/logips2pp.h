@@ -2,6 +2,14 @@ multiline_comment|/*&n; * Logitech PS/2++ mouse driver header&n; *&n; * Copyrigh
 macro_line|#ifndef _LOGIPS2PP_H
 DECL|macro|_LOGIPS2PP_H
 mdefine_line|#define _LOGIPS2PP_H
+DECL|macro|PS2PP_4BTN
+mdefine_line|#define PS2PP_4BTN&t;0x01
+DECL|macro|PS2PP_WHEEL
+mdefine_line|#define PS2PP_WHEEL&t;0x02
+DECL|macro|PS2PP_MX
+mdefine_line|#define PS2PP_MX&t;0x04
+DECL|macro|PS2PP_MX310
+mdefine_line|#define PS2PP_MX310&t;0x08
 r_struct
 id|psmouse
 suffix:semicolon

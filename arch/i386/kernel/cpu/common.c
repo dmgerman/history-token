@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -2300,7 +2301,7 @@ id|current-&gt;used_math
 op_assign
 l_int|0
 suffix:semicolon
-id|stts
+id|mxcsr_feature_mask_init
 c_func
 (paren
 )paren
