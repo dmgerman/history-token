@@ -729,25 +729,6 @@ suffix:semicolon
 multiline_comment|/* 4 */
 )brace
 suffix:semicolon
-multiline_comment|/*  Check first for the built-in bridges on hose 0. */
-r_if
-c_cond
-(paren
-id|hose-&gt;index
-op_eq
-l_int|0
-op_logical_and
-id|PCI_SLOT
-c_func
-(paren
-id|dev-&gt;bus-&gt;self-&gt;devfn
-)paren
-OG
-l_int|20
-op_minus
-id|bridge_count
-)paren
-(brace
 id|slot
 op_assign
 id|PCI_SLOT
@@ -756,11 +737,11 @@ c_func
 id|dev-&gt;devfn
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Must be a card-based bridge.  */
-r_do
+r_while
+c_loop
+(paren
+id|dev-&gt;bus-&gt;self
+)paren
 (brace
 multiline_comment|/* Check for built-in bridges on hose 0. */
 r_if
@@ -794,6 +775,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Must be a card-based bridge.  */
 id|pin
 op_assign
 id|bridge_swizzle
@@ -812,22 +794,6 @@ multiline_comment|/* Move up the chain of bridges.  */
 id|dev
 op_assign
 id|dev-&gt;bus-&gt;self
-suffix:semicolon
-multiline_comment|/* Slot of the next bridge.  */
-id|slot
-op_assign
-id|PCI_SLOT
-c_func
-(paren
-id|dev-&gt;devfn
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|dev-&gt;bus-&gt;self
-)paren
 suffix:semicolon
 )brace
 op_star

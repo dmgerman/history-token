@@ -1367,6 +1367,17 @@ suffix:semicolon
 r_int
 r_int
 id|busslot
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;bus-&gt;self
+)paren
+r_return
+id|slot
+suffix:semicolon
+id|busslot
 op_assign
 id|PCI_SLOT
 c_func
