@@ -122,6 +122,7 @@ id|len
 )paren
 (brace
 r_int
+r_int
 id|expire
 op_assign
 id|jiffies
@@ -1274,6 +1275,7 @@ op_increment
 )paren
 (brace
 r_int
+r_int
 id|expire
 op_assign
 id|jiffies
@@ -1627,6 +1629,7 @@ OL
 id|len
 )paren
 (brace
+r_int
 r_int
 id|expire
 op_assign
@@ -2098,6 +2101,7 @@ id|buf
 op_increment
 )paren
 (brace
+r_int
 r_int
 id|expire
 op_assign
