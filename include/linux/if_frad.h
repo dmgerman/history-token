@@ -297,6 +297,12 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
+DECL|member|master
+r_struct
+id|net_device
+op_star
+id|master
+suffix:semicolon
 DECL|member|slave
 r_struct
 id|net_device
@@ -311,6 +317,11 @@ suffix:semicolon
 DECL|member|configured
 r_int
 id|configured
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
 multiline_comment|/* callback function */
 DECL|member|receive

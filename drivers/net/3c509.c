@@ -2543,7 +2543,7 @@ suffix:semicolon
 macro_line|#endif
 id|out
 suffix:colon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
