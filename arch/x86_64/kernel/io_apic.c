@@ -5727,11 +5727,7 @@ op_assign
 id|cpu_mask_to_apicid
 c_func
 (paren
-id|mk_cpumask_const
-c_func
-(paren
 id|mask
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Only the first 8 bits are valid.&n;&t; */

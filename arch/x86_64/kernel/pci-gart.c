@@ -441,7 +441,7 @@ suffix:colon
 op_minus
 l_int|1
 suffix:semicolon
-id|cpumask_const_t
+id|cpumask_t
 id|bus_cpumask
 op_assign
 id|pcibus_to_cpumask
@@ -511,7 +511,7 @@ l_int|0
 op_logical_and
 op_logical_neg
 (paren
-id|cpu_isset_const
+id|cpu_isset
 c_func
 (paren
 id|i
