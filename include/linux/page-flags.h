@@ -287,6 +287,11 @@ op_star
 id|page
 )paren
 (brace
+id|smp_mb__before_clear_bit
+c_func
+(paren
+)paren
+suffix:semicolon
 id|clear_bit
 c_func
 (paren

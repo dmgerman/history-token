@@ -61,6 +61,23 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+op_star
+id|FASTCALL
+c_func
+(paren
+id|rwsem_downgrade_write
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * the semaphore definition&n; */
 DECL|struct|rw_semaphore
 r_struct
@@ -436,6 +453,73 @@ comma
 l_string|&quot;cc&quot;
 comma
 l_string|&quot;edx&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * downgrade write lock to read lock&n; */
+DECL|function|__downgrade_write
+r_static
+r_inline
+r_void
+id|__downgrade_write
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;# beginning __downgrade_write&bslash;n&bslash;t&quot;
+id|LOCK_PREFIX
+l_string|&quot;  addl      %2,(%%eax)&bslash;n&bslash;t&quot;
+multiline_comment|/* transitions 0xZZZZ0001 -&gt; 0xYYYY0001 */
+l_string|&quot;  js        2f&bslash;n&bslash;t&quot;
+multiline_comment|/* jump if the lock is being waited upon */
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
+l_string|&quot;2:&bslash;n&bslash;t&quot;
+l_string|&quot;  pushl     %%ecx&bslash;n&bslash;t&quot;
+l_string|&quot;  pushl     %%edx&bslash;n&bslash;t&quot;
+l_string|&quot;  call      rwsem_downgrade_wake&bslash;n&bslash;t&quot;
+l_string|&quot;  popl      %%edx&bslash;n&bslash;t&quot;
+l_string|&quot;  popl      %%ecx&bslash;n&bslash;t&quot;
+l_string|&quot;  jmp       1b&bslash;n&quot;
+id|LOCK_SECTION_END
+l_string|&quot;# ending __downgrade_write&bslash;n&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|sem
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+op_minus
+id|RWSEM_WAITING_BIAS
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|sem-&gt;count
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace

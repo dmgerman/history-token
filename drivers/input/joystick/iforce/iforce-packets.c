@@ -1195,6 +1195,12 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1214,6 +1220,12 @@ l_int|0
 )braket
 op_amp
 l_int|0x02
+)paren
+suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Check if an effect was just started or stopped */

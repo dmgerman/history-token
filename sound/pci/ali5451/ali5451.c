@@ -9851,6 +9851,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|codec-&gt;irq
 )paren
 suffix:semicolon
 r_if
@@ -10638,6 +10639,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|pci-&gt;irq
 )paren
 suffix:semicolon
 id|codec-&gt;synth.chmap

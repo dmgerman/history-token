@@ -444,6 +444,12 @@ id|TGFX_TOP2
 )paren
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 id|mod_timer
 c_func
@@ -873,7 +879,7 @@ id|tgfx-&gt;dev
 id|i
 )braket
 dot
-id|idbus
+id|id.bustype
 op_assign
 id|BUS_PARPORT
 suffix:semicolon
@@ -882,7 +888,7 @@ id|tgfx-&gt;dev
 id|i
 )braket
 dot
-id|idvendor
+id|id.vendor
 op_assign
 l_int|0x0003
 suffix:semicolon
@@ -891,7 +897,7 @@ id|tgfx-&gt;dev
 id|i
 )braket
 dot
-id|idproduct
+id|id.product
 op_assign
 id|config
 (braket
@@ -905,7 +911,7 @@ id|tgfx-&gt;dev
 id|i
 )braket
 dot
-id|idversion
+id|id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
@@ -1092,6 +1098,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 DECL|function|tgfx_setup
+r_static
 r_int
 id|__init
 id|tgfx_setup
@@ -1162,6 +1169,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|tgfx_setup_2
+r_static
 r_int
 id|__init
 id|tgfx_setup_2
@@ -1232,6 +1240,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|tgfx_setup_3
+r_static
 r_int
 id|__init
 id|tgfx_setup_3

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Find I2O capable controllers on the PCI bus, and register/install&n; *&t;them with the I2O layer&n; *&n; *&t;(C) Copyright 1999   Red Hat Software&n; *&t;&n; *&t;Written by Alan Cox, Building Number Three Ltd&n; * &t;Modified by Deepak Saxena &lt;deepak@plexity.net&gt;&n; * &t;Modified by Boji T Kannanthanam &lt;boji.t.kannanthanam@intel.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; * &t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;TODO:&n; *&t;&t;Support polled I2O PCI controllers. &n; */
+multiline_comment|/*&n; *&t;Find I2O capable controllers on the PCI bus, and register/install&n; *&t;them with the I2O layer&n; *&n; *&t;(C) Copyright 1999-2002   Red Hat Software&n; *&t;&n; *&t;Written by Alan Cox, Building Number Three Ltd&n; * &t;Modified by Deepak Saxena &lt;deepak@plexity.net&gt;&n; * &t;Modified by Boji T Kannanthanam &lt;boji.t.kannanthanam@intel.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; * &t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Ported to Linux 2.5 by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;TODO:&n; *&t;&t;Support polled I2O PCI controllers. &n; *&t;&t;Finish verifying 64bit/bigendian clean&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -12,36 +12,14 @@ macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif 
 singleline_comment|// CONFIG_MTRR
-macro_line|#ifdef MODULE
-multiline_comment|/*&n; * Core function table&n; * See &lt;include/linux/i2o.h&gt; for an explanation&n; */
-DECL|variable|core
+DECL|variable|dpt
 r_static
-r_struct
-id|i2o_core_func_table
-op_star
-id|core
-suffix:semicolon
-multiline_comment|/* Core attach function */
-r_extern
 r_int
-id|i2o_pci_core_attach
-c_func
-(paren
-r_struct
-id|i2o_core_func_table
-op_star
-)paren
+id|dpt
+op_assign
+l_int|0
 suffix:semicolon
-r_extern
-r_void
-id|i2o_pci_core_detach
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif /* MODULE */
-multiline_comment|/*&n; *&t;Free bus specific resources&n; */
+multiline_comment|/**&n; *&t;i2o_pci_dispose&t;&t;-&t;Free bus specific resources&n; *&t;@c: I2O controller&n; *&n; *&t;Disable interrupts and then free interrupt, I/O and mtrr resources &n; *&t;used by this controller. Called by the I2O core on unload.&n; */
 DECL|function|i2o_pci_dispose
 r_static
 r_void
@@ -134,7 +112,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-multiline_comment|/*&n; *&t;No real bus specific handling yet (note that later we will&n; *&t;need to &squot;steal&squot; PCI devices on i960 mainboards)&n; */
+multiline_comment|/**&n; *&t;i2o_pci_bind&t;&t;-&t;Bind controller and devices&n; *&t;@c: i2o controller&n; *&t;@dev: i2o device&n; *&n; *&t;Bind a device driver to a controller. In the case of PCI all we need to do&n; *&t;is module housekeeping.&n; */
 DECL|function|i2o_pci_bind
 r_static
 r_int
@@ -158,6 +136,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;i2o_pci_unbind&t;&t;-&t;Bind controller and devices&n; *&t;@c: i2o controller&n; *&t;@dev: i2o device&n; *&n; *&t;Unbind a device driver from a controller. In the case of PCI all we need to do&n; *&t;is module housekeeping.&n; */
 DECL|function|i2o_pci_unbind
 r_static
 r_int
@@ -181,7 +160,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Bus specific enable/disable functions&n; */
+multiline_comment|/**&n; *&t;i2o_pci_enable&t;&t;-&t;Enable controller&n; *&t;@c: controller&n; *&n; *&t;Called by the I2O core code in order to enable bus specific&n; *&t;resources for this controller. In our case that means unmasking the &n; *&t;interrupt line.&n; */
 DECL|function|i2o_pci_enable
 r_static
 r_void
@@ -207,6 +186,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;i2o_pci_disable&t;&t;-&t;Enable controller&n; *&t;@c: controller&n; *&n; *&t;Called by the I2O core code in order to enable bus specific&n; *&t;resources for this controller. In our case that means masking the &n; *&t;interrupt line.&n; */
 DECL|function|i2o_pci_disable
 r_static
 r_void
@@ -232,7 +212,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Bus specific interrupt handler&n; */
+multiline_comment|/**&n; *&t;i2o_pci_interrupt&t;-&t;Bus specific interrupt handler&n; *&t;@irq: interrupt line&n; *&t;@dev_id: cookie&n; *&n; *&t;Handle an interrupt from a PCI based I2O controller. This turns out&n; *&t;to be rather simple. We keep the controller pointer in the cookie.&n; */
 DECL|function|i2o_pci_interrupt
 r_static
 r_void
@@ -259,25 +239,14 @@ id|c
 op_assign
 id|dev_id
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|core
-op_member_access_from_pointer
-id|run_queue
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-macro_line|#else
 id|i2o_run_queue
 c_func
 (paren
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
 )brace
-multiline_comment|/*&n; *&t;Install a PCI (or in theory AGP) i2o controller&n; *&n; * TODO: Add support for polled controllers&n; */
+multiline_comment|/**&n; *&t;i2o_pci_install&t;&t;-&t;Install a PCI i2o controller&n; *&t;@dev: PCI device of the I2O controller&n; *&n; *&t;Install a PCI (or in theory AGP) i2o controller. Devices are&n; *&t;initialized, configured and registered with the i2o core subsystem. Be&n; *&t;very careful with ordering. There may be pending interrupts.&n; *&n; *&t;To Do: Add support for polled controllers&n; */
 DECL|function|i2o_pci_install
 r_int
 id|__init
@@ -307,8 +276,8 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|u8
-op_star
+r_int
+r_int
 id|mem
 suffix:semicolon
 id|u32
@@ -461,6 +430,10 @@ id|size
 suffix:semicolon
 id|mem
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|ioremap
 c_func
 (paren
@@ -474,7 +447,7 @@ c_cond
 (paren
 id|mem
 op_eq
-l_int|NULL
+l_int|0
 )paren
 (brace
 id|printk
@@ -500,10 +473,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|c-&gt;bus.pci.queue_buggy
-op_assign
-l_int|0
-suffix:semicolon
 id|c-&gt;bus.pci.dpt
 op_assign
 l_int|0
@@ -518,42 +487,21 @@ id|dev
 suffix:semicolon
 id|c-&gt;irq_mask
 op_assign
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-(paren
 id|mem
 op_plus
 l_int|0x34
-)paren
 suffix:semicolon
 id|c-&gt;post_port
 op_assign
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-(paren
 id|mem
 op_plus
 l_int|0x40
-)paren
 suffix:semicolon
 id|c-&gt;reply_port
 op_assign
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-(paren
 id|mem
 op_plus
 l_int|0x44
-)paren
 suffix:semicolon
 id|c-&gt;mem_phys
 op_assign
@@ -561,9 +509,6 @@ id|memptr
 suffix:semicolon
 id|c-&gt;mem_offset
 op_assign
-(paren
-id|u32
-)paren
 id|mem
 suffix:semicolon
 id|c-&gt;destructor
@@ -623,21 +568,9 @@ op_eq
 id|PCI_VENDOR_ID_PROMISE
 )paren
 (brace
-id|c-&gt;bus.pci.queue_buggy
+id|c-&gt;bus.pci.promise
 op_assign
 l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dev-&gt;subsystem_device
-op_eq
-l_int|0x0000
-)paren
-multiline_comment|/* SX6000 ???? */
-id|c-&gt;bus.pci.queue_buggy
-op_assign
-l_int|2
 suffix:semicolon
 id|printk
 c_func
@@ -677,7 +610,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&n;* If it is an INTEL i960 I/O processor then set the first 64K to Uncacheable&n;* since the region contains the Messaging unit which shouldn&squot;t be cached.&n;*/
+multiline_comment|/*&n;&t; * If it is an INTEL i960 I/O processor then set the first 64K to&n;&t; * Uncacheable since the region contains the Messaging unit which&n;&t; * shouldn&squot;t be cached.&n;&t; */
 id|c-&gt;bus.pci.mtrr_reg1
 op_assign
 op_minus
@@ -757,18 +690,6 @@ comma
 l_int|0xFFFFFFFF
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|i
-op_assign
-id|core
-op_member_access_from_pointer
-id|install
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-macro_line|#else
 id|i
 op_assign
 id|i2o_install_controller
@@ -777,7 +698,6 @@ c_func
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
 r_if
 c_cond
 (paren
@@ -802,6 +722,10 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|mem
 )paren
 suffix:semicolon
@@ -859,25 +783,19 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|core
-op_member_access_from_pointer
-r_delete
-(paren
-id|c
-)paren
-suffix:semicolon
-macro_line|#else
 id|i2o_delete_controller
 c_func
 (paren
 id|c
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */&t;
 id|iounmap
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|mem
 )paren
 suffix:semicolon
@@ -914,6 +832,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;i2o_pci_scan&t;-&t;Scan the pci bus for controllers&n; *&t;&n; *&t;Scan the PCI devices on the system looking for any device which is a &n; *&t;memory of the Intelligent, I2O class. We attempt to set up each such device&n; *&t;and register it with the core.&n; *&n; *&t;Returns the number of controllers registered&n; *&n; *&t;Note; Do not change this to a hot plug interface. I2O 1.5 itself&n; *&t;does not support hot plugging.&n; */
 DECL|function|i2o_pci_scan
 r_int
 id|__init
@@ -969,6 +888,9 @@ c_cond
 id|dev-&gt;vendor
 op_eq
 id|PCI_VENDOR_ID_DPT
+op_logical_and
+op_logical_neg
+id|dpt
 )paren
 (brace
 r_if
@@ -1040,6 +962,32 @@ comma
 id|dev-&gt;devfn
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|dev
+comma
+l_int|0xffffffff
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;I2O controller on bus %d at %d : No suitable DMA available&bslash;n&quot;
+comma
+id|dev-&gt;bus-&gt;number
+comma
+id|dev-&gt;devfn
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|pci_set_master
 c_func
 (paren
@@ -1098,157 +1046,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#ifdef I2O_HOTPLUG_SUPPORT
-multiline_comment|/*&n; * Activate a newly found PCI I2O controller&n; * Not used now, but will be needed in future for&n; * hot plug PCI support&n; */
-DECL|function|i2o_pci_activate
-r_static
-r_void
-id|i2o_pci_activate
-c_func
-(paren
-id|i2o_controller
-op_star
-id|c
-)paren
-(brace
-r_int
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-r_struct
-id|i2o_controller
-op_star
-id|c
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|c-&gt;type
-op_eq
-id|I2O_TYPE_PCI
-)paren
-(brace
-id|I2O_IRQ_WRITE32
-c_func
-(paren
-id|c
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#ifdef MODULE
-r_if
-c_cond
-(paren
-id|core
-op_member_access_from_pointer
-id|activate
-c_func
-(paren
-id|c
-)paren
-)paren
-macro_line|#else
-r_if
-c_cond
-(paren
-id|i2o_activate_controller
-c_func
-(paren
-id|c
-)paren
-)paren
-macro_line|#endif /* MODULE */
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Failed to initialize.&bslash;n&quot;
-comma
-id|c-&gt;name
-)paren
-suffix:semicolon
-macro_line|#ifdef MODULE
-id|core
-op_member_access_from_pointer
-id|unlock
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-id|core
-op_member_access_from_pointer
-r_delete
-(paren
-id|c
-)paren
-suffix:semicolon
-macro_line|#else
-id|i2o_unlock_controller
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-id|i2o_delete_controller
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
-macro_line|#endif
-r_continue
-suffix:semicolon
-)brace
-)brace
-)brace
-macro_line|#endif 
-singleline_comment|// I2O_HOTPLUG_SUPPORT
-macro_line|#ifdef MODULE
+multiline_comment|/**&n; *&t;i2o_pci_core_attach&t;-&t;PCI initialisation for I2O&n; *&n; *&t;Find any I2O controllers and if present initialise them and bring up&n; *&t;the I2O subsystem.&n; *&n; *&t;Returns 0 on success or an error code&n; */
 DECL|function|i2o_pci_core_attach
+r_static
 r_int
 id|i2o_pci_core_attach
-c_func
-(paren
-r_struct
-id|i2o_core_func_table
-op_star
-id|table
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-id|core
-op_assign
-id|table
-suffix:semicolon
-r_return
-id|i2o_pci_scan
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|i2o_pci_core_detach
-r_void
-id|i2o_pci_core_detach
-c_func
-(paren
-r_void
-)paren
-(brace
-id|core
-op_assign
-l_int|NULL
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-DECL|function|init_module
-r_int
-id|init_module
 c_func
 (paren
 r_void
@@ -1258,44 +1060,49 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Linux I2O PCI support (c) 1999 Red Hat Software.&bslash;n&quot;
+l_string|&quot;Linux I2O PCI support (c) 1999-2002 Red Hat.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|core
-op_assign
-l_int|NULL
+r_if
+c_cond
+(paren
+id|i2o_pci_scan
+c_func
+(paren
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|i2o_sys_init
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;i2o_pci_core_detach&t;-&t;PCI unload for I2O&n; *&n; *&t;Free up any resources not released when the controllers themselves were&n; *&t;shutdown and unbound from the bus and drivers&n; */
+DECL|function|i2o_pci_core_detach
+r_static
 r_void
-id|cleanup_module
+id|i2o_pci_core_detach
 c_func
 (paren
 r_void
 )paren
 (brace
 )brace
-DECL|variable|i2o_pci_core_attach
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|i2o_pci_core_attach
-)paren
-suffix:semicolon
-DECL|variable|i2o_pci_core_detach
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|i2o_pci_core_detach
-)paren
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Red Hat Software&quot;
+l_string|&quot;Red Hat&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -1310,28 +1117,34 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|function|i2o_pci_init
-r_void
-id|__init
-id|i2o_pci_init
+id|MODULE_PARM
 c_func
 (paren
-r_void
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Linux I2O PCI support (c) 1999 Red Hat Software.&bslash;n&quot;
+id|dpt
+comma
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-id|i2o_pci_scan
+id|MODULE_PARM_DESC
 c_func
 (paren
+id|dpt
+comma
+l_string|&quot;Set this if you want to drive DPT cards normally handled by dpt_i2o&quot;
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
+DECL|variable|i2o_pci_core_attach
+id|module_init
+c_func
+(paren
+id|i2o_pci_core_attach
+)paren
+suffix:semicolon
+DECL|variable|i2o_pci_core_detach
+id|module_exit
+c_func
+(paren
+id|i2o_pci_core_detach
+)paren
+suffix:semicolon
 eof

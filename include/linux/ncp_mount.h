@@ -21,6 +21,8 @@ DECL|macro|NCP_MOUNT_EXTRAS
 mdefine_line|#define NCP_MOUNT_EXTRAS&t;0x0020
 DECL|macro|NCP_MOUNT_SYMLINKS
 mdefine_line|#define NCP_MOUNT_SYMLINKS&t;0x0040&t;/* enable symlinks */
+DECL|macro|NCP_MOUNT_NFS_EXTRAS
+mdefine_line|#define NCP_MOUNT_NFS_EXTRAS&t;0x0080&t;/* Enable use of NFS NS meta-info */
 DECL|struct|ncp_mount_data
 r_struct
 id|ncp_mount_data

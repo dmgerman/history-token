@@ -923,7 +923,11 @@ id|p
 )paren
 op_logical_and
 (paren
-id|p-&gt;thread_info-&gt;cpu
+id|task_cpu
+c_func
+(paren
+id|p
+)paren
 op_ne
 id|smp_processor_id
 c_func

@@ -282,6 +282,14 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|amijoy_dev
+op_plus
+id|i
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|amijoy_open
@@ -747,7 +755,7 @@ id|amijoy-&gt;dev
 id|i
 )braket
 dot
-id|idbus
+id|id.bustype
 op_assign
 id|BUS_AMIGA
 suffix:semicolon
@@ -756,7 +764,7 @@ id|amijoy-&gt;dev
 id|i
 )braket
 dot
-id|idvendor
+id|id.vendor
 op_assign
 l_int|0x0001
 suffix:semicolon
@@ -765,7 +773,7 @@ id|amijoy-&gt;dev
 id|i
 )braket
 dot
-id|idproduct
+id|id.product
 op_assign
 l_int|0x0003
 suffix:semicolon
@@ -774,7 +782,7 @@ id|amijoy-&gt;dev
 id|i
 )braket
 dot
-id|version
+id|id.version
 op_assign
 l_int|0x0100
 suffix:semicolon

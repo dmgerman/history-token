@@ -1421,6 +1421,14 @@ id|j
 )braket
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+op_plus
+id|i
+)paren
+suffix:semicolon
 )brace
 )brace
 )brace
@@ -1652,6 +1660,14 @@ id|j
 )braket
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+op_plus
+id|i
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Multi and Multi2 joysticks&n; */
@@ -1832,6 +1848,14 @@ l_int|5
 )braket
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+op_plus
+id|i
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * PSX controllers&n; */
@@ -1922,6 +1946,14 @@ l_int|0
 )braket
 op_amp
 l_int|0x02
+)paren
+suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+op_plus
+id|i
 )paren
 suffix:semicolon
 r_case
@@ -2099,6 +2131,14 @@ op_amp
 l_int|0x01
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+op_plus
+id|i
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -2249,6 +2289,14 @@ l_int|0
 )braket
 op_amp
 l_int|0x01
+)paren
+suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+op_plus
+id|i
 )paren
 suffix:semicolon
 r_break
@@ -3312,7 +3360,7 @@ id|gc-&gt;dev
 id|i
 )braket
 dot
-id|idbus
+id|id.bustype
 op_assign
 id|BUS_PARPORT
 suffix:semicolon
@@ -3321,7 +3369,7 @@ id|gc-&gt;dev
 id|i
 )braket
 dot
-id|idvendor
+id|id.vendor
 op_assign
 l_int|0x0001
 suffix:semicolon
@@ -3330,7 +3378,7 @@ id|gc-&gt;dev
 id|i
 )braket
 dot
-id|idproduct
+id|id.product
 op_assign
 id|config
 (braket
@@ -3344,7 +3392,7 @@ id|gc-&gt;dev
 id|i
 )braket
 dot
-id|idversion
+id|id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
@@ -3440,6 +3488,7 @@ suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 DECL|function|gc_setup
+r_static
 r_int
 id|__init
 id|gc_setup
@@ -3510,6 +3559,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|gc_setup_2
+r_static
 r_int
 id|__init
 id|gc_setup_2
@@ -3580,6 +3630,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|gc_setup_3
+r_static
 r_int
 id|__init
 id|gc_setup_3

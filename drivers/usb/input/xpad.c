@@ -1,22 +1,15 @@
-multiline_comment|/*&n; * USB XBOX HID Gamecontroller - v0.0.3&n; *&n; * Copyright (c) 2002 Marko Friedemann &lt;mfr@bmx-chemnitz.de&gt;&n; *&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License as&n; *      published by the Free Software Foundation; either version 2 of&n; *      the License, or (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; *&n; * This driver is based on:&n; *  - information from      http://euc.jp/periphs/xbox-controller.ja.html&n; *  - the iForce driver     drivers/char/joystick/iforce.c&n; *  - the skeleton-driver   drivers/usb/usb-skeleton.c&n; *&n; * Thanks to:&n; *  - ITO Takayuki for providing xpad information on his website&n; *  - Vojtech Pavlik      - iforce driver / input subsystem&n; *  - Greg Kroah-Hartman  - usb-skeleton driver&n; *&n; * TODO:&n; *&t;- get the black button to work&n; *      - fine tune axes&n; *      - fix &quot;analog&quot; buttons&n; *&t;- get rumble working&n; *&n; * History:&n; *&n; * 2002-06-27 - 0.0.1 - first version, just said &quot;XBOX HID controller&quot;&n; *&n; * 2002-07-02 - 0.0.2 - basic working version&n; *      all axes and 9 of the 10 buttons work (german InterAct device)&n; *      the black button does not work&n; *&n; */
+multiline_comment|/*&n; * X-Box gamepad - v0.0.5&n; *&n; * Copyright (c) 2002 Marko Friedemann &lt;mfr@bmx-chemnitz.de&gt;&n; *&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as&n; * published by the Free Software Foundation; either version 2 of&n; * the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; *&n; * This driver is based on:&n; *  - information from     http://euc.jp/periphs/xbox-controller.ja.html&n; *  - the iForce driver    drivers/char/joystick/iforce.c&n; *  - the skeleton-driver  drivers/usb/usb-skeleton.c&n; *&n; * Thanks to:&n; *  - ITO Takayuki for providing essential xpad information on his website&n; *  - Vojtech Pavlik     - iforce driver / input subsystem&n; *  - Greg Kroah-Hartman - usb-skeleton driver&n; *&n; * TODO:&n; *  - fine tune axes&n; *  - fix &quot;analog&quot; buttons (reported as digital now)&n; *  - get rumble working&n; *&n; * History:&n; *&n; * 2002-06-27 - 0.0.1 : first version, just said &quot;XBOX HID controller&quot;&n; *&n; * 2002-07-02 - 0.0.2 : basic working version&n; *  - all axes and 9 of the 10 buttons work (german InterAct device)&n; *  - the black button does not work&n; *&n; * 2002-07-14 - 0.0.3 : rework by Vojtech Pavlik&n; *  - indentation fixes&n; *  - usb + input init sequence fixes&n; *&n; * 2002-07-16 - 0.0.4 : minor changes, merge with Vojtech&squot;s v0.0.3&n; *  - verified the lack of HID and report descriptors&n; *  - verified that ALL buttons WORK&n; *  - fixed d-pad to axes mapping&n; *&n; * 2002-07-17 - 0.0.5 : simplified d-pad handling&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v0.0.3&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v0.0.5&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Marko Friedemann &lt;mfr@bmx-chemnitz.de&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -69,7 +62,7 @@ l_int|0x05fd
 comma
 l_int|0x107a
 comma
-l_string|&quot;InterAct X-Box pad (Germany)&quot;
+l_string|&quot;InterAct &squot;PowerPad Pro&squot; X-Box pad (Germany)&quot;
 )brace
 comma
 (brace
@@ -102,7 +95,7 @@ id|BTN_Y
 comma
 id|BTN_Z
 comma
-multiline_comment|/* 6 &quot;analog&quot; buttons */
+multiline_comment|/* &quot;analog&quot; buttons */
 id|BTN_START
 comma
 id|BTN_BACK
@@ -111,7 +104,7 @@ id|BTN_THUMBL
 comma
 id|BTN_THUMBR
 comma
-multiline_comment|/* start/back + stick press */
+multiline_comment|/* start/back/sticks */
 op_minus
 l_int|1
 multiline_comment|/* terminating entry */
@@ -145,89 +138,10 @@ id|ABS_HAT0X
 comma
 id|ABS_HAT0Y
 comma
-multiline_comment|/* dpad */
+multiline_comment|/* digital pad */
 op_minus
 l_int|1
 multiline_comment|/* terminating entry */
-)brace
-suffix:semicolon
-r_static
-r_struct
-(brace
-DECL|member|x
-id|__s32
-id|x
-suffix:semicolon
-DECL|member|y
-id|__s32
-id|y
-suffix:semicolon
-DECL|variable|xpad_hat_to_axis
-)brace
-id|xpad_hat_to_axis
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0
-comma
-l_int|0
-)brace
-comma
-(brace
-l_int|0
-comma
-op_minus
-l_int|1
-)brace
-comma
-(brace
-l_int|1
-comma
-op_minus
-l_int|1
-)brace
-comma
-(brace
-l_int|1
-comma
-l_int|0
-)brace
-comma
-(brace
-l_int|1
-comma
-l_int|1
-)brace
-comma
-(brace
-l_int|0
-comma
-l_int|1
-)brace
-comma
-(brace
-op_minus
-l_int|1
-comma
-l_int|1
-)brace
-comma
-(brace
-op_minus
-l_int|1
-comma
-l_int|0
-)brace
-comma
-(brace
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-)brace
 )brace
 suffix:semicolon
 DECL|variable|xpad_table
@@ -308,10 +222,10 @@ DECL|member|open_count
 r_int
 id|open_count
 suffix:semicolon
-multiline_comment|/* how many times has this been opened */
+multiline_comment|/* reference count */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *      xpad_process_packet&n; *&n; *      Completes a request by converting the data into events for the input subsystem.&n; *      &n; *      The used report descriptor given below was taken from ITO Takayukis website:&n; *          http://euc.jp/periphs/xbox-controller.ja.html&n; *&n; * ----------------------------------------------------------------------------------------------------------------&n; * |  padding | byte-cnt | dpad sb12 | reserved |   bt A   |   bt B   |   bt X   |   bt Y   | bt black | bt white |&n; * | 01234567 | 01234567 | 0123 4567 | 01234567 | 01234567 | 01234567 | 01234567 | 01234567 | 01234567 | 01234567 |&n; * |    0     |    1     |     2     |    3     |    4     |    5     |    6     |    7     |    8     |    9     |&n; * ----------------------------------------------------------------------------------------------------------------&n; *&n; * ---------------------------------------------------------------------------------------------------------------&n; * |  trig L  |  trig R  |     left stick X    |     left stick Y    |     right stick X   |     right stick Y   |&n; * | 01234567 | 01234567 | 01234567 | 01234567 | 01234567 | 01234567 | 01234567 | 01234567 | 01234567 | 01234567 |&n; * |    10    |    11    |    12    |    13    |    14    |    15    |    16    |    17    |    18    |    19    |&n; * ---------------------------------------------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *&t;xpad_process_packet&n; *&n; *&t;Completes a request by converting the data into events for the&n; *&t;input subsystem.&n; *&n; *&t;The used report descriptor was taken from ITO Takayukis website:&n; *&t; http://euc.jp/periphs/xbox-controller.ja.html&n; */
 DECL|function|xpad_process_packet
 r_static
 r_void
@@ -497,17 +411,27 @@ id|dev
 comma
 id|ABS_HAT0X
 comma
-id|xpad_hat_to_axis
-(braket
+op_logical_neg
+op_logical_neg
+(paren
 id|data
 (braket
 l_int|2
 )braket
 op_amp
-l_int|0x0f
+l_int|0x08
+)paren
+op_minus
+op_logical_neg
+op_logical_neg
+(paren
+id|data
+(braket
+l_int|2
 )braket
-dot
-id|x
+op_amp
+l_int|0x04
+)paren
 )paren
 suffix:semicolon
 id|input_report_abs
@@ -517,17 +441,27 @@ id|dev
 comma
 id|ABS_HAT0Y
 comma
-id|xpad_hat_to_axis
-(braket
+op_logical_neg
+op_logical_neg
+(paren
 id|data
 (braket
 l_int|2
 )braket
 op_amp
-l_int|0x0f
+l_int|0x02
+)paren
+op_minus
+op_logical_neg
+op_logical_neg
+(paren
+id|data
+(braket
+l_int|2
 )braket
-dot
-id|y
+op_amp
+l_int|0x01
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* start/back buttons and stick press left/right */
@@ -681,6 +615,12 @@ id|data
 (braket
 l_int|9
 )braket
+)paren
+suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -1021,19 +961,19 @@ id|xpad-&gt;udev
 op_assign
 id|udev
 suffix:semicolon
-id|xpad-&gt;dev.idbus
+id|xpad-&gt;dev.id.bustype
 op_assign
 id|BUS_USB
 suffix:semicolon
-id|xpad-&gt;dev.idvendor
+id|xpad-&gt;dev.id.vendor
 op_assign
 id|udev-&gt;descriptor.idVendor
 suffix:semicolon
-id|xpad-&gt;dev.idproduct
+id|xpad-&gt;dev.id.product
 op_assign
 id|udev-&gt;descriptor.idProduct
 suffix:semicolon
-id|xpad-&gt;dev.idversion
+id|xpad-&gt;dev.id.version
 op_assign
 id|udev-&gt;descriptor.bcdDevice
 suffix:semicolon
@@ -1184,6 +1124,7 @@ suffix:colon
 r_case
 id|ABS_RY
 suffix:colon
+multiline_comment|/* the two sticks */
 id|xpad-&gt;dev.absmax
 (braket
 id|t
@@ -1221,6 +1162,7 @@ suffix:colon
 r_case
 id|ABS_RZ
 suffix:colon
+multiline_comment|/* the triggers */
 id|xpad-&gt;dev.absmax
 (braket
 id|t
@@ -1243,6 +1185,7 @@ suffix:colon
 r_case
 id|ABS_HAT0Y
 suffix:colon
+multiline_comment|/* the d-pad */
 id|xpad-&gt;dev.absmax
 (braket
 id|t

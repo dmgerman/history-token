@@ -6,6 +6,7 @@ DECL|macro|MAX_CDB
 mdefine_line|#define MAX_CDB 12
 DECL|macro|MAX_SENSE
 mdefine_line|#define MAX_SENSE 14
+r_static
 r_int
 id|atp870u_detect
 c_func
@@ -14,6 +15,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|atp870u_command
 c_func
@@ -22,6 +24,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|atp870u_queuecommand
 c_func
@@ -40,6 +43,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|atp870u_abort
 c_func
@@ -48,17 +52,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
-r_int
-id|atp870u_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
+r_static
 r_int
 id|atp870u_biosparam
 c_func
@@ -74,6 +68,7 @@ r_int
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|atp870u_release
 c_func
@@ -81,14 +76,6 @@ c_func
 r_struct
 id|Scsi_Host
 op_star
-)paren
-suffix:semicolon
-r_void
-id|send_s870
-c_func
-(paren
-r_int
-r_char
 )paren
 suffix:semicolon
 DECL|macro|qcnt
@@ -135,6 +122,6 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|ATP870U
-mdefine_line|#define ATP870U {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;next: NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;module: NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;proc_info: atp870u_proc_info,&t;&t;&t;&t;&bslash;&n;&t;name: NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;detect: atp870u_detect, &t;&t;&t;&t;&bslash;&n;&t;release: atp870u_release,&t;&t;&t;&t;&bslash;&n;&t;info: atp870u_info,&t;&t;&t;&t;&t;&bslash;&n;&t;command: atp870u_command,&t;&t;&t;&t;&bslash;&n;&t;queuecommand: atp870u_queuecommand,&t;&t;&t;&bslash;&n;&t;eh_strategy_handler: NULL,&t;&t;&t;&t;&bslash;&n;&t;eh_abort_handler: NULL, &t;&t;&t;&t;&bslash;&n;&t;eh_device_reset_handler: NULL,&t;&t;&t;&t;&bslash;&n;&t;eh_bus_reset_handler: NULL,&t;&t;&t;&t;&bslash;&n;&t;eh_host_reset_handler: NULL,&t;&t;&t;&t;&bslash;&n;&t;abort: atp870u_abort,&t;&t;&t;&t;&t;&bslash;&n;&t;reset: atp870u_reset,&t;&t;&t;&t;&t;&bslash;&n;&t;slave_attach: NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;bios_param: atp870u_biosparam,&t;&t;&t;&t;&bslash;&n;&t;can_queue: qcnt,&t; /* max simultaneous cmds      */&bslash;&n;&t;this_id: 7,&t;       /* scsi id of host adapter    */&bslash;&n;&t;sg_tablesize: ATP870U_SCATTER,&t;/* max scatter-gather cmds    */&bslash;&n;&t;cmd_per_lun: ATP870U_CMDLUN,&t;/* cmds per lun (linked cmds) */&bslash;&n;&t;present: 0,&t;&t;/* number of 7xxx&squot;s present   */&bslash;&n;&t;unchecked_isa_dma: 0,&t;/* no memory DMA restrictions */&bslash;&n;&t;use_clustering: ENABLE_CLUSTERING,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define ATP870U {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;next: NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;module: NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;proc_info: atp870u_proc_info,&t;&t;&t;&t;&bslash;&n;&t;name: NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;detect: atp870u_detect, &t;&t;&t;&t;&bslash;&n;&t;release: atp870u_release,&t;&t;&t;&t;&bslash;&n;&t;info: atp870u_info,&t;&t;&t;&t;&t;&bslash;&n;&t;command: atp870u_command,&t;&t;&t;&t;&bslash;&n;&t;queuecommand: atp870u_queuecommand,&t;&t;&t;&bslash;&n;&t;eh_strategy_handler: NULL,&t;&t;&t;&t;&bslash;&n;&t;eh_abort_handler: atp870u_abort, &t;&t;&t;&bslash;&n;&t;slave_attach: NULL,&t;&t;&t;&t;&t;&bslash;&n;&t;bios_param: atp870u_biosparam,&t;&t;&t;&t;&bslash;&n;&t;can_queue: qcnt,&t; /* max simultaneous cmds      */&bslash;&n;&t;this_id: 7,&t;       /* scsi id of host adapter    */&bslash;&n;&t;sg_tablesize: ATP870U_SCATTER,&t;/* max scatter-gather cmds    */&bslash;&n;&t;cmd_per_lun: ATP870U_CMDLUN,&t;/* cmds per lun (linked cmds) */&bslash;&n;&t;present: 0,&t;&t;/* number of 7xxx&squot;s present   */&bslash;&n;&t;unchecked_isa_dma: 0,&t;/* no memory DMA restrictions */&bslash;&n;&t;use_clustering: ENABLE_CLUSTERING,&t;&t;&t;&bslash;&n;}
 macro_line|#endif
 eof

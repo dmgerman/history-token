@@ -200,6 +200,13 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|pm-&gt;input
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Decide if we need to issue a control message and do so. Must be called with pm-&gt;lock down */
 DECL|function|powermate_sync_state
@@ -1299,19 +1306,19 @@ c_func
 id|MSC_PULSELED
 )paren
 suffix:semicolon
-id|pm-&gt;input.idbus
+id|pm-&gt;input.id.bustype
 op_assign
 id|BUS_USB
 suffix:semicolon
-id|pm-&gt;input.idvendor
+id|pm-&gt;input.id.vendor
 op_assign
 id|udev-&gt;descriptor.idVendor
 suffix:semicolon
-id|pm-&gt;input.idproduct
+id|pm-&gt;input.id.product
 op_assign
 id|udev-&gt;descriptor.idProduct
 suffix:semicolon
-id|pm-&gt;input.idversion
+id|pm-&gt;input.id.version
 op_assign
 id|udev-&gt;descriptor.bcdDevice
 suffix:semicolon

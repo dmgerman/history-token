@@ -1460,7 +1460,11 @@ id|task-&gt;cnswap
 comma
 id|task-&gt;exit_signal
 comma
-id|task-&gt;thread_info-&gt;cpu
+id|task_cpu
+c_func
+(paren
+id|task
+)paren
 comma
 id|task-&gt;rt_priority
 comma

@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -42,8 +43,9 @@ id|input_dev
 id|rpcmouse_dev
 op_assign
 (brace
+dot
 id|evbit
-suffix:colon
+op_assign
 (brace
 id|BIT
 c_func
@@ -58,8 +60,9 @@ id|EV_REL
 )paren
 )brace
 comma
+dot
 id|keybit
-suffix:colon
+op_assign
 (brace
 (braket
 id|LONG
@@ -88,8 +91,9 @@ id|BTN_RIGHT
 )paren
 )brace
 comma
+dot
 id|relbit
-suffix:colon
+op_assign
 (brace
 id|BIT
 c_func
@@ -104,29 +108,15 @@ id|REL_Y
 )paren
 )brace
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Acorn RiscPC Mouse&quot;
 comma
+dot
 id|phys
-suffix:colon
+op_assign
 l_string|&quot;rpcmouse/input0&quot;
-comma
-id|idbus
-suffix:colon
-id|BUS_HOST
-comma
-id|idvendor
-suffix:colon
-l_int|0x0005
-comma
-id|idproduct
-suffix:colon
-l_int|0x0001
-comma
-id|idversion
-suffix:colon
-l_int|0x0100
 comma
 )brace
 suffix:semicolon
@@ -249,7 +239,7 @@ id|rpcmouse_dev
 comma
 id|BTN_LEFT
 comma
-id|buttons
+id|b
 op_amp
 l_int|0x10
 )paren
@@ -262,7 +252,7 @@ id|rpcmouse_dev
 comma
 id|BTN_MIDDLE
 comma
-id|buttons
+id|b
 op_amp
 l_int|0x20
 )paren
@@ -275,9 +265,16 @@ id|rpcmouse_dev
 comma
 id|BTN_RIGHT
 comma
-id|buttons
+id|b
 op_amp
 l_int|0x40
+)paren
+suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|rpcmouse_dev
 )paren
 suffix:semicolon
 )brace
@@ -350,6 +347,22 @@ op_amp
 id|rpcmouse_dev
 )paren
 suffix:semicolon
+id|rpcmouse.id.bustype
+op_assign
+id|BUS_HOST
+comma
+id|rpcmouse.id.vendor
+op_assign
+l_int|0x0005
+comma
+id|rpcmouse.id.product
+op_assign
+l_int|0x0001
+comma
+id|rpcmouse.id.version
+op_assign
+l_int|0x0100
+comma
 id|printk
 c_func
 (paren

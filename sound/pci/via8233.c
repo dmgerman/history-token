@@ -3477,9 +3477,15 @@ suffix:semicolon
 multiline_comment|/* --- */
 id|__end_hw
 suffix:colon
+r_if
+c_cond
+(paren
+id|chip-&gt;irq
+)paren
 id|synchronize_irq
 c_func
 (paren
+id|chip-&gt;irq
 )paren
 suffix:semicolon
 r_if
@@ -3828,6 +3834,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|chip-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/* initialize offsets */

@@ -440,11 +440,6 @@ id|KERN_INFO
 l_string|&quot;raid5: measuring checksumming speed&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 DECL|macro|xor_speed
 mdefine_line|#define xor_speed(templ)&t;do_xor_speed((templ), b1, b2)
 id|XOR_TRY_TEMPLATES

@@ -7461,12 +7461,21 @@ id|SERIAL
 suffix:semicolon
 multiline_comment|/* clear serial interface */
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|ensoniq-&gt;irq
+op_ge
+l_int|0
+)paren
+(brace
 id|synchronize_irq
 c_func
 (paren
 id|ensoniq-&gt;irq
 )paren
 suffix:semicolon
+)brace
 id|pci_set_power_state
 c_func
 (paren

@@ -11,10 +11,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-multiline_comment|/* IBM Spruce platform is different. */
-macro_line|#ifdef CONFIG_SPRUCE
-macro_line|#include &lt;platforms/spruce.h&gt;
-macro_line|#endif
 macro_line|#ifndef KEYBOARD_IRQ
 DECL|macro|KEYBOARD_IRQ
 mdefine_line|#define KEYBOARD_IRQ&t;&t;&t;1

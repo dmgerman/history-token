@@ -769,6 +769,12 @@ id|j
 )paren
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 id|mod_timer
 c_func
@@ -1152,7 +1158,7 @@ id|cobra-&gt;dev
 id|i
 )braket
 dot
-id|idbus
+id|id.bustype
 op_assign
 id|BUS_GAMEPORT
 suffix:semicolon
@@ -1161,7 +1167,7 @@ id|cobra-&gt;dev
 id|i
 )braket
 dot
-id|idvendor
+id|id.vendor
 op_assign
 id|GAMEPORT_ID_VENDOR_CREATIVE
 suffix:semicolon
@@ -1170,7 +1176,7 @@ id|cobra-&gt;dev
 id|i
 )braket
 dot
-id|idproduct
+id|id.product
 op_assign
 l_int|0x0008
 suffix:semicolon
@@ -1179,7 +1185,7 @@ id|cobra-&gt;dev
 id|i
 )braket
 dot
-id|idversion
+id|id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
@@ -1424,12 +1430,14 @@ id|gameport_dev
 id|cobra_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|cobra_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|cobra_disconnect
 comma
 )brace

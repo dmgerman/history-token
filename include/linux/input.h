@@ -41,10 +41,32 @@ multiline_comment|/*&n; * Protocol version.&n; */
 DECL|macro|EV_VERSION
 mdefine_line|#define EV_VERSION&t;&t;0x010000
 multiline_comment|/*&n; * IOCTLs (0x00 - 0x7f)&n; */
+DECL|struct|input_id
+r_struct
+id|input_id
+(brace
+DECL|member|bustype
+id|__u16
+id|bustype
+suffix:semicolon
+DECL|member|vendor
+id|__u16
+id|vendor
+suffix:semicolon
+DECL|member|product
+id|__u16
+id|product
+suffix:semicolon
+DECL|member|version
+id|__u16
+id|version
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|EVIOCGVERSION
 mdefine_line|#define EVIOCGVERSION&t;&t;_IOR(&squot;E&squot;, 0x01, int)&t;&t;&t;/* get driver version */
 DECL|macro|EVIOCGID
-mdefine_line|#define EVIOCGID&t;&t;_IOR(&squot;E&squot;, 0x02, short[4])&t;&t;/* get device ID */
+mdefine_line|#define EVIOCGID&t;&t;_IOR(&squot;E&squot;, 0x02, struct input_id)&t;/* get device ID */
 DECL|macro|EVIOCGREP
 mdefine_line|#define EVIOCGREP&t;&t;_IOR(&squot;E&squot;, 0x03, int[2])&t;&t;&t;/* get repeat settings */
 DECL|macro|EVIOCSREP
@@ -69,6 +91,8 @@ DECL|macro|EVIOCGBIT
 mdefine_line|#define EVIOCGBIT(ev,len)&t;_IOC(_IOC_READ, &squot;E&squot;, 0x20 + ev, len)&t;/* get event bits */
 DECL|macro|EVIOCGABS
 mdefine_line|#define EVIOCGABS(abs)&t;&t;_IOR(&squot;E&squot;, 0x40 + abs, int[5])&t;&t;/* get abs value/limits */
+DECL|macro|EVIOCSABS
+mdefine_line|#define EVIOCSABS(abs)&t;&t;_IOW(&squot;E&squot;, 0xc0 + abs, int[5])&t;&t;/* set abs value/limits */
 DECL|macro|EVIOCSFF
 mdefine_line|#define EVIOCSFF&t;&t;_IOC(_IOC_WRITE, &squot;E&squot;, 0x80, sizeof(struct ff_effect))&t;/* send a force effect to a force feedback device */
 DECL|macro|EVIOCRMFF
@@ -76,8 +100,8 @@ mdefine_line|#define EVIOCRMFF&t;&t;_IOW(&squot;E&squot;, 0x81, int)&t;&t;&t;/* 
 DECL|macro|EVIOCGEFFECTS
 mdefine_line|#define EVIOCGEFFECTS&t;&t;_IOR(&squot;E&squot;, 0x84, int)&t;&t;&t;/* Report number of effects playable at the same time */
 multiline_comment|/*&n; * Event types&n; */
-DECL|macro|EV_RST
-mdefine_line|#define EV_RST&t;&t;&t;0x00
+DECL|macro|EV_SYN
+mdefine_line|#define EV_SYN&t;&t;&t;0x00
 DECL|macro|EV_KEY
 mdefine_line|#define EV_KEY&t;&t;&t;0x01
 DECL|macro|EV_REL
@@ -100,6 +124,11 @@ DECL|macro|EV_FF_STATUS
 mdefine_line|#define EV_FF_STATUS&t;&t;0x17
 DECL|macro|EV_MAX
 mdefine_line|#define EV_MAX&t;&t;&t;0x1f
+multiline_comment|/*&n; * Synchronization events.&n; */
+DECL|macro|SYN_REPORT
+mdefine_line|#define SYN_REPORT&t;&t;0
+DECL|macro|SYN_CONFIG
+mdefine_line|#define SYN_CONFIG&t;&t;1
 multiline_comment|/*&n; * Keys and buttons&n; */
 DECL|macro|KEY_RESERVED
 mdefine_line|#define KEY_RESERVED&t;&t;0
@@ -789,28 +818,24 @@ DECL|macro|KEY_LAST
 mdefine_line|#define KEY_LAST&t;&t;0x195
 DECL|macro|KEY_AB
 mdefine_line|#define KEY_AB&t;&t;&t;0x196
-DECL|macro|KEY_PLAY
-mdefine_line|#define KEY_PLAY&t;&t;0x197
+DECL|macro|KEY_NEXT
+mdefine_line|#define KEY_NEXT&t;&t;0x197
 DECL|macro|KEY_RESTART
 mdefine_line|#define KEY_RESTART&t;&t;0x198
 DECL|macro|KEY_SLOW
 mdefine_line|#define KEY_SLOW&t;&t;0x199
 DECL|macro|KEY_SHUFFLE
 mdefine_line|#define KEY_SHUFFLE&t;&t;0x19a
-DECL|macro|KEY_FASTFORWARD
-mdefine_line|#define KEY_FASTFORWARD&t;&t;0x19b
+DECL|macro|KEY_BREAK
+mdefine_line|#define KEY_BREAK&t;&t;0x1ab
 DECL|macro|KEY_PREVIOUS
 mdefine_line|#define KEY_PREVIOUS&t;&t;0x19c
-DECL|macro|KEY_NEXT
-mdefine_line|#define KEY_NEXT&t;&t;0x19d
 DECL|macro|KEY_DIGITS
-mdefine_line|#define KEY_DIGITS&t;&t;0x19e
+mdefine_line|#define KEY_DIGITS&t;&t;0x19d
 DECL|macro|KEY_TEEN
-mdefine_line|#define KEY_TEEN&t;&t;0x19f
+mdefine_line|#define KEY_TEEN&t;&t;0x19e
 DECL|macro|KEY_TWEN
-mdefine_line|#define KEY_TWEN&t;&t;0x1a0
-DECL|macro|KEY_BREAK
-mdefine_line|#define KEY_BREAK&t;&t;0x1a1
+mdefine_line|#define KEY_TWEN&t;&t;0x1af
 DECL|macro|KEY_MAX
 mdefine_line|#define KEY_MAX&t;&t;&t;0x1ff
 multiline_comment|/*&n; * Relative axes&n; */
@@ -1307,25 +1332,10 @@ r_char
 op_star
 id|uniq
 suffix:semicolon
-DECL|member|idbus
-r_int
-r_int
-id|idbus
-suffix:semicolon
-DECL|member|idvendor
-r_int
-r_int
-id|idvendor
-suffix:semicolon
-DECL|member|idproduct
-r_int
-r_int
-id|idproduct
-suffix:semicolon
-DECL|member|idversion
-r_int
-r_int
-id|idversion
+DECL|member|id
+r_struct
+id|input_id
+id|id
 suffix:semicolon
 DECL|member|evbit
 r_int
@@ -1461,6 +1471,10 @@ suffix:semicolon
 DECL|member|state
 r_int
 id|state
+suffix:semicolon
+DECL|member|sync
+r_int
+id|sync
 suffix:semicolon
 DECL|member|abs
 r_int
@@ -1724,25 +1738,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-DECL|member|idbus
-r_int
-r_int
-id|idbus
-suffix:semicolon
-DECL|member|idvendor
-r_int
-r_int
-id|idvendor
-suffix:semicolon
-DECL|member|idproduct
-r_int
-r_int
-id|idproduct
-suffix:semicolon
-DECL|member|idversion
-r_int
-r_int
-id|idversion
+DECL|member|id
+r_struct
+id|input_id
+id|id
 suffix:semicolon
 DECL|member|evbit
 r_int
@@ -2125,6 +2124,8 @@ r_int
 id|value
 )paren
 suffix:semicolon
+DECL|macro|input_sync
+mdefine_line|#define input_sync(a)&t;&t;input_event(a, EV_SYN, SYN_REPORT, 0)
 DECL|macro|input_report_key
 mdefine_line|#define input_report_key(a,b,c) input_event(a, EV_KEY, b, !!(c))
 DECL|macro|input_report_rel

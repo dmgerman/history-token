@@ -544,7 +544,7 @@ id|port-&gt;gameport.name
 op_assign
 id|port-&gt;name
 suffix:semicolon
-id|port-&gt;gameport.idbus
+id|port-&gt;gameport.id.bustype
 op_assign
 id|BUS_ISA
 suffix:semicolon
@@ -632,7 +632,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef __ISAPNP__
 DECL|macro|NS558_DEVICE
-mdefine_line|#define NS558_DEVICE(a,b,c,d)&bslash;&n;&t;card_vendor: ISAPNP_ANY_ID, card_device: ISAPNP_ANY_ID,&bslash;&n;&t;vendor: ISAPNP_VENDOR(a,b,c), function: ISAPNP_DEVICE(d)
+mdefine_line|#define NS558_DEVICE(a,b,c,d)&bslash;&n;&t;.card_vendor = ISAPNP_ANY_ID, card_device: ISAPNP_ANY_ID,&bslash;&n;&t;.vendor = ISAPNP_VENDOR(a,b,c), function: ISAPNP_DEVICE(d)
 DECL|variable|pnp_devids
 r_static
 r_struct
@@ -1199,19 +1199,19 @@ id|port-&gt;gameport.name
 op_assign
 id|port-&gt;name
 suffix:semicolon
-id|port-&gt;gameport.idbus
+id|port-&gt;gameport.id.bustype
 op_assign
 id|BUS_ISAPNP
 suffix:semicolon
-id|port-&gt;gameport.idvendor
+id|port-&gt;gameport.id.vendor
 op_assign
 id|dev-&gt;vendor
 suffix:semicolon
-id|port-&gt;gameport.idproduct
+id|port-&gt;gameport.id.product
 op_assign
 id|dev-&gt;device
 suffix:semicolon
-id|port-&gt;gameport.idversion
+id|port-&gt;gameport.id.version
 op_assign
 l_int|0x100
 suffix:semicolon

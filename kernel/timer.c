@@ -659,9 +659,10 @@ id|vec-&gt;prev
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize both explicitly - let&squot;s try to have them in the same cache line */
-DECL|variable|timerlist_lock
+DECL|variable|____cacheline_aligned_in_smp
 id|spinlock_t
 id|timerlist_lock
+id|____cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -1326,9 +1327,10 @@ id|timerlist_lock
 )paren
 suffix:semicolon
 )brace
-DECL|variable|tqueue_lock
+DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t
 id|tqueue_lock
+id|__cacheline_aligned_in_smp
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -2416,9 +2418,10 @@ r_int
 id|wall_jiffies
 suffix:semicolon
 multiline_comment|/*&n; * This read-write spinlock protects us from races in SMP while&n; * playing with xtime and avenrun.&n; */
-DECL|variable|xtime_lock
+DECL|variable|__cacheline_aligned_in_smp
 id|rwlock_t
 id|xtime_lock
+id|__cacheline_aligned_in_smp
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon

@@ -5166,12 +5166,21 @@ id|MC_CR
 )paren
 suffix:semicolon
 multiline_comment|/* --- */
+r_if
+c_cond
+(paren
+id|chip-&gt;irq
+op_ge
+l_int|0
+)paren
+(brace
 id|synchronize_irq
 c_func
 (paren
 id|chip-&gt;irq
 )paren
 suffix:semicolon
+)brace
 id|__hw_end
 suffix:colon
 r_if

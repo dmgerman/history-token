@@ -1327,6 +1327,12 @@ id|k
 )braket
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 id|tmdc-&gt;bads
 op_add_assign
@@ -2110,7 +2116,7 @@ id|tmdc-&gt;dev
 id|j
 )braket
 dot
-id|idbus
+id|id.bustype
 op_assign
 id|BUS_GAMEPORT
 suffix:semicolon
@@ -2119,7 +2125,7 @@ id|tmdc-&gt;dev
 id|j
 )braket
 dot
-id|idvendor
+id|id.vendor
 op_assign
 id|GAMEPORT_ID_VENDOR_THRUSTMASTER
 suffix:semicolon
@@ -2128,7 +2134,7 @@ id|tmdc-&gt;dev
 id|j
 )braket
 dot
-id|idproduct
+id|id.product
 op_assign
 id|models
 (braket
@@ -2142,7 +2148,7 @@ id|tmdc-&gt;dev
 id|j
 )braket
 dot
-id|idversion
+id|id.version
 op_assign
 l_int|0x0100
 suffix:semicolon
@@ -2564,12 +2570,14 @@ id|gameport_dev
 id|tmdc_dev
 op_assign
 (brace
+dot
 id|connect
-suffix:colon
+op_assign
 id|tmdc_connect
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|tmdc_disconnect
 comma
 )brace
