@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/systemcfg.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 DECL|macro|dbg
-mdefine_line|#define dbg(args...) printk(args)
+mdefine_line|#define dbg(args...)
 macro_line|#include &quot;op_impl.h&quot;
 DECL|variable|reset_value
 r_static
