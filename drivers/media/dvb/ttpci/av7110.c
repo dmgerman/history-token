@@ -15736,9 +15736,11 @@ OL
 (paren
 id|u32
 )paren
+(paren
 l_int|16
 op_star
 l_float|168.25
+)paren
 )paren
 id|config
 op_assign
@@ -15753,9 +15755,11 @@ OL
 (paren
 id|u32
 )paren
+(paren
 l_int|16
 op_star
 l_float|447.25
+)paren
 )paren
 id|config
 op_assign
