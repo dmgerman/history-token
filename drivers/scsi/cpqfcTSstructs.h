@@ -1871,11 +1871,6 @@ id|ULONG
 id|port_id
 suffix:semicolon
 singleline_comment|// a FC 24-bit address of port (lower 8 bits = al_pa)
-DECL|member|ScsiCmnd
-id|Scsi_Cmnd
-id|ScsiCmnd
-suffix:semicolon
-singleline_comment|// command buffer for Report Luns
 DECL|macro|REPORT_LUNS_PL
 mdefine_line|#define REPORT_LUNS_PL 256  
 DECL|member|ReportLunsPayload
