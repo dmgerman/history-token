@@ -27,7 +27,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-multiline_comment|/*&n; * LOCKING:&n; * There are three level of locking required by epoll :&n; *&n; * 1) epsem (semaphore)&n; * 2) ep-&gt;sem (rw_semaphore)&n; * 3) ep-&gt;lock (rw_lock)&n; *&n; * The acquire order is the one listed above, from 1 to 3.&n; * We need a spinlock (ep-&gt;lock) because we manipulate objects&n; * from inside the poll callback, that might be triggered from&n; * a wake_up() that in turn might be called from IRQ context.&n; * So we can&squot;t sleep inside the poll callback and hence we need&n; * a spinlock. During the event transfer loop (from kernel to&n; * user space) we could end up sleeping due a copy_to_user(), so&n; * we need a lock that will allow us to sleep. This lock is a&n; * read-write semaphore (ep-&gt;sem). It is acquired on read during&n; * the event transfer loop and in write during epoll_ctl(EPOLL_CTL_DEL)&n; * and during eventpoll_release(). Then we also need a global&n; * semaphore to serialize eventpoll_release() and ep_free().&n; * This semaphore is acquired by ep_free() during the epoll file&n; * cleanup path and it is also acquired by eventpoll_release()&n; * if a file has been pushed inside an epoll set and it is then&n; * close()d without a previous call toepoll_ctl(EPOLL_CTL_DEL).&n; * It is possible to drop the &quot;ep-&gt;sem&quot; and to use the global&n; * semaphore &quot;epsem&quot; (together with &quot;ep-&gt;lock&quot;) to have it working,&n; * but having &quot;ep-&gt;sem&quot; will make the interface more scalable.&n; * Events that require holding &quot;epsem&quot; are very rare, while for&n; * normal operations the epoll private &quot;ep-&gt;sem&quot; will guarantee&n; * a greater scalability.&n; */
+multiline_comment|/*&n; * LOCKING:&n; * There are three level of locking required by epoll :&n; *&n; * 1) epsem (semaphore)&n; * 2) ep-&gt;sem (rw_semaphore)&n; * 3) ep-&gt;lock (rw_lock)&n; *&n; * The acquire order is the one listed above, from 1 to 3.&n; * We need a spinlock (ep-&gt;lock) because we manipulate objects&n; * from inside the poll callback, that might be triggered from&n; * a wake_up() that in turn might be called from IRQ context.&n; * So we can&squot;t sleep inside the poll callback and hence we need&n; * a spinlock. During the event transfer loop (from kernel to&n; * user space) we could end up sleeping due a copy_to_user(), so&n; * we need a lock that will allow us to sleep. This lock is a&n; * read-write semaphore (ep-&gt;sem). It is acquired on read during&n; * the event transfer loop and in write during epoll_ctl(EPOLL_CTL_DEL)&n; * and during eventpoll_release_file(). Then we also need a global&n; * semaphore to serialize eventpoll_release_file() and ep_free().&n; * This semaphore is acquired by ep_free() during the epoll file&n; * cleanup path and it is also acquired by eventpoll_release_file()&n; * if a file has been pushed inside an epoll set and it is then&n; * close()d without a previous call toepoll_ctl(EPOLL_CTL_DEL).&n; * It is possible to drop the &quot;ep-&gt;sem&quot; and to use the global&n; * semaphore &quot;epsem&quot; (together with &quot;ep-&gt;lock&quot;) to have it working,&n; * but having &quot;ep-&gt;sem&quot; will make the interface more scalable.&n; * Events that require holding &quot;epsem&quot; are very rare, while for&n; * normal operations the epoll private &quot;ep-&gt;sem&quot; will guarantee&n; * a greater scalability.&n; */
 DECL|macro|EVENTPOLLFS_MAGIC
 mdefine_line|#define EVENTPOLLFS_MAGIC 0x03111965 /* My birthday should work for this :) */
 DECL|macro|DEBUG_EPOLL
@@ -829,7 +829,7 @@ op_star
 id|data
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This semaphore is used to serialize ep_free() and eventpoll_release().&n; */
+multiline_comment|/*&n; * This semaphore is used to serialize ep_free() and eventpoll_release_file().&n; */
 DECL|variable|epsem
 r_struct
 id|semaphore
@@ -2924,7 +2924,7 @@ op_amp
 id|ep-&gt;poll_wait
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release() while we&squot;re freeing the &quot;struct eventpoll&quot;.&n;&t; * We do not need to hold &quot;ep-&gt;sem&quot; here because the epoll file&n;&t; * is on the way to be removed and no one has references to it&n;&t; * anymore. The only hit might come from eventpoll_release() but&n;&t; * holding &quot;epsem&quot; is sufficent here.&n;&t; */
+multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release_file() while we&squot;re freeing the &quot;struct eventpoll&quot;.&n;&t; * We do not need to hold &quot;ep-&gt;sem&quot; here because the epoll file&n;&t; * is on the way to be removed and no one has references to it&n;&t; * anymore. The only hit might come from eventpoll_release_file() but&n;&t; * holding &quot;epsem&quot; is sufficent here.&n;&t; */
 id|down
 c_func
 (paren
@@ -5220,7 +5220,7 @@ op_amp
 id|txlist
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release() and epoll_ctl(EPOLL_CTL_DEL).&n;&t; */
+multiline_comment|/*&n;&t; * We need to lock this because we could be hit by&n;&t; * eventpoll_release_file() and epoll_ctl(EPOLL_CTL_DEL).&n;&t; */
 id|down_read
 c_func
 (paren
