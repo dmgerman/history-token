@@ -38,7 +38,6 @@ macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/plpar_wrappers.h&gt;
@@ -1155,7 +1154,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;initialize_naca: failed to recognize&quot;
+l_string|&quot;pSeries_discover_pic: failed to recognize&quot;
 l_string|&quot; interrupt-controller&bslash;n&quot;
 )paren
 suffix:semicolon

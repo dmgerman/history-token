@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1479,7 +1478,7 @@ id|active_debugs
 op_assign
 id|debug_flags
 op_amp
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 suffix:semicolon
 r_if
 c_cond
@@ -1656,7 +1655,7 @@ r_return
 (paren
 id|flags
 op_amp
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 )paren
 suffix:semicolon
 )brace

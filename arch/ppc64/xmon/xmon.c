@@ -16,7 +16,6 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
@@ -11744,9 +11743,9 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;naca-&gt;debug_switch = 0x%lx&bslash;n&quot;
+l_string|&quot;ppc64_debug_switch = 0x%lx&bslash;n&quot;
 comma
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 )paren
 suffix:semicolon
 r_for
@@ -11772,7 +11771,7 @@ c_func
 id|i
 )paren
 op_amp
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 suffix:semicolon
 id|printf
 c_func
@@ -11886,7 +11885,7 @@ l_char|&squot;&bslash;n&squot;
 )paren
 (brace
 multiline_comment|/* Turn on or off based on + or - */
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 op_assign
 id|on
 ques
@@ -11973,7 +11972,7 @@ c_cond
 id|on
 )paren
 (brace
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 op_or_assign
 id|PPCDBG_BITVAL
 c_func
@@ -12005,7 +12004,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 op_and_assign
 op_complement
 id|PPCDBG_BITVAL

@@ -26,21 +26,6 @@ id|u64
 id|xRamDiskSize
 suffix:semicolon
 multiline_comment|/* In pages                  0x10 */
-DECL|member|debug_switch
-id|u64
-id|debug_switch
-suffix:semicolon
-multiline_comment|/* Debug print control       0x20 */
-DECL|member|banner
-id|u64
-id|banner
-suffix:semicolon
-multiline_comment|/* Ptr to banner string      0x28 */
-DECL|member|log
-id|u64
-id|log
-suffix:semicolon
-multiline_comment|/* Ptr to log buffer         0x30 */
 )brace
 suffix:semicolon
 r_extern

@@ -30,7 +30,6 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
-macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
@@ -223,6 +222,10 @@ DECL|variable|ppc64_pft_size
 id|u64
 id|ppc64_pft_size
 suffix:semicolon
+DECL|variable|ppc64_debug_switch
+id|u64
+id|ppc64_debug_switch
+suffix:semicolon
 DECL|variable|ppc64_caches
 r_struct
 id|ppc64_caches
@@ -337,7 +340,7 @@ c_func
 r_void
 )paren
 (brace
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 op_assign
 id|PPC_DEBUG_DEFAULT
 suffix:semicolon
@@ -1134,7 +1137,7 @@ c_func
 l_string|&quot; -&gt; early_setup()&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Fill the default DBG level in naca (do we want to keep&n;&t; * that old mecanism around forever ?)&n;&t; */
+multiline_comment|/*&n;&t; * Fill the default DBG level (do we want to keep&n;&t; * that old mecanism around forever ?)&n;&t; */
 id|ppcdbg_initialize
 c_func
 (paren
@@ -1253,12 +1256,12 @@ l_string|&quot; &lt;- early_setup()&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Initialize some remaining members of the naca and systemcfg structures&n; * (at least until we get rid of them completely). This is mostly some&n; * cache informations about the CPU that will be used by cache flush&n; * routines and/or provided to userland&n; */
-DECL|function|initialize_naca
+multiline_comment|/*&n; * Initialize some remaining members of the ppc64_caches and systemcfg structures&n; * (at least until we get rid of them completely). This is mostly some&n; * cache informations about the CPU that will be used by cache flush&n; * routines and/or provided to userland&n; */
+DECL|function|initialize_cache_info
 r_static
 r_void
 id|__init
-id|initialize_naca
+id|initialize_cache_info
 c_func
 (paren
 r_void
@@ -1278,7 +1281,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot; -&gt; initialize_naca()&bslash;n&quot;
+l_string|&quot; -&gt; initialize_cache_info()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -1618,7 +1621,7 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot; &lt;- initialize_naca()&bslash;n&quot;
+l_string|&quot; &lt;- initialize_cache_info()&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1822,8 +1825,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Fill the naca &amp; systemcfg structures with informations&n;&t; * retreived from the device-tree. Need to be called before&n;&t; * finish_device_tree() since the later requires some of the&n;&t; * informations filled up here to properly parse the interrupt&n;&t; * tree.&n;&t; * It also sets up the cache line sizes which allows to call&n;&t; * routines like flush_icache_range (used by the hash init&n;&t; * later on).&n;&t; */
-id|initialize_naca
+multiline_comment|/*&n;&t; * Fill the ppc64_caches &amp; systemcfg structures with informations&n;&t; * retreived from the device-tree. Need to be called before&n;&t; * finish_device_tree() since the later requires some of the&n;&t; * informations filled up here to properly parse the interrupt&n;&t; * tree.&n;&t; * It also sets up the cache line sizes which allows to call&n;&t; * routines like flush_icache_range (used by the hash init&n;&t; * later on).&n;&t; */
+id|initialize_cache_info
 c_func
 (paren
 )paren
@@ -1924,14 +1927,6 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca                          = 0x%p&bslash;n&quot;
-comma
-id|naca
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
 l_string|&quot;ppc64_pft_size                = 0x%lx&bslash;n&quot;
 comma
 id|ppc64_pft_size
@@ -1940,9 +1935,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;naca-&gt;debug_switch            = 0x%lx&bslash;n&quot;
+l_string|&quot;ppc64_debug_switch            = 0x%lx&bslash;n&quot;
 comma
-id|naca-&gt;debug_switch
+id|ppc64_debug_switch
 )paren
 suffix:semicolon
 id|printk
