@@ -14,7 +14,6 @@ r_volatile
 r_int
 r_int
 id|lock
-multiline_comment|/*__attribute__((aligned(32))) */
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|member|on_cpu
@@ -43,34 +42,23 @@ op_star
 id|base_file
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_PREEMPT
-DECL|member|break_lock
-r_int
-r_int
-id|break_lock
-suffix:semicolon
-macro_line|#endif
 DECL|typedef|spinlock_t
 )brace
 id|spinlock_t
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) {0, -1, 0, NULL, NULL, NULL}
-DECL|macro|spin_lock_init
-mdefine_line|#define spin_lock_init(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((x)-&gt;lock = 0, (x)-&gt;on_cpu = -1, (x)-&gt;previous = NULL, (x)-&gt;task = NULL)
+mdefine_line|#define SPIN_LOCK_UNLOCKED&t;(spinlock_t){ 0, -1, 0, NULL, NULL, NULL }
 macro_line|#else
 DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED&t;(spinlock_t) { 0 }
-DECL|macro|spin_lock_init
-mdefine_line|#define spin_lock_init(x)&t;((x)-&gt;lock = 0)
+mdefine_line|#define SPIN_LOCK_UNLOCKED&t;(spinlock_t){ 0 }
 macro_line|#endif
+DECL|macro|spin_lock_init
+mdefine_line|#define spin_lock_init(x)&t;do { *(x) = SPIN_LOCK_UNLOCKED; } while(0)
 DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
 DECL|macro|spin_unlock_wait
-mdefine_line|#define spin_unlock_wait(x)&t;({ do { barrier(); } while ((x)-&gt;lock); })
-DECL|macro|_raw_spin_lock_flags
-mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
+mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while ((x)-&gt;lock)
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 r_extern
 r_void
@@ -115,11 +103,9 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|_raw_spin_lock
-mdefine_line|#define _raw_spin_lock(LOCK) debug_spin_lock(LOCK, __BASE_FILE__, __LINE__)
+mdefine_line|#define _raw_spin_lock(LOCK) &bslash;&n;&t;debug_spin_lock(LOCK, __BASE_FILE__, __LINE__)
 DECL|macro|_raw_spin_trylock
-mdefine_line|#define _raw_spin_trylock(LOCK) debug_spin_trylock(LOCK, __BASE_FILE__, __LINE__)
-DECL|macro|spin_lock_own
-mdefine_line|#define spin_lock_own(LOCK, LOCATION)&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!((LOCK)-&gt;lock &amp;&amp; (LOCK)-&gt;on_cpu == smp_processor_id()))&t;&bslash;&n;&t;&t;printk(&quot;%s: called on %d from %p but lock %s on %d&bslash;n&quot;,&t;&bslash;&n;&t;&t;       LOCATION, smp_processor_id(),&t;&t;&t;&bslash;&n;&t;&t;       __builtin_return_address(0),&t;&t;&t;&bslash;&n;&t;&t;       (LOCK)-&gt;lock ? &quot;taken&quot; : &quot;freed&quot;, (LOCK)-&gt;on_cpu); &bslash;&n;} while (0)
+mdefine_line|#define _raw_spin_trylock(LOCK) &bslash;&n;&t;debug_spin_trylock(LOCK, __BASE_FILE__, __LINE__)
 macro_line|#else
 DECL|function|_raw_spin_unlock
 r_static
@@ -158,20 +144,19 @@ id|lock
 r_int
 id|tmp
 suffix:semicolon
-multiline_comment|/* Use sub-sections to put the actual loop at the end&n;&t;   of this object file&squot;s text section so as to perfect&n;&t;   branch prediction.  */
 id|__asm__
 id|__volatile__
 c_func
 (paren
 l_string|&quot;1:&t;ldl_l&t;%0,%1&bslash;n&quot;
-l_string|&quot;&t;blbs&t;%0,2f&bslash;n&quot;
-l_string|&quot;&t;or&t;%0,1,%0&bslash;n&quot;
+l_string|&quot;&t;bne&t;%0,2f&bslash;n&quot;
+l_string|&quot;&t;lda&t;%0,1&bslash;n&quot;
 l_string|&quot;&t;stl_c&t;%0,%1&bslash;n&quot;
 l_string|&quot;&t;beq&t;%0,2f&bslash;n&quot;
 l_string|&quot;&t;mb&bslash;n&quot;
 l_string|&quot;.subsection 2&bslash;n&quot;
 l_string|&quot;2:&t;ldl&t;%0,%1&bslash;n&quot;
-l_string|&quot;&t;blbs&t;%0,2b&bslash;n&quot;
+l_string|&quot;&t;bne&t;%0,2b&bslash;n&quot;
 l_string|&quot;&t;br&t;1b&bslash;n&quot;
 l_string|&quot;.previous&quot;
 suffix:colon
@@ -218,42 +203,67 @@ id|lock-&gt;lock
 )paren
 suffix:semicolon
 )brace
-DECL|macro|spin_lock_own
-mdefine_line|#define spin_lock_own(LOCK, LOCATION)&t;((void)0)
 macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
+DECL|macro|_raw_spin_lock_flags
+mdefine_line|#define _raw_spin_lock_flags(lock, flags) _raw_spin_lock(lock)
 multiline_comment|/***********************************************************/
 r_typedef
 r_struct
 (brace
-DECL|member|write_lock
-DECL|member|read_counter
+DECL|member|lock
 r_volatile
 r_int
 r_int
-id|write_lock
-suffix:colon
-l_int|1
-comma
-id|read_counter
-suffix:colon
-l_int|31
+id|lock
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREEMPT
-DECL|member|break_lock
-r_int
-r_int
-id|break_lock
-suffix:semicolon
-macro_line|#endif
 DECL|typedef|rwlock_t
 )brace
-multiline_comment|/*__attribute__((aligned(32)))*/
 id|rwlock_t
 suffix:semicolon
 DECL|macro|RW_LOCK_UNLOCKED
-mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0, 0 }
+mdefine_line|#define RW_LOCK_UNLOCKED&t;(rwlock_t){ 0 }
 DECL|macro|rwlock_init
-mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
+mdefine_line|#define rwlock_init(x)&t;&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
+DECL|function|read_can_lock
+r_static
+r_inline
+r_int
+id|read_can_lock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|lock
+)paren
+(brace
+r_return
+(paren
+id|lock-&gt;lock
+op_amp
+l_int|1
+)paren
+op_eq
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|write_can_lock
+r_static
+r_inline
+r_int
+id|write_can_lock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|lock
+)paren
+(brace
+r_return
+id|lock-&gt;lock
+op_eq
+l_int|0
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_DEBUG_RWLOCK
 r_extern
 r_void
@@ -297,7 +307,7 @@ c_func
 (paren
 l_string|&quot;1:&t;ldl_l&t;%1,%0&bslash;n&quot;
 l_string|&quot;&t;bne&t;%1,6f&bslash;n&quot;
-l_string|&quot;&t;or&t;$31,1,%1&bslash;n&quot;
+l_string|&quot;&t;lda&t;%1,1&bslash;n&quot;
 l_string|&quot;&t;stl_c&t;%1,%0&bslash;n&quot;
 l_string|&quot;&t;beq&t;%1,6f&bslash;n&quot;
 l_string|&quot;&t;mb&bslash;n&quot;
@@ -352,7 +362,7 @@ l_string|&quot;&t;blbs&t;%1,6f&bslash;n&quot;
 l_string|&quot;&t;subl&t;%1,2,%1&bslash;n&quot;
 l_string|&quot;&t;stl_c&t;%1,%0&bslash;n&quot;
 l_string|&quot;&t;beq&t;%1,6f&bslash;n&quot;
-l_string|&quot;4:&t;mb&bslash;n&quot;
+l_string|&quot;&t;mb&bslash;n&quot;
 l_string|&quot;.subsection 2&bslash;n&quot;
 l_string|&quot;6:&t;ldl&t;%1,%0&bslash;n&quot;
 l_string|&quot;&t;blbs&t;%1,6b&bslash;n&quot;
@@ -381,6 +391,68 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_DEBUG_RWLOCK */
+DECL|function|_raw_read_trylock
+r_static
+r_inline
+r_int
+id|_raw_read_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|lock
+)paren
+(brace
+r_int
+id|regx
+suffix:semicolon
+r_int
+id|success
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;1:&t;ldl_l&t;%1,%0&bslash;n&quot;
+l_string|&quot;&t;lda&t;%2,0&bslash;n&quot;
+l_string|&quot;&t;blbs&t;%1,2f&bslash;n&quot;
+l_string|&quot;&t;subl&t;%1,2,%2&bslash;n&quot;
+l_string|&quot;&t;stl_c&t;%2,%0&bslash;n&quot;
+l_string|&quot;&t;beq&t;%2,6f&bslash;n&quot;
+l_string|&quot;2:&t;mb&bslash;n&quot;
+l_string|&quot;.subsection 2&bslash;n&quot;
+l_string|&quot;6:&t;br&t;1b&bslash;n&quot;
+l_string|&quot;.previous&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+op_star
+id|lock
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|regx
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|success
+)paren
+suffix:colon
+l_string|&quot;m&quot;
+(paren
+op_star
+id|lock
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+r_return
+id|success
+suffix:semicolon
+)brace
 DECL|function|_raw_write_trylock
 r_static
 r_inline
@@ -406,10 +478,9 @@ c_func
 l_string|&quot;1:&t;ldl_l&t;%1,%0&bslash;n&quot;
 l_string|&quot;&t;lda&t;%2,0&bslash;n&quot;
 l_string|&quot;&t;bne&t;%1,2f&bslash;n&quot;
-l_string|&quot;&t;or&t;$31,1,%1&bslash;n&quot;
-l_string|&quot;&t;stl_c&t;%1,%0&bslash;n&quot;
-l_string|&quot;&t;beq&t;%1,6f&bslash;n&quot;
 l_string|&quot;&t;lda&t;%2,1&bslash;n&quot;
+l_string|&quot;&t;stl_c&t;%2,%0&bslash;n&quot;
+l_string|&quot;&t;beq&t;%2,6f&bslash;n&quot;
 l_string|&quot;2:&t;mb&bslash;n&quot;
 l_string|&quot;.subsection 2&bslash;n&quot;
 l_string|&quot;6:&t;br&t;1b&bslash;n&quot;
@@ -461,13 +532,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-op_star
-(paren
-r_volatile
-r_int
-op_star
-)paren
-id|lock
+id|lock-&gt;lock
 op_assign
 l_int|0
 suffix:semicolon
