@@ -56,6 +56,7 @@ op_star
 id|smp_ops
 suffix:semicolon
 DECL|variable|cpu_callin_map
+r_static
 r_volatile
 r_int
 r_int
