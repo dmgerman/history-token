@@ -1,29 +1,14 @@
-multiline_comment|/*&n; *  linux/drivers/char/anakin.c&n; *&n; *  Based on driver for AMBA serial ports, by ARM Limited,&n; *  Deep Blue Solutions Ltd., Linus Torvalds and Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Aleph One Ltd. for Acunia N.V.&n; *&n; *  Copyright (C) 2001 Blue Mug, Inc. for Acunia N.V.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   20-Apr-2001 TTC&t;Created&n; *   05-May-2001 W/TTC&t;Updated for serial_core.c&n; *   27-Jun-2001 jonm&t;Minor changes; add mctrl support, switch to &n; *   &t;&t;&t;SA_INTERRUPT. Works reliably now. No longer requires&n; *   &t;&t;&t;changes to the serial_core API.&n; *&n; *  $Id: anakin.c,v 1.29 2002/07/22 15:27:32 rmk Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/char/anakin.c&n; *&n; *  Based on driver for AMBA serial ports, by ARM Limited,&n; *  Deep Blue Solutions Ltd., Linus Torvalds and Theodore Ts&squot;o.&n; *&n; *  Copyright (C) 2001 Aleph One Ltd. for Acunia N.V.&n; *&n; *  Copyright (C) 2001 Blue Mug, Inc. for Acunia N.V.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Changelog:&n; *   20-Apr-2001 TTC&t;Created&n; *   05-May-2001 W/TTC&t;Updated for serial_core.c&n; *   27-Jun-2001 jonm&t;Minor changes; add mctrl support, switch to &n; *   &t;&t;&t;SA_INTERRUPT. Works reliably now. No longer requires&n; *   &t;&t;&t;changes to the serial_core API.&n; *&n; *  $Id: anakin.c,v 1.32 2002/07/28 10:03:27 rmk Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/tty_flip.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;asm/arch/serial_reg.h&gt;
 DECL|macro|UART_NR
@@ -2161,7 +2146,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Serial: Anakin driver $Revision: 1.29 $&bslash;n&quot;
+l_string|&quot;Serial: Anakin driver $Revision: 1.32 $&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret
