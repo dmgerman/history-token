@@ -47,6 +47,12 @@ macro_line|#else
 DECL|macro|BT_DMP
 mdefine_line|#define BT_DMP(D...)
 macro_line|#endif
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_bt
+suffix:semicolon
 multiline_comment|/* Connection and socket states */
 r_enum
 (brace

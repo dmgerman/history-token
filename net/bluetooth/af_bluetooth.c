@@ -26,6 +26,14 @@ macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
 mdefine_line|#define BT_DBG( A... )
 macro_line|#endif
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|variable|proc_bt
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_bt
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Bluetooth sockets */
 DECL|macro|BT_MAX_PROTO
 mdefine_line|#define BT_MAX_PROTO&t;5
@@ -1339,6 +1347,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|hci_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|hci_proc_cleanup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|bt_init
 r_static
 r_int
@@ -1357,6 +1381,8 @@ comma
 id|VERSION
 )paren
 suffix:semicolon
+id|proc_bt
+op_assign
 id|proc_mkdir
 c_func
 (paren
@@ -1419,6 +1445,11 @@ c_func
 l_string|&quot;HCI device and connection manager initialized&quot;
 )paren
 suffix:semicolon
+id|hci_proc_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|hci_sock_init
 c_func
 (paren
@@ -1439,6 +1470,11 @@ r_void
 )paren
 (brace
 id|hci_sock_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|hci_proc_cleanup
 c_func
 (paren
 )paren

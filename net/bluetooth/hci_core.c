@@ -78,16 +78,16 @@ op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* HCI device list */
-DECL|variable|hdev_list
+DECL|variable|hci_dev_list
 id|LIST_HEAD
 c_func
 (paren
-id|hdev_list
+id|hci_dev_list
 )paren
 suffix:semicolon
-DECL|variable|hdev_list_lock
+DECL|variable|hci_dev_list_lock
 id|rwlock_t
-id|hdev_list_lock
+id|hci_dev_list_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
@@ -1106,7 +1106,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|hdev_list_lock
+id|hci_dev_list_lock
 )paren
 suffix:semicolon
 id|list_for_each
@@ -1115,7 +1115,7 @@ c_func
 id|p
 comma
 op_amp
-id|hdev_list
+id|hci_dev_list
 )paren
 (brace
 id|hdev
@@ -1160,7 +1160,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|hdev_list_lock
+id|hci_dev_list_lock
 )paren
 suffix:semicolon
 r_return
@@ -3205,7 +3205,7 @@ id|read_lock_bh
 c_func
 (paren
 op_amp
-id|hdev_list_lock
+id|hci_dev_list_lock
 )paren
 suffix:semicolon
 id|list_for_each
@@ -3214,7 +3214,7 @@ c_func
 id|p
 comma
 op_amp
-id|hdev_list
+id|hci_dev_list
 )paren
 (brace
 r_struct
@@ -3270,7 +3270,7 @@ id|read_unlock_bh
 c_func
 (paren
 op_amp
-id|hdev_list_lock
+id|hci_dev_list_lock
 )paren
 suffix:semicolon
 id|dl-&gt;dev_num
@@ -3516,7 +3516,7 @@ op_star
 id|head
 op_assign
 op_amp
-id|hdev_list
+id|hci_dev_list
 comma
 op_star
 id|p
@@ -3558,7 +3558,7 @@ id|write_lock_bh
 c_func
 (paren
 op_amp
-id|hdev_list_lock
+id|hci_dev_list_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Find first available device id */
@@ -3568,7 +3568,7 @@ c_func
 id|p
 comma
 op_amp
-id|hdev_list
+id|hci_dev_list
 )paren
 (brace
 r_if
@@ -3780,7 +3780,13 @@ id|write_unlock_bh
 c_func
 (paren
 op_amp
-id|hdev_list_lock
+id|hci_dev_list_lock
+)paren
+suffix:semicolon
+id|hci_dev_proc_init
+c_func
+(paren
+id|hdev
 )paren
 suffix:semicolon
 id|hci_notify
@@ -3827,11 +3833,17 @@ comma
 id|hdev-&gt;type
 )paren
 suffix:semicolon
+id|hci_dev_proc_cleanup
+c_func
+(paren
+id|hdev
+)paren
+suffix:semicolon
 id|write_lock_bh
 c_func
 (paren
 op_amp
-id|hdev_list_lock
+id|hci_dev_list_lock
 )paren
 suffix:semicolon
 id|list_del
@@ -3845,7 +3857,7 @@ id|write_unlock_bh
 c_func
 (paren
 op_amp
-id|hdev_list_lock
+id|hci_dev_list_lock
 )paren
 suffix:semicolon
 id|hci_dev_do_close
