@@ -1,15 +1,9 @@
-multiline_comment|/*&n; * include/asm-v850/entry.h -- Definitions used by low-level trap handlers&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
+multiline_comment|/*&n; * include/asm-v850/entry.h -- Definitions used by low-level trap handlers&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 macro_line|#ifndef __V850_ENTRY_H__
 DECL|macro|__V850_ENTRY_H__
 mdefine_line|#define __V850_ENTRY_H__
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-multiline_comment|/* If true, system calls save and restore all registers (except result&n;   registers, of course).  If false, then `call clobbered&squot; registers&n;   will not be preserved, on the theory that system calls are basically&n;   function calls anyway, and the caller should be able to deal with it.&n;   This is a security risk, of course, as `internal&squot; values may leak out&n;   after a system call, but that certainly doesn&squot;t matter very much for&n;   a processor with no MMU protection!  For a protected-mode kernel, it&n;   would be faster to just zero those registers before returning.  */
-DECL|macro|TRAPS_PRESERVE_CALL_CLOBBERED_REGS
-mdefine_line|#define TRAPS_PRESERVE_CALL_CLOBBERED_REGS&t;0
-multiline_comment|/* If TRAPS_PRESERVE_CALL_CLOBBERED_REGS is false, then zero `call&n;   clobbered&squot; registers before returning from a system call.  */
-DECL|macro|TRAPS_ZERO_CALL_CLOBBERED_REGS
-mdefine_line|#define TRAPS_ZERO_CALL_CLOBBERED_REGS&t;&t;0
 multiline_comment|/* These are special variables using by the kernel trap/interrupt code&n;   to save registers in, at a time when there are no spare registers we&n;   can use to do so, and we can&squot;t depend on the value of the stack&n;   pointer.  This means that they must be within a signed 16-bit&n;   displacement of 0x00000000.  */
 DECL|macro|KERNEL_VAR_SPACE_ADDR
 mdefine_line|#define KERNEL_VAR_SPACE_ADDR&t;R0_RAM_ADDR
