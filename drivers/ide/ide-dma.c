@@ -1764,6 +1764,12 @@ r_goto
 id|dma_alloc_failure
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ch-&gt;XXX_udma
+)paren
 id|ch-&gt;XXX_udma
 op_assign
 id|XXX_ide_dmaproc

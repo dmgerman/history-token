@@ -54,17 +54,6 @@ DECL|macro|EXPORT_SYMTAB_STROPS
 mdefine_line|#define EXPORT_SYMTAB_STROPS
 r_extern
 r_void
-id|ppc_generic_ide_fix_driveid
-c_func
-(paren
-r_struct
-id|hd_driveid
-op_star
-id|id
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|transfer_to_handler
 c_func
 (paren
@@ -724,13 +713,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ppc_ide_md
-)paren
-suffix:semicolon
-DECL|variable|ppc_generic_ide_fix_driveid
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ppc_generic_ide_fix_driveid
 )paren
 suffix:semicolon
 macro_line|#endif

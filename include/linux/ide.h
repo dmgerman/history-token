@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/hdreg.h&gt;
 multiline_comment|/*&n; * This is the multiple IDE interface driver, as evolved from hd.c.&n; * It supports up to four IDE interfaces, on one or more IRQs (usually 14, 15).&n; * There can be up to two drives per interface, as per the ATA-2 spec.&n; *&n; * Primary i/f:    ide0: major=3;  (hda) minor=0; (hdb) minor=64&n; * Secondary i/f:  ide1: major=22; (hdc) minor=0; (hdd) minor=64&n; * Tertiary i/f:   ide2: major=33; (hde) minor=0; (hdf) minor=64&n; * Quaternary i/f: ide3: major=34; (hdg) minor=0; (hdh) minor=64&n; */
 multiline_comment|/******************************************************************************&n; * IDE driver configuration options (play with these as desired):&n; */
@@ -355,6 +356,184 @@ DECL|macro|ATA_NO_LUN
 mdefine_line|#define ATA_NO_LUN      0x7f
 r_struct
 id|ide_settings_s
+suffix:semicolon
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* all of the bits together */
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|head
+r_int
+id|head
+suffix:colon
+l_int|4
+suffix:semicolon
+multiline_comment|/* always zeros here */
+DECL|member|unit
+r_int
+id|unit
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* drive select number: 0/1 */
+DECL|member|bit5
+r_int
+id|bit5
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* always 1 */
+DECL|member|lba
+r_int
+id|lba
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* using LBA instead of CHS */
+DECL|member|bit7
+r_int
+id|bit7
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* always 1 */
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|bit7
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|lba
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|bit5
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|unit
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|head
+suffix:colon
+l_int|4
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|select_t
+)brace
+id|select_t
+suffix:semicolon
+r_typedef
+r_union
+(brace
+r_int
+id|all
+suffix:colon
+l_int|8
+suffix:semicolon
+multiline_comment|/* all of the bits together */
+r_struct
+(brace
+macro_line|#if defined(__LITTLE_ENDIAN_BITFIELD)
+DECL|member|bit0
+r_int
+id|bit0
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|nIEN
+r_int
+id|nIEN
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* device INTRQ to host */
+DECL|member|SRST
+r_int
+id|SRST
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* host soft reset bit */
+DECL|member|bit3
+r_int
+id|bit3
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* ATA-2 thingy */
+DECL|member|reserved456
+r_int
+id|reserved456
+suffix:colon
+l_int|3
+suffix:semicolon
+DECL|member|HOB
+r_int
+id|HOB
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 48-bit address ordering */
+macro_line|#elif defined(__BIG_ENDIAN_BITFIELD)
+r_int
+id|HOB
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|reserved456
+suffix:colon
+l_int|3
+suffix:semicolon
+r_int
+id|bit3
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|SRST
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|nIEN
+suffix:colon
+l_int|1
+suffix:semicolon
+r_int
+id|bit0
+suffix:colon
+l_int|1
+suffix:semicolon
+macro_line|#else
+macro_line|#error &quot;Please fix &lt;asm/byteorder.h&gt;&quot;
+macro_line|#endif
+DECL|member|b
+)brace
+id|b
+suffix:semicolon
+DECL|typedef|control_t
+)brace
+id|control_t
 suffix:semicolon
 multiline_comment|/*&n; * ATA/ATAPI device structure :&n; */
 r_typedef
@@ -841,7 +1020,7 @@ id|hw_regs_t
 id|hw
 suffix:semicolon
 multiline_comment|/* Hardware info */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 DECL|member|pci_dev
 r_struct
 id|pci_dev
@@ -1871,10 +2050,6 @@ op_star
 id|p
 )paren
 suffix:semicolon
-DECL|variable|proc_ide_read_capacity
-id|read_proc_t
-id|proc_ide_read_capacity
-suffix:semicolon
 DECL|variable|proc_ide_read_geometry
 id|read_proc_t
 id|proc_ide_read_geometry
@@ -2682,6 +2857,17 @@ op_star
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|ide_fix_driveid
+c_func
+(paren
+r_struct
+id|hd_driveid
+op_star
+id|id
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|ide_driveid_update
 c_func
@@ -2931,7 +3117,7 @@ op_star
 id|drive
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 DECL|macro|ON_BOARD
 macro_line|# define ON_BOARD&t;&t;1
 DECL|macro|NEVER_BOARD

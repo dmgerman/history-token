@@ -2137,7 +2137,7 @@ id|ch-&gt;dev.driver_data
 op_assign
 id|ch
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
