@@ -3207,7 +3207,6 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|file_send_actor
-r_static
 r_int
 id|file_send_actor
 c_func
