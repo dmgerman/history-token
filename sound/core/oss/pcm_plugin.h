@@ -1326,10 +1326,10 @@ id|samples
 suffix:semicolon
 macro_line|#ifdef PLUGIN_DEBUG
 DECL|macro|pdprintf
-mdefine_line|#define pdprintf( args... ) printk( &quot;plugin: &quot; ##args)
+mdefine_line|#define pdprintf( fmt, args... ) printk( &quot;plugin: &quot; fmt, ##args)
 macro_line|#else
 DECL|macro|pdprintf
-mdefine_line|#define pdprintf( args... ) { ; }
+mdefine_line|#define pdprintf( fmt, args... ) 
 macro_line|#endif
 macro_line|#endif&t;&t;&t;&t;/* __PCM_PLUGIN_H */
 eof
