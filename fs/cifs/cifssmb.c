@@ -13,7 +13,7 @@ macro_line|#include &quot;cifsglob.h&quot;
 macro_line|#include &quot;cifsproto.h&quot;
 macro_line|#include &quot;cifs_unicode.h&quot;
 macro_line|#include &quot;cifs_debug.h&quot;
-macro_line|#ifdef CIFS_POSIX
+macro_line|#ifdef CONFIG_CIFS_POSIX
 r_static
 r_struct
 (brace
@@ -495,6 +495,7 @@ op_eq
 l_int|0
 )paren
 (brace
+multiline_comment|/* BB should we add a retry in here if not a writepage? */
 r_return
 op_minus
 id|ENOMEM
@@ -529,6 +530,24 @@ id|wct
 multiline_comment|/*wct */
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CIFS_STATS
+r_if
+c_cond
+(paren
+id|tcon
+op_ne
+l_int|NULL
+)paren
+(brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|tcon-&gt;num_smbs_sent
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_return
 id|rc
 suffix:semicolon

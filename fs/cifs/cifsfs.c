@@ -23,7 +23,7 @@ mdefine_line|#define CIFS_MAGIC_NUMBER 0xFF534D42&t;/* the first four bytes of S
 multiline_comment|/* BB when mempool_resize is added back in, we will resize pool on new mount */
 DECL|macro|CIFS_MIN_RCV_POOL
 mdefine_line|#define CIFS_MIN_RCV_POOL 11 /* enough for progress to five servers */
-macro_line|#ifdef CIFS_QUOTA
+macro_line|#ifdef CONFIG_CIFS_QUOTA
 DECL|variable|cifs_quotactl_ops
 r_static
 r_struct
@@ -327,7 +327,7 @@ op_amp
 id|cifs_super_ops
 suffix:semicolon
 multiline_comment|/*&t;if(cifs_sb-&gt;tcon-&gt;ses-&gt;server-&gt;maxBuf &gt; MAX_CIFS_HDR_SIZE + 512)&n;&t;    sb-&gt;s_blocksize = cifs_sb-&gt;tcon-&gt;ses-&gt;server-&gt;maxBuf - MAX_CIFS_HDR_SIZE; */
-macro_line|#ifdef CIFS_QUOTA
+macro_line|#ifdef CONFIG_CIFS_QUOTA
 id|sb-&gt;s_qcop
 op_assign
 op_amp
@@ -978,7 +978,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CIFS_QUOTA
+macro_line|#ifdef CONFIG_CIFS_QUOTA
 DECL|function|cifs_xquota_set
 r_int
 id|cifs_xquota_set
@@ -2022,7 +2022,7 @@ id|permission
 op_assign
 id|cifs_permission
 comma
-macro_line|#ifdef CIFS_XATTR
+macro_line|#ifdef CONFIG_CIFS_XATTR
 dot
 id|setxattr
 op_assign
@@ -2070,7 +2070,7 @@ comma
 multiline_comment|/* BB add the following two eventually */
 multiline_comment|/* revalidate: cifs_revalidate,&n;&t;   setattr:    cifs_notify_change, */
 multiline_comment|/* BB do we need notify change */
-macro_line|#ifdef CIFS_XATTR
+macro_line|#ifdef CONFIG_CIFS_XATTR
 dot
 id|setxattr
 op_assign
@@ -2145,7 +2145,7 @@ id|sendfile
 op_assign
 id|generic_file_sendfile
 comma
-macro_line|#ifdef CIFS_FCNTL
+macro_line|#ifdef CONFIG_CIFS_FCNTL
 dot
 id|fcntl
 op_assign
@@ -2175,7 +2175,7 @@ id|read
 op_assign
 id|generic_read_dir
 comma
-macro_line|#ifdef CIFS_FCNTL
+macro_line|#ifdef CONFIG_CIFS_FCNTL
 dot
 id|fcntl
 op_assign

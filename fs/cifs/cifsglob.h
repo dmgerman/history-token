@@ -530,6 +530,32 @@ id|atomic_t
 id|useCount
 suffix:semicolon
 multiline_comment|/* how many mounts (explicit or implicit) to this share */
+macro_line|#ifdef CONFIG_CIFS_STATS
+DECL|member|num_smbs_sent
+id|atomic_t
+id|num_smbs_sent
+suffix:semicolon
+DECL|member|num_writes
+id|atomic_t
+id|num_writes
+suffix:semicolon
+DECL|member|num_reads
+id|atomic_t
+id|num_reads
+suffix:semicolon
+DECL|member|bytes_read
+id|__u64
+id|bytes_read
+suffix:semicolon
+DECL|member|bytes_written
+id|__u64
+id|bytes_written
+suffix:semicolon
+DECL|member|stat_lock
+id|spinlock_t
+id|stat_lock
+suffix:semicolon
+macro_line|#endif
 DECL|member|fsDevInfo
 id|FILE_SYSTEM_DEVICE_INFO
 id|fsDevInfo
