@@ -2038,6 +2038,31 @@ comma
 id|US_FL_MODE_XLATE
 )paren
 comma
+multiline_comment|/*Medion 6047 Digital Camera&n;Davide Andrian &lt;_nessuno_@katamail.com&gt;&n;*/
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x08ca
+comma
+l_int|0x2011
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;3MegaCam&quot;
+comma
+l_string|&quot;3MegaCam&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+)paren
+comma
 multiline_comment|/* aeb */
 id|UNUSUAL_DEV
 c_func
