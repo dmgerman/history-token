@@ -1282,6 +1282,10 @@ id|bug-&gt;function
 comma
 id|bug-&gt;file
 comma
+(paren
+r_int
+r_int
+)paren
 id|bug-&gt;line
 op_amp
 op_complement
@@ -1307,6 +1311,10 @@ id|bug-&gt;function
 comma
 id|bug-&gt;file
 comma
+(paren
+r_int
+r_int
+)paren
 id|bug-&gt;line
 )paren
 suffix:semicolon

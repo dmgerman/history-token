@@ -20,6 +20,7 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;iSeries_setup.h&quot;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
@@ -234,14 +235,6 @@ r_extern
 r_int
 r_int
 id|iSeries_recal_titan
-suffix:semicolon
-r_extern
-r_char
-id|_stext
-suffix:semicolon
-r_extern
-r_char
-id|_etext
 suffix:semicolon
 DECL|variable|mf_initialized
 r_static
@@ -1592,14 +1585,12 @@ op_assign
 r_int
 r_int
 )paren
-op_amp
 id|_etext
 op_minus
 (paren
 r_int
 r_int
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|dprof_len
@@ -3264,7 +3255,6 @@ op_assign
 r_int
 op_star
 )paren
-op_amp
 id|_stext
 suffix:semicolon
 id|mb

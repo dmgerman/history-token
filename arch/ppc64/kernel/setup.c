@@ -27,6 +27,7 @@ macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 r_extern
 r_int
 r_int
@@ -1917,16 +1918,6 @@ r_int
 id|panic_timeout
 suffix:semicolon
 r_extern
-r_char
-id|_etext
-(braket
-)braket
-comma
-id|_edata
-(braket
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|do_init_bootmem
 c_func
@@ -2006,10 +1997,6 @@ id|_edata
 suffix:semicolon
 id|init_mm.brk
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|klimit
 suffix:semicolon
 multiline_comment|/* Save unparsed command line copy for /proc/cmdline */
