@@ -1518,7 +1518,7 @@ op_or
 id|MS_NODIRATIME
 suffix:semicolon
 macro_line|#else /* ! NTFS_RW */
-multiline_comment|/*&n;&t; * For the read-write compiled driver, if we are remounting read-write,&n;&t; * make sure there are no volume errors and that no unsupported volume&n;&t; * flags are set.  Also, empty the logfile journal as it would become&n;&t; * stale as soon as something is written to the volume.&n;&t; */
+multiline_comment|/*&n;&t; * For the read-write compiled driver, if we are remounting read-write,&n;&t; * make sure there are no volume errors and that no unsupported volume&n;&t; * flags are set.  Also, empty the logfile journal as it would become&n;&t; * stale as soon as something is written to the volume and mark the&n;&t; * volume dirty so that chkdsk is run if the volume is not umounted&n;&t; * cleanly.&n;&t; *&n;&t; * When remounting read-only, mark the volume clean if no volume errors&n;&t; * have occured.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1545,6 +1545,7 @@ id|es
 op_assign
 l_string|&quot;.  Cannot remount read-write.&quot;
 suffix:semicolon
+multiline_comment|/* Remounting read-write. */
 r_if
 c_cond
 (paren
@@ -1561,6 +1562,29 @@ c_func
 id|sb
 comma
 l_string|&quot;Volume has errors and is read-only%s&quot;
+comma
+id|es
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EROFS
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|vol-&gt;vol_flags
+op_amp
+id|VOLUME_IS_DIRTY
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Volume is dirty and read-only%s&quot;
 comma
 id|es
 )paren
@@ -1597,6 +1621,84 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ntfs_set_volume_flags
+c_func
+(paren
+id|vol
+comma
+id|VOLUME_IS_DIRTY
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to set dirty bit in volume &quot;
+l_string|&quot;information flags%s&quot;
+comma
+id|es
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EROFS
+suffix:semicolon
+)brace
+macro_line|#if 0
+singleline_comment|// TODO: Enable this code once we start modifying anything that
+singleline_comment|//&t; is different between NTFS 1.2 and 3.x...
+multiline_comment|/* Set NT4 compatibility flag on newer NTFS version volumes. */
+r_if
+c_cond
+(paren
+(paren
+id|vol-&gt;major_ver
+OG
+l_int|1
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ntfs_set_volume_flags
+c_func
+(paren
+id|vol
+comma
+id|VOLUME_MOUNTED_ON_NT4
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to set NT4 &quot;
+l_string|&quot;compatibility flag%s&quot;
+comma
+id|es
+)paren
+suffix:semicolon
+id|NVolSetErrors
+c_func
+(paren
+id|vol
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EROFS
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
 op_logical_neg
 id|ntfs_empty_logfile
 c_func
@@ -1624,6 +1726,60 @@ suffix:semicolon
 r_return
 op_minus
 id|EROFS
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+op_logical_and
+(paren
+op_star
+id|flags
+op_amp
+id|MS_RDONLY
+)paren
+)paren
+(brace
+multiline_comment|/* Remounting read-only. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|NVolErrors
+c_func
+(paren
+id|vol
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ntfs_clear_volume_flags
+c_func
+(paren
+id|vol
+comma
+id|VOLUME_IS_DIRTY
+)paren
+)paren
+id|ntfs_warning
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to clear dirty bit &quot;
+l_string|&quot;in volume information &quot;
+l_string|&quot;flags.  Run chkdsk.&quot;
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -5164,7 +5320,7 @@ id|ctx-&gt;attr-&gt;length
 r_goto
 id|err_put_vol
 suffix:semicolon
-multiline_comment|/* Setup volume flags and version. */
+multiline_comment|/* Copy the volume flags and version to the ntfs_volume structure. */
 id|vol-&gt;vol_flags
 op_assign
 id|vi-&gt;flags
@@ -5218,7 +5374,15 @@ r_static
 r_const
 r_char
 op_star
-id|es1
+id|es1a
+op_assign
+l_string|&quot;Volume is dirty&quot;
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|es1b
 op_assign
 l_string|&quot;Volume has unsupported flags set&quot;
 suffix:semicolon
@@ -5229,6 +5393,22 @@ op_star
 id|es2
 op_assign
 l_string|&quot;.  Run chkdsk and mount in Windows.&quot;
+suffix:semicolon
+r_const
+r_char
+op_star
+id|es1
+suffix:semicolon
+id|es1
+op_assign
+id|vol-&gt;vol_flags
+op_amp
+id|VOLUME_IS_DIRTY
+ques
+c_cond
+id|es1a
+suffix:colon
+id|es1b
 suffix:semicolon
 multiline_comment|/* If a read-write mount, convert it to a read-only mount. */
 r_if
@@ -5335,7 +5515,7 @@ r_static
 r_const
 r_char
 op_star
-id|es1
+id|es1a
 op_assign
 l_string|&quot;Failed to load $LogFile&quot;
 suffix:semicolon
@@ -5343,7 +5523,7 @@ r_static
 r_const
 r_char
 op_star
-id|es2
+id|es1b
 op_assign
 l_string|&quot;$LogFile is not clean&quot;
 suffix:semicolon
@@ -5351,9 +5531,24 @@ r_static
 r_const
 r_char
 op_star
-id|es3
+id|es2
 op_assign
 l_string|&quot;.  Mount in Windows.&quot;
+suffix:semicolon
+r_const
+r_char
+op_star
+id|es1
+suffix:semicolon
+id|es1
+op_assign
+op_logical_neg
+id|vol-&gt;logfile_ino
+ques
+c_cond
+id|es1a
+suffix:colon
+id|es1b
 suffix:semicolon
 multiline_comment|/* If a read-write mount, convert it to a read-only mount. */
 r_if
@@ -5391,15 +5586,9 @@ l_string|&quot;%s and neither on_errors=&quot;
 l_string|&quot;continue nor on_errors=&quot;
 l_string|&quot;remount-ro was specified%s&quot;
 comma
-op_logical_neg
-id|vol-&gt;logfile_ino
-ques
-c_cond
 id|es1
-suffix:colon
-id|es2
 comma
-id|es3
+id|es2
 )paren
 suffix:semicolon
 r_goto
@@ -5421,15 +5610,9 @@ id|sb
 comma
 l_string|&quot;%s.  Mounting read-only%s&quot;
 comma
-op_logical_neg
-id|vol-&gt;logfile_ino
-ques
-c_cond
 id|es1
-suffix:colon
-id|es2
 comma
-id|es3
+id|es2
 )paren
 suffix:semicolon
 )brace
@@ -5442,15 +5625,9 @@ comma
 l_string|&quot;%s.  Will not be able to remount &quot;
 l_string|&quot;read-write%s&quot;
 comma
-op_logical_neg
-id|vol-&gt;logfile_ino
-ques
-c_cond
 id|es1
-suffix:colon
-id|es2
 comma
-id|es3
+id|es2
 )paren
 suffix:semicolon
 multiline_comment|/* This will prevent a read-write remount. */
@@ -5460,9 +5637,206 @@ c_func
 id|vol
 )paren
 suffix:semicolon
-multiline_comment|/* If a read-write mount, empty the logfile. */
 )brace
-r_else
+multiline_comment|/* If (still) a read-write mount, mark the volume dirty. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+op_logical_and
+id|ntfs_set_volume_flags
+c_func
+(paren
+id|vol
+comma
+id|VOLUME_IS_DIRTY
+)paren
+)paren
+(brace
+r_static
+r_const
+r_char
+op_star
+id|es1
+op_assign
+l_string|&quot;Failed to set dirty bit in volume &quot;
+l_string|&quot;information flags&quot;
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|es2
+op_assign
+l_string|&quot;.  Run chkdsk.&quot;
+suffix:semicolon
+multiline_comment|/* Convert to a read-only mount. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|vol-&gt;on_errors
+op_amp
+(paren
+id|ON_ERRORS_REMOUNT_RO
+op_or
+id|ON_ERRORS_CONTINUE
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s and neither on_errors=continue nor &quot;
+l_string|&quot;on_errors=remount-ro was specified%s&quot;
+comma
+id|es1
+comma
+id|es2
+)paren
+suffix:semicolon
+r_goto
+id|iput_logfile_err_out
+suffix:semicolon
+)brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s.  Mounting read-only%s&quot;
+comma
+id|es1
+comma
+id|es2
+)paren
+suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Do not set NVolErrors() because ntfs_remount() might manage&n;&t;&t; * to set the dirty flag in which case all would be well.&n;&t;&t; */
+)brace
+macro_line|#if 0
+singleline_comment|// TODO: Enable this code once we start modifying anything that is
+singleline_comment|//&t; different between NTFS 1.2 and 3.x...
+multiline_comment|/*&n;&t; * If (still) a read-write mount, set the NT4 compatibility flag on&n;&t; * newer NTFS version volumes.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+op_logical_and
+(paren
+id|vol-&gt;major_ver
+OG
+l_int|1
+)paren
+op_logical_and
+id|ntfs_set_volume_flags
+c_func
+(paren
+id|vol
+comma
+id|VOLUME_MOUNTED_ON_NT4
+)paren
+)paren
+(brace
+r_static
+r_const
+r_char
+op_star
+id|es1
+op_assign
+l_string|&quot;Failed to set NT4 compatibility flag&quot;
+suffix:semicolon
+r_static
+r_const
+r_char
+op_star
+id|es2
+op_assign
+l_string|&quot;.  Run chkdsk.&quot;
+suffix:semicolon
+multiline_comment|/* Convert to a read-only mount. */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|vol-&gt;on_errors
+op_amp
+(paren
+id|ON_ERRORS_REMOUNT_RO
+op_or
+id|ON_ERRORS_CONTINUE
+)paren
+)paren
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s and neither on_errors=continue nor &quot;
+l_string|&quot;on_errors=remount-ro was specified%s&quot;
+comma
+id|es1
+comma
+id|es2
+)paren
+suffix:semicolon
+r_goto
+id|iput_logfile_err_out
+suffix:semicolon
+)brace
+id|ntfs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;%s.  Mounting read-only%s&quot;
+comma
+id|es1
+comma
+id|es2
+)paren
+suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+id|NVolSetErrors
+c_func
+(paren
+id|vol
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* If (still) a read-write mount, empty the logfile. */
 r_if
 c_cond
 (paren
@@ -5530,14 +5904,6 @@ r_goto
 id|iput_logfile_err_out
 suffix:semicolon
 )brace
-id|sb-&gt;s_flags
-op_or_assign
-id|MS_RDONLY
-op_or
-id|MS_NOATIME
-op_or
-id|MS_NODIRATIME
-suffix:semicolon
 id|ntfs_error
 c_func
 (paren
@@ -5550,7 +5916,14 @@ comma
 id|es2
 )paren
 suffix:semicolon
-multiline_comment|/* This will prevent a read-write remount. */
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_RDONLY
+op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
 id|NVolSetErrors
 c_func
 (paren
@@ -5558,7 +5931,7 @@ id|vol
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif /* NTFS_RW */
 multiline_comment|/*&n;&t; * Get the inode for the attribute definitions file and parse the&n;&t; * attribute definitions.&n;&t; */
 id|tmp_ino
 op_assign
@@ -5887,7 +6260,7 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_put_super - called by the vfs to unmount a volume&n; * @vfs_sb:&t;vfs superblock of volume to unmount&n; *&n; * ntfs_put_super() is called by the VFS (from fs/super.c::do_umount()) when&n; * the volume is being unmounted (umount system call has been invoked) and it&n; * releases all inodes and memory belonging to the NTFS specific part of the&n; * super block.&n; */
+multiline_comment|/**&n; * ntfs_put_super - called by the vfs to unmount a volume&n; * @sb:&t;&t;vfs superblock of volume to unmount&n; *&n; * ntfs_put_super() is called by the VFS (from fs/super.c::do_umount()) when&n; * the volume is being unmounted (umount system call has been invoked) and it&n; * releases all inodes and memory belonging to the NTFS specific part of the&n; * super block.&n; */
 DECL|function|ntfs_put_super
 r_static
 r_void
@@ -5897,7 +6270,7 @@ c_func
 r_struct
 id|super_block
 op_star
-id|vfs_sb
+id|sb
 )paren
 (brace
 id|ntfs_volume
@@ -5907,7 +6280,7 @@ op_assign
 id|NTFS_SB
 c_func
 (paren
-id|vfs_sb
+id|sb
 )paren
 suffix:semicolon
 id|ntfs_debug
@@ -6019,6 +6392,93 @@ c_func
 id|vol-&gt;mft_ino
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * If a read-write mount and no volume errors have occured, mark the&n;&t; * volume clean.  Also, re-commit all affected inodes.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|sb-&gt;s_flags
+op_amp
+id|MS_RDONLY
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|NVolErrors
+c_func
+(paren
+id|vol
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ntfs_clear_volume_flags
+c_func
+(paren
+id|vol
+comma
+id|VOLUME_IS_DIRTY
+)paren
+)paren
+id|ntfs_warning
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Failed to clear dirty bit &quot;
+l_string|&quot;in volume information &quot;
+l_string|&quot;flags.  Run chkdsk.&quot;
+)paren
+suffix:semicolon
+id|ntfs_commit_inode
+c_func
+(paren
+id|vol-&gt;vol_ino
+)paren
+suffix:semicolon
+id|ntfs_commit_inode
+c_func
+(paren
+id|vol-&gt;root_ino
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vol-&gt;mftmirr_ino
+)paren
+id|ntfs_commit_inode
+c_func
+(paren
+id|vol-&gt;mftmirr_ino
+)paren
+suffix:semicolon
+id|ntfs_commit_inode
+c_func
+(paren
+id|vol-&gt;mft_ino
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ntfs_warning
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;Volume has errors.  Leaving volume &quot;
+l_string|&quot;marked dirty.  Run chkdsk.&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
 macro_line|#endif /* NTFS_RW */
 id|iput
 c_func
@@ -6186,10 +6646,11 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|vfs_sb-&gt;s_dirty
+id|sb-&gt;s_dirty
 )paren
 )paren
 (brace
+r_const
 r_char
 op_star
 id|s1
@@ -6235,11 +6696,12 @@ id|list_empty
 c_func
 (paren
 op_amp
-id|vfs_sb-&gt;s_dirty
+id|sb-&gt;s_dirty
 )paren
 )paren
 (brace
 r_static
+r_const
 r_char
 op_star
 id|_s1
@@ -6247,6 +6709,7 @@ op_assign
 l_string|&quot;inodes&quot;
 suffix:semicolon
 r_static
+r_const
 r_char
 op_star
 id|_s2
@@ -6265,6 +6728,7 @@ suffix:semicolon
 r_else
 (brace
 r_static
+r_const
 r_char
 op_star
 id|_s1
@@ -6272,11 +6736,13 @@ op_assign
 l_string|&quot;mft pages&quot;
 suffix:semicolon
 r_static
+r_const
 r_char
 op_star
 id|_s2
 op_assign
-l_string|&quot;They have been thrown away.  &quot;
+l_string|&quot;They have been thrown &quot;
+l_string|&quot;away.  &quot;
 suffix:semicolon
 id|s1
 op_assign
@@ -6290,10 +6756,10 @@ suffix:semicolon
 id|ntfs_error
 c_func
 (paren
-id|vfs_sb
+id|sb
 comma
-l_string|&quot;Dirty %s found at umount time.  %s&quot;
-l_string|&quot;You should run chkdsk.  Please email &quot;
+l_string|&quot;Dirty %s found at umount time.  %sYou should &quot;
+l_string|&quot;run chkdsk.  Please email &quot;
 l_string|&quot;linux-ntfs-dev@lists.sourceforge.net and say &quot;
 l_string|&quot;that you saw this message.  Thank you.&quot;
 comma
@@ -6318,7 +6784,7 @@ id|vol-&gt;upcase_len
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Decrease the number of mounts and destroy the global default upcase&n;&t; * table if necessary. Also decrease the number of upcase users if we&n;&t; * are a user.&n;&t; */
+multiline_comment|/*&n;&t; * Decrease the number of mounts and destroy the global default upcase&n;&t; * table if necessary.  Also decrease the number of upcase users if we&n;&t; * are a user.&n;&t; */
 id|down
 c_func
 (paren
@@ -6422,7 +6888,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|vfs_sb-&gt;s_fs_info
+id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
 suffix:semicolon

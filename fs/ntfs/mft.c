@@ -3294,6 +3294,41 @@ op_assign
 id|AT_UNUSED
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Check if the inode corresponding to this mft record is in&n;&t;&t; * the VFS inode cache and obtain a reference to it if it is.&n;&t;&t; */
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Looking for inode 0x%lx in icache.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * For inode 0, i.e. $MFT itself, we cannot use ilookup5() from&n;&t;&t; * here or we deadlock because the inode is already locked by&n;&t;&t; * the kernel (fs/fs-writeback.c::__sync_single_inode()) and&n;&t;&t; * ilookup5() waits until the inode is unlocked before&n;&t;&t; * returning it and it never gets unlocked because&n;&t;&t; * ntfs_mft_writepage() never returns.  )-:  Fortunately, we&n;&t;&t; * have inode 0 pinned in icache for the duration of the mount&n;&t;&t; * so we can access it directly.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mft_no
+)paren
+(brace
+multiline_comment|/* Balance the below iput(). */
+id|vi
+op_assign
+id|igrab
+c_func
+(paren
+id|mft_vi
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|vi
+op_ne
+id|mft_vi
+)paren
+suffix:semicolon
+)brace
+r_else
 id|vi
 op_assign
 id|ilookup5
@@ -3318,6 +3353,14 @@ c_cond
 id|vi
 )paren
 (brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Inode 0x%lx is in icache.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
 multiline_comment|/* The inode is in icache.  Check if it is dirty. */
 id|ni
 op_assign
@@ -3339,6 +3382,15 @@ id|ni
 )paren
 (brace
 multiline_comment|/* The inode is not dirty, skip this record. */
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Inode 0x%lx is not dirty, &quot;
+l_string|&quot;continuing search.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
 id|iput
 c_func
 (paren
@@ -3348,6 +3400,14 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Inode 0x%lx is dirty, aborting search.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
 multiline_comment|/* The inode is dirty, no need to search further. */
 id|iput
 c_func
@@ -3362,6 +3422,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Inode 0x%lx is not in icache.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
 multiline_comment|/* The inode is not in icache. */
 multiline_comment|/* Skip the record if it is not a mft record (type &quot;FILE&quot;). */
 r_if
@@ -3374,8 +3442,19 @@ c_func
 id|maddr
 )paren
 )paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Mft record 0x%lx is not a FILE record, &quot;
+l_string|&quot;continuing search.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 id|m
 op_assign
 (paren
@@ -3395,8 +3474,19 @@ op_amp
 id|MFT_RECORD_IN_USE
 )paren
 )paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Mft record 0x%lx is not in use, &quot;
+l_string|&quot;continuing search.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 multiline_comment|/* Skip the mft record if it is a base inode. */
 r_if
 c_cond
@@ -3404,8 +3494,19 @@ c_cond
 op_logical_neg
 id|m-&gt;base_mft_record
 )paren
+(brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Mft record 0x%lx is a base record, &quot;
+l_string|&quot;continuing search.&quot;
+comma
+id|mft_no
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * This is an extent mft record.  Check if the inode&n;&t;&t; * corresponding to its base mft record is in icache.&n;&t;&t; */
 id|na.mft_no
 op_assign
@@ -3413,6 +3514,17 @@ id|MREF_LE
 c_func
 (paren
 id|m-&gt;base_mft_record
+)paren
+suffix:semicolon
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Mft record 0x%lx is an extent record.  Looking &quot;
+l_string|&quot;for base inode 0x%lx in icache.&quot;
+comma
+id|mft_no
+comma
+id|na.mft_no
 )paren
 suffix:semicolon
 id|vi
@@ -3441,9 +3553,26 @@ id|vi
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * The base inode is not in icache.  Skip this extent&n;&t;&t;&t; * mft record.&n;&t;&t;&t; */
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Base inode 0x%lx is not in icache, &quot;
+l_string|&quot;continuing search.&quot;
+comma
+id|na.mft_no
+)paren
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|ntfs_debug
+c_func
+(paren
+l_string|&quot;Base inode 0x%lx is in icache.&quot;
+comma
+id|na.mft_no
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The base inode is in icache.  Check if it has the extent&n;&t;&t; * inode corresponding to this extent mft record attached.&n;&t;&t; */
 id|ni
 op_assign
