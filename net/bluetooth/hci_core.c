@@ -71,12 +71,12 @@ r_int
 id|event
 )paren
 suffix:semicolon
-DECL|variable|hci_task_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|hci_task_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* HCI device list */
 DECL|variable|hci_dev_list
@@ -87,10 +87,11 @@ id|hci_dev_list
 )paren
 suffix:semicolon
 DECL|variable|hci_dev_list_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|hci_dev_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* HCI callback list */
 DECL|variable|hci_cb_list
@@ -101,10 +102,11 @@ id|hci_cb_list
 )paren
 suffix:semicolon
 DECL|variable|hci_cb_list_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|hci_cb_list_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* HCI protocols */
 DECL|macro|HCI_MAX_PROTO

@@ -117,12 +117,12 @@ c_func
 id|rfcomm_dev_list
 )paren
 suffix:semicolon
-DECL|variable|rfcomm_dev_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|rfcomm_dev_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void
