@@ -60,13 +60,6 @@ r_struct
 id|tcf_result
 id|res
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_CLS_ACT
-DECL|member|action
-r_struct
-id|tc_action
-op_star
-id|action
-suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_IND
 DECL|member|indev
 r_char
@@ -76,6 +69,13 @@ id|IFNAMSIZ
 )braket
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_CLS_IND */
+macro_line|#ifdef CONFIG_NET_CLS_ACT
+DECL|member|action
+r_struct
+id|tc_action
+op_star
+id|action
+suffix:semicolon
 macro_line|#else /* CONFIG_NET_CLS_ACT */
 macro_line|#ifdef CONFIG_NET_CLS_POLICE
 DECL|member|police
@@ -199,7 +199,6 @@ id|res
 op_assign
 id|f-&gt;res
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_CLS_ACT
 macro_line|#ifdef CONFIG_NET_CLS_IND
 r_if
 c_cond
@@ -216,6 +215,7 @@ id|f-&gt;indev
 r_continue
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_CLS_IND */
+macro_line|#ifdef CONFIG_NET_CLS_ACT
 r_if
 c_cond
 (paren
@@ -848,6 +848,47 @@ id|base
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_CLS_IND
+r_if
+c_cond
+(paren
+id|tb
+(braket
+id|TCA_FW_INDEV
+op_minus
+l_int|1
+)braket
+)paren
+(brace
+id|err
+op_assign
+id|tcf_change_indev
+c_func
+(paren
+id|tp
+comma
+id|f-&gt;indev
+comma
+id|tb
+(braket
+id|TCA_FW_INDEV
+op_minus
+l_int|1
+)braket
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+r_goto
+id|errout
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_NET_CLS_IND */
 macro_line|#ifdef CONFIG_NET_CLS_ACT
 r_if
 c_cond
@@ -943,47 +984,6 @@ r_goto
 id|errout
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NET_CLS_IND
-r_if
-c_cond
-(paren
-id|tb
-(braket
-id|TCA_FW_INDEV
-op_minus
-l_int|1
-)braket
-)paren
-(brace
-id|err
-op_assign
-id|tcf_change_indev
-c_func
-(paren
-id|tp
-comma
-id|f-&gt;indev
-comma
-id|tb
-(braket
-id|TCA_FW_INDEV
-op_minus
-l_int|1
-)braket
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-OL
-l_int|0
-)paren
-r_goto
-id|errout
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_NET_CLS_IND */
 macro_line|#else /* CONFIG_NET_CLS_ACT */
 macro_line|#ifdef CONFIG_NET_CLS_POLICE
 r_if
@@ -1669,27 +1669,6 @@ op_amp
 id|f-&gt;res.classid
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_CLS_ACT
-r_if
-c_cond
-(paren
-id|tcf_dump_act
-c_func
-(paren
-id|skb
-comma
-id|f-&gt;action
-comma
-id|TCA_FW_ACT
-comma
-id|TCA_FW_POLICE
-)paren
-OL
-l_int|0
-)paren
-r_goto
-id|rtattr_failure
-suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_IND
 r_if
 c_cond
@@ -1713,6 +1692,27 @@ id|f-&gt;indev
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_CLS_IND */
+macro_line|#ifdef CONFIG_NET_CLS_ACT
+r_if
+c_cond
+(paren
+id|tcf_dump_act
+c_func
+(paren
+id|skb
+comma
+id|f-&gt;action
+comma
+id|TCA_FW_ACT
+comma
+id|TCA_FW_POLICE
+)paren
+OL
+l_int|0
+)paren
+r_goto
+id|rtattr_failure
+suffix:semicolon
 macro_line|#else /* CONFIG_NET_CLS_ACT */
 macro_line|#ifdef CONFIG_NET_CLS_POLICE
 r_if
