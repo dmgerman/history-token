@@ -2085,7 +2085,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *  Timer section - /dev/snd/timer&n; */
 DECL|macro|SNDRV_TIMER_VERSION
-mdefine_line|#define SNDRV_TIMER_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 1)
+mdefine_line|#define SNDRV_TIMER_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 2)
 DECL|enum|sndrv_timer_class
 r_enum
 id|sndrv_timer_class
@@ -2411,6 +2411,8 @@ DECL|macro|SNDRV_TIMER_PSFLG_AUTO
 mdefine_line|#define SNDRV_TIMER_PSFLG_AUTO&t;&t;(1&lt;&lt;0)&t;/* auto start, otherwise one-shot */
 DECL|macro|SNDRV_TIMER_PSFLG_EXCLUSIVE
 mdefine_line|#define SNDRV_TIMER_PSFLG_EXCLUSIVE&t;(1&lt;&lt;1)&t;/* exclusive use, precise start/stop/pause/continue */
+DECL|macro|SNDRV_TIMER_PSFLG_EARLY_EVENT
+mdefine_line|#define SNDRV_TIMER_PSFLG_EARLY_EVENT&t;(1&lt;&lt;2)&t;/* write early event to the poll queue */
 DECL|struct|sndrv_timer_params
 r_struct
 id|sndrv_timer_params
@@ -2733,6 +2735,10 @@ DECL|enumerator|SNDRV_TIMER_EVENT_PAUSE
 id|SNDRV_TIMER_EVENT_PAUSE
 comma
 multiline_comment|/* val = 0 */
+DECL|enumerator|SNDRV_TIMER_EVENT_EARLY
+id|SNDRV_TIMER_EVENT_EARLY
+comma
+multiline_comment|/* val = 0, early event */
 multiline_comment|/* master timer events for slave timer instances */
 DECL|enumerator|SNDRV_TIMER_EVENT_MSTART
 id|SNDRV_TIMER_EVENT_MSTART
