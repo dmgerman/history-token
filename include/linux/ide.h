@@ -4373,8 +4373,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * IDE modules.&n; */
-DECL|macro|IDE_CHIPSET_MODULE
-mdefine_line|#define IDE_CHIPSET_MODULE&t;&t;0&t;/* not supported yet */
 DECL|macro|IDE_PROBE_MODULE
 mdefine_line|#define IDE_PROBE_MODULE&t;&t;1
 DECL|typedef|ide_module_init_proc
@@ -4462,11 +4460,6 @@ id|ide_hwifs
 )braket
 suffix:semicolon
 multiline_comment|/* master data repository */
-r_extern
-id|ide_module_t
-op_star
-id|ide_chipsets
-suffix:semicolon
 r_extern
 id|ide_module_t
 op_star

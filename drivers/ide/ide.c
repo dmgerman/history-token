@@ -132,12 +132,6 @@ c_func
 id|noautodma
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ide_modules keeps track of the available IDE chipset/probe/driver modules.&n; */
-DECL|variable|ide_chipsets
-id|ide_module_t
-op_star
-id|ide_chipsets
-suffix:semicolon
 DECL|variable|ide_probe
 id|ide_module_t
 op_star
