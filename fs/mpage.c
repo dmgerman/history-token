@@ -1699,6 +1699,8 @@ comma
 id|nr_bvecs
 comma
 id|GFP_NOFS
+op_or
+id|__GFP_HIGH
 )paren
 suffix:semicolon
 r_if
