@@ -561,15 +561,6 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|cio_modify
-(paren
-r_struct
-id|subchannel
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|cio_enable_subchannel
 (paren
 r_struct
@@ -697,13 +688,6 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Use with care. */
-r_extern
-r_int
-id|cio_tpi
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_struct
 id|subchannel

@@ -11720,8 +11720,9 @@ id|ethtool_drvinfo
 id|info
 op_assign
 (brace
+dot
 id|cmd
-suffix:colon
+op_assign
 id|ETHTOOL_GDRVINFO
 )brace
 suffix:semicolon
@@ -12147,8 +12148,9 @@ id|ethtool_value
 id|edata
 op_assign
 (brace
+dot
 id|cmd
-suffix:colon
+op_assign
 id|ETHTOOL_GLINK
 )brace
 suffix:semicolon
@@ -12195,8 +12197,9 @@ id|ethtool_value
 id|edata
 op_assign
 (brace
+dot
 id|cmd
-suffix:colon
+op_assign
 id|ETHTOOL_GMSGLVL
 )brace
 suffix:semicolon

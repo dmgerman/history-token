@@ -62,12 +62,6 @@ op_star
 id|hash_next
 suffix:semicolon
 multiline_comment|/* Also used for free list */
-DECL|member|inode_list
-r_struct
-id|list_head
-id|inode_list
-suffix:semicolon
-multiline_comment|/* per-inode metapage list */
 multiline_comment|/*&n;&t; * mapping &amp; index become redundant, but we need these here to&n;&t; * add the metapage to the hash before we have the real page&n;&t; */
 DECL|member|mapping
 r_struct
@@ -300,17 +294,7 @@ DECL|macro|invalidate_pxd_metapages
 mdefine_line|#define invalidate_pxd_metapages(ip, pxd) &bslash;&n;&t;__invalidate_metapages((ip), addressPXD(&amp;(pxd)), lengthPXD(&amp;(pxd)))
 DECL|macro|invalidate_dxd_metapages
 mdefine_line|#define invalidate_dxd_metapages(ip, dxd) &bslash;&n;&t;__invalidate_metapages((ip), addressDXD(&amp;(dxd)), lengthDXD(&amp;(dxd)))
-multiline_comment|/*&n; * This one uses mp_list to invalidate all pages for an inode&n; */
-r_extern
-r_void
-id|invalidate_inode_metapages
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-suffix:semicolon
+DECL|macro|invalidate_xad_metapages
+mdefine_line|#define invalidate_xad_metapages(ip, xad) &bslash;&n;&t;__invalidate_metapages((ip), addressXAD(&amp;(xad)), lengthXAD(&amp;(xad)))
 macro_line|#endif&t;&t;&t;&t;/* _H_JFS_METAPAGE */
 eof

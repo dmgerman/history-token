@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 176 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *              $Revision: 177 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
@@ -313,7 +313,7 @@ l_int|128
 suffix:semicolon
 DECL|variable|acpi_gbl_db_sleep_states
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_db_sleep_states
 (braket
@@ -536,7 +536,7 @@ multiline_comment|/* Hex to ASCII conversion table */
 DECL|variable|acpi_gbl_hex_to_ascii
 r_static
 r_const
-id|NATIVE_CHAR
+r_char
 id|acpi_gbl_hex_to_ascii
 (braket
 )braket
@@ -1045,7 +1045,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/* Region type decoding */
 DECL|variable|acpi_gbl_region_types
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_region_types
 (braket
@@ -1071,7 +1071,7 @@ l_string|&quot;Data_table&quot;
 comma
 )brace
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 DECL|function|acpi_ut_get_region_name
 id|acpi_ut_get_region_name
@@ -1112,7 +1112,7 @@ suffix:semicolon
 r_return
 (paren
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 )paren
 id|acpi_gbl_region_types
@@ -1127,7 +1127,7 @@ multiline_comment|/* Event type decoding */
 DECL|variable|acpi_gbl_event_types
 r_static
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_event_types
 (braket
@@ -1147,7 +1147,7 @@ l_string|&quot;Real_time_clock&quot;
 comma
 )brace
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 DECL|function|acpi_ut_get_event_name
 id|acpi_ut_get_event_name
@@ -1173,7 +1173,7 @@ suffix:semicolon
 r_return
 (paren
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 )paren
 id|acpi_gbl_event_types
@@ -1188,7 +1188,7 @@ multiline_comment|/*&n; * Elements of Acpi_gbl_Ns_type_names below must match&n;
 DECL|variable|acpi_gbl_bad_type
 r_static
 r_const
-id|NATIVE_CHAR
+r_char
 id|acpi_gbl_bad_type
 (braket
 )braket
@@ -1200,7 +1200,7 @@ mdefine_line|#define TYPE_NAME_LENGTH    12                           /* Maximum
 DECL|variable|acpi_gbl_ns_type_names
 r_static
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_ns_type_names
 (braket
@@ -1299,7 +1299,7 @@ multiline_comment|/* 39 */
 l_string|&quot;Invalid&quot;
 )brace
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 DECL|function|acpi_ut_get_type_name
 id|acpi_ut_get_type_name
@@ -1319,7 +1319,7 @@ id|ACPI_TYPE_INVALID
 r_return
 (paren
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 )paren
 id|acpi_gbl_bad_type
@@ -1329,7 +1329,7 @@ suffix:semicolon
 r_return
 (paren
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 )paren
 id|acpi_gbl_ns_type_names
@@ -1339,7 +1339,7 @@ id|type
 )paren
 suffix:semicolon
 )brace
-id|NATIVE_CHAR
+r_char
 op_star
 DECL|function|acpi_ut_get_object_type_name
 id|acpi_ut_get_object_type_name
@@ -1377,7 +1377,7 @@ suffix:semicolon
 macro_line|#if defined(ACPI_DEBUG_OUTPUT) || defined(ACPI_DEBUGGER)
 multiline_comment|/*&n; * Strings and procedures used for debug only&n; */
 multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_get_mutex_name&n; *&n; * PARAMETERS:  None.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Translate a mutex ID into a name string (Debug only)&n; *&n; ****************************************************************************/
-id|NATIVE_CHAR
+r_char
 op_star
 DECL|function|acpi_ut_get_mutex_name
 id|acpi_ut_get_mutex_name

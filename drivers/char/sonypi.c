@@ -3482,7 +3482,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;sonypi: detected %s model, &quot;
-l_string|&quot;verbose = %s, fnkeyinit = %s, camera = %s, &quot;
+l_string|&quot;verbose = %d, fnkeyinit = %s, camera = %s, &quot;
 l_string|&quot;compat = %s, mask = 0x%08lx&bslash;n&quot;
 comma
 (paren
@@ -3497,11 +3497,6 @@ suffix:colon
 l_string|&quot;type2&quot;
 comma
 id|verbose
-ques
-c_cond
-l_string|&quot;on&quot;
-suffix:colon
-l_string|&quot;off&quot;
 comma
 id|fnkeyinit
 ques

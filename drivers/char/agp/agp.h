@@ -130,8 +130,6 @@ r_int
 id|key
 )paren
 suffix:semicolon
-multiline_comment|/* chipset specific init routines. */
-multiline_comment|/*&n;int __init ali_generic_setup (struct pci_dev *pdev);&n;int __init amd_irongate_setup (struct pci_dev *pdev);&n;int __init amd_8151_setup (struct pci_dev *pdev);&n;int __init hp_zx1_setup (struct pci_dev *pdev);&n;int __init intel_i460_setup (struct pci_dev *pdev);&n;int __init intel_generic_setup (struct pci_dev *pdev);&n;int __init intel_i810_setup(struct pci_dev *i810_dev);&n;int __init intel_815_setup(struct pci_dev *pdev);&n;int __init intel_i830_setup(struct pci_dev *i830_dev);&n;int __init intel_820_setup (struct pci_dev *pdev);&n;int __init intel_830mp_setup (struct pci_dev *pdev);&n;int __init intel_840_setup (struct pci_dev *pdev);&n;int __init intel_845_setup (struct pci_dev *pdev);&n;int __init intel_850_setup (struct pci_dev *pdev);&n;int __init intel_860_setup (struct pci_dev *pdev);&n;int __init serverworks_setup (struct pci_dev *pdev);&n;int __init sis_generic_setup (struct pci_dev *pdev);&n;int __init via_generic_setup (struct pci_dev *pdev);&n;*/
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;agpgart: &quot;
 r_int

@@ -507,6 +507,11 @@ id|expr
 op_star
 id|dep
 suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
 singleline_comment|//char *help;
 DECL|member|file
 r_struct
@@ -525,6 +530,8 @@ id|data
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|MENU_CHANGED
+mdefine_line|#define MENU_CHANGED&t;&t;0x0001
 macro_line|#ifndef SWIG
 r_extern
 r_struct

@@ -2,6 +2,7 @@ multiline_comment|/* thread_info.h: m68knommu low-level thread information&n; * 
 macro_line|#ifndef _ASM_THREAD_INFO_H
 DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * low level task data.&n; * If you change this, change the TI_* offsets below to match.&n; */
@@ -39,11 +40,16 @@ r_int
 id|preempt_count
 suffix:semicolon
 multiline_comment|/* 0 =&gt; preemptable, &lt;0 =&gt; BUG*/
+DECL|member|restart_block
+r_struct
+id|restart_block
+id|restart_block
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;&t;flags:&t;&t;0,&t;&t;&t;&bslash;&n;&t;cpu:&t;&t;0,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&bslash;&n;&t;.flags&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cpu&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.restart_block&t;= {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack

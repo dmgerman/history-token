@@ -95,6 +95,9 @@ macro_line|#endif
 multiline_comment|/*&n; * User space process size: 3.75GB. This is hardcoded into a few places,&n; * so don&squot;t change it unless you know what you are doing.&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;(0xF0000000UL)
+multiline_comment|/*&n; * This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s. We won&squot;t be using it&n; */
+DECL|macro|TASK_UNMAPPED_BASE
+mdefine_line|#define TASK_UNMAPPED_BASE&t;0
 multiline_comment|/*&n; * Bus types&n; */
 DECL|macro|EISA_bus
 mdefine_line|#define EISA_bus 0

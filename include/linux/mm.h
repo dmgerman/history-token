@@ -111,12 +111,6 @@ op_star
 id|vm_file
 suffix:semicolon
 multiline_comment|/* File we map to (can be NULL). */
-DECL|member|vm_raend
-r_int
-r_int
-id|vm_raend
-suffix:semicolon
-multiline_comment|/* XXX: put full readahead info here. */
 DECL|member|vm_private_data
 r_void
 op_star
@@ -605,16 +599,6 @@ id|show_free_areas
 c_func
 (paren
 r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|fail_writepage
-c_func
-(paren
-r_struct
-id|page
-op_star
 )paren
 suffix:semicolon
 r_struct
@@ -1744,6 +1728,16 @@ r_struct
 id|file_ra_state
 op_star
 id|ra
+)paren
+suffix:semicolon
+r_int
+r_int
+id|max_sane_readahead
+c_func
+(paren
+r_int
+r_int
+id|nr
 )paren
 suffix:semicolon
 multiline_comment|/* Do stack extension */

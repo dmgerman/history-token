@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_STAT_H
 DECL|macro|_ASM_STAT_H
 mdefine_line|#define _ASM_STAT_H
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 DECL|struct|__old_kernel_stat
 r_struct
 id|__old_kernel_stat
@@ -144,7 +145,7 @@ r_int
 id|st_pad3
 suffix:semicolon
 DECL|member|st_atime
-id|__kernel_time_t32
+id|compat_time_t
 id|st_atime
 suffix:semicolon
 DECL|member|reserved0
@@ -152,7 +153,7 @@ r_int
 id|reserved0
 suffix:semicolon
 DECL|member|st_mtime
-id|__kernel_time_t32
+id|compat_time_t
 id|st_mtime
 suffix:semicolon
 DECL|member|reserved1
@@ -160,7 +161,7 @@ r_int
 id|reserved1
 suffix:semicolon
 DECL|member|st_ctime
-id|__kernel_time_t32
+id|compat_time_t
 id|st_ctime
 suffix:semicolon
 DECL|member|reserved2

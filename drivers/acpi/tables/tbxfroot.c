@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 66 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxfroot - Find the root ACPI table (RSDT)&n; *              $Revision: 67 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -13,15 +13,15 @@ id|acpi_status
 DECL|function|acpi_tb_find_table
 id|acpi_tb_find_table
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|signature
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|oem_id
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|oem_table_id
 comma
@@ -356,7 +356,7 @@ c_cond
 id|ACPI_STRNCMP
 (paren
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 )paren
 id|acpi_gbl_RSDP
@@ -546,8 +546,6 @@ r_else
 (brace
 id|address.pointer.value
 op_assign
-id|ACPI_GET_ADDRESS
-(paren
 (paren
 (paren
 id|xsdt_descriptor
@@ -560,7 +558,6 @@ id|table_offset_entry
 (braket
 id|i
 )braket
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Get the table header */
@@ -817,7 +814,7 @@ c_cond
 id|ACPI_STRNCMP
 (paren
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 )paren
 id|mem_rover

@@ -3,7 +3,7 @@ macro_line|#ifndef _S390_CURRENT_H
 DECL|macro|_S390_CURRENT_H
 mdefine_line|#define _S390_CURRENT_H
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;asm/thread_info.h&gt;
+macro_line|#include &lt;linux/thread_info.h&gt;
 r_struct
 id|task_struct
 suffix:semicolon

@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -149,7 +150,7 @@ id|s32
 id|ss_sp
 suffix:semicolon
 DECL|member|ss_size
-id|__kernel_size_t32
+id|compat_size_t
 id|ss_size
 suffix:semicolon
 DECL|member|ss_flags

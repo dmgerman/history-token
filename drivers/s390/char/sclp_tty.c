@@ -1778,6 +1778,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * push input to tty&n; */
 DECL|function|sclp_tty_input
+r_static
 r_void
 id|sclp_tty_input
 c_func
@@ -2762,6 +2763,7 @@ id|reg
 (brace
 )brace
 DECL|variable|sclp_input_event
+r_static
 r_struct
 id|sclp_register
 id|sclp_input_event

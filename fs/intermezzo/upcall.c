@@ -17,10 +17,10 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#include &lt;linux/intermezzo_lib.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
-macro_line|#include &lt;linux/intermezzo_idl.h&gt;
+macro_line|#include &quot;intermezzo_lib.h&quot;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
+macro_line|#include &quot;intermezzo_idl.h&quot;
 multiline_comment|/*&n;  At present:&n;  -- Asynchronous calls:&n;   - kml:            give a &quot;more&quot; kml indication to userland&n;   - kml_truncate:   initiate KML truncation&n;   - release_permit: kernel is done with permit&n;  -- Synchronous&n;   - open:           fetch file&n;   - permit:         get a permit&n;&n;  Errors returned by user level code are positive&n;&n; */
 DECL|function|upc_pack
 r_static

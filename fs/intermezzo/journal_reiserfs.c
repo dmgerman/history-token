@@ -18,8 +18,8 @@ macro_line|#include &lt;linux/reiserfs_fs.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#if defined(CONFIG_REISERFS_FS) || defined(CONFIG_REISERFS_FS_MODULE)
 r_static
 id|loff_t

@@ -5,7 +5,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * The following structure is used to manage multiple PCI busses.&n; */
 r_struct
 id|pci_dev

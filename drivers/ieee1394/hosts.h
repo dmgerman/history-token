@@ -12,6 +12,9 @@ mdefine_line|#define CSR_CONFIG_ROM_SIZE       0x100
 r_struct
 id|hpsb_packet
 suffix:semicolon
+r_struct
+id|hpsb_iso
+suffix:semicolon
 DECL|struct|hpsb_host
 r_struct
 id|hpsb_host
@@ -47,27 +50,6 @@ DECL|member|timeout_tq
 r_struct
 id|hpsb_queue_struct
 id|timeout_tq
-suffix:semicolon
-multiline_comment|/* A bitmask where a set bit means that this tlabel is in use.&n;         * FIXME - should be handled per node instead of per bus. */
-DECL|member|tlabel_pool
-id|u32
-id|tlabel_pool
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|tlabel_count
-r_struct
-id|semaphore
-id|tlabel_count
-suffix:semicolon
-DECL|member|tlabel_lock
-id|spinlock_t
-id|tlabel_lock
-suffix:semicolon
-DECL|member|tlabel_current
-id|u32
-id|tlabel_current
 suffix:semicolon
 DECL|member|iso_listen_count
 r_int
@@ -164,6 +146,15 @@ r_struct
 id|csr_control
 id|csr
 suffix:semicolon
+multiline_comment|/* Per node tlabel pool allocation */
+DECL|member|tpool
+r_struct
+id|hpsb_tlabel_pool
+id|tpool
+(braket
+l_int|64
+)braket
+suffix:semicolon
 DECL|member|driver
 r_struct
 id|hpsb_host_driver
@@ -218,6 +209,43 @@ DECL|enumerator|ISO_UNLISTEN_CHANNEL
 id|ISO_UNLISTEN_CHANNEL
 )brace
 suffix:semicolon
+DECL|enum|isoctl_cmd
+r_enum
+id|isoctl_cmd
+(brace
+multiline_comment|/* rawiso API - see iso.h for the meanings of these commands&n;&t; * INIT = allocate resources&n;&t; * START = begin transmission/reception (arg: cycle to start on)&n;&t; * STOP = halt transmission/reception&n;&t; * QUEUE/RELEASE = produce/consume packets (arg: # of packets)&n;&t; * SHUTDOWN = deallocate resources&n;&t; */
+DECL|enumerator|XMIT_INIT
+id|XMIT_INIT
+comma
+DECL|enumerator|XMIT_START
+id|XMIT_START
+comma
+DECL|enumerator|XMIT_STOP
+id|XMIT_STOP
+comma
+DECL|enumerator|XMIT_QUEUE
+id|XMIT_QUEUE
+comma
+DECL|enumerator|XMIT_SHUTDOWN
+id|XMIT_SHUTDOWN
+comma
+DECL|enumerator|RECV_INIT
+id|RECV_INIT
+comma
+DECL|enumerator|RECV_START
+id|RECV_START
+comma
+DECL|enumerator|RECV_STOP
+id|RECV_STOP
+comma
+DECL|enumerator|RECV_RELEASE
+id|RECV_RELEASE
+comma
+DECL|enumerator|RECV_SHUTDOWN
+id|RECV_SHUTDOWN
+comma
+)brace
+suffix:semicolon
 DECL|enum|reset_types
 r_enum
 id|reset_types
@@ -229,6 +257,20 @@ comma
 multiline_comment|/* Short (arbitrated) reset -- only available on 1394a capable&n;           IEEE 1394 capable controllers */
 DECL|enumerator|SHORT_RESET
 id|SHORT_RESET
+comma
+multiline_comment|/* Variants, that set force_root before issueing the bus reset */
+DECL|enumerator|LONG_RESET_FORCE_ROOT
+DECL|enumerator|SHORT_RESET_FORCE_ROOT
+id|LONG_RESET_FORCE_ROOT
+comma
+id|SHORT_RESET_FORCE_ROOT
+comma
+multiline_comment|/* Variants, that clear force_root before issueing the bus reset */
+DECL|enumerator|LONG_RESET_NO_FORCE_ROOT
+DECL|enumerator|SHORT_RESET_NO_FORCE_ROOT
+id|LONG_RESET_NO_FORCE_ROOT
+comma
+id|SHORT_RESET_NO_FORCE_ROOT
 )brace
 suffix:semicolon
 DECL|struct|hpsb_host_driver
@@ -300,6 +342,27 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+multiline_comment|/* ISO transmission/reception functions. Return 0 on success, -1 on failure.&n;&t;  * If the low-level driver does not support the new ISO API, set isoctl to NULL.&n;&t;  */
+DECL|member|isoctl
+r_int
+(paren
+op_star
+id|isoctl
+)paren
+(paren
+r_struct
+id|hpsb_iso
+op_star
+id|iso
+comma
+r_enum
+id|isoctl_cmd
+id|command
+comma
+r_int
+id|arg
+)paren
+suffix:semicolon
 multiline_comment|/* This function is mainly to redirect local CSR reads/locks to the iso&n;         * management registers (bus manager id, bandwidth available, channels&n;         * available) to the hardware registers in OHCI.  reg is 0,1,2,3 for bus&n;         * mgr, bwdth avail, ch avail hi, ch avail lo respectively (the same ids&n;         * as OHCI uses).  data and compare are the new data and expected data&n;         * respectively, return value is the old value.&n;         */
 DECL|member|hw_csr_reg
 id|quadlet_t
@@ -324,14 +387,6 @@ id|compare
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
-multiline_comment|/* core internal use */
-r_void
-id|register_builtin_lowlevels
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 multiline_comment|/* high level internal use */
 r_struct

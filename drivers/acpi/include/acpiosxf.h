@@ -429,7 +429,7 @@ id|ACPI_INTERNAL_VAR_XFACE
 id|acpi_os_printf
 (paren
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|format
 comma
@@ -442,7 +442,7 @@ r_void
 id|acpi_os_vprintf
 (paren
 r_const
-id|NATIVE_CHAR
+r_char
 op_star
 id|format
 comma
@@ -462,7 +462,7 @@ multiline_comment|/*&n; * Debug input&n; */
 id|u32
 id|acpi_os_get_line
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|buffer
 )paren
@@ -483,7 +483,7 @@ comma
 id|u32
 id|line_number
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|message
 )paren

@@ -136,6 +136,6 @@ op_star
 )paren
 suffix:semicolon
 DECL|macro|EATA_PIO
-mdefine_line|#define EATA_PIO {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;proc_info:         &t;eata_pio_proc_info, /* procinfo&t;  */&t;&bslash;&n;&t;name:              &t;&quot;EATA (Extended Attachment) PIO driver&quot;,&bslash;&n;&t;detect:            &t;eata_pio_detect,&t;&t;&t;&bslash;&n;&t;release:           &t;eata_pio_release,&t;&t;&t;&bslash;&n;&t;queuecommand:      &t;eata_pio_queue,&t;&t;&t;&t;&bslash;&n;&t;eh_abort_handler:  &t;eata_pio_abort,&t;&t;&t;&t;&bslash;&n;&t;eh_host_reset_handler:&t;eata_pio_host_reset,&t;&t;&t;&bslash;&n;&t;use_clustering:    &t;ENABLE_CLUSTERING &t;&t;&t;&bslash;&n;}
+mdefine_line|#define EATA_PIO {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info         &t;= eata_pio_proc_info, /* procinfo&t;  */&t;&bslash;&n;&t;.name              &t;= &quot;EATA (Extended Attachment) PIO driver&quot;,&bslash;&n;&t;.detect            &t;= eata_pio_detect,&t;&t;&t;&bslash;&n;&t;.release           &t;= eata_pio_release,&t;&t;&t;&bslash;&n;&t;.queuecommand      &t;= eata_pio_queue,&t;&t;&t;&t;&bslash;&n;&t;.eh_abort_handler  &t;= eata_pio_abort,&t;&t;&t;&t;&bslash;&n;&t;.eh_host_reset_handler&t;= eata_pio_host_reset,&t;&t;&t;&bslash;&n;&t;.use_clustering    &t;= ENABLE_CLUSTERING &t;&t;&t;&bslash;&n;}
 macro_line|#endif&t;&t;&t;&t;/* _EATA_PIO_H */
 eof

@@ -5,7 +5,9 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/fsfilter.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
 multiline_comment|/*&n; * this file contains a hash table of replicators/clients for a&n; * fileset. It allows fast lookup and update of reintegration status&n; */
 DECL|struct|izo_offset_rec
 r_struct

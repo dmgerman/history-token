@@ -196,6 +196,6 @@ id|inout
 )paren
 suffix:semicolon
 DECL|macro|SCSI_BLZ2060
-mdefine_line|#define SCSI_BLZ2060      { proc_name:&t;&t;&quot;esp-blz2060&quot;, &bslash;&n;&t;&t;&t;    proc_info:&t;&t;esp_proc_info, &bslash;&n;&t;&t;&t;    name:&t;&t;&quot;Blizzard2060 SCSI&quot;, &bslash;&n;&t;&t;&t;    detect:&t;&t;blz2060_esp_detect, &bslash;&n;&t;&t;&t;    release:&t;&t;blz2060_esp_release, &bslash;&n;&t;&t;&t;    queuecommand:&t;esp_queue, &bslash;&n;&t;&t;&t;    abort:&t;&t;esp_abort, &bslash;&n;&t;&t;&t;    reset:&t;&t;esp_reset, &bslash;&n;&t;&t;&t;    can_queue:          7, &bslash;&n;&t;&t;&t;    this_id:&t;&t;7, &bslash;&n;&t;&t;&t;    sg_tablesize:&t;SG_ALL, &bslash;&n;&t;&t;&t;    cmd_per_lun:&t;1, &bslash;&n;&t;&t;&t;    use_clustering:&t;ENABLE_CLUSTERING }
+mdefine_line|#define SCSI_BLZ2060      { .proc_name&t;&t;= &quot;esp-blz2060&quot;, &bslash;&n;&t;&t;&t;    .proc_info&t;&t;= esp_proc_info, &bslash;&n;&t;&t;&t;    .name&t;&t;= &quot;Blizzard2060 SCSI&quot;, &bslash;&n;&t;&t;&t;    .detect&t;&t;= blz2060_esp_detect, &bslash;&n;&t;&t;&t;    .release&t;&t;= blz2060_esp_release, &bslash;&n;&t;&t;&t;    .queuecommand&t;= esp_queue, &bslash;&n;&t;&t;&t;    .abort&t;&t;= esp_abort, &bslash;&n;&t;&t;&t;    .reset&t;&t;= esp_reset, &bslash;&n;&t;&t;&t;    .can_queue          = 7, &bslash;&n;&t;&t;&t;    .this_id&t;&t;= 7, &bslash;&n;&t;&t;&t;    .sg_tablesize&t;= SG_ALL, &bslash;&n;&t;&t;&t;    .cmd_per_lun&t;= 1, &bslash;&n;&t;&t;&t;    .use_clustering&t;= ENABLE_CLUSTERING }
 macro_line|#endif /* BLZ2060_H */
 eof

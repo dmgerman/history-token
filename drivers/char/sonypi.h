@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_MAJORVERSION
 mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t; 1
 DECL|macro|SONYPI_DRIVER_MINORVERSION
-mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;16
+mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;17
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE1
 mdefine_line|#define SONYPI_DEVICE_MODEL_TYPE1&t;1
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE2
@@ -349,6 +349,29 @@ id|event
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* The set of possible button release events */
+DECL|variable|sonypi_releaseev
+r_static
+r_struct
+id|sonypi_event
+id|sonypi_releaseev
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_int|0x00
+comma
+id|SONYPI_EVENT_ANYBUTTON_RELEASED
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+)brace
+)brace
+suffix:semicolon
 multiline_comment|/* The set of possible jogger events  */
 DECL|variable|sonypi_joggerev
 r_static
@@ -438,12 +461,6 @@ id|SONYPI_EVENT_JOGDIAL_PRESSED
 )brace
 comma
 (brace
-l_int|0x00
-comma
-id|SONYPI_EVENT_JOGDIAL_RELEASED
-)brace
-comma
-(brace
 l_int|0
 comma
 l_int|0
@@ -476,12 +493,6 @@ comma
 l_int|0x01
 comma
 id|SONYPI_EVENT_CAPTURE_PARTIALRELEASED
-)brace
-comma
-(brace
-l_int|0x00
-comma
-id|SONYPI_EVENT_CAPTURE_RELEASED
 )brace
 comma
 (brace
@@ -916,6 +927,16 @@ op_assign
 (brace
 id|SONYPI_DEVICE_MODEL_TYPE1
 comma
+l_int|0
+comma
+l_int|0xffffffff
+comma
+id|sonypi_releaseev
+)brace
+comma
+(brace
+id|SONYPI_DEVICE_MODEL_TYPE1
+comma
 l_int|0x70
 comma
 id|SONYPI_MEYE_MASK
@@ -981,6 +1002,16 @@ comma
 id|SONYPI_PKEY_MASK
 comma
 id|sonypi_pkeyev
+)brace
+comma
+(brace
+id|SONYPI_DEVICE_MODEL_TYPE2
+comma
+l_int|0
+comma
+l_int|0xffffffff
+comma
+id|sonypi_releaseev
 )brace
 comma
 (brace

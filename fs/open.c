@@ -52,8 +52,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sb-&gt;s_op
-op_logical_and
 id|sb-&gt;s_op-&gt;statfs
 )paren
 (brace

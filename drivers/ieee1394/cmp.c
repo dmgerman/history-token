@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;highlevel.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
@@ -520,6 +521,14 @@ r_sizeof
 op_star
 id|ch
 comma
+id|in_interrupt
+c_func
+(paren
+)paren
+ques
+c_cond
+id|SLAB_ATOMIC
+suffix:colon
 id|SLAB_KERNEL
 )paren
 suffix:semicolon

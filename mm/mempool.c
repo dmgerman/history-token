@@ -798,9 +798,12 @@ multiline_comment|/* We must not sleep in the GFP_ATOMIC case */
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|gfp_mask
-op_eq
-id|gfp_nowait
+op_amp
+id|__GFP_WAIT
+)paren
 )paren
 r_return
 l_int|NULL

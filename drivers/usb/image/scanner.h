@@ -1334,7 +1334,7 @@ mdefine_line|#define IS_EP_BULK_OUT(ep) (IS_EP_BULK(ep) &amp;&amp; ((ep)-&gt;bEn
 DECL|macro|IS_EP_INTR
 mdefine_line|#define IS_EP_INTR(ep) ((ep)-&gt;bmAttributes == USB_ENDPOINT_XFER_INT ? 1 : 0)
 DECL|macro|USB_SCN_MINOR
-mdefine_line|#define USB_SCN_MINOR(X) minor((X)-&gt;i_rdev) - SCN_BASE_MNR
+mdefine_line|#define USB_SCN_MINOR(X) minor((X)-&gt;i_rdev)
 macro_line|#ifdef DEBUG
 DECL|macro|SCN_DEBUG
 mdefine_line|#define SCN_DEBUG(X) X
@@ -1475,22 +1475,6 @@ suffix:semicolon
 r_extern
 id|devfs_handle_t
 id|usb_devfs_handle
-suffix:semicolon
-DECL|variable|p_scn_table
-r_static
-r_struct
-id|scn_usb_data
-op_star
-id|p_scn_table
-(braket
-id|SCN_MAX_MNR
-)braket
-op_assign
-(brace
-l_int|NULL
-comma
-multiline_comment|/* ... */
-)brace
 suffix:semicolon
 DECL|variable|scanner_driver
 r_static

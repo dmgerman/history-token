@@ -74,10 +74,9 @@ DECL|macro|__initcall
 mdefine_line|#define __initcall(fn) device_initcall(fn)
 DECL|macro|__exitcall
 mdefine_line|#define __exitcall(fn)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static exitcall_t __exitcall_##fn __exit_call = fn
-multiline_comment|/*&n; * Used for kernel command line parameter setup&n; */
-DECL|struct|kernel_param
+DECL|struct|obs_kernel_param
 r_struct
-id|kernel_param
+id|obs_kernel_param
 (brace
 DECL|member|str
 r_const
@@ -98,15 +97,9 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-r_struct
-id|kernel_param
-id|__setup_start
-comma
-id|__setup_end
-suffix:semicolon
+multiline_comment|/* OBSOLETE: see moduleparam.h for the right way. */
 DECL|macro|__setup
-mdefine_line|#define __setup(str, fn)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static char __setup_str_##fn[] __initdata = str;&t;&t;&bslash;&n;&t;static struct kernel_param __setup_##fn&t;&t;&t;&t;&bslash;&n;&t;&t; __attribute__((unused,__section__ (&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;= { __setup_str_##fn, fn }
+mdefine_line|#define __setup(str, fn)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static char __setup_str_##fn[] __initdata = str;&t;&t;&bslash;&n;&t;static struct obs_kernel_param __setup_##fn&t;&t;&t;&bslash;&n;&t;&t; __attribute__((unused,__section__ (&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;= { __setup_str_##fn, fn }
 macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/**&n; * module_init() - driver initialization entry point&n; * @x: function to be run at kernel boot time or module insertion&n; * &n; * module_init() will either be called during do_initcalls (if&n; * builtin) or at module insertion time (if a module).  There can only&n; * be one per module. */
 DECL|macro|module_init
@@ -143,6 +136,18 @@ macro_line|#endif
 multiline_comment|/* Data marked not to be saved by software_suspend() */
 DECL|macro|__nosavedata
 mdefine_line|#define __nosavedata __attribute__ ((__section__ (&quot;.data.nosave&quot;)))
+multiline_comment|/* This means &quot;can be init if no module support, otherwise module load&n;   may call it.&quot; */
+macro_line|#ifdef CONFIG_MODULES
+DECL|macro|__init_or_module
+mdefine_line|#define __init_or_module
+DECL|macro|__initdata_or_module
+mdefine_line|#define __initdata_or_module
+macro_line|#else
+DECL|macro|__init_or_module
+mdefine_line|#define __init_or_module __init
+DECL|macro|__initdata_or_module
+mdefine_line|#define __initdata_or_module __initdata
+macro_line|#endif /*CONFIG_MODULES*/
 macro_line|#ifdef CONFIG_HOTPLUG
 DECL|macro|__devinit
 mdefine_line|#define __devinit

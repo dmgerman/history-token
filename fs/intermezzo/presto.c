@@ -13,8 +13,8 @@ macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 DECL|function|presto_walk
 r_int
 id|presto_walk
@@ -2337,19 +2337,21 @@ op_star
 id|inode
 )paren
 (brace
-id|presto_version-&gt;pv_mtime
+id|presto_version-&gt;pv_mtime_sec
 op_assign
-(paren
-id|__u64
-)paren
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 suffix:semicolon
-id|presto_version-&gt;pv_ctime
+id|presto_version-&gt;pv_mtime_nsec
 op_assign
-(paren
-id|__u64
-)paren
-id|inode-&gt;i_ctime
+id|inode-&gt;i_mtime.tv_nsec
+suffix:semicolon
+id|presto_version-&gt;pv_ctime_sec
+op_assign
+id|inode-&gt;i_ctime.tv_sec
+suffix:semicolon
+id|presto_version-&gt;pv_ctime_nsec
+op_assign
+id|inode-&gt;i_ctime.tv_nsec
 suffix:semicolon
 id|presto_version-&gt;pv_size
 op_assign

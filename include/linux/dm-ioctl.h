@@ -2,8 +2,15 @@ multiline_comment|/*&n; * Copyright (C) 2001 Sistina Software (UK) Limited.&n; *
 macro_line|#ifndef _LINUX_DM_IOCTL_H
 DECL|macro|_LINUX_DM_IOCTL_H
 mdefine_line|#define _LINUX_DM_IOCTL_H
-macro_line|#include &lt;linux/device-mapper.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+DECL|macro|DM_DIR
+mdefine_line|#define DM_DIR &quot;mapper&quot;&t;/* Slashes not supported */
+DECL|macro|DM_MAX_TYPE_NAME
+mdefine_line|#define DM_MAX_TYPE_NAME 16
+DECL|macro|DM_NAME_LEN
+mdefine_line|#define DM_NAME_LEN 128
+DECL|macro|DM_UUID_LEN
+mdefine_line|#define DM_UUID_LEN 129
 multiline_comment|/*&n; * Implements a traditional ioctl interface to the device mapper.&n; */
 multiline_comment|/*&n; * All ioctl arguments consist of a single chunk of memory, with&n; * this structure at the start.  If a uuid is specified any&n; * lookup (eg. for a DM_INFO) will be done on that, *not* the&n; * name.&n; */
 DECL|struct|dm_ioctl

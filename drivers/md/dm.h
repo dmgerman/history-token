@@ -22,6 +22,8 @@ macro_line|#else
 DECL|macro|SECTOR_FORMAT
 mdefine_line|#define SECTOR_FORMAT &quot;%lu&quot;
 macro_line|#endif
+DECL|macro|SECTOR_SHIFT
+mdefine_line|#define SECTOR_SHIFT 9
 r_extern
 r_struct
 id|block_device_operations

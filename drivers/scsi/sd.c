@@ -4798,7 +4798,7 @@ r_if
 c_cond
 (paren
 id|index
-OG
+op_ge
 l_int|26
 )paren
 (brace

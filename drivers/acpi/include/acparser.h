@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: acparser.h - AML Parser subcomponent prototypes and defines&n; *       $Revision: 63 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: acparser.h - AML Parser subcomponent prototypes and defines&n; *       $Revision: 64 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACPARSER_H__
 DECL|macro|__ACPARSER_H__
@@ -73,7 +73,7 @@ op_star
 id|parser_state
 )paren
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_ps_get_next_namestring
 (paren
@@ -180,7 +180,7 @@ id|u16
 id|opcode
 )paren
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_ps_get_opcode_name
 (paren
@@ -389,7 +389,7 @@ id|acpi_parse_object
 op_star
 id|scope
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|path
 comma
@@ -578,7 +578,7 @@ multiline_comment|/* psdump - display parser tree */
 id|u32
 id|acpi_ps_sprint_path
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|buffer_start
 comma
@@ -593,7 +593,7 @@ suffix:semicolon
 id|u32
 id|acpi_ps_sprint_op
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|buffer_start
 comma

@@ -4156,10 +4156,19 @@ id|miscdevice
 id|agp_miscdev
 op_assign
 (brace
+dot
+id|minor
+op_assign
 id|AGPGART_MINOR
 comma
+dot
+id|name
+op_assign
 l_string|&quot;agpgart&quot;
 comma
+dot
+id|fops
+op_assign
 op_amp
 id|agp_fops
 )brace
@@ -4225,7 +4234,6 @@ suffix:semicolon
 )brace
 DECL|function|agp_frontend_cleanup
 r_void
-id|__exit
 id|agp_frontend_cleanup
 c_func
 (paren

@@ -685,6 +685,16 @@ r_if
 c_cond
 (paren
 id|block
+OL
+id|le32_to_cpu
+c_func
+(paren
+id|es-&gt;s_first_data_block
+)paren
+op_logical_or
+id|block
+op_plus
+id|count
 template_param
 id|le32_to_cpu
 c_func

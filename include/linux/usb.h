@@ -177,6 +177,11 @@ op_star
 id|driver
 suffix:semicolon
 multiline_comment|/* driver */
+DECL|member|kdev
+id|kdev_t
+id|kdev
+suffix:semicolon
+multiline_comment|/* node this interface is bound to */
 DECL|member|dev
 r_struct
 id|device
@@ -675,6 +680,21 @@ r_struct
 id|usb_device_id
 op_star
 id|id
+)paren
+suffix:semicolon
+r_struct
+id|usb_interface
+op_star
+id|usb_find_interface
+c_func
+(paren
+r_struct
+id|usb_driver
+op_star
+id|drv
+comma
+id|kdev_t
+id|kdev
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * usb_make_path - returns stable device path in the usb tree&n; * @dev: the device whose path is being constructed&n; * @buf: where to put the string&n; * @size: how big is &quot;buf&quot;?&n; *&n; * Returns length of the string (&gt; 0) or negative if size was too small.&n; *&n; * This identifier is intended to be &quot;stable&quot;, reflecting physical paths in&n; * hardware such as physical bus addresses for host controllers or ports on&n; * USB hubs.  That makes it stay the same until systems are physically&n; * reconfigured, by re-cabling a tree of USB devices or by moving USB host&n; * controllers.  Adding and removing devices, including virtual root hubs&n; * in host controller driver modules, does not change these path identifers;&n; * neither does rebooting or re-enumerating.  These are more useful identifiers&n; * than changeable (&quot;unstable&quot;) ones like bus numbers or device addresses.&n; *&n; * With a partial exception for devices connected to USB 2.0 root hubs, these&n; * identifiers are also predictable.  So long as the device tree isn&squot;t changed,&n; * plugging any USB device into a given hub port always gives it the same path.&n; * Because of the use of &quot;companion&quot; controllers, devices connected to ports on&n; * USB 2.0 root hubs (EHCI host controllers) will get one path ID if they are&n; * high speed, and a different one if they are full or low speed.&n; */

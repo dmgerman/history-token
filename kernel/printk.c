@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/kernel/printk.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; * Modified to make sys_syslog() more flexible: added commands to&n; * return the last 4k of kernel messages, regardless of whether&n; * they&squot;ve been read or not.  Added option to suppress kernel printk&squot;s&n; * to the console.  Added hook for sending the console messages&n; * elsewhere, in preparation for a serial line console (someday).&n; * Ted Ts&squot;o, 2/11/93.&n; * Modified for sysctl support, 1/8/97, Chris Horn.&n; * Fixed SMP synchronization, 08/08/99, Manfred Spraul &n; *     manfreds@colorfullife.com&n; * Rewrote bits to get rid of console_lock&n; *&t;01Mar01 Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
@@ -8,7 +9,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;&t;&t;/* For in_interrupt() */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#if defined(CONFIG_X86_NUMAQ) || defined(CONFIG_IA64)
@@ -45,30 +45,27 @@ c_func
 id|log_wait
 )paren
 suffix:semicolon
-multiline_comment|/* Keep together for sysctl support */
-DECL|variable|console_loglevel
+DECL|variable|console_printk
 r_int
-id|console_loglevel
+id|console_printk
+(braket
+l_int|4
+)braket
 op_assign
+(brace
 id|DEFAULT_CONSOLE_LOGLEVEL
-suffix:semicolon
-DECL|variable|default_message_loglevel
-r_int
-id|default_message_loglevel
-op_assign
+comma
+multiline_comment|/* console_loglevel */
 id|DEFAULT_MESSAGE_LOGLEVEL
-suffix:semicolon
-DECL|variable|minimum_console_loglevel
-r_int
-id|minimum_console_loglevel
-op_assign
+comma
+multiline_comment|/* default_message_loglevel */
 id|MINIMUM_CONSOLE_LOGLEVEL
-suffix:semicolon
-DECL|variable|default_console_loglevel
-r_int
-id|default_console_loglevel
-op_assign
+comma
+multiline_comment|/* minimum_console_loglevel */
 id|DEFAULT_CONSOLE_LOGLEVEL
+comma
+multiline_comment|/* default_console_loglevel */
+)brace
 suffix:semicolon
 DECL|variable|oops_in_progress
 r_int
@@ -497,7 +494,7 @@ comma
 id|console_setup
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Commands to do_syslog:&n; *&n; * &t;0 -- Close the log.  Currently a NOP.&n; * &t;1 -- Open the log. Currently a NOP.&n; * &t;2 -- Read from the log.&n; * &t;3 -- Read all messages remaining in the ring buffer.&n; * &t;4 -- Read and clear all messages remaining in the ring buffer&n; * &t;5 -- Clear ring buffer.&n; * &t;6 -- Disable printk&squot;s to console&n; * &t;7 -- Enable printk&squot;s to console&n; *&t;8 -- Set level of messages printed to console&n; *&t;9 -- Return number of unread characters in the log buffer&n; *     10 -- Printk from userspace.  Includes loglevel.  Returns number of&n; *           chars printed.&n; */
+multiline_comment|/*&n; * Commands to do_syslog:&n; *&n; * &t;0 -- Close the log.  Currently a NOP.&n; * &t;1 -- Open the log. Currently a NOP.&n; * &t;2 -- Read from the log.&n; * &t;3 -- Read all messages remaining in the ring buffer.&n; * &t;4 -- Read and clear all messages remaining in the ring buffer&n; * &t;5 -- Clear ring buffer.&n; * &t;6 -- Disable printk&squot;s to console&n; * &t;7 -- Enable printk&squot;s to console&n; *&t;8 -- Set level of messages printed to console&n; *&t;9 -- Return number of unread characters in the log buffer&n; */
 DECL|function|do_syslog
 r_int
 id|do_syslog
@@ -531,12 +528,6 @@ l_int|0
 suffix:semicolon
 r_char
 id|c
-suffix:semicolon
-r_char
-op_star
-id|lbuf
-op_assign
-l_int|NULL
 suffix:semicolon
 r_int
 id|error
@@ -1124,74 +1115,6 @@ id|logbuf_lock
 suffix:semicolon
 r_break
 suffix:semicolon
-r_case
-l_int|10
-suffix:colon
-id|lbuf
-op_assign
-id|kmalloc
-c_func
-(paren
-id|len
-op_plus
-l_int|1
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-id|error
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lbuf
-op_eq
-l_int|NULL
-)paren
-r_break
-suffix:semicolon
-id|error
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_from_user
-c_func
-(paren
-id|lbuf
-comma
-id|buf
-comma
-id|len
-)paren
-)paren
-r_break
-suffix:semicolon
-id|lbuf
-(braket
-id|len
-)braket
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-id|error
-op_assign
-id|printk
-c_func
-(paren
-l_string|&quot;%s&quot;
-comma
-id|lbuf
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 r_default
 suffix:colon
 id|error
@@ -1204,12 +1127,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|kfree
-c_func
-(paren
-id|lbuf
-)paren
-suffix:semicolon
 r_return
 id|error
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 182 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 183 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACLOCAL_H__
 DECL|macro|__ACLOCAL_H__
@@ -56,7 +56,7 @@ macro_line|#ifdef DEFINE_ACPI_GLOBALS
 multiline_comment|/* Names for the mutexes used in the subsystem */
 DECL|variable|acpi_gbl_mutex_names
 r_static
-id|NATIVE_CHAR
+r_char
 op_star
 id|acpi_gbl_mutex_names
 (braket
@@ -343,7 +343,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|search_for
-id|NATIVE_CHAR
+r_char
 op_star
 id|search_for
 suffix:semicolon
@@ -378,7 +378,7 @@ r_typedef
 r_struct
 (brace
 DECL|member|name
-id|NATIVE_CHAR
+r_char
 op_star
 id|name
 suffix:semicolon
@@ -387,7 +387,7 @@ id|u8
 id|type
 suffix:semicolon
 DECL|member|val
-id|NATIVE_CHAR
+r_char
 op_star
 id|val
 suffix:semicolon
@@ -407,17 +407,17 @@ r_struct
 id|acpi_namestring_info
 (brace
 DECL|member|external_name
-id|NATIVE_CHAR
+r_char
 op_star
 id|external_name
 suffix:semicolon
 DECL|member|next_external_char
-id|NATIVE_CHAR
+r_char
 op_star
 id|next_external_char
 suffix:semicolon
 DECL|member|internal_name
-id|NATIVE_CHAR
+r_char
 op_star
 id|internal_name
 suffix:semicolon
@@ -1033,7 +1033,7 @@ id|acpi_opcode_info
 (brace
 macro_line|#if defined(ACPI_DISASSEMBLER) || defined(ACPI_DEBUG_OUTPUT)
 DECL|member|name
-id|NATIVE_CHAR
+r_char
 op_star
 id|name
 suffix:semicolon
@@ -1109,7 +1109,7 @@ id|size
 suffix:semicolon
 multiline_comment|/* bytelist or field size */
 DECL|member|string
-id|NATIVE_CHAR
+r_char
 op_star
 id|string
 suffix:semicolon
@@ -1121,7 +1121,7 @@ id|buffer
 suffix:semicolon
 multiline_comment|/* buffer or string */
 DECL|member|name
-id|NATIVE_CHAR
+r_char
 op_star
 id|name
 suffix:semicolon
@@ -1138,7 +1138,7 @@ DECL|typedef|acpi_parse_value
 id|acpi_parse_value
 suffix:semicolon
 DECL|macro|ACPI_PARSE_COMMON
-mdefine_line|#define ACPI_PARSE_COMMON &bslash;&n;&t;u8                      data_type;      /* To differentiate various internal objs */&bslash;&n;&t;u8                      flags;          /* Type of Op */&bslash;&n;&t;u16                     aml_opcode;     /* AML opcode */&bslash;&n;&t;u32                     aml_offset;     /* offset of declaration in AML */&bslash;&n;&t;union acpi_parse_obj    *parent;        /* parent op */&bslash;&n;&t;union acpi_parse_obj    *next;          /* next op */&bslash;&n;&t;ACPI_DISASM_ONLY_MEMBERS (&bslash;&n;&t;u8                      disasm_flags;   /* Used during AML disassembly */&bslash;&n;&t;u8                      disasm_opcode;  /* Subtype used for disassembly */&bslash;&n;&t;NATIVE_CHAR             aml_op_name[16]) /* op name (debug only) */&bslash;&n;&t;&t;&t;  /* NON-DEBUG members below: */&bslash;&n;&t;acpi_namespace_node     *node;          /* for use by interpreter */&bslash;&n;&t;acpi_parse_value        value;          /* Value or args associated with the opcode */&bslash;&n;
+mdefine_line|#define ACPI_PARSE_COMMON &bslash;&n;&t;u8                      data_type;      /* To differentiate various internal objs */&bslash;&n;&t;u8                      flags;          /* Type of Op */&bslash;&n;&t;u16                     aml_opcode;     /* AML opcode */&bslash;&n;&t;u32                     aml_offset;     /* offset of declaration in AML */&bslash;&n;&t;union acpi_parse_obj    *parent;        /* parent op */&bslash;&n;&t;union acpi_parse_obj    *next;          /* next op */&bslash;&n;&t;ACPI_DISASM_ONLY_MEMBERS (&bslash;&n;&t;u8                      disasm_flags;   /* Used during AML disassembly */&bslash;&n;&t;u8                      disasm_opcode;  /* Subtype used for disassembly */&bslash;&n;&t;char                    aml_op_name[16]) /* op name (debug only) */&bslash;&n;&t;&t;&t;  /* NON-DEBUG members below: */&bslash;&n;&t;acpi_namespace_node     *node;          /* for use by interpreter */&bslash;&n;&t;acpi_parse_value        value;          /* Value or args associated with the opcode */&bslash;&n;
 DECL|macro|ACPI_DASM_BUFFER
 mdefine_line|#define ACPI_DASM_BUFFER        0x00
 DECL|macro|ACPI_DASM_RESOURCE
@@ -1626,12 +1626,12 @@ id|acpi_handle
 id|thread_gate
 suffix:semicolon
 DECL|member|name
-id|NATIVE_CHAR
+r_char
 op_star
 id|name
 suffix:semicolon
 DECL|member|args
-id|NATIVE_CHAR
+r_char
 op_star
 op_star
 id|args
@@ -1645,7 +1645,7 @@ id|u32
 id|num_loops
 suffix:semicolon
 DECL|member|pathname
-id|NATIVE_CHAR
+r_char
 id|pathname
 (braket
 l_int|128
@@ -1670,12 +1670,12 @@ id|u32
 id|component_id
 suffix:semicolon
 DECL|member|proc_name
-id|NATIVE_CHAR
+r_char
 op_star
 id|proc_name
 suffix:semicolon
 DECL|member|module_name
-id|NATIVE_CHAR
+r_char
 op_star
 id|module_name
 suffix:semicolon
@@ -1691,7 +1691,7 @@ mdefine_line|#define ACPI_MEM_CALLOC                      1
 DECL|macro|ACPI_MAX_MODULE_NAME
 mdefine_line|#define ACPI_MAX_MODULE_NAME                 16
 DECL|macro|ACPI_COMMON_DEBUG_MEM_HEADER
-mdefine_line|#define ACPI_COMMON_DEBUG_MEM_HEADER &bslash;&n;&t;struct acpi_debug_mem_block *previous; &bslash;&n;&t;struct acpi_debug_mem_block *next; &bslash;&n;&t;u32                         size; &bslash;&n;&t;u32                         component; &bslash;&n;&t;u32                         line; &bslash;&n;&t;NATIVE_CHAR                 module[ACPI_MAX_MODULE_NAME]; &bslash;&n;&t;u8                          alloc_type;
+mdefine_line|#define ACPI_COMMON_DEBUG_MEM_HEADER &bslash;&n;&t;struct acpi_debug_mem_block *previous; &bslash;&n;&t;struct acpi_debug_mem_block *next; &bslash;&n;&t;u32                         size; &bslash;&n;&t;u32                         component; &bslash;&n;&t;u32                         line; &bslash;&n;&t;char                        module[ACPI_MAX_MODULE_NAME]; &bslash;&n;&t;u8                          alloc_type;
 r_typedef
 r_struct
 (brace

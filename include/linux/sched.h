@@ -1237,12 +1237,10 @@ DECL|macro|PF_IOTHREAD
 mdefine_line|#define PF_IOTHREAD&t;0x00010000&t;/* this thread is needed for doing I/O to swap */
 DECL|macro|PF_FROZEN
 mdefine_line|#define PF_FROZEN&t;0x00020000&t;/* frozen for system suspend */
-DECL|macro|PF_SYNC
-mdefine_line|#define PF_SYNC&t;&t;0x00040000&t;/* performing fsync(), etc */
 DECL|macro|PF_FSTRANS
-mdefine_line|#define PF_FSTRANS&t;0x00080000&t;/* inside a filesystem transaction */
+mdefine_line|#define PF_FSTRANS&t;0x00040000&t;/* inside a filesystem transaction */
 DECL|macro|PF_KSWAPD
-mdefine_line|#define PF_KSWAPD&t;0x00100000&t;/* I am kswapd */
+mdefine_line|#define PF_KSWAPD&t;0x00080000&t;/* I am kswapd */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001

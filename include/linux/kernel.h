@@ -45,6 +45,20 @@ DECL|macro|KERN_INFO
 mdefine_line|#define&t;KERN_INFO&t;&quot;&lt;6&gt;&quot;&t;/* informational&t;&t;&t;*/
 DECL|macro|KERN_DEBUG
 mdefine_line|#define&t;KERN_DEBUG&t;&quot;&lt;7&gt;&quot;&t;/* debug-level messages&t;&t;&t;*/
+r_extern
+r_int
+id|console_printk
+(braket
+)braket
+suffix:semicolon
+DECL|macro|console_loglevel
+mdefine_line|#define console_loglevel (console_printk[0])
+DECL|macro|default_message_loglevel
+mdefine_line|#define default_message_loglevel (console_printk[1])
+DECL|macro|minimum_console_loglevel
+mdefine_line|#define minimum_console_loglevel (console_printk[2])
+DECL|macro|default_console_loglevel
+mdefine_line|#define default_console_loglevel (console_printk[3])
 r_struct
 id|completion
 suffix:semicolon
@@ -378,6 +392,7 @@ op_star
 id|get_options
 c_func
 (paren
+r_const
 r_char
 op_star
 id|str
@@ -459,10 +474,6 @@ l_int|2
 )paren
 )paren
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|console_loglevel
 suffix:semicolon
 DECL|function|console_silent
 r_static

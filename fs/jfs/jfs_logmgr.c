@@ -354,6 +354,16 @@ id|uint
 id|submitted
 suffix:semicolon
 multiline_comment|/* # of pages submitted */
+DECL|member|full_page
+id|uint
+id|full_page
+suffix:semicolon
+multiline_comment|/* # of full pages submitted */
+DECL|member|partial_page
+id|uint
+id|partial_page
+suffix:semicolon
+multiline_comment|/* # of partial pages submitted */
 DECL|variable|lmStat
 )brace
 id|lmStat
@@ -1608,7 +1618,15 @@ id|tblk-&gt;flag
 op_or_assign
 id|tblkGC_EOP
 suffix:semicolon
-multiline_comment|/* if page is not already on write queue,&n;&t;&t; * just enqueue (no lbmWRITE to prevent redrive)&n;&t;&t; * buffer to wqueue to ensure correct serial order&n;&t;&t; * of the pages since log pages will be added&n;&t;&t; * continuously (tblk bound with the page hasn&squot;t&n;&t;&t; * got around to init write of the page, either&n;&t;&t; * preempted or the page got filled by its COMMIT&n;&t;&t; * record);&n;&t;&t; * pages with COMMIT are paged out explicitly by&n;&t;&t; * tblk in lmGroupCommit();&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|log-&gt;cflag
+op_amp
+id|logGC_PAGEOUT
+)paren
+(brace
+multiline_comment|/* if page is not already on write queue,&n;&t;&t;&t; * just enqueue (no lbmWRITE to prevent redrive)&n;&t;&t;&t; * buffer to wqueue to ensure correct serial order&n;&t;&t;&t; * of the pages since log pages will be added&n;&t;&t;&t; * continuously&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1616,9 +1634,6 @@ id|bp-&gt;l_wqnext
 op_eq
 l_int|NULL
 )paren
-(brace
-multiline_comment|/* bp-&gt;l_ceor = bp-&gt;l_eor; */
-multiline_comment|/* lp-&gt;h.eor = lp-&gt;t.eor = bp-&gt;l_ceor; */
 id|lbmWrite
 c_func
 (paren
@@ -1627,6 +1642,22 @@ comma
 id|bp
 comma
 l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t; * No current GC leader, initiate group commit&n;&t;&t;&t; */
+id|log-&gt;cflag
+op_or_assign
+id|logGC_PAGEOUT
+suffix:semicolon
+id|lmGCwrite
+c_func
+(paren
+id|log
 comma
 l_int|0
 )paren
@@ -1835,6 +1866,29 @@ id|log-&gt;gcrtc
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tblk-&gt;xflag
+op_amp
+id|COMMIT_LAZY
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Lazy transactions can leave now&n;&t;&t; */
+id|tblk-&gt;flag
+op_or_assign
+id|tblkGC_LAZY
+suffix:semicolon
+id|LOGGC_UNLOCK
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * group commit pageout in progress&n;&t; */
 r_if
 c_cond
@@ -1899,28 +1953,6 @@ multiline_comment|/* upcount transaction waiting for completion&n;&t; */
 id|log-&gt;gcrtc
 op_increment
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tblk-&gt;xflag
-op_amp
-id|COMMIT_LAZY
-)paren
-(brace
-id|tblk-&gt;flag
-op_or_assign
-id|tblkGC_LAZY
-suffix:semicolon
-id|LOGGC_UNLOCK
-c_func
-(paren
-id|log
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|tblk-&gt;flag
 op_or_assign
 id|tblkGC_READY
@@ -2133,6 +2165,12 @@ comma
 id|cant_write
 )paren
 suffix:semicolon
+id|INCREMENT
+c_func
+(paren
+id|lmStat.full_page
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* page is not yet full */
 r_else
@@ -2178,6 +2216,12 @@ op_or
 id|lbmGC
 comma
 id|cant_write
+)paren
+suffix:semicolon
+id|INCREMENT
+c_func
+(paren
+id|lmStat.partial_page
 )paren
 suffix:semicolon
 )brace
@@ -2412,17 +2456,47 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* are there any transactions who have entered lnGroupCommit()&n;&t; * (whose COMMITs are after that of the last log page written.&n;&t; * They are waiting for new group commit (above at (SLEEP 1)):&n;&t; * select the latest ready transaction as new group leader and&n;&t; * wake her up to lead her group.&n;&t; */
+multiline_comment|/* are there any transactions who have entered lnGroupCommit()&n;&t; * (whose COMMITs are after that of the last log page written.&n;&t; * They are waiting for new group commit (above at (SLEEP 1))&n;&t; * or lazy transactions are on a full (queued) log page,&n;&t; * select the latest ready transaction as new group leader and&n;&t; * wake her up to lead her group.&n;&t; */
 r_if
 c_cond
+(paren
+(paren
+id|tblk
+op_assign
+id|log-&gt;cqueue.head
+)paren
+op_logical_and
 (paren
 (paren
 id|log-&gt;gcrtc
 OG
 l_int|0
 )paren
-op_logical_and
-id|log-&gt;cqueue.head
+op_logical_or
+(paren
+id|tblk-&gt;bp-&gt;l_wqnext
+op_ne
+l_int|NULL
+)paren
+op_logical_or
+id|test_bit
+c_func
+(paren
+id|log_SYNCBARRIER
+comma
+op_amp
+id|log-&gt;flag
+)paren
+op_logical_or
+id|test_bit
+c_func
+(paren
+id|log_QUIESCE
+comma
+op_amp
+id|log-&gt;flag
+)paren
+)paren
 )paren
 multiline_comment|/*&n;&t;&t; * Call lmGCwrite with new group leader&n;&t;&t; */
 id|lmGCwrite
@@ -2812,6 +2886,45 @@ id|log-&gt;syncpt
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * We may have to initiate group commit&n;&t; */
+id|LOGGC_LOCK
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|log-&gt;cqueue.head
+op_logical_and
+op_logical_neg
+(paren
+id|log-&gt;cflag
+op_amp
+id|logGC_PAGEOUT
+)paren
+)paren
+(brace
+id|log-&gt;cflag
+op_or_assign
+id|logGC_PAGEOUT
+suffix:semicolon
+id|lmGCwrite
+c_func
+(paren
+id|log
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+id|LOGGC_UNLOCK
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
 r_return
 id|lsn
 suffix:semicolon
@@ -4105,6 +4218,55 @@ id|log
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * This ensures that we will keep writing to the journal as long&n;&t; * as there are unwritten commit records&n;&t; */
+id|set_bit
+c_func
+(paren
+id|log_QUIESCE
+comma
+op_amp
+id|log-&gt;flag
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Initiate I/O on outstanding transactions&n;&t; */
+id|LOGGC_LOCK
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|log-&gt;cqueue.head
+op_logical_and
+op_logical_neg
+(paren
+id|log-&gt;cflag
+op_amp
+id|logGC_PAGEOUT
+)paren
+)paren
+(brace
+id|log-&gt;cflag
+op_or_assign
+id|logGC_PAGEOUT
+suffix:semicolon
+id|lmGCwrite
+c_func
+(paren
+id|log
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+id|LOGGC_UNLOCK
+c_func
+(paren
+id|log
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4185,6 +4347,16 @@ id|log-&gt;synclist
 )paren
 )paren
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|log_QUIESCE
+comma
+op_amp
+id|log-&gt;flag
+)paren
+suffix:semicolon
+multiline_comment|/* Probably not needed */
 )brace
 multiline_comment|/*&n; * NAME:&t;lmLogShutdown()&n; *&n; * FUNCTION:&t;log shutdown at last LogClose().&n; *&n; *&t;&t;write log syncpt record.&n; *&t;&t;update super block to set redone flag to 0.&n; *&n; * PARAMETER:&t;log&t;- log inode&n; *&n; * RETURN:&t;0&t;- success&n; *&t;&t;&t;&n; * serialization: single last close thread&n; */
 DECL|function|lmLogShutdown
@@ -6948,12 +7120,18 @@ l_string|&quot;================&bslash;n&quot;
 l_string|&quot;commits = %d&bslash;n&quot;
 l_string|&quot;writes submitted = %d&bslash;n&quot;
 l_string|&quot;writes completed = %d&bslash;n&quot;
+l_string|&quot;full pages submitted = %d&bslash;n&quot;
+l_string|&quot;partial pages submitted = %d&bslash;n&quot;
 comma
 id|lmStat.commit
 comma
 id|lmStat.submitted
 comma
 id|lmStat.pagedone
+comma
+id|lmStat.full_page
+comma
+id|lmStat.partial_page
 )paren
 suffix:semicolon
 id|begin

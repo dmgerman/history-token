@@ -400,6 +400,10 @@ id|jfs_lmstats_read
 suffix:semicolon
 r_extern
 id|read_proc_t
+id|jfs_txstats_read
+suffix:semicolon
+r_extern
+id|read_proc_t
 id|jfs_xtstat_read
 suffix:semicolon
 r_extern
@@ -438,6 +442,13 @@ macro_line|#ifdef CONFIG_JFS_STATISTICS
 l_string|&quot;lmstats&quot;
 comma
 id|jfs_lmstats_read
+comma
+)brace
+comma
+(brace
+l_string|&quot;txstats&quot;
+comma
+id|jfs_txstats_read
 comma
 )brace
 comma

@@ -16,8 +16,8 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;linux/intermezzo_fs.h&gt;
-macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
+macro_line|#include &quot;intermezzo_fs.h&quot;
+macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#ifdef CONFIG_FS_EXT_ATTR
 macro_line|# include &lt;linux/ext_attr.h&gt;
 macro_line|# if 0 /* was a broken check for Posix ACLs */
@@ -517,7 +517,11 @@ suffix:semicolon
 id|BLKDEV_FAIL
 c_func
 (paren
+id|kdev_val
+c_func
+(paren
 id|dev
+)paren
 comma
 l_int|1
 )paren
@@ -1864,7 +1868,7 @@ id|D_PIOCTL
 comma
 l_string|&quot;atime %#lx, mtime %#lx, ctime %#lx, attr_flags %#x&bslash;n&quot;
 comma
-id|iattr-&gt;ia_atime
+id|iattr-&gt;ia_atime.tv_sec
 comma
 id|iattr-&gt;ia_mtime.tv_sec
 comma

@@ -660,7 +660,6 @@ r_new
 OG
 l_int|1
 )paren
-singleline_comment|// FIXME: is this correct ?!?
 id|rwsem_downgrade_wake
 c_func
 (paren

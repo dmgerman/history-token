@@ -490,6 +490,29 @@ id|semun
 id|arg
 )paren
 suffix:semicolon
+id|asmlinkage
+r_int
+id|sys_semtimedop
+c_func
+(paren
+r_int
+id|semid
+comma
+r_struct
+id|sembuf
+op_star
+id|sops
+comma
+r_int
+id|nsops
+comma
+r_const
+r_struct
+id|timespec
+op_star
+id|timeout
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SEM_H */
 eof

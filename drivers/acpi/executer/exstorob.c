@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstorob - AML Interpreter object store support, store to object&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstorob - AML Interpreter object store support, store to object&n; *              $Revision: 49 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -29,9 +29,11 @@ id|u8
 op_star
 id|buffer
 suffix:semicolon
-id|ACPI_FUNCTION_NAME
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
 l_string|&quot;Ex_store_buffer_to_buffer&quot;
+comma
+id|source_desc
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We know that Source_desc is a buffer by now&n;&t; */
@@ -78,7 +80,7 @@ op_logical_neg
 id|target_desc-&gt;buffer.pointer
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -154,7 +156,7 @@ id|target_desc-&gt;buffer.flags
 op_assign
 id|source_desc-&gt;buffer.flags
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren
@@ -181,8 +183,11 @@ id|u8
 op_star
 id|buffer
 suffix:semicolon
-id|ACPI_FUNCTION_ENTRY
+id|ACPI_FUNCTION_TRACE_PTR
 (paren
+l_string|&quot;Ex_store_string_to_string&quot;
+comma
+id|source_desc
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We know that Source_desc is a string by now.&n;&t; */
@@ -287,7 +292,7 @@ op_logical_neg
 id|target_desc-&gt;string.pointer
 )paren
 (brace
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
@@ -313,7 +318,7 @@ id|target_desc-&gt;string.length
 op_assign
 id|length
 suffix:semicolon
-r_return
+id|return_ACPI_STATUS
 (paren
 id|AE_OK
 )paren

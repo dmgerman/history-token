@@ -897,16 +897,6 @@ id|addr
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|chsc
-c_func
-(paren
-r_void
-op_star
-id|data
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|wait_cons_dev
 c_func
