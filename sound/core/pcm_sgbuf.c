@@ -453,6 +453,10 @@ c_cond
 (paren
 id|idx
 op_ge
+(paren
+r_int
+r_int
+)paren
 id|sgbuf-&gt;pages
 )paren
 r_return

@@ -6509,8 +6509,10 @@ op_star
 id|kctl
 suffix:semicolon
 r_int
+r_int
 id|idx
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|snd_assert
@@ -8590,8 +8592,10 @@ op_star
 id|dir
 suffix:semicolon
 r_int
+r_int
 id|idx
-comma
+suffix:semicolon
+r_int
 id|err
 suffix:semicolon
 id|mpu-&gt;private_data

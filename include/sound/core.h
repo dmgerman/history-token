@@ -1576,12 +1576,16 @@ id|dma
 suffix:semicolon
 r_int
 r_int
-id|snd_dma_residue
+id|snd_dma_pointer
 c_func
 (paren
 r_int
 r_int
 id|dma
+comma
+r_int
+r_int
+id|size
 )paren
 suffix:semicolon
 multiline_comment|/* misc.c */

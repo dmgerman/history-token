@@ -422,10 +422,12 @@ id|snd_ak4524
 (brace
 DECL|member|num_adcs
 r_int
+r_int
 id|num_adcs
 suffix:semicolon
 multiline_comment|/* AK4524 or AK4528 ADCs */
 DECL|member|num_dacs
+r_int
 r_int
 id|num_dacs
 suffix:semicolon
@@ -917,6 +919,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Delta Omni I/O */
 DECL|member|num_total_dacs
+r_int
 r_int
 id|num_total_dacs
 suffix:semicolon

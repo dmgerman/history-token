@@ -686,6 +686,9 @@ id|r.data
 l_int|2
 )braket
 OG
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|page_data

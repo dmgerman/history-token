@@ -8662,6 +8662,7 @@ id|u32
 id|ulCLK
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_if
@@ -8852,6 +8853,7 @@ id|card
 op_assign
 id|chip-&gt;card
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon

@@ -69,6 +69,7 @@ id|overlay_begin_address
 )paren
 (brace
 r_int
+r_int
 id|i
 op_assign
 l_int|0
@@ -2736,6 +2737,7 @@ r_return
 suffix:semicolon
 multiline_comment|/*dsp_spos_instance_t * ins = chip-&gt;dsp_spos_instance; */
 r_int
+r_int
 id|i
 comma
 id|col
@@ -2857,6 +2859,10 @@ l_string|&quot;%04X &quot;
 comma
 id|i
 op_div
+(paren
+r_int
+r_int
+)paren
 r_sizeof
 (paren
 id|u32

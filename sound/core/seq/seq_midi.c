@@ -1267,7 +1267,9 @@ r_int
 id|newclient
 op_assign
 l_int|0
-comma
+suffix:semicolon
+r_int
+r_int
 id|p
 comma
 id|ports

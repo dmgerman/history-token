@@ -316,7 +316,7 @@ r_int
 r_char
 id|secondary_addr
 suffix:semicolon
-multiline_comment|/* addres of the secondary codec */
+multiline_comment|/* address of the secondary codec */
 DECL|member|ply_ctrl
 r_int
 r_int
@@ -1131,6 +1131,7 @@ r_int
 id|snd_fm801_rate_bits
 c_func
 (paren
+r_int
 r_int
 id|rate
 )paren
@@ -4276,9 +4277,11 @@ id|ac97_t
 id|ac97
 suffix:semicolon
 r_int
-id|err
-comma
+r_int
 id|i
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 id|memset
 c_func

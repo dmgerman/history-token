@@ -37,6 +37,7 @@ id|lock
 suffix:semicolon
 DECL|member|voices
 r_int
+r_int
 id|voices
 suffix:semicolon
 DECL|member|pvoices
@@ -946,6 +947,7 @@ id|voice_ctrl
 comma
 id|ramp_ctrl
 suffix:semicolon
+r_int
 r_int
 id|idx
 suffix:semicolon
@@ -3602,12 +3604,12 @@ suffix:semicolon
 r_int
 id|pos
 op_assign
-id|gus-&gt;c_period_size
-op_minus
-id|snd_dma_residue
+id|snd_dma_pointer
 c_func
 (paren
 id|gus-&gt;gf1.dma2
+comma
+id|gus-&gt;c_period_size
 )paren
 suffix:semicolon
 id|pos
@@ -4471,7 +4473,9 @@ id|flags
 suffix:semicolon
 r_int
 id|change
-comma
+suffix:semicolon
+r_int
+r_int
 id|idx
 suffix:semicolon
 r_int

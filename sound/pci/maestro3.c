@@ -3699,6 +3699,7 @@ id|subs
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 multiline_comment|/*&n;&t; * some per client initializers&n;&t; */
@@ -3793,19 +3794,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-r_sizeof
-(paren
-id|pv
-)paren
-op_div
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|pv
-(braket
-l_int|0
-)braket
-)paren
 )paren
 suffix:semicolon
 id|i
@@ -4067,6 +4059,7 @@ id|subs
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 multiline_comment|/*&n;&t; * some per client initializers&n;&t; */
@@ -4121,19 +4114,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-r_sizeof
-(paren
-id|rv
-)paren
-op_div
-r_sizeof
+id|ARRAY_SIZE
+c_func
 (paren
 id|rv
-(braket
-l_int|0
-)braket
-)paren
 )paren
 suffix:semicolon
 id|i
@@ -9484,6 +9468,7 @@ op_star
 id|chip
 )paren
 (brace
+r_int
 r_int
 id|i
 suffix:semicolon

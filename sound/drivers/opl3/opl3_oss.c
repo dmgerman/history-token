@@ -398,6 +398,8 @@ id|SNDRV_SEQ_PORT_TYPE_MIDI_GM
 op_or
 id|SNDRV_SEQ_PORT_TYPE_SYNTH
 comma
+id|voices
+comma
 id|name
 )paren
 suffix:semicolon
@@ -891,6 +893,9 @@ c_cond
 (paren
 id|count
 OL
+(paren
+r_int
+)paren
 r_sizeof
 (paren
 id|sbi
