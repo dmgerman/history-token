@@ -38,6 +38,7 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 DECL|variable|linvfs_qops
 id|STATIC
 r_struct
@@ -1344,6 +1345,21 @@ comma
 id|error
 )paren
 suffix:semicolon
+id|vfsp-&gt;vfs_sync_seq
+op_increment
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|wake_up
+c_func
+(paren
+op_amp
+id|vfsp-&gt;vfs_wait_single_sync_task
+)paren
+suffix:semicolon
 )brace
 id|vfsp-&gt;vfs_sync_task
 op_assign
@@ -1672,6 +1688,40 @@ id|sb-&gt;s_dirt
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|laptop_mode
+)paren
+)paren
+(brace
+r_int
+id|prev_sync_seq
+op_assign
+id|vfsp-&gt;vfs_sync_seq
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * The disk must be active because we&squot;re syncing.&n;&t;&t; * We schedule syncd now (now that the disk is&n;&t;&t; * active) instead of later (when it might not be).&n;&t;&t; */
+id|wake_up_process
+c_func
+(paren
+id|vfsp-&gt;vfs_sync_task
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We have to wait for the sync iteration to complete.&n;&t;&t; * If we don&squot;t, the disk activity caused by the sync&n;&t;&t; * will come after the sync is completed, and that&n;&t;&t; * triggers another sync from laptop mode.&n;&t;&t; */
+id|wait_event
+c_func
+(paren
+id|vfsp-&gt;vfs_wait_single_sync_task
+comma
+id|vfsp-&gt;vfs_sync_seq
+op_ne
+id|prev_sync_seq
+)paren
+suffix:semicolon
+)brace
 r_return
 op_minus
 id|error
