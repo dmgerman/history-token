@@ -88,6 +88,13 @@ DECL|macro|SUN4C_PAGE_READONLY
 mdefine_line|#define SUN4C_PAGE_READONLY&t;__pgprot(_SUN4C_PAGE_PRESENT|_SUN4C_READABLE)
 DECL|macro|SUN4C_PAGE_KERNEL
 mdefine_line|#define SUN4C_PAGE_KERNEL&t;__pgprot(_SUN4C_READABLE|_SUN4C_WRITEABLE|&bslash;&n;&t;&t;&t;&t;&t; _SUN4C_PAGE_DIRTY|_SUN4C_PAGE_PRIV)
+multiline_comment|/* SUN4C swap entry encoding&n; *&n; * We use 5 bits for the type and 19 for the offset.  This gives us&n; * 32 swapfiles of 4GB each.  Encoding looks like:&n; *&n; * RRRRRRRRooooooooooooooooooottttt&n; * fedcba9876543210fedcba9876543210&n; *&n; * The top 8 bits are reserved for protection and status bits, especially&n; * FILE and PRESENT.&n; */
+DECL|macro|SUN4C_SWP_TYPE_MASK
+mdefine_line|#define SUN4C_SWP_TYPE_MASK&t;0x1f
+DECL|macro|SUN4C_SWP_OFF_MASK
+mdefine_line|#define SUN4C_SWP_OFF_MASK&t;0x7ffff
+DECL|macro|SUN4C_SWP_OFF_SHIFT
+mdefine_line|#define SUN4C_SWP_OFF_SHIFT&t;5
 macro_line|#ifndef __ASSEMBLY__
 DECL|function|sun4c_get_synchronous_error
 r_static
