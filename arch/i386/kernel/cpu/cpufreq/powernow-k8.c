@@ -4048,15 +4048,9 @@ id|pol-&gt;cpu
 )paren
 suffix:semicolon
 r_goto
-id|sched_out
+id|err_out
 suffix:semicolon
 )brace
-multiline_comment|/* from this point, do not exit without restoring preempt and cpu */
-id|preempt_disable
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4230,13 +4224,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|err_out
-suffix:colon
-id|preempt_enable_no_resched
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sched_out
 suffix:colon
 id|set_cpus_allowed
 c_func
