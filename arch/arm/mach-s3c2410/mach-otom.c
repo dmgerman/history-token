@@ -32,6 +32,9 @@ op_assign
 (brace
 multiline_comment|/* Device area */
 (brace
+(paren
+id|u32
+)paren
 id|OTOM_VA_CS8900A_BASE
 comma
 id|OTOM_PA_CS8900A_BASE
@@ -357,6 +360,9 @@ id|S3C2410_SDRAM_PA
 comma
 id|S3C2410_PA_UART
 comma
+(paren
+id|u32
+)paren
 id|S3C24XX_VA_UART
 )paren
 id|BOOT_PARAMS
