@@ -3673,12 +3673,14 @@ id|mtd_notifier
 id|nftl_notifier
 op_assign
 (brace
+dot
 id|add
-suffix:colon
+op_assign
 id|NFTL_notify_add
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|NFTL_notify_remove
 )brace
 suffix:semicolon

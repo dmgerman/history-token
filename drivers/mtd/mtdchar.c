@@ -36,12 +36,14 @@ id|mtd_notifier
 id|notifier
 op_assign
 (brace
+dot
 id|add
-suffix:colon
+op_assign
 id|mtd_notify_add
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|mtd_notify_remove
 comma
 )brace
@@ -1930,37 +1932,44 @@ id|file_operations
 id|mtd_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
+op_assign
 id|mtd_lseek
 comma
 multiline_comment|/* lseek */
+dot
 id|read
-suffix:colon
+op_assign
 id|mtd_read
 comma
 multiline_comment|/* read */
+dot
 id|write
-suffix:colon
+op_assign
 id|mtd_write
 comma
 multiline_comment|/* write */
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|mtd_ioctl
 comma
 multiline_comment|/* ioctl */
+dot
 id|open
-suffix:colon
+op_assign
 id|mtd_open
 comma
 multiline_comment|/* open */
+dot
 id|release
-suffix:colon
+op_assign
 id|mtd_close
 comma
 multiline_comment|/* release */
