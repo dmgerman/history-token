@@ -16,9 +16,9 @@ macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-multiline_comment|/*&n;#define DEBUG 1&n;#define DEBUG_PACKET 1&n;*/
+multiline_comment|/*&n;#define DEBUG&n;#define VERBOSE_DEBUG&n;*/
 macro_line|#include &lt;linux/usb.h&gt;
-macro_line|#ifdef DEBUG_PACKET
+macro_line|#ifdef VERBOSE_DEBUG
 r_static
 r_int
 id|udsl_print_packet
@@ -34,10 +34,14 @@ id|len
 )paren
 suffix:semicolon
 DECL|macro|PACKETDEBUG
-mdefine_line|#define PACKETDEBUG(arg...) udsl_print_packet (arg)
+mdefine_line|#define PACKETDEBUG(arg...)&t;udsl_print_packet (arg)
+DECL|macro|vdbg
+mdefine_line|#define vdbg(arg...)&t;&t;dbg (arg)
 macro_line|#else
 DECL|macro|PACKETDEBUG
 mdefine_line|#define PACKETDEBUG(arg...)
+DECL|macro|vdbg
+mdefine_line|#define vdbg(arg...)
 macro_line|#endif
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Johan Verrept, Duncan Sands &lt;duncan.sands@wanadoo.fr&gt;&quot;
@@ -817,7 +821,7 @@ op_rshift
 l_int|4
 )paren
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_decode_rawcell (0x%p, 0x%p, 0x%p) called&quot;
 comma
@@ -828,7 +832,7 @@ comma
 id|ctx
 )paren
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_decode_rawcell skb-&gt;data %p, skb-&gt;tail %p&quot;
 comma
@@ -883,7 +887,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_decode_rawcell found vcc %p for packet on vpi %d, vci %d&quot;
 comma
@@ -1006,7 +1010,7 @@ id|vcc-&gt;skb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_decode_rawcell returns ATM_AAL5 pdu 0x%p with length %d&quot;
 comma
@@ -1081,7 +1085,7 @@ id|pdu_crc
 comma
 id|pdu_length
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_decode_aal5 (0x%p, 0x%p) called&quot;
 comma
@@ -1176,7 +1180,7 @@ l_int|48
 op_star
 l_int|48
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_decode_aal5: skb-&gt;len = %d, length = %d, pdu_crc = 0x%x, pdu_length = %d&quot;
 comma
@@ -1305,7 +1309,7 @@ op_amp
 id|ctx-&gt;vcc-&gt;stats-&gt;rx
 )paren
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_decode_aal5 returns pdu 0x%p with length %d&quot;
 comma
@@ -1625,7 +1629,7 @@ id|ne
 comma
 id|i
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_write_cells: howmany=%u, skb-&gt;len=%d, num_cells=%u, num_entire=%u, pdu_padding=%u&quot;
 comma
@@ -1937,7 +1941,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_complete_receive entered (urb 0x%p, status %d)&quot;
 comma
@@ -2043,7 +2047,7 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_process_receive entered&quot;
 )paren
@@ -2093,7 +2097,7 @@ id|urb
 op_assign
 id|rcv-&gt;urb
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_process_receive: got packet %p with length %d and status %d&quot;
 comma
@@ -2113,7 +2117,7 @@ id|urb-&gt;status
 r_case
 l_int|0
 suffix:colon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_process_receive: processing urb with rcv %p, urb %p, skb %p&quot;
 comma
@@ -2147,7 +2151,7 @@ id|data_start
 op_assign
 id|skb-&gt;data
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;skb-&gt;len = %d&quot;
 comma
@@ -2179,7 +2183,7 @@ id|atmsar_vcc
 )paren
 )paren
 (brace
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;(after cell processing)skb-&gt;len = %d&quot;
 comma
@@ -2208,7 +2212,7 @@ c_cond
 r_new
 )paren
 (brace
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;(after aal5 decap) skb-&gt;len = %d&quot;
 comma
@@ -2354,7 +2358,7 @@ multiline_comment|/* fall through */
 r_default
 suffix:colon
 multiline_comment|/* error or urb unlinked */
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_process_receive: adding to spare_receivers&quot;
 )paren
@@ -2398,7 +2402,7 @@ op_amp
 id|instance-&gt;completed_receivers_lock
 )paren
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_process_receive successful&quot;
 )paren
@@ -2626,13 +2630,17 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|dbg
+id|vdbg
 (paren
-l_string|&quot;udsl_complete_send entered (urb 0x%p, status %d)&quot;
+l_string|&quot;udsl_complete_send: urb 0x%p, status %d, snd 0x%p, buf 0x%p&quot;
 comma
 id|urb
 comma
 id|urb-&gt;status
+comma
+id|snd
+comma
+id|snd-&gt;buffer
 )paren
 suffix:semicolon
 multiline_comment|/* may not be in_interrupt() */
@@ -2721,11 +2729,6 @@ id|udsl_sender
 op_star
 id|snd
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;udsl_process_send entered&quot;
-)paren
-suffix:semicolon
 id|made_progress
 suffix:colon
 id|spin_lock_irq
@@ -2774,13 +2777,6 @@ op_amp
 id|buf-&gt;list
 )paren
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;sending filled buffer (0x%p)&quot;
-comma
-id|buf
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -2796,13 +2792,6 @@ id|instance-&gt;current_buffer
 id|instance-&gt;current_buffer
 op_assign
 l_int|NULL
-suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;sending current buffer (0x%p)&quot;
-comma
-id|buf
-)paren
 suffix:semicolon
 )brace
 r_else
@@ -2865,15 +2854,19 @@ comma
 id|snd
 )paren
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
-l_string|&quot;submitting urb 0x%p, contains %d cells&quot;
+l_string|&quot;udsl_process_send: submitting urb 0x%p (%d cells), snd 0x%p, buf 0x%p&quot;
 comma
 id|snd-&gt;urb
 comma
 id|UDSL_SND_BUF_SIZE
 op_minus
 id|buf-&gt;free_cells
+comma
+id|snd
+comma
+id|buf
 )paren
 suffix:semicolon
 r_if
@@ -2896,7 +2889,7 @@ l_int|0
 (brace
 id|dbg
 (paren
-l_string|&quot;submission failed (%d)!&quot;
+l_string|&quot;udsl_process_send: urb submission failed (%d)!&quot;
 comma
 id|err
 )paren
@@ -2966,13 +2959,9 @@ id|instance-&gt;sndqueue
 )paren
 )paren
 (brace
-id|dbg
-(paren
-l_string|&quot;done - no more skbs&quot;
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
+multiline_comment|/* done - no more skbs */
 )brace
 id|skb
 op_assign
@@ -3015,13 +3004,9 @@ op_amp
 id|instance-&gt;send_lock
 )paren
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;done - no more buffers&quot;
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
+multiline_comment|/* done - no more buffers */
 )brace
 id|buf
 op_assign
@@ -3072,9 +3057,9 @@ op_amp
 id|buf-&gt;free_start
 )paren
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
-l_string|&quot;wrote %u cells from skb 0x%p to buffer 0x%p&quot;
+l_string|&quot;udsl_process_send: wrote %u cells from skb 0x%p to buffer 0x%p&quot;
 comma
 id|num_written
 comma
@@ -3107,15 +3092,10 @@ id|instance-&gt;current_buffer
 op_assign
 l_int|NULL
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;queued filled buffer&quot;
-)paren
-suffix:semicolon
 )brace
-id|dbg
+id|vdbg
 (paren
-l_string|&quot;buffer contains %d cells, %d left&quot;
+l_string|&quot;udsl_process_send: buffer contains %d cells, %d left&quot;
 comma
 id|UDSL_SND_BUF_SIZE
 op_minus
@@ -3147,11 +3127,6 @@ id|skb
 )paren
 op_member_access_from_pointer
 id|atm_data.vcc
-suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;discarding empty skb&quot;
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3270,7 +3245,7 @@ id|vcc
 (brace
 id|dbg
 (paren
-l_string|&quot;popping skb 0x%p&quot;
+l_string|&quot;udsl_cancel_send: popping skb 0x%p&quot;
 comma
 id|skb
 )paren
@@ -3337,7 +3312,7 @@ id|vcc
 (brace
 id|dbg
 (paren
-l_string|&quot;popping current skb (0x%p)&quot;
+l_string|&quot;udsl_cancel_send: popping current skb (0x%p)&quot;
 comma
 id|skb
 )paren
@@ -3400,7 +3375,7 @@ id|instance
 op_assign
 id|vcc-&gt;dev-&gt;dev_data
 suffix:semicolon
-id|dbg
+id|vdbg
 (paren
 l_string|&quot;udsl_atm_send called (skb 0x%p, len %u)&quot;
 comma
@@ -3421,7 +3396,7 @@ id|instance-&gt;usb_dev
 (brace
 id|dbg
 (paren
-l_string|&quot;NULL data!&quot;
+l_string|&quot;udsl_atm_send: NULL data!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3449,7 +3424,7 @@ id|ATM_AAL5
 (brace
 id|dbg
 (paren
-l_string|&quot;unsupported ATM type %d!&quot;
+l_string|&quot;udsl_atm_send: unsupported ATM type %d!&quot;
 comma
 id|vcc-&gt;qos.aal
 )paren
@@ -3469,7 +3444,7 @@ id|ATM_MAX_AAL5_PDU
 (brace
 id|dbg
 (paren
-l_string|&quot;packet too long (%d vs %d)!&quot;
+l_string|&quot;udsl_atm_send: packet too long (%d vs %d)!&quot;
 comma
 id|skb-&gt;len
 comma
@@ -3554,20 +3529,10 @@ comma
 id|instance-&gt;sndqueue.qlen
 )paren
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;udsl_atm_dev_close: killing tasklet&quot;
-)paren
-suffix:semicolon
 id|tasklet_kill
 (paren
 op_amp
 id|instance-&gt;send_tasklet
-)paren
-suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;udsl_atm_dev_close: freeing instance&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -3621,7 +3586,7 @@ id|instance
 (brace
 id|dbg
 (paren
-l_string|&quot;NULL instance!&quot;
+l_string|&quot;udsl_atm_proc_read: NULL instance!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3864,7 +3829,11 @@ r_new
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;udsl_atm_open called&quot;
+l_string|&quot;udsl_atm_open: vpi %hd, vci %d&quot;
+comma
+id|vpi
+comma
+id|vci
 )paren
 suffix:semicolon
 r_if
@@ -3879,7 +3848,7 @@ id|instance-&gt;usb_dev
 (brace
 id|dbg
 (paren
-l_string|&quot;NULL data!&quot;
+l_string|&quot;udsl_atm_open: NULL data!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3927,7 +3896,7 @@ id|instance-&gt;firmware_loaded
 (brace
 id|dbg
 (paren
-l_string|&quot;firmware not loaded!&quot;
+l_string|&quot;udsl_atm_open: firmware not loaded!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4099,17 +4068,6 @@ op_amp
 id|instance-&gt;serialize
 )paren
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;Allocated new SARLib vcc 0x%p with vpi %d vci %d&quot;
-comma
-r_new
-comma
-id|vpi
-comma
-id|vci
-)paren
-suffix:semicolon
 id|udsl_fire_receivers
 (paren
 id|instance
@@ -4117,7 +4075,13 @@ id|instance
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;udsl_atm_open successful&quot;
+l_string|&quot;udsl_atm_open: allocated vcc data 0x%p (max_pdu: %u)&quot;
+comma
+r_new
+comma
+r_new
+op_member_access_from_pointer
+id|max_pdu
 )paren
 suffix:semicolon
 r_return
@@ -4166,7 +4130,7 @@ id|vcc_data
 (brace
 id|dbg
 (paren
-l_string|&quot;NULL data!&quot;
+l_string|&quot;udsl_atm_close: NULL data!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4174,7 +4138,7 @@ suffix:semicolon
 )brace
 id|dbg
 (paren
-l_string|&quot;Deallocating SARLib vcc 0x%p with vpi %d vci %d&quot;
+l_string|&quot;udsl_atm_close: deallocating vcc 0x%p with vpi %d vci %d&quot;
 comma
 id|vcc_data
 comma
@@ -4386,7 +4350,7 @@ l_int|0
 (brace
 id|dbg
 (paren
-l_string|&quot;usb_set_interface returned %d!&quot;
+l_string|&quot;udsl_set_alternate: usb_set_interface returned %d!&quot;
 comma
 id|ret
 )paren
@@ -4464,7 +4428,7 @@ id|instance
 (brace
 id|dbg
 (paren
-l_string|&quot;NULL instance!&quot;
+l_string|&quot;udsl_usb_ioctl: NULL instance!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4565,7 +4529,7 @@ id|buf
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;Trying device with Vendor=0x%x, Product=0x%x, ifnum %d&quot;
+l_string|&quot;udsl_usb_probe: trying device with vendor=0x%x, product=0x%x, ifnum %d&quot;
 comma
 id|dev-&gt;descriptor.idVendor
 comma
@@ -4607,7 +4571,7 @@ id|ENODEV
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;Device Accepted&quot;
+l_string|&quot;udsl_usb_probe: device accepted&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* instance init */
@@ -4633,7 +4597,7 @@ id|GFP_KERNEL
 (brace
 id|dbg
 (paren
-l_string|&quot;No memory for Instance data!&quot;
+l_string|&quot;udsl_usb_probe: no memory for instance data!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4799,7 +4763,7 @@ id|ATM_CELL_SIZE
 (brace
 id|dbg
 (paren
-l_string|&quot;No memory for skb %d!&quot;
+l_string|&quot;udsl_usb_probe: no memory for skb %d!&quot;
 comma
 id|i
 )paren
@@ -4826,7 +4790,7 @@ id|GFP_KERNEL
 (brace
 id|dbg
 (paren
-l_string|&quot;No memory for receive urb %d!&quot;
+l_string|&quot;udsl_usb_probe: no memory for receive urb %d!&quot;
 comma
 id|i
 )paren
@@ -4850,7 +4814,7 @@ id|instance-&gt;spare_receivers
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;skb-&gt;truesize = %d (asked for %d)&quot;
+l_string|&quot;udsl_usb_probe: skb-&gt;truesize = %d (asked for %d)&quot;
 comma
 id|rcv-&gt;skb-&gt;truesize
 comma
@@ -4907,7 +4871,7 @@ id|GFP_KERNEL
 (brace
 id|dbg
 (paren
-l_string|&quot;No memory for send urb %d!&quot;
+l_string|&quot;udsl_usb_probe: no memory for send urb %d!&quot;
 comma
 id|i
 )paren
@@ -4978,7 +4942,7 @@ id|GFP_KERNEL
 (brace
 id|dbg
 (paren
-l_string|&quot;No memory for send buffer %d!&quot;
+l_string|&quot;udsl_usb_probe: no memory for send buffer %d!&quot;
 comma
 id|i
 )paren
@@ -5022,7 +4986,7 @@ l_int|0
 (brace
 id|dbg
 (paren
-l_string|&quot;failed to register ATM device!&quot;
+l_string|&quot;udsl_usb_probe: failed to register ATM device!&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5397,7 +5361,7 @@ id|i
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;disconnecting&quot;
+l_string|&quot;udsl_usb_disconnect entered&quot;
 )paren
 suffix:semicolon
 id|usb_set_intfdata
@@ -5416,7 +5380,7 @@ id|instance
 (brace
 id|dbg
 (paren
-l_string|&quot;NULL instance!&quot;
+l_string|&quot;udsl_usb_disconnect: NULL instance!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5603,11 +5567,6 @@ c_loop
 l_int|1
 )paren
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;udsl_usb_disconnect: flushing&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* no need to take the spinlock */
 id|INIT_LIST_HEAD
 (paren
@@ -5625,11 +5584,6 @@ id|tasklet_kill
 (paren
 op_amp
 id|instance-&gt;receive_tasklet
-)paren
-suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;udsl_usb_disconnect: freeing receivers&quot;
 )paren
 suffix:semicolon
 r_for
@@ -5794,11 +5748,6 @@ c_loop
 l_int|1
 )paren
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;udsl_usb_disconnect: flushing&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* no need to take the spinlock */
 id|INIT_LIST_HEAD
 (paren
@@ -5820,11 +5769,6 @@ id|tasklet_enable
 (paren
 op_amp
 id|instance-&gt;send_tasklet
-)paren
-suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;udsl_usb_disconnect: freeing senders&quot;
 )paren
 suffix:semicolon
 r_for
@@ -5849,11 +5793,6 @@ id|i
 )braket
 dot
 id|urb
-)paren
-suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;udsl_usb_disconnect: freeing buffers&quot;
 )paren
 suffix:semicolon
 r_for
@@ -5964,7 +5903,7 @@ r_void
 (brace
 id|dbg
 (paren
-l_string|&quot;udsl_usb_cleanup&quot;
+l_string|&quot;udsl_usb_cleanup entered&quot;
 )paren
 suffix:semicolon
 id|usb_deregister
@@ -6004,7 +5943,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/************&n;**  debug  **&n;************/
-macro_line|#ifdef DEBUG_PACKET
+macro_line|#ifdef VERBOSE_DEBUG
 DECL|function|udsl_print_packet
 r_static
 r_int
