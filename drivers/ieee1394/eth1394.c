@@ -41,7 +41,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 801 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 806 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Our ieee1394 highlevel driver */
 DECL|macro|ETHER1394_DRIVER_NAME
@@ -580,8 +580,6 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* Copy the main data that we need */
-id|arp_ptr
-op_assign
 id|memcpy
 (paren
 id|arp_data
@@ -628,7 +626,9 @@ suffix:semicolon
 DECL|macro|PROCESS_MEMBER
 mdefine_line|#define PROCESS_MEMBER(ptr,val,len) &bslash;&n;  memcpy (val, ptr, len); ptr += len
 id|arp_ptr
-op_add_assign
+op_assign
+id|arp_data
+op_plus
 id|arp1394-&gt;hw_addr_len
 suffix:semicolon
 id|PROCESS_MEMBER
@@ -2054,7 +2054,7 @@ id|flags
 )paren
 suffix:semicolon
 DECL|macro|PROCESS_MEMBER
-mdefine_line|#define PROCESS_MEMBER(ptr,val,len) &bslash;&n;  ptr = memcpy (ptr, val, len) + len
+mdefine_line|#define PROCESS_MEMBER(ptr,val,len) &bslash;&n;  memcpy (ptr, val, len); ptr += len
 id|PROCESS_MEMBER
 (paren
 id|arp_ptr

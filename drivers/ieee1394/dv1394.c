@@ -10902,6 +10902,9 @@ r_struct
 id|list_head
 op_star
 id|lh
+comma
+op_star
+id|templh
 suffix:semicolon
 r_char
 id|buf
@@ -10957,10 +10960,12 @@ id|dv1394_cards
 )paren
 )paren
 (brace
-id|list_for_each
+id|list_for_each_safe
 c_func
 (paren
 id|lh
+comma
+id|templh
 comma
 op_amp
 id|dv1394_cards
