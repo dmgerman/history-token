@@ -150,6 +150,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Some lowlevel functions might want to know about&n; * the real APIC ID &lt;-&gt; CPU # mapping.&n; */
 DECL|macro|MAX_APICID
 mdefine_line|#define MAX_APICID 256
+DECL|macro|BAD_APICID
+mdefine_line|#define BAD_APICID 0xFFu
 r_extern
 r_volatile
 r_int

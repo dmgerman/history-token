@@ -161,6 +161,27 @@ id|summit_x86
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|raw_phys_apicid
+id|u8
+id|raw_phys_apicid
+(braket
+id|NR_CPUS
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+id|NR_CPUS
+op_minus
+l_int|1
+)braket
+op_assign
+id|BAD_APICID
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Intel MP BIOS table parsing routines:&n; */
 multiline_comment|/*&n; * Checksum an MP configuration block.&n; */
 DECL|function|mpf_checksum
@@ -802,9 +823,11 @@ r_else
 (brace
 id|phys_cpu_present_map
 op_or_assign
-l_int|1
-op_lshift
+id|apicid_to_cpu_present
+c_func
+(paren
 id|m-&gt;mpc_apicid
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Validate version&n;&t; */
@@ -835,6 +858,15 @@ id|m-&gt;mpc_apicid
 )braket
 op_assign
 id|ver
+suffix:semicolon
+id|raw_phys_apicid
+(braket
+id|num_processors
+op_minus
+l_int|1
+)braket
+op_assign
+id|m-&gt;mpc_apicid
 suffix:semicolon
 )brace
 DECL|function|MP_bus_info
