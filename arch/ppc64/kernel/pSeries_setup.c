@@ -41,6 +41,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
+macro_line|#include &lt;asm/plpar_wrappers.h&gt;
 macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
