@@ -3218,17 +3218,10 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_char
-id|status
-suffix:semicolon
 multiline_comment|/* wait for command completion */
 r_while
 c_loop
 (paren
-(paren
-id|status
-op_assign
 id|read_reg
 c_func
 (paren
@@ -3246,7 +3239,6 @@ id|STAR
 )paren
 op_amp
 id|BIT2
-)paren
 )paren
 (brace
 id|udelay

@@ -9694,6 +9694,7 @@ id|value
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|arg
@@ -9791,6 +9792,7 @@ id|value
 comma
 (paren
 id|__u32
+id|__user
 op_star
 )paren
 id|arg

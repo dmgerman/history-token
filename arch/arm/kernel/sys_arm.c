@@ -682,6 +682,7 @@ comma
 r_void
 id|__user
 op_star
+id|__user
 op_star
 )paren
 id|ptr

@@ -352,7 +352,7 @@ id|ctrl
 suffix:semicolon
 id|ctrl-&gt;driverdata
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|kfree
 c_func
@@ -3187,6 +3187,7 @@ r_int
 id|hycapi_init
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int

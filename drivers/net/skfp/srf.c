@@ -726,9 +726,7 @@ id|evc
 suffix:semicolon
 )brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|macro|THRESHOLD_2

@@ -1710,6 +1710,10 @@ id|device_node
 op_star
 id|volt_gpio_np
 suffix:semicolon
+id|u32
+op_star
+id|reg
+suffix:semicolon
 multiline_comment|/* OF only reports the high frequency */
 id|hi_freq
 op_assign
@@ -1769,8 +1773,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|u32
-op_star
 id|reg
 op_assign
 (paren

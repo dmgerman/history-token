@@ -2052,6 +2052,7 @@ id|stack.ss_sp
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|current-&gt;sas_ss_sp

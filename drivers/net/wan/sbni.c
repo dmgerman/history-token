@@ -6915,8 +6915,8 @@ id|_crc
 op_assign
 id|crc
 suffix:semicolon
-id|__asm
-id|__volatile
+id|__asm__
+id|__volatile__
 (paren
 l_string|&quot;xorl&t;%%ebx, %%ebx&bslash;n&quot;
 l_string|&quot;movl&t;%2, %%esi&bslash;n&quot;

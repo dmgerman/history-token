@@ -576,7 +576,6 @@ id|len
 )paren
 suffix:semicolon
 macro_line|#elif defined(MEMCPYTOIO_WRITEL)
-mdefine_line|#define srcd ((const u_int32_t*)src)
 r_if
 c_cond
 (paren
@@ -603,8 +602,11 @@ comma
 id|get_unaligned
 c_func
 (paren
-id|srcd
-op_increment
+(paren
+id|u32
+op_star
+)paren
+id|src
 )paren
 )paren
 suffix:semicolon
@@ -614,6 +616,10 @@ l_int|4
 suffix:semicolon
 id|len
 op_sub_assign
+l_int|4
+suffix:semicolon
+id|src
+op_add_assign
 l_int|4
 suffix:semicolon
 )brace
@@ -636,8 +642,11 @@ comma
 id|offs
 comma
 op_star
-id|srcd
-op_increment
+(paren
+id|u32
+op_star
+)paren
+id|src
 )paren
 suffix:semicolon
 id|offs
@@ -648,9 +657,12 @@ id|len
 op_sub_assign
 l_int|4
 suffix:semicolon
+id|src
+op_add_assign
+l_int|4
+suffix:semicolon
 )brace
 )brace
-macro_line|#undef srcd
 r_if
 c_cond
 (paren

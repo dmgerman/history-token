@@ -31,6 +31,7 @@ suffix:semicolon
 DECL|member|ptr
 r_int
 r_char
+id|__user
 op_star
 id|ptr
 suffix:semicolon

@@ -39,7 +39,7 @@ DECL|macro|func_enter
 mdefine_line|#define func_enter() gs_dprintk (GS_DEBUG_FLOW, &quot;gs: enter %s&bslash;n&quot;, __FUNCTION__)
 DECL|macro|func_exit
 mdefine_line|#define func_exit()  gs_dprintk (GS_DEBUG_FLOW, &quot;gs: exit  %s&bslash;n&quot;, __FUNCTION__)
-macro_line|#if NEW_WRITE_LOCKING
+macro_line|#ifdef NEW_WRITE_LOCKING
 DECL|macro|DECL
 mdefine_line|#define DECL      /* Nothing */
 DECL|macro|LOCKIT
@@ -1764,7 +1764,7 @@ id|port-&gt;xmit_buf
 suffix:semicolon
 id|port-&gt;xmit_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -2666,7 +2666,7 @@ id|port
 suffix:semicolon
 id|port-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -3575,6 +3575,7 @@ id|port
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|sp
 )paren
@@ -3708,6 +3709,7 @@ id|port
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|sp
 )paren
