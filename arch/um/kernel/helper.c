@@ -475,6 +475,16 @@ op_ne
 l_int|0
 )paren
 (brace
+id|waitpid
+c_func
+(paren
+id|pid
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|pid
 op_assign
 op_minus

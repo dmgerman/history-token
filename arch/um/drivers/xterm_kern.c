@@ -56,7 +56,10 @@ id|xterm
 op_assign
 id|data
 suffix:semicolon
-id|xterm-&gt;new_fd
+r_int
+id|fd
+suffix:semicolon
+id|fd
 op_assign
 id|os_rcv_fd
 c_func
@@ -70,7 +73,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|xterm-&gt;new_fd
+id|fd
 op_eq
 op_minus
 id|EAGAIN
@@ -79,6 +82,10 @@ id|EAGAIN
 r_return
 suffix:semicolon
 )brace
+id|xterm-&gt;new_fd
+op_assign
+id|fd
+suffix:semicolon
 id|up
 c_func
 (paren
