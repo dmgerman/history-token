@@ -688,7 +688,9 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* reset hardware to sane state */
-id|bit_lp_setsda
+id|adapter-&gt;bit_lp_data
+dot
+id|setsda
 c_func
 (paren
 id|port
@@ -696,7 +698,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|bit_lp_setscl
+id|adapter-&gt;bit_lp_data
+dot
+id|setscl
 c_func
 (paren
 id|port
