@@ -2569,24 +2569,15 @@ op_assign
 id|jiffies
 suffix:semicolon
 multiline_comment|/* Start the PPP configuration after 1sec delay.&n;&t; * This will give the interface initilization time&n;&t; * to finish its configuration */
-id|del_timer
+id|mod_timer
 c_func
 (paren
 op_amp
 id|ppp_priv_area-&gt;poll_delay_timer
-)paren
-suffix:semicolon
-id|ppp_priv_area-&gt;poll_delay_timer.expires
-op_assign
+comma
 id|jiffies
 op_plus
 id|HZ
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|ppp_priv_area-&gt;poll_delay_timer
 )paren
 suffix:semicolon
 r_return
