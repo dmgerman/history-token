@@ -1298,7 +1298,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* check for generic driver, we do not call do hotplug calls for it */
 r_if
 c_cond
 (paren
@@ -1308,8 +1307,7 @@ op_amp
 id|usb_generic_driver
 )paren
 r_return
-op_minus
-id|ENODEV
+l_int|0
 suffix:semicolon
 id|intf
 op_assign
