@@ -1050,6 +1050,7 @@ id|zoran
 DECL|member|video_dev
 r_struct
 id|video_device
+op_star
 id|video_dev
 suffix:semicolon
 DECL|member|i2c_adapter

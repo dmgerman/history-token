@@ -4614,7 +4614,7 @@ id|zoran
 id|i
 )braket
 dot
-id|video_dev.minor
+id|video_dev-&gt;minor
 op_eq
 id|minor
 )paren
@@ -8784,7 +8784,7 @@ id|zr
 suffix:semicolon
 id|vunit-&gt;video
 op_assign
-id|zr-&gt;video_dev.minor
+id|zr-&gt;video_dev-&gt;minor
 suffix:semicolon
 id|vunit-&gt;vbi
 op_assign
@@ -17516,6 +17516,12 @@ id|fops
 op_assign
 op_amp
 id|zoran_fops
+comma
+dot
+id|release
+op_assign
+op_amp
+id|zoran_vdev_release
 comma
 dot
 id|minor
