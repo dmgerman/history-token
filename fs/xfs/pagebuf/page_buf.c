@@ -7074,22 +7074,6 @@ id|len
 suffix:semicolon
 )brace
 macro_line|#endif  /* CONFIG_PROC_FS */
-id|STATIC
-r_void
-DECL|function|pagebuf_shaker
-id|pagebuf_shaker
-c_func
-(paren
-r_void
-)paren
-(brace
-id|pagebuf_daemon_wakeup
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;Initialization and Termination&n; */
 r_int
 id|__init
@@ -7276,12 +7260,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|kmem_shake_register
-c_func
-(paren
-id|pagebuf_shaker
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -7304,12 +7282,6 @@ id|kmem_cache_destroy
 c_func
 (paren
 id|pagebuf_cache
-)paren
-suffix:semicolon
-id|kmem_shake_deregister
-c_func
-(paren
-id|pagebuf_shaker
 )paren
 suffix:semicolon
 id|unregister_sysctl_table
