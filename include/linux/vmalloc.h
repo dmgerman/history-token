@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_VMALLOC_H
 DECL|macro|_LINUX_VMALLOC_H
 mdefine_line|#define _LINUX_VMALLOC_H
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/page.h&gt;&t;&t;/* pgprot_t */
 multiline_comment|/* bits in vm_struct-&gt;flags */
 DECL|macro|VM_IOREMAP
 mdefine_line|#define VM_IOREMAP&t;0x00000001&t;/* ioremap() and friends */
