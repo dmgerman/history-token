@@ -851,20 +851,6 @@ DECL|member|rc_index
 r_int
 id|rc_index
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,1)
-DECL|member|rx_waitq
-r_struct
-id|wait_queue
-op_star
-id|rx_waitq
-suffix:semicolon
-DECL|member|tx_waitq
-id|atruct
-id|wait_queue
-op_star
-id|tx_waitq
-suffix:semicolon
-macro_line|#else
 DECL|member|rx_waitq
 id|wait_queue_head_t
 id|rx_waitq
@@ -873,7 +859,6 @@ DECL|member|tx_waitq
 id|wait_queue_head_t
 id|tx_waitq
 suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|HE_VCC
