@@ -74,13 +74,15 @@ mdefine_line|#define&t;BIT31&t;0x80000000
 multiline_comment|/*&n; *  The first part is the high level driver of the gigE ethernet ports.&n; */
 multiline_comment|/* Checksum offload for Tx works */
 DECL|macro|MV64340_CHECKSUM_OFFLOAD_TX
-mdefine_line|#define  MV64340_CHECKSUM_OFFLOAD_TX
+mdefine_line|#define&t;MV64340_CHECKSUM_OFFLOAD_TX
 DECL|macro|MV64340_NAPI
-mdefine_line|#define&t; MV64340_NAPI
+mdefine_line|#define&t;MV64340_NAPI
 DECL|macro|MV64340_TX_FAST_REFILL
-mdefine_line|#define&t; MV64340_TX_FAST_REFILL
+mdefine_line|#define&t;MV64340_TX_FAST_REFILL
+DECL|macro|MV64340_RX_QUEUE_FILL_ON_TASK
+macro_line|#undef&t;MV64340_RX_QUEUE_FILL_ON_TASK&t;&t;/* Does not work, yet */
 DECL|macro|MV64340_COAL
-macro_line|#undef&t; MV64340_COAL
+macro_line|#undef&t;MV64340_COAL
 multiline_comment|/* &n; * Number of RX / TX descriptors on RX / TX rings.&n; * Note that allocating RX descriptors is done by allocating the RX&n; * ring AND a preallocated RX buffers (skb&squot;s) for each descriptor.&n; * The TX descriptors only allocates the TX descriptors ring,&n; * with no pre allocated TX buffers (skb&squot;s are allocated by higher layers.&n; */
 multiline_comment|/* Default TX ring size is 1000 descriptors */
 DECL|macro|MV64340_DEFAULT_TX_QUEUE_SIZE

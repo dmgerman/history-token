@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/net/mv64340_eth.c - Driver for MV64340X ethernet ports&n; * Copyright (C) 2002 Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Based on the 64360 driver from:&n; * Copyright (C) 2002 rabeeh@galileo.co.il&n; *&n; * Copyright (C) 2003 PMC-Sierra, Inc.,&n; *&t;written by Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; * Copyright (C) 2003 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * Copyright (C) 2004-2005 MontaVista Software, Inc.&n; *                    Dale Farnsworth &lt;dale@farnsworth.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * drivers/net/mv64340_eth.c - Driver for MV64340X ethernet ports&n; * Copyright (C) 2002 Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Based on the 64360 driver from:&n; * Copyright (C) 2002 rabeeh@galileo.co.il&n; *&n; * Copyright (C) 2003 PMC-Sierra, Inc.,&n; *&t;written by Manish Lachwani (lachwani@pmc-sierra.com)&n; *&n; * Copyright (C) 2003 Ralf Baechle &lt;ralf@linux-mips.org&gt;&n; *&n; * Copyright (C) 2004-2005 MontaVista Software, Inc.&n; *                    Dale Farnsworth &lt;dale@farnsworth.org&gt;&n; *&n; * Copyright (C) 2004 Steven J. Hill &lt;sjhill1@rockwellcollins.com&gt;&n; *                                   &lt;sjhill@realitydiluted.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
@@ -13,9 +13,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &quot;mv643xx_eth.h&quot;
 multiline_comment|/*&n; * The first part is the high level driver of the gigE ethernet ports. &n; */
-multiline_comment|/* Definition for configuring driver */
-DECL|macro|MV64340_RX_QUEUE_FILL_ON_TASK
-macro_line|#undef MV64340_RX_QUEUE_FILL_ON_TASK
 multiline_comment|/* Constants */
 DECL|macro|EXTRA_BYTES
 mdefine_line|#define EXTRA_BYTES 32
@@ -27,7 +24,7 @@ DECL|macro|INT_CAUSE_UNMASK_ALL
 mdefine_line|#define INT_CAUSE_UNMASK_ALL&t;&t;0x0007ffff
 DECL|macro|INT_CAUSE_UNMASK_ALL_EXT
 mdefine_line|#define INT_CAUSE_UNMASK_ALL_EXT&t;0x0011ffff
-macro_line|#ifdef MV64340_RX_FILL_ON_TASK
+macro_line|#ifdef MV64340_RX_QUEUE_FILL_ON_TASK
 DECL|macro|INT_CAUSE_MASK_ALL
 mdefine_line|#define INT_CAUSE_MASK_ALL&t;&t;0x00000000
 DECL|macro|INT_CAUSE_CHECK_BITS
@@ -562,7 +559,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if MV64340_RX_QUEUE_FILL_ON_TASK
+macro_line|#ifdef MV64340_RX_QUEUE_FILL_ON_TASK
 r_else
 (brace
 multiline_comment|/* Return interrupts */
@@ -1641,7 +1638,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * After forwarded received packets to upper layer,  add a task&n;&t;&t; * in an interrupts enabled context that refills the RX ring&n;&t;&t; * with skb&squot;s.&n;&t;&t; */
-macro_line|#if MV64340_RX_QUEUE_FILL_ON_TASK
+macro_line|#ifdef MV64340_RX_QUEUE_FILL_ON_TASK
 multiline_comment|/* Unmask all interrupts on ethernet port */
 id|MV_WRITE
 c_func
