@@ -2953,6 +2953,8 @@ DECL|macro|SMB_QUERY_FILE_UNIX_BASIC
 mdefine_line|#define SMB_QUERY_FILE_UNIX_BASIC       0x200
 DECL|macro|SMB_QUERY_FILE_UNIX_LINK
 mdefine_line|#define SMB_QUERY_FILE_UNIX_LINK        0x201
+DECL|macro|SMB_QUERY_POSIX_ACL
+mdefine_line|#define SMB_QUERY_POSIX_ACL             0x204
 DECL|macro|SMB_QUERY_FILE_INTERNAL_INFO
 mdefine_line|#define SMB_QUERY_FILE_INTERNAL_INFO    0x3ee
 DECL|macro|SMB_QUERY_FILE_ACCESS_INFO
@@ -2977,6 +2979,8 @@ DECL|macro|SMB_SET_FILE_UNIX_BASIC
 mdefine_line|#define SMB_SET_FILE_UNIX_BASIC         0x200
 DECL|macro|SMB_SET_FILE_UNIX_LINK
 mdefine_line|#define SMB_SET_FILE_UNIX_LINK          0x201
+DECL|macro|SMB_SET_POSIX_ACL
+mdefine_line|#define SMB_SET_POSIX_ACL               0x204
 DECL|macro|SMB_SET_FILE_UNIX_HLINK
 mdefine_line|#define SMB_SET_FILE_UNIX_HLINK         0x203
 DECL|macro|SMB_SET_FILE_BASIC_INFO2
@@ -4787,6 +4791,38 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* level 0x10b */
+multiline_comment|/* POSIX ACL set/query path info structures */
+DECL|macro|CIFS_ACL_VERSION
+mdefine_line|#define CIFS_ACL_VERSION 1
+DECL|struct|cifs_posix_acl
+r_struct
+id|cifs_posix_acl
+(brace
+multiline_comment|/* BB fixme add here */
+)brace
+suffix:semicolon
+multiline_comment|/* level 0x204 */
+multiline_comment|/* types of access control entries */
+DECL|macro|CIFS_POSIX_ACL_USER_OBJ
+mdefine_line|#define CIFS_POSIX_ACL_USER_OBJ&t; 0x01
+DECL|macro|CIFS_POSIX_ACL_USER
+mdefine_line|#define CIFS_POSIX_ACL_USER&t; 0x02
+DECL|macro|CIFS_POSIX_ACL_GROUP_OBJ
+mdefine_line|#define CIFS_POSIX_ACL_GROUP_OBJ 0x04
+DECL|macro|CIFS_POSIX_ACL_GROUP
+mdefine_line|#define CIFS_POSIX_ACL_GROUP&t; 0x08
+DECL|macro|CIFS_POSIX_ACL_MASK
+mdefine_line|#define CIFS_POSIX_ACL_MASK&t; 0x10
+DECL|macro|CIFS_POSIX_ACL_OTHER
+mdefine_line|#define CIFS_POSIX_ACL_OTHER&t; 0x20
+multiline_comment|/* types of perms */
+DECL|macro|CIFS_POSIX_ACL_EXECUTE
+mdefine_line|#define CIFS_POSIX_ACL_EXECUTE   0x01
+DECL|macro|CIFS_POSIX_ACL_WRITE
+mdefine_line|#define CIFS_POSIX_ACL_WRITE     0x02
+DECL|macro|CIFS_POSIX_ACL_READ
+mdefine_line|#define CIFS_POSIX_ACL_READ&t; 0x04
+multiline_comment|/* end of POSIX ACL definitions */
 DECL|struct|file_internal_info
 r_struct
 id|file_internal_info

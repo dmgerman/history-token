@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *   fs/cifs/xattr.c&n; *&n; *   Copyright (c) International Business Machines  Corp., 2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/posix_acl_xattr.h&gt;
 macro_line|#include &quot;cifsfs.h&quot;
 macro_line|#include &quot;cifspdu.h&quot;
 macro_line|#include &quot;cifsglob.h&quot;
@@ -8,13 +9,13 @@ macro_line|#include &quot;cifs_debug.h&quot;
 DECL|macro|MAX_EA_VALUE_SIZE
 mdefine_line|#define MAX_EA_VALUE_SIZE 65535
 DECL|macro|CIFS_XATTR_DOS_ATTRIB
-mdefine_line|#define CIFS_XATTR_DOS_ATTRIB &quot;user.DOSATTRIB&quot;
+mdefine_line|#define CIFS_XATTR_DOS_ATTRIB &quot;user.DosAttrib&quot;
 DECL|macro|CIFS_XATTR_USER_PREFIX
 mdefine_line|#define CIFS_XATTR_USER_PREFIX &quot;user.&quot;
 DECL|macro|CIFS_XATTR_SYSTEM_PREFIX
 mdefine_line|#define CIFS_XATTR_SYSTEM_PREFIX &quot;system.&quot;
 DECL|macro|CIFS_XATTR_OS2_PREFIX
-mdefine_line|#define CIFS_XATTR_OS2_PREFIX &quot;OS2.&quot; /* BB should check for this someday */
+mdefine_line|#define CIFS_XATTR_OS2_PREFIX &quot;os2.&quot; /* BB should check for this someday */
 multiline_comment|/* also note could add check for security prefix XATTR_SECURITY_PREFIX */
 DECL|function|cifs_removexattr
 r_int
@@ -502,6 +503,24 @@ id|CIFS_XATTR_USER_PREFIX
 comma
 l_int|5
 )paren
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|CIFS_XATTR_DOS_ATTRIB
+comma
+l_int|14
+)paren
+op_eq
+l_int|0
 )paren
 (brace
 id|cFYI
@@ -510,17 +529,11 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;illegal xattr namespace %s (only user namespace supported)&quot;
-comma
-id|ea_name
+l_string|&quot;attempt to set cifs inode metadata&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB what if no namespace prefix? */
-multiline_comment|/* Should we just pass them to server, except for &n;&t;&t;  system and perhaps security prefixes? */
 )brace
-r_else
-(brace
 id|ea_name
 op_add_assign
 l_int|5
@@ -549,6 +562,135 @@ comma
 id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|CIFS_XATTR_OS2_PREFIX
+comma
+l_int|4
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|ea_name
+op_add_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* skip past os2. prefix */
+id|rc
+op_assign
+id|CIFSSMBSetEA
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|full_path
+comma
+id|ea_name
+comma
+id|ea_value
+comma
+(paren
+id|__u16
+)paren
+id|value_size
+comma
+id|cifs_sb-&gt;local_nls
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|POSIX_ACL_XATTR_ACCESS
+comma
+id|strlen
+c_func
+(paren
+id|POSIX_ACL_XATTR_ACCESS
+)paren
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;set POSIX ACL not supported yet&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|POSIX_ACL_XATTR_DEFAULT
+comma
+id|strlen
+c_func
+(paren
+id|POSIX_ACL_XATTR_DEFAULT
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;set default POSIX ACL not supported yet&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;illegal xattr name request %s (only user namespace supported)&quot;
+comma
+id|ea_name
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* BB what if no namespace prefix? */
+multiline_comment|/* Should we just pass them to server, except for &n;&t;&t;  system and perhaps security prefixes? */
+)brace
 )brace
 r_if
 c_cond
@@ -732,6 +874,26 @@ multiline_comment|/* return alt name if available as pseudo attr */
 r_if
 c_cond
 (paren
+id|ea_name
+op_eq
+l_int|NULL
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;Null xattr names not supported&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|strncmp
 c_func
 (paren
@@ -741,6 +903,24 @@ id|CIFS_XATTR_USER_PREFIX
 comma
 l_int|5
 )paren
+op_eq
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|CIFS_XATTR_DOS_ATTRIB
+comma
+l_int|14
+)paren
+op_eq
+l_int|0
 )paren
 (brace
 id|cFYI
@@ -749,23 +929,18 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;illegal xattr namespace %s (only user namespace supported)&quot;
-comma
-id|ea_name
+l_string|&quot;attempt to query cifs inode metadata&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* BB what if no namespace prefix? */
-multiline_comment|/* Should we just pass them to server, except for system? */
+multiline_comment|/* revalidate/getattr then populate from inode */
 )brace
-r_else
-(brace
-multiline_comment|/* We could add a check here&n;&t;    if proc/fs/cifs/streamstoxattr is set then&n;&t;&t;search server for EAs or streams to &n;&t;&t;returns as xattrs */
+multiline_comment|/* BB add else when above is implemented */
 id|ea_name
 op_add_assign
 l_int|5
 suffix:semicolon
-multiline_comment|/* skip past user. */
+multiline_comment|/* skip past user. prefix */
 id|rc
 op_assign
 id|CIFSSMBQueryEA
@@ -787,6 +962,133 @@ id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|CIFS_XATTR_OS2_PREFIX
+comma
+l_int|4
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|ea_name
+op_add_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* skip past os2. prefix */
+id|rc
+op_assign
+id|CIFSSMBQueryEA
+c_func
+(paren
+id|xid
+comma
+id|pTcon
+comma
+id|full_path
+comma
+id|ea_name
+comma
+id|ea_value
+comma
+id|buf_size
+comma
+id|cifs_sb-&gt;local_nls
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|POSIX_ACL_XATTR_ACCESS
+comma
+id|strlen
+c_func
+(paren
+id|POSIX_ACL_XATTR_ACCESS
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;query POSIX ACL not supported yet&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* rc = CIFSSMBGetPosixACL(xid, pTcon,&n;&t;&t;&t;&t;const unsigned char *searchName,&n;&t;&t;&t;&t;char *acl_inf, const int buflen,&n;&t;&t;&t;&t;cifs_sb-&gt;local_nls); */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|ea_name
+comma
+id|POSIX_ACL_XATTR_DEFAULT
+comma
+id|strlen
+c_func
+(paren
+id|POSIX_ACL_XATTR_DEFAULT
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;query default POSIX ACL not supported yet&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* rc = CIFSSMBGetPosixACL(xid, pTcon,&n;&t;&t;&t;&t;const unsigned char *searchName,&n;&t;&t;&t;&t;char *acl_inf, const int buflen,&n;&t;&t;&t;&t;cifs_sb-&gt;local_nls); */
+)brace
+r_else
+(brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;illegal xattr name request %s (only user namespace supported)&quot;
+comma
+id|ea_name
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* We could add an additional check for streams ie &n;&t;    if proc/fs/cifs/streamstoxattr is set then&n;&t;&t;search server for EAs or streams to &n;&t;&t;returns as xattrs */
 r_if
 c_cond
 (paren
