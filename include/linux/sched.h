@@ -2989,7 +2989,7 @@ op_star
 id|p
 )paren
 suffix:semicolon
-multiline_comment|/* Protects -&gt;fs, -&gt;files, -&gt;mm, and synchronises with wait4().&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
+multiline_comment|/*&n; * Protects -&gt;fs, -&gt;files, -&gt;mm, -&gt;ptrace and synchronises with wait4().&n; * Nests both inside and outside of read_lock(&amp;tasklist_lock).&n; * It must not be nested with write_lock_irq(&amp;tasklist_lock),&n; * neither inside nor outside.&n; */
 DECL|function|task_lock
 r_static
 r_inline
