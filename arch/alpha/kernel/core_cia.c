@@ -3126,7 +3126,7 @@ l_int|2
 suffix:semicolon
 id|alpha_mv.pci_dac_offset
 op_assign
-l_int|0x200000000
+l_int|0x200000000UL
 suffix:semicolon
 op_star
 (paren

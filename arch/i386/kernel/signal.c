@@ -1188,6 +1188,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1220,6 +1221,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1236,6 +1238,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1252,6 +1255,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1389,6 +1393,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1427,6 +1432,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 op_amp
@@ -1841,6 +1847,7 @@ l_int|0xb858
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1859,6 +1866,7 @@ id|__NR_sigreturn
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -1877,6 +1885,7 @@ l_int|0x80cd
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -2287,6 +2296,7 @@ l_int|0xb8
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren
@@ -2305,6 +2315,7 @@ id|__NR_rt_sigreturn
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren
@@ -2323,6 +2334,7 @@ l_int|0x80cd
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren

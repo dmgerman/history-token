@@ -54,6 +54,7 @@ r_int
 id|third
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -100,6 +101,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -123,6 +125,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -133,6 +136,7 @@ comma
 r_const
 r_struct
 id|timespec
+id|__user
 op_star
 )paren
 id|fifth
@@ -190,7 +194,9 @@ id|fourth.__pad
 comma
 (paren
 r_void
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|ptr
@@ -227,6 +233,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -283,6 +290,7 @@ comma
 (paren
 r_struct
 id|ipc_kludge
+id|__user
 op_star
 )paren
 id|ptr
@@ -331,6 +339,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -378,6 +387,7 @@ comma
 (paren
 r_struct
 id|msqid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -410,6 +420,7 @@ id|first
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -435,6 +446,7 @@ id|raddr
 comma
 (paren
 id|ulong
+id|__user
 op_star
 )paren
 id|third
@@ -480,6 +492,7 @@ id|first
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -507,6 +520,7 @@ id|sys_shmdt
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -544,6 +558,7 @@ comma
 (paren
 r_struct
 id|shmid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -564,6 +579,7 @@ id|sys_pipe
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|fildes
 )paren
@@ -795,6 +811,7 @@ c_func
 (paren
 r_struct
 id|old_utsname
+id|__user
 op_star
 id|name
 )paren
@@ -855,6 +872,7 @@ id|sys64_time
 c_func
 (paren
 id|time_t
+id|__user
 op_star
 id|tloc
 )paren

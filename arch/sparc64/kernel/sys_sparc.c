@@ -867,6 +867,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -891,6 +892,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -901,6 +903,7 @@ comma
 r_const
 r_struct
 id|timespec
+id|__user
 op_star
 )paren
 id|fifth
@@ -966,17 +969,17 @@ id|fourth.__pad
 comma
 (paren
 r_void
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|ptr
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|err
 op_assign
 id|sys_semctl
@@ -1035,6 +1038,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -1062,6 +1066,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -1113,6 +1118,7 @@ comma
 (paren
 r_struct
 id|msqid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -1160,6 +1166,7 @@ id|first
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -1212,6 +1219,7 @@ id|sys_shmdt
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -1256,6 +1264,7 @@ comma
 (paren
 r_struct
 id|shmid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -3126,6 +3135,7 @@ id|user_cntd0
 op_assign
 (paren
 id|u64
+id|__user
 op_star
 )paren
 id|arg0
@@ -3139,6 +3149,7 @@ id|user_cntd1
 op_assign
 (paren
 id|u64
+id|__user
 op_star
 )paren
 id|arg1
@@ -3397,11 +3408,13 @@ id|PERFCTR_SETPCR
 suffix:colon
 (brace
 id|u64
+id|__user
 op_star
 id|user_pcr
 op_assign
 (paren
 id|u64
+id|__user
 op_star
 )paren
 id|arg0
@@ -3480,11 +3493,13 @@ id|PERFCTR_GETPCR
 suffix:colon
 (brace
 id|u64
+id|__user
 op_star
 id|user_pcr
 op_assign
 (paren
 id|u64
+id|__user
 op_star
 )paren
 id|arg0

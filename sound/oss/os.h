@@ -90,7 +90,8 @@ suffix:semicolon
 DECL|macro|USE_AUTOINIT_DMA
 mdefine_line|#define USE_AUTOINIT_DMA
 r_extern
-id|caddr_t
+r_void
+op_star
 id|sound_mem_blocks
 (braket
 l_int|1024

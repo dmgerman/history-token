@@ -4,6 +4,28 @@ DECL|macro|__ASM_ARM_MEMORY_H
 mdefine_line|#define __ASM_ARM_MEMORY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/arch/memory.h&gt;
+macro_line|#ifndef TASK_SIZE
+multiline_comment|/*&n; * TASK_SIZE - the maximum size of a user space task.&n; * TASK_UNMAPPED_BASE - the lower boundary of the mmap VM area&n; */
+DECL|macro|TASK_SIZE
+mdefine_line|#define TASK_SIZE&t;&t;(0xbf000000UL)
+DECL|macro|TASK_UNMAPPED_BASE
+mdefine_line|#define TASK_UNMAPPED_BASE&t;(0x40000000UL)
+macro_line|#endif
+multiline_comment|/*&n; * The maximum size of a 26-bit user space task.&n; */
+DECL|macro|TASK_SIZE_26
+mdefine_line|#define TASK_SIZE_26&t;&t;(0x04000000UL)
+multiline_comment|/*&n; * Page offset: 3GB&n; */
+macro_line|#ifndef PAGE_OFFSET
+DECL|macro|PAGE_OFFSET
+mdefine_line|#define PAGE_OFFSET&t;&t;(0xc0000000UL)
+macro_line|#endif
+multiline_comment|/*&n; * Physical vs virtual RAM address space conversion.  These are&n; * private definitions which should NOT be used outside memory.h&n; * files.  Use virt_to_phys/phys_to_virt/__pa/__va instead.&n; */
+macro_line|#ifndef __virt_to_phys
+DECL|macro|__virt_to_phys
+mdefine_line|#define __virt_to_phys(x)&t;((x) - PAGE_OFFSET + PHYS_OFFSET)
+DECL|macro|__phys_to_virt
+mdefine_line|#define __phys_to_virt(x)&t;((x) - PHYS_OFFSET + PAGE_OFFSET)
+macro_line|#endif
 multiline_comment|/*&n; * The module space lives between the addresses given by TASK_SIZE&n; * and PAGE_OFFSET - it must be within 32MB of the kernel text.&n; */
 DECL|macro|MODULE_END
 mdefine_line|#define MODULE_END&t;(PAGE_OFFSET)

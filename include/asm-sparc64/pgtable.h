@@ -9,26 +9,27 @@ macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/const.h&gt;
 multiline_comment|/* The kernel image occupies 0x4000000 to 0x1000000 (4MB --&gt; 16MB).&n; * The page copy blockops use 0x1000000 to 0x18000000 (16MB --&gt; 24MB).&n; * The PROM resides in an area spanning 0xf0000000 to 0x100000000.&n; * The vmalloc area spans 0x140000000 to 0x200000000.&n; * There is a single static kernel PMD which maps from 0x0 to address&n; * 0x400000000.&n; */
 DECL|macro|TLBTEMP_BASE
-mdefine_line|#define&t;TLBTEMP_BASE&t;&t;0x0000000001000000
+mdefine_line|#define&t;TLBTEMP_BASE&t;&t;_AC(0x0000000001000000,UL)
 DECL|macro|MODULES_VADDR
-mdefine_line|#define MODULES_VADDR&t;&t;0x0000000002000000
+mdefine_line|#define MODULES_VADDR&t;&t;_AC(0x0000000002000000,UL)
 DECL|macro|MODULES_LEN
-mdefine_line|#define MODULES_LEN&t;&t;0x000000007e000000
+mdefine_line|#define MODULES_LEN&t;&t;_AC(0x000000007e000000,UL)
 DECL|macro|MODULES_END
-mdefine_line|#define MODULES_END&t;&t;0x0000000080000000
+mdefine_line|#define MODULES_END&t;&t;_AC(0x0000000080000000,UL)
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;&t;0x0000000140000000
+mdefine_line|#define VMALLOC_START&t;&t;_AC(0x0000000140000000,UL)
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;&t;0x0000000200000000
+mdefine_line|#define VMALLOC_END&t;&t;_AC(0x0000000200000000,UL)
 DECL|macro|LOW_OBP_ADDRESS
-mdefine_line|#define LOW_OBP_ADDRESS&t;&t;0x00000000f0000000
+mdefine_line|#define LOW_OBP_ADDRESS&t;&t;_AC(0x00000000f0000000,UL)
 DECL|macro|HI_OBP_ADDRESS
-mdefine_line|#define HI_OBP_ADDRESS&t;&t;0x0000000100000000
+mdefine_line|#define HI_OBP_ADDRESS&t;&t;_AC(0x0000000100000000,UL)
 multiline_comment|/* XXX All of this needs to be rethought so we can take advantage&n; * XXX cheetah&squot;s full 64-bit virtual address space, ie. no more hole&n; * XXX in the middle like on spitfire. -DaveM&n; */
 multiline_comment|/*&n; * Given a virtual address, the lowest PAGE_SHIFT bits determine offset&n; * into the page; the next higher PAGE_SHIFT-3 bits determine the pte#&n; * in the proper pagetable (the -3 is from the 8 byte ptes, and each page&n; * table is a single page long). The next higher PMD_BITS determine pmd# &n; * in the proper pmdtable (where we must have PMD_BITS &lt;= (PAGE_SHIFT-2) &n; * since the pmd entries are 4 bytes, and each pmd page is a single page &n; * long). Finally, the higher few bits determine pgde#.&n; */
-multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
+multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page&n; * table can map&n; */
 DECL|macro|PMD_SHIFT
 mdefine_line|#define PMD_SHIFT&t;(PAGE_SHIFT + (PAGE_SHIFT-3))
 DECL|macro|PMD_SIZE
@@ -56,10 +57,10 @@ multiline_comment|/* We the first one in this file, what we export to the kernel
 DECL|macro|REAL_PTRS_PER_PMD
 mdefine_line|#define REAL_PTRS_PER_PMD&t;(1UL &lt;&lt; PMD_BITS)
 DECL|macro|PTRS_PER_PMD
-mdefine_line|#define PTRS_PER_PMD&t;&t;((const int)(test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1UL &lt;&lt; (32 - (PAGE_SHIFT-3) - PAGE_SHIFT)) : (REAL_PTRS_PER_PMD)))
+mdefine_line|#define PTRS_PER_PMD&t;&t;((const int)(test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;&t;&t; (1UL &lt;&lt; (32 - (PAGE_SHIFT-3) - PAGE_SHIFT)) : &bslash;&n;&t;&t;&t;&t; (REAL_PTRS_PER_PMD)))
 multiline_comment|/*&n; * We cannot use the top address range because VPTE table lives there. This&n; * formula finds the total legal virtual space in the processor, subtracts the&n; * vpte size, then aligns it to the number of bytes mapped by one pgde, and&n; * thus calculates the number of pgdes needed.&n; */
 DECL|macro|PTRS_PER_PGD
-mdefine_line|#define PTRS_PER_PGD&t;(((1UL &lt;&lt; VA_BITS) - VPTE_SIZE + (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;&t;(PAGE_SHIFT-3) + PMD_BITS)) - 1) / (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;&t;(PAGE_SHIFT-3) + PMD_BITS)))
+mdefine_line|#define PTRS_PER_PGD (((1UL &lt;&lt; VA_BITS) - VPTE_SIZE + (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;      (PAGE_SHIFT-3) + PMD_BITS)) - 1) / (1UL &lt;&lt; (PAGE_SHIFT + &bslash;&n;&t;&t;      (PAGE_SHIFT-3) + PMD_BITS)))
 multiline_comment|/* Kernel has a separate 44bit address space. */
 DECL|macro|USER_PTRS_PER_PGD
 mdefine_line|#define USER_PTRS_PER_PGD&t;((const int)(test_thread_flag(TIF_32BIT)) ? &bslash;&n;&t;&t;&t;&t; (1) : (PTRS_PER_PGD))
@@ -74,56 +75,56 @@ mdefine_line|#define pgd_ERROR(e)&t;__builtin_trap()
 macro_line|#endif /* !(__ASSEMBLY__) */
 multiline_comment|/* Spitfire/Cheetah TTE bits. */
 DECL|macro|_PAGE_VALID
-mdefine_line|#define _PAGE_VALID&t;0x8000000000000000&t;/* Valid TTE                          */
+mdefine_line|#define _PAGE_VALID&t;_AC(0x8000000000000000,UL) /* Valid TTE               */
 DECL|macro|_PAGE_R
-mdefine_line|#define _PAGE_R&t;&t;0x8000000000000000&t;/* Used to keep ref bit up to date    */
+mdefine_line|#define _PAGE_R&t;&t;_AC(0x8000000000000000,UL) /* Keep ref bit up to date */
 DECL|macro|_PAGE_SZ4MB
-mdefine_line|#define _PAGE_SZ4MB&t;0x6000000000000000&t;/* 4MB Page                           */
+mdefine_line|#define _PAGE_SZ4MB&t;_AC(0x6000000000000000,UL) /* 4MB Page                */
 DECL|macro|_PAGE_SZ512K
-mdefine_line|#define _PAGE_SZ512K&t;0x4000000000000000&t;/* 512K Page                          */
+mdefine_line|#define _PAGE_SZ512K&t;_AC(0x4000000000000000,UL) /* 512K Page               */
 DECL|macro|_PAGE_SZ64K
-mdefine_line|#define _PAGE_SZ64K&t;0x2000000000000000&t;/* 64K Page                           */
+mdefine_line|#define _PAGE_SZ64K&t;_AC(0x2000000000000000,UL) /* 64K Page                */
 DECL|macro|_PAGE_SZ8K
-mdefine_line|#define _PAGE_SZ8K&t;0x0000000000000000&t;/* 8K Page                            */
+mdefine_line|#define _PAGE_SZ8K&t;_AC(0x0000000000000000,UL) /* 8K Page                 */
 DECL|macro|_PAGE_NFO
-mdefine_line|#define _PAGE_NFO&t;0x1000000000000000&t;/* No Fault Only                      */
+mdefine_line|#define _PAGE_NFO&t;_AC(0x1000000000000000,UL) /* No Fault Only           */
 DECL|macro|_PAGE_IE
-mdefine_line|#define _PAGE_IE&t;0x0800000000000000&t;/* Invert Endianness                  */
+mdefine_line|#define _PAGE_IE&t;_AC(0x0800000000000000,UL) /* Invert Endianness       */
 DECL|macro|_PAGE_SN
-mdefine_line|#define _PAGE_SN&t;0x0000800000000000&t;/* (Cheetah) Snoop                    */
+mdefine_line|#define _PAGE_SN&t;_AC(0x0000800000000000,UL) /* (Cheetah) Snoop         */
 DECL|macro|_PAGE_PADDR_SF
-mdefine_line|#define _PAGE_PADDR_SF&t;0x000001FFFFFFE000&t;/* (Spitfire) Phys Address [40:13]    */
+mdefine_line|#define _PAGE_PADDR_SF&t;_AC(0x000001FFFFFFE000,UL) /* (Spitfire) paddr [40:13]*/
 DECL|macro|_PAGE_PADDR
-mdefine_line|#define _PAGE_PADDR&t;0x000007FFFFFFE000&t;/* (Cheetah) Phys Address [42:13]     */
+mdefine_line|#define _PAGE_PADDR&t;_AC(0x000007FFFFFFE000,UL) /* (Cheetah) paddr [42:13] */
 DECL|macro|_PAGE_SOFT
-mdefine_line|#define _PAGE_SOFT&t;0x0000000000001F80&t;/* Software bits                      */
+mdefine_line|#define _PAGE_SOFT&t;_AC(0x0000000000001F80,UL) /* Software bits           */
 DECL|macro|_PAGE_L
-mdefine_line|#define _PAGE_L&t;&t;0x0000000000000040&t;/* Locked TTE                         */
+mdefine_line|#define _PAGE_L&t;&t;_AC(0x0000000000000040,UL) /* Locked TTE              */
 DECL|macro|_PAGE_CP
-mdefine_line|#define _PAGE_CP&t;0x0000000000000020&t;/* Cacheable in Physical Cache        */
+mdefine_line|#define _PAGE_CP&t;_AC(0x0000000000000020,UL) /* Cacheable in P-Cache    */
 DECL|macro|_PAGE_CV
-mdefine_line|#define _PAGE_CV&t;0x0000000000000010&t;/* Cacheable in Virtual Cache         */
+mdefine_line|#define _PAGE_CV&t;_AC(0x0000000000000010,UL) /* Cacheable in V-Cache    */
 DECL|macro|_PAGE_E
-mdefine_line|#define _PAGE_E&t;&t;0x0000000000000008&t;/* side-Effect                        */
+mdefine_line|#define _PAGE_E&t;&t;_AC(0x0000000000000008,UL) /* side-Effect             */
 DECL|macro|_PAGE_P
-mdefine_line|#define _PAGE_P&t;&t;0x0000000000000004&t;/* Privileged Page                    */
+mdefine_line|#define _PAGE_P&t;&t;_AC(0x0000000000000004,UL) /* Privileged Page         */
 DECL|macro|_PAGE_W
-mdefine_line|#define _PAGE_W&t;&t;0x0000000000000002&t;/* Writable                           */
+mdefine_line|#define _PAGE_W&t;&t;_AC(0x0000000000000002,UL) /* Writable                */
 DECL|macro|_PAGE_G
-mdefine_line|#define _PAGE_G&t;&t;0x0000000000000001&t;/* Global                             */
+mdefine_line|#define _PAGE_G&t;&t;_AC(0x0000000000000001,UL) /* Global                  */
 multiline_comment|/* Here are the SpitFire software bits we use in the TTE&squot;s. */
 DECL|macro|_PAGE_FILE
-mdefine_line|#define _PAGE_FILE&t;0x0000000000001000&t;/* Pagecache page                     */
+mdefine_line|#define _PAGE_FILE&t;_AC(0x0000000000001000,UL)&t;/* Pagecache page     */
 DECL|macro|_PAGE_MODIFIED
-mdefine_line|#define _PAGE_MODIFIED&t;0x0000000000000800&t;/* Modified Page (ie. dirty)          */
+mdefine_line|#define _PAGE_MODIFIED&t;_AC(0x0000000000000800,UL)&t;/* Modified (dirty)   */
 DECL|macro|_PAGE_ACCESSED
-mdefine_line|#define _PAGE_ACCESSED&t;0x0000000000000400&t;/* Accessed Page (ie. referenced)     */
+mdefine_line|#define _PAGE_ACCESSED&t;_AC(0x0000000000000400,UL)&t;/* Accessed (ref&squot;d)   */
 DECL|macro|_PAGE_READ
-mdefine_line|#define _PAGE_READ&t;0x0000000000000200&t;/* Readable SW Bit                    */
+mdefine_line|#define _PAGE_READ&t;_AC(0x0000000000000200,UL)&t;/* Readable SW Bit    */
 DECL|macro|_PAGE_WRITE
-mdefine_line|#define _PAGE_WRITE&t;0x0000000000000100&t;/* Writable SW Bit                    */
+mdefine_line|#define _PAGE_WRITE&t;_AC(0x0000000000000100,UL)&t;/* Writable SW Bit    */
 DECL|macro|_PAGE_PRESENT
-mdefine_line|#define _PAGE_PRESENT&t;0x0000000000000080&t;/* Present Page (ie. not swapped out) */
+mdefine_line|#define _PAGE_PRESENT&t;_AC(0x0000000000000080,UL)&t;/* Present            */
 macro_line|#if PAGE_SHIFT == 13
 DECL|macro|_PAGE_SZBITS
 mdefine_line|#define _PAGE_SZBITS&t;_PAGE_SZ8K
@@ -171,7 +172,7 @@ mdefine_line|#define PAGE_KERNEL&t;__pgprot (_PAGE_PRESENT | _PAGE_VALID | _PAGE
 DECL|macro|_PFN_MASK
 mdefine_line|#define _PFN_MASK&t;_PAGE_PADDR
 DECL|macro|pg_iobits
-mdefine_line|#define pg_iobits (_PAGE_VALID | _PAGE_PRESENT | __DIRTY_BITS | __ACCESS_BITS | _PAGE_E)
+mdefine_line|#define pg_iobits (_PAGE_VALID | _PAGE_PRESENT | __DIRTY_BITS | &bslash;&n;&t;&t;   __ACCESS_BITS | _PAGE_E)
 DECL|macro|__P000
 mdefine_line|#define __P000&t;PAGE_NONE
 DECL|macro|__P001
@@ -351,11 +352,11 @@ mdefine_line|#define pte_young(pte)&t;&t;(pte_val(pte) &amp; _PAGE_ACCESSED)
 DECL|macro|pte_wrprotect
 mdefine_line|#define pte_wrprotect(pte)&t;(__pte(pte_val(pte) &amp; ~(_PAGE_WRITE|_PAGE_W)))
 DECL|macro|pte_rdprotect
-mdefine_line|#define pte_rdprotect(pte)&t;(__pte(((pte_val(pte)&lt;&lt;1UL)&gt;&gt;1UL) &amp; ~_PAGE_READ))
+mdefine_line|#define pte_rdprotect(pte)&t;&bslash;&n;&t;(__pte(((pte_val(pte)&lt;&lt;1UL)&gt;&gt;1UL) &amp; ~_PAGE_READ))
 DECL|macro|pte_mkclean
-mdefine_line|#define pte_mkclean(pte)&t;(__pte(pte_val(pte) &amp; ~(_PAGE_MODIFIED|_PAGE_W)))
+mdefine_line|#define pte_mkclean(pte)&t;&bslash;&n;&t;(__pte(pte_val(pte) &amp; ~(_PAGE_MODIFIED|_PAGE_W)))
 DECL|macro|pte_mkold
-mdefine_line|#define pte_mkold(pte)&t;&t;(__pte(((pte_val(pte)&lt;&lt;1UL)&gt;&gt;1UL) &amp; ~_PAGE_ACCESSED))
+mdefine_line|#define pte_mkold(pte)&t;&t;&bslash;&n;&t;(__pte(((pte_val(pte)&lt;&lt;1UL)&gt;&gt;1UL) &amp; ~_PAGE_ACCESSED))
 multiline_comment|/* Permanent address of a page. */
 DECL|macro|__page_address
 mdefine_line|#define __page_address(page)&t;page_address(page)
@@ -376,10 +377,10 @@ DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
 multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
-mdefine_line|#define pmd_offset(dir, address)&t;((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t;&t;&t;&t;&t;((address &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
+mdefine_line|#define pmd_offset(dir, address)&t;&bslash;&n;&t;((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t; ((address &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|pte_index
-mdefine_line|#define pte_index(dir, address)&t;((pte_t *) __pmd_page(*(dir)) + &bslash;&n;&t;&t;&t;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
+mdefine_line|#define pte_index(dir, address)&t;&bslash;&n;&t;((pte_t *) __pmd_page(*(dir)) + &bslash;&n;&t; ((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
 DECL|macro|pte_offset_kernel
 mdefine_line|#define pte_offset_kernel&t;&t;pte_index
 DECL|macro|pte_offset_map
@@ -450,6 +451,7 @@ id|pte
 op_assign
 (paren
 (paren
+(paren
 id|page
 )paren
 op_or
@@ -468,6 +470,7 @@ r_int
 r_int
 )paren
 id|_PAGE_CACHE
+)paren
 suffix:semicolon
 id|pte_val
 c_func

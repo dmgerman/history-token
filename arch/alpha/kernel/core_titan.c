@@ -806,10 +806,10 @@ c_func
 id|index
 )paren
 op_amp
-l_int|0xffffffffff
+l_int|0xffffffffffUL
 )paren
 op_or
-l_int|0x80000000000
+l_int|0x80000000000UL
 suffix:semicolon
 id|hose-&gt;dense_io_base
 op_assign
@@ -820,10 +820,10 @@ c_func
 id|index
 )paren
 op_amp
-l_int|0xffffffffff
+l_int|0xffffffffffUL
 )paren
 op_or
-l_int|0x80000000000
+l_int|0x80000000000UL
 suffix:semicolon
 id|hose-&gt;config_space_base
 op_assign

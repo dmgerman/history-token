@@ -458,13 +458,6 @@ r_goto
 id|error
 suffix:semicolon
 )brace
-id|dst1-&gt;xfrm
-op_assign
-id|xfrm
-(braket
-id|i
-)braket
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -650,6 +643,10 @@ op_assign
 op_amp
 id|rt-&gt;u.dst
 suffix:semicolon
+id|i
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -678,6 +675,14 @@ id|xfrm_dst
 op_star
 )paren
 id|dst_prev
+suffix:semicolon
+id|dst_prev-&gt;xfrm
+op_assign
+id|xfrm
+(braket
+id|i
+op_increment
+)braket
 suffix:semicolon
 id|dst_prev-&gt;dev
 op_assign
@@ -1140,7 +1145,7 @@ c_cond
 (paren
 id|mtu
 op_ge
-l_int|1280
+id|IPV6_MIN_MTU
 op_logical_and
 id|mtu
 OL
@@ -1150,8 +1155,6 @@ c_func
 id|dst
 )paren
 )paren
-r_return
-suffix:semicolon
 id|path-&gt;ops
 op_member_access_from_pointer
 id|update_pmtu
@@ -1161,6 +1164,8 @@ id|path
 comma
 id|mtu
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 DECL|variable|xfrm6_dst_ops

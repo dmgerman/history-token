@@ -15,8 +15,6 @@ mdefine_line|#define RTC_ALWAYS_BCD&t;1
 multiline_comment|/* FIXME:RTC Interrupt feature is not implemented yet. */
 DECL|macro|RTC_IRQ
 macro_line|#undef  RTC_IRQ
-DECL|macro|RTC_IRQ
-mdefine_line|#define RTC_IRQ&t;&t;0
 macro_line|#if defined(CONFIG_CPU_SH3)
 DECL|macro|RTC_PORT
 mdefine_line|#define RTC_PORT(n)&t;&t;(R64CNT+(n)*2)

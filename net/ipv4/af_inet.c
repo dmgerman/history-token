@@ -372,6 +372,7 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
@@ -422,10 +423,12 @@ r_int
 id|optname
 comma
 r_char
+id|__user
 op_star
 id|optval
 comma
 r_int
+id|__user
 op_star
 id|optlen
 )paren
@@ -2859,6 +2862,7 @@ comma
 (paren
 r_struct
 id|timeval
+id|__user
 op_star
 )paren
 id|arg
@@ -2909,6 +2913,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2958,6 +2963,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -3003,6 +3009,7 @@ id|cmd
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -3429,7 +3436,7 @@ r_if
 c_cond
 (paren
 id|p-&gt;type
-OG
+op_ge
 id|SOCK_MAX
 )paren
 r_goto

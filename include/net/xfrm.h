@@ -3893,6 +3893,7 @@ r_int
 id|optname
 comma
 id|u8
+id|__user
 op_star
 id|optval
 comma
@@ -3938,6 +3939,7 @@ r_int
 id|optname
 comma
 id|u8
+id|__user
 op_star
 id|optval
 comma

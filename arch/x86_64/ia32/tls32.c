@@ -84,6 +84,7 @@ id|t
 comma
 r_struct
 id|user_desc
+id|__user
 op_star
 id|u_info
 )paren
@@ -279,6 +280,7 @@ c_func
 (paren
 r_struct
 id|user_desc
+id|__user
 op_star
 id|u_info
 )paren
@@ -325,6 +327,7 @@ id|t
 comma
 r_struct
 id|user_desc
+id|__user
 op_star
 id|u_info
 )paren
@@ -509,6 +512,7 @@ c_func
 (paren
 r_struct
 id|user_desc
+id|__user
 op_star
 id|u_info
 )paren
@@ -548,7 +552,10 @@ suffix:semicolon
 r_struct
 id|user_desc
 id|info
-comma
+suffix:semicolon
+r_struct
+id|user_desc
+id|__user
 op_star
 id|cp
 suffix:semicolon
@@ -559,6 +566,7 @@ id|cp
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|childregs-&gt;rsi

@@ -2590,6 +2590,7 @@ suffix:semicolon
 r_else
 (brace
 id|u32
+id|__user
 op_star
 id|usp
 suffix:semicolon
@@ -2601,6 +2602,7 @@ id|usp
 op_assign
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|regs-&gt;ARM_sp

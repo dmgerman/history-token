@@ -311,9 +311,9 @@ mdefine_line|#define _EFER_NX 11  /* No execute enable */
 DECL|macro|EFER_SCE
 mdefine_line|#define EFER_SCE (1&lt;&lt;_EFER_SCE)
 DECL|macro|EFER_LME
-mdefine_line|#define EFER_LME (1&lt;&lt;EFER_LME)
+mdefine_line|#define EFER_LME (1&lt;&lt;_EFER_LME)
 DECL|macro|EFER_LMA
-mdefine_line|#define EFER_LMA (1&lt;&lt;EFER_LMA)
+mdefine_line|#define EFER_LMA (1&lt;&lt;_EFER_LMA)
 DECL|macro|EFER_NX
 mdefine_line|#define EFER_NX (1&lt;&lt;_EFER_NX)
 multiline_comment|/* Intel MSRs. Some also available on other CPUs */

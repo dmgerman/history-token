@@ -301,6 +301,12 @@ op_amp
 l_int|0xf
 suffix:semicolon
 )brace
+r_extern
+r_char
+id|_end
+(braket
+)braket
+suffix:semicolon
 DECL|function|x86_64_start_kernel
 r_void
 id|__init
@@ -333,6 +339,16 @@ c_func
 id|real_mode_data
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+id|cpu_set
+c_func
+(paren
+l_int|0
+comma
+id|cpu_online_map
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* default console: */
 r_if
 c_cond
@@ -421,6 +437,25 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* You need early console to see that */
+r_if
+c_cond
+(paren
+id|__pa_symbol
+c_func
+(paren
+op_amp
+id|_end
+)paren
+op_ge
+id|KERNEL_TEXT_SIZE
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Kernel too big for kernel mapping&bslash;n&quot;
+)paren
+suffix:semicolon
 id|setup_boot_cpu_data
 c_func
 (paren

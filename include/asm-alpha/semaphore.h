@@ -20,7 +20,7 @@ DECL|member|wait
 id|wait_queue_head_t
 id|wait
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 DECL|member|__magic
 r_int
 id|__magic
@@ -28,7 +28,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 DECL|macro|__SEM_DEBUG_INIT
 macro_line|# define __SEM_DEBUG_INIT(name)&t;&t;, (long)&amp;(name).__magic
 macro_line|#else
@@ -78,7 +78,7 @@ op_amp
 id|sem-&gt;wait
 )paren
 suffix:semicolon
-macro_line|#if WAITQUEUE_DEBUG
+macro_line|#ifdef WAITQUEUE_DEBUG
 id|sem-&gt;__magic
 op_assign
 (paren
@@ -393,7 +393,7 @@ id|sem
 )paren
 suffix:semicolon
 )brace
-macro_line|#if !WAITQUEUE_DEBUG &amp;&amp; !defined(CONFIG_DEBUG_SEMAPHORE)
+macro_line|#if !defined(WAITQUEUE_DEBUG) &amp;&amp; !defined(CONFIG_DEBUG_SEMAPHORE)
 DECL|function|down
 r_extern
 r_inline

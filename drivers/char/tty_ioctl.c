@@ -610,8 +610,9 @@ id|tty_struct
 op_star
 id|tty
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 comma
 r_int
@@ -674,6 +675,7 @@ comma
 (paren
 r_struct
 id|termio
+id|__user
 op_star
 )paren
 id|arg
@@ -698,6 +700,7 @@ comma
 (paren
 r_struct
 id|termios
+id|__user
 op_star
 )paren
 id|arg
@@ -783,6 +786,7 @@ id|tty
 comma
 r_struct
 id|termio
+id|__user
 op_star
 id|termio
 )paren
@@ -1006,6 +1010,7 @@ id|tty
 comma
 r_struct
 id|sgttyb
+id|__user
 op_star
 id|sgttyb
 )paren
@@ -1219,6 +1224,7 @@ id|tty
 comma
 r_struct
 id|sgttyb
+id|__user
 op_star
 id|sgttyb
 )paren
@@ -1327,6 +1333,7 @@ id|tty
 comma
 r_struct
 id|tchars
+id|__user
 op_star
 id|tchars
 )paren
@@ -1413,6 +1420,7 @@ id|tty
 comma
 r_struct
 id|tchars
+id|__user
 op_star
 id|tchars
 )paren
@@ -1504,6 +1512,7 @@ id|tty
 comma
 r_struct
 id|ltchars
+id|__user
 op_star
 id|ltchars
 )paren
@@ -1591,6 +1600,7 @@ id|tty
 comma
 r_struct
 id|ltchars
+id|__user
 op_star
 id|ltchars
 )paren
@@ -1775,6 +1785,18 @@ id|tty_struct
 op_star
 id|real_tty
 suffix:semicolon
+r_void
+id|__user
+op_star
+id|p
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
@@ -1817,6 +1839,7 @@ comma
 (paren
 r_struct
 id|sgttyb
+id|__user
 op_star
 )paren
 id|arg
@@ -1837,6 +1860,7 @@ comma
 (paren
 r_struct
 id|sgttyb
+id|__user
 op_star
 )paren
 id|arg
@@ -1853,12 +1877,7 @@ c_func
 (paren
 id|real_tty
 comma
-(paren
-r_struct
-id|tchars
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -1870,12 +1889,7 @@ c_func
 (paren
 id|real_tty
 comma
-(paren
-r_struct
-id|tchars
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1889,12 +1903,7 @@ c_func
 (paren
 id|real_tty
 comma
-(paren
-r_struct
-id|ltchars
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -1906,12 +1915,7 @@ c_func
 (paren
 id|real_tty
 comma
-(paren
-r_struct
-id|ltchars
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1927,6 +1931,7 @@ c_func
 (paren
 r_struct
 id|termios
+id|__user
 op_star
 )paren
 id|arg
@@ -1950,7 +1955,7 @@ c_func
 (paren
 id|real_tty
 comma
-id|arg
+id|p
 comma
 id|TERMIOS_FLUSH
 op_or
@@ -1966,7 +1971,7 @@ c_func
 (paren
 id|real_tty
 comma
-id|arg
+id|p
 comma
 id|TERMIOS_WAIT
 )paren
@@ -1980,7 +1985,7 @@ c_func
 (paren
 id|real_tty
 comma
-id|arg
+id|p
 comma
 l_int|0
 )paren
@@ -1994,12 +1999,7 @@ c_func
 (paren
 id|real_tty
 comma
-(paren
-r_struct
-id|termio
-op_star
-)paren
-id|arg
+id|p
 )paren
 suffix:semicolon
 r_case
@@ -2011,7 +2011,7 @@ c_func
 (paren
 id|real_tty
 comma
-id|arg
+id|p
 comma
 id|TERMIOS_FLUSH
 op_or
@@ -2029,7 +2029,7 @@ c_func
 (paren
 id|real_tty
 comma
-id|arg
+id|p
 comma
 id|TERMIOS_WAIT
 op_or
@@ -2045,7 +2045,7 @@ c_func
 (paren
 id|real_tty
 comma
-id|arg
+id|p
 comma
 id|TERMIOS_TERMIO
 )paren
@@ -2296,6 +2296,7 @@ l_int|0
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2334,6 +2335,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2351,6 +2353,7 @@ c_func
 (paren
 r_struct
 id|termios
+id|__user
 op_star
 )paren
 id|arg
@@ -2393,6 +2396,7 @@ comma
 (paren
 r_struct
 id|termios
+id|__user
 op_star
 )paren
 id|arg
@@ -2437,6 +2441,7 @@ id|pktmode
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2498,6 +2503,7 @@ l_int|0
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -2517,6 +2523,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg

@@ -428,11 +428,6 @@ DECL|member|nr_banks
 r_int
 id|nr_banks
 suffix:semicolon
-DECL|member|end
-r_int
-r_int
-id|end
-suffix:semicolon
 r_struct
 (brace
 DECL|member|start

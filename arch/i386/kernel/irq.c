@@ -3804,6 +3804,12 @@ c_func
 (paren
 id|THREAD_SIZE
 )paren
+comma
+id|__section__
+c_func
+(paren
+l_string|&quot;.bss.page_aligned&quot;
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -3824,6 +3830,12 @@ id|__aligned__
 c_func
 (paren
 id|THREAD_SIZE
+)paren
+comma
+id|__section__
+c_func
+(paren
+l_string|&quot;.bss.page_aligned&quot;
 )paren
 )paren
 )paren

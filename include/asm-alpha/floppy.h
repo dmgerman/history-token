@@ -252,8 +252,50 @@ mdefine_line|#define N_DRIVE 8
 DECL|macro|FLOPPY_MOTOR_MASK
 mdefine_line|#define FLOPPY_MOTOR_MASK 0xf0
 multiline_comment|/*&n; * Most Alphas have no problems with floppy DMA crossing 64k borders,&n; * except for certain ones, like XL and RUFFIAN.&n; *&n; * However, the test is simple and fast, and this *is* floppy, after all,&n; * so we do it for all platforms, just to make sure.&n; *&n; * This is advantageous in other circumstances as well, as in moving&n; * about the PCI DMA windows and forcing the floppy to start doing&n; * scatter-gather when it never had before, and there *is* a problem&n; * on that platform... ;-}&n; */
-DECL|macro|CROSS_64KB
-mdefine_line|#define CROSS_64KB(a,s)&t;&t;&t;&t;&t;&t;&bslash;&n;({ unsigned long __s64 = (unsigned long)(a);&t;&t;&t;&bslash;&n;   unsigned long __e64 = __s64 + (unsigned long)(s) - 1;&t;&bslash;&n;   (__s64 ^ __e64) &amp; ~0xfffful; })
+DECL|function|CROSS_64KB
+r_static
+r_inline
+r_int
+r_int
+id|CROSS_64KB
+c_func
+(paren
+r_void
+op_star
+id|a
+comma
+r_int
+r_int
+id|s
+)paren
+(brace
+r_int
+r_int
+id|p
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|a
+suffix:semicolon
+r_return
+(paren
+(paren
+id|p
+op_plus
+id|s
+op_minus
+l_int|1
+)paren
+op_xor
+id|p
+)paren
+op_amp
+op_complement
+l_int|0xffffUL
+suffix:semicolon
+)brace
 DECL|macro|EXTRA_FLOPPY_PARAMS
 mdefine_line|#define EXTRA_FLOPPY_PARAMS
 macro_line|#endif /* __ASM_ALPHA_FLOPPY_H */

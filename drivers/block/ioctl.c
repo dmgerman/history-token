@@ -17,6 +17,7 @@ id|bdev
 comma
 r_struct
 id|blkpg_ioctl_arg
+id|__user
 op_star
 id|arg
 )paren
@@ -603,6 +604,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -631,6 +633,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -659,6 +662,7 @@ id|val
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -689,6 +693,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -717,6 +722,7 @@ id|val
 comma
 (paren
 id|u64
+id|__user
 op_star
 )paren
 id|arg
@@ -988,6 +994,7 @@ id|n
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -1045,6 +1052,7 @@ comma
 (paren
 r_struct
 id|blkpg_ioctl_arg
+id|__user
 op_star
 )paren
 id|arg
@@ -1237,6 +1245,7 @@ id|n
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 (paren

@@ -4714,6 +4714,7 @@ id|do_replace
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -6233,6 +6234,7 @@ id|update_counters
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -6803,6 +6805,7 @@ op_star
 id|t
 comma
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -7192,6 +7195,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|user
 comma
@@ -7266,6 +7270,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|user
 comma

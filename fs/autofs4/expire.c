@@ -1179,6 +1179,7 @@ id|sbi
 comma
 r_struct
 id|autofs_packet_expire
+id|__user
 op_star
 id|pkt_p
 )paren
@@ -1312,6 +1313,7 @@ op_star
 id|sbi
 comma
 r_int
+id|__user
 op_star
 id|arg
 )paren

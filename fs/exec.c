@@ -4119,7 +4119,7 @@ id|bprm-&gt;sh_bang
 op_assign
 id|eh-&gt;ah.entry
 OL
-l_int|0x100000000
+l_int|0x100000000UL
 suffix:semicolon
 id|bprm-&gt;file
 op_assign

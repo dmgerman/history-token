@@ -1207,6 +1207,7 @@ r_int
 id|val
 comma
 r_char
+id|__user
 op_star
 id|opt
 comma
@@ -1432,6 +1433,7 @@ r_int
 id|val
 comma
 r_char
+id|__user
 op_star
 id|opt
 comma
@@ -1475,6 +1477,7 @@ r_int
 id|val
 comma
 r_char
+id|__user
 op_star
 id|opt
 comma

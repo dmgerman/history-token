@@ -1047,7 +1047,7 @@ mdefine_line|#define USB2_HOST_DELAY&t;5&t;/* nsec, guess */
 DECL|macro|HS_USECS
 mdefine_line|#define HS_USECS(bytes) NS_TO_US ( ((55 * 8 * 2083)/1000) &bslash;&n;&t;+ ((2083UL * (3167 + BitTime (bytes)))/1000) &bslash;&n;&t;+ USB2_HOST_DELAY)
 DECL|macro|HS_USECS_ISO
-mdefine_line|#define HS_USECS_ISO(bytes) NS_TO_US ( ((long)(38 * 8 * 2.083)) &bslash;&n;&t;+ ((2083UL * (3167 + BitTime (bytes)))/1000) &bslash;&n;&t;+ USB2_HOST_DELAY)
+mdefine_line|#define HS_USECS_ISO(bytes) NS_TO_US ( ((38 * 8 * 2083)/1000) &bslash;&n;&t;+ ((2083UL * (3167 + BitTime (bytes)))/1000) &bslash;&n;&t;+ USB2_HOST_DELAY)
 r_extern
 r_int
 id|usb_calc_bus_time

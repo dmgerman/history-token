@@ -79,7 +79,7 @@ mdefine_line|#define __DIRTY_BITS&t;(_PAGE_DIRTY | _PAGE_KWE | _PAGE_UWE)
 DECL|macro|__ACCESS_BITS
 mdefine_line|#define __ACCESS_BITS&t;(_PAGE_ACCESSED | _PAGE_KRE | _PAGE_URE)
 DECL|macro|_PFN_MASK
-mdefine_line|#define _PFN_MASK&t;0xFFFFFFFF00000000
+mdefine_line|#define _PFN_MASK&t;0xFFFFFFFF00000000UL
 DECL|macro|_PAGE_TABLE
 mdefine_line|#define _PAGE_TABLE&t;(_PAGE_VALID | __DIRTY_BITS | __ACCESS_BITS)
 DECL|macro|_PAGE_CHG_MASK

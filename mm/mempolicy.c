@@ -238,6 +238,7 @@ id|nodes
 comma
 r_int
 r_int
+id|__user
 op_star
 id|nmask
 comma
@@ -1442,6 +1443,7 @@ id|mode
 comma
 r_int
 r_int
+id|__user
 op_star
 id|nmask
 comma
@@ -1723,6 +1725,7 @@ id|mode
 comma
 r_int
 r_int
+id|__user
 op_star
 id|nmask
 comma
@@ -2059,8 +2062,9 @@ c_func
 (paren
 r_int
 r_int
+id|__user
 op_star
-id|user_mask
+id|mask
 comma
 r_int
 r_int
@@ -2117,9 +2121,10 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
-id|user_mask
+id|mask
 op_plus
 id|nbytes
 comma
@@ -2141,7 +2146,7 @@ r_return
 id|copy_to_user
 c_func
 (paren
-id|user_mask
+id|mask
 comma
 id|nodes
 comma
@@ -2163,11 +2168,13 @@ id|sys_get_mempolicy
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|policy
 comma
 r_int
 r_int
+id|__user
 op_star
 id|nmask
 comma
@@ -2507,10 +2514,12 @@ id|compat_get_mempolicy
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|policy
 comma
 r_int
+id|__user
 op_star
 id|nmask
 comma
@@ -2529,6 +2538,7 @@ id|err
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|nm
 op_assign
@@ -3589,7 +3599,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Slow path of a mpol destructor. */
 DECL|function|__mpol_free
-r_extern
 r_void
 id|__mpol_free
 c_func
