@@ -694,6 +694,8 @@ r_sizeof
 r_struct
 id|tss_struct
 )paren
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -738,6 +740,8 @@ comma
 id|size
 op_star
 l_int|8
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace
