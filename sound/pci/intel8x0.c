@@ -13672,6 +13672,11 @@ id|val
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
+id|val
+op_and_assign
+op_complement
+l_int|0x100
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13734,6 +13739,11 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef SUPPORT_MIDI
+id|val
+op_and_assign
+op_complement
+l_int|0x20
+suffix:semicolon
 r_if
 c_cond
 (paren
