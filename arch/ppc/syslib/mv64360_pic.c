@@ -1462,7 +1462,18 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-multiline_comment|/* Register CPU interface error interrupt handler */
+multiline_comment|/* Clear old errors and register CPU interface error intr handler */
+id|mv64x60_write
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_CPU_ERR_CAUSE
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1515,7 +1526,18 @@ comma
 l_int|0x000000ff
 )paren
 suffix:semicolon
-multiline_comment|/* Register internal SRAM error interrupt handler */
+multiline_comment|/* Clear old errors and register internal SRAM error intr handler */
+id|mv64x60_write
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64360_SRAM_ERR_CAUSE
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1577,7 +1599,18 @@ op_or_assign
 l_int|0x1
 suffix:semicolon
 multiline_comment|/* enable DPErr on 64460 */
-multiline_comment|/* Register PCI 0 error interrupt handler */
+multiline_comment|/* Clear old errors and register PCI 0 error intr handler */
+id|mv64x60_write
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_PCI0_ERR_CAUSE
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1634,7 +1667,18 @@ comma
 id|mask
 )paren
 suffix:semicolon
-multiline_comment|/* Register PCI 1 error interrupt handler */
+multiline_comment|/* Clear old errors and register PCI 1 error intr handler */
+id|mv64x60_write
+c_func
+(paren
+op_amp
+id|bh
+comma
+id|MV64x60_PCI1_ERR_CAUSE
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
