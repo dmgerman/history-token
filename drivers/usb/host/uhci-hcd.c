@@ -1738,7 +1738,7 @@ op_assign
 r_int
 r_int
 )paren
-id|hcd-&gt;regs
+id|hcd-&gt;rsrc_start
 suffix:semicolon
 multiline_comment|/* Kick BIOS off this hardware and reset, so we won&squot;t get&n;&t; * interrupts from any previous setup.&n;&t; */
 id|reset_hc
@@ -1804,21 +1804,10 @@ id|dentry
 suffix:semicolon
 id|io_size
 op_assign
-id|pci_resource_len
-c_func
 (paren
-id|to_pci_dev
-c_func
-(paren
-id|uhci_dev
-c_func
-(paren
-id|uhci
+r_int
 )paren
-)paren
-comma
-id|hcd-&gt;region
-)paren
+id|hcd-&gt;rsrc_len
 suffix:semicolon
 id|dentry
 op_assign
