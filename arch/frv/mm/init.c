@@ -372,13 +372,6 @@ id|zones_size
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_MMU
-multiline_comment|/* high memory (if present) starts after the last mapped page&n;&t; * - this is used by kmap()&n;&t; */
-id|highmem_start_page
-op_assign
-id|mem_map
-op_plus
-id|num_mappedpages
-suffix:semicolon
 multiline_comment|/* initialise init&squot;s MMU context */
 id|init_new_context
 c_func
