@@ -3881,7 +3881,7 @@ comma
 id|whichfork
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We know that the size is legal (it&squot;s checked in iformat_btree)&n;&t; */
+multiline_comment|/*&n;&t; * We know that the size is valid (it&squot;s checked in iformat_btree)&n;&t; */
 id|ifp-&gt;if_u1.if_extents
 op_assign
 id|kmem_alloc

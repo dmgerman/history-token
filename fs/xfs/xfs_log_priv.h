@@ -35,7 +35,7 @@ mdefine_line|#define XLOG_MAX_ICLOGS&t;&t;8
 DECL|macro|XLOG_CALLBACK_SIZE
 mdefine_line|#define XLOG_CALLBACK_SIZE&t;10
 DECL|macro|XLOG_HEADER_MAGIC_NUM
-mdefine_line|#define XLOG_HEADER_MAGIC_NUM&t;0xFEEDbabe&t;/* Illegal cycle number */
+mdefine_line|#define XLOG_HEADER_MAGIC_NUM&t;0xFEEDbabe&t;/* Invalid cycle number */
 DECL|macro|XLOG_VERSION_1
 mdefine_line|#define XLOG_VERSION_1&t;&t;1
 DECL|macro|XLOG_VERSION_2

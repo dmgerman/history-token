@@ -2941,7 +2941,7 @@ c_func
 id|log
 )paren
 suffix:semicolon
-multiline_comment|/* Also an illegal lsn.  1 implies that we aren&squot;t passing in a legal&n;&t; * tail_lsn.&n;&t; */
+multiline_comment|/* Also an invalid lsn.  1 implies that we aren&squot;t passing in a valid&n;&t; * tail_lsn.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4135,7 +4135,7 @@ suffix:colon
 id|xlog_panic
 c_func
 (paren
-l_string|&quot;XFS: Illegal blocksize&quot;
+l_string|&quot;XFS: Invalid blocksize&quot;
 )paren
 suffix:semicolon
 r_break
@@ -12112,7 +12112,7 @@ l_int|0
 id|xlog_panic
 c_func
 (paren
-l_string|&quot;xlog_verify_iclog: illegal ptr&quot;
+l_string|&quot;xlog_verify_iclog: invalid ptr&quot;
 )paren
 suffix:semicolon
 id|icptr
@@ -12173,7 +12173,7 @@ id|XLOG_HEADER_MAGIC_NUM
 id|xlog_panic
 c_func
 (paren
-l_string|&quot;xlog_verify_iclog: illegal magic num&quot;
+l_string|&quot;xlog_verify_iclog: invalid magic num&quot;
 )paren
 suffix:semicolon
 r_for
@@ -12425,7 +12425,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;xlog_verify_iclog: illegal clientid %d op 0x%p offset 0x%x&quot;
+l_string|&quot;xlog_verify_iclog: invalid clientid %d op 0x%p offset 0x%x&quot;
 comma
 id|clientid
 comma

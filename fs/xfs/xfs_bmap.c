@@ -10006,8 +10006,8 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* realtime allocation length */
 macro_line|#endif
-DECL|macro|ISLEGAL
-mdefine_line|#define&t;ISLEGAL(x,y)&t;&bslash;&n;&t;(rt ? &bslash;&n;&t;&t;(x) &lt; mp-&gt;m_sb.sb_rblocks : &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) == XFS_FSB_TO_AGNO(mp, y) &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) &lt; mp-&gt;m_sb.sb_agcount &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGBNO(mp, x) &lt; mp-&gt;m_sb.sb_agblocks)
+DECL|macro|ISVALID
+mdefine_line|#define&t;ISVALID(x,y)&t;&bslash;&n;&t;(rt ? &bslash;&n;&t;&t;(x) &lt; mp-&gt;m_sb.sb_rblocks : &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) == XFS_FSB_TO_AGNO(mp, y) &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) &lt; mp-&gt;m_sb.sb_agcount &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGBNO(mp, x) &lt; mp-&gt;m_sb.sb_agblocks)
 multiline_comment|/*&n;&t; * Set up variables.&n;&t; */
 id|mp
 op_assign
@@ -10246,7 +10246,7 @@ id|ap-&gt;alen
 suffix:colon
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If we&squot;re now overlapping the next or previous extent that&n;&t;&t; * means we can&squot;t fit an extsz piece in this hole.  Just move&n;&t;&t; * the start forward to the first legal spot and set&n;&t;&t; * the length so we hit the end.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If we&squot;re now overlapping the next or previous extent that&n;&t;&t; * means we can&squot;t fit an extsz piece in this hole.  Just move&n;&t;&t; * the start forward to the first valid spot and set&n;&t;&t; * the length so we hit the end.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10436,7 +10436,7 @@ id|ap-&gt;alen
 op_div
 id|mp-&gt;m_sb.sb_rextsize
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the old value was close enough to MAXEXTLEN that&n;&t;&t; * we rounded up to it, cut it back so it&squot;s legal again.&n;&t;&t; * Note that if it&squot;s a really large request (bigger than&n;&t;&t; * MAXEXTLEN), we don&squot;t hear about that number, and can&squot;t&n;&t;&t; * adjust the starting point to match it.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the old value was close enough to MAXEXTLEN that&n;&t;&t; * we rounded up to it, cut it back so it&squot;s valid again.&n;&t;&t; * Note that if it&squot;s a really large request (bigger than&n;&t;&t; * MAXEXTLEN), we don&squot;t hear about that number, and can&squot;t&n;&t;&t; * adjust the starting point to match it.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10548,7 +10548,7 @@ c_func
 id|ap-&gt;prevp-&gt;br_startblock
 )paren
 op_logical_and
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|ap-&gt;prevp-&gt;br_startblock
@@ -10581,7 +10581,7 @@ c_cond
 (paren
 id|adjust
 op_logical_and
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|ap-&gt;rval
@@ -10648,7 +10648,7 @@ op_plus
 id|ap-&gt;prevp-&gt;br_blockcount
 )paren
 op_logical_and
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|prevbno
@@ -10670,7 +10670,7 @@ op_plus
 id|ap-&gt;prevp-&gt;br_blockcount
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Figure the startblock based on the previous block&squot;s&n;&t;&t;&t; * end and the gap size.&n;&t;&t;&t; * Heuristic!&n;&t;&t;&t; * If the gap is large relative to the piece we&squot;re&n;&t;&t;&t; * allocating, or using it gives us an illegal block&n;&t;&t;&t; * number, then just use the end of the previous block.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Figure the startblock based on the previous block&squot;s&n;&t;&t;&t; * end and the gap size.&n;&t;&t;&t; * Heuristic!&n;&t;&t;&t; * If the gap is large relative to the piece we&squot;re&n;&t;&t;&t; * allocating, or using it gives us an invalid block&n;&t;&t;&t; * number, then just use the end of the previous block.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10680,7 +10680,7 @@ id|XFS_ALLOC_GAP_UNITS
 op_star
 id|ap-&gt;alen
 op_logical_and
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|prevbno
@@ -10756,7 +10756,7 @@ id|gotbno
 op_assign
 id|ap-&gt;gotp-&gt;br_startblock
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Heuristic!&n;&t;&t;&t; * If the gap is large relative to the piece we&squot;re&n;&t;&t;&t; * allocating, or using it gives us an illegal block&n;&t;&t;&t; * number, then just use the start of the next block&n;&t;&t;&t; * offset by our length.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Heuristic!&n;&t;&t;&t; * If the gap is large relative to the piece we&squot;re&n;&t;&t;&t; * allocating, or using it gives us an invalid block&n;&t;&t;&t; * number, then just use the start of the next block&n;&t;&t;&t; * offset by our length.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10766,7 +10766,7 @@ id|XFS_ALLOC_GAP_UNITS
 op_star
 id|ap-&gt;alen
 op_logical_and
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|gotbno
@@ -10784,7 +10784,7 @@ r_else
 r_if
 c_cond
 (paren
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|gotbno
@@ -11991,8 +11991,8 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-DECL|macro|ISLEGAL
-macro_line|#undef&t;ISLEGAL
+DECL|macro|ISVALID
+macro_line|#undef&t;ISVALID
 )brace
 multiline_comment|/*&n; * Transform a btree format file with only one leaf node, where the&n; * extents list will fit in the inode, into an extents format file.&n; * Since the extent list is already in-core, all we have to do is&n; * give up the space for the btree root and pitch the leaf block.&n; */
 id|STATIC
@@ -15072,7 +15072,7 @@ op_star
 id|ifp
 suffix:semicolon
 multiline_comment|/* inode fork pointer */
-multiline_comment|/*&n;&t; * We don&squot;t want to deal with the case of keeping inode data inline yet.&n;&t; * So sending the data fork of a regular inode is illegal.&n;&t; */
+multiline_comment|/*&n;&t; * We don&squot;t want to deal with the case of keeping inode data inline yet.&n;&t; * So sending the data fork of a regular inode is invalid.&n;&t; */
 id|ASSERT
 c_func
 (paren
