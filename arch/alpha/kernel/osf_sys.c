@@ -231,6 +231,7 @@ id|basep
 suffix:semicolon
 DECL|member|count
 r_int
+r_int
 id|count
 suffix:semicolon
 DECL|member|error
@@ -285,6 +286,7 @@ op_star
 )paren
 id|__buf
 suffix:semicolon
+r_int
 r_int
 id|reclen
 op_assign
@@ -6068,6 +6070,10 @@ c_cond
 (paren
 id|addr
 op_ne
+(paren
+r_int
+r_int
+)paren
 op_minus
 id|ENOMEM
 )paren
@@ -6096,6 +6102,10 @@ c_cond
 (paren
 id|addr
 op_ne
+(paren
+r_int
+r_int
+)paren
 op_minus
 id|ENOMEM
 )paren

@@ -943,6 +943,7 @@ op_assign
 id|VMALLOC_START
 suffix:semicolon
 r_int
+r_int
 id|i
 comma
 id|j

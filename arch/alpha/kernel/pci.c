@@ -1823,6 +1823,9 @@ r_return
 id|hose
 ques
 c_cond
+(paren
+r_int
+)paren
 id|hose-&gt;index
 suffix:colon
 op_minus
