@@ -79,6 +79,13 @@ DECL|struct|cpu_model
 r_struct
 id|cpu_model
 (brace
+DECL|member|cpu_id
+r_const
+r_struct
+id|cpu_id
+op_star
+id|cpu_id
+suffix:semicolon
 DECL|member|model_name
 r_const
 r_char
@@ -99,6 +106,23 @@ suffix:semicolon
 multiline_comment|/* clock/voltage pairs */
 )brace
 suffix:semicolon
+r_static
+r_int
+id|centrino_verify_cpu_id
+c_func
+(paren
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+comma
+r_const
+r_struct
+id|cpu_id
+op_star
+id|x
+)paren
+suffix:semicolon
 multiline_comment|/* Operating points for current CPU */
 DECL|variable|centrino_model
 r_static
@@ -112,12 +136,12 @@ multiline_comment|/* Computes the correct form for IA32_PERF_CTL MSR for a parti
 DECL|macro|OP
 mdefine_line|#define OP(mhz, mv)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;.frequency = (mhz) * 1000,&t;&t;&t;&t;&bslash;&n;&t;&t;.index = (((mhz)/100) &lt;&lt; 8) | ((mv - 700) / 16)&t;&t;&bslash;&n;&t;}
 multiline_comment|/* &n; * These voltage tables were derived from the Intel Pentium M&n; * datasheet, document 25261202.pdf, Table 5.  I have verified they&n; * are consistent with my IBM ThinkPad X31, which has a 1.3GHz Pentium&n; * M.&n; */
-multiline_comment|/* Ultra Low Voltage Intel Pentium M processor 900MHz */
-DECL|variable|op_900
+multiline_comment|/* Ultra Low Voltage Intel Pentium M processor 900MHz (Banias) */
+DECL|variable|banias_900
 r_static
 r_struct
 id|cpufreq_frequency_table
-id|op_900
+id|banias_900
 (braket
 )braket
 op_assign
@@ -154,12 +178,12 @@ id|CPUFREQ_TABLE_END
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Ultra Low Voltage Intel Pentium M processor 1000MHz */
-DECL|variable|op_1000
+multiline_comment|/* Ultra Low Voltage Intel Pentium M processor 1000MHz (Banias) */
+DECL|variable|banias_1000
 r_static
 r_struct
 id|cpufreq_frequency_table
-id|op_1000
+id|banias_1000
 (braket
 )braket
 op_assign
@@ -204,12 +228,12 @@ id|CPUFREQ_TABLE_END
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Low Voltage Intel Pentium M processor 1.10GHz */
-DECL|variable|op_1100
+multiline_comment|/* Low Voltage Intel Pentium M processor 1.10GHz (Banias) */
+DECL|variable|banias_1100
 r_static
 r_struct
 id|cpufreq_frequency_table
-id|op_1100
+id|banias_1100
 (braket
 )braket
 op_assign
@@ -262,12 +286,12 @@ id|CPUFREQ_TABLE_END
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Low Voltage Intel Pentium M processor 1.20GHz */
-DECL|variable|op_1200
+multiline_comment|/* Low Voltage Intel Pentium M processor 1.20GHz (Banias) */
+DECL|variable|banias_1200
 r_static
 r_struct
 id|cpufreq_frequency_table
-id|op_1200
+id|banias_1200
 (braket
 )braket
 op_assign
@@ -328,12 +352,12 @@ id|CPUFREQ_TABLE_END
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Intel Pentium M processor 1.30GHz */
-DECL|variable|op_1300
+multiline_comment|/* Intel Pentium M processor 1.30GHz (Banias) */
+DECL|variable|banias_1300
 r_static
 r_struct
 id|cpufreq_frequency_table
-id|op_1300
+id|banias_1300
 (braket
 )braket
 op_assign
@@ -386,12 +410,12 @@ id|CPUFREQ_TABLE_END
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Intel Pentium M processor 1.40GHz */
-DECL|variable|op_1400
+multiline_comment|/* Intel Pentium M processor 1.40GHz (Banias) */
+DECL|variable|banias_1400
 r_static
 r_struct
 id|cpufreq_frequency_table
-id|op_1400
+id|banias_1400
 (braket
 )braket
 op_assign
@@ -444,12 +468,12 @@ id|CPUFREQ_TABLE_END
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Intel Pentium M processor 1.50GHz */
-DECL|variable|op_1500
+multiline_comment|/* Intel Pentium M processor 1.50GHz (Banias) */
+DECL|variable|banias_1500
 r_static
 r_struct
 id|cpufreq_frequency_table
-id|op_1500
+id|banias_1500
 (braket
 )braket
 op_assign
@@ -510,12 +534,12 @@ id|CPUFREQ_TABLE_END
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Intel Pentium M processor 1.60GHz */
-DECL|variable|op_1600
+multiline_comment|/* Intel Pentium M processor 1.60GHz (Banias) */
+DECL|variable|banias_1600
 r_static
 r_struct
 id|cpufreq_frequency_table
-id|op_1600
+id|banias_1600
 (braket
 )braket
 op_assign
@@ -576,12 +600,12 @@ id|CPUFREQ_TABLE_END
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Intel Pentium M processor 1.70GHz */
-DECL|variable|op_1700
+multiline_comment|/* Intel Pentium M processor 1.70GHz (Banias) */
+DECL|variable|banias_1700
 r_static
 r_struct
 id|cpufreq_frequency_table
-id|op_1700
+id|banias_1700
 (braket
 )braket
 op_assign
@@ -644,10 +668,10 @@ id|CPUFREQ_TABLE_END
 suffix:semicolon
 DECL|macro|OP
 macro_line|#undef OP
-DECL|macro|_CPU
-mdefine_line|#define _CPU(max, name)&t;&bslash;&n;&t;{ &quot;Intel(R) Pentium(R) M processor &quot; name &quot;MHz&quot;, (max)*1000, op_##max }
-DECL|macro|CPU
-mdefine_line|#define CPU(max)&t;_CPU(max, #max)
+DECL|macro|_BANIAS
+mdefine_line|#define _BANIAS(cpuid, max, name)&t;&bslash;&n;{&t;.cpu_id&t;&t;= cpuid,&t;&bslash;&n;&t;.model_name&t;= &quot;Intel(R) Pentium(R) M processor &quot; name &quot;MHz&quot;, &bslash;&n;&t;.max_freq&t;= (max)*1000,&t;&bslash;&n;&t;.op_points&t;= banias_##max,&t;&bslash;&n;}
+DECL|macro|BANIAS
+mdefine_line|#define BANIAS(max)&t;_BANIAS(&amp;cpu_id_banias, max, #max)
 multiline_comment|/* CPU models, their operating frequency range, and freq/voltage&n;   operating points */
 DECL|variable|models
 r_static
@@ -658,57 +682,60 @@ id|models
 )braket
 op_assign
 (brace
-id|_CPU
+id|_BANIAS
 c_func
 (paren
+op_amp
+id|cpu_id_banias
+comma
 l_int|900
 comma
 l_string|&quot; 900&quot;
 )paren
 comma
-id|CPU
+id|BANIAS
 c_func
 (paren
 l_int|1000
 )paren
 comma
-id|CPU
+id|BANIAS
 c_func
 (paren
 l_int|1100
 )paren
 comma
-id|CPU
+id|BANIAS
 c_func
 (paren
 l_int|1200
 )paren
 comma
-id|CPU
+id|BANIAS
 c_func
 (paren
 l_int|1300
 )paren
 comma
-id|CPU
+id|BANIAS
 c_func
 (paren
 l_int|1400
 )paren
 comma
-id|CPU
+id|BANIAS
 c_func
 (paren
 l_int|1500
 )paren
 comma
-id|CPU
+id|BANIAS
 c_func
 (paren
 l_int|1600
 )paren
 comma
-id|CPU
+id|BANIAS
 c_func
 (paren
 l_int|1700
@@ -720,8 +747,10 @@ comma
 )brace
 )brace
 suffix:semicolon
-DECL|macro|CPU
-macro_line|#undef CPU
+DECL|macro|_BANIAS
+macro_line|#undef _BANIAS
+DECL|macro|BANIAS
+macro_line|#undef BANIAS
 DECL|function|centrino_cpu_init_table
 r_static
 r_int
@@ -767,6 +796,7 @@ op_increment
 r_if
 c_cond
 (paren
+(paren
 id|strcmp
 c_func
 (paren
@@ -776,6 +806,18 @@ id|model-&gt;model_name
 )paren
 op_eq
 l_int|0
+)paren
+op_logical_and
+(paren
+op_logical_neg
+id|centrino_verify_cpu_id
+c_func
+(paren
+id|cpu
+comma
+id|model-&gt;cpu_id
+)paren
+)paren
 )paren
 r_break
 suffix:semicolon
