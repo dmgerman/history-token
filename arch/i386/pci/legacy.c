@@ -123,7 +123,7 @@ l_string|&quot;Found device at %02x:%02x [%04x]&bslash;n&quot;
 comma
 id|n
 comma
-id|dev-&gt;devfn
+id|devfn
 comma
 id|l
 )paren
