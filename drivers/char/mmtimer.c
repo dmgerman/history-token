@@ -126,7 +126,6 @@ id|mmtimer_ioctl
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Comparators and their associated info.  Shub has&n; * three comparison registers.&n; */
 multiline_comment|/*&n; * We only have comparison registers RTC1-4 currently available per&n; * node.  RTC0 is used by SAL.&n; */
 DECL|macro|NUM_COMPARATORS
 mdefine_line|#define NUM_COMPARATORS 3
@@ -599,7 +598,7 @@ id|expires
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This function must be called with interrupts disabled and preemption off&n; * in order to insure that the setup succeeds in a deterministic time frame.&n; * It will check if the interrupt setup succeeded.&n; * mmtimer_setup will return the cycles that we were too late if the&n; * initialization failed.&n; */
+multiline_comment|/*&n; * This function must be called with interrupts disabled and preemption off&n; * in order to insure that the setup succeeds in a deterministic time frame.&n; * It will check if the interrupt setup succeeded.&n; */
 DECL|function|mmtimer_setup
 r_static
 r_int
@@ -615,9 +614,6 @@ r_int
 id|expires
 )paren
 (brace
-r_int
-id|diff
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -659,45 +655,26 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* We might&squot;ve missed our expiration time */
-id|diff
-op_assign
+r_if
+c_cond
+(paren
 id|rtc_time
 c_func
 (paren
 )paren
-op_minus
+OL
 id|expires
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|diff
-OG
-l_int|0
 )paren
-(brace
-r_if
-c_cond
-(paren
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * If an interrupt is already pending then its okay&n;&t; * if not then we failed&n;&t; */
+r_return
 id|mmtimer_int_pending
 c_func
 (paren
 id|comparator
 )paren
-)paren
-(brace
-multiline_comment|/* We&squot;ll get an interrupt for this once we&squot;re done */
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* Looks like we missed it */
-r_return
-id|diff
-suffix:semicolon
-)brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|mmtimer_disable_int
@@ -1492,6 +1469,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
 id|mmtimer_setup
 c_func
 (paren
@@ -2147,6 +2125,10 @@ r_struct
 id|timespec
 id|n
 suffix:semicolon
+r_int
+r_int
+id|now
+suffix:semicolon
 id|getnstimeofday
 c_func
 (paren
@@ -2154,13 +2136,30 @@ op_amp
 id|n
 )paren
 suffix:semicolon
-id|when
-op_sub_assign
+id|now
+op_assign
 id|timespec_to_ns
 c_func
 (paren
 id|n
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|when
+OG
+id|now
+)paren
+id|when
+op_sub_assign
+id|now
+suffix:semicolon
+r_else
+multiline_comment|/* Fire the timer immediately */
+id|when
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Convert to sgi clock period. Need to keep rtc_time() as near as possible&n;&t; * to getnstimeofday() in order to be as faithful as possible to the time&n;&t; * specified.&n;&t; */
@@ -2378,6 +2377,7 @@ l_int|0
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mmtimer_setup
 c_func
 (paren
