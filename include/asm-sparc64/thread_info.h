@@ -251,6 +251,8 @@ mdefine_line|#define THREAD_SIZE PAGE_SIZE
 DECL|macro|THREAD_SHIFT
 mdefine_line|#define THREAD_SHIFT PAGE_SHIFT
 macro_line|#endif /* PAGE_SHIFT == 13 */
+DECL|macro|PREEMPT_ACTIVE
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|INIT_THREAD_INFO

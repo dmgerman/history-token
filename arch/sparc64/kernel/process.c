@@ -208,17 +208,11 @@ c_func
 id|TIF_NEED_RESCHED
 )paren
 )paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#endif
 r_extern
