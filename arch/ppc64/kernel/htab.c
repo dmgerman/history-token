@@ -3372,22 +3372,6 @@ id|pgdir
 op_assign
 id|mm-&gt;pgd
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_MM
-comma
-l_string|&quot;hash_page ea = 0x%16.16lx, va = 0x%16.16lx&bslash;n          current = 0x%16.16lx, access = %lx&bslash;n&quot;
-comma
-id|ea
-comma
-id|va
-comma
-id|current
-comma
-id|access
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3395,12 +3379,10 @@ id|pgdir
 op_eq
 l_int|NULL
 )paren
-(brace
 r_return
 l_int|1
 suffix:semicolon
-)brace
-multiline_comment|/* Lock the Linux page table to prevent mmap and kswapd&n;&t; * from modifying entries while we search and update&n;&t; */
+multiline_comment|/*&n;&t; * Lock the Linux page table to prevent mmap and kswapd&n;&t; * from modifying entries while we search and update&n;&t; */
 id|spin_lock
 c_func
 (paren
@@ -4112,7 +4094,6 @@ id|slot
 comma
 id|flags
 suffix:semicolon
-multiline_comment|/* Local copy of first doubleword of HPTE */
 r_union
 (brace
 r_int
@@ -4237,7 +4218,6 @@ id|_PAGE_GROUP_IX
 op_rshift
 l_int|12
 suffix:semicolon
-multiline_comment|/* If there is an HPTE for this page it is indexed by slot */
 id|spin_lock_irqsave
 c_func
 (paren
@@ -4247,6 +4227,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Id prefer to flush even if our hpte was stolen, but the new&n;&t; * entry could be bolted - Anton&n;&t; */
 id|hpte_dw0.d
 op_assign
 id|ppc_md
