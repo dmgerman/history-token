@@ -4546,7 +4546,7 @@ c_cond
 (paren
 id|dev-&gt;active
 op_logical_or
-id|dev-&gt;ro
+id|dev-&gt;lock_resources
 )paren
 r_return
 op_minus
