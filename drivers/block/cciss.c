@@ -8146,15 +8146,6 @@ c_loop
 id|bio
 )paren
 (brace
-r_int
-id|nsecs
-op_assign
-id|bio_sectors
-c_func
-(paren
-id|bio
-)paren
-suffix:semicolon
 r_struct
 id|bio
 op_star
@@ -8169,7 +8160,11 @@ suffix:semicolon
 id|blk_finished_io
 c_func
 (paren
-id|nsecs
+id|bio_sectors
+c_func
+(paren
+id|bio
+)paren
 )paren
 suffix:semicolon
 id|bio_endio
@@ -8178,8 +8173,6 @@ c_func
 id|bio
 comma
 id|status
-comma
-id|nsecs
 )paren
 suffix:semicolon
 id|bio

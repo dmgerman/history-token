@@ -133,8 +133,6 @@ c_func
 id|bio
 comma
 id|uptodate
-comma
-id|nsect
 )paren
 suffix:semicolon
 )brace
