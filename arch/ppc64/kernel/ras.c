@@ -185,9 +185,11 @@ suffix:semicolon
 id|request_irq
 c_func
 (paren
+id|irq_offset_up
+c_func
+(paren
 id|virq
-op_plus
-id|NUM_8259_INTERRUPTS
+)paren
 comma
 id|ras_error_interrupt
 comma
@@ -301,9 +303,11 @@ suffix:semicolon
 id|request_irq
 c_func
 (paren
+id|irq_offset_up
+c_func
+(paren
 id|virq
-op_plus
-id|NUM_8259_INTERRUPTS
+)paren
 comma
 id|ras_epow_interrupt
 comma

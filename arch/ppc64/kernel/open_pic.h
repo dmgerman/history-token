@@ -4,6 +4,7 @@ DECL|macro|_PPC64_KERNEL_OPEN_PIC_H
 mdefine_line|#define _PPC64_KERNEL_OPEN_PIC_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 DECL|macro|OPENPIC_SIZE
 mdefine_line|#define OPENPIC_SIZE&t;0x40000
 multiline_comment|/* OpenPIC IRQ controller structure */
@@ -112,33 +113,5 @@ id|u_int
 id|cpumask
 )paren
 suffix:semicolon
-DECL|function|openpic_to_irq
-r_extern
-r_inline
-r_int
-id|openpic_to_irq
-c_func
-(paren
-r_int
-id|irq
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|systemcfg-&gt;platform
-op_eq
-id|PLATFORM_POWERMAC
-)paren
-r_return
-id|irq
-suffix:semicolon
-r_return
-id|irq
-op_add_assign
-id|NUM_8259_INTERRUPTS
-suffix:semicolon
-)brace
-multiline_comment|/*extern int open_pic_irq_offset;*/
 macro_line|#endif /* _PPC64_KERNEL_OPEN_PIC_H */
 eof

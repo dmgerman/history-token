@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/vio.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
-macro_line|#include &quot;open_pic.h&quot;
 DECL|macro|DBGENTER
 mdefine_line|#define DBGENTER() pr_debug(&quot;%s entered&bslash;n&quot;, __FUNCTION__)
 r_extern
@@ -919,7 +918,7 @@ suffix:semicolon
 r_else
 id|viodev-&gt;irq
 op_assign
-id|openpic_to_irq
+id|irq_offset_up
 c_func
 (paren
 id|virq

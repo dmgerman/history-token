@@ -14,8 +14,8 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
-macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -648,6 +648,10 @@ c_func
 op_amp
 id|udbg_console
 )paren
+suffix:semicolon
+id|__irq_offset_value
+op_assign
+id|NUM_ISA_INTERRUPTS
 suffix:semicolon
 id|finish_device_tree
 c_func

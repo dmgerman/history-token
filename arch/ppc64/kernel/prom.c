@@ -12373,7 +12373,7 @@ id|i
 dot
 id|line
 op_assign
-id|openpic_to_irq
+id|irq_offset_up
 c_func
 (paren
 id|virq
@@ -16102,7 +16102,7 @@ id|i
 dot
 id|line
 op_assign
-id|openpic_to_irq
+id|irq_offset_up
 c_func
 (paren
 id|virq
