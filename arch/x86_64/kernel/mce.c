@@ -231,6 +231,7 @@ id|m
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;CPU %d: Machine Check Exception: %16Lx Bank %d: %016Lx&bslash;n&quot;
 comma
 id|m-&gt;cpu
@@ -251,6 +252,7 @@ id|m-&gt;rip
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;RIP%s %02x:&lt;%016Lx&gt; &quot;
 comma
 op_logical_neg
@@ -295,6 +297,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;TSC %Lx &quot;
 comma
 id|m-&gt;tsc
@@ -821,9 +824,10 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* When the machine was in user space and the CPU didn&squot;t get&n;&t;&t;   confused it&squot;s normally not necessary to panic, unless you are &n;&t;&t;   paranoid (tolerant == 0) */
+multiline_comment|/* When the machine was in user space and the CPU didn&squot;t get&n;&t;&t;   confused it&squot;s normally not necessary to panic, unless you &n;&t;&t;   are paranoid (tolerant == 0)&n;&n;&t;&t;   RED-PEN could be more tolerant for MCEs in idle,&n;&t;&t;   but most likely they occur at boot anyways, where&n;&t;&t;   it is best to just halt the machine. */
 r_if
 c_cond
+(paren
 (paren
 op_logical_neg
 id|user_space
@@ -835,6 +839,14 @@ id|tolerant
 OL
 l_int|2
 )paren
+)paren
+op_logical_or
+(paren
+r_int
+)paren
+id|current-&gt;pid
+op_le
+l_int|1
 )paren
 id|mce_panic
 c_func
