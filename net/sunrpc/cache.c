@@ -1222,6 +1222,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atomic_read
 c_func
 (paren
@@ -1229,7 +1230,7 @@ op_amp
 id|ch-&gt;refcnt
 )paren
 )paren
-r_continue
+r_break
 suffix:semicolon
 )brace
 r_if
