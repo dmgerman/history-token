@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -2235,12 +2236,14 @@ op_amp
 id|hw
 comma
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 id|bay-&gt;cd_base
 comma
 (paren
-id|ide_ioreg_t
+r_int
+r_int
 )paren
 l_int|0
 comma
@@ -2251,6 +2254,10 @@ id|hw.irq
 op_assign
 id|bay-&gt;cd_irq
 suffix:semicolon
+id|hw.chipset
+op_assign
+id|ide_pmac
+suffix:semicolon
 id|bay-&gt;cd_index
 op_assign
 id|ide_register_hw
@@ -2258,6 +2265,8 @@ c_func
 (paren
 op_amp
 id|hw
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|pmu_resume
@@ -3390,7 +3399,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|media_bay_init
-id|device_initcall
+id|subsys_initcall
 c_func
 (paren
 id|media_bay_init

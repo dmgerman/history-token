@@ -37,6 +37,8 @@ DECL|macro|PMU_INT_ACK
 mdefine_line|#define PMU_INT_ACK&t;&t;0x78&t;/* read interrupt bits */
 DECL|macro|PMU_SHUTDOWN
 mdefine_line|#define PMU_SHUTDOWN&t;&t;0x7e&t;/* turn power off */
+DECL|macro|PMU_CPU_SPEED
+mdefine_line|#define PMU_CPU_SPEED&t;&t;0x7d&t;/* control CPU speed on some models */
 DECL|macro|PMU_SLEEP
 mdefine_line|#define PMU_SLEEP&t;&t;0x7f&t;/* put CPU to sleep */
 DECL|macro|PMU_POWER_EVENTS
@@ -416,6 +418,14 @@ DECL|macro|PMU_BATT_PRESENT
 mdefine_line|#define PMU_BATT_PRESENT&t;0x00000001
 DECL|macro|PMU_BATT_CHARGING
 mdefine_line|#define PMU_BATT_CHARGING&t;0x00000002
+DECL|macro|PMU_BATT_TYPE_MASK
+mdefine_line|#define PMU_BATT_TYPE_MASK&t;0x000000f0
+DECL|macro|PMU_BATT_TYPE_SMART
+mdefine_line|#define PMU_BATT_TYPE_SMART&t;0x00000010 /* Smart battery */
+DECL|macro|PMU_BATT_TYPE_HOOPER
+mdefine_line|#define PMU_BATT_TYPE_HOOPER&t;0x00000020 /* 3400/3500 */
+DECL|macro|PMU_BATT_TYPE_COMET
+mdefine_line|#define PMU_BATT_TYPE_COMET&t;0x00000030 /* 2400 */
 DECL|struct|pmu_battery_info
 r_struct
 id|pmu_battery_info
