@@ -1,6 +1,72 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-rpc/acornfb.h&n; *&n; *  Copyright (C) 1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  AcornFB architecture specific code&n; */
-DECL|macro|acornfb_valid_pixrate
-mdefine_line|#define acornfb_valid_pixrate(rate) (1)
+DECL|macro|acornfb_bandwidth
+mdefine_line|#define acornfb_bandwidth(var) ((var)-&gt;pixclock * 8 / (var)-&gt;bits_per_pixel)
+r_static
+r_inline
+r_int
+DECL|function|acornfb_valid_pixrate
+id|acornfb_valid_pixrate
+c_func
+(paren
+r_struct
+id|fb_var_screeninfo
+op_star
+id|var
+)paren
+(brace
+id|u_long
+id|limit
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|var-&gt;pixclock
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; * Limits below are taken from RISC OS bandwidthlimit file&n;&t; */
+r_if
+c_cond
+(paren
+id|current_par.using_vram
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|current_par.vram_half_sam
+op_eq
+l_int|2048
+)paren
+id|limit
+op_assign
+l_int|6578
+suffix:semicolon
+r_else
+id|limit
+op_assign
+l_int|13157
+suffix:semicolon
+)brace
+r_else
+(brace
+id|limit
+op_assign
+l_int|26315
+suffix:semicolon
+)brace
+r_return
+id|acornfb_bandwidth
+c_func
+(paren
+id|var
+)paren
+op_ge
+id|limit
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Try to find the best PLL parameters for the pixel clock.&n; * This algorithm seems to give best predictable results,&n; * and produces the same values as detailed in the VIDC20&n; * data sheet.&n; */
 r_static
 r_inline
@@ -178,8 +244,6 @@ id|var
 (brace
 id|u_int
 id|div
-comma
-id|bandwidth
 suffix:semicolon
 multiline_comment|/* Select pixel-clock divisor to keep PLL in range */
 id|div
@@ -292,14 +356,41 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Calculate bandwidth */
+multiline_comment|/*&n;&t; * With VRAM, the FIFO can be set to the highest possible setting&n;&t; * because there are no latency considerations for other memory&n;&t; * accesses. However, in 64 bit bus mode the FIFO preload value&n;&t; * must not be set to VIDC20_CTRL_FIFO_28 because this will let&n;&t; * the FIFO overflow. See VIDC20 manual page 33 (6.0 Setting the&n;&t; * FIFO preload value).&n;&t; */
+r_if
+c_cond
+(paren
+id|current_par.using_vram
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|current_par.vram_half_sam
+op_eq
+l_int|2048
+)paren
+id|vidc-&gt;control
+op_or_assign
+id|VIDC20_CTRL_FIFO_24
+suffix:semicolon
+r_else
+id|vidc-&gt;control
+op_or_assign
+id|VIDC20_CTRL_FIFO_28
+suffix:semicolon
+)brace
+r_else
+(brace
+r_int
+r_int
 id|bandwidth
 op_assign
-id|var-&gt;pixclock
-op_star
-l_int|8
-op_div
-id|var-&gt;bits_per_pixel
+id|acornfb_bandwidth
+c_func
+(paren
+id|var
+)paren
 suffix:semicolon
 multiline_comment|/* Encode bandwidth as VIDC20 setting */
 r_if
@@ -309,11 +400,11 @@ id|bandwidth
 OG
 l_int|33334
 )paren
+multiline_comment|/* &lt; 30.0MB/s */
 id|vidc-&gt;control
 op_or_assign
 id|VIDC20_CTRL_FIFO_16
 suffix:semicolon
-multiline_comment|/* &lt; 30.0MB/s */
 r_else
 r_if
 c_cond
@@ -322,11 +413,11 @@ id|bandwidth
 OG
 l_int|26666
 )paren
+multiline_comment|/* &lt; 37.5MB/s */
 id|vidc-&gt;control
 op_or_assign
 id|VIDC20_CTRL_FIFO_20
 suffix:semicolon
-multiline_comment|/* &lt; 37.5MB/s */
 r_else
 r_if
 c_cond
@@ -335,17 +426,18 @@ id|bandwidth
 OG
 l_int|22222
 )paren
+multiline_comment|/* &lt; 45.0MB/s */
 id|vidc-&gt;control
 op_or_assign
 id|VIDC20_CTRL_FIFO_24
 suffix:semicolon
-multiline_comment|/* &lt; 45.0MB/s */
 r_else
+multiline_comment|/* &gt; 45.0MB/s */
 id|vidc-&gt;control
 op_or_assign
 id|VIDC20_CTRL_FIFO_28
 suffix:semicolon
-multiline_comment|/* &gt; 45.0MB/s */
+)brace
 multiline_comment|/* Find the PLL values */
 id|vidc-&gt;pll_ctl
 op_assign

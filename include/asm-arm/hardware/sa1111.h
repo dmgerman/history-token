@@ -441,6 +441,78 @@ DECL|macro|_PC_SDR
 mdefine_line|#define _PC_SDR&t;&t;_SA1111( 0x1028 )
 DECL|macro|_PC_SSR
 mdefine_line|#define _PC_SSR&t;&t;_SA1111( 0x102c )
+DECL|macro|SA1111_GPIO
+mdefine_line|#define SA1111_GPIO&t;0x1000
+DECL|macro|SA1111_GPIO_PADDR
+mdefine_line|#define SA1111_GPIO_PADDR&t;(0x000)
+DECL|macro|SA1111_GPIO_PADRR
+mdefine_line|#define SA1111_GPIO_PADRR&t;(0x004)
+DECL|macro|SA1111_GPIO_PADWR
+mdefine_line|#define SA1111_GPIO_PADWR&t;(0x004)
+DECL|macro|SA1111_GPIO_PASDR
+mdefine_line|#define SA1111_GPIO_PASDR&t;(0x008)
+DECL|macro|SA1111_GPIO_PASSR
+mdefine_line|#define SA1111_GPIO_PASSR&t;(0x00c)
+DECL|macro|SA1111_GPIO_PBDDR
+mdefine_line|#define SA1111_GPIO_PBDDR&t;(0x010)
+DECL|macro|SA1111_GPIO_PBDRR
+mdefine_line|#define SA1111_GPIO_PBDRR&t;(0x014)
+DECL|macro|SA1111_GPIO_PBDWR
+mdefine_line|#define SA1111_GPIO_PBDWR&t;(0x014)
+DECL|macro|SA1111_GPIO_PBSDR
+mdefine_line|#define SA1111_GPIO_PBSDR&t;(0x018)
+DECL|macro|SA1111_GPIO_PBSSR
+mdefine_line|#define SA1111_GPIO_PBSSR&t;(0x01c)
+DECL|macro|SA1111_GPIO_PCDDR
+mdefine_line|#define SA1111_GPIO_PCDDR&t;(0x020)
+DECL|macro|SA1111_GPIO_PCDRR
+mdefine_line|#define SA1111_GPIO_PCDRR&t;(0x024)
+DECL|macro|SA1111_GPIO_PCDWR
+mdefine_line|#define SA1111_GPIO_PCDWR&t;(0x024)
+DECL|macro|SA1111_GPIO_PCSDR
+mdefine_line|#define SA1111_GPIO_PCSDR&t;(0x028)
+DECL|macro|SA1111_GPIO_PCSSR
+mdefine_line|#define SA1111_GPIO_PCSSR&t;(0x02c)
+DECL|macro|GPIO_A0
+mdefine_line|#define GPIO_A0&t;&t;(1 &lt;&lt; 0)
+DECL|macro|GPIO_A1
+mdefine_line|#define GPIO_A1&t;&t;(1 &lt;&lt; 1)
+DECL|macro|GPIO_A2
+mdefine_line|#define GPIO_A2&t;&t;(1 &lt;&lt; 2)
+DECL|macro|GPIO_A3
+mdefine_line|#define GPIO_A3&t;&t;(1 &lt;&lt; 3)
+DECL|macro|GPIO_B0
+mdefine_line|#define GPIO_B0&t;&t;(1 &lt;&lt; 8)
+DECL|macro|GPIO_B1
+mdefine_line|#define GPIO_B1&t;&t;(1 &lt;&lt; 9)
+DECL|macro|GPIO_B2
+mdefine_line|#define GPIO_B2&t;&t;(1 &lt;&lt; 10)
+DECL|macro|GPIO_B3
+mdefine_line|#define GPIO_B3&t;&t;(1 &lt;&lt; 11)
+DECL|macro|GPIO_B4
+mdefine_line|#define GPIO_B4&t;&t;(1 &lt;&lt; 12)
+DECL|macro|GPIO_B5
+mdefine_line|#define GPIO_B5&t;&t;(1 &lt;&lt; 13)
+DECL|macro|GPIO_B6
+mdefine_line|#define GPIO_B6&t;&t;(1 &lt;&lt; 14)
+DECL|macro|GPIO_B7
+mdefine_line|#define GPIO_B7&t;&t;(1 &lt;&lt; 15)
+DECL|macro|GPIO_C0
+mdefine_line|#define GPIO_C0&t;&t;(1 &lt;&lt; 16)
+DECL|macro|GPIO_C1
+mdefine_line|#define GPIO_C1&t;&t;(1 &lt;&lt; 17)
+DECL|macro|GPIO_C2
+mdefine_line|#define GPIO_C2&t;&t;(1 &lt;&lt; 18)
+DECL|macro|GPIO_C3
+mdefine_line|#define GPIO_C3&t;&t;(1 &lt;&lt; 19)
+DECL|macro|GPIO_C4
+mdefine_line|#define GPIO_C4&t;&t;(1 &lt;&lt; 20)
+DECL|macro|GPIO_C5
+mdefine_line|#define GPIO_C5&t;&t;(1 &lt;&lt; 21)
+DECL|macro|GPIO_C6
+mdefine_line|#define GPIO_C6&t;&t;(1 &lt;&lt; 22)
+DECL|macro|GPIO_C7
+mdefine_line|#define GPIO_C7&t;&t;(1 &lt;&lt; 23)
 DECL|macro|PA_DDR
 mdefine_line|#define PA_DDR&t;&t;__CCREG(0x1000)
 DECL|macro|PA_DRR
@@ -838,6 +910,64 @@ c_func
 r_struct
 id|sa1111_driver
 op_star
+)paren
+suffix:semicolon
+r_void
+id|sa1111_set_io_dir
+c_func
+(paren
+r_struct
+id|sa1111_dev
+op_star
+id|sadev
+comma
+r_int
+r_int
+id|bits
+comma
+r_int
+r_int
+id|dir
+comma
+r_int
+r_int
+id|sleep_dir
+)paren
+suffix:semicolon
+r_void
+id|sa1111_set_io
+c_func
+(paren
+r_struct
+id|sa1111_dev
+op_star
+id|sadev
+comma
+r_int
+r_int
+id|bits
+comma
+r_int
+r_int
+id|v
+)paren
+suffix:semicolon
+r_void
+id|sa1111_set_sleep_io
+c_func
+(paren
+r_struct
+id|sa1111_dev
+op_star
+id|sadev
+comma
+r_int
+r_int
+id|bits
+comma
+r_int
+r_int
+id|v
 )paren
 suffix:semicolon
 macro_line|#endif  /* _ASM_ARCH_SA1111 */

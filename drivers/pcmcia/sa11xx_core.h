@@ -160,6 +160,11 @@ r_struct
 id|timer_list
 id|poll_timer
 suffix:semicolon
+DECL|member|node
+r_struct
+id|list_head
+id|node
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|pcmcia_low_level
