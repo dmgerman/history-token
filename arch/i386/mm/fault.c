@@ -982,15 +982,7 @@ id|pgd_k
 r_goto
 id|no_context
 suffix:semicolon
-id|set_pgd
-c_func
-(paren
-id|pgd
-comma
-op_star
-id|pgd_k
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t;&t; * set_pgd(pgd, *pgd_k); here would be useless on PAE&n;&t;&t; * and redundant with the set_pmd() on non-PAE.&n;&t;&t; */
 id|pmd
 op_assign
 id|pmd_offset
