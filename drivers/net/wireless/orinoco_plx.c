@@ -1006,6 +1006,7 @@ id|orinoco_plx_driver
 suffix:semicolon
 )brace
 DECL|function|orinoco_plx_exit
+r_static
 r_void
 id|__exit
 id|orinoco_plx_exit

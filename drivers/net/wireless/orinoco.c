@@ -126,6 +126,7 @@ multiline_comment|/* Data tables                                                
 multiline_comment|/********************************************************************/
 multiline_comment|/* The frequency of each channel in MHz */
 DECL|variable|channel_frequency
+r_static
 r_const
 r_int
 id|channel_frequency
@@ -165,6 +166,7 @@ suffix:semicolon
 DECL|macro|NUM_CHANNELS
 mdefine_line|#define NUM_CHANNELS ARRAY_SIZE(channel_frequency)
 multiline_comment|/* This tables gives the actual meanings of the bitrate IDs returned&n; * by the firmware. */
+r_static
 r_struct
 (brace
 DECL|member|bitrate
@@ -674,6 +676,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|orinoco_get_stats
+r_static
 r_struct
 id|net_device_stats
 op_star
@@ -703,6 +706,7 @@ id|priv-&gt;stats
 suffix:semicolon
 )brace
 DECL|function|orinoco_get_wireless_stats
+r_static
 r_struct
 id|iw_statistics
 op_star
@@ -2299,6 +2303,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|orinoco_stat_gather
+r_static
 r_void
 id|orinoco_stat_gather
 c_func
