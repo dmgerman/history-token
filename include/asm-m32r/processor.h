@@ -86,6 +86,8 @@ DECL|typedef|mm_segment_t
 )brace
 id|mm_segment_t
 suffix:semicolon
+DECL|macro|MAX_TRAPS
+mdefine_line|#define MAX_TRAPS 10
 DECL|struct|debug_trap
 r_struct
 id|debug_trap
@@ -98,11 +100,17 @@ DECL|member|addr
 r_int
 r_int
 id|addr
+(braket
+id|MAX_TRAPS
+)braket
 suffix:semicolon
 DECL|member|insn
 r_int
 r_int
 id|insn
+(braket
+id|MAX_TRAPS
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
