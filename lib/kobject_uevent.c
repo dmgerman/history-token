@@ -66,6 +66,12 @@ suffix:colon
 r_return
 l_string|&quot;offline&quot;
 suffix:semicolon
+r_case
+id|KOBJ_ONLINE
+suffix:colon
+r_return
+l_string|&quot;online&quot;
+suffix:semicolon
 r_default
 suffix:colon
 r_return
