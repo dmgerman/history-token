@@ -687,15 +687,6 @@ c_func
 id|skt
 )paren
 suffix:semicolon
-id|sa1100_pcmcia_config_skt
-c_func
-(paren
-id|skt
-comma
-op_amp
-id|dead_socket
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
