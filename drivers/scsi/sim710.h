@@ -104,7 +104,7 @@ mdefine_line|#define sim710_release&t;NULL
 macro_line|#endif
 macro_line|#include &lt;scsi/scsicam.h&gt;
 DECL|macro|SIM710_SCSI
-mdefine_line|#define SIM710_SCSI { proc_name:&t;&t;&quot;sim710&quot;,&t;&bslash;&n;&t;&t;      name:&t;&t;&t;&quot;Simple 53c710&quot;, &t;&bslash;&n;&t;&t;      detect:&t;&t;&t;sim710_detect,&t;&t;&bslash;&n;&t;&t;      release:&t;&t;&t;sim710_release,&t;&t;&bslash;&n;&t;&t;      queuecommand:&t;&t;sim710_queuecommand,&t;&bslash;&n;&t;&t;      eh_abort_handler:&t;&t;sim710_abort,&t;&t;&bslash;&n;&t;&t;      eh_device_reset_handler:&t;sim710_dev_reset,&t;&bslash;&n;&t;&t;      eh_bus_reset_handler:&t;sim710_bus_reset,&t;&bslash;&n;&t;&t;      eh_host_reset_handler:&t;sim710_host_reset,&t;&bslash;&n;&t;&t;      bios_param:&t;&t;scsicam_bios_param,&t;&bslash;&n;&t;&t;      can_queue:&t;&t;8,&t;&t; &t;&bslash;&n;&t;&t;      this_id:&t;&t;&t;7, &t;&t;&t;&bslash;&n;&t;&t;      sg_tablesize:&t;&t;128,&t;&t; &t;&bslash;&n;&t;&t;      cmd_per_lun:&t;&t;1,&t;&t; &t;&bslash;&n;&t;&t;      use_clustering:&t;&t;DISABLE_CLUSTERING }
+mdefine_line|#define SIM710_SCSI { proc_name:&t;&t;&quot;sim710&quot;,&t;&t;&bslash;&n;&t;&t;      name:&t;&t;&t;&quot;53c710&quot;,&t; &t;&bslash;&n;&t;&t;      detect:&t;&t;&t;sim710_detect,&t;&t;&bslash;&n;&t;&t;      release:&t;&t;&t;sim710_release,&t;&t;&bslash;&n;&t;&t;      queuecommand:&t;&t;sim710_queuecommand,&t;&bslash;&n;&t;&t;      eh_abort_handler:&t;&t;sim710_abort,&t;&t;&bslash;&n;&t;&t;      eh_device_reset_handler:&t;sim710_dev_reset,&t;&bslash;&n;&t;&t;      eh_bus_reset_handler:&t;sim710_bus_reset,&t;&bslash;&n;&t;&t;      eh_host_reset_handler:&t;sim710_host_reset,&t;&bslash;&n;&t;&t;      bios_param:&t;&t;scsicam_bios_param,&t;&bslash;&n;&t;&t;      can_queue:&t;&t;8,&t;&t; &t;&bslash;&n;&t;&t;      this_id:&t;&t;&t;7, &t;&t;&t;&bslash;&n;&t;&t;      sg_tablesize:&t;&t;128,&t;&t; &t;&bslash;&n;&t;&t;      cmd_per_lun:&t;&t;1,&t;&t; &t;&bslash;&n;&t;&t;      use_clustering:&t;&t;DISABLE_CLUSTERING }
 macro_line|#ifndef HOSTS_C
 macro_line|#ifdef __BIG_ENDIAN
 DECL|macro|bE
@@ -538,8 +538,8 @@ mdefine_line|#define CTEST3_800_CLF&t;&t;0x04&t;/* Clear DMA FIFO */
 DECL|macro|CTEST3_800_FM
 mdefine_line|#define CTEST3_800_FM&t;&t;0x02&t;/* Fetch mode pin */
 multiline_comment|/* bit 0 is reserved on 800 series chips */
-DECL|macro|CTEST4_REG_400
-mdefine_line|#define CTEST4_REG_400&t;&t;(0x18^bE)&t;/* Chip test 4 rw */
+DECL|macro|CTEST4_REG_700
+mdefine_line|#define CTEST4_REG_700&t;&t;(0x18^bE)&t;/* Chip test 4 rw */
 DECL|macro|CTEST4_REG_800
 mdefine_line|#define CTEST4_REG_800&t;&t;(0x21^bE)&t;/* Chip test 4 rw */
 multiline_comment|/* 0x80 is reserved on 700 series chips */
@@ -1010,6 +1010,34 @@ DECL|macro|ISTAT_REG
 mdefine_line|#define ISTAT_REG&t;ISTAT_REG_700
 DECL|macro|SCRATCH_REG
 mdefine_line|#define SCRATCH_REG&t;SCRATCHB_REG_10
+DECL|macro|ADDER_REG
+mdefine_line|#define ADDER_REG&t;ADDER_REG_10
+DECL|macro|SIEN_REG
+mdefine_line|#define SIEN_REG&t;SIEN_REG_700
+DECL|macro|SDID_REG
+mdefine_line|#define SDID_REG&t;SDID_REG_700
+DECL|macro|CTEST0_REG
+mdefine_line|#define CTEST0_REG&t;CTEST0_REG_700
+DECL|macro|CTEST1_REG
+mdefine_line|#define CTEST1_REG&t;CTEST1_REG_700
+DECL|macro|CTEST2_REG
+mdefine_line|#define CTEST2_REG&t;CTEST2_REG_700
+DECL|macro|CTEST3_REG
+mdefine_line|#define CTEST3_REG&t;CTEST3_REG_700
+DECL|macro|CTEST4_REG
+mdefine_line|#define CTEST4_REG&t;CTEST4_REG_700
+DECL|macro|CTEST5_REG
+mdefine_line|#define CTEST5_REG&t;CTEST5_REG_700
+DECL|macro|CTEST6_REG
+mdefine_line|#define CTEST6_REG&t;CTEST6_REG_700
+DECL|macro|SODL_REG
+mdefine_line|#define SODL_REG&t;SODL_REG_700
+DECL|macro|SBDL_REG
+mdefine_line|#define SBDL_REG&t;SBDL_REG_700
+DECL|macro|SIDL_REG
+mdefine_line|#define SIDL_REG&t;SIDL_REG_700
+DECL|macro|LCRC_REG
+mdefine_line|#define LCRC_REG&t;LCRC_REG_10
 macro_line|#ifdef MEM_MAPPED
 DECL|macro|NCR_read8
 mdefine_line|#define NCR_read8(address) &t;&t;&t;&t;&t;&bslash;&n;&t;(unsigned int)readb((u32)(host-&gt;base) + ((u32)(address)))
