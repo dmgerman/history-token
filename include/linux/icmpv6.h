@@ -220,23 +220,20 @@ DECL|macro|ICMPV6_MGM_REPORT
 mdefine_line|#define ICMPV6_MGM_REPORT       &t;131
 DECL|macro|ICMPV6_MGM_REDUCTION
 mdefine_line|#define ICMPV6_MGM_REDUCTION    &t;132
-multiline_comment|/* definitions for MLDv2 */
-DECL|macro|MLD2_MODE_IS_INCLUDE
-mdefine_line|#define MLD2_MODE_IS_INCLUDE&t;1
-DECL|macro|MLD2_MODE_IS_EXCLUDE
-mdefine_line|#define MLD2_MODE_IS_EXCLUDE&t;2
-DECL|macro|MLD2_CHANGE_TO_INCLUDE
-mdefine_line|#define MLD2_CHANGE_TO_INCLUDE&t;3
-DECL|macro|MLD2_CHANGE_TO_EXCLUDE
-mdefine_line|#define MLD2_CHANGE_TO_EXCLUDE&t;4
-DECL|macro|MLD2_ALLOW_NEW_SOURCES
-mdefine_line|#define MLD2_ALLOW_NEW_SOURCES&t;5
-DECL|macro|MLD2_BLOCK_OLD_SOURCES
-mdefine_line|#define MLD2_BLOCK_OLD_SOURCES&t;6
+DECL|macro|ICMPV6_NI_QUERY
+mdefine_line|#define ICMPV6_NI_QUERY&t;&t;&t;139
+DECL|macro|ICMPV6_NI_REPLY
+mdefine_line|#define ICMPV6_NI_REPLY&t;&t;&t;140
 DECL|macro|ICMPV6_MLD2_REPORT
 mdefine_line|#define ICMPV6_MLD2_REPORT&t;&t;143
-DECL|macro|MLD2_ALL_MCR_INIT
-mdefine_line|#define MLD2_ALL_MCR_INIT { { { 0xff,0x02,0,0,0,0,0,0,0,0,0,0,0,0,0,0x16 } } }
+DECL|macro|ICMPV6_DHAAD_REQUEST
+mdefine_line|#define ICMPV6_DHAAD_REQUEST&t;&t;144
+DECL|macro|ICMPV6_DHAAD_REPLY
+mdefine_line|#define ICMPV6_DHAAD_REPLY&t;&t;145
+DECL|macro|ICMPV6_MOBILE_PREFIX_SOL
+mdefine_line|#define ICMPV6_MOBILE_PREFIX_SOL&t;146
+DECL|macro|ICMPV6_MOBILE_PREFIX_ADV
+mdefine_line|#define ICMPV6_MOBILE_PREFIX_ADV&t;147
 multiline_comment|/*&n; *&t;Codes for Destination Unreachable&n; */
 DECL|macro|ICMPV6_NOROUTE
 mdefine_line|#define ICMPV6_NOROUTE&t;&t;&t;0
@@ -285,6 +282,21 @@ l_int|8
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; *&t;Definitions for MLDv2&n; */
+DECL|macro|MLD2_MODE_IS_INCLUDE
+mdefine_line|#define MLD2_MODE_IS_INCLUDE&t;1
+DECL|macro|MLD2_MODE_IS_EXCLUDE
+mdefine_line|#define MLD2_MODE_IS_EXCLUDE&t;2
+DECL|macro|MLD2_CHANGE_TO_INCLUDE
+mdefine_line|#define MLD2_CHANGE_TO_INCLUDE&t;3
+DECL|macro|MLD2_CHANGE_TO_EXCLUDE
+mdefine_line|#define MLD2_CHANGE_TO_EXCLUDE&t;4
+DECL|macro|MLD2_ALLOW_NEW_SOURCES
+mdefine_line|#define MLD2_ALLOW_NEW_SOURCES&t;5
+DECL|macro|MLD2_BLOCK_OLD_SOURCES
+mdefine_line|#define MLD2_BLOCK_OLD_SOURCES&t;6
+DECL|macro|MLD2_ALL_MCR_INIT
+mdefine_line|#define MLD2_ALL_MCR_INIT { { { 0xff,0x02,0,0,0,0,0,0,0,0,0,0,0,0,0,0x16 } } }
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;

@@ -1151,6 +1151,11 @@ id|err
 r_return
 id|err
 suffix:semicolon
+id|xfrm_probe_algs
+c_func
+(paren
+)paren
+suffix:semicolon
 id|x
 op_assign
 id|xfrm_state_construct
