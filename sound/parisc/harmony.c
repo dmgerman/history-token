@@ -3001,8 +3001,9 @@ op_assign
 id|snd_dma_alloc_pages
 c_func
 (paren
-op_amp
-id|harmony-&gt;dma_dev
+id|harmony-&gt;dma_dev.type
+comma
+id|harmony-&gt;dma_dev.dev
 comma
 id|HARMONY_BUF_SIZE
 op_star
@@ -3039,8 +3040,9 @@ op_assign
 id|snd_dma_alloc_pages
 c_func
 (paren
-op_amp
-id|harmony-&gt;dma_dev
+id|harmony-&gt;dma_dev.type
+comma
+id|harmony-&gt;dma_dev.dev
 comma
 id|HARMONY_BUF_SIZE
 op_star
@@ -3081,8 +3083,9 @@ op_assign
 id|snd_dma_alloc_pages
 c_func
 (paren
-op_amp
-id|harmony-&gt;dma_dev
+id|harmony-&gt;dma_dev.type
+comma
+id|harmony-&gt;dma_dev.dev
 comma
 id|HARMONY_BUF_SIZE
 op_star
