@@ -2490,7 +2490,7 @@ DECL|macro|ALLOWED_SIGS
 mdefine_line|#define ALLOWED_SIGS ( 1 /* 0 = don&squot;t send a signal */ &bslash;&n;&t;| (1 &lt;&lt; SIGUSR1) | (1 &lt;&lt; SIGUSR2) | (1 &lt;&lt; SIGIO)  | (1 &lt;&lt; SIGURG) &bslash;&n;&t;| (1 &lt;&lt; SIGUNUSED) )
 DECL|function|irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|irq_handler
 c_func
 (paren
@@ -2594,6 +2594,9 @@ id|irqbits_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 DECL|function|free_vm86_irq
@@ -2781,8 +2784,23 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
+op_logical_neg
 id|bit
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|enable_irq
+c_func
+(paren
+id|irqnumber
+)paren
+suffix:semicolon
+r_return
+l_int|1
 suffix:semicolon
 )brace
 DECL|function|do_vm86_irq_handling

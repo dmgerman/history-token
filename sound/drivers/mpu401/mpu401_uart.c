@@ -253,7 +253,7 @@ macro_line|#endif
 )brace
 DECL|function|_snd_mpu401_uart_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|_snd_mpu401_uart_interrupt
 c_func
 (paren
@@ -371,10 +371,14 @@ id|mpu-&gt;output_lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME! This should really check whether the irq was for us */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * snd_mpu401_uart_interrupt - generic MPU401-UART interrupt handler&n; * @irq: the irq number&n; * @dev_id: mpu401 instance&n; * @regs: the reigster&n; *&n; * Processes the interrupt for MPU401-UART i/o.&n; */
 DECL|function|snd_mpu401_uart_interrupt
-r_void
+id|irqreturn_t
 id|snd_mpu401_uart_interrupt
 c_func
 (paren
@@ -413,7 +417,9 @@ op_eq
 l_int|NULL
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
+r_return
 id|_snd_mpu401_uart_interrupt
 c_func
 (paren

@@ -1263,13 +1263,7 @@ suffix:semicolon
 )brace
 id|port
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -1290,13 +1284,9 @@ id|CPC_TTY_NPORTS
 id|CPC_TTY_DBG
 c_func
 (paren
-l_string|&quot;pc300_tty: open invalid minor %i&bslash;n&quot;
+l_string|&quot;pc300_tty: open invalid port %d&bslash;n&quot;
 comma
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|port
 )paren
 suffix:semicolon
 r_return
@@ -1323,15 +1313,11 @@ id|CPC_TTY_ST_IDLE
 id|CPC_TTY_DBG
 c_func
 (paren
-l_string|&quot;%s: open - invalid interface, minor=%i&bslash;n&quot;
+l_string|&quot;%s: open - invalid interface, port=%d&bslash;n&quot;
 comma
 id|cpc_tty-&gt;name
 comma
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 suffix:semicolon
 r_return

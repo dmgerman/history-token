@@ -55,6 +55,8 @@ DECL|macro|CONFIG_ROM_NODE_CAPABILITES
 mdefine_line|#define CONFIG_ROM_NODE_CAPABILITES&t;&t;0x0C
 DECL|macro|CONFIG_ROM_UNIT_DIRECTORY
 mdefine_line|#define CONFIG_ROM_UNIT_DIRECTORY&t;&t;0xd1
+DECL|macro|CONFIG_ROM_LOGICAL_UNIT_DIRECTORY
+mdefine_line|#define CONFIG_ROM_LOGICAL_UNIT_DIRECTORY&t;0xd4
 DECL|macro|CONFIG_ROM_SPECIFIER_ID
 mdefine_line|#define CONFIG_ROM_SPECIFIER_ID&t;&t;&t;0x12 
 DECL|macro|CONFIG_ROM_UNIT_SW_VERSION
@@ -358,22 +360,6 @@ r_struct
 id|node_entry
 op_star
 id|hpsb_nodeid_get_entry
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-comma
-id|nodeid_t
-id|nodeid
-)paren
-suffix:semicolon
-multiline_comment|/* Same as above except that it will not block waiting for the nodemgr&n; * serialize semaphore.  */
-r_struct
-id|node_entry
-op_star
-id|hpsb_check_nodeid
 c_func
 (paren
 r_struct

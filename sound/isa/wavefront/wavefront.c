@@ -1555,7 +1555,7 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PNP */
 DECL|function|snd_wavefront_ics2115_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_wavefront_ics2115_interrupt
 c_func
 (paren
@@ -1592,6 +1592,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -1613,6 +1614,9 @@ id|acard
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 id|snd_hwdep_t
 op_star

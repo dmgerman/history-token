@@ -679,7 +679,7 @@ l_int|0
 dot
 id|start
 op_assign
-id|IOP321_PCI_LOWER_IO
+id|IOP321_PCI_IO_BASE
 op_plus
 l_int|0x6e000000
 suffix:semicolon
@@ -690,9 +690,13 @@ l_int|0
 dot
 id|end
 op_assign
-id|IOP321_PCI_LOWER_IO
+id|IOP321_PCI_IO_BASE
 op_plus
-l_int|0x6e00ffff
+id|IOP321_PCI_IO_SIZE
+op_minus
+l_int|1
+op_plus
+l_int|0x6e000000
 suffix:semicolon
 id|res
 (braket
@@ -719,7 +723,7 @@ l_int|1
 dot
 id|start
 op_assign
-id|IOP321_PCI_LOWER_MEM
+id|IOP321_PCI_MEM_BASE
 suffix:semicolon
 id|res
 (braket
@@ -728,9 +732,9 @@ l_int|1
 dot
 id|end
 op_assign
-id|IOP321_PCI_LOWER_MEM
+id|IOP321_PCI_MEM_BASE
 op_plus
-id|IOP321_PCI_WINDOW_SIZE
+id|IOP321_PCI_MEM_SIZE
 suffix:semicolon
 id|res
 (braket

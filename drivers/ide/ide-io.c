@@ -4234,7 +4234,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;ide_intr&t;-&t;default IDE interrupt handler&n; *&t;@irq: interrupt number&n; *&t;@dev_id: hwif group&n; *&t;@regs: unused weirdness from the kernel irq layer&n; *&n; *&t;This is the default IRQ handler for the IDE layer. You should&n; *&t;not need to override it. If you do be aware it is subtle in&n; *&t;places&n; *&n; *&t;hwgroup-&gt;hwif is the interface in the group currently performing&n; *&t;a command. hwgroup-&gt;drive is the drive and hwgroup-&gt;handler is&n; *&t;the IRQ handler to call. As we issue a command the handlers&n; *&t;step through multiple states, reassigning the handler to the&n; *&t;next step in the process. Unlike a smart SCSI controller IDE&n; *&t;expects the main processor to sequence the various transfer&n; *&t;stages. We also manage a poll timer to catch up with most&n; *&t;timeout situations. There are still a few where the handlers&n; *&t;don&squot;t ever decide to give up.&n; *&n; *&t;The handler eventually returns ide_stopped to indicate the&n; *&t;request completed. At this point we issue the next request&n; *&t;on the hwgroup and the process begins again.&n; */
 DECL|function|ide_intr
-r_void
+id|irqreturn_t
 id|ide_intr
 (paren
 r_int
@@ -4313,6 +4313,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -4383,6 +4384,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|drive
@@ -4407,6 +4409,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -4431,6 +4434,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -4568,6 +4572,9 @@ id|ide_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|ide_intr

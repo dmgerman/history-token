@@ -144,6 +144,6 @@ DECL|macro|AUX_IRQ
 mdefine_line|#define AUX_IRQ&t;&t;(machine_is_netwinder() ? IRQ_NETWINDER_PS2MOUSE : IRQ_ISA_PS2MOUSE)
 DECL|macro|IRQ_FLOPPYDISK
 mdefine_line|#define IRQ_FLOPPYDISK&t;IRQ_ISA_FLOPPY
-DECL|macro|irq_cannonicalize
-mdefine_line|#define irq_cannonicalize(_i)&t;(((_i) == IRQ_ISA_CASCADE) ? IRQ_ISA_2 : _i)
+DECL|macro|irq_canonicalize
+mdefine_line|#define irq_canonicalize(_i)&t;(((_i) == IRQ_ISA_CASCADE) ? IRQ_ISA_2 : _i)
 eof

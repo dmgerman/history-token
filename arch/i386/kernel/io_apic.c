@@ -4544,7 +4544,7 @@ r_if
 c_cond
 (paren
 id|current_vector
-OG
+op_ge
 id|FIRST_SYSTEM_VECTOR
 )paren
 (brace

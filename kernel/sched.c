@@ -3506,7 +3506,7 @@ mdefine_line|#define BUSY_REBALANCE_TICK (HZ/5 ?: 1)
 DECL|macro|IDLE_NODE_REBALANCE_TICK
 mdefine_line|#define IDLE_NODE_REBALANCE_TICK (IDLE_REBALANCE_TICK * 5)
 DECL|macro|BUSY_NODE_REBALANCE_TICK
-mdefine_line|#define BUSY_NODE_REBALANCE_TICK (BUSY_REBALANCE_TICK * 100)
+mdefine_line|#define BUSY_NODE_REBALANCE_TICK (BUSY_REBALANCE_TICK * 2)
 macro_line|#ifdef CONFIG_NUMA
 DECL|function|balance_node
 r_static
@@ -5606,7 +5606,7 @@ id|p
 r_return
 id|p-&gt;prio
 op_minus
-id|MAX_USER_RT_PRIO
+id|MAX_RT_PRIO
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * task_nice - return the nice value of a given task.&n; * @p: the task in question.&n; */

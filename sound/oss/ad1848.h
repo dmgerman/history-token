@@ -1,3 +1,4 @@
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|AD_F_CS4231
 mdefine_line|#define AD_F_CS4231     0x0001  /* Returned if a CS4232 (or compatible) detected */
 DECL|macro|AD_F_CS4248
@@ -86,7 +87,7 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|adintr
 c_func
 (paren

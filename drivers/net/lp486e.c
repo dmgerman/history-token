@@ -1061,7 +1061,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i596_interrupt
 c_func
 (paren
@@ -4599,7 +4599,7 @@ id|flags
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|i596_interrupt
 id|i596_interrupt
 (paren
@@ -4850,6 +4850,7 @@ suffix:semicolon
 id|out
 suffix:colon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|i596_close

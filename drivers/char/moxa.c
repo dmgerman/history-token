@@ -410,7 +410,7 @@ mdefine_line|#define SERIAL_TYPE_CALLOUT&t;2
 DECL|macro|WAKEUP_CHARS
 mdefine_line|#define WAKEUP_CHARS&t;&t;256
 DECL|macro|PORTNO
-mdefine_line|#define PORTNO(x)&t;&t;(minor((x)-&gt;device) - (x)-&gt;driver.minor_start)
+mdefine_line|#define PORTNO(x)&t;&t;((x)-&gt;index)
 DECL|variable|verbose
 r_static
 r_int
@@ -2860,7 +2860,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -3127,13 +3127,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;moxa_close: bad serial port count, minor=%d&bslash;n&quot;
+l_string|&quot;moxa_close: bad serial port count, device=%s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;name
 )paren
 suffix:semicolon
 id|ch-&gt;count
@@ -3241,10 +3237,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -5434,7 +5430,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren

@@ -1402,7 +1402,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Interrupt handler: some event is available */
 DECL|function|sonypi_irq
-r_void
+r_static
+id|irqreturn_t
 id|sonypi_irq
 c_func
 (paren
@@ -1617,6 +1618,7 @@ id|v2
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|found
 suffix:colon
@@ -1736,6 +1738,9 @@ c_func
 (paren
 id|event
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* External camera command (exported to the motion eye v4l driver) */

@@ -225,7 +225,7 @@ suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *  Forward protos...&n; */
 r_static
-r_void
+id|irqreturn_t
 id|mpt_interrupt
 c_func
 (paren
@@ -1100,7 +1100,7 @@ suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;mpt_interrupt - MPT adapter (IOC) specific interrupt handler.&n; *&t;@irq: irq number (not used)&n; *&t;@bus_id: bus identifier cookie == pointer to MPT_ADAPTER structure&n; *&t;@r: pt_regs pointer (not used)&n; *&n; *&t;This routine is registered via the request_irq() kernel API call,&n; *&t;and handles all interrupts generated from a specific MPT adapter&n; *&t;(also referred to as a IO Controller or IOC).&n; *&t;This routine must clear the interrupt from the adapter and does&n; *&t;so by reading the reply FIFO.  Multiple replies may be processed&n; *&t;per single call to this routine; up to MPT_MAX_REPLIES_PER_ISR&n; *&t;which is currently set to 32 in mptbase.h.&n; *&n; *&t;This routine handles register-level access of the adapter but&n; *&t;dispatches (calls) a protocol-specific callback routine to handle&n; *&t;the protocol-specific details of the MPT request completion.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|mpt_interrupt
 id|mpt_interrupt
 c_func
@@ -1204,6 +1204,7 @@ l_string|&quot;mpt_interrupt: Invalid ioc!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 )brace
@@ -1231,6 +1232,7 @@ op_eq
 l_int|0xFFFFFFFF
 )paren
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 id|cb_idx
 op_assign
@@ -1866,10 +1868,14 @@ l_string|&quot; Giving this ISR a break!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
 multiline_comment|/* drain reply FIFO */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;mpt_base_reply - MPT base driver&squot;s callback routine; all base driver&n; *&t;&quot;internal&quot; request/reply processing is routed here.&n; *&t;Currently used for EventNotification and EventAck handling.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@mf: Pointer to original MPT request frame&n; *&t;@reply: Pointer to MPT reply frame (NULL if TurboReply)&n; *&n; *&t;Returns 1 indicating original alloc&squot;d request frame ptr&n; *&t;should be freed, or 0 if it shouldn&squot;t.&n; */

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/parport_pc.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/8250_pci.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 DECL|enum|parport_pc_pci_cards
 r_enum
@@ -912,8 +913,6 @@ c_func
 (paren
 id|dev
 comma
-l_int|NULL
-comma
 id|enable
 )paren
 suffix:semicolon
@@ -944,8 +943,6 @@ id|pci_siig20x_fn
 c_func
 (paren
 id|dev
-comma
-l_int|NULL
 comma
 id|enable
 )paren

@@ -3861,10 +3861,6 @@ id|scsi_device
 op_star
 id|sdev
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/*&n;&t; * If the door was locked, we need to insert a door lock request&n;&t; * onto the head of the SCSI request queue for the device.  There&n;&t; * is no point trying to lock the door of an off-line device.&n;&t; */
 id|list_for_each_entry
 c_func
@@ -3926,30 +3922,12 @@ id|shost-&gt;my_devices
 comma
 id|siblings
 )paren
-(brace
-id|spin_lock_irqsave
-c_func
-(paren
-id|sdev-&gt;request_queue-&gt;queue_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|__blk_run_queue
+id|blk_run_queue
 c_func
 (paren
 id|sdev-&gt;request_queue
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|sdev-&gt;request_queue-&gt;queue_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/**&n; * scsi_eh_ready_devs - check device ready state and recover if not.&n; * @shost: &t;host to be recovered.&n; * @eh_done_q:&t;list_head for processed commands.&n; *&n; **/
 DECL|function|scsi_eh_ready_devs

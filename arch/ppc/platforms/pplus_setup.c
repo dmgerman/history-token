@@ -17,7 +17,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
@@ -542,8 +542,8 @@ suffix:semicolon
 r_static
 r_int
 r_int
-DECL|function|pplus_irq_cannonicalize
-id|pplus_irq_cannonicalize
+DECL|function|pplus_irq_canonicalize
+id|pplus_irq_canonicalize
 c_func
 (paren
 id|u_int
@@ -1572,9 +1572,9 @@ id|ppc_md.show_cpuinfo
 op_assign
 id|pplus_show_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
-id|pplus_irq_cannonicalize
+id|pplus_irq_canonicalize
 suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign

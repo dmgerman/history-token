@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#if NR_NODES != 4
 macro_line|#error Fix Me Please
 macro_line|#endif
-multiline_comment|/*&n; * Our node_data structure for discontigous memory.&n; */
+multiline_comment|/*&n; * Our node_data structure for discontiguous memory.&n; */
 DECL|variable|node_bootmem_data
 r_static
 id|bootmem_data_t

@@ -936,7 +936,6 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 r_struct
 id|fb_info
 suffix:semicolon

@@ -537,7 +537,7 @@ suffix:semicolon
 id|PU8
 id|p_msgbuf
 op_assign
-id|pDpa-&gt;PLanApiPA
+id|pDpa-&gt;msgbuf
 suffix:semicolon
 id|PU8
 id|p_phymsgbuf
@@ -545,27 +545,17 @@ op_assign
 (paren
 id|PU8
 )paren
-id|virt_to_bus
-(paren
-(paren
-r_void
-op_star
-)paren
-id|p_msgbuf
-)paren
+id|pDpa-&gt;msgbuf_dma
 suffix:semicolon
 id|dprintk
 (paren
-l_string|&quot;InitI2O: Adapter:0x%04ux ATU:0x%08ulx msgbuf:0x%08ulx phymsgbuf:0x%08ulx&bslash;n&quot;
+l_string|&quot;InitI2O: Adapter:0x%04ux ATU:0x%08ulx msgbuf:%p phymsgbuf:0x%08ulx&bslash;n&quot;
 l_string|&quot;TransmitCallbackFunction:0x%08ulx  ReceiveCallbackFunction:0x%08ulx&bslash;n&quot;
 comma
 id|pDpa-&gt;id
 comma
 id|pciBaseAddr
 comma
-(paren
-id|u32
-)paren
 id|p_msgbuf
 comma
 (paren
@@ -968,7 +958,7 @@ r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
 )brace
-multiline_comment|/* calc virual address of msg - virual already mapped to physical */
+multiline_comment|/* calc virtual address of msg - virtual already mapped to physical */
 id|pMsg
 op_assign
 (paren
@@ -1167,7 +1157,7 @@ r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
 )brace
-multiline_comment|/* calc virual address of msg - virual already mapped to physical */
+multiline_comment|/* calc virtual address of msg - virtual already mapped to physical */
 id|pMsg
 op_assign
 (paren
@@ -1304,7 +1294,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;** =========================================================================&n;** RCProcI2OMsgQ()&n;**&n;** Process I2O outbound message queue until empty.&n;** =========================================================================&n;*/
-r_void
+id|irqreturn_t
 DECL|function|RCProcI2OMsgQ
 id|RCProcI2OMsgQ
 (paren
@@ -1353,6 +1343,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|phyAddrMsg
 op_assign
@@ -2016,6 +2007,9 @@ op_assign
 id|pPab-&gt;p_atu-&gt;OutQueue
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n;** =========================================================================&n;**  Returns LAN interface statistical counters to space provided by caller at&n;**  StatsReturnAddr.  Returns 0 if success, else RC_RETURN code.&n;**  This function will call the WaitCallback function provided by&n;**  user while waiting for card to respond.&n;** =========================================================================&n;*/
 id|RC_RETURN
@@ -2101,7 +2095,7 @@ r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
 )brace
-multiline_comment|/* calc virual address of msg - virual already mapped to physical */
+multiline_comment|/* calc virtual address of msg - virtual already mapped to physical */
 id|pMsg
 op_assign
 (paren
@@ -2378,7 +2372,7 @@ r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
 )brace
-multiline_comment|/* calc virual address of msg - virual already mapped to physical */
+multiline_comment|/* calc virtual address of msg - virtual already mapped to physical */
 id|pMsg
 op_assign
 (paren
@@ -4856,7 +4850,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*  return 1 byte */
-multiline_comment|/* virual pointer to return buffer - clear first two dwords */
+multiline_comment|/* virtual pointer to return buffer - clear first two dwords */
 id|p32
 op_assign
 (paren
@@ -5651,7 +5645,7 @@ r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
 )brace
-multiline_comment|/* calc virual address of msg - virual already mapped to physical */
+multiline_comment|/* calc virtual address of msg - virtual already mapped to physical */
 id|pMsg
 op_assign
 (paren
@@ -5750,7 +5744,7 @@ l_int|7
 op_assign
 id|pPab-&gt;outMsgBlockPhyAddr
 suffix:semicolon
-multiline_comment|/* virual pointer to return buffer - clear first two dwords */
+multiline_comment|/* virtual pointer to return buffer - clear first two dwords */
 id|p32
 op_assign
 (paren
@@ -5944,7 +5938,7 @@ r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
 )brace
-multiline_comment|/* calc virual address of msg - virual already mapped to physical */
+multiline_comment|/* calc virtual address of msg - virtual already mapped to physical */
 id|pMsg
 op_assign
 (paren
@@ -6035,7 +6029,7 @@ op_assign
 l_int|88
 suffix:semicolon
 multiline_comment|/*  return 88 bytes */
-multiline_comment|/* virual pointer to return buffer - clear first two dwords */
+multiline_comment|/* virtual pointer to return buffer - clear first two dwords */
 id|p32
 op_assign
 (paren
@@ -6373,7 +6367,7 @@ r_return
 id|RC_RTN_FREE_Q_EMPTY
 suffix:semicolon
 )brace
-multiline_comment|/* calc virual address of msg - virual already mapped to physical */
+multiline_comment|/* calc virtual address of msg - virtual already mapped to physical */
 id|pMsg
 op_assign
 (paren
@@ -6453,7 +6447,7 @@ r_return
 id|RC_RTN_NO_ERROR
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** =========================================================================&n;** FillI2OMsgFromTCB()&n;**&n;** inputs   pMsgU32 - virual pointer (mapped to physical) of message frame&n;**          pXmitCntrlBlock - pointer to caller buffer control block.&n;**&n;** fills in LAN SGL after Transaction Control Word or Bucket Count.&n;** =========================================================================&n;*/
+multiline_comment|/*&n;** =========================================================================&n;** FillI2OMsgFromTCB()&n;**&n;** inputs   pMsgU32 - virtual pointer (mapped to physical) of message frame&n;**          pXmitCntrlBlock - pointer to caller buffer control block.&n;**&n;** fills in LAN SGL after Transaction Control Word or Bucket Count.&n;** =========================================================================&n;*/
 r_static
 r_int
 DECL|function|FillI2OMsgSGLFromTCB

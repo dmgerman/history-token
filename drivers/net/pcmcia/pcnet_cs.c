@@ -333,7 +333,7 @@ id|cmd
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ei_irq_wrapper
 c_func
 (paren
@@ -1495,6 +1495,12 @@ op_assign
 id|INT_MEMORY_AND_IO
 suffix:semicolon
 id|ethdev_init
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|SET_MODULE_OWNER
 c_func
 (paren
 id|dev
@@ -5313,8 +5319,6 @@ suffix:semicolon
 id|link-&gt;open
 op_increment
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|set_misc_reg
 c_func
 (paren
@@ -5473,8 +5477,6 @@ id|HZ
 op_div
 l_int|20
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -5732,7 +5734,7 @@ suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|function|ei_irq_wrapper
 r_static
-r_void
+id|irqreturn_t
 id|ei_irq_wrapper
 c_func
 (paren
@@ -5768,6 +5770,10 @@ id|dev_id
 comma
 id|regs
 )paren
+suffix:semicolon
+multiline_comment|/* FIXME! Was it really ours? */
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|ei_watchdog

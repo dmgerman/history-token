@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;/* block_sync_page() */
 macro_line|#include &lt;asm/pgtable.h&gt;
 multiline_comment|/*&n; * swapper_inode doesn&squot;t do anything much.  It is really only here to&n; * avoid some special-casing in other parts of the kernel.&n; */
 DECL|variable|swapper_inode
@@ -633,7 +632,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|page_has_buffers
+id|PagePrivate
 c_func
 (paren
 id|page
@@ -882,7 +881,7 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|page_has_buffers
+id|PagePrivate
 c_func
 (paren
 id|page

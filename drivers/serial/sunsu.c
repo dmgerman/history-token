@@ -1842,7 +1842,7 @@ suffix:semicolon
 )brace
 DECL|function|sunsu_serial_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sunsu_serial_interrupt
 c_func
 (paren
@@ -1958,6 +1958,9 @@ id|up-&gt;port.lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Separate interrupt handling path for keyboard/mouse ports.  */
@@ -2291,7 +2294,7 @@ suffix:semicolon
 )brace
 DECL|function|sunsu_kbd_ms_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sunsu_kbd_ms_interrupt
 c_func
 (paren
@@ -2376,6 +2379,9 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sunsu_tx_empty
 r_static
@@ -5502,13 +5508,13 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|dev_name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 comma
 macro_line|#else
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyS%d&quot;
+l_string|&quot;ttyS&quot;
 comma
 macro_line|#endif
 dot

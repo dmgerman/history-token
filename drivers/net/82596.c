@@ -923,7 +923,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i596_interrupt
 c_func
 (paren
@@ -4194,8 +4194,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* Initialize the 82596 memory */
 r_if
 c_cond
@@ -5162,6 +5160,12 @@ id|version
 )paren
 suffix:semicolon
 multiline_comment|/* The 82596-specific entries in the device structure. */
+id|SET_MODULE_OWNER
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|dev-&gt;open
 op_assign
 id|i596_open
@@ -5337,7 +5341,7 @@ suffix:semicolon
 )brace
 DECL|function|i596_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|i596_interrupt
 c_func
 (paren
@@ -5377,6 +5381,11 @@ id|ack_cmd
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifdef ENABLE_BVME6000_NET
 r_if
 c_cond
@@ -5408,6 +5417,7 @@ id|regs
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -5430,6 +5440,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|ioaddr
@@ -5512,6 +5523,10 @@ r_struct
 id|i596_cmd
 op_star
 id|ptr
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -6177,6 +6192,11 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|function|i596_close
@@ -6388,8 +6408,6 @@ c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

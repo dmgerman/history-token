@@ -2497,7 +2497,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irport_interrupt (irq, dev_id, regs)&n; *&n; *    Interrupt handler&n; */
 DECL|function|irport_interrupt
-r_void
+id|irqreturn_t
 id|irport_interrupt
 c_func
 (paren
@@ -2544,6 +2544,11 @@ id|iir
 comma
 id|lsr
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2562,6 +2567,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|self
@@ -2602,6 +2608,10 @@ c_loop
 id|iir
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Clear interrupt */
 id|lsr
 op_assign
@@ -2727,6 +2737,13 @@ c_func
 (paren
 op_amp
 id|self-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

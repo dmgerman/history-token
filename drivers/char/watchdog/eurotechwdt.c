@@ -473,7 +473,8 @@ multiline_comment|/* the default timeout */
 )brace
 multiline_comment|/*&n; * Kernel methods.&n; */
 DECL|function|eurwdt_interrupt
-r_void
+r_static
+id|irqreturn_t
 id|eurwdt_interrupt
 c_func
 (paren
@@ -520,6 +521,9 @@ l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/**&n; * eurwdt_ping:&n; *&n; * Reload counter one with the watchdog timeout.&n; */
 DECL|function|eurwdt_ping

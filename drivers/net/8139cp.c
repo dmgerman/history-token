@@ -2751,9 +2751,9 @@ op_assign
 id|rx_tail
 suffix:semicolon
 )brace
-DECL|function|cp_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|cp_interrupt
 id|cp_interrupt
 (paren
 r_int
@@ -2807,6 +2807,7 @@ l_int|0xFFFF
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -2971,6 +2972,9 @@ c_func
 op_amp
 id|cp-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|cp_tx

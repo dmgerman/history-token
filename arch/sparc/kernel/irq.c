@@ -70,7 +70,7 @@ op_star
 id|sparc_init_timers
 )paren
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 )paren
@@ -92,7 +92,7 @@ r_void
 op_star
 )paren
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 )paren
@@ -1766,7 +1766,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -2106,7 +2106,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -2170,7 +2170,7 @@ c_func
 r_int
 r_int
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 )paren

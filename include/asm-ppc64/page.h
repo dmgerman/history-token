@@ -6,8 +6,13 @@ macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* PAGE_SHIFT determines the page size */
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;12
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|PAGE_SIZE
-mdefine_line|#define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
+macro_line|# define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
+macro_line|#else
+DECL|macro|PAGE_SIZE
+macro_line|# define PAGE_SIZE&t;(1 &lt;&lt; PAGE_SHIFT)
+macro_line|#endif
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 DECL|macro|PAGE_OFFSET_MASK
@@ -18,6 +23,20 @@ DECL|macro|SID_MASK
 mdefine_line|#define SID_MASK        0xfffffffff
 DECL|macro|GET_ESID
 mdefine_line|#define GET_ESID(x)     (((x) &gt;&gt; SID_SHIFT) &amp; SID_MASK)
+multiline_comment|/* align addr on a size boundary - adjust address up/down if needed */
+DECL|macro|_ALIGN_UP
+mdefine_line|#define _ALIGN_UP(addr,size)&t;(((addr)+((size)-1))&amp;(~((size)-1)))
+DECL|macro|_ALIGN_DOWN
+mdefine_line|#define _ALIGN_DOWN(addr,size)&t;((addr)&amp;(~((size)-1)))
+multiline_comment|/* align addr on a size boundary - adjust address up if needed */
+DECL|macro|_ALIGN
+mdefine_line|#define _ALIGN(addr,size)     _ALIGN_UP(addr,size)
+multiline_comment|/* to align the pointer to the (next) double word boundary */
+DECL|macro|DOUBLEWORD_ALIGN
+mdefine_line|#define DOUBLEWORD_ALIGN(addr)&t;_ALIGN(addr,sizeof(unsigned long))
+multiline_comment|/* to align the pointer to the (next) page boundary */
+DECL|macro|PAGE_ALIGN
+mdefine_line|#define PAGE_ALIGN(addr)&t;_ALIGN(addr, PAGE_SIZE)
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/naca.h&gt;
@@ -51,7 +70,7 @@ id|line_size
 suffix:semicolon
 id|line_size
 op_assign
-id|naca-&gt;dCacheL1LineSize
+id|systemcfg-&gt;dCacheL1LineSize
 suffix:semicolon
 id|lines
 op_assign
@@ -315,20 +334,6 @@ suffix:semicolon
 DECL|macro|__pa
 mdefine_line|#define __pa(x) ((unsigned long)(x)-PAGE_OFFSET)
 macro_line|#endif /* __ASSEMBLY__ */
-multiline_comment|/* align addr on a size boundary - adjust address up/down if needed */
-DECL|macro|_ALIGN_UP
-mdefine_line|#define _ALIGN_UP(addr,size)&t;(((addr)+((size)-1))&amp;(~((size)-1)))
-DECL|macro|_ALIGN_DOWN
-mdefine_line|#define _ALIGN_DOWN(addr,size)&t;((addr)&amp;(~((size)-1)))
-multiline_comment|/* align addr on a size boundary - adjust address up if needed */
-DECL|macro|_ALIGN
-mdefine_line|#define _ALIGN(addr,size)     _ALIGN_UP(addr,size)
-multiline_comment|/* to align the pointer to the (next) double word boundary */
-DECL|macro|DOUBLEWORD_ALIGN
-mdefine_line|#define DOUBLEWORD_ALIGN(addr)&t;_ALIGN(addr,sizeof(unsigned long))
-multiline_comment|/* to align the pointer to the (next) page boundary */
-DECL|macro|PAGE_ALIGN
-mdefine_line|#define PAGE_ALIGN(addr)&t;_ALIGN(addr, PAGE_SIZE)
 macro_line|#ifdef MODULE
 DECL|macro|__page_aligned
 mdefine_line|#define __page_aligned __attribute__((__aligned__(PAGE_SIZE)))

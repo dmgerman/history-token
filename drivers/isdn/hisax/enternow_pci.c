@@ -621,7 +621,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|enpci_interrupt
 id|enpci_interrupt
 c_func
@@ -831,6 +831,9 @@ c_func
 op_amp
 id|cs-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|enpci_ops

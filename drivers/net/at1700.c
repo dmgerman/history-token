@@ -485,7 +485,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|net_interrupt
 c_func
 (paren
@@ -2939,7 +2939,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/* The typical workload of the driver:&n;   Handle the network interface interrupts. */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|net_interrupt
 id|net_interrupt
 c_func
@@ -2974,6 +2974,11 @@ id|ioaddr
 comma
 id|status
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2990,6 +2995,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|ioaddr
@@ -3077,6 +3083,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Got a packet(s).&n;&t;&t;   We cannot execute net_rx more than once at the same time for&n;&t;&t;   the same device. During executing net_rx, we possibly catch a&n;&t;&t;   Tx interrupt. Thus we flag on rx_started, so that we prevent&n;&t;&t;   the interrupt routine (net_interrupt) to dive into net_rx&n;&t;&t;   again. */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|lp-&gt;rx_started
 op_assign
 l_int|1
@@ -3122,6 +3132,10 @@ op_amp
 l_int|0x00ff
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3232,6 +3246,11 @@ id|lp-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* We have a good packet(s), get it/them out of the buffers. */
@@ -4027,9 +4046,11 @@ id|mclist
 op_assign
 id|mclist-&gt;next
 )paren
-id|set_bit
-c_func
-(paren
+(brace
+r_int
+r_int
+id|bit
+op_assign
 id|ether_crc_le
 c_func
 (paren
@@ -4039,10 +4060,21 @@ id|mclist-&gt;dmi_addr
 )paren
 op_rshift
 l_int|26
-comma
+suffix:semicolon
 id|mc_filter
+(braket
+id|bit
+op_rshift
+l_int|3
+)braket
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|bit
 )paren
 suffix:semicolon
+)brace
 id|outb
 c_func
 (paren

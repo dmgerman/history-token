@@ -2663,11 +2663,11 @@ id|notifier_block
 id|rtnetlink_dev_notifier
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|rtnetlink_event
 comma
-l_int|NULL
-comma
-l_int|0
 )brace
 suffix:semicolon
 DECL|function|rtnetlink_init

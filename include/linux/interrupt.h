@@ -10,12 +10,24 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+multiline_comment|/*&n; * For 2.4.x compatibility, 2.4.x can use&n; *&n; *&t;typedef void irqreturn_t;&n; *&t;#define IRQ_NONE&n; *&t;#define IRQ_HANDLED&n; *&t;#define IRQ_RETVAL(x)&n; *&n; * To mix old-style and new-style irq handler returns.&n; *&n; * IRQ_NONE means we didn&squot;t handle it.&n; * IRQ_HANDLED means that we did have a valid interrupt and handled it.&n; * IRQ_RETVAL(x) selects on the two depending on x being non-zero (for handled)&n; */
+DECL|typedef|irqreturn_t
+r_typedef
+r_int
+id|irqreturn_t
+suffix:semicolon
+DECL|macro|IRQ_NONE
+mdefine_line|#define IRQ_NONE&t;(0)
+DECL|macro|IRQ_HANDLED
+mdefine_line|#define IRQ_HANDLED&t;(1)
+DECL|macro|IRQ_RETVAL
+mdefine_line|#define IRQ_RETVAL(x)&t;((x) != 0)
 DECL|struct|irqaction
 r_struct
 id|irqaction
 (brace
 DECL|member|handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -61,6 +73,24 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
+id|irqreturn_t
+id|no_action
+c_func
+(paren
+r_int
+id|cpl
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|request_irq
 c_func
@@ -68,7 +98,7 @@ c_func
 r_int
 r_int
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

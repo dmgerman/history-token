@@ -391,7 +391,7 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|orinoco_interrupt
 c_func
 (paren

@@ -4359,8 +4359,6 @@ suffix:semicolon
 multiline_comment|/*&n; * We need blk.h, but we replace its end_request by our own version.&n; */
 DECL|macro|IDE_DRIVER
 mdefine_line|#define IDE_DRIVER&t;&t;/* Toggle some magic bits in blk.h */
-DECL|macro|LOCAL_END_REQUEST
-mdefine_line|#define LOCAL_END_REQUEST&t;/* Don&squot;t generate end_request in blk.h */
 macro_line|#include &lt;linux/blk.h&gt;
 r_extern
 r_int
@@ -5482,7 +5480,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|ide_intr
 c_func
 (paren

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -22,9 +23,6 @@ macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_RAM
-macro_line|# include &lt;linux/blk.h&gt;
-macro_line|#endif
 macro_line|#if defined(CONFIG_SMP) &amp;&amp; (IA64_CPU_SIZE &gt; PAGE_SIZE)
 macro_line|# error &quot;struct cpuinfo_ia64 too big!&quot;
 macro_line|#endif

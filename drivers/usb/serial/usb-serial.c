@@ -147,15 +147,15 @@ c_func
 id|usb_serial_driver_list
 )paren
 suffix:semicolon
-DECL|function|usb_serial_get_by_minor
+DECL|function|usb_serial_get_by_index
 r_struct
 id|usb_serial
 op_star
-id|usb_serial_get_by_minor
+id|usb_serial_get_by_index
+c_func
 (paren
 r_int
-r_int
-id|minor
+id|index
 )paren
 (brace
 r_struct
@@ -165,7 +165,7 @@ id|serial
 op_assign
 id|serial_table
 (braket
-id|minor
+id|index
 )braket
 suffix:semicolon
 r_if
@@ -488,13 +488,10 @@ suffix:semicolon
 multiline_comment|/* get the serial object associated with this tty pointer */
 id|serial
 op_assign
-id|usb_serial_get_by_minor
-(paren
-id|minor
+id|usb_serial_get_by_index
 c_func
 (paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 suffix:semicolon
 r_if
@@ -514,11 +511,7 @@ suffix:semicolon
 multiline_comment|/* set up our port structure making the tty driver remember our port object, and us it */
 id|portNumber
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 op_minus
 id|serial-&gt;minor
 suffix:semicolon
@@ -1780,7 +1773,7 @@ id|i
 (brace
 id|serial
 op_assign
-id|usb_serial_get_by_minor
+id|usb_serial_get_by_index
 c_func
 (paren
 id|i
@@ -4317,7 +4310,7 @@ macro_line|#else
 dot
 id|name
 op_assign
-l_string|&quot;usb/tts/%d&quot;
+l_string|&quot;usb/tts/&quot;
 comma
 macro_line|#endif
 dot

@@ -1058,7 +1058,7 @@ id|q
 suffix:semicolon
 r_extern
 r_void
-id|__blk_run_queue
+id|blk_run_queue
 c_func
 (paren
 id|request_queue_t

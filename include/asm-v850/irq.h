@@ -29,8 +29,8 @@ suffix:semicolon
 r_struct
 id|irqaction
 suffix:semicolon
-DECL|macro|irq_cannonicalize
-mdefine_line|#define irq_cannonicalize(irq)&t;(irq)
+DECL|macro|irq_canonicalize
+mdefine_line|#define irq_canonicalize(irq)&t;(irq)
 multiline_comment|/* Initialize irq handling for IRQs.&n;   BASE_IRQ, BASE_IRQ+INTERVAL, ..., BASE_IRQ+NUM*INTERVAL&n;   to IRQ_TYPE.  An IRQ_TYPE of 0 means to use a generic interrupt type.  */
 r_extern
 r_void

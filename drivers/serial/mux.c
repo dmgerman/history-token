@@ -1208,7 +1208,7 @@ l_string|&quot;ttyB&quot;
 suffix:semicolon
 id|card-&gt;drv.dev_name
 op_assign
-l_string|&quot;ttyB%d&quot;
+l_string|&quot;ttyB&quot;
 suffix:semicolon
 id|card-&gt;drv.major
 op_assign

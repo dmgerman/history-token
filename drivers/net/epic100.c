@@ -1229,7 +1229,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|epic_interrupt
 c_func
 (paren
@@ -4802,6 +4802,7 @@ id|u32
 id|ctrl_word
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -5087,7 +5088,7 @@ suffix:semicolon
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|epic_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|epic_interrupt
 c_func
 (paren
@@ -5129,6 +5130,12 @@ comma
 id|boguscnt
 op_assign
 id|max_interrupt_work
+suffix:semicolon
+r_int
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 r_do
 (brace
@@ -5197,6 +5204,10 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -5760,6 +5771,11 @@ id|status
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|function|epic_rx
@@ -6811,9 +6827,11 @@ id|mclist
 op_assign
 id|mclist-&gt;next
 )paren
-id|set_bit
-c_func
-(paren
+(brace
+r_int
+r_int
+id|bit_nr
+op_assign
 id|ether_crc_le
 c_func
 (paren
@@ -6823,10 +6841,21 @@ id|mclist-&gt;dmi_addr
 )paren
 op_amp
 l_int|0x3f
-comma
+suffix:semicolon
 id|mc_filter
+(braket
+id|bit_nr
+op_rshift
+l_int|3
+)braket
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|bit_nr
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* ToDo: perhaps we need to stop the Tx and Rx process here? */
 r_if

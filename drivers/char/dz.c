@@ -3589,9 +3589,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 (paren
 id|tty
 )paren
@@ -3854,7 +3854,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -4176,13 +4176,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 multiline_comment|/*&n;&t; * The dz lines for the mouse/keyboard must be opened using their&n;&t; * respective drivers.&n;&t; */
 r_if
@@ -4295,7 +4289,7 @@ id|DZ_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -4408,7 +4402,7 @@ suffix:semicolon
 macro_line|#else
 id|serial_driver.name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 suffix:semicolon
 macro_line|#endif
 id|serial_driver.major
@@ -4543,7 +4537,7 @@ suffix:semicolon
 macro_line|#else
 id|callout_driver.name
 op_assign
-l_string|&quot;cua/%d&quot;
+l_string|&quot;cua/&quot;
 suffix:semicolon
 macro_line|#endif
 id|callout_driver.major
@@ -4759,8 +4753,6 @@ c_func
 op_amp
 id|serial_driver
 comma
-id|serial_driver.minor_start
-op_plus
 id|info-&gt;line
 )paren
 suffix:semicolon
@@ -4770,8 +4762,6 @@ c_func
 op_amp
 id|callout_driver
 comma
-id|callout_driver.minor_start
-op_plus
 id|info-&gt;line
 )paren
 suffix:semicolon

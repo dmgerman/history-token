@@ -5477,8 +5477,6 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5501,14 +5499,10 @@ l_int|1
 op_eq
 l_int|NULL
 )paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 id|q-&gt;link.refcnt
 op_assign
 l_int|1
@@ -7215,8 +7209,6 @@ c_func
 (paren
 id|q-&gt;link.R_tab
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|cbq_put
@@ -9148,6 +9140,11 @@ dot
 id|dump
 op_assign
 id|cbq_dump
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

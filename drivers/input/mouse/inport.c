@@ -101,7 +101,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|inport_interrupt
 c_func
 (paren
@@ -350,7 +350,7 @@ comma
 suffix:semicolon
 DECL|function|inport_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|inport_interrupt
 c_func
 (paren
@@ -525,6 +525,9 @@ c_func
 op_amp
 id|inport_dev
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE

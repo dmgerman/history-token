@@ -915,7 +915,7 @@ id|__init
 id|sun4m_init_timers
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|counter_fn

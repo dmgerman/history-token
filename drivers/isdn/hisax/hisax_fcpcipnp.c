@@ -2972,7 +2972,7 @@ suffix:semicolon
 singleline_comment|// ----------------------------------------------------------------------
 DECL|function|fcpci2_irq
 r_static
-r_void
+id|irqreturn_t
 id|fcpci2_irq
 c_func
 (paren
@@ -3022,6 +3022,7 @@ id|AVM_STATUS0_IRQ_MASK
 )paren
 multiline_comment|/* hopefully a shared  IRQ reqest */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|DBG
 c_func
@@ -3060,10 +3061,13 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|fcpci_irq
 r_static
-r_void
+id|irqreturn_t
 id|fcpci_irq
 c_func
 (paren
@@ -3114,6 +3118,7 @@ id|AVM_STATUS0_IRQ_MASK
 )paren
 multiline_comment|/* possibly a shared  IRQ reqest */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|DBG
 c_func
@@ -3157,6 +3162,9 @@ c_func
 (paren
 id|adapter
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 singleline_comment|// ----------------------------------------------------------------------

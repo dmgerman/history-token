@@ -71,9 +71,7 @@ id|naca_struct
 op_star
 )paren
 (paren
-id|KERNELBASE
-op_plus
-l_int|0x4000
+id|NACA_VIRT_ADDR
 )paren
 comma
 multiline_comment|/* 64-bit Naca address */

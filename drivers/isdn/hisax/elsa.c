@@ -1497,7 +1497,7 @@ id|ELSA_TIMER_RUN
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|elsa_interrupt
 id|elsa_interrupt
 c_func
@@ -1551,6 +1551,7 @@ l_string|&quot;Elsa: card not available!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 macro_line|#if ARCOFI_USE
@@ -1729,9 +1730,12 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|elsa_interrupt_ipac
 id|elsa_interrupt_ipac
 c_func
@@ -1774,6 +1778,7 @@ l_string|&quot;Elsa: Spurious interrupt!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -1820,6 +1825,7 @@ id|ELSA_PCI_IRQ_MASK
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 macro_line|#if ARCOFI_USE
@@ -1885,6 +1891,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+r_return
 id|ipac_irq
 c_func
 (paren

@@ -52,7 +52,7 @@ id|substream
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|snd_trident_interrupt
 c_func
 (paren
@@ -16510,10 +16510,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_interrupt&n;  &n;   Description: ISR for Trident 4DWave device&n;                &n;   Paramters:   trident  - device specific private data for 4DWave card&n;&n;   Problems:    It seems that Trident chips generates interrupts more than&n;                one time in special cases. The spurious interrupts are&n;                detected via sample timer (T4D_STIMER) and computing&n;                corresponding delta value. The limits are detected with&n;                the method try &amp; fail so it is possible that it won&squot;t&n;                work on all computers. [jaroslav]&n;&n;   Returns:     None.&n;  &n;  ---------------------------------------------------------------------------*/
+multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_interrupt&n;  &n;   Description: ISR for Trident 4DWave device&n;                &n;   Paramters:   trident  - device specific private data for 4DWave card&n;&n;   Problems:    It seems that Trident chips generates interrupts more than&n;                one time in special cases. The spurious interrupts are&n;                detected via sample timer (T4D_STIMER) and computing&n;                corresponding delta value. The limits are detected with&n;                the method try &amp; fail so it is possible that it won&squot;t&n;                work on all computers. [jaroslav]&n;&n;   Returns:     Whether IRQ was handled or not.&n;  &n;  ---------------------------------------------------------------------------*/
 DECL|function|snd_trident_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_trident_interrupt
 c_func
 (paren
@@ -16595,6 +16595,7 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -17130,6 +17131,9 @@ suffix:semicolon
 )brace
 )brace
 singleline_comment|// outl((ST_TARGET_REACHED | MIXER_OVERFLOW | MIXER_UNDERFLOW), TRID_REG(trident, T4D_MISCINT));
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------&n;   snd_trident_attach_synthesizer, snd_trident_detach_synthesizer&n;  &n;   Description: Attach/detach synthesizer hooks&n;                &n;   Paramters:   trident  - device specific private data for 4DWave card&n;&n;   Returns:     None.&n;  &n;  ---------------------------------------------------------------------------*/
 DECL|function|snd_trident_attach_synthesizer

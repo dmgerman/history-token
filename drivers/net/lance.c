@@ -551,7 +551,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|lance_interrupt
 c_func
 (paren
@@ -4378,7 +4378,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The LANCE interrupt handler. */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|lance_interrupt
 id|lance_interrupt
 c_func
@@ -4436,6 +4436,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|ioaddr
@@ -4938,6 +4939,9 @@ id|spin_unlock
 op_amp
 id|lp-&gt;devlock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

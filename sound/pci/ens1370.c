@@ -895,7 +895,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|snd_audiopci_interrupt
 c_func
 (paren
@@ -11764,7 +11764,7 @@ suffix:semicolon
 multiline_comment|/*&n; *  Interrupt handler&n; */
 DECL|function|snd_audiopci_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_audiopci_interrupt
 c_func
 (paren
@@ -11809,6 +11809,7 @@ op_eq
 l_int|NULL
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|status
 op_assign
@@ -11835,6 +11836,7 @@ id|ES_INTR
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -11981,6 +11983,9 @@ c_func
 (paren
 id|ensoniq-&gt;playback1_substream
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|snd_audiopci_probe

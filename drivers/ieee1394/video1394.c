@@ -43,13 +43,6 @@ macro_line|#ifndef vmalloc_32
 DECL|macro|vmalloc_32
 mdefine_line|#define vmalloc_32(x) vmalloc(x)
 macro_line|#endif
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,3))
-DECL|macro|remap_page_range_1394
-mdefine_line|#define remap_page_range_1394(vma, start, addr, size, prot) &bslash;&n;&t;remap_page_range(start, addr, size, prot)
-macro_line|#else
-DECL|macro|remap_page_range_1394
-mdefine_line|#define remap_page_range_1394(vma, start, addr, size, prot) &bslash;&n;&t;remap_page_range(vma, start, addr, size, prot)
-macro_line|#endif
 DECL|struct|it_dma_prg
 r_struct
 id|it_dma_prg
@@ -2355,18 +2348,6 @@ id|i
 op_assign
 id|VIDEO1394_BUFFER_READY
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,18)
-id|get_fast_time
-c_func
-(paren
-op_amp
-id|d-&gt;buffer_time
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-macro_line|#else
 id|do_gettimeofday
 c_func
 (paren
@@ -2377,7 +2358,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 id|spin_unlock

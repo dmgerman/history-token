@@ -1,4 +1,5 @@
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 multiline_comment|/* Prototypes of functions used across modules here in this directory.  */
 DECL|macro|vucp
 mdefine_line|#define vucp&t;volatile unsigned char  *
@@ -766,7 +767,7 @@ multiline_comment|/* bios32.c */
 multiline_comment|/* extern void reset_for_srm(void); */
 multiline_comment|/* time.c */
 r_extern
-r_void
+id|irqreturn_t
 id|timer_interrupt
 c_func
 (paren

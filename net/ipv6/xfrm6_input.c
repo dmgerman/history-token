@@ -661,7 +661,7 @@ id|nh_offset
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+r_int
 id|nexthdr
 op_assign
 l_int|0

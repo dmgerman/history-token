@@ -3791,7 +3791,7 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|irqreturn_t
 id|DRM
 c_func
 (paren

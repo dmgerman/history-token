@@ -4828,7 +4828,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|page
@@ -4979,7 +4979,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|page
@@ -7459,7 +7459,7 @@ suffix:semicolon
 )brace
 DECL|function|trident_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|trident_interrupt
 c_func
 (paren
@@ -7655,6 +7655,7 @@ id|card-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* manually clear interrupt status, bad hardware design, blame T^2 */
@@ -7684,6 +7685,9 @@ c_func
 op_amp
 id|card-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* in this loop, dmabuf.count signifies the amount of data that is waiting to be copied to&n;   the user&squot;s buffer.  it is filled by the dma machine and drained by this loop. */

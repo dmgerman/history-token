@@ -8,6 +8,7 @@ macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
 macro_line|#include &lt;sound/util_mem.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef PCI_VENDOR_ID_CREATIVE
 DECL|macro|PCI_VENDOR_ID_CREATIVE
@@ -2363,7 +2364,7 @@ op_star
 id|rhwdep
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|snd_emu10k1_interrupt
 c_func
 (paren

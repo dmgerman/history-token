@@ -1165,6 +1165,11 @@ DECL|member|spinlock
 id|spinlock_t
 id|spinlock
 suffix:semicolon
+multiline_comment|/* flag to prevent spurious interrupts (which OHCI seems to&n;&t;   generate a lot :) from accessing the struct */
+DECL|member|dma_running
+r_int
+id|dma_running
+suffix:semicolon
 multiline_comment|/*&n;&t;  3) the sleeping semaphore &squot;sem&squot; - this is used from process context only,&n;&t;  to serialize various operations on the video_card. Even though only one&n;&t;  open() is allowed, we still need to prevent multiple threads of execution&n;&t;  from entering calls like read, write, ioctl, etc.&n;&n;&t;  I honestly can&squot;t think of a good reason to use dv1394 from several threads&n;&t;  at once, but we need to serialize anyway to prevent oopses =).&n;&n;&t;  NOTE: if you need both spinlock and sem, take sem first to avoid deadlock!&n;&t; */
 DECL|member|sem
 r_struct
@@ -1358,7 +1363,7 @@ id|video
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|do_dv1394_shutdown
 c_func
 (paren

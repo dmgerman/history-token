@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -4033,7 +4032,7 @@ c_cond
 (paren
 id|code
 op_amp
-l_int|0x80
+id|CONFIG_ROM_KEY_TYPE_LEAF
 )paren
 op_eq
 l_int|0
@@ -4192,9 +4191,10 @@ suffix:semicolon
 multiline_comment|/* This implementation currently only scans the config rom and its&n; * immediate unit directories looking for software_id and&n; * software_version entries, in order to get driver autoloading working. */
 DECL|function|nodemgr_process_unit_directory
 r_static
-r_void
+r_struct
+id|unit_directory
+op_star
 id|nodemgr_process_unit_directory
-c_func
 (paren
 r_struct
 id|host_info
@@ -4211,6 +4211,7 @@ id|address
 comma
 r_int
 r_int
+op_star
 id|id
 )paren
 (brace
@@ -4228,6 +4229,13 @@ id|infop
 suffix:semicolon
 r_int
 id|length
+suffix:semicolon
+r_struct
+id|unit_directory
+op_star
+id|ud_temp
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -4258,7 +4266,11 @@ id|address
 suffix:semicolon
 id|ud-&gt;id
 op_assign
+(paren
+op_star
 id|id
+)paren
+op_increment
 suffix:semicolon
 r_if
 c_cond
@@ -4616,6 +4628,148 @@ suffix:colon
 multiline_comment|/* TODO: read strings... icons? */
 r_break
 suffix:semicolon
+r_case
+id|CONFIG_ROM_LOGICAL_UNIT_DIRECTORY
+suffix:colon
+multiline_comment|/* TODO: Parent this with it&squot;s UD */
+id|ud_temp
+op_assign
+id|nodemgr_process_unit_directory
+c_func
+(paren
+id|hi
+comma
+id|ne
+comma
+id|address
+op_plus
+id|value
+op_star
+l_int|4
+comma
+id|id
+)paren
+suffix:semicolon
+multiline_comment|/* inherit unspecified values */
+r_if
+c_cond
+(paren
+id|ud_temp
+op_ne
+l_int|NULL
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|ud-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_VENDOR_ID
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|ud_temp-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_VENDOR_ID
+)paren
+)paren
+(brace
+id|ud_temp-&gt;flags
+op_or_assign
+id|UNIT_DIRECTORY_VENDOR_ID
+suffix:semicolon
+id|ud_temp-&gt;vendor_id
+op_assign
+id|ud-&gt;vendor_id
+suffix:semicolon
+id|ud_temp-&gt;vendor_oui
+op_assign
+id|ud-&gt;vendor_oui
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|ud-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_MODEL_ID
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|ud_temp-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_MODEL_ID
+)paren
+)paren
+(brace
+id|ud_temp-&gt;flags
+op_or_assign
+id|UNIT_DIRECTORY_MODEL_ID
+suffix:semicolon
+id|ud_temp-&gt;model_id
+op_assign
+id|ud-&gt;model_id
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|ud-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_SPECIFIER_ID
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|ud_temp-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_SPECIFIER_ID
+)paren
+)paren
+(brace
+id|ud_temp-&gt;flags
+op_or_assign
+id|UNIT_DIRECTORY_SPECIFIER_ID
+suffix:semicolon
+id|ud_temp-&gt;specifier_id
+op_assign
+id|ud-&gt;specifier_id
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|ud-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_VERSION
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|ud_temp-&gt;flags
+op_amp
+id|UNIT_DIRECTORY_VERSION
+)paren
+)paren
+(brace
+id|ud_temp-&gt;flags
+op_or_assign
+id|UNIT_DIRECTORY_VERSION
+suffix:semicolon
+id|ud_temp-&gt;version
+op_assign
+id|ud-&gt;version
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Which types of quadlets do we want to&n;&t;&t;&t;   store?  Only count immediate values and&n;&t;&t;&t;   CSR offsets for now.  */
@@ -4629,7 +4783,7 @@ c_cond
 (paren
 id|code
 op_amp
-l_int|0x80
+id|CONFIG_ROM_KEY_TYPE_LEAF
 )paren
 op_eq
 l_int|0
@@ -4707,6 +4861,7 @@ id|ud
 )paren
 suffix:semicolon
 r_return
+id|ud
 suffix:semicolon
 id|unit_directory_error
 suffix:colon
@@ -4722,6 +4877,9 @@ c_func
 (paren
 id|ud
 )paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|nodemgr_process_root_directory
@@ -4998,8 +5156,8 @@ id|value
 op_star
 l_int|4
 comma
+op_amp
 id|ud_id
-op_increment
 )paren
 suffix:semicolon
 r_break
@@ -5195,6 +5353,14 @@ id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_HOTPLUG */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|host_num_sema
+)paren
+suffix:semicolon
+multiline_comment|/* Must hold above mutex until the result of the below call is assigned to&n; * a hostinfo entry. */
 DECL|function|nodemgr_alloc_host_num
 r_static
 r_int
@@ -5255,7 +5421,7 @@ c_func
 id|driver
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Right now registration always succeeds, but maybe we should&n;&t; * detect clashes in protocols handled by other drivers.&n;&t; */
+multiline_comment|/*&n;&t; * Right now registration always succeeds, but maybe we should&n;&t; * detect clashes in protocols handled by other drivers.&n;     * DRD&gt; No because multiple drivers are needed to handle certain devices.&n;     * For example, a DV camera is an IEC 61883 device (dv1394) and AV/C (raw1394).&n;     * This will become less an issue with libiec61883 using raw1394.&n;     *&n;     * BenC: But can we handle this with an ALLOW_SHARED flag for a&n;     * protocol? When we get an SBP-3 driver, it will be nice if they were&n;     * mutually exclusive, since SBP-3 can handle SBP-2 protocol.&n;     *&n;     * Not to mention that we currently do not seem to support multiple&n;     * drivers claiming the same unitdirectory. If we implement both of&n;     * those, then we&squot;ll need to keep probing when a driver claims a&n;     * unitdirectory, but is sharable.&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -6378,7 +6544,7 @@ id|generation
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* If we had a bus reset while we were scanning the bus, it is&n;&t; * possible that we did not probe all nodes.  In that case, we&n;&t; * skip the clean up for now, since we could remove nodes that&n;&t; * were still on the bus.  The bus reset increased&n;&t; * hi-&gt;reset_sem, so there&squot;s a bus scan pending which will do&n;&t; * the clean up eventually. */
+multiline_comment|/* If we had a bus reset while we were scanning the bus, it is&n;&t; * possible that we did not probe all nodes.  In that case, we&n;&t; * skip the clean up for now, since we could remove nodes that&n;&t; * were still on the bus.  The bus reset increased hi-&gt;reset_sem,&n;&t; * so there&squot;s a bus scan pending which will do the clean up&n;&t; * eventually. */
 r_if
 c_cond
 (paren
@@ -6469,7 +6635,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Because we are a 1394a-2000 compliant IRM, we need to inform all the other&n; * nodes of the broadcast channel.  (Really we&squot;re only setting the validity&n; * bit).  Other IRM responsibilities go in here as well. */
+multiline_comment|/* Because we are a 1394a-2000 compliant IRM, we need to inform all the other&n; * nodes of the broadcast channel.  (Really we&squot;re only setting the validity&n; * bit). Other IRM responsibilities go in here as well. */
 DECL|function|nodemgr_do_irm_duties
 r_static
 r_void
@@ -6574,7 +6740,6 @@ c_cond
 (paren
 id|ne-&gt;busopt.cmc
 )paren
-(brace
 id|hpsb_send_phy_config
 c_func
 (paren
@@ -6586,7 +6751,6 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-)brace
 r_else
 (brace
 id|HPSB_DEBUG
@@ -6629,6 +6793,9 @@ r_struct
 id|hpsb_host
 op_star
 id|host
+comma
+r_int
+id|cycles
 )paren
 (brace
 id|quadlet_t
@@ -6705,6 +6872,25 @@ c_func
 l_string|&quot;Current remote IRM is not 1394a-2000 compliant, resetting...&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cycles
+op_ge
+l_int|5
+)paren
+(brace
+multiline_comment|/* Oh screw it! Just leave the bus as it is */
+id|HPSB_DEBUG
+c_func
+(paren
+l_string|&quot;Stopping reset loop for IRM sanity&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|hpsb_send_phy_config
 c_func
 (paren
@@ -6761,6 +6947,11 @@ op_star
 id|host
 op_assign
 id|hi-&gt;host
+suffix:semicolon
+r_int
+id|reset_cycles
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* No userlevel access needed */
 id|daemonize
@@ -6894,6 +7085,9 @@ id|nodemgr_check_irm_capability
 c_func
 (paren
 id|host
+comma
+id|reset_cycles
+op_increment
 )paren
 )paren
 (brace
@@ -6908,6 +7102,10 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|reset_cycles
+op_assign
+l_int|0
+suffix:semicolon
 id|nodemgr_node_probe
 c_func
 (paren
@@ -6942,9 +7140,7 @@ suffix:colon
 macro_line|#ifdef CONFIG_IEEE1394_VERBOSEDEBUG
 id|HPSB_DEBUG
 (paren
-l_string|&quot;NodeMgr: Exiting thread for %s&quot;
-comma
-id|hi-&gt;host-&gt;driver-&gt;name
+l_string|&quot;NodeMgr: Exiting thread&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7027,61 +7223,6 @@ c_func
 op_amp
 id|nodemgr_serialize
 )paren
-suffix:semicolon
-id|ne
-op_assign
-id|find_entry_by_nodeid
-c_func
-(paren
-id|host
-comma
-id|nodeid
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|nodemgr_serialize
-)paren
-suffix:semicolon
-r_return
-id|ne
-suffix:semicolon
-)brace
-DECL|function|hpsb_check_nodeid
-r_struct
-id|node_entry
-op_star
-id|hpsb_check_nodeid
-c_func
-(paren
-r_struct
-id|hpsb_host
-op_star
-id|host
-comma
-id|nodeid_t
-id|nodeid
-)paren
-(brace
-r_struct
-id|node_entry
-op_star
-id|ne
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|down_trylock
-c_func
-(paren
-op_amp
-id|nodemgr_serialize
-)paren
-)paren
-r_return
-l_int|NULL
 suffix:semicolon
 id|ne
 op_assign
@@ -7316,6 +7457,24 @@ id|host_info
 op_star
 id|hi
 suffix:semicolon
+r_int
+id|id
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|host_num_sema
+)paren
+suffix:semicolon
+multiline_comment|/* Must be called before we create the hostinfo entry, else it&n;&t; * will match entry &squot;0&squot; since all keys default to zero */
+id|id
+op_assign
+id|nodemgr_alloc_host_num
+c_func
+(paren
+)paren
+suffix:semicolon
 id|hi
 op_assign
 id|hpsb_create_hostinfo
@@ -7339,6 +7498,13 @@ op_logical_neg
 id|hi
 )paren
 (brace
+id|up
+c_func
+(paren
+op_amp
+id|host_num_sema
+)paren
+suffix:semicolon
 id|HPSB_ERR
 (paren
 l_string|&quot;NodeMgr: out of memory in add host&quot;
@@ -7347,7 +7513,27 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize the hostinfo here and start the thread.  The&n;&t; * thread blocks on the reset semaphore until a bus reset&n;&t; * happens. */
+id|hi-&gt;id
+op_assign
+id|id
+suffix:semicolon
+id|hpsb_set_hostinfo_key
+c_func
+(paren
+id|hl
+comma
+id|host
+comma
+id|hi-&gt;id
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|host_num_sema
+)paren
+suffix:semicolon
 id|hi-&gt;host
 op_assign
 id|host
@@ -7366,23 +7552,6 @@ op_amp
 id|hi-&gt;reset_sem
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|hi-&gt;id
-op_assign
-id|nodemgr_alloc_host_num
-c_func
-(paren
-)paren
-suffix:semicolon
-id|hpsb_set_hostinfo_key
-c_func
-(paren
-id|hl
-comma
-id|host
-comma
-id|hi-&gt;id
 )paren
 suffix:semicolon
 id|memcpy

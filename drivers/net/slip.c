@@ -1498,7 +1498,7 @@ suffix:semicolon
 id|actual
 op_assign
 id|sl-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -1626,7 +1626,7 @@ suffix:semicolon
 id|actual
 op_assign
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren
@@ -1751,7 +1751,7 @@ id|dev-&gt;name
 comma
 (paren
 id|sl-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|chars_in_buffer
 c_func
 (paren
@@ -2607,7 +2607,7 @@ DECL|function|sl_alloc
 id|sl_alloc
 c_func
 (paren
-id|kdev_t
+id|dev_t
 id|line
 )paren
 (brace
@@ -2688,14 +2688,9 @@ id|slp-&gt;ctrl.leased
 r_if
 c_cond
 (paren
-op_logical_neg
-id|kdev_same
-c_func
-(paren
 id|slp-&gt;ctrl.line
-comma
+op_ne
 id|line
-)paren
 )paren
 r_continue
 suffix:semicolon
@@ -2739,13 +2734,9 @@ id|slp-&gt;ctrl.pid
 r_if
 c_cond
 (paren
-id|kdev_same
-c_func
-(paren
 id|slp-&gt;ctrl.line
-comma
+op_eq
 id|line
-)paren
 op_logical_and
 id|score
 OL
@@ -2786,13 +2777,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kdev_same
-c_func
-(paren
 id|slp-&gt;ctrl.line
-comma
+op_eq
 id|line
-)paren
 op_logical_and
 id|score
 OL
@@ -3180,10 +3167,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -3411,7 +3398,7 @@ id|sl-&gt;leased
 )paren
 id|sl-&gt;line
 op_assign
-id|NODEV
+l_int|0
 suffix:semicolon
 multiline_comment|/* VSV = very important to remove timers */
 macro_line|#ifdef CONFIG_SLIP_SMART
@@ -5638,7 +5625,7 @@ id|sl-&gt;dev
 (brace
 multiline_comment|/* if device busy no outfill */
 id|sl-&gt;tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|write
 c_func
 (paren

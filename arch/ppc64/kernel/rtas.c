@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#include &lt;asm/proc_fs.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -13,13 +14,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/udbg.h&gt;
-DECL|variable|rtas_proc_dir
-r_struct
-id|proc_dir_entry
-op_star
-id|rtas_proc_dir
-suffix:semicolon
-multiline_comment|/* /proc/ppc64/rtas dir */
 DECL|variable|rtas_firmware_flash_list
 r_struct
 id|flash_block_list_header
@@ -1357,11 +1351,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|rtas_proc_dir
+DECL|variable|proc_ppc64
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|rtas_proc_dir
+id|proc_ppc64
 )paren
 suffix:semicolon
 DECL|variable|rtas_firmware_flash_list

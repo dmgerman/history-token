@@ -9578,7 +9578,7 @@ suffix:semicolon
 )brace
 DECL|function|happy_meal_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|happy_meal_interrupt
 c_func
 (paren
@@ -9764,11 +9764,14 @@ op_amp
 id|hp-&gt;happy_lock
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SBUS
 DECL|function|quattro_sbus_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|quattro_sbus_interrupt
 c_func
 (paren
@@ -10001,6 +10004,9 @@ c_func
 l_string|&quot;done&bslash;n&quot;
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif

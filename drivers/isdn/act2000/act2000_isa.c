@@ -219,7 +219,7 @@ id|ret
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|act2000_isa_interrupt
 id|act2000_isa_interrupt
 c_func
@@ -264,6 +264,7 @@ l_string|&quot;act2000: Spurious interrupt!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|istatus
@@ -350,6 +351,9 @@ id|irq
 comma
 id|istatus
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

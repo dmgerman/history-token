@@ -2945,8 +2945,6 @@ r_int
 id|sch
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3131,8 +3129,6 @@ c_func
 op_amp
 id|p-&gt;task
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|function|atm_tc_dump_class
@@ -3573,6 +3569,12 @@ dot
 id|dump
 op_assign
 id|atm_tc_dump
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef MODULE

@@ -2806,7 +2806,7 @@ suffix:semicolon
 )brace
 DECL|function|openpic_ipi_action
 r_static
-r_void
+id|irqreturn_t
 id|openpic_ipi_action
 c_func
 (paren
@@ -2832,6 +2832,9 @@ id|openpic_vec_ipi
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */

@@ -17,7 +17,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
@@ -2542,7 +2542,7 @@ id|ppc_md.show_percpuinfo
 op_assign
 id|pmac_show_percpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -34,6 +34,10 @@ r_struct
 id|list_head
 id|host_info_list
 suffix:semicolon
+DECL|member|host_info_lock
+id|rwlock_t
+id|host_info_lock
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|hpsb_address_serve

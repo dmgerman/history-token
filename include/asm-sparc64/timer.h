@@ -2,6 +2,7 @@ multiline_comment|/* $Id: timer.h,v 1.3 2000/05/09 17:40:15 davem Exp $&n; * tim
 macro_line|#ifndef _SPARC64_TIMER_H
 DECL|macro|_SPARC64_TIMER_H
 mdefine_line|#define _SPARC64_TIMER_H
+macro_line|#include &lt;linux/types.h&gt;
 multiline_comment|/* How timers work:&n; *&n; * On uniprocessors we just use counter zero for the system wide&n; * ticker, this performs thread scheduling, clock book keeping,&n; * and runs timer based events.  Previously we used the Ultra&n; * %tick interrupt for this purpose.&n; *&n; * On multiprocessors we pick one cpu as the master level 10 tick&n; * processor.  Here this counter zero tick handles clock book&n; * keeping and timer events only.  Each Ultra has it&squot;s level&n; * 14 %tick interrupt set to fire off as well, even the master&n; * tick cpu runs this locally.  This ticker performs thread&n; * scheduling, system/user tick counting for the current thread,&n; * and also profiling if enabled.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Two timers, traditionally steered to PIL&squot;s 10 and 14 respectively.&n; * But since INO packets are used on sun5, we could use any PIL level&n; * we like, however for now we use the normal ones.&n; *&n; * The &squot;reg&squot; and &squot;interrupts&squot; properties for these live in nodes named&n; * &squot;counter-timer&squot;.  The first of three &squot;reg&squot; properties describe where&n; * the sun5_timer registers are.  The other two I have no idea. (XXX)&n; */
@@ -120,6 +121,9 @@ r_extern
 r_int
 r_int
 id|timer_tick_offset
+suffix:semicolon
+r_struct
+id|pt_regs
 suffix:semicolon
 r_extern
 r_void

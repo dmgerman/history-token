@@ -988,11 +988,7 @@ id|acm
 op_assign
 id|acm_table
 (braket
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )braket
 suffix:semicolon
 r_if
@@ -3304,7 +3300,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;usb/acm/%d&quot;
+l_string|&quot;usb/acm/&quot;
 comma
 dot
 id|major

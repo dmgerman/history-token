@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
+macro_line|#include &lt;asm/auxio.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
@@ -20,10 +21,6 @@ id|power_reg
 op_assign
 l_int|0UL
 suffix:semicolon
-DECL|macro|POWER_SYSTEM_OFF
-mdefine_line|#define POWER_SYSTEM_OFF (1 &lt;&lt; 0)
-DECL|macro|POWER_COURTESY_OFF
-mdefine_line|#define POWER_COURTESY_OFF (1 &lt;&lt; 1)
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
@@ -38,7 +35,7 @@ id|button_pressed
 suffix:semicolon
 DECL|function|power_handler
 r_static
-r_void
+id|irqreturn_t
 id|power_handler
 c_func
 (paren
@@ -75,6 +72,10 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: Check registers for status... */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PCI */
 r_extern
@@ -134,9 +135,9 @@ multiline_comment|/* Both register bits seem to have the&n;&t;&t;&t; * same effe
 id|writel
 c_func
 (paren
-id|POWER_COURTESY_OFF
+id|AUXIO_PCIO_CPWR_OFF
 op_or
-id|POWER_SYSTEM_OFF
+id|AUXIO_PCIO_SPWR_OFF
 comma
 id|power_reg
 )paren

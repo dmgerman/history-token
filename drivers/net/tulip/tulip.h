@@ -1620,7 +1620,7 @@ r_extern
 r_int
 id|tulip_rx_copybreak
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|tulip_interrupt
 c_func
 (paren

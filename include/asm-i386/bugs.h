@@ -504,6 +504,14 @@ l_string|&quot;Kernel compiled for SSE2, CPU doesn&squot;t have it.&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
+r_extern
+r_void
+id|alternative_instructions
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|check_bugs
 r_static
 r_void
@@ -572,6 +580,11 @@ c_cond
 l_int|6
 suffix:colon
 id|boot_cpu_data.x86
+)paren
+suffix:semicolon
+id|alternative_instructions
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

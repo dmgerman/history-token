@@ -821,7 +821,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|pvr2fb_interrupt
 c_func
 (paren
@@ -3940,7 +3940,7 @@ suffix:semicolon
 )brace
 DECL|function|pvr2fb_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|pvr2fb_interrupt
 c_func
 (paren
@@ -4015,6 +4015,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Determine the cable type and initialize the cable output format.  Don&squot;t do&n; * anything if the cable type has been overidden (via &quot;cable:XX&quot;).&n; */
 DECL|macro|PCTRA

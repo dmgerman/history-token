@@ -3219,7 +3219,6 @@ suffix:colon
 id|spin_lock_irqsave
 c_func
 (paren
-op_amp
 id|priv-&gt;register_lock
 comma
 id|flags

@@ -4797,7 +4797,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_cs46xx_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_cs46xx_interrupt
 c_func
 (paren
@@ -4887,6 +4887,7 @@ id|HICR_IEV
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SND_CS46XX_NEW_DSP
@@ -5305,6 +5306,9 @@ id|HICR_CHGM
 op_or
 id|HICR_IEV
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|snd_cs46xx_playback

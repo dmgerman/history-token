@@ -117,7 +117,7 @@ l_int|1
 )braket
 suffix:semicolon
 DECL|member|ex_dev
-id|__kernel_dev_t
+id|__kernel_old_dev_t
 id|ex_dev
 suffix:semicolon
 DECL|member|ex_ino
@@ -245,8 +245,6 @@ DECL|macro|ca_getfd
 mdefine_line|#define ca_getfd&t;u.u_getfd
 DECL|macro|ca_getfs
 mdefine_line|#define&t;ca_getfs&t;u.u_getfs
-DECL|macro|ca_authd
-mdefine_line|#define ca_authd&t;u.u_authd
 )brace
 suffix:semicolon
 DECL|union|nfsctl_res

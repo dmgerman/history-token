@@ -2056,7 +2056,7 @@ suffix:semicolon
 )brace
 DECL|function|sunzilog_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sunzilog_interrupt
 c_func
 (paren
@@ -2328,6 +2328,9 @@ op_assign
 id|up-&gt;next
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* A convenient way to quickly get R0 status.  The caller must _not_ hold the&n; * port lock, it is acquired here.&n; */
 DECL|function|sunzilog_read_channel_status
@@ -4192,13 +4195,13 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|dev_name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 comma
 macro_line|#else
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyS%d&quot;
+l_string|&quot;ttyS&quot;
 comma
 macro_line|#endif
 dot

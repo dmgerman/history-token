@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|REALLY_SLOW_IO
 mdefine_line|#define REALLY_SLOW_IO
 macro_line|#include &lt;asm/system.h&gt;
@@ -6122,6 +6121,14 @@ comma
 l_string|&quot;cdu&quot;
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|cdu_disk-&gt;devfs_name
+comma
+l_string|&quot;cdu535&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6159,29 +6166,6 @@ id|add_disk
 c_func
 (paren
 id|cdu_disk
-)paren
-suffix:semicolon
-id|devfs_register
-(paren
-l_int|NULL
-comma
-id|CDU535_HANDLE
-comma
-id|DEVFS_FL_DEFAULT
-comma
-id|cdu_disk-&gt;major
-comma
-id|cdu_disk-&gt;first_minor
-comma
-id|S_IFBLK
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUGO
-comma
-id|cdu_disk-&gt;fops
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -6497,12 +6481,6 @@ id|kfree
 c_func
 (paren
 id|sony_toc
-)paren
-suffix:semicolon
-id|devfs_remove
-c_func
-(paren
-id|CDU535_HANDLE
 )paren
 suffix:semicolon
 id|del_gendisk

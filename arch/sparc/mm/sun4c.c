@@ -676,8 +676,10 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SUN_AUXIO
 id|_unused
 op_assign
-op_star
-id|AUXREG
+id|get_auxio
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -8269,6 +8271,8 @@ id|__get_free_page
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_REPEAT
 )paren
 suffix:semicolon
 r_if

@@ -692,6 +692,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_disable_non_wakeup_gpe_block&n; *&n; * PARAMETERS:  gpe_xrupt_info      - GPE Interrupt info&n; *              gpe_block           - Gpe Block info&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Disable all GPEs except wakeup GPEs in a GPE block&n; *&n; ******************************************************************************/
+r_static
 id|acpi_status
 DECL|function|acpi_hw_disable_non_wakeup_gpe_block
 id|acpi_hw_disable_non_wakeup_gpe_block
@@ -849,6 +850,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_enable_non_wakeup_gpe_block&n; *&n; * PARAMETERS:  gpe_xrupt_info      - GPE Interrupt info&n; *              gpe_block           - Gpe Block info&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Enable a single GPE.&n; *&n; ******************************************************************************/
+r_static
 id|acpi_status
 DECL|function|acpi_hw_enable_non_wakeup_gpe_block
 id|acpi_hw_enable_non_wakeup_gpe_block

@@ -26,7 +26,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
-macro_line|#include &lt;asm/auxio.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/* #define SOCDEBUG */
@@ -1626,7 +1625,7 @@ suffix:semicolon
 )brace
 DECL|function|soc_intr
 r_static
-r_void
+id|irqreturn_t
 id|soc_intr
 c_func
 (paren
@@ -1755,6 +1754,9 @@ id|s-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|macro|TOKEN

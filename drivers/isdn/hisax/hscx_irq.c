@@ -887,7 +887,7 @@ id|val
 )paren
 suffix:semicolon
 )brace
-r_void
+id|irqreturn_t
 DECL|function|hscxisac_irq
 id|hscxisac_irq
 c_func
@@ -1148,6 +1148,9 @@ c_func
 op_amp
 id|cs-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 eof

@@ -2951,6 +2951,18 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|disk-&gt;part
+(braket
+id|i
+)braket
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2958,7 +2970,7 @@ id|disk-&gt;part
 (braket
 id|i
 )braket
-dot
+op_member_access_from_pointer
 id|nr_sects
 op_ne
 l_int|0
@@ -2966,6 +2978,7 @@ l_int|0
 id|luninfo.num_parts
 op_increment
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -9507,7 +9520,7 @@ suffix:semicolon
 )brace
 DECL|function|do_cciss_intr
 r_static
-r_void
+id|irqreturn_t
 id|do_cciss_intr
 c_func
 (paren
@@ -9558,6 +9571,7 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/*&n;&t; * If there are completed commands in the completion queue,&n;&t; * we had better do something about it.&n;&t; */
 id|spin_lock_irqsave
@@ -9758,6 +9772,9 @@ c_func
 op_amp
 id|h-&gt;queue
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* &n; *  We cannot read the structure directly, for portablity we must use &n; *   the io functions.&n; *   This is for debug only. &n; */

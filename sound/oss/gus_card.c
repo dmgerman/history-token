@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;gus.h&quot;
 macro_line|#include &quot;gus_hw.h&quot;
-r_void
+id|irqreturn_t
 id|gusintr
 c_func
 (paren
@@ -509,7 +509,7 @@ id|hw_config-&gt;dma2
 suffix:semicolon
 )brace
 DECL|function|gusintr
-r_void
+id|irqreturn_t
 id|gusintr
 c_func
 (paren
@@ -533,6 +533,11 @@ suffix:semicolon
 r_extern
 r_int
 id|gus_timer_enabled
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_SOUND_GUSMAX
 r_if
@@ -620,7 +625,11 @@ id|u_IrqStatus
 )paren
 )paren
 )paren
-r_return
+r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -713,6 +722,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Some extra code for the 16 bit sampling option&n; */
 macro_line|#ifdef CONFIG_SOUND_GUS16

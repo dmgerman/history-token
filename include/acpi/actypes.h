@@ -214,8 +214,8 @@ id|acpi_size
 suffix:semicolon
 DECL|macro|ALIGNED_ADDRESS_BOUNDARY
 mdefine_line|#define ALIGNED_ADDRESS_BOUNDARY        0x00000002
-DECL|macro|_HW_ALIGNMENT_SUPPORT
-mdefine_line|#define _HW_ALIGNMENT_SUPPORT
+DECL|macro|ACPI_MISALIGNED_TRANSFERS
+mdefine_line|#define ACPI_MISALIGNED_TRANSFERS
 DECL|macro|ACPI_USE_NATIVE_DIVIDE
 mdefine_line|#define ACPI_USE_NATIVE_DIVIDE                          /* No 64-bit integers, ok to use native divide */
 DECL|macro|ACPI_MAX_PTR
@@ -300,8 +300,8 @@ id|acpi_size
 suffix:semicolon
 DECL|macro|ALIGNED_ADDRESS_BOUNDARY
 mdefine_line|#define ALIGNED_ADDRESS_BOUNDARY        0x00000004
-DECL|macro|_HW_ALIGNMENT_SUPPORT
-mdefine_line|#define _HW_ALIGNMENT_SUPPORT
+DECL|macro|ACPI_MISALIGNED_TRANSFERS
+mdefine_line|#define ACPI_MISALIGNED_TRANSFERS
 DECL|macro|ACPI_MAX_PTR
 mdefine_line|#define ACPI_MAX_PTR                    ACPI_UINT32_MAX
 DECL|macro|ACPI_SIZE_MAX
@@ -2181,7 +2181,7 @@ DECL|macro|ACPI_SIZEOF_RESOURCE
 mdefine_line|#define ACPI_SIZEOF_RESOURCE(type)          (ACPI_RESOURCE_LENGTH_NO_DATA + sizeof (type))
 DECL|macro|ACPI_NEXT_RESOURCE
 mdefine_line|#define ACPI_NEXT_RESOURCE(res)             (struct acpi_resource *)((u8 *) res + res-&gt;length)
-macro_line|#ifdef _HW_ALIGNMENT_SUPPORT
+macro_line|#ifdef ACPI_MISALIGNED_TRANSFERS
 DECL|macro|ACPI_ALIGN_RESOURCE_SIZE
 mdefine_line|#define ACPI_ALIGN_RESOURCE_SIZE(length)    (length)
 macro_line|#else

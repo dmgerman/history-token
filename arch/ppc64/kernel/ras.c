@@ -30,7 +30,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 r_static
-r_void
+id|irqreturn_t
 id|ras_epow_interrupt
 c_func
 (paren
@@ -48,7 +48,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ras_error_interrupt
 c_func
 (paren
@@ -167,7 +167,6 @@ id|ireg
 op_plus
 id|NUM_8259_INTERRUPTS
 comma
-op_amp
 id|ras_error_interrupt
 comma
 l_int|0
@@ -253,7 +252,6 @@ id|ireg
 op_plus
 id|NUM_8259_INTERRUPTS
 comma
-op_amp
 id|ras_epow_interrupt
 comma
 l_int|0
@@ -271,7 +269,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Handle power subsystem events (EPOW).&n; *&n; * Presently we just log the event has occurred.  This should be fixed&n; * to examine the type of power failure and take appropriate action where&n; * the time horizon permits something useful to be done.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|ras_epow_interrupt
 id|ras_epow_interrupt
 c_func
@@ -384,10 +382,13 @@ comma
 id|status
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Handle hardware error interrupts.&n; *&n; * RTAS check-exception is called to collect data on the exception.  If&n; * the error is deemed recoverable, we log a warning and return.&n; * For nonrecoverable errors, an error is logged and we stop all processing&n; * as quickly as possible in order to prevent propagation of the failure.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|ras_error_interrupt
 id|ras_error_interrupt
 c_func
@@ -566,8 +567,9 @@ comma
 id|status
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 eof

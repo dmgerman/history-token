@@ -284,7 +284,7 @@ op_star
 suffix:semicolon
 multiline_comment|/* Dispatch from interrupts. */
 r_static
-r_void
+id|irqreturn_t
 id|de620_interrupt
 c_func
 (paren
@@ -1723,9 +1723,9 @@ suffix:semicolon
 )brace
 "&f;"
 multiline_comment|/*****************************************************&n; *&n; * Handle the network interface interrupts.&n; *&n; */
-DECL|function|de620_interrupt
 r_static
-r_void
+id|irqreturn_t
+DECL|function|de620_interrupt
 id|de620_interrupt
 c_func
 (paren
@@ -1862,6 +1862,9 @@ c_func
 op_amp
 id|de620_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/**************************************&n; *&n; * Get a packet from the adapter&n; *&n; * Send it &quot;upstairs&quot;&n; *&n; */

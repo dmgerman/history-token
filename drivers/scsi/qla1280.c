@@ -5641,7 +5641,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**************************************************************************&n; * qla1280_intr_handler&n; *   Handles the H/W interrupt&n; **************************************************************************/
-r_void
+id|irqreturn_t
 DECL|function|qla1280_intr_handler
 id|qla1280_intr_handler
 c_func
@@ -5668,6 +5668,11 @@ r_struct
 id|device_reg
 op_star
 id|reg
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|u16
 id|data
@@ -5739,6 +5744,10 @@ op_amp
 id|ha-&gt;done_q_last
 )paren
 suffix:semicolon
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -5795,6 +5804,13 @@ id|LEAVE_INTR
 c_func
 (paren
 l_string|&quot;qla1280_intr_handler&quot;
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

@@ -2728,7 +2728,7 @@ suffix:semicolon
 )brace
 DECL|function|myri_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|myri_interrupt
 c_func
 (paren
@@ -2955,6 +2955,9 @@ id|mp-&gt;irq_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|myri_open

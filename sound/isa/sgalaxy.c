@@ -525,7 +525,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_sgalaxy_dummy_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_sgalaxy_dummy_interrupt
 c_func
 (paren
@@ -542,6 +542,9 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 DECL|function|snd_sgalaxy_setup_wss
 r_static

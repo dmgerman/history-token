@@ -2049,8 +2049,6 @@ id|tp
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|csz_init
 r_static
@@ -2327,8 +2325,6 @@ op_assign
 id|csz_watchdog
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3582,6 +3578,11 @@ dot
 id|dump
 op_assign
 id|csz_dump
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

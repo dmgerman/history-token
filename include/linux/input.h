@@ -1327,7 +1327,6 @@ DECL|macro|FF_MAX
 mdefine_line|#define FF_MAX&t;&t;0x7f
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * In-kernel definitions.&n; */
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 DECL|macro|NBITS
@@ -2123,7 +2122,8 @@ op_star
 id|file
 )paren
 suffix:semicolon
-id|devfs_handle_t
+multiline_comment|/* will go away once devfs_register gets sanitized */
+r_void
 id|input_register_minor
 c_func
 (paren
@@ -2136,14 +2136,6 @@ id|minor
 comma
 r_int
 id|minor_base
-)paren
-suffix:semicolon
-r_void
-id|input_unregister_minor
-c_func
-(paren
-id|devfs_handle_t
-id|handle
 )paren
 suffix:semicolon
 r_void

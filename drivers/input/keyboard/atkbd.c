@@ -1497,7 +1497,7 @@ suffix:semicolon
 multiline_comment|/*&n; * atkbd_interrupt(). Here takes place processing of data received from&n; * the keyboard into events.&n; */
 DECL|function|atkbd_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|atkbd_interrupt
 c_func
 (paren
@@ -1593,7 +1593,8 @@ id|atkbd-&gt;resend
 op_assign
 l_int|1
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1619,7 +1620,8 @@ id|atkbd-&gt;ack
 op_assign
 l_int|1
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_case
 id|ATKBD_RET_NAK
@@ -1629,7 +1631,8 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1646,7 +1649,8 @@ id|atkbd-&gt;cmdcnt
 op_assign
 id|code
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_switch
@@ -1667,7 +1671,8 @@ c_func
 id|atkbd-&gt;serio
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_case
 id|ATKBD_KEY_EMUL0
@@ -1676,7 +1681,8 @@ id|atkbd-&gt;emul
 op_assign
 l_int|1
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_case
 id|ATKBD_KEY_EMUL1
@@ -1685,7 +1691,8 @@ id|atkbd-&gt;emul
 op_assign
 l_int|2
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_case
 id|ATKBD_KEY_RELEASE
@@ -1694,7 +1701,8 @@ id|atkbd-&gt;release
 op_assign
 l_int|1
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -1709,7 +1717,8 @@ c_cond
 op_decrement
 id|atkbd-&gt;emul
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 id|code
 op_or_assign
@@ -1792,6 +1801,11 @@ suffix:semicolon
 id|atkbd-&gt;release
 op_assign
 l_int|0
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * atkbd_sendbyte() sends a byte to the keyboard, and waits for&n; * acknowledge. It doesn&squot;t handle resends according to the keyboard&n; * protocol specs, because if these are needed, the keyboard needs&n; * replacement anyway, and they only make a mess in the protocol.&n; */

@@ -14909,7 +14909,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * SCSI controller interrupt handler.&n; */
-r_void
+id|irqreturn_t
 DECL|function|ahc_linux_isr
 id|ahc_linux_isr
 c_func
@@ -15039,6 +15039,10 @@ comma
 op_amp
 id|flags
 )paren
+suffix:semicolon
+multiline_comment|/* FIXME! Was it really ours? */
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_void

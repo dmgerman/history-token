@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -2213,7 +2213,7 @@ l_int|64
 suffix:semicolon
 )brace
 multiline_comment|/* main store size (in chunks) is &n;&t; *   totalChunks - hptSizeChunks&n;&t; * which should be equal to &n;&t; *   nextPhysChunk&n;&t; */
-id|naca-&gt;physicalMemorySize
+id|systemcfg-&gt;physicalMemorySize
 op_assign
 id|chunk_to_addr
 c_func
@@ -2227,7 +2227,7 @@ c_func
 (paren
 l_int|0
 comma
-id|naca-&gt;physicalMemorySize
+id|systemcfg-&gt;physicalMemorySize
 )paren
 suffix:semicolon
 id|lmb_init
@@ -2240,7 +2240,7 @@ c_func
 (paren
 l_int|0
 comma
-id|naca-&gt;physicalMemorySize
+id|systemcfg-&gt;physicalMemorySize
 )paren
 suffix:semicolon
 id|lmb_analyze
@@ -2279,10 +2279,12 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|i
 comma
 id|n
 suffix:semicolon
+r_int
 r_int
 id|procIx
 op_assign
@@ -2293,7 +2295,18 @@ c_func
 op_member_access_from_pointer
 id|xLpPaca.xDynHvPhysicalProcIndex
 suffix:semicolon
-id|naca-&gt;iCacheL1LineSize
+id|systemcfg-&gt;iCacheL1Size
+op_assign
+id|xIoHriProcessorVpd
+(braket
+id|procIx
+)braket
+dot
+id|xInstCacheSize
+op_star
+l_int|1024
+suffix:semicolon
+id|systemcfg-&gt;iCacheL1LineSize
 op_assign
 id|xIoHriProcessorVpd
 (braket
@@ -2302,7 +2315,18 @@ id|procIx
 dot
 id|xInstCacheOperandSize
 suffix:semicolon
-id|naca-&gt;dCacheL1LineSize
+id|systemcfg-&gt;dCacheL1Size
+op_assign
+id|xIoHriProcessorVpd
+(braket
+id|procIx
+)braket
+dot
+id|xDataL1CacheSizeKB
+op_star
+l_int|1024
+suffix:semicolon
+id|systemcfg-&gt;dCacheL1LineSize
 op_assign
 id|xIoHriProcessorVpd
 (braket
@@ -2315,17 +2339,17 @@ id|naca-&gt;iCacheL1LinesPerPage
 op_assign
 id|PAGE_SIZE
 op_div
-id|naca-&gt;iCacheL1LineSize
+id|systemcfg-&gt;iCacheL1LineSize
 suffix:semicolon
 id|naca-&gt;dCacheL1LinesPerPage
 op_assign
 id|PAGE_SIZE
 op_div
-id|naca-&gt;dCacheL1LineSize
+id|systemcfg-&gt;dCacheL1LineSize
 suffix:semicolon
 id|i
 op_assign
-id|naca-&gt;iCacheL1LineSize
+id|systemcfg-&gt;iCacheL1LineSize
 suffix:semicolon
 id|n
 op_assign
@@ -2353,7 +2377,7 @@ id|n
 suffix:semicolon
 id|i
 op_assign
-id|naca-&gt;dCacheL1LineSize
+id|systemcfg-&gt;dCacheL1LineSize
 suffix:semicolon
 id|n
 op_assign
@@ -2382,33 +2406,25 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;D-cache line size = %d  (log = %d)&bslash;n&quot;
+l_string|&quot;D-cache line size = %d&bslash;n&quot;
 comma
 (paren
 r_int
-)paren
-id|naca-&gt;dCacheL1LineSize
-comma
-(paren
 r_int
 )paren
-id|naca-&gt;dCacheL1LogLineSize
+id|systemcfg-&gt;dCacheL1LineSize
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;I-cache line size = %d  (log = %d)&bslash;n&quot;
+l_string|&quot;I-cache line size = %d&bslash;n&quot;
 comma
 (paren
 r_int
-)paren
-id|naca-&gt;iCacheL1LineSize
-comma
-(paren
 r_int
 )paren
-id|naca-&gt;iCacheL1LogLineSize
+id|systemcfg-&gt;iCacheL1LineSize
 )paren
 suffix:semicolon
 )brace
@@ -2597,6 +2613,23 @@ c_func
 )paren
 op_member_access_from_pointer
 id|xLpPaca.xDynHvPhysicalProcIndex
+suffix:semicolon
+multiline_comment|/* Add an eye catcher and the systemcfg layout version number */
+id|strcpy
+c_func
+(paren
+id|systemcfg-&gt;eye_catcher
+comma
+l_string|&quot;SYSTEMCFG:PPC64&quot;
+)paren
+suffix:semicolon
+id|systemcfg-&gt;version.major
+op_assign
+id|SYSTEMCFG_MAJOR
+suffix:semicolon
+id|systemcfg-&gt;version.minor
+op_assign
+id|SYSTEMCFG_MINOR
 suffix:semicolon
 multiline_comment|/* Setup the Lp Event Queue */
 multiline_comment|/* Allocate a page for the Event Stack&n;&t; * The hypervisor wants the absolute real address, so&n;&t; * we subtract out the KERNELBASE and add in the&n;&t; * absolute real address of the kernel load area&n;&t; */
@@ -2792,17 +2825,21 @@ comma
 id|tbFreqMhzHundreths
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Processor version = %x&bslash;n&quot;
-comma
+id|systemcfg-&gt;processor
+op_assign
 id|xIoHriProcessorVpd
 (braket
 id|procIx
 )braket
 dot
 id|xPVR
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Processor version = %x&bslash;n&quot;
+comma
+id|systemcfg-&gt;processor
 )paren
 suffix:semicolon
 )brace
@@ -2849,7 +2886,7 @@ id|m
 comma
 l_string|&quot;i-cache&bslash;t&bslash;t: %d&bslash;n&quot;
 comma
-id|naca-&gt;iCacheL1LineSize
+id|systemcfg-&gt;iCacheL1LineSize
 )paren
 suffix:semicolon
 id|seq_printf
@@ -2859,7 +2896,7 @@ id|m
 comma
 l_string|&quot;d-cache&bslash;t&bslash;t: %d&bslash;n&quot;
 comma
-id|naca-&gt;dCacheL1LineSize
+id|systemcfg-&gt;dCacheL1LineSize
 )paren
 suffix:semicolon
 )brace

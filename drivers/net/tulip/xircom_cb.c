@@ -206,7 +206,7 @@ id|pdev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|xircom_interrupt
 c_func
 (paren
@@ -1493,7 +1493,7 @@ suffix:semicolon
 )brace
 DECL|function|xircom_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|xircom_interrupt
 c_func
 (paren
@@ -1746,6 +1746,9 @@ c_func
 (paren
 l_string|&quot;xircom_interrupt&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|xircom_start_xmit

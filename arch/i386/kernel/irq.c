@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -71,7 +72,7 @@ id|irq
 suffix:semicolon
 multiline_comment|/*&n; * Special irq handlers.&n; */
 DECL|function|no_action
-r_void
+id|irqreturn_t
 id|no_action
 c_func
 (paren
@@ -88,6 +89,9 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic no controller code&n; */
 DECL|function|enable_none
@@ -674,6 +678,18 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Force the &quot;do bottom halves&quot; bit */
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_struct
+id|irqaction
+op_star
+id|first_action
+op_assign
+id|action
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -695,6 +711,8 @@ id|status
 op_or_assign
 id|action-&gt;flags
 suffix:semicolon
+id|retval
+op_or_assign
 id|action
 op_member_access_from_pointer
 id|handler
@@ -736,6 +754,113 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+l_int|1
+)paren
+(brace
+r_static
+r_int
+id|count
+op_assign
+l_int|100
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+)paren
+(brace
+id|count
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;irq event %d: bogus retval mask %x&bslash;n&quot;
+comma
+id|irq
+comma
+id|retval
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;irq %d: nobody cared!&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
+)brace
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;handlers:&bslash;n&quot;
+)paren
+suffix:semicolon
+id|action
+op_assign
+id|first_action
+suffix:semicolon
+r_do
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;[&lt;%p&gt;]&quot;
+comma
+id|action-&gt;handler
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot; (%s)&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|action-&gt;handler
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|action
+op_assign
+id|action-&gt;next
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|action
+)paren
+suffix:semicolon
+)brace
+)brace
 r_return
 id|status
 suffix:semicolon
@@ -1276,7 +1401,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

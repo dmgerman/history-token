@@ -1702,7 +1702,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_interwave_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_interwave_interrupt
 c_func
 (paren
@@ -1738,6 +1738,11 @@ id|max
 op_assign
 l_int|5
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_do
 (brace
 id|loop
@@ -1754,6 +1759,10 @@ id|iwcard-&gt;gus_status_reg
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|snd_gus_interrupt
 c_func
 (paren
@@ -1781,6 +1790,10 @@ l_int|0x01
 )paren
 (brace
 multiline_comment|/* IRQ bit is set? */
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|snd_cs4231_interrupt
 c_func
 (paren
@@ -1805,6 +1818,13 @@ op_decrement
 id|max
 OG
 l_int|0
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

@@ -15688,7 +15688,7 @@ multiline_comment|/************************ INTERRUPT HANDLING *****************
 multiline_comment|/*&n; * This function is the interrupt handler for the WaveLAN card. This&n; * routine will be called whenever: &n; */
 DECL|function|wavelan_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|wavelan_interrupt
 c_func
 (paren
@@ -15912,6 +15912,7 @@ id|lp-&gt;spinlock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* Read interrupt data. */
@@ -16187,6 +16188,9 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Watchdog: when we start a transmission, a timer is set for us in the&n; * kernel.  If the transmission completes, this timer is disabled. If&n; * the timer expires, we are called and we try to unlock the hardware.&n; */

@@ -1616,6 +1616,7 @@ op_complement
 id|SPARC_FLAG_KTHREAD
 suffix:semicolon
 multiline_comment|/* We must fixup kregs as well. */
+multiline_comment|/* XXX This was not fixed for ti for a while, worked. Unused? */
 id|current-&gt;thread.kregs
 op_assign
 (paren
@@ -1625,12 +1626,10 @@ op_star
 )paren
 (paren
 (paren
-(paren
-r_int
-r_int
+r_char
+op_star
 )paren
-id|current
-)paren
+id|current-&gt;thread_info
 op_plus
 (paren
 id|THREAD_SIZE
@@ -1640,138 +1639,6 @@ id|TRACEREG_SZ
 )paren
 suffix:semicolon
 )brace
-)brace
-DECL|function|copy_regs
-r_static
-id|__inline__
-r_void
-id|copy_regs
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|dst
-comma
-r_struct
-id|pt_regs
-op_star
-id|src
-)paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;ldd&bslash;t[%1 + 0x00], %%g2&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x08], %%g4&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x10], %%o4&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g2, [%0 + 0x00]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g4, [%0 + 0x08]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%o4, [%0 + 0x10]&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x18], %%g2&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x20], %%g4&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x28], %%o4&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g2, [%0 + 0x18]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g4, [%0 + 0x20]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%o4, [%0 + 0x28]&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x30], %%g2&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x38], %%g4&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x40], %%o4&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g2, [%0 + 0x30]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g4, [%0 + 0x38]&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x48], %%g2&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%o4, [%0 + 0x40]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g2, [%0 + 0x48]&bslash;n&bslash;t&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|dst
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|src
-)paren
-suffix:colon
-l_string|&quot;g2&quot;
-comma
-l_string|&quot;g3&quot;
-comma
-l_string|&quot;g4&quot;
-comma
-l_string|&quot;g5&quot;
-comma
-l_string|&quot;o4&quot;
-comma
-l_string|&quot;o5&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|function|copy_regwin
-r_static
-id|__inline__
-r_void
-id|copy_regwin
-c_func
-(paren
-r_struct
-id|reg_window
-op_star
-id|dst
-comma
-r_struct
-id|reg_window
-op_star
-id|src
-)paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;ldd&bslash;t[%1 + 0x00], %%g2&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x08], %%g4&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x10], %%o4&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g2, [%0 + 0x00]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g4, [%0 + 0x08]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%o4, [%0 + 0x10]&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x18], %%g2&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x20], %%g4&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x28], %%o4&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g2, [%0 + 0x18]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g4, [%0 + 0x20]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%o4, [%0 + 0x28]&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x30], %%g2&bslash;n&bslash;t&quot;
-l_string|&quot;ldd&bslash;t[%1 + 0x38], %%g4&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g2, [%0 + 0x30]&bslash;n&bslash;t&quot;
-l_string|&quot;std&bslash;t%%g4, [%0 + 0x38]&bslash;n&bslash;t&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|dst
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|src
-)paren
-suffix:colon
-l_string|&quot;g2&quot;
-comma
-l_string|&quot;g3&quot;
-comma
-l_string|&quot;g4&quot;
-comma
-l_string|&quot;g5&quot;
-comma
-l_string|&quot;o4&quot;
-comma
-l_string|&quot;o5&quot;
-)paren
-suffix:semicolon
 )brace
 r_static
 id|__inline__
@@ -2056,14 +1923,9 @@ id|pt_regs
 op_star
 id|childregs
 suffix:semicolon
-r_struct
-id|reg_window
+r_char
 op_star
 id|new_stack
-suffix:semicolon
-r_int
-r_int
-id|stack_offset
 suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 r_if
@@ -2131,12 +1993,16 @@ id|p-&gt;clear_child_tid
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Calculate offset to stack_frame &amp; pt_regs */
-id|stack_offset
+multiline_comment|/*&n;&t; *  p-&gt;thread_info         new_stack   childregs&n;&t; *  !                      !           !             {if(PSR_PS) }&n;&t; *  V                      V (stk.fr.) V  (pt_regs)  { (stk.fr.) }&n;&t; *  +----- - - - - - ------+===========+============={+==========}+&n;&t; */
+id|new_stack
 op_assign
+(paren
+r_char
+op_star
+)paren
+id|ti
+op_plus
 id|THREAD_SIZE
-op_minus
-id|TRACEREG_SZ
 suffix:semicolon
 r_if
 c_cond
@@ -2145,73 +2011,45 @@ id|regs-&gt;psr
 op_amp
 id|PSR_PS
 )paren
-(brace
-id|stack_offset
+id|new_stack
 op_sub_assign
-id|REGWIN_SZ
+id|STACKFRAME_SZ
 suffix:semicolon
-)brace
+id|new_stack
+op_sub_assign
+id|STACKFRAME_SZ
+op_plus
+id|TRACEREG_SZ
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|new_stack
+comma
+(paren
+r_char
+op_star
+)paren
+id|regs
+op_minus
+id|STACKFRAME_SZ
+comma
+id|STACKFRAME_SZ
+op_plus
+id|TRACEREG_SZ
+)paren
+suffix:semicolon
 id|childregs
 op_assign
-(paren
 (paren
 r_struct
 id|pt_regs
 op_star
 )paren
 (paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ti
-)paren
+id|new_stack
 op_plus
-id|stack_offset
-)paren
-)paren
-suffix:semicolon
-id|copy_regs
-c_func
-(paren
-id|childregs
-comma
-id|regs
-)paren
-suffix:semicolon
-id|new_stack
-op_assign
-(paren
-(paren
-(paren
-r_struct
-id|reg_window
-op_star
-)paren
-id|childregs
-)paren
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-id|copy_regwin
-c_func
-(paren
-id|new_stack
-comma
-(paren
-(paren
-(paren
-r_struct
-id|reg_window
-op_star
-)paren
-id|regs
-)paren
-op_minus
-l_int|1
-)paren
+id|STACKFRAME_SZ
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * A new process must start with interrupts closed in 2.5,&n;&t; * because this is how Mingo&squot;s scheduler works (see schedule_tail&n;&t; * and finish_arch_switch). If we do not do it, a timer interrupt hits&n;&t; * before we unlock, attempts to re-take the rq-&gt;lock, and then we die.&n;&t; * Thus, kpsr|=PSR_PIL.&n;&t; */
@@ -2276,29 +2114,10 @@ op_amp
 id|fake_swapper_regs
 suffix:semicolon
 id|new_stack
-op_assign
-(paren
-r_struct
-id|reg_window
-op_star
-)paren
-(paren
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ti
-)paren
+op_add_assign
+id|STACKFRAME_SZ
 op_plus
-(paren
-id|THREAD_SIZE
-)paren
-)paren
-op_minus
-id|REGWIN_SZ
-)paren
+id|TRACEREG_SZ
 suffix:semicolon
 id|childregs-&gt;u_regs
 (braket
@@ -2322,10 +2141,6 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|new_stack
 comma
 (paren
@@ -2337,11 +2152,7 @@ id|regs-&gt;u_regs
 id|UREG_FP
 )braket
 comma
-r_sizeof
-(paren
-r_struct
-id|reg_window
-)paren
+id|STACKFRAME_SZ
 )paren
 suffix:semicolon
 id|childregs-&gt;u_regs

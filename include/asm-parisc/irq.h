@@ -166,11 +166,11 @@ id|irq_region
 id|NR_IRQ_REGS
 )braket
 suffix:semicolon
-DECL|function|irq_cannonicalize
+DECL|function|irq_canonicalize
 r_static
 id|__inline__
 r_int
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 r_int

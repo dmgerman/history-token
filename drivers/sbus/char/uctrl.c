@@ -781,7 +781,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|uctrl_interrupt
-r_void
+r_static
+id|irqreturn_t
 id|uctrl_interrupt
 c_func
 (paren
@@ -815,6 +816,9 @@ c_func
 (paren
 l_string|&quot;in uctrl_interrupt&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|uctrl_fops

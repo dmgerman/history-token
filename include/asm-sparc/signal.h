@@ -192,25 +192,25 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Sigvec flags */
-DECL|macro|SV_SSTACK
-mdefine_line|#define SV_SSTACK    1u    /* This signal handler should use sig-stack */
-DECL|macro|SV_INTR
-mdefine_line|#define SV_INTR      2u    /* Sig return should not restart system call */
-DECL|macro|SV_RESET
-mdefine_line|#define SV_RESET     4u    /* Set handler to SIG_DFL upon taken signal */
-DECL|macro|SV_IGNCHILD
-mdefine_line|#define SV_IGNCHILD  8u    /* Do not send SIGCHLD */
+DECL|macro|_SV_SSTACK
+mdefine_line|#define _SV_SSTACK    1u    /* This signal handler should use sig-stack */
+DECL|macro|_SV_INTR
+mdefine_line|#define _SV_INTR      2u    /* Sig return should not restart system call */
+DECL|macro|_SV_RESET
+mdefine_line|#define _SV_RESET     4u    /* Set handler to SIG_DFL upon taken signal */
+DECL|macro|_SV_IGNCHILD
+mdefine_line|#define _SV_IGNCHILD  8u    /* Do not send SIGCHLD */
 multiline_comment|/*&n; * sa_flags values: SA_STACK is not currently supported, but will allow the&n; * usage of signal stacks by using the (now obsolete) sa_restorer field in&n; * the sigaction structure as a stack pointer. This is now possible due to&n; * the changes in signal handling. LBT 010493.&n; * SA_INTERRUPT is a no-op, but left due to historical reasons. Use the&n; * SA_RESTART flag to get restarting signals (which were the default long ago)&n; * SA_SHIRQ flag is for shared interrupt support on PCI and EISA.&n; */
 DECL|macro|SA_NOCLDSTOP
-mdefine_line|#define SA_NOCLDSTOP&t;SV_IGNCHILD
+mdefine_line|#define SA_NOCLDSTOP&t;_SV_IGNCHILD
 DECL|macro|SA_STACK
-mdefine_line|#define SA_STACK&t;SV_SSTACK
+mdefine_line|#define SA_STACK&t;_SV_SSTACK
 DECL|macro|SA_ONSTACK
-mdefine_line|#define SA_ONSTACK&t;SV_SSTACK
+mdefine_line|#define SA_ONSTACK&t;_SV_SSTACK
 DECL|macro|SA_RESTART
-mdefine_line|#define SA_RESTART&t;SV_INTR
+mdefine_line|#define SA_RESTART&t;_SV_INTR
 DECL|macro|SA_ONESHOT
-mdefine_line|#define SA_ONESHOT&t;SV_RESET
+mdefine_line|#define SA_ONESHOT&t;_SV_RESET
 DECL|macro|SA_INTERRUPT
 mdefine_line|#define SA_INTERRUPT&t;0x10u
 DECL|macro|SA_NOMASK

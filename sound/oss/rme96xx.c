@@ -1450,6 +1450,7 @@ id|exact
 )paren
 (brace
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -1703,6 +1704,7 @@ id|stop
 r_int
 id|i
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -2624,7 +2626,7 @@ suffix:semicolon
 )brace
 DECL|function|rme96xx_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|rme96xx_interrupt
 c_func
 (paren
@@ -2688,6 +2690,7 @@ id|RME96xx_IRQ
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -2786,6 +2789,9 @@ id|s-&gt;lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------- &n; PCI detection and module initialization stuff &n; ----------------------------------------------------------------------------*/

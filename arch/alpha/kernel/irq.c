@@ -69,7 +69,7 @@ id|irq_err_count
 suffix:semicolon
 multiline_comment|/*&n; * Special irq handlers.&n; */
 DECL|function|no_action
-r_void
+id|irqreturn_t
 id|no_action
 c_func
 (paren
@@ -86,6 +86,9 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic no controller code&n; */
 DECL|function|no_irq_enable_disable
@@ -1653,7 +1656,7 @@ r_int
 r_int
 id|irq
 comma
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler

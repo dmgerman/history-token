@@ -1013,7 +1013,7 @@ comma
 )brace
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 DECL|function|sedlbauer_interrupt
 id|sedlbauer_interrupt
 c_func
@@ -1064,8 +1064,10 @@ l_string|&quot;Sedlbauer: card not available!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
+r_return
 id|hscxisac_irq
 c_func
 (paren
@@ -1078,7 +1080,7 @@ id|regs
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|sedlbauer_isar_interrupt
 id|sedlbauer_isar_interrupt
 c_func
@@ -1323,6 +1325,9 @@ c_func
 op_amp
 id|cs-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

@@ -1830,7 +1830,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|speedo_interrupt
 c_func
 (paren
@@ -7382,7 +7382,7 @@ suffix:semicolon
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|speedo_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|speedo_interrupt
 c_func
 (paren
@@ -7426,6 +7426,12 @@ suffix:semicolon
 r_int
 r_int
 id|status
+suffix:semicolon
+r_int
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|ioaddr
 op_assign
@@ -7474,6 +7480,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Avoid halting machine. */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -7535,6 +7542,10 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -7794,6 +7805,11 @@ id|sp-&gt;in_interrupt
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 DECL|function|speedo_rx_alloc

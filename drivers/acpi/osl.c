@@ -683,7 +683,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|acpi_irq
 id|acpi_irq
 c_func
@@ -701,6 +701,7 @@ op_star
 id|regs
 )paren
 (brace
+r_return
 (paren
 op_star
 id|acpi_irq_handler
@@ -912,7 +913,7 @@ c_func
 id|acpi_io_address
 id|port
 comma
-r_void
+id|u32
 op_star
 id|value
 comma
@@ -1014,7 +1015,7 @@ c_func
 id|acpi_io_address
 id|port
 comma
-id|acpi_integer
+id|u32
 id|value
 comma
 id|u32
@@ -1086,7 +1087,7 @@ c_func
 id|acpi_physical_address
 id|phys_addr
 comma
-r_void
+id|u32
 op_star
 id|value
 comma
@@ -1262,7 +1263,7 @@ c_func
 id|acpi_physical_address
 id|phys_addr
 comma
-id|acpi_integer
+id|u32
 id|value
 comma
 id|u32

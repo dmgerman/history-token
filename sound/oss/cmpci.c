@@ -4355,7 +4355,7 @@ suffix:semicolon
 id|pstart
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|pstart
@@ -4681,7 +4681,7 @@ suffix:semicolon
 id|pstart
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|pstart
@@ -5692,7 +5692,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|cm_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|cm_interrupt
 c_func
 (paren
@@ -5755,6 +5755,7 @@ l_int|0x80000000
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -5847,6 +5848,9 @@ c_func
 op_amp
 id|s-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SOUND_CMPCI_MIDI

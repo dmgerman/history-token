@@ -324,7 +324,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|nkbd_interrupt
-r_void
+id|irqreturn_t
 id|nkbd_interrupt
 c_func
 (paren
@@ -422,6 +422,9 @@ id|nkbd_name
 comma
 id|serio-&gt;phys
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|nkbd_connect

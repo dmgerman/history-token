@@ -1482,7 +1482,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|intr_handler
 c_func
 (paren
@@ -5998,7 +5998,7 @@ suffix:semicolon
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|intr_handler
 r_static
-r_void
+id|irqreturn_t
 id|intr_handler
 c_func
 (paren
@@ -6044,6 +6044,11 @@ suffix:semicolon
 r_int
 r_int
 id|num_tx
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|handled
 op_assign
 l_int|0
 suffix:semicolon
@@ -6121,6 +6126,10 @@ id|np-&gt;imrvalue
 )paren
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 singleline_comment|// 90/1/16 delete,
 singleline_comment|//
@@ -6645,6 +6654,11 @@ id|IMR
 )paren
 suffix:semicolon
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* This routine is logically part of the interrupt handler, but separated&n;   for clarity and better register allocation. */
@@ -7455,9 +7469,12 @@ op_assign
 id|mclist-&gt;next
 )paren
 (brace
-id|set_bit
-c_func
-(paren
+r_int
+r_int
+id|bit
+suffix:semicolon
+id|bit
+op_assign
 (paren
 id|ether_crc
 c_func
@@ -7471,8 +7488,18 @@ l_int|26
 )paren
 op_xor
 l_int|0x3F
-comma
+suffix:semicolon
 id|mc_filter
+(braket
+id|bit
+op_rshift
+l_int|5
+)braket
+op_or_assign
+(paren
+l_int|1
+op_lshift
+id|bit
 )paren
 suffix:semicolon
 )brace

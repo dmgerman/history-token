@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
-macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -182,8 +182,8 @@ suffix:semicolon
 )brace
 r_static
 id|u32
-DECL|function|lopec_irq_cannonicalize
-id|lopec_irq_cannonicalize
+DECL|function|lopec_irq_canonicalize
+id|lopec_irq_canonicalize
 c_func
 (paren
 id|u32
@@ -1288,9 +1288,9 @@ id|ppc_md.show_cpuinfo
 op_assign
 id|lopec_show_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
-id|lopec_irq_cannonicalize
+id|lopec_irq_canonicalize
 suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign

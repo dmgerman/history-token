@@ -316,7 +316,7 @@ id|SNDRV_DEFAULT_PTR
 suffix:semicolon
 DECL|function|snd_sb8_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_sb8_interrupt
 c_func
 (paren
@@ -371,6 +371,9 @@ id|chip
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|snd_sb8_free
 r_static

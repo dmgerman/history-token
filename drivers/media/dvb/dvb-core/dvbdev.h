@@ -35,10 +35,6 @@ DECL|member|num
 r_int
 id|num
 suffix:semicolon
-DECL|member|devfs_handle
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 DECL|member|list_head
 r_struct
 id|list_head
@@ -71,10 +67,6 @@ r_struct
 id|file_operations
 op_star
 id|fops
-suffix:semicolon
-DECL|member|devfs_handle
-id|devfs_handle_t
-id|devfs_handle
 suffix:semicolon
 DECL|member|adapter
 r_struct

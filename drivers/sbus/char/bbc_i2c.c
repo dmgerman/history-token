@@ -1393,7 +1393,7 @@ id|bbc_i2c_read_buf
 suffix:semicolon
 DECL|function|bbc_i2c_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|bbc_i2c_interrupt
 c_func
 (paren
@@ -1442,6 +1442,9 @@ c_func
 op_amp
 id|bp-&gt;wq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|reset_one_i2c

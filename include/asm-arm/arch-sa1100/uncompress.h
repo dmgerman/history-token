@@ -92,7 +92,7 @@ id|s
 op_increment
 )paren
 (brace
-multiline_comment|/* wait for space in the UART&squot;s transmiter */
+multiline_comment|/* wait for space in the UART&squot;s transmitter */
 r_while
 c_loop
 (paren

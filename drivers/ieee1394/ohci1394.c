@@ -86,7 +86,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 866 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 902 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -9077,7 +9077,7 @@ suffix:semicolon
 )brace
 DECL|function|ohci_irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|ohci_irq_handler
 c_func
 (paren
@@ -9181,6 +9181,7 @@ op_logical_neg
 id|event
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|DBGMSG
 c_func
@@ -10405,6 +10406,7 @@ id|event
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Put the buffer back into the dma context */

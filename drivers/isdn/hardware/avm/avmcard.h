@@ -4,6 +4,7 @@ DECL|macro|_AVMCARD_H_
 mdefine_line|#define _AVMCARD_H_
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|AVMB1_PORTLEN
 mdefine_line|#define&t;AVMB1_PORTLEN&t;&t;0x1f
 DECL|macro|AVM_MAXVERSION
@@ -2119,7 +2120,7 @@ op_star
 id|card
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|b1_interrupt
 c_func
 (paren
@@ -2221,7 +2222,7 @@ op_star
 id|card
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|b1dma_interrupt
 c_func
 (paren

@@ -1173,7 +1173,7 @@ suffix:semicolon
 )brace
 DECL|function|sunsab_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sunsab_interrupt
 c_func
 (paren
@@ -1489,6 +1489,9 @@ id|up-&gt;port.lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* port-&gt;lock is not held.  */
@@ -3700,13 +3703,13 @@ macro_line|#ifdef CONFIG_DEVFS_FS
 dot
 id|dev_name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 comma
 macro_line|#else
 dot
 id|dev_name
 op_assign
-l_string|&quot;ttyS%d&quot;
+l_string|&quot;ttyS&quot;
 comma
 macro_line|#endif
 dot

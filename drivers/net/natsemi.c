@@ -1828,7 +1828,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|intr_handler
 c_func
 (paren
@@ -6953,7 +6953,7 @@ suffix:semicolon
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread. */
 DECL|function|intr_handler
 r_static
-r_void
+id|irqreturn_t
 id|intr_handler
 c_func
 (paren
@@ -6994,12 +6994,19 @@ id|boguscnt
 op_assign
 id|max_interrupt_work
 suffix:semicolon
+r_int
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|np-&gt;hands_off
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_do
 (brace
@@ -7051,6 +7058,10 @@ op_eq
 l_int|0
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -7186,6 +7197,13 @@ id|KERN_DEBUG
 l_string|&quot;%s: exiting interrupt.&bslash;n&quot;
 comma
 id|dev-&gt;name
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

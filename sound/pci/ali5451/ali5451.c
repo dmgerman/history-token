@@ -5177,7 +5177,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_ali_card_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|snd_ali_card_interrupt
 c_func
 (paren
@@ -5216,12 +5216,16 @@ op_eq
 l_int|NULL
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|snd_ali_interrupt
 c_func
 (paren
 id|codec
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|snd_ali_alloc_voice

@@ -43,10 +43,6 @@ DECL|member|wait
 id|wait_queue_head_t
 id|wait
 suffix:semicolon
-DECL|member|devfs
-id|devfs_handle_t
-id|devfs
-suffix:semicolon
 DECL|member|hid
 r_struct
 id|hid_device
@@ -114,11 +110,6 @@ id|hiddev_table
 (braket
 id|HIDDEV_MINORS
 )braket
-suffix:semicolon
-DECL|variable|hiddev_devfs_handle
-r_static
-id|devfs_handle_t
-id|hiddev_devfs_handle
 suffix:semicolon
 multiline_comment|/* forward reference to make our lives easier */
 r_extern
@@ -827,10 +818,12 @@ op_star
 id|hiddev
 )paren
 (brace
-id|devfs_unregister
+id|devfs_remove
 c_func
 (paren
-id|hiddev-&gt;devfs
+l_string|&quot;usb/hid/hiddev%d&quot;
+comma
+id|hiddev-&gt;minor
 )paren
 suffix:semicolon
 id|usb_deregister_dev
@@ -3359,8 +3352,6 @@ comma
 id|minor
 )paren
 suffix:semicolon
-id|hiddev-&gt;devfs
-op_assign
 id|devfs_register
 c_func
 (paren
@@ -3368,7 +3359,7 @@ l_int|NULL
 comma
 id|devfs_name
 comma
-id|DEVFS_FL_DEFAULT
+l_int|0
 comma
 id|USB_MAJOR
 comma
@@ -3507,8 +3498,6 @@ c_func
 r_void
 )paren
 (brace
-id|hiddev_devfs_handle
-op_assign
 id|devfs_mk_dir
 c_func
 (paren

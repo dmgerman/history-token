@@ -2,6 +2,7 @@ macro_line|#ifndef _NM256_H_
 DECL|macro|_NM256_H_
 mdefine_line|#define _NM256_H_
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;ac97.h&quot;
 multiline_comment|/* The revisions that we currently handle.  */
 DECL|enum|nm256rev
@@ -213,7 +214,7 @@ id|has_irq
 suffix:semicolon
 multiline_comment|/* The card interrupt service routine. */
 DECL|member|introutine
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|introutine
