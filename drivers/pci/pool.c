@@ -1,4 +1,5 @@
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; * Pool allocator ... wraps the pci_alloc_consistent page allocator, so&n; * small blocks are easily used by drivers for bus mastering controllers.&n; * This should probably be sharing the guts of the slab allocator.&n; */
 DECL|struct|pci_pool

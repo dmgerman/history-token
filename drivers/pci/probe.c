@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * probe.c - PCI detection and setup code&n; */
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
