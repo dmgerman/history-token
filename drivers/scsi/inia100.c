@@ -1118,6 +1118,10 @@ r_goto
 id|out_unalloc
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -1127,8 +1131,23 @@ l_int|256
 comma
 l_string|&quot;inia100&quot;
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;inia100: io port 0x%x, is busy.&bslash;n&quot;
+comma
+id|pHCB-&gt;HCS_Base
+)paren
 suffix:semicolon
-multiline_comment|/* Register */
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|hreg-&gt;io_port
 op_assign
 id|pHCB-&gt;HCS_Base
