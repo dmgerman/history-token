@@ -11485,13 +11485,6 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;ahd_dv_%d&quot;
 comma
 id|ahd-&gt;unit

@@ -5301,14 +5301,13 @@ multiline_comment|/* No userlevel access needed */
 id|daemonize
 c_func
 (paren
+l_string|&quot;knodemgrd&quot;
 )paren
 suffix:semicolon
-id|strcpy
+id|allow_signal
 c_func
 (paren
-id|current-&gt;comm
-comma
-l_string|&quot;knodemgrd&quot;
+id|SIGTERM
 )paren
 suffix:semicolon
 multiline_comment|/* Sit and wait for a signal to probe the nodes on the bus. This&n;&t; * happens when we get a bus reset. */

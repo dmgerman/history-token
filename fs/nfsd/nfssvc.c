@@ -598,13 +598,6 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
 l_string|&quot;nfsd&quot;
 )paren
 suffix:semicolon

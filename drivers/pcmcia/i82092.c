@@ -1762,7 +1762,7 @@ l_int|0
 op_logical_or
 (paren
 id|socketno
-OG
+op_ge
 id|MAX_SOCKETS
 )paren
 )paren

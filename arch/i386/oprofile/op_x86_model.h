@@ -2,9 +2,9 @@ multiline_comment|/**&n; * @file op_x86_model.h&n; * interface to x86 model-spec
 macro_line|#ifndef OP_X86_MODEL_H
 DECL|macro|OP_X86_MODEL_H
 mdefine_line|#define OP_X86_MODEL_H
-multiline_comment|/* will need re-working for Pentium IV */
+multiline_comment|/* Pentium IV needs all these */
 DECL|macro|MAX_MSR
-mdefine_line|#define MAX_MSR 4
+mdefine_line|#define MAX_MSR 63
 DECL|struct|op_saved_msr
 r_struct
 id|op_saved_msr
@@ -171,6 +171,18 @@ r_struct
 id|op_x86_model_spec
 r_const
 id|op_ppro_spec
+suffix:semicolon
+r_extern
+r_struct
+id|op_x86_model_spec
+r_const
+id|op_p4_spec
+suffix:semicolon
+r_extern
+r_struct
+id|op_x86_model_spec
+r_const
+id|op_p4_ht2_spec
 suffix:semicolon
 r_extern
 r_struct

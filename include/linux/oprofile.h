@@ -14,26 +14,6 @@ suffix:semicolon
 r_struct
 id|file_operations
 suffix:semicolon
-DECL|enum|oprofile_cpu
-r_enum
-id|oprofile_cpu
-(brace
-DECL|enumerator|OPROFILE_CPU_PPRO
-id|OPROFILE_CPU_PPRO
-comma
-DECL|enumerator|OPROFILE_CPU_PII
-id|OPROFILE_CPU_PII
-comma
-DECL|enumerator|OPROFILE_CPU_PIII
-id|OPROFILE_CPU_PIII
-comma
-DECL|enumerator|OPROFILE_CPU_ATHLON
-id|OPROFILE_CPU_ATHLON
-comma
-DECL|enumerator|OPROFILE_CPU_TIMER
-id|OPROFILE_CPU_TIMER
-)brace
-suffix:semicolon
 multiline_comment|/* Operations structure to be filled in */
 DECL|struct|oprofile_operations
 r_struct
@@ -102,9 +82,15 @@ id|stop
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/* CPU identification string. */
+DECL|member|cpu_type
+r_char
+op_star
+id|cpu_type
+suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * One-time initialisation. *ops must be set to a filled-in&n; * operations structure. oprofile_cpu_type must be set.&n; * Return 0 on success.&n; */
+multiline_comment|/**&n; * One-time initialisation. *ops must be set to a filled-in&n; * operations structure.&n; * Return 0 on success.&n; */
 r_int
 id|oprofile_arch_init
 c_func
@@ -114,11 +100,6 @@ id|oprofile_operations
 op_star
 op_star
 id|ops
-comma
-r_enum
-id|oprofile_cpu
-op_star
-id|cpu
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * Add a sample. This may be called from any context. Pass&n; * smp_processor_id() as cpu.&n; */
@@ -130,6 +111,10 @@ c_func
 r_int
 r_int
 id|eip
+comma
+r_int
+r_int
+id|is_kernel
 comma
 r_int
 r_int
@@ -261,6 +246,28 @@ r_char
 r_const
 op_star
 id|name
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * Write the given asciz string to the given user buffer @buf, updating *offset&n; * appropriately. Returns bytes written or -EFAULT.&n; */
+id|ssize_t
+id|oprofilefs_str_to_user
+c_func
+(paren
+r_char
+r_const
+op_star
+id|str
+comma
+r_char
+op_star
+id|buf
+comma
+r_int
+id|count
+comma
+id|loff_t
+op_star
+id|offset
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * Convert an unsigned long value into ASCII and copy it to the user buffer @buf,&n; * updating *offset appropriately. Returns bytes written or -EFAULT.&n; */

@@ -334,6 +334,9 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
+l_string|&quot;cpqfcTS_wt_%d&quot;
+comma
+id|HostAdapter-&gt;host_no
 )paren
 suffix:semicolon
 id|siginitsetinv
@@ -343,17 +346,6 @@ op_amp
 id|current-&gt;blocked
 comma
 id|SHUTDOWN_SIGS
-)paren
-suffix:semicolon
-multiline_comment|/*&n;   * Set the name of this process.&n;   */
-id|sprintf
-c_func
-(paren
-id|current-&gt;comm
-comma
-l_string|&quot;cpqfcTS_wt_%d&quot;
-comma
-id|HostAdapter-&gt;host_no
 )paren
 suffix:semicolon
 id|cpqfcHBAdata-&gt;fcQueReady
@@ -1063,7 +1055,7 @@ r_if
 c_cond
 (paren
 id|x_ID
-OG
+op_ge
 id|TACH_SEST_LEN
 )paren
 singleline_comment|// (in)sanity check
