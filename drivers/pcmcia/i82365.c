@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
@@ -598,9 +597,6 @@ id|timer_list
 id|poll_timer
 suffix:semicolon
 multiline_comment|/*====================================================================*/
-multiline_comment|/* Default settings for PCI command configuration register */
-DECL|macro|CMD_DFLT
-mdefine_line|#define CMD_DFLT (PCI_COMMAND_IO|PCI_COMMAND_MEMORY| &bslash;&n;&t;&t;  PCI_COMMAND_MASTER|PCI_COMMAND_WAIT)
 multiline_comment|/* These definitions must match the pcic table! */
 DECL|enum|pcic_id
 r_typedef
@@ -649,24 +645,14 @@ DECL|macro|IS_VADEM
 mdefine_line|#define IS_VADEM&t;0x0001
 DECL|macro|IS_CIRRUS
 mdefine_line|#define IS_CIRRUS&t;0x0002
-DECL|macro|IS_TI
-mdefine_line|#define IS_TI&t;&t;0x0004
-DECL|macro|IS_O2MICRO
-mdefine_line|#define IS_O2MICRO&t;0x0008
 DECL|macro|IS_VIA
 mdefine_line|#define IS_VIA&t;&t;0x0010
-DECL|macro|IS_TOPIC
-mdefine_line|#define IS_TOPIC&t;0x0020
-DECL|macro|IS_RICOH
-mdefine_line|#define IS_RICOH&t;0x0040
 DECL|macro|IS_UNKNOWN
 mdefine_line|#define IS_UNKNOWN&t;0x0400
 DECL|macro|IS_VG_PWR
 mdefine_line|#define IS_VG_PWR&t;0x0800
 DECL|macro|IS_DF_PWR
 mdefine_line|#define IS_DF_PWR&t;0x1000
-DECL|macro|IS_PCI
-mdefine_line|#define IS_PCI&t;&t;0x2000
 DECL|macro|IS_ALIVE
 mdefine_line|#define IS_ALIVE&t;0x8000
 DECL|struct|pcic_t
@@ -1476,6 +1462,16 @@ comma
 id|dynamic_mode
 )paren
 suffix:semicolon
+id|flip
+c_func
+(paren
+id|p-&gt;misc2
+comma
+id|PD67_MC2_FREQ_BYPASS
+comma
+id|freq_bypass
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1509,6 +1505,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|p-&gt;misc2
+op_amp
+id|PD67_MC2_FREQ_BYPASS
+)paren
+id|strcat
+c_func
+(paren
+id|buf
+comma
+l_string|&quot; [freq bypass]&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|p-&gt;misc1
 op_amp
 id|PD67_MC1_INPACK_ENA
@@ -1521,17 +1532,6 @@ comma
 l_string|&quot; [inpack]&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|t-&gt;flags
-op_amp
-id|IS_PCI
-)paren
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -1587,32 +1587,6 @@ op_and_assign
 op_complement
 l_int|0x0600
 suffix:semicolon
-id|flip
-c_func
-(paren
-id|p-&gt;misc2
-comma
-id|PD67_MC2_FREQ_BYPASS
-comma
-id|freq_bypass
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p-&gt;misc2
-op_amp
-id|PD67_MC2_FREQ_BYPASS
-)paren
-id|strcat
-c_func
-(paren
-id|buf
-comma
-l_string|&quot; [freq bypass]&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -3522,10 +3496,6 @@ comma
 id|base
 suffix:semicolon
 r_int
-id|use_pci
-op_assign
-l_int|0
-comma
 id|isa_irq
 op_assign
 l_int|0
@@ -3693,20 +3663,10 @@ comma
 id|mask
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;    PCI card interrupts,&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Poll if only two interrupts available */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|use_pci
-op_logical_and
 op_logical_neg
 id|poll_interval
 )paren
@@ -3754,9 +3714,6 @@ multiline_comment|/* Only try an ISA cs_irq if this is the first controller */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|use_pci
-op_logical_and
 op_logical_neg
 id|grab_irq
 op_logical_and
@@ -3862,9 +3819,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|use_pci
-op_logical_and
 op_logical_neg
 id|isa_irq
 )paren
@@ -4390,20 +4344,29 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-(paren
-id|extra_sockets
-ques
-c_cond
 l_int|8
-suffix:colon
-l_int|4
-)paren
 suffix:semicolon
 id|i
 op_add_assign
 l_int|2
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|sockets
+op_logical_and
+op_logical_neg
+id|extra_sockets
+op_logical_and
+(paren
+id|i
+op_eq
+l_int|4
+)paren
+)paren
+r_break
+suffix:semicolon
 id|port
 op_assign
 id|i365_base
@@ -4686,7 +4649,6 @@ op_increment
 r_if
 c_cond
 (paren
-(paren
 id|socket
 (braket
 id|i
@@ -4695,18 +4657,6 @@ dot
 id|cs_irq
 op_ne
 id|irq
-)paren
-op_logical_and
-(paren
-id|socket
-(braket
-id|i
-)braket
-dot
-id|socket.pci_irq
-op_ne
-id|irq
-)paren
 )paren
 r_continue
 suffix:semicolon
@@ -4948,13 +4898,6 @@ comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|poll_timer
 )paren
 suffix:semicolon
 id|poll_timer.expires
@@ -5818,13 +5761,6 @@ id|reg
 op_assign
 id|t-&gt;intr
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|state-&gt;io_irq
-op_ne
-id|t-&gt;socket.pci_irq
-)paren
 id|reg
 op_or_assign
 id|state-&gt;io_irq
@@ -6725,19 +6661,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|socket
-(braket
-id|sock
-)braket
-dot
-id|flags
-op_amp
-id|IS_PCI
-)paren
-op_logical_and
-(paren
 (paren
 id|mem-&gt;sys_start
 OG
@@ -6748,7 +6671,6 @@ op_logical_or
 id|mem-&gt;sys_stop
 OG
 l_int|0xffffff
-)paren
 )paren
 )paren
 r_return
@@ -7885,7 +7807,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Intel PCIC probe: &quot;
+l_string|&quot;Intel ISA PCIC probe: &quot;
 )paren
 suffix:semicolon
 id|sockets
