@@ -881,7 +881,8 @@ id|slot-&gt;hotplug_slot
 )paren
 suffix:semicolon
 r_return
-l_int|1
+op_minus
+id|EAGAIN
 suffix:semicolon
 )brace
 id|retval
@@ -1125,6 +1126,8 @@ r_if
 c_cond
 (paren
 id|rc
+OL
+l_int|0
 )paren
 id|err
 c_func
