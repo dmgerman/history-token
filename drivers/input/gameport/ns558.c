@@ -1436,6 +1436,12 @@ comma
 id|port-&gt;size
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|port
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
