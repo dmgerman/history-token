@@ -4612,13 +4612,18 @@ r_goto
 id|release
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * report the subsystem vendor and device for help debugging&n;&t; * the irq stuff...&n;&t; */
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Yenta: CardBus bridge found at %s&bslash;n&quot;
+l_string|&quot;Yenta: CardBus bridge found at %s [%04x:%04x]&bslash;n&quot;
 comma
 id|dev-&gt;slot_name
+comma
+id|dev-&gt;subsystem_vendor
+comma
+id|dev-&gt;subsystem_device
 )paren
 suffix:semicolon
 id|yenta_config_init
