@@ -7,7 +7,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * ACPI_DEBUG_OUTPUT    - This switch enables all the debug facilities of the&n; *                        ACPI subsystem.  This includes the DEBUG_PRINT output&n; *                        statements.  When disabled, all DEBUG_PRINT&n; *                        statements are compiled out.&n; *&n; * ACPI_APPLICATION     - Use this switch if the subsystem is going to be run&n; *                        at the application level.&n; *&n; */
 multiline_comment|/* Version string */
 DECL|macro|ACPI_CA_VERSION
-mdefine_line|#define ACPI_CA_VERSION                 0x20040402
+mdefine_line|#define ACPI_CA_VERSION                 0x20040427
 multiline_comment|/* Maximum objects in the various object caches */
 DECL|macro|ACPI_MAX_STATE_CACHE_DEPTH
 mdefine_line|#define ACPI_MAX_STATE_CACHE_DEPTH      64          /* State objects for stacks */
@@ -117,7 +117,7 @@ DECL|macro|ACPI_SMBUS_BUFFER_SIZE
 mdefine_line|#define ACPI_SMBUS_BUFFER_SIZE          34
 multiline_comment|/* Number of strings associated with the _OSI reserved method */
 DECL|macro|ACPI_NUM_OSI_STRINGS
-mdefine_line|#define ACPI_NUM_OSI_STRINGS            4
+mdefine_line|#define ACPI_NUM_OSI_STRINGS            9
 multiline_comment|/******************************************************************************&n; *&n; * ACPI AML Debugger&n; *&n; *****************************************************************************/
 DECL|macro|ACPI_DEBUGGER_MAX_ARGS
 mdefine_line|#define ACPI_DEBUGGER_MAX_ARGS          8  /* Must be max method args + 1 */

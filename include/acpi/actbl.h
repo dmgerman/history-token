@@ -454,37 +454,6 @@ id|critical_level
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * High performance timer&n; */
-DECL|struct|hpet_table
-r_struct
-id|hpet_table
-(brace
-id|ACPI_TABLE_HEADER_DEF
-DECL|member|hardware_id
-id|u32
-id|hardware_id
-suffix:semicolon
-DECL|member|base_address
-id|u32
-id|base_address
-(braket
-l_int|3
-)braket
-suffix:semicolon
-DECL|member|hpet_number
-id|u8
-id|hpet_number
-suffix:semicolon
-DECL|member|clock_tick
-id|u16
-id|clock_tick
-suffix:semicolon
-DECL|member|attributes
-id|u8
-id|attributes
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#pragma pack()
 multiline_comment|/*&n; * ACPI Table information.  We save the table address, length,&n; * and type of memory allocation (mapped or allocated) for each&n; * table for 1) when we exit, and 2) if a new table is installed&n; */
 DECL|macro|ACPI_MEM_NOT_ALLOCATED
@@ -544,5 +513,36 @@ suffix:semicolon
 multiline_comment|/*&n; * Get the ACPI version-specific tables&n; */
 macro_line|#include &quot;actbl1.h&quot;   /* Acpi 1.0 table definitions */
 macro_line|#include &quot;actbl2.h&quot;   /* Acpi 2.0 table definitions */
+macro_line|#pragma pack(1)
+multiline_comment|/*&n; * High performance timer&n; */
+DECL|struct|hpet_table
+r_struct
+id|hpet_table
+(brace
+id|ACPI_TABLE_HEADER_DEF
+DECL|member|hardware_id
+id|u32
+id|hardware_id
+suffix:semicolon
+DECL|member|base_address
+r_struct
+id|acpi_generic_address
+id|base_address
+suffix:semicolon
+DECL|member|hpet_number
+id|u8
+id|hpet_number
+suffix:semicolon
+DECL|member|clock_tick
+id|u16
+id|clock_tick
+suffix:semicolon
+DECL|member|attributes
+id|u8
+id|attributes
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#pragma pack()
 macro_line|#endif /* __ACTBL_H__ */
 eof

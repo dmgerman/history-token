@@ -128,8 +128,6 @@ id|aml_length
 comma
 l_int|NULL
 comma
-l_int|NULL
-comma
 l_int|1
 )paren
 suffix:semicolon
@@ -274,8 +272,6 @@ comma
 id|aml_start
 comma
 id|aml_length
-comma
-l_int|NULL
 comma
 l_int|NULL
 comma

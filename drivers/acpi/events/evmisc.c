@@ -1016,6 +1016,14 @@ l_string|&quot;Could not remove SCI handler&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Deallocate all handler objects installed within GPE info structs */
+id|status
+op_assign
+id|acpi_ev_walk_gpe_list
+(paren
+id|acpi_ev_delete_gpe_handlers
+)paren
+suffix:semicolon
 multiline_comment|/* Return to original mode if necessary */
 r_if
 c_cond

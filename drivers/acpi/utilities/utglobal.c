@@ -353,7 +353,7 @@ comma
 l_string|&quot;_S4D&quot;
 )brace
 suffix:semicolon
-multiline_comment|/* Strings supported by the _OSI predefined (internal) method */
+multiline_comment|/*&n; * Strings supported by the _OSI predefined (internal) method.&n; * When adding strings, be sure to update ACPI_NUM_OSI_STRINGS.&n; */
 DECL|variable|acpi_gbl_valid_osi_strings
 r_const
 r_char
@@ -371,6 +371,16 @@ comma
 l_string|&quot;Windows 2001&quot;
 comma
 l_string|&quot;Windows 2001.1&quot;
+comma
+l_string|&quot;Windows 2001 SP0&quot;
+comma
+l_string|&quot;Windows 2001 SP1&quot;
+comma
+l_string|&quot;Windows 2001 SP2&quot;
+comma
+l_string|&quot;Windows 2001 SP3&quot;
+comma
+l_string|&quot;Windows 2001 SP4&quot;
 )brace
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Namespace globals&n; *&n; ******************************************************************************/
@@ -2417,6 +2427,10 @@ multiline_comment|/* Hardware oriented */
 id|acpi_gbl_events_initialized
 op_assign
 id|FALSE
+suffix:semicolon
+id|acpi_gbl_system_awake_and_running
+op_assign
+id|TRUE
 suffix:semicolon
 multiline_comment|/* Namespace */
 id|acpi_gbl_root_node

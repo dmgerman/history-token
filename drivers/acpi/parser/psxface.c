@@ -11,27 +11,15 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;psxface&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_psx_execute&n; *&n; * PARAMETERS:  method_node         - A method object containing both the AML&n; *                                    address and length.&n; *              **Params            - List of parameters to pass to method,&n; *                                    terminated by NULL. Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *              **return_obj_desc   - Return object from execution of the&n; *                                    method.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a control method&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_psx_execute&n; *&n; * PARAMETERS:  Info-&gt;Node          - A method object containing both the AML&n; *                                    address and length.&n; *              **Params            - List of parameters to pass to method,&n; *                                    terminated by NULL. Params itself may be&n; *                                    NULL if no parameters are being passed.&n; *              **return_obj_desc   - Return object from execution of the&n; *                                    method.&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute a control method&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_psx_execute
 id|acpi_psx_execute
 (paren
 r_struct
-id|acpi_namespace_node
+id|acpi_parameter_info
 op_star
-id|method_node
-comma
-r_union
-id|acpi_operand_object
-op_star
-op_star
-id|params
-comma
-r_union
-id|acpi_operand_object
-op_star
-op_star
-id|return_obj_desc
+id|info
 )paren
 (brace
 id|acpi_status
@@ -65,7 +53,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|method_node
+id|info
+op_logical_or
+op_logical_neg
+id|info-&gt;node
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -78,7 +69,7 @@ id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
-id|method_node
+id|info-&gt;node
 )paren
 suffix:semicolon
 r_if
@@ -99,7 +90,7 @@ id|status
 op_assign
 id|acpi_ds_begin_method_execution
 (paren
-id|method_node
+id|info-&gt;node
 comma
 id|obj_desc
 comma
@@ -124,7 +115,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|params
+id|info
+op_logical_and
+(paren
+id|info-&gt;parameter_type
+op_eq
+id|ACPI_PARAM_ARGS
+)paren
+op_logical_and
+(paren
+id|info-&gt;parameters
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * The caller &quot;owns&quot; the parameters, so give each one an extra&n;&t;&t; * reference&n;&t;&t; */
@@ -135,7 +136,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|params
+id|info-&gt;parameters
 (braket
 id|i
 )braket
@@ -146,7 +147,7 @@ op_increment
 (brace
 id|acpi_ut_add_reference
 (paren
-id|params
+id|info-&gt;parameters
 (braket
 id|i
 )braket
@@ -162,7 +163,7 @@ id|ACPI_DB_PARSE
 comma
 l_string|&quot;**** Begin Method Parse **** Entry=%p obj=%p&bslash;n&quot;
 comma
-id|method_node
+id|info-&gt;node
 comma
 id|obj_desc
 )paren
@@ -235,13 +236,11 @@ id|walk_state
 comma
 id|op
 comma
-id|method_node
+id|info-&gt;node
 comma
 id|obj_desc-&gt;method.aml_start
 comma
 id|obj_desc-&gt;method.aml_length
-comma
-l_int|NULL
 comma
 l_int|NULL
 comma
@@ -296,7 +295,7 @@ id|ACPI_DB_PARSE
 comma
 l_string|&quot;**** Begin Method Execution **** Entry=%p obj=%p&bslash;n&quot;
 comma
-id|method_node
+id|info-&gt;node
 comma
 id|obj_desc
 )paren
@@ -329,12 +328,12 @@ id|acpi_ps_set_name
 (paren
 id|op
 comma
-id|method_node-&gt;name.integer
+id|info-&gt;node-&gt;name.integer
 )paren
 suffix:semicolon
 id|op-&gt;common.node
 op_assign
-id|method_node
+id|info-&gt;node
 suffix:semicolon
 multiline_comment|/* Create and initialize a new walk state */
 id|walk_state
@@ -373,15 +372,13 @@ id|walk_state
 comma
 id|op
 comma
-id|method_node
+id|info-&gt;node
 comma
 id|obj_desc-&gt;method.aml_start
 comma
 id|obj_desc-&gt;method.aml_length
 comma
-id|params
-comma
-id|return_obj_desc
+id|info
 comma
 l_int|3
 )paren
@@ -430,7 +427,15 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|params
+(paren
+id|info-&gt;parameter_type
+op_eq
+id|ACPI_PARAM_ARGS
+)paren
+op_logical_and
+(paren
+id|info-&gt;parameters
+)paren
 )paren
 (brace
 multiline_comment|/* Take away the extra reference that we gave the parameters above */
@@ -441,7 +446,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|params
+id|info-&gt;parameters
 (braket
 id|i
 )braket
@@ -456,7 +461,7 @@ r_void
 )paren
 id|acpi_ut_update_object_reference
 (paren
-id|params
+id|info-&gt;parameters
 (braket
 id|i
 )braket
@@ -485,8 +490,7 @@ multiline_comment|/*&n;&t; * If the method has returned an object, signal this t
 r_if
 c_cond
 (paren
-op_star
-id|return_obj_desc
+id|info-&gt;return_object
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -496,15 +500,13 @@ id|ACPI_DB_PARSE
 comma
 l_string|&quot;Method returned obj_desc=%p&bslash;n&quot;
 comma
-op_star
-id|return_obj_desc
+id|info-&gt;return_object
 )paren
 )paren
 suffix:semicolon
 id|ACPI_DUMP_STACK_ENTRY
 (paren
-op_star
-id|return_obj_desc
+id|info-&gt;return_object
 )paren
 suffix:semicolon
 id|status

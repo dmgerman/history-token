@@ -282,6 +282,11 @@ id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_events_initialized
 suffix:semicolon
+DECL|variable|acpi_gbl_system_awake_and_running
+id|ACPI_EXTERN
+id|u8
+id|acpi_gbl_system_awake_and_running
+suffix:semicolon
 r_extern
 id|u8
 id|acpi_gbl_shutdown
