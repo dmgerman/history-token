@@ -1986,7 +1986,6 @@ op_ge
 l_int|0x300
 op_logical_and
 (paren
-(paren
 id|err
 op_assign
 id|snd_mpu401_uart_new
