@@ -9,12 +9,13 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;hwregs&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_acpi_status&n; *&n; * PARAMETERS:  none&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Clears all fixed and general purpose status bits&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_clear_acpi_status&n; *&n; * PARAMETERS:  Flags           - Lock the hardware or not&n; *&n; * RETURN:      none&n; *&n; * DESCRIPTION: Clears all fixed and general purpose status bits&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_hw_clear_acpi_status
 id|acpi_hw_clear_acpi_status
 (paren
-r_void
+id|u32
+id|flags
 )paren
 (brace
 id|acpi_status
@@ -41,6 +42,14 @@ id|acpi_gbl_FADT-&gt;xpm1a_evt_blk.address
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|ACPI_MTX_LOCK
+)paren
+(brace
 id|status
 op_assign
 id|acpi_ut_acquire_mutex
@@ -62,6 +71,7 @@ id|return_ACPI_STATUS
 id|status
 )paren
 suffix:semicolon
+)brace
 )brace
 id|status
 op_assign
@@ -130,6 +140,14 @@ id|acpi_hw_clear_gpe_block
 suffix:semicolon
 id|unlock_and_exit
 suffix:colon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|ACPI_MTX_LOCK
+)paren
+(brace
 (paren
 r_void
 )paren
@@ -138,6 +156,7 @@ id|acpi_ut_release_mutex
 id|ACPI_MTX_HARDWARE
 )paren
 suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -505,7 +524,7 @@ id|register_id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_register&n; *&n; * PARAMETERS:  register_id         - Index of ACPI Register to access&n; *              use_lock            - Lock the hardware&n; *&n; * RETURN:      Value is read from specified Register.  Value returned is&n; *              normalized to bit0 (is shifted all the way right)&n; *&n; * DESCRIPTION: ACPI bit_register read function.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_register&n; *&n; * PARAMETERS:  register_id     - ID of ACPI bit_register to access&n; *              return_value    - Value that was read from the register&n; *              Flags           - Lock the hardware or not&n; *&n; * RETURN:      Value is read from specified Register.  Value returned is&n; *              normalized to bit0 (is shifted all the way right)&n; *&n; * DESCRIPTION: ACPI bit_register read function.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_register
 id|acpi_get_register
@@ -652,9 +671,11 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_IO
 comma
-l_string|&quot;Read value %X&bslash;n&quot;
+l_string|&quot;Read value %8.8X register %X&bslash;n&quot;
 comma
 id|register_value
+comma
+id|bit_reg_info-&gt;parent_register
 )paren
 )paren
 suffix:semicolon
@@ -1052,9 +1073,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_IO
 comma
-l_string|&quot;ACPI Register Write actual %X&bslash;n&quot;
+l_string|&quot;Set bits: %8.8X actual %8.8X register %X&bslash;n&quot;
+comma
+id|value
 comma
 id|register_value
+comma
+id|bit_reg_info-&gt;parent_register
 )paren
 )paren
 suffix:semicolon
@@ -1883,13 +1908,41 @@ id|reg-&gt;address_space_id
 )paren
 )paren
 suffix:semicolon
-id|status
-op_assign
+r_return
+(paren
 id|AE_BAD_PARAMETER
-suffix:semicolon
-r_break
+)paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_IO
+comma
+l_string|&quot;Read:  %8.8X width %2d from %8.8X%8.8X (%s)&bslash;n&quot;
+comma
+op_star
+id|value
+comma
+id|width
+comma
+id|ACPI_HIDWORD
+(paren
+id|reg-&gt;address
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|reg-&gt;address
+)paren
+comma
+id|acpi_ut_get_region_name
+(paren
+id|reg-&gt;address_space_id
+)paren
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|status
@@ -2061,13 +2114,40 @@ id|reg-&gt;address_space_id
 )paren
 )paren
 suffix:semicolon
-id|status
-op_assign
+r_return
+(paren
 id|AE_BAD_PARAMETER
-suffix:semicolon
-r_break
+)paren
 suffix:semicolon
 )brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_IO
+comma
+l_string|&quot;Wrote: %8.8X width %2d   to %8.8X%8.8X (%s)&bslash;n&quot;
+comma
+id|value
+comma
+id|width
+comma
+id|ACPI_HIDWORD
+(paren
+id|reg-&gt;address
+)paren
+comma
+id|ACPI_LODWORD
+(paren
+id|reg-&gt;address
+)paren
+comma
+id|acpi_ut_get_region_name
+(paren
+id|reg-&gt;address_space_id
+)paren
+)paren
+)paren
+suffix:semicolon
 r_return
 (paren
 id|status
