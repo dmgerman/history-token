@@ -49,61 +49,6 @@ DECL|typedef|NTFS_CONSTANTS
 )brace
 id|NTFS_CONSTANTS
 suffix:semicolon
-multiline_comment|/*&n; * Defined bits for the state field in the ntfs_inode structure.&n; * (f) = files only, (d) = directories only&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|NI_Dirty
-id|NI_Dirty
-comma
-multiline_comment|/* 1: Mft record needs to be written to disk. */
-DECL|enumerator|NI_AttrList
-id|NI_AttrList
-comma
-multiline_comment|/* 1: Mft record contains an attribute list. */
-DECL|enumerator|NI_AttrListNonResident
-id|NI_AttrListNonResident
-comma
-multiline_comment|/* 1: Attribute list is non-resident. Implies&n;&t;&t;&t;&t;      NI_AttrList is set. */
-DECL|enumerator|NI_NonResident
-id|NI_NonResident
-comma
-multiline_comment|/* 1: Unnamed data attr is non-resident (f).&n;&t;&t;&t;&t;   1: $I30 index alloc attr is present (d). */
-DECL|enumerator|NI_Compressed
-id|NI_Compressed
-comma
-multiline_comment|/* 1: Unnamed data attr is compressed (f).&n;&t;&t;&t;&t;   1: Create compressed files by default (d). */
-DECL|enumerator|NI_Encrypted
-id|NI_Encrypted
-comma
-multiline_comment|/* 1: Unnamed data attr is encrypted (f).&n;&t;&t;&t;&t;   1: Create encrypted files by default (d). */
-DECL|enumerator|NI_BmpNonResident
-id|NI_BmpNonResident
-comma
-multiline_comment|/* 1: $I30 bitmap attr is non resident (d). */
-DECL|typedef|ntfs_inode_state_bits
-)brace
-id|ntfs_inode_state_bits
-suffix:semicolon
-multiline_comment|/*&n; * NOTE: We should be adding dirty mft records to a list somewhere and they&n; * should be independent of the (ntfs/vfs) inode structure so that an inode can&n; * be removed but the record can be left dirty for syncing later.&n; */
-DECL|macro|NInoDirty
-mdefine_line|#define NInoDirty(n_ino)&t;  test_bit(NI_Dirty, &amp;(n_ino)-&gt;state)
-DECL|macro|NInoSetDirty
-mdefine_line|#define NInoSetDirty(n_ino)&t;  set_bit(NI_Dirty, &amp;(n_ino)-&gt;state)
-DECL|macro|NInoClearDirty
-mdefine_line|#define NInoClearDirty(n_ino)&t;  clear_bit(NI_Dirty, &amp;(n_ino)-&gt;state)
-DECL|macro|NInoAttrList
-mdefine_line|#define NInoAttrList(n_ino)&t;  test_bit(NI_AttrList, &amp;(n_ino)-&gt;state)
-DECL|macro|NInoNonResident
-mdefine_line|#define NInoNonResident(n_ino)&t;  test_bit(NI_NonResident, &amp;(n_ino)-&gt;state)
-DECL|macro|NInoIndexAllocPresent
-mdefine_line|#define NInoIndexAllocPresent(n_ino) test_bit(NI_NonResident, &amp;(n_ino)-&gt;state)
-DECL|macro|NInoCompressed
-mdefine_line|#define NInoCompressed(n_ino)&t;  test_bit(NI_Compressed, &amp;(n_ino)-&gt;state)
-DECL|macro|NInoEncrypted
-mdefine_line|#define NInoEncrypted(n_ino)&t;  test_bit(NI_Encrypted, &amp;(n_ino)-&gt;state)
-DECL|macro|NInoBmpNonResident
-mdefine_line|#define NInoBmpNonResident(n_ino) test_bit(NI_BmpNonResident, &amp;(n_ino)-&gt;state)
 multiline_comment|/* Global variables. */
 multiline_comment|/* Slab caches (from super.c). */
 r_extern

@@ -1980,7 +1980,7 @@ suffix:semicolon
 id|psecs
 op_assign
 (paren
-id|p-&gt;times.tms_utime
+id|p-&gt;utime
 op_add_assign
 id|user
 )paren
@@ -1988,7 +1988,7 @@ suffix:semicolon
 id|psecs
 op_add_assign
 (paren
-id|p-&gt;times.tms_stime
+id|p-&gt;stime
 op_add_assign
 id|system
 )paren
