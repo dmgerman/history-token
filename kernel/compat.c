@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;&t;/* for MAX_SCHEDULE_TIMEOUT */
+macro_line|#include &lt;linux/futex.h&gt;&t;/* for FUTEX_WAIT */
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|get_compat_timespec
 r_int
@@ -1076,8 +1077,8 @@ r_int
 id|do_futex
 c_func
 (paren
-id|u32
-op_star
+r_int
+r_int
 comma
 r_int
 comma
@@ -1152,6 +1153,7 @@ op_assign
 id|timespec_to_jiffies
 c_func
 (paren
+op_amp
 id|t
 )paren
 op_plus
