@@ -459,14 +459,12 @@ DECL|macro|ISDN_TIMER_MODEMRING
 mdefine_line|#define ISDN_TIMER_MODEMRING   4
 DECL|macro|ISDN_TIMER_MODEMXMIT
 mdefine_line|#define ISDN_TIMER_MODEMXMIT   8
-DECL|macro|ISDN_TIMER_NETHANGUP
-mdefine_line|#define ISDN_TIMER_NETHANGUP  32
 DECL|macro|ISDN_TIMER_CARRIER
 mdefine_line|#define ISDN_TIMER_CARRIER   256 /* Wait for Carrier */
 DECL|macro|ISDN_TIMER_FAST
 mdefine_line|#define ISDN_TIMER_FAST      (ISDN_TIMER_MODEMREAD | ISDN_TIMER_MODEMPLUS | &bslash;&n;                              ISDN_TIMER_MODEMXMIT)
 DECL|macro|ISDN_TIMER_SLOW
-mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_NETHANGUP | &bslash;&n;                              ISDN_TIMER_CARRIER)
+mdefine_line|#define ISDN_TIMER_SLOW      (ISDN_TIMER_MODEMRING | ISDN_TIMER_CARRIER)
 multiline_comment|/* GLOBAL_FLAGS */
 DECL|macro|ISDN_GLOBAL_STOPPED
 mdefine_line|#define ISDN_GLOBAL_STOPPED 1

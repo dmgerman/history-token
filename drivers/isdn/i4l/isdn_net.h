@@ -159,7 +159,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|isdn_net_autohup
+id|isdn_net_hangup_all
 c_func
 (paren
 r_void
