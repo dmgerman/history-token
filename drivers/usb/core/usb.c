@@ -2363,7 +2363,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_connect - connects a new device during enumeration (usbcore-internal)&n; * @dev: partially enumerated device&n; *&n; * Connect a new USB device. This basically just initializes&n; * the USB device information and sets up the topology - it&squot;s&n; * up to the low-level driver to reset the port and actually&n; * do the setup (the upper levels don&squot;t know how to do that).&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
+multiline_comment|/**&n; * usb_connect - pick device address (usbcore-internal)&n; * @dev: newly detected device (in DEFAULT state)&n; *&n; * Picks a device address.  It&squot;s up to the hub (or root hub) driver&n; * to handle and manage enumeration, starting from the DEFAULT state.&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
 DECL|function|usb_connect
 r_void
 id|usb_connect
@@ -2798,7 +2798,7 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * By the time we get here, the device has gotten a new device ID&n; * and is in the default state. We need to identify the thing and&n; * get the ball rolling..&n; *&n; * Returns 0 for success, != 0 for error.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
+multiline_comment|/*&n; * By the time we get here, we chose a new device address&n; * and is in the default state. We need to identify the thing and&n; * get the ball rolling..&n; *&n; * Returns 0 for success, != 0 for error.&n; *&n; * This call is synchronous, and may not be used in an interrupt context.&n; *&n; * Only hub drivers (including virtual root hub drivers for host&n; * controllers) should ever call this.&n; */
 DECL|macro|NEW_DEVICE_RETRYS
 mdefine_line|#define NEW_DEVICE_RETRYS&t;2
 DECL|macro|SET_ADDRESS_RETRYS
