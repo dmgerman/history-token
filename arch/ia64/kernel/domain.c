@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ia64/kernel/domain.c&n; * Architecture specific sched-domains builder.&n; *&n; * Copyright (C) 2004  Linus Torvalds&n; */
+multiline_comment|/*&n; * arch/ia64/kernel/domain.c&n; * Architecture specific sched-domains builder.&n; *&n; * Copyright (C) 2004 Jesse Barnes&n; * Copyright (C) 2004 Silicon Graphics, Inc.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
