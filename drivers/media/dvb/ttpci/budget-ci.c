@@ -5,9 +5,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
-macro_line|#include &quot;input_fake.h&quot;
-macro_line|#endif
 DECL|struct|budget_ci
 r_struct
 id|budget_ci

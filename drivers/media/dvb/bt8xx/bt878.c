@@ -15,11 +15,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvbdev.h&quot;
 macro_line|#include &quot;bt878.h&quot;
-macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
 macro_line|#include &quot;dst-bt878.h&quot;
-macro_line|#else
-macro_line|#include &quot;../frontends/dst-bt878.h&quot;
-macro_line|#endif
 macro_line|#include &quot;dvb_functions.h&quot;
 multiline_comment|/**************************************/
 multiline_comment|/* Miscellaneous utility  definitions */

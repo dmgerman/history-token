@@ -8,9 +8,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 macro_line|#include &lt;linux/firmware.h&gt;
-macro_line|#endif
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dvb_i2c.h&quot;
@@ -2137,19 +2135,7 @@ id|frame
 suffix:semicolon
 )brace
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 DECL|function|ttusb_dec_process_urb
-r_static
-r_void
-id|ttusb_dec_process_urb
-c_func
-(paren
-r_struct
-id|urb
-op_star
-id|urb
-)paren
-macro_line|#else
 r_static
 r_void
 id|ttusb_dec_process_urb
@@ -2165,7 +2151,6 @@ id|pt_regs
 op_star
 id|ptregs
 )paren
-macro_line|#endif
 (brace
 r_struct
 id|ttusb_dec
@@ -2199,19 +2184,11 @@ id|i
 op_increment
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-r_struct
-id|iso_packet_descriptor
-op_star
-id|d
-suffix:semicolon
-macro_line|#else
 r_struct
 id|usb_iso_packet_descriptor
 op_star
 id|d
 suffix:semicolon
-macro_line|#endif
 id|u8
 op_star
 id|b
@@ -2340,7 +2317,6 @@ id|urb-&gt;status
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 r_if
 c_cond
 (paren
@@ -2354,7 +2330,6 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|ttusb_dec_setup_urbs
 r_static
@@ -2431,7 +2406,6 @@ id|urb-&gt;pipe
 op_assign
 id|dec-&gt;stream_pipe
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 id|urb-&gt;transfer_flags
 op_assign
 id|URB_ISO_ASAP
@@ -2440,12 +2414,6 @@ id|urb-&gt;interval
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#else
-id|urb-&gt;transfer_flags
-op_assign
-id|USB_ISO_ASAP
-suffix:semicolon
-macro_line|#endif
 id|urb-&gt;number_of_packets
 op_assign
 id|FRAMES_PER_ISO_BUF
@@ -2744,7 +2712,6 @@ id|i
 op_increment
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 r_if
 c_cond
 (paren
@@ -2764,25 +2731,6 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-macro_line|#else
-r_if
-c_cond
-(paren
-(paren
-id|result
-op_assign
-id|usb_submit_urb
-c_func
-(paren
-id|dec-&gt;iso_urb
-(braket
-id|i
-)braket
-)paren
-)paren
-)paren
-(brace
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -2848,14 +2796,6 @@ op_amp
 id|dec-&gt;iso_sem
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-id|ttusb_dec_set_streaming_interface
-c_func
-(paren
-id|dec
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3336,7 +3276,6 @@ id|urb
 op_star
 id|urb
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 r_if
 c_cond
 (paren
@@ -3354,23 +3293,6 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|urb
-op_assign
-id|usb_alloc_urb
-c_func
-(paren
-id|FRAMES_PER_ISO_BUF
-)paren
-)paren
-)paren
-(brace
-macro_line|#endif
 id|ttusb_dec_free_iso_urbs
 c_func
 (paren
@@ -3396,47 +3318,6 @@ c_func
 id|dec
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ISO_BUF_COUNT
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_int
-id|next
-op_assign
-(paren
-id|i
-op_plus
-l_int|1
-)paren
-op_mod
-id|ISO_BUF_COUNT
-suffix:semicolon
-id|dec-&gt;iso_urb
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|next
-op_assign
-id|dec-&gt;iso_urb
-(braket
-id|next
-)braket
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -3604,10 +3485,6 @@ id|dec
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-macro_line|#include &quot;dsp_dec2000t.h&quot;
-macro_line|#include &quot;dsp_dec3000s.h&quot;
-macro_line|#endif
 DECL|function|ttusb_dec_boot_dsp
 r_static
 r_int
@@ -3697,7 +3574,6 @@ suffix:semicolon
 id|u32
 id|firmware_csum_nl
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 r_const
 r_struct
 id|firmware
@@ -3706,7 +3582,6 @@ id|fw_entry
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif
 id|dprintk
 c_func
 (paren
@@ -3715,7 +3590,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 r_if
 c_cond
 (paren
@@ -3755,7 +3629,6 @@ id|firmware_size
 op_assign
 id|fw_entry-&gt;size
 suffix:semicolon
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -3765,23 +3638,6 @@ id|dec-&gt;model
 r_case
 id|TTUSB_DEC2000T
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-id|firmware
-op_assign
-op_amp
-id|dsp_dec2000t
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|firmware_size
-op_assign
-r_sizeof
-(paren
-id|dsp_dec2000t
-)paren
-suffix:semicolon
-macro_line|#endif
 id|firmware_csum
 op_assign
 l_int|0x1bc86100
@@ -3791,23 +3647,6 @@ suffix:semicolon
 r_case
 id|TTUSB_DEC3000S
 suffix:colon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-id|firmware
-op_assign
-op_amp
-id|dsp_dec3000s
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|firmware_size
-op_assign
-r_sizeof
-(paren
-id|dsp_dec3000s
-)paren
-suffix:semicolon
-macro_line|#endif
 id|firmware_csum
 op_assign
 l_int|0x00000000
@@ -5869,87 +5708,7 @@ id|dec-&gt;i2c_bus
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 DECL|function|ttusb_dec_probe
-r_static
-r_void
-op_star
-id|ttusb_dec_probe
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|udev
-comma
-r_int
-r_int
-id|ifnum
-comma
-r_const
-r_struct
-id|usb_device_id
-op_star
-id|id
-)paren
-(brace
-r_struct
-id|ttusb_dec
-op_star
-id|dec
-suffix:semicolon
-id|dprintk
-c_func
-(paren
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ifnum
-op_ne
-l_int|0
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|dec
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|ttusb_dec
-)paren
-comma
-id|GFP_KERNEL
-)paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: couldn&squot;t allocate memory.&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-macro_line|#else
 r_static
 r_int
 id|ttusb_dec_probe
@@ -6039,7 +5798,6 @@ op_star
 id|dec
 )paren
 suffix:semicolon
-macro_line|#endif
 id|memset
 c_func
 (paren
@@ -6153,15 +5911,6 @@ id|dec-&gt;active
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-r_return
-(paren
-r_void
-op_star
-)paren
-id|dec
-suffix:semicolon
-macro_line|#else
 id|ttusb_dec_set_streaming_interface
 c_func
 (paren
@@ -6171,33 +5920,8 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 DECL|function|ttusb_dec_disconnect
-r_static
-r_void
-id|ttusb_dec_disconnect
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|udev
-comma
-r_void
-op_star
-id|data
-)paren
-(brace
-r_struct
-id|ttusb_dec
-op_star
-id|dec
-op_assign
-id|data
-suffix:semicolon
-macro_line|#else
 r_static
 r_void
 id|ttusb_dec_disconnect
@@ -6228,7 +5952,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dprintk
 c_func
 (paren

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * dst-bt878.h: part of the DST driver for the TwinHan DST Frontend&n; *&n; * Copyright (C) 2003 Jamie Honan&n; */
 DECL|struct|dst_gpio_enable
 r_struct
 id|dst_gpio_enable
