@@ -1,6 +1,7 @@
 macro_line|#ifndef __LINUX_USB_H
 DECL|macro|__LINUX_USB_H
 mdefine_line|#define __LINUX_USB_H
+macro_line|#include &lt;linux/mod_devicetable.h&gt;
 macro_line|#include &lt;linux/usb_ch9.h&gt;
 DECL|macro|USB_MAJOR
 mdefine_line|#define USB_MAJOR&t;&t;&t;180
@@ -810,89 +811,6 @@ id|actual
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * Device table entry for &quot;new style&quot; table-driven USB drivers.&n; * User mode code can read these tables to choose which modules to load.&n; * Declare the table as a MODULE_DEVICE_TABLE.&n; *&n; * A probe() parameter will point to a matching entry from this table.&n; * Use the driver_info field for each match to hold information tied&n; * to that match:  device quirks, etc.&n; *&n; * Terminate the driver&squot;s table with an all-zeroes entry.&n; * Use the flag values to control which fields are compared.&n; */
-multiline_comment|/**&n; * struct usb_device_id - identifies USB devices for probing and hotplugging&n; * @match_flags: Bit mask controlling of the other fields are used to match&n; *&t;against new devices.  Any field except for driver_info may be used,&n; *&t;although some only make sense in conjunction with other fields.&n; *&t;This is usually set by a USB_DEVICE_*() macro, which sets all&n; *&t;other fields in this structure except for driver_info.&n; * @idVendor: USB vendor ID for a device; numbers are assigned&n; *&t;by the USB forum to its members.&n; * @idProduct: Vendor-assigned product ID.&n; * @bcdDevice_lo: Low end of range of vendor-assigned product version numbers.&n; *&t;This is also used to identify individual product versions, for&n; *&t;a range consisting of a single device.&n; * @bcdDevice_hi: High end of version number range.  The range of product&n; *&t;versions is inclusive.&n; * @bDeviceClass: Class of device; numbers are assigned&n; *&t;by the USB forum.  Products may choose to implement classes,&n; *&t;or be vendor-specific.  Device classes specify behavior of all&n; *&t;the interfaces on a devices.&n; * @bDeviceSubClass: Subclass of device; associated with bDeviceClass.&n; * @bDeviceProtocol: Protocol of device; associated with bDeviceClass.&n; * @bInterfaceClass: Class of interface; numbers are assigned&n; *&t;by the USB forum.  Products may choose to implement classes,&n; *&t;or be vendor-specific.  Interface classes specify behavior only&n; *&t;of a given interface; other interfaces may support other classes.&n; * @bInterfaceSubClass: Subclass of interface; associated with bInterfaceClass.&n; * @bInterfaceProtocol: Protocol of interface; associated with bInterfaceClass.&n; * @driver_info: Holds information used by the driver.  Usually it holds&n; *&t;a pointer to a descriptor understood by the driver, or perhaps&n; *&t;device flags.&n; *&n; * In most cases, drivers will create a table of device IDs by using&n; * USB_DEVICE(), or similar macros designed for that purpose.&n; * They will then export it to userspace using MODULE_DEVICE_TABLE(),&n; * and provide it to the USB core through their usb_driver structure.&n; *&n; * See the usb_match_id() function for information about how matches are&n; * performed.  Briefly, you will normally use one of several macros to help&n; * construct these entries.  Each entry you provide will either identify&n; * one or more specific products, or will identify a class of products&n; * which have agreed to behave the same.  You should put the more specific&n; * matches towards the beginning of your table, so that driver_info can&n; * record quirks of specific products.&n; */
-DECL|struct|usb_device_id
-r_struct
-id|usb_device_id
-(brace
-multiline_comment|/* which fields to match against? */
-DECL|member|match_flags
-id|__u16
-id|match_flags
-suffix:semicolon
-multiline_comment|/* Used for product specific matches; range is inclusive */
-DECL|member|idVendor
-id|__u16
-id|idVendor
-suffix:semicolon
-DECL|member|idProduct
-id|__u16
-id|idProduct
-suffix:semicolon
-DECL|member|bcdDevice_lo
-id|__u16
-id|bcdDevice_lo
-suffix:semicolon
-DECL|member|bcdDevice_hi
-id|__u16
-id|bcdDevice_hi
-suffix:semicolon
-multiline_comment|/* Used for device class matches */
-DECL|member|bDeviceClass
-id|__u8
-id|bDeviceClass
-suffix:semicolon
-DECL|member|bDeviceSubClass
-id|__u8
-id|bDeviceSubClass
-suffix:semicolon
-DECL|member|bDeviceProtocol
-id|__u8
-id|bDeviceProtocol
-suffix:semicolon
-multiline_comment|/* Used for interface class matches */
-DECL|member|bInterfaceClass
-id|__u8
-id|bInterfaceClass
-suffix:semicolon
-DECL|member|bInterfaceSubClass
-id|__u8
-id|bInterfaceSubClass
-suffix:semicolon
-DECL|member|bInterfaceProtocol
-id|__u8
-id|bInterfaceProtocol
-suffix:semicolon
-multiline_comment|/* not matched against */
-DECL|member|driver_info
-r_int
-r_int
-id|driver_info
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* Some useful macros to use to create struct usb_device_id */
-DECL|macro|USB_DEVICE_ID_MATCH_VENDOR
-mdefine_line|#define USB_DEVICE_ID_MATCH_VENDOR&t;&t;0x0001
-DECL|macro|USB_DEVICE_ID_MATCH_PRODUCT
-mdefine_line|#define USB_DEVICE_ID_MATCH_PRODUCT&t;&t;0x0002
-DECL|macro|USB_DEVICE_ID_MATCH_DEV_LO
-mdefine_line|#define USB_DEVICE_ID_MATCH_DEV_LO&t;&t;0x0004
-DECL|macro|USB_DEVICE_ID_MATCH_DEV_HI
-mdefine_line|#define USB_DEVICE_ID_MATCH_DEV_HI&t;&t;0x0008
-DECL|macro|USB_DEVICE_ID_MATCH_DEV_CLASS
-mdefine_line|#define USB_DEVICE_ID_MATCH_DEV_CLASS&t;&t;0x0010
-DECL|macro|USB_DEVICE_ID_MATCH_DEV_SUBCLASS
-mdefine_line|#define USB_DEVICE_ID_MATCH_DEV_SUBCLASS&t;0x0020
-DECL|macro|USB_DEVICE_ID_MATCH_DEV_PROTOCOL
-mdefine_line|#define USB_DEVICE_ID_MATCH_DEV_PROTOCOL&t;0x0040
-DECL|macro|USB_DEVICE_ID_MATCH_INT_CLASS
-mdefine_line|#define USB_DEVICE_ID_MATCH_INT_CLASS&t;&t;0x0080
-DECL|macro|USB_DEVICE_ID_MATCH_INT_SUBCLASS
-mdefine_line|#define USB_DEVICE_ID_MATCH_INT_SUBCLASS&t;0x0100
-DECL|macro|USB_DEVICE_ID_MATCH_INT_PROTOCOL
-mdefine_line|#define USB_DEVICE_ID_MATCH_INT_PROTOCOL&t;0x0200
 DECL|macro|USB_DEVICE_ID_MATCH_DEVICE
 mdefine_line|#define USB_DEVICE_ID_MATCH_DEVICE&t;&t;(USB_DEVICE_ID_MATCH_VENDOR | USB_DEVICE_ID_MATCH_PRODUCT)
 DECL|macro|USB_DEVICE_ID_MATCH_DEV_RANGE
