@@ -1310,7 +1310,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_input1
+id|temp1_input
 comma
 id|S_IRUGO
 comma
@@ -1323,7 +1323,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_max1
+id|temp1_max
 comma
 id|S_IWUSR
 op_or
@@ -1338,7 +1338,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|temp_hyst1
+id|temp1_max_hyst
 comma
 id|S_IWUSR
 op_or
@@ -1353,7 +1353,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_auto1
+id|fan1_auto
 comma
 id|S_IWUSR
 op_or
@@ -1368,7 +1368,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_input1
+id|fan1_input
 comma
 id|S_IRUGO
 comma
@@ -1381,7 +1381,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_input2
+id|fan2_input
 comma
 id|S_IRUGO
 comma
@@ -1394,7 +1394,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_min1
+id|fan1_min
 comma
 id|S_IWUSR
 op_or
@@ -1409,7 +1409,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_min2
+id|fan2_min
 comma
 id|S_IWUSR
 op_or
@@ -1424,7 +1424,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_div1
+id|fan1_div
 comma
 id|S_IWUSR
 op_or
@@ -1439,7 +1439,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan_div2
+id|fan2_div
 comma
 id|S_IWUSR
 op_or
@@ -1454,7 +1454,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_input0
+id|in0_input
 comma
 id|S_IRUGO
 comma
@@ -1467,7 +1467,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_input1
+id|in1_input
 comma
 id|S_IRUGO
 comma
@@ -1480,7 +1480,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_input2
+id|in2_input
 comma
 id|S_IRUGO
 comma
@@ -1493,7 +1493,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_input3
+id|in3_input
 comma
 id|S_IRUGO
 comma
@@ -1506,7 +1506,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_min0
+id|in0_min
 comma
 id|S_IWUSR
 op_or
@@ -1521,7 +1521,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_min1
+id|in1_min
 comma
 id|S_IWUSR
 op_or
@@ -1536,7 +1536,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_min2
+id|in2_min
 comma
 id|S_IWUSR
 op_or
@@ -1551,7 +1551,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_min3
+id|in3_min
 comma
 id|S_IWUSR
 op_or
@@ -1566,7 +1566,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_max0
+id|in0_max
 comma
 id|S_IWUSR
 op_or
@@ -1581,7 +1581,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_max1
+id|in1_max
 comma
 id|S_IWUSR
 op_or
@@ -1596,7 +1596,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_max2
+id|in2_max
 comma
 id|S_IWUSR
 op_or
@@ -1611,7 +1611,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|in_max3
+id|in3_max
 comma
 id|S_IWUSR
 op_or
@@ -2076,7 +2076,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_input0
+id|dev_attr_in0_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2086,7 +2086,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_input1
+id|dev_attr_in1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2096,7 +2096,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_input2
+id|dev_attr_in2_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2106,7 +2106,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_input3
+id|dev_attr_in3_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2116,7 +2116,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_min0
+id|dev_attr_in0_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2126,7 +2126,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_min1
+id|dev_attr_in1_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2136,7 +2136,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_min2
+id|dev_attr_in2_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2146,7 +2146,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_min3
+id|dev_attr_in3_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2156,7 +2156,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_max0
+id|dev_attr_in0_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2166,7 +2166,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_max1
+id|dev_attr_in1_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2176,7 +2176,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_max2
+id|dev_attr_in2_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2186,7 +2186,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_in_max3
+id|dev_attr_in3_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2196,7 +2196,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_auto1
+id|dev_attr_fan1_auto
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2206,7 +2206,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_input1
+id|dev_attr_fan1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2216,7 +2216,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_input2
+id|dev_attr_fan2_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2226,7 +2226,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_min1
+id|dev_attr_fan1_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2236,7 +2236,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_min2
+id|dev_attr_fan2_min
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2246,7 +2246,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_div1
+id|dev_attr_fan1_div
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2256,7 +2256,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan_div2
+id|dev_attr_fan2_div
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2266,7 +2266,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_input1
+id|dev_attr_temp1_input
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2276,7 +2276,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_max1
+id|dev_attr_temp1_max
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2286,7 +2286,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_temp_hyst1
+id|dev_attr_temp1_max_hyst
 )paren
 suffix:semicolon
 id|device_create_file
