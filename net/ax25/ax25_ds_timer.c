@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;AX.25 release 037&n; *&n; *&t;This code REQUIRES 2.1
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -164,6 +165,10 @@ op_star
 )paren
 id|arg
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|ax25_cb
 op_star
 id|ax25
@@ -200,6 +205,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -253,6 +267,15 @@ id|ETIMEDOUT
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ax25_list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ax25_dev_dama_off
 c_func
 (paren

@@ -4,6 +4,7 @@ DECL|macro|_AX25_H
 mdefine_line|#define _AX25_H 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ax25.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 DECL|macro|AX25_T1CLAMPLO
 mdefine_line|#define&t;AX25_T1CLAMPLO  &t;&t;1
 DECL|macro|AX25_T1CLAMPHI
@@ -556,8 +557,11 @@ multiline_comment|/* af_ax25.c */
 r_extern
 id|ax25_cb
 op_star
-r_volatile
 id|ax25_list
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|ax25_list_lock
 suffix:semicolon
 r_extern
 r_void
@@ -842,6 +846,10 @@ r_extern
 id|ax25_dev
 op_star
 id|ax25_dev_list
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|ax25_dev_lock
 suffix:semicolon
 r_extern
 id|ax25_dev

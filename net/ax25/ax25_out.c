@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
 macro_line|#include &lt;net/ax25.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
@@ -21,6 +22,13 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+DECL|variable|ax25_frag_lock
+r_static
+id|spinlock_t
+id|ax25_frag_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|ax25_send_frame
 id|ax25_cb
 op_star
@@ -447,15 +455,13 @@ OG
 l_int|0
 )paren
 (brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|ax25_frag_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -480,9 +486,12 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ax25_frag_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -511,9 +520,12 @@ comma
 id|skb-&gt;sk
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ax25_frag_lock
+comma
 id|flags
 )paren
 suffix:semicolon
