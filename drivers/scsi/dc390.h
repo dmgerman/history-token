@@ -5,14 +5,10 @@ macro_line|#ifndef DC390_H
 DECL|macro|DC390_H
 mdefine_line|#define DC390_H
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#ifndef KERNEL_VERSION
-DECL|macro|KERNEL_VERSION
-macro_line|# define KERNEL_VERSION(a,b,c) (((a) &lt;&lt; 16) + ((b) &lt;&lt; 8) + (c))
-macro_line|#endif
 DECL|macro|DC390_BANNER
 mdefine_line|#define DC390_BANNER &quot;Tekram DC390/AM53C974&quot;
 DECL|macro|DC390_VERSION
-mdefine_line|#define DC390_VERSION &quot;2.1c 2004-05-23&quot;
+mdefine_line|#define DC390_VERSION &quot;2.1d 2004-05-27&quot;
 multiline_comment|/* We don&squot;t have eh_abort_handler, eh_device_reset_handler, &n; * eh_bus_reset_handler, eh_host_reset_handler yet! &n; * So long: Use old exception handling :-( */
 DECL|macro|OLD_EH
 mdefine_line|#define OLD_EH
@@ -25,79 +21,5 @@ macro_line|# define NEW_EH use_new_eh_code: 1,
 DECL|macro|USE_NEW_EH
 macro_line|# define USE_NEW_EH
 macro_line|#endif
-r_static
-r_int
-id|DC390_queue_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_static
-r_int
-id|DC390_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-suffix:semicolon
-r_static
-r_int
-id|DC390_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-suffix:semicolon
-r_static
-r_int
-id|DC390_bios_param
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-id|sdev
-comma
-r_struct
-id|block_device
-op_star
-id|dev
-comma
-id|sector_t
-id|capacity
-comma
-r_int
-id|geom
-(braket
-)braket
-)paren
-suffix:semicolon
-r_static
-r_int
-id|DC390_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
 macro_line|#endif /* DC390_H */
 eof

@@ -21,8 +21,6 @@ DECL|macro|MAX_SRB_CNT
 mdefine_line|#define MAX_SRB_CNT&t;&t;MAX_CMD_QUEUE+1&t;/* Max number of started commands */
 DECL|macro|SEL_TIMEOUT
 mdefine_line|#define SEL_TIMEOUT&t;&t;153&t;/* 250 ms selection timeout (@ 40 MHz) */
-DECL|macro|END_SCAN
-mdefine_line|#define END_SCAN&t;&t;2
 DECL|macro|pci_dma_lo32
 mdefine_line|#define pci_dma_lo32(a)&t;&t;&t;(a &amp; 0xffffffff)
 DECL|typedef|UCHAR

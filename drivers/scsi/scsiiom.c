@@ -37,7 +37,6 @@ l_int|255
 suffix:semicolon
 )brace
 )brace
-suffix:semicolon
 r_static
 id|UCHAR
 DECL|function|dc390_StartSCSI
@@ -369,7 +368,6 @@ l_int|1
 suffix:semicolon
 singleline_comment|//goto no_tag;
 )brace
-suffix:semicolon
 id|DC390_write8
 (paren
 id|ScsiFifo
@@ -445,7 +443,6 @@ id|pSRB
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 id|pSRB-&gt;SRBState
 op_assign
 id|SRB_START_
@@ -538,7 +535,6 @@ op_assign
 id|SEL_W_ATN_STOP
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* Command is written in CommandPhase, if SEL_W_ATN_STOP ... */
 r_if
 c_cond
@@ -656,7 +652,6 @@ op_increment
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
 id|DEBUG0
 c_func
@@ -734,7 +729,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-suffix:semicolon
 id|DC390_write8
 (paren
 id|ScsiCmd
@@ -904,7 +898,6 @@ r_return
 id|dstate
 suffix:semicolon
 )brace
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1290,7 +1283,6 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#else
 singleline_comment|//DC390_write32 (DMA_ScsiBusCtrl, WRT_ERASE_DMA_STAT | EN_INT_ON_PCI_ABORT);
 singleline_comment|//dstatus = DC390_read8 (DMA_Status);
@@ -1508,7 +1500,6 @@ r_goto
 id|unlock
 suffix:semicolon
 )brace
-suffix:semicolon
 id|pSRB
 op_assign
 id|pDCB-&gt;pActiveSRB
@@ -2771,7 +2762,6 @@ id|pDCB
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#ifdef DC390_DEBUG0
 r_static
 r_void
@@ -2829,7 +2819,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 macro_line|#endif
 DECL|macro|DC390_ENABLE_MSGOUT
 mdefine_line|#define DC390_ENABLE_MSGOUT DC390_write8 (ScsiCmd, SET_ATN_CMD)
@@ -3251,7 +3240,6 @@ op_assign
 id|pDCB-&gt;NegoPeriod
 suffix:semicolon
 )brace
-suffix:semicolon
 id|memcpy
 (paren
 id|pSRB-&gt;MsgOutBuf
@@ -3268,7 +3256,6 @@ suffix:semicolon
 id|DC390_ENABLE_MSGOUT
 suffix:semicolon
 )brace
-suffix:semicolon
 id|pSRB-&gt;SRBState
 op_and_assign
 op_complement
@@ -3513,7 +3500,6 @@ id|pDCB
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* handle RESTORE_PTR */
 multiline_comment|/* I presume, this command is already mapped, so, have to remap. */
 r_static
@@ -3723,7 +3709,6 @@ op_assign
 id|pSRB-&gt;Saved_Ptr
 suffix:semicolon
 )brace
-suffix:semicolon
 multiline_comment|/* According to the docs, the AM53C974 reads the message and &n; * generates a Successful Operation IRQ before asserting ACK for&n; * the last byte (how does it know whether it&squot;s the last ?) */
 multiline_comment|/* The old code handled it in another way, indicating, that on&n; * every message byte an IRQ is generated and every byte has to&n; * be manually ACKed. Hmmm ?  (KG, 98/11/28) */
 multiline_comment|/* The old implementation was correct. Sigh! */
@@ -4009,7 +3994,6 @@ id|pSRB
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 singleline_comment|// nothing has to be done
 r_case
 id|COMMAND_COMPLETE
@@ -5951,7 +5935,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-suffix:semicolon
 id|pACB-&gt;DCBmap
 (braket
 id|pDCB-&gt;TargetID
@@ -6084,7 +6067,6 @@ id|pACB-&gt;DCBCnt
 op_decrement
 suffix:semicolon
 )brace
-suffix:semicolon
 r_static
 id|UCHAR
 id|__inline__
@@ -6137,7 +6119,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-suffix:semicolon
 r_static
 r_void
 DECL|function|dc390_disc_tagq_set
@@ -6227,7 +6208,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-suffix:semicolon
 r_static
 r_void
 DECL|function|dc390_add_dev
@@ -6263,7 +6243,6 @@ id|ptr
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 r_static
 r_void
 DECL|function|dc390_SRBdone
@@ -7384,148 +7363,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-(paren
-id|host_byte
-c_func
-(paren
-id|pcmd-&gt;result
-)paren
-op_ne
-id|DID_OK
-op_logical_and
-op_logical_neg
-(paren
-id|status_byte
-c_func
-(paren
-id|pcmd-&gt;result
-)paren
-op_amp
-id|CHECK_CONDITION
-)paren
-op_logical_and
-op_logical_neg
-(paren
-id|status_byte
-c_func
-(paren
-id|pcmd-&gt;result
-)paren
-op_amp
-id|BUSY
-)paren
-)paren
-op_logical_or
-(paren
-(paren
-id|driver_byte
-c_func
-(paren
-id|pcmd-&gt;result
-)paren
-op_amp
-id|DRIVER_SENSE
-)paren
-op_logical_and
-(paren
-id|pcmd-&gt;sense_buffer
-(braket
-l_int|0
-)braket
-op_amp
-l_int|0x70
-)paren
-op_eq
-l_int|0x70
-op_logical_and
-(paren
-id|pcmd-&gt;sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0xf
-)paren
-op_eq
-id|ILLEGAL_REQUEST
-)paren
-op_logical_or
-id|host_byte
-c_func
-(paren
-id|pcmd-&gt;result
-)paren
-op_amp
-id|DID_ERROR
-)paren
-(brace
-multiline_comment|/* device not present: remove */
-r_if
-c_cond
-(paren
-(paren
-id|pcmd-&gt;device-&gt;id
-op_eq
-id|pACB-&gt;pScsiHost-&gt;max_id
-op_minus
-l_int|1
-)paren
-op_logical_and
-(paren
-(paren
-id|pcmd-&gt;device-&gt;lun
-op_eq
-l_int|0
-)paren
-op_logical_or
-(paren
-id|pcmd-&gt;device-&gt;lun
-op_eq
-id|pACB-&gt;pScsiHost-&gt;max_lun
-op_minus
-l_int|1
-)paren
-)paren
-)paren
-(brace
-id|pACB-&gt;scan_devices
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-multiline_comment|/* device present: add */
-r_if
-c_cond
-(paren
-(paren
-id|pcmd-&gt;device-&gt;id
-op_eq
-id|pACB-&gt;pScsiHost-&gt;max_id
-op_minus
-l_int|1
-)paren
-op_logical_and
-(paren
-id|pcmd-&gt;device-&gt;lun
-op_eq
-id|pACB-&gt;pScsiHost-&gt;max_lun
-op_minus
-l_int|1
-)paren
-)paren
-(brace
-id|pACB-&gt;scan_devices
-op_assign
-id|END_SCAN
-suffix:semicolon
-)brace
-)brace
 )brace
 )brace
 r_if
@@ -7578,31 +7415,6 @@ id|pDCB
 comma
 id|ptr
 )paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|pcmd-&gt;device-&gt;id
-op_eq
-id|pACB-&gt;pScsiHost-&gt;max_id
-op_minus
-l_int|1
-)paren
-op_logical_and
-(paren
-id|pcmd-&gt;device-&gt;lun
-op_eq
-id|pACB-&gt;pScsiHost-&gt;max_lun
-op_minus
-l_int|1
-)paren
-)paren
-(brace
-id|pACB-&gt;scan_devices
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 )brace
