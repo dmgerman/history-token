@@ -8007,7 +8007,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;%02x: %08x&quot;
+l_string|&quot;%02x: %08x&bslash;n&quot;
 comma
 id|i
 comma
