@@ -1616,7 +1616,7 @@ id|cpm_free_handler
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_8xx */
-macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_4xx)
+macro_line|#if defined(CONFIG_8xx) || defined(CONFIG_40x)
 DECL|variable|__res
 id|EXPORT_SYMBOL
 c_func

@@ -163,40 +163,6 @@ id|max_host_addr
 )paren
 )paren
 (brace
-id|DBG
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;PCI: 0x%lx &lt;= resource[%d] &lt;= 0x%lx&quot;
-l_string|&quot;, bus 0x%x dev 0x%2.2x.%1.1x,&bslash;n&quot;
-id|KERN_ERR
-l_string|&quot;  %s&bslash;n&quot;
-id|KERN_ERR
-l_string|&quot;  fixup will be attempted later&bslash;n&quot;
-comma
-id|min_host_addr
-comma
-id|i
-comma
-id|max_host_addr
-comma
-id|dev-&gt;bus-&gt;number
-comma
-id|PCI_SLOT
-c_func
-(paren
-id|dev-&gt;devfn
-)paren
-comma
-id|PCI_FUNC
-c_func
-(paren
-id|dev-&gt;devfn
-)paren
-comma
-id|dev-&gt;slot.name
-)paren
-suffix:semicolon
 multiline_comment|/* force pcibios_assign_resources() to assign a new address */
 id|res-&gt;end
 op_sub_assign
