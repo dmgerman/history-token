@@ -43,6 +43,7 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -3004,6 +3005,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|event
+)paren
+suffix:semicolon
+DECL|variable|__inode_dir_notify
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__inode_dir_notify
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_UID16

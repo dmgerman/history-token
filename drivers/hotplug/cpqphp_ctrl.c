@@ -4245,7 +4245,7 @@ c_cond
 (paren
 id|ctrl-&gt;speed
 op_eq
-l_int|1
+id|PCI_SPEED_66MHz
 )paren
 (brace
 singleline_comment|// Wait for exclusive access to hardware
@@ -4857,7 +4857,7 @@ c_cond
 (paren
 id|ctrl-&gt;speed
 op_eq
-l_int|1
+id|PCI_SPEED_66MHz
 )paren
 (brace
 singleline_comment|// Wait for exclusive access to hardware
