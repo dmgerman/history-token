@@ -670,6 +670,8 @@ DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(flags)&t;do { (flags) = swpipl(IPL_MAX); barrier(); } while(0)
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(flags)&t;do { barrier(); setipl(flags); barrier(); } while(0)
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;(getipl() == IPL_MAX)
 multiline_comment|/*&n; * TB routines..&n; */
 DECL|macro|__tbi
 mdefine_line|#define __tbi(nr,arg,arg1...)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;register unsigned long __r16 __asm__(&quot;$16&quot;) = (nr);&t;&bslash;&n;&t;register unsigned long __r17 __asm__(&quot;$17&quot;); arg;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;call_pal %3 #__tbi&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;:&quot;=r&quot; (__r16),&quot;=r&quot; (__r17)&t;&t;&t;&bslash;&n;&t;&t;:&quot;0&quot; (__r16),&quot;i&quot; (PAL_tbi) ,##arg1&t;&t;&bslash;&n;&t;&t;:&quot;$0&quot;, &quot;$1&quot;, &quot;$22&quot;, &quot;$23&quot;, &quot;$24&quot;, &quot;$25&quot;);&t;&bslash;&n;})

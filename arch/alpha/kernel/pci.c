@@ -1343,6 +1343,9 @@ r_struct
 id|pci_dev
 op_star
 id|dev
+comma
+r_int
+id|mask
 )paren
 (brace
 multiline_comment|/* Nothing to do, since we enable all devices at startup.  */

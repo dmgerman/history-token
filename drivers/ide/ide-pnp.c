@@ -2,14 +2,6 @@ multiline_comment|/*&n; * linux/drivers/ide/ide-pnp.c&n; *&n; * This file provid
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
-macro_line|#ifndef PREPARE_FUNC
-DECL|macro|PREPARE_FUNC
-mdefine_line|#define PREPARE_FUNC(dev)  (dev-&gt;prepare)
-DECL|macro|ACTIVATE_FUNC
-mdefine_line|#define ACTIVATE_FUNC(dev)  (dev-&gt;activate)
-DECL|macro|DEACTIVATE_FUNC
-mdefine_line|#define DEACTIVATE_FUNC(dev)  (dev-&gt;deactivate)
-macro_line|#endif
 DECL|macro|DEV_IO
 mdefine_line|#define DEV_IO(dev, index) (dev-&gt;resource[index].start)
 DECL|macro|DEV_IRQ
@@ -201,6 +193,7 @@ l_int|0
 comma
 l_int|NULL
 comma
+singleline_comment|//&t;&t;&t;generic_pnp_ide_iops,
 id|DEV_IRQ
 c_func
 (paren
@@ -233,6 +226,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;ide%d: %s IDE interface&bslash;n&quot;
 comma
 id|index
@@ -292,7 +286,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|macro|NR_PNP_DEVICES
 mdefine_line|#define NR_PNP_DEVICES 8
 DECL|struct|pnp_dev_inst
@@ -329,7 +322,6 @@ id|pnp_ide_dev_idx
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Probe for ISA PnP IDE interfaces.&n; */
 DECL|function|pnpide_init
 r_void
@@ -364,7 +356,6 @@ c_func
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifdef MODULE
 multiline_comment|/* Module unload, deactivate all registered devices. */
 r_if
 c_cond
@@ -391,6 +382,15 @@ id|i
 op_increment
 )paren
 (brace
+id|dev
+op_assign
+id|devices
+(braket
+id|i
+)braket
+dot
+id|dev
+suffix:semicolon
 id|devices
 (braket
 id|i
@@ -409,33 +409,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|DEACTIVATE_FUNC
+id|dev-&gt;deactivate
+)paren
+id|dev
+op_member_access_from_pointer
+id|deactivate
 c_func
 (paren
-id|devices
-(braket
-id|i
-)braket
-dot
-id|dev
-)paren
-)paren
-id|DEACTIVATE_FUNC
-c_func
-(paren
-id|devices
-(braket
-id|i
-)braket
-dot
-id|dev
-)paren
-(paren
-id|devices
-(braket
-id|i
-)braket
-dot
 id|dev
 )paren
 suffix:semicolon
@@ -443,7 +423,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -487,19 +466,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PREPARE_FUNC
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;prepare
 op_logical_and
-(paren
-id|PREPARE_FUNC
-c_func
-(paren
 id|dev
-)paren
-)paren
+op_member_access_from_pointer
+id|prepare
+c_func
 (paren
 id|dev
 )paren
@@ -510,7 +482,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;ide: %s prepare failed&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;ide-pnp: %s prepare failed&bslash;n&quot;
 comma
 id|DEV_NAME
 c_func
@@ -525,19 +498,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACTIVATE_FUNC
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;activate
 op_logical_and
-(paren
-id|ACTIVATE_FUNC
-c_func
-(paren
 id|dev
-)paren
-)paren
+op_member_access_from_pointer
+id|activate
+c_func
 (paren
 id|dev
 )paren
@@ -548,6 +514,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;ide: %s activate failed&bslash;n&quot;
 comma
 id|DEV_NAME
@@ -578,17 +545,18 @@ l_int|1
 r_if
 c_cond
 (paren
-id|DEACTIVATE_FUNC
+id|dev
+op_member_access_from_pointer
+id|deactivate
 c_func
 (paren
 id|dev
 )paren
 )paren
-id|DEACTIVATE_FUNC
-c_func
-(paren
 id|dev
-)paren
+op_member_access_from_pointer
+id|deactivate
+c_func
 (paren
 id|dev
 )paren

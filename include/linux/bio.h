@@ -393,6 +393,7 @@ r_int
 r_int
 id|addr
 suffix:semicolon
+multiline_comment|/*&n;&t; * might not be a highmem page, but the preempt/irq count&n;&t; * balancing is a lot nicer this way&n;&t; */
 id|local_save_flags
 c_func
 (paren
@@ -400,29 +401,6 @@ op_star
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * could be low&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|PageHighMem
-c_func
-(paren
-id|bio_page
-c_func
-(paren
-id|bio
-)paren
-)paren
-)paren
-r_return
-id|bio_data
-c_func
-(paren
-id|bio
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * it&squot;s a highmem page&n;&t; */
 id|local_irq_disable
 c_func
 (paren
