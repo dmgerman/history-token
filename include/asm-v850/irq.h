@@ -87,6 +87,37 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+multiline_comment|/* Enable interrupt handling on an irq.  */
+r_extern
+r_void
+id|enable_irq
+c_func
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+multiline_comment|/* Disable an irq and wait for completion.  */
+r_extern
+r_void
+id|disable_irq
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
+multiline_comment|/* Disable an irq without waiting. */
+r_extern
+r_void
+id|disable_irq_nosync
+(paren
+r_int
+r_int
+id|irq
+)paren
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __V850_IRQ_H__ */
 eof
