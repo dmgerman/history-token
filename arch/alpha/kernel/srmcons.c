@@ -304,7 +304,6 @@ op_star
 id|tty
 comma
 r_const
-r_int
 r_char
 op_star
 id|buf
@@ -313,10 +312,12 @@ r_int
 id|count
 )paren
 (brace
-r_int
+r_static
 r_char
-op_star
 id|str_cr
+(braket
+l_int|1
+)braket
 op_assign
 l_string|&quot;&bslash;r&quot;
 suffix:semicolon
@@ -330,7 +331,6 @@ suffix:semicolon
 id|srmcons_result
 id|result
 suffix:semicolon
-r_int
 r_char
 op_star
 id|cur
@@ -344,7 +344,6 @@ c_loop
 id|cur
 op_assign
 (paren
-r_int
 r_char
 op_star
 )paren
@@ -514,7 +513,6 @@ c_cond
 id|from_user
 )paren
 (brace
-r_int
 r_char
 id|tmp
 (braket
@@ -651,6 +649,11 @@ c_func
 (paren
 id|tty
 comma
+(paren
+r_const
+r_char
+op_star
+)paren
 id|buf
 comma
 id|count

@@ -24,16 +24,6 @@ DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|DRIVER_IOCTLS
 mdefine_line|#define DRIVER_IOCTLS&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I915_INIT)]   = { i915_dma_init,    1, 1 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I915_FLUSH)]  = { i915_flush_ioctl, 1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I915_FLIP)]   = { i915_flip_bufs,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I915_BATCHBUFFER)] = { i915_batchbuffer, 1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I915_IRQ_EMIT)] = { i915_irq_emit,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I915_IRQ_WAIT)] = { i915_irq_wait,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I915_GETPARAM)] = { i915_getparam,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I915_SETPARAM)] = { i915_setparam,  1, 1 }, &bslash;&n;        [DRM_IOCTL_NR(DRM_IOCTL_I915_ALLOC)]   = { i915_mem_alloc,  1, 0 }, &bslash;&n;        [DRM_IOCTL_NR(DRM_IOCTL_I915_FREE)]    = { i915_mem_free,    1, 0 }, &bslash;&n;        [DRM_IOCTL_NR(DRM_IOCTL_I915_INIT_HEAP)] = { i915_mem_init_heap, 1, 1 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I915_CMDBUFFER)] = { i915_cmdbuffer, 1, 0 }
-DECL|macro|__HAVE_COUNTERS
-mdefine_line|#define __HAVE_COUNTERS         4
-DECL|macro|__HAVE_COUNTER6
-mdefine_line|#define __HAVE_COUNTER6         _DRM_STAT_IRQ
-DECL|macro|__HAVE_COUNTER7
-mdefine_line|#define __HAVE_COUNTER7         _DRM_STAT_PRIMARY
-DECL|macro|__HAVE_COUNTER8
-mdefine_line|#define __HAVE_COUNTER8         _DRM_STAT_SECONDARY
-DECL|macro|__HAVE_COUNTER9
-mdefine_line|#define __HAVE_COUNTER9         _DRM_STAT_DMA
 multiline_comment|/* We use our own dma mechanisms, not the drm template code.  However,&n; * the shared IRQ code is useful to us:&n; */
 DECL|macro|__HAVE_PM
 mdefine_line|#define __HAVE_PM&t;&t;1

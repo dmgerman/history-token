@@ -109,6 +109,7 @@ id|addr
 r_return
 op_star
 (paren
+r_volatile
 r_int
 r_char
 id|__force
@@ -136,6 +137,7 @@ id|addr
 r_return
 op_star
 (paren
+r_volatile
 r_int
 r_int
 id|__force
@@ -163,6 +165,7 @@ id|addr
 r_return
 op_star
 (paren
+r_volatile
 r_int
 r_int
 id|__force
@@ -190,6 +193,7 @@ id|addr
 r_return
 op_star
 (paren
+r_volatile
 r_int
 r_int
 id|__force
@@ -218,6 +222,7 @@ id|addr
 (brace
 op_star
 (paren
+r_volatile
 r_int
 r_char
 id|__force
@@ -248,6 +253,7 @@ id|addr
 (brace
 op_star
 (paren
+r_volatile
 r_int
 r_int
 id|__force
@@ -278,6 +284,7 @@ id|addr
 (brace
 op_star
 (paren
+r_volatile
 r_int
 r_int
 id|__force
@@ -308,6 +315,7 @@ id|addr
 (brace
 op_star
 (paren
+r_volatile
 r_int
 r_int
 id|__force

@@ -201,7 +201,7 @@ multiline_comment|/* Outgoing datagram label&t;*/
 suffix:semicolon
 multiline_comment|/* Our ieee1394 highlevel driver */
 DECL|macro|ETH1394_DRIVER_NAME
-mdefine_line|#define ETH1394_DRIVER_NAME &quot;ip1394&quot;
+mdefine_line|#define ETH1394_DRIVER_NAME &quot;eth1394&quot;
 DECL|variable|driver_name
 r_static
 r_const
