@@ -666,7 +666,7 @@ r_return
 id|count
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function ircomm_param_service_type (self, buf, len)&n; *&n; *    Handle service type, this function will both be called after the LM-IAS&n; *    query and then the remote device sends its initial paramters&n; *&n; */
+multiline_comment|/*&n; * Function ircomm_param_service_type (self, buf, len)&n; *&n; *    Handle service type, this function will both be called after the LM-IAS&n; *    query and then the remote device sends its initial parameters&n; *&n; */
 DECL|function|ircomm_param_service_type
 r_static
 r_int

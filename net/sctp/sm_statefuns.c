@@ -1145,7 +1145,7 @@ id|ret
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Tag the variable length paramters.  Note that we never&n;&t; * convert the parameters in an INIT chunk.&n;&t; */
+multiline_comment|/* Tag the variable length parameters.  Note that we never&n;&t; * convert the parameters in an INIT chunk.&n;&t; */
 id|chunk-&gt;param_hdr.v
 op_assign
 id|skb_pull
@@ -3643,7 +3643,7 @@ id|commands
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Handle duplicated INIT messages.  These are usually delayed&n; * restransmissions.&n; *&n; * Section: 5.2.2 Unexpected INIT in States Other than CLOSED,&n; * COOKIE-ECHOED and COOKIE-WAIT&n; *&n; * Unless otherwise stated, upon reception of an unexpected INIT for&n; * this association, the endpoint shall generate an INIT ACK with a&n; * State Cookie.  In the outbound INIT ACK the endpoint MUST copy its&n; * current Verification Tag and peer&squot;s Verification Tag into a reserved&n; * place within the state cookie.  We shall refer to these locations as&n; * the Peer&squot;s-Tie-Tag and the Local-Tie-Tag.  The outbound SCTP packet&n; * containing this INIT ACK MUST carry a Verification Tag value equal to&n; * the Initiation Tag found in the unexpected INIT.  And the INIT ACK&n; * MUST contain a new Initiation Tag (randomly generated see Section&n; * 5.3.1).  Other parameters for the endpoint SHOULD be copied from the&n; * existing parameters of the association (e.g. number of outbound&n; * streams) into the INIT ACK and cookie.&n; *&n; * After sending out the INIT ACK, the endpoint shall take no further&n; * actions, i.e., the existing association, including its current state,&n; * and the corresponding TCB MUST NOT be changed.&n; *&n; * Note: Only when a TCB exists and the association is not in a COOKIE-&n; * WAIT state are the Tie-Tags populated.  For a normal association INIT&n; * (i.e. the endpoint is in a COOKIE-WAIT state), the Tie-Tags MUST be&n; * set to 0 (indicating that no previous TCB existed).  The INIT ACK and&n; * State Cookie are populated as specified in section 5.2.1.&n; *&n; * Verification Tag: Not specifed, but an INIT has no way of knowing&n; * what the verification tag could be, so we ignore it.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
+multiline_comment|/*&n; * Handle duplicated INIT messages.  These are usually delayed&n; * restransmissions.&n; *&n; * Section: 5.2.2 Unexpected INIT in States Other than CLOSED,&n; * COOKIE-ECHOED and COOKIE-WAIT&n; *&n; * Unless otherwise stated, upon reception of an unexpected INIT for&n; * this association, the endpoint shall generate an INIT ACK with a&n; * State Cookie.  In the outbound INIT ACK the endpoint MUST copy its&n; * current Verification Tag and peer&squot;s Verification Tag into a reserved&n; * place within the state cookie.  We shall refer to these locations as&n; * the Peer&squot;s-Tie-Tag and the Local-Tie-Tag.  The outbound SCTP packet&n; * containing this INIT ACK MUST carry a Verification Tag value equal to&n; * the Initiation Tag found in the unexpected INIT.  And the INIT ACK&n; * MUST contain a new Initiation Tag (randomly generated see Section&n; * 5.3.1).  Other parameters for the endpoint SHOULD be copied from the&n; * existing parameters of the association (e.g. number of outbound&n; * streams) into the INIT ACK and cookie.&n; *&n; * After sending out the INIT ACK, the endpoint shall take no further&n; * actions, i.e., the existing association, including its current state,&n; * and the corresponding TCB MUST NOT be changed.&n; *&n; * Note: Only when a TCB exists and the association is not in a COOKIE-&n; * WAIT state are the Tie-Tags populated.  For a normal association INIT&n; * (i.e. the endpoint is in a COOKIE-WAIT state), the Tie-Tags MUST be&n; * set to 0 (indicating that no previous TCB existed).  The INIT ACK and&n; * State Cookie are populated as specified in section 5.2.1.&n; *&n; * Verification Tag: Not specified, but an INIT has no way of knowing&n; * what the verification tag could be, so we ignore it.&n; *&n; * Inputs&n; * (endpoint, asoc, chunk)&n; *&n; * Outputs&n; * (asoc, reply_msg, msg_up, timers, counters)&n; *&n; * The return value is the disposition of the chunk.&n; */
 DECL|function|sctp_sf_do_5_2_2_dupinit
 id|sctp_disposition_t
 id|sctp_sf_do_5_2_2_dupinit
@@ -4145,7 +4145,7 @@ id|SCTP_DISPOSITION_NOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Unexpected COOKIE-ECHO handler for setup collision (Table 2, action &squot;C&squot;)&n; *&n; * Section 5.2.4&n; *  C) In this case, the local endpoint&squot;s cookie has arrived late.&n; *     Before it arrived, the local endpoint sent an INIT and received an&n; *     INIT-ACK and finally sent a COOKIE ECHO with the peer&squot;s same tag&n; *     but a new tag of its own.&n; */
-multiline_comment|/* This case represents an intialization collision.  */
+multiline_comment|/* This case represents an initialization collision.  */
 DECL|function|sctp_sf_do_dupcook_c
 r_static
 id|sctp_disposition_t
@@ -4181,7 +4181,7 @@ id|SCTP_DISPOSITION_DISCARD
 suffix:semicolon
 )brace
 multiline_comment|/* Unexpected COOKIE-ECHO handler lost chunk (Table 2, action &squot;D&squot;)&n; *&n; * Section 5.2.4&n; *&n; * D) When both local and remote tags match the endpoint should always&n; *    enter the ESTABLISHED state, if it has not already done so.&n; */
-multiline_comment|/* This case represents an intialization collision.  */
+multiline_comment|/* This case represents an initialization collision.  */
 DECL|function|sctp_sf_do_dupcook_d
 r_static
 id|sctp_disposition_t

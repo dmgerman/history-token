@@ -4059,7 +4059,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Interrupt handler routine.&n; * Called by the Linux kernel.&n; * BEWARE! The interrupts are enabled on the call!&n; */
 DECL|function|MUNICH_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|MUNICH_interrupt
 c_func
 (paren
@@ -5414,6 +5414,7 @@ id|board-&gt;stat_pti_races_missed
 op_increment
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Hardware open routine.&n; * Called by comx (upper) layer when the user wants to bring up the interface&n; * with ifconfig.&n; * Initializes hardware, allocates resources etc.&n; * Returns 0 on OK, or standard error value on error.&n; */

@@ -2,7 +2,7 @@ macro_line|#ifndef _PPC_BUG_H
 DECL|macro|_PPC_BUG_H
 mdefine_line|#define _PPC_BUG_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/system.h&gt; /* for xmon definition */
+macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#ifdef CONFIG_XMON
 r_extern
 r_void

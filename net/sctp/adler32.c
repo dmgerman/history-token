@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 DECL|macro|BASE
 mdefine_line|#define BASE 65521 /* largest prime smaller than 65536 */
-multiline_comment|/* Performance work as shown this pig to be the&n; * worst CPU wise guy. I have done what I could think&n; * of on my flight to Austrialia but I am sure some&n; * clever assembly could speed this up, but of&n; * course this would require the dreaded #ifdef&squot;s for&n; * architecture. If you can speed this up more, pass&n; * it back and we will incorporate it :-)&n; */
+multiline_comment|/* Performance work as shown this pig to be the&n; * worst CPU wise guy. I have done what I could think&n; * of on my flight to Australia but I am sure some&n; * clever assembly could speed this up, but of&n; * course this would require the dreaded #ifdef&squot;s for&n; * architecture. If you can speed this up more, pass&n; * it back and we will incorporate it :-)&n; */
 DECL|function|update_adler32
 r_int
 r_int
@@ -96,7 +96,7 @@ op_plus
 id|s1
 )paren
 suffix:semicolon
-multiline_comment|/* again, it is more efficent (it seems) to&n;&t;&t; * subtract since the most s2 will ever be&n;&t;&t; * is (BASE-1 + BASE-1) in the worse case.&n;&t;&t; * This would then be (2 * BASE) - 2, which&n;&t;&t; * will still only do one subtract. On Intel&n;&t;&t; * this is much better to do this way and&n;&t;&t; * avoid the divide. Have not -pg&squot;d on &n;&t;&t; * sparc.&n;&t;&t; */
+multiline_comment|/* again, it is more efficient (it seems) to&n;&t;&t; * subtract since the most s2 will ever be&n;&t;&t; * is (BASE-1 + BASE-1) in the worse case.&n;&t;&t; * This would then be (2 * BASE) - 2, which&n;&t;&t; * will still only do one subtract. On Intel&n;&t;&t; * this is much better to do this way and&n;&t;&t; * avoid the divide. Have not -pg&squot;d on &n;&t;&t; * sparc.&n;&t;&t; */
 r_if
 c_cond
 (paren

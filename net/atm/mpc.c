@@ -3501,7 +3501,7 @@ id|number
 op_assign
 l_int|42
 comma
-multiline_comment|/* members not explicitely initialised will be 0 */
+multiline_comment|/* members not explicitly initialised will be 0 */
 )brace
 suffix:semicolon
 DECL|function|atm_mpoa_mpoad_attach

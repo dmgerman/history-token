@@ -89,7 +89,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Intialize a new transport from provided memory.  */
+multiline_comment|/* Initialize a new transport from provided memory.  */
 DECL|function|sctp_transport_init
 r_struct
 id|sctp_transport
@@ -395,7 +395,7 @@ id|transport
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Start T3_rtx timer if it is not already running and update the heartbeat&n; * timer.  This routine is called everytime a DATA chunk is sent.&n; */
+multiline_comment|/* Start T3_rtx timer if it is not already running and update the heartbeat&n; * timer.  This routine is called every time a DATA chunk is sent.&n; */
 DECL|function|sctp_transport_reset_timers
 r_void
 id|sctp_transport_reset_timers

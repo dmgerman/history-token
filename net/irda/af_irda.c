@@ -2713,7 +2713,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;The read queue this time is holding sockets ready to use&n;&t; *&t;hooked into the SABM we saved&n;&t; */
-multiline_comment|/*&n;&t; * We can perform the accept only if there is incomming data&n;&t; * on the listening socket.&n;&t; * So, we will block the caller until we receive any data.&n;&t; * If the caller was waiting on select() or poll() before&n;&t; * calling us, the data is waiting for us ;-)&n;&t; * Jean II&n;&t; */
+multiline_comment|/*&n;&t; * We can perform the accept only if there is incoming data&n;&t; * on the listening socket.&n;&t; * So, we will block the caller until we receive any data.&n;&t; * If the caller was waiting on select() or poll() before&n;&t; * calling us, the data is waiting for us ;-)&n;&t; * Jean II&n;&t; */
 id|skb
 op_assign
 id|skb_dequeue
@@ -3764,8 +3764,6 @@ op_assign
 l_int|0x0
 suffix:semicolon
 multiline_comment|/* so IrLMP assign us any link */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3905,10 +3903,6 @@ c_func
 id|self
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irda_release (sock)&n; */
 DECL|function|irda_release
@@ -4011,7 +4005,7 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-multiline_comment|/* Notes on socket locking and deallocation... - Jean II&n;&t; * In theory we should put pairs of sock_hold() / sock_put() to&n;&t; * prevent the socket to be destroyed whenever there is an&n;&t; * outstanding request or outstanding incomming packet or event.&n;&t; *&n;&t; * 1) This may include IAS request, both in connect and getsockopt.&n;&t; * Unfortunately, the situation is a bit more messy than it looks,&n;&t; * because we close iriap and kfree(self) above.&n;&t; *&n;&t; * 2) This may include selective discovery in getsockopt.&n;&t; * Same stuff as above, irlmp registration and self are gone.&n;&t; *&n;&t; * Probably 1 and 2 may not matter, because it&squot;s all triggered&n;&t; * by a process and the socket layer already prevent the&n;&t; * socket to go away while a process is holding it, through&n;&t; * sockfd_put() and fput()...&n;&t; *&n;&t; * 3) This may include deferred TSAP closure. In particular,&n;&t; * we may receive a late irda_disconnect_indication()&n;&t; * Fortunately, (tsap_cb *)-&gt;close_pend should protect us&n;&t; * from that.&n;&t; *&n;&t; * I did some testing on SMP, and it looks solid. And the socket&n;&t; * memory leak is now gone... - Jean II&n;&t; */
+multiline_comment|/* Notes on socket locking and deallocation... - Jean II&n;&t; * In theory we should put pairs of sock_hold() / sock_put() to&n;&t; * prevent the socket to be destroyed whenever there is an&n;&t; * outstanding request or outstanding incoming packet or event.&n;&t; *&n;&t; * 1) This may include IAS request, both in connect and getsockopt.&n;&t; * Unfortunately, the situation is a bit more messy than it looks,&n;&t; * because we close iriap and kfree(self) above.&n;&t; *&n;&t; * 2) This may include selective discovery in getsockopt.&n;&t; * Same stuff as above, irlmp registration and self are gone.&n;&t; *&n;&t; * Probably 1 and 2 may not matter, because it&squot;s all triggered&n;&t; * by a process and the socket layer already prevent the&n;&t; * socket to go away while a process is holding it, through&n;&t; * sockfd_put() and fput()...&n;&t; *&n;&t; * 3) This may include deferred TSAP closure. In particular,&n;&t; * we may receive a late irda_disconnect_indication()&n;&t; * Fortunately, (tsap_cb *)-&gt;close_pend should protect us&n;&t; * from that.&n;&t; *&n;&t; * I did some testing on SMP, and it looks solid. And the socket&n;&t; * memory leak is now gone... - Jean II&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -8557,6 +8551,11 @@ dot
 id|create
 op_assign
 id|irda_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

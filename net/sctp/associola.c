@@ -116,7 +116,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Intialize a new association from provided memory. */
+multiline_comment|/* Initialize a new association from provided memory. */
 DECL|function|sctp_association_init
 id|sctp_association_t
 op_star

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * llc_main.c - This module contains main functions to manage station, saps&n; * &t;and connections of the LLC.&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001, 2002 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
+multiline_comment|/*&n; * llc_main.c - This module contains main functions to manage station, saps&n; * &t;and connections of the LLC.&n; *&n; * Copyright (c) 1997 by Procom Technology, Inc.&n; * &t;&t; 2001-2003 by Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *&n; * This program can be redistributed or modified under the terms of the&n; * GNU General Public License as published by the Free Software Foundation.&n; * This program is distributed without any warranty or implied warranty&n; * of merchantability or fitness for a particular purpose.&n; *&n; * See the GNU General Public License for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -518,7 +518,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *     llc_sk_init - Initializes a socket with default llc values.&n; *     @sk: socket to intiailize.&n; *&n; *     Initializes a socket with default llc values.&n; */
+multiline_comment|/**&n; *     llc_sk_init - Initializes a socket with default llc values.&n; *     @sk: socket to initialize.&n; *&n; *     Initializes a socket with default llc values.&n; */
 DECL|function|llc_sk_init
 r_int
 id|llc_sk_init
@@ -2135,7 +2135,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Procom, 1997, Arnaldo C. Melo, Jay Schullist, 2001, 2002&quot;
+l_string|&quot;Procom, 1997, Arnaldo C. Melo, Jay Schullist, 2001-2003&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION

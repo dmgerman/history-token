@@ -16,6 +16,13 @@ macro_line|#include &quot;fpopcode.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
 macro_line|#include &quot;fpa11.inl&quot;
 multiline_comment|/* kernel symbols required for signal handling */
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
+DECL|macro|NWFPE_BITS
+mdefine_line|#define NWFPE_BITS &quot;extended&quot;
+macro_line|#else
+DECL|macro|NWFPE_BITS
+mdefine_line|#define NWFPE_BITS &quot;double&quot;
+macro_line|#endif
 macro_line|#ifdef MODULE
 r_void
 id|fp_send_sig
@@ -44,7 +51,9 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;NWFPE floating point emulator&quot;
+l_string|&quot;NWFPE floating point emulator (&quot;
+id|NWFPE_BITS
+l_string|&quot; precision)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -125,31 +134,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-multiline_comment|/*&n; * Return 0 if we can be unloaded.  This can only happen if&n; * kern_fp_enter is still pointing at nwfpe_enter&n; */
-DECL|function|fpe_unload
-r_static
-r_int
-id|fpe_unload
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-(paren
-id|kern_fp_enter
-op_eq
-id|nwfpe_enter
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|fpe_init
 r_static
 r_int
@@ -210,29 +194,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mod_member_present
-c_func
-(paren
-op_amp
-id|__this_module
-comma
-id|can_unload
-)paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-id|__this_module.can_unload
-op_assign
-id|fpe_unload
-suffix:semicolon
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -252,14 +213,14 @@ l_string|&quot;nwfpe&quot;
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Display title, version and copyright information. */
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;NetWinder Floating Point Emulator V0.95 &quot;
-l_string|&quot;(c) 1998-1999 Rebel.com&bslash;n&quot;
+l_string|&quot;NetWinder Floating Point Emulator V0.97 (&quot;
+id|NWFPE_BITS
+l_string|&quot; precision)&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Save pointer to the old FP handler and then patch ourselves in */
@@ -277,7 +238,7 @@ id|nwfpe_enter
 suffix:semicolon
 id|fp_init
 op_assign
-id|nwfpe_init
+id|nwfpe_init_fpa
 suffix:semicolon
 r_return
 l_int|0
@@ -367,7 +328,7 @@ id|cumulativeTraps
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* For each type of exception, the cumulative trap exception bit is only&n;     set if the corresponding trap enable bit is not set.  */
+multiline_comment|/* For each type of exception, the cumulative trap exception bit is only&n;&t;   set if the corresponding trap enable bit is not set.  */
 r_if
 c_cond
 (paren

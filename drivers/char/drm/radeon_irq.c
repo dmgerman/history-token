@@ -761,9 +761,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dev_priv
 )paren
-(brace
+r_return
+suffix:semicolon
 multiline_comment|/* Disable *all* interrupts */
 id|RADEON_WRITE
 c_func
@@ -773,6 +775,5 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 )brace
 eof

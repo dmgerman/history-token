@@ -23,7 +23,7 @@ mdefine_line|#define MASK_SYSID&t;&t;0xff000000
 DECL|macro|BIT_HARDWARE
 mdefine_line|#define BIT_HARDWARE&t;&t;0x80000000
 DECL|macro|FP_EMULATOR
-mdefine_line|#define FP_EMULATOR&t;&t;0x01000000&t;/* System ID for emulator */ 
+mdefine_line|#define FP_EMULATOR&t;&t;0x01000000&t;/* System ID for emulator */
 DECL|macro|FP_ACCELERATOR
 mdefine_line|#define FP_ACCELERATOR&t;&t;0x81000000&t;/* System ID for FPA11 */
 multiline_comment|/* EXCEPTION TRAP ENABLE BYTE&n;----------------------------- */
@@ -32,15 +32,15 @@ mdefine_line|#define MASK_TRAP_ENABLE&t;0x00ff0000
 DECL|macro|MASK_TRAP_ENABLE_STRICT
 mdefine_line|#define MASK_TRAP_ENABLE_STRICT&t;0x001f0000
 DECL|macro|BIT_IXE
-mdefine_line|#define BIT_IXE&t;&t;0x00100000   /* inexact exception enable */
+mdefine_line|#define BIT_IXE&t;&t;0x00100000&t;/* inexact exception enable */
 DECL|macro|BIT_UFE
-mdefine_line|#define BIT_UFE&t;&t;0x00080000   /* underflow exception enable */
+mdefine_line|#define BIT_UFE&t;&t;0x00080000&t;/* underflow exception enable */
 DECL|macro|BIT_OFE
-mdefine_line|#define BIT_OFE&t;&t;0x00040000   /* overflow exception enable */
+mdefine_line|#define BIT_OFE&t;&t;0x00040000&t;/* overflow exception enable */
 DECL|macro|BIT_DZE
-mdefine_line|#define BIT_DZE&t;&t;0x00020000   /* divide by zero exception enable */
+mdefine_line|#define BIT_DZE&t;&t;0x00020000&t;/* divide by zero exception enable */
 DECL|macro|BIT_IOE
-mdefine_line|#define BIT_IOE&t;&t;0x00010000   /* invalid operation exception enable */
+mdefine_line|#define BIT_IOE&t;&t;0x00010000&t;/* invalid operation exception enable */
 multiline_comment|/* SYSTEM CONTROL BYTE&n;---------------------- */
 DECL|macro|MASK_SYSTEM_CONTROL
 mdefine_line|#define MASK_SYSTEM_CONTROL&t;0x0000ff00

@@ -26,7 +26,7 @@ id|sysctl_min_tx_turn_time
 op_assign
 l_int|10
 suffix:semicolon
-multiline_comment|/*&n; * Maximum data size to be used in transmission in payload of LAP frame.&n; * There is a bit of confusion in the IrDA spec :&n; * The LAP spec defines the payload of a LAP frame (I field) to be&n; * 2048 bytes max (IrLAP 1.1, chapt 6.6.5, p40).&n; * On the other hand, the PHY mention frames of 2048 bytes max (IrPHY&n; * 1.2, chapt 5.3.2.1, p41). But, this number includes the LAP header&n; * (2 bytes), and CRC (32 bits at 4 Mb/s). So, for the I field (LAP&n; * payload), that&squot;s only 2042 bytes. Oups !&n; * My nsc-ircc hardware has troubles receiving 2048 bytes frames at 4 Mb/s,&n; * so adjust to 2042... I don&squot;t know if this bug applies only for 2048&n; * bytes frames or all negociated frame sizes, but you can use the sysctl&n; * to play with this value anyway.&n; * Jean II */
+multiline_comment|/*&n; * Maximum data size to be used in transmission in payload of LAP frame.&n; * There is a bit of confusion in the IrDA spec :&n; * The LAP spec defines the payload of a LAP frame (I field) to be&n; * 2048 bytes max (IrLAP 1.1, chapt 6.6.5, p40).&n; * On the other hand, the PHY mention frames of 2048 bytes max (IrPHY&n; * 1.2, chapt 5.3.2.1, p41). But, this number includes the LAP header&n; * (2 bytes), and CRC (32 bits at 4 Mb/s). So, for the I field (LAP&n; * payload), that&squot;s only 2042 bytes. Oups !&n; * My nsc-ircc hardware has troubles receiving 2048 bytes frames at 4 Mb/s,&n; * so adjust to 2042... I don&squot;t know if this bug applies only for 2048&n; * bytes frames or all negotiated frame sizes, but you can use the sysctl&n; * to play with this value anyway.&n; * Jean II */
 DECL|variable|sysctl_max_tx_data_size
 r_int
 id|sysctl_max_tx_data_size
@@ -993,7 +993,7 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/* -------------------------- MAIN CALLS -------------------------- */
-multiline_comment|/*&n; * Function irda_qos_compute_intersection (qos, new)&n; *&n; *    Compute the intersection of the old QoS capabilites with new ones&n; *&n; */
+multiline_comment|/*&n; * Function irda_qos_compute_intersection (qos, new)&n; *&n; *    Compute the intersection of the old QoS capabilities with new ones&n; *&n; */
 DECL|function|irda_qos_compute_intersection
 r_void
 id|irda_qos_compute_intersection

@@ -17,7 +17,7 @@ DECL|member|name
 r_char
 id|name
 (braket
-l_int|40
+id|BDEVNAME_SIZE
 )braket
 suffix:semicolon
 r_struct

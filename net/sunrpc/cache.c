@@ -1800,7 +1800,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * communicate with user-space&n; *&n; * We have a magic /proc file - /proc/sunrpc/cache&n; * On read, you get a full request, or block&n; * On write, an update request is processed&n; * Poll works if anything to read, and always allows write&n; *&n; * Implemented by linked list of requests.  Each open file has &n; * a -&gt;private that also exists in this list.  New request are added&n; * to the end and may wakeup and preceeding readers.&n; * New readers are added to the head.  If, on read, an item is found with&n; * CACHE_UPCALLING clear, we free it from the list.&n; *&n; */
+multiline_comment|/*&n; * communicate with user-space&n; *&n; * We have a magic /proc file - /proc/sunrpc/cache&n; * On read, you get a full request, or block&n; * On write, an update request is processed&n; * Poll works if anything to read, and always allows write&n; *&n; * Implemented by linked list of requests.  Each open file has &n; * a -&gt;private that also exists in this list.  New request are added&n; * to the end and may wakeup and preceding readers.&n; * New readers are added to the head.  If, on read, an item is found with&n; * CACHE_UPCALLING clear, we free it from the list.&n; *&n; */
 DECL|variable|queue_lock
 r_static
 id|spinlock_t

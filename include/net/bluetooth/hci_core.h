@@ -1046,6 +1046,7 @@ op_star
 id|conn
 comma
 r_int
+r_int
 id|timeout
 )paren
 (brace
@@ -1131,7 +1132,29 @@ c_func
 op_amp
 id|conn-&gt;refcnt
 )paren
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|conn-&gt;type
+op_eq
+id|SCO_LINK
+)paren
+id|hci_conn_set_timer
+c_func
+(paren
+id|conn
+comma
+id|HZ
+op_div
+l_int|100
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
 id|conn-&gt;out
 )paren
 id|hci_conn_set_timer
@@ -1142,6 +1165,7 @@ comma
 id|HCI_DISCONN_TIMEOUT
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* ----- HCI tasks ----- */
 DECL|function|hci_sched_cmd

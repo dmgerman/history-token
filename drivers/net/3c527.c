@@ -460,7 +460,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|mc32_interrupt
 c_func
 (paren
@@ -4079,7 +4079,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;mc32_interrupt&t;&t;-&t;handle an interrupt from a 3c527&n; *&t;@irq: Interrupt number&n; *&t;@dev_id: 3c527 that requires servicing&n; *&t;@regs: Registers (unused)&n; *&n; *&n; *&t;An interrupt is raised whenever the 3c527 writes to the command&n; *&t;register. This register contains the message it wishes to send us&n; *&t;packed into a single byte field. We keep reading status entries&n; *&t;until we have processed all the control items, but simply count&n; *&t;transmit and receive reports. When all reports are in we empty the&n; *&t;transceiver rings as appropriate. This saves the overhead of&n; *&t;multiple command requests.&n; *&n; *&t;Because MCA is level-triggered, we shouldn&squot;t miss indications.&n; *&t;Therefore, we needn&squot;t ask the card to suspend interrupts within&n; *&t;this handler. The card receives an implicit acknowledgment of the&n; *&t;current interrupt when we read the command register.&n; *&n; */
 DECL|function|mc32_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|mc32_interrupt
 c_func
 (paren
@@ -4147,6 +4147,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|ioaddr
@@ -4488,6 +4489,7 @@ id|dev
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;mc32_close&t;-&t;user configuring the 3c527 down&n; *&t;@dev: 3c527 card to shut down&n; *&n; *&t;The 3c527 is a bus mastering device. We must be careful how we&n; *&t;shut it down. It may also be running shared interrupt so we have&n; *&t;to be sure to silence it properly&n; *&n; *&t;We indicate that the card is closing to the rest of the&n; *&t;driver.  Otherwise, it is possible that the card may run out&n; *&t;of receive buffers and restart the transceiver while we&squot;re&n; *&t;trying to close it.&n; * &n; *&t;We abort any receive and transmits going on and then wait until&n; *&t;any pending exec commands have completed in other code threads.&n; *&t;In theory we can&squot;t get here while that is true, in practice I am&n; *&t;paranoid&n; *&n; *&t;We turn off the interrupt enable for the board to be sure it can&squot;t&n; *&t;intefere with other devices.&n; */

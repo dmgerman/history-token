@@ -1829,7 +1829,7 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Change the sk-&gt;state of a TCP-style socket that has sucessfully&n;&t; * completed a connect() call.&n;&t; */
+multiline_comment|/* Change the sk-&gt;state of a TCP-style socket that has successfully&n;&t; * completed a connect() call.&n;&t; */
 r_if
 c_cond
 (paren

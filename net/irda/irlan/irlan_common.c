@@ -1757,7 +1757,7 @@ r_return
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Check if object has already been registred by a previous provider.&n;&t; * If that is the case, we just change the value of the attribute&n;&t; */
+multiline_comment|/* &n;&t; * Check if object has already been registered by a previous provider.&n;&t; * If that is the case, we just change the value of the attribute&n;&t; */
 r_if
 c_cond
 (paren
@@ -1819,7 +1819,7 @@ id|new_value
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Register PnP object only if not registred before */
+multiline_comment|/* Register PnP object only if not registered before */
 r_if
 c_cond
 (paren
@@ -2961,7 +2961,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlan_get_unicast_addr (self)&n; *&n; *    Retrives the unicast address from the IrLAN provider. This address&n; *    will be inserted into the devices structure, so the ethernet layer&n; *    can construct its packets.&n; *&n; */
+multiline_comment|/*&n; * Function irlan_get_unicast_addr (self)&n; *&n; *    Retrieves the unicast address from the IrLAN provider. This address&n; *    will be inserted into the devices structure, so the ethernet layer&n; *    can construct its packets.&n; *&n; */
 DECL|function|irlan_get_unicast_addr
 r_void
 id|irlan_get_unicast_addr

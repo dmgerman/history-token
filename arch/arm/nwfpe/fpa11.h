@@ -21,6 +21,7 @@ mdefine_line|#define GET_USERREG() (user_registers)
 macro_line|#include &lt;linux/thread_info.h&gt;
 multiline_comment|/* includes */
 macro_line|#include &quot;fpsr.h&quot;&t;&t;/* FP control and status register definitions */
+macro_line|#include &quot;milieu.h&quot;
 macro_line|#include &quot;softfloat.h&quot;
 DECL|macro|typeNone
 mdefine_line|#define&t;&t;typeNone&t;&t;0x00
@@ -36,18 +37,28 @@ r_typedef
 r_union
 id|tagFPREG
 (brace
-DECL|member|fExtended
-id|floatx80
-id|fExtended
+DECL|member|fSingle
+id|float32
+id|fSingle
 suffix:semicolon
 DECL|member|fDouble
 id|float64
 id|fDouble
 suffix:semicolon
-DECL|member|fSingle
-id|float32
-id|fSingle
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
+DECL|member|fExtended
+id|floatx80
+id|fExtended
 suffix:semicolon
+macro_line|#else
+DECL|member|padding
+r_int
+id|padding
+(braket
+l_int|3
+)braket
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|FPREG
 )brace
 id|FPREG
@@ -88,13 +99,13 @@ id|fType
 l_int|8
 )braket
 suffix:semicolon
-multiline_comment|/* type of floating point value held in&n;&t;&t;&t;&t;&t;   floating point registers.  One of none&n;&t;&t;&t;&t;&t;   single, double or extended. */
+multiline_comment|/* type of floating point value held in&n;&t;&t;&t;&t;&t;   floating point registers.  One of&n;&t;&t;&t;&t;&t;   none, single, double or extended. */
 DECL|member|initflag
 multiline_comment|/* 112 */
 r_int
 id|initflag
 suffix:semicolon
-multiline_comment|/* this is special.  The kernel guarantees&n;&t;&t;&t;&t;&t;   to set it to 0 when a thread is launched,&n;&t;&t;&t;&t;&t;   so we can use it to detect whether this&n;&t;&t;&t;&t;&t;   instance of the emulator needs to be&n;&t;&t;&t;&t;&t;   initialised. */
+multiline_comment|/* this is special.  The kernel guarantees&n;&t;&t;&t;&t;   to set it to 0 when a thread is launched,&n;&t;&t;&t;&t;   so we can use it to detect whether this&n;&t;&t;&t;&t;   instance of the emulator needs to be&n;&t;&t;&t;&t;   initialised. */
 DECL|typedef|FPA11
 )brace
 id|FPA11
@@ -121,7 +132,7 @@ r_int
 suffix:semicolon
 r_extern
 r_void
-id|nwfpe_init
+id|nwfpe_init_fpa
 c_func
 (paren
 r_union

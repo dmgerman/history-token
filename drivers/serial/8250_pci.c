@@ -373,6 +373,8 @@ suffix:semicolon
 id|req-&gt;iomap_base
 op_assign
 id|port
+op_plus
+id|offset
 suffix:semicolon
 id|req-&gt;iomem_base
 op_assign
@@ -7942,18 +7944,6 @@ dot
 id|id_table
 op_assign
 id|serial_pci_tbl
-comma
-dot
-id|driver
-op_assign
-(brace
-dot
-id|devclass
-op_assign
-op_amp
-id|tty_devclass
-comma
-)brace
 comma
 )brace
 suffix:semicolon

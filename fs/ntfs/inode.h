@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * inode.h - Defines for inode structures NTFS Linux kernel driver. Part of&n; *&t;     the Linux-NTFS project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; * Copyright (c) 2002 Richard Russon.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * inode.h - Defines for inode structures NTFS Linux kernel driver. Part of&n; *&t;     the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; * Copyright (c) 2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _LINUX_NTFS_INODE_H
 DECL|macro|_LINUX_NTFS_INODE_H
 mdefine_line|#define _LINUX_NTFS_INODE_H
@@ -124,69 +124,60 @@ op_star
 id|bmp_ino
 suffix:semicolon
 multiline_comment|/* Attribute inode for the&n;&t;&t;&t;&t;&t;&t;   directory index $BITMAP. */
-DECL|member|index_block_size
+DECL|member|block_size
 id|u32
-id|index_block_size
+id|block_size
 suffix:semicolon
 multiline_comment|/* Size of an index block. */
-DECL|member|index_vcn_size
+DECL|member|vcn_size
 id|u32
-id|index_vcn_size
+id|vcn_size
 suffix:semicolon
 multiline_comment|/* Size of a vcn in this&n;&t;&t;&t;&t;&t;&t;   directory index. */
-DECL|member|index_block_size_bits
+DECL|member|block_size_bits
 id|u8
-id|index_block_size_bits
+id|block_size_bits
 suffix:semicolon
 multiline_comment|/* Log2 of the above. */
-DECL|member|index_vcn_size_bits
+DECL|member|vcn_size_bits
 id|u8
-id|index_vcn_size_bits
+id|vcn_size_bits
 suffix:semicolon
 multiline_comment|/* Log2 of the above. */
+DECL|member|index
 )brace
-id|SN
-c_func
-(paren
-id|idm
-)paren
+id|index
 suffix:semicolon
 r_struct
 (brace
 multiline_comment|/* It is a compressed file or fake inode. */
-DECL|member|compressed_size
+DECL|member|size
 id|s64
-id|compressed_size
+id|size
 suffix:semicolon
-multiline_comment|/* Copy from $DATA. */
-DECL|member|compression_block_size
+multiline_comment|/* Copy of compressed_size from&n;&t;&t;&t;&t;&t;&t;   $DATA. */
+DECL|member|block_size
 id|u32
-id|compression_block_size
+id|block_size
 suffix:semicolon
-multiline_comment|/* Size of a compression&n;&t;&t;&t;&t;&t;&t;           block (cb). */
-DECL|member|compression_block_size_bits
+multiline_comment|/* Size of a compression block&n;&t;&t;&t;&t;&t;&t;   (cb). */
+DECL|member|block_size_bits
 id|u8
-id|compression_block_size_bits
+id|block_size_bits
 suffix:semicolon
-multiline_comment|/* Log2 of the size of&n;&t;&t;&t;&t;&t;&t;&t;   a cb. */
-DECL|member|compression_block_clusters
+multiline_comment|/* Log2 of the size of a cb. */
+DECL|member|block_clusters
 id|u8
-id|compression_block_clusters
+id|block_clusters
 suffix:semicolon
-multiline_comment|/* Number of clusters&n;&t;&t;&t;&t;&t;&t;&t;   per compression&n;&t;&t;&t;&t;&t;&t;&t;   block. */
+multiline_comment|/* Number of clusters per cb. */
+DECL|member|compressed
 )brace
-id|SN
-c_func
-(paren
-id|icf
-)paren
+id|compressed
 suffix:semicolon
+DECL|member|itype
 )brace
-id|SN
-c_func
-(paren
-id|idc
-)paren
+id|itype
 suffix:semicolon
 DECL|member|extent_lock
 r_struct
@@ -215,21 +206,12 @@ op_star
 id|base_ntfs_ino
 suffix:semicolon
 multiline_comment|/* For nr_extents == -1, the&n;&t;&t;&t;&t;&t;&t;   ntfs inode of the base mft&n;&t;&t;&t;&t;&t;&t;   record. For fake inodes, the&n;&t;&t;&t;&t;&t;&t;   real (base) inode to which&n;&t;&t;&t;&t;&t;&t;   the attribute belongs. */
+DECL|member|ext
 )brace
-id|SN
-c_func
-(paren
-id|ine
-)paren
+id|ext
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|_IDM
-mdefine_line|#define _IDM(X)  SC(idc.idm,X)
-DECL|macro|_ICF
-mdefine_line|#define _ICF(X)  SC(idc.icf,X)
-DECL|macro|_INE
-mdefine_line|#define _INE(X)  SC(ine,X)
 multiline_comment|/*&n; * Defined bits for the state field in the ntfs_inode structure.&n; * (f) = files only, (d) = directories only, (a) = attributes/fake inodes only&n; */
 r_typedef
 r_enum

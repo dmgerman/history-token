@@ -43,7 +43,7 @@ macro_line|#else
 DECL|macro|DBG_PRINTK
 mdefine_line|#define DBG_PRINTK(format, a...)
 macro_line|#endif      
-multiline_comment|/* SECURE SOCKET IMPLEMENTATION &n; * &n; *   TRANSMIT:&n; *&n; *      When the user sends a packet via send() system call&n; *      the wanpipe_sendmsg() function is executed.  &n; *      &n; *      Each packet is enqueud into sk-&gt;write_queue transmit&n; *      queue. When the packet is enqueued, a delayed transmit&n; *      timer is triggerd which acts as a Bottom Half hander. &n; *&n; *      wanpipe_delay_transmit() function (BH), dequeues packets&n; *      from the sk-&gt;write_queue transmit queue and sends it &n; *      to the deriver via dev-&gt;hard_start_xmit(skb, dev) function.  &n; *      Note, this function is actual a function pointer of if_send()&n; *      routine in the wanpipe driver.&n; *&n; *      X25API GUARANTEED DELIVERY:&n; *&n; *         In order to provide 100% guaranteed packet delivery, &n; *         an atomic &squot;packet_sent&squot; counter is implemented.  Counter &n; *         is incremented for each packet enqueued &n; *         into sk-&gt;write_queue.  Counter is decremented each&n; *         time wanpipe_delayed_transmit() function successfuly &n; *         passes the packet to the driver. Before each send(), a poll&n; *         routine checks the sock resources The maximum value of&n; *         packet sent counter is 1, thus if one packet is queued, the&n; *         application will block until that packet is passed to the&n; *         driver.&n; *&n; *   RECEIVE:&n; *&n; *      Wanpipe device drivers call the socket bottom half&n; *      function, wanpipe_rcv() to queue the incoming packets&n; *      into an AF_WANPIPE socket queue.  Based on wanpipe_rcv()&n; *      return code, the driver knows whether the packet was&n; *      sucessfully queued.  If the socket queue is full, &n; *      protocol flow control is used by the driver, if any, &n; *      to slow down the traffic until the sock queue is free.&n; *&n; *      Every time a packet arrives into a socket queue the &n; *      socket wakes up processes which are waiting to receive&n; *      data.&n; *&n; *      If the socket queue is full, the driver sets a block&n; *      bit which signals the socket to kick the wanpipe driver&n; *      bottom half hander when the socket queue is partialy&n; *      empty. wanpipe_recvmsg() function performs this action.&n; * &n; *      In case of x25api, packets will never be dropped, since&n; *      flow control is available. &n; *      &n; *      In case of streaming protocols like CHDLC, packets will &n; *      be dropped but the statistics will be generated. &n; */
+multiline_comment|/* SECURE SOCKET IMPLEMENTATION &n; * &n; *   TRANSMIT:&n; *&n; *      When the user sends a packet via send() system call&n; *      the wanpipe_sendmsg() function is executed.  &n; *      &n; *      Each packet is enqueud into sk-&gt;write_queue transmit&n; *      queue. When the packet is enqueued, a delayed transmit&n; *      timer is triggerd which acts as a Bottom Half hander. &n; *&n; *      wanpipe_delay_transmit() function (BH), dequeues packets&n; *      from the sk-&gt;write_queue transmit queue and sends it &n; *      to the deriver via dev-&gt;hard_start_xmit(skb, dev) function.  &n; *      Note, this function is actual a function pointer of if_send()&n; *      routine in the wanpipe driver.&n; *&n; *      X25API GUARANTEED DELIVERY:&n; *&n; *         In order to provide 100% guaranteed packet delivery, &n; *         an atomic &squot;packet_sent&squot; counter is implemented.  Counter &n; *         is incremented for each packet enqueued &n; *         into sk-&gt;write_queue.  Counter is decremented each&n; *         time wanpipe_delayed_transmit() function successfuly &n; *         passes the packet to the driver. Before each send(), a poll&n; *         routine checks the sock resources The maximum value of&n; *         packet sent counter is 1, thus if one packet is queued, the&n; *         application will block until that packet is passed to the&n; *         driver.&n; *&n; *   RECEIVE:&n; *&n; *      Wanpipe device drivers call the socket bottom half&n; *      function, wanpipe_rcv() to queue the incoming packets&n; *      into an AF_WANPIPE socket queue.  Based on wanpipe_rcv()&n; *      return code, the driver knows whether the packet was&n; *      successfully queued.  If the socket queue is full, &n; *      protocol flow control is used by the driver, if any, &n; *      to slow down the traffic until the sock queue is free.&n; *&n; *      Every time a packet arrives into a socket queue the &n; *      socket wakes up processes which are waiting to receive&n; *      data.&n; *&n; *      If the socket queue is full, the driver sets a block&n; *      bit which signals the socket to kick the wanpipe driver&n; *      bottom half hander when the socket queue is partialy&n; *      empty. wanpipe_recvmsg() function performs this action.&n; * &n; *      In case of x25api, packets will never be dropped, since&n; *      flow control is available. &n; *      &n; *      In case of streaming protocols like CHDLC, packets will &n; *      be dropped but the statistics will be generated. &n; */
 multiline_comment|/* The code below is used to test memory leaks. It prints out&n; * a message every time kmalloc and kfree system calls get executed.&n; * If the calls match there is no leak :)&n; */
 multiline_comment|/***********FOR DEBUGGING PURPOSES*********************************************&n;#define KMEM_SAFETYZONE 8&n;&n;static void * dbg_kmalloc(unsigned int size, int prio, int line) {&n;&t;void * v = kmalloc(size,prio);&n;&t;printk(KERN_INFO &quot;line %d  kmalloc(%d,%d) = %p&bslash;n&quot;,line,size,prio,v);&n;&t;return v;&n;}&n;static void dbg_kfree(void * v, int line) {&n;&t;printk(KERN_INFO &quot;line %d  kfree(%p)&bslash;n&quot;,line,v);&n;&t;kfree(v);&n;}&n;&n;#define kmalloc(x,y) dbg_kmalloc(x,y,__LINE__)&n;#define kfree(x) dbg_kfree(x,__LINE__)&n;******************************************************************************/
 multiline_comment|/* List of all wanpipe sockets. */
@@ -414,7 +414,7 @@ id|sock
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*============================================================&n; * wanpipe_rcv&n; *&n; *&t;Wanpipe socket bottom half handler.  This function&n; *      is called by the WANPIPE device drivers to queue a&n; *      incomming packet into the socket receive queue. &n; *      Once the packet is queued, all processes waiting to &n; *      read are woken up.&n; *&n; *      During socket bind, this function is bounded into&n; *      WANPIPE driver private.&n; *===========================================================*/
+multiline_comment|/*============================================================&n; * wanpipe_rcv&n; *&n; *&t;Wanpipe socket bottom half handler.  This function&n; *      is called by the WANPIPE device drivers to queue a&n; *      incoming packet into the socket receive queue. &n; *      Once the packet is queued, all processes waiting to &n; *      read are woken up.&n; *&n; *      During socket bind, this function is bounded into&n; *      WANPIPE driver private.&n; *===========================================================*/
 DECL|function|wanpipe_rcv
 r_static
 r_int
@@ -615,7 +615,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*============================================================&n; * wanpipe_listen_rcv&n; *&n; *&t;Wanpipe LISTEN socket bottom half handler.  This function&n; *      is called by the WANPIPE device drivers to queue an&n; *      incomming call into the socket listening queue. &n; *      Once the packet is queued, the waiting accept() process &n; *      is woken up.&n; *&n; *      During socket bind, this function is bounded into&n; *      WANPIPE driver private. &n; * &n; *      IMPORTANT NOTE:&n; *          The accept call() is waiting for an skb packet&n; *          which contains a pointer to a device structure.&n; *&n; *          When we do a bind to a device structre, we &n; *          bind a newly created socket into &quot;chan-&gt;sk&quot;.  Thus, &n; *          when accept receives the skb packet, it will know &n; *          from which dev it came form, and in turn it will know&n; *          the address of the new sock.&n; *&n; *  &t;NOTE: This function gets called from driver ISR.&n; *===========================================================*/
+multiline_comment|/*============================================================&n; * wanpipe_listen_rcv&n; *&n; *&t;Wanpipe LISTEN socket bottom half handler.  This function&n; *      is called by the WANPIPE device drivers to queue an&n; *      incoming call into the socket listening queue. &n; *      Once the packet is queued, the waiting accept() process &n; *      is woken up.&n; *&n; *      During socket bind, this function is bounded into&n; *      WANPIPE driver private. &n; * &n; *      IMPORTANT NOTE:&n; *          The accept call() is waiting for an skb packet&n; *          which contains a pointer to a device structure.&n; *&n; *          When we do a bind to a device structre, we &n; *          bind a newly created socket into &quot;chan-&gt;sk&quot;.  Thus, &n; *          when accept receives the skb packet, it will know &n; *          from which dev it came form, and in turn it will know&n; *          the address of the new sock.&n; *&n; *  &t;NOTE: This function gets called from driver ISR.&n; *===========================================================*/
 DECL|function|wanpipe_listen_rcv
 r_static
 r_int
@@ -1263,8 +1263,6 @@ suffix:semicolon
 id|wan_opt-&gt;tx_timer.function
 op_assign
 id|wanpipe_delayed_transmit
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|sock_init_data
 c_func
@@ -2106,7 +2104,7 @@ id|wanpipe_tx_critical
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*============================================================&n; * execute_command &n; *&n; *&t;Execute x25api commands.  The atomic variable&n; *      chan-&gt;command is used to indicate to the driver that&n; *      command is pending for exection.  The acutal command&n; *      structure is placed into a sock mbox structure &n; *      (wp_sk(sk)-&gt;mbox).&n; *&n; *      The sock private structure, mbox is&n; *      used as shared memory between sock and the driver.&n; *      Driver uses the sock mbox to execute the command&n; *      and return the result.  &n; *&n; *      For all command except PLACE CALL, the function&n; *      waits for the result.  PLACE CALL can be ether&n; *      blocking or nonblocking. The user sets this option&n; *      via ioctl call.&n; *===========================================================*/
+multiline_comment|/*============================================================&n; * execute_command &n; *&n; *&t;Execute x25api commands.  The atomic variable&n; *      chan-&gt;command is used to indicate to the driver that&n; *      command is pending for execution.  The acutal command&n; *      structure is placed into a sock mbox structure &n; *      (wp_sk(sk)-&gt;mbox).&n; *&n; *      The sock private structure, mbox is&n; *      used as shared memory between sock and the driver.&n; *      Driver uses the sock mbox to execute the command&n; *      and return the result.  &n; *&n; *      For all command except PLACE CALL, the function&n; *      waits for the result.  PLACE CALL can be ether&n; *      blocking or nonblocking. The user sets this option&n; *      via ioctl call.&n; *===========================================================*/
 DECL|function|execute_command
 r_static
 r_int
@@ -2575,8 +2573,6 @@ c_func
 op_amp
 id|wanpipe_socks_nr
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -3257,8 +3253,6 @@ op_amp
 id|wanpipe_socks_nr
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3557,7 +3551,7 @@ id|sk
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* This functin can be called from interrupt. We must use&n;&t; * appropriate locks */
+multiline_comment|/* This function can be called from interrupt. We must use&n;&t; * appropriate locks */
 r_if
 c_cond
 (paren
@@ -3881,8 +3875,6 @@ op_amp
 id|wanpipe_socks_nr
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3911,7 +3903,7 @@ id|sk
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* This functin can be called from interrupt. We must use&n;&t; * appropriate locks */
+multiline_comment|/* This function can be called from interrupt. We must use&n;&t; * appropriate locks */
 id|write_lock
 c_func
 (paren
@@ -4055,8 +4047,6 @@ op_amp
 id|wanpipe_socks_nr
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4161,10 +4151,6 @@ c_func
 op_amp
 id|wanpipe_socks_nr
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================&n; *  wanpipe_do_bind&n; *&n; * &t;Bottom half of the binding system call.&n; *      Once the wanpipe_bind() function checks  the&n; *      legality of the call, this function binds the&n; *      sock to the driver.&n; *===========================================================*/
@@ -9173,6 +9159,11 @@ dot
 id|create
 op_assign
 id|wanpipe_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon

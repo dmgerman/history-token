@@ -265,7 +265,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ewrk3_interrupt
 c_func
 (paren
@@ -3280,7 +3280,7 @@ suffix:semicolon
 multiline_comment|/*&n;   ** The EWRK3 interrupt handler.&n; */
 DECL|function|ewrk3_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ewrk3_interrupt
 c_func
 (paren
@@ -3480,6 +3480,9 @@ c_func
 op_amp
 id|lp-&gt;hw_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Called with lp-&gt;hw_lock held */

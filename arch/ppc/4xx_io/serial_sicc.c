@@ -1056,7 +1056,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-macro_line|#ifdef SUPPORT_SYSRQ
 DECL|function|siccuart_rx_chars
 id|siccuart_rx_chars
 c_func
@@ -1071,16 +1070,6 @@ id|pt_regs
 op_star
 id|regs
 )paren
-macro_line|#else
-id|siccuart_rx_chars
-c_func
-(paren
-r_struct
-id|SICC_info
-op_star
-id|info
-)paren
-macro_line|#endif
 (brace
 r_struct
 id|tty_struct
@@ -1653,7 +1642,7 @@ suffix:semicolon
 )brace
 DECL|function|siccuart_int_rx
 r_static
-r_void
+id|irqreturn_t
 id|siccuart_int_rx
 c_func
 (paren
@@ -1677,7 +1666,6 @@ id|info
 op_assign
 id|dev_id
 suffix:semicolon
-macro_line|#ifdef SUPPORT_SYSRQ
 id|siccuart_rx_chars
 c_func
 (paren
@@ -1686,19 +1674,13 @@ comma
 id|regs
 )paren
 suffix:semicolon
-macro_line|#else
-id|siccuart_rx_chars
-c_func
-(paren
-id|info
-)paren
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
-macro_line|#endif
-singleline_comment|//powerpcClearUicsrBits(0x00000400);
 )brace
 DECL|function|siccuart_int_tx
 r_static
-r_void
+id|irqreturn_t
 id|siccuart_int_tx
 c_func
 (paren
@@ -1727,6 +1709,9 @@ c_func
 (paren
 id|info
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|siccuart_tasklet_action

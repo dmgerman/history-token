@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/cpufeature.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -1509,8 +1510,114 @@ suffix:semicolon
 )brace
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;rep_nop()
+multiline_comment|/* generic versions from gas */
+DECL|macro|GENERIC_NOP1
+mdefine_line|#define GENERIC_NOP1&t;&quot;.byte 0x90&bslash;n&quot;
+DECL|macro|GENERIC_NOP2
+mdefine_line|#define GENERIC_NOP2    &t;&quot;.byte 0x89,0xf6&bslash;n&quot;
+DECL|macro|GENERIC_NOP3
+mdefine_line|#define GENERIC_NOP3        &quot;.byte 0x8d,0x76,0x00&bslash;n&quot;
+DECL|macro|GENERIC_NOP4
+mdefine_line|#define GENERIC_NOP4        &quot;.byte 0x8d,0x74,0x26,0x00&bslash;n&quot;
+DECL|macro|GENERIC_NOP5
+mdefine_line|#define GENERIC_NOP5        GENERIC_NOP1 GENERIC_NOP4
+DECL|macro|GENERIC_NOP6
+mdefine_line|#define GENERIC_NOP6&t;&quot;.byte 0x8d,0xb6,0x00,0x00,0x00,0x00&bslash;n&quot;
+DECL|macro|GENERIC_NOP7
+mdefine_line|#define GENERIC_NOP7&t;&quot;.byte 0x8d,0xb4,0x26,0x00,0x00,0x00,0x00&bslash;n&quot;
+DECL|macro|GENERIC_NOP8
+mdefine_line|#define GENERIC_NOP8&t;GENERIC_NOP1 GENERIC_NOP7
+multiline_comment|/* Opteron nops */
+DECL|macro|K8_NOP1
+mdefine_line|#define K8_NOP1 GENERIC_NOP1
+DECL|macro|K8_NOP2
+mdefine_line|#define K8_NOP2&t;&quot;.byte 0x66,0x90&bslash;n&quot; 
+DECL|macro|K8_NOP3
+mdefine_line|#define K8_NOP3&t;&quot;.byte 0x66,0x66,0x90&bslash;n&quot; 
+DECL|macro|K8_NOP4
+mdefine_line|#define K8_NOP4&t;&quot;.byte 0x66,0x66,0x66,0x90&bslash;n&quot; 
+DECL|macro|K8_NOP5
+mdefine_line|#define K8_NOP5&t;K8_NOP3 K8_NOP2 
+DECL|macro|K8_NOP6
+mdefine_line|#define K8_NOP6&t;K8_NOP3 K8_NOP3
+DECL|macro|K8_NOP7
+mdefine_line|#define K8_NOP7&t;K8_NOP4 K8_NOP3
+DECL|macro|K8_NOP8
+mdefine_line|#define K8_NOP8&t;K8_NOP4 K8_NOP4
+multiline_comment|/* K7 nops */
+multiline_comment|/* uses eax dependencies (arbitary choice) */
+DECL|macro|K7_NOP1
+mdefine_line|#define K7_NOP1  GENERIC_NOP1
+DECL|macro|K7_NOP2
+mdefine_line|#define K7_NOP2&t;&quot;.byte 0x8b,0xc0&bslash;n&quot; 
+DECL|macro|K7_NOP3
+mdefine_line|#define K7_NOP3&t;&quot;.byte 0x8d,0x04,0x20&bslash;n&quot;
+DECL|macro|K7_NOP4
+mdefine_line|#define K7_NOP4&t;&quot;.byte 0x8d,0x44,0x20,0x00&bslash;n&quot;
+DECL|macro|K7_NOP5
+mdefine_line|#define K7_NOP5&t;K7_NOP4 ASM_NOP1
+DECL|macro|K7_NOP6
+mdefine_line|#define K7_NOP6&t;&quot;.byte 0x8d,0x80,0,0,0,0&bslash;n&quot;
+DECL|macro|K7_NOP7
+mdefine_line|#define K7_NOP7        &quot;.byte 0x8D,0x04,0x05,0,0,0,0&bslash;n&quot;
+DECL|macro|K7_NOP8
+mdefine_line|#define K7_NOP8        K7_NOP7 ASM_NOP1
+macro_line|#ifdef CONFIG_MK8
+DECL|macro|ASM_NOP1
+mdefine_line|#define ASM_NOP1 K8_NOP1
+DECL|macro|ASM_NOP2
+mdefine_line|#define ASM_NOP2 K8_NOP2
+DECL|macro|ASM_NOP3
+mdefine_line|#define ASM_NOP3 K8_NOP3
+DECL|macro|ASM_NOP4
+mdefine_line|#define ASM_NOP4 K8_NOP4
+DECL|macro|ASM_NOP5
+mdefine_line|#define ASM_NOP5 K8_NOP5
+DECL|macro|ASM_NOP6
+mdefine_line|#define ASM_NOP6 K8_NOP6
+DECL|macro|ASM_NOP7
+mdefine_line|#define ASM_NOP7 K8_NOP7
+DECL|macro|ASM_NOP8
+mdefine_line|#define ASM_NOP8 K8_NOP8
+macro_line|#elif CONFIG_MK7
+DECL|macro|ASM_NOP1
+mdefine_line|#define ASM_NOP1 K7_NOP1
+DECL|macro|ASM_NOP2
+mdefine_line|#define ASM_NOP2 K7_NOP2
+DECL|macro|ASM_NOP3
+mdefine_line|#define ASM_NOP3 K7_NOP3
+DECL|macro|ASM_NOP4
+mdefine_line|#define ASM_NOP4 K7_NOP4
+DECL|macro|ASM_NOP5
+mdefine_line|#define ASM_NOP5 K7_NOP5
+DECL|macro|ASM_NOP6
+mdefine_line|#define ASM_NOP6 K7_NOP6
+DECL|macro|ASM_NOP7
+mdefine_line|#define ASM_NOP7 K7_NOP7
+DECL|macro|ASM_NOP8
+mdefine_line|#define ASM_NOP8 K7_NOP8
+macro_line|#else
+DECL|macro|ASM_NOP1
+mdefine_line|#define ASM_NOP1 GENERIC_NOP1
+DECL|macro|ASM_NOP2
+mdefine_line|#define ASM_NOP2 GENERIC_NOP2
+DECL|macro|ASM_NOP3
+mdefine_line|#define ASM_NOP3 GENERIC_NOP3
+DECL|macro|ASM_NOP4
+mdefine_line|#define ASM_NOP4 GENERIC_NOP4
+DECL|macro|ASM_NOP5
+mdefine_line|#define ASM_NOP5 GENERIC_NOP5
+DECL|macro|ASM_NOP6
+mdefine_line|#define ASM_NOP6 GENERIC_NOP6
+DECL|macro|ASM_NOP7
+mdefine_line|#define ASM_NOP7 GENERIC_NOP7
+DECL|macro|ASM_NOP8
+mdefine_line|#define ASM_NOP8 GENERIC_NOP8
+macro_line|#endif
+DECL|macro|ASM_NOP_MAX
+mdefine_line|#define ASM_NOP_MAX 8
 multiline_comment|/* Prefetch instructions for Pentium III and AMD Athlon */
-macro_line|#ifdef &t;CONFIG_X86_PREFETCH
+multiline_comment|/* It&squot;s not worth to care about 3dnow! prefetches for the K6&n;   because they are microcoded there and very slow. */
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|function|prefetch
@@ -1526,12 +1633,15 @@ op_star
 id|x
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|alternative_input
+c_func
 (paren
-l_string|&quot;prefetchnta (%0)&quot;
-suffix:colon
-suffix:colon
+id|ASM_NOP3
+comma
+l_string|&quot;prefetchnta (%1)&quot;
+comma
+id|X86_FEATURE_XMM
+comma
 l_string|&quot;r&quot;
 (paren
 id|x
@@ -1539,39 +1649,13 @@ id|x
 )paren
 suffix:semicolon
 )brace
-macro_line|#elif defined CONFIG_X86_USE_3DNOW
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCHW
 mdefine_line|#define ARCH_HAS_PREFETCHW
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
 mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
-DECL|function|prefetch
-r_extern
-r_inline
-r_void
-id|prefetch
-c_func
-(paren
-r_const
-r_void
-op_star
-id|x
-)paren
-(brace
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;prefetch (%0)&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|x
-)paren
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* 3dnow! prefetch to get an exclusive cache line. Useful for &n;   spinlocks to avoid one state transition in the cache coherency protocol. */
 DECL|function|prefetchw
 r_extern
 r_inline
@@ -1585,12 +1669,15 @@ op_star
 id|x
 )paren
 (brace
-id|__asm__
-id|__volatile__
+id|alternative_input
+c_func
 (paren
-l_string|&quot;prefetchw (%0)&quot;
-suffix:colon
-suffix:colon
+id|ASM_NOP3
+comma
+l_string|&quot;prefetchw (%1)&quot;
+comma
+id|X86_FEATURE_3DNOW
+comma
 l_string|&quot;r&quot;
 (paren
 id|x
@@ -1600,6 +1687,5 @@ suffix:semicolon
 )brace
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
-macro_line|#endif
 macro_line|#endif /* __ASM_I386_PROCESSOR_H */
 eof

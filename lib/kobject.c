@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * kobject.c - library routines for handling generic kernel objects&n; */
+multiline_comment|/*&n; * kobject.c - library routines for handling generic kernel objects&n; *&n; * Copyright (c) 2002-2003 Patrick Mochel &lt;mochel@osdl.org&gt;&n; *&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
+multiline_comment|/* This lock can be removed entirely when the sysfs_init() code is cleaned up&n; * to not try to reference itself before it is initialized. */
 DECL|variable|kobj_lock
 r_static
 id|spinlock_t
@@ -1339,11 +1340,17 @@ id|ret
 op_assign
 id|kobj
 suffix:semicolon
-id|spin_lock
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|kobj_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1372,11 +1379,13 @@ id|ret
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|kobj_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -1460,10 +1469,19 @@ op_star
 id|kobj
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|atomic_dec_and_lock
 c_func
 (paren
@@ -1474,13 +1492,14 @@ op_amp
 id|kobj_lock
 )paren
 )paren
-r_return
-suffix:semicolon
-id|spin_unlock
+(brace
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|kobj_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|kobject_cleanup
@@ -1489,6 +1508,16 @@ c_func
 id|kobj
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; *&t;kset_init - initialize a kset for use&n; *&t;@k:&t;kset &n; */
 DECL|function|kset_init

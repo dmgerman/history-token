@@ -35,11 +35,11 @@ macro_line|#endif
 multiline_comment|/* Exported from arch/ppc/kernel/idle.c */
 r_extern
 r_int
-id|powersave_nap
+id|powersave_lowspeed
 suffix:semicolon
 r_extern
 r_int
-id|powersave_lowspeed
+id|powersave_nap
 suffix:semicolon
 multiline_comment|/*&n; * We use a single global lock to protect accesses. Each driver has&n; * to take care of its own locking&n; */
 DECL|variable|__pmacdata
@@ -9346,6 +9346,19 @@ comma
 )brace
 comma
 (brace
+l_string|&quot;RackMac1,2&quot;
+comma
+l_string|&quot;XServe rev. 2&quot;
+comma
+id|PMAC_TYPE_RACKMAC
+comma
+id|rackmac_features
+comma
+l_int|0
+comma
+)brace
+comma
+(brace
 l_string|&quot;PowerMac3,6&quot;
 comma
 l_string|&quot;PowerMac G4 Windtunnel&quot;
@@ -9355,6 +9368,36 @@ comma
 id|rackmac_features
 comma
 l_int|0
+comma
+)brace
+comma
+(brace
+l_string|&quot;PowerBook5,1&quot;
+comma
+l_string|&quot;PowerBook G4 17&bslash;&quot;&quot;
+comma
+id|PMAC_TYPE_UNKNOWN_INTREPID
+comma
+id|intrepid_features
+comma
+id|PMAC_MB_HAS_FW_POWER
+op_or
+id|PMAC_MB_MOBILE
+comma
+)brace
+comma
+(brace
+l_string|&quot;PowerBook6,1&quot;
+comma
+l_string|&quot;PowerBook G4 12&bslash;&quot;&quot;
+comma
+id|PMAC_TYPE_UNKNOWN_INTREPID
+comma
+id|intrepid_features
+comma
+id|PMAC_MB_HAS_FW_POWER
+op_or
+id|PMAC_MB_MOBILE
 comma
 )brace
 comma
@@ -9850,11 +9893,11 @@ id|macio_intrepid
 suffix:colon
 id|pmac_mb.model_id
 op_assign
-id|PMAC_TYPE_UNKNOWN_PANGEA
+id|PMAC_TYPE_UNKNOWN_INTREPID
 suffix:semicolon
 id|pmac_mb.model_name
 op_assign
-l_string|&quot;Unknown Pangea-based&quot;
+l_string|&quot;Unknown Intrepid-based&quot;
 suffix:semicolon
 id|pmac_mb.features
 op_assign

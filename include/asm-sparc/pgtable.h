@@ -21,6 +21,9 @@ macro_line|#ifndef __ASSEMBLY__
 r_struct
 id|vm_area_struct
 suffix:semicolon
+r_struct
+id|page
+suffix:semicolon
 r_extern
 r_void
 id|load_mmu
@@ -150,20 +153,22 @@ DECL|macro|mmu_release_scsi_one
 mdefine_line|#define mmu_release_scsi_one(vaddr,len,sbus) BTFIXUP_CALL(mmu_release_scsi_one)(vaddr,len,sbus)
 DECL|macro|mmu_release_scsi_sgl
 mdefine_line|#define mmu_release_scsi_sgl(sg,sz,sbus) BTFIXUP_CALL(mmu_release_scsi_sgl)(sg,sz,sbus)
-multiline_comment|/*&n; * mmu_map/unmap are provided by iommu/iounit; Invalid to call on IIep.&n; */
+multiline_comment|/*&n; * mmu_map/unmap are provided by iommu/iounit; Invalid to call on IIep.&n; *&n; * The mmu_map_dma_area establishes two mappings in one go.&n; * These mappings point to pages normally mapped at &squot;va&squot; (linear address).&n; * First mapping is for CPU visible address at &squot;a&squot;, uncached.&n; * This is an alias, but it works because it is an uncached mapping.&n; * Second mapping is for device visible address, or &quot;bus&quot; address.&n; * The bus address is returned at &squot;*pba&squot;.&n; *&n; * These functions seem distinct, but are hard to split. On sun4c,&n; * at least for now, &squot;a&squot; is equal to bus address, and retured in *pba.&n; * On sun4m, page attributes depend on the CPU type, so we have to&n; * know if we are mapping RAM or I/O, so it has to be an additional argument&n; * to a separate mapping function for CPU visible mappings.&n; */
 id|BTFIXUPDEF_CALL
 c_func
 (paren
-r_void
+r_int
 comma
 id|mmu_map_dma_area
 comma
-r_int
-r_int
-id|va
+id|dma_addr_t
+op_star
 comma
-id|__u32
-id|addr
+r_int
+r_int
+comma
+r_int
+r_int
 comma
 r_int
 id|len
@@ -171,9 +176,9 @@ id|len
 id|BTFIXUPDEF_CALL
 c_func
 (paren
-r_int
-r_int
-multiline_comment|/*phys*/
+r_struct
+id|page
+op_star
 comma
 id|mmu_translate_dvma
 comma
@@ -196,11 +201,12 @@ r_int
 id|len
 )paren
 DECL|macro|mmu_map_dma_area
-mdefine_line|#define mmu_map_dma_area(va, ba,len) BTFIXUP_CALL(mmu_map_dma_area)(va,ba,len)
+mdefine_line|#define mmu_map_dma_area(pba,va,a,len) BTFIXUP_CALL(mmu_map_dma_area)(pba,va,a,len)
 DECL|macro|mmu_unmap_dma_area
 mdefine_line|#define mmu_unmap_dma_area(ba,len) BTFIXUP_CALL(mmu_unmap_dma_area)(ba,len)
 DECL|macro|mmu_translate_dvma
 mdefine_line|#define mmu_translate_dvma(ba)     BTFIXUP_CALL(mmu_translate_dvma)(ba)
+multiline_comment|/*&n; */
 id|BTFIXUPDEF_SIMM13
 c_func
 (paren
@@ -1355,6 +1361,42 @@ id|pte_t
 )paren
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma,addr,pte) BTFIXUP_CALL(update_mmu_cache)(vma,addr,pte)
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+r_void
+comma
+id|sparc_mapiorange
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+id|BTFIXUPDEF_CALL
+c_func
+(paren
+r_void
+comma
+id|sparc_unmapiorange
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+DECL|macro|sparc_mapiorange
+mdefine_line|#define sparc_mapiorange(bus,pa,va,len) BTFIXUP_CALL(sparc_mapiorange)(bus,pa,va,len)
+DECL|macro|sparc_unmapiorange
+mdefine_line|#define sparc_unmapiorange(va,len) BTFIXUP_CALL(sparc_unmapiorange)(va,len)
 r_extern
 r_int
 id|invalid_segment

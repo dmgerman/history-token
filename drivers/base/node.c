@@ -5,26 +5,11 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
 macro_line|#include &lt;asm/topology.h&gt;
-DECL|function|node_add_device
+DECL|variable|node_class
 r_static
-r_int
-id|node_add_device
-c_func
-(paren
 r_struct
-id|device
-op_star
-id|dev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|node_devclass
-r_struct
-id|device_class
-id|node_devclass
+r_class
+id|node_class
 op_assign
 (brace
 dot
@@ -32,14 +17,10 @@ id|name
 op_assign
 l_string|&quot;node&quot;
 comma
-dot
-id|add_device
-op_assign
-id|node_add_device
-comma
 )brace
 suffix:semicolon
 DECL|variable|node_driver
+r_static
 r_struct
 id|device_driver
 id|node_driver
@@ -55,12 +36,6 @@ id|bus
 op_assign
 op_amp
 id|system_bus_type
-comma
-dot
-id|devclass
-op_assign
-op_amp
-id|node_devclass
 comma
 )brace
 suffix:semicolon
@@ -396,11 +371,11 @@ id|error
 suffix:semicolon
 id|error
 op_assign
-id|devclass_register
+id|class_register
 c_func
 (paren
 op_amp
-id|node_devclass
+id|node_class
 )paren
 suffix:semicolon
 r_if
@@ -424,11 +399,11 @@ c_cond
 (paren
 id|error
 )paren
-id|devclass_unregister
+id|class_unregister
 c_func
 (paren
 op_amp
-id|node_devclass
+id|node_class
 )paren
 suffix:semicolon
 )brace

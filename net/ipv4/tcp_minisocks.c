@@ -15,8 +15,6 @@ macro_line|#endif
 DECL|variable|sysctl_tcp_tw_recycle
 r_int
 id|sysctl_tcp_tw_recycle
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|sysctl_tcp_max_tw_buckets
 r_int
@@ -35,8 +33,6 @@ suffix:semicolon
 DECL|variable|sysctl_tcp_abort_on_overflow
 r_int
 id|sysctl_tcp_abort_on_overflow
-op_assign
-l_int|0
 suffix:semicolon
 DECL|function|tcp_in_window
 r_static
@@ -106,8 +102,6 @@ multiline_comment|/* New-style handling of TIME_WAIT sockets. */
 DECL|variable|tcp_tw_count
 r_int
 id|tcp_tw_count
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Must be called with locally disabled BHs. */
 DECL|function|tcp_timewait_kill

@@ -29,6 +29,8 @@ DECL|macro|__GFP_NOFAIL
 mdefine_line|#define __GFP_NOFAIL&t;0x800&t;/* Retry for ever.  Cannot fail */
 DECL|macro|__GFP_NORETRY
 mdefine_line|#define __GFP_NORETRY&t;0x1000&t;/* Do not retry.  Might fail */
+DECL|macro|__GFP_NO_GROW
+mdefine_line|#define __GFP_NO_GROW&t;0x2000&t;/* Slab internal usage */
 DECL|macro|GFP_ATOMIC
 mdefine_line|#define GFP_ATOMIC&t;(__GFP_HIGH)
 DECL|macro|GFP_NOIO

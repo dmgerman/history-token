@@ -934,7 +934,7 @@ DECL|macro|r128_flush_write_combine
 mdefine_line|#define r128_flush_write_combine()&t;(void) GET_RING_HEAD( &amp;dev_priv-&gt;ring )
 macro_line|#else
 DECL|macro|r128_flush_write_combine
-mdefine_line|#define r128_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER(dev_priv-&gt;ring_rptr)
+mdefine_line|#define r128_flush_write_combine()&t;DRM_WRITEMEMORYBARRIER()
 macro_line|#endif
 DECL|macro|R128_VERBOSE
 mdefine_line|#define R128_VERBOSE&t;0

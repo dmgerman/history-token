@@ -40,6 +40,9 @@ DECL|macro|__HAVE_COUNTER9
 mdefine_line|#define __HAVE_COUNTER9&t;&t;_DRM_STAT_SPECIAL
 DECL|macro|__HAVE_COUNTER10
 mdefine_line|#define __HAVE_COUNTER10&t;_DRM_STAT_MISSED
+multiline_comment|/* Driver customization:&n; */
+DECL|macro|DRIVER_PRETAKEDOWN
+mdefine_line|#define DRIVER_PRETAKEDOWN() do {&t;&t;&t;&t;&t;&bslash;&n;&t;gamma_do_cleanup_dma( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* DMA customization:&n; */
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;&t;1
