@@ -137,6 +137,9 @@ DECL|macro|__node_to_memblk
 macro_line|# define __node_to_memblk(node)&t;&t;(node)
 DECL|macro|__memblk_to_node
 macro_line|# define __memblk_to_node(memblk)&t;(memblk)
+multiline_comment|/* Cross-node load balancing interval. */
+DECL|macro|NODE_BALANCE_RATE
+macro_line|# define NODE_BALANCE_RATE 10
 macro_line|#else /* CONFIG_NUMA */
 macro_line|# include &lt;asm-generic/topology.h&gt;
 macro_line|#endif /* !CONFIG_NUMA */
