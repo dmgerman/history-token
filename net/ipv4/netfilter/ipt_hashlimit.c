@@ -319,8 +319,6 @@ r_struct
 id|dsthash_ent
 op_star
 id|ent
-op_assign
-l_int|NULL
 suffix:semicolon
 r_struct
 id|hlist_node
@@ -380,12 +378,13 @@ id|dst
 )paren
 )paren
 (brace
-r_break
+r_return
+id|ent
 suffix:semicolon
 )brace
 )brace
 r_return
-id|ent
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* allocate dsthash_ent, initialize dst, put in htable and lock it */
