@@ -2065,6 +2065,14 @@ DECL|macro|GPIO79_nCS_3
 mdefine_line|#define GPIO79_nCS_3&t;&t;79&t;/* chip select 3 */
 DECL|macro|GPIO80_nCS_4
 mdefine_line|#define GPIO80_nCS_4&t;&t;80&t;/* chip select 4 */
+DECL|macro|GPIO81_NSCLK
+mdefine_line|#define GPIO81_NSCLK&t;&t;81&t;/* NSSP clock */
+DECL|macro|GPIO82_NSFRM
+mdefine_line|#define GPIO82_NSFRM&t;&t;82&t;/* NSSP Frame */
+DECL|macro|GPIO83_NSTXD
+mdefine_line|#define GPIO83_NSTXD&t;&t;83&t;/* NSSP transmit */
+DECL|macro|GPIO84_NSRXD
+mdefine_line|#define GPIO84_NSRXD&t;&t;84&t;/* NSSP receive */
 DECL|macro|GPIO85_nPCE_1
 mdefine_line|#define GPIO85_nPCE_1&t;&t;85&t;/* Card Enable for Card Space (PXA27x) */
 DECL|macro|GPIO92_MMCDAT0
@@ -2298,6 +2306,22 @@ DECL|macro|GPIO79_pSKTSEL_MD
 mdefine_line|#define GPIO79_pSKTSEL_MD&t;(79 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO80_nCS_4_MD
 mdefine_line|#define GPIO80_nCS_4_MD&t;&t;(80 | GPIO_ALT_FN_2_OUT)
+DECL|macro|GPIO81_NSSP_CLK_OUT
+mdefine_line|#define GPIO81_NSSP_CLK_OUT &t;(81 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO81_NSSP_CLK_IN
+mdefine_line|#define GPIO81_NSSP_CLK_IN  &t;(81 | GPIO_ALT_FN_1_IN)
+DECL|macro|GPIO82_NSSP_FRM_OUT
+mdefine_line|#define GPIO82_NSSP_FRM_OUT &t;(82 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO82_NSSP_FRM_IN
+mdefine_line|#define GPIO82_NSSP_FRM_IN  &t;(82 | GPIO_ALT_FN_1_IN)
+DECL|macro|GPIO83_NSSP_TX
+mdefine_line|#define GPIO83_NSSP_TX      &t;(83 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO83_NSSP_RX
+mdefine_line|#define GPIO83_NSSP_RX      &t;(83 | GPIO_ALT_FN_2_IN)
+DECL|macro|GPIO84_NSSP_TX
+mdefine_line|#define GPIO84_NSSP_TX      &t;(84 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO84_NSSP_RX
+mdefine_line|#define GPIO84_NSSP_RX      &t;(84 | GPIO_ALT_FN_2_IN)
 DECL|macro|GPIO85_nPCE_1_MD
 mdefine_line|#define GPIO85_nPCE_1_MD&t;(85 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO92_MMCDAT0_MD
