@@ -6042,6 +6042,8 @@ r_void
 r_int
 r_int
 id|tmp
+comma
+id|orig_cache_decay_ticks
 suffix:semicolon
 r_int
 id|cpu
@@ -6106,6 +6108,14 @@ id|migration_mask
 op_assign
 id|tmp
 suffix:semicolon
+id|orig_cache_decay_ticks
+op_assign
+id|cache_decay_ticks
+suffix:semicolon
+id|cache_decay_ticks
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -6158,6 +6168,10 @@ id|BUG
 c_func
 (paren
 )paren
+suffix:semicolon
+id|cache_decay_ticks
+op_assign
+id|orig_cache_decay_ticks
 suffix:semicolon
 )brace
 macro_line|#endif
