@@ -433,10 +433,10 @@ id|spinlock_t
 op_star
 id|host_lock
 suffix:semicolon
-DECL|member|eh_cmd_list
+DECL|member|eh_cmd_q
 r_struct
 id|list_head
-id|eh_cmd_list
+id|eh_cmd_q
 suffix:semicolon
 DECL|member|ehandler
 r_struct

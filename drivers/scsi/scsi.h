@@ -1921,12 +1921,12 @@ id|list_head
 id|list
 suffix:semicolon
 multiline_comment|/* scsi_cmnd participates in queue lists */
-DECL|member|eh_list
+DECL|member|eh_entry
 r_struct
 id|list_head
-id|eh_list
+id|eh_entry
 suffix:semicolon
-multiline_comment|/* Used to place us on the host eh list */
+multiline_comment|/* entry for the host eh_cmd_q */
 DECL|member|eh_state
 r_int
 id|eh_state
@@ -2185,6 +2185,8 @@ DECL|macro|SCSI_MLQUEUE_HOST_BUSY
 mdefine_line|#define SCSI_MLQUEUE_HOST_BUSY   0x1055
 DECL|macro|SCSI_MLQUEUE_DEVICE_BUSY
 mdefine_line|#define SCSI_MLQUEUE_DEVICE_BUSY 0x1056
+DECL|macro|SCSI_MLQUEUE_EH_RETRY
+mdefine_line|#define SCSI_MLQUEUE_EH_RETRY    0x1057
 multiline_comment|/*&n; * old style reset request from external source&n; * (private to sg.c and scsi_error.c, supplied by scsi_obsolete.c)&n; */
 DECL|macro|SCSI_TRY_RESET_DEVICE
 mdefine_line|#define SCSI_TRY_RESET_DEVICE&t;1

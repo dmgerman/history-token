@@ -103,10 +103,10 @@ id|list_add_tail
 c_func
 (paren
 op_amp
-id|scmd-&gt;eh_list
+id|scmd-&gt;eh_entry
 comma
 op_amp
-id|shost-&gt;eh_cmd_list
+id|shost-&gt;eh_cmd_q
 )paren
 suffix:semicolon
 id|shost-&gt;in_recovery
@@ -416,7 +416,7 @@ id|sdev-&gt;online
 suffix:semicolon
 )brace
 macro_line|#if CONFIG_SCSI_LOGGING
-multiline_comment|/**&n; * scsi_eh_prt_fail_stats - Log info on failures.&n; * @sc_list:&t;List for failed cmds.&n; * @shost:&t;scsi host being recovered.&n; **/
+multiline_comment|/**&n; * scsi_eh_prt_fail_stats - Log info on failures.&n; * @shost:&t;scsi host being recovered.&n; * @work_q:&t;Queue of scsi cmds to process.&n; **/
 DECL|function|scsi_eh_prt_fail_stats
 r_static
 r_inline
@@ -428,6 +428,11 @@ r_struct
 id|Scsi_Host
 op_star
 id|shost
+comma
+r_struct
+id|list_head
+op_star
+id|work_q
 )paren
 (brace
 r_struct
@@ -476,10 +481,9 @@ c_func
 (paren
 id|scmd
 comma
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 comma
-id|eh_list
+id|eh_entry
 )paren
 (brace
 r_if
@@ -1670,7 +1674,7 @@ r_return
 id|rtn
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_eh_finish_cmd - Handle a cmd that eh is finished with.&n; * @scmd:&t;Original SCSI cmd that eh has finished.&n; * @shost:&t;SCSI host that cmd originally failed on.&n; * @done_list:&t;list_head for processed commands.&n; *&n; * Notes:&n; *    We don&squot;t want to use the normal command completion while we are are&n; *    still handling errors - it may cause other commands to be queued,&n; *    and that would disturb what we are doing.  thus we really want to&n; *    keep a list of pending commands for final completion, and once we&n; *    are ready to leave error handling we handle completion for real.&n; **/
+multiline_comment|/**&n; * scsi_eh_finish_cmd - Handle a cmd that eh is finished with.&n; * @scmd:&t;Original SCSI cmd that eh has finished.&n; * @done_q:&t;Queue for processed commands.&n; *&n; * Notes:&n; *    We don&squot;t want to use the normal command completion while we are are&n; *    still handling errors - it may cause other commands to be queued,&n; *    and that would disturb what we are doing.  thus we really want to&n; *    keep a list of pending commands for final completion, and once we&n; *    are ready to leave error handling we handle completion for real.&n; **/
 DECL|function|scsi_eh_finish_cmd
 r_static
 r_void
@@ -1682,17 +1686,12 @@ op_star
 id|scmd
 comma
 r_struct
-id|Scsi_Host
-op_star
-id|shost
-comma
-r_struct
 id|list_head
 op_star
-id|done_list
+id|done_q
 )paren
 (brace
-id|shost-&gt;host_failed
+id|scmd-&gt;device-&gt;host-&gt;host_failed
 op_decrement
 suffix:semicolon
 id|scmd-&gt;state
@@ -1716,13 +1715,13 @@ id|list_move_tail
 c_func
 (paren
 op_amp
-id|scmd-&gt;eh_list
+id|scmd-&gt;eh_entry
 comma
-id|done_list
+id|done_q
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_eh_get_sense - Get device sense data.&n; * @shost:&t;scsi host being recovered.&n; * @done_list:&t;list_head for processed commands.&n; *&n; * Description:&n; *    See if we need to request sense information.  if so, then get it&n; *    now, so we have a better idea of what to do.  &n; *&n; *&n; * Notes:&n; *    This has the unfortunate side effect that if a shost adapter does&n; *    not automatically request sense information, that we end up shutting&n; *    it down before we request it.  All shosts should be doing this&n; *    anyways, so for now all I have to say is tough noogies if you end up&n; *    in here.  On second thought, this is probably a good idea.  We&n; *    *really* want to give authors an incentive to automatically request&n; *    this.&n; *&n; *    In 2.5 this capability will be going away.&n; **/
+multiline_comment|/**&n; * scsi_eh_get_sense - Get device sense data.&n; * @work_q:&t;Queue of commands to process.&n; * @done_q:&t;Queue of proccessed commands..&n; *&n; * Description:&n; *    See if we need to request sense information.  if so, then get it&n; *    now, so we have a better idea of what to do.  &n; *&n; *&n; * Notes:&n; *    This has the unfortunate side effect that if a shost adapter does&n; *    not automatically request sense information, that we end up shutting&n; *    it down before we request it.  All shosts should be doing this&n; *    anyways, so for now all I have to say is tough noogies if you end up&n; *    in here.  On second thought, this is probably a good idea.  We&n; *    *really* want to give authors an incentive to automatically request&n; *    this.&n; *&n; *    In 2.5 this capability will be going away.&n; **/
 DECL|function|scsi_eh_get_sense
 r_static
 r_int
@@ -1730,14 +1729,14 @@ id|scsi_eh_get_sense
 c_func
 (paren
 r_struct
-id|Scsi_Host
+id|list_head
 op_star
-id|shost
+id|work_q
 comma
 r_struct
 id|list_head
 op_star
-id|done_list
+id|done_q
 )paren
 (brace
 r_int
@@ -1762,8 +1761,7 @@ id|lh
 comma
 id|lh_sf
 comma
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 (brace
 id|scmd
@@ -1776,7 +1774,7 @@ comma
 r_struct
 id|scsi_cmnd
 comma
-id|eh_list
+id|eh_entry
 )paren
 suffix:semicolon
 r_if
@@ -1884,9 +1882,7 @@ c_func
 (paren
 id|scmd
 comma
-id|shost
-comma
-id|done_list
+id|done_q
 )paren
 suffix:semicolon
 r_if
@@ -1926,9 +1922,7 @@ c_func
 (paren
 id|scmd
 comma
-id|shost
-comma
-id|done_list
+id|done_q
 )paren
 suffix:semicolon
 )brace
@@ -1936,8 +1930,7 @@ r_return
 id|list_empty
 c_func
 (paren
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 suffix:semicolon
 )brace
@@ -2200,7 +2193,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_eh_abort_cmds - abort canceled commands.&n; * @shost:&t;scsi host being recovered.&n; * @done_list:&t;list_head for processed commands.&n; *&n; * Decription:&n; *    Try and see whether or not it makes sense to try and abort the&n; *    running command.  this only works out to be the case if we have one&n; *    command that has timed out.  if the command simply failed, it makes&n; *    no sense to try and abort the command, since as far as the shost&n; *    adapter is concerned, it isn&squot;t running.&n; **/
+multiline_comment|/**&n; * scsi_eh_abort_cmds - abort canceled commands.&n; * @shost:&t;scsi host being recovered.&n; * @eh_done_q:&t;list_head for processed commands.&n; *&n; * Decription:&n; *    Try and see whether or not it makes sense to try and abort the&n; *    running command.  this only works out to be the case if we have one&n; *    command that has timed out.  if the command simply failed, it makes&n; *    no sense to try and abort the command, since as far as the shost&n; *    adapter is concerned, it isn&squot;t running.&n; **/
 DECL|function|scsi_eh_abort_cmds
 r_static
 r_int
@@ -2208,14 +2201,14 @@ id|scsi_eh_abort_cmds
 c_func
 (paren
 r_struct
-id|Scsi_Host
+id|list_head
 op_star
-id|shost
+id|work_q
 comma
 r_struct
 id|list_head
 op_star
-id|done_list
+id|done_q
 )paren
 (brace
 r_int
@@ -2241,8 +2234,7 @@ id|lh
 comma
 id|lh_sf
 comma
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 (brace
 id|scmd
@@ -2255,7 +2247,7 @@ comma
 r_struct
 id|scsi_cmnd
 comma
-id|eh_list
+id|eh_entry
 )paren
 suffix:semicolon
 r_if
@@ -2332,9 +2324,7 @@ c_func
 (paren
 id|scmd
 comma
-id|shost
-comma
-id|done_list
+id|done_q
 )paren
 suffix:semicolon
 )brace
@@ -2363,8 +2353,7 @@ r_return
 id|list_empty
 c_func
 (paren
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 suffix:semicolon
 )brace
@@ -2452,7 +2441,7 @@ r_return
 id|rtn
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_eh_bus_device_reset - send bdr if needed&n; * @shost:&t;scsi host being recovered.&n; * @done_list:&t;list_head for processed commands.&n; *&n; * Notes:&n; *    Try a bus device reset.  still, look to see whether we have multiple&n; *    devices that are jammed or not - if we have multiple devices, it&n; *    makes no sense to try bus_device_reset - we really would need to try&n; *    a bus_reset instead. &n; **/
+multiline_comment|/**&n; * scsi_eh_bus_device_reset - send bdr if needed&n; * @shost:&t;scsi host being recovered.&n; * @eh_done_q:&t;list_head for processed commands.&n; *&n; * Notes:&n; *    Try a bus device reset.  still, look to see whether we have multiple&n; *    devices that are jammed or not - if we have multiple devices, it&n; *    makes no sense to try bus_device_reset - we really would need to try&n; *    a bus_reset instead. &n; **/
 DECL|function|scsi_eh_bus_device_reset
 r_static
 r_int
@@ -2467,7 +2456,12 @@ comma
 r_struct
 id|list_head
 op_star
-id|done_list
+id|work_q
+comma
+r_struct
+id|list_head
+op_star
+id|done_q
 )paren
 (brace
 r_int
@@ -2514,10 +2508,9 @@ c_func
 (paren
 id|scmd
 comma
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 comma
-id|eh_list
+id|eh_entry
 )paren
 r_if
 c_cond
@@ -2596,8 +2589,7 @@ id|lh
 comma
 id|lh_sf
 comma
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 (brace
 id|scmd
@@ -2610,7 +2602,7 @@ comma
 r_struct
 id|scsi_cmnd
 comma
-id|eh_list
+id|eh_entry
 )paren
 suffix:semicolon
 r_if
@@ -2625,9 +2617,7 @@ c_func
 (paren
 id|scmd
 comma
-id|shost
-comma
-id|done_list
+id|done_q
 )paren
 suffix:semicolon
 )brace
@@ -2659,8 +2649,7 @@ r_return
 id|list_empty
 c_func
 (paren
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 suffix:semicolon
 )brace
@@ -2920,7 +2909,7 @@ r_return
 id|rtn
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_eh_bus_reset - send a bus reset &n; * @shost:&t;scsi host being recovered.&n; * @done_list:&t;list_head for processed commands.&n; **/
+multiline_comment|/**&n; * scsi_eh_bus_reset - send a bus reset &n; * @shost:&t;scsi host being recovered.&n; * @eh_done_q:&t;list_head for processed commands.&n; **/
 DECL|function|scsi_eh_bus_reset
 r_static
 r_int
@@ -2935,7 +2924,12 @@ comma
 r_struct
 id|list_head
 op_star
-id|done_list
+id|work_q
+comma
+r_struct
+id|list_head
+op_star
+id|done_q
 )paren
 (brace
 r_int
@@ -2986,10 +2980,9 @@ c_func
 (paren
 id|scmd
 comma
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 comma
-id|eh_list
+id|eh_entry
 )paren
 (brace
 r_if
@@ -3057,8 +3050,7 @@ id|lh
 comma
 id|lh_sf
 comma
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 (brace
 id|scmd
@@ -3071,7 +3063,7 @@ comma
 r_struct
 id|scsi_cmnd
 comma
-id|eh_list
+id|eh_entry
 )paren
 suffix:semicolon
 r_if
@@ -3099,9 +3091,7 @@ c_func
 (paren
 id|scmd
 comma
-id|shost
-comma
-id|done_list
+id|done_q
 )paren
 suffix:semicolon
 )brace
@@ -3131,12 +3121,11 @@ r_return
 id|list_empty
 c_func
 (paren
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_eh_host_reset - send a host reset &n; * @shost:&t;scsi host being recovered.&n; * @done_list:&t;list_head for processed commands.&n; **/
+multiline_comment|/**&n; * scsi_eh_host_reset - send a host reset &n; * @work_q:&t;list_head for processed commands.&n; * @done_q:&t;list_head for processed commands.&n; **/
 DECL|function|scsi_eh_host_reset
 r_static
 r_int
@@ -3144,14 +3133,14 @@ id|scsi_eh_host_reset
 c_func
 (paren
 r_struct
-id|Scsi_Host
+id|list_head
 op_star
-id|shost
+id|work_q
 comma
 r_struct
 id|list_head
 op_star
-id|done_list
+id|done_q
 )paren
 (brace
 r_int
@@ -3176,8 +3165,7 @@ op_logical_neg
 id|list_empty
 c_func
 (paren
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 )paren
 (brace
@@ -3186,12 +3174,12 @@ op_assign
 id|list_entry
 c_func
 (paren
-id|shost-&gt;eh_cmd_list.next
+id|work_q-&gt;next
 comma
 r_struct
 id|scsi_cmnd
 comma
-id|eh_list
+id|eh_entry
 )paren
 suffix:semicolon
 id|SCSI_LOG_ERROR_RECOVERY
@@ -3231,8 +3219,7 @@ id|lh
 comma
 id|lh_sf
 comma
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 (brace
 id|scmd
@@ -3245,7 +3232,7 @@ comma
 r_struct
 id|scsi_cmnd
 comma
-id|eh_list
+id|eh_entry
 )paren
 suffix:semicolon
 r_if
@@ -3266,9 +3253,7 @@ c_func
 (paren
 id|scmd
 comma
-id|shost
-comma
-id|done_list
+id|done_q
 )paren
 suffix:semicolon
 )brace
@@ -3296,12 +3281,11 @@ r_return
 id|list_empty
 c_func
 (paren
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_eh_offline_sdevs - offline scsi devices that fail to recover&n; * @shost:&t;scsi host being recovered.&n; * @done_list:&t;list_head for processed commands.&n; *&n; **/
+multiline_comment|/**&n; * scsi_eh_offline_sdevs - offline scsi devices that fail to recover&n; * @work_q:&t;list_head for processed commands.&n; * @done_q:&t;list_head for processed commands.&n; *&n; **/
 DECL|function|scsi_eh_offline_sdevs
 r_static
 r_void
@@ -3309,14 +3293,14 @@ id|scsi_eh_offline_sdevs
 c_func
 (paren
 r_struct
-id|Scsi_Host
+id|list_head
 op_star
-id|shost
+id|work_q
 comma
 r_struct
 id|list_head
 op_star
-id|done_list
+id|done_q
 )paren
 (brace
 r_struct
@@ -3338,8 +3322,7 @@ id|lh
 comma
 id|lh_sf
 comma
-op_amp
-id|shost-&gt;eh_cmd_list
+id|work_q
 )paren
 (brace
 id|scmd
@@ -3352,7 +3335,7 @@ comma
 r_struct
 id|scsi_cmnd
 comma
-id|eh_list
+id|eh_entry
 )paren
 suffix:semicolon
 id|printk
@@ -3363,7 +3346,7 @@ l_string|&quot;scsi: Device offlined - not&quot;
 l_string|&quot; ready after error recovery: host&quot;
 l_string|&quot; %d channel %d id %d lun %d&bslash;n&quot;
 comma
-id|shost-&gt;host_no
+id|scmd-&gt;device-&gt;host-&gt;host_no
 comma
 id|scmd-&gt;device-&gt;channel
 comma
@@ -3395,9 +3378,7 @@ c_func
 (paren
 id|scmd
 comma
-id|shost
-comma
-id|done_list
+id|done_q
 )paren
 suffix:semicolon
 )brace
@@ -4058,10 +4039,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|shost-&gt;in_recovery
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; * If the door was locked, we need to insert a door lock request&n;&t; * onto the head of the SCSI request queue for the device.  There&n;&t; * is no point trying to lock the door of an off-line device.&n;&t; */
 id|list_for_each_entry
 c_func
@@ -4100,6 +4077,10 @@ comma
 id|__FUNCTION__
 )paren
 )paren
+suffix:semicolon
+id|shost-&gt;in_recovery
+op_assign
+l_int|0
 suffix:semicolon
 id|wake_up
 c_func
@@ -4171,7 +4152,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_eh_ready_devs - check device ready state and recover if not.&n; * @shost: &t;host to be recovered.&n; * @done_list:&t;list_head for processed commands.&n; *&n; **/
+multiline_comment|/**&n; * scsi_eh_ready_devs - check device ready state and recover if not.&n; * @shost: &t;host to be recovered.&n; * @eh_done_q:&t;list_head for processed commands.&n; *&n; **/
 DECL|function|scsi_eh_ready_devs
 r_static
 r_void
@@ -4186,7 +4167,12 @@ comma
 r_struct
 id|list_head
 op_star
-id|done_list
+id|work_q
+comma
+r_struct
+id|list_head
+op_star
+id|done_q
 )paren
 (brace
 r_if
@@ -4197,7 +4183,9 @@ c_func
 (paren
 id|shost
 comma
-id|done_list
+id|work_q
+comma
+id|done_q
 )paren
 )paren
 r_if
@@ -4208,7 +4196,9 @@ c_func
 (paren
 id|shost
 comma
-id|done_list
+id|work_q
+comma
+id|done_q
 )paren
 )paren
 r_if
@@ -4217,36 +4207,31 @@ c_cond
 id|scsi_eh_host_reset
 c_func
 (paren
-id|shost
+id|work_q
 comma
-id|done_list
+id|done_q
 )paren
 )paren
 id|scsi_eh_offline_sdevs
 c_func
 (paren
-id|shost
+id|work_q
 comma
-id|done_list
+id|done_q
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_eh_flush_done_list - finish processed commands or retry them.&n; * @shost: &t;host to be recovered.&n; * @done_list:&t;list_head of processed commands.&n; *&n; **/
-DECL|function|scsi_eh_flush_done_list
+multiline_comment|/**&n; * scsi_eh_flush_done_q - finish processed commands or retry them.&n; * @done_q:&t;list_head of processed commands.&n; *&n; **/
+DECL|function|scsi_eh_flush_done_q
 r_static
 r_void
-id|scsi_eh_flush_done_list
+id|scsi_eh_flush_done_q
 c_func
 (paren
 r_struct
-id|Scsi_Host
-op_star
-id|shost
-comma
-r_struct
 id|list_head
 op_star
-id|done_list
+id|done_q
 )paren
 (brace
 r_struct
@@ -4268,7 +4253,7 @@ id|lh
 comma
 id|lh_sf
 comma
-id|done_list
+id|done_q
 )paren
 (brace
 id|scmd
@@ -4281,7 +4266,7 @@ comma
 r_struct
 id|scsi_cmnd
 comma
-id|eh_list
+id|eh_entry
 )paren
 suffix:semicolon
 id|list_del_init
@@ -4334,10 +4319,12 @@ id|scmd
 )paren
 )paren
 suffix:semicolon
-id|scsi_retry_command
+id|scsi_queue_insert
 c_func
 (paren
 id|scmd
+comma
+id|SCSI_MLQUEUE_EH_RETRY
 )paren
 suffix:semicolon
 r_continue
@@ -4382,10 +4369,46 @@ op_star
 id|shost
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|LIST_HEAD
 c_func
 (paren
-id|done_list
+id|eh_work_q
+)paren
+suffix:semicolon
+id|LIST_HEAD
+c_func
+(paren
+id|eh_done_q
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|list_splice_init
+c_func
+(paren
+op_amp
+id|shost-&gt;eh_cmd_q
+comma
+op_amp
+id|eh_work_q
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|SCSI_LOG_ERROR_RECOVERY
@@ -4397,6 +4420,9 @@ id|scsi_eh_prt_fail_stats
 c_func
 (paren
 id|shost
+comma
+op_amp
+id|eh_work_q
 )paren
 )paren
 suffix:semicolon
@@ -4407,10 +4433,11 @@ op_logical_neg
 id|scsi_eh_get_sense
 c_func
 (paren
-id|shost
+op_amp
+id|eh_work_q
 comma
 op_amp
-id|done_list
+id|eh_done_q
 )paren
 )paren
 r_if
@@ -4420,10 +4447,11 @@ op_logical_neg
 id|scsi_eh_abort_cmds
 c_func
 (paren
-id|shost
+op_amp
+id|eh_work_q
 comma
 op_amp
-id|done_list
+id|eh_done_q
 )paren
 )paren
 id|scsi_eh_ready_devs
@@ -4432,16 +4460,17 @@ c_func
 id|shost
 comma
 op_amp
-id|done_list
-)paren
-suffix:semicolon
-id|scsi_eh_flush_done_list
-c_func
-(paren
-id|shost
+id|eh_work_q
 comma
 op_amp
-id|done_list
+id|eh_done_q
+)paren
+suffix:semicolon
+id|scsi_eh_flush_done_q
+c_func
+(paren
+op_amp
+id|eh_done_q
 )paren
 suffix:semicolon
 )brace

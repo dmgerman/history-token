@@ -1208,7 +1208,7 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-id|shost-&gt;eh_cmd_list
+id|shost-&gt;eh_cmd_q
 )paren
 suffix:semicolon
 id|init_waitqueue_head
@@ -1886,6 +1886,8 @@ r_if
 c_cond
 (paren
 id|shost-&gt;in_recovery
+op_logical_and
+id|shost-&gt;host_failed
 op_logical_and
 (paren
 id|shost-&gt;host_busy
