@@ -2,7 +2,7 @@ multiline_comment|/*&n; * include/asm-arm/arch-ixp2000/ixp2000-regs.h&n; *&n; * 
 macro_line|#ifndef _IXP2000_REGS_H_
 DECL|macro|_IXP2000_REGS_H_
 mdefine_line|#define _IXP2000_REGS_H_
-multiline_comment|/* &n; * Static I/O regions.&n; *&n; * Most of the registers are clumped in 4K regions spread throughout&n; * the 0xc000000 -&gt; 0xc0100000 address range, but we just map in&n; * the whole range using a single 1 MB section instead of small&n; * 4K pages.  This has two advantages for us:&n; *&n; * 1) We use only one TLB entry for large number of on-chip I/O devices.&n; *&n; * 2) We can easily set the Section attributes to XCB=101 on the IXP2400&n; *    as required per erratum #66.&n; *&n; * CAP stands for CSR Access Proxy&n; */
+multiline_comment|/* &n; * Static I/O regions.&n; *&n; * Most of the registers are clumped in 4K regions spread throughout&n; * the 0xc000000 -&gt; 0xc0100000 address range, but we just map in&n; * the whole range using a single 1 MB section instead of small&n; * 4K pages.  This has two advantages for us:&n; *&n; * 1) We use only one TLB entry for large number of on-chip I/O devices.&n; *&n; * 2) We can easily set the Section attributes to XCB=101 on the IXP2400&n; *    as required per erratum #66.  We accomplish this by using a&n; *    new MT_IXP2000_DEVICE memory type with the bits set as required.&n; *&n; * CAP stands for CSR Access Proxy&n; */
 DECL|macro|IXP2000_CAP_PHYS_BASE
 mdefine_line|#define&t;IXP2000_CAP_PHYS_BASE&t;&t;0xc0000000
 DECL|macro|IXP2000_CAP_VIRT_BASE
