@@ -1752,7 +1752,7 @@ id|dev-&gt;active
 r_goto
 id|done
 suffix:semicolon
-id|pnp_init_resources
+id|pnp_init_resource_table
 c_func
 (paren
 op_amp
@@ -1794,7 +1794,7 @@ id|dev-&gt;active
 r_goto
 id|done
 suffix:semicolon
-id|pnp_init_resources
+id|pnp_init_resource_table
 c_func
 (paren
 op_amp
@@ -1902,7 +1902,7 @@ id|buf
 op_add_assign
 l_int|3
 suffix:semicolon
-id|pnp_init_resources
+id|pnp_init_resource_table
 c_func
 (paren
 op_amp
