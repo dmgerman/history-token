@@ -226,7 +226,7 @@ mdefine_line|#define preempt_disable() &bslash;&n;do { &bslash;&n;&t;++current_t
 DECL|macro|preempt_enable_no_resched
 mdefine_line|#define preempt_enable_no_resched() &bslash;&n;do { &bslash;&n;&t;--current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;} while (0)
 DECL|macro|preempt_enable
-mdefine_line|#define preempt_enable() &bslash;&n;do { &bslash;&n;&t;--current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;&t;if (unlikely(!(current_thread_info()-&gt;preempt_count) &amp;&amp; &bslash;&n;&t;&t;test_thread_flag(TIF_NEED_RESCHED))) &bslash;&n;&t;&t;&t;preempt_schedule(); &bslash;&n;} while (0)
+mdefine_line|#define preempt_enable() &bslash;&n;do { &bslash;&n;&t;--current_thread_info()-&gt;preempt_count; &bslash;&n;&t;barrier(); &bslash;&n;&t;if (unlikely(test_thread_flag(TIF_NEED_RESCHED))) &bslash;&n;&t;&t;preempt_schedule(); &bslash;&n;} while (0)
 DECL|macro|spin_lock
 mdefine_line|#define spin_lock(lock)&t;&bslash;&n;do { &bslash;&n;&t;preempt_disable(); &bslash;&n;&t;_raw_spin_lock(lock); &bslash;&n;} while(0)
 DECL|macro|spin_trylock
