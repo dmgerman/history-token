@@ -305,7 +305,7 @@ r_return
 id|sp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called for each inode shareowner in nfs_clear_inode, &n; * or if nfs4_do_open fails.&n; */
+multiline_comment|/*&n; * Called for each non-null inode shareowner in nfs_clear_inode, &n; * or if nfs4_do_open fails.&n; */
 r_void
 DECL|function|nfs4_put_shareowner
 id|nfs4_put_shareowner
@@ -329,6 +329,21 @@ op_logical_neg
 id|sp
 )paren
 r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sp-&gt;so_flags
+op_amp
+id|O_ACCMODE
+)paren
+id|nfs4_do_close
+c_func
+(paren
+id|inode
+comma
+id|sp
+)paren
 suffix:semicolon
 id|kfree
 c_func

@@ -1482,6 +1482,22 @@ op_star
 id|server
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|nfs4_do_close
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_struct
+id|nfs4_shareowner
+op_star
+id|sp
+)paren
+suffix:semicolon
 multiline_comment|/* nfs4renewd.c */
 r_extern
 r_int

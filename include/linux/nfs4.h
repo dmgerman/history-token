@@ -561,6 +561,9 @@ comma
 DECL|enumerator|NFSPROC4_CLNT_OPEN_CONFIRM
 id|NFSPROC4_CLNT_OPEN_CONFIRM
 comma
+DECL|enumerator|NFSPROC4_CLNT_CLOSE
+id|NFSPROC4_CLNT_CLOSE
+comma
 )brace
 suffix:semicolon
 macro_line|#endif

@@ -472,6 +472,41 @@ id|stateid
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Arguments to the close call.&n; */
+DECL|struct|nfs_closeargs
+r_struct
+id|nfs_closeargs
+(brace
+DECL|member|fh
+r_struct
+id|nfs_fh
+op_star
+id|fh
+suffix:semicolon
+DECL|member|stateid
+id|nfs4_stateid
+id|stateid
+suffix:semicolon
+DECL|member|seqid
+id|__u32
+id|seqid
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|nfs_closeres
+r_struct
+id|nfs_closeres
+(brace
+DECL|member|status
+id|__u32
+id|status
+suffix:semicolon
+DECL|member|stateid
+id|nfs4_stateid
+id|stateid
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Arguments to the read call.&n; */
 DECL|macro|NFS_READ_MAXIOV
 mdefine_line|#define NFS_READ_MAXIOV&t;&t;(9U)
