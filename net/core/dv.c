@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Generic frame diversion&n; *&n; * Version:&t;@(#)eth.c&t;0.41&t;09/09/2000&n; *&n; * Authors:&t;&n; * &t;&t;Benoit LOCHER:&t;initial integration within the kernel with support for ethernet&n; * &t;&t;Dave Miller:&t;improvement on the code (correctness, performance and source files)&n; *&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Generic frame diversion&n; *&n; * Authors:&t;&n; * &t;&t;Benoit LOCHER:&t;initial integration within the kernel with support for ethernet&n; * &t;&t;Dave Miller:&t;improvement on the code (correctness, performance and source files)&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
