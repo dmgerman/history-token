@@ -1766,7 +1766,7 @@ OG
 id|MAX_TOPO_LEVEL
 )paren
 r_return
-id|total_written
+l_int|0
 suffix:semicolon
 multiline_comment|/* allocate 2^1 pages = 8K (on i386); should be more than enough for one device */
 r_if
@@ -2053,19 +2053,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|total_written
-op_eq
-l_int|0
-)paren
 r_return
 op_minus
 id|EFAULT
-suffix:semicolon
-r_return
-id|total_written
 suffix:semicolon
 )brace
 op_star

@@ -6250,7 +6250,7 @@ suffix:semicolon
 multiline_comment|/* root hub enters addressed state... */
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 id|root-&gt;speed
 op_assign
@@ -6263,7 +6263,7 @@ c_cond
 (paren
 id|retval
 op_assign
-id|hcd_register_root
+id|usb_hcd_register_root_hub
 (paren
 id|root
 comma
@@ -6336,7 +6336,7 @@ id|root
 suffix:semicolon
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_QUIESCING
+id|HC_STATE_QUIESCING
 suffix:semicolon
 r_return
 id|retval

@@ -19,7 +19,7 @@ r_char
 op_star
 id|s
 comma
-id|u16
+id|__le16
 op_star
 id|cp
 comma
@@ -428,7 +428,7 @@ c_func
 id|s-&gt;s
 comma
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 op_amp

@@ -61,7 +61,7 @@ multiline_comment|/* stop schedules, clean any completed work */
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -75,7 +75,7 @@ id|ehci
 suffix:semicolon
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_QUIESCING
+id|HC_STATE_QUIESCING
 suffix:semicolon
 )brace
 id|ehci-&gt;command
@@ -220,7 +220,7 @@ id|ehci
 suffix:semicolon
 id|hcd-&gt;state
 op_assign
-id|HCD_STATE_SUSPENDED
+id|HC_STATE_SUSPENDED
 suffix:semicolon
 id|ehci-&gt;next_statechange
 op_assign
@@ -578,7 +578,7 @@ l_int|5
 suffix:semicolon
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 multiline_comment|/* Now we can safely re-enable irqs */
 r_if
@@ -784,7 +784,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/* Defines */
 multiline_comment|/*&n; * Version Information&n; */
@@ -1149,31 +1150,21 @@ r_int
 id|flags
 )paren
 (brace
-id|wait_queue_t
-id|wait
-suffix:semicolon
-id|init_waitqueue_entry
+id|DEFINE_WAIT
 c_func
 (paren
-op_amp
 id|wait
-comma
-id|current
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|add_wait_queue
+id|prepare_to_wait
 c_func
 (paren
 id|q
 comma
 op_amp
 id|wait
+comma
+id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -1192,7 +1183,7 @@ c_func
 id|timeout
 )paren
 suffix:semicolon
-id|remove_wait_queue
+id|finish_wait
 c_func
 (paren
 id|q
@@ -5195,6 +5186,12 @@ op_star
 id|filp
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -5551,13 +5548,32 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* wait for final commands on oob port to complete */
-id|interruptible_sleep_on_timeout
+id|prepare_to_wait
 c_func
 (paren
 op_amp
 id|priv-&gt;dp_flush_wait
 comma
+op_amp
+id|wait
+comma
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|DIGI_CLOSE_TIMEOUT
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|priv-&gt;dp_flush_wait
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 multiline_comment|/* shutdown any outstanding bulk writes */
@@ -7231,7 +7247,7 @@ op_eq
 id|DIGI_CMD_IFLUSH_FIFO
 )paren
 (brace
-id|wake_up_interruptible
+id|wake_up
 c_func
 (paren
 op_amp

@@ -3,6 +3,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
@@ -36,9 +39,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_USB_STORAGE_JUMPSHOT
 macro_line|#include &quot;jumpshot.h&quot;
 macro_line|#endif
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/* Some informational data */
 id|MODULE_AUTHOR
 c_func
@@ -84,6 +84,25 @@ c_func
 id|delay_use
 comma
 l_string|&quot;seconds to delay before using a new device&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* These are used to make sure the module doesn&squot;t unload before all the&n; * threads have exited.&n; */
+DECL|variable|total_threads
+r_static
+id|atomic_t
+id|total_threads
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_static
+id|DECLARE_COMPLETION
+c_func
+(paren
+id|threads_gone
 )paren
 suffix:semicolon
 r_static
@@ -604,6 +623,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|usb_storage_driver
+r_static
 r_struct
 id|usb_driver
 id|usb_storage_driver
@@ -863,7 +883,11 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -884,6 +908,13 @@ suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
+)paren
+suffix:semicolon
+multiline_comment|/* acquire a reference to the host, so it won&squot;t be deallocated&n;&t; * until we&squot;re ready to exit */
+id|scsi_host_get
+c_func
+(paren
+id|host
 )paren
 suffix:semicolon
 multiline_comment|/* signal that we&squot;ve started the thread */
@@ -939,19 +970,24 @@ id|us-&gt;dev_semaphore
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* if us-&gt;srb is NULL, we are being asked to exit */
+multiline_comment|/* if the device has disconnected, we are free to exit */
 r_if
 c_cond
 (paren
-id|us-&gt;srb
-op_eq
-l_int|NULL
+id|test_bit
+c_func
+(paren
+id|US_FLIDX_DISCONNECTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
 )paren
 (brace
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;-- exit command received&bslash;n&quot;
+l_string|&quot;-- exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up
@@ -995,30 +1031,6 @@ l_int|16
 suffix:semicolon
 r_goto
 id|SkipForAbort
-suffix:semicolon
-)brace
-multiline_comment|/* don&squot;t do anything if we are disconnecting */
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|US_FLIDX_DISCONNECTING
-comma
-op_amp
-id|us-&gt;flags
-)paren
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;No command during disconnect&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|SkipForDisconnect
 suffix:semicolon
 )brace
 id|scsi_unlock
@@ -1267,8 +1279,6 @@ id|us-&gt;notify
 )paren
 suffix:semicolon
 multiline_comment|/* finished working on this command */
-id|SkipForDisconnect
-suffix:colon
 id|us-&gt;srb
 op_assign
 l_int|NULL
@@ -1291,14 +1301,18 @@ id|us-&gt;dev_semaphore
 suffix:semicolon
 )brace
 multiline_comment|/* for (;;) */
+id|scsi_host_put
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 multiline_comment|/* notify the exit routine that we&squot;re actually exiting now &n;&t; *&n;&t; * complete()/wait_for_completion() is similar to up()/down(),&n;&t; * except that complete() is safe in the case where the structure&n;&t; * is getting deleted in a parallel mode of execution (i.e. just&n;&t; * after the down() -- that&squot;s necessary for the thread-shutdown&n;&t; * case.&n;&t; *&n;&t; * complete_and_exit() goes even further than this -- it is safe in&n;&t; * the case that the thread of the caller is going away (not just&n;&t; * the structure) -- this is necessary for the module-remove case.&n;&t; * This is important in preemption kernels, which transfer the flow&n;&t; * of execution immediately upon a complete().&n;&t; */
 id|complete_and_exit
 c_func
 (paren
 op_amp
-(paren
-id|us-&gt;notify
-)paren
+id|threads_gone
 comma
 l_int|0
 )paren
@@ -2446,53 +2460,6 @@ op_amp
 id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since this is a new device, we need to register a SCSI&n;&t; * host definition with the higher SCSI layers.&n;&t; */
-id|us-&gt;host
-op_assign
-id|scsi_host_alloc
-c_func
-(paren
-op_amp
-id|usb_stor_host_template
-comma
-r_sizeof
-(paren
-id|us
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|us-&gt;host
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|USB_STORAGE
-l_string|&quot;Unable to allocate the scsi host&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EBUSY
-suffix:semicolon
-)brace
-multiline_comment|/* Set the hostdata to prepare for scanning */
-id|us-&gt;host-&gt;hostdata
-(braket
-l_int|0
-)braket
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|us
-suffix:semicolon
 multiline_comment|/* Start up our control thread */
 id|p
 op_assign
@@ -2530,6 +2497,13 @@ id|us-&gt;pid
 op_assign
 id|p
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|total_threads
+)paren
+suffix:semicolon
 multiline_comment|/* Wait for the thread to start */
 id|wait_for_completion
 c_func
@@ -2546,6 +2520,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Release all our dynamic resources */
 DECL|function|usb_stor_release_resources
+r_static
 r_void
 id|usb_stor_release_resources
 c_func
@@ -2564,49 +2539,11 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* Kill the control thread.  The SCSI host must already have been&n;&t; * removed so it won&squot;t try to queue any more commands.&n;&t; */
-r_if
-c_cond
-(paren
-id|us-&gt;pid
-)paren
-(brace
-multiline_comment|/* Wait for the thread to be idle */
-id|down
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
-)paren
-suffix:semicolon
+multiline_comment|/* Tell the control thread to exit.  The SCSI host must&n;&t; * already have been removed so it won&squot;t try to queue&n;&t; * any more commands.&n;&t; */
 id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;-- sending exit command to thread&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* If the SCSI midlayer queued a final command just before&n;&t;&t; * scsi_remove_host() was called, us-&gt;srb might not be&n;&t;&t; * NULL.  We can overwrite it safely, because the midlayer&n;&t;&t; * will not wait for the command to finish.  Also the&n;&t;&t; * control thread will already have been awakened.&n;&t;&t; * That&squot;s okay, an extra up() on us-&gt;sema won&squot;t hurt.&n;&t;&t; *&n;&t;&t; * Enqueue the command, wake up the thread, and wait for &n;&t;&t; * notification that it has exited.&n;&t;&t; */
-id|scsi_lock
-c_func
-(paren
-id|us-&gt;host
-)paren
-suffix:semicolon
-id|us-&gt;srb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|us-&gt;host
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|us-&gt;dev_semaphore
 )paren
 suffix:semicolon
 id|up
@@ -2616,14 +2553,6 @@ op_amp
 id|us-&gt;sema
 )paren
 suffix:semicolon
-id|wait_for_completion
-c_func
-(paren
-op_amp
-id|us-&gt;notify
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Call the destructor routine, if it exists */
 r_if
 c_cond
@@ -2646,35 +2575,13 @@ id|us-&gt;extra
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Finish the host removal sequence */
-r_if
-c_cond
-(paren
-id|us-&gt;host
-)paren
-id|scsi_host_put
-c_func
-(paren
-id|us-&gt;host
-)paren
-suffix:semicolon
 multiline_comment|/* Free the extra data and the URB */
-r_if
-c_cond
-(paren
-id|us-&gt;extra
-)paren
 id|kfree
 c_func
 (paren
 id|us-&gt;extra
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|us-&gt;current_urb
-)paren
 id|usb_free_urb
 c_func
 (paren
@@ -2751,13 +2658,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* Free the structure itself */
-id|kfree
-c_func
-(paren
-id|us
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Thread to carry out delayed SCSI-device scanning */
 DECL|function|usb_stor_scan_thread
@@ -2800,6 +2700,27 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Acquire a reference to the host, so it won&squot;t be deallocated&n;&t; * until we&squot;re ready to exit */
+id|scsi_host_get
+c_func
+(paren
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Signal that we&squot;ve started the thread */
+id|complete
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;notify
+)paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2831,7 +2752,7 @@ suffix:colon
 id|wait_event_interruptible_timeout
 c_func
 (paren
-id|us-&gt;scsi_scan_wait
+id|us-&gt;delay_wait
 comma
 id|test_bit
 c_func
@@ -2884,7 +2805,11 @@ id|us-&gt;flags
 id|scsi_scan_host
 c_func
 (paren
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 id|printk
@@ -2894,12 +2819,23 @@ id|KERN_DEBUG
 l_string|&quot;usb-storage: device scan complete&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Should we unbind if no devices were detected? */
 )brace
+id|scsi_host_put
+c_func
+(paren
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
+)paren
+suffix:semicolon
 id|complete_and_exit
 c_func
 (paren
 op_amp
-id|us-&gt;scsi_scan_done
+id|threads_gone
 comma
 l_int|0
 )paren
@@ -2925,6 +2861,11 @@ id|id
 )paren
 (brace
 r_struct
+id|Scsi_Host
+op_star
+id|host
+suffix:semicolon
+r_struct
 id|us_data
 op_star
 id|us
@@ -2946,31 +2887,27 @@ c_func
 l_string|&quot;USB Mass Storage device detected&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Allocate the us_data structure and initialize the mutexes */
-id|us
+multiline_comment|/*&n;&t; * Ask the SCSI layer to allocate a host structure, with extra&n;&t; * space at the end for our private us_data structure.&n;&t; */
+id|host
 op_assign
-(paren
-r_struct
-id|us_data
-op_star
-)paren
-id|kmalloc
+id|scsi_host_alloc
 c_func
 (paren
+op_amp
+id|usb_stor_host_template
+comma
 r_sizeof
 (paren
 op_star
 id|us
 )paren
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|us
+id|host
 )paren
 (brace
 id|printk
@@ -2978,7 +2915,7 @@ c_func
 (paren
 id|KERN_WARNING
 id|USB_STORAGE
-l_string|&quot;Out of memory&bslash;n&quot;
+l_string|&quot;Unable to allocate the scsi host&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2986,6 +2923,14 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|us
+op_assign
+id|host_to_us
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -3031,21 +2976,7 @@ id|init_waitqueue_head
 c_func
 (paren
 op_amp
-id|us-&gt;dev_reset_wait
-)paren
-suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|us-&gt;scsi_scan_wait
-)paren
-suffix:semicolon
-id|init_completion
-c_func
-(paren
-op_amp
-id|us-&gt;scsi_scan_done
+id|us-&gt;delay_wait
 )paren
 suffix:semicolon
 multiline_comment|/* Associate the us_data structure with the USB device */
@@ -3237,7 +3168,7 @@ op_assign
 id|scsi_add_host
 c_func
 (paren
-id|us-&gt;host
+id|host
 comma
 op_amp
 id|intf-&gt;dev
@@ -3293,13 +3224,30 @@ suffix:semicolon
 id|scsi_remove_host
 c_func
 (paren
-id|us-&gt;host
+id|host
 )paren
 suffix:semicolon
 r_goto
 id|BadDevice
 suffix:semicolon
 )brace
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|total_threads
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for the thread to start */
+id|wait_for_completion
+c_func
+(paren
+op_amp
+(paren
+id|us-&gt;notify
+)paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3312,6 +3260,15 @@ c_func
 l_string|&quot;storage_probe() failed&bslash;n&quot;
 )paren
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|US_FLIDX_DISCONNECTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
 id|usb_stor_release_resources
 c_func
 (paren
@@ -3322,6 +3279,12 @@ id|dissociate_dev
 c_func
 (paren
 id|us
+)paren
+suffix:semicolon
+id|scsi_host_put
+c_func
+(paren
+id|host
 )paren
 suffix:semicolon
 r_return
@@ -3358,7 +3321,7 @@ c_func
 l_string|&quot;storage_disconnect() called&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Prevent new USB transfers, stop the current command, and&n;&t; * interrupt a device-reset delay */
+multiline_comment|/* Prevent new USB transfers, stop the current command, and&n;&t; * interrupt a SCSI-scan or device-reset delay */
 id|set_bit
 c_func
 (paren
@@ -3378,24 +3341,10 @@ id|wake_up
 c_func
 (paren
 op_amp
-id|us-&gt;dev_reset_wait
+id|us-&gt;delay_wait
 )paren
 suffix:semicolon
-multiline_comment|/* Interrupt the SCSI-device-scanning thread&squot;s time delay, and&n;&t; * wait for the thread to finish */
-id|wake_up
-c_func
-(paren
-op_amp
-id|us-&gt;scsi_scan_wait
-)paren
-suffix:semicolon
-id|wait_for_completion
-c_func
-(paren
-op_amp
-id|us-&gt;scsi_scan_done
-)paren
-suffix:semicolon
+multiline_comment|/* It doesn&squot;t matter if the SCSI-scanning thread is still running.&n;&t; * The thread will exit when it sees the DISCONNECTING flag. */
 multiline_comment|/* Wait for the current command to finish, then remove the host */
 id|down
 c_func
@@ -3414,7 +3363,11 @@ suffix:semicolon
 id|scsi_remove_host
 c_func
 (paren
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Wait for everything to become idle and release all our resources */
@@ -3428,6 +3381,17 @@ id|dissociate_dev
 c_func
 (paren
 id|us
+)paren
+suffix:semicolon
+multiline_comment|/* Drop our reference to the host; the SCSI core will free it&n;&t; * (and &quot;us&quot; along with it) when the refcount becomes 0. */
+id|scsi_host_put
+c_func
+(paren
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3510,6 +3474,35 @@ op_amp
 id|usb_storage_driver
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t return until all of our control and scanning threads&n;&t; * have exited.  Since each thread signals threads_gone as its&n;&t; * last act, we have to call wait_for_completion the right number&n;&t; * of times.&n;&t; */
+r_while
+c_loop
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|total_threads
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|threads_gone
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|total_threads
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|variable|usb_stor_init
 id|module_init

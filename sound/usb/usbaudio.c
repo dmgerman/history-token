@@ -5220,7 +5220,7 @@ id|data
 comma
 l_int|1
 comma
-id|HZ
+l_int|1000
 )paren
 )paren
 OL
@@ -5377,7 +5377,7 @@ id|data
 comma
 l_int|3
 comma
-id|HZ
+l_int|1000
 )paren
 )paren
 OL
@@ -5442,7 +5442,7 @@ id|data
 comma
 l_int|3
 comma
-id|HZ
+l_int|1000
 )paren
 )paren
 OL
@@ -14257,7 +14257,7 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 r_if

@@ -671,11 +671,11 @@ id|hcd-&gt;state
 (brace
 multiline_comment|/* entry if root hub wasn&squot;t yet suspended ... from sysfs,&n;&t; * without autosuspend, or if USB_SUSPEND isn&squot;t configured.&n;&t; */
 r_case
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:colon
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_QUIESCING
+id|HC_STATE_QUIESCING
 suffix:semicolon
 id|retval
 op_assign
@@ -706,12 +706,12 @@ suffix:semicolon
 )brace
 id|hcd-&gt;state
 op_assign
-id|HCD_STATE_SUSPENDED
+id|HC_STATE_SUSPENDED
 suffix:semicolon
 multiline_comment|/* FALLTHROUGH */
 multiline_comment|/* entry with CONFIG_USB_SUSPEND, or hcds that autosuspend: the&n;&t; * controller and/or root hub will already have been suspended,&n;&t; * but it won&squot;t be ready for a PCI resume call.&n;&t; *&n;&t; * FIXME only CONFIG_USB_SUSPEND guarantees hub_suspend() will&n;&t; * have been called, otherwise root hub timers still run ...&n;&t; */
 r_case
-id|HCD_STATE_SUSPENDED
+id|HC_STATE_SUSPENDED
 suffix:colon
 r_if
 c_cond
@@ -964,7 +964,7 @@ c_cond
 (paren
 id|hcd-&gt;state
 op_ne
-id|HCD_STATE_SUSPENDED
+id|HC_STATE_SUSPENDED
 )paren
 (brace
 id|dev_dbg
@@ -1012,7 +1012,7 @@ l_string|&quot; (legacy)&quot;
 suffix:semicolon
 id|hcd-&gt;state
 op_assign
-id|USB_STATE_RESUMING
+id|HC_STATE_RESUMING
 suffix:semicolon
 r_if
 c_cond
@@ -1104,7 +1104,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|hcd-&gt;state
 )paren

@@ -6,10 +6,10 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;scsiglue.h&quot;
-macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 multiline_comment|/***********************************************************************&n; * Data transfer routines&n; ***********************************************************************/
 multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concerned about races with a command abort.  Hanging this code&n; * is a sure fire way to hang the kernel.  (Note that this discussion applies&n; * only to transactions resulting from a scsi queued-command, since only&n; * these transactions are subject to a scsi abort.  Other transactions, such&n; * as those occurring during device-specific initialization, must be handled&n; * by a separate code path.)&n; *&n; * The abort function (usb_storage_command_abort() in scsiglue.c) first&n; * sets the machine state and the ABORTING bit in us-&gt;flags to prevent&n; * new URBs from being submitted.  It then calls usb_stor_stop_transport()&n; * below, which atomically tests-and-clears the URB_ACTIVE bit in us-&gt;flags&n; * to see if the current_urb needs to be stopped.  Likewise, the SG_ACTIVE&n; * bit is tested to see if the current_sg scatter-gather request needs to be&n; * stopped.  The timeout callback routine does much the same thing.&n; *&n; * When a disconnect occurs, the DISCONNECTING bit in us-&gt;flags is set to&n; * prevent new URBs from being submitted, and usb_stor_stop_transport() is&n; * called to stop any ongoing requests.&n; *&n; * The submit function first verifies that the submitting is allowed&n; * (neither ABORTING nor DISCONNECTING bits are set) and that the submit&n; * completes without errors, and only then sets the URB_ACTIVE bit.  This&n; * prevents the stop_transport() function from trying to cancel the URB&n; * while the submit call is underway.  Next, the submit function must test&n; * the flags to see if an abort or disconnect occurred during the submission&n; * or before the URB_ACTIVE bit was set.  If so, it&squot;s essential to cancel&n; * the URB if it hasn&squot;t been cancelled already (i.e., if the URB_ACTIVE bit&n; * is still set).  Either way, the function must then wait for the URB to&n; * finish.  Note that because the URB_ASYNC_UNLINK flag is set, the URB can&n; * still be in progress even after a call to usb_unlink_urb() returns.&n; *&n; * The idea is that (1) once the ABORTING or DISCONNECTING bit is set,&n; * either the stop_transport() function or the submitting function&n; * is guaranteed to call usb_unlink_urb() for an active URB,&n; * and (2) test_and_clear_bit() prevents usb_unlink_urb() from being&n; * called more than once or from being called during usb_submit_urb().&n; */
@@ -943,6 +943,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Receive one interrupt buffer, without timeouts, but allowing early&n; * termination.  Return codes are USB_STOR_XFER_xxx.&n; *&n; * This routine always uses us-&gt;recv_intr_pipe as the pipe and&n; * us-&gt;ep_bInterval as the interrupt interval.&n; */
 DECL|function|usb_stor_intr_transfer
+r_static
 r_int
 id|usb_stor_intr_transfer
 c_func
@@ -1159,6 +1160,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transfer a scatter-gather list via bulk transfer&n; *&n; * This function does basically the same thing as usb_stor_bulk_transfer_buf()&n; * above, but it uses the usbcore scatter-gather library.&n; */
 DECL|function|usb_stor_bulk_transfer_sglist
+r_static
 r_int
 id|usb_stor_bulk_transfer_sglist
 c_func
@@ -3537,7 +3539,11 @@ multiline_comment|/* Let the SCSI layer know we are doing a reset, set the&n;&t;
 id|scsi_lock
 c_func
 (paren
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 id|usb_stor_report_device_reset
@@ -3567,7 +3573,11 @@ suffix:semicolon
 id|scsi_unlock
 c_func
 (paren
-id|us-&gt;host
+id|us_to_host
+c_func
+(paren
+id|us
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* A 20-second timeout may seem rather long, but a LaCie&n;&t; * StudioDrive USB2 device takes 16+ seconds to get going&n;&t; * following a powerup or USB attach event.&n;&t; */
@@ -3621,7 +3631,7 @@ multiline_comment|/* Give the device some time to recover from the reset,&n; &t;
 id|wait_event_interruptible_timeout
 c_func
 (paren
-id|us-&gt;dev_reset_wait
+id|us-&gt;delay_wait
 comma
 id|test_bit
 c_func

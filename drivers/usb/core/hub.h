@@ -431,6 +431,15 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* ports with logical connect&n;&t;&t;&t;&t;&t;&t;&t;status change */
+DECL|member|busy_bits
+r_int
+r_int
+id|busy_bits
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* ports being reset */
 macro_line|#if USB_MAXCHILDREN &gt; 31 /* 8*sizeof(unsigned long) - 1 */
 macro_line|#error event_bits[] is too short!
 macro_line|#endif
@@ -461,6 +470,12 @@ suffix:semicolon
 DECL|member|activating
 r_int
 id|activating
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|resume_root_hub
+r_int
+id|resume_root_hub
 suffix:colon
 l_int|1
 suffix:semicolon

@@ -677,7 +677,7 @@ id|ohci
 op_member_access_from_pointer
 id|state
 op_eq
-id|USB_STATE_QUIESCING
+id|HC_STATE_QUIESCING
 )paren
 r_return
 op_minus
@@ -2442,7 +2442,13 @@ suffix:semicolon
 )brace
 id|info
 op_assign
+(paren
 id|is_out
+op_logical_or
+id|data_len
+op_eq
+l_int|0
+)paren
 ques
 c_cond
 id|TD_CC
@@ -3468,7 +3474,7 @@ id|likely
 (paren
 id|regs
 op_logical_and
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|ohci_to_hcd
@@ -3774,7 +3780,7 @@ id|ed-&gt;td_list
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|ohci_to_hcd
@@ -3807,7 +3813,7 @@ multiline_comment|/* maybe reenable control and bulk lists */
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|ohci_to_hcd
@@ -3827,7 +3833,7 @@ id|ohci
 op_member_access_from_pointer
 id|state
 op_ne
-id|USB_STATE_QUIESCING
+id|HC_STATE_QUIESCING
 op_logical_and
 op_logical_neg
 id|ohci-&gt;ed_rm_list

@@ -5123,6 +5123,16 @@ id|usb_gadgetfs_event
 op_star
 id|event
 suffix:semicolon
+id|u16
+id|w_value
+op_assign
+id|ctrl-&gt;wValue
+suffix:semicolon
+id|u16
+id|w_length
+op_assign
+id|ctrl-&gt;wLength
+suffix:semicolon
 id|spin_lock
 (paren
 op_amp
@@ -5357,7 +5367,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ctrl-&gt;wValue
+id|w_value
 op_rshift
 l_int|8
 )paren
@@ -5369,7 +5379,7 @@ id|value
 op_assign
 id|min
 (paren
-id|ctrl-&gt;wLength
+id|w_length
 comma
 (paren
 id|u16
@@ -5401,7 +5411,7 @@ id|value
 op_assign
 id|min
 (paren
-id|ctrl-&gt;wLength
+id|w_length
 comma
 (paren
 id|u16
@@ -5434,11 +5444,11 @@ id|config_buf
 (paren
 id|dev
 comma
-id|ctrl-&gt;wValue
+id|w_value
 op_rshift
 l_int|8
 comma
-id|ctrl-&gt;wValue
+id|w_value
 op_amp
 l_int|0xff
 )paren
@@ -5454,7 +5464,7 @@ id|value
 op_assign
 id|min
 (paren
-id|ctrl-&gt;wLength
+id|w_length
 comma
 (paren
 id|u16
@@ -5499,7 +5509,7 @@ op_eq
 (paren
 id|u8
 )paren
-id|ctrl-&gt;wValue
+id|w_value
 )paren
 (brace
 id|value
@@ -5566,7 +5576,7 @@ op_eq
 (paren
 id|u8
 )paren
-id|ctrl-&gt;wValue
+id|w_value
 )paren
 (brace
 id|value
@@ -5651,7 +5661,7 @@ id|value
 op_assign
 id|min
 (paren
-id|ctrl-&gt;wLength
+id|w_length
 comma
 (paren
 id|u16
@@ -5683,11 +5693,15 @@ id|ctrl-&gt;bRequestType
 comma
 id|ctrl-&gt;bRequest
 comma
-id|ctrl-&gt;wValue
+id|w_value
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|ctrl-&gt;wIndex
+)paren
 comma
-id|ctrl-&gt;wLength
+id|w_length
 )paren
 suffix:semicolon
 multiline_comment|/* if there&squot;s an ep0 reader, don&squot;t stall */
@@ -5737,7 +5751,7 @@ id|unlikely
 op_logical_neg
 id|dev-&gt;setup_in
 op_logical_and
-id|ctrl-&gt;wLength
+id|w_length
 )paren
 )paren
 (brace
@@ -5749,7 +5763,7 @@ id|gadget-&gt;ep0
 comma
 id|dev-&gt;req
 comma
-id|ctrl-&gt;wLength
+id|w_length
 )paren
 suffix:semicolon
 r_if
@@ -5848,15 +5862,7 @@ id|req-&gt;zero
 op_assign
 id|value
 OL
-id|ctrl-&gt;wLength
-op_logical_and
-(paren
-id|value
-op_mod
-id|gadget-&gt;ep0-&gt;maxpacket
-)paren
-op_eq
-l_int|0
+id|w_length
 suffix:semicolon
 id|value
 op_assign

@@ -4,10 +4,6 @@ DECL|macro|_TRANSPORT_H_
 mdefine_line|#define _TRANSPORT_H_
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &quot;usb.h&quot;
-r_struct
-id|scsi_cmnd
-suffix:semicolon
 multiline_comment|/* Protocols */
 DECL|macro|US_PR_CBI
 mdefine_line|#define US_PR_CBI&t;0x00&t;&t;/* Control/Bulk/Interrupt */
@@ -354,25 +350,6 @@ id|size
 suffix:semicolon
 r_extern
 r_int
-id|usb_stor_intr_transfer
-c_func
-(paren
-r_struct
-id|us_data
-op_star
-id|us
-comma
-r_void
-op_star
-id|buf
-comma
-r_int
-r_int
-id|length
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|usb_stor_bulk_transfer_buf
 c_func
 (paren
@@ -388,38 +365,6 @@ comma
 r_void
 op_star
 id|buf
-comma
-r_int
-r_int
-id|length
-comma
-r_int
-r_int
-op_star
-id|act_len
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usb_stor_bulk_transfer_sglist
-c_func
-(paren
-r_struct
-id|us_data
-op_star
-id|us
-comma
-r_int
-r_int
-id|pipe
-comma
-r_struct
-id|scatterlist
-op_star
-id|sg
-comma
-r_int
-id|num_sg
 comma
 r_int
 r_int

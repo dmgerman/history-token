@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &quot;rio500_usb.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
@@ -935,6 +936,12 @@ op_star
 id|ppos
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_struct
 id|rio_usb_data
 op_star
@@ -1179,15 +1186,32 @@ r_goto
 id|error
 suffix:semicolon
 )brace
-id|interruptible_sleep_on_timeout
+id|prepare_to_wait
 c_func
 (paren
 op_amp
-id|rio
-op_member_access_from_pointer
-id|wait_q
+id|rio-&gt;wait_q
 comma
+op_amp
+id|wait
+comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|NAK_TIMEOUT
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|rio-&gt;wait_q
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 r_continue
@@ -1318,6 +1342,12 @@ op_star
 id|ppos
 )paren
 (brace
+id|DEFINE_WAIT
+c_func
+(paren
+id|wait
+)paren
+suffix:semicolon
 r_struct
 id|rio_usb_data
 op_star
@@ -1561,13 +1591,32 @@ op_minus
 id|ETIME
 suffix:semicolon
 )brace
-id|interruptible_sleep_on_timeout
+id|prepare_to_wait
 c_func
 (paren
 op_amp
 id|rio-&gt;wait_q
 comma
+op_amp
+id|wait
+comma
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
 id|NAK_TIMEOUT
+)paren
+suffix:semicolon
+id|finish_wait
+c_func
+(paren
+op_amp
+id|rio-&gt;wait_q
+comma
+op_amp
+id|wait
 )paren
 suffix:semicolon
 r_continue

@@ -3947,6 +3947,42 @@ id|id_table_combined
 comma
 )brace
 suffix:semicolon
+DECL|variable|ftdi_chip_name
+r_static
+r_char
+op_star
+id|ftdi_chip_name
+(braket
+)braket
+op_assign
+(brace
+(braket
+id|SIO
+)braket
+op_assign
+l_string|&quot;SIO&quot;
+comma
+multiline_comment|/* the serial part of FT8U100AX */
+(braket
+id|FT8U232AM
+)braket
+op_assign
+l_string|&quot;FT8U232AM&quot;
+comma
+(braket
+id|FT232BM
+)braket
+op_assign
+l_string|&quot;FT232BM&quot;
+comma
+(braket
+id|FT2232C
+)braket
+op_assign
+l_string|&quot;FT2232C&quot;
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* Constants for read urb and write urb */
 DECL|macro|BUFSZ
 mdefine_line|#define BUFSZ 512
@@ -5822,12 +5858,6 @@ id|div_okay
 op_assign
 l_int|1
 suffix:semicolon
-r_char
-op_star
-id|chip_name
-op_assign
-l_string|&quot;&quot;
-suffix:semicolon
 r_int
 id|baud
 suffix:semicolon
@@ -5914,10 +5944,6 @@ r_case
 id|SIO
 suffix:colon
 multiline_comment|/* SIO chip */
-id|chip_name
-op_assign
-l_string|&quot;SIO&quot;
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -6049,10 +6075,6 @@ r_case
 id|FT8U232AM
 suffix:colon
 multiline_comment|/* 8U232AM chip */
-id|chip_name
-op_assign
-l_string|&quot;FT8U232AM&quot;
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6103,26 +6125,6 @@ r_case
 id|FT2232C
 suffix:colon
 multiline_comment|/* FT2232C chip */
-r_if
-c_cond
-(paren
-id|priv-&gt;chip_type
-op_eq
-id|FT2232C
-)paren
-(brace
-id|chip_name
-op_assign
-l_string|&quot;FT2232C&quot;
-suffix:semicolon
-)brace
-r_else
-(brace
-id|chip_name
-op_assign
-l_string|&quot;FT232BM&quot;
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6188,7 +6190,10 @@ r_int
 )paren
 id|div_value
 comma
-id|chip_name
+id|ftdi_chip_name
+(braket
+id|priv-&gt;chip_type
+)braket
 )paren
 suffix:semicolon
 )brace
@@ -6609,6 +6614,7 @@ suffix:semicolon
 multiline_comment|/* set_serial_info */
 multiline_comment|/*&n; * ***************************************************************************&n; * Sysfs Attribute&n; * ***************************************************************************&n; */
 DECL|function|show_latency_timer
+r_static
 id|ssize_t
 id|show_latency_timer
 c_func
@@ -6749,6 +6755,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Write a new value of the latency timer, in units of milliseconds. */
 DECL|function|store_latency_timer
+r_static
 id|ssize_t
 id|store_latency_timer
 c_func
@@ -6895,6 +6902,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Write an event character directly to the FTDI register.  The ASCII&n;   value is in the low 8 bits, with the enable bit in the 9th bit. */
 DECL|function|store_event_char
+r_static
 id|ssize_t
 id|store_event_char
 c_func
@@ -7043,7 +7051,7 @@ c_func
 (paren
 id|latency_timer
 comma
-id|S_IWUGO
+id|S_IWUSR
 op_or
 id|S_IRUGO
 comma
@@ -7058,7 +7066,7 @@ c_func
 (paren
 id|event_char
 comma
-id|S_IWUGO
+id|S_IWUSR
 comma
 l_int|NULL
 comma
@@ -7066,6 +7074,7 @@ id|store_event_char
 )paren
 suffix:semicolon
 DECL|function|create_sysfs_attrs
+r_static
 r_void
 id|create_sysfs_attrs
 c_func
@@ -7109,18 +7118,24 @@ id|udev
 op_assign
 id|serial-&gt;dev
 suffix:semicolon
+multiline_comment|/* XXX I&squot;ve no idea if the original SIO supports the event_char&n;&t; * sysfs parameter, so I&squot;m playing it safe.  */
 r_if
 c_cond
 (paren
 id|priv-&gt;chip_type
-op_eq
-id|FT232BM
+op_ne
+id|SIO
 )paren
 (brace
 id|dbg
 c_func
 (paren
-l_string|&quot;sysfs attributes for FT232BM&quot;
+l_string|&quot;sysfs attributes for %s&quot;
+comma
+id|ftdi_chip_name
+(braket
+id|priv-&gt;chip_type
+)braket
 )paren
 suffix:semicolon
 id|device_create_file
@@ -7133,6 +7148,18 @@ op_amp
 id|dev_attr_event_char
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;chip_type
+op_eq
+id|FT232BM
+op_logical_or
+id|priv-&gt;chip_type
+op_eq
+id|FT2232C
+)paren
+(brace
 id|device_create_file
 c_func
 (paren
@@ -7145,7 +7172,9 @@ id|dev_attr_latency_timer
 suffix:semicolon
 )brace
 )brace
+)brace
 DECL|function|remove_sysfs_attrs
+r_static
 r_void
 id|remove_sysfs_attrs
 c_func
@@ -7189,12 +7218,13 @@ id|udev
 op_assign
 id|serial-&gt;dev
 suffix:semicolon
+multiline_comment|/* XXX see create_sysfs_attrs */
 r_if
 c_cond
 (paren
 id|priv-&gt;chip_type
-op_eq
-id|FT232BM
+op_ne
+id|SIO
 )paren
 (brace
 id|device_remove_file
@@ -7207,6 +7237,18 @@ op_amp
 id|dev_attr_event_char
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;chip_type
+op_eq
+id|FT232BM
+op_logical_or
+id|priv-&gt;chip_type
+op_eq
+id|FT2232C
+)paren
+(brace
 id|device_remove_file
 c_func
 (paren
@@ -7217,6 +7259,7 @@ op_amp
 id|dev_attr_latency_timer
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n; * ***************************************************************************&n; * FTDI driver specific functions&n; * ***************************************************************************&n; */
@@ -7585,6 +7628,12 @@ op_div
 l_int|2
 suffix:semicolon
 multiline_comment|/* Would be / 16, but FTDI supports 0.125, 0.25 and 0.5 divisor fractions! */
+id|create_sysfs_attrs
+c_func
+(paren
+id|serial
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -7774,6 +7823,12 @@ op_div
 l_int|2
 suffix:semicolon
 multiline_comment|/* Would be / 16, but FT2232C supports multiple of 0.125 divisor fractions! */
+id|create_sysfs_attrs
+c_func
+(paren
+id|serial
+)paren
+suffix:semicolon
 r_return
 (paren
 l_int|0

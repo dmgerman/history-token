@@ -155,6 +155,31 @@ comma
 l_string|&quot;Enable HomePNA mode (bit 0),default=MII mode = 0&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* use ethtool to change the level for any given device */
+DECL|variable|msg_level
+r_static
+r_int
+id|msg_level
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|module_param
+(paren
+id|msg_level
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|msg_level
+comma
+l_string|&quot;Override default message level&quot;
+)paren
+suffix:semicolon
 id|MODULE_DEVICE_TABLE
 c_func
 (paren
@@ -255,10 +280,24 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|warn
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: status %d&quot;
+id|pegasus
+)paren
+)paren
+id|dev_err
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;%s, status %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -332,10 +371,22 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: looks like we&squot;re out of memory&quot;
+id|pegasus
+)paren
+)paren
+id|dev_warn
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;out of memory in %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -491,10 +542,22 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-id|err
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: BAD CTRLs %d&quot;
+id|pegasus
+)paren
+)paren
+id|dev_err
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;%s, status %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -595,10 +658,22 @@ op_logical_neg
 id|buffer
 )paren
 (brace
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: looks like we&squot;re out of memory&quot;
+id|pegasus
+)paren
+)paren
+id|dev_warn
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;out of memory in %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -763,10 +838,22 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-id|err
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: BAD CTRL %d&quot;
+id|pegasus
+)paren
+)paren
+id|dev_err
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;%s, status %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -853,10 +940,22 @@ op_logical_neg
 id|tmp
 )paren
 (brace
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: looks like we&squot;re out of memory&quot;
+id|pegasus
+)paren
+)paren
+id|dev_warn
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;out of memory in %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1022,10 +1121,22 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-id|err
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: BAD CTRL %d&quot;
+id|pegasus
+)paren
+)paren
+id|dev_err
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;%s, status %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1155,16 +1266,26 @@ id|GFP_ATOMIC
 )paren
 )paren
 )paren
-id|err
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: BAD CTRL %d, flgs %x&quot;
+id|pegasus
+)paren
+)paren
+id|dev_err
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;%s, status %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
 id|ret
-comma
-id|pegasus-&gt;flags
 )paren
 suffix:semicolon
 r_return
@@ -1214,6 +1335,11 @@ suffix:semicolon
 id|__le16
 id|regdi
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1224,6 +1350,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_registers
 c_func
 (paren
@@ -1239,6 +1367,8 @@ comma
 id|data
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1268,6 +1398,8 @@ id|i
 op_increment
 )paren
 (brace
+id|ret
+op_assign
 id|get_registers
 c_func
 (paren
@@ -1301,6 +1433,8 @@ OL
 id|REG_TIMEOUT
 )paren
 (brace
+id|ret
+op_assign
 id|get_registers
 c_func
 (paren
@@ -1327,10 +1461,22 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: failed&quot;
+id|pegasus
+)paren
+)paren
+id|dev_warn
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;fail %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1371,7 +1517,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|__le16
+id|u16
 id|res
 suffix:semicolon
 id|read_mii_word
@@ -1433,20 +1579,35 @@ comma
 id|indx
 )brace
 suffix:semicolon
-op_star
-(paren
+r_int
+id|ret
+suffix:semicolon
 id|data
-op_plus
+(braket
 l_int|1
-)paren
+)braket
 op_assign
-id|cpu_to_le16p
-c_func
 (paren
-op_amp
+id|u8
+)paren
 id|regd
+suffix:semicolon
+id|data
+(braket
+l_int|2
+)braket
+op_assign
+(paren
+id|u8
+)paren
+(paren
+id|regd
+op_rshift
+l_int|8
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1457,6 +1618,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_registers
 c_func
 (paren
@@ -1472,6 +1635,8 @@ comma
 id|data
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1501,6 +1666,8 @@ id|i
 op_increment
 )paren
 (brace
+id|ret
+op_assign
 id|get_registers
 c_func
 (paren
@@ -1536,10 +1703,22 @@ id|REG_TIMEOUT
 r_return
 l_int|0
 suffix:semicolon
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: failed&quot;
+id|pegasus
+)paren
+)paren
+id|dev_warn
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;fail %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1623,6 +1802,11 @@ suffix:semicolon
 id|__le16
 id|retdatai
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1633,6 +1817,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1643,6 +1829,8 @@ comma
 id|index
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1668,6 +1856,8 @@ id|i
 op_increment
 )paren
 (brace
+id|ret
+op_assign
 id|get_registers
 c_func
 (paren
@@ -1699,6 +1889,8 @@ OL
 id|REG_TIMEOUT
 )paren
 (brace
+id|ret
+op_assign
 id|get_registers
 c_func
 (paren
@@ -1725,10 +1917,22 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: failed&quot;
+id|pegasus
+)paren
+)paren
+id|dev_warn
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;fail %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -1754,6 +1958,11 @@ id|pegasus
 id|__u8
 id|tmp
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|get_registers
 c_func
 (paren
@@ -1767,6 +1976,8 @@ op_amp
 id|tmp
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1795,6 +2006,11 @@ id|pegasus
 id|__u8
 id|tmp
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|get_registers
 c_func
 (paren
@@ -1808,6 +2024,8 @@ op_amp
 id|tmp
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1818,6 +2036,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1870,6 +2090,11 @@ comma
 id|EPROM_WRITE
 )brace
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|set_registers
 c_func
 (paren
@@ -1888,6 +2113,8 @@ c_func
 id|pegasus
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1898,6 +2125,8 @@ comma
 id|index
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_registers
 c_func
 (paren
@@ -1911,6 +2140,8 @@ op_amp
 id|data
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -1936,6 +2167,8 @@ id|i
 op_increment
 )paren
 (brace
+id|ret
+op_assign
 id|get_registers
 c_func
 (paren
@@ -1975,10 +2208,22 @@ id|REG_TIMEOUT
 r_return
 l_int|0
 suffix:semicolon
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_drv
 c_func
 (paren
-l_string|&quot;%s: failed&quot;
+id|pegasus
+)paren
+)paren
+id|dev_warn
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;fail %s&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2074,6 +2319,9 @@ id|node_id
 l_int|6
 )braket
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|get_node_id
 c_func
 (paren
@@ -2082,6 +2330,8 @@ comma
 id|node_id
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_registers
 c_func
 (paren
@@ -2131,6 +2381,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -2156,6 +2411,8 @@ id|i
 op_increment
 )paren
 (brace
+id|ret
+op_assign
 id|get_registers
 c_func
 (paren
@@ -2198,6 +2455,8 @@ op_amp
 id|HAS_HOME_PNA
 )paren
 )paren
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -2209,6 +2468,8 @@ l_int|0x34
 )paren
 suffix:semicolon
 r_else
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -2219,6 +2480,8 @@ comma
 l_int|0x26
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -2229,6 +2492,8 @@ comma
 id|pegasus-&gt;features
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -2275,6 +2540,8 @@ op_eq
 id|VENDOR_DLINK
 )paren
 (brace
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -2285,6 +2552,8 @@ comma
 l_int|0x24
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -2379,6 +2648,9 @@ c_func
 (paren
 id|dev
 )paren
+suffix:semicolon
+r_int
+id|ret
 suffix:semicolon
 id|read_mii_word
 c_func
@@ -2486,6 +2758,8 @@ id|data
 )paren
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_registers
 c_func
 (paren
@@ -2809,6 +3083,12 @@ id|count
 op_assign
 id|urb-&gt;actual_length
 suffix:semicolon
+id|u8
+op_star
+id|buf
+op_assign
+id|urb-&gt;transfer_buffer
+suffix:semicolon
 id|__u16
 id|pkt_len
 suffix:semicolon
@@ -2817,13 +3097,6 @@ c_cond
 (paren
 op_logical_neg
 id|pegasus
-op_logical_or
-op_logical_neg
-(paren
-id|pegasus-&gt;flags
-op_amp
-id|PEGASUS_RUNNING
-)paren
 )paren
 r_return
 suffix:semicolon
@@ -2836,6 +3109,13 @@ c_cond
 (paren
 op_logical_neg
 id|netif_device_present
+c_func
+(paren
+id|net
+)paren
+op_logical_or
+op_logical_neg
+id|netif_running
 c_func
 (paren
 id|net
@@ -2858,10 +3138,19 @@ r_case
 op_minus
 id|ETIMEDOUT
 suffix:colon
-id|dbg
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
 c_func
 (paren
-l_string|&quot;%s: reset MAC&quot;
+id|pegasus
+)paren
+)paren
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: reset MAC&bslash;n&quot;
 comma
 id|net-&gt;name
 )paren
@@ -2879,10 +3168,20 @@ id|EPIPE
 suffix:colon
 multiline_comment|/* stall, or disconnect from TT */
 multiline_comment|/* FIXME schedule work to clear the halt */
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
 c_func
 (paren
-l_string|&quot;%s: no rx stall recovery&quot;
+id|pegasus
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: no rx stall recovery&bslash;n&quot;
 comma
 id|net-&gt;name
 )paren
@@ -2901,10 +3200,19 @@ r_case
 op_minus
 id|ESHUTDOWN
 suffix:colon
-id|dbg
+r_if
+c_cond
+(paren
+id|netif_msg_ifdown
 c_func
 (paren
-l_string|&quot;%s: rx unlink, %d&quot;
+id|pegasus
+)paren
+)paren
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: rx unlink, %d&bslash;n&quot;
 comma
 id|net-&gt;name
 comma
@@ -2915,10 +3223,21 @@ r_return
 suffix:semicolon
 r_default
 suffix:colon
-id|dbg
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
 c_func
 (paren
-l_string|&quot;%s: RX status %d&quot;
+id|pegasus
+)paren
+)paren
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: RX status %d&bslash;n&quot;
 comma
 id|net-&gt;name
 comma
@@ -2934,47 +3253,48 @@ c_cond
 (paren
 op_logical_neg
 id|count
+op_logical_or
+id|count
+OL
+l_int|4
 )paren
 r_goto
 id|goon
 suffix:semicolon
 id|rx_status
 op_assign
-id|le32_to_cpu
-c_func
-(paren
-op_star
-(paren
-id|__le32
-op_star
-)paren
-(paren
-id|urb-&gt;transfer_buffer
-op_plus
+id|buf
+(braket
 id|count
 op_minus
-l_int|4
-)paren
-)paren
+l_int|2
+)braket
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|rx_status
 op_amp
-l_int|0x000e0000
+l_int|0x1e
 )paren
 (brace
-id|dbg
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
 c_func
 (paren
-l_string|&quot;%s: RX packet error %x&quot;
+id|pegasus
+)paren
+)paren
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: RX packet error %x&bslash;n&quot;
 comma
 id|net-&gt;name
 comma
 id|rx_status
-op_amp
-l_int|0xe0000
 )paren
 suffix:semicolon
 id|pegasus-&gt;stats.rx_errors
@@ -2985,8 +3305,9 @@ c_cond
 (paren
 id|rx_status
 op_amp
-l_int|0x060000
+l_int|0x06
 )paren
+singleline_comment|// long or runt
 id|pegasus-&gt;stats.rx_length_errors
 op_increment
 suffix:semicolon
@@ -2995,7 +3316,7 @@ c_cond
 (paren
 id|rx_status
 op_amp
-l_int|0x080000
+l_int|0x08
 )paren
 id|pegasus-&gt;stats.rx_crc_errors
 op_increment
@@ -3005,8 +3326,9 @@ c_cond
 (paren
 id|rx_status
 op_amp
-l_int|0x100000
+l_int|0x10
 )paren
+singleline_comment|// extra bits
 id|pegasus-&gt;stats.rx_frame_errors
 op_increment
 suffix:semicolon
@@ -3048,12 +3370,30 @@ r_else
 (brace
 id|pkt_len
 op_assign
-(paren
-id|rx_status
-op_amp
-l_int|0xfff
-)paren
+id|buf
+(braket
+id|count
 op_minus
+l_int|3
+)braket
+op_lshift
+l_int|8
+suffix:semicolon
+id|pkt_len
+op_add_assign
+id|buf
+(braket
+id|count
+op_minus
+l_int|4
+)braket
+suffix:semicolon
+id|pkt_len
+op_and_assign
+l_int|0xfff
+suffix:semicolon
+id|pkt_len
+op_sub_assign
 l_int|8
 suffix:semicolon
 )brace
@@ -3289,10 +3629,22 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_rx_err
 c_func
 (paren
-l_string|&quot;wow, low on memory&quot;
+id|pegasus
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: low on memory&bslash;n&quot;
+comma
+id|pegasus-&gt;net-&gt;name
 )paren
 suffix:semicolon
 id|tasklet_schedule
@@ -3413,13 +3765,6 @@ c_cond
 (paren
 op_logical_neg
 id|pegasus
-op_logical_or
-op_logical_neg
-(paren
-id|pegasus-&gt;flags
-op_amp
-id|PEGASUS_RUNNING
-)paren
 )paren
 r_return
 suffix:semicolon
@@ -3428,6 +3773,13 @@ c_cond
 (paren
 op_logical_neg
 id|netif_device_present
+c_func
+(paren
+id|net
+)paren
+op_logical_or
+op_logical_neg
+id|netif_running
 c_func
 (paren
 id|net
@@ -3452,10 +3804,20 @@ c_func
 id|net
 )paren
 suffix:semicolon
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_tx_err
 c_func
 (paren
-l_string|&quot;%s: no tx stall recovery&quot;
+id|pegasus
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: no tx stall recovery&bslash;n&quot;
 comma
 id|net-&gt;name
 )paren
@@ -3474,10 +3836,19 @@ r_case
 op_minus
 id|ESHUTDOWN
 suffix:colon
-id|dbg
+r_if
+c_cond
+(paren
+id|netif_msg_ifdown
 c_func
 (paren
-l_string|&quot;%s: tx unlink, %d&quot;
+id|pegasus
+)paren
+)paren
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: tx unlink, %d&bslash;n&quot;
 comma
 id|net-&gt;name
 comma
@@ -3488,10 +3859,21 @@ r_return
 suffix:semicolon
 r_default
 suffix:colon
-id|info
+(brace
+)brace
+r_if
+c_cond
+(paren
+id|netif_msg_tx_err
 c_func
 (paren
-l_string|&quot;%s: TX status %d&quot;
+id|pegasus
+)paren
+)paren
+id|pr_info
+c_func
+(paren
+l_string|&quot;%s: TX status %d&bslash;n&quot;
 comma
 id|net-&gt;name
 comma
@@ -3587,7 +3969,18 @@ r_return
 suffix:semicolon
 r_default
 suffix:colon
+(brace
+)brace
 multiline_comment|/* some Pegasus-I products report LOTS of data&n;&t;&t; * toggle errors... avoid log spamming&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|netif_msg_timer
+c_func
+(paren
+id|pegasus
+)paren
+)paren
 id|pr_debug
 c_func
 (paren
@@ -3740,6 +4133,12 @@ r_if
 c_cond
 (paren
 id|status
+op_logical_and
+id|netif_msg_timer
+c_func
+(paren
+id|pegasus
+)paren
 )paren
 id|printk
 c_func
@@ -3775,6 +4174,15 @@ c_func
 id|net
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_timer
+c_func
+(paren
+id|pegasus
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -3930,10 +4338,22 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-id|warn
+r_if
+c_cond
+(paren
+id|netif_msg_tx_err
 c_func
 (paren
-l_string|&quot;failed tx_urb %d&quot;
+id|pegasus
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: fail tx, %d&bslash;n&quot;
+comma
+id|net-&gt;name
 comma
 id|res
 )paren
@@ -4044,6 +4464,11 @@ id|tmp
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|set_registers
 c_func
 (paren
@@ -4101,10 +4526,22 @@ OL
 l_int|0x80
 )paren
 (brace
-id|info
+r_if
+c_cond
+(paren
+id|netif_msg_timer
 c_func
 (paren
-l_string|&quot;intr interval will be changed from %ums to %ums&quot;
+id|pegasus
+)paren
+)paren
+id|dev_info
+c_func
+(paren
+op_amp
+id|pegasus-&gt;intf-&gt;dev
+comma
+l_string|&quot;intr interval changed from %ums to %ums&bslash;n&quot;
 comma
 id|data
 (braket
@@ -4169,7 +4606,7 @@ c_func
 id|net
 )paren
 suffix:semicolon
-id|__le16
+id|u16
 id|tmp
 suffix:semicolon
 r_if
@@ -4469,6 +4906,8 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|res
+op_assign
 id|set_registers
 c_func
 (paren
@@ -4522,16 +4961,30 @@ id|GFP_KERNEL
 )paren
 )paren
 )paren
-id|warn
+(brace
+r_if
+c_cond
+(paren
+id|netif_msg_ifup
 c_func
 (paren
-l_string|&quot;%s: failed rx_urb %d&quot;
+id|pegasus
+)paren
+)paren
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: failed rx_urb, %d&quot;
 comma
-id|__FUNCTION__
+id|net-&gt;name
 comma
 id|res
 )paren
 suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
 id|usb_fill_int_urb
 c_func
 (paren
@@ -4576,26 +5029,36 @@ id|GFP_KERNEL
 )paren
 )paren
 )paren
-id|warn
+(brace
+r_if
+c_cond
+(paren
+id|netif_msg_ifup
 c_func
 (paren
-l_string|&quot;%s: failed intr_urb %d&quot;
+id|pegasus
+)paren
+)paren
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: failed intr_urb, %d&bslash;n&quot;
 comma
-id|__FUNCTION__
+id|net-&gt;name
 comma
 id|res
 )paren
 suffix:semicolon
-id|netif_start_queue
+id|usb_kill_urb
 c_func
 (paren
-id|net
+id|pegasus-&gt;rx_urb
 )paren
 suffix:semicolon
-id|pegasus-&gt;flags
-op_or_assign
-id|PEGASUS_RUNNING
+r_goto
+m_exit
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4612,10 +5075,21 @@ id|pegasus-&gt;usb
 )paren
 )paren
 (brace
-id|err
+r_if
+c_cond
+(paren
+id|netif_msg_ifup
 c_func
 (paren
-l_string|&quot;can&squot;t enable_net_traffic() - %d&quot;
+id|pegasus
+)paren
+)paren
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: can&squot;t enable_net_traffic() - %d&bslash;n&quot;
+comma
+id|net-&gt;name
 comma
 id|res
 )paren
@@ -4653,6 +5127,29 @@ c_func
 id|net
 )paren
 suffix:semicolon
+id|netif_start_queue
+c_func
+(paren
+id|net
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_ifup
+c_func
+(paren
+id|pegasus
+)paren
+)paren
+id|pr_debug
+c_func
+(paren
+l_string|&quot;%s: open&bslash;n&quot;
+comma
+id|net-&gt;name
+)paren
+suffix:semicolon
 id|res
 op_assign
 l_int|0
@@ -4684,11 +5181,6 @@ c_func
 (paren
 id|net
 )paren
-suffix:semicolon
-id|pegasus-&gt;flags
-op_and_assign
-op_complement
-id|PEGASUS_RUNNING
 suffix:semicolon
 id|netif_stop_queue
 c_func
@@ -4730,6 +5222,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pegasus_get_drvinfo
+r_static
 r_void
 id|pegasus_get_drvinfo
 c_func
@@ -4906,6 +5399,7 @@ id|reg78
 op_or_assign
 l_int|0x40
 suffix:semicolon
+multiline_comment|/* FIXME this 0x10 bit still needs to get set in the chip... */
 r_if
 c_cond
 (paren
@@ -5161,7 +5655,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-id|pegasus-&gt;msg_level
+id|pegasus-&gt;msg_enable
 suffix:semicolon
 )brace
 DECL|function|pegasus_set_msglevel
@@ -5189,7 +5683,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|pegasus-&gt;msg_level
+id|pegasus-&gt;msg_enable
 op_assign
 id|v
 suffix:semicolon
@@ -5437,6 +5931,15 @@ id|EthCtrl2
 op_or_assign
 id|RX_PROMISCUOUS
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_link
+c_func
+(paren
+id|pegasus
+)paren
+)paren
 id|pr_info
 c_func
 (paren
@@ -5478,6 +5981,15 @@ op_and_assign
 op_complement
 id|RX_PROMISCUOUS
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_msg_link
+c_func
+(paren
+id|pegasus
+)paren
+)paren
 id|pr_info
 c_func
 (paren
@@ -5611,6 +6123,11 @@ id|data
 op_assign
 l_int|0xa5
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -5621,6 +6138,8 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -5648,6 +6167,8 @@ id|HAS_HOME_PNA
 op_logical_and
 id|mii_mode
 )paren
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -5659,6 +6180,8 @@ l_int|0
 )paren
 suffix:semicolon
 r_else
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -5669,6 +6192,8 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -5679,6 +6204,8 @@ comma
 id|data
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|get_registers
 c_func
 (paren
@@ -5712,6 +6239,8 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -5722,6 +6251,8 @@ comma
 l_int|0xc0
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -5732,6 +6263,8 @@ comma
 l_int|0xff
 )paren
 suffix:semicolon
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -5751,6 +6284,8 @@ id|HAS_HOME_PNA
 op_logical_and
 id|mii_mode
 )paren
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -5762,6 +6297,8 @@ l_int|6
 )paren
 suffix:semicolon
 r_else
+id|ret
+op_assign
 id|set_register
 c_func
 (paren
@@ -5774,6 +6311,7 @@ l_int|2
 suffix:semicolon
 )brace
 DECL|variable|pegasus_workqueue
+r_static
 r_struct
 id|workqueue_struct
 op_star
@@ -5784,6 +6322,7 @@ suffix:semicolon
 DECL|macro|CARRIER_CHECK_DELAY
 mdefine_line|#define CARRIER_CHECK_DELAY (2 * HZ)
 DECL|function|check_carrier
+r_static
 r_void
 id|check_carrier
 c_func
@@ -5905,10 +6444,15 @@ op_logical_neg
 id|net
 )paren
 (brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;out of memory allocating device structure&quot;
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;can&squot;t allocate %s&bslash;n&quot;
+comma
+l_string|&quot;device&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -5958,9 +6502,22 @@ c_func
 id|pegasus
 )paren
 )paren
+(brace
+id|dev_err
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;can&squot;t allocate %s&bslash;n&quot;
+comma
+l_string|&quot;urbs&quot;
+)paren
+suffix:semicolon
 r_goto
 id|out1
 suffix:semicolon
+)brace
 id|tasklet_init
 c_func
 (paren
@@ -5986,6 +6543,10 @@ id|check_carrier
 comma
 id|pegasus
 )paren
+suffix:semicolon
+id|pegasus-&gt;intf
+op_assign
+id|intf
 suffix:semicolon
 id|pegasus-&gt;usb
 op_assign
@@ -6067,6 +6628,19 @@ c_func
 (paren
 op_amp
 id|pegasus-&gt;rx_pool_lock
+)paren
+suffix:semicolon
+id|pegasus-&gt;msg_enable
+op_assign
+id|netif_msg_init
+(paren
+id|msg_level
+comma
+id|NETIF_MSG_DRV
+op_or
+id|NETIF_MSG_PROBE
+op_or
+id|NETIF_MSG_LINK
 )paren
 suffix:semicolon
 id|pegasus-&gt;features
@@ -6232,10 +6806,13 @@ comma
 id|CARRIER_CHECK_DELAY
 )paren
 suffix:semicolon
-id|pr_info
+id|dev_info
 c_func
 (paren
-l_string|&quot;%s: %s&bslash;n&quot;
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;%s, %s, %02x:%02x:%02x:%02x:%02x:%02x&bslash;n&quot;
 comma
 id|net-&gt;name
 comma
@@ -6245,6 +6822,36 @@ id|dev_index
 )braket
 dot
 id|name
+comma
+id|net-&gt;dev_addr
+(braket
+l_int|0
+)braket
+comma
+id|net-&gt;dev_addr
+(braket
+l_int|1
+)braket
+comma
+id|net-&gt;dev_addr
+(braket
+l_int|2
+)braket
+comma
+id|net-&gt;dev_addr
+(braket
+l_int|3
+)braket
+comma
+id|net-&gt;dev_addr
+(braket
+l_int|4
+)braket
+comma
+id|net-&gt;dev_addr
+(braket
+l_int|5
+)braket
 )paren
 suffix:semicolon
 r_return
@@ -6332,10 +6939,13 @@ op_logical_neg
 id|pegasus
 )paren
 (brace
-id|warn
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;unregistering non-existent device&quot;
+op_amp
+id|intf-&gt;dev
+comma
+l_string|&quot;unregistering non-bound device?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

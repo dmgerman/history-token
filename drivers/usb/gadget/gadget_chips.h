@@ -83,7 +83,13 @@ macro_line|#else
 DECL|macro|gadget_is_s3c2410
 mdefine_line|#define gadget_is_s3c2410(g)    0
 macro_line|#endif
-singleline_comment|// CONFIG_USB_GADGET_AT91RM9200
+macro_line|#ifdef CONFIG_USB_GADGET_AT91
+DECL|macro|gadget_is_at91
+mdefine_line|#define gadget_is_at91(g)&t;!strcmp(&quot;at91_udc&quot;, (g)-&gt;name)
+macro_line|#else
+DECL|macro|gadget_is_at91
+mdefine_line|#define gadget_is_at91(g)&t;0
+macro_line|#endif
 singleline_comment|// CONFIG_USB_GADGET_SX2
 singleline_comment|// CONFIG_USB_GADGET_AU1X00
 singleline_comment|// ...

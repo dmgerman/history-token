@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 r_struct
 id|us_data
 suffix:semicolon
@@ -56,29 +57,19 @@ id|flags
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Flag definitions: these entries are static */
-DECL|macro|US_FL_SINGLE_LUN
-mdefine_line|#define US_FL_SINGLE_LUN      0x00000001 /* allow access to only LUN 0&t;    */
-DECL|macro|US_FL_MODE_XLATE
-mdefine_line|#define US_FL_MODE_XLATE      0          /* [no longer used]                */
-DECL|macro|US_FL_NEED_OVERRIDE
-mdefine_line|#define US_FL_NEED_OVERRIDE   0x00000004 /* unusual_devs entry is necessary */
-DECL|macro|US_FL_IGNORE_SER
-mdefine_line|#define US_FL_IGNORE_SER      0&t;&t; /* [no longer used]&t;&t;    */
-DECL|macro|US_FL_SCM_MULT_TARG
-mdefine_line|#define US_FL_SCM_MULT_TARG   0x00000020 /* supports multiple targets&t;    */
-DECL|macro|US_FL_FIX_INQUIRY
-mdefine_line|#define US_FL_FIX_INQUIRY     0x00000040 /* INQUIRY response needs faking   */
-DECL|macro|US_FL_FIX_CAPACITY
-mdefine_line|#define US_FL_FIX_CAPACITY    0x00000080 /* READ CAPACITY response too big  */
-DECL|macro|US_FL_IGNORE_RESIDUE
-mdefine_line|#define US_FL_IGNORE_RESIDUE  0x00000100 /* reported residue is wrong&t;    */
-DECL|macro|US_FL_BULK32
-mdefine_line|#define US_FL_BULK32          0x00000200 /* Uses 32-byte CBW length         */
-DECL|macro|US_FL_NOT_LOCKABLE
-mdefine_line|#define US_FL_NOT_LOCKABLE    0x00000400 /* PREVENT/ALLOW not supported     */
-DECL|macro|US_FL_GO_SLOW
-mdefine_line|#define US_FL_GO_SLOW         0x00000800 /* Need delay after Command phase  */
+multiline_comment|/*&n; * Static flag definitions.  We use this roundabout technique so that the&n; * proc_info() routine can automatically display a message for each flag.&n; */
+DECL|macro|US_DO_ALL_FLAGS
+mdefine_line|#define US_DO_ALL_FLAGS&t;&t;&t;&t;&t;&t;&bslash;&n;&t;US_FLAG(SINGLE_LUN,&t;0x00000001)&t;&t;&t;&bslash;&n;&t;&t;/* allow access to only LUN 0 */&t;&t;&bslash;&n;&t;US_FLAG(NEED_OVERRIDE,&t;0x00000002)&t;&t;&t;&bslash;&n;&t;&t;/* unusual_devs entry is necessary */&t;&t;&bslash;&n;&t;US_FLAG(SCM_MULT_TARG,&t;0x00000004)&t;&t;&t;&bslash;&n;&t;&t;/* supports multiple targets */&t;&t;&t;&bslash;&n;&t;US_FLAG(FIX_INQUIRY,&t;0x00000008)&t;&t;&t;&bslash;&n;&t;&t;/* INQUIRY response needs faking */&t;&t;&bslash;&n;&t;US_FLAG(FIX_CAPACITY,&t;0x00000010)&t;&t;&t;&bslash;&n;&t;&t;/* READ CAPACITY response too big */&t;&t;&bslash;&n;&t;US_FLAG(IGNORE_RESIDUE,&t;0x00000020)&t;&t;&t;&bslash;&n;&t;&t;/* reported residue is wrong */&t;&t;&t;&bslash;&n;&t;US_FLAG(BULK32,&t;&t;0x00000040)&t;&t;&t;&bslash;&n;&t;&t;/* Uses 32-byte CBW length */&t;&t;&t;&bslash;&n;&t;US_FLAG(NOT_LOCKABLE,&t;0x00000080)&t;&t;&t;&bslash;&n;&t;&t;/* PREVENT/ALLOW not supported */&t;&t;&bslash;&n;&t;US_FLAG(GO_SLOW,&t;0x00000100)&t;&t;&t;&bslash;&n;&t;&t;/* Need delay after Command phase */&t;&t;&bslash;&n;&t;US_FLAG(NO_WP_DETECT,&t;0x00000200)&t;&t;&t;&bslash;&n;&t;&t;/* Don&squot;t check for write-protect */&t;&t;&bslash;&n;
+DECL|macro|US_FLAG
+mdefine_line|#define US_FLAG(name, value)&t;US_FL_##name = value ,
+DECL|enumerator|US_DO_ALL_FLAGS
+r_enum
+(brace
+id|US_DO_ALL_FLAGS
+)brace
+suffix:semicolon
+DECL|macro|US_FLAG
+macro_line|#undef US_FLAG
 multiline_comment|/* Dynamic flag definitions: used in set_bit() etc. */
 DECL|macro|US_FLIDX_URB_ACTIVE
 mdefine_line|#define US_FLIDX_URB_ACTIVE&t;18  /* 0x00040000  current_urb is in use  */
@@ -278,13 +269,6 @@ id|proto_handler
 suffix:semicolon
 multiline_comment|/* protocol handler&t;   */
 multiline_comment|/* SCSI interfaces */
-DECL|member|host
-r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
-multiline_comment|/* our dummy host data */
 DECL|member|srb
 r_struct
 id|scsi_cmnd
@@ -341,29 +325,18 @@ r_struct
 id|semaphore
 id|sema
 suffix:semicolon
-multiline_comment|/* to sleep thread on   */
+multiline_comment|/* to sleep thread on&t;    */
 DECL|member|notify
 r_struct
 id|completion
 id|notify
 suffix:semicolon
-multiline_comment|/* thread begin/end&t; */
-DECL|member|dev_reset_wait
+multiline_comment|/* thread begin/end&t;    */
+DECL|member|delay_wait
 id|wait_queue_head_t
-id|dev_reset_wait
+id|delay_wait
 suffix:semicolon
-multiline_comment|/* wait during reset    */
-DECL|member|scsi_scan_wait
-id|wait_queue_head_t
-id|scsi_scan_wait
-suffix:semicolon
-multiline_comment|/* wait before scanning */
-DECL|member|scsi_scan_done
-r_struct
-id|completion
-id|scsi_scan_done
-suffix:semicolon
-multiline_comment|/* scan thread end&t; */
+multiline_comment|/* wait during scan, reset */
 multiline_comment|/* subdriver information */
 DECL|member|extra
 r_void
@@ -378,12 +351,63 @@ suffix:semicolon
 multiline_comment|/* extra data destructor   */
 )brace
 suffix:semicolon
-multiline_comment|/* The structure which defines our driver */
-r_extern
+multiline_comment|/* Convert between us_data and the corresponding Scsi_Host */
+DECL|function|us_to_host
+r_static
 r_struct
-id|usb_driver
-id|usb_storage_driver
+id|Scsi_Host
+r_inline
+op_star
+id|us_to_host
+c_func
+(paren
+r_struct
+id|us_data
+op_star
+id|us
+)paren
+(brace
+r_return
+id|container_of
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|us
+comma
+r_struct
+id|Scsi_Host
+comma
+id|hostdata
+)paren
 suffix:semicolon
+)brace
+DECL|function|host_to_us
+r_static
+r_struct
+id|us_data
+r_inline
+op_star
+id|host_to_us
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|us_data
+op_star
+)paren
+id|host-&gt;hostdata
+suffix:semicolon
+)brace
 multiline_comment|/* Function to fill an inquiry response. See usb.c for details */
 r_extern
 r_void

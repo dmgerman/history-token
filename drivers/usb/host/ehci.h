@@ -1083,7 +1083,7 @@ suffix:semicolon
 multiline_comment|/* buf crosses pages */
 multiline_comment|/* for full speed OUT splits */
 DECL|member|buf1
-id|u16
+id|u32
 id|buf1
 suffix:semicolon
 )brace

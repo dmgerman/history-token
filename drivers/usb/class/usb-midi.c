@@ -3706,11 +3706,7 @@ id|d
 comma
 id|pipe
 comma
-id|usb_pipein
-c_func
-(paren
-id|pipe
-)paren
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* usb_pipein() = ! usb_pipeout() = true for an in Endpoint */
@@ -4002,11 +3998,7 @@ id|d
 comma
 id|pipe
 comma
-id|usb_pipeout
-c_func
-(paren
-id|pipe
-)paren
+l_int|1
 )paren
 suffix:semicolon
 id|ep
@@ -6149,17 +6141,6 @@ op_assign
 id|oep
 op_plus
 l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pins
-OG
-l_int|16
-)paren
-id|pins
-op_assign
-l_int|16
 suffix:semicolon
 id|u-&gt;out
 (braket

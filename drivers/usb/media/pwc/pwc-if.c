@@ -548,6 +548,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1306,7 +1307,7 @@ c_func
 (paren
 id|TRACE_MEMORY
 comma
-l_string|&quot;private_data(%d)&bslash;n&quot;
+l_string|&quot;private_data(%Zd)&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -2322,12 +2323,12 @@ r_char
 op_star
 id|fillptr
 op_assign
-l_int|0
+l_int|NULL
 comma
 op_star
 id|iso_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|awake
 op_assign
@@ -3287,12 +3288,16 @@ id|pdev-&gt;vendpoint
 (brace
 id|pdev-&gt;vmax_packet_size
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|idesc-&gt;endpoint
 (braket
 id|i
 )braket
 dot
 id|desc.wMaxPacketSize
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4865,6 +4870,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -4911,7 +4917,7 @@ c_func
 (paren
 id|TRACE_READ
 comma
-l_string|&quot;video_read(0x%p, %p, %d) called.&bslash;n&quot;
+l_string|&quot;video_read(0x%p, %p, %Zd) called.&bslash;n&quot;
 comma
 id|vdev
 comma
@@ -6742,9 +6748,17 @@ id|TRACE_PROBE
 comma
 l_string|&quot;probe() called [%04X %04X], if %d&bslash;n&quot;
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idVendor
+)paren
 comma
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 comma
 id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 )paren
@@ -6763,11 +6777,19 @@ id|ENODEV
 suffix:semicolon
 id|vendor_id
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idVendor
+)paren
 suffix:semicolon
 id|product_id
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.idProduct
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7736,7 +7758,11 @@ id|pdev
 suffix:semicolon
 id|pdev-&gt;release
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|udev-&gt;descriptor.bcdDevice
+)paren
 suffix:semicolon
 id|Trace
 c_func
@@ -8253,10 +8279,10 @@ multiline_comment|/* &n; * Initialization code &amp; module stuff &n; */
 DECL|variable|size
 r_static
 r_char
-op_star
 id|size
-op_assign
-l_int|NULL
+(braket
+l_int|10
+)braket
 suffix:semicolon
 DECL|variable|fps
 r_static
@@ -8323,12 +8349,19 @@ op_assign
 (brace
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_string
 c_func
 (paren
 id|size
 comma
-l_string|&quot;s&quot;
+id|size
+comma
+r_sizeof
+(paren
+id|size
+)paren
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8339,12 +8372,14 @@ comma
 l_string|&quot;Initial image size. One of sqcif, qsif, qcif, sif, cif, vga&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|fps
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0000
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8355,12 +8390,14 @@ comma
 l_string|&quot;Initial frames per second. Varies with model, useful range 5-30&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|fbufs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0000
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8371,12 +8408,14 @@ comma
 l_string|&quot;Number of internal frame buffers to reserve&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mbufs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0000
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8387,12 +8426,14 @@ comma
 l_string|&quot;Number of external (mmap()ed) image buffers&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|trace
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0000
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8403,12 +8444,14 @@ comma
 l_string|&quot;For debugging purposes&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|power_save
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0000
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8419,12 +8462,14 @@ comma
 l_string|&quot;Turn power save feature in camera on or off&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|compression
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0000
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8435,12 +8480,16 @@ comma
 l_string|&quot;Preferred compression quality. Range 0 (uncompressed) to 3 (high compression)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|leds
 comma
-l_string|&quot;2i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0000
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8451,12 +8500,16 @@ comma
 l_string|&quot;LED on,off time in milliseconds&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|dev_hint
 comma
-l_string|&quot;0-20s&quot;
+id|charp
+comma
+l_int|NULL
+comma
+l_int|0000
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8589,6 +8642,9 @@ r_if
 c_cond
 (paren
 id|size
+(braket
+l_int|0
+)braket
 )paren
 (brace
 multiline_comment|/* string; try matching with array */

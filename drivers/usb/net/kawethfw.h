@@ -8249,6 +8249,7 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|len_kaweth_trigger_code
+r_static
 r_const
 r_int
 id|len_kaweth_trigger_code
@@ -8259,6 +8260,7 @@ id|kaweth_trigger_code
 )paren
 suffix:semicolon
 DECL|variable|len_kaweth_trigger_code_fix
+r_static
 r_const
 r_int
 id|len_kaweth_trigger_code_fix
@@ -8269,6 +8271,7 @@ id|kaweth_trigger_code_fix
 )paren
 suffix:semicolon
 DECL|variable|len_kaweth_new_code
+r_static
 r_const
 r_int
 id|len_kaweth_new_code
@@ -8279,6 +8282,7 @@ id|kaweth_new_code
 )paren
 suffix:semicolon
 DECL|variable|len_kaweth_new_code_fix
+r_static
 r_const
 r_int
 id|len_kaweth_new_code_fix

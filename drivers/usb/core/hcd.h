@@ -101,6 +101,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* sw should use wakeup? */
+DECL|member|rh_registered
+r_int
+id|rh_registered
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* is root hub registered? */
 DECL|member|irq
 r_int
 id|irq
@@ -144,20 +151,20 @@ DECL|macro|__SUSPEND
 macro_line|#&t;define&t;__SUSPEND&t;&t;0x04
 DECL|macro|__TRANSIENT
 macro_line|#&t;define&t;__TRANSIENT&t;&t;0x80
-DECL|macro|USB_STATE_HALT
-macro_line|#&t;define&t;USB_STATE_HALT&t;&t;0
-DECL|macro|USB_STATE_RUNNING
-macro_line|#&t;define&t;USB_STATE_RUNNING&t;(__ACTIVE)
-DECL|macro|USB_STATE_QUIESCING
-macro_line|#&t;define&t;USB_STATE_QUIESCING&t;(__SUSPEND|__TRANSIENT|__ACTIVE)
-DECL|macro|USB_STATE_RESUMING
-macro_line|#&t;define&t;USB_STATE_RESUMING&t;(__SUSPEND|__TRANSIENT)
-DECL|macro|HCD_STATE_SUSPENDED
-macro_line|#&t;define&t;HCD_STATE_SUSPENDED&t;(__SUSPEND)
-DECL|macro|HCD_IS_RUNNING
-mdefine_line|#define&t;HCD_IS_RUNNING(state) ((state) &amp; __ACTIVE)
-DECL|macro|HCD_IS_SUSPENDED
-mdefine_line|#define&t;HCD_IS_SUSPENDED(state) ((state) &amp; __SUSPEND)
+DECL|macro|HC_STATE_HALT
+macro_line|#&t;define&t;HC_STATE_HALT&t;&t;0
+DECL|macro|HC_STATE_RUNNING
+macro_line|#&t;define&t;HC_STATE_RUNNING&t;(__ACTIVE)
+DECL|macro|HC_STATE_QUIESCING
+macro_line|#&t;define&t;HC_STATE_QUIESCING&t;(__SUSPEND|__TRANSIENT|__ACTIVE)
+DECL|macro|HC_STATE_RESUMING
+macro_line|#&t;define&t;HC_STATE_RESUMING&t;(__SUSPEND|__TRANSIENT)
+DECL|macro|HC_STATE_SUSPENDED
+macro_line|#&t;define&t;HC_STATE_SUSPENDED&t;(__SUSPEND)
+DECL|macro|HC_IS_RUNNING
+mdefine_line|#define&t;HC_IS_RUNNING(state) ((state) &amp; __ACTIVE)
+DECL|macro|HC_IS_SUSPENDED
+mdefine_line|#define&t;HC_IS_SUSPENDED(state) ((state) &amp; __SUSPEND)
 multiline_comment|/* more shared queuing code would be good; it should support&n;&t; * smarter scheduling, handle transaction translators, etc;&n;&t; * input size of periodic table to an interrupt scheduler. &n;&t; * (ohci 32, uhci 1024, ehci 256/512/1024).&n;&t; */
 multiline_comment|/* The HC driver&squot;s private data is stored at the end of&n;&t; * this structure.&n;&t; */
 DECL|member|hcd_priv
@@ -681,16 +688,6 @@ id|regs
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|usb_bus_init
-(paren
-r_struct
-id|usb_bus
-op_star
-id|bus
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|usb_hcd
 op_star
@@ -1108,42 +1105,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|usb_register_bus
-(paren
-r_struct
-id|usb_bus
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_deregister_bus
-(paren
-r_struct
-id|usb_bus
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usb_register_root_hub
-(paren
-r_struct
-id|usb_device
-op_star
-id|usb_dev
-comma
-r_struct
-id|device
-op_star
-id|parent_dev
-)paren
-suffix:semicolon
-DECL|function|hcd_register_root
-r_static
-r_inline
-r_int
-id|hcd_register_root
+id|usb_hcd_register_root_hub
 (paren
 r_struct
 id|usb_device
@@ -1155,33 +1117,17 @@ id|usb_hcd
 op_star
 id|hcd
 )paren
-(brace
-multiline_comment|/* hcd-&gt;driver-&gt;start() reported can_wakeup, probably with&n;&t; * assistance from board&squot;s boot firmware.&n;&t; * NOTE:  normal devices won&squot;t enable wakeup by default.&n;&t; */
-r_if
-c_cond
+suffix:semicolon
+r_extern
+r_void
+id|usb_hcd_resume_root_hub
 (paren
-id|hcd-&gt;can_wakeup
-)paren
-id|dev_dbg
-(paren
-id|hcd-&gt;self.controller
-comma
-l_string|&quot;supports USB remote wakeup&bslash;n&quot;
+r_struct
+id|usb_hcd
+op_star
+id|hcd
 )paren
 suffix:semicolon
-id|hcd-&gt;remote_wakeup
-op_assign
-id|hcd-&gt;can_wakeup
-suffix:semicolon
-r_return
-id|usb_register_root_hub
-(paren
-id|usb_dev
-comma
-id|hcd-&gt;self.controller
-)paren
-suffix:semicolon
-)brace
 r_extern
 r_void
 id|usb_set_device_state

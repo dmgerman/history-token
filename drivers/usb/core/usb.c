@@ -82,6 +82,7 @@ op_assign
 l_string|&quot;usbcore&quot;
 suffix:semicolon
 DECL|variable|nousb
+r_static
 r_int
 id|nousb
 suffix:semicolon
@@ -166,6 +167,7 @@ id|usb_generic_driver_data
 suffix:semicolon
 multiline_comment|/* called from driver core with usb_bus_type.subsys writelock */
 DECL|function|usb_probe_interface
+r_static
 r_int
 id|usb_probe_interface
 c_func
@@ -300,6 +302,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* called from driver core with usb_bus_type.subsys writelock */
 DECL|function|usb_unbind_interface
+r_static
 r_int
 id|usb_unbind_interface
 c_func
@@ -1590,6 +1593,129 @@ comma
 id|alt-&gt;desc.bInterfaceSubClass
 comma
 id|alt-&gt;desc.bInterfaceProtocol
+)paren
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|add_hotplug_env_var
+c_func
+(paren
+id|envp
+comma
+id|num_envp
+comma
+op_amp
+id|i
+comma
+id|buffer
+comma
+id|buffer_size
+comma
+op_amp
+id|length
+comma
+l_string|&quot;MODALIAS=usb:v%04Xp%04Xdl%04Xdh%04Xdc%02Xdsc%02Xdp%02Xic%02Xisc%02Xip%02X&quot;
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|usb_dev-&gt;descriptor.idVendor
+)paren
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|usb_dev-&gt;descriptor.idProduct
+)paren
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|usb_dev-&gt;descriptor.bcdDevice
+)paren
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|usb_dev-&gt;descriptor.bcdDevice
+)paren
+comma
+id|usb_dev-&gt;descriptor.bDeviceClass
+comma
+id|usb_dev-&gt;descriptor.bDeviceSubClass
+comma
+id|usb_dev-&gt;descriptor.bDeviceProtocol
+comma
+id|alt-&gt;desc.bInterfaceClass
+comma
+id|alt-&gt;desc.bInterfaceSubClass
+comma
+id|alt-&gt;desc.bInterfaceProtocol
+)paren
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|add_hotplug_env_var
+c_func
+(paren
+id|envp
+comma
+id|num_envp
+comma
+op_amp
+id|i
+comma
+id|buffer
+comma
+id|buffer_size
+comma
+op_amp
+id|length
+comma
+l_string|&quot;MODALIAS=usb:v%04Xp%04Xdl%04Xdh%04Xdc%02Xdsc%02Xdp%02Xic*isc*ip*&quot;
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|usb_dev-&gt;descriptor.idVendor
+)paren
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|usb_dev-&gt;descriptor.idProduct
+)paren
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|usb_dev-&gt;descriptor.bcdDevice
+)paren
+comma
+id|le16_to_cpu
+c_func
+(paren
+id|usb_dev-&gt;descriptor.bcdDevice
+)paren
+comma
+id|usb_dev-&gt;descriptor.bDeviceClass
+comma
+id|usb_dev-&gt;descriptor.bDeviceSubClass
+comma
+id|usb_dev-&gt;descriptor.bDeviceProtocol
 )paren
 )paren
 r_return
@@ -2887,7 +3013,7 @@ id|dma
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * usb_buffer_map - create DMA mapping(s) for an urb&n; * @urb: urb whose transfer_buffer/setup_packet will be mapped&n; *&n; * Return value is either null (indicating no buffer could be mapped), or&n; * the parameter.  URB_NO_TRANSFER_DMA_MAP and URB_NO_SETUP_DMA_MAP are&n; * added to urb-&gt;transfer_flags if the operation succeeds.  If the device&n; * is connected to this system through a non-DMA controller, this operation&n; * always succeeds.&n; *&n; * This call would normally be used for an urb which is reused, perhaps&n; * as the target of a large periodic transfer, with usb_buffer_dmasync()&n; * calls to synchronize memory and dma state.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap().&n; */
-DECL|function|usb_buffer_map
+macro_line|#if 0
 r_struct
 id|urb
 op_star
@@ -3008,6 +3134,7 @@ r_return
 id|urb
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 multiline_comment|/* XXX DISABLED, no users currently.  If you wish to re-enable this&n; * XXX please determine whether the sync is to transfer ownership of&n; * XXX the buffer from device to cpu or vice verse, and thusly use the&n; * XXX appropriate _for_{cpu,device}() method.  -DaveM&n; */
 macro_line|#if 0
 multiline_comment|/**&n; * usb_buffer_dmasync - synchronize DMA and CPU view of buffer(s)&n; * @urb: urb whose transfer_buffer/setup_packet will be synchronized&n; */
@@ -3114,7 +3241,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/**&n; * usb_buffer_unmap - free DMA mapping(s) for an urb&n; * @urb: urb whose transfer_buffer will be unmapped&n; *&n; * Reverses the effect of usb_buffer_map().&n; */
-DECL|function|usb_buffer_unmap
+macro_line|#if 0
 r_void
 id|usb_buffer_unmap
 (paren
@@ -3225,6 +3352,7 @@ id|URB_NO_SETUP_DMA_MAP
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  0  */
 multiline_comment|/**&n; * usb_buffer_map_sg - create scatterlist DMA mapping(s) for an endpoint&n; * @dev: device to which the scatterlist will be mapped&n; * @pipe: endpoint defining the mapping direction&n; * @sg: the scatterlist to map&n; * @nents: the number of entries in the scatterlist&n; *&n; * Return value is either &lt; 0 (indicating no buffers could be mapped), or&n; * the number of DMA mapping array entries in the scatterlist.&n; *&n; * The caller is responsible for placing the resulting DMA addresses from&n; * the scatterlist into URB transfer buffer pointers, and for setting the&n; * URB_NO_TRANSFER_DMA_MAP transfer flag in each of those URBs.&n; *&n; * Top I/O rates come from queuing URBs, instead of waiting for each one&n; * to complete before starting the next I/O.   This is particularly easy&n; * to do with scatterlists.  Just allocate and submit one URB for each DMA&n; * mapping entry returned, stopping on the first error or when all succeed.&n; * Better yet, use the usb_sg_*() calls, which do that (and more) for you.&n; *&n; * This call would normally be used when translating scatterlist requests,&n; * rather than usb_buffer_map(), since on some hardware (with IOMMUs) it&n; * may be able to coalesce mappings for improved I/O efficiency.&n; *&n; * Reverse the effect of this call with usb_buffer_unmap_sg().&n; */
 DECL|function|usb_buffer_map_sg
 r_int
@@ -4149,25 +4277,23 @@ id|EXPORT_SYMBOL
 id|usb_buffer_free
 )paren
 suffix:semicolon
-DECL|variable|usb_buffer_map
+macro_line|#if 0
 id|EXPORT_SYMBOL
 (paren
 id|usb_buffer_map
 )paren
 suffix:semicolon
-macro_line|#if 0
 id|EXPORT_SYMBOL
 (paren
 id|usb_buffer_dmasync
 )paren
 suffix:semicolon
-macro_line|#endif
-DECL|variable|usb_buffer_unmap
 id|EXPORT_SYMBOL
 (paren
 id|usb_buffer_unmap
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|usb_buffer_map_sg
 id|EXPORT_SYMBOL
 (paren

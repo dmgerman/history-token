@@ -512,7 +512,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -761,7 +761,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -897,7 +897,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|hcd-&gt;state
 )paren
@@ -1764,16 +1764,6 @@ id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
 )brace
-id|ohci_writel
-(paren
-id|ohci
-comma
-id|ohci-&gt;fminterval
-comma
-op_amp
-id|ohci-&gt;regs-&gt;fminterval
-)paren
-suffix:semicolon
 multiline_comment|/* Tell the controller where the control and bulk lists are&n;&t; * The lists are empty now. */
 id|ohci_writel
 (paren
@@ -1931,7 +1921,7 @@ id|ohci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 multiline_comment|/* wake on ConnectStatusChange, matching external hubs */
 id|ohci_writel
@@ -2126,7 +2116,7 @@ id|ohci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 id|ohci_dump
 (paren
@@ -2200,7 +2190,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|hcd_register_root
+id|usb_hcd_register_root_hub
 (paren
 id|udev
 comma
@@ -2447,6 +2437,13 @@ comma
 l_string|&quot;resume detect&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hcd-&gt;state
+op_ne
+id|HC_STATE_QUIESCING
+)paren
 id|schedule_work
 c_func
 (paren
@@ -2466,7 +2463,7 @@ id|OHCI_INTR_WDH
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -2504,7 +2501,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -2561,7 +2558,7 @@ op_logical_and
 op_logical_neg
 id|ohci-&gt;ed_rm_list
 op_logical_and
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state
@@ -2586,7 +2583,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 c_func
 (paren
 id|hcd-&gt;state

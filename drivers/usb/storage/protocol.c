@@ -2,8 +2,8 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; *&n; * $Id
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
-macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
+macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;transport.h&quot;

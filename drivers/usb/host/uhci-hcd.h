@@ -625,9 +625,9 @@ id|UHCI_NUM_SKELQH
 )braket
 suffix:semicolon
 multiline_comment|/* Skeleton QH&squot;s */
-DECL|member|schedule_lock
+DECL|member|lock
 id|spinlock_t
-id|schedule_lock
+id|lock
 suffix:semicolon
 DECL|member|fl
 r_struct
@@ -635,7 +635,7 @@ id|uhci_frame_list
 op_star
 id|fl
 suffix:semicolon
-multiline_comment|/* P: uhci-&gt;schedule_lock */
+multiline_comment|/* P: uhci-&gt;lock */
 DECL|member|fsbr
 r_int
 id|fsbr
@@ -659,18 +659,44 @@ r_int
 id|state_end
 suffix:semicolon
 multiline_comment|/* Time of next transition */
+DECL|member|frame_number
+r_int
+r_int
+id|frame_number
+suffix:semicolon
+multiline_comment|/* As of last check */
+DECL|member|is_stopped
+r_int
+r_int
+id|is_stopped
+suffix:semicolon
+DECL|macro|UHCI_IS_STOPPED
+mdefine_line|#define UHCI_IS_STOPPED&t;&t;9999&t;&t;/* Larger than a frame # */
+DECL|member|scan_in_progress
+r_int
+r_int
+id|scan_in_progress
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Schedule scan is running */
+DECL|member|need_rescan
+r_int
+r_int
+id|need_rescan
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Redo the schedule scan */
 DECL|member|resume_detect
 r_int
+r_int
 id|resume_detect
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* Need a Global Resume */
-DECL|member|saved_framenumber
-r_int
-r_int
-id|saved_framenumber
-suffix:semicolon
-multiline_comment|/* Save during PM suspend */
-multiline_comment|/* Support for port suspend/resume */
+multiline_comment|/* Support for port suspend/resume/reset */
 DECL|member|port_c_suspend
 r_int
 r_int
@@ -687,10 +713,10 @@ r_int
 r_int
 id|resuming_ports
 suffix:semicolon
-DECL|member|resume_timeout
+DECL|member|ports_timeout
 r_int
 r_int
-id|resume_timeout
+id|ports_timeout
 suffix:semicolon
 multiline_comment|/* Time to stop signalling */
 multiline_comment|/* Main list of URB&squot;s currently controlled by this HC */
@@ -699,14 +725,14 @@ r_struct
 id|list_head
 id|urb_list
 suffix:semicolon
-multiline_comment|/* P: uhci-&gt;schedule_lock */
+multiline_comment|/* P: uhci-&gt;lock */
 multiline_comment|/* List of QH&squot;s that are done, but waiting to be unlinked (race) */
 DECL|member|qh_remove_list
 r_struct
 id|list_head
 id|qh_remove_list
 suffix:semicolon
-multiline_comment|/* P: uhci-&gt;schedule_lock */
+multiline_comment|/* P: uhci-&gt;lock */
 DECL|member|qh_remove_age
 r_int
 r_int
@@ -719,7 +745,7 @@ r_struct
 id|list_head
 id|td_remove_list
 suffix:semicolon
-multiline_comment|/* P: uhci-&gt;schedule_lock */
+multiline_comment|/* P: uhci-&gt;lock */
 DECL|member|td_remove_age
 r_int
 r_int
@@ -732,7 +758,7 @@ r_struct
 id|list_head
 id|urb_remove_list
 suffix:semicolon
-multiline_comment|/* P: uhci-&gt;schedule_lock */
+multiline_comment|/* P: uhci-&gt;lock */
 DECL|member|urb_remove_age
 r_int
 r_int
@@ -745,7 +771,7 @@ r_struct
 id|list_head
 id|complete_list
 suffix:semicolon
-multiline_comment|/* P: uhci-&gt;schedule_lock */
+multiline_comment|/* P: uhci-&gt;lock */
 DECL|member|rh_numports
 r_int
 id|rh_numports
@@ -901,6 +927,6 @@ suffix:semicolon
 multiline_comment|/* P: uhci-&gt;frame_list_lock */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Locking in uhci.c&n; *&n; * Almost everything relating to the hardware schedule and processing&n; * of URBs is protected by uhci-&gt;schedule_lock.  urb-&gt;status is protected&n; * by urb-&gt;lock; that&squot;s the one exception.&n; *&n; * To prevent deadlocks, never lock uhci-&gt;schedule_lock while holding&n; * urb-&gt;lock.  The safe order of locking is:&n; *&n; * #1 uhci-&gt;schedule_lock&n; * #2 urb-&gt;lock&n; */
+multiline_comment|/*&n; * Locking in uhci.c&n; *&n; * Almost everything relating to the hardware schedule and processing&n; * of URBs is protected by uhci-&gt;lock.  urb-&gt;status is protected by&n; * urb-&gt;lock; that&squot;s the one exception.&n; *&n; * To prevent deadlocks, never lock uhci-&gt;lock while holding urb-&gt;lock.&n; * The safe order of locking is:&n; *&n; * #1 uhci-&gt;lock&n; * #2 urb-&gt;lock&n; */
 macro_line|#endif
 eof

@@ -2,12 +2,6 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Protocol
 macro_line|#ifndef _PROTOCOL_H_
 DECL|macro|_PROTOCOL_H_
 mdefine_line|#define _PROTOCOL_H_
-r_struct
-id|scsi_cmnd
-suffix:semicolon
-r_struct
-id|us_data
-suffix:semicolon
 multiline_comment|/* Sub Classes */
 DECL|macro|US_SC_RBC
 mdefine_line|#define US_SC_RBC&t;0x01&t;&t;/* Typically, flash devices */

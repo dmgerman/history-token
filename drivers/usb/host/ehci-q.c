@@ -1322,7 +1322,7 @@ id|stopped
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* magic dummy for some short reads; qh won&squot;t advance */
+multiline_comment|/* magic dummy for some short reads; qh won&squot;t advance.&n;&t;&t;&t; * that silicon quirk can kick in with this dummy too.&n;&t;&t;&t; */
 )brace
 r_else
 r_if
@@ -1333,13 +1333,12 @@ id|IS_SHORT_READ
 id|token
 )paren
 op_logical_and
+op_logical_neg
 (paren
-id|qh-&gt;hw_alt_next
+id|qtd-&gt;hw_alt_next
 op_amp
-id|QTD_MASK
+id|EHCI_LIST_END
 )paren
-op_eq
-id|ehci-&gt;async-&gt;hw_alt_next
 )paren
 (brace
 id|stopped
@@ -1361,7 +1360,7 @@ id|likely
 op_logical_neg
 id|stopped
 op_logical_and
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func
@@ -1389,7 +1388,7 @@ c_cond
 id|unlikely
 (paren
 op_logical_neg
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func
@@ -1974,7 +1973,7 @@ id|buf
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// FIXME this &squot;buf&squot; check break some zlps...
+multiline_comment|/* for zero length DATA stages, STATUS is always IN */
 r_if
 c_cond
 (paren
@@ -3006,7 +3005,7 @@ id|ehci
 op_member_access_from_pointer
 id|state
 op_assign
-id|USB_STATE_RUNNING
+id|HC_STATE_RUNNING
 suffix:semicolon
 multiline_comment|/* posted write need not be known to HC yet ... */
 )brace
@@ -3622,7 +3621,7 @@ op_amp
 id|qh-&gt;qtd_list
 )paren
 op_logical_and
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func
@@ -3652,7 +3651,7 @@ multiline_comment|/* it&squot;s not free to turn the async schedule on/off; leav
 r_if
 c_cond
 (paren
-id|HCD_IS_RUNNING
+id|HC_IS_RUNNING
 (paren
 id|ehci_to_hcd
 c_func
@@ -3778,7 +3777,7 @@ id|ehci
 op_member_access_from_pointer
 id|state
 op_ne
-id|USB_STATE_HALT
+id|HC_STATE_HALT
 )paren
 (brace
 id|writel
@@ -3861,7 +3860,7 @@ id|ehci
 op_member_access_from_pointer
 id|state
 op_eq
-id|USB_STATE_HALT
+id|HC_STATE_HALT
 )paren
 )paren
 (brace

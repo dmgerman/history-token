@@ -45,6 +45,8 @@ DECL|macro|EMI26_VENDOR_ID
 mdefine_line|#define EMI26_VENDOR_ID &t;&t;0x086a  /* Emagic Soft-und Hardware GmBH */
 DECL|macro|EMI26_PRODUCT_ID
 mdefine_line|#define EMI26_PRODUCT_ID&t;&t;0x0100&t;/* EMI 2|6 without firmware */
+DECL|macro|EMI26B_PRODUCT_ID
+mdefine_line|#define EMI26B_PRODUCT_ID&t;&t;0x0102&t;/* EMI 2|6 without firmware */
 DECL|macro|ANCHOR_LOAD_INTERNAL
 mdefine_line|#define ANCHOR_LOAD_INTERNAL&t;0xA0&t;/* Vendor specific request code for Anchor Upload/Download (This one is implemented in the core) */
 DECL|macro|ANCHOR_LOAD_EXTERNAL
@@ -1065,6 +1067,16 @@ c_func
 id|EMI26_VENDOR_ID
 comma
 id|EMI26_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|EMI26_VENDOR_ID
+comma
+id|EMI26B_PRODUCT_ID
 )paren
 )brace
 comma

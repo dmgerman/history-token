@@ -3204,8 +3204,9 @@ c_cond
 op_logical_neg
 id|urb
 )paren
-r_goto
-id|cleanup
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|memset
 (paren

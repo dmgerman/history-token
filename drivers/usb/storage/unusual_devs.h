@@ -301,6 +301,31 @@ comma
 id|US_FL_FIX_CAPACITY
 )paren
 comma
+multiline_comment|/* BENQ DC5330&n; * Reported by Manuel Fombuena &lt;mfombuena@ya.com&gt; and&n; * Frank Copeland &lt;fjc@thingy.apana.org.au&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04a5
+comma
+l_int|0x3010
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Tekom Technologies, Inc&quot;
+comma
+l_string|&quot;300_CAMERA&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_IGNORE_RESIDUE
+)paren
+comma
 multiline_comment|/* Reported by Simon Levitt &lt;simon@whattf.com&gt;&n; * This entry needs Sub and Proto fields */
 id|UNUSUAL_DEV
 c_func
@@ -1024,6 +1049,8 @@ comma
 id|US_FL_SINGLE_LUN
 op_or
 id|US_FL_NOT_LOCKABLE
+op_or
+id|US_FL_NO_WP_DETECT
 )paren
 comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
@@ -1102,6 +1129,31 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Submitted by Olaf Hering, &lt;olh@suse.de&gt; SuSE Bugzilla #49049 */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x002c
+comma
+l_int|0x0501
+comma
+l_int|0x0501
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;USB Floppy Drive&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1595,6 +1647,30 @@ comma
 id|US_FL_FIX_CAPACITY
 )paren
 comma
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x05ac
+comma
+l_int|0x1205
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Apple&quot;
+comma
+l_string|&quot;iPod&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
 macro_line|#ifdef CONFIG_USB_STORAGE_JUMPSHOT
 id|UNUSUAL_DEV
 c_func
@@ -1976,56 +2052,6 @@ c_func
 (paren
 l_int|0x0781
 comma
-l_int|0x0002
-comma
-l_int|0x0009
-comma
-l_int|0x0009
-comma
-l_string|&quot;Sandisk&quot;
-comma
-l_string|&quot;ImageMate SDDR-31&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_IGNORE_SER
-)paren
-comma
-macro_line|#ifdef CONFIG_USB_STORAGE_USBAT
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0781
-comma
-l_int|0x0005
-comma
-l_int|0x0005
-comma
-l_int|0x0005
-comma
-l_string|&quot;Sandisk&quot;
-comma
-l_string|&quot;ImageMate SDDR-05b&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_SCM_ATAPI
-comma
-id|init_usbat
-comma
-id|US_FL_SINGLE_LUN
-)paren
-comma
-macro_line|#endif
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0781
-comma
 l_int|0x0100
 comma
 l_int|0x0100
@@ -2244,6 +2270,31 @@ comma
 l_int|NULL
 comma
 l_int|0
+)paren
+comma
+multiline_comment|/* Reported by Josef Reisinger &lt;josef.reisinger@netcologne.de&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x07c4
+comma
+l_int|0xa002
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Datafab/Unknown&quot;
+comma
+l_string|&quot;MD2/MD3 Disk enclosure&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_DATAFAB
+comma
+l_int|NULL
+comma
+id|US_FL_SINGLE_LUN
 )paren
 comma
 id|UNUSUAL_DEV
@@ -2927,6 +2978,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_IGNORE_RESIDUE
+)paren
+comma
+multiline_comment|/* Reported by Michael Stattmann &lt;michael@stattmann.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0fce
+comma
+l_int|0xd008
+comma
+l_int|0x0000
+comma
+l_int|0x0000
+comma
+l_string|&quot;Sony Ericsson&quot;
+comma
+l_string|&quot;V800-Vodafone 802&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_NO_WP_DETECT
 )paren
 comma
 multiline_comment|/* Reported by Kevin Cernekee &lt;kpc-usbdev@gelato.uiuc.edu&gt;&n; * Tested on hardware version 1.10.&n; * Entry is needed only for the initializer function override.&n; */

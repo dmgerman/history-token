@@ -5028,13 +5028,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|req
-ques
-c_cond
 l_int|0
-suffix:colon
-op_minus
-id|EOPNOTSUPP
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
