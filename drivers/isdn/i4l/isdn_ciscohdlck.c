@@ -1500,6 +1500,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_static
 r_void
 DECL|function|isdn_ciscohdlck_receive
 id|isdn_ciscohdlck_receive
@@ -1814,6 +1815,10 @@ suffix:semicolon
 id|p-&gt;dev.do_ioctl
 op_assign
 id|isdn_ciscohdlck_dev_ioctl
+suffix:semicolon
+id|p-&gt;local.receive
+op_assign
+id|isdn_ciscohdlck_receive
 suffix:semicolon
 r_return
 l_int|0

@@ -4517,6 +4517,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * handler for incoming packets on a syncPPP interface&n; */
 DECL|function|isdn_ppp_receive
+r_static
 r_void
 id|isdn_ppp_receive
 c_func
@@ -13111,8 +13112,8 @@ r_return
 id|IPPP_MAX_HEADER
 suffix:semicolon
 )brace
-DECL|function|isdn_ppp_setup
 r_int
+DECL|function|isdn_ppp_setup
 id|isdn_ppp_setup
 c_func
 (paren
@@ -13151,6 +13152,10 @@ suffix:semicolon
 id|p-&gt;dev.do_ioctl
 op_assign
 id|isdn_ppp_dev_ioctl
+suffix:semicolon
+id|p-&gt;local.receive
+op_assign
+id|isdn_ppp_receive
 suffix:semicolon
 r_return
 l_int|0
