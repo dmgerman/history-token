@@ -695,14 +695,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|atomic_read
+op_logical_neg
+id|list_empty
 c_func
 (paren
 op_amp
-id|dentry-&gt;d_count
+id|dentry-&gt;d_lru
 )paren
-op_eq
-l_int|1
 )paren
 (brace
 id|dentry_stat.nr_unused
@@ -2933,7 +2932,7 @@ r_return
 r_new
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * d_lookup - search for a dentry&n; * @parent: parent dentry&n; * @name: qstr of name we wish to find&n; *&n; * Searches the children of the parent dentry for the name in question. If&n; * the dentry is found its reference count is incremented and the dentry&n; * is returned. The caller must use d_put to free the entry when it has&n; * finished using it. %NULL is returned on failure.&n; *&n; * __d_lookup is dcache_lock free. The hash list is protected using RCU.&n; * Memory barriers are used while updating and doing lockless traversal. &n; * To avoid races with d_move while rename is happening, d_lock is used.&n; *&n; * Overflows in memcmp(), while d_move, are avoided by keeping the length&n; * and name pointer in one structure pointed by d_qstr.&n; *&n; * rcu_read_lock() and rcu_read_unlock() are used to disable preemption while&n; * lookup is going on.&n; *&n; * dentry_unused list is not updated even if lookup finds the required dentry&n; * in there. It is updated in places such as prune_dcache, shrink_dcache_sb and&n; * select_parent. This laziness saves lookup from dcache_lock acquisition.&n; *&n; * d_lookup() is protected against the concurrent renames in some unrelated&n; * directory using the seqlockt_t rename_lock.&n; */
+multiline_comment|/**&n; * d_lookup - search for a dentry&n; * @parent: parent dentry&n; * @name: qstr of name we wish to find&n; *&n; * Searches the children of the parent dentry for the name in question. If&n; * the dentry is found its reference count is incremented and the dentry&n; * is returned. The caller must use d_put to free the entry when it has&n; * finished using it. %NULL is returned on failure.&n; *&n; * __d_lookup is dcache_lock free. The hash list is protected using RCU.&n; * Memory barriers are used while updating and doing lockless traversal. &n; * To avoid races with d_move while rename is happening, d_lock is used.&n; *&n; * Overflows in memcmp(), while d_move, are avoided by keeping the length&n; * and name pointer in one structure pointed by d_qstr.&n; *&n; * rcu_read_lock() and rcu_read_unlock() are used to disable preemption while&n; * lookup is going on.&n; *&n; * dentry_unused list is not updated even if lookup finds the required dentry&n; * in there. It is updated in places such as prune_dcache, shrink_dcache_sb,&n; * select_parent and __dget_locked. This laziness saves lookup from dcache_lock&n; * acquisition.&n; *&n; * d_lookup() is protected against the concurrent renames in some unrelated&n; * directory using the seqlockt_t rename_lock.&n; */
 DECL|function|d_lookup
 r_struct
 id|dentry
