@@ -100,31 +100,6 @@ l_int|0
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* &lt;torsten.scherer@uni-bielefeld.de&gt;: I don&squot;t know the name of the bridge&n; * manufacturer, but I&squot;ve got an external USB drive by the Revoltec company&n; * that needs this. otherwise the drive is recognized as /dev/sda, but any&n; * access to it blocks indefinitely.&n; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0402
-comma
-l_int|0x5621
-comma
-l_int|0x0103
-comma
-l_int|0x0103
-comma
-l_string|&quot;Revoltec&quot;
-comma
-l_string|&quot;USB/IDE Bridge (ATA/ATAPI)&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_FIX_INQUIRY
-)paren
-comma
 multiline_comment|/* Deduced by Jonathan Woithe &lt;jwoithe@physics.adelaide.edu.au&gt;&n; * Entry needed for flags: US_FL_FIX_INQUIRY because initial inquiry message&n; * always fails and confuses drive.&n; */
 id|UNUSUAL_DEV
 c_func
