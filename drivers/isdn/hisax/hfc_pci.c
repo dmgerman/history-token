@@ -276,7 +276,6 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
-macro_line|#if CONFIG_PCI
 multiline_comment|/******************************************/
 multiline_comment|/* free hardware resources used by driver */
 multiline_comment|/******************************************/
@@ -7821,7 +7820,6 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PCI */
 r_int
 id|__init
 DECL|function|setup_hfcpci
@@ -7878,7 +7876,6 @@ id|tmp
 )paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PCI
 id|cs-&gt;hw.hfcpci.int_s1
 op_assign
 l_int|0
@@ -8290,19 +8287,5 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HFC-PCI: NO_PCI_BIOS&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PCI */
 )brace
 eof

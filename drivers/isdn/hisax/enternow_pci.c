@@ -937,7 +937,6 @@ id|tmp
 l_int|64
 )braket
 suffix:semicolon
-macro_line|#if CONFIG_PCI
 macro_line|#ifdef __BIG_ENDIAN
 macro_line|#error &quot;not running on big endian machines now&quot;
 macro_line|#endif
@@ -979,27 +978,6 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;enter:now PCI: no PCI bus present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1252,27 +1230,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;enter:now PCI: NO_PCI_BIOS&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;enter:now PCI: unable to config Formula-n enter:now ISDN PCI ab&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PCI */
 id|printk
 c_func
 (paren

@@ -2554,27 +2554,6 @@ macro_line|#if CONFIG_PCI
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Sedlbauer: no PCI bus present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|err
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 (paren
 id|dev_sedl
 op_assign
@@ -2856,17 +2835,6 @@ l_int|3
 comma
 id|cs-&gt;hw.sedl.reset_off
 )paren
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Sedlbauer: NO_PCI_BIOS&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|err
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
 )brace

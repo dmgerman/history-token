@@ -1323,8 +1323,6 @@ id|I20_REGISTER_FILE
 op_star
 id|pI20_Regs
 suffix:semicolon
-macro_line|#if CONFIG_PCI
-macro_line|#endif
 id|strcpy
 c_func
 (paren
@@ -1365,30 +1363,6 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PCI
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;bkm_a4t: no PCI bus present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -1524,6 +1498,10 @@ suffix:semicolon
 )brace
 id|cs-&gt;hw.ax.base
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|request_mmio
 c_func
 (paren
@@ -1635,37 +1613,6 @@ id|cs-&gt;hw.ax.jade_ale
 op_assign
 id|GCS_3
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: %s: NO_PCI_BIOS&bslash;n&quot;
-comma
-id|CardType
-(braket
-id|card-&gt;typ
-)braket
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: %s: unable to configure&bslash;n&quot;
-comma
-id|CardType
-(braket
-id|card-&gt;typ
-)braket
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PCI */
 id|printk
 c_func
 (paren

@@ -3706,30 +3706,6 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PCI
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;W6692: no PCI bus present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -3967,27 +3943,6 @@ id|card_name
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: W6692 and NO_PCI_BIOS&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: W6692 unable to config&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PCI */
 id|printk
 c_func
 (paren

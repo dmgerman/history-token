@@ -3464,27 +3464,6 @@ macro_line|#if CONFIG_PCI
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;FritzPCI: no PCI bus present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 (paren
 id|dev_avm
 op_assign
@@ -3583,19 +3562,6 @@ suffix:semicolon
 id|cs-&gt;irq_flags
 op_or_assign
 id|SA_SHIRQ
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;FritzPCI: NO_PCI_BIOS&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
 )brace

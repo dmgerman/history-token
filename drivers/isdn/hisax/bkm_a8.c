@@ -8,7 +8,6 @@ macro_line|#include &quot;hscx.h&quot;
 macro_line|#include &quot;isdnl1.h&quot;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;bkm_ax.h&quot;
-macro_line|#if CONFIG_PCI
 DECL|macro|ATTEMPT_PCI_REMAPPING
 mdefine_line|#define&t;ATTEMPT_PCI_REMAPPING&t;/* Required for PLX rev 1 */
 r_extern
@@ -718,7 +717,6 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_PCI */
 r_int
 id|__init
 DECL|function|setup_sct_quadro
@@ -731,7 +729,6 @@ op_star
 id|card
 )paren
 (brace
-macro_line|#if CONFIG_PCI
 r_struct
 id|IsdnCardState
 op_star
@@ -886,29 +883,6 @@ op_eq
 id|SCT_1
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;bkm_a4t: no PCI bus present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -1514,15 +1488,6 @@ suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;HiSax: bkm_a8 only supported on PCI Systems&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PCI */
 id|err
 suffix:colon
 id|hisax_release_resources

@@ -1047,28 +1047,6 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PCI
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;TelesPCI: no PCI bus present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1181,27 +1159,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: Teles/PCI and NO_PCI_BIOS&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;HiSax: Teles/PCI unable to config&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* Initialize Zoran PCI controller */
 id|writel
 c_func

@@ -1291,27 +1291,6 @@ macro_line|#if CONFIG_PCI
 id|u_int
 id|pci_ioaddr
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Niccy: no PCI bus present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|cs-&gt;subtyp
 op_assign
 l_int|0
@@ -1510,26 +1489,6 @@ l_string|&quot;niccy pci&quot;
 )paren
 r_goto
 id|err
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Niccy: io0 0 and NO_PCI_BIOS&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Niccy: unable to config NICCY PCI&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
 )brace

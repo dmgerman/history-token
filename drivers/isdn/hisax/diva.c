@@ -3468,27 +3468,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if CONFIG_PCI
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Diva: no PCI bus present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|cs-&gt;subtyp
 op_assign
 l_int|0
@@ -3734,26 +3713,6 @@ suffix:semicolon
 id|cs-&gt;irq_flags
 op_or_assign
 id|SA_SHIRQ
-suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Diva: cfgreg 0 and NO_PCI_BIOS&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Diva: unable to config DIVA PCI&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PCI */
 r_if

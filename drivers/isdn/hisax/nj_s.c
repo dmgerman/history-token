@@ -542,7 +542,6 @@ id|ISDN_CTYPE_NETJET_S
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#if CONFIG_PCI
 r_for
 c_loop
 (paren
@@ -550,27 +549,6 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Netjet: no PCI bus present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -881,27 +859,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;NETjet-S: NO_PCI_BIOS&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;NETjet-S: unable to config NETJET-S PCI&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PCI */
 id|printk
 c_func
 (paren
