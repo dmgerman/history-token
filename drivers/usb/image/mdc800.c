@@ -2364,7 +2364,7 @@ r_else
 (brace
 id|err
 (paren
-l_string|&quot;Command is to long !&bslash;n&quot;
+l_string|&quot;Command is too long !&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up

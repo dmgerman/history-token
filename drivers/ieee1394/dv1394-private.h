@@ -1102,11 +1102,6 @@ r_struct
 id|list_head
 id|list
 suffix:semicolon
-multiline_comment|/* handle to /dev/ieee1394/dv/N, NULL if devfs not in use */
-DECL|member|devfs_handle
-id|devfs_handle_t
-id|devfs_handle
-suffix:semicolon
 multiline_comment|/* OHCI card IT DMA context number, -1 if not in use */
 DECL|member|ohci_it_ctx
 r_int

@@ -297,7 +297,7 @@ id|kfree
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlmp_expire_discoveries (log, saddr, force)&n; *&n; *    Go through all discoveries and expire all that has stayed to long&n; *&n; * Note : this assume that IrLAP won&squot;t change its saddr, which&n; * currently is a valid assumption...&n; */
+multiline_comment|/*&n; * Function irlmp_expire_discoveries (log, saddr, force)&n; *&n; *    Go through all discoveries and expire all that has stayed too long&n; *&n; * Note : this assume that IrLAP won&squot;t change its saddr, which&n; * currently is a valid assumption...&n; */
 DECL|function|irlmp_expire_discoveries
 r_void
 id|irlmp_expire_discoveries

@@ -409,25 +409,15 @@ id|compare
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* high level internal use */
+r_extern
 r_struct
-id|hpsb_highlevel
+id|list_head
+id|hpsb_hosts
 suffix:semicolon
-r_void
-id|hl_all_hosts
-c_func
-(paren
-r_void
-(paren
-op_star
-id|function
-)paren
-(paren
+r_extern
 r_struct
-id|hpsb_host
-op_star
-)paren
-)paren
+id|semaphore
+id|hpsb_hosts_lock
 suffix:semicolon
 multiline_comment|/*&n; * In order to prevent hosts from unloading, use hpsb_ref_host().  This prevents&n; * the host from going away (e.g. makes module unloading of the driver&n; * impossible), but still can not guarantee it (e.g. PC-Card being pulled by the&n; * user).  hpsb_ref_host() returns false if host could not be locked.  If it is&n; * successful, host is valid as a pointer until hpsb_unref_host() (not just&n; * until after remove_host).&n; */
 r_int

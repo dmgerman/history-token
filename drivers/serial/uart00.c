@@ -2462,7 +2462,7 @@ comma
 suffix:semicolon
 DECL|function|uart00_console_init
 r_static
-r_void
+r_int
 id|__init
 id|uart00_console_init
 c_func
@@ -2476,6 +2476,9 @@ c_func
 op_amp
 id|uart00_console
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|uart00_console_init

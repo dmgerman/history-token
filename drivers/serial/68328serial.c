@@ -6664,7 +6664,7 @@ comma
 suffix:semicolon
 DECL|function|m68328_console_init
 r_static
-r_void
+r_int
 id|__init
 id|m68328_console_init
 c_func
@@ -6678,6 +6678,9 @@ c_func
 op_amp
 id|m68328_driver
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|m68328_console_init

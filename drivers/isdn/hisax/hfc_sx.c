@@ -599,7 +599,7 @@ id|trans_max
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* delay to long */
+multiline_comment|/* delay too long */
 id|count
 op_assign
 id|skb-&gt;len
