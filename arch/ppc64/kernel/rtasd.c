@@ -564,7 +564,7 @@ id|ip
 suffix:semicolon
 id|node
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/rtas&quot;
@@ -599,6 +599,12 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;rtasd: no rtas-event-scan-rate&bslash;n&quot;
+)paren
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|node
 )paren
 suffix:semicolon
 r_return
@@ -650,6 +656,12 @@ id|KERN_ERR
 l_string|&quot;rtasd: no rtas-error-log-max&bslash;n&quot;
 )paren
 suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|node
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -692,6 +704,12 @@ op_assign
 id|RTAS_ERROR_LOG_MAX
 suffix:semicolon
 )brace
+id|of_node_put
+c_func
+(paren
+id|node
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

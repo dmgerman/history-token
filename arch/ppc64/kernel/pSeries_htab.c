@@ -1592,7 +1592,7 @@ suffix:semicolon
 multiline_comment|/* Disable TLB batching on nighthawk */
 id|root
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/&quot;
@@ -1630,6 +1630,12 @@ l_string|&quot;CHRP IBM,9076-N81&quot;
 id|ppc_md.flush_hash_range
 op_assign
 id|pSeries_flush_hash_range
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|root
+)paren
 suffix:semicolon
 )brace
 )brace

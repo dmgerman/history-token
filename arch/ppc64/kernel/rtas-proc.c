@@ -682,9 +682,11 @@ id|entry
 suffix:semicolon
 id|rtas_node
 op_assign
-id|find_devices
+id|of_find_node_by_name
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;rtas&quot;
 )paren
 suffix:semicolon

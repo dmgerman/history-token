@@ -529,9 +529,11 @@ c_cond
 (paren
 id|nvram
 op_assign
-id|find_type_devices
+id|of_find_node_by_type
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;nvram&quot;
 )paren
 )paren
@@ -601,6 +603,12 @@ id|KERN_INFO
 l_string|&quot;PPC64 nvram contains %d bytes&bslash;n&quot;
 comma
 id|rtas_nvram_size
+)paren
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|nvram
 )paren
 suffix:semicolon
 r_return

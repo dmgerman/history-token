@@ -308,9 +308,11 @@ op_logical_neg
 (paren
 id|np
 op_assign
-id|find_devices
+id|of_find_node_by_name
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;pci&quot;
 )paren
 )paren
@@ -434,6 +436,12 @@ id|handler
 op_assign
 op_amp
 id|i8259_pic
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|np
+)paren
 suffix:semicolon
 )brace
 DECL|function|openpic_read

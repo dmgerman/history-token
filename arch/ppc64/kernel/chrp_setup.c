@@ -207,7 +207,7 @@ id|ppc_tb_freq
 suffix:semicolon
 id|root
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/&quot;
@@ -240,6 +240,12 @@ comma
 id|model
 )paren
 suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|root
+)paren
+suffix:semicolon
 )brace
 DECL|macro|I8042_DATA_REG
 mdefine_line|#define I8042_DATA_REG 0x60
@@ -252,6 +258,11 @@ c_func
 r_void
 )paren
 (brace
+r_struct
+id|device_node
+op_star
+id|i8042
+suffix:semicolon
 id|request_region
 c_func
 (paren
@@ -317,10 +328,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|find_type_devices
+(paren
+id|i8042
+op_assign
+id|of_find_node_by_type
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;8042&quot;
+)paren
 )paren
 )paren
 id|request_region
@@ -331,6 +348,12 @@ comma
 l_int|16
 comma
 l_string|&quot;reserved (no i8042)&quot;
+)paren
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|i8042
 )paren
 suffix:semicolon
 )brace
@@ -418,7 +441,7 @@ macro_line|#endif
 multiline_comment|/* Find the Open PIC if present */
 id|root
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/&quot;
@@ -510,6 +533,12 @@ id|_PAGE_NO_CACHE
 )paren
 suffix:semicolon
 )brace
+id|of_node_put
+c_func
+(paren
+id|root
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_DUMMY_CONSOLE
 id|conswitchp
 op_assign
@@ -844,7 +873,7 @@ id|len
 suffix:semicolon
 id|dn
 op_assign
-id|find_path_device
+id|of_find_node_by_path
 c_func
 (paren
 l_string|&quot;/rtas&quot;
@@ -971,6 +1000,12 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+id|of_node_put
+c_func
+(paren
+id|dn
+)paren
+suffix:semicolon
 id|udbg_printf
 c_func
 (paren
@@ -1482,7 +1517,7 @@ id|freq
 comma
 id|processor_freq
 suffix:semicolon
-multiline_comment|/*&n;&t; * The cpu node should have a timebase-frequency property&n;&t; * to tell us the rate at which the decrementer counts. &n;&t; */
+multiline_comment|/*&n;&t; * The cpu node should have a timebase-frequency property&n;&t; * to tell us the rate at which the decrementer counts.&n;&t; */
 id|freq
 op_assign
 l_int|16666000
@@ -1490,9 +1525,11 @@ suffix:semicolon
 multiline_comment|/* hardcoded default */
 id|cpu
 op_assign
-id|find_type_devices
+id|of_find_node_by_type
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;cpu&quot;
 )paren
 suffix:semicolon
@@ -1581,6 +1618,12 @@ suffix:semicolon
 id|ppc_proc_freq
 op_assign
 id|processor_freq
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|cpu
+)paren
 suffix:semicolon
 id|printk
 c_func

@@ -1056,9 +1056,11 @@ id|fp
 suffix:semicolon
 id|cpu_node
 op_assign
-id|find_type_devices
+id|of_find_node_by_type
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;cpu&quot;
 )paren
 suffix:semicolon
@@ -1100,6 +1102,12 @@ op_star
 id|fp
 op_div
 l_int|1000000
+)paren
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|cpu_node
 )paren
 suffix:semicolon
 )brace
@@ -1373,9 +1381,11 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_CMDLINE */
 id|chosen
 op_assign
-id|find_devices
+id|of_find_node_by_name
 c_func
 (paren
+l_int|NULL
+comma
 l_string|&quot;chosen&quot;
 )paren
 suffix:semicolon
@@ -1424,6 +1434,12 @@ r_sizeof
 (paren
 id|cmd_line
 )paren
+)paren
+suffix:semicolon
+id|of_node_put
+c_func
+(paren
+id|chosen
 )paren
 suffix:semicolon
 )brace
