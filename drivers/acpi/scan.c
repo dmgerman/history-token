@@ -2530,9 +2530,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|pr_debug
+id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Found %s %s [%p]&bslash;n&quot;
 comma
 id|type_string
