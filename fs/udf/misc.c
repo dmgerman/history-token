@@ -1314,7 +1314,7 @@ id|super_block
 op_star
 id|sb
 comma
-id|lb_addr
+id|kernel_lb_addr
 id|loc
 comma
 r_uint32
@@ -1411,7 +1411,7 @@ l_int|0
 suffix:semicolon
 id|tptr-&gt;descCRCLength
 op_assign
-id|le16_to_cpu
+id|cpu_to_le16
 c_func
 (paren
 id|length
@@ -1419,7 +1419,7 @@ id|length
 suffix:semicolon
 id|tptr-&gt;descCRC
 op_assign
-id|le16_to_cpu
+id|cpu_to_le16
 c_func
 (paren
 id|udf_crc
@@ -1509,7 +1509,7 @@ id|data
 suffix:semicolon
 id|tptr-&gt;tagIdent
 op_assign
-id|le16_to_cpu
+id|cpu_to_le16
 c_func
 (paren
 id|ident
@@ -1517,7 +1517,7 @@ id|ident
 suffix:semicolon
 id|tptr-&gt;descVersion
 op_assign
-id|le16_to_cpu
+id|cpu_to_le16
 c_func
 (paren
 id|version
@@ -1525,7 +1525,7 @@ id|version
 suffix:semicolon
 id|tptr-&gt;tagSerialNum
 op_assign
-id|le16_to_cpu
+id|cpu_to_le16
 c_func
 (paren
 id|snum
@@ -1533,7 +1533,7 @@ id|snum
 suffix:semicolon
 id|tptr-&gt;tagLocation
 op_assign
-id|le32_to_cpu
+id|cpu_to_le32
 c_func
 (paren
 id|loc

@@ -86,7 +86,7 @@ id|i_crtime
 suffix:semicolon
 multiline_comment|/* Physical address of inode */
 DECL|member|i_location
-id|lb_addr
+id|kernel_lb_addr
 id|i_location
 suffix:semicolon
 DECL|member|i_unique
