@@ -16,28 +16,6 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;generic.h&quot;
-DECL|function|init_chipset_generic
-r_static
-r_int
-r_int
-id|__devinit
-id|init_chipset_generic
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_const
-r_char
-op_star
-id|name
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|init_hwif_generic
 r_static
 r_void
