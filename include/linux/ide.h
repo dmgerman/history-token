@@ -3719,8 +3719,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Subdrivers support.&n; */
-DECL|macro|IDE_SUBDRIVER_VERSION
-mdefine_line|#define IDE_SUBDRIVER_VERSION&t;1
 DECL|struct|ide_driver_s
 r_typedef
 r_struct
@@ -5351,17 +5349,13 @@ id|driver
 suffix:semicolon
 r_int
 id|ide_register_subdriver
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 id|ide_driver_t
 op_star
-id|driver
-comma
-r_int
-id|version
 )paren
 suffix:semicolon
 r_int

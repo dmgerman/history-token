@@ -5168,13 +5168,12 @@ suffix:semicolon
 id|err
 op_assign
 id|ide_register_subdriver
+c_func
 (paren
 id|drive
 comma
 op_amp
 id|idescsi_driver
-comma
-id|IDE_SUBDRIVER_VERSION
 )paren
 suffix:semicolon
 r_if

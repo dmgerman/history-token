@@ -8527,13 +8527,12 @@ r_if
 c_cond
 (paren
 id|ide_register_subdriver
+c_func
 (paren
 id|drive
 comma
 op_amp
 id|idefloppy_driver
-comma
-id|IDE_SUBDRIVER_VERSION
 )paren
 )paren
 (brace

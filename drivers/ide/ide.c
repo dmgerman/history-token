@@ -9524,6 +9524,7 @@ suffix:semicolon
 DECL|function|ide_register_subdriver
 r_int
 id|ide_register_subdriver
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -9532,9 +9533,6 @@ comma
 id|ide_driver_t
 op_star
 id|driver
-comma
-r_int
-id|version
 )paren
 (brace
 r_int
@@ -9544,9 +9542,8 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
+op_logical_neg
 id|drive-&gt;driver
-op_eq
-l_int|NULL
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -9561,10 +9558,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|version
-op_ne
-id|IDE_SUBDRIVER_VERSION
-op_logical_or
 op_logical_neg
 id|drive-&gt;present
 op_logical_or
