@@ -3335,6 +3335,7 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+multiline_comment|/* Set by CONFIG_BLK_DEV_UBD_SYNC or ubd=sync.*/
 r_if
 c_cond
 (paren
@@ -3345,12 +3346,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ubd : Synchronous mode&bslash;n&quot;
+l_string|&quot;ubd: Synchronous mode&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
+multiline_comment|/* Letting ubd=sync be like using ubd#s= instead of ubd#= is&n;&t;&t; * enough. So use anyway the io thread. */
 )brace
 id|stack
 op_assign
