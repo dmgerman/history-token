@@ -2367,11 +2367,6 @@ op_star
 id|s
 suffix:semicolon
 r_struct
-id|tc_u32_mark
-op_star
-id|mark
-suffix:semicolon
-r_struct
 id|rtattr
 op_star
 id|opt
@@ -3054,7 +3049,7 @@ op_assign
 id|i
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_CLS_U32_MARK                                                                                                                                             
+macro_line|#ifdef CONFIG_CLS_U32_MARK
 r_if
 c_cond
 (paren
@@ -3066,6 +3061,11 @@ l_int|1
 )braket
 )paren
 (brace
+r_struct
+id|tc_u32_mark
+op_star
+id|mark
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3086,10 +3086,26 @@ r_struct
 id|tc_u32_mark
 )paren
 )paren
+(brace
+macro_line|#ifdef CONFIG_CLS_U32_PERF
+id|kfree
+c_func
+(paren
+id|n-&gt;pf
+)paren
+suffix:semicolon
+macro_line|#endif
+id|kfree
+c_func
+(paren
+id|n
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|mark
 op_assign
 id|RTA_DATA
@@ -3123,7 +3139,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif                                                                                                                                                                 
+macro_line|#endif
 id|err
 op_assign
 id|u32_set_parms
