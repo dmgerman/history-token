@@ -273,6 +273,10 @@ DECL|member|tx_int_delay_enable
 id|boolean_t
 id|tx_int_delay_enable
 suffix:semicolon
+DECL|member|detect_tx_hung
+id|boolean_t
+id|detect_tx_hung
+suffix:semicolon
 multiline_comment|/* RX */
 DECL|member|rx_ring
 r_struct
