@@ -559,16 +559,6 @@ suffix:semicolon
 suffix:semicolon
 r_extern
 r_int
-id|pim_rcv
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|pim_rcv_v1
 c_func
 (paren

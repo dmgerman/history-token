@@ -53,7 +53,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|HPSB_TPOOL_INIT
-mdefine_line|#define HPSB_TPOOL_INIT(_tp)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;CLEAR_BITMAP((_tp)-&gt;pool, 64);&t;&t;&bslash;&n;&t;spin_lock_init(&amp;(_tp)-&gt;lock);&t;&t;&bslash;&n;&t;(_tp)-&gt;next = 0;&t;&t;&t;&bslash;&n;&t;(_tp)-&gt;allocations = 0;&t;&t;&t;&bslash;&n;&t;sema_init(&amp;(_tp)-&gt;count, 63);&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define HPSB_TPOOL_INIT(_tp)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;CLEAR_BITMAP((_tp)-&gt;pool, 64);&t;&t;&bslash;&n;&t;spin_lock_init(&amp;(_tp)-&gt;lock);&t;&t;&bslash;&n;&t;(_tp)-&gt;next = 0;&t;&t;&t;&bslash;&n;&t;(_tp)-&gt;allocations = 0;&t;&t;&t;&bslash;&n;&t;sema_init(&amp;(_tp)-&gt;count, 63);&t;&t;&bslash;&n;} while (0)
 DECL|typedef|quadlet_t
 r_typedef
 id|u32

@@ -314,9 +314,6 @@ op_star
 id|data
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
 r_struct
 id|pnp_irq
 op_star
@@ -372,6 +369,10 @@ op_assign
 id|data
 suffix:semicolon
 macro_line|#ifdef CONFIG_PCI
+(brace
+r_int
+id|i
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -403,6 +404,7 @@ c_func
 id|i
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif
 r_return
 l_int|0

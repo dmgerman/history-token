@@ -497,10 +497,26 @@ id|RTAX_HOPLIMIT
 comma
 DECL|macro|RTAX_HOPLIMIT
 mdefine_line|#define RTAX_HOPLIMIT RTAX_HOPLIMIT
+DECL|enumerator|RTAX_INITCWND
+id|RTAX_INITCWND
+comma
+DECL|macro|RTAX_INITCWND
+mdefine_line|#define RTAX_INITCWND RTAX_INITCWND
+DECL|enumerator|RTAX_FEATURES
+id|RTAX_FEATURES
+comma
+DECL|macro|RTAX_FEATURES
+mdefine_line|#define RTAX_FEATURES RTAX_FEATURES
 )brace
 suffix:semicolon
 DECL|macro|RTAX_MAX
-mdefine_line|#define RTAX_MAX RTAX_HOPLIMIT
+mdefine_line|#define RTAX_MAX RTAX_FEATURES
+DECL|macro|RTAX_FEATURE_ECN
+mdefine_line|#define RTAX_FEATURE_ECN&t;0x00000001
+DECL|macro|RTAX_FEATURE_SACK
+mdefine_line|#define RTAX_FEATURE_SACK&t;0x00000002
+DECL|macro|RTAX_FEATURE_TIMESTAMP
+mdefine_line|#define RTAX_FEATURE_TIMESTAMP&t;0x00000004
 DECL|struct|rta_session
 r_struct
 id|rta_session

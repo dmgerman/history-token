@@ -2,7 +2,7 @@ macro_line|#ifndef _CIO_QDIO_H
 DECL|macro|_CIO_QDIO_H
 mdefine_line|#define _CIO_QDIO_H
 DECL|macro|VERSION_CIO_QDIO_H
-mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.16 $&quot;
+mdefine_line|#define VERSION_CIO_QDIO_H &quot;$Revision: 1.17 $&quot;
 singleline_comment|//#define QDIO_DBF_LIKE_HELL
 macro_line|#ifdef QDIO_DBF_LIKE_HELL
 DECL|macro|QDIO_VERBOSE_LEVEL
@@ -23,8 +23,9 @@ DECL|macro|QDIO_TIMER_POLL_VALUE
 mdefine_line|#define QDIO_TIMER_POLL_VALUE 1
 DECL|macro|IQDIO_TIMER_POLL_VALUE
 mdefine_line|#define IQDIO_TIMER_POLL_VALUE 1
+multiline_comment|/*&n; * unfortunately this can&squot;t be (QDIO_MAX_BUFFERS_PER_Q*4/3) or so -- as&n; * we never know, whether we&squot;ll get initiative again, e.g. to give the&n; * transmit skb&squot;s back to the stack, however the stack may be waiting for&n; * them... therefore we define 4 as threshold to start polling (which&n; * will stop as soon as the asynchronous queue catches up)&n; * btw, this only applies to the asynchronous HiperSockets queue&n; */
 DECL|macro|IQDIO_FILL_LEVEL_TO_POLL
-mdefine_line|#define IQDIO_FILL_LEVEL_TO_POLL (QDIO_MAX_BUFFERS_PER_Q*4/3)
+mdefine_line|#define IQDIO_FILL_LEVEL_TO_POLL 4
 DECL|macro|IQDIO_THININT_ISC
 mdefine_line|#define IQDIO_THININT_ISC 3
 DECL|macro|IQDIO_DELAY_TARGET

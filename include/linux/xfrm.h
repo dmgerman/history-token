@@ -561,6 +561,11 @@ DECL|member|saddr
 id|xfrm_address_t
 id|saddr
 suffix:semicolon
+DECL|member|sel
+r_struct
+id|xfrm_selector
+id|sel
+suffix:semicolon
 DECL|member|policy
 r_struct
 id|xfrm_userpolicy_info

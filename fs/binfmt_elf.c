@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -573,6 +574,21 @@ comma
 id|elf_addr_t
 )paren
 id|tsk-&gt;egid
+)paren
+suffix:semicolon
+id|NEW_AUX_ENT
+c_func
+(paren
+id|AT_SECURE
+comma
+(paren
+id|elf_addr_t
+)paren
+id|security_bprm_secureexec
+c_func
+(paren
+id|bprm
+)paren
 )paren
 suffix:semicolon
 r_if

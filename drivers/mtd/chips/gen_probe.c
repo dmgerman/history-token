@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Routines common to all CFI-type probes.&n; * (C) 2001, 2001 Red Hat, Inc.&n; * GPL&squot;d&n; * $Id: gen_probe.c,v 1.11 2003/05/21 15:15:05 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Routines common to all CFI-type probes.&n; * (C) 2001-2003 Red Hat, Inc.&n; * GPL&squot;d&n; * $Id: gen_probe.c,v 1.13 2003/06/25 11:50:37 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1142,6 +1142,10 @@ suffix:semicolon
 r_extern
 id|cfi_cmdset_fn_t
 id|cfi_cmdset_0002
+suffix:semicolon
+r_extern
+id|cfi_cmdset_fn_t
+id|cfi_cmdset_0020
 suffix:semicolon
 DECL|function|cfi_cmdset_unknown
 r_static

@@ -3957,6 +3957,9 @@ r_struct
 id|array_cache
 op_star
 id|ac
+comma
+r_int
+id|force
 )paren
 suffix:semicolon
 DECL|function|do_drain
@@ -4077,6 +4080,8 @@ c_func
 id|cachep
 comma
 id|cachep-&gt;lists.shared
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -8581,6 +8586,9 @@ r_struct
 id|array_cache
 op_star
 id|ac
+comma
+r_int
+id|force
 )paren
 (brace
 r_int
@@ -8612,6 +8620,11 @@ id|ac-&gt;avail
 (brace
 id|tofree
 op_assign
+id|force
+ques
+c_cond
+id|ac-&gt;avail
+suffix:colon
 (paren
 id|ac-&gt;limit
 op_plus
@@ -8865,6 +8878,8 @@ c_func
 id|searchp
 comma
 id|searchp-&gt;lists.shared
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if

@@ -4803,7 +4803,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|drive
@@ -4853,7 +4853,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if

@@ -1,6 +1,9 @@
 macro_line|#ifndef _IEEE1394_CSR_H
 DECL|macro|_IEEE1394_CSR_H
 mdefine_line|#define _IEEE1394_CSR_H
+macro_line|#ifdef CONFIG_PREEMPT
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#endif
 DECL|macro|CSR_REGISTER_BASE
 mdefine_line|#define CSR_REGISTER_BASE  0xfffff0000000ULL
 multiline_comment|/* register offsets relative to CSR_REGISTER_BASE */

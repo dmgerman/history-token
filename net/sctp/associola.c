@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This module provides the abstraction for an SCTP association.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang             &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001 La Monte H.P. Yarroll&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * This module provides the abstraction for an SCTP association.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang             &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Ryan Layer&t;    &lt;rmlayer@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -263,28 +263,22 @@ id|asoc-&gt;state
 op_assign
 id|SCTP_STATE_CLOSED
 suffix:semicolon
-id|asoc-&gt;state_timestamp
-op_assign
-id|jiffies
-suffix:semicolon
-multiline_comment|/* Set things that have constant value.  */
+multiline_comment|/* Set these values from the socket values, a conversion between&n;&t; * millsecons to seconds/microseconds must also be done.&n;&t; */
 id|asoc-&gt;cookie_life.tv_sec
 op_assign
-id|sctp_valid_cookie_life
+id|sp-&gt;assocparams.sasoc_cookie_life
 op_div
-id|HZ
+l_int|1000
 suffix:semicolon
 id|asoc-&gt;cookie_life.tv_usec
 op_assign
 (paren
-id|sctp_valid_cookie_life
+id|sp-&gt;assocparams.sasoc_cookie_life
 op_mod
-id|HZ
+l_int|1000
 )paren
 op_star
-l_int|1000000L
-op_div
-id|HZ
+l_int|1000
 suffix:semicolon
 id|asoc-&gt;pmtu
 op_assign
@@ -294,26 +288,34 @@ id|asoc-&gt;frag_point
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize the default association max_retrans and RTO values.  */
+multiline_comment|/* Set the association max_retrans and RTO values from the&n;&t; * socket values.&n;&t; */
 id|asoc-&gt;max_retrans
 op_assign
-id|sctp_max_retrans_association
+id|sp-&gt;assocparams.sasoc_asocmaxrxt
 suffix:semicolon
 id|asoc-&gt;rto_initial
 op_assign
-id|sctp_rto_initial
+id|sp-&gt;rtoinfo.srto_initial
+op_star
+id|HZ
+op_div
+l_int|1000
 suffix:semicolon
 id|asoc-&gt;rto_max
 op_assign
-id|sctp_rto_max
+id|sp-&gt;rtoinfo.srto_max
+op_star
+id|HZ
+op_div
+l_int|1000
 suffix:semicolon
 id|asoc-&gt;rto_min
 op_assign
-id|sctp_rto_min
-suffix:semicolon
-id|asoc-&gt;overall_error_threshold
-op_assign
-id|asoc-&gt;max_retrans
+id|sp-&gt;rtoinfo.srto_min
+op_star
+id|HZ
+op_div
+l_int|1000
 suffix:semicolon
 id|asoc-&gt;overall_error_count
 op_assign
@@ -404,6 +406,8 @@ op_assign
 id|sp-&gt;initmsg.sinit_max_init_timeo
 op_star
 id|HZ
+op_div
+l_int|1000
 suffix:semicolon
 multiline_comment|/* Allocate storage for the ssnmap after the inbound and outbound&n;&t; * streams have been negotiated during Init.&n;&t; */
 id|asoc-&gt;ssnmap
@@ -1016,7 +1020,7 @@ id|asoc-&gt;peer.active_path
 op_assign
 id|transport
 suffix:semicolon
-multiline_comment|/* &n;&t; * SFR-CACC algorithm:&n;&t; * Upon the receipt of a request to change the primary&n;&t; * destination address, on the data structure for the new&n;&t; * primary destination, the sender MUST do the following:&n;&t; *&n;&t; * 1) If CHANGEOVER_ACTIVE is set, then there was a switch&n;&t; * to this destination address earlier. The sender MUST set&n;&t; * CYCLING_CHANGEOVER to indicate that this switch is a&n;&t; * double switch to the same destination address.&n;&t; */
+multiline_comment|/*&n;&t; * SFR-CACC algorithm:&n;&t; * Upon the receipt of a request to change the primary&n;&t; * destination address, on the data structure for the new&n;&t; * primary destination, the sender MUST do the following:&n;&t; *&n;&t; * 1) If CHANGEOVER_ACTIVE is set, then there was a switch&n;&t; * to this destination address earlier. The sender MUST set&n;&t; * CYCLING_CHANGEOVER to indicate that this switch is a&n;&t; * double switch to the same destination address.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1246,6 +1250,16 @@ op_assign
 id|sp-&gt;paddrparam.spp_hbinterval
 op_star
 id|HZ
+suffix:semicolon
+multiline_comment|/* Set the path max_retrans.  */
+id|peer-&gt;max_retrans
+op_assign
+id|asoc-&gt;max_retrans
+suffix:semicolon
+multiline_comment|/* Set the transport&squot;s RTO.initial value */
+id|peer-&gt;rto
+op_assign
+id|asoc-&gt;rto_initial
 suffix:semicolon
 multiline_comment|/* Attach the remote transport to our asoc.  */
 id|list_add_tail
@@ -2144,6 +2158,67 @@ r_return
 id|transport
 suffix:semicolon
 )brace
+multiline_comment|/*  Is this a live association structure. */
+DECL|function|sctp_assoc_valid
+r_int
+id|sctp_assoc_valid
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|sctp_association
+op_star
+id|asoc
+)paren
+(brace
+multiline_comment|/* First, verify that this is a kernel address. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sctp_is_valid_kaddr
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|asoc
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Verify that this _is_ an sctp_association&n;&t; * data structure and if so, that the socket matches.&n;&t; */
+r_if
+c_cond
+(paren
+id|SCTP_ASSOC_EYECATCHER
+op_ne
+id|asoc-&gt;eyecatcher
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|asoc-&gt;base.sk
+op_ne
+id|sk
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* The association is valid. */
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Do delayed input processing.  This is scheduled by sctp_rcv(). */
 DECL|function|sctp_assoc_bh_rcv
 r_static
@@ -2181,15 +2256,6 @@ r_int
 id|state
 comma
 id|subtype
-suffix:semicolon
-id|sctp_assoc_t
-id|associd
-op_assign
-id|sctp_assoc2id
-c_func
-(paren
-id|asoc
-)paren
 suffix:semicolon
 r_int
 id|error
@@ -2294,12 +2360,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sctp_id2assoc
+id|sctp_assoc_valid
 c_func
 (paren
 id|sk
 comma
-id|associd
+id|asoc
 )paren
 )paren
 r_break
@@ -3255,7 +3321,8 @@ id|sctp_association
 op_star
 id|asoc
 comma
-id|sctp_cookie_t
+r_struct
+id|sctp_cookie
 op_star
 id|cookie
 comma
@@ -3289,7 +3356,8 @@ id|cookie
 op_plus
 r_sizeof
 (paren
-id|sctp_cookie_t
+r_struct
+id|sctp_cookie
 )paren
 op_plus
 id|var_size2

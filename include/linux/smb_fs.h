@@ -562,6 +562,16 @@ id|generation
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|smb_install_null_ops
+c_func
+(paren
+r_struct
+id|smb_ops
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_SMB_FS_H */
 eof

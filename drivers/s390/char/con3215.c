@@ -4840,6 +4840,9 @@ id|tty3215_driver
 op_assign
 id|driver
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
 r_void

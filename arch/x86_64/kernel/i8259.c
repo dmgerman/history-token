@@ -23,7 +23,6 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
-multiline_comment|/* When we have things working, we can switch to always use&n;   IOAPIC. --pavel */
 multiline_comment|/*&n; * Common place to define all x86 IRQ vectors&n; *&n; * This builds up the IRQ handler stubs using some ugly macros in irq.h&n; *&n; * These macros create the low-level assembly IRQ routines that save&n; * register context and call do_IRQ(). do_IRQ() then does all the&n; * operations that are needed to keep the AT (or SMP IOAPIC)&n; * interrupt-controller happy.&n; */
 DECL|macro|BI
 mdefine_line|#define BI(x,y) &bslash;&n;&t;BUILD_IRQ(x##y)

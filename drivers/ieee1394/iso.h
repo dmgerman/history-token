@@ -100,7 +100,7 @@ DECL|member|speed
 r_int
 id|speed
 suffix:semicolon
-multiline_comment|/* SPEED_100, 200, or 400 */
+multiline_comment|/* IEEE1394_SPEED_100, 200, or 400 */
 DECL|member|channel
 r_int
 id|channel

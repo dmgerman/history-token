@@ -921,17 +921,6 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unit
-op_ge
-id|NUM_RAMDISKS
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 multiline_comment|/*&n;&t; * Immunize device against invalidate_buffers() and prune_icache().&n;&t; */
 r_if
 c_cond

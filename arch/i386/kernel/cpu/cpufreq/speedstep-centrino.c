@@ -10,8 +10,7 @@ DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&quot;speedstep-centrino: &quot;
 DECL|macro|MAINTAINER
 mdefine_line|#define MAINTAINER&t;&quot;Jeremy Fitzhardinge &lt;jeremy@goop.org&gt;&quot;
-DECL|macro|CENTRINO_DEBUG
-mdefine_line|#define CENTRINO_DEBUG
+multiline_comment|/*#define CENTRINO_DEBUG*/
 macro_line|#ifdef CENTRINO_DEBUG
 DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) printk(msg)

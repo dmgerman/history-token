@@ -622,6 +622,13 @@ c_func
 id|flush_tlb_page
 )paren
 suffix:semicolon
+DECL|variable|flush_tlb_all
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|flush_tlb_all
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_IO_APIC
 DECL|variable|IO_APIC_get_PCI_irq_vector

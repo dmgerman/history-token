@@ -722,12 +722,10 @@ id|DEVICE_COUNT_IRQ
 suffix:semicolon
 DECL|member|slot_name
 r_char
+op_star
 id|slot_name
-(braket
-l_int|8
-)braket
 suffix:semicolon
-multiline_comment|/* slot name */
+multiline_comment|/* pointer to dev.bus_id */
 multiline_comment|/* These fields are used by common fixups */
 DECL|member|transparent
 r_int
@@ -3112,6 +3110,25 @@ id|pdev-&gt;dev
 comma
 id|data
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/* If you want to know what to call your pci_dev, ask this function.&n; * Again, it&squot;s a wrapper around the generic device.&n; */
+DECL|function|pci_name
+r_static
+r_inline
+r_char
+op_star
+id|pci_name
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+r_return
+id|pdev-&gt;dev.bus_id
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  The world is not perfect and supplies us with broken PCI devices.&n; *  For at least a part of these bugs we need a work-around, so both&n; *  generic (drivers/pci/quirks.c) and per-architecture code can define&n; *  fixup hooks to be called for particular buggy devices.&n; */

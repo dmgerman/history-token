@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation Copyright (C) 1999-2001&n; * Cisco, Motorola, Intel, and International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are the definitions needed for the tsnmap type.  The tsnmap is used&n; * to track out of order TSNs received.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *   Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *   La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *   Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2003 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These are the definitions needed for the tsnmap type.  The tsnmap is used&n; * to track out of order TSNs received.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *   Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *   La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *   Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;net/sctp/constants.h&gt;
 macro_line|#ifndef __sctp_tsnmap_h__
 DECL|macro|__sctp_tsnmap_h__
@@ -50,7 +50,7 @@ DECL|member|pending_data
 id|__u16
 id|pending_data
 suffix:semicolon
-multiline_comment|/* We record duplicate TSNs here.  We clear this after&n;&t; * every SACK.  Store up to SCTP_MAX_DUP_TSNS worth of&n;&t; * information.&n;&t; */
+multiline_comment|/* Record duplicate TSNs here.  We clear this after&n;&t; * every SACK.  Store up to SCTP_MAX_DUP_TSNS worth of&n;&t; * information.&n;&t; */
 DECL|member|dup_tsns
 id|__u32
 id|dup_tsns
@@ -61,6 +61,15 @@ suffix:semicolon
 DECL|member|num_dup_tsns
 id|__u16
 id|num_dup_tsns
+suffix:semicolon
+multiline_comment|/* Record gap ack block information here.  */
+DECL|member|gabs
+r_struct
+id|sctp_gap_ack_block
+id|gabs
+(braket
+id|SCTP_MAX_GABS
+)braket
 suffix:semicolon
 DECL|member|malloced
 r_int
@@ -161,6 +170,9 @@ id|tsn
 )paren
 suffix:semicolon
 multiline_comment|/* Retrieve the Cumulative TSN ACK Point.  */
+DECL|function|sctp_tsnmap_get_ctsn
+r_static
+r_inline
 id|__u32
 id|sctp_tsnmap_get_ctsn
 c_func
@@ -169,9 +181,17 @@ r_const
 r_struct
 id|sctp_tsnmap
 op_star
+id|map
 )paren
+(brace
+r_return
+id|map-&gt;cumulative_tsn_ack_point
 suffix:semicolon
+)brace
 multiline_comment|/* Retrieve the highest TSN we&squot;ve seen.  */
+DECL|function|sctp_tsnmap_get_max_tsn_seen
+r_static
+r_inline
 id|__u32
 id|sctp_tsnmap_get_max_tsn_seen
 c_func
@@ -180,9 +200,14 @@ r_const
 r_struct
 id|sctp_tsnmap
 op_star
+id|map
 )paren
+(brace
+r_return
+id|map-&gt;max_tsn_seen
 suffix:semicolon
-multiline_comment|/* How many Duplicate TSNs are stored? */
+)brace
+multiline_comment|/* How many duplicate TSNs are stored? */
 DECL|function|sctp_tsnmap_num_dups
 r_static
 r_inline
@@ -221,6 +246,78 @@ l_int|0
 suffix:semicolon
 r_return
 id|map-&gt;dup_tsns
+suffix:semicolon
+)brace
+multiline_comment|/* How many gap ack blocks do we have recorded? */
+id|__u16
+id|sctp_tsnmap_num_gabs
+c_func
+(paren
+r_struct
+id|sctp_tsnmap
+op_star
+id|map
+)paren
+suffix:semicolon
+multiline_comment|/* Refresh the count on pending data. */
+id|__u16
+id|sctp_tsnmap_pending
+c_func
+(paren
+r_struct
+id|sctp_tsnmap
+op_star
+id|map
+)paren
+suffix:semicolon
+multiline_comment|/* Return pointer to gap ack blocks as needed by SACK. */
+DECL|function|sctp_tsnmap_get_gabs
+r_static
+r_inline
+r_struct
+id|sctp_gap_ack_block
+op_star
+id|sctp_tsnmap_get_gabs
+c_func
+(paren
+r_struct
+id|sctp_tsnmap
+op_star
+id|map
+)paren
+(brace
+r_return
+id|map-&gt;gabs
+suffix:semicolon
+)brace
+multiline_comment|/* Is there a gap in the TSN map?  */
+DECL|function|sctp_tsnmap_has_gap
+r_static
+r_inline
+r_int
+id|sctp_tsnmap_has_gap
+c_func
+(paren
+r_const
+r_struct
+id|sctp_tsnmap
+op_star
+id|map
+)paren
+(brace
+r_int
+id|has_gap
+suffix:semicolon
+id|has_gap
+op_assign
+(paren
+id|map-&gt;cumulative_tsn_ack_point
+op_ne
+id|map-&gt;max_tsn_seen
+)paren
+suffix:semicolon
+r_return
+id|has_gap
 suffix:semicolon
 )brace
 multiline_comment|/* Mark a duplicate TSN.  Note:  limit the storage of duplicate TSN&n; * information.&n; */

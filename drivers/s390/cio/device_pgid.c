@@ -281,14 +281,6 @@ id|iretry
 op_assign
 l_int|5
 suffix:semicolon
-id|cdev
-op_member_access_from_pointer
-r_private
-op_member_access_from_pointer
-id|flags.pgid_supp
-op_assign
-l_int|0
-suffix:semicolon
 id|memset
 (paren
 op_amp
@@ -635,14 +627,6 @@ r_case
 l_int|0
 suffix:colon
 multiline_comment|/* Sense Path Group ID successful. */
-id|cdev
-op_member_access_from_pointer
-r_private
-op_member_access_from_pointer
-id|flags.pgid_supp
-op_assign
-l_int|1
-suffix:semicolon
 id|opm
 op_assign
 id|sch-&gt;schib.pmcw.pim
@@ -683,7 +667,7 @@ id|cdev
 op_member_access_from_pointer
 r_private
 op_member_access_from_pointer
-id|flags.pgid_supp
+id|options.pgroup
 op_assign
 l_int|0
 suffix:semicolon
@@ -733,7 +717,8 @@ c_func
 (paren
 id|cdev
 comma
-l_int|0
+op_minus
+id|EOPNOTSUPP
 )paren
 suffix:semicolon
 r_break

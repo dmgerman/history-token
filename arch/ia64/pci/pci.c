@@ -1161,15 +1161,16 @@ suffix:semicolon
 r_struct
 id|pci_bus
 op_star
-DECL|function|pcibios_scan_root
-id|pcibios_scan_root
+DECL|function|pci_acpi_scan_root
+id|pci_acpi_scan_root
 (paren
-r_void
+r_struct
+id|acpi_device
 op_star
-id|handle
+id|device
 comma
 r_int
-id|seg
+id|domain
 comma
 r_int
 id|bus
@@ -1197,9 +1198,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: Probing PCI hardware on bus (%02x:%02x)&bslash;n&quot;
+l_string|&quot;PCI: Probing PCI hardware on bus (%04x:%02x)&bslash;n&quot;
 comma
-id|seg
+id|domain
 comma
 id|bus
 )paren
@@ -1209,7 +1210,7 @@ op_assign
 id|alloc_pci_controller
 c_func
 (paren
-id|seg
+id|domain
 )paren
 suffix:semicolon
 r_if
@@ -1223,12 +1224,12 @@ id|out1
 suffix:semicolon
 id|controller-&gt;acpi_handle
 op_assign
-id|handle
+id|device-&gt;handle
 suffix:semicolon
 id|acpi_walk_resources
 c_func
 (paren
-id|handle
+id|device-&gt;handle
 comma
 id|METHOD_NAME__CRS
 comma
@@ -1287,9 +1288,9 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;PCI Bus %02x:%02x&quot;
+l_string|&quot;PCI Bus %04x:%02x&quot;
 comma
-id|seg
+id|domain
 comma
 id|bus
 )paren
@@ -1305,7 +1306,7 @@ suffix:semicolon
 id|acpi_walk_resources
 c_func
 (paren
-id|handle
+id|device-&gt;handle
 comma
 id|METHOD_NAME__CRS
 comma

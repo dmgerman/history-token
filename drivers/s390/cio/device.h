@@ -427,8 +427,7 @@ r_void
 id|ccw_device_add_stlck
 c_func
 (paren
-r_struct
-id|ccw_device
+r_void
 op_star
 )paren
 suffix:semicolon

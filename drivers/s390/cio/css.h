@@ -240,6 +240,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* report every interrupt status */
+DECL|member|pgroup
+r_int
+r_int
+id|pgroup
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* do path grouping */
 DECL|member|options
 )brace
 id|__attribute__
@@ -252,14 +260,6 @@ id|options
 suffix:semicolon
 r_struct
 (brace
-DECL|member|pgid_supp
-r_int
-r_int
-id|pgid_supp
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* &quot;path group ID&quot; supported */
 DECL|member|pgid_single
 r_int
 r_int

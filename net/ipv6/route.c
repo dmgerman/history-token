@@ -56,9 +56,9 @@ r_static
 r_int
 id|ip6_rt_gc_min_interval
 op_assign
-l_int|5
-op_star
 id|HZ
+op_div
+l_int|2
 suffix:semicolon
 DECL|variable|ip6_rt_gc_timeout
 r_static

@@ -7772,14 +7772,14 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
-id|snprintf
+id|strlcpy
 c_func
 (paren
 id|dev-&gt;class_dev.class_id
 comma
-id|BUS_ID_SIZE
-comma
 id|dev-&gt;name
+comma
+id|BUS_ID_SIZE
 )paren
 suffix:semicolon
 id|notifier_call_chain

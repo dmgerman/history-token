@@ -77,11 +77,6 @@ op_assign
 l_string|&quot;unix&quot;
 comma
 dot
-id|maxlen
-op_assign
-l_int|0
-comma
-dot
 id|mode
 op_assign
 l_int|0555
@@ -118,11 +113,6 @@ dot
 id|procname
 op_assign
 l_string|&quot;net&quot;
-comma
-dot
-id|maxlen
-op_assign
-l_int|0
 comma
 dot
 id|mode

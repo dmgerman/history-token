@@ -219,11 +219,6 @@ op_assign
 l_string|&quot;rxrpc&quot;
 comma
 dot
-id|maxlen
-op_assign
-l_int|0
-comma
-dot
 id|mode
 op_assign
 l_int|0555

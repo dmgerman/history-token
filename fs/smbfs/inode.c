@@ -2145,6 +2145,12 @@ id|server-&gt;ops
 op_assign
 id|mem
 suffix:semicolon
+id|smb_install_null_ops
+c_func
+(paren
+id|server-&gt;ops
+)paren
+suffix:semicolon
 id|server-&gt;mnt
 op_assign
 id|mem

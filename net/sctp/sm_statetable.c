@@ -4,6 +4,7 @@ macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
 DECL|variable|bug
 r_static
+r_const
 id|sctp_sm_table_entry_t
 id|bug
 op_assign
@@ -22,6 +23,7 @@ suffix:semicolon
 DECL|macro|DO_LOOKUP
 mdefine_line|#define DO_LOOKUP(_max, _type, _table) &bslash;&n;&t;if ((event_subtype._type &gt; (_max))) { &bslash;&n;&t;&t;printk(KERN_WARNING &bslash;&n;&t;&t;       &quot;sctp table %p possible attack:&quot; &bslash;&n;&t;&t;       &quot; event %d exceeds max %d&bslash;n&quot;, &bslash;&n;&t;&t;       _table, event_subtype._type, _max); &bslash;&n;&t;&t;return &amp;bug; &bslash;&n;&t;} &bslash;&n;&t;return &amp;_table[event_subtype._type][(int)state];
 DECL|function|sctp_sm_lookup_event
+r_const
 id|sctp_sm_table_entry_t
 op_star
 id|sctp_sm_lookup_event
@@ -144,6 +146,7 @@ DECL|macro|TYPE_SCTP_SHUTDOWN_COMPLETE
 mdefine_line|#define TYPE_SCTP_SHUTDOWN_COMPLETE { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_ootb, .name = &quot;sctp_sf_ootb&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_discard_chunk, .name = &quot;sctp_sf_discard_chunk&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_do_4_C, .name = &quot;sctp_sf_do_4_C&quot;}, &bslash;&n;} /* TYPE_SCTP_SHUTDOWN_COMPLETE */
 multiline_comment|/* The primary index for this table is the chunk type.&n; * The secondary index for this table is the state.&n; *&n; * For base protocol (RFC 2960).&n; */
 DECL|variable|chunk_event_table
+r_const
 id|sctp_sm_table_entry_t
 id|chunk_event_table
 (braket
@@ -188,6 +191,7 @@ comma
 suffix:semicolon
 multiline_comment|/* state_fn_t chunk_event_table[][] */
 r_static
+r_const
 id|sctp_sm_table_entry_t
 DECL|variable|chunk_event_table_unknown
 id|chunk_event_table_unknown
@@ -328,6 +332,7 @@ DECL|macro|TYPE_SCTP_PRIMITIVE_REQUESTHEARTBEAT
 mdefine_line|#define TYPE_SCTP_PRIMITIVE_REQUESTHEARTBEAT  { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_do_prm_requestheartbeat,&t;&t;      &bslash;&n;&t; .name = &quot;sctp_sf_do_prm_requestheartbeat&quot;},          &bslash;&n;} /* TYPE_SCTP_PRIMITIVE_REQUESTHEARTBEAT */
 multiline_comment|/* The primary index for this table is the primitive type.&n; * The secondary index for this table is the state.&n; */
 DECL|variable|primitive_event_table
+r_const
 id|sctp_sm_table_entry_t
 id|primitive_event_table
 (braket
@@ -353,6 +358,7 @@ suffix:semicolon
 DECL|macro|TYPE_SCTP_OTHER_NO_PENDING_TSN
 mdefine_line|#define TYPE_SCTP_OTHER_NO_PENDING_TSN  { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_bug, .name = &quot;sctp_sf_bug&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_do_9_2_start_shutdown, &bslash;&n;&t; .name = &quot;sctp_do_9_2_start_shutdown&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_do_9_2_shutdown_ack, &bslash;&n;&t; .name = &quot;sctp_sf_do_9_2_shutdown_ack&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_ignore_other, .name = &quot;sctp_sf_ignore_other&quot;}, &bslash;&n;}
 DECL|variable|other_event_table
+r_const
 id|sctp_sm_table_entry_t
 id|other_event_table
 (braket
@@ -386,6 +392,7 @@ mdefine_line|#define TYPE_SCTP_EVENT_TIMEOUT_SACK { &bslash;&n;&t;/* SCTP_STATE_
 DECL|macro|TYPE_SCTP_EVENT_TIMEOUT_AUTOCLOSE
 mdefine_line|#define TYPE_SCTP_EVENT_TIMEOUT_AUTOCLOSE { &bslash;&n;&t;/* SCTP_STATE_EMPTY */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_CLOSED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_WAIT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_COOKIE_ECHOED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_ESTABLISHED */ &bslash;&n;&t;{.fn = sctp_sf_autoclose_timer_expire, &bslash;&n;&t; .name = &quot;sctp_sf_autoclose_timer_expire&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_PENDING */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_SENT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_RECEIVED */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;&t;/* SCTP_STATE_SHUTDOWN_ACK_SENT */ &bslash;&n;&t;{.fn = sctp_sf_timer_ignore, .name = &quot;sctp_sf_timer_ignore&quot;}, &bslash;&n;}
 DECL|variable|timeout_event_table
+r_const
 id|sctp_sm_table_entry_t
 id|timeout_event_table
 (braket
@@ -417,6 +424,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|sctp_chunk_event_lookup
+r_const
 id|sctp_sm_table_entry_t
 op_star
 id|sctp_chunk_event_lookup

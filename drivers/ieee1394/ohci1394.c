@@ -85,7 +85,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 948 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 986 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -1649,11 +1649,9 @@ id|tmp
 op_amp
 l_int|1
 )paren
-(brace
 id|ctx
 op_increment
 suffix:semicolon
-)brace
 id|tmp
 op_rshift_assign
 l_int|1
@@ -3247,11 +3245,9 @@ id|d-&gt;free_prgs
 op_eq
 l_int|0
 )paren
-id|PRINT
+id|DBGMSG
 c_func
 (paren
-id|KERN_INFO
-comma
 id|ohci-&gt;id
 comma
 l_string|&quot;Transmit DMA FIFO ctx=%d is full... waiting&quot;
@@ -4724,12 +4720,10 @@ c_cond
 op_logical_neg
 id|recv
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|iso-&gt;hostdata
 op_assign
 id|recv
@@ -4838,14 +4832,12 @@ l_int|4
 OG
 id|recv-&gt;nblocks
 )paren
-(brace
 id|recv-&gt;block_irq_interval
 op_assign
 id|recv-&gt;nblocks
 op_div
 l_int|4
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -4853,12 +4845,10 @@ id|recv-&gt;block_irq_interval
 OL
 l_int|1
 )paren
-(brace
 id|recv-&gt;block_irq_interval
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 )brace
 r_else
 (brace
@@ -4896,9 +4886,7 @@ id|recv-&gt;buf_stride
 op_mul_assign
 l_int|2
 )paren
-(brace
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5022,11 +5010,9 @@ id|recv-&gt;task
 OL
 l_int|0
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
 id|recv-&gt;task_active
 op_assign
 l_int|1
@@ -5641,7 +5627,6 @@ id|i
 OL
 l_int|32
 )paren
-(brace
 id|reg_write
 c_func
 (paren
@@ -5656,7 +5641,6 @@ id|i
 )paren
 )paren
 suffix:semicolon
-)brace
 r_else
 id|reg_write
 c_func
@@ -5686,7 +5670,6 @@ id|i
 OL
 l_int|32
 )paren
-(brace
 id|reg_write
 c_func
 (paren
@@ -5701,7 +5684,6 @@ id|i
 )paren
 )paren
 suffix:semicolon
-)brace
 r_else
 id|reg_write
 c_func
@@ -5802,7 +5784,6 @@ id|recv-&gt;dma_mode
 op_eq
 id|BUFFER_FILL_MODE
 )paren
-(brace
 id|command
 op_or_assign
 (paren
@@ -5811,7 +5792,6 @@ op_lshift
 l_int|31
 )paren
 suffix:semicolon
-)brace
 id|reg_write
 c_func
 (paren
@@ -6307,7 +6287,6 @@ id|len
 op_mod
 l_int|4
 )paren
-(brace
 id|len
 op_add_assign
 l_int|4
@@ -6318,7 +6297,6 @@ op_mod
 l_int|4
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* add 8 bytes for the OHCI DMA data format overhead */
 id|len
 op_add_assign
@@ -6524,10 +6502,8 @@ id|this_block
 op_eq
 id|recv-&gt;block_dma
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
 id|wake
 op_assign
 l_int|1
@@ -6795,14 +6771,12 @@ c_cond
 (paren
 id|wake
 )paren
-(brace
 id|hpsb_iso_wake
 c_func
 (paren
 id|iso
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|ohci_iso_recv_bufferfill_task
 r_static
@@ -7335,14 +7309,12 @@ c_cond
 (paren
 id|wake
 )paren
-(brace
 id|hpsb_iso_wake
 c_func
 (paren
 id|iso
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/***********************************&n; * rawiso ISO transmission         *&n; ***********************************/
 DECL|struct|ohci_iso_xmit
@@ -7510,12 +7482,10 @@ c_cond
 op_logical_neg
 id|xmit
 )paren
-(brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-)brace
 id|iso-&gt;hostdata
 op_assign
 id|xmit
@@ -7559,11 +7529,9 @@ comma
 id|xmit-&gt;ohci-&gt;dev
 )paren
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
 id|ohci1394_init_iso_tasklet
 c_func
 (paren
@@ -7595,11 +7563,9 @@ id|xmit-&gt;task
 OL
 l_int|0
 )paren
-(brace
 r_goto
 id|err
 suffix:semicolon
-)brace
 id|xmit-&gt;task_active
 op_assign
 l_int|1
@@ -7884,7 +7850,6 @@ id|event
 op_ne
 l_int|0x11
 )paren
-(brace
 id|PRINT
 c_func
 (paren
@@ -7897,7 +7862,6 @@ comma
 id|event
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* at least one packet went out, so wake up the writer */
 id|wake
 op_assign
@@ -7938,14 +7902,12 @@ c_cond
 (paren
 id|wake
 )paren
-(brace
 id|hpsb_iso_wake
 c_func
 (paren
 id|iso
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|ohci_iso_xmit_queue
 r_static
@@ -11747,7 +11709,6 @@ l_int|0xf
 op_eq
 l_int|0xa
 )paren
-(brace
 id|DBGMSG
 c_func
 (paren
@@ -11827,7 +11788,6 @@ comma
 id|d-&gt;ctx
 )paren
 suffix:semicolon
-)brace
 r_else
 id|DBGMSG
 c_func
@@ -14872,7 +14832,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/***********************************&n; * PCI Driver Interface functions  *&n; ***********************************/
 DECL|macro|FAIL
-mdefine_line|#define FAIL(err, fmt, args...)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PRINT_G(KERN_ERR, fmt , ## args);&t;&bslash;&n;        ohci1394_pci_remove(dev);               &bslash;&n;&t;return err;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define FAIL(err, fmt, args...)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;PRINT_G(KERN_ERR, fmt , ## args);&t;&bslash;&n;        ohci1394_pci_remove(dev);               &bslash;&n;&t;return err;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|function|ohci1394_pci_probe
 r_static
 r_int

@@ -296,11 +296,6 @@ id|task_struct
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Copy and release all segment info associated with a VM */
-DECL|macro|copy_segments
-mdefine_line|#define copy_segments(tsk, mm)&t;&t;do { } while (0)
-DECL|macro|release_segments
-mdefine_line|#define release_segments(mm)&t;&t;do { } while (0)
 r_int
 r_int
 id|get_wchan

@@ -17,11 +17,6 @@ DECL|macro|EXT3_PREALLOCATE
 macro_line|#undef  EXT3_PREALLOCATE /* @@@ Fix this! */
 DECL|macro|EXT3_DEFAULT_PREALLOC_BLOCKS
 mdefine_line|#define EXT3_DEFAULT_PREALLOC_BLOCKS&t;8
-multiline_comment|/*&n; * The second extended file system version&n; */
-DECL|macro|EXT3FS_DATE
-mdefine_line|#define EXT3FS_DATE&t;&t;&quot;02 Dec 2001&quot;
-DECL|macro|EXT3FS_VERSION
-mdefine_line|#define EXT3FS_VERSION&t;&t;&quot;2.4-0.9.16&quot;
 multiline_comment|/*&n; * Always enable hashed directories&n; */
 DECL|macro|CONFIG_EXT3_INDEX
 mdefine_line|#define CONFIG_EXT3_INDEX

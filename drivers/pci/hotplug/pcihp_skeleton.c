@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * PCI Hot Plug Controller Skeleton Driver - 0.1&n; *&n; * Copyright (c) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * This driver is to be used as a skeleton driver to be show how to interface&n; * with the pci hotplug core easily.&n; *&n; * Send feedback to &lt;greg@kroah.com&gt;&n; *&n; */
+multiline_comment|/*&n; * PCI Hot Plug Controller Skeleton Driver - 0.2&n; *&n; * Copyright (c) 2001,2003 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (c) 2001,2003 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * This driver is to be used as a skeleton driver to be show how to interface&n; * with the pci hotplug core easily.&n; *&n; * Send feedback to &lt;greg@kroah.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -67,7 +67,7 @@ r_int
 id|num_slots
 suffix:semicolon
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;0.1&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;0.2&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -894,6 +894,81 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|function|release_slots
+r_static
+r_void
+id|release_slots
+c_func
+(paren
+r_struct
+id|hotplug_slot
+op_star
+id|hotplug_slot
+)paren
+(brace
+r_struct
+id|slot
+op_star
+id|slot
+op_assign
+id|get_slot
+c_func
+(paren
+id|hotplug_slot
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_int
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|slot
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot; - physical_slot = %s&bslash;n&quot;
+comma
+id|hotplug_slot-&gt;name
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|slot-&gt;hotplug_slot-&gt;info
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|slot-&gt;hotplug_slot-&gt;name
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|slot-&gt;hotplug_slot
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|slot
+)paren
+suffix:semicolon
+)brace
 DECL|macro|SLOT_NAME_SIZE
 mdefine_line|#define SLOT_NAME_SIZE&t;10
 DECL|function|make_slot_name
@@ -1163,6 +1238,11 @@ r_private
 op_assign
 id|slot
 suffix:semicolon
+id|hotplug_slot-&gt;release
+op_assign
+op_amp
+id|release_slot
+suffix:semicolon
 id|make_slot_name
 (paren
 id|slot
@@ -1276,6 +1356,7 @@ DECL|function|cleanup_slots
 r_static
 r_void
 id|cleanup_slots
+c_func
 (paren
 r_void
 )paren
@@ -1286,14 +1367,21 @@ op_star
 id|tmp
 suffix:semicolon
 r_struct
+id|list_head
+op_star
+id|next
+suffix:semicolon
+r_struct
 id|slot
 op_star
 id|slot
 suffix:semicolon
-multiline_comment|/*&n;&t; * Unregister all of our slots with the pci_hotplug subsystem,&n;&t; * and free up all memory that we had allocated.&n;&t; */
-id|list_for_each
+multiline_comment|/*&n;&t; * Unregister all of our slots with the pci_hotplug subsystem.&n;&t; * Memory will be freed in release_slot() callback after slot&squot;s&n;&t; * lifespan is finished.&n;&t; */
+id|list_for_each_safe
 (paren
 id|tmp
+comma
+id|next
 comma
 op_amp
 id|slot_list
@@ -1322,29 +1410,7 @@ id|pci_hp_deregister
 id|slot-&gt;hotplug_slot
 )paren
 suffix:semicolon
-id|kfree
-(paren
-id|slot-&gt;hotplug_slot-&gt;info
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|slot-&gt;hotplug_slot-&gt;name
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|slot-&gt;hotplug_slot
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|slot
-)paren
-suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 DECL|function|pcihp_skel_init
 r_static
