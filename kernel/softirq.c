@@ -1375,10 +1375,11 @@ id|__bind_cpu
 r_int
 id|bind_cpu
 op_assign
-op_star
 (paren
 r_int
-op_star
+)paren
+(paren
+r_int
 )paren
 id|__bind_cpu
 suffix:semicolon
@@ -1560,7 +1561,9 @@ comma
 r_void
 op_star
 )paren
-op_amp
+(paren
+r_int
+)paren
 id|cpu
 comma
 id|CLONE_FS

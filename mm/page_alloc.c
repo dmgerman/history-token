@@ -521,14 +521,21 @@ r_return
 suffix:semicolon
 id|local_freelist
 suffix:colon
-multiline_comment|/*&n;&t; * This is a little subtle: if the allocation order&n;&t; * wanted is major than zero we&squot;d better take all the pages&n;&t; * local since we must deal with fragmentation too and we&n;&t; * can&squot;t rely on the nr_local_pages information.&n;&t; */
 r_if
 c_cond
 (paren
 id|current-&gt;nr_local_pages
-op_logical_and
-op_logical_neg
-id|current-&gt;allocation_order
+)paren
+r_goto
+id|back_local_freelist
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
 )paren
 r_goto
 id|back_local_freelist

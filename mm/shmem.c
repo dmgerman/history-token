@@ -545,8 +545,8 @@ suffix:semicolon
 id|freed
 op_increment
 suffix:semicolon
-multiline_comment|/* vmscan will do the actual page freeing later.. */
-id|swap_free
+id|free_swap_and_cache
+c_func
 (paren
 id|entry
 )paren

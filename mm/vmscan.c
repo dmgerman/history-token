@@ -143,21 +143,6 @@ comma
 id|address
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Is the page already in the swap cache? If so, then&n;&t; * we can just drop our reference to it without doing&n;&t; * any IO - it&squot;s already up-to-date on disk.&n;&t; */
-r_if
-c_cond
-(paren
-id|PageSwapCache
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-id|entry.val
-op_assign
-id|page-&gt;index
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -172,6 +157,21 @@ c_func
 (paren
 id|page
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Is the page already in the swap cache? If so, then&n;&t; * we can just drop our reference to it without doing&n;&t; * any IO - it&squot;s already up-to-date on disk.&n;&t; */
+r_if
+c_cond
+(paren
+id|PageSwapCache
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+id|entry.val
+op_assign
+id|page-&gt;index
 suffix:semicolon
 id|swap_duplicate
 c_func
@@ -237,37 +237,12 @@ c_cond
 (paren
 id|page-&gt;mapping
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|pte_dirty
-c_func
-(paren
-id|pte
-)paren
-)paren
-id|set_page_dirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 r_goto
 id|drop_pte
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * Check PageDirty as well as pte_dirty: page may&n;&t; * have been brought back from swap by swapoff.&n;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pte_dirty
-c_func
-(paren
-id|pte
-)paren
-op_logical_and
 op_logical_neg
 id|PageDirty
 c_func
@@ -301,7 +276,7 @@ id|entry.val
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* Add it to the swap cache and mark it dirty */
+multiline_comment|/* Add it to the swap cache and mark it dirty&n;&t;&t; * (adding to the page cache will clear the dirty&n;&t;&t; * and uptodate bits, so we need to do it again)&n;&t;&t; */
 r_if
 c_cond
 (paren
