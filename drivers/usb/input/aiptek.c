@@ -483,8 +483,9 @@ comma
 l_int|0x20
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 l_int|0
 )brace
 comma
