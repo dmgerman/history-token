@@ -211,13 +211,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|videobuf_dma_init
-c_func
-(paren
-op_amp
-id|dev-&gt;oss.dma
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|videobuf_dma_init_kernel
