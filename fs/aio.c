@@ -4839,6 +4839,13 @@ id|ret
 r_return
 l_int|0
 suffix:semicolon
+id|get_ioctx
+c_func
+(paren
+id|ioctx
+)paren
+suffix:semicolon
+multiline_comment|/* io_destroy() expects us to hold a ref */
 id|io_destroy
 c_func
 (paren
