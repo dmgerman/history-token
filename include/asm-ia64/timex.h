@@ -39,5 +39,16 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+r_extern
+r_int
+r_int
+(paren
+op_star
+id|gettimeoffset
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* _ASM_IA64_TIMEX_H */
 eof

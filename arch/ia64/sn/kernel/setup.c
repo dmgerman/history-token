@@ -66,15 +66,17 @@ id|bte_init_cpu
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|sn_timer_init
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|sn_rtc_cycles_per_second
 r_int
 r_int
 id|sn_rtc_cycles_per_second
-suffix:semicolon
-DECL|variable|sn_rtc_usec_per_cyc
-r_int
-r_int
-id|sn_rtc_usec_per_cyc
 suffix:semicolon
 DECL|variable|sn_partid
 id|partid_t
@@ -672,29 +674,6 @@ id|sn_rtc_cycles_per_second
 op_assign
 id|ticks_per_sec
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-multiline_comment|/* PROM has wrong value on SN1 */
-id|sn_rtc_cycles_per_second
-op_assign
-l_int|990177
-suffix:semicolon
-macro_line|#endif
-id|sn_rtc_usec_per_cyc
-op_assign
-(paren
-(paren
-l_int|1000000000UL
-op_lshift
-id|IA64_NSEC_PER_CYC_SHIFT
-)paren
-op_plus
-id|sn_rtc_cycles_per_second
-op_div
-l_int|2
-)paren
-op_div
-id|sn_rtc_cycles_per_second
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -805,6 +784,11 @@ multiline_comment|/*&n;&t; * Turn off &quot;floating-point assist fault&quot; wa
 id|current-&gt;thread.flags
 op_or_assign
 id|IA64_THREAD_FPEMU_NOPRINT
+suffix:semicolon
+id|sn_timer_init
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * sn_init_pdas - setup node data areas&n; *&n; * One time setup for Node Data Area.  Called by sn_setup().&n; */

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -22,12 +23,36 @@ r_int
 r_int
 id|last_nsec_offset
 suffix:semicolon
+r_static
+r_int
+r_int
+id|__ia64_gettimeoffset
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|gettimeoffset
+r_int
+r_int
+(paren
+op_star
+id|gettimeoffset
+)paren
+(paren
+r_void
+)paren
+op_assign
+op_amp
+id|__ia64_gettimeoffset
+suffix:semicolon
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
 op_assign
 id|INITIAL_JIFFIES
 suffix:semicolon
+DECL|macro|TIME_KEEPER_ID
+mdefine_line|#define TIME_KEEPER_ID&t;0&t;/* smp_processor_id() of time-keeper */
 macro_line|#ifdef CONFIG_IA64_DEBUG_IRQ
 DECL|variable|last_cli_ip
 r_int
@@ -127,11 +152,10 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return the number of nano-seconds that elapsed since the last update to jiffy.  The&n; * xtime_lock must be at least read-locked when calling this routine.&n; */
 r_static
-r_inline
 r_int
 r_int
-DECL|function|gettimeoffset
-id|gettimeoffset
+DECL|function|__ia64_gettimeoffset
+id|__ia64_gettimeoffset
 (paren
 r_void
 )paren
@@ -152,15 +176,13 @@ id|now
 comma
 id|last_tick
 suffix:semicolon
-DECL|macro|time_keeper_id
-macro_line|#&t;define time_keeper_id&t;0&t;/* smp_processor_id() of time-keeper */
 id|last_tick
 op_assign
 (paren
 id|cpu_data
 c_func
 (paren
-id|time_keeper_id
+id|TIME_KEEPER_ID
 )paren
 op_member_access_from_pointer
 id|itm_next
@@ -174,7 +196,7 @@ op_star
 id|cpu_data
 c_func
 (paren
-id|time_keeper_id
+id|TIME_KEEPER_ID
 )paren
 op_member_access_from_pointer
 id|itm_delta
@@ -338,8 +360,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * This is revolting. We need to set &quot;xtime&quot; correctly. However, the value&n;&t;&t; * in this location is the value at the most recent update of wall time.&n;&t;&t; * Discover what correction gettimeofday would have done, and then undo&n;&t;&t; * it!&n;&t;&t; */
 id|nsec
 op_sub_assign
+(paren
+op_star
 id|gettimeoffset
-c_func
+)paren
 (paren
 )paren
 suffix:semicolon
@@ -402,6 +426,18 @@ id|time_esterror
 op_assign
 id|NTP_PHASE_LIMIT
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|update_wall_time_hook
+)paren
+(paren
+op_star
+id|update_wall_time_hook
+)paren
+(paren
+)paren
+suffix:semicolon
 )brace
 id|write_sequnlock_irq
 c_func
@@ -462,8 +498,10 @@ id|last_nsec_offset
 suffix:semicolon
 id|offset
 op_assign
+(paren
+op_star
 id|gettimeoffset
-c_func
+)paren
 (paren
 )paren
 suffix:semicolon
@@ -682,7 +720,7 @@ c_func
 (paren
 )paren
 op_eq
-l_int|0
+id|TIME_KEEPER_ID
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Here we are in the timer irq handler. We have irqs locally&n;&t;&t;&t; * disabled, but we don&squot;t know if the timer_bh is running on&n;&t;&t;&t; * another CPU. We need to avoid to SMP race by acquiring the&n;&t;&t;&t; * xtime_lock.&n;&t;&t;&t; */

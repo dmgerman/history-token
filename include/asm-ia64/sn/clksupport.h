@@ -24,7 +24,7 @@ id|nasid_t
 id|master_nasid
 suffix:semicolon
 DECL|macro|RTC_MASK
-mdefine_line|#define RTC_MASK&t;&t;(0x007fffffffffffff)
+mdefine_line|#define RTC_MASK&t;&t;0x007fffffffffffffUL
 multiline_comment|/* clocks are not synchronized yet on SN1  - used node 0 (problem if no NASID 0) */
 DECL|macro|RTC_COUNTER_ADDR
 mdefine_line|#define RTC_COUNTER_ADDR&t;((clkreg_t*)REMOTE_HUB_ADDR(master_nasid, PI_RT_COUNTER))
@@ -46,7 +46,7 @@ macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 DECL|macro|RTC_MASK
-mdefine_line|#define RTC_MASK&t;&t;(SH_RTC_MASK)
+mdefine_line|#define RTC_MASK&t;&t;SH_RTC_MASK
 DECL|macro|RTC_COUNTER_ADDR
 mdefine_line|#define RTC_COUNTER_ADDR&t;((clkreg_t*)LOCAL_MMR_ADDR(SH_RTC))
 DECL|macro|RTC_COMPARE_A_ADDR
