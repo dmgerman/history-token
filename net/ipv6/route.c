@@ -43,12 +43,14 @@ DECL|macro|RT6_TRACE
 mdefine_line|#define RT6_TRACE(x...) do { ; } while (0)
 macro_line|#endif
 DECL|variable|ip6_rt_max_size
+r_static
 r_int
 id|ip6_rt_max_size
 op_assign
 l_int|4096
 suffix:semicolon
 DECL|variable|ip6_rt_gc_min_interval
+r_static
 r_int
 id|ip6_rt_gc_min_interval
 op_assign
@@ -57,6 +59,7 @@ op_star
 id|HZ
 suffix:semicolon
 DECL|variable|ip6_rt_gc_timeout
+r_static
 r_int
 id|ip6_rt_gc_timeout
 op_assign
@@ -73,12 +76,14 @@ op_star
 id|HZ
 suffix:semicolon
 DECL|variable|ip6_rt_gc_elasticity
+r_static
 r_int
 id|ip6_rt_gc_elasticity
 op_assign
 l_int|9
 suffix:semicolon
 DECL|variable|ip6_rt_mtu_expires
+r_static
 r_int
 id|ip6_rt_mtu_expires
 op_assign
@@ -89,6 +94,7 @@ op_star
 id|HZ
 suffix:semicolon
 DECL|variable|ip6_rt_min_advmss
+r_static
 r_int
 id|ip6_rt_min_advmss
 op_assign
@@ -188,6 +194,7 @@ id|skb
 )paren
 suffix:semicolon
 DECL|variable|ip6_dst_ops
+r_static
 r_struct
 id|dst_ops
 id|ip6_dst_ops
@@ -3189,6 +3196,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|ip6_route_del
+r_static
 r_int
 id|ip6_route_del
 c_func

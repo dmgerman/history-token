@@ -1432,6 +1432,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This should be easy, if there is something there&n; *&t;we return it, otherwise we block.&n; */
 DECL|function|rawv6_recvmsg
+r_static
 r_int
 id|rawv6_recvmsg
 c_func

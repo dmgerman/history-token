@@ -38,6 +38,7 @@ l_int|2
 )braket
 suffix:semicolon
 DECL|variable|ipv6_packet_type
+r_static
 r_struct
 id|packet_type
 id|ipv6_packet_type

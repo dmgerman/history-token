@@ -46,6 +46,7 @@ id|socket
 op_star
 id|icmpv6_socket
 suffix:semicolon
+r_static
 r_int
 id|icmpv6_rcv
 c_func
@@ -599,6 +600,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|sysctl_icmpv6_time
+r_static
 r_int
 id|sysctl_icmpv6_time
 op_assign
@@ -1792,6 +1794,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Handle icmp messages&n; */
 DECL|function|icmpv6_rcv
+r_static
 r_int
 id|icmpv6_rcv
 c_func

@@ -21,6 +21,7 @@ macro_line|#include &lt;net/rawv6.h&gt;
 macro_line|#include &lt;net/ndisc.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
 DECL|variable|sysctl_ip6frag_high_thresh
+r_static
 r_int
 id|sysctl_ip6frag_high_thresh
 op_assign
@@ -29,6 +30,7 @@ op_star
 l_int|1024
 suffix:semicolon
 DECL|variable|sysctl_ip6frag_low_thresh
+r_static
 r_int
 id|sysctl_ip6frag_low_thresh
 op_assign
@@ -37,6 +39,7 @@ op_star
 l_int|1024
 suffix:semicolon
 DECL|variable|sysctl_ip6frag_time
+r_static
 r_int
 id|sysctl_ip6frag_time
 op_assign
