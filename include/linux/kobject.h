@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
+DECL|macro|KOBJ_NAME_LEN
+mdefine_line|#define KOBJ_NAME_LEN&t;16
 DECL|struct|kobject
 r_struct
 id|kobject
@@ -15,7 +17,7 @@ DECL|member|name
 r_char
 id|name
 (braket
-l_int|16
+id|KOBJ_NAME_LEN
 )braket
 suffix:semicolon
 DECL|member|refcount
