@@ -26,6 +26,20 @@ r_char
 id|mode
 )paren
 (brace
+macro_line|#ifdef CONFIG_ARCH_IOP321
+op_star
+id|IOP321_PCSR
+op_assign
+l_int|0x30
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_IOP331
+op_star
+id|IOP331_PCSR
+op_assign
+l_int|0x30
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

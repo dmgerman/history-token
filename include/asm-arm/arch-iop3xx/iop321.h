@@ -4,21 +4,29 @@ DECL|macro|_IOP321_HW_H_
 mdefine_line|#define _IOP321_HW_H_
 multiline_comment|/*&n; * This is needed for mixed drivers that need to work on all&n; * IOP3xx variants but behave slightly differently on each.&n; */
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#ifdef&t;CONFIG_ARCH_IOP321
 DECL|macro|iop_is_321
-mdefine_line|#define iop_is_321() ((processor_id &amp; 0xfffff7e0) == 0x69052420)
+mdefine_line|#define iop_is_321() (((processor_id &amp; 0xfffff5e0) == 0x69052420))
+macro_line|#else
+DECL|macro|iop_is_321
+mdefine_line|#define&t;iop_is_321()&t;0
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * IOP321 I/O and Mem space regions for PCI autoconfiguration&n; */
-DECL|macro|IOP321_PCI_IO_BASE
-mdefine_line|#define&t;IOP321_PCI_IO_BASE&t;&t;0x90000000
-DECL|macro|IOP321_PCI_IO_SIZE
-mdefine_line|#define&t;IOP321_PCI_IO_SIZE&t;&t;0x00010000
-DECL|macro|IOP321_PCI_MEM_BASE
-mdefine_line|#define IOP321_PCI_MEM_BASE&t;&t;0x80000000
-DECL|macro|IOP321_PCI_MEM_SIZE
-mdefine_line|#define IOP321_PCI_MEM_SIZE&t;&t;0x40000000
+DECL|macro|IOP321_PCI_LOWER_IO
+mdefine_line|#define IOP321_PCI_LOWER_IO             0x90000000
+DECL|macro|IOP321_PCI_UPPER_IO
+mdefine_line|#define IOP321_PCI_UPPER_IO             0x9000ffff
+DECL|macro|IOP321_PCI_LOWER_MEM
+mdefine_line|#define IOP321_PCI_LOWER_MEM            0x80000000
+DECL|macro|IOP321_PCI_UPPER_MEM
+mdefine_line|#define IOP321_PCI_UPPER_MEM            0x83ffffff
+DECL|macro|IOP321_PCI_WINDOW_SIZE
+mdefine_line|#define IOP321_PCI_WINDOW_SIZE          64 * 0x100000
 multiline_comment|/*&n; * IOP321 chipset registers&n; */
 DECL|macro|IOP321_VIRT_MEM_BASE
-mdefine_line|#define IOP321_VIRT_MEM_BASE 0xfff00000  /* chip virtual mem address*/
+mdefine_line|#define IOP321_VIRT_MEM_BASE 0xfeffe000  /* chip virtual mem address*/
+singleline_comment|//#define IOP321_VIRT_MEM_BASE 0xfff00000  /* chip virtual mem address*/
 DECL|macro|IOP321_PHY_MEM_BASE
 mdefine_line|#define IOP321_PHY_MEM_BASE  0xffffe000  /* chip physical memory address */
 DECL|macro|IOP321_REG_ADDR
@@ -190,6 +198,22 @@ DECL|macro|IOP321_OPTPR
 mdefine_line|#define IOP321_OPTPR      (volatile u32 *)IOP321_REG_ADDR(0x0000037C)
 DECL|macro|IOP321_IAR
 mdefine_line|#define IOP321_IAR        (volatile u32 *)IOP321_REG_ADDR(0x00000380)
+DECL|macro|IOP321_IIxR_MASK
+mdefine_line|#define IOP321_IIxR_MASK&t;0x7f /* masks all */
+DECL|macro|IOP321_IIxR_IRI
+mdefine_line|#define IOP321_IIxR_IRI&t;&t;0x40 /* RC Index Register Interrupt */
+DECL|macro|IOP321_IIxR_OFQF
+mdefine_line|#define IOP321_IIxR_OFQF&t;0x20 /* RC Output Free Q Full (ERROR) */
+DECL|macro|IOP321_IIxR_ipq
+mdefine_line|#define IOP321_IIxR_ipq&t;&t;0x10 /* RC Inbound Post Q (post) */
+DECL|macro|IOP321_IIxR_ERRDI
+mdefine_line|#define IOP321_IIxR_ERRDI&t;0x08 /* RO Error Doorbell Interrupt */
+DECL|macro|IOP321_IIxR_IDI
+mdefine_line|#define IOP321_IIxR_IDI&t;&t;0x04 /* RO Inbound Doorbell Interrupt */
+DECL|macro|IOP321_IIxR_IM1
+mdefine_line|#define IOP321_IIxR_IM1&t;&t;0x02 /* RC Inbound Message 1 Interrupt */
+DECL|macro|IOP321_IIxR_IM0
+mdefine_line|#define IOP321_IIxR_IM0&t;&t;0x01 /* RC Inbound Message 0 Interrupt */
 multiline_comment|/* Reserved 0x00000384 through 0x000003FF */
 multiline_comment|/* DMA Controller 0x00000400 through 0x000004FF */
 DECL|macro|IOP321_DMA0_CCR
@@ -275,7 +299,27 @@ mdefine_line|#define IOP321_PBCR_EN    0x1
 DECL|macro|IOP321_PBISR_BOOR_ERR
 mdefine_line|#define IOP321_PBISR_BOOR_ERR 0x1
 multiline_comment|/* Peripheral performance monitoring unit 0x00000700 through 0x00077F */
+DECL|macro|IOP321_GTMR
+mdefine_line|#define IOP321_GTMR&t;(volatile u32 *)IOP321_REG_ADDR(0x00000700)
+DECL|macro|IOP321_ESR
+mdefine_line|#define IOP321_ESR&t;(volatile u32 *)IOP321_REG_ADDR(0x00000704)
+DECL|macro|IOP321_EMISR
+mdefine_line|#define IOP321_EMISR&t;(volatile u32 *)IOP321_REG_ADDR(0x00000708)
+multiline_comment|/* reserved 0x00000070c */
+DECL|macro|IOP321_GTSR
+mdefine_line|#define IOP321_GTSR&t;(volatile u32 *)IOP321_REG_ADDR(0x00000710)
+multiline_comment|/* PERC0 DOESN&squot;T EXIST - index from 1! */
+DECL|macro|IOP321_PERCR0
+mdefine_line|#define IOP321_PERCR0&t;(volatile u32 *)IOP321_REG_ADDR(0x00000710)
+DECL|macro|IOP321_GTMR_NGCE
+mdefine_line|#define IOP321_GTMR_NGCE&t;0x04 /* (Not) Global Counter Enable */
 multiline_comment|/* Internal arbitration unit 0x00000780 through 0x0007BF */
+DECL|macro|IOP321_IACR
+mdefine_line|#define IOP321_IACR&t;(volatile u32 *)IOP321_REG_ADDR(0x00000780)
+DECL|macro|IOP321_MTTR1
+mdefine_line|#define IOP321_MTTR1&t;(volatile u32 *)IOP321_REG_ADDR(0x00000784)
+DECL|macro|IOP321_MTTR2
+mdefine_line|#define IOP321_MTTR2&t;(volatile u32 *)IOP321_REG_ADDR(0x00000788)
 multiline_comment|/* General Purpose I/O Registers */
 DECL|macro|IOP321_GPOE
 mdefine_line|#define IOP321_GPOE       (volatile u32 *)IOP321_REG_ADDR(0x000007C4)
@@ -297,6 +341,19 @@ DECL|macro|IOP321_TU_TMR0
 mdefine_line|#define IOP321_TU_TMR0&t;&t;(volatile u32 *)IOP321_REG_ADDR(0x000007E0)
 DECL|macro|IOP321_TU_TMR1
 mdefine_line|#define IOP321_TU_TMR1&t;&t;(volatile u32 *)IOP321_REG_ADDR(0x000007E4)
+macro_line|#ifdef CONFIG_ARCH_IQ80321
+DECL|macro|IOP321_TICK_RATE
+mdefine_line|#define&t;IOP321_TICK_RATE&t;200000000&t;/* 200 MHz clock */
+macro_line|#elif defined(CONFIG_ARCH_IQ31244)
+DECL|macro|IOP321_TICK_RATE
+mdefine_line|#define IOP321_TICK_RATE&t;198000000&t;/* 33.000 MHz crystal */
+macro_line|#endif
+macro_line|#ifdef CONFIG_ARCH_EP80219
+DECL|macro|IOP321_TICK_RATE
+macro_line|#undef IOP321_TICK_RATE
+DECL|macro|IOP321_TICK_RATE
+mdefine_line|#define IOP321_TICK_RATE 200000000 /* 33.333333 Mhz crystal */
+macro_line|#endif
 DECL|macro|IOP321_TMR_TC
 mdefine_line|#define IOP321_TMR_TC&t;&t;0x01
 DECL|macro|IOP321_TMR_EN
@@ -336,7 +393,68 @@ DECL|macro|IOP321_AAU_ANDAR
 mdefine_line|#define IOP321_AAU_ANDAR   (volatile u32 *)IOP321_REG_ADDR(0x0000080C)
 DECL|macro|IOP321_AAU_SAR1
 mdefine_line|#define IOP321_AAU_SAR1    (volatile u32 *)IOP321_REG_ADDR(0x00000810)
-multiline_comment|/* SAR2...SAR32 0x00000814 - 0x000008A4 */
+DECL|macro|IOP321_AAU_SAR2
+mdefine_line|#define IOP321_AAU_SAR2    (volatile u32 *)IOP321_REG_ADDR(0x00000814)
+DECL|macro|IOP321_AAU_SAR3
+mdefine_line|#define IOP321_AAU_SAR3    (volatile u32 *)IOP321_REG_ADDR(0x00000818)
+DECL|macro|IOP321_AAU_SAR4
+mdefine_line|#define IOP321_AAU_SAR4    (volatile u32 *)IOP321_REG_ADDR(0x0000081C)
+DECL|macro|IOP321_AAU_SAR5
+mdefine_line|#define IOP321_AAU_SAR5    (volatile u32 *)IOP321_REG_ADDR(0x0000082C)
+DECL|macro|IOP321_AAU_SAR6
+mdefine_line|#define IOP321_AAU_SAR6    (volatile u32 *)IOP321_REG_ADDR(0x00000830)
+DECL|macro|IOP321_AAU_SAR7
+mdefine_line|#define IOP321_AAU_SAR7    (volatile u32 *)IOP321_REG_ADDR(0x00000834)
+DECL|macro|IOP321_AAU_SAR8
+mdefine_line|#define IOP321_AAU_SAR8    (volatile u32 *)IOP321_REG_ADDR(0x00000838)
+DECL|macro|IOP321_AAU_SAR9
+mdefine_line|#define IOP321_AAU_SAR9    (volatile u32 *)IOP321_REG_ADDR(0x00000840)
+DECL|macro|IOP321_AAU_SAR10
+mdefine_line|#define IOP321_AAU_SAR10   (volatile u32 *)IOP321_REG_ADDR(0x00000844)
+DECL|macro|IOP321_AAU_SAR11
+mdefine_line|#define IOP321_AAU_SAR11   (volatile u32 *)IOP321_REG_ADDR(0x00000848)
+DECL|macro|IOP321_AAU_SAR12
+mdefine_line|#define IOP321_AAU_SAR12   (volatile u32 *)IOP321_REG_ADDR(0x0000084C)
+DECL|macro|IOP321_AAU_SAR13
+mdefine_line|#define IOP321_AAU_SAR13   (volatile u32 *)IOP321_REG_ADDR(0x00000850)
+DECL|macro|IOP321_AAU_SAR14
+mdefine_line|#define IOP321_AAU_SAR14   (volatile u32 *)IOP321_REG_ADDR(0x00000854)
+DECL|macro|IOP321_AAU_SAR15
+mdefine_line|#define IOP321_AAU_SAR15   (volatile u32 *)IOP321_REG_ADDR(0x00000858)
+DECL|macro|IOP321_AAU_SAR16
+mdefine_line|#define IOP321_AAU_SAR16   (volatile u32 *)IOP321_REG_ADDR(0x0000085C)
+DECL|macro|IOP321_AAU_SAR17
+mdefine_line|#define IOP321_AAU_SAR17   (volatile u32 *)IOP321_REG_ADDR(0x00000864)
+DECL|macro|IOP321_AAU_SAR18
+mdefine_line|#define IOP321_AAU_SAR18   (volatile u32 *)IOP321_REG_ADDR(0x00000868)
+DECL|macro|IOP321_AAU_SAR19
+mdefine_line|#define IOP321_AAU_SAR19   (volatile u32 *)IOP321_REG_ADDR(0x0000086C)
+DECL|macro|IOP321_AAU_SAR20
+mdefine_line|#define IOP321_AAU_SAR20   (volatile u32 *)IOP321_REG_ADDR(0x00000870)
+DECL|macro|IOP321_AAU_SAR21
+mdefine_line|#define IOP321_AAU_SAR21   (volatile u32 *)IOP321_REG_ADDR(0x00000874)
+DECL|macro|IOP321_AAU_SAR22
+mdefine_line|#define IOP321_AAU_SAR22   (volatile u32 *)IOP321_REG_ADDR(0x00000878)
+DECL|macro|IOP321_AAU_SAR23
+mdefine_line|#define IOP321_AAU_SAR23   (volatile u32 *)IOP321_REG_ADDR(0x0000087C)
+DECL|macro|IOP321_AAU_SAR24
+mdefine_line|#define IOP321_AAU_SAR24   (volatile u32 *)IOP321_REG_ADDR(0x00000880)
+DECL|macro|IOP321_AAU_SAR25
+mdefine_line|#define IOP321_AAU_SAR25   (volatile u32 *)IOP321_REG_ADDR(0x00000888)
+DECL|macro|IOP321_AAU_SAR26
+mdefine_line|#define IOP321_AAU_SAR26   (volatile u32 *)IOP321_REG_ADDR(0x0000088C)
+DECL|macro|IOP321_AAU_SAR27
+mdefine_line|#define IOP321_AAU_SAR27   (volatile u32 *)IOP321_REG_ADDR(0x00000890)
+DECL|macro|IOP321_AAU_SAR28
+mdefine_line|#define IOP321_AAU_SAR28   (volatile u32 *)IOP321_REG_ADDR(0x00000894)
+DECL|macro|IOP321_AAU_SAR29
+mdefine_line|#define IOP321_AAU_SAR29   (volatile u32 *)IOP321_REG_ADDR(0x00000898)
+DECL|macro|IOP321_AAU_SAR30
+mdefine_line|#define IOP321_AAU_SAR30   (volatile u32 *)IOP321_REG_ADDR(0x0000089C)
+DECL|macro|IOP321_AAU_SAR31
+mdefine_line|#define IOP321_AAU_SAR31   (volatile u32 *)IOP321_REG_ADDR(0x000008A0)
+DECL|macro|IOP321_AAU_SAR32
+mdefine_line|#define IOP321_AAU_SAR32   (volatile u32 *)IOP321_REG_ADDR(0x000008A4)
 DECL|macro|IOP321_AAU_DAR
 mdefine_line|#define IOP321_AAU_DAR     (volatile u32 *)IOP321_REG_ADDR(0x00000820)
 DECL|macro|IOP321_AAU_ABCR
@@ -376,6 +494,32 @@ DECL|macro|IOP321_IBMR1
 mdefine_line|#define IOP321_IBMR1      (volatile u32 *)IOP321_REG_ADDR(0x000016B4)
 multiline_comment|/* Reserved 0x000016B8 through 0x000016FC */
 multiline_comment|/* for I2C bit defs see drivers/i2c/i2c-iop3xx.h */
+macro_line|#ifndef __ASSEMBLY__
+r_extern
+r_void
+id|iop321_map_io
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|iop321_init_irq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|iop321_time_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif 
 singleline_comment|// _IOP321_HW_H_
 eof

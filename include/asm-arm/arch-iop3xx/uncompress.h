@@ -1,11 +1,24 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-iop3xx/uncompress.h&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#if defined(CONFIG_ARCH_IQ80321)
-DECL|macro|UART2_BASE
-mdefine_line|#define UART2_BASE    ((volatile unsigned char *)IQ80321_UART1)
+macro_line|#ifdef CONFIG_ARCH_IOP321
+DECL|macro|UTYPE
+mdefine_line|#define UTYPE unsigned char *
+macro_line|#else
+DECL|macro|UTYPE
+mdefine_line|#define UTYPE u32 *
 macro_line|#endif
+DECL|variable|uart_base
+r_static
+r_volatile
+id|UTYPE
+id|uart_base
+suffix:semicolon
+DECL|macro|TX_DONE
+mdefine_line|#define TX_DONE (UART_LSR_TEMT|UART_LSR_THRE)
 DECL|function|putc
 r_static
 id|__inline__
@@ -21,21 +34,19 @@ r_while
 c_loop
 (paren
 (paren
-id|UART2_BASE
+id|uart_base
 (braket
-l_int|5
+id|UART_LSR
 )braket
 op_amp
-l_int|0x60
+id|TX_DONE
 )paren
 op_ne
-l_int|0x60
+id|TX_DONE
 )paren
 suffix:semicolon
-id|UART2_BASE
-(braket
-l_int|0
-)braket
+op_star
+id|uart_base
 op_assign
 id|c
 suffix:semicolon
@@ -86,9 +97,87 @@ op_increment
 suffix:semicolon
 )brace
 )brace
+DECL|function|__arch_decomp_setup
+r_static
+id|__inline__
+r_void
+id|__arch_decomp_setup
+c_func
+(paren
+r_int
+r_int
+id|arch_id
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|machine_is_iq80321
+c_func
+(paren
+)paren
+)paren
+(brace
+id|uart_base
+op_assign
+(paren
+r_volatile
+id|UTYPE
+)paren
+id|IQ80321_UART
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|machine_is_iq31244
+c_func
+(paren
+)paren
+)paren
+(brace
+id|uart_base
+op_assign
+(paren
+r_volatile
+id|UTYPE
+)paren
+id|IQ31244_UART
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|machine_is_iq80331
+c_func
+(paren
+)paren
+)paren
+(brace
+id|uart_base
+op_assign
+(paren
+r_volatile
+id|UTYPE
+)paren
+id|IQ80331_UART0_PHYS
+suffix:semicolon
+)brace
+r_else
+id|uart_base
+op_assign
+(paren
+r_volatile
+id|UTYPE
+)paren
+l_int|0xfe800000
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * nothing to do&n; */
 DECL|macro|arch_decomp_setup
-mdefine_line|#define arch_decomp_setup()
+mdefine_line|#define arch_decomp_setup()&t;__arch_decomp_setup(arch_id)
 DECL|macro|arch_decomp_wdog
 mdefine_line|#define arch_decomp_wdog()
 eof
