@@ -697,7 +697,6 @@ DECL|function|show_scaling_available_governors
 r_static
 id|ssize_t
 id|show_scaling_available_governors
-c_func
 (paren
 r_struct
 id|cpufreq_policy
