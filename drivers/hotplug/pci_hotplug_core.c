@@ -20,7 +20,7 @@ DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME&t;THIS_MODULE-&gt;name
 macro_line|#endif
 DECL|macro|dbg
-mdefine_line|#define dbg(fmt, arg...) do { if (debug) printk(KERN_DEBUG &quot;%s: %s: &quot; fmt, MY_NAME, __FUNCTION__, ## arg); } while (0)
+mdefine_line|#define dbg(fmt, arg...) do { if (debug) printk(KERN_DEBUG &quot;%s: %s: &quot; fmt , MY_NAME , __FUNCTION__ , ## arg); } while (0)
 DECL|macro|err
 mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format , MY_NAME , ## arg)
 DECL|macro|info
@@ -247,6 +247,10 @@ id|inode-&gt;i_fop
 op_assign
 op_amp
 id|simple_dir_operations
+suffix:semicolon
+multiline_comment|/* directory inodes start off with i_nlink == 2 (for &quot;.&quot; entry) */
+id|inode-&gt;i_nlink
+op_increment
 suffix:semicolon
 r_break
 suffix:semicolon
