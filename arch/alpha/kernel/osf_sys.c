@@ -5927,6 +5927,7 @@ op_increment
 )paren
 (brace
 r_int
+id|__user
 op_star
 id|iov_len_high
 op_assign
