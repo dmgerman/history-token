@@ -1950,29 +1950,31 @@ suffix:semicolon
 multiline_comment|/* response */
 )brace
 suffix:semicolon
-DECL|struct|nfs4_link
+DECL|struct|nfs4_link_arg
 r_struct
-id|nfs4_link
+id|nfs4_link_arg
 (brace
-DECL|member|ln_namelen
-id|u32
-id|ln_namelen
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|ln_name
+DECL|member|fh
 r_const
-r_char
-op_star
-id|ln_name
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|ln_cinfo
 r_struct
-id|nfs4_change_info
+id|nfs_fh
 op_star
-id|ln_cinfo
+id|fh
 suffix:semicolon
-multiline_comment|/* response */
+DECL|member|dir_fh
+r_const
+r_struct
+id|nfs_fh
+op_star
+id|dir_fh
+suffix:semicolon
+DECL|member|name
+r_const
+r_struct
+id|qstr
+op_star
+id|name
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfs4_lookup_arg
@@ -2395,11 +2397,6 @@ DECL|member|getfh
 r_struct
 id|nfs4_getfh
 id|getfh
-suffix:semicolon
-DECL|member|link
-r_struct
-id|nfs4_link
-id|link
 suffix:semicolon
 DECL|member|open
 r_struct
