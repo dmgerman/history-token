@@ -279,15 +279,6 @@ id|ac97
 )paren
 suffix:semicolon
 r_int
-id|patch_cm9761a
-c_func
-(paren
-id|ac97_t
-op_star
-id|ac97
-)paren
-suffix:semicolon
-r_int
 id|patch_vt1616
 c_func
 (paren
