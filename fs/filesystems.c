@@ -487,6 +487,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|__name
 )paren
@@ -616,6 +617,7 @@ r_int
 id|index
 comma
 r_char
+id|__user
 op_star
 id|buf
 )paren
@@ -822,6 +824,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 )paren
 id|arg1
@@ -841,6 +844,7 @@ id|arg1
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg2

@@ -1831,6 +1831,7 @@ r_int
 id|newsp
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|parent_tidptr
 comma
@@ -1849,6 +1850,7 @@ id|parent_tidptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|regs.edx
@@ -1857,6 +1859,7 @@ id|child_tidptr
 op_assign
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|regs.edi
