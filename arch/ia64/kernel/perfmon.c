@@ -10942,7 +10942,7 @@ c_func
 (paren
 l_string|&quot;invalid reset_pmds 0x%lx for pmc%u&bslash;n&quot;
 comma
-id|smpl_pmds
+id|reset_pmds
 comma
 id|cnum
 )paren
@@ -11004,7 +11004,7 @@ id|cnum
 (paren
 id|ctx-&gt;ctx_task
 comma
-l_int|NULL
+id|ctx
 comma
 id|cnum
 comma
@@ -11552,7 +11552,7 @@ id|cnum
 (paren
 id|ctx-&gt;ctx_task
 comma
-l_int|NULL
+id|ctx
 comma
 id|cnum
 comma
@@ -12249,7 +12249,7 @@ id|cnum
 (paren
 id|ctx-&gt;ctx_task
 comma
-l_int|NULL
+id|ctx
 comma
 id|cnum
 comma

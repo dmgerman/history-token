@@ -184,6 +184,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * task can be NULL if the context is unloaded&n; */
 r_static
 r_int
 DECL|function|pfm_mck_pmc_check
@@ -223,14 +224,6 @@ id|check_case1
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|thread_struct
-op_star
-id|th
-op_assign
-op_amp
-id|task-&gt;thread
-suffix:semicolon
 r_int
 r_int
 id|val8
@@ -255,6 +248,18 @@ id|val
 comma
 id|regs
 )paren
+suffix:semicolon
+multiline_comment|/* sanitfy check */
+r_if
+c_cond
+(paren
+id|ctx
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/*&n;&t; * we must clear the debug registers if any pmc13.ena_dbrpX bit is enabled&n;&t; * before they are written (fl_using_dbreg==0) to avoid picking up stale information.&n;&t; */
 r_if
@@ -421,14 +426,14 @@ id|val
 suffix:semicolon
 id|val13
 op_assign
-id|th-&gt;pmcs
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|13
 )braket
 suffix:semicolon
 id|val14
 op_assign
-id|th-&gt;pmcs
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|14
 )braket
@@ -444,7 +449,7 @@ l_int|13
 suffix:colon
 id|val8
 op_assign
-id|th-&gt;pmcs
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|8
 )braket
@@ -456,7 +461,7 @@ id|val
 suffix:semicolon
 id|val14
 op_assign
-id|th-&gt;pmcs
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|14
 )braket
@@ -472,14 +477,14 @@ l_int|14
 suffix:colon
 id|val8
 op_assign
-id|th-&gt;pmcs
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|13
 )braket
 suffix:semicolon
 id|val13
 op_assign
-id|th-&gt;pmcs
+id|ctx-&gt;ctx_pmcs
 (braket
 l_int|13
 )braket
