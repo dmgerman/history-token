@@ -1598,6 +1598,10 @@ l_string|&quot;e1000_init_hw&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize Identification LED */
+r_if
+c_cond
+(paren
+(paren
 id|ret_val
 op_assign
 id|e1000_id_led_init
@@ -1605,13 +1609,7 @@ c_func
 (paren
 id|hw
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret_val
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|DEBUGOUT
@@ -4065,6 +4063,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+(paren
 id|ret_val
 op_assign
 id|e1000_config_mac_to_phy
@@ -4072,13 +4074,7 @@ c_func
 (paren
 id|hw
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret_val
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|DEBUGOUT
@@ -4092,6 +4088,10 @@ id|ret_val
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+(paren
 id|ret_val
 op_assign
 id|e1000_config_fc_after_link_up
@@ -4099,13 +4099,7 @@ c_func
 (paren
 id|hw
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret_val
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|DEBUGOUT
@@ -4198,6 +4192,9 @@ op_star
 id|hw
 )paren
 (brace
+r_int32
+id|ret_val
+suffix:semicolon
 r_uint16
 id|mii_autoneg_adv_reg
 suffix:semicolon
@@ -4214,6 +4211,9 @@ multiline_comment|/* Read the MII Auto-Neg Advertisement Register (Address 4). *
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -4224,25 +4224,20 @@ comma
 op_amp
 id|mii_autoneg_adv_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 multiline_comment|/* Read the MII 1000Base-T Control Register (Address 9). */
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -4253,19 +4248,11 @@ comma
 op_amp
 id|mii_1000t_ctrl_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 multiline_comment|/* Need to parse both autoneg_advertised and fc and set up&n;     * the appropriate PHY registers.  First we will parse for&n;     * autoneg_advertised software override.  Since we can advertise&n;     * a plethora of combinations, we need to check each bit&n;     * individually.&n;     */
@@ -4490,6 +4477,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_write_phy_reg
 c_func
 (paren
@@ -4499,19 +4489,11 @@ id|PHY_AUTONEG_ADV
 comma
 id|mii_autoneg_adv_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Write Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|DEBUGOUT1
@@ -4525,6 +4507,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_write_phy_reg
 c_func
 (paren
@@ -4534,23 +4519,15 @@ id|PHY_1000T_CTRL
 comma
 id|mii_1000t_ctrl_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Write Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n;* Force PHY speed and duplex settings to hw-&gt;forced_speed_duplex&n;*&n;* hw - Struct containing variables accessed by shared code&n;******************************************************************************/
@@ -4640,6 +4617,9 @@ multiline_comment|/* Read the MII Control Register. */
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -4650,19 +4630,11 @@ comma
 op_amp
 id|mii_ctrl_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 multiline_comment|/* We need to disable autoneg in order to force link and duplex. */
@@ -4818,6 +4790,9 @@ id|e1000_phy_m88
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -4828,19 +4803,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 multiline_comment|/* Clear Auto-Crossover to force MDI manually. M88E1000 requires MDI&n;         * forced whenever speed are duplex are forced.&n;         */
@@ -4852,6 +4819,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_write_phy_reg
 c_func
 (paren
@@ -4861,19 +4831,11 @@ id|M88E1000_PHY_SPEC_CTRL
 comma
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Write Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|DEBUGOUT1
@@ -4896,6 +4858,9 @@ multiline_comment|/* Clear Auto-Crossover to force MDI manually.  IGP requires M
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -4906,19 +4871,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|phy_data
@@ -4934,6 +4891,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_write_phy_reg
 c_func
 (paren
@@ -4943,26 +4903,27 @@ id|IGP01E1000_PHY_PORT_CTRL
 comma
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Write Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Write back the modified PHY MII control register. */
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_write_phy_reg
 c_func
 (paren
@@ -4972,27 +4933,13 @@ id|PHY_CTRL
 comma
 id|mii_ctrl_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Write Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
-id|udelay
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
 multiline_comment|/* The wait_autoneg_complete flag may be a little misleading here.&n;     * Since we are forcing speed and duplex, Auto-Neg is not enabled.&n;     * But we do want to delay for a period while forcing only so we&n;     * don&squot;t generate false No Link messages.  So we will wait here&n;     * only if the user has set wait_autoneg_complete to 1, which is&n;     * the default.&n;     */
 r_if
 c_cond
@@ -5031,6 +4978,9 @@ multiline_comment|/* Read the MII Status Register and wait for Auto-Neg Complete
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -5041,24 +4991,19 @@ comma
 op_amp
 id|mii_status_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -5069,19 +5014,11 @@ comma
 op_amp
 id|mii_status_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
@@ -5112,6 +5049,10 @@ l_int|0
 (brace
 multiline_comment|/* We didn&squot;t get link */
 multiline_comment|/* Reset the DSP and wait again for link. */
+r_if
+c_cond
+(paren
+(paren
 id|ret_val
 op_assign
 id|e1000_phy_reset_dsp
@@ -5119,13 +5060,7 @@ c_func
 (paren
 id|hw
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret_val
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|DEBUGOUT
@@ -5176,6 +5111,9 @@ multiline_comment|/* Read the MII Status Register and wait for Auto-Neg Complete
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -5186,24 +5124,19 @@ comma
 op_amp
 id|mii_status_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -5214,19 +5147,11 @@ comma
 op_amp
 id|mii_status_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 )brace
@@ -5243,6 +5168,9 @@ multiline_comment|/* Because we reset the PHY above, we need to re-force TX_CLK 
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -5253,19 +5181,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|phy_data
@@ -5275,6 +5195,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_write_phy_reg
 c_func
 (paren
@@ -5284,25 +5207,20 @@ id|M88E1000_EXT_PHY_SPEC_CTRL
 comma
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Write Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 multiline_comment|/* In addition, because of the s/w reset above, we need to enable CRS on&n;         * TX.  This must be set for both full and half duplex operation.&n;         */
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -5313,19 +5231,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|phy_data
@@ -5335,6 +5245,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_write_phy_reg
 c_func
 (paren
@@ -5344,24 +5257,16 @@ id|M88E1000_PHY_SPEC_CTRL
 comma
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Write Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 )brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n;* Sets the collision distance in the Transmit Control register&n;*&n;* hw - Struct containing variables accessed by shared code&n;*&n;* Link should have been established previously. Reads the speed and duplex&n;* information from the Device Status register.&n;******************************************************************************/
@@ -5439,6 +5344,9 @@ id|hw
 r_uint32
 id|ctrl
 suffix:semicolon
+r_int32
+id|ret_val
+suffix:semicolon
 r_uint16
 id|phy_data
 suffix:semicolon
@@ -5488,6 +5396,9 @@ id|e1000_phy_igp
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -5498,19 +5409,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
@@ -5580,6 +5483,9 @@ r_else
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -5590,19 +5496,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
@@ -5679,7 +5577,7 @@ id|ctrl
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Forces the MAC&squot;s flow control settings.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Sets the TFCE and RFCE bits in the device control register to reflect&n; * the adapter settings. TFCE and RFCE need to be explicitly set by&n; * software when a Copper PHY is used because autonegotiation is managed&n; * by the PHY rather than the MAC. Software must also configure these&n; * bits when link is forced on a fiber connection.&n; *****************************************************************************/
@@ -5904,6 +5802,10 @@ id|hw-&gt;autoneg
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
 id|ret_val
 op_assign
 id|e1000_force_mac_fc
@@ -5911,13 +5813,7 @@ c_func
 (paren
 id|hw
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret_val
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|DEBUGOUT
@@ -5948,6 +5844,9 @@ multiline_comment|/* Read the MII Status Register and check to see if AutoNeg&n;
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -5958,24 +5857,19 @@ comma
 op_amp
 id|mii_status_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error &bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -5986,19 +5880,11 @@ comma
 op_amp
 id|mii_status_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error &bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
@@ -6013,6 +5899,9 @@ multiline_comment|/* The AutoNeg process has completed, so we now need to&n;    
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -6023,24 +5912,19 @@ comma
 op_amp
 id|mii_nway_adv_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -6051,19 +5935,11 @@ comma
 op_amp
 id|mii_nway_lp_ability_reg
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 multiline_comment|/* Two bits in the Auto Negotiation Advertisement Register&n;             * (Address 4) and two bits in the Auto Negotiation Base&n;             * Page Ability Register (Address 5) determine flow control&n;             * for both the PHY and the link partner.  The following&n;             * table, taken out of the IEEE 802.3ab/D6.0 dated March 25,&n;             * 1999, describes these PAUSE resolution bits and how flow&n;             * control is determined based upon these settings.&n;             * NOTE:  DC = Don&squot;t Care&n;             *&n;             *   LOCAL DEVICE  |   LINK PARTNER&n;             * PAUSE | ASM_DIR | PAUSE | ASM_DIR | NIC Resolution&n;             *-------|---------|-------|---------|--------------------&n;             *   0   |    0    |  DC   |   DC    | e1000_fc_none&n;             *   0   |    1    |   0   |   DC    | e1000_fc_none&n;             *   0   |    1    |   1   |    0    | e1000_fc_none&n;             *   0   |    1    |   1   |    1    | e1000_fc_tx_pause&n;             *   1   |    0    |   0   |   DC    | e1000_fc_none&n;             *   1   |   DC    |   1   |   DC    | e1000_fc_full&n;             *   1   |    1    |   0   |    0    | e1000_fc_none&n;             *   1   |    1    |   0   |    1    | e1000_fc_rx_pause&n;             *&n;             */
@@ -6247,6 +6123,12 @@ l_string|&quot;Flow Control = RX PAUSE frames only.&bslash;r&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Now we need to do one last check...  If we auto-&n;             * negotiated to HALF DUPLEX, flow control should not be&n;             * enabled per IEEE 802.3 spec.&n;             */
+r_if
+c_cond
+(paren
+(paren
+id|ret_val
+op_assign
 id|e1000_get_speed_and_duplex
 c_func
 (paren
@@ -6258,7 +6140,19 @@ comma
 op_amp
 id|duplex
 )paren
+)paren
+)paren
+(brace
+id|DEBUGOUT
+c_func
+(paren
+l_string|&quot;Error getting link speed and duplex&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+id|ret_val
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6273,6 +6167,10 @@ id|e1000_fc_none
 suffix:semicolon
 )brace
 multiline_comment|/* Now we call a subroutine to actually force the MAC&n;             * controller to use the correct flow control settings.&n;             */
+r_if
+c_cond
+(paren
+(paren
 id|ret_val
 op_assign
 id|e1000_force_mac_fc
@@ -6280,13 +6178,7 @@ c_func
 (paren
 id|hw
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret_val
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|DEBUGOUT
@@ -6311,7 +6203,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Checks to see if the link status of the hardware has changed.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Called by any function that needs to check the link status of the adapter.&n; *****************************************************************************/
@@ -6428,6 +6320,9 @@ multiline_comment|/* First we want to see if the MII Status Register reports&n; 
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -6438,24 +6333,19 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -6466,19 +6356,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
@@ -6556,6 +6438,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+(paren
 id|ret_val
 op_assign
 id|e1000_config_mac_to_phy
@@ -6563,13 +6449,7 @@ c_func
 (paren
 id|hw
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret_val
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|DEBUGOUT
@@ -6584,6 +6464,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Configure Flow Control now that Auto-Neg has completed. First, we&n;         * need to restore the desired flow control settings because we may&n;         * have had to re-autoneg with a different link partner.&n;         */
+r_if
+c_cond
+(paren
+(paren
 id|ret_val
 op_assign
 id|e1000_config_fc_after_link_up
@@ -6591,13 +6475,7 @@ c_func
 (paren
 id|hw
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret_val
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|DEBUGOUT
@@ -6620,6 +6498,9 @@ id|hw-&gt;tbi_compatibility_en
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -6630,19 +6511,11 @@ comma
 op_amp
 id|lp_capability
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
@@ -6852,6 +6725,10 @@ id|ctrl
 )paren
 suffix:semicolon
 multiline_comment|/* Configure Flow Control after forcing link up. */
+r_if
+c_cond
+(paren
+(paren
 id|ret_val
 op_assign
 id|e1000_config_fc_after_link_up
@@ -6859,13 +6736,7 @@ c_func
 (paren
 id|hw
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret_val
-OL
-l_int|0
+)paren
 )paren
 (brace
 id|DEBUGOUT
@@ -6936,7 +6807,7 @@ id|E1000_CTRL_SLU
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Detects the current speed and duplex settings of the hardware.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * speed - Speed of the connection&n; * duplex - Duplex setting of the connection&n; *****************************************************************************/
@@ -7233,6 +7104,9 @@ op_star
 id|hw
 )paren
 (brace
+r_int32
+id|ret_val
+suffix:semicolon
 r_uint16
 id|i
 suffix:semicolon
@@ -7271,6 +7145,9 @@ multiline_comment|/* Read the MII Status Register and wait for Auto-Neg&n;      
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -7281,24 +7158,19 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -7309,19 +7181,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
@@ -7333,7 +7197,7 @@ id|MII_SR_AUTONEG_COMPLETE
 )paren
 (brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 id|msec_delay
@@ -7344,7 +7208,7 @@ l_int|100
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n;* Raises the Management Data Clock&n;*&n;* hw - Struct containing variables accessed by shared code&n;* ctrl - Device control register&squot;s current value&n;******************************************************************************/
@@ -8753,6 +8617,11 @@ op_star
 id|hw
 )paren
 (brace
+r_int32
+id|phy_init_status
+comma
+id|ret_val
+suffix:semicolon
 r_uint16
 id|phy_id_high
 comma
@@ -8762,9 +8631,6 @@ id|boolean_t
 id|match
 op_assign
 id|FALSE
-suffix:semicolon
-r_int32
-id|phy_init_status
 suffix:semicolon
 id|DEBUGFUNC
 c_func
@@ -8776,6 +8642,9 @@ multiline_comment|/* Read the PHY ID Registers to identify which PHY is onboard.
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -8786,19 +8655,11 @@ comma
 op_amp
 id|phy_id_high
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|hw-&gt;phy_id
@@ -8821,6 +8682,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -8831,19 +8695,11 @@ comma
 op_amp
 id|phy_id_low
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|hw-&gt;phy_id
@@ -9012,7 +8868,7 @@ id|hw-&gt;phy_id
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 id|DEBUGOUT1
@@ -9188,6 +9044,9 @@ multiline_comment|/* Check polarity status */
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_check_polarity
 c_func
 (paren
@@ -9196,13 +9055,11 @@ comma
 op_amp
 id|polarity
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|phy_info-&gt;cable_polarity
@@ -9212,6 +9069,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -9222,13 +9082,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|phy_info-&gt;mdix_mode
@@ -9257,6 +9115,9 @@ multiline_comment|/* Local/Remote Receiver Information are only valid at 1000 Mb
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -9267,13 +9128,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|phy_info-&gt;local_rx
@@ -9300,6 +9159,9 @@ multiline_comment|/* Get cable length */
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_get_cable_length
 c_func
 (paren
@@ -9311,13 +9173,11 @@ comma
 op_amp
 id|max_length
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 multiline_comment|/* transalte to old method */
@@ -9413,6 +9273,9 @@ op_star
 id|phy_info
 )paren
 (brace
+r_int32
+id|ret_val
+suffix:semicolon
 r_uint16
 id|phy_data
 comma
@@ -9432,6 +9295,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -9442,13 +9308,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|phy_info-&gt;extended_10bt_distance
@@ -9475,6 +9339,9 @@ multiline_comment|/* Check polarity status */
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_check_polarity
 c_func
 (paren
@@ -9483,13 +9350,11 @@ comma
 op_amp
 id|polarity
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|phy_info-&gt;cable_polarity
@@ -9499,6 +9364,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -9509,13 +9377,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|phy_info-&gt;mdix_mode
@@ -9552,6 +9418,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -9562,13 +9431,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 id|phy_info-&gt;local_rx
@@ -9613,6 +9480,9 @@ op_star
 id|phy_info
 )paren
 (brace
+r_int32
+id|ret_val
+suffix:semicolon
 r_uint16
 id|phy_data
 suffix:semicolon
@@ -9676,6 +9546,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -9686,24 +9559,19 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -9714,19 +9582,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
-id|DEBUGOUT
-c_func
-(paren
-l_string|&quot;PHY Read Error&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 r_if
@@ -9759,6 +9619,7 @@ id|hw-&gt;phy_type
 op_eq
 id|e1000_phy_igp
 )paren
+(brace
 r_return
 id|e1000_phy_igp_get_info
 c_func
@@ -9768,6 +9629,7 @@ comma
 id|phy_info
 )paren
 suffix:semicolon
+)brace
 r_else
 r_return
 id|e1000_phy_m88_get_info
@@ -9829,7 +9691,7 @@ id|E1000_ERR_CONFIG
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Sets up eeprom variables in the hw struct.  Must be called after mac_type&n; * is configured.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
@@ -11794,7 +11656,7 @@ id|EEPROM_SUM
 )paren
 (brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 r_else
@@ -11929,7 +11791,7 @@ id|E1000_ERR_EEPROM
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Parent function for writing words to the different EEPROM types.&n; *&n; * hw - Struct containing variables accessed by shared code&n; * offset - offset within the EEPROM to be written to&n; * words - number of words to write&n; * data - 16 bit word to be written to the EEPROM&n; *&n; * If e1000_update_eeprom_checksum is not called after this function, the&n; * EEPROM will most likely contain an invalid checksum.&n; *****************************************************************************/
@@ -12559,7 +12421,7 @@ l_int|2
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Reads the adapter&squot;s part number from the EEPROM&n; *&n; * hw - Struct containing variables accessed by shared code&n; * part_num - Adapter&squot;s part number&n; *****************************************************************************/
@@ -12675,7 +12537,7 @@ op_or_assign
 id|eeprom_data
 suffix:semicolon
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Reads the adapter&squot;s MAC address from the EEPROM and inverts the LSB for the&n; * second function of dual function devices&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
@@ -12875,7 +12737,7 @@ id|i
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Initializes receive address filters.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *&n; * Places the MAC address in receive address register 0 and clears the rest&n; * of the receive addresss registers. Clears the multicast table. Assumes&n; * the receiver is in reset when the routine is called.&n; *****************************************************************************/
@@ -14034,7 +13896,7 @@ id|e1000_82540
 (brace
 multiline_comment|/* Nothing to do */
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 id|ledctl
@@ -14301,7 +14163,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-l_int|0
+id|E1000_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Prepares SW controlable LED for use and saves the current state of the LED.&n; *&n; * hw - Struct containing variables accessed by shared code&n; *****************************************************************************/
@@ -16265,6 +16127,9 @@ op_star
 id|max_length
 )paren
 (brace
+r_int32
+id|ret_val
+suffix:semicolon
 r_uint16
 id|agc_value
 op_assign
@@ -16308,6 +16173,9 @@ id|e1000_phy_m88
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -16318,13 +16186,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 multiline_comment|/* Convert the enum value to ranged values */
@@ -16682,6 +16548,9 @@ op_star
 id|polarity
 )paren
 (brace
+r_int32
+id|ret_val
+suffix:semicolon
 r_uint16
 id|phy_data
 suffix:semicolon
@@ -16703,6 +16572,9 @@ multiline_comment|/* return the Polarity bit in the Status register. */
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -16713,13 +16585,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 op_star
@@ -16747,6 +16617,9 @@ multiline_comment|/* Read the Status register to check the speed */
 r_if
 c_cond
 (paren
+(paren
+id|ret_val
+op_assign
 id|e1000_read_phy_reg
 c_func
 (paren
@@ -16757,13 +16630,11 @@ comma
 op_amp
 id|phy_data
 )paren
-OL
-l_int|0
+)paren
 )paren
 (brace
 r_return
-op_minus
-id|E1000_ERR_PHY
+id|ret_val
 suffix:semicolon
 )brace
 multiline_comment|/* If speed is 1000 Mbps, must read the IGP01E1000_PHY_PCS_INIT_REG to&n;         * find the polarity status */
