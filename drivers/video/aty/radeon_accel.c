@@ -136,7 +136,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rinfo-&gt;asleep
+id|info-&gt;state
+op_ne
+id|FBINFO_STATE_RUNNING
 )paren
 r_return
 suffix:semicolon
@@ -416,7 +418,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rinfo-&gt;asleep
+id|info-&gt;state
+op_ne
+id|FBINFO_STATE_RUNNING
 )paren
 r_return
 suffix:semicolon
@@ -582,7 +586,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rinfo-&gt;asleep
+id|info-&gt;state
+op_ne
+id|FBINFO_STATE_RUNNING
 )paren
 r_return
 suffix:semicolon
@@ -621,7 +627,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rinfo-&gt;asleep
+id|info-&gt;state
+op_ne
+id|FBINFO_STATE_RUNNING
 )paren
 r_return
 l_int|0

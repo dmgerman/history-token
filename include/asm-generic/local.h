@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 multiline_comment|/* An unsigned long type for operations which are atomic for a single&n; * CPU.  Usually used in combination with per-cpu variables. */
-macro_line|#if BITS_PER_LONG == 32 &amp;&amp; !defined(CONFIG_SPARC32)
+macro_line|#if BITS_PER_LONG == 32
 multiline_comment|/* Implement in terms of atomics. */
 multiline_comment|/* Don&squot;t use typedef: don&squot;t want them to be mixed with atomic_t&squot;s. */
 r_typedef

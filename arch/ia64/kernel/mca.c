@@ -485,7 +485,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *  ia64_mca_log_sal_error_record&n; *&n; *  This function retrieves a specified error record type from SAL&n; *  and wakes up any processes waiting for error records.&n; *&n; *  Inputs  :   sal_info_type   (Type of error record MCA/CMC/CPE/INIT)&n; *  &t;&t;called_from_init (1 for boot processing)&n; */
+multiline_comment|/*&n; *  ia64_mca_log_sal_error_record&n; *&n; *  This function retrieves a specified error record type from SAL&n; *  and wakes up any processes waiting for error records.&n; *&n; *  Inputs  :   sal_info_type   (Type of error record MCA/CMC/CPE/INIT)&n; */
 r_static
 r_void
 DECL|function|ia64_mca_log_sal_error_record
@@ -494,9 +494,6 @@ c_func
 (paren
 r_int
 id|sal_info_type
-comma
-r_int
-id|called_from_init
 )paren
 (brace
 id|u8
@@ -573,8 +570,6 @@ r_if
 c_cond
 (paren
 id|irq_safe
-op_logical_or
-id|called_from_init
 )paren
 id|printk
 c_func
@@ -669,8 +664,6 @@ id|ia64_mca_log_sal_error_record
 c_func
 (paren
 id|SAL_INFO_TYPE_CPE
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -1921,46 +1914,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* hang city if no debugger */
 )brace
-multiline_comment|/*&n; *  ia64_mca_check_errors&n; *&n; *  External entry to check for error records which may have been posted by SAL&n; *  for a prior failure which resulted in a machine shutdown before an the&n; *  error could be logged.  This function must be called after the filesystem&n; *  is initialized.&n; *&n; *  Inputs  :   None&n; *&n; *  Outputs :   None&n; */
-r_int
-DECL|function|ia64_mca_check_errors
-id|ia64_mca_check_errors
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/*&n;&t; *  If there is an MCA error record pending, get it and log it.&n;&t; */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;CPU %d: checking for saved MCA error records&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-id|ia64_mca_log_sal_error_record
-c_func
-(paren
-id|SAL_INFO_TYPE_MCA
-comma
-l_int|1
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|ia64_mca_check_errors
-id|device_initcall
-c_func
-(paren
-id|ia64_mca_check_errors
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI
 multiline_comment|/*&n; * ia64_mca_register_cpev&n; *&n; *  Register the corrected platform error vector with SAL.&n; *&n; *  Inputs&n; *      cpev        Corrected Platform Error Vector number&n; *&n; *  Outputs&n; *      None&n; */
 r_static
@@ -2635,8 +2588,6 @@ id|ia64_mca_log_sal_error_record
 c_func
 (paren
 id|SAL_INFO_TYPE_MCA
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Wakeup all the processors which are spinning in the rendezvous&n;&t; *  loop.&n;&t; */
@@ -2739,8 +2690,6 @@ id|ia64_mca_log_sal_error_record
 c_func
 (paren
 id|SAL_INFO_TYPE_CMC
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|spin_lock

@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/signal.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/btfixup.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Bus types&n; */
 DECL|macro|MCA_bus
 mdefine_line|#define MCA_bus 0

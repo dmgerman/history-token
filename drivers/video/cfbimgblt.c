@@ -1248,6 +1248,15 @@ id|u8
 op_star
 id|dst1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;state
+op_ne
+id|FBINFO_STATE_RUNNING
+)paren
+r_return
+suffix:semicolon
 id|vxres
 op_assign
 id|p-&gt;var.xres_virtual
