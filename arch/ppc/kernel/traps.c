@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/xmon.h&gt;
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
+macro_line|#include &lt;asm/perfmon.h&gt;
 macro_line|#ifdef CONFIG_XMON
 DECL|variable|debugger
 r_void
@@ -2204,9 +2205,13 @@ id|regs
 id|regs-&gt;msr
 op_and_assign
 op_complement
+(paren
 id|MSR_SE
+op_or
+id|MSR_BE
+)paren
 suffix:semicolon
-multiline_comment|/* Turn off &squot;trace&squot; bit */
+multiline_comment|/* Turn off &squot;trace&squot; bits */
 r_if
 c_cond
 (paren
@@ -2933,6 +2938,24 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_ALTIVEC */
+DECL|function|PerformanceMonitorException
+r_void
+id|PerformanceMonitorException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|perf_irq
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_FSL_BOOKE
 DECL|function|CacheLockingException
 r_void

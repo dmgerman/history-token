@@ -1,0 +1,57 @@
+multiline_comment|/*&n; * arch/ppc/boot/simple/mv64x60_stub.c&n; *&n; * Stub for board_init() routine called from mv64x60_init().&n; *&n; * Author: Mark A. Greer &lt;mgreer@mvista.com&gt;&n; *&n; * 2002 (c) MontaVista, Software, Inc.  This file is licensed under the terms&n; * of the GNU General Public License version 2.  This program is licensed&n; * &quot;as is&quot; without any warranty of any kind, whether express or implied.&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#if defined(CONFIG_SERIAL_MPSC_CONSOLE)
+DECL|variable|mv64x60_console_baud
+r_int
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+id|mv64x60_console_baud
+op_assign
+l_int|9600
+suffix:semicolon
+DECL|variable|mv64x60_mpsc_clk_src
+r_int
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+id|mv64x60_mpsc_clk_src
+op_assign
+l_int|8
+suffix:semicolon
+multiline_comment|/* TCLK */
+DECL|variable|mv64x60_mpsc_clk_freq
+r_int
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+id|mv64x60_mpsc_clk_freq
+op_assign
+l_int|100000000
+suffix:semicolon
+macro_line|#endif
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+DECL|function|mv64x60_board_init
+id|mv64x60_board_init
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+eof

@@ -1,4 +1,5 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/traps.c&n; *&n; *  Copyright (C) 1995-2002 Russell King&n; *  Fragments that appear the same as linux/arch/i386/kernel/traps.c (C) Linus Torvalds&n; *  Copyright (C) 2003 Ian Molton (ARM26)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  &squot;traps.c&squot; handles hardware exceptions after we have saved some state in&n; *  &squot;linux/arch/arm/lib/traps.S&squot;.  Mostly a debugging aid, but will probably&n; *  kill the offending process.&n; */
+multiline_comment|/*&n; *  linux/arch/arm26/kernel/traps.c&n; *&n; *  Copyright (C) 1995-2002 Russell King&n; *  Fragments that appear the same as linux/arch/i386/kernel/traps.c (C) Linus Torvalds&n; *  Copyright (C) 2003 Ian Molton (ARM26)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  &squot;traps.c&squot; handles hardware exceptions after we have saved some state in&n; *  &squot;linux/arch/arm26/lib/traps.S&squot;.  Mostly a debugging aid, but will probably&n; *  kill the offending process.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,7 +14,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -475,13 +475,6 @@ id|tsk-&gt;thread_info
 )paren
 suffix:semicolon
 )brace
-DECL|variable|dump_stack
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dump_stack
-)paren
-suffix:semicolon
 DECL|function|dump_stack
 r_void
 id|dump_stack
@@ -498,6 +491,13 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 singleline_comment|//FIXME - was a static fn
 DECL|function|dump_backtrace
 r_void
@@ -1783,13 +1783,6 @@ id|NR
 c_func
 (paren
 id|usr26
-)paren
-suffix:colon
-r_case
-id|NR
-c_func
-(paren
-id|usr32
 )paren
 suffix:colon
 r_break

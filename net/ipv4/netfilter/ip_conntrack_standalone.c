@@ -55,7 +55,6 @@ r_int
 id|kill_proto
 c_func
 (paren
-r_const
 r_struct
 id|ip_conntrack
 op_star
@@ -3750,7 +3749,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Remove all contrack entries for this protocol */
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 c_func
 (paren
 id|kill_proto
@@ -3882,11 +3881,11 @@ c_func
 id|ip_conntrack_helper_unregister
 )paren
 suffix:semicolon
-DECL|variable|ip_ct_selective_cleanup
+DECL|variable|ip_ct_iterate_cleanup
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|ip_ct_selective_cleanup
+id|ip_ct_iterate_cleanup
 )paren
 suffix:semicolon
 DECL|variable|ip_ct_refresh_acct

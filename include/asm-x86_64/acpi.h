@@ -274,6 +274,26 @@ mdefine_line|#define acpi_lapic 0
 DECL|macro|acpi_ioapic
 mdefine_line|#define acpi_ioapic 0
 macro_line|#endif /* !CONFIG_ACPI_BOOT */
+r_extern
+r_int
+id|acpi_numa
+suffix:semicolon
+r_extern
+r_int
+id|acpi_scan_nodes
+c_func
+(paren
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+DECL|macro|NR_NODE_MEMBLKS
+mdefine_line|#define NR_NODE_MEMBLKS (MAX_NUMNODES*2)
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|function|acpi_noirq_set
 r_static

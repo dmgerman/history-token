@@ -21,6 +21,11 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
+DECL|member|pdev
+r_struct
+id|platform_device
+id|pdev
+suffix:semicolon
 DECL|member|index
 r_int
 id|index

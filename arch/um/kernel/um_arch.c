@@ -57,12 +57,6 @@ l_int|1
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/* Placeholder to make UML link until the vsyscall stuff is actually&n; * implemented&n; */
-DECL|variable|__kernel_vsyscall
-r_void
-op_star
-id|__kernel_vsyscall
-suffix:semicolon
 DECL|function|thread_saved_pc
 r_int
 r_int
@@ -1053,6 +1047,13 @@ DECL|variable|end_iomem
 r_int
 r_int
 id|end_iomem
+suffix:semicolon
+DECL|variable|end_iomem
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|end_iomem
+)paren
 suffix:semicolon
 DECL|macro|MIN_VMALLOC
 mdefine_line|#define MIN_VMALLOC (32 * 1024 * 1024)

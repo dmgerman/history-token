@@ -1519,6 +1519,28 @@ id|device-&gt;discipline
 op_assign
 id|discipline
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|discipline-&gt;owner
+)paren
+)paren
+(brace
+id|PRINT_ERR
+c_func
+(paren
+l_string|&quot;Cannot get module. Module gone.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|discipline
@@ -1638,6 +1660,12 @@ id|device
 suffix:semicolon
 id|out
 suffix:colon
+id|module_put
+c_func
+(paren
+id|discipline-&gt;owner
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -1673,6 +1701,12 @@ id|cleanup_device
 c_func
 (paren
 id|device
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|device-&gt;discipline-&gt;owner
 )paren
 suffix:semicolon
 id|tape_remove_minor
@@ -5119,7 +5153,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;tape init: ($Revision: 1.50 $)&bslash;n&quot;
+l_string|&quot;tape init: ($Revision: 1.51 $)&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tape_proc_init
@@ -5190,7 +5224,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux on zSeries channel attached &quot;
-l_string|&quot;tape device driver ($Revision: 1.50 $)&quot;
+l_string|&quot;tape device driver ($Revision: 1.51 $)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

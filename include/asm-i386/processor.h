@@ -291,7 +291,7 @@ DECL|macro|X86_EFLAGS_VIP
 mdefine_line|#define X86_EFLAGS_VIP&t;0x00100000 /* Virtual Interrupt Pending */
 DECL|macro|X86_EFLAGS_ID
 mdefine_line|#define X86_EFLAGS_ID&t;0x00200000 /* CPUID detection flag */
-multiline_comment|/*&n; * Generic CPUID function&n; */
+multiline_comment|/*&n; * Generic CPUID function&n; * clear %ecx since some cpus (Cyrix MII) do not set or clear %ecx&n; * resulting in stale register contents being returned.&n; */
 DECL|function|cpuid
 r_static
 r_inline
@@ -351,6 +351,11 @@ suffix:colon
 l_string|&quot;0&quot;
 (paren
 id|op
+)paren
+comma
+l_string|&quot;c&quot;
+(paren
+l_int|0
 )paren
 )paren
 suffix:semicolon
@@ -776,6 +781,11 @@ r_extern
 r_int
 r_int
 id|mca_pentium_flag
+suffix:semicolon
+multiline_comment|/* Boot loader type from the setup header */
+r_extern
+r_int
+id|bootloader_type
 suffix:semicolon
 multiline_comment|/*&n; * User space process size: 3GB (default).&n; */
 DECL|macro|TASK_SIZE

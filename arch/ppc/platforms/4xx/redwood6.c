@@ -8,11 +8,11 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/ppc4xx_pic.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-multiline_comment|/*&n; * Define all of the IRQ senses and polarities.&n; */
+multiline_comment|/*&n; * Define external IRQ senses and polarities.&n; */
 DECL|variable|__initdata
-r_static
-id|u_char
-id|redwood6_IRQ_initsenses
+r_int
+r_char
+id|ppc4xx_uic_ext_irq_cfg
 (braket
 )braket
 id|__initdata
@@ -21,227 +21,73 @@ op_assign
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
-id|IRQ_POLARITY_POSITIVE
+id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 0: RTC/FPC */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 1: Transport */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 2: Audio Dec */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 3: Video Dec */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 4: DMA Chan 0 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 5: DMA Chan 1 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 6: DMA Chan 2 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 7: DMA Chan 3 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 8: SmartCard 0 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 9: IIC0 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 10: IRR */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 11: Cap Timers */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 12: Cmp Timers */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 13: Serial Port */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 14: Soft Modem */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 15: Down Ctrs */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 16: SmartCard 1 */
+multiline_comment|/* Ext Int 7 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 17: Ext Int 7 */
+multiline_comment|/* Ext Int 8 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 18: Ext Int 8 */
+multiline_comment|/* Ext Int 9 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 19: Ext Int 9 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 20: Serial 0 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 21: Serial 1 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 22: Serial 2 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 23: XPT_DMA */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_POSITIVE
-)paren
-comma
-multiline_comment|/* 24: DCR timeout */
+multiline_comment|/* Ext Int 0 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 25: Ext Int 0 */
+multiline_comment|/* Ext Int 1 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 26: Ext Int 1 */
+multiline_comment|/* Ext Int 2 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 27: Ext Int 2 */
+multiline_comment|/* Ext Int 3 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 28: Ext Int 3 */
+multiline_comment|/* Ext Int 4 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 29: Ext Int 4 */
+multiline_comment|/* Ext Int 5 */
 (paren
 id|IRQ_SENSE_LEVEL
 op_or
 id|IRQ_POLARITY_NEGATIVE
 )paren
 comma
-multiline_comment|/* 30: Ext Int 5 */
-(paren
-id|IRQ_SENSE_LEVEL
-op_or
-id|IRQ_POLARITY_NEGATIVE
-)paren
-comma
-multiline_comment|/* 31: Ext Int 6 */
+multiline_comment|/* Ext Int 6 */
 )brace
 suffix:semicolon
 DECL|variable|smc91x_resources
@@ -644,17 +490,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ibm4xxPIC_InitSenses
-op_assign
-id|redwood6_IRQ_initsenses
-suffix:semicolon
-id|ibm4xxPIC_NumInitSenses
-op_assign
-r_sizeof
-(paren
-id|redwood6_IRQ_initsenses
-)paren
-suffix:semicolon
 multiline_comment|/* Identify the system */
 id|printk
 c_func

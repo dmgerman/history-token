@@ -71,32 +71,6 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-DECL|function|pfn_to_pgdat
-r_static
-r_inline
-r_struct
-id|pglist_data
-op_star
-id|pfn_to_pgdat
-c_func
-(paren
-r_int
-r_int
-id|pfn
-)paren
-(brace
-r_return
-id|NODE_DATA
-c_func
-(paren
-id|pfn_to_nid
-c_func
-(paren
-id|pfn
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Following are macros that are specific to this numa platform.&n; */
 DECL|macro|reserve_bootmem
 mdefine_line|#define reserve_bootmem(addr, size) &bslash;&n;&t;reserve_bootmem_node(NODE_DATA(0), (addr), (size))

@@ -2069,8 +2069,8 @@ id|dcss_lock
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * save segment content permanently&n; */
-DECL|function|segment_save
 r_void
+DECL|function|segment_save
 id|segment_save
 c_func
 (paren

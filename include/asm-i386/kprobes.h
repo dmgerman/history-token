@@ -20,6 +20,8 @@ DECL|macro|MAX_STACK_SIZE
 mdefine_line|#define MAX_STACK_SIZE 64
 DECL|macro|MIN_STACK_SIZE
 mdefine_line|#define MIN_STACK_SIZE(ADDR) (((MAX_STACK_SIZE) &lt; &bslash;&n;&t;(((unsigned long)current_thread_info()) + THREAD_SIZE - (ADDR))) &bslash;&n;&t;? (MAX_STACK_SIZE) &bslash;&n;&t;: (((unsigned long)current_thread_info()) + THREAD_SIZE - (ADDR)))
+DECL|macro|JPROBE_ENTRY
+mdefine_line|#define JPROBE_ENTRY(pentry)&t;(kprobe_opcode_t *)pentry
 multiline_comment|/* Architecture specific copy of original instruction*/
 DECL|struct|arch_specific_insn
 r_struct

@@ -4956,7 +4956,7 @@ suffix:semicolon
 )brace
 id|n-&gt;end
 op_assign
-id|end
+id|start
 suffix:semicolon
 id|sp_insert
 c_func
@@ -4966,19 +4966,10 @@ comma
 id|new2
 )paren
 suffix:semicolon
-id|new2
-op_assign
-l_int|NULL
+r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Old crossing beginning, but not end (easy) */
-r_if
-c_cond
-(paren
-id|n-&gt;start
-template_param
-id|start
-)paren
+r_else
 id|n-&gt;end
 op_assign
 id|start
@@ -5261,16 +5252,6 @@ op_amp
 id|n-&gt;nd
 )paren
 suffix:semicolon
-id|rb_erase
-c_func
-(paren
-op_amp
-id|n-&gt;nd
-comma
-op_amp
-id|p-&gt;root
-)paren
-suffix:semicolon
 id|mpol_free
 c_func
 (paren
@@ -5292,6 +5273,10 @@ c_func
 op_amp
 id|p-&gt;lock
 )paren
+suffix:semicolon
+id|p-&gt;root
+op_assign
+id|RB_ROOT
 suffix:semicolon
 )brace
 multiline_comment|/* assumes fs == KERNEL_DS */

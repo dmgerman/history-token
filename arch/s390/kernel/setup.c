@@ -211,19 +211,6 @@ id|current-&gt;used_math
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Setup active_mm for idle_task  */
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|init_mm.mm_count
-)paren
-suffix:semicolon
-id|current-&gt;active_mm
-op_assign
-op_amp
-id|init_mm
-suffix:semicolon
 r_if
 c_cond
 (paren

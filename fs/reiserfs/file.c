@@ -115,7 +115,7 @@ op_amp
 id|inode-&gt;i_sem
 )paren
 suffix:semicolon
-multiline_comment|/* freeing preallocation only involves relogging blocks that&n;     * are already in the current transaction.  preallocation gets&n;     * freed at the end of each transaction, so it is impossible for&n;     * us to log any additional blocks&n;     */
+multiline_comment|/* freeing preallocation only involves relogging blocks that&n;     * are already in the current transaction.  preallocation gets&n;     * freed at the end of each transaction, so it is impossible for&n;     * us to log any additional blocks (including quota blocks)&n;     */
 id|err
 op_assign
 id|journal_begin
@@ -687,6 +687,10 @@ op_star
 l_int|3
 op_plus
 l_int|1
+op_plus
+l_int|2
+op_star
+id|REISERFS_QUOTA_TRANS_BLOCKS
 )paren
 suffix:semicolon
 singleline_comment|// Wish I know if this number enough
@@ -2573,6 +2577,10 @@ op_star
 l_int|3
 op_plus
 l_int|1
+op_plus
+l_int|2
+op_star
+id|REISERFS_QUOTA_TRANS_BLOCKS
 )paren
 suffix:semicolon
 r_if

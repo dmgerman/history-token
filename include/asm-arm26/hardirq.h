@@ -49,8 +49,17 @@ macro_line|#endif
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()&t;&t;(preempt_count() += HARDIRQ_OFFSET)
 macro_line|#ifndef CONFIG_SMP
+r_extern
+id|asmlinkage
+r_void
+id|__do_softirq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|irq_exit
-mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_count() -= HARDIRQ_OFFSET;&t;&t;&t;&bslash;&n;&t;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id())) &bslash;&n;&t;&t;&t;__asm__(&quot;bl%? __do_softirq&quot;: : : &quot;lr&quot;);/* out of line */&bslash;&n;&t;&t;preempt_enable_no_resched();&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define irq_exit()                                                      &bslash;&n;        do {                                                            &bslash;&n;                preempt_count() -= IRQ_EXIT_OFFSET;                     &bslash;&n;                if (!in_interrupt() &amp;&amp; local_softirq_pending())         &bslash;&n;                        __do_softirq();                                 &bslash;&n;                preempt_enable_no_resched();                            &bslash;&n;        } while (0)
 macro_line|#endif
 macro_line|#endif /* __ASM_HARDIRQ_H */
 eof

@@ -7,23 +7,9 @@ multiline_comment|/*&n; * SMP- and interrupt-safe semaphores..&n; *&n; * Copyrig
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
+macro_line|#include &lt;asm/assembler.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-DECL|macro|LOAD
-macro_line|#undef LOAD
-DECL|macro|STORE
-macro_line|#undef STORE
-macro_line|#ifdef CONFIG_SMP
-DECL|macro|LOAD
-mdefine_line|#define LOAD&t;&quot;lock&quot;
-DECL|macro|STORE
-mdefine_line|#define STORE&t;&quot;unlock&quot;
-macro_line|#else
-DECL|macro|LOAD
-mdefine_line|#define LOAD&t;&quot;ld&quot;
-DECL|macro|STORE
-mdefine_line|#define STORE&t;&quot;st&quot;
-macro_line|#endif
 DECL|struct|semaphore
 r_struct
 id|semaphore
@@ -256,11 +242,11 @@ l_string|&quot;r4&quot;
 comma
 l_string|&quot;%1&quot;
 )paren
-id|LOAD
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_LOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;addi&t;%0, #-1;&t;&t;&bslash;n&bslash;t&quot;
-id|STORE
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_UNLOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -354,11 +340,11 @@ l_string|&quot;r4&quot;
 comma
 l_string|&quot;%1&quot;
 )paren
-id|LOAD
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_LOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;addi&t;%0, #-1;&t;&t;&bslash;n&bslash;t&quot;
-id|STORE
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_UNLOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -452,11 +438,11 @@ l_string|&quot;r4&quot;
 comma
 l_string|&quot;%1&quot;
 )paren
-id|LOAD
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_LOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;addi&t;%0, #-1;&t;&t;&bslash;n&bslash;t&quot;
-id|STORE
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_UNLOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
@@ -545,11 +531,11 @@ l_string|&quot;r4&quot;
 comma
 l_string|&quot;%1&quot;
 )paren
-id|LOAD
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_LOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;addi&t;%0, #1;&t;&t;&t;&bslash;n&bslash;t&quot;
-id|STORE
-l_string|&quot;&t;%0, @%1;&t;&t;&bslash;n&bslash;t&quot;
+id|M32R_UNLOCK
+l_string|&quot; %0, @%1;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

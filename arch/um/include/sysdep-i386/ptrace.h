@@ -9,6 +9,10 @@ macro_line|#endif
 macro_line|#ifdef UML_CONFIG_MODE_SKAS
 macro_line|#include &quot;ptrace-skas.h&quot;
 macro_line|#endif
+macro_line|#ifndef PTRACE_SYSEMU_SINGLESTEP
+DECL|macro|PTRACE_SYSEMU_SINGLESTEP
+mdefine_line|#define PTRACE_SYSEMU_SINGLESTEP 32
+macro_line|#endif
 macro_line|#include &quot;choose-mode.h&quot;
 DECL|union|uml_pt_regs
 r_union

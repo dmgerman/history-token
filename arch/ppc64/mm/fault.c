@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/kdebug.h&gt;
 multiline_comment|/*&n; * Check whether the instruction at regs-&gt;nip is a store using&n; * an update addressing form which will update r1.&n; */
 DECL|function|store_updates_sp
 r_static
@@ -245,6 +246,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|notify_die
+c_func
+(paren
+id|DIE_PAGE_FAULT
+comma
+l_string|&quot;page_fault&quot;
+comma
+id|regs
+comma
+id|error_code
+comma
+l_int|11
+comma
+id|SIGSEGV
+)paren
+op_eq
+id|NOTIFY_STOP
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|trap
 op_eq
 l_int|0x300
@@ -291,6 +316,30 @@ op_amp
 l_int|0x00400000
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|notify_die
+c_func
+(paren
+id|DIE_DABR_MATCH
+comma
+l_string|&quot;dabr_match&quot;
+comma
+id|regs
+comma
+id|error_code
+comma
+l_int|11
+comma
+id|SIGSEGV
+)paren
+op_eq
+id|NOTIFY_STOP
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren

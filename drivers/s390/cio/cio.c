@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.128 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.130 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2910,15 +2910,13 @@ r_int
 id|devno
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure all subchannels are quiet before we re-ipl an lpar. */
+multiline_comment|/* Clear all subchannels. */
 r_void
-DECL|function|reipl
-id|reipl
+DECL|function|clear_all_subchannels
+id|clear_all_subchannels
 c_func
 (paren
-r_int
-r_int
-id|devno
+r_void
 )paren
 (brace
 r_int
@@ -2961,9 +2959,9 @@ op_amp
 id|schib
 )paren
 )paren
-r_goto
-id|out
+r_break
 suffix:semicolon
+multiline_comment|/* break out of the loop */
 r_if
 c_cond
 (paren
@@ -3010,7 +3008,7 @@ id|schid
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* give up... */
+multiline_comment|/* give up... jump out of switch */
 id|stsch
 c_func
 (paren
@@ -3031,8 +3029,23 @@ id|schib
 suffix:semicolon
 )brace
 )brace
-id|out
-suffix:colon
+)brace
+multiline_comment|/* Make sure all subchannels are quiet before we re-ipl an lpar. */
+r_void
+DECL|function|reipl
+id|reipl
+c_func
+(paren
+r_int
+r_int
+id|devno
+)paren
+(brace
+id|clear_all_subchannels
+c_func
+(paren
+)paren
+suffix:semicolon
 id|do_reipl
 c_func
 (paren

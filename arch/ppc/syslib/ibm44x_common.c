@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/ibm44x.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -95,6 +96,13 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+suffix:semicolon
+DECL|variable|fixup_bigphys_addr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fixup_bigphys_addr
+)paren
 suffix:semicolon
 DECL|function|ibm44x_calibrate_decr
 r_void
@@ -436,48 +444,6 @@ r_return
 id|mem_size
 suffix:semicolon
 )brace
-DECL|function|ibm44x_init_irq
-r_static
-r_void
-id|__init
-id|ibm44x_init_irq
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-id|ppc4xx_pic_init
-c_func
-(paren
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|NR_IRQS
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|handler
-op_assign
-id|ppc4xx_pic
-suffix:semicolon
-)brace
 DECL|function|ibm44x_platform_init
 r_void
 id|__init
@@ -489,7 +455,7 @@ r_void
 (brace
 id|ppc_md.init_IRQ
 op_assign
-id|ibm44x_init_irq
+id|ppc4xx_pic_init
 suffix:semicolon
 id|ppc_md.find_end_of_memory
 op_assign

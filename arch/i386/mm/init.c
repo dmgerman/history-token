@@ -456,11 +456,7 @@ c_cond
 (paren
 id|addr
 op_ge
-(paren
-r_int
-r_int
-)paren
-id|_stext
+id|PAGE_OFFSET
 op_logical_and
 id|addr
 op_le
@@ -1732,12 +1728,12 @@ id|_PAGE_NX
 suffix:semicolon
 multiline_comment|/*&n; * noexec = on|off&n; *&n; * Control non executable mappings.&n; *&n; * on      Enable&n; * off     Disable&n; */
 DECL|function|noexec_setup
-r_static
-r_int
+r_void
 id|__init
 id|noexec_setup
 c_func
 (paren
+r_const
 r_char
 op_star
 id|str
@@ -1795,18 +1791,7 @@ op_complement
 id|_PAGE_NX
 suffix:semicolon
 )brace
-r_return
-l_int|1
-suffix:semicolon
 )brace
-id|__setup
-c_func
-(paren
-l_string|&quot;noexec=&quot;
-comma
-id|noexec_setup
-)paren
-suffix:semicolon
 DECL|variable|nx_enabled
 r_int
 id|nx_enabled
@@ -2198,14 +2183,6 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_HIGHMEM
-id|highmem_start_page
-op_assign
-id|pfn_to_page
-c_func
-(paren
-id|highstart_pfn
-)paren
-suffix:semicolon
 id|max_mapnr
 op_assign
 id|num_physpages

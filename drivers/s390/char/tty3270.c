@@ -364,6 +364,13 @@ l_int|0
 r_if
 c_cond
 (paren
+id|timer_pending
+c_func
+(paren
+op_amp
+id|tp-&gt;timer
+)paren
+op_logical_and
 id|del_timer
 c_func
 (paren
@@ -384,6 +391,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|timer_pending
+c_func
+(paren
+op_amp
+id|tp-&gt;timer
+)paren
+op_logical_and
 id|mod_timer
 c_func
 (paren

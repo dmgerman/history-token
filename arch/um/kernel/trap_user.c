@@ -14,7 +14,6 @@ macro_line|#include &quot;sysdep/ptrace.h&quot;
 macro_line|#include &quot;sigcontext.h&quot;
 macro_line|#include &quot;sysdep/sigcontext.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
-macro_line|#include &quot;frame_user.h&quot;
 macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;time_user.h&quot;
 macro_line|#include &quot;task.h&quot;

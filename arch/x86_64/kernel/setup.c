@@ -44,6 +44,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach_apic.h&gt;
+macro_line|#include &lt;asm/numa.h&gt;
 multiline_comment|/*&n; * Machine setup..&n; */
 DECL|variable|boot_cpu_data
 r_struct
@@ -91,6 +92,11 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+DECL|variable|__initdata
+r_int
+id|acpi_numa
+id|__initdata
+suffix:semicolon
 multiline_comment|/* For PCI or other memory-mapped resources */
 DECL|variable|pci_mem_start
 r_int
@@ -98,6 +104,11 @@ r_int
 id|pci_mem_start
 op_assign
 l_int|0x10000000
+suffix:semicolon
+multiline_comment|/* Boot loader ID as an integer, for the benefit of proc_dointvec */
+DECL|variable|bootloader_type
+r_int
+id|bootloader_type
 suffix:semicolon
 DECL|variable|saved_video_mode
 r_int
@@ -1366,6 +1377,28 @@ id|panic_on_oops
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;noexec=&quot;
+comma
+l_int|7
+)paren
+)paren
+id|nonx_setup
+c_func
+(paren
+id|from
+op_plus
+l_int|7
+)paren
+suffix:semicolon
 id|next_char
 suffix:colon
 id|c
@@ -1996,6 +2029,10 @@ id|saved_video_mode
 op_assign
 id|SAVED_VIDEO_MODE
 suffix:semicolon
+id|bootloader_type
+op_assign
+id|LOADER_TYPE
+suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 id|rd_image_start
 op_assign
@@ -2149,6 +2186,22 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_BOOT
+multiline_comment|/*&n;&t; * Initialize the ACPI boot-time table parser (gets the RSDP and SDT).&n;&t; * Call this early for SRAT node setup.&n;&t; */
+id|acpi_boot_table_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ACPI_NUMA
+multiline_comment|/*&n;&t; * Parse SRAT to discover nodes.&n;&t; */
+id|acpi_numa_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 id|numa_initmem_init
 c_func
@@ -2356,7 +2409,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
-multiline_comment|/*&n;        * Initialize the ACPI boot-time table parser (gets the RSDP and SDT).&n;        * Must do this after paging_init (due to reliance on fixmap, and thus&n;        * the bootmem allocator) but before get_smp_config (to allow parsing&n;        * of MADT).&n;        */
+multiline_comment|/*&n;&t; * Read APIC and some other early information from ACPI tables.&n;&t; */
 id|acpi_boot_init
 c_func
 (paren
@@ -2905,6 +2958,11 @@ suffix:semicolon
 r_int
 id|level
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+r_int
+id|cpu
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Bit 31 in normal CPUID used for nonstandard 3DNow ID;&n;&t;   3DNow is IDd by bit 31 in extended CPUID (1*32+31) anyway */
 id|clear_bit
 c_func
@@ -3000,7 +3058,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|c-&gt;cpuid_level
+id|cpuid_eax
+c_func
+(paren
+l_int|0x80000000
+)paren
 op_ge
 l_int|0x80000008
 )paren
@@ -3035,20 +3097,23 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
-multiline_comment|/* On a dual core setup the lower bits of apic id&n;&t;&t;   distingush the cores. Fix up the CPU&lt;-&gt;node mappings&n;&t;&t;   here based on that.&n;&t;&t;   Assumes number of cores is a power of two. */
+multiline_comment|/* On a dual core setup the lower bits of apic id&n;&t;&t;   distingush the cores. Fix up the CPU&lt;-&gt;node mappings&n;&t;&t;   here based on that.&n;&t;&t;   Assumes number of cores is a power of two.&n;&t;&t;   When using SRAT use mapping from SRAT. */
+id|cpu
+op_assign
+id|c-&gt;x86_apicid
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|acpi_numa
+op_le
+l_int|0
+op_logical_and
 id|c-&gt;x86_num_cores
 OG
 l_int|1
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|c-&gt;x86_apicid
-suffix:semicolon
 id|cpu_to_node
 (braket
 id|cpu
@@ -3064,13 +3129,16 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;CPU %d -&gt; Node %d&bslash;n&quot;
+l_string|&quot;CPU %d(%d) -&gt; Node %d&bslash;n&quot;
 comma
 id|cpu
+comma
+id|c-&gt;x86_num_cores
 comma
 id|cpu_to_node
 (braket
@@ -3078,7 +3146,6 @@ id|cpu
 )braket
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 )brace
 r_return
@@ -3305,6 +3372,42 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+)brace
+DECL|function|sched_cmp_hack
+r_static
+r_void
+id|__init
+id|sched_cmp_hack
+c_func
+(paren
+r_struct
+id|cpuinfo_x86
+op_star
+id|c
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+multiline_comment|/* AMD dual core looks like HT but isn&squot;t really. Hide it from the&n;&t;   scheduler. This works around problems with the domain scheduler.&n;&t;   Also probably gives slightly better scheduling and disables&n;&t;   SMT nice which is harmful on dual core.&n;&t;   TBD tune the domain scheduler for dual core. */
+r_if
+c_cond
+(paren
+id|c-&gt;x86_vendor
+op_eq
+id|X86_VENDOR_AMD
+op_logical_and
+id|cpu_has
+c_func
+(paren
+id|c
+comma
+id|X86_FEATURE_CMP_LEGACY
+)paren
+)paren
+id|smp_num_siblings
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|init_intel
@@ -3929,6 +4032,12 @@ c_func
 id|c
 )paren
 suffix:semicolon
+id|sched_cmp_hack
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * On SMP, boot_cpu_data holds the common feature set between&n;&t; * all CPUs; so make sure that we indicate which features are&n;&t; * common between the CPUs.  The first time this routine gets&n;&t; * executed, c == &amp;boot_cpu_data.&n;&t; */
 r_if
 c_cond
@@ -3970,6 +4079,24 @@ id|mcheck_init
 c_func
 (paren
 id|c
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_NUMA
+r_if
+c_cond
+(paren
+id|c
+op_ne
+op_amp
+id|boot_cpu_data
+)paren
+id|numa_add_cpu
+c_func
+(paren
+id|c
+op_minus
+id|cpu_data
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4388,7 +4515,7 @@ comma
 multiline_comment|/* AMD-defined (#2) */
 l_string|&quot;lahf_lm&quot;
 comma
-l_string|&quot;htvalid&quot;
+l_string|&quot;cmp_legacy&quot;
 comma
 l_int|NULL
 comma
@@ -4615,15 +4742,7 @@ comma
 id|c-&gt;x86_cache_size
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_HT
-r_if
-c_cond
-(paren
-id|smp_num_siblings
-OG
-l_int|1
-)paren
-(brace
+macro_line|#ifdef CONFIG_SMP
 id|seq_printf
 c_func
 (paren
@@ -4646,10 +4765,11 @@ id|m
 comma
 l_string|&quot;siblings&bslash;t: %d&bslash;n&quot;
 comma
+id|c-&gt;x86_num_cores
+op_star
 id|smp_num_siblings
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif&t;
 id|seq_printf
 c_func
@@ -4870,6 +4990,14 @@ id|i
 suffix:semicolon
 )brace
 )brace
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
