@@ -105,6 +105,10 @@ r_int
 id|slot
 )paren
 suffix:semicolon
+DECL|macro|IS_OPUS
+mdefine_line|#define IS_OPUS(nasid) (cbrick_type_get_nasid(nasid) == MODULE_OPUSBRICK)
+DECL|macro|IS_ALTIX
+mdefine_line|#define IS_ALTIX(nasid) (cbrick_type_get_nasid(nasid) == MODULE_CBRICK)
 multiline_comment|/*&n; * pci_bus_cvlink_init() - To be called once during initialization before &n; *&t;SGI IO Infrastructure init is called.&n; */
 r_void
 DECL|function|pci_bus_cvlink_init

@@ -76,6 +76,12 @@ DECL|macro|EDGE_LBL_PCIX_0
 mdefine_line|#define EDGE_LBL_PCIX_0&t;&t;&t;EDGE_LBL_PCIX &quot;/0&quot;
 DECL|macro|EDGE_LBL_PCIX_1
 mdefine_line|#define EDGE_LBL_PCIX_1&t;&t;&t;EDGE_LBL_PCIX &quot;/1&quot;
+DECL|macro|EDGE_LBL_AGP
+mdefine_line|#define EDGE_LBL_AGP&t;&t;&t;&quot;agp&quot;
+DECL|macro|EDGE_LBL_AGP_0
+mdefine_line|#define EDGE_LBL_AGP_0&t;&t;&t;EDGE_LBL_AGP &quot;/0&quot;
+DECL|macro|EDGE_LBL_AGP_1
+mdefine_line|#define EDGE_LBL_AGP_1&t;&t;&t;EDGE_LBL_AGP &quot;/1&quot;
 DECL|macro|EDGE_LBL_PORT
 mdefine_line|#define EDGE_LBL_PORT&t;&t;&t;&quot;port&quot;
 DECL|macro|EDGE_LBL_PROM
@@ -130,6 +136,8 @@ DECL|macro|EDGE_LBL_IOBRICK
 mdefine_line|#define EDGE_LBL_IOBRICK&t;&t;&quot;iobrick&quot;
 DECL|macro|EDGE_LBL_PXBRICK
 mdefine_line|#define EDGE_LBL_PXBRICK&t;&t;&quot;PXbrick&quot;
+DECL|macro|EDGE_LBL_OPUSBRICK
+mdefine_line|#define EDGE_LBL_OPUSBRICK&t;&t;&quot;onboardio&quot;
 DECL|macro|EDGE_LBL_IXBRICK
 mdefine_line|#define EDGE_LBL_IXBRICK&t;&t;&quot;IXbrick&quot;
 DECL|macro|EDGE_LBL_CGBRICK
@@ -149,12 +157,8 @@ DECL|macro|INFO_LBL_CPU_INFO
 mdefine_line|#define INFO_LBL_CPU_INFO&t;&t;&quot;_cpu&quot;
 DECL|macro|INFO_LBL_DETAIL_INVENT
 mdefine_line|#define INFO_LBL_DETAIL_INVENT&t;&t;&quot;_detail_invent&quot; /* inventory data*/
-DECL|macro|INFO_LBL_DEVICE_DESC
-mdefine_line|#define INFO_LBL_DEVICE_DESC&t;&t;&quot;_device_desc&quot;
 DECL|macro|INFO_LBL_DIAGVAL
-mdefine_line|#define INFO_LBL_DIAGVAL                &quot;_diag_reason&quot;   /* Reason disabled */
-DECL|macro|INFO_LBL_DKIOTIME
-mdefine_line|#define INFO_LBL_DKIOTIME&t;&t;&quot;_dkiotime&quot;
+mdefine_line|#define INFO_LBL_DIAGVAL&t;&t;&quot;_diag_reason&quot;   /* Reason disabled */
 DECL|macro|INFO_LBL_DRIVER
 mdefine_line|#define INFO_LBL_DRIVER&t;&t;&t;&quot;_driver&quot;&t;/* points to attached device_driver_t */
 DECL|macro|INFO_LBL_ELSC
@@ -212,15 +216,6 @@ multiline_comment|/* Driver adminstrator&n;&t;&t;&t;&t;&t;&t;&t; * hint paramete
 DECL|macro|ADMIN_LBL_THREAD_CLASS
 mdefine_line|#define ADMIN_LBL_THREAD_CLASS&t;&t;&quot;thread_class&quot; 
 multiline_comment|/* Driver adminstrator&n;&t;&t;&t;&t;&t;&t;&t; * hint parameter for &n;&t;&t;&t;&t;&t;&t;&t; * thread priority&n;&t;&t;&t;&t;&t;&t;&t; * default class&n;&t;&t;&t;&t;&t;&t;&t; */
-multiline_comment|/* Special reserved info labels (also hwgfs attributes) */
-DECL|macro|_DEVNAME_ATTR
-mdefine_line|#define _DEVNAME_ATTR&t;&t;&quot;_devname&quot;&t;/* device name */
-DECL|macro|_DRIVERNAME_ATTR
-mdefine_line|#define _DRIVERNAME_ATTR&t;&quot;_drivername&quot;&t;/* driver name */
-DECL|macro|_INVENT_ATTR
-mdefine_line|#define _INVENT_ATTR&t;&t;&quot;_inventory&quot;&t;/* device inventory data */
-DECL|macro|_MASTERNODE_ATTR
-mdefine_line|#define _MASTERNODE_ATTR&t;&quot;_masternode&quot;&t;/* node that &quot;controls&quot; device */
 multiline_comment|/* Info labels that begin with &squot;_&squot; cannot be overwritten by an attr_set call */
 DECL|macro|INFO_LBL_RESERVED
 mdefine_line|#define INFO_LBL_RESERVED(name) ((name)[0] == &squot;_&squot;)

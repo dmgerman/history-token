@@ -17,7 +17,6 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif /* IOGRAPH_DEBUG */
-multiline_comment|/* #define PROBE_TEST */
 multiline_comment|/* At most 2 hubs can be connected to an xswitch */
 DECL|macro|NUM_XSWITCH_VOLUNTEER
 mdefine_line|#define NUM_XSWITCH_VOLUNTEER 2
@@ -160,19 +159,6 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-r_extern
-r_void
-id|snia_kmem_free
-c_func
-(paren
-r_void
-op_star
-id|ptr
-comma
-r_int
-id|size
-)paren
-suffix:semicolon
 id|rc
 op_assign
 id|hwgraph_info_remove_LBL
@@ -266,19 +252,31 @@ c_func
 id|master
 )paren
 )paren
+(brace
+r_char
+id|name
+(braket
+id|MAXDEVNAME
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;volunteer for widgets: vertex 0x%p has no info label&quot;
+l_string|&quot;volunteer for widgets: vertex %s has no info label&quot;
 comma
+id|vertex_to_name
+c_func
 (paren
-r_void
-op_star
-)paren
 id|xswitch
+comma
+id|name
+comma
+id|MAXDEVNAME
+)paren
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace
@@ -487,20 +485,32 @@ c_func
 id|hubv
 )paren
 )paren
+(brace
+r_char
+id|name
+(braket
+id|MAXDEVNAME
+)braket
+suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;assign_widgets_to_volunteers:vertex 0x%p has &quot;
+l_string|&quot;assign_widgets_to_volunteers:vertex %s has &quot;
 l_string|&quot; no info label&quot;
 comma
+id|vertex_to_name
+c_func
 (paren
-r_void
-op_star
-)paren
 id|xswitch
+comma
+id|name
+comma
+id|MAXDEVNAME
+)paren
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 )brace
@@ -565,7 +575,6 @@ op_increment
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Ignore disabled/empty ports.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -650,7 +659,7 @@ r_goto
 id|do_assignment
 suffix:semicolon
 )brace
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;Nasid == %d, console nasid == %d&quot;
@@ -662,6 +671,10 @@ c_func
 (paren
 )paren
 )paren
+suffix:semicolon
+id|nasid
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Assuming that we&squot;re dual-hosted and that PCI cards &n;&t;&t; * are naturally placed left-to-right, alternate PCI &n;&t;&t; * buses across both Cbricks.   For Pbricks, and Ibricks,&n;                 * io_brick_map_widget() returns the PCI bus number&n;                 * associated with the given brick type and widget number.&n;                 * For Xbricks, it returns the XIO slot number.&n;&t;&t; */
@@ -1305,6 +1318,24 @@ ques
 c_cond
 id|EDGE_LBL_IXBRICK
 suffix:colon
+(paren
+id|board-&gt;brd_type
+op_eq
+id|KLTYPE_CGBRICK
+)paren
+ques
+c_cond
+id|EDGE_LBL_CGBRICK
+suffix:colon
+(paren
+id|board-&gt;brd_type
+op_eq
+id|KLTYPE_OPUSBRICK
+)paren
+ques
+c_cond
+id|EDGE_LBL_OPUSBRICK
+suffix:colon
 l_string|&quot;?brick&quot;
 comma
 id|EDGE_LBL_XTALK
@@ -1452,13 +1483,12 @@ comma
 id|hub_widgetid
 )paren
 suffix:semicolon
-id|ia64_sn_sysctl_iobrick_module_get
+id|io_module
+op_assign
+id|iomoduleid_get
 c_func
 (paren
 id|nasid
-comma
-op_amp
-id|io_module
 )paren
 suffix:semicolon
 r_if
@@ -1521,7 +1551,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|islower
+id|isupper
 c_func
 (paren
 id|MODULE_GET_BTCHAR
@@ -1534,7 +1564,7 @@ id|io_module
 (brace
 id|bt
 op_assign
-id|toupper
+id|tolower
 c_func
 (paren
 id|MODULE_GET_BTCHAR
@@ -1659,16 +1689,10 @@ r_if
 c_cond
 (paren
 id|rc
-op_eq
+op_ne
 op_minus
 id|EEXIST
-)paren
-r_goto
-id|link_done
-suffix:semicolon
-r_if
-c_cond
-(paren
+op_logical_and
 id|rc
 op_ne
 id|GRAPH_SUCCESS
@@ -1684,23 +1708,7 @@ id|pathname
 )paren
 suffix:semicolon
 )brace
-id|link_done
-suffix:colon
 )brace
-macro_line|#ifdef&t;SN0_USE_BTE
-id|bte_bpush_war
-c_func
-(paren
-id|cnode
-comma
-(paren
-r_void
-op_star
-)paren
-id|board
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_static
@@ -2098,7 +2106,6 @@ op_ne
 id|GRAPH_VERTEX_NONE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Read mfg info on this hub&n;&t; */
 multiline_comment|/* &n;&t; * If nothing connected to this hub&squot;s xtalk port, we&squot;re done.&n;&t; */
 id|early_probe_for_widget
 c_func
@@ -2117,48 +2124,6 @@ op_eq
 id|XWIDGET_PART_NUM_NONE
 )paren
 (brace
-macro_line|#ifdef PROBE_TEST
-r_if
-c_cond
-(paren
-(paren
-id|cnodeid
-op_eq
-l_int|1
-)paren
-op_logical_or
-(paren
-id|cnodeid
-op_eq
-l_int|2
-)paren
-)paren
-(brace
-r_int
-id|index
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|index
-op_assign
-l_int|0
-suffix:semicolon
-id|index
-OL
-l_int|600
-suffix:semicolon
-id|index
-op_increment
-)paren
-id|DBG
-c_func
-(paren
-l_string|&quot;Interfering with device probing!!!&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|DBG
 c_func
 (paren
@@ -2601,48 +2566,6 @@ id|npdap-&gt;xbow_sema
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef PROBE_TEST
-r_if
-c_cond
-(paren
-(paren
-id|cnodeid
-op_eq
-l_int|1
-)paren
-op_logical_or
-(paren
-id|cnodeid
-op_eq
-l_int|2
-)paren
-)paren
-(brace
-r_int
-id|index
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|index
-op_assign
-l_int|0
-suffix:semicolon
-id|index
-OL
-l_int|500
-suffix:semicolon
-id|index
-op_increment
-)paren
-id|DBG
-c_func
-(paren
-l_string|&quot;Interfering with device probing!!!&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Now both nodes can safely inititialize widgets */
 id|io_init_xswitch_widgets
 c_func
@@ -2670,7 +2593,6 @@ id|cnodeid
 suffix:semicolon
 )brace
 macro_line|#include &lt;asm/sn/ioerror_handling.h&gt;
-multiline_comment|/* #endif */
 multiline_comment|/*&n; * Initialize all I/O devices.  Starting closest to nodes, probe and&n; * initialize outward.&n; */
 r_void
 DECL|function|init_all_devices
@@ -2680,7 +2602,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Governor on init threads..bump up when safe &n;&t; * (beware many devfs races) &n;&t; */
 id|cnodeid_t
 id|cnodeid
 comma
@@ -2742,6 +2663,7 @@ suffix:semicolon
 id|cnodeid
 op_increment
 )paren
+(brace
 multiline_comment|/*&n;&t; &t; * Update information generated by IO init.&n;&t;&t; */
 id|update_node_information
 c_func
@@ -2749,13 +2671,7 @@ c_func
 id|cnodeid
 )paren
 suffix:semicolon
-macro_line|#if HWG_PRINT
-id|hwgraph_print
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
+)brace
 )brace
 r_static
 DECL|variable|io_brick_tab
@@ -2815,6 +2731,55 @@ multiline_comment|/* 0xf            */
 )brace
 )brace
 comma
+multiline_comment|/* OPUSbrick widget number to PCI bus number map */
+(brace
+id|MODULE_OPUSBRICK
+comma
+multiline_comment|/* OPUSbrick type */
+multiline_comment|/*  PCI Bus #                                  Widget #       */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* 0x0 - 0x7      */
+l_int|0
+comma
+multiline_comment|/* 0x8            */
+l_int|0
+comma
+multiline_comment|/* 0x9            */
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* 0xa - 0xb      */
+l_int|0
+comma
+multiline_comment|/* 0xc            */
+l_int|0
+comma
+multiline_comment|/* 0xd            */
+l_int|0
+comma
+multiline_comment|/* 0xe            */
+l_int|1
+multiline_comment|/* 0xf            */
+)brace
+)brace
+comma
 multiline_comment|/* IXbrick widget number to PCI bus number map */
 (brace
 id|MODULE_IXBRICK
@@ -2860,6 +2825,55 @@ l_int|0
 comma
 multiline_comment|/* 0xe            */
 l_int|3
+multiline_comment|/* 0xf            */
+)brace
+)brace
+comma
+multiline_comment|/* CG brick widget number to PCI bus number map */
+(brace
+id|MODULE_CGBRICK
+comma
+multiline_comment|/* CG brick       */
+multiline_comment|/*  PCI Bus #                                  Widget #       */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* 0x0 - 0x7      */
+l_int|0
+comma
+multiline_comment|/* 0x8            */
+l_int|0
+comma
+multiline_comment|/* 0x9            */
+l_int|0
+comma
+l_int|1
+comma
+multiline_comment|/* 0xa - 0xb      */
+l_int|0
+comma
+multiline_comment|/* 0xc            */
+l_int|0
+comma
+multiline_comment|/* 0xd            */
+l_int|0
+comma
+multiline_comment|/* 0xe            */
+l_int|0
 multiline_comment|/* 0xf            */
 )brace
 )brace

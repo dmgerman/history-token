@@ -109,13 +109,15 @@ mdefine_line|#define L1_BRICKTYPE_C          0x43            /* C */
 DECL|macro|L1_BRICKTYPE_R
 mdefine_line|#define L1_BRICKTYPE_R          0x52            /* R */
 DECL|macro|L1_BRICKTYPE_CHI_CG
-mdefine_line|#define L1_BRICKTYPE_CHI_CG&t;0x76&t;&t;/* v */
+mdefine_line|#define L1_BRICKTYPE_CHI_CG     0x76            /* v */
 DECL|macro|L1_BRICKTYPE_N
 mdefine_line|#define L1_BRICKTYPE_N          0x4e            /* N */
 DECL|macro|L1_BRICKTYPE_PX
 mdefine_line|#define L1_BRICKTYPE_PX&t;&t;0x23&t;&t;/* # */
 DECL|macro|L1_BRICKTYPE_IX
 mdefine_line|#define L1_BRICKTYPE_IX&t;&t;0x3d&t;&t;/* = */
+DECL|macro|L1_BRICKTYPE_OPUS
+mdefine_line|#define L1_BRICKTYPE_OPUS       0x6f&t;&t;/* o */
 multiline_comment|/* EEPROM codes (for the &quot;read EEPROM&quot; request) */
 multiline_comment|/* c brick */
 DECL|macro|L1_EEP_NODE
@@ -190,7 +192,7 @@ id|brick_type
 )paren
 suffix:semicolon
 r_int
-id|iobrick_module_get
+id|iomoduleid_get
 c_func
 (paren
 id|nasid_t

@@ -13,10 +13,6 @@ macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-DECL|macro|LDEBUG
-mdefine_line|#define LDEBUG 0
-DECL|macro|NIC_UNKNOWN
-mdefine_line|#define NIC_UNKNOWN ((nic_t) -1)
 DECL|macro|DEBUG_KLGRAPH
 macro_line|#undef DEBUG_KLGRAPH
 macro_line|#ifdef DEBUG_KLGRAPH
@@ -47,7 +43,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-l_string|&quot;crikxdpn%#=012345&quot;
+l_string|&quot;crikxdpn%#=vo^34567890123456789...&quot;
 suffix:semicolon
 id|lboard_t
 op_star
@@ -1019,6 +1015,18 @@ c_cond
 (paren
 id|brd-&gt;brd_type
 op_eq
+id|KLTYPE_OPUSBRICK
+)paren
+id|board_name
+op_assign
+id|EDGE_LBL_OPUSBRICK
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|brd-&gt;brd_type
+op_eq
 id|KLTYPE_CGBRICK
 )paren
 id|board_name
@@ -1086,56 +1094,6 @@ id|brd-&gt;brd_geoid
 )paren
 comma
 id|board_name
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Get the module number for a NASID.&n; */
-id|moduleid_t
-DECL|function|get_module_id
-id|get_module_id
-c_func
-(paren
-id|nasid_t
-id|nasid
-)paren
-(brace
-id|lboard_t
-op_star
-id|brd
-suffix:semicolon
-id|brd
-op_assign
-id|find_lboard
-c_func
-(paren
-(paren
-id|lboard_t
-op_star
-)paren
-id|KL_CONFIG_INFO
-c_func
-(paren
-id|nasid
-)paren
-comma
-id|KLTYPE_SNIA
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|brd
-)paren
-r_return
-id|INVALID_MODULE
-suffix:semicolon
-r_else
-r_return
-id|geo_module
-c_func
-(paren
-id|brd-&gt;brd_geoid
 )paren
 suffix:semicolon
 )brace

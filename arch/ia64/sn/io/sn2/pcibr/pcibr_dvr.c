@@ -3568,7 +3568,7 @@ id|nasid
 )paren
 suffix:semicolon
 r_int
-id|iobrick_module_get_nasid
+id|iomoduleid_get
 c_func
 (paren
 id|nasid_t
@@ -4235,7 +4235,7 @@ id|pcibr_soft-&gt;bs_bricktype
 suffix:semicolon
 id|pcibr_soft-&gt;bs_moduleid
 op_assign
-id|iobrick_module_get_nasid
+id|iomoduleid_get
 c_func
 (paren
 id|nasid

@@ -345,6 +345,8 @@ DECL|macro|KLTYPE_IXBRICK
 mdefine_line|#define KLTYPE_IXBRICK&t;&t;(KLCLASS_IOBRICK | 0x7)
 DECL|macro|KLTYPE_CGBRICK
 mdefine_line|#define KLTYPE_CGBRICK&t;&t;(KLCLASS_IOBRICK | 0x8)
+DECL|macro|KLTYPE_OPUSBRICK
+mdefine_line|#define KLTYPE_OPUSBRICK&t;(KLCLASS_IOBRICK | 0x9)
 DECL|macro|KLTYPE_PBRICK_BRIDGE
 mdefine_line|#define KLTYPE_PBRICK_BRIDGE&t;KLTYPE_PBRICK
 multiline_comment|/* The value of type should be more than 8 so that hinv prints&n; * out the board name from the NIC string. For values less than&n; * 8 the name of the board needs to be hard coded in a few places.&n; * When bringup started nic names had not standardized and so we&n; * had to hard code. (For people interested in history.) &n; */

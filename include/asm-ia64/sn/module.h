@@ -127,6 +127,10 @@ DECL|macro|MODULE_PXBRICK
 mdefine_line|#define MODULE_PXBRICK          9
 DECL|macro|MODULE_IXBRICK
 mdefine_line|#define MODULE_IXBRICK          10
+DECL|macro|MODULE_CGBRICK
+mdefine_line|#define MODULE_CGBRICK&t;&t;11
+DECL|macro|MODULE_OPUSBRICK
+mdefine_line|#define MODULE_OPUSBRICK        12
 multiline_comment|/*&n; * Moduleid_t comparison macros&n; */
 multiline_comment|/* Don&squot;t compare the brick type:  only the position is significant */
 DECL|macro|MODULE_CMP
