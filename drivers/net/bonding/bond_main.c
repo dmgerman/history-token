@@ -14664,11 +14664,5 @@ c_func
 l_string|&quot;most ethernet devices&quot;
 )paren
 suffix:semicolon
-id|MODULE_ALIAS
-c_func
-(paren
-l_string|&quot;bond?&quot;
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; *  c-indent-level: 8&n; *  c-basic-offset: 8&n; *  tab-width: 8&n; * End:&n; */
 eof
