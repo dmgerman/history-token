@@ -988,7 +988,7 @@ c_func
 id|__wake_up_bit
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * wake_up_bit - wake up a waiter on a bit&n; * @word: the word being waited on, a kernel virtual address&n; * @bit: the bit of the word being waited on&n; *&n; * There is a standard hashed waitqueue table for generic use. This&n; * is the part of the hashtable&squot;s accessor API that wakes up waiters&n; * on a bit. For instance, if one were to have waiters on a bitflag,&n; * one would call wake_up_bit() after clearing the bit.&n; */
+multiline_comment|/**&n; * wake_up_bit - wake up a waiter on a bit&n; * @word: the word being waited on, a kernel virtual address&n; * @bit: the bit of the word being waited on&n; *&n; * There is a standard hashed waitqueue table for generic use. This&n; * is the part of the hashtable&squot;s accessor API that wakes up waiters&n; * on a bit. For instance, if one were to have waiters on a bitflag,&n; * one would call wake_up_bit() after clearing the bit.&n; *&n; * In order for this to function properly, as it uses waitqueue_active()&n; * internally, some kind of memory barrier must be done prior to calling&n; * this. Typically, this will be smp_mb__after_clear_bit(), but in some&n; * cases where bitflags are manipulated non-atomically under a lock, one&n; * may need to use a less regular barrier, such fs/inode.c&squot;s smp_mb(),&n; * because spin_unlock() does not guarantee a memory barrier.&n; */
 DECL|function|wake_up_bit
 r_void
 id|fastcall
