@@ -3605,19 +3605,6 @@ comma
 id|shost-&gt;dma_boundary
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set the queue&squot;s mask to require a mere 8-byte alignment for&n;&t; * DMA buffers, rather than the default 512.  This shouldn&squot;t&n;&t; * inconvenience any user programs and should be okay for most&n;&t; * host adapters.  A host driver can alter this mask in its&n;&t; * slave_alloc() or slave_configure() callback if necessary.&n;&t; */
-id|blk_queue_dma_alignment
-c_func
-(paren
-id|q
-comma
-(paren
-l_int|8
-op_minus
-l_int|1
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
