@@ -679,10 +679,6 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* clear INTR &amp; ERROR flags */
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1722,10 +1718,6 @@ id|ch-&gt;dma_base
 suffix:semicolon
 id|u8
 id|dma_stat
-suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
 suffix:semicolon
 id|outb
 c_func

@@ -691,7 +691,7 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* needed below */
-multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ATAPI drive reset&n; * operation. If the drive has not yet responded, and we have not yet hit our&n; * maximum waiting time, then the timer is restarted for another 50ms.&n; */
+multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ATAPI drive reset&n; * operation. If the drive has not yet responded, and we have not yet hit our&n; * maximum waiting time, then the timer is restarted for another 50ms.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|atapi_reset_pollfunc
 r_static
 id|ide_startstop_t
@@ -709,10 +709,6 @@ op_star
 id|__rq
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|ata_channel
 op_star
@@ -724,14 +720,6 @@ r_int
 id|ret
 op_assign
 id|ide_stopped
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|ata_select
 c_func
@@ -838,19 +826,11 @@ op_assign
 id|ide_stopped
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ata reset operation.&n; * If the drives have not yet responded, and we have not yet hit our maximum&n; * waiting time, then the timer is restarted for another 50ms.&n; */
+multiline_comment|/*&n; * Poll the interface for completion every 50ms during an ata reset operation.&n; * If the drives have not yet responded, and we have not yet hit our maximum&n; * waiting time, then the timer is restarted for another 50ms.&n; *&n; * Channel lock should be held.&n; */
 DECL|function|reset_pollfunc
 r_static
 id|ide_startstop_t
@@ -868,10 +848,6 @@ op_star
 id|__rq
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_struct
 id|ata_channel
 op_star
@@ -881,14 +857,6 @@ id|drive-&gt;channel
 suffix:semicolon
 r_int
 id|ret
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1102,14 +1070,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* done polling */
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|ch-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ide_stopped
 suffix:semicolon
@@ -1494,6 +1454,11 @@ id|bits
 r_int
 id|i
 suffix:semicolon
+r_int
+id|first
+op_assign
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1528,14 +1493,32 @@ id|msgs-&gt;mask
 op_eq
 id|msgs-&gt;match
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|first
+)paren
 id|printk
 c_func
 (paren
-l_string|&quot;%s &quot;
+l_string|&quot;,&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s&quot;
 comma
 id|msgs-&gt;msg
 )paren
 suffix:semicolon
+id|first
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -2081,8 +2064,6 @@ id|drive
 comma
 op_amp
 id|args
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|printk
@@ -3901,7 +3882,13 @@ id|drive
 r_if
 c_cond
 (paren
-id|drive-&gt;waiting_for_dma
+id|test_bit
+c_func
+(paren
+id|IDE_DMA
+comma
+id|ch-&gt;active
+)paren
 )paren
 id|udma_irq_lost
 c_func
@@ -3941,7 +3928,13 @@ r_else
 r_if
 c_cond
 (paren
-id|drive-&gt;waiting_for_dma
+id|test_bit
+c_func
+(paren
+id|IDE_DMA
+comma
+id|ch-&gt;active
+)paren
 )paren
 (brace
 r_struct

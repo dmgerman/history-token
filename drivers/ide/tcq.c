@@ -1478,8 +1478,6 @@ id|drive
 comma
 op_amp
 id|args
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1593,8 +1591,6 @@ id|drive
 comma
 op_amp
 id|args
-comma
-l_int|NULL
 )paren
 )paren
 (brace
@@ -1643,8 +1639,6 @@ id|drive
 comma
 op_amp
 id|args
-comma
-l_int|NULL
 )paren
 )paren
 (brace
@@ -1694,8 +1688,6 @@ id|drive
 comma
 op_amp
 id|args
-comma
-l_int|NULL
 )paren
 )paren
 (brace
