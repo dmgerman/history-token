@@ -1859,9 +1859,6 @@ l_string|&quot;pSeries create_tce_tables()&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Cache the location of the ISA bridge (if we have one) */
-r_if
-c_cond
-(paren
 id|ppc64_isabridge_dev
 op_assign
 id|pci_find_class
@@ -1873,6 +1870,13 @@ l_int|8
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ppc64_isabridge_dev
+op_ne
+l_int|NULL
 )paren
 id|printk
 c_func
@@ -1958,6 +1962,7 @@ op_star
 id|bus
 )paren
 (brace
+macro_line|#ifndef CONFIG_PPC_ISERIES
 r_struct
 id|pci_controller
 op_star
@@ -1977,7 +1982,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifndef CONFIG_PPC_ISERIES
 r_if
 c_cond
 (paren
