@@ -3873,38 +3873,15 @@ id|TIF_NEED_RESCHED
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * cond_resched() and cond_resched_lock(): latency reduction via&n; * explicit rescheduling in places that are safe. The return&n; * value indicates whether a reschedule was done in fact.&n; */
 r_extern
-r_void
-id|__cond_resched
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|function|cond_resched
-r_static
-r_inline
-r_void
+r_int
 id|cond_resched
 c_func
 (paren
 r_void
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|need_resched
-c_func
-(paren
-)paren
-)paren
-id|__cond_resched
-c_func
-(paren
-)paren
 suffix:semicolon
-)brace
 r_extern
 r_int
 id|cond_resched_lock
@@ -3915,6 +3892,14 @@ op_star
 id|lock
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Does a critical section need to be broken due to another&n; * task waiting?:&n; */
+macro_line|#if defined(CONFIG_PREEMPT) &amp;&amp; defined(CONFIG_SMP)
+DECL|macro|need_lockbreak
+macro_line|# define need_lockbreak(lock) ((lock)-&gt;break_lock)
+macro_line|#else
+DECL|macro|need_lockbreak
+macro_line|# define need_lockbreak(lock) 0
+macro_line|#endif
 multiline_comment|/* Reevaluate whether the task has signals pending delivery.&n;   This is required every time the blocked sigset_t changes.&n;   callers must hold sighand-&gt;siglock.  */
 r_extern
 id|FASTCALL

@@ -59,7 +59,7 @@ DECL|macro|IRQ_EXIT_OFFSET
 macro_line|# define IRQ_EXIT_OFFSET (HARDIRQ_OFFSET-1)
 macro_line|#else
 DECL|macro|in_atomic
-macro_line|# define in_atomic()&t;(preempt_count() != 0)
+macro_line|# define in_atomic()&t;((preempt_count() &amp; ~PREEMPT_ACTIVE) != 0)
 DECL|macro|preemptible
 macro_line|# define preemptible()&t;0
 DECL|macro|IRQ_EXIT_OFFSET
