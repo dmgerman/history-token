@@ -69,18 +69,6 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|nf_ct_info
-r_struct
-id|nf_ct_info
-(brace
-DECL|member|master
-r_struct
-id|nf_conntrack
-op_star
-id|master
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 DECL|struct|nf_bridge_info
 r_struct
@@ -231,7 +219,7 @@ id|MAX_SKB_FRAGS
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/** &n; *&t;struct sk_buff - socket buffer&n; *&t;@next: Next buffer in list&n; *&t;@prev: Previous buffer in list&n; *&t;@list: List we are on&n; *&t;@sk: Socket we are owned by&n; *&t;@stamp: Time we arrived&n; *&t;@dev: Device we arrived on/are leaving by&n; *&t;@input_dev: Device we arrived on&n; *      @real_dev: The real device we are using&n; *&t;@h: Transport layer header&n; *&t;@nh: Network layer header&n; *&t;@mac: Link layer header&n; *&t;@dst: FIXME: Describe this field&n; *&t;@cb: Control buffer. Free for use by every layer. Put private vars here&n; *&t;@len: Length of actual data&n; *&t;@data_len: Data length&n; *&t;@mac_len: Length of link layer header&n; *&t;@csum: Checksum&n; *&t;@__unused: Dead field, may be reused&n; *&t;@cloned: Head may be cloned (check refcnt to be sure)&n; *&t;@pkt_type: Packet class&n; *&t;@ip_summed: Driver fed us an IP checksum&n; *&t;@priority: Packet queueing priority&n; *&t;@users: User count - see {datagram,tcp}.c&n; *&t;@protocol: Packet protocol from driver&n; *&t;@security: Security level of packet&n; *&t;@truesize: Buffer size &n; *&t;@head: Head of buffer&n; *&t;@data: Data head pointer&n; *&t;@tail: Tail pointer&n; *&t;@end: End pointer&n; *&t;@destructor: Destruct function&n; *&t;@nfmark: Can be used for communication between hooks&n; *&t;@nfcache: Cache info&n; *&t;@nfct: Associated connection, if any&n; *&t;@nf_debug: Netfilter debugging&n; *&t;@nf_bridge: Saved data about a bridged frame - see br_netfilter.c&n; *      @private: Data which is private to the HIPPI implementation&n; *&t;@tc_index: Traffic control index&n; */
+multiline_comment|/** &n; *&t;struct sk_buff - socket buffer&n; *&t;@next: Next buffer in list&n; *&t;@prev: Previous buffer in list&n; *&t;@list: List we are on&n; *&t;@sk: Socket we are owned by&n; *&t;@stamp: Time we arrived&n; *&t;@dev: Device we arrived on/are leaving by&n; *&t;@input_dev: Device we arrived on&n; *      @real_dev: The real device we are using&n; *&t;@h: Transport layer header&n; *&t;@nh: Network layer header&n; *&t;@mac: Link layer header&n; *&t;@dst: FIXME: Describe this field&n; *&t;@cb: Control buffer. Free for use by every layer. Put private vars here&n; *&t;@len: Length of actual data&n; *&t;@data_len: Data length&n; *&t;@mac_len: Length of link layer header&n; *&t;@csum: Checksum&n; *&t;@__unused: Dead field, may be reused&n; *&t;@cloned: Head may be cloned (check refcnt to be sure)&n; *&t;@pkt_type: Packet class&n; *&t;@ip_summed: Driver fed us an IP checksum&n; *&t;@priority: Packet queueing priority&n; *&t;@users: User count - see {datagram,tcp}.c&n; *&t;@protocol: Packet protocol from driver&n; *&t;@security: Security level of packet&n; *&t;@truesize: Buffer size &n; *&t;@head: Head of buffer&n; *&t;@data: Data head pointer&n; *&t;@tail: Tail pointer&n; *&t;@end: End pointer&n; *&t;@destructor: Destruct function&n; *&t;@nfmark: Can be used for communication between hooks&n; *&t;@nfcache: Cache info&n; *&t;@nfct: Associated connection, if any&n; *&t;@nfctinfo: Relationship of this skb to the connection&n; *&t;@nf_debug: Netfilter debugging&n; *&t;@nf_bridge: Saved data about a bridged frame - see br_netfilter.c&n; *      @private: Data which is private to the HIPPI implementation&n; *&t;@tc_index: Traffic control index&n; */
 DECL|struct|sk_buff
 r_struct
 id|sk_buff
@@ -465,9 +453,13 @@ id|nfcache
 suffix:semicolon
 DECL|member|nfct
 r_struct
-id|nf_ct_info
+id|nf_conntrack
 op_star
 id|nfct
+suffix:semicolon
+DECL|member|nfctinfo
+id|__u32
+id|nfctinfo
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETFILTER_DEBUG
 DECL|member|nf_debug
@@ -3696,7 +3688,7 @@ id|nf_conntrack_put
 c_func
 (paren
 r_struct
-id|nf_ct_info
+id|nf_conntrack
 op_star
 id|nfct
 )paren
@@ -3710,15 +3702,15 @@ id|atomic_dec_and_test
 c_func
 (paren
 op_amp
-id|nfct-&gt;master-&gt;use
+id|nfct-&gt;use
 )paren
 )paren
-id|nfct-&gt;master
+id|nfct
 op_member_access_from_pointer
 id|destroy
 c_func
 (paren
-id|nfct-&gt;master
+id|nfct
 )paren
 suffix:semicolon
 )brace
@@ -3730,7 +3722,7 @@ id|nf_conntrack_get
 c_func
 (paren
 r_struct
-id|nf_ct_info
+id|nf_conntrack
 op_star
 id|nfct
 )paren
@@ -3744,7 +3736,7 @@ id|atomic_inc
 c_func
 (paren
 op_amp
-id|nfct-&gt;master-&gt;use
+id|nfct-&gt;use
 )paren
 suffix:semicolon
 )brace

@@ -52,9 +52,9 @@ op_star
 id|new_skb
 comma
 r_struct
-id|nf_ct_info
+id|sk_buff
 op_star
-id|nfct
+id|skb
 )paren
 (brace
 r_void
@@ -68,7 +68,7 @@ id|sk_buff
 op_star
 comma
 r_struct
-id|nf_ct_info
+id|sk_buff
 op_star
 )paren
 suffix:semicolon
@@ -76,7 +76,7 @@ multiline_comment|/* Avoid module unload race with ip_ct_attach being NULLed out
 r_if
 c_cond
 (paren
-id|nfct
+id|skb-&gt;nfct
 op_logical_and
 (paren
 id|attach
@@ -98,7 +98,7 @@ c_func
 (paren
 id|new_skb
 comma
-id|nfct
+id|skb
 )paren
 suffix:semicolon
 )brace
@@ -778,7 +778,7 @@ c_func
 (paren
 id|nskb
 comma
-id|oldskb-&gt;nfct
+id|oldskb
 )paren
 suffix:semicolon
 id|NF_HOOK
@@ -1524,7 +1524,7 @@ c_func
 (paren
 id|nskb
 comma
-id|skb_in-&gt;nfct
+id|skb_in
 )paren
 suffix:semicolon
 id|NF_HOOK

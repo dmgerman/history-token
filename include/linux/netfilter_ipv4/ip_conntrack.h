@@ -377,15 +377,6 @@ id|ip_conntrack_helper
 op_star
 id|helper
 suffix:semicolon
-multiline_comment|/* Our various nf_ct_info structs specify *what* relation this&n;           packet has to the conntrack */
-DECL|member|infos
-r_struct
-id|nf_ct_info
-id|infos
-(braket
-id|IP_CT_NUMBER
-)braket
-suffix:semicolon
 multiline_comment|/* Storage reserved for other modules: */
 DECL|member|proto
 r_union
@@ -474,13 +465,16 @@ id|ignored_conntrack
 )paren
 suffix:semicolon
 multiline_comment|/* Return conntrack_info and tuple hash for given skb. */
-r_extern
+r_static
+r_inline
 r_struct
 id|ip_conntrack
 op_star
+DECL|function|ip_conntrack_get
 id|ip_conntrack_get
 c_func
 (paren
+r_const
 r_struct
 id|sk_buff
 op_star
@@ -491,7 +485,21 @@ id|ip_conntrack_info
 op_star
 id|ctinfo
 )paren
+(brace
+op_star
+id|ctinfo
+op_assign
+id|skb-&gt;nfctinfo
 suffix:semicolon
+r_return
+(paren
+r_struct
+id|ip_conntrack
+op_star
+)paren
+id|skb-&gt;nfct
+suffix:semicolon
+)brace
 multiline_comment|/* decrement reference count on a conntrack */
 r_extern
 r_inline

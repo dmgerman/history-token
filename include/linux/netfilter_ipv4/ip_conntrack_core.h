@@ -173,9 +173,9 @@ id|__ip_conntrack_confirm
 c_func
 (paren
 r_struct
-id|nf_ct_info
+id|sk_buff
 op_star
-id|nfct
+id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Confirm a connection: returns NF_DROP if packet must be dropped. */
@@ -206,14 +206,14 @@ r_struct
 id|ip_conntrack
 op_star
 )paren
-id|skb-&gt;nfct-&gt;master
+id|skb-&gt;nfct
 )paren
 )paren
 r_return
 id|__ip_conntrack_confirm
 c_func
 (paren
-id|skb-&gt;nfct
+id|skb
 )paren
 suffix:semicolon
 r_return
