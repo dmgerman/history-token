@@ -1,4 +1,5 @@
 multiline_comment|/* &n; * dvb_net.c&n; *&n; * Copyright (C) 2001 Convergence integrated media GmbH&n; *                    Ralph Metzler &lt;ralph@convergence.de&gt;&n; * Copyright (C) 2002 Ralph Metzler &lt;rjkm@metzlerbros.de&gt;&n; *&n; * ULE Decapsulation code:&n; * Copyright (C) 2003 gcs - Global Communication &amp; Services GmbH.&n; *                and Institute for Computer Sciences&n; *                    Salzburg University.&n; *                    Hilmar Linder &lt;hlinder@cosy.sbg.ac.at&gt;&n; *                and Wolfram Stering &lt;wstering@cosy.sbg.ac.at&gt;&n; *&n; * ULE Decaps according to draft-fair-ipdvb-ule-01.txt.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
@@ -504,6 +505,12 @@ comma
 id|dev-&gt;hard_header_len
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,6,8)
+id|eth
+op_assign
+id|skb-&gt;mac.ethernet
+suffix:semicolon
+macro_line|#else
 id|eth
 op_assign
 id|eth_hdr
@@ -512,6 +519,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5585,6 +5593,13 @@ id|i
 suffix:semicolon
 )brace
 )brace
+DECL|variable|dvb_net_release
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_net_release
+)paren
+suffix:semicolon
 DECL|function|dvb_net_init
 r_int
 id|dvb_net_init
@@ -5652,4 +5667,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|dvb_net_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_net_init
+)paren
+suffix:semicolon
 eof

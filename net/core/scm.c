@@ -451,9 +451,14 @@ multiline_comment|/* The first check was omitted in &lt;= 2.2.5. The reasoning w
 r_if
 c_cond
 (paren
-id|cmsg-&gt;cmsg_len
-template_param
-id|msg-&gt;msg_controllen
+op_logical_neg
+id|CMSG_OK
+c_func
+(paren
+id|msg
+comma
+id|cmsg
+)paren
 )paren
 r_goto
 id|error

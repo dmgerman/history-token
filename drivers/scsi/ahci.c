@@ -1059,6 +1059,8 @@ op_or
 id|ATA_FLAG_SATA_RESET
 op_or
 id|ATA_FLAG_MMIO
+op_or
+id|ATA_FLAG_PIO_DMA
 comma
 dot
 id|pio_mask

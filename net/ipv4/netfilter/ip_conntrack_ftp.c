@@ -1986,6 +1986,12 @@ op_logical_neg
 id|loose
 )paren
 (brace
+id|ip_conntrack_expect_put
+c_func
+(paren
+id|exp
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|NF_ACCEPT

@@ -3,6 +3,10 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &quot;dvbdev.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
 macro_line|#include &quot;bttv.h&quot;
+macro_line|#include &quot;mt352.h&quot;
+macro_line|#include &quot;sp887x.h&quot;
+macro_line|#include &quot;dst.h&quot;
+macro_line|#include &quot;nxt6000.h&quot;
 DECL|struct|dvb_bt8xx_card
 r_struct
 id|dvb_bt8xx_card
@@ -82,6 +86,12 @@ DECL|member|dvbnet
 r_struct
 id|dvb_net
 id|dvbnet
+suffix:semicolon
+DECL|member|fe
+r_struct
+id|dvb_frontend
+op_star
+id|fe
 suffix:semicolon
 )brace
 suffix:semicolon
