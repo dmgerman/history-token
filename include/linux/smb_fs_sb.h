@@ -122,6 +122,14 @@ r_struct
 id|smb_conn_opt
 id|opt
 suffix:semicolon
+DECL|member|conn_wq
+id|wait_queue_head_t
+id|conn_wq
+suffix:semicolon
+DECL|member|conn_complete
+r_int
+id|conn_complete
+suffix:semicolon
 DECL|member|sem
 r_struct
 id|semaphore
