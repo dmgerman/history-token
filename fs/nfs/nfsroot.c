@@ -1060,6 +1060,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|root_nfs_init
+r_static
 r_int
 id|__init
 id|root_nfs_init
@@ -1110,6 +1111,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Parse NFS server and directory information passed on the kernel&n; *  command line.&n; */
 DECL|function|nfs_root_setup
+r_static
 r_int
 id|__init
 id|nfs_root_setup

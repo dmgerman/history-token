@@ -3121,15 +3121,5 @@ r_struct
 id|rpc_version
 id|nfs_version4
 suffix:semicolon
-r_extern
-r_struct
-id|rpc_program
-id|nfs_program
-suffix:semicolon
-r_extern
-r_struct
-id|rpc_stat
-id|nfs_rpcstat
-suffix:semicolon
 macro_line|#endif
 eof

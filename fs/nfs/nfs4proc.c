@@ -65,6 +65,25 @@ op_star
 id|entry
 )paren
 suffix:semicolon
+r_static
+r_int
+id|nfs4_handle_exception
+c_func
+(paren
+r_struct
+id|nfs_server
+op_star
+id|server
+comma
+r_int
+id|errorcode
+comma
+r_struct
+id|nfs4_exception
+op_star
+id|exception
+)paren
+suffix:semicolon
 r_extern
 id|u32
 op_star
@@ -1682,6 +1701,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Returns an nfs4_state + an extra reference to the inode&n; */
 DECL|function|_nfs4_open_delegated
+r_static
 r_int
 id|_nfs4_open_delegated
 c_func
@@ -2845,6 +2865,7 @@ id|status
 suffix:semicolon
 )brace
 DECL|function|nfs4_do_open
+r_static
 r_struct
 id|nfs4_state
 op_star
@@ -3143,6 +3164,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|nfs4_do_setattr
+r_static
 r_int
 id|nfs4_do_setattr
 c_func
@@ -10396,6 +10418,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|nfs4_wait_clnt_recover
+r_static
 r_int
 id|nfs4_wait_clnt_recover
 c_func

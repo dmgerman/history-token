@@ -150,6 +150,12 @@ id|vfsmount
 op_star
 )paren
 suffix:semicolon
+DECL|variable|nfs_program
+r_static
+r_struct
+id|rpc_program
+id|nfs_program
+suffix:semicolon
 DECL|variable|nfs_sops
 r_static
 r_struct
@@ -201,6 +207,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * RPC cruft for NFS&n; */
 DECL|variable|nfs_rpcstat
+r_static
 r_struct
 id|rpc_stat
 id|nfs_rpcstat
@@ -246,6 +253,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 DECL|variable|nfs_program
+r_static
 r_struct
 id|rpc_program
 id|nfs_program
@@ -3539,6 +3547,7 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait for the inode to get unlocked.&n; * (Used for NFS_INO_LOCKED and NFS_INO_REVALIDATING).&n; */
+r_static
 r_int
 DECL|function|nfs_wait_on_inode
 id|nfs_wait_on_inode
