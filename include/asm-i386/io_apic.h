@@ -39,12 +39,7 @@ comma
 DECL|member|ID
 id|ID
 suffix:colon
-l_int|4
-comma
-DECL|member|__reserved_0
-id|__reserved_0
-suffix:colon
-l_int|4
+l_int|8
 suffix:semicolon
 )brace
 id|__attribute__

@@ -3306,9 +3306,16 @@ id|id
 suffix:semicolon
 id|processor.mpc_apicver
 op_assign
-l_int|0x10
+id|GET_APIC_VERSION
+c_func
+(paren
+id|apic_read
+c_func
+(paren
+id|APIC_LVR
+)paren
+)paren
 suffix:semicolon
-multiline_comment|/* TBD: lapic version */
 id|processor.mpc_cpuflag
 op_assign
 (paren
@@ -3911,9 +3918,9 @@ id|mp_irqs
 id|i
 )braket
 dot
-id|mpc_dstirq
+id|mpc_srcbusirq
 op_eq
-id|intsrc.mpc_dstirq
+id|intsrc.mpc_srcbusirq
 )paren
 )paren
 (brace
@@ -4483,6 +4490,22 @@ id|ioapic
 )braket
 dot
 id|irq_start
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ioapic
+op_logical_and
+(paren
+id|irq
+OL
+l_int|16
+)paren
+)paren
+id|irq
+op_add_assign
+l_int|16
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * Avoid pin reprogramming.  PRTs typically include entries  &n;&t;&t; * with redundant pin-&gt;irq mappings (but unique PCI devices);&n;&t;&t; * we only only program the IOAPIC on the first.&n;&t;&t; */
 id|bit
