@@ -402,6 +402,10 @@ id|q-&gt;backing_dev_info.state
 op_assign
 l_int|0
 suffix:semicolon
+id|q-&gt;backing_dev_info.memory_backed
+op_assign
+l_int|0
+suffix:semicolon
 id|blk_queue_max_sectors
 c_func
 (paren
