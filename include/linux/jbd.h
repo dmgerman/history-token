@@ -2150,7 +2150,7 @@ op_star
 suffix:semicolon
 multiline_comment|/* Debugging code only: */
 DECL|macro|jbd_ENOSYS
-mdefine_line|#define jbd_ENOSYS() &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;printk (KERN_ERR &quot;JBD unimplemented function &quot; __FUNCTION__); &bslash;&n;&t;current-&gt;state = TASK_UNINTERRUPTIBLE;&t;&t;&t;      &bslash;&n;&t;schedule();&t;&t;&t;&t;&t;&t;      &bslash;&n;} while (1)
+mdefine_line|#define jbd_ENOSYS() &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;           &bslash;&n;&t;printk (KERN_ERR &quot;JBD unimplemented function %s&bslash;n&quot;, __FUNCTION__); &bslash;&n;&t;current-&gt;state = TASK_UNINTERRUPTIBLE;&t;&t;&t;           &bslash;&n;&t;schedule();&t;&t;&t;&t;&t;&t;           &bslash;&n;} while (1)
 multiline_comment|/*&n; * is_journal_abort&n; *&n; * Simple test wrapper function to test the JFS_ABORT state flag.  This&n; * bit, when set, indicates that we have had a fatal error somewhere,&n; * either inside the journaling layer or indicated to us by the client&n; * (eg. ext3), and that we and should not commit any further&n; * transactions.  &n; */
 DECL|function|is_journal_aborted
 r_static
