@@ -102,16 +102,6 @@ id|IORESOURCE_AUTO
 r_return
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rule-&gt;size
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* skip disabled resource requests */
 id|start
 op_assign
 op_amp
@@ -144,6 +134,33 @@ id|flags
 suffix:semicolon
 multiline_comment|/* set the initial values */
 op_star
+id|flags
+op_assign
+op_star
+id|flags
+op_or
+id|rule-&gt;flags
+op_or
+id|IORESOURCE_IO
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rule-&gt;size
+)paren
+(brace
+op_star
+id|flags
+op_or_assign
+id|IORESOURCE_DISABLED
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* skip disabled resource requests */
+)brace
+op_star
 id|start
 op_assign
 id|rule-&gt;min
@@ -157,16 +174,6 @@ op_plus
 id|rule-&gt;size
 op_minus
 l_int|1
-suffix:semicolon
-op_star
-id|flags
-op_assign
-op_star
-id|flags
-op_or
-id|rule-&gt;flags
-op_or
-id|IORESOURCE_IO
 suffix:semicolon
 multiline_comment|/* run through until pnp_check_port is happy */
 r_while
@@ -298,16 +305,6 @@ id|IORESOURCE_AUTO
 r_return
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rule-&gt;size
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* skip disabled resource requests */
 id|start
 op_assign
 op_amp
@@ -339,21 +336,6 @@ dot
 id|flags
 suffix:semicolon
 multiline_comment|/* set the initial values */
-op_star
-id|start
-op_assign
-id|rule-&gt;min
-suffix:semicolon
-op_star
-id|end
-op_assign
-op_star
-id|start
-op_plus
-id|rule-&gt;size
-op_minus
-l_int|1
-suffix:semicolon
 op_star
 id|flags
 op_assign
@@ -415,6 +397,38 @@ op_star
 id|flags
 op_or_assign
 id|IORESOURCE_SHADOWABLE
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rule-&gt;size
+)paren
+(brace
+op_star
+id|flags
+op_or_assign
+id|IORESOURCE_DISABLED
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* skip disabled resource requests */
+)brace
+op_star
+id|start
+op_assign
+id|rule-&gt;min
+suffix:semicolon
+op_star
+id|end
+op_assign
+op_star
+id|start
+op_plus
+id|rule-&gt;size
+op_minus
+l_int|1
 suffix:semicolon
 multiline_comment|/* run through until pnp_check_mem is happy */
 r_while
@@ -592,16 +606,6 @@ id|IORESOURCE_AUTO
 r_return
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rule-&gt;map
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* skip disabled resource requests */
 id|start
 op_assign
 op_amp
@@ -643,6 +647,23 @@ id|rule-&gt;flags
 op_or
 id|IORESOURCE_IRQ
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rule-&gt;map
+)paren
+(brace
+op_star
+id|flags
+op_or_assign
+id|IORESOURCE_DISABLED
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* skip disabled resource requests */
+)brace
 r_for
 c_loop
 (paren
@@ -818,16 +839,6 @@ id|IORESOURCE_AUTO
 r_return
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rule-&gt;map
-)paren
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* skip disabled resource requests */
 id|start
 op_assign
 op_amp
@@ -869,6 +880,23 @@ id|rule-&gt;flags
 op_or
 id|IORESOURCE_DMA
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rule-&gt;map
+)paren
+(brace
+op_star
+id|flags
+op_or_assign
+id|IORESOURCE_DISABLED
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* skip disabled resource requests */
+)brace
 r_for
 c_loop
 (paren
