@@ -3206,11 +3206,13 @@ op_star
 id|next_thread
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
 )paren
 (brace
+r_const
 r_struct
 id|pid_link
 op_star
@@ -3220,6 +3222,7 @@ id|p-&gt;pids
 op_plus
 id|PIDTYPE_TGID
 suffix:semicolon
+r_const
 r_struct
 id|list_head
 op_star

@@ -1807,6 +1807,7 @@ r_int
 id|task_prio
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
@@ -1817,6 +1818,7 @@ r_int
 id|task_nice
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
@@ -1827,6 +1829,7 @@ r_int
 id|task_curr
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
@@ -3161,6 +3164,7 @@ c_func
 id|next_thread
 c_func
 (paren
+r_const
 id|task_t
 op_star
 id|p
@@ -3658,6 +3662,7 @@ r_int
 id|task_cpu
 c_func
 (paren
+r_const
 r_struct
 id|task_struct
 op_star
@@ -3699,6 +3704,7 @@ r_int
 id|task_cpu
 c_func
 (paren
+r_const
 r_struct
 id|task_struct
 op_star
