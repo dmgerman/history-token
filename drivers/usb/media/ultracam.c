@@ -258,6 +258,7 @@ l_string|&quot;YUV colorspace regulation: 0-255 (default=128)&quot;
 suffix:semicolon
 multiline_comment|/*&n; * ultracam_ProcessIsocData()&n; *&n; * Generic routine to parse the ring queue data. It employs either&n; * ultracam_find_header() or ultracam_parse_lines() to do most&n; * of work.&n; *&n; * 02-Nov-2000 First (mostly dummy) version.&n; * 06-Nov-2000 Rewrote to dump all data into frame.&n; */
 DECL|function|ultracam_ProcessIsocData
+r_static
 r_void
 id|ultracam_ProcessIsocData
 c_func
@@ -3629,6 +3630,8 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
+id|ix
+comma
 id|i
 comma
 id|nas
@@ -3752,15 +3755,15 @@ multiline_comment|/* Validate all alternate settings */
 r_for
 c_loop
 (paren
-id|i
+id|ix
 op_assign
 l_int|0
 suffix:semicolon
-id|i
+id|ix
 OL
 id|nas
 suffix:semicolon
-id|i
+id|ix
 op_increment
 )paren
 (brace
@@ -3781,8 +3784,12 @@ op_assign
 op_amp
 id|intf-&gt;altsetting
 (braket
-id|i
+id|ix
 )braket
+suffix:semicolon
+id|i
+op_assign
+id|interface-&gt;desc.bAlternateSetting
 suffix:semicolon
 r_if
 c_cond

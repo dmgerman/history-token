@@ -679,15 +679,20 @@ op_star
 id|ed
 suffix:semicolon
 DECL|member|length
-id|__u16
+id|u16
 id|length
 suffix:semicolon
 singleline_comment|// # tds in this request
 DECL|member|td_cnt
-id|__u16
+id|u16
 id|td_cnt
 suffix:semicolon
 singleline_comment|// tds already serviced
+DECL|member|pending
+r_struct
+id|list_head
+id|pending
+suffix:semicolon
 DECL|member|td
 r_struct
 id|td
@@ -787,6 +792,11 @@ id|td_hash
 id|TD_HASH_SIZE
 )braket
 suffix:semicolon
+DECL|member|pending
+r_struct
+id|list_head
+id|pending
+suffix:semicolon
 multiline_comment|/*&n;&t; * driver state&n;&t; */
 DECL|member|load
 r_int
@@ -800,6 +810,22 @@ id|u32
 id|hc_control
 suffix:semicolon
 multiline_comment|/* copy of hc control reg */
+DECL|member|next_statechange
+r_int
+r_int
+id|next_statechange
+suffix:semicolon
+multiline_comment|/* suspend/resume */
+DECL|member|fminterval
+id|u32
+id|fminterval
+suffix:semicolon
+multiline_comment|/* saved register */
+DECL|member|rh_resume
+r_struct
+id|work_struct
+id|rh_resume
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int
@@ -821,6 +847,107 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|hcd_to_ohci
 mdefine_line|#define hcd_to_ohci(hcd_ptr) container_of(hcd_ptr, struct ohci_hcd, hcd)
+multiline_comment|/*-------------------------------------------------------------------------*/
+DECL|function|disable
+r_static
+r_inline
+r_void
+id|disable
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+(brace
+id|ohci-&gt;hcd.state
+op_assign
+id|USB_STATE_HALT
+suffix:semicolon
+)brace
+DECL|macro|MSEC_TO_JIFFIES
+mdefine_line|#define&t;MSEC_TO_JIFFIES(msec) ((HZ * (msec) + 999) / 1000)
+DECL|function|msec_delay
+r_static
+r_inline
+r_void
+id|msec_delay
+c_func
+(paren
+r_int
+id|msec
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|MSEC_TO_JIFFIES
+c_func
+(paren
+id|msec
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|macro|FI
+mdefine_line|#define&t;FI&t;&t;&t;0x2edf&t;&t;/* 12000 bits per frame (-1) */
+DECL|macro|DEFAULT_FMINTERVAL
+mdefine_line|#define&t;DEFAULT_FMINTERVAL &t;((((6 * (FI - 210)) / 7) &lt;&lt; 16) | FI)
+DECL|macro|LSTHRESH
+mdefine_line|#define LSTHRESH&t;&t;0x628&t;&t;/* lowspeed bit threshold */
+DECL|function|periodic_reinit
+r_static
+r_inline
+r_void
+id|periodic_reinit
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+(brace
+id|writel
+(paren
+id|ohci-&gt;fminterval
+comma
+op_amp
+id|ohci-&gt;regs-&gt;fminterval
+)paren
+suffix:semicolon
+id|writel
+(paren
+(paren
+(paren
+l_int|9
+op_star
+id|FI
+)paren
+op_div
+l_int|10
+)paren
+op_amp
+l_int|0x3fff
+comma
+op_amp
+id|ohci-&gt;regs-&gt;periodicstart
+)paren
+suffix:semicolon
+id|writel
+(paren
+id|LSTHRESH
+comma
+op_amp
+id|ohci-&gt;regs-&gt;lsthresh
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifndef DEBUG
 DECL|macro|STUB_DEBUG_FILES

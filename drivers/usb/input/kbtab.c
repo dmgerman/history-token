@@ -392,6 +392,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|variable|kbtab_ids
+r_static
 r_struct
 id|usb_device_id
 id|kbtab_ids

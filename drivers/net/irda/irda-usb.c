@@ -4459,11 +4459,7 @@ suffix:semicolon
 multiline_comment|/* Find our endpoints */
 id|interface
 op_assign
-op_amp
-id|intf-&gt;altsetting
-(braket
-l_int|0
-)braket
+id|intf-&gt;cur_altsetting
 suffix:semicolon
 r_if
 c_cond

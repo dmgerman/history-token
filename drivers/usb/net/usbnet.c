@@ -1700,6 +1700,7 @@ id|buf
 suffix:semicolon
 )brace
 DECL|function|ax8817x_get_wol
+r_static
 r_void
 id|ax8817x_get_wol
 c_func
@@ -1807,6 +1808,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ax8817x_set_wol
+r_static
 r_int
 id|ax8817x_set_wol
 c_func
@@ -1909,6 +1911,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ax8817x_get_eeprom
+r_static
 r_int
 id|ax8817x_get_eeprom
 c_func
@@ -3103,12 +3106,12 @@ id|u8
 op_star
 id|buf
 op_assign
-id|intf-&gt;altsetting-&gt;extra
+id|intf-&gt;cur_altsetting-&gt;extra
 suffix:semicolon
 r_int
 id|len
 op_assign
-id|intf-&gt;altsetting-&gt;extralen
+id|intf-&gt;cur_altsetting-&gt;extralen
 suffix:semicolon
 r_struct
 id|usb_interface_descriptor
@@ -3185,7 +3188,7 @@ multiline_comment|/* this assumes that if there&squot;s a non-RNDIS vendor varia
 id|rndis
 op_assign
 (paren
-id|intf-&gt;altsetting-&gt;desc.bInterfaceProtocol
+id|intf-&gt;cur_altsetting-&gt;desc.bInterfaceProtocol
 op_eq
 l_int|0xff
 )paren
@@ -3439,7 +3442,7 @@ multiline_comment|/* a data interface altsetting does the real i/o */
 id|d
 op_assign
 op_amp
-id|info-&gt;data-&gt;altsetting-&gt;desc
+id|info-&gt;data-&gt;cur_altsetting-&gt;desc
 suffix:semicolon
 r_if
 c_cond
@@ -10842,6 +10845,7 @@ id|ethtool_ops
 id|usbnet_ethtool_ops
 suffix:semicolon
 singleline_comment|// precondition: never called in_interrupt
+r_static
 r_int
 DECL|function|usbnet_probe
 id|usbnet_probe
@@ -11631,6 +11635,27 @@ r_int
 )paren
 op_amp
 id|hawking_uf200_info
+comma
+)brace
+comma
+(brace
+singleline_comment|// Billionton Systems, USB2AR 
+id|USB_DEVICE
+(paren
+l_int|0x08dd
+comma
+l_int|0x90ff
+)paren
+comma
+dot
+id|driver_info
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|ax8817x_info
 comma
 )brace
 comma

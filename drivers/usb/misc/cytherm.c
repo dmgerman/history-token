@@ -99,35 +99,6 @@ op_star
 id|interface
 )paren
 suffix:semicolon
-r_int
-id|vendor_command
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-r_char
-id|request
-comma
-r_int
-r_char
-id|value
-comma
-r_int
-r_char
-id|index
-comma
-r_void
-op_star
-id|buf
-comma
-r_int
-id|size
-)paren
-suffix:semicolon
 multiline_comment|/* usb specific object needed to register this driver with the usb subsystem */
 DECL|variable|cytherm_driver
 r_static
@@ -179,6 +150,7 @@ DECL|macro|WRITE_PORT
 mdefine_line|#define WRITE_PORT 0x05 /* Write to port, value = address, index = data */ 
 multiline_comment|/* Send a vendor command to device */
 DECL|function|vendor_command
+r_static
 r_int
 id|vendor_command
 c_func

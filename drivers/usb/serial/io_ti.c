@@ -919,8 +919,10 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * TIReadDownloadMemory - Read edgeport memory from TI chip&n; * @dev: usb device pointer&n; * @start_address: Device CPU address at which to read&n; * @length: Length of above data&n; * @address_type: Can read both XDATA and I2C&n; * @buffer: pointer to input data buffer&n; */
 DECL|function|TIReadDownloadMemory
+r_static
 r_int
 id|TIReadDownloadMemory
+c_func
 (paren
 r_struct
 id|usb_device
@@ -1099,6 +1101,7 @@ id|status
 suffix:semicolon
 )brace
 DECL|function|TIReadRam
+r_static
 r_int
 id|TIReadRam
 (paren
@@ -2217,6 +2220,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|TIReadRom
+r_static
 r_int
 id|TIReadRom
 (paren
@@ -2284,6 +2288,7 @@ id|status
 suffix:semicolon
 )brace
 DECL|function|TIWriteRom
+r_static
 r_int
 id|TIWriteRom
 (paren
@@ -3779,12 +3784,7 @@ suffix:semicolon
 id|interface
 op_assign
 op_amp
-id|serial-&gt;serial-&gt;dev-&gt;config-&gt;interface
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|altsetting-&gt;desc
+id|serial-&gt;serial-&gt;interface-&gt;cur_altsetting-&gt;desc
 suffix:semicolon
 r_if
 c_cond

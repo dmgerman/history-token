@@ -328,6 +328,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|kobil_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|kobil_device
@@ -636,7 +637,7 @@ l_int|0
 suffix:semicolon
 id|altsetting
 op_assign
-id|interface-&gt;altsetting
+id|interface-&gt;cur_altsetting
 suffix:semicolon
 id|endpoint
 op_assign

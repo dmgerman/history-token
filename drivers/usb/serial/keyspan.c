@@ -49,11 +49,6 @@ DECL|struct|keyspan_serial_private
 r_struct
 id|keyspan_serial_private
 (brace
-multiline_comment|/* number of active ports */
-DECL|member|active_count
-id|atomic_t
-id|active_count
-suffix:semicolon
 DECL|member|device_details
 r_const
 r_struct

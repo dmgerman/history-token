@@ -508,12 +508,13 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|w9968cf_dev_list
+r_static
 r_struct
 id|list_head
 id|w9968cf_dev_list
 suffix:semicolon
 multiline_comment|/* head of V4L registered cameras list */
-DECL|variable|w9968cf_dev_list
+r_static
 id|LIST_HEAD
 c_func
 (paren

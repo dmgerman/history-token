@@ -20,6 +20,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|usbat_read
+r_static
 r_int
 id|usbat_read
 c_func
@@ -76,6 +77,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|usbat_write
+r_static
 r_int
 id|usbat_write
 c_func
@@ -136,6 +138,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|usbat_set_shuttle_features
+r_static
 r_int
 id|usbat_set_shuttle_features
 c_func
@@ -263,6 +266,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|usbat_read_block
+r_static
 r_int
 id|usbat_read_block
 c_func
@@ -443,6 +447,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Block, waiting for an ATA device to become not busy or to report&n; * an error condition.&n; */
 DECL|function|usbat_wait_not_busy
+r_static
 r_int
 id|usbat_wait_not_busy
 c_func
@@ -645,6 +650,7 @@ id|USB_STOR_TRANSPORT_FAILED
 suffix:semicolon
 )brace
 DECL|function|usbat_write_block
+r_static
 r_int
 id|usbat_write_block
 c_func
@@ -834,6 +840,7 @@ id|minutes
 suffix:semicolon
 )brace
 DECL|function|usbat_rw_block_test
+r_static
 r_int
 id|usbat_rw_block_test
 c_func
@@ -1451,6 +1458,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Write data to multiple registers at once. Not meant for large&n; * transfers of data!&n; */
 DECL|function|usbat_multiple_write
+r_static
 r_int
 id|usbat_multiple_write
 c_func
@@ -1694,6 +1702,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|usbat_read_user_io
+r_static
 r_int
 id|usbat_read_user_io
 c_func
@@ -1739,6 +1748,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|usbat_write_user_io
+r_static
 r_int
 id|usbat_write_user_io
 c_func
@@ -1794,6 +1804,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Squeeze a potentially huge (&gt; 65535 byte) read10 command into&n; * a little ( &lt;= 65535 byte) ATAPI pipe&n; */
 DECL|function|usbat_handle_read10
+r_static
 r_int
 id|usbat_handle_read10
 c_func

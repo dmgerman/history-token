@@ -6584,12 +6584,7 @@ suffix:semicolon
 id|interface
 op_assign
 op_amp
-id|intf-&gt;altsetting
-(braket
-l_int|0
-)braket
-dot
-id|desc
+id|intf-&gt;cur_altsetting-&gt;desc
 suffix:semicolon
 multiline_comment|/* Is it an se401? */
 r_if

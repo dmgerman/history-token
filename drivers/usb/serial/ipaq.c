@@ -657,6 +657,7 @@ comma
 suffix:semicolon
 multiline_comment|/* All of the device info needed for the Compaq iPAQ */
 DECL|variable|ipaq_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|ipaq_device

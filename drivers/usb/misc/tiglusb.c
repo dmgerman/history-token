@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/ticable.h&gt;
 macro_line|#include &quot;tiglusb.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
@@ -36,6 +37,13 @@ op_assign
 id|TIMAXTIME
 suffix:semicolon
 multiline_comment|/* timeout in tenth of seconds     */
+DECL|variable|tiglusb_class
+r_static
+r_struct
+id|class_simple
+op_star
+id|tiglusb_class
+suffix:semicolon
 multiline_comment|/*---------- misc functions ------------------------------------------- */
 multiline_comment|/*&n; * Re-initialize device&n; */
 r_static
@@ -1231,6 +1239,10 @@ l_int|1
 suffix:semicolon
 r_int
 id|i
+comma
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 id|ptiglusb_t
 id|s
@@ -1252,10 +1264,16 @@ id|dev-&gt;descriptor.bNumConfigurations
 op_ne
 l_int|1
 )paren
-r_return
+(brace
+id|err
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1271,10 +1289,16 @@ op_ne
 l_int|0x451
 )paren
 )paren
-r_return
+(brace
+id|err
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 singleline_comment|// NOTE:  it&squot;s already in this config, this shouldn&squot;t be needed.
 singleline_comment|// is this working around some hardware bug?
 r_if
@@ -1293,9 +1317,13 @@ id|err
 l_string|&quot;tiglusb_probe: reset_configuration failed&quot;
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|ENODEV
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Find a tiglusb struct&n;&t; */
@@ -1346,10 +1374,16 @@ op_eq
 op_minus
 l_int|1
 )paren
-r_return
+(brace
+id|err
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|s
 op_assign
 op_amp
@@ -1383,6 +1417,30 @@ id|dbg
 l_string|&quot;bound to interface&quot;
 )paren
 suffix:semicolon
+id|class_simple_device_add
+c_func
+(paren
+id|tiglusb_class
+comma
+id|MKDEV
+c_func
+(paren
+id|TIUSB_MAJOR
+comma
+id|TIUSB_MINOR
+op_plus
+id|s-&gt;minor
+)paren
+comma
+l_int|NULL
+comma
+l_string|&quot;usb%d&quot;
+comma
+id|s-&gt;minor
+)paren
+suffix:semicolon
+id|err
+op_assign
 id|devfs_mk_cdev
 c_func
 (paren
@@ -1407,6 +1465,14 @@ comma
 id|s-&gt;minor
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out_class
+suffix:semicolon
 multiline_comment|/* Display firmware version */
 id|info
 (paren
@@ -1428,8 +1494,33 @@ comma
 id|s
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 l_int|0
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+id|out_class
+suffix:colon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|TIUSB_MAJOR
+comma
+id|TIUSB_MINOR
+op_plus
+id|s-&gt;minor
+)paren
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_static
@@ -1553,6 +1644,20 @@ suffix:semicolon
 id|s-&gt;opened
 op_assign
 l_int|0
+suffix:semicolon
+id|class_simple_device_remove
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|TIUSB_MAJOR
+comma
+id|TIUSB_MINOR
+op_plus
+id|s-&gt;minor
+)paren
+)paren
 suffix:semicolon
 id|devfs_remove
 c_func
@@ -1727,6 +1832,10 @@ id|u
 suffix:semicolon
 r_int
 id|result
+comma
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* initialize struct */
 r_for
@@ -1818,9 +1927,13 @@ comma
 id|TIUSB_MAJOR
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/* Use devfs, tree: /dev/ticables/usb/[0..3] */
@@ -1829,6 +1942,38 @@ id|devfs_mk_dir
 l_string|&quot;ticables/usb&quot;
 )paren
 suffix:semicolon
+id|tiglusb_class
+op_assign
+id|class_simple_create
+c_func
+(paren
+id|THIS_MODULE
+comma
+l_string|&quot;tiglusb&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|tiglusb_class
+)paren
+)paren
+(brace
+id|err
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|tiglusb_class
+)paren
+suffix:semicolon
+r_goto
+id|out_chrdev
+suffix:semicolon
+)brace
 multiline_comment|/* register USB module */
 id|result
 op_assign
@@ -1846,16 +1991,13 @@ OL
 l_int|0
 )paren
 (brace
-id|unregister_chrdev
-(paren
-id|TIUSB_MAJOR
-comma
-l_string|&quot;tiglusb&quot;
-)paren
-suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 l_int|1
+suffix:semicolon
+r_goto
+id|out_chrdev
 suffix:semicolon
 )brace
 id|info
@@ -1865,8 +2007,26 @@ l_string|&quot;, version &quot;
 id|DRIVER_VERSION
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 l_int|0
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+id|out_chrdev
+suffix:colon
+id|unregister_chrdev
+(paren
+id|TIUSB_MAJOR
+comma
+l_string|&quot;tiglusb&quot;
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+r_return
+id|err
 suffix:semicolon
 )brace
 r_static
@@ -1882,6 +2042,12 @@ id|usb_deregister
 (paren
 op_amp
 id|tiglusb_driver
+)paren
+suffix:semicolon
+id|class_simple_destroy
+c_func
+(paren
+id|tiglusb_class
 )paren
 suffix:semicolon
 id|devfs_remove

@@ -3202,16 +3202,12 @@ l_int|0
 multiline_comment|/* check out the endpoints of the other interface*/
 id|iface_desc
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
 )braket
 op_member_access_from_pointer
-id|altsetting
-(braket
-l_int|0
-)braket
+id|cur_altsetting
 suffix:semicolon
 r_for
 c_loop
