@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -4212,19 +4213,16 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* wait till this buffer gets grabbed */
-r_while
-c_loop
-(paren
-id|unused-&gt;status
-op_eq
-id|FBUFFER_BUSY
-)paren
-(brace
-id|interruptible_sleep_on
+id|wait_event_interruptible
 c_func
 (paren
-op_amp
 id|ztv-&gt;grabq
+comma
+(paren
+id|unused-&gt;status
+op_ne
+id|FBUFFER_BUSY
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* see if a signal did it */
@@ -4241,7 +4239,6 @@ r_return
 op_minus
 id|EINTR
 suffix:semicolon
-)brace
 id|done
 op_assign
 id|unused
@@ -6343,8 +6340,11 @@ r_case
 id|FBUFFER_BUSY
 suffix:colon
 multiline_comment|/* wait till this buffer gets grabbed */
-r_while
-c_loop
+id|wait_event_interruptible
+c_func
+(paren
+id|ztv-&gt;grabq
+comma
 (paren
 id|ztv-&gt;grabinfo
 (braket
@@ -6352,15 +6352,9 @@ id|i
 )braket
 dot
 id|status
-op_eq
+op_ne
 id|FBUFFER_BUSY
 )paren
-(brace
-id|interruptible_sleep_on
-c_func
-(paren
-op_amp
-id|ztv-&gt;grabq
 )paren
 suffix:semicolon
 multiline_comment|/* see if a signal did it */
@@ -6377,7 +6371,6 @@ r_return
 op_minus
 id|EINTR
 suffix:semicolon
-)brace
 multiline_comment|/* don&squot;t fall through; a DONE buffer is not UNUSED */
 r_break
 suffix:semicolon
@@ -7676,19 +7669,16 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* wait till this buffer gets grabbed */
-r_while
-c_loop
-(paren
-id|unused-&gt;status
-op_eq
-id|FBUFFER_BUSY
-)paren
-(brace
-id|interruptible_sleep_on
+id|wait_event_interruptible
 c_func
 (paren
-op_amp
 id|ztv-&gt;vbiq
+comma
+(paren
+id|unused-&gt;status
+op_ne
+id|FBUFFER_BUSY
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* see if a signal did it */
@@ -7705,7 +7695,6 @@ r_return
 op_minus
 id|EINTR
 suffix:semicolon
-)brace
 id|done
 op_assign
 id|unused
