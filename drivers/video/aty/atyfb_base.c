@@ -11299,10 +11299,6 @@ suffix:semicolon
 multiline_comment|/* Fake! */
 id|default_par-&gt;ati_regbase
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -11318,6 +11314,10 @@ l_int|0xFC00ul
 suffix:semicolon
 id|info-&gt;fix.mmio_start
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|default_par-&gt;ati_regbase
 suffix:semicolon
 multiline_comment|/* Fake! */
