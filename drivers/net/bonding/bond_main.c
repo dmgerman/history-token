@@ -4072,13 +4072,13 @@ r_if
 c_cond
 (paren
 (paren
-id|bond-&gt;params.mode
+id|bond_mode
 op_eq
 id|BOND_MODE_TLB
 )paren
 op_logical_or
 (paren
-id|bond-&gt;params.mode
+id|bond_mode
 op_eq
 id|BOND_MODE_ALB
 )paren
