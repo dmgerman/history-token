@@ -88,14 +88,6 @@ suffix:semicolon
 multiline_comment|/* temp var for idle */
 )brace
 suffix:semicolon
-r_void
-id|set_vtimer
-c_func
-(paren
-id|__u64
-id|expires
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|init_virt_timer
