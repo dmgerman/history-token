@@ -1318,6 +1318,13 @@ c_func
 id|generic_file_llseek
 )paren
 suffix:semicolon
+DECL|variable|remote_llseek
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|remote_llseek
+)paren
+suffix:semicolon
 DECL|variable|no_llseek
 id|EXPORT_SYMBOL
 c_func
