@@ -226,7 +226,7 @@ id|MIN_SAMPLING_RATE
 suffix:semicolon
 )brace
 DECL|macro|define_one_ro
-mdefine_line|#define define_one_ro(_name) &t;&t;&t;&t;&t;&bslash;&n;static struct freq_attr _name = { &t;&t;&t;&t;&bslash;&n;&t;.attr = { .name = __stringify(_name), .mode = 0444 }, &t;&bslash;&n;&t;.show = show_##_name, &t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define define_one_ro(_name) &t;&t;&t;&t;&t;&bslash;&n;static struct freq_attr _name =  &t;&t;&t;&t;&bslash;&n;__ATTR(_name, 0444, show_##_name, NULL)
 DECL|variable|sampling_rate_max
 id|define_one_ro
 c_func
@@ -601,7 +601,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|define_one_rw
-mdefine_line|#define define_one_rw(_name) &t;&t;&t;&t;&t;&bslash;&n;static struct freq_attr _name = { &t;&t;&t;&t;&bslash;&n;&t;.attr = { .name = __stringify(_name), .mode = 0644 }, &t;&bslash;&n;&t;.show = show_##_name, &t;&t;&t;&t;&t;&bslash;&n;&t;.store = store_##_name, &t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define define_one_rw(_name) &bslash;&n;static struct freq_attr _name = &bslash;&n;__ATTR(_name, 0644, show_##_name, store_##_name)
 DECL|variable|sampling_rate
 id|define_one_rw
 c_func
