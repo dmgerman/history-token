@@ -221,7 +221,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ACPI
+macro_line|#if defined(__ia64__) &amp;&amp; defined(CONFIG_ACPI)
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 DECL|struct|i8042_acpi_resources
@@ -983,7 +983,7 @@ c_func
 l_int|12
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI
+macro_line|#if defined(__ia64__) &amp;&amp; defined(CONFIG_ACPI)
 r_if
 c_cond
 (paren
@@ -1032,7 +1032,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_ACPI
+macro_line|#if defined(__ia64__) &amp;&amp; defined(CONFIG_ACPI)
 id|i8042_acpi_exit
 c_func
 (paren
