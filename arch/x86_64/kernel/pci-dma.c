@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|bad_dma_address
 id|dma_addr_t
@@ -45,7 +46,6 @@ op_eq
 id|PCI_DMA_NONE
 )paren
 suffix:semicolon
-multiline_comment|/*&n; &t; *&n; &t; */
 r_for
 c_loop
 (paren
@@ -72,12 +72,13 @@ id|sg
 id|i
 )braket
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
+op_logical_neg
 id|s-&gt;page
 )paren
-(brace
+suffix:semicolon
 id|s-&gt;dma_address
 op_assign
 id|pci_map_page
@@ -94,13 +95,6 @@ comma
 id|direction
 )paren
 suffix:semicolon
-)brace
-r_else
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -112,15 +106,7 @@ op_eq
 id|bad_dma_address
 )paren
 )paren
-r_goto
-id|error
-suffix:semicolon
-)brace
-r_return
-id|nents
-suffix:semicolon
-id|error
-suffix:colon
+(brace
 id|pci_unmap_sg
 c_func
 (paren
@@ -137,6 +123,18 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+)brace
+r_return
+id|nents
+suffix:semicolon
+)brace
+DECL|variable|pci_map_sg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_map_sg
+)paren
+suffix:semicolon
 multiline_comment|/* Unmap a set of streaming mode DMA translations.&n; * Again, cpu read rules concerning calls here are the same as for&n; * pci_unmap_single() above.&n; */
 DECL|function|pci_unmap_sg
 r_void
@@ -219,4 +217,11 @@ id|dir
 suffix:semicolon
 )brace
 )brace
+DECL|variable|pci_unmap_sg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_unmap_sg
+)paren
+suffix:semicolon
 eof

@@ -249,4 +249,13 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* legacy.c */
+r_extern
+r_void
+id|pcibios_fixup_peer_bridges
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 eof

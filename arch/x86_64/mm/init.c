@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/e820.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/proto.h&gt;
 DECL|variable|start_pfn
 DECL|variable|end_pfn
 r_int
@@ -770,7 +771,7 @@ c_cond
 (paren
 id|pfn
 op_ge
-id|end_pfn
+id|end_pfn_map
 )paren
 id|panic
 c_func
@@ -1193,7 +1194,7 @@ op_assign
 id|PAGE_OFFSET
 op_plus
 (paren
-id|end_pfn
+id|end_pfn_map
 op_star
 id|PAGE_SIZE
 )paren

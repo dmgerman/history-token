@@ -90,7 +90,7 @@ mdefine_line|#define GPTE_COHERENT 2
 DECL|macro|GPTE_ENCODE
 mdefine_line|#define GPTE_ENCODE(x,flag) (((x) &amp; 0xfffffff0) | ((x) &gt;&gt; 28) | GPTE_VALID | (flag))
 DECL|macro|GPTE_DECODE
-mdefine_line|#define GPTE_DECODE(x) (((x) &amp; 0xfffff000) | (((x) &amp; 0xff0) &lt;&lt; 28))
+mdefine_line|#define GPTE_DECODE(x) (((x) &amp; 0xfffff000) | (((u64)(x) &amp; 0xff0) &lt;&lt; 28))
 DECL|macro|for_all_nb
 mdefine_line|#define for_all_nb(dev) &bslash;&n;&t;pci_for_each_dev(dev) &bslash;&n;&t;&t;if (dev-&gt;bus-&gt;number == 0 &amp;&amp; PCI_FUNC(dev-&gt;devfn) == 3 &amp;&amp; &bslash;&n;&t;&t;    (PCI_SLOT(dev-&gt;devfn) &gt;= 24) &amp;&amp; (PCI_SLOT(dev-&gt;devfn) &lt;= 31))
 DECL|macro|EMERGENCY_PAGES
@@ -2307,6 +2307,11 @@ c_func
 r_char
 op_star
 id|opt
+comma
+r_char
+op_star
+op_star
+id|end
 )paren
 (brace
 r_int
@@ -2502,9 +2507,16 @@ id|p
 op_eq
 l_int|0
 )paren
+(brace
+op_star
+id|end
+op_assign
+id|p
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -2517,8 +2529,5 @@ l_char|&squot;,&squot;
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|1
-suffix:semicolon
 )brace
 eof

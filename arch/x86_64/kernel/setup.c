@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -757,6 +758,9 @@ c_func
 id|from
 op_plus
 l_int|4
+comma
+op_amp
+id|from
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_GART_IOMMU 
@@ -781,6 +785,9 @@ c_func
 id|from
 op_plus
 l_int|6
+comma
+op_amp
+id|from
 )paren
 suffix:semicolon
 )brace
@@ -831,11 +838,6 @@ op_star
 id|cmdline_p
 op_assign
 id|command_line
-suffix:semicolon
-id|print_user_map
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_DISCONTIGMEM
