@@ -3189,7 +3189,7 @@ id|SCR_DATA_OUT
 comma
 l_int|0
 comma
-multiline_comment|/*&n;&t;**&t;DEL 397 - 53C875 Rev 3 - Part Number 609-0392410 - ITEM 4.&n;&t;**&t;Possible data corruption during Memory Write and Invalidate.&n;&t;**&t;This work-around resets the addressing logic prior to the &n;&t;**&t;start of the first MOVE of a DATA IN phase.&n;&t;**&t;(See README.ncr53c8xx for more information)&n;&t;*/
+multiline_comment|/*&n;&t;**&t;DEL 397 - 53C875 Rev 3 - Part Number 609-0392410 - ITEM 4.&n;&t;**&t;Possible data corruption during Memory Write and Invalidate.&n;&t;**&t;This work-around resets the addressing logic prior to the &n;&t;**&t;start of the first MOVE of a DATA IN phase.&n;&t;**&t;(See Documentation/scsi/ncr53c8xx.txt for more information)&n;&t;*/
 id|SCR_JUMPR
 op_xor
 id|IFFALSE
