@@ -2215,7 +2215,7 @@ id|usb_submit_urb
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 id|PDEBUG
@@ -2910,7 +2910,7 @@ id|usb_submit_urb
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_return
