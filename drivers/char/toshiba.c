@@ -965,6 +965,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Print the information for /proc/toshiba&n; */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|function|tosh_get_info
+r_static
 r_int
 id|tosh_get_info
 c_func
