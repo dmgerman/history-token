@@ -558,9 +558,10 @@ id|wbc
 r_if
 c_cond
 (paren
-id|current_is_pdflush
-c_func
 (paren
+id|wbc-&gt;sync_mode
+op_ne
+id|WB_SYNC_ALL
 )paren
 op_logical_and
 (paren
@@ -583,6 +584,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * It&squot;s a data-integrity sync.  We must wait.&n;&t; */
 r_while
 c_loop
 (paren
