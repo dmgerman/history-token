@@ -1633,7 +1633,7 @@ op_plus
 r_int
 r_int
 )paren
-id|p
+id|p-&gt;thread_info
 suffix:semicolon
 id|fp
 op_assign
