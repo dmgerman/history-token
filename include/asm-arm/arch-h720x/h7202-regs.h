@@ -1,8 +1,16 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-h720x/h7202-regs.h&n; *&n; * Copyright (C) 2000 Jungjun Kim, Hynix Semiconductor Inc.&n; *           (C) 2003 Thomas Gleixner &lt;tglx@linutronix.de&gt;&n; *           (C) 2003 Robert Schwebel &lt;r.schwebel@pengutronix.de&gt;&n; *           (C) 2004 Sascha Hauer    &lt;s.hauer@pengutronix.de&gt;&n; *&n; * This file contains the hardware definitions of the h720x processors&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Do not add implementations specific defines here. This files contains&n; * only defines of the onchip peripherals. Add those defines to boards.h,&n; * which is included by this file.&n; */
+DECL|macro|SERIAL2_OFS
+mdefine_line|#define SERIAL2_OFS&t;&t;0x2d000
+DECL|macro|SERIAL2_BASE
+mdefine_line|#define SERIAL2_BASE&t;&t;(IO_PHYS + SERIAL2_OFS)
 DECL|macro|SERIAL2_VIRT
-mdefine_line|#define SERIAL2_VIRT &t;&t;(IO_VIRT + 0x2d000)
+mdefine_line|#define SERIAL2_VIRT &t;&t;(IO_VIRT + SERIAL2_OFS)
+DECL|macro|SERIAL3_OFS
+mdefine_line|#define SERIAL3_OFS&t;&t;0x2e000
+DECL|macro|SERIAL3_BASE
+mdefine_line|#define SERIAL3_BASE&t;&t;(IO_PHYS + SERIAL3_OFS)
 DECL|macro|SERIAL3_VIRT
-mdefine_line|#define SERIAL3_VIRT &t;&t;(IO_VIRT + 0x2e000)
+mdefine_line|#define SERIAL3_VIRT &t;&t;(IO_VIRT + SERIAL3_OFS)
 multiline_comment|/* Matrix Keyboard Controller */
 DECL|macro|KBD_VIRT
 mdefine_line|#define KBD_VIRT&t;&t;(IO_VIRT + 0x22000)

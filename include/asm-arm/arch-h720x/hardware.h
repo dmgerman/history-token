@@ -42,7 +42,19 @@ mdefine_line|#define GPIO_D_VIRT&t;&t;(GPIO_VIRT(3))
 DECL|macro|GPIO_E_VIRT
 mdefine_line|#define GPIO_E_VIRT&t;&t;(GPIO_VIRT(4))
 DECL|macro|GPIO_AMULSEL
-mdefine_line|#define GPIO_AMULSEL&t;&t;(GPIO_VIRT + 0xA4)
+mdefine_line|#define GPIO_AMULSEL&t;&t;(GPIO_VIRT(0) + 0xA4)
+DECL|macro|AMULSEL_USIN2
+mdefine_line|#define AMULSEL_USIN2&t;(1&lt;&lt;5)
+DECL|macro|AMULSEL_USOUT2
+mdefine_line|#define AMULSEL_USOUT2&t;(1&lt;&lt;6)
+DECL|macro|AMULSEL_USIN3
+mdefine_line|#define AMULSEL_USIN3&t;(1&lt;&lt;13)
+DECL|macro|AMULSEL_USOUT3
+mdefine_line|#define AMULSEL_USOUT3&t;(1&lt;&lt;14)
+DECL|macro|AMULSEL_IRDIN
+mdefine_line|#define AMULSEL_IRDIN&t;(1&lt;&lt;15)
+DECL|macro|AMULSEL_IRDOUT
+mdefine_line|#define AMULSEL_IRDOUT&t;(1&lt;&lt;7)
 multiline_comment|/* Register offsets general purpose I/O */
 DECL|macro|GPIO_DATA
 mdefine_line|#define GPIO_DATA&t;&t;0x00
@@ -224,18 +236,22 @@ multiline_comment|/* Palette */
 DECL|macro|LCD_PALETTE_BASE
 mdefine_line|#define LCD_PALETTE_BASE &t;(IO_VIRT + 0x10400)
 multiline_comment|/* Serial ports */
+DECL|macro|SERIAL0_OFS
+mdefine_line|#define SERIAL0_OFS&t;&t;0x20000
 DECL|macro|SERIAL0_VIRT
-mdefine_line|#define SERIAL0_VIRT &t;&t;(IO_VIRT + 0x20000)
-DECL|macro|SERIAL1_VIRT
-mdefine_line|#define SERIAL1_VIRT &t;&t;(IO_VIRT + 0x21000)
+mdefine_line|#define SERIAL0_VIRT &t;&t;(IO_VIRT + SERIAL0_OFS)
 DECL|macro|SERIAL0_BASE
-mdefine_line|#define SERIAL0_BASE&t;&t;SERIAL0_VIRT
+mdefine_line|#define SERIAL0_BASE&t;&t;(IO_PHYS + SERIAL0_OFS)
+DECL|macro|SERIAL1_OFS
+mdefine_line|#define SERIAL1_OFS&t;&t;0x21000
+DECL|macro|SERIAL1_VIRT
+mdefine_line|#define SERIAL1_VIRT &t;&t;(IO_VIRT + SERIAL1_OFS)
 DECL|macro|SERIAL1_BASE
-mdefine_line|#define SERIAL1_BASE&t;&t;SERIAL1_VIRT
-DECL|macro|SERIAL2_BASE
-mdefine_line|#define SERIAL2_BASE&t;&t;SERIAL2_VIRT
-DECL|macro|SERIAL3_BASE
-mdefine_line|#define SERIAL3_BASE&t;&t;SERIAL3_VIRT
+mdefine_line|#define SERIAL1_BASE&t;&t;(IO_PHYS + SERIAL1_OFS)
+DECL|macro|SERIAL_ENABLE
+mdefine_line|#define SERIAL_ENABLE&t;&t;0x30
+DECL|macro|SERIAL_ENABLE_EN
+mdefine_line|#define SERIAL_ENABLE_EN&t;(1&lt;&lt;0)
 multiline_comment|/* General defines to pacify gcc */
 DECL|macro|PCIO_BASE
 mdefine_line|#define PCIO_BASE &t;&t;(0)&t;/* for inb, outb and friends */
