@@ -5810,8 +5810,12 @@ id|FAILED
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * Blocking Call. It goes to sleep waiting for cmd to get to done q&n;&t; *&n;&t; * XXX(hch): really?  We&squot;re under host_lock here..&n;&t; */
 multiline_comment|/* Waiting for our command in done_queue to be returned to OS.*/
+r_if
+c_cond
+(paren
+id|cmd-&gt;device-&gt;host-&gt;eh_active
+)paren
 r_if
 c_cond
 (paren
@@ -6950,9 +6954,8 @@ id|KERN_WARNING
 l_string|&quot;qla2xxx: Couldn&squot;t allocate host from scsi layer!&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-op_minus
-l_int|1
+r_goto
+id|probe_disable_device
 suffix:semicolon
 )brace
 multiline_comment|/* Clear our data area */
@@ -7845,6 +7848,14 @@ c_func
 id|host
 )paren
 suffix:semicolon
+id|probe_disable_device
+suffix:colon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -8083,6 +8094,12 @@ id|ha
 suffix:semicolon
 multiline_comment|/* release io space registers  */
 id|pci_release_regions
+c_func
+(paren
+id|ha-&gt;pdev
+)paren
+suffix:semicolon
+id|pci_disable_device
 c_func
 (paren
 id|ha-&gt;pdev
@@ -11676,23 +11693,6 @@ id|ha-&gt;dpc_should_die
 )paren
 r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|list_empty
-c_func
-(paren
-op_amp
-id|ha-&gt;done_queue
-)paren
-)paren
-id|qla2x00_done
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
 id|DEBUG3
 c_func
 (paren
@@ -11729,6 +11729,23 @@ suffix:semicolon
 id|ha-&gt;dpc_active
 op_assign
 l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
+id|ha-&gt;done_queue
+)paren
+)paren
+id|qla2x00_done
+c_func
+(paren
+id|ha
+)paren
 suffix:semicolon
 multiline_comment|/* Process commands in retry queue */
 r_if

@@ -4719,8 +4719,6 @@ r_sizeof
 (paren
 id|cp-&gt;sense_buffer
 )paren
-op_minus
-l_int|1
 suffix:semicolon
 id|CMD_ACTUAL_SNSLEN
 c_func
@@ -5020,8 +5018,6 @@ r_sizeof
 (paren
 id|cp-&gt;sense_buffer
 )paren
-op_minus
-l_int|1
 suffix:semicolon
 id|CMD_ACTUAL_SNSLEN
 c_func

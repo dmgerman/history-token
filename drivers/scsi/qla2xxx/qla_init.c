@@ -868,6 +868,19 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|ha-&gt;device_flags
+op_amp
+id|DFLG_NO_CABLE
+)paren
+multiline_comment|/* If no cable, then all is good. */
+id|rval
+op_assign
+id|QLA_SUCCESS
+suffix:semicolon
 )brace
 )brace
 r_while
@@ -4903,16 +4916,6 @@ suffix:semicolon
 id|rval
 op_assign
 id|QLA_SUCCESS
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ha-&gt;flags.init_done
-)paren
-r_return
-(paren
-id|rval
-)paren
 suffix:semicolon
 multiline_comment|/* Determine NVRAM starting address. */
 id|ha-&gt;nvram_base
