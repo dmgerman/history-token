@@ -411,11 +411,6 @@ id|NR_CPUS
 suffix:semicolon
 DECL|macro|NR_LOOPS
 mdefine_line|#define NR_LOOPS 5
-r_extern
-r_int
-r_int
-id|fast_gettimeoffset_quotient
-suffix:semicolon
 multiline_comment|/*&n; * accurate 64-bit/32-bit division, expanded to 32-bit divisions and 64-bit&n; * multiplication. Not terribly optimized but we need it at boot time only&n; * anyway.&n; *&n; * result == a / b&n; *&t;== (a1 + a2*(2^32)) / b&n; *&t;== a1/b + a2*(2^32/b)&n; *&t;== a1/b + a2*((2^32-1)/b) + a2/b + (a2*((2^32-1) % b))/b&n; *&t;&t;    ^---- (this multiplication can overflow)&n; */
 DECL|function|div64
 r_static
@@ -568,23 +563,12 @@ c_func
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* convert from kcyc/sec to cyc/usec */
 id|one_usec
 op_assign
-(paren
-(paren
-l_int|1
-op_lshift
-l_int|30
-)paren
+id|cpu_khz
 op_div
-id|fast_gettimeoffset_quotient
-)paren
-op_star
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
+l_int|1000
 suffix:semicolon
 id|atomic_set
 c_func

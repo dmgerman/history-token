@@ -39,6 +39,7 @@ suffix:semicolon
 multiline_comment|/* lsb 32 bits of Time Stamp Counter */
 multiline_comment|/* Cached *multiplier* to convert TSC counts to microseconds.&n; * (see the equation below).&n; * Equal to 2^32 * (1 / (clocks per usec) ).&n; * Initialized in time_init.&n; */
 DECL|variable|fast_gettimeoffset_quotient
+r_static
 r_int
 r_int
 id|fast_gettimeoffset_quotient
