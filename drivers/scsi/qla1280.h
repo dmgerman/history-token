@@ -206,6 +206,13 @@ id|dma_addr_t
 id|saved_dma_handle
 suffix:semicolon
 multiline_comment|/* for unmap of single transfers */
+multiline_comment|/* NOTE: the sp-&gt;cmd will be NULL when this completion is&n;&t; * called, so you should know the scsi_cmnd when using this */
+DECL|member|wait
+r_struct
+id|completion
+op_star
+id|wait
+suffix:semicolon
 macro_line|#endif
 DECL|typedef|srb_t
 )brace
