@@ -1124,7 +1124,6 @@ macro_line|#endif
 )brace
 DECL|function|zap_low_mappings
 r_void
-id|__init
 id|zap_low_mappings
 (paren
 r_void
