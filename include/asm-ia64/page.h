@@ -173,6 +173,23 @@ DECL|macro|htlbpage_to_page
 macro_line|# define htlbpage_to_page(x)&t;((REGION_NUMBER(x) &lt;&lt; 61)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t; | (REGION_OFFSET(x) &gt;&gt; (HPAGE_SHIFT-PAGE_SHIFT)))
 DECL|macro|HUGETLB_PAGE_ORDER
 macro_line|# define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
+r_extern
+r_int
+id|is_invalid_hugepage_range
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|len
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|is_invalid_hugepage_range
+mdefine_line|#define is_invalid_hugepage_range(addr, len) 0
 macro_line|#endif
 r_static
 id|__inline__
