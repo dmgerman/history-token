@@ -1715,6 +1715,13 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|q-&gt;perturb_timer
+)paren
+suffix:semicolon
 id|q-&gt;perturb_timer.data
 op_assign
 (paren
@@ -1726,13 +1733,6 @@ suffix:semicolon
 id|q-&gt;perturb_timer.function
 op_assign
 id|sfq_perturbation
-suffix:semicolon
-id|init_timer
-c_func
-(paren
-op_amp
-id|q-&gt;perturb_timer
-)paren
 suffix:semicolon
 r_for
 c_loop

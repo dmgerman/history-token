@@ -1169,6 +1169,13 @@ id|ifmcaddr6
 )paren
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|mc-&gt;mca_timer
+)paren
+suffix:semicolon
 id|mc-&gt;mca_timer.function
 op_assign
 id|igmp6_timer_handler
