@@ -1672,16 +1672,6 @@ id|ent
 )paren
 suffix:semicolon
 r_static
-r_void
-id|eepro100_remove_one
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-suffix:semicolon
-r_static
 r_int
 id|do_eeprom_cmd
 c_func

@@ -1189,6 +1189,10 @@ m_exit
 op_assign
 id|us3freq_cpu_exit
 suffix:semicolon
+id|driver-&gt;owner
+op_assign
+id|THIS_MODULE
+comma
 id|strcpy
 c_func
 (paren
