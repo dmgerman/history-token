@@ -570,20 +570,10 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|msecs_to_jiffies
+id|msleep
 c_func
 (paren
 l_int|5
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Go back to normal mode */

@@ -257,11 +257,6 @@ id|arcnet_local
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|arcnet_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_struct
@@ -583,11 +578,6 @@ id|arcnet_local
 op_star
 id|lp
 op_assign
-(paren
-r_struct
-id|arcnet_local
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_struct

@@ -2256,18 +2256,10 @@ id|CSR0
 )paren
 suffix:semicolon
 multiline_comment|/* trigger interrupt */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|50
+l_int|20
 )paren
 suffix:semicolon
 id|dev-&gt;irq
