@@ -2267,7 +2267,7 @@ c_func
 id|hwif
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *&t;This is in the wrong place. The driver may&n;&t;&t; *&t;do set up based on the autotune value and this&n;&t;&t; *&t;will then trash it. Torben please move it and&n;&t;&t; *&t;propogate the fixes into the drivers&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *&t;This is in the wrong place. The driver may&n;&t;&t; *&t;do set up based on the autotune value and this&n;&t;&t; *&t;will then trash it. Torben please move it and&n;&t;&t; *&t;propagate the fixes into the drivers&n;&t;&t; */
 r_if
 c_cond
 (paren

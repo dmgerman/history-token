@@ -422,7 +422,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Add a new event for propogation to the ULP.  */
+multiline_comment|/* Add a new event for propagation to the ULP.  */
 DECL|function|sctp_ulpq_tail_event
 r_int
 id|sctp_ulpq_tail_event
