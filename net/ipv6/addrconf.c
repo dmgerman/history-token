@@ -6575,16 +6575,7 @@ id|IFA_F_TENTATIVE
 id|ipv6_ifa_notify
 c_func
 (paren
-(paren
-id|flags
-op_amp
-id|IFA_F_DEPRECATED
-)paren
-ques
-c_cond
 l_int|0
-suffix:colon
-id|RTM_NEWADDR
 comma
 id|ifp
 )paren
