@@ -1,10 +1,17 @@
-multiline_comment|/*&n; *&n; * Definitions for H3600 Handheld Computer&n; *&n; * Copyright 2000 Compaq Computer Corporation.&n; *&n; * Use consistent with the GNU GPL is permitted,&n; * provided that this copyright notice is&n; * preserved in its entirety in all copies and derived works.&n; *&n; * COMPAQ COMPUTER CORPORATION MAKES NO WARRANTIES, EXPRESSED OR IMPLIED,&n; * AS TO THE USEFULNESS OR CORRECTNESS OF THIS CODE OR ITS&n; * FITNESS FOR ANY PARTICULAR PURPOSE.&n; *&n; * Author: Jamey Hicks.&n; *&n; * History:&n; *&n; * 2001-10-??   Andrew Christian   Added support for iPAQ H3800&n; *&n; */
+multiline_comment|/*&n; *&n; * Definitions for H3600 Handheld Computer&n; *&n; * Copyright 2000 Compaq Computer Corporation.&n; *&n; * Use consistent with the GNU GPL is permitted,&n; * provided that this copyright notice is&n; * preserved in its entirety in all copies and derived works.&n; *&n; * COMPAQ COMPUTER CORPORATION MAKES NO WARRANTIES, EXPRESSED OR IMPLIED,&n; * AS TO THE USEFULNESS OR CORRECTNESS OF THIS CODE OR ITS&n; * FITNESS FOR ANY PARTICULAR PURPOSE.&n; *&n; * Author: Jamey Hicks.&n; *&n; * History:&n; *&n; * 2001-10-??&t;Andrew Christian   Added support for iPAQ H3800&n; *&n; */
 macro_line|#ifndef _INCLUDE_H3600_H_
 DECL|macro|_INCLUDE_H3600_H_
 mdefine_line|#define _INCLUDE_H3600_H_
 multiline_comment|/* generalized support for H3xxx series Compaq Pocket PC&squot;s */
 DECL|macro|machine_is_h3xxx
 mdefine_line|#define machine_is_h3xxx() (machine_is_h3100() || machine_is_h3600() || machine_is_h3800())
+multiline_comment|/* Physical memory regions corresponding to chip selects */
+DECL|macro|H3600_EGPIO_PHYS
+mdefine_line|#define H3600_EGPIO_PHYS     (SA1100_CS5_PHYS + 0x01000000)
+DECL|macro|H3600_BANK_2_PHYS
+mdefine_line|#define H3600_BANK_2_PHYS    SA1100_CS2_PHYS
+DECL|macro|H3600_BANK_4_PHYS
+mdefine_line|#define H3600_BANK_4_PHYS    SA1100_CS4_PHYS
 multiline_comment|/* Virtual memory regions corresponding to chip selects 2 &amp; 4 (used on sleeves) */
 DECL|macro|H3600_EGPIO_VIRT
 mdefine_line|#define H3600_EGPIO_VIRT     0xf0000000
@@ -14,9 +21,7 @@ DECL|macro|H3600_BANK_4_VIRT
 mdefine_line|#define H3600_BANK_4_VIRT    0xf3800000
 multiline_comment|/*&n;   Machine-independent GPIO definitions&n;   --- these are common across all current iPAQ platforms&n;*/
 DECL|macro|GPIO_H3600_NPOWER_BUTTON
-mdefine_line|#define GPIO_H3600_NPOWER_BUTTON&t;GPIO_GPIO (0)   /* Also known as the &quot;off button&quot;  */
-DECL|macro|GPIO_H3600_MICROCONTROLLER
-mdefine_line|#define GPIO_H3600_MICROCONTROLLER&t;GPIO_GPIO (1)   /* From ASIC2 on H3800 */
+mdefine_line|#define GPIO_H3600_NPOWER_BUTTON&t;GPIO_GPIO (0)&t;/* Also known as the &quot;off button&quot;  */
 DECL|macro|GPIO_H3600_PCMCIA_CD1
 mdefine_line|#define GPIO_H3600_PCMCIA_CD1&t;&t;GPIO_GPIO (10)
 DECL|macro|GPIO_H3600_PCMCIA_IRQ1
@@ -43,9 +48,7 @@ mdefine_line|#define GPIO_H3600_COM_CTS&t;&t;GPIO_GPIO (25)
 DECL|macro|GPIO_H3600_COM_RTS
 mdefine_line|#define GPIO_H3600_COM_RTS&t;&t;GPIO_GPIO (26)
 DECL|macro|IRQ_GPIO_H3600_NPOWER_BUTTON
-mdefine_line|#define IRQ_GPIO_H3600_NPOWER_BUTTON    IRQ_GPIO0
-DECL|macro|IRQ_GPIO_H3600_MICROCONTROLLER
-mdefine_line|#define IRQ_GPIO_H3600_MICROCONTROLLER  IRQ_GPIO1
+mdefine_line|#define IRQ_GPIO_H3600_NPOWER_BUTTON&t;IRQ_GPIO0
 DECL|macro|IRQ_GPIO_H3600_PCMCIA_CD1
 mdefine_line|#define IRQ_GPIO_H3600_PCMCIA_CD1&t;IRQ_GPIO10
 DECL|macro|IRQ_GPIO_H3600_PCMCIA_IRQ1
@@ -55,32 +58,18 @@ mdefine_line|#define IRQ_GPIO_H3600_PCMCIA_CD0&t;IRQ_GPIO17
 DECL|macro|IRQ_GPIO_H3600_PCMCIA_IRQ0
 mdefine_line|#define IRQ_GPIO_H3600_PCMCIA_IRQ0&t;IRQ_GPIO21
 DECL|macro|IRQ_GPIO_H3600_COM_DCD
-mdefine_line|#define IRQ_GPIO_H3600_COM_DCD          IRQ_GPIO23
+mdefine_line|#define IRQ_GPIO_H3600_COM_DCD&t;&t;IRQ_GPIO23
 DECL|macro|IRQ_GPIO_H3600_OPT_IRQ
 mdefine_line|#define IRQ_GPIO_H3600_OPT_IRQ&t;&t;IRQ_GPIO24
 DECL|macro|IRQ_GPIO_H3600_COM_CTS
-mdefine_line|#define IRQ_GPIO_H3600_COM_CTS          IRQ_GPIO25
+mdefine_line|#define IRQ_GPIO_H3600_COM_CTS&t;&t;IRQ_GPIO25
 macro_line|#ifndef __ASSEMBLY__
-DECL|enum|ipaq_model
-r_enum
-id|ipaq_model
-(brace
-DECL|enumerator|IPAQ_H3100
-id|IPAQ_H3100
-comma
-DECL|enumerator|IPAQ_H3600
-id|IPAQ_H3600
-comma
-DECL|enumerator|IPAQ_H3800
-id|IPAQ_H3800
-)brace
-suffix:semicolon
 DECL|enum|ipaq_egpio_type
 r_enum
 id|ipaq_egpio_type
 (brace
-DECL|enumerator|IPAQ_EGPIO_LCD_ON
-id|IPAQ_EGPIO_LCD_ON
+DECL|enumerator|IPAQ_EGPIO_LCD_POWER
+id|IPAQ_EGPIO_LCD_POWER
 comma
 multiline_comment|/* Power to the LCD panel */
 DECL|enumerator|IPAQ_EGPIO_CODEC_NRESET
@@ -127,32 +116,21 @@ DECL|enumerator|IPAQ_EGPIO_VPP_ON
 id|IPAQ_EGPIO_VPP_ON
 comma
 multiline_comment|/* Turn on power to flash programming */
+DECL|enumerator|IPAQ_EGPIO_LCD_ENABLE
+id|IPAQ_EGPIO_LCD_ENABLE
+comma
+multiline_comment|/* Enable/disable LCD controller */
 )brace
 suffix:semicolon
 DECL|struct|ipaq_model_ops
 r_struct
 id|ipaq_model_ops
 (brace
-DECL|member|model
-r_enum
-id|ipaq_model
-id|model
-suffix:semicolon
 DECL|member|generic_name
 r_const
 r_char
 op_star
 id|generic_name
-suffix:semicolon
-DECL|member|initialize
-r_void
-(paren
-op_star
-id|initialize
-)paren
-(paren
-r_void
-)paren
 suffix:semicolon
 DECL|member|control
 r_void
@@ -178,6 +156,41 @@ id|read
 r_void
 )paren
 suffix:semicolon
+DECL|member|blank_callback
+r_void
+(paren
+op_star
+id|blank_callback
+)paren
+(paren
+r_int
+id|blank
+)paren
+suffix:semicolon
+DECL|member|pm_callback
+r_int
+(paren
+op_star
+id|pm_callback
+)paren
+(paren
+r_int
+id|req
+)paren
+suffix:semicolon
+multiline_comment|/* Primary model callback */
+DECL|member|pm_callback_aux
+r_int
+(paren
+op_star
+id|pm_callback_aux
+)paren
+(paren
+r_int
+id|req
+)paren
+suffix:semicolon
+multiline_comment|/* Secondary callback (used by HAL modules) */
 )brace
 suffix:semicolon
 r_extern
@@ -185,21 +198,6 @@ r_struct
 id|ipaq_model_ops
 id|ipaq_model_ops
 suffix:semicolon
-DECL|function|h3600_model
-r_static
-id|__inline__
-r_enum
-id|ipaq_model
-id|h3600_model
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|ipaq_model_ops.model
-suffix:semicolon
-)brace
 DECL|function|h3600_generic_name
 r_static
 id|__inline__
@@ -214,29 +212,6 @@ r_void
 (brace
 r_return
 id|ipaq_model_ops.generic_name
-suffix:semicolon
-)brace
-DECL|function|init_h3600_egpio
-r_static
-id|__inline__
-r_void
-id|init_h3600_egpio
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ipaq_model_ops.initialize
-)paren
-id|ipaq_model_ops
-dot
-id|initialize
-c_func
-(paren
-)paren
 suffix:semicolon
 )brace
 DECL|function|assign_h3600_egpio
@@ -348,6 +323,129 @@ dot
 id|read
 c_func
 (paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|h3600_register_blank_callback
+r_static
+id|__inline__
+r_int
+id|h3600_register_blank_callback
+c_func
+(paren
+r_void
+(paren
+op_star
+id|f
+)paren
+(paren
+r_int
+)paren
+)paren
+(brace
+id|ipaq_model_ops.blank_callback
+op_assign
+id|f
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|h3600_unregister_blank_callback
+r_static
+id|__inline__
+r_void
+id|h3600_unregister_blank_callback
+c_func
+(paren
+r_void
+(paren
+op_star
+id|f
+)paren
+(paren
+r_int
+)paren
+)paren
+(brace
+id|ipaq_model_ops.blank_callback
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|h3600_register_pm_callback
+r_static
+id|__inline__
+r_int
+id|h3600_register_pm_callback
+c_func
+(paren
+r_int
+(paren
+op_star
+id|f
+)paren
+(paren
+r_int
+)paren
+)paren
+(brace
+id|ipaq_model_ops.pm_callback_aux
+op_assign
+id|f
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|h3600_unregister_pm_callback
+r_static
+id|__inline__
+r_void
+id|h3600_unregister_pm_callback
+c_func
+(paren
+r_int
+(paren
+op_star
+id|f
+)paren
+(paren
+r_int
+)paren
+)paren
+(brace
+id|ipaq_model_ops.pm_callback_aux
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|h3600_power_management
+r_static
+id|__inline__
+r_int
+id|h3600_power_management
+c_func
+(paren
+r_int
+id|req
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ipaq_model_ops.pm_callback
+)paren
+r_return
+id|ipaq_model_ops
+dot
+id|pm_callback
+c_func
+(paren
+id|req
 )paren
 suffix:semicolon
 r_return
