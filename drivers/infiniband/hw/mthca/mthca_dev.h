@@ -450,6 +450,10 @@ DECL|member|clr_mask
 id|u32
 id|clr_mask
 suffix:semicolon
+DECL|member|arm_mask
+id|u32
+id|arm_mask
+suffix:semicolon
 DECL|member|eq
 r_struct
 id|mthca_eq

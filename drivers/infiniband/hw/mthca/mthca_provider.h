@@ -102,9 +102,9 @@ DECL|member|eqn
 r_int
 id|eqn
 suffix:semicolon
-DECL|member|ecr_mask
+DECL|member|eqn_mask
 id|u32
-id|ecr_mask
+id|eqn_mask
 suffix:semicolon
 DECL|member|cons_index
 id|u32
