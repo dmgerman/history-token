@@ -1020,5 +1020,9 @@ DECL|macro|AGPCTRL_APERENB
 mdefine_line|#define AGPCTRL_APERENB&t;&t;(1&lt;&lt;8)
 DECL|macro|AGPCTRL_GTLBEN
 mdefine_line|#define AGPCTRL_GTLBEN&t;&t;(1&lt;&lt;7)
+DECL|macro|AGP2_RESERVED_MASK
+mdefine_line|#define AGP2_RESERVED_MASK 0x00fffdc8
+DECL|macro|AGP3_RESERVED_MASK
+mdefine_line|#define AGP3_RESERVED_MASK 0x00ff0180
 macro_line|#endif&t;/* _AGP_BACKEND_PRIV_H */
 eof

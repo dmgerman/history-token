@@ -1301,6 +1301,32 @@ op_star
 id|vga_agpstat
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_star
+id|requested_mode
+op_amp
+id|AGP2_RESERVED_MASK
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;reserved bits set in mode 0x%x. Fixed.&bslash;n&quot;
+comma
+op_star
+id|requested_mode
+)paren
+suffix:semicolon
+op_star
+id|requested_mode
+op_and_assign
+op_complement
+id|AGP2_RESERVED_MASK
+suffix:semicolon
+)brace
 multiline_comment|/* disable SBA if it&squot;s not supported */
 r_if
 c_cond
@@ -1525,6 +1551,32 @@ op_assign
 op_star
 id|vga_agpstat
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|requested_mode
+op_amp
+id|AGP3_RESERVED_MASK
+)paren
+(brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;reserved bits set in mode 0x%x. Fixed.&bslash;n&quot;
+comma
+op_star
+id|requested_mode
+)paren
+suffix:semicolon
+op_star
+id|requested_mode
+op_and_assign
+op_complement
+id|AGP3_RESERVED_MASK
+suffix:semicolon
+)brace
 multiline_comment|/* ARQSZ - Set the value to the maximum one.&n;&t; * Don&squot;t allow the mode register to override values. */
 op_star
 id|bridge_agpstat
@@ -1609,7 +1661,7 @@ op_amp
 id|AGPSTAT_MODE_3_0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Caller hasn&squot;t a clue what its doing. We are in 3.0 mode,&n;&t;&t; * have been passed a 3.0 mode, but with 2.x speed bits set.&n;&t;&t; * AGP2.x 4x -&gt; AGP3.0 4x.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Caller hasn&squot;t a clue what its doing. Bridge is in 3.0 mode,&n;&t;&t; * have been passed a 3.0 mode, but with 2.x speed bits set.&n;&t;&t; * AGP2.x 4x -&gt; AGP3.0 4x.&n;&t;&t; */
 r_if
 c_cond
 (paren
