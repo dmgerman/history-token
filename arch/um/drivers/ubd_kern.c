@@ -1616,6 +1616,8 @@ id|disk
 comma
 op_star
 id|fake_disk
+op_assign
+l_int|NULL
 suffix:semicolon
 id|u64
 id|size
@@ -1664,7 +1666,7 @@ suffix:semicolon
 id|disk-&gt;fops
 op_assign
 op_amp
-id|ubd_fops
+id|ubd_blops
 suffix:semicolon
 r_if
 c_cond
@@ -1742,7 +1744,7 @@ suffix:semicolon
 id|fake_disk-&gt;fops
 op_assign
 op_amp
-id|ubd_fops
+id|ubd_blops
 suffix:semicolon
 id|sprintf
 c_func
@@ -1797,6 +1799,11 @@ op_div
 l_int|512
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fake_major
+)paren
 id|set_capacity
 c_func
 (paren
@@ -2396,13 +2403,13 @@ op_amp
 id|ubd_lock
 )paren
 suffix:semicolon
-id|INIT_ELV
+id|elevator_init
 c_func
 (paren
 id|ubd_queue
 comma
 op_amp
-id|ubd_queue-&gt;elevator
+id|elevator_noop
 )paren
 suffix:semicolon
 r_if

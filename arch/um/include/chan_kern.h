@@ -75,7 +75,7 @@ op_star
 id|chans
 comma
 r_struct
-id|tq_struct
+id|work_struct
 op_star
 id|task
 comma

@@ -3,7 +3,7 @@ macro_line|#ifndef __LINE_H__
 DECL|macro|__LINE_H__
 mdefine_line|#define __LINE_H__
 macro_line|#include &quot;linux/list.h&quot;
-macro_line|#include &quot;linux/tqueue.h&quot;
+macro_line|#include &quot;linux/workqueue.h&quot;
 macro_line|#include &quot;linux/tty.h&quot;
 macro_line|#include &quot;asm/semaphore.h&quot;
 macro_line|#include &quot;chan_user.h&quot;
@@ -125,7 +125,7 @@ id|sigio
 suffix:semicolon
 DECL|member|task
 r_struct
-id|tq_struct
+id|work_struct
 id|task
 suffix:semicolon
 DECL|member|driver

@@ -2,9 +2,9 @@ multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/slab.h&quot;
 macro_line|#include &quot;linux/bootmem.h&quot;
+macro_line|#include &quot;asm/pgalloc.h&quot;
 macro_line|#include &quot;asm-generic/tlb.h&quot;
 macro_line|#include &quot;asm/pgtable.h&quot;
-macro_line|#include &quot;asm/pgalloc.h&quot;
 macro_line|#include &quot;asm/a.out.h&quot;
 macro_line|#include &quot;asm/processor.h&quot;
 macro_line|#include &quot;asm/mmu_context.h&quot;

@@ -1102,7 +1102,7 @@ comma
 id|line
 )paren
 suffix:semicolon
-id|INIT_TQUEUE
+id|INIT_WORK
 c_func
 (paren
 op_amp
