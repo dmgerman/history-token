@@ -593,6 +593,11 @@ id|disposition
 op_assign
 id|FILE_OVERWRITE_IF
 suffix:semicolon
+r_int
+id|write_only
+op_assign
+id|FALSE
+suffix:semicolon
 id|xid
 op_assign
 id|GetXid
@@ -686,10 +691,16 @@ id|O_ACCMODE
 op_eq
 id|O_WRONLY
 )paren
+(brace
 id|desiredAccess
 op_assign
 id|GENERIC_WRITE
 suffix:semicolon
+id|write_only
+op_assign
+id|TRUE
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -1132,8 +1143,8 @@ op_amp
 id|pCifsFile-&gt;fh_sem
 )paren
 suffix:semicolon
+multiline_comment|/* put the following in at open now */
 multiline_comment|/* pCifsFile-&gt;pfile = file; */
-multiline_comment|/* put in at open time */
 id|write_lock
 c_func
 (paren
@@ -1165,6 +1176,28 @@ c_cond
 id|pCifsInode
 )paren
 (brace
+multiline_comment|/* if readable file instance put first in list*/
+r_if
+c_cond
+(paren
+id|write_only
+op_eq
+id|TRUE
+)paren
+(brace
+id|list_add_tail
+c_func
+(paren
+op_amp
+id|pCifsFile-&gt;flist
+comma
+op_amp
+id|pCifsInode-&gt;openFileList
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|list_add
 c_func
 (paren
@@ -1175,6 +1208,7 @@ op_amp
 id|pCifsInode-&gt;openFileList
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
