@@ -275,10 +275,14 @@ op_amp
 id|XFS_CORRUPT_INCORE
 )paren
 (brace
-id|cmn_err
+id|xfs_cmn_err
 c_func
 (paren
+id|XFS_PTAG_SHUTDOWN_CORRUPT
+comma
 id|CE_ALERT
+comma
+id|mp
 comma
 l_string|&quot;Corruption of in-memory data detected.  Shutting down filesystem: %s&quot;
 comma
@@ -304,10 +308,14 @@ c_cond
 id|logerror
 )paren
 (brace
-id|cmn_err
+id|xfs_cmn_err
 c_func
 (paren
+id|XFS_PTAG_SHUTDOWN_LOGERROR
+comma
 id|CE_ALERT
+comma
+id|mp
 comma
 l_string|&quot;Log I/O Error Detected.  Shutting down filesystem: %s&quot;
 comma
@@ -327,10 +335,14 @@ id|XFS_SHUTDOWN_REMOTE_REQ
 )paren
 )paren
 (brace
-id|cmn_err
+id|xfs_cmn_err
 c_func
 (paren
+id|XFS_PTAG_SHUTDOWN_IOERROR
+comma
 id|CE_ALERT
+comma
+id|mp
 comma
 l_string|&quot;I/O Error Detected.  Shutting down filesystem: %s&quot;
 comma

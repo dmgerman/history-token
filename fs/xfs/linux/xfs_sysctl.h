@@ -32,6 +32,11 @@ id|ulong
 id|symlink_mode
 suffix:semicolon
 multiline_comment|/* Symlink creat mode affected by umask. */
+DECL|member|panic_mask
+id|ulong
+id|panic_mask
+suffix:semicolon
+multiline_comment|/* bitmask to specify panics on errors.  */
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t
@@ -57,6 +62,11 @@ DECL|enumerator|XFS_SYMLINK_MODE
 id|XFS_SYMLINK_MODE
 op_assign
 l_int|4
+comma
+DECL|enumerator|XFS_PANIC_MASK
+id|XFS_PANIC_MASK
+op_assign
+l_int|5
 comma
 )brace
 suffix:semicolon

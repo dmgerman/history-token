@@ -962,6 +962,12 @@ dot
 id|va_list
 id|ap
 suffix:semicolon
+macro_line|#ifdef DEBUG
+id|xfs_panic_mask
+op_or_assign
+id|XFS_PTAG_SHUTDOWN_CORRUPT
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -994,7 +1000,7 @@ c_func
 (paren
 id|CE_ALERT
 comma
-l_string|&quot;Transforming an alert into a panic.&quot;
+l_string|&quot;XFS: Transforming an alert into a BUG.&quot;
 )paren
 suffix:semicolon
 )brace
