@@ -2680,6 +2680,22 @@ r_int
 id|how
 )paren
 suffix:semicolon
+DECL|member|file_open
+r_int
+(paren
+op_star
+id|file_open
+)paren
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|file
+op_star
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * &t;NFS_CALL(getattr, inode, (fattr));&n; * into&n; *&t;NFS_PROTO(inode)-&gt;getattr(fattr);&n; */
