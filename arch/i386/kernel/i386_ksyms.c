@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/apm_bios.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
@@ -757,4 +758,41 @@ c_func
 id|__PAGE_KERNEL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HIGHMEM
+DECL|variable|kmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap
+)paren
+suffix:semicolon
+DECL|variable|kunmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kunmap
+)paren
+suffix:semicolon
+DECL|variable|kmap_atomic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_atomic
+)paren
+suffix:semicolon
+DECL|variable|kunmap_atomic
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kunmap_atomic
+)paren
+suffix:semicolon
+DECL|variable|kmap_atomic_to_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_atomic_to_page
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
