@@ -1736,6 +1736,16 @@ op_star
 id|ra
 )paren
 suffix:semicolon
+r_int
+r_int
+id|max_sane_readahead
+c_func
+(paren
+r_int
+r_int
+id|nr
+)paren
+suffix:semicolon
 multiline_comment|/* Do stack extension */
 r_extern
 r_int
