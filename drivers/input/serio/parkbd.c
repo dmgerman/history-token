@@ -499,15 +499,7 @@ id|parkbd_mode
 op_plus
 l_int|10
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|parkbd_port.dev
-)paren
-id|parkbd_port.dev
-op_member_access_from_pointer
-id|interrupt
+id|serio_interrupt
 c_func
 (paren
 op_amp
@@ -528,7 +520,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 )brace
 id|parkbd_last
 op_assign
