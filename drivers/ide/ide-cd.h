@@ -151,20 +151,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Drive can write DVD-RAM */
-DECL|member|mrw
-id|__u8
-id|mrw
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* drive can read mrw */
-DECL|member|mrw_w
-id|__u8
-id|mrw_w
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* drive can write mrw */
 DECL|member|ram
 id|__u8
 id|ram
