@@ -1334,11 +1334,6 @@ op_amp
 id|command_line
 )paren
 suffix:semicolon
-id|setup_per_zone_pages_min
-c_func
-(paren
-)paren
-suffix:semicolon
 id|setup_per_cpu_areas
 c_func
 (paren

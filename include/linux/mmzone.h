@@ -551,14 +551,6 @@ r_int
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|setup_per_zone_pages_min
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 DECL|macro|MAX_NR_MEMBLKS
 mdefine_line|#define MAX_NR_MEMBLKS&t;BITS_PER_LONG /* Max number of Memory Blocks */
