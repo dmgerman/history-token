@@ -202,12 +202,6 @@ r_struct
 id|tty_driver
 id|hp_simserial_driver
 suffix:semicolon
-DECL|variable|callout_driver
-r_static
-r_struct
-id|tty_driver
-id|callout_driver
-suffix:semicolon
 DECL|variable|serial_refcount
 r_static
 r_int
@@ -2500,8 +2494,6 @@ op_complement
 (paren
 id|ASYNC_NORMAL_ACTIVE
 op_or
-id|ASYNC_CALLOUT_ACTIVE
-op_or
 id|ASYNC_CLOSING
 )paren
 suffix:semicolon
@@ -2608,11 +2600,7 @@ suffix:semicolon
 id|info-&gt;flags
 op_and_assign
 op_complement
-(paren
 id|ASYNC_NORMAL_ACTIVE
-op_or
-id|ASYNC_CALLOUT_ACTIVE
-)paren
 suffix:semicolon
 id|info-&gt;tty
 op_assign
@@ -3494,23 +3482,10 @@ id|ASYNC_SPLIT_TERMIOS
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|tty-&gt;driver-&gt;subtype
-op_eq
-id|SERIAL_TYPE_NORMAL
-)paren
 op_star
 id|tty-&gt;termios
 op_assign
 id|info-&gt;state-&gt;normal_termios
-suffix:semicolon
-r_else
-op_star
-id|tty-&gt;termios
-op_assign
-id|info-&gt;state-&gt;callout_termios
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * figure out which console to use (should be one already)&n;&t; */
@@ -3542,14 +3517,6 @@ op_assign
 id|console-&gt;next
 suffix:semicolon
 )brace
-id|info-&gt;session
-op_assign
-id|current-&gt;session
-suffix:semicolon
-id|info-&gt;pgrp
-op_assign
-id|current-&gt;pgrp
-suffix:semicolon
 macro_line|#ifdef SIMSERIAL_DEBUG
 id|printk
 c_func
@@ -4078,31 +4045,6 @@ id|name
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The callout device is just like normal device except for&n;&t; * major number and the subtype code.&n;&t; */
-id|callout_driver
-op_assign
-id|hp_simserial_driver
-suffix:semicolon
-id|callout_driver.name
-op_assign
-l_string|&quot;cua&quot;
-suffix:semicolon
-id|callout_driver.major
-op_assign
-id|TTYAUX_MAJOR
-suffix:semicolon
-id|callout_driver.subtype
-op_assign
-id|SERIAL_TYPE_CALLOUT
-suffix:semicolon
-id|callout_driver.read_proc
-op_assign
-l_int|0
-suffix:semicolon
-id|callout_driver.proc_entry
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4117,22 +4059,6 @@ id|panic
 c_func
 (paren
 l_string|&quot;Couldn&squot;t register simserial driver&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tty_register_driver
-c_func
-(paren
-op_amp
-id|callout_driver
-)paren
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Couldn&squot;t register callout driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -350,21 +350,6 @@ c_func
 id|scsi_reset_provider
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * These are here only while I debug the rest of the scsi stuff.&n; */
-DECL|variable|scsi_host_hn_get
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_host_hn_get
-)paren
-suffix:semicolon
-DECL|variable|scsi_host_put
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_host_put
-)paren
-suffix:semicolon
 DECL|variable|scsi_device_types
 id|EXPORT_SYMBOL
 c_func

@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/raid/multipath.h&gt;
-macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|MAJOR_NR
@@ -152,7 +151,7 @@ id|i
 comma
 id|disks
 op_assign
-id|mddev-&gt;max_disks
+id|conf-&gt;raid_disks
 suffix:semicolon
 multiline_comment|/*&n;&t; * Later we do read balancing on the read side &n;&t; * now we use the first available disk.&n;&t; */
 id|spin_lock_irq
@@ -459,6 +458,12 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * oops, IO error:&n;&t;&t; */
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|md_error
 (paren
 id|mp_bh-&gt;mddev
@@ -472,10 +477,12 @@ c_func
 id|KERN_ERR
 l_string|&quot;multipath: %s: rescheduling sector %llu&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -527,7 +534,7 @@ l_int|0
 suffix:semicolon
 id|disk
 OL
-id|conf-&gt;mddev-&gt;max_disks
+id|conf-&gt;raid_disks
 suffix:semicolon
 id|disk
 op_increment
@@ -827,6 +834,12 @@ op_logical_neg
 id|rdev-&gt;faulty
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|rdev-&gt;in_sync
 op_assign
 l_int|0
@@ -850,9 +863,11 @@ l_string|&quot;multipath: IO failure on %s,&quot;
 l_string|&quot; disabling IO path. &bslash;n&t;Operation continuing&quot;
 l_string|&quot; on %d IO paths.&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 (paren
 id|rdev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|conf-&gt;working_disks
@@ -920,12 +935,18 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|conf-&gt;mddev-&gt;max_disks
+id|conf-&gt;raid_disks
 suffix:semicolon
 id|i
 op_increment
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|tmp
 op_assign
 id|conf-&gt;multipaths
@@ -947,10 +968,12 @@ comma
 op_logical_neg
 id|tmp-&gt;rdev-&gt;faulty
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|tmp-&gt;rdev-&gt;bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon
@@ -1239,6 +1262,12 @@ suffix:semicolon
 suffix:semicolon
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1311,10 +1340,12 @@ id|KERN_ALERT
 l_string|&quot;multipath: %s: unrecoverable IO read&quot;
 l_string|&quot; error for block %llu&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -1343,10 +1374,12 @@ id|KERN_ERR
 l_string|&quot;multipath: %s: redirecting sector %llu&quot;
 l_string|&quot; to another IO path&bslash;n&quot;
 comma
-id|bdev_partition_name
+id|bdevname
 c_func
 (paren
 id|bio-&gt;bi_bdev
+comma
+id|b
 )paren
 comma
 (paren
@@ -1494,6 +1527,46 @@ id|conf
 )paren
 )paren
 suffix:semicolon
+id|conf-&gt;multipaths
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|multipath_info
+)paren
+op_star
+id|mddev-&gt;raid_disks
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|conf-&gt;multipaths
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;multipath: couldn&squot;t allocate memory for md%d&bslash;n&quot;
+comma
+id|mdidx
+c_func
+(paren
+id|mddev
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|out_free_conf
+suffix:semicolon
+)brace
 id|conf-&gt;working_disks
 op_assign
 l_int|0
@@ -1714,6 +1787,17 @@ c_func
 id|conf-&gt;pool
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|conf-&gt;multipaths
+)paren
+id|kfree
+c_func
+(paren
+id|conf-&gt;multipaths
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1763,6 +1847,12 @@ id|mempool_destroy
 c_func
 (paren
 id|conf-&gt;pool
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|conf-&gt;multipaths
 )paren
 suffix:semicolon
 id|kfree

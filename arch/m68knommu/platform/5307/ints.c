@@ -418,7 +418,6 @@ id|EBUSY
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_COLDFIRE
 r_if
 c_cond
 (paren
@@ -463,7 +462,6 @@ id|fasthandler
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|irq_list
 (braket
 id|irq
@@ -568,7 +566,6 @@ dot
 id|devname
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_COLDFIRE
 r_if
 c_cond
 (paren
@@ -618,7 +615,6 @@ id|inthandler
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren

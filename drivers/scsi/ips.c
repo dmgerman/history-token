@@ -2264,6 +2264,10 @@ r_int
 id|ips_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+comma
 r_char
 op_star
 comma
@@ -2272,8 +2276,6 @@ op_star
 op_star
 comma
 id|off_t
-comma
-r_int
 comma
 r_int
 comma
@@ -5994,6 +5996,11 @@ DECL|function|ips_proc_info
 id|ips_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_char
 op_star
 id|buffer
@@ -6008,9 +6015,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|func
@@ -6068,10 +6072,8 @@ id|ips_sh
 (braket
 id|i
 )braket
-op_member_access_from_pointer
-id|host_no
 op_eq
-id|hostno
+id|host
 )paren
 (brace
 id|ha

@@ -318,6 +318,11 @@ id|first_sectors
 )paren
 suffix:semicolon
 r_extern
+id|mempool_t
+op_star
+id|bio_split_pool
+suffix:semicolon
+r_extern
 r_void
 id|bio_pair_release
 c_func

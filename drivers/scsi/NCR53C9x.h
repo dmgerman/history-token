@@ -1692,6 +1692,11 @@ r_int
 id|esp_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+comma
 r_char
 op_star
 id|buffer
@@ -1706,9 +1711,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout

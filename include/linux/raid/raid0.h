@@ -29,28 +29,10 @@ multiline_comment|/* # of devices attached to the zone */
 DECL|member|dev
 id|mdk_rdev_t
 op_star
+op_star
 id|dev
-(braket
-id|MD_SB_DISKS
-)braket
 suffix:semicolon
 multiline_comment|/* Devices attached to the zone */
-)brace
-suffix:semicolon
-DECL|struct|raid0_hash
-r_struct
-id|raid0_hash
-(brace
-DECL|member|zone0
-DECL|member|zone1
-r_struct
-id|strip_zone
-op_star
-id|zone0
-comma
-op_star
-id|zone1
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|raid0_private_data
@@ -59,32 +41,38 @@ id|raid0_private_data
 (brace
 DECL|member|hash_table
 r_struct
-id|raid0_hash
+id|strip_zone
+op_star
 op_star
 id|hash_table
 suffix:semicolon
-multiline_comment|/* Dynamically allocated */
+multiline_comment|/* Table of indexes into strip_zone */
 DECL|member|strip_zone
 r_struct
 id|strip_zone
 op_star
 id|strip_zone
 suffix:semicolon
-multiline_comment|/* This one too */
+DECL|member|devlist
+id|mdk_rdev_t
+op_star
+op_star
+id|devlist
+suffix:semicolon
+multiline_comment|/* lists of rdevs, pointed to by strip_zone-&gt;dev */
 DECL|member|nr_strip_zones
 r_int
 id|nr_strip_zones
 suffix:semicolon
-DECL|member|smallest
-r_struct
-id|strip_zone
-op_star
-id|smallest
+DECL|member|hash_spacing
+id|sector_t
+id|hash_spacing
 suffix:semicolon
-DECL|member|nr_zones
+DECL|member|preshift
 r_int
-id|nr_zones
+id|preshift
 suffix:semicolon
+multiline_comment|/* shift this before divide by hash_spacing */
 )brace
 suffix:semicolon
 DECL|typedef|raid0_conf_t

@@ -8427,6 +8427,11 @@ DECL|function|advansys_proc_info
 id|advansys_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|shost
+comma
 r_char
 op_star
 id|buffer
@@ -8441,9 +8446,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout
@@ -8538,7 +8540,7 @@ id|i
 op_member_access_from_pointer
 id|host_no
 op_eq
-id|hostno
+id|shost-&gt;host_no
 )paren
 (brace
 r_break
@@ -10331,7 +10333,7 @@ op_amp
 id|pci_devp-&gt;dev
 )paren
 suffix:semicolon
-multiline_comment|/* Save a pointer to the Scsi_host of each board found. */
+multiline_comment|/* Save a pointer to the Scsi_Host of each board found. */
 id|asc_host
 (braket
 id|asc_board_count

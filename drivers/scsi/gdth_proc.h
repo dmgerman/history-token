@@ -15,9 +15,6 @@ r_int
 id|length
 comma
 r_int
-id|vh
-comma
-r_int
 id|hanum
 comma
 r_int
@@ -43,9 +40,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|vh
 comma
 r_int
 id|hanum

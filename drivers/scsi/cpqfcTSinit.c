@@ -3093,6 +3093,11 @@ DECL|function|cpqfcTS_proc_info
 r_int
 id|cpqfcTS_proc_info
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_char
 op_star
 id|buffer
@@ -3109,17 +3114,9 @@ r_int
 id|length
 comma
 r_int
-id|hostno
-comma
-r_int
 id|inout
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
 id|Scsi_Cmnd
 id|DumCmnd
 suffix:semicolon
@@ -3149,25 +3146,6 @@ id|buf
 (braket
 l_int|81
 )braket
-suffix:semicolon
-singleline_comment|// Search the Scsi host list for our controller
-id|host
-op_assign
-id|scsi_host_hn_get
-c_func
-(paren
-id|hostno
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|host
-)paren
-r_return
-op_minus
-id|ESRCH
 suffix:semicolon
 r_if
 c_cond
@@ -3358,7 +3336,7 @@ id|info
 comma
 l_string|&quot;Host: scsi%d Channel: %02d TargetId: %02d -&gt; WWN: &quot;
 comma
-id|hostno
+id|host-&gt;host_no
 comma
 id|Chan
 comma

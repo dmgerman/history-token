@@ -19,11 +19,6 @@ macro_line|#endif
 multiline_comment|/* Some magic is always good - Who knows :) */
 DECL|macro|A2232_MAGIC
 mdefine_line|#define A2232_MAGIC 0x000a2232
-multiline_comment|/* for the tty_struct subtype field */
-DECL|macro|A2232_TTY_SUBTYPE_NORMAL
-mdefine_line|#define A2232_TTY_SUBTYPE_NORMAL&t;1
-DECL|macro|A2232_TTY_SUBTYPE_CALLOUT
-mdefine_line|#define A2232_TTY_SUBTYPE_CALLOUT&t;2
 multiline_comment|/* A2232 port structure to keep track of the&n;   status of every single line used */
 DECL|struct|a2232_port
 r_struct

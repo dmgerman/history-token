@@ -1535,7 +1535,7 @@ suffix:colon
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function:    scsi_io_completion()&n; *&n; * Purpose:     Completion processing for block device I/O requests.&n; *&n; * Arguments:   cmd   - command that is finished.&n; *&n; * Lock status: Assumed that no lock is held upon entry.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This function is matched in terms of capabilities to&n; *              the function that created the scatter-gather list.&n; *              In other words, if there are no bounce buffers&n; *              (the normal case for most drivers), we don&squot;t need&n; *              the logic to deal with cleaning up afterwards.&n; *&n; *&t;&t;We must do one of several things here:&n; *&n; *&t;&t;a) Call scsi_end_request.  This will finish off the&n; *&t;&t;   specified number of sectors.  If we are done, the&n; *&t;&t;   command block will be released, and the queue&n; *&t;&t;   function will be goosed.  If we are not done, then&n; *&t;&t;   scsi_end_request will directly goose the queue.&n; *&n; *&t;&t;b) We can just use scsi_requeue_command() here.  This would&n; *&t;&t;   be used if we just wanted to retry, for example.&n; *&n; */
+multiline_comment|/*&n; * Function:    scsi_io_completion()&n; *&n; * Purpose:     Completion processing for block device I/O requests.&n; *&n; * Arguments:   cmd   - command that is finished.&n; *&n; * Lock status: Assumed that no lock is held upon entry.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This function is matched in terms of capabilities to&n; *              the function that created the scatter-gather list.&n; *              In other words, if there are no bounce buffers&n; *              (the normal case for most drivers), we don&squot;t need&n; *              the logic to deal with cleaning up afterwards.&n; *&n; *&t;&t;We must do one of several things here:&n; *&n; *&t;&t;a) Call scsi_end_request.  This will finish off the&n; *&t;&t;   specified number of sectors.  If we are done, the&n; *&t;&t;   command block will be released, and the queue&n; *&t;&t;   function will be goosed.  If we are not done, then&n; *&t;&t;   scsi_end_request will directly goose the queue.&n; *&n; *&t;&t;b) We can just use scsi_requeue_command() here.  This would&n; *&t;&t;   be used if we just wanted to retry, for example.&n; */
 DECL|function|scsi_io_completion
 r_void
 id|scsi_io_completion
@@ -2005,7 +2005,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* If we had an ILLEGAL REQUEST returned, then we may have&n;&t;&t; * performed an unsupported command.  The only thing this should be&n;&t;&t; * would be a ten byte read where only a six byte read was supported.&n;&t;&t; * Also, on a system where READ CAPACITY failed, we have have read&n;&t;&t; * past the end of the disk.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If we had an ILLEGAL REQUEST returned, then we may have&n;&t;&t; * performed an unsupported command.  The only thing this&n;&t;&t; * should be would be a ten byte read where only a six byte&n;&t;&t; * read was supported.  Also, on a system where READ CAPACITY&n;&t;&t; * failed, we may have read past the end of the disk.&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -2021,10 +2021,26 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|cmd-&gt;device-&gt;ten
+id|cmd-&gt;device-&gt;use_10_for_rw
+op_logical_and
+(paren
+id|cmd-&gt;cmnd
+(braket
+l_int|0
+)braket
+op_eq
+id|READ_10
+op_logical_or
+id|cmd-&gt;cmnd
+(braket
+l_int|0
+)braket
+op_eq
+id|WRITE_10
+)paren
 )paren
 (brace
-id|cmd-&gt;device-&gt;ten
+id|cmd-&gt;device-&gt;use_10_for_rw
 op_assign
 l_int|0
 suffix:semicolon

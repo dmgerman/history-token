@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#160 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
+multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.c#169 $&n; *&n; * --------------------------------------------------------------------------&n; * Copyright (c) 1994-2000 Justin T. Gibbs.&n; * Copyright (c) 1997-1999 Doug Ledford&n; * Copyright (c) 2000-2003 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; */
 macro_line|#include &quot;aic79xx_osm.h&quot;
 macro_line|#include &quot;aic79xx_inline.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
@@ -11,14 +11,6 @@ macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 macro_line|#include &quot;sd.h&quot;&t;&t;&t;/* For geometry detection */
 macro_line|#endif
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* For fetching system memory size */
-DECL|macro|__KERNEL_SYSCALLS__
-mdefine_line|#define __KERNEL_SYSCALLS__
-macro_line|#include &lt;linux/unistd.h&gt;
-DECL|variable|errno
-r_static
-r_int
-id|errno
-suffix:semicolon
 multiline_comment|/*&n; * Lock protecting manipulation of the ahd softc list.&n; */
 DECL|variable|ahd_list_spinlock
 id|spinlock_t
@@ -2169,109 +2161,6 @@ id|AHD_39BIT_ADDRESSING
 op_ne
 l_int|0
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * Due to DAC restrictions, we can&squot;t&n;&t;&t; * cross a 4GB boundary.&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|addr
-op_xor
-(paren
-id|addr
-op_plus
-id|len
-op_minus
-l_int|1
-)paren
-)paren
-op_amp
-op_complement
-l_int|0xFFFFFFFF
-)paren
-(brace
-r_struct
-id|ahd_dma_seg
-op_star
-id|next_sg
-suffix:semicolon
-r_uint32
-id|next_len
-suffix:semicolon
-id|printf
-c_func
-(paren
-l_string|&quot;Crossed Seg&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|scb-&gt;sg_count
-op_plus
-l_int|2
-)paren
-OG
-id|AHD_NSEG
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Too few segs for dma mapping.  &quot;
-l_string|&quot;Increase AHD_NSEG&bslash;n&quot;
-)paren
-suffix:semicolon
-id|consumed
-op_increment
-suffix:semicolon
-id|next_sg
-op_assign
-id|sg
-op_plus
-l_int|1
-suffix:semicolon
-id|next_sg-&gt;addr
-op_assign
-l_int|0
-suffix:semicolon
-id|next_len
-op_assign
-l_int|0x100000000
-op_minus
-(paren
-id|addr
-op_amp
-l_int|0xFFFFFFFF
-)paren
-suffix:semicolon
-id|len
-op_sub_assign
-id|next_len
-suffix:semicolon
-id|next_len
-op_or_assign
-(paren
-(paren
-id|addr
-op_rshift
-l_int|8
-)paren
-op_plus
-l_int|0x1000000
-)paren
-op_amp
-l_int|0x7F000000
-suffix:semicolon
-id|next_sg-&gt;len
-op_assign
-id|ahd_htole32
-c_func
-(paren
-id|next_len
-)paren
-suffix:semicolon
-)brace
 id|len
 op_or_assign
 (paren
@@ -2280,9 +2169,8 @@ op_rshift
 l_int|8
 )paren
 op_amp
-l_int|0x7F000000
+id|AHD_SG_HIGH_ADDR_MASK
 suffix:semicolon
-)brace
 id|sg-&gt;len
 op_assign
 id|ahd_htole32
@@ -2368,6 +2256,7 @@ id|Scsi_Device
 op_star
 )paren
 suffix:semicolon
+macro_line|#if defined(__i386__)
 r_static
 r_int
 id|ahd_linux_biosparam
@@ -2388,6 +2277,7 @@ r_int
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#else
 r_static
 r_int
@@ -2414,6 +2304,7 @@ op_star
 id|scsi_devs
 )paren
 suffix:semicolon
+macro_line|#if defined(__i386__)
 r_static
 r_int
 id|ahd_linux_biosparam
@@ -2429,6 +2320,7 @@ r_int
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 r_static
 r_int
@@ -3858,6 +3750,7 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#if defined(__i386__)
 multiline_comment|/*&n; * Return the disk geometry for the given SCSI device.&n; */
 r_static
 r_int
@@ -4194,6 +4087,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Abort the current SCSI command(s).&n; */
 r_static
 r_int
@@ -8164,6 +8058,7 @@ DECL|function|ahd_linux_get_memsize
 id|ahd_linux_get_memsize
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -8195,6 +8090,7 @@ DECL|function|ahd_linux_next_unit
 id|ahd_linux_next_unit
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -11186,30 +11082,8 @@ op_star
 id|targ
 )paren
 (brace
-id|cam_status
-id|cam_status
-suffix:semicolon
 id|u_int32_t
 id|status
-suffix:semicolon
-id|u_int
-id|scsi_status
-suffix:semicolon
-id|scsi_status
-op_assign
-id|ahd_cmd_get_scsi_status
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
-id|cam_status
-op_assign
-id|ahd_cmd_get_transaction_status
-c_func
-(paren
-id|cmd
-)paren
 suffix:semicolon
 id|status
 op_assign
@@ -11220,9 +11094,17 @@ id|cmd
 comma
 id|targ-&gt;inq_data
 comma
-id|cam_status
+id|ahd_cmd_get_transaction_status
+c_func
+(paren
+id|cmd
+)paren
 comma
-id|scsi_status
+id|ahd_cmd_get_scsi_status
+c_func
+(paren
+id|cmd
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef AHD_DEBUG
@@ -16496,7 +16378,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * SCSI controller interrupt handler.&n; */
-id|AIC_LINUX_IRQRETURN_T
+id|irqreturn_t
 DECL|function|ahd_linux_isr
 id|ahd_linux_isr
 c_func
@@ -16583,7 +16465,8 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-id|AIC_LINUX_IRQRETURN
+r_return
+id|IRQ_RETVAL
 c_func
 (paren
 id|ours
