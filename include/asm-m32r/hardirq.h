@@ -1,3 +1,4 @@
+macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_HARDIRQ_H
 DECL|macro|__ASM_HARDIRQ_H
 mdefine_line|#define __ASM_HARDIRQ_H
@@ -49,5 +50,32 @@ DECL|macro|nmi_exit
 mdefine_line|#define nmi_exit()&t;&t;(preempt_count() -= HARDIRQ_OFFSET)
 DECL|macro|irq_exit
 mdefine_line|#define irq_exit()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_count() -= IRQ_EXIT_OFFSET;&t;&t;&t;&bslash;&n;&t;&t;if (!in_interrupt() &amp;&amp; softirq_pending(smp_processor_id())) &bslash;&n;&t;&t;&t;do_softirq();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_enable_no_resched();&t;&t;&t;&t;&bslash;&n;} while (0)
+DECL|function|ack_bad_irq
+r_static
+r_inline
+r_void
+id|ack_bad_irq
+c_func
+(paren
+r_int
+id|irq
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;unexpected IRQ trap at vector %02x&bslash;n&quot;
+comma
+id|irq
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASM_HARDIRQ_H */
+macro_line|#endif /* __KERNEL__ */
 eof

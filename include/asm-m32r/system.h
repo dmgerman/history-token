@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_M32R_SYSTEM_H
 DECL|macro|_ASM_M32R_SYSTEM_H
 mdefine_line|#define _ASM_M32R_SYSTEM_H
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001  by Hiroyuki Kondo, Hirokazu Takata, and Hitoshi Yamamoto&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001  by Hiroyuki Kondo, Hirokazu Takata, and Hitoshi Yamamoto&n; * Copyright (C) 2004  Hirokazu Takata &lt;takata at linux-m32r.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * switch_to(prev, next) should switch from task `prev&squot; to `next&squot;&n; * `prev&squot; will never be the same as `next&squot;.&n; *&n; * `next&squot; and `prev&squot; should be struct task_struct, but it isn&squot;t always defined&n; */
@@ -20,7 +20,7 @@ mdefine_line|#define local_irq_disable() &bslash;&n;&t;__asm__ __volatile__ (&qu
 macro_line|#else&t;/* CONFIG_CHIP_M32102 */
 DECL|function|local_irq_enable
 r_static
-id|__inline__
+r_inline
 r_void
 id|local_irq_enable
 c_func
@@ -54,7 +54,7 @@ suffix:semicolon
 )brace
 DECL|function|local_irq_disable
 r_static
-id|__inline__
+r_inline
 r_void
 id|local_irq_disable
 c_func
@@ -330,12 +330,8 @@ id|tmp
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Memory barrier.&n; *&n; * mb() prevents loads and stores being reordered across this point.&n; * rmb() prevents loads being reordered across this point.&n; * wmb() prevents stores being reordered across this point.&n; */
-macro_line|#if 0
-mdefine_line|#define mb()   __asm__ __volatile__ (&quot;push r0; &bslash;n&bslash;t pop r0;&quot; : : : &quot;memory&quot;)
-macro_line|#else
 DECL|macro|mb
-mdefine_line|#define mb()   __asm__ __volatile__ (&quot;&quot; : : : &quot;memory&quot;)
-macro_line|#endif
+mdefine_line|#define mb()   barrier()
 DECL|macro|rmb
 mdefine_line|#define rmb()  mb()
 DECL|macro|wmb

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mm/extable.c&n; */
+multiline_comment|/*&n; *  linux/arch/arm26/mm/extable.c&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -31,6 +31,7 @@ id|regs
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The kernel runs in SVC mode - make sure we keep running in SVC mode&n;&t; * by frobbing the PSR appropriately (PSR and PC are in the same reg.&n;&t; * on ARM26)&n;&t; */
 r_if
 c_cond
 (paren

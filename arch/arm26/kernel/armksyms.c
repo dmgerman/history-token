@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm26/kernel/armksyms.c&n; *&n; *  Copyright (C) 2003 Ian Molton&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
@@ -18,8 +19,6 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
-singleline_comment|//#include &lt;asm/proc-fns.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -231,15 +230,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This has a special calling convention; it doesn&squot;t&n; * modify any of the usual registers, except for LR.&n; */
-r_extern
-r_void
-id|__do_softirq
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+multiline_comment|/*&n; * This has a special calling convention; it doesn&squot;t&n; * modify any of the usual registers, except for LR.&n; * FIXME - we used to use our own local version - looks to be in kernel/softirq now&n; */
+singleline_comment|//extern void __do_softirq(void);
 DECL|macro|EXPORT_SYMBOL_ALIAS
 mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig)&t;&t;&bslash;&n; const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;  __attribute__((section(&quot;.kstrtab&quot;))) =&t;&bslash;&n;    __MODULE_STRING(sym);&t;&t;&t;&bslash;&n; const struct module_symbol __ksymtab_##sym&t;&bslash;&n;  __attribute__((section(&quot;__ksymtab&quot;))) =&t;&bslash;&n;    { (unsigned long)&amp;orig, __kstrtab_##sym };
 multiline_comment|/*&n; * floating point math emulator support.&n; * These symbols will never change their calling convention...&n; */
@@ -290,13 +282,7 @@ id|kd_mksound
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|__do_softirq
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__do_softirq
-)paren
-suffix:semicolon
+singleline_comment|//EXPORT_SYMBOL(__do_softirq);
 multiline_comment|/* platform dependent support */
 DECL|variable|dump_thread
 id|EXPORT_SYMBOL
@@ -879,35 +865,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|sys_wait4
-)paren
-suffix:semicolon
-multiline_comment|/* semaphores */
-DECL|variable|__down_failed
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__down_failed
-)paren
-suffix:semicolon
-DECL|variable|__down_interruptible_failed
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__down_interruptible_failed
-)paren
-suffix:semicolon
-DECL|variable|__down_trylock_failed
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__down_trylock_failed
-)paren
-suffix:semicolon
-DECL|variable|__up_wakeup
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__up_wakeup
 )paren
 suffix:semicolon
 DECL|variable|get_wchan

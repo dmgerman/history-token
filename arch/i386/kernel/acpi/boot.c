@@ -2444,11 +2444,12 @@ macro_line|#endif
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * acpi_boot_init()&n; *  called from setup_arch(), always.&n; *&t;1. checksums all tables&n; *&t;2. enumerates lapics&n; *&t;3. enumerates io-apics&n; *&n; * side effects:&n; *&t;acpi_lapic = 1 if LAPIC found&n; *&t;acpi_ioapic = 1 if IOAPIC found&n; *&t;if (acpi_lapic &amp;&amp; acpi_ioapic) smp_found_config = 1;&n; *&t;if acpi_blacklisted() acpi_disabled = 1;&n; *&t;acpi_irq_model=...&n; *&t;...&n; *&n; * return value: (currently ignored)&n; *&t;0: success&n; *&t;!0: failure&n; */
+multiline_comment|/*&n; * acpi_boot_table_init() and acpi_boot_init()&n; *  called from setup_arch(), always.&n; *&t;1. checksums all tables&n; *&t;2. enumerates lapics&n; *&t;3. enumerates io-apics&n; *&n; * acpi_table_init() is separate to allow reading SRAT without&n; * other side effects.&n; *&n; * side effects of acpi_boot_init:&n; *&t;acpi_lapic = 1 if LAPIC found&n; *&t;acpi_ioapic = 1 if IOAPIC found&n; *&t;if (acpi_lapic &amp;&amp; acpi_ioapic) smp_found_config = 1;&n; *&t;if acpi_blacklisted() acpi_disabled = 1;&n; *&t;acpi_irq_model=...&n; *&t;...&n; *&n; * return value: (currently ignored)&n; *&t;0: success&n; *&t;!0: failure&n; */
 r_int
 id|__init
-DECL|function|acpi_boot_init
-id|acpi_boot_init
+DECL|function|acpi_boot_table_init
+id|acpi_boot_table_init
+c_func
 (paren
 r_void
 )paren
@@ -2559,6 +2560,39 @@ id|error
 suffix:semicolon
 )brace
 )brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|acpi_boot_init
+r_int
+id|__init
+id|acpi_boot_init
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/*&n;&t; * If acpi_disabled, bail out&n;&t; * One exception: acpi=ht continues far enough to enumerate LAPICs&n;&t; */
+r_if
+c_cond
+(paren
+id|acpi_disabled
+op_logical_and
+op_logical_neg
+id|acpi_ht
+)paren
+r_return
+l_int|1
+suffix:semicolon
+id|acpi_table_parse
+c_func
+(paren
+id|ACPI_BOOT
+comma
+id|acpi_parse_sbf
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * set sci_int and PM timer address&n;&t; */
 id|acpi_table_parse
 c_func

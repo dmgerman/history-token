@@ -312,7 +312,7 @@ id|EXIT_DEAD
 )paren
 )paren
 (brace
-id|os_kill_ptraced_process
+id|os_kill_process
 c_func
 (paren
 id|prev_sched-&gt;thread.mode.tt.extern_pid

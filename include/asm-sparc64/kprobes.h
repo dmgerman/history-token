@@ -14,6 +14,8 @@ DECL|macro|BREAKPOINT_INSTRUCTION_2
 mdefine_line|#define BREAKPOINT_INSTRUCTION_2 0x91d02071 /* ta 0x71 */
 DECL|macro|MAX_INSN_SIZE
 mdefine_line|#define MAX_INSN_SIZE 2
+DECL|macro|JPROBE_ENTRY
+mdefine_line|#define JPROBE_ENTRY(pentry)&t;(kprobe_opcode_t *)pentry
 multiline_comment|/* Architecture specific copy of original instruction*/
 DECL|struct|arch_specific_insn
 r_struct

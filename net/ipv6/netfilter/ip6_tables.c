@@ -5241,6 +5241,9 @@ id|oldinfo
 )paren
 suffix:semicolon
 multiline_comment|/* Silent error: too late now. */
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -5256,6 +5259,13 @@ id|ip6t_counters
 op_star
 id|tmp.num_counters
 )paren
+op_ne
+l_int|0
+)paren
+id|ret
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
 id|vfree
 c_func
@@ -5271,7 +5281,7 @@ id|ip6t_mutex
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 id|put_module
 suffix:colon

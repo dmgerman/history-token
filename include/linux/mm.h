@@ -2629,6 +2629,8 @@ DECL|macro|VM_MAX_READAHEAD
 mdefine_line|#define VM_MAX_READAHEAD&t;128&t;/* kbytes */
 DECL|macro|VM_MIN_READAHEAD
 mdefine_line|#define VM_MIN_READAHEAD&t;16&t;/* kbytes (includes current page) */
+DECL|macro|VM_MAX_CACHE_HIT
+mdefine_line|#define VM_MAX_CACHE_HIT    &t;256&t;/* max pages in a row in cache before&n;&t;&t;&t;&t;&t; * turning readahead off */
 r_int
 id|do_page_cache_readahead
 c_func
@@ -2675,7 +2677,8 @@ r_int
 id|nr_to_read
 )paren
 suffix:semicolon
-r_void
+r_int
+r_int
 id|page_cache_readahead
 c_func
 (paren
@@ -2697,6 +2700,10 @@ comma
 r_int
 r_int
 id|offset
+comma
+r_int
+r_int
+id|size
 )paren
 suffix:semicolon
 r_void

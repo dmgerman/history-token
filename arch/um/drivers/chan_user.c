@@ -497,9 +497,10 @@ c_func
 r_int
 id|fd
 comma
-r_void
+r_struct
+id|tty_struct
 op_star
-id|device_data
+id|tty
 comma
 r_int
 op_star
@@ -720,9 +721,10 @@ c_func
 r_int
 id|fd
 comma
-r_void
+r_struct
+id|tty_struct
 op_star
-id|device_data
+id|tty
 )paren
 (brace
 r_int
@@ -777,7 +779,7 @@ id|pid
 comma
 id|fd
 comma
-id|device_data
+id|tty
 )paren
 op_logical_and
 (paren
@@ -795,7 +797,7 @@ c_func
 (paren
 id|fd
 comma
-id|device_data
+id|tty
 comma
 op_amp
 id|thread_fd
@@ -819,7 +821,7 @@ id|fd
 comma
 id|thread
 comma
-id|device_data
+id|tty
 )paren
 suffix:semicolon
 id|count

@@ -68,6 +68,9 @@ comma
 DECL|enumerator|DIE_DEBUG
 id|DIE_DEBUG
 comma
+DECL|enumerator|DIE_DEBUGSTEP
+id|DIE_DEBUGSTEP
+comma
 DECL|enumerator|DIE_PANIC
 id|DIE_PANIC
 comma

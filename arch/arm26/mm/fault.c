@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mm/fault-common.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Modifications for ARM processor (c) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/arch/arm26/mm/fault.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Modifications for ARM processor (c) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -671,16 +671,6 @@ suffix:semicolon
 id|mm
 op_assign
 id|tsk-&gt;mm
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;do_page_fault: pid: %d      %08x&bslash;n&quot;
-comma
-id|tsk-&gt;pid
-comma
-id|addr
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we&squot;re in an interrupt or have no user&n;&t; * context, we must not take the fault..&n;&t; */
 r_if

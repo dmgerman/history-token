@@ -425,13 +425,16 @@ l_int|0
 id|printf
 c_func
 (paren
-l_string|&quot;Open of machine pid file &bslash;&quot;%s&bslash;&quot; failed - &quot;
-l_string|&quot;err = %d&bslash;n&quot;
+l_string|&quot;Open of machine pid file &bslash;&quot;%s&bslash;&quot; failed: %s&bslash;n&quot;
 comma
 id|file
 comma
+id|strerror
+c_func
+(paren
 op_minus
 id|fd
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1397,11 +1400,15 @@ id|EEXIST
 id|printf
 c_func
 (paren
-l_string|&quot;Failed to mkdir %s - errno = %i&bslash;n&quot;
+l_string|&quot;Failed to mkdir %s: %s&bslash;n&quot;
 comma
 id|uml_dir
 comma
+id|strerror
+c_func
+(paren
 id|errno
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1505,9 +1512,15 @@ op_star
 id|printer
 )paren
 (paren
-l_string|&quot;make_umid - mkstemp failed, errno = %d&bslash;n&quot;
+l_string|&quot;make_umid - mkstemp(%s) failed: %s&bslash;n&quot;
 comma
+id|tmp
+comma
+id|strerror
+c_func
+(paren
 id|errno
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1661,13 +1674,6 @@ l_string|&quot;uml_dir=&lt;directory&gt;&bslash;n&quot;
 l_string|&quot;    The location to place the pid and umid files.&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-DECL|variable|make_uml_dir
-id|__uml_postsetup
-c_func
-(paren
-id|make_uml_dir
-)paren
-suffix:semicolon
 DECL|function|make_umid_setup
 r_static
 r_int
@@ -1678,11 +1684,22 @@ c_func
 r_void
 )paren
 (brace
-r_return
+multiline_comment|/* one function with the ordering we need ... */
+id|make_uml_dir
+c_func
+(paren
+)paren
+suffix:semicolon
 id|make_umid
 c_func
 (paren
 id|printf
+)paren
+suffix:semicolon
+r_return
+id|create_pid_file
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1691,13 +1708,6 @@ id|__uml_postsetup
 c_func
 (paren
 id|make_umid_setup
-)paren
-suffix:semicolon
-DECL|variable|create_pid_file
-id|__uml_postsetup
-c_func
-(paren
-id|create_pid_file
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */

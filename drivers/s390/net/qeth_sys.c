@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.40 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_sys.c ($Revision: 1.48 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; * This file contains code related to sysfs.&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; * Author(s): Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; * &t;      Frank Pavlic &lt;pavlic@de.ibm.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/ebcdic.h&gt;
@@ -11,7 +11,7 @@ r_char
 op_star
 id|VERSION_QETH_SYS_C
 op_assign
-l_string|&quot;$Revision: 1.40 $&quot;
+l_string|&quot;$Revision: 1.48 $&quot;
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*                                                                           */
@@ -258,7 +258,11 @@ id|buf
 comma
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2202,7 +2206,11 @@ c_func
 l_string|&quot;IPv6 not supported for interface %s.&bslash;n&quot;
 l_string|&quot;Routing status no changed.&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2551,10 +2559,33 @@ op_eq
 l_int|1
 )paren
 )paren
+(brace
 id|card-&gt;options.fake_ll
 op_assign
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|card-&gt;dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|i
+)paren
+id|card-&gt;dev-&gt;hard_header
+op_assign
+id|qeth_fake_header
+suffix:semicolon
+r_else
+id|card-&gt;dev-&gt;hard_header
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
 r_else
 (brace
 id|PRINT_WARN
@@ -3459,6 +3490,7 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 id|card-&gt;state
 op_ne
 id|CARD_STATE_DOWN
@@ -3468,6 +3500,13 @@ op_logical_and
 id|card-&gt;state
 op_ne
 id|CARD_STATE_RECOVER
+)paren
+)paren
+op_logical_or
+(paren
+id|card-&gt;info.type
+op_ne
+id|QETH_CARD_TYPE_OSAE
 )paren
 )paren
 r_return

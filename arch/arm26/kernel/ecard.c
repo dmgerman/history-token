@@ -18,9 +18,7 @@ macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/irqchip.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|enum|req
@@ -395,121 +393,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|req-&gt;ec-&gt;slot_no
-op_eq
-l_int|8
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * The card maintains an index which increments the address&n;&t;&t; * into a 4096-byte page on each access.  We need to keep&n;&t;&t; * track of the counter.&n;&t;&t; */
-r_static
-r_int
-r_int
-id|index
-suffix:semicolon
-r_int
-r_int
-id|page
-suffix:semicolon
-id|page
-op_assign
-(paren
-id|off
-op_rshift
-l_int|12
-)paren
-op_star
-l_int|4
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|page
-OG
-l_int|256
-op_star
-l_int|4
-)paren
-r_return
-suffix:semicolon
-id|off
-op_and_assign
-l_int|4095
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If we are reading offset 0, or our current index is&n;&t;&t; * greater than the offset, reset the hardware index counter.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|off
-op_eq
-l_int|0
-op_logical_or
-id|index
-OG
-id|off
-)paren
-(brace
-op_star
-id|base_addr
-op_assign
-l_int|0
-suffix:semicolon
-id|index
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t; * Increment the hardware index counter until we get to the&n;&t;&t; * required offset.  The read bytes are discarded.&n;&t;&t; */
-r_while
-c_loop
-(paren
-id|index
-OL
-id|off
-)paren
-(brace
-r_int
-r_char
-id|byte
-suffix:semicolon
-id|byte
-op_assign
-id|base_addr
-(braket
-id|page
-)braket
-suffix:semicolon
-id|index
-op_add_assign
-l_int|1
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|len
-op_decrement
-)paren
-(brace
-op_star
-id|buf
-op_increment
-op_assign
-id|base_addr
-(braket
-id|page
-)braket
-suffix:semicolon
-id|index
-op_add_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
 op_logical_neg
 id|req-&gt;use_loader
 op_logical_or
@@ -552,7 +435,7 @@ id|len
 op_decrement
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * The following is required by some&n;&t;&t;&t;&t; * expansion card loader programs.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The following is required by some&n;&t;&t;&t; * expansion card loader programs.&n;&t;&t;&t; */
 op_star
 (paren
 r_int
@@ -578,7 +461,6 @@ comma
 id|req-&gt;ec-&gt;loader
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 )brace
@@ -1691,10 +1573,6 @@ op_logical_or
 id|ec-&gt;irq
 op_eq
 id|NO_IRQ
-op_logical_or
-id|ec-&gt;slot_no
-op_eq
-l_int|8
 )paren
 r_continue
 suffix:semicolon
@@ -1812,16 +1690,6 @@ id|slot
 op_assign
 id|ec-&gt;slot_no
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ec-&gt;slot_no
-op_eq
-l_int|8
-)paren
-r_return
-l_int|0
-suffix:semicolon
 id|ectcr
 op_and_assign
 op_complement
@@ -1840,13 +1708,6 @@ id|type
 r_case
 id|ECARD_MEMC
 suffix:colon
-r_if
-c_cond
-(paren
-id|slot
-OL
-l_int|4
-)paren
 id|address
 op_assign
 id|IO_EC_MEMC_BASE
@@ -1862,13 +1723,6 @@ suffix:semicolon
 r_case
 id|ECARD_IOC
 suffix:colon
-r_if
-c_cond
-(paren
-id|slot
-OL
-l_int|4
-)paren
 id|address
 op_assign
 id|IO_EC_IOC_BASE
@@ -1878,17 +1732,12 @@ id|slot
 op_lshift
 l_int|12
 )paren
-suffix:semicolon
-r_if
-c_cond
+op_plus
 (paren
-id|address
-)paren
-id|address
-op_add_assign
 id|speed
 op_lshift
 l_int|17
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2256,14 +2105,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-OL
-l_int|4
-)paren
-(brace
 id|ec_set_resource
 c_func
 (paren
@@ -2284,7 +2125,6 @@ comma
 id|IORESOURCE_MEM
 )paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -3076,14 +2916,6 @@ id|ec
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * hook the interrupt handlers&n;&t; */
-r_if
-c_cond
-(paren
-id|slot
-OL
-l_int|8
-)paren
-(brace
 id|ec-&gt;irq
 op_assign
 l_int|32
@@ -3115,7 +2947,6 @@ comma
 id|IRQF_VALID
 )paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -3255,7 +3086,7 @@ l_int|0
 suffix:semicolon
 id|slot
 OL
-l_int|4
+id|MAX_ECARDS
 suffix:semicolon
 id|slot
 op_increment

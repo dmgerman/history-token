@@ -532,8 +532,49 @@ DECL|macro|__NR_clock_getres
 mdefine_line|#define __NR_clock_getres&t;(__NR_timer_create+7)
 DECL|macro|__NR_clock_nanosleep
 mdefine_line|#define __NR_clock_nanosleep&t;(__NR_timer_create+8)
+DECL|macro|__NR_statfs64
+mdefine_line|#define __NR_statfs64&t;&t;268
+DECL|macro|__NR_fstatfs64
+mdefine_line|#define __NR_fstatfs64&t;&t;269
+DECL|macro|__NR_tgkill
+mdefine_line|#define __NR_tgkill&t;&t;270
+DECL|macro|__NR_utimes
+mdefine_line|#define __NR_utimes&t;&t;271
+DECL|macro|__NR_fadvise64_64
+mdefine_line|#define __NR_fadvise64_64&t;272
+DECL|macro|__NR_vserver
+mdefine_line|#define __NR_vserver&t;&t;273
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;274
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;275
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;276
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open &t;&t;277
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;(__NR_mq_open+1)
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;(__NR_mq_open+2)
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;(__NR_mq_open+3)
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;(__NR_mq_open+4)
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;(__NR_mq_open+5)
+DECL|macro|__NR_sys_kexec_load
+mdefine_line|#define __NR_sys_kexec_load&t;283
+DECL|macro|__NR_waitid
+mdefine_line|#define __NR_waitid&t;&t;284
+multiline_comment|/* #define __NR_sys_setaltroot&t;285 */
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;286
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;287
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;288
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls 268
+mdefine_line|#define NR_syscalls 289
 multiline_comment|/* user-visible error numbers are in the range -1 - -122: see&n;   &lt;asm-m68k/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res) &bslash;&n;do { &bslash;&n;&t;if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;&t;/* avoid using res which is declared to be in register d0; &bslash;&n;&t;   errno might expand to a function call and clobber it.  */ &bslash;&n;&t;&t;int __err = -(res); &bslash;&n;&t;&t;errno = __err; &bslash;&n;&t;&t;res = -1; &bslash;&n;&t;} &bslash;&n;&t;return (type) (res); &bslash;&n;} while (0)

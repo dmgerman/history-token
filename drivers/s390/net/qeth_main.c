@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.170 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.170 $&t; $Date: 2004/11/17 09:54:06 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.181 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.181 $&t; $Date: 2004/12/27 07:36:40 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/***&n; * eye catcher; just for debugging purposes&n; */
 r_void
 r_volatile
@@ -49,7 +49,7 @@ macro_line|#include &quot;qeth.h&quot;
 macro_line|#include &quot;qeth_mpc.h&quot;
 macro_line|#include &quot;qeth_fs.h&quot;
 DECL|macro|VERSION_QETH_C
-mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.170 $&quot;
+mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.181 $&quot;
 DECL|variable|version
 r_static
 r_const
@@ -6309,6 +6309,12 @@ comma
 id|rc
 )paren
 suffix:semicolon
+id|qeth_clear_cmd_buffers
+c_func
+(paren
+id|channel
+)paren
+suffix:semicolon
 )brace
 r_else
 id|rc
@@ -6746,6 +6752,12 @@ l_string|&quot;2err%d&quot;
 comma
 op_minus
 id|ETIME
+)paren
+suffix:semicolon
+id|qeth_clear_cmd_buffers
+c_func
+(paren
+id|channel
 )paren
 suffix:semicolon
 r_return
@@ -7888,7 +7900,11 @@ l_string|&quot;there is a network problem or &quot;
 l_string|&quot;someone pulled the cable or &quot;
 l_string|&quot;disabled the port.&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|card-&gt;info.chpid
 )paren
@@ -7916,7 +7932,11 @@ l_string|&quot;Link reestablished on %s &quot;
 l_string|&quot;(CHPID 0x%X). Scheduling &quot;
 l_string|&quot;IP address reset.&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|card-&gt;info.chpid
 )paren
@@ -7964,7 +7984,11 @@ c_func
 l_string|&quot;probably problem on %s: &quot;
 l_string|&quot;received IPA command 0x%X&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|cmd-&gt;hdr.command
 )paren
@@ -10716,7 +10740,11 @@ c_func
 (paren
 l_string|&quot;No memory for packet received on %s.&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 id|QETH_DBF_TEXT
@@ -18135,7 +18163,11 @@ l_string|&quot;qeth_prepare_skb: could &quot;
 l_string|&quot;not realloc headroom for qeth_hdr &quot;
 l_string|&quot;on interface %s&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -18380,7 +18412,11 @@ c_func
 l_string|&quot;qeth_prepare_skb: misaligned &quot;
 l_string|&quot;packet on interface %s. Discarded.&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -20676,7 +20712,11 @@ c_func
 l_string|&quot;ARP processing not supported &quot;
 l_string|&quot;on %s!&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -20714,7 +20754,11 @@ c_func
 l_string|&quot;Could not set number of ARP entries on %s: &quot;
 l_string|&quot;%s (0x%x/%d)&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|qeth_arp_get_error_cause
 c_func
@@ -21597,7 +21641,11 @@ c_func
 l_string|&quot;ARP processing not supported &quot;
 l_string|&quot;on %s!&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -21716,7 +21764,11 @@ c_func
 l_string|&quot;Error while querying ARP cache on %s: %s &quot;
 l_string|&quot;(0x%x/%d)&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|qeth_arp_get_error_cause
 c_func
@@ -22300,6 +22352,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 id|qeth_adp_supported
 c_func
@@ -22309,6 +22362,12 @@ comma
 id|IPA_SETADP_SET_SNMP_CONTROL
 )paren
 )paren
+op_logical_and
+(paren
+op_logical_neg
+id|card-&gt;options.layer2
+)paren
+)paren
 (brace
 id|PRINT_WARN
 c_func
@@ -22316,7 +22375,11 @@ c_func
 l_string|&quot;SNMP Query MIBS not supported &quot;
 l_string|&quot;on %s!&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -22542,7 +22605,11 @@ c_func
 (paren
 l_string|&quot;SNMP command failed on %s: (0x%x)&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -22704,7 +22771,11 @@ c_func
 l_string|&quot;ARP processing not supported &quot;
 l_string|&quot;on %s!&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -22788,7 +22859,11 @@ l_string|&quot;%s (0x%x/%d)&bslash;n&quot;
 comma
 id|buf
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|qeth_arp_get_error_cause
 c_func
@@ -22885,7 +22960,11 @@ c_func
 l_string|&quot;ARP processing not supported &quot;
 l_string|&quot;on %s!&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -22981,7 +23060,11 @@ l_string|&quot;%s (0x%x/%d)&bslash;n&quot;
 comma
 id|buf
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|qeth_arp_get_error_cause
 c_func
@@ -23063,7 +23146,11 @@ c_func
 l_string|&quot;ARP processing not supported &quot;
 l_string|&quot;on %s!&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -23100,7 +23187,11 @@ c_func
 (paren
 l_string|&quot;Could not flush ARP cache on %s: %s (0x%x/%d)&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|qeth_arp_get_error_cause
 c_func
@@ -24483,7 +24574,11 @@ l_string|&quot;Continuing&bslash;n&quot;
 comma
 id|i
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -27080,7 +27175,11 @@ id|addr-&gt;mac
 l_int|5
 )braket
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -27204,7 +27303,11 @@ id|addr-&gt;mac
 l_int|5
 )braket
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -27717,6 +27820,41 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+r_int
+DECL|function|qeth_fake_header
+id|qeth_fake_header
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|type
+comma
+r_void
+op_star
+id|daddr
+comma
+r_void
+op_star
+id|saddr
+comma
+r_int
+id|len
+)paren
+(brace
+r_return
+id|QETH_FAKE_LL_LEN
+suffix:semicolon
+)brace
 r_static
 r_int
 DECL|function|qeth_netdev_init
@@ -27875,6 +28013,20 @@ c_func
 (paren
 id|card
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|card-&gt;options.fake_ll
+)paren
+id|dev-&gt;hard_header
+op_assign
+id|qeth_fake_header
+suffix:semicolon
+r_else
+id|dev-&gt;hard_header
+op_assign
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -30286,7 +30438,11 @@ c_func
 l_string|&quot;ARP processing not supported &quot;
 l_string|&quot;on %s!&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -30319,7 +30475,11 @@ c_func
 l_string|&quot;Could not start ARP processing &quot;
 l_string|&quot;assist on %s: 0x%x&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -30372,7 +30532,11 @@ c_func
 (paren
 l_string|&quot;Hardware IP fragmentation not supported on %s&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -30406,7 +30570,11 @@ c_func
 l_string|&quot;Could not start Hardware IP fragmentation &quot;
 l_string|&quot;assist on %s: 0x%x&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -30477,7 +30645,11 @@ c_func
 l_string|&quot;Inbound source address not &quot;
 l_string|&quot;supported on %s&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -30510,7 +30682,11 @@ c_func
 l_string|&quot;Could not start inbound source &quot;
 l_string|&quot;assist on %s: 0x%x&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -30565,7 +30741,11 @@ c_func
 (paren
 l_string|&quot;VLAN not supported on %s&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -30599,7 +30779,11 @@ c_func
 l_string|&quot;Could not start vlan &quot;
 l_string|&quot;assist on %s: 0x%x&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -30670,7 +30854,11 @@ c_func
 (paren
 l_string|&quot;Multicast not supported on %s&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -30704,7 +30892,11 @@ c_func
 l_string|&quot;Could not start multicast &quot;
 l_string|&quot;assist on %s: rc=%i&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -30780,7 +30972,11 @@ c_func
 (paren
 l_string|&quot;IPv6 startlan failed on %s&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -30814,7 +31010,11 @@ c_func
 (paren
 l_string|&quot;IPv6 query ipassist failed on %s&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -30847,7 +31047,11 @@ c_func
 l_string|&quot;IPv6 start assist (version 4) failed &quot;
 l_string|&quot;on %s: 0x%x&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -30880,7 +31084,11 @@ c_func
 l_string|&quot;IPV6 start assist (version 6) failed  &quot;
 l_string|&quot;on %s: 0x%x&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -30913,7 +31121,11 @@ c_func
 l_string|&quot;Could not enable passthrough &quot;
 l_string|&quot;on %s: 0x%x&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -30979,7 +31191,11 @@ c_func
 (paren
 l_string|&quot;IPv6 not supported on %s&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -31046,7 +31262,11 @@ c_func
 (paren
 l_string|&quot;Broadcast not supported on %s&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 id|rc
@@ -31084,7 +31304,11 @@ c_func
 l_string|&quot;Could not enable broadcasting filtering &quot;
 l_string|&quot;on %s: 0x%x&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -31118,7 +31342,11 @@ c_func
 (paren
 l_string|&quot;Could not set up broadcast filtering on %s: 0x%x&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -31163,7 +31391,11 @@ c_func
 l_string|&quot;Could not set up broadcast echo filtering on &quot;
 l_string|&quot;%s: 0x%x&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -31238,7 +31470,11 @@ c_func
 l_string|&quot;Starting Inbound HW Checksumming failed on %s: &quot;
 l_string|&quot;0x%x,&bslash;ncontinuing using Inbound SW Checksumming&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -31273,7 +31509,11 @@ c_func
 l_string|&quot;Enabling Inbound HW Checksumming failed on %s: &quot;
 l_string|&quot;0x%x,&bslash;ncontinuing using Inbound SW Checksumming&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 comma
 id|rc
 )paren
@@ -31326,7 +31566,11 @@ c_func
 (paren
 l_string|&quot;Using no checksumming on %s.&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -31346,7 +31590,11 @@ c_func
 (paren
 l_string|&quot;Using SW checksumming on %s.&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -31373,7 +31621,11 @@ l_string|&quot;Inbound HW Checksumming not &quot;
 l_string|&quot;supported on %s,&bslash;ncontinuing &quot;
 l_string|&quot;using Inbound SW Checksumming&bslash;n&quot;
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 id|card-&gt;options.checksum_type
@@ -31823,7 +32075,11 @@ l_string|&quot;Type set to &squot;no router&squot;.&bslash;n&quot;
 comma
 id|rc
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -31934,7 +32190,11 @@ l_string|&quot;Type set to &squot;no router&squot;.&bslash;n&quot;
 comma
 id|rc
 comma
-id|card-&gt;info.if_name
+id|QETH_CARD_IFNAME
+c_func
+(paren
+id|card
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -33743,9 +34003,6 @@ op_star
 id|card
 )paren
 (brace
-r_int
-id|rc
-suffix:semicolon
 id|QETH_DBF_TEXT
 c_func
 (paren
@@ -33776,30 +34033,12 @@ op_amp
 id|card-&gt;gdev-&gt;dev
 )paren
 suffix:semicolon
-id|rc
-op_assign
+r_return
 id|register_netdev
 c_func
 (paren
 id|card-&gt;dev
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rc
-)paren
-id|strcpy
-c_func
-(paren
-id|card-&gt;info.if_name
-comma
-id|card-&gt;dev-&gt;name
-)paren
-suffix:semicolon
-r_return
-id|rc
 suffix:semicolon
 )brace
 r_static

@@ -283,5 +283,27 @@ macro_line|#include &lt;asm/sigcontext.h&gt;
 DECL|macro|ptrace_signal_deliver
 mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 macro_line|#endif /* __KERNEL__ */
+multiline_comment|/*&n; * These are parameters to dbg_sigreturn syscall.  They enable or&n; * disable certain debugging things that can be done from signal&n; * handlers.  The dbg_sigreturn syscall *must* be called from a&n; * SA_SIGINFO signal so the ucontext can be passed to it.  It takes an&n; * array of struct sig_dbg_op, which has the debug operations to&n; * perform before returning from the signal.&n; */
+DECL|struct|sig_dbg_op
+r_struct
+id|sig_dbg_op
+(brace
+DECL|member|dbg_type
+r_int
+id|dbg_type
+suffix:semicolon
+DECL|member|dbg_value
+r_int
+r_int
+id|dbg_value
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Enable or disable single-stepping.  The value sets the state. */
+DECL|macro|SIG_DBG_SINGLE_STEPPING
+mdefine_line|#define SIG_DBG_SINGLE_STEPPING&t;&t;1
+multiline_comment|/* Enable or disable branch tracing.  The value sets the state. */
+DECL|macro|SIG_DBG_BRANCH_TRACING
+mdefine_line|#define SIG_DBG_BRANCH_TRACING&t;&t;2
 macro_line|#endif
 eof

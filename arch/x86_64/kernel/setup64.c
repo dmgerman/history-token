@@ -125,12 +125,12 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* noexec=on|off&n;Control non executable mappings for 64bit processes.&n;&n;on&t;Enable(default)&n;off&t;Disable&n;*/
 DECL|function|nonx_setup
-r_static
-r_int
+r_void
 id|__init
 id|nonx_setup
 c_func
 (paren
+r_const
 r_char
 op_star
 id|str
@@ -182,18 +182,7 @@ op_complement
 id|_PAGE_NX
 suffix:semicolon
 )brace
-r_return
-l_int|1
-suffix:semicolon
 )brace
-id|__setup
-c_func
-(paren
-l_string|&quot;noexec=&quot;
-comma
-id|nonx_setup
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Great future plan:&n; * Declare PDA itself and support (irqstack,tss,pgd) as per cpu data.&n; * Always point %gs to its beginning&n; */
 DECL|function|setup_per_cpu_areas
 r_void
@@ -257,7 +246,6 @@ r_char
 op_star
 id|ptr
 suffix:semicolon
-multiline_comment|/* If possible allocate on the node of the CPU.&n;&t;&t;   In case it doesn&squot;t exist round-robin nodes. */
 r_if
 c_cond
 (paren
@@ -265,9 +253,11 @@ op_logical_neg
 id|NODE_DATA
 c_func
 (paren
+id|cpu_to_node
+c_func
+(paren
 id|i
-op_mod
-id|numnodes
+)paren
 )paren
 )paren
 (brace
@@ -300,9 +290,11 @@ c_func
 id|NODE_DATA
 c_func
 (paren
+id|cpu_to_node
+c_func
+(paren
 id|i
-op_mod
-id|numnodes
+)paren
 )paren
 comma
 id|size
@@ -1101,13 +1093,5 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
-id|numa_add_cpu
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 eof

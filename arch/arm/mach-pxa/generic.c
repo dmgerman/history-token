@@ -261,7 +261,7 @@ l_int|0xf2000000
 comma
 l_int|0x40000000
 comma
-l_int|0x01800000
+l_int|0x02000000
 comma
 id|MT_DEVICE
 )brace

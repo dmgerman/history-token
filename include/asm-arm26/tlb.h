@@ -19,6 +19,11 @@ r_int
 r_int
 id|freed
 suffix:semicolon
+DECL|member|fullmm
+r_int
+r_int
+id|fullmm
+suffix:semicolon
 DECL|member|flushes
 r_int
 r_int
@@ -84,6 +89,10 @@ suffix:semicolon
 id|tlb-&gt;freed
 op_assign
 l_int|0
+suffix:semicolon
+id|tlb-&gt;fullmm
+op_assign
+id|full_mm_flush
 suffix:semicolon
 r_return
 id|tlb
@@ -174,10 +183,30 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_int
+r_int
+DECL|function|tlb_is_full_mm
+id|tlb_is_full_mm
+c_func
+(paren
+r_struct
+id|mmu_gather
+op_star
+id|tlb
+)paren
+(brace
+r_return
+id|tlb-&gt;fullmm
+suffix:semicolon
+)brace
 DECL|macro|tlb_remove_tlb_entry
 mdefine_line|#define tlb_remove_tlb_entry(tlb,ptep,address)  do { } while (0)
+singleline_comment|//#define tlb_start_vma(tlb,vma)                  do { } while (0)
+singleline_comment|//FIXME - ARM32 uses this now that things changed in the kernel. seems like it may be pointless on arm26, however to get things compiling...
 DECL|macro|tlb_start_vma
-mdefine_line|#define tlb_start_vma(tlb,vma)                  do { } while (0)
+mdefine_line|#define tlb_start_vma(tlb,vma)                                          &bslash;&n;        do {                                                            &bslash;&n;                if (!tlb-&gt;fullmm)                                       &bslash;&n;                        flush_cache_range(vma, vma-&gt;vm_start, vma-&gt;vm_end); &bslash;&n;        } while (0)
 DECL|macro|tlb_end_vma
 mdefine_line|#define tlb_end_vma(tlb,vma)                    do { } while (0)
 DECL|macro|tlb_remove_page

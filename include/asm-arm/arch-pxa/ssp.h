@@ -144,6 +144,16 @@ id|dev
 comma
 id|u32
 id|port
+)paren
+suffix:semicolon
+r_int
+id|ssp_config
+c_func
+(paren
+r_struct
+id|ssp_dev
+op_star
+id|dev
 comma
 id|u32
 id|mode

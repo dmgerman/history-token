@@ -730,6 +730,13 @@ comma
 l_int|0
 )brace
 comma
+multiline_comment|/* Rockwell 28.8 */
+(brace
+l_string|&quot;ROK4120&quot;
+comma
+l_int|0
+)brace
+comma
 multiline_comment|/* Viking Components, Inc */
 multiline_comment|/* Viking 28.8 INTERNAL Fax+Data+Voice PnP */
 (brace

@@ -331,6 +331,9 @@ op_star
 id|data
 )paren
 suffix:semicolon
+r_struct
+id|tty_struct
+suffix:semicolon
 r_extern
 r_void
 id|register_winch
@@ -339,9 +342,10 @@ c_func
 r_int
 id|fd
 comma
-r_void
+r_struct
+id|tty_struct
 op_star
-id|device_data
+id|tty
 )paren
 suffix:semicolon
 r_extern
@@ -358,9 +362,10 @@ comma
 r_int
 id|pid
 comma
-r_void
+r_struct
+id|tty_struct
 op_star
-id|line
+id|tty
 )paren
 suffix:semicolon
 DECL|macro|__channel_help

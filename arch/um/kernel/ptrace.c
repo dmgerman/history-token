@@ -1442,6 +1442,11 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|entryexit
+)paren
 multiline_comment|/* force do_signal() --&gt; is_syscall() */
 id|set_thread_flag
 c_func

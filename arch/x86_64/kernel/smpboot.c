@@ -45,6 +45,13 @@ op_assign
 id|BAD_APICID
 )brace
 suffix:semicolon
+DECL|variable|phys_proc_id
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_proc_id
+)paren
+suffix:semicolon
 multiline_comment|/* Bitmask of currently online CPUs */
 DECL|variable|cpu_online_map
 id|cpumask_t

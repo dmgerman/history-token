@@ -1202,5 +1202,10 @@ r_int
 r_int
 id|boot_option_idle_override
 suffix:semicolon
+multiline_comment|/* Boot loader type from the setup header */
+r_extern
+r_int
+id|bootloader_type
+suffix:semicolon
 macro_line|#endif /* __ASM_X86_64_PROCESSOR_H */
 eof

@@ -360,6 +360,7 @@ id|hotdrop
 suffix:semicolon
 multiline_comment|/* Function to hash a given address into the hash table of table_size size */
 DECL|function|hash_func
+r_static
 r_int
 id|hash_func
 c_func
@@ -4318,8 +4319,7 @@ l_int|NULL
 )paren
 (brace
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 )brace
 id|spin_lock_init
@@ -4417,8 +4417,7 @@ id|curr_table
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 )brace
 id|memset
@@ -4524,8 +4523,7 @@ id|curr_table
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 )brace
 r_for
@@ -4629,8 +4627,7 @@ id|curr_table
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 )brace
 r_for
@@ -4737,8 +4734,7 @@ id|curr_table
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 )brace
 r_for
@@ -4986,8 +4982,7 @@ id|recent_lock
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 )brace
 r_while
@@ -5050,8 +5045,7 @@ id|recent_lock
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -5108,8 +5102,7 @@ id|curr_table
 )paren
 suffix:semicolon
 r_return
-op_minus
-id|ENOMEM
+l_int|0
 suffix:semicolon
 )brace
 id|curr_table-&gt;status_proc-&gt;owner
@@ -5552,6 +5545,8 @@ r_void
 )paren
 (brace
 r_int
+id|err
+comma
 id|count
 suffix:semicolon
 id|printk
@@ -5665,13 +5660,30 @@ id|ip_list_hash_size
 suffix:semicolon
 )brace
 macro_line|#endif
-r_return
+id|err
+op_assign
 id|ipt_register_match
 c_func
 (paren
 op_amp
 id|recent_match
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|remove_proc_entry
+c_func
+(paren
+l_string|&quot;ipt_recent&quot;
+comma
+id|proc_net
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* Kernel module destruction. */

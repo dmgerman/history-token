@@ -1,7 +1,7 @@
-multiline_comment|/* thread_info.h: i386 low-level thread information&n; *&n; * Copyright (C) 2002  David Howells (dhowells@redhat.com)&n; * - Incorporating suggestions made by Linus Torvalds and Dave Miller&n; */
-macro_line|#ifndef _ASM_THREAD_INFO_H
-DECL|macro|_ASM_THREAD_INFO_H
-mdefine_line|#define _ASM_THREAD_INFO_H
+macro_line|#ifndef _ASM_M32R_THREAD_INFO_H
+DECL|macro|_ASM_M32R_THREAD_INFO_H
+mdefine_line|#define _ASM_M32R_THREAD_INFO_H
+multiline_comment|/* thread_info.h: m32r low-level thread information&n; *&n; * Copyright (C) 2002  David Howells (dhowells@redhat.com)&n; * - Incorporating suggestions made by Linus Torvalds and Dave Miller&n; * Copyright (C) 2004  Hirokazu Takata &lt;takata at linux-m32r.org&gt;&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
@@ -52,7 +52,7 @@ DECL|member|addr_limit
 id|mm_segment_t
 id|addr_limit
 suffix:semicolon
-multiline_comment|/* thread address space:&n;&t;&t;&t;&t;&t; &t;   0-0xBFFFFFFF for user-thead&n;&t;&t;&t;&t;&t;&t;   0-0xFFFFFFFF for kernel-thread&n;&t;&t;&t;&t;&t;&t;*/
+multiline_comment|/* thread address space:&n;&t;&t;&t;&t;&t; &t;   0-0xBFFFFFFF for user-thread&n;&t;&t;&t;&t;&t;&t;   0-0xFFFFFFFF for kernel-thread&n;&t;&t;&t;&t;&t;&t;*/
 DECL|member|restart_block
 r_struct
 id|restart_block
@@ -87,7 +87,7 @@ DECL|macro|TI_RESTART_BLOCK
 mdefine_line|#define TI_RESTART_BLOCK 0x000001C
 macro_line|#endif
 DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x10000000
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; *&n; * preempt_count needs to be 1 initially, until the scheduler is functional.&n; */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|INIT_THREAD_INFO
@@ -96,6 +96,8 @@ DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack
 mdefine_line|#define init_stack&t;&t;(init_thread_union.stack)
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 multiline_comment|/* how to get the thread information struct from C */
 DECL|function|current_thread_info
 r_static
@@ -117,12 +119,22 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;ldi&t;%0, #0xffffe000;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;and&t;%0, sp;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;ldi&t;%0, #%1&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;and&t;%0, sp&t;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
 id|ti
+)paren
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+op_complement
+(paren
+id|THREAD_SIZE
+op_minus
+l_int|1
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -131,17 +143,97 @@ id|ti
 suffix:semicolon
 )brace
 multiline_comment|/* thread information allocation */
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
+macro_line|#if CONFIG_DEBUG_STACK_USAGE
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(task) &bslash;&n;&t;((struct thread_info *) __get_free_pages(GFP_KERNEL,1))
+mdefine_line|#define alloc_thread_info(tsk)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;struct thread_info *ret;&t;&t;&t;&bslash;&n;&t; &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; &t;ret = kmalloc(THREAD_SIZE, GFP_KERNEL);&t;&t;&bslash;&n;&t; &t;if (ret)&t;&t;&t;&t;&t;&bslash;&n;&t; &t;&t;memset(ret, 0, THREAD_SIZE);&t;&t;&bslash;&n;&t; &t;ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; })
+macro_line|#else
+DECL|macro|alloc_thread_info
+mdefine_line|#define alloc_thread_info(tsk) kmalloc(THREAD_SIZE, GFP_KERNEL)
+macro_line|#endif
 DECL|macro|free_thread_info
-mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), 1)
+mdefine_line|#define free_thread_info(info) kfree(info)
 DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
+DECL|macro|TI_FLAG_FAULT_CODE_SHIFT
+mdefine_line|#define TI_FLAG_FAULT_CODE_SHIFT&t;28
+DECL|function|set_thread_fault_code
+r_static
+r_inline
+r_void
+id|set_thread_fault_code
+c_func
+(paren
+r_int
+r_int
+id|val
+)paren
+(brace
+r_struct
+id|thread_info
+op_star
+id|ti
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ti-&gt;flags
+op_assign
+(paren
+id|ti-&gt;flags
+op_amp
+(paren
+op_complement
+l_int|0
+op_rshift
+(paren
+l_int|32
+op_minus
+id|TI_FLAG_FAULT_CODE_SHIFT
+)paren
+)paren
+)paren
+op_or
+(paren
+id|val
+op_lshift
+id|TI_FLAG_FAULT_CODE_SHIFT
+)paren
+suffix:semicolon
+)brace
+DECL|function|get_thread_fault_code
+r_static
+r_inline
+r_int
+r_int
+id|get_thread_fault_code
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|thread_info
+op_star
+id|ti
+op_assign
+id|current_thread_info
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|ti-&gt;flags
+op_rshift
+id|TI_FLAG_FAULT_CODE_SHIFT
+suffix:semicolon
+)brace
 macro_line|#else /* !__ASSEMBLY__ */
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE&t;8192
 multiline_comment|/* how to get the thread information struct from ASM */
 DECL|macro|GET_THREAD_INFO
 mdefine_line|#define GET_THREAD_INFO(reg)&t;GET_THREAD_INFO reg
@@ -153,8 +245,7 @@ id|ldi
 "&bslash;"
 id|reg
 comma
-macro_line|#0xffffe000
-DECL|variable|reg
+macro_line|#-THREAD_SIZE
 op_logical_and
 "&bslash;"
 id|reg
@@ -178,6 +269,7 @@ DECL|macro|TIF_IRET
 mdefine_line|#define TIF_IRET&t;&t;5&t;/* return with iret */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;16&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
+multiline_comment|/* 31..28 fault code */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_NOTIFY_RESUME
@@ -200,5 +292,5 @@ multiline_comment|/*&n; * Thread-synchronous status.&n; *&n; * This is different
 DECL|macro|TS_USEDFPU
 mdefine_line|#define TS_USEDFPU&t;&t;0x0001&t;/* FPU was used by this task this quantum (SMP) */
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* _ASM_THREAD_INFO_H */
+macro_line|#endif /* _ASM_M32R_THREAD_INFO_H */
 eof

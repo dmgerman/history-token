@@ -46,6 +46,20 @@ id|regs_out
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|ptrace_setfpregs
+c_func
+(paren
+r_int
+id|pid
+comma
+r_int
+r_int
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|arch_enter_kernel
 c_func
@@ -90,6 +104,10 @@ macro_line|#ifndef PTRACE_SYSEMU
 DECL|macro|PTRACE_SYSEMU
 mdefine_line|#define PTRACE_SYSEMU 31
 macro_line|#endif
+macro_line|#ifndef PTRACE_SYSEMU_SINGLESTEP
+DECL|macro|PTRACE_SYSEMU_SINGLESTEP
+mdefine_line|#define PTRACE_SYSEMU_SINGLESTEP 32
+macro_line|#endif
 r_void
 id|set_using_sysemu
 c_func
@@ -109,5 +127,7 @@ r_extern
 r_int
 id|sysemu_supported
 suffix:semicolon
+DECL|macro|SELECT_PTRACE_OPERATION
+mdefine_line|#define SELECT_PTRACE_OPERATION(sysemu_mode, singlestep_mode) &bslash;&n;&t;(((int[3][3] ) { &bslash;&n;&t;&t;{ PTRACE_SYSCALL, PTRACE_SYSCALL, PTRACE_SINGLESTEP }, &bslash;&n;&t;&t;{ PTRACE_SYSEMU, PTRACE_SYSEMU, PTRACE_SINGLESTEP }, &bslash;&n;&t;&t;{ PTRACE_SYSEMU, PTRACE_SYSEMU_SINGLESTEP, PTRACE_SYSEMU_SINGLESTEP }}) &bslash;&n;&t;&t;[sysemu_mode][singlestep_mode])
 macro_line|#endif
 eof

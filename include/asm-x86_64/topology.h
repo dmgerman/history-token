@@ -29,6 +29,21 @@ id|pci_bus_to_cpumask
 (braket
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_NUMA
+r_extern
+r_int
+id|__node_distance
+c_func
+(paren
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|macro|node_distance
+mdefine_line|#define node_distance(a,b) __node_distance(a,b)
+multiline_comment|/* #else fallback version */
+macro_line|#endif
 DECL|macro|cpu_to_node
 mdefine_line|#define cpu_to_node(cpu)&t;&t;(cpu_to_node[cpu])
 DECL|macro|parent_node

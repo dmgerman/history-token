@@ -3727,7 +3727,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_static
 r_int
 DECL|function|ext3_journal_dirty_data
 id|ext3_journal_dirty_data
