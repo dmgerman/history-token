@@ -23,7 +23,7 @@ DECL|macro|MAX_COPY_PREFETCH
 mdefine_line|#define MAX_COPY_PREFETCH&t;1
 macro_line|#else
 DECL|macro|L1_CACHE_LINE_SIZE
-mdefine_line|#define&t;L1_CACHE_LINE_SIZE  32
+mdefine_line|#define&t;L1_CACHE_LINE_SIZE&t;32
 DECL|macro|LG_L1_CACHE_LINE_SIZE
 mdefine_line|#define LG_L1_CACHE_LINE_SIZE&t;5
 DECL|macro|MAX_COPY_PREFETCH
@@ -31,6 +31,8 @@ mdefine_line|#define MAX_COPY_PREFETCH&t;4
 macro_line|#endif
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define&t;L1_CACHE_BYTES L1_CACHE_LINE_SIZE
+DECL|macro|L1_CACHE_SHIFT
+mdefine_line|#define L1_CACHE_SHIFT LG_L1_CACHE_LINE_SIZE
 DECL|macro|SMP_CACHE_BYTES
 mdefine_line|#define&t;SMP_CACHE_BYTES L1_CACHE_BYTES
 DECL|macro|L1_CACHE_ALIGN
