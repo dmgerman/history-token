@@ -216,8 +216,6 @@ DECL|macro|US_FL_FIX_CAPACITY
 mdefine_line|#define US_FL_FIX_CAPACITY    0x00000080 /* READ CAPACITY response too big  */
 DECL|macro|US_FL_DEV_ATTACHED
 mdefine_line|#define US_FL_DEV_ATTACHED    0x00010000 /* is the device attached?&t;    */
-DECL|macro|US_FLIDX_IP_WANTED
-mdefine_line|#define US_FLIDX_IP_WANTED   17  /* 0x00020000&t;is an IRQ expected?&t;    */
 DECL|macro|US_FLIDX_CAN_CANCEL
 mdefine_line|#define US_FLIDX_CAN_CANCEL  18  /* 0x00040000  okay to cancel current_urb? */
 DECL|macro|US_FLIDX_CANCEL_SG
@@ -343,6 +341,11 @@ DECL|member|recv_ctrl_pipe
 r_int
 r_int
 id|recv_ctrl_pipe
+suffix:semicolon
+DECL|member|recv_intr_pipe
+r_int
+r_int
+id|recv_intr_pipe
 suffix:semicolon
 multiline_comment|/* information about the device -- always good */
 DECL|member|vendor
@@ -474,36 +477,7 @@ id|atomic_t
 id|sm_state
 suffix:semicolon
 multiline_comment|/* what we are doing&t; */
-multiline_comment|/* interrupt info for CBI devices -- only good if attached */
-DECL|member|ip_waitq
-r_struct
-id|semaphore
-id|ip_waitq
-suffix:semicolon
-multiline_comment|/* for CBI interrupts&t; */
 multiline_comment|/* interrupt communications data */
-DECL|member|irq_urb_sem
-r_struct
-id|semaphore
-id|irq_urb_sem
-suffix:semicolon
-multiline_comment|/* to protect irq_urb&t; */
-DECL|member|irq_urb
-r_struct
-id|urb
-op_star
-id|irq_urb
-suffix:semicolon
-multiline_comment|/* for USB int requests */
-DECL|member|irqbuf
-r_int
-r_char
-id|irqbuf
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* buffer for USB IRQ&t; */
 DECL|member|irqdata
 r_int
 r_char
