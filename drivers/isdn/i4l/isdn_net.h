@@ -247,16 +247,6 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|isdn_other_setup
-c_func
-(paren
-id|isdn_net_dev
-op_star
-id|p
-)paren
-suffix:semicolon
 DECL|macro|ISDN_NET_MAX_QUEUE_LENGTH
 mdefine_line|#define ISDN_NET_MAX_QUEUE_LENGTH 2
 multiline_comment|/*&n; * is this particular channel busy?&n; */
