@@ -3729,7 +3729,7 @@ id|filp-&gt;f_dentry-&gt;d_inode
 op_member_access_from_pointer
 id|sk
 suffix:semicolon
-id|sk-&gt;user_data
+id|sk-&gt;sk_user_data
 op_assign
 id|server
 suffix:semicolon
@@ -3740,7 +3740,7 @@ id|xchg
 c_func
 (paren
 op_amp
-id|sk-&gt;data_ready
+id|sk-&gt;sk_data_ready
 comma
 id|smb_data_ready
 )paren
