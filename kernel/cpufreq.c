@@ -36,14 +36,7 @@ id|cpufreq_driver_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/* will go away once the locking mess is cleaned up */
-r_static
-id|DECLARE_MUTEX
-(paren
-id|cpufreq_driver_sem
-)paren
-suffix:semicolon
-multiline_comment|/**&n; * Two notifier lists: the &quot;policy&quot; list is involved in the &n; * validation process for a new CPU frequency policy; the &n; * &quot;transition&quot; list for kernel code that needs to handle&n; * changes to devices when the CPU clock speed changes.&n; * The mutex locks both lists. If both cpufreq_driver_sem&n; * and cpufreq_notifier_sem need to be hold, get cpufreq_driver_sem&n; * first.&n; */
+multiline_comment|/**&n; * Two notifier lists: the &quot;policy&quot; list is involved in the &n; * validation process for a new CPU frequency policy; the &n; * &quot;transition&quot; list for kernel code that needs to handle&n; * changes to devices when the CPU clock speed changes.&n; * The mutex locks both lists.&n; */
 DECL|variable|cpufreq_policy_notifier_list
 r_static
 r_struct
@@ -2755,14 +2748,6 @@ op_amp
 id|cpufreq_notifier_rwsem
 )paren
 suffix:semicolon
-multiline_comment|/* from here on we limit it to one limit and/or governor change running at the moment */
-id|down
-c_func
-(paren
-op_amp
-id|cpufreq_driver_sem
-)paren
-suffix:semicolon
 id|data-&gt;min
 op_assign
 id|policy-&gt;min
@@ -2891,13 +2876,6 @@ id|CPUFREQ_GOV_LIMITS
 )paren
 suffix:semicolon
 )brace
-id|up
-c_func
-(paren
-op_amp
-id|cpufreq_driver_sem
-)paren
-suffix:semicolon
 id|error_out
 suffix:colon
 id|up
@@ -3322,13 +3300,6 @@ op_amp
 id|cpufreq_sysdev_driver
 )paren
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|cpufreq_driver_sem
-)paren
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3355,13 +3326,6 @@ op_amp
 id|cpufreq_driver_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|cpufreq_driver_sem
 )paren
 suffix:semicolon
 r_return
