@@ -5227,7 +5227,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PREEMPT
 multiline_comment|/* Set the preempt count _outside_ the spinlocks! */
 id|idle-&gt;thread_info-&gt;preempt_count
 op_assign
@@ -5237,7 +5236,6 @@ op_ge
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_extern
 r_void
