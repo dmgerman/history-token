@@ -198,7 +198,7 @@ id|skb
 comma
 r_enum
 id|ip_conntrack_info
-id|conntrackinfo
+id|ctinfo
 )paren
 (brace
 multiline_comment|/* If we&squot;ve seen traffic both ways, this is some kind of UDP&n;&t;   stream.  Extend timeout. */
@@ -215,10 +215,14 @@ id|conntrack-&gt;status
 )paren
 )paren
 (brace
-id|ip_ct_refresh
+id|ip_ct_refresh_acct
 c_func
 (paren
 id|conntrack
+comma
+id|ctinfo
+comma
+id|skb
 comma
 id|ip_ct_udp_timeout_stream
 )paren
@@ -235,10 +239,14 @@ id|conntrack-&gt;status
 suffix:semicolon
 )brace
 r_else
-id|ip_ct_refresh
+id|ip_ct_refresh_acct
 c_func
 (paren
 id|conntrack
+comma
+id|ctinfo
+comma
+id|skb
 comma
 id|ip_ct_udp_timeout
 )paren

@@ -153,10 +153,14 @@ r_return
 id|NF_ACCEPT
 suffix:semicolon
 multiline_comment|/* increase the UDP timeout of the master connection as replies from&n;&t; * Amanda clients to the server can be quite delayed */
-id|ip_ct_refresh
+id|ip_ct_refresh_acct
 c_func
 (paren
 id|ct
+comma
+id|ctinfo
+comma
+l_int|NULL
 comma
 id|master_timeout
 op_star

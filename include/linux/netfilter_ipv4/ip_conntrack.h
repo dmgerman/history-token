@@ -295,6 +295,20 @@ id|help
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|ip_conntrack_counter
+r_struct
+id|ip_conntrack_counter
+(brace
+DECL|member|packets
+id|u_int64_t
+id|packets
+suffix:semicolon
+DECL|member|bytes
+id|u_int64_t
+id|bytes
+suffix:semicolon
+)brace
+suffix:semicolon
 r_struct
 id|ip_conntrack_helper
 suffix:semicolon
@@ -329,6 +343,17 @@ r_struct
 id|timer_list
 id|timeout
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_CT_ACCT
+multiline_comment|/* Accounting Information (same cache line as other written members) */
+DECL|member|counters
+r_struct
+id|ip_conntrack_counter
+id|counters
+(braket
+id|IP_CT_DIR_MAX
+)braket
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* If we&squot;re expecting another related connection, this will be&n;           in expected linked list */
 DECL|member|sibling_list
 r_struct
@@ -527,13 +552,23 @@ suffix:semicolon
 multiline_comment|/* Refresh conntrack for this many jiffies */
 r_extern
 r_void
-id|ip_ct_refresh
+id|ip_ct_refresh_acct
 c_func
 (paren
 r_struct
 id|ip_conntrack
 op_star
 id|ct
+comma
+r_enum
+id|ip_conntrack_info
+id|ctinfo
+comma
+r_const
+r_struct
+id|sk_buff
+op_star
+id|skb
 comma
 r_int
 r_int

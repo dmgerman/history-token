@@ -355,10 +355,14 @@ op_amp
 id|ct-&gt;proto.icmp.count
 )paren
 suffix:semicolon
-id|ip_ct_refresh
+id|ip_ct_refresh_acct
 c_func
 (paren
 id|ct
+comma
+id|ctinfo
+comma
+id|skb
 comma
 id|ip_ct_icmp_timeout
 )paren
