@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/serio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &quot;psmouse.h&quot;
 macro_line|#include &quot;synaptics.h&quot;
 macro_line|#include &quot;logips2pp.h&quot;
@@ -2103,6 +2104,90 @@ id|psmouse
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Reinitialize mouse hardware after software suspend.&n; */
+DECL|function|psmouse_pm_callback
+r_static
+r_int
+id|psmouse_pm_callback
+c_func
+(paren
+r_struct
+id|pm_dev
+op_star
+id|dev
+comma
+id|pm_request_t
+id|request
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+r_struct
+id|psmouse
+op_star
+id|psmouse
+op_assign
+id|dev-&gt;data
+suffix:semicolon
+r_struct
+id|serio_dev
+op_star
+id|ser_dev
+op_assign
+id|psmouse-&gt;serio-&gt;dev
+suffix:semicolon
+id|synaptics_disconnect
+c_func
+(paren
+id|psmouse
+)paren
+suffix:semicolon
+multiline_comment|/* We need to reopen the serio port to reinitialize the i8042 controller */
+id|serio_close
+c_func
+(paren
+id|psmouse-&gt;serio
+)paren
+suffix:semicolon
+id|serio_open
+c_func
+(paren
+id|psmouse-&gt;serio
+comma
+id|ser_dev
+)paren
+suffix:semicolon
+multiline_comment|/* Probe and re-initialize the mouse */
+id|psmouse_probe
+c_func
+(paren
+id|psmouse
+)paren
+suffix:semicolon
+id|psmouse_initialize
+c_func
+(paren
+id|psmouse
+)paren
+suffix:semicolon
+id|synaptics_pt_init
+c_func
+(paren
+id|psmouse
+)paren
+suffix:semicolon
+id|psmouse_activate
+c_func
+(paren
+id|psmouse
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * psmouse_connect() is a callback from the serio module when&n; * an unhandled serio port is found.&n; */
 DECL|function|psmouse_connect
 r_static
@@ -2125,6 +2210,11 @@ r_struct
 id|psmouse
 op_star
 id|psmouse
+suffix:semicolon
+r_struct
+id|pm_dev
+op_star
+id|pmdev
 suffix:semicolon
 r_if
 c_cond
@@ -2317,6 +2407,33 @@ id|psmouse
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+)brace
+id|pmdev
+op_assign
+id|pm_register
+c_func
+(paren
+id|PM_SYS_DEV
+comma
+id|PM_SYS_UNKNOWN
+comma
+id|psmouse_pm_callback
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pmdev
+)paren
+(brace
+id|psmouse-&gt;dev.pm_dev
+op_assign
+id|pmdev
+suffix:semicolon
+id|pmdev-&gt;data
+op_assign
+id|psmouse
 suffix:semicolon
 )brace
 id|sprintf
