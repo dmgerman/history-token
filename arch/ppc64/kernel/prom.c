@@ -8344,6 +8344,12 @@ op_amp
 id|np-&gt;kref
 )paren
 suffix:semicolon
+id|of_node_get
+c_func
+(paren
+id|np
+)paren
+suffix:semicolon
 id|np-&gt;parent
 op_assign
 id|derive_parent
