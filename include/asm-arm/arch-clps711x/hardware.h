@@ -55,6 +55,13 @@ mdefine_line|#define EP7212_VIRT_BASE&t;CLPS7111_VIRT_BASE
 DECL|macro|EP7212_BASE
 mdefine_line|#define EP7212_BASE&t;&t;CLPS7111_VIRT_BASE
 macro_line|#include &lt;asm/hardware/ep7212.h&gt;
+macro_line|#elif define (CONFIG_ARCH_CEIVA)
+DECL|macro|EP7212_VIRT_BASE
+mdefine_line|#define EP7212_VIRT_BASE&t;CLPS7111_VIRT_BASE
+DECL|macro|EP7212_BASE
+mdefine_line|#define EP7212_BASE&t;&t;CLPS7111_VIRT_BASE
+macro_line|#include &lt;asm/hardware/clps7111.h&gt;
+macro_line|#include &lt;asm/hardware/ep7212.h&gt;
 macro_line|#endif
 DECL|macro|SYSPLD_VIRT_BASE
 mdefine_line|#define SYSPLD_VIRT_BASE&t;0xfe000000
@@ -138,5 +145,61 @@ DECL|macro|EDB_PD2_LCDEN
 mdefine_line|#define EDB_PD2_LCDEN&t;&t;(1&lt;&lt;2)
 DECL|macro|EDB_PD3_LCDBL
 mdefine_line|#define EDB_PD3_LCDBL&t;&t;(1&lt;&lt;3)
+macro_line|#if defined (CONFIG_ARCH_CEIVA)
+DECL|macro|CEIVA_VIRT_BASE
+mdefine_line|#define  CEIVA_VIRT_BASE&t;CLPS7111_VIRT_BASE
+DECL|macro|CEIVA_BASE
+mdefine_line|#define  CEIVA_BASE&t;&t;CLPS7111_VIRT_BASE
+macro_line|#include &lt;asm/hardware/clps7111.h&gt;
+macro_line|#include &lt;asm/hardware/ep7212.h&gt;
+multiline_comment|/*&n; * The two flash banks are wired to chip selects 0 and 1. This is the mapping&n; * for them.&n; *&n; * nCS0 and nCS1 are at 0x70000000 and 0x60000000, respectively, when running&n; * in jumpered boot mode.&n; */
+DECL|macro|CEIVA_PHYS_FLASH1
+mdefine_line|#define CEIVA_PHYS_FLASH1&t;CS0_PHYS_BASE&t;/* physical */
+DECL|macro|CEIVA_PHYS_FLASH2
+mdefine_line|#define CEIVA_PHYS_FLASH2&t;CS1_PHYS_BASE&t;/* physical */
+DECL|macro|CEIVA_VIRT_FLASH1
+mdefine_line|#define CEIVA_VIRT_FLASH1&t;(0xfa000000)&t;/* virtual */
+DECL|macro|CEIVA_VIRT_FLASH2
+mdefine_line|#define CEIVA_VIRT_FLASH2&t;(0xfb000000)&t;/* virtual */
+DECL|macro|CEIVA_FLASH_SIZE
+mdefine_line|#define CEIVA_FLASH_SIZE        0x100000
+DECL|macro|CEIVA_FLASH_WIDTH
+mdefine_line|#define CEIVA_FLASH_WIDTH       2
+DECL|macro|SRAM_START
+mdefine_line|#define SRAM_START       0x60000000
+DECL|macro|SRAM_SIZE
+mdefine_line|#define SRAM_SIZE        0xc000
+DECL|macro|SRAM_WIDTH
+mdefine_line|#define SRAM_WIDTH       4
+DECL|macro|BOOTROM_START
+mdefine_line|#define BOOTROM_START    0x70000000
+DECL|macro|BOOTROM_SIZE
+mdefine_line|#define BOOTROM_SIZE     0x80
+DECL|macro|BOOTROM_WIDTH
+mdefine_line|#define BOOTROM_WIDTH    4
+multiline_comment|/*&n; * SED1355 LCD controller&n; */
+DECL|macro|CEIVA_PHYS_SED1355
+mdefine_line|#define CEIVA_PHYS_SED1355&t;CS2_PHYS_BASE
+DECL|macro|CEIVA_VIRT_SED1355
+mdefine_line|#define CEIVA_VIRT_SED1355&t;(0xfc000000)
+multiline_comment|/*&n; * Relevant bits in port D, which controls power to the various parts of&n; * the LCD on the Ceiva Photo Max, and reset to the LCD controller.&n; */
+singleline_comment|// Reset line to SED1355 (must be high to operate)
+DECL|macro|CEIVA_PD1_LCDRST
+mdefine_line|#define CEIVA_PD1_LCDRST&t;(1&lt;&lt;1)
+singleline_comment|// LCD panel enable (set to one, to enable LCD)
+DECL|macro|CEIVA_PD4_LCDEN
+mdefine_line|#define CEIVA_PD4_LCDEN&t;&t;(1&lt;&lt;4)
+singleline_comment|// Backlight (set to one, to turn on backlight
+DECL|macro|CEIVA_PD5_LCDBL
+mdefine_line|#define CEIVA_PD5_LCDBL&t;&t;(1&lt;&lt;5)
+multiline_comment|/*&n; * Relevant bits in port B, which report the status of the buttons.&n; */
+singleline_comment|// White button
+DECL|macro|CEIVA_PB4_WHT_BTN
+mdefine_line|#define CEIVA_PB4_WHT_BTN&t;(1&lt;&lt;4)
+singleline_comment|// Black button
+DECL|macro|CEIVA_PB0_BLK_BTN
+mdefine_line|#define CEIVA_PB0_BLK_BTN&t;(1&lt;&lt;0)
+macro_line|#endif 
+singleline_comment|// #if defined (CONFIG_ARCH_CEIVA)
 macro_line|#endif
 eof
