@@ -24,22 +24,6 @@ macro_line|#ifndef __HAVE_DMA_SCHEDULE
 DECL|macro|__HAVE_DMA_SCHEDULE
 mdefine_line|#define __HAVE_DMA_SCHEDULE&t;&t;0
 macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_FLUSH
-DECL|macro|__HAVE_DMA_FLUSH
-mdefine_line|#define __HAVE_DMA_FLUSH&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_READY
-DECL|macro|__HAVE_DMA_READY
-mdefine_line|#define __HAVE_DMA_READY&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_QUIESCENT
-DECL|macro|__HAVE_DMA_QUIESCENT
-mdefine_line|#define __HAVE_DMA_QUIESCENT&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_RELEASE
-DECL|macro|__HAVE_RELEASE
-mdefine_line|#define __HAVE_RELEASE&t;&t;&t;0
-macro_line|#endif
 macro_line|#ifndef __HAVE_COUNTERS
 DECL|macro|__HAVE_COUNTERS
 mdefine_line|#define __HAVE_COUNTERS&t;&t;&t;0
@@ -61,41 +45,9 @@ macro_line|#ifndef __HAVE_DRIVER_FOPS_POLL
 DECL|macro|__HAVE_DRIVER_FOPS_POLL
 mdefine_line|#define __HAVE_DRIVER_FOPS_POLL&t;&t;0
 macro_line|#endif
-macro_line|#ifndef DRIVER_PREINIT
-DECL|macro|DRIVER_PREINIT
-mdefine_line|#define DRIVER_PREINIT()
-macro_line|#endif
-macro_line|#ifndef DRIVER_POSTINIT
-DECL|macro|DRIVER_POSTINIT
-mdefine_line|#define DRIVER_POSTINIT()
-macro_line|#endif
-macro_line|#ifndef DRIVER_PRERELEASE
-DECL|macro|DRIVER_PRERELEASE
-mdefine_line|#define DRIVER_PRERELEASE()
-macro_line|#endif
-macro_line|#ifndef DRIVER_PRETAKEDOWN
-DECL|macro|DRIVER_PRETAKEDOWN
-mdefine_line|#define DRIVER_PRETAKEDOWN()
-macro_line|#endif
-macro_line|#ifndef DRIVER_POSTCLEANUP
-DECL|macro|DRIVER_POSTCLEANUP
-mdefine_line|#define DRIVER_POSTCLEANUP()
-macro_line|#endif
-macro_line|#ifndef DRIVER_PRESETUP
-DECL|macro|DRIVER_PRESETUP
-mdefine_line|#define DRIVER_PRESETUP()
-macro_line|#endif
-macro_line|#ifndef DRIVER_POSTSETUP
-DECL|macro|DRIVER_POSTSETUP
-mdefine_line|#define DRIVER_POSTSETUP()
-macro_line|#endif
 macro_line|#ifndef DRIVER_IOCTLS
 DECL|macro|DRIVER_IOCTLS
 mdefine_line|#define DRIVER_IOCTLS
-macro_line|#endif
-macro_line|#ifndef DRIVER_OPEN_HELPER
-DECL|macro|DRIVER_OPEN_HELPER
-mdefine_line|#define DRIVER_OPEN_HELPER( priv, dev )
 macro_line|#endif
 macro_line|#ifndef DRIVER_FOPS
 DECL|macro|DRIVER_FOPS
@@ -173,7 +125,6 @@ suffix:semicolon
 id|DRIVER_FOPS
 suffix:semicolon
 multiline_comment|/** Ioctl table */
-r_static
 id|drm_ioctl_desc_t
 id|DRM
 c_func
@@ -728,29 +679,6 @@ comma
 l_int|0
 )brace
 comma
-macro_line|#if __HAVE_DMA_FLUSH
-multiline_comment|/* Gamma only, really */
-(braket
-id|DRM_IOCTL_NR
-c_func
-(paren
-id|DRM_IOCTL_FINISH
-)paren
-)braket
-op_assign
-(brace
-id|DRM
-c_func
-(paren
-id|finish
-)paren
-comma
-l_int|1
-comma
-l_int|0
-)brace
-comma
-macro_line|#else
 (braket
 id|DRM_IOCTL_NR
 c_func
@@ -771,7 +699,6 @@ comma
 l_int|0
 )brace
 comma
-macro_line|#endif
 macro_line|#if __HAVE_DMA
 (braket
 id|DRM_IOCTL_NR
@@ -1183,9 +1110,17 @@ id|dev
 r_int
 id|i
 suffix:semicolon
-id|DRIVER_PRESETUP
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.presetup
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|presetup
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 id|atomic_set
@@ -1665,9 +1600,17 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The kernel&squot;s context could be created here, but is now created&n;&t; * in drm_dma_enqueue.&t;This is more resource-efficient for&n;&t; * hardware that does not do DMA, but may mean that&n;&t; * drm_select_queue fails between the time the interrupt is&n;&t; * initialized and the time the queues are initialized.&n;&t; */
-id|DRIVER_POSTSETUP
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.postsetup
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|postsetup
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -1728,9 +1671,17 @@ c_func
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DRIVER_PRETAKEDOWN
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.pretakedown
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|pretakedown
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#if __HAVE_IRQ
@@ -2717,9 +2668,26 @@ id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-id|DRIVER_PREINIT
+id|DRM
 c_func
 (paren
+id|driver_register_fns
+)paren
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.preinit
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|preinit
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 macro_line|#if __REALLY_HAVE_AGP
@@ -2877,9 +2845,17 @@ id|pdev
 )paren
 )paren
 suffix:semicolon
-id|DRIVER_POSTINIT
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.postinit
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|postinit
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
 r_return
@@ -3166,12 +3142,20 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
-)brace
-id|DRIVER_POSTCLEANUP
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.postcleanup
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|postcleanup
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
+)brace
 id|DRM
 c_func
 (paren
@@ -3558,9 +3542,19 @@ comma
 id|dev-&gt;open_count
 )paren
 suffix:semicolon
-id|DRIVER_PRERELEASE
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.prerelease
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|prerelease
 c_func
 (paren
+id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 multiline_comment|/* ========================================================&n;&t; * Begin inline drm_release&n;&t; */
@@ -3615,13 +3609,21 @@ id|dev-&gt;lock.hw_lock-&gt;lock
 )paren
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_RELEASE
-id|DRIVER_RELEASE
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.release
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|release
 c_func
 (paren
+id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
-macro_line|#endif
 id|DRM
 c_func
 (paren
@@ -3642,11 +3644,12 @@ id|dev-&gt;lock.hw_lock-&gt;lock
 suffix:semicolon
 multiline_comment|/* FIXME: may require heavy-handed reset of&n;                                   hardware at this point, possibly&n;                                   processed via a callback to the X&n;                                   server. */
 )brace
-macro_line|#if __HAVE_RELEASE
 r_else
 r_if
 c_cond
 (paren
+id|dev-&gt;fn_tbl.release
+op_logical_and
 id|priv-&gt;lock_count
 op_logical_and
 id|dev-&gt;lock.hw_lock
@@ -3782,9 +3785,19 @@ op_logical_neg
 id|retcode
 )paren
 (brace
-id|DRIVER_RELEASE
+r_if
+c_cond
+(paren
+id|dev-&gt;fn_tbl.release
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|release
 c_func
 (paren
+id|dev
+comma
+id|filp
 )paren
 suffix:semicolon
 id|DRM
@@ -3803,7 +3816,7 @@ id|DRM_KERNEL_CONTEXT
 suffix:semicolon
 )brace
 )brace
-macro_line|#elif __HAVE_DMA
+macro_line|#if __HAVE_DMA
 id|DRM
 c_func
 (paren
@@ -4519,30 +4532,6 @@ id|lock.context
 )braket
 suffix:semicolon
 macro_line|#endif
-macro_line|#if __HAVE_DMA_FLUSH
-id|ret
-op_assign
-id|DRM
-c_func
-(paren
-id|flush_block_and_flush
-)paren
-(paren
-id|dev
-comma
-id|lock.context
-comma
-id|lock.flags
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret
-)paren
-(brace
 id|add_wait_queue
 c_func
 (paren
@@ -4657,30 +4646,6 @@ op_amp
 id|entry
 )paren
 suffix:semicolon
-)brace
-macro_line|#if __HAVE_DMA_FLUSH
-id|DRM
-c_func
-(paren
-id|flush_unblock
-)paren
-(paren
-id|dev
-comma
-id|lock.context
-comma
-id|lock.flags
-)paren
-suffix:semicolon
-multiline_comment|/* cleanup phase */
-macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret
-)paren
-(brace
 id|sigemptyset
 c_func
 (paren
@@ -4748,39 +4713,46 @@ op_amp
 id|dev-&gt;sigmask
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_READY
 r_if
 c_cond
+(paren
+id|dev-&gt;fn_tbl.dma_ready
+op_logical_and
 (paren
 id|lock.flags
 op_amp
 id|_DRM_LOCK_READY
 )paren
-(brace
-id|DRIVER_DMA_READY
+)paren
+id|dev-&gt;fn_tbl
+dot
+id|dma_ready
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if __HAVE_DMA_QUIESCENT
 r_if
 c_cond
+(paren
+id|dev-&gt;fn_tbl.dma_quiescent
+op_logical_and
 (paren
 id|lock.flags
 op_amp
 id|_DRM_LOCK_QUIESCENT
 )paren
-(brace
-id|DRIVER_DMA_QUIESCENT
+)paren
+r_return
+id|dev-&gt;fn_tbl
+dot
+id|dma_quiescent
 c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/* __HAVE_KERNEL_CTX_SWITCH isn&squot;t used by any of the&n;&t;&t; * drm modules in the DRI cvs tree, but it is required&n;&t;&t; * by the Sparc driver.&n;&t;&t; */
+multiline_comment|/* __HAVE_KERNEL_CTX_SWITCH isn&squot;t used by any of the&n;&t; * drm modules in the DRI cvs tree, but it is required&n;&t; * by the Sparc driver.&n;&t; */
 macro_line|#if __HAVE_KERNEL_CTX_SWITCH
 r_if
 c_cond
@@ -4805,7 +4777,6 @@ id|lock.context
 suffix:semicolon
 )brace
 macro_line|#endif
-)brace
 id|DRM_DEBUG
 c_func
 (paren

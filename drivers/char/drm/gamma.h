@@ -66,18 +66,8 @@ DECL|macro|__HAVE_DMA_WAITLIST
 mdefine_line|#define __HAVE_DMA_WAITLIST&t;&t;1
 DECL|macro|__HAVE_DMA_FREELIST
 mdefine_line|#define __HAVE_DMA_FREELIST&t;&t;1
-DECL|macro|__HAVE_DMA_FLUSH
-mdefine_line|#define __HAVE_DMA_FLUSH&t;&t;1
 DECL|macro|__HAVE_DMA_SCHEDULE
 mdefine_line|#define __HAVE_DMA_SCHEDULE&t;&t;1
-DECL|macro|__HAVE_DMA_READY
-mdefine_line|#define __HAVE_DMA_READY&t;&t;1
-DECL|macro|DRIVER_DMA_READY
-mdefine_line|#define DRIVER_DMA_READY() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;gamma_dma_ready(dev);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|__HAVE_DMA_QUIESCENT
-mdefine_line|#define __HAVE_DMA_QUIESCENT&t;&t;1
-DECL|macro|DRIVER_DMA_QUIESCENT
-mdefine_line|#define DRIVER_DMA_QUIESCENT() do {&t;&t;&t;&t;&t;&bslash;&n;&t;drm_gamma_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(drm_gamma_private_t *)dev-&gt;dev_private;&t;&t;&bslash;&n;&t;if (dev_priv-&gt;num_rast == 2)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;gamma_dma_quiescent_dual(dev);&t;&t;&t;&t;&bslash;&n;&t;else gamma_dma_quiescent_single(dev);&t;&t;&t;&t;&bslash;&n;&t;return 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|__HAVE_IRQ
 mdefine_line|#define __HAVE_IRQ&t;&t;&t;1
 DECL|macro|__HAVE_IRQ_BH

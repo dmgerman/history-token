@@ -41,13 +41,6 @@ DECL|macro|__HAVE_COUNTER8
 mdefine_line|#define __HAVE_COUNTER8         _DRM_STAT_SECONDARY
 DECL|macro|__HAVE_COUNTER9
 mdefine_line|#define __HAVE_COUNTER9         _DRM_STAT_DMA
-multiline_comment|/* Driver customization:&n; */
-DECL|macro|__HAVE_RELEASE
-mdefine_line|#define __HAVE_RELEASE&t;&t;1
-DECL|macro|DRIVER_RELEASE
-mdefine_line|#define DRIVER_RELEASE() do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;i830_reclaim_buffers( filp );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|DRIVER_PRETAKEDOWN
-mdefine_line|#define DRIVER_PRETAKEDOWN() do {&t;&t;&t;&t;&t;&bslash;&n;&t;i830_dma_cleanup( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* DMA customization:&n; */
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;1
@@ -57,10 +50,6 @@ DECL|macro|__HAVE_DMA_WAITLIST
 mdefine_line|#define __HAVE_DMA_WAITLIST&t;0
 DECL|macro|__HAVE_DMA_RECLAIM
 mdefine_line|#define __HAVE_DMA_RECLAIM&t;1
-DECL|macro|__HAVE_DMA_QUIESCENT
-mdefine_line|#define __HAVE_DMA_QUIESCENT&t;1
-DECL|macro|DRIVER_DMA_QUIESCENT
-mdefine_line|#define DRIVER_DMA_QUIESCENT() do {&t;&t;&t;&t;&t;&bslash;&n;&t;i830_dma_quiescent( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Driver will work either way: IRQ&squot;s save cpu time when waiting for&n; * the card, but are subject to subtle interactions between bios,&n; * hardware and the driver.&n; */
 multiline_comment|/* XXX: Add vblank support? */
 DECL|macro|USE_IRQS
