@@ -1572,7 +1572,11 @@ multiline_comment|/* reset S-frame and (maybe) C-frame masks */
 id|qh-&gt;hw_info2
 op_and_assign
 op_complement
+id|__constant_cpu_to_le32
+c_func
+(paren
 l_int|0xffff
+)paren
 suffix:semicolon
 id|qh-&gt;hw_info2
 op_or_assign
