@@ -287,8 +287,9 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk)&t;(__KSTK_PTREGS(tsk)-&gt;psw.addr)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)&t;(__KSTK_PTREGS(tsk)-&gt;gprs[15])
+multiline_comment|/*&n; * Give up the time slice of the virtual PU.&n; */
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;barrier()
+mdefine_line|#define cpu_relax()&t;asm volatile (&quot;diag 0,0,68&quot; : : : &quot;memory&quot;)
 multiline_comment|/*&n; * Set PSW mask to specified value, while leaving the&n; * PSW addr pointing to the next instruction.&n; */
 DECL|function|__load_psw_mask
 r_static

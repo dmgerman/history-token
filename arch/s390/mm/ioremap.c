@@ -120,8 +120,6 @@ comma
 id|__pgprot
 c_func
 (paren
-id|_PAGE_PRESENT
-op_or
 id|flags
 )paren
 )paren

@@ -105,7 +105,7 @@ mdefine_line|#define TIOCM_OUT1&t;0x2000
 DECL|macro|TIOCM_OUT2
 mdefine_line|#define TIOCM_OUT2&t;0x4000
 DECL|macro|TIOCM_LOOP
-mdefine_line|#define TIOCM_LOOP      0x8000
+mdefine_line|#define TIOCM_LOOP&t;0x8000
 multiline_comment|/* ioctl (fd, TIOCSERGETLSR, &amp;result) where result may be as below */
 multiline_comment|/* line disciplines */
 DECL|macro|N_TTY
@@ -135,7 +135,9 @@ mdefine_line|#define N_IRDA&t;&t;11&t;/* Linux IR - http://irda.sourceforge.net/
 DECL|macro|N_SMSBLOCK
 mdefine_line|#define N_SMSBLOCK&t;12&t;/* SMS block mode - for talking to GSM data cards about SMS messages */
 DECL|macro|N_HDLC
-mdefine_line|#define N_HDLC         13&t;/* synchronous HDLC */
+mdefine_line|#define N_HDLC&t;&t;13&t;/* synchronous HDLC */
+DECL|macro|N_SYNC_PPP
+mdefine_line|#define N_SYNC_PPP&t;14&t;/* synchronous PPP */
 DECL|macro|N_HCI
 mdefine_line|#define N_HCI&t;&t;15  /* Bluetooth HCI UART */
 macro_line|#ifdef __KERNEL__
@@ -143,8 +145,10 @@ multiline_comment|/*&t;intr=^C&t;&t;quit=^&bslash;&t;&t;erase=del&t;kill=^U&n;&t
 DECL|macro|INIT_C_CC
 mdefine_line|#define INIT_C_CC &quot;&bslash;003&bslash;034&bslash;177&bslash;025&bslash;004&bslash;0&bslash;1&bslash;0&bslash;021&bslash;023&bslash;032&bslash;0&bslash;022&bslash;017&bslash;027&bslash;026&bslash;0&quot;
 multiline_comment|/*&n; * Translate a &quot;termio&quot; structure into a &quot;termios&quot;. Ugh.&n; */
+DECL|macro|SET_LOW_TERMIOS_BITS
+mdefine_line|#define SET_LOW_TERMIOS_BITS(termios, termio, x) { &bslash;&n;&t;unsigned short __tmp; &bslash;&n;&t;get_user(__tmp,&amp;(termio)-&gt;x); &bslash;&n;&t;(termios)-&gt;x = (0xffff0000 &amp; ((termios)-&gt;x)) | __tmp; &bslash;&n;}
 DECL|macro|user_termio_to_kernel_termios
-mdefine_line|#define user_termio_to_kernel_termios(termios, termio) &bslash;&n;({ &bslash;&n;        unsigned short tmp; &bslash;&n;        get_user(tmp, &amp;(termio)-&gt;c_iflag); &bslash;&n;        (termios)-&gt;c_iflag = (0xffff0000 &amp; ((termios)-&gt;c_iflag)) | tmp; &bslash;&n;        get_user(tmp, &amp;(termio)-&gt;c_oflag); &bslash;&n;        (termios)-&gt;c_oflag = (0xffff0000 &amp; ((termios)-&gt;c_oflag)) | tmp; &bslash;&n;        get_user(tmp, &amp;(termio)-&gt;c_cflag); &bslash;&n;        (termios)-&gt;c_cflag = (0xffff0000 &amp; ((termios)-&gt;c_cflag)) | tmp; &bslash;&n;        get_user(tmp, &amp;(termio)-&gt;c_lflag); &bslash;&n;        (termios)-&gt;c_lflag = (0xffff0000 &amp; ((termios)-&gt;c_lflag)) | tmp; &bslash;&n;        get_user((termios)-&gt;c_line, &amp;(termio)-&gt;c_line); &bslash;&n;&t;copy_from_user((termios)-&gt;c_cc, (termio)-&gt;c_cc, NCC); &bslash;&n;})
+mdefine_line|#define user_termio_to_kernel_termios(termios, termio) &bslash;&n;({ &bslash;&n;&t;SET_LOW_TERMIOS_BITS(termios, termio, c_iflag); &bslash;&n;&t;SET_LOW_TERMIOS_BITS(termios, termio, c_oflag); &bslash;&n;&t;SET_LOW_TERMIOS_BITS(termios, termio, c_cflag); &bslash;&n;&t;SET_LOW_TERMIOS_BITS(termios, termio, c_lflag); &bslash;&n;&t;copy_from_user((termios)-&gt;c_cc, (termio)-&gt;c_cc, NCC); &bslash;&n;})
 multiline_comment|/*&n; * Translate a &quot;termios&quot; structure into a &quot;termio&quot;. Ugh.&n; */
 DECL|macro|kernel_termios_to_user_termio
 mdefine_line|#define kernel_termios_to_user_termio(termio, termios) &bslash;&n;({ &bslash;&n;&t;put_user((termios)-&gt;c_iflag, &amp;(termio)-&gt;c_iflag); &bslash;&n;&t;put_user((termios)-&gt;c_oflag, &amp;(termio)-&gt;c_oflag); &bslash;&n;&t;put_user((termios)-&gt;c_cflag, &amp;(termio)-&gt;c_cflag); &bslash;&n;&t;put_user((termios)-&gt;c_lflag, &amp;(termio)-&gt;c_lflag); &bslash;&n;&t;put_user((termios)-&gt;c_line,  &amp;(termio)-&gt;c_line); &bslash;&n;&t;copy_to_user((termio)-&gt;c_cc, (termios)-&gt;c_cc, NCC); &bslash;&n;})

@@ -90,17 +90,27 @@ mdefine_line|#define VMALLOC_VMADDR(x) ((unsigned long)(x))
 DECL|macro|VMALLOC_END
 mdefine_line|#define VMALLOC_END     (0x7fffffffL)
 multiline_comment|/*&n; * A pagetable entry of S390 has following format:&n; *  |   PFRA          |    |  OS  |&n; * 0                   0IP0&n; * 00000000001111111111222222222233&n; * 01234567890123456789012345678901&n; *&n; * I Page-Invalid Bit:    Page is not available for address-translation&n; * P Page-Protection Bit: Store access not possible for page&n; *&n; * A segmenttable entry of S390 has following format:&n; *  |   P-table origin      |  |PTL&n; * 0                         IC&n; * 00000000001111111111222222222233&n; * 01234567890123456789012345678901&n; *&n; * I Segment-Invalid Bit:    Segment is not available for address-translation&n; * C Common-Segment Bit:     Segment is not private (PoP 3-30)&n; * PTL Page-Table-Length:    Page-table length (PTL+1*16 entries -&gt; up to 256)&n; *&n; * The segmenttable origin of S390 has following format:&n; *&n; *  |S-table origin   |     | STL |&n; * X                   **GPS&n; * 00000000001111111111222222222233&n; * 01234567890123456789012345678901&n; *&n; * X Space-Switch event:&n; * G Segment-Invalid Bit:     *&n; * P Private-Space Bit:       Segment is not private (PoP 3-30)&n; * S Storage-Alteration:&n; * STL Segment-Table-Length:  Segment-table length (STL+1*16 entries -&gt; up to 2048)&n; *&n; * A storage key has the following format:&n; * | ACC |F|R|C|0|&n; *  0   3 4 5 6 7&n; * ACC: access key&n; * F  : fetch protection bit&n; * R  : referenced bit&n; * C  : changed bit&n; */
-multiline_comment|/* Bits in the page table entry */
-DECL|macro|_PAGE_PRESENT
-mdefine_line|#define _PAGE_PRESENT   0x001          /* Software                         */
-DECL|macro|_PAGE_MKCLEAN
-mdefine_line|#define _PAGE_MKCLEAN   0x002          /* Software                         */
-DECL|macro|_PAGE_ISCLEAN
-mdefine_line|#define _PAGE_ISCLEAN   0x004&t;       /* Software&t;&t;&t;   */
+multiline_comment|/* Hardware bits in the page table entry */
 DECL|macro|_PAGE_RO
 mdefine_line|#define _PAGE_RO        0x200          /* HW read-only                     */
 DECL|macro|_PAGE_INVALID
 mdefine_line|#define _PAGE_INVALID   0x400          /* HW invalid                       */
+multiline_comment|/* Software bits in the page table entry */
+DECL|macro|_PAGE_MKCLEAN
+mdefine_line|#define _PAGE_MKCLEAN   0x002
+DECL|macro|_PAGE_ISCLEAN
+mdefine_line|#define _PAGE_ISCLEAN   0x004
+multiline_comment|/* Mask and four different kinds of invalid pages. */
+DECL|macro|_PAGE_INVALID_MASK
+mdefine_line|#define _PAGE_INVALID_MASK&t;0x601
+DECL|macro|_PAGE_INVALID_EMPTY
+mdefine_line|#define _PAGE_INVALID_EMPTY&t;0x400
+DECL|macro|_PAGE_INVALID_NONE
+mdefine_line|#define _PAGE_INVALID_NONE&t;0x001
+DECL|macro|_PAGE_INVALID_SWAP
+mdefine_line|#define _PAGE_INVALID_SWAP&t;0x200
+DECL|macro|_PAGE_INVALID_FILE
+mdefine_line|#define _PAGE_INVALID_FILE&t;0x201
 multiline_comment|/* Bits in the segment table entry */
 DECL|macro|_PAGE_TABLE_LEN
 mdefine_line|#define _PAGE_TABLE_LEN 0xf            /* only full page-tables            */
@@ -121,33 +131,31 @@ DECL|macro|_KERNEL_SEG_TABLE_LEN
 mdefine_line|#define _KERNEL_SEG_TABLE_LEN  0x7f    /* kernel-segment-table up to 2 GB  */
 multiline_comment|/*&n; * User and Kernel pagetables are identical&n; */
 DECL|macro|_PAGE_TABLE
-mdefine_line|#define _PAGE_TABLE     (_PAGE_TABLE_LEN )
+mdefine_line|#define _PAGE_TABLE&t;_PAGE_TABLE_LEN
 DECL|macro|_KERNPG_TABLE
-mdefine_line|#define _KERNPG_TABLE   (_PAGE_TABLE_LEN )
+mdefine_line|#define _KERNPG_TABLE&t;_PAGE_TABLE_LEN
 multiline_comment|/*&n; * The Kernel segment-tables includes the User segment-table&n; */
 DECL|macro|_SEGMENT_TABLE
-mdefine_line|#define _SEGMENT_TABLE  (_USER_SEG_TABLE_LEN|0x80000000|0x100)
+mdefine_line|#define _SEGMENT_TABLE&t;(_USER_SEG_TABLE_LEN|0x80000000|0x100)
 DECL|macro|_KERNSEG_TABLE
-mdefine_line|#define _KERNSEG_TABLE  (_KERNEL_SEG_TABLE_LEN)
+mdefine_line|#define _KERNSEG_TABLE&t;_KERNEL_SEG_TABLE_LEN
 DECL|macro|USER_STD_MASK
-mdefine_line|#define USER_STD_MASK           0x00000080UL
+mdefine_line|#define USER_STD_MASK&t;0x00000080UL
 multiline_comment|/*&n; * No mapping available&n; */
-DECL|macro|PAGE_INVALID
-mdefine_line|#define PAGE_INVALID&t;  __pgprot(_PAGE_INVALID)
 DECL|macro|PAGE_NONE_SHARED
-mdefine_line|#define PAGE_NONE_SHARED  __pgprot(_PAGE_PRESENT|_PAGE_INVALID)
+mdefine_line|#define PAGE_NONE_SHARED  __pgprot(_PAGE_INVALID_NONE)
 DECL|macro|PAGE_NONE_PRIVATE
-mdefine_line|#define PAGE_NONE_PRIVATE __pgprot(_PAGE_PRESENT|_PAGE_INVALID|_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_NONE_PRIVATE __pgprot(_PAGE_INVALID_NONE|_PAGE_ISCLEAN)
 DECL|macro|PAGE_RO_SHARED
-mdefine_line|#define PAGE_RO_SHARED&t;  __pgprot(_PAGE_PRESENT|_PAGE_RO)
+mdefine_line|#define PAGE_RO_SHARED&t;  __pgprot(_PAGE_RO)
 DECL|macro|PAGE_RO_PRIVATE
-mdefine_line|#define PAGE_RO_PRIVATE&t;  __pgprot(_PAGE_PRESENT|_PAGE_RO|_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_RO_PRIVATE&t;  __pgprot(_PAGE_RO|_PAGE_ISCLEAN)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;  __pgprot(_PAGE_PRESENT|_PAGE_RO|_PAGE_ISCLEAN)
+mdefine_line|#define PAGE_COPY&t;  __pgprot(_PAGE_RO|_PAGE_ISCLEAN)
 DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED&t;  __pgprot(_PAGE_PRESENT)
+mdefine_line|#define PAGE_SHARED&t;  __pgprot(0)
 DECL|macro|PAGE_KERNEL
-mdefine_line|#define PAGE_KERNEL&t;  __pgprot(_PAGE_PRESENT)
+mdefine_line|#define PAGE_KERNEL&t;  __pgprot(0)
 multiline_comment|/*&n; * The S390 can&squot;t do page protection for execute, and considers that the&n; * same are read. Also, write permissions imply read permissions. This is&n; * the closest we can get..&n; */
 multiline_comment|/*xwr*/
 DECL|macro|__P000
@@ -374,27 +382,6 @@ op_ne
 id|_PAGE_TABLE
 suffix:semicolon
 )brace
-DECL|function|pte_present
-r_extern
-r_inline
-r_int
-id|pte_present
-c_func
-(paren
-id|pte_t
-id|pte
-)paren
-(brace
-r_return
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_amp
-id|_PAGE_PRESENT
-suffix:semicolon
-)brace
 DECL|function|pte_none
 r_extern
 r_inline
@@ -408,6 +395,31 @@ id|pte
 (brace
 r_return
 (paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_INVALID_MASK
+)paren
+op_eq
+id|_PAGE_INVALID_EMPTY
+suffix:semicolon
+)brace
+DECL|function|pte_present
+r_extern
+r_inline
+r_int
+id|pte_present
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+op_logical_neg
 (paren
 id|pte_val
 c_func
@@ -415,17 +427,45 @@ c_func
 id|pte
 )paren
 op_amp
-(paren
 id|_PAGE_INVALID
-op_or
-id|_PAGE_RO
-op_or
-id|_PAGE_PRESENT
 )paren
+op_logical_or
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_INVALID_MASK
 )paren
 op_eq
-id|_PAGE_INVALID
+id|_PAGE_INVALID_NONE
+suffix:semicolon
+)brace
+DECL|function|pte_file
+r_extern
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
 )paren
+(brace
+r_return
+(paren
+id|pte_val
+c_func
+(paren
+id|pte
+)paren
+op_amp
+id|_PAGE_INVALID_MASK
+)paren
+op_eq
+id|_PAGE_INVALID_FILE
 suffix:semicolon
 )brace
 DECL|macro|pte_same
@@ -640,7 +680,7 @@ op_star
 id|ptep
 )paren
 op_assign
-id|_PAGE_INVALID
+id|_PAGE_INVALID_EMPTY
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The following pte modification functions only work if&n; * pte_present() is true. Undefined behaviour if not..&n; */
@@ -1197,9 +1237,7 @@ op_lshift
 l_int|12
 )paren
 op_or
-id|_PAGE_INVALID
-op_or
-id|_PAGE_RO
+id|_PAGE_INVALID_SWAP
 suffix:semicolon
 id|pte_val
 c_func
@@ -1230,6 +1268,12 @@ id|pte_t
 op_star
 id|pte_addr_t
 suffix:semicolon
+DECL|macro|PTE_FILE_MAX_BITS
+mdefine_line|#define PTE_FILE_MAX_BITS&t;26
+DECL|macro|pte_to_pgoff
+mdefine_line|#define pte_to_pgoff(__pte) &bslash;&n;&t;((((__pte).pte &gt;&gt; 12) &lt;&lt; 7) + (((__pte).pte &gt;&gt; 1) &amp; 0x7f))
+DECL|macro|pgoff_to_pte
+mdefine_line|#define pgoff_to_pte(__off) &bslash;&n;&t;((pte_t) { ((((__off) &amp; 0x7f) &lt;&lt; 1) + (((__off) &gt;&gt; 7) &lt;&lt; 12)) &bslash;&n;&t;&t;   | _PAGE_INVALID_FILE })
 macro_line|#endif /* !__ASSEMBLY__ */
 DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)   (1)

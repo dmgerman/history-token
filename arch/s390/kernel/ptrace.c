@@ -716,15 +716,60 @@ c_func
 id|child
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * I added child != current line so we can get the&n;&t; * ieee_instruction_pointer from the user structure DJB&n;&t; */
+multiline_comment|/*&n;&t; * Special cases to get/store the ieee instructions pointer.&n;&t; */
 r_if
 c_cond
 (paren
 id|child
-op_ne
+op_eq
 id|current
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|request
+op_eq
+id|PTRACE_PEEKUSR
+op_logical_and
+id|addr
+op_eq
+id|PT_IEEE_IP
+)paren
+r_return
+id|peek_user
+c_func
+(paren
+id|child
+comma
+id|addr
+comma
+id|data
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|request
+op_eq
+id|PTRACE_POKEUSR
+op_logical_and
+id|addr
+op_eq
+id|PT_IEEE_IP
+)paren
+r_return
+id|poke_user
+c_func
+(paren
+id|child
+comma
+id|addr
+comma
+id|data
+)paren
+suffix:semicolon
+)brace
 id|ret
 op_assign
 id|ptrace_check_attach
@@ -747,12 +792,6 @@ l_int|0
 r_return
 id|ret
 suffix:semicolon
-)brace
-multiline_comment|/* Remove high order bit from address. */
-id|addr
-op_and_assign
-id|PSW_ADDR_INSN
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -765,6 +804,11 @@ suffix:colon
 r_case
 id|PTRACE_PEEKDATA
 suffix:colon
+multiline_comment|/* Remove high order bit from address. */
+id|addr
+op_and_assign
+id|PSW_ADDR_INSN
+suffix:semicolon
 multiline_comment|/* read word at location addr. */
 id|copied
 op_assign
@@ -835,6 +879,11 @@ suffix:colon
 r_case
 id|PTRACE_POKEDATA
 suffix:colon
+multiline_comment|/* Remove high order bit from address. */
+id|addr
+op_and_assign
+id|PSW_ADDR_INSN
+suffix:semicolon
 multiline_comment|/* write the word at location addr. */
 id|copied
 op_assign

@@ -88,6 +88,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|invoke_softirq
+mdefine_line|#define invoke_softirq() do_call_softirq()
 macro_line|#if CONFIG_PREEMPT
 DECL|macro|in_atomic
 macro_line|# define in_atomic()&t;(in_interrupt() || preempt_count() == PREEMPT_ACTIVE)

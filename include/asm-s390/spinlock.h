@@ -144,22 +144,39 @@ op_star
 id|lp
 )paren
 (brace
+r_int
+r_int
+id|old
+suffix:semicolon
 id|__asm__
 id|__volatile
 c_func
 (paren
-l_string|&quot;    xc 0(4,%1),0(%1)&bslash;n&quot;
-l_string|&quot;    bcr 15,0&quot;
+l_string|&quot;cs %0,%3,0(%4)&quot;
 suffix:colon
-l_string|&quot;+m&quot;
+l_string|&quot;=d&quot;
+(paren
+id|old
+)paren
+comma
+l_string|&quot;=m&quot;
 (paren
 id|lp-&gt;lock
 )paren
 suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|lp-&gt;lock
+)paren
+comma
+l_string|&quot;d&quot;
+(paren
+l_int|0
+)paren
+comma
 l_string|&quot;a&quot;
 (paren
-op_amp
-id|lp-&gt;lock
+id|lp
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
