@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;60xx Single Board Computer Watchdog Timer driver for Linux 2.2.x&n; *&n; *      Based on acquirewdt.c by Alan Cox.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The author does NOT admit liability nor provide warranty for&n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in&n; *&t;the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2000    Jakob Oestergaard &lt;jakob@unthought.net&gt;&n; *&n; *           12/4 - 2000      [Initial revision]&n; *           25/4 - 2000      Added /dev/watchdog support&n; *           09/5 - 2001      [smj@oro.net] fixed fop_write to &quot;return 1&quot; on success&n; *           12/4 - 2002      [rob@osinvestor.com] eliminate fop_read&n; *                            fix possible wdt_is_open race&n; *                            add CONFIG_WATCHDOG_NOWAYOUT support&n; *                            remove lock_kernel/unlock_kernel pairs&n; *                            added KERN_* to printk&squot;s&n; *                            got rid of extraneous comments&n; *                            changed watchdog_info to correctly reflect what the driver offers&n; *                            added WDIOC_GETSTATUS, WDIOC_GETBOOTSTATUS, WDIOC_SETTIMEOUT,&n; *                            WDIOC_GETTIMEOUT, and WDIOC_SETOPTIONS ioctls&n; *           09/8 - 2003      [wim@iguana.be] cleanup of trailing spaces&n; *                            use module_param&n; *                            made timeout (the emulated heartbeat) a module_param&n; *                            made the keepalive ping an internal subroutine&n; *                            added MODULE_AUTHOR and MODULE_DESCRIPTION info&n; *&n; *&n; *  This WDT driver is different from the other Linux WDT&n; *  drivers in the following ways:&n; *  *)  The driver will ping the watchdog by itself, because this&n; *      particular WDT has a very short timeout (one second) and it&n; *      would be insane to count on any userspace daemon always&n; *      getting scheduled within that time frame.&n; *&n; */
+multiline_comment|/*&n; *&t;60xx Single Board Computer Watchdog Timer driver for Linux 2.2.x&n; *&n; *      Based on acquirewdt.c by Alan Cox.&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;The author does NOT admit liability nor provide warranty for&n; *&t;any of this software. This material is provided &quot;AS-IS&quot; in&n; *&t;the hope that it may be useful for others.&n; *&n; *&t;(c) Copyright 2000    Jakob Oestergaard &lt;jakob@unthought.net&gt;&n; *&n; *           12/4 - 2000      [Initial revision]&n; *           25/4 - 2000      Added /dev/watchdog support&n; *           09/5 - 2001      [smj@oro.net] fixed fop_write to &quot;return 1&quot; on success&n; *           12/4 - 2002      [rob@osinvestor.com] eliminate fop_read&n; *                            fix possible wdt_is_open race&n; *                            add CONFIG_WATCHDOG_NOWAYOUT support&n; *                            remove lock_kernel/unlock_kernel pairs&n; *                            added KERN_* to printk&squot;s&n; *                            got rid of extraneous comments&n; *                            changed watchdog_info to correctly reflect what the driver offers&n; *                            added WDIOC_GETSTATUS, WDIOC_GETBOOTSTATUS, WDIOC_SETTIMEOUT,&n; *                            WDIOC_GETTIMEOUT, and WDIOC_SETOPTIONS ioctls&n; *           09/8 - 2003      [wim@iguana.be] cleanup of trailing spaces&n; *                            use module_param&n; *                            made timeout (the emulated heartbeat) a module_param&n; *                            made the keepalive ping an internal subroutine&n; *                            made wdt_stop and wdt_start module params&n; *                            added MODULE_AUTHOR and MODULE_DESCRIPTION info&n; *&n; *&n; *  This WDT driver is different from the other Linux WDT&n; *  drivers in the following ways:&n; *  *)  The driver will ping the watchdog by itself, because this&n; *      particular WDT has a very short timeout (one second) and it&n; *      would be insane to count on any userspace daemon always&n; *      getting scheduled within that time frame.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -19,10 +19,56 @@ mdefine_line|#define OUR_NAME &quot;sbc60xxwdt&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX OUR_NAME &quot;: &quot;
 multiline_comment|/*&n; * You must set these - The driver cannot probe for the settings&n; */
-DECL|macro|WDT_STOP
-mdefine_line|#define WDT_STOP 0x45
-DECL|macro|WDT_START
-mdefine_line|#define WDT_START 0x443
+DECL|variable|wdt_stop
+r_static
+r_int
+id|wdt_stop
+op_assign
+l_int|0x45
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|wdt_stop
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|wdt_stop
+comma
+l_string|&quot;SBC60xx WDT &squot;stop&squot; io port (default 0x45)&quot;
+)paren
+suffix:semicolon
+DECL|variable|wdt_start
+r_static
+r_int
+id|wdt_start
+op_assign
+l_int|0x443
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|wdt_start
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|wdt_start
+comma
+l_string|&quot;SBC60xx WDT &squot;start&squot; io port (default 0x443)&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * The 60xx board can use watchdog timeout values from one second&n; * to several minutes.  The default is one second, so if we reset&n; * the watchdog every ~250ms we should be safe.&n; */
 DECL|macro|WDT_INTERVAL
 mdefine_line|#define WDT_INTERVAL (HZ/4+1)
@@ -153,11 +199,11 @@ id|next_heartbeat
 )paren
 )paren
 (brace
-multiline_comment|/* Ping the WDT by reading from WDT_START */
+multiline_comment|/* Ping the WDT by reading from wdt_start */
 id|inb_p
 c_func
 (paren
-id|WDT_START
+id|wdt_start
 )paren
 suffix:semicolon
 multiline_comment|/* Re-set the timer interval */
@@ -250,7 +296,7 @@ suffix:semicolon
 id|inb_p
 c_func
 (paren
-id|WDT_STOP
+id|wdt_stop
 )paren
 suffix:semicolon
 id|printk
@@ -960,15 +1006,37 @@ op_amp
 id|wdt_notifier
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|wdt_stop
+op_ne
+l_int|0x45
+)paren
+op_logical_and
+(paren
+id|wdt_stop
+op_ne
+id|wdt_start
+)paren
+)paren
 id|release_region
 c_func
 (paren
-id|WDT_START
+id|wdt_stop
 comma
 l_int|1
 )paren
 suffix:semicolon
-singleline_comment|//&t;release_region(WDT_STOP,1);
+id|release_region
+c_func
+(paren
+id|wdt_start
+comma
+l_int|1
+)paren
+suffix:semicolon
 )brace
 DECL|function|sbc60xxwdt_init
 r_static
@@ -986,9 +1054,6 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
-singleline_comment|//&t;We cannot reserve 0x45 - the kernel already has!
-singleline_comment|//&t;if (!request_region(WDT_STOP, 1, &quot;SBC 60XX WDT&quot;))
-singleline_comment|//&t;&t;goto err_out;
 r_if
 c_cond
 (paren
@@ -996,7 +1061,41 @@ op_logical_neg
 id|request_region
 c_func
 (paren
-id|WDT_START
+id|wdt_start
+comma
+l_int|1
+comma
+l_string|&quot;SBC 60XX WDT&quot;
+)paren
+)paren
+r_goto
+id|err_out
+suffix:semicolon
+multiline_comment|/* We cannot reserve 0x45 - the kernel already has! */
+r_if
+c_cond
+(paren
+(paren
+id|wdt_stop
+op_ne
+l_int|0x45
+)paren
+op_logical_and
+(paren
+id|wdt_stop
+op_ne
+id|wdt_start
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|wdt_stop
 comma
 l_int|1
 comma
@@ -1006,6 +1105,7 @@ l_string|&quot;SBC 60XX WDT&quot;
 r_goto
 id|err_out_region1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1100,10 +1200,25 @@ id|wdt_miscdev
 suffix:semicolon
 id|err_out_region2
 suffix:colon
+r_if
+c_cond
+(paren
+(paren
+id|wdt_stop
+op_ne
+l_int|0x45
+)paren
+op_logical_and
+(paren
+id|wdt_stop
+op_ne
+id|wdt_start
+)paren
+)paren
 id|release_region
 c_func
 (paren
-id|WDT_START
+id|wdt_stop
 comma
 l_int|1
 )paren
@@ -1113,12 +1228,13 @@ suffix:colon
 id|release_region
 c_func
 (paren
-id|WDT_STOP
+id|wdt_start
 comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* err_out: */
+id|err_out
+suffix:colon
 r_return
 id|rc
 suffix:semicolon
