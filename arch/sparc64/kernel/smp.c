@@ -2571,6 +2571,16 @@ id|cpus
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* Can deadlock when called with interrupts disabled */
+id|WARN_ON
+c_func
+(paren
+id|irqs_disabled
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|data.func
 op_assign
 id|func

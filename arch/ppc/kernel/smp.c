@@ -636,6 +636,16 @@ l_int|1
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* Can deadlock when called with interrupts disabled */
+id|WARN_ON
+c_func
+(paren
+id|irqs_disabled
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 r_return
 id|__smp_call_function
 c_func
