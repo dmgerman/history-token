@@ -1031,12 +1031,37 @@ op_assign
 id|LinkBad
 suffix:semicolon
 )brace
-r_if
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+multiline_comment|/* unlink */
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+r_return
+suffix:semicolon
+multiline_comment|/* -EPIPE:  should clear the halt */
+r_default
+suffix:colon
+multiline_comment|/* error */
 id|dbg
 c_func
 (paren
@@ -1055,7 +1080,8 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|resubmit
 suffix:semicolon
 )brace
 r_if
@@ -1167,6 +1193,33 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|resubmit
+suffix:colon
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|SLAB_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;can&squot;t resubmit intr, %s-%s, status %d&quot;
+comma
+id|catc-&gt;usbdev-&gt;bus-&gt;bus_name
+comma
+id|catc-&gt;usbdev-&gt;devpath
+comma
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transmit routines.&n; */
 DECL|function|catc_tx_run

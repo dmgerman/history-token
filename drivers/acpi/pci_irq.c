@@ -651,7 +651,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                          PCI Interrupt Routing Support&n;   -------------------------------------------------------------------------- */
-r_static
 r_int
 DECL|function|acpi_pci_irq_lookup
 id|acpi_pci_irq_lookup
@@ -882,11 +881,7 @@ c_loop
 op_logical_neg
 id|irq
 op_logical_and
-(paren
-id|bridge
-op_assign
 id|bridge-&gt;bus-&gt;self
-)paren
 )paren
 (brace
 id|pin
@@ -902,6 +897,10 @@ id|bridge-&gt;devfn
 )paren
 op_mod
 l_int|4
+suffix:semicolon
+id|bridge
+op_assign
+id|bridge-&gt;bus-&gt;self
 suffix:semicolon
 id|irq
 op_assign

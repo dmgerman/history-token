@@ -8,7 +8,8 @@ mdefine_line|#define NULL 0
 macro_line|#endif
 multiline_comment|/* NOTE:  scatter-gather support only works in PIO mode.&n; * Use SG_NONE if DMA mode is enabled!&n; */
 DECL|macro|NCR53c406a
-mdefine_line|#define NCR53c406a { &bslash;&n;     proc_name:         &quot;NCR53c406a&quot;&t;&t;/* proc_name */,        &bslash;&n;     name:              &quot;NCR53c406a&quot;&t;&t;/* name */,             &bslash;&n;     detect:            NCR53c406a_detect&t;/* detect */,           &bslash;&n;     info:              NCR53c406a_info&t;&t;/* info */,             &bslash;&n;     command:           NCR53c406a_command&t;/* command */,          &bslash;&n;     queuecommand:      NCR53c406a_queue&t;/* queuecommand */,     &bslash;&n;     abort:             NCR53c406a_abort&t;/* abort */,            &bslash;&n;     reset:             NCR53c406a_reset&t;/* reset */,            &bslash;&n;     bios_param:        NCR53c406a_biosparm&t;/* biosparm */,         &bslash;&n;     can_queue:         1&t;&t;&t;/* can_queue */,        &bslash;&n;     this_id:           7&t;&t;&t;/* SCSI ID of the chip */, &bslash;&n;     sg_tablesize:      32&t;&t;&t;/*SG_ALL*/ /*SG_NONE*/, &bslash;&n;     cmd_per_lun:       1&t;&t;&t;/* commands per lun */, &bslash;&n;     unchecked_isa_dma: 1&t;&t;&t;/* unchecked_isa_dma */, &bslash;&n;     use_clustering:    ENABLE_CLUSTERING                               &bslash;&n;}
+mdefine_line|#define NCR53c406a { &bslash;&n;     proc_name:         &t;&quot;NCR53c406a&quot;&t;&t;/* proc_name */,        &bslash;&n;     name:              &t;&quot;NCR53c406a&quot;&t;&t;/* name */,             &bslash;&n;     detect:            &t;NCR53c406a_detect&t;/* detect */,           &bslash;&n;     info:              &t;NCR53c406a_info&t;&t;/* info */,             &bslash;&n;     command:           &t;NCR53c406a_command&t;/* command */,          &bslash;&n;     queuecommand:      &t;NCR53c406a_queue&t;/* queuecommand */,     &bslash;&n;     eh_abort_handler:  &t;NCR53c406a_abort&t;/* abort */,            &bslash;&n;     eh_bus_reset_handler:      NCR53c406a_bus_reset&t;/* reset */,            &bslash;&n;     eh_device_reset_handler:   NCR53c406a_device_reset&t;/* reset */,            &bslash;&n;     eh_host_reset_handler:     NCR53c406a_host_reset&t;/* reset */,            &bslash;&n;     bios_param:        &t;NCR53c406a_biosparm&t;/* biosparm */,         &bslash;&n;     can_queue:         &t;1&t;&t;&t;/* can_queue */,        &bslash;&n;     this_id:           &t;7&t;&t;&t;/* SCSI ID of the chip */, &bslash;&n;     sg_tablesize:      &t;32&t;&t;&t;/*SG_ALL*/ /*SG_NONE*/, &bslash;&n;     cmd_per_lun:       &t;1&t;&t;&t;/* commands per lun */, &bslash;&n;     unchecked_isa_dma: &t;1&t;&t;&t;/* unchecked_isa_dma */, &bslash;&n;     use_clustering:    &t;ENABLE_CLUSTERING                               &bslash;&n;}
+r_static
 r_int
 id|NCR53c406a_detect
 c_func
@@ -17,6 +18,7 @@ id|Scsi_Host_Template
 op_star
 )paren
 suffix:semicolon
+r_static
 r_const
 r_char
 op_star
@@ -28,6 +30,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|NCR53c406a_command
 c_func
@@ -36,6 +39,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|NCR53c406a_queue
 c_func
@@ -54,6 +58,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|NCR53c406a_abort
 c_func
@@ -62,17 +67,34 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
-id|NCR53c406a_reset
+id|NCR53c406a_bus_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
+r_static
+r_int
+id|NCR53c406a_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
+r_int
+id|NCR53c406a_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+r_static
 r_int
 id|NCR53c406a_biosparm
 c_func
@@ -89,6 +111,5 @@ r_int
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* _NCR53C406A_H */
-multiline_comment|/*&n; * Overrides for Emacs so that we get a uniform tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4&n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
+macro_line|#endif&t;&t;&t;&t;/* _NCR53C406A_H */
 eof

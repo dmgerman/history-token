@@ -21,7 +21,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;HDLC support module revision 1.10&quot;
+l_string|&quot;HDLC support module revision 1.11&quot;
 suffix:semicolon
 DECL|function|hdlc_change_mtu
 r_static
@@ -195,7 +195,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ifr-&gt;ifr_settings-&gt;type
+id|ifr-&gt;ifr_settings.type
 )paren
 (brace
 r_case
@@ -215,7 +215,7 @@ id|IF_PROTO_X25
 suffix:colon
 id|proto
 op_assign
-id|ifr-&gt;ifr_settings-&gt;type
+id|ifr-&gt;ifr_settings.type
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -3247,6 +3247,8 @@ suffix:semicolon
 id|hiddev_table
 (braket
 id|minor
+op_minus
+id|HIDDEV_MINOR_BASE
 )braket
 op_assign
 id|hiddev

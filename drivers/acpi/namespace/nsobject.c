@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 83 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nsobject - Utilities for objects attached to namespace&n; *                         table entries&n; *              $Revision: 84 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -224,27 +224,11 @@ op_star
 )paren
 id|object
 suffix:semicolon
-multiline_comment|/* If a valid type (non-ANY) was given, just use it */
-r_if
-c_cond
-(paren
-id|ACPI_TYPE_ANY
-op_ne
-id|type
-)paren
-(brace
+multiline_comment|/* Use the given type */
 id|object_type
 op_assign
 id|type
 suffix:semicolon
-)brace
-r_else
-(brace
-id|object_type
-op_assign
-id|INTERNAL_TYPE_DEF_ANY
-suffix:semicolon
-)brace
 )brace
 id|ACPI_DEBUG_PRINT
 (paren
@@ -360,7 +344,7 @@ id|ACPI_GET_OBJECT_TYPE
 id|obj_desc
 )paren
 op_eq
-id|INTERNAL_TYPE_DATA
+id|ACPI_TYPE_LOCAL_DATA
 )paren
 )paren
 (brace
@@ -398,7 +382,7 @@ id|ACPI_GET_OBJECT_TYPE
 id|node-&gt;object
 )paren
 op_ne
-id|INTERNAL_TYPE_DATA
+id|ACPI_TYPE_LOCAL_DATA
 )paren
 )paren
 (brace
@@ -509,7 +493,7 @@ id|ACPI_GET_OBJECT_TYPE
 id|node-&gt;object
 )paren
 op_eq
-id|INTERNAL_TYPE_DATA
+id|ACPI_TYPE_LOCAL_DATA
 )paren
 )paren
 (brace
@@ -557,7 +541,7 @@ id|ACPI_GET_OBJECT_TYPE
 id|obj_desc
 )paren
 op_eq
-id|INTERNAL_TYPE_DATA
+id|ACPI_TYPE_LOCAL_DATA
 )paren
 op_logical_or
 (paren
@@ -571,7 +555,7 @@ id|ACPI_GET_OBJECT_TYPE
 id|obj_desc-&gt;common.next_object
 )paren
 op_eq
-id|INTERNAL_TYPE_DATA
+id|ACPI_TYPE_LOCAL_DATA
 )paren
 )paren
 (brace
@@ -640,7 +624,7 @@ id|ACPI_GET_OBJECT_TYPE
 id|obj_desc
 )paren
 op_eq
-id|INTERNAL_TYPE_DATA
+id|ACPI_TYPE_LOCAL_DATA
 )paren
 op_logical_and
 (paren
@@ -670,7 +654,7 @@ id|data_desc
 op_assign
 id|acpi_ut_create_internal_object
 (paren
-id|INTERNAL_TYPE_DATA
+id|ACPI_TYPE_LOCAL_DATA
 )paren
 suffix:semicolon
 r_if
@@ -763,7 +747,7 @@ id|ACPI_GET_OBJECT_TYPE
 id|obj_desc
 )paren
 op_eq
-id|INTERNAL_TYPE_DATA
+id|ACPI_TYPE_LOCAL_DATA
 )paren
 op_logical_and
 (paren
@@ -858,7 +842,7 @@ id|ACPI_GET_OBJECT_TYPE
 id|obj_desc
 )paren
 op_eq
-id|INTERNAL_TYPE_DATA
+id|ACPI_TYPE_LOCAL_DATA
 )paren
 op_logical_and
 (paren

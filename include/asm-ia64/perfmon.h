@@ -290,7 +290,7 @@ multiline_comment|/*&n; * Define the version numbers for both perfmon as a whole
 DECL|macro|PFM_VERSION_MAJ
 mdefine_line|#define PFM_VERSION_MAJ&t;&t;1U
 DECL|macro|PFM_VERSION_MIN
-mdefine_line|#define PFM_VERSION_MIN&t;&t;0U
+mdefine_line|#define PFM_VERSION_MIN&t;&t;1U
 DECL|macro|PFM_VERSION
 mdefine_line|#define PFM_VERSION&t;&t;(((PFM_VERSION_MAJ&amp;0xffff)&lt;&lt;16)|(PFM_VERSION_MIN &amp; 0xffff))
 DECL|macro|PFM_SMPL_VERSION_MAJ

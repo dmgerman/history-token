@@ -1,5 +1,5 @@
 multiline_comment|/*========================================================================&n;    Debug routines for nsp_cs&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;=========================================================================*/
-multiline_comment|/* $Id: nsp_debug.c,v 1.8 2001/09/07 04:32:28 elca Exp $ */
+multiline_comment|/* $Id: nsp_debug.c,v 1.2 2002/09/20 04:06:58 gotom Exp $ */
 multiline_comment|/*&n; * Show the command data of a command&n; */
 DECL|variable|unknown
 r_static
@@ -504,13 +504,40 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*printk(KERN_DEBUG __FUNCTION__ &quot; &quot;);*/
-r_for
-c_loop
+r_if
+c_cond
 (paren
-id|i
+(paren
+id|command
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|5
+)paren
+op_eq
+l_int|6
+op_logical_or
+(paren
+id|command
+(braket
+l_int|0
+)braket
+op_rshift
+l_int|5
+)paren
+op_eq
+l_int|7
+)paren
+(brace
+id|s
 op_assign
-l_int|1
-comma
+l_int|12
+suffix:semicolon
+multiline_comment|/* vender specific */
+)brace
+r_else
+(brace
 id|s
 op_assign
 id|COMMAND_SIZE
@@ -521,6 +548,14 @@ id|command
 l_int|0
 )braket
 )paren
+suffix:semicolon
+)brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
 suffix:semicolon
 id|i
 OL
@@ -545,14 +580,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|COMMAND_SIZE
-c_func
-(paren
-id|command
-(braket
-l_int|0
-)braket
-)paren
+id|s
 )paren
 (brace
 r_case

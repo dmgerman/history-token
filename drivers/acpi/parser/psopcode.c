@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 72 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: psopcode - Parser/Interpreter opcode information table&n; *              $Revision: 73 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -528,7 +528,7 @@ id|AML_NUM_OPCODES
 op_assign
 (brace
 multiline_comment|/*! [Begin] no source code translation */
-multiline_comment|/* Index           Name                 Parser Args               Interpreter Args                ObjectType                Class                      Type                  Flags */
+multiline_comment|/* Index           Name                 Parser Args               Interpreter Args                ObjectType                    Class                      Type                  Flags */
 multiline_comment|/* 00 */
 id|ACPI_OP
 (paren
@@ -574,7 +574,7 @@ id|ARGP_ALIAS_OP
 comma
 id|ARGI_ALIAS_OP
 comma
-id|INTERNAL_TYPE_ALIAS
+id|ACPI_TYPE_LOCAL_ALIAS
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -698,7 +698,7 @@ id|ARGP_SCOPE_OP
 comma
 id|ARGI_SCOPE_OP
 comma
-id|INTERNAL_TYPE_SCOPE
+id|ACPI_TYPE_LOCAL_SCOPE
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -796,7 +796,7 @@ id|ARGP_LOCAL0
 comma
 id|ARGI_LOCAL0
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -814,7 +814,7 @@ id|ARGP_LOCAL1
 comma
 id|ARGI_LOCAL1
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -832,7 +832,7 @@ id|ARGP_LOCAL2
 comma
 id|ARGI_LOCAL2
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -850,7 +850,7 @@ id|ARGP_LOCAL3
 comma
 id|ARGI_LOCAL3
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -868,7 +868,7 @@ id|ARGP_LOCAL4
 comma
 id|ARGI_LOCAL4
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -886,7 +886,7 @@ id|ARGP_LOCAL5
 comma
 id|ARGI_LOCAL5
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -904,7 +904,7 @@ id|ARGP_LOCAL6
 comma
 id|ARGI_LOCAL6
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -922,7 +922,7 @@ id|ARGP_LOCAL7
 comma
 id|ARGI_LOCAL7
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -940,7 +940,7 @@ id|ARGP_ARG0
 comma
 id|ARGI_ARG0
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -958,7 +958,7 @@ id|ARGP_ARG1
 comma
 id|ARGI_ARG1
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -976,7 +976,7 @@ id|ARGP_ARG2
 comma
 id|ARGI_ARG2
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -994,7 +994,7 @@ id|ARGP_ARG3
 comma
 id|ARGI_ARG3
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -1012,7 +1012,7 @@ id|ARGP_ARG4
 comma
 id|ARGI_ARG4
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -1030,7 +1030,7 @@ id|ARGP_ARG5
 comma
 id|ARGI_ARG5
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -1048,7 +1048,7 @@ id|ARGP_ARG6
 comma
 id|ARGI_ARG6
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -2269,7 +2269,7 @@ id|ARGP_DEBUG_OP
 comma
 id|ARGI_DEBUG_OP
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -2333,7 +2333,7 @@ id|ARGP_FIELD_OP
 comma
 id|ARGI_FIELD_OP
 comma
-id|INTERNAL_TYPE_FIELD_DEFN
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -2461,7 +2461,7 @@ id|ARGP_INDEX_FIELD_OP
 comma
 id|ARGI_INDEX_FIELD_OP
 comma
-id|INTERNAL_TYPE_INDEX_FIELD_DEFN
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -2485,7 +2485,7 @@ id|ARGP_BANK_FIELD_OP
 comma
 id|ARGI_BANK_FIELD_OP
 comma
-id|INTERNAL_TYPE_BANK_FIELD_DEFN
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma
@@ -2570,7 +2570,7 @@ id|ARGP_NAMEPATH_OP
 comma
 id|ARGI_NAMEPATH_OP
 comma
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 comma
 id|AML_CLASS_ARGUMENT
 comma
@@ -2728,7 +2728,7 @@ id|ARG_NONE
 comma
 id|ARG_NONE
 comma
-id|INTERNAL_TYPE_INVALID
+id|ACPI_TYPE_INVALID
 comma
 id|AML_CLASS_UNKNOWN
 comma
@@ -3087,7 +3087,7 @@ id|ARGP_SCOPE_OP
 comma
 id|ARGI_SCOPE_OP
 comma
-id|INTERNAL_TYPE_SCOPE
+id|ACPI_TYPE_ANY
 comma
 id|AML_CLASS_NAMED_OBJECT
 comma

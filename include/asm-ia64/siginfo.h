@@ -310,7 +310,7 @@ id|siginfo_t
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* _sigchld is currently the largest know union member */
+multiline_comment|/* _sigprof is currently the largest know union member */
 id|memcpy
 c_func
 (paren
@@ -327,7 +327,7 @@ r_int
 op_plus
 r_sizeof
 (paren
-id|from-&gt;_sifields._sigchld
+id|from-&gt;_sifields._sigprof
 )paren
 )paren
 suffix:semicolon

@@ -123,6 +123,11 @@ id|de620_debug
 op_assign
 id|DE620_DEBUG
 suffix:semicolon
+DECL|variable|de620_lock
+r_static
+id|spinlock_t
+id|de620_lock
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -1409,6 +1414,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: transmit timed out, %s?&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -1511,17 +1517,14 @@ op_increment
 id|len
 suffix:semicolon
 multiline_comment|/* Start real output */
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|de620_lock
+comma
 id|flags
 )paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|PRINTK
 c_func
 (paren
@@ -1604,9 +1607,12 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|de620_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1664,13 +1670,15 @@ op_member_access_from_pointer
 id|tx_packets
 op_increment
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|de620_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* interrupts maybe back on */
 id|dev_kfree_skb
 (paren
 id|skb
@@ -1721,41 +1729,13 @@ id|again
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* This might be deleted now, no crummy drivers present :-) Or..? */
-r_if
-c_cond
-(paren
-(paren
-id|dev
-op_eq
-l_int|NULL
-)paren
-op_logical_or
-(paren
-id|irq
-op_ne
-id|irq_in
-)paren
-)paren
-(brace
-id|printk
+id|spin_lock
 c_func
 (paren
-l_string|&quot;%s: bogus interrupt %d&bslash;n&quot;
-comma
-id|dev
-ques
-c_cond
-id|dev-&gt;name
-suffix:colon
-l_string|&quot;de620&quot;
-comma
-id|irq_in
+op_amp
+id|de620_lock
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Read the status register (_not_ the status port) */
 id|irq_status
 op_assign
@@ -1843,6 +1823,13 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|de620_lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/**************************************&n; *&n; * Get a packet from the adapter&n; *&n; * Send it &quot;upstairs&quot;&n; *&n; */
 DECL|function|de620_rx_intr
@@ -2753,6 +2740,13 @@ id|SET_MODULE_OWNER
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|de620_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This is where the base_addr and irq gets set.&n;&t; * Tunable at compile-time and insmod-time&n;&t; */

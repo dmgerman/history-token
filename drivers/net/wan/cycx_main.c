@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/slab.h&gt;&t;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/kernel.h&gt;&t;/* printk(), and other useful stuff */
 macro_line|#include &lt;linux/module.h&gt;&t;/* support for loadable modules */
 macro_line|#include &lt;linux/ioport.h&gt;&t;/* request_region(), release_region() */
-macro_line|#include &lt;linux/tqueue.h&gt;&t;/* for kernel task queues */
 macro_line|#include &lt;linux/wanrouter.h&gt;&t;/* WAN router definitions */
 macro_line|#include &lt;linux/cyclomx.h&gt;&t;/* cyclomx common user API definitions */
 macro_line|#include &lt;asm/uaccess.h&gt;&t;/* kernel &lt;-&gt; user copy */

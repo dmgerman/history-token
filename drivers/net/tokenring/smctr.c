@@ -1,8 +1,6 @@
-multiline_comment|/*&n; *  smctr.c: A network driver for the SMC Token Ring Adapters.&n; *&n; *  Written by Jay Schulist &lt;jschlst@samba.org&gt;&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; *&n; *  This device driver works with the following SMC adapters:&n; *      - SMC TokenCard Elite   (8115T, chips 825/584)&n; *      - SMC TokenCard Elite/A MCA (8115T/A, chips 825/594)&n; *&n; *  Source(s):&n; *  &t;- SMC TokenCard SDK.&n; *&n; *  Maintainer(s):&n; *    JS        Jay Schulist &lt;jschlst@samba.org&gt;&n; *&n; * Changes:&n; *    07102000          JS      Fixed a timing problem in smctr_wait_cmd();&n; *                              Also added a bit more discriptive error msgs.&n; *    07122000          JS      Fixed problem with detecting a card with&n; *&t;&t;&t;&t;module io/irq/mem specified.&n; *&n; *  To do:&n; *    1. Multicast support.&n; */
-macro_line|#ifdef MODULE
+multiline_comment|/*&n; *  smctr.c: A network driver for the SMC Token Ring Adapters.&n; *&n; *  Written by Jay Schulist &lt;jschlst@samba.org&gt;&n; *&n; *  This software may be used and distributed according to the terms&n; *  of the GNU General Public License, incorporated herein by reference.&n; *&n; *  This device driver works with the following SMC adapters:&n; *      - SMC TokenCard Elite   (8115T, chips 825/584)&n; *      - SMC TokenCard Elite/A MCA (8115T/A, chips 825/594)&n; *&n; *  Source(s):&n; *  &t;- SMC TokenCard SDK.&n; *&n; *  Maintainer(s):&n; *    JS        Jay Schulist &lt;jschlst@samba.org&gt;&n; *&n; * Changes:&n; *    07102000          JS      Fixed a timing problem in smctr_wait_cmd();&n; *                              Also added a bit more discriptive error msgs.&n; *    07122000          JS      Fixed problem with detecting a card with&n; *&t;&t;&t;&t;module io/irq/mem specified.&n; *&n; *  To do:&n; *    1. Multicast support.&n; *&n; *  Initial 2.5 cleanup Alan Cox &lt;alan@redhat.com&gt;  2002/10/28&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1962,6 +1960,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_alloc_shared_memory&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2681,6 +2680,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_bypass_state&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -2747,6 +2747,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_checksum_firmware&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -3585,6 +3586,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_chg_rx_mask&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4105,6 +4107,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_decode_firmware&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4385,6 +4388,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_disable_adapter_ctrl_store&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4573,6 +4577,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_enable_adapter_ctrl_store&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4643,6 +4648,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_enable_adapter_ram&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4870,6 +4876,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_chk_isa %#4x&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -4978,6 +4985,7 @@ id|BRD_ID_8115T
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: The adapter found is not supported&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5353,6 +5361,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: No IRQ found aborting&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -5688,7 +5697,7 @@ op_or_assign
 id|EARLY_TOKEN_REL
 suffix:semicolon
 )brace
-multiline_comment|/* see if the chip is corrupted&n;                if(smctr_read_584_chksum(ioaddr))&n;                {&n;                        printk(&quot;%s: EEPROM Checksum Failure&bslash;n&quot;, dev-&gt;name);&n;                        return(-1);&n;                }&n;&t;&t;*/
+multiline_comment|/* see if the chip is corrupted&n;                if(smctr_read_584_chksum(ioaddr))&n;                {&n;                        printk(KERN_ERR &quot;%s: EEPROM Checksum Failure&bslash;n&quot;, dev-&gt;name);&n;                        return(-1);&n;                }&n;&t;&t;*/
 )brace
 r_return
 (paren
@@ -6738,6 +6747,7 @@ l_int|20
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;smctr_get_tx_fcb&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7103,6 +7113,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_hardware_send_packet&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7350,6 +7361,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_init_acbs&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7562,6 +7574,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_init_adapter&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7701,6 +7714,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Previously loaded firmware is missing&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7730,6 +7744,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: RAM memory test failed.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7778,6 +7793,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Initialization of card failed (%d)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7810,6 +7826,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Card failed internal self test (%d)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7848,6 +7865,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Initialization of card failed (%d)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7927,6 +7945,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_init_card&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -7979,6 +7998,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_init_card_real&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -8269,6 +8289,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Hardware failure&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -8335,6 +8356,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_init_rx_bdbs&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -8904,6 +8926,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_init_shared_memory&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -9814,6 +9837,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;%s: irq %d for unknown device.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -9848,6 +9872,13 @@ id|NOT_INITIALIZED
 r_return
 suffix:semicolon
 )brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|tp-&gt;lock
+)paren
+suffix:semicolon
 id|smctr_disable_bic_int
 c_func
 (paren
@@ -9936,6 +9967,13 @@ id|smctr_disable_16bit
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|tp-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -10756,6 +10794,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_CRIT
 l_string|&quot;Jay please send bug&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -10800,6 +10839,7 @@ id|ACB_CMD_HIC_NOP
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i1&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -11323,6 +11363,13 @@ id|smctr_enable_bic_int
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|tp-&gt;lock
 )paren
 suffix:semicolon
 r_return
@@ -12367,6 +12414,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Hardware failure&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -12987,6 +13035,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_issue_resume_rx_fcb_cmd&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -13084,6 +13133,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_issue_resume_tx_fcb_cmd&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -13817,6 +13867,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_load_firmware&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -14334,6 +14385,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_lobe_media_test&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -14602,6 +14654,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_lobe_media_test_cmd&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -14636,6 +14689,7 @@ id|dev
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Lobe Failed test state&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -16211,6 +16265,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_open&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -16292,6 +16347,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_open_tr&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -16328,15 +16384,14 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|save_flags
+multiline_comment|/* FIXME: it would work a lot better if we masked the irq sources&n;&t;   on the card here, then we could skip the locking and poll nicely */
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|tp-&gt;lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|smctr_set_page
@@ -16668,6 +16723,7 @@ id|LOBE_MEDIA_TEST_FAILED
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: Lobe Media Test Failure - Check cable?&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -16680,9 +16736,12 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|tp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -16947,6 +17006,13 @@ id|net_local
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|tp-&gt;lock
+)paren
+suffix:semicolon
 id|dev-&gt;priv
 op_assign
 id|tp
@@ -17066,6 +17132,7 @@ id|SUCCESS
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: Firmware load failed (%d)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -17104,6 +17171,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%s: %s %s at Io %#4x, Irq %d, Rom %#4x, Ram %#4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -18101,6 +18169,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_ram_memory_test&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -19756,6 +19825,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_restart_tx_chain&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -19839,6 +19909,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_ring_status_chg&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -20104,7 +20175,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Singal Loss&bslash;n&quot;
+l_string|&quot;%s: Signal Loss&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -20185,17 +20256,13 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_rx_frame&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|queue
 op_assign
 id|tp-&gt;receive_queue_number
@@ -20339,11 +20406,6 @@ comma
 id|rx_size
 )paren
 suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Update Counters */
 id|tp-&gt;MacStat.rx_packets
 op_increment
@@ -20380,11 +20442,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 )brace
 r_else
@@ -20498,6 +20555,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_send_dat&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -20797,6 +20855,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_send_packet&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -20919,6 +20978,7 @@ l_int|15
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_send_lobe_media_test&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -23623,6 +23683,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_set_multicast_list&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -23941,6 +24002,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_set_rx_look_ahead_flag&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -24137,6 +24199,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_setup_single_cmd&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -24367,6 +24430,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_status_chg&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -24506,6 +24570,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_trc_send_packet&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -24619,6 +24684,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_tx_complete&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -24873,6 +24939,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_tx_move_frame&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -25480,6 +25547,7 @@ l_int|20
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;smctr_update_tx_chain&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -25628,6 +25696,7 @@ l_int|10
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;%s: smctr_wait_cmd&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -26096,6 +26165,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;%s: register_trdev() returned (&lt;0).&bslash;n&quot;
 comma
 id|cardname

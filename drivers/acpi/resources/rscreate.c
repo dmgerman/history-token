@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Create resource lists/tables&n; *              $Revision: 58 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Create resource lists/tables&n; *              $Revision: 61 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
@@ -204,21 +204,15 @@ id|acpi_operand_object
 op_star
 op_star
 id|top_object_list
-op_assign
-l_int|NULL
 suffix:semicolon
 id|acpi_operand_object
 op_star
 op_star
 id|sub_object_list
-op_assign
-l_int|NULL
 suffix:semicolon
 id|acpi_operand_object
 op_star
-id|package_element
-op_assign
-l_int|NULL
+id|obj_desc
 suffix:semicolon
 id|ACPI_SIZE
 id|buffer_size_needed
@@ -227,19 +221,13 @@ l_int|0
 suffix:semicolon
 id|u32
 id|number_of_elements
-op_assign
-l_int|0
 suffix:semicolon
 id|u32
 id|index
-op_assign
-l_int|0
 suffix:semicolon
 id|acpi_pci_routing_table
 op_star
 id|user_prt
-op_assign
-l_int|NULL
 suffix:semicolon
 id|acpi_namespace_node
 op_star
@@ -322,7 +310,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Loop through the ACPI_INTERNAL_OBJECTS - Each object should contain an&n;&t; * acpi_integer Address, a u8 Pin, a Name and a u8 Source_index.&n;&t; */
+multiline_comment|/*&n;&t; * Loop through the ACPI_INTERNAL_OBJECTS - Each object&n;&t; * should be a package that in turn contains an&n;&t; * acpi_integer Address, a u8 Pin, a Name and a u8 Source_index.&n;&t; */
 id|top_object_list
 op_assign
 id|package_object-&gt;package.elements
@@ -385,25 +373,104 @@ op_minus
 l_int|4
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Dereference the sub-package&n;&t;&t; */
-id|package_element
-op_assign
-op_star
-id|top_object_list
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The Sub_object_list will now point to an array of the four IRQ&n;&t;&t; * elements: Address, Pin, Source and Source_index&n;&t;&t; */
-id|sub_object_list
-op_assign
-id|package_element-&gt;package.elements
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * 1) First subobject:  Dereference the Address&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Each element of the top-level package must also be a package&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
 op_star
+id|top_object_list
+)paren
+op_ne
+id|ACPI_TYPE_PACKAGE
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;(PRT[%X]) Need sub-package, found %s&bslash;n&quot;
+comma
+id|index
+comma
+id|acpi_ut_get_object_type_name
+(paren
+op_star
+id|top_object_list
+)paren
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Each sub-package must be of length 4 */
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|top_object_list
+)paren
+op_member_access_from_pointer
+id|package.count
+op_ne
+l_int|4
+)paren
+(brace
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;(PRT[%X]) Need package of length 4, found length %d&bslash;n&quot;
+comma
+id|index
+comma
+(paren
+op_star
+id|top_object_list
+)paren
+op_member_access_from_pointer
+id|package.count
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_PACKAGE_LIMIT
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * Dereference the sub-package.&n;&t;&t; * The Sub_object_list will now point to an array of the four IRQ&n;&t;&t; * elements: [Address, Pin, Source, Source_index]&n;&t;&t; */
 id|sub_object_list
+op_assign
+(paren
+op_star
+id|top_object_list
+)paren
+op_member_access_from_pointer
+id|package.elements
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * 1) First subobject: Dereference the PRT.Address&n;&t;&t; */
+id|obj_desc
+op_assign
+id|sub_object_list
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
 )paren
 op_eq
 id|ACPI_TYPE_INTEGER
@@ -411,12 +478,7 @@ id|ACPI_TYPE_INTEGER
 (brace
 id|user_prt-&gt;address
 op_assign
-(paren
-op_star
-id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|integer.value
+id|obj_desc-&gt;integer.value
 suffix:semicolon
 )brace
 r_else
@@ -426,12 +488,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Need Integer, found %s&bslash;n&quot;
+l_string|&quot;(PRT[%X].Address) Need Integer, found %s&bslash;n&quot;
+comma
+id|index
 comma
 id|acpi_ut_get_object_type_name
 (paren
-op_star
-id|sub_object_list
+id|obj_desc
 )paren
 )paren
 )paren
@@ -442,17 +505,20 @@ id|AE_BAD_DATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * 2) Second subobject: Dereference the Pin&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * 2) Second subobject: Dereference the PRT.Pin&n;&t;&t; */
+id|obj_desc
+op_assign
 id|sub_object_list
-op_increment
+(braket
+l_int|1
+)braket
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-op_star
-id|sub_object_list
+id|obj_desc
 )paren
 op_eq
 id|ACPI_TYPE_INTEGER
@@ -463,12 +529,7 @@ op_assign
 (paren
 id|u32
 )paren
-(paren
-op_star
-id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|integer.value
+id|obj_desc-&gt;integer.value
 suffix:semicolon
 )brace
 r_else
@@ -478,12 +539,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Need Integer, found %s&bslash;n&quot;
+l_string|&quot;(PRT[%X].Pin) Need Integer, found %s&bslash;n&quot;
+comma
+id|index
 comma
 id|acpi_ut_get_object_type_name
 (paren
-op_star
-id|sub_object_list
+id|obj_desc
 )paren
 )paren
 )paren
@@ -494,32 +556,30 @@ id|AE_BAD_DATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * 3) Third subobject: Dereference the Source Name&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * 3) Third subobject: Dereference the PRT.Source_name&n;&t;&t; */
+id|obj_desc
+op_assign
 id|sub_object_list
-op_increment
+(braket
+l_int|2
+)braket
 suffix:semicolon
 r_switch
 c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-op_star
-id|sub_object_list
+id|obj_desc
 )paren
 )paren
 (brace
 r_case
-id|INTERNAL_TYPE_REFERENCE
+id|ACPI_TYPE_LOCAL_REFERENCE
 suffix:colon
 r_if
 c_cond
 (paren
-(paren
-op_star
-id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|reference.opcode
+id|obj_desc-&gt;reference.opcode
 op_ne
 id|AML_INT_NAMEPATH_OP
 )paren
@@ -529,14 +589,11 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Need name, found reference op %X&bslash;n&quot;
+l_string|&quot;(PRT[%X].Source) Need name, found reference op %X&bslash;n&quot;
 comma
-(paren
-op_star
-id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|reference.opcode
+id|index
+comma
+id|obj_desc-&gt;reference.opcode
 )paren
 )paren
 suffix:semicolon
@@ -548,12 +605,7 @@ suffix:semicolon
 )brace
 id|node
 op_assign
-(paren
-op_star
-id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|reference.node
+id|obj_desc-&gt;reference.node
 suffix:semicolon
 multiline_comment|/* Use *remaining* length of the buffer as max for pathname */
 id|path_buffer.length
@@ -596,6 +648,9 @@ id|path_buffer
 suffix:semicolon
 id|user_prt-&gt;length
 op_add_assign
+(paren
+id|u32
+)paren
 id|ACPI_STRLEN
 (paren
 id|user_prt-&gt;source
@@ -613,23 +668,13 @@ id|ACPI_STRCPY
 (paren
 id|user_prt-&gt;source
 comma
-(paren
-op_star
-id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|string.pointer
+id|obj_desc-&gt;string.pointer
 )paren
 suffix:semicolon
 multiline_comment|/* Add to the Length field the length of the string */
 id|user_prt-&gt;length
 op_add_assign
-(paren
-op_star
-id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|string.length
+id|obj_desc-&gt;string.length
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -653,12 +698,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Need Integer, found %s&bslash;n&quot;
+l_string|&quot;(PRT[%X].Source) Need Ref/String/Integer, found %s&bslash;n&quot;
+comma
+id|index
 comma
 id|acpi_ut_get_object_type_name
 (paren
-op_star
-id|sub_object_list
+id|obj_desc
 )paren
 )paren
 )paren
@@ -677,17 +723,20 @@ id|ACPI_ROUND_UP_TO_64_bITS
 id|user_prt-&gt;length
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * 4) Fourth subobject: Dereference the Source Index&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * 4) Fourth subobject: Dereference the PRT.Source_index&n;&t;&t; */
+id|obj_desc
+op_assign
 id|sub_object_list
-op_increment
+(braket
+l_int|3
+)braket
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|ACPI_GET_OBJECT_TYPE
 (paren
-op_star
-id|sub_object_list
+id|obj_desc
 )paren
 op_eq
 id|ACPI_TYPE_INTEGER
@@ -698,12 +747,7 @@ op_assign
 (paren
 id|u32
 )paren
-(paren
-op_star
-id|sub_object_list
-)paren
-op_member_access_from_pointer
-id|integer.value
+id|obj_desc-&gt;integer.value
 suffix:semicolon
 )brace
 r_else
@@ -713,12 +757,13 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Need Integer, found %s&bslash;n&quot;
+l_string|&quot;(PRT[%X].Source_index) Need Integer, found %s&bslash;n&quot;
+comma
+id|index
 comma
 id|acpi_ut_get_object_type_name
 (paren
-op_star
-id|sub_object_list
+id|obj_desc
 )paren
 )paren
 )paren
@@ -729,7 +774,7 @@ id|AE_BAD_DATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Point to the next acpi_operand_object */
+multiline_comment|/* Point to the next acpi_operand_object in the top level package */
 id|top_object_list
 op_increment
 suffix:semicolon

@@ -1643,7 +1643,11 @@ r_struct
 id|chipset_bus_clock_list_entry
 op_star
 )paren
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Disable on-chip PIO FIFO/buffer&n;&t; *  (to avoid problems handling I/O errors later)&n;&t; */
@@ -1924,7 +1928,11 @@ r_struct
 id|chipset_bus_clock_list_entry
 op_star
 )paren
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|pci_read_config_dword
@@ -2112,7 +2120,11 @@ r_struct
 id|chipset_bus_clock_list_entry
 op_star
 )paren
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|pci_read_config_dword
@@ -4542,7 +4554,11 @@ multiline_comment|/*&n;&t; * only try the pll if we don&squot;t have a table for
 r_if
 c_cond
 (paren
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 )paren
 r_goto
 id|init_hpt37X_done
@@ -4988,7 +5004,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;driver_data
+id|pci_get_drvdata
+c_func
+(paren
+id|dev
+)paren
 )paren
 (brace
 id|printk

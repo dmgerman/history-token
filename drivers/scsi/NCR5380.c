@@ -1,7 +1,3 @@
-macro_line|#ifndef NDEBUG
-DECL|macro|NDEBUG
-mdefine_line|#define NDEBUG (NDEBUG_RESTART_SELECT | NDEBUG_ABORT)
-macro_line|#endif
 multiline_comment|/* &n; * NCR 5380 generic driver routines.  These should make it *trivial*&n; *      to implement 5380 SCSI drivers under Linux with a non-trantor&n; *      architecture.&n; *&n; *      Note that these routines also work with NR53c400 family chips.&n; *&n; * Copyright 1993, Drew Eckhardt&n; *      Visionary Computing &n; *      (Unix and Linux consulting and custom programming)&n; *      drew@colorado.edu&n; *      +1 (303) 666-5836&n; *&n; * DISTRIBUTION RELEASE 6. &n; *&n; * For more information, please consult &n; *&n; * NCR 5380 Family&n; * SCSI Protocol Controller&n; * Databook&n; *&n; * NCR Microelectronics&n; * 1635 Aeroplaza Drive&n; * Colorado Springs, CO 80916&n; * 1+ (719) 578-3400&n; * 1+ (800) 334-5454&n; */
 multiline_comment|/*&n; * $Log: NCR5380.c,v $&n;&n; * Revision 1.10 1998/9/2&t;Alan Cox&n; *&t;&t;&t;&t;(alan@redhat.com)&n; * Fixed up the timer lockups reported so far. Things still suck. Looking &n; * forward to 2.3 and per device request queues. Then it&squot;ll be possible to&n; * SMP thread this beast and improve life no end.&n; &n; * Revision 1.9  1997/7/27&t;Ronald van Cuijlenborg&n; *&t;&t;&t;&t;(ronald.van.cuijlenborg@tip.nl or nutty@dds.nl)&n; * (hopefully) fixed and enhanced USLEEP&n; * added support for DTC3181E card (for Mustek scanner)&n; *&n;&n; * Revision 1.8&t;&t;&t;Ingmar Baumgart&n; *&t;&t;&t;&t;(ingmar@gonzo.schwaben.de)&n; * added support for NCR53C400a card&n; *&n;&n; * Revision 1.7  1996/3/2       Ray Van Tassle (rayvt@comm.mot.com)&n; * added proc_info&n; * added support needed for DTC 3180/3280&n; * fixed a couple of bugs&n; *&n;&n; * Revision 1.5  1994/01/19  09:14:57  drew&n; * Fixed udelay() hack that was being used on DATAOUT phases&n; * instead of a proper wait for the final handshake.&n; *&n; * Revision 1.4  1994/01/19  06:44:25  drew&n; * *** empty log message ***&n; *&n; * Revision 1.3  1994/01/19  05:24:40  drew&n; * Added support for TCR LAST_BYTE_SENT bit.&n; *&n; * Revision 1.2  1994/01/15  06:14:11  drew&n; * REAL DMA support, bug fixes.&n; *&n; * Revision 1.1  1994/01/15  06:00:54  drew&n; * Initial revision&n; *&n; */
 multiline_comment|/*&n; * Further development / testing that should be done : &n; * 1.  Cleanup the NCR5380_transfer_dma function and DMA operation complete&n; *     code so that everything does the same thing that&squot;s done at the &n; *     end of a pseudo-DMA read operation.&n; *&n; * 2.  Fix REAL_DMA (interrupt driven, polled works fine) -&n; *     basically, transfer size needs to be reduced by one &n; *     and the last byte read as is done with PSEUDO_DMA.&n; * &n; * 4.  Test SCSI-II tagged queueing (I have no devices which support &n; *      tagged queueing)&n; *&n; * 5.  Test linked command handling code after Eric is ready with &n; *      the high level code.&n; */
@@ -59,20 +55,21 @@ op_star
 id|host
 )paren
 suffix:semicolon
-DECL|variable|first_instance
+DECL|variable|first_host
 r_static
 r_struct
-id|Scsi_Host
+id|NCR5380_hostdata
 op_star
-id|first_instance
+id|first_host
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|the_template
+DECL|variable|last_host
 r_static
-id|Scsi_Host_Template
+r_struct
+id|NCR5380_hostdata
 op_star
-id|the_template
+id|last_host
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -156,7 +153,70 @@ id|cmd-&gt;request_bufflen
 suffix:semicolon
 )brace
 )brace
-macro_line|#include &lt;linux/delay.h&gt;
+r_static
+r_struct
+(brace
+DECL|member|value
+r_int
+r_char
+id|value
+suffix:semicolon
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|variable|phases
+)brace
+id|phases
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|PHASE_DATAOUT
+comma
+l_string|&quot;DATAOUT&quot;
+)brace
+comma
+(brace
+id|PHASE_DATAIN
+comma
+l_string|&quot;DATAIN&quot;
+)brace
+comma
+(brace
+id|PHASE_CMDOUT
+comma
+l_string|&quot;CMDOUT&quot;
+)brace
+comma
+(brace
+id|PHASE_STATIN
+comma
+l_string|&quot;STATIN&quot;
+)brace
+comma
+(brace
+id|PHASE_MSGOUT
+comma
+l_string|&quot;MSGOUT&quot;
+)brace
+comma
+(brace
+id|PHASE_MSGIN
+comma
+l_string|&quot;MSGIN&quot;
+)brace
+comma
+(brace
+id|PHASE_UNKNOWN
+comma
+l_string|&quot;UNKNOWN&quot;
+)brace
+)brace
+suffix:semicolon
 macro_line|#ifdef NDEBUG
 r_static
 r_struct
@@ -648,70 +708,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-r_static
-r_struct
-(brace
-DECL|member|value
-r_int
-r_char
-id|value
-suffix:semicolon
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|variable|phases
-)brace
-id|phases
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|PHASE_DATAOUT
-comma
-l_string|&quot;DATAOUT&quot;
-)brace
-comma
-(brace
-id|PHASE_DATAIN
-comma
-l_string|&quot;DATAIN&quot;
-)brace
-comma
-(brace
-id|PHASE_CMDOUT
-comma
-l_string|&quot;CMDOUT&quot;
-)brace
-comma
-(brace
-id|PHASE_STATIN
-comma
-l_string|&quot;STATIN&quot;
-)brace
-comma
-(brace
-id|PHASE_MSGOUT
-comma
-l_string|&quot;MSGOUT&quot;
-)brace
-comma
-(brace
-id|PHASE_MSGIN
-comma
-l_string|&quot;MSGIN&quot;
-)brace
-comma
-(brace
-id|PHASE_UNKNOWN
-comma
-l_string|&quot;UNKNOWN&quot;
-)brace
-)brace
-suffix:semicolon
 multiline_comment|/* &n; *&t;NCR5380_print_phase&t;-&t;show SCSI phase&n; *&t;@instance: adapter to dump&n; *&n; * &t;Print the current SCSI phase for debugging purposes&n; *&n; *&t;Locks: none&n; */
 DECL|function|NCR5380_print_phase
 r_static
@@ -826,45 +822,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * We need to have our coroutine active given these constraints : &n; * 1.  The mutex flag, main_running, can only be set when the main &n; *     routine can actually process data, otherwise SCSI commands&n; *     will never get issued.&n; *&n; * 2.  NCR5380_main() shouldn&squot;t be called before it has exited, because&n; *     other drivers have had kernel stack overflows in similar&n; *     situations.&n; *&n; * 3.  We don&squot;t want to inline NCR5380_main() because of space concerns,&n; *     even though it is only called in two places.&n; *&n; * So, the solution is to set the mutex in an inline wrapper for the &n; * main coroutine, and have the main coroutine exit with interrupts &n; * disabled after the final search through the queues so that no race &n; * conditions are possible.&n; */
-DECL|variable|main_running
-r_static
-r_int
-r_int
-id|main_running
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* &n; * Function : run_main(void)&n; * &n; * Purpose : insure that the coroutine is running and will process our &n; *      request.  main_running is checked/set here (in an inline function)&n; *      rather than in NCR5380_main itself to reduce the chances of stack&n; *      overflow.&n; * FIXME: NCR5380_main should probably be run with schedule_task or be a&n; * thread.&n; */
-DECL|function|run_main
-r_static
-id|__inline__
-r_void
-id|run_main
-c_func
-(paren
-r_void
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|test_and_set_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|main_running
-)paren
-)paren
-id|NCR5380_main
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * These need tweaking, and would probably work best as per-device &n; * flags initialized differently for disk, tape, cd, etc devices.&n; * People with broken devices are free to experiment as to what gives&n; * the best results for them.&n; *&n; * USLEEP_SLEEP should be a minimum seek time.&n; *&n; * USLEEP_POLL should be a maximum rotational latency.&n; */
 macro_line|#ifndef USLEEP_SLEEP
 multiline_comment|/* 20 ms (reasonable hard disk speed) */
@@ -1150,6 +1107,11 @@ id|Scsi_Host
 op_star
 id|instance
 suffix:semicolon
+r_struct
+id|NCR5380_hostdata
+op_star
+id|hostdata
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -1188,42 +1150,31 @@ id|jiffies
 suffix:semicolon
 )paren
 (brace
-id|instance
+id|hostdata
 op_assign
 (paren
-(paren
 r_struct
 id|NCR5380_hostdata
 op_star
 )paren
 id|expires_first-&gt;hostdata
-)paren
-op_member_access_from_pointer
-id|next_timer
 suffix:semicolon
+id|schedule_work
+c_func
 (paren
-(paren
-r_struct
-id|NCR5380_hostdata
-op_star
+op_amp
+id|hostdata-&gt;coroutine
 )paren
-id|expires_first-&gt;hostdata
-)paren
-op_member_access_from_pointer
-id|next_timer
+suffix:semicolon
+id|instance
+op_assign
+id|hostdata-&gt;next_timer
+suffix:semicolon
+id|hostdata-&gt;next_timer
 op_assign
 l_int|NULL
 suffix:semicolon
-(paren
-(paren
-r_struct
-id|NCR5380_hostdata
-op_star
-)paren
-id|expires_first-&gt;hostdata
-)paren
-op_member_access_from_pointer
-id|time_expires
+id|hostdata-&gt;time_expires
 op_assign
 l_int|0
 suffix:semicolon
@@ -1273,11 +1224,6 @@ op_amp
 id|timer_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|run_main
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -1699,6 +1645,42 @@ id|NCR53C400_PUBLIC_RELEASE
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; *&t;NCR5380_coroutine_running&t;-&t;coroutine status&n; *&t;@instance: controller to check&n; *&n; *&t;Return true if the co-routine for this controller is running&n; *&t;or scheduled to run&n; *&n; *&t;FIXME: this test function belongs in the workqueue code!&n; */
+DECL|function|NCR5380_coroutine_running
+r_static
+r_int
+id|NCR5380_coroutine_running
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+id|instance
+)paren
+(brace
+r_struct
+id|NCR5380_hostdata
+op_star
+id|hostdata
+op_assign
+(paren
+r_struct
+id|NCR5380_hostdata
+op_star
+)paren
+id|instance-&gt;hostdata
+suffix:semicolon
+r_return
+id|test_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|hostdata-&gt;coroutine.pending
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;NCR5380_print_status &t;-&t;dump controller info&n; *&t;@instance: controller to dump&n; *&n; *&t;Print commands in the various queues, called from NCR5380_abort &n; *&t;and NCR5380_debug to aid debugging.&n; *&n; *&t;Locks: called functions disable irqs&n; */
 DECL|function|NCR5380_print_status
 r_static
@@ -1731,7 +1713,11 @@ c_func
 (paren
 l_string|&quot;NCR5380 : coroutine is%s running.&bslash;n&quot;
 comma
-id|main_running
+id|NCR5380_coroutine_running
+c_func
+(paren
+id|instance
+)paren
 ques
 c_cond
 l_string|&quot;&quot;
@@ -1915,22 +1901,12 @@ id|Scsi_Cmnd
 op_star
 id|ptr
 suffix:semicolon
-r_for
-c_loop
+id|instance
+op_assign
+id|scsi_host_hn_get
+c_func
 (paren
-id|instance
-op_assign
-id|first_instance
-suffix:semicolon
-id|instance
-op_logical_and
-id|instance-&gt;host_no
-op_ne
 id|hostno
-suffix:semicolon
-id|instance
-op_assign
-id|instance-&gt;next
 )paren
 suffix:semicolon
 r_if
@@ -2136,7 +2112,11 @@ c_func
 (paren
 l_string|&quot;NCR5380 : coroutine is%s running.&bslash;n&quot;
 comma
-id|main_running
+id|NCR5380_coroutine_running
+c_func
+(paren
+id|instance
+)paren
 ques
 c_cond
 l_string|&quot;&quot;
@@ -2309,8 +2289,8 @@ r_return
 id|length
 suffix:semicolon
 )brace
-r_static
 DECL|function|lprint_Scsi_Cmnd
+r_static
 r_char
 op_star
 id|lprint_Scsi_Cmnd
@@ -2370,8 +2350,8 @@ id|pos
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|lprint_command
+r_static
 r_char
 op_star
 id|lprint_command
@@ -2464,8 +2444,8 @@ id|pos
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|lprint_opcode
+r_static
 r_char
 op_star
 id|lprint_opcode
@@ -2502,10 +2482,10 @@ id|pos
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;NCR5380_init&t;-&t;initialise an NCR5380&n; *&t;@instance: adapter to configure&n; *&t;@flags: control flags&n; *&n; *&t;Initializes *instance and corresponding 5380 chip,&n; *      with flags OR&squot;d into the initial flags value.&n; *&n; *&t;Notes : I assume that the host, hostno, and id bits have been&n; *      set correctly.  I don&squot;t care about the irq and other fields. &n; *&n; *&t;Locks: interrupts must be enabled when we are called &n; */
+multiline_comment|/**&n; *&t;NCR5380_init&t;-&t;initialise an NCR5380&n; *&t;@instance: adapter to configure&n; *&t;@flags: control flags&n; *&n; *&t;Initializes *instance and corresponding 5380 chip,&n; *      with flags OR&squot;d into the initial flags value.&n; *&n; *&t;Notes : I assume that the host, hostno, and id bits have been&n; *      set correctly.  I don&squot;t care about the irq and other fields. &n; *&n; *&t;Returns 0 for success&n; *&n; *&t;Locks: interrupts must be enabled when we are called &n; */
 DECL|function|NCR5380_init
 r_static
-r_void
+r_int
 id|__init
 id|NCR5380_init
 c_func
@@ -2666,6 +2646,17 @@ id|hostdata-&gt;disconnected_queue
 op_assign
 l_int|NULL
 suffix:semicolon
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|hostdata-&gt;coroutine
+comma
+id|NCR5380_main
+comma
+id|hostdata
+)paren
+suffix:semicolon
 macro_line|#ifdef NCR5380_STATS
 r_for
 c_loop
@@ -2745,22 +2736,33 @@ id|FLAG_CHECK_LAST_BYTE_SENT
 op_or
 id|flags
 suffix:semicolon
+id|hostdata-&gt;next
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|the_template
+id|first_host
 )paren
-(brace
-id|the_template
+id|first_host
 op_assign
-id|instance-&gt;hostt
+id|hostdata
 suffix:semicolon
-id|first_instance
+r_else
+id|last_host-&gt;next
+op_assign
+id|hostdata
+suffix:semicolon
+id|last_host
+op_assign
+id|hostdata
+suffix:semicolon
+id|hostdata-&gt;host
 op_assign
 id|instance
 suffix:semicolon
-)brace
 id|hostdata-&gt;time_expires
 op_assign
 l_int|0
@@ -2890,6 +2892,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi%d: SCSI bus busy, waiting up to five seconds&bslash;n&quot;
 comma
 id|instance-&gt;host_no
@@ -2924,7 +2927,20 @@ op_amp
 id|SR_BSY
 )paren
 )paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
 suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -2933,6 +2949,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scsi%d: bus busy, attempting abort&bslash;n&quot;
 comma
 id|instance-&gt;host_no
@@ -2952,6 +2969,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scsi%d: bus busy, attempting reset&bslash;n&quot;
 comma
 id|instance-&gt;host_no
@@ -2971,20 +2989,25 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;scsi%d: bus locked solid or invalid override&bslash;n&quot;
 comma
 id|instance-&gt;host_no
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ENXIO
+suffix:semicolon
 )brace
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;NCR5380_queue_command &t;&t;-&t;queue a command&n; *&t;@cmd: SCSI command&n; *&t;@done: completion handler&n; *&n; *      cmd is added to the per instance issue_queue, with minor &n; *      twiddling done to the host specific fields of cmd.  If the &n; *      main coroutine is not running, it is restarted.&n; *&n; *&t;Locks: host lock taken by caller. Called functions drop and&n; *&t;retake this lock. Called functions take dma lock.&n; */
-multiline_comment|/* Only make static if a wrapper function is used */
-macro_line|#ifndef NCR5380_queue_command
-r_static
-macro_line|#endif
 DECL|function|NCR5380_queue_command
+r_static
 r_int
 id|NCR5380_queue_command
 c_func
@@ -3026,10 +3049,6 @@ suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|tmp
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 macro_line|#if (NDEBUG &amp; NDEBUG_NO_WRITE)
 r_switch
@@ -3074,14 +3093,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* (NDEBUG &amp; NDEBUG_NO_WRITE) */
-id|spin_lock_irqsave
-c_func
-(paren
-id|instance-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 macro_line|#ifdef NCR5380_STATS
 r_switch
 c_cond
@@ -3281,24 +3292,19 @@ l_string|&quot;tail&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Run the coroutine if it isn&squot;t already running. */
-id|spin_unlock_irqrestore
+multiline_comment|/* Kick off command processing */
+id|schedule_work
 c_func
 (paren
-id|instance-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|run_main
-c_func
-(paren
+op_amp
+id|hostdata-&gt;coroutine
 )paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;NCR5380_main&t;-&t;NCR state machines&n; *&n; *&t;NCR5380_main is a coroutine that runs as long as more work can &n; *      be done on the NCR5380 host adapters in a system.  Both &n; *      NCR5380_queue_command() and NCR5380_intr() will try to start it &n; *      in case it is not running.&n; * &n; *&t;Locks; The caller must hold the io_request_lock. The lock will still be&n; *&t;held on return but may be dropped while running. Called functions take&n; *&t;the DMA lock.&n; */
+multiline_comment|/**&n; *&t;NCR5380_main&t;-&t;NCR state machines&n; *&n; *&t;NCR5380_main is a coroutine that runs as long as more work can &n; *      be done on the NCR5380 host adapters in a system.  Both &n; *      NCR5380_queue_command() and NCR5380_intr() will try to start it &n; *      in case it is not running.&n; * &n; *&t;Locks: called as its own thread with no locks held. Takes the&n; *&t;host lock and called routines may take the isa dma lock.&n; */
 DECL|function|NCR5380_main
 r_static
 r_void
@@ -3306,8 +3312,17 @@ id|NCR5380_main
 c_func
 (paren
 r_void
+op_star
+id|p
 )paren
 (brace
+r_struct
+id|NCR5380_hostdata
+op_star
+id|hostdata
+op_assign
+id|p
+suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|tmp
@@ -3320,15 +3335,26 @@ id|Scsi_Host
 op_star
 id|instance
 suffix:semicolon
-r_struct
-id|NCR5380_hostdata
-op_star
-id|hostdata
-suffix:semicolon
 r_int
 id|done
 suffix:semicolon
-multiline_comment|/*&n;&t; * We run (with interrupts disabled) until we&squot;re sure that none of &n;&t; * the host adapters have anything that can be done, at which point &n;&t; * we set main_running to 0 and exit.&n;&t; *&n;&t; * Interrupts are enabled before doing various other internal &n;&t; * instructions, after we&squot;ve decided that we need to run through&n;&t; * the loop again.&n;&t; *&n;&t; * this should prevent any race conditions.&n;&t; */
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/*&n;&t; * We run (with interrupts disabled) until we&squot;re sure that none of &n;&t; * the host adapters have anything that can be done, at which point &n;&t; * we can exit&n;&t; *&n;&t; * Interrupts are enabled before doing various other internal &n;&t; * instructions, after we&squot;ve decided that we need to run through&n;&t; * the loop again.&n;&t; *&n;&t; * this should prevent any race conditions.&n;&t; */
+id|instance
+op_assign
+id|hostdata-&gt;host
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_do
 (brace
 multiline_comment|/* Lock held here */
@@ -3336,34 +3362,6 @@ id|done
 op_assign
 l_int|1
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|instance
-op_assign
-id|first_instance
-suffix:semicolon
-id|instance
-op_logical_and
-id|instance-&gt;hostt
-op_eq
-id|the_template
-suffix:semicolon
-id|instance
-op_assign
-id|instance-&gt;next
-)paren
-(brace
-id|hostdata
-op_assign
-(paren
-r_struct
-id|NCR5380_hostdata
-op_star
-)paren
-id|instance-&gt;hostdata
-suffix:semicolon
-multiline_comment|/* Lock held here */
 r_if
 c_cond
 (paren
@@ -3386,7 +3384,7 @@ id|instance-&gt;host_no
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Search through the issue_queue for a command destined&n;&t;&t;&t;&t; * for a target that&squot;s not busy.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Search through the issue_queue for a command destined&n;&t;&t;&t; * for a target that&squot;s not busy.&n;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -3515,7 +3513,7 @@ id|tmp-&gt;host_scribble
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t;&t;&t;&t; * Attempt to establish an I_T_L nexus here. &n;&t;&t;&t;&t;&t;&t; * On success, instance-&gt;hostdata-&gt;connected is set.&n;&t;&t;&t;&t;&t;&t; * On failure, we must add the command back to the&n;&t;&t;&t;&t;&t;&t; *   issue queue so we can keep trying. &n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t;&t;&t; * Attempt to establish an I_T_L nexus here. &n;&t;&t;&t;&t;&t; * On success, instance-&gt;hostdata-&gt;connected is set.&n;&t;&t;&t;&t;&t; * On failure, we must add the command back to the&n;&t;&t;&t;&t;&t; *   issue queue so we can keep trying. &n;&t;&t;&t;&t;&t; */
 id|dprintk
 c_func
 (paren
@@ -3534,7 +3532,7 @@ id|tmp-&gt;lun
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * A successful selection is defined as one that &n;&t;&t;&t;&t;&t;&t; * leaves us with the command connected and &n;&t;&t;&t;&t;&t;&t; * in hostdata-&gt;connected, OR has terminated the&n;&t;&t;&t;&t;&t;&t; * command.&n;&t;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t;&t; * With successful commands, we fall through&n;&t;&t;&t;&t;&t;&t; * and see if we can do an information transfer,&n;&t;&t;&t;&t;&t;&t; * with failures we will restart.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * A successful selection is defined as one that &n;&t;&t;&t;&t;&t; * leaves us with the command connected and &n;&t;&t;&t;&t;&t; * in hostdata-&gt;connected, OR has terminated the&n;&t;&t;&t;&t;&t; * command.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * With successful commands, we fall through&n;&t;&t;&t;&t;&t; * and see if we can do an information transfer,&n;&t;&t;&t;&t;&t; * with failures we will restart.&n;&t;&t;&t;&t;&t; */
 id|hostdata-&gt;selecting
 op_assign
 l_int|0
@@ -3551,7 +3549,7 @@ id|instance
 comma
 id|tmp
 comma
-multiline_comment|/* &n;&t;&t;&t;&t;&t;&t;&t;&t;     * REQUEST SENSE commands are issued without tagged&n;&t;&t;&t;&t;&t;&t;&t;&t;     * queueing, even on SCSI-II devices because the &n;&t;&t;&t;&t;&t;&t;&t;&t;     * contingent allegiance condition exists for the &n;&t;&t;&t;&t;&t;&t;&t;&t;     * entire unit.&n;&t;&t;&t;&t;&t;&t;&t;&t;     */
+multiline_comment|/* &n;&t;&t;&t;&t;&t;&t;&t;     * REQUEST SENSE commands are issued without tagged&n;&t;&t;&t;&t;&t;&t;&t;     * queueing, even on SCSI-II devices because the &n;&t;&t;&t;&t;&t;&t;&t;     * contingent allegiance condition exists for the &n;&t;&t;&t;&t;&t;&t;&t;     * entire unit.&n;&t;&t;&t;&t;&t;&t;&t;     */
 (paren
 id|tmp-&gt;cmnd
 (braket
@@ -3667,7 +3665,7 @@ multiline_comment|/* Ok ?? */
 )brace
 r_else
 (brace
-multiline_comment|/* RvC: device failed, so we wait a long time&n;&t;&t;&t;&t;&t;   this is needed for Mustek scanners, that&n;&t;&t;&t;&t;&t;   do not respond to commands immediately&n;&t;&t;&t;&t;&t;   after a scan */
+multiline_comment|/* RvC: device failed, so we wait a long time&n;&t;&t;&t;&t;   this is needed for Mustek scanners, that&n;&t;&t;&t;&t;   do not respond to commands immediately&n;&t;&t;&t;&t;   after a scan */
 id|printk
 c_func
 (paren
@@ -3780,8 +3778,6 @@ r_else
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* for instance */
-)brace
 r_while
 c_loop
 (paren
@@ -3789,14 +3785,12 @@ op_logical_neg
 id|done
 )paren
 suffix:semicolon
-multiline_comment|/* Exit lock held */
-id|clear_bit
+id|spin_unlock_irqrestore
 c_func
 (paren
-l_int|0
+id|instance-&gt;host_lock
 comma
-op_amp
-id|main_running
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -3838,6 +3832,11 @@ r_int
 r_char
 id|basr
 suffix:semicolon
+r_struct
+id|NCR5380_hostdata
+op_star
+id|hostdata
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -3860,23 +3859,23 @@ multiline_comment|/* The instance list is constant while the driver is&n;&t;&t; 
 r_for
 c_loop
 (paren
-id|instance
+id|hostdata
 op_assign
-id|first_instance
+id|first_host
 suffix:semicolon
-id|instance
-op_logical_and
-(paren
-id|instance-&gt;hostt
-op_eq
-id|the_template
-)paren
+id|hostdata
+op_ne
+l_int|NULL
 suffix:semicolon
-id|instance
+id|hostdata
 op_assign
-id|instance-&gt;next
+id|hostdata-&gt;next
 )paren
 (brace
+id|instance
+op_assign
+id|hostdata-&gt;host
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4286,11 +4285,15 @@ c_cond
 op_logical_neg
 id|done
 )paren
-id|run_main
+(brace
+id|schedule_work
 c_func
 (paren
+op_amp
+id|hostdata-&gt;coroutine
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* if (instance-&gt;irq == irq) */
 )brace

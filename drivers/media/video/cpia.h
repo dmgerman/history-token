@@ -3,17 +3,17 @@ DECL|macro|cpia_h
 mdefine_line|#define cpia_h
 multiline_comment|/*&n; * CPiA Parallel Port Video4Linux driver&n; *&n; * Supports CPiA based parallel port Video Camera&squot;s.&n; *&n; * (C) Copyright 1999 Bas Huisman,&n; *                    Peter Pregler,&n; *                    Scott J. Bertin,&n; *                    VLSI Vision Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 DECL|macro|CPIA_MAJ_VER
-mdefine_line|#define CPIA_MAJ_VER&t;0
+mdefine_line|#define CPIA_MAJ_VER&t;1
 DECL|macro|CPIA_MIN_VER
-mdefine_line|#define CPIA_MIN_VER    8
+mdefine_line|#define CPIA_MIN_VER    2
 DECL|macro|CPIA_PATCH_VER
-mdefine_line|#define CPIA_PATCH_VER&t;1
+mdefine_line|#define CPIA_PATCH_VER&t;2
 DECL|macro|CPIA_PP_MAJ_VER
-mdefine_line|#define CPIA_PP_MAJ_VER       0
+mdefine_line|#define CPIA_PP_MAJ_VER       1
 DECL|macro|CPIA_PP_MIN_VER
-mdefine_line|#define CPIA_PP_MIN_VER       8
+mdefine_line|#define CPIA_PP_MIN_VER       2
 DECL|macro|CPIA_PP_PATCH_VER
-mdefine_line|#define CPIA_PP_PATCH_VER     1
+mdefine_line|#define CPIA_PP_PATCH_VER     2
 DECL|macro|CPIA_MAX_FRAME_SIZE_UNALIGNED
 mdefine_line|#define CPIA_MAX_FRAME_SIZE_UNALIGNED&t;(352 * 288 * 4)   /* CIF at RGB32 */
 DECL|macro|CPIA_MAX_FRAME_SIZE
@@ -151,6 +151,13 @@ multiline_comment|/* If wait_for_stream_ready is non-zero, wait until the stream
 DECL|member|wait_for_stream_ready
 r_int
 id|wait_for_stream_ready
+suffix:semicolon
+multiline_comment|/* &n;&t; * Used to maintain lowlevel module usage counts&n;&t; */
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -356,9 +363,9 @@ id|exposure
 suffix:semicolon
 r_struct
 (brace
-DECL|member|balanceModeIsAuto
+DECL|member|balanceMode
 id|u8
-id|balanceModeIsAuto
+id|balanceMode
 suffix:semicolon
 DECL|member|redGain
 id|u8
@@ -414,6 +421,10 @@ id|apcor
 suffix:semicolon
 r_struct
 (brace
+DECL|member|disabled
+id|u8
+id|disabled
+suffix:semicolon
 DECL|member|flickerMode
 id|u8
 id|flickerMode
@@ -423,7 +434,7 @@ id|u8
 id|coarseJump
 suffix:semicolon
 DECL|member|allowableOverExposure
-id|u8
+r_int
 id|allowableOverExposure
 suffix:semicolon
 DECL|member|flickerControl
@@ -776,6 +787,12 @@ id|video_window
 id|vw
 suffix:semicolon
 multiline_comment|/* v4l capture area */
+DECL|member|vc
+r_struct
+id|video_capture
+id|vc
+suffix:semicolon
+multiline_comment|/* v4l subcapture area */
 multiline_comment|/* mmap interface */
 DECL|member|curframe
 r_int
@@ -812,6 +829,16 @@ id|u32
 id|cmd_queue
 suffix:semicolon
 multiline_comment|/* queued commands */
+DECL|member|exposure_status
+r_int
+id|exposure_status
+suffix:semicolon
+multiline_comment|/* EXPOSURE_* */
+DECL|member|exposure_count
+r_int
+id|exposure_count
+suffix:semicolon
+multiline_comment|/* number of frames at this status */
 )brace
 suffix:semicolon
 multiline_comment|/* cpia_register_camera is called by low level driver for each camera.&n; * A unique camera number is returned, or a negative value on error */
@@ -1006,6 +1033,26 @@ DECL|macro|VP_STATE_ACB_RMAX
 mdefine_line|#define VP_STATE_ACB_RMAX&t;&t;0x40
 DECL|macro|VP_STATE_ACB_GMAX
 mdefine_line|#define VP_STATE_ACB_GMAX&t;&t;0x80
+multiline_comment|/* default (minimum) compensation values */
+DECL|macro|COMP_RED
+mdefine_line|#define COMP_RED        220
+DECL|macro|COMP_GREEN1
+mdefine_line|#define COMP_GREEN1     214
+DECL|macro|COMP_GREEN2
+mdefine_line|#define COMP_GREEN2     COMP_GREEN1
+DECL|macro|COMP_BLUE
+mdefine_line|#define COMP_BLUE       230
+multiline_comment|/* exposure status */
+DECL|macro|EXPOSURE_VERY_LIGHT
+mdefine_line|#define EXPOSURE_VERY_LIGHT 0
+DECL|macro|EXPOSURE_LIGHT
+mdefine_line|#define EXPOSURE_LIGHT      1
+DECL|macro|EXPOSURE_NORMAL
+mdefine_line|#define EXPOSURE_NORMAL     2
+DECL|macro|EXPOSURE_DARK
+mdefine_line|#define EXPOSURE_DARK       3
+DECL|macro|EXPOSURE_VERY_DARK
+mdefine_line|#define EXPOSURE_VERY_DARK  4
 multiline_comment|/* ErrorCode */
 DECL|macro|ERROR_FLICKER_BELOW_MIN_EXP
 mdefine_line|#define ERROR_FLICKER_BELOW_MIN_EXP     0x01 /*flicker exposure got below minimum exposure */
@@ -1015,9 +1062,9 @@ DECL|macro|LOG
 mdefine_line|#define LOG(fmt,args...) ALOG(KERN_INFO __FILE__ &quot;:%s(%d):&quot; fmt, __FUNCTION__ , __LINE__ , ##args)
 macro_line|#ifdef _CPIA_DEBUG_
 DECL|macro|ADBG
-mdefine_line|#define ADBG(lineno,fmt,args...) printk(fmt, jiffies, lineno, ##args)
+mdefine_line|#define ADBG(fmt,args...) printk(fmt, jiffies, ##args)
 DECL|macro|DBG
-mdefine_line|#define DBG(fmt,args...) ADBG((__LINE__), KERN_DEBUG __FILE__&quot; (%ld):&quot; __FUNCTION__ &quot;(%d):&quot; fmt, ##args)
+mdefine_line|#define DBG(fmt,args...) ADBG(KERN_DEBUG __FILE__&quot; (%ld):%s(%d):&quot; fmt, __FUNCTION__, __LINE__ , ##args)
 macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(fmn,args...) do {} while(0)
@@ -1034,23 +1081,36 @@ c_func
 r_struct
 id|cam_data
 op_star
+op_star
 id|l
 comma
 r_struct
 id|cam_data
 op_star
-id|drv
+op_star
+id|drv_p
 )paren
 (brace
+r_struct
+id|cam_data
+op_star
+id|drv
+suffix:semicolon
+id|drv
+op_assign
+op_star
+id|drv_p
+suffix:semicolon
 id|drv-&gt;next
 op_assign
+op_star
 id|l
 suffix:semicolon
 id|drv-&gt;previous
 op_assign
-op_amp
 id|l
 suffix:semicolon
+op_star
 id|l
 op_assign
 id|drv
@@ -1066,9 +1126,20 @@ c_func
 r_struct
 id|cam_data
 op_star
-id|drv
+op_star
+id|drv_p
 )paren
 (brace
+r_struct
+id|cam_data
+op_star
+id|drv
+suffix:semicolon
+id|drv
+op_assign
+op_star
+id|drv_p
+suffix:semicolon
 r_if
 c_cond
 (paren

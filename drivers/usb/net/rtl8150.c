@@ -2097,6 +2097,9 @@ id|rtl8150_t
 op_star
 id|dev
 suffix:semicolon
+r_int
+id|status
+suffix:semicolon
 id|dev
 op_assign
 id|urb-&gt;context
@@ -2118,14 +2121,25 @@ id|urb-&gt;status
 r_case
 l_int|0
 suffix:colon
+multiline_comment|/* success */
 r_break
 suffix:semicolon
 r_case
 op_minus
+id|ECONNRESET
+suffix:colon
+multiline_comment|/* unlink */
+r_case
+op_minus
 id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
 suffix:colon
 r_return
 suffix:semicolon
+multiline_comment|/* -EPIPE:  should clear the halt */
 r_default
 suffix:colon
 id|info
@@ -2138,7 +2152,38 @@ comma
 id|urb-&gt;status
 )paren
 suffix:semicolon
+r_goto
+id|resubmit
+suffix:semicolon
 )brace
+multiline_comment|/* FIXME if this doesn&squot;t do anything, don&squot;t submit the urb! */
+id|resubmit
+suffix:colon
+id|status
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|SLAB_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+)paren
+id|err
+(paren
+l_string|&quot;can&squot;t resubmit intr, %s-%s/input0, status %d&quot;
+comma
+id|dev-&gt;udev-&gt;bus-&gt;bus_name
+comma
+id|dev-&gt;udev-&gt;devpath
+comma
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;**&n;**&t;network related part of the code&n;**&n;*/
 DECL|function|fill_skb_pool

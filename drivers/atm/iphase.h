@@ -307,6 +307,22 @@ id|crc32
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|cpcs_trailer_desc
+r_struct
+id|cpcs_trailer_desc
+(brace
+DECL|member|cpcs
+r_struct
+id|cpcs_trailer
+op_star
+id|cpcs
+suffix:semicolon
+DECL|member|dma_addr
+id|dma_addr_t
+id|dma_addr
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|ia_vcc
 r_struct
 id|ia_vcc
@@ -523,6 +539,8 @@ DECL|macro|DMA_INT_ENABLE
 mdefine_line|#define DMA_INT_ENABLE 0x0002&t;/* use for both Tx and Rx */  
 DECL|macro|TX_DLE_PSI
 mdefine_line|#define TX_DLE_PSI 0x0001  
+DECL|macro|DLE_TOTAL_SIZE
+mdefine_line|#define DLE_TOTAL_SIZE (sizeof(struct dle)*DLE_ENTRIES)
 multiline_comment|/* Descriptor List Entries (DLE) */
 DECL|struct|dle
 r_struct
@@ -3094,7 +3112,8 @@ id|timeout_wait
 suffix:semicolon
 macro_line|#endif
 DECL|member|tx_buf
-id|caddr_t
+r_struct
+id|cpcs_trailer_desc
 op_star
 id|tx_buf
 suffix:semicolon
@@ -3361,6 +3380,14 @@ id|testTable_t
 op_star
 op_star
 id|testTable
+suffix:semicolon
+DECL|member|tx_dle_dma
+id|dma_addr_t
+id|tx_dle_dma
+suffix:semicolon
+DECL|member|rx_dle_dma
+id|dma_addr_t
+id|rx_dle_dma
 suffix:semicolon
 DECL|typedef|IADEV
 )brace
