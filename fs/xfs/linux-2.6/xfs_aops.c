@@ -4582,7 +4582,7 @@ op_minus
 id|error
 suffix:semicolon
 r_return
-id|blockdev_direct_IO_no_locking
+id|blockdev_direct_IO_own_locking
 c_func
 (paren
 id|rw
