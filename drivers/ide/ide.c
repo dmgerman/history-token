@@ -10077,22 +10077,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We must remove proc entries defined in this module.&n;&t;&t;   Otherwise we oops while accessing these entries */
-macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-id|drive-&gt;proc
-)paren
-id|ide_remove_proc_entries
-c_func
-(paren
-id|drive-&gt;proc
-comma
-id|driver-&gt;proc
-)paren
-suffix:semicolon
-macro_line|#endif
 id|ata_attach
 c_func
 (paren
