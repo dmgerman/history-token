@@ -15451,19 +15451,6 @@ id|HACR_MMC_INT_ENABLE
 id|u8
 id|dce_status
 suffix:semicolon
-macro_line|#ifdef DEBUG_INTERRUPT_ERROR
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: wavelan_interrupt(): unexpected mmc interrupt: status 0x%04x.&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|dce_status
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Interrupt from the modem management controller.&n;&t;&t; * This will clear it -- ignored for now.&n;&t;&t; */
 id|mmc_read
 c_func
@@ -15487,6 +15474,19 @@ id|dce_status
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG_INTERRUPT_ERROR
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: wavelan_interrupt(): unexpected mmc interrupt: status 0x%04x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|dce_status
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* Check if not controller interrupt */
 r_if
