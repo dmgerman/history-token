@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.setup.c 1.63 11/13/01 21:26:07 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.setup.c 1.65 11/18/01 20:57:25 trini&n; */
 multiline_comment|/*&n; * Common prep/pmac/chrp boot and setup code.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -1950,6 +1950,8 @@ id|data
 (braket
 l_int|0
 )braket
+op_plus
+id|KERNELBASE
 suffix:semicolon
 id|initrd_end
 op_assign
@@ -1962,6 +1964,8 @@ id|data
 (braket
 l_int|1
 )braket
+op_plus
+id|KERNELBASE
 suffix:semicolon
 r_break
 suffix:semicolon

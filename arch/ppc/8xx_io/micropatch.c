@@ -12,7 +12,7 @@ macro_line|#include &lt;asm/mpc8xx.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/8xx_immap.h&gt;
-macro_line|#include &quot;commproc.h&quot;
+macro_line|#include &lt;asm/commproc.h&gt;
 multiline_comment|/* Define this to get SMC patches as well.  You need to modify the uart&n; * driver as well......&n;#define USE_SMC_PATCH 1&n; */
 macro_line|#ifdef CONFIG_USB_MPC8xx
 DECL|macro|USE_USB_SOF_PATCH

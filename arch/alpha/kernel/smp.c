@@ -1621,6 +1621,13 @@ id|idle-&gt;processor
 op_assign
 id|cpuid
 suffix:semicolon
+id|idle-&gt;cpus_runnable
+op_assign
+l_int|1
+op_lshift
+id|cpuid
+suffix:semicolon
+multiline_comment|/* we schedule the first task manually */
 id|__cpu_logical_map
 (braket
 id|cpunum
@@ -1635,11 +1642,6 @@ id|cpuid
 op_assign
 id|cpunum
 suffix:semicolon
-id|idle-&gt;has_cpu
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* we schedule the first task manually */
 id|del_from_runqueue
 c_func
 (paren

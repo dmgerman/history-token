@@ -1771,9 +1771,11 @@ id|idle-&gt;processor
 op_assign
 id|cpu
 suffix:semicolon
-id|idle-&gt;has_cpu
+id|idle-&gt;cpus_runnable
 op_assign
 l_int|1
+op_lshift
+id|cpu
 suffix:semicolon
 multiline_comment|/* we schedule the first task manually */
 id|del_from_runqueue

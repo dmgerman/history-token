@@ -959,6 +959,13 @@ c_func
 id|___wait_on_page
 )paren
 suffix:semicolon
+DECL|variable|generic_direct_IO
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|generic_direct_IO
+)paren
+suffix:semicolon
 DECL|variable|block_write_full_page
 id|EXPORT_SYMBOL
 c_func

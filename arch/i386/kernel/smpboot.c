@@ -2576,6 +2576,13 @@ id|idle-&gt;processor
 op_assign
 id|cpu
 suffix:semicolon
+id|idle-&gt;cpus_runnable
+op_assign
+l_int|1
+op_lshift
+id|cpu
+suffix:semicolon
+multiline_comment|/* we schedule the first task manually */
 id|map_cpu_to_boot_apicid
 c_func
 (paren
@@ -2584,11 +2591,6 @@ comma
 id|apicid
 )paren
 suffix:semicolon
-id|idle-&gt;has_cpu
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* we schedule the first task manually */
 id|idle-&gt;thread.eip
 op_assign
 (paren

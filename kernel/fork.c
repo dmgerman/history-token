@@ -2560,9 +2560,10 @@ macro_line|#ifdef CONFIG_SMP
 r_int
 id|i
 suffix:semicolon
-id|p-&gt;has_cpu
+id|p-&gt;cpus_runnable
 op_assign
-l_int|0
+op_complement
+l_int|0UL
 suffix:semicolon
 id|p-&gt;processor
 op_assign

@@ -760,9 +760,11 @@ id|p-&gt;processor
 op_assign
 id|i
 suffix:semicolon
-id|p-&gt;has_cpu
+id|p-&gt;cpus_runnable
 op_assign
 l_int|1
+op_lshift
+id|i
 suffix:semicolon
 multiline_comment|/* we schedule the first task manually */
 id|current_set

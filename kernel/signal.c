@@ -1717,7 +1717,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|t-&gt;has_cpu
+id|task_has_cpu
+c_func
+(paren
+id|t
+)paren
 op_logical_and
 id|t-&gt;processor
 op_ne

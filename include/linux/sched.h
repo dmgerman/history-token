@@ -642,16 +642,17 @@ id|mm_struct
 op_star
 id|mm
 suffix:semicolon
-DECL|member|has_cpu
 DECL|member|processor
 r_int
-id|has_cpu
-comma
 id|processor
 suffix:semicolon
+multiline_comment|/*&n;&t; * cpus_runnable is ~0 if the process is not running on any&n;&t; * CPU. It&squot;s (1 &lt;&lt; cpu) if it&squot;s running on a CPU. This mask&n;&t; * is updated under the runqueue lock.&n;&t; *&n;&t; * To determine whether a process might run on a CPU, this&n;&t; * mask is AND-ed with cpus_allowed.&n;&t; */
+DECL|member|cpus_runnable
 DECL|member|cpus_allowed
 r_int
 r_int
+id|cpus_runnable
+comma
 id|cpus_allowed
 suffix:semicolon
 multiline_comment|/*&n;&t; * (only the &squot;next&squot; pointer fits into the cacheline, but&n;&t; * that&squot;s just fine.)&n;&t; */
@@ -1147,7 +1148,7 @@ id|default_exec_domain
 suffix:semicolon
 multiline_comment|/*&n; *  INIT_TASK is used to set up the first task table, touch at&n; * your own risk!. Base=0, limit=0x1fffff (=2MB)&n; */
 DECL|macro|INIT_TASK
-mdefine_line|#define INIT_TASK(tsk)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    state:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    flags:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    sigpending:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    addr_limit:&t;&t;KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;    exec_domain:&t;&amp;default_exec_domain,&t;&t;&t;&t;&bslash;&n;    lock_depth:&t;&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    counter:&t;&t;DEF_COUNTER,&t;&t;&t;&t;&t;&bslash;&n;    nice:&t;&t;DEF_NICE,&t;&t;&t;&t;&t;&bslash;&n;    policy:&t;&t;SCHED_OTHER,&t;&t;&t;&t;&t;&bslash;&n;    mm:&t;&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;    active_mm:&t;&t;&amp;init_mm,&t;&t;&t;&t;&t;&bslash;&n;    cpus_allowed:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    run_list:&t;&t;LIST_HEAD_INIT(tsk.run_list),&t;&t;&t;&bslash;&n;    next_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    prev_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_opptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_pptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    thread_group:&t;LIST_HEAD_INIT(tsk.thread_group),&t;&t;&bslash;&n;    wait_chldexit:&t;__WAIT_QUEUE_HEAD_INITIALIZER(tsk.wait_chldexit),&bslash;&n;    real_timer:&t;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;function:&t;&t;it_real_fn&t;&t;&t;&t;&bslash;&n;    },&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    cap_effective:&t;CAP_INIT_EFF_SET,&t;&t;&t;&t;&bslash;&n;    cap_inheritable:&t;CAP_INIT_INH_SET,&t;&t;&t;&t;&bslash;&n;    cap_permitted:&t;CAP_FULL_SET,&t;&t;&t;&t;&t;&bslash;&n;    keep_capabilities:&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    rlim:&t;&t;INIT_RLIMITS,&t;&t;&t;&t;&t;&bslash;&n;    user:&t;&t;INIT_USER,&t;&t;&t;&t;&t;&bslash;&n;    comm:&t;&t;&quot;swapper&quot;,&t;&t;&t;&t;&t;&bslash;&n;    thread:&t;&t;INIT_THREAD,&t;&t;&t;&t;&t;&bslash;&n;    fs:&t;&t;&t;&amp;init_fs,&t;&t;&t;&t;&t;&bslash;&n;    files:&t;&t;&amp;init_files,&t;&t;&t;&t;&t;&bslash;&n;    sigmask_lock:&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    sig:&t;&t;&amp;init_signals,&t;&t;&t;&t;&t;&bslash;&n;    pending:&t;&t;{ NULL, &amp;tsk.pending.head, {{0}}},&t;&t;&bslash;&n;    blocked:&t;&t;{{0}},&t;&t;&t;&t;&t;&t;&bslash;&n;    alloc_lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    journal_info:&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_TASK(tsk)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    state:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    flags:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    sigpending:&t;&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    addr_limit:&t;&t;KERNEL_DS,&t;&t;&t;&t;&t;&bslash;&n;    exec_domain:&t;&amp;default_exec_domain,&t;&t;&t;&t;&bslash;&n;    lock_depth:&t;&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    counter:&t;&t;DEF_COUNTER,&t;&t;&t;&t;&t;&bslash;&n;    nice:&t;&t;DEF_NICE,&t;&t;&t;&t;&t;&bslash;&n;    policy:&t;&t;SCHED_OTHER,&t;&t;&t;&t;&t;&bslash;&n;    mm:&t;&t;&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;    active_mm:&t;&t;&amp;init_mm,&t;&t;&t;&t;&t;&bslash;&n;    cpus_runnable:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    cpus_allowed:&t;-1,&t;&t;&t;&t;&t;&t;&bslash;&n;    run_list:&t;&t;LIST_HEAD_INIT(tsk.run_list),&t;&t;&t;&bslash;&n;    next_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    prev_task:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_opptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    p_pptr:&t;&t;&amp;tsk,&t;&t;&t;&t;&t;&t;&bslash;&n;    thread_group:&t;LIST_HEAD_INIT(tsk.thread_group),&t;&t;&bslash;&n;    wait_chldexit:&t;__WAIT_QUEUE_HEAD_INITIALIZER(tsk.wait_chldexit),&bslash;&n;    real_timer:&t;&t;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;function:&t;&t;it_real_fn&t;&t;&t;&t;&bslash;&n;    },&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    cap_effective:&t;CAP_INIT_EFF_SET,&t;&t;&t;&t;&bslash;&n;    cap_inheritable:&t;CAP_INIT_INH_SET,&t;&t;&t;&t;&bslash;&n;    cap_permitted:&t;CAP_FULL_SET,&t;&t;&t;&t;&t;&bslash;&n;    keep_capabilities:&t;0,&t;&t;&t;&t;&t;&t;&bslash;&n;    rlim:&t;&t;INIT_RLIMITS,&t;&t;&t;&t;&t;&bslash;&n;    user:&t;&t;INIT_USER,&t;&t;&t;&t;&t;&bslash;&n;    comm:&t;&t;&quot;swapper&quot;,&t;&t;&t;&t;&t;&bslash;&n;    thread:&t;&t;INIT_THREAD,&t;&t;&t;&t;&t;&bslash;&n;    fs:&t;&t;&t;&amp;init_fs,&t;&t;&t;&t;&t;&bslash;&n;    files:&t;&t;&amp;init_files,&t;&t;&t;&t;&t;&bslash;&n;    sigmask_lock:&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    sig:&t;&t;&amp;init_signals,&t;&t;&t;&t;&t;&bslash;&n;    pending:&t;&t;{ NULL, &amp;tsk.pending.head, {{0}}},&t;&t;&bslash;&n;    blocked:&t;&t;{{0}},&t;&t;&t;&t;&t;&t;&bslash;&n;    alloc_lock:&t;&t;SPIN_LOCK_UNLOCKED,&t;&t;&t;&t;&bslash;&n;    journal_info:&t;NULL,&t;&t;&t;&t;&t;&t;&bslash;&n;}
 macro_line|#ifndef INIT_TASK_SIZE
 DECL|macro|INIT_TASK_SIZE
 macro_line|# define INIT_TASK_SIZE&t;2048*sizeof(long)
@@ -1357,6 +1358,55 @@ suffix:semicolon
 )brace
 r_return
 id|p
+suffix:semicolon
+)brace
+DECL|macro|task_has_cpu
+mdefine_line|#define task_has_cpu(tsk) ((tsk)-&gt;cpus_runnable != ~0UL)
+DECL|function|task_set_cpu
+r_static
+r_inline
+r_void
+id|task_set_cpu
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_int
+r_int
+id|cpu
+)paren
+(brace
+id|tsk-&gt;processor
+op_assign
+id|cpu
+suffix:semicolon
+id|tsk-&gt;cpus_runnable
+op_assign
+l_int|1UL
+op_lshift
+id|cpu
+suffix:semicolon
+)brace
+DECL|function|task_release_cpu
+r_static
+r_inline
+r_void
+id|task_release_cpu
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+(brace
+id|tsk-&gt;cpus_runnable
+op_assign
+op_complement
+l_int|0UL
 suffix:semicolon
 )brace
 multiline_comment|/* per-UID process charging. */

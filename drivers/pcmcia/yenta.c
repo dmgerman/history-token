@@ -4223,6 +4223,16 @@ comma
 l_int|0x0
 )paren
 suffix:semicolon
+id|exca_writeb
+c_func
+(paren
+id|sock
+comma
+id|I365_CSCINT
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -3241,6 +3241,10 @@ c_cond
 id|urb
 op_logical_and
 id|urb-&gt;dev
+op_logical_and
+id|urb-&gt;dev-&gt;bus
+op_logical_and
+id|urb-&gt;dev-&gt;bus-&gt;op
 )paren
 r_return
 id|urb-&gt;dev-&gt;bus-&gt;op
@@ -3274,6 +3278,10 @@ c_cond
 id|urb
 op_logical_and
 id|urb-&gt;dev
+op_logical_and
+id|urb-&gt;dev-&gt;bus
+op_logical_and
+id|urb-&gt;dev-&gt;bus-&gt;op
 )paren
 r_return
 id|urb-&gt;dev-&gt;bus-&gt;op

@@ -3334,6 +3334,13 @@ c_func
 id|sb
 )paren
 suffix:semicolon
+id|invalidate_inodes
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
+multiline_comment|/* bad name - it should be evict_inodes() */
 r_if
 c_cond
 (paren

@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -45094,7 +45095,11 @@ l_int|0xf
 comma
 l_int|0
 comma
-l_int|1024
+id|block_size
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_if

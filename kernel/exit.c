@@ -80,7 +80,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|p-&gt;has_cpu
+id|task_has_cpu
+c_func
+(paren
+id|p
+)paren
 )paren
 r_break
 suffix:semicolon
@@ -106,7 +110,11 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|p-&gt;has_cpu
+id|task_has_cpu
+c_func
+(paren
+id|p
+)paren
 )paren
 suffix:semicolon
 )brace
