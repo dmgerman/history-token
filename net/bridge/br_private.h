@@ -408,6 +408,22 @@ suffix:semicolon
 multiline_comment|/* br_fdb.c */
 r_extern
 r_void
+id|br_fdb_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|br_fdb_fini
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|br_fdb_changeaddr
 c_func
 (paren
