@@ -3,6 +3,7 @@ macro_line|#ifndef __XFS_STATS_H__
 DECL|macro|__XFS_STATS_H__
 mdefine_line|#define __XFS_STATS_H__
 macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; !defined(XFS_STATS_OFF)
+macro_line|#include &lt;linux/percpu.h&gt;
 multiline_comment|/*&n; * XFS global statistics&n; */
 DECL|struct|xfsstats
 r_struct
@@ -327,17 +328,21 @@ id|xs_read_bytes
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
+id|DECLARE_PER_CPU
+c_func
+(paren
 r_struct
 id|xfsstats
+comma
 id|xfsstats
+)paren
 suffix:semicolon
 DECL|macro|XFS_STATS_INC
-macro_line|# define XFS_STATS_INC(count)&t;&t;( xfsstats.count++ )
+macro_line|# define XFS_STATS_INC(count)&t;&t;( get_cpu_var(xfsstats).count++ )
 DECL|macro|XFS_STATS_DEC
-macro_line|# define XFS_STATS_DEC(count)&t;&t;( xfsstats.count-- )
+macro_line|# define XFS_STATS_DEC(count)&t;&t;( get_cpu_var(xfsstats).count-- )
 DECL|macro|XFS_STATS_ADD
-macro_line|# define XFS_STATS_ADD(count, inc)&t;( xfsstats.count += (inc) )
+macro_line|# define XFS_STATS_ADD(count, inc)&t;( get_cpu_var(xfsstats).count += (inc) )
 r_extern
 r_void
 id|xfs_init_procfs
