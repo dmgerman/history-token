@@ -17,6 +17,7 @@ mdefine_line|#define I2C_VERSION &quot;2.7.0&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/i2c-id.h&gt;
+macro_line|#include &lt;linux/device.h&gt;&t;/* for struct device */
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/* --- General options ------------------------------------------------&t;*/
 DECL|macro|I2C_ALGO_MAX
@@ -441,6 +442,11 @@ id|arg
 )paren
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|bus_type
+id|i2c_bus_type
 suffix:semicolon
 multiline_comment|/*&n; * i2c_client identifies a single device (i.e. chip) that is connected to an &n; * i2c bus. The behaviour is defined by the routines of the driver. This&n; * function is mainly used for lookup &amp; other admin. functions.&n; */
 DECL|struct|i2c_client
