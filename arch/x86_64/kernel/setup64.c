@@ -879,13 +879,12 @@ id|cpu_gdt_table
 id|cpu
 )braket
 suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
+id|asm
+r_volatile
 (paren
 l_string|&quot;lgdt %0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
+op_scope_resolution
+l_string|&quot;m&quot;
 (paren
 id|cpu_gdt_descr
 (braket
@@ -894,13 +893,12 @@ id|cpu
 )paren
 )paren
 suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
+id|asm
+r_volatile
 (paren
 l_string|&quot;lidt %0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
+op_scope_resolution
+l_string|&quot;m&quot;
 (paren
 id|idt_descr
 )paren
