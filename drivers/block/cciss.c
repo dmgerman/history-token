@@ -12432,6 +12432,8 @@ comma
 id|SA_INTERRUPT
 op_or
 id|SA_SHIRQ
+op_or
+id|SA_SAMPLE_RANDOM
 comma
 id|hba
 (braket
