@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/qdio.h&gt;
 macro_line|#include &quot;cio.h&quot;
@@ -20,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.61 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.62 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -243,26 +244,17 @@ c_func
 r_void
 )paren
 (brace
-id|__u64
-id|time
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;STCK %0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
-(paren
-id|time
-)paren
-)paren
-suffix:semicolon
 r_return
-id|time
+(paren
+id|get_clock
+c_func
+(paren
+)paren
 op_rshift
 l_int|12
+)paren
 suffix:semicolon
-multiline_comment|/* time&gt;&gt;12 is microseconds*/
+multiline_comment|/* time&gt;&gt;12 is microseconds */
 )brace
 multiline_comment|/* &n; * unfortunately, we can&squot;t just xchg the values; in do_QDIO we want to reserve&n; * the q in any case, so that we&squot;ll not be interrupted when we are in&n; * qdio_mark_tiq... shouldn&squot;t have a really bad impact, as reserving almost&n; * ever works (last famous words) &n; */
 r_static

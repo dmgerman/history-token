@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.77 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.78 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -3322,6 +3322,19 @@ comma
 id|chp_status_write
 )paren
 suffix:semicolon
+r_static
+r_void
+DECL|function|chp_release
+id|chp_release
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+)paren
+(brace
+)brace
 multiline_comment|/*&n; * Entries for chpids on the system bus.&n; * This replaces /proc/chpids.&n; */
 r_static
 r_int
@@ -3398,10 +3411,25 @@ id|chp-&gt;state
 op_assign
 id|status
 suffix:semicolon
-id|chp-&gt;dev.parent
+id|chp-&gt;dev
+op_assign
+(paren
+r_struct
+id|device
+)paren
+(brace
+dot
+id|parent
 op_assign
 op_amp
 id|css_bus_device
+comma
+dot
+id|release
+op_assign
+id|chp_release
+comma
+)brace
 suffix:semicolon
 id|snprintf
 c_func
