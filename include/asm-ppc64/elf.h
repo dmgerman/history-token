@@ -173,6 +173,7 @@ mdefine_line|#define ELF_EXEC_PAGESIZE&t;4096
 multiline_comment|/* This is the location that an ET_DYN program is loaded if exec&squot;ed.  Typical&n;   use of this is to invoke &quot;./ld.so someprog&quot; to test out a new version of&n;   the loader.  We need to make sure that it is out of the way of the program&n;   that it will &quot;exec&quot;, and that there is sufficient room for the brk.  */
 DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE         (0x08000000)
+macro_line|#ifdef __KERNEL__
 multiline_comment|/* Common routine for both 32-bit and 64-bit processes */
 DECL|function|ppc64_elf_core_copy_regs
 r_static
@@ -324,6 +325,7 @@ r_void
 suffix:semicolon
 DECL|macro|ELF_CORE_SYNC
 mdefine_line|#define ELF_CORE_SYNC dump_smp_unlazy_fpu
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports.  This could be done in userspace,&n;   but it&squot;s not easy, and we&squot;ve already done it here.  */
 DECL|macro|ELF_HWCAP
