@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasfunc.c,v 1.22 2003/09/09 06:46:29 schindler Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasfunc.c,v 1.23 2004/04/08 01:17:57 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;pc.h&quot;
@@ -36,18 +36,6 @@ id|MAX_ADAPTER
 suffix:semicolon
 DECL|macro|MAX_DESCRIPTORS
 mdefine_line|#define MAX_DESCRIPTORS  32
-r_extern
-r_void
-id|diva_run_trap_script
-c_func
-(paren
-id|PISDN_ADAPTER
-id|IoAdapter
-comma
-id|dword
-id|ANum
-)paren
-suffix:semicolon
 r_extern
 r_char
 op_star
@@ -338,8 +326,6 @@ id|card
 )paren
 )paren
 )brace
-r_else
-(brace
 id|IoAdapters
 (braket
 id|card
@@ -349,9 +335,8 @@ l_int|1
 op_member_access_from_pointer
 id|os_trap_nfy_Fnc
 op_assign
-id|diva_run_trap_script
+l_int|NULL
 suffix:semicolon
-)brace
 )brace
 )brace
 multiline_comment|/*&n; * remove an adapter&n; */
