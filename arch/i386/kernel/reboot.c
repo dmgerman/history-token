@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &quot;mach_reboot.h&quot;
 multiline_comment|/*&n; * Power off function, if any&n; */
 DECL|variable|pm_power_off
@@ -776,6 +777,31 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#elif CONFIG_X86_LOCAL_APIC
+r_if
+c_cond
+(paren
+id|cpu_has_apic
+)paren
+(brace
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|disable_local_APIC
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_X86_IO_APIC
 id|disable_IO_APIC
 c_func
 (paren
