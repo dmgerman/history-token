@@ -117,6 +117,12 @@ DECL|typedef|drm_gamma_sarea_t
 )brace
 id|drm_gamma_sarea_t
 suffix:semicolon
+multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the Xserver file (xf86drmGamma.h)&n; */
+multiline_comment|/* Gamma specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_IOCTL_GAMMA_INIT
+mdefine_line|#define DRM_IOCTL_GAMMA_INIT&t;&t;DRM_IOW( 0x40, drm_gamma_init_t)
+DECL|macro|DRM_IOCTL_GAMMA_COPY
+mdefine_line|#define DRM_IOCTL_GAMMA_COPY&t;&t;DRM_IOW( 0x41, drm_gamma_copy_t)
 DECL|struct|drm_gamma_copy
 r_typedef
 r_struct

@@ -442,6 +442,25 @@ DECL|typedef|drm_i830_sarea_t
 )brace
 id|drm_i830_sarea_t
 suffix:semicolon
+multiline_comment|/* I830 specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_IOCTL_I830_INIT
+mdefine_line|#define DRM_IOCTL_I830_INIT&t;&t;DRM_IOW( 0x40, drm_i830_init_t)
+DECL|macro|DRM_IOCTL_I830_VERTEX
+mdefine_line|#define DRM_IOCTL_I830_VERTEX&t;&t;DRM_IOW( 0x41, drm_i830_vertex_t)
+DECL|macro|DRM_IOCTL_I830_CLEAR
+mdefine_line|#define DRM_IOCTL_I830_CLEAR&t;&t;DRM_IOW( 0x42, drm_i830_clear_t)
+DECL|macro|DRM_IOCTL_I830_FLUSH
+mdefine_line|#define DRM_IOCTL_I830_FLUSH&t;&t;DRM_IO ( 0x43)
+DECL|macro|DRM_IOCTL_I830_GETAGE
+mdefine_line|#define DRM_IOCTL_I830_GETAGE&t;&t;DRM_IO ( 0x44)
+DECL|macro|DRM_IOCTL_I830_GETBUF
+mdefine_line|#define DRM_IOCTL_I830_GETBUF&t;&t;DRM_IOWR(0x45, drm_i830_dma_t)
+DECL|macro|DRM_IOCTL_I830_SWAP
+mdefine_line|#define DRM_IOCTL_I830_SWAP&t;&t;DRM_IO ( 0x46)
+DECL|macro|DRM_IOCTL_I830_COPY
+mdefine_line|#define DRM_IOCTL_I830_COPY&t;&t;DRM_IOW( 0x47, drm_i830_copy_t)
+DECL|macro|DRM_IOCTL_I830_DOCOPY
+mdefine_line|#define DRM_IOCTL_I830_DOCOPY&t;&t;DRM_IO ( 0x48)
 DECL|struct|_drm_i830_clear
 r_typedef
 r_struct

@@ -356,6 +356,36 @@ DECL|typedef|drm_i810_sarea_t
 )brace
 id|drm_i810_sarea_t
 suffix:semicolon
+multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the Xserver file (xf86drmMga.h)&n; */
+multiline_comment|/* i810 specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_IOCTL_I810_INIT
+mdefine_line|#define DRM_IOCTL_I810_INIT&t;&t;DRM_IOW( 0x40, drm_i810_init_t)
+DECL|macro|DRM_IOCTL_I810_VERTEX
+mdefine_line|#define DRM_IOCTL_I810_VERTEX&t;&t;DRM_IOW( 0x41, drm_i810_vertex_t)
+DECL|macro|DRM_IOCTL_I810_CLEAR
+mdefine_line|#define DRM_IOCTL_I810_CLEAR&t;&t;DRM_IOW( 0x42, drm_i810_clear_t)
+DECL|macro|DRM_IOCTL_I810_FLUSH
+mdefine_line|#define DRM_IOCTL_I810_FLUSH&t;&t;DRM_IO(  0x43)
+DECL|macro|DRM_IOCTL_I810_GETAGE
+mdefine_line|#define DRM_IOCTL_I810_GETAGE&t;&t;DRM_IO(  0x44)
+DECL|macro|DRM_IOCTL_I810_GETBUF
+mdefine_line|#define DRM_IOCTL_I810_GETBUF&t;&t;DRM_IOWR(0x45, drm_i810_dma_t)
+DECL|macro|DRM_IOCTL_I810_SWAP
+mdefine_line|#define DRM_IOCTL_I810_SWAP&t;&t;DRM_IO(  0x46)
+DECL|macro|DRM_IOCTL_I810_COPY
+mdefine_line|#define DRM_IOCTL_I810_COPY&t;&t;DRM_IOW( 0x47, drm_i810_copy_t)
+DECL|macro|DRM_IOCTL_I810_DOCOPY
+mdefine_line|#define DRM_IOCTL_I810_DOCOPY&t;&t;DRM_IO(  0x48)
+DECL|macro|DRM_IOCTL_I810_OV0INFO
+mdefine_line|#define DRM_IOCTL_I810_OV0INFO&t;&t;DRM_IOR( 0x49, drm_i810_overlay_t)
+DECL|macro|DRM_IOCTL_I810_FSTATUS
+mdefine_line|#define DRM_IOCTL_I810_FSTATUS&t;&t;DRM_IO ( 0x4a)
+DECL|macro|DRM_IOCTL_I810_OV0FLIP
+mdefine_line|#define DRM_IOCTL_I810_OV0FLIP&t;&t;DRM_IO ( 0x4b)
+DECL|macro|DRM_IOCTL_I810_MC
+mdefine_line|#define DRM_IOCTL_I810_MC&t;&t;DRM_IOW( 0x4c, drm_i810_mc_t)
+DECL|macro|DRM_IOCTL_I810_RSTATUS
+mdefine_line|#define DRM_IOCTL_I810_RSTATUS&t;&t;DRM_IO ( 0x4d )
 DECL|struct|_drm_i810_clear
 r_typedef
 r_struct

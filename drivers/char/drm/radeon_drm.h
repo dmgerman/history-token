@@ -726,6 +726,43 @@ DECL|typedef|drm_radeon_sarea_t
 id|drm_radeon_sarea_t
 suffix:semicolon
 multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the Xserver file (xf86drmRadeon.h)&n; *&n; * KW: actually it&squot;s illegal to change any of this (backwards compatibility).&n; */
+multiline_comment|/* Radeon specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_IOCTL_RADEON_CP_INIT
+mdefine_line|#define DRM_IOCTL_RADEON_CP_INIT    DRM_IOW( 0x40, drm_radeon_init_t)
+DECL|macro|DRM_IOCTL_RADEON_CP_START
+mdefine_line|#define DRM_IOCTL_RADEON_CP_START   DRM_IO(  0x41)
+DECL|macro|DRM_IOCTL_RADEON_CP_STOP
+mdefine_line|#define DRM_IOCTL_RADEON_CP_STOP    DRM_IOW( 0x42, drm_radeon_cp_stop_t)
+DECL|macro|DRM_IOCTL_RADEON_CP_RESET
+mdefine_line|#define DRM_IOCTL_RADEON_CP_RESET   DRM_IO(  0x43)
+DECL|macro|DRM_IOCTL_RADEON_CP_IDLE
+mdefine_line|#define DRM_IOCTL_RADEON_CP_IDLE    DRM_IO(  0x44)
+DECL|macro|DRM_IOCTL_RADEON_RESET
+mdefine_line|#define DRM_IOCTL_RADEON_RESET      DRM_IO(  0x45)
+DECL|macro|DRM_IOCTL_RADEON_FULLSCREEN
+mdefine_line|#define DRM_IOCTL_RADEON_FULLSCREEN DRM_IOW( 0x46, drm_radeon_fullscreen_t)
+DECL|macro|DRM_IOCTL_RADEON_SWAP
+mdefine_line|#define DRM_IOCTL_RADEON_SWAP       DRM_IO(  0x47)
+DECL|macro|DRM_IOCTL_RADEON_CLEAR
+mdefine_line|#define DRM_IOCTL_RADEON_CLEAR      DRM_IOW( 0x48, drm_radeon_clear_t)
+DECL|macro|DRM_IOCTL_RADEON_VERTEX
+mdefine_line|#define DRM_IOCTL_RADEON_VERTEX     DRM_IOW( 0x49, drm_radeon_vertex_t)
+DECL|macro|DRM_IOCTL_RADEON_INDICES
+mdefine_line|#define DRM_IOCTL_RADEON_INDICES    DRM_IOW( 0x4a, drm_radeon_indices_t)
+DECL|macro|DRM_IOCTL_RADEON_STIPPLE
+mdefine_line|#define DRM_IOCTL_RADEON_STIPPLE    DRM_IOW( 0x4c, drm_radeon_stipple_t)
+DECL|macro|DRM_IOCTL_RADEON_INDIRECT
+mdefine_line|#define DRM_IOCTL_RADEON_INDIRECT   DRM_IOWR(0x4d, drm_radeon_indirect_t)
+DECL|macro|DRM_IOCTL_RADEON_TEXTURE
+mdefine_line|#define DRM_IOCTL_RADEON_TEXTURE    DRM_IOWR(0x4e, drm_radeon_texture_t)
+DECL|macro|DRM_IOCTL_RADEON_VERTEX2
+mdefine_line|#define DRM_IOCTL_RADEON_VERTEX2    DRM_IOW( 0x4f, drm_radeon_vertex_t)
+DECL|macro|DRM_IOCTL_RADEON_CMDBUF
+mdefine_line|#define DRM_IOCTL_RADEON_CMDBUF     DRM_IOW( 0x50, drm_radeon_cmd_buffer_t)
+DECL|macro|DRM_IOCTL_RADEON_GETPARAM
+mdefine_line|#define DRM_IOCTL_RADEON_GETPARAM   DRM_IOWR(0x51, drm_radeon_getparam_t)
+DECL|macro|DRM_IOCTL_RADEON_FLIP
+mdefine_line|#define DRM_IOCTL_RADEON_FLIP&t;    DRM_IO(  0x52)
 DECL|struct|drm_radeon_init
 r_typedef
 r_struct
