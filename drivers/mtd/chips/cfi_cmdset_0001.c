@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common Flash Interface support:&n; *   Intel Extended Vendor Command Set (ID 0x0001)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * $Id: cfi_cmdset_0001.c,v 1.153 2004/07/12 21:52:20 dwmw2 Exp $&n; *&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; * 02/05/2002&t;Christopher Hoover &lt;ch@hpl.hp.com&gt;/&lt;ch@murgatroid.com&gt;&n; *&t;- reworked lock/unlock/erase support for var size flash&n; */
+multiline_comment|/*&n; * Common Flash Interface support:&n; *   Intel Extended Vendor Command Set (ID 0x0001)&n; *&n; * (C) 2000 Red Hat. GPL&squot;d&n; *&n; * $Id: cfi_cmdset_0001.c,v 1.154 2004/08/09 13:19:43 dwmw2 Exp $&n; *&n; * &n; * 10/10/2000&t;Nicolas Pitre &lt;nico@cam.org&gt;&n; * &t;- completely revamped method functions so they are aware and&n; * &t;  independent of the flash geometry (buswidth, interleave, etc.)&n; * &t;- scalability vs code size is completely set at compile-time&n; * &t;  (see include/linux/mtd/cfi.h for selection)&n; *&t;- optimized write buffer method&n; * 02/05/2002&t;Christopher Hoover &lt;ch@hpl.hp.com&gt;/&lt;ch@murgatroid.com&gt;&n; *&t;- reworked lock/unlock/erase support for var size flash&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -7508,14 +7508,7 @@ id|instr-&gt;state
 op_assign
 id|MTD_ERASE_DONE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|instr-&gt;callback
-)paren
-id|instr
-op_member_access_from_pointer
-id|callback
+id|mtd_erase_callback
 c_func
 (paren
 id|instr

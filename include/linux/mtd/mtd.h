@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * $Id: mtd.h,v 1.54 2004/07/15 01:13:12 dwmw2 Exp $&n; *&n; * Copyright (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt; et al.&n; *&n; * Released under GPL&n; */
+multiline_comment|/* &n; * $Id: mtd.h,v 1.56 2004/08/09 18:46:04 dmarlin Exp $&n; *&n; * Copyright (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt; et al.&n; *&n; * Released under GPL&n; */
 macro_line|#ifndef __MTD_MTD_H__
 DECL|macro|__MTD_MTD_H__
 mdefine_line|#define __MTD_MTD_H__
@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
+macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;mtd/mtd-abi.h&gt;
 DECL|macro|MTD_CHAR_MAJOR
 mdefine_line|#define MTD_CHAR_MAJOR 90
@@ -980,6 +981,46 @@ DECL|macro|MTD_WRITEOOB
 mdefine_line|#define MTD_WRITEOOB(mtd, args...) (*(mtd-&gt;write_oob))(mtd, args)
 DECL|macro|MTD_SYNC
 mdefine_line|#define MTD_SYNC(mtd) do { if (mtd-&gt;sync) (*(mtd-&gt;sync))(mtd);  } while (0) 
+macro_line|#ifdef CONFIG_MTD_PARTITIONS
+r_void
+id|mtd_erase_callback
+c_func
+(paren
+r_struct
+id|erase_info
+op_star
+id|instr
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|function|mtd_erase_callback
+r_static
+r_inline
+r_void
+id|mtd_erase_callback
+c_func
+(paren
+r_struct
+id|erase_info
+op_star
+id|instr
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|instr-&gt;callback
+)paren
+id|instr
+op_member_access_from_pointer
+id|callback
+c_func
+(paren
+id|instr
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * Debugging macro and defines&n; */
 DECL|macro|MTD_DEBUG_LEVEL0
 mdefine_line|#define MTD_DEBUG_LEVEL0&t;(0)&t;/* Quiet   */
