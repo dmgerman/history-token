@@ -137,6 +137,12 @@ op_star
 id|hash
 suffix:semicolon
 multiline_comment|/* request hash */
+DECL|member|new_success
+r_int
+r_int
+id|new_success
+suffix:semicolon
+multiline_comment|/* anticipation success on new proc */
 DECL|member|current_batch_expires
 r_int
 r_int
@@ -1945,6 +1951,11 @@ op_eq
 id|ANTIC_WAIT_NEXT
 )paren
 (brace
+r_struct
+id|as_io_context
+op_star
+id|aic
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1970,6 +1981,30 @@ c_func
 op_amp
 id|ad-&gt;antic_work
 )paren
+suffix:semicolon
+id|aic
+op_assign
+id|ad-&gt;io_context-&gt;aic
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|aic-&gt;seek_samples
+op_eq
+l_int|0
+)paren
+multiline_comment|/* new process */
+id|ad-&gt;new_success
+op_assign
+(paren
+id|ad-&gt;new_success
+op_star
+l_int|3
+)paren
+op_div
+l_int|4
+op_plus
+l_int|256
 suffix:semicolon
 )brace
 )brace
@@ -2028,6 +2063,11 @@ op_eq
 id|ANTIC_WAIT_NEXT
 )paren
 (brace
+r_struct
+id|as_io_context
+op_star
+id|aic
+suffix:semicolon
 id|ad-&gt;antic_status
 op_assign
 id|ANTIC_FINISHED
@@ -2038,6 +2078,28 @@ c_func
 op_amp
 id|ad-&gt;antic_work
 )paren
+suffix:semicolon
+id|aic
+op_assign
+id|ad-&gt;io_context-&gt;aic
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|aic-&gt;seek_samples
+op_eq
+l_int|0
+)paren
+multiline_comment|/* new process */
+id|ad-&gt;new_success
+op_assign
+(paren
+id|ad-&gt;new_success
+op_star
+l_int|3
+)paren
+op_div
+l_int|4
 suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
@@ -2342,6 +2404,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ad-&gt;new_success
+OL
+l_int|256
+op_logical_and
+(paren
 id|aic-&gt;seek_samples
 op_eq
 l_int|0
@@ -2350,8 +2417,9 @@ id|aic-&gt;ttime_samples
 op_eq
 l_int|0
 )paren
+)paren
 (brace
-multiline_comment|/*&n;&t;&t; * Process has just started IO so default to not anticipate.&n;&t;&t; * Maybe should be smarter.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Process has just started IO and we have a bad history of&n;&t;&t; * success anticipating on new processes!&n;&t;&t; */
 r_return
 l_int|1
 suffix:semicolon
@@ -6629,6 +6697,10 @@ l_int|2
 id|ad-&gt;write_batch_count
 op_assign
 l_int|2
+suffix:semicolon
+id|ad-&gt;new_success
+op_assign
+l_int|512
 suffix:semicolon
 r_return
 l_int|0
