@@ -1,11 +1,17 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: wbuf.c,v 1.12 2002/05/20 14:56:39 dwmw2 Exp $&n; * -- with the NAND definitions added back pending MTD update for 2.5.&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: wbuf.c,v 1.20 2002/11/12 11:33:02 dwmw2 Exp $&n; * + some of the dependencies on later MTD NAND code temporarily reverted.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/mtd/nand.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
 multiline_comment|/* FIXME duplicated defines in wbuf.c and nand.c&n; * Constants for out of band layout&n; */
+macro_line|#ifndef NAND_BADBLOCK_POS
+DECL|macro|NAND_BADBLOCK_POS
+mdefine_line|#define NAND_BADBLOCK_POS&t;&t;5
+macro_line|#endif
+macro_line|#ifndef NAND_JFFS2_OOB_BADBPOS
 DECL|macro|NAND_JFFS2_OOB_BADBPOS
 mdefine_line|#define NAND_JFFS2_OOB_BADBPOS&t;&t;5
 DECL|macro|NAND_JFFS2_OOB8_FSDAPOS
@@ -16,6 +22,7 @@ DECL|macro|NAND_JFFS2_OOB8_FSDALEN
 mdefine_line|#define NAND_JFFS2_OOB8_FSDALEN&t;&t;2
 DECL|macro|NAND_JFFS2_OOB16_FSDALEN
 mdefine_line|#define NAND_JFFS2_OOB16_FSDALEN&t;8
+macro_line|#endif
 multiline_comment|/* max. erase failures before we mark a block bad */
 DECL|macro|MAX_ERASE_FAILURES
 mdefine_line|#define MAX_ERASE_FAILURES &t;5
@@ -254,10 +261,33 @@ l_string|&quot;jffs2_wbuf_process() entered&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Check, if the timer is active again */
 r_if
 c_cond
 (paren
-op_logical_neg
+id|timer_pending
+(paren
+op_amp
+id|c-&gt;wbuf_timer
+)paren
+)paren
+(brace
+id|D1
+c_func
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;Nothing to do, timer is active again&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|down_trylock
 c_func
 (paren
@@ -266,6 +296,20 @@ id|c-&gt;alloc_sem
 )paren
 )paren
 (brace
+multiline_comment|/* If someone else has the alloc_sem, they&squot;re about to&n;&t;&t;   write anyway. So no need to waste space by&n;&t;&t;   padding */
+id|D1
+c_func
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;jffs2_wbuf_process() alloc_sem already occupied&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|D1
 c_func
 (paren
@@ -281,29 +325,57 @@ c_cond
 (paren
 op_logical_neg
 id|c-&gt;nextblock
-op_logical_or
-(paren
-id|c-&gt;nextblock-&gt;free_size
-OL
-(paren
-id|c-&gt;wbuf_pagesize
-op_minus
-id|c-&gt;wbuf_len
-)paren
-)paren
 )paren
 (brace
-id|jffs2_flush_wbuf
+id|D1
 c_func
 (paren
-id|c
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;jffs2_wbuf_process(): nextblock NULL, nothing to do&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c-&gt;wbuf_len
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;jffs2_wbuf_process(): c-&gt;wbuf_len is 0x%03x but nextblock is NULL!&bslash;n&quot;
 comma
-l_int|1
+id|c-&gt;wbuf_len
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|c-&gt;alloc_sem
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* pad only */
-r_else
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* if !c-&gt;nextblock then the tail will have got flushed from&n;&t;   jffs2_do_reserve_space() anyway. */
+r_if
+c_cond
+(paren
+id|c-&gt;nextblock
+)paren
+(brace
 id|jffs2_flush_wbuf
 c_func
 (paren
@@ -312,6 +384,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* pad and adjust nextblock */
 id|up
 c_func
@@ -320,20 +393,6 @@ op_amp
 id|c-&gt;alloc_sem
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|D1
-c_func
-(paren
-id|printk
-(paren
-id|KERN_DEBUG
-l_string|&quot;jffs2_wbuf_process() alloc_sem already occupied&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* Meaning of pad argument:&n;   0: Do not pad. Probably pointless - we only ever use this when we can&squot;t pad anyway.&n;   1: Pad, do not adjust nextblock free_size&n;   2: Pad, adjust nextblock free_size&n;*/
 DECL|function|jffs2_flush_wbuf
@@ -355,6 +414,19 @@ id|ret
 suffix:semicolon
 r_int
 id|retlen
+suffix:semicolon
+multiline_comment|/* Nothing to do if not NAND flash. In particular, we shouldn&squot;t&n;&t;   del_timer() the timer we never initialised. */
+r_if
+c_cond
+(paren
+id|jffs2_can_mark_obsolete
+c_func
+(paren
+id|c
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -456,20 +528,35 @@ id|c-&gt;wbuf_len
 suffix:semicolon
 id|padnode-&gt;magic
 op_assign
+id|cpu_to_je16
+c_func
+(paren
 id|JFFS2_MAGIC_BITMASK
+)paren
 suffix:semicolon
 id|padnode-&gt;nodetype
 op_assign
+id|cpu_to_je16
+c_func
+(paren
 id|JFFS2_NODETYPE_PADDING
+)paren
 suffix:semicolon
 id|padnode-&gt;totlen
 op_assign
+id|cpu_to_je32
+c_func
+(paren
 id|c-&gt;wbuf_pagesize
 op_minus
 id|c-&gt;wbuf_len
+)paren
 suffix:semicolon
 id|padnode-&gt;hdr_crc
 op_assign
+id|cpu_to_je32
+c_func
+(paren
 id|crc32
 c_func
 (paren
@@ -484,6 +571,7 @@ id|padnode
 )paren
 op_minus
 l_int|4
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -593,6 +681,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* wbuf_pagesize - wbuf_len is the amount of space that&squot;s to be &n;&t;&t;   padded. If there is less free space in the block than that,&n;&t;&t;   something screwed up */
 r_if
 c_cond
 (paren
@@ -604,11 +693,39 @@ op_minus
 id|c-&gt;wbuf_len
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;jffs2_flush_wbuf(): Accounting error. wbuf at 0x%08x has 0x%03x bytes, 0x%03x left.&bslash;n&quot;
+comma
+id|c-&gt;wbuf_ofs
+comma
+id|c-&gt;wbuf_len
+comma
+id|c-&gt;wbuf_pagesize
+op_minus
+id|c-&gt;wbuf_len
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;jffs2_flush_wbuf(): But free_size for block at 0x%08x is only 0x%08x&bslash;n&quot;
+comma
+id|c-&gt;nextblock-&gt;offset
+comma
+id|c-&gt;nextblock-&gt;free_size
+)paren
+suffix:semicolon
 id|BUG
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 id|c-&gt;nextblock-&gt;free_size
 op_sub_assign
 (paren
@@ -617,7 +734,23 @@ op_minus
 id|c-&gt;wbuf_len
 )paren
 suffix:semicolon
-id|c-&gt;nextblock-&gt;dirty_size
+id|c-&gt;free_size
+op_sub_assign
+(paren
+id|c-&gt;wbuf_pagesize
+op_minus
+id|c-&gt;wbuf_len
+)paren
+suffix:semicolon
+id|c-&gt;nextblock-&gt;wasted_size
+op_add_assign
+(paren
+id|c-&gt;wbuf_pagesize
+op_minus
+id|c-&gt;wbuf_len
+)paren
+suffix:semicolon
+id|c-&gt;wasted_size
 op_add_assign
 (paren
 id|c-&gt;wbuf_pagesize
@@ -1727,6 +1860,17 @@ r_int
 id|ret
 suffix:semicolon
 multiline_comment|/* Read flash */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|jffs2_can_mark_obsolete
+c_func
+(paren
+id|c
+)paren
+)paren
+(brace
 id|ret
 op_assign
 id|c-&gt;mtd
@@ -1748,13 +1892,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|jffs2_can_mark_obsolete
-c_func
-(paren
-id|c
-)paren
-op_logical_and
 (paren
 id|ret
 op_eq
@@ -1781,12 +1918,31 @@ comma
 id|ofs
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * We have the raw data without ECC correction in the buffer, maybe &n;&t;&t; * we are lucky and all data or parts are correct. We check the node.&n;&t;&t; * If data are corrupted node check will sort it out.&n;&t;&t; * We keep this block, it will fail on write or erase and the we&n;&t;&t; * mark it bad. Or should we do that now? But we should give him a chance.&n;&t;&t; * Maybe we had a system crash or power loss before the ecc write or  &n;&t;&t; * a erase was completed.&n;&t;&t; * So we return success. :)&n;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * We have the raw data without ECC correction in the buffer, maybe &n;&t;&t;&t; * we are lucky and all data or parts are correct. We check the node.&n;&t;&t;&t; * If data are corrupted node check will sort it out.&n;&t;&t;&t; * We keep this block, it will fail on write or erase and the we&n;&t;&t;&t; * mark it bad. Or should we do that now? But we should give him a chance.&n;&t;&t;&t; * Maybe we had a system crash or power loss before the ecc write or  &n;&t;&t;&t; * a erase was completed.&n;&t;&t;&t; * So we return success. :)&n;&t;&t;&t; */
 id|ret
 op_assign
 l_int|0
 suffix:semicolon
 )brace
+)brace
+r_else
+r_return
+id|c-&gt;mtd
+op_member_access_from_pointer
+id|read
+c_func
+(paren
+id|c-&gt;mtd
+comma
+id|ofs
+comma
+id|len
+comma
+id|retlen
+comma
+id|buf
+)paren
+suffix:semicolon
 multiline_comment|/* if no writebuffer available or write buffer empty, return */
 r_if
 c_cond
@@ -2019,7 +2175,7 @@ id|NAND_JFFS2_OOB16_FSDAPOS
 suffix:semicolon
 id|badblock_pos
 op_assign
-id|NAND_JFFS2_OOB_BADBPOS
+id|NAND_BADBLOCK_POS
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2044,13 +2200,9 @@ suffix:semicolon
 multiline_comment|/* allocate a buffer for all oob data in this sector */
 id|len
 op_assign
-id|oob_size
+l_int|4
 op_star
-(paren
-id|c-&gt;sector_size
-op_div
-id|c-&gt;mtd-&gt;oobblock
-)paren
+id|oob_size
 suffix:semicolon
 id|buf
 op_assign
@@ -2170,6 +2322,8 @@ suffix:semicolon
 id|page
 OL
 l_int|2
+op_star
+id|oob_size
 suffix:semicolon
 id|page
 op_add_assign
@@ -2451,7 +2605,7 @@ id|NAND_JFFS2_OOB16_FSDALEN
 suffix:semicolon
 id|badblock_pos
 op_assign
-id|NAND_JFFS2_OOB_BADBPOS
+id|NAND_BADBLOCK_POS
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2625,15 +2779,27 @@ suffix:semicolon
 )brace
 id|n.magic
 op_assign
+id|cpu_to_je16
+c_func
+(paren
 id|JFFS2_MAGIC_BITMASK
+)paren
 suffix:semicolon
 id|n.nodetype
 op_assign
+id|cpu_to_je16
+c_func
+(paren
 id|JFFS2_NODETYPE_CLEANMARKER
+)paren
 suffix:semicolon
 id|n.totlen
 op_assign
+id|cpu_to_je32
+c_func
+(paren
 l_int|8
+)paren
 suffix:semicolon
 id|p
 op_assign
@@ -2786,15 +2952,27 @@ suffix:semicolon
 )brace
 id|n.magic
 op_assign
+id|cpu_to_je16
+c_func
+(paren
 id|JFFS2_MAGIC_BITMASK
+)paren
 suffix:semicolon
 id|n.nodetype
 op_assign
+id|cpu_to_je16
+c_func
+(paren
 id|JFFS2_NODETYPE_CLEANMARKER
+)paren
 suffix:semicolon
 id|n.totlen
 op_assign
+id|cpu_to_je32
+c_func
+(paren
 l_int|8
+)paren
 suffix:semicolon
 id|ret
 op_assign
@@ -2929,7 +3107,7 @@ id|MTD_ECC_SW
 suffix:colon
 id|badblock_pos
 op_assign
-id|NAND_JFFS2_OOB_BADBPOS
+id|NAND_BADBLOCK_POS
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3080,7 +3258,7 @@ id|MTD_ECC_SW
 suffix:colon
 id|pos
 op_assign
-id|NAND_JFFS2_OOB_BADBPOS
+id|NAND_BADBLOCK_POS
 suffix:semicolon
 r_break
 suffix:semicolon

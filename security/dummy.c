@@ -802,10 +802,10 @@ op_star
 id|dentry
 comma
 r_int
-id|major
+id|mode
 comma
 id|dev_t
-id|minor
+id|dev
 )paren
 (brace
 r_return
@@ -828,10 +828,10 @@ op_star
 id|dentry
 comma
 r_int
-id|major
+id|mode
 comma
 id|dev_t
-id|minor
+id|dev
 )paren
 (brace
 r_return

@@ -137,9 +137,12 @@ id|get_sysvec
 c_func
 (paren
 r_int
-comma
 r_int
 comma
+r_int
+r_int
+comma
+r_int
 r_int
 )paren
 suffix:semicolon
@@ -161,9 +164,12 @@ id|get_sysnames
 c_func
 (paren
 r_int
-comma
 r_int
 comma
+r_int
+r_int
+comma
+r_int
 r_int
 comma
 r_char
@@ -866,6 +872,7 @@ comma
 id|end
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Find free clusters, and init and free the bootmem accordingly.  */
@@ -1154,8 +1161,8 @@ c_cond
 (paren
 id|bootmap_start
 op_eq
-op_minus
-l_int|1
+op_complement
+l_int|0UL
 )paren
 (brace
 id|max_low_pfn
@@ -1509,6 +1516,7 @@ id|memdesc_struct
 op_star
 id|memdesc
 suffix:semicolon
+r_int
 r_int
 id|i
 suffix:semicolon
@@ -2879,11 +2887,14 @@ id|get_sysvec
 c_func
 (paren
 r_int
+r_int
 id|type
 comma
 r_int
+r_int
 id|variation
 comma
+r_int
 r_int
 id|cpu
 )paren
@@ -3223,19 +3234,6 @@ id|alpha_machine_vector
 op_star
 id|vec
 suffix:semicolon
-multiline_comment|/* Restore real CABRIO and EB66+ family names, ie EB64+ and EB66 */
-r_if
-c_cond
-(paren
-id|type
-OL
-l_int|0
-)paren
-id|type
-op_assign
-op_minus
-id|type
-suffix:semicolon
 multiline_comment|/* Search the system tables first... */
 id|vec
 op_assign
@@ -3336,6 +3334,7 @@ id|vec
 )paren
 (brace
 multiline_comment|/* Member ID is a bit-field. */
+r_int
 r_int
 id|member
 op_assign
@@ -3755,19 +3754,6 @@ id|xlt_mv
 suffix:semicolon
 r_int
 id|i
-comma
-id|n
-op_assign
-r_sizeof
-(paren
-id|all_vecs
-)paren
-op_div
-r_sizeof
-(paren
-op_star
-id|all_vecs
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -3778,7 +3764,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|n
+id|N
+c_func
+(paren
+id|all_vecs
+)paren
 suffix:semicolon
 op_increment
 id|i
@@ -3822,11 +3812,14 @@ id|get_sysnames
 c_func
 (paren
 r_int
+r_int
 id|type
 comma
 r_int
+r_int
 id|variation
 comma
+r_int
 r_int
 id|cpu
 comma
@@ -3842,20 +3835,8 @@ id|variation_name
 )paren
 (brace
 r_int
+r_int
 id|member
-suffix:semicolon
-multiline_comment|/* Restore real CABRIO and EB66+ family names, ie EB64+ and EB66 */
-r_if
-c_cond
-(paren
-id|type
-OL
-l_int|0
-)paren
-id|type
-op_assign
-op_minus
-id|type
 suffix:semicolon
 multiline_comment|/* If not in the tables, make it UNKNOWN,&n;&t;   else set type name to family */
 r_if
@@ -3962,7 +3943,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Set variation to &quot;0&quot;; if variation is zero, done */
+multiline_comment|/* Set variation to &quot;0&quot;; if variation is zero, done.  */
 op_star
 id|variation_name
 op_assign
@@ -4326,8 +4307,10 @@ op_star
 id|cpu
 suffix:semicolon
 r_int
+r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|count
 op_assign
 l_int|0

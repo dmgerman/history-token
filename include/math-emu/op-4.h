@@ -80,27 +80,27 @@ DECL|macro|__FP_FRAC_SET_4
 mdefine_line|#define __FP_FRAC_SET_4(X,I3,I2,I1,I0)&t;&t;&t;&t;&t;&bslash;&n;  (X##_f[3] = I3, X##_f[2] = I2, X##_f[1] = I1, X##_f[0] = I0)
 macro_line|#ifndef __FP_FRAC_ADD_3
 DECL|macro|__FP_FRAC_ADD_3
-mdefine_line|#define __FP_FRAC_ADD_3(r2,r1,r0,x2,x1,x0,y2,y1,y0)&t;&t;&t;&bslash;&n;  (r0 = x0 + y0,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   r1 = x1 + y1 + (r0 &lt; x0),&t;&t;&t;&t;&t;&t;&bslash;&n;   r2 = x2 + y2 + (r1 &lt; x1))
+mdefine_line|#define __FP_FRAC_ADD_3(r2,r1,r0,x2,x1,x0,y2,y1,y0)&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    int _c1, _c2;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    r0 = x0 + y0;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c1 = r0 &lt; x0;&t;&t;&t;&t;&t;&t;&bslash;&n;    r1 = x1 + y1;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c2 = r1 &lt; x1;&t;&t;&t;&t;&t;&t;&bslash;&n;    r1 += _c1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c2 |= r1 &lt; _c1;&t;&t;&t;&t;&t;&t;&bslash;&n;    r2 = x2 + y2 + _c2;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
 macro_line|#endif
 macro_line|#ifndef __FP_FRAC_ADD_4
 DECL|macro|__FP_FRAC_ADD_4
-mdefine_line|#define __FP_FRAC_ADD_4(r3,r2,r1,r0,x3,x2,x1,x0,y3,y2,y1,y0)&t;&t;&bslash;&n;  (r0 = x0 + y0,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   r1 = x1 + y1 + (r0 &lt; x0),&t;&t;&t;&t;&t;&t;&bslash;&n;   r2 = x2 + y2 + (r1 &lt; x1),&t;&t;&t;&t;&t;&t;&bslash;&n;   r3 = x3 + y3 + (r2 &lt; x2))
+mdefine_line|#define __FP_FRAC_ADD_4(r3,r2,r1,r0,x3,x2,x1,x0,y3,y2,y1,y0)&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    int _c1, _c2, _c3;&t;&t;&t;&t;&t;&t;&bslash;&n;    r0 = x0 + y0;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c1 = r0 &lt; x0;&t;&t;&t;&t;&t;&t;&bslash;&n;    r1 = x1 + y1;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c2 = r1 &lt; x1;&t;&t;&t;&t;&t;&t;&bslash;&n;    r1 += _c1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c2 |= r1 &lt; _c1;&t;&t;&t;&t;&t;&t;&bslash;&n;    r2 = x2 + y2;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c3 = r2 &lt; x2;&t;&t;&t;&t;&t;&t;&bslash;&n;    r2 += _c2;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c3 |= r2 &lt; _c2;&t;&t;&t;&t;&t;&t;&bslash;&n;    r3 = x3 + y3 + _c3;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
 macro_line|#endif
 macro_line|#ifndef __FP_FRAC_SUB_3
 DECL|macro|__FP_FRAC_SUB_3
-mdefine_line|#define __FP_FRAC_SUB_3(r2,r1,r0,x2,x1,x0,y2,y1,y0)&t;&t;&t;&bslash;&n;  (r0 = x0 - y0,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   r1 = x1 - y1 - (r0 &gt; x0),&t;&t;&t;&t;&t;&t;&bslash;&n;   r2 = x2 - y2 - (r1 &gt; x1))
+mdefine_line|#define __FP_FRAC_SUB_3(r2,r1,r0,x2,x1,x0,y2,y1,y0)&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    int _c1, _c2;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    r0 = x0 - y0;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c1 = r0 &gt; x0;&t;&t;&t;&t;&t;&t;&bslash;&n;    r1 = x1 - y1;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c2 = r1 &gt; x1;&t;&t;&t;&t;&t;&t;&bslash;&n;    r1 -= _c1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c2 |= r1 &gt; _c1;&t;&t;&t;&t;&t;&t;&bslash;&n;    r2 = x2 - y2 - _c2;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
 macro_line|#endif
 macro_line|#ifndef __FP_FRAC_SUB_4
 DECL|macro|__FP_FRAC_SUB_4
-mdefine_line|#define __FP_FRAC_SUB_4(r3,r2,r1,r0,x3,x2,x1,x0,y3,y2,y1,y0)&t;&t;&bslash;&n;  (r0 = x0 - y0,&t;&t;&t;&t;&t;&t;&t;&bslash;&n;   r1 = x1 - y1 - (r0 &gt; x0),&t;&t;&t;&t;&t;&t;&bslash;&n;   r2 = x2 - y2 - (r1 &gt; x1),&t;&t;&t;&t;&t;&t;&bslash;&n;   r3 = x3 - y3 - (r2 &gt; x2))
+mdefine_line|#define __FP_FRAC_SUB_4(r3,r2,r1,r0,x3,x2,x1,x0,y3,y2,y1,y0)&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    int _c1, _c2, _c3;&t;&t;&t;&t;&t;&t;&bslash;&n;    r0 = x0 - y0;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c1 = r0 &gt; x0;&t;&t;&t;&t;&t;&t;&bslash;&n;    r1 = x1 - y1;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c2 = r1 &gt; x1;&t;&t;&t;&t;&t;&t;&bslash;&n;    r1 -= _c1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c2 |= r1 &gt; _c1;&t;&t;&t;&t;&t;&t;&bslash;&n;    r2 = x2 - y2;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c3 = r2 &gt; x2;&t;&t;&t;&t;&t;&t;&bslash;&n;    r2 -= _c2;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    _c3 |= r2 &gt; _c2;&t;&t;&t;&t;&t;&t;&bslash;&n;    r3 = x3 - y3 - _c3;&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
 macro_line|#endif
 macro_line|#ifndef __FP_FRAC_DEC_3
 DECL|macro|__FP_FRAC_DEC_3
-mdefine_line|#define __FP_FRAC_DEC_3(x2,x1,x0,y2,y1,y0)&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    UWtype _t0, _t1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    _t0 = x0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    x0 -= y0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    _t1 = x1;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    x1 -= y1 + (x0 &gt; _t0);&t;&t;&t;&t;&t;&t;&bslash;&n;    x2 -= y2 + (x1 &gt; _t1);&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
+mdefine_line|#define __FP_FRAC_DEC_3(x2,x1,x0,y2,y1,y0)&t;&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    UWtype _t0, _t1, _t2;&t;&t;&t;&t;&t;&t;&bslash;&n;    _t0 = x0, _t1 = x1, _t2 = x2;&t;&t;&t;&t;&t;&bslash;&n;    __FP_FRAC_SUB_3 (x2, x1, x0, _t2, _t1, _t0, y2, y1, y0);&t;&t;&bslash;&n;  } while (0)
 macro_line|#endif
 macro_line|#ifndef __FP_FRAC_DEC_4
 DECL|macro|__FP_FRAC_DEC_4
-mdefine_line|#define __FP_FRAC_DEC_4(x3,x2,x1,x0,y3,y2,y1,y0)&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    UWtype _t0, _t1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    _t0 = x0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    x0 -= y0;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    _t1 = x1;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    x1 -= y1 + (x0 &gt; _t0);&t;&t;&t;&t;&t;&t;&bslash;&n;    _t0 = x2;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    x2 -= y2 + (x1 &gt; _t1);&t;&t;&t;&t;&t;&t;&bslash;&n;    x3 -= y3 + (x2 &gt; _t0);&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)
+mdefine_line|#define __FP_FRAC_DEC_4(x3,x2,x1,x0,y3,y2,y1,y0)&t;&t;&t;&bslash;&n;  do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;    UWtype _t0, _t1, _t2, _t3;&t;&t;&t;&t;&t;&t;&bslash;&n;    _t0 = x0, _t1 = x1, _t2 = x2, _t3 = x3;&t;&t;&t;&t;&bslash;&n;    __FP_FRAC_SUB_4 (x3,x2,x1,x0,_t3,_t2,_t1,_t0, y3,y2,y1,y0);&t;&t;&bslash;&n;  } while (0)
 macro_line|#endif
 macro_line|#ifndef __FP_FRAC_ADDI_4
 DECL|macro|__FP_FRAC_ADDI_4
