@@ -3472,6 +3472,11 @@ id|en
 r_int
 id|i
 suffix:semicolon
+singleline_comment|// Disable AU8810 routes, since they seem to be wrong (in au8810.h).
+macro_line|#ifdef CHIP_AU8810
+r_return
+suffix:semicolon
+macro_line|#endif
 macro_line|#if 1
 multiline_comment|/* Alloc Xtalk mixin resources */
 id|v-&gt;mixxtlk

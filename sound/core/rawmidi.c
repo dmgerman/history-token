@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -79,18 +80,21 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|boot_devs
+r_static
+r_int
+id|boot_devs
+suffix:semicolon
+id|module_param_array
 c_func
 (paren
 id|midi_map
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -109,18 +113,16 @@ comma
 l_string|&quot;default:0,skill:advanced&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|amidi_map
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8285,98 +8287,13 @@ c_func
 (paren
 id|alsa_rawmidi_exit
 )paren
-macro_line|#ifndef MODULE
-macro_line|#ifdef CONFIG_SND_OSSEMUL
-multiline_comment|/* format is: snd-rawmidi=midi_map,amidi_map */
-DECL|function|alsa_rawmidi_setup
-r_static
-r_int
-id|__init
-id|alsa_rawmidi_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_static
-r_int
-id|__initdata
-id|nr_dev
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nr_dev
-op_ge
-id|SNDRV_CARDS
-)paren
-r_return
-l_int|0
-suffix:semicolon
-(paren
-r_void
-)paren
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|midi_map
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|amidi_map
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-)paren
-suffix:semicolon
-id|nr_dev
-op_increment
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;snd-rawmidi=&quot;
-comma
-id|alsa_rawmidi_setup
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_SND_OSSEMUL */
-macro_line|#endif /* ifndef MODULE */
-DECL|variable|snd_rawmidi_output_params
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_rawmidi_output_params
 )paren
 suffix:semicolon
-DECL|variable|snd_rawmidi_input_params
+DECL|variable|EXPORT_SYMBOL
 id|EXPORT_SYMBOL
 c_func
 (paren

@@ -1543,6 +1543,11 @@ r_char
 op_star
 id|name
 suffix:semicolon
+DECL|member|model
+r_char
+op_star
+id|model
+suffix:semicolon
 DECL|member|chip_init
 r_int
 (paren

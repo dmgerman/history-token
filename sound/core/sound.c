@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -73,12 +74,14 @@ c_func
 l_string|&quot;sound&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|major
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -97,12 +100,14 @@ comma
 l_string|&quot;default:116,skill:devel&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|cards_limit
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -129,12 +134,14 @@ id|CONFIG_SND_MAJOR
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|device_mode
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2054,6 +2061,36 @@ c_func
 id|snd_power_wait
 )paren
 suffix:semicolon
+DECL|variable|snd_card_set_pm_callback
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_card_set_pm_callback
+)paren
+suffix:semicolon
+DECL|variable|snd_card_set_dev_pm_callback
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_card_set_dev_pm_callback
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+DECL|variable|snd_card_pci_suspend
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_card_pci_suspend
+)paren
+suffix:semicolon
+DECL|variable|snd_card_pci_resume
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_card_pci_resume
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* device.c */
 DECL|variable|snd_device_new

@@ -343,7 +343,7 @@ id|sndrv_hwdep_dsp_image
 suffix:semicolon
 multiline_comment|/*****************************************************************************&n; *                                                                           *&n; *             Digital Audio (PCM) interface - /dev/snd/pcm??                *&n; *                                                                           *&n; *****************************************************************************/
 DECL|macro|SNDRV_PCM_VERSION
-mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 6)
+mdefine_line|#define SNDRV_PCM_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 7)
 DECL|typedef|sndrv_pcm_uframes_t
 r_typedef
 r_int
@@ -1427,6 +1427,57 @@ suffix:semicolon
 multiline_comment|/* RW: min available frames for wakeup */
 )brace
 suffix:semicolon
+DECL|macro|SNDRV_PCM_SYNC_PTR_HWSYNC
+mdefine_line|#define SNDRV_PCM_SYNC_PTR_HWSYNC&t;(1&lt;&lt;0)&t;/* execute hwsync */
+DECL|struct|sndrv_pcm_sync_ptr
+r_struct
+id|sndrv_pcm_sync_ptr
+(brace
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_union
+(brace
+DECL|member|status
+r_struct
+id|sndrv_pcm_mmap_status
+id|status
+suffix:semicolon
+DECL|member|reserved
+r_int
+r_char
+id|reserved
+(braket
+l_int|64
+)braket
+suffix:semicolon
+DECL|member|s
+)brace
+id|s
+suffix:semicolon
+r_union
+(brace
+DECL|member|control
+r_struct
+id|sndrv_pcm_mmap_control
+id|control
+suffix:semicolon
+DECL|member|reserved
+r_int
+r_char
+id|reserved
+(braket
+l_int|64
+)braket
+suffix:semicolon
+DECL|member|c
+)brace
+id|c
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|sndrv_xferi
 r_struct
 id|sndrv_xferi
@@ -1597,6 +1648,20 @@ c_func
 l_char|&squot;A&squot;
 comma
 l_int|0x22
+)paren
+comma
+DECL|enumerator|SNDRV_PCM_IOCTL_SYNC_PTR
+id|SNDRV_PCM_IOCTL_SYNC_PTR
+op_assign
+id|_IOWR
+c_func
+(paren
+l_char|&squot;A&squot;
+comma
+l_int|0x23
+comma
+r_struct
+id|sndrv_pcm_sync_ptr
 )paren
 comma
 DECL|enumerator|SNDRV_PCM_IOCTL_CHANNEL_INFO
@@ -2085,7 +2150,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *  Timer section - /dev/snd/timer&n; */
 DECL|macro|SNDRV_TIMER_VERSION
-mdefine_line|#define SNDRV_TIMER_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 1)
+mdefine_line|#define SNDRV_TIMER_VERSION&t;&t;SNDRV_PROTOCOL_VERSION(2, 0, 2)
 DECL|enum|sndrv_timer_class
 r_enum
 id|sndrv_timer_class
@@ -2411,6 +2476,8 @@ DECL|macro|SNDRV_TIMER_PSFLG_AUTO
 mdefine_line|#define SNDRV_TIMER_PSFLG_AUTO&t;&t;(1&lt;&lt;0)&t;/* auto start, otherwise one-shot */
 DECL|macro|SNDRV_TIMER_PSFLG_EXCLUSIVE
 mdefine_line|#define SNDRV_TIMER_PSFLG_EXCLUSIVE&t;(1&lt;&lt;1)&t;/* exclusive use, precise start/stop/pause/continue */
+DECL|macro|SNDRV_TIMER_PSFLG_EARLY_EVENT
+mdefine_line|#define SNDRV_TIMER_PSFLG_EARLY_EVENT&t;(1&lt;&lt;2)&t;/* write early event to the poll queue */
 DECL|struct|sndrv_timer_params
 r_struct
 id|sndrv_timer_params
@@ -2733,6 +2800,10 @@ DECL|enumerator|SNDRV_TIMER_EVENT_PAUSE
 id|SNDRV_TIMER_EVENT_PAUSE
 comma
 multiline_comment|/* val = 0 */
+DECL|enumerator|SNDRV_TIMER_EVENT_EARLY
+id|SNDRV_TIMER_EVENT_EARLY
+comma
+multiline_comment|/* val = 0, early event */
 multiline_comment|/* master timer events for slave timer instances */
 DECL|enumerator|SNDRV_TIMER_EVENT_MSTART
 id|SNDRV_TIMER_EVENT_MSTART

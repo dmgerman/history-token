@@ -2580,6 +2580,11 @@ op_assign
 l_string|&quot;Audiotrak Prodigy 7.1&quot;
 comma
 dot
+id|model
+op_assign
+l_string|&quot;prodigy71&quot;
+comma
+dot
 id|chip_init
 op_assign
 id|prodigy_init

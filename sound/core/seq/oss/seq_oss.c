@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * OSS compatible sequencer driver&n; *&n; * registration of device and proc&n; *&n; * Copyright (C) 1998,99 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
@@ -47,12 +48,14 @@ id|SNDRV_MINOR_OSS_MUSIC
 )paren
 suffix:semicolon
 macro_line|#ifdef SNDRV_SEQ_OSS_DEBUG
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|seq_oss_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

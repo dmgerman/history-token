@@ -457,13 +457,6 @@ id|chip
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
-DECL|member|sleep_registered
-r_int
-r_int
-id|sleep_registered
-suffix:colon
-l_int|1
-suffix:semicolon
 DECL|member|suspend
 r_void
 (paren
@@ -559,6 +552,13 @@ c_func
 id|pmac_t
 op_star
 id|chip
+)paren
+suffix:semicolon
+r_int
+id|snd_pmac_tumbler_post_init
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/* i2c functions */
