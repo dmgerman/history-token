@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 DECL|variable|max_mapnr
 r_int
 r_int

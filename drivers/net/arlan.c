@@ -3089,9 +3089,13 @@ c_func
 id|dev
 )paren
 op_logical_and
-id|priv-&gt;tx_done_delayed
-OL
+id|time_after
+c_func
+(paren
 id|jiffies
+comma
+id|priv-&gt;tx_done_delayed
+)paren
 op_logical_and
 id|priv-&gt;tx_done_delayed
 op_ne

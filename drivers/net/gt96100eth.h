@@ -3,13 +3,21 @@ macro_line|#ifndef _GT96100ETH_H
 DECL|macro|_GT96100ETH_H
 mdefine_line|#define _GT96100ETH_H
 macro_line|#include &lt;asm/galileo-boards/gt96100.h&gt;
+DECL|macro|dbg
+mdefine_line|#define dbg(lvl, format, arg...) &bslash;&n;    if (lvl &lt;= GT96100_DEBUG) &bslash;&n;        printk(KERN_DEBUG &quot;%s: &quot; format, dev-&gt;name , ## arg)
+DECL|macro|err
+mdefine_line|#define err(format, arg...) &bslash;&n;    printk(KERN_ERR &quot;%s: &quot; format, dev-&gt;name , ## arg)
+DECL|macro|info
+mdefine_line|#define info(format, arg...) &bslash;&n;    printk(KERN_INFO &quot;%s: &quot; format, dev-&gt;name , ## arg)
+DECL|macro|warn
+mdefine_line|#define warn(format, arg...) &bslash;&n;    printk(KERN_WARNING &quot;%s: &quot; format, dev-&gt;name , ## arg)
 multiline_comment|/* Keep the ring sizes a power of two for efficiency. */
 DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE&t;16
 DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE&t;32
 DECL|macro|PKT_BUF_SZ
-mdefine_line|#define PKT_BUF_SZ&t;1536&t;/* Size of each temporary Rx buffer. */
+mdefine_line|#define PKT_BUF_SZ&t;1536&t;/* Size of each temporary Rx buffer.*/
 DECL|macro|RX_HASH_TABLE_SIZE
 mdefine_line|#define RX_HASH_TABLE_SIZE 16384
 DECL|macro|HASH_HOP_NUMBER
@@ -17,14 +25,14 @@ mdefine_line|#define HASH_HOP_NUMBER 12
 DECL|macro|NUM_INTERFACES
 mdefine_line|#define NUM_INTERFACES 2
 DECL|macro|GT96100ETH_TX_TIMEOUT
-mdefine_line|#define GT96100ETH_TX_TIMEOUT HZ
+mdefine_line|#define GT96100ETH_TX_TIMEOUT HZ/4
 DECL|macro|GT96100_ETH0_BASE
 mdefine_line|#define GT96100_ETH0_BASE (MIPS_GT96100_BASE + GT96100_ETH_PORT_CONFIG)
 DECL|macro|GT96100_ETH1_BASE
 mdefine_line|#define GT96100_ETH1_BASE (GT96100_ETH0_BASE + GT96100_ETH_IO_SIZE)
 macro_line|#ifdef CONFIG_MIPS_EV96100
 DECL|macro|GT96100_ETHER0_IRQ
-mdefine_line|#define GT96100_ETHER0_IRQ 4
+mdefine_line|#define GT96100_ETHER0_IRQ 3
 DECL|macro|GT96100_ETHER1_IRQ
 mdefine_line|#define GT96100_ETHER1_IRQ 4
 macro_line|#else
@@ -33,6 +41,12 @@ mdefine_line|#define GT96100_ETHER0_IRQ -1
 DECL|macro|GT96100_ETHER1_IRQ
 mdefine_line|#define GT96100_ETHER1_IRQ -1
 macro_line|#endif
+DECL|macro|REV_GT96100
+mdefine_line|#define REV_GT96100  1
+DECL|macro|REV_GT96100A_1
+mdefine_line|#define REV_GT96100A_1 2
+DECL|macro|REV_GT96100A
+mdefine_line|#define REV_GT96100A 3
 DECL|macro|GT96100ETH_READ
 mdefine_line|#define GT96100ETH_READ(gp, offset) &bslash;&n;    GT96100_READ((gp-&gt;port_offset + offset))
 DECL|macro|GT96100ETH_WRITE
@@ -651,55 +665,87 @@ multiline_comment|/* The Rx and Tx descriptor lists. */
 r_typedef
 r_struct
 (brace
+macro_line|#ifdef DESC_BE
+DECL|member|byte_cnt
+id|u16
+id|byte_cnt
+suffix:semicolon
+DECL|member|reserved
+id|u16
+id|reserved
+suffix:semicolon
+macro_line|#else
+id|u16
+id|reserved
+suffix:semicolon
+id|u16
+id|byte_cnt
+suffix:semicolon
+macro_line|#endif
 DECL|member|cmdstat
 id|u32
 id|cmdstat
 suffix:semicolon
-DECL|member|byte_cnt
+DECL|member|next
 id|u32
-id|byte_cnt
+id|next
 suffix:semicolon
 DECL|member|buff_ptr
 id|u32
 id|buff_ptr
-suffix:semicolon
-DECL|member|next
-id|u32
-id|next
 suffix:semicolon
 DECL|typedef|gt96100_td_t
 )brace
 id|gt96100_td_t
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
-DECL|macro|tdByteCntBit
-mdefine_line|#define tdByteCntBit 16
 r_typedef
 r_struct
 (brace
+macro_line|#ifdef DESC_BE
+DECL|member|buff_sz
+id|u16
+id|buff_sz
+suffix:semicolon
+DECL|member|byte_cnt
+id|u16
+id|byte_cnt
+suffix:semicolon
+macro_line|#else
+id|u16
+id|byte_cnt
+suffix:semicolon
+id|u16
+id|buff_sz
+suffix:semicolon
+macro_line|#endif
 DECL|member|cmdstat
 id|u32
 id|cmdstat
-suffix:semicolon
-DECL|member|buff_cnt_sz
-id|u32
-id|buff_cnt_sz
-suffix:semicolon
-DECL|member|buff_ptr
-id|u32
-id|buff_ptr
 suffix:semicolon
 DECL|member|next
 id|u32
 id|next
 suffix:semicolon
+DECL|member|buff_ptr
+id|u32
+id|buff_ptr
+suffix:semicolon
 DECL|typedef|gt96100_rd_t
 )brace
 id|gt96100_rd_t
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
-DECL|macro|rdBuffSzBit
-mdefine_line|#define rdBuffSzBit 16
-DECL|macro|rdByteCntMask
-mdefine_line|#define rdByteCntMask 0xffff
 multiline_comment|/* Values for the Tx command-status descriptor entry. */
 DECL|enum|td_cmdstat
 r_enum
@@ -802,8 +848,6 @@ op_lshift
 l_int|5
 )brace
 suffix:semicolon
-DECL|macro|TxReTxCntBit
-mdefine_line|#define TxReTxCntBit 10
 multiline_comment|/* Values for the Rx command-status descriptor entry. */
 DECL|enum|rd_cmdstat
 r_enum
@@ -1084,9 +1128,10 @@ DECL|member|rx_buff
 r_char
 op_star
 id|rx_buff
-(braket
-id|RX_RING_SIZE
-)braket
+suffix:semicolon
+DECL|member|rx_buff_dma
+id|dma_addr_t
+id|rx_buff_dma
 suffix:semicolon
 singleline_comment|// Tx buffers (tx_skbuff[i]-&gt;data) with less than 8 bytes
 singleline_comment|// of payload must be 8-byte aligned
@@ -1119,6 +1164,16 @@ r_int
 id|tx_count
 suffix:semicolon
 multiline_comment|/* current # of pkts waiting to be sent in Tx ring */
+DECL|member|intr_work_done
+r_int
+id|intr_work_done
+suffix:semicolon
+multiline_comment|/* number of Rx and Tx pkts processed in the isr */
+DECL|member|tx_full
+r_int
+id|tx_full
+suffix:semicolon
+multiline_comment|/* Tx ring is full */
 DECL|member|mib
 id|mib_counters_t
 id|mib
@@ -1137,6 +1192,10 @@ r_int
 id|port_num
 suffix:semicolon
 singleline_comment|// 0 or 1
+DECL|member|chip_rev
+r_int
+id|chip_rev
+suffix:semicolon
 DECL|member|port_offset
 id|u32
 id|port_offset
@@ -1160,15 +1219,11 @@ DECL|member|drv_flags
 r_int
 id|drv_flags
 suffix:semicolon
-DECL|member|phys
-r_int
-r_char
-id|phys
-(braket
-l_int|2
-)braket
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
 suffix:semicolon
-multiline_comment|/* MII device addresses. */
 DECL|member|lock
 id|spinlock_t
 id|lock

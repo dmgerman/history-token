@@ -4615,6 +4615,12 @@ c_func
 l_string|&quot;6pack driver for AX.25&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|sixpack_init_driver
 id|module_init
 c_func

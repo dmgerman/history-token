@@ -1636,10 +1636,6 @@ id|ei-&gt;i_frag_size
 op_assign
 l_int|0
 suffix:semicolon
-id|ei-&gt;i_osync
-op_assign
-l_int|0
-suffix:semicolon
 id|ei-&gt;i_file_acl
 op_assign
 l_int|0

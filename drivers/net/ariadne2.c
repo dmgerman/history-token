@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
@@ -572,10 +571,10 @@ id|reset_start_time
 op_assign
 id|jiffies
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
-id|readb
+id|z_readb
 c_func
 (paren
 id|ioaddr
@@ -592,7 +591,7 @@ r_while
 c_loop
 (paren
 (paren
-id|readb
+id|z_readb
 c_func
 (paren
 id|ioaddr
@@ -630,7 +629,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|writeb
+id|z_writeb
 c_func
 (paren
 l_int|0xff
@@ -777,7 +776,7 @@ id|i
 op_increment
 )paren
 (brace
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|program_seq
@@ -819,7 +818,7 @@ id|SA_prom
 id|i
 )braket
 op_assign
-id|readb
+id|z_readb
 c_func
 (paren
 id|ioaddr
@@ -830,7 +829,7 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|readb
+id|z_readb
 c_func
 (paren
 id|ioaddr
@@ -840,7 +839,7 @@ id|NE_DATAPORT
 suffix:semicolon
 )brace
 multiline_comment|/* We must set the 8390 for word mode. */
-id|writeb
+id|z_writeb
 c_func
 (paren
 l_int|0x49
@@ -1170,10 +1169,10 @@ comma
 id|jiffies
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
-id|readb
+id|z_readb
 c_func
 (paren
 id|NE_BASE
@@ -1199,7 +1198,7 @@ r_while
 c_loop
 (paren
 (paren
-id|readb
+id|z_readb
 c_func
 (paren
 id|NE_BASE
@@ -1237,7 +1236,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|ENISR_RESET
@@ -1309,7 +1308,7 @@ id|ei_status.dmaing
 op_or_assign
 l_int|0x01
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|E8390_NODMA
@@ -1323,7 +1322,7 @@ op_plus
 id|NE_CMD
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|ENISR_RDC
@@ -1333,7 +1332,7 @@ op_plus
 id|NE_EN0_ISR
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 r_sizeof
@@ -1347,7 +1346,7 @@ op_plus
 id|NE_EN0_RCNTLO
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 l_int|0
@@ -1357,7 +1356,7 @@ op_plus
 id|NE_EN0_RCNTHI
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 l_int|0
@@ -1368,7 +1367,7 @@ id|NE_EN0_RSARLO
 )paren
 suffix:semicolon
 multiline_comment|/* On page boundary */
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|ring_page
@@ -1378,7 +1377,7 @@ op_plus
 id|NE_EN0_RSARHI
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|E8390_RREAD
@@ -1424,7 +1423,7 @@ op_star
 id|ptrs
 op_increment
 op_assign
-id|readw
+id|z_readw
 c_func
 (paren
 id|NE_BASE
@@ -1432,7 +1431,7 @@ op_plus
 id|NE_DATAPORT
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|ENISR_RDC
@@ -1457,7 +1456,7 @@ op_complement
 l_int|0x01
 suffix:semicolon
 )brace
-multiline_comment|/* Block input and output, similar to the Crynwr packet driver.  If you&n;   are porting to a new ethercard, look at the packet driver source for hints.&n;   The NEx000 doesn&squot;t share the on-board packet memory -- you have to put&n;   the packet out through the &quot;remote DMA&quot; dataport using writeb. */
+multiline_comment|/* Block input and output, similar to the Crynwr packet driver.  If you&n;   are porting to a new ethercard, look at the packet driver source for hints.&n;   The NEx000 doesn&squot;t share the on-board packet memory -- you have to put&n;   the packet out through the &quot;remote DMA&quot; dataport using z_writeb. */
 DECL|function|ariadne2_block_input
 r_static
 r_void
@@ -1526,7 +1525,7 @@ id|ei_status.dmaing
 op_or_assign
 l_int|0x01
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|E8390_NODMA
@@ -1540,7 +1539,7 @@ op_plus
 id|NE_CMD
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|ENISR_RDC
@@ -1550,7 +1549,7 @@ op_plus
 id|NE_EN0_ISR
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|count
@@ -1562,7 +1561,7 @@ op_plus
 id|NE_EN0_RCNTLO
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|count
@@ -1574,7 +1573,7 @@ op_plus
 id|NE_EN0_RCNTHI
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|ring_offset
@@ -1586,7 +1585,7 @@ op_plus
 id|NE_EN0_RSARLO
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|ring_offset
@@ -1598,7 +1597,7 @@ op_plus
 id|NE_EN0_RSARHI
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|E8390_RREAD
@@ -1640,7 +1639,7 @@ op_star
 id|ptrs
 op_increment
 op_assign
-id|readw
+id|z_readw
 c_func
 (paren
 id|NE_BASE
@@ -1662,7 +1661,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-id|readb
+id|z_readb
 c_func
 (paren
 id|NE_BASE
@@ -1670,7 +1669,7 @@ op_plus
 id|NE_DATAPORT
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|ENISR_RDC
@@ -1767,7 +1766,7 @@ op_or_assign
 l_int|0x01
 suffix:semicolon
 multiline_comment|/* We should already be in page 0, but to be safe... */
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|E8390_PAGE0
@@ -1781,7 +1780,7 @@ op_plus
 id|NE_CMD
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|ENISR_RDC
@@ -1792,7 +1791,7 @@ id|NE_EN0_ISR
 )paren
 suffix:semicolon
 multiline_comment|/* Now the normal output. */
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|count
@@ -1804,7 +1803,7 @@ op_plus
 id|NE_EN0_RCNTLO
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|count
@@ -1816,7 +1815,7 @@ op_plus
 id|NE_EN0_RCNTHI
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 l_int|0x00
@@ -1826,7 +1825,7 @@ op_plus
 id|NE_EN0_RSARLO
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|start_page
@@ -1836,7 +1835,7 @@ op_plus
 id|NE_EN0_RSARHI
 )paren
 suffix:semicolon
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|E8390_RWRITE
@@ -1872,7 +1871,7 @@ suffix:semicolon
 id|cnt
 op_increment
 )paren
-id|writew
+id|z_writew
 c_func
 (paren
 op_star
@@ -1892,7 +1891,7 @@ r_while
 c_loop
 (paren
 (paren
-id|readb
+id|z_readb
 c_func
 (paren
 id|NE_BASE
@@ -1945,7 +1944,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|writeb
+id|z_writeb
 c_func
 (paren
 id|ENISR_RDC
@@ -2057,6 +2056,12 @@ id|module_exit
 c_func
 (paren
 id|ariadne2_cleanup
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

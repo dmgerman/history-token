@@ -6434,6 +6434,12 @@ c_func
 l_string|&quot;Baycom epp amateur radio modem driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|init_baycomepp
 r_static

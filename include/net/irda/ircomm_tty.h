@@ -16,6 +16,9 @@ DECL|macro|IRCOMM_TTY_MAJOR
 mdefine_line|#define IRCOMM_TTY_MAJOR 161
 DECL|macro|IRCOMM_TTY_MINOR
 mdefine_line|#define IRCOMM_TTY_MINOR 0
+multiline_comment|/* This is used as an initial value to max_header_size before the proper&n; * value is filled in (5 for ttp, 4 for lmp). This allow us to detect&n; * the state of the underlying connection. - Jean II */
+DECL|macro|IRCOMM_TTY_HDR_UNITIALISED
+mdefine_line|#define IRCOMM_TTY_HDR_UNITIALISED&t;32
 multiline_comment|/*&n; * IrCOMM TTY driver state&n; */
 DECL|struct|ircomm_tty_cb
 r_struct

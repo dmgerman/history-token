@@ -90,6 +90,8 @@ id|DISCOVERY_CALLBACK1
 id|discovery_t
 op_star
 comma
+id|DISCOVERY_MODE
+comma
 r_void
 op_star
 )paren
@@ -669,6 +671,8 @@ c_func
 id|hashbin_t
 op_star
 id|discovery_log
+comma
+id|DISCOVERY_MODE
 )paren
 suffix:semicolon
 r_void
