@@ -2221,6 +2221,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * init can run on any cpu.&n;&t; */
+id|set_cpus_allowed
+c_func
+(paren
+id|current
+comma
+id|CPU_MASK_ALL
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Tell the world that we&squot;re going to be the grim&n;&t; * reaper of innocent orphaned children.&n;&t; *&n;&t; * We don&squot;t want people to have to make incorrect&n;&t; * assumptions about where in the task array this&n;&t; * can be found.&n;&t; */
 id|child_reaper
 op_assign

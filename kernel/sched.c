@@ -13999,6 +13999,14 @@ id|idle-&gt;state
 op_assign
 id|TASK_RUNNING
 suffix:semicolon
+id|idle-&gt;cpus_allowed
+op_assign
+id|cpumask_of_cpu
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
 id|set_task_cpu
 c_func
 (paren
