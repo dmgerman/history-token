@@ -123,8 +123,8 @@ mdefine_line|#define pfn_pmd(pfn, prot)&t;__pmd(((pfn) &lt;&lt; PAGE_SHIFT) | pg
 DECL|macro|PTE_FILE_MAX_BITS
 mdefine_line|#define PTE_FILE_MAX_BITS&t;29
 DECL|macro|pte_to_pgoff
-mdefine_line|#define pte_to_pgoff(pte)&t;(((pte_val(pte) &gt;&gt; 2) &amp; 0xff) | (((pte_val(pte) &gt;&gt; 11)) &lt;&lt; 8))
+mdefine_line|#define pte_to_pgoff(pte)&t;(((pte_val(pte) &gt;&gt; 2) &amp; 0xef) | (((pte_val(pte) &gt;&gt; 10)) &lt;&lt; 7))
 DECL|macro|pgoff_to_pte
-mdefine_line|#define pgoff_to_pte(off)&t;((pte_t) { (((off) &amp; 0xff) &lt;&lt; 2) | (((off) &gt;&gt; 8) &lt;&lt; 11) | _PAGE_FILE })
+mdefine_line|#define pgoff_to_pte(off)&t;((pte_t) { (((off) &amp; 0xef) &lt;&lt; 2) | (((off) &gt;&gt; 7) &lt;&lt; 10) | _PAGE_FILE })
 macro_line|#endif /* _ASM_M32R_PGTABLE_2LEVEL_H */
 eof

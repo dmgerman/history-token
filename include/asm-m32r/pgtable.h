@@ -81,12 +81,10 @@ DECL|macro|_PAGE_BIT_READ
 mdefine_line|#define _PAGE_BIT_READ&t;&t;6&t;/* Read */
 DECL|macro|_PAGE_BIT_NONCACHABLE
 mdefine_line|#define _PAGE_BIT_NONCACHABLE&t;7&t;/* Non cachable */
-DECL|macro|_PAGE_BIT_USER
-mdefine_line|#define _PAGE_BIT_USER&t;&t;8&t;/* software: user space access&n;&t;&t;&t;&t;&t;   allowed */
 DECL|macro|_PAGE_BIT_ACCESSED
-mdefine_line|#define _PAGE_BIT_ACCESSED&t;9&t;/* software: page referenced */
+mdefine_line|#define _PAGE_BIT_ACCESSED&t;8&t;/* software: page referenced */
 DECL|macro|_PAGE_BIT_PROTNONE
-mdefine_line|#define _PAGE_BIT_PROTNONE&t;10&t;/* software: if not present */
+mdefine_line|#define _PAGE_BIT_PROTNONE&t;9&t;/* software: if not present */
 DECL|macro|_PAGE_DIRTY
 mdefine_line|#define _PAGE_DIRTY&t;&t;(1UL &lt;&lt; _PAGE_BIT_DIRTY)
 DECL|macro|_PAGE_FILE
@@ -105,14 +103,12 @@ DECL|macro|_PAGE_READ
 mdefine_line|#define _PAGE_READ&t;&t;(1UL &lt;&lt; _PAGE_BIT_READ)
 DECL|macro|_PAGE_NONCACHABLE
 mdefine_line|#define _PAGE_NONCACHABLE&t;(1UL &lt;&lt; _PAGE_BIT_NONCACHABLE)
-DECL|macro|_PAGE_USER
-mdefine_line|#define _PAGE_USER&t;&t;(1UL &lt;&lt; _PAGE_BIT_USER)
 DECL|macro|_PAGE_ACCESSED
 mdefine_line|#define _PAGE_ACCESSED&t;&t;(1UL &lt;&lt; _PAGE_BIT_ACCESSED)
 DECL|macro|_PAGE_PROTNONE
 mdefine_line|#define _PAGE_PROTNONE&t;&t;(1UL &lt;&lt; _PAGE_BIT_PROTNONE)
 DECL|macro|_PAGE_TABLE
-mdefine_line|#define _PAGE_TABLE&t;&bslash;&n;&t;( _PAGE_PRESENT | _PAGE_WRITE | _PAGE_READ | _PAGE_USER &bslash;&n;&t;| _PAGE_ACCESSED | _PAGE_DIRTY )
+mdefine_line|#define _PAGE_TABLE&t;&bslash;&n;&t;( _PAGE_PRESENT | _PAGE_WRITE | _PAGE_READ | _PAGE_ACCESSED &bslash;&n;&t;| _PAGE_DIRTY )
 DECL|macro|_KERNPG_TABLE
 mdefine_line|#define _KERNPG_TABLE&t;&bslash;&n;&t;( _PAGE_PRESENT | _PAGE_WRITE | _PAGE_READ | _PAGE_ACCESSED &bslash;&n;&t;| _PAGE_DIRTY )
 DECL|macro|_PAGE_CHG_MASK
@@ -121,17 +117,17 @@ macro_line|#ifdef CONFIG_MMU
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;&bslash;&n;&t;__pgprot(_PAGE_PROTNONE | _PAGE_ACCESSED)
 DECL|macro|PAGE_SHARED
-mdefine_line|#define PAGE_SHARED&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_WRITE | _PAGE_READ | _PAGE_USER &bslash;&n;&t;&t;| _PAGE_ACCESSED)
+mdefine_line|#define PAGE_SHARED&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_WRITE | _PAGE_READ | _PAGE_ACCESSED)
 DECL|macro|PAGE_SHARED_EXEC
-mdefine_line|#define PAGE_SHARED_EXEC &bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_EXEC | _PAGE_WRITE | _PAGE_READ &bslash;&n;&t;&t;| _PAGE_USER | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_SHARED_EXEC &bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_EXEC | _PAGE_WRITE | _PAGE_READ &bslash;&n;&t;&t;| _PAGE_ACCESSED)
 DECL|macro|PAGE_COPY
-mdefine_line|#define PAGE_COPY&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_USER | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_COPY&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_ACCESSED)
 DECL|macro|PAGE_COPY_EXEC
-mdefine_line|#define PAGE_COPY_EXEC&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_EXEC | _PAGE_READ | _PAGE_USER &bslash;&n;&t;&t;| _PAGE_ACCESSED)
+mdefine_line|#define PAGE_COPY_EXEC&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_EXEC | _PAGE_READ | _PAGE_ACCESSED)
 DECL|macro|PAGE_READONLY
-mdefine_line|#define PAGE_READONLY&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_USER | _PAGE_ACCESSED)
+mdefine_line|#define PAGE_READONLY&t;&bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_READ | _PAGE_ACCESSED)
 DECL|macro|PAGE_READONLY_EXEC
-mdefine_line|#define PAGE_READONLY_EXEC &bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_EXEC | _PAGE_READ | _PAGE_USER &bslash;&n;&t;&t;| _PAGE_ACCESSED)
+mdefine_line|#define PAGE_READONLY_EXEC &bslash;&n;&t;__pgprot(_PAGE_PRESENT | _PAGE_EXEC | _PAGE_READ | _PAGE_ACCESSED)
 DECL|macro|__PAGE_KERNEL
 mdefine_line|#define __PAGE_KERNEL&t;&bslash;&n;&t;( _PAGE_PRESENT | _PAGE_EXEC | _PAGE_WRITE | _PAGE_READ | _PAGE_DIRTY &bslash;&n;&t;| _PAGE_ACCESSED )
 DECL|macro|__PAGE_KERNEL_RO
@@ -213,31 +209,10 @@ mdefine_line|#define pmd_present(x)&t;(pmd_val(x) &amp; _PAGE_PRESENT)
 DECL|macro|pmd_clear
 mdefine_line|#define pmd_clear(xp)&t;do { set_pmd(xp, __pmd(0)); } while (0)
 DECL|macro|pmd_bad
-mdefine_line|#define&t;pmd_bad(x)&t;((pmd_val(x) &amp; (~PAGE_MASK &amp; ~_PAGE_USER)) &bslash;&n;&t;!= _KERNPG_TABLE)
+mdefine_line|#define&t;pmd_bad(x)&t;((pmd_val(x) &amp; ~PAGE_MASK) != _KERNPG_TABLE)
 DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x)&t;((x) &gt;&gt; (20 - PAGE_SHIFT))
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */
-DECL|function|pte_user
-r_static
-r_inline
-r_int
-id|pte_user
-c_func
-(paren
-id|pte_t
-id|pte
-)paren
-(brace
-r_return
-id|pte_val
-c_func
-(paren
-id|pte
-)paren
-op_amp
-id|_PAGE_USER
-suffix:semicolon
-)brace
 DECL|function|pte_read
 r_static
 r_inline
@@ -842,9 +817,9 @@ multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|__swp_type
 mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 2) &amp; 0x3f)
 DECL|macro|__swp_offset
-mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 11)
+mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 10)
 DECL|macro|__swp_entry
-mdefine_line|#define __swp_entry(type, offset)&t;&bslash;&n;&t;((swp_entry_t) { ((type) &lt;&lt; 2) | ((offset) &lt;&lt; 11) })
+mdefine_line|#define __swp_entry(type, offset)&t;&bslash;&n;&t;((swp_entry_t) { ((type) &lt;&lt; 2) | ((offset) &lt;&lt; 10) })
 DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
