@@ -9489,7 +9489,7 @@ comma
 dot
 id|action
 op_assign
-id|VIA_DXS_DISABLE
+id|VIA_DXS_NO_VRA
 )brace
 comma
 multiline_comment|/* ASRock K7VM2 */
