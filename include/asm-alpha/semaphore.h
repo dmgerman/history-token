@@ -12,27 +12,10 @@ DECL|struct|semaphore
 r_struct
 id|semaphore
 (brace
-multiline_comment|/* Careful, inline assembly knows about the position of these two.  */
 DECL|member|count
 id|atomic_t
 id|count
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
 suffix:semicolon
-DECL|member|waking
-id|atomic_t
-id|waking
-suffix:semicolon
-multiline_comment|/* biased by -1 */
 DECL|member|wait
 id|wait_queue_head_t
 id|wait
@@ -53,15 +36,15 @@ DECL|macro|__SEM_DEBUG_INIT
 macro_line|# define __SEM_DEBUG_INIT(name)
 macro_line|#endif
 DECL|macro|__SEMAPHORE_INITIALIZER
-mdefine_line|#define __SEMAPHORE_INITIALIZER(name,count)&t;&t;&bslash;&n;&t;{ ATOMIC_INIT(count), ATOMIC_INIT(-1),&t;&t;&bslash;&n;&t;  __WAIT_QUEUE_HEAD_INITIALIZER((name).wait)&t;&bslash;&n;&t;  __SEM_DEBUG_INIT(name) }
+mdefine_line|#define __SEMAPHORE_INITIALIZER(name,count)&t;&t;&bslash;&n;&t;{ ATOMIC_INIT(count),&t;&t;&t;&t;&bslash;&n;&t;  __WAIT_QUEUE_HEAD_INITIALIZER((name).wait)&t;&bslash;&n;&t;  __SEM_DEBUG_INIT(name) }
 DECL|macro|__MUTEX_INITIALIZER
-mdefine_line|#define __MUTEX_INITIALIZER(name) &bslash;&n;&t;__SEMAPHORE_INITIALIZER(name,1)
+mdefine_line|#define __MUTEX_INITIALIZER(name)&t;&t;&t;&bslash;&n;&t;__SEMAPHORE_INITIALIZER(name,1)
 DECL|macro|__DECLARE_SEMAPHORE_GENERIC
-mdefine_line|#define __DECLARE_SEMAPHORE_GENERIC(name,count) &bslash;&n;&t;struct semaphore name = __SEMAPHORE_INITIALIZER(name,count)
+mdefine_line|#define __DECLARE_SEMAPHORE_GENERIC(name,count)&t;&t;&bslash;&n;&t;struct semaphore name = __SEMAPHORE_INITIALIZER(name,count)
 DECL|macro|DECLARE_MUTEX
-mdefine_line|#define DECLARE_MUTEX(name) __DECLARE_SEMAPHORE_GENERIC(name,1)
+mdefine_line|#define DECLARE_MUTEX(name)&t;&t;__DECLARE_SEMAPHORE_GENERIC(name,1)
 DECL|macro|DECLARE_MUTEX_LOCKED
-mdefine_line|#define DECLARE_MUTEX_LOCKED(name) __DECLARE_SEMAPHORE_GENERIC(name,0)
+mdefine_line|#define DECLARE_MUTEX_LOCKED(name)&t;__DECLARE_SEMAPHORE_GENERIC(name,0)
 DECL|function|sema_init
 r_static
 r_inline
@@ -86,16 +69,6 @@ op_amp
 id|sem-&gt;count
 comma
 id|val
-)paren
-suffix:semicolon
-id|atomic_set
-c_func
-(paren
-op_amp
-id|sem-&gt;waking
-comma
-op_minus
-l_int|1
 )paren
 suffix:semicolon
 id|init_waitqueue_head
@@ -329,7 +302,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * down_trylock returns 0 on success, 1 if we failed to get the lock.&n; *&n; * We must manipulate count and waking simultaneously and atomically.&n; * Do this by using ll/sc on the pair of 32-bit words.&n; */
+multiline_comment|/*&n; * down_trylock returns 0 on success, 1 if we failed to get the lock.&n; */
 DECL|function|__down_trylock
 r_static
 r_inline
@@ -345,32 +318,19 @@ id|sem
 (brace
 r_int
 id|ret
-comma
-id|tmp
-comma
-id|tmp2
-comma
-id|sub
 suffix:semicolon
-multiline_comment|/* &quot;Equivalent&quot; C.  Note that we have to do this all without&n;&t;   (taken) branches in order to be a valid ll/sc sequence.&n;&n;&t;   do {&n;&t;&t;tmp = ldq_l;&n;&t;&t;sub = 0x0000000100000000;&t;&n;&t;&t;ret = ((int)tmp &lt;= 0);&t;&t;// count &lt;= 0 ?&n;&t;&t;// Note that if count=0, the decrement overflows into&n;&t;&t;// waking, so cancel the 1 loaded above.  Also cancel&n;&t;&t;// it if the lock was already free.&n;&t;&t;if ((int)tmp &gt;= 0) sub = 0;&t;// count &gt;= 0 ?&n;&t;&t;ret &amp;= ((long)tmp &lt; 0);&t;&t;// waking &lt; 0 ?&n;&t;&t;sub += 1;&n;&t;&t;if (ret) break;&t;&n;&t;&t;tmp -= sub;&n;&t;&t;tmp = stq_c = tmp;&n;&t;   } while (tmp == 0);&n;&t;*/
+multiline_comment|/* &quot;Equivalent&quot; C:&n;&n;&t;   do {&n;&t;&t;ret = ldl_l;&n;&t;&t;--ret;&n;&t;&t;if (ret &lt; 0)&n;&t;&t;&t;break;&n;&t;&t;ret = stl_c = ret;&n;&t;   } while (ret == 0);&n;&t;*/
 id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;1:&t;ldq_l&t;%1,%4&bslash;n&quot;
-l_string|&quot;&t;lda&t;%3,1&bslash;n&quot;
-l_string|&quot;&t;addl&t;%1,0,%2&bslash;n&quot;
-l_string|&quot;&t;sll&t;%3,32,%3&bslash;n&quot;
-l_string|&quot;&t;cmple&t;%2,0,%0&bslash;n&quot;
-l_string|&quot;&t;cmovge&t;%2,0,%3&bslash;n&quot;
-l_string|&quot;&t;cmplt&t;%1,0,%2&bslash;n&quot;
-l_string|&quot;&t;addq&t;%3,1,%3&bslash;n&quot;
-l_string|&quot;&t;and&t;%0,%2,%0&bslash;n&quot;
-l_string|&quot;&t;bne&t;%0,2f&bslash;n&quot;
-l_string|&quot;&t;subq&t;%1,%3,%1&bslash;n&quot;
-l_string|&quot;&t;stq_c&t;%1,%4&bslash;n&quot;
-l_string|&quot;&t;beq&t;%1,3f&bslash;n&quot;
-l_string|&quot;2:&t;mb&bslash;n&quot;
+l_string|&quot;1:&t;ldl_l&t;%0,%1&bslash;n&quot;
+l_string|&quot;&t;subl&t;%0,1,%0&bslash;n&quot;
+l_string|&quot;&t;blt&t;%0,2f&bslash;n&quot;
+l_string|&quot;&t;stl_c&t;%0,%1&bslash;n&quot;
+l_string|&quot;&t;beq&t;%0,3f&bslash;n&quot;
+l_string|&quot;&t;mb&bslash;n&quot;
+l_string|&quot;2:&bslash;n&quot;
 l_string|&quot;.subsection 2&bslash;n&quot;
 l_string|&quot;3:&t;br&t;1b&bslash;n&quot;
 l_string|&quot;.previous&quot;
@@ -380,32 +340,21 @@ l_string|&quot;=&amp;r&quot;
 id|ret
 )paren
 comma
-l_string|&quot;=&amp;r&quot;
+l_string|&quot;=m&quot;
 (paren
-id|tmp
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp2
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|sub
+id|sem-&gt;count
 )paren
 suffix:colon
 l_string|&quot;m&quot;
 (paren
-op_star
-id|sem
+id|sem-&gt;count
 )paren
-suffix:colon
-l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
 id|ret
+OL
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|__up
@@ -421,76 +370,18 @@ op_star
 id|sem
 )paren
 (brace
-r_int
-id|ret
-comma
-id|tmp
-comma
-id|tmp2
-comma
-id|tmp3
-suffix:semicolon
-multiline_comment|/* We must manipulate count and waking simultaneously and atomically.&n;&t;   Otherwise we have races between up and __down_failed_interruptible&n;&t;   waking up on a signal.&n;&n;&t;   &quot;Equivalent&quot; C.  Note that we have to do this all without&n;&t;   (taken) branches in order to be a valid ll/sc sequence.&n;&n;&t;   do {&n;&t;&t;tmp = ldq_l;&n;&t;&t;ret = (int)tmp + 1;&t;&t;&t;// count += 1;&n;&t;&t;tmp2 = tmp &amp; 0xffffffff00000000;&t;// extract waking&n;&t;&t;if (ret &lt;= 0)&t;&t;&t;&t;// still sleepers?&n;&t;&t;&t;tmp2 += 0x0000000100000000;&t;// waking += 1;&n;&t;&t;tmp = ret &amp; 0x00000000ffffffff;&t;&t;// insert count&n;&t;&t;tmp |= tmp2;&t;&t;&t;&t;// insert waking;&n;&t;       tmp = stq_c = tmp;&n;&t;   } while (tmp == 0);&n;&t;*/
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;&t;mb&bslash;n&quot;
-l_string|&quot;1:&t;ldq_l&t;%1,%4&bslash;n&quot;
-l_string|&quot;&t;addl&t;%1,1,%0&bslash;n&quot;
-l_string|&quot;&t;zapnot&t;%1,0xf0,%2&bslash;n&quot;
-l_string|&quot;&t;addq&t;%2,%5,%3&bslash;n&quot;
-l_string|&quot;&t;cmovle&t;%0,%3,%2&bslash;n&quot;
-l_string|&quot;&t;zapnot&t;%0,0x0f,%1&bslash;n&quot;
-l_string|&quot;&t;bis&t;%1,%2,%1&bslash;n&quot;
-l_string|&quot;&t;stq_c&t;%1,%4&bslash;n&quot;
-l_string|&quot;&t;beq&t;%1,3f&bslash;n&quot;
-l_string|&quot;2:&bslash;n&quot;
-l_string|&quot;.subsection 2&bslash;n&quot;
-l_string|&quot;3:&t;br&t;1b&bslash;n&quot;
-l_string|&quot;.previous&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|ret
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp2
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp3
-)paren
-suffix:colon
-l_string|&quot;m&quot;
-(paren
-op_star
-id|sem
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-l_int|0x0000000100000000
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|unlikely
 c_func
 (paren
-id|ret
+id|atomic_inc_return
+c_func
+(paren
+op_amp
+id|sem-&gt;count
+)paren
 op_le
 l_int|0
 )paren
