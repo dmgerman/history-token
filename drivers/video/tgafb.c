@@ -4822,15 +4822,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|vhcr
@@ -5036,7 +5031,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -5701,7 +5696,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device at 0x%lx&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|fb_info.gen.info.node

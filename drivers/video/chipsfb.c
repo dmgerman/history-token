@@ -2890,7 +2890,7 @@ c_func
 (paren
 l_string|&quot;fb%d: Chips 65550 frame buffer (%dK RAM detected)&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|p-&gt;info.node

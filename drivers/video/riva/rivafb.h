@@ -3,11 +3,7 @@ DECL|macro|__RIVAFB_H
 mdefine_line|#define __RIVAFB_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-cfb4.h&gt;
-macro_line|#include &lt;video/fbcon-cfb8.h&gt;
-macro_line|#include &lt;video/fbcon-cfb16.h&gt;
-macro_line|#include &lt;video/fbcon-cfb32.h&gt;
+macro_line|#include &lt;video/vga.h&gt;
 macro_line|#include &quot;riva_hw.h&quot;
 multiline_comment|/* GGI compatibility macros */
 DECL|macro|NUM_SEQ_REGS
@@ -82,58 +78,20 @@ DECL|typedef|riva_cfb8_cmap_t
 )brace
 id|riva_cfb8_cmap_t
 suffix:semicolon
+DECL|struct|riva_par
 r_struct
-id|rivafb_info
-suffix:semicolon
-DECL|struct|rivafb_info
-r_struct
-id|rivafb_info
+id|riva_par
 (brace
-DECL|member|info
-r_struct
-id|fb_info
-id|info
-suffix:semicolon
-multiline_comment|/* kernel framebuffer info */
 DECL|member|riva
 id|RIVA_HW_INST
 id|riva
 suffix:semicolon
 multiline_comment|/* interface to riva_hw.c */
-DECL|member|drvr_name
-r_const
-r_char
-op_star
-id|drvr_name
-suffix:semicolon
-multiline_comment|/* Riva hardware board type */
-DECL|member|ctrl_base_phys
-r_int
-r_int
-id|ctrl_base_phys
-suffix:semicolon
-multiline_comment|/* physical control register base addr */
-DECL|member|fb_base_phys
-r_int
-r_int
-id|fb_base_phys
-suffix:semicolon
-multiline_comment|/* physical framebuffer base addr */
 DECL|member|ctrl_base
 id|caddr_t
 id|ctrl_base
 suffix:semicolon
 multiline_comment|/* virtual control register base addr */
-DECL|member|fb_base
-id|caddr_t
-id|fb_base
-suffix:semicolon
-multiline_comment|/* virtual framebuffer base addr */
-DECL|member|ram_amount
-r_int
-id|ram_amount
-suffix:semicolon
-multiline_comment|/* amount of RAM on card, in bytes */
 DECL|member|dclk_max
 r_int
 id|dclk_max
@@ -150,89 +108,45 @@ r_struct
 id|riva_regs
 id|current_state
 suffix:semicolon
-DECL|member|disp
+DECL|member|state
 r_struct
-id|display
-id|disp
+id|vgastate
+id|state
 suffix:semicolon
-DECL|member|currcon
-r_int
-id|currcon
+DECL|member|ref_count
+id|atomic_t
+id|ref_count
 suffix:semicolon
-DECL|member|currcon_display
-r_struct
-id|display
-op_star
-id|currcon_display
-suffix:semicolon
-DECL|member|next
-r_struct
-id|rivafb_info
-op_star
-id|next
-suffix:semicolon
-DECL|member|pd
-r_struct
-id|pci_dev
-op_star
-id|pd
-suffix:semicolon
-multiline_comment|/* pointer to board&squot;s pci info */
-DECL|member|base0_region_size
-r_int
-id|base0_region_size
-suffix:semicolon
-multiline_comment|/* size of control register region */
-DECL|member|base1_region_size
-r_int
-id|base1_region_size
-suffix:semicolon
-multiline_comment|/* size of framebuffer region */
-DECL|member|cursor
-r_struct
-id|riva_cursor
-op_star
-id|cursor
-suffix:semicolon
-DECL|member|dispsw
-r_struct
-id|display_switch
-id|dispsw
-suffix:semicolon
-DECL|member|palette
+DECL|member|cmap
 id|riva_cfb8_cmap_t
-id|palette
+id|cmap
 (braket
 l_int|256
 )braket
 suffix:semicolon
 multiline_comment|/* VGA DAC palette cache */
-macro_line|#if defined(FBCON_HAS_CFB16) || defined(FBCON_HAS_CFB32)
-r_union
-(brace
-macro_line|#ifdef FBCON_HAS_CFB16
-DECL|member|cfb16
-id|u_int16_t
-id|cfb16
+DECL|member|riva_palette
+id|u32
+id|riva_palette
 (braket
 l_int|16
 )braket
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef FBCON_HAS_CFB32
-DECL|member|cfb32
-id|u_int32_t
-id|cfb32
+DECL|member|cursor_data
+id|u32
+id|cursor_data
 (braket
-l_int|16
+l_int|32
+op_star
+l_int|32
+op_div
+l_int|4
 )braket
 suffix:semicolon
-macro_line|#endif
-DECL|member|con_cmap
-)brace
-id|con_cmap
+DECL|member|cursor_reset
+r_int
+id|cursor_reset
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* FBCON_HAS_CFB16 | FBCON_HAS_CFB32 */
 macro_line|#ifdef CONFIG_MTRR
 DECL|member|vram
 DECL|member|vram_valid
