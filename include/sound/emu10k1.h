@@ -1233,7 +1233,13 @@ id|extra
 suffix:semicolon
 DECL|member|running
 r_int
+r_int
 id|running
+suffix:semicolon
+DECL|member|first_ptr
+r_int
+r_int
+id|first_ptr
 suffix:semicolon
 DECL|member|memblk
 id|snd_util_memblk_t

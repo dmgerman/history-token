@@ -474,6 +474,51 @@ DECL|member|spdif_status_in
 r_int
 id|spdif_status_in
 suffix:semicolon
+multiline_comment|/* SPDIF input sample rate converter */
+DECL|member|spdif_in_src
+id|dsp_scb_descriptor_t
+op_star
+id|spdif_in_src
+suffix:semicolon
+multiline_comment|/* SPDIF input asynch. receiver */
+DECL|member|asynch_rx_scb
+id|dsp_scb_descriptor_t
+op_star
+id|asynch_rx_scb
+suffix:semicolon
+multiline_comment|/* Capture record mixer SCB */
+DECL|member|record_mixer_scb
+id|dsp_scb_descriptor_t
+op_star
+id|record_mixer_scb
+suffix:semicolon
+multiline_comment|/* CODEC input SCB */
+DECL|member|codec_in_scb
+id|dsp_scb_descriptor_t
+op_star
+id|codec_in_scb
+suffix:semicolon
+multiline_comment|/* reference snooper */
+DECL|member|ref_snoop_scb
+id|dsp_scb_descriptor_t
+op_star
+id|ref_snoop_scb
+suffix:semicolon
+multiline_comment|/* record sources */
+DECL|member|pcm_input
+id|dsp_scb_descriptor_t
+op_star
+id|pcm_input
+suffix:semicolon
+DECL|member|adc_input
+id|dsp_scb_descriptor_t
+op_star
+id|adc_input
+suffix:semicolon
+DECL|member|spdif_in_sample_rate
+r_int
+id|spdif_in_sample_rate
+suffix:semicolon
 DECL|typedef|dsp_spos_instance_t
 )brace
 id|dsp_spos_instance_t

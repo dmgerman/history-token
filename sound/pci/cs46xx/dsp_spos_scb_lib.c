@@ -1,7 +1,5 @@
 multiline_comment|/*&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 multiline_comment|/*&n; * 2002-07 Benny Sjostrand benny@hostmobility.com&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -531,32 +529,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* update entry in DSP RAM */
-id|snd_cs46xx_poke
-c_func
-(paren
-id|chip
-comma
-(paren
-id|scb-&gt;address
-op_plus
-id|SCBsubListPtr
-)paren
-op_lshift
-l_int|2
-comma
-(paren
-id|scb-&gt;sub_list_ptr-&gt;address
-op_lshift
-l_int|0x10
-)paren
-op_or
-(paren
-id|scb-&gt;next_scb_ptr-&gt;address
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* update parent entry in DSP RAM */
+multiline_comment|/* update parent first entry in DSP RAM */
 id|snd_cs46xx_poke
 c_func
 (paren
@@ -578,6 +551,31 @@ l_int|0x10
 op_or
 (paren
 id|scb-&gt;parent_scb_ptr-&gt;next_scb_ptr-&gt;address
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* then update entry in DSP RAM */
+id|snd_cs46xx_poke
+c_func
+(paren
+id|chip
+comma
+(paren
+id|scb-&gt;address
+op_plus
+id|SCBsubListPtr
+)paren
+op_lshift
+l_int|2
+comma
+(paren
+id|scb-&gt;sub_list_ptr-&gt;address
+op_lshift
+l_int|0x10
+)paren
+op_or
+(paren
+id|scb-&gt;next_scb_ptr-&gt;address
 )paren
 )paren
 suffix:semicolon
@@ -2089,9 +2087,9 @@ l_int|0x8000
 comma
 l_int|0x8000
 comma
-l_int|0xFFFF
+l_int|0x8000
 comma
-l_int|0xFFFF
+l_int|0x8000
 )brace
 )brace
 suffix:semicolon
@@ -2268,9 +2266,9 @@ comma
 l_int|0x8000
 comma
 multiline_comment|/* F */
-l_int|0xFFFF
+l_int|0x8000
 comma
-l_int|0xFFFF
+l_int|0x8000
 )brace
 )brace
 suffix:semicolon
@@ -2670,7 +2668,9 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0x000000c1
+id|RSCONFIG_SAMPLE_16STEREO
+op_plus
+id|RSCONFIG_MODULO_16
 comma
 l_int|0
 comma
@@ -2805,7 +2805,9 @@ id|dest
 op_plus
 id|AFGTxAccumPhi
 comma
-l_int|0x000000c5
+id|RSCONFIG_SAMPLE_16STEREO
+op_plus
+id|RSCONFIG_MODULO_256
 comma
 multiline_comment|/* Stereo, 256 dword */
 (paren
@@ -2814,7 +2816,7 @@ id|asynch_buffer_address
 op_lshift
 l_int|0x10
 comma
-multiline_comment|/* This should be automagically synchronized&n;&t;&t;&t;&t;&t;&t;     to the producer pointer */
+multiline_comment|/* This should be automagically synchronized&n;                                             to the producer pointer */
 multiline_comment|/* There is no correct initial value, it will depend upon the detected&n;&t;&t;   rate etc  */
 l_int|0x18000000
 comma
@@ -2897,11 +2899,11 @@ id|asynch_fg_rx_scb_t
 id|asynch_fg_rx_scb
 op_assign
 (brace
-l_int|0xff00
+l_int|0xfe00
 comma
-l_int|0x00ff
+l_int|0x01ff
 comma
-multiline_comment|/* Prototype sample buffer size of 512 dwords */
+multiline_comment|/*  Prototype sample buffer size of 128 dwords */
 l_int|0x0064
 comma
 l_int|0x001c
@@ -2939,18 +2941,28 @@ l_int|0
 comma
 id|dest
 comma
-l_int|0x000000c3
+id|RSCONFIG_MODULO_128
+op_or
+id|RSCONFIG_SAMPLE_16STEREO
 comma
-multiline_comment|/* Stereo, 512 dword */
+multiline_comment|/* Stereo, 128 dword */
+(paren
 (paren
 id|asynch_buffer_address
+op_plus
+(paren
+l_int|16
+op_star
+l_int|4
+)paren
+)paren
 op_lshift
 l_int|0x10
 )paren
 comma
-multiline_comment|/* This should be automagically &n;&t;&t;&t;&t;&t;&t;&t;  synchrinized to the producer pointer */
+multiline_comment|/* This should be automagically &n;&t;&t;&t;&t;&t;&t;&t;                                  synchrinized to the producer pointer */
 multiline_comment|/* There is no correct initial value, it will depend upon the detected&n;&t;&t;   rate etc  */
-l_int|0
+l_int|0x18000000
 comma
 l_int|0x8000
 comma
@@ -3063,7 +3075,9 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0x000000c3
+id|RSCONFIG_SAMPLE_16STEREO
+op_plus
+id|RSCONFIG_MODULO_64
 comma
 id|snoop_buffer_address
 op_lshift
@@ -4000,16 +4014,15 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|snd_assert
+multiline_comment|/* if channel is unlinked then src_scb-&gt;sub_list_ptr == null_scb, and&n;         that&squot;s a correct state.&n;        snd_assert (src_scb-&gt;sub_list_ptr != ins-&gt;the_null_scb, goto _end); &n;      */
+r_if
+c_cond
 (paren
 id|src_scb-&gt;sub_list_ptr
 op_ne
 id|ins-&gt;the_null_scb
-comma
-r_goto
-id|_end
 )paren
-suffix:semicolon
+(brace
 id|pcm_parent_scb
 op_assign
 id|find_next_free_scb
@@ -4024,6 +4037,18 @@ id|insert_point
 op_assign
 id|SCB_ON_PARENT_NEXT_SCB
 suffix:semicolon
+)brace
+r_else
+(brace
+id|pcm_parent_scb
+op_assign
+id|src_scb
+suffix:semicolon
+id|insert_point
+op_assign
+id|SCB_ON_PARENT_SUBLIST_SCB
+suffix:semicolon
+)brace
 )brace
 id|snprintf
 (paren
@@ -4827,6 +4852,109 @@ id|chip-&gt;reg_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+)brace
+id|dsp_scb_descriptor_t
+op_star
+DECL|function|cs46xx_add_record_source
+id|cs46xx_add_record_source
+(paren
+id|cs46xx_t
+op_star
+id|chip
+comma
+id|dsp_scb_descriptor_t
+op_star
+id|source
+comma
+id|u16
+id|addr
+comma
+r_char
+op_star
+id|scb_name
+)paren
+(brace
+id|dsp_spos_instance_t
+op_star
+id|ins
+op_assign
+id|chip-&gt;dsp_spos_instance
+suffix:semicolon
+id|dsp_scb_descriptor_t
+op_star
+id|parent
+suffix:semicolon
+id|dsp_scb_descriptor_t
+op_star
+id|pcm_input
+suffix:semicolon
+r_int
+id|insert_point
+suffix:semicolon
+id|snd_assert
+(paren
+id|ins-&gt;record_mixer_scb
+op_ne
+l_int|NULL
+comma
+r_return
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ins-&gt;record_mixer_scb-&gt;sub_list_ptr
+op_ne
+id|ins-&gt;the_null_scb
+)paren
+(brace
+id|parent
+op_assign
+id|find_next_free_scb
+(paren
+id|chip
+comma
+id|ins-&gt;record_mixer_scb-&gt;sub_list_ptr
+)paren
+suffix:semicolon
+id|insert_point
+op_assign
+id|SCB_ON_PARENT_NEXT_SCB
+suffix:semicolon
+)brace
+r_else
+(brace
+id|parent
+op_assign
+id|ins-&gt;record_mixer_scb
+suffix:semicolon
+id|insert_point
+op_assign
+id|SCB_ON_PARENT_SUBLIST_SCB
+suffix:semicolon
+)brace
+id|pcm_input
+op_assign
+id|cs46xx_dsp_create_pcm_serial_input_scb
+c_func
+(paren
+id|chip
+comma
+id|scb_name
+comma
+id|addr
+comma
+id|source
+comma
+id|parent
+comma
+id|insert_point
+)paren
+suffix:semicolon
+r_return
+id|pcm_input
 suffix:semicolon
 )brace
 eof

@@ -2,8 +2,6 @@ multiline_comment|/*&n; *  Various wrappers&n; *  Copyright (c) by Jaroslav Kyse
 macro_line|#ifdef ALSA_BUILD
 macro_line|#include &quot;config.h&quot;
 macro_line|#endif
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef ALSA_BUILD

@@ -3,8 +3,6 @@ DECL|macro|DEBUG_ALLOC
 macro_line|#undef DEBUG_ALLOC
 DECL|macro|DEBUG_MIDI
 macro_line|#undef DEBUG_MIDI
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;opl3_voice.h&quot;
 macro_line|#include &lt;sound/asoundef.h&gt;
 r_extern

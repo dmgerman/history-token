@@ -1,7 +1,5 @@
 multiline_comment|/*&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 multiline_comment|/*&n; * 2002-07 Benny Sjostrand benny@hostmobility.com&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -1348,8 +1346,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// if (0) printk (&quot;dsp_spos: symbol &lt;%s&gt; duplicated, probably nothing wrong with that (Cirrus?)&bslash;n&quot;,
-singleline_comment|//                module-&gt;symbol_table.symbols[i].symbol_name);
+multiline_comment|/* if (0) printk (&quot;dsp_spos: symbol &lt;%s&gt; duplicated, probably nothing wrong with that (Cirrus?)&bslash;n&quot;,&n;                             module-&gt;symbol_table.symbols[i].symbol_name); */
 )brace
 )brace
 r_return
@@ -1717,6 +1714,11 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* default SPDIF input sample rate&n;&t;   to 48000 khz */
+id|ins-&gt;spdif_in_sample_rate
+op_assign
+l_int|32000
+suffix:semicolon
 r_return
 id|ins
 suffix:semicolon
@@ -3656,13 +3658,13 @@ c_loop
 (paren
 id|i
 op_assign
-id|SPDIFO_IP_OUTPUT_BUFFER1
-op_minus
-l_int|0x80
+id|SPDIFI_IP_OUTPUT_BUFFER1
 suffix:semicolon
 id|i
 OL
-id|SPDIFO_IP_OUTPUT_BUFFER1
+id|SPDIFI_IP_OUTPUT_BUFFER1
+op_plus
+l_int|0x40
 suffix:semicolon
 id|i
 op_add_assign
@@ -5724,15 +5726,15 @@ id|codec_in_scb
 suffix:semicolon
 id|dsp_scb_descriptor_t
 op_star
-id|pcm_reader_scb
-suffix:semicolon
-id|dsp_scb_descriptor_t
-op_star
 id|src_task_scb
 suffix:semicolon
 id|dsp_scb_descriptor_t
 op_star
 id|master_mix_scb
+suffix:semicolon
+id|dsp_scb_descriptor_t
+op_star
+id|record_mix_scb
 suffix:semicolon
 id|dsp_scb_descriptor_t
 op_star
@@ -5752,19 +5754,11 @@ id|asynch_tx_scb
 suffix:semicolon
 id|dsp_scb_descriptor_t
 op_star
-id|asynch_rx_scb
-suffix:semicolon
-id|dsp_scb_descriptor_t
-op_star
 id|sec_codec_out_scb
 suffix:semicolon
 id|dsp_scb_descriptor_t
 op_star
 id|magic_snoop_scb
-suffix:semicolon
-id|dsp_scb_descriptor_t
-op_star
-id|sec_magic_snoop_scb
 suffix:semicolon
 id|spos_control_block_t
 id|sposcb
@@ -6469,7 +6463,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-singleline_comment|// debug_tree = 1;
 id|cs46xx_dsp_create_task_tree
 c_func
 (paren
@@ -6489,9 +6482,7 @@ comma
 l_int|0x35
 )paren
 suffix:semicolon
-singleline_comment|// debug_tree = 0;
 )brace
-singleline_comment|//debug_scb = 1;
 multiline_comment|/* create timing master SCB */
 id|timing_master_scb
 op_assign
@@ -6565,51 +6556,6 @@ id|master_mix_scb
 r_goto
 id|_fail_end
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* the sample rate converter SCB */
-id|src_task_scb
-op_assign
-id|cs46xx_dsp_create_src_task_scb
-c_func
-(paren
-id|chip
-comma
-l_string|&quot;SrcTaskSCB_I&quot;
-comma
-id|SRC_OUTPUT_BUF1
-comma
-id|SRC_DELAY_BUF1
-comma
-id|SRCTASK_SCB_ADDR
-comma
-id|asynch_tx_scb
-comma
-id|SCB_ON_PARENT_SUBLIST_SCB
-)paren
-suffix:semicolon
-multiline_comment|/* create the PCM reader SCB */
-id|pcm_reader_scb
-op_assign
-id|cs46xx_dsp_create_pcm_reader_scb
-c_func
-(paren
-id|chip
-comma
-l_string|&quot;PCMReaderSCB_I&quot;
-comma
-id|PCM_READER_BUF1
-comma
-id|PCMREADER_SCB_ADDR
-comma
-l_int|0
-comma
-multiline_comment|/* playback how hw addr */
-id|src_task_scb
-comma
-id|SCB_ON_PARENT_SUBLIST_SCB
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* create codec in */
 id|codec_in_scb
 op_assign
@@ -6641,6 +6587,10 @@ id|codec_in_scb
 )paren
 r_goto
 id|_fail_end
+suffix:semicolon
+id|ins-&gt;codec_in_scb
+op_assign
+id|codec_in_scb
 suffix:semicolon
 multiline_comment|/* create write back scb */
 id|write_back_scb
@@ -6730,65 +6680,38 @@ id|vari_decimate_scb
 r_goto
 id|_fail_end
 suffix:semicolon
-multiline_comment|/* pcm input */
-id|pcm_serial_input_task
+multiline_comment|/* create the record mixer SCB */
+id|record_mix_scb
 op_assign
-id|cs46xx_dsp_create_pcm_serial_input_scb
+id|cs46xx_dsp_create_mix_only_scb
 c_func
 (paren
 id|chip
 comma
-l_string|&quot;PCMSerialInput&quot;
+l_string|&quot;RecordMixerSCB&quot;
 comma
-id|PCMSERIALIN_SCB_ADDR
+id|MIX_SAMPLE_BUF2
 comma
-id|codec_in_scb
+l_int|0x170
 comma
 id|vari_decimate_scb
 comma
 id|SCB_ON_PARENT_SUBLIST_SCB
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pcm_serial_input_task
-)paren
-r_goto
-id|_fail_end
-suffix:semicolon
-macro_line|#if 0  /* asynch. receive task */
-id|asynch_rx_scb
+id|ins-&gt;record_mixer_scb
 op_assign
-id|cs46xx_dsp_create_asynch_fg_rx_scb
-c_func
-(paren
-id|chip
-comma
-l_string|&quot;AsynchFGRxSCB&quot;
-comma
-id|ASYNCRX_SCB_ADDR
-comma
-id|SPDIFI_SCB_INST
-comma
-id|SPDIFI_IP_OUTPUT_BUFFER1
-comma
-id|master_mix_scb
-comma
-id|SCB_ON_PARENT_NEXT_SCB
-)paren
+id|record_mix_scb
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|asynch_rx_scb
+id|record_mix_scb
 )paren
 r_goto
 id|_fail_end
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* create secondary CODEC output */
 id|sec_codec_out_scb
 op_assign
@@ -6849,6 +6772,10 @@ id|magic_snoop_scb
 )paren
 r_goto
 id|_fail_end
+suffix:semicolon
+id|ins-&gt;ref_snoop_scb
+op_assign
+id|magic_snoop_scb
 suffix:semicolon
 multiline_comment|/* The asynch. transfer task */
 id|asynch_tx_scb
@@ -6931,22 +6858,22 @@ r_goto
 id|_fail_end
 suffix:semicolon
 multiline_comment|/* the magic snooper */
-macro_line|#if 0
-id|sec_magic_snoop_scb
+id|src_task_scb
 op_assign
-id|cs46xx_dsp_create_magic_snoop_scb
+id|cs46xx_dsp_create_src_task_scb
+c_func
 (paren
 id|chip
 comma
-l_string|&quot;MagicSnoopSCB_II&quot;
+l_string|&quot;SrcTaskSCB_SPDIFI&quot;
 comma
-id|OUTPUTSNOOPII_SCB_ADDR
+id|SRC_OUTPUT_BUF1
 comma
-id|MIX_SAMPLE_BUF1
+id|SRC_DELAY_BUF1
+comma
+id|SRCTASK_SCB_ADDR
 comma
 id|master_mix_scb
-comma
-id|asynch_tx_scb
 comma
 id|SCB_ON_PARENT_SUBLIST_SCB
 )paren
@@ -6955,13 +6882,16 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sec_magic_scb
+id|src_task_scb
 )paren
 r_goto
 id|_fail_end
 suffix:semicolon
-macro_line|#endif
-singleline_comment|//debug_scb = 0;
+multiline_comment|/* NOTE: when we now how to detect the SPDIF input&n;&t;   sample rate we will use this SRC to adjust it */
+id|ins-&gt;spdif_in_src
+op_assign
+id|src_task_scb
+suffix:semicolon
 id|cs46xx_dsp_async_init
 c_func
 (paren
@@ -7137,23 +7067,22 @@ comma
 multiline_comment|/* 1 */
 l_int|0xb0
 comma
-singleline_comment|//DSP_SPOS_UUUU,
 multiline_comment|/* 2 */
 l_int|0
 comma
-singleline_comment|//DSP_SPOS_UUUU,
 multiline_comment|/* 3 */
 l_int|0
 comma
-singleline_comment|//DSP_SPOS_UUUU, 
 multiline_comment|/* 4 */
 l_int|0
 comma
-singleline_comment|//DSP_SPOS_UUUU,
 )brace
 comma
+multiline_comment|/* NOTE: the SPDIF output task read samples in mono&n;&t;&t;&t;   format, the AsynchFGTxSCB task writes to buffer&n;&t;&t;&t;   in stereo format&n;&t;&t;&t;*/
 multiline_comment|/* 5 */
-l_int|0x00000085
+id|RSCONFIG_SAMPLE_16MONO
+op_plus
+id|RSCONFIG_MODULO_256
 comma
 multiline_comment|/* 6 */
 (paren
@@ -7169,11 +7098,9 @@ l_int|0
 comma
 l_int|0
 comma
-singleline_comment|// DSP_SPOS_UU,1, //DSP_SPOS_DC,DSP_SPOS_UU, 
 multiline_comment|/* 8 */
 l_int|0
 comma
-singleline_comment|//DSP_SPOS_UUUU,      
 multiline_comment|/* 9 */
 id|FG_TASK_HEADER_ADDR
 comma
@@ -7266,8 +7193,11 @@ id|SPDIFI_SCB_INST
 op_plus
 id|SPDIFIFIFOPointer
 comma
+multiline_comment|/* NOTE: The SPDIF input task write the sample in mono&n;&t;&t;&t;   format from the HW FIFO, the AsynchFGRxSCB task  reads &n;&t;&t;&t;   them in stereo &n;&t;&t;&t;*/
 multiline_comment|/* B */
-l_int|0x00000083
+id|RSCONFIG_SAMPLE_16MONO
+op_plus
+id|RSCONFIG_MODULO_128
 comma
 multiline_comment|/* C */
 (paren
@@ -7317,7 +7247,9 @@ comma
 l_int|0x0001
 comma
 multiline_comment|/* 5 */
-l_int|0x00000083
+id|RSCONFIG_SAMPLE_16MONO
+op_plus
+id|RSCONFIG_MODULO_64
 comma
 multiline_comment|/* 6 */
 (paren
@@ -7536,8 +7468,17 @@ id|fg_entry-&gt;parent_scb_ptr
 op_assign
 id|spdifo_scb_desc
 suffix:semicolon
-multiline_comment|/* dirty hack to start forground task ... */
-singleline_comment|//snd_cs46xx_poke(chip,DSP_PARAMETER_BYTE_OFFSET  + 0x070 * sizeof(u32),0x066a0ba0);
+multiline_comment|/* Async MASTER ENABLE, affects both SPDIF input and output */
+id|snd_cs46xx_pokeBA0
+c_func
+(paren
+id|chip
+comma
+id|BA0_ASER_MASTER
+comma
+l_int|0x1
+)paren
+suffix:semicolon
 )brace
 r_return
 l_int|0
@@ -7567,7 +7508,7 @@ comma
 id|BA0_ASER_FADDR
 comma
 (paren
-l_int|0x8100
+l_int|0x8000
 op_or
 (paren
 (paren
@@ -7581,79 +7522,6 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Async MASTER ENABLE */
-id|snd_cs46xx_pokeBA0
-c_func
-(paren
-id|chip
-comma
-id|BA0_ASER_MASTER
-comma
-l_int|0x1
-)paren
-suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* reset buffers */
-id|snd_cs46xx_poke
-(paren
-id|chip
-comma
-(paren
-id|SPDIFO_SCB_INST
-op_plus
-l_int|6
-)paren
-op_lshift
-l_int|2
-comma
-(paren
-id|SPDIFO_IP_OUTPUT_BUFFER1
-op_lshift
-l_int|0x10
-)paren
-op_or
-l_int|0xFFFC
-)paren
-suffix:semicolon
-id|snd_cs46xx_poke
-(paren
-id|chip
-comma
-(paren
-id|ASYNCTX_SCB_ADDR
-op_plus
-l_int|12
-)paren
-op_lshift
-l_int|2
-comma
-(paren
-id|SPDIFO_IP_OUTPUT_BUFFER1
-)paren
-op_lshift
-l_int|0x10
-)paren
-suffix:semicolon
-multiline_comment|/* insert the foreground asynch tranfer task */
-id|snd_cs46xx_poke
-(paren
-id|chip
-comma
-(paren
-id|MASTERMIX_SCB_ADDR
-op_plus
-l_int|9
-)paren
-op_lshift
-l_int|2
-comma
-id|ASYNCTX_SCB_ADDR
-op_lshift
-l_int|0x10
-multiline_comment|/*| ASYNCRX_SCB_ADDR*/
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* SPDIF output MASTER ENABLE */
 id|cs46xx_poke_via_dsp
 (paren
@@ -7710,36 +7578,15 @@ id|ins
 op_assign
 id|chip-&gt;dsp_spos_instance
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* unlink the foreground asynch tranfer task */
-id|snd_cs46xx_poke
-(paren
-id|chip
-comma
-(paren
-id|MASTERMIX_SCB_ADDR
-op_plus
-l_int|9
-)paren
-op_lshift
-l_int|2
-comma
-id|SRCTASK_SCB_ADDR
-op_lshift
-l_int|0x10
-multiline_comment|/* | ASYNCRX_SCB_ADDR*/
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Async MASTER DISABLE */
+multiline_comment|/* disable  SPDIF output FIFO slot */
 id|snd_cs46xx_pokeBA0
 c_func
 (paren
 id|chip
 comma
-id|BA0_ASER_MASTER
+id|BA0_ASER_FADDR
 comma
-l_int|0x0
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* SPDIF output MASTER DISABLE */
@@ -7776,18 +7623,114 @@ id|ins
 op_assign
 id|chip-&gt;dsp_spos_instance
 suffix:semicolon
-multiline_comment|/* Async MASTER ENABLE */
-id|snd_cs46xx_pokeBA0
+multiline_comment|/* turn on amplifier */
+id|chip
+op_member_access_from_pointer
+id|active_ctrl
 c_func
 (paren
 id|chip
 comma
-id|BA0_ASER_MASTER
-comma
-l_int|0x1
+l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Time countdown enable */
+id|chip
+op_member_access_from_pointer
+id|amplifier_ctrl
+c_func
+(paren
+id|chip
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* set SPDIF input sample rate &n;&t;   NOTE: only 48khz support for SPDIF input this time */
+id|cs46xx_dsp_set_src_sample_rate
+c_func
+(paren
+id|chip
+comma
+id|ins-&gt;spdif_in_src
+comma
+l_int|48000
+)paren
+suffix:semicolon
+id|snd_assert
+(paren
+id|ins-&gt;asynch_rx_scb
+op_eq
+l_int|NULL
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+id|snd_assert
+(paren
+id|ins-&gt;spdif_in_src
+op_ne
+l_int|NULL
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+multiline_comment|/* create and start the asynchronous receiver SCB */
+id|ins-&gt;asynch_rx_scb
+op_assign
+id|cs46xx_dsp_create_asynch_fg_rx_scb
+c_func
+(paren
+id|chip
+comma
+l_string|&quot;AsynchFGRxSCB&quot;
+comma
+id|ASYNCRX_SCB_ADDR
+comma
+id|SPDIFI_SCB_INST
+comma
+id|SPDIFI_IP_OUTPUT_BUFFER1
+comma
+id|ins-&gt;spdif_in_src
+comma
+id|SCB_ON_PARENT_SUBLIST_SCB
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ins-&gt;asynch_rx_scb
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* reset SPDIF input sample buffer pointer */
+id|snd_cs46xx_poke
+(paren
+id|chip
+comma
+(paren
+id|SPDIFI_SCB_INST
+op_plus
+l_int|0x0c
+)paren
+op_lshift
+l_int|2
+comma
+(paren
+id|SPDIFI_IP_OUTPUT_BUFFER1
+op_lshift
+l_int|0x10
+)paren
+op_or
+l_int|0xFFFC
+)paren
+suffix:semicolon
+multiline_comment|/* time countdown enable */
 id|cs46xx_poke_via_dsp
 (paren
 id|chip
@@ -7795,6 +7738,16 @@ comma
 id|SP_ASER_COUNTDOWN
 comma
 l_int|0x80000000
+)paren
+suffix:semicolon
+multiline_comment|/* reset FIFO ptr */
+id|cs46xx_poke_via_dsp
+(paren
+id|chip
+comma
+id|SP_SPDIN_FIFOPTR
+comma
+l_int|0x0
 )paren
 suffix:semicolon
 multiline_comment|/* SPDIF input MASTER ENABLE */
@@ -7831,6 +7784,27 @@ id|ins
 op_assign
 id|chip-&gt;dsp_spos_instance
 suffix:semicolon
+id|snd_assert
+(paren
+id|ins-&gt;asynch_rx_scb
+op_ne
+l_int|NULL
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+multiline_comment|/* Time countdown disable */
+id|cs46xx_poke_via_dsp
+(paren
+id|chip
+comma
+id|SP_ASER_COUNTDOWN
+comma
+l_int|0x00000000
+)paren
+suffix:semicolon
 multiline_comment|/* SPDIF input MASTER DISABLE */
 id|cs46xx_poke_via_dsp
 (paren
@@ -7841,10 +7815,237 @@ comma
 l_int|0x000003ff
 )paren
 suffix:semicolon
+multiline_comment|/* Remove the asynchronous receiver SCB */
+id|cs46xx_dsp_remove_scb
+(paren
+id|chip
+comma
+id|ins-&gt;asynch_rx_scb
+)paren
+suffix:semicolon
+id|ins-&gt;asynch_rx_scb
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/* monitor state */
 id|ins-&gt;spdif_status_in
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* restore amplifier */
+id|chip
+op_member_access_from_pointer
+id|active_ctrl
+c_func
+(paren
+id|chip
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|chip
+op_member_access_from_pointer
+id|amplifier_ctrl
+c_func
+(paren
+id|chip
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|cs46xx_dsp_enable_pcm_capture
+r_int
+id|cs46xx_dsp_enable_pcm_capture
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+(brace
+id|dsp_spos_instance_t
+op_star
+id|ins
+op_assign
+id|chip-&gt;dsp_spos_instance
+suffix:semicolon
+id|snd_assert
+(paren
+id|ins-&gt;pcm_input
+op_eq
+l_int|NULL
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+id|snd_assert
+(paren
+id|ins-&gt;ref_snoop_scb
+op_ne
+l_int|NULL
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+id|ins-&gt;pcm_input
+op_assign
+id|cs46xx_add_record_source
+c_func
+(paren
+id|chip
+comma
+id|ins-&gt;ref_snoop_scb
+comma
+id|PCMSERIALIN_PCM_SCB_ADDR
+comma
+l_string|&quot;PCMSerialInput_Wave&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|cs46xx_dsp_disable_pcm_capture
+r_int
+id|cs46xx_dsp_disable_pcm_capture
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+(brace
+id|dsp_spos_instance_t
+op_star
+id|ins
+op_assign
+id|chip-&gt;dsp_spos_instance
+suffix:semicolon
+id|snd_assert
+(paren
+id|ins-&gt;pcm_input
+op_ne
+l_int|NULL
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+id|cs46xx_dsp_remove_scb
+(paren
+id|chip
+comma
+id|ins-&gt;pcm_input
+)paren
+suffix:semicolon
+id|ins-&gt;pcm_input
+op_assign
+l_int|NULL
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|cs46xx_dsp_enable_adc_capture
+r_int
+id|cs46xx_dsp_enable_adc_capture
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+(brace
+id|dsp_spos_instance_t
+op_star
+id|ins
+op_assign
+id|chip-&gt;dsp_spos_instance
+suffix:semicolon
+id|snd_assert
+(paren
+id|ins-&gt;adc_input
+op_eq
+l_int|NULL
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+id|snd_assert
+(paren
+id|ins-&gt;codec_in_scb
+op_ne
+l_int|NULL
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+id|ins-&gt;adc_input
+op_assign
+id|cs46xx_add_record_source
+c_func
+(paren
+id|chip
+comma
+id|ins-&gt;codec_in_scb
+comma
+id|PCMSERIALIN_SCB_ADDR
+comma
+l_string|&quot;PCMSerialInput_ADC&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|cs46xx_dsp_disable_adc_capture
+r_int
+id|cs46xx_dsp_disable_adc_capture
+(paren
+id|cs46xx_t
+op_star
+id|chip
+)paren
+(brace
+id|dsp_spos_instance_t
+op_star
+id|ins
+op_assign
+id|chip-&gt;dsp_spos_instance
+suffix:semicolon
+id|snd_assert
+(paren
+id|ins-&gt;adc_input
+op_ne
+l_int|NULL
+comma
+r_return
+op_minus
+id|EINVAL
+)paren
+suffix:semicolon
+id|cs46xx_dsp_remove_scb
+(paren
+id|chip
+comma
+id|ins-&gt;adc_input
+)paren
+suffix:semicolon
+id|ins-&gt;adc_input
+op_assign
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
