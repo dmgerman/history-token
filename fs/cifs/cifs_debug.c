@@ -1598,7 +1598,7 @@ op_assign
 id|create_proc_read_entry
 c_func
 (paren
-l_string|&quot;NewReaddirEnabled&quot;
+l_string|&quot;ReenableOldCifsReaddirCode&quot;
 comma
 l_int|0
 comma
