@@ -103,6 +103,7 @@ suffix:semicolon
 DECL|macro|SWSUSP_SIG
 mdefine_line|#define SWSUSP_SIG&t;&quot;S1SUSPEND&quot;
 DECL|struct|swsusp_header
+r_static
 r_struct
 id|swsusp_header
 (brace
@@ -156,6 +157,7 @@ id|PAGE_SIZE
 id|swsusp_header
 suffix:semicolon
 DECL|variable|swsusp_info
+r_static
 r_struct
 id|swsusp_info
 id|swsusp_info
@@ -375,6 +377,7 @@ id|inode
 suffix:semicolon
 )brace
 DECL|function|swsusp_swap_check
+r_static
 r_int
 id|swsusp_swap_check
 c_func
