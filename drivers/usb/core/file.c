@@ -203,12 +203,14 @@ id|file_operations
 id|usb_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|open
-suffix:colon
+op_assign
 id|usb_open
 comma
 )brace

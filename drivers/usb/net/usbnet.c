@@ -405,14 +405,16 @@ id|driver_info
 id|an2720_info
 op_assign
 (brace
+dot
 id|description
-suffix:colon
+op_assign
 l_string|&quot;AnchorChips/Cypress 2720&quot;
 comma
 singleline_comment|// no reset available!
 singleline_comment|// no check_connect available!
+dot
 id|in
-suffix:colon
+op_assign
 l_int|2
 comma
 id|out
@@ -420,8 +422,9 @@ suffix:colon
 l_int|2
 comma
 singleline_comment|// direction distinguishes these
+dot
 id|epsize
-suffix:colon
+op_assign
 l_int|64
 comma
 )brace
@@ -438,12 +441,14 @@ id|driver_info
 id|belkin_info
 op_assign
 (brace
+dot
 id|description
-suffix:colon
+op_assign
 l_string|&quot;Belkin, eTEK, or compatible&quot;
 comma
+dot
 id|in
-suffix:colon
+op_assign
 l_int|1
 comma
 id|out
@@ -451,8 +456,9 @@ suffix:colon
 l_int|1
 comma
 singleline_comment|// direction distinguishes these
+dot
 id|epsize
-suffix:colon
+op_assign
 l_int|64
 comma
 )brace
@@ -1494,43 +1500,51 @@ id|driver_info
 id|genelink_info
 op_assign
 (brace
+dot
 id|description
-suffix:colon
+op_assign
 l_string|&quot;Genesys GeneLink&quot;
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|FLAG_FRAMING_GL
 op_or
 id|FLAG_NO_SETINT
 comma
+dot
 id|reset
-suffix:colon
+op_assign
 id|genelink_reset
 comma
+dot
 id|rx_fixup
-suffix:colon
+op_assign
 id|genelink_rx_fixup
 comma
+dot
 id|tx_fixup
-suffix:colon
+op_assign
 id|genelink_tx_fixup
 comma
+dot
 id|in
-suffix:colon
+op_assign
 l_int|1
 comma
 id|out
 suffix:colon
 l_int|2
 comma
+dot
 id|epsize
-suffix:colon
+op_assign
 l_int|64
 comma
 macro_line|#ifdef&t;GENELINK_ACK
+dot
 id|check_connect
-suffix:colon
+op_assign
 id|genelink_check_connect
 comma
 macro_line|#endif
@@ -1564,25 +1578,29 @@ id|driver_info
 id|linuxdev_info
 op_assign
 (brace
+dot
 id|description
-suffix:colon
+op_assign
 l_string|&quot;Linux Device&quot;
 comma
 singleline_comment|// no reset defined (yet?)
+dot
 id|check_connect
-suffix:colon
+op_assign
 id|linuxdev_check_connect
 comma
+dot
 id|in
-suffix:colon
+op_assign
 l_int|2
 comma
 id|out
 suffix:colon
 l_int|1
 comma
+dot
 id|epsize
-suffix:colon
+op_assign
 l_int|64
 comma
 )brace
@@ -3235,32 +3253,39 @@ id|driver_info
 id|net1080_info
 op_assign
 (brace
+dot
 id|description
-suffix:colon
+op_assign
 l_string|&quot;NetChip TurboCONNECT&quot;
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|FLAG_FRAMING_NC
 comma
+dot
 id|reset
-suffix:colon
+op_assign
 id|net1080_reset
 comma
+dot
 id|check_connect
-suffix:colon
+op_assign
 id|net1080_check_connect
 comma
+dot
 id|rx_fixup
-suffix:colon
+op_assign
 id|net1080_rx_fixup
 comma
+dot
 id|tx_fixup
-suffix:colon
+op_assign
 id|net1080_tx_fixup
 comma
+dot
 id|in
-suffix:colon
+op_assign
 l_int|1
 comma
 id|out
@@ -3268,8 +3293,9 @@ suffix:colon
 l_int|1
 comma
 singleline_comment|// direction distinguishes these
+dot
 id|epsize
-suffix:colon
+op_assign
 l_int|64
 comma
 )brace
@@ -3444,29 +3470,34 @@ id|driver_info
 id|prolific_info
 op_assign
 (brace
+dot
 id|description
-suffix:colon
+op_assign
 l_string|&quot;Prolific PL-2301/PL-2302&quot;
 comma
+dot
 id|flags
-suffix:colon
+op_assign
 id|FLAG_NO_SETINT
 comma
 multiline_comment|/* some PL-2302 versions seem to fail usb_set_interface() */
+dot
 id|reset
-suffix:colon
+op_assign
 id|pl_reset
 comma
+dot
 id|in
-suffix:colon
+op_assign
 l_int|3
 comma
 id|out
 suffix:colon
 l_int|2
 comma
+dot
 id|epsize
-suffix:colon
+op_assign
 l_int|64
 comma
 )brace
@@ -6939,8 +6970,9 @@ l_int|0x2720
 )paren
 comma
 singleline_comment|// AnchorChips defaults
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -6959,8 +6991,9 @@ l_int|0x2727
 )paren
 comma
 singleline_comment|// Xircom PGUNET
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -6981,8 +7014,9 @@ l_int|0x0004
 )paren
 comma
 singleline_comment|// Belkin
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -7001,8 +7035,9 @@ l_int|0x8100
 )paren
 comma
 singleline_comment|// eTEK
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -7021,8 +7056,9 @@ l_int|0x9901
 )paren
 comma
 singleline_comment|// Advance USBNET (eTEK)
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -7043,8 +7079,9 @@ l_int|0x0502
 )paren
 comma
 singleline_comment|// GL620USB-A
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -7067,8 +7104,9 @@ l_int|0x505A
 )paren
 comma
 singleline_comment|// Compaq &quot;Itsy&quot;
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -7089,8 +7127,9 @@ l_int|0x1080
 )paren
 comma
 singleline_comment|// NetChip ref design
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -7109,8 +7148,9 @@ l_int|0x0622
 )paren
 comma
 singleline_comment|// Laplink Gold
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -7131,8 +7171,9 @@ l_int|0x0000
 )paren
 comma
 singleline_comment|// PL-2301
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -7151,8 +7192,9 @@ l_int|0x0001
 )paren
 comma
 singleline_comment|// PL-2302
+dot
 id|driver_info
-suffix:colon
+op_assign
 (paren
 r_int
 r_int
@@ -7184,20 +7226,24 @@ id|usb_driver
 id|usbnet_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 id|driver_name
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|products
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|usbnet_probe
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|usbnet_disconnect
 comma
 )brace

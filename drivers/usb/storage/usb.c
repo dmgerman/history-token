@@ -362,7 +362,7 @@ multiline_comment|/* The vendor name should be kept at eight characters or less,
 DECL|macro|UNUSUAL_DEV
 macro_line|#undef UNUSUAL_DEV
 DECL|macro|UNUSUAL_DEV
-mdefine_line|#define UNUSUAL_DEV(idVendor, idProduct, bcdDeviceMin, bcdDeviceMax, &bslash;&n;&t;&t;    vendor_name, product_name, use_protocol, use_transport, &bslash;&n;&t;&t;    init_function, Flags) &bslash;&n;{ &bslash;&n;&t;vendorName: vendor_name,&t;&bslash;&n;&t;productName: product_name,&t;&bslash;&n;&t;useProtocol: use_protocol,&t;&bslash;&n;&t;useTransport: use_transport,&t;&bslash;&n;&t;initFunction : init_function,&t;&bslash;&n;&t;flags: Flags, &bslash;&n;}
+mdefine_line|#define UNUSUAL_DEV(idVendor, idProduct, bcdDeviceMin, bcdDeviceMax, &bslash;&n;&t;&t;    vendor_name, product_name, use_protocol, use_transport, &bslash;&n;&t;&t;    init_function, Flags) &bslash;&n;{ &bslash;&n;&t;.vendorName = vendor_name,&t;&bslash;&n;&t;.productName = product_name,&t;&bslash;&n;&t;.useProtocol = use_protocol,&t;&bslash;&n;&t;.useTransport = use_transport,&t;&bslash;&n;&t;initFunction : init_function,&t;&bslash;&n;&t;.flags = Flags, &bslash;&n;}
 DECL|variable|us_unusual_dev_list
 r_static
 r_struct
@@ -570,20 +570,24 @@ id|usb_driver
 id|usb_storage_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;usb-storage&quot;
 comma
+dot
 id|probe
-suffix:colon
+op_assign
 id|storage_probe
 comma
+dot
 id|disconnect
-suffix:colon
+op_assign
 id|storage_disconnect
 comma
+dot
 id|id_table
-suffix:colon
+op_assign
 id|storage_usb_ids
 comma
 )brace

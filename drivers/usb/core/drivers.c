@@ -448,12 +448,14 @@ id|file_operations
 id|usbdevfs_drivers_fops
 op_assign
 (brace
+dot
 id|llseek
-suffix:colon
+op_assign
 id|usb_driver_lseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|usb_driver_read
 comma
 )brace
