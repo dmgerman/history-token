@@ -1242,7 +1242,7 @@ id|serverworks_private.svrwrks_dev
 comma
 id|agp_bridge.capndx
 op_plus
-l_int|4
+id|PCI_AGP_STATUS
 comma
 op_amp
 id|agp_bridge.mode
@@ -1949,7 +1949,7 @@ id|serverworks_private.svrwrks_dev
 comma
 id|agp_bridge.capndx
 op_plus
-l_int|4
+id|PCI_AGP_STATUS
 comma
 op_amp
 id|command
@@ -1987,7 +1987,7 @@ id|serverworks_private.svrwrks_dev
 comma
 id|agp_bridge.capndx
 op_plus
-l_int|8
+id|PCI_AGP_COMMAND
 comma
 id|command
 )paren
