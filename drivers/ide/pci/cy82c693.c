@@ -209,7 +209,6 @@ id|u8
 id|clk1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/*&n; * set DMA mode a specific channel for CY82C693&n; */
 DECL|function|cy82c693_dma_enable
 r_static
@@ -588,7 +587,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; * tune ide drive - set PIO mode&n; */
 DECL|function|cy82c693_tune_drive
 r_static
@@ -1221,7 +1219,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x04
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;ide_dma_on
 op_assign
 op_amp
@@ -1255,7 +1252,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|variable|primary
 r_static
