@@ -495,6 +495,8 @@ op_assign
 id|UART_CAP_FIFO
 op_or
 id|UART_CAP_SLEEP
+op_or
+id|UART_CAP_AFE
 comma
 )brace
 comma
@@ -6534,13 +6536,17 @@ dot
 id|fcr
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * TI16C750: hardware flow control and 64 byte FIFOs. When AFE is&n;&t; * enabled, RTS will be deasserted when the receive FIFO contains&n;&t; * more characters than the trigger, or the MCR RTS bit is cleared.&n;&t; */
+multiline_comment|/*&n;&t; * MCR-based auto flow control.  When AFE is enabled, RTS will be&n;&t; * deasserted when the receive FIFO contains more characters than&n;&t; * the trigger, or the MCR RTS bit is cleared.  In the case where&n;&t; * the remote UART is not using CTS auto flow control, we must&n;&t; * have sufficient FIFO entries for the latency of the remote&n;&t; * UART to respond.  IOW, at least 32 bytes of FIFO.&n;&t; */
 r_if
 c_cond
 (paren
-id|up-&gt;port.type
-op_eq
-id|PORT_16750
+id|up-&gt;capabilities
+op_amp
+id|UART_CAP_AFE
+op_logical_and
+id|up-&gt;port.fifosize
+op_ge
+l_int|32
 )paren
 (brace
 id|up-&gt;mcr
