@@ -190,6 +190,34 @@ l_string|&quot;a Fabric scan.  This is needed for several broken switches.&quot;
 l_string|&quot;Default is 0 - no PLOGI. 1 - perfom PLOGI.&quot;
 )paren
 suffix:semicolon
+DECL|variable|ql2xenablezio
+r_int
+id|ql2xenablezio
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|ql2xenablezio
+comma
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IRUSR
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ql2xenablezio
+comma
+l_string|&quot;Option to enable ZIO:If 1 then enable it otherwise&quot;
+l_string|&quot; use the default set in the NVRAM.&quot;
+l_string|&quot; Default is 0 : disabled&quot;
+)paren
+suffix:semicolon
 DECL|variable|ql2xintrdelaytimer
 r_int
 id|ql2xintrdelaytimer

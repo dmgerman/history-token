@@ -209,6 +209,10 @@ id|ql2xplogiabsentdevice
 suffix:semicolon
 r_extern
 r_int
+id|ql2xenablezio
+suffix:semicolon
+r_extern
+r_int
 id|ql2xintrdelaytimer
 suffix:semicolon
 r_extern
