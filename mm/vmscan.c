@@ -3160,6 +3160,12 @@ r_if
 c_cond
 (paren
 id|total_scanned
+op_logical_and
+id|priority
+OL
+id|DEF_PRIORITY
+op_minus
+l_int|2
 )paren
 id|blk_congestion_wait
 c_func
@@ -3575,6 +3581,12 @@ r_if
 c_cond
 (paren
 id|pages_scanned
+op_logical_and
+id|priority
+OL
+id|DEF_PRIORITY
+op_minus
+l_int|2
 )paren
 id|blk_congestion_wait
 c_func
