@@ -192,6 +192,16 @@ DECL|macro|cr_specdata1
 mdefine_line|#define cr_specdata1&t;u.dev.specdata1
 DECL|macro|cr_specdata2
 mdefine_line|#define cr_specdata2&t;u.dev.specdata2
+DECL|struct|nfsd4_delegreturn
+r_struct
+id|nfsd4_delegreturn
+(brace
+DECL|member|dr_stateid
+id|stateid_t
+id|dr_stateid
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|nfsd4_getattr
 r_struct
 id|nfsd4_getattr
@@ -1109,6 +1119,11 @@ r_struct
 id|nfsd4_create
 id|create
 suffix:semicolon
+DECL|member|delegreturn
+r_struct
+id|nfsd4_delegreturn
+id|delegreturn
+suffix:semicolon
 DECL|member|getattr
 r_struct
 id|nfsd4_getattr
@@ -1774,6 +1789,27 @@ c_func
 r_struct
 id|nfsd4_compoundargs
 op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|nfsd4_delegreturn
+c_func
+(paren
+r_struct
+id|svc_rqst
+op_star
+id|rqstp
+comma
+r_struct
+id|svc_fh
+op_star
+id|current_fh
+comma
+r_struct
+id|nfsd4_delegreturn
+op_star
+id|dr
 )paren
 suffix:semicolon
 macro_line|#endif
