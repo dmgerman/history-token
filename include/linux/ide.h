@@ -1132,13 +1132,6 @@ op_star
 id|id
 suffix:semicolon
 multiline_comment|/* drive model identification info */
-DECL|member|part
-r_struct
-id|hd_struct
-op_star
-id|part
-suffix:semicolon
-multiline_comment|/* drive partition table */
 DECL|member|name
 r_char
 id|name

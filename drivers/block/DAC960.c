@@ -7657,16 +7657,6 @@ comma
 id|n
 )paren
 suffix:semicolon
-id|disk-&gt;part
-op_assign
-id|Controller-&gt;DiskPartitions
-op_plus
-(paren
-id|n
-op_lshift
-id|DAC960_MaxPartitionsBits
-)paren
-suffix:semicolon
 id|disk-&gt;major
 op_assign
 id|MajorNumber

@@ -181,15 +181,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * these have to be allocated separately because external&n; * subsystems want to have a pre-defined structure&n; */
-DECL|variable|md_hd_struct
-r_struct
-id|hd_struct
-id|md_hd_struct
-(braket
-id|MAX_MD_DEVS
-)braket
-suffix:semicolon
 r_static
 r_void
 id|md_recover_arrays
@@ -5726,16 +5717,6 @@ suffix:semicolon
 id|disk-&gt;major_name
 op_assign
 id|major_name
-suffix:semicolon
-id|disk-&gt;part
-op_assign
-id|md_hd_struct
-op_plus
-id|mdidx
-c_func
-(paren
-id|mddev
-)paren
 suffix:semicolon
 id|disk-&gt;fops
 op_assign
@@ -13032,7 +13013,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* we don&squot;t use devfs_register_series because we want to fill md_hd_struct */
 r_for
 c_loop
 (paren
@@ -13063,13 +13043,6 @@ comma
 id|minor
 )paren
 suffix:semicolon
-id|md_hd_struct
-(braket
-id|minor
-)braket
-dot
-id|de
-op_assign
 id|devfs_register
 (paren
 id|devfs_handle

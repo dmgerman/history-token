@@ -60,16 +60,6 @@ op_star
 l_int|8
 )braket
 suffix:semicolon
-DECL|member|part
-r_struct
-id|hd_struct
-id|part
-(braket
-l_int|1
-op_lshift
-id|MINORBITS
-)braket
-suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Returns the queue corresponding to a device behind a kdev.&n; */
@@ -350,16 +340,6 @@ suffix:semicolon
 id|disk-&gt;flags
 op_assign
 id|GENHD_FL_DEVFS
-suffix:semicolon
-id|disk-&gt;part
-op_assign
-id|mi-&gt;part
-op_plus
-(paren
-id|i
-op_lshift
-id|DASD_PARTN_BITS
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Setup block device pointers for the new major. */

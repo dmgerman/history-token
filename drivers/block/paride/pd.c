@@ -676,15 +676,6 @@ r_int
 id|unit
 )paren
 suffix:semicolon
-DECL|variable|pd_hd
-r_static
-r_struct
-id|hd_struct
-id|pd_hd
-(braket
-id|PD_DEVS
-)braket
-suffix:semicolon
 DECL|macro|PD_NAMELEN
 mdefine_line|#define PD_NAMELEN&t;8
 DECL|struct|pd_unit
@@ -3263,16 +3254,6 @@ op_assign
 id|unit
 op_lshift
 id|PD_BITS
-suffix:semicolon
-id|PD.gd.part
-op_assign
-id|pd_hd
-op_plus
-(paren
-id|unit
-op_lshift
-id|PD_BITS
-)paren
 suffix:semicolon
 id|add_gendisk
 c_func

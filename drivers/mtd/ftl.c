@@ -264,23 +264,6 @@ DECL|macro|XFER_PREPARED
 mdefine_line|#define XFER_PREPARED&t;0x03
 DECL|macro|XFER_FAILED
 mdefine_line|#define XFER_FAILED&t;0x04
-DECL|variable|ftl_hd
-r_static
-r_struct
-id|hd_struct
-id|ftl_hd
-(braket
-id|MINOR_NR
-c_func
-(paren
-id|MAX_DEV
-comma
-l_int|0
-comma
-l_int|0
-)paren
-)braket
-suffix:semicolon
 multiline_comment|/*====================================================================*/
 r_static
 r_int
@@ -5390,16 +5373,6 @@ suffix:semicolon
 id|disk-&gt;minor_shift
 op_assign
 id|PART_BITS
-suffix:semicolon
-id|disk-&gt;part
-op_assign
-id|ftl_hd
-op_plus
-(paren
-id|device
-op_lshift
-l_int|4
-)paren
 suffix:semicolon
 id|disk-&gt;fops
 op_assign

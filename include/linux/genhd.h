@@ -261,15 +261,9 @@ id|block_device_operations
 op_star
 id|fops
 suffix:semicolon
-DECL|member|de
-id|devfs_handle_t
-id|de
-suffix:semicolon
-DECL|member|driverfs_dev
-r_struct
-id|device
-op_star
-id|driverfs_dev
+DECL|member|capacity
+id|sector_t
+id|capacity
 suffix:semicolon
 DECL|member|flags
 r_int
@@ -280,6 +274,27 @@ r_int
 id|number
 suffix:semicolon
 multiline_comment|/* devfs crap */
+DECL|member|de
+id|devfs_handle_t
+id|de
+suffix:semicolon
+multiline_comment|/* more of the same */
+DECL|member|disk_de
+id|devfs_handle_t
+id|disk_de
+suffix:semicolon
+multiline_comment|/* piled higher and deeper */
+DECL|member|driverfs_dev
+r_struct
+id|device
+op_star
+id|driverfs_dev
+suffix:semicolon
+DECL|member|disk_dev
+r_struct
+id|device
+id|disk_dev
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* drivers/block/genhd.c */
@@ -359,12 +374,7 @@ id|disk
 )paren
 (brace
 r_return
-id|disk-&gt;part
-(braket
-l_int|0
-)braket
-dot
-id|nr_sects
+id|disk-&gt;capacity
 suffix:semicolon
 )brace
 DECL|function|set_capacity
@@ -383,12 +393,7 @@ id|sector_t
 id|size
 )paren
 (brace
-id|disk-&gt;part
-(braket
-l_int|0
-)braket
-dot
-id|nr_sects
+id|disk-&gt;capacity
 op_assign
 id|size
 suffix:semicolon

@@ -174,17 +174,6 @@ id|MFM_MAXDRIVES
 suffix:semicolon
 DECL|macro|MFM_DRV_INFO
 mdefine_line|#define MFM_DRV_INFO mfm_info[raw_cmd.dev]
-DECL|variable|mfm
-r_static
-r_struct
-id|hd_struct
-id|mfm
-(braket
-id|MFM_MAXDRIVES
-op_lshift
-l_int|6
-)braket
-suffix:semicolon
 multiline_comment|/* Stuff from the assembly routines */
 r_extern
 r_int
@@ -3332,11 +3321,6 @@ id|minor_shift
 op_assign
 l_int|6
 comma
-dot
-id|part
-op_assign
-id|mfm
-comma
 )brace
 comma
 (brace
@@ -3359,13 +3343,6 @@ dot
 id|minor_shift
 op_assign
 l_int|6
-comma
-dot
-id|part
-op_assign
-id|mfm
-op_plus
-l_int|64
 comma
 )brace
 suffix:semicolon

@@ -161,6 +161,8 @@ c_cond
 id|g-&gt;part
 (braket
 id|p-&gt;pno
+op_minus
+l_int|1
 )braket
 dot
 id|nr_sects
@@ -177,7 +179,7 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|i
 OL
@@ -186,6 +188,8 @@ l_int|1
 op_lshift
 id|g-&gt;minor_shift
 )paren
+op_minus
+l_int|1
 suffix:semicolon
 id|i
 op_increment
@@ -231,6 +235,8 @@ multiline_comment|/* all seems OK */
 id|g-&gt;part
 (braket
 id|p-&gt;pno
+op_minus
+l_int|1
 )braket
 dot
 id|start_sect
@@ -240,6 +246,8 @@ suffix:semicolon
 id|g-&gt;part
 (braket
 id|p-&gt;pno
+op_minus
+l_int|1
 )braket
 dot
 id|nr_sects
@@ -353,6 +361,8 @@ c_cond
 id|g-&gt;part
 (braket
 id|p-&gt;pno
+op_minus
+l_int|1
 )braket
 dot
 id|nr_sects
@@ -442,6 +452,8 @@ suffix:semicolon
 id|g-&gt;part
 (braket
 id|p-&gt;pno
+op_minus
+l_int|1
 )braket
 dot
 id|start_sect
@@ -451,6 +463,8 @@ suffix:semicolon
 id|g-&gt;part
 (braket
 id|p-&gt;pno
+op_minus
+l_int|1
 )braket
 dot
 id|nr_sects
