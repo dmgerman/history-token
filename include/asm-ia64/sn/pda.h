@@ -4,6 +4,7 @@ DECL|macro|_ASM_IA64_SN_PDA_H
 mdefine_line|#define _ASM_IA64_SN_PDA_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;asm/percpu.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -118,7 +119,7 @@ DECL|member|cnodeid_to_nasid_table
 r_int
 id|cnodeid_to_nasid_table
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|member|sn_lb_int_war_ticks

@@ -2,7 +2,7 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_NODEDATA_H
 DECL|macro|_ASM_IA64_NODEDATA_H
 mdefine_line|#define _ASM_IA64_NODEDATA_H
-macro_line|#include &lt;asm/mmzone.h&gt;
+macro_line|#include &lt;linux/mmzone.h&gt;
 multiline_comment|/*&n; * Node Data. One of these structures is located on each node of a NUMA system.&n; */
 r_struct
 id|pglist_data
@@ -25,7 +25,7 @@ id|pglist_data
 op_star
 id|pg_data_ptrs
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|member|bank_mem_map_base
@@ -43,7 +43,7 @@ id|ia64_node_data
 op_star
 id|node_data_ptrs
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|member|node_id_map
