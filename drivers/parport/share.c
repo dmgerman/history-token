@@ -1467,7 +1467,7 @@ id|portlist
 op_assign
 id|tmp
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp

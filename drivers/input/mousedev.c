@@ -2198,7 +2198,7 @@ op_assign
 id|input_register_minor
 c_func
 (paren
-l_string|&quot;mouse%d&quot;
+l_string|&quot;input/mouse%d&quot;
 comma
 id|minor
 comma
@@ -2649,7 +2649,7 @@ op_assign
 id|input_register_minor
 c_func
 (paren
-l_string|&quot;mice&quot;
+l_string|&quot;input/mice&quot;
 comma
 id|MOUSEDEV_MIX
 comma

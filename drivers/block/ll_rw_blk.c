@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;&t;/* for max_pfn/max_low_pfn */
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/swap.h&gt;
 r_static
 r_void
 id|blk_unplug_work

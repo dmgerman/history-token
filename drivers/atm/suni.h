@@ -276,6 +276,8 @@ DECL|macro|SUNI_MT_DBCTRL
 mdefine_line|#define SUNI_MT_DBCTRL&t;&t;0x08&t;/* W, control data bus by CSB pin */
 DECL|macro|SUNI_MT_PMCTST
 mdefine_line|#define SUNI_MT_PMCTST&t;&t;0x10&t;/* W, PMC test mode */
+DECL|macro|SUNI_MT_DS27_53
+mdefine_line|#define SUNI_MT_DS27_53&t;&t;0x80&t;/* RW, select between 8- or 16- bit */
 DECL|macro|SUNI_IDLE_PATTERN
 mdefine_line|#define SUNI_IDLE_PATTERN       0x6a    /* idle pattern */
 macro_line|#ifdef __KERNEL__

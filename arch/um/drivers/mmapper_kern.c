@@ -507,17 +507,9 @@ suffix:semicolon
 id|devfs_mk_symlink
 c_func
 (paren
-l_int|NULL
-comma
 l_string|&quot;mmapper0&quot;
 comma
-id|DEVFS_FL_DEFAULT
-comma
 l_string|&quot;mmapper&quot;
-comma
-l_int|NULL
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_return

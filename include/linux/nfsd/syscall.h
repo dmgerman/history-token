@@ -27,10 +27,8 @@ DECL|macro|NFSCTL_EXPORT
 mdefine_line|#define NFSCTL_EXPORT&t;&t;3&t;/* export a file system. */
 DECL|macro|NFSCTL_UNEXPORT
 mdefine_line|#define NFSCTL_UNEXPORT&t;&t;4&t;/* unexport a file system. */
-DECL|macro|NFSCTL_UGIDUPDATE
-mdefine_line|#define NFSCTL_UGIDUPDATE&t;5&t;/* update a client&squot;s uid/gid map. */
-DECL|macro|NFSCTL_GETFH
-mdefine_line|#define NFSCTL_GETFH&t;&t;6&t;/* get an fh by ino (used by mountd) */
+multiline_comment|/*#define NFSCTL_UGIDUPDATE&t;5&t;/ * update a client&squot;s uid/gid map. DISCARDED */
+multiline_comment|/*#define NFSCTL_GETFH&t;&t;6&t;/ * get an fh by ino DISCARDED */
 DECL|macro|NFSCTL_GETFD
 mdefine_line|#define NFSCTL_GETFD&t;&t;7&t;/* get an fh by path (used by mountd) */
 DECL|macro|NFSCTL_GETFS
@@ -140,68 +138,6 @@ id|ex_anon_gid
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* UGIDUPDATE */
-DECL|struct|nfsctl_uidmap
-r_struct
-id|nfsctl_uidmap
-(brace
-DECL|member|ug_ident
-r_char
-op_star
-id|ug_ident
-suffix:semicolon
-DECL|member|ug_uidbase
-id|__kernel_uid_t
-id|ug_uidbase
-suffix:semicolon
-DECL|member|ug_uidlen
-r_int
-id|ug_uidlen
-suffix:semicolon
-DECL|member|ug_udimap
-id|__kernel_uid_t
-op_star
-id|ug_udimap
-suffix:semicolon
-DECL|member|ug_gidbase
-id|__kernel_gid_t
-id|ug_gidbase
-suffix:semicolon
-DECL|member|ug_gidlen
-r_int
-id|ug_gidlen
-suffix:semicolon
-DECL|member|ug_gdimap
-id|__kernel_gid_t
-op_star
-id|ug_gdimap
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* GETFH */
-DECL|struct|nfsctl_fhparm
-r_struct
-id|nfsctl_fhparm
-(brace
-DECL|member|gf_addr
-r_struct
-id|sockaddr
-id|gf_addr
-suffix:semicolon
-DECL|member|gf_dev
-id|__kernel_dev_t
-id|gf_dev
-suffix:semicolon
-DECL|member|gf_ino
-id|__kernel_ino_t
-id|gf_ino
-suffix:semicolon
-DECL|member|gf_version
-r_int
-id|gf_version
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* GETFD */
 DECL|struct|nfsctl_fdparm
 r_struct
@@ -279,16 +215,6 @@ r_struct
 id|nfsctl_export
 id|u_export
 suffix:semicolon
-DECL|member|u_umap
-r_struct
-id|nfsctl_uidmap
-id|u_umap
-suffix:semicolon
-DECL|member|u_getfh
-r_struct
-id|nfsctl_fhparm
-id|u_getfh
-suffix:semicolon
 DECL|member|u_getfd
 r_struct
 id|nfsctl_fdparm
@@ -309,10 +235,6 @@ DECL|macro|ca_client
 mdefine_line|#define ca_client&t;u.u_client
 DECL|macro|ca_export
 mdefine_line|#define ca_export&t;u.u_export
-DECL|macro|ca_umap
-mdefine_line|#define ca_umap&t;&t;u.u_umap
-DECL|macro|ca_getfh
-mdefine_line|#define ca_getfh&t;u.u_getfh
 DECL|macro|ca_getfd
 mdefine_line|#define ca_getfd&t;u.u_getfd
 DECL|macro|ca_getfs
