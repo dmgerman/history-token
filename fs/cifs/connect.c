@@ -1422,6 +1422,7 @@ r_char
 op_star
 id|options
 comma
+r_const
 r_char
 op_star
 id|devname
@@ -3937,6 +3938,7 @@ r_char
 op_star
 id|mount_data
 comma
+r_const
 r_char
 op_star
 id|devname

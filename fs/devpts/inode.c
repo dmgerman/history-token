@@ -286,9 +286,9 @@ id|devpts_remount
 comma
 )brace
 suffix:semicolon
-DECL|function|devpts_fill_super
 r_static
 r_int
+DECL|function|devpts_fill_super
 id|devpts_fill_super
 c_func
 (paren
@@ -447,6 +447,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name

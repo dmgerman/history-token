@@ -347,11 +347,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|jffs2_get_sb_mtd
 r_static
 r_struct
 id|super_block
 op_star
+DECL|function|jffs2_get_sb_mtd
 id|jffs2_get_sb_mtd
 c_func
 (paren
@@ -363,6 +363,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -588,11 +589,11 @@ r_return
 id|sb
 suffix:semicolon
 )brace
-DECL|function|jffs2_get_sb_mtdnr
 r_static
 r_struct
 id|super_block
 op_star
+DECL|function|jffs2_get_sb_mtdnr
 id|jffs2_get_sb_mtdnr
 c_func
 (paren
@@ -604,6 +605,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
@@ -676,11 +678,11 @@ id|mtd
 )paren
 suffix:semicolon
 )brace
-DECL|function|jffs2_get_sb
 r_static
 r_struct
 id|super_block
 op_star
+DECL|function|jffs2_get_sb
 id|jffs2_get_sb
 c_func
 (paren
@@ -692,6 +694,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name

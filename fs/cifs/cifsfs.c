@@ -116,6 +116,7 @@ comma
 r_char
 op_star
 comma
+r_const
 r_char
 op_star
 )paren
@@ -163,6 +164,7 @@ r_void
 op_star
 id|data
 comma
+r_const
 r_char
 op_star
 id|devname
@@ -927,6 +929,7 @@ comma
 r_int
 id|flags
 comma
+r_const
 r_char
 op_star
 id|dev_name
