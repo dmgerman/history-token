@@ -1042,6 +1042,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * the first prototypes used 0x2c as the page code for the mrw mode page,&n; * subsequently this was changed to 0x03. probe the one used by this drive&n; */
 DECL|function|cdrom_mrw_probe_pc
+r_static
 r_int
 id|cdrom_mrw_probe_pc
 c_func
@@ -1144,6 +1145,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|cdrom_is_mrw
+r_static
 r_int
 id|cdrom_is_mrw
 c_func
@@ -1894,6 +1896,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cdrom_get_random_writable
+r_static
 r_int
 id|cdrom_get_random_writable
 c_func
@@ -2017,6 +2020,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|cdrom_has_defect_mgt
+r_static
 r_int
 id|cdrom_has_defect_mgt
 c_func
@@ -2145,6 +2149,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|cdrom_is_random_writable
+r_static
 r_int
 id|cdrom_is_random_writable
 c_func
@@ -14010,24 +14015,11 @@ c_func
 id|cdrom_get_media_event
 )paren
 suffix:semicolon
-DECL|variable|cdrom_is_mrw
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|cdrom_is_mrw
-)paren
-suffix:semicolon
-DECL|variable|cdrom_is_random_writable
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|cdrom_is_random_writable
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SYSCTL
 DECL|macro|CDROM_STR_SIZE
 mdefine_line|#define CDROM_STR_SIZE 1000
 DECL|struct|cdrom_sysctl_settings
+r_static
 r_struct
 id|cdrom_sysctl_settings
 (brace
@@ -14069,6 +14061,7 @@ DECL|variable|cdrom_sysctl_settings
 id|cdrom_sysctl_settings
 suffix:semicolon
 DECL|function|cdrom_sysctl_info
+r_static
 r_int
 id|cdrom_sysctl_info
 c_func
@@ -15102,6 +15095,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Unfortunately, per device settings are not implemented through&n;   procfs/sysctl yet. When they are, this will naturally disappear. For now&n;   just update all drives. Later this will become the template on which&n;   new registered drives will be based. */
 DECL|function|cdrom_update_settings
+r_static
 r_void
 id|cdrom_update_settings
 c_func
@@ -15437,6 +15431,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Place files in /proc/sys/dev/cdrom */
 DECL|variable|cdrom_table
+r_static
 id|ctl_table
 id|cdrom_table
 (braket
@@ -15676,6 +15671,7 @@ l_int|0
 )brace
 suffix:semicolon
 DECL|variable|cdrom_cdrom_table
+r_static
 id|ctl_table
 id|cdrom_cdrom_table
 (braket
@@ -15720,6 +15716,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Make sure that /proc/sys/dev is there */
 DECL|variable|cdrom_root_table
+r_static
 id|ctl_table
 id|cdrom_root_table
 (braket
