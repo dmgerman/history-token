@@ -29631,7 +29631,7 @@ dot
 id|proc_info
 op_assign
 id|ncr53c8xx_proc_info
-suffix:semicolon
+comma
 macro_line|#endif
 dot
 id|info
