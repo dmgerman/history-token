@@ -473,23 +473,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|sbusfb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sbusfb_setup
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|control_init
 c_func
 (paren
@@ -833,6 +816,23 @@ r_char
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ffb_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ffb_setup
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
 r_static
 r_struct
 (brace
@@ -871,17 +871,6 @@ id|fb_drivers
 id|__initdata
 op_assign
 (brace
-macro_line|#ifdef CONFIG_FB_SBUS
-multiline_comment|/*&n;&t; * Sbusfb must be initialized _before_ other frame buffer devices that&n;&t; * use PCI probing&n;&t; */
-(brace
-l_string|&quot;sbus&quot;
-comma
-id|sbusfb_init
-comma
-id|sbusfb_setup
-)brace
-comma
-macro_line|#endif
 multiline_comment|/*&n;&t; * Chipset specific drivers that use resource management&n;&t; */
 macro_line|#ifdef CONFIG_FB_RETINAZ3
 (brace
@@ -1150,6 +1139,16 @@ comma
 id|stifb_init
 comma
 id|stifb_setup
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_FB_FFB
+(brace
+l_string|&quot;ffb&quot;
+comma
+id|ffb_init
+comma
+id|ffb_setup
 )brace
 comma
 macro_line|#endif
