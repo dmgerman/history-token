@@ -39,17 +39,17 @@ mdefine_line|#define&t;IRQ_IXP2000_PCI   &t;&t;15 /* PCI INTA or INTB */
 DECL|macro|IRQ_IXP2000_THDA0
 mdefine_line|#define&t;IRQ_IXP2000_THDA0   &t;&t;16 /* thread 0-31A */
 DECL|macro|IRQ_IXP2000_THDA1
-mdefine_line|#define&t;IRQ_IXP2000_THDA1  &t;&t;17 /* thread 32-63A */
+mdefine_line|#define&t;IRQ_IXP2000_THDA1  &t;&t;17 /* thread 32-63A, IXP2800 only */
 DECL|macro|IRQ_IXP2000_THDA2
-mdefine_line|#define&t;IRQ_IXP2000_THDA2&t;&t;18 /* thread 64-95A, IXP2800 only */
+mdefine_line|#define&t;IRQ_IXP2000_THDA2&t;&t;18 /* thread 64-95A */
 DECL|macro|IRQ_IXP2000_THDA3
 mdefine_line|#define&t;IRQ_IXP2000_THDA3 &t;&t;19 /* thread 96-127A, IXP2800 only */
 DECL|macro|IRQ_IXP2000_THDB0
 mdefine_line|#define&t;IRQ_IXP2000_THDB0&t;&t;24 /* thread 0-31B */
 DECL|macro|IRQ_IXP2000_THDB1
-mdefine_line|#define&t;IRQ_IXP2000_THDB1&t;&t;25 /* thread 32-63B */
+mdefine_line|#define&t;IRQ_IXP2000_THDB1&t;&t;25 /* thread 32-63B, IXP2800 only */
 DECL|macro|IRQ_IXP2000_THDB2
-mdefine_line|#define&t;IRQ_IXP2000_THDB2&t;&t;26 /* thread 64-95B, IXP2800 only */
+mdefine_line|#define&t;IRQ_IXP2000_THDB2&t;&t;26 /* thread 64-95B */
 DECL|macro|IRQ_IXP2000_THDB3
 mdefine_line|#define&t;IRQ_IXP2000_THDB3&t;&t;27 /* thread 96-127B, IXP2800 only */
 multiline_comment|/* define generic GPIOs */
