@@ -1174,6 +1174,14 @@ c_func
 id|hdr-&gt;e_shnum
 )paren
 suffix:semicolon
+id|hdr-&gt;e_machine
+op_assign
+id|TO_NATIVE
+c_func
+(paren
+id|hdr-&gt;e_machine
+)paren
+suffix:semicolon
 id|sechdrs
 op_assign
 (paren

@@ -1,5 +1,6 @@
 multiline_comment|/* $Id: pci.c,v 1.39 2002/01/05 01:13:43 davem Exp $&n; * pci.c: UltraSparc PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@redhat.com)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -3361,6 +3362,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|pci_domain_nr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_domain_nr
+)paren
+suffix:semicolon
 DECL|function|pci_name_bus
 r_int
 id|pci_name_bus
