@@ -5630,6 +5630,11 @@ comma
 id|sdp-&gt;devfs_name
 )paren
 suffix:semicolon
+id|gd-&gt;private_data
+op_assign
+op_amp
+id|sdkp-&gt;driver
+suffix:semicolon
 id|sd_revalidate_disk
 c_func
 (paren
@@ -5653,11 +5658,6 @@ id|sdp-&gt;removable
 id|gd-&gt;flags
 op_or_assign
 id|GENHD_FL_REMOVABLE
-suffix:semicolon
-id|gd-&gt;private_data
-op_assign
-op_amp
-id|sdkp-&gt;driver
 suffix:semicolon
 id|gd-&gt;queue
 op_assign
