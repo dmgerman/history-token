@@ -1404,6 +1404,12 @@ r_int
 id|currcon
 suffix:semicolon
 multiline_comment|/* Current VC. */
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
+multiline_comment|/* Sysfs data */
 DECL|member|pseudo_palette
 r_void
 op_star
@@ -1737,6 +1743,50 @@ suffix:semicolon
 r_extern
 r_int
 id|num_registered_fb
+suffix:semicolon
+multiline_comment|/* drivers/video/fbsysfs.c */
+r_extern
+r_struct
+id|fb_info
+op_star
+id|framebuffer_alloc
+c_func
+(paren
+r_int
+id|size
+comma
+r_struct
+id|device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|framebuffer_release
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fb_add_class_device
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+suffix:semicolon
+r_extern
+r_struct
+r_class
+id|fb_class
 suffix:semicolon
 multiline_comment|/* drivers/video/fbmon.c */
 DECL|macro|FB_MAXTIMINGS
