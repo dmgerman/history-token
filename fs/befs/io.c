@@ -31,11 +31,6 @@ id|block
 op_assign
 l_int|0
 suffix:semicolon
-id|vfs_blocknr_t
-id|vfs_block
-op_assign
-l_int|0
-suffix:semicolon
 id|befs_sb_info
 op_star
 id|befs_sb
@@ -96,36 +91,6 @@ op_amp
 id|iaddr
 )paren
 suffix:semicolon
-id|vfs_block
-op_assign
-(paren
-id|vfs_blocknr_t
-)paren
-id|block
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vfs_block
-op_ne
-id|block
-)paren
-(brace
-id|befs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Error converting to host blocknr_t. %Lu &quot;
-l_string|&quot;is larger than the host can use&quot;
-comma
-id|block
-)paren
-suffix:semicolon
-r_goto
-id|error
-suffix:semicolon
-)brace
 id|befs_debug
 c_func
 (paren
@@ -143,7 +108,7 @@ c_func
 (paren
 id|sb
 comma
-id|vfs_block
+id|block
 )paren
 suffix:semicolon
 r_if
@@ -216,14 +181,6 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|vfs_blocknr_t
-id|vfs_block
-op_assign
-(paren
-id|vfs_blocknr_t
-)paren
-id|block
-suffix:semicolon
 id|befs_debug
 c_func
 (paren
@@ -234,29 +191,6 @@ comma
 id|block
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vfs_block
-op_ne
-id|block
-)paren
-(brace
-id|befs_error
-c_func
-(paren
-id|sb
-comma
-l_string|&quot;Error converting to host blocknr_t. %Lu &quot;
-l_string|&quot;is larger than the host can use&quot;
-comma
-id|block
-)paren
-suffix:semicolon
-r_goto
-id|error
-suffix:semicolon
-)brace
 id|bh
 op_assign
 id|sb_bread
@@ -264,7 +198,7 @@ c_func
 (paren
 id|sb
 comma
-id|vfs_block
+id|block
 )paren
 suffix:semicolon
 r_if
@@ -282,7 +216,7 @@ id|sb
 comma
 l_string|&quot;Failed to read block %lu&quot;
 comma
-id|vfs_block
+id|block
 )paren
 suffix:semicolon
 r_goto

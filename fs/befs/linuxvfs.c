@@ -3694,6 +3694,35 @@ id|BEFS_OK
 r_goto
 id|unaquire_priv_sbp
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|befs_sb-&gt;num_blocks
+OG
+op_complement
+(paren
+(paren
+id|sector_t
+)paren
+l_int|0
+)paren
+)paren
+(brace
+id|befs_error
+c_func
+(paren
+id|sb
+comma
+l_string|&quot;blocks count: %Lu &quot;
+l_string|&quot;is larger than the host can use&quot;
+comma
+id|befs_sb-&gt;num_blocks
+)paren
+suffix:semicolon
+r_goto
+id|unaquire_priv_sbp
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * set up enough so that it can read an inode&n;&t; * Fill in kernel superblock fields from private sb&n;&t; */
 id|sb-&gt;s_magic
 op_assign
