@@ -4,11 +4,6 @@ r_struct
 id|semaphore
 id|dpm_sem
 suffix:semicolon
-multiline_comment|/*&n; * Used to protect PM lists.&n; */
-r_extern
-id|spinlock_t
-id|dpm_lock
-suffix:semicolon
 multiline_comment|/* &n; * The PM lists.&n; */
 r_extern
 r_struct
