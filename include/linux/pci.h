@@ -882,12 +882,12 @@ r_int
 r_char
 id|pad1
 suffix:semicolon
-DECL|member|iobus
+DECL|member|dev
 r_struct
-id|iobus
-id|iobus
+id|device
+op_star
+id|dev
 suffix:semicolon
-multiline_comment|/* Generic device interface */
 )brace
 suffix:semicolon
 DECL|macro|pci_bus_b
