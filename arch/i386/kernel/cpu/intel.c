@@ -403,6 +403,14 @@ l_int|2048
 )brace
 comma
 (brace
+l_int|0x7f
+comma
+id|LVL_2
+comma
+l_int|512
+)brace
+comma
+(brace
 l_int|0x82
 comma
 id|LVL_2
