@@ -339,6 +339,7 @@ id|show_temp
 comma
 l_int|NULL
 )paren
+suffix:semicolon
 r_static
 id|DEVICE_ATTR
 c_func
@@ -351,6 +352,7 @@ id|show_temp_over
 comma
 l_int|NULL
 )paren
+suffix:semicolon
 multiline_comment|/*&n; * Real code&n; */
 DECL|function|w83l785ts_attach_adapter
 r_static

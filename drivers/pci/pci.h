@@ -440,4 +440,11 @@ r_extern
 r_int
 id|pciehp_msi_quirk
 suffix:semicolon
+r_extern
+r_struct
+id|device_attribute
+id|pci_dev_attrs
+(braket
+)braket
+suffix:semicolon
 eof

@@ -7123,6 +7123,7 @@ op_star
 id|dentry
 comma
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -8370,9 +8371,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|tgid
 op_div_assign
 l_int|10
+)paren
+op_ne
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -8656,9 +8661,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|tid
 op_div_assign
 l_int|10
+)paren
+op_ne
+l_int|0
 )paren
 suffix:semicolon
 r_if

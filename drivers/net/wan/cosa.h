@@ -68,6 +68,7 @@ id|len
 suffix:semicolon
 DECL|member|code
 r_char
+id|__user
 op_star
 id|code
 suffix:semicolon

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/drivers/ide/pci/siimage.c&t;&t;Version 1.07&t;Nov 30, 2003&n; *&n; * Copyright (C) 2001-2002&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; * Copyright (C) 2003&t;&t;Red Hat &lt;alan@redhat.com&gt;&n; *&n; *  May be copied or modified under the terms of the GNU General Public License&n; *&n; *  Documentation available under NDA only&n; *&n; *&n; *  FAQ Items:&n; *&t;If you are using Marvell SATA-IDE adapters with Maxtor drives&n; *&t;ensure the system is set up for ATA100/UDMA5 not UDMA6.&n; *&n; *&t;If you are using WD drives with SATA bridges you must set the&n; *&t;drive to &quot;Single&quot;. &quot;Master&quot; will hang&n; *&n; *&t;If you have strange problems with nVidia chipset systems please&n; *&t;see the SI support documentation and update your system BIOS&n; *&t;if neccessary&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -4623,6 +4624,7 @@ comma
 l_int|0
 )brace
 comma
+macro_line|#ifdef CONFIG_BLK_DEV_IDE_SATA
 (brace
 id|PCI_VENDOR_ID_CMD
 comma
@@ -4655,6 +4657,7 @@ comma
 l_int|2
 )brace
 comma
+macro_line|#endif
 (brace
 l_int|0
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * class_simple.c - a &quot;simple&quot; interface for classes for simple char devices.&n; *&n; * Copyright (c) 2003-2004 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; * Copyright (c) 2003-2004 IBM Corp.&n; * &n; * This file is released under the GPLv2&n; *&n; */
+multiline_comment|/*&n; * class_simple.c - a &quot;simple&quot; interface for classes for simple char devices.&n; *&n; * Copyright (c) 2003-2004 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; * Copyright (c) 2003-2004 IBM Corp.&n; *&n; * This file is released under the GPLv2&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
@@ -361,7 +361,7 @@ c_func
 id|class_simple_destroy
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * class_simple_device_add - adds a class device to sysfs for a character driver&n; * @cs: pointer to the struct class_simple that this device should be registered to.  &n; * @dev: the dev_t for the device to be added.&n; * @device: a pointer to a struct device that is assiociated with this class device.&n; * @fmt: string for the class device&squot;s name&n; *&n; * This function can be used by simple char device classes that do not&n; * implement their own class device registration.  A struct class_device will&n; * be created in sysfs, registered to the specified class.  A &quot;dev&quot; file will&n; * be created, showing the dev_t for the device.  The pointer to the struct&n; * class_device will be returned from the call.  Any further sysfs files that&n; * might be required can be created using this pointer.&n; * Note: the struct class_device passed to this function must have previously been&n; * created with a call to class_simple_create().&n; */
+multiline_comment|/**&n; * class_simple_device_add - adds a class device to sysfs for a character driver&n; * @cs: pointer to the struct class_simple that this device should be registered to.&n; * @dev: the dev_t for the device to be added.&n; * @device: a pointer to a struct device that is assiociated with this class device.&n; * @fmt: string for the class device&squot;s name&n; *&n; * This function can be used by simple char device classes that do not&n; * implement their own class device registration.  A struct class_device will&n; * be created in sysfs, registered to the specified class.  A &quot;dev&quot; file will&n; * be created, showing the dev_t for the device.  The pointer to the struct&n; * class_device will be returned from the call.  Any further sysfs files that&n; * might be required can be created using this pointer.&n; * Note: the struct class_device passed to this function must have previously been&n; * created with a call to class_simple_create().&n; */
 DECL|function|class_simple_device_add
 r_struct
 id|class_device
@@ -597,7 +597,7 @@ c_func
 id|class_simple_device_add
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * class_simple_set_hotplug - set the hotplug callback in the embedded struct class&n; * @cs: pointer to the struct class_simple to hold the pointer&n; * @hotplug: function pointer to the hotplug function&n; *&n; * Implement and set a hotplug function to add environment variables specific to this &n; * class on the hotplug event.&n; */
+multiline_comment|/**&n; * class_simple_set_hotplug - set the hotplug callback in the embedded struct class&n; * @cs: pointer to the struct class_simple to hold the pointer&n; * @hotplug: function pointer to the hotplug function&n; *&n; * Implement and set a hotplug function to add environment variables specific to this&n; * class on the hotplug event.&n; */
 DECL|function|class_simple_set_hotplug
 r_int
 id|class_simple_set_hotplug

@@ -26,6 +26,7 @@ id|size
 suffix:semicolon
 DECL|member|data
 r_char
+id|__user
 op_star
 id|data
 suffix:semicolon
@@ -212,6 +213,7 @@ id|object_name_len
 suffix:semicolon
 DECL|member|object_name
 r_void
+id|__user
 op_star
 id|object_name
 suffix:semicolon
@@ -228,6 +230,7 @@ id|len
 suffix:semicolon
 DECL|member|data
 r_void
+id|__user
 op_star
 id|data
 suffix:semicolon
