@@ -153,7 +153,7 @@ r_void
 op_star
 )paren
 suffix:semicolon
-r_void
+r_int
 id|mgt_commit
 c_func
 (paren

@@ -3868,7 +3868,7 @@ suffix:semicolon
 )brace
 DECL|macro|VEC_SIZE
 mdefine_line|#define VEC_SIZE(a) (sizeof(a)/sizeof(a[0]))
-r_void
+r_int
 DECL|function|mgt_commit
 id|mgt_commit
 c_func
@@ -3896,6 +3896,7 @@ OL
 id|PRV_STATE_INIT
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|rvalue
 op_assign
@@ -3978,6 +3979,9 @@ id|priv-&gt;ndev-&gt;name
 )paren
 suffix:semicolon
 )brace
+r_return
+id|rvalue
+suffix:semicolon
 )brace
 multiline_comment|/* The following OIDs need to be &quot;unlatched&quot;:&n; *&n; * MEDIUMLIMIT,BEACONPERIOD,DTIMPERIOD,ATIMWINDOW,LISTENINTERVAL&n; * FREQUENCY,EXTENDEDRATES.&n; *&n; * The way to do this is to set ESSID. Note though that they may get &n; * unlatch before though by setting another OID. */
 r_void
