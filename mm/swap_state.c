@@ -29,16 +29,11 @@ id|swap_backing_dev_info
 op_assign
 (brace
 dot
-id|memory_backed
+id|state
 op_assign
-l_int|1
+l_int|0
 comma
-multiline_comment|/* Does not contribute to dirty memory */
-dot
-id|unplug_io_fn
-op_assign
-id|swap_unplug_io_fn
-comma
+multiline_comment|/* uncongested */
 )brace
 suffix:semicolon
 DECL|variable|swapper_space
@@ -61,6 +56,12 @@ id|tree_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 comma
+dot
+id|nrpages
+op_assign
+l_int|0
+comma
+multiline_comment|/* total_swapcache_pages */
 dot
 id|a_ops
 op_assign
