@@ -70,7 +70,7 @@ id|handle
 r_int
 id|gfp
 op_assign
-id|GFP_KERNEL
+id|GFP_ATOMIC
 suffix:semicolon
 r_if
 c_cond
@@ -102,6 +102,8 @@ comma
 id|size
 comma
 id|handle
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

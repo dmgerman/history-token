@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/fault-common.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Modifications for ARM processor (c) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -288,18 +289,16 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-r_int
+r_const
+r_struct
+id|exception_table_entry
+op_star
 id|fixup
 suffix:semicolon
 multiline_comment|/*&n;&t; * Are we prepared to handle this kernel fault?&n;&t; */
-r_if
-c_cond
-(paren
-(paren
 id|fixup
 op_assign
-id|search_exception_table
+id|search_exception_tables
 c_func
 (paren
 id|instruction_pointer
@@ -308,9 +307,11 @@ c_func
 id|regs
 )paren
 )paren
-)paren
-op_ne
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fixup
 )paren
 (brace
 macro_line|#ifdef DEBUG
@@ -326,18 +327,24 @@ id|regs-&gt;ARM_pc
 comma
 id|addr
 comma
-id|fixup
+id|fixup-&gt;fixup
 )paren
 suffix:semicolon
 macro_line|#endif
 id|regs-&gt;ARM_pc
 op_assign
-id|fixup
+id|fixup-&gt;fixup
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * No handler, we&squot;ll have to terminate things with extreme prejudice.&n;&t; */
+id|bust_spinlocks
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -374,6 +381,12 @@ comma
 id|regs
 comma
 id|fsr
+)paren
+suffix:semicolon
+id|bust_spinlocks
+c_func
+(paren
+l_int|0
 )paren
 suffix:semicolon
 id|do_exit
