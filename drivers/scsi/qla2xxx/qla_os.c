@@ -3466,11 +3466,6 @@ op_star
 id|temp
 suffix:semicolon
 id|u_long
-id|cpu_flags
-op_assign
-l_int|0
-suffix:semicolon
-id|u_long
 id|max_wait_time
 op_assign
 id|ABORT_WAIT_TIME
@@ -3485,13 +3480,11 @@ op_logical_neg
 id|found
 )paren
 (brace
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|cpu_flags
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -3546,13 +3539,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|cpu_flags
 )paren
 suffix:semicolon
 )brace
@@ -3676,8 +3667,6 @@ id|done
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * qla2x00_wait_for_hba_online&n; *    Wait till the HBA is online after going through &n; *    &lt;= MAX_RETRIES_OF_ISP_ABORT  or&n; *    finally HBA is disabled ie marked offline&n; *&n; * Input:&n; *     ha - pointer to host adapter structure&n; * &n; * Note:    &n; *    Does context switching-Release SPIN_LOCK&n; *    (if any) before calling this routine.&n; *&n; * Return:&n; *    Success (Adapter is online) : 0&n; *    Failed  (Adapter is offline/disabled) : 1&n; */
-r_static
-r_inline
 r_int
 DECL|function|qla2x00_wait_for_hba_online
 id|qla2x00_wait_for_hba_online
@@ -3737,6 +3726,8 @@ comma
 op_amp
 id|ha-&gt;dpc_flags
 )paren
+op_logical_or
+id|ha-&gt;dpc_active
 )paren
 op_logical_and
 id|time_before
@@ -3773,7 +3764,6 @@ op_assign
 id|QLA_SUCCESS
 suffix:semicolon
 r_else
-multiline_comment|/* Adapter is disabled/offline */
 id|return_status
 op_assign
 id|QLA_FUNCTION_FAILED
@@ -3975,10 +3965,6 @@ comma
 id|t
 comma
 id|l
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 multiline_comment|/* Get the SCSI request ptr */
 id|sp
@@ -4214,7 +4200,6 @@ c_func
 id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Blocking call-Does context switching if abort isp is active etc */
 r_if
 c_cond
 (paren
@@ -4246,9 +4231,7 @@ id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
-(paren
 id|FAILED
-)paren
 suffix:semicolon
 )brace
 id|spin_lock_irq
@@ -4258,13 +4241,11 @@ id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Search done queue */
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -4319,13 +4300,11 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* list_for_each_safe() */
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return immediately if the aborted command was already in the done&n;&t; * queue&n;&t; */
@@ -4377,13 +4356,11 @@ id|sp
 )paren
 suffix:semicolon
 )paren
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -4463,13 +4440,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Our SP pointer points at the command we want to remove from the&n;&t; * pending queue providing we haven&squot;t already sent it to the adapter.&n;&t; */
@@ -4493,13 +4468,11 @@ id|sp
 )paren
 suffix:semicolon
 )paren
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|vis_ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -4585,13 +4558,11 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* list_for_each_safe() */
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|vis_ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -4617,13 +4588,11 @@ id|sp
 )paren
 suffix:semicolon
 )paren
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_for
@@ -4706,16 +4675,14 @@ comma
 id|sp
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 id|ha-&gt;host-&gt;host_lock
@@ -4781,13 +4748,11 @@ c_func
 id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Regardless of mailbox command status, go check on&n;&t;&t;&t; * done queue just in case the sp is already done.&n;&t;&t;&t; */
@@ -4795,18 +4760,16 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/*End of for loop */
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*End of if !found */
-multiline_comment|/*Waiting for our command in done_queue to be returned to OS.*/
+multiline_comment|/* Waiting for our command in done_queue to be returned to OS.*/
 r_if
 c_cond
 (paren
@@ -4895,10 +4858,6 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|srb_t
 op_star
 id|sp
@@ -4928,13 +4887,11 @@ id|cnt
 op_increment
 )paren
 (brace
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|sp
@@ -4954,13 +4911,11 @@ id|cmd
 op_assign
 id|sp-&gt;cmd
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -4995,13 +4950,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -5050,10 +5003,6 @@ suffix:semicolon
 id|fc_port_t
 op_star
 id|fcport_to_reset
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|srb_t
 op_star
@@ -5258,13 +5207,11 @@ id|cmd-&gt;state
 )paren
 suffix:semicolon
 multiline_comment|/* Clear commands from the retry queue. */
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|list_for_each_safe
@@ -5335,13 +5282,11 @@ id|rp
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;list_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -5350,7 +5295,6 @@ c_func
 id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Blocking call-Does context switching if abort isp is active etc */
 r_if
 c_cond
 (paren
@@ -5386,7 +5330,6 @@ r_goto
 id|eh_dev_reset_done
 suffix:semicolon
 )brace
-multiline_comment|/* Blocking call-Does context switching if loop is Not Ready */
 r_if
 c_cond
 (paren
@@ -5635,10 +5578,6 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|srb_t
 op_star
 id|sp
@@ -5668,13 +5607,11 @@ id|cnt
 op_increment
 )paren
 (brace
-id|spin_lock_irqsave
+id|spin_lock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|sp
@@ -5694,13 +5631,11 @@ id|cmd
 op_assign
 id|sp-&gt;cmd
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|status
@@ -5725,13 +5660,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|ha-&gt;hardware_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -5811,7 +5744,6 @@ c_func
 id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Blocking call-Does context switching if abort isp is active etc*/
 r_if
 c_cond
 (paren
@@ -5846,7 +5778,6 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* Blocking call-Does context switching if loop is Not Ready */
 r_if
 c_cond
 (paren
@@ -5999,7 +5930,6 @@ c_func
 id|ha-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-multiline_comment|/* Blocking call-Does context switching if abort isp is active etc*/
 r_if
 c_cond
 (paren
