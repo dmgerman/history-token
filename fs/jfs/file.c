@@ -92,7 +92,7 @@ r_if
 c_cond
 (paren
 id|datasync
-op_logical_or
+op_logical_and
 op_logical_neg
 (paren
 id|inode-&gt;i_state
