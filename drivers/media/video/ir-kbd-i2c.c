@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * keyboard input driver for i2c IR remote controls&n; *&n; * Copyright (c) 2000-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; * modified for PixelView (BT878P+W/FM) by&n; *      Michal Kochanowicz &lt;mkochano@pld.org.pl&gt;&n; *      Christoph Bartelmus &lt;lirc@bartelmus.de&gt;&n; * modified for KNC ONE TV Station/Anubis Typhoon TView Tuner by&n; *      Ulrich Mueller &lt;ulrich.mueller42@web.de&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
+multiline_comment|/*&n; * $Id: ir-kbd-i2c.c,v 1.8 2004/09/15 16:15:24 kraxel Exp $&n; *&n; * keyboard input driver for i2c IR remote controls&n; *&n; * Copyright (c) 2000-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; * modified for PixelView (BT878P+W/FM) by&n; *      Michal Kochanowicz &lt;mkochano@pld.org.pl&gt;&n; *      Christoph Bartelmus &lt;lirc@bartelmus.de&gt;&n; * modified for KNC ONE TV Station/Anubis Typhoon TView Tuner by&n; *      Ulrich Mueller &lt;ulrich.mueller42@web.de&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1859,7 +1859,7 @@ op_star
 id|adap
 )paren
 (brace
-multiline_comment|/* The external IR receiver is at i2c address 0x34 (0x35 for&n;&t;   reads).  Future Hauppauge cards will have an internal&n;&t;   receiver at 0x30 (0x31 for reads).  In theory, both can be&n;&t;   fitted, and Hauppauge suggest an external overrides an&n;&t;   internal. &n;&t;   &n;&t;   That&squot;s why we probe 0x1a (~0x34) first. CB &n;&t;*/
+multiline_comment|/* The external IR receiver is at i2c address 0x34 (0x35 for&n;&t;   reads).  Future Hauppauge cards will have an internal&n;&t;   receiver at 0x30 (0x31 for reads).  In theory, both can be&n;&t;   fitted, and Hauppauge suggest an external overrides an&n;&t;   internal.&n;&n;&t;   That&squot;s why we probe 0x1a (~0x34) first. CB&n;&t;*/
 r_static
 r_const
 r_int
@@ -2089,12 +2089,14 @@ suffix:semicolon
 DECL|function|ir_init
 r_static
 r_int
+id|__init
 id|ir_init
 c_func
 (paren
 r_void
 )paren
 (brace
+r_return
 id|i2c_add_driver
 c_func
 (paren
@@ -2102,13 +2104,11 @@ op_amp
 id|driver
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|ir_fini
 r_static
 r_void
+id|__exit
 id|ir_fini
 c_func
 (paren
