@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.h#126 $&n; *&n; */
+multiline_comment|/*&n; * Adaptec AIC79xx device driver for Linux.&n; *&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/linux/drivers/scsi/aic7xxx/aic79xx_osm.h#128 $&n; *&n; */
 macro_line|#ifndef _AIC79XX_LINUX_H_
 DECL|macro|_AIC79XX_LINUX_H_
 mdefine_line|#define _AIC79XX_LINUX_H_
@@ -1191,12 +1191,10 @@ r_struct
 id|ahd_completeq
 id|completeq
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 DECL|member|spin_lock
 id|spinlock_t
 id|spin_lock
 suffix:semicolon
-macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 DECL|member|runq_tasklet
 r_struct
@@ -2210,7 +2208,6 @@ op_star
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 r_static
 id|__inline
 r_void
@@ -2497,183 +2494,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,0) */
-DECL|function|ahd_lockinit
-id|ahd_lockinit
-c_func
-(paren
-r_struct
-id|ahd_softc
-op_star
-id|ahd
-)paren
-(brace
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahd_lock
-id|ahd_lock
-c_func
-(paren
-r_struct
-id|ahd_softc
-op_star
-id|ahd
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-id|save_flags
-c_func
-(paren
-op_star
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahd_unlock
-id|ahd_unlock
-c_func
-(paren
-r_struct
-id|ahd_softc
-op_star
-id|ahd
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-id|restore_flags
-c_func
-(paren
-op_star
-id|flags
-)paren
-suffix:semicolon
-)brace
-DECL|function|ahd_done_lockinit
-id|ahd_done_lockinit
-c_func
-(paren
-r_struct
-id|ahd_softc
-op_star
-id|ahd
-)paren
-(brace
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahd_done_lock
-id|ahd_done_lock
-c_func
-(paren
-r_struct
-id|ahd_softc
-op_star
-id|ahd
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-multiline_comment|/*&n;&t; * The done lock is always held while&n;&t; * the ahd lock is held so blocking&n;&t; * interrupts again would have no effect.&n;&t; */
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahd_done_unlock
-id|ahd_done_unlock
-c_func
-(paren
-r_struct
-id|ahd_softc
-op_star
-id|ahd
-comma
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahd_list_lockinit
-id|ahd_list_lockinit
-c_func
-(paren
-)paren
-(brace
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahd_list_lock
-id|ahd_list_lock
-c_func
-(paren
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-id|save_flags
-c_func
-(paren
-op_star
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-r_static
-id|__inline
-r_void
-DECL|function|ahd_list_unlock
-id|ahd_list_unlock
-c_func
-(paren
-r_int
-r_int
-op_star
-id|flags
-)paren
-(brace
-id|restore_flags
-c_func
-(paren
-op_star
-id|flags
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,0) */
 multiline_comment|/******************************* PCI Definitions ******************************/
 multiline_comment|/*&n; * PCIM_xxx: mask to locate subfield in register&n; * PCIR_xxx: config register offset&n; * PCIC_xxx: device class&n; * PCIS_xxx: device subclass&n; * PCIP_xxx: device programming interface&n; * PCIV_xxx: PCI vendor ID (only required to fixup ancient devices)&n; * PCID_xxx: device ID&n; */
 DECL|macro|PCIR_DEVVENDOR
@@ -2795,13 +2615,6 @@ id|new_state
 )paren
 suffix:semicolon
 multiline_comment|/******************************* PCI Routines *********************************/
-multiline_comment|/*&n; * We need to use the bios32.h routines if we are kernel version 2.1.92 or less.&n; */
-macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,1,92)
-macro_line|#if defined(__sparc_v9__) || defined(__powerpc__)
-macro_line|#error &quot;PPC and Sparc platforms are only supported under 2.1.92 and above&quot;
-macro_line|#endif
-macro_line|#include &lt;linux/bios32.h&gt;
-macro_line|#endif
 r_int
 id|ahd_linux_pci_init
 c_func
