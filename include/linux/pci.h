@@ -904,6 +904,11 @@ id|list_head
 id|pci_devices
 suffix:semicolon
 multiline_comment|/* list of all devices */
+r_extern
+r_struct
+id|bus_type
+id|pci_bus_type
+suffix:semicolon
 multiline_comment|/*&n; * Error values that may be returned by PCI functions.&n; */
 DECL|macro|PCIBIOS_SUCCESSFUL
 mdefine_line|#define PCIBIOS_SUCCESSFUL&t;&t;0x00
