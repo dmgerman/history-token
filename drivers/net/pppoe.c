@@ -2151,7 +2151,7 @@ op_assign
 id|PPPOX_CONNECTED
 suffix:semicolon
 )brace
-id|sk-&gt;num
+id|po-&gt;num
 op_assign
 id|sp-&gt;sa_addr.pppoe.sid
 suffix:semicolon
@@ -2750,7 +2750,7 @@ l_int|0
 suffix:semicolon
 id|hdr.sid
 op_assign
-id|sk-&gt;num
+id|po-&gt;num
 suffix:semicolon
 id|lock_sock
 c_func
@@ -3062,7 +3062,7 @@ l_int|0
 suffix:semicolon
 id|hdr.sid
 op_assign
-id|sk-&gt;num
+id|po-&gt;num
 suffix:semicolon
 id|hdr.length
 op_assign

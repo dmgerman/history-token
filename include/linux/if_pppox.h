@@ -277,6 +277,11 @@ DECL|member|proto
 )brace
 id|proto
 suffix:semicolon
+DECL|member|num
+r_int
+r_int
+id|num
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|pppoe_dev

@@ -1239,7 +1239,7 @@ suffix:semicolon
 multiline_comment|/* Use correct destination address if we have options. */
 id|daddr
 op_assign
-id|sk-&gt;daddr
+id|inet-&gt;daddr
 suffix:semicolon
 r_if
 c_cond
@@ -1266,7 +1266,7 @@ id|rt
 comma
 id|daddr
 comma
-id|sk-&gt;saddr
+id|inet-&gt;saddr
 comma
 id|RT_CONN_FLAGS
 c_func
@@ -1433,7 +1433,7 @@ id|skb
 comma
 id|opt
 comma
-id|sk-&gt;daddr
+id|inet-&gt;daddr
 comma
 id|rt
 comma
@@ -1710,7 +1710,7 @@ id|EMSGSIZE
 comma
 id|rt-&gt;rt_dst
 comma
-id|sk-&gt;dport
+id|inet-&gt;dport
 comma
 id|mtu
 )paren
@@ -1792,7 +1792,7 @@ id|EMSGSIZE
 comma
 id|rt-&gt;rt_dst
 comma
-id|sk-&gt;dport
+id|inet-&gt;dport
 comma
 id|mtu
 )paren
@@ -2409,7 +2409,7 @@ id|EMSGSIZE
 comma
 id|rt-&gt;rt_dst
 comma
-id|sk-&gt;dport
+id|inet-&gt;dport
 comma
 id|rt-&gt;u.dst.dev-&gt;mtu
 )paren

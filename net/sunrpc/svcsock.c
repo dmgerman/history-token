@@ -4518,7 +4518,13 @@ comma
 id|ntohs
 c_func
 (paren
-id|inet-&gt;sport
+id|inet_sk
+c_func
+(paren
+id|inet
+)paren
+op_member_access_from_pointer
+id|sport
 )paren
 )paren
 suffix:semicolon

@@ -753,7 +753,13 @@ id|sk-&gt;type
 op_ne
 id|SOCK_RAW
 op_logical_or
-id|sk-&gt;num
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 op_eq
 id|IPPROTO_RAW
 )paren
@@ -2046,7 +2052,7 @@ id|TCPF_CLOSE
 )paren
 )paren
 op_logical_and
-id|sk-&gt;daddr
+id|inet-&gt;daddr
 op_ne
 id|LOOPBACK4_IPV6
 )paren
@@ -3503,11 +3509,11 @@ id|info
 suffix:semicolon
 id|info.ipi_addr.s_addr
 op_assign
-id|sk-&gt;rcv_saddr
+id|inet-&gt;rcv_saddr
 suffix:semicolon
 id|info.ipi_spec_dst.s_addr
 op_assign
-id|sk-&gt;rcv_saddr
+id|inet-&gt;rcv_saddr
 suffix:semicolon
 id|info.ipi_ifindex
 op_assign

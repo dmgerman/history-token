@@ -1056,7 +1056,7 @@ op_amp
 id|ehead-&gt;lock
 )paren
 suffix:semicolon
-multiline_comment|/* Step 3: Put TW into bind hash. Original socket stays there too.&n;&t;   Note, that any socket with sk-&gt;num!=0 MUST be bound in binding&n;&t;   cache, even if it is closed.&n;&t; */
+multiline_comment|/* Step 3: Put TW into bind hash. Original socket stays there too.&n;&t;   Note, that any socket with inet_sk(sk)-&gt;num != 0 MUST be bound in&n;&t;   binding cache, even if it is closed.&n;&t; */
 id|bhead
 op_assign
 op_amp
@@ -1065,7 +1065,13 @@ id|tcp_bhash
 id|tcp_bhashfn
 c_func
 (paren
-id|sk-&gt;num
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 )paren
 )braket
 suffix:semicolon
@@ -1214,6 +1220,17 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_struct
+id|inet_opt
+op_star
+id|inet
+op_assign
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 r_int
 id|rto
 op_assign
@@ -1232,11 +1249,11 @@ suffix:semicolon
 multiline_comment|/* Give us an identity. */
 id|tw-&gt;daddr
 op_assign
-id|sk-&gt;daddr
+id|inet-&gt;daddr
 suffix:semicolon
 id|tw-&gt;rcv_saddr
 op_assign
-id|sk-&gt;rcv_saddr
+id|inet-&gt;rcv_saddr
 suffix:semicolon
 id|tw-&gt;bound_dev_if
 op_assign
@@ -1244,7 +1261,7 @@ id|sk-&gt;bound_dev_if
 suffix:semicolon
 id|tw-&gt;num
 op_assign
-id|sk-&gt;num
+id|inet-&gt;num
 suffix:semicolon
 id|tw-&gt;state
 op_assign
@@ -1256,11 +1273,11 @@ id|state
 suffix:semicolon
 id|tw-&gt;sport
 op_assign
-id|sk-&gt;sport
+id|inet-&gt;sport
 suffix:semicolon
 id|tw-&gt;dport
 op_assign
-id|sk-&gt;dport
+id|inet-&gt;dport
 suffix:semicolon
 id|tw-&gt;family
 op_assign
@@ -2489,7 +2506,13 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Clone the TCP header template */
-id|newsk-&gt;dport
+id|inet_sk
+c_func
+(paren
+id|newsk
+)paren
+op_member_access_from_pointer
+id|dport
 op_assign
 id|req-&gt;rmt_port
 suffix:semicolon

@@ -48,7 +48,7 @@ suffix:semicolon
 multiline_comment|/* This is for listening sockets, thus all sockets which possess wildcards. */
 DECL|macro|TCP_LHTABLE_SIZE
 mdefine_line|#define TCP_LHTABLE_SIZE&t;32&t;/* Yes, really, this is all you need. */
-multiline_comment|/* There are a few simple rules, which allow for local port reuse by&n; * an application.  In essence:&n; *&n; *&t;1) Sockets bound to different interfaces may share a local port.&n; *&t;   Failing that, goto test 2.&n; *&t;2) If all sockets have sk-&gt;reuse set, and none of them are in&n; *&t;   TCP_LISTEN state, the port may be shared.&n; *&t;   Failing that, goto test 3.&n; *&t;3) If all sockets are bound to a specific sk-&gt;rcv_saddr local&n; *&t;   address, and none of them are the same, the port may be&n; *&t;   shared.&n; *&t;   Failing this, the port cannot be shared.&n; *&n; * The interesting point, is test #2.  This is what an FTP server does&n; * all day.  To optimize this case we use a specific flag bit defined&n; * below.  As we add sockets to a bind bucket list, we perform a&n; * check of: (newsk-&gt;reuse &amp;&amp; (newsk-&gt;state != TCP_LISTEN))&n; * As long as all sockets added to a bind bucket pass this test,&n; * the flag bit will be set.&n; * The resulting situation is that tcp_v[46]_verify_bind() can just check&n; * for this flag bit, if it is set and the socket trying to bind has&n; * sk-&gt;reuse set, we don&squot;t even have to walk the owners list at all,&n; * we return that it is ok to bind this socket to the requested local port.&n; *&n; * Sounds like a lot of work, but it is worth it.  In a more naive&n; * implementation (ie. current FreeBSD etc.) the entire list of ports&n; * must be walked for each data port opened by an ftp server.  Needless&n; * to say, this does not scale at all.  With a couple thousand FTP&n; * users logged onto your box, isn&squot;t it nice to know that new data&n; * ports are created in O(1) time?  I thought so. ;-)&t;-DaveM&n; */
+multiline_comment|/* There are a few simple rules, which allow for local port reuse by&n; * an application.  In essence:&n; *&n; *&t;1) Sockets bound to different interfaces may share a local port.&n; *&t;   Failing that, goto test 2.&n; *&t;2) If all sockets have sk-&gt;reuse set, and none of them are in&n; *&t;   TCP_LISTEN state, the port may be shared.&n; *&t;   Failing that, goto test 3.&n; *&t;3) If all sockets are bound to a specific inet_sk(sk)-&gt;rcv_saddr local&n; *&t;   address, and none of them are the same, the port may be&n; *&t;   shared.&n; *&t;   Failing this, the port cannot be shared.&n; *&n; * The interesting point, is test #2.  This is what an FTP server does&n; * all day.  To optimize this case we use a specific flag bit defined&n; * below.  As we add sockets to a bind bucket list, we perform a&n; * check of: (newsk-&gt;reuse &amp;&amp; (newsk-&gt;state != TCP_LISTEN))&n; * As long as all sockets added to a bind bucket pass this test,&n; * the flag bit will be set.&n; * The resulting situation is that tcp_v[46]_verify_bind() can just check&n; * for this flag bit, if it is set and the socket trying to bind has&n; * sk-&gt;reuse set, we don&squot;t even have to walk the owners list at all,&n; * we return that it is ok to bind this socket to the requested local port.&n; *&n; * Sounds like a lot of work, but it is worth it.  In a more naive&n; * implementation (ie. current FreeBSD etc.) the entire list of ports&n; * must be walked for each data port opened by an ftp server.  Needless&n; * to say, this does not scale at all.  With a couple thousand FTP&n; * users logged onto your box, isn&squot;t it nice to know that new data&n; * ports are created in O(1) time?  I thought so. ;-)&t;-DaveM&n; */
 DECL|struct|tcp_bind_bucket
 r_struct
 id|tcp_bind_bucket
@@ -277,27 +277,34 @@ r_struct
 id|tcp_tw_bucket
 (brace
 multiline_comment|/* These _must_ match the beginning of struct sock precisely.&n;&t; * XXX Yes I know this is gross, but I&squot;d have to edit every single&n;&t; * XXX networking file if I created a &quot;struct sock_header&quot;. -DaveM&n;&t; */
-DECL|member|daddr
-id|__u32
-id|daddr
-suffix:semicolon
-DECL|member|rcv_saddr
-id|__u32
-id|rcv_saddr
-suffix:semicolon
-DECL|member|dport
-id|__u16
-id|dport
-suffix:semicolon
-DECL|member|num
+DECL|member|state
+r_volatile
 r_int
-r_int
-id|num
+r_char
+id|state
+comma
+multiline_comment|/* Connection state&t;      */
+DECL|member|substate
+id|substate
 suffix:semicolon
+multiline_comment|/* &quot;zapped&quot; -&gt; &quot;substate&quot;     */
+DECL|member|reuse
+r_int
+r_char
+id|reuse
+suffix:semicolon
+multiline_comment|/* SO_REUSEADDR setting       */
+DECL|member|rcv_wscale
+r_int
+r_char
+id|rcv_wscale
+suffix:semicolon
+multiline_comment|/* also TW bucket specific    */
 DECL|member|bound_dev_if
 r_int
 id|bound_dev_if
 suffix:semicolon
+multiline_comment|/* Main hash linkage for various protocol lookup tables. */
 DECL|member|next
 r_struct
 id|sock
@@ -324,36 +331,37 @@ op_star
 op_star
 id|bind_pprev
 suffix:semicolon
-DECL|member|state
-r_int
-r_char
-id|state
-comma
-DECL|member|substate
-id|substate
-suffix:semicolon
-multiline_comment|/* &quot;zapped&quot; is replaced with &quot;substate&quot; */
-DECL|member|sport
-id|__u16
-id|sport
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
 suffix:semicolon
 DECL|member|family
 r_int
 r_int
 id|family
 suffix:semicolon
-DECL|member|reuse
-r_int
-r_char
-id|reuse
-comma
-DECL|member|rcv_wscale
-id|rcv_wscale
+multiline_comment|/* End of struct sock/struct tcp_tw_bucket shared layout */
+DECL|member|sport
+id|__u16
+id|sport
 suffix:semicolon
-multiline_comment|/* It is also TW bucket specific */
-DECL|member|refcnt
-id|atomic_t
-id|refcnt
+multiline_comment|/* Socket demultiplex comparisons on incoming packets. */
+multiline_comment|/* these five are in inet_opt */
+DECL|member|daddr
+id|__u32
+id|daddr
+suffix:semicolon
+DECL|member|rcv_saddr
+id|__u32
+id|rcv_saddr
+suffix:semicolon
+DECL|member|dport
+id|__u16
+id|dport
+suffix:semicolon
+DECL|member|num
+id|__u16
+id|num
 suffix:semicolon
 multiline_comment|/* And these are ours. */
 DECL|member|hashent
@@ -550,15 +558,15 @@ DECL|macro|TCP_V4_ADDR_COOKIE
 mdefine_line|#define TCP_V4_ADDR_COOKIE(__name, __saddr, __daddr) &bslash;&n;&t;__u64 __name = (((__u64)(__daddr))&lt;&lt;32)|((__u64)(__saddr));
 macro_line|#endif /* __BIG_ENDIAN */
 DECL|macro|TCP_IPV4_MATCH
-mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;((__sk)-&gt;daddr)))== (__cookie))&t;&amp;&amp;&t;&t;&bslash;&n;&t; ((*((__u32 *)&amp;((__sk)-&gt;dport)))== (__ports))   &amp;&amp;&t;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((*((__u64 *)&amp;(inet_sk(__sk)-&gt;daddr)))== (__cookie))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
 macro_line|#else /* 32-bit arch */
 DECL|macro|TCP_V4_ADDR_COOKIE
 mdefine_line|#define TCP_V4_ADDR_COOKIE(__name, __saddr, __daddr)
 DECL|macro|TCP_IPV4_MATCH
-mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;(((__sk)-&gt;daddr&t;&t;&t;== (__saddr))&t;&amp;&amp;&t;&t;&bslash;&n;&t; ((__sk)-&gt;rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&t;&bslash;&n;&t; ((*((__u32 *)&amp;((__sk)-&gt;dport)))== (__ports))   &amp;&amp;&t;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+mdefine_line|#define TCP_IPV4_MATCH(__sk, __cookie, __saddr, __daddr, __ports, __dif)&bslash;&n;&t;((inet_sk(__sk)-&gt;daddr&t;&t;&t;== (__saddr))&t;&amp;&amp;&t;&bslash;&n;&t; (inet_sk(__sk)-&gt;rcv_saddr&t;&t;== (__daddr))&t;&amp;&amp;&t;&bslash;&n;&t; ((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))&t;&amp;&amp;&t;&bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
 macro_line|#endif /* 64-bit arch */
 DECL|macro|TCP_IPV6_MATCH
-mdefine_line|#define TCP_IPV6_MATCH(__sk, __saddr, __daddr, __ports, __dif)&t;   &bslash;&n;&t;(((*((__u32 *)&amp;((__sk)-&gt;dport)))== (__ports))   &t;&amp;&amp; &bslash;&n;&t; ((__sk)-&gt;family&t;&t;== AF_INET6)&t;&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;daddr, (__saddr))&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;rcv_saddr, (__daddr))&t;&amp;&amp; &bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
+mdefine_line|#define TCP_IPV6_MATCH(__sk, __saddr, __daddr, __ports, __dif)&t;   &bslash;&n;&t;(((*((__u32 *)&amp;(inet_sk(__sk)-&gt;dport)))== (__ports))   &t;&amp;&amp; &bslash;&n;&t; ((__sk)-&gt;family&t;&t;== AF_INET6)&t;&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;daddr, (__saddr))&t;&amp;&amp; &bslash;&n;&t; !ipv6_addr_cmp(&amp;inet6_sk(__sk)-&gt;rcv_saddr, (__daddr))&t;&amp;&amp; &bslash;&n;&t; (!((__sk)-&gt;bound_dev_if) || ((__sk)-&gt;bound_dev_if == (__dif))))
 multiline_comment|/* These can have wildcards, don&squot;t try too hard. */
 DECL|function|tcp_lhashfn
 r_static
@@ -599,7 +607,13 @@ r_return
 id|tcp_lhashfn
 c_func
 (paren
-id|sk-&gt;num
+id|inet_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|num
 )paren
 suffix:semicolon
 )brace

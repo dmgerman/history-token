@@ -1992,7 +1992,7 @@ id|sk-&gt;family
 op_assign
 id|PF_ECONET
 suffix:semicolon
-id|sk-&gt;num
+id|eo-&gt;num
 op_assign
 id|protocol
 suffix:semicolon
