@@ -1154,16 +1154,6 @@ c_func
 id|complete_and_exit
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-DECL|variable|__wake_up_sync
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|__wake_up_sync
-)paren
-suffix:semicolon
-multiline_comment|/* internal use only */
-macro_line|#endif
 DECL|variable|schedule_timeout
 id|EXPORT_SYMBOL
 c_func

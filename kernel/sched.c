@@ -5633,12 +5633,13 @@ id|flags
 suffix:semicolon
 )brace
 DECL|variable|__wake_up_sync
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|__wake_up_sync
 )paren
 suffix:semicolon
+multiline_comment|/* For internal use only */
 DECL|function|complete
 r_void
 id|complete
