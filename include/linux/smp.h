@@ -212,12 +212,6 @@ id|cpu
 )paren
 (brace
 )brace
-DECL|macro|cpu_online_map
-mdefine_line|#define cpu_online_map&t;&t;&t;&t;1
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu)&t;&t;&t;&t;({ BUG_ON((cpu) != 0); 1; })
-DECL|macro|num_online_cpus
-mdefine_line|#define num_online_cpus()&t;&t;&t;1
 DECL|macro|num_booting_cpus
 mdefine_line|#define num_booting_cpus()&t;&t;&t;1
 DECL|macro|cpu_possible

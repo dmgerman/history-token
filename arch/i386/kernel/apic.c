@@ -3683,9 +3683,11 @@ c_func
 suffix:semicolon
 id|phys_cpu_present_map
 op_assign
-l_int|1
-op_lshift
+id|physid_mask_of_physid
+c_func
+(paren
 id|boot_cpu_physical_apicid
+)paren
 suffix:semicolon
 id|setup_local_APIC
 c_func

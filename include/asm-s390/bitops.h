@@ -2545,6 +2545,7 @@ id|ch
 op_assign
 op_star
 (paren
+r_volatile
 r_int
 r_char
 op_star

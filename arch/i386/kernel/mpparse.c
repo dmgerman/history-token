@@ -153,8 +153,7 @@ id|num_processors
 suffix:semicolon
 multiline_comment|/* Bitmask of physically existing CPUs */
 DECL|variable|phys_cpu_present_map
-r_int
-r_int
+id|physid_mask_t
 id|phys_cpu_present_map
 suffix:semicolon
 DECL|variable|bios_cpu_apicid
@@ -251,6 +250,9 @@ r_int
 id|ver
 comma
 id|apicid
+suffix:semicolon
+id|physid_mask_t
+id|tmp
 suffix:semicolon
 r_if
 c_cond
@@ -710,12 +712,22 @@ id|ver
 op_assign
 id|m-&gt;mpc_apicver
 suffix:semicolon
-id|phys_cpu_present_map
-op_or_assign
+id|tmp
+op_assign
 id|apicid_to_cpu_present
 c_func
 (paren
 id|apicid
+)paren
+suffix:semicolon
+id|physids_or
+c_func
+(paren
+id|phys_cpu_present_map
+comma
+id|phys_cpu_present_map
+comma
+id|tmp
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Validate version&n;&t; */

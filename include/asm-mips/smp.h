@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id()&t;(current_thread_info()-&gt;cpu)
@@ -75,55 +76,6 @@ DECL|macro|SMP_RESCHEDULE_YOURSELF
 mdefine_line|#define SMP_RESCHEDULE_YOURSELF&t;0x1&t;/* XXX braindead */
 DECL|macro|SMP_CALL_FUNCTION
 mdefine_line|#define SMP_CALL_FUNCTION&t;0x2
-macro_line|#if (NR_CPUS &lt;= _MIPS_SZLONG)
-DECL|typedef|cpumask_t
-r_typedef
-r_int
-r_int
-id|cpumask_t
-suffix:semicolon
-DECL|macro|CPUMASK_CLRALL
-mdefine_line|#define CPUMASK_CLRALL(p)&t;(p) = 0
-DECL|macro|CPUMASK_SETB
-mdefine_line|#define CPUMASK_SETB(p, bit)&t;(p) |= 1UL &lt;&lt; (bit)
-DECL|macro|CPUMASK_CLRB
-mdefine_line|#define CPUMASK_CLRB(p, bit)&t;(p) &amp;= ~(1UL &lt;&lt; (bit))
-DECL|macro|CPUMASK_TSTB
-mdefine_line|#define CPUMASK_TSTB(p, bit)&t;((p) &amp; (1UL &lt;&lt; (bit)))
-macro_line|#elif (NR_CPUS &lt;= 128)
-multiline_comment|/*&n; * The foll should work till 128 cpus.&n; */
-DECL|macro|CPUMASK_SIZE
-mdefine_line|#define CPUMASK_SIZE&t;&t;(NR_CPUS/_MIPS_SZLONG)
-DECL|macro|CPUMASK_INDEX
-mdefine_line|#define CPUMASK_INDEX(bit)&t;((bit) &gt;&gt; 6)
-DECL|macro|CPUMASK_SHFT
-mdefine_line|#define CPUMASK_SHFT(bit)&t;((bit) &amp; 0x3f)
-r_typedef
-r_struct
-(brace
-DECL|member|_bits
-r_int
-r_int
-id|_bits
-(braket
-id|CPUMASK_SIZE
-)braket
-suffix:semicolon
-DECL|typedef|cpumask_t
-)brace
-id|cpumask_t
-suffix:semicolon
-DECL|macro|CPUMASK_CLRALL
-mdefine_line|#define&t;CPUMASK_CLRALL(p)&t;(p)._bits[0] = 0, (p)._bits[1] = 0
-DECL|macro|CPUMASK_SETB
-mdefine_line|#define CPUMASK_SETB(p, bit)&t;(p)._bits[CPUMASK_INDEX(bit)] |= &bslash;&n;&t;&t;&t;&t;&t;(1UL &lt;&lt; CPUMASK_SHFT(bit))
-DECL|macro|CPUMASK_CLRB
-mdefine_line|#define CPUMASK_CLRB(p, bit)&t;(p)._bits[CPUMASK_INDEX(bit)] &amp;= &bslash;&n;&t;&t;&t;&t;&t;~(1UL &lt;&lt; CPUMASK_SHFT(bit))
-DECL|macro|CPUMASK_TSTB
-mdefine_line|#define CPUMASK_TSTB(p, bit)&t;((p)._bits[CPUMASK_INDEX(bit)] &amp; &bslash;&n;&t;&t;&t;&t;&t;(1UL &lt;&lt; CPUMASK_SHFT(bit)))
-macro_line|#else
-macro_line|#error cpumask macros only defined for 128p kernels
-macro_line|#endif
 r_extern
 id|cpumask_t
 id|phys_cpu_present_map
@@ -133,9 +85,9 @@ id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 DECL|macro|cpu_possible
-mdefine_line|#define cpu_possible(cpu) (phys_cpu_present_map &amp; (1&lt;&lt;(cpu)))
+mdefine_line|#define cpu_possible(cpu)&t;cpu_isset(cpu, phys_cpu_present_map)
 DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu) (cpu_online_map &amp; (1&lt;&lt;(cpu)))
+mdefine_line|#define cpu_online(cpu)&t;&t;cpu_isset(cpu, cpu_online_map)
 DECL|function|num_online_cpus
 r_static
 r_inline
@@ -148,7 +100,7 @@ r_void
 )paren
 (brace
 r_return
-id|hweight32
+id|cpus_weight
 c_func
 (paren
 id|cpu_online_map
@@ -156,9 +108,7 @@ id|cpu_online_map
 suffix:semicolon
 )brace
 r_extern
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_callout_map
 suffix:semicolon
 multiline_comment|/* We don&squot;t mark CPUs online until __cpu_up(), so we need another measure */
@@ -173,7 +123,7 @@ r_void
 )paren
 (brace
 r_return
-id|hweight32
+id|cpus_weight
 c_func
 (paren
 id|cpu_callout_map

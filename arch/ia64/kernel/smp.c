@@ -113,7 +113,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Remove this CPU:&n;&t; */
-id|clear_bit
+id|cpu_clear
 c_func
 (paren
 id|smp_processor_id
@@ -121,7 +121,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon

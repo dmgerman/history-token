@@ -71,16 +71,14 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* track which CPU is booting */
 DECL|variable|cpu_online_map
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 suffix:semicolon
 multiline_comment|/* Bitmap of online CPUs */
 DECL|macro|IS_LOGGED_IN
-mdefine_line|#define IS_LOGGED_IN(cpunum) (test_bit(cpunum, (atomic_t *)&amp;cpu_online_map))
+mdefine_line|#define IS_LOGGED_IN(cpunum) (cpu_isset(cpunum, cpu_online_map))
 DECL|variable|smp_num_cpus
 r_int
 id|smp_num_cpus
@@ -108,8 +106,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Command line */
 DECL|variable|cpu_present_mask
-r_int
-r_int
+id|cpumask_t
 id|cpu_present_mask
 suffix:semicolon
 DECL|struct|smp_call_struct
@@ -255,7 +252,7 @@ suffix:semicolon
 macro_line|#else
 multiline_comment|/* REVISIT : redirect I/O Interrupts to another CPU? */
 multiline_comment|/* REVISIT : does PM *know* this CPU isn&squot;t available? */
-id|clear_bit
+id|cpu_clear
 c_func
 (paren
 id|smp_processor_id
@@ -263,11 +260,6 @@ c_func
 (paren
 )paren
 comma
-(paren
-r_void
-op_star
-)paren
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
@@ -1336,20 +1328,12 @@ multiline_comment|/* Well, support 2.4 linux scheme as well. */
 r_if
 c_cond
 (paren
-id|test_and_set_bit
+id|cpu_test_and_set
 c_func
 (paren
 id|cpunum
 comma
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-op_amp
 id|cpu_online_map
-)paren
 )paren
 )paren
 (brace
@@ -1868,13 +1852,15 @@ id|current-&gt;thread_info-&gt;cpu
 op_assign
 id|bootstrap_processor
 suffix:semicolon
+multiline_comment|/* Mark Boostrap processor as present */
 id|cpu_online_map
 op_assign
-l_int|1
-op_lshift
+id|cpumask_of_cpu
+c_func
+(paren
 id|bootstrap_processor
+)paren
 suffix:semicolon
-multiline_comment|/* Mark Boostrap processor as present */
 id|current-&gt;active_mm
 op_assign
 op_amp
@@ -1893,9 +1879,11 @@ suffix:semicolon
 macro_line|#endif
 id|cpu_present_mask
 op_assign
-l_int|1UL
-op_lshift
+id|cpumask_of_cpu
+c_func
+(paren
 id|bootstrap_processor
+)paren
 suffix:semicolon
 multiline_comment|/* Nothing to do when told not to.  */
 r_if
@@ -2165,7 +2153,7 @@ c_func
 r_void
 )paren
 (brace
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -2173,11 +2161,10 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -2185,7 +2172,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_present_mask
 )paren
 suffix:semicolon

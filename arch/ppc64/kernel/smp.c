@@ -42,11 +42,10 @@ id|cache_decay_ticks
 suffix:semicolon
 multiline_comment|/* initialised so it doesn&squot;t end up in bss */
 DECL|variable|cpu_online_map
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 suffix:semicolon
 DECL|variable|smp_ops
 r_static
@@ -2097,7 +2096,7 @@ c_func
 r_void
 )paren
 (brace
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -2105,7 +2104,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
@@ -2419,12 +2417,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon

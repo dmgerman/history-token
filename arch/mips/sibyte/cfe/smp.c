@@ -172,12 +172,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|CPUMASK_SETB
+id|cpu_set
 c_func
 (paren
-id|cpu_online_map
-comma
 id|i
+comma
+id|cpu_online_map
 )paren
 suffix:semicolon
 )brace

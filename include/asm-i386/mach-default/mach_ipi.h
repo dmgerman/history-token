@@ -6,7 +6,7 @@ r_void
 id|send_IPI_mask_bitmask
 c_func
 (paren
-r_int
+id|cpumask_t
 id|mask
 comma
 r_int
@@ -33,7 +33,7 @@ r_void
 id|send_IPI_mask
 c_func
 (paren
-r_int
+id|cpumask_t
 id|mask
 comma
 r_int

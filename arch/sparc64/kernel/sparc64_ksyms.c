@@ -774,13 +774,6 @@ c_func
 id|cpu_online_map
 )paren
 suffix:semicolon
-DECL|variable|sparc64_num_cpus_online
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sparc64_num_cpus_online
-)paren
-suffix:semicolon
 DECL|variable|phys_cpu_present_map
 id|EXPORT_SYMBOL
 c_func

@@ -1410,6 +1410,8 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * hweightN - returns the hamming weight of a N-bit word&n; * @x: the word to weigh&n; *&n; * The Hamming Weight of a number is the total number of bits set in it.&n; */
+DECL|macro|hweight64
+mdefine_line|#define hweight64(x) generic_hweight64(x)
 DECL|macro|hweight32
 mdefine_line|#define hweight32(x) generic_hweight32(x)
 DECL|macro|hweight16

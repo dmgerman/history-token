@@ -121,14 +121,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|cpu_online
+c_func
 (paren
-id|cpu_online_map
-op_amp
-(paren
-l_int|1
-op_lshift
 id|index
-)paren
 )paren
 )paren
 r_return

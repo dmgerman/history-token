@@ -38,29 +38,23 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 multiline_comment|/* Package ID of each logical CPU */
-multiline_comment|/* Bitmask of currently online CPUs */
+multiline_comment|/* bitmap of online cpus */
 DECL|variable|cpu_online_map
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 DECL|variable|cpu_callin_map
 r_static
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_callin_map
 suffix:semicolon
 DECL|variable|cpu_callout_map
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_callout_map
 suffix:semicolon
 DECL|variable|smp_commenced_mask
 r_static
-r_int
-r_int
+id|cpumask_t
 id|smp_commenced_mask
 suffix:semicolon
 multiline_comment|/* Per CPU bogomips and other parameters */
@@ -736,12 +730,11 @@ op_increment
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|i
 comma
-op_amp
 id|cpu_callout_map
 )paren
 )paren
@@ -795,12 +788,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|i
 comma
-op_amp
 id|cpu_callout_map
 )paren
 )paren
@@ -1107,12 +1099,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpuid
 comma
-op_amp
 id|cpu_callin_map
 )paren
 )paren
@@ -1169,12 +1160,11 @@ multiline_comment|/*&n;&t;&t; * Has the boot CPU finished it&squot;s STARTUP seq
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpuid
 comma
-op_amp
 id|cpu_callout_map
 )paren
 )paren
@@ -1273,12 +1263,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allow the master to continue.&n;&t; */
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|cpuid
 comma
-op_amp
 id|cpu_callin_map
 )paren
 suffix:semicolon
@@ -1335,7 +1324,7 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|smp_processor_id
@@ -1343,7 +1332,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|smp_commenced_mask
 )paren
 )paren
@@ -1395,7 +1383,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -1403,7 +1391,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
@@ -1506,9 +1493,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 multiline_comment|/* which logical CPUs are on which nodes */
 DECL|variable|node_2_cpu_mask
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|node_2_cpu_mask
 (braket
 id|MAX_NR_NODES
@@ -1525,12 +1510,11 @@ op_minus
 l_int|1
 )braket
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 )brace
 suffix:semicolon
 multiline_comment|/* which node each logical CPU is on */
 DECL|variable|cpu_2_node
-r_volatile
 r_int
 id|cpu_2_node
 (braket
@@ -1576,15 +1560,15 @@ comma
 id|node
 )paren
 suffix:semicolon
+id|cpu_set
+c_func
+(paren
+id|cpu
+comma
 id|node_2_cpu_mask
 (braket
 id|node
 )braket
-op_or_assign
-(paren
-l_int|1
-op_lshift
-id|cpu
 )paren
 suffix:semicolon
 id|cpu_2_node
@@ -1632,16 +1616,15 @@ suffix:semicolon
 id|node
 op_increment
 )paren
+id|cpu_clear
+c_func
+(paren
+id|cpu
+comma
 id|node_2_cpu_mask
 (braket
 id|node
 )braket
-op_and_assign
-op_complement
-(paren
-l_int|1
-op_lshift
-id|cpu
 )paren
 suffix:semicolon
 id|cpu_2_node
@@ -1660,7 +1643,6 @@ DECL|macro|unmap_cpu_to_node
 mdefine_line|#define unmap_cpu_to_node(cpu)&t;({})
 macro_line|#endif /* CONFIG_NUMA */
 DECL|variable|cpu_2_logical_apicid
-r_volatile
 id|u8
 id|cpu_2_logical_apicid
 (braket
@@ -2659,8 +2641,7 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;/* WAKE_SECONDARY_VIA_INIT */
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|cpu_initialized
 suffix:semicolon
 DECL|function|do_boot_cpu
@@ -2851,12 +2832,11 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_callout_map
 )paren
 suffix:semicolon
@@ -2887,12 +2867,11 @@ op_increment
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_callin_map
 )paren
 )paren
@@ -2909,12 +2888,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_callin_map
 )paren
 )paren
@@ -3009,22 +2987,20 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-id|clear_bit
+id|cpu_clear
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_callout_map
 )paren
 suffix:semicolon
 multiline_comment|/* was set here (do_boot_cpu()) */
-id|clear_bit
+id|cpu_clear
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_initialized
 )paren
 suffix:semicolon
@@ -3315,7 +3291,11 @@ c_func
 suffix:semicolon
 id|phys_cpu_present_map
 op_assign
-l_int|1
+id|physid_mask_of_physid
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3361,15 +3341,15 @@ comma
 id|boot_cpu_physical_apicid
 )paren
 suffix:semicolon
-id|phys_cpu_present_map
-op_or_assign
+id|physid_set
+c_func
 (paren
-l_int|1
-op_lshift
 id|hard_smp_processor_id
 c_func
 (paren
 )paren
+comma
+id|phys_cpu_present_map
 )paren
 suffix:semicolon
 )brace
@@ -3413,7 +3393,11 @@ c_func
 suffix:semicolon
 id|phys_cpu_present_map
 op_assign
-l_int|1
+id|physid_mask_of_physid
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -3449,7 +3433,11 @@ c_func
 suffix:semicolon
 id|phys_cpu_present_map
 op_assign
-l_int|1
+id|physid_mask_of_physid
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -3500,7 +3488,11 @@ c_func
 (paren
 l_string|&quot;CPU present map: %lx&bslash;n&quot;
 comma
+id|physids_coerce
+c_func
+(paren
 id|phys_cpu_present_map
+)paren
 )paren
 suffix:semicolon
 id|kicked
@@ -3520,7 +3512,7 @@ id|NR_CPUS
 op_logical_and
 id|bit
 OL
-id|BITS_PER_LONG
+id|MAX_APICS
 suffix:semicolon
 id|bit
 op_increment
@@ -3650,12 +3642,12 @@ op_increment
 r_if
 c_cond
 (paren
-id|cpu_callout_map
-op_amp
+id|cpu_isset
+c_func
 (paren
-l_int|1
-op_lshift
 id|cpu
+comma
+id|cpu_callout_map
 )paren
 )paren
 id|bogosum
@@ -3804,12 +3796,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_callout_map
 )paren
 )paren
@@ -3838,12 +3829,11 @@ op_eq
 id|cpu
 op_logical_or
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|i
 comma
-op_amp
 id|cpu_callout_map
 )paren
 )paren
@@ -3968,7 +3958,7 @@ c_func
 r_void
 )paren
 (brace
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -3976,11 +3966,10 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -3988,7 +3977,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_callout_map
 )paren
 suffix:semicolon
@@ -4008,12 +3996,11 @@ multiline_comment|/* This only works at boot for x86.  See &quot;rewrite&quot; a
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|smp_commenced_mask
 )paren
 )paren
@@ -4033,12 +4020,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_callin_map
 )paren
 )paren
@@ -4059,12 +4045,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Unleash the CPU! */
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|smp_commenced_mask
 )paren
 suffix:semicolon
@@ -4072,12 +4057,11 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_online_map
 )paren
 )paren
@@ -4102,10 +4086,15 @@ id|max_cpus
 )paren
 (brace
 macro_line|#ifdef CONFIG_X86_IO_APIC
+id|cpumask_t
+id|targets
+op_assign
+id|CPU_MASK_ALL
+suffix:semicolon
 id|setup_ioapic_dest
 c_func
 (paren
-id|TARGET_CPUS
+id|targets
 )paren
 suffix:semicolon
 macro_line|#endif

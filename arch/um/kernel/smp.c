@@ -1,13 +1,5 @@
 multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/config.h&quot;
-multiline_comment|/* CPU online map, set by smp_boot_cpus */
-DECL|variable|cpu_online_map
-r_int
-r_int
-id|cpu_online_map
-op_assign
-l_int|1
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/threads.h&quot;
@@ -22,6 +14,18 @@ macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;os.h&quot;
+multiline_comment|/* CPU online map, set by smp_boot_cpus */
+DECL|variable|cpu_online_map
+r_int
+r_int
+id|cpu_online_map
+op_assign
+id|cpumask_of_cpu
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* Per CPU bogomips and other parameters&n; * The only piece used here is the ipi pipe, which is set before SMP is&n; * started and never changed.&n; */
 DECL|variable|cpu_data
 r_struct
@@ -310,18 +314,15 @@ suffix:semicolon
 )brace
 DECL|variable|smp_commenced_mask
 r_static
-r_int
-r_int
+id|cpumask_t
 id|smp_commenced_mask
 suffix:semicolon
 DECL|variable|smp_callin_map
 r_static
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|smp_callin_map
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 suffix:semicolon
 DECL|function|idle_proc
 r_static
@@ -403,7 +404,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_and_set_bit
+id|cpu_test_and_set
 c_func
 (paren
 id|cpu
@@ -431,7 +432,7 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
@@ -445,12 +446,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
@@ -623,21 +623,19 @@ id|err
 comma
 id|cpu
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 l_int|0
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 l_int|0
 comma
-op_amp
 id|smp_callin_map
 )paren
 suffix:semicolon
@@ -746,12 +744,11 @@ id|waittime
 op_decrement
 op_logical_and
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|smp_callin_map
 )paren
 )paren
@@ -763,12 +760,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|smp_callin_map
 )paren
 )paren
@@ -795,7 +791,7 @@ c_func
 r_void
 )paren
 (brace
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -803,7 +799,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
@@ -818,12 +813,11 @@ r_int
 id|cpu
 )paren
 (brace
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|smp_commenced_mask
 )paren
 suffix:semicolon
@@ -831,12 +825,11 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpu_online_map
 )paren
 )paren
@@ -1185,12 +1178,11 @@ op_ne
 id|current-&gt;thread_info-&gt;cpu
 )paren
 op_logical_and
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|i
 comma
-op_amp
 id|cpu_online_map
 )paren
 )paren

@@ -3,13 +3,13 @@ macro_line|#ifndef _LINUX_NODE_H_
 DECL|macro|_LINUX_NODE_H_
 mdefine_line|#define _LINUX_NODE_H_
 macro_line|#include &lt;linux/sysdev.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 DECL|struct|node
 r_struct
 id|node
 (brace
 DECL|member|cpumap
-r_int
-r_int
+id|cpumask_t
 id|cpumap
 suffix:semicolon
 multiline_comment|/* Bitmap of CPUs on the Node */
