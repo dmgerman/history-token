@@ -10805,7 +10805,6 @@ suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|variable|pci_ids
 r_static
-r_const
 r_struct
 id|pci_device_id
 id|__devinitdata
