@@ -4339,6 +4339,12 @@ id|freq
 op_member_access_from_pointer
 r_new
 )paren
+op_logical_or
+(paren
+id|val
+op_eq
+id|CPUFREQ_RESUMECHANGE
+)paren
 )paren
 (brace
 id|cpu_data

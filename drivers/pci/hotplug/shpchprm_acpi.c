@@ -5654,7 +5654,8 @@ r_return
 id|aps
 suffix:semicolon
 )brace
-DECL|function|shpchprm_get_slot
+macro_line|#if 0
+r_static
 r_void
 op_star
 id|shpchprm_get_slot
@@ -5713,6 +5714,7 @@ op_star
 id|aps
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|shpchprm_dump_func_res
 r_static
 r_void

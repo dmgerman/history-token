@@ -13,6 +13,10 @@ DECL|macro|ide_default_irq
 mdefine_line|#define ide_default_irq(base) (0)
 DECL|macro|ide_default_io_base
 mdefine_line|#define ide_default_io_base(index) (0)
+DECL|macro|IDE_ARCH_OBSOLETE_INIT
+mdefine_line|#define IDE_ARCH_OBSOLETE_INIT
+DECL|macro|ide_default_io_ctl
+mdefine_line|#define ide_default_io_ctl(base)&t;((base) + 0x206) /* obsolete */
 DECL|macro|ide_init_default_irq
 mdefine_line|#define ide_init_default_irq(base)&t;(0)
 DECL|macro|ide_request_irq

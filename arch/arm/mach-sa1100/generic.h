@@ -88,7 +88,9 @@ r_int
 id|sa11x0_getspeed
 c_func
 (paren
-r_void
+r_int
+r_int
+id|cpu
 )paren
 suffix:semicolon
 r_extern

@@ -7,13 +7,8 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;
 macro_line|#include &quot;pci_hotplug.h&quot;
-macro_line|#if !defined(CONFIG_HOTPLUG_PCI_PCIE_MODULE)
 DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME&t;&quot;pciehp&quot;
-macro_line|#else
-DECL|macro|MY_NAME
-mdefine_line|#define MY_NAME&t;THIS_MODULE-&gt;name
-macro_line|#endif
 r_extern
 r_int
 id|pciehp_poll_mode
@@ -134,16 +129,10 @@ id|pci_dev
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|SLOT_MAGIC
-mdefine_line|#define SLOT_MAGIC&t;0x67267321
 DECL|struct|slot
 r_struct
 id|slot
 (brace
-DECL|member|magic
-id|u32
-id|magic
-suffix:semicolon
 DECL|member|next
 r_struct
 id|slot
@@ -533,7 +522,7 @@ mdefine_line|#define msg_HPC_rev_error&t;&quot;Unsupported revision of the PCI h
 DECL|macro|msg_HPC_non_pcie
 mdefine_line|#define msg_HPC_non_pcie&t;&quot;The PCI hot plug controller is not supported by this driver.&bslash;n&quot;
 DECL|macro|msg_HPC_not_supported
-mdefine_line|#define msg_HPC_not_supported&t;&quot;This system is not supported by this version of pciephd mdoule. Upgrade to a newer version of pciehpd&bslash;n&quot;
+mdefine_line|#define msg_HPC_not_supported&t;&quot;This system is not supported by this version of pciephd module. Upgrade to a newer version of pciehpd&bslash;n&quot;
 DECL|macro|msg_unable_to_save
 mdefine_line|#define msg_unable_to_save&t;&quot;Unable to store PCI hot plug add resource information. This system must be rebooted before adding any PCI devices.&bslash;n&quot;
 DECL|macro|msg_button_on
@@ -556,15 +545,6 @@ id|ctrl
 )paren
 suffix:semicolon
 multiline_comment|/* controller functions */
-r_extern
-r_void
-id|pciehp_pushbutton_thread
-(paren
-r_int
-r_int
-id|event_pointer
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|pciehprm_find_available_resources
@@ -848,160 +828,6 @@ l_int|256
 )braket
 suffix:semicolon
 multiline_comment|/* Inline functions */
-multiline_comment|/* Inline functions to check the sanity of a pointer that is passed to us */
-DECL|function|slot_paranoia_check
-r_static
-r_inline
-r_int
-id|slot_paranoia_check
-(paren
-r_struct
-id|slot
-op_star
-id|slot
-comma
-r_const
-r_char
-op_star
-id|function
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|slot
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - slot == NULL&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|slot-&gt;magic
-op_ne
-id|SLOT_MAGIC
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - bad magic number for slot&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|slot-&gt;hotplug_slot
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - slot-&gt;hotplug_slot == NULL!&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|get_slot
-r_static
-r_inline
-r_struct
-id|slot
-op_star
-id|get_slot
-(paren
-r_struct
-id|hotplug_slot
-op_star
-id|hotplug_slot
-comma
-r_const
-r_char
-op_star
-id|function
-)paren
-(brace
-r_struct
-id|slot
-op_star
-id|slot
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hotplug_slot
-)paren
-(brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - hotplug_slot == NULL&bslash;n&quot;
-comma
-id|function
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-id|slot
-op_assign
-(paren
-r_struct
-id|slot
-op_star
-)paren
-id|hotplug_slot
-op_member_access_from_pointer
-r_private
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot_paranoia_check
-(paren
-id|slot
-comma
-id|function
-)paren
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-r_return
-id|slot
-suffix:semicolon
-)brace
 DECL|function|pciehp_find_slot
 r_static
 r_inline
@@ -1009,6 +835,7 @@ r_struct
 id|slot
 op_star
 id|pciehp_find_slot
+c_func
 (paren
 r_struct
 id|controller
@@ -1027,15 +854,6 @@ comma
 op_star
 id|tmp_slot
 op_assign
-l_int|NULL
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ctrl
-)paren
-r_return
 l_int|NULL
 suffix:semicolon
 id|p_slot
@@ -1101,9 +919,7 @@ id|tmp_slot
 suffix:semicolon
 )brace
 r_return
-(paren
 id|p_slot
-)paren
 suffix:semicolon
 )brace
 DECL|function|wait_for_ctrl_irq
@@ -1111,6 +927,7 @@ r_static
 r_inline
 r_int
 id|wait_for_ctrl_irq
+c_func
 (paren
 r_struct
 id|controller

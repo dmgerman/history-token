@@ -310,6 +310,14 @@ id|slot
 r_goto
 id|exit_rc
 suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|slot-&gt;name
+comma
+id|slot-&gt;dev.vio_dev-&gt;dev.bus_id
+)paren
+suffix:semicolon
 id|info
 c_func
 (paren

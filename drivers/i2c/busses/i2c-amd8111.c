@@ -1123,12 +1123,10 @@ op_amp
 id|AMD_SMB_STS_DONE
 )paren
 (brace
-id|i2c_delay
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|100
+l_int|1
 )paren
 suffix:semicolon
 id|amd_ec_read

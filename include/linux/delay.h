@@ -24,5 +24,14 @@ macro_line|#ifndef ndelay
 DECL|macro|ndelay
 mdefine_line|#define ndelay(x)&t;udelay(((x)+999)/1000)
 macro_line|#endif
+r_void
+id|msleep
+c_func
+(paren
+r_int
+r_int
+id|msecs
+)paren
+suffix:semicolon
 macro_line|#endif /* defined(_LINUX_DELAY_H) */
 eof

@@ -244,9 +244,19 @@ r_int
 id|sa11x0_getspeed
 c_func
 (paren
-r_void
+r_int
+r_int
+id|cpu
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cpu
+)paren
+r_return
+l_int|0
+suffix:semicolon
 r_return
 id|cclk_frequency_100khz
 (braket
@@ -258,13 +268,6 @@ op_star
 l_int|100
 suffix:semicolon
 )brace
-DECL|variable|sa11x0_getspeed
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|sa11x0_getspeed
-)paren
-suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n; * We still need to provide this so building without cpufreq works.&n; */
 DECL|function|cpufreq_get

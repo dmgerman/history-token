@@ -1526,7 +1526,7 @@ id|USB_PORT_FEAT_POWER
 suffix:semicolon
 )brace
 multiline_comment|/* Wait for power to be enabled */
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|hub-&gt;descriptor-&gt;bPwrOn2PwrGood
@@ -3785,7 +3785,7 @@ id|delay
 )paren
 (brace
 multiline_comment|/* wait to give the device a chance to reset */
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|delay
@@ -4202,7 +4202,7 @@ op_add_assign
 id|HUB_DEBOUNCE_STEP
 )paren
 (brace
-id|wait_ms
+id|msleep
 c_func
 (paren
 id|HUB_DEBOUNCE_STEP
@@ -4745,7 +4745,7 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|200
@@ -4814,7 +4814,7 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* cope with hardware quirkiness:&n;&t;&t; *  - let SET_ADDRESS settle, some device hardware wants it&n;&t;&t; *  - read ep0 maxpacket even for high and low speed,&n;  &t;&t; */
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10
@@ -4839,7 +4839,7 @@ l_int|8
 )paren
 r_break
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|100
@@ -6322,7 +6322,7 @@ comma
 l_string|&quot;overcurrent change&bslash;n&quot;
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|500

@@ -671,6 +671,10 @@ r_enum
 id|rndis_state
 id|state
 suffix:semicolon
+DECL|member|filter
+id|u32
+id|filter
+suffix:semicolon
 DECL|member|medium
 id|u32
 id|medium

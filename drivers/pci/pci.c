@@ -2054,7 +2054,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_DEBUG
 l_string|&quot;PCI: cache line size of %d is not supported &quot;
 l_string|&quot;by device %s&bslash;n&quot;
 comma

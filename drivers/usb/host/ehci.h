@@ -1473,36 +1473,6 @@ DECL|macro|ehci_port_speed
 mdefine_line|#define&t;ehci_port_speed(ehci, portsc)&t;(1&lt;&lt;USB_PORT_FEAT_HIGHSPEED)
 macro_line|#endif
 multiline_comment|/*-------------------------------------------------------------------------*/
-DECL|macro|MSEC_TO_JIFFIES
-mdefine_line|#define&t;MSEC_TO_JIFFIES(msec) ((HZ * (msec) + 999) / 1000)
-DECL|function|msec_delay
-r_static
-r_inline
-r_void
-id|msec_delay
-c_func
-(paren
-r_int
-id|msec
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|MSEC_TO_JIFFIES
-c_func
-(paren
-id|msec
-)paren
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifndef DEBUG
 DECL|macro|STUB_DEBUG_FILES
 mdefine_line|#define STUB_DEBUG_FILES

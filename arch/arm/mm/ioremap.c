@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/ioremap.c&n; *&n; * Re-map IO memory to kernel address space so that we can access it.&n; *&n; * (C) Copyright 1995 1996 Linus Torvalds&n; *&n; * Hacked for ARM by Phil Blundell &lt;philb@gnu.org&gt;&n; * Hacked to allow all architectures to build, and various cleanups&n; * by Russell King&n; *&n; * This allows a driver to remap an arbitrary region of bus memory into&n; * virtual space.  One should *only* use readl, writel, memcpy_toio and&n; * so on with such remapped areas.&n; *&n; * Because the ARM only has a 32-bit address space we can&squot;t address the&n; * whole of the (physical) PCI space at once.  PCI huge-mode addressing&n; * allows us to circumvent this restriction by splitting PCI space into&n; * two 2GB chunks and mapping only one at a time into processor memory.&n; * We use MMU protection domains to trap any attempt to access the bank&n; * that is not currently mapped.  (This isn&squot;t fully implemented yet.)&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;

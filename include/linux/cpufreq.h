@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/sysfs.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 DECL|macro|CPUFREQ_NAME_LEN
 mdefine_line|#define CPUFREQ_NAME_LEN 16
 multiline_comment|/*********************************************************************&n; *                     CPUFREQ NOTIFIER INTERFACE                    *&n; *********************************************************************/
@@ -161,6 +162,12 @@ id|semaphore
 id|lock
 suffix:semicolon
 multiline_comment|/* CPU -&gt;setpolicy or -&gt;target may&n;&t;&t;&t;&t;&t;   only be called once a time */
+DECL|member|update
+r_struct
+id|work_struct
+id|update
+suffix:semicolon
+multiline_comment|/* if update_policy() needs to be&n;&t;&t;&t;&t;&t; * called, but you&squot;re in IRQ context */
 DECL|member|user_policy
 r_struct
 id|cpufreq_real_policy
@@ -189,6 +196,8 @@ DECL|macro|CPUFREQ_PRECHANGE
 mdefine_line|#define CPUFREQ_PRECHANGE&t;(0)
 DECL|macro|CPUFREQ_POSTCHANGE
 mdefine_line|#define CPUFREQ_POSTCHANGE&t;(1)
+DECL|macro|CPUFREQ_RESUMECHANGE
+mdefine_line|#define CPUFREQ_RESUMECHANGE&t;(8)
 DECL|struct|cpufreq_freqs
 r_struct
 id|cpufreq_freqs
@@ -209,6 +218,11 @@ r_int
 r_int
 r_new
 suffix:semicolon
+DECL|member|flags
+id|u8
+id|flags
+suffix:semicolon
+multiline_comment|/* flags of cpufreq_driver, see below. */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * cpufreq_scale - &quot;old * mult / div&quot; calculation for large values (32-bit-arch safe)&n; * @old:   old value&n; * @div:   divisor&n; * @mult:  multiplier&n; *&n; *&n; *    new = old * mult / div&n; */
@@ -500,6 +514,20 @@ r_int
 id|relation
 )paren
 suffix:semicolon
+multiline_comment|/* should be defined, if possible */
+DECL|member|get
+r_int
+r_int
+(paren
+op_star
+id|get
+)paren
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
 multiline_comment|/* optional */
 DECL|member|exit
 r_int
@@ -538,7 +566,13 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* flags */
 DECL|macro|CPUFREQ_STICKY
-mdefine_line|#define CPUFREQ_STICKY&t;0x01&t;/* the driver isn&squot;t removed even if &n;&t;&t;&t;&t;   all -&gt;init() calls failed */
+mdefine_line|#define CPUFREQ_STICKY&t;&t;0x01&t;/* the driver isn&squot;t removed even if &n;&t;&t;&t;&t;&t; * all -&gt;init() calls failed */
+DECL|macro|CPUFREQ_CONST_LOOPS
+mdefine_line|#define CPUFREQ_CONST_LOOPS &t;0x02&t;/* loops_per_jiffy or other kernel&n;&t;&t;&t;&t;&t; * &quot;constants&quot; aren&squot;t affected by&n;&t;&t;&t;&t;&t; * frequency transitions */
+DECL|macro|CPUFREQ_PANIC_OUTOFSYNC
+mdefine_line|#define CPUFREQ_PANIC_OUTOFSYNC&t;0x04&t;/* panic if cpufreq&squot;s opinion of&n;&t;&t;&t;&t;&t; * current frequency differs from&n;&t;&t;&t;&t;&t; * actual frequency */
+DECL|macro|CPUFREQ_PANIC_RESUME_OUTOFSYNC
+mdefine_line|#define CPUFREQ_PANIC_RESUME_OUTOFSYNC 0x08 /* panic if cpufreq&squot;s opinion of&n;&t;&t;&t;&t;&t; * current frequency differs from&n;&t;&t;&t;&t;&t; * actual frequency on resume&n;&t;&t;&t;&t;&t; * from sleep. */
 r_int
 id|cpufreq_register_driver
 c_func
@@ -731,6 +765,17 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+multiline_comment|/* query the current CPU frequency (in kHz). If zero, cpufreq couldn&squot;t detect it */
+r_int
+r_int
+id|cpufreq_get
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
 multiline_comment|/* the proc_intf.c needs this */
 r_int
 id|cpufreq_parse_governor
@@ -752,13 +797,6 @@ id|governor
 )paren
 suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ USERSPACE GOVERNOR                   *&n; *********************************************************************/
-r_int
-id|cpufreq_gov_userspace_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 r_int
 id|cpufreq_setmax
@@ -777,16 +815,6 @@ r_int
 r_int
 id|kHz
 comma
-r_int
-r_int
-id|cpu
-)paren
-suffix:semicolon
-r_int
-r_int
-id|cpufreq_get
-c_func
-(paren
 r_int
 r_int
 id|cpu

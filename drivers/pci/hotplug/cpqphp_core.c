@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * Compaq Hot Plug Controller Driver&n; *&n; * Copyright (C) 1995,2001 Compaq Computer Corporation&n; * Copyright (C) 2001 Greg Kroah-Hartman (greg@kroah.com)&n; * Copyright (C) 2001 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;greg@kroah.com&gt;&n; *&n; * Jan 12, 2003 -&t;Added 66/100/133MHz PCI-X support,&n; * &t;&t;&t;Torben Mathiasen &lt;torben.mathiasen@hp.com&gt;&n; *&n; */
+multiline_comment|/*&n; * Compaq Hot Plug Controller Driver&n; *&n; * Copyright (C) 1995,2001 Compaq Computer Corporation&n; * Copyright (C) 2001 Greg Kroah-Hartman &lt;greg@kroah.com&gt;&n; * Copyright (C) 2001 IBM Corp.&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;greg@kroah.com&gt;&n; *&n; * Jan 12, 2003 -&t;Added 66/100/133MHz PCI-X support,&n; * &t;&t;&t;Torben Mathiasen &lt;torben.mathiasen@hp.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -59,7 +60,7 @@ id|cpqhp_rom_start
 suffix:semicolon
 DECL|variable|power_mode
 r_static
-id|u8
+r_int
 id|power_mode
 suffix:semicolon
 DECL|variable|debug
@@ -68,7 +69,7 @@ r_int
 id|debug
 suffix:semicolon
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&quot;0.9.7&quot;
+mdefine_line|#define DRIVER_VERSION&t;&quot;0.9.8&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&quot;Dan Zink &lt;dan.zink@compaq.com&gt;, Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -93,12 +94,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|power_mode
 comma
-l_string|&quot;b&quot;
+r_bool
+comma
+l_int|644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -109,12 +112,14 @@ comma
 l_string|&quot;Power mode enabled or not&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -335,6 +340,7 @@ r_static
 r_inline
 r_int
 id|is_slot64bit
+c_func
 (paren
 r_struct
 id|slot
@@ -342,20 +348,7 @@ op_star
 id|slot
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|slot
-op_logical_or
-op_logical_neg
-id|slot-&gt;p_sm_slot
-)paren
 r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
 (paren
 id|readb
 c_func
@@ -367,10 +360,10 @@ id|SMBIOS_SLOT_WIDTH
 op_eq
 l_int|0x06
 )paren
-r_return
+ques
+c_cond
 l_int|1
-suffix:semicolon
-r_return
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
@@ -379,6 +372,7 @@ r_static
 r_inline
 r_int
 id|is_slot66mhz
+c_func
 (paren
 r_struct
 id|slot
@@ -386,20 +380,7 @@ op_star
 id|slot
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|slot
-op_logical_or
-op_logical_neg
-id|slot-&gt;p_sm_slot
-)paren
 r_return
-l_int|0
-suffix:semicolon
-r_if
-c_cond
 (paren
 id|readb
 c_func
@@ -411,14 +392,14 @@ id|SMBIOS_SLOT_TYPE
 op_eq
 l_int|0x0E
 )paren
-r_return
+ques
+c_cond
 l_int|1
-suffix:semicolon
-r_return
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * detect_SMBIOS_pointer - find the system Management BIOS Table in the specified region of memory.&n; *&n; * @begin: begin pointer for region to be scanned.&n; * @end: end pointer for region to be scanned.&n; *&n; * Returns pointer to the head of the SMBIOS tables (or NULL)&n; *&n; */
+multiline_comment|/**&n; * detect_SMBIOS_pointer - find the System Management BIOS Table in mem region.&n; *&n; * @begin: begin pointer for region to be scanned.&n; * @end: end pointer for region to be scanned.&n; *&n; * Returns pointer to the head of the SMBIOS tables (or NULL)&n; *&n; */
 DECL|function|detect_SMBIOS_pointer
 r_static
 r_void
@@ -821,7 +802,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get_subsequent_smbios_entry&n; *&n; * Gets the first entry if previous == NULL&n; * Otherwise, returns the next entry&n; * Uses global SMBIOS Table pointer&n; *&n; * @curr: %NULL or pointer to previously returned structure&n; *&n; * returns a pointer to an SMBIOS structure or NULL if none found&n; */
+multiline_comment|/**&n; * get_subsequent_smbios_entry: get the next entry from bios table.&n; *&n; * Gets the first entry if previous == NULL&n; * Otherwise, returns the next entry&n; * Uses global SMBIOS Table pointer&n; *&n; * @curr: %NULL or pointer to previously returned structure&n; *&n; * returns a pointer to an SMBIOS structure or NULL if none found&n; */
 DECL|function|get_subsequent_smbios_entry
 r_static
 r_void
@@ -912,8 +893,7 @@ op_logical_neg
 id|bail
 )paren
 (brace
-singleline_comment|// Look for the double NULL terminator
-singleline_comment|// The first condition is the previous byte and the second is the curr
+multiline_comment|/* Look for the double NULL terminator&n;&t;&t; * The first condition is the previous byte&n;&t;&t; * and the second is the curr */
 r_if
 c_cond
 (paren
@@ -972,6 +952,7 @@ r_static
 r_void
 op_star
 id|get_SMBIOS_entry
+c_func
 (paren
 r_void
 op_star
@@ -1085,21 +1066,9 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 id|dbg
 c_func
@@ -1140,6 +1109,7 @@ DECL|function|ctrl_slot_setup
 r_static
 r_int
 id|ctrl_slot_setup
+c_func
 (paren
 r_struct
 id|controller
@@ -1183,6 +1153,9 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|result
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|dbg
 c_func
@@ -1238,18 +1211,13 @@ id|number_of_slots
 (brace
 id|new_slot
 op_assign
+id|kmalloc
+c_func
 (paren
-r_struct
-id|slot
+r_sizeof
+(paren
 op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|slot
+id|new_slot
 )paren
 comma
 id|GFP_KERNEL
@@ -1261,9 +1229,8 @@ c_cond
 op_logical_neg
 id|new_slot
 )paren
-r_return
-op_minus
-id|ENOMEM
+r_goto
+id|error
 suffix:semicolon
 id|memset
 c_func
@@ -1282,11 +1249,14 @@ suffix:semicolon
 id|new_slot-&gt;hotplug_slot
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|hotplug_slot
+op_star
+(paren
+id|new_slot-&gt;hotplug_slot
+)paren
 )paren
 comma
 id|GFP_KERNEL
@@ -1298,17 +1268,9 @@ c_cond
 op_logical_neg
 id|new_slot-&gt;hotplug_slot
 )paren
-(brace
-id|kfree
-(paren
-id|new_slot
-)paren
+r_goto
+id|error_slot
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -1326,11 +1288,14 @@ suffix:semicolon
 id|new_slot-&gt;hotplug_slot-&gt;info
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
-r_struct
-id|hotplug_slot_info
+op_star
+(paren
+id|new_slot-&gt;hotplug_slot-&gt;info
+)paren
 )paren
 comma
 id|GFP_KERNEL
@@ -1342,22 +1307,9 @@ c_cond
 op_logical_neg
 id|new_slot-&gt;hotplug_slot-&gt;info
 )paren
-(brace
-id|kfree
-(paren
-id|new_slot-&gt;hotplug_slot
-)paren
+r_goto
+id|error_hpslot
 suffix:semicolon
-id|kfree
-(paren
-id|new_slot
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|memset
 c_func
 (paren
@@ -1375,6 +1327,7 @@ suffix:semicolon
 id|new_slot-&gt;hotplug_slot-&gt;name
 op_assign
 id|kmalloc
+c_func
 (paren
 id|SLOT_NAME_SIZE
 comma
@@ -1387,30 +1340,8 @@ c_cond
 op_logical_neg
 id|new_slot-&gt;hotplug_slot-&gt;name
 )paren
-(brace
-id|kfree
-(paren
-id|new_slot-&gt;hotplug_slot-&gt;info
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|new_slot-&gt;hotplug_slot
-)paren
-suffix:semicolon
-id|kfree
-(paren
-id|new_slot
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|new_slot-&gt;magic
-op_assign
-id|SLOT_MAGIC
+r_goto
+id|error_info
 suffix:semicolon
 id|new_slot-&gt;ctrl
 op_assign
@@ -1646,6 +1577,7 @@ op_assign
 id|new_slot
 suffix:semicolon
 id|make_slot_name
+c_func
 (paren
 id|new_slot-&gt;hotplug_slot-&gt;name
 comma
@@ -1701,7 +1633,8 @@ id|new_slot
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;registering bus %d, dev %d, number %d, ctrl-&gt;slot_device_offset %d, slot %d&bslash;n&quot;
+l_string|&quot;registering bus %d, dev %d, number %d, &quot;
+l_string|&quot;ctrl-&gt;slot_device_offset %d, slot %d&bslash;n&quot;
 comma
 id|new_slot-&gt;bus
 comma
@@ -1734,14 +1667,8 @@ comma
 id|result
 )paren
 suffix:semicolon
-id|release_slot
-c_func
-(paren
-id|new_slot-&gt;hotplug_slot
-)paren
-suffix:semicolon
-r_return
-id|result
+r_goto
+id|error_name
 suffix:semicolon
 )brace
 id|new_slot-&gt;next
@@ -1764,6 +1691,43 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
+suffix:semicolon
+id|error_name
+suffix:colon
+id|kfree
+c_func
+(paren
+id|new_slot-&gt;hotplug_slot-&gt;name
+)paren
+suffix:semicolon
+id|error_info
+suffix:colon
+id|kfree
+c_func
+(paren
+id|new_slot-&gt;hotplug_slot-&gt;info
+)paren
+suffix:semicolon
+id|error_hpslot
+suffix:colon
+id|kfree
+c_func
+(paren
+id|new_slot-&gt;hotplug_slot
+)paren
+suffix:semicolon
+id|error_slot
+suffix:colon
+id|kfree
+c_func
+(paren
+id|new_slot
+)paren
+suffix:semicolon
+id|error
+suffix:colon
+r_return
+id|result
 suffix:semicolon
 )brace
 DECL|function|ctrl_slot_cleanup
@@ -1869,10 +1833,11 @@ singleline_comment|//&t;&t;&t;be returned
 singleline_comment|//
 singleline_comment|// Output:&t;SUCCESS or FAILURE
 singleline_comment|//=============================================================================
-DECL|function|get_slot_mapping
 r_static
 r_int
+DECL|function|get_slot_mapping
 id|get_slot_mapping
+c_func
 (paren
 r_struct
 id|pci_bus
@@ -2065,17 +2030,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// Didn&squot;t get a match on the target PCI device. Check if the
-singleline_comment|// current IRQ table entry is a PCI-to-PCI bridge device.  If so,
-singleline_comment|// and it&squot;s secondary bus matches the bus number for the target 
-singleline_comment|// device, I need to save the bridge&squot;s slot number.  If I can&squot;t 
-singleline_comment|// find an entry for the target device, I will have to assume it&squot;s 
-singleline_comment|// on the other side of the bridge, and assign it the bridge&squot;s slot.
+multiline_comment|/* Did not get a match on the target PCI device. Check&n;&t;&t;&t; * if the current IRQ table entry is a PCI-to-PCI bridge&n;&t;&t;&t; * device.  If so, and it&squot;s secondary bus matches the&n;&t;&t;&t; * bus number for the target device, I need to save the&n;&t;&t;&t; * bridge&squot;s slot number.  If I can not find an entry for&n;&t;&t;&t; * the target device, I will have to assume it&squot;s on the&n;&t;&t;&t; * other side of the bridge, and assign it the bridge&squot;s&n;&t;&t;&t; * slot. */
 id|bus-&gt;number
 op_assign
 id|tbus
 suffix:semicolon
 id|pci_bus_read_config_dword
+c_func
 (paren
 id|bus
 comma
@@ -2106,6 +2067,7 @@ id|PCI_TO_PCI_BRIDGE_CLASS
 )paren
 (brace
 id|pci_bus_read_config_dword
+c_func
 (paren
 id|bus
 comma
@@ -2191,10 +2153,11 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * cpqhp_set_attention_status - Turns the Amber LED for a slot on or off&n; *&n; */
-DECL|function|cpqhp_set_attention_status
 r_static
 r_int
+DECL|function|cpqhp_set_attention_status
 id|cpqhp_set_attention_status
+c_func
 (paren
 r_struct
 id|controller
@@ -2333,17 +2296,16 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_struct
 id|controller
 op_star
 id|ctrl
+op_assign
+id|slot-&gt;ctrl
 suffix:semicolon
 id|u8
 id|bus
@@ -2357,17 +2319,6 @@ suffix:semicolon
 id|u8
 id|function
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -2377,21 +2328,6 @@ id|__FUNCTION__
 comma
 id|hotplug_slot-&gt;name
 )paren
-suffix:semicolon
-id|ctrl
-op_assign
-id|slot-&gt;ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctrl
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -2459,12 +2395,10 @@ c_cond
 op_logical_neg
 id|slot_func
 )paren
-(brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 r_return
 id|cpqhp_set_attention_status
 c_func
@@ -2481,6 +2415,7 @@ DECL|function|process_SI
 r_static
 r_int
 id|process_SI
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -2498,17 +2433,16 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_struct
 id|controller
 op_star
 id|ctrl
+op_assign
+id|slot-&gt;ctrl
 suffix:semicolon
 id|u8
 id|bus
@@ -2522,17 +2456,6 @@ suffix:semicolon
 id|u8
 id|function
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -2542,21 +2465,6 @@ id|__FUNCTION__
 comma
 id|hotplug_slot-&gt;name
 )paren
-suffix:semicolon
-id|ctrl
-op_assign
-id|slot-&gt;ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctrl
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -2624,12 +2532,10 @@ c_cond
 op_logical_neg
 id|slot_func
 )paren
-(brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 id|slot_func-&gt;bus
 op_assign
 id|bus
@@ -2670,6 +2576,7 @@ DECL|function|process_SS
 r_static
 r_int
 id|process_SS
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -2687,17 +2594,16 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_struct
 id|controller
 op_star
 id|ctrl
+op_assign
+id|slot-&gt;ctrl
 suffix:semicolon
 id|u8
 id|bus
@@ -2711,17 +2617,6 @@ suffix:semicolon
 id|u8
 id|function
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -2731,21 +2626,6 @@ id|__FUNCTION__
 comma
 id|hotplug_slot-&gt;name
 )paren
-suffix:semicolon
-id|ctrl
-op_assign
-id|slot-&gt;ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctrl
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -2813,16 +2693,16 @@ c_cond
 op_logical_neg
 id|slot_func
 )paren
-(brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 id|dbg
 c_func
 (paren
-l_string|&quot;In power_down_board, slot_func = %p, ctrl = %p&bslash;n&quot;
+l_string|&quot;In %s, slot_func = %p, ctrl = %p&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|slot_func
 comma
@@ -2843,6 +2723,7 @@ DECL|function|hardware_test
 r_static
 r_int
 id|hardware_test
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -2858,17 +2739,16 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_struct
 id|controller
 op_star
 id|ctrl
+op_assign
+id|slot-&gt;ctrl
 suffix:semicolon
 id|dbg
 c_func
@@ -2880,34 +2760,9 @@ comma
 id|hotplug_slot-&gt;name
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-id|ctrl
-op_assign
-id|slot-&gt;ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctrl
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 r_return
 id|cpqhp_hardware_test
+c_func
 (paren
 id|ctrl
 comma
@@ -2919,6 +2774,7 @@ DECL|function|get_power_status
 r_static
 r_int
 id|get_power_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -2935,28 +2791,16 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_struct
 id|controller
 op_star
 id|ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
+op_assign
+id|slot-&gt;ctrl
 suffix:semicolon
 id|dbg
 c_func
@@ -2967,21 +2811,6 @@ id|__FUNCTION__
 comma
 id|hotplug_slot-&gt;name
 )paren
-suffix:semicolon
-id|ctrl
-op_assign
-id|slot-&gt;ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctrl
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 op_star
 id|value
@@ -3002,6 +2831,7 @@ DECL|function|get_attention_status
 r_static
 r_int
 id|get_attention_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -3018,28 +2848,16 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_struct
 id|controller
 op_star
 id|ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
+op_assign
+id|slot-&gt;ctrl
 suffix:semicolon
 id|dbg
 c_func
@@ -3050,21 +2868,6 @@ id|__FUNCTION__
 comma
 id|hotplug_slot-&gt;name
 )paren
-suffix:semicolon
-id|ctrl
-op_assign
-id|slot-&gt;ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctrl
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 op_star
 id|value
@@ -3085,6 +2888,7 @@ DECL|function|get_latch_status
 r_static
 r_int
 id|get_latch_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -3101,28 +2905,16 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_struct
 id|controller
 op_star
 id|ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
+op_assign
+id|slot-&gt;ctrl
 suffix:semicolon
 id|dbg
 c_func
@@ -3134,25 +2926,11 @@ comma
 id|hotplug_slot-&gt;name
 )paren
 suffix:semicolon
-id|ctrl
-op_assign
-id|slot-&gt;ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctrl
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 op_star
 id|value
 op_assign
 id|cpq_get_latch_status
+c_func
 (paren
 id|ctrl
 comma
@@ -3167,6 +2945,7 @@ DECL|function|get_adapter_status
 r_static
 r_int
 id|get_adapter_status
+c_func
 (paren
 r_struct
 id|hotplug_slot
@@ -3183,28 +2962,16 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_struct
 id|controller
 op_star
 id|ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
+op_assign
+id|slot-&gt;ctrl
 suffix:semicolon
 id|dbg
 c_func
@@ -3216,25 +2983,11 @@ comma
 id|hotplug_slot-&gt;name
 )paren
 suffix:semicolon
-id|ctrl
-op_assign
-id|slot-&gt;ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctrl
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 op_star
 id|value
 op_assign
 id|get_presence_status
+c_func
 (paren
 id|ctrl
 comma
@@ -3266,28 +3019,16 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_struct
 id|controller
 op_star
 id|ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
+op_assign
+id|slot-&gt;ctrl
 suffix:semicolon
 id|dbg
 c_func
@@ -3298,21 +3039,6 @@ id|__FUNCTION__
 comma
 id|hotplug_slot-&gt;name
 )paren
-suffix:semicolon
-id|ctrl
-op_assign
-id|slot-&gt;ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctrl
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 op_star
 id|value
@@ -3344,28 +3070,16 @@ id|slot
 op_star
 id|slot
 op_assign
-id|get_slot
-(paren
 id|hotplug_slot
-comma
-id|__FUNCTION__
-)paren
+op_member_access_from_pointer
+r_private
 suffix:semicolon
 r_struct
 id|controller
 op_star
 id|ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|slot
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
+op_assign
+id|slot-&gt;ctrl
 suffix:semicolon
 id|dbg
 c_func
@@ -3376,21 +3090,6 @@ id|__FUNCTION__
 comma
 id|hotplug_slot-&gt;name
 )paren
-suffix:semicolon
-id|ctrl
-op_assign
-id|slot-&gt;ctrl
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ctrl
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 op_star
 id|value
@@ -3774,27 +3473,22 @@ id|ctrl-&gt;slot_switch_type
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Switch is present
 id|ctrl-&gt;push_button
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Pushbutton is present
 id|ctrl-&gt;pci_config_space
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Index/data access to working registers 0 = not supported, 1 = supported
 id|ctrl-&gt;defeature_PHP
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// PHP is supported
 id|ctrl-&gt;pcix_support
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// PCI-X supported
 id|ctrl-&gt;pcix_speed_capability
 op_assign
 l_int|1
@@ -3911,7 +3605,6 @@ id|ctrl-&gt;slot_switch_type
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Switch is present
 id|ctrl-&gt;speed_capability
 op_assign
 id|PCI_SPEED_33MHz
@@ -3920,27 +3613,22 @@ id|ctrl-&gt;push_button
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// No pushbutton
 id|ctrl-&gt;pci_config_space
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Index/data access to working registers 0 = not supported, 1 = supported
 id|ctrl-&gt;defeature_PHP
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// PHP is supported
 id|ctrl-&gt;pcix_support
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// PCI-X not supported
 id|ctrl-&gt;pcix_speed_capability
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// N/A since PCI-X not supported
 r_break
 suffix:semicolon
 r_case
@@ -3955,7 +3643,6 @@ id|ctrl-&gt;slot_switch_type
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Switch is present
 id|ctrl-&gt;speed_capability
 op_assign
 id|PCI_SPEED_33MHz
@@ -3964,27 +3651,22 @@ id|ctrl-&gt;push_button
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Pushbutton is present
 id|ctrl-&gt;pci_config_space
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Index/data access to working registers 0 = not supported, 1 = supported
 id|ctrl-&gt;defeature_PHP
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// PHP is supported
 id|ctrl-&gt;pcix_support
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// PCI-X not supported
 id|ctrl-&gt;pcix_speed_capability
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// N/A since PCI-X not supported
 r_break
 suffix:semicolon
 r_case
@@ -3995,7 +3677,6 @@ id|ctrl-&gt;slot_switch_type
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Switch is present
 id|ctrl-&gt;speed_capability
 op_assign
 id|PCI_SPEED_33MHz
@@ -4004,27 +3685,22 @@ id|ctrl-&gt;push_button
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// No pushbutton
 id|ctrl-&gt;pci_config_space
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Index/data access to working registers 0 = not supported, 1 = supported
 id|ctrl-&gt;defeature_PHP
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// PHP is supported
 id|ctrl-&gt;pcix_support
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// PCI-X not supported
 id|ctrl-&gt;pcix_speed_capability
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// N/A since PCI-X not supported
 r_break
 suffix:semicolon
 r_case
@@ -4039,7 +3715,6 @@ id|ctrl-&gt;slot_switch_type
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Switch is present
 id|ctrl-&gt;speed_capability
 op_assign
 id|PCI_SPEED_66MHz
@@ -4048,27 +3723,22 @@ id|ctrl-&gt;push_button
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Pushbutton is present
 id|ctrl-&gt;pci_config_space
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Index/data access to working registers 0 = not supported, 1 = supported
 id|ctrl-&gt;defeature_PHP
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// PHP is supported
 id|ctrl-&gt;pcix_support
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// PCI-X not supported
 id|ctrl-&gt;pcix_speed_capability
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// N/A since PCI-X not supported
 r_break
 suffix:semicolon
 r_case
@@ -4083,7 +3753,6 @@ id|ctrl-&gt;slot_switch_type
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Switch is present
 id|ctrl-&gt;speed_capability
 op_assign
 id|PCI_SPEED_100MHz_PCIX
@@ -4092,22 +3761,18 @@ id|ctrl-&gt;push_button
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Pushbutton is present
 id|ctrl-&gt;pci_config_space
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Index/data access to working registers 0 = not supported, 1 = supported
 id|ctrl-&gt;defeature_PHP
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// PHP is supported
 id|ctrl-&gt;pcix_support
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// PCI-X supported
 id|ctrl-&gt;pcix_speed_capability
 op_assign
 l_int|0
@@ -4366,11 +4031,13 @@ id|pdev-&gt;bus-&gt;number
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;Hotplug controller capabilities:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;    speed_capability       %d&bslash;n&quot;
 comma
@@ -4378,87 +4045,81 @@ id|ctrl-&gt;speed_capability
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;    slot_switch_type       %s&bslash;n&quot;
 comma
 id|ctrl-&gt;slot_switch_type
-op_eq
-l_int|0
 ques
 c_cond
-l_string|&quot;no switch&quot;
-suffix:colon
 l_string|&quot;switch present&quot;
+suffix:colon
+l_string|&quot;no switch&quot;
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;    defeature_PHP          %s&bslash;n&quot;
 comma
 id|ctrl-&gt;defeature_PHP
-op_eq
-l_int|0
 ques
 c_cond
-l_string|&quot;PHP not supported&quot;
-suffix:colon
 l_string|&quot;PHP supported&quot;
+suffix:colon
+l_string|&quot;PHP not supported&quot;
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;    alternate_base_address %s&bslash;n&quot;
 comma
 id|ctrl-&gt;alternate_base_address
-op_eq
-l_int|0
 ques
 c_cond
-l_string|&quot;not supported&quot;
-suffix:colon
 l_string|&quot;supported&quot;
+suffix:colon
+l_string|&quot;not supported&quot;
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;    pci_config_space       %s&bslash;n&quot;
 comma
 id|ctrl-&gt;pci_config_space
-op_eq
-l_int|0
 ques
 c_cond
-l_string|&quot;not supported&quot;
-suffix:colon
 l_string|&quot;supported&quot;
+suffix:colon
+l_string|&quot;not supported&quot;
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;    pcix_speed_capability  %s&bslash;n&quot;
 comma
 id|ctrl-&gt;pcix_speed_capability
-op_eq
-l_int|0
 ques
 c_cond
-l_string|&quot;not supported&quot;
-suffix:colon
 l_string|&quot;supported&quot;
+suffix:colon
+l_string|&quot;not supported&quot;
 )paren
 suffix:semicolon
 id|dbg
+c_func
 (paren
 l_string|&quot;    pcix_support           %s&bslash;n&quot;
 comma
 id|ctrl-&gt;pcix_support
-op_eq
-l_int|0
 ques
 c_cond
-l_string|&quot;not supported&quot;
-suffix:colon
 l_string|&quot;supported&quot;
+suffix:colon
+l_string|&quot;not supported&quot;
 )paren
 suffix:semicolon
 id|ctrl-&gt;pci_dev
@@ -4473,10 +4134,11 @@ comma
 id|ctrl
 )paren
 suffix:semicolon
-multiline_comment|/* make our own copy of the pci bus structure, as we like tweaking it a lot */
+multiline_comment|/* make our own copy of the pci bus structure,&n;&t; * as we like tweaking it a lot */
 id|ctrl-&gt;pci_bus
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -4510,6 +4172,7 @@ id|err_free_ctrl
 suffix:semicolon
 )brace
 id|memcpy
+c_func
 (paren
 id|ctrl-&gt;pci_bus
 comma
@@ -4731,17 +4394,9 @@ c_func
 id|ctrl
 )paren
 suffix:semicolon
-singleline_comment|//**************************************************
-singleline_comment|//
-singleline_comment|//              Save configuration headers for this and
-singleline_comment|//              subordinate PCI buses
-singleline_comment|//
-singleline_comment|//**************************************************
+multiline_comment|/********************************************************&n;&t; *&n;&t; *              Save configuration headers for this and&n;&t; *              subordinate PCI buses&n;&t; *&n;&t; ********************************************************/
 singleline_comment|// find the physical slot number of the first hot plug slot
-singleline_comment|// Get slot won&squot;t work for devices behind bridges, but
-singleline_comment|// in this case it will always be called for the &quot;base&quot;
-singleline_comment|// bus/dev/func of a slot.
-singleline_comment|// CS: this is leveraging the PCIIRQ routing code from the kernel (pci-pc.c: get_irq_routing_table)
+multiline_comment|/* Get slot won&squot;t work for devices behind bridges, but&n;&t; * in this case it will always be called for the &quot;base&quot;&n;&t; * bus/dev/func of a slot.&n;&t; * CS: this is leveraging the PCIIRQ routing code from the kernel&n;&t; * (pci-pc.c: get_irq_routing_table) */
 id|rc
 op_assign
 id|get_slot_mapping
@@ -5271,6 +4926,7 @@ id|func-&gt;is_a_board
 )paren
 (brace
 id|green_LED_off
+c_func
 (paren
 id|ctrl
 comma
@@ -5278,6 +4934,7 @@ id|hp_slot
 )paren
 suffix:semicolon
 id|slot_disable
+c_func
 (paren
 id|ctrl
 comma
@@ -5308,6 +4965,7 @@ id|ctrl
 suffix:semicolon
 singleline_comment|// Wait for SOBS to be unset
 id|wait_for_ctrl_irq
+c_func
 (paren
 id|ctrl
 )paren
@@ -5353,6 +5011,7 @@ id|ctrl-&gt;crit_sect
 )paren
 suffix:semicolon
 id|cpqhp_create_ctrl_files
+c_func
 (paren
 id|ctrl
 )paren
@@ -5593,7 +5252,7 @@ op_minus
 id|EIO
 suffix:semicolon
 r_goto
-id|error
+id|error_rom_start
 suffix:semicolon
 )brace
 id|smbios_start
@@ -5636,7 +5295,7 @@ op_minus
 id|EIO
 suffix:semicolon
 r_goto
-id|error
+id|error_smbios_start
 suffix:semicolon
 )brace
 id|initialized
@@ -5646,30 +5305,24 @@ suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
+id|error_smbios_start
+suffix:colon
+id|iounmap
+c_func
+(paren
+id|smbios_start
+)paren
+suffix:semicolon
+id|error_rom_start
+suffix:colon
+id|iounmap
+c_func
+(paren
+id|cpqhp_rom_start
+)paren
+suffix:semicolon
 id|error
 suffix:colon
-r_if
-c_cond
-(paren
-id|cpqhp_rom_start
-)paren
-id|iounmap
-c_func
-(paren
-id|cpqhp_rom_start
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|smbios_start
-)paren
-id|iounmap
-c_func
-(paren
-id|smbios_start
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -5677,6 +5330,7 @@ suffix:semicolon
 DECL|function|unload_cpqphpd
 r_static
 r_void
+id|__exit
 id|unload_cpqphpd
 c_func
 (paren
@@ -6179,7 +5833,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;pci_hotplug&quot;
+l_string|&quot;compaq_pci_hotplug&quot;
 comma
 dot
 id|id_table
@@ -6211,6 +5865,14 @@ id|cpqhp_debug
 op_assign
 id|debug
 suffix:semicolon
+id|info
+(paren
+id|DRIVER_DESC
+l_string|&quot; version: &quot;
+id|DRIVER_VERSION
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 id|result
 op_assign
 id|pci_module_init
@@ -6228,24 +5890,8 @@ comma
 id|result
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|result
-)paren
 r_return
 id|result
-suffix:semicolon
-id|info
-(paren
-id|DRIVER_DESC
-l_string|&quot; version: &quot;
-id|DRIVER_VERSION
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|cpqhpc_cleanup

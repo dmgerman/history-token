@@ -4707,6 +4707,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**************************************************************&n;* HOT REMOVING ADAPTER CARD                                   *&n;* INPUT: POINTER TO THE HOTPLUG SLOT STRUCTURE                *&n;* OUTPUT: SUCCESS 0 ; FAILURE: UNCONFIGURE , VALIDATE         *&n;          DISABLE POWER ,                                    *&n;**************************************************************/
 DECL|function|ibmphp_disable_slot
+r_static
 r_int
 id|ibmphp_disable_slot
 (paren

@@ -1725,21 +1725,12 @@ l_string|&quot;scheduling hangup...&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|info-&gt;tqueue_hangup
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 )brace
@@ -2212,8 +2203,6 @@ c_func
 (paren
 id|tty
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/*static void rs_8xx_timer(void)&n;{&n;&t;printk(&quot;rs_8xx_timer&bslash;n&quot;);&n;}*/
@@ -6103,8 +6092,6 @@ c_func
 l_string|&quot;before DEC-hung&quot;
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|restore_flags
 c_func
 (paren
@@ -6192,8 +6179,6 @@ c_func
 (paren
 l_string|&quot;before DEC-2&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|restore_flags
 c_func
@@ -6398,8 +6383,6 @@ c_func
 op_amp
 id|info-&gt;close_wait
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|restore_flags
 c_func
@@ -7310,8 +7293,6 @@ id|retval
 r_return
 id|retval
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|retval
 op_assign
 id|block_til_ready
@@ -7340,8 +7321,6 @@ id|retval
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -9174,6 +9153,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize the tty_driver structure */
+id|serial_driver-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|serial_driver-&gt;driver_name
 op_assign
 l_string|&quot;serial&quot;

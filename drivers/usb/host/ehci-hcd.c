@@ -677,7 +677,8 @@ suffix:semicolon
 multiline_comment|/* and wait a while for it to happen */
 r_do
 (brace
-id|wait_ms
+id|msleep
+c_func
 (paren
 l_int|10
 )paren
@@ -1988,7 +1989,7 @@ comma
 id|ehci-&gt;next_statechange
 )paren
 )paren
-id|msec_delay
+id|msleep
 (paren
 l_int|100
 )paren
@@ -2053,7 +2054,7 @@ comma
 id|ehci-&gt;next_statechange
 )paren
 )paren
-id|msec_delay
+id|msleep
 (paren
 l_int|100
 )paren
@@ -2489,7 +2490,7 @@ id|i
 op_assign
 id|jiffies
 op_plus
-id|MSEC_TO_JIFFIES
+id|msecs_to_jiffies
 (paren
 l_int|20
 )paren

@@ -2019,7 +2019,7 @@ comma
 id|gpio_audio_reset_pol
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|100
@@ -2034,7 +2034,7 @@ op_logical_neg
 id|gpio_audio_reset_pol
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|100
@@ -3032,7 +3032,7 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|200
@@ -3585,7 +3585,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* Sorry for the horrible delays... I hope to get that improved&n;&t; * by making the whole PM process asynchronous in a future version&n;&t; */
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|750
@@ -3613,7 +3613,7 @@ op_or
 id|MASK_ADDR1
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1000
@@ -6556,7 +6556,7 @@ op_plus
 id|MASK_ADDR5
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|100
@@ -6573,7 +6573,7 @@ op_plus
 id|MASK_ADDR6
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|2
@@ -6906,7 +6906,7 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|200
@@ -6951,7 +6951,7 @@ op_logical_and
 id|awacs
 )paren
 (brace
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|100
@@ -6980,7 +6980,7 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|300
@@ -6988,7 +6988,7 @@ l_int|300
 suffix:semicolon
 )brace
 r_else
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1000
@@ -7031,7 +7031,7 @@ comma
 id|gpio_audio_reset_pol
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|100
@@ -7046,7 +7046,7 @@ op_logical_neg
 id|gpio_audio_reset_pol
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|150
@@ -7073,7 +7073,7 @@ suffix:semicolon
 r_case
 id|AWACS_DACA
 suffix:colon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10
@@ -11674,7 +11674,7 @@ id|DBDMA_STOP
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We should probably wait for the thing to stop before we&n;&t; * release the memory.&n;&t; */
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|100

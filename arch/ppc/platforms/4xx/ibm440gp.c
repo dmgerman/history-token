@@ -529,7 +529,7 @@ comma
 dot
 id|paddr
 op_assign
-l_int|0x0000000140000800UL
+l_int|0x0000000140000800ULL
 comma
 dot
 id|irq

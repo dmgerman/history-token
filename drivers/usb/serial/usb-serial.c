@@ -462,6 +462,22 @@ c_func
 id|tty-&gt;index
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|serial
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|bailout
+suffix:semicolon
+)brace
 multiline_comment|/* set up our port structure making the tty driver remember our port object, and us it */
 id|portNumber
 op_assign
@@ -588,6 +604,14 @@ id|usb_serial_port
 op_star
 )paren
 id|tty-&gt;driver_data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|port
+)paren
+r_return
 suffix:semicolon
 id|dbg
 c_func

@@ -349,7 +349,7 @@ comma
 id|ohci-&gt;next_statechange
 )paren
 )paren
-id|msec_delay
+id|msleep
 (paren
 l_int|100
 )paren
@@ -364,7 +364,12 @@ id|hcd-&gt;self.root_hub
 )paren
 suffix:semicolon
 macro_line|#else
-multiline_comment|/* FIXME lock root hub */
+id|down
+(paren
+op_amp
+id|hcd-&gt;self.root_hub-&gt;serialize
+)paren
+suffix:semicolon
 (paren
 r_void
 )paren
@@ -373,9 +378,15 @@ id|ohci_hub_suspend
 id|hcd
 )paren
 suffix:semicolon
+id|up
+(paren
+op_amp
+id|hcd-&gt;self.root_hub-&gt;serialize
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* let things settle down a bit */
-id|msec_delay
+id|msleep
 (paren
 l_int|100
 )paren
@@ -516,7 +527,7 @@ comma
 id|ohci-&gt;next_statechange
 )paren
 )paren
-id|msec_delay
+id|msleep
 (paren
 l_int|100
 )paren

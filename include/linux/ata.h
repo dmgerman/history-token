@@ -56,6 +56,11 @@ id|ATA_ID_PROD_OFS
 op_assign
 l_int|27
 comma
+DECL|enumerator|ATA_ID_FW_REV_OFS
+id|ATA_ID_FW_REV_OFS
+op_assign
+l_int|23
+comma
 DECL|enumerator|ATA_ID_SERNO_OFS
 id|ATA_ID_SERNO_OFS
 op_assign
@@ -463,6 +468,12 @@ op_assign
 id|ATA_REG_NSECT
 comma
 multiline_comment|/* ATA device commands */
+DECL|enumerator|ATA_CMD_CHK_POWER
+id|ATA_CMD_CHK_POWER
+op_assign
+l_int|0xE5
+comma
+multiline_comment|/* check power mode */
 DECL|enumerator|ATA_CMD_EDD
 id|ATA_CMD_EDD
 op_assign
@@ -842,19 +853,52 @@ multiline_comment|/* IO operation */
 suffix:semicolon
 DECL|macro|ata_id_is_ata
 mdefine_line|#define ata_id_is_ata(dev)&t;(((dev)-&gt;id[0] &amp; (1 &lt;&lt; 15)) == 0)
+DECL|macro|ata_id_rahead_enabled
+mdefine_line|#define ata_id_rahead_enabled(dev) ((dev)-&gt;id[85] &amp; (1 &lt;&lt; 6))
 DECL|macro|ata_id_wcache_enabled
 mdefine_line|#define ata_id_wcache_enabled(dev) ((dev)-&gt;id[85] &amp; (1 &lt;&lt; 5))
 DECL|macro|ata_id_has_lba48
 mdefine_line|#define ata_id_has_lba48(dev)&t;((dev)-&gt;id[83] &amp; (1 &lt;&lt; 10))
 DECL|macro|ata_id_has_wcache
 mdefine_line|#define ata_id_has_wcache(dev)&t;((dev)-&gt;id[82] &amp; (1 &lt;&lt; 5))
+DECL|macro|ata_id_has_pm
+mdefine_line|#define ata_id_has_pm(dev)&t;((dev)-&gt;id[82] &amp; (1 &lt;&lt; 3))
 DECL|macro|ata_id_has_lba
 mdefine_line|#define ata_id_has_lba(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 8))
 DECL|macro|ata_id_has_dma
 mdefine_line|#define ata_id_has_dma(dev)&t;((dev)-&gt;id[49] &amp; (1 &lt;&lt; 9))
+DECL|macro|ata_id_removeable
+mdefine_line|#define ata_id_removeable(dev)&t;((dev)-&gt;id[0] &amp; (1 &lt;&lt; 7))
 DECL|macro|ata_id_u32
 mdefine_line|#define ata_id_u32(dev,n)&t;&bslash;&n;&t;(((u32) (dev)-&gt;id[(n) + 1] &lt;&lt; 16) | ((u32) (dev)-&gt;id[(n)]))
 DECL|macro|ata_id_u64
 mdefine_line|#define ata_id_u64(dev,n)&t;&bslash;&n;&t;( ((u64) dev-&gt;id[(n) + 3] &lt;&lt; 48) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 2] &lt;&lt; 32) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 1] &lt;&lt; 16) |&t;&bslash;&n;&t;  ((u64) dev-&gt;id[(n) + 0]) )
+DECL|function|is_atapi_taskfile
+r_static
+r_inline
+r_int
+id|is_atapi_taskfile
+c_func
+(paren
+r_struct
+id|ata_taskfile
+op_star
+id|tf
+)paren
+(brace
+r_return
+(paren
+id|tf-&gt;protocol
+op_eq
+id|ATA_PROT_ATAPI
+)paren
+op_logical_or
+(paren
+id|tf-&gt;protocol
+op_eq
+id|ATA_PROT_ATAPI_DMA
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* __LINUX_ATA_H__ */
 eof

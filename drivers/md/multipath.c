@@ -2085,6 +2085,10 @@ c_func
 id|mddev-&gt;thread
 )paren
 suffix:semicolon
+id|mddev-&gt;thread
+op_assign
+l_int|NULL
+suffix:semicolon
 id|mempool_destroy
 c_func
 (paren

@@ -853,7 +853,7 @@ id|USB_STOR_TRANSPORT_GOOD
 (brace
 singleline_comment|// I have not experimented to find the smallest value.
 singleline_comment|//
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|50
