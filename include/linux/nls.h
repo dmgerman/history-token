@@ -84,7 +84,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* this value hold the maximum octet of charset */
 DECL|macro|NLS_MAX_CHARSET_SIZE
-mdefine_line|#define NLS_MAX_CHARSET_SIZE 3
+mdefine_line|#define NLS_MAX_CHARSET_SIZE 6 /* for UTF-8 */
 multiline_comment|/* nls.c */
 r_extern
 r_int
