@@ -123,7 +123,7 @@ suffix:semicolon
 multiline_comment|/* Use NCR53c400, Ricoh, etc. extensions ? */
 )brace
 id|overrides
-macro_line|#ifdef GENERIC_NCR5380_OVERRIDE 
+macro_line|#ifdef GENERIC_NCR5380_OVERRIDE
 DECL|variable|__initdata
 (braket
 )braket
@@ -148,12 +148,11 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|NO_OVERRIDES
 mdefine_line|#define NO_OVERRIDES (sizeof(overrides) / sizeof(struct override))
-multiline_comment|/*&n; * Function : static internal_setup(int board, char *str, int *ints)&n; *&n; * Purpose : LILO command line initialization of the overrides array,&n; * &n; * Inputs : board - either BOARD_NCR5380 for a normal NCR5380 board, &n; * &t;or BOARD_NCR53C400 for a NCR53C400 board. str - unused, ints - &n; *&t;array of integer parameters with ints[0] equal to the number of ints.&n; *&n; */
+multiline_comment|/**&n; *&t;internal_setup&t;&t;-&t;handle lilo command string override&n; *&t;@board:&t;BOARD_* identifier for the board&n; *&t;@str: unused&n; *&t;@ints: numeric parameters&n; *&n; * &t;Do LILO command line initialization of the overrides array. Display&n; *&t;errors when needed&n; *&n; *&t;Locks: none&n; */
 DECL|function|internal_setup
 r_static
 r_void
 id|__init
-(def_block
 id|internal_setup
 c_func
 (paren
@@ -205,6 +204,7 @@ l_int|3
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;generic_NCR5380_setup : usage ncr5380=&quot;
 id|STRVAL
 c_func
@@ -236,6 +236,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;generic_NCR53C400_setup : usage ncr53c400=&quot;
 id|STRVAL
 c_func
@@ -267,6 +268,7 @@ l_int|2
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;generic_NCR53C400A_setup : usage ncr53c400a=&quot;
 id|STRVAL
 c_func
@@ -394,23 +396,45 @@ id|commandline_current
 suffix:semicolon
 )brace
 )brace
-)def_block
-multiline_comment|/*&n; * Function : generic_NCR5380_setup (char *str, int *ints)&n; *&n; * Purpose : LILO command line initialization of the overrides array,&n; * &n; * Inputs : str - unused, ints - array of integer parameters with ints[0] &n; * &t;equal to the number of ints.&n; */
-DECL|function|generic_NCR5380_setup
-r_void
+multiline_comment|/**&n; * &t;do_NCR53C80_setup&t;&t;-&t;set up entry point&n; *&t;@str: unused&n; *&n; *&t;Setup function invoked at boot to parse the ncr5380= command&n; *&t;line.&n; */
+DECL|function|do_NCR5380_setup
+r_static
+r_int
 id|__init
-id|generic_NCR5380_setup
+id|do_NCR5380_setup
+c_func
 (paren
 r_char
 op_star
 id|str
-comma
-r_int
-op_star
-id|ints
 )paren
 (brace
+r_int
+id|ints
+(braket
+l_int|10
+)braket
+suffix:semicolon
+id|get_options
+c_func
+(paren
+id|str
+comma
+r_sizeof
+(paren
+id|ints
+)paren
+op_div
+r_sizeof
+(paren
+r_int
+)paren
+comma
+id|ints
+)paren
+suffix:semicolon
 id|internal_setup
+c_func
 (paren
 id|BOARD_NCR5380
 comma
@@ -419,23 +443,49 @@ comma
 id|ints
 )paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function : generic_NCR53C400_setup (char *str, int *ints)&n; *&n; * Purpose : LILO command line initialization of the overrides array,&n; * &n; * Inputs : str - unused, ints - array of integer parameters with ints[0] &n; * &t;equal to the number of ints.&n; */
-DECL|function|generic_NCR53C400_setup
-r_void
+multiline_comment|/**&n; * &t;do_NCR53C400_setup&t;&t;-&t;set up entry point&n; *&t;@str: unused&n; *&t;@ints: integer parameters from kernel setup code &n; *&n; *&t;Setup function invoked at boot to parse the ncr53c400= command&n; *&t;line.&n; */
+DECL|function|do_NCR53C400_setup
+r_static
+r_int
 id|__init
-id|generic_NCR53C400_setup
+id|do_NCR53C400_setup
+c_func
 (paren
 r_char
 op_star
 id|str
-comma
-r_int
-op_star
-id|ints
 )paren
 (brace
+r_int
+id|ints
+(braket
+l_int|10
+)braket
+suffix:semicolon
+id|get_options
+c_func
+(paren
+id|str
+comma
+r_sizeof
+(paren
+id|ints
+)paren
+op_div
+r_sizeof
+(paren
+r_int
+)paren
+comma
+id|ints
+)paren
+suffix:semicolon
 id|internal_setup
+c_func
 (paren
 id|BOARD_NCR53C400
 comma
@@ -444,22 +494,49 @@ comma
 id|ints
 )paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function : generic_NCR53C400A_setup (char *str, int *ints)&n; *&n; * Purpose : LILO command line initialization of the overrides array,&n; * &n; * Inputs : str - unused, ints - array of integer parameters with ints[0] &n; * &t;equal to the number of ints.&n; */
-DECL|function|generic_NCR53C400A_setup
-r_void
-id|generic_NCR53C400A_setup
+multiline_comment|/**&n; * &t;do_NCR53C400A_setup&t;-&t;set up entry point&n; *&t;@str: unused&n; *&t;@ints: integer parameters from kernel setup code &n; *&n; *&t;Setup function invoked at boot to parse the ncr53c400a= command&n; *&t;line.&n; */
+DECL|function|do_NCR53C400A_setup
+r_static
+r_int
+id|__init
+id|do_NCR53C400A_setup
+c_func
 (paren
 r_char
 op_star
 id|str
-comma
-r_int
-op_star
-id|ints
 )paren
 (brace
+r_int
+id|ints
+(braket
+l_int|10
+)braket
+suffix:semicolon
+id|get_options
+c_func
+(paren
+id|str
+comma
+r_sizeof
+(paren
+id|ints
+)paren
+op_div
+r_sizeof
+(paren
+r_int
+)paren
+comma
+id|ints
+)paren
+suffix:semicolon
 id|internal_setup
+c_func
 (paren
 id|BOARD_NCR53C400A
 comma
@@ -468,22 +545,49 @@ comma
 id|ints
 )paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function : generic_DTC3181E_setup (char *str, int *ints)&n; *&n; * Purpose : LILO command line initialization of the overrides array,&n; * &n; * Inputs : str - unused, ints - array of integer parameters with ints[0] &n; * &t;equal to the number of ints.&n; */
-DECL|function|generic_DTC3181E_setup
-r_void
-id|generic_DTC3181E_setup
+multiline_comment|/**&n; * &t;do_DTC3181E_setup&t;-&t;set up entry point&n; *&t;@str: unused&n; *&t;@ints: integer parameters from kernel setup code &n; *&n; *&t;Setup function invoked at boot to parse the dtc3181e= command&n; *&t;line.&n; */
+DECL|function|do_DTC3181E_setup
+r_static
+r_int
+id|__init
+id|do_DTC3181E_setup
+c_func
 (paren
 r_char
 op_star
 id|str
-comma
-r_int
-op_star
-id|ints
 )paren
 (brace
+r_int
+id|ints
+(braket
+l_int|10
+)braket
+suffix:semicolon
+id|get_options
+c_func
+(paren
+id|str
+comma
+r_sizeof
+(paren
+id|ints
+)paren
+op_div
+r_sizeof
+(paren
+r_int
+)paren
+comma
+id|ints
+)paren
+suffix:semicolon
 id|internal_setup
+c_func
 (paren
 id|BOARD_DTC3181E
 comma
@@ -492,12 +596,14 @@ comma
 id|ints
 )paren
 suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
 )brace
-multiline_comment|/* &n; * Function : int generic_NCR5380_detect(Scsi_Host_Template * tpnt)&n; *&n; * Purpose : initializes generic NCR5380 driver based on the &n; *&t;command line / compile time port and irq definitions.&n; *&n; * Inputs : tpnt - template for this SCSI adapter.&n; * &n; * Returns : 1 if a host adapter was found, 0 if not.&n; *&n; */
+multiline_comment|/**&n; * &t;generic_NCR5380_detect&t;-&t;look for NCR5380 controllers&n; *&t;@tpnt: the scsi template&n; *&n; *&t;Scan for the present of NCR5380, NCR53C400, NCR53C400A, DTC3181E&n; *&t;and DTC436(ISAPnP) controllers. If overrides have been set we use&n; *&t;them.&n; *&n; *&t;The caller supplied NCR5380_init function is invoked from here, before&n; *&t;the interrupt line is taken.&n; *&n; *&t;Locks: none&n; */
 DECL|function|generic_NCR5380_detect
 r_int
 id|__init
-(def_block
 id|generic_NCR5380_detect
 c_func
 (paren
@@ -517,11 +623,15 @@ id|count
 comma
 id|i
 suffix:semicolon
-id|u_int
+r_int
+r_int
 op_star
 id|ports
 suffix:semicolon
-id|u_int
+r_static
+r_int
+r_int
+id|__initdata
 id|ncr_53c400a_ports
 (braket
 )braket
@@ -546,7 +656,10 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-id|u_int
+r_static
+r_int
+r_int
+id|__initdata
 id|dtc_3181e_ports
 (braket
 )braket
@@ -1040,7 +1153,7 @@ c_cond
 id|ports
 )paren
 (brace
-multiline_comment|/* wakeup sequence for the NCR53C400A and DTC3181E*/
+multiline_comment|/* wakeup sequence for the NCR53C400A and DTC3181E */
 multiline_comment|/* Disable the adapter and look for a free io port */
 id|outb
 c_func
@@ -1327,10 +1440,8 @@ comma
 id|NCR5380_region_size
 )paren
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|request_mem_region
 c_func
 (paren
@@ -1350,6 +1461,7 @@ macro_line|#endif
 id|instance
 op_assign
 id|scsi_register
+c_func
 (paren
 id|tpnt
 comma
@@ -1477,6 +1589,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;scsi%d : IRQ%d not free, interrupts disabled&bslash;n&quot;
 comma
 id|instance-&gt;host_no
@@ -1500,6 +1613,7 @@ id|IRQ_NONE
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi%d : interrupts not enabled. for better interactive performance,&bslash;n&quot;
 comma
 id|instance-&gt;host_no
@@ -1508,6 +1622,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi%d : please jumper the board for a free IRQ.&bslash;n&quot;
 comma
 id|instance-&gt;host_no
@@ -1517,6 +1632,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi%d : at &quot;
 id|STRVAL
 c_func
@@ -1542,12 +1658,14 @@ op_eq
 id|IRQ_NONE
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot; interrupts disabled&quot;
 )paren
 suffix:semicolon
 r_else
 id|printk
+c_func
 (paren
 l_string|&quot; irq %d&quot;
 comma
@@ -1589,12 +1707,13 @@ r_return
 id|count
 suffix:semicolon
 )brace
-)def_block
+multiline_comment|/**&n; *&t;generic_NCR5380_info&t;-&t;reporting string&n; *&t;@host: NCR5380 to report on&n; *&n; *&t;Report driver information for the NCR5380&n; */
 DECL|function|generic_NCR5380_info
 r_const
 r_char
 op_star
 id|generic_NCR5380_info
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -1615,6 +1734,7 @@ r_return
 id|string
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;generic_NCR5380_release_resources&t;-&t;free resources&n; *&t;@instance: host adapter to clean up &n; *&n; *&t;Free the generic interface resources from this adapter.&n; *&n; *&t;Locks: none&n; */
 DECL|function|generic_NCR5380_release_resources
 r_int
 id|generic_NCR5380_release_resources
@@ -1655,7 +1775,7 @@ comma
 id|NCR5380_region_size
 )paren
 suffix:semicolon
-macro_line|#endif    
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1676,8 +1796,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifdef BIOSPARAM
-multiline_comment|/*&n; * Function : int generic_NCR5380_biosparam(Disk * disk, kdev_t dev, int *ip)&n; *&n; * Purpose : Generates a BIOS / DOS compatible H-C-S mapping for &n; *&t;the specified device / size.&n; * &n; * Inputs : size = size of device in sectors (512 bytes), dev = block device&n; *&t;major / minor, ip[] = {heads, sectors, cylinders}  &n; *&n; * Returns : always 0 (success), initializes ip&n; *&t;&n; */
-multiline_comment|/* &n; * XXX Most SCSI boards use this mapping, I could be incorrect.  Some one&n; * using hard disks on a trantor should verify that this mapping corresponds&n; * to that used by the BIOS / ASPI driver by running the linux fdisk program&n; * and matching the H_C_S coordinates to what DOS uses.&n; */
+multiline_comment|/**&n; *&t;generic_NCR5380_biosparam&n; *&t;@disk: disk to compute geometry for&n; *&t;@dev: device identifier for this disk&n; *&t;@ip: sizes to fill in&n; *&n; *&t;Generates a BIOS / DOS compatible H-C-S mapping for the specified &n; *&t;device / size.&n; * &n; * &t;XXX Most SCSI boards use this mapping, I could be incorrect.  Someone&n; *&t;using hard disks on a trantor should verify that this mapping&n; *&t;corresponds to that used by the BIOS / ASPI driver by running the linux&n; *&t;fdisk program and matching the H_C_S coordinates to what DOS uses.&n; *&n; *&t;Locks: none&n; */
 DECL|function|generic_NCR5380_biosparam
 r_int
 id|generic_NCR5380_biosparam
@@ -1729,11 +1848,13 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if NCR53C400_PSEUDO_DMA
+multiline_comment|/**&n; *&t;NCR5380_pread&t;&t;-&t;pseudo DMA read&n; *&t;@instance: adapter to read from&n; *&t;@dst: buffer to read into&n; *&t;@len: buffer length&n; *&n; *&t;Perform a psuedo DMA mode read from an NCR53C400 or equivalent&n; *&t;controller&n; */
 DECL|function|NCR5380_pread
 r_static
 r_inline
 r_int
 id|NCR5380_pread
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -1764,11 +1885,6 @@ suffix:semicolon
 r_int
 id|bl
 suffix:semicolon
-macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
-r_int
-id|i
-suffix:semicolon
-macro_line|#endif 
 id|NCR5380_local_declare
 c_func
 (paren
@@ -1780,18 +1896,6 @@ c_func
 id|instance
 )paren
 suffix:semicolon
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: About to read %d blocks for %d bytes&bslash;n&quot;
-comma
-id|blocks
-comma
-id|len
-)paren
-suffix:semicolon
-macro_line|#endif
 id|NCR5380_write
 c_func
 (paren
@@ -1816,16 +1920,6 @@ c_loop
 l_int|1
 )paren
 (brace
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: %d blocks left&bslash;n&quot;
-comma
-id|blocks
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1842,32 +1936,9 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-r_if
-c_cond
-(paren
-id|blocks
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: blocks still == %d&bslash;n&quot;
-comma
-id|blocks
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: Exiting loop&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 )brace
-macro_line|#if 1
 r_if
 c_cond
 (paren
@@ -1883,6 +1954,7 @@ id|CSR_GATED_53C80_IRQ
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;53C400r: Got 53C80_IRQ start=%d, blocks=%d&bslash;n&quot;
 comma
 id|start
@@ -1895,17 +1967,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: Waiting for buffer, bl=%d&bslash;n&quot;
-comma
-id|bl
-)paren
-suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -1918,15 +1979,11 @@ op_amp
 id|CSR_HOST_BUF_NOT_RDY
 )paren
 suffix:semicolon
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: Transferring 128 bytes&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+(brace
+r_int
+id|i
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1954,6 +2011,7 @@ c_func
 id|C400_HOST_BUFFER
 )paren
 suffix:semicolon
+)brace
 macro_line|#else
 multiline_comment|/* implies CONFIG_SCSI_G_NCR5380_MEM */
 id|isa_memcpy_fromio
@@ -1985,14 +2043,6 @@ c_cond
 id|blocks
 )paren
 (brace
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: EXTRA: Waiting for buffer&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -2004,16 +2054,14 @@ id|C400_CONTROL_STATUS_REG
 op_amp
 id|CSR_HOST_BUF_NOT_RDY
 )paren
-suffix:semicolon
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: Transferring EXTRA 128 bytes&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
+(brace
+singleline_comment|// FIXME - no timeout
+)brace
 macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+(brace
+r_int
+id|i
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2041,6 +2089,7 @@ c_func
 id|C400_HOST_BUFFER
 )paren
 suffix:semicolon
+)brace
 macro_line|#else
 multiline_comment|/* implies CONFIG_SCSI_G_NCR5380_MEM */
 id|isa_memcpy_fromio
@@ -2066,27 +2115,6 @@ id|blocks
 op_decrement
 suffix:semicolon
 )brace
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: No EXTRA required&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: Final values: blocks=%d   start=%d&bslash;n&quot;
-comma
-id|blocks
-comma
-id|start
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2107,16 +2135,27 @@ c_func
 l_string|&quot;53C400r: no 53C80 gated irq after transfer&quot;
 )paren
 suffix:semicolon
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-r_else
+macro_line|#if 0
+multiline_comment|/*&n;&t; *&t;DON&squot;T DO THIS - THEY NEVER ARRIVE!&n;&t; */
 id|printk
 c_func
 (paren
-l_string|&quot;53C400r: Got 53C80 interrupt and tried to clear it&bslash;n&quot;
+l_string|&quot;53C400r: Waiting for 53C80 registers&bslash;n&quot;
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|NCR5380_read
+c_func
+(paren
+id|C400_CONTROL_STATUS_REG
+)paren
+op_amp
+id|CSR_53C80_REG
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* DON&squot;T DO THIS - THEY NEVER ARRIVE!&n;    printk(&quot;53C400r: Waiting for 53C80 registers&bslash;n&quot;);&n;    while (NCR5380_read(C400_CONTROL_STATUS_REG) &amp; CSR_53C80_REG)&n;&t;;&n;*/
 r_if
 c_cond
 (paren
@@ -2134,18 +2173,10 @@ id|BASR_END_DMA_TRANSFER
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;53C400r: no end dma signal&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PREAD)
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;53C400r: end dma as expected&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|NCR5380_write
 c_func
 (paren
@@ -2164,11 +2195,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;NCR5380_write&t;&t;-&t;pseudo DMA write&n; *&t;@instance: adapter to read from&n; *&t;@dst: buffer to read into&n; *&t;@len: buffer length&n; *&n; *&t;Perform a psuedo DMA mode read from an NCR53C400 or equivalent&n; *&t;controller&n; */
 DECL|function|NCR5380_pwrite
 r_static
 r_inline
 r_int
 id|NCR5380_pwrite
+c_func
 (paren
 r_struct
 id|Scsi_Host
@@ -2197,10 +2230,10 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|i
+id|bl
 suffix:semicolon
 r_int
-id|bl
+id|i
 suffix:semicolon
 id|NCR5380_local_declare
 c_func
@@ -2213,18 +2246,6 @@ c_func
 id|instance
 )paren
 suffix:semicolon
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: About to write %d blocks for %d bytes&bslash;n&quot;
-comma
-id|blocks
-comma
-id|len
-)paren
-suffix:semicolon
-macro_line|#endif
 id|NCR5380_write
 c_func
 (paren
@@ -2262,6 +2283,7 @@ id|CSR_GATED_53C80_IRQ
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;53C400w: Got 53C80_IRQ start=%d, blocks=%d&bslash;n&quot;
 comma
 id|start
@@ -2290,49 +2312,9 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-r_if
-c_cond
-(paren
-id|blocks
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: exiting loop, blocks still == %d&bslash;n&quot;
-comma
-id|blocks
-)paren
-suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: exiting loop&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 )brace
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: %d blocks left&bslash;n&quot;
-comma
-id|blocks
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: waiting for buffer, bl=%d&bslash;n&quot;
-comma
-id|bl
-)paren
-suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -2345,15 +2327,9 @@ op_amp
 id|CSR_HOST_BUF_NOT_RDY
 )paren
 suffix:semicolon
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: transferring 128 bytes&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
+singleline_comment|// FIXME - timeout
 macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+(brace
 r_for
 c_loop
 (paren
@@ -2381,6 +2357,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 macro_line|#else
 multiline_comment|/* implies CONFIG_SCSI_G_NCR5380_MEM */
 id|isa_memcpy_toio
@@ -2412,14 +2389,6 @@ c_cond
 id|blocks
 )paren
 (brace
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: EXTRA waiting for buffer&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_while
 c_loop
 (paren
@@ -2432,15 +2401,9 @@ op_amp
 id|CSR_HOST_BUF_NOT_RDY
 )paren
 suffix:semicolon
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: transferring EXTRA 128 bytes&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
+singleline_comment|// FIXME - no timeout
 macro_line|#ifdef CONFIG_SCSI_G_NCR5380_PORT
+(brace
 r_for
 c_loop
 (paren
@@ -2468,6 +2431,7 @@ id|i
 )braket
 )paren
 suffix:semicolon
+)brace
 macro_line|#else
 multiline_comment|/* implies CONFIG_SCSI_G_NCR5380_MEM */
 id|isa_memcpy_toio
@@ -2493,27 +2457,6 @@ id|blocks
 op_decrement
 suffix:semicolon
 )brace
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: No EXTRA required&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: Final values: blocks=%d   start=%d&bslash;n&quot;
-comma
-id|blocks
-comma
-id|start
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if 0
 id|printk
 c_func
@@ -2545,7 +2488,7 @@ l_string|&quot;53C400w: Got em&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Let&squot;s wait for this instead - could be ugly */
-multiline_comment|/* All documentation says to check for this. Maybe my hardware is too&n;     * fast. Waiting for it seems to work fine! KLL&n;     */
+multiline_comment|/* All documentation says to check for this. Maybe my hardware is too&n;&t; * fast. Waiting for it seems to work fine! KLL&n;&t; */
 r_while
 c_loop
 (paren
@@ -2563,21 +2506,14 @@ id|CSR_GATED_53C80_IRQ
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * I know. i is certainly != 0 here but the loop is new. See previous&n;     * comment.&n;     */
+singleline_comment|// FIXME - no timeout
+multiline_comment|/*&n;&t; * I know. i is certainly != 0 here but the loop is new. See previous&n;&t; * comment.&n;&t; */
 r_if
 c_cond
 (paren
 id|i
 )paren
 (brace
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: got 53C80 gated irq (last block)&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2599,25 +2535,18 @@ id|BASR_END_DMA_TRANSFER
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;53C400w: No END OF DMA bit - WHOOPS! BASR=%0x&bslash;n&quot;
 comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-r_else
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: Got END OF DMA&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;53C400w: no 53C80 gated irq after transfer (last block)&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2640,18 +2569,11 @@ id|BASR_END_DMA_TRANSFER
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;53C400w: no end dma signal&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: waiting for last byte...&bslash;n&quot;
-)paren
-suffix:semicolon
 macro_line|#endif
 r_while
 c_loop
@@ -2668,25 +2590,13 @@ id|TCR_LAST_BYTE_SENT
 )paren
 )paren
 suffix:semicolon
-macro_line|#if (NDEBUG &amp; NDEBUG_C400_PWRITE)
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w:     got last byte.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;53C400w: pwrite exiting with status 0, whoopee!&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
+singleline_comment|// TIMEOUT
 r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* PSEUDO_DMA */
+macro_line|#endif&t;&t;&t;&t;/* PSEUDO_DMA */
+multiline_comment|/*&n; *&t;Include the NCR5380 core code that we build our driver around&t;&n; */
 macro_line|#include &quot;NCR5380.c&quot;
 DECL|macro|PRINTP
 mdefine_line|#define PRINTP(x) len += sprintf(buffer+len, x)
@@ -2732,6 +2642,7 @@ DECL|function|sprint_command
 r_static
 r_int
 id|sprint_command
+c_func
 (paren
 r_char
 op_star
@@ -2818,10 +2729,12 @@ op_minus
 id|start
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;sprintf_Scsi_Cmnd&t;-&t;print a scsi command&n; *&t;@buffer: buffr to print into&n; *&t;@len: buffer length&n; *&t;@cmd: SCSI command block&n; *&t;&n; *&t;Print out the target and command data in hex&n; */
 DECL|function|sprint_Scsi_Cmnd
 r_static
 r_int
 id|sprint_Scsi_Cmnd
+c_func
 (paren
 r_char
 op_star
@@ -2861,6 +2774,7 @@ suffix:semicolon
 id|len
 op_add_assign
 id|sprint_command
+c_func
 (paren
 id|buffer
 comma
@@ -2875,6 +2789,7 @@ op_minus
 id|start
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;generic_NCR5380_proc_info&t;-&t;/proc for NCR5380 driver&n; *&t;@buffer: buffer to print into&n; *&t;@start: start position&n; *&t;@offset: offset into buffer&n; *&t;@len: length&n; *&t;@hostno: instance to affect&n; *&t;@inout: read/write&n; *&n; *&t;Provide the procfs information for the 5380 controller. We fill&n; *&t;this with useful debugging information including the commands&n; *&t;being executed, disconnected command queue and the statistical&n; *&t;data&n; *&n; *&t;Locks: global cli/lock for queue walk&n; */
 DECL|function|generic_NCR5380_proc_info
 r_int
 id|generic_NCR5380_proc_info
@@ -3041,6 +2956,7 @@ c_func
 (paren
 l_string|&quot;NCR53C400 card%s detected&bslash;n&quot;
 id|ANDP
+c_func
 (paren
 (paren
 (paren
@@ -3234,6 +3150,7 @@ l_string|&quot;  T:%d %s &quot;
 id|ANDP
 id|dev-&gt;id
 id|ANDP
+c_func
 (paren
 id|dev-&gt;type
 OL
@@ -3563,6 +3480,7 @@ r_else
 id|len
 op_add_assign
 id|sprint_Scsi_Cmnd
+c_func
 (paren
 id|buffer
 comma
@@ -3606,6 +3524,7 @@ id|ptr-&gt;host_scribble
 id|len
 op_add_assign
 id|sprint_Scsi_Cmnd
+c_func
 (paren
 id|buffer
 comma
@@ -3644,6 +3563,7 @@ id|ptr-&gt;host_scribble
 id|len
 op_add_assign
 id|sprint_Scsi_Cmnd
+c_func
 (paren
 id|buffer
 comma
@@ -3688,7 +3608,7 @@ DECL|macro|PRINTP
 macro_line|#undef PRINTP
 DECL|macro|ANDP
 macro_line|#undef ANDP
-multiline_comment|/* Eventually this will go into an include file, but this will be later */
+multiline_comment|/*&n; *&t;Eventually this will go into an include file, but this will be later &n; */
 DECL|variable|driver_template
 r_static
 id|Scsi_Host_Template
@@ -3698,7 +3618,6 @@ id|GENERIC_NCR5380
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;scsi_module.c&quot;
-macro_line|#ifdef MODULE 
 id|MODULE_PARM
 c_func
 (paren
@@ -3761,231 +3680,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|function|do_NCR5380_setup
-r_static
-r_int
-id|__init
-id|do_NCR5380_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|ints
-(braket
-l_int|10
-)braket
-suffix:semicolon
-id|get_options
-c_func
-(paren
-id|str
-comma
-r_sizeof
-(paren
-id|ints
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-)paren
-comma
-id|ints
-)paren
-suffix:semicolon
-id|generic_NCR5380_setup
-c_func
-(paren
-id|str
-comma
-id|ints
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|do_NCR53C400_setup
-r_static
-r_int
-id|__init
-id|do_NCR53C400_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|ints
-(braket
-l_int|10
-)braket
-suffix:semicolon
-id|get_options
-c_func
-(paren
-id|str
-comma
-r_sizeof
-(paren
-id|ints
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-)paren
-comma
-id|ints
-)paren
-suffix:semicolon
-id|generic_NCR53C400_setup
-c_func
-(paren
-id|str
-comma
-id|ints
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|do_NCR53C400A_setup
-r_static
-r_int
-id|__init
-id|do_NCR53C400A_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|ints
-(braket
-l_int|10
-)braket
-suffix:semicolon
-id|get_options
-c_func
-(paren
-id|str
-comma
-r_sizeof
-(paren
-id|ints
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-)paren
-comma
-id|ints
-)paren
-suffix:semicolon
-id|generic_NCR53C400A_setup
-c_func
-(paren
-id|str
-comma
-id|ints
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|do_DTC3181E_setup
-r_static
-r_int
-id|__init
-id|do_DTC3181E_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|ints
-(braket
-l_int|10
-)braket
-suffix:semicolon
-id|get_options
-c_func
-(paren
-id|str
-comma
-r_sizeof
-(paren
-id|ints
-)paren
-op_div
-r_sizeof
-(paren
-r_int
-)paren
-comma
-id|ints
-)paren
-suffix:semicolon
-id|generic_DTC3181E_setup
-c_func
-(paren
-id|str
-comma
-id|ints
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;ncr5380=&quot;
-comma
-id|do_NCR5380_setup
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;ncr53c400=&quot;
-comma
-id|do_NCR53C400_setup
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;ncr53c400a=&quot;
-comma
-id|do_NCR53C400A_setup
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;dtc3181e=&quot;
-comma
-id|do_DTC3181E_setup
-)paren
-suffix:semicolon
 DECL|variable|__devinitdata
 r_static
 r_struct
@@ -4033,11 +3727,36 @@ comma
 id|id_table
 )paren
 suffix:semicolon
-id|MODULE_LICENSE
+id|__setup
 c_func
 (paren
-l_string|&quot;GPL&quot;
+l_string|&quot;ncr5380=&quot;
+comma
+id|do_NCR5380_setup
 )paren
 suffix:semicolon
-macro_line|#endif
+id|__setup
+c_func
+(paren
+l_string|&quot;ncr53c400=&quot;
+comma
+id|do_NCR53C400_setup
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;ncr53c400a=&quot;
+comma
+id|do_NCR53C400A_setup
+)paren
+suffix:semicolon
+id|__setup
+c_func
+(paren
+l_string|&quot;dtc3181e=&quot;
+comma
+id|do_DTC3181E_setup
+)paren
+suffix:semicolon
 eof

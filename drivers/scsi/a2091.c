@@ -122,6 +122,7 @@ id|ISTR_INTS
 id|spin_lock_irqsave
 c_func
 (paren
+op_amp
 id|instance-&gt;host_lock
 comma
 id|flags
@@ -135,6 +136,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
 id|instance-&gt;host_lock
 comma
 id|flags
@@ -227,7 +229,7 @@ id|instance
 op_member_access_from_pointer
 id|dma_bounce_buffer
 op_assign
-id|scsi_malloc
+id|kmalloc
 (paren
 id|HDATA
 c_func
@@ -236,6 +238,8 @@ id|instance
 )paren
 op_member_access_from_pointer
 id|dma_bounce_len
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/* can&squot;t allocate memory; use PIO */
@@ -291,7 +295,7 @@ id|A2091_XFER_MASK
 )paren
 (brace
 multiline_comment|/* we could use chipmem... maybe later */
-id|scsi_free
+id|kfree
 (paren
 id|HDATA
 c_func
@@ -300,14 +304,6 @@ id|instance
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
-comma
-id|HDATA
-c_func
-(paren
-id|instance
-)paren
-op_member_access_from_pointer
-id|dma_bounce_len
 )paren
 suffix:semicolon
 id|HDATA
@@ -663,7 +659,7 @@ id|SCpnt-&gt;SCp.this_residual
 )paren
 suffix:semicolon
 )brace
-id|scsi_free
+id|kfree
 (paren
 id|HDATA
 c_func
@@ -672,14 +668,6 @@ id|instance
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
-comma
-id|HDATA
-c_func
-(paren
-id|instance
-)paren
-op_member_access_from_pointer
-id|dma_bounce_len
 )paren
 suffix:semicolon
 id|HDATA
@@ -734,7 +722,7 @@ comma
 id|SCpnt-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|scsi_free
+id|kfree
 (paren
 id|HDATA
 c_func
@@ -743,14 +731,6 @@ id|instance
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
-comma
-id|HDATA
-c_func
-(paren
-id|instance
-)paren
-op_member_access_from_pointer
-id|dma_bounce_len
 )paren
 suffix:semicolon
 id|HDATA

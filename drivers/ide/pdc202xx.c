@@ -21,7 +21,7 @@ mdefine_line|#define PDC202XX_DEBUG_DRIVE_INFO&t;&t;0
 DECL|macro|PDC202XX_DECODE_REGISTER_INFO
 mdefine_line|#define PDC202XX_DECODE_REGISTER_INFO&t;&t;0
 DECL|macro|DISPLAY_PDC202XX_TIMINGS
-mdefine_line|#define DISPLAY_PDC202XX_TIMINGS
+macro_line|#undef DISPLAY_PDC202XX_TIMINGS
 macro_line|#ifndef SPLIT_BYTE
 DECL|macro|SPLIT_BYTE
 mdefine_line|#define SPLIT_BYTE(B,H,L)&t;((H)=(B&gt;&gt;4), (L)=(B-((B&gt;&gt;4)&lt;&lt;4)))

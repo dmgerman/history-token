@@ -204,6 +204,11 @@ r_int
 id|phys_base
 suffix:semicolon
 r_extern
+r_int
+r_int
+id|pfn_base
+suffix:semicolon
+r_extern
 r_struct
 id|page
 op_star
@@ -211,15 +216,19 @@ id|mem_map_zero
 suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr)&t;(mem_map_zero)
-multiline_comment|/* Warning: These take pointers to page structs now... */
+multiline_comment|/* PFNs are real physical page numbers.  However, mem_map only begins to record&n; * per-page information starting at pfn_base.  This is to handle systems where&n; * the first physical page in the machine is at some huge physical address, such&n; * as 4GB.   This is common on a partitioned E10000, for example.&n; */
+DECL|macro|pfn_pte
+mdefine_line|#define pfn_pte(pfn, prot)&t;&bslash;&n;&t;__pte(((pfn) &lt;&lt; PAGE_SHIFT) | pgprot_val(prot) | _PAGE_SZBITS)
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page, pgprot)&t;&t;&bslash;&n;&t;__pte((((page - mem_map) &lt;&lt; PAGE_SHIFT)+phys_base) | pgprot_val(pgprot) | _PAGE_SZBITS)
+mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
+DECL|macro|pte_pfn
+mdefine_line|#define pte_pfn(x)&t;&t;((pte_val(x) &amp; _PAGE_PADDR)&gt;&gt;PAGE_SHIFT)
+DECL|macro|pte_page
+mdefine_line|#define pte_page(x)&t;&t;pfn_to_page(pte_pfn(x))
 DECL|macro|page_pte_prot
 mdefine_line|#define page_pte_prot(page, prot)&t;mk_pte(page, prot)
 DECL|macro|page_pte
 mdefine_line|#define page_pte(page)&t;&t;&t;page_pte_prot(page, __pgprot(0))
-DECL|macro|mk_pte_phys
-mdefine_line|#define mk_pte_phys(physpage, pgprot)&t;(__pte((physpage) | pgprot_val(pgprot) | _PAGE_SZBITS))
 DECL|function|pte_modify
 r_extern
 r_inline
@@ -317,8 +326,6 @@ mdefine_line|#define pte_mkold(pte)&t;&t;(__pte(((pte_val(pte)&lt;&lt;1UL)&gt;&g
 multiline_comment|/* Permanent address of a page. */
 DECL|macro|__page_address
 mdefine_line|#define __page_address(page)&t;page_address(page)
-DECL|macro|pte_page
-mdefine_line|#define pte_page(x) (mem_map+(((pte_val(x)&amp;_PAGE_PADDR)-phys_base)&gt;&gt;PAGE_SHIFT))
 multiline_comment|/* Be very careful when you change these three, they are delicate. */
 DECL|macro|pte_mkyoung
 mdefine_line|#define pte_mkyoung(pte)&t;(__pte(pte_val(pte) | _PAGE_ACCESSED | _PAGE_R))

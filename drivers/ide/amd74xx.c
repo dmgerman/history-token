@@ -259,18 +259,15 @@ l_string|&quot;UDMA100&quot;
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * AMD /proc entry.&n; */
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if 0 &amp;&amp; defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-DECL|variable|amd74xx_proc
 id|byte
 id|amd74xx_proc
 suffix:semicolon
-DECL|variable|amd_base
 r_int
 id|amd_base
 suffix:semicolon
-DECL|variable|bmide_dev
 r_static
 r_struct
 id|pci_dev
@@ -297,11 +294,8 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* ide-proc.c */
-DECL|macro|amd_print
 mdefine_line|#define amd_print(format, arg...) p += sprintf(p, format &quot;&bslash;n&quot; , ## arg)
-DECL|macro|amd_print_drive
 mdefine_line|#define amd_print_drive(name, format, arg...)&bslash;&n;&t;p += sprintf(p, name); for (i = 0; i &lt; 4; i++) p += sprintf(p, format, ## arg); p += sprintf(p, &quot;&bslash;n&quot;);
-DECL|function|amd_get_info
 r_static
 r_int
 id|amd_get_info
@@ -2417,7 +2411,7 @@ id|dev-&gt;slot_name
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Register /proc/ide/amd74xx entry&n; */
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#if 0 &amp;&amp; defined(CONFIG_PROC_FS)
 r_if
 c_cond
 (paren

@@ -8242,42 +8242,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|idefloppy_proc
-r_static
-id|ide_proc_entry_t
-id|idefloppy_proc
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_string|&quot;geometry&quot;
-comma
-id|S_IFREG
-op_or
-id|S_IRUGO
-comma
-id|proc_ide_read_geometry
-comma
-l_int|NULL
-)brace
-comma
-(brace
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
-)brace
-suffix:semicolon
-macro_line|#else
-DECL|macro|idefloppy_proc
-mdefine_line|#define&t;idefloppy_proc&t;NULL
-macro_line|#endif&t;/* CONFIG_PROC_FS */
 multiline_comment|/*&n; *&t;IDE subdriver functions, registered with ide.c&n; */
 DECL|variable|idefloppy_driver
 r_static
@@ -8331,9 +8295,6 @@ id|capacity
 suffix:colon
 id|idefloppy_capacity
 comma
-id|proc
-suffix:colon
-id|idefloppy_proc
 )brace
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -8403,22 +8364,6 @@ id|failed
 op_increment
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-multiline_comment|/* We must remove proc entries defined in this module.&n;&t;&t;   Otherwise we oops while accessing these entries */
-r_if
-c_cond
-(paren
-id|drive-&gt;proc
-)paren
-id|ide_remove_proc_entries
-c_func
-(paren
-id|drive-&gt;proc
-comma
-id|idefloppy_proc
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 multiline_comment|/*&n; *&t;idefloppy_init will register the driver for each floppy.&n; */

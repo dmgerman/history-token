@@ -2831,9 +2831,6 @@ id|capacity
 suffix:colon
 l_int|NULL
 comma
-id|proc
-suffix:colon
-l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;idescsi_init will register the driver for each scsi.&n; */

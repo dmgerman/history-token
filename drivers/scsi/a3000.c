@@ -64,13 +64,6 @@ id|a3000_host
 op_member_access_from_pointer
 id|ISTR
 suffix:semicolon
-r_struct
-id|Scsi_Host
-op_star
-id|dev
-op_assign
-id|dummy
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -94,7 +87,8 @@ id|ISTR_INTS
 id|spin_lock_irqsave
 c_func
 (paren
-id|dev-&gt;host_lock
+op_amp
+id|a3000_host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -107,7 +101,8 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|dev-&gt;host_lock
+op_amp
+id|a3000_host-&gt;host_lock
 comma
 id|flags
 )paren
@@ -200,7 +195,7 @@ id|a3000_host
 op_member_access_from_pointer
 id|dma_bounce_buffer
 op_assign
-id|scsi_malloc
+id|kmalloc
 (paren
 id|HDATA
 c_func
@@ -209,6 +204,8 @@ id|a3000_host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_len
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 multiline_comment|/* can&squot;t allocate memory; use PIO */
@@ -607,7 +604,7 @@ comma
 id|SCpnt-&gt;SCp.this_residual
 )paren
 suffix:semicolon
-id|scsi_free
+id|kfree
 (paren
 id|HDATA
 c_func
@@ -616,14 +613,6 @@ id|instance
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
-comma
-id|HDATA
-c_func
-(paren
-id|instance
-)paren
-op_member_access_from_pointer
-id|dma_bounce_len
 )paren
 suffix:semicolon
 id|HDATA
@@ -677,7 +666,7 @@ comma
 id|SCpnt-&gt;request_bufflen
 )paren
 suffix:semicolon
-id|scsi_free
+id|kfree
 (paren
 id|HDATA
 c_func
@@ -686,14 +675,6 @@ id|instance
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
-comma
-id|HDATA
-c_func
-(paren
-id|instance
-)paren
-op_member_access_from_pointer
-id|dma_bounce_len
 )paren
 suffix:semicolon
 id|HDATA
@@ -897,13 +878,11 @@ l_int|1
 suffix:semicolon
 id|fail_irq
 suffix:colon
-macro_line|#ifdef MODULE
 id|wd33c93_release
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
 id|scsi_unregister
 c_func
 (paren
@@ -946,13 +925,11 @@ op_star
 id|instance
 )paren
 (brace
-macro_line|#ifdef MODULE
 id|wd33c93_release
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE*/
 id|DMA
 c_func
 (paren
@@ -983,4 +960,10 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -191,7 +191,7 @@ id|__cacheline_aligned
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 DECL|variable|ide_scan_direction
 r_static
 r_int
@@ -483,7 +483,7 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* may be overridden by ide_setup() */
-macro_line|#endif /* CONFIG_BLK_DEV_HD */
+macro_line|#endif
 id|ch-&gt;major
 op_assign
 id|ide_major
@@ -560,14 +560,6 @@ suffix:semicolon
 id|drive-&gt;bad_wstat
 op_assign
 id|BAD_W_STAT
-suffix:semicolon
-id|drive-&gt;special_cmd
-op_assign
-(paren
-id|ATA_SPECIAL_RECALIBRATE
-op_or
-id|ATA_SPECIAL_GEOMETRY
-)paren
 suffix:semicolon
 id|sprintf
 c_func
@@ -1067,10 +1059,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|ata_pre_reset
+DECL|function|check_crc_errors
 r_static
 r_void
-id|ata_pre_reset
+id|check_crc_errors
 c_func
 (paren
 r_struct
@@ -1079,35 +1071,6 @@ op_star
 id|drive
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_logical_and
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|pre_reset
-)paren
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|pre_reset
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1244,142 +1207,6 @@ multiline_comment|/* This used to be 0x7fffffff, but since now we use the maxima
 r_return
 op_complement
 l_int|0UL
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * This is used to issue WIN_SPECIFY, WIN_RESTORE, and WIN_SETMULT commands to&n; * a drive.&n; */
-DECL|function|ata_special
-r_static
-id|ide_startstop_t
-id|ata_special
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-id|drive
-)paren
-(brace
-r_int
-r_char
-id|special_cmd
-op_assign
-id|drive-&gt;special_cmd
-suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;%s: ata_special: 0x%02x&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|special_cmd
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|special_cmd
-op_amp
-id|ATA_SPECIAL_TUNE
-)paren
-(brace
-id|drive-&gt;special_cmd
-op_and_assign
-op_complement
-id|ATA_SPECIAL_TUNE
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|drive-&gt;channel-&gt;tuneproc
-op_ne
-l_int|NULL
-)paren
-id|drive-&gt;channel
-op_member_access_from_pointer
-id|tuneproc
-c_func
-(paren
-id|drive
-comma
-id|drive-&gt;tune_req
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|drive-&gt;driver
-op_ne
-l_int|NULL
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|special
-)paren
-r_return
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|special
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
-r_else
-(brace
-id|drive-&gt;special_cmd
-op_assign
-l_int|0
-suffix:semicolon
-id|drive-&gt;mult_req
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-id|ide_stopped
-suffix:semicolon
-)brace
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|special_cmd
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: bad special flag: 0x%02x&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|special_cmd
-)paren
-suffix:semicolon
-id|drive-&gt;special_cmd
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_return
-id|ide_stopped
 suffix:semicolon
 )brace
 r_extern
@@ -1531,23 +1358,20 @@ op_star
 id|__rq
 )paren
 (brace
-id|ide_hwgroup_t
+r_struct
+id|ata_channel
 op_star
-id|hwgroup
+id|ch
 op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
+id|drive-&gt;channel
 suffix:semicolon
-id|byte
+id|u8
 id|stat
 suffix:semicolon
 id|SELECT_DRIVE
 c_func
 (paren
-id|drive-&gt;channel
+id|ch
 comma
 id|drive
 )paren
@@ -1595,7 +1419,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 )paren
 )paren
 (brace
@@ -1617,7 +1441,7 @@ id|ide_started
 suffix:semicolon
 multiline_comment|/* continue polling */
 )brace
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 l_int|0
 suffix:semicolon
@@ -1642,7 +1466,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* do it the old fashioned way */
 )brace
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 l_int|0
 suffix:semicolon
@@ -1669,20 +1493,10 @@ op_star
 id|__rq
 )paren
 (brace
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 op_assign
 id|drive-&gt;channel
 suffix:semicolon
@@ -1717,7 +1531,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 )paren
 )paren
 (brace
@@ -1745,7 +1559,7 @@ c_func
 (paren
 l_string|&quot;%s: reset timed-out, status=0x%02x&bslash;n&quot;
 comma
-id|hwif-&gt;name
+id|ch-&gt;name
 comma
 id|stat
 )paren
@@ -1761,7 +1575,7 @@ c_func
 (paren
 l_string|&quot;%s: reset: &quot;
 comma
-id|hwif-&gt;name
+id|ch-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -1886,7 +1700,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 l_int|0
 suffix:semicolon
@@ -1922,19 +1736,9 @@ suffix:semicolon
 r_struct
 id|ata_channel
 op_star
-id|hwif
+id|ch
 op_assign
 id|drive-&gt;channel
-suffix:semicolon
-id|ide_hwgroup_t
-op_star
-id|hwgroup
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
 suffix:semicolon
 id|__save_flags
 c_func
@@ -1961,7 +1765,7 @@ op_logical_neg
 id|do_not_try_atapi
 )paren
 (brace
-id|ata_pre_reset
+id|check_crc_errors
 c_func
 (paren
 id|drive
@@ -1970,7 +1774,7 @@ suffix:semicolon
 id|SELECT_DRIVE
 c_func
 (paren
-id|hwif
+id|ch
 comma
 id|drive
 )paren
@@ -1988,7 +1792,7 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 id|jiffies
 op_plus
@@ -2034,11 +1838,11 @@ suffix:semicolon
 op_increment
 id|unit
 )paren
-id|ata_pre_reset
+id|check_crc_errors
 c_func
 (paren
 op_amp
-id|hwif-&gt;drives
+id|ch-&gt;drives
 (braket
 id|unit
 )braket
@@ -2120,7 +1924,7 @@ l_int|10
 )paren
 suffix:semicolon
 multiline_comment|/* more than enough time */
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_assign
 id|jiffies
 op_plus
@@ -2144,11 +1948,11 @@ multiline_comment|/*&n;&t; * Some weird controller like resetting themselves to 
 r_if
 c_cond
 (paren
-id|hwif-&gt;resetproc
+id|ch-&gt;resetproc
 op_ne
 l_int|NULL
 )paren
-id|hwif
+id|ch
 op_member_access_from_pointer
 id|resetproc
 c_func
@@ -2156,6 +1960,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: we should handle mulit mode setting here as well ! */
 macro_line|#endif
 id|__restore_flags
 (paren
@@ -3158,6 +2963,103 @@ id|SECTOR_WORDS
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_BLK_DEV_PDC4030
+DECL|macro|IS_PDC4030_DRIVE
+macro_line|# define IS_PDC4030_DRIVE (drive-&gt;channel-&gt;chipset == ide_pdc4030)
+macro_line|#else
+DECL|macro|IS_PDC4030_DRIVE
+macro_line|# define IS_PDC4030_DRIVE (0)&t;/* auto-NULLs out pdc4030 code */
+macro_line|#endif
+multiline_comment|/*&n; * We are still on the old request path here so issuing the recalibrate command&n; * directly should just work.&n; */
+DECL|function|do_recalibrate
+r_static
+r_int
+id|do_recalibrate
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+id|drive
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: recalibrating!&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;type
+op_ne
+id|ATA_DISK
+)paren
+r_return
+id|ide_stopped
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IS_PDC4030_DRIVE
+)paren
+(brace
+r_struct
+id|ata_taskfile
+id|args
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|args
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|args
+)paren
+)paren
+suffix:semicolon
+id|args.taskfile.sector_count
+op_assign
+id|drive-&gt;sect
+suffix:semicolon
+id|args.taskfile.command
+op_assign
+id|WIN_RESTORE
+suffix:semicolon
+id|args.handler
+op_assign
+id|recal_intr
+suffix:semicolon
+id|ata_taskfile
+c_func
+(paren
+id|drive
+comma
+op_amp
+id|args
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
+r_return
+id|IS_PDC4030_DRIVE
+ques
+c_cond
+id|ide_stopped
+suffix:colon
+id|ide_started
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Take action based on the error returned by the drive.&n; */
 DECL|function|ide_error
 id|ide_startstop_t
@@ -3480,6 +3382,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
+op_increment
+id|rq-&gt;errors
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3491,10 +3396,6 @@ id|ERROR_RESET
 op_eq
 id|ERROR_RESET
 )paren
-(brace
-op_increment
-id|rq-&gt;errors
-suffix:semicolon
 r_return
 id|do_reset1
 c_func
@@ -3504,7 +3405,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3516,12 +3416,12 @@ id|ERROR_RECAL
 op_eq
 id|ERROR_RECAL
 )paren
-id|drive-&gt;special_cmd
-op_or_assign
-id|ATA_SPECIAL_RECALIBRATE
-suffix:semicolon
-op_increment
-id|rq-&gt;errors
+r_return
+id|do_recalibrate
+c_func
+(paren
+id|drive
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -4198,19 +4098,6 @@ id|res
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* FIXME: We can see nicely here that all commands should be submitted&n;&t; * through the request queue and that the special field in drive should&n;&t; * go as soon as possible!&n;&t; */
-r_if
-c_cond
-(paren
-id|drive-&gt;special_cmd
-)paren
-r_return
-id|ata_special
-c_func
-(paren
-id|drive
-)paren
-suffix:semicolon
 multiline_comment|/* This issues a special drive command, usually initiated by ioctl()&n;&t; * from the external hdparm program.&n;&t; */
 r_if
 c_cond
@@ -5967,7 +5854,7 @@ multiline_comment|/* local CPU only, as if we were handling an interrupt */
 r_if
 c_cond
 (paren
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_ne
 l_int|0
 )paren
@@ -6338,7 +6225,7 @@ id|handler
 op_eq
 l_int|NULL
 op_logical_or
-id|hwgroup-&gt;poll_timeout
+id|ch-&gt;poll_timeout
 op_ne
 l_int|0
 )paren
@@ -6357,7 +6244,7 @@ id|irq
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Not expecting an interrupt from this drive.&n;&t;&t; * That means this could be:&n;&t;&t; *&t;(1) an interrupt from another PCI device&n;&t;&t; *&t;sharing the same PCI INT# as us.&n;&t;&t; * or&t;(2) a drive just entered sleep or standby mode,&n;&t;&t; *&t;and is interrupting to let us know.&n;&t;&t; * or&t;(3) a spurious interrupt of unknown origin.&n;&t;&t; *&n;&t;&t; * For PCI, we cannot tell the difference,&n;&t;&t; * so in that case we just ignore it and hope it goes away.&n;&t;&t; */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -6375,7 +6262,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 )brace
 r_else
 (brace
@@ -7574,38 +7461,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|generic_subdriver_entries
-id|ide_proc_entry_t
-id|generic_subdriver_entries
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_string|&quot;capacity&quot;
-comma
-id|S_IFREG
-op_or
-id|S_IRUGO
-comma
-id|proc_ide_read_capacity
-comma
-l_int|NULL
-)brace
-comma
-(brace
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|function|ide_unregister
 r_void
 id|ide_unregister
@@ -7886,14 +7741,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-id|destroy_proc_ide_drives
-c_func
-(paren
-id|ch
-)paren
-suffix:semicolon
-macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -8371,6 +8218,10 @@ id|ch-&gt;XXX_udma
 op_assign
 id|old.XXX_udma
 suffix:semicolon
+id|ch-&gt;udma_enable
+op_assign
+id|old.udma_enable
+suffix:semicolon
 id|ch-&gt;udma_start
 op_assign
 id|old.udma_start
@@ -8450,7 +8301,7 @@ id|ch-&gt;udma_four
 op_assign
 id|old.udma_four
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 id|ch-&gt;pci_dev
 op_assign
 id|old.pci_dev
@@ -8840,13 +8691,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|create_proc_ide_interfaces
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* FIXME: Do we really have to call it second time here?! */
 id|ide_driver_module
 c_func
@@ -9459,6 +9303,7 @@ c_func
 id|drive
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: Wait on a proper timer. Instead of playing games on the&n;&t; * spin_lock().&n;&t; */
 r_int
 r_int
 id|timeout
@@ -9466,7 +9311,7 @@ op_assign
 id|jiffies
 op_plus
 (paren
-l_int|3
+l_int|10
 op_star
 id|HZ
 )paren
@@ -9491,10 +9336,6 @@ id|hwgroup-&gt;flags
 )paren
 )paren
 (brace
-r_int
-r_int
-id|lflags
-suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -9502,42 +9343,18 @@ op_amp
 id|ide_lock
 )paren
 suffix:semicolon
-id|__save_flags
-c_func
-(paren
-id|lflags
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
-id|__sti
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only; needed for jiffies */
 r_if
 c_cond
 (paren
-l_int|0
-OL
-(paren
-r_int
-r_int
-)paren
+id|time_after
+c_func
 (paren
 id|jiffies
-op_minus
+comma
 id|timeout
 )paren
 )paren
 (brace
-id|__restore_flags
-c_func
-(paren
-id|lflags
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 id|printk
 c_func
 (paren
@@ -9551,13 +9368,6 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|__restore_flags
-c_func
-(paren
-id|lflags
-)paren
-suffix:semicolon
-multiline_comment|/* local CPU only */
 id|spin_lock_irq
 c_func
 (paren
@@ -9873,10 +9683,6 @@ r_int
 id|arg
 )paren
 (brace
-r_struct
-id|request
-id|rq
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9887,44 +9693,40 @@ r_return
 op_minus
 id|ENOSYS
 suffix:semicolon
+multiline_comment|/* FIXME: This is very much the same kind of problem as we have with&n;&t; * set_mutlmode() see for a edscription there.&n;&t; */
 r_if
 c_cond
 (paren
-id|drive-&gt;special_cmd
-op_amp
-id|ATA_SPECIAL_TUNE
+id|HWGROUP
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|handler
 )paren
 r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-id|ide_init_drive_cmd
-c_func
+r_if
+c_cond
 (paren
-op_amp
-id|rq
+id|drive-&gt;channel-&gt;tuneproc
+op_ne
+l_int|NULL
 )paren
-suffix:semicolon
-id|drive-&gt;tune_req
-op_assign
-(paren
-id|u8
-)paren
-id|arg
-suffix:semicolon
-id|drive-&gt;special_cmd
-op_or_assign
-id|ATA_SPECIAL_TUNE
-suffix:semicolon
-id|ide_do_drive_cmd
+id|drive-&gt;channel
+op_member_access_from_pointer
+id|tuneproc
 c_func
 (paren
 id|drive
 comma
-op_amp
-id|rq
-comma
-id|ide_wait
+(paren
+id|u8
+)paren
+id|arg
 )paren
 suffix:semicolon
 r_return
@@ -12066,7 +11868,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 r_if
 c_cond
 (paren
@@ -13032,7 +12834,7 @@ op_minus
 l_int|7
 suffix:colon
 multiline_comment|/* ata66 */
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|#ifdef CONFIG_PCI
 id|hwif-&gt;udma_four
 op_assign
 l_int|1
@@ -13691,43 +13493,6 @@ id|drive-&gt;suspend_reset
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-id|ide_add_proc_entries
-c_func
-(paren
-id|drive-&gt;proc
-comma
-id|generic_subdriver_entries
-comma
-id|drive
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-)paren
-id|ide_add_proc_entries
-c_func
-(paren
-id|drive-&gt;proc
-comma
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|proc
-comma
-id|drive
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -13820,39 +13585,6 @@ id|pnpide_init
 c_func
 (paren
 l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-)paren
-id|ide_remove_proc_entries
-c_func
-(paren
-id|drive-&gt;proc
-comma
-id|ata_ops
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|proc
-)paren
-suffix:semicolon
-id|ide_remove_proc_entries
-c_func
-(paren
-id|drive-&gt;proc
-comma
-id|generic_subdriver_entries
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -14165,29 +13897,6 @@ c_func
 id|ide_stall_queue
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|ide_add_proc_entries
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_add_proc_entries
-)paren
-suffix:semicolon
-DECL|variable|ide_remove_proc_entries
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ide_remove_proc_entries
-)paren
-suffix:semicolon
-DECL|variable|proc_ide_read_geometry
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|proc_ide_read_geometry
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|ide_add_setting
 id|EXPORT_SYMBOL
 c_func
@@ -14551,7 +14260,7 @@ c_func
 )paren
 )paren
 (brace
-macro_line|# ifdef CONFIG_BLK_DEV_IDEPCI
+macro_line|# ifdef CONFIG_PCI
 id|ide_scan_pcibus
 c_func
 (paren
@@ -14738,13 +14447,6 @@ suffix:semicolon
 multiline_comment|/* for atari only */
 )brace
 macro_line|# endif
-macro_line|#endif
-macro_line|#ifdef CONFIG_PROC_FS
-id|proc_ide_create
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Initialize all device type driver modules.&n;&t; */
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
@@ -14997,13 +14699,6 @@ id|h
 )paren
 suffix:semicolon
 )brace
-macro_line|# ifdef CONFIG_PROC_FS
-id|proc_ide_destroy
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|# endif
 id|devfs_unregister
 c_func
 (paren

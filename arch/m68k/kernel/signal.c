@@ -11,6 +11,9 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/highuid.h&gt;
+macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -5069,18 +5072,18 @@ id|SI_USER
 suffix:semicolon
 id|info.si_pid
 op_assign
-id|current-&gt;p_pptr-&gt;pid
+id|current-&gt;parent-&gt;pid
 suffix:semicolon
 id|info.si_uid
 op_assign
-id|current-&gt;p_pptr-&gt;uid
+id|current-&gt;parent-&gt;uid
 suffix:semicolon
 id|info.si_uid16
 op_assign
 id|high2lowuid
 c_func
 (paren
-id|current-&gt;p_pptr-&gt;uid
+id|current-&gt;parent-&gt;uid
 )paren
 suffix:semicolon
 )brace
@@ -5230,6 +5233,12 @@ multiline_comment|/* FALLTHRU */
 r_case
 id|SIGSTOP
 suffix:colon
+(brace
+r_struct
+id|signal_struct
+op_star
+id|sig
+suffix:semicolon
 id|current-&gt;state
 op_assign
 id|TASK_STOPPED
@@ -5238,12 +5247,18 @@ id|current-&gt;exit_code
 op_assign
 id|signr
 suffix:semicolon
+id|sig
+op_assign
+id|current-&gt;parent-&gt;sig
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|sig
+op_logical_and
 op_logical_neg
 (paren
-id|current-&gt;p_pptr-&gt;sig-&gt;action
+id|sig-&gt;action
 (braket
 id|SIGCHLD
 op_minus
@@ -5270,6 +5285,7 @@ c_func
 suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 r_case
 id|SIGQUIT
 suffix:colon

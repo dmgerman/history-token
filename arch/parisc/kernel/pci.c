@@ -596,6 +596,10 @@ comma
 r_int
 r_int
 id|size
+comma
+r_int
+r_int
+id|alignment
 )paren
 (brace
 r_int
@@ -607,7 +611,7 @@ suffix:semicolon
 id|DBG_RES
 c_func
 (paren
-l_string|&quot;pcibios_align_resource(%s, (%p) [%lx,%lx]/%x, 0x%lx)&bslash;n&quot;
+l_string|&quot;pcibios_align_resource(%s, (%p) [%lx,%lx]/%x, 0x%lx, 0x%lx)&bslash;n&quot;
 comma
 (paren
 (paren
@@ -632,6 +636,8 @@ r_int
 id|res-&gt;flags
 comma
 id|size
+comma
+id|alignment
 )paren
 suffix:semicolon
 multiline_comment|/* has resource already been aligned/assigned? */
@@ -862,6 +868,8 @@ op_amp
 id|res
 comma
 id|size
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|inner.io_end
@@ -893,6 +901,8 @@ op_amp
 id|res
 comma
 id|size
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|inner.mem_end

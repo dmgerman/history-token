@@ -1983,7 +1983,7 @@ r_return
 op_minus
 id|ENOIOCTLCMD
 suffix:semicolon
-multiline_comment|/*&n;&t; * To have permissions to do most of the vt ioctls, we either have&n;&t; * to be the owner of the tty, or super-user.&n;&t; */
+multiline_comment|/*&n;&t; * To have permissions to do most of the vt ioctls, we either have&n;&t; * to be the owner of the tty, or have CAP_SYS_TTY_CONFIG.&n;&t; */
 id|perm
 op_assign
 l_int|0
@@ -1995,9 +1995,10 @@ id|current-&gt;tty
 op_eq
 id|tty
 op_logical_or
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_TTY_CONFIG
 )paren
 )paren
 id|perm
@@ -2220,7 +2221,7 @@ op_logical_neg
 id|capable
 c_func
 (paren
-id|CAP_SYS_ADMIN
+id|CAP_SYS_TTY_CONFIG
 )paren
 )paren
 r_return
@@ -2659,7 +2660,7 @@ op_logical_neg
 id|capable
 c_func
 (paren
-id|CAP_SYS_ADMIN
+id|CAP_SYS_TTY_CONFIG
 )paren
 )paren
 (brace
@@ -4459,9 +4460,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_TTY_CONFIG
 )paren
 )paren
 r_return
@@ -4482,9 +4484,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_TTY_CONFIG
 )paren
 )paren
 r_return

@@ -733,7 +733,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * IDE stuff.&n; * should be generic for every IDE PCI chipset&n; */
-macro_line|#if defined(CONFIG_BLK_DEV_IDEPCI)
+macro_line|#ifdef  CONFIG_PCI
 r_static
 r_void
 DECL|function|ppc4xx_ide_init_hwif_ports
@@ -1118,7 +1118,7 @@ macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n;**   m8xx_setup.c, prep_setup.c use&n;**     defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)&n;*/
 macro_line|#ifdef CONFIG_IDE
-macro_line|# if defined(CONFIG_BLK_DEV_IDEPCI)
+macro_line|# if defined(CONFIG_PCI)
 id|ppc_ide_md.ide_init_hwif
 op_assign
 id|ppc4xx_ide_init_hwif_ports

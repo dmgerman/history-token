@@ -19,11 +19,11 @@ mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#if PAGE_SHIFT &lt; 13
-DECL|macro|KTHREAD_SIZE
-mdefine_line|#define KTHREAD_SIZE (8192)
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE (8192)
 macro_line|#else
-DECL|macro|KTHREAD_SIZE
-mdefine_line|#define KTHREAD_SIZE PAGE_SIZE
+DECL|macro|THREAD_SIZE
+mdefine_line|#define THREAD_SIZE PAGE_SIZE
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|get_user_page

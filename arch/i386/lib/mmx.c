@@ -158,6 +158,61 @@ op_add_assign
 l_int|64
 suffix:semicolon
 )brace
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|i
+OG
+l_int|0
+suffix:semicolon
+id|i
+op_decrement
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;  movq (%0), %%mm0&bslash;n&quot;
+l_string|&quot;  movq 8(%0), %%mm1&bslash;n&quot;
+l_string|&quot;  movq 16(%0), %%mm2&bslash;n&quot;
+l_string|&quot;  movq 24(%0), %%mm3&bslash;n&quot;
+l_string|&quot;  movq %%mm0, (%1)&bslash;n&quot;
+l_string|&quot;  movq %%mm1, 8(%1)&bslash;n&quot;
+l_string|&quot;  movq %%mm2, 16(%1)&bslash;n&quot;
+l_string|&quot;  movq %%mm3, 24(%1)&bslash;n&quot;
+l_string|&quot;  movq 32(%0), %%mm0&bslash;n&quot;
+l_string|&quot;  movq 40(%0), %%mm1&bslash;n&quot;
+l_string|&quot;  movq 48(%0), %%mm2&bslash;n&quot;
+l_string|&quot;  movq 56(%0), %%mm3&bslash;n&quot;
+l_string|&quot;  movq %%mm0, 32(%1)&bslash;n&quot;
+l_string|&quot;  movq %%mm1, 40(%1)&bslash;n&quot;
+l_string|&quot;  movq %%mm2, 48(%1)&bslash;n&quot;
+l_string|&quot;  movq %%mm3, 56(%1)&bslash;n&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|from
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|to
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
+id|from
+op_add_assign
+l_int|64
+suffix:semicolon
+id|to
+op_add_assign
+l_int|64
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *&t;Now do the tail of the block&n;&t; */
 id|__memcpy
 c_func

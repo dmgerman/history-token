@@ -1917,11 +1917,6 @@ id|reboot_command
 l_int|256
 )braket
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|phys_base
-suffix:semicolon
 DECL|variable|fake_swapper_regs
 r_static
 r_struct
@@ -2257,6 +2252,12 @@ op_assign
 id|top
 suffix:semicolon
 )brace
+id|pfn_base
+op_assign
+id|phys_base
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -359,9 +359,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-id|hy_di
-op_member_access_from_pointer
-id|detach_ctr
+id|detach_capi_ctr
 c_func
 (paren
 id|ctrl
@@ -1216,16 +1214,6 @@ id|capi_register_params
 )paren
 suffix:semicolon
 multiline_comment|/*        MOD_INC_USE_COUNT; */
-id|ctrl
-op_member_access_from_pointer
-id|appl_registered
-c_func
-(paren
-id|ctrl
-comma
-id|appl
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*********************************************************************&n;&n;hycapi_release_internal&n;&n;Send down a CAPI_RELEASE to the controller.&n;*********************************************************************/
 DECL|function|hycapi_release_internal
@@ -1589,16 +1577,6 @@ id|appl
 )paren
 suffix:semicolon
 )brace
-id|ctrl
-op_member_access_from_pointer
-id|appl_released
-c_func
-(paren
-id|ctrl
-comma
-id|appl
-)paren
-suffix:semicolon
 multiline_comment|/*        MOD_DEC_USE_COUNT;  */
 )brace
 multiline_comment|/**************************************************************&n;Kill a single controller.&n;**************************************************************/
@@ -3171,29 +3149,57 @@ id|capi_driver
 id|hycapi_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
+id|name
+suffix:colon
 l_string|&quot;hysdn&quot;
 comma
+id|revision
+suffix:colon
 l_string|&quot;0.0&quot;
 comma
+id|load_firmware
+suffix:colon
 id|hycapi_load_firmware
 comma
+id|reset_ctr
+suffix:colon
 id|hycapi_reset_ctr
 comma
+id|remove_ctr
+suffix:colon
 id|hycapi_remove_ctr
 comma
+id|register_appl
+suffix:colon
 id|hycapi_register_appl
 comma
+id|release_appl
+suffix:colon
 id|hycapi_release_appl
 comma
+id|send_message
+suffix:colon
 id|hycapi_send_message
 comma
+id|procinfo
+suffix:colon
 id|hycapi_procinfo
 comma
+id|ctr_read_proc
+suffix:colon
 id|hycapi_read_proc
 comma
+id|driver_read_proc
+suffix:colon
 l_int|0
 comma
 multiline_comment|/* use standard driver_read_proc */
+id|add_card
+suffix:colon
 l_int|0
 comma
 multiline_comment|/* no add_card function */
@@ -3244,33 +3250,12 @@ id|KERN_NOTICE
 l_string|&quot;HYSDN: Attaching capi-driver&bslash;n&quot;
 )paren
 suffix:semicolon
-id|hy_di
-op_assign
 id|attach_capi_driver
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hy_di
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;HYCAPI: failed to attach capi_driver&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -3723,9 +3708,7 @@ suffix:semicolon
 )brace
 id|cinfo-&gt;capi_ctrl
 op_assign
-id|hy_di
-op_member_access_from_pointer
-id|attach_ctr
+id|attach_capi_ctr
 c_func
 (paren
 op_amp

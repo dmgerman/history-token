@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &quot;../../arch/i386/kernel/pci-i386.h&quot;&t;/* for struct irq_routing_table */
+macro_line|#include &quot;../../arch/i386/pci/pci.h&quot;&t;/* for struct irq_routing_table */
 macro_line|#include &quot;ibmphp.h&quot;
 DECL|macro|attn_on
 mdefine_line|#define attn_on(sl)  ibmphp_hpc_writeslot (sl, HPC_SLOT_ATTNON)

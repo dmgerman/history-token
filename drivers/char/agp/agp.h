@@ -476,12 +476,16 @@ r_void
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|OUTREG64
+mdefine_line|#define OUTREG64(mmap, addr, val)   __raw_writeq((val), (mmap)+(addr))
 DECL|macro|OUTREG32
 mdefine_line|#define OUTREG32(mmap, addr, val)   __raw_writel((val), (mmap)+(addr))
 DECL|macro|OUTREG16
 mdefine_line|#define OUTREG16(mmap, addr, val)   __raw_writew((val), (mmap)+(addr))
 DECL|macro|OUTREG8
 mdefine_line|#define OUTREG8(mmap, addr, val)   __raw_writeb((val), (mmap)+(addr))
+DECL|macro|INREG64
+mdefine_line|#define INREG64(mmap, addr)         __raw_readq((mmap)+(addr))
 DECL|macro|INREG32
 mdefine_line|#define INREG32(mmap, addr)         __raw_readl((mmap)+(addr))
 DECL|macro|INREG16
@@ -846,5 +850,20 @@ DECL|macro|SVWRKS_POSTFLUSH
 mdefine_line|#define SVWRKS_POSTFLUSH  0x14
 DECL|macro|SVWRKS_DIRFLUSH
 mdefine_line|#define SVWRKS_DIRFLUSH   0x0c
+multiline_comment|/* HP ZX1 SBA registers */
+DECL|macro|HP_ZX1_CTRL
+mdefine_line|#define HP_ZX1_CTRL&t;&t;0x200
+DECL|macro|HP_ZX1_IBASE
+mdefine_line|#define HP_ZX1_IBASE&t;&t;0x300
+DECL|macro|HP_ZX1_IMASK
+mdefine_line|#define HP_ZX1_IMASK&t;&t;0x308
+DECL|macro|HP_ZX1_PCOM
+mdefine_line|#define HP_ZX1_PCOM&t;&t;0x310
+DECL|macro|HP_ZX1_TCNFG
+mdefine_line|#define HP_ZX1_TCNFG&t;&t;0x318
+DECL|macro|HP_ZX1_PDIR_BASE
+mdefine_line|#define HP_ZX1_PDIR_BASE&t;0x320
+DECL|macro|HP_ZX1_CACHE_FLUSH
+mdefine_line|#define HP_ZX1_CACHE_FLUSH&t;0x428
 macro_line|#endif&t;&t;&t;&t;/* _AGP_BACKEND_PRIV_H */
 eof

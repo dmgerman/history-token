@@ -650,6 +650,11 @@ r_int
 r_int
 id|phys_base
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|pfn_base
+suffix:semicolon
 multiline_comment|/* used by various drivers */
 macro_line|#ifdef CONFIG_SMP
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
@@ -1823,6 +1828,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|phys_base
+)paren
+suffix:semicolon
+DECL|variable|pfn_base
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pfn_base
 )paren
 suffix:semicolon
 DECL|variable|sparc64_valid_addr_bitmap

@@ -111,7 +111,7 @@ id|nfsd_list
 suffix:semicolon
 multiline_comment|/*&n; * Maximum number of nfsd processes&n; */
 DECL|macro|NFSD_MAXSERVS
-mdefine_line|#define&t;NFSD_MAXSERVS&t;&t;128
+mdefine_line|#define&t;NFSD_MAXSERVS&t;&t;8192
 r_int
 DECL|function|nfsd_svc
 id|nfsd_svc
@@ -210,6 +210,11 @@ id|nfsd_busy
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|error
+op_assign
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|nfsd_serv
 op_assign

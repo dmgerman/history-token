@@ -23190,7 +23190,9 @@ id|dev
 (brace
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
+r_int
 id|map
 op_assign
 l_int|0x1FF8

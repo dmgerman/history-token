@@ -16,7 +16,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;ata-timing.h&quot;
 DECL|macro|DISPLAY_AEC62XX_TIMINGS
-mdefine_line|#define DISPLAY_AEC62XX_TIMINGS
+macro_line|#undef DISPLAY_AEC62XX_TIMINGS
 macro_line|#ifndef HIGH_4
 DECL|macro|HIGH_4
 mdefine_line|#define HIGH_4(H)&t;&t;((H)=(H&gt;&gt;4))
@@ -3627,7 +3627,7 @@ op_amp
 id|aec62xx_get_info
 suffix:semicolon
 )brace
-macro_line|#endif /* DISPLAY_AEC62XX_TIMINGS &amp;&amp; CONFIG_PROC_FS */
+macro_line|#endif
 r_return
 id|dev-&gt;irq
 suffix:semicolon

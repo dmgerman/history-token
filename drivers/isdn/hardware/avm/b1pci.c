@@ -76,14 +76,6 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|di
-r_static
-r_struct
-id|capi_driver_interface
-op_star
-id|di
-suffix:semicolon
-multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|b1pci_procinfo
 r_static
 r_char
@@ -408,9 +400,7 @@ suffix:semicolon
 )brace
 id|cinfo-&gt;capi_ctrl
 op_assign
-id|di
-op_member_access_from_pointer
-id|attach_ctr
+id|attach_capi_ctr
 c_func
 (paren
 id|driver
@@ -574,9 +564,7 @@ c_func
 id|port
 )paren
 suffix:semicolon
-id|di
-op_member_access_from_pointer
-id|detach_ctr
+id|detach_capi_ctr
 c_func
 (paren
 id|ctrl
@@ -619,6 +607,10 @@ id|capi_driver
 id|b1pci_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;b1pci&quot;
@@ -672,14 +664,6 @@ multiline_comment|/* no add_card function */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_ISDN_DRV_AVMB1_B1PCIV4
-multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|div4
-r_static
-r_struct
-id|capi_driver_interface
-op_star
-id|div4
-suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|b1pciv4_procinfo
 r_static
@@ -1094,9 +1078,7 @@ suffix:semicolon
 )brace
 id|cinfo-&gt;capi_ctrl
 op_assign
-id|div4
-op_member_access_from_pointer
-id|attach_ctr
+id|attach_capi_ctr
 c_func
 (paren
 id|driver
@@ -1243,9 +1225,7 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|div4
-op_member_access_from_pointer
-id|detach_ctr
+id|detach_capi_ctr
 c_func
 (paren
 id|ctrl
@@ -1300,6 +1280,10 @@ id|capi_driver
 id|b1pciv4_driver
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;b1pciv4&quot;
@@ -1834,37 +1818,12 @@ comma
 id|driver-&gt;revision
 )paren
 suffix:semicolon
-id|di
-op_assign
 id|attach_capi_driver
 c_func
 (paren
 id|driver
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|di
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: failed to attach capi_driver&bslash;n&quot;
-comma
-id|driver-&gt;name
-)paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_ISDN_DRV_AVMB1_B1PCIV4
 id|printk
 c_func
@@ -1877,43 +1836,12 @@ comma
 id|driverv4-&gt;revision
 )paren
 suffix:semicolon
-id|div4
-op_assign
 id|attach_capi_driver
 c_func
 (paren
 id|driverv4
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|div4
-)paren
-(brace
-id|detach_capi_driver
-c_func
-(paren
-id|driver
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: failed to attach capi_driver&bslash;n&quot;
-comma
-id|driverv4-&gt;name
-)paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
 macro_line|#endif
 id|ncards
 op_assign

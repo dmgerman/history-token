@@ -165,6 +165,10 @@ DECL|macro|CHIPREV_ID_5700_B0
 mdefine_line|#define  CHIPREV_ID_5700_B0&t;&t; 0x7100
 DECL|macro|CHIPREV_ID_5700_B1
 mdefine_line|#define  CHIPREV_ID_5700_B1&t;&t; 0x7101
+DECL|macro|CHIPREV_ID_5700_B3
+mdefine_line|#define  CHIPREV_ID_5700_B3&t;&t; 0x7102
+DECL|macro|CHIPREV_ID_5700_ALTIMA
+mdefine_line|#define  CHIPREV_ID_5700_ALTIMA&t;&t; 0x7104
 DECL|macro|CHIPREV_ID_5700_C0
 mdefine_line|#define  CHIPREV_ID_5700_C0&t;&t; 0x7200
 DECL|macro|CHIPREV_ID_5701_A0
@@ -3749,6 +3753,8 @@ DECL|macro|PHY_REV_BCM5401_B2
 mdefine_line|#define PHY_REV_BCM5401_B2&t;&t;0x3
 DECL|macro|PHY_REV_BCM5401_C0
 mdefine_line|#define PHY_REV_BCM5401_C0&t;&t;0x6
+DECL|macro|PHY_REV_BCM5411_X0
+mdefine_line|#define PHY_REV_BCM5411_X0&t;&t;0x1 /* Found on Netgear GA302T */
 DECL|member|led_mode
 r_enum
 id|phy_led_mode

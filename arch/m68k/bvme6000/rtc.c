@@ -405,6 +405,12 @@ l_int|12
 )paren
 op_logical_or
 (paren
+id|mon
+OL
+l_int|1
+)paren
+op_logical_or
+(paren
 id|day
 op_eq
 l_int|0
