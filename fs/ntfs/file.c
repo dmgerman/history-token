@@ -70,6 +70,14 @@ op_assign
 id|generic_file_read
 comma
 multiline_comment|/* Read from file. */
+macro_line|#ifdef NTFS_RW
+dot
+id|write
+op_assign
+id|generic_file_write
+comma
+multiline_comment|/* Write to a file. */
+macro_line|#endif
 dot
 id|mmap
 op_assign
