@@ -2287,7 +2287,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutRequests
+id|OutRequests
 )paren
 suffix:semicolon
 id|err
@@ -2359,7 +2359,7 @@ suffix:colon
 id|IP6_INC_STATS
 c_func
 (paren
-id|Ip6OutDiscards
+id|OutDiscards
 )paren
 suffix:semicolon
 r_return

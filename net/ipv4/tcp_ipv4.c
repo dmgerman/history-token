@@ -5464,7 +5464,7 @@ l_int|0
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpOutNoRoutes
+id|OutNoRoutes
 )paren
 suffix:semicolon
 r_return
@@ -5492,7 +5492,7 @@ suffix:semicolon
 id|IP_INC_STATS_BH
 c_func
 (paren
-id|IpOutNoRoutes
+id|OutNoRoutes
 )paren
 suffix:semicolon
 r_return
