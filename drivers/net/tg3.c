@@ -22608,6 +22608,14 @@ comma
 id|MAC_MI_STAT_LNKSTAT_ATTN_ENAB
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tp-&gt;phy_id
+op_eq
+id|PHY_ID_SERDES
+)paren
+(brace
 id|tw32
 c_func
 (paren
@@ -22628,6 +22636,7 @@ c_func
 l_int|10
 )paren
 suffix:semicolon
+)brace
 id|tw32
 c_func
 (paren
