@@ -5774,7 +5774,8 @@ l_int|1
 (brace
 id|rc
 op_assign
-id|pci_module_init
+id|pci_register_driver
+c_func
 (paren
 op_amp
 id|ibmphp_driver

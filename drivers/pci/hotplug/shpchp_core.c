@@ -2482,7 +2482,7 @@ id|retval
 (brace
 id|retval
 op_assign
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
@@ -2492,7 +2492,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: pci_module_init = %d&bslash;n&quot;
+l_string|&quot;%s: pci_register_driver = %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

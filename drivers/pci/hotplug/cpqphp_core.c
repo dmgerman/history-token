@@ -5896,7 +5896,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 id|result
 op_assign
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
@@ -5906,7 +5906,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;pci_module_init = %d&bslash;n&quot;
+l_string|&quot;pci_register_driver = %d&bslash;n&quot;
 comma
 id|result
 )paren
