@@ -3203,9 +3203,17 @@ multiline_comment|/* PDC20265 has problems with large LBA48 requests */
 r_if
 c_cond
 (paren
+(paren
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_PROMISE_20267
+)paren
+op_logical_or
+(paren
 id|dev-&gt;device
 op_eq
 id|PCI_DEVICE_ID_PROMISE_20265
+)paren
 )paren
 id|hwif-&gt;rqsize
 op_assign
