@@ -1465,8 +1465,6 @@ id|idev
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#endif /* __ISAPNP__ */
-macro_line|#if defined(__ISAPNP__) &amp;&amp; !defined(CONFIG_X86_PC9800)
 r_if
 c_cond
 (paren
@@ -1804,12 +1802,15 @@ l_int|0x10
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|id_port
 comma
 l_int|1
+comma
+l_string|&quot;3c509&quot;
 )paren
 )paren
 r_continue
@@ -1841,7 +1842,26 @@ id|id_port
 op_amp
 l_int|0x01
 )paren
+(brace
+id|release_region
+c_func
+(paren
+id|id_port
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_break
+suffix:semicolon
+)brace
+r_else
+id|release_region
+c_func
+(paren
+id|id_port
+comma
+l_int|1
+)paren
 suffix:semicolon
 )brace
 r_if

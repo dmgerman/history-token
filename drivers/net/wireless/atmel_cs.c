@@ -914,6 +914,30 @@ l_string|&quot;atmel_at76c502.bin&quot;
 comma
 l_string|&quot;BT Voyager 1020&quot;
 )brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;IEEE 802.11b/Wireless LAN PC Card&quot;
+comma
+l_string|&quot;atmel_at76c502.bin&quot;
+comma
+l_string|&quot;Siemens Gigaset PC Card II&quot;
+)brace
+comma
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_string|&quot;CNet/CNWLC 11Mbps Wireless PC Card V-5&quot;
+comma
+l_string|&quot;atmel_at76c502e.bin&quot;
+comma
+l_string|&quot;CNet CNWLC-811ARL&quot;
+)brace
 )brace
 suffix:semicolon
 multiline_comment|/* This is strictly temporary, until PCMCIA devices get integrated into the device model. */

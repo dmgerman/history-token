@@ -2289,6 +2289,4 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* MODULE */
-"&f;"
-multiline_comment|/*&n; * Local variables:&n; * compile-command: &quot;gcc -D__KERNEL__ -I/usr/src/linux/net/inet -Wall -Wstrict-prototypes -O6 -m486 -c hp.c&quot;&n; * version-control: t&n; * kept-new-versions: 5&n; * tab-width: 4&n; * c-indent-level: 4&n; * End:&n; */
 eof

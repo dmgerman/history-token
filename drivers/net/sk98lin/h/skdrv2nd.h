@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdrv2nd.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.19 $&n; * Date:&t;$Date: 2003/07/07 09:53:10 $&n; * Purpose:&t;Second header file for driver and all other modules&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdrv2nd.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.3 $&n; * Date:&t;$Date: 2003/08/12 16:51:18 $&n; * Purpose:&t;Second header file for driver and all other modules&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2003 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skdrv2nd.h,v $&n; *&t;Revision 1.19  2003/07/07 09:53:10  rroesler&n; *&t;Fix: Removed proprietary RxTx defines and used the ones from skgehw.h instead&n; *&t;&n; *&t;Revision 1.18  2003/06/12 07:54:14  mlindner&n; *&t;Fix: Changed Descriptor Alignment to 64 Byte&n; *&t;&n; *&t;Revision 1.17  2003/05/26 12:56:39  mlindner&n; *&t;Add: Support for Kernel 2.5/2.6&n; *&t;Add: New SkOsGetTimeCurrent function&n; *&t;Add: SK_PNMI_HUNDREDS_SEC definition&n; *&t;Fix: SK_TICKS_PER_SEC on Intel Itanium2&n; *&t;&n; *&t;Revision 1.16  2003/03/21 14:56:18  rroesler&n; *&t;Added code regarding interrupt moderation&n; *&t;&n; *&t;Revision 1.15  2003/02/25 14:16:40  mlindner&n; *&t;Fix: Copyright statement&n; *&t;&n; *&t;Revision 1.14  2003/02/25 13:26:26  mlindner&n; *&t;Add: Support for various vendors&n; *&t;&n; *&t;Revision 1.13  2002/10/02 12:46:02  mlindner&n; *&t;Add: Support for Yukon&n; *&t;&n; *&t;Revision 1.12.2.2  2001/09/05 12:14:50  mlindner&n; *&t;add: New hardware revision int&n; *&t;&n; *&t;Revision 1.12.2.1  2001/03/12 16:50:59  mlindner&n; *&t;chg: kernel 2.4 adaption&n; *&t;&n; *&t;Revision 1.12  2001/03/01 12:52:15  mlindner&n; *&t;Fixed ring size&n; *&n; *&t;Revision 1.11  2001/02/19 13:28:02  mlindner&n; *&t;Changed PNMI parameter values&n; *&n; *&t;Revision 1.10  2001/01/22 14:16:04  mlindner&n; *&t;added ProcFs functionality&n; *&t;Dual Net functionality integrated&n; *&t;Rlmt networks added&n; *&n; *&t;Revision 1.1  2000/10/05 19:46:50  phargrov&n; *&t;Add directory src/vipk_devs_nonlbl/vipk_sk98lin/&n; *&t;This is the SysKonnect SK-98xx Gigabit Ethernet driver,&n; *&t;contributed by SysKonnect.&n; *&n; *&t;Revision 1.9  2000/02/21 10:39:55  cgoos&n; *&t;Added flag for jumbo support usage.&n; *&n; *&t;Revision 1.8  1999/11/22 13:50:44  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Fixed two comments.&n; *&n; *&t;Revision 1.7  1999/09/28 12:38:21  cgoos&n; *&t;Added CheckQueue to SK_AC.&n; *&t;&n; *&t;Revision 1.6  1999/07/27 08:04:05  cgoos&n; *&t;Added checksumming variables to SK_AC.&n; *&t;&n; *&t;Revision 1.5  1999/03/29 12:33:26  cgoos&n; *&t;Rreversed to fine lock granularity.&n; *&t;&n; *&t;Revision 1.4  1999/03/15 12:14:02  cgoos&n; *&t;Added DriverLock to SK_AC.&n; *&t;Removed other locks.&n; *&t;&n; *&t;Revision 1.3  1999/03/01 08:52:27  cgoos&n; *&t;Changed pAC-&gt;PciDev declaration.&n; *&t;&n; *&t;Revision 1.2  1999/02/18 10:57:14  cgoos&n; *&t;Removed SkDrvTimeStamp prototype.&n; *&t;Fixed SkGeOsGetTime prototype.&n; *&t;&n; *&t;Revision 1.1  1999/02/16 07:41:01  cgoos&n; *&t;First version.&n; *&t;&n; *&t;&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skdrv2nd.h,v $&n; *&t;Revision 1.3  2003/08/12 16:51:18  mlindner&n; *&t;Fix: UDP and TCP Proto checks&n; *&t;Fix: UDP header offset&n; *&t;&n; *&t;Revision 1.2  2003/08/07 10:50:54  mlindner&n; *&t;Add: Speed and HW-Csum support for Yukon Lite chipset&n; *&t;&n; *&t;Revision 1.1  2003/07/21 07:25:29  rroesler&n; *&t;Fix: Re-Enter after CVS crash&n; *&t;&n; *&t;Revision 1.19  2003/07/07 09:53:10  rroesler&n; *&t;Fix: Removed proprietary RxTx defines and used the ones from skgehw.h instead&n; *&t;&n; *&t;Revision 1.18  2003/06/12 07:54:14  mlindner&n; *&t;Fix: Changed Descriptor Alignment to 64 Byte&n; *&t;&n; *&t;Revision 1.17  2003/05/26 12:56:39  mlindner&n; *&t;Add: Support for Kernel 2.5/2.6&n; *&t;Add: New SkOsGetTimeCurrent function&n; *&t;Add: SK_PNMI_HUNDREDS_SEC definition&n; *&t;Fix: SK_TICKS_PER_SEC on Intel Itanium2&n; *&t;&n; *&t;Revision 1.16  2003/03/21 14:56:18  rroesler&n; *&t;Added code regarding interrupt moderation&n; *&t;&n; *&t;Revision 1.15  2003/02/25 14:16:40  mlindner&n; *&t;Fix: Copyright statement&n; *&t;&n; *&t;Revision 1.14  2003/02/25 13:26:26  mlindner&n; *&t;Add: Support for various vendors&n; *&t;&n; *&t;Revision 1.13  2002/10/02 12:46:02  mlindner&n; *&t;Add: Support for Yukon&n; *&t;&n; *&t;Revision 1.12.2.2  2001/09/05 12:14:50  mlindner&n; *&t;add: New hardware revision int&n; *&t;&n; *&t;Revision 1.12.2.1  2001/03/12 16:50:59  mlindner&n; *&t;chg: kernel 2.4 adaption&n; *&t;&n; *&t;Revision 1.12  2001/03/01 12:52:15  mlindner&n; *&t;Fixed ring size&n; *&n; *&t;Revision 1.11  2001/02/19 13:28:02  mlindner&n; *&t;Changed PNMI parameter values&n; *&n; *&t;Revision 1.10  2001/01/22 14:16:04  mlindner&n; *&t;added ProcFs functionality&n; *&t;Dual Net functionality integrated&n; *&t;Rlmt networks added&n; *&n; *&t;Revision 1.1  2000/10/05 19:46:50  phargrov&n; *&t;Add directory src/vipk_devs_nonlbl/vipk_sk98lin/&n; *&t;This is the SysKonnect SK-98xx Gigabit Ethernet driver,&n; *&t;contributed by SysKonnect.&n; *&n; *&t;Revision 1.9  2000/02/21 10:39:55  cgoos&n; *&t;Added flag for jumbo support usage.&n; *&n; *&t;Revision 1.8  1999/11/22 13:50:44  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Fixed two comments.&n; *&n; *&t;Revision 1.7  1999/09/28 12:38:21  cgoos&n; *&t;Added CheckQueue to SK_AC.&n; *&t;&n; *&t;Revision 1.6  1999/07/27 08:04:05  cgoos&n; *&t;Added checksumming variables to SK_AC.&n; *&t;&n; *&t;Revision 1.5  1999/03/29 12:33:26  cgoos&n; *&t;Rreversed to fine lock granularity.&n; *&t;&n; *&t;Revision 1.4  1999/03/15 12:14:02  cgoos&n; *&t;Added DriverLock to SK_AC.&n; *&t;Removed other locks.&n; *&t;&n; *&t;Revision 1.3  1999/03/01 08:52:27  cgoos&n; *&t;Changed pAC-&gt;PciDev declaration.&n; *&t;&n; *&t;Revision 1.2  1999/02/18 10:57:14  cgoos&n; *&t;Removed SkDrvTimeStamp prototype.&n; *&t;Fixed SkGeOsGetTime prototype.&n; *&t;&n; *&t;Revision 1.1  1999/02/16 07:41:01  cgoos&n; *&t;First version.&n; *&t;&n; *&t;&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This is the second include file of the driver, which includes all other&n; * neccessary files and defines all structures and constants used by the&n; * driver and the common modules.&n; *&n; * Include File Hierarchy:&n; *&n; *&t;see skge.c&n; *&n; ******************************************************************************/
 macro_line|#ifndef __INC_SKDRV2ND_H
 DECL|macro|__INC_SKDRV2ND_H
@@ -317,12 +317,14 @@ DECL|macro|C_OFFSET_IPHEADER_IPPROTO
 mdefine_line|#define C_OFFSET_IPHEADER_IPPROTO       9
 DECL|macro|C_OFFSET_TCPHEADER_TCPCS
 mdefine_line|#define C_OFFSET_TCPHEADER_TCPCS        16
+DECL|macro|C_OFFSET_UDPHEADER_UDPCS
+mdefine_line|#define C_OFFSET_UDPHEADER_UDPCS        6
 DECL|macro|C_OFFSET_IPPROTO
 mdefine_line|#define C_OFFSET_IPPROTO                ( (C_LEN_ETHERMAC_HEADER) + &bslash;&n;                                          (C_OFFSET_IPHEADER_IPPROTO) )
 DECL|macro|C_PROTO_ID_UDP
-mdefine_line|#define C_PROTO_ID_UDP                  6       /* refer to RFC 790 or Stevens&squot;   */
+mdefine_line|#define C_PROTO_ID_UDP                  17       /* refer to RFC 790 or Stevens&squot;   */
 DECL|macro|C_PROTO_ID_TCP
-mdefine_line|#define C_PROTO_ID_TCP                  17      /* TCP/IP illustrated for details */
+mdefine_line|#define C_PROTO_ID_TCP                  6        /* TCP/IP illustrated for details */
 multiline_comment|/* TX and RX descriptors *****************************************************/
 DECL|typedef|RXD
 r_typedef
@@ -482,6 +484,12 @@ DECL|struct|s_DevNet
 r_struct
 id|s_DevNet
 (brace
+DECL|member|proc
+r_struct
+id|proc_dir_entry
+op_star
+id|proc
+suffix:semicolon
 DECL|member|PortNr
 r_int
 id|PortNr
@@ -1054,6 +1062,11 @@ DECL|member|PortDown
 r_int
 id|PortDown
 suffix:semicolon
+DECL|member|ChipsetType
+r_int
+id|ChipsetType
+suffix:semicolon
+multiline_comment|/*  Chipset family type &n;&t;&t;&t;&t;&t;&t;&t; *  0 == Genesis family support&n;&t;&t;&t;&t;&t;&t;&t; *  1 == Yukon family support&n;&t;&t;&t;&t;&t;&t;&t; */
 )brace
 suffix:semicolon
 macro_line|#endif /* __INC_SKDRV2ND_H */
