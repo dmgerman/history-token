@@ -3409,11 +3409,6 @@ id|skb
 (brace
 r_int
 id|this_cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
 suffix:semicolon
 r_struct
 id|softnet_data
@@ -3437,7 +3432,20 @@ op_amp
 id|skb-&gt;stamp
 )paren
 suffix:semicolon
-multiline_comment|/* The code is rearranged so that the path is the most&n;&t;   short when CPU is congested, but is still operating.&n;&t; */
+multiline_comment|/*&n;&t; * The code is rearranged so that the path is the most&n;&t; * short when CPU is congested, but is still operating.&n;&t; */
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|this_cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|queue
 op_assign
 op_amp
@@ -3445,12 +3453,6 @@ id|softnet_data
 (braket
 id|this_cpu
 )braket
-suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 id|netdev_rx_stat
 (braket
@@ -3499,12 +3501,6 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 macro_line|#ifndef OFFLINE_SAMPLE
 id|get_sample_stats
 c_func
@@ -3513,6 +3509,12 @@ id|this_cpu
 )paren
 suffix:semicolon
 macro_line|#endif
+id|local_irq_restore
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|queue-&gt;cng_level
 suffix:semicolon
