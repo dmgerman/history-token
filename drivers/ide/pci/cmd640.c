@@ -100,7 +100,7 @@ mdefine_line|#define BRST&t;&t;0x59
 multiline_comment|/*&n; * Registers and masks for easy access by drive index:&n; */
 DECL|variable|prefetch_regs
 r_static
-id|byte
+id|u8
 id|prefetch_regs
 (braket
 l_int|4
@@ -118,7 +118,7 @@ id|ARTTIM23
 suffix:semicolon
 DECL|variable|prefetch_masks
 r_static
-id|byte
+id|u8
 id|prefetch_masks
 (braket
 l_int|4
@@ -137,7 +137,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_CMD640_ENHANCED
 DECL|variable|arttim_regs
 r_static
-id|byte
+id|u8
 id|arttim_regs
 (braket
 l_int|4
@@ -155,7 +155,7 @@ id|ARTTIM23
 suffix:semicolon
 DECL|variable|drwtim_regs
 r_static
-id|byte
+id|u8
 id|drwtim_regs
 (braket
 l_int|4
@@ -174,7 +174,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Current cmd640 timing values for each drive.&n; * The defaults for each are the slowest possible timings.&n; */
 DECL|variable|setup_counts
 r_static
-id|byte
+id|u8
 id|setup_counts
 (braket
 l_int|4
@@ -193,7 +193,7 @@ suffix:semicolon
 multiline_comment|/* Address setup count (in clocks) */
 DECL|variable|active_counts
 r_static
-id|byte
+id|u8
 id|active_counts
 (braket
 l_int|4
@@ -212,7 +212,7 @@ suffix:semicolon
 multiline_comment|/* Active count   (encoded) */
 DECL|variable|recovery_counts
 r_static
-id|byte
+id|u8
 id|recovery_counts
 (braket
 l_int|4
@@ -265,24 +265,22 @@ op_star
 id|put_cmd640_reg
 )paren
 (paren
-r_int
-r_int
+id|u16
 id|reg
 comma
-id|byte
+id|u8
 id|val
 )paren
 suffix:semicolon
 DECL|variable|get_cmd640_reg
 r_static
-id|byte
+id|u8
 (paren
 op_star
 id|get_cmd640_reg
 )paren
 (paren
-r_int
-r_int
+id|u16
 id|reg
 )paren
 suffix:semicolon
@@ -300,11 +298,10 @@ r_static
 r_void
 id|put_cmd640_reg_pci1
 (paren
-r_int
-r_int
+id|u16
 id|reg
 comma
-id|byte
+id|u8
 id|val
 )paren
 (brace
@@ -361,15 +358,14 @@ suffix:semicolon
 )brace
 DECL|function|get_cmd640_reg_pci1
 r_static
-id|byte
+id|u8
 id|get_cmd640_reg_pci1
 (paren
-r_int
-r_int
+id|u16
 id|reg
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 r_int
@@ -432,11 +428,10 @@ r_static
 r_void
 id|put_cmd640_reg_pci2
 (paren
-r_int
-r_int
+id|u16
 id|reg
 comma
-id|byte
+id|u8
 id|val
 )paren
 (brace
@@ -491,15 +486,14 @@ suffix:semicolon
 )brace
 DECL|function|get_cmd640_reg_pci2
 r_static
-id|byte
+id|u8
 id|get_cmd640_reg_pci2
 (paren
-r_int
-r_int
+id|u16
 id|reg
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 r_int
@@ -560,11 +554,10 @@ r_static
 r_void
 id|put_cmd640_reg_vlb
 (paren
-r_int
-r_int
+id|u16
 id|reg
 comma
-id|byte
+id|u8
 id|val
 )paren
 (brace
@@ -611,15 +604,14 @@ suffix:semicolon
 )brace
 DECL|function|get_cmd640_reg_vlb
 r_static
-id|byte
+id|u8
 id|get_cmd640_reg_vlb
 (paren
-r_int
-r_int
+id|u16
 id|reg
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 r_int
@@ -676,7 +668,7 @@ r_void
 )paren
 (brace
 r_const
-id|byte
+id|u8
 id|ven_dev
 (braket
 l_int|4
@@ -874,7 +866,7 @@ id|probe_for_cmd640_vlb
 r_void
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 id|get_cmd640_reg
@@ -1079,6 +1071,7 @@ multiline_comment|/* success */
 macro_line|#ifdef CMD640_DUMP_REGS
 multiline_comment|/*&n; * Dump out all cmd640 registers.  May be called from ide.c&n; */
 DECL|function|cmd640_dump_regs
+r_static
 r_void
 id|cmd640_dump_regs
 (paren
@@ -1175,7 +1168,7 @@ id|cmd_drives
 id|index
 )braket
 suffix:semicolon
-id|byte
+id|u8
 id|b
 op_assign
 id|get_cmd640_reg
@@ -1407,7 +1400,7 @@ id|prefetch_regs
 id|index
 )braket
 suffix:semicolon
-id|byte
+id|u8
 id|b
 suffix:semicolon
 r_int
@@ -1514,7 +1507,7 @@ r_int
 id|index
 )paren
 (brace
-id|byte
+id|u8
 id|active_count
 comma
 id|recovery_count
@@ -1589,13 +1582,13 @@ multiline_comment|/*&n; * Pack active and recovery counts into single byte repre
 DECL|function|pack_nibbles
 r_inline
 r_static
-id|byte
+id|u8
 id|pack_nibbles
 (paren
-id|byte
+id|u8
 id|upper
 comma
-id|byte
+id|u8
 id|lower
 )paren
 (brace
@@ -1629,7 +1622,7 @@ r_int
 id|index
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the internal setup timing, and convert to clock count&n;&t; */
@@ -1764,7 +1757,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|byte
+id|u8
 id|setup_count
 op_assign
 id|setup_counts
@@ -1772,7 +1765,7 @@ id|setup_counts
 id|index
 )braket
 suffix:semicolon
-id|byte
+id|u8
 id|active_count
 op_assign
 id|active_counts
@@ -1780,7 +1773,7 @@ id|active_counts
 id|index
 )braket
 suffix:semicolon
-id|byte
+id|u8
 id|recovery_count
 op_assign
 id|recovery_counts
@@ -1986,7 +1979,7 @@ r_int
 r_int
 id|index
 comma
-id|byte
+id|u8
 id|pio_mode
 comma
 r_int
@@ -2003,7 +1996,7 @@ id|recovery_time
 comma
 id|clock_time
 suffix:semicolon
-id|byte
+id|u8
 id|setup_count
 comma
 id|active_count
@@ -2253,11 +2246,11 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|byte
+id|u8
 id|mode_wanted
 )paren
 (brace
-id|byte
+id|u8
 id|b
 suffix:semicolon
 id|ide_pio_data_t
@@ -2479,7 +2472,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|outb
 c_func
 (paren
 l_int|0x01
@@ -2579,7 +2572,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|outb
 c_func
 (paren
 l_int|0x00
@@ -2587,7 +2580,7 @@ comma
 l_int|0xCFB
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|outb
 c_func
 (paren
 l_int|0x00
@@ -2595,7 +2588,7 @@ comma
 l_int|0xCF8
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|outb
 c_func
 (paren
 l_int|0x00
@@ -2606,7 +2599,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IN_BYTE
+id|inb
 c_func
 (paren
 l_int|0xCF8
@@ -2614,7 +2607,7 @@ l_int|0xCF8
 op_eq
 l_int|0x00
 op_logical_and
-id|IN_BYTE
+id|inb
 c_func
 (paren
 l_int|0xCF8
@@ -2682,7 +2675,7 @@ r_int
 r_int
 id|index
 suffix:semicolon
-id|byte
+id|u8
 id|b
 comma
 id|cfr
