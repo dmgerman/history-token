@@ -1666,8 +1666,6 @@ id|dev-&gt;buf
 comma
 l_int|1
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
@@ -2142,8 +2140,6 @@ id|dev-&gt;buf
 comma
 l_int|1
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
@@ -4721,8 +4717,6 @@ l_int|NULL
 comma
 l_int|0
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
@@ -5110,8 +5104,6 @@ id|buf
 comma
 id|len
 comma
-id|HZ
-op_star
 id|USB_CTRL_SET_TIMEOUT
 )paren
 suffix:semicolon
@@ -5158,8 +5150,6 @@ id|buf
 comma
 id|len
 comma
-id|HZ
-op_star
 id|USB_CTRL_GET_TIMEOUT
 )paren
 suffix:semicolon
