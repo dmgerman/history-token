@@ -8975,9 +8975,9 @@ l_int|6
 id|PRINTK
 c_func
 (paren
-l_string|&quot;raid6: md%d: raid level not set to 6 (%d)&bslash;n&quot;
+l_string|&quot;raid6: %s: raid level not set to 6 (%d)&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9149,9 +9149,9 @@ suffix:semicolon
 id|PRINTK
 c_func
 (paren
-l_string|&quot;raid6: run(md%d) called.&bslash;n&quot;
+l_string|&quot;raid6: run(%s) called.&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9275,9 +9275,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid6: not enough configured devices for md%d (%d, minimum 4)&bslash;n&quot;
+l_string|&quot;raid6: not enough configured devices for %s (%d, minimum 4)&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9305,11 +9305,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid6: invalid chunk size %d for md%d&bslash;n&quot;
+l_string|&quot;raid6: invalid chunk size %d for %s&bslash;n&quot;
 comma
 id|conf-&gt;chunk_size
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9332,11 +9332,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid6: unsupported parity algorithm %d for md%d&bslash;n&quot;
+l_string|&quot;raid6: unsupported parity algorithm %d for %s&bslash;n&quot;
 comma
 id|conf-&gt;algorithm
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9359,10 +9359,10 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid6: not enough operational devices for md%d&quot;
+l_string|&quot;raid6: not enough operational devices for %s&quot;
 l_string|&quot; (%d/%d failed)&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9394,9 +9394,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid6: cannot start dirty degraded array for md%d&bslash;n&quot;
+l_string|&quot;raid6: cannot start dirty degraded array for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9418,7 +9418,7 @@ id|raid6d
 comma
 id|mddev
 comma
-l_string|&quot;md%d_raid6&quot;
+l_string|&quot;%s_raid6&quot;
 )paren
 suffix:semicolon
 r_if
@@ -9432,9 +9432,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;raid6: couldn&squot;t allocate thread for md%d&bslash;n&quot;
+l_string|&quot;raid6: couldn&squot;t allocate thread for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9516,11 +9516,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;raid6: allocated %dkB for md%d&bslash;n&quot;
+l_string|&quot;raid6: allocated %dkB for %s&bslash;n&quot;
 comma
 id|memory
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9538,12 +9538,12 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;raid6: raid level %d set md%d active with %d out of %d&quot;
+l_string|&quot;raid6: raid level %d set %s active with %d out of %d&quot;
 l_string|&quot; devices, algorithm %d&bslash;n&quot;
 comma
 id|conf-&gt;level
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9563,12 +9563,12 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;raid6: raid level %d set md%d active with %d&quot;
+l_string|&quot;raid6: raid level %d set %s active with %d&quot;
 l_string|&quot; out of %d devices, algorithm %d&bslash;n&quot;
 comma
 id|conf-&gt;level
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -9678,9 +9678,9 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;raid6: failed to run raid set md%d&bslash;n&quot;
+l_string|&quot;raid6: failed to run raid set %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev

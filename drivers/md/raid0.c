@@ -984,9 +984,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;md%d: setting max_sectors to %d, segment boundary to %d&bslash;n&quot;
+l_string|&quot;%s: setting max_sectors to %d, segment boundary to %d&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev

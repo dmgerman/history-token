@@ -1550,9 +1550,9 @@ id|LEVEL_MULTIPATH
 id|printk
 c_func
 (paren
-l_string|&quot;multipath: md%d: raid level not set to multipath IO (%d)&bslash;n&quot;
+l_string|&quot;multipath: %s: raid level not set to multipath IO (%d)&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -1596,9 +1596,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;multipath: couldn&squot;t allocate memory for md%d&bslash;n&quot;
+l_string|&quot;multipath: couldn&squot;t allocate memory for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -1650,9 +1650,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;multipath: couldn&squot;t allocate memory for md%d&bslash;n&quot;
+l_string|&quot;multipath: couldn&squot;t allocate memory for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -1787,9 +1787,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;multipath: no operational IO paths for md%d&bslash;n&quot;
+l_string|&quot;multipath: no operational IO paths for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -1832,9 +1832,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;multipath: couldn&squot;t allocate memory for md%d&bslash;n&quot;
+l_string|&quot;multipath: couldn&squot;t allocate memory for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -1846,13 +1846,6 @@ id|out_free_conf
 suffix:semicolon
 )brace
 (brace
-r_const
-r_char
-op_star
-id|name
-op_assign
-l_string|&quot;md%d_multipath&quot;
-suffix:semicolon
 id|mddev-&gt;thread
 op_assign
 id|md_register_thread
@@ -1862,7 +1855,7 @@ id|multipathd
 comma
 id|mddev
 comma
-id|name
+l_string|&quot;%s_multipath&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1877,9 +1870,9 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;multipath: couldn&squot;t allocate thread&quot;
-l_string|&quot; for md%d&bslash;n&quot;
+l_string|&quot; for %s&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
@@ -1895,9 +1888,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;multipath: array md%d active with %d out of %d IO paths&bslash;n&quot;
+l_string|&quot;multipath: array %s active with %d out of %d IO paths&bslash;n&quot;
 comma
-id|mdidx
+id|mdname
 c_func
 (paren
 id|mddev
