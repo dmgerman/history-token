@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;acpi/processor.h&gt;
 macro_line|#endif
@@ -86,7 +86,7 @@ id|numpstates
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 DECL|union|powernow_acpi_control_t
 r_union
 id|powernow_acpi_control_t
@@ -1192,7 +1192,7 @@ id|CPUFREQ_POSTCHANGE
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 DECL|variable|acpi_processor_perf
 r_struct
 id|acpi_processor_performance
@@ -2802,7 +2802,7 @@ id|powernow_exit
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_ACPI_PROCESSOR
+macro_line|#if defined(CONFIG_ACPI_PROCESSOR) || defined(CONFIG_ACPI_PROCESSOR_MODULE)
 r_if
 c_cond
 (paren
