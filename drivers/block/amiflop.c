@@ -26,8 +26,8 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
 DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
-DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) ( (minor(device) &amp; 3) | ((minor(device) &amp; 0x80 ) &gt;&gt; 5 ))
+DECL|macro|QUEUE
+mdefine_line|#define QUEUE (&amp;floppy_queue)
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG /* print _LOTS_ of infos */
@@ -90,6 +90,12 @@ c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
+suffix:semicolon
+DECL|variable|floppy_queue
+r_static
+r_struct
+id|request_queue
+id|floppy_queue
 suffix:semicolon
 multiline_comment|/*&n; *  Macros&n; */
 DECL|macro|MOTOR_ON
@@ -7382,24 +7388,6 @@ multiline_comment|/* Nothing left to do */
 r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|major
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
-op_ne
-id|MAJOR_NR
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: request list destroyed&quot;
-)paren
-suffix:semicolon
 id|device
 op_assign
 id|minor
@@ -7422,12 +7410,6 @@ op_assign
 id|device
 op_amp
 l_int|3
-suffix:semicolon
-id|floppy
-op_assign
-id|unit
-op_plus
-id|drive
 suffix:semicolon
 )brace
 r_else
@@ -7453,13 +7435,11 @@ id|device
 op_amp
 l_int|3
 suffix:semicolon
+)brace
 id|floppy
 op_assign
-id|unit
-op_plus
-id|drive
+id|CURRENT-&gt;rq_disk-&gt;private_data
 suffix:semicolon
-)brace
 multiline_comment|/* Here someone could investigate to be more efficient */
 r_for
 c_loop
@@ -7659,12 +7639,7 @@ c_func
 (paren
 id|data
 comma
-id|unit
-(braket
-id|drive
-)braket
-dot
-id|trackbuf
+id|floppy-&gt;trackbuf
 op_plus
 id|sector
 op_star
@@ -7681,12 +7656,7 @@ suffix:colon
 id|memcpy
 c_func
 (paren
-id|unit
-(braket
-id|drive
-)braket
-dot
-id|trackbuf
+id|floppy-&gt;trackbuf
 op_plus
 id|sector
 op_star
@@ -7732,12 +7702,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|unit
-(braket
-id|drive
-)braket
-dot
-id|dirty
+id|floppy-&gt;dirty
 op_assign
 l_int|1
 suffix:semicolon
@@ -8917,20 +8882,25 @@ r_int
 id|amiga_floppy_change
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|gendisk
+op_star
+id|disk
 )paren
 (brace
+r_struct
+id|amiga_floppy_struct
+op_star
+id|p
+op_assign
+id|disk-&gt;private_data
+suffix:semicolon
 r_int
 id|drive
 op_assign
-id|minor
-c_func
-(paren
-id|dev
-)paren
-op_amp
-l_int|3
+id|p
+op_minus
+id|unit
 suffix:semicolon
 r_int
 id|changed
@@ -8996,22 +8966,12 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-id|unit
-(braket
-id|drive
-)braket
-dot
-id|track
+id|p-&gt;track
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|unit
-(braket
-id|drive
-)braket
-dot
-id|dirty
+id|p-&gt;dirty
 op_assign
 l_int|0
 suffix:semicolon
@@ -9060,7 +9020,7 @@ op_assign
 id|fd_ioctl
 comma
 dot
-id|check_media_change
+id|media_changed
 op_assign
 id|amiga_floppy_change
 comma
@@ -9297,6 +9257,19 @@ l_string|&quot;fd%d&quot;
 comma
 id|drive
 )paren
+suffix:semicolon
+id|disk-&gt;private_data
+op_assign
+op_amp
+id|unit
+(braket
+id|drive
+)braket
+suffix:semicolon
+id|disk-&gt;queue
+op_assign
+op_amp
+id|floppy_queue
 suffix:semicolon
 id|set_capacity
 c_func
@@ -9899,11 +9872,8 @@ suffix:semicolon
 id|blk_init_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|floppy_queue
 comma
 id|do_fd_request
 comma
@@ -10118,11 +10088,8 @@ suffix:semicolon
 id|blk_cleanup_queue
 c_func
 (paren
-id|BLK_DEFAULT_QUEUE
-c_func
-(paren
-id|MAJOR_NR
-)paren
+op_amp
+id|floppy_queue
 )paren
 suffix:semicolon
 id|release_mem_region
