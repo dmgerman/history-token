@@ -173,6 +173,8 @@ DECL|macro|FB_ACCEL_SIS_GLAMOUR_2
 mdefine_line|#define FB_ACCEL_SIS_GLAMOUR_2  40&t;/* SiS 315, 650, 740&t;&t;*/
 DECL|macro|FB_ACCEL_SIS_XABRE
 mdefine_line|#define FB_ACCEL_SIS_XABRE      41&t;/* SiS 330 (&quot;Xabre&quot;)&t;&t;*/
+DECL|macro|FB_ACCEL_I830
+mdefine_line|#define FB_ACCEL_I830           42      /* Intel 830M/845G/85x/865G     */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2070
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2070 90&t;/* NeoMagic NM2070              */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2090
