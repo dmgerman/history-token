@@ -308,5 +308,24 @@ suffix:semicolon
 multiline_comment|/* 0 = ok, 1 = something went wrong&t; */
 )brace
 suffix:semicolon
+DECL|struct|ether3_data
+r_struct
+id|ether3_data
+(brace
+DECL|member|name
+r_const
+r_char
+id|name
+(braket
+l_int|8
+)braket
+suffix:semicolon
+DECL|member|base_offset
+r_int
+r_int
+id|base_offset
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif
 eof
