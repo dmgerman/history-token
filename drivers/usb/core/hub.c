@@ -4196,7 +4196,7 @@ id|USB_CLASS_VENDOR_SPEC
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* COMM/2/all is CDC ACM, except 0xff is MSFT RNDIS */
+multiline_comment|/* COMM/2/all is CDC ACM, except 0xff is MSFT RNDIS.&n;&t;&t;&t; * MSFT needs this to be the first config; never use&n;&t;&t;&t; * it as the default unless Linux has host-side RNDIS.&n;&t;&t;&t; * A second config would ideally be CDC-Ethernet, but&n;&t;&t;&t; * may instead be the &quot;vendor specific&quot; CDC subset&n;&t;&t;&t; * long used by ARM Linux for sa1100 or pxa255.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4212,8 +4212,19 @@ id|desc-&gt;bInterfaceProtocol
 op_eq
 l_int|0xff
 )paren
+(brace
+id|c
+op_assign
+id|udev-&gt;config
+(braket
+l_int|1
+)braket
+dot
+id|desc.bConfigurationValue
+suffix:semicolon
 r_continue
 suffix:semicolon
+)brace
 id|c
 op_assign
 id|udev-&gt;config
