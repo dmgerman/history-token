@@ -31,10 +31,10 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SND_OSSEMUL
-DECL|variable|snd_midi_map
+DECL|variable|midi_map
 r_static
 r_int
-id|snd_midi_map
+id|midi_map
 (braket
 id|SNDRV_CARDS
 )braket
@@ -55,10 +55,10 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
-DECL|variable|snd_amidi_map
+DECL|variable|amidi_map
 r_static
 r_int
-id|snd_amidi_map
+id|amidi_map
 (braket
 id|SNDRV_CARDS
 )braket
@@ -82,7 +82,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_midi_map
+id|midi_map
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -96,7 +96,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_midi_map
+id|midi_map
 comma
 l_string|&quot;Raw MIDI device number assigned to 1st OSS device.&quot;
 )paren
@@ -104,7 +104,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_midi_map
+id|midi_map
 comma
 l_string|&quot;default:0,skill:advanced&quot;
 )paren
@@ -112,7 +112,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_amidi_map
+id|amidi_map
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -126,7 +126,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_amidi_map
+id|amidi_map
 comma
 l_string|&quot;Raw MIDI device number assigned to 2nd OSS device.&quot;
 )paren
@@ -134,7 +134,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_amidi_map
+id|amidi_map
 comma
 l_string|&quot;default:1,skill:advanced&quot;
 )paren
@@ -1764,12 +1764,12 @@ op_eq
 id|SNDRV_MINOR_OSS_MIDI
 ques
 c_cond
-id|snd_midi_map
+id|midi_map
 (braket
 id|cardnum
 )braket
 suffix:colon
-id|snd_amidi_map
+id|amidi_map
 (braket
 id|cardnum
 )braket
@@ -2513,6 +2513,19 @@ id|info
 (brace
 id|snd_rawmidi_t
 op_star
+id|rmidi
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|substream
+op_eq
+l_int|NULL
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|rmidi
 op_assign
 id|substream-&gt;rmidi
@@ -7400,7 +7413,7 @@ c_cond
 (paren
 id|rmidi-&gt;device
 op_eq
-id|snd_midi_map
+id|midi_map
 (braket
 id|rmidi-&gt;card-&gt;number
 )braket
@@ -7463,7 +7476,7 @@ c_cond
 (paren
 id|rmidi-&gt;device
 op_eq
-id|snd_amidi_map
+id|amidi_map
 (braket
 id|rmidi-&gt;card-&gt;number
 )braket
@@ -7768,7 +7781,7 @@ c_cond
 (paren
 id|rmidi-&gt;device
 op_eq
-id|snd_midi_map
+id|midi_map
 (braket
 id|rmidi-&gt;card-&gt;number
 )braket
@@ -7800,7 +7813,7 @@ c_cond
 (paren
 id|rmidi-&gt;device
 op_eq
-id|snd_amidi_map
+id|amidi_map
 (braket
 id|rmidi-&gt;card-&gt;number
 )braket
@@ -7987,14 +8000,14 @@ op_increment
 r_if
 c_cond
 (paren
-id|snd_midi_map
+id|midi_map
 (braket
 id|i
 )braket
 OL
 l_int|0
 op_logical_or
-id|snd_midi_map
+id|midi_map
 (braket
 id|i
 )braket
@@ -8010,13 +8023,13 @@ l_string|&quot;invalid midi_map[%d] = %d&bslash;n&quot;
 comma
 id|i
 comma
-id|snd_midi_map
+id|midi_map
 (braket
 id|i
 )braket
 )paren
 suffix:semicolon
-id|snd_midi_map
+id|midi_map
 (braket
 id|i
 )braket
@@ -8027,14 +8040,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_amidi_map
+id|amidi_map
 (braket
 id|i
 )braket
 OL
 l_int|0
 op_logical_or
-id|snd_amidi_map
+id|amidi_map
 (braket
 id|i
 )braket
@@ -8050,13 +8063,13 @@ l_string|&quot;invalid amidi_map[%d] = %d&bslash;n&quot;
 comma
 id|i
 comma
-id|snd_amidi_map
+id|amidi_map
 (braket
 id|i
 )braket
 )paren
 suffix:semicolon
-id|snd_amidi_map
+id|amidi_map
 (braket
 id|i
 )braket

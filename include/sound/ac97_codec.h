@@ -113,7 +113,7 @@ mdefine_line|#define AC97_BC_SIM_STEREO&t;0x0008&t;/* Simulated stereo */
 DECL|macro|AC97_BC_HEADPHONE
 mdefine_line|#define AC97_BC_HEADPHONE&t;0x0010&t;/* Headphone Out Support */
 DECL|macro|AC97_BC_LOUDNESS
-mdefine_line|#define AC97_BC_LOUDNESS&t;0x0020&t;/* Loudness (bass boost) Supporqt */
+mdefine_line|#define AC97_BC_LOUDNESS&t;0x0020&t;/* Loudness (bass boost) Support */
 DECL|macro|AC97_BC_16BIT_DAC
 mdefine_line|#define AC97_BC_16BIT_DAC&t;0x0000&t;/* 16-bit DAC resolution */
 DECL|macro|AC97_BC_18BIT_DAC
@@ -298,6 +298,11 @@ DECL|macro|AC97_CXR_SPDIF_PCM
 mdefine_line|#define AC97_CXR_SPDIF_PCM&t;0x0
 DECL|macro|AC97_CXR_SPDIF_AC3
 mdefine_line|#define AC97_CXR_SPDIF_AC3&t;0x2
+multiline_comment|/* specific - ALC */
+DECL|macro|AC97_ALC650_MULTICH
+mdefine_line|#define AC97_ALC650_MULTICH&t;0x6a
+DECL|macro|AC97_ALC650_CLOCK
+mdefine_line|#define AC97_ALC650_CLOCK&t;0x7a
 multiline_comment|/* ac97-&gt;scaps */
 DECL|macro|AC97_SCAP_AUDIO
 mdefine_line|#define AC97_SCAP_AUDIO&t;&t;(1&lt;&lt;0)&t;/* audio AC&squot;97 codec */

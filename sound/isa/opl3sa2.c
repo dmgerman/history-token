@@ -52,10 +52,10 @@ l_string|&quot;{Intel,AL440LX sound},&quot;
 l_string|&quot;{NeoMagic,MagicWave 3DX}}&quot;
 )paren
 suffix:semicolon
-DECL|variable|snd_index
+DECL|variable|index
 r_static
 r_int
-id|snd_index
+id|index
 (braket
 id|SNDRV_CARDS
 )braket
@@ -63,11 +63,11 @@ op_assign
 id|SNDRV_DEFAULT_IDX
 suffix:semicolon
 multiline_comment|/* Index 0-MAX */
-DECL|variable|snd_id
+DECL|variable|id
 r_static
 r_char
 op_star
-id|snd_id
+id|id
 (braket
 id|SNDRV_CARDS
 )braket
@@ -75,10 +75,10 @@ op_assign
 id|SNDRV_DEFAULT_STR
 suffix:semicolon
 multiline_comment|/* ID for this card */
-DECL|variable|snd_enable
+DECL|variable|enable
 r_static
 r_int
-id|snd_enable
+id|enable
 (braket
 id|SNDRV_CARDS
 )braket
@@ -87,10 +87,10 @@ id|SNDRV_DEFAULT_ENABLE_ISAPNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
 macro_line|#ifdef __ISAPNP__
-DECL|variable|snd_isapnp
+DECL|variable|isapnp
 r_static
 r_int
-id|snd_isapnp
+id|isapnp
 (braket
 id|SNDRV_CARDS
 )braket
@@ -112,10 +112,10 @@ l_int|1
 )brace
 suffix:semicolon
 macro_line|#endif
-DECL|variable|snd_port
+DECL|variable|port
 r_static
 r_int
-id|snd_port
+id|port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -123,10 +123,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0xf86,0x370,0x100 */
-DECL|variable|snd_sb_port
+DECL|variable|sb_port
 r_static
 r_int
-id|snd_sb_port
+id|sb_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -134,10 +134,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x220,0x240,0x260 */
-DECL|variable|snd_wss_port
+DECL|variable|wss_port
 r_static
 r_int
-id|snd_wss_port
+id|wss_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -145,10 +145,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x530,0xe80,0xf40,0x604 */
-DECL|variable|snd_fm_port
+DECL|variable|fm_port
 r_static
 r_int
-id|snd_fm_port
+id|fm_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -156,10 +156,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x388 */
-DECL|variable|snd_midi_port
+DECL|variable|midi_port
 r_static
 r_int
-id|snd_midi_port
+id|midi_port
 (braket
 id|SNDRV_CARDS
 )braket
@@ -167,10 +167,10 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x330,0x300 */
-DECL|variable|snd_irq
+DECL|variable|irq
 r_static
 r_int
-id|snd_irq
+id|irq
 (braket
 id|SNDRV_CARDS
 )braket
@@ -178,10 +178,10 @@ op_assign
 id|SNDRV_DEFAULT_IRQ
 suffix:semicolon
 multiline_comment|/* 0,1,3,5,9,11,12,15 */
-DECL|variable|snd_dma1
+DECL|variable|dma1
 r_static
 r_int
-id|snd_dma1
+id|dma1
 (braket
 id|SNDRV_CARDS
 )braket
@@ -189,10 +189,10 @@ op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
 multiline_comment|/* 1,3,5,6,7 */
-DECL|variable|snd_dma2
+DECL|variable|dma2
 r_static
 r_int
-id|snd_dma2
+id|dma2
 (braket
 id|SNDRV_CARDS
 )braket
@@ -200,10 +200,10 @@ op_assign
 id|SNDRV_DEFAULT_DMA
 suffix:semicolon
 multiline_comment|/* 1,3,5,6,7 */
-DECL|variable|snd_opl3sa3_ymode
+DECL|variable|opl3sa3_ymode
 r_static
 r_int
-id|snd_opl3sa3_ymode
+id|opl3sa3_ymode
 (braket
 id|SNDRV_CARDS
 )braket
@@ -229,7 +229,7 @@ multiline_comment|/*SL Added*/
 id|MODULE_PARM
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -243,7 +243,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_index
+id|index
 comma
 l_string|&quot;Index value for OPL3-SA soundcard.&quot;
 )paren
@@ -251,7 +251,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_index
+id|index
 comma
 id|SNDRV_INDEX_DESC
 )paren
@@ -259,7 +259,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -273,7 +273,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_id
+id|id
 comma
 l_string|&quot;ID string for OPL3-SA soundcard.&quot;
 )paren
@@ -281,7 +281,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_id
+id|id
 comma
 id|SNDRV_ID_DESC
 )paren
@@ -289,7 +289,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -303,7 +303,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 l_string|&quot;Enable OPL3-SA soundcard.&quot;
 )paren
@@ -311,7 +311,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_enable
+id|enable
 comma
 id|SNDRV_ENABLE_DESC
 )paren
@@ -320,7 +320,7 @@ macro_line|#ifdef __ISAPNP__
 id|MODULE_PARM
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -334,7 +334,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 l_string|&quot;ISA PnP detection for specified soundcard.&quot;
 )paren
@@ -342,7 +342,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_isapnp
+id|isapnp
 comma
 id|SNDRV_ISAPNP_DESC
 )paren
@@ -351,7 +351,7 @@ macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -365,7 +365,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_port
+id|port
 comma
 l_string|&quot;Port # for OPL3-SA driver.&quot;
 )paren
@@ -373,7 +373,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_port
+id|port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0xf86},{0x370},{0x100}},dialog:list&quot;
@@ -382,7 +382,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_sb_port
+id|sb_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -396,7 +396,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_sb_port
+id|sb_port
 comma
 l_string|&quot;SB port # for OPL3-SA driver.&quot;
 )paren
@@ -404,7 +404,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_sb_port
+id|sb_port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x220},{0x240},{0x260}},dialog:list&quot;
@@ -413,7 +413,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_wss_port
+id|wss_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -427,7 +427,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_wss_port
+id|wss_port
 comma
 l_string|&quot;WSS port # for OPL3-SA driver.&quot;
 )paren
@@ -435,7 +435,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_wss_port
+id|wss_port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x530},{0xe80},{0xf40},{0x604}},dialog:list&quot;
@@ -444,7 +444,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -458,7 +458,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 l_string|&quot;FM port # for OPL3-SA driver.&quot;
 )paren
@@ -466,7 +466,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_fm_port
+id|fm_port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x388}},dialog:list&quot;
@@ -475,7 +475,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_midi_port
+id|midi_port
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -489,7 +489,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_midi_port
+id|midi_port
 comma
 l_string|&quot;MIDI port # for OPL3-SA driver.&quot;
 )paren
@@ -497,7 +497,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_midi_port
+id|midi_port
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0x330},{0x300}},dialog:list&quot;
@@ -506,7 +506,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -520,7 +520,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 l_string|&quot;IRQ # for OPL3-SA driver.&quot;
 )paren
@@ -528,7 +528,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_irq
+id|irq
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0},{1},{3},{5},{9},{11},{12},{15}},dialog:list&quot;
@@ -537,7 +537,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -551,7 +551,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 l_string|&quot;DMA1 # for OPL3-SA driver.&quot;
 )paren
@@ -559,7 +559,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma1
+id|dma1
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1},{3},{5},{6},{7}},dialog:list&quot;
@@ -568,7 +568,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -582,7 +582,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 l_string|&quot;DMA2 # for OPL3-SA driver.&quot;
 )paren
@@ -590,7 +590,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_dma2
+id|dma2
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1},{3},{5},{6},{7}},dialog:list&quot;
@@ -599,7 +599,7 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|snd_opl3sa3_ymode
+id|opl3sa3_ymode
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -614,7 +614,7 @@ multiline_comment|/* SL Added */
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|snd_opl3sa3_ymode
+id|opl3sa3_ymode
 comma
 l_string|&quot;Speaker size selection for 3D Enhancement mode: Desktop/Large Notebook/Small Notebook/HiFi.&quot;
 )paren
@@ -622,7 +622,7 @@ suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|snd_opl3sa3_ymode
+id|opl3sa3_ymode
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{0,3}},dialog:list&quot;
@@ -3679,7 +3679,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_sb_port
+id|sb_port
 (braket
 id|dev
 )braket
@@ -3695,7 +3695,7 @@ id|pdev-&gt;resource
 l_int|0
 )braket
 comma
-id|snd_sb_port
+id|sb_port
 (braket
 id|dev
 )braket
@@ -3706,7 +3706,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_wss_port
+id|wss_port
 (braket
 id|dev
 )braket
@@ -3722,7 +3722,7 @@ id|pdev-&gt;resource
 l_int|1
 )braket
 comma
-id|snd_wss_port
+id|wss_port
 (braket
 id|dev
 )braket
@@ -3733,7 +3733,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -3749,7 +3749,7 @@ id|pdev-&gt;resource
 l_int|2
 )braket
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -3760,7 +3760,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_midi_port
+id|midi_port
 (braket
 id|dev
 )braket
@@ -3776,7 +3776,7 @@ id|pdev-&gt;resource
 l_int|3
 )braket
 comma
-id|snd_midi_port
+id|midi_port
 (braket
 id|dev
 )braket
@@ -3787,7 +3787,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -3803,7 +3803,7 @@ id|pdev-&gt;resource
 l_int|4
 )braket
 comma
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -3814,7 +3814,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
@@ -3830,7 +3830,7 @@ id|pdev-&gt;dma_resource
 l_int|0
 )braket
 comma
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
@@ -3841,7 +3841,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -3857,7 +3857,7 @@ id|pdev-&gt;dma_resource
 l_int|1
 )braket
 comma
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -3868,7 +3868,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -3884,7 +3884,7 @@ id|pdev-&gt;irq_resource
 l_int|0
 )braket
 comma
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -3917,7 +3917,7 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-id|snd_sb_port
+id|sb_port
 (braket
 id|dev
 )braket
@@ -3929,7 +3929,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_wss_port
+id|wss_port
 (braket
 id|dev
 )braket
@@ -3941,7 +3941,7 @@ l_int|1
 dot
 id|start
 suffix:semicolon
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -3953,7 +3953,7 @@ l_int|2
 dot
 id|start
 suffix:semicolon
-id|snd_midi_port
+id|midi_port
 (braket
 id|dev
 )braket
@@ -3965,7 +3965,7 @@ l_int|3
 dot
 id|start
 suffix:semicolon
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -3977,7 +3977,7 @@ l_int|4
 dot
 id|start
 suffix:semicolon
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
@@ -3989,7 +3989,7 @@ l_int|0
 dot
 id|start
 suffix:semicolon
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -4001,7 +4001,7 @@ l_int|1
 dot
 id|start
 suffix:semicolon
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -4018,22 +4018,22 @@ c_func
 (paren
 l_string|&quot;isapnp OPL3-SA: sb port=0x%lx, wss port=0x%lx, fm port=0x%lx, midi port=0x%lx&bslash;n&quot;
 comma
-id|snd_sb_port
+id|sb_port
 (braket
 id|dev
 )braket
 comma
-id|snd_wss_port
+id|wss_port
 (braket
 id|dev
 )braket
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
 comma
-id|snd_midi_port
+id|midi_port
 (braket
 id|dev
 )braket
@@ -4044,22 +4044,22 @@ c_func
 (paren
 l_string|&quot;isapnp OPL3-SA: control port=0x%lx, dma1=%i, dma2=%i, irq=%i&bslash;n&quot;
 comma
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
 comma
-id|snd_dma1
+id|dma1
 (braket
 id|dev
 )braket
 comma
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
 comma
-id|snd_irq
+id|irq
 (braket
 id|dev
 )braket
@@ -4228,11 +4228,11 @@ id|dev
 )paren
 (brace
 r_int
-id|irq
+id|xirq
 comma
-id|dma1
+id|xdma1
 comma
-id|dma2
+id|xdma2
 suffix:semicolon
 id|snd_card_t
 op_star
@@ -4271,7 +4271,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -4281,7 +4281,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
@@ -4292,7 +4292,7 @@ id|SNDRV_AUTO_PORT
 id|snd_printk
 c_func
 (paren
-l_string|&quot;specify snd_port&bslash;n&quot;
+l_string|&quot;specify port&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4303,7 +4303,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_wss_port
+id|wss_port
 (braket
 id|dev
 )braket
@@ -4314,7 +4314,7 @@ id|SNDRV_AUTO_PORT
 id|snd_printk
 c_func
 (paren
-l_string|&quot;specify snd_wss_port&bslash;n&quot;
+l_string|&quot;specify wss_port&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4325,7 +4325,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -4336,7 +4336,7 @@ id|SNDRV_AUTO_PORT
 id|snd_printk
 c_func
 (paren
-l_string|&quot;specify snd_fm_port&bslash;n&quot;
+l_string|&quot;specify fm_port&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4347,7 +4347,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_midi_port
+id|midi_port
 (braket
 id|dev
 )braket
@@ -4358,7 +4358,7 @@ id|SNDRV_AUTO_PORT
 id|snd_printk
 c_func
 (paren
-l_string|&quot;specify snd_midi_port&bslash;n&quot;
+l_string|&quot;specify midi_port&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4374,12 +4374,12 @@ op_assign
 id|snd_card_new
 c_func
 (paren
-id|snd_index
+id|index
 (braket
 id|dev
 )braket
 comma
-id|snd_id
+id|id
 (braket
 id|dev
 )braket
@@ -4479,7 +4479,7 @@ macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -4504,7 +4504,7 @@ suffix:semicolon
 macro_line|#endif
 id|chip-&gt;ymode
 op_assign
-id|snd_opl3sa3_ymode
+id|opl3sa3_ymode
 (braket
 id|dev
 )braket
@@ -4518,28 +4518,28 @@ id|card
 suffix:semicolon
 id|chip-&gt;port
 op_assign
-id|snd_port
+id|port
 (braket
 id|dev
 )braket
 suffix:semicolon
+id|xirq
+op_assign
 id|irq
-op_assign
-id|snd_irq
 (braket
 id|dev
 )braket
 suffix:semicolon
+id|xdma1
+op_assign
 id|dma1
-op_assign
-id|snd_dma1
 (braket
 id|dev
 )braket
 suffix:semicolon
-id|dma2
+id|xdma2
 op_assign
-id|snd_dma2
+id|dma2
 (braket
 id|dev
 )braket
@@ -4547,7 +4547,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dma2
+id|xdma2
 OL
 l_int|0
 )paren
@@ -4579,7 +4579,7 @@ c_cond
 id|request_irq
 c_func
 (paren
-id|irq
+id|xirq
 comma
 id|snd_opl3sa2_interrupt
 comma
@@ -4606,7 +4606,7 @@ suffix:semicolon
 )brace
 id|chip-&gt;irq
 op_assign
-id|irq
+id|xirq
 suffix:semicolon
 r_if
 c_cond
@@ -4619,7 +4619,7 @@ c_func
 (paren
 id|card
 comma
-id|snd_wss_port
+id|wss_port
 (braket
 id|dev
 )braket
@@ -4629,11 +4629,11 @@ comma
 op_minus
 l_int|1
 comma
-id|irq
+id|xirq
 comma
-id|dma1
+id|xdma1
 comma
-id|dma2
+id|xdma2
 comma
 id|CS4231_HW_OPL3SA2
 comma
@@ -4652,7 +4652,7 @@ c_func
 (paren
 l_string|&quot;Oops, WSS not detected at 0x%lx&bslash;n&quot;
 comma
-id|snd_wss_port
+id|wss_port
 (braket
 id|dev
 )braket
@@ -4751,14 +4751,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
 op_ge
 l_int|0x340
 op_logical_and
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -4777,12 +4777,12 @@ c_func
 (paren
 id|card
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
 comma
-id|snd_fm_port
+id|fm_port
 (braket
 id|dev
 )braket
@@ -4854,14 +4854,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_midi_port
+id|midi_port
 (braket
 id|dev
 )braket
 op_ge
 l_int|0x300
 op_logical_and
-id|snd_midi_port
+id|midi_port
 (braket
 id|dev
 )braket
@@ -4884,14 +4884,14 @@ l_int|0
 comma
 id|MPU401_HW_OPL3SA2
 comma
-id|snd_midi_port
+id|midi_port
 (braket
 id|dev
 )braket
 comma
 l_int|0
 comma
-id|irq
+id|xirq
 comma
 l_int|0
 comma
@@ -4970,9 +4970,9 @@ id|card-&gt;shortname
 comma
 id|chip-&gt;port
 comma
-id|irq
+id|xirq
 comma
-id|dma1
+id|xdma1
 )paren
 suffix:semicolon
 r_if
@@ -4995,7 +4995,7 @@ id|card-&gt;longname
 comma
 l_string|&quot;&amp;%d&quot;
 comma
-id|dma2
+id|xdma2
 )paren
 suffix:semicolon
 r_if
@@ -5081,7 +5081,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -5169,7 +5169,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|snd_enable
+id|enable
 (braket
 id|dev
 )braket
@@ -5180,7 +5180,7 @@ macro_line|#ifdef __ISAPNP__
 r_if
 c_cond
 (paren
-id|snd_isapnp
+id|isapnp
 (braket
 id|dev
 )braket
@@ -5288,7 +5288,7 @@ c_func
 id|alsa_card_opl3sa2_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-opl3sa2=snd_enable,snd_index,snd_id,snd_isapnp,&n;&t;&t;&t;  snd_port,snd_sb_port,snd_wss_port,snd_fm_port,&n;&t;&t;&t;  snd_midi_port,snd_irq,snd_dma1,snd_dma2,&n;&t;&t;&t;  snd_opl3sa3_ymode */
+multiline_comment|/* format is: snd-opl3sa2=enable,index,id,isapnp,&n;&t;&t;&t;  port,sb_port,wss_port,fm_port,&n;&t;&t;&t;  midi_port,irq,dma1,dma2,&n;&t;&t;&t;  opl3sa3_ymode */
 DECL|function|alsa_card_opl3sa2_setup
 r_static
 r_int
@@ -5340,7 +5340,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_enable
+id|enable
 (braket
 id|nr_dev
 )braket
@@ -5355,7 +5355,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_index
+id|index
 (braket
 id|nr_dev
 )braket
@@ -5370,7 +5370,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_id
+id|id
 (braket
 id|nr_dev
 )braket
@@ -5401,7 +5401,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_port
+id|port
 (braket
 id|nr_dev
 )braket
@@ -5420,7 +5420,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_sb_port
+id|sb_port
 (braket
 id|nr_dev
 )braket
@@ -5439,7 +5439,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_wss_port
+id|wss_port
 (braket
 id|nr_dev
 )braket
@@ -5458,7 +5458,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_fm_port
+id|fm_port
 (braket
 id|nr_dev
 )braket
@@ -5477,7 +5477,7 @@ r_int
 op_star
 )paren
 op_amp
-id|snd_midi_port
+id|midi_port
 (braket
 id|nr_dev
 )braket
@@ -5492,7 +5492,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_irq
+id|irq
 (braket
 id|nr_dev
 )braket
@@ -5507,7 +5507,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma1
+id|dma1
 (braket
 id|nr_dev
 )braket
@@ -5522,7 +5522,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_dma2
+id|dma2
 (braket
 id|nr_dev
 )braket
@@ -5537,7 +5537,7 @@ op_amp
 id|str
 comma
 op_amp
-id|snd_opl3sa3_ymode
+id|opl3sa3_ymode
 (braket
 id|nr_dev
 )braket
@@ -5554,7 +5554,7 @@ id|pnp
 op_ne
 id|INT_MAX
 )paren
-id|snd_isapnp
+id|isapnp
 (braket
 id|nr_dev
 )braket

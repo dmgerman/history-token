@@ -3,7 +3,7 @@ DECL|macro|__SOUND_DELTA_H
 mdefine_line|#define __SOUND_DELTA_H
 multiline_comment|/*&n; *   ALSA driver for ICEnsemble ICE1712 (Envy24)&n; *&n; *   Lowlevel functions for M-Audio Delta 1010, 44, 66, Dio2496, Audiophile&n; *&n; *&t;Copyright (c) 2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 DECL|macro|DELTA_DEVICE_DESC
-mdefine_line|#define DELTA_DEVICE_DESC &bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta DiO 2496},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 66},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 44},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Audiophile 24/96},&quot;
+mdefine_line|#define DELTA_DEVICE_DESC &bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 1010LT},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta DiO 2496},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 66},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Delta 44},&quot;&bslash;&n;&t;&t;&quot;{MidiMan M Audio,Audiophile 24/96},&quot;
 DECL|macro|ICE1712_SUBDEVICE_DELTA1010
 mdefine_line|#define ICE1712_SUBDEVICE_DELTA1010&t;0x121430d6
 DECL|macro|ICE1712_SUBDEVICE_DELTADIO2496
@@ -25,7 +25,7 @@ id|snd_ice1712_delta_cards
 )braket
 suffix:semicolon
 multiline_comment|/*&n; *  MidiMan M-Audio Delta GPIO definitions&n; */
-multiline_comment|/* MidiMan M-Audio Delta1010 */
+multiline_comment|/* MidiMan M-Audio Delta shared pins */
 DECL|macro|ICE1712_DELTA_DFS
 mdefine_line|#define ICE1712_DELTA_DFS 0x01&t;&t;/* fast/slow sample rate mode */
 multiline_comment|/* (&gt;48kHz must be 1) */
@@ -106,5 +106,30 @@ multiline_comment|/* low signal = select */
 DECL|macro|ICE1712_DELTA_AP_CS_CODEC
 mdefine_line|#define ICE1712_DELTA_AP_CS_CODEC 0x20&t;/* AK4528 chip select */
 multiline_comment|/* low signal = select */
+multiline_comment|/* MidiMan M-Audio Delta1010LT definitions */
+multiline_comment|/* thanks to Anders Johansson &lt;ajh@watri.uwa.edu.au&gt; */
+multiline_comment|/* 0x01 = DFS */
+DECL|macro|ICE1712_DELTA_1010LT_CCLK
+mdefine_line|#define ICE1712_DELTA_1010LT_CCLK&t;0x02&t;/* SPI clock (AK4524 + CS8427) */
+DECL|macro|ICE1712_DELTA_1010LT_DIN
+mdefine_line|#define ICE1712_DELTA_1010LT_DIN&t;0x04&t;/* data input (CS8427) */
+DECL|macro|ICE1712_DELTA_1010LT_DOUT
+mdefine_line|#define ICE1712_DELTA_1010LT_DOUT&t;0x08&t;/* data output (AK4524 + CS8427) */
+DECL|macro|ICE1712_DELTA_1010LT_CS
+mdefine_line|#define ICE1712_DELTA_1010LT_CS&t;&t;0x70&t;/* mask for CS address */
+DECL|macro|ICE1712_DELTA_1010LT_CS_CHIP_A
+mdefine_line|#define ICE1712_DELTA_1010LT_CS_CHIP_A&t;0x00&t;/* AK4524 #0 */
+DECL|macro|ICE1712_DELTA_1010LT_CS_CHIP_B
+mdefine_line|#define ICE1712_DELTA_1010LT_CS_CHIP_B&t;0x10&t;/* AK4524 #1 */
+DECL|macro|ICE1712_DELTA_1010LT_CS_CHIP_C
+mdefine_line|#define ICE1712_DELTA_1010LT_CS_CHIP_C&t;0x20&t;/* AK4524 #2 */
+DECL|macro|ICE1712_DELTA_1010LT_CS_CHIP_D
+mdefine_line|#define ICE1712_DELTA_1010LT_CS_CHIP_D&t;0x30&t;/* AK4524 #3 */
+DECL|macro|ICE1712_DELTA_1010LT_CS_CS8427
+mdefine_line|#define ICE1712_DELTA_1010LT_CS_CS8427&t;0x40&t;/* CS8427 */
+DECL|macro|ICE1712_DELTA_1010LT_CS_NONE
+mdefine_line|#define ICE1712_DELTA_1010LT_CS_NONE&t;0x50&t;/* nothing */
+DECL|macro|ICE1712_DELTA_1010LT_WORDCLOCK
+mdefine_line|#define ICE1712_DELTA_1010LT_WORDCLOCK 0x80&t;/* sample clock source: 0 = Word Clock Input, 1 = S/PDIF Input ??? */
 macro_line|#endif /* __SOUND_DELTA_H */
 eof
