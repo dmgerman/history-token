@@ -8077,7 +8077,7 @@ c_func
 id|vmalloc_to_pfn
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ARCH_GATE_AREA)
+macro_line|#if !defined(__HAVE_ARCH_GATE_AREA)
 macro_line|#if defined(AT_SYSINFO_EHDR)
 DECL|variable|gate_vma
 r_struct
@@ -8189,5 +8189,5 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif&t;/* __HAVE_ARCH_GATE_AREA */
 eof

@@ -3039,7 +3039,6 @@ id|enable
 (brace
 )brace
 macro_line|#endif
-macro_line|#ifndef CONFIG_ARCH_GATE_AREA
 r_extern
 r_struct
 id|vm_area_struct
@@ -3067,7 +3066,6 @@ r_int
 id|addr
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_MM_H */
 eof
