@@ -838,7 +838,6 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
 multiline_comment|/*&n;&t; * Put the calling processor into the GIQ.  This is really only&n;&t; * necessary from a secondary thread as the OF start-cpu interface&n;&t; * performs this function for us on primary threads.&n;&t; */
 id|rtas_set_indicator
 c_func
@@ -858,7 +857,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|timebase_lock
 r_static

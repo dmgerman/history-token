@@ -3456,7 +3456,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
 id|u32
 id|msk
 op_assign
@@ -3471,7 +3470,6 @@ r_int
 r_int
 id|i
 suffix:semicolon
-macro_line|#endif
 id|BUG_ON
 c_func
 (paren
@@ -3502,8 +3500,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
 multiline_comment|/* let the mpic know we want intrs. default affinity is 0xffffffff&n;&t; * until changed via /proc. That&squot;s how it&squot;s done on x86. If we want&n;&t; * it differently, then we should make sure we also change the default&n;&t; * values of irq_affinity in irq.c.&n; &t; */
+r_if
+c_cond
+(paren
+id|distribute_irqs
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -3536,7 +3539,7 @@ op_or
 id|msk
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IRQ_ALL_CPUS */
+)brace
 multiline_comment|/* Set current processor priority to 0 */
 id|mpic_cpu_write
 c_func

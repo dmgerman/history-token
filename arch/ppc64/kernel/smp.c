@@ -1738,11 +1738,6 @@ c_func
 id|boot_cpuid
 )paren
 suffix:semicolon
-multiline_comment|/* XXX fix this, xics currently relies on it - Anton */
-id|smp_threads_ready
-op_assign
-l_int|1
-suffix:semicolon
 id|set_cpus_allowed
 c_func
 (paren
