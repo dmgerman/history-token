@@ -234,7 +234,11 @@ id|ASB100_IN_MAX
 )paren
 suffix:semicolon
 r_return
+(paren
 id|nval
+op_plus
+l_int|8
+)paren
 op_div
 l_int|16
 suffix:semicolon
