@@ -1066,6 +1066,12 @@ r_void
 op_star
 id|journal_info
 suffix:semicolon
+DECL|member|proc_dentry
+r_struct
+id|dentry
+op_star
+id|proc_dentry
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
