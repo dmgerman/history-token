@@ -110,19 +110,21 @@ c_func
 id|mmu_cr4_features
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI_HT_ONLY
-DECL|variable|acpi_disabled
+macro_line|#ifdef&t;CONFIG_ACPI
+DECL|variable|__initdata
 r_int
 id|acpi_disabled
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#else
-DECL|variable|acpi_disabled
-r_int
-id|acpi_disabled
+id|__initdata
 op_assign
 l_int|0
+suffix:semicolon
+macro_line|#else
+DECL|variable|__initdata
+r_int
+id|acpi_disabled
+id|__initdata
+op_assign
+l_int|1
 suffix:semicolon
 macro_line|#endif
 DECL|variable|acpi_disabled
@@ -131,6 +133,23 @@ c_func
 (paren
 id|acpi_disabled
 )paren
+suffix:semicolon
+macro_line|#ifdef&t;CONFIG_ACPI_BOOT
+DECL|variable|__initdata
+r_int
+id|acpi_ht
+id|__initdata
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* enable HT */
+macro_line|#endif
+DECL|variable|__initdata
+r_int
+id|acpi_force
+id|__initdata
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|MCA_bus
 r_int
@@ -2021,14 +2040,12 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* &quot;acpi=off&quot; disables both ACPI table parsing and interpreter init */
+macro_line|#ifdef CONFIG_ACPI_BOOT
+multiline_comment|/* &quot;acpi=off&quot; disables both ACPI table parsing and interpreter */
+r_else
 r_if
 c_cond
 (paren
-id|c
-op_eq
-l_char|&squot; &squot;
-op_logical_and
 op_logical_neg
 id|memcmp
 c_func
@@ -2040,33 +2057,79 @@ comma
 l_int|8
 )paren
 )paren
+(brace
+id|acpi_ht
+op_assign
+l_int|0
+suffix:semicolon
 id|acpi_disabled
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* &quot;acpismp=force&quot; turns on ACPI again */
+)brace
+multiline_comment|/* acpi=force to over-ride black-list */
+r_else
 r_if
 c_cond
 (paren
-id|c
-op_eq
-l_char|&squot; &squot;
-op_logical_and
 op_logical_neg
 id|memcmp
 c_func
 (paren
 id|from
 comma
-l_string|&quot;acpismp=force&quot;
+l_string|&quot;acpi=force&quot;
 comma
-l_int|13
+l_int|10
 )paren
 )paren
+(brace
+id|acpi_force
+op_assign
+l_int|1
+suffix:semicolon
+id|acpi_ht
+op_assign
+l_int|1
+suffix:semicolon
 id|acpi_disabled
 op_assign
 l_int|0
 suffix:semicolon
+)brace
+multiline_comment|/* Limit ACPI just to boot-time to enable HT */
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|memcmp
+c_func
+(paren
+id|from
+comma
+l_string|&quot;acpi=ht&quot;
+comma
+l_int|7
+)paren
+)paren
+(brace
+id|acpi_ht
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_force
+)paren
+id|acpi_disabled
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n;&t;&t; * highmem=size forces highmem to be exactly &squot;size&squot; bytes.&n;&t;&t; * This works even on boxes that have no highmem otherwise.&n;&t;&t; * This also works to reduce highmem size on bigger boxes.&n;&t;&t; */
 r_if
 c_cond
@@ -4122,11 +4185,8 @@ suffix:semicolon
 macro_line|#endif&t;
 macro_line|#ifdef CONFIG_ACPI
 multiline_comment|/*&n;&t; * Parse the ACPI tables for possible boot-time SMP configuration.&n;&t; */
-r_if
-c_cond
 (paren
-op_logical_neg
-id|acpi_disabled
+r_void
 )paren
 id|acpi_boot_init
 c_func
