@@ -162,6 +162,8 @@ c_cond
 (paren
 id|ops
 op_logical_and
+id|ops-&gt;mp_alg_select_route
+op_logical_and
 (paren
 id|rth-&gt;u.dst.flags
 op_amp
@@ -233,6 +235,8 @@ r_if
 c_cond
 (paren
 id|ops
+op_logical_and
+id|ops-&gt;mp_alg_flush
 )paren
 id|ops
 op_member_access_from_pointer
@@ -288,6 +292,8 @@ r_if
 c_cond
 (paren
 id|ops
+op_logical_and
+id|ops-&gt;mp_alg_set_nhinfo
 )paren
 id|ops
 op_member_access_from_pointer
@@ -333,6 +339,8 @@ r_if
 c_cond
 (paren
 id|ops
+op_logical_and
+id|ops-&gt;mp_alg_remove
 op_logical_and
 (paren
 id|rth-&gt;u.dst.flags
