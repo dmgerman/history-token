@@ -43,13 +43,14 @@ suffix:semicolon
 multiline_comment|/*&n; * IXP4xx provides two methods of accessing PCI memory space:&n; *&n; * 1) A direct mapped window from 0x48000000 to 0x4bffffff (64MB).&n; *    To access PCI via this space, we simply ioremap() the BAR&n; *    into the kernel and we can use the standard read[bwl]/write[bwl]&n; *    macros. This is the preffered method due to speed but it&n; *    limits the system to just 64MB of PCI memory. This can be &n; *    problamatic if using video cards and other memory-heavy&n; *    targets.&n; *&n; * 2) If &gt; 64MB of memory space is required, the IXP4xx can be configured&n; *    to use indirect registers to access PCI (as we do below for I/O&n; *    transactions). This allows for up to 128MB (0x48000000 to 0x4fffffff)&n; *    of memory on the bus. The disadvantadge of this is that every &n; *    PCI access requires three local register accesses plus a spinlock,&n; *    but in some cases the performance hit is acceptable. In addition,&n; *    you cannot mmap() PCI devices in this case.&n; *&n; */
 macro_line|#ifndef&t;CONFIG_IXP4XX_INDIRECT_PCI
 DECL|macro|__mem_pci
-mdefine_line|#define __mem_pci(a)&t;&t;((unsigned long)(a))
+mdefine_line|#define __mem_pci(a)&t;&t;(a)
 macro_line|#else
 macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/*&n; * In the case of using indirect PCI, we simply return the actual PCI&n; * address and our read/write implementation use that to drive the &n; * access registers. If something outside of PCI is ioremap&squot;d, we&n; * fallback to the default.&n; */
 r_static
 r_inline
 r_void
+id|__iomem
 op_star
 DECL|function|__ixp4xx_ioremap
 id|__ixp4xx_ioremap
@@ -73,6 +74,7 @@ id|align
 (brace
 r_extern
 r_void
+id|__iomem
 op_star
 id|__ioremap
 c_func
@@ -135,6 +137,7 @@ id|__ixp4xx_iounmap
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -145,6 +148,7 @@ id|__iounmap
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren

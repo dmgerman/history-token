@@ -338,8 +338,9 @@ suffix:semicolon
 multiline_comment|/* channel flags */
 multiline_comment|/* channel&squot;s hardware position and configuration */
 DECL|member|regs
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* channels registers */

@@ -3037,6 +3037,7 @@ op_star
 id|uap
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
