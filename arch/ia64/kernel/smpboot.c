@@ -1474,7 +1474,7 @@ suffix:semicolon
 id|phys_cpu_present_map
 op_or_assign
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|cpu
 )paren

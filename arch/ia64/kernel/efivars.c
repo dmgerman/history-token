@@ -181,8 +181,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|efi_vars_dir
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|macro|efivar_entry
 mdefine_line|#define efivar_entry(n) list_entry(n, efivar_entry_t, list)

@@ -433,7 +433,7 @@ id|vec
 (brace
 id|desc
 op_assign
-id|irq_desc
+id|irq_descp
 c_func
 (paren
 id|irq
