@@ -2762,10 +2762,6 @@ id|udsl_instance_data
 op_star
 id|instance
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2850,12 +2846,10 @@ id|urb-&gt;actual_length
 )paren
 suffix:semicolon
 multiline_comment|/* queue the skb for processing and wake the SAR */
-id|spin_lock_irqsave
+id|spin_lock
 (paren
 op_amp
 id|instance-&gt;recvqlock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|skb_queue_tail
@@ -2866,12 +2860,10 @@ comma
 id|ctx-&gt;skb
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 (paren
 op_amp
 id|instance-&gt;recvqlock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|wake_up
