@@ -1,14 +1,6 @@
 macro_line|#ifndef _AHA1740_H
 multiline_comment|/* $Id$&n; *&n; * Header file for the adaptec 1740 driver for Linux&n; *&n; * With minor revisions 3/31/93&n; * Written and (C) 1992,1993 Brad McLean.  See aha1740.c&n; * for more info&n; *&n; */
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/* Eisa Enhanced mode operation - slot locating and addressing */
-DECL|macro|MINEISA
-mdefine_line|#define MINEISA 1&t;&t;/* I don&squot;t have an EISA Spec to know these ranges, so I */
-DECL|macro|MAXEISA
-mdefine_line|#define MAXEISA 8&t;&t;/* Just took my machine&squot;s specifications.  Adjust to fit. */
-multiline_comment|/* I just saw an ad, and bumped this from 6 to 8 */
-DECL|macro|SLOTBASE
-mdefine_line|#define&t;SLOTBASE(x)&t;((x &lt;&lt; 12) + 0xc80)
 DECL|macro|SLOTSIZE
 mdefine_line|#define SLOTSIZE&t;0x5c
 multiline_comment|/* EISA configuration registers &amp; values */
@@ -380,62 +372,6 @@ DECL|macro|AHA1740CMD_RINQ
 mdefine_line|#define AHA1740CMD_RINQ  0x0a&t;/* Read Host Adapter Inquiry Data */
 DECL|macro|AHA1740CMD_TARG
 mdefine_line|#define AHA1740CMD_TARG  0x10&t;/* Target SCSI Command */
-r_static
-r_int
-id|aha1740_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|aha1740_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|aha1740_queuecommand
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_static
-r_int
-id|aha1740_biosparam
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-comma
-r_struct
-id|block_device
-op_star
-comma
-id|sector_t
-comma
-r_int
-op_star
-)paren
-suffix:semicolon
 DECL|macro|AHA1740_ECBS
 mdefine_line|#define AHA1740_ECBS 32
 DECL|macro|AHA1740_SCATTER
