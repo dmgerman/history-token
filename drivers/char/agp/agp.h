@@ -1061,6 +1061,11 @@ r_int
 id|agp_3_0_node_enable
 c_func
 (paren
+r_struct
+id|agp_bridge_data
+op_star
+id|bridge
+comma
 id|u32
 id|mode
 comma

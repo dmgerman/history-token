@@ -1658,6 +1658,8 @@ l_int|0x1
 id|agp_3_0_node_enable
 c_func
 (paren
+id|agp_bridge
+comma
 id|mode
 comma
 id|minor
