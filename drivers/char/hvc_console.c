@@ -943,11 +943,21 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#if defined (CONFIG_XMON)
 r_extern
 r_int
 r_int
 id|cpus_in_xmon
 suffix:semicolon
+macro_line|#else
+DECL|variable|cpus_in_xmon
+r_int
+r_int
+id|cpus_in_xmon
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
 DECL|function|khvcd
 r_int
 id|khvcd
