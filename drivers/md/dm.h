@@ -50,6 +50,13 @@ id|block_device
 op_star
 id|bdev
 suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|16
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 r_struct

@@ -1747,6 +1747,14 @@ r_return
 id|r
 suffix:semicolon
 )brace
+id|format_dev_t
+c_func
+(paren
+id|dd-&gt;name
+comma
+id|dev
+)paren
+suffix:semicolon
 id|atomic_set
 c_func
 (paren
