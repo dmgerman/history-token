@@ -81,7 +81,7 @@ multiline_comment|/* 64-bit Naca address */
 dot
 id|xMsNucDataOffset
 op_assign
-l_int|0x6000
+l_int|0x4800
 comma
 multiline_comment|/* offset of LparMap within loadarea (see head.S) */
 dot

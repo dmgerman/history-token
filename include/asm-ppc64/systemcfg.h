@@ -114,14 +114,6 @@ id|__u32
 id|icache_line_size
 suffix:semicolon
 multiline_comment|/* L1 i-cache line size&t;&t;0x6C */
-DECL|member|reserved0
-id|__u8
-id|reserved0
-(braket
-l_int|3984
-)braket
-suffix:semicolon
-multiline_comment|/* Reserve rest of page&t;&t;0x70 */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
@@ -133,11 +125,5 @@ id|systemcfg
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* __ASSEMBLY__ */
-DECL|macro|SYSTEMCFG_PAGE
-mdefine_line|#define SYSTEMCFG_PAGE      0x5
-DECL|macro|SYSTEMCFG_PHYS_ADDR
-mdefine_line|#define SYSTEMCFG_PHYS_ADDR (SYSTEMCFG_PAGE&lt;&lt;PAGE_SHIFT)
-DECL|macro|SYSTEMCFG_VIRT_ADDR
-mdefine_line|#define SYSTEMCFG_VIRT_ADDR (KERNELBASE+SYSTEMCFG_PHYS_ADDR)
 macro_line|#endif /* _SYSTEMCFG_H */
 eof
