@@ -72,6 +72,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|variable|usbcore_name
+r_const
+r_char
+op_star
+id|usbcore_name
+op_assign
+l_string|&quot;usbcore&quot;
+suffix:semicolon
 DECL|variable|nousb
 r_int
 id|nousb
@@ -422,10 +430,12 @@ op_logical_neg
 id|retval
 )paren
 (brace
-id|info
+id|pr_info
 c_func
 (paren
-l_string|&quot;registered new driver %s&quot;
+l_string|&quot;%s: registered new driver %s&bslash;n&quot;
+comma
+id|usbcore_name
 comma
 id|new_driver-&gt;name
 )paren
@@ -438,10 +448,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|err
+id|printk
 c_func
 (paren
-l_string|&quot;problem %d when registering driver %s&quot;
+id|KERN_ERR
+l_string|&quot;%s: error %d registering driver %s&bslash;n&quot;
+comma
+id|usbcore_name
 comma
 id|retval
 comma
@@ -465,10 +478,12 @@ op_star
 id|driver
 )paren
 (brace
-id|info
+id|pr_info
 c_func
 (paren
-l_string|&quot;deregistering driver %s&quot;
+l_string|&quot;%s: deregistering driver %s&bslash;n&quot;
+comma
+id|usbcore_name
 comma
 id|driver-&gt;name
 )paren
@@ -1391,13 +1406,6 @@ id|length
 op_assign
 l_int|0
 suffix:semicolon
-id|dbg
-(paren
-l_string|&quot;%s&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1407,6 +1415,14 @@ id|dev
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+multiline_comment|/* driver is often null here; dev_dbg() would oops */
+id|pr_debug
+(paren
+l_string|&quot;usb %s: hotplug&bslash;n&quot;
+comma
+id|dev-&gt;bus_id
+)paren
 suffix:semicolon
 multiline_comment|/* Must check driver_data here, as on remove driver is always NULL */
 r_if
@@ -1452,9 +1468,11 @@ OL
 l_int|0
 )paren
 (brace
-id|dbg
+id|pr_debug
 (paren
-l_string|&quot;device already deleted ??&quot;
+l_string|&quot;usb %s: already deleted?&bslash;n&quot;
+comma
+id|dev-&gt;bus_id
 )paren
 suffix:semicolon
 r_return
@@ -1469,9 +1487,11 @@ op_logical_neg
 id|usb_dev-&gt;bus
 )paren
 (brace
-id|dbg
+id|pr_debug
 (paren
-l_string|&quot;bus already removed?&quot;
+l_string|&quot;usb %s: bus removed?&bslash;n&quot;
+comma
+id|dev-&gt;bus_id
 )paren
 suffix:semicolon
 r_return
@@ -2201,10 +2221,13 @@ suffix:semicolon
 r_int
 id|child
 suffix:semicolon
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;looking at vendor %d, product %d&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;check for vendor %04x, product %04x ...&bslash;n&quot;
 comma
 id|dev-&gt;descriptor.idVendor
 comma
@@ -2228,9 +2251,12 @@ id|product_id
 )paren
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;found the device!&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;matched this device!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ret_dev
@@ -2481,10 +2507,15 @@ OL
 l_int|2
 )paren
 (brace
-id|err
+id|printk
 c_func
 (paren
-l_string|&quot;invalid descriptor length of %d&quot;
+id|KERN_ERR
+l_string|&quot;%s: bogus descriptor, type %d length %d&bslash;n&quot;
+comma
+id|usbcore_name
+comma
+id|header-&gt;bDescriptorType
 comma
 id|header-&gt;bLength
 )paren
@@ -4560,10 +4591,11 @@ c_cond
 id|nousb
 )paren
 (brace
-id|info
-c_func
+id|pr_info
 (paren
-l_string|&quot;USB support disabled&bslash;n&quot;
+l_string|&quot;%s: USB support disabled&bslash;n&quot;
+comma
+id|usbcore_name
 )paren
 suffix:semicolon
 r_return

@@ -2861,10 +2861,13 @@ op_logical_neg
 id|iface
 )paren
 (brace
-id|warn
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;selecting invalid interface %d&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;selecting invalid interface %d&bslash;n&quot;
 comma
 id|interface
 )paren
@@ -2950,12 +2953,13 @@ op_eq
 l_int|1
 )paren
 (brace
-id|dbg
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;manual set_interface for dev %d, iface %d, alt %d&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;devnum
+l_string|&quot;manual set_interface for iface %d, alt %d&bslash;n&quot;
 comma
 id|interface
 comma
@@ -3741,10 +3745,12 @@ OL
 l_int|0
 )paren
 (brace
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;error getting string descriptor 0 (error=%d)&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;string descriptor 0 read error: %d&bslash;n&quot;
 comma
 id|err
 )paren
@@ -3769,10 +3775,12 @@ OL
 l_int|4
 )paren
 (brace
-id|err
-c_func
+id|dev_err
 (paren
-l_string|&quot;string descriptor 0 too short&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;string descriptor 0 too short&bslash;n&quot;
 )paren
 suffix:semicolon
 id|err
@@ -3808,12 +3816,12 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* always use the first langid listed */
-id|dbg
-c_func
+id|dev_dbg
 (paren
-l_string|&quot;USB device number %d default language ID 0x%x&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;devnum
+l_string|&quot;default language 0x%04x&bslash;n&quot;
 comma
 id|dev-&gt;string_langid
 )paren

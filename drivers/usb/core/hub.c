@@ -849,13 +849,12 @@ c_cond
 (paren
 id|status
 )paren
-id|err
+id|dev_err
 (paren
-l_string|&quot;usb-%s-%s clear tt %d (%04x) error %d&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;bus-&gt;bus_name
-comma
-id|dev-&gt;devpath
+l_string|&quot;clear tt %d (%04x) error %d&bslash;n&quot;
 comma
 id|clear-&gt;tt
 comma
@@ -929,13 +928,12 @@ op_eq
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;can&squot;t save CLEAR_TT_BUFFER state for hub at usb-%s-%s&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;bus-&gt;bus_name
-comma
-id|tt-&gt;hub-&gt;devpath
+l_string|&quot;can&squot;t save CLEAR_TT_BUFFER state&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME recover somehow ... RESET_TT? */
@@ -2518,10 +2516,15 @@ op_logical_neg
 id|hub
 )paren
 (brace
-id|err
+id|dev_dbg
+(paren
+id|hubdev
 c_func
 (paren
-l_string|&quot;couldn&squot;t kmalloc hub struct&quot;
+id|dev
+)paren
+comma
+l_string|&quot;couldn&squot;t kmalloc hub struct&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2971,12 +2974,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|err
+id|dev_err
 c_func
 (paren
-l_string|&quot;cannot disconnect hub %s&quot;
+op_amp
+id|dev-&gt;dev
 comma
-id|dev-&gt;devpath
+l_string|&quot;cannot disconnect hub!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4783,10 +4787,11 @@ id|current
 )paren
 )paren
 suffix:semicolon
-id|dbg
-c_func
+id|pr_debug
 (paren
-l_string|&quot;hub_thread exiting&quot;
+l_string|&quot;%s: khubd exiting&bslash;n&quot;
+comma
+id|usbcore_name
 )paren
 suffix:semicolon
 id|complete_and_exit
@@ -4908,10 +4913,13 @@ OL
 l_int|0
 )paren
 (brace
-id|err
+id|printk
 c_func
 (paren
-l_string|&quot;Unable to register USB hub driver&quot;
+id|KERN_ERR
+l_string|&quot;%s: can&squot;t register hub driver&bslash;n&quot;
+comma
+id|usbcore_name
 )paren
 suffix:semicolon
 r_return
@@ -4955,10 +4963,13 @@ op_amp
 id|hub_driver
 )paren
 suffix:semicolon
-id|err
+id|printk
 c_func
 (paren
-l_string|&quot;failed to start hub_thread&quot;
+id|KERN_ERR
+l_string|&quot;%s: can&squot;t start khubd&bslash;n&quot;
+comma
+id|usbcore_name
 )paren
 suffix:semicolon
 r_return
