@@ -33,6 +33,25 @@ DECL|macro|I2OEVTREG
 mdefine_line|#define I2OEVTREG&t;&t;_IOW(I2O_MAGIC_NUMBER,10,struct i2o_evt_id)
 DECL|macro|I2OEVTGET
 mdefine_line|#define I2OEVTGET&t;&t;_IOR(I2O_MAGIC_NUMBER,11,struct i2o_evt_info)
+DECL|macro|I2OPASSTHRU
+mdefine_line|#define I2OPASSTHRU&t;&t;_IOR(I2O_MAGIC_NUMBER,12,struct i2o_cmd_passthru)
+DECL|struct|i2o_cmd_passthru
+r_struct
+id|i2o_cmd_passthru
+(brace
+DECL|member|msg
+r_void
+op_star
+id|msg
+suffix:semicolon
+multiline_comment|/* message */
+DECL|member|iop
+r_int
+id|iop
+suffix:semicolon
+multiline_comment|/* number of the I2O controller, to which the&n;&t;&t;&t;&t;   message should go to */
+)brace
+suffix:semicolon
 DECL|struct|i2o_cmd_hrtlct
 r_struct
 id|i2o_cmd_hrtlct

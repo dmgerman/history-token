@@ -1715,6 +1715,10 @@ DECL|macro|HOST_TID
 mdefine_line|#define HOST_TID&t;&t;1
 DECL|macro|MSG_FRAME_SIZE
 mdefine_line|#define MSG_FRAME_SIZE&t;&t;64&t;/* i2o_scsi assumes &gt;= 32 */
+DECL|macro|REPLY_FRAME_SIZE
+mdefine_line|#define REPLY_FRAME_SIZE&t;17
+DECL|macro|SG_TABLESIZE
+mdefine_line|#define SG_TABLESIZE&t;&t;30
 DECL|macro|NMBR_MSG_FRAMES
 mdefine_line|#define NMBR_MSG_FRAMES&t;&t;128
 DECL|macro|MSG_POOL_SIZE
