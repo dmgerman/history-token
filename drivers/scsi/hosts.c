@@ -7,11 +7,9 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
@@ -448,66 +446,6 @@ c_func
 (paren
 op_amp
 id|scsi_host_list_lock
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * scsi_host_legacy_release - default release function for hosts&n; * @shost: &n; * &n; * Description:&n; * &t;This is the default case for the release function.  Its completely&n; *&t;useless for anything but old ISA adapters&n; **/
-DECL|function|scsi_host_legacy_release
-r_static
-r_int
-id|scsi_host_legacy_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-id|shost
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|shost-&gt;irq
-)paren
-id|free_irq
-c_func
-(paren
-id|shost-&gt;irq
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_GENERIC_ISA_DMA
-r_if
-c_cond
-(paren
-id|shost-&gt;dma_channel
-op_ne
-l_int|0xff
-)paren
-id|free_dma
-c_func
-(paren
-id|shost-&gt;dma_channel
-)paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|shost-&gt;io_port
-op_logical_and
-id|shost-&gt;n_io_port
-)paren
-id|release_region
-c_func
-(paren
-id|shost-&gt;io_port
-comma
-id|shost-&gt;n_io_port
 )paren
 suffix:semicolon
 r_return
@@ -1324,10 +1262,14 @@ comma
 id|shost_tp-&gt;name
 )paren
 suffix:semicolon
-id|shost_tp-&gt;release
-op_assign
-op_amp
-id|scsi_host_legacy_release
+id|dump_stack
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|shost_tp
