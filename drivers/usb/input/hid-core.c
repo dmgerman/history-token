@@ -6573,7 +6573,7 @@ c_func
 (paren
 id|hid-&gt;name
 comma
-l_int|64
+l_int|128
 comma
 l_string|&quot;%04x:%04x&quot;
 comma
