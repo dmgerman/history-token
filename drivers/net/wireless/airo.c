@@ -2592,6 +2592,7 @@ suffix:semicolon
 macro_line|#ifdef WIRELESS_EXT
 singleline_comment|// Frequency list (map channels to frequencies)
 DECL|variable|frequency_list
+r_static
 r_const
 r_int
 id|frequency_list
