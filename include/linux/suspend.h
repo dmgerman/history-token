@@ -138,7 +138,7 @@ r_void
 suffix:semicolon
 multiline_comment|/* kernel/suspend.c */
 r_extern
-r_void
+r_int
 id|software_suspend
 c_func
 (paren
@@ -241,13 +241,17 @@ macro_line|#else&t;/* CONFIG_SOFTWARE_SUSPEND */
 DECL|function|software_suspend
 r_static
 r_inline
-r_void
+r_int
 id|software_suspend
 c_func
 (paren
 r_void
 )paren
 (brace
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
 )brace
 DECL|macro|software_resume
 mdefine_line|#define software_resume()&t;&t;do { } while(0)

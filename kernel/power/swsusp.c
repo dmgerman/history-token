@@ -1401,14 +1401,6 @@ id|page
 op_star
 id|page
 suffix:semicolon
-macro_line|#ifdef CONFIG_DISCONTIGMEM
-id|panic
-c_func
-(paren
-l_string|&quot;Discontingmem not supported&quot;
-)paren
-suffix:semicolon
-macro_line|#else
 id|BUG_ON
 (paren
 id|max_pfn
@@ -1416,7 +1408,6 @@ op_ne
 id|num_physpages
 )paren
 suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1438,21 +1429,6 @@ id|pfn_to_page
 c_func
 (paren
 id|pfn
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PageHighMem
-c_func
-(paren
-id|page
-)paren
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Swsusp not supported on highmem boxes. Send 1GB of RAM to &lt;pavel@ucw.cz&gt; and try again ;-).&quot;
 )paren
 suffix:semicolon
 r_if
@@ -2887,7 +2863,7 @@ suffix:semicolon
 )brace
 DECL|function|do_software_suspend
 r_static
-r_void
+r_int
 id|do_software_suspend
 c_func
 (paren
@@ -2976,10 +2952,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is main interface to the outside world. It needs to be&n; * called from process context.&n; */
+multiline_comment|/**&n; *&t;software_suspend - initiate suspend-to-swap transition.&n; *&n; *&t;This is main interface to the outside world. It needs to be&n; *&t;called from process context.&n; */
 DECL|function|software_suspend
-r_void
+r_int
 id|software_suspend
 c_func
 (paren
@@ -2994,8 +2973,22 @@ id|software_suspend_enabled
 )paren
 (brace
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#if defined (CONFIG_HIGHMEM) || defined (COFNIG_DISCONTIGMEM)
+id|printk
+c_func
+(paren
+l_string|&quot;swsusp is not supported with high- or discontig-mem.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+macro_line|#endif
 id|software_suspend_enabled
 op_assign
 l_int|0
@@ -3005,6 +2998,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_return
 id|do_software_suspend
 c_func
 (paren
