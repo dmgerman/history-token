@@ -868,19 +868,15 @@ id|host
 suffix:semicolon
 multiline_comment|/* owner: inode, block_device */
 DECL|member|i_mmap
-r_struct
-id|vm_area_struct
-op_star
+id|list_t
 id|i_mmap
 suffix:semicolon
 multiline_comment|/* list of private mappings */
 DECL|member|i_mmap_shared
-r_struct
-id|vm_area_struct
-op_star
+id|list_t
 id|i_mmap_shared
 suffix:semicolon
-multiline_comment|/* list of shared mappings */
+multiline_comment|/* list of private mappings */
 DECL|member|i_shared_lock
 id|spinlock_t
 id|i_shared_lock

@@ -3672,9 +3672,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|list_empty
+c_func
+(paren
+op_amp
 id|mapping-&gt;i_mmap_shared
-op_ne
-l_int|NULL
+)paren
 )paren
 id|flush_dcache_page
 c_func
