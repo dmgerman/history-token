@@ -524,7 +524,7 @@ suffix:semicolon
 id|sprintf
 c_func
 (paren
-id|mca_bus-&gt;dev.name
+id|mca_bus-&gt;name
 comma
 l_string|&quot;Host %s MCA Bridge&quot;
 comma
