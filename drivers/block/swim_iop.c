@@ -1478,9 +1478,10 @@ l_int|0x80
 )paren
 op_logical_and
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return

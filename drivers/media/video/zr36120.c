@@ -6137,7 +6137,6 @@ r_struct
 id|video_buffer
 id|v
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020100
 r_if
 c_cond
 (paren
@@ -6146,27 +6145,9 @@ id|capable
 c_func
 (paren
 id|CAP_SYS_ADMIN
-)paren
-op_logical_and
-op_logical_neg
-id|capable
-c_func
-(paren
-id|CAP_SYS_ADMIN
-)paren
-)paren
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|suser
-c_func
-(paren
 )paren
 )paren
 (brace
-macro_line|#endif
 r_return
 op_minus
 id|EPERM

@@ -1518,9 +1518,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|fsuser
+id|capable
 c_func
 (paren
+id|CAP_SYS_RESOURCE
 )paren
 op_logical_and
 id|ufs_freespace

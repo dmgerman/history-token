@@ -5533,9 +5533,10 @@ id|tty-&gt;flags
 )paren
 op_logical_and
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 id|retval
@@ -6017,9 +6018,10 @@ id|tty
 )paren
 op_logical_and
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return
@@ -6271,9 +6273,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return
@@ -6418,9 +6421,10 @@ op_eq
 l_int|1
 )paren
 op_logical_and
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 (brace
