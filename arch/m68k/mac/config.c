@@ -685,7 +685,7 @@ op_assign
 id|mac_debug_init
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_INPUT_M68K_BEEP
+macro_line|#if defined(CONFIG_INPUT_M68K_BEEP) || defined(CONFIG_INPUT_M68K_BEEP_MODULE)
 id|mach_beep
 op_assign
 id|mac_mksound

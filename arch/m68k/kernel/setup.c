@@ -431,7 +431,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_INPUT_M68K_BEEP
+macro_line|#if defined(CONFIG_INPUT_M68K_BEEP) || defined(CONFIG_INPUT_M68K_BEEP_MODULE)
 DECL|variable|mach_beep
 r_void
 (paren

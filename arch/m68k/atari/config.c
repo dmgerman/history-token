@@ -883,7 +883,7 @@ id|mach_max_dma_address
 op_assign
 l_int|0xffffff
 suffix:semicolon
-macro_line|#ifdef CONFIG_INPUT_M68K_BEEP
+macro_line|#if defined(CONFIG_INPUT_M68K_BEEP) || defined(CONFIG_INPUT_M68K_BEEP_MODULE)
 id|mach_beep
 op_assign
 id|atari_mksound
