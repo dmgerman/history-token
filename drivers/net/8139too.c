@@ -2,7 +2,7 @@ multiline_comment|/*&n;&n;&t;8139too.c: A RealTek RTL-8139 Fast Ethernet driver 
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;8139too&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.9.25&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.9.26&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1532,7 +1532,7 @@ l_int|7
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Twister tuning parameters from RealTek.&n;   Completely undocumented, but required to tune bad links. */
+multiline_comment|/* Twister tuning parameters from RealTek.&n;   Completely undocumented, but required to tune bad links on some boards. */
 DECL|enum|CSCRBits
 r_enum
 id|CSCRBits
@@ -1580,12 +1580,29 @@ l_int|0xC0
 comma
 )brace
 suffix:semicolon
-DECL|macro|PARA78_default
-mdefine_line|#define PARA78_default&t;0x78fa8388
-DECL|macro|PARA7c_default
-mdefine_line|#define PARA7c_default&t;0xcb38de43&t;/* param[0][3] */
-DECL|macro|PARA7c_xxx
-mdefine_line|#define PARA7c_xxx&t;&t;0xcb38de43
+macro_line|#ifdef CONFIG_8139TOO_TUNE_TWISTER
+DECL|enum|TwisterParamVals
+r_enum
+id|TwisterParamVals
+(brace
+DECL|enumerator|PARA78_default
+id|PARA78_default
+op_assign
+l_int|0x78fa8388
+comma
+DECL|enumerator|PARA7c_default
+id|PARA7c_default
+op_assign
+l_int|0xcb38de43
+comma
+multiline_comment|/* param[0][3] */
+DECL|enumerator|PARA7c_xxx
+id|PARA7c_xxx
+op_assign
+l_int|0xcb38de43
+comma
+)brace
+suffix:semicolon
 DECL|variable|param
 r_static
 r_const
@@ -1641,6 +1658,7 @@ l_int|0xbb39ce83
 )brace
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_8139TOO_TUNE_TWISTER */
 r_typedef
 r_enum
 (brace
@@ -5162,7 +5180,16 @@ l_int|0x003f0000
 suffix:semicolon
 id|tp-&gt;twistie
 op_assign
+(paren
+id|tp-&gt;chipset
+op_eq
+id|CH_8139_K
+)paren
+ques
+c_cond
 l_int|1
+suffix:colon
+l_int|0
 suffix:semicolon
 id|tp-&gt;time_to_die
 op_assign
@@ -7237,7 +7264,7 @@ id|ioaddr
 id|u8
 id|tmp8
 suffix:semicolon
-macro_line|#ifndef CONFIG_8139_NEW_RX_RESET
+macro_line|#ifdef CONFIG_8139_OLD_RX_RESET
 r_int
 id|tmp_work
 suffix:semicolon
@@ -7329,7 +7356,7 @@ id|tp-&gt;xstats.rx_lost_in_ring
 op_increment
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_8139_NEW_RX_RESET
+macro_line|#ifndef CONFIG_8139_OLD_RX_RESET
 id|tmp8
 op_assign
 id|RTL_R8

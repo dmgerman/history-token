@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Free memory management - zoned buddy allocator.&n; */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
 DECL|macro|MAX_ORDER
@@ -38,11 +40,30 @@ suffix:semicolon
 r_struct
 id|pglist_data
 suffix:semicolon
-multiline_comment|/*&n; * On machines where it is needed (eg PCs) we divide physical memory&n; * into multiple physical zones. On a PC we have 3 zones:&n; *&n; * ZONE_DMA&t;  &lt; 16 MB&t;ISA DMA capable memory&n; * ZONE_NORMAL&t;16-896 MB&t;direct mapped by the kernel&n; * ZONE_HIGHMEM&t; &gt; 896 MB&t;only page cache and user processes&n; */
-DECL|struct|zone_struct
-r_typedef
+multiline_comment|/*&n; * zone-&gt;lock and zone-&gt;lru_lock are two of the hottest locks in the kernel.&n; * So add a wild amount of padding here to ensure that they fall into separate&n; * cachelines.  There are very few zone structures in the machine, so space&n; * consumption is not a concern here.&n; */
+macro_line|#if defined(CONFIG_SMP)
+DECL|struct|zone_padding
 r_struct
-id|zone_struct
+id|zone_padding
+(brace
+DECL|member|x
+r_int
+id|x
+suffix:semicolon
+DECL|variable|____cacheline_maxaligned_in_smp
+)brace
+id|____cacheline_maxaligned_in_smp
+suffix:semicolon
+DECL|macro|ZONE_PADDING
+mdefine_line|#define ZONE_PADDING(name)&t;struct zone_padding name;
+macro_line|#else
+DECL|macro|ZONE_PADDING
+mdefine_line|#define ZONE_PADDING(name)
+macro_line|#endif
+multiline_comment|/*&n; * On machines where it is needed (eg PCs) we divide physical memory&n; * into multiple physical zones. On a PC we have 3 zones:&n; *&n; * ZONE_DMA&t;  &lt; 16 MB&t;ISA DMA capable memory&n; * ZONE_NORMAL&t;16-896 MB&t;direct mapped by the kernel&n; * ZONE_HIGHMEM&t; &gt; 896 MB&t;only page cache and user processes&n; */
+DECL|struct|zone
+r_struct
+id|zone
 (brace
 multiline_comment|/*&n;&t; * Commonly accessed fields:&n;&t; */
 DECL|member|lock
@@ -69,8 +90,44 @@ DECL|member|need_balance
 r_int
 id|need_balance
 suffix:semicolon
+id|ZONE_PADDING
+c_func
+(paren
+id|_pad1_
+)paren
+id|spinlock_t
+id|lru_lock
+suffix:semicolon
+DECL|member|active_list
+r_struct
+id|list_head
+id|active_list
+suffix:semicolon
+DECL|member|inactive_list
+r_struct
+id|list_head
+id|inactive_list
+suffix:semicolon
+DECL|member|refill_counter
+id|atomic_t
+id|refill_counter
+suffix:semicolon
+DECL|member|nr_active
+r_int
+r_int
+id|nr_active
+suffix:semicolon
+DECL|member|nr_inactive
+r_int
+r_int
+id|nr_inactive
+suffix:semicolon
+id|ZONE_PADDING
+c_func
+(paren
+id|_pad2_
+)paren
 multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
-DECL|member|free_area
 id|free_area_t
 id|free_area
 (braket
@@ -127,9 +184,9 @@ r_int
 r_int
 id|size
 suffix:semicolon
-DECL|typedef|zone_t
+DECL|variable|____cacheline_maxaligned_in_smp
 )brace
-id|zone_t
+id|____cacheline_maxaligned_in_smp
 suffix:semicolon
 DECL|macro|ZONE_DMA
 mdefine_line|#define ZONE_DMA&t;&t;0
@@ -140,13 +197,13 @@ mdefine_line|#define ZONE_HIGHMEM&t;&t;2
 DECL|macro|MAX_NR_ZONES
 mdefine_line|#define MAX_NR_ZONES&t;&t;3
 multiline_comment|/*&n; * One allocation request operates on a zonelist. A zonelist&n; * is a list of zones, the first one is the &squot;goal&squot; of the&n; * allocation, the other zones are fallback zones, in decreasing&n; * priority.&n; *&n; * Right now a zonelist takes up less than a cacheline. We never&n; * modify it apart from boot-up, and only a few indices are used,&n; * so despite the zonelist table being relatively big, the cache&n; * footprint of this construct is very small.&n; */
-DECL|struct|zonelist_struct
-r_typedef
+DECL|struct|zonelist
 r_struct
-id|zonelist_struct
+id|zonelist
 (brace
 DECL|member|zones
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zones
 (braket
@@ -156,13 +213,11 @@ l_int|1
 )braket
 suffix:semicolon
 singleline_comment|// NULL delimited
-DECL|typedef|zonelist_t
 )brace
-id|zonelist_t
 suffix:semicolon
 DECL|macro|GFP_ZONEMASK
 mdefine_line|#define GFP_ZONEMASK&t;0x0f
-multiline_comment|/*&n; * The pg_data_t structure is used in machines with CONFIG_DISCONTIGMEM&n; * (mostly NUMA machines?) to denote a higher-level memory zone than the&n; * zone_struct denotes.&n; *&n; * On NUMA machines, each NUMA node would have a pg_data_t to describe&n; * it&squot;s memory layout.&n; *&n; * XXX: we need to move the global memory statistics (active_list, ...)&n; *      into the pg_data_t to properly support NUMA.&n; */
+multiline_comment|/*&n; * The pg_data_t structure is used in machines with CONFIG_DISCONTIGMEM&n; * (mostly NUMA machines?) to denote a higher-level memory zone than the&n; * zone denotes.&n; *&n; * On NUMA machines, each NUMA node would have a pg_data_t to describe&n; * it&squot;s memory layout.&n; *&n; * XXX: we need to move the global memory statistics (active_list, ...)&n; *      into the pg_data_t to properly support NUMA.&n; */
 r_struct
 id|bootmem_data
 suffix:semicolon
@@ -172,14 +227,16 @@ r_struct
 id|pglist_data
 (brace
 DECL|member|node_zones
-id|zone_t
+r_struct
+id|zone
 id|node_zones
 (braket
 id|MAX_NR_ZONES
 )braket
 suffix:semicolon
 DECL|member|node_zonelists
-id|zonelist_t
+r_struct
+id|zonelist
 id|node_zonelists
 (braket
 id|GFP_ZONEMASK
@@ -247,18 +304,20 @@ id|pg_data_t
 op_star
 id|pgdat_list
 suffix:semicolon
-DECL|function|memclass
 r_static
 r_inline
 r_int
+DECL|function|memclass
 id|memclass
 c_func
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
 id|pgzone
 comma
-id|zone_t
+r_struct
+id|zone
 op_star
 id|classzone
 )paren
@@ -291,17 +350,6 @@ multiline_comment|/*&n; * The following two are not meant for general usage. The
 r_struct
 id|page
 suffix:semicolon
-r_extern
-r_void
-id|show_free_areas_core
-c_func
-(paren
-id|pg_data_t
-op_star
-id|pgdat
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|free_area_init_core
 c_func
@@ -339,6 +387,21 @@ op_star
 id|pmap
 )paren
 suffix:semicolon
+r_void
+id|get_zone_counts
+c_func
+(paren
+r_int
+r_int
+op_star
+id|active
+comma
+r_int
+r_int
+op_star
+id|inactive
+)paren
+suffix:semicolon
 r_extern
 id|pg_data_t
 id|contig_page_data
@@ -350,12 +413,14 @@ multiline_comment|/*&n; * next_zone - helper magic for for_each_zone()&n; * Than
 DECL|function|next_zone
 r_static
 r_inline
-id|zone_t
+r_struct
+id|zone
 op_star
 id|next_zone
 c_func
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 )paren
@@ -405,7 +470,7 @@ r_return
 id|zone
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * for_each_zone - helper macro to iterate over all memory zones&n; * @zone - pointer to zone_t variable&n; *&n; * The user only needs to declare the zone variable, for_each_zone&n; * fills it in. This basically means for_each_zone() is an&n; * easier to read version of this piece of code:&n; *&n; * for (pgdat = pgdat_list; pgdat; pgdat = pgdat-&gt;node_next)&n; * &t;for (i = 0; i &lt; MAX_NR_ZONES; ++i) {&n; * &t;&t;zone_t * z = pgdat-&gt;node_zones + i;&n; * &t;&t;...&n; * &t;}&n; * }&n; */
+multiline_comment|/**&n; * for_each_zone - helper macro to iterate over all memory zones&n; * @zone - pointer to struct zone variable&n; *&n; * The user only needs to declare the zone variable, for_each_zone&n; * fills it in. This basically means for_each_zone() is an&n; * easier to read version of this piece of code:&n; *&n; * for (pgdat = pgdat_list; pgdat; pgdat = pgdat-&gt;node_next)&n; * &t;for (i = 0; i &lt; MAX_NR_ZONES; ++i) {&n; * &t;&t;struct zone * z = pgdat-&gt;node_zones + i;&n; * &t;&t;...&n; * &t;}&n; * }&n; */
 DECL|macro|for_each_zone
 mdefine_line|#define for_each_zone(zone) &bslash;&n;&t;for (zone = pgdat_list-&gt;node_zones; zone; zone = next_zone(zone))
 macro_line|#ifndef CONFIG_DISCONTIGMEM

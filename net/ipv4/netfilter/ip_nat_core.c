@@ -3918,7 +3918,7 @@ suffix:colon
 l_string|&quot;REPLY&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Note: May not be from a NAT&squot;d host, but probably safest to&n;&t;   do translation always as if it came from the host itself&n;&t;   (even though a &quot;host unreachable&quot; coming from the host&n;&t;   itself is a bit wierd).&n;&n;&t;   More explanation: some people use NAT for anonymizing.&n;&t;   Also, CERT recommends dropping all packets from private IP&n;&t;   addresses (although ICMP errors from internal links with&n;&t;   such addresses are not too uncommon, as Alan Cox points&n;&t;   out) */
+multiline_comment|/* Note: May not be from a NAT&squot;d host, but probably safest to&n;&t;   do translation always as if it came from the host itself&n;&t;   (even though a &quot;host unreachable&quot; coming from the host&n;&t;   itself is a bit weird).&n;&n;&t;   More explanation: some people use NAT for anonymizing.&n;&t;   Also, CERT recommends dropping all packets from private IP&n;&t;   addresses (although ICMP errors from internal links with&n;&t;   such addresses are not too uncommon, as Alan Cox points&n;&t;   out) */
 id|READ_LOCK
 c_func
 (paren

@@ -587,11 +587,6 @@ id|dentry
 op_star
 )paren
 suffix:semicolon
-DECL|macro|shrink_dcache
-mdefine_line|#define shrink_dcache() prune_dcache(0)
-r_struct
-id|zone_struct
-suffix:semicolon
 multiline_comment|/* dcache memory management */
 r_extern
 r_int

@@ -413,8 +413,6 @@ suffix:semicolon
 )brace
 DECL|macro|elf_addr_t
 mdefine_line|#define elf_addr_t&t;u32
-DECL|macro|elf_caddr_t
-mdefine_line|#define elf_caddr_t&t;u32
 DECL|macro|start_thread
 macro_line|#undef start_thread
 DECL|macro|start_thread

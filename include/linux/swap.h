@@ -329,7 +329,7 @@ r_struct
 id|address_space
 suffix:semicolon
 r_struct
-id|zone_t
+id|zone
 suffix:semicolon
 multiline_comment|/* linux/mm/rmap.c */
 r_extern
@@ -461,13 +461,11 @@ id|kswapd_wait
 suffix:semicolon
 r_extern
 r_int
-id|FASTCALL
-c_func
-(paren
 id|try_to_free_pages
 c_func
 (paren
-id|zone_t
+r_struct
+id|zone
 op_star
 comma
 r_int
@@ -475,7 +473,6 @@ r_int
 comma
 r_int
 r_int
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* linux/mm/page_io.c */
@@ -786,10 +783,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-id|spinlock_t
-id|_pagemap_lru_lock
-suffix:semicolon
-r_extern
 r_void
 id|FASTCALL
 c_func
@@ -803,19 +796,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * List add/del helper macros. These must be called&n; * with the pagemap_lru_lock held!&n; */
-DECL|macro|DEBUG_LRU_PAGE
-mdefine_line|#define DEBUG_LRU_PAGE(page)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!PageLRU(page))&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;&t;if (PageActive(page))&t;&t;&t;&bslash;&n;&t;&t;BUG();&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|__add_page_to_active_list
-mdefine_line|#define __add_page_to_active_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;active_list);&t;&bslash;&n;&t;inc_page_state(nr_active);&t;&t;&bslash;&n;} while (0)
-DECL|macro|add_page_to_active_list
-mdefine_line|#define add_page_to_active_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DEBUG_LRU_PAGE(page);&t;&t;&t;&bslash;&n;&t;SetPageActive(page);&t;&t;&t;&bslash;&n;&t;__add_page_to_active_list(page);&t;&bslash;&n;} while (0)
-DECL|macro|add_page_to_inactive_list
-mdefine_line|#define add_page_to_inactive_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DEBUG_LRU_PAGE(page);&t;&t;&t;&bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;inactive_list);&t;&bslash;&n;&t;inc_page_state(nr_inactive);&t;&t;&bslash;&n;} while (0)
-DECL|macro|del_page_from_active_list
-mdefine_line|#define del_page_from_active_list(page)&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_del(&amp;(page)-&gt;lru);&t;&t;&t;&bslash;&n;&t;ClearPageActive(page);&t;&t;&t;&bslash;&n;&t;dec_page_state(nr_active);&t;&t;&bslash;&n;} while (0)
-DECL|macro|del_page_from_inactive_list
-mdefine_line|#define del_page_from_inactive_list(page)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;list_del(&amp;(page)-&gt;lru);&t;&t;&t;&bslash;&n;&t;dec_page_state(nr_inactive);&t;&t;&bslash;&n;} while (0)
 r_extern
 id|spinlock_t
 id|swaplock

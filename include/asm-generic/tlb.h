@@ -34,6 +34,12 @@ r_int
 id|nr
 suffix:semicolon
 multiline_comment|/* set to ~0U means fast mode */
+DECL|member|need_flush
+r_int
+r_int
+id|need_flush
+suffix:semicolon
+multiline_comment|/* Really unmapped some ptes? */
 DECL|member|fullmm
 r_int
 r_int
@@ -53,6 +59,17 @@ id|pages
 (braket
 id|FREE_PTE_NR
 )braket
+suffix:semicolon
+DECL|member|flushes
+r_int
+r_int
+id|flushes
+suffix:semicolon
+multiline_comment|/* stats: count avoided flushes */
+DECL|member|avoided_flushes
+r_int
+r_int
+id|avoided_flushes
 suffix:semicolon
 DECL|typedef|mmu_gather_t
 )brace
@@ -153,6 +170,26 @@ id|end
 r_int
 r_int
 id|nr
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tlb-&gt;need_flush
+)paren
+(brace
+id|tlb-&gt;avoided_flushes
+op_increment
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|tlb-&gt;need_flush
+op_assign
+l_int|0
+suffix:semicolon
+id|tlb-&gt;flushes
+op_increment
 suffix:semicolon
 id|tlb_flush
 c_func
@@ -298,6 +335,10 @@ op_star
 id|page
 )paren
 (brace
+id|tlb-&gt;need_flush
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -343,5 +384,12 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * tlb_remove_tlb_entry - remember a pte unmapping for later tlb invalidation.&n; *&n; * Record the fact that pte&squot;s were really umapped in -&gt;need_flush, so we can&n; * later optimise away the tlb invalidate.   This helps when userspace is&n; * unmapping already-unmapped pages, which happens quite a lot.&n; */
+DECL|macro|tlb_remove_tlb_entry
+mdefine_line|#define tlb_remove_tlb_entry(tlb, ptep, address)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;__tlb_remove_tlb_entry(tlb, ptep, address);&t;&bslash;&n;&t;} while (0)
+DECL|macro|pte_free_tlb
+mdefine_line|#define pte_free_tlb(tlb, ptep)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;__pte_free_tlb(tlb, ptep);&t;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|pmd_free_tlb
+mdefine_line|#define pmd_free_tlb(tlb, pmdp)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;__pmd_free_tlb(tlb, pmdp);&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#endif /* _ASM_GENERIC__TLB_H */
 eof

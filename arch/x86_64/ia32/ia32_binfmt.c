@@ -333,8 +333,6 @@ DECL|macro|MODULE_AUTHOR
 macro_line|#undef MODULE_AUTHOR
 DECL|macro|elf_addr_t
 mdefine_line|#define elf_addr_t __u32
-DECL|macro|elf_caddr_t
-mdefine_line|#define elf_caddr_t __u32
 r_static
 r_void
 id|elf32_init

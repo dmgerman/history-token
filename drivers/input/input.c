@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * $Id: input.c,v 1.48 2001/12/26 21:08:33 jsimmons Exp $&n; *&n; *  Copyright (c) 1999-2001 Vojtech Pavlik&n; *&n; *  The input core&n; */
-multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic&n; */
+multiline_comment|/*&n; * The input core&n; *&n; * Copyright (c) 1999-2002 Vojtech Pavlik&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -15,7 +15,7 @@ macro_line|#include &lt;linux/device.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
+l_string|&quot;Vojtech Pavlik &lt;vojtech@suse.cz&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -1366,7 +1366,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;input.c: calling hotplug a hotplug agent defined&bslash;n&quot;
+l_string|&quot;input.c: calling hotplug without a hotplug agent defined&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1729,6 +1729,7 @@ op_increment
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef INPUT_DEBUG
 id|printk
 c_func
 (paren
@@ -1771,6 +1772,7 @@ l_int|4
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 id|value
 op_assign
 id|call_usermodehelper
@@ -1798,6 +1800,7 @@ c_func
 id|envp
 )paren
 suffix:semicolon
+macro_line|#ifdef INPUT_DEBUG
 r_if
 c_cond
 (paren
@@ -1808,12 +1811,13 @@ l_int|0
 id|printk
 c_func
 (paren
-id|KERN_WARNING
+id|KERN_DEBUG
 l_string|&quot;input.c: hotplug returned %d&bslash;n&quot;
 comma
 id|value
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#endif
 DECL|function|input_register_device
@@ -1842,7 +1846,6 @@ id|input_device_id
 op_star
 id|id
 suffix:semicolon
-multiline_comment|/*&n; * Add the EV_SYN capability.&n; */
 id|set_bit
 c_func
 (paren
@@ -1851,7 +1854,6 @@ comma
 id|dev-&gt;evbit
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Initialize repeat timer to default values.&n; */
 id|init_timer
 c_func
 (paren
@@ -1888,7 +1890,6 @@ id|HZ
 op_div
 l_int|33
 suffix:semicolon
-multiline_comment|/*&n; * Add the device.&n; */
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -1906,7 +1907,6 @@ op_amp
 id|input_dev_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Notify handlers.&n; */
 id|list_for_each
 c_func
 (paren
@@ -1968,7 +1968,6 @@ id|handle
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Notify the hotplug agent.&n; */
 macro_line|#ifdef CONFIG_HOTPLUG
 id|input_call_hotplug
 c_func
@@ -1979,7 +1978,6 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Notify /proc.&n; */
 macro_line|#ifdef CONFIG_PROC_FS
 id|input_devices_state
 op_increment
@@ -2020,7 +2018,6 @@ id|dev
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n; * Turn off power management for the device.&n; */
 r_if
 c_cond
 (paren
@@ -2032,7 +2029,6 @@ c_func
 id|dev-&gt;pm_dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Kill any pending repeat timers.&n; */
 id|del_timer_sync
 c_func
 (paren
@@ -2040,7 +2036,6 @@ op_amp
 id|dev-&gt;timer
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Notify handlers.&n; */
 id|list_for_each_safe
 c_func
 (paren
@@ -2086,7 +2081,6 @@ id|handle
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Notify the hotplug agent.&n; */
 macro_line|#ifdef CONFIG_HOTPLUG
 id|input_call_hotplug
 c_func
@@ -2097,7 +2091,6 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n; * Remove the device.&n; */
 id|list_del_init
 c_func
 (paren
@@ -2105,7 +2098,6 @@ op_amp
 id|dev-&gt;node
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Notify /proc.&n; */
 macro_line|#ifdef CONFIG_PROC_FS
 id|input_devices_state
 op_increment
@@ -2160,7 +2152,6 @@ op_amp
 id|handler-&gt;h_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Add minors if needed.&n; */
 r_if
 c_cond
 (paren
@@ -2177,7 +2168,6 @@ l_int|5
 op_assign
 id|handler
 suffix:semicolon
-multiline_comment|/*&n; * Add the handler.&n; */
 id|list_add_tail
 c_func
 (paren
@@ -2188,7 +2178,6 @@ op_amp
 id|input_handler_list
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Notify it about all existing devices.&n; */
 id|list_for_each
 c_func
 (paren
@@ -2250,7 +2239,6 @@ id|handle
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Notify /proc.&n; */
 macro_line|#ifdef CONFIG_PROC_FS
 id|input_devices_state
 op_increment
@@ -2283,7 +2271,6 @@ comma
 op_star
 id|next
 suffix:semicolon
-multiline_comment|/*&n; * Tell the handler to disconnect from all devices it keeps open.&n; */
 id|list_for_each_safe
 c_func
 (paren
@@ -2329,7 +2316,6 @@ id|handle
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Remove it.&n; */
 id|list_del_init
 c_func
 (paren
@@ -2337,7 +2323,6 @@ op_amp
 id|handler-&gt;node
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Remove minors.&n; */
 r_if
 c_cond
 (paren
@@ -2354,7 +2339,6 @@ l_int|5
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n; * Notify /proc.&n; */
 macro_line|#ifdef CONFIG_PROC_FS
 id|input_devices_state
 op_increment
@@ -2602,7 +2586,6 @@ id|handle
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ProcFS interface for the input drivers.&n; */
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|macro|SPRINTF_BIT_B
 mdefine_line|#define SPRINTF_BIT_B(bit, name, max) &bslash;&n;&t;do { &bslash;&n;&t;&t;len += sprintf(buf + len, &quot;B: %s&quot;, name); &bslash;&n;&t;&t;for (i = NBITS(max) - 1; i &gt;= 0; i--) &bslash;&n;&t;&t;&t;if (dev-&gt;bit[i]) break; &bslash;&n;&t;&t;for (; i &gt;= 0; i--) &bslash;&n;&t;&t;&t;len += sprintf(buf + len, &quot;%lx &quot;, dev-&gt;bit[i]); &bslash;&n;&t;&t;len += sprintf(buf + len, &quot;&bslash;n&quot;); &bslash;&n;&t;} while (0)

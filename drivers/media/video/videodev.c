@@ -36,7 +36,7 @@ c_func
 id|videodev_lock
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#ifdef CONFIG_VIDEO_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
 DECL|struct|videodev_proc_data
 r_struct
@@ -99,7 +99,7 @@ c_func
 id|videodev_proc_list
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS &amp;&amp; CONFIG_VIDEO_PROC_FS */
+macro_line|#endif /* CONFIG_VIDEO_PROC_FS */
 DECL|function|video_devdata
 r_struct
 id|video_device
@@ -744,7 +744,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;/proc support&n; */
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#ifdef CONFIG_VIDEO_PROC_FS
 multiline_comment|/* Hmm... i&squot;d like to see video_capability information here, but&n; * how can I access it (without changing the other drivers? -claudio&n; */
 DECL|function|videodev_proc_read
 r_static
@@ -1174,7 +1174,7 @@ id|THIS_MODULE
 suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#ifdef CONFIG_VIDEO_PROC_FS
 DECL|function|videodev_proc_destroy
 r_static
 r_void
@@ -1694,7 +1694,7 @@ op_amp
 id|vfd-&gt;lock
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#ifdef CONFIG_VIDEO_PROC_FS
 id|sprintf
 (paren
 id|name
@@ -1757,7 +1757,7 @@ l_string|&quot;videodev: bad unregister&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#ifdef CONFIG_VIDEO_PROC_FS
 id|videodev_proc_destroy_dev
 (paren
 id|vfd
@@ -1851,7 +1851,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#ifdef CONFIG_VIDEO_PROC_FS
 id|videodev_proc_create
 (paren
 )paren
@@ -1871,7 +1871,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
+macro_line|#ifdef CONFIG_VIDEO_PROC_FS
 id|videodev_proc_destroy
 (paren
 )paren

@@ -75,7 +75,7 @@ DECL|macro|BTEOFF_NOTIFY
 mdefine_line|#define BTEOFF_NOTIFY&t;&t;(IIO_BTE_NOTIFY_0 - IIO_BTE_STAT_0)
 DECL|macro|BTEOFF_INT
 mdefine_line|#define BTEOFF_INT&t;&t;(IIO_BTE_INT_0 - IIO_BTE_STAT_0)
-multiline_comment|/*&n; * The following definitions use the names defined in the IO interface&n; * document for ease of reference.  When possible, software should &n; * generally use the the longer but clearer names defined above.&n; */
+multiline_comment|/*&n; * The following definitions use the names defined in the IO interface&n; * document for ease of reference.  When possible, software should &n; * generally use the longer but clearer names defined above.&n; */
 DECL|macro|IIO_BASE
 mdefine_line|#define IIO_BASE&t;0x400000
 DECL|macro|IIO_BASE_BTE0

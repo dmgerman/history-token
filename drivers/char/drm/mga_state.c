@@ -4,7 +4,6 @@ macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;mga_drm.h&quot;
 macro_line|#include &quot;mga_drv.h&quot;
-macro_line|#include &quot;drm.h&quot;
 multiline_comment|/* ================================================================&n; * DMA hardware state programming functions&n; */
 DECL|function|mga_emit_clip_rect
 r_static
@@ -2507,7 +2506,7 @@ c_func
 (paren
 l_string|&quot;%s... done.&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -4017,7 +4016,7 @@ c_func
 (paren
 l_string|&quot;%s: -EBUSY&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return

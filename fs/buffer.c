@@ -1546,7 +1546,8 @@ c_func
 r_void
 )paren
 (brace
-id|zone_t
+r_struct
+id|zone
 op_star
 id|zone
 suffix:semicolon
@@ -9742,7 +9743,7 @@ id|buffer_head
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
+l_int|0
 comma
 id|init_buffer_head
 comma

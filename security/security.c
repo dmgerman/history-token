@@ -50,9 +50,9 @@ id|printk
 (paren
 id|KERN_INFO
 l_string|&quot;Passed a NULL security_operations &quot;
-l_string|&quot;pointer, &quot;
+l_string|&quot;pointer, %s failed.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -87,9 +87,9 @@ id|printk
 (paren
 id|KERN_INFO
 l_string|&quot;Not enough functions specified in the &quot;
-l_string|&quot;security_operation structure, &quot;
+l_string|&quot;security_operation structure, %s failed.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -149,9 +149,10 @@ id|ops
 id|printk
 (paren
 id|KERN_INFO
-id|__FUNCTION__
-l_string|&quot; could not verify &quot;
+l_string|&quot;%s could not verify &quot;
 l_string|&quot;security_operations structure.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -172,9 +173,9 @@ id|printk
 (paren
 id|KERN_INFO
 l_string|&quot;There is already a security &quot;
-l_string|&quot;framework initialized, &quot;
+l_string|&quot;framework initialized, %s failed.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -212,10 +213,11 @@ id|security_ops
 id|printk
 (paren
 id|KERN_INFO
-id|__FUNCTION__
-l_string|&quot;: trying to unregister &quot;
+l_string|&quot;%s: trying to unregister &quot;
 l_string|&quot;a security_opts structure that is not &quot;
 l_string|&quot;registered, failing.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -260,9 +262,10 @@ id|ops
 id|printk
 (paren
 id|KERN_INFO
-id|__FUNCTION__
-l_string|&quot; could not verify &quot;
+l_string|&quot;%s could not verify &quot;
 l_string|&quot;security operations.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -281,9 +284,10 @@ id|security_ops
 id|printk
 (paren
 id|KERN_INFO
-id|__FUNCTION__
-l_string|&quot; security operations &quot;
+l_string|&quot;%s security operations &quot;
 l_string|&quot;already registered.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -327,9 +331,10 @@ id|security_ops
 id|printk
 (paren
 id|KERN_INFO
-id|__FUNCTION__
-l_string|&quot; invalid attempt to unregister &quot;
+l_string|&quot;%s invalid attempt to unregister &quot;
 l_string|&quot; primary security ops.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return

@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 macro_line|#ifdef CONFIG_MTD_DEBUG

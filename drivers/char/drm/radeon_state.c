@@ -5935,7 +5935,7 @@ c_func
 (paren
 l_string|&quot;%s called with no initialization&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -6268,7 +6268,7 @@ c_func
 (paren
 l_string|&quot;%s called with no initialization&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -6887,7 +6887,7 @@ c_func
 (paren
 l_string|&quot;%s called with no initialization&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -7172,7 +7172,7 @@ c_func
 (paren
 l_string|&quot;%s called with no initialization&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -8506,7 +8506,7 @@ c_func
 (paren
 l_string|&quot;%s called with no initialization&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -9063,7 +9063,7 @@ c_func
 (paren
 l_string|&quot;%s called with no initialization&bslash;n&quot;
 comma
-id|__func__
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return

@@ -356,7 +356,7 @@ multiline_comment|/*   BAR value.  BARS with zero length will have the resources
 multiline_comment|/*   The HvCallPci_getBarParms is used to get the size of the BAR  */
 multiline_comment|/*   space.  It calls iSeries_IoMmTable_AllocateEntry to allocate  */
 multiline_comment|/*   each entry.                                                   */
-multiline_comment|/* - Loops through The Bar resourses(0 - 5) including the the ROM  */
+multiline_comment|/* - Loops through The Bar resources(0 - 5) including the ROM      */
 multiline_comment|/*   is resource(6).                                               */
 multiline_comment|/*******************************************************************/
 DECL|function|iSeries_allocateDeviceBars
