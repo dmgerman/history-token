@@ -2456,11 +2456,42 @@ id|iobase
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/*&n;&t;   ** Enable any multicasts&n;&t; */
 id|set_multicast_list
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;** Set hardware MAC address. Address is initialized from the EEPROM&n;&t;** during startup but may have since been changed by the user.&n;&t;*/
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ETH_ALEN
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|outb
+c_func
+(paren
+id|dev-&gt;dev_addr
+(braket
+id|i
+)braket
+comma
+id|EWRK3_PAR0
+op_plus
+id|i
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;   ** Clean out any remaining entries in all the queues here&n;&t; */
