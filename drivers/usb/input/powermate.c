@@ -235,6 +235,15 @@ m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* handle updates to device state */
+id|input_regs
+c_func
+(paren
+op_amp
+id|pm-&gt;input
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren

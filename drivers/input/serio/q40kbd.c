@@ -127,14 +127,7 @@ c_func
 id|INTERRUPT_REG
 )paren
 )paren
-r_if
-c_cond
-(paren
-id|q40kbd_port.dev
-)paren
-id|q40kbd_port.dev
-op_member_access_from_pointer
-id|interrupt
+id|serio_interrupt
 c_func
 (paren
 op_amp
@@ -147,6 +140,8 @@ id|KEYCODE_REG
 )paren
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 id|master_outb

@@ -173,6 +173,15 @@ l_int|3
 )paren
 r_return
 suffix:semicolon
+id|input_regs
+c_func
+(paren
+op_amp
+id|pc110pad_dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren

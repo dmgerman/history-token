@@ -177,6 +177,14 @@ op_star
 )paren
 id|dev_id
 suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren
@@ -240,6 +248,14 @@ op_star
 id|dev_id
 suffix:semicolon
 multiline_comment|/* &n;&t; * This interrupt is only called when we release the key. So we have &n;&t; * to fake a key press.&n;&t; */
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|input_report_key
 c_func
 (paren
@@ -496,6 +512,11 @@ r_struct
 id|h3600_dev
 op_star
 id|ts
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -518,6 +539,14 @@ comma
 id|down
 op_assign
 l_int|0
+suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
 suffix:semicolon
 r_switch
 c_cond

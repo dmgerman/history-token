@@ -277,6 +277,14 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
+suffix:semicolon
 id|proximity
 op_assign
 id|data

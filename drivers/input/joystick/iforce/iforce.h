@@ -395,6 +395,11 @@ r_int
 r_char
 op_star
 id|data
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_int

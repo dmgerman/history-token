@@ -2434,6 +2434,11 @@ id|usage
 comma
 id|__s32
 id|value
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -2450,6 +2455,14 @@ id|quirks
 op_assign
 op_amp
 id|hid-&gt;quirks
+suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|input
+comma
+id|regs
+)paren
 suffix:semicolon
 r_if
 c_cond

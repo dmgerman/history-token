@@ -2207,6 +2207,8 @@ comma
 id|ch
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2265,6 +2267,8 @@ comma
 id|ch
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 macro_line|#endif

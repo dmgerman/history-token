@@ -206,6 +206,11 @@ r_struct
 id|psmouse
 op_star
 id|psmouse
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -222,6 +227,14 @@ op_star
 id|packet
 op_assign
 id|psmouse-&gt;packet
+suffix:semicolon
+id|input_regs
+c_func
+(paren
+id|dev
+comma
+id|regs
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * The PS2++ protocol is a little bit complex&n; */
 r_if
@@ -844,6 +857,11 @@ comma
 r_int
 r_int
 id|flags
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -995,6 +1013,8 @@ id|psmouse_process_packet
 c_func
 (paren
 id|psmouse
+comma
+id|regs
 )paren
 suffix:semicolon
 id|psmouse-&gt;pktcnt

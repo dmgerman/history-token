@@ -3256,6 +3256,11 @@ id|usage
 comma
 id|__s32
 id|value
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|hid_dump_input
@@ -3283,6 +3288,8 @@ comma
 id|usage
 comma
 id|value
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -3302,6 +3309,8 @@ comma
 id|usage
 comma
 id|value
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace
@@ -3325,6 +3334,11 @@ comma
 id|__u8
 op_star
 id|data
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -3543,6 +3557,8 @@ id|value
 (braket
 id|n
 )braket
+comma
+id|regs
 )paren
 suffix:semicolon
 r_continue
@@ -3609,6 +3625,8 @@ id|min
 )braket
 comma
 l_int|0
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -3672,6 +3690,8 @@ id|min
 )braket
 comma
 l_int|1
+comma
+id|regs
 )paren
 suffix:semicolon
 )brace
@@ -3704,6 +3724,11 @@ r_struct
 id|urb
 op_star
 id|urb
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_struct
@@ -3958,6 +3983,8 @@ id|n
 )braket
 comma
 id|data
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -4023,6 +4050,8 @@ c_func
 id|HID_INPUT_REPORT
 comma
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 r_break
@@ -5204,6 +5233,8 @@ dot
 id|report-&gt;type
 comma
 id|urb
+comma
+id|regs
 )paren
 suffix:semicolon
 id|hid-&gt;ctrltail

@@ -1035,6 +1035,11 @@ id|hid_usage
 op_star
 comma
 id|__s32
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 suffix:semicolon
 r_extern
@@ -1100,6 +1105,11 @@ id|usage
 comma
 id|__s32
 id|value
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 )brace
