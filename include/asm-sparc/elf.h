@@ -5,8 +5,10 @@ mdefine_line|#define __ASMSPARC_ELF_H
 multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/mbus.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#endif
 multiline_comment|/*&n; * Sparc section types&n; */
 DECL|macro|STT_REGISTER
 mdefine_line|#define STT_REGISTER&t;&t;13
