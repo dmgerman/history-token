@@ -2150,13 +2150,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|schedule_work
 c_func
 (paren
 id|task
 )paren
-OL
-l_int|0
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
