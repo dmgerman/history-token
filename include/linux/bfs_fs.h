@@ -2,8 +2,6 @@ multiline_comment|/*&n; *&t;include/linux/bfs_fs.h - BFS data structures on disk
 macro_line|#ifndef _LINUX_BFS_FS_H
 DECL|macro|_LINUX_BFS_FS_H
 mdefine_line|#define _LINUX_BFS_FS_H
-macro_line|#include &lt;linux/bfs_fs_i.h&gt;
-macro_line|#include &lt;linux/bfs_fs_sb.h&gt;
 DECL|macro|BFS_BSIZE_BITS
 mdefine_line|#define BFS_BSIZE_BITS&t;&t;9
 DECL|macro|BFS_BSIZE
@@ -176,81 +174,5 @@ DECL|macro|BFS_INO2OFF
 mdefine_line|#define BFS_INO2OFF(ino) &bslash;&n;&t;((__u32)(((ino) - BFS_ROOT_INO) * sizeof(struct bfs_inode)) + BFS_BSIZE)
 DECL|macro|BFS_UNCLEAN
 mdefine_line|#define BFS_UNCLEAN(bfs_sb, sb)&t;&bslash;&n;&t;((bfs_sb-&gt;s_from != -1) &amp;&amp; (bfs_sb-&gt;s_to != -1) &amp;&amp; !(sb-&gt;s_flags &amp; MS_RDONLY))
-macro_line|#ifdef __KERNEL__
-multiline_comment|/* file.c */
-r_extern
-r_struct
-id|inode_operations
-id|bfs_file_inops
-suffix:semicolon
-r_extern
-r_struct
-id|file_operations
-id|bfs_file_operations
-suffix:semicolon
-r_extern
-r_struct
-id|address_space_operations
-id|bfs_aops
-suffix:semicolon
-multiline_comment|/* dir.c */
-r_extern
-r_struct
-id|inode_operations
-id|bfs_dir_inops
-suffix:semicolon
-r_extern
-r_struct
-id|file_operations
-id|bfs_dir_operations
-suffix:semicolon
-DECL|function|BFS_SB
-r_static
-r_inline
-r_struct
-id|bfs_sb_info
-op_star
-id|BFS_SB
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-)paren
-(brace
-r_return
-id|sb-&gt;u.generic_sbp
-suffix:semicolon
-)brace
-DECL|function|BFS_I
-r_static
-r_inline
-r_struct
-id|bfs_inode_info
-op_star
-id|BFS_I
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-id|list_entry
-c_func
-(paren
-id|inode
-comma
-r_struct
-id|bfs_inode_info
-comma
-id|vfs_inode
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif&t;/* _LINUX_BFS_FS_H */
 eof
