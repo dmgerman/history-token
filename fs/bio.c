@@ -1856,8 +1856,6 @@ r_struct
 id|bio
 op_star
 id|bio_dirty_list
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * This runs in process context&n; */
 DECL|function|bio_dirty_fn
