@@ -3741,27 +3741,6 @@ r_return
 id|str
 suffix:semicolon
 )brace
-multiline_comment|/*&n; */
-DECL|function|pcibios_update_resource
-r_void
-id|pcibios_update_resource
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-comma
-r_struct
-id|resource
-op_star
-id|res
-comma
-r_int
-id|index
-)paren
-(brace
-)brace
 DECL|function|pcibios_align_resource
 r_void
 id|pcibios_align_resource
