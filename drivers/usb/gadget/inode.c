@@ -1983,7 +1983,7 @@ id|iocb
 op_member_access_from_pointer
 r_private
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* aio_complete() reports bytes-transferred _and_ faults */
 r_if
@@ -2597,7 +2597,7 @@ id|len
 comma
 id|epdata
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
