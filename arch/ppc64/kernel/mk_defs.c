@@ -263,6 +263,20 @@ id|slb_size
 )paren
 )paren
 suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|PLATFORM
+comma
+m_offsetof
+(paren
+r_struct
+id|naca_struct
+comma
+id|platform
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* paca */
 id|DEFINE
 c_func
