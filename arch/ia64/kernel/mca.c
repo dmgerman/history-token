@@ -576,10 +576,9 @@ c_cond
 (paren
 id|irq_safe
 )paren
-id|printk
+id|IA64_MCA_DEBUG
 c_func
 (paren
-id|KERN_INFO
 l_string|&quot;CPU %d: SAL log contains %s error record&bslash;n&quot;
 comma
 id|smp_processor_id
