@@ -915,18 +915,21 @@ id|file_operations
 id|ifconfig_net_fops
 op_assign
 (brace
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|ifconfig_net_ioctl
 comma
 multiline_comment|/* ioctl */
+dot
 id|open
-suffix:colon
+op_assign
 id|ifconfig_net_open
 comma
 multiline_comment|/* open */
+dot
 id|release
-suffix:colon
+op_assign
 id|ifconfig_net_close
 multiline_comment|/* release */
 )brace

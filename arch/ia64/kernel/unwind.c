@@ -282,17 +282,20 @@ DECL|variable|unw
 id|unw
 op_assign
 (brace
+dot
 id|tables
-suffix:colon
+op_assign
 op_amp
 id|unw.kernel_table
 comma
+dot
 id|lock
-suffix:colon
+op_assign
 id|SPIN_LOCK_UNLOCKED
 comma
+dot
 id|save_order
-suffix:colon
+op_assign
 (brace
 id|UNW_REG_RP
 comma
@@ -311,8 +314,9 @@ comma
 id|UNW_REG_PRI_UNAT_GR
 )brace
 comma
+dot
 id|preg_index
-suffix:colon
+op_assign
 (brace
 id|struct_offset
 c_func
@@ -849,8 +853,9 @@ l_int|8
 comma
 )brace
 comma
+dot
 id|hash
-suffix:colon
+op_assign
 (brace
 (braket
 l_int|0
@@ -867,8 +872,9 @@ l_int|1
 )brace
 comma
 macro_line|#if UNW_DEBUG
+dot
 id|preg_name
-suffix:colon
+op_assign
 (brace
 l_string|&quot;pri_unat_gr&quot;
 comma

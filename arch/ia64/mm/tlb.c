@@ -18,16 +18,19 @@ id|ia64_ctx
 id|ia64_ctx
 op_assign
 (brace
+dot
 id|lock
-suffix:colon
+op_assign
 id|SPIN_LOCK_UNLOCKED
 comma
+dot
 id|next
-suffix:colon
+op_assign
 l_int|1
 comma
+dot
 id|limit
-suffix:colon
+op_assign
 (paren
 l_int|1
 op_lshift
@@ -37,8 +40,9 @@ op_minus
 l_int|1
 comma
 multiline_comment|/* start out with the safe (architected) limit */
+dot
 id|max_ctx
-suffix:colon
+op_assign
 op_complement
 l_int|0U
 )brace
