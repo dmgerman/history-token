@@ -20,6 +20,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
+macro_line|#include &lt;asm/hwrpb.h&gt;
 multiline_comment|/*&n; * We try to avoid hae updates (thus the cache), but when we&n; * do need to update the hae, we need to do it atomically, so&n; * that any interrupts wouldn&squot;t get confused with the hae&n; * register not being up-to-date with respect to the hardware&n; * value.&n; */
 DECL|function|__set_hae
 r_static
@@ -97,6 +98,7 @@ id|new_hae
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Change virtual addresses to physical addresses and vv.&n; */
+macro_line|#ifdef USE_48_BIT_KSEG
 DECL|function|virt_to_phys
 r_static
 r_inline
@@ -145,6 +147,92 @@ id|IDENT_ADDR
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|function|virt_to_phys
+r_static
+r_inline
+r_int
+r_int
+id|virt_to_phys
+c_func
+(paren
+r_void
+op_star
+id|address
+)paren
+(brace
+r_int
+r_int
+id|phys
+suffix:semicolon
+id|__asm__
+(paren
+l_string|&quot;sll %1, 63-40, %0&bslash;n&quot;
+l_string|&quot;sra %0, 63-40, %0&bslash;n&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|phys
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|address
+)paren
+)paren
+suffix:semicolon
+id|phys
+op_and_assign
+(paren
+l_int|1ul
+op_lshift
+id|hwrpb-&gt;pa_bits
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+r_return
+id|phys
+suffix:semicolon
+)brace
+DECL|function|phys_to_virt
+r_static
+r_inline
+r_void
+op_star
+id|phys_to_virt
+c_func
+(paren
+r_int
+r_int
+id|address
+)paren
+(brace
+r_return
+(paren
+r_void
+op_star
+)paren
+(paren
+id|IDENT_ADDR
+op_plus
+(paren
+id|address
+op_amp
+(paren
+(paren
+l_int|1ul
+op_lshift
+l_int|41
+)paren
+op_minus
+l_int|1
+)paren
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;PAGE_TO_PA(page)
 multiline_comment|/* This depends on working iommu.  */
