@@ -170,8 +170,8 @@ id|debugger
 c_func
 (paren
 r_struct
-op_star
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -187,8 +187,8 @@ id|debugger_bpt
 c_func
 (paren
 r_struct
-op_star
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -204,8 +204,8 @@ id|debugger_sstep
 c_func
 (paren
 r_struct
-op_star
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -221,8 +221,8 @@ id|debugger_iabr_match
 c_func
 (paren
 r_struct
-op_star
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -238,8 +238,8 @@ id|debugger_dabr_match
 c_func
 (paren
 r_struct
-op_star
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -255,8 +255,8 @@ id|debugger_fault_handler
 c_func
 (paren
 r_struct
-op_star
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
