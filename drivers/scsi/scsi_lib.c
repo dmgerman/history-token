@@ -1674,7 +1674,7 @@ id|count
 comma
 id|gfp_mask
 suffix:semicolon
-multiline_comment|/*&n;&t; * non-sg block request. FIXME: check bouncing for isa hosts!&n;&t; */
+multiline_comment|/*&n;&t; * if this is a rq-&gt;data based REQ_BLOCK_PC, setup for a non-sg xfer&n;&t; */
 r_if
 c_cond
 (paren
@@ -1688,15 +1688,6 @@ op_logical_neg
 id|req-&gt;bio
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * FIXME: isa bouncing&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|SCpnt-&gt;host-&gt;unchecked_isa_dma
-)paren
-r_goto
-id|fail
-suffix:semicolon
 id|SCpnt-&gt;request_bufflen
 op_assign
 id|req-&gt;data_len
@@ -1867,8 +1858,6 @@ id|req-&gt;current_nr_sectors
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * kill it. there should be no leftover blocks in this request&n;&t; */
-id|fail
-suffix:colon
 id|SCpnt
 op_assign
 id|scsi_end_request
