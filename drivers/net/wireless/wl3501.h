@@ -1738,10 +1738,6 @@ id|bssid
 id|ETH_ALEN
 )braket
 suffix:semicolon
-DECL|member|ether_type
-r_int
-id|ether_type
-suffix:semicolon
 DECL|member|net_type
 r_int
 id|net_type
