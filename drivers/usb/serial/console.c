@@ -727,8 +727,6 @@ c_func
 (paren
 id|port
 comma
-l_int|0
-comma
 id|buf
 comma
 id|count
@@ -741,8 +739,6 @@ id|usb_serial_generic_write
 c_func
 (paren
 id|port
-comma
-l_int|0
 comma
 id|buf
 comma
