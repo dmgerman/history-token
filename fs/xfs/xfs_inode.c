@@ -13207,7 +13207,7 @@ op_amp
 id|I_LOCK
 )paren
 )paren
-id|mark_inode_dirty
+id|mark_inode_dirty_sync
 c_func
 (paren
 id|inode
