@@ -854,11 +854,13 @@ op_assign
 l_int|5
 suffix:semicolon
 multiline_comment|/* MMX support is present in kernel and CPU. Checked upon decomp module load. */
-DECL|variable|ov51x_mmx_available
-r_static
-r_int
-id|ov51x_mmx_available
-suffix:semicolon
+macro_line|#if defined(__i386__) || defined(__x86_64__)
+DECL|macro|ov51x_mmx_available
+mdefine_line|#define ov51x_mmx_available (cpu_has_mmx)
+macro_line|#else
+DECL|macro|ov51x_mmx_available
+mdefine_line|#define ov51x_mmx_available (0)
+macro_line|#endif
 DECL|variable|device_table
 r_static
 id|__devinitdata
@@ -29356,23 +29358,6 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#if defined (__i386__)
-r_if
-c_cond
-(paren
-id|test_bit
-c_func
-(paren
-id|X86_FEATURE_MMX
-comma
-id|boot_cpu_data.x86_capability
-)paren
-)paren
-id|ov51x_mmx_available
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|info
 c_func
 (paren
