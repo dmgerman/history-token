@@ -8043,6 +8043,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|blk_fs_request
+c_func
+(paren
+id|req
+)paren
+op_logical_and
 op_logical_neg
 (paren
 id|req-&gt;flags
