@@ -635,6 +635,10 @@ id|mode
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 (brace
 r_int
@@ -648,6 +652,8 @@ comma
 id|mode
 comma
 id|sync
+comma
+id|key
 )paren
 suffix:semicolon
 r_if

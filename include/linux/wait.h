@@ -40,9 +40,12 @@ id|mode
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|default_wake_function
 c_func
@@ -56,6 +59,10 @@ id|mode
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 suffix:semicolon
 DECL|struct|__wait_queue
@@ -639,6 +646,10 @@ id|mode
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 suffix:semicolon
 DECL|macro|DEFINE_WAIT

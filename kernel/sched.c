@@ -7573,6 +7573,10 @@ id|mode
 comma
 r_int
 id|sync
+comma
+r_void
+op_star
+id|key
 )paren
 (brace
 id|task_t
@@ -7677,6 +7681,8 @@ comma
 id|mode
 comma
 id|sync
+comma
+l_int|NULL
 )paren
 op_logical_and
 (paren
