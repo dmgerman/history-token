@@ -1644,6 +1644,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_XFS_POSIX_ACL
 id|STATIC
 r_int
 DECL|function|linvfs_permission
@@ -1699,6 +1700,10 @@ op_minus
 id|error
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|linvfs_permission
+mdefine_line|#define linvfs_permission NULL
+macro_line|#endif
 id|STATIC
 r_int
 DECL|function|linvfs_getattr
