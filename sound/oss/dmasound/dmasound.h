@@ -1,4 +1,8 @@
+macro_line|#ifndef _dmasound_h_
 multiline_comment|/*&n; *  linux/drivers/sound/dmasound/dmasound.h&n; *&n; *&n; *  Minor numbers for the sound driver.&n; *&n; *  Unfortunately Creative called the codec chip of SB as a DSP. For this&n; *  reason the /dev/dsp is reserved for digitized audio use. There is a&n; *  device for true DSP processors but it will be called something else.&n; *  In v3.0 it&squot;s /dev/sndproc but this could be a temporary solution.&n; */
+DECL|macro|_dmasound_h_
+mdefine_line|#define _dmasound_h_
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|SND_NDEVS
 mdefine_line|#define SND_NDEVS&t;256&t;/* Number of supported devices */
@@ -23,16 +27,13 @@ DECL|macro|SND_DEV_SNDPROC
 mdefine_line|#define SND_DEV_SNDPROC 9&t;/* /dev/sndproc for programmable devices */
 DECL|macro|SND_DEV_PSS
 mdefine_line|#define SND_DEV_PSS&t;SND_DEV_SNDPROC
-DECL|macro|DSP_DEFAULT_SPEED
-mdefine_line|#define DSP_DEFAULT_SPEED&t;8000
-DECL|macro|ON
-mdefine_line|#define ON&t;&t;1
-DECL|macro|OFF
-mdefine_line|#define OFF&t;&t;0
+multiline_comment|/* switch on various prinks */
+DECL|macro|DEBUG_DMASOUND
+mdefine_line|#define DEBUG_DMASOUND 1
 DECL|macro|MAX_AUDIO_DEV
 mdefine_line|#define MAX_AUDIO_DEV&t;5
 DECL|macro|MAX_MIXER_DEV
-mdefine_line|#define MAX_MIXER_DEV&t;2
+mdefine_line|#define MAX_MIXER_DEV&t;4
 DECL|macro|MAX_SYNTH_DEV
 mdefine_line|#define MAX_SYNTH_DEV&t;3
 DECL|macro|MAX_MIDI_DEV
@@ -41,12 +42,6 @@ DECL|macro|MAX_TIMER_DEV
 mdefine_line|#define MAX_TIMER_DEV&t;3
 DECL|macro|MAX_CATCH_RADIUS
 mdefine_line|#define MAX_CATCH_RADIUS&t;10
-DECL|macro|MIN_BUFFERS
-mdefine_line|#define MIN_BUFFERS&t;&t;4
-DECL|macro|MIN_BUFSIZE
-mdefine_line|#define MIN_BUFSIZE&t;&t;4&t;/* in KB */
-DECL|macro|MAX_BUFSIZE
-mdefine_line|#define MAX_BUFSIZE&t;&t;128&t;/* Limit for Amiga in KB */
 DECL|macro|le2be16
 mdefine_line|#define le2be16(x)&t;(((x)&lt;&lt;8 &amp; 0xff00) | ((x)&gt;&gt;8 &amp; 0x00ff))
 DECL|macro|le2be16dbl
@@ -90,19 +85,38 @@ suffix:semicolon
 multiline_comment|/*&n;     *  Configuration&n;     */
 DECL|macro|HAS_8BIT_TABLES
 macro_line|#undef HAS_8BIT_TABLES
-DECL|macro|HAS_14BIT_TABLES
-macro_line|#undef HAS_14BIT_TABLES
-DECL|macro|HAS_16BIT_TABLES
-macro_line|#undef HAS_16BIT_TABLES
 DECL|macro|HAS_RECORD
 macro_line|#undef HAS_RECORD
 macro_line|#if defined(CONFIG_DMASOUND_ATARI) || defined(CONFIG_DMASOUND_ATARI_MODULE) ||&bslash;&n;    defined(CONFIG_DMASOUND_PAULA) || defined(CONFIG_DMASOUND_PAULA_MODULE) ||&bslash;&n;    defined(CONFIG_DMASOUND_Q40) || defined(CONFIG_DMASOUND_Q40_MODULE)
 DECL|macro|HAS_8BIT_TABLES
 mdefine_line|#define HAS_8BIT_TABLES
+DECL|macro|MIN_BUFFERS
+mdefine_line|#define MIN_BUFFERS&t;4
+DECL|macro|MIN_BUFSIZE
+mdefine_line|#define MIN_BUFSIZE&t;(1&lt;&lt;12)&t;/* in bytes (- where does this come from ?) */
+DECL|macro|MIN_FRAG_SIZE
+mdefine_line|#define MIN_FRAG_SIZE&t;8&t;/* not 100% sure about this */
+DECL|macro|MAX_BUFSIZE
+mdefine_line|#define MAX_BUFSIZE&t;(1&lt;&lt;17)&t;/* Limit for Amiga is 128 kb */
+DECL|macro|MAX_FRAG_SIZE
+mdefine_line|#define MAX_FRAG_SIZE&t;15&t;/* allow *4 for mono-8 =&gt; stereo-16 (for multi) */
+macro_line|#else /* is pmac and multi is off */
+DECL|macro|MIN_BUFFERS
+mdefine_line|#define MIN_BUFFERS&t;2
+DECL|macro|MIN_BUFSIZE
+mdefine_line|#define MIN_BUFSIZE&t;(1&lt;&lt;8)&t;/* in bytes */
+DECL|macro|MIN_FRAG_SIZE
+mdefine_line|#define MIN_FRAG_SIZE&t;8
+DECL|macro|MAX_BUFSIZE
+mdefine_line|#define MAX_BUFSIZE&t;(1&lt;&lt;18)&t;/* this is somewhat arbitrary for pmac */
+DECL|macro|MAX_FRAG_SIZE
+mdefine_line|#define MAX_FRAG_SIZE&t;16&t;/* need to allow *4 for mono-8 =&gt; stereo-16 */
 macro_line|#endif
-macro_line|#if defined(CONFIG_DMASOUND_AWACS) || defined(CONFIG_DMASOUND_AWACS_MODULE)
-DECL|macro|HAS_16BIT_TABLES
-mdefine_line|#define HAS_16BIT_TABLES
+DECL|macro|DEFAULT_N_BUFFERS
+mdefine_line|#define DEFAULT_N_BUFFERS 4
+DECL|macro|DEFAULT_BUFF_SIZE
+mdefine_line|#define DEFAULT_BUFF_SIZE (1&lt;&lt;15)
+macro_line|#if defined(CONFIG_DMASOUND_PMAC) || defined(CONFIG_DMASOUND_PMAC_MODULE)
 DECL|macro|HAS_RECORD
 mdefine_line|#define HAS_RECORD
 macro_line|#endif
@@ -128,6 +142,34 @@ macro_line|#else
 DECL|macro|dmasound_deinit
 mdefine_line|#define dmasound_deinit()&t;do { } while (0)
 macro_line|#endif
+multiline_comment|/* description of the set-up applies to either hard or soft settings */
+r_typedef
+r_struct
+(brace
+DECL|member|format
+r_int
+id|format
+suffix:semicolon
+multiline_comment|/* AFMT_* */
+DECL|member|stereo
+r_int
+id|stereo
+suffix:semicolon
+multiline_comment|/* 0 = mono, 1 = stereo */
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+multiline_comment|/* 8/16 bit*/
+DECL|member|speed
+r_int
+id|speed
+suffix:semicolon
+multiline_comment|/* speed */
+DECL|typedef|SETTINGS
+)brace
+id|SETTINGS
+suffix:semicolon
 multiline_comment|/*&n;     *  Machine definitions&n;     */
 r_typedef
 r_struct
@@ -330,7 +372,7 @@ id|u_long
 suffix:semicolon
 multiline_comment|/* optional */
 DECL|member|write_sq_setup
-r_void
+r_int
 (paren
 op_star
 id|write_sq_setup
@@ -341,7 +383,7 @@ r_void
 suffix:semicolon
 multiline_comment|/* optional */
 DECL|member|read_sq_setup
-r_void
+r_int
 (paren
 op_star
 id|read_sq_setup
@@ -352,13 +394,13 @@ r_void
 suffix:semicolon
 multiline_comment|/* optional */
 DECL|member|sq_open
-r_void
+r_int
 (paren
 op_star
 id|sq_open
 )paren
 (paren
-r_void
+id|mode_t
 )paren
 suffix:semicolon
 multiline_comment|/* optional */
@@ -371,6 +413,8 @@ id|state_info
 (paren
 r_char
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* optional */
@@ -389,38 +433,40 @@ DECL|member|min_dsp_speed
 r_int
 id|min_dsp_speed
 suffix:semicolon
+DECL|member|max_dsp_speed
+r_int
+id|max_dsp_speed
+suffix:semicolon
+DECL|member|version
+r_int
+id|version
+suffix:semicolon
+DECL|member|hardware_afmts
+r_int
+id|hardware_afmts
+suffix:semicolon
+multiline_comment|/* OSS says we only return h&squot;ware info */
+multiline_comment|/* when queried via SNDCTL_DSP_GETFMTS */
+DECL|member|capabilities
+r_int
+id|capabilities
+suffix:semicolon
+multiline_comment|/* low-level reply to SNDCTL_DSP_GETCAPS */
+DECL|member|default_hard
+id|SETTINGS
+id|default_hard
+suffix:semicolon
+multiline_comment|/* open() or init() should set something valid */
+DECL|member|default_soft
+id|SETTINGS
+id|default_soft
+suffix:semicolon
+multiline_comment|/* you can make it look like old OSS, if you want to */
 DECL|typedef|MACHINE
 )brace
 id|MACHINE
 suffix:semicolon
 multiline_comment|/*&n;     *  Low level stuff&n;     */
-r_typedef
-r_struct
-(brace
-DECL|member|format
-r_int
-id|format
-suffix:semicolon
-multiline_comment|/* AFMT_* */
-DECL|member|stereo
-r_int
-id|stereo
-suffix:semicolon
-multiline_comment|/* 0 = mono, 1 = stereo */
-DECL|member|size
-r_int
-id|size
-suffix:semicolon
-multiline_comment|/* 8/16 bit*/
-DECL|member|speed
-r_int
-id|speed
-suffix:semicolon
-multiline_comment|/* speed */
-DECL|typedef|SETTINGS
-)brace
-id|SETTINGS
-suffix:semicolon
 r_typedef
 r_struct
 (brace
@@ -680,6 +726,7 @@ r_struct
 id|sound_settings
 id|dmasound
 suffix:semicolon
+macro_line|#ifdef HAS_8BIT_TABLES
 r_extern
 r_char
 id|dmasound_ulaw2dma8
@@ -692,18 +739,7 @@ id|dmasound_alaw2dma8
 (braket
 )braket
 suffix:semicolon
-r_extern
-r_int
-id|dmasound_ulaw2dma16
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_int
-id|dmasound_alaw2dma16
-(braket
-)braket
-suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;     *  Mid level stuff&n;     */
 DECL|function|dmasound_set_volume
 r_static
@@ -814,6 +850,7 @@ DECL|member|numBufs
 r_int
 id|numBufs
 suffix:semicolon
+multiline_comment|/* real limits on what the user can have */
 DECL|member|bufSize
 r_int
 id|bufSize
@@ -826,19 +863,36 @@ op_star
 id|buffers
 suffix:semicolon
 multiline_comment|/* current parameters */
+DECL|member|locked
+r_int
+id|locked
+suffix:semicolon
+multiline_comment|/* params cannot be modified when != 0 */
+DECL|member|user_frags
+r_int
+id|user_frags
+suffix:semicolon
+multiline_comment|/* user requests this many */
+DECL|member|user_frag_size
+r_int
+id|user_frag_size
+suffix:semicolon
+multiline_comment|/* of this size */
 DECL|member|max_count
 r_int
 id|max_count
 suffix:semicolon
+multiline_comment|/* actual # fragments &lt;= numBufs */
 DECL|member|block_size
 r_int
 id|block_size
 suffix:semicolon
-multiline_comment|/* in bytes */
+multiline_comment|/* internal block size in bytes */
 DECL|member|max_active
 r_int
 id|max_active
 suffix:semicolon
+multiline_comment|/* in-use fragments &lt;= max_count */
 multiline_comment|/* it shouldn&squot;t be necessary to declare any of these volatile */
 DECL|member|front
 DECL|member|rear
@@ -875,10 +929,16 @@ id|open_mode
 suffix:semicolon
 DECL|member|busy
 DECL|member|syncing
+DECL|member|xruns
+DECL|member|died
 r_int
 id|busy
 comma
 id|syncing
+comma
+id|xruns
+comma
+id|died
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -891,19 +951,54 @@ r_struct
 id|sound_queue
 id|dmasound_write_sq
 suffix:semicolon
+DECL|macro|write_sq
+mdefine_line|#define write_sq&t;dmasound_write_sq
+macro_line|#ifdef HAS_RECORD
 r_extern
 r_struct
 id|sound_queue
 id|dmasound_read_sq
 suffix:semicolon
-DECL|macro|write_sq
-mdefine_line|#define write_sq&t;dmasound_write_sq
 DECL|macro|read_sq
 mdefine_line|#define read_sq&t;&t;dmasound_read_sq
+macro_line|#endif
 r_extern
 r_int
 id|dmasound_catchRadius
 suffix:semicolon
 DECL|macro|catchRadius
 mdefine_line|#define catchRadius&t;dmasound_catchRadius
+multiline_comment|/* define the value to be put in the byte-swap reg in mac-io&n;   when we want it to swap for us.&n;*/
+DECL|macro|BS_VAL
+mdefine_line|#define BS_VAL 1
+DECL|function|wait_ms
+r_static
+r_inline
+r_void
+id|wait_ms
+c_func
+(paren
+r_int
+r_int
+id|ms
+)paren
+(brace
+id|current-&gt;state
+op_assign
+id|TASK_UNINTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+op_plus
+id|ms
+op_star
+id|HZ
+op_div
+l_int|1000
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* _dmasound_h_ */
 eof
