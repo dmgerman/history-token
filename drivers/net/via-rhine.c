@@ -3137,6 +3137,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|free_ring
+r_static
 r_void
 id|free_ring
 c_func
