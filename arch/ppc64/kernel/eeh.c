@@ -2230,8 +2230,6 @@ id|phb
 comma
 id|early_enable_eeh
 comma
-l_int|NULL
-comma
 op_amp
 id|info
 )paren
