@@ -3417,26 +3417,62 @@ id|urb-&gt;context
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;auerswald_int_complete called&quot;
+l_string|&quot;%s called&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/* do not respond to an error condition */
-r_if
+r_switch
 c_cond
 (paren
 id|urb-&gt;status
-op_ne
-l_int|0
 )paren
 (brace
+r_case
+l_int|0
+suffix:colon
+multiline_comment|/* success */
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ECONNRESET
+suffix:colon
+r_case
+op_minus
+id|ENOENT
+suffix:colon
+r_case
+op_minus
+id|ESHUTDOWN
+suffix:colon
+multiline_comment|/* this urb is terminated, clean up */
 id|dbg
+c_func
 (paren
-l_string|&quot;nonzero URB status = %d&quot;
+l_string|&quot;%s - urb shutting down with status: %d&quot;
+comma
+id|__FUNCTION__
 comma
 id|urb-&gt;status
 )paren
 suffix:semicolon
 r_return
+suffix:semicolon
+r_default
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;%s - nonzero urb status received: %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|urb-&gt;status
+)paren
+suffix:semicolon
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* check if all needed data was received */
@@ -3455,7 +3491,8 @@ comma
 id|urb-&gt;actual_length
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* check the command code */
@@ -3480,7 +3517,8 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* check the command type */
@@ -3505,7 +3543,8 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* now extract the information */
@@ -3543,7 +3582,8 @@ comma
 id|channelid
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* check the byte count */
@@ -3566,7 +3606,8 @@ comma
 id|bytecount
 )paren
 suffix:semicolon
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 id|dbg
@@ -3650,7 +3691,8 @@ l_string|&quot;auerswald_int_complete: no data buffer available&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* can we do something more?&n;&t;&t;   This is a big problem: if this int packet is ignored, the&n;&t;&t;   device will wait forever and not signal any more data.&n;&t;&t;   The only real solution is: having enought buffers!&n;&t;&t;   Or perhaps temporary disabling the int endpoint?&n;&t;&t;*/
-r_return
+r_goto
+m_exit
 suffix:semicolon
 )brace
 multiline_comment|/* fill the control message */
@@ -3755,6 +3797,31 @@ id|bp-&gt;urbp
 suffix:semicolon
 multiline_comment|/* here applies the same problem as above: device locking! */
 )brace
+m_exit
+suffix:colon
+id|ret
+op_assign
+id|usb_submit_urb
+(paren
+id|urb
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|err
+(paren
+l_string|&quot;%s - usb_submit_urb failed with result %d&quot;
+comma
+id|__FUNCTION__
+comma
+id|ret
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* int memory deallocation&n;   NOTE: no mutex please!&n;*/
 DECL|function|auerswald_int_free

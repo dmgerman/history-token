@@ -350,153 +350,43 @@ c_func
 (paren
 id|aic7xxx
 comma
-"&quot;"
-id|period
-id|delimited
-comma
-id|options
-id|string
-dot
-id|verbose
-id|Enable
-id|verbose
-op_div
-id|diagnostic
-id|logging
-id|no_probe
-id|Disable
-id|EISA
-op_div
-id|VLB
-id|controller
-id|probing
-id|no_reset
-id|Supress
-id|initial
-id|bus
-id|resets
-id|extended
-id|Enable
-id|extended
-id|geometry
-id|on
-id|all
-id|controllers
-id|periodic_otag
-id|Send
-id|an
-id|ordered
-id|tagged
-id|transaction
-id|periodically
-id|to
-id|prevent
-id|tag
-id|starvation
-dot
-id|This
-id|may
-id|be
-id|required
-id|by
-id|some
-id|older
-id|disk
-id|drives
-op_div
-id|RAID
-id|arrays
-dot
-id|reverse_scan
-id|Sort
-id|PCI
-id|devices
-id|highest
-id|Bus
-op_div
-id|Slot
-id|to
-id|lowest
-id|tag_info
-suffix:colon
-template_param
-id|Set
-id|per
-op_minus
-id|target
-id|tag
-id|depth
-id|seltime
-suffix:colon
-template_param
-id|Selection
-id|Timeout
-c_func
-(paren
-l_int|0
-op_div
-l_int|256
-id|ms
-comma
-l_int|1
-op_div
-l_int|128
-id|ms
-comma
-l_int|2
-op_div
-l_int|64
-id|ms
-comma
-l_int|3
-op_div
-l_int|32
-id|ms
-)paren
-id|Sample
-op_div
-id|etc
-op_div
-id|modules.conf
-id|line
-suffix:colon
-id|Enable
-id|verbose
-id|logging
-id|Disable
-id|EISA
-op_div
-id|VLB
-id|probing
-id|Set
-id|tag
-id|depth
-id|on
-id|Controller
-l_int|2
-op_div
-id|Target
-l_int|2
-id|to
-l_int|10
-id|tags
-id|Shorten
-id|the
-id|selection
-id|timeout
-id|to
-l_int|128
-id|ms
-id|from
-id|its
-r_default
-id|of
-l_int|256
-id|options
-id|aic7xxx
-op_assign
-l_char|&squot;&bslash;&quot;verbose.no_probe.tag_info:{{}.{}.{..10}}.seltime:1&bslash;&quot;&squot;
-"&quot;"
+l_string|&quot;period delimited, options string.&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;verbose&t;&t;&t;Enable verbose/diagnostic logging&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;no_probe&t;&t;Disable EISA/VLB controller probing&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;no_reset&t;&t;Supress initial bus resets&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;extended&t;&t;Enable extended geometry on all controllers&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;periodic_otag&t;&t;Send an ordered tagged transaction periodically&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;&t;&t;&t;to prevent tag starvation.  This may be&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;&t;&t;&t;required by some older disk drives/RAID arrays. &bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;reverse_scan&t;&t;Sort PCI devices highest Bus/Slot to lowest&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;tag_info:&lt;tag_str&gt;&t;Set per-target tag depth&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;seltime:&lt;int&gt;&t;&t;Selection Timeout(0/256ms,1/128ms,2/64ms,3/32ms)&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;Sample /etc/modules.conf line:&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;&t;Enable verbose logging&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;&t;Disable EISA/VLB probing&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;&t;Set tag depth on Controller 2/Target 2 to 10 tags&bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;&t;Shorten the selection timeout to 128ms from its default of 256&bslash;n&quot;
+"&bslash;"
+l_string|&quot; &bslash;n&quot;
+"&bslash;"
+l_string|&quot;&t;options aic7xxx=&squot;&bslash;&quot;verbose.no_probe.tag_info:{{}.{}.{..10}}.seltime:1&bslash;&quot;&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

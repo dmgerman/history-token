@@ -205,6 +205,11 @@ id|atalk_addr
 id|node_addr
 suffix:semicolon
 multiline_comment|/* Full node address */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* RX/TX lock */
 )brace
 suffix:semicolon
 multiline_comment|/* Index to functions, as function prototypes. */
@@ -808,6 +813,13 @@ r_sizeof
 r_struct
 id|cops_local
 )paren
+)paren
+suffix:semicolon
+id|spinlock_init
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
 )paren
 suffix:semicolon
 multiline_comment|/* Copy local board variable to lp struct. */
@@ -2642,18 +2654,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Disable interrupts. */
 r_if
 c_cond
 (paren
@@ -2742,9 +2751,12 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -2908,9 +2920,12 @@ id|DAYNA_INT_CARD
 suffix:semicolon
 )brace
 multiline_comment|/* Interrupt the card */
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -3185,18 +3200,15 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Disable interrupts. */
 r_if
 c_cond
 (paren
@@ -3223,6 +3235,10 @@ op_eq
 l_int|0
 )paren
 (brace
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -3251,6 +3267,10 @@ op_eq
 l_int|0
 )paren
 (brace
+id|cpu_relax
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Output IO length. */
@@ -3364,9 +3384,12 @@ id|DAYNA_INT_CARD
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lp-&gt;lock
+comma
 id|flags
 )paren
 suffix:semicolon

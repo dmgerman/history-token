@@ -38,7 +38,7 @@ mdefine_line|#define DEBUG_ABORT      1&t;/* Debug abort() routine */
 DECL|macro|DEBUG_RESET
 mdefine_line|#define DEBUG_RESET      1&t;/* Debug reset() routine */
 DECL|macro|DEBUG_RACE
-mdefine_line|#define DEBUG_RACE       1      /* Debug interrupt-driven race condition */
+mdefine_line|#define DEBUG_RACE       1&t;/* Debug interrupt-driven race condition */
 macro_line|#else
 DECL|macro|EVERY_ACCESS
 mdefine_line|#define EVERY_ACCESS     0&t;/* LEAVE THESE ALONE--CHANGE THE ONES ABOVE */
@@ -415,7 +415,7 @@ mdefine_line|#define adapter_name          (HOSTDATA(shpnt)-&gt;_adapter_name)
 macro_line|#if DEBUG_RACE
 DECL|macro|in_interrupt_flag
 mdefine_line|#define in_interrupt_flag     (HOSTDATA(shpnt)-&gt;_in_interrupt_flag)
-macro_line|#endif&t;                     
+macro_line|#endif
 DECL|macro|SCSI_Mode_Cntl_port
 mdefine_line|#define SCSI_Mode_Cntl_port   (HOSTDATA(shpnt)-&gt;_SCSI_Mode_Cntl_port)
 DECL|macro|FIFO_Data_Count_port
@@ -650,6 +650,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|fd_mcs_setup
+r_static
 r_void
 id|fd_mcs_setup
 c_func
@@ -732,6 +733,14 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+id|__setup
+c_func
+(paren
+l_string|&quot;fd_mcs=&quot;
+comma
+id|fd_mcs_setup
+)paren
+suffix:semicolon
 DECL|function|print_banner
 r_static
 r_void
@@ -825,16 +834,14 @@ c_func
 r_int
 id|amount
 )paren
-multiline_comment|/* Pause for amount*10 milliseconds */
 (brace
+multiline_comment|/* Pause for amount*10 milliseconds */
 r_do
 (brace
-id|udelay
+id|mdelay
 c_func
 (paren
 l_int|10
-op_star
-l_int|1000
 )paren
 suffix:semicolon
 )brace
@@ -847,7 +854,6 @@ id|amount
 suffix:semicolon
 )brace
 DECL|function|fd_mcs_make_bus_idle
-r_inline
 r_static
 r_void
 id|fd_mcs_make_bus_idle
@@ -910,6 +916,7 @@ id|TMC_Cntl_port
 suffix:semicolon
 )brace
 DECL|function|fd_mcs_detect
+r_static
 r_int
 id|fd_mcs_detect
 c_func
@@ -1006,10 +1013,11 @@ id|slot
 )paren
 )paren
 (brace
-multiline_comment|/* if we get this far, an adapter has been detected and is&n;&t; enabled */
+multiline_comment|/* if we get this far, an adapter has been detected and is&n;&t;&t;&t;   enabled */
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;scsi  &lt;fd_mcs&gt;: %s at slot %d&bslash;n&quot;
 comma
 id|fd_mcs_adapters
@@ -1205,14 +1213,6 @@ multiline_comment|/* check irq/region */
 r_if
 c_cond
 (paren
-id|check_region
-c_func
-(paren
-id|port
-comma
-l_int|0x10
-)paren
-op_logical_or
 id|request_irq
 c_func
 (paren
@@ -1231,7 +1231,33 @@ id|hosts
 id|printk
 c_func
 (paren
-l_string|&quot;fd_mcs: check_region() || request_irq() failed, Skip it&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;fd_mcs: interrupt is not available, skipping...&bslash;n&quot;
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+multiline_comment|/* request I/O region */
+r_if
+c_cond
+(paren
+id|request_region
+c_func
+(paren
+id|port
+comma
+l_int|0x10
+comma
+l_string|&quot;fd_mcs&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;fd_mcs: I/O region is already in use, skipping...&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -1262,23 +1288,29 @@ id|fd_hostdata
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;fd_mcs: scsi_register() failed&bslash;n&quot;
 )paren
 suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/* request I/O region */
-id|request_region
+id|release_region
 c_func
 (paren
 id|port
 comma
 l_int|0x10
-comma
-l_string|&quot;fd_mcs&quot;
 )paren
 suffix:semicolon
+id|free_irq
+c_func
+(paren
+id|irq
+comma
+id|hosts
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* save name */
 id|strcpy
 c_func
@@ -1334,7 +1366,7 @@ id|fifo_size
 suffix:semicolon
 macro_line|#ifdef NOT_USED
 multiline_comment|/* *************************************************** */
-multiline_comment|/* Try to toggle 32-bit mode.  This only&n;&t;   works on an 18c30 chip.  (User reports&n;&t;   say this works, so we should switch to&n;&t;   it in the near future.) */
+multiline_comment|/* Try to toggle 32-bit mode.  This only&n;&t;&t;&t;&t;   works on an 18c30 chip.  (User reports&n;&t;&t;&t;&t;   say this works, so we should switch to&n;&t;&t;&t;&t;   it in the near future.) */
 id|outb
 c_func
 (paren
@@ -1421,7 +1453,7 @@ id|FIFO_Size
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* That should have worked, but appears to&n;&t;   have problems.  Let&squot;s assume it is an&n;&t;   18c30 if the RAM is disabled. */
+multiline_comment|/* That should have worked, but appears to&n;&t;&t;&t;&t;   have problems.  Let&squot;s assume it is an&n;&t;&t;&t;&t;   18c30 if the RAM is disabled. */
 r_if
 c_cond
 (paren
@@ -2112,6 +2144,7 @@ id|found
 suffix:semicolon
 )brace
 DECL|function|fd_mcs_info
+r_static
 r_const
 r_char
 op_star
@@ -2137,6 +2170,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * inout : decides on the direction of the dataflow and the meaning of the &n; *         variables&n; * buffer: If inout==FALSE data is being written to it else read from it&n; * *start: If inout==FALSE start of the valid data in the buffer&n; * offset: If inout==FALSE offset from the beginning of the imaginary file &n; *         from which we start writing into the buffer&n; * length: If inout==FALSE max number of bytes to be written into the buffer &n; *         else number of bytes in the buffer&n; */
 DECL|function|fd_mcs_proc_info
+r_static
 r_int
 id|fd_mcs_proc_info
 c_func
@@ -2182,8 +2216,10 @@ c_cond
 id|inout
 )paren
 r_return
+(paren
 op_minus
 id|ENOSYS
+)paren
 suffix:semicolon
 op_star
 id|start
@@ -2232,8 +2268,10 @@ id|shpnt
 )paren
 (brace
 r_return
+(paren
 op_minus
 id|ENOENT
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -3212,8 +3250,8 @@ id|current_SC-&gt;cmd_len
 )paren
 )paren
 (brace
-multiline_comment|/* We have to get the FIFO direction&n;       correct, so I&squot;ve made a table based&n;       on the SCSI Standard of which commands&n;       appear to require a DATA OUT phase.&n;       */
-multiline_comment|/*&n;      p. 94: Command for all device types&n;      CHANGE DEFINITION            40 DATA OUT&n;      COMPARE                      39 DATA OUT&n;      COPY                         18 DATA OUT&n;      COPY AND VERIFY              3a DATA OUT&n;      INQUIRY                      12 &n;      LOG SELECT                   4c DATA OUT&n;      LOG SENSE                    4d&n;      MODE SELECT (6)              15 DATA OUT&n;      MODE SELECT (10)             55 DATA OUT&n;      MODE SENSE (6)               1a&n;      MODE SENSE (10)              5a&n;      READ BUFFER                  3c&n;      RECEIVE DIAGNOSTIC RESULTS   1c&n;      REQUEST SENSE                03&n;      SEND DIAGNOSTIC              1d DATA OUT&n;      TEST UNIT READY              00&n;      WRITE BUFFER                 3b DATA OUT&n;&n;      p.178: Commands for direct-access devices (not listed on p. 94)&n;      FORMAT UNIT                  04 DATA OUT&n;      LOCK-UNLOCK CACHE            36&n;      PRE-FETCH                    34&n;      PREVENT-ALLOW MEDIUM REMOVAL 1e&n;      READ (6)/RECEIVE             08&n;      READ (10)                    3c&n;      READ CAPACITY                25&n;      READ DEFECT DATA (10)        37&n;      READ LONG                    3e&n;      REASSIGN BLOCKS              07 DATA OUT&n;      RELEASE                      17&n;      RESERVE                      16 DATA OUT&n;      REZERO UNIT/REWIND           01&n;      SEARCH DATA EQUAL (10)       31 DATA OUT&n;      SEARCH DATA HIGH (10)        30 DATA OUT&n;      SEARCH DATA LOW (10)         32 DATA OUT&n;      SEEK (6)                     0b&n;      SEEK (10)                    2b&n;      SET LIMITS (10)              33&n;      START STOP UNIT              1b&n;      SYNCHRONIZE CACHE            35&n;      VERIFY (10)                  2f&n;      WRITE (6)/PRINT/SEND         0a DATA OUT&n;      WRITE (10)/SEND              2a DATA OUT&n;      WRITE AND VERIFY (10)        2e DATA OUT&n;      WRITE LONG                   3f DATA OUT&n;      WRITE SAME                   41 DATA OUT ?&n;&n;      p. 261: Commands for sequential-access devices (not previously listed)&n;      ERASE                        19&n;      LOAD UNLOAD                  1b&n;      LOCATE                       2b&n;      READ BLOCK LIMITS            05&n;      READ POSITION                34&n;      READ REVERSE                 0f&n;      RECOVER BUFFERED DATA        14&n;      SPACE                        11&n;      WRITE FILEMARKS              10 ?&n;&n;      p. 298: Commands for printer devices (not previously listed)&n;      ****** NOT SUPPORTED BY THIS DRIVER, since 0b is SEEK (6) *****&n;      SLEW AND PRINT               0b DATA OUT  -- same as seek&n;      STOP PRINT                   1b&n;      SYNCHRONIZE BUFFER           10&n;&n;      p. 315: Commands for processor devices (not previously listed)&n;&t;&n;      p. 321: Commands for write-once devices (not previously listed)&n;      MEDIUM SCAN                  38&n;      READ (12)                    a8&n;      SEARCH DATA EQUAL (12)       b1 DATA OUT&n;      SEARCH DATA HIGH (12)        b0 DATA OUT&n;      SEARCH DATA LOW (12)         b2 DATA OUT&n;      SET LIMITS (12)              b3&n;      VERIFY (12)                  af&n;      WRITE (12)                   aa DATA OUT&n;      WRITE AND VERIFY (12)        ae DATA OUT&n;&n;      p. 332: Commands for CD-ROM devices (not previously listed)&n;      PAUSE/RESUME                 4b&n;      PLAY AUDIO (10)              45&n;      PLAY AUDIO (12)              a5&n;      PLAY AUDIO MSF               47&n;      PLAY TRACK RELATIVE (10)     49&n;      PLAY TRACK RELATIVE (12)     a9&n;      READ HEADER                  44&n;      READ SUB-CHANNEL             42&n;      READ TOC                     43&n;&n;      p. 370: Commands for scanner devices (not previously listed)&n;      GET DATA BUFFER STATUS       34&n;      GET WINDOW                   25&n;      OBJECT POSITION              31&n;      SCAN                         1b&n;      SET WINDOW                   24 DATA OUT&n;&n;      p. 391: Commands for optical memory devices (not listed)&n;      ERASE (10)                   2c&n;      ERASE (12)                   ac&n;      MEDIUM SCAN                  38 DATA OUT&n;      READ DEFECT DATA (12)        b7&n;      READ GENERATION              29&n;      READ UPDATED BLOCK           2d&n;      UPDATE BLOCK                 3d DATA OUT&n;&n;      p. 419: Commands for medium changer devices (not listed)&n;      EXCHANGE MEDIUM              46&n;      INITIALIZE ELEMENT STATUS    07&n;      MOVE MEDIUM                  a5&n;      POSITION TO ELEMENT          2b&n;      READ ELEMENT STATUS          b8&n;      REQUEST VOL. ELEMENT ADDRESS b5&n;      SEND VOLUME TAG              b6 DATA OUT&n;&n;      p. 454: Commands for communications devices (not listed previously)&n;      GET MESSAGE (6)              08&n;      GET MESSAGE (10)             28&n;      GET MESSAGE (12)             a8&n;      */
+multiline_comment|/* We have to get the FIFO direction&n;&t;&t;   correct, so I&squot;ve made a table based&n;&t;&t;   on the SCSI Standard of which commands&n;&t;&t;   appear to require a DATA OUT phase.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;   p. 94: Command for all device types&n;&t;&t;   CHANGE DEFINITION            40 DATA OUT&n;&t;&t;   COMPARE                      39 DATA OUT&n;&t;&t;   COPY                         18 DATA OUT&n;&t;&t;   COPY AND VERIFY              3a DATA OUT&n;&t;&t;   INQUIRY                      12 &n;&t;&t;   LOG SELECT                   4c DATA OUT&n;&t;&t;   LOG SENSE                    4d&n;&t;&t;   MODE SELECT (6)              15 DATA OUT&n;&t;&t;   MODE SELECT (10)             55 DATA OUT&n;&t;&t;   MODE SENSE (6)               1a&n;&t;&t;   MODE SENSE (10)              5a&n;&t;&t;   READ BUFFER                  3c&n;&t;&t;   RECEIVE DIAGNOSTIC RESULTS   1c&n;&t;&t;   REQUEST SENSE                03&n;&t;&t;   SEND DIAGNOSTIC              1d DATA OUT&n;&t;&t;   TEST UNIT READY              00&n;&t;&t;   WRITE BUFFER                 3b DATA OUT&n;&n;&t;&t;   p.178: Commands for direct-access devices (not listed on p. 94)&n;&t;&t;   FORMAT UNIT                  04 DATA OUT&n;&t;&t;   LOCK-UNLOCK CACHE            36&n;&t;&t;   PRE-FETCH                    34&n;&t;&t;   PREVENT-ALLOW MEDIUM REMOVAL 1e&n;&t;&t;   READ (6)/RECEIVE             08&n;&t;&t;   READ (10)                    3c&n;&t;&t;   READ CAPACITY                25&n;&t;&t;   READ DEFECT DATA (10)        37&n;&t;&t;   READ LONG                    3e&n;&t;&t;   REASSIGN BLOCKS              07 DATA OUT&n;&t;&t;   RELEASE                      17&n;&t;&t;   RESERVE                      16 DATA OUT&n;&t;&t;   REZERO UNIT/REWIND           01&n;&t;&t;   SEARCH DATA EQUAL (10)       31 DATA OUT&n;&t;&t;   SEARCH DATA HIGH (10)        30 DATA OUT&n;&t;&t;   SEARCH DATA LOW (10)         32 DATA OUT&n;&t;&t;   SEEK (6)                     0b&n;&t;&t;   SEEK (10)                    2b&n;&t;&t;   SET LIMITS (10)              33&n;&t;&t;   START STOP UNIT              1b&n;&t;&t;   SYNCHRONIZE CACHE            35&n;&t;&t;   VERIFY (10)                  2f&n;&t;&t;   WRITE (6)/PRINT/SEND         0a DATA OUT&n;&t;&t;   WRITE (10)/SEND              2a DATA OUT&n;&t;&t;   WRITE AND VERIFY (10)        2e DATA OUT&n;&t;&t;   WRITE LONG                   3f DATA OUT&n;&t;&t;   WRITE SAME                   41 DATA OUT ?&n;&n;&t;&t;   p. 261: Commands for sequential-access devices (not previously listed)&n;&t;&t;   ERASE                        19&n;&t;&t;   LOAD UNLOAD                  1b&n;&t;&t;   LOCATE                       2b&n;&t;&t;   READ BLOCK LIMITS            05&n;&t;&t;   READ POSITION                34&n;&t;&t;   READ REVERSE                 0f&n;&t;&t;   RECOVER BUFFERED DATA        14&n;&t;&t;   SPACE                        11&n;&t;&t;   WRITE FILEMARKS              10 ?&n;&n;&t;&t;   p. 298: Commands for printer devices (not previously listed)&n;&t;&t;   ****** NOT SUPPORTED BY THIS DRIVER, since 0b is SEEK (6) *****&n;&t;&t;   SLEW AND PRINT               0b DATA OUT  -- same as seek&n;&t;&t;   STOP PRINT                   1b&n;&t;&t;   SYNCHRONIZE BUFFER           10&n;&n;&t;&t;   p. 315: Commands for processor devices (not previously listed)&n;&n;&t;&t;   p. 321: Commands for write-once devices (not previously listed)&n;&t;&t;   MEDIUM SCAN                  38&n;&t;&t;   READ (12)                    a8&n;&t;&t;   SEARCH DATA EQUAL (12)       b1 DATA OUT&n;&t;&t;   SEARCH DATA HIGH (12)        b0 DATA OUT&n;&t;&t;   SEARCH DATA LOW (12)         b2 DATA OUT&n;&t;&t;   SET LIMITS (12)              b3&n;&t;&t;   VERIFY (12)                  af&n;&t;&t;   WRITE (12)                   aa DATA OUT&n;&t;&t;   WRITE AND VERIFY (12)        ae DATA OUT&n;&n;&t;&t;   p. 332: Commands for CD-ROM devices (not previously listed)&n;&t;&t;   PAUSE/RESUME                 4b&n;&t;&t;   PLAY AUDIO (10)              45&n;&t;&t;   PLAY AUDIO (12)              a5&n;&t;&t;   PLAY AUDIO MSF               47&n;&t;&t;   PLAY TRACK RELATIVE (10)     49&n;&t;&t;   PLAY TRACK RELATIVE (12)     a9&n;&t;&t;   READ HEADER                  44&n;&t;&t;   READ SUB-CHANNEL             42&n;&t;&t;   READ TOC                     43&n;&n;&t;&t;   p. 370: Commands for scanner devices (not previously listed)&n;&t;&t;   GET DATA BUFFER STATUS       34&n;&t;&t;   GET WINDOW                   25&n;&t;&t;   OBJECT POSITION              31&n;&t;&t;   SCAN                         1b&n;&t;&t;   SET WINDOW                   24 DATA OUT&n;&n;&t;&t;   p. 391: Commands for optical memory devices (not listed)&n;&t;&t;   ERASE (10)                   2c&n;&t;&t;   ERASE (12)                   ac&n;&t;&t;   MEDIUM SCAN                  38 DATA OUT&n;&t;&t;   READ DEFECT DATA (12)        b7&n;&t;&t;   READ GENERATION              29&n;&t;&t;   READ UPDATED BLOCK           2d&n;&t;&t;   UPDATE BLOCK                 3d DATA OUT&n;&n;&t;&t;   p. 419: Commands for medium changer devices (not listed)&n;&t;&t;   EXCHANGE MEDIUM              46&n;&t;&t;   INITIALIZE ELEMENT STATUS    07&n;&t;&t;   MOVE MEDIUM                  a5&n;&t;&t;   POSITION TO ELEMENT          2b&n;&t;&t;   READ ELEMENT STATUS          b8&n;&t;&t;   REQUEST VOL. ELEMENT ADDRESS b5&n;&t;&t;   SEND VOLUME TAG              b6 DATA OUT&n;&n;&t;&t;   p. 454: Commands for communications devices (not listed previously)&n;&t;&t;   GET MESSAGE (6)              08&n;&t;&t;   GET MESSAGE (10)             28&n;&t;&t;   GET MESSAGE (12)             a8&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -3503,7 +3541,13 @@ id|current_SC-&gt;SCp.buffer
 suffix:semicolon
 id|current_SC-&gt;SCp.ptr
 op_assign
-id|current_SC-&gt;SCp.buffer-&gt;address
+id|page_address
+c_func
+(paren
+id|current_SC-&gt;SCp.buffer-&gt;page
+)paren
+op_plus
+id|current_SC-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
 id|current_SC-&gt;SCp.this_residual
 op_assign
@@ -3658,7 +3702,13 @@ id|current_SC-&gt;SCp.buffer
 suffix:semicolon
 id|current_SC-&gt;SCp.ptr
 op_assign
-id|current_SC-&gt;SCp.buffer-&gt;address
+id|page_address
+c_func
+(paren
+id|current_SC-&gt;SCp.buffer-&gt;page
+)paren
+op_plus
+id|current_SC-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
 id|current_SC-&gt;SCp.this_residual
 op_assign
@@ -3973,6 +4023,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|fd_mcs_release
+r_static
 r_int
 id|fd_mcs_release
 c_func
@@ -4109,6 +4160,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|fd_mcs_queue
+r_static
 r_int
 id|fd_mcs_queue
 c_func
@@ -4203,7 +4255,13 @@ id|current_SC-&gt;request_buffer
 suffix:semicolon
 id|current_SC-&gt;SCp.ptr
 op_assign
-id|current_SC-&gt;SCp.buffer-&gt;address
+id|page_address
+c_func
+(paren
+id|current_SC-&gt;SCp.buffer-&gt;page
+)paren
+op_plus
+id|current_SC-&gt;SCp.buffer-&gt;offset
 suffix:semicolon
 id|current_SC-&gt;SCp.this_residual
 op_assign
@@ -4364,11 +4422,18 @@ c_loop
 op_logical_neg
 id|SCpnt-&gt;host_scribble
 )paren
+(brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 id|barrier
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 r_return
 id|SCpnt-&gt;result
 suffix:semicolon
@@ -4820,6 +4885,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|fd_mcs_abort
+r_static
 r_int
 id|fd_mcs_abort
 c_func
@@ -4848,15 +4914,12 @@ l_string|&quot;fd_mcs: abort &quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+id|shpnt-&gt;host_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -4874,14 +4937,16 @@ l_string|&quot; (not in command)&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+id|shpnt-&gt;host_lock
+comma
 id|flags
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_NOT_RUNNING
+id|FAILED
 suffix:semicolon
 )brace
 r_else
@@ -4915,21 +4980,7 @@ id|DID_ABORT
 op_lshift
 l_int|16
 suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 multiline_comment|/* Aborts are not done well. . . */
-id|spin_lock_irqsave
-c_func
-(paren
-id|shpnt-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|my_done
 c_func
 (paren
@@ -4949,21 +5000,48 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
-DECL|function|fd_mcs_reset
+DECL|function|fd_mcs_host_reset
+r_static
 r_int
-id|fd_mcs_reset
+id|fd_mcs_host_reset
 c_func
 (paren
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+DECL|function|fd_mcs_device_reset
+r_static
 r_int
+id|fd_mcs_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+(brace
+r_return
+id|FAILED
+suffix:semicolon
+)brace
+DECL|function|fd_mcs_bus_reset
+r_static
 r_int
-id|reset_flags
+id|fd_mcs_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
 )paren
 (brace
 r_struct
@@ -4972,6 +5050,10 @@ op_star
 id|shpnt
 op_assign
 id|SCpnt-&gt;host
+suffix:semicolon
+r_int
+r_int
+id|flags
 suffix:semicolon
 macro_line|#if DEBUG_RESET
 r_static
@@ -5011,6 +5093,14 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+id|spin_lock_irqsave
+c_func
+(paren
+id|shpnt-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|outb
 c_func
 (paren
@@ -5055,14 +5145,23 @@ comma
 id|TMC_Cntl_port
 )paren
 suffix:semicolon
-multiline_comment|/* Unless this is the very first call (i.e., SCPnt == NULL), everything&n;     is probably hosed at this point.  We will, however, try to keep&n;     things going by informing the high-level code that we need help. */
+multiline_comment|/* Unless this is the very first call (i.e., SCPnt == NULL), everything&n;&t;&t;   is probably hosed at this point.  We will, however, try to keep&n;&t;&t;   things going by informing the high-level code that we need help. */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shpnt-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
-id|SCSI_RESET_WAKEUP
+id|SUCCESS
 suffix:semicolon
 )brace
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 DECL|function|fd_mcs_biosparam
+r_static
 r_int
 id|fd_mcs_biosparam
 c_func
@@ -5225,7 +5324,7 @@ l_int|0x1c2
 )paren
 (brace
 multiline_comment|/* Partition type */
-multiline_comment|/* The partition table layout is as follows:&n;&n;&t; Start: 0x1b3h&n;&t; Offset: 0 = partition status&n;&t; 1 = starting head&n;&t; 2 = starting sector and cylinder (word, encoded)&n;&t; 4 = partition type&n;&t; 5 = ending head&n;&t; 6 = ending sector and cylinder (word, encoded)&n;&t; 8 = starting absolute sector (double word)&n;&t; c = number of sectors (double word)&n;&t; Signature: 0x1fe = 0x55aa&n;&n;&t; So, this algorithm assumes:&n;&t; 1) the first partition table is in use,&n;&t; 2) the data in the first entry is correct, and&n;&t; 3) partitions never divide cylinders&n;&n;&t; Note that (1) may be FALSE for NetBSD (and other BSD flavors),&n;&t; as well as for Linux.  Note also, that Linux doesn&squot;t pay any&n;&t; attention to the fields that are used by this algorithm -- it&n;&t; only uses the absolute sector data.  Recent versions of Linux&squot;s&n;&t; fdisk(1) will fill this data in correctly, and forthcoming&n;&t; versions will check for consistency.&n;&n;&t; Checking for a non-zero partition type is not part of the&n;&t; Future Domain algorithm, but it seemed to be a reasonable thing&n;&t; to do, especially in the Linux and BSD worlds. */
+multiline_comment|/* The partition table layout is as follows:&n;&n;&t;&t;&t;   Start: 0x1b3h&n;&t;&t;&t;   Offset: 0 = partition status&n;&t;&t;&t;   1 = starting head&n;&t;&t;&t;   2 = starting sector and cylinder (word, encoded)&n;&t;&t;&t;   4 = partition type&n;&t;&t;&t;   5 = ending head&n;&t;&t;&t;   6 = ending sector and cylinder (word, encoded)&n;&t;&t;&t;   8 = starting absolute sector (double word)&n;&t;&t;&t;   c = number of sectors (double word)&n;&t;&t;&t;   Signature: 0x1fe = 0x55aa&n;&n;&t;&t;&t;   So, this algorithm assumes:&n;&t;&t;&t;   1) the first partition table is in use,&n;&t;&t;&t;   2) the data in the first entry is correct, and&n;&t;&t;&t;   3) partitions never divide cylinders&n;&n;&t;&t;&t;   Note that (1) may be FALSE for NetBSD (and other BSD flavors),&n;&t;&t;&t;   as well as for Linux.  Note also, that Linux doesn&squot;t pay any&n;&t;&t;&t;   attention to the fields that are used by this algorithm -- it&n;&t;&t;&t;   only uses the absolute sector data.  Recent versions of Linux&squot;s&n;&t;&t;&t;   fdisk(1) will fill this data in correctly, and forthcoming&n;&t;&t;&t;   versions will check for consistency.&n;&n;&t;&t;&t;   Checking for a non-zero partition type is not part of the&n;&t;&t;&t;   Future Domain algorithm, but it seemed to be a reasonable thing&n;&t;&t;&t;   to do, especially in the Linux and BSD worlds. */
 id|info_array
 (braket
 l_int|0
@@ -5255,7 +5354,7 @@ multiline_comment|/* sectors */
 )brace
 r_else
 (brace
-multiline_comment|/* Note that this new method guarantees that there will always be&n;&t; less than 1024 cylinders on a platter.  This is good for drives&n;&t; up to approximately 7.85GB (where 1GB = 1024 * 1024 kB). */
+multiline_comment|/* Note that this new method guarantees that there will always be&n;&t;&t;&t;   less than 1024 cylinders on a platter.  This is good for drives&n;&t;&t;&t;   up to approximately 7.85GB (where 1GB = 1024 * 1024 kB). */
 r_if
 c_cond
 (paren

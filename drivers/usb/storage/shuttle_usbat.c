@@ -2755,7 +2755,7 @@ l_string|&quot;INIT 15&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|USB_STOR_TRANSPORT_ERROR
+id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Transport for the HP 8200e&n; */

@@ -2306,6 +2306,10 @@ id|tr_statistics
 id|MacStat
 suffix:semicolon
 multiline_comment|/* MAC statistics structure */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|typedef|NET_LOCAL
 )brace
 id|NET_LOCAL

@@ -1613,12 +1613,6 @@ r_int
 r_int
 id|cookie
 suffix:semicolon
-multiline_comment|/* I have to do a STI() here, because this is called from&n;&t;   a routine that does an CLI during this process, making it&n;&t;   rather difficult to get interrupts for auto detection */
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|cookie
 op_assign
 id|probe_irq_on
@@ -1712,12 +1706,6 @@ comma
 id|ioaddr
 op_plus
 id|INT_MASK
-)paren
-suffix:semicolon
-multiline_comment|/* clear hardware interrupts again, because that&squot;s how it&n;&t;   was when I was called... */
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* and return what I found */

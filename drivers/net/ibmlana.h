@@ -2,30 +2,6 @@ macro_line|#ifndef _IBM_LANA_INCLUDE_
 DECL|macro|_IBM_LANA_INCLUDE_
 mdefine_line|#define _IBM_LANA_INCLUDE_
 macro_line|#ifdef _IBM_LANA_DRIVER_
-multiline_comment|/* version-dependent functions/structures */
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x020318
-DECL|macro|IBMLANA_READB
-mdefine_line|#define IBMLANA_READB(addr) isa_readb(addr)
-DECL|macro|IBMLANA_TOIO
-mdefine_line|#define IBMLANA_TOIO(dest, src, len) isa_memcpy_toio(dest, src, len)
-DECL|macro|IBMLANA_FROMIO
-mdefine_line|#define IBMLANA_FROMIO(dest, src, len) isa_memcpy_fromio(dest, src, len)
-DECL|macro|IBMLANA_SETIO
-mdefine_line|#define IBMLANA_SETIO(dest, val, len) isa_memset_io(dest, val, len)
-DECL|macro|IBMLANA_NETDEV
-mdefine_line|#define IBMLANA_NETDEV net_device
-macro_line|#else
-DECL|macro|IBMLANA_READB
-mdefine_line|#define IBMLANA_READB(addr) readb(addr)
-DECL|macro|IBMLANA_TOIO
-mdefine_line|#define IBMLANA_TOIO(dest, src, len) memcpy_toio(dest, src, len)
-DECL|macro|IBMLANA_FROMIO
-mdefine_line|#define IBMLANA_FROMIO(dest, src, len) memcpy_fromio(dest, src, len)
-DECL|macro|IBMLANA_SETIO
-mdefine_line|#define IBMLANA_SETIO(dest, val, len) memset_io(dest, val, len)
-DECL|macro|IBMLANA_NETDEV
-mdefine_line|#define IBMLANA_NETDEV device
-macro_line|#endif
 multiline_comment|/* maximum packet size */
 DECL|macro|PKTSIZE
 mdefine_line|#define PKTSIZE 1524
@@ -36,11 +12,11 @@ multiline_comment|/* Adapter ID&squot;s */
 DECL|macro|IBM_LANA_ID
 mdefine_line|#define IBM_LANA_ID 0xffe0
 multiline_comment|/* media enumeration - defined in a way that it fits onto the LAN/A&squot;s&n;   POS registers... */
-DECL|enumerator|Media_10BaseT
-DECL|enumerator|Media_10Base5
 r_typedef
 r_enum
 (brace
+DECL|enumerator|Media_10BaseT
+DECL|enumerator|Media_10Base5
 id|Media_10BaseT
 comma
 id|Media_10Base5
@@ -77,7 +53,7 @@ DECL|member|realirq
 r_int
 id|realirq
 suffix:semicolon
-multiline_comment|/* memorizes actual IRQ, even when &n;&t;&t;&t;&t;   currently not allocated          */
+multiline_comment|/* memorizes actual IRQ, even when &n;&t;&t;&t;&t;&t;   currently not allocated          */
 DECL|member|medium
 id|ibmlana_medium
 id|medium
@@ -130,6 +106,10 @@ id|TXBUFCNT
 )braket
 suffix:semicolon
 multiline_comment|/* busy flags                       */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|typedef|ibmlana_priv
 )brace
 id|ibmlana_priv
@@ -578,7 +558,7 @@ id|ibmlana_probe
 c_func
 (paren
 r_struct
-id|IBMLANA_NETDEV
+id|net_device
 op_star
 )paren
 suffix:semicolon

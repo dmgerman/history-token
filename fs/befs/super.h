@@ -1,0 +1,26 @@
+multiline_comment|/*&n; * super.h&n; */
+r_int
+id|befs_load_sb
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+comma
+id|befs_super_block
+op_star
+id|disk_sb
+)paren
+suffix:semicolon
+r_int
+id|befs_check_sb
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+id|sb
+)paren
+suffix:semicolon
+eof

@@ -20,6 +20,7 @@ macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 DECL|struct|override
 r_static
 r_struct
@@ -590,7 +591,7 @@ c_func
 (paren
 id|instance-&gt;irq
 comma
-id|do_t128_intr
+id|t128_intr
 comma
 id|SA_INTERRUPT
 comma
