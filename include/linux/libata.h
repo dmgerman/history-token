@@ -906,18 +906,15 @@ id|ATA_ID_WORDS
 suffix:semicolon
 multiline_comment|/* IDENTIFY xxx DEVICE data */
 DECL|member|pio_mode
-r_int
-r_int
+id|u8
 id|pio_mode
 suffix:semicolon
 DECL|member|dma_mode
-r_int
-r_int
+id|u8
 id|dma_mode
 suffix:semicolon
 DECL|member|xfer_mode
-r_int
-r_int
+id|u8
 id|xfer_mode
 suffix:semicolon
 DECL|member|xfer_shift
