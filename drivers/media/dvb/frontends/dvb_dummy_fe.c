@@ -10,8 +10,8 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* depending on module parameter sct deliver different infos&n; */
-r_static
 DECL|variable|dvb_s_dummyfe_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|dvb_s_dummyfe_info
@@ -85,8 +85,8 @@ op_or
 id|FE_CAN_QPSK
 )brace
 suffix:semicolon
-r_static
 DECL|variable|dvb_c_dummyfe_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|dvb_c_dummyfe_info
@@ -323,8 +323,8 @@ id|dvb_s_dummyfe_info
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|dvbdummyfe_ioctl
+r_static
 r_int
 id|dvbdummyfe_ioctl
 (paren
@@ -539,8 +539,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvbdummyfe_attach
+r_static
 r_int
 id|dvbdummyfe_attach
 (paren
@@ -568,8 +568,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvbdummyfe_detach
+r_static
 r_void
 id|dvbdummyfe_detach
 (paren
@@ -587,8 +587,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_dvbdummyfe
+r_static
 r_int
 id|__init
 id|init_dvbdummyfe
@@ -610,8 +610,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_dvbdummyfe
+r_static
 r_void
 id|__exit
 id|exit_dvbdummyfe

@@ -19,8 +19,8 @@ comma
 id|BUDGET_PATCH
 )paren
 suffix:semicolon
-r_static
 DECL|variable|pci_tbl
+r_static
 r_struct
 id|pci_device_id
 id|pci_tbl
@@ -47,8 +47,8 @@ comma
 )brace
 )brace
 suffix:semicolon
-r_static
 DECL|function|wdebi
+r_static
 r_int
 id|wdebi
 c_func
@@ -169,8 +169,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|SOutCommand
+r_static
 r_int
 id|SOutCommand
 c_func
@@ -307,8 +307,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|av7110_set22k
+r_static
 r_void
 id|av7110_set22k
 c_func
@@ -368,9 +368,9 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+DECL|function|av7110_send_diseqc_msg
 r_static
 r_int
-DECL|function|av7110_send_diseqc_msg
 id|av7110_send_diseqc_msg
 c_func
 (paren
@@ -691,8 +691,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_patch_attach
+r_static
 r_int
 id|budget_patch_attach
 (paren
@@ -714,9 +714,6 @@ id|budget
 suffix:semicolon
 r_int
 id|err
-suffix:semicolon
-r_int
-id|cnt
 suffix:semicolon
 r_if
 c_cond
@@ -778,12 +775,6 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n;**      This code will setup the SAA7146_RPS1 to generate a square &n;**      wave on GPIO3, changing when a field (TS_HEIGHT/2 &quot;lines&quot; of &n;**      TS_WIDTH packets) has been acquired on SAA7146_D1B video port; &n;**      then, this GPIO3 output which is connected to the D1B_VSYNC &n;**      input, will trigger the acquisition of the alternate field &n;**      and so on.&n;**      Currently, the TT_budget / WinTV_Nova cards have two ICs &n;**      (74HCT4040, LVC74) for the generation of this VSYNC signal, &n;**      which seems that can be done perfectly without this :-)).&n;*/
-DECL|macro|WRITE_RPS1
-mdefine_line|#define WRITE_RPS1(x) dev-&gt;d_rps1.cpu_addr[ cnt++ ] = cpu_to_le32(x)
-id|cnt
-op_assign
-l_int|0
-suffix:semicolon
 singleline_comment|// Setup RPS1 &quot;program&quot; (p35)
 singleline_comment|// Wait reset Source Line Counter Threshold                     (p36)
 id|WRITE_RPS1
@@ -1015,8 +1006,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_patch_detach
+r_static
 r_int
 id|budget_patch_detach
 (paren
@@ -1066,8 +1057,8 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_patch_init
+r_static
 r_int
 id|__init
 id|budget_patch_init
@@ -1094,8 +1085,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_patch_exit
+r_static
 r_void
 id|__exit
 id|budget_patch_exit
@@ -1120,8 +1111,8 @@ id|budget_extension
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|variable|budget_extension
+r_static
 r_struct
 id|saa7146_extension
 id|budget_extension

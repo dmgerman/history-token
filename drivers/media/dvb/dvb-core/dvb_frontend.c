@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * dvb-core.c: DVB core driver&n; *&n; * Copyright (C) 1999-2001 Ralph  Metzler&n; *                         Marcus Metzler&n; *                         Holger Waechtler &n; *                                    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; */
-macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,6 +7,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvbdev.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
@@ -279,8 +279,8 @@ c_func
 id|frontend_mutex
 )paren
 suffix:semicolon
-r_static
 DECL|function|dvb_frontend_internal_ioctl
+r_static
 r_int
 id|dvb_frontend_internal_ioctl
 (paren
@@ -376,8 +376,8 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *  if 2 tuners are located side by side you can get interferences when&n; *  they try to tune to the same frequency, so both lose sync.&n; *  We will slightly mistune in this case. The AFC of the demodulator&n; *  should make it still possible to receive the requested transponder &n; *  on both tuners...&n; */
-r_static
 DECL|function|dvb_bend_frequency
+r_static
 r_void
 id|dvb_bend_frequency
 (paren
@@ -578,8 +578,8 @@ id|frontend_mutex
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_call_frontend_notifiers
+r_static
 r_void
 id|dvb_call_frontend_notifiers
 (paren
@@ -682,8 +682,8 @@ id|fe-&gt;frontend.notifier_data
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_add_event
+r_static
 r_void
 id|dvb_frontend_add_event
 (paren
@@ -832,8 +832,8 @@ id|events-&gt;wait_queue
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_get_event
+r_static
 r_int
 id|dvb_frontend_get_event
 (paren
@@ -975,8 +975,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_set_parameters
+r_static
 r_int
 id|dvb_frontend_set_parameters
 (paren
@@ -1114,8 +1114,8 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_init
+r_static
 r_void
 id|dvb_frontend_init
 (paren
@@ -1154,8 +1154,8 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|update_delay
+r_static
 r_void
 id|update_delay
 (paren
@@ -1255,8 +1255,8 @@ mdefine_line|#define LNB_DRIFT 1024  /*  max. tolerated LNB drift, XXX FIXME: ad
 DECL|macro|TIMEOUT
 mdefine_line|#define TIMEOUT 2*HZ
 multiline_comment|/**&n; *  here we only come when we have lost the lock bit, &n; *  let&squot;s try to do something useful...&n; */
-r_static
 DECL|function|dvb_frontend_recover
+r_static
 r_void
 id|dvb_frontend_recover
 (paren
@@ -1433,8 +1433,8 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_is_exiting
+r_static
 r_int
 id|dvb_frontend_is_exiting
 (paren
@@ -1479,8 +1479,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_thread
+r_static
 r_int
 id|dvb_frontend_thread
 (paren
@@ -1814,8 +1814,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_stop
+r_static
 r_void
 id|dvb_frontend_stop
 (paren
@@ -1915,8 +1915,8 @@ id|fe-&gt;thread_pid
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_start
+r_static
 r_int
 id|dvb_frontend_start
 (paren
@@ -2047,8 +2047,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_ioctl
+r_static
 r_int
 id|dvb_frontend_ioctl
 (paren
@@ -2240,8 +2240,8 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_poll
+r_static
 r_int
 r_int
 id|dvb_frontend_poll
@@ -2308,8 +2308,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_open
+r_static
 r_int
 id|dvb_frontend_open
 (paren
@@ -2410,8 +2410,8 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_frontend_release
+r_static
 r_int
 id|dvb_frontend_release
 (paren
@@ -3179,8 +3179,8 @@ id|frontend_mutex
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|variable|dvb_frontend_fops
+r_static
 r_struct
 id|file_operations
 id|dvb_frontend_fops

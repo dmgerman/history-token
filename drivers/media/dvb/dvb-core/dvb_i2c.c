@@ -1,9 +1,9 @@
 multiline_comment|/*&n; * dvb_i2c.h: simplified i2c interface for DVB adapters to get rid of i2c-core.c&n; *&n; * Copyright (C) 2002 Holger Waechtler for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; */
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;dvb_i2c.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
 DECL|struct|dvb_i2c_device
@@ -70,8 +70,8 @@ c_func
 id|dvb_i2c_mutex
 )paren
 suffix:semicolon
-r_static
 DECL|function|register_i2c_client
+r_static
 r_int
 id|register_i2c_client
 (paren
@@ -142,8 +142,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|try_attach_device
+r_static
 r_void
 id|try_attach_device
 (paren
@@ -210,8 +210,8 @@ id|dev-&gt;owner
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|detach_device
+r_static
 r_void
 id|detach_device
 (paren
@@ -242,8 +242,8 @@ id|dev-&gt;owner
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|unregister_i2c_client_from_bus
+r_static
 r_void
 id|unregister_i2c_client_from_bus
 (paren
@@ -316,8 +316,8 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_static
 DECL|function|unregister_i2c_client_from_all_busses
+r_static
 r_void
 id|unregister_i2c_client_from_all_busses
 (paren
@@ -371,8 +371,8 @@ id|i2c
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|unregister_all_clients_from_bus
+r_static
 r_void
 id|unregister_all_clients_from_bus
 (paren
@@ -428,8 +428,8 @@ id|i2c
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|probe_device_on_all_busses
+r_static
 r_void
 id|probe_device_on_all_busses
 (paren
@@ -478,8 +478,8 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|probe_devices_on_bus
+r_static
 r_void
 id|probe_devices_on_bus
 (paren
@@ -528,8 +528,8 @@ id|dev
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|dvb_find_i2c_bus
+r_static
 r_struct
 id|dvb_i2c_bus
 op_star

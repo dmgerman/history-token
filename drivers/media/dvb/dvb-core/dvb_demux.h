@@ -2,10 +2,10 @@ multiline_comment|/* &n; * dvb_demux.h - DVB kernel demux API&n; *&n; * Copyrigh
 macro_line|#ifndef _DVB_DEMUX_H_
 DECL|macro|_DVB_DEMUX_H_
 mdefine_line|#define _DVB_DEMUX_H_
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;demux.h&quot;
 DECL|macro|DMX_TYPE_TS
 mdefine_line|#define DMX_TYPE_TS  0

@@ -28,17 +28,17 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/dvb/frontend.h&gt;
 macro_line|#include &quot;dvb_i2c.h&quot;
 macro_line|#include &quot;dvb_frontend.h&quot;
@@ -275,8 +275,8 @@ DECL|macro|FW_CI_LL_SUPPORT
 mdefine_line|#define FW_CI_LL_SUPPORT(arm_app) (((arm_app) &gt;&gt; 16) &amp; 0x8000)
 multiline_comment|/****************************************************************************&n; * DEBI functions&n; ****************************************************************************/
 multiline_comment|/* This DEBI code is based on the Stradis driver &n;   by Nathan Laredo &lt;laredo@gnu.org&gt; */
-r_static
 DECL|function|wait_for_debi_done
+r_static
 r_int
 id|wait_for_debi_done
 c_func
@@ -731,10 +731,10 @@ suffix:semicolon
 )brace
 multiline_comment|/* DEBI during interrupt */
 multiline_comment|/* fixme: val can be a pointer to a memory or an u32 value -- this &n;   won&squot;t work on 64bit platforms! */
+DECL|function|iwdebi
 r_static
 r_inline
 r_void
-DECL|function|iwdebi
 id|iwdebi
 c_func
 (paren
@@ -794,10 +794,10 @@ id|count
 )paren
 suffix:semicolon
 )brace
+DECL|function|irdebi
 r_static
 r_inline
 id|u32
-DECL|function|irdebi
 id|irdebi
 c_func
 (paren
@@ -863,10 +863,10 @@ id|res
 suffix:semicolon
 )brace
 multiline_comment|/* DEBI outside interrupts, only for count&lt;=4! */
+DECL|function|wdebi
 r_static
 r_inline
 r_void
-DECL|function|wdebi
 id|wdebi
 c_func
 (paren
@@ -925,10 +925,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|rdebi
 r_static
 r_inline
 id|u32
-DECL|function|rdebi
 id|rdebi
 c_func
 (paren
@@ -993,10 +993,10 @@ r_return
 id|res
 suffix:semicolon
 )brace
+DECL|function|chtrans
 r_static
 r_inline
 r_char
-DECL|function|chtrans
 id|chtrans
 c_func
 (paren
@@ -1019,10 +1019,10 @@ id|c
 suffix:semicolon
 )brace
 multiline_comment|/* handle mailbox registers of the dual ported RAM */
+DECL|function|ARM_ResetMailBox
 r_static
 r_inline
 r_void
-DECL|function|ARM_ResetMailBox
 id|ARM_ResetMailBox
 c_func
 (paren
@@ -1092,10 +1092,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|function|ARM_ClearMailBox
 r_static
 r_inline
 r_void
-DECL|function|ARM_ClearMailBox
 id|ARM_ClearMailBox
 c_func
 (paren
@@ -1120,10 +1120,10 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+DECL|function|ARM_ClearIrq
 r_static
 r_inline
 r_void
-DECL|function|ARM_ClearIrq
 id|ARM_ClearIrq
 c_func
 (paren
@@ -1148,9 +1148,9 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+DECL|function|reset_arm
 r_static
 r_void
-DECL|function|reset_arm
 id|reset_arm
 c_func
 (paren
@@ -1262,9 +1262,9 @@ l_string|&quot;av7110: ARM RESET&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|function|recover_arm
 r_static
 r_void
-DECL|function|recover_arm
 id|recover_arm
 c_func
 (paren
@@ -1337,9 +1337,9 @@ id|av7110-&gt;ir_config
 )paren
 suffix:semicolon
 )brace
+DECL|function|arm_error
 r_static
 r_void
-DECL|function|arm_error
 id|arm_error
 c_func
 (paren
@@ -1557,9 +1557,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|record_cb
 r_static
 r_int
-DECL|function|record_cb
 id|record_cb
 c_func
 (paren
@@ -1674,9 +1674,9 @@ id|len
 )paren
 suffix:semicolon
 )brace
+DECL|function|dvb_filter_pes2ts_cb
 r_static
 r_int
-DECL|function|dvb_filter_pes2ts_cb
 id|dvb_filter_pes2ts_cb
 c_func
 (paren
@@ -1735,9 +1735,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|AV_StartRecord
 r_static
 r_int
-DECL|function|AV_StartRecord
 id|AV_StartRecord
 c_func
 (paren
@@ -1991,9 +1991,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|AV_StartPlay
 r_static
 r_int
-DECL|function|AV_StartPlay
 id|AV_StartPlay
 c_func
 (paren
@@ -2163,9 +2163,9 @@ r_return
 id|av7110-&gt;playing
 suffix:semicolon
 )brace
+DECL|function|AV_Stop
 r_static
 r_void
-DECL|function|AV_Stop
 id|AV_Stop
 c_func
 (paren
@@ -2710,10 +2710,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|function|DvbDmxFilterCallback
 r_static
 r_inline
 r_int
-DECL|function|DvbDmxFilterCallback
 id|DvbDmxFilterCallback
 c_func
 (paren
@@ -3059,10 +3059,10 @@ comma
 )brace
 suffix:semicolon
 singleline_comment|//#define DEBUG_TIMING
-r_inline
-r_static
-r_void
 DECL|function|print_time
+r_static
+r_inline
+r_void
 id|print_time
 c_func
 (paren
@@ -3103,9 +3103,9 @@ id|tv.tv_usec
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|function|ci_get_data
 r_static
 r_void
-DECL|function|ci_get_data
 id|ci_get_data
 c_func
 (paren
@@ -3177,8 +3177,8 @@ id|cibuf-&gt;queue
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|debiirq
+r_static
 r_void
 id|debiirq
 (paren
@@ -3959,9 +3959,9 @@ id|av7110-&gt;debilock
 )paren
 suffix:semicolon
 )brace
+DECL|function|pes_play
 r_static
 r_int
-DECL|function|pes_play
 id|pes_play
 c_func
 (paren
@@ -4230,8 +4230,8 @@ r_return
 id|blen
 suffix:semicolon
 )brace
-r_static
 DECL|function|gpioirq
+r_static
 r_void
 id|gpioirq
 (paren
@@ -6125,10 +6125,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_inline
-r_static
-r_int
 DECL|function|SOutCommand
+r_static
+r_inline
+r_int
 id|SOutCommand
 c_func
 (paren
@@ -6941,10 +6941,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|RequestParameter
 r_static
 r_inline
 r_int
-DECL|function|RequestParameter
 id|RequestParameter
 c_func
 (paren
@@ -7000,10 +7000,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * Firmware commands &n; ****************************************************************************/
+DECL|function|msp_writereg
 r_static
 r_inline
 r_int
-DECL|function|msp_writereg
 id|msp_writereg
 c_func
 (paren
@@ -7072,10 +7072,10 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_inline
-r_static
-r_int
 DECL|function|SendDAC
+r_static
+r_inline
+r_int
 id|SendDAC
 c_func
 (paren
@@ -7119,9 +7119,9 @@ id|data
 )paren
 suffix:semicolon
 )brace
+DECL|function|SetVolume
 r_static
 r_int
-DECL|function|SetVolume
 id|SetVolume
 c_func
 (paren
@@ -7389,8 +7389,8 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_DVB_AV7110_OSD
 DECL|function|ResetBlend
-r_inline
 r_static
+r_inline
 r_int
 id|ResetBlend
 c_func
@@ -7421,8 +7421,8 @@ id|windownr
 suffix:semicolon
 )brace
 DECL|function|SetColorBlend
-r_inline
 r_static
+r_inline
 r_int
 id|SetColorBlend
 c_func
@@ -7453,8 +7453,8 @@ id|windownr
 suffix:semicolon
 )brace
 DECL|function|SetWindowBlend
-r_inline
 r_static
+r_inline
 r_int
 id|SetWindowBlend
 c_func
@@ -7490,8 +7490,8 @@ id|blending
 suffix:semicolon
 )brace
 DECL|function|SetBlend_
-r_inline
 r_static
+r_inline
 r_int
 id|SetBlend_
 c_func
@@ -7538,8 +7538,8 @@ id|blending
 suffix:semicolon
 )brace
 DECL|function|SetColor_
-r_inline
 r_static
+r_inline
 r_int
 id|SetColor_
 c_func
@@ -7591,8 +7591,8 @@ id|colorlo
 suffix:semicolon
 )brace
 DECL|function|BringToTop
-r_inline
 r_static
+r_inline
 r_int
 id|BringToTop
 c_func
@@ -7623,8 +7623,8 @@ id|windownr
 suffix:semicolon
 )brace
 DECL|function|SetFont
-r_inline
 r_static
+r_inline
 r_int
 id|SetFont
 c_func
@@ -8088,8 +8088,8 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|DrawLine
-r_inline
 r_static
+r_inline
 r_int
 id|DrawLine
 c_func
@@ -8145,8 +8145,8 @@ id|color
 suffix:semicolon
 )brace
 DECL|function|DrawBlock
-r_inline
 r_static
+r_inline
 r_int
 id|DrawBlock
 c_func
@@ -8202,8 +8202,8 @@ id|color
 suffix:semicolon
 )brace
 DECL|function|HideWindow
-r_inline
 r_static
+r_inline
 r_int
 id|HideWindow
 c_func
@@ -8234,8 +8234,8 @@ id|windownr
 suffix:semicolon
 )brace
 DECL|function|MoveWindowRel
-r_inline
 r_static
+r_inline
 r_int
 id|MoveWindowRel
 c_func
@@ -8276,8 +8276,8 @@ id|y
 suffix:semicolon
 )brace
 DECL|function|MoveWindowAbs
-r_inline
 r_static
+r_inline
 r_int
 id|MoveWindowAbs
 c_func
@@ -8318,8 +8318,8 @@ id|y
 suffix:semicolon
 )brace
 DECL|function|DestroyOSDWindow
-r_inline
 r_static
+r_inline
 r_int
 id|DestroyOSDWindow
 c_func
@@ -8394,10 +8394,10 @@ id|i
 suffix:semicolon
 )brace
 macro_line|#endif
+DECL|function|CreateOSDWindow
 r_static
 r_inline
 r_int
-DECL|function|CreateOSDWindow
 id|CreateOSDWindow
 c_func
 (paren
@@ -8464,10 +8464,10 @@ l_int|8
 op_assign
 initialization_block
 suffix:semicolon
+DECL|function|LoadBitmap
 r_static
 r_inline
 r_int
-DECL|function|LoadBitmap
 id|LoadBitmap
 c_func
 (paren
@@ -8919,9 +8919,9 @@ id|dy
 )paren
 suffix:semicolon
 )brace
+DECL|function|BlitBitmap
 r_static
 r_int
-DECL|function|BlitBitmap
 id|BlitBitmap
 c_func
 (paren
@@ -9073,10 +9073,10 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|ReleaseBitmap
 r_static
 r_inline
 r_int
-DECL|function|ReleaseBitmap
 id|ReleaseBitmap
 c_func
 (paren
@@ -9234,9 +9234,9 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+DECL|function|OSDSetColor
 r_static
 r_void
-DECL|function|OSDSetColor
 id|OSDSetColor
 c_func
 (paren
@@ -9357,9 +9357,9 @@ l_int|0x0f
 )paren
 suffix:semicolon
 )brace
+DECL|function|OSDSetBlock
 r_static
 r_int
-DECL|function|OSDSetBlock
 id|OSDSetBlock
 c_func
 (paren
@@ -9641,9 +9641,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|OSD_DrawCommand
 r_static
 r_int
-DECL|function|OSD_DrawCommand
 id|OSD_DrawCommand
 c_func
 (paren
@@ -10261,9 +10261,9 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
+DECL|function|dvb_osd_ioctl
 r_static
 r_int
-DECL|function|dvb_osd_ioctl
 id|dvb_osd_ioctl
 c_func
 (paren
@@ -10411,9 +10411,9 @@ comma
 suffix:semicolon
 macro_line|#endif /* CONFIG_DVB_AV7110_OSD */
 multiline_comment|/* get version of the firmware ROM, RTSL, video ucode and ARM application  */
+DECL|function|firmversion
 r_static
 r_void
-DECL|function|firmversion
 id|firmversion
 c_func
 (paren
@@ -10593,9 +10593,9 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|function|waitdebi
 r_static
 r_int
-DECL|function|waitdebi
 id|waitdebi
 c_func
 (paren
@@ -10673,9 +10673,9 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|load_dram
 r_static
 r_int
-DECL|function|load_dram
 id|load_dram
 c_func
 (paren
@@ -11057,9 +11057,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|bootcode
 r_static
 id|u8
-DECL|variable|bootcode
 id|bootcode
 (braket
 )braket
@@ -11407,9 +11407,9 @@ comma
 )brace
 suffix:semicolon
 macro_line|#include &quot;av7110_firm.h&quot;
+DECL|function|bootarm
 r_static
 r_int
-DECL|function|bootarm
 id|bootarm
 c_func
 (paren
@@ -11839,10 +11839,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|SetPIDs
 r_static
 r_inline
 r_int
-DECL|function|SetPIDs
 id|SetPIDs
 c_func
 (paren
@@ -11966,9 +11966,9 @@ id|subpid
 )paren
 suffix:semicolon
 )brace
+DECL|function|ChangePIDs
 r_static
 r_void
-DECL|function|ChangePIDs
 id|ChangePIDs
 c_func
 (paren
@@ -12128,9 +12128,9 @@ id|av7110-&gt;pid_mutex
 )paren
 suffix:semicolon
 )brace
+DECL|function|SetMode
 r_static
 r_void
-DECL|function|SetMode
 id|SetMode
 c_func
 (paren
@@ -12216,10 +12216,10 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-r_inline
-r_static
-r_void
 DECL|function|TestMode
+r_static
+r_inline
+r_void
 id|TestMode
 c_func
 (paren
@@ -12257,10 +12257,10 @@ id|mode
 )paren
 suffix:semicolon
 )brace
-r_inline
-r_static
-r_void
 DECL|function|VidMode
+r_static
+r_inline
+r_void
 id|VidMode
 c_func
 (paren
@@ -12298,10 +12298,10 @@ id|mode
 )paren
 suffix:semicolon
 )brace
-r_static
-r_int
-r_inline
 DECL|function|vidcom
+r_static
+r_inline
+r_int
 id|vidcom
 c_func
 (paren
@@ -12365,10 +12365,10 @@ l_int|0xffff
 )paren
 suffix:semicolon
 )brace
-r_static
-r_int
-r_inline
 DECL|function|audcom
+r_static
+r_inline
+r_int
 id|audcom
 c_func
 (paren
@@ -12417,10 +12417,10 @@ l_int|0xffff
 )paren
 suffix:semicolon
 )brace
-r_inline
-r_static
-r_void
 DECL|function|Set22K
+r_static
+r_inline
+r_void
 id|Set22K
 c_func
 (paren
@@ -12463,8 +12463,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|SendDiSEqCMsg
+r_static
 r_int
 id|SendDiSEqCMsg
 c_func
@@ -12656,10 +12656,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * I2C client commands&n; ****************************************************************************/
+DECL|function|i2c_writereg
 r_static
 r_inline
 r_int
-DECL|function|i2c_writereg
 id|i2c_writereg
 c_func
 (paren
@@ -12727,10 +12727,10 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|function|i2c_readreg
 r_static
 r_inline
 id|u8
-DECL|function|i2c_readreg
 id|i2c_readreg
 c_func
 (paren
@@ -12920,9 +12920,9 @@ id|VIDEO_MODE_PAL
 comma
 )brace
 suffix:semicolon
+DECL|function|get_video_format
 r_static
 r_void
-DECL|function|get_video_format
 id|get_video_format
 c_func
 (paren
@@ -13117,10 +13117,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|function|aux_ring_buffer_write
 r_static
 r_inline
 r_int
-DECL|function|aux_ring_buffer_write
 id|aux_ring_buffer_write
 c_func
 (paren
@@ -13242,9 +13242,9 @@ op_minus
 id|todo
 suffix:semicolon
 )brace
+DECL|function|play_video_cb
 r_static
 r_void
-DECL|function|play_video_cb
 id|play_video_cb
 c_func
 (paren
@@ -13332,9 +13332,9 @@ id|count
 )paren
 suffix:semicolon
 )brace
+DECL|function|play_audio_cb
 r_static
 r_void
-DECL|function|play_audio_cb
 id|play_audio_cb
 c_func
 (paren
@@ -13386,9 +13386,9 @@ suffix:semicolon
 )brace
 DECL|macro|FREE_COND
 mdefine_line|#define FREE_COND (dvb_ringbuffer_free(&amp;av7110-&gt;avout)&gt;=20*1024 &amp;&amp; dvb_ringbuffer_free(&amp;av7110-&gt;aout)&gt;=20*1024)
+DECL|function|dvb_play
 r_static
 id|ssize_t
-DECL|function|dvb_play
 id|dvb_play
 c_func
 (paren
@@ -13596,9 +13596,9 @@ op_minus
 id|todo
 suffix:semicolon
 )brace
+DECL|function|dvb_aplay
 r_static
 id|ssize_t
-DECL|function|dvb_aplay
 id|dvb_aplay
 c_func
 (paren
@@ -15318,8 +15318,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_audio_poll
+r_static
 r_int
 r_int
 id|dvb_audio_poll
@@ -15432,9 +15432,9 @@ suffix:semicolon
 multiline_comment|/****************************************************************************&n; * END OF V4L SECTION&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; * DVB API SECTION&n; ****************************************************************************/
 multiline_comment|/******************************************************************************&n; * hardware filter functions&n; ******************************************************************************/
+DECL|function|StartHWFilter
 r_static
 r_int
-DECL|function|StartHWFilter
 id|StartHWFilter
 c_func
 (paren
@@ -15682,9 +15682,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|StopHWFilter
 r_static
 r_int
-DECL|function|StopHWFilter
 id|StopHWFilter
 c_func
 (paren
@@ -15867,9 +15867,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|av7110_write_to_decoder
 r_static
 r_int
-DECL|function|av7110_write_to_decoder
 id|av7110_write_to_decoder
 c_func
 (paren
@@ -16070,9 +16070,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_feed_start_pid
 r_static
 r_void
-DECL|function|dvb_feed_start_pid
 id|dvb_feed_start_pid
 c_func
 (paren
@@ -16385,9 +16385,9 @@ id|dvbdmxfeed
 suffix:semicolon
 )brace
 )brace
+DECL|function|dvb_feed_stop_pid
 r_static
 r_void
-DECL|function|dvb_feed_stop_pid
 id|dvb_feed_stop_pid
 c_func
 (paren
@@ -16621,9 +16621,9 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
+DECL|function|av7110_start_feed
 r_static
 r_int
-DECL|function|av7110_start_feed
 id|av7110_start_feed
 c_func
 (paren
@@ -16916,9 +16916,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|av7110_stop_feed
 r_static
 r_int
-DECL|function|av7110_stop_feed
 id|av7110_stop_feed
 c_func
 (paren
@@ -17127,9 +17127,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|restart_feeds
 r_static
 r_void
-DECL|function|restart_feeds
 id|restart_feeds
 c_func
 (paren
@@ -17483,8 +17483,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * SEC device file operations&n; ******************************************************************************/
-r_static
 DECL|function|av7110_diseqc_ioctl
+r_static
 r_int
 id|av7110_diseqc_ioctl
 (paren
@@ -17893,9 +17893,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|ci_ll_write
 r_static
 id|ssize_t
-DECL|function|ci_ll_write
 id|ci_ll_write
 c_func
 (paren
@@ -18029,9 +18029,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|function|ci_ll_read
 r_static
 id|ssize_t
-DECL|function|ci_ll_read
 id|ci_ll_read
 c_func
 (paren
@@ -18197,9 +18197,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|function|dvb_ca_open
 r_static
 r_int
-DECL|function|dvb_ca_open
 id|dvb_ca_open
 c_func
 (paren
@@ -18283,8 +18283,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_ca_poll
+r_static
 r_int
 r_int
 id|dvb_ca_poll
@@ -18398,8 +18398,8 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_ca_ioctl
+r_static
 r_int
 id|dvb_ca_ioctl
 c_func
@@ -18811,9 +18811,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_ca_write
 r_static
 id|ssize_t
-DECL|function|dvb_ca_write
 id|dvb_ca_write
 c_func
 (paren
@@ -18886,9 +18886,9 @@ id|ppos
 )paren
 suffix:semicolon
 )brace
+DECL|function|dvb_ca_read
 r_static
 id|ssize_t
-DECL|function|dvb_ca_read
 id|dvb_ca_read
 c_func
 (paren
@@ -18961,8 +18961,8 @@ id|ppos
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * Video MPEG decoder events&n; ******************************************************************************/
-r_static
 DECL|function|dvb_video_add_event
+r_static
 r_void
 id|dvb_video_add_event
 (paren
@@ -19073,8 +19073,8 @@ id|events-&gt;wait_queue
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_video_get_event
+r_static
 r_int
 id|dvb_video_get_event
 (paren
@@ -19213,8 +19213,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; * DVB device file operations&n; ******************************************************************************/
-r_static
 DECL|function|dvb_video_poll
+r_static
 r_int
 r_int
 id|dvb_video_poll
@@ -19337,9 +19337,9 @@ r_return
 id|mask
 suffix:semicolon
 )brace
+DECL|function|dvb_video_write
 r_static
 id|ssize_t
-DECL|function|dvb_video_write
 id|dvb_video_write
 c_func
 (paren
@@ -19426,9 +19426,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|function|dvb_audio_write
 r_static
 id|ssize_t
-DECL|function|dvb_audio_write
 id|dvb_audio_write
 c_func
 (paren
@@ -19550,9 +19550,9 @@ l_int|0x00
 suffix:semicolon
 DECL|macro|MIN_IFRAME
 mdefine_line|#define MIN_IFRAME 400000
+DECL|function|play_iframe
 r_static
 r_int
-DECL|function|play_iframe
 id|play_iframe
 c_func
 (paren
@@ -19691,9 +19691,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_video_ioctl
 r_static
 r_int
-DECL|function|dvb_video_ioctl
 id|dvb_video_ioctl
 c_func
 (paren
@@ -20581,9 +20581,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|dvb_audio_ioctl
 r_static
 r_int
-DECL|function|dvb_audio_ioctl
 id|dvb_audio_ioctl
 c_func
 (paren
@@ -21644,8 +21644,8 @@ id|dvb_ca_ioctl
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|av7110_before_after_tune
+r_static
 r_void
 id|av7110_before_after_tune
 (paren
@@ -21778,8 +21778,8 @@ id|av7110-&gt;pid_mutex
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|av7110_register
+r_static
 r_int
 id|av7110_register
 c_func
@@ -22210,9 +22210,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_unregister
 r_static
 r_void
-DECL|function|dvb_unregister
 id|dvb_unregister
 c_func
 (paren
@@ -22352,8 +22352,8 @@ suffix:semicolon
 macro_line|#endif
 singleline_comment|//        }
 )brace
-r_static
 DECL|function|master_xfer
+r_static
 r_int
 id|master_xfer
 (paren
@@ -22428,8 +22428,8 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-r_static
 DECL|function|av7110_attach
+r_static
 r_int
 id|av7110_attach
 (paren
@@ -23517,8 +23517,8 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-r_static
 DECL|function|av7110_detach
+r_static
 r_int
 id|av7110_detach
 (paren
@@ -23693,8 +23693,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|av7110_irq
+r_static
 r_void
 id|av7110_irq
 c_func
@@ -23763,8 +23763,8 @@ id|av7110-&gt;gpio_tasklet
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME: these values are experimental values that look better than the&n;   values from the latest &quot;official&quot; driver -- at least for me... (MiHu) */
-r_static
 DECL|variable|standard
+r_static
 r_struct
 id|saa7146_standard
 id|standard
@@ -23819,8 +23819,8 @@ l_int|640
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|variable|av7110_extension
+r_static
 r_struct
 id|saa7146_extension
 id|av7110_extension
@@ -23899,8 +23899,8 @@ comma
 l_string|&quot;Technotrend/Hauppauge Nexus PCI DVB-S&quot;
 )paren
 suffix:semicolon
-r_static
 DECL|variable|pci_tbl
+r_static
 r_struct
 id|pci_device_id
 id|pci_tbl
@@ -24146,8 +24146,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|variable|av7110_vv_data
+r_static
 r_struct
 id|saa7146_ext_vv
 id|av7110_vv_data
@@ -24218,8 +24218,8 @@ id|av7110_ioctl
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|variable|av7110_extension
+r_static
 r_struct
 id|saa7146_extension
 id|av7110_extension
@@ -24274,8 +24274,8 @@ id|av7110_irq
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|av7110_init
+r_static
 r_int
 id|__init
 id|av7110_init
@@ -24307,8 +24307,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|av7110_exit
+r_static
 r_void
 id|__exit
 id|av7110_exit

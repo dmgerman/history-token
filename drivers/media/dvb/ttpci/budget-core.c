@@ -6,8 +6,8 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; * TT budget / WinTV Nova&n; ****************************************************************************/
-r_static
 DECL|function|stop_ts_capture
+r_static
 r_int
 id|stop_ts_capture
 c_func
@@ -60,8 +60,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|start_ts_capture
+r_static
 r_int
 id|start_ts_capture
 (paren
@@ -332,8 +332,8 @@ op_increment
 id|budget-&gt;feeding
 suffix:semicolon
 )brace
-r_static
 DECL|function|vpeirq
+r_static
 r_void
 id|vpeirq
 (paren
@@ -520,8 +520,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/****************************************************************************&n; * DVB API SECTION&n; ****************************************************************************/
-r_static
 DECL|function|budget_start_feed
+r_static
 r_int
 id|budget_start_feed
 c_func
@@ -578,8 +578,8 @@ id|budget
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_stop_feed
+r_static
 r_int
 id|budget_stop_feed
 c_func
@@ -626,8 +626,8 @@ id|budget
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_register
+r_static
 r_int
 id|budget_register
 c_func
@@ -820,8 +820,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_unregister
+r_static
 r_void
 id|budget_unregister
 c_func
@@ -905,8 +905,8 @@ id|budget-&gt;demux
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|master_xfer
+r_static
 r_int
 id|master_xfer
 (paren

@@ -14,8 +14,8 @@ l_int|0
 suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk&t;if (debug) printk
-r_static
 DECL|variable|bsrv2_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|bsrv2_info
@@ -89,8 +89,8 @@ op_or
 id|FE_CAN_QPSK
 )brace
 suffix:semicolon
-r_static
 DECL|variable|init_1893_tab
+r_static
 id|u8
 id|init_1893_tab
 (braket
@@ -206,8 +206,8 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-r_static
 DECL|variable|init_1893_wtab
+r_static
 id|u8
 id|init_1893_wtab
 (braket
@@ -323,8 +323,8 @@ comma
 l_int|1
 )brace
 suffix:semicolon
-r_static
 DECL|function|ves1893_writereg
+r_static
 r_int
 id|ves1893_writereg
 (paren
@@ -424,8 +424,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_readreg
+r_static
 id|u8
 id|ves1893_readreg
 (paren
@@ -548,8 +548,8 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|sp5659_write
+r_static
 r_int
 id|sp5659_write
 (paren
@@ -638,8 +638,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *   set up the downconverter frequency divisor for a&n; *   reference clock comparision frequency of 125 kHz.&n; */
-r_static
 DECL|function|sp5659_set_tv_freq
+r_static
 r_int
 id|sp5659_set_tv_freq
 (paren
@@ -705,8 +705,8 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_init
+r_static
 r_int
 id|ves1893_init
 (paren
@@ -765,8 +765,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_clr_bit
+r_static
 r_int
 id|ves1893_clr_bit
 (paren
@@ -825,8 +825,8 @@ l_int|3
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_set_inversion
+r_static
 r_int
 id|ves1893_set_inversion
 (paren
@@ -902,8 +902,8 @@ id|val
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_set_fec
+r_static
 r_int
 id|ves1893_set_fec
 (paren
@@ -959,8 +959,8 @@ id|FEC_1_2
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_get_fec
+r_static
 id|fe_code_rate_t
 id|ves1893_get_fec
 (paren
@@ -989,8 +989,8 @@ l_int|0x7
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_set_symbolrate
+r_static
 r_int
 id|ves1893_set_symbolrate
 (paren
@@ -1558,8 +1558,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1893_set_voltage
+r_static
 r_int
 id|ves1893_set_voltage
 (paren
@@ -1625,8 +1625,8 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|bsrv2_ioctl
+r_static
 r_int
 id|bsrv2_ioctl
 (paren
@@ -2178,8 +2178,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|bsrv2_attach
+r_static
 r_int
 id|bsrv2_attach
 (paren
@@ -2225,8 +2225,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|bsrv2_detach
+r_static
 r_void
 id|bsrv2_detach
 (paren
@@ -2244,8 +2244,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_bsrv2
+r_static
 r_int
 id|__init
 id|init_bsrv2
@@ -2264,8 +2264,8 @@ id|bsrv2_detach
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_bsrv2
+r_static
 r_void
 id|__exit
 id|exit_bsrv2

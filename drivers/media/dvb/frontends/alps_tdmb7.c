@@ -15,8 +15,8 @@ l_int|0
 suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk&t;if (debug) printk
-r_static
 DECL|variable|tdmb7_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|tdmb7_info
@@ -116,8 +116,8 @@ op_or
 id|FE_CAN_RECOVER
 )brace
 suffix:semicolon
-r_static
 DECL|variable|init_tab
+r_static
 id|u8
 id|init_tab
 (braket
@@ -198,8 +198,8 @@ l_int|0x05
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|cx22700_writereg
+r_static
 r_int
 id|cx22700_writereg
 (paren
@@ -309,8 +309,8 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx22700_readreg
+r_static
 id|u8
 id|cx22700_readreg
 (paren
@@ -438,8 +438,8 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|pll_write
+r_static
 r_int
 id|pll_write
 (paren
@@ -550,8 +550,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *   set up the downconverter frequency divisor for a &n; *   reference clock comparision frequency of 125 kHz.&n; */
-r_static
 DECL|function|pll_set_tv_freq
+r_static
 r_int
 id|pll_set_tv_freq
 (paren
@@ -694,8 +694,8 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx22700_init
+r_static
 r_int
 id|cx22700_init
 (paren
@@ -788,8 +788,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx22700_set_inversion
+r_static
 r_int
 id|cx22700_set_inversion
 (paren
@@ -881,8 +881,8 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|cx22700_set_tps
+r_static
 r_int
 id|cx22700_set_tps
 (paren
@@ -1192,8 +1192,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx22700_get_tps
+r_static
 r_int
 id|cx22700_get_tps
 (paren
@@ -1443,8 +1443,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tdmb7_ioctl
+r_static
 r_int
 id|tdmb7_ioctl
 (paren
@@ -1911,8 +1911,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tdmb7_attach
+r_static
 r_int
 id|tdmb7_attach
 (paren
@@ -1990,8 +1990,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tdmb7_detach
+r_static
 r_void
 id|tdmb7_detach
 (paren
@@ -2016,8 +2016,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_tdmb7
+r_static
 r_int
 id|__init
 id|init_tdmb7
@@ -2043,8 +2043,8 @@ id|tdmb7_detach
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_tdmb7
+r_static
 r_void
 id|__exit
 id|exit_tdmb7

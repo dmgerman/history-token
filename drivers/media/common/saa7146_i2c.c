@@ -1,7 +1,7 @@
 macro_line|#include &lt;media/saa7146_vv.h&gt;
 multiline_comment|/* helper function */
-r_static
 DECL|function|my_wait
+r_static
 r_void
 id|my_wait
 c_func
@@ -69,9 +69,9 @@ id|I2C_FUNC_SMBUS_WRITE_BYTE_DATA
 suffix:semicolon
 )brace
 multiline_comment|/* this function returns the status-register of our i2c-device */
+DECL|function|saa7146_i2c_status
 r_static
 r_inline
-DECL|function|saa7146_i2c_status
 id|u32
 id|saa7146_i2c_status
 c_func
@@ -99,8 +99,8 @@ id|iicsta
 suffix:semicolon
 )brace
 multiline_comment|/* this function runs through the i2c-messages and prepares the data to be&n;   sent through the saa7146. have a look at the specifications p. 122 ff &n;   to understand this. it returns the number of u32s to send, or -1&n;   in case of an error. */
-r_static
 DECL|function|saa7146_i2c_msg_prepare
+r_static
 r_int
 id|saa7146_i2c_msg_prepare
 c_func
@@ -514,8 +514,8 @@ id|mem
 suffix:semicolon
 )brace
 multiline_comment|/* this functions loops through all i2c-messages. normally, it should determine&n;   which bytes were read through the adapter and write them back to the corresponding&n;   i2c-message. but instead, we simply write back all bytes.&n;   fixme: this could be improved. */
-r_static
 DECL|function|saa7146_i2c_msg_cleanup
+r_static
 r_int
 id|saa7146_i2c_msg_cleanup
 c_func
@@ -629,8 +629,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* this functions resets the i2c-device and returns 0 if everything was fine, otherwise -1 */
-r_static
 DECL|function|saa7146_i2c_reset
+r_static
 r_int
 id|saa7146_i2c_reset
 c_func
@@ -933,8 +933,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* this functions writes out the data-byte &squot;dword&squot; to the i2c-device.&n;   it returns 0 if ok, -1 if the transfer failed, -2 if the transfer&n;   failed badly (e.g. address error) */
-r_static
 DECL|function|saa7146_i2c_writeout
+r_static
 r_int
 id|saa7146_i2c_writeout
 c_func
@@ -1807,8 +1807,8 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/* utility functions */
-r_static
 DECL|function|saa7146_i2c_xfer
+r_static
 r_int
 id|saa7146_i2c_xfer
 c_func
@@ -1858,8 +1858,8 @@ multiline_comment|/*************************************************************
 multiline_comment|/* i2c-adapter helper functions                                              */
 macro_line|#include &lt;linux/i2c-id.h&gt;
 multiline_comment|/* exported algorithm data */
-r_static
 DECL|variable|saa7146_algo
+r_static
 r_struct
 id|i2c_algorithm
 id|saa7146_algo

@@ -1,6 +1,5 @@
 multiline_comment|/* &n; * dvbdev.c&n; *&n; * Copyright (C) 2000 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
-macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -9,6 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;dvbdev.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
 DECL|variable|dvbdev_debug
@@ -66,8 +66,8 @@ DECL|macro|DVB_MAX_IDS
 mdefine_line|#define DVB_MAX_IDS              4
 DECL|macro|nums2minor
 mdefine_line|#define nums2minor(num,type,id)  ((num &lt;&lt; 6) | (id &lt;&lt; 4) | type)
-r_static
 DECL|function|dvbdev_find_device
+r_static
 r_struct
 id|dvb_device
 op_star
@@ -161,8 +161,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_device_open
+r_static
 r_int
 id|dvb_device_open
 c_func
@@ -498,8 +498,8 @@ id|dvbdev-&gt;kernel_ioctl
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvbdev_get_free_id
+r_static
 r_int
 id|dvbdev_get_free_id
 (paren
@@ -879,8 +879,8 @@ id|dvbdev
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|dvbdev_get_free_adapter_num
+r_static
 r_int
 id|dvbdev_get_free_adapter_num
 (paren
@@ -1166,8 +1166,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_dvbdev
+r_static
 r_int
 id|__init
 id|init_dvbdev
@@ -1214,8 +1214,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_dvbdev
+r_static
 r_void
 id|__exit
 id|exit_dvbdev

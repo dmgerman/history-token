@@ -25,8 +25,8 @@ mdefine_line|#define PHILIPS_SU1278     3
 multiline_comment|/* Master Clock = 88 MHz */
 DECL|macro|M_CLK
 mdefine_line|#define M_CLK (88000000UL) 
-r_static
 DECL|variable|uni0299_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|uni0299_info
@@ -108,8 +108,8 @@ op_or
 id|FE_CAN_CLEAN_SETUP
 )brace
 suffix:semicolon
-r_static
 DECL|variable|init_tab
+r_static
 id|u8
 id|init_tab
 (braket
@@ -285,8 +285,8 @@ comma
 singleline_comment|// error control
 )brace
 suffix:semicolon
-r_static
 DECL|function|stv0299_writereg
+r_static
 r_int
 id|stv0299_writereg
 (paren
@@ -390,8 +390,8 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_readreg
+r_static
 id|u8
 id|stv0299_readreg
 (paren
@@ -512,8 +512,8 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_readregs
+r_static
 r_int
 id|stv0299_readregs
 (paren
@@ -628,8 +628,8 @@ suffix:colon
 id|ret
 suffix:semicolon
 )brace
-r_static
 DECL|function|pll_write
+r_static
 r_int
 id|pll_write
 (paren
@@ -790,8 +790,8 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|sl1935_set_tv_freq
+r_static
 r_int
 id|sl1935_set_tv_freq
 (paren
@@ -945,8 +945,8 @@ id|buf
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *   set up the downconverter frequency divisor for a &n; *   reference clock comparision frequency of 125 kHz.&n; */
-r_static
 DECL|function|tsa5059_set_tv_freq
+r_static
 r_int
 id|tsa5059_set_tv_freq
 (paren
@@ -1069,8 +1069,8 @@ DECL|macro|MIN2
 mdefine_line|#define MIN2(a,b) ((a) &lt; (b) ? (a) : (b))
 DECL|macro|MIN3
 mdefine_line|#define MIN3(a,b,c) MIN2(MIN2(a,b),c)
-r_static
 DECL|function|tua6100_set_tv_freq
+r_static
 r_int
 id|tua6100_set_tv_freq
 (paren
@@ -1888,8 +1888,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|pll_set_tv_freq
+r_static
 r_int
 id|pll_set_tv_freq
 (paren
@@ -2089,8 +2089,8 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-r_static
 DECL|function|stv0299_init
+r_static
 r_int
 id|stv0299_init
 (paren
@@ -2232,8 +2232,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_check_inversion
+r_static
 r_int
 id|stv0299_check_inversion
 (paren
@@ -2318,8 +2318,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_set_FEC
+r_static
 r_int
 id|stv0299_set_FEC
 (paren
@@ -2431,8 +2431,8 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|stv0299_get_fec
+r_static
 id|fe_code_rate_t
 id|stv0299_get_fec
 (paren
@@ -2500,8 +2500,8 @@ id|index
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_wait_diseqc_fifo
+r_static
 r_int
 id|stv0299_wait_diseqc_fifo
 (paren
@@ -2575,8 +2575,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_wait_diseqc_idle
+r_static
 r_int
 id|stv0299_wait_diseqc_idle
 (paren
@@ -2654,8 +2654,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_send_diseqc_msg
+r_static
 r_int
 id|stv0299_send_diseqc_msg
 (paren
@@ -2803,8 +2803,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_send_diseqc_burst
+r_static
 r_int
 id|stv0299_send_diseqc_burst
 (paren
@@ -2935,8 +2935,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_set_tone
+r_static
 r_int
 id|stv0299_set_tone
 (paren
@@ -3051,8 +3051,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_set_voltage
+r_static
 r_int
 id|stv0299_set_voltage
 (paren
@@ -3214,8 +3214,8 @@ suffix:semicolon
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|stv0299_set_symbolrate
+r_static
 r_int
 id|stv0299_set_symbolrate
 (paren
@@ -3473,8 +3473,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|stv0299_get_symbolrate
+r_static
 r_int
 id|stv0299_get_symbolrate
 (paren
@@ -3612,8 +3612,8 @@ r_return
 id|srate
 suffix:semicolon
 )brace
-r_static
 DECL|function|uni0299_ioctl
+r_static
 r_int
 id|uni0299_ioctl
 (paren
@@ -4288,8 +4288,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|probe_tuner
+r_static
 r_int
 id|probe_tuner
 (paren
@@ -4658,8 +4658,8 @@ r_return
 id|UNKNOWN_FRONTEND
 suffix:semicolon
 )brace
-r_static
 DECL|function|uni0299_attach
+r_static
 r_int
 id|uni0299_attach
 (paren
@@ -4747,8 +4747,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|uni0299_detach
+r_static
 r_void
 id|uni0299_detach
 (paren
@@ -4773,8 +4773,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_uni0299
+r_static
 r_int
 id|__init
 id|init_uni0299
@@ -4800,8 +4800,8 @@ id|uni0299_detach
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_uni0299
+r_static
 r_void
 id|__exit
 id|exit_uni0299

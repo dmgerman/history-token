@@ -1,10 +1,10 @@
 multiline_comment|/* &n; * dvb_net.c&n; *&n; * Copyright (C) 2001 Convergence integrated media GmbH&n; *                    Ralph Metzler &lt;ralph@convergence.de&gt;&n; * Copyright (C) 2002 Ralph Metzler &lt;rjkm@metzlerbros.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; */
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/dvb/net.h&gt;
 macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dvb_net.h&quot;
@@ -207,9 +207,9 @@ id|ETH_P_802_2
 )paren
 suffix:semicolon
 )brace
+DECL|function|dvb_net_sec
 r_static
 r_void
-DECL|function|dvb_net_sec
 id|dvb_net_sec
 c_func
 (paren
@@ -487,9 +487,9 @@ id|skb
 )paren
 suffix:semicolon
 )brace
+DECL|function|dvb_net_callback
 r_static
 r_int
-DECL|function|dvb_net_callback
 id|dvb_net_callback
 c_func
 (paren
@@ -546,9 +546,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_net_tx
 r_static
 r_int
-DECL|function|dvb_net_tx
 id|dvb_net_tx
 c_func
 (paren
@@ -607,9 +607,9 @@ l_int|6
 op_assign
 initialization_block
 suffix:semicolon
+DECL|function|dvb_net_filter_set
 r_static
 r_int
-DECL|function|dvb_net_filter_set
 id|dvb_net_filter_set
 c_func
 (paren
@@ -989,9 +989,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_net_feed_start
 r_static
 r_int
-DECL|function|dvb_net_feed_start
 id|dvb_net_feed_start
 c_func
 (paren
@@ -1263,9 +1263,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_net_feed_stop
 r_static
 r_void
-DECL|function|dvb_net_feed_stop
 id|dvb_net_feed_stop
 c_func
 (paren
@@ -1404,9 +1404,9 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
+DECL|function|dvb_add_mc_filter
 r_static
 r_int
-DECL|function|dvb_add_mc_filter
 id|dvb_add_mc_filter
 c_func
 (paren
@@ -1482,9 +1482,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|dvb_net_set_multi
 r_static
 r_void
-DECL|function|dvb_net_set_multi
 id|dvb_net_set_multi
 c_func
 (paren
@@ -1698,9 +1698,9 @@ id|dev
 suffix:semicolon
 )brace
 )brace
+DECL|function|dvb_net_set_config
 r_static
 r_int
-DECL|function|dvb_net_set_config
 id|dvb_net_set_config
 c_func
 (paren
@@ -1732,9 +1732,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_net_set_mac
 r_static
 r_int
-DECL|function|dvb_net_set_mac
 id|dvb_net_set_mac
 c_func
 (paren
@@ -1813,9 +1813,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_net_open
 r_static
 r_int
-DECL|function|dvb_net_open
 id|dvb_net_open
 c_func
 (paren
@@ -1835,9 +1835,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_net_stop
 r_static
 r_int
-DECL|function|dvb_net_stop
 id|dvb_net_stop
 c_func
 (paren
@@ -1857,11 +1857,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_net_get_stats
 r_static
 r_struct
 id|net_device_stats
 op_star
-DECL|function|dvb_net_get_stats
 id|dvb_net_get_stats
 c_func
 (paren
@@ -1885,9 +1885,9 @@ op_member_access_from_pointer
 id|stats
 suffix:semicolon
 )brace
+DECL|function|dvb_net_init_dev
 r_static
 r_int
-DECL|function|dvb_net_init_dev
 id|dvb_net_init_dev
 c_func
 (paren
@@ -1952,9 +1952,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|get_if
 r_static
 r_int
-DECL|function|get_if
 id|get_if
 c_func
 (paren
@@ -2513,9 +2513,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_net_ioctl
 r_static
 r_int
-DECL|function|dvb_net_ioctl
 id|dvb_net_ioctl
 c_func
 (paren

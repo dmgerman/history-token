@@ -642,8 +642,8 @@ suffix:semicolon
 )brace
 multiline_comment|/********************************************************************************/
 multiline_comment|/* file operations */
-r_static
 DECL|function|fops_open
+r_static
 r_int
 id|fops_open
 c_func
@@ -2283,8 +2283,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_vv_init_module
+r_static
 r_int
 id|__init
 id|saa7146_vv_init_module
@@ -2297,8 +2297,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_vv_cleanup_module
+r_static
 r_void
 id|__exit
 id|saa7146_vv_cleanup_module

@@ -1,8 +1,8 @@
 multiline_comment|/*&n; * budget.c: driver for the SAA7146 based Budget DVB cards &n; *&n; * Compiled from various sources by Michael Hunold &lt;michael@mihu.de&gt; &n; *&n; * Copyright (C) 2002 Ralph Metzler &lt;rjkm@metzlerbros.de&gt;&n; *&n; * Copyright (C) 1999-2002 Ralph  Metzler &n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
 macro_line|#include &quot;budget.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
-r_static
 DECL|function|Set22K
+r_static
 r_void
 id|Set22K
 (paren
@@ -52,8 +52,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Diseqc functions only for TT Budget card */
 multiline_comment|/* taken from the Skyvision DVB driver by&n;   Ralph Metzler &lt;rjkm@metzlerbros.de&gt; */
-r_static
 DECL|function|DiseqcSendBit
+r_static
 r_void
 id|DiseqcSendBit
 (paren
@@ -126,8 +126,8 @@ l_int|500
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|DiseqcSendByte
+r_static
 r_void
 id|DiseqcSendByte
 (paren
@@ -206,8 +206,8 @@ id|par
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|SendDiSEqCMsg
+r_static
 r_int
 id|SendDiSEqCMsg
 (paren
@@ -501,8 +501,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_attach
+r_static
 r_int
 id|budget_attach
 (paren
@@ -619,8 +619,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_detach
+r_static
 r_int
 id|budget_detach
 (paren
@@ -722,8 +722,8 @@ id|BUDGET_TT_HW_DISEQC
 suffix:semicolon
 multiline_comment|/* Uncomment for Budget Patch */
 multiline_comment|/*MAKE_BUDGET_INFO(fs_1_3,&quot;Siemens/Technotrend/Hauppauge PCI rev1.3+Budget_Patch&quot;, BUDGET_PATCH);*/
-r_static
 DECL|variable|pci_tbl
+r_static
 r_struct
 id|pci_device_id
 id|pci_tbl
@@ -790,8 +790,8 @@ comma
 id|pci_tbl
 )paren
 suffix:semicolon
-r_static
 DECL|variable|budget_extension
+r_static
 r_struct
 id|saa7146_extension
 id|budget_extension
@@ -844,8 +844,8 @@ id|ttpci_budget_irq10_handler
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|budget_init
+r_static
 r_int
 id|__init
 id|budget_init
@@ -872,8 +872,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_exit
+r_static
 r_void
 id|__exit
 id|budget_exit

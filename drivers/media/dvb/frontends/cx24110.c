@@ -15,8 +15,8 @@ l_int|0
 suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk&t;if (debug) printk
-r_static
 DECL|variable|cx24110_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|cx24110_info
@@ -93,10 +93,10 @@ id|FE_CAN_CLEAN_SETUP
 )brace
 suffix:semicolon
 multiline_comment|/* fixme: are these values correct? especially ..._tolerance and caps */
-r_static
 DECL|member|reg
 DECL|member|data
 DECL|variable|cx24110_regdata
+r_static
 r_struct
 (brace
 id|u8
@@ -388,8 +388,8 @@ multiline_comment|/* @  &quot; */
 multiline_comment|/* the remaining registers are for SEC */
 )brace
 suffix:semicolon
-r_static
 DECL|function|cx24110_writereg
+r_static
 r_int
 id|cx24110_writereg
 (paren
@@ -488,8 +488,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx24110_readreg
+r_static
 id|u8
 id|cx24110_readreg
 (paren
@@ -611,8 +611,8 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx24108_write
+r_static
 r_int
 id|cx24108_write
 (paren
@@ -813,8 +813,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx24108_set_tv_freq
+r_static
 r_int
 id|cx24108_set_tv_freq
 (paren
@@ -1172,8 +1172,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx24110_init
+r_static
 r_int
 id|cx24110_init
 (paren
@@ -1247,8 +1247,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx24110_set_inversion
+r_static
 r_int
 id|cx24110_set_inversion
 (paren
@@ -1428,8 +1428,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx24110_set_fec
+r_static
 r_int
 id|cx24110_set_fec
 (paren
@@ -1716,8 +1716,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx24110_get_fec
+r_static
 id|fe_code_rate_t
 id|cx24110_get_fec
 (paren
@@ -1769,8 +1769,8 @@ id|FEC_NONE
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|cx24110_set_symbolrate
+r_static
 r_int
 id|cx24110_set_symbolrate
 (paren
@@ -2289,8 +2289,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx24110_set_voltage
+r_static
 r_int
 id|cx24110_set_voltage
 (paren
@@ -2488,8 +2488,8 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* wait for LNB ready */
 )brace
-r_static
 DECL|function|cx24110_ioctl
+r_static
 r_int
 id|cx24110_ioctl
 (paren
@@ -3317,8 +3317,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx24110_attach
+r_static
 r_int
 id|cx24110_attach
 (paren
@@ -3371,8 +3371,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|cx24110_detach
+r_static
 r_void
 id|cx24110_detach
 (paren
@@ -3390,8 +3390,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_cx24110
+r_static
 r_int
 id|__init
 id|init_cx24110
@@ -3410,8 +3410,8 @@ id|cx24110_detach
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_cx24110
+r_static
 r_void
 id|__exit
 id|exit_cx24110

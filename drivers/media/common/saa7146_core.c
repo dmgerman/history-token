@@ -111,8 +111,8 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/****************************************************************************&n; * general helper functions&n; ****************************************************************************/
 multiline_comment|/* this is videobuf_vmalloc_to_sg() from video-buf.c */
-r_static
 DECL|function|vmalloc_to_sg
+r_static
 r_struct
 id|scatterlist
 op_star
@@ -1166,8 +1166,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*********************************************************************************/
 multiline_comment|/* configuration-functions                                                       */
-r_static
 DECL|function|saa7146_init_one
+r_static
 r_int
 id|saa7146_init_one
 c_func
@@ -1954,8 +1954,8 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_remove_one
+r_static
 r_void
 id|saa7146_remove_one
 c_func
@@ -2237,8 +2237,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_init_module
+r_static
 r_int
 id|__init
 id|saa7146_init_module
@@ -2278,8 +2278,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_cleanup_module
+r_static
 r_void
 id|__exit
 id|saa7146_cleanup_module

@@ -23,8 +23,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/****************************************************************************&n; * INITIALIZATION&n; ****************************************************************************/
-r_static
 DECL|function|i2c_readreg
+r_static
 id|u8
 id|i2c_readreg
 (paren
@@ -163,8 +163,8 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|i2c_writereg
+r_static
 r_int
 id|i2c_writereg
 (paren
@@ -225,9 +225,9 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|saa7113_tab
 r_static
 r_const
-DECL|variable|saa7113_tab
 id|u8
 id|saa7113_tab
 (braket
@@ -353,8 +353,8 @@ comma
 l_int|0xff
 )brace
 suffix:semicolon
-r_static
 DECL|function|saa7113_init
+r_static
 r_int
 id|saa7113_init
 (paren
@@ -471,8 +471,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7113_setinput
+r_static
 r_int
 id|saa7113_setinput
 (paren
@@ -573,8 +573,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_av_detach
+r_static
 r_int
 id|budget_av_detach
 (paren
@@ -650,8 +650,8 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_av_attach
+r_static
 r_int
 id|budget_av_attach
 (paren
@@ -982,8 +982,8 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|variable|ioctls
+r_static
 r_struct
 id|saa7146_extension_ioctls
 id|ioctls
@@ -1016,8 +1016,8 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-r_static
 DECL|function|av_ioctl
+r_static
 r_int
 id|av_ioctl
 c_func
@@ -1194,8 +1194,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|variable|standard
+r_static
 r_struct
 id|saa7146_standard
 id|standard
@@ -1221,8 +1221,8 @@ id|SAA7146_NTSC_VALUES
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|variable|vv_data
+r_static
 r_struct
 id|saa7146_ext_vv
 id|vv_data
@@ -1299,8 +1299,8 @@ comma
 id|BUDGET_KNC1
 )paren
 suffix:semicolon
-r_static
 DECL|variable|pci_tbl
+r_static
 r_struct
 id|pci_device_id
 id|pci_tbl
@@ -1335,8 +1335,8 @@ comma
 id|pci_tbl
 )paren
 suffix:semicolon
-r_static
 DECL|variable|budget_extension
+r_static
 r_struct
 id|saa7146_extension
 id|budget_extension
@@ -1385,8 +1385,8 @@ id|ttpci_budget_irq10_handler
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|budget_av_init
+r_static
 r_int
 id|__init
 id|budget_av_init
@@ -1421,8 +1421,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_av_exit
+r_static
 r_void
 id|__exit
 id|budget_av_exit

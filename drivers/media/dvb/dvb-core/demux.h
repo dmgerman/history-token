@@ -2,7 +2,7 @@ multiline_comment|/* demux.h &n; *&n; * Copyright (c) 2002 Convergence GmbH&n; *
 macro_line|#ifndef __DEMUX_H 
 DECL|macro|__DEMUX_H
 mdefine_line|#define __DEMUX_H 
-macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/list.h&gt; 
 macro_line|#include &lt;linux/time.h&gt; 

@@ -68,8 +68,8 @@ id|FE_CAN_MUTE_TS
 multiline_comment|/*| FE_CAN_CLEAN_SETUP*/
 )brace
 suffix:semicolon
-r_static
 DECL|function|l64781_writereg
+r_static
 r_int
 id|l64781_writereg
 (paren
@@ -169,8 +169,8 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|l64781_readreg
+r_static
 id|u8
 id|l64781_readreg
 (paren
@@ -291,8 +291,8 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|tsa5060_write
+r_static
 r_int
 id|tsa5060_write
 (paren
@@ -380,8 +380,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *   set up the downconverter frequency divisor for a&n; *   reference clock comparision frequency of 166666 Hz.&n; *   frequency offset is 36125000 Hz.&n; */
-r_static
 DECL|function|tsa5060_set_tv_freq
+r_static
 r_int
 id|tsa5060_set_tv_freq
 (paren
@@ -531,8 +531,8 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|apply_tps
+r_static
 r_void
 id|apply_tps
 (paren
@@ -571,8 +571,8 @@ l_int|0x02
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|reset_afc
+r_static
 r_void
 id|reset_afc
 (paren
@@ -688,8 +688,8 @@ l_int|0x00
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|apply_frontend_param
+r_static
 r_int
 id|apply_frontend_param
 (paren
@@ -1321,8 +1321,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|reset_and_configure
+r_static
 r_void
 id|reset_and_configure
 (paren
@@ -1378,8 +1378,8 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init
+r_static
 r_int
 id|init
 (paren
@@ -1875,8 +1875,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|l64781_attach
+r_static
 r_int
 id|l64781_attach
 (paren
@@ -2029,8 +2029,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|l64781_detach
+r_static
 r_void
 id|l64781_detach
 (paren
@@ -2048,8 +2048,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_grundig_29504_401
+r_static
 r_int
 id|__init
 id|init_grundig_29504_401
@@ -2068,8 +2068,8 @@ id|l64781_detach
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_grundig_29504_401
+r_static
 r_void
 id|__exit
 id|exit_grundig_29504_401

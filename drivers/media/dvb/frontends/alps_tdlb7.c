@@ -43,8 +43,8 @@ r_static
 r_int
 id|errno
 suffix:semicolon
-r_static
 DECL|variable|tdlb7_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|tdlb7_info
@@ -144,8 +144,8 @@ op_or
 id|FE_CAN_QAM_64
 )brace
 suffix:semicolon
-r_static
 DECL|function|sp8870_writereg
+r_static
 r_int
 id|sp8870_writereg
 (paren
@@ -255,8 +255,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|sp8870_readreg
+r_static
 id|u16
 id|sp8870_readreg
 (paren
@@ -394,8 +394,8 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|sp5659_write
+r_static
 r_int
 id|sp5659_write
 (paren
@@ -483,8 +483,8 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|sp5659_set_tv_freq
+r_static
 r_int
 id|sp5659_set_tv_freq
 (paren
@@ -580,8 +580,8 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|sp8870_read_code
+r_static
 r_int
 id|sp8870_read_code
 c_func
@@ -802,8 +802,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|sp8870_load_code
+r_static
 r_int
 id|sp8870_load_code
 c_func
@@ -1067,8 +1067,8 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-r_static
 DECL|function|sp8870_init
+r_static
 r_int
 id|sp8870_init
 (paren
@@ -1199,8 +1199,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tdlb7_ioctl
+r_static
 r_int
 id|tdlb7_ioctl
 (paren
@@ -1694,8 +1694,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tdlb7_attach
+r_static
 r_int
 id|tdlb7_attach
 (paren
@@ -1820,8 +1820,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tdlb7_detach
+r_static
 r_void
 id|tdlb7_detach
 (paren
@@ -1846,8 +1846,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_tdlb7
+r_static
 r_int
 id|__init
 id|init_tdlb7
@@ -1873,8 +1873,8 @@ id|tdlb7_detach
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_tdlb7
+r_static
 r_void
 id|__exit
 id|exit_tdlb7

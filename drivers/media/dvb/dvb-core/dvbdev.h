@@ -2,7 +2,7 @@ multiline_comment|/* &n; * dvbdev.h&n; *&n; * Copyright (C) 2000 Ralph  Metzler 
 macro_line|#ifndef _DVBDEV_H_
 DECL|macro|_DVBDEV_H_
 mdefine_line|#define _DVBDEV_H_
-macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;

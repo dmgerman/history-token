@@ -1,6 +1,4 @@
 multiline_comment|/* &n; * dmxdev.c - DVB demultiplexer device &n; *&n; * Copyright (C) 2000 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *&t;&t;  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n;&t;&t;      for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -9,6 +7,8 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
 id|MODULE_PARM
@@ -79,10 +79,10 @@ op_star
 id|file-&gt;private_data
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_buffer_init
 r_static
 r_inline
 r_void
-DECL|function|dvb_dmxdev_buffer_init
 id|dvb_dmxdev_buffer_init
 c_func
 (paren
@@ -120,9 +120,9 @@ id|buffer-&gt;queue
 )paren
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_buffer_write
 r_static
 r_inline
-DECL|function|dvb_dmxdev_buffer_write
 r_int
 id|dvb_dmxdev_buffer_write
 c_func
@@ -286,9 +286,9 @@ r_return
 id|len
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_buffer_read
 r_static
 id|ssize_t
-DECL|function|dvb_dmxdev_buffer_read
 id|dvb_dmxdev_buffer_read
 c_func
 (paren
@@ -588,11 +588,11 @@ r_return
 id|count
 suffix:semicolon
 )brace
+DECL|function|get_fe
 r_static
 r_struct
 id|dmx_frontend
 op_star
-DECL|function|get_fe
 id|get_fe
 c_func
 (paren
@@ -663,10 +663,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_dvr_state_set
 r_static
 r_inline
 r_void
-DECL|function|dvb_dmxdev_dvr_state_set
 id|dvb_dmxdev_dvr_state_set
 c_func
 (paren
@@ -1096,9 +1096,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_dvr_write
 r_static
 id|ssize_t
-DECL|function|dvb_dvr_write
 id|dvb_dvr_write
 c_func
 (paren
@@ -1210,9 +1210,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|dvb_dvr_read
 r_static
 id|ssize_t
-DECL|function|dvb_dvr_read
 id|dvb_dvr_read
 c_func
 (paren
@@ -1285,10 +1285,10 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_filter_state_set
 r_static
 r_inline
 r_void
-DECL|function|dvb_dmxdev_filter_state_set
 id|dvb_dmxdev_filter_state_set
 c_func
 (paren
@@ -1320,9 +1320,9 @@ id|dmxdevfilter-&gt;dev-&gt;lock
 )paren
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_set_buffer_size
 r_static
 r_int
-DECL|function|dvb_dmxdev_set_buffer_size
 id|dvb_dmxdev_set_buffer_size
 c_func
 (paren
@@ -1459,9 +1459,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_filter_timeout
 r_static
 r_void
-DECL|function|dvb_dmxdev_filter_timeout
 id|dvb_dmxdev_filter_timeout
 c_func
 (paren
@@ -1513,9 +1513,9 @@ id|dmxdevfilter-&gt;buffer.queue
 )paren
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_filter_timer
 r_static
 r_void
-DECL|function|dvb_dmxdev_filter_timer
 id|dvb_dmxdev_filter_timer
 c_func
 (paren
@@ -1585,9 +1585,9 @@ id|dmxdevfilter-&gt;timer
 suffix:semicolon
 )brace
 )brace
+DECL|function|dvb_dmxdev_section_callback
 r_static
 r_int
-DECL|function|dvb_dmxdev_section_callback
 id|dvb_dmxdev_section_callback
 c_func
 (paren
@@ -1800,9 +1800,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_ts_callback
 r_static
 r_int
-DECL|function|dvb_dmxdev_ts_callback
 id|dvb_dmxdev_ts_callback
 c_func
 (paren
@@ -1988,9 +1988,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* stop feed but only mark the specified filter as stopped (state set) */
+DECL|function|dvb_dmxdev_feed_stop
 r_static
 r_int
-DECL|function|dvb_dmxdev_feed_stop
 id|dvb_dmxdev_feed_stop
 c_func
 (paren
@@ -2059,8 +2059,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* start feed associated with the specified filter */
-r_static
 DECL|function|dvb_dmxdev_feed_start
+r_static
 r_int
 id|dvb_dmxdev_feed_start
 c_func
@@ -2124,8 +2124,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* restart section feed if it has filters left associated with it, &n;   otherwise release the feed */
-r_static
 DECL|function|dvb_dmxdev_feed_restart
+r_static
 r_int
 id|dvb_dmxdev_feed_restart
 c_func
@@ -2224,9 +2224,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_filter_stop
 r_static
 r_int
-DECL|function|dvb_dmxdev_filter_stop
 id|dvb_dmxdev_filter_stop
 c_func
 (paren
@@ -2358,10 +2358,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_filter_reset
 r_static
 r_inline
 r_int
-DECL|function|dvb_dmxdev_filter_reset
 id|dvb_dmxdev_filter_reset
 c_func
 (paren
@@ -2401,9 +2401,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_filter_start
 r_static
 r_int
-DECL|function|dvb_dmxdev_filter_start
 id|dvb_dmxdev_filter_start
 c_func
 (paren
@@ -3372,8 +3372,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_dmxdev_filter_free
+r_static
 r_int
 id|dvb_dmxdev_filter_free
 c_func
@@ -3508,10 +3508,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|invert_mode
 r_static
 r_inline
 r_void
-DECL|function|invert_mode
 id|invert_mode
 c_func
 (paren
@@ -3545,9 +3545,9 @@ op_xor_assign
 l_int|0xff
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_filter_set
 r_static
 r_int
-DECL|function|dvb_dmxdev_filter_set
 id|dvb_dmxdev_filter_set
 c_func
 (paren
@@ -3636,9 +3636,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_pes_filter_set
 r_static
 r_int
-DECL|function|dvb_dmxdev_pes_filter_set
 id|dvb_dmxdev_pes_filter_set
 c_func
 (paren
@@ -3728,9 +3728,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|dvb_dmxdev_read_sec
 r_static
 id|ssize_t
-DECL|function|dvb_dmxdev_read_sec
 id|dvb_dmxdev_read_sec
 c_func
 (paren
@@ -4549,8 +4549,8 @@ id|dvb_demux_do_ioctl
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_demux_poll
+r_static
 r_int
 r_int
 id|dvb_demux_poll
@@ -4659,8 +4659,8 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_demux_release
+r_static
 r_int
 id|dvb_demux_release
 c_func
@@ -4915,8 +4915,8 @@ id|dvb_dvr_do_ioctl
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|dvb_dvr_poll
+r_static
 r_int
 r_int
 id|dvb_dvr_poll
@@ -5041,8 +5041,8 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-r_static
 DECL|variable|dvb_dvr_fops
+r_static
 r_struct
 id|file_operations
 id|dvb_dvr_fops
@@ -5085,8 +5085,8 @@ id|dvb_dvr_poll
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|variable|dvbdev_dvr
+r_static
 r_struct
 id|dvb_device
 id|dvbdev_dvr

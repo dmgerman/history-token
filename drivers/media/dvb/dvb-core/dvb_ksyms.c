@@ -1,9 +1,9 @@
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;dmxdev.h&quot;
 macro_line|#include &quot;dvb_demux.h&quot;
 macro_line|#include &quot;dvb_frontend.h&quot;

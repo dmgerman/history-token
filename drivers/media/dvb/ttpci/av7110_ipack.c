@@ -158,8 +158,8 @@ id|p-&gt;buf
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|send_ipack
+r_static
 r_void
 id|send_ipack
 c_func
@@ -662,8 +662,8 @@ id|p
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|write_ipack
+r_static
 r_void
 id|write_ipack
 c_func

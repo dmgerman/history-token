@@ -1,9 +1,9 @@
-macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;av7110.h&quot;
 DECL|macro|UP_TIMEOUT
 mdefine_line|#define UP_TIMEOUT (HZ/4)
@@ -27,8 +27,8 @@ r_static
 id|u32
 id|ir_config
 suffix:semicolon
-r_static
 DECL|variable|key_map
+r_static
 id|u16
 id|key_map
 (braket
@@ -549,8 +549,8 @@ comma
 id|KEY_VCR
 )brace
 suffix:semicolon
-r_static
 DECL|function|av7110_emit_keyup
+r_static
 r_void
 id|av7110_emit_keyup
 (paren
@@ -590,8 +590,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|variable|keyup_timer
+r_static
 r_struct
 id|timer_list
 id|keyup_timer
@@ -602,8 +602,8 @@ suffix:colon
 id|av7110_emit_keyup
 )brace
 suffix:semicolon
-r_static
 DECL|function|av7110_emit_key
+r_static
 r_void
 id|av7110_emit_key
 (paren
@@ -867,8 +867,8 @@ op_assign
 id|new_toggle
 suffix:semicolon
 )brace
-r_static
 DECL|function|input_register_keys
+r_static
 r_void
 id|input_register_keys
 (paren
@@ -969,8 +969,8 @@ id|data
 (brace
 multiline_comment|/* dummy routine to disable autorepeat in the input driver */
 )brace
-r_static
 DECL|function|av7110_ir_write_proc
+r_static
 r_int
 id|av7110_ir_write_proc
 (paren

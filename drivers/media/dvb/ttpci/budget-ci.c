@@ -114,8 +114,8 @@ id|value
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|wait_for_debi_done
+r_static
 r_int
 id|wait_for_debi_done
 c_func
@@ -246,8 +246,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|debiread
+r_static
 id|u32
 id|debiread
 (paren
@@ -383,9 +383,9 @@ id|result
 suffix:semicolon
 )brace
 multiline_comment|/* DEBI during interrupt */
+DECL|function|irdebi
 r_static
 r_inline
-DECL|function|irdebi
 id|u32
 id|irdebi
 c_func
@@ -431,8 +431,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* from reading the following remotes:&n;   Zenith Universal 7 / TV Mode 807 / VCR Mode 837&n;   Hauppauge (from NOVA-CI-s box product)&n;   i&squot;ve taken a &quot;middle of the road&quot; approach and note the differences&n;*/
-r_static
 DECL|variable|key_map
+r_static
 id|u16
 id|key_map
 (braket
@@ -584,8 +584,8 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|msp430_ir_debounce
+r_static
 r_void
 id|msp430_ir_debounce
 (paren
@@ -686,8 +686,8 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* REPEAT */
 )brace
-r_static
 DECL|function|msp430_ir_interrupt
+r_static
 r_void
 id|msp430_ir_interrupt
 (paren
@@ -881,8 +881,8 @@ id|dev-&gt;timer
 suffix:semicolon
 )brace
 )brace
-r_static
 DECL|function|msp430_ir_init
+r_static
 r_int
 id|msp430_ir_init
 (paren
@@ -1014,8 +1014,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|msp430_ir_deinit
+r_static
 r_void
 id|msp430_ir_deinit
 (paren
@@ -1113,8 +1113,8 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_ci_irq
+r_static
 r_void
 id|budget_ci_irq
 (paren
@@ -1182,8 +1182,8 @@ id|isr
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_ci_attach
+r_static
 r_int
 id|budget_ci_attach
 (paren
@@ -1293,8 +1293,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_ci_detach
+r_static
 r_int
 id|budget_ci_detach
 (paren
@@ -1363,8 +1363,8 @@ comma
 id|BUDGET_TT_HW_DISEQC
 )paren
 suffix:semicolon
-r_static
 DECL|variable|pci_tbl
+r_static
 r_struct
 id|pci_device_id
 id|pci_tbl
@@ -1409,8 +1409,8 @@ comma
 id|pci_tbl
 )paren
 suffix:semicolon
-r_static
 DECL|variable|budget_extension
+r_static
 r_struct
 id|saa7146_extension
 id|budget_extension
@@ -1469,8 +1469,8 @@ id|budget_ci_irq
 comma
 )brace
 suffix:semicolon
-r_static
 DECL|function|budget_ci_init
+r_static
 r_int
 id|__init
 id|budget_ci_init
@@ -1497,8 +1497,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|budget_ci_exit
+r_static
 r_void
 id|__exit
 id|budget_ci_exit

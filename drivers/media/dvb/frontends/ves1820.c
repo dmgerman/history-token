@@ -34,8 +34,8 @@ DECL|macro|XIN
 mdefine_line|#define XIN 57840000UL
 DECL|macro|FIN
 mdefine_line|#define FIN (XIN &gt;&gt; 4)
-r_static
 DECL|variable|ves1820_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|ves1820_info
@@ -139,8 +139,8 @@ op_or
 id|FE_CAN_RECOVER
 )brace
 suffix:semicolon
-r_static
 DECL|variable|ves1820_inittab
+r_static
 id|u8
 id|ves1820_inittab
 (braket
@@ -254,8 +254,8 @@ comma
 l_int|0x40
 )brace
 suffix:semicolon
-r_static
 DECL|function|ves1820_writereg
+r_static
 r_int
 id|ves1820_writereg
 (paren
@@ -382,8 +382,8 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1820_readreg
+r_static
 id|u8
 id|ves1820_readreg
 (paren
@@ -520,8 +520,8 @@ l_int|0
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|tuner_write
+r_static
 r_int
 id|tuner_write
 (paren
@@ -612,8 +612,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *   set up the downconverter frequency divisor for a&n; *   reference clock comparision frequency of 62.5 kHz.&n; */
-r_static
 DECL|function|tuner_set_tv_freq
+r_static
 r_int
 id|tuner_set_tv_freq
 (paren
@@ -829,8 +829,8 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1820_setup_reg0
+r_static
 r_int
 id|ves1820_setup_reg0
 (paren
@@ -985,8 +985,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1820_init
+r_static
 r_int
 id|ves1820_init
 (paren
@@ -1057,8 +1057,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1820_set_symbolrate
+r_static
 r_int
 id|ves1820_set_symbolrate
 (paren
@@ -1482,8 +1482,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1820_set_parameters
+r_static
 r_int
 id|ves1820_set_parameters
 (paren
@@ -1702,8 +1702,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1820_ioctl
+r_static
 r_int
 id|ves1820_ioctl
 (paren
@@ -2250,8 +2250,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|probe_tuner
+r_static
 r_int
 id|probe_tuner
 (paren
@@ -2403,8 +2403,8 @@ r_return
 id|type
 suffix:semicolon
 )brace
-r_static
 DECL|function|read_pwm
+r_static
 id|u8
 id|read_pwm
 (paren
@@ -2508,8 +2508,8 @@ r_return
 id|pwm
 suffix:semicolon
 )brace
-r_static
 DECL|function|probe_demod_addr
+r_static
 r_int
 id|probe_demod_addr
 (paren
@@ -2673,8 +2673,8 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1820_attach
+r_static
 r_int
 id|ves1820_attach
 (paren
@@ -2789,8 +2789,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|ves1820_detach
+r_static
 r_void
 id|ves1820_detach
 (paren
@@ -2808,8 +2808,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_ves1820
+r_static
 r_int
 id|__init
 id|init_ves1820
@@ -2828,8 +2828,8 @@ id|ves1820_detach
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_ves1820
+r_static
 r_void
 id|__exit
 id|exit_ves1820

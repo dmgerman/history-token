@@ -15,8 +15,8 @@ l_int|0
 suffix:semicolon
 DECL|macro|dprintk
 mdefine_line|#define dprintk&t;if (debug) printk
-r_static
 DECL|variable|grundig_29504_491_info
+r_static
 r_struct
 id|dvb_frontend_info
 id|grundig_29504_491_info
@@ -99,8 +99,8 @@ op_or
 id|FE_CAN_CLEAN_SETUP
 )brace
 suffix:semicolon
-r_static
 DECL|variable|tda8083_init_tab
+r_static
 id|u8
 id|tda8083_init_tab
 (braket
@@ -196,8 +196,8 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-r_static
 DECL|function|tda8083_writereg
+r_static
 r_int
 id|tda8083_writereg
 (paren
@@ -297,8 +297,8 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tda8083_readregs
+r_static
 r_int
 id|tda8083_readregs
 (paren
@@ -415,9 +415,9 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|tda8083_readreg
 r_static
 r_inline
-DECL|function|tda8083_readreg
 id|u8
 id|tda8083_readreg
 (paren
@@ -449,8 +449,8 @@ r_return
 id|val
 suffix:semicolon
 )brace
-r_static
 DECL|function|tsa5522_write
+r_static
 r_int
 id|tsa5522_write
 (paren
@@ -539,8 +539,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *   set up the downconverter frequency divisor for a&n; *   reference clock comparision frequency of 125 kHz.&n; */
-r_static
 DECL|function|tsa5522_set_tv_freq
+r_static
 r_int
 id|tsa5522_set_tv_freq
 (paren
@@ -593,9 +593,9 @@ id|buf
 )paren
 suffix:semicolon
 )brace
+DECL|function|tda8083_init
 r_static
 r_int
-DECL|function|tda8083_init
 id|tda8083_init
 (paren
 r_struct
@@ -645,9 +645,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|tda8083_set_inversion
 r_static
 r_int
-DECL|function|tda8083_set_inversion
 id|tda8083_set_inversion
 (paren
 r_struct
@@ -675,9 +675,9 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+DECL|function|tda8083_set_fec
 r_static
 r_int
-DECL|function|tda8083_set_fec
 id|tda8083_set_fec
 (paren
 r_struct
@@ -738,8 +738,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_static
 DECL|function|tda8083_get_fec
+r_static
 id|fe_code_rate_t
 id|tda8083_get_fec
 (paren
@@ -804,8 +804,8 @@ id|index
 )braket
 suffix:semicolon
 )brace
-r_static
 DECL|function|tda8083_set_symbolrate
+r_static
 r_int
 id|tda8083_set_symbolrate
 (paren
@@ -1017,8 +1017,8 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-r_static
 DECL|function|tda8083_wait_diseqc_fifo
+r_static
 r_void
 id|tda8083_wait_diseqc_fifo
 (paren
@@ -1069,8 +1069,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 )brace
-r_static
 DECL|function|tda8083_send_diseqc_msg
+r_static
 r_int
 id|tda8083_send_diseqc_msg
 (paren
@@ -1167,8 +1167,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tda8083_send_diseqc_burst
+r_static
 r_int
 id|tda8083_send_diseqc_burst
 (paren
@@ -1244,8 +1244,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tda8083_set_tone
+r_static
 r_int
 id|tda8083_set_tone
 (paren
@@ -1308,8 +1308,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 )brace
-r_static
 DECL|function|tda8083_set_voltage
+r_static
 r_int
 id|tda8083_set_voltage
 (paren
@@ -1363,8 +1363,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 )brace
-r_static
 DECL|function|grundig_29504_491_ioctl
+r_static
 r_int
 id|grundig_29504_491_ioctl
 (paren
@@ -1917,8 +1917,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tda8083_attach
+r_static
 r_int
 id|tda8083_attach
 (paren
@@ -1962,8 +1962,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|tda8083_detach
+r_static
 r_void
 id|tda8083_detach
 (paren
@@ -1981,8 +1981,8 @@ id|i2c
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|init_tda8083
+r_static
 r_int
 id|__init
 id|init_tda8083
@@ -2001,8 +2001,8 @@ id|tda8083_detach
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|exit_tda8083
+r_static
 r_void
 id|__exit
 id|exit_tda8083

@@ -3,8 +3,8 @@ DECL|macro|my_min
 mdefine_line|#define my_min(type,x,y) &bslash;&n;&t;({ type __x = (x), __y = (y); __x &lt; __y ? __x: __y; })
 DECL|macro|my_max
 mdefine_line|#define my_max(type,x,y) &bslash;&n;&t;({ type __x = (x), __y = (y); __x &gt; __y ? __x: __y; })
-r_static
 DECL|function|calculate_output_format_register
+r_static
 r_void
 id|calculate_output_format_register
 c_func
@@ -73,8 +73,8 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|calculate_bcs_ctrl_register
+r_static
 r_void
 id|calculate_bcs_ctrl_register
 c_func
@@ -122,8 +122,8 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|calculate_hps_source_and_sync
+r_static
 r_void
 id|calculate_hps_source_and_sync
 c_func
@@ -172,8 +172,8 @@ l_int|28
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|calculate_hxo_and_hyo
+r_static
 r_void
 id|calculate_hxo_and_hyo
 c_func
@@ -681,8 +681,8 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* calculate horizontal scale registers */
-r_static
 DECL|function|calculate_h_scale_registers
+r_static
 r_int
 id|calculate_h_scale_registers
 c_func
@@ -1627,8 +1627,8 @@ l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* calculate vertical scale registers */
-r_static
 DECL|function|calculate_v_scale_registers
+r_static
 r_int
 id|calculate_v_scale_registers
 c_func
@@ -2066,8 +2066,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* simple bubble-sort algorithm with duplicate elimination */
-r_static
 DECL|function|sort_and_eliminate
+r_static
 r_int
 id|sort_and_eliminate
 c_func
@@ -2269,8 +2269,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|calculate_clipping_registers_rect
+r_static
 r_void
 id|calculate_clipping_registers_rect
 c_func
@@ -3245,8 +3245,8 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* disable clipping */
-r_static
 DECL|function|saa7146_disable_clipping
+r_static
 r_void
 id|saa7146_disable_clipping
 c_func
@@ -3312,8 +3312,8 @@ id|MASK_21
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_set_clipping_rect
+r_static
 r_void
 id|saa7146_set_clipping_rect
 c_func
@@ -3538,8 +3538,8 @@ id|MASK_21
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_set_window
+r_static
 r_void
 id|saa7146_set_window
 c_func
@@ -3763,8 +3763,8 @@ id|MASK_22
 suffix:semicolon
 )brace
 multiline_comment|/* calculate the new memory offsets for a desired position */
-r_static
 DECL|function|saa7146_set_position
+r_static
 r_void
 id|saa7146_set_position
 c_func
@@ -4033,8 +4033,8 @@ id|vdma1
 )paren
 suffix:semicolon
 )brace
-r_static
 DECL|function|saa7146_set_output_format
+r_static
 r_void
 id|saa7146_set_output_format
 c_func
@@ -4639,8 +4639,8 @@ l_int|1
 suffix:semicolon
 multiline_comment|/*&t;&t;&n;&t;printk(&quot;vdma%d.base_even:     0x%08x&bslash;n&quot;, which,vdma-&gt;base_even);&n;&t;printk(&quot;vdma%d.base_odd:      0x%08x&bslash;n&quot;, which,vdma-&gt;base_odd);&n;&t;printk(&quot;vdma%d.prot_addr:     0x%08x&bslash;n&quot;, which,vdma-&gt;prot_addr);&n;&t;printk(&quot;vdma%d.base_page:     0x%08x&bslash;n&quot;, which,vdma-&gt;base_page);&n;&t;printk(&quot;vdma%d.pitch:         0x%08x&bslash;n&quot;, which,vdma-&gt;pitch);&n;&t;printk(&quot;vdma%d.num_line_byte: 0x%08x&bslash;n&quot;, which,vdma-&gt;num_line_byte);&n;*/
 )brace
-r_static
 DECL|function|calculate_video_dma_grab_packed
+r_static
 r_int
 id|calculate_video_dma_grab_packed
 c_func
@@ -4917,8 +4917,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|calc_planar_422
+r_static
 r_int
 id|calc_planar_422
 c_func
@@ -5126,8 +5126,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|calc_planar_420
+r_static
 r_int
 id|calc_planar_420
 c_func
@@ -5335,8 +5335,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
 DECL|function|calculate_video_dma_grab_planar
+r_static
 r_int
 id|calculate_video_dma_grab_planar
 c_func
@@ -5849,10 +5849,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|WRITE_RPS0
-mdefine_line|#define WRITE_RPS0(x) dev-&gt;d_rps0.cpu_addr[ count++ ] = cpu_to_le32(x)
-r_static
 DECL|function|program_capture_engine
+r_static
 r_void
 id|program_capture_engine
 c_func
@@ -5872,11 +5870,6 @@ op_star
 id|vv
 op_assign
 id|dev-&gt;vv_data
-suffix:semicolon
-r_int
-id|count
-op_assign
-l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -5931,11 +5924,6 @@ op_assign
 id|tmp
 suffix:semicolon
 )brace
-multiline_comment|/* write beginning of rps-program */
-id|count
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* wait for o_fid_a/b / e_fid_a/b toggle only if bit 0 is not set*/
 id|WRITE_RPS0
 c_func
