@@ -18,6 +18,7 @@ mdefine_line|#define MIT_SIZE 15
 DECL|macro|MIT_TABLE
 mdefine_line|#define MIT_TABLE 15 /* We use 0 or max */
 DECL|variable|mit_table
+r_static
 r_int
 r_int
 id|mit_table
