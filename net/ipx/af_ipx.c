@@ -7217,6 +7217,23 @@ id|MSG_DONTWAIT
 r_goto
 id|out
 suffix:semicolon
+multiline_comment|/* Max possible packet size limited by 16 bit pktsize in header */
+r_if
+c_cond
+(paren
+id|len
+op_ge
+l_int|65535
+op_minus
+r_sizeof
+(paren
+r_struct
+id|ipxhdr
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 r_if
 c_cond
 (paren
