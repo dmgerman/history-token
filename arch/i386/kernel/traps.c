@@ -2163,7 +2163,6 @@ id|SIGSEGV
 op_eq
 id|NOTIFY_STOP
 )paren
-suffix:semicolon
 r_return
 suffix:semicolon
 id|die

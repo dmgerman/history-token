@@ -30,7 +30,6 @@ DECL|macro|skipbl
 mdefine_line|#define skipbl&t;xmon_skipbl
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|cpus_in_xmon
-r_volatile
 id|cpumask_t
 id|cpus_in_xmon
 op_assign
@@ -1531,6 +1530,7 @@ suffix:semicolon
 op_decrement
 id|timeout
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -1544,6 +1544,12 @@ id|ncpus
 )paren
 r_break
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 id|remove_bpts
 c_func

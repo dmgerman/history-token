@@ -157,11 +157,12 @@ op_assign
 id|GPLR
 suffix:semicolon
 r_int
-r_int
-op_star
 id|cs3reg
 op_assign
-id|CS3_BASE
+id|get_cs3_shadow
+c_func
+(paren
+)paren
 suffix:semicolon
 id|state-&gt;detect
 op_assign
@@ -212,7 +213,6 @@ r_if
 c_cond
 (paren
 (paren
-op_star
 id|cs3reg
 op_amp
 l_int|0x0c

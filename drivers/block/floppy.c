@@ -19474,6 +19474,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Small 10 msec delay to let through any interrupt that&n;&t; * initialization might have triggered, to not&n;&t; * confuse detection:&n;&t; */
+id|msleep
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren

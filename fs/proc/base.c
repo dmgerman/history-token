@@ -1751,7 +1751,7 @@ op_logical_neg
 id|mm-&gt;arg_end
 )paren
 r_goto
-id|out
+id|out_mm
 suffix:semicolon
 multiline_comment|/* Shh! No looking before we&squot;re done */
 id|len
@@ -1886,6 +1886,8 @@ id|res
 suffix:semicolon
 )brace
 )brace
+id|out_mm
+suffix:colon
 id|mmput
 c_func
 (paren

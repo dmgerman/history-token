@@ -17,8 +17,6 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/arch/serial.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/* We&squot;ve been assigned a range on the &quot;Low-density serial ports&quot; major */
 DECL|macro|SERIAL_IMX_MAJOR
 mdefine_line|#define SERIAL_IMX_MAJOR&t;204

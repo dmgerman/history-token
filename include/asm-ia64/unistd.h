@@ -493,6 +493,12 @@ DECL|macro|__NR_vserver
 mdefine_line|#define __NR_vserver&t;&t;&t;1269
 DECL|macro|__NR_waitid
 mdefine_line|#define __NR_waitid&t;&t;&t;1270
+DECL|macro|__NR_add_key
+mdefine_line|#define __NR_add_key&t;&t;&t;1271
+DECL|macro|__NR_request_key
+mdefine_line|#define __NR_request_key&t;&t;1272
+DECL|macro|__NR_keyctl
+mdefine_line|#define __NR_keyctl&t;&t;&t;1273
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|NR_syscalls

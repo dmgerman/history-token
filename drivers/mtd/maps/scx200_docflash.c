@@ -822,10 +822,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|scx200_docflash_map.virt
 )paren
 suffix:semicolon
@@ -967,10 +963,6 @@ id|scx200_docflash_map.virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|scx200_docflash_map.virt
 )paren
 suffix:semicolon

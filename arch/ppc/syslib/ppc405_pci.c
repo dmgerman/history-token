@@ -236,10 +236,14 @@ suffix:semicolon
 r_int
 r_int
 id|new_pmm_max
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
 id|new_pmm_min
+op_assign
+l_int|0
 suffix:semicolon
 id|isa_io_base
 op_assign

@@ -2179,10 +2179,6 @@ l_int|3UL
 suffix:semicolon
 id|iface-&gt;base
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -2206,9 +2202,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|iface-&gt;base
-op_eq
-l_int|0
 )paren
 (brace
 id|printk
@@ -2399,10 +2394,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|iface-&gt;base
 )paren
 suffix:semicolon
@@ -2830,10 +2821,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|iface-&gt;base
 )paren
 suffix:semicolon

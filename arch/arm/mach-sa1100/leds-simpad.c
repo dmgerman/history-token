@@ -53,11 +53,6 @@ id|led_event_t
 id|evt
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-singleline_comment|//local_irq_save(flags);
 r_switch
 c_cond
 (paren
@@ -230,6 +225,5 @@ c_func
 id|LED2_ON
 )paren
 suffix:semicolon
-singleline_comment|//local_irq_restore(flags);
 )brace
 eof

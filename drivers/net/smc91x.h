@@ -46,6 +46,36 @@ DECL|macro|SMC_outsw
 mdefine_line|#define SMC_outsw(a, r, p, l) &t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long __port = (a) + (r);&t;&t;&t;&bslash;&n;&t;&t;u16 *__p = (u16 *)(p);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int __l = (l);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;while (__l &gt; 0) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;/* Believe it or not, the swab isn&squot;t needed. */&t;&bslash;&n;&t;&t;&t;outw( /* swab16 */ (*__p++), __port);&t;&t;&bslash;&n;&t;&t;&t;__l--;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|set_irq_type
 mdefine_line|#define set_irq_type(irq, type)
+macro_line|#elif defined(CONFIG_SA1100_PLEB)
+multiline_comment|/* We can only do 16-bit reads and writes in the static memory space. */
+DECL|macro|SMC_CAN_USE_8BIT
+mdefine_line|#define SMC_CAN_USE_8BIT&t;1
+DECL|macro|SMC_CAN_USE_16BIT
+mdefine_line|#define SMC_CAN_USE_16BIT&t;1
+DECL|macro|SMC_CAN_USE_32BIT
+mdefine_line|#define SMC_CAN_USE_32BIT&t;0
+DECL|macro|SMC_IO_SHIFT
+mdefine_line|#define SMC_IO_SHIFT&t;&t;0
+DECL|macro|SMC_NOWAIT
+mdefine_line|#define SMC_NOWAIT&t;&t;1
+DECL|macro|SMC_inb
+mdefine_line|#define SMC_inb(a, r)&t;&t;inb((a) + (r))
+DECL|macro|SMC_insb
+mdefine_line|#define SMC_insb(a, r, p, l)&t;insb((a) + (r), p, (l))
+DECL|macro|SMC_inw
+mdefine_line|#define SMC_inw(a, r)&t;&t;inw((a) + (r))
+DECL|macro|SMC_insw
+mdefine_line|#define SMC_insw(a, r, p, l)&t;insw((a) + (r), p, l)
+DECL|macro|SMC_outb
+mdefine_line|#define SMC_outb(v, a, r)&t;outb(v, (a) + (r))
+DECL|macro|SMC_outsb
+mdefine_line|#define SMC_outsb(a, r, p, l)&t;outsb((a) + (r), p, (l))
+DECL|macro|SMC_outw
+mdefine_line|#define SMC_outw(v, a, r)&t;outw(v, (a) + (r))
+DECL|macro|SMC_outsw
+mdefine_line|#define SMC_outsw(a, r, p, l)&t;outsw((a) + (r), p, l)
+DECL|macro|set_irq_type
+mdefine_line|#define set_irq_type(irq, type) do {} while (0)
 macro_line|#elif defined(CONFIG_SA1100_ASSABET)
 macro_line|#include &lt;asm/arch/neponset.h&gt;
 multiline_comment|/* We can only do 8-bit reads and writes in the static memory space. */

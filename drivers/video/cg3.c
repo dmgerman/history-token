@@ -322,6 +322,7 @@ suffix:semicolon
 DECL|member|regs
 r_struct
 id|cg3_regs
+id|__iomem
 op_star
 id|regs
 suffix:semicolon
@@ -415,6 +416,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|bt_regs
+id|__iomem
 op_star
 id|bt
 op_assign
@@ -599,6 +601,7 @@ id|info-&gt;par
 suffix:semicolon
 r_struct
 id|cg3_regs
+id|__iomem
 op_star
 id|regs
 op_assign
@@ -1428,6 +1431,7 @@ l_int|2
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|regp
 op_assign
@@ -1435,6 +1439,7 @@ op_amp
 (paren
 (paren
 id|u8
+id|__iomem
 op_star
 )paren
 id|par-&gt;regs
@@ -1475,6 +1480,7 @@ l_int|2
 (brace
 r_volatile
 id|u8
+id|__iomem
 op_star
 id|regp
 suffix:semicolon
@@ -1483,6 +1489,7 @@ op_assign
 (paren
 r_volatile
 id|u8
+id|__iomem
 op_star
 )paren
 op_amp
@@ -1504,6 +1511,7 @@ op_assign
 (paren
 r_volatile
 id|u8
+id|__iomem
 op_star
 )paren
 op_amp
@@ -1709,11 +1717,6 @@ id|all-&gt;info.var.yres
 suffix:semicolon
 id|all-&gt;par.regs
 op_assign
-(paren
-r_struct
-id|cg3_regs
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -1748,6 +1751,7 @@ id|all-&gt;info.screen_base
 op_assign
 (paren
 r_char
+id|__iomem
 op_star
 )paren
 id|prom_getintdefault
@@ -1769,10 +1773,6 @@ id|all-&gt;info.screen_base
 )paren
 id|all-&gt;info.screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren

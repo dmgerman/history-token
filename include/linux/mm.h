@@ -2238,7 +2238,7 @@ id|new_below
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|insert_vm_struct
 c_func
 (paren

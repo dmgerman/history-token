@@ -102,6 +102,7 @@ DECL|member|cmap_regs
 r_volatile
 r_struct
 id|cmap_regs
+id|__iomem
 op_star
 id|cmap_regs
 suffix:semicolon
@@ -114,6 +115,7 @@ DECL|member|platinum_regs
 r_volatile
 r_struct
 id|platinum_regs
+id|__iomem
 op_star
 id|platinum_regs
 suffix:semicolon
@@ -124,12 +126,14 @@ id|platinum_regs_phys
 suffix:semicolon
 DECL|member|frame_buffer
 id|__u8
+id|__iomem
 op_star
 id|frame_buffer
 suffix:semicolon
 DECL|member|base_frame_buffer
 r_volatile
 id|__u8
+id|__iomem
 op_star
 id|base_frame_buffer
 suffix:semicolon
@@ -479,10 +483,6 @@ l_int|0x10
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|pinfo-&gt;frame_buffer
 op_plus
 id|init-&gt;fb_offset
@@ -603,6 +603,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|cmap_regs
+id|__iomem
 op_star
 id|cmap_regs
 op_assign
@@ -840,6 +841,7 @@ id|pinfo
 r_volatile
 r_struct
 id|cmap_regs
+id|__iomem
 op_star
 id|cmap_regs
 op_assign
@@ -999,6 +1001,7 @@ id|pinfo
 r_volatile
 r_struct
 id|platinum_regs
+id|__iomem
 op_star
 id|platinum_regs
 op_assign
@@ -1007,6 +1010,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|cmap_regs
+id|__iomem
 op_star
 id|cmap_regs
 op_assign
@@ -1387,10 +1391,6 @@ id|FBINFO_DEFAULT
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|pinfo-&gt;frame_buffer
 op_plus
 l_int|0x20
@@ -1802,6 +1802,7 @@ id|info
 r_volatile
 r_struct
 id|platinum_regs
+id|__iomem
 op_star
 id|platinum_regs
 op_assign
@@ -3119,20 +3120,12 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|pinfo-&gt;frame_buffer
 )paren
 suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|pinfo-&gt;platinum_regs
 )paren
 suffix:semicolon
@@ -3147,10 +3140,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|pinfo-&gt;cmap_regs
 )paren
 suffix:semicolon
