@@ -4807,7 +4807,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Ensure there are no outstanding leases on the file.&n;&t; */
 id|error
 op_assign
-id|get_lease
+id|break_lease
 c_func
 (paren
 id|inode

@@ -1,21 +1,21 @@
 multiline_comment|/* $Id: atp870u.c,v 1.0 1997/05/07 15:22:00 root Exp root $&n; *  linux/kernel/atp870u.c&n; *&n; *  Copyright (C) 1997&t;Wu Ching Chen&n; *  2.1.x update (C) 1998  Krzysztof G. Baranowski&n; *  2.5.x update (C) 2002  Red Hat &lt;alan@redhat.com&gt;&n; *&n; * Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : SMP fixes&n; *&n; * Wu Ching Chen : NULL pointer fixes  2000/06/02&n; *&t;&t;   support atp876 chip&n; *&t;&t;   enable 32 bit fifo transfer&n; *&t;&t;   support cdrom &amp; remove device run ultra speed&n; *&t;&t;   fix disconnect bug  2000/12/21&n; *&t;&t;   support atp880 chip lvd u160 2001/05/15&n; *&t;&t;   fix prd table bug 2001/09/12 (7.1)&n; */
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
+macro_line|#include &lt;linux/stat.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;atp870u.h&quot;
-macro_line|#include&lt;linux/stat.h&gt;
 multiline_comment|/*&n; *   static const char RCSid[] = &quot;$Header: /usr/src/linux/kernel/blk_drv/scsi/RCS/atp870u.c,v 1.0 1997/05/07 15:22:00 root Exp root $&quot;;&n; */
 DECL|variable|sync_idu
 r_static

@@ -1650,10 +1650,11 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|hugetlbfs_get_inode
+r_static
 r_struct
 id|inode
 op_star
+DECL|function|hugetlbfs_get_inode
 id|hugetlbfs_get_inode
 c_func
 (paren
@@ -1665,7 +1666,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace
@@ -1797,9 +1798,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * File creation. Allocate an inode, and we&squot;re done..&n; */
 multiline_comment|/* SMP-safe */
-DECL|function|hugetlbfs_mknod
 r_static
 r_int
+DECL|function|hugetlbfs_mknod
 id|hugetlbfs_mknod
 c_func
 (paren
@@ -1816,7 +1817,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|dev
 )paren
 (brace

@@ -180,7 +180,7 @@ op_star
 comma
 r_int
 comma
-r_int
+id|dev_t
 )paren
 suffix:semicolon
 r_static
@@ -3347,9 +3347,9 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * See comments for nfs_proc_create regarding failed operations.&n; */
-DECL|function|nfs_mknod
 r_static
 r_int
+DECL|function|nfs_mknod
 id|nfs_mknod
 c_func
 (paren
@@ -3366,7 +3366,7 @@ comma
 r_int
 id|mode
 comma
-r_int
+id|dev_t
 id|rdev
 )paren
 (brace

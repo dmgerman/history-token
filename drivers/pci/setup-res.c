@@ -56,6 +56,19 @@ comma
 id|res
 )paren
 suffix:semicolon
+r_char
+op_star
+id|dtype
+op_assign
+id|resource
+OL
+id|PCI_BRIDGE_RESOURCES
+ques
+c_cond
+l_string|&quot;device&quot;
+suffix:colon
+l_string|&quot;bridge&quot;
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -71,7 +84,6 @@ id|root
 op_ne
 l_int|NULL
 )paren
-(brace
 id|err
 op_assign
 id|request_resource
@@ -92,32 +104,24 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PCI: Address space collision on &quot;
-l_string|&quot;region %d of device %s [%lx:%lx]&bslash;n&quot;
+l_string|&quot;PCI: %s region %d of %s %s [%lx:%lx]&bslash;n&quot;
+comma
+id|root
+ques
+c_cond
+l_string|&quot;Address space collision on&quot;
+suffix:colon
+l_string|&quot;No parent found for&quot;
 comma
 id|resource
 comma
-id|dev-&gt;dev.name
+id|dtype
+comma
+id|dev-&gt;slot_name
 comma
 id|res-&gt;start
 comma
 id|res-&gt;end
-)paren
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;PCI: No parent found for region %d &quot;
-l_string|&quot;of device %s&bslash;n&quot;
-comma
-id|resource
-comma
-id|dev-&gt;dev.name
 )paren
 suffix:semicolon
 )brace
@@ -457,7 +461,7 @@ id|res-&gt;end
 comma
 id|i
 comma
-id|dev-&gt;name
+id|dev-&gt;dev.name
 )paren
 )paren
 suffix:semicolon
@@ -467,7 +471,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Sort resources by alignment */
 r_void
-id|__init
+id|__devinit
 DECL|function|pdev_sort_resources
 id|pdev_sort_resources
 c_func

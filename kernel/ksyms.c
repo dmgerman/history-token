@@ -1520,11 +1520,11 @@ c_func
 id|vfs_readdir
 )paren
 suffix:semicolon
-DECL|variable|__get_lease
+DECL|variable|__break_lease
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__get_lease
+id|__break_lease
 )paren
 suffix:semicolon
 DECL|variable|lease_get_mtime

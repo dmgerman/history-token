@@ -23,6 +23,9 @@ mdefine_line|#define&t;SCSI_REMOVAL_PREVENT&t;1
 DECL|macro|SCSI_REMOVAL_ALLOW
 mdefine_line|#define&t;SCSI_REMOVAL_ALLOW&t;0
 macro_line|#ifdef __KERNEL__
+r_struct
+id|scsi_device
+suffix:semicolon
 multiline_comment|/*&n; * Structures used for scsi_ioctl et al.&n; */
 DECL|struct|scsi_ioctl_command
 r_typedef
@@ -94,33 +97,31 @@ suffix:semicolon
 r_extern
 r_int
 id|scsi_ioctl
+c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
-id|dev
 comma
 r_int
-id|cmd
 comma
 r_void
 op_star
-id|arg
 )paren
 suffix:semicolon
 r_extern
 r_int
 id|kernel_scsi_ioctl
+c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
-id|dev
 comma
 r_int
-id|cmd
 comma
 r_void
 op_star
-id|arg
 )paren
 suffix:semicolon
 r_extern
@@ -128,15 +129,15 @@ r_int
 id|scsi_ioctl_send_command
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
-id|dev
 comma
-id|Scsi_Ioctl_Command
+r_struct
+id|scsi_ioctl_command
 op_star
-id|arg
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
+macro_line|#endif /* _SCSI_IOCTL_H */
 eof
