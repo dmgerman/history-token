@@ -127,10 +127,10 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-DECL|function|ntfs_alloc_inode
+DECL|function|ntfs_alloc_extent_inode
 id|ntfs_inode
 op_star
-id|ntfs_alloc_inode
+id|ntfs_alloc_extent_inode
 c_func
 (paren
 r_void
@@ -180,9 +180,9 @@ r_return
 id|ni
 suffix:semicolon
 )brace
-DECL|function|ntfs_destroy_inode
+DECL|function|ntfs_destroy_extent_inode
 r_void
-id|ntfs_destroy_inode
+id|ntfs_destroy_extent_inode
 c_func
 (paren
 id|ntfs_inode
@@ -395,10 +395,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|ntfs_new_inode
+DECL|function|ntfs_new_extent_inode
 id|ntfs_inode
 op_star
-id|ntfs_new_inode
+id|ntfs_new_extent_inode
 c_func
 (paren
 r_struct
@@ -411,7 +411,7 @@ id|ntfs_inode
 op_star
 id|ni
 op_assign
-id|ntfs_alloc_inode
+id|ntfs_alloc_extent_inode
 c_func
 (paren
 )paren
@@ -810,7 +810,7 @@ id|vi-&gt;i_mode
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Initialize the ntfs specific part of @vi special casing&n;&t; * FILE_MFT which we need to do at mount time.&n;&t; */
+multiline_comment|/*&n;&t; * Initialize the ntfs specific part of @vi special casing&n;&t; * FILE_MFT which we need to do at mount time. This also sets&n;&t; * ni-&gt;mft_no to vi-&gt;i_ino.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1131,11 +1131,11 @@ comma
 id|vi-&gt;i_ino
 )paren
 suffix:semicolon
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_AttrList
+id|NInoSetAttrList
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1147,6 +1147,10 @@ op_logical_or
 id|ctx-&gt;attr-&gt;flags
 op_amp
 id|ATTR_COMPRESSION_MASK
+op_logical_or
+id|ctx-&gt;attr-&gt;flags
+op_amp
+id|ATTR_IS_SPARSE
 )paren
 (brace
 id|ntfs_error
@@ -1155,9 +1159,9 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;Attribute list attribute is &quot;
-l_string|&quot;compressed/encrypted. Not allowed. &quot;
-l_string|&quot;Corrupt inode. You should run &quot;
-l_string|&quot;chkdsk.&quot;
+l_string|&quot;compressed/encrypted/sparse. Not &quot;
+l_string|&quot;allowed. Corrupt inode. You should &quot;
+l_string|&quot;run chkdsk.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1215,11 +1219,11 @@ c_cond
 id|ctx-&gt;attr-&gt;non_resident
 )paren
 (brace
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_AttrListNonResident
+id|NInoSetAttrListNonResident
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1545,11 +1549,11 @@ id|ctx-&gt;attr-&gt;flags
 op_amp
 id|ATTR_COMPRESSION_MASK
 )paren
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_Compressed
+id|NInoSetCompressed
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1581,13 +1585,26 @@ r_goto
 id|put_unm_err_out
 suffix:semicolon
 )brace
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_Encrypted
+id|NInoSetEncrypted
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ctx-&gt;attr-&gt;flags
+op_amp
+id|ATTR_IS_SPARSE
+)paren
+id|NInoSetSparse
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
 id|ir
 op_assign
 (paren
@@ -1966,6 +1983,25 @@ op_assign
 id|vol-&gt;sector_size_bits
 suffix:semicolon
 )brace
+multiline_comment|/* Setup the index allocation attribute, even if not present. */
+id|NInoSetMstProtected
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
+id|ni-&gt;type
+op_assign
+id|AT_INDEX_ALLOCATION
+suffix:semicolon
+id|ni-&gt;name
+op_assign
+id|I30
+suffix:semicolon
+id|ni-&gt;name_len
+op_assign
+l_int|4
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1989,11 +2025,11 @@ id|skip_large_dir_stuff
 suffix:semicolon
 )brace
 multiline_comment|/* LARGE_INDEX: Index allocation present. Setup state. */
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_NonResident
+id|NInoSetIndexAllocPresent
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 multiline_comment|/* Find index allocation attribute. */
 id|reinit_attr_search_ctx
@@ -2076,6 +2112,27 @@ id|vi-&gt;i_sb
 comma
 l_string|&quot;$INDEX_ALLOCATION attribute &quot;
 l_string|&quot;is encrypted.&quot;
+)paren
+suffix:semicolon
+r_goto
+id|put_unm_err_out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ctx-&gt;attr-&gt;flags
+op_amp
+id|ATTR_IS_SPARSE
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;$INDEX_ALLOCATION attribute &quot;
+l_string|&quot;is sparse.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2226,6 +2283,8 @@ op_amp
 id|ATTR_COMPRESSION_MASK
 op_or
 id|ATTR_IS_ENCRYPTED
+op_or
+id|ATTR_IS_SPARSE
 )paren
 )paren
 (brace
@@ -2235,7 +2294,7 @@ c_func
 id|vi-&gt;i_sb
 comma
 l_string|&quot;$BITMAP attribute is compressed &quot;
-l_string|&quot;and/or encrypted.&quot;
+l_string|&quot;and/or encrypted and/or sparse.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2248,11 +2307,11 @@ c_cond
 id|ctx-&gt;attr-&gt;non_resident
 )paren
 (brace
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_BmpNonResident
+id|NInoSetBmpNonResident
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2573,6 +2632,19 @@ c_func
 id|ctx
 )paren
 suffix:semicolon
+multiline_comment|/* Setup the data attribute, even if not present. */
+id|ni-&gt;type
+op_assign
+id|AT_DATA
+suffix:semicolon
+id|ni-&gt;name
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ni-&gt;name_len
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2654,11 +2726,11 @@ c_cond
 id|ctx-&gt;attr-&gt;non_resident
 )paren
 (brace
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_NonResident
+id|NInoSetNonResident
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2668,11 +2740,11 @@ op_amp
 id|ATTR_COMPRESSION_MASK
 )paren
 (brace
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_Compressed
+id|NInoSetCompressed
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2861,13 +2933,26 @@ r_goto
 id|put_unm_err_out
 suffix:semicolon
 )brace
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_Encrypted
+id|NInoSetEncrypted
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ctx-&gt;attr-&gt;flags
+op_amp
+id|ATTR_IS_SPARSE
+)paren
+id|NInoSetSparse
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3296,6 +3381,31 @@ r_goto
 id|err_out
 suffix:semicolon
 )brace
+multiline_comment|/* Setup the data attribute. It is special as it is mst protected. */
+id|NInoSetNonResident
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
+id|NInoSetMstProtected
+c_func
+(paren
+id|ni
+)paren
+suffix:semicolon
+id|ni-&gt;type
+op_assign
+id|AT_DATA
+suffix:semicolon
+id|ni-&gt;name
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ni-&gt;name_len
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * This sets up our little cheat allowing us to reuse the async io&n;&t; * completion handler for directories.&n;&t; */
 id|ni
 op_member_access_from_pointer
@@ -3604,11 +3714,11 @@ c_func
 l_string|&quot;Attribute list attribute found in $MFT.&quot;
 )paren
 suffix:semicolon
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_AttrList
+id|NInoSetAttrList
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3620,6 +3730,10 @@ op_logical_or
 id|ctx-&gt;attr-&gt;flags
 op_amp
 id|ATTR_COMPRESSION_MASK
+op_logical_or
+id|ctx-&gt;attr-&gt;flags
+op_amp
+id|ATTR_IS_SPARSE
 )paren
 (brace
 id|ntfs_error
@@ -3628,9 +3742,9 @@ c_func
 id|sb
 comma
 l_string|&quot;Attribute list attribute is &quot;
-l_string|&quot;compressed/encrypted. Not allowed. &quot;
-l_string|&quot;$MFT is corrupt. You should run &quot;
-l_string|&quot;chkdsk.&quot;
+l_string|&quot;compressed/encrypted/sparse. Not &quot;
+l_string|&quot;allowed. $MFT is corrupt. You should &quot;
+l_string|&quot;run chkdsk.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3683,11 +3797,11 @@ c_cond
 id|ctx-&gt;attr-&gt;non_resident
 )paren
 (brace
-id|ni-&gt;state
-op_or_assign
-l_int|1
-op_lshift
-id|NI_AttrListNonResident
+id|NInoSetAttrListNonResident
+c_func
+(paren
+id|ni
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4215,6 +4329,10 @@ op_logical_or
 id|attr-&gt;flags
 op_amp
 id|ATTR_IS_ENCRYPTED
+op_logical_or
+id|attr-&gt;flags
+op_amp
+id|ATTR_IS_SPARSE
 )paren
 (brace
 id|ntfs_error
@@ -4222,10 +4340,11 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;$MFT must be uncompressed and &quot;
-l_string|&quot;unencrypted but a compressed/&quot;
-l_string|&quot;encrypted extent was found. &quot;
-l_string|&quot;$MFT is corrupt. Run chkdsk.&quot;
+l_string|&quot;$MFT must be uncompressed, &quot;
+l_string|&quot;non-sparse, and unencrypted but a &quot;
+l_string|&quot;compressed/sparse/encrypted extent &quot;
+l_string|&quot;was found. $MFT is corrupt. Run &quot;
+l_string|&quot;chkdsk.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4880,7 +4999,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|ntfs_destroy_inode
+id|ntfs_clear_extent_inode
 c_func
 (paren
 id|ni
@@ -4916,6 +5035,12 @@ op_amp
 id|ni-&gt;run_list.lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ni-&gt;run_list.rl
+)paren
+(brace
 id|ntfs_free
 c_func
 (paren
@@ -4926,6 +5051,7 @@ id|ni-&gt;run_list.rl
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 id|up_write
 c_func
 (paren
@@ -4933,12 +5059,23 @@ op_amp
 id|ni-&gt;run_list.lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ni-&gt;attr_list
+)paren
+(brace
 id|ntfs_free
 c_func
 (paren
 id|ni-&gt;attr_list
 )paren
 suffix:semicolon
+id|ni-&gt;attr_list
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 id|down_write
 c_func
 (paren
@@ -4946,6 +5083,12 @@ op_amp
 id|ni-&gt;attr_list_rl.lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ni-&gt;attr_list_rl.rl
+)paren
+(brace
 id|ntfs_free
 c_func
 (paren
@@ -4956,6 +5099,7 @@ id|ni-&gt;attr_list_rl.rl
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
 id|up_write
 c_func
 (paren
@@ -4963,10 +5107,35 @@ op_amp
 id|ni-&gt;attr_list_rl.lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ni-&gt;name_len
+op_logical_and
+id|ni-&gt;name
+op_ne
+id|I30
+)paren
+(brace
+multiline_comment|/* Catch bugs... */
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|ni-&gt;name
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|ni-&gt;name
+)paren
+suffix:semicolon
 )brace
-DECL|function|ntfs_clear_inode
+)brace
+DECL|function|ntfs_clear_extent_inode
 r_void
-id|ntfs_clear_inode
+id|ntfs_clear_extent_inode
 c_func
 (paren
 id|ntfs_inode
@@ -4981,7 +5150,7 @@ id|ni
 )paren
 suffix:semicolon
 multiline_comment|/* Bye, bye... */
-id|ntfs_destroy_inode
+id|ntfs_destroy_extent_inode
 c_func
 (paren
 id|ni
@@ -5041,6 +5210,19 @@ dot
 id|lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ni
+op_member_access_from_pointer
+id|_IDM
+c_func
+(paren
+id|bmp_rl
+)paren
+dot
+id|rl
+)paren
 id|ntfs_free
 c_func
 (paren
