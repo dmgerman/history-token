@@ -11565,4 +11565,11 @@ c_func
 id|sysctl_tcp_low_latency
 )paren
 suffix:semicolon
+DECL|variable|sysctl_tcp_tw_reuse
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_tcp_tw_reuse
+)paren
+suffix:semicolon
 eof
