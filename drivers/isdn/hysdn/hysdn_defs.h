@@ -545,6 +545,11 @@ op_star
 id|tx_skb
 suffix:semicolon
 multiline_comment|/* buffer for tx operation */
+DECL|member|ncci_head
+r_struct
+id|list_head
+id|ncci_head
+suffix:semicolon
 DECL|member|hyctrlinfo
 )brace
 op_star
@@ -994,7 +999,7 @@ id|appl
 )paren
 suffix:semicolon
 r_extern
-r_void
+id|u16
 id|hycapi_send_message
 c_func
 (paren
