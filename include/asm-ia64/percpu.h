@@ -1,16 +1,19 @@
 macro_line|#ifndef _ASM_IA64_PERCPU_H
 DECL|macro|_ASM_IA64_PERCPU_H
 mdefine_line|#define _ASM_IA64_PERCPU_H
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * Copyright (C) 2002-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|PERCPU_ENOUGH_ROOM
 mdefine_line|#define PERCPU_ENOUGH_ROOM PERCPU_PAGE_SIZE
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|THIS_CPU
-mdefine_line|#define THIS_CPU(var)&t;(var##__per_cpu)  /* use this to mark accesses to per-CPU variables... */
+macro_line|# define THIS_CPU(var)&t;(per_cpu__##var)  /* use this to mark accesses to per-CPU variables... */
 macro_line|#else /* !__ASSEMBLY__ */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
+DECL|macro|DECLARE_PER_CPU
+mdefine_line|#define DECLARE_PER_CPU(type, name) extern __typeof__(type) per_cpu__##name
+multiline_comment|/*&n; * Pretty much a literal copy of asm-generic/percpu.h, except that percpu_modcopy() is an&n; * external routine, to avoid include-hell.&n; */
+macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int
 r_int
@@ -19,15 +22,23 @@ id|__per_cpu_offset
 id|NR_CPUS
 )braket
 suffix:semicolon
+multiline_comment|/* Equal to __per_cpu_offset[smp_processor_id()], but faster to access: */
+id|DECLARE_PER_CPU
+c_func
+(paren
+r_int
+r_int
+comma
+id|local_per_cpu_offset
+)paren
+suffix:semicolon
+multiline_comment|/* Separate out the type, so (int[3], foo) works. */
 DECL|macro|DEFINE_PER_CPU
-mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __attribute__((__section__(&quot;.data.percpu&quot;))) __typeof__(type) name##__per_cpu
-DECL|macro|DECLARE_PER_CPU
-mdefine_line|#define DECLARE_PER_CPU(type, name) extern __typeof__(type) name##__per_cpu
-DECL|macro|__get_cpu_var
-mdefine_line|#define __get_cpu_var(var)&t;(var##__per_cpu)
-macro_line|#ifdef CONFIG_SMP
+mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __attribute__((__section__(&quot;.data.percpu&quot;))) __typeof__(type) per_cpu__##name
 DECL|macro|per_cpu
-macro_line|# define per_cpu(var, cpu)&t;(*RELOC_HIDE(&amp;var##__per_cpu, __per_cpu_offset[cpu]))
+mdefine_line|#define per_cpu(var, cpu)  (*RELOC_HIDE(&amp;per_cpu__##var, __per_cpu_offset[cpu]))
+DECL|macro|__get_cpu_var
+mdefine_line|#define __get_cpu_var(var) (*RELOC_HIDE(&amp;per_cpu__##var, __ia64_per_cpu_var(local_per_cpu_offset)))
 r_extern
 r_void
 id|percpu_modcopy
@@ -47,14 +58,19 @@ r_int
 id|size
 )paren
 suffix:semicolon
-macro_line|#else
+macro_line|#else /* ! SMP */
+DECL|macro|DEFINE_PER_CPU
+mdefine_line|#define DEFINE_PER_CPU(type, name)&t;&t;__typeof__(type) per_cpu__##name
 DECL|macro|per_cpu
-macro_line|# define per_cpu(var, cpu)&t;((void)cpu, __get_cpu_var(var))
-macro_line|#endif
+mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;((void)cpu, per_cpu__##var)
+DECL|macro|__get_cpu_var
+mdefine_line|#define __get_cpu_var(var)&t;&t;&t;per_cpu__##var
+macro_line|#endif&t;/* SMP */
 DECL|macro|EXPORT_PER_CPU_SYMBOL
-mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var) EXPORT_SYMBOL(var##__per_cpu)
+mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var)&t;&t;EXPORT_SYMBOL(per_cpu__##var)
 DECL|macro|EXPORT_PER_CPU_SYMBOL_GPL
-mdefine_line|#define EXPORT_PER_CPU_SYMBOL_GPL(var) EXPORT_SYMBOL_GPL(var##__per_cpu)
+mdefine_line|#define EXPORT_PER_CPU_SYMBOL_GPL(var)&t;&t;EXPORT_SYMBOL_GPL(per_cpu__##var)
+multiline_comment|/* ia64-specific part: */
 r_extern
 r_void
 id|setup_per_cpu_areas
@@ -62,6 +78,9 @@ id|setup_per_cpu_areas
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Be extremely careful when taking the address of this variable!  Due to virtual&n; * remapping, it is different from the canonical address returned by __get_cpu_var(var)!&n; * On the positive side, using __ia64_per_cpu_var() instead of __get_cpu_var() is slightly&n; * more efficient.&n; */
+DECL|macro|__ia64_per_cpu_var
+mdefine_line|#define __ia64_per_cpu_var(var)&t;(per_cpu__##var)
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_PERCPU_H */
 eof

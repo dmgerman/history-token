@@ -57,6 +57,15 @@ c_func
 r_int
 r_int
 comma
+id|local_per_cpu_offset
+)paren
+suffix:semicolon
+id|DEFINE_PER_CPU
+c_func
+(paren
+r_int
+r_int
+comma
 id|ia64_phys_stacked_size_p8
 )paren
 suffix:semicolon
@@ -2758,6 +2767,19 @@ id|cpu_data
 op_add_assign
 id|PERCPU_PAGE_SIZE
 suffix:semicolon
+id|per_cpu
+c_func
+(paren
+id|local_per_cpu_offset
+comma
+id|cpu
+)paren
+op_assign
+id|__per_cpu_offset
+(braket
+id|cpu
+)braket
+suffix:semicolon
 )brace
 )brace
 id|cpu_data
@@ -2778,6 +2800,12 @@ op_assign
 id|__phys_per_cpu_start
 suffix:semicolon
 macro_line|#endif /* !CONFIG_SMP */
+id|get_max_cacheline_size
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We can&squot;t pass &quot;local_cpu_data&quot; to identify_cpu() because we haven&squot;t called&n;&t; * ia64_mmu_init() yet.  And we can&squot;t call ia64_mmu_init() first because it&n;&t; * depends on the data returned by identify_cpu().  We break the dependency by&n;&t; * accessing cpu_data() through the canonical per-CPU address.&n;&t; */
 id|cpu_info
 op_assign
 id|cpu_data
@@ -2788,7 +2816,7 @@ r_char
 op_star
 )paren
 op_amp
-id|__get_cpu_var
+id|__ia64_per_cpu_var
 c_func
 (paren
 id|cpu_info
@@ -2806,12 +2834,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|get_max_cacheline_size
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We can&squot;t pass &quot;local_cpu_data&quot; to identify_cpu() because we haven&squot;t called&n;&t; * ia64_mmu_init() yet.  And we can&squot;t call ia64_mmu_init() first because it&n;&t; * depends on the data returned by identify_cpu().  We break the dependency by&n;&t; * accessing cpu_data() the old way, through identity mapped space.&n;&t; */
 id|identify_cpu
 c_func
 (paren

@@ -1425,7 +1425,7 @@ suffix:semicolon
 DECL|macro|pfm_wait_task_inactive
 mdefine_line|#define pfm_wait_task_inactive(t)&t;wait_task_inactive(t)
 DECL|macro|pfm_get_cpu_var
-mdefine_line|#define pfm_get_cpu_var(v)&t;&t;__get_cpu_var(v)
+mdefine_line|#define pfm_get_cpu_var(v)&t;&t;__ia64_per_cpu_var(v)
 DECL|macro|pfm_get_cpu_data
 mdefine_line|#define pfm_get_cpu_data(a,b)&t;&t;per_cpu(a, b)
 DECL|typedef|pfm_irq_handler_t

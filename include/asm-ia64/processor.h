@@ -483,9 +483,9 @@ comma
 id|cpu_info
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The &quot;local&quot; data pointer.  It points to the per-CPU data of the currently executing&n; * CPU, much like &quot;current&quot; points to the per-task data of the currently executing task.&n; */
+multiline_comment|/*&n; * The &quot;local&quot; data variable.  It refers to the per-CPU data of the currently executing&n; * CPU, much like &quot;current&quot; points to the per-task data of the currently executing task.&n; * Do not use the address of local_cpu_data, since it will be different from&n; * cpu_data(smp_processor_id())!&n; */
 DECL|macro|local_cpu_data
-mdefine_line|#define local_cpu_data&t;&t;(&amp;__get_cpu_var(cpu_info))
+mdefine_line|#define local_cpu_data&t;&t;(&amp;__ia64_per_cpu_var(cpu_info))
 DECL|macro|cpu_data
 mdefine_line|#define cpu_data(cpu)&t;&t;(&amp;per_cpu(cpu_info, cpu))
 r_extern

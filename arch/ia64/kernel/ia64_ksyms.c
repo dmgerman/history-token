@@ -281,11 +281,11 @@ id|ia64_pfn_valid
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &lt;asm/processor.h&gt;
-DECL|variable|cpu_info__per_cpu
+DECL|variable|per_cpu__cpu_info
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|cpu_info__per_cpu
+id|per_cpu__cpu_info
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
@@ -294,6 +294,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__per_cpu_offset
+)paren
+suffix:semicolon
+DECL|variable|per_cpu__local_per_cpu_offset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|per_cpu__local_per_cpu_offset
 )paren
 suffix:semicolon
 macro_line|#endif
