@@ -370,6 +370,8 @@ DECL|macro|tlb_remove_tlb_entry
 mdefine_line|#define tlb_remove_tlb_entry(tlb, ptep, address)&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;__tlb_remove_tlb_entry(tlb, ptep, address);&t;&bslash;&n;&t;} while (0)
 DECL|macro|pte_free_tlb
 mdefine_line|#define pte_free_tlb(tlb, ptep)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;__pte_free_tlb(tlb, ptep);&t;&t;&t;&bslash;&n;&t;} while (0)
+DECL|macro|pud_free_tlb
+mdefine_line|#define pud_free_tlb(tlb, pudp)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;__pud_free_tlb(tlb, pudp);&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|pmd_free_tlb
 mdefine_line|#define pmd_free_tlb(tlb, pmdp)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;tlb-&gt;need_flush = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;__pmd_free_tlb(tlb, pmdp);&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|tlb_migrate_finish
