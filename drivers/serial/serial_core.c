@@ -6244,6 +6244,20 @@ id|stat_buf
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|strcat
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ret
+op_increment
+suffix:semicolon
+)brace
 DECL|macro|STATBIT
 macro_line|#undef STATBIT
 DECL|macro|INFOBIT
