@@ -8,16 +8,11 @@ macro_line|#include &quot;sysrq.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 multiline_comment|/*&n;  * If the address is either in the .text section of the&n;  * kernel, or in the vmalloc&squot;ed module regions, it *may* &n;  * be the address of a calling routine&n;  */
 macro_line|#ifdef CONFIG_MODULES
+multiline_comment|/* FIXME: Accessed without a lock --RR */
 r_extern
 r_struct
-id|module
-op_star
-id|module_list
-suffix:semicolon
-r_extern
-r_struct
-id|module
-id|kernel_module
+id|list_head
+id|modules
 suffix:semicolon
 DECL|function|kernel_text_address
 r_static
@@ -65,21 +60,15 @@ id|_etext
 r_return
 l_int|1
 suffix:semicolon
-r_for
-c_loop
+id|list_for_each_entry
+c_func
 (paren
 id|mod
-op_assign
-id|module_list
-suffix:semicolon
-id|mod
-op_ne
+comma
 op_amp
-id|kernel_module
-suffix:semicolon
-id|mod
-op_assign
-id|mod-&gt;next
+id|modules
+comma
+id|list
 )paren
 (brace
 multiline_comment|/* mod_bound tests for addr being inside the vmalloc&squot;ed&n;&t;&t; * module area. Of course it&squot;d be better to test only&n;&t;&t; * for the .text subset... */
@@ -89,6 +78,10 @@ c_cond
 id|mod_bound
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|addr
 comma
 l_int|0
