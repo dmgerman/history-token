@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * A policy database (policydb) specifies the&n; * configuration data for the security policy.&n; *&n; * Author : Stephen Smalley, &lt;sds@epoch.ncsc.mil&gt;&n; */
+multiline_comment|/* Updated: Frank Mayer &lt;mayerf@tresys.com&gt; and Karl MacMillan &lt;kmacmillan@tresys.com&gt;&n; *&n; * &t;Added conditional policy language extensions&n; *&n; * Copyright (C) 2003 - 2004 Tresys Technology, LLC&n; *&t;This program is free software; you can redistribute it and/or modify&n; *  &t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation, version 2.&n; */
 macro_line|#ifndef _SS_POLICYDB_H_
 DECL|macro|_SS_POLICYDB_H_
 mdefine_line|#define _SS_POLICYDB_H_
@@ -257,6 +258,25 @@ multiline_comment|/* is this category an alias for another? */
 )brace
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Boolean data type */
+DECL|struct|cond_bool_datum
+r_struct
+id|cond_bool_datum
+(brace
+DECL|member|value
+id|__u32
+id|value
+suffix:semicolon
+multiline_comment|/* internal type value */
+DECL|member|state
+r_int
+id|state
+suffix:semicolon
+)brace
+suffix:semicolon
+r_struct
+id|cond_node
+suffix:semicolon
 multiline_comment|/*&n; * The configuration data includes security contexts for&n; * initial SIDs, unlabeled file systems, TCP and UDP port numbers,&n; * network interfaces, and nodes.  This structure stores the&n; * relevant data for one such entry.  Entries of the same kind&n; * (e.g. all initial SIDs) are linked together into a list.&n; */
 DECL|struct|ocontext
 r_struct
@@ -388,11 +408,15 @@ DECL|macro|SYM_LEVELS
 mdefine_line|#define SYM_LEVELS  5
 DECL|macro|SYM_CATS
 mdefine_line|#define SYM_CATS    6
+DECL|macro|SYM_BOOLS
+mdefine_line|#define SYM_BOOLS   7
 DECL|macro|SYM_NUM
-mdefine_line|#define SYM_NUM     7
+mdefine_line|#define SYM_NUM     8
 macro_line|#else
+DECL|macro|SYM_BOOLS
+mdefine_line|#define SYM_BOOLS   5
 DECL|macro|SYM_NUM
-mdefine_line|#define SYM_NUM     5
+mdefine_line|#define SYM_NUM     6
 macro_line|#endif
 multiline_comment|/* object context array indices */
 DECL|macro|OCON_ISID
@@ -437,6 +461,8 @@ DECL|macro|p_levels
 mdefine_line|#define p_levels symtab[SYM_LEVELS]
 DECL|macro|p_cats
 mdefine_line|#define p_cats symtab[SYM_CATS]
+DECL|macro|p_bools
+mdefine_line|#define p_bools symtab[SYM_BOOLS]
 multiline_comment|/* symbol names indexed by (value - 1) */
 DECL|member|sym_val_to_name
 r_char
@@ -461,6 +487,8 @@ DECL|macro|p_sens_val_to_name
 mdefine_line|#define p_sens_val_to_name sym_val_to_name[SYM_LEVELS]
 DECL|macro|p_cat_val_to_name
 mdefine_line|#define p_cat_val_to_name sym_val_to_name[SYM_CATS]
+DECL|macro|p_bool_val_to_name
+mdefine_line|#define p_bool_val_to_name sym_val_to_name[SYM_BOOLS]
 multiline_comment|/* class, role, and user attributes indexed by (value - 1) */
 DECL|member|class_val_to_struct
 r_struct
@@ -495,6 +523,27 @@ r_struct
 id|role_trans
 op_star
 id|role_tr
+suffix:semicolon
+multiline_comment|/* bools indexed by (value - 1) */
+DECL|member|bool_val_to_struct
+r_struct
+id|cond_bool_datum
+op_star
+op_star
+id|bool_val_to_struct
+suffix:semicolon
+multiline_comment|/* type enforcement conditional access vectors and transitions */
+DECL|member|te_cond_avtab
+r_struct
+id|avtab
+id|te_cond_avtab
+suffix:semicolon
+multiline_comment|/* linked list indexing te_cond_avtab by conditional */
+DECL|member|cond_list
+r_struct
+id|cond_node
+op_star
+id|cond_list
 suffix:semicolon
 multiline_comment|/* role allows */
 DECL|member|role_allow
