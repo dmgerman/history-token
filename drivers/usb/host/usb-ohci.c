@@ -28,7 +28,8 @@ singleline_comment|// #define OHCI_VERBOSE_DEBUG&t;/* not always helpful */
 macro_line|#include &quot;../core/hcd.h&quot;
 macro_line|#include &quot;usb-ohci.h&quot;
 macro_line|#ifdef CONFIG_PMAC_PBOOK
-macro_line|#include &lt;asm/feature.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#include &lt;asm/pmac_feature.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#ifndef CONFIG_PM
 DECL|macro|CONFIG_PM
@@ -11864,14 +11865,15 @@ r_if
 c_cond
 (paren
 id|of_node
-op_logical_and
-id|_machine
-op_eq
-id|_MACH_Pmac
 )paren
-id|feature_set_usb_power
+id|pmac_call_feature
+c_func
 (paren
+id|PMAC_FTR_USB_ENABLE
+comma
 id|of_node
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -11966,14 +11968,15 @@ r_if
 c_cond
 (paren
 id|of_node
-op_logical_and
-id|_machine
-op_eq
-id|_MACH_Pmac
 )paren
-id|feature_set_usb_power
+id|pmac_call_feature
+c_func
 (paren
+id|PMAC_FTR_USB_ENABLE
+comma
 id|of_node
+comma
+l_int|0
 comma
 l_int|1
 )paren
