@@ -17,7 +17,7 @@ r_void
 r_int
 id|i
 suffix:semicolon
-id|u8
+id|u16
 id|temp
 suffix:semicolon
 r_struct
@@ -33,7 +33,7 @@ c_func
 id|agp_bridge.aperture_sizes
 )paren
 suffix:semicolon
-id|pci_read_config_byte
+id|pci_read_config_word
 c_func
 (paren
 id|agp_bridge.dev
@@ -43,6 +43,10 @@ comma
 op_amp
 id|temp
 )paren
+suffix:semicolon
+id|temp
+op_and_assign
+l_int|0xfff
 suffix:semicolon
 r_for
 c_loop
