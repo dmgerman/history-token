@@ -1544,9 +1544,6 @@ id|req-&gt;data_size
 op_assign
 l_int|2
 suffix:semicolon
-(paren
-r_int
-)paren
 id|req-&gt;priv
 op_assign
 l_int|0
@@ -3685,6 +3682,7 @@ op_star
 id|net
 comma
 r_void
+id|__user
 op_star
 id|uaddr
 )paren
@@ -4181,6 +4179,11 @@ c_func
 (paren
 id|net
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|ifr-&gt;ifr_data
 )paren
 suffix:semicolon
