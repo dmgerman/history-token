@@ -9290,7 +9290,6 @@ id|idx
 r_goto
 id|overflow
 suffix:semicolon
-macro_line|#if MAX_SKB_FRAGS
 r_if
 c_cond
 (paren
@@ -9303,7 +9302,6 @@ id|skb
 op_member_access_from_pointer
 id|nr_frags
 )paren
-macro_line|#endif
 (brace
 id|dma_addr_t
 id|mapping
@@ -9428,7 +9426,6 @@ id|vlan_tag
 )paren
 suffix:semicolon
 )brace
-macro_line|#if MAX_SKB_FRAGS
 r_else
 (brace
 id|dma_addr_t
@@ -9731,7 +9728,6 @@ id|vlan_tag
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 id|wmb
 c_func
 (paren
