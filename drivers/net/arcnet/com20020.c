@@ -478,6 +478,8 @@ l_int|0x42
 comma
 id|ioaddr
 op_plus
+id|BUS_ALIGN
+op_star
 l_int|7
 )paren
 suffix:semicolon
@@ -548,11 +550,15 @@ c_func
 (paren
 id|ioaddr
 op_plus
+id|BUS_ALIGN
+op_star
 l_int|8
 )paren
 comma
 id|ioaddr
 op_plus
+id|BUS_ALIGN
+op_star
 l_int|7
 )paren
 suffix:semicolon
@@ -729,6 +735,8 @@ c_func
 (paren
 id|ioaddr
 op_plus
+id|BUS_ALIGN
+op_star
 l_int|8
 )paren
 suffix:semicolon
@@ -997,13 +1005,33 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-r_int
+id|u_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 id|u_char
 id|inbyte
+suffix:semicolon
+id|BUGMSG
+c_func
+(paren
+id|D_DEBUG
+comma
+l_string|&quot;%s: %d: %s: dev: %p, lp: %p, dev-&gt;name: %s&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+comma
+id|__FUNCTION__
+comma
+id|dev
+comma
+id|lp
+comma
+id|dev-&gt;name
+)paren
 suffix:semicolon
 id|BUGMSG
 c_func
@@ -1018,6 +1046,20 @@ id|ASTATUS
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|BUGMSG
+c_func
+(paren
+id|D_DEBUG
+comma
+l_string|&quot;%s: %d: %s&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|lp-&gt;config
@@ -1039,6 +1081,20 @@ suffix:semicolon
 multiline_comment|/* power-up defaults */
 id|SETCONF
 suffix:semicolon
+id|BUGMSG
+c_func
+(paren
+id|D_DEBUG
+comma
+l_string|&quot;%s: %d: %s&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1059,6 +1115,20 @@ suffix:semicolon
 multiline_comment|/* COM20020 seems to be slower sometimes */
 )brace
 multiline_comment|/* clear flags &amp; end reset */
+id|BUGMSG
+c_func
+(paren
+id|D_DEBUG
+comma
+l_string|&quot;%s: %d: %s&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|ACOMMAND
 c_func
 (paren
@@ -1070,6 +1140,20 @@ id|CONFIGclear
 )paren
 suffix:semicolon
 multiline_comment|/* verify that the ARCnet signature byte is present */
+id|BUGMSG
+c_func
+(paren
+id|D_DEBUG
+comma
+l_string|&quot;%s: %d: %s&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|com20020_copy_from_card
 c_func
 (paren
@@ -1085,6 +1169,20 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|BUGMSG
+c_func
+(paren
+id|D_DEBUG
+comma
+l_string|&quot;%s: %d: %s&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1093,6 +1191,20 @@ op_ne
 id|TESTvalue
 )paren
 (brace
+id|BUGMSG
+c_func
+(paren
+id|D_DEBUG
+comma
+l_string|&quot;%s: %d: %s&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|BUGMSG
 c_func
 (paren
@@ -1112,6 +1224,20 @@ c_func
 id|CONFIGcmd
 op_or
 id|EXTconf
+)paren
+suffix:semicolon
+id|BUGMSG
+c_func
+(paren
+id|D_DEBUG
+comma
+l_string|&quot;%s: %d: %s&bslash;n&quot;
+comma
+id|__FILE__
+comma
+id|__LINE__
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* done!  return success. */
@@ -1134,10 +1260,22 @@ r_int
 id|mask
 )paren
 (brace
-r_int
+id|u_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
+suffix:semicolon
+id|BUGMSG
+c_func
+(paren
+id|D_DURING
+comma
+l_string|&quot;Setting mask to %x at %x&bslash;n&quot;
+comma
+id|mask
+comma
+id|ioaddr
+)paren
 suffix:semicolon
 id|AINTMASK
 c_func
@@ -1161,7 +1299,7 @@ r_int
 id|cmd
 )paren
 (brace
-r_int
+id|u_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -1185,7 +1323,7 @@ op_star
 id|dev
 )paren
 (brace
-r_int
+id|u_int
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -1194,6 +1332,15 @@ r_return
 id|ASTATUS
 c_func
 (paren
+)paren
+op_plus
+(paren
+id|ADIAGSTATUS
+c_func
+(paren
+)paren
+op_lshift
+l_int|8
 )paren
 suffix:semicolon
 )brace
