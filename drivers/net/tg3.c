@@ -13246,6 +13246,9 @@ c_func
 id|entry
 )paren
 suffix:semicolon
+id|i
+op_increment
+suffix:semicolon
 )brace
 id|dev_kfree_skb
 c_func
