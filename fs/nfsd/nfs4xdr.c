@@ -4323,6 +4323,10 @@ id|argp-&gt;ops
 id|i
 )braket
 suffix:semicolon
+id|op-&gt;replay
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We can&squot;t use READ_BUF() here because we need to handle&n;&t;&t; * a missing opcode as an OP_WRITE + 1. So we need to check&n;&t;&t; * to see if we&squot;re truly at the end of our buffer or if there&n;&t;&t; * is another page we need to flip to.&n;&t;&t; */
 r_if
 c_cond
@@ -4898,9 +4902,12 @@ DECL|macro|RESERVE_SPACE
 mdefine_line|#define RESERVE_SPACE(nbytes)&t;do {&t;&t;&t;&t;&bslash;&n;&t;p = resp-&gt;p;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;BUG_ON(p + XDR_QUADLEN(nbytes) &gt; resp-&gt;end);&t;&t;&bslash;&n;} while (0)
 DECL|macro|ADJUST_ARGS
 mdefine_line|#define ADJUST_ARGS()&t;&t;resp-&gt;p = p
-multiline_comment|/*&n; * Routine for encoding the result of a&n; * &quot;seqid-mutating&quot; NFSv4 operation.  This is&n; * where seqids are incremented&n; */
+multiline_comment|/*&n; * Header routine to setup seqid operation replay cache&n; */
+DECL|macro|ENCODE_SEQID_OP_HEAD
+mdefine_line|#define ENCODE_SEQID_OP_HEAD&t;&t;&t;&t;&t;&bslash;&n;&t;u32 *p;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 *save;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;save = resp-&gt;p;
+multiline_comment|/*&n; * Routine for encoding the result of a&n; * &quot;seqid-mutating&quot; NFSv4 operation.  This is&n; * where seqids are incremented, and the&n; * replay cache is filled.&n; */
 DECL|macro|ENCODE_SEQID_OP_TAIL
-mdefine_line|#define ENCODE_SEQID_OP_TAIL(stateowner) do {&t;&t;&bslash;&n;&t;BUG_ON(!stateowner);&t;&t;&t;&t;&bslash;&n;&t;if (seqid_mutating_err(nfserr) &amp;&amp; stateowner) {&t;&bslash;&n;&t;&t;if (stateowner-&gt;so_confirmed)&t;&t;&bslash;&n;&t;&t;&t;stateowner-&gt;so_seqid++;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define ENCODE_SEQID_OP_TAIL(stateowner) do {&t;&t;&t;&bslash;&n;&t;if (seqid_mutating_err(nfserr) &amp;&amp; stateowner) {&t;&t;&bslash;&n;&t;&t;if (stateowner-&gt;so_confirmed)&t;&t;&t;&bslash;&n;&t;&t;&t;stateowner-&gt;so_seqid++;&t;&t;&t;&bslash;&n;&t;&t;stateowner-&gt;so_replay.rp_status = nfserr;   &t;&bslash;&n;&t;&t;stateowner-&gt;so_replay.rp_buflen = &t;&t;&bslash;&n;&t;&t;&t;  (((char *)(resp)-&gt;p - (char *)save)); &bslash;&n;&t;&t;memcpy(stateowner-&gt;so_replay.rp_buf, save,      &bslash;&n; &t;&t;&t;stateowner-&gt;so_replay.rp_buflen); &t;&bslash;&n;&t;} } while(0)
 DECL|variable|nfs4_ftypes
 r_static
 id|u32
@@ -7478,7 +7485,7 @@ op_star
 id|close
 )paren
 (brace
-id|ENCODE_HEAD
+id|ENCODE_SEQID_OP_HEAD
 suffix:semicolon
 r_if
 c_cond
@@ -7520,19 +7527,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
+id|ENCODE_SEQID_OP_TAIL
+c_func
 (paren
 id|close-&gt;cl_stateowner
 )paren
-op_logical_and
-(paren
-id|close-&gt;cl_stateowner-&gt;so_confirmed
-)paren
-)paren
-id|close-&gt;cl_stateowner-&gt;so_seqid
-op_increment
 suffix:semicolon
 )brace
 r_static
@@ -7875,7 +7874,7 @@ op_star
 id|open
 )paren
 (brace
-id|ENCODE_HEAD
+id|ENCODE_SEQID_OP_HEAD
 suffix:semicolon
 r_if
 c_cond
@@ -8163,7 +8162,7 @@ op_star
 id|oc
 )paren
 (brace
-id|ENCODE_HEAD
+id|ENCODE_SEQID_OP_HEAD
 suffix:semicolon
 r_if
 c_cond
@@ -8232,7 +8231,7 @@ op_star
 id|od
 )paren
 (brace
-id|ENCODE_HEAD
+id|ENCODE_SEQID_OP_HEAD
 suffix:semicolon
 r_if
 c_cond
@@ -9967,6 +9966,82 @@ op_star
 id|statp
 op_assign
 id|op-&gt;status
+suffix:semicolon
+)brace
+multiline_comment|/* &n; * Encode the reply stored in the stateowner reply cache &n; * &n; * XDR note: do not encode rp-&gt;rp_buflen: the buffer contains the&n; * previously sent already encoded operation.&n; */
+r_void
+DECL|function|nfsd4_encode_replay
+id|nfsd4_encode_replay
+c_func
+(paren
+r_struct
+id|nfsd4_compoundres
+op_star
+id|resp
+comma
+r_struct
+id|nfsd4_op
+op_star
+id|op
+)paren
+(brace
+id|ENCODE_HEAD
+suffix:semicolon
+r_struct
+id|nfs4_replay
+op_star
+id|rp
+op_assign
+id|op-&gt;replay
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|rp
+)paren
+suffix:semicolon
+id|RESERVE_SPACE
+c_func
+(paren
+l_int|8
+)paren
+suffix:semicolon
+id|WRITE32
+c_func
+(paren
+id|op-&gt;opnum
+)paren
+suffix:semicolon
+id|WRITE32
+c_func
+(paren
+id|NFS_OK
+)paren
+suffix:semicolon
+id|ADJUST_ARGS
+c_func
+(paren
+)paren
+suffix:semicolon
+id|RESERVE_SPACE
+c_func
+(paren
+id|rp-&gt;rp_buflen
+)paren
+suffix:semicolon
+id|WRITEMEM
+c_func
+(paren
+id|rp-&gt;rp_buf
+comma
+id|rp-&gt;rp_buflen
+)paren
+suffix:semicolon
+id|ADJUST_ARGS
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * END OF &quot;GENERIC&quot; ENCODE ROUTINES.&n; */

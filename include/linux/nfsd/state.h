@@ -156,6 +156,41 @@ id|stateid-&gt;si_generation
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/* A reasonable value for REPLAY_ISIZE was estimated as follows:  &n; * The OPEN response, typically the largest, requires &n; *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +  8(verifier) + &n; *   4(deleg. type) + 8(deleg. stateid) + 4(deleg. recall flag) + &n; *   20(deleg. space limit) + ~32(deleg. ace) = 112 bytes &n; */
+DECL|macro|NFSD4_REPLAY_ISIZE
+mdefine_line|#define NFSD4_REPLAY_ISIZE       112 
+multiline_comment|/*&n; * Replay buffer, where the result of the last seqid-mutating operation &n; * is cached. &n; */
+DECL|struct|nfs4_replay
+r_struct
+id|nfs4_replay
+(brace
+DECL|member|rp_status
+id|u32
+id|rp_status
+suffix:semicolon
+DECL|member|rp_buflen
+r_int
+r_int
+id|rp_buflen
+suffix:semicolon
+DECL|member|rp_buf
+r_char
+op_star
+id|rp_buf
+suffix:semicolon
+DECL|member|intrp_allocated
+r_int
+id|intrp_allocated
+suffix:semicolon
+DECL|member|rp_ibuf
+r_char
+id|rp_ibuf
+(braket
+id|NFSD4_REPLAY_ISIZE
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n;* nfs4_stateowner can either be an open_owner, or (eventually) a lock_owner&n;*&n;*    o so_peropenstate list is used to ensure no dangling nfs4_stateid&n;*              reverences when we release a stateowner.&n;*/
 DECL|struct|nfs4_stateowner
 r_struct
@@ -210,6 +245,11 @@ r_int
 id|so_confirmed
 suffix:semicolon
 multiline_comment|/* successful OPEN_CONFIRM? */
+DECL|member|so_replay
+r_struct
+id|nfs4_replay
+id|so_replay
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n;*  nfs4_file: a file opened by some number of (open) nfs4_stateowners.&n;*    o fi_perfile list is used to search for conflicting &n;*      share_acces, share_deny on the file.&n;*/

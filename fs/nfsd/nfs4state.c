@@ -2856,6 +2856,11 @@ id|nfs4_stateowner
 op_star
 id|sop
 suffix:semicolon
+r_struct
+id|nfs4_replay
+op_star
+id|rp
+suffix:semicolon
 r_int
 r_int
 id|idhashval
@@ -2974,6 +2979,23 @@ suffix:semicolon
 id|sop-&gt;so_confirmed
 op_assign
 l_int|0
+suffix:semicolon
+id|rp
+op_assign
+op_amp
+id|sop-&gt;so_replay
+suffix:semicolon
+id|rp-&gt;rp_status
+op_assign
+id|NFSERR_SERVERFAULT
+suffix:semicolon
+id|rp-&gt;rp_buflen
+op_assign
+l_int|0
+suffix:semicolon
+id|rp-&gt;rp_buf
+op_assign
+id|rp-&gt;rp_ibuf
 suffix:semicolon
 id|alloc_sowner
 op_increment
@@ -4079,6 +4101,7 @@ id|open-&gt;op_stateowner
 op_assign
 id|sop
 suffix:semicolon
+multiline_comment|/* check for replay */
 r_if
 c_cond
 (paren
@@ -4087,10 +4110,32 @@ op_eq
 id|sop-&gt;so_seqid
 )paren
 (brace
-multiline_comment|/* XXX retplay: for now, return bad seqid */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sop-&gt;so_replay.rp_buflen
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;* The original OPEN failed in so spectacularly that we&n;&t;&t;&t;* don&squot;t even have replay data saved!  Therefore, we&n;&t;&t;&t;* have no choice but to continue processing&n;&t;&t;&t;* this OPEN; presumably, we&squot;ll fail again for the same&n;&t;&t;&t;* reason.&n;&t;&t;&t;*/
+id|dprintk
+c_func
+(paren
+l_string|&quot;nfsd4_process_open1: replay with no replay cache&bslash;n&quot;
+)paren
+suffix:semicolon
 id|status
 op_assign
-id|nfserr_bad_seqid
+id|NFS_OK
+suffix:semicolon
+r_goto
+id|renew
+suffix:semicolon
+)brace
+multiline_comment|/* replay: indicate to calling function */
+id|status
+op_assign
+id|NFSERR_REPLAY_ME
 suffix:semicolon
 r_goto
 id|out
@@ -4128,7 +4173,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* If we get here, we received and OPEN for an unconfirmed&n;&t;&t; * nfs4_stateowner. If seqid&squot;s are the same then this &n;&t;&t; * is a replay.&n;&t;&t; * If the sequid&squot;s are different, then purge the &n;&t;&t; * existing nfs4_stateowner, and instantiate a new one.&n;&t;&t; */
+multiline_comment|/* If we get here, we received and OPEN for an unconfirmed&n;&t;&t; * nfs4_stateowner. &n;&t;&t; * Since the sequid&squot;s are different, purge the &n;&t;&t; * existing nfs4_stateowner, and instantiate a new one.&n;&t;&t; */
 id|clp
 op_assign
 id|sop-&gt;so_client
@@ -5605,7 +5650,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Checks for sequence id mutating operations. &n; *&n; * XXX need to code replay cache logic&n; */
+multiline_comment|/* &n; * Checks for sequence id mutating operations. &n; */
 r_int
 DECL|function|nfs4_preprocess_seqid_op
 id|nfs4_preprocess_seqid_op
@@ -5933,10 +5978,6 @@ suffix:semicolon
 )brace
 id|check_replay
 suffix:colon
-id|status
-op_assign
-id|nfserr_bad_seqid
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5951,7 +5992,11 @@ c_func
 l_string|&quot;NFSD: preprocess_seqid_op: retransmission?&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* XXX will need to indicate replay to calling function here */
+multiline_comment|/* indicate replay to calling function */
+id|status
+op_assign
+id|NFSERR_REPLAY_ME
+suffix:semicolon
 )brace
 r_else
 id|printk
@@ -5965,6 +6010,10 @@ l_int|1
 comma
 id|seqid
 )paren
+suffix:semicolon
+id|status
+op_assign
+id|nfserr_bad_seqid
 suffix:semicolon
 r_goto
 id|out
@@ -6090,7 +6139,6 @@ id|stateid_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* XXX renew the client lease here */
 id|dprintk
 c_func
 (paren
