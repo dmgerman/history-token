@@ -415,7 +415,7 @@ op_assign
 id|presto_find_cache
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb
 )paren
 suffix:semicolon
 r_if

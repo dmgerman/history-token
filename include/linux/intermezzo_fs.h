@@ -102,8 +102,10 @@ op_star
 id|presto_find_cache
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|super_block
+op_star
+id|sb
 )paren
 suffix:semicolon
 r_extern
@@ -164,11 +166,6 @@ op_star
 id|cache_root_fileset
 suffix:semicolon
 multiline_comment|/* fileset mounted on cache &quot;/&quot;  */
-DECL|member|cache_dev
-id|kdev_t
-id|cache_dev
-suffix:semicolon
-multiline_comment|/* underlying block device */
 DECL|member|cache_sb
 r_struct
 id|super_block
