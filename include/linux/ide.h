@@ -6016,6 +6016,7 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA_PCI */
 macro_line|#ifdef CONFIG_BLK_DEV_IDE_TCQ
 r_extern
 r_int
@@ -6068,7 +6069,8 @@ id|drive
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#else
+macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#ifndef CONFIG_BLK_DEV_IDEDMA_PCI
 DECL|function|ide_release_dma
 r_static
 r_inline
@@ -6084,7 +6086,6 @@ id|drive
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 r_extern
 r_int
 id|ide_hwif_request_regions
