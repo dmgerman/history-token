@@ -17,7 +17,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Bart De Schuymer &lt;bdschuy@pandora.be&gt;&quot;
+l_string|&quot;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
