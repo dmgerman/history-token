@@ -219,13 +219,15 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|GENHD_FL_REMOVABLE
-mdefine_line|#define GENHD_FL_REMOVABLE  1
+mdefine_line|#define GENHD_FL_REMOVABLE&t;&t;&t;1
 DECL|macro|GENHD_FL_DRIVERFS
-mdefine_line|#define GENHD_FL_DRIVERFS  2
+mdefine_line|#define GENHD_FL_DRIVERFS&t;&t;&t;2
 DECL|macro|GENHD_FL_CD
-mdefine_line|#define GENHD_FL_CD&t;8
+mdefine_line|#define GENHD_FL_CD&t;&t;&t;&t;8
 DECL|macro|GENHD_FL_UP
-mdefine_line|#define GENHD_FL_UP&t;16
+mdefine_line|#define GENHD_FL_UP&t;&t;&t;&t;16
+DECL|macro|GENHD_FL_SUPPRESS_PARTITION_INFO
+mdefine_line|#define GENHD_FL_SUPPRESS_PARTITION_INFO&t;32
 DECL|struct|disk_stats
 r_struct
 id|disk_stats

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: tei.c,v 2.17.6.3 2001/09/23 22:24:51 kai Exp $&n; *&n; * Author       Karsten Keil&n; *              based on the teles driver from Jan den Ouden&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
+multiline_comment|/* $Id: tei.c,v 2.20.2.3 2004/01/13 14:31:26 keil Exp $&n; *&n; * Author       Karsten Keil&n; *              based on the teles driver from Jan den Ouden&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Jan den Ouden&n; *              Fritz Elfert&n; *&n; */
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isdnl2.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
@@ -9,7 +9,7 @@ r_char
 op_star
 id|tei_revision
 op_assign
-l_string|&quot;$Revision: 2.17.6.3 $&quot;
+l_string|&quot;$Revision: 2.20.2.3 $&quot;
 suffix:semicolon
 DECL|macro|ID_REQUEST
 mdefine_line|#define ID_REQUEST&t;1
@@ -42,7 +42,7 @@ id|PStack
 op_star
 id|st
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_struct
@@ -135,68 +135,6 @@ l_string|&quot;EV_T202&quot;
 comma
 )brace
 suffix:semicolon
-r_static
-r_inline
-r_void
-DECL|function|mdl_assign
-id|mdl_assign
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-)paren
-(brace
-id|cs-&gt;status
-op_or_assign
-l_int|0x0001
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;card_ops-&gt;led_handler
-)paren
-id|cs-&gt;card_ops
-op_member_access_from_pointer
-id|led_handler
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
-)brace
-r_static
-r_inline
-r_void
-DECL|function|mdl_remove
-id|mdl_remove
-c_func
-(paren
-r_struct
-id|IsdnCardState
-op_star
-id|cs
-)paren
-(brace
-id|cs-&gt;status
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cs-&gt;card_ops-&gt;led_handler
-)paren
-id|cs-&gt;card_ops
-op_member_access_from_pointer
-id|led_handler
-c_func
-(paren
-id|cs
-)paren
-suffix:semicolon
-)brace
 r_int
 r_int
 DECL|function|random_ri
@@ -308,14 +246,14 @@ id|PStack
 op_star
 id|st
 comma
-id|u8
+id|u_char
 id|m_id
 comma
 r_int
 r_int
 id|ri
 comma
-id|u8
+id|u_char
 id|tei
 )paren
 (brace
@@ -324,7 +262,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|bp
 suffix:semicolon
@@ -451,7 +389,9 @@ l_int|1
 op_or
 l_int|1
 suffix:semicolon
-id|L2L1
+id|st-&gt;l2
+dot
+id|l2l1
 c_func
 (paren
 id|st
@@ -507,7 +447,7 @@ c_func
 op_amp
 id|st-&gt;ma.tei_m
 comma
-l_string|&quot;assign request for already assigned tei %d&quot;
+l_string|&quot;assign request for allready asigned tei %d&quot;
 comma
 id|st-&gt;l2.tei
 )paren
@@ -757,7 +697,9 @@ comma
 id|ST_TEI_NOP
 )paren
 suffix:semicolon
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st
@@ -785,10 +727,18 @@ op_star
 )paren
 id|st-&gt;l1.hardware
 suffix:semicolon
-id|mdl_assign
+id|cs
+op_member_access_from_pointer
+id|cardmsg
 c_func
 (paren
 id|cs
+comma
+id|MDL_ASSIGN
+op_or
+id|REQUEST
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1258,7 +1208,9 @@ comma
 id|ST_TEI_NOP
 )paren
 suffix:semicolon
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st
@@ -1279,10 +1231,18 @@ op_star
 )paren
 id|st-&gt;l1.hardware
 suffix:semicolon
-id|mdl_remove
+id|cs
+op_member_access_from_pointer
+id|cardmsg
 c_func
 (paren
 id|cs
+comma
+id|MDL_REMOVE
+op_or
+id|REQUEST
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -1480,7 +1440,9 @@ comma
 l_string|&quot;assign req failed&quot;
 )paren
 suffix:semicolon
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st
@@ -1501,10 +1463,18 @@ op_star
 )paren
 id|st-&gt;l1.hardware
 suffix:semicolon
-id|mdl_remove
+id|cs
+op_member_access_from_pointer
+id|cardmsg
 c_func
 (paren
 id|cs
+comma
+id|MDL_REMOVE
+op_or
+id|REQUEST
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|FsmChangeState
@@ -1620,7 +1590,9 @@ comma
 id|st-&gt;l2.tei
 )paren
 suffix:semicolon
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st
@@ -1641,10 +1613,18 @@ op_star
 )paren
 id|st-&gt;l1.hardware
 suffix:semicolon
-id|mdl_remove
+id|cs
+op_member_access_from_pointer
+id|cardmsg
 c_func
 (paren
 id|cs
+comma
+id|MDL_REMOVE
+op_or
+id|REQUEST
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|FsmChangeState
@@ -2091,7 +2071,9 @@ comma
 id|st-&gt;l2.tei
 )paren
 suffix:semicolon
-id|L3L2
+id|st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|st
@@ -2119,10 +2101,18 @@ op_star
 )paren
 id|st-&gt;l1.hardware
 suffix:semicolon
-id|mdl_assign
+id|cs
+op_member_access_from_pointer
+id|cardmsg
 c_func
 (paren
 id|cs
+comma
+id|MDL_ASSIGN
+op_or
+id|REQUEST
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

@@ -716,6 +716,188 @@ DECL|macro|KSTK_EIP
 mdefine_line|#define KSTK_EIP(tsk) &bslash;&n;&t;(((struct pt_regs *)(tsk-&gt;thread.rsp0 - sizeof(struct pt_regs)))-&gt;rip)
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk) -1 /* sorry. doesn&squot;t work for syscall. */
+DECL|struct|microcode_header
+r_struct
+id|microcode_header
+(brace
+DECL|member|hdrver
+r_int
+r_int
+id|hdrver
+suffix:semicolon
+DECL|member|rev
+r_int
+r_int
+id|rev
+suffix:semicolon
+DECL|member|date
+r_int
+r_int
+id|date
+suffix:semicolon
+DECL|member|sig
+r_int
+r_int
+id|sig
+suffix:semicolon
+DECL|member|cksum
+r_int
+r_int
+id|cksum
+suffix:semicolon
+DECL|member|ldrver
+r_int
+r_int
+id|ldrver
+suffix:semicolon
+DECL|member|pf
+r_int
+r_int
+id|pf
+suffix:semicolon
+DECL|member|datasize
+r_int
+r_int
+id|datasize
+suffix:semicolon
+DECL|member|totalsize
+r_int
+r_int
+id|totalsize
+suffix:semicolon
+DECL|member|reserved
+r_int
+r_int
+id|reserved
+(braket
+l_int|3
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|microcode
+r_struct
+id|microcode
+(brace
+DECL|member|hdr
+r_struct
+id|microcode_header
+id|hdr
+suffix:semicolon
+DECL|member|bits
+r_int
+r_int
+id|bits
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|typedef|microcode_t
+r_typedef
+r_struct
+id|microcode
+id|microcode_t
+suffix:semicolon
+DECL|typedef|microcode_header_t
+r_typedef
+r_struct
+id|microcode_header
+id|microcode_header_t
+suffix:semicolon
+multiline_comment|/* microcode format is extended from prescott processors */
+DECL|struct|extended_signature
+r_struct
+id|extended_signature
+(brace
+DECL|member|sig
+r_int
+r_int
+id|sig
+suffix:semicolon
+DECL|member|pf
+r_int
+r_int
+id|pf
+suffix:semicolon
+DECL|member|cksum
+r_int
+r_int
+id|cksum
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|extended_sigtable
+r_struct
+id|extended_sigtable
+(brace
+DECL|member|count
+r_int
+r_int
+id|count
+suffix:semicolon
+DECL|member|cksum
+r_int
+r_int
+id|cksum
+suffix:semicolon
+DECL|member|reserved
+r_int
+r_int
+id|reserved
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|sigs
+r_struct
+id|extended_signature
+id|sigs
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* &squot;6&squot; because it used to be for P6 only (but now covers Pentium 4 as well) */
+DECL|macro|MICROCODE_IOCFREE
+mdefine_line|#define MICROCODE_IOCFREE&t;_IO(&squot;6&squot;,0)
+DECL|macro|ASM_NOP1
+mdefine_line|#define ASM_NOP1 K8_NOP1
+DECL|macro|ASM_NOP2
+mdefine_line|#define ASM_NOP2 K8_NOP2
+DECL|macro|ASM_NOP3
+mdefine_line|#define ASM_NOP3 K8_NOP3
+DECL|macro|ASM_NOP4
+mdefine_line|#define ASM_NOP4 K8_NOP4
+DECL|macro|ASM_NOP5
+mdefine_line|#define ASM_NOP5 K8_NOP5
+DECL|macro|ASM_NOP6
+mdefine_line|#define ASM_NOP6 K8_NOP6
+DECL|macro|ASM_NOP7
+mdefine_line|#define ASM_NOP7 K8_NOP7
+DECL|macro|ASM_NOP8
+mdefine_line|#define ASM_NOP8 K8_NOP8
+multiline_comment|/* Opteron nops */
+DECL|macro|K8_NOP1
+mdefine_line|#define K8_NOP1 &quot;.byte 0x90&bslash;n&quot;
+DECL|macro|K8_NOP2
+mdefine_line|#define K8_NOP2&t;&quot;.byte 0x66,0x90&bslash;n&quot; 
+DECL|macro|K8_NOP3
+mdefine_line|#define K8_NOP3&t;&quot;.byte 0x66,0x66,0x90&bslash;n&quot; 
+DECL|macro|K8_NOP4
+mdefine_line|#define K8_NOP4&t;&quot;.byte 0x66,0x66,0x66,0x90&bslash;n&quot; 
+DECL|macro|K8_NOP5
+mdefine_line|#define K8_NOP5&t;K8_NOP3 K8_NOP2 
+DECL|macro|K8_NOP6
+mdefine_line|#define K8_NOP6&t;K8_NOP3 K8_NOP3
+DECL|macro|K8_NOP7
+mdefine_line|#define K8_NOP7&t;K8_NOP4 K8_NOP3
+DECL|macro|K8_NOP8
+mdefine_line|#define K8_NOP8&t;K8_NOP4 K8_NOP4
+DECL|macro|ASM_NOP_MAX
+mdefine_line|#define ASM_NOP_MAX 8
 multiline_comment|/* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
 DECL|function|rep_nop
 r_extern
@@ -780,7 +962,6 @@ suffix:semicolon
 )brace
 DECL|macro|cpu_has_fpu
 mdefine_line|#define cpu_has_fpu 1
-multiline_comment|/* Some early Opteron versions incorrectly fault on prefetch (errata #91). &n;   If this happens just jump back. */
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|function|prefetch
@@ -798,11 +979,7 @@ id|x
 id|asm
 r_volatile
 (paren
-l_string|&quot;2: prefetcht0 %0&bslash;n1:&bslash;t&quot;
-l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;
-l_string|&quot;  .align 8&bslash;n&bslash;t&quot;
-l_string|&quot;  .quad  2b,1b&bslash;n&bslash;t&quot;
-l_string|&quot;.previous&quot;
+l_string|&quot;prefetcht0 %0&quot;
 op_scope_resolution
 l_string|&quot;m&quot;
 (paren
@@ -818,7 +995,7 @@ id|x
 suffix:semicolon
 )brace
 DECL|macro|ARCH_HAS_PREFETCHW
-mdefine_line|#define ARCH_HAS_PREFETCHW
+mdefine_line|#define ARCH_HAS_PREFETCHW 1
 DECL|function|prefetchw
 r_static
 r_inline
@@ -831,30 +1008,24 @@ op_star
 id|x
 )paren
 (brace
-id|asm
-r_volatile
+id|alternative_input
+c_func
 (paren
-l_string|&quot;2: prefetchw %0&bslash;n1:&bslash;t&quot;
-l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&bslash;t&quot;
-l_string|&quot;  .align 8&bslash;n&bslash;t&quot;
-l_string|&quot;  .quad  2b,1b&bslash;n&bslash;t&quot;
-l_string|&quot;.previous&quot;
-op_scope_resolution
-l_string|&quot;m&quot;
+id|ASM_NOP4
+comma
+l_string|&quot;prefetchw (%1)&quot;
+comma
+id|X86_FEATURE_3DNOW
+comma
+l_string|&quot;r&quot;
 (paren
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
 id|x
 )paren
 )paren
 suffix:semicolon
 )brace
 DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
-mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
+mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH 1
 DECL|macro|spin_lock_prefetch
 mdefine_line|#define spin_lock_prefetch(x)  prefetchw(x)
 DECL|macro|cpu_relax
@@ -889,42 +1060,87 @@ DECL|macro|getCx86
 mdefine_line|#define getCx86(reg) ({ outb((reg), 0x22); inb(0x23); })
 DECL|macro|setCx86
 mdefine_line|#define setCx86(reg, data) do { &bslash;&n;&t;outb((reg), 0x22); &bslash;&n;&t;outb((data), 0x23); &bslash;&n;} while (0)
+DECL|function|__monitor
+r_static
+r_inline
+r_void
+id|__monitor
+c_func
+(paren
+r_const
+r_void
+op_star
+id|eax
+comma
+r_int
+r_int
+id|ecx
+comma
+r_int
+r_int
+id|edx
+)paren
+(brace
+multiline_comment|/* &quot;monitor %eax,%ecx,%edx;&quot; */
+id|asm
+r_volatile
+(paren
+l_string|&quot;.byte 0x0f,0x01,0xc8;&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|eax
+)paren
+comma
+l_string|&quot;c&quot;
+(paren
+id|ecx
+)paren
+comma
+l_string|&quot;d&quot;
+(paren
+id|edx
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|__mwait
+r_static
+r_inline
+r_void
+id|__mwait
+c_func
+(paren
+r_int
+r_int
+id|eax
+comma
+r_int
+r_int
+id|ecx
+)paren
+(brace
+multiline_comment|/* &quot;mwait %eax,%ecx;&quot; */
+id|asm
+r_volatile
+(paren
+l_string|&quot;.byte 0x0f,0x01,0xc9;&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+id|eax
+)paren
+comma
+l_string|&quot;c&quot;
+(paren
+id|ecx
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|stack_current
 mdefine_line|#define stack_current() &bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ti;&t;&t;&t;&t;&t;&bslash;&n;&t;asm(&quot;andq %%rsp,%0; &quot;:&quot;=r&quot; (ti) : &quot;0&quot; (CURRENT_MASK));&t;&bslash;&n;&t;ti-&gt;task;&t;&t;&t;&t;&t;&bslash;&n;})
-DECL|macro|ASM_NOP1
-mdefine_line|#define ASM_NOP1 K8_NOP1
-DECL|macro|ASM_NOP2
-mdefine_line|#define ASM_NOP2 K8_NOP2
-DECL|macro|ASM_NOP3
-mdefine_line|#define ASM_NOP3 K8_NOP3
-DECL|macro|ASM_NOP4
-mdefine_line|#define ASM_NOP4 K8_NOP4
-DECL|macro|ASM_NOP5
-mdefine_line|#define ASM_NOP5 K8_NOP5
-DECL|macro|ASM_NOP6
-mdefine_line|#define ASM_NOP6 K8_NOP6
-DECL|macro|ASM_NOP7
-mdefine_line|#define ASM_NOP7 K8_NOP7
-DECL|macro|ASM_NOP8
-mdefine_line|#define ASM_NOP8 K8_NOP8
-multiline_comment|/* Opteron nops */
-DECL|macro|K8_NOP1
-mdefine_line|#define K8_NOP1 &quot;.byte 0x90&bslash;n&quot;
-DECL|macro|K8_NOP2
-mdefine_line|#define K8_NOP2&t;&quot;.byte 0x66,0x90&bslash;n&quot; 
-DECL|macro|K8_NOP3
-mdefine_line|#define K8_NOP3&t;&quot;.byte 0x66,0x66,0x90&bslash;n&quot; 
-DECL|macro|K8_NOP4
-mdefine_line|#define K8_NOP4&t;&quot;.byte 0x66,0x66,0x66,0x90&bslash;n&quot; 
-DECL|macro|K8_NOP5
-mdefine_line|#define K8_NOP5&t;K8_NOP3 K8_NOP2 
-DECL|macro|K8_NOP6
-mdefine_line|#define K8_NOP6&t;K8_NOP3 K8_NOP3
-DECL|macro|K8_NOP7
-mdefine_line|#define K8_NOP7&t;K8_NOP4 K8_NOP3
-DECL|macro|K8_NOP8
-mdefine_line|#define K8_NOP8&t;K8_NOP4 K8_NOP4
-DECL|macro|ASM_NOP_MAX
-mdefine_line|#define ASM_NOP_MAX 8
 macro_line|#endif /* __ASM_X86_64_PROCESSOR_H */
 eof

@@ -5865,6 +5865,8 @@ op_or
 l_int|2
 op_or
 id|O_NOFOLLOW
+op_or
+id|O_LARGEFILE
 comma
 l_int|0600
 )paren

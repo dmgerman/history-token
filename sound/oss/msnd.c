@@ -1,9 +1,5 @@
 multiline_comment|/*********************************************************************&n; *&n; * msnd.c - Driver Base&n; *&n; * Turtle Beach MultiSound Sound Card Driver for Linux&n; *&n; * Copyright (C) 1998 Andrew Veliath&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * $Id: msnd.c,v 1.17 1999/03/21 16:50:09 andrewtv Exp $&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020101
-DECL|macro|LINUX20
-macro_line|#  define LINUX20
-macro_line|#endif
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -11,18 +7,10 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#ifdef LINUX20
-macro_line|#  include &lt;linux/major.h&gt;
-macro_line|#  include &lt;linux/fs.h&gt;
-macro_line|#  include &lt;linux/sound.h&gt;
-macro_line|#  include &lt;asm/segment.h&gt;
-macro_line|#  include &quot;sound_config.h&quot;
-macro_line|#else
-macro_line|#  include &lt;linux/init.h&gt;
-macro_line|#  include &lt;asm/io.h&gt;
-macro_line|#  include &lt;asm/uaccess.h&gt;
-macro_line|#  include &lt;linux/spinlock.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;msnd.h&quot;
 DECL|macro|LOGNAME

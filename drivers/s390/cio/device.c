@@ -186,7 +186,7 @@ id|buffer
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buffer
@@ -238,7 +238,7 @@ id|buffer
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buffer
@@ -291,7 +291,7 @@ id|buffer
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buffer
@@ -343,7 +343,7 @@ id|buffer
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buffer

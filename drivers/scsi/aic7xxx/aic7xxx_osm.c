@@ -445,7 +445,7 @@ l_string|&quot;&t;dv:&lt;dv_settings&gt;&t;Set per-controller Domain Validation 
 l_string|&quot;&t;seltime:&lt;int&gt;&t;&t;Selection Timeout&bslash;n&quot;
 l_string|&quot;&t;&t;&t;&t;(0/256ms,1/128ms,2/64ms,3/32ms)&bslash;n&quot;
 l_string|&quot;&bslash;n&quot;
-l_string|&quot;&t;Sample /etc/modules.conf line:&bslash;n&quot;
+l_string|&quot;&t;Sample /etc/modprobe.conf line:&bslash;n&quot;
 l_string|&quot;&t;&t;Toggle EISA/VLB probing&bslash;n&quot;
 l_string|&quot;&t;&t;Set tag depth on Controller 1/Target 1 to 10 tags&bslash;n&quot;
 l_string|&quot;&t;&t;Shorten the selection timeout to 128ms&bslash;n&quot;

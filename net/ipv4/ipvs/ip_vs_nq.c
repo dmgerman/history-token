@@ -1,11 +1,7 @@
 multiline_comment|/*&n; * IPVS:        Never Queue scheduling module&n; *&n; * Version:     $Id: ip_vs_nq.c,v 1.2 2003/06/08 09:31:19 wensong Exp $&n; *&n; * Authors:     Wensong Zhang &lt;wensong@linuxvirtualserver.org&gt;&n; *&n; *              This program is free software; you can redistribute it and/or&n; *              modify it under the terms of the GNU General Public License&n; *              as published by the Free Software Foundation; either version&n; *              2 of the License, or (at your option) any later version.&n; *&n; * Changes:&n; *&n; */
 multiline_comment|/*&n; * The NQ algorithm adopts a two-speed model. When there is an idle server&n; * available, the job will be sent to the idle server, instead of waiting&n; * for a fast one. When there is no idle server available, the job will be&n; * sent to the server that minimize its expected delay (The Shortest&n; * Expected Delay scheduling algorithm).&n; *&n; * See the following paper for more information:&n; * A. Weinrib and S. Shenker, Greed is not enough: Adaptive load sharing&n; * in large heterogeneous systems. In Proceedings IEEE INFOCOM&squot;88,&n; * pages 986-994, 1988.&n; *&n; * Thanks must go to Marko Buuri &lt;marko@buuri.name&gt; for talking NQ to me.&n; *&n; * The difference between NQ and SED is that NQ can improve overall&n; * system utilization.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;net/ip_vs.h&gt;
 r_static
 r_int

@@ -53,6 +53,10 @@ macro_line|#ifndef __attribute_const__
 DECL|macro|__attribute_const__
 macro_line|# define __attribute_const__&t;/* unimplemented */
 macro_line|#endif
+macro_line|#ifndef noinline
+DECL|macro|noinline
+mdefine_line|#define noinline
+macro_line|#endif
 multiline_comment|/* Optimization barrier */
 macro_line|#ifndef barrier
 DECL|macro|barrier

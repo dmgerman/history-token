@@ -334,6 +334,8 @@ comma
 id|bdata-&gt;node_bootmem_map
 )paren
 )paren
+(brace
+macro_line|#ifdef CONFIG_DEBUG_BOOTMEM
 id|printk
 c_func
 (paren
@@ -344,6 +346,8 @@ op_star
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+macro_line|#endif
+)brace
 )brace
 DECL|function|free_bootmem_core
 r_static

@@ -9572,8 +9572,6 @@ c_func
 id|journal
 op_member_access_from_pointer
 id|j_dev_bd
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 id|journal
@@ -9719,8 +9717,6 @@ c_func
 id|jdev
 comma
 id|blkdev_mode
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 r_if

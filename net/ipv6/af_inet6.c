@@ -32,7 +32,7 @@ macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/transp_v6.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
-macro_line|#if CONFIG_IPV6_TUNNEL
+macro_line|#ifdef CONFIG_IPV6_TUNNEL
 macro_line|#include &lt;net/ip6_tunnel.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -40,8 +40,8 @@ mdefine_line|#define for_each_cpu(cpu) for (cpu = 0; cpu &lt; 1; cpu++)
 DECL|macro|for_each_online_cpu
 mdefine_line|#define for_each_online_cpu(cpu) for (cpu = 0; cpu &lt; 1; cpu++)
 macro_line|#endif
-DECL|macro|cpumask_snprintf
-mdefine_line|#define cpumask_snprintf(buf, buflen, map)&t;&t;&t;&t;&bslash;&n;&t;bitmap_snprintf(buf, buflen, cpus_addr(map), NR_CPUS)
+DECL|macro|cpumask_scnprintf
+mdefine_line|#define cpumask_scnprintf(buf, buflen, map)&t;&t;&t;&t;&bslash;&n;&t;bitmap_scnprintf(buf, buflen, cpus_addr(map), NR_CPUS)
 DECL|macro|cpumask_parse
 mdefine_line|#define cpumask_parse(buf, buflen, map)&t;&t;&t;&t;&t;&bslash;&n;&t;bitmap_parse(buf, buflen, cpus_addr(map), NR_CPUS)
 macro_line|#endif /* __LINUX_CPUMASK_H */

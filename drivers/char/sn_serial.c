@@ -818,7 +818,7 @@ id|fmt
 suffix:semicolon
 id|printed_len
 op_assign
-id|vsnprintf
+id|vscnprintf
 c_func
 (paren
 id|printk_buf

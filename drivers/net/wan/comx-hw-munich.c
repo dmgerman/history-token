@@ -9146,7 +9146,7 @@ id|FMR2
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9169,7 +9169,7 @@ l_int|0
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9194,7 +9194,7 @@ id|FRS0_LOS
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9219,7 +9219,7 @@ id|FRS0_AIS
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9244,7 +9244,7 @@ id|FRS0_AUXP
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9267,7 +9267,7 @@ id|FRS0_LFA
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9292,7 +9292,7 @@ id|FRS0_RRA
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9325,7 +9325,7 @@ id|FRS0_LMFA
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9360,7 +9360,7 @@ id|FRS0_NMF
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9397,7 +9397,7 @@ id|frs1
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9415,7 +9415,7 @@ multiline_comment|/* debug Rx ring: DEL: - vagy meghagyni, de akkor legyen kicsi
 )brace
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9431,7 +9431,7 @@ l_string|&quot;Rx ring:&bslash;n&quot;
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9449,7 +9449,7 @@ id|hw-&gt;rafutott
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9469,7 +9469,7 @@ id|jiffies
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9498,7 +9498,7 @@ l_int|0
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9516,7 +9516,7 @@ id|hw-&gt;rx_desc_ptr
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9545,7 +9545,7 @@ id|hw-&gt;rx_desc_ptr
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9580,7 +9580,7 @@ op_increment
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9663,7 +9663,7 @@ id|board-&gt;isx21
 (brace
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9733,7 +9733,7 @@ id|timeslots
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9778,7 +9778,7 @@ id|timeslots
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9796,7 +9796,7 @@ id|j
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9815,7 +9815,7 @@ suffix:semicolon
 )brace
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9845,7 +9845,7 @@ op_increment
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9895,7 +9895,7 @@ l_char|&squot; &squot;
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -9925,7 +9925,7 @@ op_increment
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10178,7 +10178,7 @@ suffix:semicolon
 )brace
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10196,7 +10196,7 @@ id|board-&gt;elapsed_seconds
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10218,7 +10218,7 @@ id|curr_int-&gt;e_bit_errors
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10242,7 +10242,7 @@ id|curr_int-&gt;degraded_mins
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10266,7 +10266,7 @@ id|curr_int-&gt;unavail_secs
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10282,7 +10282,7 @@ l_string|&quot;Data in Interval 1 (15 minutes):&bslash;n&quot;
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10304,7 +10304,7 @@ id|prev_int-&gt;e_bit_errors
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10328,7 +10328,7 @@ id|prev_int-&gt;degraded_mins
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10352,7 +10352,7 @@ id|prev_int-&gt;unavail_secs
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10368,7 +10368,7 @@ l_string|&quot;Data in last 4 intervals (1 hour):&bslash;n&quot;
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10390,7 +10390,7 @@ id|last4.e_bit_errors
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10414,7 +10414,7 @@ id|last4.degraded_mins
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10438,7 +10438,7 @@ id|last4.unavail_secs
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10454,7 +10454,7 @@ l_string|&quot;Data in last 96 intervals (24 hours):&bslash;n&quot;
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10476,7 +10476,7 @@ id|last96.e_bit_errors
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10500,7 +10500,7 @@ id|last96.degraded_mins
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10523,9 +10523,9 @@ id|last96.unavail_secs
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//      len +=snprintf( page + len, PAGE_SIZE - len, &quot;Special events:&bslash;n&quot; );
-singleline_comment|//      len +=snprintf( page + len, PAGE_SIZE - len, &quot;&bslash;tstat_pri/missed: %u / %u&bslash;n&quot;, board-&gt;stat_pri_races, board-&gt;stat_pri_races_missed );
-singleline_comment|//      len +=snprintf( page + len, PAGE_SIZE - len, &quot;&bslash;tstat_pti/missed: %u / %u&bslash;n&quot;, board-&gt;stat_pti_races, board-&gt;stat_pti_races_missed );
+singleline_comment|//      len +=scnprintf( page + len, PAGE_SIZE - len, &quot;Special events:&bslash;n&quot; );
+singleline_comment|//      len +=scnprintf( page + len, PAGE_SIZE - len, &quot;&bslash;tstat_pri/missed: %u / %u&bslash;n&quot;, board-&gt;stat_pri_races, board-&gt;stat_pri_races_missed );
+singleline_comment|//      len +=scnprintf( page + len, PAGE_SIZE - len, &quot;&bslash;tstat_pti/missed: %u / %u&bslash;n&quot;, board-&gt;stat_pti_races, board-&gt;stat_pti_races_missed );
 r_return
 id|len
 suffix:semicolon
@@ -10716,7 +10716,7 @@ id|timeslots
 )paren
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10734,7 +10734,7 @@ id|i
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10791,7 +10791,7 @@ op_increment
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10855,7 +10855,7 @@ op_increment
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10919,7 +10919,7 @@ op_increment
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -10983,7 +10983,7 @@ op_increment
 suffix:semicolon
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -11022,7 +11022,7 @@ id|FILENAME_REG
 (brace
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page
@@ -11057,7 +11057,7 @@ id|FILENAME_LBIREG
 (brace
 id|len
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|page

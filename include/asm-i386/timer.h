@@ -136,6 +136,14 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|init_cpu_khz
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HPET_TIMER
 r_extern
 r_struct
@@ -153,6 +161,13 @@ r_int
 op_star
 id|tsc_hpet_quotient_ptr
 )paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_X86_PM_TIMER
+r_extern
+r_struct
+id|timer_opts
+id|timer_pmtmr
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif

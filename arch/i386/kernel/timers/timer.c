@@ -26,6 +26,11 @@ op_amp
 id|timer_hpet
 comma
 macro_line|#endif
+macro_line|#ifdef CONFIG_X86_PM_TIMER
+op_amp
+id|timer_pmtmr
+comma
+macro_line|#endif
 op_amp
 id|timer_tsc
 comma

@@ -127,6 +127,10 @@ r_int
 id|interrupt
 suffix:semicolon
 multiline_comment|/* set during interrupt &n;&t;&t;&t;&t;&t;&t;   processing */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 multiline_comment|/* isdn4linux */
 DECL|member|msn_list
 r_struct

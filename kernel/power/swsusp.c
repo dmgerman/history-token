@@ -4288,8 +4288,6 @@ c_func
 id|resume_device
 comma
 id|FMODE_READ
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 r_if
@@ -4337,8 +4335,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 )brace

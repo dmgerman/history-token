@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: l3_1tr6.c,v 2.13.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * German 1TR6 D-channel protocol&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; */
+multiline_comment|/* $Id: l3_1tr6.c,v 2.15.2.3 2004/01/13 14:31:25 keil Exp $&n; *&n; * German 1TR6 D-channel protocol&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; */
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;l3_1tr6.h&quot;
 macro_line|#include &quot;isdnl3.h&quot;
@@ -21,7 +21,7 @@ r_char
 op_star
 id|l3_1tr6_revision
 op_assign
-l_string|&quot;$Revision: 2.13.6.2 $&quot;
+l_string|&quot;$Revision: 2.15.2.3 $&quot;
 suffix:semicolon
 DECL|macro|MsgHead
 mdefine_line|#define MsgHead(ptr, cref, mty, dis) &bslash;&n;&t;*ptr++ = dis; &bslash;&n;&t;*ptr++ = 0x1; &bslash;&n;&t;*ptr++ = cref ^ 0x80; &bslash;&n;&t;*ptr++ = mty
@@ -36,10 +36,10 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|mt
 comma
-id|u8
+id|u_char
 id|pd
 )paren
 (brace
@@ -48,7 +48,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -114,7 +114,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -169,7 +169,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -212,7 +212,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 op_star
 id|msg
 comma
@@ -265,7 +265,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -278,27 +278,27 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|128
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
 id|tmp
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|teln
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|eaz
 suffix:semicolon
-id|u8
+id|u_char
 id|channel
 op_assign
 l_int|0
@@ -749,7 +749,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -757,7 +757,7 @@ op_star
 id|arg
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -1143,7 +1143,9 @@ comma
 l_int|6
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -1175,7 +1177,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -1183,7 +1185,7 @@ op_star
 id|arg
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -1327,7 +1329,9 @@ comma
 id|CC_T304
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -1351,7 +1355,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -1359,7 +1363,7 @@ op_star
 id|arg
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -1539,7 +1543,9 @@ comma
 l_int|3
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -1563,7 +1569,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -1600,7 +1606,9 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -1624,7 +1632,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -1632,14 +1640,13 @@ op_star
 id|arg
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
-id|u_int
-id|i
-suffix:semicolon
 r_int
+id|i
+comma
 id|tmpcharge
 op_assign
 l_int|0
@@ -1741,7 +1748,9 @@ id|pc-&gt;para.chargeinfo
 op_assign
 id|tmpcharge
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -1816,7 +1825,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -1849,7 +1858,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -1920,7 +1929,9 @@ id|pc-&gt;para.chargeinfo
 op_assign
 l_int|0
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -1944,7 +1955,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -1959,7 +1970,7 @@ id|skb
 op_assign
 id|arg
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -2089,7 +2100,9 @@ comma
 id|PROTO_DIS_N1
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -2119,7 +2132,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -2158,7 +2171,9 @@ id|pc-&gt;para.cause
 op_assign
 id|NO_CAUSE
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -2188,7 +2203,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -2203,14 +2218,13 @@ id|skb
 op_assign
 id|arg
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
-id|u_int
-id|i
-suffix:semicolon
 r_int
+id|i
+comma
 id|tmpcharge
 op_assign
 l_int|0
@@ -2311,7 +2325,9 @@ id|pc-&gt;para.chargeinfo
 op_assign
 id|tmpcharge
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -2511,7 +2527,9 @@ comma
 l_int|12
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -2535,7 +2553,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -2605,7 +2623,9 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -2629,7 +2649,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -2667,7 +2687,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -2680,13 +2700,13 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|24
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -2880,7 +2900,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -2906,7 +2926,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -2919,13 +2939,13 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -2934,12 +2954,12 @@ suffix:semicolon
 r_int
 id|l
 suffix:semicolon
-id|u8
+id|u_char
 id|cause
 op_assign
 l_int|0x10
 suffix:semicolon
-id|u8
+id|u_char
 id|clen
 op_assign
 l_int|1
@@ -3117,7 +3137,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -3190,7 +3210,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -3219,7 +3239,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -3241,7 +3263,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -3254,13 +3276,13 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -3269,12 +3291,12 @@ suffix:semicolon
 r_int
 id|l
 suffix:semicolon
-id|u8
+id|u_char
 id|cause
 op_assign
 l_int|0x90
 suffix:semicolon
-id|u8
+id|u_char
 id|clen
 op_assign
 l_int|1
@@ -3442,7 +3464,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -3471,7 +3493,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -3493,7 +3517,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -3522,7 +3546,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -3544,7 +3570,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -3600,7 +3626,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -3615,7 +3641,9 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -3643,7 +3671,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -3665,7 +3693,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -3687,7 +3717,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -3712,7 +3742,9 @@ id|pc-&gt;para.loc
 op_assign
 l_int|0
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -4410,10 +4442,9 @@ op_star
 id|arg
 )paren
 (brace
-id|u_int
-id|i
-suffix:semicolon
 r_int
+id|i
+comma
 id|mt
 comma
 id|cr
@@ -5160,10 +5191,9 @@ op_star
 id|arg
 )paren
 (brace
-id|u_int
-id|i
-suffix:semicolon
 r_int
+id|i
+comma
 id|cr
 suffix:semicolon
 r_struct
@@ -5443,7 +5473,7 @@ op_star
 id|arg
 )paren
 (brace
-id|u_int
+r_int
 id|i
 suffix:semicolon
 r_struct
@@ -5612,11 +5642,11 @@ id|tmp
 l_int|64
 )braket
 suffix:semicolon
-id|st-&gt;l3.l4l3
+id|st-&gt;lli.l4l3
 op_assign
 id|down1tr6
 suffix:semicolon
-id|st-&gt;l3.l2l3
+id|st-&gt;l2.l2l3
 op_assign
 id|up1tr6
 suffix:semicolon

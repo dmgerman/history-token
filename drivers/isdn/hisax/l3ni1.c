@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: l3ni1.c,v 2.5.6.3 2001/09/23 22:24:50 kai Exp $&n; *&n; * NI1 D-channel protocol&n; *&n; * Author       Matt Henderson &amp; Guy Ellis&n; * Copyright    by Traverse Technologies Pty Ltd, www.travers.com.au&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * 2000.6.6 Initial implementation of routines for US NI1 &n; * Layer 3 protocol based on the EURO/DSS1 D-channel protocol &n; * driver written by Karsten Keil et al.  &n; * NI-1 Hall of Fame - Thanks to.... &n; * Ragnar Paulson - for some handy code fragments&n; * Will Scales - beta tester extraordinaire&n; * Brett Whittacre - beta tester and remote devel system in Vegas&n; *&n; */
+multiline_comment|/* $Id: l3ni1.c,v 2.8.2.3 2004/01/13 14:31:25 keil Exp $&n; *&n; * NI1 D-channel protocol&n; *&n; * Author       Matt Henderson &amp; Guy Ellis&n; * Copyright    by Traverse Technologies Pty Ltd, www.travers.com.au&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * 2000.6.6 Initial implementation of routines for US NI1 &n; * Layer 3 protocol based on the EURO/DSS1 D-channel protocol &n; * driver written by Karsten Keil et al.  &n; * NI-1 Hall of Fame - Thanks to.... &n; * Ragnar Paulson - for some handy code fragments&n; * Will Scales - beta tester extraordinaire&n; * Brett Whittacre - beta tester and remote devel system in Vegas&n; *&n; */
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;isdnl3.h&quot;
 macro_line|#include &quot;l3ni1.h&quot;
@@ -21,14 +21,7 @@ r_char
 op_star
 id|ni1_revision
 op_assign
-l_string|&quot;$Revision: 2.5.6.3 $&quot;
-suffix:semicolon
-DECL|variable|l3ni1_lock
-r_static
-id|spinlock_t
-id|l3ni1_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+l_string|&quot;$Revision: 2.8.2.3 $&quot;
 suffix:semicolon
 DECL|macro|EXT_BEARER_CAPS
 mdefine_line|#define EXT_BEARER_CAPS 1
@@ -56,10 +49,6 @@ r_char
 id|retval
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
 id|i
@@ -67,15 +56,6 @@ op_assign
 l_int|32
 suffix:semicolon
 multiline_comment|/* maximum search depth */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|l3ni1_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|retval
 op_assign
 id|p-&gt;prot.ni1.last_invoke_id
@@ -172,15 +152,6 @@ l_int|7
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|l3ni1_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -205,10 +176,6 @@ r_char
 id|id
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -218,15 +185,6 @@ id|id
 r_return
 suffix:semicolon
 multiline_comment|/* 0 = invalid value */
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|l3ni1_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|p-&gt;prot.ni1.invoke_used
 (braket
 id|id
@@ -243,15 +201,6 @@ id|id
 op_amp
 l_int|7
 )paren
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|l3ni1_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -441,11 +390,11 @@ comma
 r_int
 id|id
 comma
-id|u8
+id|u_char
 op_star
 id|p
 comma
-id|u8
+id|u_char
 id|nlen
 )paren
 (brace
@@ -741,11 +690,11 @@ comma
 r_int
 id|ident
 comma
-id|u8
+id|u_char
 op_star
 id|p
 comma
-id|u8
+id|u_char
 id|nlen
 )paren
 (brace
@@ -864,7 +813,7 @@ comma
 r_int
 id|cr
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
@@ -1611,7 +1560,9 @@ id|pc-&gt;redir_result
 op_assign
 id|pc-&gt;prot.ni1.remote_result
 suffix:semicolon
-id|L3L4
+id|st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|st
@@ -1841,7 +1792,9 @@ id|pc-&gt;redir_result
 op_assign
 id|pc-&gt;prot.ni1.remote_result
 suffix:semicolon
-id|L3L4
+id|st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|st
@@ -1893,7 +1846,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|mt
 )paren
 (brace
@@ -1902,7 +1855,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -1966,7 +1919,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|mt
 )paren
 multiline_comment|/* sends an l3 messages plus channel id -  added GE 05/09/00 */
@@ -1976,25 +1929,25 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
 id|tmp
 suffix:semicolon
-id|u8
+id|u_char
 id|chid
 suffix:semicolon
 id|chid
 op_assign
 (paren
-id|u8
+id|u_char
 )paren
 (paren
 id|pc-&gt;para.bchannel
@@ -2088,10 +2041,10 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|mt
 comma
-id|u8
+id|u_char
 id|cause
 )paren
 (brace
@@ -2100,13 +2053,13 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -2213,7 +2166,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -2221,13 +2174,13 @@ op_star
 id|arg
 )paren
 (brace
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -2359,7 +2312,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -2368,13 +2321,13 @@ id|arg
 )paren
 (brace
 multiline_comment|/* This routine is called if here was no SETUP made (checks in ni1up and in&n;&t; * l3ni1_setup) and a RELEASE_COMPLETE have to be sent with an error code&n;&t; * MT_STATUS_ENQUIRE in the NULL state is handled too&n;&t; */
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -3265,7 +3218,7 @@ DECL|function|getmax_ie_len
 id|getmax_ie_len
 c_func
 (paren
-id|u8
+id|u_char
 id|ie
 )paren
 (brace
@@ -3327,7 +3280,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|ie
 comma
 r_int
@@ -3417,10 +3370,10 @@ id|cl
 op_assign
 id|checklist
 suffix:semicolon
-id|u8
+id|u_char
 id|mt
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 comma
@@ -3450,17 +3403,17 @@ id|err_ureg
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+id|u_char
 id|codeset
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+id|u_char
 id|old_codeset
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+id|u_char
 id|codelock
 op_assign
 l_int|1
@@ -3500,9 +3453,6 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-(paren
-id|u_int
-)paren
 (paren
 id|p
 op_minus
@@ -4123,7 +4073,7 @@ op_star
 id|skb
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -4257,14 +4207,14 @@ op_star
 id|skb
 )paren
 (brace
-id|u8
+id|u_char
 id|l
 comma
 id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -4442,7 +4392,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|cmd
 )paren
 (brace
@@ -4451,7 +4401,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
@@ -4459,7 +4409,7 @@ op_plus
 l_int|40
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -4600,7 +4550,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -4671,7 +4621,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -4751,7 +4701,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -4772,17 +4724,17 @@ suffix:semicolon
 )brace
 macro_line|#if EXT_BEARER_CAPS
 r_static
-id|u8
+id|u_char
 op_star
 DECL|function|EncodeASyncParams
 id|EncodeASyncParams
 c_func
 (paren
-id|u8
+id|u_char
 op_star
 id|p
 comma
-id|u8
+id|u_char
 id|si2
 )paren
 (brace
@@ -5001,15 +4953,15 @@ l_int|3
 suffix:semicolon
 )brace
 r_static
-id|u8
+id|u_char
 DECL|function|EncodeSyncParams
 id|EncodeSyncParams
 c_func
 (paren
-id|u8
+id|u_char
 id|si2
 comma
-id|u8
+id|u_char
 id|ai
 )paren
 (brace
@@ -5128,20 +5080,20 @@ id|ai
 suffix:semicolon
 )brace
 r_static
-id|u8
+id|u_char
 DECL|function|DecodeASyncParams
 id|DecodeASyncParams
 c_func
 (paren
-id|u8
+id|u_char
 id|si2
 comma
-id|u8
+id|u_char
 op_star
 id|p
 )paren
 (brace
-id|u8
+id|u_char
 id|info
 suffix:semicolon
 r_switch
@@ -5310,15 +5262,15 @@ id|si2
 suffix:semicolon
 )brace
 r_static
-id|u8
+id|u_char
 DECL|function|DecodeSyncParams
 id|DecodeSyncParams
 c_func
 (paren
-id|u8
+id|u_char
 id|si2
 comma
-id|u8
+id|u_char
 id|info
 )paren
 (brace
@@ -5431,7 +5383,7 @@ suffix:semicolon
 )brace
 )brace
 r_static
-id|u8
+id|u_char
 DECL|function|DecodeSI2
 id|DecodeSI2
 c_func
@@ -5442,7 +5394,7 @@ op_star
 id|skb
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -5576,7 +5528,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -5589,27 +5541,27 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|128
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
 id|tmp
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|teln
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|sub
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|sp
 suffix:semicolon
@@ -6173,7 +6125,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -6402,7 +6354,9 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -6426,7 +6380,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -6648,7 +6602,9 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -6672,7 +6628,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -6687,14 +6643,14 @@ id|skb
 op_assign
 id|arg
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|u8
+id|u_char
 id|cause
 op_assign
 l_int|0
@@ -6867,7 +6823,9 @@ l_int|11
 op_ne
 id|ret
 )paren
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -6936,7 +6894,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -7019,7 +6977,9 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -7043,7 +7003,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -7121,7 +7081,9 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -7145,7 +7107,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -7153,7 +7115,7 @@ op_star
 id|arg
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -7188,7 +7150,7 @@ id|p
 op_assign
 id|skb-&gt;data
 suffix:semicolon
-multiline_comment|/* only the first occurrence &squot;ll be detected ! */
+multiline_comment|/* only the first occurence &squot;ll be detected ! */
 r_if
 c_cond
 (paren
@@ -8052,7 +8014,9 @@ comma
 id|err
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -8076,7 +8040,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -8102,7 +8066,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -8115,7 +8079,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
@@ -8123,7 +8087,7 @@ op_plus
 l_int|40
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -8132,7 +8096,7 @@ suffix:semicolon
 r_int
 id|l
 suffix:semicolon
-id|u8
+id|u_char
 id|cause
 op_assign
 l_int|16
@@ -8330,7 +8294,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -8435,7 +8399,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -8512,7 +8476,9 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -8536,7 +8502,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -8549,13 +8515,13 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -8564,7 +8530,7 @@ suffix:semicolon
 r_int
 id|l
 suffix:semicolon
-id|u8
+id|u_char
 id|cause
 op_assign
 l_int|21
@@ -8666,7 +8632,9 @@ comma
 id|skb
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -8704,7 +8672,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -8719,7 +8687,7 @@ id|skb
 op_assign
 id|arg
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -8914,7 +8882,9 @@ comma
 id|MT_RELEASE_COMPLETE
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -8952,7 +8922,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -9006,7 +8976,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -9030,7 +9000,9 @@ comma
 id|MT_CALL_PROCEEDING
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -9054,7 +9026,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -9114,12 +9086,12 @@ comma
 r_int
 id|pr
 comma
-id|u8
+id|u_char
 op_star
 id|infp
 )paren
 (brace
-id|u8
+id|u_char
 id|len
 suffix:semicolon
 id|isdn_ctrl
@@ -9230,7 +9202,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -9250,7 +9222,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -9475,7 +9447,9 @@ id|ERR_IE_COMPREHENSION
 op_ne
 id|err
 )paren
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -9499,7 +9473,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -9519,7 +9493,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -9680,7 +9654,9 @@ id|ERR_IE_COMPREHENSION
 op_ne
 id|err
 )paren
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -9704,7 +9680,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -9769,7 +9745,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -9787,7 +9763,7 @@ id|skb
 op_assign
 id|arg
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -9880,7 +9856,9 @@ comma
 id|tmp
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -9920,7 +9898,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -9933,28 +9911,28 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|128
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
 id|tmp
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|subp
 suffix:semicolon
-id|u8
+id|u_char
 id|len_phone
 op_assign
 l_int|0
 suffix:semicolon
-id|u8
+id|u_char
 id|len_sub
 op_assign
 l_int|0
@@ -10383,7 +10361,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -10415,7 +10393,7 @@ suffix:semicolon
 multiline_comment|/* l3ni1_redir_req_early */
 multiline_comment|/***********************************************/
 multiline_comment|/* handle special commands for this protocol.  */
-multiline_comment|/* Examples are call independent services like */
+multiline_comment|/* Examples are call independant services like */
 multiline_comment|/* remote operations with dummy  callref.      */
 multiline_comment|/***********************************************/
 DECL|function|l3ni1_cmd_global
@@ -10434,16 +10412,16 @@ op_star
 id|ic
 )paren
 (brace
-id|u8
+id|u_char
 id|id
 suffix:semicolon
-id|u8
+id|u_char
 id|temp
 (braket
 l_int|265
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -11025,7 +11003,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11033,7 +11011,7 @@ op_star
 id|arg
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -11100,7 +11078,9 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* ETS 300-104 7.6.1, 8.6.1, 10.6.1... and 16.1&n;&t;&t; * set down layer 3 without sending any message&n;&t;&t; */
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11129,7 +11109,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11154,7 +11136,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11174,7 +11156,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11208,7 +11190,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11230,7 +11214,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11286,7 +11270,9 @@ comma
 l_int|102
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11315,7 +11301,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11348,7 +11334,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11370,7 +11358,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11378,13 +11366,13 @@ op_star
 id|arg
 )paren
 (brace
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -11398,7 +11386,7 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|cause
 op_assign
 l_int|16
@@ -11538,7 +11526,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11571,7 +11559,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11593,7 +11583,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11626,7 +11616,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11648,7 +11640,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11702,7 +11694,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11717,7 +11709,9 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11745,7 +11739,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11770,7 +11764,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* local */
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11819,7 +11815,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11844,7 +11840,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* local */
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11874,7 +11872,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11889,7 +11887,9 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -11919,7 +11919,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -11927,7 +11927,7 @@ op_star
 id|arg
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -11941,7 +11941,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|u8
+id|u_char
 id|cause
 op_assign
 l_int|0
@@ -12126,7 +12126,7 @@ c_cond
 id|cause
 )paren
 (brace
-id|u8
+id|u_char
 id|tmp
 suffix:semicolon
 r_if
@@ -12206,7 +12206,9 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* ETS 300-104 7.6.1, 8.6.1, 10.6.1...&n;&t;&t; * if received MT_STATUS with cause == 111 and call&n;&t;&t; * state == 0, then we must set down layer 3&n;&t;&t; */
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -12245,7 +12247,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -12284,7 +12286,7 @@ id|ret
 )paren
 suffix:semicolon
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -12332,7 +12334,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -12345,24 +12347,24 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|32
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
 id|tmp
 suffix:semicolon
-id|u8
+id|u_char
 id|i
 comma
 id|l
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|msg
 op_assign
@@ -12533,7 +12535,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -12570,7 +12572,9 @@ id|pc-&gt;para.cause
 op_assign
 id|NO_CAUSE
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -12635,7 +12639,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -12753,7 +12757,9 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -12797,7 +12803,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -12810,24 +12816,24 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|32
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
 id|tmp
 suffix:semicolon
-id|u8
+id|u_char
 id|i
 comma
 id|l
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|msg
 op_assign
@@ -12998,7 +13004,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -13180,7 +13186,9 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -13226,7 +13234,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -13344,7 +13352,9 @@ op_amp
 id|pc-&gt;timer
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -13394,7 +13404,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -13402,17 +13412,17 @@ op_star
 id|arg
 )paren
 (brace
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|32
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
-id|u8
+id|u_char
 id|ri
 comma
 id|ch
@@ -13595,7 +13605,9 @@ l_int|7
 op_eq
 l_int|7
 )paren
-id|L4L3
+id|up-&gt;st-&gt;lli
+dot
+id|l4l3
 c_func
 (paren
 id|up-&gt;st
@@ -13615,7 +13627,9 @@ id|up-&gt;para.bchannel
 op_eq
 id|chan
 )paren
-id|L4L3
+id|up-&gt;st-&gt;lli
+dot
+id|l4l3
 c_func
 (paren
 id|up-&gt;st
@@ -13762,7 +13776,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -13789,7 +13803,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -13811,7 +13827,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -13836,7 +13852,9 @@ id|pc-&gt;para.loc
 op_assign
 l_int|0
 suffix:semicolon
-id|L3L4
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l4
 c_func
 (paren
 id|pc-&gt;st
@@ -13866,7 +13884,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -13916,7 +13934,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -13958,7 +13976,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_struct
@@ -13970,7 +13988,7 @@ r_int
 id|iNewState
 )paren
 (brace
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -14033,7 +14051,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|L3L2
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|pc-&gt;st
@@ -14166,7 +14186,9 @@ comma
 id|CC_TSPID
 )paren
 suffix:semicolon
-id|L3L2
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|pc-&gt;st
@@ -14190,7 +14212,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -14221,7 +14243,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -14303,7 +14325,7 @@ id|l3_process
 op_star
 id|pc
 comma
-id|u8
+id|u_char
 id|pr
 comma
 r_void
@@ -14362,7 +14384,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|L3L2
+id|pc-&gt;st-&gt;l3
+dot
+id|l3l2
 c_func
 (paren
 id|pc-&gt;st
@@ -15715,13 +15739,13 @@ op_star
 id|skb
 )paren
 (brace
-id|u8
+id|u_char
 id|tmp
 (braket
 l_int|16
 )braket
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 op_assign
@@ -15730,7 +15754,7 @@ suffix:semicolon
 r_int
 id|l
 suffix:semicolon
-id|u_int
+r_int
 id|i
 suffix:semicolon
 r_struct
@@ -16000,10 +16024,9 @@ op_star
 id|arg
 )paren
 (brace
-id|u_int
-id|i
-suffix:semicolon
 r_int
+id|i
+comma
 id|mt
 comma
 id|cr
@@ -16016,7 +16039,7 @@ r_char
 op_star
 id|ptr
 suffix:semicolon
-id|u8
+id|u_char
 op_star
 id|p
 suffix:semicolon
@@ -16221,9 +16244,6 @@ c_cond
 (paren
 id|skb-&gt;len
 OL
-(paren
-id|u_int
-)paren
 (paren
 (paren
 id|skb-&gt;data
@@ -17093,10 +17113,9 @@ op_star
 id|arg
 )paren
 (brace
-id|u_int
-id|i
-suffix:semicolon
 r_int
+id|i
+comma
 id|cr
 suffix:semicolon
 r_struct
@@ -17401,7 +17420,7 @@ op_star
 id|arg
 )paren
 (brace
-id|u_int
+r_int
 id|i
 suffix:semicolon
 r_struct
@@ -17573,15 +17592,15 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|st-&gt;l3.l4l3
+id|st-&gt;lli.l4l3
 op_assign
 id|ni1down
 suffix:semicolon
-id|st-&gt;l3.l4l3_proto
+id|st-&gt;lli.l4l3_proto
 op_assign
 id|l3ni1_cmd_global
 suffix:semicolon
-id|st-&gt;l3.l2l3
+id|st-&gt;l2.l2l3
 op_assign
 id|ni1up
 suffix:semicolon

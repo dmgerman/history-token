@@ -833,8 +833,6 @@ id|name
 comma
 l_int|0
 comma
-id|BDEV_FS
-comma
 id|mp
 )paren
 suffix:semicolon
@@ -894,8 +892,6 @@ id|close_bdev_excl
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 )brace

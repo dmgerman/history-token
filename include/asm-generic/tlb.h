@@ -278,6 +278,24 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_static
+r_inline
+r_int
+r_int
+DECL|function|tlb_is_full_mm
+id|tlb_is_full_mm
+c_func
+(paren
+r_struct
+id|mmu_gather
+op_star
+id|tlb
+)paren
+(brace
+r_return
+id|tlb-&gt;fullmm
+suffix:semicolon
+)brace
 multiline_comment|/* tlb_remove_page&n; *&t;Must perform the equivalent to __free_pte(pte_get_and_clear(ptep)), while&n; *&t;handling the additional races in SMP caused by other CPUs caching valid&n; *&t;mappings in their TLBs.&n; */
 DECL|function|tlb_remove_page
 r_static

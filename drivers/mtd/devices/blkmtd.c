@@ -2466,8 +2466,6 @@ id|close_bdev_excl
 c_func
 (paren
 id|dev-&gt;blkdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 )brace
@@ -2856,8 +2854,6 @@ id|devname
 comma
 id|mode
 comma
-id|BDEV_RAW
-comma
 l_int|NULL
 )paren
 suffix:semicolon
@@ -2885,8 +2881,6 @@ id|devname
 )paren
 comma
 id|mode
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2968,8 +2962,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 r_return
@@ -3002,8 +2994,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 r_return

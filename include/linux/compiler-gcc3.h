@@ -24,4 +24,8 @@ DECL|macro|__attribute_pure__
 mdefine_line|#define __attribute_pure__&t;__attribute__((pure))
 DECL|macro|__attribute_const__
 mdefine_line|#define __attribute_const__&t;__attribute__((__const__))
+macro_line|#if __GNUC_MINOR__ &gt;= 1
+DECL|macro|noinline
+mdefine_line|#define  noinline __attribute__((noinline))
+macro_line|#endif
 eof

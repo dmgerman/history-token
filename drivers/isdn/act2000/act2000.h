@@ -354,6 +354,11 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* Pointer to next device struct    */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* protect critical operations      */
 DECL|member|myid
 r_int
 id|myid
@@ -441,7 +446,12 @@ r_int
 r_int
 id|msgnum
 suffix:semicolon
-multiline_comment|/* Message number fur sending       */
+multiline_comment|/* Message number for sending       */
+DECL|member|mnlock
+id|spinlock_t
+id|mnlock
+suffix:semicolon
+multiline_comment|/* lock for msgnum                  */
 DECL|member|bch
 id|act2000_chan
 id|bch

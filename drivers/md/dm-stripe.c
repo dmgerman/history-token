@@ -819,7 +819,7 @@ id|STATUSTYPE_TABLE
 suffix:colon
 id|offset
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|result
@@ -866,7 +866,7 @@ id|dev-&gt;bdev-&gt;bd_dev
 suffix:semicolon
 id|offset
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|result

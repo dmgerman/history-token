@@ -565,7 +565,7 @@ suffix:semicolon
 r_else
 id|p
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|p

@@ -997,6 +997,8 @@ suffix:semicolon
 r_int
 r_int
 id|num_packets
+comma
+id|packet_offset
 suffix:semicolon
 r_int
 id|len
@@ -1004,8 +1006,6 @@ comma
 id|buf_size
 comma
 id|bytes_sent
-comma
-id|packet_offset
 suffix:semicolon
 r_struct
 id|sk_buff
@@ -1081,7 +1081,7 @@ id|skb
 (brace
 id|len
 op_assign
-id|hdlc_encode
+id|isdnhdlc_encode
 c_func
 (paren
 op_amp
@@ -1113,7 +1113,7 @@ r_else
 singleline_comment|// Send flags or idle
 id|len
 op_assign
-id|hdlc_encode
+id|isdnhdlc_encode
 c_func
 (paren
 op_amp
@@ -1226,9 +1226,6 @@ id|len
 op_minus
 id|packet_offset
 OL
-(paren
-r_int
-)paren
 id|desc-&gt;length
 )paren
 id|desc-&gt;length
@@ -1550,7 +1547,7 @@ comma
 id|skb-&gt;len
 )paren
 suffix:semicolon
-id|hdlc_out_init
+id|isdnhdlc_out_init
 c_func
 (paren
 op_amp
@@ -1606,7 +1603,7 @@ id|skb
 suffix:semicolon
 id|len
 op_assign
-id|hdlc_encode
+id|isdnhdlc_encode
 c_func
 (paren
 op_amp

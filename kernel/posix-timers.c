@@ -1102,6 +1102,8 @@ c_func
 (paren
 op_amp
 id|posix_timers_id
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren

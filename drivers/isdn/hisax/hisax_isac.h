@@ -39,11 +39,11 @@ id|FsmTimer
 id|timer
 suffix:semicolon
 DECL|member|mocr
-id|u8
+id|u_char
 id|mocr
 suffix:semicolon
 DECL|member|adf2
-id|u8
+id|u_char
 id|adf2
 suffix:semicolon
 DECL|member|type
@@ -51,7 +51,7 @@ r_int
 id|type
 suffix:semicolon
 DECL|member|rcvbuf
-id|u8
+id|u_char
 id|rcvbuf
 (braket
 id|MAX_DFRAME_LEN_L1
@@ -72,7 +72,7 @@ r_int
 id|tx_cnt
 suffix:semicolon
 DECL|member|read_isac
-id|u8
+id|u_char
 (paren
 op_star
 id|read_isac
@@ -82,7 +82,7 @@ r_struct
 id|isac
 op_star
 comma
-id|u8
+id|u_char
 )paren
 suffix:semicolon
 DECL|member|write_isac
@@ -96,9 +96,9 @@ r_struct
 id|isac
 op_star
 comma
-id|u8
+id|u_char
 comma
-id|u8
+id|u_char
 )paren
 suffix:semicolon
 DECL|member|read_isac_fifo
@@ -112,7 +112,7 @@ r_struct
 id|isac
 op_star
 comma
-id|u8
+id|u_char
 op_star
 comma
 r_int
@@ -129,7 +129,7 @@ r_struct
 id|isac
 op_star
 comma
-id|u8
+id|u_char
 op_star
 comma
 r_int
@@ -165,7 +165,7 @@ id|arg
 )paren
 suffix:semicolon
 r_void
-id|hisax_isac_setup
+id|isac_setup
 c_func
 (paren
 r_struct

@@ -27032,7 +27032,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 id|err
 op_assign
 id|pci_module_init
@@ -27065,7 +27065,7 @@ id|de4x5_module_exit
 r_void
 )paren
 (brace
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 id|pci_unregister_driver
 (paren
 op_amp

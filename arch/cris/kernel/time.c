@@ -281,6 +281,11 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+id|clock_was_set
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

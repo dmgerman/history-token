@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capilli.h,v 1.4.8.1 2001/09/23 22:24:33 kai Exp $&n; * &n; * Kernel CAPI 2.0 Driver Interface for Linux&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capilli.h,v 1.1.2.2 2004/01/16 21:09:27 keil Exp $&n; * &n; * Kernel CAPI 2.0 Driver Interface for Linux&n; * &n; * Copyright 1999 by Carsten Paeth &lt;calle@calle.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef __CAPILLI_H__
 DECL|macro|__CAPILLI_H__
 mdefine_line|#define __CAPILLI_H__
@@ -391,6 +391,72 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+)paren
+suffix:semicolon
+singleline_comment|// ---------------------------------------------------------------------------
+singleline_comment|// needed for AVM capi drivers
+DECL|struct|capi_driver
+r_struct
+id|capi_driver
+(brace
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* driver name */
+DECL|member|revision
+r_char
+id|revision
+(braket
+l_int|32
+)braket
+suffix:semicolon
+DECL|member|add_card
+r_int
+(paren
+op_star
+id|add_card
+)paren
+(paren
+r_struct
+id|capi_driver
+op_star
+id|driver
+comma
+id|capicardparams
+op_star
+id|data
+)paren
+suffix:semicolon
+multiline_comment|/* management information for kcapi */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+)brace
+suffix:semicolon
+r_void
+id|register_capi_driver
+c_func
+(paren
+r_struct
+id|capi_driver
+op_star
+id|driver
+)paren
+suffix:semicolon
+r_void
+id|unregister_capi_driver
+c_func
+(paren
+r_struct
+id|capi_driver
+op_star
+id|driver
 )paren
 suffix:semicolon
 singleline_comment|// ---------------------------------------------------------------------------

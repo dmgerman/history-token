@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: w6692.h,v 1.2.6.2 2001/09/23 22:24:52 kai Exp $&n; *&n; * Winbond W6692 specific defines&n; *&n; * Author       Petr Novak&n; * Copyright    by Petr Novak        &lt;petr.novak@i.cz&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: w6692.h,v 1.4.2.2 2004/01/12 22:52:29 keil Exp $&n; *&n; * Winbond W6692 specific defines&n; *&n; * Author       Petr Novak&n; * Copyright    by Petr Novak        &lt;petr.novak@i.cz&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 multiline_comment|/* map W6692 functions to ISAC functions */
 DECL|macro|readW6692
 mdefine_line|#define readW6692&t;readisac
@@ -9,6 +9,8 @@ mdefine_line|#define&t;readW6692fifo&t;readisacfifo
 DECL|macro|writeW6692fifo
 mdefine_line|#define&t;writeW6692fifo&t;writeisacfifo
 multiline_comment|/* B-channel FIFO read/write routines */
+DECL|macro|READW6692BFIFO
+mdefine_line|#define READW6692BFIFO(cs,bchan,ptr,count) &bslash;&n;&t;insb(cs-&gt;hw.w6692.iobase+W_B_RFIFO+(bchan?0x40:0),ptr,count)
 DECL|macro|WRITEW6692BFIFO
 mdefine_line|#define WRITEW6692BFIFO(cs,bchan,ptr,count) &bslash;&n;&t;outsb(cs-&gt;hw.w6692.iobase+W_B_XFIFO+(bchan?0x40:0),ptr,count)
 multiline_comment|/* Specifications of W6692 registers */

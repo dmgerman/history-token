@@ -97,7 +97,7 @@ id|scratch
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 (paren
 id|scratch
 comma
@@ -150,7 +150,7 @@ id|scratch
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 (paren
 id|scratch
 comma
@@ -203,7 +203,7 @@ id|scratch
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 (paren
 id|scratch
 comma
@@ -256,7 +256,7 @@ id|scratch
 suffix:semicolon
 id|length
 op_add_assign
-id|snprintf
+id|scnprintf
 (paren
 id|scratch
 comma

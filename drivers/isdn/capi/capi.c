@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capi.c,v 1.1.4.1.2.2 2001/12/21 15:00:17 kai Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capi.c,v 1.1.2.3 2004/01/16 21:09:26 keil Exp $&n; *&n; * CAPI 2.0 Interface for Linux&n; *&n; * Copyright 1996 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -39,7 +39,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.1.4.1.2.2 $&quot;
+l_string|&quot;$Revision: 1.1.2.3 $&quot;
 suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
@@ -726,6 +726,39 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|capiminor_list
+)paren
+)paren
+(brace
+id|list_add
+c_func
+(paren
+op_amp
+id|mp-&gt;list
+comma
+op_amp
+id|capiminor_list
+)paren
+suffix:semicolon
+id|write_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|capiminor_list_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|list_for_each
 c_func
 (paren
@@ -804,6 +837,7 @@ suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
 )brace
 r_return
 id|mp
@@ -1107,8 +1141,6 @@ macro_line|#if defined(CONFIG_ISDN_CAPI_CAPIFS) || defined(CONFIG_ISDN_CAPI_CAPI
 id|capifs_new_ncci
 c_func
 (paren
-l_int|0
-comma
 id|mp-&gt;minor
 comma
 id|MKDEV
@@ -1241,16 +1273,6 @@ macro_line|#if defined(CONFIG_ISDN_CAPI_CAPIFS) || defined(CONFIG_ISDN_CAPI_CAPI
 id|capifs_free_ncci
 c_func
 (paren
-l_char|&squot;r&squot;
-comma
-id|mp-&gt;minor
-)paren
-suffix:semicolon
-id|capifs_free_ncci
-c_func
-(paren
-l_int|0
-comma
 id|mp-&gt;minor
 )paren
 suffix:semicolon

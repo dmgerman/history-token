@@ -295,7 +295,7 @@ id|off
 )braket
 )paren
 (brace
-multiline_comment|/* type specific length/alignment &n;&t;&t;&t;&t;&t;   checks will be perfomed in the &n;&t;&t;&t;&t;&t;   func(). */
+multiline_comment|/* type specific length/alignment &n;&t;&t;&t;&t;&t;   checks will be performed in the &n;&t;&t;&t;&t;&t;   func(). */
 r_if
 c_cond
 (paren

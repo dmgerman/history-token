@@ -478,7 +478,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|dm_vcalloc
-r_static
 r_void
 op_star
 id|dm_vcalloc
@@ -743,7 +742,7 @@ op_star
 id|t
 )paren
 comma
-id|GFP_NOIO
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1329,8 +1328,6 @@ c_func
 id|dev
 comma
 id|d-&gt;mode
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 r_if
@@ -1368,8 +1365,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 r_else
@@ -1412,8 +1407,6 @@ id|blkdev_put
 c_func
 (paren
 id|d-&gt;bdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 id|d-&gt;bdev
@@ -2638,6 +2631,22 @@ op_amp
 id|tgt-&gt;limits
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|len
+)paren
+(brace
+id|tgt-&gt;error
+op_assign
+l_string|&quot;zero-length target&quot;
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 id|tgt-&gt;type
 op_assign
 id|dm_get_target_type
@@ -3515,6 +3524,13 @@ id|ti
 suffix:semicolon
 )brace
 )brace
+DECL|variable|dm_vcalloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dm_vcalloc
+)paren
+suffix:semicolon
 DECL|variable|dm_get_device
 id|EXPORT_SYMBOL
 c_func

@@ -10,7 +10,7 @@ r_int
 id|CLOCK_TICK_RATE
 suffix:semicolon
 macro_line|#else
-macro_line|#ifdef CONFIG_MELAN
+macro_line|#ifdef CONFIG_X86_ELAN
 DECL|macro|CLOCK_TICK_RATE
 macro_line|#  define CLOCK_TICK_RATE 1189200 /* AMD Elan has different frequency! */
 macro_line|#else

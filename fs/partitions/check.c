@@ -1548,8 +1548,6 @@ comma
 id|FMODE_READ
 comma
 l_int|0
-comma
-id|BDEV_RAW
 )paren
 OL
 l_int|0
@@ -1662,8 +1660,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_RAW
 )paren
 suffix:semicolon
 )brace

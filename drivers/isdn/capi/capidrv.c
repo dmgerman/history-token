@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capidrv.c,v 1.39.6.7 2001/09/23 22:24:33 kai Exp $&n; *&n; * ISDN4Linux Driver, using capi20 interface (kernelcapi)&n; *&n; * Copyright 1997 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capidrv.c,v 1.1.2.2 2004/01/12 23:17:24 keil Exp $&n; *&n; * ISDN4Linux Driver, using capi20 interface (kernelcapi)&n; *&n; * Copyright 1997 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -28,7 +28,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.39.6.7 $&quot;
+l_string|&quot;$Revision: 1.1.2.2 $&quot;
 suffix:semicolon
 DECL|variable|debugmode
 r_static
@@ -6016,6 +6016,28 @@ multiline_comment|/* ncci */
 r_if
 c_cond
 (paren
+id|cmsg-&gt;Info
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;CAPI_DATA_B3_CONF: Info %x - %s&bslash;n&quot;
+comma
+id|cmsg-&gt;Info
+comma
+id|capi_info2str
+c_func
+(paren
+id|cmsg-&gt;Info
+)paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 (paren
 id|nccip
@@ -6545,7 +6567,7 @@ c_cond
 (paren
 id|debugmode
 OG
-l_int|2
+l_int|3
 )paren
 id|printk
 c_func
@@ -8895,7 +8917,7 @@ c_cond
 (paren
 id|debugmode
 OG
-l_int|1
+l_int|4
 )paren
 id|printk
 c_func
@@ -9153,6 +9175,30 @@ r_return
 id|len
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|debugmode
+OG
+l_int|3
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;capidrv-%d: sendbuf putmsg ret(%x) - %s&bslash;n&quot;
+comma
+id|card-&gt;contrnr
+comma
+id|errcode
+comma
+id|capi_info2str
+c_func
+(paren
+id|errcode
+)paren
+)paren
+suffix:semicolon
 (paren
 r_void
 )paren
@@ -9226,6 +9272,30 @@ r_return
 id|len
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|debugmode
+OG
+l_int|3
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;capidrv-%d: sendbuf putmsg ret(%x) - %s&bslash;n&quot;
+comma
+id|card-&gt;contrnr
+comma
+id|errcode
+comma
+id|capi_info2str
+c_func
+(paren
+id|errcode
+)paren
+)paren
+suffix:semicolon
 id|skb_pull
 c_func
 (paren

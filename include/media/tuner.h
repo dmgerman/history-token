@@ -90,7 +90,11 @@ mdefine_line|#define TUNER_PHILIPS_PAL_MK     41
 DECL|macro|TUNER_PHILIPS_ATSC
 mdefine_line|#define TUNER_PHILIPS_ATSC       42
 DECL|macro|TUNER_PHILIPS_FM1236_MK3
-mdefine_line|#define TUNER_PHILIPS_FM1236_MK3  43
+mdefine_line|#define TUNER_PHILIPS_FM1236_MK3 43
+DECL|macro|TUNER_PHILIPS_4IN1
+mdefine_line|#define TUNER_PHILIPS_4IN1       44&t;/* ATI TV Wonder Pro - Conexant */
+DECL|macro|TUNER_MICROTUNE_4049FM5
+mdefine_line|#define TUNER_MICROTUNE_4049FM5  45
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL

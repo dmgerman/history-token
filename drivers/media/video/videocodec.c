@@ -1300,7 +1300,7 @@ l_int|0
 suffix:semicolon
 id|i
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|videocodec_buf
@@ -1316,7 +1316,7 @@ l_string|&quot;&lt;S&gt;lave or attached &lt;M&gt;aster name  type flags    magi
 suffix:semicolon
 id|i
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|videocodec_buf
@@ -1324,6 +1324,8 @@ op_plus
 id|i
 comma
 id|size
+op_minus
+id|i
 op_minus
 l_int|1
 comma
@@ -1356,7 +1358,7 @@ suffix:semicolon
 singleline_comment|// security check
 id|i
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|videocodec_buf
@@ -1364,6 +1366,10 @@ op_plus
 id|i
 comma
 id|size
+op_minus
+id|i
+op_minus
+l_int|1
 comma
 l_string|&quot;S %32s %04x %08lx %08lx (TEMPLATE)&bslash;n&quot;
 comma
@@ -1402,7 +1408,7 @@ suffix:semicolon
 singleline_comment|// security check
 id|i
 op_add_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|videocodec_buf
@@ -1410,6 +1416,10 @@ op_plus
 id|i
 comma
 id|size
+op_minus
+id|i
+op_minus
+l_int|1
 comma
 l_string|&quot;M %32s %04x %08lx %08lx (%s)&bslash;n&quot;
 comma

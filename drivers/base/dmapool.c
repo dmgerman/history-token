@@ -147,7 +147,8 @@ id|PAGE_SIZE
 suffix:semicolon
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
+c_func
 (paren
 id|next
 comma
@@ -213,7 +214,8 @@ suffix:semicolon
 multiline_comment|/* per-pool info, no real statistics yet */
 id|temp
 op_assign
-id|snprintf
+id|scnprintf
+c_func
 (paren
 id|next
 comma

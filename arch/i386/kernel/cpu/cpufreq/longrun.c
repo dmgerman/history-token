@@ -732,6 +732,7 @@ suffix:semicolon
 DECL|function|longrun_cpu_init
 r_static
 r_int
+id|__init
 id|longrun_cpu_init
 c_func
 (paren

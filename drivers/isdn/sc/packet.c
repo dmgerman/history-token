@@ -6,7 +6,7 @@ macro_line|#include &quot;card.h&quot;
 r_extern
 id|board
 op_star
-id|adapter
+id|sc_adapter
 (braket
 )braket
 suffix:semicolon
@@ -171,14 +171,14 @@ c_func
 (paren
 l_string|&quot;%s: sndpkt: frst = 0x%x nxt = %d  f = %d n = %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|devicename
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -190,7 +190,7 @@ id|channel
 dot
 id|first_sendbuf
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -202,7 +202,7 @@ id|channel
 dot
 id|next_sendbuf
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -214,7 +214,7 @@ id|channel
 dot
 id|free_sendbufs
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -231,7 +231,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -249,7 +249,7 @@ c_func
 (paren
 l_string|&quot;%s: out of TX buffers&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -275,7 +275,7 @@ c_func
 (paren
 l_string|&quot;%s: data overflows buffer size (data &gt; buffer)&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -290,7 +290,7 @@ suffix:semicolon
 )brace
 id|ReqLnkWrite.buff_offset
 op_assign
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -304,7 +304,7 @@ id|next_sendbuf
 op_star
 id|BUFFER_SIZE
 op_plus
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -326,7 +326,7 @@ c_func
 (paren
 l_string|&quot;%s: writing %d bytes to buffer offset 0x%x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -360,7 +360,7 @@ c_func
 (paren
 l_string|&quot;%s: sndpkt size=%d, buf_offset=0x%x buf_indx=%d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -371,7 +371,7 @@ id|ReqLnkWrite.msg_len
 comma
 id|ReqLnkWrite.buff_offset
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -432,7 +432,7 @@ c_func
 (paren
 l_string|&quot;%s: failed to send packet, status = %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -449,7 +449,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -462,7 +462,7 @@ dot
 id|free_sendbufs
 op_decrement
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -475,7 +475,7 @@ dot
 id|next_sendbuf
 op_assign
 op_increment
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -487,7 +487,7 @@ id|channel
 dot
 id|next_sendbuf
 op_eq
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -502,7 +502,7 @@ ques
 c_cond
 l_int|0
 suffix:colon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -519,7 +519,7 @@ c_func
 (paren
 l_string|&quot;%s: packet sent successfully&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -618,7 +618,7 @@ c_func
 (paren
 l_string|&quot;%s: error status code: 0x%x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -654,7 +654,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: rcvpkt out of memory, dropping packet&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -678,7 +678,7 @@ c_func
 (paren
 l_string|&quot;%s: getting data from offset: 0x%x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -710,7 +710,7 @@ comma
 id|rcvmsg-&gt;msg_data.response.msg_len
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -720,7 +720,7 @@ op_member_access_from_pointer
 id|rcvcallb_skb
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -743,7 +743,7 @@ c_func
 (paren
 l_string|&quot;%s: buffer size : %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -767,7 +767,7 @@ c_func
 (paren
 l_string|&quot;%s: recycled buffer at offset 0x%x size %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -867,7 +867,7 @@ c_func
 (paren
 l_string|&quot;%s: setting up channel buffer space in shared RAM&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -883,7 +883,7 @@ id|nBuffers
 op_assign
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -914,7 +914,7 @@ c_func
 (paren
 l_string|&quot;%s: calculating buffer space: %d buffers, %d big&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -939,7 +939,7 @@ c_func
 (paren
 l_string|&quot;%s: not enough buffer space&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -971,7 +971,7 @@ c_func
 (paren
 l_string|&quot;%s: channel buffer offset from shared RAM: 0x%x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -981,7 +981,7 @@ comma
 id|cBase
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -999,7 +999,7 @@ id|BUFFER_BASE
 op_plus
 id|cBase
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1017,7 +1017,7 @@ id|nBuffers
 op_div
 l_int|2
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1035,7 +1035,7 @@ id|nBuffers
 op_div
 l_int|2
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1056,14 +1056,14 @@ c_func
 (paren
 l_string|&quot;%s: send buffer setup complete: first=0x%x n=%d f=%d, nxt=%d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|devicename
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1077,7 +1077,7 @@ l_int|1
 dot
 id|first_sendbuf
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1091,7 +1091,7 @@ l_int|1
 dot
 id|num_sendbufs
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1105,7 +1105,7 @@ l_int|1
 dot
 id|free_sendbufs
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1126,7 +1126,7 @@ c_func
 (paren
 l_string|&quot;%s: adding %d RecvBuffers:&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1159,7 +1159,7 @@ id|RcvBuffOffset.buff_offset
 op_assign
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1198,7 +1198,7 @@ c_func
 (paren
 l_string|&quot;%s: adding RcvBuffer #%d offset=0x%x sz=%d bufsz:%d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1277,7 +1277,7 @@ c_func
 (paren
 l_string|&quot;%s: data at 0x%x len: 0x%x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1326,7 +1326,7 @@ c_func
 (paren
 l_string|&quot;%s: data =  0x%x&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket

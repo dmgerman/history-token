@@ -1526,6 +1526,58 @@ comma
 l_int|732
 )brace
 comma
+(brace
+l_string|&quot;Philips 4 in 1 (ATI TV Wonder Pro/Conexant)&quot;
+comma
+id|Philips
+comma
+id|NTSC
+comma
+l_int|16
+op_star
+l_float|160.00
+comma
+l_int|16
+op_star
+l_float|442.00
+comma
+l_int|0x01
+comma
+l_int|0x02
+comma
+l_int|0x04
+comma
+l_int|0x8e
+comma
+l_int|732
+)brace
+comma
+(brace
+l_string|&quot;Microtune 4049 FM5&quot;
+comma
+id|Microtune
+comma
+id|PAL
+comma
+l_int|16
+op_star
+l_float|141.00
+comma
+l_int|16
+op_star
+l_float|464.00
+comma
+l_int|0xa0
+comma
+l_int|0x90
+comma
+l_int|0x30
+comma
+l_int|0x8e
+comma
+l_int|623
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|macro|TUNERS
@@ -5623,6 +5675,10 @@ comma
 r_int
 r_int
 id|type
+comma
+r_char
+op_star
+id|source
 )paren
 (brace
 r_struct
@@ -5644,12 +5700,22 @@ op_ne
 id|UNSET
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|t-&gt;type
+op_ne
+id|type
+)paren
 id|printk
 c_func
 (paren
-l_string|&quot;tuner: type already set (%d)&bslash;n&quot;
+l_string|&quot;tuner: type already set to %d, &quot;
+l_string|&quot;ignoring request for %d&bslash;n&quot;
 comma
 id|t-&gt;type
+comma
+id|type
 )paren
 suffix:semicolon
 r_return
@@ -5671,7 +5737,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;tuner: type set to %d (%s)&bslash;n&quot;
+l_string|&quot;tuner: type set to %d (%s) by %s&bslash;n&quot;
 comma
 id|t-&gt;type
 comma
@@ -5681,6 +5747,8 @@ id|t-&gt;type
 )braket
 dot
 id|name
+comma
+id|source
 )paren
 suffix:semicolon
 id|strlcpy
@@ -5786,11 +5854,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;tuner: chip found @ 0x%x&bslash;n&quot;
+l_string|&quot;tuner: chip found at addr 0x%x i2c-bus %s&bslash;n&quot;
 comma
 id|addr
 op_lshift
 l_int|1
+comma
+id|adap-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -5912,35 +5982,16 @@ id|type
 OL
 id|TUNERS
 )paren
-(brace
-id|t-&gt;type
-op_assign
-id|type
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;tuner: type forced to %d (%s) [insmod]&bslash;n&quot;
-comma
-id|t-&gt;type
-comma
-id|tuners
-(braket
-id|t-&gt;type
-)braket
-dot
-id|name
-)paren
-suffix:semicolon
 id|set_type
 c_func
 (paren
 id|client
 comma
 id|type
+comma
+l_string|&quot;insmod option&quot;
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -6158,6 +6209,8 @@ id|client
 comma
 op_star
 id|iarg
+comma
+id|client-&gt;adapter-&gt;name
 )paren
 suffix:semicolon
 r_break

@@ -6,7 +6,7 @@ macro_line|#include &quot;card.h&quot;
 r_extern
 id|board
 op_star
-id|adapter
+id|sc_adapter
 (braket
 )braket
 suffix:semicolon
@@ -86,7 +86,7 @@ id|outb
 c_func
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -96,7 +96,7 @@ op_rshift
 l_int|12
 )paren
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -112,7 +112,7 @@ id|outb
 c_func
 (paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -122,7 +122,7 @@ op_or
 l_int|0x80
 )paren
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -167,7 +167,7 @@ c_func
 (paren
 l_string|&quot;%s: check_timer timer called&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -186,7 +186,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -199,14 +199,14 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|ioport
 (braket
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -215,7 +215,7 @@ id|shmem_pgport
 )braket
 comma
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -242,7 +242,7 @@ r_int
 op_star
 )paren
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -272,7 +272,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -286,7 +286,7 @@ multiline_comment|/* See if we need to do a startproc */
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -307,7 +307,7 @@ c_func
 (paren
 l_string|&quot;%s: No signature yet, waiting another %d jiffies.&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -321,7 +321,7 @@ id|mod_timer
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -337,7 +337,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -349,7 +349,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Timed function to check the status of a previous reset&n; * Must be very fast as this function runs in the context of&n; * an interrupt handler.&n; *&n; * Send check adapter-&gt;phystat to see if the channels are up&n; * If they are, tell ISDN4Linux that the board is up. If not,&n; * tell IADN4Linux that it is up. Always reset the timer to&n; * fire again (endless loop).&n; */
+multiline_comment|/*&n; * Timed function to check the status of a previous reset&n; * Must be very fast as this function runs in the context of&n; * an interrupt handler.&n; *&n; * Send check sc_adapter-&gt;phystat to see if the channels are up&n; * If they are, tell ISDN4Linux that the board is up. If not,&n; * tell IADN4Linux that it is up. Always reset the timer to&n; * fire again (endless loop).&n; */
 DECL|function|check_phystat
 r_void
 id|check_phystat
@@ -378,7 +378,7 @@ c_func
 (paren
 l_string|&quot;%s: Checking status...&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -390,7 +390,7 @@ multiline_comment|/* &n;&t; * check the results of the last PhyStat and change o
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -398,7 +398,7 @@ op_member_access_from_pointer
 id|nphystat
 op_logical_and
 op_logical_neg
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -418,7 +418,7 @@ c_func
 (paren
 l_string|&quot;%s: Switch contacted, transmitter enabled&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -444,14 +444,14 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|nphystat
 op_logical_and
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -471,7 +471,7 @@ c_func
 (paren
 l_string|&quot;%s: Switch connection lost, transmitter disabled&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -492,14 +492,14 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|phystat
 op_assign
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -511,7 +511,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -525,7 +525,7 @@ id|mod_timer
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -541,7 +541,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket

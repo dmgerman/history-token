@@ -1720,7 +1720,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;ethtool_ops-&gt;get_ringparam
+id|dev-&gt;ethtool_ops-&gt;set_ringparam
 )paren
 r_return
 op_minus

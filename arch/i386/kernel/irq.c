@@ -1375,7 +1375,9 @@ id|esp
 suffix:colon
 l_string|&quot;0&quot;
 (paren
-l_int|8191
+id|THREAD_SIZE
+op_minus
+l_int|1
 )paren
 )paren
 suffix:semicolon
@@ -2970,7 +2972,7 @@ id|data
 r_int
 id|len
 op_assign
-id|cpumask_snprintf
+id|cpumask_scnprintf
 c_func
 (paren
 id|page
@@ -3186,7 +3188,7 @@ id|data
 r_int
 id|len
 op_assign
-id|cpumask_snprintf
+id|cpumask_scnprintf
 c_func
 (paren
 id|page

@@ -87,7 +87,7 @@ suffix:semicolon
 r_extern
 id|board
 op_star
-id|adapter
+id|sc_adapter
 (braket
 )braket
 suffix:semicolon
@@ -121,7 +121,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|i
 )braket
@@ -205,7 +205,7 @@ c_func
 (paren
 l_string|&quot;%s: Entered Interrupt handler&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -232,7 +232,7 @@ multiline_comment|/*&n;&t;&t; * Push the message to the adapter structure for&n;
 r_if
 c_cond
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -245,7 +245,7 @@ c_func
 (paren
 op_amp
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -293,7 +293,7 @@ c_func
 (paren
 l_string|&quot;%s: Invalid request Message, rsp_status = %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -328,7 +328,7 @@ c_func
 (paren
 l_string|&quot;%s: Received packet 0x%x bytes long at 0x%x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -374,7 +374,7 @@ c_func
 (paren
 l_string|&quot;%s: Packet Send ACK on channel %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -384,7 +384,7 @@ comma
 id|rcvmsg.phy_link_no
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -431,7 +431,7 @@ c_func
 (paren
 l_string|&quot;%s: Connect message: line %d: status %d: cause 0x%x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -479,7 +479,7 @@ c_func
 (paren
 l_string|&quot;%s: Got Dial-Out Rsp&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -524,7 +524,7 @@ c_func
 (paren
 l_string|&quot;%s: Got Incoming Call&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -551,7 +551,7 @@ c_func
 (paren
 id|setup.eazmsn
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -649,7 +649,7 @@ c_func
 (paren
 l_string|&quot;%s: disconnect message: line %d: status %d: cause 0x%x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -727,7 +727,7 @@ c_func
 (paren
 l_string|&quot;%s: Received EngineUp message&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -735,7 +735,7 @@ op_member_access_from_pointer
 id|devicename
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -788,7 +788,7 @@ id|init_timer
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -796,7 +796,7 @@ op_member_access_from_pointer
 id|stat_timer
 )paren
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -805,7 +805,7 @@ id|stat_timer.function
 op_assign
 id|check_phystat
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -814,7 +814,7 @@ id|stat_timer.data
 op_assign
 id|card
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -829,7 +829,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -862,7 +862,7 @@ c_func
 (paren
 l_string|&quot;%s: StartProc Response Status %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -895,7 +895,7 @@ id|GetMyNumber
 id|strcpy
 c_func
 (paren
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -961,7 +961,7 @@ id|rcvmsg.msg_data.byte_array
 l_int|1
 )braket
 suffix:semicolon
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -982,14 +982,14 @@ c_func
 (paren
 l_string|&quot;%s: PhyStat is 0x%2x&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
 op_member_access_from_pointer
 id|devicename
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1040,7 +1040,7 @@ c_func
 (paren
 l_string|&quot;%s: current frame format: 0x%x, will change to HDLC&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1090,7 +1090,7 @@ c_func
 (paren
 l_string|&quot;%s: Received unhandled message (%d,%d,%d) link %d&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket
@@ -1115,7 +1115,7 @@ c_func
 (paren
 l_string|&quot;%s: Exiting Interrupt Handler&bslash;n&quot;
 comma
-id|adapter
+id|sc_adapter
 (braket
 id|card
 )braket

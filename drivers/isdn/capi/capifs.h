@@ -1,11 +1,8 @@
-multiline_comment|/* $Id: capifs.h,v 1.2.6.2 2001/09/23 22:24:33 kai Exp $&n; * &n; * Copyright 2000 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capifs.h,v 1.1.2.2 2004/01/16 21:09:26 keil Exp $&n; * &n; * Copyright 2000 by Carsten Paeth &lt;calle@calle.de&gt;&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 r_void
 id|capifs_new_ncci
 c_func
 (paren
-r_char
-id|type
-comma
 r_int
 r_int
 id|num
@@ -18,9 +15,6 @@ r_void
 id|capifs_free_ncci
 c_func
 (paren
-r_char
-id|type
-comma
 r_int
 r_int
 id|num

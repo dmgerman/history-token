@@ -22,7 +22,7 @@ id|hdlc_stat_reg
 (brace
 macro_line|#ifdef __BIG_ENDIAN
 DECL|member|fill
-id|u8
+id|u_char
 id|fill
 id|__attribute__
 c_func
@@ -33,7 +33,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|mode
-id|u8
+id|u_char
 id|mode
 id|__attribute__
 c_func
@@ -44,7 +44,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|xml
-id|u8
+id|u_char
 id|xml
 id|__attribute__
 c_func
@@ -55,7 +55,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|member|cmd
-id|u8
+id|u_char
 id|cmd
 id|__attribute__
 c_func
@@ -66,7 +66,7 @@ id|packed
 )paren
 suffix:semicolon
 macro_line|#else
-id|u8
+id|u_char
 id|cmd
 id|__attribute__
 c_func
@@ -76,7 +76,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-id|u8
+id|u_char
 id|xml
 id|__attribute__
 c_func
@@ -86,7 +86,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-id|u8
+id|u_char
 id|mode
 id|__attribute__
 c_func
@@ -96,7 +96,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-id|u8
+id|u_char
 id|fill
 id|__attribute__
 c_func
@@ -155,8 +155,12 @@ DECL|member|rcvidx
 r_int
 id|rcvidx
 suffix:semicolon
+DECL|member|fifo_size
+r_int
+id|fifo_size
+suffix:semicolon
 DECL|member|rcvbuf
-id|u8
+id|u_char
 id|rcvbuf
 (braket
 id|HSCX_BUFMAX

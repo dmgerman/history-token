@@ -1175,12 +1175,15 @@ l_int|0
 )paren
 id|n
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|stkbuf
 comma
-l_int|40
+r_sizeof
+(paren
+id|stkbuf
+)paren
 comma
 l_string|&quot;Power on time not set&bslash;n&quot;
 )paren
@@ -1188,12 +1191,15 @@ suffix:semicolon
 r_else
 id|n
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|stkbuf
 comma
-l_int|40
+r_sizeof
+(paren
+id|stkbuf
+)paren
 comma
 l_string|&quot;%lu&bslash;n&quot;
 comma
@@ -1898,11 +1904,14 @@ id|error
 suffix:semicolon
 id|n
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|stkbuf
 comma
-l_int|40
+r_sizeof
+(paren
+id|stkbuf
+)paren
 comma
 l_string|&quot;0&quot;
 )paren
@@ -1912,11 +1921,14 @@ r_else
 (brace
 id|n
 op_assign
-id|snprintf
+id|scnprintf
 (paren
 id|stkbuf
 comma
-l_int|40
+r_sizeof
+(paren
+id|stkbuf
+)paren
 comma
 l_string|&quot;%lu&bslash;n&quot;
 comma
@@ -4205,11 +4217,15 @@ l_string|&quot; &quot;
 )paren
 suffix:semicolon
 multiline_comment|/* see how many characters we have printed */
-id|snprintf
+id|scnprintf
+c_func
 (paren
 id|t
 comma
-l_int|50
+r_sizeof
+(paren
+id|t
+)paren
 comma
 l_string|&quot;%s &quot;
 comma
@@ -4460,7 +4476,7 @@ suffix:semicolon
 multiline_comment|/* its small, its on stack */
 id|n
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|stkbuf
@@ -4783,7 +4799,7 @@ suffix:semicolon
 multiline_comment|/* its small, its on stack */
 id|n
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|stkbuf

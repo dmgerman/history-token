@@ -392,13 +392,6 @@ c_func
 id|rpc_proc_unregister
 )paren
 suffix:semicolon
-DECL|variable|rpc_proc_read
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rpc_proc_read
-)paren
-suffix:semicolon
 DECL|variable|svc_proc_register
 id|EXPORT_SYMBOL
 c_func
@@ -413,11 +406,11 @@ c_func
 id|svc_proc_unregister
 )paren
 suffix:semicolon
-DECL|variable|svc_proc_read
+DECL|variable|svc_seq_show
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|svc_proc_read
+id|svc_seq_show
 )paren
 suffix:semicolon
 macro_line|#endif

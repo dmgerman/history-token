@@ -65,13 +65,21 @@ comma
 r_int
 id|cmd
 comma
-r_char
+r_struct
+id|page
 op_star
-id|raw_buf
+id|raw_page
 comma
-r_char
+r_int
+id|raw_off
+comma
+r_struct
+id|page
 op_star
-id|loop_buf
+id|loop_page
+comma
+r_int
+id|loop_off
 comma
 r_int
 id|size
@@ -215,10 +223,8 @@ suffix:semicolon
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Loop flags&n; */
-DECL|macro|LO_FLAGS_DO_BMAP
-mdefine_line|#define LO_FLAGS_DO_BMAP&t;1
 DECL|macro|LO_FLAGS_READ_ONLY
-mdefine_line|#define LO_FLAGS_READ_ONLY&t;2
+mdefine_line|#define LO_FLAGS_READ_ONLY&t;1
 macro_line|#include &lt;asm/posix_types.h&gt;&t;/* for __kernel_old_dev_t */
 macro_line|#include &lt;asm/types.h&gt;&t;&t;/* for __u64 */
 multiline_comment|/* Backwards compatibility version */
@@ -425,13 +431,21 @@ comma
 r_int
 id|cmd
 comma
-r_char
+r_struct
+id|page
 op_star
-id|raw_buf
+id|raw_page
 comma
-r_char
+r_int
+id|raw_off
+comma
+r_struct
+id|page
 op_star
-id|loop_buf
+id|loop_page
+comma
+r_int
+id|loop_off
 comma
 r_int
 id|size

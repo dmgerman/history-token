@@ -1110,7 +1110,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_SMP)
+macro_line|#if defined(CONFIG_IRQBALANCE)
 macro_line|# include &lt;asm/processor.h&gt;&t;/* kernel_thread() */
 macro_line|# include &lt;linux/kernel_stat.h&gt;&t;/* kstat */
 macro_line|# include &lt;linux/slab.h&gt;&t;&t;/* kmalloc() */
@@ -2951,7 +2951,7 @@ c_func
 id|balanced_irq_init
 )paren
 suffix:semicolon
-macro_line|#else /* !SMP */
+macro_line|#else /* !CONFIG_IRQBALANCE */
 DECL|function|move_irq
 r_static
 r_inline
@@ -2964,6 +2964,8 @@ id|irq
 )paren
 (brace
 )brace
+macro_line|#endif /* CONFIG_IRQBALANCE */
+macro_line|#ifndef CONFIG_SMP
 DECL|function|send_IPI_self
 r_void
 id|send_IPI_self
@@ -3003,7 +3005,7 @@ id|cfg
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* defined(CONFIG_SMP) */
+macro_line|#endif /* !CONFIG_SMP */
 multiline_comment|/*&n; * support for broken MP BIOSs, enables hand-redirection of PIRQ0-7 to&n; * specific CPU-side IRQs.&n; */
 DECL|macro|MAX_PIRQS
 mdefine_line|#define MAX_PIRQS 8
@@ -9171,6 +9173,26 @@ suffix:semicolon
 r_int
 id|vector
 suffix:semicolon
+r_int
+r_int
+id|ver
+suffix:semicolon
+id|ver
+op_assign
+id|apic_read
+c_func
+(paren
+id|APIC_LVR
+)paren
+suffix:semicolon
+id|ver
+op_assign
+id|GET_APIC_VERSION
+c_func
+(paren
+id|ver
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * get/set the timer IRQ vector:&n;&t; */
 id|disable_8259A_irq
 c_func
@@ -9197,7 +9219,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Subtle, code in do_timer_interrupt() expects an AEOI&n;&t; * mode for the 8259A whenever interrupts are routed&n;&t; * through I/O APICs.  Also IRQ0 has to be enabled in&n;&t; * the 8259A which implies the virtual wire has to be&n;&t; * disabled in the local APIC.&n;&t; */
+multiline_comment|/*&n;&t; * Subtle, code in do_timer_interrupt() expects an AEOI&n;&t; * mode for the 8259A whenever interrupts are routed&n;&t; * through I/O APICs.  Also IRQ0 has to be enabled in&n;&t; * the 8259A which implies the virtual wire has to be&n;&t; * disabled in the local APIC.  Finally timer interrupts&n;&t; * need to be acknowledged manually in the 8259A for&n;&t; * do_slow_timeoffset() and for the i82489DX when using&n;&t; * the NMI watchdog.&n;&t; */
 id|apic_write_around
 c_func
 (paren
@@ -9214,9 +9236,29 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|nmi_watchdog
+op_eq
+id|NMI_IO_APIC
+op_logical_and
+op_logical_neg
+id|APIC_INTEGRATED
+c_func
+(paren
+id|ver
+)paren
+)paren
 id|timer_ack
 op_assign
 l_int|1
+suffix:semicolon
+r_else
+id|timer_ack
+op_assign
+op_logical_neg
+id|cpu_has_tsc
 suffix:semicolon
 id|enable_8259A_irq
 c_func
@@ -9307,10 +9349,21 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|check_nmi_watchdog
 c_func
 (paren
 )paren
+OL
+l_int|0
+)paren
+suffix:semicolon
+id|timer_ack
+op_assign
+op_logical_neg
+id|cpu_has_tsc
 suffix:semicolon
 )brace
 r_return
@@ -9426,10 +9479,21 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|check_nmi_watchdog
 c_func
 (paren
 )paren
+OL
+l_int|0
+)paren
+suffix:semicolon
+id|timer_ack
+op_assign
+op_logical_neg
+id|cpu_has_tsc
 suffix:semicolon
 )brace
 r_return

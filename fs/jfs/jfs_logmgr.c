@@ -3047,8 +3047,6 @@ comma
 id|FMODE_READ
 op_or
 id|FMODE_WRITE
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 r_if
@@ -3196,8 +3194,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 id|free
@@ -4039,8 +4035,6 @@ id|blkdev_put
 c_func
 (paren
 id|bdev
-comma
-id|BDEV_FS
 )paren
 suffix:semicolon
 id|out

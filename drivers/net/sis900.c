@@ -8692,7 +8692,11 @@ op_or_assign
 (paren
 l_int|1
 op_lshift
+(paren
 id|bit_nr
+op_amp
+l_int|0xf
+)paren
 )paren
 suffix:semicolon
 )brace

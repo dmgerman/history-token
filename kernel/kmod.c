@@ -320,6 +320,11 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
+id|cpumask_t
+id|mask
+op_assign
+id|CPU_MASK_ALL
+suffix:semicolon
 multiline_comment|/* Unblock all signals. */
 id|flush_signals
 c_func
@@ -359,6 +364,15 @@ c_func
 (paren
 op_amp
 id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
+multiline_comment|/* We can run anywhere, unlike our parent keventd(). */
+id|set_cpus_allowed
+c_func
+(paren
+id|current
+comma
+id|mask
 )paren
 suffix:semicolon
 id|retval

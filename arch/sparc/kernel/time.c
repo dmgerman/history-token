@@ -2371,6 +2371,11 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
+id|clock_was_set
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

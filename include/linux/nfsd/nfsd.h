@@ -343,7 +343,7 @@ r_struct
 id|svc_fh
 op_star
 comma
-id|off_t
+id|loff_t
 comma
 r_int
 r_int

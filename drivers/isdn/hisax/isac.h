@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isac.h,v 1.7.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * ISAC specific defines&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: isac.h,v 1.9.2.2 2004/01/12 22:52:27 keil Exp $&n; *&n; * ISAC specific defines&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 multiline_comment|/* All Registers original Siemens Spec  */
 DECL|macro|ISAC_MASK
 mdefine_line|#define ISAC_MASK 0x20
@@ -96,13 +96,35 @@ DECL|macro|ISAC_IND_DID
 mdefine_line|#define ISAC_IND_DID&t;0xF
 r_extern
 r_void
+id|ISACVersion
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+comma
+r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|setup_isac
+c_func
+(paren
+r_struct
+id|IsdnCardState
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|initisac
 c_func
 (paren
 r_struct
 id|IsdnCardState
 op_star
-id|cs
 )paren
 suffix:semicolon
 r_extern
@@ -113,26 +135,18 @@ c_func
 r_struct
 id|IsdnCardState
 op_star
-id|cs
 comma
-id|u8
-id|val
+id|u_char
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|isac_setup
+r_void
+id|clear_pending_isac_ints
 c_func
 (paren
 r_struct
 id|IsdnCardState
 op_star
-id|cs
-comma
-r_struct
-id|dc_hw_ops
-op_star
-id|isac_ops
 )paren
 suffix:semicolon
 eof

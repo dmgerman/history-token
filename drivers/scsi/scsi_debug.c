@@ -3084,7 +3084,7 @@ id|devip-&gt;lun
 suffix:semicolon
 id|len
 op_assign
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|dev_id_str
@@ -3095,19 +3095,6 @@ l_string|&quot;%d&quot;
 comma
 id|dev_id_num
 )paren
-suffix:semicolon
-id|len
-op_assign
-(paren
-id|len
-OG
-l_int|6
-)paren
-ques
-c_cond
-l_int|6
-suffix:colon
-id|len
 suffix:semicolon
 r_if
 c_cond
@@ -7618,7 +7605,7 @@ id|buf
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -7745,7 +7732,7 @@ id|buf
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -7914,7 +7901,7 @@ id|buf
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -8024,7 +8011,7 @@ id|buf
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -8065,7 +8052,7 @@ id|buf
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -8179,7 +8166,7 @@ id|buf
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -8289,7 +8276,7 @@ id|buf
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf
@@ -8330,7 +8317,7 @@ id|buf
 )paren
 (brace
 r_return
-id|snprintf
+id|scnprintf
 c_func
 (paren
 id|buf

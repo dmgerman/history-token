@@ -415,17 +415,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|pfn_valid
-c_func
-(paren
-id|page_to_pfn
-c_func
-(paren
-id|page
-)paren
-)paren
-op_logical_or
 id|PageReserved
 c_func
 (paren

@@ -10,10 +10,6 @@ DECL|macro|DO_TIMINGS
 macro_line|#undef  DO_TIMINGS
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt; 131328
-DECL|macro|LINUX21X
-mdefine_line|#define LINUX21X
-macro_line|#endif
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
