@@ -3306,9 +3306,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|phase
 op_eq
 id|CPUFREQ_POSTCHANGE
+)paren
+op_logical_or
+(paren
+id|phase
+op_eq
+id|CPUFREQ_RESUMECHANGE
+)paren
 )paren
 (brace
 r_for
