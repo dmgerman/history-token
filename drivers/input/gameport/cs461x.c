@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Victor Krapivin &lt;vik@belcaf.minsk.by&gt;&quot;
+l_string|&quot;Victor Krapivin&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
