@@ -1663,7 +1663,9 @@ r_struct
 id|isp1020_hostdata
 (brace
 DECL|member|memaddr
-id|u_long
+r_void
+id|__iomem
+op_star
 id|memaddr
 suffix:semicolon
 DECL|member|revision
@@ -2335,10 +2337,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|hostdata-&gt;memaddr
 )paren
 suffix:semicolon
@@ -2463,10 +2461,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|hostdata-&gt;memaddr
 )paren
 suffix:semicolon
@@ -2554,6 +2548,10 @@ comma
 id|hostdata-&gt;memaddr
 ques
 c_cond
+(paren
+r_int
+r_int
+)paren
 id|hostdata-&gt;memaddr
 suffix:colon
 id|host-&gt;io_port
@@ -5612,11 +5610,8 @@ l_int|0
 )paren
 )paren
 (brace
-id|mem_base
+id|hostdata-&gt;memaddr
 op_assign
-(paren
-id|u_long
-)paren
 id|ioremap
 c_func
 (paren
@@ -5629,7 +5624,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|mem_base
+id|hostdata-&gt;memaddr
 )paren
 (brace
 id|printk
@@ -5642,10 +5637,6 @@ r_goto
 id|out_release
 suffix:semicolon
 )brace
-id|hostdata-&gt;memaddr
-op_assign
-id|mem_base
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -5677,7 +5668,7 @@ suffix:semicolon
 )brace
 id|hostdata-&gt;memaddr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* zero to signify no i/o mapping */
 id|mem_base
@@ -5874,10 +5865,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|hostdata-&gt;memaddr
 )paren
 suffix:semicolon

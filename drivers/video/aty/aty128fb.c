@@ -1765,6 +1765,7 @@ suffix:semicolon
 multiline_comment|/* PLL and others      */
 DECL|member|regbase
 r_void
+id|__iomem
 op_star
 id|regbase
 suffix:semicolon
@@ -2052,6 +2053,7 @@ op_star
 id|par
 comma
 r_void
+id|__iomem
 op_star
 id|bios
 )paren
@@ -2059,6 +2061,7 @@ suffix:semicolon
 r_static
 r_void
 id|__init
+id|__iomem
 op_star
 id|aty128_map_ROM
 c_func
@@ -2087,6 +2090,7 @@ op_star
 id|dev
 comma
 r_void
+id|__iomem
 op_star
 id|rom
 )paren
@@ -3459,6 +3463,7 @@ op_star
 id|dev
 comma
 r_void
+id|__iomem
 op_star
 id|rom
 )paren
@@ -3526,6 +3531,7 @@ suffix:semicolon
 DECL|function|aty128_map_ROM
 r_static
 r_void
+id|__iomem
 op_star
 id|__init
 id|aty128_map_ROM
@@ -3555,6 +3561,7 @@ id|u8
 id|rom_type
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|bios
 suffix:semicolon
@@ -3874,6 +3881,7 @@ id|par
 comma
 r_int
 r_char
+id|__iomem
 op_star
 id|bios
 )paren
@@ -3975,6 +3983,7 @@ macro_line|#ifdef CONFIG_X86
 DECL|function|aty128_find_mem_vbios
 r_static
 r_void
+id|__iomem
 op_star
 id|__devinit
 id|aty128_find_mem_vbios
@@ -3992,6 +4001,7 @@ id|segstart
 suffix:semicolon
 r_int
 r_char
+id|__iomem
 op_star
 id|rom_base
 op_assign
@@ -4015,10 +4025,6 @@ l_int|0x00001000
 (brace
 id|rom_base
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -8514,6 +8520,7 @@ id|err
 suffix:semicolon
 macro_line|#ifndef __sparc__
 r_void
+id|__iomem
 op_star
 id|bios
 op_assign
