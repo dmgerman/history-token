@@ -28,19 +28,19 @@ macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-DECL|variable|log_buf
+DECL|variable|ras_log_buf
 r_static
 r_int
 r_char
-id|log_buf
+id|ras_log_buf
 (braket
 id|RTAS_ERROR_LOG_MAX
 )braket
 suffix:semicolon
-DECL|variable|log_lock
+DECL|variable|ras_log_buf_lock
 r_static
 id|spinlock_t
-id|log_lock
+id|ras_log_buf_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -497,7 +497,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|log_lock
+id|ras_log_buf_lock
 )paren
 suffix:semicolon
 id|status
@@ -535,7 +535,7 @@ id|__pa
 c_func
 (paren
 op_amp
-id|log_buf
+id|ras_log_buf
 )paren
 comma
 id|RTAS_ERROR_LOG_MAX
@@ -554,7 +554,7 @@ r_int
 op_star
 )paren
 op_amp
-id|log_buf
+id|ras_log_buf
 )paren
 comma
 id|status
@@ -576,7 +576,7 @@ r_int
 op_star
 )paren
 op_amp
-id|log_buf
+id|ras_log_buf
 )paren
 comma
 id|status
@@ -588,7 +588,7 @@ multiline_comment|/* format and print the extended information */
 id|log_error
 c_func
 (paren
-id|log_buf
+id|ras_log_buf
 comma
 id|ERR_TYPE_RTAS_LOG
 comma
@@ -599,7 +599,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|log_lock
+id|ras_log_buf_lock
 )paren
 suffix:semicolon
 r_return
@@ -643,7 +643,7 @@ id|spin_lock
 c_func
 (paren
 op_amp
-id|log_lock
+id|ras_log_buf_lock
 )paren
 suffix:semicolon
 id|status
@@ -680,7 +680,7 @@ id|__pa
 c_func
 (paren
 op_amp
-id|log_buf
+id|ras_log_buf
 )paren
 comma
 id|RTAS_ERROR_LOG_MAX
@@ -693,7 +693,7 @@ r_struct
 id|rtas_error_log
 op_star
 )paren
-id|log_buf
+id|ras_log_buf
 suffix:semicolon
 r_if
 c_cond
@@ -723,7 +723,7 @@ multiline_comment|/* format and print the extended information */
 id|log_error
 c_func
 (paren
-id|log_buf
+id|ras_log_buf
 comma
 id|ERR_TYPE_RTAS_LOG
 comma
@@ -749,7 +749,7 @@ r_int
 op_star
 )paren
 op_amp
-id|log_buf
+id|ras_log_buf
 )paren
 comma
 id|status
@@ -769,7 +769,7 @@ r_int
 op_star
 )paren
 op_amp
-id|log_buf
+id|ras_log_buf
 )paren
 comma
 id|status
@@ -801,7 +801,7 @@ r_int
 op_star
 )paren
 op_amp
-id|log_buf
+id|ras_log_buf
 )paren
 comma
 id|status
@@ -821,7 +821,7 @@ r_int
 op_star
 )paren
 op_amp
-id|log_buf
+id|ras_log_buf
 )paren
 comma
 id|status
@@ -832,7 +832,7 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|log_lock
+id|ras_log_buf_lock
 )paren
 suffix:semicolon
 r_return
