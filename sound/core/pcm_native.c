@@ -4364,6 +4364,10 @@ c_cond
 id|runtime-&gt;status-&gt;suspended_state
 op_ne
 id|SNDRV_PCM_STATE_RUNNING
+op_logical_and
+id|runtime-&gt;status-&gt;suspended_state
+op_ne
+id|SNDRV_PCM_STATE_DRAINING
 )paren
 r_return
 l_int|0
@@ -4693,6 +4697,10 @@ c_cond
 id|runtime-&gt;status-&gt;suspended_state
 op_ne
 id|SNDRV_PCM_STATE_RUNNING
+op_logical_and
+id|runtime-&gt;status-&gt;suspended_state
+op_ne
+id|SNDRV_PCM_STATE_DRAINING
 )paren
 r_return
 l_int|0
@@ -5942,6 +5950,12 @@ c_func
 id|substream
 )paren
 suffix:semicolon
+id|snd_power_unlock
+c_func
+(paren
+id|card
+)paren
+suffix:semicolon
 id|tout
 op_assign
 id|schedule_timeout
@@ -5950,6 +5964,12 @@ c_func
 l_int|10
 op_star
 id|HZ
+)paren
+suffix:semicolon
+id|snd_power_lock
+c_func
+(paren
+id|card
 )paren
 suffix:semicolon
 id|snd_pcm_stream_lock_irq
