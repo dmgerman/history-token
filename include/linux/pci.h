@@ -885,16 +885,23 @@ id|name
 l_int|48
 )braket
 suffix:semicolon
-DECL|member|dev
+DECL|member|bridge
 r_struct
 id|device
 op_star
-id|dev
+id|bridge
+suffix:semicolon
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
 suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|pci_bus_b
-mdefine_line|#define pci_bus_b(n) list_entry(n, struct pci_bus, node)
+mdefine_line|#define pci_bus_b(n)&t;list_entry(n, struct pci_bus, node)
+DECL|macro|to_pci_bus
+mdefine_line|#define to_pci_bus(n)&t;container_of(n, struct pci_bus, class_dev)
 multiline_comment|/*&n; * Error values that may be returned by PCI functions.&n; */
 DECL|macro|PCIBIOS_SUCCESSFUL
 mdefine_line|#define PCIBIOS_SUCCESSFUL&t;&t;0x00
