@@ -30,7 +30,7 @@ DECL|macro|OSST_FIRST_SG
 mdefine_line|#define OSST_FIRST_SG    ((OSST_BUFFER_BLOCKS*1024) / PAGE_SIZE)
 multiline_comment|/* The size of the first scatter/gather segments (determines the maximum block&n;   size for SCSI adapters not supporting scatter/gather). The default is set&n;   to try to allocate the buffer as one chunk. */
 DECL|macro|OSST_FIRST_ORDER
-mdefine_line|#define OSST_FIRST_ORDER  5
+mdefine_line|#define OSST_FIRST_ORDER  (15-PAGE_SHIFT)
 multiline_comment|/* The following lines define defaults for properties that can be set&n;   separately for each drive using the MTSTOPTIONS ioctl. */
 multiline_comment|/* If OSST_TWO_FM is non-zero, the driver writes two filemarks after a&n;   file being written. Some drives can&squot;t handle two filemarks at the&n;   end of data. */
 DECL|macro|OSST_TWO_FM
