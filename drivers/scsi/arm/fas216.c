@@ -14,8 +14,8 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
-macro_line|#include &quot;../../scsi/scsi.h&quot;
-macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#include &quot;../scsi.h&quot;
+macro_line|#include &quot;../hosts.h&quot;
 macro_line|#include &quot;fas216.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 multiline_comment|/* NOTE: SCSI2 Synchronous transfers *require* DMA according to&n; *  the data sheet.  This restriction is crazy, especially when&n; *  you only want to send 16 bytes!  What were the guys who&n; *  designed this chip on at that time?  Did they read the SCSI2&n; *  spec at all?  The following sections are taken from the SCSI2&n; *  standard (s2r10) concerning this:&n; *&n; * &gt; IMPLEMENTORS NOTES:&n; * &gt;   (1)  Re-negotiation at every selection is not recommended, since a&n; * &gt;   significant performance impact is likely.&n; *&n; * &gt;  The implied synchronous agreement shall remain in effect until a BUS DEVICE&n; * &gt;  RESET message is received, until a hard reset condition occurs, or until one&n; * &gt;  of the two SCSI devices elects to modify the agreement.  The default data&n; * &gt;  transfer mode is asynchronous data transfer mode.  The default data transfer&n; * &gt;  mode is entered at power on, after a BUS DEVICE RESET message, or after a hard&n; * &gt;  reset condition.&n; *&n; *  In total, this means that once you have elected to use synchronous&n; *  transfers, you must always use DMA.&n; *&n; *  I was thinking that this was a good chip until I found this restriction ;(&n; */

@@ -22,7 +22,7 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;../../net/8390.h&quot;
+macro_line|#include &quot;../8390.h&quot;
 DECL|macro|NET_DEBUG
 mdefine_line|#define NET_DEBUG  0
 DECL|macro|DEBUG_INIT
