@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: l3_1tr6.c,v 2.13.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * German 1TR6 D-channel protocol&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;hisax.h&quot;
 macro_line|#include &quot;l3_1tr6.h&quot;
 macro_line|#include &quot;isdnl3.h&quot;

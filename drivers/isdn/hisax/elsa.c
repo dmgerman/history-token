@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: elsa.c,v 2.26.6.6 2001/09/23 22:24:47 kai Exp $&n; *&n; * low level stuff for Elsa isdn cards&n; *&n; * Author       Karsten Keil&n; * Copyright    by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * For changes and modifications please read&n; * ../../../Documentation/isdn/HiSax.cert&n; *&n; * Thanks to    Elsa GmbH for documents and information&n; *&n; *              Klaus Lichtenwalder (Klaus.Lichtenwalder@WebForum.DE)&n; *              for ELSA PCMCIA support&n; *&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;hisax.h&quot;

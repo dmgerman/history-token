@@ -1,6 +1,4 @@
 multiline_comment|/* $Id: ix1_micro.c,v 2.10.6.2 2001/09/23 22:24:49 kai Exp $&n; *&n; * low level stuff for ITK ix1-micro Rev.2 isdn cards&n; * derived from the original file teles3.c from Karsten Keil&n; *&n; * Author       Klaus-Peter Nischke&n; * Copyright    by Klaus-Peter Nischke, ITK AG&n; *                                   &lt;klaus@nischke.do.eunet.de&gt;&n; *              by Karsten Keil      &lt;keil@isdn4linux.de&gt;&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; * Klaus-Peter Nischke&n; * Deusener Str. 287&n; * 44369 Dortmund&n; * Germany&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &quot;hisax.h&quot;
