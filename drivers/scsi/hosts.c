@@ -1127,7 +1127,7 @@ r_return
 id|shost
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * *scsi_host_get - inc a Scsi_Host ref count&n; * @shost:&t;Pointer to Scsi_Host to inc.&n; **/
+multiline_comment|/**&n; * scsi_host_get - inc a Scsi_Host ref count&n; * @shost:&t;Pointer to Scsi_Host to inc.&n; **/
 DECL|function|scsi_host_get
 r_struct
 id|Scsi_Host
@@ -1168,7 +1168,7 @@ r_return
 id|shost
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * *scsi_host_put - dec a Scsi_Host ref count&n; * @shost:&t;Pointer to Scsi_Host to dec.&n; **/
+multiline_comment|/**&n; * scsi_host_put - dec a Scsi_Host ref count&n; * @shost:&t;Pointer to Scsi_Host to dec.&n; **/
 DECL|function|scsi_host_put
 r_void
 id|scsi_host_put
