@@ -110,7 +110,7 @@ op_div
 l_int|100
 )paren
 suffix:semicolon
-id|policy-&gt;min
+id|policy-&gt;max
 op_assign
 id|longrun_low_freq
 op_plus
