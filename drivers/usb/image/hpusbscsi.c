@@ -68,7 +68,7 @@ id|intf
 )paren
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|altsetting
 op_assign
@@ -89,7 +89,7 @@ multiline_comment|/* basic check */
 r_if
 c_cond
 (paren
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 op_ne
 l_int|3
 )paren
@@ -262,7 +262,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|altsetting-&gt;bNumEndpoints
+id|altsetting-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|i
 op_increment
@@ -276,6 +276,8 @@ id|altsetting-&gt;endpoint
 (braket
 id|i
 )braket
+dot
+id|desc
 dot
 id|bmAttributes
 op_amp
@@ -293,6 +295,8 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
+id|desc
+dot
 id|bEndpointAddress
 op_amp
 id|USB_DIR_IN
@@ -306,6 +310,8 @@ id|altsetting-&gt;endpoint
 (braket
 id|i
 )braket
+dot
+id|desc
 dot
 id|bEndpointAddress
 op_amp
@@ -322,6 +328,8 @@ id|altsetting-&gt;endpoint
 (braket
 id|i
 )braket
+dot
+id|desc
 dot
 id|bEndpointAddress
 op_amp
@@ -340,6 +348,8 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
+id|desc
+dot
 id|bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
@@ -353,7 +363,7 @@ id|altsetting-&gt;endpoint
 id|i
 )braket
 dot
-id|bInterval
+id|desc.bInterval
 suffix:semicolon
 )brace
 )brace
@@ -364,7 +374,7 @@ id|usb_set_interface
 (paren
 id|dev
 comma
-id|altsetting-&gt;bInterfaceNumber
+id|altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|0
 )paren

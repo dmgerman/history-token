@@ -1387,7 +1387,7 @@ id|dev
 op_logical_or
 id|intf
 op_ge
-id|dev-&gt;actconfig-&gt;bNumInterfaces
+id|dev-&gt;actconfig-&gt;desc.bNumInterfaces
 )paren
 r_return
 op_minus
@@ -1682,7 +1682,7 @@ op_star
 id|iface
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|alts
 suffix:semicolon
@@ -1716,7 +1716,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;actconfig-&gt;bNumInterfaces
+id|dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -1762,7 +1762,7 @@ l_int|0
 suffix:semicolon
 id|e
 OL
-id|alts-&gt;bNumEndpoints
+id|alts-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|e
 op_increment
@@ -1775,6 +1775,8 @@ id|alts-&gt;endpoint
 (braket
 id|e
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -1822,7 +1824,7 @@ op_star
 id|iface
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|alts
 suffix:semicolon
@@ -1847,7 +1849,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;actconfig-&gt;bNumInterfaces
+id|dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -1887,7 +1889,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|alts-&gt;bInterfaceNumber
+id|alts-&gt;desc.bInterfaceNumber
 op_eq
 id|ifn
 )paren
@@ -3530,7 +3532,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|ps-&gt;dev-&gt;actconfig-&gt;bNumInterfaces
+id|ps-&gt;dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment

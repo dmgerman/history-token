@@ -1525,7 +1525,7 @@ id|kaweth-&gt;dev-&gt;config
 l_int|0
 )braket
 dot
-id|bConfigurationValue
+id|desc.bConfigurationValue
 comma
 l_int|0
 comma

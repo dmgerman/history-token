@@ -7545,7 +7545,7 @@ op_star
 id|net
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -7601,9 +7601,9 @@ id|usb_set_interface
 (paren
 id|xdev
 comma
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 comma
-id|interface-&gt;bAlternateSetting
+id|interface-&gt;desc.bAlternateSetting
 )paren
 OL
 l_int|0

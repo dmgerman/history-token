@@ -2337,7 +2337,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 op_ne
 l_int|2
 op_logical_or
@@ -2347,7 +2347,7 @@ id|intfd-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -2360,7 +2360,7 @@ id|intfd-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -2381,7 +2381,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 op_ne
 l_int|2
 op_logical_or
@@ -2391,7 +2391,7 @@ id|intfd-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -2404,7 +2404,7 @@ id|intfd-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -2419,9 +2419,9 @@ c_func
 (paren
 id|umidi-&gt;chip-&gt;dev
 comma
-id|intfd-&gt;bInterfaceNumber
+id|intfd-&gt;desc.bInterfaceNumber
 comma
-id|intfd-&gt;bAlternateSetting
+id|intfd-&gt;desc.bAlternateSetting
 )paren
 suffix:semicolon
 r_return
@@ -2430,6 +2430,8 @@ id|intfd-&gt;endpoint
 (braket
 l_int|1
 )braket
+dot
+id|desc
 suffix:semicolon
 )brace
 DECL|function|snd_usbmidi_get_midiman_int_epd
@@ -2481,6 +2483,8 @@ id|endpoint
 (braket
 l_int|0
 )braket
+dot
+id|desc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Creates an input endpoint.&n; */
@@ -3978,7 +3982,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 OL
 l_int|1
 )paren
@@ -3988,7 +3992,13 @@ id|ENOENT
 suffix:semicolon
 id|epd
 op_assign
+op_amp
 id|intfd-&gt;endpoint
+(braket
+l_int|0
+)braket
+dot
+id|desc
 suffix:semicolon
 id|endpoint-&gt;epnum
 op_assign
@@ -4229,7 +4239,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 OL
 (paren
 id|ports
@@ -4262,6 +4272,8 @@ id|intfd-&gt;endpoint
 (braket
 l_int|0
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -4302,6 +4314,8 @@ id|intfd-&gt;endpoint
 (braket
 l_int|2
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -4350,6 +4364,8 @@ id|intfd-&gt;endpoint
 (braket
 l_int|4
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -4391,7 +4407,7 @@ id|intfd-&gt;endpoint
 l_int|2
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -4443,7 +4459,7 @@ id|intfd-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -4508,7 +4524,7 @@ id|intfd-&gt;endpoint
 l_int|4
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon

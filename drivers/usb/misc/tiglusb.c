@@ -68,7 +68,7 @@ id|dev-&gt;config
 l_int|0
 )braket
 dot
-id|bConfigurationValue
+id|desc.bConfigurationValue
 )paren
 OL
 l_int|0
@@ -1267,7 +1267,7 @@ id|dev-&gt;config
 l_int|0
 )braket
 dot
-id|bConfigurationValue
+id|desc.bConfigurationValue
 )paren
 OL
 l_int|0

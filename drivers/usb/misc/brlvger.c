@@ -971,7 +971,7 @@ op_star
 id|endpoint
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|actifsettings
 suffix:semicolon
@@ -1000,11 +1000,11 @@ id|dev-&gt;descriptor.bNumConfigurations
 op_ne
 l_int|1
 op_logical_or
-id|dev-&gt;config-&gt;bNumInterfaces
+id|dev-&gt;config-&gt;desc.bNumInterfaces
 op_ne
 l_int|1
 op_logical_or
-id|actifsettings-&gt;bNumEndpoints
+id|actifsettings-&gt;desc.bNumEndpoints
 op_ne
 l_int|1
 )paren
@@ -1021,7 +1021,13 @@ suffix:semicolon
 )brace
 id|endpoint
 op_assign
+op_amp
 id|actifsettings-&gt;endpoint
+(braket
+l_int|0
+)braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond

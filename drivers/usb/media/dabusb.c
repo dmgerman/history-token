@@ -3116,7 +3116,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 op_ne
 id|_DABUSB_IF
 op_logical_and
@@ -3190,7 +3190,7 @@ id|usbdev-&gt;config
 l_int|0
 )braket
 dot
-id|bConfigurationValue
+id|desc.bConfigurationValue
 )paren
 OL
 l_int|0

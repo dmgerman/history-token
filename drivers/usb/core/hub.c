@@ -1984,7 +1984,7 @@ id|id
 )paren
 (brace
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|desc
 suffix:semicolon
@@ -2027,13 +2027,13 @@ r_if
 c_cond
 (paren
 (paren
-id|desc-&gt;bInterfaceSubClass
+id|desc-&gt;desc.bInterfaceSubClass
 op_ne
 l_int|0
 )paren
 op_logical_and
 (paren
-id|desc-&gt;bInterfaceSubClass
+id|desc-&gt;desc.bInterfaceSubClass
 op_ne
 l_int|1
 )paren
@@ -2044,7 +2044,7 @@ c_func
 (paren
 l_string|&quot;invalid subclass (%d) for USB hub device #%d&quot;
 comma
-id|desc-&gt;bInterfaceSubClass
+id|desc-&gt;desc.bInterfaceSubClass
 comma
 id|dev-&gt;devnum
 )paren
@@ -2058,7 +2058,7 @@ multiline_comment|/* Multiple endpoints? What kind of mutant ninja-hub is this? 
 r_if
 c_cond
 (paren
-id|desc-&gt;bNumEndpoints
+id|desc-&gt;desc.bNumEndpoints
 op_ne
 l_int|1
 )paren
@@ -2068,7 +2068,7 @@ c_func
 (paren
 l_string|&quot;invalid bNumEndpoints (%d) for USB hub device #%d&quot;
 comma
-id|desc-&gt;bNumEndpoints
+id|desc-&gt;desc.bNumEndpoints
 comma
 id|dev-&gt;devnum
 )paren
@@ -2085,6 +2085,8 @@ id|desc-&gt;endpoint
 (braket
 l_int|0
 )braket
+dot
+id|desc
 suffix:semicolon
 multiline_comment|/* Output endpoint? Curiousier and curiousier.. */
 r_if
@@ -5088,7 +5090,7 @@ c_func
 (paren
 id|dev
 comma
-id|dev-&gt;actconfig-&gt;bConfigurationValue
+id|dev-&gt;actconfig-&gt;desc.bConfigurationValue
 )paren
 suffix:semicolon
 r_if
@@ -5122,7 +5124,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|dev-&gt;actconfig-&gt;bNumInterfaces
+id|dev-&gt;actconfig-&gt;desc.bNumInterfaces
 suffix:semicolon
 id|i
 op_increment
@@ -5151,6 +5153,8 @@ id|intf-&gt;altsetting
 (braket
 id|intf-&gt;act_altsetting
 )braket
+dot
+id|desc
 suffix:semicolon
 id|ret
 op_assign

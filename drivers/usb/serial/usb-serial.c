@@ -3714,7 +3714,7 @@ op_star
 id|port
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|iface_desc
 suffix:semicolon
@@ -3991,7 +3991,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|iface_desc-&gt;bNumEndpoints
+id|iface_desc-&gt;desc.bNumEndpoints
 suffix:semicolon
 op_increment
 id|i
@@ -4004,6 +4004,8 @@ id|iface_desc-&gt;endpoint
 (braket
 id|i
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -4199,7 +4201,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|iface_desc-&gt;bNumEndpoints
+id|iface_desc-&gt;desc.bNumEndpoints
 suffix:semicolon
 op_increment
 id|i

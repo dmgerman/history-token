@@ -1151,7 +1151,7 @@ id|intf
 )paren
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -1184,9 +1184,13 @@ l_int|0
 suffix:semicolon
 id|endpoint
 op_assign
+op_amp
 id|interface-&gt;endpoint
-op_plus
+(braket
 l_int|0
+)braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -1238,7 +1242,7 @@ id|USB_RECIP_INTERFACE
 comma
 l_int|0
 comma
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 comma
 l_int|NULL
 comma

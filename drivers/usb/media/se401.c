@@ -7167,6 +7167,8 @@ id|intf-&gt;altsetting
 (braket
 l_int|0
 )braket
+dot
+id|desc
 suffix:semicolon
 multiline_comment|/* Is it an se401? */
 r_if

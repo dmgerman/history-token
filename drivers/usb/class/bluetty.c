@@ -3962,7 +3962,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -4032,7 +4032,7 @@ l_int|0
 suffix:semicolon
 id|control_out_endpoint
 op_assign
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 suffix:semicolon
 multiline_comment|/* find the endpoints that we need */
 r_for
@@ -4044,7 +4044,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 suffix:semicolon
 op_increment
 id|i
@@ -4057,6 +4057,8 @@ id|interface-&gt;endpoint
 (braket
 id|i
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond

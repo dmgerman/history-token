@@ -7793,14 +7793,14 @@ op_assign
 id|as-&gt;state-&gt;usbdev
 suffix:semicolon
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 op_assign
 id|dev-&gt;actconfig
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|alts
 suffix:semicolon
@@ -7855,7 +7855,7 @@ l_int|0
 op_logical_or
 id|u-&gt;interface
 op_ge
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 )paren
 r_return
 l_int|0
@@ -7932,7 +7932,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0xf
 )paren
@@ -7952,7 +7952,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 l_int|0x0c
 )paren
@@ -7963,7 +7963,7 @@ l_int|0x08
 r_if
 c_cond
 (paren
-id|alts-&gt;bNumEndpoints
+id|alts-&gt;desc.bNumEndpoints
 OL
 l_int|2
 op_logical_or
@@ -7972,7 +7972,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_ne
 l_int|0x01
 op_logical_or
@@ -7981,7 +7981,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bSynchAddress
+id|desc.bSynchAddress
 op_ne
 l_int|0
 op_logical_or
@@ -7990,7 +7990,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_ne
 (paren
 id|alts-&gt;endpoint
@@ -7998,7 +7998,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bSynchAddress
+id|desc.bSynchAddress
 op_amp
 l_int|0x7f
 )paren
@@ -8034,7 +8034,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0xf
 )paren
@@ -8046,7 +8046,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bRefresh
+id|desc.bRefresh
 suffix:semicolon
 )brace
 r_if
@@ -8078,7 +8078,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;usbaudio: set_format_in: usb_set_interface %u %u&bslash;n&quot;
 comma
-id|alts-&gt;bInterfaceNumber
+id|alts-&gt;desc.bInterfaceNumber
 comma
 id|fmt-&gt;altsetting
 )paren
@@ -8092,7 +8092,7 @@ c_func
 (paren
 id|dev
 comma
-id|alts-&gt;bInterfaceNumber
+id|alts-&gt;desc.bInterfaceNumber
 comma
 id|fmt-&gt;altsetting
 )paren
@@ -8494,14 +8494,14 @@ op_assign
 id|as-&gt;state-&gt;usbdev
 suffix:semicolon
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 op_assign
 id|dev-&gt;actconfig
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|alts
 suffix:semicolon
@@ -8556,7 +8556,7 @@ l_int|0
 op_logical_or
 id|u-&gt;interface
 op_ge
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 )paren
 r_return
 l_int|0
@@ -8633,7 +8633,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0xf
 )paren
@@ -8653,7 +8653,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 l_int|0x0c
 )paren
@@ -8707,7 +8707,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|alts-&gt;bNumEndpoints
+id|alts-&gt;desc.bNumEndpoints
 OL
 l_int|2
 op_logical_or
@@ -8716,7 +8716,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_ne
 l_int|0x01
 op_logical_or
@@ -8725,7 +8725,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bSynchAddress
+id|desc.bSynchAddress
 op_ne
 l_int|0
 op_logical_or
@@ -8734,7 +8734,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_ne
 (paren
 id|alts-&gt;endpoint
@@ -8742,7 +8742,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bSynchAddress
+id|desc.bSynchAddress
 op_or
 l_int|0x80
 )paren
@@ -8778,7 +8778,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0xf
 )paren
@@ -8790,7 +8790,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bRefresh
+id|desc.bRefresh
 suffix:semicolon
 )brace
 r_if
@@ -8822,7 +8822,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;usbaudio: set_format_out: usb_set_interface %u %u&bslash;n&quot;
 comma
-id|alts-&gt;bInterfaceNumber
+id|alts-&gt;desc.bInterfaceNumber
 comma
 id|fmt-&gt;altsetting
 )paren
@@ -15816,7 +15816,7 @@ c_func
 (paren
 id|dev
 comma
-id|iface-&gt;altsetting-&gt;bInterfaceNumber
+id|iface-&gt;altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|0
 )paren
@@ -15873,7 +15873,7 @@ c_func
 (paren
 id|dev
 comma
-id|iface-&gt;altsetting-&gt;bInterfaceNumber
+id|iface-&gt;altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|0
 )paren
@@ -16539,14 +16539,14 @@ op_star
 id|as
 suffix:semicolon
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 op_assign
 id|dev-&gt;actconfig
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|alts
 suffix:semicolon
@@ -16987,11 +16987,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|alts-&gt;bInterfaceClass
+id|alts-&gt;desc.bInterfaceClass
 op_ne
 id|USB_CLASS_AUDIO
 op_logical_or
-id|alts-&gt;bInterfaceSubClass
+id|alts-&gt;desc.bInterfaceSubClass
 op_ne
 l_int|2
 )paren
@@ -17000,7 +17000,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|alts-&gt;bNumEndpoints
+id|alts-&gt;desc.bNumEndpoints
 OL
 l_int|1
 )paren
@@ -17040,7 +17040,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 l_int|0x03
 )paren
@@ -17054,7 +17054,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0x80
 )paren
@@ -17661,11 +17661,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|alts-&gt;bInterfaceClass
+id|alts-&gt;desc.bInterfaceClass
 op_ne
 id|USB_CLASS_AUDIO
 op_logical_or
-id|alts-&gt;bInterfaceSubClass
+id|alts-&gt;desc.bInterfaceSubClass
 op_ne
 l_int|2
 )paren
@@ -17674,7 +17674,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|alts-&gt;bNumEndpoints
+id|alts-&gt;desc.bNumEndpoints
 OL
 l_int|1
 )paren
@@ -17704,7 +17704,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 l_int|0x03
 )paren
@@ -17717,7 +17717,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 l_int|0x80
 )paren
@@ -22882,6 +22882,9 @@ id|s-&gt;mixerlist
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* arbitrary limit, we won&squot;t check more interfaces than this */
+DECL|macro|USB_MAXINTERFACES
+mdefine_line|#define USB_MAXINTERFACES&t;32
 DECL|function|usb_audio_parsecontrol
 r_static
 r_struct
@@ -22915,7 +22918,7 @@ op_star
 id|s
 suffix:semicolon
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 op_assign
@@ -23143,7 +23146,7 @@ c_cond
 (paren
 id|j
 op_ge
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 )paren
 (brace
 id|printk
@@ -23178,7 +23181,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceClass
+id|desc.bInterfaceClass
 op_ne
 id|USB_CLASS_AUDIO
 )paren
@@ -23207,7 +23210,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceSubClass
+id|desc.bInterfaceSubClass
 op_eq
 l_int|3
 )paren
@@ -23236,7 +23239,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceSubClass
+id|desc.bInterfaceSubClass
 op_ne
 l_int|2
 )paren
@@ -23309,7 +23312,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bNumEndpoints
+id|desc.bNumEndpoints
 OG
 l_int|0
 )paren
@@ -23329,7 +23332,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bNumEndpoints
+id|desc.bNumEndpoints
 suffix:semicolon
 id|k
 op_increment
@@ -23348,7 +23351,7 @@ id|endpoint
 id|k
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 OG
 l_int|0
 )paren
@@ -23380,7 +23383,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bNumEndpoints
+id|desc.bNumEndpoints
 )paren
 r_continue
 suffix:semicolon
@@ -23393,7 +23396,7 @@ id|iface-&gt;altsetting
 l_int|1
 )braket
 dot
-id|bNumEndpoints
+id|desc.bNumEndpoints
 OL
 l_int|1
 )paren
@@ -23428,7 +23431,7 @@ id|endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -23789,7 +23792,7 @@ id|intf
 )paren
 suffix:semicolon
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 op_assign
@@ -23840,7 +23843,7 @@ id|altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceClass
+id|desc.bInterfaceClass
 comma
 id|config-&gt;interface
 (braket
@@ -23852,7 +23855,7 @@ id|altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceSubClass
+id|desc.bInterfaceSubClass
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -23871,7 +23874,7 @@ c_func
 (paren
 id|dev
 comma
-id|config-&gt;bConfigurationValue
+id|config-&gt;desc.bConfigurationValue
 )paren
 OL
 l_int|0
@@ -23883,7 +23886,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;usbaudio: set_configuration failed (ConfigValue 0x%x)&bslash;n&quot;
 comma
-id|config-&gt;bConfigurationValue
+id|config-&gt;desc.bConfigurationValue
 )paren
 suffix:semicolon
 r_return
@@ -24062,7 +24065,7 @@ id|buffer
 comma
 id|buflen
 comma
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 )paren
 suffix:semicolon
 r_if

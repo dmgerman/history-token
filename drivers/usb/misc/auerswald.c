@@ -7060,7 +7060,7 @@ multiline_comment|/* we use only the first -and only- interface */
 r_if
 c_cond
 (paren
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 op_ne
 l_int|0
 )paren

@@ -8259,7 +8259,7 @@ l_int|0
 suffix:semicolon
 r_const
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -8323,7 +8323,7 @@ comma
 r_int
 )paren
 (paren
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 )paren
 )paren
 suffix:semicolon
@@ -8334,6 +8334,8 @@ id|interface-&gt;endpoint
 (braket
 l_int|0
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond

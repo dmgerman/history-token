@@ -3799,7 +3799,7 @@ id|udev-&gt;config
 l_int|0
 )braket
 dot
-id|bConfigurationValue
+id|desc.bConfigurationValue
 )paren
 )paren
 (brace

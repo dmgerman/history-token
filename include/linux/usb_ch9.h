@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file holds USB constants and structures that are needed for USB&n; * device APIs.  These are used by the USB device model, which is defined&n; * in chapter 9 of the USB 2.0 specification.  Linux has several APIs in C&n; * that need these:&n; *&n; * - the master/host side Linux-USB kernel driver API;&n; * - the &quot;usbfs&quot; user space API; and&n; * - (eventually) a Linux slave/device side driver API.&n; *&n; * USB 2.0 adds an additional &quot;On The Go&quot; (OTG) mode, which lets systems&n; * act either as a USB master/host or as a USB slave/device.  That means&n; * the master and slave side APIs will benefit from working well together.&n; */
+multiline_comment|/*&n; * This file holds USB constants and structures that are needed for USB&n; * device APIs.  These are used by the USB device model, which is defined&n; * in chapter 9 of the USB 2.0 specification.  Linux has several APIs in C&n; * that need these:&n; *&n; * - the master/host side Linux-USB kernel driver API;&n; * - the &quot;usbfs&quot; user space API; and&n; * - (eventually) a Linux &quot;gadget&quot; slave/device side driver API.&n; *&n; * USB 2.0 adds an additional &quot;On The Go&quot; (OTG) mode, which lets systems&n; * act either as a USB master/host or as a USB slave/device.  That means&n; * the master and slave side APIs will benefit from working well together.&n; */
 macro_line|#ifndef __LINUX_USB_CH9_H
 DECL|macro|__LINUX_USB_CH9_H
 mdefine_line|#define __LINUX_USB_CH9_H
@@ -89,7 +89,7 @@ id|packed
 )paren
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * STANDARD DESCRIPTORS ... as returned by GET_DESCRIPTOR, or&n; * (rarely) accepted by SET_DESCRIPTOR.&n; *&n; * Note that all multi-byte values here are encoded in little endian&n; * byte order.&n; */
+multiline_comment|/*&n; * STANDARD DESCRIPTORS ... as returned by GET_DESCRIPTOR, or&n; * (rarely) accepted by SET_DESCRIPTOR.&n; *&n; * Note that all multi-byte values here are encoded in little endian&n; * byte order &quot;on the wire&quot;.  But when exposed through Linux-USB APIs,&n; * they&squot;ve been converted to cpu byte order.&n; */
 multiline_comment|/*&n; * Descriptor types ... USB 2.0 spec table 9.5&n; */
 DECL|macro|USB_DT_DEVICE
 mdefine_line|#define USB_DT_DEVICE&t;&t;&t;0x01
@@ -128,6 +128,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* USB_DT_DEVICE: Device descriptor */
 DECL|struct|usb_device_descriptor
 r_struct
@@ -197,7 +198,9 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Device and/or Interface Class codes&n; * as found in device and interface descriptors&n; * and defined by www.usb.org documents&n; */
+DECL|macro|USB_DT_DEVICE_SIZE
+mdefine_line|#define USB_DT_DEVICE_SIZE&t;&t;18
+multiline_comment|/*&n; * Device and/or Interface Class codes&n; * as found in bDeviceClass or bInterfaceClass&n; * and defined by www.usb.org documents&n; */
 DECL|macro|USB_CLASS_PER_INTERFACE
 mdefine_line|#define USB_CLASS_PER_INTERFACE&t;&t;0&t;/* for DeviceClass */
 DECL|macro|USB_CLASS_AUDIO
@@ -226,7 +229,62 @@ DECL|macro|USB_CLASS_APP_SPEC
 mdefine_line|#define USB_CLASS_APP_SPEC&t;&t;0xfe
 DECL|macro|USB_CLASS_VENDOR_SPEC
 mdefine_line|#define USB_CLASS_VENDOR_SPEC&t;&t;0xff
-singleline_comment|// FIXME include struct usb_config_descriptor
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* USB_DT_CONFIG: Configuration descriptor information.&n; *&n; * USB_DT_OTHER_SPEED_CONFIG is the same descriptor, except that the&n; * descriptor type is different.  Highspeed-capable devices can look&n; * different depending on what speed they&squot;re currently running.  Only&n; * devices with a USB_DT_DEVICE_QUALIFIER have any OTHER_SPEED_CONFIG&n; * descriptors.&n; */
+DECL|struct|usb_config_descriptor
+r_struct
+id|usb_config_descriptor
+(brace
+DECL|member|bLength
+id|__u8
+id|bLength
+suffix:semicolon
+DECL|member|bDescriptorType
+id|__u8
+id|bDescriptorType
+suffix:semicolon
+DECL|member|wTotalLength
+id|__u16
+id|wTotalLength
+suffix:semicolon
+DECL|member|bNumInterfaces
+id|__u8
+id|bNumInterfaces
+suffix:semicolon
+DECL|member|bConfigurationValue
+id|__u8
+id|bConfigurationValue
+suffix:semicolon
+DECL|member|iConfiguration
+id|__u8
+id|iConfiguration
+suffix:semicolon
+DECL|member|bmAttributes
+id|__u8
+id|bmAttributes
+suffix:semicolon
+DECL|member|bMaxPower
+id|__u8
+id|bMaxPower
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|macro|USB_DT_CONFIG_SIZE
+mdefine_line|#define USB_DT_CONFIG_SIZE&t;&t;9
+multiline_comment|/* from config descriptor bmAttributes */
+DECL|macro|USB_CONFIG_ATT_ONE
+mdefine_line|#define USB_CONFIG_ATT_ONE&t;&t;(1 &lt;&lt; 7)&t;/* must be set */
+DECL|macro|USB_CONFIG_ATT_SELFPOWER
+mdefine_line|#define USB_CONFIG_ATT_SELFPOWER&t;(1 &lt;&lt; 6)&t;/* self powered */
+DECL|macro|USB_CONFIG_ATT_WAKEUP
+mdefine_line|#define USB_CONFIG_ATT_WAKEUP&t;&t;(1 &lt;&lt; 5)&t;/* can wakeup */
+multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* USB_DT_STRING: String descriptor */
 DECL|struct|usb_string_descriptor
 r_struct
@@ -256,8 +314,111 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// FIXME include struct usb_interface_descriptor
-singleline_comment|// FIXME include struct usb_endpoint_descriptor
+multiline_comment|/* note that &quot;string&quot; zero is special, it holds language codes that&n; * the device supports, not Unicode characters.&n; */
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* USB_DT_INTERFACE: Interface descriptor */
+DECL|struct|usb_interface_descriptor
+r_struct
+id|usb_interface_descriptor
+(brace
+DECL|member|bLength
+id|__u8
+id|bLength
+suffix:semicolon
+DECL|member|bDescriptorType
+id|__u8
+id|bDescriptorType
+suffix:semicolon
+DECL|member|bInterfaceNumber
+id|__u8
+id|bInterfaceNumber
+suffix:semicolon
+DECL|member|bAlternateSetting
+id|__u8
+id|bAlternateSetting
+suffix:semicolon
+DECL|member|bNumEndpoints
+id|__u8
+id|bNumEndpoints
+suffix:semicolon
+DECL|member|bInterfaceClass
+id|__u8
+id|bInterfaceClass
+suffix:semicolon
+DECL|member|bInterfaceSubClass
+id|__u8
+id|bInterfaceSubClass
+suffix:semicolon
+DECL|member|bInterfaceProtocol
+id|__u8
+id|bInterfaceProtocol
+suffix:semicolon
+DECL|member|iInterface
+id|__u8
+id|iInterface
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|macro|USB_DT_INTERFACE_SIZE
+mdefine_line|#define USB_DT_INTERFACE_SIZE&t;&t;9
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* USB_DT_ENDPOINT: Endpoint descriptor */
+DECL|struct|usb_endpoint_descriptor
+r_struct
+id|usb_endpoint_descriptor
+(brace
+DECL|member|bLength
+id|__u8
+id|bLength
+suffix:semicolon
+DECL|member|bDescriptorType
+id|__u8
+id|bDescriptorType
+suffix:semicolon
+DECL|member|bEndpointAddress
+id|__u8
+id|bEndpointAddress
+suffix:semicolon
+DECL|member|bmAttributes
+id|__u8
+id|bmAttributes
+suffix:semicolon
+DECL|member|wMaxPacketSize
+id|__u16
+id|wMaxPacketSize
+suffix:semicolon
+DECL|member|bInterval
+id|__u8
+id|bInterval
+suffix:semicolon
+singleline_comment|// NOTE:  these two are _only_ in audio endpoints.
+singleline_comment|// use USB_DT_ENDPOINT*_SIZE in bLength, not sizeof.
+DECL|member|bRefresh
+id|__u8
+id|bRefresh
+suffix:semicolon
+DECL|member|bSynchAddress
+id|__u8
+id|bSynchAddress
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|macro|USB_DT_ENDPOINT_SIZE
+mdefine_line|#define USB_DT_ENDPOINT_SIZE&t;&t;7
+DECL|macro|USB_DT_ENDPOINT_AUDIO_SIZE
+mdefine_line|#define USB_DT_ENDPOINT_AUDIO_SIZE&t;9&t;/* Audio extension */
 multiline_comment|/*&n; * Endpoints&n; */
 DECL|macro|USB_ENDPOINT_NUMBER_MASK
 mdefine_line|#define USB_ENDPOINT_NUMBER_MASK&t;0x0f&t;/* in bEndpointAddress */
@@ -273,6 +434,7 @@ DECL|macro|USB_ENDPOINT_XFER_BULK
 mdefine_line|#define USB_ENDPOINT_XFER_BULK&t;&t;2
 DECL|macro|USB_ENDPOINT_XFER_INT
 mdefine_line|#define USB_ENDPOINT_XFER_INT&t;&t;3
+multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* USB_DT_DEVICE_QUALIFIER: Device Qualifier descriptor */
 DECL|struct|usb_qualifier_descriptor
 r_struct

@@ -89,115 +89,17 @@ r_struct
 id|usb_device
 suffix:semicolon
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * Standard USB Descriptor support.&n; * Devices may also have class-specific or vendor-specific descriptors.&n; */
-multiline_comment|/*&n; * Descriptor sizes per descriptor type&n; */
-DECL|macro|USB_DT_DEVICE_SIZE
-mdefine_line|#define USB_DT_DEVICE_SIZE&t;&t;18
-DECL|macro|USB_DT_CONFIG_SIZE
-mdefine_line|#define USB_DT_CONFIG_SIZE&t;&t;9
-DECL|macro|USB_DT_INTERFACE_SIZE
-mdefine_line|#define USB_DT_INTERFACE_SIZE&t;&t;9
-DECL|macro|USB_DT_ENDPOINT_SIZE
-mdefine_line|#define USB_DT_ENDPOINT_SIZE&t;&t;7
-DECL|macro|USB_DT_ENDPOINT_AUDIO_SIZE
-mdefine_line|#define USB_DT_ENDPOINT_AUDIO_SIZE&t;9&t;/* Audio extension */
-multiline_comment|/* most of these maximums are arbitrary */
-DECL|macro|USB_MAXCONFIG
-mdefine_line|#define USB_MAXCONFIG&t;&t;&t;8
-DECL|macro|USB_ALTSETTINGALLOC
-mdefine_line|#define USB_ALTSETTINGALLOC&t;&t;4
-DECL|macro|USB_MAXALTSETTING
-mdefine_line|#define USB_MAXALTSETTING&t;&t;128&t;/* Hard limit */
-DECL|macro|USB_MAXINTERFACES
-mdefine_line|#define USB_MAXINTERFACES&t;&t;32
-DECL|macro|USB_MAXENDPOINTS
-mdefine_line|#define USB_MAXENDPOINTS&t;&t;32&t;/* Hard limit */
-multiline_comment|/* USB_DT_ENDPOINT: Endpoint descriptor */
-DECL|struct|usb_endpoint_descriptor
+multiline_comment|/*&n; * Host-side wrappers for standard USB descriptors ... these are parsed&n; * from the data provided by devices.  Parsing turns them from a flat&n; * sequence of descriptors into a hierarchy:&n; *&n; *  - devices have one (usually) or more configs;&n; *  - configs have one (often) or more interfaces;&n; *  - interfaces have one (usually) or more settings;&n; *  - each interface setting has zero or (usually) more endpoints.&n; *&n; * And there might be other descriptors mixed in with those.&n; *&n; * Devices may also have class-specific or vendor-specific descriptors.&n; */
+multiline_comment|/* host-side wrapper for parsed endpoint descriptors */
+DECL|struct|usb_host_endpoint
+r_struct
+id|usb_host_endpoint
+(brace
+DECL|member|desc
 r_struct
 id|usb_endpoint_descriptor
-(brace
-DECL|member|bLength
-id|__u8
-id|bLength
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
+id|desc
 suffix:semicolon
-DECL|member|bDescriptorType
-id|__u8
-id|bDescriptorType
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bEndpointAddress
-id|__u8
-id|bEndpointAddress
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bmAttributes
-id|__u8
-id|bmAttributes
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|wMaxPacketSize
-id|__u16
-id|wMaxPacketSize
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bInterval
-id|__u8
-id|bInterval
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bRefresh
-id|__u8
-id|bRefresh
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bSynchAddress
-id|__u8
-id|bSynchAddress
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* the rest is internal to the Linux implementation */
 DECL|member|extra
 r_int
 r_char
@@ -211,105 +113,20 @@ id|extralen
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* USB_DT_INTERFACE: Interface descriptor */
-DECL|struct|usb_interface_descriptor
+multiline_comment|/* host-side wrapper for one interface setting&squot;s parsed descriptors */
+DECL|struct|usb_host_interface
+r_struct
+id|usb_host_interface
+(brace
+DECL|member|desc
 r_struct
 id|usb_interface_descriptor
-(brace
-DECL|member|bLength
-id|__u8
-id|bLength
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
+id|desc
 suffix:semicolon
-DECL|member|bDescriptorType
-id|__u8
-id|bDescriptorType
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bInterfaceNumber
-id|__u8
-id|bInterfaceNumber
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bAlternateSetting
-id|__u8
-id|bAlternateSetting
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bNumEndpoints
-id|__u8
-id|bNumEndpoints
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bInterfaceClass
-id|__u8
-id|bInterfaceClass
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bInterfaceSubClass
-id|__u8
-id|bInterfaceSubClass
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bInterfaceProtocol
-id|__u8
-id|bInterfaceProtocol
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|iInterface
-id|__u8
-id|iInterface
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* the rest is internal to the Linux implementation */
+multiline_comment|/* array of desc.bNumEndpoint endpoints associated with this&n;&t; * interface setting.  these will be in no particular order.&n;&t; */
 DECL|member|endpoint
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|endpoint
 suffix:semicolon
@@ -331,9 +148,10 @@ DECL|struct|usb_interface
 r_struct
 id|usb_interface
 (brace
+multiline_comment|/* array of alternate settings for this interface.&n;&t; * these will be in numeric order, 0..num_altsettting&n;&t; */
 DECL|member|altsetting
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|altsetting
 suffix:semicolon
@@ -377,91 +195,16 @@ mdefine_line|#define&t;to_usb_interface(d) container_of(d, struct usb_interface,
 DECL|macro|interface_to_usbdev
 mdefine_line|#define&t;interface_to_usbdev(intf) &bslash;&n;&t;container_of(intf-&gt;dev.parent, struct usb_device, dev)
 multiline_comment|/* USB_DT_CONFIG: Configuration descriptor information.&n; *&n; * USB_DT_OTHER_SPEED_CONFIG is the same descriptor, except that the&n; * descriptor type is different.  Highspeed-capable devices can look&n; * different depending on what speed they&squot;re currently running.  Only&n; * devices with a USB_DT_DEVICE_QUALIFIER have an OTHER_SPEED_CONFIG.&n; */
-DECL|struct|usb_config_descriptor
+DECL|struct|usb_host_config
+r_struct
+id|usb_host_config
+(brace
+DECL|member|desc
 r_struct
 id|usb_config_descriptor
-(brace
-DECL|member|bLength
-id|__u8
-id|bLength
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
+id|desc
 suffix:semicolon
-DECL|member|bDescriptorType
-id|__u8
-id|bDescriptorType
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|wTotalLength
-id|__u16
-id|wTotalLength
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bNumInterfaces
-id|__u8
-id|bNumInterfaces
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bConfigurationValue
-id|__u8
-id|bConfigurationValue
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|iConfiguration
-id|__u8
-id|iConfiguration
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|bmAttributes
-id|__u8
-id|bmAttributes
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|member|MaxPower
-id|__u8
-id|MaxPower
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* the rest is internal to the Linux implementation */
+multiline_comment|/* the interfaces associated with this configuration&n;&t; * these will be in numeric order, 0..desc.bNumInterfaces&n;&t; */
 DECL|member|interface
 r_struct
 id|usb_interface
@@ -523,7 +266,6 @@ suffix:semicolon
 DECL|macro|usb_get_extra_descriptor
 mdefine_line|#define usb_get_extra_descriptor(ifpoint,type,ptr)&bslash;&n;&t;__usb_get_extra_descriptor((ifpoint)-&gt;extra,(ifpoint)-&gt;extralen,&bslash;&n;&t;&t;type,(void**)ptr)
 multiline_comment|/* -------------------------------------------------------------------------- */
-multiline_comment|/* Host Controller Driver (HCD) support */
 r_struct
 id|usb_operations
 suffix:semicolon
@@ -730,14 +472,14 @@ suffix:semicolon
 multiline_comment|/* Descriptor */
 DECL|member|config
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 suffix:semicolon
 multiline_comment|/* All of the configs */
 DECL|member|actconfig
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|actconfig
 suffix:semicolon

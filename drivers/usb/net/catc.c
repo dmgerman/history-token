@@ -3363,7 +3363,7 @@ c_func
 (paren
 id|usbdev
 comma
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|1
 )paren
