@@ -135,30 +135,19 @@ id|acpi_disabled
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_ACPI_BOOT
-DECL|variable|__initdata
+r_extern
 r_int
-id|acpi_irq
 id|__initdata
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* enable IRQ */
-DECL|variable|__initdata
-r_int
 id|acpi_ht
-id|__initdata
-op_assign
-l_int|1
 suffix:semicolon
-multiline_comment|/* enable HT */
-macro_line|#endif
-DECL|variable|__initdata
+DECL|variable|acpi_force
 r_int
-id|acpi_force
 id|__initdata
+id|acpi_force
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 DECL|variable|MCA_bus
 r_int
 id|MCA_bus
@@ -2167,9 +2156,10 @@ l_int|10
 )paren
 )paren
 (brace
-id|acpi_irq
-op_assign
-l_int|0
+id|acpi_noirq_set
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC

@@ -14,18 +14,22 @@ macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#endif
 DECL|macro|PREFIX
 mdefine_line|#define PREFIX&t;&t;&t;&quot;ACPI: &quot;
-r_extern
+DECL|variable|__initdata
 r_int
-id|acpi_disabled
+id|acpi_noirq
+id|__initdata
+op_assign
+l_int|0
 suffix:semicolon
-r_extern
-r_int
-id|acpi_irq
-suffix:semicolon
-r_extern
+multiline_comment|/* skip ACPI IRQ initialization */
+DECL|variable|__initdata
 r_int
 id|acpi_ht
+id|__initdata
+op_assign
+l_int|1
 suffix:semicolon
+multiline_comment|/* enable HT */
 DECL|variable|acpi_lapic
 r_int
 id|acpi_lapic
@@ -1378,8 +1382,7 @@ c_cond
 (paren
 id|acpi_disabled
 op_logical_or
-op_logical_neg
-id|acpi_irq
+id|acpi_noirq
 )paren
 (brace
 r_return
