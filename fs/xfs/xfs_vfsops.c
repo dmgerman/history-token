@@ -1578,6 +1578,8 @@ id|xfs_alloc_buftarg
 c_func
 (paren
 id|ddev
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1615,6 +1617,8 @@ id|xfs_alloc_buftarg
 c_func
 (paren
 id|rtdev
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1642,6 +1646,8 @@ id|xfs_alloc_buftarg
 c_func
 (paren
 id|logdev
+comma
+l_int|1
 )paren
 suffix:colon
 id|mp-&gt;m_ddev_targp
