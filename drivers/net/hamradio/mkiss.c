@@ -1595,6 +1595,13 @@ id|ax-&gt;rcount
 op_sub_assign
 l_int|2
 suffix:semicolon
+multiline_comment|/* dl9sau bugfix: the trailling two bytes flexnet crc&n;                         * will not be passed to the kernel. thus we have&n;                         * to correct the kissparm signature, because it&n;                         * indicates a crc but there&squot;s none&n;&t;&t;&t; */
+op_star
+id|ax-&gt;rbuff
+op_and_assign
+op_complement
+l_int|0x20
+suffix:semicolon
 )brace
 )brace
 id|count
