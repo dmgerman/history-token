@@ -694,7 +694,7 @@ r_case
 op_minus
 id|EPIPE
 suffix:colon
-multiline_comment|/* for control endpoints, a stall indicates a protocol error */
+multiline_comment|/* for control endpoints, (used by CB[I]) a stall indicates&n;&t;&t; * a failed command */
 r_if
 c_cond
 (paren
@@ -712,7 +712,7 @@ l_string|&quot;-- stall on control pipe&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|USB_STOR_XFER_ERROR
+id|USB_STOR_XFER_STALLED
 suffix:semicolon
 )brace
 multiline_comment|/* for other sorts of endpoint, clear the stall */
@@ -2077,7 +2077,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Abort the currently running scsi command or device reset.&n; * This must be called with scsi_lock(us-&gt;srb-&gt;host) held */
 DECL|function|usb_stor_abort_transport
-r_void
+r_int
 id|usb_stor_abort_transport
 c_func
 (paren
@@ -2109,9 +2109,8 @@ l_string|&quot;usb_stor_abort_transport called&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Normally the current state is RUNNING.  If the control thread&n;&t; * hasn&squot;t even started processing this command, the state will be&n;&t; * IDLE.  Anything else is a bug. */
-id|BUG_ON
-c_func
-(paren
+r_if
+c_cond
 (paren
 id|state
 op_ne
@@ -2121,8 +2120,24 @@ id|state
 op_ne
 id|US_STATE_IDLE
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|USB_STORAGE
+l_string|&quot;Error in %s: &quot;
+l_string|&quot;invalid state %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|state
 )paren
 suffix:semicolon
+r_return
+id|FAILED
+suffix:semicolon
+)brace
 multiline_comment|/* set state to abort and release the lock */
 id|atomic_set
 c_func
@@ -2213,6 +2228,9 @@ c_func
 id|host
 )paren
 suffix:semicolon
+r_return
+id|SUCCESS
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Control/Bulk/Interrupt transport&n; */
 DECL|function|usb_stor_CBI_transport
@@ -2274,6 +2292,20 @@ comma
 id|result
 )paren
 suffix:semicolon
+multiline_comment|/* if we stalled the command, it means command failed */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+id|USB_STOR_XFER_STALLED
+)paren
+(brace
+r_return
+id|USB_STOR_TRANSPORT_FAILED
+suffix:semicolon
+)brace
+multiline_comment|/* Uh oh... serious problem here */
 r_if
 c_cond
 (paren
@@ -2282,7 +2314,6 @@ op_ne
 id|USB_STOR_XFER_GOOD
 )paren
 (brace
-multiline_comment|/* Uh oh... serious problem here */
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
@@ -2552,6 +2583,20 @@ comma
 id|result
 )paren
 suffix:semicolon
+multiline_comment|/* if we stalled the command, it means command failed */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+id|USB_STOR_XFER_STALLED
+)paren
+(brace
+r_return
+id|USB_STOR_TRANSPORT_FAILED
+suffix:semicolon
+)brace
+multiline_comment|/* Uh oh... serious problem here */
 r_if
 c_cond
 (paren
@@ -2560,7 +2605,6 @@ op_ne
 id|USB_STOR_XFER_GOOD
 )paren
 (brace
-multiline_comment|/* Uh oh... serious problem here */
 r_return
 id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon

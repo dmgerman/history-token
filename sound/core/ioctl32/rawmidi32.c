@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   32bit -&gt; 64bit ioctl wrapper for raw MIDI API&n; 
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -47,27 +48,6 @@ id|packed
 suffix:semicolon
 DECL|macro|CVT_sndrv_rawmidi_params
 mdefine_line|#define CVT_sndrv_rawmidi_params()&bslash;&n;{&bslash;&n;&t;COPY(stream);&bslash;&n;&t;COPY(buffer_size);&bslash;&n;&t;COPY(avail_min);&bslash;&n;&t;COPY(no_active_sensing);&bslash;&n;}
-DECL|struct|timeval32
-r_struct
-id|timeval32
-(brace
-DECL|member|tv_sec
-id|s32
-id|tv_sec
-suffix:semicolon
-DECL|member|tv_usec
-id|s32
-id|tv_usec
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
 DECL|struct|sndrv_rawmidi_status32
 r_struct
 id|sndrv_rawmidi_status32
@@ -78,7 +58,7 @@ id|stream
 suffix:semicolon
 DECL|member|tstamp
 r_struct
-id|timeval32
+id|compat_timespec
 id|tstamp
 suffix:semicolon
 DECL|member|avail
@@ -107,7 +87,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|macro|CVT_sndrv_rawmidi_status
-mdefine_line|#define CVT_sndrv_rawmidi_status()&bslash;&n;{&bslash;&n;&t;COPY(stream);&bslash;&n;&t;COPY(tstamp.tv_sec);&bslash;&n;&t;COPY(tstamp.tv_usec);&bslash;&n;&t;COPY(avail);&bslash;&n;&t;COPY(xruns);&bslash;&n;}
+mdefine_line|#define CVT_sndrv_rawmidi_status()&bslash;&n;{&bslash;&n;&t;COPY(stream);&bslash;&n;&t;COPY(tstamp.tv_sec);&bslash;&n;&t;COPY(tstamp.tv_nsec);&bslash;&n;&t;COPY(avail);&bslash;&n;&t;COPY(xruns);&bslash;&n;}
 DECL|variable|rawmidi_params
 id|DEFINE_ALSA_IOCTL
 c_func

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * ohci1394.c - driver for OHCI 1394 boards&n; * Copyright (C)1999,2000 Sebastien Rougeaux &lt;sebastien.rougeaux@anu.edu.au&gt;&n; *                        Gord Peters &lt;GordPeters@smarttech.com&gt;&n; *              2001      Ben Collins &lt;bcollins@debian.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
 multiline_comment|/*&n; * Things known to be working:&n; * . Async Request Transmit&n; * . Async Response Receive&n; * . Async Request Receive&n; * . Async Response Transmit&n; * . Iso Receive&n; * . DMA mmap for iso receive&n; * . Config ROM generation&n; *&n; * Things implemented, but still in test phase:&n; * . Iso Transmit&n; * . Async Stream Packets Transmit (Receive done via Iso interface)&n; * &n; * Things not implemented:&n; * . DMA error recovery&n; *&n; * Known bugs:&n; * . devctl BUS_RESET arg confusion (reset type or root holdoff?)&n; *   added LONG_RESET_ROOT and SHORT_RESET_ROOT for root holdoff --kk&n; */
-multiline_comment|/* &n; * Acknowledgments:&n; *&n; * Adam J Richter &lt;adam@yggdrasil.com&gt;&n; *  . Use of pci_class to find device&n; *&n; * Andreas Tobler &lt;toa@pop.agri.ch&gt;&n; *  . Updated proc_fs calls&n; *&n; * Emilie Chung&t;&lt;emilie.chung@axis.com&gt;&n; *  . Tip on Async Request Filter&n; *&n; * Pascal Drolet &lt;pascal.drolet@informission.ca&gt;&n; *  . Various tips for optimization and functionnalities&n; *&n; * Robert Ficklin &lt;rficklin@westengineering.com&gt;&n; *  . Loop in irq_handler&n; *&n; * James Goodwin &lt;jamesg@Filanet.com&gt;&n; *  . Various tips on initialization, self-id reception, etc.&n; *&n; * Albrecht Dress &lt;ad@mpifr-bonn.mpg.de&gt;&n; *  . Apple PowerBook detection&n; *&n; * Daniel Kobras &lt;daniel.kobras@student.uni-tuebingen.de&gt;&n; *  . Reset the board properly before leaving + misc cleanups&n; *&n; * Leon van Stuivenberg &lt;leonvs@iae.nl&gt;&n; *  . Bug fixes&n; *&n; * Ben Collins &lt;bcollins@debian.org&gt;&n; *  . Working big-endian support&n; *  . Updated to 2.4.x module scheme (PCI aswell)&n; *  . Removed procfs support since it trashes random mem&n; *  . Config ROM generation&n; *&n; * Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *  . Reworked code for initiating bus resets&n; *    (long, short, with or without hold-off)&n; */
+multiline_comment|/* &n; * Acknowledgments:&n; *&n; * Adam J Richter &lt;adam@yggdrasil.com&gt;&n; *  . Use of pci_class to find device&n; *&n; * Andreas Tobler &lt;toa@pop.agri.ch&gt;&n; *  . Updated proc_fs calls&n; *&n; * Emilie Chung&t;&lt;emilie.chung@axis.com&gt;&n; *  . Tip on Async Request Filter&n; *&n; * Pascal Drolet &lt;pascal.drolet@informission.ca&gt;&n; *  . Various tips for optimization and functionnalities&n; *&n; * Robert Ficklin &lt;rficklin@westengineering.com&gt;&n; *  . Loop in irq_handler&n; *&n; * James Goodwin &lt;jamesg@Filanet.com&gt;&n; *  . Various tips on initialization, self-id reception, etc.&n; *&n; * Albrecht Dress &lt;ad@mpifr-bonn.mpg.de&gt;&n; *  . Apple PowerBook detection&n; *&n; * Daniel Kobras &lt;daniel.kobras@student.uni-tuebingen.de&gt;&n; *  . Reset the board properly before leaving + misc cleanups&n; *&n; * Leon van Stuivenberg &lt;leonvs@iae.nl&gt;&n; *  . Bug fixes&n; *&n; * Ben Collins &lt;bcollins@debian.org&gt;&n; *  . Working big-endian support&n; *  . Updated to 2.4.x module scheme (PCI aswell)&n; *  . Removed procfs support since it trashes random mem&n; *  . Config ROM generation&n; *&n; * Manfred Weihs &lt;weihs@ict.tuwien.ac.at&gt;&n; *  . Reworked code for initiating bus resets&n; *    (long, short, with or without hold-off)&n; *&n; * Nandu Santhi &lt;contactnandu@users.sourceforge.net&gt;&n; *  . Added support for nVidia nForce2 onboard Firewire chipset&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -59,7 +60,8 @@ mdefine_line|#define OHCI_DMA_ALLOC(fmt, args...) &bslash;&n;&t;HPSB_ERR(&quot;%
 DECL|macro|OHCI_DMA_FREE
 mdefine_line|#define OHCI_DMA_FREE(fmt, args...) &bslash;&n;&t;HPSB_ERR(&quot;%s(%s)free(%d): &quot;fmt, OHCI1394_DRIVER_NAME, __FUNCTION__, &bslash;&n;&t;&t;--global_outstanding_dmas, ## args)
 DECL|variable|global_outstanding_dmas
-id|u32
+r_static
+r_int
 id|global_outstanding_dmas
 op_assign
 l_int|0
@@ -84,15 +86,24 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 801 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 858 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
-id|MODULE_PARM
+DECL|variable|phys_dma
+r_static
+r_int
+id|phys_dma
+op_assign
+l_int|1
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|phys_dma
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -102,13 +113,6 @@ id|phys_dma
 comma
 l_string|&quot;Enable physical dma (default = 1).&quot;
 )paren
-suffix:semicolon
-DECL|variable|phys_dma
-r_static
-r_int
-id|phys_dma
-op_assign
-l_int|1
 suffix:semicolon
 r_static
 r_void
@@ -992,7 +996,7 @@ id|ohci
 comma
 id|OHCI1394_HCControlSet
 comma
-l_int|0x00010000
+id|OHCI1394_HCControl_softReset
 )paren
 suffix:semicolon
 r_for
@@ -1013,6 +1017,7 @@ op_increment
 r_if
 c_cond
 (paren
+op_logical_neg
 id|reg_read
 c_func
 (paren
@@ -1021,7 +1026,7 @@ comma
 id|OHCI1394_HCControlSet
 )paren
 op_amp
-l_int|0x00010000
+id|OHCI1394_HCControl_softReset
 )paren
 r_break
 suffix:semicolon
@@ -1757,7 +1762,7 @@ id|ohci
 comma
 id|OHCI1394_HCControlSet
 comma
-l_int|0x00040000
+id|OHCI1394_HCControl_postedWriteEnable
 )paren
 suffix:semicolon
 multiline_comment|/* Clear link control register */
@@ -2007,7 +2012,7 @@ id|ohci
 comma
 id|OHCI1394_HCControlClear
 comma
-l_int|0x40000000
+id|OHCI1394_HCControl_noByteSwap
 )paren
 suffix:semicolon
 multiline_comment|/* Enable interrupts */
@@ -2049,7 +2054,7 @@ id|ohci
 comma
 id|OHCI1394_HCControlSet
 comma
-l_int|0x00020000
+id|OHCI1394_HCControl_linkEnable
 )paren
 suffix:semicolon
 id|buf
@@ -4823,20 +4828,6 @@ r_if
 c_cond
 (paren
 id|recv-&gt;block_irq_interval
-OL
-l_int|1
-)paren
-(brace
-id|recv-&gt;block_irq_interval
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|recv-&gt;block_irq_interval
 op_star
 l_int|4
 OG
@@ -4848,6 +4839,19 @@ op_assign
 id|recv-&gt;nblocks
 op_div
 l_int|4
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|recv-&gt;block_irq_interval
+OL
+l_int|1
+)paren
+(brace
+id|recv-&gt;block_irq_interval
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -9595,15 +9599,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ohci-&gt;dev-&gt;vendor
-op_eq
-id|PCI_VENDOR_ID_APPLE
-op_logical_and
-id|ohci-&gt;dev-&gt;device
-op_eq
-id|PCI_DEVICE_ID_APPLE_UNI_N_FW
+id|ohci-&gt;check_busreset
 )paren
 (brace
+r_int
+id|loop_count
+op_assign
+l_int|0
+suffix:semicolon
 id|udelay
 c_func
 (paren
@@ -9657,6 +9660,39 @@ id|ohci-&gt;event_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+multiline_comment|/* The loop counter check is to prevent the driver&n;&t;&t;&t;&t; * from remaining in this state forever. For the&n;&t;&t;&t;&t; * initial bus reset, the loop continues for ever&n;&t;&t;&t;&t; * and the system hangs, until some device is plugged-in&n;&t;&t;&t;&t; * or out manually into a port! The forced reset seems&n;&t;&t;&t;&t; * to solve this problem. This mainly effects nForce2. */
+r_if
+c_cond
+(paren
+id|loop_count
+OG
+l_int|10000
+)paren
+(brace
+id|hpsb_reset_bus
+c_func
+(paren
+id|host
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|DBGMSG
+c_func
+(paren
+id|ohci-&gt;id
+comma
+l_string|&quot;Detected bus-reset loop. Forced a bus reset!&quot;
+)paren
+suffix:semicolon
+id|loop_count
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|loop_count
+op_increment
 suffix:semicolon
 )brace
 )brace
@@ -10365,6 +10401,8 @@ l_string|&quot;Unhandled interrupt(s) 0x%08x&quot;
 comma
 id|event
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Put the buffer back into the dma context */
@@ -14912,6 +14950,38 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_NVIDIA_NFORCE2_FW
+DECL|macro|PCI_DEVICE_ID_NVIDIA_NFORCE2_FW
+mdefine_line|#define PCI_DEVICE_ID_NVIDIA_NFORCE2_FW 0x006e
+macro_line|#endif
+multiline_comment|/* These chipsets require a bit of extra care when checking after&n;&t; * a busreset.  */
+r_if
+c_cond
+(paren
+(paren
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_APPLE
+op_logical_and
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_APPLE_UNI_N_FW
+)paren
+op_logical_or
+(paren
+id|dev-&gt;vendor
+op_eq
+id|PCI_VENDOR_ID_NVIDIA
+op_logical_and
+id|dev-&gt;device
+op_eq
+id|PCI_DEVICE_ID_NVIDIA_NFORCE2_FW
+)paren
+)paren
+id|ohci-&gt;check_busreset
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* We hardwire the MMIO length, since some CardBus adaptors&n;&t; * fail to report the right length.  Anyway, the ohci spec&n;&t; * clearly says it&squot;s 2kb, so this shouldn&squot;t be a problem. */
 id|ohci_base
 op_assign
@@ -15293,7 +15363,7 @@ id|ohci
 comma
 id|OHCI1394_HCControlSet
 comma
-l_int|0x00080000
+id|OHCI1394_HCControl_LPS
 )paren
 suffix:semicolon
 id|mdelay
@@ -15722,8 +15792,7 @@ comma
 dot
 id|class_mask
 op_assign
-op_complement
-l_int|0
+id|PCI_ANY_ID
 comma
 dot
 id|vendor

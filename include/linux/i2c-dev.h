@@ -12,7 +12,7 @@ r_struct
 id|i2c_smbus_ioctl_data
 (brace
 DECL|member|read_write
-r_char
+id|__u8
 id|read_write
 suffix:semicolon
 DECL|member|command
@@ -20,7 +20,7 @@ id|__u8
 id|command
 suffix:semicolon
 DECL|member|size
-r_int
+id|__u32
 id|size
 suffix:semicolon
 DECL|member|data
@@ -44,7 +44,7 @@ id|msgs
 suffix:semicolon
 multiline_comment|/* pointers to i2c_msgs */
 DECL|member|nmsgs
-r_int
+id|__u32
 id|nmsgs
 suffix:semicolon
 multiline_comment|/* number of i2c_msgs */

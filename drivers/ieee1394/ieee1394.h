@@ -72,11 +72,17 @@ mdefine_line|#define ACKX_ABORTED             (-3)
 DECL|macro|ACKX_TIMEOUT
 mdefine_line|#define ACKX_TIMEOUT             (-4)
 DECL|macro|SPEED_100
-mdefine_line|#define SPEED_100                0x0
+mdefine_line|#define SPEED_100&t;&t;0x00
 DECL|macro|SPEED_200
-mdefine_line|#define SPEED_200                0x1
+mdefine_line|#define SPEED_200&t;&t;0x01
 DECL|macro|SPEED_400
-mdefine_line|#define SPEED_400                0x2
+mdefine_line|#define SPEED_400&t;&t;0x02
+DECL|macro|SPEED_800
+mdefine_line|#define SPEED_800&t;&t;0x03
+DECL|macro|SPEED_1600
+mdefine_line|#define SPEED_1600&t;&t;0x04
+DECL|macro|SPEED_3200
+mdefine_line|#define SPEED_3200&t;&t;0x05
 multiline_comment|/* Maps speed values above to a string representation */
 r_extern
 r_const

@@ -902,14 +902,14 @@ c_func
 id|br_handle_frame_hook
 )paren
 suffix:semicolon
-macro_line|#endif
-DECL|variable|br_ioctl_hook
+DECL|variable|brioctl_set
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|br_ioctl_hook
+id|brioctl_set
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_NET_DIVERT
 DECL|variable|alloc_divert_blk
 id|EXPORT_SYMBOL

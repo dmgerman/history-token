@@ -951,6 +951,11 @@ comma
 id|ct
 )paren
 suffix:semicolon
+multiline_comment|/* Indicate that this expectations parent is dead */
+id|exp-&gt;expectant
+op_assign
+l_int|NULL
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -1199,6 +1204,14 @@ c_func
 (paren
 op_amp
 id|ip_conntrack_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Delete us from our own list to prevent corruption later */
+id|list_del
+c_func
+(paren
+op_amp
+id|ct-&gt;sibling_list
 )paren
 suffix:semicolon
 multiline_comment|/* Delete our master expectation */

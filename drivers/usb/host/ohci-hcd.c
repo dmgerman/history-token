@@ -1117,6 +1117,16 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
+singleline_comment|// flush those pci writes
+(paren
+r_void
+)paren
+id|readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
 id|wait_ms
 (paren
 l_int|50
@@ -1184,6 +1194,16 @@ id|writel
 (paren
 id|ohci-&gt;hc_control
 comma
+op_amp
+id|ohci-&gt;regs-&gt;control
+)paren
+suffix:semicolon
+singleline_comment|// flush those pci writes
+(paren
+r_void
+)paren
+id|readl
+(paren
 op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
@@ -1474,6 +1494,16 @@ l_int|0
 comma
 op_amp
 id|ohci-&gt;regs-&gt;roothub.b
+)paren
+suffix:semicolon
+singleline_comment|// flush those pci writes
+(paren
+r_void
+)paren
+id|readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
 singleline_comment|// POTPGT delay is bits 24-31, in 2 ms units.
@@ -1868,6 +1898,16 @@ id|OHCI_INTR_MIE
 comma
 op_amp
 id|regs-&gt;intrenable
+)paren
+suffix:semicolon
+singleline_comment|// flush those pci writes
+(paren
+r_void
+)paren
+id|readl
+(paren
+op_amp
+id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
 )brace

@@ -172,6 +172,8 @@ c_func
 id|fs
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 DECL|function|register_fs_subsys

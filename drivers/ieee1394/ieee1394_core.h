@@ -507,5 +507,11 @@ id|proc_dir_entry
 op_star
 id|ieee1394_procfs_entry
 suffix:semicolon
+multiline_comment|/* Our sysfs bus entry */
+r_extern
+r_struct
+id|bus_type
+id|ieee1394_bus_type
+suffix:semicolon
 macro_line|#endif /* _IEEE1394_CORE_H */
 eof

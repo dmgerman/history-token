@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -23,12 +24,21 @@ macro_line|#include &quot;ieee1394_hotplug.h&quot;
 macro_line|#include &quot;dma.h&quot;
 macro_line|#include &quot;iso.h&quot;
 multiline_comment|/*&n; * Disable the nodemgr detection and config rom reading functionality.&n; */
-id|MODULE_PARM
+DECL|variable|disable_nodemgr
+r_static
+r_int
+id|disable_nodemgr
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
 c_func
 (paren
 id|disable_nodemgr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -38,36 +48,6 @@ id|disable_nodemgr
 comma
 l_string|&quot;Disable nodemgr functionality.&quot;
 )paren
-suffix:semicolon
-DECL|variable|disable_nodemgr
-r_static
-r_int
-id|disable_nodemgr
-op_assign
-l_int|0
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|disable_hotplug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|disable_hotplug
-comma
-l_string|&quot;Disable hotplug for detected nodes.&quot;
-)paren
-suffix:semicolon
-DECL|variable|disable_hotplug
-r_static
-r_int
-id|disable_hotplug
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* We are GPL, so treat us special */
 id|MODULE_LICENSE
@@ -97,6 +77,12 @@ comma
 l_string|&quot;S200&quot;
 comma
 l_string|&quot;S400&quot;
+comma
+l_string|&quot;S800&quot;
+comma
+l_string|&quot;S1600&quot;
+comma
+l_string|&quot;S3200&quot;
 )brace
 suffix:semicolon
 DECL|function|dump_packet
@@ -291,19 +277,6 @@ id|data
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-id|kmflags
-op_assign
-id|in_interrupt
-c_func
-(paren
-)paren
-ques
-c_cond
-id|GFP_ATOMIC
-suffix:colon
-id|GFP_KERNEL
-suffix:semicolon
 id|packet
 op_assign
 id|kmem_cache_alloc
@@ -311,7 +284,7 @@ c_func
 (paren
 id|hpsb_packet_cache
 comma
-id|kmflags
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -357,7 +330,7 @@ id|data_size
 op_plus
 l_int|8
 comma
-id|kmflags
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -2000,19 +1973,6 @@ id|packet-&gt;data_size
 op_plus
 id|packet-&gt;header_size
 suffix:semicolon
-r_int
-id|kmflags
-op_assign
-id|in_interrupt
-c_func
-(paren
-)paren
-ques
-c_cond
-id|GFP_ATOMIC
-suffix:colon
-id|GFP_KERNEL
-suffix:semicolon
 id|data
 op_assign
 id|kmalloc
@@ -2022,7 +1982,7 @@ id|packet-&gt;header_size
 op_plus
 id|packet-&gt;data_size
 comma
-id|kmflags
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -5040,7 +5000,6 @@ id|disable_nodemgr
 id|init_ieee1394_nodemgr
 c_func
 (paren
-id|disable_hotplug
 )paren
 suffix:semicolon
 r_else
@@ -5529,11 +5488,11 @@ c_func
 id|hpsb_unregister_protocol
 )paren
 suffix:semicolon
-DECL|variable|hpsb_release_unit_directory
+DECL|variable|ieee1394_bus_type
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hpsb_release_unit_directory
+id|ieee1394_bus_type
 )paren
 suffix:semicolon
 multiline_comment|/** csr.c **/

@@ -7903,6 +7903,10 @@ c_func
 id|in_dev
 comma
 id|daddr
+comma
+id|saddr
+comma
+id|skb-&gt;nh.iph-&gt;protocol
 )paren
 suffix:semicolon
 r_if
@@ -8822,6 +8826,10 @@ c_func
 id|in_dev
 comma
 id|oldflp-&gt;fl4_dst
+comma
+id|oldflp-&gt;fl4_src
+comma
+id|oldflp-&gt;proto
 )paren
 )paren
 id|flags

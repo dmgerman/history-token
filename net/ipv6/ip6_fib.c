@@ -1125,6 +1125,11 @@ r_struct
 id|rt6_info
 op_star
 id|rt
+comma
+r_struct
+id|nlmsghdr
+op_star
+id|nlh
 )paren
 (brace
 r_struct
@@ -1321,6 +1326,8 @@ c_func
 id|RTM_NEWROUTE
 comma
 id|rt
+comma
+id|nlh
 )paren
 suffix:semicolon
 id|rt6_stats.fib_rt_entries
@@ -1407,6 +1414,11 @@ r_struct
 id|rt6_info
 op_star
 id|rt
+comma
+r_struct
+id|nlmsghdr
+op_star
+id|nlh
 )paren
 (brace
 r_struct
@@ -1670,6 +1682,8 @@ c_func
 id|fn
 comma
 id|rt
+comma
+id|nlh
 )paren
 suffix:semicolon
 r_if
@@ -2956,6 +2970,11 @@ id|rt6_info
 op_star
 op_star
 id|rtp
+comma
+r_struct
+id|nlmsghdr
+op_star
+id|nlh
 )paren
 (brace
 r_struct
@@ -3181,6 +3200,8 @@ c_func
 id|RTM_DELROUTE
 comma
 id|rt
+comma
+id|nlh
 )paren
 suffix:semicolon
 id|rt6_release
@@ -3199,6 +3220,11 @@ r_struct
 id|rt6_info
 op_star
 id|rt
+comma
+r_struct
+id|nlmsghdr
+op_star
+id|nlh
 )paren
 (brace
 r_struct
@@ -3321,6 +3347,8 @@ c_func
 id|fn
 comma
 id|rtp
+comma
+id|nlh
 )paren
 suffix:semicolon
 r_return
@@ -3752,6 +3780,8 @@ id|fib6_del
 c_func
 (paren
 id|rt
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

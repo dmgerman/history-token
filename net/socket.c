@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/wanrouter.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
+macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
@@ -2557,7 +2558,15 @@ id|tot_len
 )paren
 suffix:semicolon
 )brace
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|br_ioctl_mutex
+)paren
+suffix:semicolon
 DECL|variable|br_ioctl_hook
+r_static
 r_int
 (paren
 op_star
@@ -2568,7 +2577,44 @@ r_int
 r_int
 id|arg
 )paren
+op_assign
+l_int|NULL
 suffix:semicolon
+DECL|function|brioctl_set
+r_void
+id|brioctl_set
+c_func
+(paren
+r_int
+(paren
+op_star
+id|hook
+)paren
+(paren
+r_int
+r_int
+)paren
+)paren
+(brace
+id|down
+c_func
+(paren
+op_amp
+id|br_ioctl_mutex
+)paren
+suffix:semicolon
+id|br_ioctl_hook
+op_assign
+id|hook
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|br_ioctl_mutex
+)paren
+suffix:semicolon
+)brace
 DECL|variable|vlan_ioctl_hook
 r_int
 (paren
@@ -2818,6 +2864,13 @@ l_string|&quot;bridge&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|down
+c_func
+(paren
+op_amp
+id|br_ioctl_mutex
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2829,6 +2882,13 @@ id|br_ioctl_hook
 c_func
 (paren
 id|arg
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|br_ioctl_mutex
 )paren
 suffix:semicolon
 r_break
