@@ -257,16 +257,6 @@ id|u_char
 op_star
 id|fontdata
 suffix:semicolon
-DECL|member|_fontheight
-r_int
-r_int
-id|_fontheight
-suffix:semicolon
-DECL|member|_fontwidth
-r_int
-r_int
-id|_fontwidth
-suffix:semicolon
 DECL|member|userfont
 r_int
 id|userfont
