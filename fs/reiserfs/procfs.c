@@ -217,7 +217,7 @@ c_func
 id|m
 comma
 l_string|&quot;state: &bslash;t%s&bslash;n&quot;
-l_string|&quot;mount options: &bslash;t%s%s%s%s%s%s%s%s%s%s%s%s&bslash;n&quot;
+l_string|&quot;mount options: &bslash;t%s%s%s%s%s%s%s%s%s%s%s&bslash;n&quot;
 l_string|&quot;gen. counter: &bslash;t%i&bslash;n&quot;
 l_string|&quot;s_kmallocs: &bslash;t%i&bslash;n&quot;
 l_string|&quot;s_disk_reads: &bslash;t%i&bslash;n&quot;
@@ -376,17 +376,6 @@ c_cond
 l_string|&quot;REPLAY_ONLY &quot;
 suffix:colon
 l_string|&quot;&quot;
-comma
-id|reiserfs_dont_log
-c_func
-(paren
-id|sb
-)paren
-ques
-c_cond
-l_string|&quot;DONT_LOG &quot;
-suffix:colon
-l_string|&quot;LOG &quot;
 comma
 id|convert_reiserfs
 c_func
@@ -1341,7 +1330,6 @@ l_string|&quot;j_bcount: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;j_first_unflushed_offset: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;j_last_flush_trans_id: &bslash;t%lu&bslash;n&quot;
 l_string|&quot;j_trans_start_time: &bslash;t%li&bslash;n&quot;
-l_string|&quot;j_journal_list_index: &bslash;t%i&bslash;n&quot;
 l_string|&quot;j_list_bitmap_index: &bslash;t%i&bslash;n&quot;
 l_string|&quot;j_must_wait: &bslash;t%i&bslash;n&quot;
 l_string|&quot;j_next_full_flush: &bslash;t%i&bslash;n&quot;
@@ -1502,12 +1490,6 @@ id|JF
 c_func
 (paren
 id|j_trans_start_time
-)paren
-comma
-id|JF
-c_func
-(paren
-id|j_journal_list_index
 )paren
 comma
 id|JF

@@ -3907,9 +3907,9 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_trans_index
+id|i_jl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -7011,7 +7011,7 @@ c_func
 id|inode
 )paren
 op_member_access_from_pointer
-id|i_trans_index
+id|i_jl
 op_assign
 l_int|0
 suffix:semicolon

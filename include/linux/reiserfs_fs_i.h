@@ -2,6 +2,9 @@ macro_line|#ifndef _REISER_FS_I
 DECL|macro|_REISER_FS_I
 mdefine_line|#define _REISER_FS_I
 macro_line|#include &lt;linux/list.h&gt;
+r_struct
+id|reiserfs_journal_list
+suffix:semicolon
 multiline_comment|/** bitmasks for i_flags field in reiserfs-specific part of inode */
 r_typedef
 r_enum
@@ -100,10 +103,11 @@ r_int
 r_int
 id|i_trans_id
 suffix:semicolon
-DECL|member|i_trans_index
-r_int
-r_int
-id|i_trans_index
+DECL|member|i_jl
+r_struct
+id|reiserfs_journal_list
+op_star
+id|i_jl
 suffix:semicolon
 DECL|member|vfs_inode
 r_struct

@@ -110,8 +110,6 @@ DECL|macro|JOURNAL_HASH_SIZE
 mdefine_line|#define JOURNAL_HASH_SIZE 8192   
 DECL|macro|JOURNAL_NUM_BITMAPS
 mdefine_line|#define JOURNAL_NUM_BITMAPS 5 /* number of copies of the bitmaps to have floating.  Must be &gt;= 2 */
-DECL|macro|JOURNAL_LIST_COUNT
-mdefine_line|#define JOURNAL_LIST_COUNT 64
 multiline_comment|/* these are bh_state bit flag offset numbers, for use in the buffer head */
 DECL|macro|BH_JDirty
 mdefine_line|#define BH_JDirty       16      /* journal data needs to be written before buffer can be marked dirty */
@@ -124,6 +122,8 @@ DECL|macro|BH_JPrepared
 mdefine_line|#define BH_JPrepared 20&t;&t;/* block has been prepared for the log */
 DECL|macro|BH_JRestore_dirty
 mdefine_line|#define BH_JRestore_dirty 22    /* restore the dirty bit later */
+DECL|macro|BH_JTest
+mdefine_line|#define BH_JTest 23             /* debugging use only */
 multiline_comment|/* One of these for every block in every transaction&n;** Each one is in two hash tables.  First, a hash of the current transaction, and after journal_end, a&n;** hash of all the in memory transactions.&n;** next and prev are used by the current transaction (journal_hash).&n;** hnext and hprev are used by journal_list_hash.  If a block is in more than one transaction, the journal_list_hash&n;** links it in multiple times.  This allows flush_journal_list to remove just the cnode belonging&n;** to a given transaction.&n;*/
 DECL|struct|reiserfs_journal_cnode
 r_struct
@@ -228,53 +228,6 @@ id|bitmaps
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;** transaction handle which is passed around for all journal calls&n;*/
-DECL|struct|reiserfs_transaction_handle
-r_struct
-id|reiserfs_transaction_handle
-(brace
-DECL|member|t_super
-r_struct
-id|super_block
-op_star
-id|t_super
-suffix:semicolon
-multiline_comment|/* super for this FS when journal_begin was&n;&t;&t;&t;&t;   called. saves calls to reiserfs_get_super&n;&t;&t;&t;&t;   also used by nested transactions to make&n;&t;&t;&t;&t;   sure they are nesting on the right FS&n;&t;&t;&t;&t;   _must_ be first in the handle&n;&t;&t;&t;&t;*/
-DECL|member|t_refcount
-r_int
-id|t_refcount
-suffix:semicolon
-DECL|member|t_blocks_logged
-r_int
-id|t_blocks_logged
-suffix:semicolon
-multiline_comment|/* number of blocks this writer has logged */
-DECL|member|t_blocks_allocated
-r_int
-id|t_blocks_allocated
-suffix:semicolon
-multiline_comment|/* number of blocks this writer allocated */
-DECL|member|t_trans_id
-r_int
-r_int
-id|t_trans_id
-suffix:semicolon
-multiline_comment|/* sanity check, equals the current trans id */
-DECL|member|t_handle_save
-r_void
-op_star
-id|t_handle_save
-suffix:semicolon
-multiline_comment|/* save existing current-&gt;journal_info */
-DECL|member|displace_new_blocks
-r_int
-id|displace_new_blocks
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* if new block allocation occurres, that block&n;&t;&t;&t;&t;   should be displaced from others */
-)brace
-suffix:semicolon
 multiline_comment|/*&n;** one of these for each transaction.  The most important part here is the j_realblock.&n;** this list of cnodes is used to hash all the blocks in all the commits, to mark all the&n;** real buffer heads dirty once all the commits hit the disk,&n;** and to make sure every real block in a transaction is on disk before allowing the log area&n;** to be overwritten */
 DECL|struct|reiserfs_journal_list
 r_struct
@@ -284,6 +237,11 @@ DECL|member|j_start
 r_int
 r_int
 id|j_start
+suffix:semicolon
+DECL|member|j_state
+r_int
+r_int
+id|j_state
 suffix:semicolon
 DECL|member|j_len
 r_int
@@ -298,19 +256,16 @@ DECL|member|j_commit_left
 id|atomic_t
 id|j_commit_left
 suffix:semicolon
-DECL|member|j_flushing
-id|atomic_t
-id|j_flushing
-suffix:semicolon
-DECL|member|j_commit_flushing
-id|atomic_t
-id|j_commit_flushing
-suffix:semicolon
 DECL|member|j_older_commits_done
 id|atomic_t
 id|j_older_commits_done
 suffix:semicolon
 multiline_comment|/* all commits older than this on disk*/
+DECL|member|j_commit_lock
+r_struct
+id|semaphore
+id|j_commit_lock
+suffix:semicolon
 DECL|member|j_trans_id
 r_int
 r_int
@@ -346,22 +301,24 @@ op_star
 id|j_freedlist
 suffix:semicolon
 multiline_comment|/* list of buffers that were freed during this trans.  free each of these on flush */
-DECL|member|j_commit_wait
-id|wait_queue_head_t
-id|j_commit_wait
+multiline_comment|/* time ordered list of all active transactions */
+DECL|member|j_list
+r_struct
+id|list_head
+id|j_list
 suffix:semicolon
-multiline_comment|/* wait for all the commit blocks to be flushed */
-DECL|member|j_flush_wait
-id|wait_queue_head_t
-id|j_flush_wait
+multiline_comment|/* time ordered list of all transactions we haven&squot;t tried to flush yet */
+DECL|member|j_working_list
+r_struct
+id|list_head
+id|j_working_list
 suffix:semicolon
-multiline_comment|/* wait for all the real blocks to be flushed */
+DECL|member|j_refcount
+r_int
+id|j_refcount
+suffix:semicolon
 )brace
 suffix:semicolon
-r_struct
-id|reiserfs_page_list
-suffix:semicolon
-multiline_comment|/* defined in reiserfs_fs.h */
 DECL|struct|reiserfs_journal
 r_struct
 id|reiserfs_journal
@@ -466,28 +423,21 @@ id|buffer_head
 op_star
 id|j_header_bh
 suffix:semicolon
-multiline_comment|/* j_flush_pages must be flushed before the current transaction can&n;  ** commit&n;  */
-DECL|member|j_flush_pages
-r_struct
-id|reiserfs_page_list
-op_star
-id|j_flush_pages
-suffix:semicolon
 DECL|member|j_trans_start_time
 id|time_t
 id|j_trans_start_time
 suffix:semicolon
 multiline_comment|/* time this transaction started */
-DECL|member|j_wait
-id|wait_queue_head_t
-id|j_wait
+DECL|member|j_lock
+r_struct
+id|semaphore
+id|j_lock
 suffix:semicolon
-multiline_comment|/* wait  journal_end to finish I/O */
-DECL|member|j_wlock
-id|atomic_t
-id|j_wlock
+DECL|member|j_flush_sem
+r_struct
+id|semaphore
+id|j_flush_sem
 suffix:semicolon
-multiline_comment|/* lock for j_wait */
 DECL|member|j_join_wait
 id|wait_queue_head_t
 id|j_join_wait
@@ -498,11 +448,6 @@ id|atomic_t
 id|j_jlock
 suffix:semicolon
 multiline_comment|/* lock for j_join_wait */
-DECL|member|j_journal_list_index
-r_int
-id|j_journal_list_index
-suffix:semicolon
-multiline_comment|/* journal list number of the current trans */
 DECL|member|j_list_bitmap_index
 r_int
 id|j_list_bitmap_index
@@ -570,6 +515,12 @@ op_star
 id|j_cnode_free_orig
 suffix:semicolon
 multiline_comment|/* orig pointer returned from vmalloc */
+DECL|member|j_current_jl
+r_struct
+id|reiserfs_journal_list
+op_star
+id|j_current_jl
+suffix:semicolon
 DECL|member|j_free_bitmap_nodes
 r_int
 id|j_free_bitmap_nodes
@@ -577,6 +528,26 @@ suffix:semicolon
 DECL|member|j_used_bitmap_nodes
 r_int
 id|j_used_bitmap_nodes
+suffix:semicolon
+DECL|member|j_num_lists
+r_int
+id|j_num_lists
+suffix:semicolon
+multiline_comment|/* total number of active transactions */
+DECL|member|j_num_work_lists
+r_int
+id|j_num_work_lists
+suffix:semicolon
+multiline_comment|/* number that need attention from kreiserfsd */
+multiline_comment|/* debugging to make sure things are flushed in order */
+DECL|member|j_last_flush_id
+r_int
+id|j_last_flush_id
+suffix:semicolon
+multiline_comment|/* debugging to make sure things are committed in order */
+DECL|member|j_last_commit_id
+r_int
+id|j_last_commit_id
 suffix:semicolon
 DECL|member|j_bitmap_nodes
 r_struct
@@ -593,6 +564,18 @@ id|spinlock_t
 id|j_dirty_buffers_lock
 suffix:semicolon
 multiline_comment|/* protects j_dirty_buffers */
+multiline_comment|/* list of all active transactions */
+DECL|member|j_journal_list
+r_struct
+id|list_head
+id|j_journal_list
+suffix:semicolon
+multiline_comment|/* lists that haven&squot;t been touched by writeback attempts */
+DECL|member|j_working_list
+r_struct
+id|list_head
+id|j_working_list
+suffix:semicolon
 DECL|member|j_list_bitmap
 r_struct
 id|reiserfs_list_bitmap
@@ -602,15 +585,6 @@ id|JOURNAL_NUM_BITMAPS
 )braket
 suffix:semicolon
 multiline_comment|/* array of bitmaps to record the deleted blocks */
-DECL|member|j_journal_list
-r_struct
-id|reiserfs_journal_list
-id|j_journal_list
-(braket
-id|JOURNAL_LIST_COUNT
-)braket
-suffix:semicolon
-multiline_comment|/* array of all the journal lists */
 DECL|member|j_hash_table
 r_struct
 id|reiserfs_journal_cnode
@@ -646,6 +620,11 @@ DECL|member|j_max_batch_size
 r_int
 r_int
 id|j_max_batch_size
+suffix:semicolon
+DECL|member|j_work
+r_struct
+id|work_struct
+id|j_work
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1205,8 +1184,6 @@ DECL|macro|REISERFS_SMALLTAIL
 mdefine_line|#define REISERFS_SMALLTAIL 17  /* small (for files less than block size) tails will be created in a session */
 DECL|macro|REPLAYONLY
 mdefine_line|#define REPLAYONLY 3 /* replay journal and return 0. Use by fsck */
-DECL|macro|REISERFS_NOLOG
-mdefine_line|#define REISERFS_NOLOG 4      /* -o nolog: turn journalling off */
 DECL|macro|REISERFS_CONVERT
 mdefine_line|#define REISERFS_CONVERT 5    /* -o conv: causes conversion of old&n;                                 format super block to the new&n;                                 format. If not specified - old&n;                                 partition will be dealt with in a&n;                                 manner of 3.5.x */
 multiline_comment|/* -o hash={tea, rupasov, r5, detect} is meant for properly mounting &n;** reiserfs disks from 3.5.19 or earlier.  99% of the time, this option&n;** is not required.  If the normal autodection code can&squot;t determine which&n;** hash to use (because both hases had the same value for a file)&n;** use this option to force a specific hash.  It won&squot;t allow you to override&n;** the existing hash on the FS, so if you have a tea hash disk, and mount&n;** with -o hash=rupasov, the mount will fail.&n;*/
@@ -1283,36 +1260,6 @@ id|file_system_type
 id|reiserfs_fs_type
 suffix:semicolon
 r_int
-id|journal_mark_dirty
-c_func
-(paren
-r_struct
-id|reiserfs_transaction_handle
-op_star
-comma
-r_struct
-id|super_block
-op_star
-comma
-r_struct
-id|buffer_head
-op_star
-id|bh
-)paren
-suffix:semicolon
-r_int
-id|flush_old_commits
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|s
-comma
-r_int
-)paren
-suffix:semicolon
-r_int
 id|reiserfs_resize
 c_func
 (paren
@@ -1334,10 +1281,6 @@ DECL|macro|SB_JOURNAL
 mdefine_line|#define SB_JOURNAL(s) (REISERFS_SB(s)-&gt;s_journal)
 DECL|macro|SB_JOURNAL_1st_RESERVED_BLOCK
 mdefine_line|#define SB_JOURNAL_1st_RESERVED_BLOCK(s) (SB_JOURNAL(s)-&gt;j_1st_reserved_block)
-DECL|macro|SB_JOURNAL_LIST
-mdefine_line|#define SB_JOURNAL_LIST(s) (SB_JOURNAL(s)-&gt;j_journal_list)
-DECL|macro|SB_JOURNAL_LIST_INDEX
-mdefine_line|#define SB_JOURNAL_LIST_INDEX(s) (SB_JOURNAL(s)-&gt;j_journal_list_index) 
 DECL|macro|SB_JOURNAL_LEN_FREE
 mdefine_line|#define SB_JOURNAL_LEN_FREE(s) (SB_JOURNAL(s)-&gt;j_journal_len_free) 
 DECL|macro|SB_AP_BITMAP

@@ -3108,10 +3108,6 @@ id|new_root
 )paren
 suffix:semicolon
 multiline_comment|/*&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;&amp;*/
-id|tb-&gt;tb_sb-&gt;s_dirt
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/* do what is needed for buffer thrown from tree */
 id|reiserfs_invalidate_buffer
 c_func
@@ -4799,10 +4795,6 @@ id|s_sbh
 comma
 l_int|1
 )paren
-suffix:semicolon
-id|tb-&gt;tb_sb-&gt;s_dirt
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 r_if

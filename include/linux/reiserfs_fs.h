@@ -3563,9 +3563,6 @@ DECL|macro|_jhashfn
 mdefine_line|#define _jhashfn(sb,block)&t;&bslash;&n;&t;(((unsigned long)sb&gt;&gt;L1_CACHE_SHIFT) ^ &bslash;&n;&t; (((block)&lt;&lt;(JBH_HASH_SHIFT - 6)) ^ ((block) &gt;&gt; 13) ^ ((block) &lt;&lt; (JBH_HASH_SHIFT - 12))))
 DECL|macro|journal_hash
 mdefine_line|#define journal_hash(t,sb,block) ((t)[_jhashfn((sb),(block)) &amp; JBH_HASH_MASK])
-multiline_comment|/* finds n&squot;th buffer with 0 being the start of this commit.  Needs to go away, j_ap_blocks has changed&n;** since I created this.  One chunk of code in journal.c needs changing before deleting it&n;*/
-DECL|macro|JOURNAL_BUFFER
-mdefine_line|#define JOURNAL_BUFFER(j,n) ((j)-&gt;j_ap_blocks[((j)-&gt;j_start + (n)) % JOURNAL_BLOCK_COUNT])
 singleline_comment|// We need these to make journal.c code more readable
 DECL|macro|journal_find_get_block
 mdefine_line|#define journal_find_get_block(s, block) __find_get_block(SB_JOURNAL(s)-&gt;j_dev_bd, block, s-&gt;s_blocksize)
@@ -3573,6 +3570,80 @@ DECL|macro|journal_getblk
 mdefine_line|#define journal_getblk(s, block) __getblk(SB_JOURNAL(s)-&gt;j_dev_bd, block, s-&gt;s_blocksize)
 DECL|macro|journal_bread
 mdefine_line|#define journal_bread(s, block) __bread(SB_JOURNAL(s)-&gt;j_dev_bd, block, s-&gt;s_blocksize)
+multiline_comment|/*&n;** transaction handle which is passed around for all journal calls&n;*/
+DECL|struct|reiserfs_transaction_handle
+r_struct
+id|reiserfs_transaction_handle
+(brace
+DECL|member|t_super
+r_struct
+id|super_block
+op_star
+id|t_super
+suffix:semicolon
+multiline_comment|/* super for this FS when journal_begin was&n;&t;&t;&t;&t;   called. saves calls to reiserfs_get_super&n;&t;&t;&t;&t;   also used by nested transactions to make&n;&t;&t;&t;&t;   sure they are nesting on the right FS&n;&t;&t;&t;&t;   _must_ be first in the handle&n;&t;&t;&t;&t;*/
+DECL|member|t_refcount
+r_int
+id|t_refcount
+suffix:semicolon
+DECL|member|t_blocks_logged
+r_int
+id|t_blocks_logged
+suffix:semicolon
+multiline_comment|/* number of blocks this writer has logged */
+DECL|member|t_blocks_allocated
+r_int
+id|t_blocks_allocated
+suffix:semicolon
+multiline_comment|/* number of blocks this writer allocated */
+DECL|member|t_trans_id
+r_int
+r_int
+id|t_trans_id
+suffix:semicolon
+multiline_comment|/* sanity check, equals the current trans id */
+DECL|member|t_handle_save
+r_void
+op_star
+id|t_handle_save
+suffix:semicolon
+multiline_comment|/* save existing current-&gt;journal_info */
+DECL|member|displace_new_blocks
+r_int
+id|displace_new_blocks
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* if new block allocation occurres, that block&n;&t;&t;&t;&t;   should be displaced from others */
+)brace
+suffix:semicolon
+r_int
+id|journal_mark_dirty
+c_func
+(paren
+r_struct
+id|reiserfs_transaction_handle
+op_star
+comma
+r_struct
+id|super_block
+op_star
+comma
+r_struct
+id|buffer_head
+op_star
+id|bh
+)paren
+suffix:semicolon
+r_int
+id|reiserfs_flush_old_commits
+c_func
+(paren
+r_struct
+id|super_block
+op_star
+)paren
+suffix:semicolon
 r_void
 id|reiserfs_commit_for_inode
 c_func
@@ -3630,7 +3701,7 @@ op_star
 id|caller
 )paren
 suffix:semicolon
-r_void
+r_int
 id|reiserfs_prepare_for_journal
 c_func
 (paren
@@ -3822,16 +3893,6 @@ id|p_s_sb
 comma
 r_int
 r_int
-)paren
-suffix:semicolon
-r_void
-id|flush_async_commits
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|p_s_sb
 )paren
 suffix:semicolon
 r_int
