@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
+macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -59,13 +60,6 @@ c_func
 id|input_unregister_handler
 )paren
 suffix:semicolon
-DECL|variable|input_register_minor
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|input_register_minor
-)paren
-suffix:semicolon
 DECL|variable|input_open_device
 id|EXPORT_SYMBOL
 c_func
@@ -108,8 +102,6 @@ c_func
 id|input_class
 )paren
 suffix:semicolon
-DECL|macro|INPUT_MAJOR
-mdefine_line|#define INPUT_MAJOR&t;13
 DECL|macro|INPUT_DEVICES
 mdefine_line|#define INPUT_DEVICES&t;256
 r_static
@@ -2474,66 +2466,6 @@ id|input_open_file
 comma
 )brace
 suffix:semicolon
-DECL|function|input_register_minor
-r_void
-id|input_register_minor
-c_func
-(paren
-r_char
-op_star
-id|name
-comma
-r_int
-id|minor
-comma
-r_int
-id|minor_base
-)paren
-(brace
-r_char
-id|devfs_name
-(braket
-l_int|16
-)braket
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|devfs_name
-comma
-id|name
-comma
-id|minor
-)paren
-suffix:semicolon
-id|devfs_register
-c_func
-(paren
-l_int|NULL
-comma
-id|devfs_name
-comma
-l_int|0
-comma
-id|INPUT_MAJOR
-comma
-id|minor_base
-op_plus
-id|minor
-comma
-id|S_IFCHR
-op_or
-id|S_IRUGO
-op_or
-id|S_IWUSR
-comma
-op_amp
-id|input_fops
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|macro|SPRINTF_BIT_B
 mdefine_line|#define SPRINTF_BIT_B(bit, name, max) &bslash;&n;&t;do { &bslash;&n;&t;&t;len += sprintf(buf + len, &quot;B: %s&quot;, name); &bslash;&n;&t;&t;for (i = NBITS(max) - 1; i &gt;= 0; i--) &bslash;&n;&t;&t;&t;if (dev-&gt;bit[i]) break; &bslash;&n;&t;&t;for (; i &gt;= 0; i--) &bslash;&n;&t;&t;&t;len += sprintf(buf + len, &quot;%lx &quot;, dev-&gt;bit[i]); &bslash;&n;&t;&t;len += sprintf(buf + len, &quot;&bslash;n&quot;); &bslash;&n;&t;} while (0)
