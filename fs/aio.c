@@ -1952,7 +1952,6 @@ suffix:semicolon
 multiline_comment|/* __aio_put_req&n; *&t;Returns true if this put was the last user of the request.&n; */
 DECL|function|__aio_put_req
 r_static
-r_inline
 r_int
 id|__aio_put_req
 c_func
@@ -2164,7 +2163,6 @@ suffix:semicolon
 multiline_comment|/*&t;Lookup an ioctx id.  ioctx_list is lockless for reads.&n; *&t;FIXME: this is O(n) and is only suitable for development.&n; */
 DECL|function|lookup_ioctx
 r_static
-r_inline
 r_struct
 id|kioctx
 op_star
