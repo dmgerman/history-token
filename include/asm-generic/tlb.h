@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/*&n; * For UP we don&squot;t need to worry about TLB flush&n; * and page free order so much..&n; */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|FREE_PTE_NR
-mdefine_line|#define FREE_PTE_NR&t;507
+mdefine_line|#define FREE_PTE_NR&t;506
 DECL|macro|tlb_fast_mode
 mdefine_line|#define tlb_fast_mode(tlb) ((tlb)-&gt;nr == ~0U)
 macro_line|#else
@@ -59,17 +59,6 @@ id|pages
 (braket
 id|FREE_PTE_NR
 )braket
-suffix:semicolon
-DECL|member|flushes
-r_int
-r_int
-id|flushes
-suffix:semicolon
-multiline_comment|/* stats: count avoided flushes */
-DECL|member|avoided_flushes
-r_int
-r_int
-id|avoided_flushes
 suffix:semicolon
 DECL|typedef|mmu_gather_t
 )brace
@@ -167,39 +156,23 @@ r_int
 id|end
 )paren
 (brace
-r_int
-r_int
-id|nr
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|tlb-&gt;need_flush
 )paren
-(brace
-id|tlb-&gt;avoided_flushes
-op_increment
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 id|tlb-&gt;need_flush
 op_assign
 l_int|0
-suffix:semicolon
-id|tlb-&gt;flushes
-op_increment
 suffix:semicolon
 id|tlb_flush
 c_func
 (paren
 id|tlb
 )paren
-suffix:semicolon
-id|nr
-op_assign
-id|tlb-&gt;nr
 suffix:semicolon
 r_if
 c_cond
