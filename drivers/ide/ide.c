@@ -645,7 +645,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * ide_system_bus_speed() returns what we think is the system VESA/PCI&n; * bus speed (in MHz).  This is used for calculating interface PIO timings.&n; * The default is 40 for known PCI systems, 50 otherwise.&n; * The &quot;idebus=xx&quot; parameter can be used to override this value.&n; * The actual value to be used is computed/displayed the first time through.&n; */
+multiline_comment|/**&n; *&t;ide_system_bus_speed&t;-&t;guess bus speed&n; *&n; *&t;ide_system_bus_speed() returns what we think is the system VESA/PCI&n; *&t;bus speed (in MHz). This is used for calculating interface PIO timings.&n; *&t;The default is 40 for known PCI systems, 50 otherwise.&n; *&t;The &quot;idebus=xx&quot; parameter can be used to override this value.&n; *&t;The actual value to be used is computed/displayed the first time&n; *&t;through. Drivers should only use this as a last resort.&n; *&n; *&t;Returns a guessed speed in MHz.&n; */
 DECL|function|ide_system_bus_speed
 r_int
 id|ide_system_bus_speed
@@ -725,7 +725,7 @@ r_return
 id|system_bus_speed
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * current_capacity() returns the capacity (in sectors) of a drive&n; * according to its current geometry/LBA settings.&n; */
+multiline_comment|/**&n; *&t;current_capacity&t;-&t;drive capacity&n; *&t;@drive: drive to query&n; *&n; *&t;Return the current capacity (in sectors) of a drive according to&n; *&t;its current geometry/LBA settings. Empty removables are reported&n; *&t;as size zero.&n; */
 DECL|function|current_capacity
 id|sector_t
 id|current_capacity
@@ -765,7 +765,7 @@ c_func
 id|current_capacity
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; */
+multiline_comment|/**&n; *&t;ide_dump_status&t;&t;-&t;translate ATA error&n; *&t;@drive: drive the error occured on&n; *&t;@msg: information string&n; *&t;@stat: status byte&n; *&n; *&t;Error reporting, in human readable form (luxurious, but a memory hog).&n; *&t;Combines the drive name, message and status byte to provide a&n; *&t;user understandable explanation of the device error.&n; */
 DECL|function|ide_dump_status
 id|u8
 id|ide_dump_status
@@ -1554,6 +1554,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;drives_lock protects the list of drives, drivers_lock the&n; *&t;list of drivers.  Currently nobody takes both at once.&n; */
 DECL|variable|drives_lock
 r_static
 id|spinlock_t
@@ -1575,7 +1576,7 @@ c_func
 id|drivers
 )paren
 suffix:semicolon
-multiline_comment|/* Iterator */
+multiline_comment|/* Iterator for the driver list. */
 DECL|function|m_start
 r_static
 r_void
@@ -2193,7 +2194,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* restore hwif to a sane state */
+multiline_comment|/**&n; *&t;ide_hwif_restore&t;-&t;restore hwif to template&n; *&t;@hwif: hwif to update&n; *&t;@tmp_hwif: template&n; *&n; *&t;Restore hwif to a previous state by copying most settngs&n; *&t;from the template.&n; */
 DECL|function|ide_hwif_restore
 r_static
 r_void
@@ -3421,7 +3422,7 @@ id|ack_intr
 suffix:semicolon
 multiline_comment|/*&n; *&t;hw-&gt;iops = iops;&n; */
 )brace
-multiline_comment|/*&n; * Register an IDE interface, specifying exactly the registers etc&n; * Set init=1 iff calling before probes have taken place.&n; */
+multiline_comment|/**&n; *&t;ide_register_hw&t;&t;-&t;register IDE interface&n; *&t;@hw: hardware registers&n; *&t;@hwifp: pointer to returned hwif&n; *&n; *&t;Register an IDE interface, specifying exactly the registers etc.&n; *&t;Set init=1 iff calling before probes have taken place.&n; *&n; *&t;Returns -1 on error.&n; */
 DECL|function|ide_register_hw
 r_int
 id|ide_register_hw
@@ -4375,6 +4376,7 @@ r_return
 id|val
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ide_spin_wait_hwgroup&t;-&t;wait for group&n; *&t;@drive: drive in the group&n; *&n; *&t;Wait for an IDE device group to go non busy and then return&n; *&t;holding the ide_lock which guards the hwgroup-&gt;busy status&n; *&t;and right to use it.&n; */
 DECL|function|ide_spin_wait_hwgroup
 r_int
 id|ide_spin_wait_hwgroup
@@ -5004,6 +5006,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ide_add_generic_settings&t;-&t;generic ide settings&n; *&t;@drive: drive being configured&n; *&n; *&t;Add the generic parts of the system settings to the /proc files and&n; *&t;ioctls for this IDE device. The caller must not be holding the&n; *&t;ide_setting_sem.&n; */
 DECL|function|ide_add_generic_settings
 r_void
 id|ide_add_generic_settings
@@ -5300,6 +5303,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;system_bus_clock&t;-&t;clock guess&n; *&n; *&t;External version of the bus clock guess used by very old IDE drivers&n; *&t;for things like VLB timings. Should not be used.&n; */
 DECL|function|system_bus_clock
 r_int
 id|system_bus_clock
@@ -5484,6 +5488,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ata_attach&t;&t;-&t;attach an ATA/ATAPI device&n; *&t;@drive: drive to attach&n; *&n; *&t;Takes a drive that is as yet not assigned to any midlayer IDE&n; *&t;driver (or is assigned to the default driver) and figures out&n; *&t;which driver would like to own it. If nobody claims the drive&n; *&t;then it is automatically attached to the default driver used for&n; *&t;unclaimed objects.&n; *&n; *&t;A return of zero indicates attachment to a driver, of one&n; *&t;attachment to the default driver.&n; *&n; *&t;Takes drivers_lock.&n; */
 DECL|function|ata_attach
 r_int
 id|ata_attach
@@ -9382,6 +9387,7 @@ c_func
 id|ide_register_subdriver
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;ide_unregister_subdriver&t;-&t;disconnect drive from driver&n; *&t;@drive: drive to unplug&n; *&n; *&t;Disconnect a drive from the driver it was attached to and then&n; *&t;clean up the various proc files and other objects attached to it.&n; *&n; *&t;Takes ide_setting_sem, ide_lock and drives_lock.&n; *&t;Caller must hold none of the locks.&n; *&n; *&t;No locking versus subdriver unload because we are moving to the&n; *&t;default driver anyway. Wants double checking.&n; */
 DECL|function|ide_unregister_subdriver
 r_int
 id|ide_unregister_subdriver
@@ -9576,6 +9582,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;ide_register_driver&t;-&t;register IDE device driver&n; *&t;@driver: the IDE device driver&n; *&n; *&t;Register a new device driver and then scan the devices&n; *&t;on the IDE bus in case any should be attached to the&n; *&t;driver we have just registered.  If so attach them.&n; *&n; *&t;Takes drivers_lock and drives_lock.&n; */
 DECL|function|ide_register_driver
 r_int
 id|ide_register_driver
@@ -9738,6 +9745,7 @@ c_func
 id|ide_register_driver
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;ide_unregister_driver&t;-&t;unregister IDE device driver&n; *&t;@driver: the IDE device driver&n; *&n; *&t;Called when a driver module is being unloaded. We reattach any&n; *&t;devices to whatever driver claims them next (typically the default&n; *&t;driver).&n; *&n; *&t;Takes drivers_lock and called functions will take ide_setting_sem.&n; */
 DECL|function|ide_unregister_driver
 r_void
 id|ide_unregister_driver
