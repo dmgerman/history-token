@@ -6,5 +6,7 @@ macro_line|#include &lt;asm/io.h&gt;&t;&t;/* need byte IO */
 multiline_comment|/* The I/O subsystem can access only memory below 2GB.&n;   We use the existing DMA zone mechanism to handle this. */
 DECL|macro|MAX_DMA_ADDRESS
 mdefine_line|#define MAX_DMA_ADDRESS         0x80000000
+DECL|macro|free_dma
+mdefine_line|#define free_dma(x)
 macro_line|#endif /* _ASM_DMA_H */
 eof
