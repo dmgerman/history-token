@@ -1573,15 +1573,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|f-&gt;exts.action
-op_logical_and
-id|f-&gt;exts.action-&gt;type
-op_eq
-id|TCA_OLD_COMPAT
-)paren
-r_if
-c_cond
-(paren
 id|tcf_exts_dump_stats
 c_func
 (paren
