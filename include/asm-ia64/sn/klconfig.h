@@ -1674,15 +1674,6 @@ id|path
 )paren
 suffix:semicolon
 r_extern
-id|moduleid_t
-id|get_module_id
-c_func
-(paren
-id|nasid_t
-id|nasid
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|nic_name_convert
 c_func

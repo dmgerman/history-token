@@ -370,7 +370,7 @@ id|hub_migrintr_init
 c_func
 (paren
 id|cnodeid_t
-multiline_comment|/*cnode*/
+multiline_comment|/*cnode */
 )paren
 suffix:semicolon
 r_extern
@@ -384,7 +384,8 @@ comma
 id|intr_func_t
 id|handler
 comma
-id|uint
+r_int
+r_int
 id|intr_spl_mask
 )paren
 suffix:semicolon
@@ -1022,5 +1023,5 @@ id|vertex_hdl_t
 id|vertex
 )paren
 suffix:semicolon
-macro_line|#endif /* _ASM_IA64_SN_SN2_SN_PRIVATE_H */
+macro_line|#endif&t;&t;&t;&t;/* _ASM_IA64_SN_SN2_SN_PRIVATE_H */
 eof
