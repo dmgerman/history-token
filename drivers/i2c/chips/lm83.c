@@ -115,11 +115,11 @@ DECL|macro|LM83_REG_R_TCRIT
 mdefine_line|#define LM83_REG_R_TCRIT&t;&t;0x42
 DECL|macro|LM83_REG_W_TCRIT
 mdefine_line|#define LM83_REG_W_TCRIT&t;&t;0x5A
-multiline_comment|/*&n; * Conversions and various macros&n; * The LM83 uses signed 8-bit values.&n; */
+multiline_comment|/*&n; * Conversions and various macros&n; * The LM83 uses signed 8-bit values with LSB = 1 degree Celcius.&n; */
 DECL|macro|TEMP_FROM_REG
-mdefine_line|#define TEMP_FROM_REG(val)&t;(((val) &gt; 127 ? (val) - 0x100 : (val)) * 1000)
+mdefine_line|#define TEMP_FROM_REG(val)&t;((val) * 1000)
 DECL|macro|TEMP_TO_REG
-mdefine_line|#define TEMP_TO_REG(val)&t;((val) &lt;= -50000 ? -50 + 0x100 : (val) &gt;= 127000 ? 127 : &bslash;&n;&t;&t;&t;&t; (val) &gt; -500 ? ((val)+500) / 1000 : &bslash;&n;&t;&t;&t;&t; ((val)-500) / 1000 + 0x100)
+mdefine_line|#define TEMP_TO_REG(val)&t;((val) &lt;= -128000 ? -128 : &bslash;&n;&t;&t;&t;&t; (val) &gt;= 127000 ? 127 : &bslash;&n;&t;&t;&t;&t; (val) &lt; 0 ? ((val) - 500) / 1000 : &bslash;&n;&t;&t;&t;&t; ((val) + 500) / 1000)
 DECL|variable|LM83_REG_R_TEMP
 r_static
 r_const
@@ -295,21 +295,21 @@ suffix:semicolon
 multiline_comment|/* in jiffies */
 multiline_comment|/* registers values */
 DECL|member|temp_input
-id|u8
+id|s8
 id|temp_input
 (braket
 l_int|4
 )braket
 suffix:semicolon
 DECL|member|temp_high
-id|u8
+id|s8
 id|temp_high
 (braket
 l_int|4
 )braket
 suffix:semicolon
 DECL|member|temp_crit
-id|u8
+id|s8
 id|temp_crit
 suffix:semicolon
 DECL|member|alarms
