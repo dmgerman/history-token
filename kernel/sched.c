@@ -16234,6 +16234,9 @@ op_logical_and
 id|system_state
 op_eq
 id|SYSTEM_RUNNING
+op_logical_and
+op_logical_neg
+id|oops_in_progress
 )paren
 (brace
 r_if
