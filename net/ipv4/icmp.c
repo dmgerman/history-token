@@ -699,6 +699,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Checksum each fragment, and on the first include the headers and final&n; *&t;checksum.&n; */
 DECL|function|icmp_glue_bits
+r_static
 r_int
 id|icmp_glue_bits
 c_func
@@ -967,7 +968,7 @@ op_assign
 id|icmp_socket-&gt;sk
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -3562,7 +3563,7 @@ id|ops
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 suffix:semicolon

@@ -350,16 +350,5 @@ r_int
 id|error
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|rxrpc_clear_transport
-c_func
-(paren
-r_struct
-id|rxrpc_transport
-op_star
-id|trans
-)paren
-suffix:semicolon
 macro_line|#endif /* _LINUX_RXRPC_TRANSPORT_H */
 eof

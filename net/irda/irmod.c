@@ -208,6 +208,7 @@ id|irda_notify_init
 suffix:semicolon
 multiline_comment|/*&n; * Function irda_init (void)&n; *&n; *  Protocol stack initialisation entry point.&n; *  Initialise the various components of the IrDA stack&n; */
 DECL|function|irda_init
+r_static
 r_int
 id|__init
 id|irda_init
@@ -288,6 +289,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irda_cleanup (void)&n; *&n; *  Protocol stack cleanup/removal entry point.&n; *  Cleanup the various components of the IrDA stack&n; */
 DECL|function|irda_cleanup
+r_static
 r_void
 id|__exit
 id|irda_cleanup

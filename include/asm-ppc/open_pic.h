@@ -38,6 +38,7 @@ id|OpenPIC_InitSenses
 suffix:semicolon
 r_extern
 r_void
+id|__iomem
 op_star
 id|OpenPIC_Addr
 suffix:semicolon
@@ -58,6 +59,7 @@ r_int
 id|num_irqs
 comma
 r_void
+id|__iomem
 op_star
 id|isr
 )paren

@@ -1,25 +1,9 @@
 multiline_comment|/*&n; *  linux/fs/affs/inode.c&n; *&n; *  (c) 1996  Hans-Joachim Widmaier - Rewritten&n; *&n; *  (C) 1993  Ray Burr - Modified for Amiga FFS filesystem.&n; *&n; *  (C) 1992  Eric Youngdale Modified for ISO 9660 filesystem.&n; *&n; *  (C) 1991  Linus Torvalds - minix filesystem&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/affs_fs.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/genhd.h&gt;
-macro_line|#include &lt;linux/amigaffs.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;linux/vfs.h&gt;
+macro_line|#include &lt;linux/statfs.h&gt;
 macro_line|#include &lt;linux/parser.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &quot;affs.h&quot;
 r_extern
 r_struct
 id|timezone

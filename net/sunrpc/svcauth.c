@@ -362,6 +362,7 @@ id|DN_HASHMAX
 )braket
 suffix:semicolon
 DECL|function|auth_domain_drop
+r_static
 r_void
 id|auth_domain_drop
 c_func

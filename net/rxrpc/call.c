@@ -48,6 +48,7 @@ op_div
 l_int|3
 suffix:semicolon
 DECL|variable|rxrpc_call_acks_timeout
+r_static
 r_int
 id|rxrpc_call_acks_timeout
 op_assign
@@ -56,6 +57,7 @@ op_div
 l_int|3
 suffix:semicolon
 DECL|variable|rxrpc_call_dfr_ack_timeout
+r_static
 r_int
 id|rxrpc_call_dfr_ack_timeout
 op_assign
@@ -64,6 +66,7 @@ op_div
 l_int|20
 suffix:semicolon
 DECL|variable|rxrpc_call_max_resend
+r_static
 r_int
 r_int
 id|rxrpc_call_max_resend
@@ -165,6 +168,7 @@ l_string|&quot;?15&quot;
 )brace
 suffix:semicolon
 DECL|variable|rxrpc_acks
+r_static
 r_const
 r_char
 op_star
@@ -308,6 +312,17 @@ id|seq
 comma
 r_int
 id|count
+)paren
+suffix:semicolon
+r_static
+r_int
+id|rxrpc_call_flush
+c_func
+(paren
+r_struct
+id|rxrpc_call
+op_star
+id|call
 )paren
 suffix:semicolon
 DECL|macro|_state
@@ -8222,6 +8237,7 @@ multiline_comment|/* end rxrpc_call_write_data() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * flush outstanding packets to the network&n; */
 DECL|function|rxrpc_call_flush
+r_static
 r_int
 id|rxrpc_call_flush
 c_func

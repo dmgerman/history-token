@@ -85,7 +85,7 @@ id|nlmsg_flags
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2041,7 +2041,7 @@ l_int|1
 )paren
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2194,7 +2194,7 @@ id|seq
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2505,7 +2505,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2962,7 +2962,7 @@ id|i
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -3235,7 +3235,7 @@ id|head-&gt;chain
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -3356,7 +3356,7 @@ id|chain
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign

@@ -262,6 +262,7 @@ id|addr
 suffix:semicolon
 multiline_comment|/* globals */
 DECL|variable|he_devs
+r_static
 r_struct
 id|he_dev
 op_star
@@ -312,6 +313,116 @@ r_int
 id|sdh
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* Read from EEPROM = 0000 0011b */
+DECL|variable|readtab
+r_static
+r_int
+r_int
+id|readtab
+(braket
+)braket
+op_assign
+(brace
+id|CS_HIGH
+op_or
+id|CLK_HIGH
+comma
+id|CS_LOW
+op_or
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+multiline_comment|/* 0 */
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+multiline_comment|/* 0 */
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+multiline_comment|/* 0 */
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+multiline_comment|/* 0 */
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+multiline_comment|/* 0 */
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+multiline_comment|/* 0 */
+id|CLK_LOW
+op_or
+id|SI_HIGH
+comma
+id|CLK_HIGH
+op_or
+id|SI_HIGH
+comma
+multiline_comment|/* 1 */
+id|CLK_LOW
+op_or
+id|SI_HIGH
+comma
+id|CLK_HIGH
+op_or
+id|SI_HIGH
+multiline_comment|/* 1 */
+)brace
+suffix:semicolon
+multiline_comment|/* Clock to read from/write to the EEPROM */
+DECL|variable|clocktab
+r_static
+r_int
+r_int
+id|clocktab
+(braket
+)braket
+op_assign
+(brace
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+id|CLK_LOW
+comma
+id|CLK_HIGH
+comma
+id|CLK_LOW
+)brace
 suffix:semicolon
 DECL|variable|he_ops
 r_static

@@ -161,6 +161,24 @@ id|PI_HANDLER
 id|func
 )paren
 suffix:semicolon
+r_static
+r_int
+id|irda_param_unpack
+c_func
+(paren
+id|__u8
+op_star
+id|buf
+comma
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
 multiline_comment|/* Parameter value call table. Must match PV_TYPE */
 DECL|variable|pv_extract_table
 r_static
@@ -1626,6 +1644,7 @@ id|irda_param_pack
 suffix:semicolon
 multiline_comment|/*&n; * Function irda_param_unpack (skb, fmt, ...)&n; */
 DECL|function|irda_param_unpack
+r_static
 r_int
 id|irda_param_unpack
 c_func
@@ -1854,13 +1873,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|irda_param_unpack
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_param_unpack
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Function irda_param_insert (self, pi, buf, len, info)&n; *&n; *    Insert the specified parameter (pi) into buffer. Returns number of&n; *    bytes inserted&n; */
 DECL|function|irda_param_insert
 r_int
@@ -2072,8 +2084,9 @@ c_func
 id|irda_param_insert
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Function irda_param_extract_all (self, buf, len, info)&n; *&n; *    Parse all parameters. If len is correct, then everything should be&n; *    safe. Returns the number of bytes that was parsed&n; *&n; */
+multiline_comment|/*&n; * Function irda_param_extract (self, buf, len, info)&n; *&n; *    Parse all parameters. If len is correct, then everything should be&n; *    safe. Returns the number of bytes that was parsed&n; *&n; */
 DECL|function|irda_param_extract
+r_static
 r_int
 id|irda_param_extract
 c_func
@@ -2318,13 +2331,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|variable|irda_param_extract
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irda_param_extract
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Function irda_param_extract_all (self, buf, len, info)&n; *&n; *    Parse all parameters. If len is correct, then everything should be&n; *    safe. Returns the number of bytes that was parsed&n; *&n; */
 DECL|function|irda_param_extract_all
 r_int

@@ -23,6 +23,7 @@ mdefine_line|#define OPENPIC_BIG_ENDIAN
 macro_line|#endif
 DECL|variable|OpenPIC_Addr
 r_void
+id|__iomem
 op_star
 id|OpenPIC_Addr
 suffix:semicolon
@@ -31,6 +32,7 @@ r_static
 r_volatile
 r_struct
 id|OpenPIC
+id|__iomem
 op_star
 id|OpenPIC
 op_assign
@@ -75,6 +77,7 @@ DECL|variable|ISR
 r_static
 r_volatile
 id|OpenPIC_Source
+id|__iomem
 op_star
 id|ISR
 (braket
@@ -475,6 +478,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 )paren
@@ -514,6 +518,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -550,6 +555,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -580,6 +586,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -628,6 +635,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -655,6 +663,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -681,6 +690,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -735,6 +745,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 )paren
@@ -776,6 +787,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -824,6 +836,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -851,6 +864,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -877,6 +891,7 @@ c_func
 (paren
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -1034,12 +1049,14 @@ r_int
 id|num_irqs
 comma
 r_void
+id|__iomem
 op_star
 id|first_ISR
 )paren
 (brace
 r_volatile
 id|OpenPIC_Source
+id|__iomem
 op_star
 id|src
 op_assign
@@ -1081,6 +1098,7 @@ op_amp
 (paren
 r_struct
 id|OpenPIC
+id|__iomem
 op_star
 )paren
 id|OpenPIC_Addr
@@ -1162,6 +1180,7 @@ op_assign
 r_volatile
 r_struct
 id|OpenPIC
+id|__iomem
 op_star
 )paren
 id|OpenPIC_Addr
@@ -2584,6 +2603,7 @@ id|irq
 (brace
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|vpp
 suffix:semicolon
@@ -2648,6 +2668,7 @@ id|irq
 (brace
 r_volatile
 id|u_int
+id|__iomem
 op_star
 id|vpp
 suffix:semicolon

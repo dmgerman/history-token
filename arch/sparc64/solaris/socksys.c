@@ -599,7 +599,11 @@ c_cond
 (paren
 id|ino
 op_logical_and
-id|ino-&gt;i_sock
+id|S_ISSOCK
+c_func
+(paren
+id|ino-&gt;i_mode
+)paren
 )paren
 (brace
 r_struct

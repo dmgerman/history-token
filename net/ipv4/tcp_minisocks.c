@@ -36,6 +36,20 @@ DECL|variable|sysctl_tcp_abort_on_overflow
 r_int
 id|sysctl_tcp_abort_on_overflow
 suffix:semicolon
+r_static
+r_void
+id|tcp_tw_schedule
+c_func
+(paren
+r_struct
+id|tcp_tw_bucket
+op_star
+id|tw
+comma
+r_int
+id|timeo
+)paren
+suffix:semicolon
 DECL|function|tcp_in_window
 r_static
 id|__inline__
@@ -1075,7 +1089,7 @@ l_int|NULL
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1973,6 +1987,7 @@ id|TCP_TW_RECYCLE_SLOTS
 )braket
 suffix:semicolon
 DECL|function|tcp_tw_schedule
+r_static
 r_void
 id|tcp_tw_schedule
 c_func

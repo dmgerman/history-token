@@ -556,9 +556,7 @@ DECL|member|paddr
 id|dma_addr_t
 id|paddr
 suffix:semicolon
-DECL|variable|rsq_info
 )brace
-id|rsq_info
 suffix:semicolon
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*                                                                           */

@@ -831,13 +831,6 @@ op_star
 suffix:semicolon
 macro_line|#endif /* CONFIG_IRDA_ULTRA */
 r_void
-id|irlmp_status_request
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
 id|irlmp_status_indication
 c_func
 (paren
@@ -863,21 +856,6 @@ id|self
 comma
 id|LOCAL_FLOW
 id|flow
-)paren
-suffix:semicolon
-r_int
-id|irlmp_slsap_inuse
-c_func
-(paren
-id|__u8
-id|slsap
-)paren
-suffix:semicolon
-id|__u8
-id|irlmp_find_free_slsap
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 id|LM_REASON

@@ -1,12 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/affs/symlink.c&n; *&n; *  1995  Hans-Joachim Widmaier - Modified for affs.&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  affs symlink handling code&n; */
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/affs_fs.h&gt;
-macro_line|#include &lt;linux/amigaffs.h&gt;
-macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &quot;affs.h&quot;
 DECL|function|affs_symlink_readpage
 r_static
 r_int

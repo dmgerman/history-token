@@ -9,19 +9,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;net/irda/irias_object.h&gt;
 macro_line|#include &lt;net/irda/irlan_event.h&gt;
 r_void
-id|irlan_client_start_kick_timer
-c_func
-(paren
-r_struct
-id|irlan_cb
-op_star
-id|self
-comma
-r_int
-id|timeout
-)paren
-suffix:semicolon
-r_void
 id|irlan_client_discovery_indication
 c_func
 (paren
@@ -48,16 +35,6 @@ id|saddr
 comma
 id|__u32
 id|daddr
-)paren
-suffix:semicolon
-r_void
-id|irlan_client_open_ctrl_tsap
-c_func
-(paren
-r_struct
-id|irlan_cb
-op_star
-id|self
 )paren
 suffix:semicolon
 r_void

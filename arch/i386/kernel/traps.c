@@ -3895,13 +3895,26 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_EISA
-r_if
-c_cond
-(paren
-id|isa_readl
+r_void
+id|__iomem
+op_star
+id|p
+op_assign
+id|ioremap
 c_func
 (paren
 l_int|0x0FFFD9
+comma
+l_int|4
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|readl
+c_func
+(paren
+id|p
 )paren
 op_eq
 l_char|&squot;E&squot;
@@ -3930,6 +3943,12 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|iounmap
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 id|init_apic_mappings

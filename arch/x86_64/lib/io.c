@@ -3,7 +3,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 DECL|function|__memcpy_toio
 r_void
-op_star
 id|__memcpy_toio
 c_func
 (paren
@@ -20,7 +19,6 @@ r_int
 id|len
 )paren
 (brace
-r_return
 id|__inline_memcpy
 c_func
 (paren
@@ -45,7 +43,6 @@ id|__memcpy_toio
 suffix:semicolon
 DECL|function|__memcpy_fromio
 r_void
-op_star
 id|__memcpy_fromio
 c_func
 (paren
@@ -61,7 +58,6 @@ r_int
 id|len
 )paren
 (brace
-r_return
 id|__inline_memcpy
 c_func
 (paren

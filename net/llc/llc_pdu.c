@@ -217,36 +217,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;llc_pdu_decode_cr_bit - extracts command response bit from LLC header&n; *&t;@skb: input skb that c/r bit must be extracted from it.&n; *&t;@cr_bit: command/response bit (0 or 1).&n; *&n; *&t;This function extracts command/response bit from LLC header. this bit&n; *&t;is right bit of source SAP.&n; */
-DECL|function|llc_pdu_decode_cr_bit
-r_void
-id|llc_pdu_decode_cr_bit
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-id|u8
-op_star
-id|cr_bit
-)paren
-(brace
-op_star
-id|cr_bit
-op_assign
-id|llc_pdu_un_hdr
-c_func
-(paren
-id|skb
-)paren
-op_member_access_from_pointer
-id|ssap
-op_amp
-id|LLC_PDU_CMD_RSP_MASK
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;llc_pdu_init_as_disc_cmd - Builds DISC PDU&n; *&t;@skb: Address of the skb to build&n; *&t;@p_bit: The P bit to set in the PDU&n; *&n; *&t;Builds a pdu frame as a DISC command.&n; */
 DECL|function|llc_pdu_init_as_disc_cmd
 r_void

@@ -77,6 +77,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|variable|ip_vs_dropentry
+r_static
 id|atomic_t
 id|ip_vs_dropentry
 op_assign

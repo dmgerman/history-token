@@ -861,6 +861,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|atalk_seq_interface_ops
+r_static
 r_struct
 id|seq_operations
 id|atalk_seq_interface_ops
@@ -889,6 +890,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|atalk_seq_route_ops
+r_static
 r_struct
 id|seq_operations
 id|atalk_seq_route_ops
@@ -917,6 +919,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|atalk_seq_socket_ops
+r_static
 r_struct
 id|seq_operations
 id|atalk_seq_socket_ops

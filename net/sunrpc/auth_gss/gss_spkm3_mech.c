@@ -13,17 +13,6 @@ macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPCDBG_FACILITY
 macro_line|# define RPCDBG_FACILITY&t;RPCDBG_AUTH
 macro_line|#endif
-DECL|variable|gss_mech_spkm3_oid
-r_struct
-id|xdr_netobj
-id|gss_mech_spkm3_oid
-op_assign
-(brace
-l_int|7
-comma
-l_string|&quot;&bslash;053&bslash;006&bslash;001&bslash;005&bslash;005&bslash;001&bslash;003&quot;
-)brace
-suffix:semicolon
 r_static
 r_inline
 r_int
@@ -864,6 +853,7 @@ r_return
 id|GSS_S_FAILURE
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|gss_delete_sec_context_spkm3
 id|gss_delete_sec_context_spkm3
@@ -940,6 +930,7 @@ id|sctx
 )paren
 suffix:semicolon
 )brace
+r_static
 id|u32
 DECL|function|gss_verify_mic_spkm3
 id|gss_verify_mic_spkm3
@@ -1030,6 +1021,7 @@ r_return
 id|maj_stat
 suffix:semicolon
 )brace
+r_static
 id|u32
 DECL|function|gss_get_mic_spkm3
 id|gss_get_mic_spkm3

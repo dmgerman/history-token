@@ -758,6 +758,7 @@ id|__u8
 id|__raw_readb
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -785,6 +786,7 @@ id|__u16
 id|__raw_readw
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -812,6 +814,7 @@ id|__u32
 id|__raw_readl
 c_func
 (paren
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -1310,6 +1313,7 @@ r_void
 op_star
 id|dst
 comma
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -1374,6 +1378,8 @@ id|count
 )paren
 suffix:semicolon
 )brace
+DECL|macro|eth_io_copy_and_sum
+mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;&t;eth_copy_and_sum((a),(void __force *)(void __iomem *)(b),(c),(d))
 multiline_comment|/*&n; * Map in an area of physical address space, for accessing&n; * I/O devices etc.&n; */
 r_extern
 r_void
@@ -1936,11 +1942,6 @@ id|count
 id|_insb
 c_func
 (paren
-(paren
-id|u8
-id|__force
-op_star
-)paren
 id|addr
 comma
 id|dst
@@ -1973,11 +1974,6 @@ id|count
 id|_insw_ns
 c_func
 (paren
-(paren
-id|u16
-id|__force
-op_star
-)paren
 id|addr
 comma
 id|dst
@@ -2010,11 +2006,6 @@ id|count
 id|_insl_ns
 c_func
 (paren
-(paren
-id|u32
-id|__force
-op_star
-)paren
 id|addr
 comma
 id|dst
@@ -2048,11 +2039,6 @@ id|count
 id|_outsb
 c_func
 (paren
-(paren
-id|u8
-id|__force
-op_star
-)paren
 id|addr
 comma
 id|src
@@ -2086,11 +2072,6 @@ id|count
 id|_outsw_ns
 c_func
 (paren
-(paren
-id|u16
-id|__force
-op_star
-)paren
 id|addr
 comma
 id|src
@@ -2124,11 +2105,6 @@ id|count
 id|_outsl_ns
 c_func
 (paren
-(paren
-id|u32
-id|__force
-op_star
-)paren
 id|addr
 comma
 id|src

@@ -75,12 +75,6 @@ r_extern
 r_int
 id|sysctl_fast_poll_increase
 suffix:semicolon
-DECL|variable|sysctl_compression
-r_int
-id|sysctl_compression
-op_assign
-l_int|0
-suffix:semicolon
 r_extern
 r_char
 id|sysctl_devname

@@ -293,17 +293,5 @@ op_amp
 id|irnet_device_fops
 )brace
 suffix:semicolon
-multiline_comment|/* Generic PPP callbacks (to call us) */
-DECL|variable|irnet_ppp_ops
-r_struct
-id|ppp_channel_ops
-id|irnet_ppp_ops
-op_assign
-(brace
-id|ppp_irnet_send
-comma
-id|ppp_irnet_ioctl
-)brace
-suffix:semicolon
 macro_line|#endif /* IRNET_PPP_H */
 eof

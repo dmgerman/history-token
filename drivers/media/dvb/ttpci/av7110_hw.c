@@ -6518,6 +6518,7 @@ id|colors
 op_assign
 (paren
 id|u8
+id|__user
 op_star
 )paren
 id|dc-&gt;data

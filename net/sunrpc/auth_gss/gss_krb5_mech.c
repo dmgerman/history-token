@@ -12,17 +12,6 @@ macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPCDBG_FACILITY
 macro_line|# define RPCDBG_FACILITY&t;RPCDBG_AUTH
 macro_line|#endif
-DECL|variable|gss_mech_krb5_oid
-r_struct
-id|xdr_netobj
-id|gss_mech_krb5_oid
-op_assign
-(brace
-l_int|9
-comma
-l_string|&quot;&bslash;052&bslash;206&bslash;110&bslash;206&bslash;367&bslash;022&bslash;001&bslash;002&bslash;002&quot;
-)brace
-suffix:semicolon
 r_static
 r_inline
 r_int

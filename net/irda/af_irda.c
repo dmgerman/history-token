@@ -796,6 +796,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irda_connect_response (handle)&n; *&n; *    Accept incoming connection&n; *&n; */
 DECL|function|irda_connect_response
+r_static
 r_void
 id|irda_connect_response
 c_func
@@ -3804,6 +3805,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irda_destroy_socket (self)&n; *&n; *    Destroy socket&n; *&n; */
 DECL|function|irda_destroy_socket
+r_static
 r_void
 id|irda_destroy_socket
 c_func

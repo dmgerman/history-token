@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/arch/arm/mach-omap/board-perseus2.c&n; *&n; * Mo
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
@@ -12,20 +13,6 @@ macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/fpga.h&gt;
 macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;common.h&quot;
-DECL|function|omap_perseus2_init_irq
-r_void
-id|omap_perseus2_init_irq
-c_func
-(paren
-r_void
-)paren
-(brace
-id|omap_init_irq
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 DECL|variable|smc91x_resources
 r_static
 r_struct
@@ -173,6 +160,76 @@ c_func
 (paren
 id|devices
 )paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|perseus2_init_smc91x
+r_static
+r_void
+id|__init
+id|perseus2_init_smc91x
+c_func
+(paren
+r_void
+)paren
+(brace
+id|fpga_write
+c_func
+(paren
+l_int|1
+comma
+id|H2P2_DBG_FPGA_LAN_RESET
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
+id|fpga_write
+c_func
+(paren
+id|fpga_read
+c_func
+(paren
+id|H2P2_DBG_FPGA_LAN_RESET
+)paren
+op_amp
+op_complement
+l_int|1
+comma
+id|H2P2_DBG_FPGA_LAN_RESET
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
+)brace
+DECL|function|omap_perseus2_init_irq
+r_void
+id|omap_perseus2_init_irq
+c_func
+(paren
+r_void
+)paren
+(brace
+id|omap_init_irq
+c_func
+(paren
+)paren
+suffix:semicolon
+id|omap_gpio_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|perseus2_init_smc91x
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

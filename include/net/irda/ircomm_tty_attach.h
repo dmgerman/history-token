@@ -106,13 +106,6 @@ suffix:semicolon
 r_extern
 r_char
 op_star
-id|ircomm_event
-(braket
-)braket
-suffix:semicolon
-r_extern
-r_char
-op_star
 id|ircomm_tty_state
 (braket
 )braket

@@ -1517,7 +1517,11 @@ id|f_dentry-&gt;d_inode
 )paren
 op_logical_or
 op_logical_neg
-id|ino-&gt;i_sock
+id|S_ISSOCK
+c_func
+(paren
+id|ino-&gt;i_mode
+)paren
 )paren
 (brace
 id|spin_unlock
@@ -2691,7 +2695,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ino-&gt;i_sock
+id|S_ISSOCK
+c_func
+(paren
+id|ino-&gt;i_mode
+)paren
 )paren
 r_return
 op_minus

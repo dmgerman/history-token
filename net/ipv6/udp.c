@@ -616,7 +616,7 @@ l_int|1
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1156,7 +1156,7 @@ id|ETH_P_IP
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -1801,7 +1801,7 @@ id|node
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2646,7 +2646,7 @@ op_star
 id|uh
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -2929,7 +2929,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign
@@ -4599,7 +4599,7 @@ id|bucket
 )paren
 (brace
 r_struct
-id|inet_opt
+id|inet_sock
 op_star
 id|inet
 op_assign

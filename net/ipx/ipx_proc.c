@@ -1451,6 +1451,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|ipx_seq_interface_ops
+r_static
 r_struct
 id|seq_operations
 id|ipx_seq_interface_ops
@@ -1479,6 +1480,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|ipx_seq_route_ops
+r_static
 r_struct
 id|seq_operations
 id|ipx_seq_route_ops
@@ -1507,6 +1509,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|ipx_seq_socket_ops
+r_static
 r_struct
 id|seq_operations
 id|ipx_seq_socket_ops
