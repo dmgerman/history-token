@@ -1010,6 +1010,7 @@ r_int
 id|newsp
 comma
 r_int
+id|__user
 op_star
 id|parent_tidptr
 comma
@@ -1017,6 +1018,7 @@ r_int
 id|tls_val
 comma
 r_int
+id|__user
 op_star
 id|child_tidptr
 comma

@@ -38,24 +38,16 @@ DECL|macro|RW_LOCK_BIAS
 mdefine_line|#define RW_LOCK_BIAS&t;&t; 0x01000000
 DECL|macro|RW_LOCK_BIAS_STR
 mdefine_line|#define RW_LOCK_BIAS_STR&t;&quot;0x01000000&quot;
-multiline_comment|/* It seems that people are forgetting to&n; * initialize their spinlocks properly, tsk tsk.&n; * Remember to turn this off in 2.4. -ben&n; */
-macro_line|#if defined(CONFIG_DEBUG_SPINLOCK)
-DECL|macro|SPINLOCK_DEBUG
-mdefine_line|#define SPINLOCK_DEBUG&t;1
-macro_line|#else
-DECL|macro|SPINLOCK_DEBUG
-mdefine_line|#define SPINLOCK_DEBUG&t;0
-macro_line|#endif
 multiline_comment|/*&n; * Your basic SMP spinlocks, allowing only a single CPU anywhere&n; */
 r_typedef
 r_struct
 (brace
-DECL|member|lock
+DECL|member|slock
 r_volatile
 r_int
-id|lock
+id|slock
 suffix:semicolon
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|member|magic
 r_int
 id|magic
@@ -74,7 +66,7 @@ id|spinlock_t
 suffix:semicolon
 DECL|macro|SPINLOCK_MAGIC
 mdefine_line|#define SPINLOCK_MAGIC&t;0xdead4ead
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|macro|SPINLOCK_MAGIC_INIT
 mdefine_line|#define SPINLOCK_MAGIC_INIT&t;, SPINLOCK_MAGIC
 macro_line|#else
@@ -87,7 +79,7 @@ DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(x)&t;do { *(x) = SPIN_LOCK_UNLOCKED; } while(0)
 multiline_comment|/*&n; * Simple spin lock operations.  There are two variants, one clears IRQ&squot;s&n; * on the local processor, one does not.&n; *&n; * We make no fairness assumptions. They have a cost.&n; */
 DECL|macro|spin_is_locked
-mdefine_line|#define spin_is_locked(x)&t;(*(volatile int *)(&amp;(x)-&gt;lock) &lt;= 0)
+mdefine_line|#define spin_is_locked(x)&t;(*(volatile int *)(&amp;(x)-&gt;slock) &lt;= 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(spin_is_locked(x))
 DECL|macro|_raw_spin_lock_flags
@@ -114,7 +106,7 @@ id|tmp1
 comma
 id|tmp2
 suffix:semicolon
-multiline_comment|/*&n;&t; * lock-&gt;lock :  =1 : unlock&n;&t; *            : &lt;=0 : lock&n;&t; * {&n;&t; *   oldval = lock-&gt;lock; &lt;--+ need atomic operation&n;&t; *   lock-&gt;lock = 0;      &lt;--+&n;&t; * }&n;&t; */
+multiline_comment|/*&n;&t; * lock-&gt;slock :  =1 : unlock&n;&t; *             : &lt;=0 : lock&n;&t; * {&n;&t; *   oldval = lock-&gt;slock; &lt;--+ need atomic operation&n;&t; *   lock-&gt;slock = 0;      &lt;--+&n;&t; * }&n;&t; */
 id|__asm__
 id|__volatile__
 (paren
@@ -153,7 +145,7 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 op_amp
-id|lock-&gt;lock
+id|lock-&gt;slock
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -189,7 +181,7 @@ id|tmp0
 comma
 id|tmp1
 suffix:semicolon
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 id|__label__
 id|here
 suffix:semicolon
@@ -206,7 +198,7 @@ id|SPINLOCK_MAGIC
 id|printk
 c_func
 (paren
-l_string|&quot;eip: %p&bslash;n&quot;
+l_string|&quot;pc: %p&bslash;n&quot;
 comma
 op_logical_and
 id|here
@@ -219,7 +211,7 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * lock-&gt;lock :  =1 : unlock&n;&t; *            : &lt;=0 : lock&n;&t; *&n;&t; * for ( ; ; ) {&n;&t; *   lock-&gt;lock -= 1;  &lt;-- need atomic operation&n;&t; *   if (lock-&gt;lock == 0) break;&n;&t; *   for ( ; lock-&gt;lock &lt;= 0 ; );&n;&t; * }&n;&t; */
+multiline_comment|/*&n;&t; * lock-&gt;slock :  =1 : unlock&n;&t; *             : &lt;=0 : lock&n;&t; *&n;&t; * for ( ; ; ) {&n;&t; *   lock-&gt;slock -= 1;  &lt;-- need atomic operation&n;&t; *   if (lock-&gt;slock == 0) break;&n;&t; *   for ( ; lock-&gt;slock &lt;= 0 ; );&n;&t; * }&n;&t; */
 id|__asm__
 id|__volatile__
 (paren
@@ -267,7 +259,7 @@ suffix:colon
 l_string|&quot;r&quot;
 (paren
 op_amp
-id|lock-&gt;lock
+id|lock-&gt;slock
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -290,7 +282,7 @@ op_star
 id|lock
 )paren
 (brace
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 id|BUG_ON
 c_func
 (paren
@@ -316,7 +308,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|lock-&gt;lock
+id|lock-&gt;slock
 op_assign
 l_int|1
 suffix:semicolon
@@ -330,7 +322,7 @@ r_volatile
 r_int
 id|lock
 suffix:semicolon
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|member|magic
 r_int
 id|magic
@@ -349,7 +341,7 @@ id|rwlock_t
 suffix:semicolon
 DECL|macro|RWLOCK_MAGIC
 mdefine_line|#define RWLOCK_MAGIC&t;0xdeaf1eed
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|macro|RWLOCK_MAGIC_INIT
 mdefine_line|#define RWLOCK_MAGIC_INIT&t;, RWLOCK_MAGIC
 macro_line|#else
@@ -360,6 +352,12 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { RW_LOCK_BIAS RWLOCK_MAGIC_INIT }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
+multiline_comment|/**&n; * read_can_lock - would read_trylock() succeed?&n; * @lock: the rwlock in question.&n; */
+DECL|macro|read_can_lock
+mdefine_line|#define read_can_lock(x) ((int)(x)-&gt;lock &gt; 0)
+multiline_comment|/**&n; * write_can_lock - would write_trylock() succeed?&n; * @lock: the rwlock in question.&n; */
+DECL|macro|write_can_lock
+mdefine_line|#define write_can_lock(x) ((x)-&gt;lock == RW_LOCK_BIAS)
 multiline_comment|/*&n; * On x86, we implement read-write locks as a 32-bit counter&n; * with the high bit (sign) being the &quot;contended&quot; bit.&n; *&n; * The inline assembly is non-obvious. Think about it.&n; *&n; * Changed to use the same technique as rw semaphores.  See&n; * semaphore.h for details.  -ben&n; */
 multiline_comment|/* the spinlock helpers are in arch/i386/kernel/semaphore.c */
 DECL|function|_raw_read_lock
@@ -380,7 +378,7 @@ id|tmp0
 comma
 id|tmp1
 suffix:semicolon
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 id|BUG_ON
 c_func
 (paren
@@ -485,7 +483,7 @@ id|tmp1
 comma
 id|tmp2
 suffix:semicolon
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 id|BUG_ON
 c_func
 (paren

@@ -9553,10 +9553,6 @@ id|dev-&gt;watchdog_timeo
 op_assign
 id|TX_TIMEOUT
 suffix:semicolon
-id|dev-&gt;irq
-op_assign
-id|pdev-&gt;irq
-suffix:semicolon
 id|de
 op_assign
 id|dev-&gt;priv
@@ -9714,6 +9710,10 @@ r_goto
 id|err_out_res
 suffix:semicolon
 )brace
+id|dev-&gt;irq
+op_assign
+id|pdev-&gt;irq
+suffix:semicolon
 multiline_comment|/* obtain and check validity of PCI I/O address */
 id|pciaddr
 op_assign

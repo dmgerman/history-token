@@ -300,6 +300,7 @@ suffix:semicolon
 )brace
 )brace
 r_else
+(brace
 id|pte
 op_assign
 (paren
@@ -311,6 +312,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pte
+)paren
+id|clear_page
+c_func
+(paren
+id|pte
+)paren
+suffix:semicolon
+)brace
 r_return
 id|pte
 suffix:semicolon

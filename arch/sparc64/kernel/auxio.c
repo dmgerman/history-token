@@ -15,7 +15,7 @@ id|__iomem
 op_star
 id|auxio_register
 op_assign
-l_int|0UL
+l_int|NULL
 suffix:semicolon
 DECL|enum|auxio_type
 r_enum
