@@ -4789,9 +4789,6 @@ r_int
 id|silent
 )paren
 (brace
-r_int
-id|size
-suffix:semicolon
 r_struct
 id|inode
 op_star
@@ -4897,22 +4894,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|size
-op_assign
-id|block_size
-c_func
-(paren
-id|s-&gt;s_dev
-)paren
-suffix:semicolon
-id|sb_set_blocksize
-c_func
-(paren
-id|s
-comma
-id|size
-)paren
-suffix:semicolon
 multiline_comment|/* try old format (undistributed bitmap, super block in 8-th 1k block of a device) */
 r_if
 c_cond

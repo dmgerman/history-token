@@ -689,13 +689,6 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|set_blocksize
-(paren
-id|sb-&gt;s_dev
-comma
-id|BLOCK_SIZE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
