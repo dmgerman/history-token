@@ -275,6 +275,27 @@ OL
 id|fbi-&gt;palette_size
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|fbi-&gt;fb.var.grayscale
+)paren
+(brace
+id|val
+op_assign
+(paren
+(paren
+id|blue
+op_rshift
+l_int|8
+)paren
+op_amp
+l_int|0x00ff
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|val
 op_assign
 (paren
@@ -311,6 +332,7 @@ op_amp
 l_int|0x001f
 )paren
 suffix:semicolon
+)brace
 id|fbi-&gt;palette_cpu
 (braket
 id|regno
@@ -438,7 +460,7 @@ id|fbi-&gt;fb.fix.visual
 r_case
 id|FB_VISUAL_TRUECOLOR
 suffix:colon
-multiline_comment|/*&n;&t;&t; * 12 or 16-bit True Colour.  We encode the RGB value&n;&t;&t; * according to the RGB bitfield information.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * 16-bit True Colour.  We encode the RGB value&n;&t;&t; * according to the RGB bitfield information.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -931,16 +953,30 @@ id|var-&gt;bits_per_pixel
 op_div
 l_int|8
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|var-&gt;bits_per_pixel
+op_eq
+l_int|16
+)paren
+id|fbi-&gt;palette_size
+op_assign
+l_int|0
+suffix:semicolon
+r_else
 id|fbi-&gt;palette_size
 op_assign
 id|var-&gt;bits_per_pixel
 op_eq
-l_int|8
+l_int|1
 ques
 c_cond
-l_int|256
+l_int|4
 suffix:colon
-l_int|16
+l_int|1
+op_lshift
+id|var-&gt;bits_per_pixel
 suffix:semicolon
 id|palette_mem_size
 op_assign
@@ -993,6 +1029,34 @@ op_eq
 id|FB_VISUAL_TRUECOLOR
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|fbi-&gt;fb.var.bits_per_pixel
+op_eq
+l_int|16
+)paren
+id|fb_dealloc_cmap
+c_func
+(paren
+op_amp
+id|fbi-&gt;fb.cmap
+)paren
+suffix:semicolon
+r_else
+id|fb_alloc_cmap
+c_func
+(paren
+op_amp
+id|fbi-&gt;fb.cmap
+comma
+l_int|1
+op_lshift
+id|fbi-&gt;fb.var.bits_per_pixel
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|pxafb_activate_var
 c_func
 (paren
@@ -1006,7 +1070,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Formal definition of the VESA spec:&n; *  On&n; *  &t;This refers to the state of the display when it is in full operation&n; *  Stand-By&n; *  &t;This defines an optional operating state of minimal power reduction with&n; *  &t;the shortest recovery time&n; *  Suspend&n; *  &t;This refers to a level of power management in which substantial power&n; *  &t;reduction is achieved by the display.  The display can have a longer&n; *  &t;recovery time from this state than from the Stand-by state&n; *  Off&n; *  &t;This indicates that the display is consuming the lowest level of power&n; *  &t;and is non-operational. Recovery from this state may optionally require&n; *  &t;the user to manually power on the monitor&n; *&n; *  Now, the fbdev driver adds an additional state, (blank), where they&n; *  turn off the video (maybe by colormap tricks), but don&squot;t mess with the&n; *  video itself: think of it semantically between on and Stand-By.&n; *&n; *  So here&squot;s what we should do in our fbdev blank routine:&n; *&n; *  &t;VESA_NO_BLANKING (mode 0)&t;Video on,  front/back light on&n; *  &t;VESA_VSYNC_SUSPEND (mode 1)  &t;Video on,  front/back light off&n; *  &t;VESA_HSYNC_SUSPEND (mode 2)  &t;Video on,  front/back light off&n; *  &t;VESA_POWERDOWN (mode 3)&t;&t;Video off, front/back light off&n; *&n; *  This will match the matrox implementation.&n; */
-multiline_comment|/*&n; * pxafb_blank():&n; *&t;Blank the display by setting all palette values to zero.  Note, the&n; * &t;12 and 16 bpp modes don&squot;t really use the palette, so this will not&n; *      blank the display in all modes.&n; */
+multiline_comment|/*&n; * pxafb_blank():&n; *&t;Blank the display by setting all palette values to zero.  Note, the&n; * &t;16 bpp mode does not really use the palette, so this will not&n; *      blank the display in all modes.&n; */
 DECL|function|pxafb_blank
 r_static
 r_int
@@ -1575,9 +1639,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|fbi-&gt;lccr0
 op_amp
 id|LCCR0_SDS
+)paren
+op_eq
+id|LCCR0_Dual
 )paren
 id|lines_per_panel
 op_div_assign
@@ -1835,26 +1903,9 @@ r_if
 c_cond
 (paren
 id|var-&gt;bits_per_pixel
-OL
-l_int|12
+op_eq
+l_int|16
 )paren
-(brace
-multiline_comment|/* assume any mode with &lt;12 bpp is palette driven */
-id|fbi-&gt;dmadesc_palette_cpu-&gt;fdadr
-op_assign
-id|fbi-&gt;dmadesc_fbhigh_dma
-suffix:semicolon
-id|fbi-&gt;dmadesc_fbhigh_cpu-&gt;fdadr
-op_assign
-id|fbi-&gt;dmadesc_palette_dma
-suffix:semicolon
-id|fbi-&gt;fdadr0
-op_assign
-id|fbi-&gt;dmadesc_palette_dma
-suffix:semicolon
-multiline_comment|/* flips back and forth between pal and fbhigh */
-)brace
-r_else
 (brace
 multiline_comment|/* palette shouldn&squot;t be loaded in true-color mode */
 id|fbi-&gt;dmadesc_fbhigh_cpu-&gt;fdadr
@@ -1871,6 +1922,22 @@ id|fbi-&gt;dmadesc_palette_cpu-&gt;fdadr
 op_assign
 id|fbi-&gt;dmadesc_palette_dma
 suffix:semicolon
+)brace
+r_else
+(brace
+id|fbi-&gt;dmadesc_palette_cpu-&gt;fdadr
+op_assign
+id|fbi-&gt;dmadesc_fbhigh_dma
+suffix:semicolon
+id|fbi-&gt;dmadesc_fbhigh_cpu-&gt;fdadr
+op_assign
+id|fbi-&gt;dmadesc_palette_dma
+suffix:semicolon
+id|fbi-&gt;fdadr0
+op_assign
+id|fbi-&gt;dmadesc_palette_dma
+suffix:semicolon
+multiline_comment|/* flips back and forth between pal and fbhigh */
 )brace
 macro_line|#if 0
 id|DPRINTK
@@ -4193,7 +4260,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;overriding resolution: %dx%x&bslash;n&quot;
+l_string|&quot;overriding resolution: %dx%d&bslash;n&quot;
 comma
 id|xres
 comma
@@ -4300,7 +4367,7 @@ c_func
 (paren
 id|dev
 comma
-l_string|&quot;override pixclock: %u&bslash;n&quot;
+l_string|&quot;override pixclock: %ld&bslash;n&quot;
 comma
 id|inf-&gt;pixclock
 )paren
