@@ -3006,8 +3006,12 @@ r_int
 id|cycleTime
 comma
 id|accessTime
+op_assign
+l_int|0
 comma
 id|recTime
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|accessTicks
