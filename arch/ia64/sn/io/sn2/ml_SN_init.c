@@ -10,10 +10,6 @@ macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
-r_extern
-id|cpuid_t
-id|master_procid
-suffix:semicolon
 DECL|variable|maxcpus
 r_int
 id|maxcpus
