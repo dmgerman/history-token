@@ -6260,7 +6260,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;STRIP: radio serial number shorter (%d) than expected (%d)&bslash;n&quot;
+l_string|&quot;STRIP: radio serial number shorter (%zd) than expected (%d)&bslash;n&quot;
 comma
 id|end
 op_minus
@@ -6333,7 +6333,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;STRIP: radio voltage string shorter (%d) than expected (%d)&bslash;n&quot;
+l_string|&quot;STRIP: radio voltage string shorter (%zd) than expected (%d)&bslash;n&quot;
 comma
 id|end
 op_minus
