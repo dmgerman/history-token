@@ -12,19 +12,16 @@ id|vx_core_t
 id|core
 suffix:semicolon
 multiline_comment|/* h/w config; for PLX and for DSP */
+DECL|member|pci
+r_struct
+id|pci_dev
+op_star
+id|pci
+suffix:semicolon
 DECL|member|port
 r_int
 r_int
 id|port
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|port_res
-r_struct
-id|resource
-op_star
-id|port_res
 (braket
 l_int|2
 )braket

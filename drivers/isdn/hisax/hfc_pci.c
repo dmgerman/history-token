@@ -276,7 +276,7 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 multiline_comment|/******************************************/
 multiline_comment|/* free hardware resources used by driver */
 multiline_comment|/******************************************/
@@ -9201,7 +9201,7 @@ id|tmp
 )paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 id|cs-&gt;hw.hfcpci.int_s1
 op_assign
 l_int|0

@@ -2516,8 +2516,8 @@ id|retval
 op_ne
 id|CAPI_NOERROR
 )paren
-r_goto
-id|out
+r_return
+id|retval
 suffix:semicolon
 id|dlen
 op_assign
@@ -2578,10 +2578,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|retval
-op_assign
-id|CAPI_NOERROR
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2619,8 +2615,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|out
-suffix:colon
 id|dev_kfree_skb_any
 c_func
 (paren
@@ -2628,7 +2622,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-id|retval
+id|CAPI_NOERROR
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */

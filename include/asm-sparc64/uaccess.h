@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/a.out.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/spitfire.h&gt;
+macro_line|#include &lt;asm-generic/uaccess.h&gt;
 macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Sparc64 is segmented, though more like the M68K than the I386. &n; * We use the secondary ASI to address user memory, which references a&n; * completely different VM map, thus there is zero chance of the user&n; * doing something queer and tricking us into poking kernel memory.&n; *&n; * What is left here is basically what is needed for the other parts of&n; * the kernel that expect to be able to manipulate, erum, &quot;segments&quot;.&n; * Or perhaps more properly, permissions.&n; *&n; * &quot;For historical reasons, these macros are grossly misnamed.&quot; -Linus&n; */
@@ -559,6 +560,10 @@ DECL|macro|strlen_user
 mdefine_line|#define strlen_user __strlen_user
 DECL|macro|strnlen_user
 mdefine_line|#define strnlen_user __strnlen_user
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 macro_line|#endif  /* __ASSEMBLY__ */
 macro_line|#endif /* _ASM_UACCESS_H */
 eof

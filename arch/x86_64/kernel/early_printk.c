@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/* Simple VGA output */
 macro_line|#ifdef __i386__
 DECL|macro|VGABASE
-mdefine_line|#define VGABASE&t;&t;__pa(__PAGE_OFFSET + 0xb8000UL)
+mdefine_line|#define VGABASE&t;&t;__pa((void *)(__PAGE_OFFSET + 0xb8000UL))
 macro_line|#else
 DECL|macro|VGABASE
 mdefine_line|#define VGABASE&t;&t;0xffffffff800b8000UL

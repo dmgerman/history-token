@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: capifunc.c,v 1.61.4.2 2004/05/05 16:09:25 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: capifunc.c,v 1.61.4.5 2004/08/27 20:10:12 armin Exp $&n; *&n; * ISDN interface module for Eicon active cards DIVA.&n; * CAPI Interface common functions&n; * &n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de) &n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; * &n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;os_capi.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
@@ -5316,6 +5316,13 @@ comma
 l_string|&quot;send message&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+id|CAPI_NOERROR
+)paren
 id|diva_os_free_message_buffer
 c_func
 (paren

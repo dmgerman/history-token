@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *  Copyright (c) by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *  EMU10K1 memory page allocation (PTB area)&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/emu10k1.h&gt;
@@ -1105,7 +1106,11 @@ id|snd_sg_buf
 op_star
 id|sgbuf
 op_assign
-id|runtime-&gt;dma_private
+id|snd_pcm_substream_sgbuf
+c_func
+(paren
+id|substream
+)paren
 suffix:semicolon
 id|snd_util_memhdr_t
 op_star
@@ -1836,8 +1841,13 @@ c_cond
 id|snd_dma_alloc_pages
 c_func
 (paren
-op_amp
-id|emu-&gt;dma_dev
+id|SNDRV_DMA_TYPE_DEV
+comma
+id|snd_dma_pci_data
+c_func
+(paren
+id|emu-&gt;pci
+)paren
 comma
 id|PAGE_SIZE
 comma
@@ -1866,9 +1876,6 @@ id|dmab.addr
 id|snd_dma_free_pages
 c_func
 (paren
-op_amp
-id|emu-&gt;dma_dev
-comma
 op_amp
 id|dmab
 )paren
@@ -1941,9 +1948,6 @@ id|snd_dma_free_pages
 c_func
 (paren
 op_amp
-id|emu-&gt;dma_dev
-comma
-op_amp
 id|dmab
 )paren
 suffix:semicolon
@@ -2008,6 +2012,18 @@ op_amp
 id|last_page
 )paren
 suffix:semicolon
+id|dmab.dev.type
+op_assign
+id|SNDRV_DMA_TYPE_DEV
+suffix:semicolon
+id|dmab.dev.dev
+op_assign
+id|snd_dma_pci_data
+c_func
+(paren
+id|emu-&gt;pci
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2056,9 +2072,6 @@ suffix:semicolon
 id|snd_dma_free_pages
 c_func
 (paren
-op_amp
-id|emu-&gt;dma_dev
-comma
 op_amp
 id|dmab
 )paren

@@ -1493,7 +1493,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 id|u_int
 id|pci_ioaddr
 suffix:semicolon

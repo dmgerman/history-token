@@ -1492,6 +1492,10 @@ DECL|macro|__copy_to_user
 mdefine_line|#define __copy_to_user(to,from,n)   __generic_copy_to_user_nocheck((to),(from),(n))
 DECL|macro|__copy_from_user
 mdefine_line|#define __copy_from_user(to,from,n) __generic_copy_from_user_nocheck((to),(from),(n))
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 DECL|macro|__clear_user
 mdefine_line|#define __clear_user(to,n) __generic_clear_user_nocheck((to),(n))
 DECL|macro|strlen_user

@@ -197,6 +197,8 @@ DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!!((regs)-&gt;cs &amp; 3))
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;rip)
+DECL|macro|profile_pc
+mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
 r_void
 id|signal_fault
 c_func

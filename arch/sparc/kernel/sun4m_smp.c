@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
@@ -1670,20 +1671,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|sparc_do_profile
-c_func
-(paren
-r_int
-r_int
-id|pc
-comma
-r_int
-r_int
-id|o7
-)paren
-suffix:semicolon
 DECL|function|smp4m_percpu_timer_interrupt
 r_void
 id|smp4m_percpu_timer_interrupt
@@ -1709,29 +1696,14 @@ c_func
 id|cpu
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
-)paren
-(brace
-id|sparc_do_profile
-c_func
-(paren
-id|regs-&gt;pc
-comma
-id|regs-&gt;u_regs
-(braket
-id|UREG_RETPC
-)braket
-)paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

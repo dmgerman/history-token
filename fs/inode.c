@@ -727,6 +727,11 @@ op_star
 id|inode
 )paren
 (brace
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|invalidate_inode_buffers
 c_func
 (paren

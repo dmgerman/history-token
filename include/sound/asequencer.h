@@ -199,7 +199,7 @@ multiline_comment|/* 150-151: kernel events with quote - DO NOT use in user clie
 DECL|macro|SNDRV_SEQ_EVENT_KERNEL_ERROR
 mdefine_line|#define SNDRV_SEQ_EVENT_KERNEL_ERROR&t;150
 DECL|macro|SNDRV_SEQ_EVENT_KERNEL_QUOTE
-mdefine_line|#define SNDRV_SEQ_EVENT_KERNEL_QUOTE&t;151
+mdefine_line|#define SNDRV_SEQ_EVENT_KERNEL_QUOTE&t;151&t;/* obsolete */
 multiline_comment|/* 152-191: reserved */
 multiline_comment|/* 192-254: hardware specific events */
 multiline_comment|/* 255: special event */

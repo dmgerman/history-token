@@ -1331,9 +1331,11 @@ id|regs
 suffix:semicolon
 multiline_comment|/*&n; * In the SMP case we use the local APIC timer interrupt to do the profiling,&n; * except when we simulate SMP mode on a uniprocessor system, in that case we&n; * have to call the local interrupt handler.&n; */
 macro_line|#ifndef CONFIG_X86_LOCAL_APIC
-id|x86_do_profile
+id|profile_tick
 c_func
 (paren
+id|CPU_PROFILING
+comma
 id|regs
 )paren
 suffix:semicolon

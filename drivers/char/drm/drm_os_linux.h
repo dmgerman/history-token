@@ -17,12 +17,18 @@ mdefine_line|#define DRM_UDELAY(d)&t;&t;&t;udelay(d)
 multiline_comment|/** Read a byte from a MMIO region */
 DECL|macro|DRM_READ8
 mdefine_line|#define DRM_READ8(map, offset)&t;&t;readb(((unsigned long)(map)-&gt;handle) + (offset))
+multiline_comment|/** Read a word from a MMIO region */
+DECL|macro|DRM_READ16
+mdefine_line|#define DRM_READ16(map, offset)         readw(((unsigned long)(map)-&gt;handle) + (offset))
 multiline_comment|/** Read a dword from a MMIO region */
 DECL|macro|DRM_READ32
 mdefine_line|#define DRM_READ32(map, offset)&t;&t;readl(((unsigned long)(map)-&gt;handle) + (offset))
 multiline_comment|/** Write a byte into a MMIO region */
 DECL|macro|DRM_WRITE8
 mdefine_line|#define DRM_WRITE8(map, offset, val)&t;writeb(val, ((unsigned long)(map)-&gt;handle) + (offset))
+multiline_comment|/** Write a word into a MMIO region */
+DECL|macro|DRM_WRITE16
+mdefine_line|#define DRM_WRITE16(map, offset, val)   writew(val, ((unsigned long)(map)-&gt;handle) + (offset))
 multiline_comment|/** Write a dword into a MMIO region */
 DECL|macro|DRM_WRITE32
 mdefine_line|#define DRM_WRITE32(map, offset, val)&t;writel(val, ((unsigned long)(map)-&gt;handle) + (offset))

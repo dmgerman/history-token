@@ -147,8 +147,7 @@ r_int
 id|seq_mode
 )paren
 suffix:semicolon
-id|evrec_t
-op_star
+r_int
 id|snd_seq_oss_readq_pick
 c_func
 (paren
@@ -156,26 +155,18 @@ id|seq_oss_readq_t
 op_star
 id|q
 comma
-r_int
-id|blocking
-comma
-r_int
-r_int
+id|evrec_t
 op_star
-id|rflags
+id|rec
 )paren
 suffix:semicolon
 r_void
-id|snd_seq_oss_readq_unlock
+id|snd_seq_oss_readq_wait
 c_func
 (paren
 id|seq_oss_readq_t
 op_star
 id|q
-comma
-r_int
-r_int
-id|flags
 )paren
 suffix:semicolon
 r_void
@@ -185,11 +176,11 @@ c_func
 id|seq_oss_readq_t
 op_star
 id|q
-comma
-r_int
-r_int
-id|flags
 )paren
 suffix:semicolon
+DECL|macro|snd_seq_oss_readq_lock
+mdefine_line|#define snd_seq_oss_readq_lock(q, flags) spin_lock_irqsave(&amp;(q)-&gt;lock, flags)
+DECL|macro|snd_seq_oss_readq_unlock
+mdefine_line|#define snd_seq_oss_readq_unlock(q, flags) spin_unlock_irqrestore(&amp;(q)-&gt;lock, flags)
 macro_line|#endif
 eof

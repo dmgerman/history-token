@@ -440,7 +440,7 @@ op_star
 id|str
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_OSSEMUL) &amp;&amp; defined(CONFIG_PROC_FS)
 r_extern
 r_int
 id|snd_info_minor_register
@@ -457,6 +457,11 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|snd_info_minor_register
+mdefine_line|#define snd_info_minor_register() /* NOP */
+DECL|macro|snd_info_minor_unregister
+mdefine_line|#define snd_info_minor_unregister() /* NOP */
 macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 r_extern

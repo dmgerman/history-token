@@ -1921,11 +1921,11 @@ id|srcidx
 suffix:semicolon
 id|dptr-&gt;srcs
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
 id|nsrcs
-op_star
+comma
 r_sizeof
 (paren
 op_star

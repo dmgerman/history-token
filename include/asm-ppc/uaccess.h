@@ -377,6 +377,10 @@ DECL|macro|__copy_from_user
 mdefine_line|#define __copy_from_user(to, from, size) &bslash;&n;&t;__copy_tofrom_user((void __user *)(to), (from), (size))
 DECL|macro|__copy_to_user
 mdefine_line|#define __copy_to_user(to, from, size) &bslash;&n;&t;__copy_tofrom_user((to), (void __user *)(from), (size))
+DECL|macro|__copy_to_user_inatomic
+mdefine_line|#define __copy_to_user_inatomic __copy_to_user
+DECL|macro|__copy_from_user_inatomic
+mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 r_extern
 r_int
 r_int

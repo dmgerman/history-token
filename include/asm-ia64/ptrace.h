@@ -599,6 +599,9 @@ macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * We use the ia64_psr(regs)-&gt;ri to determine which of the three&n; * instructions in bundle (16 bytes) took the sample. Generate&n; * the canonical representation by adding to instruction pointer.&n; */
 DECL|macro|instruction_pointer
 macro_line|# define instruction_pointer(regs) ((regs)-&gt;cr_iip + ia64_psr(regs)-&gt;ri)
+multiline_comment|/* Conserve space in histogram by encoding slot bits in address&n; * bits 2 and 3 rather than bits 0 and 1.&n; */
+DECL|macro|profile_pc
+mdefine_line|#define profile_pc(regs)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long __ip = instruction_pointer(regs);&t;&t;&t;&bslash;&n;&t;(__ip &amp; ~3UL) + ((__ip &amp; 3UL) &lt;&lt; 2);&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/* given a pointer to a task_struct, return the user&squot;s pt_regs */
 DECL|macro|ia64_task_regs
 macro_line|# define ia64_task_regs(t)&t;&t;(((struct pt_regs *) ((char *) (t) + IA64_STK_OFFSET)) - 1)

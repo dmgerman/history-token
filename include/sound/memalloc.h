@@ -14,7 +14,7 @@ DECL|member|type
 r_int
 id|type
 suffix:semicolon
-multiline_comment|/* SNDRV_MEM_TYPE_XXX */
+multiline_comment|/* SNDRV_DMA_TYPE_XXX */
 DECL|member|dev
 r_struct
 id|device
@@ -22,12 +22,6 @@ op_star
 id|dev
 suffix:semicolon
 multiline_comment|/* generic device */
-DECL|member|id
-r_int
-r_int
-id|id
-suffix:semicolon
-multiline_comment|/* a unique ID */
 )brace
 suffix:semicolon
 macro_line|#ifndef snd_dma_pci_data
@@ -56,6 +50,12 @@ DECL|struct|snd_dma_buffer
 r_struct
 id|snd_dma_buffer
 (brace
+DECL|member|dev
+r_struct
+id|snd_dma_device
+id|dev
+suffix:semicolon
+multiline_comment|/* device type */
 DECL|member|area
 r_int
 r_char
@@ -133,7 +133,8 @@ suffix:semicolon
 multiline_comment|/* page table (for vmap/vunmap) */
 DECL|member|dev
 r_struct
-id|snd_dma_device
+id|device
+op_star
 id|dev
 suffix:semicolon
 )brace
@@ -200,9 +201,11 @@ r_int
 id|snd_dma_alloc_pages
 c_func
 (paren
-r_const
+r_int
+id|type
+comma
 r_struct
-id|snd_dma_device
+id|device
 op_star
 id|dev
 comma
@@ -219,9 +222,11 @@ r_int
 id|snd_dma_alloc_pages_fallback
 c_func
 (paren
-r_const
+r_int
+id|type
+comma
 r_struct
-id|snd_dma_device
+id|device
 op_star
 id|dev
 comma
@@ -238,12 +243,6 @@ r_void
 id|snd_dma_free_pages
 c_func
 (paren
-r_const
-r_struct
-id|snd_dma_device
-op_star
-id|dev
-comma
 r_struct
 id|snd_dma_buffer
 op_star
@@ -251,47 +250,34 @@ id|dmab
 )paren
 suffix:semicolon
 multiline_comment|/* buffer-preservation managements */
+DECL|macro|snd_dma_pci_buf_id
+mdefine_line|#define snd_dma_pci_buf_id(pci)&t;(((unsigned int)(pci)-&gt;vendor &lt;&lt; 16) | (pci)-&gt;device)
 r_int
-id|snd_dma_get_reserved
+id|snd_dma_get_reserved_buf
 c_func
 (paren
-r_const
-r_struct
-id|snd_dma_device
-op_star
-id|dev
-comma
 r_struct
 id|snd_dma_buffer
 op_star
 id|dmab
-)paren
-suffix:semicolon
-r_int
-id|snd_dma_free_reserved
-c_func
-(paren
-r_const
-r_struct
-id|snd_dma_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_int
-id|snd_dma_set_reserved
-c_func
-(paren
-r_const
-r_struct
-id|snd_dma_device
-op_star
-id|dev
 comma
+r_int
+r_int
+id|id
+)paren
+suffix:semicolon
+r_int
+id|snd_dma_reserve_buf
+c_func
+(paren
 r_struct
 id|snd_dma_buffer
 op_star
 id|dmab
+comma
+r_int
+r_int
+id|id
 )paren
 suffix:semicolon
 multiline_comment|/* basic memory allocation functions */
@@ -306,23 +292,6 @@ comma
 r_int
 r_int
 id|gfp_flags
-)paren
-suffix:semicolon
-r_void
-op_star
-id|snd_malloc_pages_fallback
-c_func
-(paren
-r_int
-id|size
-comma
-r_int
-r_int
-id|gfp_flags
-comma
-r_int
-op_star
-id|res_size
 )paren
 suffix:semicolon
 r_void

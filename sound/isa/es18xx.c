@@ -254,8 +254,6 @@ r_struct
 id|_snd_es18xx
 id|es18xx_t
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t es18xx_t
 multiline_comment|/* Lowlevel */
 DECL|macro|DAC1
 mdefine_line|#define DAC1 0x01
@@ -3173,16 +3171,7 @@ id|es18xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es18xx_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 r_char
@@ -4709,18 +4698,10 @@ id|es18xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es18xx_t
-comma
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
-)paren
-comma
-r_return
 )paren
 suffix:semicolon
 id|chip-&gt;master_volume
@@ -7772,15 +7753,7 @@ id|es18xx_t
 op_star
 id|codec
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es18xx_t
-comma
 id|pcm-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|codec-&gt;pcm
 op_assign
@@ -8048,17 +8021,7 @@ id|es18xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es18xx_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 id|snd_pcm_suspend_all
 c_func
@@ -8142,17 +8105,7 @@ id|es18xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es18xx_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 multiline_comment|/* restore PM register, we won&squot;t wake till (not 0x07) i/o activity though */
 id|snd_es18xx_write
@@ -8313,7 +8266,7 @@ id|chip-&gt;dma2
 )paren
 suffix:semicolon
 )brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -8338,17 +8291,7 @@ id|es18xx_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es18xx_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_es18xx_free
@@ -8422,12 +8365,16 @@ l_int|NULL
 suffix:semicolon
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|es18xx_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -9326,13 +9273,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{ESS,ES1868 PnP AudioDrive},&quot;
@@ -9522,14 +9463,6 @@ comma
 l_string|&quot;Index value for ES18xx soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -9550,14 +9483,6 @@ comma
 l_string|&quot;ID string for ES18xx soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -9576,14 +9501,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable ES18xx soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
@@ -9607,14 +9524,6 @@ comma
 l_string|&quot;PnP detection for specified soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|isapnp
-comma
-id|SNDRV_ISAPNP_DESC
-)paren
-suffix:semicolon
 macro_line|#endif
 id|module_param_array
 c_func
@@ -9634,15 +9543,6 @@ c_func
 id|port
 comma
 l_string|&quot;Port # for ES18xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x220,0x280,0x20}},prefers:{0x220},base:16,dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -9665,15 +9565,6 @@ comma
 l_string|&quot;MPU-401 port # for ES18xx driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|mpu_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x300,0x330,0x30},{0x800,0xffe,0x2}},prefers:{0x330,0x300},base:16,dialog:combo&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -9692,15 +9583,6 @@ c_func
 id|fm_port
 comma
 l_string|&quot;FM port # for ES18xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|fm_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x388},{0x800,0xffc,0x4}},prefers:{0x388},base:16,dialog:combo&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -9723,15 +9605,6 @@ comma
 l_string|&quot;IRQ # for ES18xx driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_IRQ_DESC
-l_string|&quot;,prefers:{5}&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -9752,15 +9625,6 @@ comma
 l_string|&quot;DMA 1 # for ES18xx driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma1
-comma
-id|SNDRV_DMA8_DESC
-l_string|&quot;,prefers:{1}&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -9779,15 +9643,6 @@ c_func
 id|dma2
 comma
 l_string|&quot;DMA 2 # for ES18xx driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma2
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0},{1},{3},{5}},dialog:list,prefers:{0}&quot;
 )paren
 suffix:semicolon
 DECL|struct|snd_audiodrive

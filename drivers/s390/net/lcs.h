@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 DECL|macro|VERSION_LCS_H
-mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.17 $&quot;
+mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.18 $&quot;
 DECL|macro|LCS_DBF_TEXT
 mdefine_line|#define LCS_DBF_TEXT(level, name, text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(lcs_dbf_##name, level, text); &bslash;&n;&t;} while (0)
 DECL|macro|LCS_DBF_HEX
@@ -188,6 +188,32 @@ id|DEV_STATE_UP
 comma
 DECL|enumerator|DEV_STATE_RECOVER
 id|DEV_STATE_RECOVER
+comma
+)brace
+suffix:semicolon
+DECL|enum|lcs_threads
+r_enum
+id|lcs_threads
+(brace
+DECL|enumerator|LCS_SET_MC_THREAD
+id|LCS_SET_MC_THREAD
+op_assign
+l_int|1
+comma
+DECL|enumerator|LCS_STARTLAN_THREAD
+id|LCS_STARTLAN_THREAD
+op_assign
+l_int|2
+comma
+DECL|enumerator|LCS_STOPLAN_THREAD
+id|LCS_STOPLAN_THREAD
+op_assign
+l_int|4
+comma
+DECL|enumerator|LCS_STARTUP_THREAD
+id|LCS_STARTUP_THREAD
+op_assign
+l_int|8
 comma
 )brace
 suffix:semicolon
@@ -554,6 +580,10 @@ DECL|member|sequence_no
 id|__u16
 id|sequence_no
 suffix:semicolon
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
 multiline_comment|/* Callback for completion notification. */
 DECL|member|callback
 r_void
@@ -574,6 +604,12 @@ suffix:semicolon
 DECL|member|wait_q
 id|wait_queue_head_t
 id|wait_q
+suffix:semicolon
+DECL|member|card
+r_struct
+id|lcs_card
+op_star
+id|card
 suffix:semicolon
 DECL|member|received
 r_int
@@ -720,10 +756,28 @@ r_struct
 id|work_struct
 id|kernel_thread_starter
 suffix:semicolon
-DECL|member|thread_mask
+DECL|member|mask_lock
+id|spinlock_t
+id|mask_lock
+suffix:semicolon
+DECL|member|thread_start_mask
 r_int
 r_int
-id|thread_mask
+id|thread_start_mask
+suffix:semicolon
+DECL|member|thread_running_mask
+r_int
+r_int
+id|thread_running_mask
+suffix:semicolon
+DECL|member|thread_allowed_mask
+r_int
+r_int
+id|thread_allowed_mask
+suffix:semicolon
+DECL|member|wait_q
+id|wait_queue_head_t
+id|wait_q
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_MULTICAST
 DECL|member|ipm_list

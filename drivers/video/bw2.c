@@ -1435,7 +1435,7 @@ id|all-&gt;info.var.green.length
 op_assign
 id|all-&gt;info.var.blue.length
 op_assign
-id|all_info.var.bits_per_pixel
+id|all-&gt;info.var.bits_per_pixel
 suffix:semicolon
 id|all-&gt;info.var.red.offset
 op_assign

@@ -1018,7 +1018,7 @@ id|hose_a-&gt;io_base_phys
 op_assign
 id|MPC85XX_PCI1_IO_BASE
 suffix:semicolon
-macro_line|#if CONFIG_85xx_PCI2
+macro_line|#ifdef CONFIG_85xx_PCI2
 id|isa_io_base
 op_assign
 (paren
@@ -1107,7 +1107,7 @@ comma
 id|hose_a-&gt;first_busno
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_85xx_PCI2
+macro_line|#ifdef CONFIG_85xx_PCI2
 id|hose_b
 op_assign
 id|pcibios_alloc_controller

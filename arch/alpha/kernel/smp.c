@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -2147,16 +2148,12 @@ id|cpu
 )braket
 suffix:semicolon
 multiline_comment|/* Record kernel PC.  */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user
-)paren
-id|alpha_do_profile
+id|profile_tick
 c_func
 (paren
-id|regs-&gt;pc
+id|CPU_PROFILING
+comma
+id|regs
 )paren
 suffix:semicolon
 r_if

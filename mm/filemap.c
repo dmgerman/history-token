@@ -2965,7 +2965,7 @@ id|KM_USER0
 suffix:semicolon
 id|left
 op_assign
-id|__copy_to_user
+id|__copy_to_user_inatomic
 c_func
 (paren
 id|desc-&gt;arg.buf
@@ -6180,7 +6180,7 @@ id|KM_USER0
 suffix:semicolon
 id|left
 op_assign
-id|__copy_from_user
+id|__copy_from_user_inatomic
 c_func
 (paren
 id|kaddr
@@ -6310,7 +6310,7 @@ l_int|0
 suffix:semicolon
 id|left
 op_assign
-id|__copy_from_user
+id|__copy_from_user_inatomic
 c_func
 (paren
 id|vaddr

@@ -643,7 +643,7 @@ id|tmp
 l_int|64
 )braket
 suffix:semicolon
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 macro_line|#endif
 macro_line|#ifdef __BIG_ENDIAN
 macro_line|#error &quot;not running on big endian machines now&quot;
@@ -688,7 +688,7 @@ op_amp
 id|cs-&gt;HW_Flags
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 r_for
 c_loop
 (paren

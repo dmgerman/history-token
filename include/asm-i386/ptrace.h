@@ -128,6 +128,8 @@ DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) ((VM_MASK &amp; (regs)-&gt;eflags) || (3 &amp; (regs)-&gt;xcs))
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;eip)
+DECL|macro|profile_pc
+mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
 macro_line|#endif
 macro_line|#endif
 eof

@@ -5,8 +5,6 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t snd_gus_card_t
 multiline_comment|/*&n; *&n; */
 DECL|macro|GF1_SINGLE
 mdefine_line|#define GF1_SINGLE(xname, xindex, shift, invert) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .index = xindex, &bslash;&n;  .info = snd_gf1_info_single, &bslash;&n;  .get = snd_gf1_get_single, .put = snd_gf1_put_single, &bslash;&n;  .private_value = shift | (invert &lt;&lt; 8) }
@@ -717,8 +715,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|GF1_CONTROLS
-mdefine_line|#define GF1_CONTROLS (sizeof(snd_gf1_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_gf1_controls
 r_static
 id|snd_kcontrol_new_t
@@ -764,8 +760,6 @@ l_int|0
 )paren
 )brace
 suffix:semicolon
-DECL|macro|ICS_CONTROLS
-mdefine_line|#define ICS_CONTROLS (sizeof(snd_ics_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_ics_controls
 r_static
 id|snd_kcontrol_new_t
@@ -988,7 +982,11 @@ ques
 c_cond
 l_int|1
 suffix:colon
-id|GF1_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_gf1_controls
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1048,7 +1046,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|ICS_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_ics_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

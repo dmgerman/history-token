@@ -1,8 +1,6 @@
 multiline_comment|/*&n; *  NRPN / SYSEX callbacks for Emu8k/Emu10k1&n; *&n; *  Copyright (c) 1999-2000 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &quot;emux_voice.h&quot;
 macro_line|#include &lt;sound/asoundef.h&gt;
-DECL|macro|NELEM
-mdefine_line|#define NELEM(arr) (sizeof(arr)/sizeof((arr)[0]))
 multiline_comment|/*&n; * conversion from NRPN/control parameters to Emu8000 raw parameters&n; */
 multiline_comment|/* NRPN / CC -&gt; Emu8000 parameter converter */
 r_typedef
@@ -756,17 +754,6 @@ id|fx_reverb
 comma
 )brace
 suffix:semicolon
-DECL|variable|num_awe_effects
-r_static
-r_int
-id|num_awe_effects
-op_assign
-id|NELEM
-c_func
-(paren
-id|awe_effects
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * GS(SC88) NRPN effects; still experimental&n; */
 multiline_comment|/* cutoff: quarter semitone step, max=255 */
 DECL|function|gs_cutoff
@@ -1054,17 +1041,6 @@ id|gs_vib_delay
 comma
 )brace
 suffix:semicolon
-DECL|variable|num_gs_effects
-r_static
-r_int
-id|num_gs_effects
-op_assign
-id|NELEM
-c_func
-(paren
-id|gs_effects
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * NRPN events&n; */
 r_void
 DECL|function|snd_emux_nrpn
@@ -1090,15 +1066,7 @@ id|port
 suffix:semicolon
 id|port
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_emux_port_t
-comma
 id|p
-comma
-r_return
-)paren
 suffix:semicolon
 id|snd_assert
 c_func
@@ -1167,7 +1135,11 @@ id|send_converted_effect
 (paren
 id|awe_effects
 comma
-id|num_awe_effects
+id|ARRAY_SIZE
+c_func
+(paren
+id|awe_effects
+)paren
 comma
 id|port
 comma
@@ -1217,7 +1189,11 @@ id|send_converted_effect
 (paren
 id|gs_effects
 comma
-id|num_gs_effects
+id|ARRAY_SIZE
+c_func
+(paren
+id|gs_effects
+)paren
 comma
 id|port
 comma
@@ -1386,17 +1362,6 @@ id|xg_attack
 comma
 )brace
 suffix:semicolon
-DECL|variable|num_xg_effects
-r_static
-r_int
-id|num_xg_effects
-op_assign
-id|NELEM
-c_func
-(paren
-id|xg_effects
-)paren
-suffix:semicolon
 r_int
 DECL|function|snd_emux_xg_control
 id|snd_emux_xg_control
@@ -1420,7 +1385,11 @@ c_func
 (paren
 id|xg_effects
 comma
-id|num_xg_effects
+id|ARRAY_SIZE
+c_func
+(paren
+id|xg_effects
+)paren
 comma
 id|port
 comma
@@ -1473,15 +1442,7 @@ id|emu
 suffix:semicolon
 id|port
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|snd_emux_port_t
-comma
 id|p
-comma
-r_return
-)paren
 suffix:semicolon
 id|snd_assert
 c_func
