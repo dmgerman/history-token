@@ -619,6 +619,11 @@ op_assign
 id|nfs_readpages
 comma
 dot
+id|set_page_dirty
+op_assign
+id|__set_page_dirty_nobuffers
+comma
+dot
 id|writepage
 op_assign
 id|nfs_writepage
