@@ -399,6 +399,12 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|request_queue_t
+op_star
+id|q
+op_assign
+id|req-&gt;sr_device-&gt;request_queue
+suffix:semicolon
 id|scsi_put_command
 c_func
 (paren
@@ -408,6 +414,14 @@ suffix:semicolon
 id|req-&gt;sr_command
 op_assign
 l_int|NULL
+suffix:semicolon
+id|scsi_queue_next_request
+c_func
+(paren
+id|q
+comma
+l_int|NULL
+)paren
 suffix:semicolon
 )brace
 id|kfree
