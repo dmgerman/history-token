@@ -2214,7 +2214,7 @@ l_int|14
 op_or
 id|packet-&gt;header_size
 suffix:semicolon
-macro_line|#ifdef __BIG_ENDIAN
+macro_line|#ifndef __BIG_ENDIAN
 id|pcl.buffer
 (braket
 l_int|0
@@ -8040,7 +8040,7 @@ id|PCL_CMD_RCV
 op_or
 l_int|16
 suffix:semicolon
-macro_line|#ifdef __BIG_ENDIAN
+macro_line|#ifndef __BIG_ENDIAN
 id|pcl.buffer
 (braket
 l_int|0
