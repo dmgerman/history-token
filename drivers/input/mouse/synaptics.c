@@ -746,6 +746,14 @@ c_func
 (paren
 id|priv-&gt;ext_cap
 )paren
+op_logical_and
+id|SYN_CAP_MULTI_BUTTON_NO
+c_func
+(paren
+id|priv-&gt;ext_cap
+)paren
+op_le
+l_int|8
 )paren
 id|printk
 c_func
@@ -1770,12 +1778,8 @@ l_int|0x01
 (brace
 r_default
 suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;This touchpad reports more than 8 multi-buttons, don&squot;t know how to handle.&bslash;n&quot;
-)paren
+multiline_comment|/*&n;&t;&t;&t; * if nExtBtn is greater than 8 it should be considered&n;&t;&t;&t; * invalid and treated as 0&n;&t;&t;&t; */
+r_break
 suffix:semicolon
 r_case
 l_int|8
@@ -2304,8 +2308,9 @@ l_int|0x01
 (brace
 r_default
 suffix:colon
+multiline_comment|/*&n;&t;&t;&t;&t; * if nExtBtn is greater than 8 it should be&n;&t;&t;&t;&t; * considered invalid and treated as 0&n;&t;&t;&t;&t; */
+r_break
 suffix:semicolon
-multiline_comment|/* we did comment while initialising... */
 r_case
 l_int|8
 suffix:colon
@@ -2856,8 +2861,9 @@ l_int|0x01
 (brace
 r_default
 suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * if nExtBtn is greater than 8 it should be considered&n;&t;&t;&t; * invalid and treated as 0&n;&t;&t;&t; */
+r_break
 suffix:semicolon
-multiline_comment|/* we did comment while initialising... */
 r_case
 l_int|8
 suffix:colon
