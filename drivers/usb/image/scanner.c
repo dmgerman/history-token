@@ -242,10 +242,10 @@ suffix:semicolon
 )brace
 id|scn
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
+c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 id|dev
@@ -3017,11 +3017,10 @@ op_amp
 id|scn_mutex
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|scn
 )paren
@@ -3058,11 +3057,10 @@ id|scn_usb_data
 op_star
 id|scn
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 multiline_comment|/* remove device id to disable open() */
@@ -3070,11 +3068,10 @@ id|intf-&gt;kdev
 op_assign
 id|NODEV
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren

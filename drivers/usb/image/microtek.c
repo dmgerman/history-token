@@ -2690,11 +2690,10 @@ id|mts_desc
 op_star
 id|to_remove
 op_assign
-id|dev_get_drvdata
+id|usb_get_intfdata
 c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 )paren
 suffix:semicolon
 id|MTS_DEBUG_GOT_HERE
@@ -2702,11 +2701,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 l_int|NULL
 )paren
@@ -3610,11 +3608,10 @@ c_func
 l_string|&quot;completed probe and exiting happily&bslash;n&quot;
 )paren
 suffix:semicolon
-id|dev_set_drvdata
+id|usb_set_intfdata
 c_func
 (paren
-op_amp
-id|intf-&gt;dev
+id|intf
 comma
 id|new_desc
 )paren
