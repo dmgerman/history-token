@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.168 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.168 $&t; $Date: 2004/11/08 15:55:12 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; *&n; * linux/drivers/s390/net/qeth_main.c ($Revision: 1.170 $)&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; *&n; *    Author(s): Original Code written by&n; *&t;&t;&t;  Utz Bacher (utz.bacher@de.ibm.com)&n; *&t;&t; Rewritten by&n; *&t;&t;&t;  Frank Pavlic (pavlic@de.ibm.com) and&n; *&t;&t; &t;  Thomas Spatzier &lt;tspat@de.ibm.com&gt;&n; *&n; *    $Revision: 1.170 $&t; $Date: 2004/11/17 09:54:06 $&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/***&n; * eye catcher; just for debugging purposes&n; */
 r_void
 r_volatile
@@ -49,7 +49,7 @@ macro_line|#include &quot;qeth.h&quot;
 macro_line|#include &quot;qeth_mpc.h&quot;
 macro_line|#include &quot;qeth_fs.h&quot;
 DECL|macro|VERSION_QETH_C
-mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.168 $&quot;
+mdefine_line|#define VERSION_QETH_C &quot;$Revision: 1.170 $&quot;
 DECL|variable|version
 r_static
 r_const
@@ -11205,7 +11205,11 @@ c_cond
 (paren
 id|hdr-&gt;hdr.l3.ext_flags
 op_amp
+(paren
 id|QETH_HDR_EXT_VLAN_FRAME
+op_or
+id|QETH_HDR_EXT_INCLUDE_VLAN_TAG
+)paren
 )paren
 (brace
 id|vlan_tag
@@ -11225,7 +11229,27 @@ suffix:semicolon
 op_star
 id|vlan_tag
 op_assign
+(paren
+id|hdr-&gt;hdr.l3.ext_flags
+op_amp
+id|QETH_HDR_EXT_VLAN_FRAME
+)paren
+ques
+c_cond
 id|hdr-&gt;hdr.l3.vlan_id
+suffix:colon
+op_star
+(paren
+(paren
+id|u16
+op_star
+)paren
+op_amp
+id|hdr-&gt;hdr.l3.dest_addr
+(braket
+l_int|12
+)braket
+)paren
 suffix:semicolon
 op_star
 (paren
@@ -18860,9 +18884,9 @@ l_int|4
 )paren
 ques
 c_cond
-id|QETH_EXT_HDR_VLAN_FRAME
+id|QETH_HDR_EXT_VLAN_FRAME
 suffix:colon
-id|QETH_EXT_HDR_INCLUDE_VLAN_TAG
+id|QETH_HDR_EXT_INCLUDE_VLAN_TAG
 suffix:semicolon
 id|hdr-&gt;hdr.l3.vlan_id
 op_assign
@@ -32759,11 +32783,6 @@ id|card
 )paren
 (brace
 r_int
-id|recover_flag
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|rc
 op_assign
 l_int|0
@@ -32839,10 +32858,6 @@ id|CARD_STATE_UP
 )paren
 )paren
 (brace
-id|recover_flag
-op_assign
-l_int|1
-suffix:semicolon
 id|rtnl_lock
 c_func
 (paren
@@ -32968,7 +32983,7 @@ comma
 op_logical_neg
 id|card-&gt;use_hard_stop
 comma
-id|recover_flag
+l_int|1
 )paren
 suffix:semicolon
 id|qeth_clear_ipacmd_list
@@ -33825,6 +33840,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* this also sets saved unicast addresses */
 id|qeth_set_multicast_list
 c_func
 (paren

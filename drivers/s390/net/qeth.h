@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.123 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.124 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -558,13 +558,6 @@ DECL|macro|QETH_WATERMARK_PACK_FUZZ
 mdefine_line|#define QETH_WATERMARK_PACK_FUZZ 1
 DECL|macro|QETH_IP_HEADER_SIZE
 mdefine_line|#define QETH_IP_HEADER_SIZE 40
-multiline_comment|/* VLAN defines */
-DECL|macro|QETH_EXT_HDR_VLAN_FRAME
-mdefine_line|#define QETH_EXT_HDR_VLAN_FRAME        0x01
-DECL|macro|QETH_EXT_HDR_TOKEN_ID
-mdefine_line|#define QETH_EXT_HDR_TOKEN_ID          0x02
-DECL|macro|QETH_EXT_HDR_INCLUDE_VLAN_TAG
-mdefine_line|#define QETH_EXT_HDR_INCLUDE_VLAN_TAG  0x04
 DECL|struct|qeth_hdr_layer3
 r_struct
 id|qeth_hdr_layer3
@@ -784,13 +777,17 @@ comma
 suffix:semicolon
 multiline_comment|/* flags for qeth_hdr.ext_flags */
 DECL|macro|QETH_HDR_EXT_VLAN_FRAME
-mdefine_line|#define QETH_HDR_EXT_VLAN_FRAME      0x01
-DECL|macro|QETH_HDR_EXT_CSUM_HDR_REQ
-mdefine_line|#define QETH_HDR_EXT_CSUM_HDR_REQ    0x10
-DECL|macro|QETH_HDR_EXT_CSUM_TRANSP_REQ
-mdefine_line|#define QETH_HDR_EXT_CSUM_TRANSP_REQ 0x20
+mdefine_line|#define QETH_HDR_EXT_VLAN_FRAME       0x01
+DECL|macro|QETH_HDR_EXT_TOKEN_ID
+mdefine_line|#define QETH_HDR_EXT_TOKEN_ID         0x02
+DECL|macro|QETH_HDR_EXT_INCLUDE_VLAN_TAG
+mdefine_line|#define QETH_HDR_EXT_INCLUDE_VLAN_TAG 0x04
 DECL|macro|QETH_HDR_EXT_SRC_MAC_ADDR
-mdefine_line|#define QETH_HDR_EXT_SRC_MAC_ADDR    0x08
+mdefine_line|#define QETH_HDR_EXT_SRC_MAC_ADDR     0x08
+DECL|macro|QETH_HDR_EXT_CSUM_HDR_REQ
+mdefine_line|#define QETH_HDR_EXT_CSUM_HDR_REQ     0x10
+DECL|macro|QETH_HDR_EXT_CSUM_TRANSP_REQ
+mdefine_line|#define QETH_HDR_EXT_CSUM_TRANSP_REQ  0x20
 r_static
 r_inline
 r_int
