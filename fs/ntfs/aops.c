@@ -1757,6 +1757,11 @@ id|ntfs_write_block
 c_func
 (paren
 r_struct
+id|writeback_control
+op_star
+id|wbc
+comma
+r_struct
 id|page
 op_star
 id|page
@@ -1950,12 +1955,11 @@ l_string|&quot;Redirtying page so we try again later.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Put the page back on mapping-&gt;dirty_pages, but leave its&n;&t;&t; * buffer&squot;s dirty state as-is.&n;&t;&t; */
-singleline_comment|// FIXME: Once Andrew&squot;s -EAGAIN patch goes in, remove the
-singleline_comment|// __set_page_dirty_nobuffers(page) and return -EAGAIN instead
-singleline_comment|// of zero.
-id|__set_page_dirty_nobuffers
+id|redirty_page_for_writepage
 c_func
 (paren
+id|wbc
+comma
 id|page
 )paren
 suffix:semicolon
@@ -2681,12 +2685,11 @@ l_string|&quot;later.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Put the page back on mapping-&gt;dirty_pages, but&n;&t;&t;&t; * leave its buffer&squot;s dirty state as-is.&n;&t;&t;&t; */
-singleline_comment|// FIXME: Once Andrew&squot;s -EAGAIN patch goes in, remove
-singleline_comment|// the __set_page_dirty_nobuffers(page) and set err to
-singleline_comment|// -EAGAIN instead of zero.
-id|__set_page_dirty_nobuffers
+id|redirty_page_for_writepage
 c_func
 (paren
+id|wbc
+comma
 id|page
 )paren
 suffix:semicolon
@@ -3137,6 +3140,8 @@ r_return
 id|ntfs_write_block
 c_func
 (paren
+id|wbc
+comma
 id|page
 )paren
 suffix:semicolon
@@ -3553,12 +3558,11 @@ l_string|&quot;page so we try again later.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Put the page back on mapping-&gt;dirty_pages, but leave its&n;&t;&t; * buffer&squot;s dirty state as-is.&n;&t;&t; */
-singleline_comment|// FIXME: Once Andrew&squot;s -EAGAIN patch goes in, remove the
-singleline_comment|// __set_page_dirty_nobuffers(page) and set err to -EAGAIN
-singleline_comment|// instead of zero.
-id|__set_page_dirty_nobuffers
+id|redirty_page_for_writepage
 c_func
 (paren
+id|wbc
+comma
 id|page
 )paren
 suffix:semicolon
