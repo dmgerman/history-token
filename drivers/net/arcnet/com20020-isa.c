@@ -567,10 +567,6 @@ id|timeout
 op_amp
 l_int|3
 suffix:semicolon
-id|lp-&gt;owner
-op_assign
-id|THIS_MODULE
-suffix:semicolon
 id|dev-&gt;base_addr
 op_assign
 id|io
