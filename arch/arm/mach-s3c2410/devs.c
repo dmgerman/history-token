@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/devs.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Base S3C2410 platform device definitions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     18-Aug-2004 BJD  Created initial version&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/devs.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; * Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Base S3C2410 platform device definitions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     21-Aug-2004 BJD  Added IRQ_TICK to RTC resources&n; *     18-Aug-2004 BJD  Created initial version&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -783,6 +783,27 @@ id|flags
 op_assign
 id|IORESOURCE_IRQ
 comma
+)brace
+comma
+(braket
+l_int|2
+)braket
+op_assign
+(brace
+dot
+id|start
+op_assign
+id|IRQ_TICK
+comma
+dot
+id|end
+op_assign
+id|IRQ_TICK
+comma
+dot
+id|flags
+op_assign
+id|IORESOURCE_IRQ
 )brace
 )brace
 suffix:semicolon

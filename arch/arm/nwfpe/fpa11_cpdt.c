@@ -112,6 +112,39 @@ id|Fn
 op_assign
 id|typeDouble
 suffix:semicolon
+macro_line|#ifdef __ARMEB__
+id|get_user
+c_func
+(paren
+id|p
+(braket
+l_int|0
+)braket
+comma
+op_amp
+id|pMem
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* sign &amp; exponent */
+id|get_user
+c_func
+(paren
+id|p
+(braket
+l_int|1
+)braket
+comma
+op_amp
+id|pMem
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+macro_line|#else
 id|get_user
 c_func
 (paren
@@ -143,6 +176,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* sign &amp; exponent */
+macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 DECL|function|loadExtended
@@ -658,6 +692,40 @@ dot
 id|fDouble
 suffix:semicolon
 )brace
+macro_line|#ifdef __ARMEB__
+id|put_user
+c_func
+(paren
+id|val.i
+(braket
+l_int|0
+)braket
+comma
+op_amp
+id|pMem
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* msw */
+id|put_user
+c_func
+(paren
+id|val.i
+(braket
+l_int|1
+)braket
+comma
+op_amp
+id|pMem
+(braket
+l_int|1
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* lsw */
+macro_line|#else
 id|put_user
 c_func
 (paren
@@ -690,6 +758,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* lsw */
+macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 DECL|function|storeExtended

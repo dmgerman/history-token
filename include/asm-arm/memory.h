@@ -205,9 +205,9 @@ macro_line|#ifndef __arch_page_to_dma
 DECL|macro|page_to_dma
 mdefine_line|#define page_to_dma(dev, page)&t;&t;((dma_addr_t)__virt_to_bus((unsigned long)page_address(page)))
 DECL|macro|dma_to_virt
-mdefine_line|#define dma_to_virt(dev, addr)&t;&t;(__bus_to_virt(addr))
+mdefine_line|#define dma_to_virt(dev, addr)&t;&t;((void *)__bus_to_virt(addr))
 DECL|macro|virt_to_dma
-mdefine_line|#define virt_to_dma(dev, addr)&t;&t;(__virt_to_bus((unsigned long)(addr)))
+mdefine_line|#define virt_to_dma(dev, addr)&t;&t;((dma_addr_t)__virt_to_bus((unsigned long)(addr)))
 macro_line|#else
 DECL|macro|page_to_dma
 mdefine_line|#define page_to_dma(dev, page)&t;&t;(__arch_page_to_dma(dev, page))

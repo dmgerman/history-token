@@ -1832,7 +1832,7 @@ suffix:semicolon
 )brace
 DECL|function|ep_aio_read_retry
 r_static
-r_int
+id|ssize_t
 id|ep_aio_read_retry
 c_func
 (paren
@@ -1856,7 +1856,7 @@ id|iocb
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-r_int
+id|ssize_t
 id|status
 op_assign
 id|priv-&gt;actual

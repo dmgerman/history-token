@@ -2239,24 +2239,18 @@ suffix:semicolon
 r_int
 r_int
 id|paddr
-comma
-id|size
 suffix:semicolon
 macro_line|#if 0
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;hs_set_mem_map(sock=%d, map=%d, flags=0x%x, sys_start=0x%08lx, sys_end=0x%08lx, card_start=0x%08x)&bslash;n&quot;
+l_string|&quot;hs_set_mem_map(sock=%d, map=%d, flags=0x%x, card_start=0x%08x)&bslash;n&quot;
 comma
 id|sock
 comma
 id|map
 comma
 id|mem-&gt;flags
-comma
-id|mem-&gt;sys_start
-comma
-id|mem-&gt;sys_stop
 comma
 id|mem-&gt;card_start
 )paren
@@ -2280,14 +2274,6 @@ id|sp-&gt;mem_maps
 (braket
 id|map
 )braket
-suffix:semicolon
-id|size
-op_assign
-id|mem-&gt;sys_stop
-op_minus
-id|mem-&gt;sys_start
-op_plus
-l_int|1
 suffix:semicolon
 id|paddr
 op_assign
@@ -2314,17 +2300,9 @@ op_add_assign
 id|mem-&gt;card_start
 suffix:semicolon
 multiline_comment|/* Because we specified SS_CAP_STATIC_MAP, we are obliged&n;&t; * at this time to report the system address corresponding&n;&t; * to the card address requested.  This is how Socket Services&n;&t; * queries our fixed mapping.  I wish this fact had been&n;&t; * documented - Greg Banks.&n;&t; */
-id|mem-&gt;sys_start
+id|mem-&gt;static_start
 op_assign
 id|paddr
-suffix:semicolon
-id|mem-&gt;sys_stop
-op_assign
-id|paddr
-op_plus
-id|size
-op_minus
-l_int|1
 suffix:semicolon
 op_star
 id|smem

@@ -1,10 +1,11 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-bast.c&n; *&n; * Copyright (c) 2003 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-bast.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     20-Aug-2004 BJD  Added s3c2410_board struct&n; *     18-Aug-2004 BJD  Added platform devices from default set&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
@@ -16,6 +17,7 @@ macro_line|#include &lt;asm/mach-types.h&gt;
 singleline_comment|//#include &lt;asm/debug-ll.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
+macro_line|#include &quot;devs.h&quot;
 multiline_comment|/* macros for virtual address mods for the io space entries */
 DECL|macro|VA_C5
 mdefine_line|#define VA_C5(item) ((item) + BAST_VAM_CS5)
@@ -1027,6 +1029,57 @@ comma
 )brace
 )brace
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_struct
+id|platform_device
+op_star
+id|bast_devices
+(braket
+)braket
+id|__initdata
+op_assign
+(brace
+op_amp
+id|s3c_device_usb
+comma
+op_amp
+id|s3c_device_lcd
+comma
+op_amp
+id|s3c_device_wdt
+comma
+op_amp
+id|s3c_device_i2c
+comma
+op_amp
+id|s3c_device_iis
+comma
+)brace
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_struct
+id|s3c2410_board
+id|bast_board
+id|__initdata
+op_assign
+(brace
+dot
+id|devices
+op_assign
+id|bast_devices
+comma
+dot
+id|devices_count
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|bast_devices
+)paren
+)brace
+suffix:semicolon
 DECL|function|bast_map_io
 r_void
 id|__init
@@ -1052,6 +1105,13 @@ id|s3c2410_uartcfgs
 op_assign
 id|bast_uartcfgs
 suffix:semicolon
+id|s3c2410_set_board
+c_func
+(paren
+op_amp
+id|bast_board
+)paren
+suffix:semicolon
 )brace
 DECL|function|bast_init_irq
 r_void
@@ -1062,7 +1122,6 @@ c_func
 r_void
 )paren
 (brace
-singleline_comment|//llprintk(&quot;bast_init_irq:&bslash;n&quot;);
 id|s3c2410_init_irq
 c_func
 (paren
