@@ -25,7 +25,11 @@ comma
 id|priority
 )paren
 suffix:semicolon
-multiline_comment|/* XXX Check for NULL? -DaveM */
+r_if
+c_cond
+(paren
+id|retval
+)paren
 id|sctp_init_cmd_seq
 c_func
 (paren
