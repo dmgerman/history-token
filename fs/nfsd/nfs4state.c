@@ -4890,12 +4890,6 @@ id|nfs4_stateid
 op_star
 id|stp
 comma
-r_struct
-id|nfs4_stateowner
-op_star
-op_star
-id|sopp
-comma
 r_int
 id|flag
 )paren
@@ -9813,9 +9807,6 @@ c_func
 (paren
 id|stp
 comma
-op_amp
-id|close-&gt;cl_stateowner
-comma
 id|OPEN_STATE
 )paren
 suffix:semicolon
@@ -11821,9 +11812,6 @@ id|release_state_owner
 c_func
 (paren
 id|lock_stp
-comma
-op_amp
-id|lock-&gt;lk_stateowner
 comma
 id|LOCK_STATE
 )paren
