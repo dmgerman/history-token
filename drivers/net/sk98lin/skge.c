@@ -20529,11 +20529,6 @@ op_assign
 op_amp
 id|SkGeStats
 suffix:semicolon
-id|dev-&gt;last_stats
-op_assign
-op_amp
-id|SkGeStats
-suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 op_amp
