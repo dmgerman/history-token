@@ -222,8 +222,8 @@ DECL|macro|QUIRK_AUDIO_STANDARD_INTERFACE
 mdefine_line|#define QUIRK_AUDIO_STANDARD_INTERFACE&t;5
 DECL|macro|QUIRK_MIDI_STANDARD_INTERFACE
 mdefine_line|#define QUIRK_MIDI_STANDARD_INTERFACE&t;6
-DECL|macro|QUIRK_AUDIO_EDIROL_UA700
-mdefine_line|#define QUIRK_AUDIO_EDIROL_UA700&t;7
+DECL|macro|QUIRK_AUDIO_EDIROL_UA700_UA25
+mdefine_line|#define QUIRK_AUDIO_EDIROL_UA700_UA25&t;7
 DECL|macro|QUIRK_AUDIO_EDIROL_UA1000
 mdefine_line|#define QUIRK_AUDIO_EDIROL_UA1000&t;8
 DECL|typedef|snd_usb_audio_quirk_t
@@ -300,7 +300,7 @@ multiline_comment|/* for QUIRK_MIDI_MIDIMAN, data points to a snd_usb_midi_endpo
 multiline_comment|/* for QUIRK_COMPOSITE, data points to an array of snd_usb_audio_quirk&n; * structures, terminated with .ifnum = -1 */
 multiline_comment|/* for QUIRK_AUDIO_FIXED_ENDPOINT, data points to an audioformat structure */
 multiline_comment|/* for QUIRK_AUDIO/MIDI_STANDARD_INTERFACE, data is NULL */
-multiline_comment|/* for QUIRK_AUDIO_EDIROL_UA700/1000, data is NULL */
+multiline_comment|/* for QUIRK_AUDIO_EDIROL_UA700_UA25/UA1000, data is NULL */
 multiline_comment|/*&n; */
 DECL|macro|combine_word
 mdefine_line|#define combine_word(s)    ((*s) | ((unsigned int)(s)[1] &lt;&lt; 8))

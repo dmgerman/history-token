@@ -252,10 +252,6 @@ l_string|&quot;The default timer resolution in Hz.&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  INIT PART&n; */
-DECL|variable|snd_seq_in_init
-r_int
-id|snd_seq_in_init
-suffix:semicolon
 DECL|function|alsa_seq_init
 r_static
 r_int
@@ -269,9 +265,10 @@ r_void
 r_int
 id|err
 suffix:semicolon
-id|snd_seq_in_init
-op_assign
-l_int|1
+id|snd_seq_autoload_lock
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -287,8 +284,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
 suffix:semicolon
 multiline_comment|/* init memory, room for selected events */
 r_if
@@ -305,8 +302,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
 suffix:semicolon
 multiline_comment|/* init event queues */
 r_if
@@ -323,8 +320,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
 suffix:semicolon
 multiline_comment|/* register sequencer device */
 r_if
@@ -341,8 +338,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
 suffix:semicolon
 multiline_comment|/* register proc interface */
 r_if
@@ -359,8 +356,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|err
+r_goto
+id|error
 suffix:semicolon
 multiline_comment|/* register our internal client */
 r_if
@@ -377,15 +374,18 @@ c_func
 OL
 l_int|0
 )paren
+r_goto
+id|error
+suffix:semicolon
+id|error
+suffix:colon
+id|snd_seq_autoload_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|err
-suffix:semicolon
-id|snd_seq_in_init
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|alsa_seq_exit

@@ -303,7 +303,7 @@ l_string|&quot; SPDIF=7/8&quot;
 comma
 l_string|&quot; SPDIF=6/9&quot;
 comma
-l_string|&quot; SPDIF=res&quot;
+l_string|&quot; SPDIF=10/11&quot;
 )brace
 suffix:semicolon
 r_static

@@ -3108,7 +3108,7 @@ op_increment
 id|i
 )paren
 (brace
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|us-&gt;urb
@@ -3166,8 +3166,6 @@ id|format
 r_int
 id|alternate
 comma
-id|unlink_err
-comma
 id|err
 suffix:semicolon
 r_struct
@@ -3219,9 +3217,7 @@ id|p
 )paren
 suffix:semicolon
 )brace
-id|unlink_err
-op_assign
-id|usb_unlink_urb
+id|usb_kill_urb
 c_func
 (paren
 id|usX2Y-&gt;In04urb
@@ -3255,14 +3251,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-l_int|0
-op_eq
-id|unlink_err
-)paren
-(brace
 id|usX2Y-&gt;In04urb-&gt;dev
 op_assign
 id|usX2Y-&gt;chip.dev
@@ -3277,7 +3265,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-)brace
 id|list_for_each
 c_func
 (paren

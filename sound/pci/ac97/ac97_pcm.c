@@ -1169,7 +1169,7 @@ id|es
 op_assign
 id|ac97-&gt;regs
 (braket
-id|AC97_EXTENDED_STATUS
+id|AC97_EXTENDED_ID
 )braket
 op_and_assign
 op_complement
@@ -1216,7 +1216,7 @@ c_func
 (paren
 id|ac97
 comma
-id|AC97_EXTENDED_STATUS
+id|AC97_EXTENDED_ID
 comma
 id|es
 )paren
