@@ -1956,6 +1956,8 @@ op_amp
 id|count
 comma
 l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|resp-&gt;count

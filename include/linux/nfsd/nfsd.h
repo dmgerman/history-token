@@ -81,6 +81,19 @@ DECL|member|dotonly
 r_char
 id|dotonly
 suffix:semicolon
+DECL|member|nfserr
+r_int
+id|nfserr
+suffix:semicolon
+multiline_comment|/* v4 only */
+DECL|member|bmval
+id|u32
+id|bmval
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* v4 only */
 )brace
 suffix:semicolon
 DECL|typedef|encode_dent_fn
@@ -618,6 +631,10 @@ comma
 id|u32
 op_star
 id|verf
+comma
+id|u32
+op_star
+id|bmval
 )paren
 suffix:semicolon
 r_int
