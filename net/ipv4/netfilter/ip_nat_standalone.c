@@ -323,19 +323,6 @@ multiline_comment|/* Fall thru... (Only ICMPs can be IP_CT_IS_REPLY) */
 r_case
 id|IP_CT_NEW
 suffix:colon
-macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
-multiline_comment|/* LOCAL_IN hook doesn&squot;t have a chain and thus doesn&squot;t care&n;&t;&t; * about new packets -HW */
-r_if
-c_cond
-(paren
-id|hooknum
-op_eq
-id|NF_IP_LOCAL_IN
-)paren
-r_return
-id|NF_ACCEPT
-suffix:semicolon
-macro_line|#endif
 id|info
 op_assign
 op_amp
@@ -418,6 +405,23 @@ suffix:semicolon
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_IP_NF_NAT_LOCAL
+multiline_comment|/* LOCAL_IN hook doesn&squot;t have a chain!  */
+r_if
+c_cond
+(paren
+id|hooknum
+op_eq
+id|NF_IP_LOCAL_IN
+)paren
+(brace
+id|ret
+op_assign
+id|NF_ACCEPT
+suffix:semicolon
+)brace
+r_else
+macro_line|#endif
 id|ret
 op_assign
 id|ip_nat_rule_find
