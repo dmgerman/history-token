@@ -370,12 +370,12 @@ suffix:semicolon
 multiline_comment|/* register cache */
 DECL|member|reg_accessed
 r_int
-r_char
+r_int
 id|reg_accessed
 (braket
 l_int|0x80
 op_div
-l_int|8
+id|BITS_PER_LONG
 )braket
 suffix:semicolon
 multiline_comment|/* bit flags */
