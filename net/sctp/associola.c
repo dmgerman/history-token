@@ -1178,6 +1178,11 @@ comma
 id|asoc-&gt;max_retrans
 )paren
 suffix:semicolon
+multiline_comment|/* By default, enable heartbeat for peer address. */
+id|peer-&gt;hb_allowed
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Initialize the peer&squot;s heartbeat interval based on the&n;&t; * sock configured value.&n;&t; */
 id|sp
 op_assign
@@ -1385,7 +1390,7 @@ id|command
 r_case
 id|SCTP_TRANSPORT_UP
 suffix:colon
-id|transport-&gt;state.active
+id|transport-&gt;active
 op_assign
 l_int|1
 suffix:semicolon
@@ -1398,7 +1403,7 @@ suffix:semicolon
 r_case
 id|SCTP_TRANSPORT_DOWN
 suffix:colon
-id|transport-&gt;state.active
+id|transport-&gt;active
 op_assign
 l_int|0
 suffix:semicolon
@@ -1491,7 +1496,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|t-&gt;state.active
+id|t-&gt;active
 )paren
 r_continue
 suffix:semicolon
@@ -1534,7 +1539,7 @@ multiline_comment|/* RFC 2960 6.4 Multi-Homed SCTP Endpoints&n;&t; *&n;&t; * By 
 r_if
 c_cond
 (paren
-id|asoc-&gt;peer.primary_path-&gt;state.active
+id|asoc-&gt;peer.primary_path-&gt;active
 op_logical_and
 id|first
 op_ne
@@ -2852,7 +2857,7 @@ multiline_comment|/* Try to find an active transport. */
 r_if
 c_cond
 (paren
-id|t-&gt;state.active
+id|t-&gt;active
 )paren
 (brace
 r_break

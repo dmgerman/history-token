@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement that state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement that state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *    Ardelle Fan&t;    &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -130,6 +130,21 @@ id|sctp_cmd_seq_t
 op_star
 comma
 id|sctp_association_t
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|sctp_cmd_hb_timers_update
+c_func
+(paren
+id|sctp_cmd_seq_t
+op_star
+comma
+id|sctp_association_t
+op_star
+comma
+id|sctp_transport_t
 op_star
 )paren
 suffix:semicolon
@@ -493,6 +508,11 @@ id|SCTP_DISPOSITION_NOMEM
 suffix:colon
 multiline_comment|/* We ran out of memory, so we need to discard this&n;&t;&t; * packet.&n;&t;&t; */
 multiline_comment|/* BUG--we should now recover some memory, probably by&n;&t;&t; * reneging...&n;&t;&t; */
+id|error
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1672,6 +1692,25 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|SCTP_CMD_HB_TIMERS_UPDATE
+suffix:colon
+id|t
+op_assign
+id|command-&gt;obj.transport
+suffix:semicolon
+id|sctp_cmd_hb_timers_update
+c_func
+(paren
+id|commands
+comma
+id|asoc
+comma
+id|t
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|SCTP_CMD_REPORT_ERROR
 suffix:colon
 id|error
@@ -2813,7 +2852,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|transport-&gt;state.active
+id|transport-&gt;active
 op_logical_and
 (paren
 id|transport-&gt;error_count
@@ -3218,6 +3257,51 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* Helper function to update the heartbeat timer. */
+DECL|function|sctp_cmd_hb_timers_update
+r_static
+r_void
+id|sctp_cmd_hb_timers_update
+c_func
+(paren
+id|sctp_cmd_seq_t
+op_star
+id|cmds
+comma
+id|sctp_association_t
+op_star
+id|asoc
+comma
+id|sctp_transport_t
+op_star
+id|t
+)paren
+(brace
+multiline_comment|/* Update the heartbeat timer.  */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mod_timer
+c_func
+(paren
+op_amp
+id|t-&gt;hb_timer
+comma
+id|t-&gt;hb_interval
+op_plus
+id|t-&gt;rto
+op_plus
+id|jiffies
+)paren
+)paren
+id|sctp_transport_hold
+c_func
+(paren
+id|t
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Helper function to break out SCTP_CMD_SET_BIND_ADDR handling.  */
 DECL|function|sctp_cmd_set_bind_addrs
 r_void
@@ -3322,7 +3406,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|t-&gt;state.active
+id|t-&gt;active
 )paren
 id|sctp_assoc_control_transport
 c_func
@@ -3392,30 +3476,6 @@ c_func
 (paren
 id|asoc
 comma
-id|t
-)paren
-suffix:semicolon
-multiline_comment|/* Update the heartbeat timer.  */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mod_timer
-c_func
-(paren
-op_amp
-id|t-&gt;hb_timer
-comma
-id|t-&gt;hb_interval
-op_plus
-id|t-&gt;rto
-op_plus
-id|jiffies
-)paren
-)paren
-id|sctp_transport_hold
-c_func
-(paren
 id|t
 )paren
 suffix:semicolon

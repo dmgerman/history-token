@@ -226,6 +226,19 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|sctp_primitive_REQUESTHEARTBEAT
+c_func
+(paren
+id|sctp_association_t
+op_star
+comma
+r_void
+op_star
+id|arg
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * sctp_crc32c.c&n; */
 r_extern
 id|__u32
