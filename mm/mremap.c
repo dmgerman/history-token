@@ -477,13 +477,6 @@ r_int
 id|len
 )paren
 (brace
-r_struct
-id|mm_struct
-op_star
-id|mm
-op_assign
-id|vma-&gt;vm_mm
-suffix:semicolon
 r_int
 r_int
 id|offset
