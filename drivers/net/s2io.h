@@ -1769,6 +1769,10 @@ DECL|macro|LINK_DOWN
 mdefine_line|#define&t;LINK_DOWN&t;1
 DECL|macro|LINK_UP
 mdefine_line|#define&t;LINK_UP&t;&t;2
+DECL|member|task_flag
+r_int
+id|task_flag
+suffix:semicolon
 DECL|typedef|nic_t
 )brace
 id|nic_t
