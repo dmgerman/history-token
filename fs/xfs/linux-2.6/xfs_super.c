@@ -2794,7 +2794,7 @@ comma
 id|BBSIZE
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_EXPORTFS
+macro_line|#ifdef CONFIG_XFS_EXPORT
 id|sb-&gt;s_export_op
 op_assign
 op_amp
