@@ -1201,6 +1201,8 @@ id|kmalloc
 c_func
 (paren
 id|ns_len
+op_plus
+l_int|1
 comma
 id|GFP_NOFS
 )paren
@@ -1345,6 +1347,7 @@ suffix:semicolon
 id|ns_len
 op_assign
 (paren
+(paren
 id|ns_len
 op_plus
 l_int|64
@@ -1352,6 +1355,9 @@ l_int|64
 op_amp
 op_complement
 l_int|63
+)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|kfree
 c_func

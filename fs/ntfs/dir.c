@@ -615,7 +615,7 @@ l_string|&quot;in phase 1. Please run chkdsk &quot;
 l_string|&quot;and if that doesn&squot;t find any &quot;
 l_string|&quot;errors please report you saw &quot;
 l_string|&quot;this message to &quot;
-l_string|&quot;linux-ntfs@lists.sf.net.&quot;
+l_string|&quot;linux-ntfs-dev@lists.sf.net.&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1696,7 +1696,7 @@ l_string|&quot;in phase 2. Please run chkdsk &quot;
 l_string|&quot;and if that doesn&squot;t find any &quot;
 l_string|&quot;errors please report you saw &quot;
 l_string|&quot;this message to &quot;
-l_string|&quot;linux-ntfs@lists.sf.net.&quot;
+l_string|&quot;linux-ntfs-dev@lists.sf.net.&quot;
 )paren
 suffix:semicolon
 id|ntfs_unmap_page
