@@ -8,7 +8,7 @@ macro_line|#ifndef __ASSEMBLY__
 DECL|macro|__REG
 macro_line|# define __REG(x)&t;(*((volatile u32 *)IO_ADDRESS(x)))
 DECL|macro|__REG2
-macro_line|# define __REG2(x,y)&t;&bslash;&n;&t;( __builtin_constant_p(y) ? (__REG((x) + (y))) &bslash;&n;&t;&t;&t;  : (*(volatile u32 *)((u32)&amp;__REG(x) + (y))) )
+macro_line|# define __REG2(x,y)        (*(volatile u32 *)((u32)&amp;__REG(x) + (y)))
 macro_line|#endif
 multiline_comment|/*&n; * Memory map&n; */
 DECL|macro|IMX_IO_PHYS

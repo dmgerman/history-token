@@ -192,8 +192,6 @@ DECL|macro|IDP_BUSY_LED
 mdefine_line|#define IDP_BUSY_LED&t;(1&lt;&lt;6)
 DECL|macro|IDP_LEDS_MASK
 mdefine_line|#define IDP_LEDS_MASK&t;(IDP_HB_LED | IDP_BUSY_LED)
-DECL|macro|IDP_WRITE_LEDS
-mdefine_line|#define IDP_WRITE_LEDS(value)&t;(IDP_CPLD_LED_CONTROL = (IDP_CPLD_LED_CONTROL &amp; ((~(IDP_LEDS_MASK)) | value)))
 multiline_comment|/*&n; * macros for MTD driver&n; */
 DECL|macro|FLASH_WRITE_PROTECT_DISABLE
 mdefine_line|#define FLASH_WRITE_PROTECT_DISABLE()&t;((IDP_CPLD_FLASH_WE) &amp;= ~(0x1))

@@ -2571,11 +2571,6 @@ id|cpu_is_omap16xx
 c_func
 (paren
 )paren
-op_logical_or
-id|cpu_is_omap730
-c_func
-(paren
-)paren
 )paren
 (brace
 multiline_comment|/* If the sync device is set, configure it dynamically. */

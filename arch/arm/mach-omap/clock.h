@@ -42,7 +42,7 @@ id|__s8
 id|usecount
 suffix:semicolon
 DECL|member|flags
-id|__u8
+id|__u16
 id|flags
 suffix:semicolon
 DECL|member|enable_reg
@@ -76,6 +76,10 @@ op_star
 id|set_rate
 )paren
 (paren
+r_struct
+id|clk
+op_star
+comma
 r_int
 r_int
 )paren
@@ -87,8 +91,24 @@ op_star
 id|round_rate
 )paren
 (paren
+r_struct
+id|clk
+op_star
+comma
 r_int
 r_int
+)paren
+suffix:semicolon
+DECL|member|init
+r_void
+(paren
+op_star
+id|init
+)paren
+(paren
+r_struct
+id|clk
+op_star
 )paren
 suffix:semicolon
 )brace
@@ -139,6 +159,8 @@ DECL|macro|CLOCK_IN_OMAP16XX
 mdefine_line|#define CLOCK_IN_OMAP16XX&t;64
 DECL|macro|CLOCK_IN_OMAP1510
 mdefine_line|#define CLOCK_IN_OMAP1510&t;128
+DECL|macro|CLOCK_IN_OMAP730
+mdefine_line|#define CLOCK_IN_OMAP730&t;256
 multiline_comment|/* ARM_CKCTL bit shifts */
 DECL|macro|CKCTL_PERDIV_OFFSET
 mdefine_line|#define CKCTL_PERDIV_OFFSET&t;0
@@ -200,10 +222,18 @@ mdefine_line|#define EN_TC1_CK&t;2
 DECL|macro|EN_TC2_CK
 mdefine_line|#define EN_TC2_CK&t;4
 multiline_comment|/* Various register defines for clock controls scattered around OMAP chip */
-DECL|macro|USB_MCLK_EN
-mdefine_line|#define USB_MCLK_EN&t;&t;4&t;/* In ULPD_CLKC_CTRL */
+DECL|macro|USB_MCLK_EN_BIT
+mdefine_line|#define USB_MCLK_EN_BIT&t;&t;4&t;/* In ULPD_CLKC_CTRL */
 DECL|macro|USB_HOST_HHC_UHOST_EN
 mdefine_line|#define USB_HOST_HHC_UHOST_EN&t;9&t;/* In MOD_CONF_CTRL_0 */
+DECL|macro|SWD_ULPD_PLL_CLK_REQ
+mdefine_line|#define SWD_ULPD_PLL_CLK_REQ&t;1&t;/* In SWD_CLK_DIV_CTRL_SEL */
+DECL|macro|COM_ULPD_PLL_CLK_REQ
+mdefine_line|#define COM_ULPD_PLL_CLK_REQ&t;1&t;/* In COM_CLK_DIV_CTRL_SEL */
+DECL|macro|SWD_CLK_DIV_CTRL_SEL
+mdefine_line|#define SWD_CLK_DIV_CTRL_SEL&t;0xfffe0874
+DECL|macro|COM_CLK_DIV_CTRL_SEL
+mdefine_line|#define COM_CLK_DIV_CTRL_SEL&t;0xfffe0878
 r_int
 id|clk_register
 c_func

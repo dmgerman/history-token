@@ -56,8 +56,18 @@ DECL|macro|ULPD_IT_STATUS
 mdefine_line|#define ULPD_IT_STATUS&t;&t;(ULPD_REG_BASE + 0x14)
 DECL|macro|ULPD_CLOCK_CTRL
 mdefine_line|#define ULPD_CLOCK_CTRL&t;&t;(ULPD_REG_BASE + 0x30)
+DECL|macro|DIS_USB_PVCI_CLK
+macro_line|#&t;define DIS_USB_PVCI_CLK&t;&t;(1 &lt;&lt; 5)&t;/* no USB/FAC synch */
+DECL|macro|USB_MCLK_EN
+macro_line|#&t;define USB_MCLK_EN&t;&t;(1 &lt;&lt; 4)&t;/* enable W4_USB_CLKO */
 DECL|macro|ULPD_SOFT_REQ
 mdefine_line|#define ULPD_SOFT_REQ&t;&t;(ULPD_REG_BASE + 0x34)
+DECL|macro|SOFT_UDC_REQ
+macro_line|#&t;define SOFT_UDC_REQ&t;&t;(1 &lt;&lt; 4)
+DECL|macro|SOFT_USB_CLK_REQ
+macro_line|#&t;define SOFT_USB_CLK_REQ&t;&t;(1 &lt;&lt; 3)
+DECL|macro|SOFT_DPLL_REQ
+macro_line|#&t;define SOFT_DPLL_REQ&t;&t;(1 &lt;&lt; 0)
 DECL|macro|ULPD_DPLL_CTRL
 mdefine_line|#define ULPD_DPLL_CTRL&t;&t;(ULPD_REG_BASE + 0x3c)
 DECL|macro|ULPD_STATUS_REQ
@@ -66,70 +76,25 @@ DECL|macro|ULPD_APLL_CTRL
 mdefine_line|#define ULPD_APLL_CTRL&t;&t;(ULPD_REG_BASE + 0x4c)
 DECL|macro|ULPD_POWER_CTRL
 mdefine_line|#define ULPD_POWER_CTRL&t;&t;(ULPD_REG_BASE + 0x50)
+DECL|macro|ULPD_SOFT_DISABLE_REQ_REG
+mdefine_line|#define ULPD_SOFT_DISABLE_REQ_REG&t;(ULPD_REG_BASE + 0x68)
+DECL|macro|DIS_MMC2_DPLL_REQ
+macro_line|#&t;define DIS_MMC2_DPLL_REQ&t;(1 &lt;&lt; 11)
+DECL|macro|DIS_MMC1_DPLL_REQ
+macro_line|#&t;define DIS_MMC1_DPLL_REQ&t;(1 &lt;&lt; 10)
+DECL|macro|DIS_UART3_DPLL_REQ
+macro_line|#&t;define DIS_UART3_DPLL_REQ&t;(1 &lt;&lt; 9)
+DECL|macro|DIS_UART2_DPLL_REQ
+macro_line|#&t;define DIS_UART2_DPLL_REQ&t;(1 &lt;&lt; 8)
+DECL|macro|DIS_UART1_DPLL_REQ
+macro_line|#&t;define DIS_UART1_DPLL_REQ&t;(1 &lt;&lt; 7)
+DECL|macro|DIS_USB_HOST_DPLL_REQ
+macro_line|#&t;define DIS_USB_HOST_DPLL_REQ&t;(1 &lt;&lt; 6)
+DECL|macro|ULPD_SDW_CLK_DIV_CTRL_SEL
+mdefine_line|#define ULPD_SDW_CLK_DIV_CTRL_SEL&t;(ULPD_REG_BASE + 0x74)
 DECL|macro|ULPD_CAM_CLK_CTRL
 mdefine_line|#define ULPD_CAM_CLK_CTRL&t;(ULPD_REG_BASE + 0x7c)
-multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Timers&n; * ---------------------------------------------------------------------------&n; */
-DECL|macro|OMAP_32kHz_TIMER_BASE
-mdefine_line|#define OMAP_32kHz_TIMER_BASE 0xfffb9000
-multiline_comment|/* 32k Timer Registers */
-DECL|macro|TIMER32k_CR
-mdefine_line|#define TIMER32k_CR&t;&t;0x08
-DECL|macro|TIMER32k_TVR
-mdefine_line|#define TIMER32k_TVR&t;&t;0x00
-DECL|macro|TIMER32k_TCR
-mdefine_line|#define TIMER32k_TCR&t;&t;0x04
-multiline_comment|/* 32k Timer Control Register definition */
-DECL|macro|TIMER32k_TSS
-mdefine_line|#define TIMER32k_TSS&t;&t;(1&lt;&lt;0)
-DECL|macro|TIMER32k_TRB
-mdefine_line|#define TIMER32k_TRB&t;&t;(1&lt;&lt;1)
-DECL|macro|TIMER32k_INT
-mdefine_line|#define TIMER32k_INT&t;&t;(1&lt;&lt;2)
-DECL|macro|TIMER32k_ARL
-mdefine_line|#define TIMER32k_ARL&t;&t;(1&lt;&lt;3)
-multiline_comment|/* MPU Timer base addresses */
-DECL|macro|OMAP_TIMER1_BASE
-mdefine_line|#define OMAP_TIMER1_BASE&t;(0xfffec500)
-DECL|macro|OMAP_TIMER2_BASE
-mdefine_line|#define OMAP_TIMER2_BASE&t;(0xfffec600)
-DECL|macro|OMAP_TIMER3_BASE
-mdefine_line|#define OMAP_TIMER3_BASE&t;(0xfffec700)
-DECL|macro|OMAP_MPUTIMER_BASE
-mdefine_line|#define OMAP_MPUTIMER_BASE&t;OMAP_TIMER1_BASE
-DECL|macro|OMAP_MPUTIMER_OFFSET
-mdefine_line|#define OMAP_MPUTIMER_OFFSET&t;0x100
-multiline_comment|/* MPU Timer Registers */
-DECL|macro|OMAP_TIMER1_CNTL
-mdefine_line|#define OMAP_TIMER1_CNTL&t;(OMAP_TIMER_BASE1 + 0x0)
-DECL|macro|OMAP_TIMER1_LOAD_TIM
-mdefine_line|#define OMAP_TIMER1_LOAD_TIM&t;(OMAP_TIMER_BASE1 + 0x4)
-DECL|macro|OMAP_TIMER1_READ_TIM
-mdefine_line|#define OMAP_TIMER1_READ_TIM&t;(OMAP_TIMER_BASE1 + 0x8)
-DECL|macro|OMAP_TIMER2_CNTL
-mdefine_line|#define OMAP_TIMER2_CNTL&t;(OMAP_TIMER_BASE2 + 0x0)
-DECL|macro|OMAP_TIMER2_LOAD_TIM
-mdefine_line|#define OMAP_TIMER2_LOAD_TIM&t;(OMAP_TIMER_BASE2 + 0x4)
-DECL|macro|OMAP_TIMER2_READ_TIM
-mdefine_line|#define OMAP_TIMER2_READ_TIM&t;(OMAP_TIMER_BASE2 + 0x8)
-DECL|macro|OMAP_TIMER3_CNTL
-mdefine_line|#define OMAP_TIMER3_CNTL&t;(OMAP_TIMER_BASE3 + 0x0)
-DECL|macro|OMAP_TIMER3_LOAD_TIM
-mdefine_line|#define OMAP_TIMER3_LOAD_TIM&t;(OMAP_TIMER_BASE3 + 0x4)
-DECL|macro|OMAP_TIMER3_READ_TIM
-mdefine_line|#define OMAP_TIMER3_READ_TIM&t;(OMAP_TIMER_BASE3 + 0x8)
-multiline_comment|/* CNTL_TIMER register bits */
-DECL|macro|MPUTIM_FREE
-mdefine_line|#define MPUTIM_FREE&t;&t;(1&lt;&lt;6)
-DECL|macro|MPUTIM_CLOCK_ENABLE
-mdefine_line|#define MPUTIM_CLOCK_ENABLE&t;(1&lt;&lt;5)
-DECL|macro|MPUTIM_PTV_MASK
-mdefine_line|#define MPUTIM_PTV_MASK&t;&t;(0x7&lt;&lt;MPUTIM_PTV_BIT)
-DECL|macro|MPUTIM_PTV_BIT
-mdefine_line|#define MPUTIM_PTV_BIT&t;&t;2
-DECL|macro|MPUTIM_AR
-mdefine_line|#define MPUTIM_AR&t;&t;(1&lt;&lt;1)
-DECL|macro|MPUTIM_ST
-mdefine_line|#define MPUTIM_ST&t;&t;(1&lt;&lt;0)
+multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Watchdog timer&n; * ---------------------------------------------------------------------------&n; */
 multiline_comment|/* Watchdog timer within the OMAP3.2 gigacell */
 DECL|macro|OMAP_MPU_WATCHDOG_BASE
 mdefine_line|#define OMAP_MPU_WATCHDOG_BASE&t;(0xfffec800)
@@ -190,41 +155,6 @@ DECL|macro|IRQ_ILR0_REG_OFFSET
 mdefine_line|#define IRQ_ILR0_REG_OFFSET&t;0x1c
 DECL|macro|IRQ_GMR_REG_OFFSET
 mdefine_line|#define IRQ_GMR_REG_OFFSET&t;0xa0
-multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Traffic controller memory interface&n; * ---------------------------------------------------------------------------&n; */
-DECL|macro|TCMIF_BASE
-mdefine_line|#define TCMIF_BASE&t;&t;0xfffecc00
-DECL|macro|IMIF_PRIO
-mdefine_line|#define IMIF_PRIO&t;&t;(TCMIF_BASE + 0x00)
-DECL|macro|EMIFS_PRIO
-mdefine_line|#define EMIFS_PRIO&t;&t;(TCMIF_BASE + 0x04)
-DECL|macro|EMIFF_PRIO
-mdefine_line|#define EMIFF_PRIO&t;&t;(TCMIF_BASE + 0x08)
-DECL|macro|EMIFS_CONFIG
-mdefine_line|#define EMIFS_CONFIG&t;&t;(TCMIF_BASE + 0x0c)
-DECL|macro|EMIFS_CS0_CONFIG
-mdefine_line|#define EMIFS_CS0_CONFIG&t;(TCMIF_BASE + 0x10)
-DECL|macro|EMIFS_CS1_CONFIG
-mdefine_line|#define EMIFS_CS1_CONFIG&t;(TCMIF_BASE + 0x14)
-DECL|macro|EMIFS_CS2_CONFIG
-mdefine_line|#define EMIFS_CS2_CONFIG&t;(TCMIF_BASE + 0x18)
-DECL|macro|EMIFS_CS3_CONFIG
-mdefine_line|#define EMIFS_CS3_CONFIG&t;(TCMIF_BASE + 0x1c)
-DECL|macro|EMIFF_SDRAM_CONFIG
-mdefine_line|#define EMIFF_SDRAM_CONFIG&t;(TCMIF_BASE + 0x20)
-DECL|macro|EMIFF_MRS
-mdefine_line|#define EMIFF_MRS&t;&t;(TCMIF_BASE + 0x24)
-DECL|macro|TC_TIMEOUT1
-mdefine_line|#define TC_TIMEOUT1&t;&t;(TCMIF_BASE + 0x28)
-DECL|macro|TC_TIMEOUT2
-mdefine_line|#define TC_TIMEOUT2&t;&t;(TCMIF_BASE + 0x2c)
-DECL|macro|TC_TIMEOUT3
-mdefine_line|#define TC_TIMEOUT3&t;&t;(TCMIF_BASE + 0x30)
-DECL|macro|TC_ENDIANISM
-mdefine_line|#define TC_ENDIANISM&t;&t;(TCMIF_BASE + 0x34)
-DECL|macro|EMIFF_SDRAM_CONFIG_2
-mdefine_line|#define EMIFF_SDRAM_CONFIG_2&t;(TCMIF_BASE + 0x3c)
-DECL|macro|EMIF_CFG_DYNAMIC_WS
-mdefine_line|#define EMIF_CFG_DYNAMIC_WS&t;(TCMIF_BASE + 0x40)
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * System control registers&n; * ----------------------------------------------------------------------------&n; */
 DECL|macro|MOD_CONF_CTRL_0
 mdefine_line|#define MOD_CONF_CTRL_0&t;&t;0xfffe1080
@@ -323,6 +253,19 @@ DECL|macro|MPUI_DSP_BOOT_CONFIG
 mdefine_line|#define MPUI_DSP_BOOT_CONFIG&t;&t;(MPUI_BASE + 0x18)
 DECL|macro|MPUI_DSP_API_CONFIG
 mdefine_line|#define MPUI_DSP_API_CONFIG&t;&t;(MPUI_BASE + 0x1c)
+multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * LED Pulse Generator&n; * ----------------------------------------------------------------------------&n; */
+DECL|macro|OMAP_LPG1_BASE
+mdefine_line|#define OMAP_LPG1_BASE&t;&t;&t;0xfffbd000
+DECL|macro|OMAP_LPG2_BASE
+mdefine_line|#define OMAP_LPG2_BASE&t;&t;&t;0xfffbd800
+DECL|macro|OMAP_LPG1_LCR
+mdefine_line|#define OMAP_LPG1_LCR&t;&t;&t;(OMAP_LPG1_BASE + 0x00)
+DECL|macro|OMAP_LPG1_PMR
+mdefine_line|#define OMAP_LPG1_PMR&t;&t;&t;(OMAP_LPG1_BASE + 0x04)
+DECL|macro|OMAP_LPG2_LCR
+mdefine_line|#define OMAP_LPG2_LCR&t;&t;&t;(OMAP_LPG2_BASE + 0x00)
+DECL|macro|OMAP_LPG2_PMR
+mdefine_line|#define OMAP_LPG2_PMR&t;&t;&t;(OMAP_LPG2_BASE + 0x04)
 macro_line|#ifndef __ASSEMBLER__
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Serial ports&n; * ---------------------------------------------------------------------------&n; */
 DECL|macro|OMAP_UART1_BASE
@@ -338,7 +281,7 @@ mdefine_line|#define OMAP1510_BASE_BAUD&t;(12000000/16)
 DECL|macro|OMAP16XX_BASE_BAUD
 mdefine_line|#define OMAP16XX_BASE_BAUD&t;(48000000/16)
 DECL|macro|is_omap_port
-mdefine_line|#define is_omap_port(p)&t;({int __ret = 0;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;if (p == (char*)IO_ADDRESS(OMAP_UART1_BASE) ||&t;&bslash;&n;&t;&t;&t;    p == (char*)IO_ADDRESS(OMAP_UART2_BASE) ||&t;&bslash;&n;&t;&t;&t;    p == (char*)IO_ADDRESS(OMAP_UART3_BASE))&t;&bslash;&n;&t;&t;&t;&t;__ret = 1;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;__ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;})
+mdefine_line|#define is_omap_port(p)&t;({int __ret = 0;&t;&t;&t;&bslash;&n;&t;&t;&t;if (p == IO_ADDRESS(OMAP_UART1_BASE) ||&t;&bslash;&n;&t;&t;&t;    p == IO_ADDRESS(OMAP_UART2_BASE) ||&t;&bslash;&n;&t;&t;&t;    p == IO_ADDRESS(OMAP_UART3_BASE))&t;&bslash;&n;&t;&t;&t;&t;__ret = 1;&t;&t;&t;&bslash;&n;&t;&t;&t;__ret;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;})
 multiline_comment|/*&n; * ---------------------------------------------------------------------------&n; * Processor specific defines&n; * ---------------------------------------------------------------------------&n; */
 macro_line|#ifdef CONFIG_ARCH_OMAP730
 macro_line|#include &quot;omap730.h&quot;
@@ -368,6 +311,12 @@ macro_line|#error &quot;Support for H4 board not yet implemented.&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_MACH_OMAP_OSK
 macro_line|#include &quot;board-osk.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MACH_VOICEBLUE
+macro_line|#include &quot;board-voiceblue.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MACH_NETSTAR
+macro_line|#include &quot;board-netstar.h&quot;
 macro_line|#endif
 macro_line|#endif /* !__ASSEMBLER__ */
 macro_line|#endif&t;/* __ASM_ARCH_OMAP_HARDWARE_H */
