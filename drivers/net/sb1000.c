@@ -903,11 +903,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;rmem_end
+id|dev-&gt;mem_start
 op_ne
 l_int|0
 op_logical_and
-id|dev-&gt;rmem_end
+id|dev-&gt;mem_start
 op_ne
 id|ioaddr
 (braket
@@ -988,8 +988,8 @@ id|ioaddr
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/* rmem_end holds the second I/O address - fv */
-id|dev-&gt;rmem_end
+multiline_comment|/* mem_start holds the second I/O address */
+id|dev-&gt;mem_start
 op_assign
 id|ioaddr
 (braket
@@ -1018,7 +1018,7 @@ id|dev-&gt;name
 comma
 id|dev-&gt;base_addr
 comma
-id|dev-&gt;rmem_end
+id|dev-&gt;mem_start
 comma
 id|serial_number
 comma
@@ -5836,13 +5836,13 @@ l_int|0
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-multiline_comment|/* rmem_end holds the second I/O address - fv */
+multiline_comment|/* mem_start holds the second I/O address */
 id|ioaddr
 (braket
 l_int|1
 )braket
 op_assign
-id|dev-&gt;rmem_end
+id|dev-&gt;mem_start
 suffix:semicolon
 id|name
 op_assign
@@ -5957,13 +5957,13 @@ l_int|0
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-multiline_comment|/* rmem_end holds the second I/O address - fv */
+multiline_comment|/* mem_start holds the second I/O address */
 id|ioaddr
 (braket
 l_int|1
 )braket
 op_assign
-id|dev-&gt;rmem_end
+id|dev-&gt;mem_start
 suffix:semicolon
 id|name
 op_assign
@@ -6385,13 +6385,13 @@ l_int|0
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-multiline_comment|/* rmem_end holds the second I/O address - fv */
+multiline_comment|/* mem_start holds the second I/O address */
 id|ioaddr
 (braket
 l_int|1
 )braket
 op_assign
-id|dev-&gt;rmem_end
+id|dev-&gt;mem_start
 suffix:semicolon
 id|name
 op_assign
@@ -6992,13 +6992,13 @@ l_int|0
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-multiline_comment|/* rmem_end holds the second I/O address - fv */
+multiline_comment|/* mem_start holds the second I/O address */
 id|ioaddr
 (braket
 l_int|1
 )braket
 op_assign
-id|dev-&gt;rmem_end
+id|dev-&gt;mem_start
 suffix:semicolon
 id|name
 op_assign
@@ -7306,13 +7306,13 @@ l_int|0
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-multiline_comment|/* rmem_end holds the second I/O address - fv */
+multiline_comment|/* mem_start holds the second I/O address */
 id|ioaddr
 (braket
 l_int|1
 )braket
 op_assign
-id|dev-&gt;rmem_end
+id|dev-&gt;mem_start
 suffix:semicolon
 id|free_irq
 c_func
@@ -7536,8 +7536,8 @@ id|io
 l_int|0
 )braket
 suffix:semicolon
-multiline_comment|/* rmem_end holds the second I/O address - fv */
-id|dev_sb1000.rmem_end
+multiline_comment|/* mem_start holds the second I/O address */
+id|dev_sb1000.mem_start
 op_assign
 id|io
 (braket
@@ -7616,7 +7616,7 @@ suffix:semicolon
 id|release_region
 c_func
 (paren
-id|dev_sb1000.rmem_end
+id|dev_sb1000.mem_start
 comma
 l_int|16
 )paren
