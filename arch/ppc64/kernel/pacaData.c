@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
+macro_line|#include &lt;asm/lppaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 DECL|variable|systemcfg

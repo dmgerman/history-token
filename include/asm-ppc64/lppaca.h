@@ -1,12 +1,12 @@
-multiline_comment|/*&n; * ItLpPaca.h&n; * Copyright (C) 2001  Mike Corrigan IBM Corporation&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
-macro_line|#ifndef _ITLPPACA_H
-DECL|macro|_ITLPPACA_H
-mdefine_line|#define _ITLPPACA_H
+multiline_comment|/*&n; * lppaca.h&n; * Copyright (C) 2001  Mike Corrigan IBM Corporation&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+macro_line|#ifndef _ASM_LPPACA_H
+DECL|macro|_ASM_LPPACA_H
+mdefine_line|#define _ASM_LPPACA_H
 singleline_comment|//=============================================================================
-singleline_comment|//                                   
-singleline_comment|//&t;This control block contains the data that is shared between the 
+singleline_comment|//
+singleline_comment|//&t;This control block contains the data that is shared between the
 singleline_comment|//&t;hypervisor (PLIC) and the OS.
-singleline_comment|//    
+singleline_comment|//
 singleline_comment|//
 singleline_comment|//----------------------------------------------------------------------------
 macro_line|#include &lt;asm/types.h&gt;
@@ -16,8 +16,8 @@ id|ItLpPaca
 (brace
 singleline_comment|//=============================================================================
 singleline_comment|// CACHE_LINE_1 0x0000 - 0x007F Contains read-only data
-singleline_comment|// NOTE: The xDynXyz fields are fields that will be dynamically changed by 
-singleline_comment|// PLIC when preparing to bring a processor online or when dispatching a 
+singleline_comment|// NOTE: The xDynXyz fields are fields that will be dynamically changed by
+singleline_comment|// PLIC when preparing to bring a processor online or when dispatching a
 singleline_comment|// virtual processor!
 singleline_comment|//=============================================================================
 DECL|member|xDesc
@@ -130,7 +130,7 @@ singleline_comment|// Reserved&t;&t;&t;x30-x7F
 singleline_comment|//=============================================================================
 singleline_comment|// CACHE_LINE_2 0x0080 - 0x00FF Contains local read-write data
 singleline_comment|//=============================================================================
-singleline_comment|// This Dword contains a byte for each type of interrupt that can occur.  
+singleline_comment|// This Dword contains a byte for each type of interrupt that can occur.
 singleline_comment|// The IPI is a count while the others are just a binary 1 or 0.
 r_union
 (brace
@@ -183,20 +183,20 @@ DECL|member|xIntDword
 )brace
 id|xIntDword
 suffix:semicolon
-singleline_comment|// Whenever any fields in this Dword are set then PLIC will defer the 
-singleline_comment|// processing of external interrupts.  Note that PLIC will store the 
-singleline_comment|// XIRR directly into the xXirrValue field so that another XIRR will 
-singleline_comment|// not be presented until this one clears.  The layout of the low 
-singleline_comment|// 4-bytes of this Dword is upto SLIC - PLIC just checks whether the 
-singleline_comment|// entire Dword is zero or not.  A non-zero value in the low order 
-singleline_comment|// 2-bytes will result in SLIC being granted the highest thread 
+singleline_comment|// Whenever any fields in this Dword are set then PLIC will defer the
+singleline_comment|// processing of external interrupts.  Note that PLIC will store the
+singleline_comment|// XIRR directly into the xXirrValue field so that another XIRR will
+singleline_comment|// not be presented until this one clears.  The layout of the low
+singleline_comment|// 4-bytes of this Dword is upto SLIC - PLIC just checks whether the
+singleline_comment|// entire Dword is zero or not.  A non-zero value in the low order
+singleline_comment|// 2-bytes will result in SLIC being granted the highest thread
 singleline_comment|// priority upon return.  A 0 will return to SLIC as medium priority.
 DECL|member|xPlicDeferIntsArea
 id|u64
 id|xPlicDeferIntsArea
 suffix:semicolon
 singleline_comment|// Entire Dword
-singleline_comment|// Used to pass the real SRR0/1 from PLIC to SLIC as well as to 
+singleline_comment|// Used to pass the real SRR0/1 from PLIC to SLIC as well as to
 singleline_comment|// pass the target SRR0/1 from SLIC to PLIC on a SetAsrAndRfid.
 DECL|member|xSavedSrr0
 id|u64
@@ -266,7 +266,7 @@ DECL|member|xTotPLICLatency
 id|u64
 id|xTotPLICLatency
 suffix:semicolon
-singleline_comment|// Accumulated PLIC latency     x50-x57   
+singleline_comment|// Accumulated PLIC latency     x50-x57
 DECL|member|xWaitStateCycles
 id|u64
 id|xWaitStateCycles
@@ -311,11 +311,11 @@ singleline_comment|// Reserved                     x7F
 singleline_comment|//=============================================================================
 singleline_comment|// CACHE_LINE_3 0x0100 - 0x007F: This line is shared with other processors
 singleline_comment|//=============================================================================
-singleline_comment|// This is the xYieldCount.  An &quot;odd&quot; value (low bit on) means that 
-singleline_comment|// the processor is yielded (either because of an OS yield or a PLIC 
-singleline_comment|// preempt).  An even value implies that the processor is currently 
+singleline_comment|// This is the xYieldCount.  An &quot;odd&quot; value (low bit on) means that
+singleline_comment|// the processor is yielded (either because of an OS yield or a PLIC
+singleline_comment|// preempt).  An even value implies that the processor is currently
 singleline_comment|// executing.
-singleline_comment|// NOTE: This value will ALWAYS be zero for dedicated processors and 
+singleline_comment|// NOTE: This value will ALWAYS be zero for dedicated processors and
 singleline_comment|// will NEVER be zero for shared processors (ie, initialized to a 1).
 DECL|member|xYieldCount
 r_volatile
@@ -330,7 +330,7 @@ id|xRsvd3_0
 l_int|124
 )braket
 suffix:semicolon
-singleline_comment|// Reserved                     x04-x7F         
+singleline_comment|// Reserved                     x04-x7F
 singleline_comment|//=============================================================================
 singleline_comment|// CACHE_LINE_4-5 0x0100 - 0x01FF Contains PMC interrupt data
 singleline_comment|//=============================================================================
@@ -344,5 +344,5 @@ suffix:semicolon
 singleline_comment|// PMC interrupt Area           x00-xFF
 )brace
 suffix:semicolon
-macro_line|#endif /* _ITLPPACA_H */
+macro_line|#endif /* _ASM_LPPACA_H */
 eof

@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
-macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
+macro_line|#include &lt;asm/lppaca.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/hvcall.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;

@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpNaca.h&gt;
-macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
+macro_line|#include &lt;asm/lppaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpRegSave.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/iSeries/HvReleaseData.h&gt;

@@ -14,7 +14,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
-macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
+macro_line|#include &lt;asm/lppaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;

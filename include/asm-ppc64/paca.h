@@ -4,7 +4,7 @@ mdefine_line|#define _PPC64_PACA_H
 multiline_comment|/*&n; * include/asm-ppc64/paca.h&n; *&n; * This control block defines the PACA which defines the processor &n; * specific data for each logical processor on the system.  &n; * There are some pointers defined that are utilized by PLIC.&n; *&n; * C 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include&t;&lt;linux/config.h&gt;
 macro_line|#include&t;&lt;asm/types.h&gt;
-macro_line|#include&t;&lt;asm/iSeries/ItLpPaca.h&gt;
+macro_line|#include&t;&lt;asm/lppaca.h&gt;
 macro_line|#include&t;&lt;asm/iSeries/ItLpRegSave.h&gt;
 macro_line|#include&t;&lt;asm/mmu.h&gt;
 r_extern
