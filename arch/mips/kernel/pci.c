@@ -475,30 +475,4 @@ id|align
 (brace
 multiline_comment|/* this should not be called */
 )brace
-r_void
-DECL|function|pcibios_update_resource
-id|pcibios_update_resource
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_struct
-id|resource
-op_star
-id|root
-comma
-r_struct
-id|resource
-op_star
-id|res
-comma
-r_int
-id|resource
-)paren
-(brace
-multiline_comment|/* this should not be called */
-)brace
 eof
