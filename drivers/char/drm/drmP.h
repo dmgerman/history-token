@@ -38,18 +38,21 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &quot;drm.h&quot;
+DECL|macro|__OS_HAS_AGP
+mdefine_line|#define __OS_HAS_AGP (defined(CONFIG_AGP) || (defined(CONFIG_AGP_MODULE) &amp;&amp; defined(MODULE)))
+DECL|macro|__OS_HAS_MTRR
+mdefine_line|#define __OS_HAS_MTRR (defined(CONFIG_MTRR))
 macro_line|#include &quot;drm_os_linux.h&quot;
 multiline_comment|/***********************************************************************/
 multiline_comment|/** &bslash;name DRM template customization defaults */
 multiline_comment|/*@{*/
-macro_line|#ifndef __HAVE_AGP
-DECL|macro|__HAVE_AGP
-mdefine_line|#define __HAVE_AGP&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_MTRR
-DECL|macro|__HAVE_MTRR
-mdefine_line|#define __HAVE_MTRR&t;&t;0
-macro_line|#endif
+multiline_comment|/* driver capabilities and requirements mask */
+DECL|macro|DRIVER_USE_AGP
+mdefine_line|#define DRIVER_USE_AGP     0x1
+DECL|macro|DRIVER_REQUIRE_AGP
+mdefine_line|#define DRIVER_REQUIRE_AGP 0x2
+DECL|macro|DRIVER_USE_MTRR
+mdefine_line|#define DRIVER_USE_MTRR    0x4
 macro_line|#ifndef __HAVE_CTX_BITMAP
 DECL|macro|__HAVE_CTX_BITMAP
 mdefine_line|#define __HAVE_CTX_BITMAP&t;0
@@ -62,10 +65,6 @@ macro_line|#ifndef __HAVE_IRQ
 DECL|macro|__HAVE_IRQ
 mdefine_line|#define __HAVE_IRQ&t;&t;0
 macro_line|#endif
-DECL|macro|__REALLY_HAVE_AGP
-mdefine_line|#define __REALLY_HAVE_AGP&t;(__HAVE_AGP &amp;&amp; (defined(CONFIG_AGP) || &bslash;&n;&t;&t;&t;&t;&t;&t;defined(CONFIG_AGP_MODULE)))
-DECL|macro|__REALLY_HAVE_MTRR
-mdefine_line|#define __REALLY_HAVE_MTRR&t;(__HAVE_MTRR &amp;&amp; defined(CONFIG_MTRR))
 DECL|macro|__REALLY_HAVE_SG
 mdefine_line|#define __REALLY_HAVE_SG&t;(__HAVE_SG)
 multiline_comment|/*@}*/
@@ -1041,7 +1040,6 @@ DECL|typedef|drm_device_dma_t
 )brace
 id|drm_device_dma_t
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
 multiline_comment|/** &n; * AGP memory entry.  Stored as a doubly linked list.&n; */
 DECL|struct|drm_agp_mem
 r_typedef
@@ -1142,7 +1140,6 @@ DECL|typedef|drm_agp_head_t
 )brace
 id|drm_agp_head_t
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/**&n; * Scatter-gather memory.&n; */
 DECL|struct|drm_sg_mem
 r_typedef
@@ -1874,14 +1871,12 @@ id|wait_queue_head_t
 id|buf_writers
 suffix:semicolon
 multiline_comment|/**&lt; Processes waiting to ctx switch */
-macro_line|#if __REALLY_HAVE_AGP
 DECL|member|agp
 id|drm_agp_head_t
 op_star
 id|agp
 suffix:semicolon
 multiline_comment|/**&lt; AGP data */
-macro_line|#endif
 DECL|member|pdev
 r_struct
 id|pci_dev
@@ -1968,10 +1963,101 @@ DECL|member|dev_priv_size
 r_int
 id|dev_priv_size
 suffix:semicolon
+DECL|member|driver_features
+id|u32
+id|driver_features
+suffix:semicolon
 DECL|typedef|drm_device_t
 )brace
 id|drm_device_t
 suffix:semicolon
+DECL|function|drm_core_check_feature
+r_static
+id|__inline__
+r_int
+id|drm_core_check_feature
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
+r_int
+id|feature
+)paren
+(brace
+r_return
+(paren
+(paren
+id|dev-&gt;driver_features
+op_amp
+id|feature
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
+)brace
+macro_line|#if __OS_HAS_AGP
+DECL|function|drm_core_has_AGP
+r_static
+r_inline
+r_int
+id|drm_core_has_AGP
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+(brace
+r_return
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_USE_AGP
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|drm_core_has_AGP
+mdefine_line|#define drm_core_has_AGP(dev) (0)
+macro_line|#endif
+macro_line|#if __OS_HAS_MTRR
+DECL|function|drm_core_has_MTRR
+r_static
+r_inline
+r_int
+id|drm_core_has_MTRR
+c_func
+(paren
+r_struct
+id|drm_device
+op_star
+id|dev
+)paren
+(brace
+r_return
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_USE_MTRR
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|drm_core_has_MTRR
+mdefine_line|#define drm_core_has_MTRR(dev) (0)
+macro_line|#endif
 r_extern
 r_void
 id|DRM
@@ -2575,7 +2661,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
 r_extern
 id|DRM_AGP_MEM
 op_star
@@ -2638,7 +2723,6 @@ op_star
 id|handle
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Misc. IOCTL support (drm_ioctl.h) */
 r_extern
 r_int
@@ -3835,7 +3919,6 @@ id|dev
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#if __REALLY_HAVE_AGP
 multiline_comment|/* AGP/GART support (drm_agpsupport.h) */
 r_extern
 id|drm_agp_head_t
@@ -4145,7 +4228,6 @@ op_star
 id|handle
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Stub support (drm_stub.h) */
 r_int
 id|DRM

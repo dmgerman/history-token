@@ -4229,7 +4229,7 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -4332,7 +4332,7 @@ id|dev_priv-&gt;ring.tail
 op_assign
 id|cur_read_ptr
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -5439,7 +5439,7 @@ op_plus
 id|init-&gt;sarea_priv_offset
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -5665,7 +5665,7 @@ c_func
 id|RADEON_CONFIG_APER_SIZE
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -5777,7 +5777,7 @@ id|dev_priv-&gt;ring.high_mark
 op_assign
 id|RADEON_RING_HIGH_MARK
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -5937,7 +5937,7 @@ id|dev_priv
 op_assign
 id|dev-&gt;dev_private
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -6088,7 +6088,7 @@ c_func
 l_string|&quot;Starting radeon_do_resume_cp()&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren

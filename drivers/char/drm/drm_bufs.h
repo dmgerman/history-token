@@ -376,7 +376,16 @@ op_add_assign
 id|dev-&gt;hose-&gt;mem_space-&gt;start
 suffix:semicolon
 macro_line|#endif
-macro_line|#if __REALLY_HAVE_MTRR
+r_if
+c_cond
+(paren
+id|drm_core_has_MTRR
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -406,7 +415,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 r_if
 c_cond
 (paren
@@ -553,10 +562,19 @@ multiline_comment|/* Pointer to lock */
 )brace
 r_break
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
 r_case
 id|_DRM_AGP
 suffix:colon
+r_if
+c_cond
+(paren
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
 macro_line|#ifdef __alpha__
 id|map-&gt;offset
 op_add_assign
@@ -572,9 +590,9 @@ op_assign
 id|dev-&gt;agp-&gt;agp_mtrr
 suffix:semicolon
 multiline_comment|/* for getmap */
+)brace
 r_break
 suffix:semicolon
-macro_line|#endif
 r_case
 id|_DRM_SCATTER_GATHER
 suffix:colon
@@ -1033,7 +1051,16 @@ suffix:colon
 r_case
 id|_DRM_FRAME_BUFFER
 suffix:colon
-macro_line|#if __REALLY_HAVE_MTRR
+r_if
+c_cond
+(paren
+id|drm_core_has_MTRR
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1066,7 +1093,7 @@ id|retcode
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 id|DRM
 c_func
 (paren
@@ -1304,7 +1331,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 multiline_comment|/**&n; * Add AGP buffers for DMA transfers (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_desc_t request.&n; * &bslash;return zero on success or a negative number on failure.&n; * &n; * After some sanity checks creates a drm_buf structure for each buffer and&n; * reallocates the buffer list of the same size order to accommodate the new&n; * buffers.&n; */
 DECL|function|addbufs_agp
 r_int
@@ -2127,7 +2154,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* __REALLY_HAVE_AGP */
+macro_line|#endif /* __OS_HAS_AGP */
 macro_line|#if __HAVE_PCI_DMA
 DECL|function|addbufs_pci
 r_int
@@ -4237,7 +4264,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -5257,7 +5284,11 @@ r_if
 c_cond
 (paren
 (paren
-id|__HAVE_AGP
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
 op_logical_and
 (paren
 id|dma-&gt;flags

@@ -2,6 +2,7 @@ multiline_comment|/* tdfx_drv.c -- tdfx driver -*- linux-c -*-&n; * Created: Thu
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;tdfx.h&quot;
 macro_line|#include &quot;drmP.h&quot;
+macro_line|#include &quot;drm_agpsupport.h&quot;
 macro_line|#include &quot;drm_auth.h&quot;
 macro_line|#include &quot;drm_bufs.h&quot;
 macro_line|#include &quot;drm_context.h&quot;
@@ -29,5 +30,9 @@ op_star
 id|dev
 )paren
 (brace
+id|dev-&gt;driver_features
+op_assign
+id|DRIVER_USE_MTRR
+suffix:semicolon
 )brace
 eof

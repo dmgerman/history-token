@@ -7383,6 +7383,14 @@ op_star
 id|dev
 )paren
 (brace
+id|dev-&gt;driver_features
+op_assign
+id|DRIVER_USE_AGP
+op_or
+id|DRIVER_REQUIRE_AGP
+op_or
+id|DRIVER_USE_MTRR
+suffix:semicolon
 id|dev-&gt;dev_priv_size
 op_assign
 r_sizeof

@@ -6,12 +6,6 @@ multiline_comment|/* This remains constant for all DRM template files.&n; */
 DECL|macro|DRM
 mdefine_line|#define DRM(x) r128_##x
 multiline_comment|/* General customization:&n; */
-DECL|macro|__HAVE_AGP
-mdefine_line|#define __HAVE_AGP&t;&t;1
-DECL|macro|__MUST_HAVE_AGP
-mdefine_line|#define __MUST_HAVE_AGP&t;&t;0
-DECL|macro|__HAVE_MTRR
-mdefine_line|#define __HAVE_MTRR&t;&t;1
 DECL|macro|__HAVE_CTX_BITMAP
 mdefine_line|#define __HAVE_CTX_BITMAP&t;1
 DECL|macro|__HAVE_SG

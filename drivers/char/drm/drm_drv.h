@@ -1,9 +1,5 @@
 multiline_comment|/**&n; * &bslash;file drm_drv.h &n; * Generic driver template&n; *&n; * &bslash;author Rickard E. (Rik) Faith &lt;faith@valinux.com&gt;&n; * &bslash;author Gareth Hughes &lt;gareth@valinux.com&gt;&n; *&n; * To use this template, you must at least define the following (samples&n; * given for the MGA driver):&n; *&n; * &bslash;code&n; * #define DRIVER_AUTHOR&t;&quot;VA Linux Systems, Inc.&quot;&n; *&n; * #define DRIVER_NAME&t;&t;&quot;mga&quot;&n; * #define DRIVER_DESC&t;&t;&quot;Matrox G200/G400&quot;&n; * #define DRIVER_DATE&t;&t;&quot;20001127&quot;&n; *&n; * #define DRIVER_MAJOR&t;&t;2&n; * #define DRIVER_MINOR&t;&t;0&n; * #define DRIVER_PATCHLEVEL&t;2&n; *&n; * #define DRIVER_IOCTL_COUNT&t;DRM_ARRAY_SIZE( mga_ioctls )&n; *&n; * #define DRM(x)&t;&t;mga_##x&n; * &bslash;endcode&n; */
 multiline_comment|/*&n; * Created: Thu Nov 23 03:10:50 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
-macro_line|#ifndef __MUST_HAVE_AGP
-DECL|macro|__MUST_HAVE_AGP
-mdefine_line|#define __MUST_HAVE_AGP&t;&t;&t;0
-macro_line|#endif
 macro_line|#ifndef __HAVE_CTX_BITMAP
 DECL|macro|__HAVE_CTX_BITMAP
 mdefine_line|#define __HAVE_CTX_BITMAP&t;&t;0
@@ -890,7 +886,7 @@ l_int|1
 )brace
 comma
 macro_line|#endif
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 (braket
 id|DRM_IOCTL_NR
 c_func
@@ -1909,11 +1905,16 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#if __REALLY_HAVE_AGP
 multiline_comment|/* Clear AGP information */
 r_if
 c_cond
 (paren
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
 id|dev-&gt;agp
 )paren
 (brace
@@ -2013,7 +2014,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* Clear vma list (only built for debugging) */
 r_if
 c_cond
@@ -2109,7 +2109,16 @@ suffix:colon
 r_case
 id|_DRM_FRAME_BUFFER
 suffix:colon
-macro_line|#if __REALLY_HAVE_MTRR
+r_if
+c_cond
+(paren
+id|drm_core_has_MTRR
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2142,7 +2151,7 @@ id|retcode
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 id|DRM
 c_func
 (paren
@@ -2738,7 +2747,16 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+r_if
+c_cond
+(paren
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
 id|dev-&gt;agp
 op_assign
 id|DRM
@@ -2749,13 +2767,22 @@ id|agp_init
 (paren
 )paren
 suffix:semicolon
-macro_line|#if __MUST_HAVE_AGP
 r_if
 c_cond
+(paren
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_REQUIRE_AGP
+)paren
+op_logical_and
 (paren
 id|dev-&gt;agp
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|DRM_ERROR
@@ -2787,8 +2814,16 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if __REALLY_HAVE_MTRR
+r_if
+c_cond
+(paren
+id|drm_core_has_MTRR
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2812,8 +2847,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#endif
+)brace
+)brace
 macro_line|#if __HAVE_CTX_BITMAP
 id|retcode
 op_assign
@@ -3103,10 +3138,21 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if __REALLY_HAVE_AGP &amp;&amp; __REALLY_HAVE_MTRR
 r_if
 c_cond
 (paren
+id|drm_core_has_MTRR
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
 id|dev-&gt;agp
 op_logical_and
 id|dev-&gt;agp-&gt;agp_mtrr
@@ -3142,7 +3188,6 @@ id|retval
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|DRM
 c_func
 (paren
@@ -3152,10 +3197,15 @@ id|takedown
 id|dev
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
 r_if
 c_cond
 (paren
+id|drm_core_has_AGP
+c_func
+(paren
+id|dev
+)paren
+op_logical_and
 id|dev-&gt;agp
 )paren
 (brace
@@ -3189,7 +3239,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren

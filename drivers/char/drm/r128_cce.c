@@ -1977,7 +1977,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* The manual (p. 2) says this address is in &quot;VM space&quot;.  This&n;&t; * means it&squot;s an offset from the start of AGP space.&n;&t; */
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -2836,7 +2836,7 @@ op_plus
 id|init-&gt;sarea_priv_offset
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -2938,7 +2938,7 @@ op_star
 id|dev-&gt;agp_buffer_map-&gt;offset
 suffix:semicolon
 )brace
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -3038,7 +3038,7 @@ comma
 id|dev_priv-&gt;sarea_priv-&gt;last_dispatch
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
@@ -3102,7 +3102,7 @@ comma
 id|dev_priv-&gt;bus_pci_gart
 )paren
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 )brace
 macro_line|#endif
 id|r128_cce_init_ring_buffer
@@ -3176,7 +3176,7 @@ id|dev_priv
 op_assign
 id|dev-&gt;dev_private
 suffix:semicolon
-macro_line|#if __REALLY_HAVE_AGP
+macro_line|#if __OS_HAS_AGP
 r_if
 c_cond
 (paren
