@@ -19127,6 +19127,10 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+id|i2o_proc_dir_root-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 r_for
 c_loop
 (paren
