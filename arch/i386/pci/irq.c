@@ -3855,6 +3855,10 @@ id|dev
 id|u8
 id|pin
 suffix:semicolon
+r_extern
+r_int
+id|interrupt_line_quirk
+suffix:semicolon
 id|pci_read_config_byte
 c_func
 (paren
@@ -3914,6 +3918,29 @@ id|msg
 op_assign
 l_string|&quot; Please try using pci=biosirq.&quot;
 suffix:semicolon
+multiline_comment|/* With IDE legacy devices the IRQ lookup failure is not a problem.. */
+r_if
+c_cond
+(paren
+id|dev
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|8
+op_eq
+id|PCI_CLASS_STORAGE_IDE
+op_logical_and
+op_logical_neg
+(paren
+id|dev
+op_member_access_from_pointer
+r_class
+op_amp
+l_int|0x5
+)paren
+)paren
+r_return
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3932,6 +3959,23 @@ id|msg
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* VIA bridges use interrupt line for apic/pci steering across&n;&t;   the V-Link */
+r_else
+r_if
+c_cond
+(paren
+id|interrupt_line_quirk
+)paren
+id|pci_write_config_byte
+c_func
+(paren
+id|dev
+comma
+id|PCI_INTERRUPT_LINE
+comma
+id|dev-&gt;irq
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

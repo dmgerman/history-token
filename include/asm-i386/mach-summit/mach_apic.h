@@ -18,7 +18,7 @@ mdefine_line|#define xapic_phys_to_log_apicid(phys_apic) ( (1ul &lt;&lt; ((phys_
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(x86_summit ? APIC_DFR_CLUSTER : APIC_DFR_FLAT)
 DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS&t;(x86_summit ? XAPIC_DEST_CPUS_MASK : cpu_online_map)
+mdefine_line|#define TARGET_CPUS&t;(x86_summit ? XAPIC_DEST_CPUS_MASK : cpu_callout_map)
 DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE (x86_summit ? dest_Fixed : dest_LowestPrio)
 DECL|macro|INT_DEST_MODE

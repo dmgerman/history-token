@@ -345,14 +345,14 @@ multiline_comment|/* Find an entry in the second-level page table.. */
 DECL|macro|pmd_offset
 mdefine_line|#define pmd_offset(dir, address)&t;((pmd_t *) pgd_page(*(dir)) + &bslash;&n;&t;&t;&t;&t;&t;((address &gt;&gt; PMD_SHIFT) &amp; (REAL_PTRS_PER_PMD-1)))
 multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|macro|__pte_offset
-mdefine_line|#define __pte_offset(dir, address)&t;((pte_t *) __pmd_page(*(dir)) + &bslash;&n;&t;&t;&t;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
+DECL|macro|pte_index
+mdefine_line|#define pte_index(dir, address)&t;((pte_t *) __pmd_page(*(dir)) + &bslash;&n;&t;&t;&t;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1)))
 DECL|macro|pte_offset_kernel
-mdefine_line|#define pte_offset_kernel&t;&t;__pte_offset
+mdefine_line|#define pte_offset_kernel&t;&t;pte_index
 DECL|macro|pte_offset_map
-mdefine_line|#define pte_offset_map&t;&t;&t;__pte_offset
+mdefine_line|#define pte_offset_map&t;&t;&t;pte_index
 DECL|macro|pte_offset_map_nested
-mdefine_line|#define pte_offset_map_nested&t;&t;__pte_offset
+mdefine_line|#define pte_offset_map_nested&t;&t;pte_index
 DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte)&t;&t;&t;do { } while (0)
 DECL|macro|pte_unmap_nested

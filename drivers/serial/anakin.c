@@ -2162,6 +2162,7 @@ l_int|1
 comma
 )brace
 suffix:semicolon
+r_static
 r_void
 id|__init
 DECL|function|anakin_console_init
@@ -2179,6 +2180,13 @@ id|anakin_console
 )paren
 suffix:semicolon
 )brace
+DECL|variable|anakin_console_init
+id|console_initcall
+c_func
+(paren
+id|anakin_console_init
+)paren
+suffix:semicolon
 DECL|macro|ANAKIN_CONSOLE
 mdefine_line|#define ANAKIN_CONSOLE&t;&t;&amp;anakin_console
 macro_line|#else

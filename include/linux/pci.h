@@ -732,6 +732,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Transparent PCI bridge */
+DECL|member|multifunction
+r_int
+r_int
+id|multifunction
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Part of multi-function device */
 )brace
 suffix:semicolon
 DECL|macro|pci_dev_g
@@ -1349,16 +1357,27 @@ id|bus
 )paren
 suffix:semicolon
 )brace
-r_struct
-id|pci_dev
-op_star
+r_int
 id|pci_scan_slot
 c_func
 (paren
 r_struct
-id|pci_dev
+id|pci_bus
 op_star
-id|temp
+id|bus
+comma
+r_int
+id|devfn
+)paren
+suffix:semicolon
+r_void
+id|pci_bus_add_devices
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
 )paren
 suffix:semicolon
 r_int
@@ -2228,6 +2247,72 @@ id|pci_dev
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+multiline_comment|/* drivers/pci/bus.c */
+r_int
+id|pci_bus_alloc_resource
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
+comma
+r_struct
+id|resource
+op_star
+id|res
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+r_int
+id|align
+comma
+r_int
+r_int
+id|min
+comma
+r_int
+r_int
+id|type_mask
+comma
+r_void
+(paren
+op_star
+id|alignf
+)paren
+(paren
+r_void
+op_star
+comma
+r_struct
+id|resource
+op_star
+comma
+r_int
+r_int
+comma
+r_int
+r_int
+)paren
+comma
+r_void
+op_star
+id|alignf_data
+)paren
+suffix:semicolon
+r_void
+id|pci_enable_bridges
+c_func
+(paren
+r_struct
+id|pci_bus
+op_star
+id|bus
 )paren
 suffix:semicolon
 multiline_comment|/* New-style probing supporting hot-pluggable devices */
@@ -3247,6 +3332,8 @@ DECL|macro|PCIPCI_VIAETBF
 mdefine_line|#define PCIPCI_VIAETBF&t;&t;8
 DECL|macro|PCIPCI_VSFX
 mdefine_line|#define PCIPCI_VSFX&t;&t;16
+DECL|macro|PCIPCI_ALIMAGIK
+mdefine_line|#define PCIPCI_ALIMAGIK&t;&t;32
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* LINUX_PCI_H */
 eof

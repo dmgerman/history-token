@@ -25,6 +25,7 @@ macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 id|DEFINE_SNMP_STAT
 c_func
 (paren
@@ -2602,6 +2603,32 @@ op_star
 id|skb
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm6_policy_check
+c_func
+(paren
+id|sk
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 macro_line|#if defined(CONFIG_FILTER)
 r_if
 c_cond
@@ -3170,6 +3197,23 @@ id|udphdr
 )paren
 r_goto
 id|short_packet
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm6_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+r_goto
+id|discard
 suffix:semicolon
 id|saddr
 op_assign

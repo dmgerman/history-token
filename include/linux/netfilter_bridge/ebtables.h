@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  ebtables&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer&t;&t;&lt;bart.de.schuymer@pandora.be&gt;&n; *&n; *  ebtables.c,v 2.0, April, 2002&n; *&n; *  This code is stongly inspired on the iptables code which is&n; *  Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; */
+multiline_comment|/*&n; *  ebtables&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer&t;&t;&lt;bdschuym@pandora.be&gt;&n; *&n; *  ebtables.c,v 2.0, April, 2002&n; *&n; *  This code is stongly inspired on the iptables code which is&n; *  Copyright (C) 1999 Paul `Rusty&squot; Russell &amp; Michael J. Neuling&n; */
 macro_line|#ifndef __LINUX_BRIDGE_EFF_H
 DECL|macro|__LINUX_BRIDGE_EFF_H
 mdefine_line|#define __LINUX_BRIDGE_EFF_H
@@ -11,7 +11,7 @@ DECL|macro|EBT_CHAIN_MAXNAMELEN
 mdefine_line|#define EBT_CHAIN_MAXNAMELEN EBT_TABLE_MAXNAMELEN
 DECL|macro|EBT_FUNCTION_MAXNAMELEN
 mdefine_line|#define EBT_FUNCTION_MAXNAMELEN EBT_TABLE_MAXNAMELEN
-singleline_comment|// verdicts &gt;0 are &quot;branches&quot;
+multiline_comment|/* verdicts &gt;0 are &quot;branches&quot; */
 DECL|macro|EBT_ACCEPT
 mdefine_line|#define EBT_ACCEPT   -1
 DECL|macro|EBT_DROP
@@ -40,15 +40,13 @@ DECL|struct|ebt_entries
 r_struct
 id|ebt_entries
 (brace
-singleline_comment|// this field is always set to zero
-singleline_comment|// See EBT_ENTRY_OR_ENTRIES.
-singleline_comment|// Must be same size as ebt_entry.bitmask
+multiline_comment|/* this field is always set to zero&n;&t; * See EBT_ENTRY_OR_ENTRIES.&n;&t; * Must be same size as ebt_entry.bitmask */
 DECL|member|distinguisher
 r_int
 r_int
 id|distinguisher
 suffix:semicolon
-singleline_comment|// the chain name
+multiline_comment|/* the chain name */
 DECL|member|name
 r_char
 id|name
@@ -56,24 +54,24 @@ id|name
 id|EBT_CHAIN_MAXNAMELEN
 )braket
 suffix:semicolon
-singleline_comment|// counter offset for this chain
+multiline_comment|/* counter offset for this chain */
 DECL|member|counter_offset
 r_int
 r_int
 id|counter_offset
 suffix:semicolon
-singleline_comment|// one standard (accept, drop, return) per hook
+multiline_comment|/* one standard (accept, drop, return) per hook */
 DECL|member|policy
 r_int
 id|policy
 suffix:semicolon
-singleline_comment|// nr. of entries
+multiline_comment|/* nr. of entries */
 DECL|member|nentries
 r_int
 r_int
 id|nentries
 suffix:semicolon
-singleline_comment|// entry list
+multiline_comment|/* entry list */
 DECL|member|data
 r_char
 id|data
@@ -83,17 +81,11 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-singleline_comment|// used for the bitmask of struct ebt_entry
-singleline_comment|// This is a hack to make a difference between an ebt_entry struct and an
-singleline_comment|// ebt_entries struct when traversing the entries from start to end.
-singleline_comment|// Using this simplifies the code alot, while still being able to use
-singleline_comment|// ebt_entries.
-singleline_comment|// Contrary, iptables doesn&squot;t use something like ebt_entries and therefore uses
-singleline_comment|// different techniques for naming the policy and such. So, iptables doesn&squot;t
-singleline_comment|// need a hack like this.
+multiline_comment|/* used for the bitmask of struct ebt_entry */
+multiline_comment|/* This is a hack to make a difference between an ebt_entry struct and an&n; * ebt_entries struct when traversing the entries from start to end.&n; * Using this simplifies the code alot, while still being able to use&n; * ebt_entries.&n; * Contrary, iptables doesn&squot;t use something like ebt_entries and therefore uses&n; * different techniques for naming the policy and such. So, iptables doesn&squot;t&n; * need a hack like this.&n; */
 DECL|macro|EBT_ENTRY_OR_ENTRIES
 mdefine_line|#define EBT_ENTRY_OR_ENTRIES 0x01
-singleline_comment|// these are the normal masks
+multiline_comment|/* these are the normal masks */
 DECL|macro|EBT_NOPROTO
 mdefine_line|#define EBT_NOPROTO 0x02
 DECL|macro|EBT_802_3
@@ -143,7 +135,7 @@ DECL|member|u
 )brace
 id|u
 suffix:semicolon
-singleline_comment|// size of data
+multiline_comment|/* size of data */
 DECL|member|match_size
 r_int
 r_int
@@ -182,7 +174,7 @@ DECL|member|u
 )brace
 id|u
 suffix:semicolon
-singleline_comment|// size of data
+multiline_comment|/* size of data */
 DECL|member|watcher_size
 r_int
 r_int
@@ -221,7 +213,7 @@ DECL|member|u
 )brace
 id|u
 suffix:semicolon
-singleline_comment|// size of data
+multiline_comment|/* size of data */
 DECL|member|target_size
 r_int
 r_int
@@ -254,12 +246,12 @@ id|verdict
 suffix:semicolon
 )brace
 suffix:semicolon
-singleline_comment|// one entry
+multiline_comment|/* one entry */
 DECL|struct|ebt_entry
 r_struct
 id|ebt_entry
 (brace
-singleline_comment|// this needs to be the first field
+multiline_comment|/* this needs to be the first field */
 DECL|member|bitmask
 r_int
 r_int
@@ -274,7 +266,7 @@ DECL|member|ethproto
 r_uint16
 id|ethproto
 suffix:semicolon
-singleline_comment|// the physical in-dev
+multiline_comment|/* the physical in-dev */
 DECL|member|in
 r_char
 id|in
@@ -282,7 +274,7 @@ id|in
 id|IFNAMSIZ
 )braket
 suffix:semicolon
-singleline_comment|// the logical in-dev
+multiline_comment|/* the logical in-dev */
 DECL|member|logical_in
 r_char
 id|logical_in
@@ -290,7 +282,7 @@ id|logical_in
 id|IFNAMSIZ
 )braket
 suffix:semicolon
-singleline_comment|// the physical out-dev
+multiline_comment|/* the physical out-dev */
 DECL|member|out
 r_char
 id|out
@@ -298,7 +290,7 @@ id|out
 id|IFNAMSIZ
 )braket
 suffix:semicolon
-singleline_comment|// the logical out-dev
+multiline_comment|/* the logical out-dev */
 DECL|member|logical_out
 r_char
 id|logical_out
@@ -338,19 +330,19 @@ id|destmsk
 id|ETH_ALEN
 )braket
 suffix:semicolon
-singleline_comment|// sizeof ebt_entry + matches
+multiline_comment|/* sizeof ebt_entry + matches */
 DECL|member|watchers_offset
 r_int
 r_int
 id|watchers_offset
 suffix:semicolon
-singleline_comment|// sizeof ebt_entry + matches + watchers
+multiline_comment|/* sizeof ebt_entry + matches + watchers */
 DECL|member|target_offset
 r_int
 r_int
 id|target_offset
 suffix:semicolon
-singleline_comment|// sizeof ebt_entry + matches + watchers + target
+multiline_comment|/* sizeof ebt_entry + matches + watchers + target */
 DECL|member|next_offset
 r_int
 r_int
@@ -382,19 +374,19 @@ r_int
 r_int
 id|valid_hooks
 suffix:semicolon
-singleline_comment|// nr of rules in the table
+multiline_comment|/* nr of rules in the table */
 DECL|member|nentries
 r_int
 r_int
 id|nentries
 suffix:semicolon
-singleline_comment|// total size of the entries
+multiline_comment|/* total size of the entries */
 DECL|member|entries_size
 r_int
 r_int
 id|entries_size
 suffix:semicolon
-singleline_comment|// start of the chains
+multiline_comment|/* start of the chains */
 DECL|member|hook_entry
 r_struct
 id|ebt_entries
@@ -404,13 +396,13 @@ id|hook_entry
 id|NF_BR_NUMHOOKS
 )braket
 suffix:semicolon
-singleline_comment|// nr of counters userspace expects back
+multiline_comment|/* nr of counters userspace expects back */
 DECL|member|num_counters
 r_int
 r_int
 id|num_counters
 suffix:semicolon
-singleline_comment|// where the kernel will put the old counters
+multiline_comment|/* where the kernel will put the old counters */
 DECL|member|counters
 r_struct
 id|ebt_counter
@@ -424,7 +416,7 @@ id|entries
 suffix:semicolon
 )brace
 suffix:semicolon
-singleline_comment|// [gs]etsockopt numbers
+multiline_comment|/* {g,s}etsockopt numbers */
 DECL|macro|EBT_BASE_CTL
 mdefine_line|#define EBT_BASE_CTL            128
 DECL|macro|EBT_SO_SET_ENTRIES
@@ -444,7 +436,7 @@ mdefine_line|#define EBT_SO_GET_INIT_ENTRIES (EBT_SO_GET_INIT_INFO+1)
 DECL|macro|EBT_SO_GET_MAX
 mdefine_line|#define EBT_SO_GET_MAX          (EBT_SO_GET_INIT_ENTRIES+1)
 macro_line|#ifdef __KERNEL__
-singleline_comment|// return values for match() functions
+multiline_comment|/* return values for match() functions */
 DECL|macro|EBT_MATCH
 mdefine_line|#define EBT_MATCH 0
 DECL|macro|EBT_NOMATCH
@@ -466,7 +458,7 @@ id|name
 id|EBT_FUNCTION_MAXNAMELEN
 )braket
 suffix:semicolon
-singleline_comment|// 0 == it matches
+multiline_comment|/* 0 == it matches */
 DECL|member|match
 r_int
 (paren
@@ -502,7 +494,7 @@ r_int
 id|datalen
 )paren
 suffix:semicolon
-singleline_comment|// 0 == let it in
+multiline_comment|/* 0 == let it in */
 DECL|member|check
 r_int
 (paren
@@ -610,7 +602,7 @@ r_int
 id|datalen
 )paren
 suffix:semicolon
-singleline_comment|// 0 == let it in
+multiline_comment|/* 0 == let it in */
 DECL|member|check
 r_int
 (paren
@@ -683,7 +675,7 @@ id|name
 id|EBT_FUNCTION_MAXNAMELEN
 )braket
 suffix:semicolon
-singleline_comment|// returns one of the standard verdicts
+multiline_comment|/* returns one of the standard verdicts */
 DECL|member|target
 r_int
 (paren
@@ -723,7 +715,7 @@ r_int
 id|datalen
 )paren
 suffix:semicolon
-singleline_comment|// 0 == let it in
+multiline_comment|/* 0 == let it in */
 DECL|member|check
 r_int
 (paren
@@ -779,7 +771,7 @@ id|me
 suffix:semicolon
 )brace
 suffix:semicolon
-singleline_comment|// used for jumping from and into user defined chains (udc)
+multiline_comment|/* used for jumping from and into user defined chains (udc) */
 DECL|struct|ebt_chainstack
 r_struct
 id|ebt_chainstack
@@ -790,27 +782,27 @@ id|ebt_entries
 op_star
 id|chaininfo
 suffix:semicolon
-singleline_comment|// pointer to chain data
+multiline_comment|/* pointer to chain data */
 DECL|member|e
 r_struct
 id|ebt_entry
 op_star
 id|e
 suffix:semicolon
-singleline_comment|// pointer to entry data
+multiline_comment|/* pointer to entry data */
 DECL|member|n
 r_int
 r_int
 id|n
 suffix:semicolon
-singleline_comment|// n&squot;th entry
+multiline_comment|/* n&squot;th entry */
 )brace
 suffix:semicolon
 DECL|struct|ebt_table_info
 r_struct
 id|ebt_table_info
 (brace
-singleline_comment|// total size of the entries
+multiline_comment|/* total size of the entries */
 DECL|member|entries_size
 r_int
 r_int
@@ -821,7 +813,7 @@ r_int
 r_int
 id|nentries
 suffix:semicolon
-singleline_comment|// pointers to the start of the chains
+multiline_comment|/* pointers to the start of the chains */
 DECL|member|hook_entry
 r_struct
 id|ebt_entries
@@ -831,7 +823,7 @@ id|hook_entry
 id|NF_BR_NUMHOOKS
 )braket
 suffix:semicolon
-singleline_comment|// room to maintain the stack used for jumping from and into udc
+multiline_comment|/* room to maintain the stack used for jumping from and into udc */
 DECL|member|chainstack
 r_struct
 id|ebt_chainstack
@@ -886,8 +878,7 @@ DECL|member|lock
 id|rwlock_t
 id|lock
 suffix:semicolon
-singleline_comment|// e.g. could be the table explicitly only allows certain
-singleline_comment|// matches, targets, ... 0 == let it in
+multiline_comment|/* e.g. could be the table explicitly only allows certain&n;&t; * matches, targets, ... 0 == let it in */
 DECL|member|check
 r_int
 (paren
@@ -906,7 +897,7 @@ r_int
 id|valid_hooks
 )paren
 suffix:semicolon
-singleline_comment|// the data used by the kernel
+multiline_comment|/* the data used by the kernel */
 DECL|member|private
 r_struct
 id|ebt_table_info
@@ -1037,22 +1028,20 @@ op_star
 id|table
 )paren
 suffix:semicolon
-singleline_comment|// Used in the kernel match() functions
+multiline_comment|/* Used in the kernel match() functions */
 DECL|macro|FWINV
 mdefine_line|#define FWINV(bool,invflg) ((bool) ^ !!(info-&gt;invflags &amp; invflg))
-singleline_comment|// True if the hook mask denotes that the rule is in a base chain,
-singleline_comment|// used in the check() functions
+multiline_comment|/* True if the hook mask denotes that the rule is in a base chain,&n; * used in the check() functions */
 DECL|macro|BASE_CHAIN
 mdefine_line|#define BASE_CHAIN (hookmask &amp; (1 &lt;&lt; NF_BR_NUMHOOKS))
-singleline_comment|// Clear the bit in the hook mask that tells if the rule is on a base chain
+multiline_comment|/* Clear the bit in the hook mask that tells if the rule is on a base chain */
 DECL|macro|CLEAR_BASE_CHAIN_BIT
 mdefine_line|#define CLEAR_BASE_CHAIN_BIT (hookmask &amp;= ~(1 &lt;&lt; NF_BR_NUMHOOKS))
-singleline_comment|// True if the target is not a standard target
+multiline_comment|/* True if the target is not a standard target */
 DECL|macro|INVALID_TARGET
 mdefine_line|#define INVALID_TARGET (info-&gt;target &lt; -NUM_STANDARD_TARGETS || info-&gt;target &gt;= 0)
 macro_line|#endif /* __KERNEL__ */
-singleline_comment|// blatently stolen from ip_tables.h
-singleline_comment|// fn returns 0 to continue iteration
+multiline_comment|/* blatently stolen from ip_tables.h&n; * fn returns 0 to continue iteration */
 DECL|macro|EBT_MATCH_ITERATE
 mdefine_line|#define EBT_MATCH_ITERATE(e, fn, args...)                   &bslash;&n;({                                                          &bslash;&n;&t;unsigned int __i;                                   &bslash;&n;&t;int __ret = 0;                                      &bslash;&n;&t;struct ebt_entry_match *__match;                    &bslash;&n;&t;                                                    &bslash;&n;&t;for (__i = sizeof(struct ebt_entry);                &bslash;&n;&t;     __i &lt; (e)-&gt;watchers_offset;                    &bslash;&n;&t;     __i += __match-&gt;match_size +                   &bslash;&n;&t;     sizeof(struct ebt_entry_match)) {              &bslash;&n;&t;&t;__match = (void *)(e) + __i;                &bslash;&n;&t;&t;                                            &bslash;&n;&t;&t;__ret = fn(__match , ## args);              &bslash;&n;&t;&t;if (__ret != 0)                             &bslash;&n;&t;&t;&t;break;                              &bslash;&n;&t;}                                                   &bslash;&n;&t;if (__ret == 0) {                                   &bslash;&n;&t;&t;if (__i != (e)-&gt;watchers_offset)            &bslash;&n;&t;&t;&t;__ret = -EINVAL;                    &bslash;&n;&t;}                                                   &bslash;&n;&t;__ret;                                              &bslash;&n;})
 DECL|macro|EBT_WATCHER_ITERATE

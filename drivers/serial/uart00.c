@@ -2459,6 +2459,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|uart00_console_init
+r_static
 r_void
 id|__init
 id|uart00_console_init
@@ -2475,6 +2476,13 @@ id|uart00_console
 )paren
 suffix:semicolon
 )brace
+DECL|variable|uart00_console_init
+id|console_initcall
+c_func
+(paren
+id|uart00_console_init
+)paren
+suffix:semicolon
 DECL|macro|UART00_CONSOLE
 mdefine_line|#define UART00_CONSOLE&t;&amp;uart00_console
 macro_line|#else

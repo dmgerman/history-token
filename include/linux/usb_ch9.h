@@ -508,5 +508,38 @@ id|USB_SPEED_HIGH
 multiline_comment|/* usb 2.0 */
 )brace
 suffix:semicolon
+DECL|enum|usb_device_state
+r_enum
+id|usb_device_state
+(brace
+multiline_comment|/* NOTATTACHED isn&squot;t in the USB spec, and this state acts&n;&t; * the same as ATTACHED ... but it&squot;s clearer this way.&n;&t; */
+DECL|enumerator|USB_STATE_NOTATTACHED
+id|USB_STATE_NOTATTACHED
+op_assign
+l_int|0
+comma
+multiline_comment|/* the chapter 9 device states */
+DECL|enumerator|USB_STATE_ATTACHED
+id|USB_STATE_ATTACHED
+comma
+DECL|enumerator|USB_STATE_POWERED
+id|USB_STATE_POWERED
+comma
+DECL|enumerator|USB_STATE_DEFAULT
+id|USB_STATE_DEFAULT
+comma
+multiline_comment|/* limited function */
+DECL|enumerator|USB_STATE_ADDRESS
+id|USB_STATE_ADDRESS
+comma
+DECL|enumerator|USB_STATE_CONFIGURED
+id|USB_STATE_CONFIGURED
+comma
+multiline_comment|/* most functions */
+DECL|enumerator|USB_STATE_SUSPENDED
+id|USB_STATE_SUSPENDED
+multiline_comment|/* NOTE:  there are actually four different SUSPENDED&n;&t; * states, returning to POWERED, DEFAULT, ADDRESS, or&n;&t; * CONFIGURED respectively when SOF tokens flow again.&n;&t; */
+)brace
+suffix:semicolon
 macro_line|#endif&t;/* __LINUX_USB_CH9_H */
 eof

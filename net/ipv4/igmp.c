@@ -2104,7 +2104,7 @@ op_assign
 dot
 id|daddr
 op_assign
-id|imr-&gt;imr_address.s_addr
+id|imr-&gt;imr_multiaddr.s_addr
 )brace
 )brace
 )brace

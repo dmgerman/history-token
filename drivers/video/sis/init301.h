@@ -298,6 +298,7 @@ id|PSIS_HW_DEVICE_INFO
 id|HwDeviceExtension
 )paren
 suffix:semicolon
+macro_line|#ifdef SIS315H&t;&t;&t;     
 r_void
 id|SiS_GetCRT2PtrA
 c_func
@@ -328,6 +329,7 @@ op_star
 id|ResIndex
 )paren
 suffix:semicolon
+macro_line|#endif
 r_void
 id|SiS_GetCRT2Part2Ptr
 c_func
@@ -1160,6 +1162,7 @@ id|PSIS_HW_DEVICE_INFO
 id|HwDeviceExtension
 )paren
 suffix:semicolon
+macro_line|#ifdef SIS315H&t;&t;&t;   
 r_void
 id|SiS_GetLVDSDesPtrA
 c_func
@@ -1190,6 +1193,7 @@ op_star
 id|ResIndex
 )paren
 suffix:semicolon
+macro_line|#endif&t;&t;&t;    
 r_void
 id|SiS_SetTPData
 c_func
@@ -1736,6 +1740,7 @@ id|USHORT
 id|RefreshRateTableIndex
 )paren
 suffix:semicolon
+macro_line|#ifdef SIS315H&t;&t;&t;    
 r_void
 id|SiS_SetGroup1_LCDA
 c_func
@@ -1764,6 +1769,7 @@ id|USHORT
 id|RefreshRateTableIndex
 )paren
 suffix:semicolon
+macro_line|#endif&t;&t;&t;    
 r_void
 id|SiS_SetGroup1_301
 c_func
@@ -2023,7 +2029,6 @@ id|PSIS_HW_DEVICE_INFO
 id|HwDeviceExtension
 )paren
 suffix:semicolon
-multiline_comment|/* TW: New functions (with mostly temporary names) */
 r_void
 id|SiS_Chrontel701xBLOn
 c_func
@@ -2033,6 +2038,16 @@ op_star
 id|SiS_Pr
 )paren
 suffix:semicolon
+r_void
+id|SiS_Chrontel701xBLOff
+c_func
+(paren
+id|SiS_Private
+op_star
+id|SiS_Pr
+)paren
+suffix:semicolon
+macro_line|#ifdef SIS315H
 r_void
 id|SiS_Chrontel701xOn
 c_func
@@ -2046,15 +2061,6 @@ id|HwDeviceExtension
 comma
 id|USHORT
 id|BaseAddr
-)paren
-suffix:semicolon
-r_void
-id|SiS_Chrontel701xBLOff
-c_func
-(paren
-id|SiS_Private
-op_star
-id|SiS_Pr
 )paren
 suffix:semicolon
 r_void
@@ -2073,6 +2079,12 @@ c_func
 id|SiS_Private
 op_star
 id|SiS_Pr
+comma
+id|PSIS_HW_DEVICE_INFO
+id|HwDeviceExtension
+comma
+id|USHORT
+id|BaseAddr
 )paren
 suffix:semicolon
 r_void
@@ -2153,6 +2165,42 @@ id|USHORT
 id|BaseAddr
 )paren
 suffix:semicolon
+r_void
+id|SiS_ChrontelPowerSequencing
+c_func
+(paren
+id|SiS_Private
+op_star
+id|SiS_Pr
+)paren
+suffix:semicolon
+r_void
+id|SiS_SetCH701xForLCD
+c_func
+(paren
+id|SiS_Private
+op_star
+id|SiS_Pr
+comma
+id|PSIS_HW_DEVICE_INFO
+id|HwDeviceExtension
+comma
+id|USHORT
+id|BaseAddr
+)paren
+suffix:semicolon
+macro_line|#ifdef NEWCH701x
+r_void
+id|SiS_ChrontelDoSomething5
+c_func
+(paren
+id|SiS_Private
+op_star
+id|SiS_Pr
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif /* 315 */
 macro_line|#if 0
 id|BOOLEAN
 id|SiS_IsSomethingCR5F
@@ -2230,30 +2278,6 @@ id|USHORT
 id|BaseAddr
 )paren
 suffix:semicolon
-r_void
-id|SiS_SetCH701xForLCD
-c_func
-(paren
-id|SiS_Private
-op_star
-id|SiS_Pr
-comma
-id|PSIS_HW_DEVICE_INFO
-id|HwDeviceExtension
-comma
-id|USHORT
-id|BaseAddr
-)paren
-suffix:semicolon
-r_void
-id|SiS_ChrontelPowerSequencing
-c_func
-(paren
-id|SiS_Private
-op_star
-id|SiS_Pr
-)paren
-suffix:semicolon
 id|BOOLEAN
 id|SiS_CR36BIOSWord23b
 c_func
@@ -2290,7 +2314,6 @@ id|PSIS_HW_DEVICE_INFO
 id|HwDeviceExtension
 )paren
 suffix:semicolon
-multiline_comment|/* TW end */
 r_extern
 r_void
 id|SiS_SetReg1

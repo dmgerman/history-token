@@ -146,7 +146,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_add_timer - Start timeout timer for a single scsi command.&n; * @scmd:&t;scsi command that is about to start running.&n; * @timeout:&t;amount of time to allow this command to run.&n; * @complete:&t;timeout function to call if timer isn&squot;t canceled.&n; *&n; * Notes:&n; *    This should be turned into an inline function.  Each scsi command&n; *    has it&squot;s own timer, and as it is added to the queue, we set up the&n; *    timer.  When the command completes, we cancel the timer.  Pretty&n; *    simple, really, especially compared to the old way of handling this&n; *    crap.&n; **/
+multiline_comment|/**&n; * scsi_add_timer - Start timeout timer for a single scsi command.&n; * @scmd:&t;scsi command that is about to start running.&n; * @timeout:&t;amount of time to allow this command to run.&n; * @complete:&t;timeout function to call if timer isn&squot;t canceled.&n; *&n; * Notes:&n; *    This should be turned into an inline function.  Each scsi command&n; *    has its own timer, and as it is added to the queue, we set up the&n; *    timer.  When the command completes, we cancel the timer.&n; **/
 DECL|function|scsi_add_timer
 r_void
 id|scsi_add_timer
@@ -3454,7 +3454,7 @@ id|timer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_decide_disposition - Disposition a cmd on return from LLD.&n; * @scmd:&t;SCSI cmd to examine.&n; *&n; * Notes:&n; *    This is *only* called when we are examining the status after sending&n; *    out the actual data command.  any commands that are queued for error&n; *    recovery (i.e. test_unit_ready) do *not* come through here.&n; *&n; *    When this routine returns failed, it means the error handler thread&n; *    is woken.  in cases where the error code indicates an error that&n; *    doesn&squot;t require the error handler read (i.e. we don&squot;t need to&n; *    abort/reset), then this function should return SUCCESS.&n; **/
+multiline_comment|/**&n; * scsi_decide_disposition - Disposition a cmd on return from LLD.&n; * @scmd:&t;SCSI cmd to examine.&n; *&n; * Notes:&n; *    This is *only* called when we are examining the status after sending&n; *    out the actual data command.  any commands that are queued for error&n; *    recovery (e.g. test_unit_ready) do *not* come through here.&n; *&n; *    When this routine returns failed, it means the error handler thread&n; *    is woken.  In cases where the error code indicates an error that&n; *    doesn&squot;t require the error handler read (i.e. we don&squot;t need to&n; *    abort/reset), this function should return SUCCESS.&n; **/
 DECL|function|scsi_decide_disposition
 r_int
 id|scsi_decide_disposition
@@ -3655,12 +3655,10 @@ id|scmd-&gt;result
 op_ne
 id|COMMAND_COMPLETE
 )paren
-(brace
 r_return
 id|FAILED
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * now, check the status byte to see if this indicates anything special.&n;&t; */
+multiline_comment|/*&n;&t; * check the status byte to see if this indicates anything special.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -3709,13 +3707,13 @@ id|rtn
 op_eq
 id|NEEDS_RETRY
 )paren
-(brace
 r_goto
 id|maybe_retry
 suffix:semicolon
-)brace
+multiline_comment|/* if rtn == FAILED, we have no sense information */
+multiline_comment|/* was: return rtn; */
 r_return
-id|rtn
+id|SUCCESS
 suffix:semicolon
 r_case
 id|CONDITION_GOOD
@@ -4131,6 +4129,7 @@ id|done_q
 r_if
 c_cond
 (paren
+op_logical_neg
 id|scsi_eh_bus_device_reset
 c_func
 (paren
@@ -4144,6 +4143,7 @@ id|done_q
 r_if
 c_cond
 (paren
+op_logical_neg
 id|scsi_eh_bus_reset
 c_func
 (paren
@@ -4157,6 +4157,7 @@ id|done_q
 r_if
 c_cond
 (paren
+op_logical_neg
 id|scsi_eh_host_reset
 c_func
 (paren

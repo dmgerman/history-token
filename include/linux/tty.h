@@ -714,6 +714,7 @@ id|minimum_to_wake
 suffix:semicolon
 DECL|member|overrun_time
 r_int
+r_int
 id|overrun_time
 suffix:semicolon
 DECL|member|num_overrun
@@ -880,14 +881,6 @@ suffix:semicolon
 r_extern
 r_int
 id|kmsg_redirect
-suffix:semicolon
-r_extern
-r_void
-id|con_init
-c_func
-(paren
-r_void
-)paren
 suffix:semicolon
 r_extern
 r_void

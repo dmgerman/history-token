@@ -2,81 +2,8 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef&t;_WANPIPE_H
 DECL|macro|_WANPIPE_H
 mdefine_line|#define&t;_WANPIPE_H
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#ifndef KERNEL_VERSION
-DECL|macro|KERNEL_VERSION
-mdefine_line|#define KERNEL_VERSION(a,b,c) (((a) &lt;&lt; 16) + ((b) &lt;&lt; 8) + (c))
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
-DECL|macro|LINUX_2_4
-mdefine_line|#define LINUX_2_4
 DECL|macro|netdevice_t
 mdefine_line|#define netdevice_t struct net_device
-DECL|macro|FREE_READ
-mdefine_line|#define FREE_READ 1
-DECL|macro|FREE_WRITE
-mdefine_line|#define FREE_WRITE 0
-DECL|macro|stop_net_queue
-mdefine_line|#define stop_net_queue(a) &t;netif_stop_queue(a) 
-DECL|macro|start_net_queue
-mdefine_line|#define start_net_queue(a) &t;netif_start_queue(a)
-DECL|macro|is_queue_stopped
-mdefine_line|#define is_queue_stopped(a)&t;netif_queue_stopped(a)
-DECL|macro|wake_net_dev
-mdefine_line|#define wake_net_dev(a)&t;netif_wake_queue(a)
-DECL|macro|is_dev_running
-mdefine_line|#define is_dev_running(a)&t;netif_running(a)
-DECL|macro|wan_dev_kfree_skb
-mdefine_line|#define wan_dev_kfree_skb(a,b)&t;dev_kfree_skb_any(a)
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,0)
-DECL|macro|LINUX_2_1
-mdefine_line|#define LINUX_2_1
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct device
-DECL|macro|FREE_READ
-mdefine_line|#define FREE_READ 1
-DECL|macro|FREE_WRITE
-mdefine_line|#define FREE_WRITE 0
-DECL|macro|stop_net_queue
-mdefine_line|#define stop_net_queue(a) &t;(set_bit(0, &amp;##a-&gt;tbusy)) 
-DECL|macro|start_net_queue
-mdefine_line|#define start_net_queue(a) &t;(clear_bit(0,&amp;##a-&gt;tbusy))
-DECL|macro|is_queue_stopped
-mdefine_line|#define is_queue_stopped(a)&t;(##a-&gt;tbusy)
-DECL|macro|wake_net_dev
-mdefine_line|#define wake_net_dev(a)&t;{clear_bit(0,&amp;##a-&gt;tbusy);mark_bh(NET_BH);}
-DECL|macro|is_dev_running
-mdefine_line|#define is_dev_running(a)&t;(test_bit(0,&amp;##a-&gt;start))
-DECL|macro|wan_dev_kfree_skb
-mdefine_line|#define wan_dev_kfree_skb(a,b)&t;dev_kfree_skb(a)
-macro_line|#else
-DECL|macro|LINUX_2_0
-mdefine_line|#define LINUX_2_0
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct device
-DECL|macro|test_and_set_bit
-mdefine_line|#define test_and_set_bit set_bit
-DECL|macro|net_ratelimit
-mdefine_line|#define net_ratelimit() 1 
-DECL|macro|stop_net_queue
-mdefine_line|#define stop_net_queue(a) &t;(set_bit(0, &amp;##a-&gt;tbusy)) 
-DECL|macro|start_net_queue
-mdefine_line|#define start_net_queue(a) &t;(clear_bit(0,&amp;##a-&gt;tbusy))
-DECL|macro|is_queue_stopped
-mdefine_line|#define is_queue_stopped(a)&t;(##a-&gt;tbusy)
-DECL|macro|wake_net_dev
-mdefine_line|#define wake_net_dev(a)&t;{clear_bit(0,&amp;##a-&gt;tbusy);mark_bh(NET_BH);}
-DECL|macro|is_dev_running
-mdefine_line|#define is_dev_running(a)&t;(test_bit(0,(void*)&amp;##a-&gt;start))
-DECL|macro|wan_dev_kfree_skb
-mdefine_line|#define wan_dev_kfree_skb(a,b) dev_kfree_skb(a,b)  &t;&t; 
-DECL|macro|spin_lock_init
-mdefine_line|#define spin_lock_init(a)
-DECL|macro|spin_lock
-mdefine_line|#define spin_lock(a)
-DECL|macro|spin_unlock
-mdefine_line|#define spin_unlock(a)
-macro_line|#endif
 macro_line|#include &lt;linux/wanrouter.h&gt;
 multiline_comment|/* Defines */
 macro_line|#ifndef&t;PACKED
@@ -111,23 +38,12 @@ DECL|macro|MAX_LCN_NUM
 mdefine_line|#define MAX_LCN_NUM&t;4095&t;/* Maximum lcn number */
 DECL|macro|MAX_FT1_RETRY
 mdefine_line|#define MAX_FT1_RETRY &t;100
-macro_line|#ifdef LINUX_2_4
 macro_line|#ifndef AF_WANPIPE
 DECL|macro|AF_WANPIPE
 mdefine_line|#define AF_WANPIPE 25
 macro_line|#ifndef PF_WANPIPE
 DECL|macro|PF_WANPIPE
 mdefine_line|#define PF_WANPIPE AF_WANPIPE
-macro_line|#endif
-macro_line|#endif
-macro_line|#else
-macro_line|#ifndef AF_WANPIPE
-DECL|macro|AF_WANPIPE
-mdefine_line|#define AF_WANPIPE 24
-macro_line|#ifndef PF_WANPIPE
-DECL|macro|PF_WANPIPE
-mdefine_line|#define PF_WANPIPE AF_WANPIPE
-macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 DECL|macro|TX_TIMEOUT
@@ -726,12 +642,10 @@ multiline_comment|/****** Kernel Interface *************************************
 macro_line|#include &lt;linux/sdladrv.h&gt;&t;/* SDLA support module API definitions */
 macro_line|#include &lt;linux/sdlasfm.h&gt;&t;/* SDLA firmware module definitions */
 macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#ifdef LINUX_2_4
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serialP.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;

@@ -33,7 +33,7 @@ suffix:semicolon
 DECL|macro|APIC_DFR_VALUE
 mdefine_line|#define APIC_DFR_VALUE&t;(APIC_DFR_CLUSTER)
 DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS&t;((cpu_online_map &lt; 0xf)?cpu_online_map:0xf)
+mdefine_line|#define TARGET_CPUS&t;((cpu_callout_map &lt; 0xf)?cpu_callout_map:0xf)
 DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE dest_LowestPrio
 DECL|macro|INT_DEST_MODE

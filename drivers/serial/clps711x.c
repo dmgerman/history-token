@@ -2183,6 +2183,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|clps711xuart_console_init
+r_static
 r_void
 id|__init
 id|clps711xuart_console_init
@@ -2199,6 +2200,13 @@ id|clps711x_console
 )paren
 suffix:semicolon
 )brace
+DECL|variable|clps711xuart_console_init
+id|console_initcall
+c_func
+(paren
+id|clps711xuart_console_init
+)paren
+suffix:semicolon
 DECL|macro|CLPS711X_CONSOLE
 mdefine_line|#define CLPS711X_CONSOLE&t;&amp;clps711x_console
 macro_line|#else

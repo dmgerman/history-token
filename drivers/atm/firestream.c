@@ -7032,7 +7032,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Manual (AN9, page 6) says ASF1=0 means compare Utopia address&n;&t;&t; * too.  I can&squot;t find ASF1 anywhere. Anyway, we AND with just hte&n;&t;&t; * other bits, then compare with 0, which is exactly what we&n;&t;&t; * want. */
+multiline_comment|/* Manual (AN9, page 6) says ASF1=0 means compare Utopia address&n;&t;&t; * too.  I can&squot;t find ASF1 anywhere. Anyway, we AND with just the&n;&t;&t; * other bits, then compare with 0, which is exactly what we&n;&t;&t; * want. */
 id|write_fs
 (paren
 id|dev

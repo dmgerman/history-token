@@ -5455,9 +5455,14 @@ id|sk-&gt;err
 op_assign
 l_int|0
 suffix:semicolon
-id|sk-&gt;done
-op_assign
-l_int|0
+id|__clear_bit
+c_func
+(paren
+id|SOCK_DONE
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 suffix:semicolon
 id|tp-&gt;snd_wnd
 op_assign

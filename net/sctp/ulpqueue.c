@@ -585,7 +585,14 @@ multiline_comment|/* If the socket is just going to throw this away, do not&n;&t
 r_if
 c_cond
 (paren
-id|sk-&gt;dead
+id|test_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 op_logical_or
 (paren
 id|sk-&gt;shutdown

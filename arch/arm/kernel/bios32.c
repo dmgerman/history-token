@@ -14,10 +14,6 @@ r_static
 r_int
 id|debug_pci
 suffix:semicolon
-DECL|variable|have_isa_bridge
-r_int
-id|have_isa_bridge
-suffix:semicolon
 DECL|function|pcibios_report_status
 r_void
 id|pcibios_report_status
@@ -1220,9 +1216,9 @@ op_assign
 id|bus-&gt;sysdata
 suffix:semicolon
 r_struct
-id|list_head
+id|pci_dev
 op_star
-id|walk
+id|dev
 suffix:semicolon
 id|u16
 id|features
@@ -1230,12 +1226,8 @@ op_assign
 id|PCI_COMMAND_SERR
 op_or
 id|PCI_COMMAND_PARITY
-suffix:semicolon
-id|u16
-id|all_status
-op_assign
-op_minus
-l_int|1
+op_or
+id|PCI_COMMAND_FAST_BACK
 suffix:semicolon
 id|pbus_assign_bus_resources
 c_func
@@ -1246,34 +1238,17 @@ id|root
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Walk the devices on this bus, working out what we can&n;&t; * and can&squot;t support.&n;&t; */
-r_for
-c_loop
-(paren
-id|walk
-op_assign
-id|bus-&gt;devices.next
-suffix:semicolon
-id|walk
-op_ne
-op_amp
-id|bus-&gt;devices
-suffix:semicolon
-id|walk
-op_assign
-id|walk-&gt;next
-)paren
-(brace
-r_struct
-id|pci_dev
-op_star
-id|dev
-op_assign
-id|pci_dev_b
+id|list_for_each_entry
 c_func
 (paren
-id|walk
+id|dev
+comma
+op_amp
+id|bus-&gt;devices
+comma
+id|bus_list
 )paren
-suffix:semicolon
+(brace
 id|u16
 id|status
 suffix:semicolon
@@ -1296,9 +1271,21 @@ op_amp
 id|status
 )paren
 suffix:semicolon
-id|all_status
-op_and_assign
+multiline_comment|/*&n;&t;&t; * If any device on this bus does not support fast back&n;&t;&t; * to back transfers, then the bus as a whole is not able&n;&t;&t; * to support them.  Having fast back to back transfers&n;&t;&t; * on saves us one PCI cycle per transaction.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|status
+op_amp
+id|PCI_STATUS_FAST_BACK
+)paren
+)paren
+id|features
+op_and_assign
+op_complement
+id|PCI_COMMAND_FAST_BACK
 suffix:semicolon
 r_if
 c_cond
@@ -1318,8 +1305,7 @@ op_or
 id|PCI_COMMAND_PARITY
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If this device is an ISA bridge, set the have_isa_bridge&n;&t;&t; * flag.  We will then go looking for things like keyboard,&n;&t;&t; * etc&n;&t;&t; */
-r_if
+r_switch
 c_cond
 (paren
 id|dev
@@ -1327,64 +1313,36 @@ op_member_access_from_pointer
 r_class
 op_rshift
 l_int|8
-op_eq
-id|PCI_CLASS_BRIDGE_ISA
-op_logical_or
-id|dev
-op_member_access_from_pointer
-r_class
-op_rshift
-l_int|8
-op_eq
-id|PCI_CLASS_BRIDGE_EISA
-)paren
-id|have_isa_bridge
-op_assign
-op_logical_neg
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * If any device on this bus does not support fast back to back&n;&t; * transfers, then the bus as a whole is not able to support them.&n;&t; * Having fast back to back transfers on saves us one PCI cycle&n;&t; * per transaction.&n;&t; */
-r_if
-c_cond
-(paren
-id|all_status
-op_amp
-id|PCI_STATUS_FAST_BACK
-)paren
-id|features
-op_or_assign
-id|PCI_COMMAND_FAST_BACK
-suffix:semicolon
-multiline_comment|/*&n;&t; * Now walk the devices again, this time setting them up.&n;&t; */
-r_for
-c_loop
-(paren
-id|walk
-op_assign
-id|bus-&gt;devices.next
-suffix:semicolon
-id|walk
-op_ne
-op_amp
-id|bus-&gt;devices
-suffix:semicolon
-id|walk
-op_assign
-id|walk-&gt;next
 )paren
 (brace
-r_struct
-id|pci_dev
-op_star
-id|dev
+macro_line|#if defined(CONFIG_ISA) || defined(CONFIG_EISA)
+r_case
+id|PCI_CLASS_BRIDGE_ISA
+suffix:colon
+r_case
+id|PCI_CLASS_BRIDGE_EISA
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * If this device is an ISA bridge, set isa_bridge&n;&t;&t;&t; * to point at this device.  We will then go looking&n;&t;&t;&t; * for things like keyboard, etc.&n;&t;&t;&t; */
+id|isa_bridge
 op_assign
-id|pci_dev_b
+id|dev
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+)brace
+multiline_comment|/*&n;&t; * Now walk the devices again, this time setting them up.&n;&t; */
+id|list_for_each_entry
 c_func
 (paren
-id|walk
+id|dev
+comma
+op_amp
+id|bus-&gt;devices
+comma
+id|bus_list
 )paren
-suffix:semicolon
+(brace
 id|u16
 id|cmd
 suffix:semicolon
@@ -1420,10 +1378,44 @@ id|dev
 comma
 id|PCI_CACHE_LINE_SIZE
 comma
-id|SMP_CACHE_BYTES
+id|L1_CACHE_BYTES
 op_rshift
 l_int|2
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Propagate the flags to the PCI bridge.&n;&t; */
+r_if
+c_cond
+(paren
+id|bus-&gt;self
+op_logical_and
+id|bus-&gt;self-&gt;hdr_type
+op_eq
+id|PCI_HEADER_TYPE_BRIDGE
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|features
+op_amp
+id|PCI_COMMAND_FAST_BACK
+)paren
+id|bus-&gt;bridge_ctl
+op_or_assign
+id|PCI_BRIDGE_CTL_FAST_BACK
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|features
+op_amp
+id|PCI_COMMAND_PARITY
+)paren
+id|bus-&gt;bridge_ctl
+op_or_assign
+id|PCI_BRIDGE_CTL_PARITY
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Report what we did for this bus&n;&t; */
@@ -1451,7 +1443,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Convert from Linux-centric to bus-centric addresses for bridge devices.&n; */
 r_void
 id|__devinit
-DECL|function|pcibios_fixup_pbus_ranges
 id|pcibios_fixup_pbus_ranges
 c_func
 (paren
@@ -1499,7 +1490,6 @@ id|root-&gt;mem_offset
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the standard PCI-PCI bridge swizzling algorithm:&n; *&n; *   Dev: 0  1  2  3&n; *    A   A  B  C  D&n; *    B   B  C  D  A&n; *    C   C  D  A  B&n; *    D   D  A  B  C&n; *        ^^^^^^^^^^ irq pin on bridge&n; */
-DECL|function|pci_std_swizzle
 id|u8
 id|__devinit
 id|pci_std_swizzle
@@ -1520,17 +1510,7 @@ id|pin
 op_assign
 op_star
 id|pinp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pin
-op_ne
-l_int|0
-)paren
-(brace
-id|pin
-op_sub_assign
+op_minus
 l_int|1
 suffix:semicolon
 r_while
@@ -1553,7 +1533,7 @@ id|dev-&gt;devfn
 op_amp
 l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * move up the chain of bridges,&n;&t;&t;&t; * swizzling as we go.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * move up the chain of bridges,&n;&t;&t; * swizzling as we go.&n;&t;&t; */
 id|dev
 op_assign
 id|dev-&gt;bus-&gt;self
@@ -1566,7 +1546,6 @@ id|pin
 op_plus
 l_int|1
 suffix:semicolon
-)brace
 r_return
 id|PCI_SLOT
 c_func
@@ -1576,7 +1555,6 @@ id|dev-&gt;devfn
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Swizzle the device pin each time we cross a bridge.&n; * This might update pin and returns the slot number.&n; */
-DECL|function|pcibios_swizzle
 r_static
 id|u8
 id|__devinit
@@ -1652,7 +1630,6 @@ id|slot
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Map a slot/pin to an IRQ.&n; */
-DECL|function|pcibios_map_irq
 r_static
 r_int
 id|pcibios_map_irq
@@ -1725,7 +1702,6 @@ r_return
 id|irq
 suffix:semicolon
 )brace
-DECL|function|pcibios_init_hw
 r_static
 r_void
 id|__init
@@ -1913,7 +1889,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|pci_common_init
 r_void
 id|__init
 id|pci_common_init
@@ -1970,7 +1945,6 @@ id|pcibios_map_irq
 )paren
 suffix:semicolon
 )brace
-DECL|function|pcibios_setup
 r_char
 op_star
 id|__init
@@ -2008,7 +1982,6 @@ id|str
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * From arch/i386/kernel/pci-i386.c:&n; *&n; * We need to avoid collisions with `mirrored&squot; VGA ports&n; * and other strange ISA hardware, so we always want the&n; * addresses to be allocated in the 0x000-0x0ff region&n; * modulo 0x400.&n; *&n; * Why? Because some silly external IO cards only decode&n; * the low 10 bits of the IO address. The 0x00-0xff region&n; * is reserved for motherboard devices that decode all 16&n; * bits, so it&squot;s ok to allocate at, say, 0x2800-0x28ff,&n; * but we want to try to avoid allocating at 0x2900-0x2bff&n; * which might be mirrored at 0x0100-0x03ff..&n; */
-DECL|function|pcibios_align_resource
 r_void
 id|pcibios_align_resource
 c_func
@@ -2078,7 +2051,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pcibios_enable_device - Enable I/O and memory.&n; * @dev: PCI device to be enabled&n; */
-DECL|function|pcibios_enable_device
 r_int
 id|pcibios_enable_device
 c_func
@@ -2260,7 +2232,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pci_mmap_page_range
 r_int
 id|pci_mmap_page_range
 c_func

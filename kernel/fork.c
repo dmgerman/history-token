@@ -3763,7 +3763,7 @@ id|current-&gt;time_slice
 op_rshift_assign
 l_int|1
 suffix:semicolon
-id|p-&gt;sleep_timestamp
+id|p-&gt;last_run
 op_assign
 id|jiffies
 suffix:semicolon

@@ -281,7 +281,14 @@ c_cond
 (paren
 (paren
 op_logical_neg
-id|sk-&gt;dead
+id|test_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 )paren
 op_logical_and
 (paren
@@ -311,9 +318,14 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|sk-&gt;dead
-op_assign
-l_int|1
+id|__set_bit
+c_func
+(paren
+id|SOCK_DEAD
+comma
+op_amp
+id|sk-&gt;flags
+)paren
 suffix:semicolon
 multiline_comment|/* Uh-oh... Should use sock_orphan ? */
 multiline_comment|/* Close our TSAP.&n;&t;&t; * If we leave it open, IrLMP put it back into the list of&n;&t;&t; * unconnected LSAPs. The problem is that any incoming request&n;&t;&t; * can then be matched to this socket (and it will be, because&n;&t;&t; * it is at the head of the list). This would prevent any&n;&t;&t; * listening socket waiting on the same TSAP to get those&n;&t;&t; * requests. Some apps forget to close sockets, or hang to it&n;&t;&t; * a bit too long, so we may stay in this dead state long&n;&t;&t; * enough to be noticed...&n;&t;&t; * Note : all socket function do check sk-&gt;state, so we are&n;&t;&t; * safe...&n;&t;&t; * Jean II&n;&t;&t; */
@@ -335,7 +347,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Note : once we are there, there is not much you want to do&n;&t; * with the socket anymore, apart from closing it.&n;&t; * For example, bind() and connect() won&squot;t reset sk-&gt;err,&n;&t; * sk-&gt;shutdown and sk-&gt;dead to valid values...&n;&t; * Jean II&n;&t; */
+multiline_comment|/* Note : once we are there, there is not much you want to do&n;&t; * with the socket anymore, apart from closing it.&n;&t; * For example, bind() and connect() won&squot;t reset sk-&gt;err,&n;&t; * sk-&gt;shutdown and sk-&gt;flags to valid values...&n;&t; * Jean II&n;&t; */
 )brace
 multiline_comment|/*&n; * Function irda_connect_confirm (instance, sap, qos, max_sdu_size, skb)&n; *&n; *    Connections has been confirmed by the remote device&n; *&n; */
 DECL|function|irda_connect_confirm

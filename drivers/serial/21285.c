@@ -1996,6 +1996,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|rs285_console_init
+r_static
 r_void
 id|__init
 id|rs285_console_init
@@ -2017,6 +2018,13 @@ id|serial21285_console
 )paren
 suffix:semicolon
 )brace
+DECL|variable|rs285_console_init
+id|console_initcall
+c_func
+(paren
+id|rs285_console_init
+)paren
+suffix:semicolon
 DECL|macro|SERIAL_21285_CONSOLE
 mdefine_line|#define SERIAL_21285_CONSOLE&t;&amp;serial21285_console
 macro_line|#else

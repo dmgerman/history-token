@@ -12,8 +12,6 @@ DECL|macro|LOW
 mdefine_line|#define LOW(n)&t;&t;(n &amp; 0x00FF)
 DECL|macro|HOPBYHOP
 mdefine_line|#define HOPBYHOP&t;1
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

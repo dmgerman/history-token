@@ -23,6 +23,7 @@ macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_static
 r_void
@@ -3300,6 +3301,17 @@ op_assign
 id|rt0-&gt;addr
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|fl.fl6_src
+)paren
+id|fl.fl6_src
+op_assign
+op_amp
+id|np-&gt;saddr
+suffix:semicolon
 id|dst
 op_assign
 id|ip6_route_output
@@ -3879,7 +3891,7 @@ id|fl
 suffix:semicolon
 )brace
 r_else
-id|dst_clone
+id|dst_hold
 c_func
 (paren
 id|dst
@@ -7825,6 +7837,23 @@ l_int|0
 r_goto
 id|discard_and_relse
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm6_policy_check
+c_func
+(paren
+id|sk
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+r_goto
+id|discard_it
+suffix:semicolon
 id|skb-&gt;dev
 op_assign
 l_int|NULL
@@ -7902,6 +7931,23 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|xfrm6_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+r_goto
+id|discard_and_relse
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|skb-&gt;len
 OL
 (paren
@@ -7960,6 +8006,23 @@ id|discard_it
 suffix:semicolon
 id|do_time_wait
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm6_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+r_goto
+id|discard_and_relse
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -607,6 +607,7 @@ macro_line|#else
 DECL|macro|tub3270_con_devno
 mdefine_line|#define tub3270_con_devno console_device
 DECL|function|tub3270_con_init
+r_static
 r_void
 id|__init
 id|tub3270_con_init
@@ -647,6 +648,13 @@ id|tub3270_con
 )paren
 suffix:semicolon
 )brace
+DECL|variable|tub3270_con_init
+id|console_initcall
+c_func
+(paren
+id|tub3270_con_init
+)paren
+suffix:semicolon
 macro_line|#endif
 r_static
 id|kdev_t

@@ -108,7 +108,7 @@ r_void
 id|ide_unplugged_outb
 (paren
 id|u8
-id|addr
+id|val
 comma
 r_int
 r_int
@@ -122,7 +122,7 @@ r_void
 id|ide_unplugged_outw
 (paren
 id|u16
-id|addr
+id|val
 comma
 r_int
 r_int
@@ -154,7 +154,7 @@ r_void
 id|ide_unplugged_outl
 (paren
 id|u32
-id|addr
+id|val
 comma
 r_int
 r_int
@@ -368,7 +368,7 @@ r_void
 id|ide_outb
 (paren
 id|u8
-id|addr
+id|val
 comma
 r_int
 r_int
@@ -378,7 +378,7 @@ id|port
 id|outb
 c_func
 (paren
-id|addr
+id|val
 comma
 id|port
 )paren
@@ -390,7 +390,7 @@ r_void
 id|ide_outw
 (paren
 id|u16
-id|addr
+id|val
 comma
 r_int
 r_int
@@ -400,7 +400,7 @@ id|port
 id|outw
 c_func
 (paren
-id|addr
+id|val
 comma
 id|port
 )paren
@@ -440,7 +440,7 @@ r_void
 id|ide_outl
 (paren
 id|u32
-id|addr
+id|val
 comma
 r_int
 r_int
@@ -450,7 +450,7 @@ id|port
 id|outl
 c_func
 (paren
-id|addr
+id|val
 comma
 id|port
 )paren

@@ -740,9 +740,9 @@ r_else
 (brace
 multiline_comment|/* Synchronize this task&squot;s top level page-table&n;&t;&t;   with the &quot;reference&quot; page table from init.  */
 r_int
-id|offset
+id|index
 op_assign
-id|__pgd_offset
+id|pgd_index
 c_func
 (paren
 id|address
@@ -759,13 +759,13 @@ id|pgd
 op_assign
 id|current-&gt;active_mm-&gt;pgd
 op_plus
-id|offset
+id|index
 suffix:semicolon
 id|pgd_k
 op_assign
 id|swapper_pg_dir
 op_plus
-id|offset
+id|index
 suffix:semicolon
 r_if
 c_cond

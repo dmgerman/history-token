@@ -437,6 +437,12 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* Use in messages: /port/port/... */
+DECL|member|state
+r_enum
+id|usb_device_state
+id|state
+suffix:semicolon
+multiline_comment|/* configured, not attached, etc */
 DECL|member|speed
 r_enum
 id|usb_device_speed
@@ -552,11 +558,6 @@ r_int
 id|string_langid
 suffix:semicolon
 multiline_comment|/* language ID for strings */
-DECL|member|present
-r_int
-id|present
-suffix:semicolon
-multiline_comment|/* if device is present or not */
 DECL|member|hcpriv
 r_void
 op_star

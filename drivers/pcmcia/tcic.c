@@ -1985,13 +1985,6 @@ id|sockets
 op_increment
 suffix:semicolon
 )brace
-id|platform_device_register
-c_func
-(paren
-op_amp
-id|tcic_device
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -2431,6 +2424,13 @@ id|tcic_device.dev.class_data
 op_assign
 op_amp
 id|tcic_data
+suffix:semicolon
+id|platform_device_register
+c_func
+(paren
+op_amp
+id|tcic_device
+)paren
 suffix:semicolon
 r_return
 l_int|0

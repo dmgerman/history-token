@@ -1328,8 +1328,6 @@ multiline_comment|/* Initialize the ACPI boot-time table parser */
 id|acpi_table_init
 c_func
 (paren
-op_star
-id|cmdline_p
 )paren
 suffix:semicolon
 macro_line|# ifdef CONFIG_ACPI_NUMA
@@ -1538,8 +1536,6 @@ macro_line|#ifdef CONFIG_ACPI_BOOT
 id|acpi_boot_init
 c_func
 (paren
-op_star
-id|cmdline_p
 )paren
 suffix:semicolon
 macro_line|#endif

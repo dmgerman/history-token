@@ -15,31 +15,10 @@ macro_line|#include &lt;asm/io.h&gt;&t;&t;/* phys_to_virt() */
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sdlapci.h&gt;
 macro_line|#include &lt;linux/if_wanpipe_common.h&gt;
-macro_line|#if defined(LINUX_2_4)
+DECL|macro|netdevice_t
+mdefine_line|#define netdevice_t struct net_device
 macro_line|#include &lt;asm/uaccess.h&gt;&t;/* kernel &lt;-&gt; user copy */
 macro_line|#include &lt;linux/inetdevice.h&gt;
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct net_device 
-macro_line|#elif defined(LINUX_2_1)
-macro_line|#include &lt;asm/uaccess.h&gt;&t;/* kernel &lt;-&gt; user copy */
-macro_line|#include &lt;linux/inetdevice.h&gt;
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct device 
-macro_line|#else
-macro_line|#include &lt;asm/segment.h&gt;
-DECL|macro|devinet_ioctl
-mdefine_line|#define devinet_ioctl(x,y) dev_ioctl(x,y)
-DECL|macro|netdevice_t
-mdefine_line|#define netdevice_t struct device 
-DECL|macro|test_and_set_bit
-mdefine_line|#define test_and_set_bit set_bit
-DECL|typedef|mm_segment_t
-r_typedef
-r_int
-r_int
-id|mm_segment_t
-suffix:semicolon
-macro_line|#endif
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 DECL|macro|KMEM_SAFETYZONE
@@ -302,7 +281,6 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* adapter data space */
 multiline_comment|/* Wanpipe&squot;s own task queue, used for all API&squot;s.&n; * All protocol specific tasks will be instered&n; * into &quot;wanpipe_tq_custom&quot; task_queue. &n;&n; * On each rx_interrupt, the whole task queue&n; * (wanpipe_tq_custom) will be queued into &n; * IMMEDIATE_BH via wanpipe_mark_bh() call. &n; &n; * The IMMEDIATE_BH will execute run_wanpipe_tq() &n; * function, which will execute all pending,&n; * tasks in wanpipe_tq_custom queue */
-macro_line|#ifdef LINUX_2_4
 DECL|variable|wanpipe_tq_custom
 id|DECLARE_TASK_QUEUE
 c_func
@@ -339,42 +317,6 @@ op_amp
 id|wanpipe_tq_custom
 )brace
 suffix:semicolon
-macro_line|#else
-DECL|variable|wanpipe_tq_custom
-r_static
-r_struct
-id|tq_struct
-op_star
-id|wanpipe_tq_custom
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|wanpipe_tq_task
-r_static
-r_struct
-id|tq_struct
-id|wanpipe_tq_task
-op_assign
-(brace
-l_int|NULL
-comma
-l_int|0
-comma
-(paren
-r_void
-op_star
-)paren
-(paren
-r_void
-op_star
-)paren
-id|run_wanpipe_tq
-comma
-op_amp
-id|wanpipe_tq_custom
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|variable|wanpipe_bh_critical
 r_static
 r_int
@@ -1281,7 +1223,6 @@ id|card-&gt;configured
 )paren
 (brace
 multiline_comment|/* Initialize the Spin lock */
-macro_line|#if defined(__SMP__) || defined(LINUX_2_4) 
 id|printk
 c_func
 (paren
@@ -1291,7 +1232,6 @@ comma
 id|wandev-&gt;name
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Piggyback spin lock has already been initialized,&n;&t;&t; * in check_s514/s508_conflicts() */
 r_if
 c_cond
@@ -2810,7 +2750,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -2842,56 +2781,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-r_if
-c_cond
-(paren
-(paren
-id|u_dump
-op_eq
-l_int|NULL
-)paren
-op_logical_or
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|u_dump
-comma
-r_sizeof
-(paren
-id|sdla_dump_t
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-id|memcpy_fromfs
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|dump
-comma
-(paren
-r_void
-op_star
-)paren
-id|u_dump
-comma
-r_sizeof
-(paren
-id|sdla_dump_t
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2913,31 +2802,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#ifdef LINUX_2_0
-r_if
-c_cond
-(paren
-(paren
-id|dump.ptr
-op_eq
-l_int|NULL
-)paren
-op_logical_or
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-id|dump.ptr
-comma
-id|dump.length
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-macro_line|#endif&t;
 id|winsize
 op_assign
 id|card-&gt;hw.dpmsize
@@ -3033,7 +2897,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -3073,32 +2936,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-id|memcpy_tofs
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-(paren
-id|dump.ptr
-)paren
-comma
-(paren
-r_void
-op_star
-)paren
-(paren
-id|card-&gt;hw.dpmbase
-op_plus
-id|pos
-)paren
-comma
-id|len
-)paren
-suffix:semicolon
-macro_line|#endif
 id|dump.length
 op_sub_assign
 id|len
@@ -3139,7 +2976,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4) 
 r_if
 c_cond
 (paren
@@ -3169,32 +3005,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-id|memcpy_tofs
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-(paren
-id|dump.ptr
-)paren
-comma
-(paren
-r_void
-op_star
-)paren
-(paren
-id|card-&gt;hw.dpmbase
-op_plus
-id|dump.offset
-)paren
-comma
-id|dump.length
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 id|err
@@ -3243,7 +3053,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)&t;
 r_if
 c_cond
 (paren
@@ -3275,56 +3084,6 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-macro_line|#else
-r_if
-c_cond
-(paren
-(paren
-id|u_exec
-op_eq
-l_int|NULL
-)paren
-op_logical_or
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-id|u_exec
-comma
-r_sizeof
-(paren
-id|sdla_exec_t
-)paren
-)paren
-)paren
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-id|memcpy_fromfs
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-op_amp
-id|exec
-comma
-(paren
-r_void
-op_star
-)paren
-id|u_exec
-comma
-r_sizeof
-(paren
-id|sdla_exec_t
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4362,7 +4121,6 @@ r_int
 id|option
 )paren
 (brace
-macro_line|#ifdef LINUX_2_4
 r_struct
 id|in_ifaddr
 op_star
@@ -4393,35 +4151,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#elif defined(LINUX_2_1)
-r_struct
-id|in_ifaddr
-op_star
-id|ifaddr
-suffix:semicolon
-r_struct
-id|in_device
-op_star
-id|in_dev
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|in_dev
-op_assign
-id|dev-&gt;ip_ptr
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 r_if
 c_cond
 (paren
@@ -4438,7 +4167,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -4448,57 +4176,33 @@ id|option
 r_case
 id|WAN_LOCAL_IP
 suffix:colon
-macro_line|#ifdef LINUX_2_0
-r_return
-id|dev-&gt;pa_addr
-suffix:semicolon
-macro_line|#else&t;
 r_return
 id|ifaddr-&gt;ifa_local
 suffix:semicolon
-macro_line|#endif&t;
 r_break
 suffix:semicolon
 r_case
 id|WAN_POINTOPOINT_IP
 suffix:colon
-macro_line|#ifdef LINUX_2_0
-r_return
-id|dev-&gt;pa_dstaddr
-suffix:semicolon
-macro_line|#else&t;
 r_return
 id|ifaddr-&gt;ifa_address
 suffix:semicolon
-macro_line|#endif&t;
 r_break
 suffix:semicolon
 r_case
 id|WAN_NETMASK_IP
 suffix:colon
-macro_line|#ifdef LINUX_2_0
-r_return
-id|dev-&gt;pa_mask
-suffix:semicolon
-macro_line|#else&t;
 r_return
 id|ifaddr-&gt;ifa_mask
 suffix:semicolon
-macro_line|#endif&t;
 r_break
 suffix:semicolon
 r_case
 id|WAN_BROADCAST_IP
 suffix:colon
-macro_line|#ifdef LINUX_2_0
-r_return
-id|dev-&gt;pa_brdaddr
-suffix:semicolon
-macro_line|#else&t;
 r_return
 id|ifaddr-&gt;ifa_broadcast
 suffix:semicolon
-macro_line|#endif&t;
 r_break
 suffix:semicolon
 r_default
@@ -4642,7 +4346,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-macro_line|#if defined(LINUX_2_1) || defined(LINUX_2_4)
 id|res
 op_assign
 id|ip_rt_ioctl
@@ -4654,17 +4357,6 @@ op_amp
 id|route
 )paren
 suffix:semicolon
-macro_line|#else
-id|res
-op_assign
-id|ip_rt_new
-c_func
-(paren
-op_amp
-id|route
-)paren
-suffix:semicolon
-macro_line|#endif
 id|set_fs
 c_func
 (paren

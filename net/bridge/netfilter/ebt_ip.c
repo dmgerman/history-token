@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  ebt_ip&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bart.de.schuymer@pandora.be&gt;&n; *&n; *  April, 2002&n; *&n; *  Changes:&n; *    added ip-sport and ip-dport&n; *    Innominate Security Technologies AG &lt;mhopf@innominate.com&gt;&n; *    September, 2002&n; */
+multiline_comment|/*&n; *  ebt_ip&n; *&n; *&t;Authors:&n; *&t;Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *&n; *  April, 2002&n; *&n; *  Changes:&n; *    added ip-sport and ip-dport&n; *    Innominate Security Technologies AG &lt;mhopf@innominate.com&gt;&n; *    September, 2002&n; */
 macro_line|#include &lt;linux/netfilter_bridge/ebtables.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge/ebt_ip.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -405,9 +405,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|info-&gt;bitmask
 op_amp
 id|EBT_IPROTO
+)paren
 )paren
 r_return
 op_minus
@@ -482,21 +484,26 @@ id|ebt_match
 id|filter_ip
 op_assign
 (brace
-(brace
-l_int|NULL
-comma
-l_int|NULL
-)brace
-comma
+dot
+id|name
+op_assign
 id|EBT_IP_MATCH
 comma
+dot
+id|match
+op_assign
 id|ebt_filter_ip
 comma
+dot
+id|check
+op_assign
 id|ebt_ip_check
 comma
-l_int|NULL
-comma
+dot
+id|me
+op_assign
 id|THIS_MODULE
+comma
 )brace
 suffix:semicolon
 DECL|function|init

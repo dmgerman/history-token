@@ -386,7 +386,7 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __EXTERN_INLINE
 DECL|macro|__EXTERN_INLINE
-mdefine_line|#define __EXTERN_INLINE extern inline
+mdefine_line|#define __EXTERN_INLINE static inline
 DECL|macro|__IO_EXTERN_INLINE
 mdefine_line|#define __IO_EXTERN_INLINE
 macro_line|#endif

@@ -138,50 +138,5 @@ mdefine_line|#define CPU_INCLUDE_NAME &quot;asm/cpu-single.h&quot;
 macro_line|#endif
 macro_line|#include CPU_INCLUDE_NAME
 macro_line|#endif /* __KERNEL__ */
-macro_line|#if 0
-op_star
-id|The
-id|following
-id|is
-id|to
-id|fool
-id|mkdep
-id|into
-id|generating
-id|the
-id|correct
-op_star
-id|dependencies
-dot
-id|Without
-id|this
-comma
-id|it
-id|can
-"&squot;"
-id|t
-id|figure
-id|out
-id|that
-id|this
-op_star
-id|file
-id|does
-id|indeed
-id|depend
-id|on
-id|the
-id|cpu
-op_minus
-op_star
-dot
-id|h
-id|files
-dot
-macro_line|#include &lt;asm/cpu-single.h&gt;
-macro_line|#include &lt;asm/cpu-multi26.h&gt;
-macro_line|#include &lt;asm/cpu-multi32.h&gt;
-op_star
-macro_line|#endif
 macro_line|#endif /* __ASM_PROCFNS_H */
 eof

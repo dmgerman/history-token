@@ -8925,13 +8925,6 @@ id|pcic_interrupt
 )paren
 suffix:semicolon
 macro_line|#endif
-id|platform_device_register
-c_func
-(paren
-op_amp
-id|i82365_device
-)paren
-suffix:semicolon
 id|i82365_data.nsock
 op_assign
 id|sockets
@@ -8940,6 +8933,13 @@ id|i82365_device.dev.class_data
 op_assign
 op_amp
 id|i82365_data
+suffix:semicolon
+id|platform_device_register
+c_func
+(paren
+op_amp
+id|i82365_device
+)paren
 suffix:semicolon
 multiline_comment|/* Finally, schedule a polling interrupt */
 r_if
