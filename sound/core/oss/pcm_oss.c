@@ -12023,7 +12023,7 @@ suffix:semicolon
 r_char
 id|line
 (braket
-l_int|256
+l_int|128
 )braket
 comma
 id|str
