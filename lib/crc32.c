@@ -189,7 +189,7 @@ c_loop
 suffix:semicolon
 (paren
 (paren
-id|u32
+r_int
 )paren
 id|b
 )paren
@@ -913,7 +913,7 @@ c_loop
 suffix:semicolon
 (paren
 (paren
-id|u32
+r_int
 )paren
 id|b
 )paren
