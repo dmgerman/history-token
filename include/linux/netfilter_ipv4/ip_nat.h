@@ -163,12 +163,9 @@ id|IP_NAT_MAX_MANIPS
 )braket
 suffix:semicolon
 DECL|member|bysource
-DECL|member|byipsproto
 r_struct
 id|list_head
 id|bysource
-comma
-id|byipsproto
 suffix:semicolon
 multiline_comment|/* Helper (NULL if none). */
 DECL|member|helper
