@@ -530,16 +530,5 @@ id|nullpackets
 suffix:semicolon
 )brace
 suffix:semicolon
-r_static
-r_inline
-r_void
-id|usb_se401_remove_disconnected
-(paren
-r_struct
-id|usb_se401
-op_star
-id|se401
-)paren
-suffix:semicolon
 macro_line|#endif
 eof
