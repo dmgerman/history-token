@@ -2723,7 +2723,7 @@ id|intf
 )paren
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|bulk_out_ep
 (braket
@@ -2731,7 +2731,7 @@ id|HCI_MAX_IFACE_NUM
 )braket
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|isoc_out_ep
 (braket
@@ -2739,7 +2739,7 @@ id|HCI_MAX_IFACE_NUM
 )braket
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|bulk_in_ep
 (braket
@@ -2747,7 +2747,7 @@ id|HCI_MAX_IFACE_NUM
 )braket
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|isoc_in_ep
 (braket
@@ -2755,7 +2755,7 @@ id|HCI_MAX_IFACE_NUM
 )braket
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|intr_in_ep
 (braket
@@ -2763,12 +2763,12 @@ id|HCI_MAX_IFACE_NUM
 )braket
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|uif
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -2838,7 +2838,7 @@ id|intf-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bNumEndpoints
+id|desc.bNumEndpoints
 OL
 l_int|3
 )paren
@@ -2934,7 +2934,7 @@ c_func
 r_int
 r_int
 comma
-id|udev-&gt;actconfig-&gt;bNumInterfaces
+id|udev-&gt;actconfig-&gt;desc.bNumInterfaces
 comma
 id|HCI_MAX_IFACE_NUM
 )paren
@@ -2994,7 +2994,7 @@ l_int|0
 suffix:semicolon
 id|e
 OL
-id|uif-&gt;bNumEndpoints
+id|uif-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|e
 op_increment
@@ -3011,7 +3011,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ep-&gt;bmAttributes
+id|ep-&gt;desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -3022,7 +3022,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -3041,7 +3041,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -3068,7 +3068,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ep-&gt;wMaxPacketSize
+id|ep-&gt;desc.wMaxPacketSize
 OL
 id|size
 )paren
@@ -3076,7 +3076,7 @@ r_break
 suffix:semicolon
 id|size
 op_assign
-id|ep-&gt;wMaxPacketSize
+id|ep-&gt;desc.wMaxPacketSize
 suffix:semicolon
 id|isoc_iface
 op_assign
@@ -3093,7 +3093,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -3233,7 +3233,7 @@ id|bulk_out_ep
 l_int|0
 )braket
 op_member_access_from_pointer
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 id|husb-&gt;bulk_in_ep
 op_assign
@@ -3242,7 +3242,7 @@ id|bulk_in_ep
 l_int|0
 )braket
 op_member_access_from_pointer
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 id|husb-&gt;intr_ep
 op_assign
@@ -3251,7 +3251,7 @@ id|intr_in_ep
 l_int|0
 )braket
 op_member_access_from_pointer
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 id|husb-&gt;intr_interval
 op_assign
@@ -3260,7 +3260,7 @@ id|intr_in_ep
 l_int|0
 )braket
 op_member_access_from_pointer
-id|bInterval
+id|desc.bInterval
 suffix:semicolon
 r_if
 c_cond
@@ -3315,7 +3315,7 @@ id|isoc_in_ep
 l_int|1
 )braket
 op_member_access_from_pointer
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 id|husb-&gt;isoc_out_ep
 op_assign
@@ -3324,7 +3324,7 @@ id|isoc_in_ep
 l_int|1
 )braket
 op_member_access_from_pointer
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 )brace
 id|husb-&gt;completion_lock
