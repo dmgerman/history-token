@@ -106,18 +106,21 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#ifndef _LOCAL_CRC32
+macro_line|#ifndef _COMPAT_WITH_OLD_KERNEL
 macro_line|#include &lt;linux/crc32.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#else
 macro_line|#include &quot;crc32.h&quot;
+macro_line|#include &quot;ethtool.h&quot;
+macro_line|#include &quot;mii.h&quot;
+macro_line|#include &quot;compat.h&quot;
 macro_line|#endif
 multiline_comment|/* These identify the driver base version and may not be removed. */
 DECL|variable|__devinitdata
