@@ -3705,7 +3705,6 @@ op_star
 id|ps
 )paren
 (brace
-multiline_comment|/* FIXME when usb_reset_device() is fixed we&squot;ll need to grab&n;&t; * ps-&gt;dev-&gt;serialize before calling it.&n;&t; */
 r_return
 id|usb_reset_device
 c_func
