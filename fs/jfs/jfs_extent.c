@@ -1036,10 +1036,12 @@ id|sb
 op_assign
 id|ip-&gt;i_sb
 suffix:semicolon
-id|xadlist_t
+r_struct
+id|xadlist
 id|xadl
 suffix:semicolon
-id|lxdlist_t
+r_struct
+id|lxdlist
 id|lxdl
 suffix:semicolon
 id|lxd_t
@@ -1432,7 +1434,8 @@ id|ip-&gt;i_sb
 op_member_access_from_pointer
 id|nbperpage
 suffix:semicolon
-id|bmap_t
+r_struct
+id|bmap
 op_star
 id|mp
 op_assign

@@ -3,51 +3,7 @@ macro_line|#ifndef&t;_H_JFS_BTREE
 DECL|macro|_H_JFS_BTREE
 mdefine_line|#define _H_JFS_BTREE
 multiline_comment|/*&n; *&t;jfs_btree.h: B+-tree&n; *&n; * JFS B+-tree (dtree and xtree) common definitions&n; */
-multiline_comment|/*&n; *&t;basic btree page - btpage_t&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|next
-id|s64
-id|next
-suffix:semicolon
-multiline_comment|/* 8: right sibling bn */
-DECL|member|prev
-id|s64
-id|prev
-suffix:semicolon
-multiline_comment|/* 8: left sibling bn */
-DECL|member|flag
-id|u8
-id|flag
-suffix:semicolon
-multiline_comment|/* 1: */
-DECL|member|rsrvd
-id|u8
-id|rsrvd
-(braket
-l_int|7
-)braket
-suffix:semicolon
-multiline_comment|/* 7: type specific */
-DECL|member|self
-id|s64
-id|self
-suffix:semicolon
-multiline_comment|/* 8: self address */
-DECL|member|entry
-id|u8
-id|entry
-(braket
-l_int|4064
-)braket
-suffix:semicolon
-multiline_comment|/* 4064: */
-DECL|typedef|btpage_t
-)brace
-id|btpage_t
-suffix:semicolon
-multiline_comment|/* (4096) */
+multiline_comment|/*&n; *&t;basic btree page - btpage&n; *&n;struct btpage {&n;&t;s64 next;&t;&t;right sibling bn&n;&t;s64 prev;&t;&t;left sibling bn&n;&n;&t;u8 flag;&n;&t;u8 rsrvd[7];&t;&t;type specific&n;&t;s64 self;&t;&t;self address&n;&n;&t;u8 entry[4064];&n;};&t;&t;&t;&t;&t;&t;*/
 multiline_comment|/* btpaget_t flag */
 DECL|macro|BT_TYPE
 mdefine_line|#define BT_TYPE&t;&t;0x07&t;/* B+-tree index */
@@ -82,7 +38,7 @@ DECL|macro|BT_PAGE
 mdefine_line|#define BT_PAGE(IP, MP, TYPE, ROOT)&bslash;&n;&t;(BT_IS_ROOT(MP) ? (TYPE *)&amp;JFS_IP(IP)-&gt;ROOT : (TYPE *)(MP)-&gt;data)
 multiline_comment|/* get the page buffer and the page for specified block address */
 DECL|macro|BT_GETPAGE
-mdefine_line|#define BT_GETPAGE(IP, BN, MP, TYPE, SIZE, P, RC, ROOT)&bslash;&n;{&bslash;&n;&t;if ((BN) == 0)&bslash;&n;&t;{&bslash;&n;&t;&t;MP = (metapage_t *)&amp;JFS_IP(IP)-&gt;bxflag;&bslash;&n;&t;&t;P = (TYPE *)&amp;JFS_IP(IP)-&gt;ROOT;&bslash;&n;&t;&t;RC = 0;&bslash;&n;&t;&t;jEVENT(0,(&quot;%d BT_GETPAGE returning root&bslash;n&quot;, __LINE__));&bslash;&n;&t;}&bslash;&n;&t;else&bslash;&n;&t;{&bslash;&n;&t;&t;jEVENT(0,(&quot;%d BT_GETPAGE reading block %d&bslash;n&quot;, __LINE__,&bslash;&n;&t;&t;&t; (int)BN));&bslash;&n;&t;&t;MP = read_metapage((IP), BN, SIZE, 1);&bslash;&n;&t;&t;if (MP) {&bslash;&n;&t;&t;&t;RC = 0;&bslash;&n;&t;&t;&t;P = (MP)-&gt;data;&bslash;&n;&t;&t;} else {&bslash;&n;&t;&t;&t;P = NULL;&bslash;&n;&t;&t;&t;jERROR(1,(&quot;bread failed!&bslash;n&quot;));&bslash;&n;&t;&t;&t;RC = EIO;&bslash;&n;&t;&t;}&bslash;&n;&t;}&bslash;&n;}
+mdefine_line|#define BT_GETPAGE(IP, BN, MP, TYPE, SIZE, P, RC, ROOT)&bslash;&n;{&bslash;&n;&t;if ((BN) == 0)&bslash;&n;&t;{&bslash;&n;&t;&t;MP = (struct metapage *)&amp;JFS_IP(IP)-&gt;bxflag;&bslash;&n;&t;&t;P = (TYPE *)&amp;JFS_IP(IP)-&gt;ROOT;&bslash;&n;&t;&t;RC = 0;&bslash;&n;&t;&t;jEVENT(0,(&quot;%d BT_GETPAGE returning root&bslash;n&quot;, __LINE__));&bslash;&n;&t;}&bslash;&n;&t;else&bslash;&n;&t;{&bslash;&n;&t;&t;jEVENT(0,(&quot;%d BT_GETPAGE reading block %d&bslash;n&quot;, __LINE__,&bslash;&n;&t;&t;&t; (int)BN));&bslash;&n;&t;&t;MP = read_metapage((IP), BN, SIZE, 1);&bslash;&n;&t;&t;if (MP) {&bslash;&n;&t;&t;&t;RC = 0;&bslash;&n;&t;&t;&t;P = (MP)-&gt;data;&bslash;&n;&t;&t;} else {&bslash;&n;&t;&t;&t;P = NULL;&bslash;&n;&t;&t;&t;jERROR(1,(&quot;bread failed!&bslash;n&quot;));&bslash;&n;&t;&t;&t;RC = EIO;&bslash;&n;&t;&t;}&bslash;&n;&t;}&bslash;&n;}
 DECL|macro|BT_MARK_DIRTY
 mdefine_line|#define BT_MARK_DIRTY(MP, IP)&bslash;&n;{&bslash;&n;&t;if (BT_IS_ROOT(MP))&bslash;&n;&t;&t;mark_inode_dirty(IP);&bslash;&n;&t;else&bslash;&n;&t;&t;mark_metapage_dirty(MP);&bslash;&n;}
 multiline_comment|/* put the page buffer */
@@ -92,7 +48,6 @@ multiline_comment|/*&n; *&t;btree traversal stack&n; *&n; * record the path trav
 DECL|macro|MAXTREEHEIGHT
 mdefine_line|#define&t;MAXTREEHEIGHT&t;&t;8
 DECL|struct|btframe
-r_typedef
 r_struct
 id|btframe
 (brace
@@ -119,37 +74,32 @@ op_star
 id|mp
 suffix:semicolon
 multiline_comment|/* 4: */
-DECL|typedef|btframe_t
 )brace
-id|btframe_t
 suffix:semicolon
 multiline_comment|/* (16) */
 DECL|struct|btstack
-r_typedef
 r_struct
 id|btstack
 (brace
 DECL|member|top
-id|btframe_t
+r_struct
+id|btframe
 op_star
 id|top
 suffix:semicolon
-multiline_comment|/* 4: */
 DECL|member|nsplit
 r_int
 id|nsplit
 suffix:semicolon
-multiline_comment|/* 4: */
 DECL|member|stack
-id|btframe_t
+r_struct
+id|btframe
 id|stack
 (braket
 id|MAXTREEHEIGHT
 )braket
 suffix:semicolon
-DECL|typedef|btstack_t
 )brace
-id|btstack_t
 suffix:semicolon
 DECL|macro|BT_CLR
 mdefine_line|#define BT_CLR(btstack)&bslash;&n;&t;(btstack)-&gt;top = (btstack)-&gt;stack

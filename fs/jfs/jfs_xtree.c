@@ -28,11 +28,13 @@ mdefine_line|#define XT_PUTPAGE(MP) BT_PUTPAGE(MP)
 DECL|macro|XT_GETSEARCH
 mdefine_line|#define XT_GETSEARCH(IP, LEAF, BN, MP,  P, INDEX) &bslash;&n;&t;BT_GETSEARCH(IP, LEAF, BN, MP, xtpage_t, P, INDEX, i_xtroot)
 multiline_comment|/* xtree entry parameter descriptor */
-r_typedef
+DECL|struct|xtsplit
 r_struct
+id|xtsplit
 (brace
 DECL|member|mp
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -57,13 +59,12 @@ r_int
 id|len
 suffix:semicolon
 DECL|member|pxdlist
-id|pxdlist_t
+r_struct
+id|pxdlist
 op_star
 id|pxdlist
 suffix:semicolon
-DECL|typedef|xtsplit_t
 )brace
-id|xtsplit_t
 suffix:semicolon
 multiline_comment|/*&n; *      statistics&n; */
 macro_line|#ifdef CONFIG_JFS_STATISTICS
@@ -105,7 +106,8 @@ r_int
 op_star
 id|cmpp
 comma
-id|btstack_t
+r_struct
+id|btstack
 op_star
 id|btstack
 comma
@@ -126,11 +128,13 @@ id|inode
 op_star
 id|ip
 comma
-id|xtsplit_t
+r_struct
+id|xtsplit
 op_star
 id|split
 comma
-id|btstack_t
+r_struct
+id|btstack
 op_star
 id|btstack
 )paren
@@ -148,11 +152,13 @@ id|inode
 op_star
 id|ip
 comma
-id|xtsplit_t
+r_struct
+id|xtsplit
 op_star
 id|split
 comma
-id|metapage_t
+r_struct
+id|metapage
 op_star
 op_star
 id|rmpp
@@ -175,11 +181,13 @@ id|inode
 op_star
 id|ip
 comma
-id|xtsplit_t
+r_struct
+id|xtsplit
 op_star
 id|split
 comma
-id|metapage_t
+r_struct
+id|metapage
 op_star
 op_star
 id|rmpp
@@ -199,7 +207,8 @@ id|inode
 op_star
 id|ip
 comma
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|fmp
 comma
@@ -207,7 +216,8 @@ id|xtpage_t
 op_star
 id|fp
 comma
-id|btstack_t
+r_struct
+id|btstack
 op_star
 id|btstack
 )paren
@@ -230,7 +240,8 @@ r_int
 op_star
 id|cmpp
 comma
-id|btstack_t
+r_struct
+id|btstack
 op_star
 id|btstack
 comma
@@ -298,7 +309,8 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 r_int
@@ -307,7 +319,8 @@ suffix:semicolon
 id|s64
 id|bn
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -599,7 +612,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *      xtLookupList()&n; *&n; * function: map a single logical extent into a list of physical extent;&n; *&n; * parameter:&n; *      struct inode    *ip,&n; *      lxdlist_t       *lxdlist,       lxd list (in)&n; *      xadlist_t       *xadlist,       xad list (in/out)&n; *      int&t;&t;flag)&n; *&n; * coverage of lxd by xad under assumption of&n; * . lxd&squot;s are ordered and disjoint.&n; * . xad&squot;s are ordered and disjoint.&n; *&n; * return:&n; *      0:      success&n; *&n; * note: a page being written (even a single byte) is backed fully,&n; *      except the last page which is only backed with blocks&n; *      required to cover the last byte;&n; *      the extent backing a page is fully contained within an xad;&n; */
+multiline_comment|/*&n; *      xtLookupList()&n; *&n; * function: map a single logical extent into a list of physical extent;&n; *&n; * parameter:&n; *      struct inode    *ip,&n; *      struct lxdlist  *lxdlist,       lxd list (in)&n; *      struct xadlist  *xadlist,       xad list (in/out)&n; *      int&t;&t;flag)&n; *&n; * coverage of lxd by xad under assumption of&n; * . lxd&squot;s are ordered and disjoint.&n; * . xad&squot;s are ordered and disjoint.&n; *&n; * return:&n; *      0:      success&n; *&n; * note: a page being written (even a single byte) is backed fully,&n; *      except the last page which is only backed with blocks&n; *      required to cover the last byte;&n; *      the extent backing a page is fully contained within an xad;&n; */
 DECL|function|xtLookupList
 r_int
 id|xtLookupList
@@ -610,16 +623,16 @@ id|inode
 op_star
 id|ip
 comma
-id|lxdlist_t
+r_struct
+id|lxdlist
 op_star
 id|lxdlist
 comma
-multiline_comment|/* lxd list (in) */
-id|xadlist_t
+r_struct
+id|xadlist
 op_star
 id|xadlist
 comma
-multiline_comment|/* xad list (in/out) */
 r_int
 id|flag
 )paren
@@ -629,7 +642,8 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 r_int
@@ -638,7 +652,8 @@ suffix:semicolon
 id|s64
 id|bn
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -1372,7 +1387,8 @@ r_int
 op_star
 id|cmpp
 comma
-id|btstack_t
+r_struct
+id|btstack
 op_star
 id|btstack
 comma
@@ -1406,7 +1422,8 @@ id|s64
 id|bn
 suffix:semicolon
 multiline_comment|/* block number */
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -1429,7 +1446,8 @@ id|lim
 comma
 id|btindex
 suffix:semicolon
-id|btframe_t
+r_struct
+id|btframe
 op_star
 id|btsp
 suffix:semicolon
@@ -2112,7 +2130,8 @@ id|xaddr
 comma
 id|hint
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -2130,11 +2149,13 @@ id|index
 comma
 id|nextindex
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 multiline_comment|/* traverse stack */
-id|xtsplit_t
+r_struct
+id|xtsplit
 id|split
 suffix:semicolon
 multiline_comment|/* split information */
@@ -2145,11 +2166,13 @@ suffix:semicolon
 r_int
 id|cmp
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 suffix:semicolon
@@ -2541,7 +2564,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -2611,11 +2635,13 @@ id|inode
 op_star
 id|ip
 comma
-id|xtsplit_t
+r_struct
+id|xtsplit
 op_star
 id|split
 comma
-id|btstack_t
+r_struct
+id|btstack
 op_star
 id|btstack
 )paren
@@ -2625,7 +2651,8 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|smp
 suffix:semicolon
@@ -2634,7 +2661,8 @@ op_star
 id|sp
 suffix:semicolon
 multiline_comment|/* split page */
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|rmp
 suffix:semicolon
@@ -2642,7 +2670,8 @@ id|s64
 id|rbn
 suffix:semicolon
 multiline_comment|/* new right page block number */
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|rcmp
 suffix:semicolon
@@ -2663,7 +2692,8 @@ r_int
 id|nextindex
 suffix:semicolon
 multiline_comment|/* next available entry index of p */
-id|btframe_t
+r_struct
+id|btframe
 op_star
 id|parent
 suffix:semicolon
@@ -2682,18 +2712,21 @@ r_int
 id|nsplit
 suffix:semicolon
 multiline_comment|/* number of pages split */
-id|pxdlist_t
+r_struct
+id|pxdlist
 id|pxdlist
 suffix:semicolon
 id|pxd_t
 op_star
 id|pxd
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 suffix:semicolon
@@ -2901,7 +2934,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -3441,7 +3475,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -3521,7 +3556,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *      xtSplitPage()&n; *&n; * function:&n; *      split a full non-root page into&n; *      original/split/left page and new right page&n; *      i.e., the original/split page remains as left page.&n; *&n; * parameter:&n; *      int&t;&t;tid,&n; *      struct inode    *ip,&n; *      xtsplit_t       *split,&n; *      metapage_t&t;**rmpp,&n; *      u64&t;&t;*rbnp,&n; *&n; * return:&n; *      Pointer to page in which to insert or NULL on error.&n; */
+multiline_comment|/*&n; *      xtSplitPage()&n; *&n; * function:&n; *      split a full non-root page into&n; *      original/split/left page and new right page&n; *      i.e., the original/split page remains as left page.&n; *&n; * parameter:&n; *      int&t;&t;tid,&n; *      struct inode    *ip,&n; *      struct xtsplit  *split,&n; *      struct metapage&t;**rmpp,&n; *      u64&t;&t;*rbnp,&n; *&n; * return:&n; *      Pointer to page in which to insert or NULL on error.&n; */
 r_static
 r_int
 DECL|function|xtSplitPage
@@ -3536,11 +3571,13 @@ id|inode
 op_star
 id|ip
 comma
-id|xtsplit_t
+r_struct
+id|xtsplit
 op_star
 id|split
 comma
-id|metapage_t
+r_struct
+id|metapage
 op_star
 op_star
 id|rmpp
@@ -3555,7 +3592,8 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|smp
 suffix:semicolon
@@ -3563,7 +3601,8 @@ id|xtpage_t
 op_star
 id|sp
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|rmp
 suffix:semicolon
@@ -3576,7 +3615,8 @@ id|s64
 id|rbn
 suffix:semicolon
 multiline_comment|/* new right page block number */
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -3602,7 +3642,8 @@ id|xad_t
 op_star
 id|xad
 suffix:semicolon
-id|pxdlist_t
+r_struct
+id|pxdlist
 op_star
 id|pxdlist
 suffix:semicolon
@@ -3610,11 +3651,13 @@ id|pxd_t
 op_star
 id|pxd
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|sxtlck
 op_assign
@@ -3792,7 +3835,8 @@ suffix:semicolon
 id|rxtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -3822,7 +3866,8 @@ suffix:semicolon
 id|sxtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -4466,7 +4511,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *      xtSplitRoot()&n; *&n; * function:&n; *      split the full root page into&n; *      original/root/split page and new right page&n; *      i.e., root remains fixed in tree anchor (inode) and&n; *      the root is copied to a single new right child page&n; *      since root page &lt;&lt; non-root page, and&n; *      the split root page contains a single entry for the&n; *      new right child page.&n; *&n; * parameter:&n; *      int&t;&t;tid,&n; *      struct inode    *ip,&n; *      xtsplit_t       *split,&n; *      metapage_t&t;**rmpp)&n; *&n; * return:&n; *      Pointer to page in which to insert or NULL on error.&n; */
+multiline_comment|/*&n; *      xtSplitRoot()&n; *&n; * function:&n; *      split the full root page into&n; *      original/root/split page and new right page&n; *      i.e., root remains fixed in tree anchor (inode) and&n; *      the root is copied to a single new right child page&n; *      since root page &lt;&lt; non-root page, and&n; *      the split root page contains a single entry for the&n; *      new right child page.&n; *&n; * parameter:&n; *      int&t;&t;tid,&n; *      struct inode    *ip,&n; *      struct xtsplit  *split,&n; *      struct metapage&t;**rmpp)&n; *&n; * return:&n; *      Pointer to page in which to insert or NULL on error.&n; */
 r_static
 r_int
 DECL|function|xtSplitRoot
@@ -4481,11 +4526,13 @@ id|inode
 op_star
 id|ip
 comma
-id|xtsplit_t
+r_struct
+id|xtsplit
 op_star
 id|split
 comma
-id|metapage_t
+r_struct
+id|metapage
 op_star
 op_star
 id|rmpp
@@ -4495,7 +4542,8 @@ id|xtpage_t
 op_star
 id|sp
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|rmp
 suffix:semicolon
@@ -4519,15 +4567,18 @@ id|pxd_t
 op_star
 id|pxd
 suffix:semicolon
-id|pxdlist_t
+r_struct
+id|pxdlist
 op_star
 id|pxdlist
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 suffix:semicolon
@@ -4812,7 +4863,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -4923,7 +4975,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -5010,7 +5063,8 @@ suffix:semicolon
 r_int
 id|cmp
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -5030,11 +5084,13 @@ id|nextindex
 comma
 id|len
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 multiline_comment|/* traverse stack */
-id|xtsplit_t
+r_struct
+id|xtsplit
 id|split
 suffix:semicolon
 multiline_comment|/* split information */
@@ -5045,11 +5101,13 @@ suffix:semicolon
 id|s64
 id|xaddr
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 op_assign
@@ -5233,7 +5291,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -5466,7 +5525,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -5670,7 +5730,8 @@ suffix:semicolon
 r_int
 id|cmp
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -5692,11 +5753,13 @@ id|llen
 comma
 id|rlen
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 multiline_comment|/* traverse stack */
-id|xtsplit_t
+r_struct
+id|xtsplit
 id|split
 suffix:semicolon
 multiline_comment|/* split information */
@@ -5704,21 +5767,25 @@ id|xad_t
 op_star
 id|xad
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 op_assign
 l_int|0
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|mtlck
 suffix:semicolon
-id|maplock_t
+r_struct
+id|maplock
 op_star
 id|pxdlock
 suffix:semicolon
@@ -5838,7 +5905,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -6046,7 +6114,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -6181,7 +6250,8 @@ suffix:semicolon
 id|pxdlock
 op_assign
 (paren
-id|maplock_t
+r_struct
+id|maplock
 op_star
 )paren
 op_amp
@@ -6382,7 +6452,8 @@ suffix:semicolon
 r_int
 id|cmp
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -6404,11 +6475,13 @@ id|newindex
 comma
 id|nextindex
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 multiline_comment|/* traverse stack */
-id|xtsplit_t
+r_struct
+id|xtsplit
 id|split
 suffix:semicolon
 multiline_comment|/* split information */
@@ -6444,11 +6517,13 @@ id|nxaddr
 comma
 id|xaddr
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 op_assign
@@ -6580,7 +6655,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -7422,7 +7498,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -7698,7 +7775,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -8037,7 +8115,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -8240,7 +8319,8 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -8260,11 +8340,13 @@ id|index
 comma
 id|nextindex
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 multiline_comment|/* traverse stack */
-id|xtsplit_t
+r_struct
+id|xtsplit
 id|split
 suffix:semicolon
 multiline_comment|/* split information */
@@ -8275,11 +8357,13 @@ suffix:semicolon
 r_int
 id|cmp
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 suffix:semicolon
@@ -8290,7 +8374,8 @@ id|nblocks
 comma
 id|xlen
 suffix:semicolon
-id|pxdlist_t
+r_struct
+id|pxdlist
 id|pxdlist
 suffix:semicolon
 id|pxd_t
@@ -8695,7 +8780,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -8822,7 +8908,8 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 r_int
@@ -8831,7 +8918,8 @@ suffix:semicolon
 id|s64
 id|bn
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -8844,11 +8932,13 @@ id|index
 comma
 id|nextindex
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 suffix:semicolon
@@ -8991,7 +9081,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -9080,7 +9171,8 @@ id|inode
 op_star
 id|ip
 comma
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|fmp
 comma
@@ -9088,7 +9180,8 @@ id|xtpage_t
 op_star
 id|fp
 comma
-id|btstack_t
+r_struct
+id|btstack
 op_star
 id|btstack
 )paren
@@ -9098,7 +9191,8 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -9117,15 +9211,18 @@ suffix:semicolon
 r_int
 id|xlen
 suffix:semicolon
-id|btframe_t
+r_struct
+id|btframe
 op_star
 id|parent
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 suffix:semicolon
@@ -9408,7 +9505,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -9550,19 +9648,23 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 comma
@@ -9646,11 +9748,13 @@ suffix:semicolon
 r_int
 id|index
 suffix:semicolon
-id|pxdlock_t
+r_struct
+id|pxd_lock
 op_star
 id|pxdlock
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 multiline_comment|/* traverse stack */
@@ -10479,7 +10583,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -10594,7 +10699,8 @@ suffix:semicolon
 id|pxdlock
 op_assign
 (paren
-id|pxdlock_t
+r_struct
+id|pxd_lock
 op_star
 )paren
 op_amp
@@ -10664,7 +10770,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -10743,7 +10850,8 @@ r_int
 op_star
 id|cmpp
 comma
-id|btstack_t
+r_struct
+id|btstack
 op_star
 id|btstack
 comma
@@ -10774,7 +10882,8 @@ id|s64
 id|bn
 suffix:semicolon
 multiline_comment|/* block number */
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -10791,7 +10900,8 @@ id|index
 comma
 id|lim
 suffix:semicolon
-id|btframe_t
+r_struct
+id|btframe
 op_star
 id|btsp
 suffix:semicolon
@@ -11074,7 +11184,8 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -11083,7 +11194,8 @@ id|nextbn
 comma
 id|prevbn
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
@@ -11275,7 +11387,8 @@ id|xtpage_t
 op_star
 id|p
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 suffix:semicolon
@@ -11290,7 +11403,8 @@ comma
 id|ip
 comma
 (paren
-id|metapage_t
+r_struct
+id|metapage
 op_star
 )paren
 op_amp
@@ -11401,7 +11515,8 @@ suffix:semicolon
 id|s64
 id|teof
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -11433,36 +11548,43 @@ id|len
 comma
 id|freexlen
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
-id|btframe_t
+r_struct
+id|btframe
 op_star
 id|parent
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 op_assign
 l_int|0
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 op_assign
 l_int|0
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 op_assign
 l_int|0
 suffix:semicolon
-id|xdlistlock_t
+r_struct
+id|xdlistlock
 id|xadlock
 suffix:semicolon
 multiline_comment|/* maplock for COMMIT_WMAP */
-id|pxdlock_t
+r_struct
+id|pxd_lock
 op_star
 id|pxdlock
 suffix:semicolon
@@ -11752,7 +11874,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -11946,7 +12069,8 @@ suffix:semicolon
 id|pxdlock
 op_assign
 (paren
-id|pxdlock_t
+r_struct
+id|pxd_lock
 op_star
 )paren
 op_amp
@@ -11982,7 +12106,8 @@ multiline_comment|/* COMMIT_WMAP */
 id|pxdlock
 op_assign
 (paren
-id|pxdlock_t
+r_struct
+id|pxd_lock
 op_star
 )paren
 op_amp
@@ -12095,7 +12220,8 @@ c_func
 id|ip
 comma
 (paren
-id|maplock_t
+r_struct
+id|maplock
 op_star
 )paren
 op_amp
@@ -12176,7 +12302,8 @@ c_func
 id|ip
 comma
 (paren
-id|maplock_t
+r_struct
+id|maplock
 op_star
 )paren
 op_amp
@@ -12377,7 +12504,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -12446,7 +12574,8 @@ c_func
 id|ip
 comma
 (paren
-id|maplock_t
+r_struct
+id|maplock
 op_star
 )paren
 op_amp
@@ -12529,7 +12658,8 @@ id|lid
 op_assign
 id|mp-&gt;lid
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|prev
 suffix:semicolon
@@ -12642,7 +12772,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -12693,7 +12824,8 @@ c_func
 id|ip
 comma
 (paren
-id|maplock_t
+r_struct
+id|maplock
 op_star
 )paren
 op_amp
@@ -12963,7 +13095,8 @@ id|committed_size
 id|s64
 id|bn
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 r_int
@@ -12977,7 +13110,8 @@ id|locked_leaves
 op_assign
 l_int|0
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -12985,18 +13119,21 @@ id|xtpage_t
 op_star
 id|p
 suffix:semicolon
-id|btframe_t
+r_struct
+id|btframe
 op_star
 id|parent
 suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|tblock_t
+r_struct
+id|tblock
 op_star
 id|tblk
 suffix:semicolon
-id|tlock_t
+r_struct
+id|tlock
 op_star
 id|tlck
 op_assign
@@ -13012,7 +13149,8 @@ suffix:semicolon
 id|s64
 id|xoff
 suffix:semicolon
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 id|xtlck
 op_assign
@@ -13249,7 +13387,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -13350,7 +13489,8 @@ suffix:semicolon
 id|xtlck
 op_assign
 (paren
-id|xtlock_t
+r_struct
+id|xtlock
 op_star
 )paren
 op_amp
@@ -13470,7 +13610,8 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -13496,14 +13637,17 @@ id|xad_t
 op_star
 id|xad
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
-id|btframe_t
+r_struct
+id|btframe
 op_star
 id|btsp
 suffix:semicolon
-id|btframe_t
+r_struct
+id|btframe
 op_star
 id|parent
 suffix:semicolon
@@ -13799,7 +13943,8 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
-id|metapage_t
+r_struct
+id|metapage
 op_star
 id|mp
 suffix:semicolon
@@ -14015,7 +14160,8 @@ id|btentry_t
 op_star
 id|e
 suffix:semicolon
-id|btstack_t
+r_struct
+id|btstack
 id|btstack
 suffix:semicolon
 r_struct

@@ -116,7 +116,7 @@ mdefine_line|#define MAXBLOCKSIZE&t;&t;4096
 DECL|macro|MAXFILESIZE
 mdefine_line|#define&t;MAXFILESIZE&t;&t;((s64)1 &lt;&lt; 52)
 DECL|macro|JFS_LINK_MAX
-mdefine_line|#define JFS_LINK_MAX&t;&t;65535&t;/* nlink_t is unsigned short */
+mdefine_line|#define JFS_LINK_MAX&t;&t;0xffffffff
 multiline_comment|/* Minimum number of bytes supported for a JFS partition */
 DECL|macro|MINJFS
 mdefine_line|#define MINJFS&t;&t;&t;(0x1000000)

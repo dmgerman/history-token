@@ -3,8 +3,9 @@ macro_line|#ifndef&t;_H_JFS_DEFRAGFS
 DECL|macro|_H_JFS_DEFRAGFS
 mdefine_line|#define _H_JFS_DEFRAGFS
 multiline_comment|/*&n; *&t;defragfs parameter list&n; */
-r_typedef
+DECL|struct|defragfs
 r_struct
+id|defragfs
 (brace
 DECL|member|flag
 id|uint
@@ -64,11 +65,8 @@ id|s32
 id|xlen
 suffix:semicolon
 multiline_comment|/* 4: */
-DECL|typedef|defragfs_t
 )brace
-id|defragfs_t
 suffix:semicolon
-multiline_comment|/* (52) */
 multiline_comment|/* plist flag */
 DECL|macro|DEFRAGFS_SYNC
 mdefine_line|#define DEFRAGFS_SYNC&t;&t;0x80000000

@@ -74,13 +74,15 @@ id|ipimap
 op_assign
 id|sbi-&gt;ipimap
 suffix:semicolon
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 op_assign
 id|sbi-&gt;log
 suffix:semicolon
-id|bmap_t
+r_struct
+id|bmap
 op_star
 id|bmp
 op_assign

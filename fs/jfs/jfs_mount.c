@@ -620,7 +620,8 @@ c_func
 id|sb
 )paren
 suffix:semicolon
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 suffix:semicolon
@@ -1647,7 +1648,8 @@ op_star
 id|sb
 )paren
 (brace
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 op_assign
@@ -1659,7 +1661,8 @@ id|sb
 op_member_access_from_pointer
 id|log
 suffix:semicolon
-id|lrd_t
+r_struct
+id|lrd
 id|lrd
 suffix:semicolon
 id|lrd.logtid
