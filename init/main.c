@@ -1674,11 +1674,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * Tell the world that we&squot;re going to be the grim&n;&t; * reaper of innocent orphaned children.&n;&t; *&n;&t; * We don&squot;t want people to have to make incorrect&n;&t; * assumptions about where in the task array this&n;&t; * can be found.&n;&t; */
-id|child_reaper
-op_assign
-id|current
-suffix:semicolon
 macro_line|#if defined(CONFIG_MTRR)&t;/* Do this after SMP initialization */
 multiline_comment|/*&n; * We should probably create some architecture-dependent &quot;fixup after&n; * everything is up&quot; style function where this would belong better&n; * than in init/main.c..&n; */
 id|mtrr_init
@@ -1794,6 +1789,11 @@ id|lock_kernel
 c_func
 (paren
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Tell the world that we&squot;re going to be the grim&n;&t; * reaper of innocent orphaned children.&n;&t; *&n;&t; * We don&squot;t want people to have to make incorrect&n;&t; * assumptions about where in the task array this&n;&t; * can be found.&n;&t; */
+id|child_reaper
+op_assign
+id|current
 suffix:semicolon
 multiline_comment|/* Sets up cpus_possible() */
 id|smp_prepare_cpus

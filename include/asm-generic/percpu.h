@@ -16,7 +16,7 @@ suffix:semicolon
 multiline_comment|/* Separate out the type, so (int[3], foo) works. */
 macro_line|#ifndef MODULE
 DECL|macro|DEFINE_PER_CPU
-mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __attribute__((__section__(&quot;.percpu&quot;))) __typeof__(type) name##__per_cpu
+mdefine_line|#define DEFINE_PER_CPU(type, name) &bslash;&n;    __attribute__((__section__(&quot;.data.percpu&quot;))) __typeof__(type) name##__per_cpu
 macro_line|#endif
 multiline_comment|/* var is in discarded region: offset to particular copy we want */
 DECL|macro|per_cpu

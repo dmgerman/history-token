@@ -1083,7 +1083,8 @@ suffix:semicolon
 r_int
 id|order
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|curr
 suffix:semicolon
@@ -2865,7 +2866,8 @@ id|type
 op_increment
 )paren
 (brace
-id|list_t
+r_struct
+id|list_head
 op_star
 id|elem
 suffix:semicolon

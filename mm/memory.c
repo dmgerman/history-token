@@ -4663,7 +4663,8 @@ r_void
 id|vmtruncate_list
 c_func
 (paren
-id|list_t
+r_struct
+id|list_head
 op_star
 id|head
 comma
@@ -4687,7 +4688,8 @@ id|vm_area_struct
 op_star
 id|vma
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|curr
 suffix:semicolon

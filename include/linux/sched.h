@@ -609,7 +609,8 @@ comma
 id|static_prio
 suffix:semicolon
 DECL|member|run_list
-id|list_t
+r_struct
+id|list_head
 id|run_list
 suffix:semicolon
 DECL|member|array

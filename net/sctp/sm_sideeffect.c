@@ -2946,7 +2946,8 @@ id|sctp_transport_t
 op_star
 id|t
 suffix:semicolon
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 suffix:semicolon
@@ -3018,7 +3019,8 @@ op_star
 id|bp
 )paren
 (brace
-id|list_t
+r_struct
+id|list_head
 op_star
 id|pos
 comma

@@ -3726,10 +3726,6 @@ id|daemonize
 (paren
 )paren
 suffix:semicolon
-id|reparent_to_init
-(paren
-)paren
-suffix:semicolon
 singleline_comment|//  New name
 id|strcpy
 (paren

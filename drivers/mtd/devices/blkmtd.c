@@ -1146,10 +1146,6 @@ comma
 l_string|&quot;blkmtdd&quot;
 )paren
 suffix:semicolon
-id|tsk-&gt;tty
-op_assign
-l_int|NULL
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
