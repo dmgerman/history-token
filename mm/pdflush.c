@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 multiline_comment|/*&n; * Minimum and maximum number of pdflush instances&n; */
 DECL|macro|MIN_PDFLUSH_THREADS
 mdefine_line|#define MIN_PDFLUSH_THREADS&t;2
@@ -157,6 +158,8 @@ suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_FLUSHER
+op_or
+id|PF_KERNTHREAD
 suffix:semicolon
 id|my_work-&gt;fn
 op_assign
@@ -194,6 +197,15 @@ id|pdflush_work
 op_star
 id|pdf
 suffix:semicolon
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+id|run_task_queue
+c_func
+(paren
+op_amp
+id|tq_bdflush
+)paren
+suffix:semicolon
+macro_line|#endif
 id|list_add
 c_func
 (paren
@@ -221,6 +233,19 @@ op_amp
 id|pdflush_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
+)paren
+suffix:semicolon
 id|schedule
 c_func
 (paren
@@ -231,6 +256,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|my_work-&gt;fn
+)paren
 (paren
 op_star
 id|my_work-&gt;fn
@@ -347,6 +377,10 @@ r_break
 suffix:semicolon
 multiline_comment|/* exeunt */
 )brace
+id|my_work-&gt;fn
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 id|nr_pdflush_threads
 op_decrement

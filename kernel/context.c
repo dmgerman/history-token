@@ -193,6 +193,10 @@ comma
 l_string|&quot;keventd&quot;
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_IOTHREAD
+suffix:semicolon
 id|keventd_running
 op_assign
 l_int|1

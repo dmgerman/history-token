@@ -62,6 +62,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 multiline_comment|/*&n; * PS/2 floppies have much slower step rates than regular floppies.&n; * It&squot;s been recommended that take about 1/4 of the default speed&n; * in some more extreme cases.&n; */
 DECL|variable|slow_floppy
 r_static
@@ -18250,6 +18251,12 @@ op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+DECL|variable|device_floppy
+r_static
+r_struct
+id|device
+id|device_floppy
+suffix:semicolon
 DECL|function|floppy_init
 r_int
 id|__init
@@ -18265,6 +18272,29 @@ comma
 id|unit
 comma
 id|drive
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|device_floppy.name
+comma
+l_string|&quot;floppy&quot;
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|device_floppy.bus_id
+comma
+l_string|&quot;03?0&quot;
+)paren
+suffix:semicolon
+id|register_sys_device
+c_func
+(paren
+op_amp
+id|device_floppy
+)paren
 suffix:semicolon
 id|raw_cmd
 op_assign

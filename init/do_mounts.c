@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_fs_sb.h&gt;
 macro_line|#include &lt;linux/nfs_mount.h&gt;
@@ -4406,6 +4407,12 @@ comma
 id|ROOT_DEV
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* This has to be before mounting root, because even readonly mount of reiserfs would replay&n;&t;   log corrupting stuff */
+id|software_resume
+c_func
+(paren
 )paren
 suffix:semicolon
 r_if

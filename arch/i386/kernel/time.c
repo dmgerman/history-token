@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -1740,6 +1741,52 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|device_i8253
+r_static
+r_struct
+id|device
+id|device_i8253
+suffix:semicolon
+DECL|function|time_init_driverfs
+r_static
+r_void
+id|time_init_driverfs
+c_func
+(paren
+r_void
+)paren
+(brace
+id|strcpy
+c_func
+(paren
+id|device_i8253.name
+comma
+l_string|&quot;i8253&quot;
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|device_i8253.bus_id
+comma
+l_string|&quot;0040&quot;
+)paren
+suffix:semicolon
+id|register_sys_device
+c_func
+(paren
+op_amp
+id|device_i8253
+)paren
+suffix:semicolon
+)brace
+DECL|variable|time_init_driverfs
+id|__initcall
+c_func
+(paren
+id|time_init_driverfs
+)paren
+suffix:semicolon
 DECL|function|time_init
 r_void
 id|__init

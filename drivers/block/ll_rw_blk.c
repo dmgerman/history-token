@@ -4955,6 +4955,11 @@ id|req-&gt;biotail
 op_assign
 id|bio
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bio-&gt;bi_bdev
+)paren
 id|req-&gt;rq_dev
 op_assign
 id|to_kdev_t
@@ -4962,6 +4967,11 @@ c_func
 (paren
 id|bio-&gt;bi_bdev-&gt;bd_dev
 )paren
+suffix:semicolon
+r_else
+id|req-&gt;rq_dev
+op_assign
+id|NODEV
 suffix:semicolon
 id|add_request
 c_func
