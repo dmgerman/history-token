@@ -1532,26 +1532,13 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
+r_return
 (paren
 id|cpqarray_init_step2
 c_func
 (paren
 )paren
-op_eq
-l_int|0
 )paren
-(brace
-multiline_comment|/* all the block dev num already used */
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-multiline_comment|/* or no controllers were found */
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|release_io_mem
@@ -2999,7 +2986,7 @@ id|cpqarray_pci_device_id
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *  This is it.  Find all the controllers and register them.  I really hate&n; *  stealing all these major device numbers.&n; *  returns the number of block devices registered.&n; */
+multiline_comment|/*&n; *  This is it.  Find all the controllers and register them.&n; *  returns the number of block devices registered.&n; */
 DECL|function|cpqarray_init_step2
 r_int
 id|__init
@@ -3017,6 +3004,11 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* detect controllers */
 id|printk
 c_func
@@ -3025,12 +3017,25 @@ id|DRIVER_NAME
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* TODO: If it&squot;s an eisa only system, will rc return negative? */
+id|rc
+op_assign
 id|pci_register_driver
 c_func
 (paren
 op_amp
 id|cpqarray_pci_driver
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+OL
+l_int|0
+)paren
+r_return
+id|rc
 suffix:semicolon
 id|cpqarray_eisa_detect
 c_func
