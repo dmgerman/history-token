@@ -7645,7 +7645,7 @@ id|eisa_driver_register
 op_amp
 id|el3_eisa_driver
 )paren
-op_le
+OL
 l_int|0
 )paren
 (brace
@@ -7667,13 +7667,7 @@ id|el3_mca_driver
 suffix:semicolon
 macro_line|#endif
 r_return
-id|el3_cards
-ques
-c_cond
 l_int|0
-suffix:colon
-op_minus
-id|ENODEV
 suffix:semicolon
 )brace
 DECL|function|el3_cleanup_module
@@ -7702,7 +7696,11 @@ id|el3_private
 op_star
 id|lp
 op_assign
-id|el3_root_dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|el3_root_dev
+)paren
 suffix:semicolon
 id|next_dev
 op_assign
