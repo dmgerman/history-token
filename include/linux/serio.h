@@ -454,6 +454,24 @@ id|THIS_MODULE
 suffix:semicolon
 )brace
 r_void
+id|__serio_register_driver
+c_func
+(paren
+r_struct
+id|serio_driver
+op_star
+id|drv
+comma
+r_struct
+id|module
+op_star
+id|owner
+)paren
+suffix:semicolon
+DECL|function|serio_register_driver
+r_static
+r_inline
+r_void
 id|serio_register_driver
 c_func
 (paren
@@ -462,7 +480,16 @@ id|serio_driver
 op_star
 id|drv
 )paren
+(brace
+id|__serio_register_driver
+c_func
+(paren
+id|drv
+comma
+id|THIS_MODULE
+)paren
 suffix:semicolon
+)brace
 r_void
 id|serio_unregister_driver
 c_func
@@ -475,7 +502,7 @@ id|drv
 suffix:semicolon
 DECL|function|serio_write
 r_static
-id|__inline__
+r_inline
 r_int
 id|serio_write
 c_func
@@ -514,7 +541,7 @@ suffix:semicolon
 )brace
 DECL|function|serio_drv_write_wakeup
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_drv_write_wakeup
 c_func
@@ -543,7 +570,7 @@ suffix:semicolon
 )brace
 DECL|function|serio_cleanup
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_cleanup
 c_func
@@ -573,7 +600,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Use the following fucntions to manipulate serio&squot;s per-port&n; * driver-specific data.&n; */
 DECL|function|serio_get_drvdata
 r_static
-id|__inline__
+r_inline
 r_void
 op_star
 id|serio_get_drvdata
@@ -596,7 +623,7 @@ suffix:semicolon
 )brace
 DECL|function|serio_set_drvdata
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_set_drvdata
 c_func
@@ -624,7 +651,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Use the following fucntions to protect critical sections in&n; * driver code from port&squot;s interrupt handler&n; */
 DECL|function|serio_pause_rx
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_pause_rx
 c_func
@@ -645,7 +672,7 @@ suffix:semicolon
 )brace
 DECL|function|serio_continue_rx
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_continue_rx
 c_func
@@ -667,7 +694,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Use the following fucntions to pin serio&squot;s driver in process context&n; */
 DECL|function|serio_pin_driver
 r_static
-id|__inline__
+r_inline
 r_int
 id|serio_pin_driver
 c_func
@@ -689,7 +716,7 @@ suffix:semicolon
 )brace
 DECL|function|serio_unpin_driver
 r_static
-id|__inline__
+r_inline
 r_void
 id|serio_unpin_driver
 c_func
