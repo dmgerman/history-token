@@ -451,8 +451,7 @@ id|key_serial_t
 suffix:semicolon
 multiline_comment|/*&n; * debugging key validation&n; */
 macro_line|#ifdef KEY_DEBUGGING
-DECL|function|__key_check
-r_static
+r_extern
 r_void
 id|__key_check
 c_func
@@ -461,27 +460,8 @@ r_const
 r_struct
 id|key
 op_star
-id|key
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;__key_check: key %p {%08x} should be {%08x}&bslash;n&quot;
-comma
-id|key
-comma
-id|key-&gt;magic
-comma
-id|KEY_DEBUG_MAGIC
 )paren
 suffix:semicolon
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|key_check
 r_static
 r_inline
