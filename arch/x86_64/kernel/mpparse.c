@@ -3440,6 +3440,16 @@ id|bit
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|edge_level
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|active_high_low
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Parsing through the PCI Interrupt Routing Table (PRT) and program&n;&t; * routing for all static (IOAPIC-direct) entries.&n;&t; */
 id|list_for_each
 c_func
@@ -3478,6 +3488,12 @@ c_func
 id|entry-&gt;link.handle
 comma
 id|entry-&gt;link.index
+comma
+op_amp
+id|edge_level
+comma
+op_amp
+id|active_high_low
 )paren
 suffix:semicolon
 r_if
@@ -3490,9 +3506,30 @@ r_continue
 suffix:semicolon
 )brace
 r_else
+(brace
+multiline_comment|/* Hardwired IRQ. Assume PCI standard settings */
 id|irq
 op_assign
 id|entry-&gt;link.index
+suffix:semicolon
+id|edge_level
+op_assign
+l_int|1
+suffix:semicolon
+id|active_high_low
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* Don&squot;t set up the ACPI SCI because it&squot;s already set up */
+r_if
+c_cond
+(paren
+id|acpi_fadt.sci_int
+op_eq
+id|irq
+)paren
+r_continue
 suffix:semicolon
 id|ioapic
 op_assign
@@ -3643,6 +3680,10 @@ comma
 id|ioapic_pin
 comma
 id|irq
+comma
+id|edge_level
+comma
+id|active_high_low
 )paren
 suffix:semicolon
 r_if

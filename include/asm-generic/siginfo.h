@@ -38,7 +38,7 @@ mdefine_line|#define __ARCH_SI_UID_T&t;uid_t
 macro_line|#endif
 macro_line|#ifndef __ARCH_SI_BAND_T
 DECL|macro|__ARCH_SI_BAND_T
-mdefine_line|#define __ARCH_SI_BAND_T long
+mdefine_line|#define __ARCH_SI_BAND_T int
 macro_line|#endif
 macro_line|#ifndef HAVE_ARCH_SIGINFO_T
 DECL|struct|siginfo

@@ -3734,7 +3734,7 @@ id|simd_coprocessor_error
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA32_EMULATION
-id|set_intr_gate
+id|set_system_gate
 c_func
 (paren
 id|IA32_SYSCALL_VECTOR

@@ -1029,6 +1029,26 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; &t; * if &quot;noapic&quot; boot option, don&squot;t look for IO-APICs&n;&t; */
+r_if
+c_cond
+(paren
+id|skip_ioapic_setup
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|PREFIX
+l_string|&quot;Skipping IOAPIC probe &quot;
+l_string|&quot;due to &squot;noapic&squot; option.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|result
 op_assign
 id|acpi_table_parse_madt

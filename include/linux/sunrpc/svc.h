@@ -326,6 +326,11 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* secure port */
+DECL|member|rq_daddr
+id|__u32
+id|rq_daddr
+suffix:semicolon
+multiline_comment|/* dest addr of request - reply from here */
 DECL|member|rq_argp
 r_void
 op_star

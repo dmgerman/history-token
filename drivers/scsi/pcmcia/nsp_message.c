@@ -1,5 +1,5 @@
 multiline_comment|/*==========================================================================&n;  NinjaSCSI-3 message handler&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;   This software may be used and distributed according to the terms of&n;   the GNU General Public License.&n; */
-multiline_comment|/* $Id: nsp_message.c,v 1.2 2002/09/20 04:06:58 gotom Exp $ */
+multiline_comment|/* $Id: nsp_message.c,v 1.6 2003/07/26 14:21:09 elca Exp $ */
 DECL|function|nsp_message_in
 r_static
 r_void
@@ -9,10 +9,6 @@ c_func
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
-id|nsp_hw_data
-op_star
-id|data
 )paren
 (brace
 r_int
@@ -20,6 +16,16 @@ r_int
 id|base
 op_assign
 id|SCpnt-&gt;device-&gt;host-&gt;io_port
+suffix:semicolon
+id|nsp_hw_data
+op_star
+id|data
+op_assign
+(paren
+id|nsp_hw_data
+op_star
+)paren
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 r_char
@@ -41,12 +47,12 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-id|DEBUG
+id|nsp_dbg
 c_func
 (paren
-l_int|0
+id|NSP_DEBUG_MSGINOCCUR
 comma
-l_string|&quot; msgin loop&bslash;n&quot;
+l_string|&quot;msgin loop&quot;
 )paren
 suffix:semicolon
 r_do
@@ -173,12 +179,18 @@ c_func
 id|Scsi_Cmnd
 op_star
 id|SCpnt
-comma
+)paren
+(brace
 id|nsp_hw_data
 op_star
 id|data
+op_assign
+(paren
+id|nsp_hw_data
+op_star
 )paren
-(brace
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
+suffix:semicolon
 r_int
 id|ret
 op_assign
@@ -190,12 +202,12 @@ op_assign
 id|data-&gt;MsgLen
 suffix:semicolon
 multiline_comment|/*&n;&t; * XXX: NSP QUIRK&n;&t; * NSP invoke interrupts only in the case of scsi phase changes,&n;&t; * therefore we should poll the scsi phase here to catch &n;&t; * the next &quot;msg out&quot; if exists (no scsi phase changes).&n;&t; */
-id|DEBUG
+id|nsp_dbg
 c_func
 (paren
-l_int|0
+id|NSP_DEBUG_MSGOUTOCCUR
 comma
-l_string|&quot; msgout loop&bslash;n&quot;
+l_string|&quot;msgout loop&quot;
 )paren
 suffix:semicolon
 r_do
@@ -208,19 +220,16 @@ c_func
 (paren
 id|SCpnt
 comma
-id|data
-comma
 id|BUSPHASE_MESSAGE_OUT
 )paren
 )paren
 (brace
-id|printk
+id|nsp_msg
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot; %s: msgout: xfer short&bslash;n&quot;
 comma
-id|__FUNCTION__
+l_string|&quot;msgout: xfer short&quot;
 )paren
 suffix:semicolon
 )brace

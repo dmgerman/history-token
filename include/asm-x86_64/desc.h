@@ -453,7 +453,7 @@ r_int
 )paren
 id|func
 comma
-l_int|3
+l_int|0
 comma
 l_int|0
 )paren
@@ -494,7 +494,7 @@ r_int
 )paren
 id|func
 comma
-l_int|3
+l_int|0
 comma
 id|ist
 )paren

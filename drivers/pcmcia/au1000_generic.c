@@ -391,9 +391,6 @@ c_func
 r_void
 )paren
 (brace
-id|servinfo_t
-id|info
-suffix:semicolon
 r_struct
 id|pcmcia_init
 id|pcmcia_init
@@ -427,35 +424,6 @@ op_minus
 l_int|1
 suffix:semicolon
 macro_line|#endif
-id|CardServices
-c_func
-(paren
-id|GetCardServicesInfo
-comma
-op_amp
-id|info
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|info.Revision
-op_ne
-id|CS_RELEASE_CODE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Card Services release codes do not match&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 macro_line|#if defined(CONFIG_MIPS_PB1000) || defined(CONFIG_MIPS_PB1100) || defined(CONFIG_MIPS_PB1500)
 id|pcmcia_low_level
 op_assign
