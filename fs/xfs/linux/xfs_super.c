@@ -38,6 +38,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 DECL|variable|linvfs_qops
 id|STATIC
 r_struct
@@ -1344,6 +1345,20 @@ id|schedule_timeout
 c_func
 (paren
 id|xfs_params.sync_interval
+)paren
+suffix:semicolon
+multiline_comment|/* swsusp */
+r_if
+c_cond
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_FREEZE
+)paren
+id|refrigerator
+c_func
+(paren
+id|PF_IOTHREAD
 )paren
 suffix:semicolon
 r_if
