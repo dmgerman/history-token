@@ -5422,6 +5422,7 @@ id|cmd
 )paren
 (brace
 id|sync_serial_settings
+id|__user
 op_star
 id|line
 op_assign

@@ -868,7 +868,9 @@ id|sync_serial_settings
 suffix:semicolon
 id|sync_serial_settings
 id|new_line
-comma
+suffix:semicolon
+id|sync_serial_settings
+id|__user
 op_star
 id|line
 op_assign

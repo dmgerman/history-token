@@ -536,9 +536,9 @@ op_assign
 id|ata_bmdma_start_mmio
 comma
 dot
-id|fill_sg
+id|qc_prep
 op_assign
-id|ata_fill_sg
+id|ata_qc_prep
 comma
 dot
 id|eng_timeout
@@ -1327,6 +1327,10 @@ suffix:semicolon
 id|ap-&gt;host-&gt;hostt-&gt;max_sectors
 op_assign
 l_int|15
+suffix:semicolon
+id|dev-&gt;flags
+op_or_assign
+id|ATA_DFLAG_LOCK_SECTORS
 suffix:semicolon
 r_return
 suffix:semicolon

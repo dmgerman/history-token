@@ -229,6 +229,9 @@ mdefine_line|#define PMAC_FTR_WRITE_GPIO&t;&t;PMAC_FTR_DEF(18)
 multiline_comment|/* PMAC_FTR_ENABLE_MPIC&n; *&n; * Enable the MPIC cell&n; */
 DECL|macro|PMAC_FTR_ENABLE_MPIC
 mdefine_line|#define PMAC_FTR_ENABLE_MPIC&t;&t;PMAC_FTR_DEF(19)
+multiline_comment|/* PMAC_FTR_AACK_DELAY_ENABLE&t;(NULL, int enable, 0)&n; *&n; * Enable/disable the AACK delay on the northbridge for systems using DFS&n; */
+DECL|macro|PMAC_FTR_AACK_DELAY_ENABLE
+mdefine_line|#define PMAC_FTR_AACK_DELAY_ENABLE     &t;PMAC_FTR_DEF(20)
 multiline_comment|/* Don&squot;t use those directly, they are for the sake of pmac_setup.c */
 r_extern
 r_int

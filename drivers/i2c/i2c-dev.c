@@ -774,6 +774,7 @@ op_star
 id|rdwr_pa
 suffix:semicolon
 id|u8
+id|__user
 op_star
 op_star
 id|data_ptrs
@@ -1066,11 +1067,6 @@ suffix:semicolon
 )brace
 id|data_ptrs
 op_assign
-(paren
-id|u8
-op_star
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -1079,6 +1075,7 @@ op_star
 r_sizeof
 (paren
 id|u8
+id|__user
 op_star
 )paren
 comma
@@ -1150,6 +1147,11 @@ id|data_ptrs
 id|i
 )braket
 op_assign
+(paren
+id|u8
+id|__user
+op_star
+)paren
 id|rdwr_pa
 (braket
 id|i

@@ -1,20 +1,14 @@
 multiline_comment|/*&n; *  linux/arch/arm/mach-clps711x/time.c&n; *&n; *  Copyright (C) 2001 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware/clps7111.h&gt;
-r_extern
-r_int
-r_int
-(paren
-op_star
-id|gettimeoffset
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &lt;asm/mach/time.h&gt;
 multiline_comment|/*&n; * gettimeoffset() returns time since last timer tick, in usecs.&n; *&n; * &squot;LATCH&squot; is hwclock ticks (see CLOCK_TICK_RATE in timex.h) per jiffy.&n; * &squot;tick&squot; is usecs per jiffy.&n; */
 DECL|function|clps711x_gettimeoffset
 r_static
@@ -59,10 +53,63 @@ op_div
 id|LATCH
 suffix:semicolon
 )brace
-DECL|function|clps711x_setup_timer
+multiline_comment|/*&n; * IRQ handler for the timer&n; */
+r_static
+id|irqreturn_t
+DECL|function|p720t_timer_interrupt
+id|p720t_timer_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|timer_tick
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
+)brace
+DECL|variable|clps711x_timer_irq
+r_static
+r_struct
+id|irqaction
+id|clps711x_timer_irq
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;CLPS711x Timer Tick&quot;
+comma
+dot
+id|flags
+op_assign
+id|SA_INTERRUPT
+comma
+dot
+id|handler
+op_assign
+id|p720t_timer_interrupt
+)brace
+suffix:semicolon
+DECL|function|clps711x_init_time
 r_void
 id|__init
-id|clps711x_setup_timer
+id|clps711x_init_time
 c_func
 (paren
 r_void
@@ -75,10 +122,6 @@ suffix:semicolon
 r_int
 r_int
 id|syscon
-suffix:semicolon
-id|gettimeoffset
-op_assign
-id|clps711x_gettimeoffset
 suffix:semicolon
 id|syscon
 op_assign
@@ -113,6 +156,19 @@ id|TC2D
 )paren
 suffix:semicolon
 multiline_comment|/* 512kHz / 100Hz - 1 */
+id|setup_irq
+c_func
+(paren
+id|IRQ_TC2OI
+comma
+op_amp
+id|clps711x_timer_irq
+)paren
+suffix:semicolon
+id|gettimeoffset
+op_assign
+id|clps711x_gettimeoffset
+suffix:semicolon
 id|tv.tv_nsec
 op_assign
 l_int|0

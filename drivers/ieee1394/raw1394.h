@@ -204,6 +204,7 @@ id|buffer_length
 suffix:semicolon
 DECL|member|buffer
 id|__u8
+id|__user
 op_star
 id|buffer
 suffix:semicolon
@@ -227,6 +228,7 @@ id|buffer_length
 suffix:semicolon
 DECL|member|buffer
 id|__u8
+id|__user
 op_star
 id|buffer
 suffix:semicolon
@@ -243,12 +245,14 @@ id|arm_request_response
 DECL|member|request
 r_struct
 id|arm_request
+id|__user
 op_star
 id|request
 suffix:semicolon
 DECL|member|response
 r_struct
 id|arm_response
+id|__user
 op_star
 id|response
 suffix:semicolon
@@ -305,6 +309,7 @@ suffix:semicolon
 DECL|member|infos
 r_struct
 id|raw1394_iso_packet_info
+id|__user
 op_star
 id|infos
 suffix:semicolon

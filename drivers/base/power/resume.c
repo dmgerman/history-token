@@ -108,7 +108,7 @@ id|dpm_active
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;device_resume - Restore state of each device in system.&n; *&n; *&t;Walk the dpm_off list, remove each entry, resume the device,&n; *&t;then add it to the dpm_active list. &n; */
+multiline_comment|/**&n; *&t;device_resume - Restore state of each device in system.&n; *&n; *&t;Walk the dpm_off list, remove each entry, resume the device,&n; *&t;then add it to the dpm_active list.&n; */
 DECL|function|device_resume
 r_void
 id|device_resume
@@ -144,7 +144,7 @@ c_func
 id|device_resume
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;device_power_up_irq - Power on some devices. &n; *&n; *&t;Walk the dpm_off_irq list and power each device up. This &n; *&t;is used for devices that required they be powered down with&n; *&t;interrupts disabled. As devices are powered on, they are moved to&n; *&t;the dpm_suspended list.&n; *&n; *&t;Interrupts must be disabled when calling this. &n; */
+multiline_comment|/**&n; *&t;device_power_up_irq - Power on some devices.&n; *&n; *&t;Walk the dpm_off_irq list and power each device up. This&n; *&t;is used for devices that required they be powered down with&n; *&t;interrupts disabled. As devices are powered on, they are moved to&n; *&t;the dpm_suspended list.&n; *&n; *&t;Interrupts must be disabled when calling this.&n; */
 DECL|function|dpm_power_up
 r_void
 id|dpm_power_up

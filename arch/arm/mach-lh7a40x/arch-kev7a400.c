@@ -19,6 +19,13 @@ id|lh7a400_init_irq
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|lh7a40x_init_time
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
@@ -376,6 +383,10 @@ id|kev7a400_map_io
 id|INITIRQ
 (paren
 id|lh7a400_init_irq
+)paren
+id|INITTIME
+(paren
+id|lh7a40x_init_time
 )paren
 id|MACHINE_END
 eof

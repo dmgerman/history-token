@@ -10,8 +10,6 @@ macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
-DECL|macro|MAX_SG_ONSTACK
-mdefine_line|#define MAX_SG_ONSTACK 4
 multiline_comment|/* decapsulation data for use when post-processing */
 DECL|struct|esp_decap_data
 r_struct
@@ -1074,24 +1072,14 @@ r_do
 (brace
 r_struct
 id|scatterlist
-id|sgbuf
-(braket
-id|nfrags
-OG
-id|MAX_SG_ONSTACK
-ques
-c_cond
-l_int|0
-suffix:colon
-id|nfrags
-)braket
-suffix:semicolon
-r_struct
-id|scatterlist
 op_star
 id|sg
 op_assign
-id|sgbuf
+op_amp
+id|esp-&gt;sgbuf
+(braket
+l_int|0
+)braket
 suffix:semicolon
 r_if
 c_cond
@@ -1101,7 +1089,7 @@ c_func
 (paren
 id|nfrags
 OG
-id|MAX_SG_ONSTACK
+id|ESP_NUM_FAST_SG
 )paren
 )paren
 (brace
@@ -1173,7 +1161,11 @@ c_func
 (paren
 id|sg
 op_ne
-id|sgbuf
+op_amp
+id|esp-&gt;sgbuf
+(braket
+l_int|0
+)braket
 )paren
 )paren
 id|kfree
@@ -1646,24 +1638,14 @@ l_int|2
 suffix:semicolon
 r_struct
 id|scatterlist
-id|sgbuf
-(braket
-id|nfrags
-OG
-id|MAX_SG_ONSTACK
-ques
-c_cond
-l_int|0
-suffix:colon
-id|nfrags
-)braket
-suffix:semicolon
-r_struct
-id|scatterlist
 op_star
 id|sg
 op_assign
-id|sgbuf
+op_amp
+id|esp-&gt;sgbuf
+(braket
+l_int|0
+)braket
 suffix:semicolon
 id|u8
 id|workbuf
@@ -1682,7 +1664,7 @@ c_func
 (paren
 id|nfrags
 OG
-id|MAX_SG_ONSTACK
+id|ESP_NUM_FAST_SG
 )paren
 )paren
 (brace
@@ -1750,7 +1732,11 @@ c_func
 (paren
 id|sg
 op_ne
-id|sgbuf
+op_amp
+id|esp-&gt;sgbuf
+(braket
+l_int|0
+)braket
 )paren
 )paren
 id|kfree

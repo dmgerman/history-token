@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
@@ -164,27 +165,6 @@ id|delta
 suffix:semicolon
 )brace
 r_extern
-r_int
-r_int
-id|prof_cpu_mask
-suffix:semicolon
-r_extern
-r_int
-r_int
-op_star
-id|prof_buffer
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_len
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|prof_shift
-suffix:semicolon
-r_extern
 r_char
 id|_stext
 suffix:semicolon
@@ -194,11 +174,38 @@ r_inline
 r_void
 id|ppc_do_profile
 (paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
 r_int
 r_int
 id|nip
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|prof_cpu_mask
+suffix:semicolon
+id|profile_hook
+c_func
+(paren
+id|regs
 )paren
-(brace
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -206,6 +213,14 @@ op_logical_neg
 id|prof_buffer
 )paren
 r_return
+suffix:semicolon
+id|nip
+op_assign
+id|instruction_pointer
+c_func
+(paren
+id|regs
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Only measure the CPUs specified by /proc/irq/prof_cpu_mask.&n;&t; * (default is all CPUs.)&n;&t; */
 r_if
@@ -360,24 +375,10 @@ id|jiffy_stamp
 op_add_assign
 id|tb_ticks_per_jiffy
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
 id|ppc_do_profile
 c_func
 (paren
-id|instruction_pointer
-c_func
-(paren
 id|regs
-)paren
 )paren
 suffix:semicolon
 r_if

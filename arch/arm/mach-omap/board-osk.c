@@ -251,6 +251,11 @@ c_func
 (paren
 id|osk_init_irq
 )paren
+id|INITTIME
+c_func
+(paren
+id|omap_init_time
+)paren
 id|INIT_MACHINE
 c_func
 (paren

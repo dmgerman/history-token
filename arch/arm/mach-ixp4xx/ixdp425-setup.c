@@ -386,6 +386,11 @@ c_func
 (paren
 id|ixp4xx_init_irq
 )paren
+id|INITTIME
+c_func
+(paren
+id|ixp4xx_init_time
+)paren
 id|BOOT_PARAMS
 c_func
 (paren
@@ -427,6 +432,11 @@ id|INITIRQ
 c_func
 (paren
 id|ixp4xx_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|ixp4xx_init_time
 )paren
 id|BOOT_PARAMS
 c_func
@@ -471,6 +481,11 @@ id|INITIRQ
 c_func
 (paren
 id|ixp4xx_init_irq
+)paren
+id|INITTIME
+c_func
+(paren
+id|ixp4xx_init_time
 )paren
 id|BOOT_PARAMS
 c_func
