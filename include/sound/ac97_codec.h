@@ -328,6 +328,39 @@ DECL|macro|AC97_MEA_PRG
 mdefine_line|#define AC97_MEA_PRG&t;&t;0x4000&t;/* HADC power down (high) */
 DECL|macro|AC97_MEA_PRH
 mdefine_line|#define AC97_MEA_PRH&t;&t;0x8000&t;/* HDAC power down (high) */
+multiline_comment|/* modem gpio status defines */
+DECL|macro|AC97_GPIO_LINE1_OH
+mdefine_line|#define AC97_GPIO_LINE1_OH      0x0001  /* Off Hook Line1 */
+DECL|macro|AC97_GPIO_LINE1_RI
+mdefine_line|#define AC97_GPIO_LINE1_RI      0x0002  /* Ring Detect Line1 */
+DECL|macro|AC97_GPIO_LINE1_CID
+mdefine_line|#define AC97_GPIO_LINE1_CID     0x0004  /* Caller ID path enable Line1 */
+DECL|macro|AC97_GPIO_LINE1_LCS
+mdefine_line|#define AC97_GPIO_LINE1_LCS     0x0008  /* Loop Current Sense Line1 */
+DECL|macro|AC97_GPIO_LINE1_PULSE
+mdefine_line|#define AC97_GPIO_LINE1_PULSE   0x0010  /* Opt./ Pulse Dial Line1 (out) */
+DECL|macro|AC97_GPIO_LINE1_HL1R
+mdefine_line|#define AC97_GPIO_LINE1_HL1R    0x0020  /* Opt./ Handset to Line1 relay control (out) */
+DECL|macro|AC97_GPIO_LINE1_HOHD
+mdefine_line|#define AC97_GPIO_LINE1_HOHD    0x0040  /* Opt./ Handset off hook detect Line1 (in) */
+DECL|macro|AC97_GPIO_LINE12_AC
+mdefine_line|#define AC97_GPIO_LINE12_AC     0x0080  /* Opt./ Int.bit 1 / Line1/2 AC (out) */
+DECL|macro|AC97_GPIO_LINE12_DC
+mdefine_line|#define AC97_GPIO_LINE12_DC     0x0100  /* Opt./ Int.bit 2 / Line1/2 DC (out) */
+DECL|macro|AC97_GPIO_LINE12_RS
+mdefine_line|#define AC97_GPIO_LINE12_RS     0x0200  /* Opt./ Int.bit 3 / Line1/2 RS (out) */
+DECL|macro|AC97_GPIO_LINE2_OH
+mdefine_line|#define AC97_GPIO_LINE2_OH      0x0400  /* Off Hook Line2 */
+DECL|macro|AC97_GPIO_LINE2_RI
+mdefine_line|#define AC97_GPIO_LINE2_RI      0x0800  /* Ring Detect Line2 */
+DECL|macro|AC97_GPIO_LINE2_CID
+mdefine_line|#define AC97_GPIO_LINE2_CID     0x1000  /* Caller ID path enable Line2 */
+DECL|macro|AC97_GPIO_LINE2_LCS
+mdefine_line|#define AC97_GPIO_LINE2_LCS     0x2000  /* Loop Current Sense Line2 */
+DECL|macro|AC97_GPIO_LINE2_PULSE
+mdefine_line|#define AC97_GPIO_LINE2_PULSE   0x4000  /* Opt./ Pulse Dial Line2 (out) */
+DECL|macro|AC97_GPIO_LINE2_HL1R
+mdefine_line|#define AC97_GPIO_LINE2_HL1R    0x8000  /* Opt./ Handset to Line2 relay control (out) */
 multiline_comment|/* specific - SigmaTel */
 DECL|macro|AC97_SIGMATEL_ANALOG
 mdefine_line|#define AC97_SIGMATEL_ANALOG&t;0x6c&t;/* Analog Special */

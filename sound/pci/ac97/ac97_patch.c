@@ -7270,4 +7270,42 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Si3036/8 specific registers */
+DECL|macro|AC97_SI3036_CHIP_ID
+mdefine_line|#define AC97_SI3036_CHIP_ID     0x5a
+DECL|function|mpatch_si3036
+r_int
+id|mpatch_si3036
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+singleline_comment|//printk(&quot;mpatch_si3036: chip id = %x&bslash;n&quot;, snd_ac97_read(ac97, 0x5a));
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+l_int|0x5c
+comma
+l_int|0xf210
+)paren
+suffix:semicolon
+id|snd_ac97_write_cache
+c_func
+(paren
+id|ac97
+comma
+l_int|0x68
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 eof
