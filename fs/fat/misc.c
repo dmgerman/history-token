@@ -1105,12 +1105,6 @@ id|sb
 op_member_access_from_pointer
 id|cluster_bits
 suffix:semicolon
-id|mark_inode_dirty
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 r_return
 id|res
 suffix:semicolon
