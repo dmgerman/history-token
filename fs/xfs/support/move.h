@@ -4,14 +4,6 @@ DECL|macro|__XFS_SUPPORT_MOVE_H__
 mdefine_line|#define __XFS_SUPPORT_MOVE_H__
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|bzero
-mdefine_line|#define bzero(p,s)&t;memset((p), 0, (s))
-DECL|macro|bcopy
-mdefine_line|#define bcopy(s,d,n)&t;memcpy((d),(s),(n))
-DECL|macro|bcmp
-mdefine_line|#define bcmp(s1,s2,l)&t;memcmp(s1,s2,l)
-DECL|macro|ovbcopy
-mdefine_line|#define ovbcopy(from,to,count)&t;memmove(to,from,count)
 DECL|typedef|iovec_t
 r_typedef
 r_struct

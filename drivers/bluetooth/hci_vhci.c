@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ HCI virtual device driver.&n; *&n; * $Id: hci_vhci.c,v 1.3 2002/04/17 17:37:20 maxk Exp $ &n; */
+multiline_comment|/*&n; * Bluetooth HCI virtual device driver.&n; *&n; * $Id: hci_vhci.c,v 1.3 2002/04/17 17:37:20 maxk Exp $ &n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;1.1&quot;
 macro_line|#include &lt;linux/config.h&gt;
@@ -398,7 +398,7 @@ op_logical_neg
 (paren
 id|skb
 op_assign
-id|bluez_skb_alloc
+id|bt_skb_alloc
 c_func
 (paren
 id|count
@@ -589,9 +589,12 @@ id|buf
 suffix:semicolon
 id|len
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|skb-&gt;len
 comma
 id|len
@@ -1274,7 +1277,7 @@ r_void
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;BlueZ VHCI driver ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;Bluetooth VHCI driver ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
 comma
 id|VERSION
 )paren
@@ -1352,7 +1355,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;BlueZ VHCI driver ver &quot;
+l_string|&quot;Bluetooth VHCI driver ver &quot;
 id|VERSION
 )paren
 suffix:semicolon

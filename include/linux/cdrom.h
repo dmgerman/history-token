@@ -1510,12 +1510,6 @@ op_star
 id|handle
 suffix:semicolon
 multiline_comment|/* driver-dependent data */
-DECL|member|cdrom_driverfs_dev
-r_struct
-id|device
-id|cdrom_driverfs_dev
-suffix:semicolon
-multiline_comment|/* driverfs implementation */
 multiline_comment|/* specifications */
 DECL|member|dev
 id|kdev_t

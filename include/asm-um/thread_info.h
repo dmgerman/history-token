@@ -111,12 +111,16 @@ DECL|macro|TIF_SIGPENDING
 mdefine_line|#define TIF_SIGPENDING&t;&t;1&t;/* signal pending */
 DECL|macro|TIF_NEED_RESCHED
 mdefine_line|#define TIF_NEED_RESCHED&t;2&t;/* rescheduling necessary */
+DECL|macro|TIF_POLLING_NRFLAG
+mdefine_line|#define TIF_POLLING_NRFLAG      3       /* true if poll_idle() is polling &n;&t;&t;&t;&t;&t; * TIF_NEED_RESCHED &n;&t;&t;&t;&t;&t; */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1 &lt;&lt; TIF_SYSCALL_TRACE)
 DECL|macro|_TIF_SIGPENDING
 mdefine_line|#define _TIF_SIGPENDING&t;&t;(1 &lt;&lt; TIF_SIGPENDING)
 DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1 &lt;&lt; TIF_NEED_RESCHED)
+DECL|macro|_TIF_POLLING_NRFLAG
+mdefine_line|#define _TIF_POLLING_NRFLAG     (1 &lt;&lt; TIF_POLLING_NRFLAG)
 macro_line|#endif
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

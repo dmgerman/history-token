@@ -33,6 +33,12 @@ macro_line|#ifndef STATIC
 DECL|macro|STATIC
 mdefine_line|#define STATIC static
 macro_line|#endif
+DECL|macro|restricted_chown
+mdefine_line|#define restricted_chown&t;xfs_params.restrict_chown
+DECL|macro|irix_sgid_inherit
+mdefine_line|#define irix_sgid_inherit&t;xfs_params.sgid_inherit
+DECL|macro|irix_symlink_mode
+mdefine_line|#define irix_symlink_mode&t;xfs_params.symlink_mode
 DECL|struct|xfs_dirent
 r_typedef
 r_struct

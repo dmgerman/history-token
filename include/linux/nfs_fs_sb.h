@@ -131,6 +131,40 @@ r_struct
 id|sockaddr_in
 id|addr
 suffix:semicolon
+macro_line|#if CONFIG_NFS_V4
+multiline_comment|/* Our own IP address, as a null-terminated string.&n;&t; * This is used to generate the clientid, and the callback address.&n;&t; */
+DECL|member|ip_addr
+r_char
+id|ip_addr
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|mnt_path
+r_char
+op_star
+id|mnt_path
+suffix:semicolon
+DECL|member|nfs4_state
+r_struct
+id|nfs4_client
+op_star
+id|nfs4_state
+suffix:semicolon
+multiline_comment|/* all NFSv4 state starts here */
+DECL|member|lease_time
+r_int
+r_int
+id|lease_time
+suffix:semicolon
+multiline_comment|/* in jiffies */
+DECL|member|last_renewal
+r_int
+r_int
+id|last_renewal
+suffix:semicolon
+multiline_comment|/* in jiffies */
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* Server capabilities */

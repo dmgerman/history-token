@@ -141,6 +141,7 @@ r_return
 id|data
 suffix:semicolon
 )brace
+multiline_comment|/* Only changed by xterm_setup, which is a setup */
 DECL|variable|terminal_emulator
 r_static
 r_char

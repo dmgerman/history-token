@@ -3942,6 +3942,9 @@ op_assign
 id|alloc_disk
 c_func
 (paren
+l_int|1
+op_lshift
+id|PARTN_BITS
 )paren
 suffix:semicolon
 r_if
@@ -4007,10 +4010,6 @@ id|MAX_DRIVES
 op_plus
 id|unit
 )paren
-suffix:semicolon
-id|disk-&gt;minor_shift
-op_assign
-id|PARTN_BITS
 suffix:semicolon
 id|disk-&gt;fops
 op_assign

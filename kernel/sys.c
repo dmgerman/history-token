@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/dcookies.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -418,6 +419,11 @@ id|cond_syscall
 c_func
 (paren
 id|sys_acct
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys_lookup_dcookie
 )paren
 DECL|function|set_one_prio
 r_static

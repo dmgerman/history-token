@@ -19,6 +19,7 @@ macro_line|#include &quot;wait.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;os.h&quot;
+macro_line|#include &quot;tempfile.h&quot;
 DECL|function|debugger_wait
 r_static
 r_int
@@ -449,6 +450,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Used by the tracing thread */
 DECL|variable|parent
 r_static
 id|debugger_state
@@ -713,9 +715,7 @@ id|debugger-&gt;pid
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SMP
-macro_line|#error need to make these arrays
-macro_line|#endif
+multiline_comment|/* Used by the tracing thread */
 DECL|variable|debugger
 r_static
 id|debugger_state

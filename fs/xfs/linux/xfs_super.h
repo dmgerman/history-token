@@ -50,9 +50,6 @@ DECL|macro|LINVFS_GET_VFS
 mdefine_line|#define LINVFS_GET_VFS(s) &bslash;&n;&t;(vfs_t *)((s)-&gt;s_fs_info)
 DECL|macro|LINVFS_SET_VFS
 mdefine_line|#define LINVFS_SET_VFS(s, vfsp) &bslash;&n;&t;((s)-&gt;s_fs_info = vfsp)
-r_struct
-id|xfs_mount_args
-suffix:semicolon
 r_extern
 r_void
 id|linvfs_set_inode_ops
@@ -62,34 +59,6 @@ r_struct
 id|inode
 op_star
 id|inode
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|spectodevs
-c_func
-(paren
-r_struct
-id|super_block
-op_star
-id|sb
-comma
-r_struct
-id|xfs_mount_args
-op_star
-id|args
-comma
-id|dev_t
-op_star
-id|ddevp
-comma
-id|dev_t
-op_star
-id|logdevp
-comma
-id|dev_t
-op_star
-id|rtdevp
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* __XFS_SUPER_H__ */

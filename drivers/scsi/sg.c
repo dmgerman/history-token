@@ -4503,7 +4503,7 @@ c_func
 (paren
 r_int
 )paren
-id|sdp-&gt;device-&gt;queue_depth
+id|sdp-&gt;device-&gt;new_queue_depth
 comma
 op_amp
 id|sg_idp-&gt;d_queue_depth
@@ -16530,7 +16530,7 @@ comma
 (paren
 r_int
 )paren
-id|scsidp-&gt;queue_depth
+id|scsidp-&gt;new_queue_depth
 comma
 (paren
 r_int

@@ -17,6 +17,7 @@ DECL|macro|UMID_LEN
 mdefine_line|#define UMID_LEN 64
 DECL|macro|UML_DIR
 mdefine_line|#define UML_DIR &quot;~/.uml/&quot;
+multiline_comment|/* Changed by set_umid and make_umid, which are run early in boot */
 DECL|variable|umid
 r_static
 r_char
@@ -29,6 +30,7 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
+multiline_comment|/* Changed by set_uml_dir and make_uml_dir, which are run early in boot */
 DECL|variable|uml_dir
 r_static
 r_char
@@ -37,6 +39,7 @@ id|uml_dir
 op_assign
 id|UML_DIR
 suffix:semicolon
+multiline_comment|/* Changed by set_umid */
 DECL|variable|umid_is_random
 r_static
 r_int

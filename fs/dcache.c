@@ -1957,6 +1957,10 @@ id|dentry-&gt;d_mounted
 op_assign
 l_int|0
 suffix:semicolon
+id|dentry-&gt;d_cookie
+op_assign
+l_int|NULL
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

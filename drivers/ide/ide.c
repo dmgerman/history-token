@@ -11861,7 +11861,7 @@ r_case
 id|CDROMCLOSETRAY
 suffix:colon
 r_return
-id|block_ioctl
+id|scsi_cmd_ioctl
 c_func
 (paren
 id|inode-&gt;i_bdev

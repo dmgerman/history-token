@@ -236,12 +236,6 @@ id|vp
 )paren
 )paren
 (brace
-id|filemap_fdatawait
-c_func
-(paren
-id|ip-&gt;i_mapping
-)paren
-suffix:semicolon
 id|filemap_fdatawrite
 c_func
 (paren
@@ -318,12 +312,6 @@ id|vp
 )paren
 )paren
 (brace
-id|filemap_fdatawait
-c_func
-(paren
-id|ip-&gt;i_mapping
-)paren
-suffix:semicolon
 id|filemap_fdatawrite
 c_func
 (paren

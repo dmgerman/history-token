@@ -291,6 +291,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Accessed only by the tracing thread */
 DECL|variable|kernel_debugregs
 r_static
 r_int

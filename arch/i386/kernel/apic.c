@@ -3392,15 +3392,6 @@ id|regs
 )paren
 (brace
 r_int
-id|user
-op_assign
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-r_int
 id|cpu
 op_assign
 id|smp_processor_id
@@ -3408,17 +3399,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The profiling function is SMP safe. (nothing can mess&n;&t; * around with &quot;current&quot;, and the profiling counters are&n;&t; * updated with atomic operations). This is especially&n;&t; * useful with a profiling multiplier != 1&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user
-)paren
 id|x86_do_profile
 c_func
 (paren
-id|regs-&gt;eip
+id|regs
 )paren
 suffix:semicolon
 r_if
@@ -3484,7 +3468,11 @@ macro_line|#ifdef CONFIG_SMP
 id|update_process_times
 c_func
 (paren
-id|user
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
 )paren
 suffix:semicolon
 macro_line|#endif

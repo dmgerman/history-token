@@ -641,6 +641,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Changed only during early boot */
 DECL|variable|signal_frame_sc
 r_struct
 id|sc_frame
@@ -686,6 +687,7 @@ id|arch
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Changed only during early boot */
 DECL|variable|raw_sc
 r_static
 r_struct
@@ -802,6 +804,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Changed only during early boot */
 DECL|variable|signal_frame_si
 r_struct
 id|si_frame
@@ -847,6 +850,7 @@ id|sp
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Changed only during early boot */
 DECL|variable|raw_si
 r_static
 r_struct

@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ HCI UART driver.&n; *&n; * $Id: hci_ldisc.c,v 1.5 2002/10/02 18:37:20 maxk Exp $    &n; */
+multiline_comment|/*&n; * Bluetooth HCI UART driver.&n; *&n; * $Id: hci_ldisc.c,v 1.5 2002/10/02 18:37:20 maxk Exp $    &n; */
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;2.1&quot;
 macro_line|#include &lt;linux/config.h&gt;
@@ -24,7 +24,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/bluetooth/bluetooth.h&gt;
 macro_line|#include &lt;net/bluetooth/hci_core.h&gt;
 macro_line|#include &quot;hci_uart.h&quot;
-macro_line|#ifndef HCI_UART_DEBUG
+macro_line|#ifndef CONFIG_BT_HCIUART_DEBUG
 DECL|macro|BT_DBG
 macro_line|#undef  BT_DBG
 DECL|macro|BT_DBG
@@ -1672,7 +1672,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLUEZ_HCIUART_H4
+macro_line|#ifdef CONFIG_BT_HCIUART_H4
 r_int
 id|h4_init
 c_func
@@ -1688,7 +1688,7 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLUEZ_HCIUART_BCSP
+macro_line|#ifdef CONFIG_BT_HCIUART_BCSP
 r_int
 id|bcsp_init
 c_func
@@ -1724,7 +1724,7 @@ suffix:semicolon
 id|BT_INFO
 c_func
 (paren
-l_string|&quot;BlueZ HCI UART driver ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
+l_string|&quot;Bluetooth HCI UART driver ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
 comma
 id|VERSION
 )paren
@@ -1823,14 +1823,14 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLUEZ_HCIUART_H4
+macro_line|#ifdef CONFIG_BT_HCIUART_H4
 id|h4_init
 c_func
 (paren
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLUEZ_HCIUART_BCSP
+macro_line|#ifdef CONFIG_BT_HCIUART_BCSP
 id|bcsp_init
 c_func
 (paren
@@ -1852,14 +1852,14 @@ r_void
 r_int
 id|err
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLUEZ_HCIUART_H4
+macro_line|#ifdef CONFIG_BT_HCIUART_H4
 id|h4_deinit
 c_func
 (paren
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_BLUEZ_HCIUART_BCSP
+macro_line|#ifdef CONFIG_BT_HCIUART_BCSP
 id|bcsp_deinit
 c_func
 (paren
@@ -1914,7 +1914,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;BlueZ HCI UART driver ver &quot;
+l_string|&quot;Bluetooth HCI UART driver ver &quot;
 id|VERSION
 )paren
 suffix:semicolon
