@@ -877,6 +877,12 @@ comma
 id|st.st_size
 )paren
 suffix:semicolon
+id|close
+c_func
+(paren
+id|fd
+)paren
+suffix:semicolon
 )brace
 DECL|function|parse_dep_file
 r_void
@@ -1302,6 +1308,12 @@ c_func
 id|map
 comma
 id|st.st_size
+)paren
+suffix:semicolon
+id|close
+c_func
+(paren
+id|fd
 )paren
 suffix:semicolon
 )brace
