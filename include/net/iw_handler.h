@@ -47,7 +47,8 @@ mdefine_line|#define IW_DESCR_FLAG_DUMP&t;0x0001&t;/* Not part of the dump comma
 DECL|macro|IW_DESCR_FLAG_EVENT
 mdefine_line|#define IW_DESCR_FLAG_EVENT&t;0x0002&t;/* Generate an event on SET */
 DECL|macro|IW_DESCR_FLAG_RESTRICT
-mdefine_line|#define IW_DESCR_FLAG_RESTRICT&t;0x0004&t;/* GET request is ROOT only */
+mdefine_line|#define IW_DESCR_FLAG_RESTRICT&t;0x0004&t;/* GET : request is ROOT only */
+multiline_comment|/* SET : Omit payload from generated iwevent */
 multiline_comment|/* Driver level flags */
 DECL|macro|IW_DESCR_FLAG_WAIT
 mdefine_line|#define IW_DESCR_FLAG_WAIT&t;0x0100&t;/* Wait for driver event */
