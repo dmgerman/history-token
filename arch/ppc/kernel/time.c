@@ -804,6 +804,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* This function is only called on the boot processor */
 DECL|function|time_init
 r_void
 id|__init
@@ -824,11 +825,6 @@ comma
 id|stamp
 comma
 id|elapsed
-suffix:semicolon
-multiline_comment|/* This function is only called on the boot processor */
-r_int
-r_int
-id|flags
 suffix:semicolon
 r_if
 c_cond
@@ -876,13 +872,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Now that the decrementer is calibrated, it can be used in case the &n;&t; * clock is stuck, but the fact that we have to handle the 601&n;&t; * makes things more complex. Repeatedly read the RTC until the&n;&t; * next second boundary to try to achieve some precision...&n;&t; */
-r_if
-c_cond
-(paren
-id|ppc_md.get_rtc_time
-)paren
-(brace
+multiline_comment|/* Now that the decrementer is calibrated, it can be used in case the &n;&t; * clock is stuck, but the fact that we have to handle the 601&n;&t; * makes things more complex. Repeatedly read the RTC until the&n;&t; * next second boundary to try to achieve some precision.  If there&n;&t; * is no RTC, we still need to set tb_last_stamp and&n;&t; * last_jiffy_stamp(cpu 0) to the current stamp.&n;&t; */
 id|stamp
 op_assign
 id|get_native_tbl
@@ -890,6 +880,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ppc_md.get_rtc_time
+)paren
+(brace
 id|sec
 op_assign
 id|ppc_md
@@ -975,36 +971,15 @@ id|sec
 op_eq
 id|old_sec
 )paren
-(brace
 id|printk
 c_func
 (paren
 l_string|&quot;Warning: real time clock seems stuck!&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-id|write_lock_irqsave
-c_func
-(paren
-op_amp
-id|xtime_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|xtime.tv_sec
 op_assign
 id|sec
-suffix:semicolon
-id|last_jiffy_stamp
-c_func
-(paren
-l_int|0
-)paren
-op_assign
-id|tb_last_stamp
-op_assign
-id|stamp
 suffix:semicolon
 id|xtime.tv_nsec
 op_assign
@@ -1015,16 +990,17 @@ id|last_rtc_update
 op_assign
 id|xtime.tv_sec
 suffix:semicolon
-id|write_unlock_irqrestore
+)brace
+id|last_jiffy_stamp
 c_func
 (paren
-op_amp
-id|xtime_lock
-comma
-id|flags
+l_int|0
 )paren
+op_assign
+id|tb_last_stamp
+op_assign
+id|stamp
 suffix:semicolon
-)brace
 multiline_comment|/* Not exact, but the timer interrupt takes care of this */
 id|set_dec
 c_func

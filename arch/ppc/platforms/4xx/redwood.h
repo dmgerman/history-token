@@ -62,17 +62,15 @@ r_int
 id|bi_busfreq
 suffix:semicolon
 multiline_comment|/* Bus speed, in Hz */
-DECL|member|bi_tbfreq
-r_int
-r_int
-id|bi_tbfreq
-suffix:semicolon
-multiline_comment|/* Software timebase freq */
 DECL|typedef|bd_t
 )brace
 id|bd_t
 suffix:semicolon
+DECL|macro|bi_tbfreq
+mdefine_line|#define bi_tbfreq bi_intfreq
 macro_line|#endif /* !__ASSEMBLY__ */
+DECL|macro|bi_tbfreq
+mdefine_line|#define bi_tbfreq bi_intfreq
 DECL|macro|OAKNET_IO_PADDR
 mdefine_line|#define OAKNET_IO_PADDR&t;&t;((uint)0xf2000000)
 DECL|macro|OAKNET_IO_VADDR
@@ -84,6 +82,10 @@ DECL|macro|OAKNET_IO_SIZE
 mdefine_line|#define OAKNET_IO_SIZE&t;&t;0xffff
 DECL|macro|OAKNET_INT
 mdefine_line|#define OAKNET_INT&t;&t;26&t;/* EXTINT1 */
+DECL|macro|IDE_XLINUX_MUX_BASE
+mdefine_line|#define IDE_XLINUX_MUX_BASE        0xf2040000
+DECL|macro|IDE_DMA_ADDR
+mdefine_line|#define IDE_DMA_ADDR&t;0xfce00000
 DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE&t;0
 DECL|macro|_ISA_MEM_BASE

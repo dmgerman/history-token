@@ -47,7 +47,7 @@ macro_line|#else
 DECL|macro|__cacheline_aligned
 mdefine_line|#define __cacheline_aligned&t;&t;&t;&t;&t;&bslash;&n;  __attribute__((__aligned__(L1_CACHE_BYTES),&t;&t;&t;&bslash;&n;&t;&t; __section__(&quot;.data.cacheline_aligned&quot;)))
 macro_line|#endif
-macro_line|#if defined(__KERNEL__) &amp;&amp; !defined(__ASSEMBLY__)
+macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
 id|clean_dcache_range

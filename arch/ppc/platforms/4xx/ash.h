@@ -1,9 +1,9 @@
-multiline_comment|/*&n; *&n; *&n; *    Copyright 2000 MontaVista Software Inc.&n; * &t;Author: MontaVista Software, Inc.&n; *         &t;akuster@mvista.com or source@mvista.com&n; *&n; *    Module name: ash.h&n; *&n; *    Description:&n; *      Macros, definitions, and data structures specific to the IBM PowerPC&n; *      Ash eval board.&n; *&n; *&n; */
+multiline_comment|/*&n; *&n; *&n; *    Copyright 2000-2002  MontaVista Software Inc.&n; * &t;Author: MontaVista Software, Inc.&n; *         &t;akuster@mvista.com or source@mvista.com&n; *&n; *    Module name: ash.h&n; *&n; *    Description:&n; *      Macros, definitions, and data structures specific to the IBM PowerPC&n; *      Ash eval board.&n; *&n; *&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_ASH_H__
 DECL|macro|__ASM_ASH_H__
 mdefine_line|#define __ASM_ASH_H__
-macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
+macro_line|#include &lt;asm/ibm_ocp.h&gt;
 macro_line|#include &lt;platforms/4xx/ibmnp405h.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * Data structure defining board information maintained by the boot&n; * ROM on IBM&squot;s &quot;Ash&quot; evaluation board. An effort has been made to&n; * keep the field names consistent with the 8xx &squot;bd_t&squot; board info&n; * structures.&n; */
@@ -41,7 +41,7 @@ r_int
 r_char
 id|bi_enetaddr
 (braket
-id|EMAC_NUMS
+l_int|4
 )braket
 (braket
 l_int|6
@@ -128,7 +128,7 @@ DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD&t;&t;691200
 macro_line|#endif
 DECL|macro|PPC4xx_MACHINE_NAME
-mdefine_line|#define PPC4xx_MACHINE_NAME &quot;IBM NP405H Ceder&quot;
+mdefine_line|#define PPC4xx_MACHINE_NAME &quot;IBM NP405H Ash&quot;
 r_extern
 r_char
 id|pci_irq_table
