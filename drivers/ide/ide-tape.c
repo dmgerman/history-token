@@ -2611,7 +2611,16 @@ c_loop
 id|bcount
 op_decrement
 )paren
-id|IN_BYTE
+(paren
+r_void
+)paren
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|IDE_DATA_REG
@@ -4019,6 +4028,7 @@ DECL|function|idetape_end_request
 r_static
 r_int
 id|idetape_end_request
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -4026,6 +4036,9 @@ id|drive
 comma
 r_int
 id|uptodate
+comma
+r_int
+id|nr_sects
 )paren
 (brace
 r_struct
@@ -4617,6 +4630,8 @@ c_func
 id|drive
 comma
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -4633,6 +4648,8 @@ id|idetape_end_request
 c_func
 (paren
 id|drive
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -4765,7 +4782,13 @@ id|error
 suffix:semicolon
 id|error.all
 op_assign
-id|IN_BYTE
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|IDE_ERROR_REG
@@ -4879,6 +4902,12 @@ op_star
 id|drive
 )paren
 (brace
+id|ide_hwif_t
+op_star
+id|hwif
+op_assign
+id|drive-&gt;hwif
+suffix:semicolon
 id|idetape_tape_t
 op_star
 id|tape
@@ -5356,27 +5385,32 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Get the number of bytes to transfer on this interrupt. */
 id|bcount.b.high
 op_assign
-id|IN_BYTE
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|IDE_BCOUNTH_REG
 )paren
 suffix:semicolon
-multiline_comment|/* Get the number of bytes to transfer */
 id|bcount.b.low
 op_assign
-id|IN_BYTE
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|IDE_BCOUNTL_REG
 )paren
 suffix:semicolon
-multiline_comment|/* on this interrupt */
 id|ireason.all
 op_assign
-id|IN_BYTE
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|IDE_IREASON_REG
@@ -5691,6 +5725,12 @@ op_star
 id|drive
 )paren
 (brace
+id|ide_hwif_t
+op_star
+id|hwif
+op_assign
+id|drive-&gt;hwif
+suffix:semicolon
 id|idetape_tape_t
 op_star
 id|tape
@@ -5746,7 +5786,9 @@ suffix:semicolon
 )brace
 id|ireason.all
 op_assign
-id|IN_BYTE
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|IDE_IREASON_REG
@@ -5782,7 +5824,9 @@ l_int|100
 suffix:semicolon
 id|ireason.all
 op_assign
-id|IN_BYTE
+id|hwif
+op_member_access_from_pointer
+id|INB
 c_func
 (paren
 id|IDE_IREASON_REG
@@ -5924,6 +5968,12 @@ op_star
 id|pc
 )paren
 (brace
+id|ide_hwif_t
+op_star
+id|hwif
+op_assign
+id|drive-&gt;hwif
+suffix:semicolon
 id|idetape_tape_t
 op_star
 id|tape
@@ -6268,7 +6318,9 @@ c_cond
 (paren
 id|IDE_CONTROL_REG
 )paren
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|drive-&gt;ctl
@@ -6276,7 +6328,9 @@ comma
 id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|dma_ok
@@ -6290,7 +6344,9 @@ id|IDE_FEATURE_REG
 )paren
 suffix:semicolon
 multiline_comment|/* Use PIO/DMA */
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|bcount.b.high
@@ -6298,7 +6354,9 @@ comma
 id|IDE_BCOUNTH_REG
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|bcount.b.low
@@ -6306,7 +6364,9 @@ comma
 id|IDE_BCOUNTL_REG
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|drive-&gt;select.all
@@ -6355,7 +6415,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|WIN_PACKETCMD
@@ -6369,7 +6431,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|OUT_BYTE
+id|hwif
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|WIN_PACKETCMD
@@ -6430,6 +6494,8 @@ c_cond
 l_int|0
 suffix:colon
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -6676,6 +6742,8 @@ c_cond
 l_int|0
 suffix:colon
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -7385,6 +7453,8 @@ c_func
 id|drive
 comma
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_else
@@ -7394,6 +7464,8 @@ c_func
 id|drive
 comma
 id|tape-&gt;pc-&gt;error
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -7913,6 +7985,7 @@ DECL|function|idetape_do_request
 r_static
 id|ide_startstop_t
 id|idetape_do_request
+c_func
 (paren
 id|ide_drive_t
 op_star
@@ -7923,8 +7996,7 @@ id|request
 op_star
 id|rq
 comma
-r_int
-r_int
+id|sector_t
 id|block
 )paren
 (brace
@@ -8026,6 +8098,8 @@ c_func
 id|drive
 comma
 l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -8086,6 +8160,8 @@ id|idetape_end_request
 c_func
 (paren
 id|drive
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -8748,6 +8824,8 @@ c_func
 id|drive
 comma
 id|IDETAPE_ERROR_EOD
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -8784,6 +8862,8 @@ c_func
 id|drive
 comma
 id|IDETAPE_ERROR_EOD
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -8831,6 +8911,8 @@ id|idetape_end_request
 c_func
 (paren
 id|drive
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -10438,6 +10520,8 @@ c_func
 id|drive
 comma
 l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -10507,6 +10591,8 @@ c_func
 id|drive
 comma
 l_int|1
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -10517,6 +10603,8 @@ id|idetape_end_request
 c_func
 (paren
 id|drive
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -10771,12 +10859,12 @@ DECL|function|idetape_wait_ready
 r_static
 r_int
 id|idetape_wait_ready
+c_func
 (paren
 id|ide_drive_t
 op_star
 id|drive
 comma
-r_int
 r_int
 r_int
 id|timeout
@@ -17182,13 +17270,6 @@ op_star
 id|ppos
 )paren
 (brace
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
 id|ide_drive_t
 op_star
 id|drive
@@ -22047,7 +22128,7 @@ id|ide_drive_t
 op_star
 id|drive
 op_assign
-id|file-&gt;private_data
+id|filp-&gt;private_data
 suffix:semicolon
 id|idetape_tape_t
 op_star
@@ -26864,6 +26945,7 @@ id|major
 comma
 id|minor
 )paren
+comma
 id|S_IFCHR
 op_or
 id|S_IRUGO
