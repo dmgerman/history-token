@@ -66,17 +66,6 @@ id|transaction-&gt;t_jcb_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Set up the commit timer for the new transaction. */
-id|J_ASSERT
-c_func
-(paren
-op_logical_neg
-id|journal-&gt;j_commit_timer_active
-)paren
-suffix:semicolon
-id|journal-&gt;j_commit_timer_active
-op_assign
-l_int|1
-suffix:semicolon
 id|journal-&gt;j_commit_timer-&gt;expires
 op_assign
 id|transaction-&gt;t_expires
