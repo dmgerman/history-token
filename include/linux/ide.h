@@ -60,6 +60,9 @@ macro_line|#ifndef DISABLE_IRQ_NOSYNC
 DECL|macro|DISABLE_IRQ_NOSYNC
 mdefine_line|#define DISABLE_IRQ_NOSYNC&t;0
 macro_line|#endif
+multiline_comment|/*&n; * Used to indicate &quot;no IRQ&quot;, should be a value that cannot be an IRQ&n; * number.&n; */
+DECL|macro|IDE_NO_IRQ
+mdefine_line|#define IDE_NO_IRQ&t;&t;(-1)
 multiline_comment|/*&n; * IDE_DRIVE_CMD is used to implement many features of the hdparm utility&n; */
 DECL|macro|IDE_DRIVE_CMD
 mdefine_line|#define IDE_DRIVE_CMD&t;&t;&t;99&t;/* (magic) undef to reduce kernel size*/
