@@ -75,12 +75,15 @@ r_int
 id|fd_mcs_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
 id|block_device
 op_star
+comma
+id|sector_t
 comma
 r_int
 op_star

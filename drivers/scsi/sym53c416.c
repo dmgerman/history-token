@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/isapnp.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;sym53c416.h&quot;
 DECL|macro|VERSION_STRING
 mdefine_line|#define VERSION_STRING        &quot;Version 1.0.0-ac&quot;
@@ -3849,14 +3848,18 @@ r_int
 id|sym53c416_bios_param
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -3868,7 +3871,7 @@ id|size
 suffix:semicolon
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|ip
 (braket

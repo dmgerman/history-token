@@ -21,7 +21,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ibmmca.h&quot;
@@ -13281,14 +13280,18 @@ DECL|function|ibmmca_biosparam
 r_int
 id|ibmmca_biosparam
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -13298,7 +13301,7 @@ id|info
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|info
 (braket

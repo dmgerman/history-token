@@ -11936,11 +11936,6 @@ op_assign
 id|acornscsi_reset
 comma
 dot
-id|bios_param
-op_assign
-id|scsicam_bios_param
-comma
-dot
 id|can_queue
 op_assign
 l_int|16

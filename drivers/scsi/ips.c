@@ -146,7 +146,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;scsi/sg.h&gt;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;ips.h&quot;
@@ -1364,12 +1363,15 @@ r_int
 id|ips_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
 id|block_device
 op_star
+comma
+id|sector_t
 comma
 r_int
 op_star
@@ -7411,14 +7413,18 @@ DECL|function|ips_biosparam
 id|ips_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -7453,7 +7459,7 @@ op_assign
 id|ips_ha_t
 op_star
 )paren
-id|disk-&gt;device-&gt;host-&gt;hostdata
+id|sdev-&gt;host-&gt;hostdata
 suffix:semicolon
 r_if
 c_cond
@@ -7500,7 +7506,7 @@ r_if
 c_cond
 (paren
 (paren
-id|disk-&gt;capacity
+id|capacity
 OG
 l_int|0x400000
 )paren
@@ -7542,7 +7548,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads

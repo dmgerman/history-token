@@ -15,7 +15,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;&t;/* needed for in_interrupt() pro
 macro_line|#include &lt;linux/reboot.h&gt;&t;/* notifier code */
 macro_line|#include &quot;../../scsi/scsi.h&quot;
 macro_line|#include &quot;../../scsi/hosts.h&quot;
-macro_line|#include &quot;../../scsi/sd.h&quot;
 macro_line|#include &quot;mptbase.h&quot;
 macro_line|#include &quot;mptscsih.h&quot;
 macro_line|#include &quot;isense.h&quot;
@@ -12859,24 +12858,29 @@ suffix:semicolon
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *&t;This is anyones guess quite frankly.&n; */
 r_int
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,28)
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,44)
 DECL|function|mptscsih_bios_param
 id|mptscsih_bios_param
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
 id|ip
 )paren
+(brace
 macro_line|#else
 id|mptscsih_bios_param
 c_func
@@ -12892,14 +12896,19 @@ r_int
 op_star
 id|ip
 )paren
-macro_line|#endif
 (brace
+id|sector_t
+id|capacity
+op_assign
+id|disk-&gt;capacity
+suffix:semicolon
+macro_line|#endif
 r_int
 id|size
 suffix:semicolon
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|ip
 (braket

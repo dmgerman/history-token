@@ -17,7 +17,6 @@ macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;seagate.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#ifdef DEBUG
 DECL|macro|DPRINTK

@@ -13,7 +13,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;eata_pio.h&quot;
 macro_line|#include &quot;eata_dma_proc.h&quot;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/config.h&gt;&t;/* for CONFIG_PCI */
 macro_line|#include &lt;linux/blk.h&gt;

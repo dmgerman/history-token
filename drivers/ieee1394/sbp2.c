@@ -28,11 +28,9 @@ macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#ifdef CONFIG_KBUILD_2_5
 macro_line|#include &lt;scsi.h&gt;
 macro_line|#include &lt;hosts.h&gt;
-macro_line|#include &lt;sd.h&gt;
 macro_line|#else
 macro_line|#include &quot;../scsi/scsi.h&quot;
 macro_line|#include &quot;../scsi/hosts.h&quot;
-macro_line|#include &quot;../scsi/sd.h&quot;
 macro_line|#endif
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
@@ -9678,8 +9676,32 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called by scsi stack to get bios parameters (used by fdisk, and at boot).&n; */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,28)
+macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,44)
 DECL|function|sbp2scsi_biosparam
+r_static
+r_int
+id|sbp2scsi_biosparam
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+comma
+r_struct
+id|block_device
+op_star
+id|dev
+comma
+id|sector_t
+id|capacy
+comma
+r_int
+id|geom
+(braket
+)braket
+)paren
+(brace
+macro_line|#else
 r_static
 r_int
 id|sbp2scsi_biosparam
@@ -9696,27 +9718,13 @@ id|geom
 (braket
 )braket
 )paren
-macro_line|#else
-r_static
-r_int
-id|sbp2scsi_biosparam
-(paren
-id|Scsi_Disk
-op_star
-id|disk
-comma
-r_struct
-id|block_device
-op_star
-id|dev
-comma
-r_int
-id|geom
-(braket
-)braket
-)paren
-macro_line|#endif
 (brace
+id|sector_t
+id|capacy
+op_assign
+id|disk-&gt;capacity
+suffix:semicolon
+macro_line|#endif
 r_int
 id|heads
 comma
@@ -9743,7 +9751,7 @@ op_assign
 (paren
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -9772,7 +9780,7 @@ op_assign
 (paren
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads

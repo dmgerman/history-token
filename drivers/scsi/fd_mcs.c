@@ -5060,21 +5060,24 @@ r_return
 id|SCSI_RESET_WAKEUP
 suffix:semicolon
 )brace
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 DECL|function|fd_mcs_biosparam
 r_int
 id|fd_mcs_biosparam
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -5098,7 +5101,7 @@ suffix:semicolon
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 r_int
 op_star
@@ -5185,7 +5188,7 @@ op_assign
 id|kernel_scsi_ioctl
 c_func
 (paren
-id|disk-&gt;device
+id|sdev
 comma
 id|SCSI_IOCTL_SEND_COMMAND
 comma

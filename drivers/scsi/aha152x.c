@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -7889,14 +7888,18 @@ r_int
 id|aha152x_biosparam
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -7908,7 +7911,7 @@ id|Scsi_Host
 op_star
 id|shpnt
 op_assign
-id|disk-&gt;device-&gt;host
+id|sdev-&gt;host
 suffix:semicolon
 multiline_comment|/* try default translation */
 id|info_array
@@ -7934,7 +7937,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 l_int|64
@@ -7967,9 +7970,9 @@ c_cond
 id|scsicam_bios_param
 c_func
 (paren
-id|disk
-comma
 id|bdev
+comma
+id|capacity
 comma
 id|info
 )paren
@@ -8049,7 +8052,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 l_int|255

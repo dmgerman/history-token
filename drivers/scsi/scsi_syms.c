@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 multiline_comment|/*&n; * This source file contains the symbol table used by scsi loadable&n; * modules.&n; */
 DECL|variable|scsi_register_device

@@ -6576,15 +6576,6 @@ id|driver_template
 id|ctlr
 )braket
 dot
-id|bios_param
-op_assign
-id|scsicam_bios_param
-suffix:semicolon
-id|driver_template
-(braket
-id|ctlr
-)braket
-dot
 id|can_queue
 op_assign
 id|SCSI_CCISS_CAN_QUEUE

@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;aha1740.h&quot;
 macro_line|#include&lt;linux/stat.h&gt;
 multiline_comment|/* IF YOU ARE HAVING PROBLEMS WITH THIS DRIVER, AND WANT TO WATCH&n;   IT WORK, THEN:&n;#define DEBUG&n;*/
@@ -2841,14 +2840,18 @@ r_int
 id|aha1740_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -2858,7 +2861,7 @@ id|ip
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 r_int
 id|extended
@@ -2866,7 +2869,7 @@ op_assign
 id|HOSTDATA
 c_func
 (paren
-id|disk-&gt;device-&gt;host
+id|sdev-&gt;host
 )paren
 op_member_access_from_pointer
 id|translation

@@ -19,7 +19,6 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/sg.h&gt;
 DECL|macro|IDESCSI_DEBUG_LOG
 mdefine_line|#define IDESCSI_DEBUG_LOG&t;&t;0
@@ -4404,14 +4403,18 @@ r_int
 id|idescsi_bios
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -4424,7 +4427,7 @@ id|drive
 op_assign
 id|idescsi_drives
 (braket
-id|disk-&gt;device-&gt;id
+id|sdev-&gt;id
 )braket
 suffix:semicolon
 r_if

@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 r_static
 r_int
@@ -136,43 +135,33 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function : int scsicam_bios_param (Disk *disk, struct block_device *bdev, int *ip)&n; *&n; * Purpose : to determine the BIOS mapping used for a drive in a &n; *      SCSI-CAM system, storing the results in ip as required&n; *      by the HDIO_GETGEO ioctl().&n; *&n; * Returns : -1 on failure, 0 on success.&n; *&n; */
+multiline_comment|/*&n; * Function : int scsicam_bios_param (struct block_device *bdev, ector_t capacity, int *ip)&n; *&n; * Purpose : to determine the BIOS mapping used for a drive in a &n; *      SCSI-CAM system, storing the results in ip as required&n; *      by the HDIO_GETGEO ioctl().&n; *&n; * Returns : -1 on failure, 0 on success.&n; *&n; */
 DECL|function|scsicam_bios_param
 r_int
 id|scsicam_bios_param
 c_func
 (paren
-id|Disk
-op_star
-id|disk
-comma
-multiline_comment|/* SCSI disk */
 r_struct
 id|block_device
 op_star
 id|bdev
 comma
+id|sector_t
+id|capacity
+comma
 r_int
 op_star
 id|ip
-multiline_comment|/* Heads, sectors, cylinders in that order */
 )paren
 (brace
 r_int
-id|ret_code
-suffix:semicolon
-r_int
-id|size
-op_assign
-id|disk-&gt;capacity
-suffix:semicolon
-r_int
-r_int
-id|temp_cyl
-suffix:semicolon
-r_int
 r_char
 op_star
+id|p
+suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|p
 op_assign
 id|scsi_bios_ptable
@@ -192,7 +181,7 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* try to infer mapping from partition table */
-id|ret_code
+id|ret
 op_assign
 id|scsi_partsize
 c_func
@@ -203,7 +192,7 @@ comma
 r_int
 r_int
 )paren
-id|size
+id|capacity
 comma
 (paren
 r_int
@@ -242,14 +231,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ret_code
+id|ret
 op_eq
 op_minus
 l_int|1
 )paren
 (brace
 multiline_comment|/* pick some standard mapping with at most 1024 cylinders,&n;&t;&t;   and at most 62 sectors per track - this works up to&n;&t;&t;   7905 MB */
-id|ret_code
+id|ret
 op_assign
 id|setsize
 c_func
@@ -258,7 +247,7 @@ c_func
 r_int
 r_int
 )paren
-id|size
+id|capacity
 comma
 (paren
 r_int
@@ -293,7 +282,7 @@ multiline_comment|/* if something went wrong, then apparently we have to return&
 r_if
 c_cond
 (paren
-id|ret_code
+id|ret
 op_logical_or
 id|ip
 (braket
@@ -324,9 +313,11 @@ l_int|1
 op_assign
 l_int|32
 suffix:semicolon
-id|temp_cyl
-op_assign
-id|size
+r_if
+c_cond
+(paren
+(paren
+id|capacity
 op_div
 (paren
 id|ip
@@ -339,11 +330,7 @@ id|ip
 l_int|1
 )braket
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|temp_cyl
+)paren
 OG
 l_int|65534
 )paren
@@ -368,7 +355,7 @@ id|ip
 l_int|2
 )braket
 op_assign
-id|size
+id|capacity
 op_div
 (paren
 id|ip

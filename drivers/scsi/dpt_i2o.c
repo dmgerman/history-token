@@ -45,7 +45,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for virt_to_bus, etc. */
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;dpt/dptsig.h&quot;
 macro_line|#include &quot;dpti.h&quot;
 multiline_comment|/*============================================================================&n; * Create a binary signature - this is read by dptsig&n; * Needed for our management apps&n; *============================================================================&n; */
@@ -1646,14 +1645,18 @@ r_int
 id|adpt_bios_param
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -1684,7 +1687,7 @@ singleline_comment|// If the capacity is less than ox2000
 r_if
 c_cond
 (paren
-id|disk-&gt;capacity
+id|capacity
 OL
 l_int|0x2000
 )paren
@@ -1704,7 +1707,7 @@ r_else
 r_if
 c_cond
 (paren
-id|disk-&gt;capacity
+id|capacity
 OL
 l_int|0x20000
 )paren
@@ -1723,7 +1726,7 @@ r_else
 r_if
 c_cond
 (paren
-id|disk-&gt;capacity
+id|capacity
 OL
 l_int|0x40000
 )paren
@@ -1742,7 +1745,7 @@ r_else
 r_if
 c_cond
 (paren
-id|disk-&gt;capacity
+id|capacity
 OL
 l_int|0x80000
 )paren
@@ -1770,7 +1773,7 @@ suffix:semicolon
 )brace
 id|cylinders
 op_assign
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -1782,7 +1785,7 @@ singleline_comment|// Special case if CDROM
 r_if
 c_cond
 (paren
-id|disk-&gt;device-&gt;type
+id|sdev-&gt;type
 op_eq
 l_int|5
 )paren

@@ -21,7 +21,6 @@ macro_line|#include &quot;pas16.h&quot;
 DECL|macro|AUTOPROBE_IRQ
 mdefine_line|#define AUTOPROBE_IRQ
 macro_line|#include &quot;NCR5380.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|variable|pas_maxi
@@ -1349,14 +1348,18 @@ r_int
 id|pas16_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|dev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -1366,7 +1369,7 @@ id|ip
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|ip
 (braket

@@ -15,9 +15,12 @@ mdefine_line|#define MAJOR_NR SCSI_DISK0_MAJOR&t;/* For DEVICE_NR() */
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;aacraid.h&quot;
-multiline_comment|/* FIXME: We share this with sd.c - wants putting in one spot only */
+macro_line|#warning this is broken
+DECL|macro|N_SD_MAJORS
+mdefine_line|#define N_SD_MAJORS&t;8
+DECL|macro|SD_MAJOR_MASK
+mdefine_line|#define SD_MAJOR_MASK&t;(N_SD_MAJORS - 1)
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (((major(device) &amp; SD_MAJOR_MASK) &lt;&lt; (8 - 4)) + (minor(device) &gt;&gt; 4))
 multiline_comment|/*&t;SCSI Commands */

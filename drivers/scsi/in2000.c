@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 DECL|macro|IN2000_VERSION
 mdefine_line|#define IN2000_VERSION    &quot;1.33&quot;
@@ -7595,14 +7594,18 @@ r_int
 id|in2000_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -7614,7 +7617,7 @@ id|size
 suffix:semicolon
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|iinfo
 (braket
@@ -7674,7 +7677,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|iinfo
@@ -7723,7 +7726,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|iinfo
@@ -7772,7 +7775,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|iinfo

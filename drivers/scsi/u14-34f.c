@@ -92,7 +92,6 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;u14-34f.h&quot;
@@ -6570,14 +6569,18 @@ r_int
 id|u14_34f_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -6593,7 +6596,7 @@ suffix:semicolon
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|dkinfo
 (braket
@@ -6655,9 +6658,9 @@ op_logical_and
 id|scsicam_bios_param
 c_func
 (paren
-id|disk
-comma
 id|bdev
+comma
+id|capacity
 comma
 id|dkinfo
 )paren

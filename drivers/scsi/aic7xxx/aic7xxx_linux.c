@@ -5,7 +5,6 @@ macro_line|#include &quot;aic7xxx_inline.h&quot;
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,0)
 macro_line|#include &lt;linux/init.h&gt;&t;&t;/* __setup */
 macro_line|#endif
-macro_line|#include &quot;../sd.h&quot;&t;&t;/* For geometry detection */
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* For fetching system memory size */
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
@@ -10115,14 +10114,18 @@ DECL|function|ahc_linux_biosparam
 id|ahc_linux_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
 id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|geom
@@ -10165,7 +10168,7 @@ id|ahc_softc
 op_star
 op_star
 )paren
-id|disk-&gt;device-&gt;host-&gt;hostdata
+id|sdev-&gt;host-&gt;hostdata
 )paren
 suffix:semicolon
 id|buf
@@ -10189,7 +10192,7 @@ c_func
 (paren
 id|buf
 comma
-id|disk-&gt;capacity
+id|capacity
 comma
 op_amp
 id|geom
@@ -10244,7 +10247,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads
@@ -10267,7 +10270,7 @@ r_else
 r_if
 c_cond
 (paren
-id|disk-&gt;device-&gt;channel
+id|sdev-&gt;channel
 op_eq
 l_int|0
 )paren
@@ -10316,7 +10319,7 @@ op_assign
 r_int
 r_int
 )paren
-id|disk-&gt;capacity
+id|capacity
 op_div
 (paren
 id|heads

@@ -4,6 +4,7 @@ DECL|macro|_HOSTS_H
 mdefine_line|#define _HOSTS_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 multiline_comment|/* It is senseless to set SG_ALL any higher than this - the performance&n; *  does not get any better, and it wastes memory&n; */
 DECL|macro|SG_NONE
@@ -273,12 +274,15 @@ op_star
 id|bios_param
 )paren
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct
 id|block_device
 op_star
+comma
+id|sector_t
 comma
 r_int
 (braket

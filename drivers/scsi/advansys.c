@@ -46,7 +46,6 @@ macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#endif
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;advansys.h&quot;
 macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;linux/pci.h&gt;
@@ -14727,14 +14726,18 @@ DECL|function|advansys_biosparam
 id|advansys_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|dp
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dep
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 id|ip
@@ -14757,7 +14760,7 @@ suffix:semicolon
 id|ASC_STATS
 c_func
 (paren
-id|dp-&gt;device-&gt;host
+id|sdev-&gt;host
 comma
 id|biosparam
 )paren
@@ -14767,7 +14770,7 @@ op_assign
 id|ASC_BOARDP
 c_func
 (paren
-id|dp-&gt;device-&gt;host
+id|sdev-&gt;host
 )paren
 suffix:semicolon
 r_if
@@ -14789,7 +14792,7 @@ op_amp
 id|ASC_CNTL_BIOS_GT_1GB
 )paren
 op_logical_and
-id|dp-&gt;capacity
+id|capacity
 OG
 l_int|0x200000
 )paren
@@ -14838,7 +14841,7 @@ op_amp
 id|BIOS_CTRL_EXTENDED_XLAT
 )paren
 op_logical_and
-id|dp-&gt;capacity
+id|capacity
 OG
 l_int|0x200000
 )paren
@@ -14885,7 +14888,7 @@ op_assign
 r_int
 r_int
 )paren
-id|dp-&gt;capacity
+id|capacity
 op_div
 (paren
 id|ip

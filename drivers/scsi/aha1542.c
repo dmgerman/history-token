@@ -8414,21 +8414,24 @@ id|SCSI_RESET_PUNT
 suffix:semicolon
 )brace
 macro_line|#endif    /* end of big comment block around old_abort + old_reset */
-macro_line|#include &quot;sd.h&quot;
 DECL|function|aha1542_biosparam
 r_static
 r_int
 id|aha1542_biosparam
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -8441,14 +8444,14 @@ suffix:semicolon
 r_int
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|translation_algorithm
 op_assign
 id|HOSTDATA
 c_func
 (paren
-id|disk-&gt;device-&gt;host
+id|sdev-&gt;host
 )paren
 op_member_access_from_pointer
 id|bios_translation

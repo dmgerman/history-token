@@ -43,7 +43,6 @@ macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;g_NCR5380.h&quot;
 macro_line|#include &quot;NCR5380.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -1801,25 +1800,24 @@ r_int
 id|generic_NCR5380_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
 id|ip
 )paren
 (brace
-r_int
-id|size
-op_assign
-id|disk-&gt;capacity
-suffix:semicolon
 id|ip
 (braket
 l_int|0
@@ -1839,7 +1837,7 @@ id|ip
 l_int|2
 )braket
 op_assign
-id|size
+id|capacity
 op_rshift
 l_int|11
 suffix:semicolon

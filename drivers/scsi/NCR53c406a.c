@@ -36,7 +36,6 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;NCR53c406a.h&quot;
 multiline_comment|/* ============================================================= */
 DECL|macro|WATCHDOG
@@ -3050,14 +3049,18 @@ DECL|function|NCR53c406a_biosparm
 id|NCR53c406a_biosparm
 c_func
 (paren
-id|Scsi_Disk
+r_struct
+id|scsi_device
 op_star
-id|disk
+id|sdev
 comma
 r_struct
 id|block_device
 op_star
-id|dev
+id|bdev
+comma
+id|sector_t
+id|capacity
 comma
 r_int
 op_star
@@ -3079,7 +3082,7 @@ l_string|&quot;NCR53c406a_biosparm called&bslash;n&quot;
 suffix:semicolon
 id|size
 op_assign
-id|disk-&gt;capacity
+id|capacity
 suffix:semicolon
 id|info_array
 (braket
