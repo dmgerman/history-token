@@ -4726,6 +4726,11 @@ id|unix_dgram_sendmsg
 c_func
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|socket
 op_star
 id|sock
@@ -5355,6 +5360,11 @@ id|unix_stream_sendmsg
 c_func
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|socket
 op_star
 id|sock
@@ -5832,6 +5842,11 @@ id|unix_dgram_recvmsg
 c_func
 (paren
 r_struct
+id|kiocb
+op_star
+id|iocb
+comma
+r_struct
 id|socket
 op_star
 id|sock
@@ -6233,6 +6248,11 @@ r_int
 id|unix_stream_recvmsg
 c_func
 (paren
+r_struct
+id|kiocb
+op_star
+id|iocb
+comma
 r_struct
 id|socket
 op_star
