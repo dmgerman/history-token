@@ -2587,18 +2587,21 @@ id|conf-&gt;mirrors
 op_plus
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp-&gt;rdev
+)paren
 id|printk
 c_func
 (paren
-l_string|&quot; disk %d, s:%d, o:%d, us:%d dev:%s&bslash;n&quot;
+l_string|&quot; disk %d, s:%d, o:%d, dev:%s&bslash;n&quot;
 comma
 id|i
 comma
 id|tmp-&gt;spare
 comma
 id|tmp-&gt;operational
-comma
-id|tmp-&gt;used_slot
 comma
 id|bdev_partition_name
 c_func
@@ -2797,7 +2800,7 @@ id|tmp-&gt;spare
 )paren
 op_logical_or
 op_logical_neg
-id|tmp-&gt;used_slot
+id|tmp-&gt;rdev
 )paren
 (brace
 id|failed_disk
@@ -2904,16 +2907,6 @@ id|sdisk
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * (careful, &squot;failed&squot; and &squot;spare&squot; are switched from now on)&n;&t; *&n;&t; * we want to preserve linear numbering and we want to&n;&t; * give the proper raid_disk number to the now activated&n;&t; * disk. (this means we switch back these values)&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sdisk-&gt;rdev
-)paren
-id|sdisk-&gt;used_slot
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; * this really activates the spare.&n;&t; */
 id|fdisk-&gt;spare
 op_assign
@@ -3184,7 +3177,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|p-&gt;used_slot
+id|p-&gt;rdev
 )paren
 (brace
 id|p-&gt;rdev
@@ -3200,10 +3193,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|p-&gt;spare
-op_assign
-l_int|1
-suffix:semicolon
-id|p-&gt;used_slot
 op_assign
 l_int|1
 suffix:semicolon
@@ -3294,7 +3283,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;used_slot
+id|p-&gt;rdev
 )paren
 (brace
 r_if
@@ -3326,10 +3315,6 @@ suffix:semicolon
 id|p-&gt;rdev
 op_assign
 l_int|NULL
-suffix:semicolon
-id|p-&gt;used_slot
-op_assign
-l_int|0
 suffix:semicolon
 id|err
 op_assign
@@ -5007,10 +4992,6 @@ id|disk-&gt;spare
 op_assign
 l_int|0
 suffix:semicolon
-id|disk-&gt;used_slot
-op_assign
-l_int|1
-suffix:semicolon
 id|disk-&gt;head_position
 op_assign
 l_int|0
@@ -5077,10 +5058,6 @@ id|disk-&gt;spare
 op_assign
 l_int|0
 suffix:semicolon
-id|disk-&gt;used_slot
-op_assign
-l_int|1
-suffix:semicolon
 id|disk-&gt;head_position
 op_assign
 l_int|0
@@ -5117,10 +5094,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|disk-&gt;spare
-op_assign
-l_int|1
-suffix:semicolon
-id|disk-&gt;used_slot
 op_assign
 l_int|1
 suffix:semicolon
@@ -5212,13 +5185,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|disk-&gt;used_slot
+id|disk-&gt;rdev
 )paren
 (brace
-id|disk-&gt;rdev
-op_assign
-l_int|NULL
-suffix:semicolon
 id|disk-&gt;operational
 op_assign
 l_int|0
@@ -5231,24 +5200,14 @@ id|disk-&gt;spare
 op_assign
 l_int|0
 suffix:semicolon
-id|disk-&gt;used_slot
-op_assign
-l_int|1
-suffix:semicolon
 id|disk-&gt;head_position
 op_assign
 l_int|0
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|disk-&gt;used_slot
-)paren
 id|mddev-&gt;degraded
 op_increment
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * find the first working one and use it as a starting point&n;&t; * to read balancing.&n;&t; */
 r_for

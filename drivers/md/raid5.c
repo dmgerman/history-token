@@ -7630,10 +7630,6 @@ id|disk-&gt;spare
 op_assign
 l_int|0
 suffix:semicolon
-id|disk-&gt;used_slot
-op_assign
-l_int|1
-suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -7690,10 +7686,6 @@ id|disk-&gt;operational
 op_assign
 l_int|1
 suffix:semicolon
-id|disk-&gt;used_slot
-op_assign
-l_int|1
-suffix:semicolon
 id|conf-&gt;working_disks
 op_increment
 suffix:semicolon
@@ -7730,10 +7722,6 @@ id|disk-&gt;spare
 op_assign
 l_int|1
 suffix:semicolon
-id|disk-&gt;used_slot
-op_assign
-l_int|1
-suffix:semicolon
 )brace
 )brace
 r_for
@@ -7761,13 +7749,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|disk-&gt;used_slot
+id|disk-&gt;rdev
 )paren
 (brace
-id|disk-&gt;rdev
-op_assign
-l_int|NULL
-suffix:semicolon
 id|disk-&gt;operational
 op_assign
 l_int|0
@@ -7779,10 +7763,6 @@ suffix:semicolon
 id|disk-&gt;spare
 op_assign
 l_int|0
-suffix:semicolon
-id|disk-&gt;used_slot
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -7819,45 +7799,6 @@ id|conf-&gt;max_nr_stripes
 op_assign
 id|NR_STRIPES
 suffix:semicolon
-macro_line|#if 0
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|conf-&gt;raid_disks
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|conf-&gt;disks
-(braket
-id|i
-)braket
-dot
-id|used_slot
-)paren
-(brace
-id|MD_BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_goto
-m_abort
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8706,18 +8647,21 @@ id|conf-&gt;disks
 op_plus
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp-&gt;rdev
+)paren
 id|printk
 c_func
 (paren
-l_string|&quot; disk %d, s:%d, o:%d, us:%d dev:%s&bslash;n&quot;
+l_string|&quot; disk %d, s:%d, o:%d, dev:%s&bslash;n&quot;
 comma
 id|i
 comma
 id|tmp-&gt;spare
 comma
 id|tmp-&gt;operational
-comma
-id|tmp-&gt;used_slot
 comma
 id|bdev_partition_name
 c_func
@@ -8829,7 +8773,7 @@ id|tmp-&gt;spare
 )paren
 op_logical_or
 op_logical_neg
-id|tmp-&gt;used_slot
+id|tmp-&gt;rdev
 )paren
 (brace
 id|failed_disk
@@ -8955,16 +8899,6 @@ id|sdisk
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * (careful, &squot;failed&squot; and &squot;spare&squot; are switched from now on)&n;&t; *&n;&t; * we want to preserve linear numbering and we want to&n;&t; * give the proper raid_disk number to the now activated&n;&t; * disk. (this means we switch back these values)&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sdisk-&gt;rdev
-)paren
-id|sdisk-&gt;used_slot
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t; * this really activates the spare.&n;&t; */
 id|fdisk-&gt;spare
 op_assign
@@ -9261,7 +9195,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;used_slot
+id|p-&gt;rdev
 )paren
 (brace
 r_if
@@ -9289,10 +9223,6 @@ suffix:semicolon
 id|p-&gt;rdev
 op_assign
 l_int|NULL
-suffix:semicolon
-id|p-&gt;used_slot
-op_assign
-l_int|0
 suffix:semicolon
 id|err
 op_assign
@@ -9383,7 +9313,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|p-&gt;used_slot
+id|p-&gt;rdev
 )paren
 (brace
 multiline_comment|/* it will be held open by rdev */
@@ -9400,10 +9330,6 @@ op_assign
 l_int|0
 suffix:semicolon
 id|p-&gt;spare
-op_assign
-l_int|1
-suffix:semicolon
-id|p-&gt;used_slot
 op_assign
 l_int|1
 suffix:semicolon

@@ -1080,20 +1080,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tmp-&gt;operational
-op_logical_or
-id|tmp-&gt;used_slot
+id|tmp-&gt;rdev
 )paren
 id|printk
 c_func
 (paren
-l_string|&quot; disk%d, o:%d, us:%d dev:%s&bslash;n&quot;
+l_string|&quot; disk%d, o:%d, dev:%s&bslash;n&quot;
 comma
 id|i
 comma
 id|tmp-&gt;operational
-comma
-id|tmp-&gt;used_slot
 comma
 id|bdev_partition_name
 c_func
@@ -1158,7 +1154,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|p-&gt;used_slot
+id|p-&gt;rdev
 )paren
 (brace
 id|p-&gt;rdev
@@ -1166,10 +1162,6 @@ op_assign
 id|rdev
 suffix:semicolon
 id|p-&gt;operational
-op_assign
-l_int|1
-suffix:semicolon
-id|p-&gt;used_slot
 op_assign
 l_int|1
 suffix:semicolon
@@ -1260,7 +1252,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;used_slot
+id|p-&gt;rdev
 )paren
 (brace
 r_if
@@ -1301,10 +1293,6 @@ suffix:semicolon
 id|p-&gt;rdev
 op_assign
 l_int|NULL
-suffix:semicolon
-id|p-&gt;used_slot
-op_assign
-l_int|0
 suffix:semicolon
 id|err
 op_assign
@@ -1747,10 +1735,6 @@ op_assign
 id|rdev
 suffix:semicolon
 id|disk-&gt;operational
-op_assign
-l_int|1
-suffix:semicolon
-id|disk-&gt;used_slot
 op_assign
 l_int|1
 suffix:semicolon

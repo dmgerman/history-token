@@ -17,10 +17,6 @@ DECL|member|operational
 r_int
 id|operational
 suffix:semicolon
-DECL|member|used_slot
-r_int
-id|used_slot
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|multipath_private_data
