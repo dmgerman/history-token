@@ -13,9 +13,9 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &quot;audiochip.h&quot;
+macro_line|#include &lt;media/audiochip.h&gt;
+macro_line|#include &lt;media/id.h&gt;
 macro_line|#include &quot;tvaudio.h&quot;
-macro_line|#include &quot;id.h&quot;
 multiline_comment|/* ---------------------------------------------------------------------- */
 multiline_comment|/* insmod args                                                            */
 id|MODULE_PARM

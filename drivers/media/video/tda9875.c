@@ -12,8 +12,8 @@ macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;bttv.h&quot;
-macro_line|#include &quot;audiochip.h&quot;
-macro_line|#include &quot;id.h&quot;
+macro_line|#include &lt;media/audiochip.h&gt;
+macro_line|#include &lt;media/id.h&gt;
 id|MODULE_PARM
 c_func
 (paren

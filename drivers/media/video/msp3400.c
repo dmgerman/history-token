@@ -20,7 +20,7 @@ multiline_comment|/* kernel_thread */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/unistd.h&gt;
-macro_line|#include &quot;audiochip.h&quot;
+macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &quot;msp3400.h&quot;
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c

@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;saa7134-reg.h&quot;
 macro_line|#include &quot;saa7134.h&quot;
-macro_line|#include &quot;tuner.h&quot;
 multiline_comment|/* commly used strings */
 DECL|variable|name_mute
 r_static
