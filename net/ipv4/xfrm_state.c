@@ -3443,6 +3443,8 @@ op_member_access_from_pointer
 id|compile_policy
 c_func
 (paren
+id|sk-&gt;family
+comma
 id|optname
 comma
 id|data
