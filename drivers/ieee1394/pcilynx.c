@@ -9141,14 +9141,13 @@ id|lynx_csr_rom
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|pci_table
 r_static
 r_struct
 id|pci_device_id
 id|pci_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

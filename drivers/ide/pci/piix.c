@@ -3181,14 +3181,13 @@ l_string|&quot;piix: A BIOS update may resolve this.&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__devinitdata
+DECL|variable|piix_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|piix_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

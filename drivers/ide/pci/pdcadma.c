@@ -536,14 +536,13 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|pdcadma_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|pdcadma_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -1654,14 +1654,13 @@ comma
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|piix4_ids
 r_static
 r_struct
 id|pci_device_id
 id|piix4_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

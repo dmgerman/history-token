@@ -1394,14 +1394,13 @@ id|amd8111_func
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|amd8111_ids
 r_static
 r_struct
 id|pci_device_id
 id|amd8111_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
