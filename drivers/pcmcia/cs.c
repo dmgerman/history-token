@@ -1060,7 +1060,7 @@ id|socket-&gt;socket
 op_assign
 id|dead_socket
 suffix:semicolon
-id|socket-&gt;ss_entry
+id|socket-&gt;ops
 op_member_access_from_pointer
 id|init
 c_func
@@ -1230,7 +1230,7 @@ id|client
 )paren
 suffix:semicolon
 )brace
-id|socket-&gt;ss_entry
+id|socket-&gt;ops
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1285,7 +1285,7 @@ op_logical_neg
 id|socket
 op_logical_or
 op_logical_neg
-id|socket-&gt;ss_entry
+id|socket-&gt;ops
 op_logical_or
 op_logical_neg
 id|socket-&gt;dev.dev
@@ -1301,7 +1301,7 @@ l_int|0
 comma
 l_string|&quot;cs: pcmcia_register_socket(0x%p)&bslash;n&quot;
 comma
-id|socket-&gt;ss_entry
+id|socket-&gt;ops
 )paren
 suffix:semicolon
 multiline_comment|/* try to obtain a socket number [yes, it gets ugly if we&n;&t; * register more than 2^sizeof(unsigned int) pcmcia &n;&t; * sockets... but the socket number is deprecated &n;&t; * anyways, so I don&squot;t care] */
@@ -1506,7 +1506,7 @@ l_int|0
 comma
 l_string|&quot;cs: pcmcia_unregister_socket(0x%p)&bslash;n&quot;
 comma
-id|socket-&gt;ss_entry
+id|socket-&gt;ops
 )paren
 suffix:semicolon
 id|init_completion
@@ -1735,7 +1735,7 @@ id|s-&gt;socket
 op_assign
 id|dead_socket
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|init
 c_func
@@ -1796,7 +1796,7 @@ id|s-&gt;socket.io_irq
 op_assign
 l_int|0
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func
@@ -2245,7 +2245,7 @@ id|SS_OUTPUT_ENA
 op_or
 id|SS_RESET
 suffix:semicolon
-id|skt-&gt;ss_entry
+id|skt-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func
@@ -2270,7 +2270,7 @@ op_and_assign
 op_complement
 id|SS_RESET
 suffix:semicolon
-id|skt-&gt;ss_entry
+id|skt-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func
@@ -2312,7 +2312,7 @@ id|i
 op_increment
 )paren
 (brace
-id|skt-&gt;ss_entry
+id|skt-&gt;ops
 op_member_access_from_pointer
 id|get_status
 c_func
@@ -2395,7 +2395,7 @@ id|status
 comma
 id|i
 suffix:semicolon
-id|skt-&gt;ss_entry
+id|skt-&gt;ops
 op_member_access_from_pointer
 id|get_status
 c_func
@@ -2450,7 +2450,7 @@ id|i
 op_increment
 )paren
 (brace
-id|skt-&gt;ss_entry
+id|skt-&gt;ops
 op_member_access_from_pointer
 id|get_status
 c_func
@@ -2602,7 +2602,7 @@ id|skt-&gt;socket.flags
 op_assign
 id|SS_DEBOUNCED
 suffix:semicolon
-id|skt-&gt;ss_entry
+id|skt-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func
@@ -2777,7 +2777,7 @@ id|skt-&gt;socket
 op_assign
 id|dead_socket
 suffix:semicolon
-id|skt-&gt;ss_entry
+id|skt-&gt;ops
 op_member_access_from_pointer
 id|suspend
 c_func
@@ -2826,7 +2826,7 @@ id|skt-&gt;socket
 op_assign
 id|dead_socket
 suffix:semicolon
-id|skt-&gt;ss_entry
+id|skt-&gt;ops
 op_member_access_from_pointer
 id|init
 c_func
@@ -3024,7 +3024,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-id|skt-&gt;ss_entry
+id|skt-&gt;ops
 op_member_access_from_pointer
 id|get_status
 c_func
@@ -5695,7 +5695,7 @@ c_func
 id|handle
 )paren
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|get_status
 c_func
@@ -6170,7 +6170,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_mem_map
 c_func
@@ -6305,7 +6305,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func
@@ -6365,7 +6365,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func
@@ -6493,7 +6493,7 @@ id|win-&gt;ctl.speed
 op_assign
 id|req-&gt;AccessSpeed
 suffix:semicolon
-id|win-&gt;sock-&gt;ss_entry
+id|win-&gt;sock-&gt;ops
 op_member_access_from_pointer
 id|set_mem_map
 c_func
@@ -6961,7 +6961,7 @@ id|s-&gt;socket.io_irq
 op_assign
 l_int|0
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func
@@ -7035,7 +7035,7 @@ id|io.map
 op_assign
 id|i
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_io_map
 c_func
@@ -7439,7 +7439,7 @@ op_and_assign
 op_complement
 id|MAP_ACTIVE
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_mem_map
 c_func
@@ -7631,7 +7631,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func
@@ -7713,7 +7713,7 @@ id|s-&gt;socket.io_irq
 op_assign
 l_int|0
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_socket
 c_func
@@ -8187,7 +8187,7 @@ id|NumPorts
 op_minus
 l_int|1
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_io_map
 c_func
@@ -9218,7 +9218,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_mem_map
 c_func

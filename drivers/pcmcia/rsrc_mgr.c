@@ -1562,7 +1562,7 @@ id|map.card_start
 op_assign
 l_int|0
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_mem_map
 c_func
@@ -1613,7 +1613,7 @@ id|map.flags
 op_assign
 l_int|0
 suffix:semicolon
-id|s-&gt;ss_entry
+id|s-&gt;ops
 op_member_access_from_pointer
 id|set_mem_map
 c_func

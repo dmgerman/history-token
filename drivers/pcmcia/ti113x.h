@@ -415,7 +415,7 @@ id|devctl
 )paren
 suffix:semicolon
 )brace
-id|socket-&gt;socket.ss_entry-&gt;init
+id|socket-&gt;socket.ops-&gt;init
 op_assign
 id|ti_init
 suffix:semicolon
@@ -611,7 +611,7 @@ c_func
 id|socket
 )paren
 suffix:semicolon
-id|socket-&gt;socket.ss_entry-&gt;init
+id|socket-&gt;socket.ops-&gt;init
 op_assign
 id|ti113x_init
 suffix:semicolon
@@ -808,7 +808,7 @@ c_func
 id|socket
 )paren
 suffix:semicolon
-id|socket-&gt;socket.ss_entry-&gt;init
+id|socket-&gt;socket.ops-&gt;init
 op_assign
 id|ti1250_init
 suffix:semicolon
