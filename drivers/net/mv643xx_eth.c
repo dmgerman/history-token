@@ -177,14 +177,74 @@ id|mv64340_eth_phy_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|macro|MV_READ
-macro_line|#undef MV_READ
-DECL|macro|MV_READ
-mdefine_line|#define MV_READ(offset)&t;&bslash;&n;&t;readl(mv64x60_eth_shared_base - MV64340_ETH_SHARED_REGS + offset)
-DECL|macro|MV_WRITE
-macro_line|#undef MV_WRITE
-DECL|macro|MV_WRITE
-mdefine_line|#define MV_WRITE(offset, data)&t;&bslash;&n;&t;writel((u32)data,&t;&bslash;&n;&t;&t;mv64x60_eth_shared_base - MV64340_ETH_SHARED_REGS + offset)
+DECL|function|mv_read
+r_static
+r_inline
+id|u32
+id|mv_read
+c_func
+(paren
+r_int
+id|offset
+)paren
+(brace
+r_void
+op_star
+id|__iomem
+id|reg_base
+suffix:semicolon
+id|reg_base
+op_assign
+id|mv64x60_eth_shared_base
+op_minus
+id|MV64340_ETH_SHARED_REGS
+suffix:semicolon
+r_return
+id|readl
+c_func
+(paren
+id|reg_base
+op_plus
+id|offset
+)paren
+suffix:semicolon
+)brace
+DECL|function|mv_write
+r_static
+r_inline
+r_void
+id|mv_write
+c_func
+(paren
+r_int
+id|offset
+comma
+id|u32
+id|data
+)paren
+(brace
+r_void
+op_star
+id|__iomem
+id|reg_base
+suffix:semicolon
+id|reg_base
+op_assign
+id|mv64x60_eth_shared_base
+op_minus
+id|MV64340_ETH_SHARED_REGS
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|data
+comma
+id|reg_base
+op_plus
+id|offset
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Changes MTU (maximum transfer unit) of the gigabit ethenret port&n; *&n; * Input :&t;pointer to ethernet interface network device structure&n; *&t;&t;new mtu size&n; * Output :&t;0 upon success, -EINVAL upon failure&n; */
 DECL|function|mv64340_eth_change_mtu
 r_static
@@ -539,7 +599,7 @@ macro_line|#ifdef MV64340_RX_QUEUE_FILL_ON_TASK
 r_else
 (brace
 multiline_comment|/* Return interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_MASK_REG
@@ -1428,7 +1488,7 @@ suffix:semicolon
 multiline_comment|/* Read interrupt cause registers */
 id|eth_int_cause
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_REG
@@ -1449,7 +1509,7 @@ id|BIT1
 )paren
 id|eth_int_cause_ext
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
@@ -1476,7 +1536,7 @@ l_int|0x0007fffd
 multiline_comment|/* Dont ack the Rx interrupt */
 macro_line|#endif
 multiline_comment|/*&n;&t;&t; * Clear specific ethernet port intrerrupt registers by&n;&t;&t; * acknowleding relevant bits.&n;&t;&t; */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_REG
@@ -1496,7 +1556,7 @@ id|eth_int_cause_ext
 op_ne
 l_int|0x0
 )paren
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
@@ -1559,7 +1619,7 @@ id|dev
 )paren
 (brace
 multiline_comment|/* Mask all the interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_MASK_REG
@@ -1571,7 +1631,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_EXTEND_MASK_REG
@@ -1612,7 +1672,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * After forwarded received packets to upper layer, add a task&n;&t;&t; * in an interrupts enabled context that refills the RX ring&n;&t;&t; * with skb&squot;s.&n;&t;&t; */
 macro_line|#ifdef MV64340_RX_QUEUE_FILL_ON_TASK
 multiline_comment|/* Unmask all interrupts on ethernet port */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_MASK_REG
@@ -1688,7 +1748,7 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* Start TX queue */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
@@ -1778,7 +1838,7 @@ op_div
 l_int|64
 suffix:semicolon
 multiline_comment|/* Set RX Coalescing mechanism */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_SDMA_CONFIG_REG
@@ -1798,7 +1858,7 @@ l_int|8
 )paren
 op_or
 (paren
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_SDMA_CONFIG_REG
@@ -1857,7 +1917,7 @@ op_div
 l_int|64
 suffix:semicolon
 multiline_comment|/* Set TX Coalescing mechanism */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_TX_FIFO_URGENT_THRESHOLD_REG
@@ -2268,7 +2328,7 @@ id|u32
 id|port_serial_control_reg
 suffix:semicolon
 multiline_comment|/* Stop RX Queues */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
@@ -2281,7 +2341,7 @@ l_int|0x0000ff00
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the ethernet port interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_REG
@@ -2293,7 +2353,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
@@ -2306,7 +2366,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Unmask RX buffer and TX end interrupt */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_MASK_REG
@@ -2319,7 +2379,7 @@ id|INT_CAUSE_UNMASK_ALL
 )paren
 suffix:semicolon
 multiline_comment|/* Unmask phy and link status changes interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_EXTEND_MASK_REG
@@ -2795,7 +2855,7 @@ suffix:semicolon
 multiline_comment|/* Increase the Rx side buffer size if supporting GigE */
 id|port_serial_control_reg
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
@@ -2812,7 +2872,7 @@ id|port_serial_control_reg
 op_amp
 id|MV64340_ETH_SET_GMII_SPEED_TO_1000
 )paren
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
@@ -2907,7 +2967,7 @@ r_int
 id|curr
 suffix:semicolon
 multiline_comment|/* Stop Tx Queues */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
@@ -3035,7 +3095,7 @@ r_int
 id|curr
 suffix:semicolon
 multiline_comment|/* Stop RX Queues */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
@@ -3187,7 +3247,7 @@ id|mp-&gt;port_num
 )paren
 suffix:semicolon
 multiline_comment|/* Disable ethernet port interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_REG
@@ -3199,7 +3259,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
@@ -3212,7 +3272,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Mask RX buffer and TX end interrupt */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_MASK_REG
@@ -3225,7 +3285,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Mask phy and link status changes interrupts */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_EXTEND_MASK_REG
@@ -3523,7 +3583,7 @@ r_if
 c_cond
 (paren
 (paren
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_0
@@ -3616,7 +3676,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_REG
@@ -3628,7 +3688,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
@@ -3640,7 +3700,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_MASK_REG
@@ -3652,7 +3712,7 @@ comma
 id|INT_CAUSE_UNMASK_ALL
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_EXTEND_MASK_REG
@@ -5465,7 +5525,7 @@ multiline_comment|/*&n; * Marvell&squot;s Gigabit Ethernet controller low level 
 multiline_comment|/* defines */
 multiline_comment|/* SDMA command macros */
 DECL|macro|ETH_ENABLE_TX_QUEUE
-mdefine_line|#define ETH_ENABLE_TX_QUEUE(eth_port) &bslash;&n;&t;MV_WRITE(MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG(eth_port), 1)
+mdefine_line|#define ETH_ENABLE_TX_QUEUE(eth_port) &bslash;&n;&t;mv_write(MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG(eth_port), 1)
 multiline_comment|/* locals */
 multiline_comment|/* PHY routines */
 r_static
@@ -5586,7 +5646,7 @@ id|tx_curr_desc
 op_assign
 id|mp-&gt;tx_curr_desc_q
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_TX_CURRENT_QUEUE_DESC_PTR_0
@@ -5596,6 +5656,10 @@ id|eth_port_num
 )paren
 comma
 (paren
+id|u32
+)paren
+(paren
+(paren
 r_struct
 id|eth_tx_desc
 op_star
@@ -5604,13 +5668,14 @@ id|mp-&gt;tx_desc_dma
 op_plus
 id|tx_curr_desc
 )paren
+)paren
 suffix:semicolon
 multiline_comment|/* Assignment of Rx CRDP of given queue */
 id|rx_curr_desc
 op_assign
 id|mp-&gt;rx_curr_desc_q
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_RX_CURRENT_QUEUE_DESC_PTR_0
@@ -5620,6 +5685,10 @@ id|eth_port_num
 )paren
 comma
 (paren
+id|u32
+)paren
+(paren
+(paren
 r_struct
 id|eth_rx_desc
 op_star
@@ -5627,6 +5696,7 @@ op_star
 id|mp-&gt;rx_desc_dma
 op_plus
 id|rx_curr_desc
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Add the assigned Ethernet address to the port&squot;s address table */
@@ -5639,7 +5709,7 @@ id|mp-&gt;port_mac_addr
 )paren
 suffix:semicolon
 multiline_comment|/* Assign port configuration and command. */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_PORT_CONFIG_REG
@@ -5651,7 +5721,7 @@ comma
 id|mp-&gt;port_config
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_PORT_CONFIG_EXTEND_REG
@@ -5663,7 +5733,7 @@ comma
 id|mp-&gt;port_config_extend
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
@@ -5675,7 +5745,7 @@ comma
 id|mp-&gt;port_serial_control
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
@@ -5684,7 +5754,7 @@ c_func
 id|eth_port_num
 )paren
 comma
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
@@ -5698,7 +5768,7 @@ id|MV64340_ETH_SERIAL_PORT_ENABLE
 )paren
 suffix:semicolon
 multiline_comment|/* Assign port SDMA configuration */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_SDMA_CONFIG_REG
@@ -5711,7 +5781,7 @@ id|mp-&gt;port_sdma_config
 )paren
 suffix:semicolon
 multiline_comment|/* Enable port Rx. */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
@@ -5805,7 +5875,7 @@ op_lshift
 l_int|0
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_MAC_ADDR_LOW
@@ -5817,7 +5887,7 @@ comma
 id|mac_l
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_MAC_ADDR_HIGH
@@ -5885,7 +5955,7 @@ id|mac_l
 suffix:semicolon
 id|mac_h
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_MAC_ADDR_HIGH
@@ -5897,7 +5967,7 @@ id|mp-&gt;port_num
 suffix:semicolon
 id|mac_l
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_MAC_ADDR_LOW
@@ -6048,7 +6118,7 @@ suffix:colon
 multiline_comment|/* Clear accepts frame bit at given unicast DA table entry */
 id|unicast_reg
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 (paren
@@ -6073,7 +6143,7 @@ id|reg_offset
 )paren
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 (paren
@@ -6096,7 +6166,7 @@ suffix:colon
 multiline_comment|/* Set accepts frame bit at unicast DA filter table entry */
 id|unicast_reg
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 (paren
@@ -6121,7 +6191,7 @@ id|reg_offset
 )paren
 )paren
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 (paren
@@ -6179,7 +6249,7 @@ id|table_index
 op_add_assign
 l_int|4
 )paren
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 (paren
@@ -6211,7 +6281,7 @@ l_int|4
 )paren
 (brace
 multiline_comment|/* Clear DA filter special multicast table (Ex_dFSMT) */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 (paren
@@ -6227,7 +6297,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Clear DA filter other multicast table (Ex_dFOMT) */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 (paren
@@ -6275,7 +6345,7 @@ id|i
 op_add_assign
 l_int|4
 )paren
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_MIB_COUNTERS_BASE
@@ -6402,7 +6472,7 @@ id|reg_data
 suffix:semicolon
 id|reg_data
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_PHY_ADDR_REG
@@ -6451,7 +6521,7 @@ id|eth_port_num
 suffix:semicolon
 id|reg_data
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_PHY_ADDR_REG
@@ -6476,7 +6546,7 @@ l_int|0x1f
 op_lshift
 id|addr_shift
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_PHY_ADDR_REG
@@ -6548,7 +6618,7 @@ suffix:semicolon
 multiline_comment|/* Stop Tx port activity. Check port Tx activity. */
 id|reg_data
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
@@ -6567,7 +6637,7 @@ l_int|0xFF
 )paren
 (brace
 multiline_comment|/* Issue stop command for active channels only */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
@@ -6588,7 +6658,7 @@ multiline_comment|/* Check port cause register that all Tx queues are stopped */
 r_while
 c_loop
 (paren
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
@@ -6610,7 +6680,7 @@ suffix:semicolon
 multiline_comment|/* Stop Rx port activity. Check port Rx activity. */
 id|reg_data
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
@@ -6629,7 +6699,7 @@ l_int|0xFF
 )paren
 (brace
 multiline_comment|/* Issue stop command for active channels only */
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
@@ -6650,7 +6720,7 @@ multiline_comment|/* Check port cause register that all Rx queues are stopped */
 r_while
 c_loop
 (paren
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_RECEIVE_QUEUE_COMMAND_REG
@@ -6679,7 +6749,7 @@ suffix:semicolon
 multiline_comment|/* Reset the Enable bit in the Configuration Register */
 id|reg_data
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
@@ -6694,7 +6764,7 @@ op_and_assign
 op_complement
 id|MV64340_ETH_SERIAL_PORT_ENABLE
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_PORT_SERIAL_CONTROL_REG
@@ -6729,7 +6799,7 @@ id|eth_config_reg
 suffix:semicolon
 id|eth_config_reg
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_PORT_CONFIG_REG
@@ -6743,7 +6813,7 @@ id|eth_config_reg
 op_or_assign
 id|value
 suffix:semicolon
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_PORT_CONFIG_REG
@@ -6853,7 +6923,7 @@ id|eth_config_reg
 suffix:semicolon
 id|eth_config_reg
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_PORT_CONFIG_EXTEND_REG
@@ -6921,7 +6991,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_SMI_REG
@@ -6960,7 +7030,7 @@ id|PHY_WAIT_MICRO_SECONDS
 )paren
 suffix:semicolon
 )brace
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_SMI_REG
@@ -6990,7 +7060,7 @@ l_int|0
 suffix:semicolon
 op_logical_neg
 (paren
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_SMI_REG
@@ -7033,7 +7103,7 @@ suffix:semicolon
 op_star
 id|value
 op_assign
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_SMI_REG
@@ -7109,7 +7179,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|MV_READ
+id|mv_read
 c_func
 (paren
 id|MV64340_ETH_SMI_REG
@@ -7148,7 +7218,7 @@ id|PHY_WAIT_MICRO_SECONDS
 )paren
 suffix:semicolon
 )brace
-id|MV_WRITE
+id|mv_write
 c_func
 (paren
 id|MV64340_ETH_SMI_REG
