@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -3195,18 +3196,6 @@ op_star
 id|dev
 )paren
 (brace
-r_while
-c_loop
-(paren
-id|test_and_set_bit
-(paren
-id|tx_busy
-comma
-op_amp
-id|dev-&gt;flags
-)paren
-)paren
-(brace
 id|PRINTD
 (paren
 id|DBG_TX
@@ -3218,10 +3207,22 @@ comma
 id|dev-&gt;flags
 )paren
 suffix:semicolon
-id|interruptible_sleep_on
+id|wait_event_interruptible
+c_func
 (paren
-op_amp
 id|dev-&gt;tx_queue
+comma
+(paren
+op_logical_neg
+id|test_and_set_bit
+c_func
+(paren
+id|tx_busy
+comma
+op_amp
+id|dev-&gt;flags
+)paren
+)paren
 )paren
 suffix:semicolon
 id|PRINTD
@@ -3247,7 +3248,6 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 id|PRINTD
 (paren
 id|DBG_TX
