@@ -3571,6 +3571,38 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* no response expected */
+id|pSMB-&gt;Timeout
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|waitFlag
+op_eq
+id|TRUE
+)paren
+(brace
+id|timeout
+op_assign
+l_int|3
+suffix:semicolon
+multiline_comment|/* blocking operation, no timeout */
+id|pSMB-&gt;Timeout
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* blocking - do not time out */
+)brace
+r_else
+(brace
+id|pSMB-&gt;Timeout
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 id|pSMB-&gt;NumberOfLocks
 op_assign
@@ -3587,23 +3619,6 @@ c_func
 (paren
 id|numUnlock
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|waitFlag
-)paren
-(brace
-id|pSMB-&gt;Timeout
-op_assign
-l_int|3
-suffix:semicolon
-)brace
-multiline_comment|/* blocking - do time out */
-r_else
-id|pSMB-&gt;Timeout
-op_assign
-l_int|0
 suffix:semicolon
 id|pSMB-&gt;LockType
 op_assign
