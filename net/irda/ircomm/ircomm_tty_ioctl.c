@@ -202,6 +202,21 @@ id|self-&gt;settings.flow_control
 op_or_assign
 id|IRCOMM_RTS_CTS_IN
 suffix:semicolon
+multiline_comment|/* This got me. Bummer. Jean II */
+r_if
+c_cond
+(paren
+id|self-&gt;service_type
+op_eq
+id|IRCOMM_3_WIRE_RAW
+)paren
+id|WARNING
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;(), enabling RTS/CTS on link that doesn&squot;t support it (3-wire-raw)&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace

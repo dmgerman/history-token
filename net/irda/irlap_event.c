@@ -617,6 +617,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Calculate and set time before we will have to send back the pf bit&n; * to the peer. Use in primary.&n; * Make sure that state is XMIT_P/XMIT_S when calling this function&n; * (and that nobody messed up with the state). - Jean II&n; */
 DECL|function|irlap_start_poll_timer
 r_void
 id|irlap_start_poll_timer
@@ -3843,15 +3844,7 @@ op_amp
 id|self-&gt;qos_tx
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t;&t; * Important to switch state before calling&n;&t;&t;&t;&t; * upper layers&n;&t;&t;&t;&t; */
-id|irlap_next_state
-c_func
-(paren
-id|self
-comma
-id|LAP_XMIT_P
-)paren
-suffix:semicolon
+multiline_comment|/* Call higher layer *before* changing state&n;&t;&t;&t;&t; * to give them a chance to send data in the&n;&t;&t;&t;&t; * next LAP frame.&n;&t;&t;&t;&t; * Jean II */
 id|irlap_data_indication
 c_func
 (paren
@@ -3862,7 +3855,16 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
-multiline_comment|/* This is the last frame */
+multiline_comment|/* XMIT states are the most dangerous state&n;&t;&t;&t;&t; * to be in, because user requests are&n;&t;&t;&t;&t; * processed directly and may change state.&n;&t;&t;&t;&t; * On the other hand, in NDM_P, those&n;&t;&t;&t;&t; * requests are queued and we will process&n;&t;&t;&t;&t; * them when we return to irlap_do_event().&n;&t;&t;&t;&t; * Jean II&n;&t;&t;&t;&t; */
+id|irlap_next_state
+c_func
+(paren
+id|self
+comma
+id|LAP_XMIT_P
+)paren
+suffix:semicolon
+multiline_comment|/* This is the last frame.&n;&t;&t;&t;&t; * Make sure it&squot;s always called in XMIT state.&n;&t;&t;&t;&t; * - Jean II */
 id|irlap_start_poll_timer
 c_func
 (paren
@@ -4335,6 +4337,14 @@ comma
 id|skb
 comma
 id|TRUE
+)paren
+suffix:semicolon
+id|irlap_next_state
+c_func
+(paren
+id|self
+comma
+id|LAP_XMIT_P
 )paren
 suffix:semicolon
 id|printk

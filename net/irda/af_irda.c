@@ -4104,6 +4104,20 @@ r_return
 op_minus
 id|ENOTCONN
 suffix:semicolon
+multiline_comment|/* Handle signals */
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+r_return
+op_minus
+id|ERESTARTSYS
+suffix:semicolon
 )brace
 multiline_comment|/* Check that we don&squot;t send out to big frames */
 r_if
