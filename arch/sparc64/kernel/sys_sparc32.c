@@ -22032,7 +22032,7 @@ id|KERNEL_DS
 suffix:semicolon
 id|ret
 op_assign
-id|sys_sendfile
+id|sys_sendfile64
 c_func
 (paren
 id|out_fd
