@@ -5,6 +5,7 @@ multiline_comment|/*&n; *&n; * Based on cfs.h from Mach, but revamped for increa
 macro_line|#ifndef _CODA_HEADER_
 DECL|macro|_CODA_HEADER_
 mdefine_line|#define _CODA_HEADER_
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Catch new _KERNEL defn for NetBSD and DJGPP/__CYGWIN32__ */
 macro_line|#if defined(__NetBSD__) || &bslash;&n;  ((defined(DJGPP) || defined(__CYGWIN32__)) &amp;&amp; !defined(KERNEL))
 macro_line|#include &lt;sys/types.h&gt;
@@ -279,6 +280,21 @@ mdefine_line|#define&t;IFTOCDT(mode)&t;(((mode) &amp; 0170000) &gt;&gt; 12)
 DECL|macro|CDTTOIF
 mdefine_line|#define&t;CDTTOIF(dirtype)&t;((dirtype) &lt;&lt; 12)
 macro_line|#endif
+macro_line|#ifndef _VUID_T_
+DECL|macro|_VUID_T_
+mdefine_line|#define _VUID_T_
+DECL|typedef|vuid_t
+r_typedef
+id|u_int32_t
+id|vuid_t
+suffix:semicolon
+DECL|typedef|vgid_t
+r_typedef
+id|u_int32_t
+id|vgid_t
+suffix:semicolon
+macro_line|#endif /*_VUID_T_ */
+macro_line|#ifdef CODA_FS_OLD_API
 DECL|struct|CodaFid
 r_struct
 id|CodaFid
@@ -292,7 +308,6 @@ l_int|3
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __linux__
 DECL|function|coda_f2i
 r_static
 id|__inline__
@@ -381,27 +396,6 @@ l_int|20
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|macro|coda_f2i
-mdefine_line|#define coda_f2i(fid)&bslash;&n;&t;((fid) ? ((fid)-&gt;opaque[2] + ((fid)-&gt;opaque[1]&lt;&lt;10) + ((fid)-&gt;opaque[0]&lt;&lt;20)) : 0)
-macro_line|#endif
-macro_line|#ifndef _VUID_T_
-DECL|macro|_VUID_T_
-mdefine_line|#define _VUID_T_
-DECL|typedef|vuid_t
-r_typedef
-id|u_int32_t
-id|vuid_t
-suffix:semicolon
-DECL|typedef|vgid_t
-r_typedef
-id|u_int32_t
-id|vgid_t
-suffix:semicolon
-macro_line|#endif /*_VUID_T_ */
-macro_line|#ifndef _CODACRED_T_
-DECL|macro|_CODACRED_T_
-mdefine_line|#define _CODACRED_T_
 DECL|struct|coda_cred
 r_struct
 id|coda_cred
@@ -436,7 +430,23 @@ suffix:semicolon
 multiline_comment|/* same for groups */
 )brace
 suffix:semicolon
-macro_line|#endif 
+macro_line|#else /* not defined(CODA_FS_OLD_API) */
+DECL|struct|CodaFid
+r_struct
+id|CodaFid
+(brace
+DECL|member|opaque
+id|u_int32_t
+id|opaque
+(braket
+l_int|4
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|coda_f2i
+mdefine_line|#define coda_f2i(fid)&bslash;&n;&t;(fid ? (fid-&gt;opaque[3] ^ (fid-&gt;opaque[2]&lt;&lt;10) ^ (fid-&gt;opaque[1]&lt;&lt;20) ^ fid-&gt;opaque[0]) : 0)
+macro_line|#endif
 macro_line|#ifndef _VENUS_VATTR_T_
 DECL|macro|_VENUS_VATTR_T_
 mdefine_line|#define _VENUS_VATTR_T_
@@ -669,8 +679,13 @@ macro_line|#if 0
 mdefine_line|#define CODA_KERNEL_VERSION 0 /* don&squot;t care about kernel version number */
 mdefine_line|#define CODA_KERNEL_VERSION 1 /* The old venus 4.6 compatible interface */
 macro_line|#endif
+macro_line|#ifdef CODA_FS_OLD_API
 DECL|macro|CODA_KERNEL_VERSION
-mdefine_line|#define CODA_KERNEL_VERSION 2 /* venus_lookup gets an extra parameter */
+mdefine_line|#define CODA_KERNEL_VERSION 2 /* venus_lookup got an extra parameter */
+macro_line|#else
+DECL|macro|CODA_KERNEL_VERSION
+mdefine_line|#define CODA_KERNEL_VERSION 3 /* 128-bit file identifiers */
+macro_line|#endif
 multiline_comment|/*&n; *        Venus &lt;-&gt; Coda  RPC arguments&n; */
 DECL|struct|coda_in_hdr
 r_struct
@@ -685,6 +700,7 @@ id|u_int32_t
 id|unique
 suffix:semicolon
 multiline_comment|/* Keep multiple outstanding msgs distinct */
+macro_line|#ifdef CODA_FS_OLD_API
 DECL|member|pid
 id|u_int16_t
 id|pid
@@ -706,6 +722,20 @@ id|coda_cred
 id|cred
 suffix:semicolon
 multiline_comment|/* Common to all */
+macro_line|#else
+DECL|member|pid
+id|pid_t
+id|pid
+suffix:semicolon
+DECL|member|pgid
+id|pid_t
+id|pgid
+suffix:semicolon
+DECL|member|uid
+id|vuid_t
+id|uid
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* Really important that opcode and unique are 1st two fields! */
@@ -1504,11 +1534,18 @@ r_struct
 id|coda_out_hdr
 id|oh
 suffix:semicolon
+macro_line|#ifdef CODA_FS_OLD_API
 DECL|member|cred
 r_struct
 id|coda_cred
 id|cred
 suffix:semicolon
+macro_line|#else
+DECL|member|uid
+id|vuid_t
+id|uid
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* coda_zapfile: */

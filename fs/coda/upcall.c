@@ -104,6 +104,7 @@ id|inp-&gt;ih.pgid
 op_assign
 id|current-&gt;pgrp
 suffix:semicolon
+macro_line|#ifdef CODA_FS_OLD_API
 id|memset
 c_func
 (paren
@@ -123,6 +124,12 @@ id|inp-&gt;ih.cred.cr_fsuid
 op_assign
 id|current-&gt;fsuid
 suffix:semicolon
+macro_line|#else
+id|inp-&gt;ih.uid
+op_assign
+id|current-&gt;fsuid
+suffix:semicolon
+macro_line|#endif
 r_return
 (paren
 r_void
@@ -642,6 +649,7 @@ id|outsize
 comma
 id|error
 suffix:semicolon
+macro_line|#ifdef CODA_FS_OLD_API
 r_struct
 id|coda_cred
 id|cred
@@ -655,6 +663,7 @@ id|cred.cr_fsuid
 op_assign
 id|uid
 suffix:semicolon
+macro_line|#endif
 id|insize
 op_assign
 id|SIZE
@@ -669,6 +678,7 @@ c_func
 id|CODA_STORE
 )paren
 suffix:semicolon
+macro_line|#ifdef CODA_FS_OLD_API
 id|memcpy
 c_func
 (paren
@@ -686,6 +696,12 @@ id|cred
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+id|inp-&gt;ih.uid
+op_assign
+id|uid
+suffix:semicolon
+macro_line|#endif
 id|inp-&gt;coda_store.VFid
 op_assign
 op_star
@@ -855,6 +871,7 @@ id|outsize
 comma
 id|error
 suffix:semicolon
+macro_line|#ifdef CODA_FS_OLD_API
 r_struct
 id|coda_cred
 id|cred
@@ -868,6 +885,7 @@ id|cred.cr_fsuid
 op_assign
 id|uid
 suffix:semicolon
+macro_line|#endif
 id|insize
 op_assign
 id|SIZE
@@ -882,6 +900,7 @@ c_func
 id|CODA_CLOSE
 )paren
 suffix:semicolon
+macro_line|#ifdef CODA_FS_OLD_API
 id|memcpy
 c_func
 (paren
@@ -899,6 +918,12 @@ id|cred
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+id|inp-&gt;ih.uid
+op_assign
+id|uid
+suffix:semicolon
+macro_line|#endif
 id|inp-&gt;coda_close.VFid
 op_assign
 op_star
