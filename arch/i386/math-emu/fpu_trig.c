@@ -427,7 +427,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif BETTER_THAN_486
+macro_line|#endif /* BETTER_THAN_486 */
 )brace
 macro_line|#ifdef BETTER_THAN_486
 r_else
@@ -632,7 +632,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif BETTER_THAN_486
+macro_line|#endif /* BETTER_THAN_486 */
 id|FPU_settag0
 c_func
 (paren
@@ -842,7 +842,7 @@ op_or
 l_int|0x0112
 )paren
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 DECL|function|single_arg_2_error
 r_static
@@ -1016,7 +1016,7 @@ op_or
 l_int|0x0112
 )paren
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 )brace
 multiline_comment|/*---------------------------------------------------------------------------*/
@@ -1930,7 +1930,7 @@ op_or
 l_int|0x119
 )paren
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 DECL|function|fdecstp
 r_static
@@ -2832,7 +2832,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Must be up. */
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 r_return
 l_int|0
 suffix:semicolon
@@ -4169,7 +4169,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 r_return
 suffix:semicolon
 )brace
@@ -4691,7 +4691,7 @@ op_or
 l_int|0x118
 )paren
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 id|real_2op_NaN
 c_func
 (paren
@@ -5561,7 +5561,7 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 id|changesign
 c_func
 (paren
@@ -6210,7 +6210,7 @@ op_or
 l_int|0x125
 )paren
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 id|FPU_pop
 c_func
 (paren
@@ -6643,7 +6643,7 @@ l_int|0x116
 suffix:semicolon
 r_return
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 )brace
 r_else
@@ -6716,7 +6716,7 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 )brace
 r_else
 r_if
@@ -6834,7 +6834,7 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 )brace
 r_else
 r_if
@@ -7005,7 +7005,7 @@ l_int|0
 multiline_comment|/* log(-infinity) */
 r_return
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 r_if
 c_cond
 (paren
@@ -7042,7 +7042,7 @@ l_int|0
 multiline_comment|/* log(-infinity) */
 r_return
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 )brace
 r_else
 r_if
@@ -7135,7 +7135,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 id|FPU_pop
 c_func
 (paren

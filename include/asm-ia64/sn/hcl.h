@@ -15,6 +15,10 @@ r_extern
 id|devfs_handle_t
 id|hwgraph_root
 suffix:semicolon
+r_extern
+id|devfs_handle_t
+id|linux_busnum
+suffix:semicolon
 DECL|typedef|labelcl_info_place_t
 r_typedef
 r_int
@@ -36,11 +40,6 @@ id|inventory_s
 suffix:semicolon
 r_struct
 id|invplace_s
-suffix:semicolon
-r_extern
-r_struct
-id|invplace_s
-id|invplace_none
 suffix:semicolon
 multiline_comment|/* &n; * Reserve room in every vertex for 2 pieces of fast access indexed information &n; * Note that we do not save a pointer to the bdevsw or cdevsw[] tables anymore.&n; */
 DECL|macro|HWGRAPH_NUM_INDEX_INFO

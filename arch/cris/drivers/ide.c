@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ide.c,v 1.4 2001/01/10 21:14:32 bjornw Exp $&n; *&n; * Etrax specific IDE functions, like init and PIO-mode setting etc.&n; * Almost the entire ide.c is used for the rest of the Etrax ATA driver.&n; * Copyright (c) 2000, 2001 Axis Communications AB &n; *&n; * Authors:    Bjorn Wesen        (initial version)&n; *             Mikael Starvik     (pio setup stuff)&n; *&n; * $Log: ide.c,v $&n; * Revision 1.4  2001/01/10 21:14:32  bjornw&n; * Initialize hwif-&gt;ideproc, for the new way of handling ide_xxx_data&n; *&n; * Revision 1.3  2000/12/01 17:48:18  bjornw&n; * - atapi_output_bytes now uses DMA&n; * - dma_active check removed - the kernel does proper serializing and it had&n; *   a race-condition anyway&n; * - ide_build_dmatable had a nameclash&n; * - re-added the RESET_DMA thingys because sometimes the interface can get&n; *   stuck apparently&n; * - added ide_release_dma&n; *&n; * Revision 1.2  2000/11/29 17:31:29  bjornw&n; * 2.4 port&n; *&n; * - The &quot;register addresses&quot; stored in the hwif are now 32-bit fields that&n; *   don&squot;t need to be shifted into correct positions in R_ATA_CTRL_DATA&n; * - PIO-mode detection temporarily disabled since ide-modes.c is not compiled&n; * - All DMA uses virt_to_phys conversions for DMA buffers and descriptor ptrs&n; * - Probably correct ide_dma_begin semantics in dmaproc now for ATAPI devices&n; * - Removed RESET_DMA when starting a new transfer - why was this necessary ?&n; * - Indentation fix&n; *&n; *&n; */
+multiline_comment|/* $Id: ide.c,v 1.9 2001/03/01 13:11:18 bjornw Exp $&n; *&n; * Etrax specific IDE functions, like init and PIO-mode setting etc.&n; * Almost the entire ide.c is used for the rest of the Etrax ATA driver.&n; * Copyright (c) 2000, 2001 Axis Communications AB &n; *&n; * Authors:    Bjorn Wesen        (initial version)&n; *             Mikael Starvik     (pio setup stuff)&n; *&n; * $Log: ide.c,v $&n; * Revision 1.9  2001/03/01 13:11:18  bjornw&n; * 100 -&gt; HZ&n; *&n; * Revision 1.8  2001/03/01 09:32:56  matsfg&n; * Moved IDE delay to a CONFIG-parameter instead&n; *&n; * Revision 1.7  2001/02/23 13:46:38  bjornw&n; * Spellling check&n; *&n; * Revision 1.6  2001/02/22 15:44:30  bjornw&n; * * Use ioremap when mapping the CSE1 memory-mapped reset-line for LX v2&n; * * sw_len for a 65536 descriptor is 0, not 65536&n; * * Express concern for G27 reset code&n; *&n; * Revision 1.5  2001/02/16 07:35:38  matsfg&n; * Now handles DMA request blocks between 64k and 128k by split into two descriptors.&n; *&n; * Revision 1.4  2001/01/10 21:14:32  bjornw&n; * Initialize hwif-&gt;ideproc, for the new way of handling ide_xxx_data&n; *&n; * Revision 1.3  2000/12/01 17:48:18  bjornw&n; * - atapi_output_bytes now uses DMA&n; * - dma_active check removed - the kernel does proper serializing and it had&n; *   a race-condition anyway&n; * - ide_build_dmatable had a nameclash&n; * - re-added the RESET_DMA thingys because sometimes the interface can get&n; *   stuck apparently&n; * - added ide_release_dma&n; *&n; * Revision 1.2  2000/11/29 17:31:29  bjornw&n; * 2.4 port&n; *&n; * - The &quot;register addresses&quot; stored in the hwif are now 32-bit fields that&n; *   don&squot;t need to be shifted into correct positions in R_ATA_CTRL_DATA&n; * - PIO-mode detection temporarily disabled since ide-modes.c is not compiled&n; * - All DMA uses virt_to_phys conversions for DMA buffers and descriptor ptrs&n; * - Probably correct ide_dma_begin semantics in dmaproc now for ATAPI devices&n; * - Removed RESET_DMA when starting a new transfer - why was this necessary ?&n; * - Indentation fix&n; *&n; *&n; */
 multiline_comment|/* Regarding DMA: &n; *&n; * There are two forms of DMA - &quot;DMA handshaking&quot; between the interface and the drive,&n; * and DMA between the memory and the interface. We can ALWAYS use the latter, since it&squot;s&n; * something built-in in the Etrax. However only some drives support the DMA-mode handshaking&n; * on the ATA-bus. The normal PC driver and Triton interface disables memory-if DMA when the&n; * device can&squot;t do DMA handshaking for some stupid reason. We don&squot;t need to do that.&n; */
 DECL|macro|REALLY_SLOW_IO
 macro_line|#undef REALLY_SLOW_IO           /* most systems can safely undef this */
@@ -18,10 +18,21 @@ macro_line|#include &lt;asm/svinto.h&gt;
 multiline_comment|/* number of Etrax DMA descriptors */
 DECL|macro|MAX_DMA_DESCRS
 mdefine_line|#define MAX_DMA_DESCRS 64
+macro_line|#ifdef CONFIG_ETRAX_IDE_CSE1_16_RESET
+multiline_comment|/* address where the memory-mapped IDE reset bit lives, if used */
+DECL|variable|reset_addr
+r_static
+r_volatile
+r_int
+r_int
+op_star
+id|reset_addr
+suffix:semicolon
+macro_line|#endif
 DECL|macro|LOWDB
 mdefine_line|#define LOWDB(x)
 DECL|macro|D
-mdefine_line|#define D(x)
+mdefine_line|#define D(x) 
 DECL|function|OUT_BYTE
 r_void
 id|OUT_BYTE
@@ -689,9 +700,9 @@ id|length
 )paren
 suffix:semicolon
 multiline_comment|/* defined below */
-DECL|function|init_e100_ide
 r_void
 id|__init
+DECL|function|init_e100_ide
 id|init_e100_ide
 (paren
 r_void
@@ -758,6 +769,7 @@ id|e100_ideproc
 suffix:semicolon
 )brace
 multiline_comment|/* actually reset and configure the etrax100 ide/ata interface */
+multiline_comment|/* This is mystifying; why is not G27 SET anywhere ? It&squot;s just reset here twice. */
 multiline_comment|/* de-assert bus-reset */
 macro_line|#ifdef CONFIG_ETRAX_IDE_PB7_RESET  
 id|port_pb_dir_shadow
@@ -885,9 +897,42 @@ op_assign
 id|genconfig_shadow
 suffix:semicolon
 macro_line|#ifdef CONFIG_ETRAX_IDE_CSE1_16_RESET
-op_star
+macro_line|#ifndef CONFIG_CRIS_LOW_MAP
+multiline_comment|/* remap the I/O-mapped reset-bit from CSE1 to something inside our kernel space */
+id|reset_addr
+op_assign
 (paren
-r_volatile
+r_int
+r_int
+op_star
+)paren
+id|ioremap
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+(paren
+id|MEM_CSE1_START
+op_or
+id|MEM_NON_CACHEABLE
+)paren
+comma
+l_int|16
+)paren
+suffix:semicolon
+op_star
+id|reset_addr
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
+multiline_comment|/* LOW_MAP, can&squot;t do the ioremap, but it&squot;s already mapped straight over */
+id|reset_addr
+op_assign
+(paren
+r_int
 r_int
 op_star
 )paren
@@ -896,9 +941,13 @@ id|MEM_CSE1_START
 op_or
 id|MEM_NON_CACHEABLE
 )paren
+suffix:semicolon
+op_star
+id|reset_addr
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/* wait some */
 id|dummy
@@ -915,28 +964,21 @@ l_int|3
 suffix:semicolon
 macro_line|#ifdef CONFIG_ETRAX_IDE_CSE1_16_RESET
 op_star
-(paren
-r_volatile
-r_int
-op_star
-)paren
-(paren
-id|MEM_CSE1_START
-op_or
-id|MEM_NON_CACHEABLE
-)paren
+id|reset_addr
 op_assign
 l_int|1
 op_lshift
 l_int|16
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ETRAX_IDE_G27_RESET
 op_star
 id|R_PORT_G_DATA
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* de-assert bus-reset */
-macro_line|#endif
+macro_line|#endif 
 multiline_comment|/* make a dummy read to set the ata controller in a proper state */
 id|dummy
 op_assign
@@ -1099,14 +1141,20 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ide: waiting 10 seconds for drives to regain consciousness&bslash;n&quot;
+l_string|&quot;ide: waiting %d seconds for drives to regain consciousness&bslash;n&quot;
+comma
+id|CONFIG_IDE_DELAY
 )paren
 suffix:semicolon
 id|h
 op_assign
 id|jiffies
 op_plus
-l_int|1000
+(paren
+id|CONFIG_IDE_DELAY
+op_star
+id|HZ
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -2219,27 +2267,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* uh.. I&squot;m lazy.. if size &gt;= 65536, it should loop below and split it in&n;&t;&t;   more than one descriptor */
-r_if
-c_cond
-(paren
-id|size
-op_ge
-l_int|65536
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;too large ATA DMA request block, size = %d!&bslash;n&quot;
-comma
-id|size
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* however, this case is more difficult - R_ATA_TRANSFER_CNT cannot be more&n;&t;&t;   than 65536 words per transfer, so in that case we need to either &n;&t;&t;   1) use a DMA interrupt to re-trigger R_ATA_TRANSFER_CNT and continue with&n;&t;&t;      the descriptors, or&n;&t;&t;   2) simply do the request here, and get dma_intr to only ide_end_request on &n;&t;&t;      those blocks that were actually set-up for transfer.&n;&t;&t;*/
 r_if
 c_cond
@@ -2263,6 +2290,80 @@ id|size
 suffix:semicolon
 r_return
 l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* If size &gt; 65536 it has to be splitted into new descriptors. Since we don&squot;t handle &n;                   size &gt; 131072 only one split is necessary */
+r_if
+c_cond
+(paren
+id|size
+OG
+l_int|65536
+)paren
+(brace
+multiline_comment|/* ok we want to do IO at addr, size bytes. set up a new descriptor entry */
+id|ata_descrs
+(braket
+id|count
+)braket
+dot
+id|sw_len
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* 0 means 65536, this is a 16-bit field */
+id|ata_descrs
+(braket
+id|count
+)braket
+dot
+id|ctrl
+op_assign
+l_int|0
+suffix:semicolon
+id|ata_descrs
+(braket
+id|count
+)braket
+dot
+id|buf
+op_assign
+id|addr
+suffix:semicolon
+id|ata_descrs
+(braket
+id|count
+)braket
+dot
+id|next
+op_assign
+id|virt_to_phys
+c_func
+(paren
+op_amp
+id|ata_descrs
+(braket
+id|count
+op_plus
+l_int|1
+)braket
+)paren
+suffix:semicolon
+id|count
+op_increment
+suffix:semicolon
+id|ata_tot_size
+op_add_assign
+l_int|65536
+suffix:semicolon
+multiline_comment|/* size and addr should refere to not handled data */
+id|size
+op_sub_assign
+l_int|65536
+suffix:semicolon
+id|addr
+op_add_assign
+l_int|65536
 suffix:semicolon
 )brace
 multiline_comment|/* ok we want to do IO at addr, size bytes. set up a new descriptor entry */

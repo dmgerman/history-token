@@ -1,13 +1,16 @@
 macro_line|#ifndef _ASM_IA64_MMU_CONTEXT_H
 DECL|macro|_ASM_IA64_MMU_CONTEXT_H
 mdefine_line|#define _ASM_IA64_MMU_CONTEXT_H
-multiline_comment|/*&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Routines to manage the allocation of task context numbers.  Task context numbers are&n; * used to reduce or eliminate the need to perform TLB flushes due to context switches.&n; * Context numbers are implemented using ia-64 region ids.  Since the IA-64 TLB does not&n; * consider the region number when performing a TLB lookup, we need to assign a unique&n; * region id to each region in a process.  We use the least significant three bits in a&n; * region id for this purpose.&n; *&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+DECL|macro|IA64_REGION_ID_KERNEL
+mdefine_line|#define IA64_REGION_ID_KERNEL&t;0 /* the kernel&squot;s region id (tlb.c depends on this being 0) */
+DECL|macro|ia64_rid
+mdefine_line|#define ia64_rid(ctx,addr)&t;(((ctx) &lt;&lt; 3) | (addr &gt;&gt; 61))
+macro_line|# ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-multiline_comment|/*&n; * Routines to manage the allocation of task context numbers.  Task&n; * context numbers are used to reduce or eliminate the need to perform&n; * TLB flushes due to context switches.  Context numbers are&n; * implemented using ia-64 region ids.  Since ia-64 TLBs do not&n; * guarantee that the region number is checked when performing a TLB&n; * lookup, we need to assign a unique region id to each region in a&n; * process.  We use the least significant three bits in a region id&n; * for this purpose.  On processors where the region number is checked&n; * in TLB lookups, we can get back those two bits by defining&n; * CONFIG_IA64_TLB_CHECKS_REGION_NUMBER.  The macro&n; * IA64_REGION_ID_BITS gives the number of bits in a region id.  The&n; * architecture manual guarantees this number to be in the range&n; * 18-24.&n; *&n; * Copyright (C) 1998 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
-DECL|macro|IA64_REGION_ID_KERNEL
-mdefine_line|#define IA64_REGION_ID_KERNEL&t;0 /* the kernel&squot;s region id (tlb.c depends on this being 0) */
 DECL|struct|ia64_ctx
 r_struct
 id|ia64_ctx
@@ -71,34 +74,6 @@ r_int
 id|cpu
 )paren
 (brace
-)brace
-r_static
-r_inline
-r_int
-r_int
-DECL|function|ia64_rid
-id|ia64_rid
-(paren
-r_int
-r_int
-id|context
-comma
-r_int
-r_int
-id|region_addr
-)paren
-(brace
-r_return
-id|context
-op_lshift
-l_int|3
-op_or
-(paren
-id|region_addr
-op_rshift
-l_int|61
-)paren
-suffix:semicolon
 )brace
 r_static
 r_inline
@@ -385,18 +360,15 @@ id|next
 )paren
 (brace
 multiline_comment|/*&n;&t; * We may get interrupts here, but that&squot;s OK because interrupt&n;&t; * handlers cannot touch user-space.&n;&t; */
-id|__asm__
-id|__volatile__
+id|ia64_set_kr
+c_func
 (paren
-l_string|&quot;mov ar.k7=%0&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|IA64_KR_PT_BASE
+comma
 id|__pa
 c_func
 (paren
 id|next-&gt;pgd
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -415,5 +387,6 @@ suffix:semicolon
 )brace
 DECL|macro|switch_mm
 mdefine_line|#define switch_mm(prev_mm,next_mm,next_task,cpu)&t;activate_mm(prev_mm, next_mm)
+macro_line|# endif /* ! __ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_MMU_CONTEXT_H */
 eof

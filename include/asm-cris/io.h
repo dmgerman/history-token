@@ -8,7 +8,7 @@ multiline_comment|/* Console I/O for simulated etrax100.  Use #ifdef so erroneou
 macro_line|#ifdef CONFIG_SVINTO_SIM
 multiline_comment|/* Let&squot;s use the ucsim interface since it lets us do write(2, ...) */
 DECL|macro|SIMCOUT
-mdefine_line|#define SIMCOUT(s,len) asm (&quot;moveq 4,r1&bslash;n&bslash;tmoveq 2,r10&bslash;n&bslash;tmove.d %0,r11&bslash;n&bslash;tmove.d %1,r12&bslash;&n;&bslash;n&bslash;tpush irp&bslash;n&bslash;t.word 0xae3f&bslash;n&bslash;t.dword 0f&bslash;n&bslash;tjump -6809&bslash;n0:&bslash;n&bslash;tpop irp&quot; &bslash;&n;       : : &quot;rm&quot; (s), &quot;rm&quot; (len) : &quot;r1&quot;,&quot;r10&quot;,&quot;r11&quot;,&quot;r12&quot;,&quot;memory&quot;)
+mdefine_line|#define SIMCOUT(s,len) asm (&quot;moveq 4,r9&bslash;n&bslash;tmoveq 2,r10&bslash;n&bslash;tmove.d %0,r11&bslash;n&bslash;tmove.d %1,r12&bslash;&n;&bslash;n&bslash;tpush irp&bslash;n&bslash;t.word 0xae3f&bslash;n&bslash;t.dword 0f&bslash;n&bslash;tjump -6809&bslash;n0:&bslash;n&bslash;tpop irp&quot; &bslash;&n;       : : &quot;rm&quot; (s), &quot;rm&quot; (len) : &quot;r9&quot;,&quot;r10&quot;,&quot;r11&quot;,&quot;r12&quot;,&quot;memory&quot;)
 DECL|macro|TRACE_ON
 mdefine_line|#define TRACE_ON() __extension__ &bslash;&n; ({ int _Foofoo; __asm__ volatile (&quot;bmod [%0],%0&quot; : &quot;=r&quot; (_Foofoo) : &quot;0&quot; &bslash;&n;&t;&t;&t;       (255)); _Foofoo; })
 DECL|macro|TRACE_OFF
@@ -186,6 +186,53 @@ id|__va
 c_func
 (paren
 id|address
+)paren
+suffix:semicolon
+)brace
+r_extern
+r_void
+op_star
+id|__ioremap
+c_func
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+DECL|function|ioremap
+r_extern
+r_inline
+r_void
+op_star
+id|ioremap
+(paren
+r_int
+r_int
+id|offset
+comma
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|__ioremap
+c_func
+(paren
+id|offset
+comma
+id|size
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&t;drivers/net/tulip/21142.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000  The Linux Kernel Team&n;&t;Written/copyright 1994-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/networking/tulip.txt for more&n;&t;information on this driver.&n;&n;*/
+multiline_comment|/*&n;&t;drivers/net/tulip/21142.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
 macro_line|#include &quot;tulip.h&quot;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -575,6 +575,32 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|tp-&gt;chip_id
+op_eq
+id|PNIC2
+)paren
+(brace
+id|tp-&gt;csr6
+op_assign
+l_int|0x01000000
+op_or
+(paren
+id|tp-&gt;to_advertise
+op_amp
+l_int|0x0040
+ques
+c_cond
+id|FullDuplex
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|tulip_debug
 OG
 l_int|1
@@ -616,29 +642,6 @@ op_plus
 id|CSR14
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tp-&gt;chip_id
-op_eq
-id|PNIC2
-)paren
-id|tp-&gt;csr6
-op_assign
-l_int|0x01a80000
-op_or
-(paren
-id|tp-&gt;to_advertise
-op_amp
-l_int|0x0040
-ques
-c_cond
-l_int|0x0200
-suffix:colon
-l_int|0
-)paren
-suffix:semicolon
-r_else
 id|tp-&gt;csr6
 op_assign
 l_int|0x82420000
@@ -649,7 +652,7 @@ op_amp
 l_int|0x0040
 ques
 c_cond
-l_int|0x0200
+id|FullDuplex
 suffix:colon
 l_int|0
 )paren

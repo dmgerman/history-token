@@ -4,12 +4,10 @@ DECL|macro|_ASM_SN_ARCH_H
 mdefine_line|#define _ASM_SN_ARCH_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#if defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_SGI_IP37) || defined(CONFIG_IA64_GENERIC)
 macro_line|#include &lt;asm/sn/sn1/arch.h&gt;
 macro_line|#endif
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO */
 macro_line|#if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
 DECL|typedef|hubreg_t
 r_typedef
@@ -45,7 +43,7 @@ DECL|macro|makespnum
 mdefine_line|#define makespnum(_nasid, _slice)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(((_nasid) &lt;&lt; CPUS_PER_NODE_SHFT) | (_slice))
 macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 multiline_comment|/*&n; * There are 2 very similar macros for dealing with &quot;slices&quot;. Make sure&n; * you use the right one. &n; * Unfortunately, on all platforms except IP35 (currently), the 2 macros &n; * are interchangible. &n; *&n; * On IP35, there are 4 cpus per node. Each cpu is refered to by it&squot;s slice.&n; * The slices are numbered 0 thru 3. &n; *&n; * There are also 2 PI interfaces per node. Each PI interface supports 2 cpus.&n; * The term &quot;local slice&quot; specifies the cpu number relative to the PI.&n; *&n; * The cpus on the node are numbered:&n; *&t;slice&t;localslice&n; *&t;  0          0&n; *&t;  1          1&n; *&t;  2          0&n; *&t;  3          1&n; *&n; *&t;cputoslice - returns a number 0..3 that is the slice of the specified cpu.&n; *&t;cputolocalslice - returns a number 0..1 that identifies the local slice of&n; *&t;&t;&t;the cpu within it&squot;s PI interface.&n; */
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 multiline_comment|/* These are dummied up for now ..... */
 DECL|macro|cputocnode
 mdefine_line|#define cputocnode(cpu)&t;&t;&t;&t;&bslash;&n;               (pdaindr[(cpu)].p_nodeid)
@@ -68,7 +66,7 @@ DECL|macro|cputolocalslice
 mdefine_line|#define cputolocalslice(cpu) 0
 DECL|macro|cputosubnode
 mdefine_line|#define cputosubnode(cpu) 0
-macro_line|#endif&t;/* notyet */
+macro_line|#endif&t;/* LATER */
 macro_line|#endif&t;/* CONFIG_SGI_IP35 */
 macro_line|#if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
 DECL|macro|INVALID_NASID
@@ -174,6 +172,7 @@ suffix:semicolon
 multiline_comment|/*&n; * These macros are used by various parts of the kernel to convert&n; * between the three different kinds of node numbering.   At least some&n; * of them may change to procedure calls in the future, but the macros&n; * will continue to work.  Don&squot;t use the arrays above directly.&n; */
 DECL|macro|NASID_TO_REGION
 mdefine_line|#define&t;NASID_TO_REGION(nnode)&t;      &t;&bslash;&n;    ((nnode) &gt;&gt; &bslash;&n;     (is_fine_dirmode() ? NASID_TO_FINEREG_SHFT : NASID_TO_COARSEREG_SHFT))
+macro_line|#ifndef __ia64
 r_extern
 id|cnodeid_t
 id|nasid_to_compact_node
@@ -227,6 +226,15 @@ mdefine_line|#define COMPACT_TO_NASID_NODEID(cnode)&t;compact_to_nasid_nodeid(cn
 DECL|macro|CPUID_TO_COMPACT_NODEID
 mdefine_line|#define CPUID_TO_COMPACT_NODEID(cpu)&t;(cpuid_to_compact_node[(cpu)])
 macro_line|#endif
+macro_line|#else
+multiline_comment|/*&n; * IA64 specific nasid and cnode ids.&n; */
+DECL|macro|NASID_TO_COMPACT_NODEID
+mdefine_line|#define NASID_TO_COMPACT_NODEID(nasid)  (nasid_to_cnodeid(nasid))
+DECL|macro|COMPACT_TO_NASID_NODEID
+mdefine_line|#define COMPACT_TO_NASID_NODEID(cnode)  (cnodeid_to_nasid(cnode))
+DECL|macro|CPUID_TO_COMPACT_NODEID
+mdefine_line|#define CPUID_TO_COMPACT_NODEID(cpu)    (cpuid_to_cnodeid(cpu))
+macro_line|#endif /* #ifndef __ia64 */
 r_extern
 r_int
 id|node_getlastslot

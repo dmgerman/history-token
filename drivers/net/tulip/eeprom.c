@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&t;drivers/net/tulip/eeprom.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000  The Linux Kernel Team&n;&t;Written/copyright 1994-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/networking/tulip.txt for more&n;&t;information on this driver.&n;&n;*/
+multiline_comment|/*&n;&t;drivers/net/tulip/eeprom.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
 macro_line|#include &quot;tulip.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
@@ -324,22 +324,16 @@ r_struct
 id|mediatable
 op_star
 id|last_mediatable
-op_assign
-l_int|NULL
 suffix:semicolon
 r_static
 r_int
 r_char
 op_star
 id|last_ee_data
-op_assign
-l_int|NULL
 suffix:semicolon
 r_static
 r_int
 id|controller_index
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|tulip_private
@@ -725,7 +719,7 @@ id|medianame
 (braket
 id|media
 op_amp
-l_int|15
+id|MEDIA_MASK
 )braket
 )paren
 suffix:semicolon
@@ -746,11 +740,18 @@ op_increment
 (brace
 r_int
 r_char
-id|media_code
+id|media_block
 op_assign
 op_star
 id|p
 op_increment
+suffix:semicolon
+r_int
+id|media_code
+op_assign
+id|media_block
+op_amp
+id|MEDIA_MASK
 suffix:semicolon
 r_if
 c_cond
@@ -959,7 +960,7 @@ id|medianame
 (braket
 id|media
 op_amp
-l_int|15
+id|MEDIA_MASK
 )braket
 )paren
 suffix:semicolon
@@ -1203,7 +1204,7 @@ id|p
 l_int|2
 )braket
 op_amp
-l_int|0x0f
+id|MEDIA_MASK
 suffix:semicolon
 multiline_comment|/* Davicom&squot;s media number for 100BaseTX is strange */
 r_if
@@ -1564,6 +1565,27 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Reading a serial EEPROM is a &quot;bit&quot; grungy, but we work our way through:-&gt;.*/
+multiline_comment|/*  EEPROM_Ctrl bits. */
+DECL|macro|EE_SHIFT_CLK
+mdefine_line|#define EE_SHIFT_CLK&t;0x02&t;/* EEPROM shift clock. */
+DECL|macro|EE_CS
+mdefine_line|#define EE_CS&t;&t;&t;0x01&t;/* EEPROM chip select. */
+DECL|macro|EE_DATA_WRITE
+mdefine_line|#define EE_DATA_WRITE&t;0x04&t;/* Data from the Tulip to EEPROM. */
+DECL|macro|EE_WRITE_0
+mdefine_line|#define EE_WRITE_0&t;&t;0x01
+DECL|macro|EE_WRITE_1
+mdefine_line|#define EE_WRITE_1&t;&t;0x05
+DECL|macro|EE_DATA_READ
+mdefine_line|#define EE_DATA_READ&t;0x08&t;/* Data from the EEPROM chip. */
+DECL|macro|EE_ENB
+mdefine_line|#define EE_ENB&t;&t;&t;(0x4800 | EE_CS)
+multiline_comment|/* Delay between EEPROM clock transitions.&n;   Even at 33Mhz current PCI implementations don&squot;t overrun the EEPROM clock.&n;   We add a bus turn-around to insure that this remains true. */
+DECL|macro|eeprom_delay
+mdefine_line|#define eeprom_delay()&t;inl(ee_addr)
+multiline_comment|/* The EEPROM commands include the alway-set leading bit. */
+DECL|macro|EE_READ_CMD
+mdefine_line|#define EE_READ_CMD&t;&t;(6)
 multiline_comment|/* Note: this routine returns extra data bits for size detection. */
 DECL|function|tulip_read_eeprom
 r_int

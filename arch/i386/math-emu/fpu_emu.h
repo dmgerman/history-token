@@ -86,7 +86,7 @@ DECL|macro|RE_ENTRANT_CHECK_OFF
 macro_line|#  define RE_ENTRANT_CHECK_OFF
 DECL|macro|RE_ENTRANT_CHECK_ON
 macro_line|#  define RE_ENTRANT_CHECK_ON
-macro_line|#endif RE_ENTRANT_CHECKING
+macro_line|#endif /* RE_ENTRANT_CHECKING */
 DECL|macro|FWAIT_OPCODE
 mdefine_line|#define FWAIT_OPCODE 0x9b
 DECL|macro|OP_SIZE_PREFIX
@@ -611,6 +611,6 @@ suffix:semicolon
 macro_line|#ifndef MAKING_PROTO
 macro_line|#include &quot;fpu_proto.h&quot;
 macro_line|#endif
-macro_line|#endif __ASSEMBLY__
-macro_line|#endif _FPU_EMU_H_
+macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#endif /* _FPU_EMU_H_ */
 eof

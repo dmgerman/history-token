@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Network Checksum &amp; Copy routine&n; * &n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * Most of the code has been imported from Linux/Alpha&n; */
+multiline_comment|/*&n; * Network Checksum &amp; Copy routine&n; *&n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * Most of the code has been imported from Linux/Alpha&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -472,66 +472,40 @@ op_star
 id|errp
 )paren
 (brace
-r_const
-r_int
-r_char
-op_star
-id|psrc
-op_assign
-id|src
-suffix:semicolon
 r_int
 r_int
 id|result
 suffix:semicolon
-r_int
-id|cplen
-op_assign
-id|len
-suffix:semicolon
-r_int
-id|r
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* XXX Fixme&n;&t; * for now we separate the copy from checksum for obvious &n;&t; * alignment difficulties. Look at the Alpha code and you&squot;ll be&n;&t; * scared.&n;&t; */
-r_while
-c_loop
-(paren
-id|cplen
-op_decrement
-)paren
-id|r
-op_or_assign
-id|__get_user
-c_func
-(paren
-op_star
-id|dst
-op_increment
-comma
-id|psrc
-op_increment
-)paren
-suffix:semicolon
+multiline_comment|/* XXX Fixme&n;&t; * for now we separate the copy from checksum for obvious&n;&t; * alignment difficulties. Look at the Alpha code and you&squot;ll be&n;&t; * scared.&n;&t; */
 r_if
 c_cond
 (paren
-id|r
+id|__copy_from_user
+c_func
+(paren
+id|dst
+comma
+id|src
+comma
+id|len
+)paren
+op_ne
+l_int|0
 op_logical_and
 id|errp
 )paren
 op_star
 id|errp
 op_assign
-id|r
+op_minus
+id|EFAULT
 suffix:semicolon
 id|result
 op_assign
 id|do_csum
 c_func
 (paren
-id|src
+id|dst
 comma
 id|len
 )paren

@@ -34,5 +34,7 @@ mdefine_line|#define XVE_SOURCE_LIQ  0x2&t;/* 0010 */
 multiline_comment|/* XB_PARMS fields */
 DECL|macro|XBP_RESET_DEFAULTS
 mdefine_line|#define XBP_RESET_DEFAULTS&t;0x0008000080000021LL
+DECL|macro|XBP_ACTIVE_DEFAULTS
+mdefine_line|#define XBP_ACTIVE_DEFAULTS&t;0x00080000fffff021LL
 macro_line|#endif&t;/* _ASM_SN_SN1_HUBXB_NEXT_H */
 eof

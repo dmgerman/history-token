@@ -11,23 +11,14 @@ macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/reg.h&gt;
 macro_line|#include &lt;asm/sn/kldir.h&gt;
 macro_line|#endif&t;/* CONFIG_IA64_SGI_SN1 */
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 macro_line|#include &lt;asm/sn/sn1/addrs.h&gt;
 macro_line|#endif
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO */
 macro_line|#if _LANGUAGE_C
-macro_line|#if defined(CONFIG_IA64_SGI_IO)&t;/* FIXME */
 DECL|macro|PS_UINT_CAST
 mdefine_line|#define PS_UINT_CAST&t;&t;(__psunsigned_t)
 DECL|macro|UINT64_CAST
 mdefine_line|#define UINT64_CAST&t;&t;(uint64_t)
-macro_line|#else&t;/* CONFIG_IA64_SGI_IO */
-DECL|macro|PS_UINT_CAST
-mdefine_line|#define PS_UINT_CAST&t;&t;(unsigned long)
-DECL|macro|UINT64_CAST
-mdefine_line|#define UINT64_CAST&t;&t;(unsigned long)
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO */
 DECL|macro|HUBREG_CAST
 mdefine_line|#define HUBREG_CAST&t;&t;(volatile hubreg_t *)
 macro_line|#elif _LANGUAGE_ASSEMBLY
@@ -101,6 +92,10 @@ DECL|macro|UALIAS_BASE
 mdefine_line|#define UALIAS_BASE&t;&t;HSPEC_BASE
 DECL|macro|UALIAS_SIZE
 mdefine_line|#define UALIAS_SIZE&t;&t;0x10000000&t;/* 256 Megabytes */
+DECL|macro|CPU_UALIAS
+mdefine_line|#define CPU_UALIAS&t;&t;0x20000&t;&t;/* 128 Kilobytes */
+DECL|macro|UALIAS_CPU_SIZE
+mdefine_line|#define UALIAS_CPU_SIZE&t;&t;(CPU_UALIAS / CPUS_PER_NODE)
 DECL|macro|UALIAS_LIMIT
 mdefine_line|#define UALIAS_LIMIT&t;&t;(UALIAS_BASE + UALIAS_SIZE)
 multiline_comment|/*&n; * The bottom of ualias space is flipped depending on whether you&squot;re&n; * processor 0 or 1 within a node.&n; */
@@ -471,18 +466,6 @@ DECL|macro|PHYS_RAMBASE
 mdefine_line|#define PHYS_RAMBASE&t;&t;0x0
 DECL|macro|K0_RAMBASE
 mdefine_line|#define K0_RAMBASE&t;&t;PHYS_TO_K0(PHYS_RAMBASE)
-DECL|macro|EX_HANDLER_OFFSET
-mdefine_line|#define EX_HANDLER_OFFSET(slice) ((slice) &lt;&lt; 16)
-DECL|macro|EX_HANDLER_ADDR
-mdefine_line|#define EX_HANDLER_ADDR(nasid, slice)&t;&t;&t;&t;&t;&bslash;&n;&t;PHYS_TO_K0(NODE_OFFSET(nasid) | EX_HANDLER_OFFSET(slice))
-DECL|macro|EX_HANDLER_SIZE
-mdefine_line|#define EX_HANDLER_SIZE&t;&t;0x0400
-DECL|macro|EX_FRAME_OFFSET
-mdefine_line|#define EX_FRAME_OFFSET(slice)&t;((slice) &lt;&lt; 16 | 0x400)
-DECL|macro|EX_FRAME_ADDR
-mdefine_line|#define EX_FRAME_ADDR(nasid, slice)&t;&t;&t;&t;&t;&bslash;&n;&t;PHYS_TO_K0(NODE_OFFSET(nasid) | EX_FRAME_OFFSET(slice))
-DECL|macro|EX_FRAME_SIZE
-mdefine_line|#define EX_FRAME_SIZE&t;&t;0x0c00
 DECL|macro|ARCS_SPB_OFFSET
 mdefine_line|#define ARCS_SPB_OFFSET&t;&t;0x1000
 DECL|macro|ARCS_SPB_ADDR
@@ -491,8 +474,13 @@ DECL|macro|ARCS_SPB_SIZE
 mdefine_line|#define ARCS_SPB_SIZE&t;&t;0x0400
 DECL|macro|KLDIR_OFFSET
 mdefine_line|#define KLDIR_OFFSET&t;&t;0x2000
+macro_line|#ifndef __ia64
 DECL|macro|KLDIR_ADDR
 mdefine_line|#define KLDIR_ADDR(nasid)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;TO_NODE_UNCAC((nasid), KLDIR_OFFSET)
+macro_line|#else
+DECL|macro|KLDIR_ADDR
+mdefine_line|#define KLDIR_ADDR(nasid)                                               &bslash;&n;        TO_NODE_CAC((nasid), KLDIR_OFFSET)
+macro_line|#endif
 DECL|macro|KLDIR_SIZE
 mdefine_line|#define KLDIR_SIZE&t;&t;0x0400
 multiline_comment|/*&n; * Software structure locations -- indirected through KLDIR&n; *    See diagram in kldir.h&n; *&n; * Important:&t;All low memory structures must only be accessed&n; *&t;&t;uncached, except for the symmon stacks.&n; */

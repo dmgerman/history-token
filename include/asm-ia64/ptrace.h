@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PTRACE_H
 DECL|macro|_ASM_IA64_PTRACE_H
 mdefine_line|#define _ASM_IA64_PTRACE_H
-multiline_comment|/*&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1998, 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 12/07/98&t;S. Eranian&t;added pt_regs &amp; switch_stack&n; * 12/21/98&t;D. Mosberger&t;updated to match latest code&n; *  6/17/99&t;D. Mosberger&t;added second unat member to &quot;struct switch_stack&quot;&n; *&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1998, 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 12/07/98&t;S. Eranian&t;added pt_regs &amp; switch_stack&n; * 12/21/98&t;D. Mosberger&t;updated to match latest code&n; *  6/17/99&t;D. Mosberger&t;added second unat member to &quot;struct switch_stack&quot;&n; *&n; */
 multiline_comment|/*&n; * When a user process is blocked, its state looks as follows:&n; *&n; *            +----------------------+&t;-------&t;IA64_STK_OFFSET&n; *     &t;      |&t;&t;&t;     |&t; ^&n; *            | struct pt_regs       |&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *            +----------------------+&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *     &t;      |&t;   memory stack&t;     |&t; |&n; *&t;      |&t;(growing downwards)  |&t; |&n; *&t;      //.....................//&t; |&n; *&t;&t;&t;&t;&t; |&n; *&t;      //.....................//&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *            +----------------------+&t; |&n; *            | struct switch_stack  |&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      +----------------------+&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      //.....................//&t; |&n; *&t;&t;&t;&t;&t; |&n; *&t;      //.....................//&t; |&n; *&t;      |&t;&t;&t;     |&t; |&n; *&t;      |&t; register stack&t;     |&t; |&n; *&t;      |&t;(growing upwards)    |&t; |&n; *            |&t;&t;&t;     |&t; |&n; *&t;      +----------------------+&t; |  ---&t;IA64_RBS_OFFSET&n; *&t;      |&t;&t;&t;     |&t; |  ^&n; *            |  struct task_struct  |&t; |  |&n; * current -&gt; |&t;&t;&t;     |   |  |&n; *&t;      +----------------------+ -------&n; *&n; * Note that ar.ec is not saved explicitly in pt_reg or switch_stack.&n; * This is because ar.ec is saved as part of ar.pfs.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
@@ -21,7 +21,7 @@ DECL|macro|IA64_TASK_STRUCT_LOG_NUM_PAGES
 macro_line|# define IA64_TASK_STRUCT_LOG_NUM_PAGES&t;&t;0
 macro_line|#endif
 DECL|macro|IA64_RBS_OFFSET
-mdefine_line|#define IA64_RBS_OFFSET&t;&t;&t;((IA64_TASK_SIZE + 15) &amp; ~15) 
+mdefine_line|#define IA64_RBS_OFFSET&t;&t;&t;((IA64_TASK_SIZE + 15) &amp; ~15)
 DECL|macro|IA64_STK_OFFSET
 mdefine_line|#define IA64_STK_OFFSET&t;&t;&t;((1 &lt;&lt; IA64_TASK_STRUCT_LOG_NUM_PAGES)*PAGE_SIZE)
 DECL|macro|INIT_TASK_SIZE
@@ -605,23 +605,34 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|ia64_peek
+r_int
+id|ia64_get_user_bsp
 (paren
+r_struct
+id|task_struct
+op_star
+comma
 r_struct
 id|pt_regs
 op_star
-comma
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ia64_peek
+(paren
 r_struct
 id|task_struct
 op_star
 comma
 r_int
 r_int
-id|addr
+comma
+r_int
+r_int
 comma
 r_int
 op_star
-id|val
 )paren
 suffix:semicolon
 r_extern
@@ -629,19 +640,16 @@ r_int
 id|ia64_poke
 (paren
 r_struct
-id|pt_regs
-op_star
-comma
-r_struct
 id|task_struct
 op_star
 comma
 r_int
 r_int
-id|addr
 comma
 r_int
-id|val
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -651,7 +659,6 @@ id|ia64_flush_fph
 r_struct
 id|task_struct
 op_star
-id|t
 )paren
 suffix:semicolon
 r_extern
@@ -661,10 +668,8 @@ id|ia64_sync_fph
 r_struct
 id|task_struct
 op_star
-id|t
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_NEW_UNWIND
 multiline_comment|/* get nat bits for scratch registers such that bit N==1 iff scratch register rN is a NaT */
 r_extern
 r_int
@@ -697,44 +702,6 @@ r_int
 id|nat
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* get nat bits for r1-r31 such that bit N==1 iff rN is a NaT */
-r_extern
-r_int
-id|ia64_get_nat_bits
-(paren
-r_struct
-id|pt_regs
-op_star
-id|pt
-comma
-r_struct
-id|switch_stack
-op_star
-id|sw
-)paren
-suffix:semicolon
-multiline_comment|/* put nat bits for r1-r31 such that rN is a NaT iff bit N==1 */
-r_extern
-r_void
-id|ia64_put_nat_bits
-(paren
-r_struct
-id|pt_regs
-op_star
-id|pt
-comma
-r_struct
-id|switch_stack
-op_star
-id|sw
-comma
-r_int
-r_int
-id|nat
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|ia64_increment_ip

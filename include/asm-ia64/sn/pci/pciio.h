@@ -27,26 +27,6 @@ id|pciio_device_id_t
 suffix:semicolon
 DECL|macro|PCIIO_DEVICE_ID_NONE
 mdefine_line|#define PCIIO_DEVICE_ID_NONE&t;-1
-macro_line|#ifdef colin
-DECL|typedef|pciio_bus_t
-r_typedef
-r_char
-id|pciio_bus_t
-suffix:semicolon
-multiline_comment|/* PCI bus number (0..255) */
-DECL|typedef|pciio_slot_t
-r_typedef
-r_char
-id|pciio_slot_t
-suffix:semicolon
-multiline_comment|/* PCI slot number (0..31, 255) */
-DECL|typedef|pciio_function_t
-r_typedef
-r_char
-id|pciio_function_t
-suffix:semicolon
-multiline_comment|/* PCI func number (0..7, 255) */
-macro_line|#else
 DECL|typedef|pciio_bus_t
 r_typedef
 r_uint8
@@ -65,7 +45,6 @@ r_uint8
 id|pciio_function_t
 suffix:semicolon
 multiline_comment|/* PCI func number (0..7, 255) */
-macro_line|#endif
 DECL|macro|PCIIO_SLOTS
 mdefine_line|#define&t;PCIIO_SLOTS&t;&t;((pciio_slot_t)32)
 DECL|macro|PCIIO_FUNCS
@@ -782,6 +761,61 @@ op_star
 id|addrp
 )paren
 suffix:semicolon
+r_typedef
+r_void
+DECL|typedef|pciio_driver_reg_callback_f
+id|pciio_driver_reg_callback_f
+(paren
+id|devfs_handle_t
+id|conn
+comma
+r_int
+id|key1
+comma
+r_int
+id|key2
+comma
+r_int
+id|error
+)paren
+suffix:semicolon
+r_typedef
+r_void
+DECL|typedef|pciio_driver_unreg_callback_f
+id|pciio_driver_unreg_callback_f
+(paren
+id|devfs_handle_t
+id|conn
+comma
+multiline_comment|/* pci connection point */
+r_int
+id|key1
+comma
+r_int
+id|key2
+comma
+r_int
+id|error
+)paren
+suffix:semicolon
+r_typedef
+r_int
+DECL|typedef|pciio_device_unregister_f
+id|pciio_device_unregister_f
+(paren
+id|devfs_handle_t
+id|conn
+)paren
+suffix:semicolon
+r_typedef
+r_int
+DECL|typedef|pciio_dma_enabled_f
+id|pciio_dma_enabled_f
+(paren
+id|devfs_handle_t
+id|conn
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Adapters that provide a PCI interface adhere to this software interface.&n; */
 DECL|struct|pciio_provider_s
 r_typedef
@@ -953,6 +987,27 @@ id|pciio_error_extract_f
 op_star
 id|error_extract
 suffix:semicolon
+multiline_comment|/* Callback support */
+DECL|member|driver_reg_callback
+id|pciio_driver_reg_callback_f
+op_star
+id|driver_reg_callback
+suffix:semicolon
+DECL|member|driver_unreg_callback
+id|pciio_driver_unreg_callback_f
+op_star
+id|driver_unreg_callback
+suffix:semicolon
+DECL|member|device_unregister
+id|pciio_device_unregister_f
+op_star
+id|device_unregister
+suffix:semicolon
+DECL|member|dma_enabled
+id|pciio_dma_enabled_f
+op_star
+id|dma_enabled
+suffix:semicolon
 DECL|typedef|pciio_provider_t
 )brace
 id|pciio_provider_t
@@ -1097,13 +1152,8 @@ DECL|macro|PCIIO_WIDGETDEV_SLOT_MASK
 mdefine_line|#define PCIIO_WIDGETDEV_SLOT_MASK&t;&t;0x1f
 DECL|macro|PCIIO_WIDGETDEV_FUNC_MASK
 mdefine_line|#define PCIIO_WIDGETDEV_FUNC_MASK&t;&t;0x7
-macro_line|#ifdef IRIX
-DECL|macro|pciio_widgetdev_create
-mdefine_line|#define pciio_widgetdev_create(slot,func)&t;&bslash;&n;&t;((slot) &lt;&lt; PCIIO_WIDGETDEV_SLOT_SHFT + (func))
-macro_line|#else
 DECL|macro|pciio_widgetdev_create
 mdefine_line|#define pciio_widgetdev_create(slot,func)       &bslash;&n;        (((slot) &lt;&lt; PCIIO_WIDGETDEV_SLOT_SHFT) + (func))
-macro_line|#endif
 DECL|macro|pciio_widgetdev_slot_get
 mdefine_line|#define pciio_widgetdev_slot_get(wdev)&t;&t;&bslash;&n;&t;(((wdev) &gt;&gt; PCIIO_WIDGETDEV_SLOT_SHFT) &amp; PCIIO_WIDGETDEV_SLOT_MASK)
 DECL|macro|pciio_widgetdev_func_get
@@ -1295,9 +1345,12 @@ c_func
 (paren
 id|devfs_handle_t
 id|pcicard
+comma
+multiline_comment|/* vertex created by pciio_device_register */
+r_int
+id|drv_flags
 )paren
 suffix:semicolon
-multiline_comment|/* vertex created by pciio_device_register */
 r_extern
 r_int
 id|pciio_device_detach
@@ -1305,9 +1358,12 @@ c_func
 (paren
 id|devfs_handle_t
 id|pcicard
+comma
+multiline_comment|/* vertex created by pciio_device_register */
+r_int
+id|drv_flags
 )paren
 suffix:semicolon
-multiline_comment|/* vertex created by pciio_device_register */
 multiline_comment|/*&n; * Generic PCI interface, for use with all PCI providers&n; * and all PCI devices.&n; */
 multiline_comment|/* Generic PCI interrupt interfaces */
 r_extern
@@ -1383,7 +1439,7 @@ id|pciio_piomap_t
 id|pciio_piomap
 )paren
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 macro_line|#ifdef USE_PCI_PIO
 r_extern
 r_uint8
@@ -1639,7 +1695,7 @@ id|val
 suffix:semicolon
 )brace
 macro_line|#endif /* USE_PCI_PIO */
-macro_line|#endif
+macro_line|#endif&t;/* LATER */
 multiline_comment|/* Generic PCI dma interfaces */
 r_extern
 id|devfs_handle_t

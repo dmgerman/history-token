@@ -8,14 +8,12 @@ macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
+macro_line|#include &lt;asm/sn/hack.h&gt;
 macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk_private.h&gt;
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;&t;1
-DECL|macro|XBOW_DEBUG
-mdefine_line|#define XBOW_DEBUG&t;1
+multiline_comment|/* #define DEBUG&t;&t;1 */
+multiline_comment|/* #define XBOW_DEBUG&t;1 */
 multiline_comment|/*&n; * Files needed to get the device driver entry points&n; */
-multiline_comment|/* #include &lt;asm/cred.h&gt; */
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
@@ -94,7 +92,7 @@ id|MAX_XBOW_PORTS
 )braket
 suffix:semicolon
 DECL|member|xbow_perf_lock
-id|lock_t
+id|spinlock_t
 id|xbow_perf_lock
 suffix:semicolon
 DECL|member|link_monitor
@@ -112,7 +110,7 @@ suffix:semicolon
 multiline_comment|/* cached PIO pointer */
 multiline_comment|/* Bandwidth allocation state. Bandwidth values are for the&n;     * destination port since contention happens there.&n;     * Implicit mapping from xbow ports (8..f) -&gt; (0..7) array indices.&n;     */
 DECL|member|xbow_bw_alloc_lock
-id|lock_t
+id|spinlock_t
 id|xbow_bw_alloc_lock
 suffix:semicolon
 multiline_comment|/* bw allocation lock */
@@ -367,7 +365,6 @@ c_func
 id|devfs_handle_t
 )paren
 suffix:semicolon
-macro_line|#ifdef IRIX
 r_int
 id|xbow_prio_bw_alloc
 c_func
@@ -387,27 +384,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-macro_line|#else
-r_int
-id|xbow_prio_bw_alloc
-c_func
-(paren
-id|devfs_handle_t
-comma
-id|xwidgetnum_t
-comma
-id|xwidgetnum_t
-comma
-r_int
-r_int
-r_int
-comma
-r_int
-r_int
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|xbow_reset_link
 id|xswitch_reset_link_f
 id|xbow_reset_link
@@ -607,16 +583,25 @@ r_int
 id|xbow_num
 suffix:semicolon
 macro_line|#if DEBUG &amp;&amp; ATTACH_DEBUG
-id|cmn_err
+macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;%v: xbow_attach&bslash;n&quot;
 comma
 id|conn
 )paren
 suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+l_string|&quot;0x%x: xbow_attach&bslash;n&quot;
+comma
+id|conn
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n;     * Get a PIO pointer to the base of the crossbow&n;     * chip.&n;     */
 macro_line|#ifdef XBRIDGE_REGS_SIM
@@ -699,6 +684,7 @@ c_func
 id|conn
 )paren
 suffix:semicolon
+macro_line|#if DEBUG &amp;&amp; ATTACH_DEBUG
 id|printk
 c_func
 (paren
@@ -719,6 +705,7 @@ op_star
 id|xbow
 )paren
 suffix:semicolon
+macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -783,24 +770,8 @@ id|vhdl
 id|printk
 c_func
 (paren
-"&quot;"
-id|xbow_attach
-suffix:colon
-id|Unable
-id|to
-id|create
-r_char
-id|device
-r_for
-id|xbow
-id|conn
-l_int|0
-id|x
-op_mod
-id|p
-"&bslash;"
-id|n
-"&quot;"
+id|KERN_WARNING
+l_string|&quot;xbow_attach: Unable to create char device for xbow conn %p&bslash;n&quot;
 comma
 id|conn
 )paren
@@ -845,21 +816,10 @@ suffix:semicolon
 DECL|macro|XBOW_NUM_SUFFIX_FORMAT
 mdefine_line|#define XBOW_NUM_SUFFIX_FORMAT&t;&quot;[xbow# %d]&quot;
 multiline_comment|/* Add xbow number as a suffix to the hwgraph name of the xbow.&n;     * This is helpful while looking at the error/warning messages.&n;     */
-macro_line|#if CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 || CONFIG_IA64_GENERIC
 id|xbow_num
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#else
-id|xbow_num
-op_assign
-id|xswitch_id_get
-c_func
-(paren
-id|busv
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;     * get the name of this xbow vertex and keep the info.&n;     * This is needed during errors and interrupts, but as&n;     * long as we have it, we can use it elsewhere.&n;     */
 id|s
 op_assign
@@ -935,7 +895,7 @@ id|id
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     * Print the revision if DEBUG, or SHOW_REVS and kdebug,&n;     * or the xbow is downrev.&n;     *&n;     * If xbow is downrev, make it a WARNING that the&n;     * Crossbow is DOWNREV: these chips are not good&n;     * to have around, and the operator should be told.&n;     */
-macro_line|#ifdef IRIX
+macro_line|#ifdef&t;LATER
 macro_line|#if !DEBUG
 r_if
 c_cond
@@ -953,20 +913,9 @@ id|XBOW_REV_1_1
 )paren
 )paren
 macro_line|#endif&t;/* !DEBUG  */
-id|cmn_err
+id|printk
 c_func
 (paren
-(paren
-id|rev
-OL
-id|XBOW_REV_1_1
-)paren
-ques
-c_cond
-id|CE_WARN
-suffix:colon
-id|CE_CONT
-comma
 l_string|&quot;%sCrossbow ASIC: rev %s (code=%d) at %s%s&quot;
 comma
 (paren
@@ -1061,14 +1010,12 @@ suffix:colon
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* IRIX */
-id|spinlock_init
+macro_line|#endif&t;/* LATER */
+id|mutex_spinlock_init
 c_func
 (paren
 op_amp
 id|soft-&gt;xbow_perf_lock
-comma
-l_string|&quot;xbow_perf_lock&quot;
 )paren
 suffix:semicolon
 id|soft-&gt;xbow_perfcnt
@@ -1092,13 +1039,11 @@ op_amp
 id|xbow-&gt;xb_perf_ctr_b
 suffix:semicolon
 multiline_comment|/* Initialization for GBR bw allocation */
-id|spinlock_init
+id|mutex_spinlock_init
 c_func
 (paren
 op_amp
 id|soft-&gt;xbow_bw_alloc_lock
-comma
-l_string|&quot;xbow_bw_alloc_lock&quot;
 )paren
 suffix:semicolon
 DECL|macro|XBOW_8_BIT_PORT_BW_MAX
@@ -1239,7 +1184,7 @@ id|soft
 )paren
 suffix:semicolon
 macro_line|#else
-id|printk
+id|FIXME
 c_func
 (paren
 l_string|&quot;xbow_attach: Fixme: we bypassed attaching xbow error interrupt.&bslash;n&quot;
@@ -1449,24 +1394,6 @@ op_star
 id|credp
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|_CAP_CRABLE
-c_func
-(paren
-(paren
-r_uint64
-)paren
-id|credp
-comma
-id|CAP_DEVICE_MGT
-)paren
-)paren
-r_return
-id|EPERM
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1621,13 +1548,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#if IP27
-id|cnodeid_t
-id|cnodeid
-op_assign
-id|CNODEID_NONE
-suffix:semicolon
-macro_line|#endif
 id|vertex_to_name
 c_func
 (paren
@@ -1638,72 +1558,6 @@ comma
 id|MAXDEVNAME
 )paren
 suffix:semicolon
-macro_line|#if IP30
-multiline_comment|/* If there is a &quot;.connection&quot; edge from this vertex,&n;&t; * then it must be &quot;/hw/node&quot; vertex. Return the widget&n;&t; * number for heart: 8.&n;&t; */
-r_if
-c_cond
-(paren
-id|hwgraph_edge_get
-c_func
-(paren
-id|dev
-comma
-id|EDGE_LBL_CONN
-comma
-op_amp
-id|tdev
-)paren
-op_eq
-id|GRAPH_SUCCESS
-)paren
-(brace
-r_return
-(paren
-(paren
-id|xwidgetnum_t
-)paren
-l_int|8
-)paren
-suffix:semicolon
-)brace
-macro_line|#elif IP27
-r_if
-c_cond
-(paren
-(paren
-id|cnodeid
-op_assign
-id|nodevertex_to_cnodeid
-c_func
-(paren
-id|dev
-)paren
-)paren
-op_ne
-id|CNODEID_NONE
-)paren
-(brace
-id|ASSERT
-c_func
-(paren
-id|cnodeid
-OL
-id|maxnodes
-)paren
-suffix:semicolon
-r_return
-id|hub_widget_id
-c_func
-(paren
-id|COMPACT_TO_NASID_NODEID
-c_func
-(paren
-id|cnodeid
-)paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* If this is a pci controller vertex, traverse up using&n;&t; * the &quot;..&quot; links to get to the widget.&n;&t; */
 r_if
 c_cond
@@ -1919,7 +1773,7 @@ c_cond
 id|cmd
 )paren
 (brace
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_case
 id|XBOWIOC_PERF_ENABLE
 suffix:colon
@@ -2033,7 +1887,7 @@ r_break
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_case
 id|XBOWIOC_PERF_GET
 suffix:colon
@@ -2121,29 +1975,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|_CAP_CRABLE
-c_func
-(paren
-(paren
-r_uint64
-)paren
-id|cr
-comma
-id|CAP_DEVICE_MGT
-)paren
-)paren
-(brace
-id|error
-op_assign
-id|EPERM
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 (paren
 id|error
 op_assign
@@ -2168,29 +1999,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|_CAP_CRABLE
-c_func
-(paren
-(paren
-r_uint64
-)paren
-id|cr
-comma
-id|CAP_DEVICE_MGT
-)paren
-)paren
-(brace
-id|error
-op_assign
-id|EPERM
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 (paren
 id|error
 op_assign
@@ -2209,7 +2017,7 @@ id|EINVAL
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_case
 id|XBOWIOC_LLP_ERROR_GET
 suffix:colon
@@ -2291,7 +2099,7 @@ r_break
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_case
 id|GIOCSETBW
 suffix:colon
@@ -2304,24 +2112,6 @@ id|src_widgetnum
 comma
 id|dest_widgetnum
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cap_able
-c_func
-(paren
-id|CAP_DEVICE_MGT
-)paren
-)paren
-(brace
-id|error
-op_assign
-id|EPERM
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2836,14 +2626,14 @@ id|addr
 suffix:semicolon
 )brace
 DECL|macro|XEM_ADD_STR
-mdefine_line|#define&t;XEM_ADD_STR(s)&t;&t;cmn_err(CE_CONT, &quot;%s&quot;, (s))
+mdefine_line|#define&t;XEM_ADD_STR(s)&t;&t;printk(&quot;%s&quot;, (s))
 DECL|macro|XEM_ADD_NVAR
-mdefine_line|#define&t;XEM_ADD_NVAR(n,v)&t;cmn_err(CE_CONT, &quot;&bslash;t%20s: 0x%x&bslash;n&quot;, (n), (v))
+mdefine_line|#define&t;XEM_ADD_NVAR(n,v)&t;printk(&quot;&bslash;t%20s: 0x%x&bslash;n&quot;, (n), (v))
 DECL|macro|XEM_ADD_VAR
 mdefine_line|#define&t;XEM_ADD_VAR(v)&t;&t;XEM_ADD_NVAR(#v,(v))
 DECL|macro|XEM_ADD_IOEF
 mdefine_line|#define XEM_ADD_IOEF(n) &t;if (IOERROR_FIELDVALID(ioe,n))&t;&t;    &bslash;&n;&t;&t;&t;&t;    XEM_ADD_NVAR(&quot;ioe.&quot; #n,&t;&t;    &bslash;&n;&t;&t;&t;&t;&t;&t; IOERROR_GETVALUE(ioe,n))
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_static
 r_void
 DECL|function|xem_add_ioe
@@ -2942,7 +2732,7 @@ suffix:semicolon
 )brace
 DECL|macro|XEM_ADD_IOE
 mdefine_line|#define XEM_ADD_IOE()&t;(xem_add_ioe(ioe))
-macro_line|#endif&t;/* IRIX */
+macro_line|#endif&t;/* LATER */
 DECL|variable|xbow_xmit_retry_errors
 r_int
 id|xbow_xmit_retry_errors
@@ -3159,7 +2949,6 @@ id|intr_arg_t
 id|arg
 )paren
 (brace
-macro_line|#ifdef IRIX
 id|ioerror_t
 id|ioe
 (braket
@@ -3502,12 +3291,10 @@ c_func
 id|xwidget_vhdl
 )paren
 suffix:semicolon
-macro_line|#ifdef IRIX
-id|cmn_err
+macro_line|#ifdef&t;LATER
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;%s port %X[%s] XIO Bus Error&quot;
 comma
 id|soft-&gt;name
@@ -3647,7 +3434,7 @@ c_func
 l_string|&quot;&bslash;tSource Timeout Error&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#endif&t;/* LATER */
 (brace
 r_int
 id|other_port
@@ -3766,11 +3553,9 @@ id|XB_WID_STAT_REG_ACC_ERR
 )paren
 )paren
 (brace
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;%s Port 0 XIO Bus Error&quot;
 comma
 id|soft-&gt;name
@@ -3862,18 +3647,13 @@ c_func
 id|wid_err_addr
 )paren
 suffix:semicolon
-id|cmn_err_tag
+id|PRINT_PANIC
 c_func
 (paren
-l_int|8
-comma
-id|CE_PANIC
-comma
 l_string|&quot;XIO Bus Error&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 macro_line|#endif&t;/* LATER */
 multiline_comment|/*&n; * XBOW ERROR Handling routines.&n; * These get invoked as part of walking down the error handling path&n; * from hub/heart towards the I/O device that caused the error.&n; */
@@ -3900,7 +3680,6 @@ op_star
 id|ioerror
 )paren
 (brace
-macro_line|#ifdef IRIX
 r_int
 id|retval
 op_assign
@@ -3970,11 +3749,9 @@ op_assign
 id|soft-&gt;busv
 suffix:semicolon
 macro_line|#if DEBUG &amp;&amp; ERROR_DEBUG
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;%s: xbow_error_handler&bslash;n&quot;
 comma
 id|soft-&gt;name
@@ -4020,11 +3797,9 @@ op_amp
 id|IOECODE_DMA
 )paren
 (brace
-id|cmn_err
+id|PRINT_ALERT
 c_func
 (paren
-id|CE_ALERT
-comma
 l_string|&quot;DMA error blamed on Crossbow at %s&bslash;n&quot;
 l_string|&quot;&bslash;tbut Crosbow never initiates DMA!&quot;
 comma
@@ -4040,11 +3815,9 @@ op_amp
 id|IOECODE_PIO
 )paren
 (brace
-id|cmn_err
+id|PRINT_ALERt
 c_func
 (paren
-id|CE_ALERT
-comma
 l_string|&quot;PIO Error on XIO Bus %s&bslash;n&quot;
 l_string|&quot;&bslash;tattempting to access XIO controller&bslash;n&quot;
 l_string|&quot;&bslash;twith offset 0x%X&quot;
@@ -4134,11 +3907,9 @@ op_amp
 id|IOECODE_DMA
 )paren
 (brace
-id|cmn_err
+id|PRINT_ALERT
 c_func
 (paren
-id|CE_ALERT
-comma
 l_string|&quot;DMA error blamed on XIO port at %s/%d&bslash;n&quot;
 l_string|&quot;&bslash;tbut Crossbow does not support that port&quot;
 comma
@@ -4156,11 +3927,9 @@ op_amp
 id|IOECODE_PIO
 )paren
 (brace
-id|cmn_err
+id|PRINT_ALERT
 c_func
 (paren
-id|CE_ALERT
-comma
 l_string|&quot;PIO Error on XIO Bus %s&bslash;n&quot;
 l_string|&quot;&bslash;tattempting to access XIO port %d&bslash;n&quot;
 l_string|&quot;&bslash;t(which Crossbow does not support)&quot;
@@ -4289,11 +4058,9 @@ op_amp
 id|IOECODE_DMA
 )paren
 (brace
-id|cmn_err
+id|PRINT_ALERT
 c_func
 (paren
-id|CE_ALERT
-comma
 l_string|&quot;DMA error blamed on XIO port at %s/%d&bslash;n&quot;
 l_string|&quot;&bslash;tbut there is no device connected there.&quot;
 comma
@@ -4311,11 +4078,9 @@ op_amp
 id|IOECODE_PIO
 )paren
 (brace
-id|cmn_err
+id|PRINT_ALERT
 c_func
 (paren
-id|CE_ALERT
-comma
 l_string|&quot;PIO Error on XIO Bus %s&bslash;n&quot;
 l_string|&quot;&bslash;tattempting to access XIO port %d&bslash;n&quot;
 l_string|&quot;&bslash;t(which has no device connected)&quot;
@@ -4433,11 +4198,9 @@ id|MODE_DEVPROBE
 r_return
 id|IOERROR_HANDLED
 suffix:semicolon
-id|cmn_err
+id|PRINT_ALERT
 c_func
 (paren
-id|CE_ALERT
-comma
 l_string|&quot;%s%sError on XIO Bus %s port %d&quot;
 comma
 (paren
@@ -4487,11 +4250,9 @@ id|xtalkaddr
 )paren
 )paren
 (brace
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;&bslash;tAccess attempted to offset 0x%X&bslash;n&quot;
 comma
 id|IOERROR_GETVALUE
@@ -4599,11 +4360,9 @@ id|retval
 op_assign
 id|IOERROR_PANIC
 suffix:semicolon
-id|cmn_err
+id|PRINT_ALERT
 c_func
 (paren
-id|CE_ALERT
-comma
 l_string|&quot;%s%sError on XIO Bus %s port %d&quot;
 comma
 (paren
@@ -4653,11 +4412,9 @@ id|xtalkaddr
 )paren
 )paren
 (brace
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;&bslash;tAccess attempted to offset 0x%X&bslash;n&quot;
 comma
 id|IOERROR_GETVALUE
@@ -4746,7 +4503,6 @@ multiline_comment|/* caller will dump raw ioerror data&n;     * in DEBUG and kde
 r_return
 id|retval
 suffix:semicolon
-macro_line|#endif /* IRIX */
 )brace
 macro_line|#endif&t;/* LATER */
 r_void
@@ -4783,9 +4539,11 @@ id|xbow_perfcount_t
 id|perf_reg
 suffix:semicolon
 r_int
-id|link
-comma
+r_int
 id|s
+suffix:semicolon
+r_int
+id|link
 comma
 id|i
 suffix:semicolon
@@ -4874,7 +4632,7 @@ id|s
 suffix:semicolon
 )brace
 multiline_comment|/* Do port /mode multiplexing here */
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 (paren
 r_void
 )paren
@@ -4972,8 +4730,10 @@ id|xbow_perfcount_t
 id|perf_reg
 suffix:semicolon
 r_int
+r_int
 id|s
-comma
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 id|link
@@ -5203,7 +4963,7 @@ id|xbow_perf-&gt;xp_current
 op_assign
 id|perf_reg.xb_perf.count
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 (paren
 r_void
 )paren
@@ -5408,12 +5168,10 @@ id|XB_STAT_LINKALIVE
 )paren
 )paren
 (brace
-macro_line|#ifdef IRIX
-id|cmn_err
+macro_line|#ifdef&t;LATER
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;link %d[%s]: bad status 0x%x&bslash;n&quot;
 comma
 id|link
@@ -5426,7 +5184,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 )brace
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_if
 c_cond
 (paren
@@ -5535,7 +5293,7 @@ c_func
 id|vhdl
 )paren
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 (paren
 r_void
 )paren
@@ -5811,7 +5569,7 @@ id|xb_linkregs_t
 op_star
 id|link
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_if
 c_cond
 (paren
@@ -5859,7 +5617,7 @@ op_star
 id|regs
 suffix:semicolon
 )brace
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 id|qprintf
 c_func
 (paren
@@ -5929,7 +5687,7 @@ c_func
 id|i
 )paren
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 id|qprintf
 c_func
 (paren
@@ -6136,6 +5894,7 @@ suffix:semicolon
 id|xbowreg_t
 id|mask
 suffix:semicolon
+r_int
 r_int
 id|s
 suffix:semicolon

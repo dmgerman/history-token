@@ -49,6 +49,7 @@ id|x
 (brace
 r_return
 id|__ia64_swab64
+c_func
 (paren
 id|x
 )paren
@@ -70,6 +71,7 @@ id|x
 (brace
 r_return
 id|__ia64_swab64
+c_func
 (paren
 id|x
 )paren
@@ -78,11 +80,11 @@ l_int|48
 suffix:semicolon
 )brace
 DECL|macro|__arch__swab64
-mdefine_line|#define __arch__swab64(x) __ia64_swab64 (x)
+mdefine_line|#define __arch__swab64(x) __ia64_swab64(x)
 DECL|macro|__arch__swab32
-mdefine_line|#define __arch__swab32(x) __ia64_swab32 (x)
+mdefine_line|#define __arch__swab32(x) __ia64_swab32(x)
 DECL|macro|__arch__swab16
-mdefine_line|#define __arch__swab16(x) __ia64_swab16 (x)
+mdefine_line|#define __arch__swab16(x) __ia64_swab16(x)
 DECL|macro|__BYTEORDER_HAS_U64__
 mdefine_line|#define __BYTEORDER_HAS_U64__
 macro_line|#include &lt;linux/byteorder/little_endian.h&gt;

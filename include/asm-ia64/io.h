@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_IO_H
 DECL|macro|_ASM_IA64_IO_H
 mdefine_line|#define _ASM_IA64_IO_H
-multiline_comment|/*&n; * This file contains the definitions for the emulated IO instructions&n; * inb/inw/inl/outb/outw/outl and the &quot;string versions&quot; of the same&n; * (insb/insw/insl/outsb/outsw/outsl). You can also use &quot;pausing&quot;&n; * versions of the single-IO instructions (inb_p/inw_p/..).&n; *&n; * This file is not meant to be obfuscating: it&squot;s just complicated to&n; * (a) handle it all in a way that makes gcc able to optimize it as&n; * well as possible and (b) trying to avoid writing the same thing&n; * over and over again with slight variations and possibly making a&n; * mistake somewhere.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the definitions for the emulated IO instructions&n; * inb/inw/inl/outb/outw/outl and the &quot;string versions&quot; of the same&n; * (insb/insw/insl/outsb/outsw/outsl). You can also use &quot;pausing&quot;&n; * versions of the single-IO instructions (inb_p/inw_p/..).&n; *&n; * This file is not meant to be obfuscating: it&squot;s just complicated to&n; * (a) handle it all in a way that makes gcc able to optimize it as&n; * well as possible and (b) trying to avoid writing the same thing&n; * over and over again with slight variations and possibly making a&n; * mistake somewhere.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
 multiline_comment|/* We don&squot;t use IO slowdowns on the ia64, but.. */
 DECL|macro|__SLOW_DOWN_IO
 mdefine_line|#define __SLOW_DOWN_IO&t;do { } while (0)
@@ -147,7 +147,7 @@ op_star
 id|addr
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * For the in/out instructions, we need to do:&n; *&n; *&t;o &quot;mf&quot; _before_ doing the I/O access to ensure that all prior&n; *&t;  accesses to memory occur before the I/O access&n; *&t;o &quot;mf.a&quot; _after_ doing the I/O access to ensure that the access&n; *&t;  has completed before we&squot;re doing any other I/O accesses&n; *&n; * The former is necessary because we might be doing normal (cached) memory&n; * accesses, e.g., to set up a DMA descriptor table and then do an &quot;outX()&quot;&n; * to tell the DMA controller to start the DMA operation.  The &quot;mf&quot; ahead&n; * of the I/O operation ensures that the DMA table is correct when the I/O&n; * access occurs.&n; *&n; * The mf.a is necessary to ensure that all I/O access occur in program&n; * order. --davidm 99/12/07 &n; */
+multiline_comment|/*&n; * For the in/out routines, we need to do &quot;mf.a&quot; _after_ doing the I/O access to ensure&n; * that the access has completed before executing other I/O accesses.  Since we&squot;re doing&n; * the accesses through an uncachable (UC) translation, the CPU will execute them in&n; * program order.  However, we still need to tell the compiler not to shuffle them around&n; * during optimization, which is why we use &quot;volatile&quot; pointers.&n; */
 r_static
 r_inline
 r_int
@@ -1212,7 +1212,7 @@ macro_line|#ifndef outl_p
 DECL|macro|outl_p
 macro_line|# define outl_p&t;&t;outl
 macro_line|#endif
-multiline_comment|/*&n; * An &quot;address&quot; in IO memory space is not clearly either an integer&n; * or a pointer. We will accept both, thus the casts.&n; *&n; * On ia-64, we access the physical I/O memory space through the&n; * uncached kernel region.&n; */
+multiline_comment|/*&n; * An &quot;address&quot; in IO memory space is not clearly either an integer or a pointer. We will&n; * accept both, thus the casts.&n; *&n; * On ia-64, we access the physical I/O memory space through the uncached kernel region.&n; */
 r_static
 r_inline
 r_void
@@ -1304,93 +1304,6 @@ DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(to,from,len) &bslash;&n;  __ia64_memcpy_toio((unsigned long)(to),(from),(len))
 DECL|macro|memset_io
 mdefine_line|#define memset_io(addr,c,len) &bslash;&n;  __ia64_memset_c_io((unsigned long)(addr),0x0101010101010101UL*(u8)(c),(len))
-DECL|macro|__HAVE_ARCH_MEMSETW_IO
-mdefine_line|#define __HAVE_ARCH_MEMSETW_IO
-DECL|macro|memsetw_io
-mdefine_line|#define memsetw_io(addr,c,len) &bslash;&n;  _memset_c_io((unsigned long)(addr),0x0001000100010001UL*(u16)(c),(len))
-multiline_comment|/*&n; * XXX - We don&squot;t have csum_partial_copy_fromio() yet, so we cheat here and &n; * just copy it. The net code will then do the checksum later. Presently &n; * only used by some shared memory 8390 Ethernet cards anyway.&n; */
-DECL|macro|eth_io_copy_and_sum
-mdefine_line|#define eth_io_copy_and_sum(skb,src,len,unused)&t;&t;memcpy_fromio((skb)-&gt;data,(src),(len))
-macro_line|#if 0
-multiline_comment|/*&n; * XXX this is the kind of legacy stuff we want to get rid of with IA-64... --davidm 99/12/02&n; */
-multiline_comment|/*&n; * This is used for checking BIOS signatures.  It&squot;s not clear at all&n; * why this is here.  This implementation seems to be the same on&n; * all architectures.  Strange.&n; */
-r_static
-r_inline
-r_int
-id|check_signature
-(paren
-r_int
-r_int
-id|io_addr
-comma
-r_const
-r_int
-r_char
-op_star
-id|signature
-comma
-r_int
-id|length
-)paren
-(brace
-r_int
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_do
-(brace
-r_if
-c_cond
-(paren
-id|readb
-c_func
-(paren
-id|io_addr
-)paren
-op_ne
-op_star
-id|signature
-)paren
-r_goto
-id|out
-suffix:semicolon
-id|io_addr
-op_increment
-suffix:semicolon
-id|signature
-op_increment
-suffix:semicolon
-id|length
-op_decrement
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|length
-)paren
-suffix:semicolon
-id|retval
-op_assign
-l_int|1
-suffix:semicolon
-id|out
-suffix:colon
-r_return
-id|retval
-suffix:semicolon
-)brace
-mdefine_line|#define RTC_PORT(x)&t;&t;(0x70 + (x))
-mdefine_line|#define RTC_ALWAYS_BCD&t;&t;0
-macro_line|#endif
-multiline_comment|/*&n; * The caches on some architectures aren&squot;t DMA-coherent and have need&n; * to handle this in software.  There are two types of operations that&n; * can be applied to dma buffers.&n; *&n; * - dma_cache_inv(start, size) invalidates the affected parts of the&n; *   caches.  Dirty lines of the caches may be written back or simply&n; *   be discarded.  This operation is necessary before dma operations&n; *   to the memory.&n; *&n; * - dma_cache_wback(start, size) makes caches and memory coherent&n; *   by writing the content of the caches back to memory, if necessary&n; *   (cache flush).&n; *&n; * - dma_cache_wback_inv(start, size) Like dma_cache_wback() but the&n; *   function also invalidates the affected part of the caches as&n; *   necessary before DMA transfers from outside to memory.&n; *&n; * Fortunately, the IA-64 architecture mandates cache-coherent DMA, so&n; * these functions can be implemented as no-ops.&n; */
-DECL|macro|dma_cache_inv
-mdefine_line|#define dma_cache_inv(_start,_size)&t;&t;do { } while (0)
-DECL|macro|dma_cache_wback
-mdefine_line|#define dma_cache_wback(_start,_size)&t;&t;do { } while (0)
-DECL|macro|dma_cache_wback_inv
-mdefine_line|#define dma_cache_wback_inv(_start,_size)&t;do { } while (0)
 macro_line|# endif /* __KERNEL__ */
 macro_line|#endif /* _ASM_IA64_IO_H */
 eof

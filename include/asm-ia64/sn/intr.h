@@ -2,6 +2,9 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_INTR_H
 DECL|macro|_ASM_SN_INTR_H
 mdefine_line|#define _ASM_SN_INTR_H
+multiline_comment|/* Subnode wildcard */
+DECL|macro|SUBNODE_ANY
+mdefine_line|#define SUBNODE_ANY&t;&t;-1
 multiline_comment|/* Number of interrupt levels associated with each interrupt register. */
 DECL|macro|N_INTPEND_BITS
 mdefine_line|#define N_INTPEND_BITS&t;&t;64
@@ -16,7 +19,6 @@ mdefine_line|#define&t;INTPENDJUNK_CLRBIT&t;0x80
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/intr_public.h&gt;
 macro_line|#if LANGUAGE_C
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 DECL|macro|II_NAMELEN
 mdefine_line|#define II_NAMELEN&t;24
 multiline_comment|/*&n; * Dispatch table entry - contains information needed to call an interrupt&n; * routine.&n; */
@@ -41,7 +43,7 @@ op_star
 id|iv_arg
 suffix:semicolon
 multiline_comment|/* Argument to pass to handler */
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 DECL|member|iv_tinfo
 id|thd_int_t
 id|iv_tinfo
@@ -145,7 +147,7 @@ id|N_INTPEND_BITS
 suffix:semicolon
 multiline_comment|/* information needed only&n;&t;&t;&t;&t;&t;&t;     to maintain interrupts. */
 DECL|member|vector_lock
-id|lock_t
+id|spinlock_t
 id|vector_lock
 suffix:semicolon
 multiline_comment|/* Lock for this and the&n;&t;&t;&t;&t;&t;&t;     masks in the PDA. */
@@ -196,22 +198,18 @@ DECL|macro|hub_intrinfo0
 mdefine_line|#define hub_intrinfo0&t;private.p_intmasks.dispatch0-&gt;info
 DECL|macro|hub_intrinfo1
 mdefine_line|#define hub_intrinfo1&t;private.p_intmasks.dispatch1-&gt;info
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO */
 multiline_comment|/*&n; * Macros to manipulate the interrupt register on the calling hub chip.&n; */
 DECL|macro|LOCAL_HUB_SEND_INTR
 mdefine_line|#define LOCAL_HUB_SEND_INTR(_level)&t;LOCAL_HUB_S(PI_INT_PEND_MOD, &bslash;&n;&t;&t;&t;&t;&t;&t;    (0x100|(_level)))
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 DECL|macro|REMOTE_HUB_PI_SEND_INTR
 mdefine_line|#define REMOTE_HUB_PI_SEND_INTR(_hub, _sn, _level) &bslash;&n;&t;&t;REMOTE_HUB_PI_S((_hub), _sn, PI_INT_PEND_MOD, (0x100|(_level)))
 DECL|macro|REMOTE_CPU_SEND_INTR
 mdefine_line|#define REMOTE_CPU_SEND_INTR(_cpuid, _level) &t;&t;&t;&t;&t;&bslash;&n;&t;&t;REMOTE_HUB_PI_S(cputonasid(_cpuid),&t;&t;&t;&t;&bslash;&n;&t;&t;&t;SUBNODE(cputoslice(_cpuid)),&t;&t;&t;&t;&bslash;&n;&t;&t;&t;PI_INT_PEND_MOD, (0x100|(_level)))
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO*/
 multiline_comment|/*&n; * When clearing the interrupt, make sure this clear does make it &n; * to the hub. Otherwise we could end up losing interrupts.&n; * We do an uncached load of the int_pend0 register to ensure this.&n; */
 DECL|macro|LOCAL_HUB_CLR_INTR
 mdefine_line|#define LOCAL_HUB_CLR_INTR(_level)&t;  &bslash;&n;                LOCAL_HUB_S(PI_INT_PEND_MOD, (_level)),&t;&bslash;&n;                LOCAL_HUB_L(PI_INT_PEND0)
 DECL|macro|REMOTE_HUB_PI_CLR_INTR
 mdefine_line|#define REMOTE_HUB_PI_CLR_INTR(_hub, _sn, _level) &bslash;&n;&t;&t;REMOTE_HUB_PI_S((_hub), (_sn), PI_INT_PEND_MOD, (_level)),&t;&bslash;&n;                REMOTE_HUB_PI_L((_hub), (_sn), PI_INT_PEND0)
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 multiline_comment|/* Special support for use by gfx driver only.  Supports special gfx hub interrupt. */
 r_extern
 r_void
@@ -265,7 +263,6 @@ r_int
 id|bit
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO */
 macro_line|#endif /* LANGUAGE_C */
 multiline_comment|/*&n; * Hard-coded interrupt levels:&n; */
 multiline_comment|/*&n; *&t;L0 = SW1&n; *&t;L1 = SW2&n; *&t;L2 = INT_PEND0&n; *&t;L3 = INT_PEND1&n; *&t;L4 = RTC&n; *&t;L5 = Profiling Timer&n; *&t;L6 = Hub Errors&n; *&t;L7 = Count/Compare (T5 counters)&n; */
@@ -371,6 +368,14 @@ DECL|macro|DEBUG_INTR_B
 macro_line|# define DEBUG_INTR_B&t;37&t;/* used by symmon to stop all cpus */
 DECL|macro|DEBUG_INTR_A
 macro_line|# define DEBUG_INTR_A&t;36
+macro_line|#endif
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
+singleline_comment|// These aren&squot;t strictly accurate or complete.  See the
+singleline_comment|// Synergy Spec. for details.
+DECL|macro|SGI_UART_IRQ
+mdefine_line|#define SGI_UART_IRQ&t;(65)
+DECL|macro|SGI_HUB_ERROR_IRQ
+mdefine_line|#define SGI_HUB_ERROR_IRQ&t;(182)
 macro_line|#endif
 macro_line|#endif /* _ASM_SN_INTR_H */
 eof

@@ -1536,12 +1536,12 @@ id|io_lock
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 id|unlock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 l_int|0

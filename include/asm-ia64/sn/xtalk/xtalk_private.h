@@ -2,11 +2,7 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_XTALK_XTALK_PRIVATE_H
 DECL|macro|_ASM_SN_XTALK_XTALK_PRIVATE_H
 mdefine_line|#define _ASM_SN_XTALK_XTALK_PRIVATE_H
-macro_line|#ifdef IRIX
-macro_line|#include &lt;sys/ioerror.h&gt;&t;/* for error function and arg types */
-macro_line|#else
 macro_line|#include &lt;asm/sn/ioerror.h&gt;        /* for error function and arg types */
-macro_line|#endif
 multiline_comment|/*&n; * xtalk_private.h -- private definitions for xtalk&n; * crosstalk drivers should NOT include this file.&n; */
 multiline_comment|/*&n; * All Crosstalk providers set up PIO using this information.&n; */
 DECL|struct|xtalk_piomap_s
@@ -62,11 +58,6 @@ DECL|struct|xtalk_intr_s
 r_struct
 id|xtalk_intr_s
 (brace
-DECL|member|xi_flags
-r_int
-id|xi_flags
-suffix:semicolon
-multiline_comment|/* XTALK_INTR flags */
 DECL|member|xi_dev
 id|devfs_handle_t
 id|xi_dev

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/cmn_err.h&gt;
 macro_line|#include &lt;asm/sn/iobus.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
@@ -941,28 +940,8 @@ r_int
 id|i
 suffix:semicolon
 r_int
-id|slot
-suffix:semicolon
 r_int
-r_int
-id|res
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-r_int
-id|val
-comma
 id|size
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-id|u_short
-id|command
-suffix:semicolon
-id|devfs_handle_t
-id|device_vertex
 suffix:semicolon
 id|devfs_handle_t
 id|bridge_vhdl
@@ -973,34 +952,8 @@ c_func
 id|d-&gt;bus-&gt;number
 )paren
 suffix:semicolon
-id|pcibr_soft_t
-id|pcibr_soft
-op_assign
-(paren
-id|pcibr_soft_t
-)paren
-id|hwgraph_fastinfo_get
-c_func
-(paren
-id|bridge_vhdl
-)paren
-suffix:semicolon
-id|devfs_handle_t
-id|xconn_vhdl
-op_assign
-id|pcibr_soft-&gt;bs_conn
-suffix:semicolon
-id|bridge_t
-op_star
-id|bridge
-op_assign
-id|pcibr_soft-&gt;bs_base
-suffix:semicolon
-id|bridgereg_t
-id|devreg
-suffix:semicolon
 multiline_comment|/* IOC3 only decodes 0x20 bytes of the config space, reading&n;&t; * beyond that is relatively benign but writing beyond that&n;&t; * (especially the base address registers) will shut down the&n;&t; * pci bus...so avoid doing so.&n;&t; * NOTE: this means we can&squot;t program the intr_pin into the device,&n;&t; *       currently we hack this with special code in &n;&t; *&t; sgi_pci_intr_support()&n;&t; */
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;pci_fixup_ioc3: Fixing base addresses for ioc3 device %s&bslash;n&quot;
@@ -1082,6 +1035,20 @@ l_int|0UL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Hardcode Device 4 register(IOC3 is in Slot 4) to set the &n;&t; * DEV_DIRECT bit.  This will not work if IOC3 is not on Slot &n;&t; * 4.&n;&t; */
+id|DBG
+c_func
+(paren
+l_string|&quot;pci_fixup_ioc3: FIXME .. need to take NASID into account when setting IOC3 devreg 0x%x&bslash;n&quot;
+comma
+op_star
+(paren
+r_volatile
+id|u32
+op_star
+)paren
+l_int|0xc0000a000f000220
+)paren
+suffix:semicolon
 op_star
 (paren
 r_volatile

@@ -34,9 +34,9 @@ macro_line|#include &quot;cs8420.h&quot;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(x) &t;&t;/* debug driver */
 DECL|macro|IDEBUG
-macro_line|#undef  IDEBUG(x) &t;&t;/* debug irq handler */
+macro_line|#undef  IDEBUG&t; &t;&t;/* debug irq handler */
 DECL|macro|MDEBUG
-macro_line|#undef  MDEBUG(x) &t;&t;/* debug memory management */
+macro_line|#undef  MDEBUG&t; &t;&t;/* debug memory management */
 DECL|macro|SAA7146_MAX
 mdefine_line|#define SAA7146_MAX 6
 DECL|variable|saa7146s

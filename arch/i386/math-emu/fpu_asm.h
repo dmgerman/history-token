@@ -29,5 +29,5 @@ DECL|macro|SIGL
 mdefine_line|#define&t;SIGL(x)&t;SIGL_OFFSET##(x)
 DECL|macro|SIGH
 mdefine_line|#define&t;SIGH(x)&t;4(x)
-macro_line|#endif _FPU_ASM_H_
+macro_line|#endif /* _FPU_ASM_H_ */
 eof

@@ -8,18 +8,14 @@ macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/cmn_err.h&gt;
 macro_line|#include &lt;asm/sn/agent.h&gt;
-macro_line|#ifdef CONFIG_IA64_SGI_IO
 macro_line|#include &lt;asm/sn/kldir.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/sn/gda.h&gt; 
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
-DECL|macro|KLGRAPH_DEBUG
-mdefine_line|#define KLGRAPH_DEBUG 1
+multiline_comment|/* #define KLGRAPH_DEBUG 1 */
 macro_line|#ifdef KLGRAPH_DEBUG
 DECL|macro|GRPRINTF
 mdefine_line|#define GRPRINTF(x)&t;printk x
@@ -42,84 +38,6 @@ r_extern
 r_int
 id|maxnodes
 suffix:semicolon
-macro_line|#ifndef BRINGUP
-multiline_comment|/*&n; * Gets reason for diagval using table lookup.&n; */
-r_static
-r_char
-op_star
-DECL|function|get_diag_string
-id|get_diag_string
-c_func
-(paren
-id|uint
-id|diagcode
-)paren
-(brace
-r_int
-id|num_entries
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-id|num_entries
-op_assign
-r_sizeof
-(paren
-id|diagval_map
-)paren
-op_div
-r_sizeof
-(paren
-id|diagval_t
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|num_entries
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|unchar
-)paren
-id|diagval_map
-(braket
-id|i
-)braket
-dot
-id|dv_code
-op_eq
-(paren
-id|unchar
-)paren
-id|diagcode
-)paren
-r_return
-id|diagval_map
-(braket
-id|i
-)braket
-dot
-id|dv_msg
-suffix:semicolon
-)brace
-r_return
-l_string|&quot;Unknown&quot;
-suffix:semicolon
-)brace
-macro_line|#endif /* ndef BRINGUP */
 multiline_comment|/*&n; * Support for verbose inventory via hardware graph. &n; * klhwg_invent_alloc allocates the necessary size of inventory information&n; * and fills in the generic information.&n; */
 id|invent_generic_t
 op_star
@@ -238,7 +156,7 @@ op_assign
 id|INV_IO6PROM
 suffix:semicolon
 multiline_comment|/* Read the io6prom revision from the nvram */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 id|nvram_prom_version_get
 c_func
 (paren
@@ -470,7 +388,7 @@ comma
 id|node_vertex
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 multiline_comment|/*&n;&t; * Activate when we support hub stats.&n;&t; */
 id|rc
 op_assign
@@ -505,11 +423,9 @@ op_ne
 id|GRAPH_SUCCESS
 )paren
 (brace
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;klhwg_add_hub: Can&squot;t add hub info label 0x%p, code %d&quot;
 comma
 id|myhubv
@@ -541,8 +457,6 @@ id|cnode
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* ndef BRINGUP */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
 id|sndrv_attach
 c_func
 (paren
@@ -551,7 +465,7 @@ id|myhubv
 suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n;&t; * Need to call our driver to do the attach?&n;&t; */
-id|printk
+id|FIXME
 c_func
 (paren
 l_string|&quot;klhwg_add_hub: Need to add code to do the attach.&bslash;n&quot;
@@ -1090,7 +1004,7 @@ op_assign
 id|INVENT_ENABLED
 suffix:semicolon
 )brace
-macro_line|#endif /* ndef BRINGUP */
+macro_line|#endif /* BRINGUP */
 r_void
 DECL|function|klhwg_add_xbow
 id|klhwg_add_xbow
@@ -1149,7 +1063,7 @@ c_func
 id|nasid
 )paren
 comma
-id|KLTYPE_PBRICK_XBOW
+id|KLTYPE_IOBRICK_XBOW
 )paren
 )paren
 op_eq
@@ -1206,7 +1120,7 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 multiline_comment|/*&n;&t; * We cannot support this function in devfs .. see below where &n;&t; * we use hwgraph_path_add() to create this vertex with a known &n;&t; * name.&n;&t; */
 id|err
 op_assign
@@ -1231,7 +1145,7 @@ c_func
 id|xbow_v
 )paren
 suffix:semicolon
-macro_line|#endif /* !CONFIG_IA64_SGI_IO */
+macro_line|#endif /* LATER */
 r_for
 c_loop
 (paren
@@ -1271,16 +1185,6 @@ comma
 id|widgetnum
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;klhwg_add_xbow: Found xbow port type hub hub_nasid %d widgetnum %d&bslash;n&quot;
-comma
-id|hub_nasid
-comma
-id|widgetnum
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1289,11 +1193,9 @@ op_eq
 id|INVALID_NASID
 )paren
 (brace
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;hub widget %d, skipping xbow graph&bslash;n&quot;
 comma
 id|widgetnum
@@ -1308,22 +1210,6 @@ id|NASID_TO_COMPACT_NODEID
 c_func
 (paren
 id|hub_nasid
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;klhwg_add_xbow: cnode %d cnode %d&bslash;n&quot;
-comma
-id|nasid_to_compact_node
-(braket
-l_int|0
-)braket
-comma
-id|nasid_to_compact_node
-(braket
-l_int|1
-)braket
 )paren
 suffix:semicolon
 r_if
@@ -1348,17 +1234,6 @@ op_assign
 id|cnodeid_to_vertex
 c_func
 (paren
-id|hub_cnode
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SGI_IO
-id|printk
-c_func
-(paren
-l_string|&quot;klhwg_add_xbow: Hub Vertex found = %p hub_cnode %d&bslash;n&quot;
-comma
-id|hubv
-comma
 id|hub_cnode
 )paren
 suffix:semicolon
@@ -1390,20 +1265,16 @@ id|err
 op_eq
 id|GRAPH_DUP
 )paren
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;klhwg_add_xbow: Check for &quot;
 l_string|&quot;working routers and router links!&quot;
 )paren
 suffix:semicolon
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_GRPANIC
-comma
 l_string|&quot;klhwg_add_xbow: Failed to add &quot;
 l_string|&quot;edge: vertex 0x%p (0x%p) to vertex 0x%p (0x%p),&quot;
 l_string|&quot;error %d&bslash;n&quot;
@@ -1426,7 +1297,6 @@ c_func
 id|xbow_v
 )paren
 suffix:semicolon
-macro_line|#endif
 id|NODEPDA
 c_func
 (paren
@@ -1485,7 +1355,7 @@ id|hubv
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 id|err
 op_assign
 id|hwgraph_edge_add
@@ -1513,20 +1383,16 @@ id|err
 op_eq
 id|GRAPH_DUP
 )paren
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;klhwg_add_xbow: Check for &quot;
 l_string|&quot;working routers and router links!&quot;
 )paren
 suffix:semicolon
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_GRPANIC
-comma
 l_string|&quot;klhwg_add_xbow: Failed to add &quot;
 l_string|&quot;edge: vertex 0x%p (0x%p) to vertex 0x%p (0x%p), &quot;
 l_string|&quot;error %d&bslash;n&quot;
@@ -1679,18 +1545,6 @@ op_amp
 id|node_vertex
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;klhwg_add_node: rv = %d graph success %d node_vertex 0x%p&bslash;n&quot;
-comma
-id|rv
-comma
-id|GRAPH_SUCCESS
-comma
-id|node_vertex
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1698,11 +1552,9 @@ id|rv
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_PANIC
-comma
 l_string|&quot;Node vertex creation failed.  &quot;
 l_string|&quot;Path == %s&quot;
 comma
@@ -1766,18 +1618,6 @@ op_star
 id|numnodes
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;klhwg_add_node: node_vertex %p, cnode %d numnodes %d&bslash;n&quot;
-comma
-id|node_vertex
-comma
-id|cnode
-comma
-id|numnodes
-)paren
-suffix:semicolon
 id|s
 op_assign
 id|dev_to_name
@@ -1791,14 +1631,6 @@ r_sizeof
 (paren
 id|path_buffer
 )paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;klhwg_add_node: s %s&bslash;n&quot;
-comma
-id|s
 )paren
 suffix:semicolon
 id|NODEPDA
@@ -2140,11 +1972,9 @@ id|rv
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_PANIC
-comma
 l_string|&quot;Router vertex creation &quot;
 l_string|&quot;failed.  Path == %s&quot;
 comma
@@ -2323,11 +2153,9 @@ id|rc
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;Can&squot;t find router: %s&quot;
 comma
 id|path_buffer
@@ -2342,11 +2170,9 @@ op_ne
 l_int|1
 )paren
 (brace
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_PANIC
-comma
 l_string|&quot;klhwg_connect_one_router: %d cmpts on router&bslash;n&quot;
 comma
 id|brd-&gt;brd_numcompts
@@ -2516,11 +2342,9 @@ id|dest_brd
 )paren
 r_continue
 suffix:semicolon
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_PANIC
-comma
 l_string|&quot;Can&squot;t find router: %s&quot;
 comma
 id|dest_path
@@ -2609,11 +2433,9 @@ c_func
 id|arg_maxnodes
 )paren
 )paren
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_GRPANIC
-comma
 l_string|&quot;Can&squot;t create edge: %s/%s to vertex 0x%p error 0x%x&bslash;n&quot;
 comma
 id|path_buffer
@@ -2954,11 +2776,9 @@ id|rc
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;Can&squot;t find hub: %s&quot;
 comma
 id|path_buffer
@@ -3025,11 +2845,9 @@ id|dest_brd
 )paren
 r_continue
 suffix:semicolon
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_PANIC
-comma
 l_string|&quot;Can&squot;t find board: %s&quot;
 comma
 id|dest_path
@@ -3069,11 +2887,9 @@ id|rc
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_GRPANIC
-comma
 l_string|&quot;Can&squot;t create edge: %s/%s to vertex 0x%p, error 0x%x&bslash;n&quot;
 comma
 id|path_buffer
@@ -3125,7 +2941,7 @@ id|device_name
 id|MAXDEVNAME
 )braket
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 id|device_admin_table_init
 c_func
 (paren
@@ -3259,7 +3075,7 @@ comma
 id|device_name
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 id|device_admin_table_update
 c_func
 (paren
@@ -3318,6 +3134,12 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
+r_char
+id|buffer
+(braket
+l_int|16
+)braket
+suffix:semicolon
 multiline_comment|/* Add devices under each module */
 r_for
 c_loop
@@ -3335,6 +3157,44 @@ op_increment
 )paren
 (brace
 multiline_comment|/* Use module as module vertex fastinfo */
+macro_line|#ifdef __ia64
+id|memset
+c_func
+(paren
+id|buffer
+comma
+l_int|0
+comma
+l_int|16
+)paren
+suffix:semicolon
+id|format_module_id
+c_func
+(paren
+id|buffer
+comma
+id|modules
+(braket
+id|cm
+)braket
+op_member_access_from_pointer
+id|id
+comma
+id|MODULE_FORMAT_BRIEF
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|name
+comma
+id|EDGE_LBL_MODULE
+l_string|&quot;/%s&quot;
+comma
+id|buffer
+)paren
+suffix:semicolon
+macro_line|#else
 id|sprintf
 c_func
 (paren
@@ -3351,6 +3211,7 @@ op_member_access_from_pointer
 id|id
 )paren
 suffix:semicolon
+macro_line|#endif
 id|rc
 op_assign
 id|hwgraph_path_add
@@ -3391,6 +3252,20 @@ id|cm
 )paren
 suffix:semicolon
 multiline_comment|/* Add system controller */
+macro_line|#ifdef __ia64
+id|sprintf
+c_func
+(paren
+id|name
+comma
+id|EDGE_LBL_MODULE
+l_string|&quot;/%s/&quot;
+id|EDGE_LBL_L1
+comma
+id|buffer
+)paren
+suffix:semicolon
+macro_line|#else
 id|sprintf
 c_func
 (paren
@@ -3408,6 +3283,7 @@ op_member_access_from_pointer
 id|id
 )paren
 suffix:semicolon
+macro_line|#endif
 id|rc
 op_assign
 id|hwgraph_path_add
@@ -3449,7 +3325,7 @@ id|__psint_t
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 id|sndrv_attach
 c_func
 (paren
@@ -3484,30 +3360,20 @@ suffix:semicolon
 id|cnodeid_t
 id|cnode
 suffix:semicolon
-macro_line|#ifdef SIMULATED_KLGRAPH
-singleline_comment|//gdap = 0xa800000000011000;
 id|gdap
 op_assign
 (paren
 id|gda_t
 op_star
 )paren
-l_int|0xe000000000011000
+l_int|0xe000000000002400
 suffix:semicolon
-id|printk
+id|FIXME
 c_func
 (paren
-l_string|&quot;klhwg_add_all_nodes: SIMULATED_KLGRAPH FIXME: gdap= 0x%p&bslash;n&quot;
-comma
-id|gdap
+l_string|&quot;klhwg_add_all_nodes: FIX GDA&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-id|gdap
-op_assign
-id|GDA
-suffix:semicolon
-macro_line|#endif /* SIMULATED_KLGRAPH */
 r_for
 c_loop
 (paren
@@ -3571,7 +3437,6 @@ op_ne
 id|INVALID_NASID
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
 id|klhwg_add_xbow
 c_func
 (paren
@@ -3583,22 +3448,6 @@ id|cnode
 )braket
 )paren
 suffix:semicolon
-macro_line|#else
-id|printk
-c_func
-(paren
-l_string|&quot;klhwg_add_all_nodes: Fix me by getting real nasid&bslash;n&quot;
-)paren
-suffix:semicolon
-id|klhwg_add_xbow
-c_func
-(paren
-id|cnode
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n;&t; * As for router hardware inventory information, we set this&n;&t; * up in router.c. &n;&t; */
 id|klhwg_add_all_routers
@@ -3620,7 +3469,7 @@ id|hwgraph_root
 )paren
 suffix:semicolon
 multiline_comment|/* Assign guardian nodes to each of the&n;&t; * routers in the system.&n;&t; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 id|router_guardians_set
 c_func
 (paren

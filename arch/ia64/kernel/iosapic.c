@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * I/O SAPIC support.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999-2000 Hewlett-Packard Co.&n; * Copyright (C) 1999-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 00/04/19&t;D. Mosberger&t;Rewritten to mirror more closely the x86 I/O APIC code.&n; *&t;&t;&t;&t;In particular, we now have separate handlers for edge&n; *&t;&t;&t;&t;and level triggered interrupts.&n; * 00/10/27&t;Asit Mallick, Goutham Rao &lt;goutham.rao@intel.com&gt; IRQ vector allocation &n; *&t;&t;&t;&t;PCI to vector mapping, shared PCI interrupts.&n; * 00/10/27&t;D. Mosberger&t;Document things a bit more to make them more understandable.&n; *&t;&t;&t;&t;Clean up much of the old IOSAPIC cruft.&n; */
+multiline_comment|/*&n; * I/O SAPIC support.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999-2000 Hewlett-Packard Co.&n; * Copyright (C) 1999-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 00/04/19&t;D. Mosberger&t;Rewritten to mirror more closely the x86 I/O APIC code.&n; *&t;&t;&t;&t;In particular, we now have separate handlers for edge&n; *&t;&t;&t;&t;and level triggered interrupts.&n; * 00/10/27&t;Asit Mallick, Goutham Rao &lt;goutham.rao@intel.com&gt; IRQ vector allocation&n; *&t;&t;&t;&t;PCI to vector mapping, shared PCI interrupts.&n; * 00/10/27&t;D. Mosberger&t;Document things a bit more to make them more understandable.&n; *&t;&t;&t;&t;Clean up much of the old IOSAPIC cruft.&n; */
 multiline_comment|/*&n; * Here is what the interrupt logic between a PCI device and the CPU looks like:&n; *&n; * (1) A PCI device raises one of the four interrupt pins (INTA, INTB, INTC, INTD).  The&n; *     device is uniquely identified by its bus-, device-, and slot-number (the function&n; *     number does not matter here because all functions share the same interrupt&n; *     lines).&n; *&n; * (2) The motherboard routes the interrupt line to a pin on a IOSAPIC controller.&n; *     Multiple interrupt lines may have to share the same IOSAPIC pin (if they&squot;re level&n; *     triggered and use the same polarity).  Each interrupt line has a unique IOSAPIC&n; *     irq number which can be calculated as the sum of the controller&squot;s base irq number&n; *     and the IOSAPIC pin number to which the line connects.&n; *&n; * (3) The IOSAPIC uses an internal table to map the IOSAPIC pin into the IA-64 interrupt&n; *     vector.  This interrupt vector is then sent to the CPU.&n; *&n; * In other words, there are two levels of indirections involved:&n; *&n; *&t;pci pin -&gt; iosapic irq -&gt; IA-64 vector&n; *&n; * Note: outside this module, IA-64 vectors are called &quot;irqs&quot;.  This is because that&squot;s&n; * the traditional name Linux uses for interrupt vectors.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -97,7 +97,7 @@ DECL|variable|iosapic_irq
 )brace
 id|iosapic_irq
 (braket
-id|NR_IRQS
+id|IA64_NUM_VECTORS
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * Translate IOSAPIC irq number to the corresponding IA-64 interrupt vector.  If no&n; * entry exists, return -1.&n; */
@@ -122,7 +122,7 @@ l_int|0
 suffix:semicolon
 id|vector
 OL
-id|NR_IRQS
+id|IA64_NUM_VECTORS
 suffix:semicolon
 op_increment
 id|vector
@@ -335,28 +335,6 @@ op_or
 id|vector
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_AZUSA_HACKS
-multiline_comment|/* set Flush Disable bit */
-r_if
-c_cond
-(paren
-id|addr
-op_ne
-(paren
-r_char
-op_star
-)paren
-l_int|0xc0000000fec00000
-)paren
-id|low32
-op_or_assign
-(paren
-l_int|1
-op_lshift
-l_int|17
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* dest contains both id and eid */
 id|high32
 op_assign
@@ -434,7 +412,7 @@ id|mask_irq
 (paren
 r_int
 r_int
-id|vector
+id|irq
 )paren
 (brace
 r_int
@@ -451,11 +429,20 @@ suffix:semicolon
 r_int
 id|pin
 suffix:semicolon
+id|ia64_vector
+id|vec
+op_assign
+id|irq_to_vector
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 id|addr
 op_assign
 id|iosapic_irq
 (braket
-id|vector
+id|vec
 )braket
 dot
 id|addr
@@ -464,7 +451,7 @@ id|pin
 op_assign
 id|iosapic_irq
 (braket
-id|vector
+id|vec
 )braket
 dot
 id|pin
@@ -550,7 +537,7 @@ id|unmask_irq
 (paren
 r_int
 r_int
-id|vector
+id|irq
 )paren
 (brace
 r_int
@@ -567,11 +554,20 @@ suffix:semicolon
 r_int
 id|pin
 suffix:semicolon
+id|ia64_vector
+id|vec
+op_assign
+id|irq_to_vector
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 id|addr
 op_assign
 id|iosapic_irq
 (braket
-id|vector
+id|vec
 )braket
 dot
 id|addr
@@ -580,7 +576,7 @@ id|pin
 op_assign
 id|iosapic_irq
 (braket
-id|vector
+id|vec
 )braket
 dot
 id|pin
@@ -667,7 +663,7 @@ id|iosapic_set_affinity
 (paren
 r_int
 r_int
-id|vector
+id|irq
 comma
 r_int
 r_int
@@ -690,13 +686,13 @@ id|iosapic_startup_level_irq
 (paren
 r_int
 r_int
-id|vector
+id|irq
 )paren
 (brace
 id|unmask_irq
 c_func
 (paren
-id|vector
+id|irq
 )paren
 suffix:semicolon
 r_return
@@ -710,17 +706,26 @@ id|iosapic_end_level_irq
 (paren
 r_int
 r_int
-id|vector
+id|irq
 )paren
 (brace
+id|ia64_vector
+id|vec
+op_assign
+id|irq_to_vector
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 id|writel
 c_func
 (paren
-id|vector
+id|vec
 comma
 id|iosapic_irq
 (braket
-id|vector
+id|vec
 )braket
 dot
 id|addr
@@ -785,13 +790,13 @@ id|iosapic_startup_edge_irq
 (paren
 r_int
 r_int
-id|vector
+id|irq
 )paren
 (brace
 id|unmask_irq
 c_func
 (paren
-id|vector
+id|irq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * IOSAPIC simply drops interrupts pended while the&n;&t; * corresponding pin was masked, so we can&squot;t know if an&n;&t; * interrupt is pending already.  Let&squot;s hope not...&n;&t; */
@@ -806,20 +811,25 @@ id|iosapic_ack_edge_irq
 (paren
 r_int
 r_int
-id|vector
+id|irq
 )paren
 (brace
+id|irq_desc_t
+op_star
+id|idesc
+op_assign
+id|irq_desc
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Once we have recorded IRQ_PENDING already, we can mask the&n;&t; * interrupt for real. This prevents IRQ storms from unhandled&n;&t; * devices.&n;&t; */
 r_if
 c_cond
 (paren
 (paren
-id|irq_desc
-(braket
-id|vector
-)braket
-dot
-id|status
+id|idesc-&gt;status
 op_amp
 (paren
 id|IRQ_PENDING
@@ -837,7 +847,7 @@ id|IRQ_DISABLED
 id|mask_irq
 c_func
 (paren
-id|vector
+id|irq
 )paren
 suffix:semicolon
 )brace
@@ -1059,6 +1069,10 @@ id|max_pin
 comma
 id|vector
 suffix:semicolon
+id|irq_desc_t
+op_star
+id|idesc
+suffix:semicolon
 r_int
 r_int
 id|ver
@@ -1092,7 +1106,7 @@ l_int|0
 suffix:semicolon
 id|vector
 OL
-id|NR_IRQS
+id|IA64_NUM_VECTORS
 suffix:semicolon
 op_increment
 id|vector
@@ -1108,7 +1122,7 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* mark as unused */
-multiline_comment|/* &n;&t;&t; * Fetch the PCI interrupt routing table:&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Fetch the PCI interrupt routing table:&n;&t;&t; */
 macro_line|#ifdef CONFIG_ACPI_KERNEL_CONFIG
 id|acpi_cf_get_pci_vectors
 c_func
@@ -1131,12 +1145,12 @@ op_star
 id|__va
 c_func
 (paren
-id|ia64_boot_param.pci_vectors
+id|ia64_boot_param-&gt;pci_vectors
 )paren
 suffix:semicolon
 id|pci_irq.num_routes
 op_assign
-id|ia64_boot_param.num_pci_vectors
+id|ia64_boot_param-&gt;num_pci_vectors
 suffix:semicolon
 macro_line|#endif
 )brace
@@ -1325,15 +1339,18 @@ op_assign
 op_amp
 id|irq_type_iosapic_edge
 suffix:semicolon
+id|idesc
+op_assign
+id|irq_desc
+c_func
+(paren
+id|vector
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq_desc
-(braket
-id|vector
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_ne
 id|irq_type
 )paren
@@ -1341,12 +1358,7 @@ id|irq_type
 r_if
 c_cond
 (paren
-id|irq_desc
-(braket
-id|vector
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_ne
 op_amp
 id|no_irq_type
@@ -1359,12 +1371,7 @@ l_string|&quot;%s&bslash;n&quot;
 comma
 id|irq
 comma
-id|irq_desc
-(braket
-id|vector
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_member_access_from_pointer
 r_typename
 comma
@@ -1373,12 +1380,7 @@ op_member_access_from_pointer
 r_typename
 )paren
 suffix:semicolon
-id|irq_desc
-(braket
-id|vector
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_assign
 id|irq_type
 suffix:semicolon
@@ -1402,7 +1404,6 @@ l_int|0xffff
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_IA64_SOFTSDV_HACKS
 r_for
 c_loop
 (paren
@@ -1595,15 +1596,18 @@ op_assign
 op_amp
 id|irq_type_iosapic_level
 suffix:semicolon
+id|idesc
+op_assign
+id|irq_desc
+c_func
+(paren
+id|vector
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq_desc
-(braket
-id|vector
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_ne
 id|irq_type
 )paren
@@ -1611,12 +1615,7 @@ id|irq_type
 r_if
 c_cond
 (paren
-id|irq_desc
-(braket
-id|vector
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_ne
 op_amp
 id|no_irq_type
@@ -1628,12 +1627,7 @@ l_string|&quot;iosapic_init: changing vector 0x%02x from %s to %s&bslash;n&quot;
 comma
 id|vector
 comma
-id|irq_desc
-(braket
-id|vector
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_member_access_from_pointer
 r_typename
 comma
@@ -1642,12 +1636,7 @@ op_member_access_from_pointer
 r_typename
 )paren
 suffix:semicolon
-id|irq_desc
-(braket
-id|vector
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_assign
 id|irq_type
 suffix:semicolon
@@ -1671,7 +1660,6 @@ l_int|0xffff
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* !CONFIG_IA64_SOFTSDV_HACKS */
 )brace
 r_void
 DECL|function|iosapic_pci_fixup
@@ -1902,7 +1890,7 @@ c_cond
 (paren
 id|dev-&gt;irq
 op_ge
-id|NR_IRQS
+id|IA64_NUM_VECTORS
 )paren
 id|dev-&gt;irq
 op_assign

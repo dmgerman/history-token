@@ -27,6 +27,12 @@ id|hwgraph_root
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|linux_busnum
+id|devfs_handle_t
+id|linux_busnum
+op_assign
+l_int|NULL
+suffix:semicolon
 multiline_comment|/*&n; * Debug flag definition.&n; */
 DECL|macro|OPTION_NONE
 mdefine_line|#define OPTION_NONE             0x00
@@ -53,6 +59,7 @@ id|hcl_debug
 op_assign
 id|HCL_DEBUG_NONE
 suffix:semicolon
+macro_line|#if defined(CONFIG_HCL_DEBUG) &amp;&amp; !defined(MODULE)
 DECL|variable|boot_options
 r_static
 r_int
@@ -61,6 +68,7 @@ id|boot_options
 op_assign
 id|OPTION_NONE
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Some Global definitions.&n; */
 DECL|variable|hcl_spinlock
 id|spinlock_t
@@ -71,6 +79,18 @@ id|devfs_handle_t
 id|hcl_handle
 op_assign
 l_int|NULL
+suffix:semicolon
+DECL|variable|invplace_none
+id|invplace_t
+id|invplace_none
+op_assign
+(brace
+id|GRAPH_VERTEX_NONE
+comma
+id|GRAPH_VERTEX_PLACE_NONE
+comma
+l_int|NULL
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * HCL device driver.&n; * The purpose of this device driver is to provide a facility &n; * for User Level Apps e.g. hinv, ioconfig etc. an ioctl path &n; * to manipulate label entries without having to implement&n; * system call interfaces.  This methodology will enable us to &n; * make this feature module loadable.&n; */
 DECL|function|hcl_open
@@ -215,6 +235,13 @@ id|file_operations
 id|hcl_fops
 op_assign
 (brace
+(paren
+r_struct
+id|module
+op_star
+)paren
+l_int|0
+comma
 l_int|NULL
 comma
 multiline_comment|/* lseek - default */
@@ -253,12 +280,13 @@ comma
 multiline_comment|/* fasync */
 l_int|NULL
 comma
-multiline_comment|/* check_media_change */
+multiline_comment|/* lock */
 l_int|NULL
 comma
-multiline_comment|/* revalidate */
+multiline_comment|/* readv */
 l_int|NULL
-multiline_comment|/* lock */
+comma
+multiline_comment|/* writev */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * init_hcl() - Boot time initialization.  Ensure that it is called &n; *&t;after devfs has been initialized.&n; *&n; * For now this routine is being called out of devfs/base.c.  Actually &n; * Not a bad place to be ..&n; *&n; */
@@ -299,6 +327,7 @@ id|rv
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if defined(CONFIG_HCL_DEBUG) &amp;&amp; !defined(MODULE)
 id|printk
 (paren
 l_string|&quot;&bslash;n%s: v%s Colin Ngam (cngam@sgi.com)&bslash;n&quot;
@@ -308,7 +337,6 @@ comma
 id|HCL_VERSION
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_HCL_DEBUG) &amp;&amp; !defined(MODULE)
 id|hcl_debug
 op_assign
 id|hcl_debug_init
@@ -322,7 +350,6 @@ comma
 id|hcl_debug
 )paren
 suffix:semicolon
-macro_line|#endif
 id|printk
 (paren
 l_string|&quot;&bslash;n%s: boot_options: 0x%0x&bslash;n&quot;
@@ -332,6 +359,7 @@ comma
 id|boot_options
 )paren
 suffix:semicolon
+macro_line|#endif
 id|spin_lock_init
 c_func
 (paren
@@ -360,7 +388,7 @@ id|rv
 )paren
 id|printk
 (paren
-l_string|&quot;init_hcl: Failed to create hwgraph_root. Error = %d.&bslash;n&quot;
+l_string|&quot;WARNING: init_hcl: Failed to create hwgraph_root. Error = %d.&bslash;n&quot;
 comma
 id|rv
 )paren
@@ -427,6 +455,38 @@ op_amp
 id|label_string_table
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Create the directory that links Linux bus numbers to our Xwidget.&n;&t; */
+id|rv
+op_assign
+id|hwgraph_path_add
+c_func
+(paren
+id|hwgraph_root
+comma
+l_string|&quot;linux/busnum&quot;
+comma
+op_amp
+id|linux_busnum
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|linux_busnum
+op_eq
+l_int|NULL
+)paren
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;HCL: Unable to create hw/linux/busnum&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -462,14 +522,6 @@ id|str
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;HCL: Boot time parameter %s&bslash;n&quot;
-comma
-id|str
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_HCL_DEBUG
 r_if
 c_cond
@@ -1153,6 +1205,7 @@ multiline_comment|/*&n;&t;&t; * We need to clean up!&n;&t;&t; */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;HCL: Unable to set the connect point to it&squot;s parent 0x%p&bslash;n&quot;
 comma
 id|new_devfs_handle
@@ -1445,6 +1498,14 @@ r_char
 op_star
 id|path
 suffix:semicolon
+r_char
+op_star
+id|s1
+suffix:semicolon
+r_char
+op_star
+id|index
+suffix:semicolon
 r_int
 id|name_start
 suffix:semicolon
@@ -1456,6 +1517,11 @@ suffix:semicolon
 r_int
 id|rv
 suffix:semicolon
+r_int
+id|i
+comma
+id|count
+suffix:semicolon
 id|path
 op_assign
 id|kmalloc
@@ -1464,6 +1530,88 @@ c_func
 l_int|1024
 comma
 id|GFP_KERNEL
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|path
+comma
+l_int|0x0
+comma
+l_int|1024
+)paren
+suffix:semicolon
+id|name_start
+op_assign
+id|devfs_generate_path
+(paren
+id|from
+comma
+id|path
+comma
+l_int|1024
+)paren
+suffix:semicolon
+id|s1
+op_assign
+op_amp
+id|path
+(braket
+id|name_start
+)braket
+suffix:semicolon
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+(brace
+id|index
+op_assign
+id|strstr
+(paren
+id|s1
+comma
+l_string|&quot;/&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|index
+)paren
+(brace
+id|count
+op_increment
+suffix:semicolon
+id|s1
+op_assign
+op_increment
+id|index
+suffix:semicolon
+)brace
+r_else
+(brace
+id|count
+op_increment
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+id|memset
+c_func
+(paren
+id|path
+comma
+l_int|0x0
+comma
+l_int|1024
 )paren
 suffix:semicolon
 id|name_start
@@ -1475,6 +1623,42 @@ comma
 id|path
 comma
 l_int|1024
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|count
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|strcat
+c_func
+(paren
+id|path
+comma
+l_string|&quot;../&quot;
+)paren
+suffix:semicolon
+)brace
+id|strcat
+c_func
+(paren
+id|path
+comma
+op_amp
+id|path
+(braket
+id|name_start
+)braket
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Otherwise, just create a symlink to the vertex.&n;&t; * In this case the vertex was previous created with a REAL pathname.&n;&t; */
@@ -1493,16 +1677,7 @@ id|name
 comma
 id|DEVFS_FL_DEFAULT
 comma
-(paren
-r_const
-r_char
-op_star
-)paren
-op_amp
 id|path
-(braket
-id|name_start
-)braket
 comma
 op_amp
 id|handle
@@ -2033,16 +2208,6 @@ op_star
 id|target
 comma
 op_amp
-id|namelen
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;hwgraph_edge_get_next: Component name = %s, length = %d&bslash;n&quot;
-comma
-id|tempname
-comma
 id|namelen
 )paren
 suffix:semicolon
@@ -3844,7 +4009,7 @@ r_return
 id|DEVNAME_UNKNOWN
 suffix:semicolon
 )brace
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 multiline_comment|/*&n;** Return the compact node id of the node that ultimately &quot;owns&quot; the specified&n;** vertex.  In order to do this, we walk back through masters and connect points&n;** until we reach a vertex that represents a node.&n;*/
 id|cnodeid_t
 DECL|function|master_node_get
@@ -4137,7 +4302,7 @@ id|mem_vhdl
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* IRIX */
+macro_line|#endif /* LATER */
 multiline_comment|/*&n;** Add a char device -- if the driver supports it -- at a specified vertex.&n;*/
 id|graph_error_t
 DECL|function|hwgraph_char_device_add
@@ -4168,7 +4333,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;FIXME: hwgraph_char_device_add() called. Use hwgraph_register.&bslash;n&quot;
+l_string|&quot;WARNING: hwgraph_char_device_add() not supported .. use hwgraph_register.&bslash;n&quot;
 )paren
 suffix:semicolon
 op_star
@@ -4201,7 +4366,7 @@ id|toptr
 id|printk
 c_func
 (paren
-l_string|&quot;FIXME: hwgraph_edge_remove&bslash;n&quot;
+l_string|&quot;WARNING: hwgraph_edge_remove NOT supported.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4217,12 +4382,6 @@ id|devfs_handle_t
 id|vhdl
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;FIXME: hwgraph_vertex_unref&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 id|GRAPH_ILLEGAL_REQUEST
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&t;drivers/net/tulip/tulip.h&n;&n;&t;Copyright 2000  The Linux Kernel Team&n;&t;Written/copyright 1994-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;*/
+multiline_comment|/*&n;&t;drivers/net/tulip/tulip.h&n;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
 macro_line|#ifndef __NET_TULIP_H__
 DECL|macro|__NET_TULIP_H__
 mdefine_line|#define __NET_TULIP_H__
@@ -63,59 +63,64 @@ id|tbl_flag
 DECL|enumerator|HAS_MII
 id|HAS_MII
 op_assign
-l_int|1
+l_int|0x0001
 comma
 DECL|enumerator|HAS_MEDIA_TABLE
 id|HAS_MEDIA_TABLE
 op_assign
-l_int|2
+l_int|0x0002
 comma
 DECL|enumerator|CSR12_IN_SROM
 id|CSR12_IN_SROM
 op_assign
-l_int|4
+l_int|0x0004
 comma
 DECL|enumerator|ALWAYS_CHECK_MII
 id|ALWAYS_CHECK_MII
 op_assign
-l_int|8
+l_int|0x0008
 comma
 DECL|enumerator|HAS_ACPI
 id|HAS_ACPI
 op_assign
-l_int|0x10
+l_int|0x0010
 comma
 DECL|enumerator|MC_HASH_ONLY
 id|MC_HASH_ONLY
 op_assign
-l_int|0x20
+l_int|0x0020
 comma
 multiline_comment|/* Hash-only multicast filter. */
 DECL|enumerator|HAS_PNICNWAY
 id|HAS_PNICNWAY
 op_assign
-l_int|0x80
+l_int|0x0080
 comma
 DECL|enumerator|HAS_NWAY
 id|HAS_NWAY
 op_assign
-l_int|0x40
+l_int|0x0040
 comma
 multiline_comment|/* Uses internal NWay xcvr. */
 DECL|enumerator|HAS_INTR_MITIGATION
 id|HAS_INTR_MITIGATION
 op_assign
-l_int|0x100
+l_int|0x0100
 comma
 DECL|enumerator|IS_ASIX
 id|IS_ASIX
 op_assign
-l_int|0x200
+l_int|0x0200
 comma
 DECL|enumerator|HAS_8023X
 id|HAS_8023X
 op_assign
-l_int|0x400
+l_int|0x0400
+comma
+DECL|enumerator|COMET_MAC_ADDR
+id|COMET_MAC_ADDR
+op_assign
+l_int|0x0800
 comma
 )brace
 suffix:semicolon
@@ -408,6 +413,37 @@ DECL|enumerator|TxIntr
 id|TxIntr
 op_assign
 l_int|0x01
+comma
+)brace
+suffix:semicolon
+DECL|enum|tulip_rx_modes
+r_enum
+id|tulip_rx_modes
+(brace
+DECL|enumerator|FullDuplex
+id|FullDuplex
+op_assign
+l_int|0x0200
+comma
+DECL|enumerator|AcceptBroadcast
+id|AcceptBroadcast
+op_assign
+l_int|0x0100
+comma
+DECL|enumerator|AcceptAllMulticast
+id|AcceptAllMulticast
+op_assign
+l_int|0x0080
+comma
+DECL|enumerator|AcceptAllPhys
+id|AcceptAllPhys
+op_assign
+l_int|0x0040
+comma
+DECL|enumerator|AcceptRunt
+id|AcceptRunt
+op_assign
+l_int|0x0008
 comma
 )brace
 suffix:semicolon
@@ -898,50 +934,15 @@ DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE&t;16
 DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE&t;32
+DECL|macro|MEDIA_MASK
+mdefine_line|#define MEDIA_MASK     31
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;&t;1536&t;/* Size of each temporary Rx buffer. */
 multiline_comment|/* Ring-wrap flag in length field, use for last ring entry.&n;&t;0x01000000 means chain on buffer2 address,&n;&t;0x02000000 means use the ring start address in CSR2/3.&n;   Note: Some work-alike chips do not function correctly in chained mode.&n;   The ASIX chip works only in chained mode.&n;   Thus we indicates ring mode, but always write the &squot;next&squot; field for&n;   chained mode as well.&n;*/
 DECL|macro|DESC_RING_WRAP
 mdefine_line|#define DESC_RING_WRAP 0x02000000
-multiline_comment|/*  EEPROM_Ctrl bits. */
-DECL|macro|EE_SHIFT_CLK
-mdefine_line|#define EE_SHIFT_CLK&t;0x02&t;/* EEPROM shift clock. */
-DECL|macro|EE_CS
-mdefine_line|#define EE_CS&t;&t;&t;0x01&t;/* EEPROM chip select. */
-DECL|macro|EE_DATA_WRITE
-mdefine_line|#define EE_DATA_WRITE&t;0x04&t;/* Data from the Tulip to EEPROM. */
-DECL|macro|EE_WRITE_0
-mdefine_line|#define EE_WRITE_0&t;&t;0x01
-DECL|macro|EE_WRITE_1
-mdefine_line|#define EE_WRITE_1&t;&t;0x05
-DECL|macro|EE_DATA_READ
-mdefine_line|#define EE_DATA_READ&t;0x08&t;/* Data from the EEPROM chip. */
-DECL|macro|EE_ENB
-mdefine_line|#define EE_ENB&t;&t;&t;(0x4800 | EE_CS)
-multiline_comment|/* Delay between EEPROM clock transitions.&n;   Even at 33Mhz current PCI implementations don&squot;t overrun the EEPROM clock.&n;   We add a bus turn-around to insure that this remains true. */
-DECL|macro|eeprom_delay
-mdefine_line|#define eeprom_delay()&t;inl(ee_addr)
-multiline_comment|/* The EEPROM commands include the alway-set leading bit. */
-DECL|macro|EE_READ_CMD
-mdefine_line|#define EE_READ_CMD&t;&t;(6)
 DECL|macro|EEPROM_SIZE
 mdefine_line|#define EEPROM_SIZE 128 &t;/* 2 &lt;&lt; EEPROM_ADDRLEN */
-multiline_comment|/* The maximum data clock rate is 2.5 Mhz.  The minimum timing is usually&n;   met by back-to-back PCI I/O cycles, but we insert a delay to avoid&n;   &quot;overclocking&quot; issues or future 66Mhz PCI. */
-DECL|macro|mdio_delay
-mdefine_line|#define mdio_delay() inl(mdio_addr)
-multiline_comment|/* Read and write the MII registers using software-generated serial&n;   MDIO protocol.  It is just different enough from the EEPROM protocol&n;   to not share code.  The maxium data clock rate is 2.5 Mhz. */
-DECL|macro|MDIO_SHIFT_CLK
-mdefine_line|#define MDIO_SHIFT_CLK&t;0x10000
-DECL|macro|MDIO_DATA_WRITE0
-mdefine_line|#define MDIO_DATA_WRITE0 0x00000
-DECL|macro|MDIO_DATA_WRITE1
-mdefine_line|#define MDIO_DATA_WRITE1 0x20000
-DECL|macro|MDIO_ENB
-mdefine_line|#define MDIO_ENB&t;&t;0x00000&t;&t;/* Ignore the 0x02000 databook setting. */
-DECL|macro|MDIO_ENB_IN
-mdefine_line|#define MDIO_ENB_IN&t;&t;0x40000
-DECL|macro|MDIO_DATA_READ
-mdefine_line|#define MDIO_DATA_READ&t;0x80000
 DECL|macro|RUN_AT
 mdefine_line|#define RUN_AT(x) (jiffies + (x))
 macro_line|#if defined(__i386__)&t;&t;&t;/* AKA get_unaligned() */
@@ -1152,9 +1153,20 @@ id|timer_list
 id|timer
 suffix:semicolon
 multiline_comment|/* Media selection timer. */
+DECL|member|mc_filter
+id|u32
+id|mc_filter
+(braket
+l_int|2
+)braket
+suffix:semicolon
 DECL|member|lock
 id|spinlock_t
 id|lock
+suffix:semicolon
+DECL|member|mii_lock
+id|spinlock_t
+id|mii_lock
 suffix:semicolon
 DECL|member|cur_rx
 DECL|member|cur_tx

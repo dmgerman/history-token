@@ -67,6 +67,8 @@ DECL|macro|SO_TIMESTAMP
 mdefine_line|#define SO_TIMESTAMP           29
 DECL|macro|SCM_TIMESTAMP
 mdefine_line|#define SCM_TIMESTAMP          SO_TIMESTAMP
+DECL|macro|SO_ACCEPTCONN
+mdefine_line|#define SO_ACCEPTCONN          30
 macro_line|#if defined(__KERNEL__)
 multiline_comment|/* Socket types. */
 DECL|macro|SOCK_STREAM

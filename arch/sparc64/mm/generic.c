@@ -68,8 +68,7 @@ id|ptpage
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * free_page() used to be able to clear swap cache&n;&t;&t; * entries.  We may now have to do it manually.  &n;&t;&t; */
-id|free_page_and_swap_cache
+id|page_cache_release
 c_func
 (paren
 id|ptpage

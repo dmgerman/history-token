@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File: &t;mca.h&n; * Purpose: &t;Machine check handling specific defines&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander (vijay@engr.sgi.com)&n; * Copyright (C) Srinivasa Thirumalachar (sprasad@engr.sgi.com)&n; */
+multiline_comment|/*&n; * File:&t;mca.h&n; * Purpose:&t;Machine check handling specific defines&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander (vijay@engr.sgi.com)&n; * Copyright (C) Srinivasa Thirumalachar (sprasad@engr.sgi.com)&n; */
 multiline_comment|/* XXX use this temporary define for MP systems trying to INIT */
 DECL|macro|SAL_MPINIT_WORKAROUND
 mdefine_line|#define SAL_MPINIT_WORKAROUND
@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/hw_irq.h&gt;
 multiline_comment|/* These are the return codes from all the IA64_MCA specific interfaces */
 DECL|typedef|ia64_mca_return_code_t
 r_typedef
@@ -32,13 +31,6 @@ l_int|1
 suffix:semicolon
 DECL|macro|IA64_MCA_RENDEZ_TIMEOUT
 mdefine_line|#define IA64_MCA_RENDEZ_TIMEOUT&t;&t;(100 * HZ)&t;/* 1000 milliseconds */
-multiline_comment|/* Interrupt vectors reserved for MC handling. */
-DECL|macro|IA64_MCA_RENDEZ_INT_VECTOR
-mdefine_line|#define IA64_MCA_RENDEZ_INT_VECTOR&t;MCA_RENDEZ_IRQ&t;/* Rendez interrupt */
-DECL|macro|IA64_MCA_WAKEUP_INT_VECTOR
-mdefine_line|#define IA64_MCA_WAKEUP_INT_VECTOR&t;MCA_WAKEUP_IRQ&t;/* Wakeup interrupt */
-DECL|macro|IA64_MCA_CMC_INT_VECTOR
-mdefine_line|#define IA64_MCA_CMC_INT_VECTOR&t;&t;CMC_IRQ&t;/* Correctable machine check interrupt */
 DECL|macro|IA64_CMC_INT_DISABLE
 mdefine_line|#define IA64_CMC_INT_DISABLE&t;&t;0
 DECL|macro|IA64_CMC_INT_ENABLE
@@ -421,7 +413,7 @@ suffix:semicolon
 DECL|macro|PLATFORM_CALL
 mdefine_line|#define PLATFORM_CALL(fn, args)&t;printk(&quot;Platform call TBD&bslash;n&quot;)
 DECL|macro|MCA_TEST
-macro_line|#undef &t;MCA_TEST
+macro_line|#undef&t;MCA_TEST
 DECL|macro|IA64_MCA_DEBUG_INFO
 mdefine_line|#define IA64_MCA_DEBUG_INFO 1
 macro_line|#if defined(IA64_MCA_DEBUG_INFO)

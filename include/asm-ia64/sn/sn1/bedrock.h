@@ -2,6 +2,7 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_SN1_BEDROCK_H
 DECL|macro|_ASM_SN_SN1_BEDROCK_H
 mdefine_line|#define _ASM_SN_SN1_BEDROCK_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* The secret password; used to release protection */
 DECL|macro|HUB_PASSWORD
 mdefine_line|#define HUB_PASSWORD&t;&t;0x53474972756c6573ull
@@ -15,7 +16,6 @@ DECL|macro|BEDROCK_REV_1_1
 mdefine_line|#define BEDROCK_REV_1_1&t;&t;2
 DECL|macro|MAX_HUB_PATH
 mdefine_line|#define MAX_HUB_PATH&t;&t;80
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/sn1/addrs.h&gt;

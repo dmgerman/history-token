@@ -6,14 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 macro_line|#include &lt;asm/sn/sn1/addrs.h&gt;
 macro_line|#endif
-DECL|macro|IO_SPACE_BASE
-mdefine_line|#define IO_SPACE_BASE IO_BASE
 multiline_comment|/* Because we only have PCI I/O ports.  */
-macro_line|#if !defined(CONFIG_IA64_SGI_IO)
-DECL|macro|IO_SPACE_LIMIT
-mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
-multiline_comment|/* No isa_* versions, the Origin doesn&squot;t have ISA / EISA bridges.  */
-macro_line|#else&t;/* CONFIG_IA64_SGI_IO */
 DECL|macro|IIO_ITTE_BASE
 mdefine_line|#define IIO_ITTE_BASE&t;0x400160&t;/* base of translation table entries */
 DECL|macro|IIO_ITTE
@@ -54,6 +47,5 @@ mdefine_line|#define&t;IIO_IOPRB(_x)&t;(IIO_IOPRB_0 + ( ( (_x) &lt; HUB_WIDGET_I
 macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 macro_line|#include &lt;asm/sn/sn1/hubio.h&gt;
 macro_line|#endif
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO */
 macro_line|#endif /* _ASM_SN_IO_H */
 eof

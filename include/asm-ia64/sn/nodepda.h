@@ -11,8 +11,9 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/agent.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
+macro_line|#include &lt;asm/sn/synergy.h&gt;
 multiline_comment|/* #include &lt;SN/klkernvars.h&gt; */
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 DECL|typedef|module_t
 r_typedef
 r_struct
@@ -57,8 +58,13 @@ suffix:semicolon
 r_struct
 id|ptpool_s
 suffix:semicolon
+macro_line|#if defined(CONFIG_IA64_SGI_SYNERGY_PERF)
+r_struct
+id|synergy_perf_s
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Node-specific data structure.&n; *&n; * One of these structures is allocated on each node of a NUMA system.&n; * Non-NUMA systems are considered to be systems with one node, and&n; * hence there will be one of this structure for the entire system.&n; *&n; * This structure provides a convenient way of keeping together &n; * all per-node data structures. &n; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 multiline_comment|/*&n; * The following structure is contained in the nodepda &amp; contains&n; * a lock &amp; queue-head for sanon pages that belong to the node.&n; * See the anon manager for more details.&n; */
 r_typedef
 r_struct
@@ -145,7 +151,7 @@ r_uint64
 id|migr_candidate
 suffix:semicolon
 multiline_comment|/*&n;&t; * Each node gets its own syswait counter to remove contention&n;&t; * on the global one.&n;&t; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 DECL|member|syswait
 r_struct
 id|syswait
@@ -154,7 +160,7 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif&t;/* NUMA_BASE */
 multiline_comment|/*&n;&t; * Node-specific Zone structures.&n;&t; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 DECL|member|node_zones
 id|zoneset_element_t
 id|node_zones
@@ -194,7 +200,7 @@ id|NUM_SUBNODES
 )braket
 suffix:semicolon
 multiline_comment|/* Distributed kernel support */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 DECL|member|kern_vars
 id|kern_vars_t
 id|kern_vars
@@ -257,6 +263,41 @@ DECL|member|dependent_routers
 r_int
 id|dependent_routers
 suffix:semicolon
+macro_line|#if defined(CONFIG_IA64_SGI_SYNERGY_PERF)
+DECL|member|synergy_perf_enabled
+r_int
+id|synergy_perf_enabled
+suffix:semicolon
+DECL|member|synergy_perf_freq
+r_int
+id|synergy_perf_freq
+suffix:semicolon
+DECL|member|synergy_perf_lock
+id|spinlock_t
+id|synergy_perf_lock
+suffix:semicolon
+DECL|member|synergy_inactive_intervals
+r_uint64
+id|synergy_inactive_intervals
+suffix:semicolon
+DECL|member|synergy_active_intervals
+r_uint64
+id|synergy_active_intervals
+suffix:semicolon
+DECL|member|synergy_perf_data
+r_struct
+id|synergy_perf_s
+op_star
+id|synergy_perf_data
+suffix:semicolon
+DECL|member|synergy_perf_first
+r_struct
+id|synergy_perf_s
+op_star
+id|synergy_perf_first
+suffix:semicolon
+multiline_comment|/* reporting consistency .. */
+macro_line|#endif /* CONFIG_IA64_SGI_SYNERGY_PERF */
 DECL|member|xbow_vhdl
 id|devfs_handle_t
 id|xbow_vhdl
@@ -317,7 +358,7 @@ r_char
 id|ni_error_print
 suffix:semicolon
 multiline_comment|/* For printing ni error state&n;&t;&t;&t;&t;&t; * only once during system panic&n;&t;&t;&t;&t;&t; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 DECL|member|node_md_perfmon
 id|md_perf_monitor_t
 id|node_md_perfmon
@@ -330,17 +371,17 @@ DECL|member|hubticks
 r_int
 id|hubticks
 suffix:semicolon
-DECL|member|huberror_ticks
-r_int
-id|huberror_ticks
-suffix:semicolon
 DECL|member|sbe_info
 id|sbe_info_t
 op_star
 id|sbe_info
 suffix:semicolon
 multiline_comment|/* ECC single-bit error statistics */
-macro_line|#endif&t;/* !CONFIG_IA64_SGI_IO */
+macro_line|#endif&t;/* LATER */
+DECL|member|huberror_ticks
+r_int
+id|huberror_ticks
+suffix:semicolon
 DECL|member|visited_router_q
 id|router_queue_t
 op_star
@@ -406,13 +447,11 @@ r_int
 id|dump_count
 suffix:semicolon
 multiline_comment|/* To allow only one cpu-per-node */
-macro_line|#if defined BRINGUP
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 DECL|member|node_io_perfmon
 id|io_perf_monitor_t
 id|node_io_perfmon
 suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n;&t; * Each node gets its own pdcount counter to remove contention&n;&t; * on the global one.&n;&t; */
 DECL|member|pdcount
@@ -428,7 +467,7 @@ id|cached_global_pool
 suffix:semicolon
 multiline_comment|/* pointer to cached vmpool */
 macro_line|#endif /* NUMA_BASE */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 DECL|member|sanon_list_head
 id|sanon_list_head_t
 id|sanon_list_head
@@ -446,7 +485,7 @@ multiline_comment|/* ptpool for this node */
 macro_line|#endif /* NUMA_BASE */
 multiline_comment|/*&n;&t; * The BTEs on this node are shared by the local cpus&n;&t; */
 macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 DECL|member|node_bte_info
 id|bteinfo_t
 op_star
@@ -471,7 +510,7 @@ DECL|macro|NODE_SLOTID
 mdefine_line|#define NODE_SLOTID(_node)&t;(NODEPDA(_node)-&gt;slotdesc)
 macro_line|#ifdef&t;NUMA_BASE
 multiline_comment|/*&n; * Access Functions for node PDA.&n; * Since there is one nodepda for each node, we need a convenient mechanism&n; * to access these nodepdas without cluttering code with #ifdefs.&n; * The next set of definitions provides this.&n; * Routines are expected to use &n; *&n; *&t;nodepda&t;&t;-&gt; to access PDA for the node on which code is running&n; *&t;subnodepda&t;-&gt; to access subnode PDA for the node on which code is running&n; *&n; *&t;NODEPDA(x)&t;-&gt; to access node PDA for cnodeid &squot;x&squot;&n; *&t;SUBNODEPDA(x,s)&t;-&gt; to access subnode PDA for cnodeid/slice &squot;x&squot;&n; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 DECL|macro|nodepda
 mdefine_line|#define&t;nodepda&t;&t;private.p_nodepda&t;/* Ptr to this node&squot;s PDA */
 macro_line|#if CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 || CONFIG_IA64_GENERIC

@@ -1,5 +1,3 @@
-DECL|macro|ilvt_t
-mdefine_line|#define ilvt_t int
 multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -12,7 +10,7 @@ macro_line|#include &lt;asm/sn/iograph.h&gt;
 multiline_comment|/* &n; * Interfaces in this file are all platform-independent AND IObus-independent.&n; * Be aware that there may be macro equivalents to each of these hiding in&n; * header files which supercede these functions.&n; */
 multiline_comment|/* =====Generic iobus support===== */
 multiline_comment|/* String table to hold names of interrupts. */
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 DECL|variable|device_desc_string_table
 r_static
 r_struct
@@ -30,7 +28,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|string_table_init
 c_func
 (paren
@@ -56,7 +54,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|device_desc_t
 id|device_desc
 suffix:semicolon
@@ -148,7 +146,7 @@ id|device_desc_t
 id|device_desc
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_if
 c_cond
 (paren
@@ -183,7 +181,7 @@ id|devfs_handle_t
 id|dev
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|device_desc_t
 id|orig_device_desc
 comma
@@ -287,7 +285,7 @@ id|devfs_handle_t
 id|dev
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|graph_error_t
 id|rc
 suffix:semicolon
@@ -352,7 +350,7 @@ id|device_desc_t
 id|new_device_desc
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|graph_error_t
 id|rc
 suffix:semicolon
@@ -503,7 +501,7 @@ id|device_desc_t
 id|device_desc
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_return
 id|device_desc-&gt;intr_target
 suffix:semicolon
@@ -531,7 +529,7 @@ id|device_desc_t
 id|device_desc
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_return
 id|device_desc-&gt;intr_policy
 suffix:semicolon
@@ -556,7 +554,7 @@ id|device_desc_t
 id|device_desc
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_return
 id|device_desc-&gt;intr_swlevel
 suffix:semicolon
@@ -585,7 +583,7 @@ id|device_desc_t
 id|device_desc
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_return
 id|device_desc-&gt;intr_name
 suffix:semicolon
@@ -610,7 +608,7 @@ id|device_desc_t
 id|device_desc
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_return
 id|device_desc-&gt;flags
 suffix:semicolon
@@ -720,7 +718,7 @@ op_star
 id|name
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_if
 c_cond
 (paren
@@ -912,7 +910,7 @@ op_star
 id|registry
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_if
 c_cond
 (paren
@@ -972,7 +970,7 @@ op_star
 id|val
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|dev_admin_list_t
 op_star
 id|reg_entry
@@ -1191,7 +1189,7 @@ op_star
 id|name
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|dev_admin_list_t
 op_star
 id|scan
@@ -1283,7 +1281,7 @@ op_star
 id|info_lbl
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_char
 op_star
 id|info
@@ -1342,7 +1340,7 @@ op_star
 id|dev_info_val
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|graph_error_t
 id|rv
 suffix:semicolon
@@ -1597,7 +1595,7 @@ op_star
 id|driver_info_lbl
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|device_driver_t
 id|driver
 suffix:semicolon
@@ -1652,7 +1650,7 @@ op_star
 id|driver_info_val
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|device_driver_t
 id|driver
 suffix:semicolon
@@ -1740,7 +1738,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|extended_dev_admin_table_size
 op_assign
 l_int|0
@@ -1781,7 +1779,7 @@ op_star
 id|value
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|dev_admin_info_t
 op_star
 id|p
@@ -1953,7 +1951,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|extended_drv_admin_table_size
 op_assign
 l_int|0
@@ -1994,7 +1992,7 @@ op_star
 id|value
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|dev_admin_info_t
 op_star
 id|p
@@ -2147,7 +2145,7 @@ id|devfs_handle_t
 id|dev_vhdl
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_int
 id|i
 op_assign
@@ -2302,7 +2300,7 @@ id|device_driver_t
 id|driver
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_int
 id|i
 op_assign
@@ -2420,7 +2418,7 @@ multiline_comment|/* =====Device Driver Support===== */
 multiline_comment|/*&n;** Generic device driver support routines for use by kernel modules that&n;** deal with device drivers (but NOT for use by the drivers themselves).&n;** EVERY registered driver currently in the system -- static or loadable --&n;** has an entry in the device_driver_hash table.  A pointer to such an entry&n;** serves as a generic device driver handle.&n;*/
 DECL|macro|DEVICE_DRIVER_HASH_SIZE
 mdefine_line|#define DEVICE_DRIVER_HASH_SIZE 32
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 DECL|variable|device_driver_lock
 id|lock_t
 id|device_driver_lock
@@ -2451,7 +2449,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_int
 id|i
 suffix:semicolon
@@ -2524,7 +2522,7 @@ id|i
 op_increment
 )paren
 (brace
-id|spinlock_init
+id|spin_lock_init
 c_func
 (paren
 op_amp
@@ -2532,8 +2530,6 @@ id|device_driver_lock
 (braket
 id|i
 )braket
-comma
-l_string|&quot;devdrv&quot;
 )paren
 suffix:semicolon
 id|device_driver_hash
@@ -2646,7 +2642,7 @@ op_star
 id|prefix
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_int
 id|accum
 op_assign
@@ -2698,13 +2694,14 @@ op_star
 id|prefix
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_int
 id|which_hash
 suffix:semicolon
 id|device_driver_t
 id|new_driver
 suffix:semicolon
+r_int
 r_int
 id|s
 suffix:semicolon
@@ -2891,10 +2888,11 @@ id|device_driver_t
 id|driver
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_int
 id|which_hash
 suffix:semicolon
+r_int
 r_int
 id|s
 suffix:semicolon
@@ -3083,13 +3081,14 @@ op_star
 id|prefix
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_int
 id|which_hash
 suffix:semicolon
 id|device_driver_t
 id|drvscan
 suffix:semicolon
+r_int
 r_int
 id|s
 suffix:semicolon
@@ -3187,7 +3186,7 @@ id|devfs_handle_t
 id|device
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_struct
 id|bdevsw
 op_star
@@ -3268,7 +3267,7 @@ op_star
 id|my_cdevsw
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_int
 id|i
 suffix:semicolon
@@ -3604,7 +3603,7 @@ op_star
 id|info
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|hwgraph_fastinfo_set
 c_func
 (paren
@@ -3635,7 +3634,7 @@ id|devfs_handle_t
 id|device
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_return
 (paren
 r_void
@@ -3670,7 +3669,7 @@ op_star
 id|dev_prefix
 )paren
 (brace
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 r_int
 id|pri
 suffix:semicolon

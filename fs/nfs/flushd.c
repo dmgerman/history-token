@@ -520,6 +520,7 @@ suffix:semicolon
 id|out
 suffix:colon
 )brace
+multiline_comment|/* Protect me using the BKL */
 DECL|function|inode_remove_flushd
 r_void
 id|inode_remove_flushd
@@ -548,11 +549,6 @@ op_star
 op_star
 id|q
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -567,8 +563,7 @@ op_amp
 id|NFS_INO_FLUSH
 )paren
 )paren
-r_goto
-id|out
+r_return
 suffix:semicolon
 id|q
 op_assign
@@ -624,13 +619,6 @@ id|inode
 )paren
 suffix:semicolon
 )brace
-id|out
-suffix:colon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|inode_schedule_scan
 r_void

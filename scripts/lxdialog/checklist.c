@@ -1163,11 +1163,6 @@ id|choice
 )paren
 suffix:semicolon
 )brace
-id|wnoutrefresh
-(paren
-id|list
-)paren
-suffix:semicolon
 id|print_arrows
 c_func
 (paren
@@ -1200,6 +1195,20 @@ comma
 id|width
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|wnoutrefresh
+(paren
+id|list
+)paren
+suffix:semicolon
+id|wnoutrefresh
+(paren
+id|dialog
+)paren
+suffix:semicolon
+id|doupdate
+(paren
 )paren
 suffix:semicolon
 r_while
@@ -2073,6 +2082,11 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Now, update everything... */
+id|doupdate
+(paren
+)paren
+suffix:semicolon
 )brace
 id|delwin
 (paren

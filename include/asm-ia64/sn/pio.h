@@ -27,7 +27,7 @@ DECL|member|pio_adap
 id|uint
 id|pio_adap
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 DECL|member|pio_iospace
 id|iospace_t
 id|pio_iospace
@@ -63,7 +63,7 @@ op_star
 id|pio_prev
 suffix:semicolon
 multiline_comment|/* for debug and error reporting */
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 DECL|member|pio_errfunc
 r_void
 (paren
@@ -90,13 +90,21 @@ DECL|typedef|piomap_t
 )brace
 id|piomap_t
 suffix:semicolon
+DECL|macro|pio_type
+mdefine_line|#define pio_type&t;pio_iospace.ios_type
+DECL|macro|pio_iopaddr
+mdefine_line|#define pio_iopaddr&t;pio_iospace.ios_iopaddr
+DECL|macro|pio_size
+mdefine_line|#define pio_size&t;pio_iospace.ios_size
+DECL|macro|pio_vaddr
+mdefine_line|#define pio_vaddr&t;pio_iospace.ios_vaddr
 multiline_comment|/* Macro to get/set PIO error function */
 DECL|macro|pio_seterrf
 mdefine_line|#define&t;pio_seterrf(p,f)&t;(p)-&gt;pio_errfunc = (f)
 DECL|macro|pio_geterrf
 mdefine_line|#define&t;pio_geterrf(p)&t;&t;(p)-&gt;pio_errfunc
 multiline_comment|/*&n; * pio_mapalloc() - allocates a handle that specifies a mapping from kernel&n; *&t;&t;    virtual to io space. The returned handle piomap is used&n; *&t;&t;    with the access functions to make sure that the mapping&n; *&t;&t;    to the iospace exists.&n; * pio_mapfree()  - frees the mapping as specified in the piomap handle.&n; * pio_mapaddr()  - returns the kv address that maps to piomap&squot;ed io address.&n; */
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_extern
 id|piomap_t
 op_star
@@ -414,7 +422,7 @@ r_int
 r_int
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* IRIX */
+macro_line|#endif&t;/* LATER */
 multiline_comment|/*&n; * piomap_t type defines&n; */
 DECL|macro|PIOMAP_NTYPES
 mdefine_line|#define PIOMAP_NTYPES&t;7

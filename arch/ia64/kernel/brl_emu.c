@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Emulation of the &quot;brl&quot; instruction for IA64 processors that&n; *  don&squot;t support it in hardware. &n; *  Author: Stephan Zeisset, Intel Corp. &lt;Stephan.Zeisset@intel.com&gt;&n; */
+multiline_comment|/*&n; *  Emulation of the &quot;brl&quot; instruction for IA64 processors that&n; *  don&squot;t support it in hardware.&n; *  Author: Stephan Zeisset, Intel Corp. &lt;Stephan.Zeisset@intel.com&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -37,11 +37,11 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; *  The unimplemented bits of a virtual address must be set&n; *  to the value of the most significant implemented bit.&n; *  unimpl_va_mask includes all unimplemented bits and&n; *  the most significant implemented bit, so the result&n; *  of an and operation with the mask must be all 0&squot;s&n; *  or all 1&squot;s for the address to be valid.&n; */
 DECL|macro|unimplemented_virtual_address
-mdefine_line|#define unimplemented_virtual_address(va) (&t;&t;&t;&t;&t;&bslash;&n;&t;((va) &amp; my_cpu_data.unimpl_va_mask) != 0 &amp;&amp;&t;&t;&t;&t;&bslash;&n;&t;((va) &amp; my_cpu_data.unimpl_va_mask) != my_cpu_data.unimpl_va_mask&t;&bslash;&n;)
+mdefine_line|#define unimplemented_virtual_address(va) (&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((va) &amp; local_cpu_data-&gt;unimpl_va_mask) != 0 &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;((va) &amp; local_cpu_data-&gt;unimpl_va_mask) != local_cpu_data-&gt;unimpl_va_mask&t;&bslash;&n;)
 multiline_comment|/*&n; *  The unimplemented bits of a physical address must be 0.&n; *  unimpl_pa_mask includes all unimplemented bits, so the result&n; *  of an and operation with the mask must be all 0&squot;s for the&n; *  address to be valid.&n; */
 DECL|macro|unimplemented_physical_address
-mdefine_line|#define unimplemented_physical_address(pa) (&t;&t;&bslash;&n;&t;((pa) &amp; my_cpu_data.unimpl_pa_mask) != 0&t;&bslash;&n;)
-multiline_comment|/*&n; *  Handle an illegal operation fault that was caused by an &n; *  unimplemented &quot;brl&quot; instruction.&n; *  If we are not successful (e.g because the illegal operation &n; *  wasn&squot;t caused by a &quot;brl&quot; after all), we return -1.&n; *  If we are successful, we return either 0 or the address&n; *  of a &quot;fixup&quot; function for manipulating preserved register&n; *  state.&n; */
+mdefine_line|#define unimplemented_physical_address(pa) (&t;&t;&bslash;&n;&t;((pa) &amp; local_cpu_data-&gt;unimpl_pa_mask) != 0&t;&bslash;&n;)
+multiline_comment|/*&n; *  Handle an illegal operation fault that was caused by an&n; *  unimplemented &quot;brl&quot; instruction.&n; *  If we are not successful (e.g because the illegal operation&n; *  wasn&squot;t caused by a &quot;brl&quot; after all), we return -1.&n; *  If we are successful, we return either 0 or the address&n; *  of a &quot;fixup&quot; function for manipulating preserved register&n; *  state.&n; */
 r_struct
 id|illegal_op_return
 DECL|function|ia64_emulate_brl

@@ -185,13 +185,6 @@ c_func
 id|iounmap
 )paren
 suffix:semicolon
-DECL|variable|__io_virt_debug
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__io_virt_debug
-)paren
-suffix:semicolon
 DECL|variable|enable_irq
 id|EXPORT_SYMBOL
 c_func
@@ -262,6 +255,15 @@ c_func
 id|gdt
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IO_DEBUG
+DECL|variable|__io_virt_debug
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__io_virt_debug
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|__down_failed
 id|EXPORT_SYMBOL_NOVERS
 c_func

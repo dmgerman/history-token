@@ -12784,6 +12784,11 @@ r_if
 c_cond
 (paren
 id|vm.frame
+OL
+l_int|0
+op_logical_or
+id|vm.frame
+op_ge
 id|FRAME_NUM
 )paren
 (brace

@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;asm/sn/cmn_err.h&gt;
 macro_line|#include &lt;asm/sn/iobus.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
@@ -19,22 +18,13 @@ macro_line|#include &lt;asm/sn/agent.h&gt;
 macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalkaddrs.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
+macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 r_extern
 id|xtalk_provider_t
 id|hub_provider
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-multiline_comment|/* Global variables */
-r_extern
-id|pdaindr_t
-id|pdaindr
-(braket
-id|MAXCPUS
-)braket
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Perform any initializations needed to support hub-based I/O.&n; * Called once during startup.&n; */
 r_void
 DECL|function|hubio_init
@@ -44,7 +34,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if 0
+macro_line|#ifdef&t;LATER
 multiline_comment|/* This isn&squot;t needed unless we port the entire sio driver ... */
 r_extern
 r_void
@@ -217,7 +207,6 @@ id|bigwin
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;BRINGUP
 id|hub_set_piomode
 c_func
 (paren
@@ -226,35 +215,26 @@ comma
 id|HUB_PIO_CONVEYOR
 )paren
 suffix:semicolon
-macro_line|#else
-multiline_comment|/* Set all the xwidgets in fire-and-forget mode&n;&t; * by default&n;&t; */
-id|hub_set_piomode
+id|mutex_spinlock_init
 c_func
 (paren
-id|nasid
-comma
-id|HUB_PIO_FIRE_N_FORGET
+op_amp
+id|hubinfo-&gt;h_bwlock
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* BRINGUP */
+multiline_comment|/*&n; * If this lock can be acquired from interrupts or bh&squot;s, add SV_INTS or SV_BHS,&n; * respectively, to the flags here.&n; */
 id|sv_init
 c_func
 (paren
 op_amp
 id|hubinfo-&gt;h_bwwait
 comma
-id|SV_FIFO
-comma
-l_string|&quot;bigwin&quot;
-)paren
-suffix:semicolon
-id|spinlock_init
-c_func
-(paren
 op_amp
 id|hubinfo-&gt;h_bwlock
 comma
-l_string|&quot;bigwin&quot;
+id|SV_ORDER_FIFO
+op_or
+id|SV_MON_SPIN
 )paren
 suffix:semicolon
 )brace
@@ -334,6 +314,7 @@ r_volatile
 id|hubreg_t
 id|junk
 suffix:semicolon
+r_int
 r_int
 id|s
 suffix:semicolon
@@ -588,12 +569,9 @@ c_func
 op_amp
 id|hubinfo-&gt;h_bwwait
 comma
-id|PZERO
+l_int|0
 comma
-op_amp
-id|hubinfo-&gt;h_bwlock
-comma
-id|s
+l_int|0
 )paren
 suffix:semicolon
 r_goto
@@ -729,6 +707,7 @@ suffix:semicolon
 id|nasid_t
 id|nasid
 suffix:semicolon
+r_int
 r_int
 id|s
 suffix:semicolon
@@ -1243,25 +1222,20 @@ op_assign
 id|dmamap-&gt;hdma_xtalk_info.xd_dev
 suffix:semicolon
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;%v: hub_dmamap_addr re-uses dmamap.&bslash;n&quot;
 comma
 id|vhdl
 )paren
 suffix:semicolon
 macro_line|#else
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
+l_string|&quot;0x%x: hub_dmamap_addr re-uses dmamap.&bslash;n&quot;
 comma
-l_string|&quot;0x%p: hub_dmamap_addr re-uses dmamap.&bslash;n&quot;
-comma
-op_amp
 id|vhdl
 )paren
 suffix:semicolon
@@ -1335,25 +1309,20 @@ op_assign
 id|hub_dmamap-&gt;hdma_xtalk_info.xd_dev
 suffix:semicolon
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;%v: hub_dmamap_list re-uses dmamap&bslash;n&quot;
 comma
 id|vhdl
 )paren
 suffix:semicolon
 macro_line|#else
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
+l_string|&quot;0x%x: hub_dmamap_list re-uses dmamap&bslash;n&quot;
 comma
-l_string|&quot;0x%p: hub_dmamap_list re-uses dmamap&bslash;n&quot;
-comma
-op_amp
 id|vhdl
 )paren
 suffix:semicolon
@@ -1419,25 +1388,20 @@ op_assign
 id|hub_dmamap-&gt;hdma_xtalk_info.xd_dev
 suffix:semicolon
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;%v: hub_dmamap_done already done with dmamap&bslash;n&quot;
 comma
 id|vhdl
 )paren
 suffix:semicolon
 macro_line|#else
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
+l_string|&quot;0x%x: hub_dmamap_done already done with dmamap&bslash;n&quot;
 comma
-l_string|&quot;0x%p: hub_dmamap_done already done with dmamap&bslash;n&quot;
-comma
-op_amp
 id|vhdl
 )paren
 suffix:semicolon
@@ -1628,9 +1592,10 @@ op_assign
 id|INTRCONNECT_ANYBIT
 suffix:semicolon
 multiline_comment|/*&n; * Allocate resources required for an interrupt as specified in dev_desc.&n; * Returns a hub interrupt handle on success, or 0 on failure.&n; */
+r_static
 id|hub_intr_t
-DECL|function|hub_intr_alloc
-id|hub_intr_alloc
+DECL|function|do_hub_intr_alloc
+id|do_hub_intr_alloc
 c_func
 (paren
 id|devfs_handle_t
@@ -1643,11 +1608,20 @@ comma
 multiline_comment|/* device descriptor */
 id|devfs_handle_t
 id|owner_dev
-)paren
+comma
 multiline_comment|/* owner of this interrupt, if known */
+r_int
+id|uncond_nothread
+)paren
+multiline_comment|/* unconditionally non-threaded */
 (brace
 id|cpuid_t
 id|cpu
+op_assign
+(paren
+id|cpuid_t
+)paren
+l_int|0
 suffix:semicolon
 multiline_comment|/* cpu to receive interrupt */
 r_int
@@ -1662,6 +1636,8 @@ multiline_comment|/* interrupt vector */
 multiline_comment|/*REFERENCED*/
 r_int
 id|intr_resflags
+op_assign
+l_int|0
 suffix:semicolon
 id|hub_intr_t
 id|intr_hdl
@@ -1768,6 +1744,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|uncond_nothread
+op_logical_and
+op_logical_neg
 (paren
 id|dev_desc-&gt;flags
 op_amp
@@ -1795,6 +1774,12 @@ id|intr_swlevel
 op_assign
 id|default_intr_pri
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|uncond_nothread
+)paren
 id|intr_resflags
 op_assign
 id|II_THREADED
@@ -1843,25 +1828,20 @@ id|CPU_NONE
 )paren
 (brace
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;%v hub_intr_alloc could not allocate interrupt&bslash;n&quot;
 comma
 id|owner_dev
 )paren
 suffix:semicolon
 macro_line|#else
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
+l_string|&quot;0x%x hub_intr_alloc could not allocate interrupt&bslash;n&quot;
 comma
-l_string|&quot;0x%p hub_intr_alloc could not allocate interrupt&bslash;n&quot;
-comma
-op_amp
 id|owner_dev
 )paren
 suffix:semicolon
@@ -1903,11 +1883,9 @@ l_int|0
 )paren
 (brace
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;Could not reserve an interrupt bit for cpu &quot;
 l_string|&quot; %d and dev %v&bslash;n&quot;
 comma
@@ -1917,17 +1895,14 @@ id|owner_dev
 )paren
 suffix:semicolon
 macro_line|#else
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;Could not reserve an interrupt bit for cpu &quot;
 l_string|&quot; %d and dev 0x%x&bslash;n&quot;
 comma
 id|cpu
 comma
-op_amp
 id|owner_dev
 )paren
 suffix:semicolon
@@ -2015,19 +1990,6 @@ id|xtalk_info-&gt;xi_addr
 op_assign
 id|xtalk_addr
 suffix:semicolon
-id|xtalk_info-&gt;xi_flags
-op_assign
-(paren
-id|intr_resflags
-op_eq
-id|II_THREADED
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|XTALK_INTR_NOTHREAD
-suffix:semicolon
 multiline_comment|/*&n;&t; * Regardless of which CPU we ultimately interrupt, a given crosstalk&n;&t; * widget always handles interrupts (and PIO and DMA) through its &n;&t; * designated &quot;master&quot; crosstalk provider.&n;&t; */
 id|xwidget_info
 op_assign
@@ -2096,6 +2058,72 @@ suffix:semicolon
 macro_line|#endif
 r_return
 id|intr_hdl
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Allocate resources required for an interrupt as specified in dev_desc.&n; * Returns a hub interrupt handle on success, or 0 on failure.&n; */
+id|hub_intr_t
+DECL|function|hub_intr_alloc
+id|hub_intr_alloc
+c_func
+(paren
+id|devfs_handle_t
+id|dev
+comma
+multiline_comment|/* which crosstalk device */
+id|device_desc_t
+id|dev_desc
+comma
+multiline_comment|/* device descriptor */
+id|devfs_handle_t
+id|owner_dev
+)paren
+multiline_comment|/* owner of this interrupt, if known */
+(brace
+r_return
+id|do_hub_intr_alloc
+c_func
+(paren
+id|dev
+comma
+id|dev_desc
+comma
+id|owner_dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Allocate resources required for an interrupt as specified in dev_desc.&n; * Uncondtionally request non-threaded, regardless of what the device&n; * descriptor might say.&n; * Returns a hub interrupt handle on success, or 0 on failure.&n; */
+id|hub_intr_t
+DECL|function|hub_intr_alloc_nothd
+id|hub_intr_alloc_nothd
+c_func
+(paren
+id|devfs_handle_t
+id|dev
+comma
+multiline_comment|/* which crosstalk device */
+id|device_desc_t
+id|dev_desc
+comma
+multiline_comment|/* device descriptor */
+id|devfs_handle_t
+id|owner_dev
+)paren
+multiline_comment|/* owner of this interrupt, if known */
+(brace
+r_return
+id|do_hub_intr_alloc
+c_func
+(paren
+id|dev
+comma
+id|dev_desc
+comma
+id|owner_dev
+comma
+l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Free resources consumed by intr_alloc.&n; */
@@ -2740,7 +2768,7 @@ suffix:semicolon
 r_int
 id|prb_offset
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_extern
 r_int
 id|force_fire_and_forget
@@ -2861,8 +2889,6 @@ r_int
 id|prbnum
 suffix:semicolon
 r_int
-id|s
-comma
 id|cons_lock
 op_assign
 l_int|0
@@ -3001,18 +3027,6 @@ id|conveyor
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef IRIX
-multiline_comment|/*&n;&t; * In direct connect mode, disable access to all widgets but 0.&n;&t; * Later, the prom will do this for us.&n;&t; */
-r_if
-c_cond
-(paren
-id|direct_connect
-)paren
-id|ii_iowa
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|REMOTE_HUB_S
 c_func
 (paren
@@ -3161,8 +3175,10 @@ id|nasid_t
 id|nasid
 suffix:semicolon
 r_int
+r_int
 id|s
-comma
+suffix:semicolon
+r_int
 id|rv
 suffix:semicolon
 multiline_comment|/* Use the nasid from the hub info hanging off the hub vertex&n;&t; * and widget number from the widget vertex&n;&t; */
@@ -3256,6 +3272,7 @@ id|nasid_t
 id|nasid
 suffix:semicolon
 r_int
+r_int
 id|s
 suffix:semicolon
 multiline_comment|/* Use the nasid from the hub info hanging off the hub vertex&n;&t; * and widget number from the widget vertex&n;&t; */
@@ -3344,6 +3361,7 @@ suffix:semicolon
 id|nasid_t
 id|nasid
 suffix:semicolon
+r_int
 r_int
 id|s
 suffix:semicolon
@@ -3532,34 +3550,27 @@ id|IIO_IOWA
 )paren
 suffix:semicolon
 macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;Inquiry Info for %v&bslash;n&quot;
 comma
 id|xconn
 )paren
 suffix:semicolon
 macro_line|#else
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
+l_string|&quot;Inquiry Info for 0x%x&bslash;n&quot;
 comma
-l_string|&quot;Inquiry Info for 0x%p&bslash;n&quot;
-comma
-op_amp
 id|xconn
 )paren
 suffix:semicolon
 macro_line|#endif
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;&bslash;tDevices shutdown [ &quot;
 )paren
 suffix:semicolon
@@ -3595,29 +3606,23 @@ id|d
 )paren
 )paren
 )paren
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot; %d&quot;
 comma
 id|d
 )paren
 suffix:semicolon
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;]&bslash;n&quot;
 )paren
 suffix:semicolon
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;&bslash;tInbound access ? %s&bslash;n&quot;
 comma
 id|ii_iiwa
@@ -3634,11 +3639,9 @@ suffix:colon
 l_string|&quot;no&quot;
 )paren
 suffix:semicolon
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;&bslash;tOutbound access ? %s&bslash;n&quot;
 comma
 id|ii_iowa
@@ -3757,6 +3760,12 @@ id|xtalk_intr_alloc_f
 op_star
 )paren
 id|hub_intr_alloc
+comma
+(paren
+id|xtalk_intr_alloc_f
+op_star
+)paren
+id|hub_intr_alloc_nothd
 comma
 (paren
 id|xtalk_intr_free_f

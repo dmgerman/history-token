@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: delay.h,v 1.2 2000/08/08 16:36:41 bjornw Exp $ */
+multiline_comment|/* $Id: delay.h,v 1.3 2001/02/23 13:47:33 bjornw Exp $ */
 macro_line|#ifndef _CRIS_DELAY_H
 DECL|macro|_CRIS_DELAY_H
 mdefine_line|#define _CRIS_DELAY_H

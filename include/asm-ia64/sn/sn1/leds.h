@@ -30,7 +30,7 @@ id|eid
 suffix:semicolon
 id|eid
 op_assign
-id|hard_processor_sapicid
+id|hard_smp_processor_id
 c_func
 (paren
 )paren

@@ -8,7 +8,7 @@ mdefine_line|#define DONT_MERGE_REQUESTS
 macro_line|#ifndef SBPCD_ISSUE
 DECL|macro|SBPCD_ISSUE
 mdefine_line|#define SBPCD_ISSUE 1
-macro_line|#endif SBPCD_ISSUE
+macro_line|#endif /* SBPCD_ISSUE */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -85,7 +85,7 @@ DECL|macro|SBPCD_CLI
 mdefine_line|#define SBPCD_CLI
 DECL|macro|SBPCD_STI
 mdefine_line|#define SBPCD_STI
-macro_line|#endif SBPCD_DIS_IRQ
+macro_line|#endif /* SBPCD_DIS_IRQ */
 multiline_comment|/*==========================================================================*/
 multiline_comment|/*&n; * auto-probing address list&n; * inspired by Adam J. Richter from Yggdrasil&n; *&n; * still not good enough - can cause a hang.&n; *   example: a NE 2000 ethernet card at 300 will cause a hang probing 310.&n; * if that happens, reboot and use the LILO (kernel) command line.&n; * The possibly conflicting ethernet card addresses get NOT probed &n; * by default - to minimize the hang possibilities. &n; *&n; * The SB Pro addresses get &quot;mirrored&quot; at 0x6xx and some more locations - to&n; * avoid a type error, the 0x2xx-addresses must get checked before 0x6xx.&n; *&n; * send mail to emoenke@gwdg.de if your interface card is not FULLY&n; * represented here.&n; */
 macro_line|#if !(SBPCD_ISSUE-1)
@@ -237,9 +237,9 @@ comma
 l_int|0
 comma
 multiline_comment|/* Lasermate, CI-101P, WDH-7001C */
-macro_line|#endif MODULE
+macro_line|#endif /* MODULE */
 macro_line|#endif
-macro_line|#endif DISTRIBUTION
+macro_line|#endif /* DISTRIBUTION */
 )brace
 suffix:semicolon
 macro_line|#else
@@ -443,7 +443,7 @@ id|DBG_UPC
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif DISTRIBUTION
+macro_line|#endif /* DISTRIBUTION */
 DECL|variable|sbpcd_ioaddr
 r_static
 r_int
@@ -710,7 +710,7 @@ c_func
 id|sbp_waitq
 )paren
 suffix:semicolon
-macro_line|#endif FUTURE
+macro_line|#endif /* FUTURE */
 DECL|variable|teac
 r_static
 r_int
@@ -858,7 +858,7 @@ id|u_char
 id|busy_audio
 suffix:semicolon
 multiline_comment|/* true semaphores would be safer */
-macro_line|#endif OLD_BUSY
+macro_line|#endif /* OLD_BUSY */ 
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -941,7 +941,7 @@ id|maxtim_data
 op_assign
 l_int|3000
 suffix:semicolon
-macro_line|#endif LONG_TIMING
+macro_line|#endif /* LONG_TIMING */ 
 macro_line|#if DISTRIBUTION
 DECL|variable|n_retries
 r_static
@@ -1163,7 +1163,7 @@ suffix:semicolon
 id|u_char
 id|vol_ctrl3
 suffix:semicolon
-macro_line|#endif 000
+macro_line|#endif /*000 */
 DECL|member|volume_control
 id|u_char
 id|volume_control
@@ -1263,7 +1263,7 @@ DECL|member|has_data
 r_char
 id|has_data
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */ 
 DECL|member|ored_ctl_adr
 id|u_char
 id|ored_ctl_adr
@@ -1451,7 +1451,7 @@ DECL|macro|MSG_LEVEL
 mdefine_line|#define MSG_LEVEL KERN_NOTICE
 macro_line|#else
 mdefine_line|#define MSG_LEVEL KERN_INFO
-macro_line|#endif DISTRIBUTION
+macro_line|#endif /* DISTRIBUTION */
 r_char
 id|buf
 (braket
@@ -1548,7 +1548,7 @@ id|KLOGD_PAUSE
 )paren
 suffix:semicolon
 multiline_comment|/* else messages get lost */
-macro_line|#endif KLOGD_PAUSE
+macro_line|#endif /* KLOGD_PAUSE */ 
 r_return
 suffix:semicolon
 )brace
@@ -3276,7 +3276,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-macro_line|#endif 000
+macro_line|#endif /* 000 */
 r_for
 c_loop
 (paren
@@ -5129,7 +5129,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif 01
+macro_line|#endif /* 01 */
 r_if
 c_cond
 (paren
@@ -5167,7 +5167,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-macro_line|#endif 0
+macro_line|#endif /* 0 */ 
 id|i
 op_assign
 id|inb
@@ -5307,7 +5307,7 @@ l_string|&quot;cmd_out_T: do_16bit: false first byte!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif TEST_FALSE_FF
+macro_line|#endif /* TEST_FALSE_FF */ 
 )brace
 r_else
 id|infobuf
@@ -9144,7 +9144,7 @@ id|HZ
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif 1
+macro_line|#endif /* 1 */ 
 id|flush_status
 c_func
 (paren
@@ -10866,7 +10866,7 @@ c_func
 id|HZ
 )paren
 suffix:semicolon
-macro_line|#endif 0
+macro_line|#endif /* 0 */ 
 id|i
 op_assign
 id|ResponseStatus
@@ -13056,7 +13056,7 @@ id|vol_ctrl3
 op_assign
 l_int|0xFF
 suffix:semicolon
-macro_line|#endif 000
+macro_line|#endif /*  000 */
 id|D_S
 (braket
 id|d
@@ -15214,7 +15214,7 @@ id|block
 comma
 id|checksum
 suffix:semicolon
-macro_line|#endif TEST_UPC
+macro_line|#endif /* TEST_UPC */ 
 r_if
 c_cond
 (paren
@@ -15260,7 +15260,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* but it should work */
-macro_line|#endif 1
+macro_line|#endif
 id|D_S
 (braket
 id|d
@@ -15291,7 +15291,7 @@ id|block
 op_increment
 )paren
 (brace
-macro_line|#endif TEST_UPC
+macro_line|#endif /* TEST_UPC */ 
 id|clr_cmdbuf
 c_func
 (paren
@@ -15346,7 +15346,7 @@ id|block
 op_amp
 l_int|0xFF
 suffix:semicolon
-macro_line|#endif TEST_UPC
+macro_line|#endif /* TEST_UPC */ 
 id|response_count
 op_assign
 l_int|8
@@ -15410,7 +15410,7 @@ id|block
 op_amp
 l_int|0xFF
 suffix:semicolon
-macro_line|#endif TEST_UPC
+macro_line|#endif /* TEST_UPC */ 
 id|response_count
 op_assign
 l_int|0
@@ -15545,7 +15545,7 @@ id|checksum
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif TEST_UPC
+macro_line|#endif /* TEST_UPC */ 
 r_for
 c_loop
 (paren
@@ -15576,7 +15576,7 @@ id|infobuf
 id|i
 )braket
 suffix:semicolon
-macro_line|#endif TEST_UPC
+macro_line|#endif /* TEST_UPC */ 
 id|sprintf
 c_func
 (paren
@@ -15631,7 +15631,7 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
-macro_line|#endif TEST_UPC
+macro_line|#endif /* TEST_UPC */ 
 id|D_S
 (braket
 id|d
@@ -16972,7 +16972,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif FUTURE
+macro_line|#endif /* FUTURE */ 
 multiline_comment|/*==========================================================================*/
 DECL|function|check_datarate
 r_static
@@ -17087,7 +17087,7 @@ l_int|0x6FFFFFFF
 )paren
 r_break
 suffix:semicolon
-macro_line|#endif 00000
+macro_line|#endif 
 )brace
 r_while
 c_loop
@@ -17164,7 +17164,7 @@ id|datarate
 op_div
 l_int|300
 suffix:semicolon
-macro_line|#endif LONG_TIMING
+macro_line|#endif /* LONG_TIMING */ 
 macro_line|#if 0
 id|msg
 c_func
@@ -18398,7 +18398,7 @@ dot
 id|drv_sel
 )paren
 suffix:semicolon
-macro_line|#endif 0
+macro_line|#endif
 id|drvcmd
 (braket
 l_int|0
@@ -20891,7 +20891,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* in any case - no real &quot;function&quot; at time */
 )brace
-macro_line|#endif PATH_CHECK
+macro_line|#endif /* PATH_CHECK */ 
 multiline_comment|/*==========================================================================*/
 multiline_comment|/*==========================================================================*/
 multiline_comment|/*&n; * probe for the presence of drives on the selected controller&n; */
@@ -21511,7 +21511,7 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif 000
+macro_line|#endif
 )brace
 multiline_comment|/*==========================================================================*/
 DECL|function|check_allowed2
@@ -21631,7 +21631,7 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif 000
+macro_line|#endif
 )brace
 multiline_comment|/*==========================================================================*/
 DECL|function|check_allowed3
@@ -21883,7 +21883,7 @@ r_return
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif 000
+macro_line|#endif
 )brace
 multiline_comment|/*==========================================================================*/
 DECL|function|seek_pos_audio_end
@@ -21942,7 +21942,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif FUTURE
+macro_line|#endif /* FUTURE */ 
 multiline_comment|/*==========================================================================*/
 DECL|function|ReadToC
 r_static
@@ -23403,7 +23403,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif FUTURE
+macro_line|#endif /* FUTURE */ 
 multiline_comment|/*==========================================================================*/
 multiline_comment|/*==========================================================================*/
 multiline_comment|/*&n; * Check the results of the &quot;get status&quot; command.&n; */
@@ -23872,7 +23872,7 @@ op_minus
 id|EBUSY
 )paren
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */
 id|cc_ModeSelect
 c_func
 (paren
@@ -23931,7 +23931,7 @@ op_minus
 id|EBUSY
 )paren
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */
 id|cc_ModeSelect
 c_func
 (paren
@@ -24243,7 +24243,7 @@ op_minus
 id|EBUSY
 )paren
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */ 
 r_if
 c_cond
 (paren
@@ -24467,7 +24467,7 @@ id|busy_audio
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif OLD_BUSY
+macro_line|#endif /* OLD_BUSY */ 
 id|error_flag
 op_assign
 l_int|0
@@ -25300,7 +25300,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif 0000
+macro_line|#endif
 r_continue
 suffix:semicolon
 )brace
@@ -25622,7 +25622,7 @@ id|busy_audio
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif OLD_BUSY
+macro_line|#endif /* OLD_BUSY */ 
 r_if
 c_cond
 (paren
@@ -26201,7 +26201,7 @@ op_minus
 id|EBUSY
 )paren
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */ 
 r_if
 c_cond
 (paren
@@ -26479,7 +26479,7 @@ op_minus
 id|EBUSY
 )paren
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */ 
 r_if
 c_cond
 (paren
@@ -27075,7 +27075,7 @@ op_minus
 id|EBUSY
 )paren
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */ 
 id|i
 op_assign
 id|cc_Pause_Resume
@@ -28249,7 +28249,7 @@ id|busy_data
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif OLD_BUSY
+macro_line|#endif /* OLD_BUSY */
 r_if
 c_cond
 (paren
@@ -28402,7 +28402,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif FUTURE
+macro_line|#endif /* FUTURE */ 
 r_if
 c_cond
 (paren
@@ -28539,7 +28539,7 @@ op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* is really a data disk */
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */ 
 macro_line|#ifdef DEBUG_GTL
 id|printk
 c_func
@@ -28592,7 +28592,7 @@ id|busy_data
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif OLD_BUSY
+macro_line|#endif /* OLD_BUSY */
 macro_line|#ifdef DEBUG_GTL
 id|printk
 c_func
@@ -30819,7 +30819,7 @@ c_cond
 op_logical_neg
 id|success
 )paren
-macro_line|#endif 0
+macro_line|#endif
 r_do
 (brace
 r_if
@@ -30848,7 +30848,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif 1
+macro_line|#endif
 id|i
 op_assign
 id|ResponseStatus
@@ -30873,7 +30873,7 @@ comma
 id|i
 )paren
 suffix:semicolon
-macro_line|#endif 1
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -31221,7 +31221,7 @@ id|has_data
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */
 )brace
 macro_line|#if SAFE_MIXED
 r_else
@@ -31246,7 +31246,7 @@ id|has_data
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */ 
 )brace
 r_if
 c_cond
@@ -31478,7 +31478,7 @@ id|has_data
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */ 
 )brace
 )brace
 id|up
@@ -32279,7 +32279,7 @@ c_func
 (paren
 r_void
 )paren
-macro_line|#endif MODULE
+macro_line|#endif /* MODULE */ 
 (brace
 r_char
 id|nbuff
@@ -32428,7 +32428,7 @@ l_string|&quot;= = = = = = = = = = END of WARNING = = = = = == = = =&bslash;n&qu
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif DISTRIBUTION
+macro_line|#endif /* DISTRIBUTION */
 id|sbpcd
 (braket
 l_int|0
@@ -32445,7 +32445,7 @@ op_assign
 id|sbpro_type
 suffix:semicolon
 multiline_comment|/* possibly changed by kernel command line */
-macro_line|#endif MODULE
+macro_line|#endif /* MODULE */
 r_for
 c_loop
 (paren
@@ -32593,7 +32593,7 @@ comma
 id|type
 )paren
 suffix:semicolon
-macro_line|#endif DISTRIBUTION
+macro_line|#endif /* DISTRIBUTION */
 r_if
 c_cond
 (paren
@@ -32639,7 +32639,7 @@ l_int|1
 )paren
 r_continue
 suffix:semicolon
-macro_line|#endif PATH_CHECK
+macro_line|#endif /* PATH_CHECK */ 
 id|i
 op_assign
 id|check_drives
@@ -32692,7 +32692,7 @@ macro_line|#else
 r_goto
 id|init_done
 suffix:semicolon
-macro_line|#endif MODULE
+macro_line|#endif /* MODULE */
 )brace
 r_if
 c_cond
@@ -32780,7 +32780,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif 0
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -32877,7 +32877,7 @@ id|f_eject
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif EJECT
+macro_line|#endif /* EJECT */ 
 id|cc_ReadStatus
 c_func
 (paren
@@ -33118,7 +33118,7 @@ l_int|0xCC
 )paren
 suffix:semicolon
 multiline_comment|/* one nibble per channel, max. value: 0xFF */
-macro_line|#endif SOUND_BASE
+macro_line|#endif /* SOUND_BASE */ 
 r_if
 c_cond
 (paren
@@ -33155,7 +33155,7 @@ macro_line|#else
 r_goto
 id|init_done
 suffix:semicolon
-macro_line|#endif MODULE
+macro_line|#endif /* MODULE */
 )brace
 id|blk_init_queue
 c_func
@@ -33304,7 +33304,7 @@ id|has_data
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */ 
 multiline_comment|/*&n;&t;&t; * allocate memory for the frame buffers&n;&t;&t; */
 id|D_S
 (braket
@@ -33473,7 +33473,7 @@ comma
 id|buffers
 )paren
 suffix:semicolon
-macro_line|#endif MODULE
+macro_line|#endif /* MODULE */
 r_if
 c_cond
 (paren
@@ -33731,23 +33731,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif CONFIG_SBPCD2
+macro_line|#endif /* CONFIG_SBPCD2 */
 macro_line|#ifdef CONFIG_SBPCD3
 id|sbpcd3_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif CONFIG_SBPCD3
+macro_line|#endif /* CONFIG_SBPCD3 */ 
 macro_line|#ifdef CONFIG_SBPCD4
 id|sbpcd4_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif CONFIG_SBPCD4
-macro_line|#endif !(SBPCD_ISSUE-1)
-macro_line|#endif MODULE
+macro_line|#endif /* CONFIG_SBPCD4 */ 
+macro_line|#endif /* !(SBPCD_ISSUE-1) */ 
+macro_line|#endif /* MODULE */
 r_return
 l_int|0
 suffix:semicolon
@@ -33955,7 +33955,7 @@ c_func
 id|sbpcd_exit
 )paren
 suffix:semicolon
-macro_line|#endif MODULE
+macro_line|#endif /* MODULE */ 
 multiline_comment|/*==========================================================================*/
 multiline_comment|/*&n; * Check if the media has changed in the CD-ROM drive.&n; * used externally (isofs/inode.c, fs/buffer.c)&n; */
 DECL|function|sbpcd_chk_disk_change
@@ -34062,7 +34062,7 @@ id|has_data
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif SAFE_MIXED
+macro_line|#endif /* SAFE_MIXED */ 
 r_return
 (paren
 l_int|1

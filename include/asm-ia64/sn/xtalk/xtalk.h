@@ -651,6 +651,11 @@ id|xtalk_intr_alloc_f
 op_star
 id|intr_alloc
 suffix:semicolon
+DECL|member|intr_alloc_nothd
+id|xtalk_intr_alloc_f
+op_star
+id|intr_alloc_nothd
+suffix:semicolon
 DECL|member|intr_free
 id|xtalk_intr_free_f
 op_star
@@ -756,6 +761,10 @@ suffix:semicolon
 r_extern
 id|xtalk_intr_alloc_f
 id|xtalk_intr_alloc
+suffix:semicolon
+r_extern
+id|xtalk_intr_alloc_f
+id|xtalk_intr_alloc_nothd
 suffix:semicolon
 r_extern
 id|xtalk_intr_free_f
@@ -882,18 +891,6 @@ id|xtalk_intr_t
 id|xtalk_intr
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|xtalk_intr_flags_get
-c_func
-(paren
-id|xtalk_intr_t
-id|xtalk_intr
-)paren
-suffix:semicolon
-multiline_comment|/* XTALK_INTR flags */
-DECL|macro|XTALK_INTR_NOTHREAD
-mdefine_line|#define XTALK_INTR_NOTHREAD&t;1&t;/* interrupt handler wants to be called at interrupt level */
 multiline_comment|/* Generic crosstalk pio interfaces */
 r_extern
 id|devfs_handle_t

@@ -335,6 +335,7 @@ l_int|0xff
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
+macro_line|#ifdef PTC_NOTYET
 r_static
 r_void
 id|__init
@@ -350,7 +351,6 @@ r_int
 id|domain
 )paren
 (brace
-macro_line|#ifdef PTC_NOTYET
 id|ia64_sal_ptc_domain_proc_entry_t
 op_star
 id|pe
@@ -425,7 +425,6 @@ op_assign
 id|sapicid
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 r_static
 r_void
@@ -482,6 +481,7 @@ id|i
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 r_void
 id|__init
 DECL|function|init_sn1_smp_config
@@ -551,7 +551,7 @@ l_int|0
 dot
 id|sapicid
 op_assign
-id|hard_processor_sapicid
+id|hard_smp_processor_id
 c_func
 (paren
 )paren

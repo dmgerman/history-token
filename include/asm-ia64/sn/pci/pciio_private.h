@@ -2,9 +2,6 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_PCI_PCIIO_PRIVATE_H
 DECL|macro|_ASM_SN_PCI_PCIIO_PRIVATE_H
 mdefine_line|#define _ASM_SN_PCI_PCIIO_PRIVATE_H
-macro_line|#ifdef colin
-macro_line|#include &lt;ksys/xthread.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * pciio_private.h -- private definitions for pciio&n; * PCI drivers should NOT include this file.&n; */
 macro_line|#ident &quot;sys/PCI/pciio_private: $Revision: 1.13 $&quot;
 multiline_comment|/*&n; * All PCI providers set up PIO using this information.&n; */
@@ -106,7 +103,7 @@ id|intr_arg_t
 id|pi_arg
 suffix:semicolon
 multiline_comment|/* handler parameter (when connected) */
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 DECL|member|pi_tinfo
 id|thd_int_t
 id|pi_tinfo

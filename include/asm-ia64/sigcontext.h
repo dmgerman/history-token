@@ -118,6 +118,7 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* branch registers */
+multiline_comment|/* Note: sc_gr[0] is used as the &quot;uc_link&quot; member of ucontext_t */
 DECL|member|sc_gr
 r_int
 r_int

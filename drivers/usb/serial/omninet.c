@@ -13,16 +13,22 @@ macro_line|#include &lt;linux/tty_driver.h&gt;
 macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|macro|isalpha
-mdefine_line|#define isalpha(x) ( ( x &gt; 96 &amp;&amp; x &lt; 123) || ( x &gt; 64 &amp;&amp; x &lt; 91) || (x &gt; 47 &amp;&amp; x &lt; 58) )
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#else
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
+DECL|variable|debug
+r_static
+r_int
+id|debug
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
+macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 DECL|macro|ZYXEL_VENDOR_ID
 mdefine_line|#define ZYXEL_VENDOR_ID&t;&t;0x0586
@@ -757,13 +763,18 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
 r_if
 c_cond
+(paren
+(paren
+id|debug
+)paren
+op_logical_and
 (paren
 id|header-&gt;oh_xxx
 op_ne
 l_int|0x30
+)paren
 )paren
 (brace
 r_if
@@ -818,7 +829,6 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1418,6 +1428,22 @@ id|module_exit
 c_func
 (paren
 id|omninet_exit
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Debug enabled or not&quot;
 )paren
 suffix:semicolon
 eof

@@ -144,6 +144,8 @@ DECL|macro|EDGE_LBL_RACK
 mdefine_line|#define EDGE_LBL_RACK&t;&t;&t;&quot;rack&quot;
 DECL|macro|EDGE_LBL_RDISK
 mdefine_line|#define EDGE_LBL_RDISK&t;&t;&t;&quot;rdisk&quot;
+DECL|macro|EDGE_LBL_REPEATER_ROUTER
+mdefine_line|#define EDGE_LBL_REPEATER_ROUTER&t;&quot;repeaterrouter&quot;
 DECL|macro|EDGE_LBL_ROUTER
 mdefine_line|#define EDGE_LBL_ROUTER&t;&t;&t;&quot;router&quot;
 DECL|macro|EDGE_LBL_RPOS
@@ -199,11 +201,11 @@ mdefine_line|#define EDGE_LBL_XBOX_RPS               &quot;xbox_rps&quot;      /
 DECL|macro|EDGE_LBL_IOBRICK
 mdefine_line|#define EDGE_LBL_IOBRICK&t;&t;&quot;iobrick&quot;
 DECL|macro|EDGE_LBL_PBRICK
-mdefine_line|#define EDGE_LBL_PBRICK&t;&t;&t;&quot;pbrick&quot;
+mdefine_line|#define EDGE_LBL_PBRICK&t;&t;&t;&quot;Pbrick&quot;
 DECL|macro|EDGE_LBL_IBRICK
-mdefine_line|#define EDGE_LBL_IBRICK&t;&t;&t;&quot;ibrick&quot;
+mdefine_line|#define EDGE_LBL_IBRICK&t;&t;&t;&quot;Ibrick&quot;
 DECL|macro|EDGE_LBL_XBRICK
-mdefine_line|#define EDGE_LBL_XBRICK&t;&t;&t;&quot;xbrick&quot;
+mdefine_line|#define EDGE_LBL_XBRICK&t;&t;&t;&quot;Xbrick&quot;
 DECL|macro|EDGE_LBL_CPUBUS
 mdefine_line|#define EDGE_LBL_CPUBUS&t;&t;&t;&quot;cpubus&quot;&t;/* CPU Interfaces (SysAd) */
 multiline_comment|/* vertex info labels in hwgraph */
@@ -229,6 +231,10 @@ DECL|macro|INFO_LBL_DRIVER
 mdefine_line|#define INFO_LBL_DRIVER&t;&t;&t;&quot;_driver&quot;&t;/* points to attached device_driver_t */
 DECL|macro|INFO_LBL_ELSC
 mdefine_line|#define INFO_LBL_ELSC&t;&t;&t;&quot;_elsc&quot;
+DECL|macro|INFO_LBL_SUBCH
+mdefine_line|#define&t;INFO_LBL_SUBCH&t;&t;&t;&quot;_subch&quot;&t;/* system controller subchannel */
+DECL|macro|INFO_LBL_L1SCP
+mdefine_line|#define INFO_LBL_L1SCP&t;&t;&t;&quot;_l1scp&quot;&t;/* points to l1sc_t */
 DECL|macro|INFO_LBL_FC_PORTNAME
 mdefine_line|#define INFO_LBL_FC_PORTNAME&t;&t;&quot;_fc_portname&quot;
 DECL|macro|INFO_LBL_GIOIO
@@ -323,5 +329,43 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
+macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;&t;/* For get MAX_PORT_NUM */
+r_int
+id|io_brick_map_widget
+c_func
+(paren
+r_char
+comma
+r_int
+)paren
+suffix:semicolon
+r_int
+id|io_path_map_widget
+c_func
+(paren
+id|devfs_handle_t
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Map a brick&squot;s widget number to a meaningful int&n; */
+DECL|struct|io_brick_map_s
+r_struct
+id|io_brick_map_s
+(brace
+DECL|member|ibm_type
+r_char
+id|ibm_type
+suffix:semicolon
+multiline_comment|/* brick type, e.g. */
+multiline_comment|/* &squot;I&squot; for Ibrick   */
+DECL|member|ibm_map_wid
+r_int
+id|ibm_map_wid
+(braket
+id|MAX_PORT_NUM
+)braket
+suffix:semicolon
+multiline_comment|/* wid to int map */
+)brace
+suffix:semicolon
 macro_line|#endif /* _ASM_SN_IOGRAPH_H */
 eof

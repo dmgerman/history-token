@@ -2,13 +2,13 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_SLOTNUM_H
 DECL|macro|_ASM_SN_SLOTNUM_H
 mdefine_line|#define _ASM_SN_SLOTNUM_H
+macro_line|#include &lt;linux/config.h&gt;
 DECL|typedef|slotid_t
 r_typedef
 r_int
 r_char
 id|slotid_t
 suffix:semicolon
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined (CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 macro_line|#include &lt;asm/sn/sn1/slotnum.h&gt;
 macro_line|#else

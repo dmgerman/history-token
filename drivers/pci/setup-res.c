@@ -629,6 +629,22 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tmp
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;pdev_sort_resources(): kmalloc() failed!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 id|tmp-&gt;next
 op_assign
 id|ln

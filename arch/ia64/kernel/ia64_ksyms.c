@@ -121,12 +121,33 @@ c_func
 id|strtok
 )paren
 suffix:semicolon
-macro_line|#include &lt;asm/hw_irq.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 DECL|variable|isa_irq_to_vector_map
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|isa_irq_to_vector_map
+)paren
+suffix:semicolon
+DECL|variable|enable_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_irq
+)paren
+suffix:semicolon
+DECL|variable|disable_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_irq
+)paren
+suffix:semicolon
+DECL|variable|disable_irq_nosync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_irq_nosync
 )paren
 suffix:semicolon
 macro_line|#include &lt;linux/in6.h&gt;
@@ -182,26 +203,54 @@ c_func
 id|__ia64_memset_c_io
 )paren
 suffix:semicolon
-macro_line|#include &lt;asm/irq.h&gt;
-DECL|variable|enable_irq
-id|EXPORT_SYMBOL
+macro_line|#include &lt;asm/semaphore.h&gt;
+DECL|variable|__down
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|enable_irq
+id|__down
 )paren
 suffix:semicolon
-DECL|variable|disable_irq
-id|EXPORT_SYMBOL
+DECL|variable|__down_interruptible
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|disable_irq
+id|__down_interruptible
 )paren
 suffix:semicolon
-DECL|variable|disable_irq_nosync
-id|EXPORT_SYMBOL
+DECL|variable|__down_trylock
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|disable_irq_nosync
+id|__down_trylock
+)paren
+suffix:semicolon
+DECL|variable|__up
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__up
+)paren
+suffix:semicolon
+DECL|variable|__down_read_failed
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__down_read_failed
+)paren
+suffix:semicolon
+DECL|variable|__down_write_failed
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__down_write_failed
+)paren
+suffix:semicolon
+DECL|variable|__rwsem_wake
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__rwsem_wake
 )paren
 suffix:semicolon
 macro_line|#include &lt;asm/page.h&gt;
@@ -237,7 +286,15 @@ id|last_cli_ip
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#ifdef CONFIG_SMP
+DECL|variable|smp_flush_tlb_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_flush_tlb_all
+)paren
+suffix:semicolon
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 DECL|variable|synchronize_irq
@@ -253,6 +310,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|smp_call_function
+)paren
+suffix:semicolon
+DECL|variable|smp_call_function_single
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_call_function_single
+)paren
+suffix:semicolon
+DECL|variable|cpu_online_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_online_map
 )paren
 suffix:semicolon
 macro_line|#include &lt;linux/smp.h&gt;
@@ -300,7 +371,15 @@ c_func
 id|__global_restore_flags
 )paren
 suffix:semicolon
-macro_line|#endif
+macro_line|#else /* !CONFIG_SMP */
+DECL|variable|__flush_tlb_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__flush_tlb_all
+)paren
+suffix:semicolon
+macro_line|#endif /* !CONFIG_SMP */
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|__copy_user
 id|EXPORT_SYMBOL
@@ -476,6 +555,47 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ia64_iobase
+)paren
+suffix:semicolon
+macro_line|#include &lt;asm/pal.h&gt;
+DECL|variable|ia64_pal_call_phys_stacked
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_pal_call_phys_stacked
+)paren
+suffix:semicolon
+DECL|variable|ia64_pal_call_phys_static
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_pal_call_phys_static
+)paren
+suffix:semicolon
+DECL|variable|ia64_pal_call_stacked
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_pal_call_stacked
+)paren
+suffix:semicolon
+DECL|variable|ia64_pal_call_static
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_pal_call_static
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|efi
+id|efi
+suffix:semicolon
+DECL|variable|efi
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|efi
 )paren
 suffix:semicolon
 eof

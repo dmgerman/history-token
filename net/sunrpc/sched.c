@@ -3602,6 +3602,10 @@ comma
 l_string|&quot;rpciod&quot;
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_MEMALLOC
+suffix:semicolon
 id|dprintk
 c_func
 (paren

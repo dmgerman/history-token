@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 VA Linux Systems &n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; */
+multiline_comment|/*&n; * SMP Support&n; *&n; * Copyright (C) 1999 VA Linux Systems &n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2001 Hewlett-Packard Co&n; * Copyright (C) 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_SMP_H
 DECL|macro|_ASM_IA64_SMP_H
 mdefine_line|#define _ASM_IA64_SMP_H
@@ -7,14 +7,15 @@ macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 DECL|macro|XTP_OFFSET
 mdefine_line|#define XTP_OFFSET&t;&t;0x1e0008
 DECL|macro|SMP_IRQ_REDIRECTION
-mdefine_line|#define SMP_IRQ_REDIRECTION     (1 &lt;&lt; 0)
+mdefine_line|#define SMP_IRQ_REDIRECTION&t;(1 &lt;&lt; 0)
 DECL|macro|SMP_IPI_REDIRECTION
-mdefine_line|#define SMP_IPI_REDIRECTION     (1 &lt;&lt; 1)
+mdefine_line|#define SMP_IPI_REDIRECTION&t;(1 &lt;&lt; 1)
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id()&t;(current-&gt;processor)
 DECL|struct|smp_boot_data
@@ -38,6 +39,11 @@ id|smp_boot_data
 id|__initdata
 suffix:semicolon
 r_extern
+r_char
+id|no_int_routing
+id|__initdata
+suffix:semicolon
+r_extern
 r_int
 r_int
 id|cpu_present_map
@@ -54,11 +60,6 @@ id|ipi_base_addr
 suffix:semicolon
 r_extern
 r_int
-id|bootstrap_processor
-suffix:semicolon
-r_extern
-r_volatile
-r_int
 id|__cpu_physical_id
 (braket
 id|NR_CPUS
@@ -68,10 +69,6 @@ r_extern
 r_int
 r_char
 id|smp_int_redirect
-suffix:semicolon
-r_extern
-r_char
-id|no_int_routing
 suffix:semicolon
 r_extern
 r_int
@@ -113,10 +110,9 @@ id|i
 OL
 id|smp_num_cpus
 suffix:semicolon
-id|i
 op_increment
+id|i
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -126,22 +122,23 @@ c_func
 id|i
 )paren
 op_eq
+(paren
+id|__u32
+)paren
 id|cpuid
 )paren
 r_break
 suffix:semicolon
-)brace
 r_return
 id|i
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * XTP control functions:&n; *    min_xtp   :  route all interrupts to this CPU&n; *    normal_xtp:  nominal XTP value&n; *    max_xtp   :  never deliver interrupts to this CPU.&n; */
+multiline_comment|/*&n; * XTP control functions:&n; *&t;min_xtp   : route all interrupts to this CPU&n; *&t;normal_xtp: nominal XTP value&n; *&t;max_xtp   : never deliver interrupts to this CPU.&n; */
 r_static
 r_inline
 r_void
 DECL|function|min_xtp
 id|min_xtp
-c_func
 (paren
 r_void
 )paren
@@ -170,7 +167,6 @@ r_inline
 r_void
 DECL|function|normal_xtp
 id|normal_xtp
-c_func
 (paren
 r_void
 )paren
@@ -199,7 +195,6 @@ r_inline
 r_void
 DECL|function|max_xtp
 id|max_xtp
-c_func
 (paren
 r_void
 )paren
@@ -229,10 +224,11 @@ r_int
 r_int
 DECL|function|hard_smp_processor_id
 id|hard_smp_processor_id
-c_func
 (paren
 r_void
 )paren
+(brace
+r_union
 (brace
 r_struct
 (brace
@@ -261,24 +257,28 @@ suffix:colon
 l_int|32
 suffix:semicolon
 )brace
+id|f
+suffix:semicolon
+r_int
+r_int
+id|bits
+suffix:semicolon
+)brace
 id|lid
 suffix:semicolon
-id|__asm__
+id|lid.bits
+op_assign
+id|ia64_get_lid
+c_func
 (paren
-l_string|&quot;mov %0=cr.lid&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|lid
-)paren
 )paren
 suffix:semicolon
 r_return
-id|lid.id
+id|lid.f.id
 op_lshift
 l_int|8
 op_or
-id|lid.eid
+id|lid.f.eid
 suffix:semicolon
 )brace
 DECL|macro|NO_PROC_ID

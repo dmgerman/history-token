@@ -3,11 +3,12 @@ DECL|macro|_HWMCODE_
 mdefine_line|#define _HWMCODE_
 DECL|variable|DspInst
 r_static
-r_int
-r_int
-r_int
+id|u32
 id|DspInst
 (braket
+id|YDSXG_DSPLENGTH
+op_div
+l_int|4
 )braket
 op_assign
 (brace
@@ -78,11 +79,12 @@ l_int|0x00000000
 suffix:semicolon
 DECL|variable|CntrlInst
 r_static
-r_int
-r_int
-r_int
+id|u32
 id|CntrlInst
 (braket
+id|YDSXG_CTRLLENGTH
+op_div
+l_int|4
 )braket
 op_assign
 (brace
@@ -6241,11 +6243,12 @@ singleline_comment|// 04/12  stop nise fix
 singleline_comment|// 06/21  WorkingOff timming
 DECL|variable|CntrlInst1E
 r_static
-r_int
-r_int
-r_int
+id|u32
 id|CntrlInst1E
 (braket
+id|YDSXG_CTRLLENGTH
+op_div
+l_int|4
 )braket
 op_assign
 (brace

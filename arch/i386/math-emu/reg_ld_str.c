@@ -1657,7 +1657,7 @@ l_int|0x000007ff
 )paren
 )paren
 )paren
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 (brace
 id|EXCEPTION
 c_func
@@ -2106,7 +2106,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 id|reg_copy
 c_func
 (paren
@@ -2578,7 +2578,7 @@ id|st0_ptr-&gt;sigl
 )paren
 )paren
 )paren
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 (brace
 id|EXCEPTION
 c_func
@@ -3009,7 +3009,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */ 
 r_goto
 id|denormal_arg
 suffix:semicolon
@@ -5026,7 +5026,7 @@ op_and_assign
 op_complement
 l_int|0xe080
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */ 
 id|top
 op_assign
 (paren
@@ -5474,7 +5474,7 @@ op_star
 id|d
 )paren
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 id|FPU_put_user
 c_func
 (paren
@@ -5694,7 +5694,7 @@ id|I387.soft.fos
 op_or_assign
 l_int|0xffff0000
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 id|__copy_to_user
 c_func
 (paren

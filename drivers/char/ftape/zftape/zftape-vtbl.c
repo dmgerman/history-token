@@ -1791,7 +1791,7 @@ id|TRACE_EXIT
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* this functions translates the failed_sector_log, misused as&n; * EOF-marker list, into a virtual volume table. The table mustn&squot;t be&n; * written to tape, because this would occupy the first data segment,&n; * which should be the volume table, but is actualy the first segment&n; * that is filled with data (when using standard ftape).  We assume,&n; * that we get a non-empty failed_sector_log.&n; */
+multiline_comment|/* this functions translates the failed_sector_log, misused as&n; * EOF-marker list, into a virtual volume table. The table mustn&squot;t be&n; * written to tape, because this would occupy the first data segment,&n; * which should be the volume table, but is actually the first segment&n; * that is filled with data (when using standard ftape).  We assume,&n; * that we get a non-empty failed_sector_log.&n; */
 DECL|function|zft_fake_volume_headers
 r_int
 id|zft_fake_volume_headers

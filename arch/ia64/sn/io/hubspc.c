@@ -84,7 +84,7 @@ op_star
 id|cpuprom_head
 suffix:semicolon
 DECL|variable|cpuprom_spinlock
-id|lock_t
+id|spinlock_t
 id|cpuprom_spinlock
 suffix:semicolon
 DECL|macro|PROM_LOCK
@@ -108,6 +108,7 @@ id|cpuprom_info_t
 op_star
 id|info
 suffix:semicolon
+r_int
 r_int
 id|s
 suffix:semicolon
@@ -169,6 +170,7 @@ id|devfs_handle_t
 id|prom
 )paren
 (brace
+r_int
 r_int
 id|s
 suffix:semicolon
@@ -254,6 +256,7 @@ id|devfs_handle_t
 id|prom
 )paren
 (brace
+r_int
 r_int
 id|s
 suffix:semicolon
@@ -834,13 +837,11 @@ l_string|&quot;hubspc_init: Completed&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif&t;/* HUBSPC_DEBUG */
 multiline_comment|/* Initialize spinlocks */
-id|spinlock_init
+id|mutex_spinlock_init
 c_func
 (paren
 op_amp
 id|cpuprom_spinlock
-comma
-l_string|&quot;promlist&quot;
 )paren
 suffix:semicolon
 )brace
@@ -909,23 +910,6 @@ suffix:semicolon
 r_case
 id|HUBSPC_PROM
 suffix:colon
-multiline_comment|/* Check if the user has proper access rights to &n;&t;&t; * read/write the prom space.&n;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cap_able
-c_func
-(paren
-id|CAP_DEVICE_MGT
-)paren
-)paren
-(brace
-id|errcode
-op_assign
-id|EPERM
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_default

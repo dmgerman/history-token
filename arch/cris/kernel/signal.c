@@ -22,27 +22,6 @@ multiline_comment|/* manipulate regs so that upon return, it will be re-executed
 DECL|macro|RESTART_CRIS_SYS
 mdefine_line|#define RESTART_CRIS_SYS(regs) regs-&gt;r10 = regs-&gt;orig_r10; regs-&gt;irp -= 2;
 r_int
-id|sys_wait4
-c_func
-(paren
-id|pid_t
-id|pid
-comma
-r_int
-r_int
-op_star
-id|stat_addr
-comma
-r_int
-id|options
-comma
-r_int
-r_int
-op_star
-id|ru
-)paren
-suffix:semicolon
-r_int
 id|do_signal
 c_func
 (paren
@@ -1591,14 +1570,14 @@ r_int
 op_amp
 id|frame-&gt;retcode
 suffix:semicolon
-multiline_comment|/* This is movu.w __NR_sigreturn, r1; break 13; */
+multiline_comment|/* This is movu.w __NR_sigreturn, r9; break 13; */
 multiline_comment|/* TODO: check byteorder */
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-l_int|0x1c5f
+l_int|0x9c5f
 comma
 (paren
 r_int
@@ -1917,14 +1896,14 @@ r_int
 op_amp
 id|frame-&gt;retcode
 suffix:semicolon
-multiline_comment|/* This is movu.w __NR_sigreturn, r1; break 13; */
+multiline_comment|/* This is movu.w __NR_sigreturn, r9; break 13; */
 multiline_comment|/* TODO: check byteorder */
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-l_int|0x1c5f
+l_int|0x9c5f
 comma
 (paren
 r_int

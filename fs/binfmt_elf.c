@@ -409,17 +409,9 @@ id|sp
 suffix:semicolon
 id|csp
 op_sub_assign
-(paren
-(paren
-id|exec
-ques
-c_cond
 id|DLINFO_ITEMS
 op_star
 l_int|2
-suffix:colon
-l_int|4
-)paren
 op_plus
 (paren
 id|k_platform
@@ -428,7 +420,6 @@ c_cond
 l_int|2
 suffix:colon
 l_int|0
-)paren
 )paren
 suffix:semicolon
 id|csp
@@ -532,7 +523,7 @@ suffix:semicolon
 )brace
 id|sp
 op_sub_assign
-l_int|3
+id|DLINFO_ITEMS
 op_star
 l_int|2
 suffix:semicolon
@@ -566,22 +557,10 @@ comma
 id|CLOCKS_PER_SEC
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|exec
-)paren
-(brace
-id|sp
-op_sub_assign
-l_int|10
-op_star
-l_int|2
-suffix:semicolon
 id|NEW_AUX_ENT
 c_func
 (paren
-l_int|0
+l_int|3
 comma
 id|AT_PHDR
 comma
@@ -593,7 +572,7 @@ suffix:semicolon
 id|NEW_AUX_ENT
 c_func
 (paren
-l_int|1
+l_int|4
 comma
 id|AT_PHENT
 comma
@@ -607,7 +586,7 @@ suffix:semicolon
 id|NEW_AUX_ENT
 c_func
 (paren
-l_int|2
+l_int|5
 comma
 id|AT_PHNUM
 comma
@@ -617,7 +596,7 @@ suffix:semicolon
 id|NEW_AUX_ENT
 c_func
 (paren
-l_int|3
+l_int|6
 comma
 id|AT_BASE
 comma
@@ -627,7 +606,7 @@ suffix:semicolon
 id|NEW_AUX_ENT
 c_func
 (paren
-l_int|4
+l_int|7
 comma
 id|AT_FLAGS
 comma
@@ -637,7 +616,7 @@ suffix:semicolon
 id|NEW_AUX_ENT
 c_func
 (paren
-l_int|5
+l_int|8
 comma
 id|AT_ENTRY
 comma
@@ -649,7 +628,7 @@ suffix:semicolon
 id|NEW_AUX_ENT
 c_func
 (paren
-l_int|6
+l_int|9
 comma
 id|AT_UID
 comma
@@ -662,7 +641,7 @@ suffix:semicolon
 id|NEW_AUX_ENT
 c_func
 (paren
-l_int|7
+l_int|10
 comma
 id|AT_EUID
 comma
@@ -675,7 +654,7 @@ suffix:semicolon
 id|NEW_AUX_ENT
 c_func
 (paren
-l_int|8
+l_int|11
 comma
 id|AT_GID
 comma
@@ -688,7 +667,7 @@ suffix:semicolon
 id|NEW_AUX_ENT
 c_func
 (paren
-l_int|9
+l_int|12
 comma
 id|AT_EGID
 comma
@@ -698,7 +677,6 @@ id|elf_addr_t
 id|current-&gt;egid
 )paren
 suffix:semicolon
-)brace
 DECL|macro|NEW_AUX_ENT
 macro_line|#undef NEW_AUX_ENT
 id|sp
@@ -3035,17 +3013,8 @@ id|bprm-&gt;argc
 comma
 id|bprm-&gt;envc
 comma
-(paren
-id|interpreter_type
-op_eq
-id|INTERPRETER_ELF
-ques
-c_cond
 op_amp
 id|elf_ex
-suffix:colon
-l_int|NULL
-)paren
 comma
 id|load_addr
 comma

@@ -705,7 +705,7 @@ c_func
 id|EX_Invalid
 )paren
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 id|diff
 op_assign
 id|exp0
@@ -995,7 +995,7 @@ id|SW_C0
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 id|setcc
 c_func
@@ -1213,7 +1213,7 @@ id|SW_C0
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 id|setcc
 c_func
@@ -1444,7 +1444,7 @@ id|SW_C0
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */ 
 )brace
 id|setcc
 c_func

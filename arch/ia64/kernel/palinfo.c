@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * palinfo.c&n; *&n; * Prints processor specific information reported by PAL.&n; * This code is based on specification of PAL as of the&n; * Intel IA-64 Architecture Software Developer&squot;s Manual v1.0.&n; *&n; * &n; * Copyright (C) 2000 Hewlett-Packard Co&n; * Copyright (C) 2000 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * &n; * 05/26/2000&t;S.Eranian&t;initial release&n; * 08/21/2000&t;S.Eranian&t;updated to July 2000 PAL specs&n; *&n; * ISSUES:&n; *&t;- as of 2.2.9/2.2.12, the following values are still wrong&n; *&t;&t;PAL_VM_SUMMARY: key &amp; rid sizes&n; */
+multiline_comment|/*&n; * palinfo.c&n; *&n; * Prints processor specific information reported by PAL.&n; * This code is based on specification of PAL as of the&n; * Intel IA-64 Architecture Software Developer&squot;s Manual v1.0.&n; *&n; *&n; * Copyright (C) 2000 Hewlett-Packard Co&n; * Copyright (C) 2000 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * 05/26/2000&t;S.Eranian&t;initial release&n; * 08/21/2000&t;S.Eranian&t;updated to July 2000 PAL specs&n; * 02/05/2001   S.Eranian&t;fixed module support&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -26,11 +26,8 @@ c_func
 l_string|&quot;/proc interface to IA-64 PAL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Hope to get rid of this one in a near future&n;*/
-DECL|macro|IA64_PAL_VERSION_BUG
-mdefine_line|#define IA64_PAL_VERSION_BUG&t;&t;1
 DECL|macro|PALINFO_VERSION
-mdefine_line|#define PALINFO_VERSION &quot;0.3&quot;
+mdefine_line|#define PALINFO_VERSION &quot;0.4&quot;
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|cpu_is_online
 mdefine_line|#define cpu_is_online(i) (cpu_online_map &amp; (1UL &lt;&lt; i))
@@ -143,7 +140,7 @@ initialization_block
 suffix:semicolon
 DECL|macro|RSE_HINTS_COUNT
 mdefine_line|#define RSE_HINTS_COUNT (sizeof(rse_hints)/sizeof(const char *))
-multiline_comment|/*&n; * The current revision of the Volume 2 (July 2000) of &n; * IA-64 Architecture Software Developer&squot;s Manual is wrong.&n; * Table 4-10 has invalid information concerning the ma field:&n; * Correct table is:&n; *      bit 0 - 001 - UC&n; *      bit 4 - 100 - UC&n; *      bit 5 - 101 - UCE&n; *      bit 6 - 110 - WC&n; *      bit 7 - 111 - NatPage &n; */
+multiline_comment|/*&n; * The current revision of the Volume 2 (July 2000) of&n; * IA-64 Architecture Software Developer&squot;s Manual is wrong.&n; * Table 4-10 has invalid information concerning the ma field:&n; * Correct table is:&n; *      bit 0 - 001 - UC&n; *      bit 4 - 100 - UC&n; *      bit 5 - 101 - UCE&n; *      bit 6 - 110 - WC&n; *      bit 7 - 111 - NatPage&n; */
 DECL|variable|mem_attrib
 r_static
 r_const
@@ -155,7 +152,7 @@ id|mem_attrib
 op_assign
 initialization_block
 suffix:semicolon
-multiline_comment|/*&n; * Take a 64bit vector and produces a string such that&n; * if bit n is set then 2^n in clear text is generated. The adjustment&n; * to the right unit is also done.&n; *&n; * Input:&n; *&t;- a pointer to a buffer to hold the string&n; * &t;- a 64-bit vector&n; * Ouput:&n; *&t;- a pointer to the end of the buffer&n; *&n; */
+multiline_comment|/*&n; * Take a 64bit vector and produces a string such that&n; * if bit n is set then 2^n in clear text is generated. The adjustment&n; * to the right unit is also done.&n; *&n; * Input:&n; *&t;- a pointer to a buffer to hold the string&n; *&t;- a 64-bit vector&n; * Ouput:&n; *&t;- a pointer to the end of the buffer&n; *&n; */
 r_static
 r_char
 op_star
@@ -253,7 +250,7 @@ r_return
 id|p
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Take a 64bit vector and produces a string such that&n; * if bit n is set then register n is present. The function&n; * takes into account consecutive registers and prints out ranges.&n; *&n; * Input:&n; *&t;- a pointer to a buffer to hold the string&n; * &t;- a 64-bit vector&n; * Ouput:&n; *&t;- a pointer to the end of the buffer&n; *&n; */
+multiline_comment|/*&n; * Take a 64bit vector and produces a string such that&n; * if bit n is set then register n is present. The function&n; * takes into account consecutive registers and prints out ranges.&n; *&n; * Input:&n; *&t;- a pointer to a buffer to hold the string&n; *&t;- a 64-bit vector&n; * Ouput:&n; *&t;- a pointer to the end of the buffer&n; *&n; */
 r_static
 r_char
 op_star
@@ -2139,63 +2136,6 @@ op_minus
 id|page
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * physical mode call for PAL_VERSION is working fine.&n; * This function is meant to go away once PAL get fixed.&n; */
-r_static
-r_inline
-id|s64
-DECL|function|ia64_pal_version_phys
-id|ia64_pal_version_phys
-c_func
-(paren
-id|pal_version_u_t
-op_star
-id|pal_min_version
-comma
-id|pal_version_u_t
-op_star
-id|pal_cur_version
-)paren
-(brace
-r_struct
-id|ia64_pal_retval
-id|iprv
-suffix:semicolon
-id|PAL_CALL_PHYS
-c_func
-(paren
-id|iprv
-comma
-id|PAL_VERSION
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pal_min_version
-)paren
-id|pal_min_version-&gt;pal_version_val
-op_assign
-id|iprv.v0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pal_cur_version
-)paren
-id|pal_cur_version-&gt;pal_version_val
-op_assign
-id|iprv.v1
-suffix:semicolon
-r_return
-id|iprv.status
-suffix:semicolon
-)brace
 r_static
 r_int
 DECL|function|version_info
@@ -2207,9 +2147,6 @@ op_star
 id|page
 )paren
 (brace
-id|s64
-id|status
-suffix:semicolon
 id|pal_version_u_t
 id|min_ver
 comma
@@ -2221,24 +2158,10 @@ id|p
 op_assign
 id|page
 suffix:semicolon
-macro_line|#ifdef IA64_PAL_VERSION_BUG
-multiline_comment|/* The virtual mode call is buggy. But the physical mode call seems&n;&t; * to be ok. Until they fix virtual mode, we do physical.&n;&t; */
-id|status
-op_assign
-id|ia64_pal_version_phys
-c_func
+multiline_comment|/* The PAL_VERSION call is advertised as being able to support&n;&t; * both physical and virtual mode calls. This seems to be a documentation&n;&t; * bug rather than firmware bug. In fact, it does only support physical mode.&n;&t; * So now the code reflects this fact and the pal_version() has been updated&n;&t; * accordingly.&n;&t; */
+r_if
+c_cond
 (paren
-op_amp
-id|min_ver
-comma
-op_amp
-id|cur_ver
-)paren
-suffix:semicolon
-macro_line|#else
-multiline_comment|/* The system crashes if you enable this code with the wrong PAL &n;&t; * code&n;&t; */
-id|status
-op_assign
 id|ia64_pal_version
 c_func
 (paren
@@ -2248,12 +2171,6 @@ comma
 op_amp
 id|cur_ver
 )paren
-suffix:semicolon
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|status
 op_ne
 l_int|0
 )paren
@@ -3120,7 +3037,7 @@ initialization_block
 suffix:semicolon
 DECL|macro|NR_PALINFO_ENTRIES
 mdefine_line|#define NR_PALINFO_ENTRIES&t;(sizeof(palinfo_entries)/sizeof(palinfo_entry_t))
-multiline_comment|/*&n; * this array is used to keep track of the proc entries we create. This is &n; * required in the module mode when we need to remove all entries. The procfs code&n; * does not do recursion of deletion&n; *&n; * Notes:&n; *&t;- first +1 accounts for the cpuN entry&n; *&t;- second +1 account for toplevel palinfo&n; * &n; */
+multiline_comment|/*&n; * this array is used to keep track of the proc entries we create. This is&n; * required in the module mode when we need to remove all entries. The procfs code&n; * does not do recursion of deletion&n; *&n; * Notes:&n; *&t;- first +1 accounts for the cpuN entry&n; *&t;- second +1 account for toplevel palinfo&n; *&n; */
 DECL|macro|NR_PALINFO_PROC_ENTRIES
 mdefine_line|#define NR_PALINFO_PROC_ENTRIES&t;(NR_CPUS*(NR_PALINFO_ENTRIES+1)+1)
 DECL|variable|palinfo_proc_entries
@@ -3170,7 +3087,7 @@ mdefine_line|#define req_cpu&t;pal_func_cpu.req_cpu
 DECL|macro|func_id
 mdefine_line|#define func_id pal_func_cpu.func_id
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/*&n; * used to hold information about final function to call &n; */
+multiline_comment|/*&n; * used to hold information about final function to call&n; */
 r_typedef
 r_struct
 (brace
@@ -3704,7 +3621,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* remove all nodes: depth first pass */
+multiline_comment|/* remove all nodes: depth first pass. Could optimize this  */
 r_for
 c_loop
 (paren
@@ -3720,6 +3637,14 @@ id|i
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|palinfo_proc_entries
+(braket
+id|i
+)braket
+)paren
 id|remove_proc_entry
 (paren
 id|palinfo_proc_entries

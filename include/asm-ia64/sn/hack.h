@@ -21,6 +21,10 @@ id|x
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|mrlock
+mdefine_line|#define mrlock(_s, _t, _u)
+DECL|macro|mrunlock
+mdefine_line|#define mrunlock(_s)
 multiline_comment|/*&n; * Hardware Graph routines that are currently stubbed!&n; */
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|DELAY
@@ -28,16 +32,9 @@ mdefine_line|#define DELAY(a)
 DECL|macro|cpuid
 mdefine_line|#define cpuid() 0
 multiline_comment|/************************************************&n; * Routines redefined to use linux equivalents. *&n; ************************************************/
+multiline_comment|/* #define FIXME(s) printk(&quot;FIXME: [ %s ] in %s at %s:%d&bslash;n&quot;, s, __FUNCTION__, __FILE__, __LINE__) */
 DECL|macro|FIXME
-mdefine_line|#define FIXME(s) printk(&quot;FIXME: [ %s ] in %s at %s:%d&bslash;n&quot;, s, __FUNCTION__, __FILE__, __LINE__)
-DECL|macro|sv_init
-mdefine_line|#define sv_init(a,b,c)          FIXME(&quot;Fixme: sv_init : no-op&quot;)
-DECL|macro|sv_wait
-mdefine_line|#define sv_wait(a,b,c,d)        FIXME(&quot;Fixme: sv_wait : no-op&quot;)
-DECL|macro|sv_broadcast
-mdefine_line|#define sv_broadcast(a)  &t;FIXME(&quot;Fixme: sv_broadcast : no-op&quot;)
-DECL|macro|sv_destroy
-mdefine_line|#define sv_destroy(a)&t;&t;FIXME(&quot;Fixme: sv_destroy : no-op&quot;)
+mdefine_line|#define FIXME(s)
 r_extern
 id|devfs_handle_t
 id|dummy_vrtx
@@ -48,32 +45,6 @@ DECL|macro|PUTBUF_LOCK
 mdefine_line|#define PUTBUF_LOCK(a) { FIXME(&quot;PUTBUF_LOCK&quot;); }
 DECL|macro|PUTBUF_UNLOCK
 mdefine_line|#define PUTBUF_UNLOCK(a) { FIXME(&quot;PUTBUF_UNLOCK&quot;); }
-DECL|function|sv_signal
-r_static
-r_inline
-r_int
-id|sv_signal
-c_func
-(paren
-id|sv_t
-op_star
-id|a
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;sv_signal : return 0&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|macro|cmn_err
-mdefine_line|#define cmn_err(x,y...)         { FIXME(&quot;cmn_err : use printk&quot;); printk(x y); }
 DECL|typedef|splfunc_t
 r_typedef
 r_int
@@ -85,59 +56,7 @@ id|splfunc_t
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|badaddr_val
-c_func
-(paren
-r_volatile
-r_void
-op_star
-comma
-r_int
-comma
-r_volatile
-r_void
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|cap_able_cred
-c_func
-(paren
-r_uint64
-id|a
-comma
-r_uint64
-id|b
-)paren
-suffix:semicolon
-DECL|macro|_CAP_CRABLE
-mdefine_line|#define _CAP_CRABLE(cr,c)&t;(cap_able_cred(cr,c))
-DECL|macro|CAP_MEMORY_MGT
-mdefine_line|#define CAP_MEMORY_MGT          (0x01LL &lt;&lt; 25)
-DECL|macro|CAP_DEVICE_MGT
-mdefine_line|#define CAP_DEVICE_MGT          (0x01LL &lt;&lt; 37)
-DECL|macro|io_splock
-mdefine_line|#define io_splock(l) l
-DECL|macro|io_spunlock
-mdefine_line|#define io_spunlock(l,s)
 multiline_comment|/* move to stubs.c yet */
-DECL|macro|spinlock_destroy
-mdefine_line|#define spinlock_destroy(a)     /* needed by pcibr_detach() */
-DECL|macro|mutex_spinlock
-mdefine_line|#define mutex_spinlock(a) 0
-DECL|macro|mutex_spinunlock
-mdefine_line|#define mutex_spinunlock(a,b)
-DECL|macro|mutex_spinlock_spl
-mdefine_line|#define mutex_spinlock_spl(x,y) y
-DECL|macro|mutex_init
-mdefine_line|#define mutex_init(a,b,c)               ;
-DECL|macro|mutex_lock
-mdefine_line|#define mutex_lock(a,b)                 ;
-DECL|macro|mutex_unlock
-mdefine_line|#define mutex_unlock(a)                 ;
 DECL|macro|dev_to_vhdl
 mdefine_line|#define dev_to_vhdl(dev) 0
 DECL|macro|get_timestamp
@@ -145,15 +64,14 @@ mdefine_line|#define get_timestamp() 0
 DECL|macro|us_delay
 mdefine_line|#define us_delay(a)
 DECL|macro|v_mapphys
-mdefine_line|#define v_mapphys(a,b,c) printk(&quot;Fixme: v_mapphys - soft-&gt;base 0x%p&bslash;n&quot;, b);
+mdefine_line|#define v_mapphys(a,b,c) 0    
+singleline_comment|// printk(&quot;Fixme: v_mapphys - soft-&gt;base 0x%p&bslash;n&quot;, b);
 DECL|macro|splhi
 mdefine_line|#define splhi()  0
 DECL|macro|spl7
 mdefine_line|#define spl7&t;splhi()
 DECL|macro|splx
 mdefine_line|#define splx(s)
-DECL|macro|spinlock_init
-mdefine_line|#define spinlock_init(x,name) mutex_init(x, MUTEX_DEFAULT, name);
 r_extern
 r_void
 op_star

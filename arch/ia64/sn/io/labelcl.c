@@ -625,6 +625,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;labelcl_info_add_LBL: Duplicate label name %s for vertex 0x%p&bslash;n&quot;
 comma
 id|info_name

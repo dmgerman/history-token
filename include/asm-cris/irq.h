@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/sv_addr_ag.h&gt;
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS 26     /* TODO: what is this for Etrax100/LX ? */
+mdefine_line|#define NR_IRQS 32
 r_extern
 r_void
 id|disable_irq

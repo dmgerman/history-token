@@ -102,7 +102,7 @@ op_star
 id|callback_data
 )paren
 suffix:semicolon
-macro_line|#if 0
+macro_line|#ifdef LATER
 r_char
 op_star
 id|elsc_errmsg
@@ -232,7 +232,7 @@ op_star
 id|result
 )paren
 suffix:semicolon
-macro_line|#if 0
+macro_line|#ifdef LATER
 r_int
 id|elsc_debug_set
 c_func
@@ -452,7 +452,7 @@ r_int
 id|l_case
 )paren
 suffix:semicolon
-macro_line|#if 0
+macro_line|#ifdef LATER
 r_int
 id|elsc_display_mesg
 c_func

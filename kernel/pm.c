@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|variable|pm_active
 r_int
 id|pm_active
@@ -22,7 +23,7 @@ c_func
 id|pm_devs
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;pm_register - register a device with power management&n; *&t;@type: device type &n; *&t;@id: device ID&n; *&t;@callback: callback function&n; *&n; *&t;Add a device to the list of devices that wish to be notified about&n; *&t;power management events. A &amp;pm_dev structure is returned on success,&n; *&t;on failure the return is %NULL.&n; */
+multiline_comment|/**&n; *&t;pm_register - register a device with power management&n; *&t;@type: device type &n; *&t;@id: device ID&n; *&t;@callback: callback function&n; *&n; *&t;Add a device to the list of devices that wish to be notified about&n; *&t;power management events. A &amp;pm_dev structure is returned on success,&n; *&t;on failure the return is %NULL.&n; *&n; *      The callback function will be called in process context and&n; *      it may sleep.&n; */
 DECL|function|pm_register
 r_struct
 id|pm_dev
@@ -312,6 +313,19 @@ r_int
 id|prev_state
 comma
 id|next_state
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 r_switch
 c_cond

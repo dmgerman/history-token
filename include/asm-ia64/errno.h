@@ -250,5 +250,7 @@ DECL|macro|ENOMEDIUM
 mdefine_line|#define&t;ENOMEDIUM&t;123&t;/* No medium found */
 DECL|macro|EMEDIUMTYPE
 mdefine_line|#define&t;EMEDIUMTYPE&t;124&t;/* Wrong medium type */
+DECL|macro|EHASHCOLLISION
+mdefine_line|#define&t;EHASHCOLLISION&t;125&t;/* Number of hash collisons exceeds max. generation value */
 macro_line|#endif /* _ASM_IA64_ERRNO_H */
 eof

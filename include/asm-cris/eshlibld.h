@@ -1,5 +1,5 @@
 multiline_comment|/*!**************************************************************************&n;*!&n;*! FILE NAME  : eshlibld.h&n;*!&n;*! DESCRIPTION: Prototypes for exported shared library functions&n;*!&n;*! FUNCTIONS  : perform_cris_aout_relocations, shlibmod_fork, shlibmod_exit&n;*! (EXPORTED)&n;*!&n;*!---------------------------------------------------------------------------&n;*!&n;*! (C) Copyright 1998, 1999 Axis Communications AB, LUND, SWEDEN&n;*!&n;*!**************************************************************************/
-multiline_comment|/* $Id: eshlibld.h,v 1.1 2000/07/10 16:32:31 bjornw Exp $ */
+multiline_comment|/* $Id: eshlibld.h,v 1.2 2001/02/23 13:47:33 bjornw Exp $ */
 macro_line|#ifndef _cris_relocate_h
 DECL|macro|_cris_relocate_h
 mdefine_line|#define _cris_relocate_h

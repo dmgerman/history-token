@@ -1,8 +1,8 @@
 macro_line|#ifndef _ASM_IA64_MMZONE_SN1_H
 DECL|macro|_ASM_IA64_MMZONE_SN1_H
 mdefine_line|#define _ASM_IA64_MMZONE_SN1_H
-multiline_comment|/*&n; * Copyright, 2000, Silicon Graphics, sprasad@engr.sgi.com&n; */
 macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * Copyright, 2000, Silicon Graphics, sprasad@engr.sgi.com&n; */
 multiline_comment|/* Maximum configuration supported by SNIA hardware. There are other&n; * restrictions that may limit us to a smaller max configuration.&n; */
 DECL|macro|MAXNODES
 mdefine_line|#define MAXNODES                128

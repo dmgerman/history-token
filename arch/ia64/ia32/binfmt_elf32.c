@@ -152,11 +152,21 @@ comma
 id|address
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|tsk-&gt;mm-&gt;page_table_lock
+)paren
+suffix:semicolon
+(brace
 id|pmd
 op_assign
 id|pmd_alloc
 c_func
 (paren
+id|tsk-&gt;mm
+comma
 id|pgd
 comma
 id|address
@@ -168,30 +178,16 @@ c_cond
 op_logical_neg
 id|pmd
 )paren
-(brace
-id|__free_page
-c_func
-(paren
-id|page
-)paren
+r_goto
+id|out
 suffix:semicolon
-id|force_sig
-c_func
-(paren
-id|SIGKILL
-comma
-id|tsk
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|pte
 op_assign
 id|pte_alloc
 c_func
 (paren
+id|tsk-&gt;mm
+comma
 id|pmd
 comma
 id|address
@@ -203,25 +199,9 @@ c_cond
 op_logical_neg
 id|pte
 )paren
-(brace
-id|__free_page
-c_func
-(paren
-id|page
-)paren
+r_goto
+id|out
 suffix:semicolon
-id|force_sig
-c_func
-(paren
-id|SIGKILL
-comma
-id|tsk
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -233,24 +213,9 @@ op_star
 id|pte
 )paren
 )paren
-(brace
-id|pte_ERROR
-c_func
-(paren
-op_star
-id|pte
-)paren
+r_goto
+id|out
 suffix:semicolon
-id|__free_page
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|flush_page_to_ram
 c_func
 (paren
@@ -275,9 +240,35 @@ id|PAGE_SHARED
 )paren
 )paren
 suffix:semicolon
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|tsk-&gt;mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 multiline_comment|/* no need for flush_tlb */
 r_return
 id|page
+suffix:semicolon
+id|out
+suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|tsk-&gt;mm-&gt;page_table_lock
+)paren
+suffix:semicolon
+id|__free_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|ia64_elf32_init
@@ -348,6 +339,13 @@ op_assign
 l_int|0xc0000000
 suffix:semicolon
 multiline_comment|/* use what Linux/x86 uses... */
+id|set_fs
+c_func
+(paren
+id|USER_DS
+)paren
+suffix:semicolon
+multiline_comment|/* set addr limit for new TASK_SIZE */
 multiline_comment|/* setup ia32 state for ia32_load_state */
 id|current-&gt;thread.eflag
 op_assign
@@ -540,58 +538,20 @@ c_func
 l_string|&quot;mov ar.fdr = r0&quot;
 )paren
 suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;mov %0=ar.k0 ;;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|current-&gt;thread.old_iob
-)paren
-)paren
-suffix:semicolon
-id|__asm__
+op_assign
+id|ia64_get_kr
 c_func
 (paren
-l_string|&quot;mov ar.k0=%0 ;;&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
+id|IA64_KR_IO_BASE
+)paren
+suffix:semicolon
+id|ia64_set_kr
+c_func
 (paren
+id|IA64_KR_IO_BASE
+comma
 id|IA32_IOBASE
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* TSS */
-id|__asm__
-c_func
-(paren
-l_string|&quot;mov ar.k1 = %0&quot;
-suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-l_string|&quot;r&quot;
-id|IA64_SEG_DESCRIPTOR
-c_func
-(paren
-id|IA32_PAGE_OFFSET
-op_plus
-id|PAGE_SIZE
-comma
-l_int|0x1FFFL
-comma
-l_int|0xBL
-comma
-l_int|1L
-comma
-l_int|3L
-comma
-l_int|1L
-comma
-l_int|1L
-comma
-l_int|1L
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Get the segment selectors right */
@@ -771,42 +731,6 @@ id|regs-&gt;loadrs
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; *  According to the ABI %edx points to an `atexit&squot; handler.&n;&t; *  Since we don&squot;t have one we&squot;ll set it to 0 and initialize&n;&t; *  all the other registers just to make things more deterministic,&n;&t; *  ala the i386 implementation.&n;&t; */
-id|regs-&gt;r8
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* %eax */
-id|regs-&gt;r11
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* %ebx */
-id|regs-&gt;r9
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* %ecx */
-id|regs-&gt;r10
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* %edx */
-id|regs-&gt;r13
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* %ebp */
-id|regs-&gt;r14
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* %esi */
-id|regs-&gt;r15
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* %edi */
 )brace
 DECL|macro|STACK_TOP
 macro_line|#undef STACK_TOP

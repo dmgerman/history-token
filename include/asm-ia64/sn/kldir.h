@@ -3,9 +3,7 @@ macro_line|#ifndef _ASM_SN_KLDIR_H
 DECL|macro|_ASM_SN_KLDIR_H
 mdefine_line|#define _ASM_SN_KLDIR_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * The kldir memory area resides at a fixed place in each node&squot;s memory and&n; * provides pointers to most other IP27 memory areas.  This allows us to&n; * resize and/or relocate memory areas at a later time without breaking all&n; * firmware and kernels that use them.  Indices in the array are&n; * permanently dedicated to areas listed below.  Some memory areas (marked&n; * below) reside at a permanently fixed location, but are included in the&n; * directory for completeness.&n; */
 DECL|macro|KLDIR_MAGIC
 mdefine_line|#define KLDIR_MAGIC&t;&t;0x434d5f53505f5357
@@ -24,86 +22,6 @@ mdefine_line|#define KLDIR_OFF_COUNT&t;&t;&t;0x20
 DECL|macro|KLDIR_OFF_STRIDE
 mdefine_line|#define KLDIR_OFF_STRIDE&t;&t;0x28
 macro_line|#endif /* LANGUAGE_ASSEMBLY */
-macro_line|#if !defined(CONFIG_IA64_SGI_IO)
-multiline_comment|/*&n; * This is defined here because IP27_SYMMON_STK_SIZE must be at least what&n; * we define here.  Since it&squot;s set up in the prom.  We can&squot;t redefine it later&n; * and expect more space to be allocated.  The way to find out the true size&n; * of the symmon stacks is to divide SYMMON_STK_SIZE by SYMMON_STK_STRIDE&n; * for a particular node.&n; */
-DECL|macro|SYMMON_STACK_SIZE
-mdefine_line|#define SYMMON_STACK_SIZE&t;&t;0x8000
-macro_line|#if defined (PROM) || defined (SABLE)
-multiline_comment|/*&n; * These defines are prom version dependent.  No code other than the IP27&n; * prom should attempt to use these values.&n; */
-DECL|macro|IP27_LAUNCH_OFFSET
-mdefine_line|#define IP27_LAUNCH_OFFSET&t;&t;0x2400
-DECL|macro|IP27_LAUNCH_SIZE
-mdefine_line|#define IP27_LAUNCH_SIZE&t;&t;0x400
-DECL|macro|IP27_LAUNCH_COUNT
-mdefine_line|#define IP27_LAUNCH_COUNT&t;&t;2
-DECL|macro|IP27_LAUNCH_STRIDE
-mdefine_line|#define IP27_LAUNCH_STRIDE&t;&t;0x200
-DECL|macro|IP27_KLCONFIG_OFFSET
-mdefine_line|#define IP27_KLCONFIG_OFFSET&t;&t;0x4000
-DECL|macro|IP27_KLCONFIG_SIZE
-mdefine_line|#define IP27_KLCONFIG_SIZE&t;&t;0xc000
-DECL|macro|IP27_KLCONFIG_COUNT
-mdefine_line|#define IP27_KLCONFIG_COUNT&t;&t;1
-DECL|macro|IP27_KLCONFIG_STRIDE
-mdefine_line|#define IP27_KLCONFIG_STRIDE&t;&t;0
-DECL|macro|IP27_NMI_OFFSET
-mdefine_line|#define IP27_NMI_OFFSET&t;&t;&t;0x3000
-DECL|macro|IP27_NMI_SIZE
-mdefine_line|#define IP27_NMI_SIZE&t;&t;&t;0x40
-DECL|macro|IP27_NMI_COUNT
-mdefine_line|#define IP27_NMI_COUNT&t;&t;&t;2
-DECL|macro|IP27_NMI_STRIDE
-mdefine_line|#define IP27_NMI_STRIDE&t;&t;&t;0x40
-DECL|macro|IP27_PI_ERROR_OFFSET
-mdefine_line|#define IP27_PI_ERROR_OFFSET&t;&t;0x12000
-DECL|macro|IP27_PI_ERROR_SIZE
-mdefine_line|#define IP27_PI_ERROR_SIZE&t;&t;0x4000
-DECL|macro|IP27_PI_ERROR_COUNT
-mdefine_line|#define IP27_PI_ERROR_COUNT&t;&t;1
-DECL|macro|IP27_PI_ERROR_STRIDE
-mdefine_line|#define IP27_PI_ERROR_STRIDE&t;&t;0
-DECL|macro|IP27_SYMMON_STK_OFFSET
-mdefine_line|#define IP27_SYMMON_STK_OFFSET&t;&t;0x25000
-DECL|macro|IP27_SYMMON_STK_SIZE
-mdefine_line|#define IP27_SYMMON_STK_SIZE&t;&t;0xe000
-DECL|macro|IP27_SYMMON_STK_COUNT
-mdefine_line|#define IP27_SYMMON_STK_COUNT&t;&t;2
-multiline_comment|/* IP27_SYMMON_STK_STRIDE must be &gt;= SYMMON_STACK_SIZE */
-DECL|macro|IP27_SYMMON_STK_STRIDE
-mdefine_line|#define IP27_SYMMON_STK_STRIDE&t;&t;0x7000
-DECL|macro|IP27_FREEMEM_OFFSET
-mdefine_line|#define IP27_FREEMEM_OFFSET&t;&t;0x19000
-DECL|macro|IP27_FREEMEM_SIZE
-mdefine_line|#define IP27_FREEMEM_SIZE&t;&t;-1
-DECL|macro|IP27_FREEMEM_COUNT
-mdefine_line|#define IP27_FREEMEM_COUNT&t;&t;1
-DECL|macro|IP27_FREEMEM_STRIDE
-mdefine_line|#define IP27_FREEMEM_STRIDE&t;&t;0
-macro_line|#endif /* PROM || SABLE*/
-multiline_comment|/*&n; * There will be only one of these in a partition so the IO6 must set it up.&n; */
-DECL|macro|IO6_GDA_OFFSET
-mdefine_line|#define IO6_GDA_OFFSET&t;&t;&t;0x11000
-DECL|macro|IO6_GDA_SIZE
-mdefine_line|#define IO6_GDA_SIZE&t;&t;&t;0x400
-DECL|macro|IO6_GDA_COUNT
-mdefine_line|#define IO6_GDA_COUNT&t;&t;&t;1
-DECL|macro|IO6_GDA_STRIDE
-mdefine_line|#define IO6_GDA_STRIDE&t;&t;&t;0
-multiline_comment|/*&n; * save area of kernel nmi regs in the prom format&n; */
-DECL|macro|IP27_NMI_KREGS_OFFSET
-mdefine_line|#define IP27_NMI_KREGS_OFFSET&t;&t;0x11400
-DECL|macro|IP27_NMI_KREGS_CPU_SIZE
-mdefine_line|#define IP27_NMI_KREGS_CPU_SIZE&t;&t;0x200
-multiline_comment|/*&n; * save area of kernel nmi regs in eframe format &n; */
-DECL|macro|IP27_NMI_EFRAME_OFFSET
-mdefine_line|#define IP27_NMI_EFRAME_OFFSET&t;&t;0x11800
-DECL|macro|IP27_NMI_EFRAME_SIZE
-mdefine_line|#define IP27_NMI_EFRAME_SIZE&t;&t;0x200
-DECL|macro|KLDIR_ENT_SIZE
-mdefine_line|#define KLDIR_ENT_SIZE&t;&t;&t;0x40
-DECL|macro|KLDIR_MAX_ENTRIES
-mdefine_line|#define KLDIR_MAX_ENTRIES&t;&t;(0x400 / 0x40)
-macro_line|#endif&t;/* !CONFIG_IA64_SGI_IO */
 macro_line|#ifdef _LANGUAGE_C
 DECL|struct|kldir_ent_s
 r_typedef
@@ -120,20 +38,11 @@ id|off_t
 id|offset
 suffix:semicolon
 multiline_comment|/* Offset from start of node space  */
-macro_line|#if defined(CONFIG_IA64_SGI_IO)&t;/* FIXME */
 DECL|member|pointer
 id|__psunsigned_t
 id|pointer
 suffix:semicolon
 multiline_comment|/* Pointer to area in some cases    */
-macro_line|#else
-DECL|member|pointer
-r_int
-r_int
-id|pointer
-suffix:semicolon
-multiline_comment|/* Pointer to area in some cases    */
-macro_line|#endif
 DECL|member|size
 r_int
 id|size
@@ -163,7 +72,6 @@ DECL|typedef|kldir_ent_t
 id|kldir_ent_t
 suffix:semicolon
 macro_line|#endif /* _LANGUAGE_C */
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 DECL|macro|KLDIR_ENT_SIZE
 mdefine_line|#define KLDIR_ENT_SIZE&t;&t;&t;0x40
 DECL|macro|KLDIR_MAX_ENTRIES
@@ -174,6 +82,5 @@ macro_line|#include &lt;asm/sn/sn1/kldir.h&gt;
 macro_line|#else
 macro_line|#error &quot;kldir.h is currently defined for IP27 and IP35 platforms only&quot;
 macro_line|#endif
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO */
 macro_line|#endif /* _ASM_SN_KLDIR_H */
 eof

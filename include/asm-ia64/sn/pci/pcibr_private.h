@@ -4,6 +4,7 @@ DECL|macro|_ASM_SN_PCI_PCIBR_PRIVATE_H
 mdefine_line|#define _ASM_SN_PCI_PCIBR_PRIVATE_H
 multiline_comment|/*&n; * pcibr_private.h -- private definitions for pcibr&n; * only the pcibr driver (and its closest friends)&n; * should ever peek into this file.&n; */
 macro_line|#include &lt;asm/sn/pci/pciio_private.h&gt;
+macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
 multiline_comment|/*&n; * convenience typedefs&n; */
 DECL|typedef|pcibr_DMattr_t
 r_typedef
@@ -62,6 +63,13 @@ id|pcibr_intr_wrap_s
 op_star
 id|pcibr_intr_wrap_t
 suffix:semicolon
+DECL|typedef|pcibr_intr_cbuf_t
+r_typedef
+r_struct
+id|pcibr_intr_cbuf_s
+op_star
+id|pcibr_intr_cbuf_t
+suffix:semicolon
 multiline_comment|/*&n; * Bridge sets up PIO using this information.&n; */
 DECL|struct|pcibr_piomap_s
 r_struct
@@ -108,7 +116,7 @@ id|bp_soft
 suffix:semicolon
 multiline_comment|/* backpointer to bridge soft data */
 DECL|member|bp_toc
-r_int
+id|atomic_t
 id|bp_toc
 (braket
 l_int|1
@@ -192,6 +200,38 @@ suffix:semicolon
 multiline_comment|/* value of 1st ATE written */
 )brace
 suffix:semicolon
+DECL|macro|IBUFSIZE
+mdefine_line|#define&t;IBUFSIZE&t;5&t;&t;/* size of circular buffer (holds 4) */
+multiline_comment|/*&n; * Circular buffer used for interrupt processing&n; */
+DECL|struct|pcibr_intr_cbuf_s
+r_struct
+id|pcibr_intr_cbuf_s
+(brace
+DECL|member|ib_lock
+id|spinlock_t
+id|ib_lock
+suffix:semicolon
+multiline_comment|/* cbuf &squot;put&squot; lock */
+DECL|member|ib_in
+r_int
+id|ib_in
+suffix:semicolon
+multiline_comment|/* index of next free entry */
+DECL|member|ib_out
+r_int
+id|ib_out
+suffix:semicolon
+multiline_comment|/* index of next full entry */
+DECL|member|ib_cbuf
+id|pcibr_intr_wrap_t
+id|ib_cbuf
+(braket
+id|IBUFSIZE
+)braket
+suffix:semicolon
+multiline_comment|/* circular buffer of wrap  */
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Bridge sets up interrupts using this information.&n; */
 DECL|struct|pcibr_intr_s
 r_struct
@@ -230,6 +270,12 @@ id|pcibr_soft_t
 id|bi_soft
 suffix:semicolon
 multiline_comment|/* shortcut to soft info */
+DECL|member|bi_ibuf
+r_struct
+id|pcibr_intr_cbuf_s
+id|bi_ibuf
+suffix:semicolon
+multiline_comment|/* circular buffer of wrap ptrs */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * per-connect point pcibr data, including&n; * standard pciio data in-line:&n; */
@@ -286,6 +332,10 @@ DECL|member|f_piomap
 id|pcibr_piomap_t
 id|f_piomap
 suffix:semicolon
+DECL|member|f_att_det_error
+r_int
+id|f_att_det_error
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* =====================================================================&n; *          Shared Interrupt Information&n; */
@@ -331,12 +381,27 @@ DECL|member|iw_intr
 id|bridgereg_t
 id|iw_intr
 suffix:semicolon
-multiline_comment|/* bits in b_int_status */
+multiline_comment|/* bit in b_int_status */
 DECL|member|iw_list
 id|pcibr_intr_list_t
 id|iw_list
 suffix:semicolon
 multiline_comment|/* ghostbusters! */
+DECL|member|iw_hdlrcnt
+r_int
+id|iw_hdlrcnt
+suffix:semicolon
+multiline_comment|/* running handler count */
+DECL|member|iw_shared
+r_int
+id|iw_shared
+suffix:semicolon
+multiline_comment|/* if Bridge bit is shared */
+DECL|member|iw_connected
+r_int
+id|iw_connected
+suffix:semicolon
+multiline_comment|/* if already connected */
 )brace
 suffix:semicolon
 DECL|macro|PCIBR_ISR_ERR_START
@@ -434,9 +499,20 @@ r_int
 id|bs_dma_flags
 suffix:semicolon
 multiline_comment|/* revision-implied DMA flags */
+DECL|member|bs_l1sc
+id|l1sc_t
+op_star
+id|bs_l1sc
+suffix:semicolon
+multiline_comment|/* io brick l1 system cntr */
+DECL|member|bs_moduleid
+id|moduleid_t
+id|bs_moduleid
+suffix:semicolon
+multiline_comment|/* io brick moduleid */
 multiline_comment|/*&n;     * Lock used primarily to get mutual exclusion while managing any&n;     * bridge resources..&n;     */
 DECL|member|bs_lock
-id|lock_t
+id|spinlock_t
 id|bs_lock
 suffix:semicolon
 DECL|member|bs_noslot_conn
@@ -465,6 +541,10 @@ suffix:semicolon
 DECL|member|slot_conn
 id|devfs_handle_t
 id|slot_conn
+suffix:semicolon
+DECL|member|slot_status
+r_int
+id|slot_status
 suffix:semicolon
 multiline_comment|/* Potentially several connection points&n;&t; * for this slot. bss_ninfo is how many,&n;&t; * and bss_infos is a pointer to&n;&t; * an array pcibr_info_t values (which are&n;&t; * pointers to pcibr_info structs, stored&n;&t; * as device_info in connection ponts).&n;&t; */
 DECL|member|bss_ninfo
@@ -546,7 +626,7 @@ id|bss_d32_flags
 suffix:semicolon
 multiline_comment|/* Shadow information used for implementing&n;&t; * Bridge Hardware WAR #484930&n;&t; */
 DECL|member|bss_ext_ates_active
-r_int
+id|atomic_t
 id|bss_ext_ates_active
 suffix:semicolon
 DECL|member|bss_cmd_pointer
@@ -604,18 +684,11 @@ DECL|member|bsi_xtalk_intr
 id|xtalk_intr_t
 id|bsi_xtalk_intr
 suffix:semicolon
-multiline_comment|/*&n;&t; * We do not like sharing PCI interrrupt lines&n;&t; * between devices, but the Origin 200 PCI&n;&t; * layout forces us to do so.&n;&t; */
-DECL|member|bsi_pcibr_intr_list
-id|pcibr_intr_list_t
-id|bsi_pcibr_intr_list
-suffix:semicolon
+multiline_comment|/*&n;&t; * A wrapper structure is associated with each&n;&t; * Bridge interrupt bit.&n;&t; */
 DECL|member|bsi_pcibr_intr_wrap
-id|pcibr_intr_wrap_t
+r_struct
+id|pcibr_intr_wrap_s
 id|bsi_pcibr_intr_wrap
-suffix:semicolon
-DECL|member|bsi_pcibr_wrap_set
-r_int
-id|bsi_pcibr_wrap_set
 suffix:semicolon
 DECL|member|bs_intr
 )brace
@@ -637,7 +710,7 @@ DECL|member|bserr_toutcnt
 r_int
 id|bserr_toutcnt
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 DECL|member|bserr_toutid
 id|toid_t
 id|bserr_toutid

@@ -380,22 +380,6 @@ op_star
 id|sw
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Prepare to unwind the current task.  For this to work, the kernel&n; * stack identified by REGS must look like this:&n; *&n; *&t;//&t;&t;      //&n; *&t;|&t;&t;      |&n; *&t;|   kernel stack      |&n; *&t;|&t;&t;      |&n; *&t;+=====================+&n; *&t;|   struct pt_regs    |&n; *&t;+---------------------+ &lt;--- REGS&n; *&t;| struct switch_stack |&n; *&t;+---------------------+&n; */
-r_extern
-r_void
-id|unw_init_from_current
-(paren
-r_struct
-id|unw_frame_info
-op_star
-id|info
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Prepare to unwind the currently running thread.&n; */
 r_extern
 r_void
@@ -449,7 +433,6 @@ mdefine_line|#define unw_is_intr_frame(info)&t;(((info)-&gt;flags &amp; UNW_FLAG
 r_static
 r_inline
 r_int
-r_int
 DECL|function|unw_get_ip
 id|unw_get_ip
 (paren
@@ -479,7 +462,6 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-r_int
 r_int
 DECL|function|unw_get_sp
 id|unw_get_sp
@@ -511,7 +493,6 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-r_int
 DECL|function|unw_get_psp
 id|unw_get_psp
 (paren
@@ -541,7 +522,6 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-r_int
 r_int
 DECL|function|unw_get_bsp
 id|unw_get_bsp
@@ -573,7 +553,6 @@ suffix:semicolon
 r_static
 r_inline
 r_int
-r_int
 DECL|function|unw_get_cfm
 id|unw_get_cfm
 (paren
@@ -604,7 +583,6 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-r_int
 r_int
 DECL|function|unw_set_cfm
 id|unw_set_cfm

@@ -63,7 +63,6 @@ op_star
 id|mod
 )paren
 (brace
-macro_line|#ifdef CONFIG_IA64_NEW_UNWIND
 r_struct
 id|archdata
 op_star
@@ -245,7 +244,6 @@ comma
 id|archdata-&gt;unw_end
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IA64_NEW_UNWIND */
 r_return
 l_int|0
 suffix:semicolon
@@ -262,7 +260,6 @@ op_star
 id|addr
 )paren
 (brace
-macro_line|#ifdef CONFIG_IA64_NEW_UNWIND
 r_struct
 id|module
 op_star
@@ -324,7 +321,6 @@ id|archdata-&gt;unw_table
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_IA64_NEW_UNWIND */
 id|vfree
 c_func
 (paren

@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 multiline_comment|/* Bytes per L1 (data) cache line.  */
 DECL|macro|L1_CACHE_SHIFT
-mdefine_line|#define L1_CACHE_SHIFT&t;&t;6
+mdefine_line|#define L1_CACHE_SHIFT&t;&t;CONFIG_IA64_L1_CACHE_SHIFT
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES&t;&t;(1 &lt;&lt; L1_CACHE_SHIFT)
 macro_line|#ifdef CONFIG_SMP

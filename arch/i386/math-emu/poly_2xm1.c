@@ -217,7 +217,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 id|argSignif.lsw
 op_assign
 l_int|0

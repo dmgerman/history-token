@@ -4317,7 +4317,7 @@ id|err
 id|printk
 c_func
 (paren
-l_string|&quot;errors occured during superblock update, repeating&bslash;n&quot;
+l_string|&quot;errors occurred during superblock update, repeating&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -4332,7 +4332,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;excessive errors occured during superblock update, exiting&bslash;n&quot;
+l_string|&quot;excessive errors occurred during superblock update, exiting&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

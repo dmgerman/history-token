@@ -185,6 +185,9 @@ comma
 DECL|enumerator|TPUAdapter
 id|TPUAdapter
 comma
+DECL|enumerator|TernaryCache
+id|TernaryCache
+comma
 DECL|enumerator|Anonymous
 id|Anonymous
 DECL|typedef|CONFIGTYPE

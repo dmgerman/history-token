@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Advanced Configuration and Power Interface &n; *&n; * Based on &squot;ACPI Specification 1.0b&squot; February 2, 1999 and &n; * &squot;IA-64 Extensions to ACPI Specification&squot; Revision 0.6&n; * &n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2000 Hewlett-Packard Co.&n; * Copyright (C) 2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2000 Intel Corp.&n; * Copyright (C) 2000 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *      ACPI based kernel configuration manager.&n; *      ACPI 2.0 &amp; IA64 ext 0.71&n; */
+multiline_comment|/*&n; * Advanced Configuration and Power Interface&n; *&n; * Based on &squot;ACPI Specification 1.0b&squot; February 2, 1999 and&n; * &squot;IA-64 Extensions to ACPI Specification&squot; Revision 0.6&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 2000 Hewlett-Packard Co.&n; * Copyright (C) 2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2000 Intel Corp.&n; * Copyright (C) 2000 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *      ACPI based kernel configuration manager.&n; *      ACPI 2.0 &amp; IA64 ext 0.71&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -273,9 +273,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;      CPU %d (%.04x:%.04x): &quot;
-comma
-id|total_cpus
+l_string|&quot;      CPU %.04x:%.04x: &quot;
 comma
 id|lsapic-&gt;eid
 comma
@@ -297,7 +295,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;Disabled.&bslash;n&quot;
+l_string|&quot;disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|add
@@ -321,14 +319,14 @@ c_cond
 id|add
 )paren
 (brace
+id|available_cpus
+op_increment
+suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Available.&bslash;n&quot;
+l_string|&quot;available&quot;
 )paren
-suffix:semicolon
-id|available_cpus
-op_increment
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|smp_boot_data.cpu_phys_id
@@ -344,7 +342,32 @@ l_int|8
 op_or
 id|lsapic-&gt;eid
 suffix:semicolon
-macro_line|#endif /* CONFIG_SMP */
+r_if
+c_cond
+(paren
+id|hard_smp_processor_id
+c_func
+(paren
+)paren
+op_eq
+id|smp_boot_data.cpu_phys_id
+(braket
+id|total_cpus
+)braket
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; (BSP)&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|printk
+c_func
+(paren
+l_string|&quot;.&bslash;n&quot;
+)paren
+suffix:semicolon
 )brace
 id|total_cpus
 op_increment
@@ -1049,14 +1072,14 @@ multiline_comment|/* We&squot;ve got at least one of these, no? */
 )brace
 id|smp_boot_data.cpu_count
 op_assign
-id|available_cpus
+id|total_cpus
 suffix:semicolon
 macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ACPI 1.0b with 0.71 IA64 extensions functions; should be removed once all &n; * platforms start supporting ACPI 2.0&n; */
+multiline_comment|/*&n; * ACPI 1.0b with 0.71 IA64 extensions functions; should be removed once all&n; * platforms start supporting ACPI 2.0&n; */
 multiline_comment|/*&n; * Identify usable CPU&squot;s and remember them for SMP bringup later.&n; */
 r_static
 r_void
@@ -1604,7 +1627,7 @@ multiline_comment|/* We&squot;ve got at least one of these, no? */
 )brace
 id|smp_boot_data.cpu_count
 op_assign
-id|available_cpus
+id|total_cpus
 suffix:semicolon
 macro_line|#endif
 r_return

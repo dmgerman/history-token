@@ -808,7 +808,7 @@ suffix:semicolon
 multiline_comment|/* Time it took to sample&t;    */
 macro_line|#endif
 DECL|member|ri_lock
-id|lock_t
+id|spinlock_t
 id|ri_lock
 suffix:semicolon
 multiline_comment|/* Lock for access to router info   */
@@ -927,6 +927,8 @@ DECL|macro|NULL_ROUTER_NAME
 mdefine_line|#define NULL_ROUTER_NAME&t;&quot;null_router&quot;
 DECL|macro|META_ROUTER_NAME
 mdefine_line|#define META_ROUTER_NAME&t;&quot;meta_router&quot;
+DECL|macro|REPEATER_ROUTER_NAME
+mdefine_line|#define REPEATER_ROUTER_NAME&t;&quot;repeater_router&quot;
 DECL|macro|UNKNOWN_ROUTER_NAME
 mdefine_line|#define UNKNOWN_ROUTER_NAME&t;&quot;unknown_router&quot; 
 multiline_comment|/* The following definitions are needed by the router traversing&n; * code either using the hardware graph or using vector operations.&n; */
@@ -1044,7 +1046,7 @@ multiline_comment|/*&n; * RR_RESET_MASK(_L) mask and shift definitions&n; */
 DECL|macro|RRM_RESETOK
 mdefine_line|#define RRM_RESETOK(_L)&t;&t;(UINT64_CAST 1 &lt;&lt; ((_L) - 1))
 DECL|macro|RRM_RESETOK_ALL
-mdefine_line|#define RRM_RESETOK_ALL&t;&t;(UINT64_CAST 0x3f)
+mdefine_line|#define RRM_RESETOK_ALL&t;&t;ALL_PORTS
 multiline_comment|/*&n; * RR_META_TABLE(_x) and RR_LOCAL_TABLE(_x) mask and shift definitions&n; */
 DECL|macro|RTABLE_SHFT
 mdefine_line|#define RTABLE_SHFT(_L)&t;&t;(4 * ((_L) - 1))

@@ -294,10 +294,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|page-&gt;mapping
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 DECL|function|remove_inode_page
 r_void

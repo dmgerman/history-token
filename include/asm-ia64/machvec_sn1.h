@@ -106,6 +106,8 @@ DECL|macro|platform_outw
 mdefine_line|#define platform_outw&t;&t;sn1_outw
 DECL|macro|platform_outl
 mdefine_line|#define platform_outl&t;&t;sn1_outl
+DECL|macro|platform_pci_dma_init
+mdefine_line|#define platform_pci_dma_init&t;machvec_noop
 DECL|macro|platform_pci_alloc_consistent
 mdefine_line|#define platform_pci_alloc_consistent&t;sn1_pci_alloc_consistent
 DECL|macro|platform_pci_free_consistent

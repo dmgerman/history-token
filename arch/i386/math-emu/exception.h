@@ -11,7 +11,7 @@ mdefine_line|#define&t;Const_(x)&t;x
 macro_line|#endif
 macro_line|#ifndef SW_C1
 macro_line|#include &quot;fpu_emu.h&quot;
-macro_line|#endif SW_C1
+macro_line|#endif /* SW_C1 */
 DECL|macro|FPU_BUSY
 mdefine_line|#define FPU_BUSY        Const_(0x8000)   /* FPU busy bit (8087 compatibility) */
 DECL|macro|EX_ErrorSummary
@@ -48,6 +48,6 @@ macro_line|#else
 DECL|macro|EXCEPTION
 mdefine_line|#define&t;EXCEPTION(x)&t;FPU_exception(x)
 macro_line|#endif
-macro_line|#endif __ASSEMBLY__
-macro_line|#endif _EXCEPTION_H_
+macro_line|#endif /* __ASSEMBLY__ */ 
+macro_line|#endif /* _EXCEPTION_H_ */
 eof

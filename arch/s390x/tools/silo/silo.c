@@ -1810,7 +1810,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;Cannot acces bootmap file &squot;%s&squot;: %s&bslash;n&quot;
+l_string|&quot;Cannot access bootmap file &squot;%s&squot;: %s&bslash;n&quot;
 comma
 id|o-&gt;bootmap
 comma

@@ -14,14 +14,22 @@ macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/tqueue.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#else
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
+DECL|variable|debug
+r_static
+r_int
+id|debug
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
+macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/* Defines */
 multiline_comment|/* port output buffer length -- must be &lt;= transfer buffer length - 2 */
@@ -7482,6 +7490,22 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Digi AccelePort USB-2/USB-4 Serial Converter driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Debug enabled or not&quot;
 )paren
 suffix:semicolon
 eof

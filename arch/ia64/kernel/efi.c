@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2000 Hewlett-Packard Co.&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999-2000 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; * &t;Skip non-WB memory and ignore empty memory ranges.&n; */
+multiline_comment|/*&n; * Extensible Firmware Interface&n; *&n; * Based on Extensible Firmware Interface Specification version 0.9 April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999-2001 Hewlett-Packard Co.&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999-2001 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * All EFI Runtime Services are not implemented yet as EFI only&n; * supports physical mode addressing on SoftSDV. This is to be fixed&n; * in a future version.  --drummond 1999-07-20&n; *&n; * Implemented EFI runtime services and virtual mode calls.  --davidm&n; *&n; * Goutham Rao: &lt;goutham.rao@intel.com&gt;&n; *&t;Skip non-WB memory and ignore empty memory ranges.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;asm/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/kregs.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 DECL|macro|EFI_DEBUG
@@ -562,18 +563,18 @@ op_assign
 id|__va
 c_func
 (paren
-id|ia64_boot_param.efi_memmap
+id|ia64_boot_param-&gt;efi_memmap
 )paren
 suffix:semicolon
 id|efi_map_end
 op_assign
 id|efi_map_start
 op_plus
-id|ia64_boot_param.efi_memmap_size
+id|ia64_boot_param-&gt;efi_memmap_size
 suffix:semicolon
 id|efi_desc_size
 op_assign
-id|ia64_boot_param.efi_memdesc_size
+id|ia64_boot_param-&gt;efi_memdesc_size
 suffix:semicolon
 r_for
 c_loop
@@ -881,18 +882,18 @@ op_assign
 id|__va
 c_func
 (paren
-id|ia64_boot_param.efi_memmap
+id|ia64_boot_param-&gt;efi_memmap
 )paren
 suffix:semicolon
 id|efi_map_end
 op_assign
 id|efi_map_start
 op_plus
-id|ia64_boot_param.efi_memmap_size
+id|ia64_boot_param-&gt;efi_memmap_size
 suffix:semicolon
 id|efi_desc_size
 op_assign
-id|ia64_boot_param.efi_memdesc_size
+id|ia64_boot_param-&gt;efi_memdesc_size
 suffix:semicolon
 r_for
 c_loop
@@ -944,7 +945,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * We must use the same page size as the one used&n;&t;&t; * for the kernel region when we map the PAL code.&n;&t;&t; * This way, we avoid overlapping TRs if code is &n;&t;&t; * executed nearby. The Alt I-TLB installs 256MB&n;&t;&t; * page sizes as defined for region 7.&n;&t;&t; *&n;&t;&t; * XXX Fixme: should be dynamic here (for page size)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The only ITLB entry in region 7 that is used is the one installed by&n;&t;&t; * __start().  That entry covers a 64MB range.&n;&t;&t; *&n;&t;&t; * XXX Fixme: should be dynamic here (for page size)&n;&t;&t; */
 id|mask
 op_assign
 op_complement
@@ -952,7 +953,7 @@ op_complement
 (paren
 l_int|1
 op_lshift
-id|_PAGE_SIZE_256M
+id|_PAGE_SIZE_64M
 )paren
 op_minus
 l_int|1
@@ -964,7 +965,7 @@ id|PAGE_OFFSET
 op_plus
 id|md-&gt;phys_addr
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * We must check that the PAL mapping won&squot;t overlap&n;&t;&t; * with the kernel mapping on ITR1. &n;&t;&t; *&n;&t;&t; * PAL code is guaranteed to be aligned on a power of 2&n;&t;&t; * between 4k and 256KB.&n;&t;&t; * Also from the documentation, it seems like there is an&n;&t;&t; * implicit guarantee that you will need only ONE ITR to&n;&t;&t; * map it. This implies that the PAL code is always aligned&n;&t;&t; * on its size, i.e., the closest matching page size supported&n;&t;&t; * by the TLB. Therefore PAL code is guaranteed never to cross&n;&t;&t; * a 256MB unless it is bigger than 256MB (very unlikely!).&n;&t;&t; * So for now the following test is enough to determine whether&n;&t;&t; * or not we need a dedicated ITR for the PAL code.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We must check that the PAL mapping won&squot;t overlap with the kernel&n;&t;&t; * mapping.&n;&t;&t; *&n;&t;&t; * PAL code is guaranteed to be aligned on a power of 2 between 4k and&n;&t;&t; * 256KB.  Also from the documentation, it seems like there is an implicit&n;&t;&t; * guarantee that you will need only ONE ITR to map it. This implies that&n;&t;&t; * the PAL code is always aligned on its size, i.e., the closest matching&n;&t;&t; * page size supported by the TLB. Therefore PAL code is guaranteed never&n;&t;&t; * to cross a 64MB unless it is bigger than 64MB (very unlikely!).  So for&n;&t;&t; * now the following test is enough to determine whether or not we need a&n;&t;&t; * dedicated ITR for the PAL code.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -975,7 +976,7 @@ id|mask
 )paren
 op_eq
 (paren
-id|PAGE_OFFSET
+id|KERNEL_START
 op_amp
 id|mask
 )paren
@@ -985,7 +986,7 @@ id|printk
 c_func
 (paren
 id|__FUNCTION__
-l_string|&quot; : no need to install ITR for PAL Code&bslash;n&quot;
+l_string|&quot; : no need to install ITR for PAL code&bslash;n&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -1021,7 +1022,7 @@ op_amp
 id|mask
 )paren
 op_plus
-l_int|256
+l_int|64
 op_star
 l_int|1024
 op_star
@@ -1035,13 +1036,12 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * ITR0/DTR0: used for kernel code/data&n;&t;&t; * ITR1/DTR1: used by HP simulator&n;&t;&t; * ITR2/DTR2: map PAL code&n;&t;&t; */
 id|ia64_itr
 c_func
 (paren
 l_int|0x1
 comma
-l_int|2
+id|IA64_TR_PALCODE
 comma
 id|vaddr
 op_amp
@@ -1055,19 +1055,11 @@ c_func
 (paren
 id|md-&gt;phys_addr
 comma
-id|__pgprot
-c_func
-(paren
-id|__DIRTY_BITS
-op_or
-id|_PAGE_PL_0
-op_or
-id|_PAGE_AR_RX
-)paren
+id|PAGE_KERNEL
 )paren
 )paren
 comma
-id|_PAGE_SIZE_256M
+id|_PAGE_SIZE_64M
 )paren
 suffix:semicolon
 id|local_irq_restore
@@ -1077,6 +1069,7 @@ id|flags
 )paren
 suffix:semicolon
 id|ia64_srlz_i
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1243,10 +1236,10 @@ op_assign
 id|__va
 c_func
 (paren
-id|ia64_boot_param.efi_systab
+id|ia64_boot_param-&gt;efi_systab
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Verify the EFI Table&n; &t; */
+multiline_comment|/*&n;&t; * Verify the EFI Table&n;&t; */
 r_if
 c_cond
 (paren
@@ -1690,18 +1683,18 @@ op_assign
 id|__va
 c_func
 (paren
-id|ia64_boot_param.efi_memmap
+id|ia64_boot_param-&gt;efi_memmap
 )paren
 suffix:semicolon
 id|efi_map_end
 op_assign
 id|efi_map_start
 op_plus
-id|ia64_boot_param.efi_memmap_size
+id|ia64_boot_param-&gt;efi_memmap_size
 suffix:semicolon
 id|efi_desc_size
 op_assign
-id|ia64_boot_param.efi_memdesc_size
+id|ia64_boot_param-&gt;efi_memdesc_size
 suffix:semicolon
 macro_line|#if EFI_DEBUG
 multiline_comment|/* print EFI memory map: */
@@ -1777,14 +1770,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SOFTSDV_HACKS
-multiline_comment|/*&n;&t; * (Some) SoftSDVs seem to have a problem with this call.&n;&t; * Since it&squot;s mostly a performance optimization, just don&squot;t do&n;&t; * it for now...  --davidm 99/12/6&n;&t; */
 id|efi_enter_virtual_mode
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 r_void
 DECL|function|efi_enter_virtual_mode
@@ -1818,18 +1808,18 @@ op_assign
 id|__va
 c_func
 (paren
-id|ia64_boot_param.efi_memmap
+id|ia64_boot_param-&gt;efi_memmap
 )paren
 suffix:semicolon
 id|efi_map_end
 op_assign
 id|efi_map_start
 op_plus
-id|ia64_boot_param.efi_memmap_size
+id|ia64_boot_param-&gt;efi_memmap_size
 suffix:semicolon
 id|efi_desc_size
 op_assign
-id|ia64_boot_param.efi_memdesc_size
+id|ia64_boot_param-&gt;efi_memdesc_size
 suffix:semicolon
 r_for
 c_loop
@@ -2024,13 +2014,13 @@ c_func
 id|runtime-&gt;set_virtual_address_map
 )paren
 comma
-id|ia64_boot_param.efi_memmap_size
+id|ia64_boot_param-&gt;efi_memmap_size
 comma
 id|efi_desc_size
 comma
-id|ia64_boot_param.efi_memdesc_version
+id|ia64_boot_param-&gt;efi_memdesc_version
 comma
-id|ia64_boot_param.efi_memmap
+id|ia64_boot_param-&gt;efi_memmap
 )paren
 suffix:semicolon
 r_if

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * serial.h: Arch-dep definitions for the Etrax100 serial driver.&n; *&n; * Copyright (C) 1998, 1999, 2000 Axis Communications AB&n; */
-macro_line|#ifndef _ETRAX100_SERIAL_H
-DECL|macro|_ETRAX100_SERIAL_H
-mdefine_line|#define _ETRAX100_SERIAL_H
+macro_line|#ifndef _ETRAX_SERIAL_H
+DECL|macro|_ETRAX_SERIAL_H
+mdefine_line|#define _ETRAX_SERIAL_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;asm/termios.h&gt;
@@ -208,7 +208,7 @@ DECL|member|type
 r_int
 id|type
 suffix:semicolon
-multiline_comment|/* PORT_ETRAX100 */
+multiline_comment|/* PORT_ETRAX */
 DECL|member|count
 r_int
 id|count
@@ -289,11 +289,11 @@ macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/* this PORT is not in the standard serial.h. it&squot;s not actually used for&n; * anything since we only have one type of async serial-port anyway in this&n; * system.&n; */
-DECL|macro|PORT_ETRAX100
-mdefine_line|#define PORT_ETRAX100 1
+DECL|macro|PORT_ETRAX
+mdefine_line|#define PORT_ETRAX 1
 multiline_comment|/*&n; * Events are used to schedule things to happen at timer-interrupt&n; * time, instead of at rs interrupt time.&n; */
 DECL|macro|RS_EVENT_WRITE_WAKEUP
 mdefine_line|#define RS_EVENT_WRITE_WAKEUP&t;0
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* !(_ETRAX100_SERIAL_H) */
+macro_line|#endif /* !(_ETRAX_SERIAL_H) */
 eof

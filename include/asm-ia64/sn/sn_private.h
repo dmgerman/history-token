@@ -2,7 +2,6 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_PRIVATE_H
 DECL|macro|_ASM_SN_PRIVATE_H
 mdefine_line|#define _ASM_SN_PRIVATE_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk_private.h&gt;
@@ -27,7 +26,7 @@ id|nasid_t
 )paren
 suffix:semicolon
 multiline_comment|/* promif.c */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 r_extern
 id|cpuid_t
 id|cpu_node_probe
@@ -59,7 +58,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 r_extern
 r_int
 id|cpu_enabled
@@ -127,7 +126,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 r_extern
 r_void
 id|intr_init_vecblk
@@ -683,7 +682,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* get compact node id */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 r_extern
 r_void
 id|init_platform_nodepda
@@ -727,7 +726,7 @@ c_func
 id|cnodeid_t
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 r_extern
 id|cpumask_t
 id|boot_cpumask
@@ -749,7 +748,7 @@ c_func
 id|cnodeid_t
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 multiline_comment|/* clksupport.c */
 r_extern
 r_void
@@ -1071,7 +1070,7 @@ r_typedef
 r_struct
 id|cpuinfo_s
 (brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 DECL|member|ci_cpupda
 id|pda_t
 op_star

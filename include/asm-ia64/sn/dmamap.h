@@ -2,6 +2,7 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_DMAMAP_H
 DECL|macro|_ASM_SN_DMAMAP_H
 mdefine_line|#define _ASM_SN_DMAMAP_H
+macro_line|#include &lt;asm/sn/sv.h&gt;
 macro_line|#ifdef __cplusplus
 r_extern
 l_string|&quot;C&quot;
@@ -130,7 +131,7 @@ comma
 id|caddr_t
 )paren
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_extern
 r_int
 id|dma_mapbp

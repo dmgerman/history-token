@@ -1,3 +1,7 @@
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
+macro_line|#ifndef _ASM_SN_SN1_UART16550_H
+DECL|macro|_ASM_SN_SN1_UART16550_H
+mdefine_line|#define _ASM_SN_SN1_UART16550_H
 multiline_comment|/*&n; * Definitions for 16550  chip&n; */
 multiline_comment|/* defined as offsets from the data register */
 DECL|macro|REG_DAT
@@ -306,4 +310,5 @@ mdefine_line|#define CLOCK_ACE&t;&t;&t;7333333
 multiline_comment|/*&n; * increment the ring offset. One way to do this would be to add b&squot;100000.&n; * this would let the offset value roll over automatically when it reaches&n; * its maximum value (127). However when we use the offset, we must use&n; * the appropriate bits only by masking with 0xfe0.&n; * The other option is to shift the offset right by 5 bits and look at its&n; * value. Then increment if required and shift back&n; * note: 127 * 2^5 = 4064&n; */
 DECL|macro|INC_RING_POINTER
 mdefine_line|#define INC_RING_POINTER(x) &bslash;&n;&t;( ((x &amp; 0xffe0) &lt; 4064) ? (x += 32) : 0 )
+macro_line|#endif /* _ASM_SN_SN1_UART16550_H */
 eof

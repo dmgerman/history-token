@@ -1,18 +1,7 @@
 macro_line|#ifndef _ASM_IA64_ASMMACRO_H
 DECL|macro|_ASM_IA64_ASMMACRO_H
 mdefine_line|#define _ASM_IA64_ASMMACRO_H
-multiline_comment|/*&n; * Copyright (C) 2000 Hewlett-Packard Co&n; * Copyright (C) 2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
-macro_line|#if 1
-multiline_comment|/*&n; * This is a hack that&squot;s necessary as long as we support old versions&n; * of gas, that have no unwind support.&n; */
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_IA64_NEW_UNWIND
-DECL|macro|UNW
-macro_line|# define UNW(args...)&t;args
-macro_line|#else
-DECL|macro|UNW
-macro_line|# define UNW(args...)
-macro_line|#endif
-macro_line|#endif
+multiline_comment|/*&n; * Copyright (C) 2000-2001 Hewlett-Packard Co&n; * Copyright (C) 2000-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 DECL|macro|ENTRY
 mdefine_line|#define ENTRY(name)&t;&t;&t;&t;&bslash;&n;&t;.align 32;&t;&t;&t;&t;&bslash;&n;&t;.proc name;&t;&t;&t;&t;&bslash;&n;name:
 DECL|macro|GLOBAL_ENTRY
@@ -31,5 +20,23 @@ DECL|macro|ASM_UNW_PRLG_PR
 mdefine_line|#define ASM_UNW_PRLG_PR&t;&t;&t;0x1
 DECL|macro|ASM_UNW_PRLG_GRSAVE
 mdefine_line|#define ASM_UNW_PRLG_GRSAVE(ninputs)&t;(32+(ninputs))
+multiline_comment|/*&n; * Helper macros for accessing user memory.&n; */
+dot
+id|section
+l_string|&quot;__ex_table&quot;
+comma
+l_string|&quot;a&quot;
+singleline_comment|// declare section &amp; section attributes
+dot
+id|previous
+macro_line|#if __GNUC__ &gt;= 3
+DECL|macro|EX
+macro_line|# define EX(y,x...)&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, @gprel(99f), @gprel(y);&t;&bslash;&n;  [99:]&t;x
+DECL|macro|EXCLR
+macro_line|# define EXCLR(y,x...)&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, @gprel(99f), @gprel(y)+4;&t;&bslash;&n;  [99:]&t;x
+macro_line|#else
+macro_line|# define EX(y,x...)&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, @gprel(99f), @gprel(y);&t;&bslash;&n;  99:&t;x
+macro_line|# define EXCLR(y,x...)&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;__ex_table&quot;, @gprel(99f), @gprel(y)+4;&t;&bslash;&n;  99:&t;x
+macro_line|#endif
 macro_line|#endif /* _ASM_IA64_ASMMACRO_H */
 eof

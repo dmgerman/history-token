@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Platform dependent support for Intel SoftSDV simulator.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999 Hewlett-Packard Co&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; */
+multiline_comment|/*&n; * Platform dependent support for DIG64 platforms.&n; *&n; * Copyright (C) 1999 Intel Corp.&n; * Copyright (C) 1999, 2001 Hewlett-Packard Co&n; * Copyright (C) 1999, 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -63,17 +63,6 @@ l_int|0x0802
 )paren
 suffix:semicolon
 multiline_comment|/* default to second partition on first drive */
-macro_line|#ifdef&t;CONFIG_IA64_SOFTSDV_HACKS
-id|ROOT_DEV
-op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0302
-)paren
-suffix:semicolon
-multiline_comment|/* 2nd partion on 1st IDE */
-macro_line|#endif /* CONFIG_IA64_SOFTSDV_HACKS */
 macro_line|#ifdef CONFIG_SMP
 id|init_smp_config
 c_func
@@ -99,10 +88,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ia64_boot_param.console_info.num_rows
+id|ia64_boot_param-&gt;console_info.num_rows
 op_logical_or
 op_logical_neg
-id|ia64_boot_param.console_info.num_cols
+id|ia64_boot_param-&gt;console_info.num_cols
 )paren
 (brace
 id|printk
@@ -136,19 +125,19 @@ r_else
 (brace
 id|orig_x
 op_assign
-id|ia64_boot_param.console_info.orig_x
+id|ia64_boot_param-&gt;console_info.orig_x
 suffix:semicolon
 id|orig_y
 op_assign
-id|ia64_boot_param.console_info.orig_y
+id|ia64_boot_param-&gt;console_info.orig_y
 suffix:semicolon
 id|num_cols
 op_assign
-id|ia64_boot_param.console_info.num_cols
+id|ia64_boot_param-&gt;console_info.num_cols
 suffix:semicolon
 id|num_rows
 op_assign
-id|ia64_boot_param.console_info.num_rows
+id|ia64_boot_param-&gt;console_info.num_rows
 suffix:semicolon
 id|font_height
 op_assign

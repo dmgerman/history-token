@@ -1,7 +1,7 @@
 multiline_comment|/* &n;        paride.c  (c) 1997-8  Grant R. Guenther &lt;grant@torque.net&gt;&n;                              Under the terms of the GNU General Public License.&n;&n;&t;This is the base module for the family of device drivers&n;        that support parallel port IDE devices.  &n;&n;*/
-multiline_comment|/* Changes:&n;&n;&t;1.01&t;GRG 1998.05.03&t;Use spinlocks&n;&t;1.02&t;GRG 1998.05.05  init_proto, release_proto, ktti&n;&t;1.03&t;GRG 1998.08.15  eliminate compiler warning&n;&t;1.04    GRG 1998.11.28  added support for FRIQ &n;&t;1.05    TMW 2000.06.06  use parport_find_number instead of&n;&t;&t;&t;&t;parport_enumerate&n;*/
+multiline_comment|/* Changes:&n;&n;&t;1.01&t;GRG 1998.05.03&t;Use spinlocks&n;&t;1.02&t;GRG 1998.05.05  init_proto, release_proto, ktti&n;&t;1.03&t;GRG 1998.08.15  eliminate compiler warning&n;&t;1.04    GRG 1998.11.28  added support for FRIQ &n;&t;1.05    TMW 2000.06.06  use parport_find_number instead of&n;&t;&t;&t;&t;parport_enumerate&n;&t;1.06    TMW 2001.03.26  more sane parport-or-not resource management&n;*/
 DECL|macro|PI_VERSION
-mdefine_line|#define PI_VERSION      &quot;1.05&quot;
+mdefine_line|#define PI_VERSION      &quot;1.06&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -539,17 +539,11 @@ c_func
 id|pi
 )paren
 suffix:semicolon
+macro_line|#ifndef CONFIG_PARPORT
 r_if
 c_cond
 (paren
-(paren
-op_logical_neg
-id|pi-&gt;pardev
-)paren
-op_logical_and
-(paren
 id|pi-&gt;reserved
-)paren
 )paren
 id|release_region
 c_func
@@ -559,6 +553,7 @@ comma
 id|pi-&gt;reserved
 )paren
 suffix:semicolon
+macro_line|#endif /* !CONFIG_PARPORT */
 id|pi-&gt;proto
 op_member_access_from_pointer
 id|release_proto
@@ -968,7 +963,7 @@ suffix:semicolon
 )brace
 DECL|function|pi_register_parport
 r_static
-r_void
+r_int
 id|pi_register_parport
 c_func
 (paren
@@ -1000,6 +995,7 @@ op_logical_neg
 id|port
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|pi-&gt;pardev
 op_assign
@@ -1037,6 +1033,7 @@ op_logical_neg
 id|pi-&gt;pardev
 )paren
 r_return
+l_int|0
 suffix:semicolon
 id|init_waitqueue_head
 c_func
@@ -1071,6 +1068,9 @@ op_star
 id|port-&gt;name
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|1
+suffix:semicolon
 )brace
 DECL|function|pi_probe_mode
 r_static
@@ -1150,14 +1150,10 @@ l_int|8
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#ifndef CONFIG_PARPORT
 r_if
 c_cond
 (paren
-(paren
-op_logical_neg
-id|pi-&gt;pardev
-)paren
-op_logical_and
 id|check_region
 c_func
 (paren
@@ -1169,6 +1165,7 @@ id|range
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif /* !CONFIG_PARPORT */
 id|pi-&gt;reserved
 op_assign
 id|range
@@ -1240,14 +1237,10 @@ l_int|8
 )paren
 r_break
 suffix:semicolon
+macro_line|#ifndef CONFIG_PARPORT
 r_if
 c_cond
 (paren
-(paren
-op_logical_neg
-id|pi-&gt;pardev
-)paren
-op_logical_and
 id|check_region
 c_func
 (paren
@@ -1258,6 +1251,7 @@ id|range
 )paren
 r_break
 suffix:semicolon
+macro_line|#endif /* !CONFIG_PARPORT */
 id|pi-&gt;reserved
 op_assign
 id|range
@@ -1350,6 +1344,10 @@ op_assign
 id|pi-&gt;proto-&gt;max_units
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|pi_register_parport
 c_func
 (paren
@@ -1357,15 +1355,14 @@ id|pi
 comma
 id|verbose
 )paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
+macro_line|#ifndef CONFIG_PARPORT
 r_if
 c_cond
 (paren
-(paren
-op_logical_neg
-id|pi-&gt;pardev
-)paren
-op_logical_and
 id|check_region
 c_func
 (paren
@@ -1377,6 +1374,7 @@ l_int|3
 r_return
 l_int|0
 suffix:semicolon
+macro_line|#endif /* !CONFIG_PARPORT */
 r_if
 c_cond
 (paren
@@ -1921,12 +1919,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pi-&gt;pardev
-)paren
+macro_line|#ifndef CONFIG_PARPORT
 id|request_region
 c_func
 (paren
@@ -1937,6 +1930,7 @@ comma
 id|pi-&gt;device
 )paren
 suffix:semicolon
+macro_line|#endif /* !CONFIG_PARPORT */
 r_if
 c_cond
 (paren
@@ -1982,6 +1976,19 @@ r_void
 r_int
 id|k
 suffix:semicolon
+r_const
+r_char
+op_star
+id|indicate_pp
+op_assign
+l_string|&quot;&quot;
+suffix:semicolon
+macro_line|#ifdef CONFIG_PARPORT
+id|indicate_pp
+op_assign
+l_string|&quot; (parport)&quot;
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -2006,9 +2013,11 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;paride: version %s installed&bslash;n&quot;
+l_string|&quot;paride: version %s installed%s&bslash;n&quot;
 comma
 id|PI_VERSION
+comma
+id|indicate_pp
 )paren
 suffix:semicolon
 r_return

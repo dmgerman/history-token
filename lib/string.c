@@ -1087,7 +1087,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMSET
-multiline_comment|/**&n; * memset - Fill a region of memory with the given value&n; * @s: Pointer to the start of the area.&n; * @c: The byte to fill the area with&n; * @count: The size of the area.&n; */
+multiline_comment|/**&n; * memset - Fill a region of memory with the given value&n; * @s: Pointer to the start of the area.&n; * @c: The byte to fill the area with&n; * @count: The size of the area.&n; *&n; * Do not use memset() to access IO space, use memset_io() instead.&n; */
 DECL|function|memset
 r_void
 op_star
@@ -1133,7 +1133,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_BCOPY
-multiline_comment|/**&n; * bcopy - Copy one area of memory to another&n; * @src: Where to copy from&n; * @dest: Where to copy to&n; * @count: The size of the area.&n; *&n; * When using copies for I/O remember that bcopy and memcpy are entitled&n; * to do out of order writes and may well exactly that.&n; *&n; * Note that this is the same as memcpy, with the arguments reversed. memcpy&n; * is the standard, bcopy is a legacy BSD function.&n; */
+multiline_comment|/**&n; * bcopy - Copy one area of memory to another&n; * @src: Where to copy from&n; * @dest: Where to copy to&n; * @count: The size of the area.&n; *&n; * Note that this is the same as memcpy(), with the arguments reversed.&n; * memcpy() is the standard, bcopy() is a legacy BSD function.&n; *&n; * You should not use this function to access IO space, use memcpy_toio()&n; * or memcpy_fromio() instead.&n; */
 DECL|function|bcopy
 r_char
 op_star
@@ -1179,7 +1179,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMCPY
-multiline_comment|/**&n; * memcpy - Copy one area of memory to another&n; * @dest: Where to copy to&n; * @src: Where to copy from&n; * @count: The size of the area.&n; *&n; * When using copies for I/O remember that bcopy and memcpy are entitled&n; * to do out of order writes and may well exactly that.&n; */
+multiline_comment|/**&n; * memcpy - Copy one area of memory to another&n; * @dest: Where to copy to&n; * @src: Where to copy from&n; * @count: The size of the area.&n; *&n; * You should not use this function to access IO space, use memcpy_toio()&n; * or memcpy_fromio() instead.&n; */
 DECL|function|memcpy
 r_void
 op_star
@@ -1238,7 +1238,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMMOVE
-multiline_comment|/**&n; * memmove - Copy one area of memory to another&n; * @dest: Where to copy to&n; * @src: Where to copy from&n; * @count: The size of the area.&n; *&n; * memmove copes with overlapping areas.&n; */
+multiline_comment|/**&n; * memmove - Copy one area of memory to another&n; * @dest: Where to copy to&n; * @src: Where to copy from&n; * @count: The size of the area.&n; *&n; * Unlike memcpy(), memmove() copes with overlapping areas.&n; */
 DECL|function|memmove
 r_void
 op_star
@@ -1347,7 +1347,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMCMP
-multiline_comment|/**&n; * memmove - Compare two areas of memory&n; * @cs: One area of memory&n; * @ct: Another area of memory&n; * @count: The size of the area.&n; */
+multiline_comment|/**&n; * memcmp - Compare two areas of memory&n; * @cs: One area of memory&n; * @ct: Another area of memory&n; * @count: The size of the area.&n; */
 DECL|function|memcmp
 r_int
 id|memcmp

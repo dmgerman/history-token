@@ -1,20 +1,24 @@
 macro_line|#ifndef _ASM_IA64_SYSTEM_H
 DECL|macro|_ASM_IA64_SYSTEM_H
 mdefine_line|#define _ASM_IA64_SYSTEM_H
-multiline_comment|/*&n; * System defines. Note that this is included both from .c and .S&n; * files, so it does only defines, not any C code.  This is based&n; * on information published in the Processor Abstraction Layer&n; * and the System Abstraction Layer manual.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
+multiline_comment|/*&n; * System defines. Note that this is included both from .c and .S&n; * files, so it does only defines, not any C code.  This is based&n; * on information published in the Processor Abstraction Layer&n; * and the System Abstraction Layer manual.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Asit Mallick &lt;asit.k.mallick@intel.com&gt;&n; * Copyright (C) 1999 Don Dugger &lt;don.dugger@intel.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|KERNEL_START
-mdefine_line|#define KERNEL_START&t;&t;(PAGE_OFFSET + 0x500000)
+mdefine_line|#define KERNEL_START&t;&t;(PAGE_OFFSET + 68*1024*1024)
 multiline_comment|/*&n; * The following #defines must match with vmlinux.lds.S:&n; */
+DECL|macro|IVT_ADDR
+mdefine_line|#define IVT_ADDR&t;&t;(KERNEL_START)
 DECL|macro|IVT_END_ADDR
 mdefine_line|#define IVT_END_ADDR&t;&t;(KERNEL_START + 0x8000)
 DECL|macro|ZERO_PAGE_ADDR
-mdefine_line|#define ZERO_PAGE_ADDR&t;&t;(IVT_END_ADDR + 0*PAGE_SIZE)
+mdefine_line|#define ZERO_PAGE_ADDR&t;&t;PAGE_ALIGN(IVT_END_ADDR)
 DECL|macro|SWAPPER_PGD_ADDR
-mdefine_line|#define SWAPPER_PGD_ADDR&t;(IVT_END_ADDR + 1*PAGE_SIZE)
+mdefine_line|#define SWAPPER_PGD_ADDR&t;(ZERO_PAGE_ADDR + 1*PAGE_SIZE)
 DECL|macro|GATE_ADDR
 mdefine_line|#define GATE_ADDR&t;&t;(0xa000000000000000 + PAGE_SIZE)
+DECL|macro|PERCPU_ADDR
+mdefine_line|#define PERCPU_ADDR&t;&t;(0xa000000000000000 + 2*PAGE_SIZE)
 macro_line|#if defined(CONFIG_ITANIUM_ASTEP_SPECIFIC) &bslash;&n;    || defined(CONFIG_ITANIUM_B0_SPECIFIC) || defined(CONFIG_ITANIUM_B1_SPECIFIC)
 multiline_comment|/* Workaround for Errata 97.  */
 DECL|macro|IA64_SEMFIX_INSN
@@ -117,16 +121,6 @@ DECL|member|console_info
 )brace
 id|console_info
 suffix:semicolon
-DECL|member|num_pci_vectors
-id|__u16
-id|num_pci_vectors
-suffix:semicolon
-multiline_comment|/* number of ACPI derived PCI IRQ&squot;s*/
-DECL|member|pci_vectors
-id|__u64
-id|pci_vectors
-suffix:semicolon
-multiline_comment|/* physical address of PCI data (pci_vector_struct)*/
 DECL|member|fpswa
 id|__u64
 id|fpswa
@@ -141,6 +135,7 @@ id|__u64
 id|initrd_size
 suffix:semicolon
 )brace
+op_star
 id|ia64_boot_param
 suffix:semicolon
 r_static
@@ -223,24 +218,10 @@ DECL|macro|__save_and_cli
 mdefine_line|#define __save_and_cli(flags)&t;local_irq_save(flags)
 DECL|macro|save_and_cli
 mdefine_line|#define save_and_cli(flags)&t;__save_and_cli(flags)
-macro_line|#ifdef CONFIG_IA64_SOFTSDV_HACKS
-multiline_comment|/*&n; * Yech.  SoftSDV has a slight probem with psr.i and itc/itm.  If&n; * PSR.i = 0 and ITC == ITM, you don&squot;t get the timer tick posted.  So,&n; * I&squot;ll check if ITC is larger than ITM here and reset if neccessary.&n; * I may miss a tick to two.&n; * &n; * Don&squot;t include asm/delay.h; it causes include loops that are&n; * mind-numbingly hard to follow.&n; */
-DECL|macro|get_itc
-mdefine_line|#define get_itc(x) __asm__ __volatile__(&quot;mov %0=ar.itc&quot; : &quot;=r&quot;((x)) :: &quot;memory&quot;)
-DECL|macro|get_itm
-mdefine_line|#define get_itm(x) __asm__ __volatile__(&quot;mov %0=cr.itm&quot; : &quot;=r&quot;((x)) :: &quot;memory&quot;)
-DECL|macro|set_itm
-mdefine_line|#define set_itm(x) __asm__ __volatile__(&quot;mov cr.itm=%0&quot; :: &quot;r&quot;((x)) : &quot;memory&quot;)
-DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(x)&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;        unsigned long itc, itm;&t;&t;&t;&bslash;&n;&t;local_irq_restore(x);&t;&t;&t;&bslash;&n;        get_itc(itc);&t;&t;&t;&t;&bslash;&n;        get_itm(itm);&t;&t;&t;&t;&bslash;&n;        if (itc &gt; itm)&t;&t;&t;&t;&bslash;&n;&t;&t;set_itm(itc + 10);&t;&t;&bslash;&n;} while (0)
-DECL|macro|__sti
-mdefine_line|#define __sti()&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long itc, itm;&t;&t;&t;&bslash;&n;&t;local_irq_enable();&t;&t;&t;&bslash;&n;&t;get_itc(itc);&t;&t;&t;&t;&bslash;&n;&t;get_itm(itm);&t;&t;&t;&t;&bslash;&n;&t;if (itc &gt; itm)&t;&t;&t;&t;&bslash;&n;&t;&t;set_itm(itc + 10);&t;&t;&bslash;&n;} while (0)
-macro_line|#else /* !CONFIG_IA64_SOFTSDV_HACKS */
 DECL|macro|__sti
 mdefine_line|#define __sti()&t;&t;&t;local_irq_enable ()
 DECL|macro|__restore_flags
 mdefine_line|#define __restore_flags(flags)&t;local_irq_restore(flags)
-macro_line|#endif /* !CONFIG_IA64_SOFTSDV_HACKS */
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -481,7 +462,7 @@ suffix:semicolon
 )brace
 DECL|macro|xchg
 mdefine_line|#define xchg(ptr,x)&t;&t;&t;&t;&t;&t;&t;     &bslash;&n;  ((__typeof__(*(ptr))) __xchg ((unsigned long) (x), (ptr), sizeof(*(ptr))))
-multiline_comment|/* &n; * Atomic compare and exchange.  Compare OLD with MEM, if identical,&n; * store NEW in MEM.  Return the initial value in MEM.  Success is&n; * indicated by comparing RETURN with OLD.&n; */
+multiline_comment|/*&n; * Atomic compare and exchange.  Compare OLD with MEM, if identical,&n; * store NEW in MEM.  Return the initial value in MEM.  Success is&n; * indicated by comparing RETURN with OLD.&n; */
 DECL|macro|__HAVE_ARCH_CMPXCHG
 mdefine_line|#define __HAVE_ARCH_CMPXCHG 1
 multiline_comment|/*&n; * This function doesn&squot;t exist, so you&squot;ll get a linker error&n; * if something tries to do an invalid cmpxchg().&n; */
@@ -494,7 +475,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|ia64_cmpxchg
-mdefine_line|#define ia64_cmpxchg(sem,ptr,old,new,size)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(ptr) _p_ = (ptr);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(new) _n_ = (new);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 _o_, _r_;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 1: _o_ = (__u8 ) (long) (old); break;&t;&t;&t;&t;&bslash;&n;&t;      case 2: _o_ = (__u16) (long) (old); break;&t;&t;&t;&t;&bslash;&n;&t;      case 4: _o_ = (__u32) (long) (old); break;&t;&t;&t;&t;&bslash;&n;&t;      case 8: _o_ = (__u64) (long) (old); break;&t;&t;&t;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; __asm__ __volatile__ (&quot;mov ar.ccv=%0;;&quot; :: &quot;rO&quot;(_o_));&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 1:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (IA64_SEMFIX&quot;cmpxchg1.&quot;sem&quot; %0=[%1],%2,ar.ccv&quot;&t;&bslash;&n;&t;&t;&t;&t;      : &quot;=r&quot;(_r_) : &quot;r&quot;(_p_), &quot;r&quot;(_n_) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 2:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (IA64_SEMFIX&quot;cmpxchg2.&quot;sem&quot; %0=[%1],%2,ar.ccv&quot;&t;&bslash;&n;&t;&t;&t;&t;      : &quot;=r&quot;(_r_) : &quot;r&quot;(_p_), &quot;r&quot;(_n_) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 4:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (IA64_SEMFIX&quot;cmpxchg4.&quot;sem&quot; %0=[%1],%2,ar.ccv&quot;&t;&bslash;&n;&t;&t;&t;&t;      : &quot;=r&quot;(_r_) : &quot;r&quot;(_p_), &quot;r&quot;(_n_) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 8:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (IA64_SEMFIX&quot;cmpxchg8.&quot;sem&quot; %0=[%1],%2,ar.ccv&quot;&t;&bslash;&n;&t;&t;&t;&t;      : &quot;=r&quot;(_r_) : &quot;r&quot;(_p_), &quot;r&quot;(_n_) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_r_ = __cmpxchg_called_with_bad_pointer();&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__typeof__(old)) _r_;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define ia64_cmpxchg(sem,ptr,old,new,size)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(ptr) _p_ = (ptr);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__typeof__(new) _n_ = (new);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__u64 _o_, _r_;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 1: _o_ = (__u8 ) (long) (old); break;&t;&t;&t;&t;&bslash;&n;&t;      case 2: _o_ = (__u16) (long) (old); break;&t;&t;&t;&t;&bslash;&n;&t;      case 4: _o_ = (__u32) (long) (old); break;&t;&t;&t;&t;&bslash;&n;&t;      case 8: _o_ = (__u64) (long) (old); break;&t;&t;&t;&t;&bslash;&n;&t;      default: break;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; __asm__ __volatile__ (&quot;mov ar.ccv=%0;;&quot; :: &quot;rO&quot;(_o_));&t;&t;&t;&t;&bslash;&n;&t;switch (size) {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 1:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (IA64_SEMFIX&quot;cmpxchg1.&quot;sem&quot; %0=[%1],%2,ar.ccv&quot;&t;&bslash;&n;&t;&t;&t;&t;      : &quot;=r&quot;(_r_) : &quot;r&quot;(_p_), &quot;r&quot;(_n_) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 2:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (IA64_SEMFIX&quot;cmpxchg2.&quot;sem&quot; %0=[%1],%2,ar.ccv&quot;&t;&bslash;&n;&t;&t;&t;&t;      : &quot;=r&quot;(_r_) : &quot;r&quot;(_p_), &quot;r&quot;(_n_) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 4:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (IA64_SEMFIX&quot;cmpxchg4.&quot;sem&quot; %0=[%1],%2,ar.ccv&quot;&t;&bslash;&n;&t;&t;&t;&t;      : &quot;=r&quot;(_r_) : &quot;r&quot;(_p_), &quot;r&quot;(_n_) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      case 8:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__ (IA64_SEMFIX&quot;cmpxchg8.&quot;sem&quot; %0=[%1],%2,ar.ccv&quot;&t;&bslash;&n;&t;&t;&t;&t;      : &quot;=r&quot;(_r_) : &quot;r&quot;(_p_), &quot;r&quot;(_n_) : &quot;memory&quot;);&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;      default:&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;_r_ = __cmpxchg_called_with_bad_pointer();&t;&t;&t;&t;&bslash;&n;&t;&t;break;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(__typeof__(old)) _r_;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 DECL|macro|cmpxchg_acq
 mdefine_line|#define cmpxchg_acq(ptr,o,n)&t;ia64_cmpxchg(&quot;acq&quot;, (ptr), (o), (n), sizeof(*(ptr)))
 DECL|macro|cmpxchg_rel
@@ -557,7 +538,7 @@ id|task
 suffix:semicolon
 DECL|macro|__switch_to
 mdefine_line|#define __switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((prev)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(prev)))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_save_extra(prev);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((next)-&gt;thread.flags &amp; (IA64_THREAD_DBG_VALID|IA64_THREAD_PM_VALID))&t;&bslash;&n;&t;    || IS_IA32_PROCESS(ia64_task_regs(next)))&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_load_extra(next);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(last) = ia64_switch_to((next));&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-macro_line|#ifdef CONFIG_SMP 
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;   * In the SMP case, we save the fph state when context-switching&n;   * away from a thread that modified fph.  This way, when the thread&n;   * gets scheduled on another CPU, the CPU can pick up the state from&n;   * task-&gt;thread.fph, avoiding the complication of having to fetch&n;   * the latest fph state from another CPU.&n;   */
 DECL|macro|switch_to
 macro_line|# define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ia64_psr(ia64_task_regs(prev))-&gt;mfh) {&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_psr(ia64_task_regs(prev))-&gt;mfh = 0;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.flags |= IA64_THREAD_FPH_VALID;&t;&t;&t;&bslash;&n;&t;&t;__ia64_save_fpu((prev)-&gt;thread.fph);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ia64_psr(ia64_task_regs(prev))-&gt;dfh = 1;&t;&t;&t;&t;&bslash;&n;&t;__switch_to(prev,next,last);&t;&t;&t;&t;&t;&t;&bslash;&n;  } while (0)

@@ -909,6 +909,6 @@ r_return
 id|FPU_Exception
 suffix:semicolon
 )brace
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */ 
 )brace
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Utility to generate asm-ia64/offsets.h.&n; *&n; * Copyright (C) 1999-2000 Hewlett-Packard Co&n; * Copyright (C) 1999-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Note that this file has dual use: when building the kernel&n; * natively, the file is translated into a binary and executed.  When&n; * building the kernel in a cross-development environment, this file&n; * gets translated into an assembly file which, in turn, is processed&n; * by awk to generate offsets.h.  So if you make any changes to this&n; * file, be sure to verify that the awk procedure still works (see&n; * prin_offsets.awk).&n; */
+multiline_comment|/*&n; * Utility to generate asm-ia64/offsets.h.&n; *&n; * Copyright (C) 1999-2001 Hewlett-Packard Co&n; * Copyright (C) 1999-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Note that this file has dual use: when building the kernel&n; * natively, the file is translated into a binary and executed.  When&n; * building the kernel in a cross-development environment, this file&n; * gets translated into an assembly file which, in turn, is processed&n; * by awk to generate offsets.h.  So if you make any changes to this&n; * file, be sure to verify that the awk procedure still works (see&n; * prin_offsets.awk).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm-ia64/processor.h&gt;
@@ -87,7 +87,16 @@ id|siginfo
 )paren
 )brace
 comma
-macro_line|#ifdef CONFIG_IA64_NEW_UNWIND
+(brace
+l_string|&quot;IA64_CPU_SIZE&quot;
+comma
+r_sizeof
+(paren
+r_struct
+id|cpuinfo_ia64
+)paren
+)brace
+comma
 (brace
 l_string|&quot;UNW_FRAME_INFO_SIZE&quot;
 comma
@@ -98,7 +107,6 @@ id|unw_frame_info
 )paren
 )brace
 comma
-macro_line|#endif
 (brace
 l_string|&quot;&quot;
 comma
@@ -188,6 +196,20 @@ r_struct
 id|task_struct
 comma
 id|thread.un.sigmask
+)paren
+)brace
+comma
+macro_line|#endif
+macro_line|#ifdef CONFIG_PERFMON
+(brace
+l_string|&quot;IA64_TASK_PFM_NOTIFY_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|task_struct
+comma
+id|thread.pfm_pend_notify
 )paren
 )brace
 comma
@@ -1369,6 +1391,66 @@ comma
 l_string|&quot;IA64_CLONE_VM&quot;
 comma
 id|CLONE_VM
+)brace
+comma
+(brace
+l_string|&quot;IA64_CPU_IRQ_COUNT_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|cpuinfo_ia64
+comma
+id|irq_stat.f.irq_count
+)paren
+)brace
+comma
+(brace
+l_string|&quot;IA64_CPU_BH_COUNT_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|cpuinfo_ia64
+comma
+id|irq_stat.f.bh_count
+)paren
+)brace
+comma
+(brace
+l_string|&quot;IA64_CPU_SOFTIRQ_ACTIVE_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|cpuinfo_ia64
+comma
+id|softirq.active
+)paren
+)brace
+comma
+(brace
+l_string|&quot;IA64_CPU_SOFTIRQ_MASK_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|cpuinfo_ia64
+comma
+id|softirq.mask
+)paren
+)brace
+comma
+(brace
+l_string|&quot;IA64_CPU_PHYS_STACKED_SIZE_P8_OFFSET&quot;
+comma
+m_offsetof
+(paren
+r_struct
+id|cpuinfo_ia64
+comma
+id|phys_stacked_size_p8
+)paren
 )brace
 comma
 )brace

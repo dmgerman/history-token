@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * Architecture-specific trap handling.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 05/12/00 grao &lt;goutham.rao@intel.com&gt; : added isr in siginfo for SIGFPE&n; */
-DECL|macro|FPSWA_DEBUG
-mdefine_line|#define FPSWA_DEBUG&t;1
 multiline_comment|/*&n; * The fpu_fault() handler needs to be able to access and update all&n; * floating point registers.  Those saved in pt_regs can be accessed&n; * through that structure, but those not saved, will be accessed&n; * directly.  To make this work, we need to ensure that the compiler&n; * does not end up using a preserved floating point register on its&n; * own.  The following achieves this by declaring preserved registers&n; * that are not marked as &quot;fixed&quot; as global register variables.&n; */
 r_register
 r_float
@@ -189,126 +187,23 @@ c_func
 (paren
 l_string|&quot;fpswa interface at %lx&bslash;n&quot;
 comma
-id|ia64_boot_param.fpswa
+id|ia64_boot_param-&gt;fpswa
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ia64_boot_param.fpswa
+id|ia64_boot_param-&gt;fpswa
 )paren
-(brace
-DECL|macro|OLD_FIRMWARE
-mdefine_line|#define OLD_FIRMWARE
-macro_line|#ifdef OLD_FIRMWARE
-multiline_comment|/*&n;&t;&t; * HACK to work around broken firmware.  This code&n;&t;&t; * applies the label fixup to the FPSWA interface and&n;&t;&t; * works both with old and new (fixed) firmware.&n;&t;&t; */
-r_int
-r_int
-id|addr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|__va
-c_func
-(paren
-id|ia64_boot_param.fpswa
-)paren
-suffix:semicolon
-r_int
-r_int
-id|gp_val
-op_assign
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|addr
-op_plus
-l_int|8
-)paren
-suffix:semicolon
-multiline_comment|/* go indirect and indexed to get table address */
-id|addr
-op_assign
-id|gp_val
-suffix:semicolon
-id|gp_val
-op_assign
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|addr
-op_plus
-l_int|8
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|gp_val
-op_eq
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|addr
-op_plus
-l_int|8
-)paren
-)paren
-(brace
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-id|addr
-op_or_assign
-id|PAGE_OFFSET
-suffix:semicolon
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|addr
-op_plus
-l_int|8
-)paren
-op_or_assign
-id|PAGE_OFFSET
-suffix:semicolon
-id|addr
-op_add_assign
-l_int|16
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* FPSWA fixup: make the interface pointer a kernel virtual address: */
 id|fpswa_interface
 op_assign
 id|__va
 c_func
 (paren
-id|ia64_boot_param.fpswa
+id|ia64_boot_param-&gt;fpswa
 )paren
 suffix:semicolon
-)brace
 )brace
 r_void
 DECL|function|die_if_kernel
@@ -940,6 +835,8 @@ suffix:semicolon
 id|fpswa_ret_t
 id|ret
 suffix:semicolon
+DECL|macro|FPSWA_BUG
+mdefine_line|#define FPSWA_BUG
 macro_line|#ifdef FPSWA_BUG
 r_struct
 id|ia64_fpreg
@@ -973,7 +870,7 @@ id|fp_state_t
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * compute fp_state.  only FP registers f6 - f11 are used by the &n;&t; * kernel, so set those bits in the mask and set the low volatile&n;&t; * pointer to point to these registers.&n;&t; */
+multiline_comment|/*&n;&t; * compute fp_state.  only FP registers f6 - f11 are used by the&n;&t; * kernel, so set those bits in the mask and set the low volatile&n;&t; * pointer to point to these registers.&n;&t; */
 macro_line|#ifndef FPSWA_BUG
 id|fp_state.bitmask_low64
 op_assign
@@ -1373,14 +1270,9 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef FPSWA_DEBUG
 r_if
 c_cond
 (paren
-id|fpu_swa_count
-OG
-l_int|5
-op_logical_and
 id|jiffies
 op_minus
 id|last_time
@@ -1409,6 +1301,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s(%d): floating-point assist fault at ip %016lx&bslash;n&quot;
 comma
 id|current-&gt;comm
@@ -1427,7 +1320,6 @@ id|ri
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|exception
 op_assign
 id|fp_emulate
@@ -1803,7 +1695,7 @@ id|buf
 l_int|128
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_BRL_EMU&t;
+macro_line|#ifdef CONFIG_IA64_BRL_EMU
 (brace
 r_extern
 r_struct
@@ -2076,10 +1968,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|count
-OG
-l_int|5
-op_logical_and
 id|jiffies
 op_minus
 id|last_time

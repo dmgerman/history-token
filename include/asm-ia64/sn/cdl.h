@@ -21,6 +21,25 @@ id|devfs_handle_t
 id|vhdl
 )paren
 suffix:semicolon
+multiline_comment|/*&n; *&t;cdl_drv_f is the type for the functions&n; *&t;that are called by cdl_add_driver and &n; *      cdl_del_driver.&n; */
+r_typedef
+r_void
+DECL|typedef|cdl_drv_f
+id|cdl_drv_f
+(paren
+id|devfs_handle_t
+id|vhdl
+comma
+r_int
+id|key1
+comma
+r_int
+id|key2
+comma
+r_int
+id|error
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;If CDL_PRI_HI is specified in the flags&n; *&t;parameter for cdl_add_driver, then that driver&squot;s&n; *&t;attach routine will be called for future connect&n; *&t;points before any (non-CDL_PRI_HI) drivers.&n; *&n; *&t;The IOC3 driver uses this facility to make sure&n; *&t;that the ioc3_attach() function is called before&n; *&t;the attach routines of any subdevices.&n; *&n; *&t;Drivers for bridge-based crosstalk cards that&n; *&t;are almost but not quite generic can use it to&n; *&t;arrange that their attach() functions get called&n; *&t;before the generic bridge drivers, so they can&n; *&t;leave behind &quot;hint&quot; structures that will&n; *&t;properly configure the generic driver.&n; */
 DECL|macro|CDL_PRI_HI
 mdefine_line|#define&t;CDL_PRI_HI&t;0x0001
@@ -50,7 +69,7 @@ id|cdl_p
 id|reg
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;cdl_add_driver: register a device driver&n; *&n; *&t;Calls the driver&squot;s attach routine with all&n; *&t;connection points on the list that have the same&n; *&t;key information as the driver; then places the&n; *&t;driver on the list so that any connection points&n; *&t;discovered in the future that match the driver&n; *&t;can be handed off to the driver&squot;s attach&n; *&t;routine.&n; *&n; *&t;CDL_PRI_HI may be specified (see above).&n; */
+multiline_comment|/*&n; *&t;cdl_add_driver: register a device driver&n; *&n; *&t;Calls the driver&squot;s attach routine with all&n; *&t;connection points on the list that have the same&n; *&t;key information as the driver; call-back the &n; *      specified function to notify the driver of the &n; *      attach status for each device.  Place the driver&n; *      on the list so that any connection points&n; *&t;discovered in the future that match the driver&n; *&t;can be handed off to the driver&squot;s attach&n; *&t;routine.&n; *&n; *&t;CDL_PRI_HI may be specified (see above).&n; */
 r_extern
 r_int
 id|cdl_add_driver
@@ -71,9 +90,13 @@ id|prefix
 comma
 r_int
 id|flags
+comma
+id|cdl_drv_f
+op_star
+id|func
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;cdl_del_driver: remove a device driver&n; *&n; *&t;Calls the driver&squot;s detach routine with all&n; *&t;connection points on the list that match the&n; *&t;driver; then forgets about the driver. Future&n; *&t;calls to cdl_add_connpt with connections that&n; *&t;would match this driver no longer trigger calls&n; *&t;to the driver&squot;s attach routine.&n; *&n; *&t;NOTE: Yes, I said CONNECTION POINTS, not&n; *&t;verticies that the driver has been attached to&n; *&t;with hwgraph_driver_add(); this gives the driver&n; *&t;a chance to clean up anything it did to the&n; *&t;connection point in its attach routine. Also,&n; *&t;this is done whether or not the attach routine&n; *&t;was successful.&n; */
+multiline_comment|/*&n; *&t;cdl_del_driver: remove a device driver&n; *&n; *&t;Calls the driver&squot;s detach routine with all&n; *&t;connection points on the list that match the&n; *&t;driver;  call-back the specified function to&n; *      notify the driver of the detach status for each&n; *      device.  Then forget about the driver.  Future&n; *&t;calls to cdl_add_connpt with connections that&n; *&t;would match this driver no longer trigger calls&n; *&t;to the driver&squot;s attach routine.&n; *&n; *&t;NOTE: Yes, I said CONNECTION POINTS, not&n; *&t;verticies that the driver has been attached to&n; *&t;with hwgraph_driver_add(); this gives the driver&n; *&t;a chance to clean up anything it did to the&n; *&t;connection point in its attach routine. Also,&n; *&t;this is done whether or not the attach routine&n; *&t;was successful.&n; */
 r_extern
 r_void
 id|cdl_del_driver
@@ -85,6 +108,10 @@ comma
 r_char
 op_star
 id|prefix
+comma
+id|cdl_drv_f
+op_star
+id|func
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;cdl_add_connpt: add a connection point&n; *&n; *&t;Calls the attach routines of all the drivers on&n; *&t;the list that match this connection point, in&n; *&t;the order that they were added to the list,&n; *&t;except that CDL_PRI_HI drivers are called first.&n; *&n; *&t;Then the vertex is added to the list, so it can&n; *&t;be presented to any matching drivers that may be&n; *&t;subsequently added to the list.&n; */
@@ -104,11 +131,14 @@ id|key2
 comma
 id|devfs_handle_t
 id|conn
+comma
+r_int
+id|drv_flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;cdl_del_connpt: delete a connection point&n; *&n; *&t;Calls the detach routines of all matching&n; *&t;drivers for this connection point, in the same&n; *&t;order that the attach routines were called; then&n; *&t;forgets about this vertex, so drivers added in&n; *&t;the future will not be told about it.&n; *&n; *&t;NOTE: Same caveat here about the detach calls as&n; *&t;in the cdl_del_driver() comment above.&n; */
 r_extern
-r_void
+r_int
 id|cdl_del_connpt
 c_func
 (paren
@@ -123,6 +153,9 @@ id|key2
 comma
 id|devfs_handle_t
 id|conn
+comma
+r_int
+id|drv_flags
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;cdl_iterate: find all verticies in the registry&n; *&t;corresponding to the named driver and call them&n; *&t;with the specified function (giving the vertex&n; *&t;as the parameter).&n; */
@@ -149,7 +182,8 @@ r_struct
 id|async_attach_s
 (brace
 DECL|member|async_sema
-id|sema_t
+r_struct
+id|semaphore
 id|async_sema
 suffix:semicolon
 DECL|member|async_count

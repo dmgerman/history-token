@@ -129,7 +129,7 @@ mdefine_line|#define IO_SPACE_LIMIT 0xffff
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/vmalloc.h&gt;
 multiline_comment|/*&n; * Temporary debugging check to catch old code using&n; * unmapped ISA addresses. Will be removed in 2.4.&n; */
-macro_line|#if 1
+macro_line|#if 0
 r_extern
 r_void
 op_star
@@ -168,10 +168,10 @@ r_int
 id|line
 )paren
 suffix:semicolon
-DECL|macro|__io_virt
 mdefine_line|#define __io_virt(x) __io_virt_debug((unsigned long)(x), __FILE__, __LINE__)
 singleline_comment|//#define __io_phys(x) __io_phys_debug((unsigned long)(x), __FILE__, __LINE__)
 macro_line|#else
+DECL|macro|__io_virt
 mdefine_line|#define __io_virt(x) ((void *)(x))
 singleline_comment|//#define __io_phys(x) __pa(x)
 macro_line|#endif

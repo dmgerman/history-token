@@ -892,7 +892,7 @@ mdefine_line|#define EEP_PARAM&t;&t;6
 DECL|macro|EEP_NOMEM
 mdefine_line|#define EEP_NOMEM&t;&t;7
 multiline_comment|/* given a hardware graph vertex and an indication of the brick type,&n; * brick and board to be read, this functions reads the eeprom and&n; * attaches a &quot;NIC&quot;-format string of manufacturing information to the &n; * vertex.  If the vertex already has the string, just returns the&n; * string.  If component is not VECTOR or R_BRICK, the path parameter&n; * is ignored.&n; */
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_char
 op_star
 id|eeprom_vertex_info_set
@@ -913,7 +913,7 @@ id|path
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* We may need to differentiate between an XBridge and other types of&n; * bridges during discovery to tell whether the bridge in question&n; * is part of an IO brick.  The following function reads the WIDGET_ID&n; * register of the bridge under examination and returns a positive value&n; * if the part and mfg numbers stored there indicate that this widget&n; * is an XBridge (and so must be part of a brick).&n; */
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 r_int
 id|is_iobrick
 c_func
@@ -927,13 +927,8 @@ id|widget_num
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* the following macro derives the widget number from the register&n; * address passed to it and uses is_iobrick to determine whether&n; * the widget in question is part of an SN1 IO brick.&n; */
-macro_line|#ifdef IRIX
 DECL|macro|IS_IOBRICK
 mdefine_line|#define IS_IOBRICK(rg)&t;is_iobrick( NASID_GET((rg)), SWIN_WIDGETNUM((rg)) )
-macro_line|#else
-DECL|macro|IS_IOBRICK
-mdefine_line|#define IS_IOBRICK(rg)&t;1
-macro_line|#endif
 multiline_comment|/* macros for NIC compatability */
 multiline_comment|/* always invoked on &quot;this&quot; cbrick */
 DECL|macro|HUB_VERTEX_MFG_INFO

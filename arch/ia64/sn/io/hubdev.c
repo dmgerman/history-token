@@ -60,10 +60,6 @@ c_func
 (paren
 op_amp
 id|hubdev_callout_mutex
-comma
-id|MUTEX_DEFAULT
-comma
-l_string|&quot;hubdev&quot;
 )paren
 suffix:semicolon
 id|hubdev_callout_list
@@ -124,11 +120,9 @@ c_func
 (paren
 op_amp
 id|hubdev_callout_mutex
-comma
-id|PZERO
 )paren
 suffix:semicolon
-multiline_comment|/*&n;         * Insert at the front of the list&n;         */
+multiline_comment|/*&n;         * Insert at the end of the list&n;         */
 id|callout-&gt;fp
 op_assign
 id|hubdev_callout_list
@@ -180,8 +174,6 @@ c_func
 (paren
 op_amp
 id|hubdev_callout_mutex
-comma
-id|PZERO
 )paren
 suffix:semicolon
 multiline_comment|/*&n;         * Remove registry element containing attach_method&n;         */
@@ -293,8 +285,6 @@ c_func
 (paren
 op_amp
 id|hubdev_callout_mutex
-comma
-id|PZERO
 )paren
 suffix:semicolon
 r_for

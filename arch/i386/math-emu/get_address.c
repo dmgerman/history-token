@@ -519,7 +519,7 @@ id|SIGSEGV
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 id|addr-&gt;selector
 op_assign
 id|VM86_REG_
@@ -612,7 +612,7 @@ id|SIGSEGV
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 r_switch
 c_cond
 (paren

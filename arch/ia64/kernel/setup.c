@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1998, 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2000, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 04/04/00 D.Mosberger renamed cpu_initialized to cpu_online_map&n; * 03/31/00 R.Seth&t;cpu_initialized and current-&gt;processor fixes&n; * 02/04/00 D.Mosberger&t;some more get_cpuinfo fixes...&n; * 02/01/00 R.Seth&t;fixed get_cpuinfo for SMP&n; * 01/07/99 S.Eranian&t;added the support for command line argument&n; * 06/24/99 W.Drummond&t;added boot_cpu_data.&n; */
+multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1998, 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2000, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 04/04/00 D.Mosberger renamed cpu_initialized to cpu_online_map&n; * 03/31/00 R.Seth&t;cpu_initialized and current-&gt;processor fixes&n; * 02/04/00 D.Mosberger&t;some more get_cpuinfo fixes...&n; * 02/01/00 R.Seth&t;fixed get_cpuinfo for SMP&n; * 01/07/99 S.Eranian&t;added the support for command line argument&n; * 06/24/99 W.Drummond&t;added boot_cpu_data.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
@@ -22,6 +22,9 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_RAM
 macro_line|# include &lt;linux/blk.h&gt;
 macro_line|#endif
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; (IA64_CPU_SIZE &gt; PAGE_SIZE)
+macro_line|# error &quot;struct cpuinfo_ia64 too big!&quot;
+macro_line|#endif
 r_extern
 r_char
 id|_end
@@ -34,6 +37,15 @@ id|cpu_data
 (braket
 id|NR_CPUS
 )braket
+id|__attribute__
+(paren
+(paren
+id|section
+(paren
+l_string|&quot;__special_page_section&quot;
+)paren
+)paren
+)paren
 suffix:semicolon
 DECL|variable|ia64_cycles_per_usec
 r_int
@@ -43,6 +55,7 @@ suffix:semicolon
 DECL|variable|ia64_boot_param
 r_struct
 id|ia64_boot_param
+op_star
 id|ia64_boot_param
 suffix:semicolon
 DECL|variable|screen_info
@@ -54,8 +67,6 @@ multiline_comment|/* This tells _start which CPU is booting.  */
 DECL|variable|cpu_now_booting
 r_int
 id|cpu_now_booting
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|cpu_online_map
@@ -304,32 +315,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The secondary bootstrap loader passes us the boot&n;&t; * parameters at the beginning of the ZERO_PAGE, so let&squot;s&n;&t; * stash away those values before ZERO_PAGE gets cleared out.&n;&t; */
-id|memcpy
-c_func
-(paren
-op_amp
-id|ia64_boot_param
-comma
-(paren
-r_void
-op_star
-)paren
-id|ZERO_PAGE_ADDR
-comma
-r_sizeof
-(paren
-id|ia64_boot_param
-)paren
-)paren
-suffix:semicolon
 op_star
 id|cmdline_p
 op_assign
 id|__va
 c_func
 (paren
-id|ia64_boot_param.command_line
+id|ia64_boot_param-&gt;command_line
 )paren
 suffix:semicolon
 id|strncpy
@@ -391,7 +383,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ia64_boot_param.initrd_size
+id|ia64_boot_param-&gt;initrd_size
 )paren
 id|bootmap_start
 op_assign
@@ -400,7 +392,7 @@ c_func
 (paren
 id|bootmap_start
 op_plus
-id|ia64_boot_param.initrd_size
+id|ia64_boot_param-&gt;initrd_size
 )paren
 suffix:semicolon
 id|bootmap_size
@@ -434,7 +426,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 id|initrd_start
 op_assign
-id|ia64_boot_param.initrd_start
+id|ia64_boot_param-&gt;initrd_start
 suffix:semicolon
 r_if
 c_cond
@@ -467,7 +459,7 @@ l_string|&quot;for initrd, please upgrade the loader&bslash;n&quot;
 suffix:semicolon
 r_else
 macro_line|#endif
-multiline_comment|/* &n;&t;&t;&t; * The loader ONLY passes physical addresses&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * The loader ONLY passes physical addresses&n;&t;&t;&t; */
 id|initrd_start
 op_assign
 (paren
@@ -484,7 +476,7 @@ id|initrd_end
 op_assign
 id|initrd_start
 op_plus
-id|ia64_boot_param.initrd_size
+id|ia64_boot_param-&gt;initrd_size
 suffix:semicolon
 id|start
 op_assign
@@ -492,7 +484,7 @@ id|initrd_start
 suffix:semicolon
 id|size
 op_assign
-id|ia64_boot_param.initrd_size
+id|ia64_boot_param-&gt;initrd_size
 suffix:semicolon
 id|printk
 c_func
@@ -505,7 +497,7 @@ op_star
 )paren
 id|initrd_start
 comma
-id|ia64_boot_param.initrd_size
+id|ia64_boot_param-&gt;initrd_size
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The kernel end and the beginning of initrd can be&n;&t;&t; * on the same page. This would cause the page to be&n;&t;&t; * reserved twice.  While not harmful, it does lead to&n;&t;&t; * a warning message which can cause confusion.  Thus,&n;&t;&t; * we make sure that in this case we only reserve new&n;&t;&t; * pages, i.e., initrd only pages. We need to:&n;&t;&t; *&n;&t;&t; *&t;- align up start&n;&t;&t; *&t;- adjust size of reserved section accordingly&n;&t;&t; *&n;&t;&t; * It should be noted that this operation is only&n;&t;&t; * valid for the reserve_bootmem() call and does not&n;&t;&t; * affect the integrety of the initrd itself.&n;&t;&t; *&n;&t;&t; * reserve_bootmem() considers partial pages as reserved.&n;&t;&t; */
@@ -652,32 +644,13 @@ c_func
 id|efi.sal_systab
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-id|current-&gt;processor
-op_assign
-l_int|0
-suffix:semicolon
-id|cpu_physical_id
-c_func
-(paren
-l_int|0
-)paren
-op_assign
-id|hard_smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Set `iobase&squot; to the appropriate address in region 6&n;&t; *    (uncached access range)&n;&t; */
-id|__asm__
-(paren
-l_string|&quot;mov %0=ar.k0;;&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|ia64_iobase
-)paren
+op_assign
+id|ia64_get_kr
+c_func
+(paren
+id|IA64_KR_IO_BASE
 )paren
 suffix:semicolon
 id|ia64_iobase
@@ -697,6 +670,19 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* initialize the bootstrap CPU */
+macro_line|#ifdef CONFIG_SMP
+id|cpu_physical_id
+c_func
+(paren
+l_int|0
+)paren
+op_assign
+id|hard_smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_IA64_GENERIC
 id|machvec_init
 c_func
@@ -762,15 +748,15 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|paging_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|platform_setup
 c_func
 (paren
 id|cmdline_p
+)paren
+suffix:semicolon
+id|paging_init
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1193,20 +1179,6 @@ c_func
 id|i
 )paren
 suffix:semicolon
-id|memset
-c_func
-(paren
-id|c
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|cpuinfo_ia64
-)paren
-)paren
-suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -1337,29 +1309,6 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_SOFTSDV_HACKS
-multiline_comment|/* BUG: SoftSDV doesn&squot;t support the cpuid registers. */
-r_if
-c_cond
-(paren
-id|c-&gt;vendor
-(braket
-l_int|0
-)braket
-op_eq
-l_char|&squot;&bslash;0&squot;
-)paren
-id|memcpy
-c_func
-(paren
-id|c-&gt;vendor
-comma
-l_string|&quot;Intel&quot;
-comma
-l_int|6
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * cpu_init() initializes state that is per-CPU.  This function acts&n; * as a &squot;CPU state barrier&squot;, nothing should get across.&n; */
 r_void
@@ -1372,18 +1321,14 @@ r_void
 r_extern
 r_void
 id|__init
-id|ia64_rid_init
+id|ia64_mmu_init
 (paren
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|__init
-id|ia64_tlb_init
-(paren
-r_void
-)paren
+r_int
+r_int
+id|num_phys_stacked
 suffix:semicolon
 id|pal_vm_info_2_u_t
 id|vmi
@@ -1392,11 +1337,18 @@ r_int
 r_int
 id|max_ctx
 suffix:semicolon
+multiline_comment|/*&n;&t; * We can&squot;t pass &quot;local_cpu_data&quot; do identify_cpu() because we haven&squot;t called&n;&t; * ia64_mmu_init() yet.  And we can&squot;t call ia64_mmu_init() first because it&n;&t; * depends on the data returned by identify_cpu().  We break the dependency by&n;&t; * accessing cpu_data[] the old way, through identity mapped space.&n;&t; */
 id|identify_cpu
 c_func
 (paren
 op_amp
-id|my_cpu_data
+id|cpu_data
+(braket
+id|smp_processor_id
+c_func
+(paren
+)paren
+)braket
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the stack memory reserved for pt_regs: */
@@ -1444,7 +1396,6 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* initialize ar.k5 */
 macro_line|#endif
 id|atomic_inc
 c_func
@@ -1458,17 +1409,12 @@ op_assign
 op_amp
 id|init_mm
 suffix:semicolon
-id|ia64_rid_init
+id|ia64_mmu_init
 c_func
 (paren
 )paren
 suffix:semicolon
-id|ia64_tlb_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#ifdef&t;CONFIG_IA32_SUPPORT
+macro_line|#ifdef CONFIG_IA32_SUPPORT
 multiline_comment|/* initialize global ia32 state - CR0 and CR4 */
 id|__asm__
 c_func
@@ -1493,6 +1439,54 @@ id|IA32_CR0
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* disable all local interrupt sources: */
+id|ia64_set_itv
+c_func
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+id|ia64_set_lrr0
+c_func
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+id|ia64_set_lrr1
+c_func
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+id|ia64_set_pmv
+c_func
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+id|ia64_set_cmcv
+c_func
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+multiline_comment|/* clear TPR &amp; XTP to enable all interrupt classes: */
+id|ia64_set_tpr
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|normal_xtp
 c_func
@@ -1534,7 +1528,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;ia64_rid_init: PAL VM summary failed, assuming 18 RID bits&bslash;n&quot;
+l_string|&quot;cpu_init: PAL VM summary failed, assuming 18 RID bits&bslash;n&quot;
 )paren
 suffix:semicolon
 id|max_ctx
@@ -1582,5 +1576,38 @@ id|old
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ia64_pal_rse_info
+c_func
+(paren
+op_amp
+id|num_phys_stacked
+comma
+l_int|0
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+(paren
+l_string|&quot;cpu_init: PAL RSE info failed, assuming 96 physical stacked regs&bslash;n&quot;
+)paren
+suffix:semicolon
+id|num_phys_stacked
+op_assign
+l_int|96
+suffix:semicolon
+)brace
+id|local_cpu_data-&gt;phys_stacked_size_p8
+op_assign
+id|num_phys_stacked
+op_star
+l_int|8
+op_plus
+l_int|8
+suffix:semicolon
 )brace
 eof

@@ -121,6 +121,8 @@ id|nasid_t
 id|g_nasidtable
 (braket
 id|MAX_COMPACT_NODES
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* NASID of each node,&n;&t;&t;&t;&t;&t;&t;  * indexed by cnodeid.&n;&t;&t;&t;&t;&t;&t;  */

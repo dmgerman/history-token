@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/hubspc.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
+macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/mem_refcnt.h&gt;
 macro_line|#include &lt;asm/sn/hwcntrs.h&gt;
 singleline_comment|// From numa_hw.h
@@ -92,12 +93,6 @@ id|crp
 id|cnodeid_t
 id|node
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_SN1
-r_extern
-r_int
-id|numnodes
-suffix:semicolon
-macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -117,23 +112,6 @@ op_eq
 id|HUBSPC_REFCOUNTERS
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cap_able
-c_func
-(paren
-id|CAP_MEMORY_MGT
-)paren
-)paren
-(brace
-r_return
-(paren
-id|EPERM
-)paren
-suffix:semicolon
-)brace
 id|node
 op_assign
 id|master_node_get
@@ -276,12 +254,6 @@ suffix:semicolon
 r_int
 id|blen
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_SN1
-r_extern
-r_int
-id|numnodes
-suffix:semicolon
-macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -687,7 +659,7 @@ id|rcb.rcb_granularity
 op_assign
 id|MD_PAGE_SIZE
 suffix:semicolon
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|rcb.rcb_hw_counter_max
 op_assign
 id|MIGR_COUNTER_MAX_GET
@@ -816,7 +788,7 @@ id|s
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef notyet
+macro_line|#ifdef LATER
 id|slot
 (braket
 id|s

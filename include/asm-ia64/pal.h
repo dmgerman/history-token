@@ -3903,7 +3903,7 @@ r_struct
 id|ia64_pal_retval
 id|iprv
 suffix:semicolon
-id|PAL_CALL
+id|PAL_CALL_PHYS
 c_func
 (paren
 id|iprv

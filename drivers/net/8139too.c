@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|RTL8139_VERSION
-mdefine_line|#define RTL8139_VERSION &quot;0.9.15c&quot;
+mdefine_line|#define RTL8139_VERSION &quot;0.9.15d&quot;
 DECL|macro|MODNAME
 mdefine_line|#define MODNAME &quot;8139too&quot;
 DECL|macro|RTL8139_DRIVER_NAME
@@ -143,6 +143,8 @@ DECL|macro|RX_BUF_WRAP_PAD
 mdefine_line|#define RX_BUF_WRAP_PAD 2048 /* spare padding to handle lack of packet wrap */
 DECL|macro|RX_BUF_TOT_LEN
 mdefine_line|#define RX_BUF_TOT_LEN (RX_BUF_LEN + RX_BUF_PAD + RX_BUF_WRAP_PAD)
+DECL|macro|RX_EARLY_THRESH
+mdefine_line|#define RX_EARLY_THRESH 2
 multiline_comment|/* Number of Tx descriptor registers. */
 DECL|macro|NUM_TX_DESC
 mdefine_line|#define NUM_TX_DESC&t;4
@@ -1972,7 +1974,11 @@ r_int
 r_int
 id|rtl8139_rx_config
 op_assign
-id|RxCfgEarlyRxNone
+(paren
+id|RX_EARLY_THRESH
+op_lshift
+id|RxCfgEarlyRxShift
+)paren
 op_or
 id|RxCfgRcv32K
 op_or
@@ -7327,7 +7333,6 @@ l_string|&quot;tx/rx enable wait too long&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* The data sheet doesn&squot;t describe the Rx ring at all, so I&squot;m guessing at the&n;   field alignments and semantics. */
 DECL|function|rtl8139_rx_interrupt
 r_static
 r_void
@@ -7346,6 +7351,9 @@ comma
 r_void
 op_star
 id|ioaddr
+comma
+id|u16
+id|status
 )paren
 (brace
 r_int
@@ -7409,6 +7417,24 @@ id|RTL_R8
 id|ChipCmd
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_amp
+id|RxFIFOOver
+)paren
+id|status
+op_assign
+id|RxOverflow
+op_or
+id|RxOK
+suffix:semicolon
+r_else
+id|status
+op_assign
+id|RxOK
 suffix:semicolon
 r_while
 c_loop
@@ -7536,8 +7562,6 @@ l_string|&quot;.&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* E. Gill */
-multiline_comment|/* Note from BSD driver:&n;&t;&t; * Here&squot;s a totally undocumented fact for you. When the&n;&t;&t; * RealTek chip is in the process of copying a packet into&n;&t;&t; * RAM for you, the length will be 0xfff0. If you spot a&n;&t;&t; * packet header with this value, you need to stop. The&n;&t;&t; * datasheet makes absolutely no mention of this and&n;&t;&t; * RealTek should be shot for this.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7545,8 +7569,18 @@ id|rx_size
 op_eq
 l_int|0xfff0
 )paren
+(brace
+multiline_comment|/* Early Rx in progress */
+id|RTL_W16_F
+(paren
+id|IntrStatus
+comma
+id|status
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
+)brace
 multiline_comment|/* If Rx err or invalid rx_size/rx_status received&n;&t;&t; * (which happens if we get lost in the ring),&n;&t;&t; * Rx process gets reset, so we abort any further&n;&t;&t; * Rx processing.&n;&t;&t; */
 r_if
 c_cond
@@ -7694,13 +7728,25 @@ op_amp
 op_complement
 l_int|3
 suffix:semicolon
-id|RTL_W16_F
+id|RTL_W16
 (paren
 id|RxBufPtr
 comma
 id|cur_rx
 op_minus
 l_int|16
+)paren
+suffix:semicolon
+id|RTL_W16_F
+(paren
+id|IntrStatus
+comma
+id|status
+)paren
+suffix:semicolon
+id|barrier
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -7948,36 +7994,6 @@ c_cond
 (paren
 id|status
 op_amp
-id|RxOverflow
-)paren
-(brace
-id|tp-&gt;stats.rx_over_errors
-op_increment
-suffix:semicolon
-id|tp-&gt;cur_rx
-op_assign
-id|RTL_R16
-(paren
-id|RxBufAddr
-)paren
-op_mod
-id|RX_BUF_LEN
-suffix:semicolon
-id|RTL_W16_F
-(paren
-id|RxBufPtr
-comma
-id|tp-&gt;cur_rx
-op_minus
-l_int|16
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|status
-op_amp
 id|PCIErr
 )paren
 (brace
@@ -8056,10 +8072,11 @@ op_assign
 id|tp-&gt;mmio_addr
 suffix:semicolon
 r_int
-id|status
-op_assign
-l_int|0
+id|ackstat
 comma
+id|status
+suffix:semicolon
+r_int
 id|link_changed
 op_assign
 l_int|0
@@ -8103,31 +8120,33 @@ id|CSCR_LinkChangeBit
 suffix:semicolon
 multiline_comment|/* E. Gill */
 multiline_comment|/* In case of an RxFIFOOver we must also clear the RxOverflow&n;&t;&t;   bit to avoid dropping frames for ever. Believe me, I got a&n;&t;&t;   lot of troubles copying huge data (approximately 2 RxFIFOOver&n;&t;&t;   errors per 1GB data transfer).&n;&t;&t;   The following is written in the &squot;p-guide.pdf&squot; file (RTL8139(A/B)&n;&t;&t;   Programming guide V0.1, from 1999/1/15) on page 9 from REALTEC.&n;&t;&t;   -----------------------------------------------------------&n;&t;&t;   2. RxFIFOOvw handling:&n;&t;&t;     When RxFIFOOvw occurs, all incoming packets are discarded.&n;&t;&t;     Clear ISR(RxFIFOOvw) doesn&squot;t dismiss RxFIFOOvw event. To&n;&t;&t;     dismiss RxFIFOOvw event, the ISR(RxBufOvw) must be written&n;&t;&t;     with a &squot;1&squot;.&n;&t;&t;   -----------------------------------------------------------&n;&t;&t;   Unfortunately I was not able to find any reason for the&n;&t;&t;   RxFIFOOver error (I got the feeling this depends on the&n;&t;&t;   CPU speed, lower CPU speed --&gt; more errors).&n;&t;&t;   After clearing the RxOverflow bit the transfer of the&n;&t;&t;   packet was repeated and all data are error free transferred */
-id|RTL_W16_F
+id|ackstat
+op_assign
+id|status
+op_amp
+op_complement
+(paren
+id|RxFIFOOver
+op_or
+id|RxOverflow
+op_or
+id|RxOK
+)paren
+suffix:semicolon
+id|RTL_W16
 (paren
 id|IntrStatus
 comma
-(paren
-id|status
-op_amp
-id|RxFIFOOver
-)paren
-ques
-c_cond
-(paren
-id|status
-op_or
-id|RxOverflow
-)paren
-suffix:colon
-id|status
+id|ackstat
 )paren
 suffix:semicolon
 id|DPRINTK
 (paren
-l_string|&quot;%s: interrupt  status=%#4.4x new intstat=%#4.4x.&bslash;n&quot;
+l_string|&quot;%s: interrupt  status=%#4.4x ackstat=%#4.4x new intstat=%#4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
+comma
+id|ackstat
 comma
 id|status
 comma
@@ -8168,6 +8187,38 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_running
+(paren
+id|dev
+)paren
+op_logical_and
+id|status
+op_amp
+(paren
+id|RxOK
+op_or
+id|RxUnderrun
+op_or
+id|RxOverflow
+op_or
+id|RxFIFOOver
+)paren
+)paren
+multiline_comment|/* Rx interrupt */
+id|rtl8139_rx_interrupt
+(paren
+id|dev
+comma
+id|tp
+comma
+id|ioaddr
+comma
+id|status
+)paren
+suffix:semicolon
 multiline_comment|/* Check uncommon events with one test. */
 r_if
 c_cond
@@ -8201,36 +8252,6 @@ comma
 id|status
 comma
 id|link_changed
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|netif_running
-(paren
-id|dev
-)paren
-op_logical_and
-id|status
-op_amp
-(paren
-id|RxOK
-op_or
-id|RxUnderrun
-op_or
-id|RxOverflow
-op_or
-id|RxFIFOOver
-)paren
-)paren
-multiline_comment|/* Rx interrupt */
-id|rtl8139_rx_interrupt
-(paren
-id|dev
-comma
-id|tp
-comma
-id|ioaddr
 )paren
 suffix:semicolon
 r_if

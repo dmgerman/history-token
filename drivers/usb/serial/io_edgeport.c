@@ -15,14 +15,22 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#else
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
-macro_line|#endif
 macro_line|#include &lt;linux/usb.h&gt;
+macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
+DECL|variable|debug
+r_static
+r_int
+id|debug
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
+macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;io_edgeport.h&quot;
 macro_line|#include &quot;io_ionsp.h&quot;&t;&t;/* info for the iosp messages */
@@ -62,6 +70,22 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Edgeport USB Serial Driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Debug enabled or not&quot;
 )paren
 suffix:semicolon
 DECL|macro|MAX_NAME_LEN
@@ -1081,253 +1105,6 @@ op_star
 id|pRetDesc
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-multiline_comment|/* Dump a buffer in HEX and Ascii */
-DECL|function|DbgDisplayBuffer
-r_void
-id|DbgDisplayBuffer
-c_func
-(paren
-r_void
-op_star
-id|pBuffer
-comma
-id|__u32
-id|Len
-)paren
-(brace
-r_char
-id|DisplayBuf
-(braket
-l_int|80
-)braket
-suffix:semicolon
-r_char
-op_star
-id|pStr
-op_assign
-id|DisplayBuf
-suffix:semicolon
-id|__u8
-op_star
-id|pBuf
-op_assign
-id|pBuffer
-suffix:semicolon
-id|__u32
-id|i
-suffix:semicolon
-id|__u8
-id|d
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|Len
-)paren
-(brace
-singleline_comment|// Init for new line
-id|memset
-c_func
-(paren
-id|DisplayBuf
-comma
-l_char|&squot; &squot;
-comma
-r_sizeof
-(paren
-id|DisplayBuf
-)paren
-)paren
-suffix:semicolon
-id|DisplayBuf
-(braket
-l_int|79
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|pStr
-op_assign
-id|DisplayBuf
-suffix:semicolon
-id|pStr
-(braket
-l_int|54
-)braket
-op_assign
-l_char|&squot;[&squot;
-suffix:semicolon
-id|pStr
-(braket
-l_int|71
-)braket
-op_assign
-l_char|&squot;]&squot;
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|MIN
-c_func
-(paren
-l_int|16
-comma
-id|Len
-)paren
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|d
-op_assign
-(paren
-id|__u8
-)paren
-(paren
-op_star
-id|pBuf
-op_rshift
-l_int|4
-)paren
-suffix:semicolon
-id|pStr
-(braket
-(paren
-id|i
-op_star
-l_int|3
-)paren
-op_plus
-l_int|0
-)braket
-op_assign
-(paren
-r_char
-)paren
-(paren
-(paren
-id|d
-OL
-l_int|10
-)paren
-ques
-c_cond
-id|d
-op_plus
-l_char|&squot;0&squot;
-suffix:colon
-id|d
-op_minus
-l_int|10
-op_plus
-l_char|&squot;A&squot;
-)paren
-suffix:semicolon
-id|d
-op_assign
-(paren
-id|__u8
-)paren
-(paren
-op_star
-id|pBuf
-op_amp
-l_int|0xf
-)paren
-suffix:semicolon
-id|pStr
-(braket
-(paren
-id|i
-op_star
-l_int|3
-)paren
-op_plus
-l_int|1
-)braket
-op_assign
-(paren
-r_char
-)paren
-(paren
-(paren
-id|d
-OL
-l_int|10
-)paren
-ques
-c_cond
-id|d
-op_plus
-l_char|&squot;0&squot;
-suffix:colon
-id|d
-op_minus
-l_int|10
-op_plus
-l_char|&squot;A&squot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|pBuf
-OG
-l_int|31
-op_logical_and
-op_star
-id|pBuf
-OL
-l_int|127
-)paren
-id|pStr
-(braket
-id|i
-op_plus
-l_int|55
-)braket
-op_assign
-op_star
-id|pBuf
-suffix:semicolon
-r_else
-id|pStr
-(braket
-id|i
-op_plus
-l_int|55
-)braket
-op_assign
-l_char|&squot;.&squot;
-suffix:semicolon
-id|pBuf
-op_increment
-suffix:semicolon
-)brace
-id|Len
-op_sub_assign
-id|i
-suffix:semicolon
-id|dbg
-c_func
-(paren
-l_string|&quot;%s&quot;
-comma
-id|DisplayBuf
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 singleline_comment|// ************************************************************************
 singleline_comment|// ************************************************************************
 singleline_comment|// ************************************************************************
@@ -2111,7 +1888,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
 singleline_comment|// Dump Product Info structure
 id|dbg
 c_func
@@ -2262,7 +2038,6 @@ comma
 id|product_info-&gt;iDownloadFile
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/************************************************************************/
 multiline_comment|/************************************************************************/
@@ -2376,53 +2151,17 @@ c_cond
 id|length
 )paren
 (brace
-macro_line|#ifdef DEBUG
-r_int
-id|i
-suffix:semicolon
-id|printk
+id|usb_serial_debug_data
 (paren
-id|KERN_DEBUG
 id|__FILE__
-l_string|&quot;: &quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - length = %d, data = &quot;
 comma
 id|length
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|length
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;%.2x &quot;
 comma
 id|data
-(braket
-id|i
-)braket
 )paren
 suffix:semicolon
-)brace
-id|printk
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2740,20 +2479,17 @@ id|raw_data_length
 op_assign
 id|urb-&gt;actual_length
 suffix:semicolon
-macro_line|#ifdef DEBUG
-(brace
-singleline_comment|//&t;&t;&t;int i;
-id|dbg
+id|usb_serial_debug_data
 (paren
+id|__FILE__
+comma
 id|__FUNCTION__
-l_string|&quot; - length = %d, data = &quot;
 comma
 id|raw_data_length
+comma
+id|data
 )paren
 suffix:semicolon
-singleline_comment|//&t;&t;&t;DbgDisplayBuffer((void *)data, raw_data_length);
-)brace
-macro_line|#endif
 multiline_comment|/* decrement our rxBytes available by the number that we just got */
 id|edge_serial-&gt;rxBytesAvail
 op_sub_assign
@@ -3001,7 +2737,6 @@ c_func
 id|__FUNCTION__
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG&t;
 id|CmdUrbs
 op_decrement
 suffix:semicolon
@@ -3016,7 +2751,6 @@ comma
 id|CmdUrbs
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* if this urb had a transfer buffer already (old transfer) free it */
 r_if
 c_cond
@@ -4391,35 +4125,24 @@ id|secondhalf
 suffix:semicolon
 singleline_comment|// No need to check for wrap since we can not get to end of fifo in this part
 )brace
-macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
 id|copySize
 )paren
 (brace
-id|dbg
+id|usb_serial_debug_data
 (paren
+id|__FILE__
+comma
 id|__FUNCTION__
-l_string|&quot; - length = %d, data = &quot;
 comma
 id|copySize
-)paren
-suffix:semicolon
-id|DbgDisplayBuffer
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
+comma
 id|data
-comma
-id|copySize
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|send_more_port_data
 c_func
 (paren
@@ -4801,39 +4524,28 @@ op_sub_assign
 id|secondhalf
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
 id|count
 )paren
 (brace
-id|dbg
+id|usb_serial_debug_data
 (paren
+id|__FILE__
+comma
 id|__FUNCTION__
-l_string|&quot; - length = %d, data = &quot;
 comma
 id|count
-)paren
-suffix:semicolon
-id|DbgDisplayBuffer
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
+comma
 op_amp
 id|buffer
 (braket
 l_int|2
 )braket
-comma
-id|count
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 multiline_comment|/* fill up the urb with all of our data and submit it */
 id|FILL_BULK_URB
 (paren
@@ -8569,60 +8281,17 @@ suffix:semicolon
 r_int
 id|timeout
 suffix:semicolon
-macro_line|#ifdef DEBUG
-r_if
-c_cond
+id|usb_serial_debug_data
 (paren
-id|length
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-id|printk
-(paren
-id|KERN_DEBUG
 id|__FILE__
-l_string|&quot;: &quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - length = %d, buffer = &quot;
 comma
 id|length
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|length
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;%.2x &quot;
 comma
 id|buffer
-(braket
-id|i
-)braket
 )paren
 suffix:semicolon
-)brace
-id|printk
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Allocate our next urb */
 id|urb
 op_assign
@@ -10049,7 +9718,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef DEBUG
 r_char
 id|string
 (braket
@@ -10212,7 +9880,6 @@ comma
 id|edge_serial-&gt;manuf_descriptor.IonConfig
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 multiline_comment|/****************************************************************************&n; * get_boot_desc&n; *&t;reads in the bootloader descriptor and stores it into the serial &n; *&t;structure.&n; ****************************************************************************/

@@ -71,25 +71,10 @@ DECL|function|ia64_set_itv
 id|ia64_set_itv
 (paren
 r_int
-r_char
-id|vector
-comma
 r_int
-r_char
-id|masked
+id|val
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|masked
-OG
-l_int|1
-)paren
-id|masked
-op_assign
-l_int|1
-suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -98,13 +83,7 @@ l_string|&quot;mov cr.itv=%0;; srlz.d;;&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-(paren
-id|masked
-op_lshift
-l_int|16
-)paren
-op_or
-id|vector
+id|val
 )paren
 suffix:colon
 l_string|&quot;memory&quot;
@@ -282,15 +261,6 @@ r_int
 id|usecs
 )paren
 (brace
-macro_line|#ifdef CONFIG_IA64_SOFTSDV_HACKS
-r_while
-c_loop
-(paren
-id|usecs
-op_decrement
-)paren
-suffix:semicolon
-macro_line|#else
 r_int
 r_int
 id|start
@@ -306,7 +276,7 @@ id|cycles
 op_assign
 id|usecs
 op_star
-id|my_cpu_data.cyc_per_usec
+id|local_cpu_data-&gt;cyc_per_usec
 suffix:semicolon
 r_while
 c_loop
@@ -322,7 +292,6 @@ id|cycles
 )paren
 multiline_comment|/* skip */
 suffix:semicolon
-macro_line|#endif&t;/* CONFIG_IA64_SOFTSDV_HACKS */
 )brace
 macro_line|#endif /* _ASM_IA64_DELAY_H */
 eof

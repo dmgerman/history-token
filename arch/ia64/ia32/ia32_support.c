@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IA32 helper functions&n; *&n; * 06/16/00&t;A. Mallick&t;added csd/ssd/tssd for ia32 thread context&n; */
+multiline_comment|/*&n; * IA32 helper functions&n; *&n; * 06/16/00&t;A. Mallick&t;added csd/ssd/tssd for ia32 thread context&n; * 02/19/01&t;D. Mosberger&t;dropped tssd; it&squot;s not needed&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -59,8 +59,6 @@ comma
 id|csd
 comma
 id|ssd
-comma
-id|tssd
 suffix:semicolon
 id|asm
 (paren
@@ -71,7 +69,6 @@ l_string|&quot;mov %3=ar.fir;&quot;
 l_string|&quot;mov %4=ar.fdr;&quot;
 l_string|&quot;mov %5=ar.csd;&quot;
 l_string|&quot;mov %6=ar.ssd;&quot;
-l_string|&quot;mov %7=ar.k1&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -107,11 +104,6 @@ l_string|&quot;=r&quot;
 (paren
 id|ssd
 )paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|tssd
-)paren
 )paren
 suffix:semicolon
 id|thread-&gt;eflag
@@ -141,10 +133,6 @@ suffix:semicolon
 id|thread-&gt;ssd
 op_assign
 id|ssd
-suffix:semicolon
-id|thread-&gt;tssd
-op_assign
-id|tssd
 suffix:semicolon
 id|asm
 (paren
@@ -182,8 +170,6 @@ comma
 id|csd
 comma
 id|ssd
-comma
-id|tssd
 suffix:semicolon
 id|eflag
 op_assign
@@ -213,10 +199,6 @@ id|ssd
 op_assign
 id|thread-&gt;ssd
 suffix:semicolon
-id|tssd
-op_assign
-id|thread-&gt;tssd
-suffix:semicolon
 id|asm
 r_volatile
 (paren
@@ -227,7 +209,6 @@ l_string|&quot;mov ar.fir=%3;&quot;
 l_string|&quot;mov ar.fdr=%4;&quot;
 l_string|&quot;mov ar.csd=%5;&quot;
 l_string|&quot;mov ar.ssd=%6;&quot;
-l_string|&quot;mov ar.k1=%7&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
@@ -262,11 +243,6 @@ comma
 l_string|&quot;r&quot;
 (paren
 id|ssd
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|tssd
 )paren
 )paren
 suffix:semicolon

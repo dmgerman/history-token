@@ -1,7 +1,7 @@
 macro_line|#ifndef _LINUX_APM_H
 DECL|macro|_LINUX_APM_H
 mdefine_line|#define _LINUX_APM_H
-multiline_comment|/*&n; * Include file for the interface to an APM BIOS&n; * Copyright 1994-2000 Stephen Rothwell (sfr@linuxcare.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; */
+multiline_comment|/*&n; * Include file for the interface to an APM BIOS&n; * Copyright 1994-2001 Stephen Rothwell (sfr@canb.auug.org.au)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; */
 DECL|typedef|apm_event_t
 r_typedef
 r_int

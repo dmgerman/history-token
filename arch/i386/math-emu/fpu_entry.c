@@ -313,7 +313,7 @@ id|__BAD__
 comma
 )brace
 suffix:semicolon
-macro_line|#endif NO_UNDOC_CODE
+macro_line|#endif /* NO_UNDOC_CODE */
 DECL|macro|_NONE_
 mdefine_line|#define _NONE_ 0   /* Take no special action */
 DECL|macro|_REG0_
@@ -615,7 +615,7 @@ comma
 id|_null_
 )brace
 suffix:semicolon
-macro_line|#endif NO_UNDOC_CODE
+macro_line|#endif /* NO_UNDOC_CODE */
 macro_line|#ifdef RE_ENTRANT_CHECKING
 DECL|variable|emulating
 id|u_char
@@ -623,7 +623,7 @@ id|emulating
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif RE_ENTRANT_CHECKING
+macro_line|#endif /* RE_ENTRANT_CHECKING */
 r_static
 r_int
 id|valid_prefix
@@ -725,7 +725,7 @@ suffix:semicolon
 )brace
 id|RE_ENTRANT_CHECK_ON
 suffix:semicolon
-macro_line|#endif RE_ENTRANT_CHECKING
+macro_line|#endif /* RE_ENTRANT_CHECKING */
 r_if
 c_cond
 (paren
@@ -1089,7 +1089,7 @@ comma
 id|SIGILL
 )paren
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 id|RE_ENTRANT_CHECK_OFF
 suffix:semicolon
@@ -1652,7 +1652,7 @@ id|loaded_data
 )paren
 suffix:semicolon
 r_else
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */ 
 multiline_comment|/* fadd, fdivr, fmul, or fsubr */
 id|real_2op_NaN
 c_func
@@ -2152,7 +2152,7 @@ id|operand_address.selector
 op_assign
 id|FPU_DS
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 id|st0_ptr
 op_assign
 op_amp
@@ -2364,7 +2364,7 @@ c_func
 suffix:semicolon
 id|RE_ENTRANT_CHECK_ON
 suffix:semicolon
-macro_line|#endif DEBUG
+macro_line|#endif /* DEBUG */
 r_if
 c_cond
 (paren
@@ -2729,7 +2729,7 @@ c_func
 l_string|&quot;ERROR: wm-FPU-emu math_abort failed!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 DECL|macro|S387
 mdefine_line|#define S387 ((struct i387_soft_struct *)s387)
@@ -3118,7 +3118,7 @@ id|S387-&gt;fos
 op_or_assign
 l_int|0xffff0000
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 id|__copy_to_user
 c_func
 (paren

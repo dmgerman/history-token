@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&t;drivers/net/tulip/interrupt.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000  The Linux Kernel Team&n;&t;Written/copyright 1994-1999 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/networking/tulip.txt for more&n;&t;information on this driver.&n;&n;*/
+multiline_comment|/*&n;&t;drivers/net/tulip/interrupt.c&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
 macro_line|#include &quot;tulip.h&quot;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1467,6 +1467,54 @@ op_plus
 id|CSR1
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|csr5
+op_amp
+(paren
+id|RxDied
+op_or
+id|RxNoBuf
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|tp-&gt;flags
+op_amp
+id|COMET_MAC_ADDR
+)paren
+(brace
+id|outl
+c_func
+(paren
+id|tp-&gt;mc_filter
+(braket
+l_int|0
+)braket
+comma
+id|ioaddr
+op_plus
+l_int|0xAC
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|tp-&gt;mc_filter
+(braket
+l_int|1
+)braket
+comma
+id|ioaddr
+op_plus
+l_int|0xB0
+)paren
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_EFI_H
 DECL|macro|_ASM_IA64_EFI_H
 mdefine_line|#define _ASM_IA64_EFI_H
-multiline_comment|/*&n; * Extensible Firmware Interface&n; * Based on &squot;Extensible Firmware Interface Specification&squot; version 0.9, April 30, 1999&n; * &n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Hewlett-Packard Co.&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Extensible Firmware Interface&n; * Based on &squot;Extensible Firmware Interface Specification&squot; version 0.9, April 30, 1999&n; *&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; * Copyright (C) 1999 Hewlett-Packard Co.&n; * Copyright (C) 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 1999 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -10,12 +10,18 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|EFI_SUCCESS
 mdefine_line|#define EFI_SUCCESS&t;&t;0
+DECL|macro|EFI_LOAD_ERROR
+mdefine_line|#define EFI_LOAD_ERROR          (1L | (1L &lt;&lt; 63))
 DECL|macro|EFI_INVALID_PARAMETER
-mdefine_line|#define EFI_INVALID_PARAMETER&t;2
+mdefine_line|#define EFI_INVALID_PARAMETER&t;(2L | (1L &lt;&lt; 63))
 DECL|macro|EFI_UNSUPPORTED
-mdefine_line|#define EFI_UNSUPPORTED&t;&t;3
+mdefine_line|#define EFI_UNSUPPORTED&t;&t;(3L | (1L &lt;&lt; 63))
+DECL|macro|EFI_BAD_BUFFER_SIZE
+mdefine_line|#define EFI_BAD_BUFFER_SIZE     (4L | (1L &lt;&lt; 63))
 DECL|macro|EFI_BUFFER_TOO_SMALL
-mdefine_line|#define EFI_BUFFER_TOO_SMALL&t;4
+mdefine_line|#define EFI_BUFFER_TOO_SMALL&t;(5L | (1L &lt;&lt; 63))
+DECL|macro|EFI_NOT_FOUND
+mdefine_line|#define EFI_NOT_FOUND          (14L | (1L &lt;&lt; 63))
 DECL|typedef|efi_status_t
 r_typedef
 r_int
@@ -512,7 +518,7 @@ suffix:semicolon
 DECL|macro|EFI_SYSTEM_TABLE_SIGNATURE
 mdefine_line|#define EFI_SYSTEM_TABLE_SIGNATURE 0x5453595320494249
 DECL|macro|EFI_SYSTEM_TABLE_REVISION
-mdefine_line|#define EFI_SYSTEM_TABLE_REVISION  ((0 &lt;&lt; 16) | (92))
+mdefine_line|#define EFI_SYSTEM_TABLE_REVISION  ((1 &lt;&lt; 16) | 00)
 r_typedef
 r_struct
 (brace
@@ -743,5 +749,12 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* switch EFI to virtual mode, if possible */
+multiline_comment|/*&n; * Variable Attributes&n; */
+DECL|macro|EFI_VARIABLE_NON_VOLATILE
+mdefine_line|#define EFI_VARIABLE_NON_VOLATILE       0x0000000000000001
+DECL|macro|EFI_VARIABLE_BOOTSERVICE_ACCESS
+mdefine_line|#define EFI_VARIABLE_BOOTSERVICE_ACCESS 0x0000000000000002
+DECL|macro|EFI_VARIABLE_RUNTIME_ACCESS
+mdefine_line|#define EFI_VARIABLE_RUNTIME_ACCESS     0x0000000000000004
 macro_line|#endif /* _ASM_IA64_EFI_H */
 eof

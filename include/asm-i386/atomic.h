@@ -111,7 +111,7 @@ id|v-&gt;counter
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * atomic_sub_and_test - test variable then subtract &n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; * &n; * Atomically subtracts @i from @v and returns&n; * true if the result is zero, or false for all&n; * other cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/**&n; * atomic_sub_and_test - subtract value from variable and test result&n; * @i: integer value to subtract&n; * @v: pointer of type atomic_t&n; * &n; * Atomically subtracts @i from @v and returns&n; * true if the result is zero, or false for all&n; * other cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|function|atomic_sub_and_test
 r_static
 id|__inline__
@@ -197,7 +197,7 @@ id|v-&gt;counter
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * atomic_dec - decrement the atomic variable&n; * @v: pointer of type atomic_t&n; * &n; * Atomically decrements @v by 1.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/**&n; * atomic_dec - decrement atomic variable&n; * @v: pointer of type atomic_t&n; * &n; * Atomically decrements @v by 1.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|function|atomic_dec
 r_static
 id|__inline__
@@ -229,7 +229,7 @@ id|v-&gt;counter
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * atomic_dec_and_test - decrement by 1 and test&n; * @v: pointer of type atomic_t&n; * &n; * Atomically decrements @v by 1 and&n; * returns true if the result is 0, or false for all other&n; * cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/**&n; * atomic_dec_and_test - decrement and test&n; * @v: pointer of type atomic_t&n; * &n; * Atomically decrements @v by 1 and&n; * returns true if the result is 0, or false for all other&n; * cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|function|atomic_dec_and_test
 r_static
 id|__inline__
@@ -277,7 +277,7 @@ op_ne
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * atomic_inc_and_test - increment by 1 and test &n; * @v: pointer of type atomic_t&n; * &n; * Atomically increments @v by 1&n; * and returns true if the result is zero, or false for all&n; * other cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
+multiline_comment|/**&n; * atomic_inc_and_test - increment and test &n; * @v: pointer of type atomic_t&n; * &n; * Atomically increments @v by 1&n; * and returns true if the result is zero, or false for all&n; * other cases.  Note that the guaranteed&n; * useful range of an atomic_t is only 24 bits.&n; */
 DECL|function|atomic_inc_and_test
 r_static
 id|__inline__

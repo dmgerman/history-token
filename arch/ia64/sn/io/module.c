@@ -6,21 +6,26 @@ macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/cmn_err.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
+macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/sn1/hubdev.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xswitch.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
-DECL|macro|LDEBUG
-mdefine_line|#define LDEBUG&t;1&t;
+macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
+multiline_comment|/* #define LDEBUG&t;1&t;*/
+macro_line|#ifdef LDEBUG
 DECL|macro|DPRINTF
-mdefine_line|#define DPRINTF&t;&t;if (LDEBUG) printk
+mdefine_line|#define DPRINTF&t;&t;printk
 DECL|macro|printf
 mdefine_line|#define printf&t;&t;printk
+macro_line|#else
+DECL|macro|DPRINTF
+mdefine_line|#define DPRINTF(x...)
+macro_line|#endif
 DECL|variable|modules
 id|module_t
 op_star
@@ -412,14 +417,6 @@ id|id
 r_int
 id|i
 suffix:semicolon
-id|DPRINTF
-c_func
-(paren
-l_string|&quot;module_lookup: id=%d&bslash;n&quot;
-comma
-id|id
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -490,16 +487,44 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_char
+id|buffer
+(braket
+l_int|16
+)braket
+suffix:semicolon
+macro_line|#ifdef __ia64
+id|memset
+c_func
+(paren
+id|buffer
+comma
+l_int|0
+comma
+l_int|16
+)paren
+suffix:semicolon
+id|format_module_id
+c_func
+(paren
+id|buffer
+comma
+id|id
+comma
+id|MODULE_FORMAT_BRIEF
+)paren
+suffix:semicolon
 id|DPRINTF
 c_func
 (paren
-l_string|&quot;module_add_node: id=%x node=%d&bslash;n&quot;
+l_string|&quot;module_add_node: id=%s node=%d&bslash;n&quot;
 comma
-id|id
+id|buffer
 comma
 id|n
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -516,7 +541,7 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 id|m
 op_assign
 id|kmem_zalloc_node
@@ -559,26 +584,10 @@ id|module_t
 )paren
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Module nodecnt = %d&bslash;n&quot;
-comma
-id|m-&gt;nodecnt
-)paren
-suffix:semicolon
 macro_line|#endif
 id|ASSERT_ALWAYS
 c_func
 (paren
-id|m
-)paren
-suffix:semicolon
-id|DPRINTF
-c_func
-(paren
-l_string|&quot;module_add_node: m=0x%p&bslash;n&quot;
-comma
 id|m
 )paren
 suffix:semicolon
@@ -593,34 +602,14 @@ op_amp
 id|m-&gt;lock
 )paren
 suffix:semicolon
-id|init_MUTEX_LOCKED
+id|mutex_init_locked
 c_func
 (paren
 op_amp
 id|m-&gt;thdcnt
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Set elsc to 0x%p on node %d&bslash;n&quot;
-comma
-op_amp
-id|m-&gt;elsc
-comma
-id|get_nasid
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-id|set_elsc
-c_func
-(paren
-op_amp
-id|m-&gt;elsc
-)paren
-suffix:semicolon
+singleline_comment|// set_elsc(&amp;m-&gt;elsc);
 id|elsc_init
 c_func
 (paren
@@ -698,22 +687,12 @@ op_increment
 op_assign
 id|n
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;module_add_node: module %x now has %d nodes&bslash;n&quot;
-comma
-id|id
-comma
-id|m-&gt;nodecnt
-)paren
-suffix:semicolon
 id|DPRINTF
 c_func
 (paren
-l_string|&quot;module_add_node: module %x now has %d nodes&bslash;n&quot;
+l_string|&quot;module_add_node: module %s now has %d nodes&bslash;n&quot;
 comma
-id|id
+id|buffer
 comma
 id|m-&gt;nodecnt
 )paren
@@ -742,6 +721,24 @@ suffix:semicolon
 id|klmod_serial_num_t
 op_star
 id|comp
+suffix:semicolon
+r_char
+op_star
+id|bcopy
+c_func
+(paren
+r_const
+r_char
+op_star
+id|src
+comma
+r_char
+op_star
+id|dest
+comma
+r_int
+id|count
+)paren
 suffix:semicolon
 id|board
 op_assign
@@ -872,22 +869,7 @@ l_int|1
 suffix:semicolon
 r_else
 (brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-id|cmn_err
-c_func
-(paren
-id|CE_WARN
-op_or
-id|CE_MAINTENANCE
-comma
-l_string|&quot;Invalid serial number for module %d, &quot;
-l_string|&quot;possible missing or invalid NIC.&quot;
-comma
-id|m-&gt;id
-)paren
-suffix:semicolon
-macro_line|#else
-id|printk
+id|DPRINTF
 c_func
 (paren
 l_string|&quot;Invalid serial number for module %d, &quot;
@@ -896,7 +878,6 @@ comma
 id|m-&gt;id
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -1027,46 +1008,13 @@ id|nserial
 op_eq
 l_int|0
 )paren
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
-l_string|&quot;No serial number found.&quot;
+l_string|&quot;io_module_init: No serial number found.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef BRINGUP
-DECL|variable|Elsc
-id|elsc_t
-op_star
-id|Elsc
-(braket
-l_int|100
-)braket
-suffix:semicolon
-r_void
-DECL|function|set_elsc
-id|set_elsc
-c_func
-(paren
-id|elsc_t
-op_star
-id|p
-)paren
-(brace
-id|Elsc
-(braket
-id|get_nasid
-c_func
-(paren
-)paren
-)braket
-op_assign
-id|p
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|get_elsc
 id|elsc_t
 op_star
@@ -1076,66 +1024,23 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef BRINGUP
-r_return
-id|Elsc
-(braket
-id|get_nasid
-c_func
-(paren
-)paren
-)braket
-suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|NODEPDA
-c_func
-(paren
-id|get_nasid
-c_func
-(paren
-)paren
-)paren
-op_member_access_from_pointer
-id|module
-op_eq
-(paren
-id|module_t
-op_star
-)paren
-l_int|0
-)paren
-(brace
-id|printf
-c_func
-(paren
-l_string|&quot;get_elsc() for nasd %d fails&bslash;n&quot;
-comma
-id|get_nasid
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-singleline_comment|//&t;&t;return((elsc_t *)0);
-)brace
 r_return
 op_amp
 id|NODEPDA
 c_func
 (paren
-id|get_nasid
+id|cpuid_to_cnodeid
 c_func
 (paren
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 )paren
 op_member_access_from_pointer
 id|module-&gt;elsc
 suffix:semicolon
-singleline_comment|//&t;return &amp;NODEPDA(NASID_TO_COMPACT_NODEID(0))-&gt;module-&gt;elsc;
-macro_line|#endif
 )brace
 r_int
 DECL|function|get_kmod_info

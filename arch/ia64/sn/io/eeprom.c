@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/eeprom.h&gt;
 macro_line|#include &lt;asm/sn/ksys/i2c.h&gt;
-macro_line|#include &lt;asm/sn/cmn_err.h&gt;
 multiline_comment|/* #include &lt;sys/SN/SN1/ip27log.h&gt; */
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
@@ -3579,6 +3578,10 @@ id|len
 suffix:semicolon
 multiline_comment|/* number of bytes used in message buffer */
 r_int
+id|resp
+suffix:semicolon
+multiline_comment|/* l1 response code */
+r_int
 id|spd_len
 op_assign
 id|EEPROM_CHUNKSIZE
@@ -3700,6 +3703,9 @@ multiline_comment|/* check response */
 r_if
 c_cond
 (paren
+(paren
+id|resp
+op_assign
 id|sc_interpret_resp
 c_func
 (paren
@@ -3719,12 +3725,34 @@ id|len
 comma
 id|spd_p
 )paren
+)paren
 OL
 l_int|0
 )paren
 (brace
-r_return
+multiline_comment|/*&n;             * translate l1 response code to eeprom.c error codes:&n;             * The L1 response will be L1_RESP_NAVAIL if the spd&n;             * can&squot;t be read (i.e. the spd isn&squot;t physically there). It will&n;             * return L1_RESP_INVAL if the spd exists, but fails the checksum&n;             * test because the eeprom wasn&squot;t programmed, programmed incorrectly,&n;             * or corrupted. L1_RESP_NAVAIL indicates the eeprom is likely not present,&n;             * whereas L1_RESP_INVAL indicates the eeprom is present, but the data is&n;             * invalid.&n;             */
+r_if
+c_cond
+(paren
+id|resp
+op_eq
+id|L1_RESP_INVAL
+)paren
+(brace
+id|resp
+op_assign
+id|EEP_BAD_CHECKSUM
+suffix:semicolon
+)brace
+r_else
+(brace
+id|resp
+op_assign
 id|EEP_L1
+suffix:semicolon
+)brace
+r_return
+id|resp
 suffix:semicolon
 )brace
 r_if
@@ -4651,12 +4679,14 @@ id|uid
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef LOG_GETENV
 r_char
 id|uid_str
 (braket
 l_int|32
 )braket
 suffix:semicolon
+macro_line|#endif
 r_int
 id|l1_compt
 comma
@@ -4756,6 +4786,54 @@ l_int|0
 (brace
 r_return
 id|EEP_L1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|component
+op_amp
+id|C_DIMM
+)paren
+op_eq
+id|C_DIMM
+)paren
+(brace
+id|l1_compt
+op_assign
+id|L1_EEP_DIMM
+c_func
+(paren
+id|component
+op_amp
+id|COMPT_MASK
+)paren
+suffix:semicolon
+id|r
+op_assign
+id|read_spd
+c_func
+(paren
+id|scp
+comma
+id|subch
+comma
+id|l1_compt
+comma
+id|buf-&gt;spd
+)paren
+suffix:semicolon
+id|sc_close
+c_func
+(paren
+id|scp
+comma
+id|subch
+)paren
+suffix:semicolon
+r_return
+id|r
 suffix:semicolon
 )brace
 r_switch
@@ -4859,45 +4937,6 @@ id|COMPT_MASK
 )paren
 suffix:semicolon
 r_break
-suffix:semicolon
-r_case
-id|C_DIMM
-suffix:colon
-multiline_comment|/* one of the DIMMs */
-id|l1_compt
-op_assign
-id|L1_EEP_DIMM
-c_func
-(paren
-id|component
-op_amp
-id|COMPT_MASK
-)paren
-suffix:semicolon
-id|r
-op_assign
-id|read_spd
-c_func
-(paren
-id|scp
-comma
-id|subch
-comma
-id|l1_compt
-comma
-id|buf-&gt;spd
-)paren
-suffix:semicolon
-id|sc_close
-c_func
-(paren
-id|scp
-comma
-id|subch
-)paren
-suffix:semicolon
-r_return
-id|r
 suffix:semicolon
 r_default
 suffix:colon
@@ -5034,20 +5073,20 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|elsc_t
-op_star
-id|get_elsc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|scp
 op_assign
-id|get_elsc
+op_amp
+id|NODEPDA
 c_func
 (paren
+id|NASID_TO_COMPACT_NODEID
+c_func
+(paren
+id|nasid
 )paren
+)paren
+op_member_access_from_pointer
+id|module-&gt;elsc
 suffix:semicolon
 )brace
 r_return
@@ -5152,20 +5191,20 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|elsc_t
-op_star
-id|get_elsc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|scp
 op_assign
-id|get_elsc
+op_amp
+id|NODEPDA
 c_func
 (paren
+id|NASID_TO_COMPACT_NODEID
+c_func
+(paren
+id|nasid
 )paren
+)paren
+op_member_access_from_pointer
+id|module-&gt;elsc
 suffix:semicolon
 )brace
 r_if
@@ -5234,7 +5273,7 @@ comma
 id|subch
 )paren
 suffix:semicolon
-macro_line|#ifdef BRINGUP /* Once EEPROMs are universally available, remove this */
+multiline_comment|/*&n;&t; * Whenever we no longer need to test on hardware&n;&t; * that does not have EEPROMS, then this can be removed.&n;&t; */
 id|r
 op_assign
 id|fake_an_eeprom_record
@@ -5250,7 +5289,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* BRINGUP */
 r_return
 id|r
 suffix:semicolon

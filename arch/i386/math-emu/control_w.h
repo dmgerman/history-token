@@ -47,5 +47,5 @@ mdefine_line|#define PR_RESERVED_BITS  _Const_(0x100)
 multiline_comment|/* FULL_PRECISION simulates all exceptions masked */
 DECL|macro|FULL_PRECISION
 mdefine_line|#define FULL_PRECISION  (PR_64_BITS | RC_RND | 0x3f)
-macro_line|#endif _CONTROLW_H_
+macro_line|#endif /* _CONTROLW_H_ */
 eof

@@ -403,7 +403,7 @@ suffix:semicolon
 multiline_comment|/*&n; &t;&t; *&t;lp may be invalid after the callback&n;&t;&t; */
 )brace
 )brace
-multiline_comment|/*&n; *&t;Interpret_pseudo_code() executes the actions in the connection component&n; *&t;state transition table. Table 4 in document on p88.&n; *&n; *&t;If this function is called to handle an incomming pdu, skb will point&n; *&t;to the buffer with the pdu and type will contain the decoded pdu type.&n; *&n; *&t;If called by data_request skb points to an skb that was skb_alloc-ed by &n; *&t;the llc client to hold the information unit to be transmitted, there is&n; *&t;no valid type in this case.  &n; *&n; *&t;If called because a timer expired no skb is passed, and there is no &n; *&t;type.&n; */
+multiline_comment|/*&n; *&t;Interpret_pseudo_code() executes the actions in the connection component&n; *&t;state transition table. Table 4 in document on p88.&n; *&n; *&t;If this function is called to handle an incoming pdu, skb will point&n; *&t;to the buffer with the pdu and type will contain the decoded pdu type.&n; *&n; *&t;If called by data_request skb points to an skb that was skb_alloc-ed by &n; *&t;the llc client to hold the information unit to be transmitted, there is&n; *&t;no valid type in this case.  &n; *&n; *&t;If called because a timer expired no skb is passed, and there is no &n; *&t;type.&n; */
 DECL|function|llc_interpret_pseudo_code
 r_void
 id|llc_interpret_pseudo_code

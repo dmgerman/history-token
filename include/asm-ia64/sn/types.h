@@ -2,7 +2,6 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_SN_TYPES_H
 DECL|macro|_ASM_SN_TYPES_H
 mdefine_line|#define _ASM_SN_TYPES_H
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 DECL|typedef|cpuid_t
 r_typedef
@@ -59,13 +58,10 @@ r_char
 id|clusterid_t
 suffix:semicolon
 multiline_comment|/* Clusterid of the cell */
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 DECL|macro|__psunsigned_t
 mdefine_line|#define __psunsigned_t uint64_t
 DECL|macro|lock_t
 mdefine_line|#define lock_t uint64_t
-DECL|macro|sv_t
-mdefine_line|#define sv_t uint64_t
 DECL|typedef|iopaddr_t
 r_typedef
 r_int
@@ -90,6 +86,5 @@ r_int
 r_int
 id|pfn_t
 suffix:semicolon
-macro_line|#endif        /* CONFIG_IA64_SGI_IO */
 macro_line|#endif /* _ASM_SN_TYPES_H */
 eof

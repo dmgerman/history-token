@@ -6,7 +6,7 @@ mdefine_line|#define NET_ATM_ADDR_H
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmdev.h&gt;
 r_void
-id|reset_addr
+id|atm_reset_addr
 c_func
 (paren
 r_struct
@@ -16,22 +16,7 @@ id|dev
 )paren
 suffix:semicolon
 r_int
-id|add_addr
-c_func
-(paren
-r_struct
-id|atm_dev
-op_star
-id|dev
-comma
-r_struct
-id|sockaddr_atmsvc
-op_star
-id|addr
-)paren
-suffix:semicolon
-r_int
-id|del_addr
+id|atm_add_addr
 c_func
 (paren
 r_struct
@@ -46,7 +31,22 @@ id|addr
 )paren
 suffix:semicolon
 r_int
-id|get_addr
+id|atm_del_addr
+c_func
+(paren
+r_struct
+id|atm_dev
+op_star
+id|dev
+comma
+r_struct
+id|sockaddr_atmsvc
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_int
+id|atm_get_addr
 c_func
 (paren
 r_struct

@@ -7,13 +7,15 @@ mdefine_line|#define PT_PTRACED_BIT&t;&t;&t;0
 DECL|macro|PT_TRACESYS_BIT
 mdefine_line|#define PT_TRACESYS_BIT&t;&t;&t;1
 DECL|macro|IA64_TASK_SIZE
-mdefine_line|#define IA64_TASK_SIZE&t;&t;&t;3376&t;/* 0xd30 */
+mdefine_line|#define IA64_TASK_SIZE&t;&t;&t;3904&t;/* 0xf40 */
 DECL|macro|IA64_PT_REGS_SIZE
 mdefine_line|#define IA64_PT_REGS_SIZE&t;&t;400&t;/* 0x190 */
 DECL|macro|IA64_SWITCH_STACK_SIZE
 mdefine_line|#define IA64_SWITCH_STACK_SIZE&t;&t;560&t;/* 0x230 */
 DECL|macro|IA64_SIGINFO_SIZE
 mdefine_line|#define IA64_SIGINFO_SIZE&t;&t;128&t;/* 0x80 */
+DECL|macro|IA64_CPU_SIZE
+mdefine_line|#define IA64_CPU_SIZE&t;&t;&t;16384&t;/* 0x4000 */
 DECL|macro|UNW_FRAME_INFO_SIZE
 mdefine_line|#define UNW_FRAME_INFO_SIZE&t;&t;448&t;/* 0x1c0 */
 DECL|macro|IA64_TASK_PTRACE_OFFSET
@@ -29,7 +31,9 @@ mdefine_line|#define IA64_TASK_THREAD_OFFSET&t;&t;1456&t;/* 0x5b0 */
 DECL|macro|IA64_TASK_THREAD_KSP_OFFSET
 mdefine_line|#define IA64_TASK_THREAD_KSP_OFFSET&t;1456&t;/* 0x5b0 */
 DECL|macro|IA64_TASK_THREAD_SIGMASK_OFFSET
-mdefine_line|#define IA64_TASK_THREAD_SIGMASK_OFFSET&t;3224&t;/* 0xc98 */
+mdefine_line|#define IA64_TASK_THREAD_SIGMASK_OFFSET&t;3752&t;/* 0xea8 */
+DECL|macro|IA64_TASK_PFM_NOTIFY_OFFSET
+mdefine_line|#define IA64_TASK_PFM_NOTIFY_OFFSET&t;3648&t;/* 0xe40 */
 DECL|macro|IA64_TASK_PID_OFFSET
 mdefine_line|#define IA64_TASK_PID_OFFSET&t;&t;196&t;/* 0xc4 */
 DECL|macro|IA64_TASK_MM_OFFSET
@@ -228,5 +232,15 @@ DECL|macro|IA64_CLONE_VFORK
 mdefine_line|#define IA64_CLONE_VFORK&t;&t;&t;16384&t;/* 0x4000 */
 DECL|macro|IA64_CLONE_VM
 mdefine_line|#define IA64_CLONE_VM&t;&t;&t;256&t;/* 0x100 */
+DECL|macro|IA64_CPU_IRQ_COUNT_OFFSET
+mdefine_line|#define IA64_CPU_IRQ_COUNT_OFFSET&t;8&t;/* 0x8 */
+DECL|macro|IA64_CPU_BH_COUNT_OFFSET
+mdefine_line|#define IA64_CPU_BH_COUNT_OFFSET&t;&t;12&t;/* 0xc */
+DECL|macro|IA64_CPU_SOFTIRQ_ACTIVE_OFFSET
+mdefine_line|#define IA64_CPU_SOFTIRQ_ACTIVE_OFFSET&t;0&t;/* 0x0 */
+DECL|macro|IA64_CPU_SOFTIRQ_MASK_OFFSET
+mdefine_line|#define IA64_CPU_SOFTIRQ_MASK_OFFSET&t;4&t;/* 0x4 */
+DECL|macro|IA64_CPU_PHYS_STACKED_SIZE_P8_OFFSET
+mdefine_line|#define IA64_CPU_PHYS_STACKED_SIZE_P8_OFFSET 16&t;/* 0x10 */
 macro_line|#endif /* _ASM_IA64_OFFSETS_H */
 eof

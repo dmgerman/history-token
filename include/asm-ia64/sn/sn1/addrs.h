@@ -9,19 +9,14 @@ macro_line|#if defined(_RUN_UNCACHED)
 DECL|macro|CAC_BASE
 mdefine_line|#define CAC_BASE&t;&t;0x9600000000000000
 macro_line|#else
+macro_line|#ifndef __ia64
 DECL|macro|CAC_BASE
 mdefine_line|#define CAC_BASE&t;&t;0xa800000000000000
-macro_line|#endif
-macro_line|#ifdef Colin
-DECL|macro|HSPEC_BASE
-mdefine_line|#define HSPEC_BASE&t;&t;0x9000000000000000
-DECL|macro|IO_BASE
-mdefine_line|#define IO_BASE&t;&t;&t;0x9200000000000000
-DECL|macro|MSPEC_BASE
-mdefine_line|#define MSPEC_BASE&t;&t;0x9400000000000000
-DECL|macro|UNCAC_BASE
-mdefine_line|#define UNCAC_BASE&t;&t;0x9600000000000000
 macro_line|#else
+DECL|macro|CAC_BASE
+mdefine_line|#define CAC_BASE                0xe000000000000000
+macro_line|#endif
+macro_line|#endif
 DECL|macro|HSPEC_BASE
 mdefine_line|#define HSPEC_BASE              0xc0000b0000000000
 DECL|macro|HSPEC_SWIZ_BASE
@@ -34,7 +29,6 @@ DECL|macro|MSPEC_BASE
 mdefine_line|#define MSPEC_BASE              0xc000000000000000
 DECL|macro|UNCAC_BASE
 mdefine_line|#define UNCAC_BASE              0xc000000000000000
-macro_line|#endif
 DECL|macro|TO_PHYS
 mdefine_line|#define TO_PHYS(x)&t;&t;(&t;      ((x) &amp; TO_PHYS_MASK))
 DECL|macro|TO_CAC

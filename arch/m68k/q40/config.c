@@ -1041,7 +1041,7 @@ op_star
 l_int|1024
 suffix:semicolon
 multiline_comment|/* no DMA at all, but ide-scsi requires it.. */
-multiline_comment|/* userfull for early debugging stages writes kernel messages into SRAM */
+multiline_comment|/* useful for early debugging stages - writes kernel messages into SRAM */
 r_if
 c_cond
 (paren

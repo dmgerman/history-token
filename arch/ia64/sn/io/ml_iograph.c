@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
+macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/eeprom.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
@@ -24,6 +25,14 @@ r_extern
 r_int
 id|maxnodes
 suffix:semicolon
+multiline_comment|/* #define IOGRAPH_DEBUG */
+macro_line|#ifdef IOGRAPH_DEBUG
+DECL|macro|DBG
+mdefine_line|#define DBG(x...) printk(x)
+macro_line|#else
+DECL|macro|DBG
+mdefine_line|#define DBG(x...)
+macro_line|#endif /* IOGRAPH_DEBUG */
 multiline_comment|/* #define PROBE_TEST */
 multiline_comment|/* At most 2 hubs can be connected to an xswitch */
 DECL|macro|NUM_XSWITCH_VOLUNTEER
@@ -35,8 +44,7 @@ r_struct
 id|xswitch_vol_s
 (brace
 DECL|member|xswitch_volunteer_mutex
-r_struct
-id|semaphore
+id|mutex_t
 id|xswitch_volunteer_mutex
 suffix:semicolon
 DECL|member|xswitch_volunteer_count
@@ -84,7 +92,7 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|init_MUTEX
+id|mutex_init
 c_func
 (paren
 op_amp
@@ -157,7 +165,7 @@ op_amp
 id|xvolinfo
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 id|ASSERT
 c_func
 (paren
@@ -224,7 +232,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 r_if
 c_cond
 (paren
@@ -235,31 +243,38 @@ c_func
 id|master
 )paren
 )paren
-id|cmn_err
+(brace
+macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;volunteer for widgets: vertex %v has no info label&quot;
 comma
 id|xswitch
 )paren
 suffix:semicolon
+macro_line|#else
+id|PRINT_WARNING
+c_func
+(paren
+l_string|&quot;volunteer for widgets: vertex 0x%x has no info label&quot;
+comma
+id|xswitch
+)paren
+suffix:semicolon
 macro_line|#endif
+)brace
+macro_line|#endif&t;/* LATER */
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
 id|mutex_lock
 c_func
 (paren
 op_amp
 id|xvolinfo-&gt;xswitch_volunteer_mutex
-comma
-id|PZERO
 )paren
 suffix:semicolon
-macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -278,7 +293,6 @@ suffix:semicolon
 id|xvolinfo-&gt;xswitch_volunteer_count
 op_increment
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
 id|mutex_unlock
 c_func
 (paren
@@ -286,82 +300,7 @@ op_amp
 id|xvolinfo-&gt;xswitch_volunteer_mutex
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
-macro_line|#ifndef&t;BRINGUP
-multiline_comment|/* &n; * The &quot;ideal fixed assignment&quot; of 12 IO slots to 4 node slots.&n; * At index N is the node slot number of the node board that should&n; * ideally control the widget in IO slot N.  Note that if there is&n; * only one node board on a given xbow, it will control all of the&n; * devices on that xbow regardless of these defaults.&n; *&n; * &t;N1 controls IO slots IO1, IO3, IO5&t;(upper left)&n; * &t;N3 controls IO slots IO2, IO4, IO6&t;(upper right)&n; * &t;N2 controls IO slots IO7, IO9, IO11&t;(lower left)&n; * &t;N4 controls IO slots IO8, IO10, IO12&t;(lower right)&n; *&n; * This makes assignments predictable and easily controllable.&n; * TBD: Allow administrator to override these defaults.&n; */
-DECL|variable|ideal_assignment
-r_static
-id|slotid_t
-id|ideal_assignment
-(braket
-)braket
-op_assign
-(brace
-op_minus
-l_int|1
-comma
-multiline_comment|/* IO0 --&gt;non-existent */
-l_int|1
-comma
-multiline_comment|/* IO1 --&gt;N1 */
-l_int|3
-comma
-multiline_comment|/* IO2 --&gt;N3 */
-l_int|1
-comma
-multiline_comment|/* IO3 --&gt;N1 */
-l_int|3
-comma
-multiline_comment|/* IO4 --&gt;N3 */
-l_int|1
-comma
-multiline_comment|/* IO5 --&gt;N1 */
-l_int|3
-comma
-multiline_comment|/* IO6 --&gt;N3 */
-l_int|2
-comma
-multiline_comment|/* IO7 --&gt;N2 */
-l_int|4
-comma
-multiline_comment|/* IO8 --&gt;N4 */
-l_int|2
-comma
-multiline_comment|/* IO9 --&gt;N2 */
-l_int|4
-comma
-multiline_comment|/* IO10--&gt;N4 */
-l_int|2
-comma
-multiline_comment|/* IO11--&gt;N2 */
-l_int|4
-multiline_comment|/* IO12--&gt;N4 */
-)brace
-suffix:semicolon
-r_static
-r_int
-DECL|function|is_ideal_assignment
-id|is_ideal_assignment
-c_func
-(paren
-id|slotid_t
-id|hubslot
-comma
-id|slotid_t
-id|ioslot
-)paren
-(brace
-r_return
-id|ideal_assignment
-(braket
-id|ioslot
-)braket
-op_eq
-id|hubslot
-suffix:semicolon
-)brace
-macro_line|#endif /* ifndef BRINGUP */
 r_extern
 r_int
 id|xbow_port_io_enabled
@@ -389,6 +328,14 @@ id|devfs_handle_t
 id|hubv
 )paren
 (brace
+r_int
+id|curr_volunteer
+comma
+id|num_volunteer
+suffix:semicolon
+id|xwidgetnum_t
+id|widgetnum
+suffix:semicolon
 id|xswitch_info_t
 id|xswitch_info
 suffix:semicolon
@@ -397,25 +344,12 @@ id|xvolinfo
 op_assign
 l_int|NULL
 suffix:semicolon
-id|xwidgetnum_t
-id|widgetnum
-suffix:semicolon
-r_int
-id|curr_volunteer
-comma
-id|num_volunteer
-suffix:semicolon
 id|nasid_t
 id|nasid
 suffix:semicolon
 id|hubinfo_t
 id|hubinfo
 suffix:semicolon
-macro_line|#ifndef BRINGUP
-r_int
-id|xbownum
-suffix:semicolon
-macro_line|#endif
 id|hubinfo_get
 c_func
 (paren
@@ -471,7 +405,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 r_if
 c_cond
 (paren
@@ -482,18 +416,30 @@ c_func
 id|hubv
 )paren
 )paren
-id|cmn_err
+(brace
+macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;assign_widgets_to_volunteers:vertex %v has &quot;
 l_string|&quot; no info label&quot;
 comma
 id|xswitch
 )paren
 suffix:semicolon
+macro_line|#else
+id|PRINT_WARNING
+c_func
+(paren
+l_string|&quot;assign_widgets_to_volunteers:vertex 0x%x has &quot;
+l_string|&quot; no info label&quot;
+comma
+id|xswitch
+)paren
+suffix:semicolon
 macro_line|#endif
+)brace
+macro_line|#endif&t;/* LATER */
 r_return
 suffix:semicolon
 )brace
@@ -543,16 +489,6 @@ id|hubv
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef&t;BRINGUP
-id|xbownum
-op_assign
-id|get_node_crossbow
-c_func
-(paren
-id|nasid
-)paren
-suffix:semicolon
-macro_line|#endif /* ifndef BRINGUP */
 multiline_comment|/*&n;&t; * TBD: Use administrative information to alter assignment of&n;&t; * widgets to hubs.&n;&t; */
 r_for
 c_loop
@@ -654,12 +590,10 @@ r_goto
 id|do_assignment
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-id|cmn_err
+macro_line|#ifdef LATER
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_PANIC
-comma
 l_string|&quot;Nasid == %d, console nasid == %d&quot;
 comma
 id|nasid
@@ -672,79 +606,6 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifndef&t;BRINGUP
-multiline_comment|/*&n;&t;&t; * Try to do the &quot;ideal&quot; assignment if IO slots to nodes.&n;&t;&t; */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|num_volunteer
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|hubv
-op_assign
-id|xvolinfo-&gt;xswitch_volunteer
-(braket
-id|i
-)braket
-suffix:semicolon
-id|hubinfo_get
-c_func
-(paren
-id|hubv
-comma
-op_amp
-id|hubinfo
-)paren
-suffix:semicolon
-id|nasid
-op_assign
-id|hubinfo-&gt;h_nasid
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|is_ideal_assignment
-c_func
-(paren
-id|SLOTNUM_GETSLOT
-c_func
-(paren
-id|get_node_slotid
-c_func
-(paren
-id|nasid
-)paren
-)paren
-comma
-id|SLOTNUM_GETSLOT
-c_func
-(paren
-id|get_widget_slotnum
-c_func
-(paren
-id|xbownum
-comma
-id|widgetnum
-)paren
-)paren
-)paren
-)paren
-(brace
-r_goto
-id|do_assignment
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* ifndef BRINGUP */
 multiline_comment|/*&n;&t;&t; * Do a round-robin assignment among the volunteer nodes.&n;&t;&t; */
 id|hubv
 op_assign
@@ -841,7 +702,7 @@ c_func
 id|nasid
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;iograph_early_init: Found board 0x%p&bslash;n&quot;
@@ -868,7 +729,7 @@ c_func
 id|board
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;iograph_early_init: Found board 0x%p&bslash;n&quot;
@@ -884,7 +745,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 multiline_comment|/* There is an identical definition of this in os/scheduler/runq.c */
 DECL|macro|INIT_COOKIE
 mdefine_line|#define INIT_COOKIE(cookie) cookie.must_run = 0; cookie.cpu = PDA_RUNANYWHERE
@@ -1018,17 +879,15 @@ id|cookie
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* LATER */
+macro_line|#ifdef LINUX_KERNEL_THREADS
 DECL|variable|io_init_sema
 r_static
-id|sema_t
-id|io_init_sema
-suffix:semicolon
-macro_line|#endif&t;/* !CONFIG_IA64_SGI_IO */
-DECL|variable|io_init_sema
 r_struct
 id|semaphore
 id|io_init_sema
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Let boot processor know that we&squot;re done initializing our node&squot;s IO&n; * and then exit.&n; */
 multiline_comment|/* ARGSUSED */
 r_static
@@ -1044,8 +903,8 @@ id|cpu_cookie_t
 id|c
 )paren
 (brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
 multiline_comment|/* Let boot processor know that we&squot;re done. */
+macro_line|#ifdef LINUX_KERNEL_THREADS
 id|up
 c_func
 (paren
@@ -1053,6 +912,8 @@ op_amp
 id|io_init_sema
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef LATER
 multiline_comment|/* This is for the setnoderun done when the io_init thread&n;&t; * started &n;&t; */
 id|restorenoderun
 c_func
@@ -1124,7 +985,6 @@ id|IIO_LLP_CSR_IS_UP
 (brace
 multiline_comment|/* TBD: Put hub into &quot;indirect&quot; mode */
 multiline_comment|/*&n;&t;&t; * We&squot;re able to read from a widget because our hub&squot;s &n;&t;&t; * WIDGET_ID was set up earlier.&n;&t;&t; */
-macro_line|#ifdef&t;BRINGUP
 id|widgetreg_t
 id|widget_id
 op_assign
@@ -1146,7 +1006,7 @@ op_plus
 id|WIDGET_ID
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;early_probe_for_widget: Hub Vertex 0x%p is UP widget_id = 0x%x Register 0x%p&bslash;n&quot;
@@ -1173,19 +1033,6 @@ id|WIDGET_ID
 )paren
 )paren
 suffix:semicolon
-macro_line|#else&t;/* !BRINGUP */
-id|widgetreg_t
-id|widget_id
-op_assign
-id|XWIDGET_ID_READ
-c_func
-(paren
-id|nasid
-comma
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* BRINGUP */
 id|hwid-&gt;part_num
 op_assign
 id|XWIDGET_PART_NUM
@@ -1214,16 +1061,6 @@ multiline_comment|/* TBD: link reset */
 )brace
 r_else
 (brace
-id|panic
-c_func
-(paren
-l_string|&quot;&bslash;n&bslash;n**** early_probe_for_widget: Hub Vertex 0x%p is DOWN llp_csr_reg 0x%x ****&bslash;n&bslash;n&quot;
-comma
-id|hubv
-comma
-id|llp_csr_reg
-)paren
-suffix:semicolon
 id|hwid-&gt;part_num
 op_assign
 id|XWIDGET_PART_NUM_NONE
@@ -1369,7 +1206,13 @@ id|board
 op_assign
 l_int|NULL
 suffix:semicolon
-id|printk
+r_char
+id|buffer
+(braket
+l_int|16
+)braket
+suffix:semicolon
+id|DBG
 c_func
 (paren
 l_string|&quot;&bslash;nio_xswitch_widget_init: hubv 0x%p, xswitchv 0x%p, widgetnum 0x%x&bslash;n&quot;
@@ -1520,13 +1363,13 @@ id|module_id
 suffix:semicolon
 macro_line|#ifdef XBRIDGE_REGS_SIM
 multiline_comment|/* hardwire for now...could do this with something like:&n;&t;&t; * xbow_soft_t soft = hwgraph_fastinfo_get(vhdl);&n;&t;&t; * xbow_t xbow = soft-&gt;base;&n;&t;&t; * xbowreg_t xwidget_id = xbow-&gt;xb_wid_id;&n;&t;&t; * but I don&squot;t feel like figuring out vhdl right now..&n;&t;&t; * and I know for a fact the answer is 0x2d000049 &n;&t;&t; */
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_xswitch_widget_init: XBRIDGE_REGS_SIM FIXME: reading xwidget id: hardwired to xbridge (0x2d000049).&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;XWIDGET_PART_NUM(0x2d000049)= 0x%x&bslash;n&quot;
@@ -1582,12 +1425,25 @@ comma
 id|KLTYPE_IOBRICK
 )paren
 suffix:semicolon
+id|DBG
+c_func
+(paren
+l_string|&quot;io_xswitch_widget_init: Board 0x%p&bslash;n&quot;
+comma
+id|board
+)paren
+suffix:semicolon
+(brace
+id|lboard_t
+id|dummy
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|board
 )paren
-id|printk
+(brace
+id|DBG
 c_func
 (paren
 l_string|&quot;io_xswitch_widget_init: Found KLTYPE_IOBRICK Board 0x%p brd_type 0x%x&bslash;n&quot;
@@ -1597,6 +1453,22 @@ comma
 id|board-&gt;brd_type
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|DBG
+c_func
+(paren
+l_string|&quot;io_xswitch_widget_init: FIXME did not find IOBOARD&bslash;n&quot;
+)paren
+suffix:semicolon
+id|board
+op_assign
+op_amp
+id|dummy
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n;&t;&t;&t; * BRINGUP&n;&t; &t;&t; * Make sure we really want to say xbrick, pbrick,&n;&t;&t;&t; * etc. rather than XIO, graphics, etc.&n;&t; &t;&t; */
 macro_line|#ifdef SUPPORT_PRINTING_M_FORMAT
 id|sprintf
@@ -1605,15 +1477,6 @@ id|pathname
 comma
 id|EDGE_LBL_MODULE
 l_string|&quot;/%M/&quot;
-macro_line|#else
-id|sprintf
-c_func
-(paren
-id|pathname
-comma
-id|EDGE_LBL_MODULE
-l_string|&quot;/%x/&quot;
-macro_line|#endif
 l_string|&quot;%cbrick&quot;
 l_string|&quot;/%s/%d&quot;
 comma
@@ -1625,6 +1488,46 @@ id|cnode
 op_member_access_from_pointer
 id|module_id
 comma
+macro_line|#else
+id|memset
+c_func
+(paren
+id|buffer
+comma
+l_int|0
+comma
+l_int|16
+)paren
+suffix:semicolon
+id|format_module_id
+c_func
+(paren
+id|buffer
+comma
+id|NODEPDA
+c_func
+(paren
+id|cnode
+)paren
+op_member_access_from_pointer
+id|module_id
+comma
+id|MODULE_FORMAT_BRIEF
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|pathname
+comma
+id|EDGE_LBL_MODULE
+l_string|&quot;/%s/&quot;
+l_string|&quot;%cbrick&quot;
+l_string|&quot;/%s/%d&quot;
+comma
+id|buffer
+comma
+macro_line|#endif
 macro_line|#ifdef BRINGUP
 (paren
 id|board-&gt;brd_type
@@ -1679,7 +1582,7 @@ id|widgetnum
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_xswitch_widget_init: path= %s&bslash;n&quot;
@@ -1788,7 +1691,7 @@ op_member_access_from_pointer
 id|module_id
 suffix:semicolon
 macro_line|#ifdef XBRIDGE_REGS_SIM
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_xswitch_widget_init: XBRIDGE_REGS_SIM FIXME: reading xwidget id: hardwired to xbridge (0x2d000049).&bslash;n&quot;
@@ -1918,20 +1821,12 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; &t; * Create the vertex for the widget, &n;&t;&t;&t;&t; * using the decimal &n;&t;&t;&t; &t; * widgetnum as the name of the primary edge.&n;&t;&t;&t; &t; */
 macro_line|#ifdef SUPPORT_PRINTING_M_FORMAT
 id|sprintf
-(paren
-id|pathname
-comma
-id|EDGE_LBL_MODULE
-l_string|&quot;/%M/&quot;
-macro_line|#else
-id|sprintf
 c_func
 (paren
 id|pathname
 comma
 id|EDGE_LBL_MODULE
-l_string|&quot;/%x/&quot;
-macro_line|#endif
+l_string|&quot;/%M/&quot;
 id|EDGE_LBL_SLOT
 l_string|&quot;/%s/%s&quot;
 comma
@@ -1948,6 +1843,51 @@ comma
 id|new_name
 )paren
 suffix:semicolon
+macro_line|#else
+id|memset
+c_func
+(paren
+id|buffer
+comma
+l_int|0
+comma
+l_int|16
+)paren
+suffix:semicolon
+id|format_module_id
+c_func
+(paren
+id|buffer
+comma
+id|NODEPDA
+c_func
+(paren
+id|cnode
+)paren
+op_member_access_from_pointer
+id|module_id
+comma
+id|MODULE_FORMAT_BRIEF
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|pathname
+comma
+id|EDGE_LBL_MODULE
+l_string|&quot;/%s/&quot;
+id|EDGE_LBL_SLOT
+l_string|&quot;/%s/%s&quot;
+comma
+id|buffer
+comma
+id|slotname
+comma
+id|new_name
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 id|rc
 op_assign
@@ -1962,7 +1902,7 @@ op_amp
 id|widgetv
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_xswitch_widget_init: (2) path= %s&bslash;n&quot;
@@ -2004,7 +1944,7 @@ comma
 id|widgetnum
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_xswitch_widget_init: FIXME hwgraph_edge_add %s xswitchv 0x%p, widgetv 0x%p&bslash;n&quot;
@@ -2045,7 +1985,7 @@ id|widget_id
 op_assign
 l_int|0x2d000049
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_xswitch_widget_init: XBRIDGE_REGS_SIM FIXME: id hardwired to widget_id&bslash;n&quot;
@@ -2160,7 +2100,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_init_xswitch_widgets: xswitchv 0x%p for cnode %d&bslash;n&quot;
@@ -2185,14 +2125,6 @@ id|widgetnum
 op_increment
 )paren
 (brace
-macro_line|#ifdef BRINGUP
-r_if
-c_cond
-(paren
-id|widgetnum
-op_ne
-l_int|0xe
-)paren
 id|io_xswitch_widget_init
 c_func
 (paren
@@ -2209,24 +2141,6 @@ comma
 id|aa
 )paren
 suffix:semicolon
-macro_line|#else
-id|io_xswitch_widget_init
-c_func
-(paren
-id|xswitchv
-comma
-id|cnodeid_to_vertex
-c_func
-(paren
-id|cnode
-)paren
-comma
-id|widgetnum
-comma
-id|aa
-)paren
-suffix:semicolon
-macro_line|#endif /* BRINGUP */
 )brace
 multiline_comment|/* &n;&t; * Wait for parallel attach threads, if any, to complete.&n;&t; */
 id|async_attach_waitall
@@ -2483,13 +2397,21 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-id|cmn_err
+macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;Could not find PROM info for vertex %v, &quot;
+l_string|&quot;FRU analyzer may fail&quot;
+comma
+id|vhdl
+)paren
+suffix:semicolon
+macro_line|#else
+id|PRINT_WARNING
+c_func
+(paren
+l_string|&quot;Could not find PROM info for vertex 0x%x, &quot;
 l_string|&quot;FRU analyzer may fail&quot;
 comma
 id|vhdl
@@ -2570,14 +2492,6 @@ id|nodepda_t
 op_star
 id|npdap
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-id|sema_t
-op_star
-id|peer_sema
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#else
 r_struct
 id|semaphore
 op_star
@@ -2585,7 +2499,6 @@ id|peer_sema
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 r_uint32
 id|widget_partnum
 suffix:semicolon
@@ -2598,7 +2511,15 @@ id|c
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+r_extern
+r_int
+id|hubdev_docallouts
+c_func
+(paren
+id|devfs_handle_t
+)paren
+suffix:semicolon
+macro_line|#ifdef LATER
 multiline_comment|/* Try to execute on the node that we&squot;re initializing. */
 id|c
 op_assign
@@ -2626,7 +2547,7 @@ c_func
 id|cnodeid
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_init_node: Initialize IO for cnode %d hubv(node) 0x%p npdap 0x%p&bslash;n&quot;
@@ -2646,14 +2567,12 @@ op_ne
 id|GRAPH_VERTEX_NONE
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SGI_IP35 || CONFIG_IA64_SGI_SN1 || CONFIG_IA64_GENERIC
 id|hubdev_docallouts
 c_func
 (paren
 id|hubv
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Set up the dependent routers if we have any.&n;&t; */
 id|npda_rip
 op_assign
@@ -2690,7 +2609,7 @@ id|npda_rip-&gt;router_next
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Read mfg info on this hub&n;&t; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 id|printk
 c_func
 (paren
@@ -2703,7 +2622,7 @@ c_func
 id|hubv
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
+macro_line|#endif /* LATER */
 multiline_comment|/* &n;&t; * If nothing connected to this hub&squot;s xtalk port, we&squot;re done.&n;&t; */
 id|early_probe_for_widget
 c_func
@@ -2756,7 +2675,7 @@ suffix:semicolon
 id|index
 op_increment
 )paren
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;Interfering with device probing!!!&bslash;n&quot;
@@ -2765,7 +2684,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* io_init_done takes cpu cookie as 2nd argument &n;&t;&t; * to do a restorenoderun for the setnoderun done &n;&t;&t; * at the start of this thread &n;&t;&t; */
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;**** io_init_node: Node&squot;s 0x%p hub widget has XWIDGET_PART_NUM_NONE ****&bslash;n&quot;
@@ -2773,13 +2692,7 @@ comma
 id|hubv
 )paren
 suffix:semicolon
-id|io_init_done
-c_func
-(paren
-id|cnodeid
-comma
-id|c
-)paren
+r_return
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
 )brace
@@ -2814,7 +2727,7 @@ op_amp
 id|switchv
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_init_node: Created &squot;xtalk&squot; entry to &squot;../node/&squot; xtalk vertex 0x%p&bslash;n&quot;
@@ -2843,7 +2756,7 @@ comma
 id|EDGE_LBL_IO
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_init_node: Created symlink &squot;io&squot; from ../node/io to ../node/xtalk &bslash;n&quot;
@@ -2928,7 +2841,7 @@ op_amp
 id|WIDGET_WIDGET_ID
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_init_node: Found XBRIDGE widget_partnum= 0x%x&bslash;n&quot;
@@ -2951,7 +2864,7 @@ id|XXBOW_WIDGET_PART_NUM
 )paren
 (brace
 multiline_comment|/* &n;&t;&t; * Xbow control register does not have the widget ID field.&n;&t;&t; * So, hard code the widget ID to be zero.&n;&t;&t; */
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_init_node: Found XBOW widget_partnum= 0x%x&bslash;n&quot;
@@ -3092,7 +3005,7 @@ op_amp
 id|widgetv
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;io_init_node: Created &squot;%s&squot; to &squot;..node/xtalk/&squot; vertex 0x%p&bslash;n&quot;
@@ -3249,7 +3162,7 @@ c_cond
 id|peer_sema
 )paren
 (brace
-id|up
+id|mutex_unlock
 c_func
 (paren
 id|peer_sema
@@ -3260,7 +3173,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Wait &squot;til master is done assigning widgets. */
-id|down
+id|mutex_lock
 c_func
 (paren
 op_amp
@@ -3302,7 +3215,7 @@ suffix:semicolon
 id|index
 op_increment
 )paren
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;Interfering with device probing!!!&bslash;n&quot;
@@ -3336,7 +3249,7 @@ comma
 id|c
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;&bslash;nio_init_node: DONE INITIALIZED ALL I/O FOR CNODEID %d&bslash;n&bslash;n&quot;
@@ -3347,9 +3260,6 @@ suffix:semicolon
 )brace
 DECL|macro|IOINIT_STKSZ
 mdefine_line|#define IOINIT_STKSZ&t;(16 * 1024)
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-macro_line|#include &lt;sys/sn/iograph.h&gt;
-macro_line|#endif
 DECL|macro|__DEVSTR1
 mdefine_line|#define __DEVSTR1 &t;&quot;/../.master/&quot;
 DECL|macro|__DEVSTR2
@@ -3514,6 +3424,16 @@ l_int|4
 )brace
 comma
 (brace
+l_string|&quot;15/&quot;
+id|EDGE_LBL_PCI
+l_string|&quot;/6/ohci/0/&quot;
+id|EDGE_LBL_SCSI_CTLR
+l_string|&quot;/0&quot;
+comma
+l_int|5
+)brace
+comma
+(brace
 l_int|NULL
 comma
 op_minus
@@ -3668,11 +3588,7 @@ macro_line|#else
 macro_line|#pragma error Bomb!
 macro_line|#endif
 )brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-macro_line|#include &lt;sys/asm/sn/ioerror_handling.h&gt;
-macro_line|#else
 macro_line|#include &lt;asm/sn/ioerror_handling.h&gt;
-macro_line|#endif
 r_extern
 id|devfs_handle_t
 id|ioc3_console_vhdl_get
@@ -3720,7 +3636,7 @@ suffix:semicolon
 id|devfs_handle_t
 id|baseio_console_conn
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;sys_critical_graph_init: FIXME.&bslash;n&quot;
@@ -4073,7 +3989,7 @@ id|pci_vhdl
 comma
 id|enet_vhdl
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;baseio_ctlr_num_set; FIXME&bslash;n&quot;
@@ -4274,21 +4190,17 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
 r_if
 c_cond
 (paren
 id|rtn_val
 )paren
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;sn00_rrb_alloc: pcibr_alloc_all_rrbs failed&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4449,21 +4361,17 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
 r_if
 c_cond
 (paren
 id|rtn_val
 )paren
-id|cmn_err
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;sn00_rrb_alloc: pcibr_alloc_all_rrbs failed&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Initialize all I/O devices.  Starting closest to nodes, probe and&n; * initialize outward.&n; */
 r_void
@@ -4475,7 +4383,7 @@ r_void
 )paren
 (brace
 multiline_comment|/* Governor on init threads..bump up when safe &n;&t; * (beware many devfs races) &n;&t; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 r_int
 id|io_init_node_threads
 op_assign
@@ -4487,13 +4395,17 @@ id|cnodeid
 comma
 id|active
 suffix:semicolon
-id|init_MUTEX
+macro_line|#ifdef LINUX_KERNEL_THREADS
+id|sema_init
 c_func
 (paren
 op_amp
 id|io_init_sema
+comma
+l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|active
 op_assign
 l_int|0
@@ -4513,7 +4425,7 @@ id|cnodeid
 op_increment
 )paren
 (brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LINUX_KERNEL_THREADS
 r_char
 id|thread_name
 (braket
@@ -4576,7 +4488,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#else
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;init_all_devices: Calling io_init_node() for cnode %d&bslash;n&quot;
@@ -4590,7 +4502,7 @@ c_func
 id|cnodeid
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;init_all_devices: Done io_init_node() for cnode %d&bslash;n&quot;
@@ -4598,11 +4510,11 @@ comma
 id|cnodeid
 )paren
 suffix:semicolon
-macro_line|#endif /* !CONFIG_IA64_SGI_IO */
+macro_line|#endif /* LINUX_KERNEL_THREADS */
+macro_line|#ifdef LINUX_KERNEL_THREADS
 multiline_comment|/* Limit how many nodes go at once, to not overload hwgraph */
 multiline_comment|/* TBD: Should timeout */
-macro_line|#ifdef AA_DEBUG
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;started thread for cnode %d&bslash;n&quot;
@@ -4610,8 +4522,6 @@ comma
 id|cnodeid
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef LINUX_KERNEL_THREADS
 id|active
 op_increment
 suffix:semicolon
@@ -4649,7 +4559,7 @@ l_int|0
 )paren
 (brace
 macro_line|#ifdef AA_DEBUG
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;waiting, %d still active&bslash;n&quot;
@@ -4658,7 +4568,7 @@ id|active
 )paren
 suffix:semicolon
 macro_line|#endif
-id|sema
+id|down
 c_func
 (paren
 op_amp
@@ -4850,7 +4760,7 @@ id|viable_found
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;Only controller numbers 0..%d  are supported for&bslash;n&quot;
@@ -4860,19 +4770,19 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;prom &bslash;&quot;root&bslash;&quot; variables of the form dksXdXsX.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;To use another disk you must use the full hardware graph path&bslash;n&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;Possible controller numbers for use in &squot;dksXdXsX&squot; on this system: &quot;
@@ -4904,7 +4814,7 @@ op_ne
 id|GRAPH_VERTEX_NONE
 )paren
 (brace
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;%d &quot;
@@ -4923,20 +4833,20 @@ c_cond
 (paren
 id|viable_found
 )paren
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|DBG
 c_func
 (paren
 l_string|&quot;none found!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef LATER
 r_if
 c_cond
 (paren
@@ -5099,6 +5009,447 @@ c_func
 id|devnm
 comma
 id|tmpnm
+)paren
+suffix:semicolon
+)brace
+r_static
+DECL|variable|io_brick_tab
+r_struct
+id|io_brick_map_s
+id|io_brick_tab
+(braket
+)braket
+op_assign
+(brace
+multiline_comment|/* Ibrick widget number to PCI bus number map */
+(brace
+l_char|&squot;I&squot;
+comma
+multiline_comment|/* Ibrick type    */
+multiline_comment|/*  PCI Bus #                                  Widget #       */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* 0x0 - 0x7      */
+l_int|0
+comma
+multiline_comment|/* 0x8            */
+l_int|0
+comma
+multiline_comment|/* 0x9            */
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* 0xa - 0xb      */
+l_int|0
+comma
+multiline_comment|/* 0xc            */
+l_int|0
+comma
+multiline_comment|/* 0xd            */
+l_int|2
+comma
+multiline_comment|/* 0xe            */
+l_int|1
+multiline_comment|/* 0xf            */
+)brace
+)brace
+comma
+multiline_comment|/* Pbrick widget number to PCI bus number map */
+(brace
+l_char|&squot;P&squot;
+comma
+multiline_comment|/* Pbrick type    */
+multiline_comment|/*  PCI Bus #                                  Widget #       */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* 0x0 - 0x7      */
+l_int|2
+comma
+multiline_comment|/* 0x8            */
+l_int|1
+comma
+multiline_comment|/* 0x9            */
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* 0xa - 0xb      */
+l_int|5
+comma
+multiline_comment|/* 0xc            */
+l_int|6
+comma
+multiline_comment|/* 0xd            */
+l_int|4
+comma
+multiline_comment|/* 0xe            */
+l_int|3
+multiline_comment|/* 0xf            */
+)brace
+)brace
+comma
+multiline_comment|/* Xbrick widget to XIO slot map */
+(brace
+l_char|&squot;X&squot;
+comma
+multiline_comment|/* Xbrick type    */
+multiline_comment|/*  XIO Slot #                                 Widget #       */
+(brace
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* 0x0 - 0x7      */
+l_int|1
+comma
+multiline_comment|/* 0x8            */
+l_int|2
+comma
+multiline_comment|/* 0x9            */
+l_int|0
+comma
+l_int|0
+comma
+multiline_comment|/* 0xa - 0xb      */
+l_int|3
+comma
+multiline_comment|/* 0xc            */
+l_int|4
+comma
+multiline_comment|/* 0xd            */
+l_int|0
+comma
+multiline_comment|/* 0xe            */
+l_int|0
+multiline_comment|/* 0xf            */
+)brace
+)brace
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Use the brick&squot;s type to map a widget number to a meaningful int&n; */
+r_int
+DECL|function|io_brick_map_widget
+id|io_brick_map_widget
+c_func
+(paren
+r_char
+id|brick_type
+comma
+r_int
+id|widget_num
+)paren
+(brace
+r_int
+id|num_bricks
+comma
+id|i
+suffix:semicolon
+multiline_comment|/* Calculate number of bricks in table */
+id|num_bricks
+op_assign
+r_sizeof
+(paren
+id|io_brick_tab
+)paren
+op_div
+r_sizeof
+(paren
+id|io_brick_tab
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+multiline_comment|/* Look for brick prefix in table */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|num_bricks
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|brick_type
+op_eq
+id|io_brick_tab
+(braket
+id|i
+)braket
+dot
+id|ibm_type
+)paren
+r_return
+id|io_brick_tab
+(braket
+id|i
+)braket
+dot
+id|ibm_map_wid
+(braket
+id|widget_num
+)braket
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Use the device&squot;s vertex to map the device&squot;s widget to a meaningful int&n; */
+r_int
+DECL|function|io_path_map_widget
+id|io_path_map_widget
+c_func
+(paren
+id|devfs_handle_t
+id|vertex
+)paren
+(brace
+r_char
+id|hw_path_name
+(braket
+id|MAXDEVNAME
+)braket
+suffix:semicolon
+r_char
+op_star
+id|wp
+comma
+op_star
+id|bp
+comma
+op_star
+id|sp
+op_assign
+l_int|NULL
+suffix:semicolon
+r_int
+id|widget_num
+suffix:semicolon
+r_int
+id|atoi
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
+r_int
+id|hwgraph_vertex_name_get
+c_func
+(paren
+id|devfs_handle_t
+id|vhdl
+comma
+r_char
+op_star
+id|buf
+comma
+id|uint
+id|buflen
+)paren
+suffix:semicolon
+multiline_comment|/* Get the full path name of the vertex */
+r_if
+c_cond
+(paren
+id|GRAPH_SUCCESS
+op_ne
+id|hwgraph_vertex_name_get
+c_func
+(paren
+id|vertex
+comma
+id|hw_path_name
+comma
+id|MAXDEVNAME
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Find the widget number in the path name */
+id|wp
+op_assign
+id|strstr
+c_func
+(paren
+id|hw_path_name
+comma
+l_string|&quot;/&quot;
+id|EDGE_LBL_XTALK
+l_string|&quot;/&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|wp
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|widget_num
+op_assign
+id|atoi
+c_func
+(paren
+id|wp
+op_plus
+l_int|7
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|widget_num
+template_param
+id|XBOW_PORT_F
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Find &quot;brick&quot; in the path name */
+id|bp
+op_assign
+id|strstr
+c_func
+(paren
+id|hw_path_name
+comma
+l_string|&quot;brick&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bp
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Find preceding slash */
+id|sp
+op_assign
+id|bp
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|sp
+OG
+id|hw_path_name
+)paren
+(brace
+id|sp
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|sp
+op_eq
+l_char|&squot;/&squot;
+)paren
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Invalid if no preceding slash */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sp
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* Bump slash pointer to &quot;brick&quot; prefix */
+id|sp
+op_increment
+suffix:semicolon
+multiline_comment|/*&n;         * Verify &quot;brick&quot; prefix length;  valid exaples:&n;         * &squot;I&squot; from &quot;/Ibrick&quot;&n;         * &squot;P&squot; from &quot;/Pbrick&quot;&n;         * &squot;X&squot; from &quot;/Xbrick&quot;&n;         */
+r_if
+c_cond
+(paren
+(paren
+id|bp
+op_minus
+id|sp
+)paren
+op_ne
+l_int|1
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+(paren
+id|io_brick_map_widget
+c_func
+(paren
+op_star
+id|sp
+comma
+id|widget_num
+)paren
 )paren
 suffix:semicolon
 )brace

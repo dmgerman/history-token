@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * PAL &amp; SAL emulation.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * For the HP simulator, this file gets include in boot/bootloader.c.&n; * For SoftSDV, this file gets included in sys_softsdv.c.&n; */
+multiline_comment|/*&n; * PAL &amp; SAL emulation.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * For the HP simulator, this file gets include in boot/bootloader.c.&n; * For SoftSDV, this file gets included in sys_softsdv.c.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_PCI
 macro_line|# include &lt;linux/pci.h&gt;
@@ -17,6 +17,12 @@ r_char
 id|fw_mem
 (braket
 (paren
+r_sizeof
+(paren
+r_struct
+id|ia64_boot_param
+)paren
+op_plus
 r_sizeof
 (paren
 id|efi_system_table_t
@@ -609,6 +615,43 @@ id|p6
 comma
 id|p7
 op_assign
+l_int|19
+comma
+id|r28
+multiline_comment|/* PAL_RSE_INFO */
+(paren
+id|p7
+)paren
+id|br.cond.sptk.few
+l_float|1f
+id|mov
+id|r8
+op_assign
+l_int|0
+multiline_comment|/* status = 0 */
+id|mov
+id|r9
+op_assign
+l_int|96
+multiline_comment|/* num phys stacked */
+id|mov
+id|r10
+op_assign
+l_int|0
+multiline_comment|/* hints */
+id|mov
+id|r11
+op_assign
+l_int|0
+id|br.cond.sptk.few
+id|rp
+l_int|1
+suffix:colon
+id|cmp.eq
+id|p6
+comma
+id|p7
+op_assign
 l_int|1
 comma
 id|r28
@@ -939,22 +982,10 @@ r_case
 id|SAL_FREQ_BASE_INTERVAL_TIMER
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * Is this supposed to be the cr.itc frequency&n;&t;&t;&t; * or something platform specific?  The SAL&n;&t;&t;&t; * doc ain&squot;t exactly clear on this...&n;&t;&t;&t; */
-macro_line|#if defined(CONFIG_IA64_SOFTSDV_HACKS)
-id|r9
-op_assign
-l_int|4000000
-suffix:semicolon
-macro_line|#elif defined(CONFIG_IA64_SDV)
-id|r9
-op_assign
-l_int|300000000
-suffix:semicolon
-macro_line|#else
 id|r9
 op_assign
 l_int|700000000
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
@@ -1317,7 +1348,9 @@ op_star
 id|addr
 suffix:semicolon
 )brace
-r_void
+r_struct
+id|ia64_boot_param
+op_star
 DECL|function|sys_fw_init
 id|sys_fw_init
 (paren
@@ -1518,6 +1551,22 @@ r_sizeof
 (paren
 op_star
 id|efi_memmap
+)paren
+suffix:semicolon
+id|bp
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|cp
+suffix:semicolon
+id|cp
+op_add_assign
+r_sizeof
+(paren
+op_star
+id|bp
 )paren
 suffix:semicolon
 id|cmd_line
@@ -1950,14 +1999,14 @@ suffix:semicolon
 id|md-&gt;num_pages
 op_assign
 (paren
-l_int|64
+l_int|128
 op_star
 id|MB
 )paren
 op_rshift
 l_int|12
 suffix:semicolon
-multiline_comment|/* 64MB (in 4KB pages) */
+multiline_comment|/* 128MB (in 4KB pages) */
 id|md-&gt;attribute
 op_assign
 id|EFI_MEMORY_WB
@@ -1973,7 +2022,7 @@ l_int|1
 suffix:semicolon
 id|md-&gt;type
 op_assign
-id|EFI_RUNTIME_SERVICES_DATA
+id|EFI_PAL_CODE
 suffix:semicolon
 id|md-&gt;pad
 op_assign
@@ -1987,7 +2036,9 @@ id|MB
 suffix:semicolon
 id|md-&gt;virt_addr
 op_assign
-l_int|0
+l_int|1
+op_star
+id|MB
 suffix:semicolon
 id|md-&gt;num_pages
 op_assign
@@ -2049,14 +2100,6 @@ op_assign
 id|EFI_MEMORY_WB
 suffix:semicolon
 macro_line|#endif
-id|bp
-op_assign
-id|id
-c_func
-(paren
-id|ZERO_PAGE_ADDR
-)paren
-suffix:semicolon
 id|bp-&gt;efi_systab
 op_assign
 id|__pa
@@ -2118,13 +2161,12 @@ id|bp-&gt;console_info.orig_y
 op_assign
 l_int|24
 suffix:semicolon
-id|bp-&gt;num_pci_vectors
-op_assign
-l_int|0
-suffix:semicolon
 id|bp-&gt;fpswa
 op_assign
 l_int|0
+suffix:semicolon
+r_return
+id|bp
 suffix:semicolon
 )brace
 eof

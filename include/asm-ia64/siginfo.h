@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_SIGINFO_H
 DECL|macro|_ASM_IA64_SIGINFO_H
 mdefine_line|#define _ASM_IA64_SIGINFO_H
-multiline_comment|/*&n; * Copyright (C) 1998, 1999 Hewlett-Packard Co&n; * Copyright (C) 1998, 1999 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 DECL|union|sigval
 r_typedef
@@ -184,6 +184,29 @@ DECL|member|_sigpoll
 )brace
 id|_sigpoll
 suffix:semicolon
+multiline_comment|/* SIGPROF */
+r_struct
+(brace
+DECL|member|_pid
+id|pid_t
+id|_pid
+suffix:semicolon
+multiline_comment|/* which child */
+DECL|member|_uid
+id|uid_t
+id|_uid
+suffix:semicolon
+multiline_comment|/* sender&squot;s uid */
+DECL|member|_pfm_ovfl_counters
+r_int
+r_int
+id|_pfm_ovfl_counters
+suffix:semicolon
+multiline_comment|/* which PMU counter overflowed */
+DECL|member|_sigprof
+)brace
+id|_sigprof
+suffix:semicolon
 DECL|member|_sifields
 )brace
 id|_sifields
@@ -219,6 +242,8 @@ DECL|macro|si_band
 mdefine_line|#define si_band&t;&t;_sifields._sigpoll._band
 DECL|macro|si_fd
 mdefine_line|#define si_fd&t;&t;_sifields._sigpoll._fd
+DECL|macro|si_pfm_ovfl
+mdefine_line|#define si_pfm_ovfl&t;_sifields._sigprof._pfm_ovfl_counters
 multiline_comment|/*&n; * si_code values&n; * Positive values for kernel-generated signals.&n; */
 macro_line|#ifdef __KERNEL__
 DECL|macro|__SI_MASK
@@ -235,6 +260,8 @@ DECL|macro|__SI_CHLD
 mdefine_line|#define __SI_CHLD&t;(4 &lt;&lt; 16)
 DECL|macro|__SI_RT
 mdefine_line|#define __SI_RT&t;&t;(5 &lt;&lt; 16)
+DECL|macro|__SI_PROF
+mdefine_line|#define __SI_PROF&t;(6 &lt;&lt; 16)
 DECL|macro|__SI_CODE
 mdefine_line|#define __SI_CODE(T,N)&t;((T) &lt;&lt; 16 | ((N) &amp; 0xffff))
 macro_line|#else
@@ -382,7 +409,10 @@ DECL|macro|POLL_HUP
 mdefine_line|#define POLL_HUP&t;(__SI_POLL|6)&t;/* device disconnected */
 DECL|macro|NSIGPOLL
 mdefine_line|#define NSIGPOLL&t;6
-multiline_comment|/*&n; * sigevent definitions&n; * &n; * It seems likely that SIGEV_THREAD will have to be handled from &n; * userspace, libpthread transmuting it to SIGEV_SIGNAL, which the&n; * thread manager then catches and does the appropriate nonsense.&n; * However, everything is written out here so as to not get lost.&n; */
+multiline_comment|/*&n; * SIGPROF si_codes&n; */
+DECL|macro|PROF_OVFL
+mdefine_line|#define PROF_OVFL&t;(__SI_PROF|1)  /* some counters overflowed */
+multiline_comment|/*&n; * sigevent definitions&n; *&n; * It seems likely that SIGEV_THREAD will have to be handled from userspace, libpthread&n; * transmuting it to SIGEV_SIGNAL, which the thread manager then catches and does the&n; * appropriate nonsense.  However, everything is written out here so as to not get lost.&n; */
 DECL|macro|SIGEV_SIGNAL
 mdefine_line|#define SIGEV_SIGNAL&t;0&t;/* notify via signal */
 DECL|macro|SIGEV_NONE
@@ -516,6 +546,20 @@ suffix:semicolon
 r_extern
 r_int
 id|copy_siginfo_to_user
+c_func
+(paren
+id|siginfo_t
+op_star
+id|to
+comma
+id|siginfo_t
+op_star
+id|from
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|copy_siginfo_from_user
 c_func
 (paren
 id|siginfo_t

@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_PGTABLE_H
 DECL|macro|_ASM_IA64_PGTABLE_H
 mdefine_line|#define _ASM_IA64_PGTABLE_H
-multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the IA-64 page table tree.&n; *&n; * This hopefully works with any (fixed) IA-64 page-size, as defined&n; * in &lt;asm/page.h&gt; (currently 8192).&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -125,10 +125,6 @@ mdefine_line|#define PTRS_PER_PMD&t;(__IA64_UL(1) &lt;&lt; (PAGE_SHIFT-3))
 multiline_comment|/*&n; * Definitions for third level:&n; */
 DECL|macro|PTRS_PER_PTE
 mdefine_line|#define PTRS_PER_PTE&t;(__IA64_UL(1) &lt;&lt; (PAGE_SHIFT-3))
-macro_line|# ifndef __ASSEMBLY__
-macro_line|#include &lt;asm/bitops.h&gt;
-macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * All the normal masks have the &quot;page accessed&quot; bits on, as any time&n; * they are used, the page is accessed. They are cleared only by the&n; * page-out routines.  On the other hand, we do NOT turn on the&n; * execute bit on pages that are mapped writable.  For those pages, we&n; * turn on the X bit only when the program attempts to actually&n; * execute code in such a page (it&squot;s a &quot;lazy execute bit&quot;, if you&n; * will).  This lets reduce the amount of i-cache flushing we have to&n; * do for data pages such as stack and heap pages.&n; */
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_PROTNONE | _PAGE_A)
@@ -142,6 +138,11 @@ DECL|macro|PAGE_GATE
 mdefine_line|#define PAGE_GATE&t;__pgprot(__ACCESS_BITS | _PAGE_PL_0 | _PAGE_AR_X_RX)
 DECL|macro|PAGE_KERNEL
 mdefine_line|#define PAGE_KERNEL&t;__pgprot(__DIRTY_BITS  | _PAGE_PL_0 | _PAGE_AR_RWX)
+macro_line|# ifndef __ASSEMBLY__
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Next come the mappings that determine how mmap() protection bits&n; * (PROT_EXEC, PROT_READ, PROT_WRITE, PROT_NONE) get implemented.  The&n; * _P version gets used for a private shared memory segment, the _S&n; * version gets used for a shared memory segment with MAP_SHARED on.&n; * In a private shared memory segment, we do a copy-on-write if a task&n; * attempts to write to the page.&n; */
 multiline_comment|/* xwr */
 DECL|macro|__P000
@@ -203,7 +204,7 @@ r_return
 id|addr
 op_amp
 (paren
-id|my_cpu_data.unimpl_pa_mask
+id|local_cpu_data-&gt;unimpl_pa_mask
 )paren
 )paren
 op_eq
@@ -220,35 +221,15 @@ mdefine_line|#define set_pte(ptep, pteval)&t;(*(ptep) = (pteval))
 DECL|macro|RGN_SIZE
 mdefine_line|#define RGN_SIZE&t;(1UL &lt;&lt; 61)
 DECL|macro|RGN_MAP_LIMIT
-mdefine_line|#define RGN_MAP_LIMIT&t;(1UL &lt;&lt; (4*PAGE_SHIFT - 12))&t;/* limit of mappable area in region */
+mdefine_line|#define RGN_MAP_LIMIT&t;((1UL &lt;&lt; (4*PAGE_SHIFT - 12)) - PAGE_SIZE)&t;/* per region addr limit */
 DECL|macro|RGN_KERNEL
 mdefine_line|#define RGN_KERNEL&t;7
 DECL|macro|VMALLOC_START
-mdefine_line|#define VMALLOC_START&t;&t;(0xa000000000000000 + 2*PAGE_SIZE)
+mdefine_line|#define VMALLOC_START&t;&t;(0xa000000000000000 + 3*PAGE_SIZE)
 DECL|macro|VMALLOC_VMADDR
 mdefine_line|#define VMALLOC_VMADDR(x)&t;((unsigned long)(x))
 DECL|macro|VMALLOC_END
-mdefine_line|#define VMALLOC_END&t;&t;(0xa000000000000000 + RGN_MAP_LIMIT)
-multiline_comment|/*&n; * BAD_PAGETABLE is used when we need a bogus page-table, while&n; * BAD_PAGE is used for a bogus page.&n; *&n; * ZERO_PAGE is a global shared page that is always zero:  used&n; * for zero-mapped memory areas etc..&n; */
-r_extern
-id|pte_t
-id|ia64_bad_page
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-id|pmd_t
-op_star
-id|ia64_bad_pagetable
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|BAD_PAGETABLE
-mdefine_line|#define BAD_PAGETABLE&t;ia64_bad_pagetable()
-DECL|macro|BAD_PAGE
-mdefine_line|#define BAD_PAGE&t;ia64_bad_page()
+mdefine_line|#define VMALLOC_END&t;&t;(0xa000000000000000 + (1UL &lt;&lt; (4*PAGE_SHIFT - 9)))
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page,pgprot)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_t __pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;pte_val(__pte) = ((page - mem_map) &lt;&lt; PAGE_SHIFT) | pgprot_val(pgprot);&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
@@ -270,8 +251,6 @@ mdefine_line|#define pte_clear(pte)&t;&t;&t;(pte_val(*(pte)) = 0UL)
 multiline_comment|/* pte_page() returns the &quot;struct page *&quot; corresponding to the PTE: */
 DECL|macro|pte_page
 mdefine_line|#define pte_page(pte)&t;&t;&t;(mem_map + (unsigned long) ((pte_val(pte) &amp; _PFN_MASK) &gt;&gt; PAGE_SHIFT))
-DECL|macro|pmd_set
-mdefine_line|#define pmd_set(pmdp, ptep) &t;&t;(pmd_val(*(pmdp)) = __pa(ptep))
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;&t;(!pmd_val(pmd))
 DECL|macro|pmd_bad
@@ -282,8 +261,6 @@ DECL|macro|pmd_clear
 mdefine_line|#define pmd_clear(pmdp)&t;&t;&t;(pmd_val(*(pmdp)) = 0UL)
 DECL|macro|pmd_page
 mdefine_line|#define pmd_page(pmd)&t;&t;&t;((unsigned long) __va(pmd_val(pmd) &amp; _PFN_MASK))
-DECL|macro|pgd_set
-mdefine_line|#define pgd_set(pgdp, pmdp)&t;&t;(pgd_val(*(pgdp)) = __pa(pmdp))
 DECL|macro|pgd_none
 mdefine_line|#define pgd_none(pgd)&t;&t;&t;(!pgd_val(pgd))
 DECL|macro|pgd_bad
@@ -324,8 +301,13 @@ multiline_comment|/*&n; * Macro to make mark a page protection value as &quot;un
 DECL|macro|pgprot_noncached
 mdefine_line|#define pgprot_noncached(prot)&t;&t;__pgprot((pgprot_val(prot) &amp; ~_PAGE_MA_MASK) | _PAGE_MA_UC)
 multiline_comment|/*&n; * Macro to make mark a page protection value as &quot;write-combining&quot;.&n; * Note that &quot;protection&quot; is really a misnomer here as the protection&n; * value contains the memory attribute bits, dirty bits, and various&n; * other bits as well.  Accesses through a write-combining translation&n; * works bypasses the caches, but does allow for consecutive writes to&n; * be combined into single (but larger) write transactions.&n; */
+macro_line|#ifdef CONFIG_MCKINLEY_A0_SPECIFIC
 DECL|macro|pgprot_writecombine
-mdefine_line|#define pgprot_writecombine(prot)&t;__pgprot((pgprot_val(prot) &amp; ~_PAGE_MA_MASK) | _PAGE_MA_WC)
+macro_line|# define pgprot_writecombine(prot)&t;prot
+macro_line|#else
+DECL|macro|pgprot_writecombine
+macro_line|# define pgprot_writecombine(prot)&t;__pgprot((pgprot_val(prot) &amp; ~_PAGE_MA_MASK) | _PAGE_MA_WC)
+macro_line|#endif
 multiline_comment|/*&n; * Return the region index for virtual address ADDRESS.&n; */
 r_static
 r_inline

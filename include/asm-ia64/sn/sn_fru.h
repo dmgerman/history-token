@@ -1,7 +1,7 @@
-multiline_comment|/**************************************************************************&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;  *&n; *&t;&t; Copyright (C) 1992-1997, Silicon Graphics, Inc.&t;  *&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;  *&n; *  These coded instructions, statements, and computer programs&t; contain  *&n; *  unpublished&t; proprietary  information of Silicon Graphics, Inc., and  *&n; *  are protected by Federal copyright law.  They  may&t;not be disclosed  *&n; *  to&t;third  parties&t;or copied or duplicated in any form, in whole or  *&n; *  in part, without the prior written consent of Silicon Graphics, Inc.  *&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;  *&n; **************************************************************************/
-macro_line|#ifndef __SYS_SN_SN0_FRU_H__
-DECL|macro|__SYS_SN_SN0_FRU_H__
-mdefine_line|#define __SYS_SN_SN0_FRU_H__
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 1999-2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Patrick Gefre&n; */
+macro_line|#ifndef _ASM_SN_SN_FRU_H
+DECL|macro|_ASM_SN_SN_FRU_H
+mdefine_line|#define _ASM_SN_SN_FRU_H
 DECL|macro|MAX_DIMMS
 mdefine_line|#define MAX_DIMMS&t;&t;&t;8&t; /* max # of dimm banks */
 DECL|macro|MAX_PCIDEV
@@ -90,5 +90,5 @@ DECL|typedef|kf_pci_bus_t
 )brace
 id|kf_pci_bus_t
 suffix:semicolon
-macro_line|#endif /* #ifdef __SYS_SN_SN0_FRU_H__ */
+macro_line|#endif&t;/* _ASM_SN_SN_FRU_H */
 eof

@@ -83,5 +83,5 @@ id|FPU_REG
 r_const
 id|CONST_QNaN
 suffix:semicolon
-macro_line|#endif _REG_CONSTANT_H_
+macro_line|#endif /* _REG_CONSTANT_H_ */
 eof

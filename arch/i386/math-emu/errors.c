@@ -599,7 +599,7 @@ c_func
 l_string|&quot;SW: invalid operation&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif DEBUGGING
+macro_line|#endif /* DEBUGGING */
 id|printk
 c_func
 (paren
@@ -1244,7 +1244,7 @@ id|__DATE__
 l_string|&quot; (C) W. Metzenthen.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif PRINT_MESSAGES
+macro_line|#endif /* PRINT_MESSAGES */
 multiline_comment|/* Get a name string for error reporting */
 r_for
 c_loop
@@ -1311,7 +1311,7 @@ dot
 id|name
 )paren
 suffix:semicolon
-macro_line|#endif PRINT_MESSAGES
+macro_line|#endif /* PRINT_MESSAGES */
 )brace
 r_else
 id|printk
@@ -1351,7 +1351,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif PRINT_MESSAGES
+macro_line|#endif /* PRINT_MESSAGES */
 multiline_comment|/*&n;       * The 80486 generates an interrupt on the next non-control FPU&n;       * instruction. So we need some means of flagging it.&n;       * We use the ES (Error Summary) bit for this.&n;       */
 )brace
 id|RE_ENTRANT_CHECK_ON
@@ -1365,7 +1365,7 @@ comma
 id|SIGFPE
 )paren
 suffix:semicolon
-macro_line|#endif __DEBUG__
+macro_line|#endif /* __DEBUG__ */
 )brace
 multiline_comment|/* Real operation attempted on a NaN. */
 multiline_comment|/* Returns &lt; 0 if the exception is unmasked */
@@ -1833,7 +1833,7 @@ id|tagb
 op_eq
 id|TW_NaN
 )paren
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 (brace
 id|signalling
 op_assign
@@ -1870,7 +1870,7 @@ op_amp
 id|CONST_QNaN
 suffix:semicolon
 )brace
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 r_if
 c_cond
 (paren

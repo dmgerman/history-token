@@ -3,7 +3,7 @@ macro_line|#ifndef _ASM_SN_IOERROR_HANDLING_H
 DECL|macro|_ASM_SN_IOERROR_HANDLING_H
 mdefine_line|#define _ASM_SN_IOERROR_HANDLING_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef __KERNEL__
+macro_line|#if __KERNEL__
 multiline_comment|/*&n; * Basic types required for io error handling interfaces.&n; */
 multiline_comment|/*&n; * Return code from the io error handling interfaces.&n; */
 DECL|enum|error_return_code_e
@@ -416,7 +416,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Check if we have a valid hwgraph vertex */
-macro_line|#ifdef IRIX
+macro_line|#ifdef&t;LATER
 r_if
 c_cond
 (paren
@@ -513,36 +513,6 @@ op_star
 id|error_env
 )paren
 suffix:semicolon
-macro_line|#ifdef IRIX
-multiline_comment|/* NOTE: It might be OK to leave the allocated jump buffer on the&n;&t; * vertex. This can be used for later purposes.&n;&t; */
-r_if
-c_cond
-(paren
-id|code
-)paren
-(brace
-multiline_comment|/* This is the case where a long jump has been taken from one&n;&t;&t; * one of the error handling interfaces.&t;&t;     &n;&t;&t; */
-r_if
-c_cond
-(paren
-id|v_error_skip_env_clear
-c_func
-(paren
-id|v
-comma
-id|error_env
-)paren
-op_eq
-id|GRAPH_SUCCESS
-)paren
-id|kfree
-c_func
-(paren
-id|error_env
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 id|code
 suffix:semicolon
@@ -592,9 +562,6 @@ DECL|macro|IS_ERROR_INTR_CONTEXT
 mdefine_line|#define&t;IS_ERROR_INTR_CONTEXT(_ec)&t;((_ec &amp; IOECODE_DMA) &t;&t;|| &bslash;&n;&t;&t;&t;&t;&t; (_ec == IOECODE_PIO_WRITE))
 multiline_comment|/* Some convenience macros on device state. This state is accessed only &n; * thru the calls the io error handling layer.&n; */
 macro_line|#if defined(CONFIG_SGI_IO_ERROR_HANDLING)
-DECL|macro|IS_DEVICE_SHUTDOWN
-mdefine_line|#define IS_DEVICE_SHUTDOWN(_d) &t;(error_state_get(_d) == ERROR_STATE_SHUTDOWN)
-macro_line|#else
 r_extern
 id|boolean_t
 id|is_device_shutdown

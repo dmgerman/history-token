@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * TLB support routines.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 08/02/00 A. Mallick &lt;asit.k.mallick@intel.com&gt;&t;&n; *&t;&t;Modified RID allocation for SMP &n; *          Goutham Rao &lt;goutham.rao@intel.com&gt;&n; *              IPI based ptc implementation and A-step IPI implementation.&n; */
+multiline_comment|/*&n; * TLB support routines.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 08/02/00 A. Mallick &lt;asit.k.mallick@intel.com&gt;&n; *&t;&t;Modified RID allocation for SMP&n; *          Goutham Rao &lt;goutham.rao@intel.com&gt;&n; *              IPI based ptc implementation and A-step IPI implementation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -42,7 +42,7 @@ op_complement
 l_int|0U
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Seralize usage of ptc.g &n; */
+multiline_comment|/*&n; * Seralize usage of ptc.g&n; */
 DECL|variable|ptcg_lock
 id|spinlock_t
 id|ptcg_lock
@@ -140,7 +140,7 @@ suffix:semicolon
 id|ia64_set_tpr
 c_func
 (paren
-id|IPI_IRQ
+id|IA64_IPI_VECTOR
 op_minus
 l_int|16
 )paren
@@ -251,8 +251,15 @@ c_func
 suffix:semicolon
 multiline_comment|/* srlz.i implies srlz.d */
 multiline_comment|/*&n;&t; * Wait for other CPUs to finish purging entries.&n;&t; */
-macro_line|#if (defined(CONFIG_ITANIUM_ASTEP_SPECIFIC) || defined(CONFIG_ITANIUM_BSTEP_SPECIFIC))
+macro_line|#if defined(CONFIG_ITANIUM_ASTEP_SPECIFIC) || defined(CONFIG_ITANIUM_BSTEP_SPECIFIC)
 (brace
+r_extern
+r_void
+id|smp_resend_flush_tlb
+(paren
+r_void
+)paren
+suffix:semicolon
 r_int
 r_int
 id|start
@@ -287,21 +294,10 @@ op_minus
 id|start
 )paren
 OG
-l_int|40000UL
+l_int|400000UL
 )paren
 (brace
-id|atomic_set
-c_func
-(paren
-op_amp
-id|flush_cpu_count
-comma
-id|smp_num_cpus
-op_minus
-l_int|1
-)paren
-suffix:semicolon
-id|smp_send_flush_tlb
+id|smp_resend_flush_tlb
 c_func
 (paren
 )paren
@@ -531,32 +527,32 @@ id|addr
 suffix:semicolon
 id|addr
 op_assign
-id|my_cpu_data.ptce_base
+id|local_cpu_data-&gt;ptce_base
 suffix:semicolon
 id|count0
 op_assign
-id|my_cpu_data.ptce_count
+id|local_cpu_data-&gt;ptce_count
 (braket
 l_int|0
 )braket
 suffix:semicolon
 id|count1
 op_assign
-id|my_cpu_data.ptce_count
+id|local_cpu_data-&gt;ptce_count
 (braket
 l_int|1
 )braket
 suffix:semicolon
 id|stride0
 op_assign
-id|my_cpu_data.ptce_stride
+id|local_cpu_data-&gt;ptce_stride
 (braket
 l_int|0
 )braket
 suffix:semicolon
 id|stride1
 op_assign
-id|my_cpu_data.ptce_stride
+id|local_cpu_data-&gt;ptce_stride
 (braket
 l_int|1
 )braket
@@ -899,11 +895,11 @@ op_amp
 id|ptce_info
 )paren
 suffix:semicolon
-id|my_cpu_data.ptce_base
+id|local_cpu_data-&gt;ptce_base
 op_assign
 id|ptce_info.base
 suffix:semicolon
-id|my_cpu_data.ptce_count
+id|local_cpu_data-&gt;ptce_count
 (braket
 l_int|0
 )braket
@@ -913,7 +909,7 @@ id|ptce_info.count
 l_int|0
 )braket
 suffix:semicolon
-id|my_cpu_data.ptce_count
+id|local_cpu_data-&gt;ptce_count
 (braket
 l_int|1
 )braket
@@ -923,7 +919,7 @@ id|ptce_info.count
 l_int|1
 )braket
 suffix:semicolon
-id|my_cpu_data.ptce_stride
+id|local_cpu_data-&gt;ptce_stride
 (braket
 l_int|0
 )braket
@@ -933,7 +929,7 @@ id|ptce_info.stride
 l_int|0
 )braket
 suffix:semicolon
-id|my_cpu_data.ptce_stride
+id|local_cpu_data-&gt;ptce_stride
 (braket
 l_int|1
 )braket

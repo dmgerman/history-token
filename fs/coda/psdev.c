@@ -695,7 +695,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* adjust outsize. is this usefull ?? */
+multiline_comment|/* adjust outsize. is this useful ?? */
 id|req-&gt;uc_outSize
 op_assign
 id|nbytes

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: setup.c,v 1.8 2001/01/16 16:31:38 bjornw Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2000  Axis Communications AB&n; */
+multiline_comment|/* $Id: setup.c,v 1.11 2001/03/02 15:52:03 bjornw Exp $&n; *&n; *  linux/arch/cris/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (c) 2001  Axis Communications AB&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of initialization&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -118,9 +118,9 @@ id|romfs_in_flash
 suffix:semicolon
 multiline_comment|/* from head.S */
 multiline_comment|/* This mainly sets up the memory area, and can be really confusing.&n; *&n; * The physical DRAM is virtually mapped into dram_start to dram_end&n; * (usually c0000000 to c0000000 + DRAM size). The physical address is&n; * given by the macro __pa().&n; *&n; * In this DRAM, the kernel code and data is loaded, in the beginning.&n; * It really starts at c00a0000 to make room for some special pages - &n; * the start address is text_start. The kernel data ends at _end. After&n; * this the ROM filesystem is appended (if there is any).&n; * &n; * Between this address and dram_end, we have RAM pages usable to the&n; * boot code and the system.&n; *&n; */
-DECL|function|setup_arch
 r_void
 id|__init
+DECL|function|setup_arch
 id|setup_arch
 c_func
 (paren
@@ -366,7 +366,7 @@ multiline_comment|/* give credit for the CRIS port */
 id|printk
 c_func
 (paren
-l_string|&quot;Linux/CRIS port on ETRAX 100LX (c) 2000 Axis Communications AB&bslash;n&quot;
+l_string|&quot;Linux/CRIS port on ETRAX 100LX (c) 2001 Axis Communications AB&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -387,6 +387,8 @@ DECL|macro|HAS_USB
 mdefine_line|#define HAS_USB&t;&t;0x0040
 DECL|macro|HAS_IRQ_BUG
 mdefine_line|#define HAS_IRQ_BUG&t;0x0080
+DECL|macro|HAS_MMU_BUG
+mdefine_line|#define HAS_MMU_BUG     0x0100
 DECL|struct|cpu_info
 r_static
 r_struct
@@ -525,6 +527,24 @@ op_or
 id|HAS_USB
 op_or
 id|HAS_MMU
+op_or
+id|HAS_MMU_BUG
+)brace
+comma
+(brace
+l_string|&quot;ETRAX 100LX v2&quot;
+comma
+l_int|8
+comma
+id|HAS_ETHERNET100
+op_or
+id|HAS_SCSI
+op_or
+id|HAS_ATA
+op_or
+id|HAS_USB
+op_or
+id|HAS_MMU
 )brace
 comma
 (brace
@@ -590,6 +610,7 @@ l_string|&quot;cpu model&bslash;t: %s&bslash;n&quot;
 l_string|&quot;cache size&bslash;t: %d kB&bslash;n&quot;
 l_string|&quot;fpu&bslash;t&bslash;t: %s&bslash;n&quot;
 l_string|&quot;mmu&bslash;t&bslash;t: %s&bslash;n&quot;
+l_string|&quot;mmu DMA bug&bslash;t: %s&bslash;n&quot;
 l_string|&quot;ethernet&bslash;t: %s Mbps&bslash;n&quot;
 l_string|&quot;token ring&bslash;t: %s&bslash;n&quot;
 l_string|&quot;scsi&bslash;t&bslash;t: %s&bslash;n&quot;
@@ -635,6 +656,20 @@ dot
 id|flags
 op_amp
 id|HAS_MMU
+ques
+c_cond
+l_string|&quot;yes&quot;
+suffix:colon
+l_string|&quot;no&quot;
+comma
+id|cpu_info
+(braket
+id|revision
+)braket
+dot
+id|flags
+op_amp
+id|HAS_MMU_BUG
 ques
 c_cond
 l_string|&quot;yes&quot;

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Platform dependent support for HP simulator.&n; *&n; * Copyright (C) 1998-2000 Hewlett-Packard Co&n; * Copyright (C) 1998-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Platform dependent support for HP simulator.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; * Copyright (C) 1998-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -91,6 +91,10 @@ id|hpsim_irq_init
 r_void
 )paren
 (brace
+id|irq_desc_t
+op_star
+id|idesc
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -99,35 +103,33 @@ c_loop
 (paren
 id|i
 op_assign
-id|IA64_MIN_VECTORED_IRQ
+l_int|0
 suffix:semicolon
 id|i
-op_le
-id|IA64_MAX_VECTORED_IRQ
+OL
+id|NR_IRQS
 suffix:semicolon
 op_increment
 id|i
 )paren
 (brace
+id|idesc
+op_assign
+id|irq_desc
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_eq
 op_amp
 id|no_irq_type
 )paren
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_assign
 op_amp
 id|irq_type_hp_sim

@@ -472,7 +472,7 @@ multiline_comment|/* There must be a logic error */
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 id|argSignif.msw
 op_assign
 l_int|0

@@ -57,109 +57,6 @@ op_star
 id|from
 )paren
 suffix:semicolon
-macro_line|#  ifdef STRICT_MM_TYPECHECKS
-multiline_comment|/*&n; * These are used to make use of C type-checking..&n; */
-DECL|member|pte
-DECL|typedef|pte_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|pte
-suffix:semicolon
-)brace
-id|pte_t
-suffix:semicolon
-DECL|member|pmd
-DECL|typedef|pmd_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|pmd
-suffix:semicolon
-)brace
-id|pmd_t
-suffix:semicolon
-DECL|member|pgd
-DECL|typedef|pgd_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|pgd
-suffix:semicolon
-)brace
-id|pgd_t
-suffix:semicolon
-DECL|member|pgprot
-DECL|typedef|pgprot_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|pgprot
-suffix:semicolon
-)brace
-id|pgprot_t
-suffix:semicolon
-DECL|macro|pte_val
-mdefine_line|#define pte_val(x)&t;((x).pte)
-DECL|macro|pmd_val
-mdefine_line|#define pmd_val(x)&t;((x).pmd)
-DECL|macro|pgd_val
-mdefine_line|#define pgd_val(x)&t;((x).pgd)
-DECL|macro|pgprot_val
-mdefine_line|#define pgprot_val(x)&t;((x).pgprot)
-DECL|macro|__pte
-mdefine_line|#define __pte(x)&t;((pte_t) { (x) } )
-DECL|macro|__pgprot
-mdefine_line|#define __pgprot(x)&t;((pgprot_t) { (x) } )
-macro_line|#  else /* !STRICT_MM_TYPECHECKS */
-multiline_comment|/*&n; * .. while these make it easier on the compiler&n; */
-DECL|typedef|pte_t
-r_typedef
-r_int
-r_int
-id|pte_t
-suffix:semicolon
-DECL|typedef|pmd_t
-r_typedef
-r_int
-r_int
-id|pmd_t
-suffix:semicolon
-DECL|typedef|pgd_t
-r_typedef
-r_int
-r_int
-id|pgd_t
-suffix:semicolon
-DECL|typedef|pgprot_t
-r_typedef
-r_int
-r_int
-id|pgprot_t
-suffix:semicolon
-DECL|macro|pte_val
-mdefine_line|#define pte_val(x)&t;(x)
-DECL|macro|pmd_val
-mdefine_line|#define pmd_val(x)&t;(x)
-DECL|macro|pgd_val
-mdefine_line|#define pgd_val(x)&t;(x)
-DECL|macro|pgprot_val
-mdefine_line|#define pgprot_val(x)&t;(x)
-DECL|macro|__pte
-mdefine_line|#define __pte(x)&t;(x)
-DECL|macro|__pgd
-mdefine_line|#define __pgd(x)&t;(x)
-DECL|macro|__pgprot
-mdefine_line|#define __pgprot(x)&t;(x)
-macro_line|#  endif /* !STRICT_MM_TYPECHECKS */
 multiline_comment|/*&n; * Note: the MAP_NR_*() macro can&squot;t use __pa() because MAP_NR_*(X) MUST&n; * map to something &gt;= max_mapnr if X is outside the identity mapped&n; * kernel space.&n; */
 multiline_comment|/*&n; * The dense variant can be used as long as the size of memory holes isn&squot;t&n; * very big.&n; */
 DECL|macro|MAP_NR_DENSE
@@ -299,7 +196,112 @@ id|order
 suffix:semicolon
 )brace
 macro_line|# endif /* __KERNEL__ */
-macro_line|#endif /* !ASSEMBLY */
+macro_line|#endif /* !__ASSEMBLY__ */
+macro_line|#ifdef STRICT_MM_TYPECHECKS
+multiline_comment|/*&n;   * These are used to make use of C type-checking..&n;   */
+DECL|member|pte
+DECL|typedef|pte_t
+r_typedef
+r_struct
+(brace
+r_int
+r_int
+id|pte
+suffix:semicolon
+)brace
+id|pte_t
+suffix:semicolon
+DECL|member|pmd
+DECL|typedef|pmd_t
+r_typedef
+r_struct
+(brace
+r_int
+r_int
+id|pmd
+suffix:semicolon
+)brace
+id|pmd_t
+suffix:semicolon
+DECL|member|pgd
+DECL|typedef|pgd_t
+r_typedef
+r_struct
+(brace
+r_int
+r_int
+id|pgd
+suffix:semicolon
+)brace
+id|pgd_t
+suffix:semicolon
+DECL|member|pgprot
+DECL|typedef|pgprot_t
+r_typedef
+r_struct
+(brace
+r_int
+r_int
+id|pgprot
+suffix:semicolon
+)brace
+id|pgprot_t
+suffix:semicolon
+DECL|macro|pte_val
+macro_line|# define pte_val(x)&t;((x).pte)
+DECL|macro|pmd_val
+macro_line|# define pmd_val(x)&t;((x).pmd)
+DECL|macro|pgd_val
+macro_line|# define pgd_val(x)&t;((x).pgd)
+DECL|macro|pgprot_val
+macro_line|# define pgprot_val(x)&t;((x).pgprot)
+DECL|macro|__pte
+macro_line|# define __pte(x)&t;((pte_t) { (x) } )
+DECL|macro|__pgprot
+macro_line|# define __pgprot(x)&t;((pgprot_t) { (x) } )
+macro_line|#else /* !STRICT_MM_TYPECHECKS */
+multiline_comment|/*&n;   * .. while these make it easier on the compiler&n;   */
+macro_line|# ifndef __ASSEMBLY__
+DECL|typedef|pte_t
+r_typedef
+r_int
+r_int
+id|pte_t
+suffix:semicolon
+DECL|typedef|pmd_t
+r_typedef
+r_int
+r_int
+id|pmd_t
+suffix:semicolon
+DECL|typedef|pgd_t
+r_typedef
+r_int
+r_int
+id|pgd_t
+suffix:semicolon
+DECL|typedef|pgprot_t
+r_typedef
+r_int
+r_int
+id|pgprot_t
+suffix:semicolon
+macro_line|# endif
+DECL|macro|pte_val
+macro_line|# define pte_val(x)&t;(x)
+DECL|macro|pmd_val
+macro_line|# define pmd_val(x)&t;(x)
+DECL|macro|pgd_val
+macro_line|# define pgd_val(x)&t;(x)
+DECL|macro|pgprot_val
+macro_line|# define pgprot_val(x)&t;(x)
+DECL|macro|__pte
+macro_line|# define __pte(x)&t;(x)
+DECL|macro|__pgd
+macro_line|# define __pgd(x)&t;(x)
+DECL|macro|__pgprot
+macro_line|# define __pgprot(x)&t;(x)
+macro_line|#endif /* !STRICT_MM_TYPECHECKS */
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;0xe000000000000000
 macro_line|#endif /* _ASM_IA64_PAGE_H */

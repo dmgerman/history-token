@@ -11,8 +11,6 @@ macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/ioerror_handling.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/slotnum.h&gt;
-DECL|macro|spinlock_init
-mdefine_line|#define spinlock_init(x,name) mutex_init(x, MUTEX_DEFAULT, name);
 r_void
 op_star
 DECL|function|kmem_zalloc

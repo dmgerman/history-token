@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ethernet.c,v 1.5 2000/11/29 17:22:22 bjornw Exp $&n; *&n; * e100net.c: A network driver for the ETRAX 100LX network controller.&n; *&n; * Copyright (c) 1998-2000 Axis Communications AB.&n; *&n; * The outline of this driver comes from skeleton.c.&n; *&n; * $Log: ethernet.c,v $&n; * Revision 1.5  2000/11/29 17:22:22  bjornw&n; * Get rid of the udword types legacy stuff&n; *&n; * Revision 1.4  2000/11/22 16:36:09  bjornw&n; * Please marketing by using the correct case when spelling Etrax.&n; *&n; * Revision 1.3  2000/11/21 16:43:04  bjornw&n; * Minor short-&gt;int change&n; *&n; * Revision 1.2  2000/11/08 14:27:57  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2000/11/06 13:56:00  bjornw&n; * Verbatim copy of the 1.24 version of e100net.c from elinux&n; *&n; * Revision 1.24  2000/10/04 15:55:23  bjornw&n; * * Use virt_to_phys etc. for DMA addresses&n; * * Removed bogus CHECKSUM_UNNECESSARY&n; *&n; *&n; */
+multiline_comment|/* $Id: ethernet.c,v 1.8 2001/02/27 13:52:48 bjornw Exp $&n; *&n; * e100net.c: A network driver for the ETRAX 100LX network controller.&n; *&n; * Copyright (c) 1998-2001 Axis Communications AB.&n; *&n; * The outline of this driver comes from skeleton.c.&n; *&n; * $Log: ethernet.c,v $&n; * Revision 1.8  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.7  2001/02/23 13:46:38  bjornw&n; * Spellling check&n; *&n; * Revision 1.6  2001/01/26 15:21:04  starvik&n; * Don&squot;t disable interrupts while reading MDIO registers (MDIO is slow)&n; * Corrected promiscuous mode&n; * Improved deallocation of IRQs (&quot;ifconfig eth0 down&quot; now works)&n; *&n; * Revision 1.5  2000/11/29 17:22:22  bjornw&n; * Get rid of the udword types legacy stuff&n; *&n; * Revision 1.4  2000/11/22 16:36:09  bjornw&n; * Please marketing by using the correct case when spelling Etrax.&n; *&n; * Revision 1.3  2000/11/21 16:43:04  bjornw&n; * Minor short-&gt;int change&n; *&n; * Revision 1.2  2000/11/08 14:27:57  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2000/11/06 13:56:00  bjornw&n; * Verbatim copy of the 1.24 version of e100net.c from elinux&n; *&n; * Revision 1.24  2000/10/04 15:55:23  bjornw&n; * * Use virt_to_phys etc. for DMA addresses&n; * * Removed bogus CHECKSUM_UNNECESSARY&n; *&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
-macro_line|#include &lt;asm/svinto.h&gt;
+macro_line|#include &lt;asm/svinto.h&gt;     /* DMA and register descriptions */
 singleline_comment|//#define ETHDEBUG
 DECL|macro|D
 mdefine_line|#define D(x)
@@ -1665,17 +1665,6 @@ multiline_comment|/* Data read from MDIO */
 r_int
 id|bitCounter
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Start of frame, OP Code, Physical Address, Register Address */
 id|cmd
 op_assign
@@ -1743,12 +1732,6 @@ id|bitCounter
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|data
 suffix:semicolon
@@ -2020,17 +2003,6 @@ suffix:semicolon
 r_int
 id|bitCounter
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|data
 op_assign
 id|e100_get_mdio_reg
@@ -2105,12 +2077,6 @@ id|data
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/* Called by upper layers if they decide it took too long to complete&n; * sending a packet - we need to reset and stuff.&n; */
 r_static
@@ -3150,7 +3116,11 @@ c_func
 (paren
 id|NETWORK_DMARX_IRQ
 comma
-l_int|NULL
+(paren
+r_void
+op_star
+)paren
+id|dev
 )paren
 suffix:semicolon
 id|free_irq
@@ -3158,7 +3128,11 @@ c_func
 (paren
 id|NETWORK_DMATX_IRQ
 comma
-l_int|NULL
+(paren
+r_void
+op_star
+)paren
+id|dev
 )paren
 suffix:semicolon
 id|free_irq
@@ -3166,7 +3140,11 @@ c_func
 (paren
 id|NETWORK_STATUS_IRQ
 comma
-l_int|NULL
+(paren
+r_void
+op_star
+)paren
+id|dev
 )paren
 suffix:semicolon
 id|free_dma
@@ -3400,6 +3378,40 @@ id|hi_bits
 op_assign
 l_int|0xfffffffful
 suffix:semicolon
+multiline_comment|/* Enable individual receive */
+op_star
+id|R_NETWORK_REC_CONFIG
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_NETWORK_REC_CONFIG
+comma
+id|broadcast
+comma
+id|receive
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_NETWORK_REC_CONFIG
+comma
+id|ma0
+comma
+id|enable
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_NETWORK_REC_CONFIG
+comma
+id|individual
+comma
+id|receive
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -3418,6 +3430,30 @@ suffix:semicolon
 id|hi_bits
 op_assign
 l_int|0x00000000ul
+suffix:semicolon
+multiline_comment|/* Disable individual receive */
+op_star
+id|R_NETWORK_REC_CONFIG
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_NETWORK_REC_CONFIG
+comma
+id|broadcast
+comma
+id|receive
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_NETWORK_REC_CONFIG
+comma
+id|ma0
+comma
+id|enable
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -3676,6 +3712,30 @@ op_assign
 id|dmi-&gt;next
 suffix:semicolon
 )brace
+multiline_comment|/* Disable individual receive */
+op_star
+id|R_NETWORK_REC_CONFIG
+op_assign
+id|IO_STATE
+c_func
+(paren
+id|R_NETWORK_REC_CONFIG
+comma
+id|broadcast
+comma
+id|receive
+)paren
+op_or
+id|IO_STATE
+c_func
+(paren
+id|R_NETWORK_REC_CONFIG
+comma
+id|ma0
+comma
+id|enable
+)paren
+suffix:semicolon
 )brace
 op_star
 id|R_NETWORK_GA_0

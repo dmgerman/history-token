@@ -1,7 +1,8 @@
 multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000 Silicon Graphics, Inc.&n; * Copyright (C) 2000 by Colin Ngam&n; */
-macro_line|#ifndef __SYS_SN_INTR_PUBLIC_H__
-DECL|macro|__SYS_SN_INTR_PUBLIC_H__
-mdefine_line|#define __SYS_SN_INTR_PUBLIC_H__
+macro_line|#ifndef _ASM_SN_INTR_PUBLIC_H__
+DECL|macro|_ASM_SN_INTR_PUBLIC_H__
+mdefine_line|#define _ASM_SN_INTR_PUBLIC_H__
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* REMEMBER: If you change these, the whole world needs to be recompiled.&n; * It would also require changing the hubspl.s code and SN0/intr.c&n; * Currently, the spl code has no support for multiple INTPEND1 masks.&n; */
 DECL|macro|N_INTPEND0_MASKS
 mdefine_line|#define&t;N_INTPEND0_MASKS&t;1
@@ -11,7 +12,6 @@ DECL|macro|INTPEND0_MAXMASK
 mdefine_line|#define INTPEND0_MAXMASK&t;(N_INTPEND0_MASKS - 1)
 DECL|macro|INTPEND1_MAXMASK
 mdefine_line|#define INTPEND1_MAXMASK&t;(N_INTPEND1_MASKS - 1)
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if _LANGUAGE_C
 macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 macro_line|#include &lt;asm/sn/sn1/arch.h&gt;
@@ -63,5 +63,5 @@ DECL|typedef|hub_intmasks_t
 id|hub_intmasks_t
 suffix:semicolon
 macro_line|#endif /* _LANGUAGE_C */
-macro_line|#endif /* __SYS_SN_INTR_PUBLIC_H__ */
+macro_line|#endif /* _ASM_SN_INTR_PUBLIC_H__ */
 eof

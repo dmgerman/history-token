@@ -246,14 +246,13 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef Colin
-multiline_comment|/*&n;&t; * Simulate Big Window 0.&n;&t; * Only when we build for lutsen etc. ..&n;&t; */
-id|simulated_BW0_init
-c_func
-(paren
-)paren
+r_int
+id|cnode
 suffix:semicolon
-macro_line|#endif
+r_extern
+r_int
+id|maxnodes
+suffix:semicolon
 multiline_comment|/*&n;&t; * Do any early init stuff .. einit_tbl[] etc.&n;&t; */
 id|DBG
 c_func
@@ -323,13 +322,28 @@ c_func
 l_string|&quot;--&gt; sgi_master_io_infr_init: calling per_hub_init(0).&bslash;n&quot;
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|cnode
+op_assign
+l_int|0
+suffix:semicolon
+id|cnode
+OL
+id|maxnodes
+suffix:semicolon
+id|cnode
+op_increment
+)paren
+(brace
 id|per_hub_init
 c_func
 (paren
-l_int|0
+id|cnode
 )paren
 suffix:semicolon
-multiline_comment|/* Need to get and send in actual cnode number */
+)brace
 multiline_comment|/* We can do headless hub cnodes here .. */
 multiline_comment|/*&n;&t; * io_init[] stuff.&n;&t; *&n;&t; * Get SGI IO Infrastructure drivers to init and register with &n;&t; * each other etc.&n;&t; */
 id|DBG
@@ -489,13 +503,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* This is a slave cpu */
-id|per_hub_init
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Need to get and send in actual cnode number */
+singleline_comment|// per_hub_init(0); /* Need to get and send in actual cnode number */
 multiline_comment|/* Done */
 )brace
 multiline_comment|/*&n; * One-time setup for MP SN.&n; * Allocate per-node data, slurp prom klconfig information and&n; * convert it to hwgraph information.&n; */
@@ -525,6 +533,10 @@ l_string|&quot;sn_mp_setup: Entered.&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/*&n;&t; * NODEPDA(x) Macro depends on nodepda&n;&t; * subnodepda is also statically set to calias space which we &n;&t; * do not currently support yet .. just a hack for now.&n;&t; */
 macro_line|#ifdef NUMA_BASE
+id|maxnodes
+op_assign
+id|numnodes
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -535,20 +547,6 @@ comma
 id|numnodes
 )paren
 suffix:semicolon
-id|maxnodes
-op_assign
-id|numnodes
-suffix:semicolon
-macro_line|#ifdef SIMULATED_KLGRAPH
-id|maxnodes
-op_assign
-l_int|1
-suffix:semicolon
-id|numnodes
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif /* SIMULATED_KLGRAPH */
 id|printk
 c_func
 (paren
@@ -734,57 +732,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif /* NUMA_BASE */
 multiline_comment|/*&n;&t; * Before we let the other processors run, set up the platform specific&n;&t; * stuff in the nodepda.&n;&t; *&n;&t; * ???? maxnodes set in mlreset .. who sets it now ????&n;&t; * ???? cpu_node_probe() called in mlreset to set up the following:&n;&t; *      compact_to_nasid_node[] - cnode id gives nasid&n;&t; *      nasid_to_compact_node[] - nasid gives cnode id&n;&t; *&n;&t; *&t;do_cpumask() sets the following:&n;&t; *      cpuid_to_compact_node[] - cpuid gives cnode id&n;&t; *&n;&t; *      nasid comes from gdap-&gt;g_nasidtable[]&n;&t; *      ml/SN/promif.c&n;&t; */
-r_for
-c_loop
-(paren
-id|cnode
-op_assign
-l_int|0
-suffix:semicolon
-id|cnode
-OL
-id|maxnodes
-suffix:semicolon
-id|cnode
-op_increment
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Set up platform-dependent nodepda fields.&n;&t;&t; * The following routine actually sets up the hubinfo struct&n;&t;&t; * in nodepda.&n;&t;&t; */
-id|DBG
-c_func
-(paren
-l_string|&quot;sn_mp_io_setup: calling init_platform_nodepda(%2d)&bslash;n&quot;
-comma
-id|cnode
-)paren
-suffix:semicolon
-id|init_platform_nodepda
-c_func
-(paren
-id|Nodepdaindr
-(braket
-id|cnode
-)braket
-comma
-id|cnode
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * This routine clears the Hub&squot;s Interrupt registers.&n;&t;&t; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-multiline_comment|/*&n;&t;&t; * We need to move this intr_clear_all() routine &n;&t;&t; * from SN/intr.c to a more appropriate file.&n;&t;&t; * Talk to Al Mayer.&n;&t;&t; */
-id|intr_clear_all
-c_func
-(paren
-id|COMPACT_TO_NASID_NODEID
-c_func
-(paren
-id|cnode
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#ifdef CONFIG_IA64_SGI_IO
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
 r_for
 c_loop
 (paren
@@ -820,6 +768,42 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+r_for
+c_loop
+(paren
+id|cnode
+op_assign
+l_int|0
+suffix:semicolon
+id|cnode
+OL
+id|maxnodes
+suffix:semicolon
+id|cnode
+op_increment
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * Set up platform-dependent nodepda fields.&n;&t;&t; * The following routine actually sets up the hubinfo struct&n;&t;&t; * in nodepda.&n;&t;&t; */
+id|DBG
+c_func
+(paren
+l_string|&quot;sn_mp_io_setup: calling init_platform_nodepda(%2d)&bslash;n&quot;
+comma
+id|cnode
+)paren
+suffix:semicolon
+id|init_platform_nodepda
+c_func
+(paren
+id|Nodepdaindr
+(braket
+id|cnode
+)braket
+comma
+id|cnode
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Initialize platform-dependent vertices in the hwgraph:&n;&t; *&t;module&n;&t; *&t;node&n;&t; *&t;cpu&n;&t; *&t;memory&n;&t; *&t;slot&n;&t; *&t;hub&n;&t; *&t;router&n;&t; *&t;xbow&n;&t; */
 id|DBG
 c_func
@@ -857,5 +841,44 @@ c_func
 id|hwgraph_root
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|cnode
+op_assign
+l_int|0
+suffix:semicolon
+id|cnode
+OL
+id|maxnodes
+suffix:semicolon
+id|cnode
+op_increment
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * This routine clears the Hub&squot;s Interrupt registers.&n;&t;&t; */
+macro_line|#ifdef CONFIG_IA64_SGI_SN1
+multiline_comment|/*&n;&t;&t; * We need to move this intr_clear_all() routine &n;&t;&t; * from SN/intr.c to a more appropriate file.&n;&t;&t; * Talk to Al Mayer.&n;&t;&t; */
+id|intr_clear_all
+c_func
+(paren
+id|COMPACT_TO_NASID_NODEID
+c_func
+(paren
+id|cnode
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* now init the hub */
+singleline_comment|//&t;per_hub_init(cnode);
+macro_line|#endif
+)brace
+macro_line|#if defined(CONFIG_IA64_SGI_SYNERGY_PERF)
+id|synergy_perf_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_IA64_SGI_SYNERGY_PERF */
 )brace
 eof

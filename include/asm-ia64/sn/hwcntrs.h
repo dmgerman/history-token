@@ -209,7 +209,6 @@ DECL|typedef|rcb_slot_t
 id|rcb_slot_t
 suffix:semicolon
 macro_line|#if defined(__KERNEL__)
-singleline_comment|// #include &lt;sys/immu.h&gt;
 DECL|struct|sn0_refcnt_args_32
 r_typedef
 r_struct

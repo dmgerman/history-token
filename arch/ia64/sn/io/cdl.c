@@ -147,11 +147,7 @@ id|cdl_p
 id|reg
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - cdl_del not supported.&bslash;n&quot;
-)paren
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * cdl_add_driver: The driver part number and manufacturers number &n; * are statically initialized above.&n; * &n;  Do nothing.&n; */
@@ -175,6 +171,10 @@ id|prefix
 comma
 r_int
 id|flags
+comma
+id|cdl_drv_f
+op_star
+id|func
 )paren
 (brace
 r_return
@@ -193,13 +193,13 @@ comma
 r_char
 op_star
 id|prefix
+comma
+id|cdl_drv_f
+op_star
+id|func
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - cdl_del_driver not supported.&bslash;n&quot;
-)paren
+r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * cdl_add_connpt: We found a device and it&squot;s connect point.  Call the &n; * attach routine of that driver.&n; *&n; * May need support for pciba registration here ...&n; *&n; * This routine use to create /hw/.id/pci/.../.. that links to &n; * /hw/module/006c06/Pbrick/xtalk/15/pci/&lt;slotnum&gt; .. do we still need &n; * it?  The specified driver attach routine does not reference these &n; * vertices.&n; */
@@ -219,6 +219,9 @@ id|mfg_num
 comma
 id|devfs_handle_t
 id|connpt
+comma
+r_int
+id|drv_flags
 )paren
 (brace
 r_int
@@ -291,72 +294,14 @@ id|connpt
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef BRINGUP
-multiline_comment|/*&n;&t;&t;&t; * XXX HACK ALERT bypassing fops for now..&n;&t;&t;&t; */
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;cdl_add_connpt: NEED FOPS FOR OUR DRIVERS!!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;cdl_add_connpt: part_num= 0x%x  mfg_num= 0x%x&bslash;n&quot;
-comma
-id|part_num
-comma
-id|mfg_num
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif /* BRINGUP */
 )brace
 r_else
 (brace
 r_continue
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;**** cdl_add_connpt: driver not found for part_num %d mfg_num %d ****&bslash;n&quot;
-comma
-id|part_num
-comma
-id|mfg_num
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
-id|i
-op_eq
-id|MAX_SGI_IO_INFRA_DRVR
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;**** cdl_add_connpt: Driver not found for part_num 0x%x mfg_num 0x%x ****&bslash;n&quot;
-comma
-id|part_num
-comma
-id|mfg_num
-)paren
-suffix:semicolon
+multiline_comment|/* printk(&quot;WARNING: cdl_add_connpt: Driver not found for part_num 0x%x mfg_num 0x%x&bslash;n&quot;, part_num, mfg_num); */
 r_return
 (paren
 l_int|0
@@ -364,7 +309,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * cdl_del_connpt: Not implemented.&n; */
-r_void
+r_int
 DECL|function|cdl_del_connpt
 id|cdl_del_connpt
 c_func
@@ -380,13 +325,13 @@ id|key2
 comma
 id|devfs_handle_t
 id|connpt
+comma
+r_int
+id|drv_flags
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - cdl_del_cdl_del_connpt not supported.&bslash;n&quot;
-)paren
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *    cdl_iterate: Not Implemented.&n; */
@@ -407,11 +352,7 @@ op_star
 id|func
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - cdl_iterate not supported.&bslash;n&quot;
-)paren
+r_return
 suffix:semicolon
 )brace
 id|async_attach_t
@@ -422,12 +363,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - async_attach_new not supported.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -441,11 +376,7 @@ id|async_attach_t
 id|aa
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - async_attach_free not supported.&bslash;n&quot;
-)paren
+r_return
 suffix:semicolon
 )brace
 id|async_attach_t
@@ -457,12 +388,6 @@ id|devfs_handle_t
 id|vhdl
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - async_attach_get_info not supported.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -479,11 +404,7 @@ id|async_attach_t
 id|aa
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - async_attach_add_info not supported.&bslash;n&quot;
-)paren
+r_return
 suffix:semicolon
 )brace
 r_void
@@ -495,11 +416,7 @@ id|devfs_handle_t
 id|vhdl
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - async_attach_del_info not supported.&bslash;n&quot;
-)paren
+r_return
 suffix:semicolon
 )brace
 DECL|function|async_attach_signal_start
@@ -511,11 +428,7 @@ id|async_attach_t
 id|aa
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - async_attach_signal_start not supported.&bslash;n&quot;
-)paren
+r_return
 suffix:semicolon
 )brace
 DECL|function|async_attach_signal_done
@@ -527,11 +440,7 @@ id|async_attach_t
 id|aa
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - async_attach_signal_done not supported.&bslash;n&quot;
-)paren
+r_return
 suffix:semicolon
 )brace
 DECL|function|async_attach_waitall
@@ -543,11 +452,7 @@ id|async_attach_t
 id|aa
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;SGI IO INFRASTRUCTURE - async_attach_waitall not supported.&bslash;n&quot;
-)paren
+r_return
 suffix:semicolon
 )brace
 eof

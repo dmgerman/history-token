@@ -998,7 +998,11 @@ suffix:colon
 l_int|0x40UL
 )paren
 op_lshift
+(paren
 id|shift
+op_minus
+l_int|1
+)paren
 suffix:semicolon
 r_else
 op_star

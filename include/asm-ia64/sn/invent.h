@@ -13,6 +13,12 @@ DECL|macro|graph_vertex_place_t
 mdefine_line|#define graph_vertex_place_t long
 DECL|macro|GRAPH_VERTEX_NONE
 mdefine_line|#define GRAPH_VERTEX_NONE ((devfs_handle_t)-1)
+DECL|macro|GRAPH_EDGE_PLACE_NONE
+mdefine_line|#define GRAPH_EDGE_PLACE_NONE ((graph_edge_place_t)0)
+DECL|macro|GRAPH_INFO_PLACE_NONE
+mdefine_line|#define GRAPH_INFO_PLACE_NONE ((graph_info_place_t)0)
+DECL|macro|GRAPH_VERTEX_PLACE_NONE
+mdefine_line|#define GRAPH_VERTEX_PLACE_NONE ((graph_vertex_place_t)0)
 DECL|struct|inventory_s
 r_typedef
 r_struct
@@ -200,6 +206,10 @@ DECL|macro|INV_TPU
 mdefine_line|#define INV_TPU&t;&t;24&t;/* Tensor Processing Unit */
 DECL|macro|INV_FCNODE
 mdefine_line|#define INV_FCNODE&t;25&t;/* Helper class for SCSI classes, not in classes[] */
+DECL|macro|INV_USB
+mdefine_line|#define INV_USB&t;&t;26&t;/* Universal Serial Bus */
+DECL|macro|INV_1394NODE
+mdefine_line|#define INV_1394NODE    27      /* helper class for 1394/SPB2 classes, not in classes[] */
 multiline_comment|/* types for class processor */
 DECL|macro|INV_CPUBOARD
 mdefine_line|#define INV_CPUBOARD&t;1
@@ -331,8 +341,16 @@ DECL|macro|INV_QL_2100
 mdefine_line|#define INV_QL_2100&t;18&t;/* qLogic 2100 Fibrechannel */
 DECL|macro|INV_QL_2200
 mdefine_line|#define INV_QL_2200&t;19&t;/* qLogic 2200 Fibrechannel */
+DECL|macro|INV_PR_HIO_D
+mdefine_line|#define INV_PR_HIO_D&t;20&t;/* Prisa HIO Dual channel */
+DECL|macro|INV_PR_PCI64_D
+mdefine_line|#define INV_PR_PCI64_D&t;21&t;/* Prisa PCI-64 Dual channel */
+DECL|macro|INV_QL_2200A
+mdefine_line|#define INV_QL_2200A&t;22&t;/* qLogic 2200A Fibrechannel */
 DECL|macro|INV_SBP2
-mdefine_line|#define INV_SBP2&t;20&t;/* SBP2 protocol over OHCI on 1394 */
+mdefine_line|#define INV_SBP2        23      /* SBP2 protocol over OHCI on 1394 */
+DECL|macro|INV_QL_2300
+mdefine_line|#define INV_QL_2300&t;24&t;/* qLogic 2300 Fibrechannel */
 multiline_comment|/* states for INV_SCSIDRIVE type of class disk */
 DECL|macro|INV_RAID5_LUN
 mdefine_line|#define INV_RAID5_LUN&t;0x100
@@ -370,6 +388,8 @@ DECL|macro|INV_MAIN_MB
 mdefine_line|#define INV_MAIN_MB&t;9
 DECL|macro|INV_HUBSPC
 mdefine_line|#define INV_HUBSPC      10      /* HUBSPC */
+DECL|macro|INV_TIDCACHE
+mdefine_line|#define INV_TIDCACHE&t;11
 multiline_comment|/* types for class serial */
 DECL|macro|INV_CDSIO
 mdefine_line|#define INV_CDSIO&t;1&t;/* Central Data serial board */
@@ -692,6 +712,8 @@ DECL|macro|INV_NET_HIPPIS
 mdefine_line|#define INV_NET_HIPPIS&t;&t;9&t;/* HIPPI-Serial */
 DECL|macro|INV_NET_GSN
 mdefine_line|#define&t;INV_NET_GSN&t;&t;10&t;/* GSN (aka HIPPI-6400) */
+DECL|macro|INV_NET_MYRINET
+mdefine_line|#define INV_NET_MYRINET&t;&t;11&t;/* Myricom PCI network */
 multiline_comment|/* controllers for network types, unique within class network */
 DECL|macro|INV_ETHER_EC
 mdefine_line|#define INV_ETHER_EC&t;0&t;/* IP6 integral controller */
@@ -784,6 +806,8 @@ DECL|macro|INV_CHANGER
 mdefine_line|#define INV_CHANGER&t;8&t;/* jukebox&squot;s for CDROMS, for example */
 DECL|macro|INV_COMM
 mdefine_line|#define INV_COMM&t;9&t;/* Communications device */
+DECL|macro|INV_STARCTLR
+mdefine_line|#define INV_STARCTLR&t;12&t;/* Storage Array Controller */
 DECL|macro|INV_RAIDCTLR
 mdefine_line|#define INV_RAIDCTLR&t;32&t;/* RAID ctlr actually gives type 0 */
 multiline_comment|/* bit definitions for state field for class INV_SCSI */
@@ -833,6 +857,8 @@ DECL|macro|INV_VIDEO_EVO
 mdefine_line|#define&t;INV_VIDEO_EVO&t;&t;12&t;/* EVO Personal Video */
 DECL|macro|INV_VIDEO_XTHD
 mdefine_line|#define INV_VIDEO_XTHD&t;&t;13&t;/* XIO XT-HDTV video */
+DECL|macro|INV_VIDEO_XTDIGVID
+mdefine_line|#define INV_VIDEO_XTDIGVID      14      /* XIO XT-HDDIGVID video */
 multiline_comment|/* states for video class INV_VIDEO_EXPRESS */
 DECL|macro|INV_GALILEO_REV
 mdefine_line|#define INV_GALILEO_REV&t;&t;0xF
@@ -926,13 +952,7 @@ DECL|macro|INV_7of9_PANEL
 mdefine_line|#define INV_7of9_PANEL          5       /* 7of9 flatpanel board and panel */
 multiline_comment|/* types for class INV_IEEE1394 */
 DECL|macro|INV_OHCI
-mdefine_line|#define INV_OHCI&t;&t;0&t;/* Ohci IEEE1394 pci card */
-DECL|macro|INV_RAWISO1394
-mdefine_line|#define INV_RAWISO1394   &t;10&t;/* Raw Isochronous IEEE 1394 protocol driver */
-DECL|macro|INV_RAWASYNC1394
-mdefine_line|#define INV_RAWASYNC1394 &t;11&t;/* Raw Asynchronous IEEE 1394 protocol driver */
-DECL|macro|INV_AVC1394
-mdefine_line|#define INV_AVC1394     &t;12&t;/* Audio, Video &amp; Control (AV/C) IEEE 1394 protocol driver */
+mdefine_line|#define INV_OHCI&t;0&t;/* Ohci IEEE1394 pci card */
 multiline_comment|/* state for class INV_IEEE1394 &amp; type INV_OHCI */
 DECL|macro|INV_IEEE1394_STATE_TI_REV_1
 mdefine_line|#define INV_IEEE1394_STATE_TI_REV_1 0
@@ -944,6 +964,30 @@ DECL|macro|INV_TPU_EXT
 mdefine_line|#define&t;INV_TPU_EXT&t;&t;0&t;/* External XIO Tensor Processing Unit */
 DECL|macro|INV_TPU_XIO
 mdefine_line|#define&t;INV_TPU_XIO&t;&t;1&t;/* Internal XIO Tensor Processing Unit */
+multiline_comment|/*&n; * USB Types.  The upper 8 bits contain general usb device class and are used to&n; * qualify the lower 8 bits which contain device type within a usb class.&n; * Use USB_INV_DEVCLASS and USB_INV_DEVTYPE to to decode an i_type, and&n; * USB_INV_TYPE to set it.&n; */
+DECL|macro|USB_INV_DEVCLASS
+mdefine_line|#define USB_INV_DEVCLASS(invtype)&t;((invtype) &gt;&gt; 8)
+DECL|macro|USB_INV_DEVTYPE
+mdefine_line|#define USB_INV_DEVTYPE(invtype)&t;((invtype) &amp; 0xf)
+DECL|macro|USB_INV_TYPE
+mdefine_line|#define USB_INV_TYPE(usbclass, usbtype)&t;(((usbclass) &lt;&lt; 8) | (usbtype))
+multiline_comment|/*&n; * USB device classes.  These classes might not match the classes as defined&n; * by the usb spec, but where possible we will try.&n; */
+DECL|macro|USB_INV_CLASS_RH
+mdefine_line|#define USB_INV_CLASS_RH&t;0x00&t;/* root hub (ie. controller) */
+DECL|macro|USB_INV_CLASS_HID
+mdefine_line|#define USB_INV_CLASS_HID&t;0x03&t;/* human interface device */
+DECL|macro|USB_INV_CLASS_HUB
+mdefine_line|#define USB_INV_CLASS_HUB&t;0x09&t;/* hub device */
+multiline_comment|/*&n; * USB device types within a class.  These will not match USB device types,&n; * as the usb is not consistent on how specific types are defined (sometimes&n; * they are found in the interface subclass, sometimes (as in HID devices) they&n; * are found within data generated by the device (hid report descriptors for&n; * example).&n; */
+multiline_comment|/*&n; * RH types&n; */
+DECL|macro|USB_INV_RH_OHCI
+mdefine_line|#define USB_INV_RH_OHCI&t;&t;0x01&t;/* ohci root hub */
+multiline_comment|/*&n; * HID types&n; */
+DECL|macro|USB_INV_HID_KEYBOARD
+mdefine_line|#define USB_INV_HID_KEYBOARD&t;0x01&t;/* kbd (HID class) */
+DECL|macro|USB_INV_HID_MOUSE
+mdefine_line|#define USB_INV_HID_MOUSE&t;0x02&t;/* mouse (HID class) */
+multiline_comment|/*&n; * HUB types - none yet&n; */
 DECL|struct|invent_generic_s
 r_typedef
 r_struct
@@ -1058,6 +1102,11 @@ DECL|member|ic_slice
 r_int
 r_int
 id|ic_slice
+suffix:semicolon
+DECL|member|ic_cpumode
+r_int
+r_int
+id|ic_cpumode
 suffix:semicolon
 DECL|typedef|invent_cpuinfo_t
 )brace
@@ -1194,6 +1243,12 @@ id|invplace_t
 suffix:semicolon
 multiline_comment|/* Magic cookie placeholder in inventory list */
 r_extern
+id|invplace_t
+id|invplace_none
+suffix:semicolon
+DECL|macro|INVPLACE_NONE
+mdefine_line|#define INVPLACE_NONE invplace_none
+r_extern
 r_void
 id|add_to_inventory
 c_func
@@ -1229,9 +1284,27 @@ r_int
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|start_scan_inventory
+c_func
+(paren
+id|invplace_t
+op_star
+)paren
+suffix:semicolon
+r_extern
 id|inventory_t
 op_star
 id|get_next_inventory
+c_func
+(paren
+id|invplace_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|end_scan_inventory
 c_func
 (paren
 id|invplace_t

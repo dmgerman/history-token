@@ -4,9 +4,7 @@ DECL|macro|_ASM_SN_SN1_SLOTNUM_H
 mdefine_line|#define _ASM_SN_SN1_SLOTNUM_H
 DECL|macro|SLOTNUM_MAXLENGTH
 mdefine_line|#define SLOTNUM_MAXLENGTH&t;16
-multiline_comment|/*&n; * This file attempts to define a slot number space across all slots&n; * a IP27 module.  Here, we deal with the top level slots.&n; *&n; *&t;Node slots&n; *&t;Router slots&n; *&t;Crosstalk slots&n; *&n; *&t;Other slots are children of their parent crosstalk slot:&n; *&t;&t;PCI slots&n; *&t;&t;VME slots&n; */
-singleline_comment|// #include &lt;slotnum.h&gt;
-singleline_comment|// #ifdef NOTDEF&t;/* moved to sys/slotnum.h */
+multiline_comment|/*&n; * This file attempts to define a slot number space across all slots.&n; *&n; *&t;Node slots&n; *&t;Router slots&n; *&t;Crosstalk slots&n; *&n; *&t;Other slots are children of their parent crosstalk slot:&n; *&t;&t;PCI slots&n; *&t;&t;VME slots&n; *&n; *&t;The PCI class has been added since the XBridge ASIC on SN-MIPS&n; *&t;has built-in PCI bridges (2). On IBricks, widget E &amp; F serve&n; *&t;PCI busses, and on PBricks all widgets serve as PCI busses&n; *&t;with the use of the super-bridge mode of the XBridge ASIC.&n; */
 DECL|macro|SLOTNUM_NODE_CLASS
 mdefine_line|#define SLOTNUM_NODE_CLASS&t;0x00&t;/* Node   */
 DECL|macro|SLOTNUM_ROUTER_CLASS
@@ -19,6 +17,8 @@ DECL|macro|SLOTNUM_XBOW_CLASS
 mdefine_line|#define SLOTNUM_XBOW_CLASS&t;0x40&t;/* Xbow  */
 DECL|macro|SLOTNUM_KNODE_CLASS
 mdefine_line|#define SLOTNUM_KNODE_CLASS&t;0x50&t;/* Kego node */
+DECL|macro|SLOTNUM_PCI_CLASS
+mdefine_line|#define SLOTNUM_PCI_CLASS&t;0x60&t;/* PCI widgets on XBridge */
 DECL|macro|SLOTNUM_INVALID_CLASS
 mdefine_line|#define SLOTNUM_INVALID_CLASS&t;0xf0&t;/* Invalid */
 DECL|macro|SLOTNUM_CLASS_MASK
@@ -29,7 +29,6 @@ DECL|macro|SLOTNUM_GETCLASS
 mdefine_line|#define SLOTNUM_GETCLASS(_sn)&t;((_sn) &amp; SLOTNUM_CLASS_MASK)
 DECL|macro|SLOTNUM_GETSLOT
 mdefine_line|#define SLOTNUM_GETSLOT(_sn)&t;((_sn) &amp; SLOTNUM_SLOT_MASK)
-singleline_comment|// #endif&t;/* NOTDEF */
 multiline_comment|/* This determines module to pnode mapping. */
 multiline_comment|/* NODESLOTS_PER_MODULE has changed from 4 to 6&n; * to support the 12P 4IO configuration. This change&n; * helps in minimum  number of changes to code which&n; * depend on the number of node boards within a module.&n; */
 DECL|macro|NODESLOTS_PER_MODULE

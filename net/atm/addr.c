@@ -203,9 +203,10 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|function|reset_addr
+multiline_comment|/*&n; *&t;This is called from atm_ioctl only. You must hold the lock as a caller&n; */
+DECL|function|atm_reset_addr
 r_void
-id|reset_addr
+id|atm_reset_addr
 c_func
 (paren
 r_struct
@@ -224,12 +225,6 @@ c_func
 (paren
 op_amp
 id|local_lock
-)paren
-suffix:semicolon
-id|spin_lock
-(paren
-op_amp
-id|atm_dev_lock
 )paren
 suffix:semicolon
 r_while
@@ -260,12 +255,6 @@ op_amp
 id|local_lock
 )paren
 suffix:semicolon
-id|spin_unlock
-(paren
-op_amp
-id|atm_dev_lock
-)paren
-suffix:semicolon
 id|notify_sigd
 c_func
 (paren
@@ -273,9 +262,9 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-DECL|function|add_addr
+DECL|function|atm_add_addr
 r_int
-id|add_addr
+id|atm_add_addr
 c_func
 (paren
 r_struct
@@ -443,9 +432,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|del_addr
+DECL|function|atm_del_addr
 r_int
-id|del_addr
+id|atm_del_addr
 c_func
 (paren
 r_struct
@@ -587,9 +576,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|get_addr
+DECL|function|atm_get_addr
 r_int
-id|get_addr
+id|atm_get_addr
 c_func
 (paren
 r_struct

@@ -409,7 +409,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* inode operations for directories */
-multiline_comment|/* acces routines: lookup, readlink, permission */
+multiline_comment|/* access routines: lookup, readlink, permission */
 DECL|function|coda_lookup
 r_static
 r_struct

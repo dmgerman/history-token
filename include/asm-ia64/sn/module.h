@@ -242,6 +242,18 @@ DECL|member|count_down
 r_int
 id|count_down
 suffix:semicolon
+multiline_comment|/* System serial number info (used by SN1) */
+DECL|member|sys_snum
+r_char
+id|sys_snum
+(braket
+id|MAX_SERIAL_NUM_SIZE
+)braket
+suffix:semicolon
+DECL|member|sys_snum_valid
+r_int
+id|sys_snum_valid
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* module.c */
@@ -258,17 +270,6 @@ r_extern
 r_int
 id|nummodules
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-multiline_comment|/* Clashes with LINUX stuff */
-r_extern
-r_void
-id|module_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 id|module_t
 op_star
@@ -299,6 +300,19 @@ comma
 id|module_info_t
 op_star
 id|mod_info
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|get_kmod_sys_snum
+c_func
+(paren
+id|cmoduleid_t
+id|cmod
+comma
+r_char
+op_star
+id|snum
 )paren
 suffix:semicolon
 r_extern

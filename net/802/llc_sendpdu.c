@@ -210,7 +210,7 @@ l_int|0x01
 multiline_comment|/* TEST_RSP */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; *&t;Sendpdu() constructs an output frame in a new skb and&n; *&t;gives it to the MAC layer for transmision.&n; *&t;This function is not used to send I pdus.&n; *&t;No queues are updated here, nothing is saved for retransmission.&n; *&n; *&t;Parameter pf controls both the poll/final bit and dsap&n; *&t;fields in the output pdu. &n; *&t;The dsap trick was needed to implement XID_CMD send with&n; *&t;zero dsap field as described in doc 6.6 item 1 of enum.  &n; */
+multiline_comment|/*&n; *&t;Sendpdu() constructs an output frame in a new skb and&n; *&t;gives it to the MAC layer for transmission.&n; *&t;This function is not used to send I pdus.&n; *&t;No queues are updated here, nothing is saved for retransmission.&n; *&n; *&t;Parameter pf controls both the poll/final bit and dsap&n; *&t;fields in the output pdu. &n; *&t;The dsap trick was needed to implement XID_CMD send with&n; *&t;zero dsap field as described in doc 6.6 item 1 of enum.  &n; */
 DECL|function|llc_sendpdu
 r_void
 id|llc_sendpdu
@@ -575,7 +575,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;llc_sendipdu() Completes an I pdu in an existing skb and gives it&n; *&t;to the MAC layer for transmision.&n; *&t;Parameter &quot;type&quot; must be either I_CMD or I_RSP.&n; *&t;The skb is not freed after xmit, it is kept in case a retransmission&n; *&t;is requested. If needed it can be picked up again from the rtq.&n; */
+multiline_comment|/*&n; *&t;llc_sendipdu() Completes an I pdu in an existing skb and gives it&n; *&t;to the MAC layer for transmission.&n; *&t;Parameter &quot;type&quot; must be either I_CMD or I_RSP.&n; *&t;The skb is not freed after xmit, it is kept in case a retransmission&n; *&t;is requested. If needed it can be picked up again from the rtq.&n; */
 DECL|function|llc_sendipdu
 r_void
 id|llc_sendipdu

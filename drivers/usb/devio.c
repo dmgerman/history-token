@@ -609,6 +609,13 @@ id|as-&gt;urb.number_of_packets
 op_assign
 id|numisoframes
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|as-&gt;urb.lock
+)paren
+suffix:semicolon
 r_return
 id|as
 suffix:semicolon
@@ -1007,23 +1014,6 @@ r_struct
 id|siginfo
 id|sinfo
 suffix:semicolon
-macro_line|#if 1
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;usbdevfs: async_completed: status %d errcount %d actlen %d pipe 0x%x&bslash;n&quot;
-comma
-id|urb-&gt;status
-comma
-id|urb-&gt;error_count
-comma
-id|urb-&gt;actual_length
-comma
-id|urb-&gt;pipe
-)paren
-suffix:semicolon
-macro_line|#endif
 id|spin_lock
 c_func
 (paren

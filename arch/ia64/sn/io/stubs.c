@@ -32,8 +32,6 @@ DECL|variable|ignore_conveyor_override
 r_int
 id|ignore_conveyor_override
 suffix:semicolon
-DECL|macro|spinlock_init
-mdefine_line|#define spinlock_init(x,name) mutex_init(x, MUTEX_DEFAULT, name);
 DECL|variable|dummy_vrtx
 id|devfs_handle_t
 id|dummy_vrtx
@@ -321,101 +319,6 @@ op_star
 l_int|0
 suffix:semicolon
 )brace
-r_uint64
-DECL|function|rmalloc
-id|rmalloc
-c_func
-(paren
-r_struct
-id|map
-op_star
-id|mp
-comma
-r_int
-id|size
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;rmalloc : returns NULL&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-r_uint64
-)paren
-l_int|0
-suffix:semicolon
-)brace
-r_void
-DECL|function|rmfree
-id|rmfree
-c_func
-(paren
-r_struct
-id|map
-op_star
-id|mp
-comma
-r_int
-id|size
-comma
-r_uint64
-id|a
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;rmfree : no-op&quot;
-)paren
-suffix:semicolon
-)brace
-r_struct
-id|map
-op_star
-DECL|function|rmallocmap
-id|rmallocmap
-c_func
-(paren
-r_uint64
-id|mapsiz
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;rmallocmap : returns NULL&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-r_struct
-id|map
-op_star
-)paren
-l_int|0
-suffix:semicolon
-)brace
-r_void
-DECL|function|rmfreemap
-id|rmfreemap
-c_func
-(paren
-r_struct
-id|map
-op_star
-id|mp
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;rmfreemap : no-op&quot;
-)paren
-suffix:semicolon
-)brace
 r_int
 DECL|function|compare_and_swap_ptr
 id|compare_and_swap_ptr
@@ -595,64 +498,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#if 0
-mdefine_line|#define io_splock(l) 1
-mdefine_line|#define io_spunlock(l,s)
-mdefine_line|#define spinlock_destroy(a)     /* needed by pcibr_detach() */
-mdefine_line|#define mutex_spinlock(a) 0
-mdefine_line|#define mutex_spinunlock(a,b)
-mdefine_line|#define mutex_init(a,b,c)               ;
-mdefine_line|#define mutex_lock(a,b)                 ;
-mdefine_line|#define mutex_unlock(a)                 ;
-mdefine_line|#define dev_to_vhdl(dev) 0
-mdefine_line|#define get_timestamp() 0
-mdefine_line|#define us_delay(a)
-mdefine_line|#define v_mapphys(a,b,c) 0
-mdefine_line|#define splhi()  0
-mdefine_line|#define splx(s)
-mdefine_line|#define spinlock_init(x,name) mutex_init(x, MUTEX_DEFAULT, name);
-macro_line|#endif /* 0 */
-r_int
-DECL|function|cap_able
-id|cap_able
-c_func
-(paren
-r_uint64
-id|x
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;cap_able : returns 1&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_int
-DECL|function|cap_able_cred
-id|cap_able_cred
-c_func
-(paren
-r_uint64
-id|a
-comma
-r_uint64
-id|b
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;cap_able_cred : returns 1&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 r_void
 DECL|function|nic_vmc_check
 id|nic_vmc_check
@@ -751,58 +596,6 @@ c_func
 (paren
 l_string|&quot;vector_write_node&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_int
-DECL|function|atomicAddInt
-id|atomicAddInt
-c_func
-(paren
-r_int
-op_star
-id|int_ptr
-comma
-r_int
-id|value
-)paren
-(brace
-singleline_comment|//&t;FIXME(&quot;atomicAddInt : simple add&bslash;n&quot;);
-op_star
-id|int_ptr
-op_add_assign
-id|value
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_int
-DECL|function|atomicClearInt
-id|atomicClearInt
-c_func
-(paren
-r_int
-op_star
-id|int_ptr
-comma
-r_int
-id|value
-)paren
-(brace
-id|FIXME
-c_func
-(paren
-l_string|&quot;atomicClearInt : simple clear&bslash;n&quot;
-)paren
-suffix:semicolon
-op_star
-id|int_ptr
-op_and_assign
-op_complement
-id|value
 suffix:semicolon
 r_return
 l_int|0

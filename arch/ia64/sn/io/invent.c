@@ -106,7 +106,7 @@ id|state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Inventory retrieval &n; *&n; * These two routines are intended to prevent the caller from having to know&n; * the internal structure of the inventory table.&n; *&n; */
+multiline_comment|/*&n; * Inventory retrieval &n; *&n; * These two routines are intended to prevent the caller from having to know&n; * the internal structure of the inventory table.&n; *&n; * The caller of get_next_inventory is supposed to call start_scan_invent&n; * before the irst call to get_next_inventory, and the caller is required&n; * to call end_scan_invent after the last call to get_next_inventory.&n; */
 id|inventory_t
 op_star
 DECL|function|get_next_inventory
@@ -149,6 +149,11 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * We&squot;ve exhausted inventory items on the last device.&n;&t;&t; * Advance to next device.&n;&t;&t; */
+id|place-&gt;invplace_inv
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Start from beginning invent on this device */
 id|rv
 op_assign
 id|hwgraph_vertex_get_next
@@ -165,21 +170,25 @@ r_if
 c_cond
 (paren
 id|rv
-op_ne
+op_eq
 id|LABELCL_SUCCESS
 )paren
-r_return
-l_int|NULL
-suffix:semicolon
+(brace
 id|place-&gt;invplace_vhdl
 op_assign
 id|device
 suffix:semicolon
-id|place-&gt;invplace_inv
+)brace
+r_else
+(brace
+id|place-&gt;invplace_vhdl
 op_assign
+id|GRAPH_VERTEX_NONE
+suffix:semicolon
+r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Start from beginning invent on this device */
+)brace
 )brace
 r_return
 id|pinv
@@ -201,6 +210,59 @@ r_sizeof
 id|inventory_t
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* Must be called prior to first call to get_next_inventory */
+r_void
+DECL|function|start_scan_inventory
+id|start_scan_inventory
+c_func
+(paren
+id|invplace_t
+op_star
+id|iplace
+)paren
+(brace
+op_star
+id|iplace
+op_assign
+id|INVPLACE_NONE
+suffix:semicolon
+)brace
+multiline_comment|/* Must be called after last call to get_next_inventory */
+r_void
+DECL|function|end_scan_inventory
+id|end_scan_inventory
+c_func
+(paren
+id|invplace_t
+op_star
+id|iplace
+)paren
+(brace
+id|devfs_handle_t
+id|vhdl
+op_assign
+id|iplace-&gt;invplace_vhdl
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vhdl
+op_ne
+id|GRAPH_VERTEX_NONE
+)paren
+id|hwgraph_vertex_unref
+c_func
+(paren
+id|vhdl
+)paren
+suffix:semicolon
+op_star
+id|iplace
+op_assign
+id|INVPLACE_NONE
+suffix:semicolon
+multiline_comment|/* paranoia */
 )brace
 multiline_comment|/*&n; * Hardware inventory scanner.&n; *&n; * Calls fun() for every entry in inventory list unless fun() returns something&n; * other than 0.&n; */
 r_int
@@ -252,6 +314,13 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+id|start_scan_inventory
+c_func
+(paren
+op_amp
+id|iplace
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -291,6 +360,13 @@ id|rc
 r_break
 suffix:semicolon
 )brace
+id|end_scan_inventory
+c_func
+(paren
+op_amp
+id|iplace
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -332,6 +408,13 @@ l_int|NULL
 comma
 l_int|NULL
 )brace
+suffix:semicolon
+id|start_scan_inventory
+c_func
+(paren
+op_amp
+id|iplace
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -428,6 +511,13 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|end_scan_inventory
+c_func
+(paren
+op_amp
+id|iplace
+)paren
+suffix:semicolon
 r_return
 id|pinv
 suffix:semicolon

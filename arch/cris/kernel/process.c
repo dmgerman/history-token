@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: process.c,v 1.8 2000/09/13 14:34:13 bjornw Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; */
+multiline_comment|/* $Id: process.c,v 1.12 2001/02/27 13:52:52 bjornw Exp $&n; * &n; *  linux/arch/cris/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Copyright (C) 2000, 2001  Axis Communications AB&n; *&n; *  Authors:   Bjorn Wesen (bjornw@axis.com)&n; *&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -100,22 +100,6 @@ suffix:semicolon
 multiline_comment|/* in a system call, set_esp0 is called to remember the stack frame, therefore&n;   in the implementation of syscalls we can use that value to access the stack&n;   frame and saved registers.&n;*/
 DECL|macro|currentregs
 mdefine_line|#define currentregs ((struct pt_regs *)current-&gt;thread.esp0)
-DECL|function|set_esp0
-id|asmlinkage
-r_void
-id|set_esp0
-c_func
-(paren
-r_int
-r_int
-id|ssp
-)paren
-(brace
-id|current-&gt;thread.esp0
-op_assign
-id|ssp
-suffix:semicolon
-)brace
 DECL|function|disable_hlt
 r_void
 id|disable_hlt
@@ -266,8 +250,8 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;movu.w %1,r1&bslash;n&bslash;t&quot;
-multiline_comment|/* r1 contains syscall number, to sys_clone */
+l_string|&quot;movu.w %1,r9&bslash;n&bslash;t&quot;
+multiline_comment|/* r9 contains syscall number, to sys_clone */
 l_string|&quot;clear.d r10&bslash;n&bslash;t&quot;
 multiline_comment|/* r10 is argument 1 to clone */
 l_string|&quot;move.d %2,r11&bslash;n&bslash;t&quot;
@@ -284,8 +268,8 @@ l_string|&quot;move.d %4,r10&bslash;n&bslash;t&quot;
 multiline_comment|/* set argument to function to call */
 l_string|&quot;jsr %5&bslash;n&bslash;t&quot;
 multiline_comment|/* call specified function */
-l_string|&quot;movu.w %3,r1&bslash;n&bslash;t&quot;
-multiline_comment|/* r1 is sys_exit syscall number */
+l_string|&quot;movu.w %3,r9&bslash;n&bslash;t&quot;
+multiline_comment|/* r9 is sys_exit syscall number */
 l_string|&quot;moveq -1,r10&bslash;n&bslash;t&quot;
 multiline_comment|/* Give a really bad exit-value */
 l_string|&quot;break 13&bslash;n&bslash;t&quot;
@@ -328,7 +312,7 @@ l_string|&quot;r10&quot;
 comma
 l_string|&quot;r11&quot;
 comma
-l_string|&quot;r1&quot;
+l_string|&quot;r9&quot;
 )paren
 suffix:semicolon
 r_return

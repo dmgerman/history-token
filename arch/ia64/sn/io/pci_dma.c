@@ -14,10 +14,6 @@ macro_line|#ifndef _LANGUAGE_C
 DECL|macro|_LANGUAGE_C
 mdefine_line|#define _LANGUAGE_C 99
 macro_line|#endif
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-DECL|macro|CONFIG_IA64_SGI_IO
-mdefine_line|#define CONFIG_IA64_SGI_IO 99
-macro_line|#endif
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
@@ -25,22 +21,239 @@ macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/iobus.h&gt;
-macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
+macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/invent.h&gt;
+macro_line|#include &lt;asm/sn/hcl.h&gt;
+macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
+macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/alenlist.h&gt;
+macro_line|#include &lt;asm/sn/pci/pci_bus_cvlink.h&gt;
 multiline_comment|/*&n; * this is REALLY ugly, blame it on gcc&squot;s lame inlining that we&n; * have to put procedures in header files&n; */
 macro_line|#if LANGUAGE_C == 99
 DECL|macro|LANGUAGE_C
 macro_line|#undef LANGUAGE_C
 macro_line|#endif
-macro_line|#if _LANGUAGE_C == 99
-DECL|macro|_LANGUAGE_C
-macro_line|#undef _LANGUAGE_C
-macro_line|#endif
 macro_line|#if CONFIG_IA64_SGI_IO == 99
 DECL|macro|CONFIG_IA64_SGI_IO
 macro_line|#undef CONFIG_IA64_SGI_IO
 macro_line|#endif
+id|pciio_dmamap_t
+id|get_free_pciio_dmamap
+c_func
+(paren
+id|devfs_handle_t
+)paren
+suffix:semicolon
+r_struct
+id|sn1_dma_maps_s
+op_star
+id|find_sn1_dma_map
+c_func
+(paren
+id|dma_addr_t
+comma
+r_int
+r_char
+)paren
+suffix:semicolon
+r_extern
+id|devfs_handle_t
+id|busnum_to_pcibr_vhdl
+(braket
+)braket
+suffix:semicolon
+r_extern
+id|nasid_t
+id|busnum_to_nid
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|busnum_to_atedmamaps
+(braket
+)braket
+suffix:semicolon
+multiline_comment|/*&n; * Get a free pciio_dmamap_t entry.&n; */
+id|pciio_dmamap_t
+DECL|function|get_free_pciio_dmamap
+id|get_free_pciio_dmamap
+c_func
+(paren
+id|devfs_handle_t
+id|pci_bus
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_struct
+id|sn1_dma_maps_s
+op_star
+id|sn1_dma_map
+op_assign
+l_int|NULL
+suffix:semicolon
+multiline_comment|/*&n;&t; * Darn, we need to get the maps allocated for this bus.&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|512
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|busnum_to_pcibr_vhdl
+(braket
+id|i
+)braket
+op_eq
+id|pci_bus
+)paren
+(brace
+id|sn1_dma_map
+op_assign
+id|busnum_to_atedmamaps
+(braket
+id|i
+)braket
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * Now get a free dmamap entry from this list.&n;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|512
+suffix:semicolon
+id|i
+op_increment
+comma
+id|sn1_dma_map
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sn1_dma_map-&gt;dma_addr
+)paren
+(brace
+id|sn1_dma_map-&gt;dma_addr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_return
+(paren
+id|pciio_dmamap_t
+)paren
+id|sn1_dma_map
+suffix:semicolon
+)brace
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;get_pciio_dmamap: Unable to find a free dmamap&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+r_struct
+id|sn1_dma_maps_s
+op_star
+DECL|function|find_sn1_dma_map
+id|find_sn1_dma_map
+c_func
+(paren
+id|dma_addr_t
+id|dma_addr
+comma
+r_int
+r_char
+id|busnum
+)paren
+(brace
+r_struct
+id|sn1_dma_maps_s
+op_star
+id|sn1_dma_map
+op_assign
+l_int|NULL
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|sn1_dma_map
+op_assign
+id|busnum_to_atedmamaps
+(braket
+id|busnum
+)braket
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|512
+suffix:semicolon
+id|i
+op_increment
+comma
+id|sn1_dma_map
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|sn1_dma_map-&gt;dma_addr
+op_eq
+id|dma_addr
+)paren
+(brace
+r_return
+id|sn1_dma_map
+suffix:semicolon
+)brace
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot;find_pciio_dmamap: Unable find the corresponding dma map&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * sn1 platform specific pci_alloc_consistent()&n; *&n; * this interface is meant for &quot;command&quot; streams, i.e. called only&n; * once for initializing a device, so we don&squot;t want prefetching or&n; * write gathering turned on, hence the PCIIO_DMA_CMD flag&n; */
 r_void
 op_star
@@ -105,6 +318,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|ret
 op_assign
 (paren
@@ -120,6 +334,7 @@ id|get_order
 c_func
 (paren
 id|size
+)paren
 )paren
 )paren
 )paren
@@ -350,6 +565,9 @@ id|sn1_device_sysdata
 op_star
 id|device_sysdata
 suffix:semicolon
+id|pciio_dmamap_t
+id|dma_map
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -396,7 +614,11 @@ op_increment
 (brace
 id|sg-&gt;orig_address
 op_assign
-id|sg-&gt;address
+(paren
+r_char
+op_star
+)paren
+l_int|NULL
 suffix:semicolon
 id|dma_addr
 op_assign
@@ -457,7 +679,6 @@ op_star
 )paren
 id|dma_addr
 suffix:semicolon
-multiline_comment|/* printk(&quot;pci_map_sg: 64Bits hwdev %p DMA Address 0x%p alt_address 0x%p orig_address 0x%p length 0x%x&bslash;n&quot;, hwdev, sg-&gt;address, sg-&gt;alt_address, sg-&gt;orig_address, sg-&gt;length); */
 r_continue
 suffix:semicolon
 )brace
@@ -509,17 +730,44 @@ op_star
 )paren
 id|dma_addr
 suffix:semicolon
-multiline_comment|/* printk(&quot;pci_map_single: 32Bit direct pciio_dmatrans_addr pcidev %p returns dma_addr 0x%lx&bslash;n&quot;, hwdev, dma_addr); */
 r_continue
 suffix:semicolon
 )brace
-r_else
+)brace
+multiline_comment|/*&n;&t;&t; * It is a 32bit card and we cannot do Direct mapping.&n;&t;&t; * Let&squot;s 32Bit Page map the request.&n;&t;&t; */
+id|dma_map
+op_assign
+l_int|NULL
+suffix:semicolon
+id|dma_map
+op_assign
+id|pciio_dmamap_alloc
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|sg-&gt;length
+comma
+id|PCIBR_BARRIER
+op_or
+id|PCIIO_BYTE_STREAM
+op_or
+id|PCIIO_DMA_CMD
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dma_map
+)paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * We need to map this request by using ATEs.&n;&t;&t;&t;&t; */
 id|printk
 c_func
 (paren
-l_string|&quot;pci_map_single: 32Bits DMA Page Map support not available yet!&quot;
+l_string|&quot;pci_map_sg: Unable to allocate anymore 32Bits Page Map entries.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|BUG
@@ -528,7 +776,38 @@ c_func
 )paren
 suffix:semicolon
 )brace
-)brace
+id|dma_addr
+op_assign
+(paren
+id|dma_addr_t
+)paren
+id|pciio_dmamap_addr
+c_func
+(paren
+id|dma_map
+comma
+id|temp_ptr
+comma
+id|sg-&gt;length
+)paren
+suffix:semicolon
+multiline_comment|/* printk(&quot;pci_map_sg: dma_map 0x%p Phys Addr 0x%p dma_addr 0x%p&bslash;n&quot;, dma_map, temp_ptr, dma_addr); */
+id|sg-&gt;address
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|dma_addr
+suffix:semicolon
+id|sg-&gt;orig_address
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|dma_map
+suffix:semicolon
 )brace
 r_return
 id|nents
@@ -558,6 +837,11 @@ id|direction
 (brace
 r_int
 id|i
+suffix:semicolon
+r_struct
+id|sn1_dma_maps_s
+op_star
+id|sn1_dma_map
 suffix:semicolon
 r_if
 c_cond
@@ -592,14 +876,50 @@ r_if
 c_cond
 (paren
 id|sg-&gt;orig_address
-op_ne
-id|sg-&gt;address
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * We maintain the DMA Map pointer in sg-&gt;orig_address if &n;&t;&t;&t; * it is ever allocated.&n;&t;&t;&t; */
 multiline_comment|/* phys_to_virt((dma_addr_t)sg-&gt;address | ~0x80000000); */
+multiline_comment|/* sg-&gt;address = sg-&gt;orig_address; */
 id|sg-&gt;address
 op_assign
+(paren
+r_char
+op_star
+)paren
+op_minus
+l_int|1
+suffix:semicolon
+id|sn1_dma_map
+op_assign
+(paren
+r_struct
+id|sn1_dma_maps_s
+op_star
+)paren
 id|sg-&gt;orig_address
+suffix:semicolon
+id|pciio_dmamap_done
+c_func
+(paren
+(paren
+id|pciio_dmamap_t
+)paren
+id|sn1_dma_map
+)paren
+suffix:semicolon
+id|pciio_dmamap_free
+c_func
+(paren
+(paren
+id|pciio_dmamap_t
+)paren
+id|sn1_dma_map
+)paren
+suffix:semicolon
+id|sn1_dma_map-&gt;dma_addr
+op_assign
+l_int|0
 suffix:semicolon
 id|sg-&gt;orig_address
 op_assign
@@ -642,6 +962,16 @@ id|sn1_device_sysdata
 op_star
 id|device_sysdata
 suffix:semicolon
+id|pciio_dmamap_t
+id|dma_map
+op_assign
+l_int|NULL
+suffix:semicolon
+r_struct
+id|sn1_dma_maps_s
+op_star
+id|sn1_dma_map
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -654,26 +984,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PCI32L
-c_func
-(paren
-id|hwdev
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * SNIA64 cannot support DMA Addresses smaller than 32 bits.&n;&t;&t; */
-r_return
-(paren
-(paren
-id|dma_addr_t
-)paren
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * find vertex for the device&n;&t; */
 id|device_sysdata
 op_assign
@@ -688,7 +998,6 @@ id|vhdl
 op_assign
 id|device_sysdata-&gt;vhdl
 suffix:semicolon
-multiline_comment|/* printk(&quot;pci_map_single: Called vhdl = 0x%p ptr = 0x%p size = %d&bslash;n&quot;, vhdl, ptr, size); */
 multiline_comment|/*&n;&t; * Call our dmamap interface&n;&t; */
 id|dma_addr
 op_assign
@@ -741,7 +1050,6 @@ op_or
 id|PCIIO_DMA_A64
 )paren
 suffix:semicolon
-multiline_comment|/* printk(&quot;pci_map_single: 64Bit pciio_dmatrans_addr pcidev %p returns dma_addr 0x%lx&bslash;n&quot;, hwdev, dma_addr); */
 r_return
 (paren
 id|dma_addr
@@ -788,25 +1096,9 @@ c_cond
 id|dma_addr
 )paren
 (brace
-multiline_comment|/* printk(&quot;pci_map_single: 32Bit direct pciio_dmatrans_addr pcidev %p returns dma_addr 0x%lx&bslash;n&quot;, hwdev, dma_addr); */
 r_return
 (paren
 id|dma_addr
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;&t; * We need to map this request by using ATEs.&n;&t;&t;&t; */
-id|printk
-c_func
-(paren
-l_string|&quot;pci_map_single: 32Bits DMA Page Map support not available yet!&quot;
-)paren
-suffix:semicolon
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -831,12 +1123,83 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * It is a 32bit card and we cannot do Direct mapping.&n;&t; * Let&squot;s 32Bit Page map the request.&n;&t; */
+id|dma_map
+op_assign
+l_int|NULL
+suffix:semicolon
+id|dma_map
+op_assign
+id|pciio_dmamap_alloc
+c_func
+(paren
+id|vhdl
+comma
+l_int|NULL
+comma
+id|size
+comma
+id|PCIBR_BARRIER
+op_or
+id|PCIIO_BYTE_STREAM
+op_or
+id|PCIIO_DMA_CMD
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dma_map
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;pci_map_single: Unable to allocate anymore 32Bits Page Map entries.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+id|dma_addr
+op_assign
+(paren
+id|dma_addr_t
+)paren
+id|pciio_dmamap_addr
+c_func
+(paren
+id|dma_map
+comma
+id|temp_ptr
+comma
+id|size
+)paren
+suffix:semicolon
+multiline_comment|/* printk(&quot;pci_map_single: dma_map 0x%p Phys Addr 0x%p dma_addr 0x%p&bslash;n&quot;, dma_map, &n;&t;&t;temp_ptr, dma_addr); */
+id|sn1_dma_map
+op_assign
+(paren
+r_struct
+id|sn1_dma_maps_s
+op_star
+)paren
+id|dma_map
+suffix:semicolon
+id|sn1_dma_map-&gt;dma_addr
+op_assign
+id|dma_addr
+suffix:semicolon
 r_return
 (paren
 (paren
 id|dma_addr_t
 )paren
-l_int|NULL
+id|dma_addr
 )paren
 suffix:semicolon
 )brace
@@ -859,6 +1222,13 @@ r_int
 id|direction
 )paren
 (brace
+r_struct
+id|sn1_dma_maps_s
+op_star
+id|sn1_dma_map
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -871,7 +1241,58 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Nothing to do */
+multiline_comment|/*&n;&t; * Get the sn1_dma_map entry.&n;&t; */
+r_if
+c_cond
+(paren
+id|IS_PCI32_MAPPED
+c_func
+(paren
+id|dma_addr
+)paren
+)paren
+id|sn1_dma_map
+op_assign
+id|find_sn1_dma_map
+c_func
+(paren
+id|dma_addr
+comma
+id|hwdev-&gt;bus-&gt;number
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sn1_dma_map
+)paren
+(brace
+id|pciio_dmamap_done
+c_func
+(paren
+(paren
+id|pciio_dmamap_t
+)paren
+id|sn1_dma_map
+)paren
+suffix:semicolon
+id|pciio_dmamap_free
+c_func
+(paren
+(paren
+id|pciio_dmamap_t
+)paren
+id|sn1_dma_map
+)paren
+suffix:semicolon
+id|sn1_dma_map-&gt;dma_addr
+op_assign
+(paren
+id|dma_addr_t
+)paren
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 r_void
 DECL|function|sn1_pci_dma_sync_single
@@ -954,6 +1375,10 @@ id|sg
 (brace
 r_return
 (paren
+(paren
+r_int
+r_int
+)paren
 id|sg-&gt;address
 )paren
 suffix:semicolon

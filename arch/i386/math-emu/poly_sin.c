@@ -807,7 +807,7 @@ l_int|0x150
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 multiline_comment|/*--- poly_cos() ------------------------------------------------------------+&n; |                                                                           |&n; +---------------------------------------------------------------------------*/
 DECL|function|poly_cos
@@ -900,7 +900,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 id|exponent
 op_assign
 id|exponent
@@ -1694,6 +1694,6 @@ l_int|0x151
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 eof

@@ -174,7 +174,7 @@ c_func
 id|xwidget
 )paren
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef&t;LATER
 r_if
 c_cond
 (paren
@@ -190,27 +190,26 @@ op_ne
 id|xswitch_info_fingerprint
 )paren
 )paren
-id|cmn_err
+macro_line|#ifdef SUPPORT_PRINTING_V_FORMAT
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_PANIC
-comma
 l_string|&quot;%v xswitch_info_get bad fingerprint&quot;
 comma
 id|xwidget
 )paren
 suffix:semicolon
-macro_line|#endif
-id|printk
+macro_line|#else
+id|PRINT_PANIC
 c_func
 (paren
-l_string|&quot;xswitch_info_get: xwidget 0x%p xswitch_info 0x%p&bslash;n&quot;
+l_string|&quot;%x xswitch_info_get bad fingerprint&quot;
 comma
 id|xwidget
-comma
-id|xswitch_info
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#endif&t;/* LATER */
 r_return
 (paren
 id|xswitch_info
@@ -274,7 +273,7 @@ id|xwidgetnum_t
 id|port
 )paren
 (brace
-macro_line|#ifdef IRIX
+macro_line|#ifdef&t;LATER
 r_if
 c_cond
 (paren
@@ -282,11 +281,9 @@ id|xswitch_info
 op_eq
 l_int|NULL
 )paren
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_PANIC
-comma
 l_string|&quot;xswitch_info_vhdl_get: null xswitch_info&quot;
 )paren
 suffix:semicolon
@@ -519,16 +516,6 @@ suffix:semicolon
 id|xswitch_info_set
 c_func
 (paren
-id|xwidget
-comma
-id|xswitch_info
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;xswitch_info_new: xswitch_info_set xwidget 0x%p, xswitch_info 0x%p&bslash;n&quot;
-comma
 id|xwidget
 comma
 id|xswitch_info

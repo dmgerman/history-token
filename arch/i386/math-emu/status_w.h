@@ -69,7 +69,7 @@ macro_line|#  define clear_C1()  { partial_status &amp;= ~SW_C1; }
 macro_line|# else
 DECL|macro|clear_C1
 macro_line|#  define clear_C1()
-macro_line|#endif PECULIAR_486
-macro_line|#endif __ASSEMBLY__
-macro_line|#endif _STATUS_H_
+macro_line|#endif /* PECULIAR_486 */
+macro_line|#endif /* __ASSEMBLY__ */
+macro_line|#endif /* _STATUS_H_ */
 eof

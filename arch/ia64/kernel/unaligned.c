@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific unaligned trap handling.&n; *&n; * Copyright (C) 1999-2000 Hewlett-Packard Co&n; * Copyright (C) 1999-2000 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Architecture-specific unaligned trap handling.&n; *&n; * Copyright (C) 1999-2001 Hewlett-Packard Co&n; * Copyright (C) 1999-2000 Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 2001/01/17&t;Add support emulation of unaligned kernel accesses.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -34,105 +34,177 @@ DECL|macro|DEBUG_UNALIGNED_TRAP
 macro_line|#undef DEBUG_UNALIGNED_TRAP
 macro_line|#ifdef DEBUG_UNALIGNED_TRAP
 DECL|macro|DPRINT
-mdefine_line|#define DPRINT(a) { printk(&quot;%s, line %d: &quot;, __FUNCTION__, __LINE__); printk a;}
+macro_line|# define DPRINT(a...)&t;do { printk(&quot;%s.%u: &quot;, __FUNCTION__, __LINE__); printk (a); } while (0)
+DECL|macro|DDUMP
+macro_line|# define DDUMP(str,vp,len)&t;dump(str, vp, len)
+r_static
+r_void
+DECL|function|dump
+id|dump
+(paren
+r_const
+r_char
+op_star
+id|str
+comma
+r_void
+op_star
+id|vp
+comma
+r_int
+id|len
+)paren
+(brace
+r_int
+r_char
+op_star
+id|cp
+op_assign
+id|vp
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s&quot;
+comma
+id|str
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|len
+suffix:semicolon
+op_increment
+id|i
+)paren
+id|printk
+(paren
+l_string|&quot; %02x&quot;
+comma
+op_star
+id|cp
+op_increment
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 macro_line|#else
 DECL|macro|DPRINT
-mdefine_line|#define DPRINT(a)
+macro_line|# define DPRINT(a...)
+DECL|macro|DDUMP
+macro_line|# define DDUMP(str,vp,len)
 macro_line|#endif
 DECL|macro|IA64_FIRST_STACKED_GR
 mdefine_line|#define IA64_FIRST_STACKED_GR&t;32
 DECL|macro|IA64_FIRST_ROTATING_FR
 mdefine_line|#define IA64_FIRST_ROTATING_FR&t;32
 DECL|macro|SIGN_EXT9
-mdefine_line|#define SIGN_EXT9&t;&t;__IA64_UL(0xffffffffffffff00)
-multiline_comment|/*&n; * For M-unit:&n; *&n; *  opcode |   m  |   x6    |&n; * --------|------|---------|&n; * [40-37] | [36] | [35:30] |&n; * --------|------|---------|&n; *     4   |   1  |    6    | = 11 bits&n; * --------------------------&n; * However bits [31:30] are not directly useful to distinguish between &n; * load/store so we can use [35:32] instead, which gives the following &n; * mask ([40:32]) using 9 bits. The &squot;e&squot; comes from the fact that we defer&n; * checking the m-bit until later in the load/store emulation.&n; */
+mdefine_line|#define SIGN_EXT9&t;&t;0xffffffffffffff00ul
+multiline_comment|/*&n; * For M-unit:&n; *&n; *  opcode |   m  |   x6    |&n; * --------|------|---------|&n; * [40-37] | [36] | [35:30] |&n; * --------|------|---------|&n; *     4   |   1  |    6    | = 11 bits&n; * --------------------------&n; * However bits [31:30] are not directly useful to distinguish between&n; * load/store so we can use [35:32] instead, which gives the following&n; * mask ([40:32]) using 9 bits. The &squot;e&squot; comes from the fact that we defer&n; * checking the m-bit until later in the load/store emulation.&n; */
 DECL|macro|IA64_OPCODE_MASK
-mdefine_line|#define IA64_OPCODE_MASK&t;0x1ef00000000
-multiline_comment|/*&n; * Table C-28 Integer Load/Store&n; * &n; * We ignore [35:32]= 0x6, 0x7, 0xE, 0xF&n; *&n; * ld8.fill, st8.fill  MUST be aligned because the RNATs are based on &n; * the address (bits [8:3]), so we must failed.&n; */
+mdefine_line|#define IA64_OPCODE_MASK&t;0x1ef
+DECL|macro|IA64_OPCODE_SHIFT
+mdefine_line|#define IA64_OPCODE_SHIFT&t;32
+multiline_comment|/*&n; * Table C-28 Integer Load/Store&n; *&n; * We ignore [35:32]= 0x6, 0x7, 0xE, 0xF&n; *&n; * ld8.fill, st8.fill  MUST be aligned because the RNATs are based on&n; * the address (bits [8:3]), so we must failed.&n; */
 DECL|macro|LD_OP
-mdefine_line|#define LD_OP            0x08000000000
+mdefine_line|#define LD_OP            0x080
 DECL|macro|LDS_OP
-mdefine_line|#define LDS_OP           0x08100000000
+mdefine_line|#define LDS_OP           0x081
 DECL|macro|LDA_OP
-mdefine_line|#define LDA_OP           0x08200000000
+mdefine_line|#define LDA_OP           0x082
 DECL|macro|LDSA_OP
-mdefine_line|#define LDSA_OP          0x08300000000
+mdefine_line|#define LDSA_OP          0x083
 DECL|macro|LDBIAS_OP
-mdefine_line|#define LDBIAS_OP        0x08400000000
+mdefine_line|#define LDBIAS_OP        0x084
 DECL|macro|LDACQ_OP
-mdefine_line|#define LDACQ_OP         0x08500000000
+mdefine_line|#define LDACQ_OP         0x085
 multiline_comment|/* 0x086, 0x087 are not relevant */
 DECL|macro|LDCCLR_OP
-mdefine_line|#define LDCCLR_OP        0x08800000000
+mdefine_line|#define LDCCLR_OP        0x088
 DECL|macro|LDCNC_OP
-mdefine_line|#define LDCNC_OP         0x08900000000
+mdefine_line|#define LDCNC_OP         0x089
 DECL|macro|LDCCLRACQ_OP
-mdefine_line|#define LDCCLRACQ_OP     0x08a00000000
+mdefine_line|#define LDCCLRACQ_OP     0x08a
 DECL|macro|ST_OP
-mdefine_line|#define ST_OP            0x08c00000000
+mdefine_line|#define ST_OP            0x08c
 DECL|macro|STREL_OP
-mdefine_line|#define STREL_OP         0x08d00000000
+mdefine_line|#define STREL_OP         0x08d
 multiline_comment|/* 0x08e,0x8f are not relevant */
 multiline_comment|/*&n; * Table C-29 Integer Load +Reg&n; *&n; * we use the ld-&gt;m (bit [36:36]) field to determine whether or not we have&n; * a load/store of this form.&n; */
-multiline_comment|/*&n; * Table C-30 Integer Load/Store +Imm&n; * &n; * We ignore [35:32]= 0x6, 0x7, 0xE, 0xF&n; *&n; * ld8.fill, st8.fill  must be aligned because the Nat register are based on &n; * the address, so we must fail and the program must be fixed.&n; */
+multiline_comment|/*&n; * Table C-30 Integer Load/Store +Imm&n; *&n; * We ignore [35:32]= 0x6, 0x7, 0xE, 0xF&n; *&n; * ld8.fill, st8.fill  must be aligned because the Nat register are based on&n; * the address, so we must fail and the program must be fixed.&n; */
 DECL|macro|LD_IMM_OP
-mdefine_line|#define LD_IMM_OP            0x0a000000000
+mdefine_line|#define LD_IMM_OP            0x0a0
 DECL|macro|LDS_IMM_OP
-mdefine_line|#define LDS_IMM_OP           0x0a100000000
+mdefine_line|#define LDS_IMM_OP           0x0a1
 DECL|macro|LDA_IMM_OP
-mdefine_line|#define LDA_IMM_OP           0x0a200000000
+mdefine_line|#define LDA_IMM_OP           0x0a2
 DECL|macro|LDSA_IMM_OP
-mdefine_line|#define LDSA_IMM_OP          0x0a300000000
+mdefine_line|#define LDSA_IMM_OP          0x0a3
 DECL|macro|LDBIAS_IMM_OP
-mdefine_line|#define LDBIAS_IMM_OP        0x0a400000000
+mdefine_line|#define LDBIAS_IMM_OP        0x0a4
 DECL|macro|LDACQ_IMM_OP
-mdefine_line|#define LDACQ_IMM_OP         0x0a500000000
+mdefine_line|#define LDACQ_IMM_OP         0x0a5
 multiline_comment|/* 0x0a6, 0xa7 are not relevant */
 DECL|macro|LDCCLR_IMM_OP
-mdefine_line|#define LDCCLR_IMM_OP        0x0a800000000
+mdefine_line|#define LDCCLR_IMM_OP        0x0a8
 DECL|macro|LDCNC_IMM_OP
-mdefine_line|#define LDCNC_IMM_OP         0x0a900000000
+mdefine_line|#define LDCNC_IMM_OP         0x0a9
 DECL|macro|LDCCLRACQ_IMM_OP
-mdefine_line|#define LDCCLRACQ_IMM_OP     0x0aa00000000
+mdefine_line|#define LDCCLRACQ_IMM_OP     0x0aa
 DECL|macro|ST_IMM_OP
-mdefine_line|#define ST_IMM_OP            0x0ac00000000
+mdefine_line|#define ST_IMM_OP            0x0ac
 DECL|macro|STREL_IMM_OP
-mdefine_line|#define STREL_IMM_OP         0x0ad00000000
+mdefine_line|#define STREL_IMM_OP         0x0ad
 multiline_comment|/* 0x0ae,0xaf are not relevant */
 multiline_comment|/*&n; * Table C-32 Floating-point Load/Store&n; */
 DECL|macro|LDF_OP
-mdefine_line|#define LDF_OP           0x0c000000000
+mdefine_line|#define LDF_OP           0x0c0
 DECL|macro|LDFS_OP
-mdefine_line|#define LDFS_OP          0x0c100000000
+mdefine_line|#define LDFS_OP          0x0c1
 DECL|macro|LDFA_OP
-mdefine_line|#define LDFA_OP          0x0c200000000
+mdefine_line|#define LDFA_OP          0x0c2
 DECL|macro|LDFSA_OP
-mdefine_line|#define LDFSA_OP         0x0c300000000
+mdefine_line|#define LDFSA_OP         0x0c3
 multiline_comment|/* 0x0c6 is irrelevant */
 DECL|macro|LDFCCLR_OP
-mdefine_line|#define LDFCCLR_OP       0x0c800000000
+mdefine_line|#define LDFCCLR_OP       0x0c8
 DECL|macro|LDFCNC_OP
-mdefine_line|#define LDFCNC_OP        0x0c900000000
+mdefine_line|#define LDFCNC_OP        0x0c9
 multiline_comment|/* 0x0cb is irrelevant  */
 DECL|macro|STF_OP
-mdefine_line|#define STF_OP           0x0cc00000000
+mdefine_line|#define STF_OP           0x0cc
 multiline_comment|/*&n; * Table C-33 Floating-point Load +Reg&n; *&n; * we use the ld-&gt;m (bit [36:36]) field to determine whether or not we have&n; * a load/store of this form.&n; */
 multiline_comment|/*&n; * Table C-34 Floating-point Load/Store +Imm&n; */
 DECL|macro|LDF_IMM_OP
-mdefine_line|#define LDF_IMM_OP       0x0e000000000
+mdefine_line|#define LDF_IMM_OP       0x0e0
 DECL|macro|LDFS_IMM_OP
-mdefine_line|#define LDFS_IMM_OP      0x0e100000000
+mdefine_line|#define LDFS_IMM_OP      0x0e1
 DECL|macro|LDFA_IMM_OP
-mdefine_line|#define LDFA_IMM_OP      0x0e200000000
+mdefine_line|#define LDFA_IMM_OP      0x0e2
 DECL|macro|LDFSA_IMM_OP
-mdefine_line|#define LDFSA_IMM_OP     0x0e300000000
+mdefine_line|#define LDFSA_IMM_OP     0x0e3
 multiline_comment|/* 0x0e6 is irrelevant */
 DECL|macro|LDFCCLR_IMM_OP
-mdefine_line|#define LDFCCLR_IMM_OP   0x0e800000000
+mdefine_line|#define LDFCCLR_IMM_OP   0x0e8
 DECL|macro|LDFCNC_IMM_OP
-mdefine_line|#define LDFCNC_IMM_OP    0x0e900000000
+mdefine_line|#define LDFCNC_IMM_OP    0x0e9
 DECL|macro|STF_IMM_OP
-mdefine_line|#define STF_IMM_OP       0x0ec00000000
+mdefine_line|#define STF_IMM_OP       0x0ec
 r_typedef
 r_struct
 (brace
@@ -1863,7 +1935,6 @@ r_static
 r_void
 DECL|function|set_rse_reg
 id|set_rse_reg
-c_func
 (paren
 r_struct
 id|pt_regs
@@ -1899,28 +1970,6 @@ suffix:semicolon
 r_int
 r_int
 op_star
-id|kbs
-op_assign
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|current
-)paren
-op_plus
-id|IA64_RBS_OFFSET
-op_div
-l_int|8
-suffix:semicolon
-r_int
-r_int
-id|on_kbs
-suffix:semicolon
-r_int
-r_int
-op_star
 id|bsp
 comma
 op_star
@@ -1930,20 +1979,36 @@ op_star
 id|addr
 comma
 op_star
-id|ubs_end
+id|rnat_addr
 comma
 op_star
-id|slot
+id|ubs_end
+suffix:semicolon
+r_int
+r_int
+op_star
+id|kbs
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|current
+op_plus
+id|IA64_RBS_OFFSET
 suffix:semicolon
 r_int
 r_int
 id|rnats
+comma
+id|nat_mask
 suffix:semicolon
 r_int
-id|nlocals
+r_int
+id|on_kbs
 suffix:semicolon
-multiline_comment|/*&n;&t; * cr_ifs=[rv:ifm], ifm=[....:sof(6)]&n;&t; * nlocal=number of locals (in+loc) register of the faulting function&n;&t; */
-id|nlocals
+r_int
+id|sof
 op_assign
 (paren
 id|regs-&gt;cr_ifs
@@ -1954,26 +2019,15 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
-l_string|&quot;sw.bsptore=%lx pt.bspstore=%lx&bslash;n&quot;
+l_string|&quot;r%lu, sw.bspstore=%lx pt.bspstore=%lx sof=%ld sol=%ld&bslash;n&quot;
+comma
+id|r1
 comma
 id|sw-&gt;ar_bspstore
 comma
 id|regs-&gt;ar_bspstore
-)paren
-)paren
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;cr.ifs=%lx sof=%ld sol=%ld&bslash;n&quot;
 comma
-id|regs-&gt;cr_ifs
-comma
-id|regs-&gt;cr_ifs
-op_amp
-l_int|0x7f
+id|sof
 comma
 (paren
 id|regs-&gt;cr_ifs
@@ -1983,8 +2037,33 @@ l_int|7
 op_amp
 l_int|0x7f
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|r1
+op_minus
+l_int|32
+)paren
+op_ge
+id|sof
+)paren
+(brace
+multiline_comment|/* this should never happen, as the &quot;rsvd register fault&quot; has higher priority */
+id|DPRINT
+c_func
+(paren
+l_string|&quot;ignoring write to r%lu; only %lu registers are allocated!&bslash;n&quot;
+comma
+id|r1
+comma
+id|sof
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|on_kbs
 op_assign
 id|ia64_rse_num_regs
@@ -2000,6 +2079,116 @@ op_star
 id|sw-&gt;ar_bspstore
 )paren
 suffix:semicolon
+id|addr
+op_assign
+id|ia64_rse_skip_regs
+c_func
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|sw-&gt;ar_bspstore
+comma
+op_minus
+id|sof
+op_plus
+(paren
+id|r1
+op_minus
+l_int|32
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+op_ge
+id|kbs
+)paren
+(brace
+multiline_comment|/* the register is on the kernel backing store: easy... */
+id|rnat_addr
+op_assign
+id|ia64_rse_rnat_addr
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+r_int
+r_int
+)paren
+id|rnat_addr
+op_ge
+id|sw-&gt;ar_bspstore
+)paren
+id|rnat_addr
+op_assign
+op_amp
+id|sw-&gt;ar_rnat
+suffix:semicolon
+id|nat_mask
+op_assign
+l_int|1UL
+op_lshift
+id|ia64_rse_slot_num
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+op_star
+id|addr
+op_assign
+id|val
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nat
+)paren
+op_star
+id|rnat_addr
+op_or_assign
+id|nat_mask
+suffix:semicolon
+r_else
+op_star
+id|rnat_addr
+op_and_assign
+op_complement
+id|nat_mask
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Avoid using user_mode() here: with &quot;epc&quot;, we cannot use the privilege level to&n;&t; * infer whether the interrupt task was running on the kernel backing store.&n;&t; */
+r_if
+c_cond
+(paren
+id|regs-&gt;r12
+op_ge
+id|TASK_SIZE
+)paren
+(brace
+id|DPRINT
+c_func
+(paren
+l_string|&quot;ignoring kernel write to r%lu; register isn&squot;t on the RBS!&quot;
+comma
+id|r1
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|bspstore
 op_assign
 (paren
@@ -2009,91 +2198,6 @@ op_star
 )paren
 id|regs-&gt;ar_bspstore
 suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;rse_slot_num=0x%lx&bslash;n&quot;
-comma
-id|ia64_rse_slot_num
-c_func
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|sw-&gt;ar_bspstore
-)paren
-)paren
-)paren
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;kbs=%p nlocals=%ld&bslash;n&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|kbs
-comma
-id|nlocals
-)paren
-)paren
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;bspstore next rnat slot %p&bslash;n&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-id|ia64_rse_rnat_addr
-c_func
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|sw-&gt;ar_bspstore
-)paren
-)paren
-)paren
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;on_kbs=%ld rnats=%ld&bslash;n&quot;
-comma
-id|on_kbs
-comma
-(paren
-(paren
-id|sw-&gt;ar_bspstore
-op_minus
-(paren
-r_int
-r_int
-)paren
-id|kbs
-)paren
-op_rshift
-l_int|3
-)paren
-op_minus
-id|on_kbs
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * See get_rse_reg() for an explanation on the following instructions&n;&t; */
 id|ubs_end
 op_assign
 id|ia64_rse_skip_regs
@@ -2112,12 +2216,10 @@ c_func
 id|ubs_end
 comma
 op_minus
-id|nlocals
+id|sof
 )paren
 suffix:semicolon
 id|addr
-op_assign
-id|slot
 op_assign
 id|ia64_rse_skip_regs
 c_func
@@ -2132,8 +2234,7 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
-l_string|&quot;ubs_end=%p bsp=%p addr=%p slot=0x%lx&bslash;n&quot;
+l_string|&quot;ubs_end=%p bsp=%p addr=%px&bslash;n&quot;
 comma
 (paren
 r_void
@@ -2152,21 +2253,18 @@ r_void
 op_star
 )paren
 id|addr
-comma
-id|ia64_rse_slot_num
-c_func
-(paren
-id|addr
-)paren
-)paren
 )paren
 suffix:semicolon
 id|ia64_poke
 c_func
 (paren
-id|regs
-comma
 id|current
+comma
+(paren
+r_int
+r_int
+)paren
+id|ubs_end
 comma
 (paren
 r_int
@@ -2177,8 +2275,7 @@ comma
 id|val
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * addr will now contain the address of the RNAT for the register&n;&t; */
-id|addr
+id|rnat_addr
 op_assign
 id|ia64_rse_rnat_addr
 c_func
@@ -2189,15 +2286,19 @@ suffix:semicolon
 id|ia64_peek
 c_func
 (paren
-id|regs
-comma
 id|current
 comma
 (paren
 r_int
 r_int
 )paren
-id|addr
+id|ubs_end
+comma
+(paren
+r_int
+r_int
+)paren
+id|rnat_addr
 comma
 op_amp
 id|rnats
@@ -2206,27 +2307,39 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
-l_string|&quot;rnat @%p = 0x%lx nat=%d rnatval=%lx&bslash;n&quot;
+l_string|&quot;rnat @%p = 0x%lx nat=%d old nat=%ld&bslash;n&quot;
 comma
 (paren
 r_void
 op_star
 )paren
-id|addr
+id|rnat_addr
 comma
 id|rnats
 comma
 id|nat
 comma
+(paren
 id|rnats
-op_amp
+op_rshift
 id|ia64_rse_slot_num
 c_func
 (paren
-id|slot
+id|addr
 )paren
 )paren
+op_amp
+l_int|1
+)paren
+suffix:semicolon
+id|nat_mask
+op_assign
+l_int|1UL
+op_lshift
+id|ia64_rse_slot_num
+c_func
+(paren
+id|addr
 )paren
 suffix:semicolon
 r_if
@@ -2234,54 +2347,32 @@ c_cond
 (paren
 id|nat
 )paren
-(brace
 id|rnats
 op_or_assign
-id|__IA64_UL
-c_func
-(paren
-l_int|1
-)paren
-op_lshift
-id|ia64_rse_slot_num
-c_func
-(paren
-id|slot
-)paren
+id|nat_mask
 suffix:semicolon
-)brace
 r_else
-(brace
 id|rnats
 op_and_assign
 op_complement
-(paren
-id|__IA64_UL
-c_func
-(paren
-l_int|1
-)paren
-op_lshift
-id|ia64_rse_slot_num
-c_func
-(paren
-id|slot
-)paren
-)paren
+id|nat_mask
 suffix:semicolon
-)brace
 id|ia64_poke
 c_func
 (paren
-id|regs
-comma
 id|current
 comma
 (paren
 r_int
 r_int
 )paren
-id|addr
+id|ubs_end
+comma
+(paren
+r_int
+r_int
+)paren
+id|rnat_addr
 comma
 id|rnats
 )paren
@@ -2289,17 +2380,15 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;rnat changed to @%p = 0x%lx&bslash;n&quot;
 comma
 (paren
 r_void
 op_star
 )paren
-id|addr
+id|rnat_addr
 comma
 id|rnats
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -2307,7 +2396,6 @@ r_static
 r_void
 DECL|function|get_rse_reg
 id|get_rse_reg
-c_func
 (paren
 r_struct
 id|pt_regs
@@ -2345,49 +2433,45 @@ suffix:semicolon
 r_int
 r_int
 op_star
-id|kbs
-op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
-id|current
-op_plus
-id|IA64_RBS_OFFSET
-op_div
-l_int|8
-suffix:semicolon
-r_int
-r_int
-id|on_kbs
-suffix:semicolon
-r_int
-id|nlocals
-suffix:semicolon
-r_int
-r_int
-op_star
 id|bsp
 comma
 op_star
 id|addr
 comma
 op_star
-id|ubs_end
+id|rnat_addr
 comma
 op_star
-id|slot
+id|ubs_end
 comma
 op_star
 id|bspstore
 suffix:semicolon
 r_int
 r_int
-id|rnats
+op_star
+id|kbs
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|current
+op_plus
+id|IA64_RBS_OFFSET
 suffix:semicolon
-multiline_comment|/*&n;&t; * cr_ifs=[rv:ifm], ifm=[....:sof(6)]&n;&t; * nlocals=number of local registers in the faulting function&n;&t; */
-id|nlocals
+r_int
+r_int
+id|rnats
+comma
+id|nat_mask
+suffix:semicolon
+r_int
+r_int
+id|on_kbs
+suffix:semicolon
+r_int
+id|sof
 op_assign
 (paren
 id|regs-&gt;cr_ifs
@@ -2395,7 +2479,54 @@ id|regs-&gt;cr_ifs
 op_amp
 l_int|0x7f
 suffix:semicolon
-multiline_comment|/*&n;&t; * save_switch_stack does a flushrs and saves bspstore.&n;&t; * on_kbs = actual number of registers saved on kernel backing store&n;&t; *          (taking into accound potential RNATs)&n;&t; *&n;&t; * Note that this number can be greater than nlocals if the dirty&n;&t; * parititions included more than one stack frame at the time we&n;&t; * switched to KBS&n;&t; */
+id|DPRINT
+c_func
+(paren
+l_string|&quot;r%lu, sw.bspstore=%lx pt.bspstore=%lx sof=%ld sol=%ld&bslash;n&quot;
+comma
+id|r1
+comma
+id|sw-&gt;ar_bspstore
+comma
+id|regs-&gt;ar_bspstore
+comma
+id|sof
+comma
+(paren
+id|regs-&gt;cr_ifs
+op_rshift
+l_int|7
+)paren
+op_amp
+l_int|0x7f
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|r1
+op_minus
+l_int|32
+)paren
+op_ge
+id|sof
+)paren
+(brace
+multiline_comment|/* this should never happen, as the &quot;rsvd register fault&quot; has higher priority */
+id|DPRINT
+c_func
+(paren
+l_string|&quot;ignoring read from r%lu; only %lu registers are allocated!&bslash;n&quot;
+comma
+id|r1
+comma
+id|sof
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|on_kbs
 op_assign
 id|ia64_rse_num_regs
@@ -2411,6 +2542,119 @@ op_star
 id|sw-&gt;ar_bspstore
 )paren
 suffix:semicolon
+id|addr
+op_assign
+id|ia64_rse_skip_regs
+c_func
+(paren
+(paren
+r_int
+r_int
+op_star
+)paren
+id|sw-&gt;ar_bspstore
+comma
+op_minus
+id|sof
+op_plus
+(paren
+id|r1
+op_minus
+l_int|32
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
+op_ge
+id|kbs
+)paren
+(brace
+multiline_comment|/* the register is on the kernel backing store: easy... */
+op_star
+id|val
+op_assign
+op_star
+id|addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nat
+)paren
+(brace
+id|rnat_addr
+op_assign
+id|ia64_rse_rnat_addr
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+r_int
+r_int
+)paren
+id|rnat_addr
+op_ge
+id|sw-&gt;ar_bspstore
+)paren
+id|rnat_addr
+op_assign
+op_amp
+id|sw-&gt;ar_rnat
+suffix:semicolon
+id|nat_mask
+op_assign
+l_int|1UL
+op_lshift
+id|ia64_rse_slot_num
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+op_star
+id|nat
+op_assign
+(paren
+op_star
+id|rnat_addr
+op_amp
+id|nat_mask
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+)brace
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Avoid using user_mode() here: with &quot;epc&quot;, we cannot use the privilege level to&n;&t; * infer whether the interrupt task was running on the kernel backing store.&n;&t; */
+r_if
+c_cond
+(paren
+id|regs-&gt;r12
+op_ge
+id|TASK_SIZE
+)paren
+(brace
+id|DPRINT
+c_func
+(paren
+l_string|&quot;ignoring kernel read of r%lu; register isn&squot;t on the RBS!&quot;
+comma
+id|r1
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|bspstore
 op_assign
 (paren
@@ -2420,7 +2664,6 @@ op_star
 )paren
 id|regs-&gt;ar_bspstore
 suffix:semicolon
-multiline_comment|/*&n;&t; * To simplify the logic, we calculate everything as if there was only&n;&t; * one backing store i.e., the user one (UBS). We let it to peek/poke&n;&t; * to figure out whether the register we&squot;re looking for really is&n;&t; * on the UBS or on KBS.&n;&t; *&n;&t; * regs-&gt;ar_bsptore = address of last register saved on UBS (before switch)&n;&t; *&n;&t; * ubs_end = virtual end of the UBS (if everything had been spilled there)&n;&t; *&n;&t; * We know that ubs_end is the point where the last register on the&n;&t; * stack frame we&squot;re interested in as been saved. So we need to walk&n;&t; * our way backward to figure out what the BSP &quot;was&quot; for that frame,&n;&t; * this will give us the location of r32. &n;&t; *&n;&t; * bsp = &quot;virtual UBS&quot; address of r32 for our frame&n;&t; *&n;&t; * Finally, get compute the address of the register we&squot;re looking for&n;&t; * using bsp as our base (move up again).&n;&t; *&n;&t; * Please note that in our case, we know that the register is necessarily&n;&t; * on the KBS because we are only interested in the current frame at the moment&n;&t; * we got the exception i.e., bsp is not changed until we switch to KBS.&n;&t; */
 id|ubs_end
 op_assign
 id|ia64_rse_skip_regs
@@ -2439,12 +2682,10 @@ c_func
 id|ubs_end
 comma
 op_minus
-id|nlocals
+id|sof
 )paren
 suffix:semicolon
 id|addr
-op_assign
-id|slot
 op_assign
 id|ia64_rse_skip_regs
 c_func
@@ -2459,8 +2700,7 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
-l_string|&quot;ubs_end=%p bsp=%p addr=%p slot=0x%lx&bslash;n&quot;
+l_string|&quot;ubs_end=%p bsp=%p addr=%p&bslash;n&quot;
 comma
 (paren
 r_void
@@ -2479,21 +2719,18 @@ r_void
 op_star
 )paren
 id|addr
-comma
-id|ia64_rse_slot_num
-c_func
-(paren
-id|addr
-)paren
-)paren
 )paren
 suffix:semicolon
 id|ia64_peek
 c_func
 (paren
-id|regs
-comma
 id|current
+comma
+(paren
+r_int
+r_int
+)paren
+id|ubs_end
 comma
 (paren
 r_int
@@ -2504,8 +2741,13 @@ comma
 id|val
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * addr will now contain the address of the RNAT for the register&n;&t; */
-id|addr
+r_if
+c_cond
+(paren
+id|nat
+)paren
+(brace
+id|rnat_addr
 op_assign
 id|ia64_rse_rnat_addr
 c_func
@@ -2513,26 +2755,18 @@ c_func
 id|addr
 )paren
 suffix:semicolon
-id|ia64_peek
+id|nat_mask
+op_assign
+l_int|1UL
+op_lshift
+id|ia64_rse_slot_num
 c_func
 (paren
-id|regs
-comma
-id|current
-comma
-(paren
-r_int
-r_int
-)paren
 id|addr
-comma
-op_amp
-id|rnats
 )paren
 suffix:semicolon
 id|DPRINT
 c_func
-(paren
 (paren
 l_string|&quot;rnat @%p = 0x%lx&bslash;n&quot;
 comma
@@ -2540,36 +2774,49 @@ comma
 r_void
 op_star
 )paren
-id|addr
+id|rnat_addr
 comma
 id|rnats
 )paren
+suffix:semicolon
+id|ia64_peek
+c_func
+(paren
+id|current
+comma
+(paren
+r_int
+r_int
+)paren
+id|ubs_end
+comma
+(paren
+r_int
+r_int
+)paren
+id|rnat_addr
+comma
+op_amp
+id|rnats
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|nat
-)paren
 op_star
 id|nat
 op_assign
-id|rnats
-op_rshift
-id|ia64_rse_slot_num
-c_func
 (paren
-id|slot
-)paren
+id|rnats
 op_amp
-l_int|0x1
+id|nat_mask
+)paren
+op_ne
+l_int|0
 suffix:semicolon
+)brace
 )brace
 r_static
 r_void
 DECL|function|setreg
 id|setreg
-c_func
 (paren
 r_int
 r_int
@@ -2639,7 +2886,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Using r0 as a target raises a General Exception fault which has &n;&t; * higher priority than the Unaligned Reference fault.&n;&t; */
+multiline_comment|/*&n;&t; * Using r0 as a target raises a General Exception fault which has higher priority&n;&t; * than the Unaligned Reference fault.&n;&t; */
 multiline_comment|/*&n;&t; * Now look at registers in [0-31] range and init correct UNAT&n;&t; */
 r_if
 c_cond
@@ -2684,7 +2931,6 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;tmp_base=%lx switch_stack=%s offset=%d&bslash;n&quot;
 comma
 id|addr
@@ -2703,7 +2949,6 @@ id|GR_OFFS
 c_func
 (paren
 id|regnum
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -2729,11 +2974,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We need to clear the corresponding UNAT bit to fully emulate the load&n;&t; * UNAT bit_pos = GR[r3]{8:3} form EAS-2.4&n;&t; */
 id|bitmask
 op_assign
-id|__IA64_UL
-c_func
-(paren
-l_int|1
-)paren
+l_int|1UL
 op_lshift
 (paren
 id|addr
@@ -2745,7 +2986,6 @@ l_int|0x3f
 suffix:semicolon
 id|DPRINT
 c_func
-(paren
 (paren
 l_string|&quot;*0x%lx=0x%lx NaT=%d prev_unat @%p=%lx&bslash;n&quot;
 comma
@@ -2763,7 +3003,6 @@ id|unat
 comma
 op_star
 id|unat
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2790,7 +3029,6 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;*0x%lx=0x%lx NaT=%d new unat: %p=%lx&bslash;n&quot;
 comma
 id|addr
@@ -2808,7 +3046,6 @@ comma
 op_star
 id|unat
 )paren
-)paren
 suffix:semicolon
 )brace
 DECL|macro|IA64_FPH_OFFS
@@ -2817,7 +3054,6 @@ r_static
 r_void
 DECL|function|setfpreg
 id|setfpreg
-c_func
 (paren
 r_int
 r_int
@@ -2916,7 +3152,6 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;tmp_base=%lx offset=%d&bslash;n&quot;
 comma
 id|addr
@@ -2925,7 +3160,6 @@ id|FR_OFFS
 c_func
 (paren
 id|regnum
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -2948,7 +3182,7 @@ op_assign
 op_star
 id|fpval
 suffix:semicolon
-multiline_comment|/*&n;&t; &t; * mark the low partition as being used now&n;&t;&t; *&n;&t;&t; * It is highly unlikely that this bit is not already set, but&n;&t;&t; * let&squot;s do it for safety.&n;&t; &t; */
+multiline_comment|/*&n;&t;&t; * mark the low partition as being used now&n;&t;&t; *&n;&t;&t; * It is highly unlikely that this bit is not already set, but&n;&t;&t; * let&squot;s do it for safety.&n;&t;&t; */
 id|regs-&gt;cr_ipsr
 op_or_assign
 id|IA64_PSR_MFL
@@ -2961,7 +3195,6 @@ r_inline
 r_void
 DECL|function|float_spill_f0
 id|float_spill_f0
-c_func
 (paren
 r_struct
 id|ia64_fpreg
@@ -2988,7 +3221,6 @@ r_inline
 r_void
 DECL|function|float_spill_f1
 id|float_spill_f1
-c_func
 (paren
 r_struct
 id|ia64_fpreg
@@ -3014,7 +3246,6 @@ r_static
 r_void
 DECL|function|getfpreg
 id|getfpreg
-c_func
 (paren
 r_int
 r_int
@@ -3049,7 +3280,7 @@ r_int
 r_int
 id|addr
 suffix:semicolon
-multiline_comment|/*&n;&t; * From EAS-2.5: FPDisableFault has higher priority than &n;&t; * Unaligned Fault. Thus, when we get here, we know the partition is &n;&t; * enabled.&n;&t; *&n;&t; * When regnum &gt; 31, the register is still live and we need to force a save&n;&t; * to current-&gt;thread.fph to get access to it.  See discussion in setfpreg()&n;&t; * for reasons and other ways of doing this.&n;&t; */
+multiline_comment|/*&n;&t; * From EAS-2.5: FPDisableFault has higher priority than&n;&t; * Unaligned Fault. Thus, when we get here, we know the partition is&n;&t; * enabled.&n;&t; *&n;&t; * When regnum &gt; 31, the register is still live and we need to force a save&n;&t; * to current-&gt;thread.fph to get access to it.  See discussion in setfpreg()&n;&t; * for reasons and other ways of doing this.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3079,7 +3310,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * f0 = 0.0, f1= 1.0. Those registers are constant and are thus&n;&t; &t; * not saved, we must generate their spilled form on the fly&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * f0 = 0.0, f1= 1.0. Those registers are constant and are thus&n;&t;&t; * not saved, we must generate their spilled form on the fly&n;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -3135,7 +3366,6 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;is_sw=%d tmp_base=%lx offset=0x%x&bslash;n&quot;
 comma
 id|FR_IN_SW
@@ -3150,7 +3380,6 @@ id|FR_OFFS
 c_func
 (paren
 id|regnum
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -3180,7 +3409,6 @@ r_static
 r_void
 DECL|function|getreg
 id|getreg
-c_func
 (paren
 r_int
 r_int
@@ -3316,7 +3544,6 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;addr_base=%lx offset=0x%x&bslash;n&quot;
 comma
 id|addr
@@ -3325,7 +3552,6 @@ id|GR_OFFS
 c_func
 (paren
 id|regnum
-)paren
 )paren
 )paren
 suffix:semicolon
@@ -3377,13 +3603,11 @@ r_static
 r_void
 DECL|function|emulate_load_updates
 id|emulate_load_updates
-c_func
 (paren
 id|update_t
 id|type
 comma
 id|load_store_t
-op_star
 id|ld
 comma
 r_struct
@@ -3396,15 +3620,15 @@ r_int
 id|ifa
 )paren
 (brace
-multiline_comment|/*&n;&t; * IMPORTANT: &n;&t; * Given the way we handle unaligned speculative loads, we should&n;&t; * not get to this point in the code but we keep this sanity check,&n;&t; * just in case.&n;&t; */
+multiline_comment|/*&n;&t; * IMPORTANT:&n;&t; * Given the way we handle unaligned speculative loads, we should&n;&t; * not get to this point in the code but we keep this sanity check,&n;&t; * just in case.&n;&t; */
 r_if
 c_cond
 (paren
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_eq
 l_int|1
 op_logical_or
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_eq
 l_int|3
 )paren
@@ -3441,20 +3665,20 @@ r_int
 r_int
 id|imm
 suffix:semicolon
-multiline_comment|/* &n;&t; &t; * Load +Imm: ldXZ r1=[r3],imm(9)&n;&t; &t; *&n;&t;&t; *&n;&t;   &t; * form imm9: [13:19] contain the first 7 bits&n;      &t;&t; */
+multiline_comment|/*&n;&t;&t; * Load +Imm: ldXZ r1=[r3],imm(9)&n;&t;&t; *&n;&t;&t; *&n;&t;&t; * form imm9: [13:19] contain the first 7 bits&n;&t;&t; */
 id|imm
 op_assign
-id|ld-&gt;x
+id|ld.x
 op_lshift
 l_int|7
 op_or
-id|ld-&gt;imm
+id|ld.imm
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * sign extend (1+8bits) if m set&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|ld-&gt;m
+id|ld.m
 )paren
 id|imm
 op_or_assign
@@ -3468,7 +3692,7 @@ suffix:semicolon
 id|setreg
 c_func
 (paren
-id|ld-&gt;r3
+id|ld.r3
 comma
 id|ifa
 comma
@@ -3480,17 +3704,15 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;ld.x=%d ld.m=%d imm=%ld r3=0x%lx&bslash;n&quot;
 comma
-id|ld-&gt;x
+id|ld.x
 comma
-id|ld-&gt;m
+id|ld.m
 comma
 id|imm
 comma
 id|ifa
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3498,7 +3720,7 @@ r_else
 r_if
 c_cond
 (paren
-id|ld-&gt;m
+id|ld.m
 )paren
 (brace
 r_int
@@ -3508,11 +3730,11 @@ suffix:semicolon
 r_int
 id|nat_r2
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Load +Reg Opcode: ldXZ r1=[r3],r2&n;&t;&t; *&n;&t;&t; * Note: that we update r3 even in the case of ldfX.a &n;&t;&t; * (where the load does not happen)&n;&t;&t; *&n;&t;&t; * The way the load algorithm works, we know that r3 does not&n;&t;&t; * have its NaT bit set (would have gotten NaT consumption&n;&t;&t; * before getting the unaligned fault). So we can use ifa &n;&t;&t; * which equals r3 at this point.&n;&t;&t; *&n;&t;&t; * IMPORTANT:&n;&t; &t; * The above statement holds ONLY because we know that we&n;&t;&t; * never reach this code when trying to do a ldX.s.&n;&t;&t; * If we ever make it to here on an ldfX.s then &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Load +Reg Opcode: ldXZ r1=[r3],r2&n;&t;&t; *&n;&t;&t; * Note: that we update r3 even in the case of ldfX.a&n;&t;&t; * (where the load does not happen)&n;&t;&t; *&n;&t;&t; * The way the load algorithm works, we know that r3 does not&n;&t;&t; * have its NaT bit set (would have gotten NaT consumption&n;&t;&t; * before getting the unaligned fault). So we can use ifa&n;&t;&t; * which equals r3 at this point.&n;&t;&t; *&n;&t;&t; * IMPORTANT:&n;&t;&t; * The above statement holds ONLY because we know that we&n;&t;&t; * never reach this code when trying to do a ldX.s.&n;&t;&t; * If we ever make it to here on an ldfX.s then&n;&t;&t; */
 id|getreg
 c_func
 (paren
-id|ld-&gt;imm
+id|ld.imm
 comma
 op_amp
 id|r2
@@ -3531,7 +3753,7 @@ multiline_comment|/*&n;&t;&t; * propagate Nat r2 -&gt; r3&n;&t;&t; */
 id|setreg
 c_func
 (paren
-id|ld-&gt;r3
+id|ld.r3
 comma
 id|ifa
 comma
@@ -3543,17 +3765,15 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;imm=%d r2=%ld r3=0x%lx nat_r2=%d&bslash;n&quot;
 comma
-id|ld-&gt;imm
+id|ld.imm
 comma
 id|r2
 comma
 id|ifa
 comma
 id|nat_r2
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -3562,14 +3782,12 @@ r_static
 r_int
 DECL|function|emulate_load_int
 id|emulate_load_int
-c_func
 (paren
 r_int
 r_int
 id|ifa
 comma
 id|load_store_t
-op_star
 id|ld
 comma
 r_struct
@@ -3580,136 +3798,50 @@ id|regs
 (brace
 r_int
 r_int
-id|val
-suffix:semicolon
-r_int
-r_int
 id|len
 op_assign
 l_int|1
 op_lshift
-id|ld-&gt;x6_sz
+id|ld.x6_sz
 suffix:semicolon
-multiline_comment|/*&n;&t; * the macro supposes sequential access (which is the case)&n;&t; * if the first byte is an invalid address we return here. Otherwise&n;&t; * there is a guard page at the top of the user&squot;s address page and &n;&t; * the first access would generate a NaT consumption fault and return&n;&t; * with a SIGSEGV, which is what we want.&n;&t; *&n;&t; * Note: the first argument is ignored &n;&t; */
+multiline_comment|/*&n;&t; * r0, as target, doesn&squot;t need to be checked because Illegal Instruction&n;&t; * faults have higher priority than unaligned faults.&n;&t; *&n;&t; * r0 cannot be found as the base as it would never generate an&n;&t; * unaligned reference.&n;&t; */
+multiline_comment|/*&n;&t; * ldX.a we don&squot;t try to emulate anything but we must invalidate the ALAT entry.&n;&t; * See comment below for explanation on how we handle ldX.a&n;&t; */
 r_if
 c_cond
 (paren
-id|access_ok
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-id|len
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;verify area failed on %lx&bslash;n&quot;
-comma
-id|ifa
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * r0, as target, doesn&squot;t need to be checked because Illegal Instruction&n;&t; * faults have higher priority than unaligned faults.&n;&t; *&n;&t; * r0 cannot be found as the base as it would never generate an &n;&t; * unaligned reference.&n;&t; */
-multiline_comment|/*&n;&t; * ldX.a we don&squot;t try to emulate anything but we must&n;&t; * invalidate the ALAT entry.&n;&t; * See comment below for explanation on how we handle ldX.a&n;&t; */
-r_if
-c_cond
-(paren
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_ne
 l_int|0x2
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * we rely on the macros in unaligned.h for now i.e.,&n;&t;&t; * we let the compiler figure out how to read memory gracefully.&n;&t;&t; *&n;&t;&t; * We need this switch/case because the way the inline function&n;&t;&t; * works. The code is optimized by the compiler and looks like&n;&t;&t; * a single switch/case.&n;&t;&t; */
-r_switch
+r_int
+r_int
+id|val
+op_assign
+l_int|0
+suffix:semicolon
+r_if
 c_cond
 (paren
 id|len
+op_ne
+l_int|2
+op_logical_and
+id|len
+op_ne
+l_int|4
+op_logical_and
+id|len
+op_ne
+l_int|8
 )paren
 (brace
-r_case
-l_int|2
-suffix:colon
-id|val
-op_assign
-id|ia64_get_unaligned
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-l_int|2
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-id|val
-op_assign
-id|ia64_get_unaligned
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-l_int|4
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|8
-suffix:colon
-id|val
-op_assign
-id|ia64_get_unaligned
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-l_int|8
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;unknown size: x6=%d&bslash;n&quot;
 comma
-id|ld-&gt;x6_sz
-)paren
+id|ld.x6_sz
 )paren
 suffix:semicolon
 r_return
@@ -3717,10 +3849,33 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* this assumes little-endian byte-order: */
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|val
+comma
+(paren
+r_void
+op_star
+)paren
+id|ifa
+comma
+id|len
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 id|setreg
 c_func
 (paren
-id|ld-&gt;r1
+id|ld.r1
 comma
 id|val
 comma
@@ -3734,16 +3889,16 @@ multiline_comment|/*&n;&t; * check for updates on any kind of loads&n;&t; */
 r_if
 c_cond
 (paren
-id|ld-&gt;op
+id|ld.op
 op_eq
 l_int|0x5
 op_logical_or
-id|ld-&gt;m
+id|ld.m
 )paren
 id|emulate_load_updates
 c_func
 (paren
-id|ld-&gt;op
+id|ld.op
 op_eq
 l_int|0x5
 ques
@@ -3759,16 +3914,16 @@ comma
 id|ifa
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * handling of various loads (based on EAS2.4):&n;&t; *&n;&t; * ldX.acq (ordered load):&n;&t; *&t;- acquire semantics would have been used, so force fence instead.&n;&t; *&n;&t; *&n;&t; * ldX.c.clr (check load and clear):&n;&t; *&t;- if we get to this handler, it&squot;s because the entry was not in the ALAT.&n;&t; *&t;  Therefore the operation reverts to a normal load&n;&t; *&n;&t; * ldX.c.nc (check load no clear):&n;&t; *&t;- same as previous one&n;&t; *&n;&t; * ldX.c.clr.acq (ordered check load and clear):&n;&t; *&t;- same as above for c.clr part. The load needs to have acquire semantics. So&n;&t; *&t;  we use the fence semantics which is stronger and thus ensures correctness.&n;&t; *&t;&n;&t; * ldX.a (advanced load):&n;&t; *&t;- suppose ldX.a r1=[r3]. If we get to the unaligned trap it&squot;s because the &n;&t; * &t;  address doesn&squot;t match requested size alignement. This means that we would &n;&t; *&t;  possibly need more than one load to get the result.&n;&t; *&n;&t; *&t;  The load part can be handled just like a normal load, however the difficult&n;&t; *&t;  part is to get the right thing into the ALAT. The critical piece of information&n;&t; * &t;  in the base address of the load &amp; size. To do that, a ld.a must be executed,&n;&t; *&t;  clearly any address can be pushed into the table by using ld1.a r1=[r3]. Now&n;&t; *&t;  if we use the same target register, we will be okay for the check.a instruction.&n;&t; *&t;  If we look at the store, basically a stX [r3]=r1 checks the ALAT  for any entry&n;&t; *&t;  which would overlap within [r3,r3+X] (the size of the load was store in the&n;&t; *&t;  ALAT). If such an entry is found the entry is invalidated. But this is not good&n;&t; *&t;  enough, take the following example:&n;&t; *&t;&t;r3=3&n;&t; *&t;&t;ld4.a r1=[r3]&n;&t; *&n;&t; *&t;  Could be emulated by doing:&n;&t; *&t;&t;ld1.a r1=[r3],1&n;&t; *&t;&t;store to temporary;&n;&t; *&t;&t;ld1.a r1=[r3],1&n;&t; *&t;&t;store &amp; shift to temporary;&n;&t; *&t;&t;ld1.a r1=[r3],1&n;&t; *&t;&t;store &amp; shift to temporary;&n;&t; *&t;&t;ld1.a r1=[r3]&n;&t; *&t;&t;store &amp; shift to temporary;&n;&t; * &t;&t;r1=temporary&n;&t; *&n;&t; *&t;  So int this case, you would get the right value is r1 but the wrong info in&n;&t; *&t;  the ALAT.  Notice that you could do it in reverse to finish with address 3&n;&t; *&t;  but you would still get the size wrong.  To get the size right, one needs to&n;&t; *&t;  execute exactly the same kind of load. You could do it from a aligned&n;&t; *&t;  temporary location, but you would get the address wrong.&n;&t; *&n;&t; *&t;  So no matter what, it is not possible to emulate an advanced load&n;&t; *&t;  correctly. But is that really critical ?&n;&t; *&n;&t; *&n;&t; *&t;  Now one has to look at how ld.a is used, one must either do a ld.c.* or&n;&t; *&t;  chck.a.* to reuse the value stored in the ALAT. Both can &quot;fail&quot; (meaning no&n;&t; *&t;  entry found in ALAT), and that&squot;s perfectly ok because:&n;&t; *&n;&t; *&t;&t;- ld.c.*, if the entry is not present a  normal load is executed&n;&t; *&t;&t;- chk.a.*, if the entry is not present, execution jumps to recovery code&n;&t; *&n;&t; *&t;  In either case, the load can be potentially retried in another form.&n;&t; *&n;&t; *&t;  So it&squot;s okay NOT to do any actual load on an unaligned ld.a. However the ALAT&n;&t; *&t;  must be invalidated for the register (so that&squot;s chck.a.*,ld.c.* don&squot;t pick up&n;&t; *&t;  a stale entry later) The register base update MUST also be performed.&n;&t; *&t;  &n;&t; *&t;  Now what is the content of the register and its NaT bit in the case we don&squot;t&n;&t; *&t;  do the load ?  EAS2.4, says (in case an actual load is needed)&n;&t; *&n;&t; *&t;&t;- r1 = [r3], Nat = 0 if succeeds&n;&t; *&t;&t;- r1 = 0 Nat = 0 if trying to access non-speculative memory&n;&t; *&n;&t; *&t;  For us, there is nothing to do, because both ld.c.* and chk.a.* are going to&n;&t; *&t;  retry and thus eventually reload the register thereby changing Nat and&n;&t; *&t;  register content.&n;&t; */
-multiline_comment|/*&n;&t; * when the load has the .acq completer then &n;&t; * use ordering fence.&n;&t; */
+multiline_comment|/*&n;&t; * handling of various loads (based on EAS2.4):&n;&t; *&n;&t; * ldX.acq (ordered load):&n;&t; *&t;- acquire semantics would have been used, so force fence instead.&n;&t; *&n;&t; * ldX.c.clr (check load and clear):&n;&t; *&t;- if we get to this handler, it&squot;s because the entry was not in the ALAT.&n;&t; *&t;  Therefore the operation reverts to a normal load&n;&t; *&n;&t; * ldX.c.nc (check load no clear):&n;&t; *&t;- same as previous one&n;&t; *&n;&t; * ldX.c.clr.acq (ordered check load and clear):&n;&t; *&t;- same as above for c.clr part. The load needs to have acquire semantics. So&n;&t; *&t;  we use the fence semantics which is stronger and thus ensures correctness.&n;&t; *&n;&t; * ldX.a (advanced load):&n;&t; *&t;- suppose ldX.a r1=[r3]. If we get to the unaligned trap it&squot;s because the&n;&t; *&t;  address doesn&squot;t match requested size alignement. This means that we would&n;&t; *&t;  possibly need more than one load to get the result.&n;&t; *&n;&t; *&t;  The load part can be handled just like a normal load, however the difficult&n;&t; *&t;  part is to get the right thing into the ALAT. The critical piece of information&n;&t; *&t;  in the base address of the load &amp; size. To do that, a ld.a must be executed,&n;&t; *&t;  clearly any address can be pushed into the table by using ld1.a r1=[r3]. Now&n;&t; *&t;  if we use the same target register, we will be okay for the check.a instruction.&n;&t; *&t;  If we look at the store, basically a stX [r3]=r1 checks the ALAT  for any entry&n;&t; *&t;  which would overlap within [r3,r3+X] (the size of the load was store in the&n;&t; *&t;  ALAT). If such an entry is found the entry is invalidated. But this is not good&n;&t; *&t;  enough, take the following example:&n;&t; *&t;&t;r3=3&n;&t; *&t;&t;ld4.a r1=[r3]&n;&t; *&n;&t; *&t;  Could be emulated by doing:&n;&t; *&t;&t;ld1.a r1=[r3],1&n;&t; *&t;&t;store to temporary;&n;&t; *&t;&t;ld1.a r1=[r3],1&n;&t; *&t;&t;store &amp; shift to temporary;&n;&t; *&t;&t;ld1.a r1=[r3],1&n;&t; *&t;&t;store &amp; shift to temporary;&n;&t; *&t;&t;ld1.a r1=[r3]&n;&t; *&t;&t;store &amp; shift to temporary;&n;&t; *&t;&t;r1=temporary&n;&t; *&n;&t; *&t;  So int this case, you would get the right value is r1 but the wrong info in&n;&t; *&t;  the ALAT.  Notice that you could do it in reverse to finish with address 3&n;&t; *&t;  but you would still get the size wrong.  To get the size right, one needs to&n;&t; *&t;  execute exactly the same kind of load. You could do it from a aligned&n;&t; *&t;  temporary location, but you would get the address wrong.&n;&t; *&n;&t; *&t;  So no matter what, it is not possible to emulate an advanced load&n;&t; *&t;  correctly. But is that really critical ?&n;&t; *&n;&t; *&n;&t; *&t;  Now one has to look at how ld.a is used, one must either do a ld.c.* or&n;&t; *&t;  chck.a.* to reuse the value stored in the ALAT. Both can &quot;fail&quot; (meaning no&n;&t; *&t;  entry found in ALAT), and that&squot;s perfectly ok because:&n;&t; *&n;&t; *&t;&t;- ld.c.*, if the entry is not present a  normal load is executed&n;&t; *&t;&t;- chk.a.*, if the entry is not present, execution jumps to recovery code&n;&t; *&n;&t; *&t;  In either case, the load can be potentially retried in another form.&n;&t; *&n;&t; *&t;  So it&squot;s okay NOT to do any actual load on an unaligned ld.a. However the ALAT&n;&t; *&t;  must be invalidated for the register (so that&squot;s chck.a.*,ld.c.* don&squot;t pick up&n;&t; *&t;  a stale entry later) The register base update MUST also be performed.&n;&t; *&n;&t; *&t;  Now what is the content of the register and its NaT bit in the case we don&squot;t&n;&t; *&t;  do the load ?  EAS2.4, says (in case an actual load is needed)&n;&t; *&n;&t; *&t;&t;- r1 = [r3], Nat = 0 if succeeds&n;&t; *&t;&t;- r1 = 0 Nat = 0 if trying to access non-speculative memory&n;&t; *&n;&t; *&t;  For us, there is nothing to do, because both ld.c.* and chk.a.* are going to&n;&t; *&t;  retry and thus eventually reload the register thereby changing Nat and&n;&t; *&t;  register content.&n;&t; */
+multiline_comment|/*&n;&t; * when the load has the .acq completer then&n;&t; * use ordering fence.&n;&t; */
 r_if
 c_cond
 (paren
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_eq
 l_int|0x5
 op_logical_or
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_eq
 l_int|0xa
 )paren
@@ -3781,14 +3936,14 @@ multiline_comment|/*&n;&t; * invalidate ALAT entry in case of advanced load&n;&t
 r_if
 c_cond
 (paren
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_eq
 l_int|0x2
 )paren
 id|invala_gr
 c_func
 (paren
-id|ld-&gt;r1
+id|ld.r1
 )paren
 suffix:semicolon
 r_return
@@ -3799,14 +3954,12 @@ r_static
 r_int
 DECL|function|emulate_store_int
 id|emulate_store_int
-c_func
 (paren
 r_int
 r_int
 id|ifa
 comma
 id|load_store_t
-op_star
 id|ld
 comma
 r_struct
@@ -3825,49 +3978,13 @@ id|len
 op_assign
 l_int|1
 op_lshift
-id|ld-&gt;x6_sz
+id|ld.x6_sz
 suffix:semicolon
-multiline_comment|/*&n;&t; * the macro supposes sequential access (which is the case)&n;&t; * if the first byte is an invalid address we return here. Otherwise&n;&t; * there is a guard page at the top of the user&squot;s address page and &n;&t; * the first access would generate a NaT consumption fault and return&n;&t; * with a SIGSEGV, which is what we want.&n;&t; *&n;&t; * Note: the first argument is ignored &n;&t; */
-r_if
-c_cond
-(paren
-id|access_ok
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-id|len
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;verify area failed on %lx&bslash;n&quot;
-comma
-id|ifa
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * if we get to this handler, Nat bits on both r3 and r2 have already&n;&t; * been checked. so we don&squot;t need to do it&n;&t; *&n;&t; * extract the value to be stored&n;&t; */
 id|getreg
 c_func
 (paren
-id|ld-&gt;imm
+id|ld.imm
 comma
 op_amp
 id|r2
@@ -3881,7 +3998,6 @@ multiline_comment|/*&n;&t; * we rely on the macros in unaligned.h for now i.e.,&
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;st%d [%lx]=%lx&bslash;n&quot;
 comma
 id|len
@@ -3890,81 +4006,29 @@ id|ifa
 comma
 id|r2
 )paren
-)paren
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
 id|len
+op_ne
+l_int|2
+op_logical_and
+id|len
+op_ne
+l_int|4
+op_logical_and
+id|len
+op_ne
+l_int|8
 )paren
 (brace
-r_case
-l_int|2
-suffix:colon
-id|ia64_put_unaligned
-c_func
-(paren
-id|r2
-comma
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-l_int|2
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|4
-suffix:colon
-id|ia64_put_unaligned
-c_func
-(paren
-id|r2
-comma
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-l_int|4
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|8
-suffix:colon
-id|ia64_put_unaligned
-c_func
-(paren
-id|r2
-comma
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-l_int|8
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;unknown size: x6=%d&bslash;n&quot;
 comma
-id|ld-&gt;x6_sz
-)paren
+id|ld.x6_sz
 )paren
 suffix:semicolon
 r_return
@@ -3972,11 +4036,34 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * stX [r3]=r2,imm(9)&n;&t; *&n;&t; * NOTE:&n;&t; * ld-&gt;r3 can never be r0, because r0 would not generate an &n;&t; * unaligned access.&n;&t; */
+multiline_comment|/* this assumes little-endian byte-order: */
 r_if
 c_cond
 (paren
-id|ld-&gt;op
+id|copy_to_user
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|ifa
+comma
+op_amp
+id|r2
+comma
+id|len
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * stX [r3]=r2,imm(9)&n;&t; *&n;&t; * NOTE:&n;&t; * ld.r3 can never be r0, because r0 would not generate an&n;&t; * unaligned access.&n;&t; */
+r_if
+c_cond
+(paren
+id|ld.op
 op_eq
 l_int|0x5
 )paren
@@ -3988,17 +4075,17 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * form imm9: [12:6] contain first 7bits&n;&t;&t; */
 id|imm
 op_assign
-id|ld-&gt;x
+id|ld.x
 op_lshift
 l_int|7
 op_or
-id|ld-&gt;r1
+id|ld.r1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * sign extend (8bits) if m set&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|ld-&gt;m
+id|ld.m
 )paren
 id|imm
 op_or_assign
@@ -4012,19 +4099,17 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;imm=%lx r3=%lx&bslash;n&quot;
 comma
 id|imm
 comma
 id|ifa
 )paren
-)paren
 suffix:semicolon
 id|setreg
 c_func
 (paren
-id|ld-&gt;r3
+id|ld.r3
 comma
 id|ifa
 comma
@@ -4044,7 +4129,7 @@ multiline_comment|/*&n;&t; * stX.rel: use fence instead of release&n;&t; */
 r_if
 c_cond
 (paren
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_eq
 l_int|0xd
 )paren
@@ -4062,7 +4147,7 @@ DECL|variable|float_fsz
 r_static
 r_const
 r_int
-r_int
+r_char
 id|float_fsz
 (braket
 l_int|4
@@ -4075,7 +4160,6 @@ r_inline
 r_void
 DECL|function|mem2float_extended
 id|mem2float_extended
-c_func
 (paren
 r_struct
 id|ia64_fpreg
@@ -4114,7 +4198,6 @@ r_inline
 r_void
 DECL|function|mem2float_integer
 id|mem2float_integer
-c_func
 (paren
 r_struct
 id|ia64_fpreg
@@ -4153,7 +4236,6 @@ r_inline
 r_void
 DECL|function|mem2float_single
 id|mem2float_single
-c_func
 (paren
 r_struct
 id|ia64_fpreg
@@ -4192,7 +4274,6 @@ r_inline
 r_void
 DECL|function|mem2float_double
 id|mem2float_double
-c_func
 (paren
 r_struct
 id|ia64_fpreg
@@ -4231,7 +4312,6 @@ r_inline
 r_void
 DECL|function|float2mem_extended
 id|float2mem_extended
-c_func
 (paren
 r_struct
 id|ia64_fpreg
@@ -4270,7 +4350,6 @@ r_inline
 r_void
 DECL|function|float2mem_integer
 id|float2mem_integer
-c_func
 (paren
 r_struct
 id|ia64_fpreg
@@ -4309,7 +4388,6 @@ r_inline
 r_void
 DECL|function|float2mem_single
 id|float2mem_single
-c_func
 (paren
 r_struct
 id|ia64_fpreg
@@ -4348,7 +4426,6 @@ r_inline
 r_void
 DECL|function|float2mem_double
 id|float2mem_double
-c_func
 (paren
 r_struct
 id|ia64_fpreg
@@ -4386,14 +4463,12 @@ r_static
 r_int
 DECL|function|emulate_load_floatpair
 id|emulate_load_floatpair
-c_func
 (paren
 r_int
 r_int
 id|ifa
 comma
 id|load_store_t
-op_star
 id|ld
 comma
 r_struct
@@ -4422,48 +4497,11 @@ id|len
 op_assign
 id|float_fsz
 (braket
-id|ld-&gt;x6_sz
+id|ld.x6_sz
 )braket
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|access_ok
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-id|len
-op_lshift
-l_int|1
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;verify area failed on %lx&bslash;n&quot;
-comma
-id|ifa
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * fr0 &amp; fr1 don&squot;t need to be checked because Illegal Instruction&n;&t; * faults have higher priority than unaligned faults.&n;&t; *&n;&t; * r0 cannot be found as the base as it would never generate an &n;&t; * unaligned reference.&n;&t; */
-multiline_comment|/* &n;&t; * make sure we get clean buffers&n;&t; */
+multiline_comment|/*&n;&t; * fr0 &amp; fr1 don&squot;t need to be checked because Illegal Instruction&n;&t; * faults have higher priority than unaligned faults.&n;&t; *&n;&t; * r0 cannot be found as the base as it would never generate an&n;&t; * unaligned reference.&n;&t; */
+multiline_comment|/*&n;&t; * make sure we get clean buffers&n;&t; */
 id|memset
 c_func
 (paren
@@ -4496,13 +4534,16 @@ multiline_comment|/*&n;&t; * ldfpX.a: we don&squot;t try to emulate anything but
 r_if
 c_cond
 (paren
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_ne
 l_int|0x2
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * does the unaligned access&n;&t;&t; */
-id|memcpy
+multiline_comment|/* this assumes little-endian byte-order: */
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -4519,8 +4560,8 @@ id|ifa
 comma
 id|len
 )paren
-suffix:semicolon
-id|memcpy
+op_logical_or
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -4541,87 +4582,41 @@ id|len
 comma
 id|len
 )paren
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;ld.r1=%d ld.imm=%d x6_sz=%d&bslash;n&quot;
 comma
-id|ld-&gt;r1
+id|ld.r1
 comma
-id|ld-&gt;imm
+id|ld.imm
 comma
-id|ld-&gt;x6_sz
-)paren
+id|ld.x6_sz
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_UNALIGNED_TRAP
-(brace
-r_int
-id|i
-suffix:semicolon
-r_char
-op_star
-id|c
-op_assign
+id|DDUMP
+c_func
 (paren
-r_char
-op_star
-)paren
+l_string|&quot;frp_init =&quot;
+comma
 op_amp
 id|fpr_init
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;fpr_init= &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|len
-op_lshift
-l_int|1
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
 comma
-id|c
-(braket
-id|i
-)braket
-op_amp
-l_int|0xff
+l_int|2
+op_star
+id|len
 )paren
 suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/*&n;&t;&t; * XXX fixme&n;&t;&t; * Could optimize inlines by using ldfpX &amp; 2 spills &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * XXX fixme&n;&t;&t; * Could optimize inlines by using ldfpX &amp; 2 spills&n;&t;&t; */
 r_switch
 c_cond
 (paren
-id|ld-&gt;x6_sz
+id|ld.x6_sz
 )paren
 (brace
 r_case
@@ -4773,72 +4768,24 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG_UNALIGNED_TRAP
-(brace
-r_int
-id|i
-suffix:semicolon
-r_char
-op_star
-id|c
-op_assign
+id|DDUMP
+c_func
 (paren
-r_char
-op_star
-)paren
+l_string|&quot;fpr_final =&quot;
+comma
 op_amp
 id|fpr_final
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;fpr_final= &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|len
-op_lshift
-l_int|1
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
 comma
-id|c
-(braket
-id|i
-)braket
-op_amp
-l_int|0xff
+l_int|2
+op_star
+id|len
 )paren
 suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t;&t; * XXX fixme&n;&t;&t; *&n;&t;&t; * A possible optimization would be to drop fpr_final and directly&n;&t;&t; * use the storage from the saved context i.e., the actual final&n;&t;&t; * destination (pt_regs, switch_stack or thread structure).&n;&t;&t; */
 id|setfpreg
 c_func
 (paren
-id|ld-&gt;r1
+id|ld.r1
 comma
 op_amp
 id|fpr_final
@@ -4852,7 +4799,7 @@ suffix:semicolon
 id|setfpreg
 c_func
 (paren
-id|ld-&gt;imm
+id|ld.imm
 comma
 op_amp
 id|fpr_final
@@ -4868,7 +4815,7 @@ multiline_comment|/*&n;&t; * Check for updates: only immediate updates are avail
 r_if
 c_cond
 (paren
-id|ld-&gt;m
+id|ld.m
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * the immediate is implicit given the ldsz of the operation:&n;&t;&t; * single: 8 (2x4) and for  all others it&squot;s 16 (2x8)&n;&t;&t; */
@@ -4878,33 +4825,31 @@ id|len
 op_lshift
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * IMPORTANT: &n;&t;&t; * the fact that we force the NaT of r3 to zero is ONLY valid&n;&t;&t; * as long as we don&squot;t come here with a ldfpX.s.&n;&t;&t; * For this reason we keep this sanity check&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * IMPORTANT:&n;&t;&t; * the fact that we force the NaT of r3 to zero is ONLY valid&n;&t;&t; * as long as we don&squot;t come here with a ldfpX.s.&n;&t;&t; * For this reason we keep this sanity check&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_eq
 l_int|1
 op_logical_or
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_eq
 l_int|3
 )paren
-(brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: register update on speculative load pair, error&bslash;n&quot;
-comma
 id|__FUNCTION__
+l_string|&quot;: register update on speculative load pair, &quot;
+l_string|&quot;error&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
 id|setreg
 c_func
 (paren
-id|ld-&gt;r3
+id|ld.r3
 comma
 id|ifa
 comma
@@ -4918,7 +4863,7 @@ multiline_comment|/*&n;&t; * Invalidate ALAT entries, if any, for both registers
 r_if
 c_cond
 (paren
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_eq
 l_int|0x2
 )paren
@@ -4926,13 +4871,13 @@ l_int|0x2
 id|invala_fr
 c_func
 (paren
-id|ld-&gt;r1
+id|ld.r1
 )paren
 suffix:semicolon
 id|invala_fr
 c_func
 (paren
-id|ld-&gt;imm
+id|ld.imm
 )paren
 suffix:semicolon
 )brace
@@ -4944,14 +4889,12 @@ r_static
 r_int
 DECL|function|emulate_load_float
 id|emulate_load_float
-c_func
 (paren
 r_int
 r_int
 id|ifa
 comma
 id|load_store_t
-op_star
 id|ld
 comma
 r_struct
@@ -4974,47 +4917,11 @@ id|len
 op_assign
 id|float_fsz
 (braket
-id|ld-&gt;x6_sz
+id|ld.x6_sz
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * check for load pair because our masking scheme is not fine grain enough&n;&t;if (ld-&gt;x == 1) return emulate_load_floatpair(ifa,ld,regs);&n;&t; */
-r_if
-c_cond
-(paren
-id|access_ok
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-id|len
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;verify area failed on %lx&bslash;n&quot;
-comma
-id|ifa
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * fr0 &amp; fr1 don&squot;t need to be checked because Illegal Instruction&n;&t; * faults have higher priority than unaligned faults.&n;&t; *&n;&t; * r0 cannot be found as the base as it would never generate an &n;&t; * unaligned reference.&n;&t; */
-multiline_comment|/* &n;&t; * make sure we get clean buffers&n;&t; */
+multiline_comment|/*&n;&t; * fr0 &amp; fr1 don&squot;t need to be checked because Illegal Instruction&n;&t; * faults have higher priority than unaligned faults.&n;&t; *&n;&t; * r0 cannot be found as the base as it would never generate an&n;&t; * unaligned reference.&n;&t; */
+multiline_comment|/*&n;&t; * make sure we get clean buffers&n;&t; */
 id|memset
 c_func
 (paren
@@ -5047,13 +4954,15 @@ multiline_comment|/*&n;&t; * ldfX.a we don&squot;t try to emulate anything but w
 r_if
 c_cond
 (paren
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_ne
 l_int|0x2
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * does the unaligned access&n;&t;&t; */
-id|memcpy
+r_if
+c_cond
+(paren
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -5067,83 +4976,37 @@ id|ifa
 comma
 id|len
 )paren
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;ld.r1=%d x6_sz=%d&bslash;n&quot;
 comma
-id|ld-&gt;r1
+id|ld.r1
 comma
-id|ld-&gt;x6_sz
-)paren
+id|ld.x6_sz
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_UNALIGNED_TRAP
-(brace
-r_int
-id|i
-suffix:semicolon
-r_char
-op_star
-id|c
-op_assign
+id|DDUMP
+c_func
 (paren
-r_char
-op_star
-)paren
+l_string|&quot;fpr_init =&quot;
+comma
 op_amp
 id|fpr_init
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;fpr_init= &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|len
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
 comma
-id|c
-(braket
-id|i
-)braket
-op_amp
-l_int|0xff
+id|len
 )paren
 suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t;&t; * we only do something for x6_op={0,8,9}&n;&t;&t; */
 r_switch
 c_cond
 (paren
-id|ld-&gt;x6_sz
+id|ld.x6_sz
 )paren
 (brace
 r_case
@@ -5207,70 +5070,22 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG_UNALIGNED_TRAP
-(brace
-r_int
-id|i
-suffix:semicolon
-r_char
-op_star
-id|c
-op_assign
+id|DDUMP
+c_func
 (paren
-r_char
-op_star
-)paren
+l_string|&quot;fpr_final =&quot;
+comma
 op_amp
 id|fpr_final
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;fpr_final= &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|len
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
 comma
-id|c
-(braket
-id|i
-)braket
-op_amp
-l_int|0xff
+id|len
 )paren
 suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/*&n;&t;&t; * XXX fixme&n;&t;&t; *&n;&t;&t; * A possible optimization would be to drop fpr_final and directly&n;&t;&t; * use the storage from the saved context i.e., the actual final&n;&t;&t; * destination (pt_regs, switch_stack or thread structure).&n;&t;&t; */
 id|setfpreg
 c_func
 (paren
-id|ld-&gt;r1
+id|ld.r1
 comma
 op_amp
 id|fpr_final
@@ -5283,16 +5098,16 @@ multiline_comment|/*&n;&t; * check for updates on any loads&n;&t; */
 r_if
 c_cond
 (paren
-id|ld-&gt;op
+id|ld.op
 op_eq
 l_int|0x7
 op_logical_or
-id|ld-&gt;m
+id|ld.m
 )paren
 id|emulate_load_updates
 c_func
 (paren
-id|ld-&gt;op
+id|ld.op
 op_eq
 l_int|0x7
 ques
@@ -5312,14 +5127,14 @@ multiline_comment|/*&n;&t; * invalidate ALAT entry in case of advanced floating 
 r_if
 c_cond
 (paren
-id|ld-&gt;x6_op
+id|ld.x6_op
 op_eq
 l_int|0x2
 )paren
 id|invala_fr
 c_func
 (paren
-id|ld-&gt;r1
+id|ld.r1
 )paren
 suffix:semicolon
 r_return
@@ -5330,14 +5145,12 @@ r_static
 r_int
 DECL|function|emulate_store_float
 id|emulate_store_float
-c_func
 (paren
 r_int
 r_int
 id|ifa
 comma
 id|load_store_t
-op_star
 id|ld
 comma
 r_struct
@@ -5360,46 +5173,10 @@ id|len
 op_assign
 id|float_fsz
 (braket
-id|ld-&gt;x6_sz
+id|ld.x6_sz
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t; * the macro supposes sequential access (which is the case)&n;&t; * if the first byte is an invalid address we return here. Otherwise&n;&t; * there is a guard page at the top of the user&squot;s address page and &n;&t; * the first access would generate a NaT consumption fault and return&n;&t; * with a SIGSEGV, which is what we want.&n;&t; *&n;&t; * Note: the first argument is ignored &n;&t; */
-r_if
-c_cond
-(paren
-id|access_ok
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|ifa
-comma
-id|len
-)paren
-OL
-l_int|0
-)paren
-(brace
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;verify area failed on %lx&bslash;n&quot;
-comma
-id|ifa
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* &n;&t; * make sure we get clean buffers&n;&t; */
+multiline_comment|/*&n;&t; * make sure we get clean buffers&n;&t; */
 id|memset
 c_func
 (paren
@@ -5432,7 +5209,7 @@ multiline_comment|/*&n;&t; * if we get to this handler, Nat bits on both r3 and 
 id|getfpreg
 c_func
 (paren
-id|ld-&gt;imm
+id|ld.imm
 comma
 op_amp
 id|fpr_init
@@ -5444,7 +5221,7 @@ multiline_comment|/*&n;&t; * during this step, we extract the spilled registers 
 r_switch
 c_cond
 (paren
-id|ld-&gt;x6_sz
+id|ld.x6_sz
 )paren
 (brace
 r_case
@@ -5511,133 +5288,39 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;ld.r1=%d x6_sz=%d&bslash;n&quot;
 comma
-id|ld-&gt;r1
+id|ld.r1
 comma
-id|ld-&gt;x6_sz
-)paren
+id|ld.x6_sz
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_UNALIGNED_TRAP
-(brace
-r_int
-id|i
-suffix:semicolon
-r_char
-op_star
-id|c
-op_assign
+id|DDUMP
+c_func
 (paren
-r_char
-op_star
-)paren
+l_string|&quot;fpr_init =&quot;
+comma
 op_amp
 id|fpr_init
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;fpr_init= &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|len
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
 comma
-id|c
-(braket
-id|i
-)braket
-op_amp
-l_int|0xff
+id|len
 )paren
 suffix:semicolon
-)brace
-id|printk
+id|DDUMP
 c_func
 (paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-(brace
-r_int
-id|i
-suffix:semicolon
-r_char
-op_star
-id|c
-op_assign
-(paren
-r_char
-op_star
-)paren
+l_string|&quot;fpr_final =&quot;
+comma
 op_amp
 id|fpr_final
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;fpr_final= &quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|len
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
 comma
-id|c
-(braket
-id|i
-)braket
-op_amp
-l_int|0xff
+id|len
 )paren
 suffix:semicolon
-)brace
-id|printk
-c_func
+r_if
+c_cond
 (paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/*&n;&t; * does the unaligned store&n;&t; */
-id|memcpy
+id|copy_to_user
 c_func
 (paren
 (paren
@@ -5651,12 +5334,16 @@ id|fpr_final
 comma
 id|len
 )paren
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * stfX [r3]=r2,imm(9)&n;&t; *&n;&t; * NOTE:&n;&t; * ld-&gt;r3 can never be r0, because r0 would not generate an &n;&t; * unaligned access.&n;&t; */
+multiline_comment|/*&n;&t; * stfX [r3]=r2,imm(9)&n;&t; *&n;&t; * NOTE:&n;&t; * ld.r3 can never be r0, because r0 would not generate an&n;&t; * unaligned access.&n;&t; */
 r_if
 c_cond
 (paren
-id|ld-&gt;op
+id|ld.op
 op_eq
 l_int|0x7
 )paren
@@ -5668,17 +5355,17 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * form imm9: [12:6] contain first 7bits&n;&t;&t; */
 id|imm
 op_assign
-id|ld-&gt;x
+id|ld.x
 op_lshift
 l_int|7
 op_or
-id|ld-&gt;r1
+id|ld.r1
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * sign extend (8bits) if m set&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|ld-&gt;m
+id|ld.m
 )paren
 id|imm
 op_or_assign
@@ -5692,19 +5379,17 @@ suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;imm=%lx r3=%lx&bslash;n&quot;
 comma
 id|imm
 comma
 id|ifa
 )paren
-)paren
 suffix:semicolon
 id|setreg
 c_func
 (paren
-id|ld-&gt;r3
+id|ld.r3
 comma
 id|ifa
 comma
@@ -5724,10 +5409,61 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Make sure we log the unaligned access, so that user/sysadmin can notice it and&n; * eventually fix the program.  However, we don&squot;t want to do that for every access so we&n; * pace it with jiffies.  This isn&squot;t really MP-safe, but it doesn&squot;t really have to be&n; * either...&n; */
+r_static
+r_int
+DECL|function|within_logging_rate_limit
+id|within_logging_rate_limit
+(paren
+r_void
+)paren
+(brace
+r_static
+r_int
+r_int
+id|count
+comma
+id|last_time
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|jiffies
+op_minus
+id|last_time
+OG
+l_int|5
+op_star
+id|HZ
+)paren
+id|count
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_increment
+id|count
+OL
+l_int|5
+)paren
+(brace
+id|last_time
+op_assign
+id|jiffies
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_void
 DECL|function|ia64_handle_unaligned
 id|ia64_handle_unaligned
-c_func
 (paren
 r_int
 r_int
@@ -5739,14 +5475,13 @@ op_star
 id|regs
 )paren
 (brace
-r_static
-r_int
-r_int
-id|unalign_count
-suffix:semicolon
-r_static
-r_int
-id|last_time
+r_struct
+id|exception_fixup
+id|fix
+op_assign
+(brace
+l_int|0
+)brace
 suffix:semicolon
 r_struct
 id|ia64_psr
@@ -5759,22 +5494,40 @@ c_func
 id|regs
 )paren
 suffix:semicolon
+id|mm_segment_t
+id|old_fs
+op_assign
+id|get_fs
+c_func
+(paren
+)paren
+suffix:semicolon
 r_int
 r_int
-op_star
-id|bundle_addr
+id|bundle
+(braket
+l_int|2
+)braket
 suffix:semicolon
 r_int
 r_int
 id|opcode
 suffix:semicolon
+r_struct
+id|siginfo
+id|si
+suffix:semicolon
+r_union
+(brace
 r_int
 r_int
-id|op
+id|l
 suffix:semicolon
 id|load_store_t
-op_star
 id|insn
+suffix:semicolon
+)brace
+id|u
 suffix:semicolon
 r_int
 id|ret
@@ -5782,90 +5535,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Unaligned references in the kernel could come from unaligned&n;&t; *   arguments to system calls.  We fault the user process in&n;&t; *   these cases and panic the kernel otherwise (the kernel should&n;&t; *   be fixed to not make unaligned accesses).&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-(brace
-r_const
-r_struct
-id|exception_table_entry
-op_star
-id|fix
-suffix:semicolon
-id|fix
-op_assign
-id|search_exception_table
-c_func
-(paren
-id|regs-&gt;cr_iip
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fix
-)paren
-(brace
-id|regs-&gt;r8
-op_assign
-op_minus
-id|EFAULT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fix-&gt;skip
-op_amp
-l_int|1
-)paren
-(brace
-id|regs-&gt;r9
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|regs-&gt;cr_iip
-op_add_assign
-(paren
-(paren
-r_int
-)paren
-id|fix-&gt;skip
-)paren
-op_amp
-op_complement
-l_int|15
-suffix:semicolon
-id|regs-&gt;cr_ipsr
-op_and_assign
-op_complement
-id|IA64_PSR_RI
-suffix:semicolon
-multiline_comment|/* clear exception slot number */
-r_return
-suffix:semicolon
-)brace
-id|die_if_kernel
-c_func
-(paren
-l_string|&quot;Unaligned reference while in kernel&bslash;n&quot;
-comma
-id|regs
-comma
-l_int|30
-)paren
-suffix:semicolon
-multiline_comment|/* NOT_REACHED */
-)brace
-multiline_comment|/*&n;&t; * For now, we don&squot;t support user processes running big-endian&n;&t; * which do unaligned accesses&n;&t; */
 r_if
 c_cond
 (paren
@@ -5878,108 +5547,87 @@ op_member_access_from_pointer
 id|be
 )paren
 (brace
-r_struct
-id|siginfo
-id|si
-suffix:semicolon
-id|printk
+multiline_comment|/* we don&squot;t support big-endian accesses */
+id|die_if_kernel
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;%s(%d): big-endian unaligned access %016lx (ip=%016lx) not &quot;
-l_string|&quot;yet supported&bslash;n&quot;
+l_string|&quot;big-endian unaligned accesses are not supported&quot;
 comma
-id|current-&gt;comm
+id|regs
 comma
-id|current-&gt;pid
-comma
-id|ifa
-comma
+l_int|0
+)paren
+suffix:semicolon
+r_goto
+id|force_sigbus
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Treat kernel accesses for which there is an exception handler entry the same as&n;&t; * user-level unaligned accesses.  Otherwise, a clever program could trick this&n;&t; * handler into reading an arbitrary kernel addresses...&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+(brace
+macro_line|#ifdef GAS_HAS_LOCAL_TAGS
+id|fix
+op_assign
+id|search_exception_table
+c_func
+(paren
 id|regs-&gt;cr_iip
 op_plus
-id|ipsr-&gt;ri
-)paren
-suffix:semicolon
-id|si.si_signo
-op_assign
-id|SIGBUS
-suffix:semicolon
-id|si.si_errno
-op_assign
-l_int|0
-suffix:semicolon
-id|si.si_code
-op_assign
-id|BUS_ADRALN
-suffix:semicolon
-id|si.si_addr
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|ifa
-suffix:semicolon
-id|force_sig_info
+id|ia64_psr
 c_func
 (paren
-id|SIGBUS
-comma
-op_amp
-id|si
-comma
-id|current
+id|regs
+)paren
+op_member_access_from_pointer
+id|ri
 )paren
 suffix:semicolon
-r_return
+macro_line|#else
+id|fix
+op_assign
+id|search_exception_table
+c_func
+(paren
+id|regs-&gt;cr_iip
+)paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+op_logical_or
+id|fix.cont
+)paren
+(brace
+r_if
+c_cond
+(paren
 (paren
 id|current-&gt;thread.flags
 op_amp
 id|IA64_THREAD_UAC_SIGBUS
 )paren
-(brace
-r_struct
-id|siginfo
-id|si
-suffix:semicolon
-id|si.si_signo
-op_assign
-id|SIGBUS
-suffix:semicolon
-id|si.si_errno
-op_assign
+op_ne
 l_int|0
-suffix:semicolon
-id|si.si_code
-op_assign
-id|BUS_ADRALN
-suffix:semicolon
-id|si.si_addr
-op_assign
-(paren
-r_void
-op_star
 )paren
-id|ifa
+r_goto
+id|force_sigbus
 suffix:semicolon
-id|force_sig_info
-c_func
-(paren
-id|SIGBUS
-comma
-op_amp
-id|si
-comma
-id|current
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5989,35 +5637,11 @@ id|current-&gt;thread.flags
 op_amp
 id|IA64_THREAD_UAC_NOPRINT
 )paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Make sure we log the unaligned access, so that&n;&t;&t; * user/sysadmin can notice it and eventually fix the&n;&t;&t; * program.&n;&t;&t; *&n;&t;&t; * We don&squot;t want to do that for every access so we&n;&t;&t; * pace it with jiffies.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|unalign_count
-OG
-l_int|5
 op_logical_and
-id|jiffies
-op_minus
-id|last_time
-OG
-l_int|5
-op_star
-id|HZ
-)paren
-id|unalign_count
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
+id|within_logging_rate_limit
+c_func
 (paren
-op_increment
-id|unalign_count
-OL
-l_int|5
+)paren
 )paren
 (brace
 r_char
@@ -6030,10 +5654,6 @@ multiline_comment|/* comm[] is at most 16 bytes... */
 r_int
 id|len
 suffix:semicolon
-id|last_time
-op_assign
-id|jiffies
-suffix:semicolon
 id|len
 op_assign
 id|sprintf
@@ -6041,7 +5661,8 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%s(%d): unaligned access to 0x%016lx, ip=0x%016lx&bslash;n&bslash;r&quot;
+l_string|&quot;%s(%d): unaligned access to 0x%016lx, &quot;
+l_string|&quot;ip=0x%016lx&bslash;n&bslash;r&quot;
 comma
 id|current-&gt;comm
 comma
@@ -6075,50 +5696,80 @@ multiline_comment|/* drop &squot;&bslash;r&squot; */
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s&quot;
 comma
 id|buf
 )paren
 suffix:semicolon
-multiline_comment|/* guard against command names containing %s!! */
+multiline_comment|/* watch for command names containing %s */
 )brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|within_logging_rate_limit
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;kernel unaligned access to 0x%016lx, ip=0x%016lx&bslash;n&quot;
+comma
+id|ifa
+comma
+id|regs-&gt;cr_iip
+op_plus
+id|ipsr-&gt;ri
+)paren
+suffix:semicolon
+id|set_fs
+c_func
+(paren
+id|KERNEL_DS
+)paren
+suffix:semicolon
 )brace
 id|DPRINT
 c_func
 (paren
-(paren
-l_string|&quot;iip=%lx ifa=%lx isr=%lx&bslash;n&quot;
+l_string|&quot;iip=%lx ifa=%lx isr=%lx (ei=%d, sp=%d)&bslash;n&quot;
 comma
 id|regs-&gt;cr_iip
 comma
 id|ifa
 comma
 id|regs-&gt;cr_ipsr
-)paren
-)paren
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;ISR.ei=%d ISR.sp=%d&bslash;n&quot;
 comma
 id|ipsr-&gt;ri
 comma
 id|ipsr-&gt;it
 )paren
-)paren
 suffix:semicolon
-id|bundle_addr
-op_assign
+r_if
+c_cond
 (paren
-r_int
-r_int
+id|__copy_from_user
+c_func
+(paren
+id|bundle
+comma
+(paren
+r_void
 op_star
 )paren
-(paren
 id|regs-&gt;cr_iip
+comma
+l_int|16
 )paren
+)paren
+r_goto
+id|failure
 suffix:semicolon
 multiline_comment|/*&n;&t; * extract the instruction from the bundle given the slot number&n;&t; */
 r_switch
@@ -6130,102 +5781,99 @@ id|ipsr-&gt;ri
 r_case
 l_int|0
 suffix:colon
-id|op
+id|u.l
 op_assign
-op_star
-id|bundle_addr
+(paren
+id|bundle
+(braket
+l_int|0
+)braket
 op_rshift
 l_int|5
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|op
+id|u.l
 op_assign
-op_star
-id|bundle_addr
+(paren
+id|bundle
+(braket
+l_int|0
+)braket
 op_rshift
 l_int|46
+)paren
 op_or
 (paren
-op_star
-(paren
-id|bundle_addr
-op_plus
+id|bundle
+(braket
 l_int|1
-)paren
-op_amp
-l_int|0x7fffff
-)paren
+)braket
 op_lshift
 l_int|18
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
-id|op
+id|u.l
 op_assign
-op_star
 (paren
-id|bundle_addr
-op_plus
+id|bundle
+(braket
 l_int|1
-)paren
+)braket
 op_rshift
 l_int|23
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|insn
-op_assign
-(paren
-id|load_store_t
-op_star
-)paren
-op_amp
-id|op
-suffix:semicolon
 id|opcode
 op_assign
-id|op
+(paren
+id|u.l
+op_rshift
+id|IA64_OPCODE_SHIFT
+)paren
 op_amp
 id|IA64_OPCODE_MASK
 suffix:semicolon
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;opcode=%lx ld.qp=%d ld.r1=%d ld.imm=%d ld.r3=%d ld.x=%d ld.hint=%d &quot;
 l_string|&quot;ld.x6=0x%x ld.m=%d ld.op=%d&bslash;n&quot;
 comma
 id|opcode
 comma
-id|insn-&gt;qp
+id|u.insn.qp
 comma
-id|insn-&gt;r1
+id|u.insn.r1
 comma
-id|insn-&gt;imm
+id|u.insn.imm
 comma
-id|insn-&gt;r3
+id|u.insn.r3
 comma
-id|insn-&gt;x
+id|u.insn.x
 comma
-id|insn-&gt;hint
+id|u.insn.hint
 comma
-id|insn-&gt;x6_sz
+id|u.insn.x6_sz
 comma
-id|insn-&gt;m
+id|u.insn.m
 comma
-id|insn-&gt;op
-)paren
+id|u.insn.op
 )paren
 suffix:semicolon
-multiline_comment|/*&n;  &t; * IMPORTANT:&n;&t; * Notice that the swictch statement DOES not cover all possible instructions&n;&t; * that DO generate unaligned references. This is made on purpose because for some&n;&t; * instructions it DOES NOT make sense to try and emulate the access. Sometimes it&n;&t; * is WRONG to try and emulate. Here is a list of instruction we don&squot;t emulate i.e.,&n;&t; * the program will get a signal and die:&n;&t; *&n;&t; *&t;load/store:&n;&t; *&t;&t;- ldX.spill&n;&t; *&t;&t;- stX.spill&n;&t; * &t;Reason: RNATs are based on addresses&n;&t; *&n;&t; *&t;synchronization:&n;&t; *&t;&t;- cmpxchg&n;&t; *&t;&t;- fetchadd&n;&t; *&t;&t;- xchg&n;&t; * &t;Reason: ATOMIC operations cannot be emulated properly using multiple &n;&t; * &t;        instructions.&n;&t; *&n;&t; *&t;speculative loads:&n;&t; *&t;&t;- ldX.sZ&n;&t; *&t;Reason: side effects, code must be ready to deal with failure so simpler &n;&t; * &t;&t;to let the load fail.&n;&t; * ---------------------------------------------------------------------------------&n;&t; * XXX fixme&n;&t; *&n;&t; * I would like to get rid of this switch case and do something&n;&t; * more elegant.&n;&t; */
+multiline_comment|/*&n;&t; * IMPORTANT:&n;&t; * Notice that the swictch statement DOES not cover all possible instructions&n;&t; * that DO generate unaligned references. This is made on purpose because for some&n;&t; * instructions it DOES NOT make sense to try and emulate the access. Sometimes it&n;&t; * is WRONG to try and emulate. Here is a list of instruction we don&squot;t emulate i.e.,&n;&t; * the program will get a signal and die:&n;&t; *&n;&t; *&t;load/store:&n;&t; *&t;&t;- ldX.spill&n;&t; *&t;&t;- stX.spill&n;&t; *&t;Reason: RNATs are based on addresses&n;&t; *&n;&t; *&t;synchronization:&n;&t; *&t;&t;- cmpxchg&n;&t; *&t;&t;- fetchadd&n;&t; *&t;&t;- xchg&n;&t; *&t;Reason: ATOMIC operations cannot be emulated properly using multiple&n;&t; *&t;        instructions.&n;&t; *&n;&t; *&t;speculative loads:&n;&t; *&t;&t;- ldX.sZ&n;&t; *&t;Reason: side effects, code must be ready to deal with failure so simpler&n;&t; *&t;&t;to let the load fail.&n;&t; * ---------------------------------------------------------------------------------&n;&t; * XXX fixme&n;&t; *&n;&t; * I would like to get rid of this switch case and do something&n;&t; * more elegant.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -6253,20 +5901,19 @@ suffix:colon
 r_case
 id|LDFS_IMM_OP
 suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * The instruction will be retried with defered exceptions&n;&t;&t;&t; * turned on, and we should get Nat bit installed&n;&t;&t;&t; *&n;&t;&t;&t; * IMPORTANT:&n;&t;&t;&t; * When PSR_ED is set, the register &amp; immediate update&n;&t;&t;&t; * forms are actually executed even though the operation&n;&t;&t;&t; * failed. So we don&squot;t need to take care of this.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The instruction will be retried with deferred exceptions turned on, and&n;&t;&t; * we should get Nat bit installed&n;&t;&t; *&n;&t;&t; * IMPORTANT: When PSR_ED is set, the register &amp; immediate update forms&n;&t;&t; * are actually executed even though the operation failed. So we don&squot;t&n;&t;&t; * need to take care of this.&n;&t;&t; */
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;forcing PSR_ED&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|regs-&gt;cr_ipsr
 op_or_assign
 id|IA64_PSR_ED
 suffix:semicolon
-r_return
+r_goto
+id|done
 suffix:semicolon
 r_case
 id|LD_OP
@@ -6317,7 +5964,7 @@ c_func
 (paren
 id|ifa
 comma
-id|insn
+id|u.insn
 comma
 id|regs
 )paren
@@ -6343,7 +5990,7 @@ c_func
 (paren
 id|ifa
 comma
-id|insn
+id|u.insn
 comma
 id|regs
 )paren
@@ -6374,27 +6021,32 @@ suffix:colon
 r_case
 id|LDFCNC_IMM_OP
 suffix:colon
+r_if
+c_cond
+(paren
+id|u.insn.x
+)paren
 id|ret
 op_assign
-id|insn-&gt;x
-ques
-c_cond
 id|emulate_load_floatpair
 c_func
 (paren
 id|ifa
 comma
-id|insn
+id|u.insn
 comma
 id|regs
 )paren
-suffix:colon
+suffix:semicolon
+r_else
+id|ret
+op_assign
 id|emulate_load_float
 c_func
 (paren
 id|ifa
 comma
-id|insn
+id|u.insn
 comma
 id|regs
 )paren
@@ -6414,20 +6066,25 @@ c_func
 (paren
 id|ifa
 comma
-id|insn
+id|u.insn
 comma
 id|regs
 )paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_goto
+id|failure
 suffix:semicolon
 )brace
 id|DPRINT
 c_func
 (paren
-(paren
 l_string|&quot;ret=%d&bslash;n&quot;
 comma
 id|ret
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -6435,11 +6092,98 @@ c_cond
 (paren
 id|ret
 )paren
-(brace
-r_struct
-id|siginfo
-id|si
+r_goto
+id|failure
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ipsr-&gt;ri
+op_eq
+l_int|2
+)paren
+multiline_comment|/*&n;&t;&t; * given today&squot;s architecture this case is not likely to happen because a&n;&t;&t; * memory access instruction (M) can never be in the last slot of a&n;&t;&t; * bundle. But let&squot;s keep it for now.&n;&t;&t; */
+id|regs-&gt;cr_iip
+op_add_assign
+l_int|16
+suffix:semicolon
+id|ipsr-&gt;ri
+op_assign
+(paren
+id|ipsr-&gt;ri
+op_plus
+l_int|1
+)paren
+op_amp
+l_int|0x3
+suffix:semicolon
+id|DPRINT
+c_func
+(paren
+l_string|&quot;ipsr-&gt;ri=%d iip=%lx&bslash;n&quot;
+comma
+id|ipsr-&gt;ri
+comma
+id|regs-&gt;cr_iip
+)paren
+suffix:semicolon
+id|done
+suffix:colon
+id|set_fs
+c_func
+(paren
+id|old_fs
+)paren
+suffix:semicolon
+multiline_comment|/* restore original address limit */
+r_return
+suffix:semicolon
+id|failure
+suffix:colon
+multiline_comment|/* something went wrong... */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|fix.cont
+)paren
+(brace
+id|handle_exception
+c_func
+(paren
+id|regs
+comma
+id|fix
+)paren
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
+id|die_if_kernel
+c_func
+(paren
+l_string|&quot;error during unaligned kernel access&bslash;n&quot;
+comma
+id|regs
+comma
+id|ret
+)paren
+suffix:semicolon
+multiline_comment|/* NOT_REACHED */
+)brace
+id|force_sigbus
+suffix:colon
 id|si.si_signo
 op_assign
 id|SIGBUS
@@ -6471,40 +6215,8 @@ comma
 id|current
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t; &t; * given today&squot;s architecture this case is not likely to happen&n;&t; &t; * because a memory access instruction (M) can never be in the &n;&t; &t; * last slot of a bundle. But let&squot;s keep it for  now.&n;&t; &t; */
-r_if
-c_cond
-(paren
-id|ipsr-&gt;ri
-op_eq
-l_int|2
-)paren
-id|regs-&gt;cr_iip
-op_add_assign
-l_int|16
-suffix:semicolon
-id|ipsr-&gt;ri
-op_assign
-op_increment
-id|ipsr-&gt;ri
-op_amp
-l_int|3
-suffix:semicolon
-)brace
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;ipsr-&gt;ri=%d iip=%lx&bslash;n&quot;
-comma
-id|ipsr-&gt;ri
-comma
-id|regs-&gt;cr_iip
-)paren
-)paren
+r_goto
+id|done
 suffix:semicolon
 )brace
 eof

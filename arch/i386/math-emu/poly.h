@@ -629,5 +629,5 @@ l_string|&quot;cx&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif _POLY_H
+macro_line|#endif /* _POLY_H */
 eof

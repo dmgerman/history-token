@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Machine vector for IA-64.&n; * &n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Srinivasa Thirumalachar &lt;sprasad@engr.sgi.com&gt;&n; * Copyright (C) Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; * Copyright (C) 1999-2000 Hewlett-Packard Co.&n; * Copyright (C) 1999-2000 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Machine vector for IA-64.&n; * &n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Srinivasa Thirumalachar &lt;sprasad@engr.sgi.com&gt;&n; * Copyright (C) Vijay Chander &lt;vijay@engr.sgi.com&gt;&n; * Copyright (C) 1999-2001 Hewlett-Packard Co.&n; * Copyright (C) 1999-2001 David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#ifndef _ASM_IA64_MACHVEC_H
 DECL|macro|_ASM_IA64_MACHVEC_H
 mdefine_line|#define _ASM_IA64_MACHVEC_H
@@ -13,6 +13,9 @@ id|pt_regs
 suffix:semicolon
 r_struct
 id|scatterlist
+suffix:semicolon
+r_struct
+id|irq_desc
 suffix:semicolon
 DECL|typedef|ia64_mv_setup_t
 r_typedef
@@ -101,6 +104,35 @@ comma
 r_int
 comma
 r_int
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_irq_desc
+r_typedef
+r_struct
+id|irq_desc
+op_star
+id|ia64_mv_irq_desc
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_irq_to_vector
+r_typedef
+id|u8
+id|ia64_mv_irq_to_vector
+(paren
+id|u8
+)paren
+suffix:semicolon
+DECL|typedef|ia64_mv_local_vector_to_irq
+r_typedef
+r_int
+r_int
+id|ia64_mv_local_vector_to_irq
+(paren
+id|u8
+id|vector
 )paren
 suffix:semicolon
 multiline_comment|/* PCI-DMA interface: */
@@ -383,6 +415,12 @@ DECL|macro|platform_pci_dma_sync_sg
 macro_line|#  define platform_pci_dma_sync_sg&t;ia64_mv.sync_sg
 DECL|macro|platform_pci_dma_address
 macro_line|#  define platform_pci_dma_address&t;ia64_mv.dma_address
+DECL|macro|platform_irq_desc
+macro_line|#  define platform_irq_desc&t;&t;ia64_mv.irq_desc
+DECL|macro|platform_irq_to_vector
+macro_line|#  define platform_irq_to_vector&t;ia64_mv.irq_to_vector
+DECL|macro|platform_local_vector_to_irq
+macro_line|#  define platform_local_vector_to_irq&t;ia64_mv.local_vector_to_irq
 DECL|macro|platform_inb
 macro_line|#  define platform_inb&t;&t;ia64_mv.inb
 DECL|macro|platform_inw
@@ -501,6 +539,21 @@ id|ia64_mv_pci_dma_address
 op_star
 id|dma_address
 suffix:semicolon
+DECL|member|irq_desc
+id|ia64_mv_irq_desc
+op_star
+id|irq_desc
+suffix:semicolon
+DECL|member|irq_to_vector
+id|ia64_mv_irq_to_vector
+op_star
+id|irq_to_vector
+suffix:semicolon
+DECL|member|local_vector_to_irq
+id|ia64_mv_local_vector_to_irq
+op_star
+id|local_vector_to_irq
+suffix:semicolon
 DECL|member|inb
 id|ia64_mv_inb_t
 op_star
@@ -534,7 +587,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|MACHVEC_INIT
-mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_pci_fixup,&t;&t;&t;&bslash;&n;&t;platform_map_nr,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_address,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define MACHVEC_INIT(name)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;#name,&t;&t;&t;&t;&t;&bslash;&n;&t;platform_setup,&t;&t;&t;&t;&bslash;&n;&t;platform_irq_init,&t;&t;&t;&bslash;&n;&t;platform_pci_fixup,&t;&t;&t;&bslash;&n;&t;platform_map_nr,&t;&t;&t;&bslash;&n;&t;platform_mca_init,&t;&t;&t;&bslash;&n;&t;platform_mca_handler,&t;&t;&t;&bslash;&n;&t;platform_cmci_handler,&t;&t;&t;&bslash;&n;&t;platform_log_print,&t;&t;&t;&bslash;&n;&t;platform_send_ipi,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_init,&t;&t;&t;&bslash;&n;&t;platform_pci_alloc_consistent,&t;&t;&bslash;&n;&t;platform_pci_free_consistent,&t;&t;&bslash;&n;&t;platform_pci_map_single,&t;&t;&bslash;&n;&t;platform_pci_unmap_single,&t;&t;&bslash;&n;&t;platform_pci_map_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_unmap_sg,&t;&t;&t;&bslash;&n;&t;platform_pci_dma_sync_single,&t;&t;&bslash;&n;&t;platform_pci_dma_sync_sg,&t;&t;&bslash;&n;&t;platform_pci_dma_address,&t;&t;&bslash;&n;&t;platform_irq_desc,&t;&t;&t;&bslash;&n;&t;platform_irq_to_vector,&t;&t;&t;&bslash;&n;&t;platform_local_vector_to_irq,&t;&t;&bslash;&n;&t;platform_inb,&t;&t;&t;&t;&bslash;&n;&t;platform_inw,&t;&t;&t;&t;&bslash;&n;&t;platform_inl,&t;&t;&t;&t;&bslash;&n;&t;platform_outb,&t;&t;&t;&t;&bslash;&n;&t;platform_outw,&t;&t;&t;&t;&bslash;&n;&t;platform_outl&t;&t;&t;&t;&bslash;&n;}
 r_extern
 r_struct
 id|ia64_machine_vector
@@ -666,6 +719,18 @@ macro_line|#endif
 macro_line|#ifndef platform_pci_dma_address
 DECL|macro|platform_pci_dma_address
 macro_line|# define  platform_pci_dma_address&t;swiotlb_dma_address
+macro_line|#endif
+macro_line|#ifndef platform_irq_desc
+DECL|macro|platform_irq_desc
+macro_line|# define platform_irq_desc&t;&t;__ia64_irq_desc
+macro_line|#endif
+macro_line|#ifndef platform_irq_to_vector
+DECL|macro|platform_irq_to_vector
+macro_line|# define platform_irq_to_vector&t;&t;__ia64_irq_to_vector
+macro_line|#endif
+macro_line|#ifndef platform_local_vector_to_irq
+DECL|macro|platform_local_vector_to_irq
+macro_line|# define platform_local_vector_to_irq&t;__ia64_local_vector_to_irq
 macro_line|#endif
 macro_line|#ifndef platform_inb
 DECL|macro|platform_inb

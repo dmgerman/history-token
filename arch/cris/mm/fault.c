@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/cris/mm/fault.c&n; *&n; *  Copyright (C) 2000  Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen &n; * &n; *  $Log: fault.c,v $&n; *  Revision 1.8  2000/11/22 14:45:31  bjornw&n; *  * 2.4.0-test10 removed the set_pgdir instantaneous kernel global mapping&n; *    into all processes. Instead we fill in the missing PTE entries on demand.&n; *&n; *  Revision 1.7  2000/11/21 16:39:09  bjornw&n; *  fixup switches frametype&n; *&n; *  Revision 1.6  2000/11/17 16:54:08  bjornw&n; *  More detailed siginfo reporting&n; *&n; *&n; */
+multiline_comment|/*&n; *  linux/arch/cris/mm/fault.c&n; *&n; *  Copyright (C) 2000  Axis Communications AB&n; *&n; *  Authors:  Bjorn Wesen &n; * &n; *  $Log: fault.c,v $&n; *  Revision 1.9  2001/03/05 13:22:20  bjornw&n; *  Spell-fix and fix in vmalloc_fault handling&n; *&n; *  Revision 1.8  2000/11/22 14:45:31  bjornw&n; *  * 2.4.0-test10 removed the set_pgdir instantaneous kernel global mapping&n; *    into all processes. Instead we fill in the missing PTE entries on demand.&n; *&n; *  Revision 1.7  2000/11/21 16:39:09  bjornw&n; *  fixup switches frametype&n; *&n; *  Revision 1.6  2000/11/17 16:54:08  bjornw&n; *  More detailed siginfo reporting&n; *&n; *&n; */
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -911,7 +911,7 @@ suffix:semicolon
 )brace
 id|no_context
 suffix:colon
-multiline_comment|/* Are we prepared to handle this kernel fault?&n;&t; *&n;&t; * (The kernel has valid exception-points in the source &n;&t; *  when it acesses user-memory. When it fails in one&n;&t; *  of those points, we find it in a table and do a jump&n;&t; *  to some fixup code that loads an appropriate error&n;&t; *  code)&n;&t; */
+multiline_comment|/* Are we prepared to handle this kernel fault?&n;&t; *&n;&t; * (The kernel has valid exception-points in the source &n;&t; *  when it accesses user-memory. When it fails in one&n;&t; *  of those points, we find it in a table and do a jump&n;&t; *  to some fixup code that loads an appropriate error&n;&t; *  code)&n;&t; */
 r_if
 c_cond
 (paren

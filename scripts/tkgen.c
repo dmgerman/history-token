@@ -187,7 +187,7 @@ c_func
 l_string|&quot;&bslash;&quot;catch {focus $oldFocus}; &quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;     * We are checking which windows should be destroyed and which are &n;     * common parrents with the next one. Remember that menu_num field&n;     * in mainmenu_option record reports number of its *parent* menu.&n;     */
+multiline_comment|/* &n;     * We are checking which windows should be destroyed and which are &n;     * common parents with the next one. Remember that menu_num field&n;     * in mainmenu_option record reports number of its *parent* menu.&n;     */
 r_if
 c_cond
 (paren

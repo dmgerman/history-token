@@ -79,32 +79,6 @@ c_func
 id|nasid_t
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-macro_line|#if defined (IP27)
-DECL|variable|cputype
-r_int
-id|cputype
-op_assign
-id|CPU_IP27
-suffix:semicolon
-macro_line|#elif defined (IP33)
-DECL|variable|cputype
-r_int
-id|cputype
-op_assign
-id|CPU_IP33
-suffix:semicolon
-macro_line|#elif defined (IP35)
-DECL|variable|cputype
-r_int
-id|cputype
-op_assign
-id|CPU_IP35
-suffix:semicolon
-macro_line|#else
-macro_line|#error &lt;BOMB! define new cputype here &gt;
-macro_line|#endif
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
 DECL|variable|fine_mode
 r_static
 r_int
@@ -112,16 +86,6 @@ id|fine_mode
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-multiline_comment|/* Global variables */
-DECL|variable|pdaindr
-id|pdaindr_t
-id|pdaindr
-(braket
-id|MAXCPUS
-)braket
-suffix:semicolon
-macro_line|#endif
 DECL|variable|hub_init_mask
 r_static
 id|cnodemask_t
@@ -213,7 +177,7 @@ c_func
 l_string|&quot;mlreset: Enable when we support ioc3 ..&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 r_if
 c_cond
 (paren
@@ -266,7 +230,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
+macro_line|#endif /* LATER */
 multiline_comment|/* We&squot;re the master processor */
 id|master_procid
 op_assign
@@ -295,7 +259,7 @@ c_func
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 multiline_comment|/*&n;&t; * Activate when calias is implemented.&n;&t; */
 multiline_comment|/* Set all nodes&squot; calias sizes to 8k */
 r_for
@@ -400,7 +364,7 @@ id|IIO_ITTE_WIDGET_SHIFT
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
+macro_line|#endif /* LATER */
 multiline_comment|/* Set up the hub initialization mask and init the lock */
 id|CNODEMASK_CLRALL
 c_func
@@ -433,7 +397,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 multiline_comment|/*&n;&t;&t; * Our IO system doesn&squot;t require cache writebacks.  Set some&n;&t;&t; * variables appropriately.&n;&t;&t; */
 id|cachewrback
 op_assign
@@ -469,7 +433,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
+macro_line|#endif /* LATER */
 )brace
 r_else
 (brace
@@ -525,9 +489,22 @@ comma
 id|cnodeid_t
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|intr_init_vecblk
+c_func
+(paren
+id|nodepda_t
+op_star
+comma
+id|cnodeid_t
+comma
+r_int
+)paren
+suffix:semicolon
 macro_line|#if defined(DEBUG)
 r_extern
-id|lock_t
+id|spinlock_t
 id|intr_dev_targ_map_lock
 suffix:semicolon
 r_extern
@@ -548,15 +525,11 @@ id|intr_dev_targ_map_size
 op_assign
 l_int|0
 suffix:semicolon
-id|init_spinlock
+id|spin_lock_init
 c_func
 (paren
 op_amp
 id|intr_dev_targ_map_lock
-comma
-l_string|&quot;dtmap_lock&quot;
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -609,17 +582,6 @@ id|COMPACT_TO_NASID_NODEID
 c_func
 (paren
 id|node
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;init_platform_nodepda: hubinfo 0x%p, &amp;hubinfo-&gt;h_crblock 0x%p&bslash;n&quot;
-comma
-id|hubinfo
-comma
-op_amp
-id|hubinfo-&gt;h_crblock
 )paren
 suffix:semicolon
 id|spin_lock_init
@@ -700,8 +662,6 @@ id|next_prof_timeout
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// ajm
-macro_line|#ifndef CONFIG_IA64_SGI_IO
 id|intr_init_vecblk
 c_func
 (paren
@@ -712,7 +672,6 @@ comma
 id|sn
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|npda-&gt;vector_unit_busy
 op_assign
@@ -725,7 +684,7 @@ op_amp
 id|npda-&gt;vector_lock
 )paren
 suffix:semicolon
-id|init_MUTEX_LOCKED
+id|mutex_init_locked
 c_func
 (paren
 op_amp
@@ -751,7 +710,7 @@ id|npda-&gt;ni_error_print
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 r_if
 c_cond
 (paren
@@ -831,7 +790,7 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 id|npda-&gt;node_first_cpu
 op_assign
 id|get_cnode_cpu
@@ -905,7 +864,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Allocate memory for the dump stack on each node &n;&t; * This is useful during nmi handling since we&n;&t; * may not be guaranteed shared memory at that time&n;&t; * which precludes depending on a global dump stack&n;&t; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 id|npda-&gt;dump_stack
 op_assign
 (paren
@@ -936,7 +895,7 @@ id|npda-&gt;dump_stack
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Initialize the counter which prevents&n;&t; * both the cpus on a node to proceed with nmi&n;&t; * handling.&n;&t; */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 id|npda-&gt;dump_count
 op_assign
 l_int|0
@@ -1008,7 +967,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
+macro_line|#endif /* LATER */
 )brace
 multiline_comment|/* XXX - Move the interrupt stuff to intr.c ? */
 multiline_comment|/*&n; * Set up the platform-dependent fields in the processor pda.&n; * Must be done _after_ init_platform_nodepda().&n; * If we need a lock here, something else is wrong!&n; */
@@ -1026,9 +985,11 @@ id|hub_intmasks_t
 op_star
 id|intmasks
 suffix:semicolon
+macro_line|#ifdef&t;LATER
 id|cpuinfo_t
 id|cpuinfo
 suffix:semicolon
+macro_line|#endif
 r_int
 id|i
 suffix:semicolon
@@ -1042,7 +1003,7 @@ suffix:semicolon
 r_int
 id|which_synergy
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 multiline_comment|/* Allocate per-cpu platform-dependent data */
 id|cpuinfo
 op_assign
@@ -1125,7 +1086,7 @@ op_assign
 op_amp
 id|sda-&gt;s_intmasks
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 id|ASSERT_ALWAYS
 c_func
 (paren
@@ -1168,7 +1129,7 @@ id|cnode
 op_member_access_from_pointer
 id|snpda
 (braket
-id|cputosubnode
+id|cpuid_to_subnode
 c_func
 (paren
 id|cpu
@@ -1187,7 +1148,7 @@ id|cnode
 op_member_access_from_pointer
 id|snpda
 (braket
-id|cputosubnode
+id|cpuid_to_subnode
 c_func
 (paren
 id|cpu
@@ -1218,7 +1179,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 multiline_comment|/* Don&squot;t read the routers unless we&squot;re the master. */
 id|ppda-&gt;p_routertick
 op_assign
@@ -1229,7 +1190,7 @@ macro_line|#endif
 macro_line|#if (defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)) &amp;&amp; !defined(BRINGUP)&t;/* protect low mem for IP35/7 */
 macro_line|#error &quot;need protect_hub_calias, protect_nmi_handler_data&quot;
 macro_line|#endif
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 multiline_comment|/*&n; * For now, just protect the first page (exception handlers). We&n; * may want to protect more stuff later.&n; */
 r_void
 DECL|function|protect_hub_calias
@@ -1283,42 +1244,6 @@ id|nasid
 )paren
 r_continue
 suffix:semicolon
-macro_line|#ifndef BRINGUP
-multiline_comment|/* Protect the exception handlers. */
-op_star
-(paren
-id|__psunsigned_t
-op_star
-)paren
-id|BDPRT_ENTRY
-c_func
-(paren
-id|pa
-comma
-id|i
-)paren
-op_assign
-id|MD_PROT_NO
-suffix:semicolon
-multiline_comment|/* Protect the ARCS SPB. */
-op_star
-(paren
-id|__psunsigned_t
-op_star
-)paren
-id|BDPRT_ENTRY
-c_func
-(paren
-id|pa
-op_plus
-l_int|4096
-comma
-id|i
-)paren
-op_assign
-id|MD_PROT_NO
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 multiline_comment|/*&n; * Protect the page of low memory used to communicate with the NMI handler.&n; */
@@ -1382,27 +1307,10 @@ id|nasid
 )paren
 r_continue
 suffix:semicolon
-macro_line|#ifndef BRINGUP
-op_star
-(paren
-id|__psunsigned_t
-op_star
-)paren
-id|BDPRT_ENTRY
-c_func
-(paren
-id|pa
-comma
-id|i
-)paren
-op_assign
-id|MD_PROT_NO
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
-macro_line|#ifdef IRIX
+macro_line|#endif /* LATER */
+macro_line|#ifdef LATER
 multiline_comment|/*&n; * Protect areas of memory that we access uncached by marking them as&n; * poisoned so the T5 can&squot;t read them speculatively and erroneously&n; * mark them dirty in its cache only to write them back with old data&n; * later.&n; */
 r_static
 r_void
@@ -1505,7 +1413,7 @@ l_int|1
 suffix:semicolon
 macro_line|#error &quot;SN1 not handled correctly&quot;
 )brace
-macro_line|#endif&t;/* IRIX */
+macro_line|#endif&t;/* LATER */
 multiline_comment|/*&n; * per_hub_init&n; *&n; * &t;This code is executed once for each Hub chip.&n; */
 r_void
 DECL|function|per_hub_init
@@ -1534,33 +1442,11 @@ id|ii_ibcr_u_t
 id|ii_ibcr
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 r_int
 id|i
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef SIMULATED_KLGRAPH
-id|compact_to_nasid_node
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|nasid_to_compact_node
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|FIXME
-c_func
-(paren
-l_string|&quot;per_hub_init: SIMULATED_KLCONFIG: compact_to_nasid_node[0] = 0&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif /* SIMULATED_KLGRAPH */
 id|nasid
 op_assign
 id|COMPACT_TO_NASID_NODEID
@@ -1656,6 +1542,38 @@ c_func
 id|cnode
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_IA64_SGI_SYNERGY_PERF)
+multiline_comment|/* initialize per-node synergy perf instrumentation */
+id|npdap-&gt;synergy_perf_enabled
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* off by default */
+id|npdap-&gt;synergy_perf_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+id|npdap-&gt;synergy_perf_freq
+op_assign
+id|SYNERGY_PERF_FREQ_DEFAULT
+suffix:semicolon
+id|npdap-&gt;synergy_inactive_intervals
+op_assign
+l_int|0
+suffix:semicolon
+id|npdap-&gt;synergy_active_intervals
+op_assign
+l_int|0
+suffix:semicolon
+id|npdap-&gt;synergy_perf_data
+op_assign
+l_int|NULL
+suffix:semicolon
+id|npdap-&gt;synergy_perf_first
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif /* CONFIG_IA64_SGI_SYNERGY_PERF */
 id|npdap-&gt;hub_chip_rev
 op_assign
 id|get_hub_chiprev
@@ -1664,7 +1582,7 @@ c_func
 id|nasid
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 r_for
 c_loop
 (paren
@@ -1711,7 +1629,7 @@ l_int|0xf
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
+macro_line|#endif /* LATER */
 macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC) /* SN1 specific */
 multiline_comment|/*&n;&t;&t; * Set the total number of CRBs that can be used.&n;&t;&t; */
 id|ii_icmr.ii_icmr_regval
@@ -1773,7 +1691,6 @@ l_int|0xff
 )paren
 suffix:semicolon
 macro_line|#endif /* SN0_HWDEBUG */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
 multiline_comment|/* Reserve all of the hardwired interrupt levels. */
 id|intr_reserve_hardwired
 c_func
@@ -1788,6 +1705,7 @@ c_func
 id|cnode
 )paren
 suffix:semicolon
+macro_line|#ifdef LATER
 multiline_comment|/* Set up correctable memory/directory ECC error interrupt. */
 id|install_eccintr
 c_func
@@ -1816,7 +1734,7 @@ id|cnode
 )paren
 suffix:semicolon
 multiline_comment|/* Enable migration interrupt */
-macro_line|#endif
+macro_line|#endif&t;/* LATER */
 id|spin_lock
 c_func
 (paren
@@ -1856,8 +1774,17 @@ id|cnode
 op_eq
 l_int|0
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * On SNIA64 we should never get here ..&n;&t;&t;&t; */
+id|printk
+c_func
+(paren
+l_string|&quot;WARNING: per_hub_init: Should NEVER get here!&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* LOOP */
 suffix:semicolon
+)brace
 )brace
 )brace
 r_extern

@@ -354,22 +354,6 @@ DECL|typedef|graph_error_t
 )brace
 id|graph_error_t
 suffix:semicolon
-DECL|macro|SV_FIFO
-mdefine_line|#define SV_FIFO         0x0             /* sv_t is FIFO type */
-DECL|macro|SV_LIFO
-mdefine_line|#define SV_LIFO         0x2             /* sv_t is LIFO type */
-DECL|macro|SV_PRIO
-mdefine_line|#define SV_PRIO         0x4             /* sv_t is PRIO type */
-DECL|macro|SV_KEYED
-mdefine_line|#define SV_KEYED        0x6             /* sv_t is KEYED type */
-DECL|macro|SV_DEFAULT
-mdefine_line|#define SV_DEFAULT      SV_FIFO
-DECL|macro|MUTEX_DEFAULT
-mdefine_line|#define MUTEX_DEFAULT&t;0x0&t;&t;/* needed by mutex_init() calls */
-DECL|macro|PZERO
-mdefine_line|#define PZERO&t;&t;25&t;&t;/* needed by mutex_lock(), sv_wait()&n;&t;&t;&t;&t;&t; * psema() calls */
-DECL|macro|sema_t
-mdefine_line|#define sema_t  uint64_t&t;&t;/* FIXME */
 DECL|macro|KM_SLEEP
 mdefine_line|#define KM_SLEEP   0x0000
 DECL|macro|KM_NOSLEEP
@@ -378,10 +362,6 @@ DECL|macro|VM_NOSLEEP
 mdefine_line|#define VM_NOSLEEP 0x0001&t;&t;/* needed kmem_alloc_node(), kmem_zalloc_node&n;&t;&t;&t;&t;&t; * calls */
 DECL|macro|XG_WIDGET_PART_NUM
 mdefine_line|#define XG_WIDGET_PART_NUM      0xC102          /* KONA/xt_regs.h     XG_XT_PART_NUM_VALUE */
-macro_line|#ifndef K1BASE
-DECL|macro|K1BASE
-mdefine_line|#define K1BASE 0xA0000000
-macro_line|#endif
 macro_line|#ifndef TO_PHYS_MASK
 DECL|macro|TO_PHYS_MASK
 mdefine_line|#define TO_PHYS_MASK 0x0000000fffffffff
@@ -411,12 +391,6 @@ macro_line|#ifndef _PAGESZ
 DECL|macro|_PAGESZ
 mdefine_line|#define _PAGESZ 4096
 macro_line|#endif
-DECL|typedef|k_machreg_t
-r_typedef
-r_uint64
-id|k_machreg_t
-suffix:semicolon
-multiline_comment|/* needed by cmn_err.h */
 DECL|typedef|mrlock_t
 r_typedef
 r_uint64
@@ -441,14 +415,12 @@ DECL|macro|POFFMASK
 mdefine_line|#define POFFMASK&t;&t;(NBPP - 1)
 DECL|macro|poff
 mdefine_line|#define poff(X)&t;&t;&t;((__psunsigned_t)(X) &amp; POFFMASK)
-DECL|macro|initnsema
-mdefine_line|#define initnsema(a,b,c) &t;sema_init(a,b)
 DECL|macro|BZERO
 mdefine_line|#define BZERO(a,b)&t;&t;memset(a, 0, b)
 DECL|macro|kern_malloc
-mdefine_line|#define kern_malloc(x)&t;kmalloc(x, GFP_KERNEL)
+mdefine_line|#define kern_malloc(x)&t;&t;kmalloc(x, GFP_KERNEL)
 DECL|macro|kern_free
-mdefine_line|#define kern_free(x)&t;kfree(x)
+mdefine_line|#define kern_free(x)&t;&t;kfree(x)
 DECL|typedef|cpu_cookie_t
 r_typedef
 id|cpuid_t
@@ -456,6 +428,58 @@ id|cpu_cookie_t
 suffix:semicolon
 DECL|macro|CPU_NONE
 mdefine_line|#define CPU_NONE&t;&t;-1
+multiline_comment|/*&n; * mutext support mapping&n; */
+DECL|macro|mutex_spinlock_init
+mdefine_line|#define mutex_spinlock_init(s)&t;spin_lock_init(s)
+r_inline
+r_static
+r_int
+r_int
+DECL|function|mutex_spinlock
+id|mutex_spinlock
+c_func
+(paren
+id|spinlock_t
+op_star
+id|sem
+)paren
+(brace
+r_int
+r_int
+id|flags
+op_assign
+l_int|0
+suffix:semicolon
+singleline_comment|//&t;spin_lock_irqsave(sem, flags);
+id|spin_lock
+c_func
+(paren
+id|sem
+)paren
+suffix:semicolon
+r_return
+id|flags
+suffix:semicolon
+)brace
+singleline_comment|// #define mutex_spinunlock(s,t)&t;spin_unlock_irqrestore(s,t)
+DECL|macro|mutex_spinunlock
+mdefine_line|#define mutex_spinunlock(s,t)&t;spin_unlock(s)
+DECL|macro|mutex_t
+mdefine_line|#define mutex_t&t;&t;&t;struct semaphore
+DECL|macro|mutex_init
+mdefine_line|#define mutex_init(s)&t;&t;init_MUTEX(s)
+DECL|macro|mutex_init_locked
+mdefine_line|#define mutex_init_locked(s)&t;init_MUTEX_LOCKED(s)
+DECL|macro|mutex_lock
+mdefine_line|#define mutex_lock(s)&t;&t;down(s)
+DECL|macro|mutex_unlock
+mdefine_line|#define mutex_unlock(s)&t;&t;up(s)
+DECL|macro|io_splock
+mdefine_line|#define io_splock(s)&t;&t;mutex_spinlock(s)
+DECL|macro|io_spunlock
+mdefine_line|#define io_spunlock(s,t)&t;spin_unlock(s)
+DECL|macro|spin_lock_destroy
+mdefine_line|#define spin_lock_destroy(s)
 macro_line|#if defined(DISABLE_ASSERT)
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(expr)
@@ -463,23 +487,18 @@ DECL|macro|ASSERT_ALWAYS
 mdefine_line|#define ASSERT_ALWAYS(expr)
 macro_line|#else
 DECL|macro|ASSERT
-mdefine_line|#define ASSERT(expr)&t;&bslash;&n;        if(!(expr)) { &bslash;&n;&t;&t;printk( &quot;Assertion [%s] failed! %s:%s(line=%d)&bslash;n&quot;,&bslash;&n;&t;&t;&t;#expr,__FILE__,__FUNCTION__,__LINE__); &bslash;&n;&t;&t;panic(&quot;Assertion panic&bslash;n&quot;); &t;&bslash;&n;        }
+mdefine_line|#define ASSERT(expr)  do {&t;&bslash;&n;        if(!(expr)) { &bslash;&n;&t;&t;printk( &quot;Assertion [%s] failed! %s:%s(line=%d)&bslash;n&quot;,&bslash;&n;&t;&t;&t;#expr,__FILE__,__FUNCTION__,__LINE__); &bslash;&n;&t;&t;panic(&quot;Assertion panic&bslash;n&quot;); &t;&bslash;&n;        } } while(0)
 DECL|macro|ASSERT_ALWAYS
-mdefine_line|#define ASSERT_ALWAYS(expr)&t;&bslash;&n;        if(!(expr)) { &bslash;&n;&t;&t;printk( &quot;Assertion [%s] failed! %s:%s(line=%d)&bslash;n&quot;,&bslash;&n;&t;&t;&t;#expr,__FILE__,__FUNCTION__,__LINE__); &bslash;&n;&t;&t;panic(&quot;Assertion always panic&bslash;n&quot;); &t;&bslash;&n;        }
+mdefine_line|#define ASSERT_ALWAYS(expr)&t;do {&bslash;&n;        if(!(expr)) { &bslash;&n;&t;&t;printk( &quot;Assertion [%s] failed! %s:%s(line=%d)&bslash;n&quot;,&bslash;&n;&t;&t;&t;#expr,__FILE__,__FUNCTION__,__LINE__); &bslash;&n;&t;&t;panic(&quot;Assertion always panic&bslash;n&quot;); &t;&bslash;&n;        } } while(0)
 macro_line|#endif&t;/* DISABLE_ASSERT */
-multiline_comment|/* These are defined as cmn_err() replacements */
 DECL|macro|PRINT_WARNING
-mdefine_line|#define PRINT_WARNING(x...)&t;{ printk(&quot;WARNING : &quot;); printk(x); }
+mdefine_line|#define PRINT_WARNING(x...)&t;do { printk(&quot;WARNING : &quot;); printk(x); } while(0)
 DECL|macro|PRINT_NOTICE
-mdefine_line|#define PRINT_NOTICE(x...)&t;{ printk(&quot;NOTICE : &quot;); printk(x); }
+mdefine_line|#define PRINT_NOTICE(x...)&t;do { printk(&quot;NOTICE : &quot;); printk(x); } while(0)
 DECL|macro|PRINT_ALERT
-mdefine_line|#define PRINT_ALERT(x...)&t;{ printk(&quot;ALERT : &quot;); printk(x); }
+mdefine_line|#define PRINT_ALERT(x...)&t;do { printk(&quot;ALERT : &quot;); printk(x); } while(0)
 DECL|macro|PRINT_PANIC
 mdefine_line|#define PRINT_PANIC&t;&t;panic
-DECL|macro|mutex_t
-mdefine_line|#define mutex_t int
-DECL|macro|spinlock_init
-mdefine_line|#define spinlock_init(x,name) mutex_init(x, MUTEX_DEFAULT, name);
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|cpu_enabled
 mdefine_line|#define cpu_enabled(cpu)        (test_bit(cpu, &amp;cpu_online_map))

@@ -160,7 +160,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* Need a positive number */
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 multiline_comment|/* Split the problem into two domains, smaller and larger than pi/4 */
 r_if
 c_cond

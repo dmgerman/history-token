@@ -3,23 +3,30 @@ macro_line|#ifndef _ASM_IA64_SN_SN_CPUID_H
 DECL|macro|_ASM_IA64_SN_SN_CPUID_H
 mdefine_line|#define _ASM_IA64_SN_SN_CPUID_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sn/mmzone_sn1.h&gt;
 multiline_comment|/*&n; * Functions for converting between cpuids, nodeids and NASIDs.&n; * &n; * These are for SGI platforms only.&n; *&n; */
-multiline_comment|/*&n; * The following assumes the following mappings for LID register values:&n; *&n; *         LID&n; *&t;&t;31:24 - id   Contains the NASID&n; *&t;&t;23:16 - eid  Contains 0-3 to identify the cpu on the node&n; *&t;&t;&t;&t;bit 17 - synergy number&n; *&t;&t;&t;&t;bit 16 - FSB number &n; *&n; * &t;   SAPICID&n; *&t;&t;This is the same as 31:24 of LID&n; *&n; * The macros convert between cpuid &amp; slice/fsb/synergy/nasid/cnodeid.&n; * These terms are described below:&n; *&n; *&n; *          -----   -----           -----   -----       CPU&n; *          | 0 |   | 1 |           | 2 |   | 3 |       SLICE&n; *          -----   -----           -----   -----&n; *            |       |               |       |&n; *            |       |               |       |&n; *          0 |       | 1           0 |       | 1       FSB&n; *             -------                 -------  &n; *                |                       |&n; *                |                       |&n; *             -------                 -------&n; *             |     |                 |     |&n; *             |  0  |                 |  1  |         SYNERGY&n; *             |     |                 |     |&n; *             -------                 -------&n; *                |                       |&n; *                |                       |&n; *             -------------------------------&n; *             |                             |&n; *             |         BEDROCK             |        NASID   (0..127)&n; *             |                             |        CNODEID (0..numnodes-1)&n; *             |                             |&n; *             |                             |&n; *             -------------------------------&n; *                           |&n; *&n; */
-DECL|macro|sapicid_to_nasid
-mdefine_line|#define sapicid_to_nasid(sid)&t;&t;((sid) &gt;&gt; 8)
-DECL|macro|sapicid_to_synergy
-mdefine_line|#define sapicid_to_synergy(sid)&t;&t;(((sid) &gt;&gt; 1) &amp; 1)
-DECL|macro|sapicid_to_fsb
-mdefine_line|#define sapicid_to_fsb(sid)&t;&t;((sid) &amp; 1)
-DECL|macro|sapicid_to_slice
-mdefine_line|#define sapicid_to_slice(sid)&t;&t;((sid) &amp; 3)
+multiline_comment|/*&n; *  Definitions of terms (these definitions are for IA64 ONLY. Other architectures&n; *  use cpuid/cpunum quite defferently):&n; *&n; *&t;   CPUID - a number in range of 0..NR_CPUS-1 that uniquely identifies&n; *&t;&t;the cpu. The value cpuid has no significance on IA64 other than&n; *&t;&t;the boot cpu is 0.&n; *&t;&t;&t;smp_processor_id() returns the cpuid of the current cpu.&n; *&n; *&t;   CPUNUM - On IA64, a cpunum and cpuid are the same. This is NOT true&n; *&t;&t;on other architectures like IA32.&n; *&n; * &t;   CPU_PHYSICAL_ID (also known as HARD_PROCESSOR_ID)&n; *&t;&t;This is the same as 31:24 of the processor LID register&n; *&t;&t;&t;hard_smp_processor_id()- cpu_physical_id of current processor&n; *&t;&t;&t;cpu_physical_id(cpuid) - convert a &lt;cpuid&gt; to a &lt;physical_cpuid&gt;&n; *&t;&t;&t;cpu_logical_id(phy_id) - convert a &lt;physical_cpuid&gt; to a &lt;cpuid&gt; &n; *&t;&t;&t;&t;* not real efficient - dont use in perf critical code&n; *&n; *         LID - processor defined register (see PRM V2).&n; *&t;&t;31:24 - id   Contains the NASID&n; *&t;&t;23:16 - eid  Contains 0-3 to identify the cpu on the node&n; *&t;&t;&t;&t;bit 17 - synergy number&n; *&t;&t;&t;&t;bit 16 - FSB slot number &n; *&n; *&n; *&n; * The following assumes the following mappings for LID register values:&n; *&n; * The macros convert between cpu physical ids &amp; slice/fsb/synergy/nasid/cnodeid.&n; * These terms are described below:&n; *&n; *&n; *          -----   -----           -----   -----       CPU&n; *          | 0 |   | 1 |           | 2 |   | 3 |       SLICE&n; *          -----   -----           -----   -----&n; *            |       |               |       |&n; *            |       |               |       |&n; *          0 |       | 1           0 |       | 1       FSB SLOT&n; *             -------                 -------  &n; *                |                       |&n; *                |                       |&n; *             -------                 -------&n; *             |     |                 |     |&n; *             |  0  |                 |  1  |         SYNERGY&n; *             |     |                 |     |&n; *             -------                 -------&n; *                |                       |&n; *                |                       |&n; *             -------------------------------&n; *             |                             |&n; *             |         BEDROCK             |        NASID   (0..127)&n; *             |                             |        CNODEID (0..numnodes-1)&n; *             |                             |&n; *             |                             |&n; *             -------------------------------&n; *                           |&n; *&n; */
+macro_line|#ifndef CONFIG_SMP
+DECL|macro|cpu_logical_id
+mdefine_line|#define cpu_logical_id(cpu)&t;&t;&t;&t;0
+DECL|macro|cpu_physical_id
+mdefine_line|#define cpu_physical_id(cpuid)&t;&t;&t;((ia64_get_lid() &gt;&gt; 16) &amp; 0xffff)
+macro_line|#endif
+DECL|macro|cpu_physical_id_to_nasid
+mdefine_line|#define cpu_physical_id_to_nasid(cpi)&t;&t;((cpi) &gt;&gt; 8)
+DECL|macro|cpu_physical_id_to_synergy
+mdefine_line|#define cpu_physical_id_to_synergy(cpi)&t;&t;(((cpi) &gt;&gt; 1) &amp; 1)
+DECL|macro|cpu_physical_id_to_fsb_slot
+mdefine_line|#define cpu_physical_id_to_fsb_slot(cpi)&t;((cpi) &amp; 1)
+DECL|macro|cpu_physical_id_to_slice
+mdefine_line|#define cpu_physical_id_to_slice(cpi)&t;&t;((cpi) &amp; 3)
 multiline_comment|/*&n; * NOTE: id &amp; eid refer to Intels definitions of the LID register&n; *&t;(id = NASID, eid = slice)&n; * NOTE: on non-MP systems, only cpuid 0 exists&n; */
-DECL|macro|id_eid_to_sapicid
-mdefine_line|#define id_eid_to_sapicid(id,eid)       (((id)&lt;&lt;8) | (eid))
+DECL|macro|id_eid_to_cpu_physical_id
+mdefine_line|#define id_eid_to_cpu_physical_id(id,eid)       (((id)&lt;&lt;8) | (eid))
 DECL|macro|id_eid_to_cpuid
-mdefine_line|#define id_eid_to_cpuid(id,eid)         ((NASID_TO_CNODEID(id)&lt;&lt;2) | (eid))
-multiline_comment|/*&n; * The following table/struct is for translating between sapicid and cpuids.&n; * It is also used for managing PTC coherency domains.&n; */
+mdefine_line|#define id_eid_to_cpuid(id,eid)         &t;(cpu_logical_id(id_eid_to_cpu_physical_id((id),(eid))))
+multiline_comment|/*&n; * The following table/struct  is used for managing PTC coherency domains.&n; */
 r_typedef
 r_struct
 (brace
@@ -46,43 +53,6 @@ id|sn_sapicid_info
 )braket
 suffix:semicolon
 multiline_comment|/* indexed by cpuid */
-multiline_comment|/*&n; * cpuid_to_spaicid  - Convert a cpuid to a SAPIC id of the cpu. &n; * The SAPIC id is the same as bits 31:16 of the LID register.&n; */
-r_static
-id|__inline__
-r_int
-DECL|function|cpuid_to_spaicid
-id|cpuid_to_spaicid
-c_func
-(paren
-r_int
-id|cpuid
-)paren
-(brace
-macro_line|#ifdef CONFIG_SMP
-r_return
-id|cpu_physical_id
-c_func
-(paren
-id|cpuid
-)paren
-suffix:semicolon
-macro_line|#else
-r_return
-(paren
-(paren
-id|ia64_get_lid
-c_func
-(paren
-)paren
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0xffff
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 multiline_comment|/*&n; * cpuid_to_fsb_slot  - convert a cpuid to the fsb slot number that it is in.&n; *   (there are 2 cpus per FSB. This function returns 0 or 1)&n; */
 r_static
 id|__inline__
@@ -96,10 +66,10 @@ id|cpuid
 )paren
 (brace
 r_return
-id|sapicid_to_fsb
+id|cpu_physical_id_to_fsb_slot
 c_func
 (paren
-id|cpuid_to_spaicid
+id|cpu_physical_id
 c_func
 (paren
 id|cpuid
@@ -120,10 +90,10 @@ id|cpuid
 )paren
 (brace
 r_return
-id|sapicid_to_synergy
+id|cpu_physical_id_to_synergy
 c_func
 (paren
-id|cpuid_to_spaicid
+id|cpu_physical_id
 c_func
 (paren
 id|cpuid
@@ -144,10 +114,10 @@ id|cpuid
 )paren
 (brace
 r_return
-id|sapicid_to_slice
+id|cpu_physical_id_to_slice
 c_func
 (paren
-id|cpuid_to_spaicid
+id|cpu_physical_id
 c_func
 (paren
 id|cpuid
@@ -168,10 +138,10 @@ id|cpuid
 )paren
 (brace
 r_return
-id|sapicid_to_nasid
+id|cpu_physical_id_to_nasid
 c_func
 (paren
-id|cpuid_to_spaicid
+id|cpu_physical_id
 c_func
 (paren
 id|cpuid
@@ -202,6 +172,7 @@ id|cpuid
 )braket
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * cnodeid_to_nasid - convert a cnodeid to a NASID&n; */
 r_static
 id|__inline__
 r_int
@@ -213,45 +184,73 @@ r_int
 id|cnodeid
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|MAXNASIDS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
 r_if
 c_cond
 (paren
 id|nasid_map
 (braket
-id|i
+id|cnodeid_map
+(braket
+id|cnodeid
 )braket
-op_eq
+)braket
+op_ne
 id|cnodeid
 )paren
+id|panic
+c_func
+(paren
+l_string|&quot;cnodeid_to_nasid, cnode = %d&quot;
+comma
+id|cnodeid
+)paren
+suffix:semicolon
+r_return
+id|cnodeid_map
+(braket
+id|cnodeid
+)braket
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * nasid_to_cnodeid - convert a NASID to a cnodeid&n; */
+r_static
+id|__inline__
+r_int
+DECL|function|nasid_to_cnodeid
+id|nasid_to_cnodeid
+c_func
+(paren
+r_int
+id|nasid
+)paren
 (brace
+r_if
+c_cond
+(paren
+id|cnodeid_map
+(braket
+id|nasid_map
+(braket
+id|nasid
+)braket
+)braket
+op_ne
+id|nasid
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;nasid_to_cnodeid&quot;
+)paren
+suffix:semicolon
 r_return
-id|i
+id|nasid_map
+(braket
+id|nasid
+)braket
 suffix:semicolon
 )brace
-)brace
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * cnode_slice_to_cpuid - convert a codeid &amp; slice to a cpuid&n; */
 r_static
 id|__inline__
 r_int
@@ -280,6 +279,7 @@ id|slice
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * cpuid_to_subnode - convert a cpuid to the subnode it resides on.&n; *   slice 0 &amp; 1 are on subnode 0&n; *   slice 2 &amp; 3 are on subnode 1.&n; */
 r_static
 id|__inline__
 r_int
@@ -315,6 +315,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * cpuid_to_localslice - convert a cpuid to a local slice&n; *    slice 0 &amp; 2 are local slice 0&n; *    slice 1 &amp; 3 are local slice 1&n; */
 r_static
 id|__inline__
 r_int
@@ -334,6 +335,67 @@ id|cpuid
 )paren
 op_amp
 l_int|1
+suffix:semicolon
+)brace
+r_static
+id|__inline__
+r_int
+DECL|function|cnodeid_to_cpuid
+id|cnodeid_to_cpuid
+c_func
+(paren
+r_int
+id|cnode
+)paren
+(brace
+r_int
+id|cpu
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|cpu
+op_assign
+l_int|0
+suffix:semicolon
+id|cpu
+OL
+id|smp_num_cpus
+suffix:semicolon
+id|cpu
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpuid_to_cnodeid
+c_func
+(paren
+id|cpu
+)paren
+op_eq
+id|cnode
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|cpu
+op_eq
+id|smp_num_cpus
+)paren
+id|cpu
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_return
+id|cpu
 suffix:semicolon
 )brace
 macro_line|#endif /* _ASM_IA64_SN_SN_CPUID_H */

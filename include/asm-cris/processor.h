@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-cris/processor.h&n; *&n; * Copyright (C) 2000 Axis Communications AB&n; *&n; * Authors:         Bjorn Wesen        Initial version&n; *&n; */
+multiline_comment|/*&n; * include/asm-cris/processor.h&n; *&n; * Copyright (C) 2000, 2001 Axis Communications AB&n; *&n; * Authors:         Bjorn Wesen        Initial version&n; *&n; */
 macro_line|#ifndef __ASM_CRIS_PROCESSOR_H
 DECL|macro|__ASM_CRIS_PROCESSOR_H
 mdefine_line|#define __ASM_CRIS_PROCESSOR_H
@@ -56,17 +56,6 @@ suffix:semicolon
 multiline_comment|/* saved stack-frame upon syscall entry, points to registers */
 DECL|macro|current_regs
 mdefine_line|#define current_regs() (current-&gt;thread.esp0)
-multiline_comment|/* this lives in process.c */
-id|asmlinkage
-r_void
-id|set_esp0
-c_func
-(paren
-r_int
-r_int
-id|ssp
-)paren
-suffix:semicolon
 multiline_comment|/* INIT_MMAP is the kernels map of memory, between KSEG_C and KSEG_D */
 macro_line|#ifdef CONFIG_CRIS_LOW_MAP
 DECL|macro|INIT_MMAP

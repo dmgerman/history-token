@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: irq.c,v 1.5 2000/08/17 15:35:15 bjornw Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
+multiline_comment|/* $Id: irq.c,v 1.11 2001/02/27 13:52:52 bjornw Exp $&n; *&n; *&t;linux/arch/cris/kernel/irq.c&n; *&n; *      Copyright (c) 2000,2001 Axis Communications AB&n; *&n; *      Authors: Bjorn Wesen (bjornw@axis.com)&n; *&n; * This file contains the code used by various IRQ handling routines:&n; * asking for different IRQ&squot;s should be done through these routines&n; * instead of just grabbing them. Thus setups with different IRQ numbers&n; * shouldn&squot;t result in any weird surprises, and installing new handlers&n; * should be easier.&n; *&n; * Notice Linux/CRIS: these routines do not care about SMP&n; *&n; */
 multiline_comment|/*&n; * IRQ&squot;s are in fact implemented a bit like signal handlers for the kernel.&n; * Naturally it&squot;s not a 1:1 relation, but there are similarities.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -461,6 +461,14 @@ l_int|25
 comma
 l_int|0x2000000
 )paren
+multiline_comment|/* IRQ 26-30 are resereved */
+id|BUILD_IRQ
+c_func
+(paren
+l_int|31
+comma
+l_int|0x80000000
+)paren
 multiline_comment|/*&n; * Pointers to the low-level handlers &n; */
 DECL|variable|interrupt
 r_static
@@ -528,6 +536,18 @@ comma
 id|IRQ24_interrupt
 comma
 id|IRQ25_interrupt
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+id|IRQ31_interrupt
 )brace
 suffix:semicolon
 DECL|variable|sinterrupt
@@ -596,6 +616,18 @@ comma
 id|sIRQ24_interrupt
 comma
 id|sIRQ25_interrupt
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+id|sIRQ31_interrupt
 )brace
 suffix:semicolon
 DECL|variable|bad_interrupt
@@ -664,6 +696,18 @@ comma
 id|bad_IRQ24_interrupt
 comma
 id|bad_IRQ25_interrupt
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+id|bad_IRQ31_interrupt
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Initial irq handlers.&n; */
@@ -678,6 +722,18 @@ id|NR_IRQS
 )braket
 op_assign
 (brace
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
 l_int|NULL
 comma
 l_int|NULL
@@ -1577,6 +1633,22 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* from entry.S */
+r_void
+id|gdb_handle_breakpoint
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* from traps.c */
+r_void
+id|do_sigtrap
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* also from traps.c */
 DECL|function|init_IRQ
 r_void
 id|init_IRQ
@@ -1656,6 +1728,29 @@ id|i
 op_assign
 id|weird_irq
 suffix:semicolon
+multiline_comment|/* the entries in the break vector contain actual code to be&n;           executed by the associated break handler, rather than just a jump&n;           address. therefore we need to setup a default breakpoint handler&n;           for all breakpoints */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|16
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|set_break_vector
+c_func
+(paren
+id|i
+comma
+id|do_sigtrap
+)paren
+suffix:semicolon
 multiline_comment|/* set all etrax irq&squot;s to the bad handlers */
 r_for
 c_loop
@@ -1734,6 +1829,15 @@ c_func
 l_int|13
 comma
 id|system_call
+)paren
+suffix:semicolon
+multiline_comment|/* setup a breakpoint handler for debugging used for both user and&n;           kernel mode debugging  (which is why it is not inside an ifdef&n;           CONFIG_KGDB) */
+id|set_break_vector
+c_func
+(paren
+l_int|8
+comma
+id|gdb_handle_breakpoint
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_KGDB

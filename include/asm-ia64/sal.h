@@ -13,13 +13,8 @@ suffix:semicolon
 multiline_comment|/* SAL spec _requires_ eight args for each call. */
 DECL|macro|__SAL_CALL
 mdefine_line|#define __SAL_CALL(result,a0,a1,a2,a3,a4,a5,a6,a7)&t;&bslash;&n;&t;result = (*ia64_sal)(a0,a1,a2,a3,a4,a5,a6,a7)
-macro_line|#ifdef CONFIG_SMP
 DECL|macro|SAL_CALL
-macro_line|# define SAL_CALL(result,args...) do {&t;&t;&bslash;&n;&t;  spin_lock(&amp;sal_lock);&t;&t;&t;&bslash;&n;&t;  __SAL_CALL(result,args);&t;&t;&bslash;&n;&t;  spin_unlock(&amp;sal_lock);&t;&t;&bslash;&n;} while (0)
-macro_line|#else
-DECL|macro|SAL_CALL
-macro_line|# define SAL_CALL(result,args...)&t;__SAL_CALL(result,args)
-macro_line|#endif
+macro_line|# define SAL_CALL(result,args...) do {&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;sal_lock, flags);&t;&t;&bslash;&n;&t;__SAL_CALL(result,args);&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;sal_lock, flags);&t;&bslash;&n;} while (0)
 DECL|macro|SAL_SET_VECTORS
 mdefine_line|#define SAL_SET_VECTORS&t;&t;&t;0x01000000
 DECL|macro|SAL_GET_STATE_INFO
@@ -1431,9 +1426,6 @@ id|ia64_sal_clear_state_info
 (paren
 id|u64
 id|sal_info_type
-comma
-id|u64
-id|sal_info_sub_type
 )paren
 (brace
 r_struct
@@ -1449,7 +1441,7 @@ id|SAL_CLEAR_STATE_INFO
 comma
 id|sal_info_type
 comma
-id|sal_info_sub_type
+l_int|0
 comma
 l_int|0
 comma
@@ -1477,9 +1469,6 @@ id|u64
 id|sal_info_type
 comma
 id|u64
-id|sal_info_sub_type
-comma
-id|u64
 op_star
 id|sal_info
 )paren
@@ -1497,7 +1486,7 @@ id|SAL_GET_STATE_INFO
 comma
 id|sal_info_type
 comma
-id|sal_info_sub_type
+l_int|0
 comma
 id|sal_info
 comma
@@ -1531,9 +1520,6 @@ id|ia64_sal_get_state_info_size
 (paren
 id|u64
 id|sal_info_type
-comma
-id|u64
-id|sal_info_sub_type
 )paren
 (brace
 r_struct
@@ -1549,7 +1535,7 @@ id|SAL_GET_STATE_INFO_SIZE
 comma
 id|sal_info_type
 comma
-id|sal_info_sub_type
+l_int|0
 comma
 l_int|0
 comma
@@ -1632,6 +1618,9 @@ id|i_or_m_val
 comma
 id|u64
 id|timeout
+comma
+id|u64
+id|rz_always
 )paren
 (brace
 r_struct
@@ -1653,7 +1642,7 @@ id|i_or_m_val
 comma
 id|timeout
 comma
-l_int|0
+id|rz_always
 comma
 l_int|0
 comma

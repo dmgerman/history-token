@@ -4174,6 +4174,17 @@ op_star
 id|sock
 )paren
 (brace
+multiline_comment|/* Disable all events so we don&squot;t die in an IRQ storm */
+id|cb_writel
+c_func
+(paren
+id|sock
+comma
+id|CB_SOCKET_MASK
+comma
+l_int|0x0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Original driver code supplied by Multi-Tech&n; *&n; *&t;Changes&n; *&t;1/9/98&t;alan@redhat.com&t;&t;Merge to 2.0.x kernel tree&n; *&t;&t;&t;&t;&t;Obtain and use official major/minors&n; *&t;&t;&t;&t;&t;Loader switched to a misc device&n; *&t;&t;&t;&t;&t;(fixed range check bug as a side effect)&n; *&t;&t;&t;&t;&t;Printk clean up&n; *&t;9/12/98&t;alan@redhat.com&t;&t;Rough port to 2.1.x&n; *&n; *&t;10/6/99 sameer&t;&t;&t;Merged the ISA and PCI drivers to&n; *&t;&t;&t;&t;&t;a new unified driver.&n; *&t;***********************************************************&n; *&n; *&t;To use this driver you also need the support package. You &n; *&t;can find this in RPM format on&n; *&t;&t;ftp://ftp.linux.org.uk/pub/linux/alan&n; * &t;&n; *&t;You can find the original tools for this direct from Multitech&n; *&t;&t;ftp://ftp.multitech.com/ISI-Cards/&n; *&n; *&t;Having installed the cards the module options (/etc/modules.conf)&n; *&n; *&t;options isicom   io=card1,card2,card3,card4 irq=card1,card2,card3,card4&n; *&n; *&t;Omit those entries for boards you don&squot;t have installed.&n; *&n; */
+multiline_comment|/*&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Original driver code supplied by Multi-Tech&n; *&n; *&t;Changes&n; *&t;1/9/98&t;alan@redhat.com&t;&t;Merge to 2.0.x kernel tree&n; *&t;&t;&t;&t;&t;Obtain and use official major/minors&n; *&t;&t;&t;&t;&t;Loader switched to a misc device&n; *&t;&t;&t;&t;&t;(fixed range check bug as a side effect)&n; *&t;&t;&t;&t;&t;Printk clean up&n; *&t;9/12/98&t;alan@redhat.com&t;&t;Rough port to 2.1.x&n; *&n; *&t;10/6/99 sameer&t;&t;&t;Merged the ISA and PCI drivers to&n; *&t;&t;&t;&t;&t;a new unified driver.&n; *&t;09/06/01 acme@conectiva.com.br&t;use capable, not suser, do&n; *&t;&t;&t;&t;&t;restore_flags on failure in&n; *&t;&t;&t;&t;&t;isicom_send_break, verify put_user&n; *&t;&t;&t;&t;&t;result&n; *&t;***********************************************************&n; *&n; *&t;To use this driver you also need the support package. You &n; *&t;can find this in RPM format on&n; *&t;&t;ftp://ftp.linux.org.uk/pub/linux/alan&n; * &t;&n; *&t;You can find the original tools for this direct from Multitech&n; *&t;&t;ftp://ftp.multitech.com/ISI-Cards/&n; *&n; *&t;Having installed the cards the module options (/etc/modules.conf)&n; *&n; *&t;options isicom   io=card1,card2,card3,card4 irq=card1,card2,card3,card4&n; *&n; *&t;Omit those entries for boards you don&squot;t have installed.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -6438,7 +6438,8 @@ id|KERN_DEBUG
 l_string|&quot;ISICOM: Card found busy in isicom_send_break.&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|outw
@@ -6495,6 +6496,8 @@ c_func
 id|base
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|restore_flags
 c_func
 (paren
@@ -6610,6 +6613,7 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
+r_return
 id|put_user
 c_func
 (paren
@@ -6622,9 +6626,6 @@ op_star
 )paren
 id|value
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|isicom_set_modem_info
@@ -6891,9 +6892,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 (brace

@@ -1,6 +1,6 @@
-multiline_comment|/* toshiba.c -- Linux driver for accessing the SMM on Toshiba laptops&n; *&n; * Copyright (c) 1996-2000  Jonathan A. Buzzard (jonathan@buzzard.org.uk)&n; *&n; * Valuable assistance and patches from:&n; *     Tom May &lt;tom@you-bastards.com&gt;&n; *     Rob Napier &lt;rnapier@employees.org&gt;&n; *&n; * Fn status port numbers for machine ID&squot;s courtesy of&n; *     0xfc08: Garth Berry &lt;garth@itsbruce.net&gt;&n; *     0xfc11: Spencer Olson &lt;solson@novell.com&gt;&n; *     0xfc13: Claudius Frankewitz &lt;kryp@gmx.de&gt;&n; *     0xfc15: Tom May &lt;tom@you-bastards.com&gt;&n; *     0xfc17: Dave Konrad &lt;konrad@xenia.it&gt;&n; *     0xfc1a: George Betzos &lt;betzos@engr.colostate.edu&gt;&n; *     0xfc1d: Arthur Liu &lt;armie@slap.mine.nu&gt;&n; *&n; * WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING&n; *&n; *   This code is covered by the GNU GPL and you are free to make any&n; *   changes you wish to it under the terms of the license. However the&n; *   code has the potential to render your computer and/or someone else&squot;s&n; *   unusable. Please proceed with care when modifying the code.&n; *&n; * Note: Unfortunately the laptop hardware can close the System Configuration&n; *       Interface on it&squot;s own accord. It is therefore necessary for *all*&n; *       programs using this driver to be aware that *any* SCI call can fail at&n; *       *any* time. It is up to any program to be aware of this eventuality&n; *       and take appropriate steps.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * The information used to write this driver has been obtained by reverse&n; * engineering the software supplied by Toshiba for their portable computers in&n; * strict accordance with the European Council Directive 92/250/EEC on the legal&n; * protection of computer programs, and it&squot;s implementation into English Law by&n; * the Copyright (Computer Programs) Regulations 1992 (S.I. 1992 No.3233).&n; *&n; */
+multiline_comment|/* toshiba.c -- Linux driver for accessing the SMM on Toshiba laptops&n; *&n; * Copyright (c) 1996-2001  Jonathan A. Buzzard (jonathan@buzzard.org.uk)&n; *&n; * Valuable assistance and patches from:&n; *     Tom May &lt;tom@you-bastards.com&gt;&n; *     Rob Napier &lt;rnapier@employees.org&gt;&n; *&n; * Fn status port numbers for machine ID&squot;s courtesy of&n; *     0xfc02: Scott Eisert &lt;scott.e@sky-eye.com&gt;&n; *     0xfc04: Steve VanDevender &lt;stevev@efn.org&gt;&n; *     0xfc08: Garth Berry &lt;garth@itsbruce.net&gt;&n; *     0xfc0a: Egbert Eich &lt;eich@xfree86.org&gt;&n; *     0xfc10: Andrew Lofthouse &lt;Andrew.Lofthouse@robins.af.mil&gt;&n; *     0xfc11: Spencer Olson &lt;solson@novell.com&gt;&n; *     0xfc13: Claudius Frankewitz &lt;kryp@gmx.de&gt;&n; *     0xfc15: Tom May &lt;tom@you-bastards.com&gt;&n; *     0xfc17: Dave Konrad &lt;konrad@xenia.it&gt;&n; *     0xfc1a: George Betzos &lt;betzos@engr.colostate.edu&gt;&n; *     0xfc1d: Arthur Liu &lt;armie@slap.mine.nu&gt;&n; *     0xfcd1: Mr. Dave Konrad &lt;konrad@xenia.it&gt;&n; *&n; * WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING&n; *&n; *   This code is covered by the GNU GPL and you are free to make any&n; *   changes you wish to it under the terms of the license. However the&n; *   code has the potential to render your computer and/or someone else&squot;s&n; *   unusable. Please proceed with care when modifying the code.&n; *&n; * Note: Unfortunately the laptop hardware can close the System Configuration&n; *       Interface on it&squot;s own accord. It is therefore necessary for *all*&n; *       programs using this driver to be aware that *any* SCI call can fail at&n; *       *any* time. It is up to any program to be aware of this eventuality&n; *       and take appropriate steps.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * The information used to write this driver has been obtained by reverse&n; * engineering the software supplied by Toshiba for their portable computers in&n; * strict accordance with the European Council Directive 92/250/EEC on the legal&n; * protection of computer programs, and it&squot;s implementation into English Law by&n; * the Copyright (Computer Programs) Regulations 1992 (S.I. 1992 No.3233).&n; *&n; */
 DECL|macro|TOSH_VERSION
-mdefine_line|#define TOSH_VERSION &quot;1.7 22/6/2000&quot;
+mdefine_line|#define TOSH_VERSION &quot;1.9 22/3/2001&quot;
 DECL|macro|TOSH_DEBUG
 mdefine_line|#define TOSH_DEBUG 0
 macro_line|#include &lt;linux/module.h&gt;
@@ -216,8 +216,6 @@ r_int
 id|scan
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * At some point we need to emulate setting the HDD auto off times for&n; * the new laptops. We can do this by calling the ide_ioctl on /dev/hda.&n; * The values we need for the various times are&n; *&n; *    Disabled   0x00&n; *    1 minute   0x0c&n; *    3 minutes  0x24&n; *    5 minutes  0x3c&n; *   10 minutes  0x78&n; *   15 minutes  0xb4&n; *   20 minutes  0xf0&n; *   30 minutes  0xf1&n; *&n; */
-multiline_comment|/*static int tosh_emulate_hdd(SMMRegisters *regs)&n;{&n;&t;return 0;&n;}*/
 multiline_comment|/*&n; * For the Portage 610CT and the Tecra 700CS/700CDT emulate the HCI fan function&n; */
 DECL|function|tosh_emulate_fan
 r_static
@@ -1121,6 +1119,21 @@ c_cond
 id|tosh_id
 )paren
 (brace
+r_case
+l_int|0xfc02
+suffix:colon
+r_case
+l_int|0xfc04
+suffix:colon
+r_case
+l_int|0xfc09
+suffix:colon
+r_case
+l_int|0xfc0a
+suffix:colon
+r_case
+l_int|0xfc10
+suffix:colon
 r_case
 l_int|0xfc11
 suffix:colon

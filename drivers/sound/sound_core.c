@@ -499,6 +499,9 @@ c_func
 id|s
 )paren
 suffix:semicolon
+r_return
+id|r
+suffix:semicolon
 )brace
 r_if
 c_cond

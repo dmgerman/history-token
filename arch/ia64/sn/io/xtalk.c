@@ -275,6 +275,17 @@ comma
 id|devfs_handle_t
 )paren
 suffix:semicolon
+id|xtalk_intr_t
+id|xtalk_intr_alloc_nothd
+c_func
+(paren
+id|devfs_handle_t
+comma
+id|device_desc_t
+comma
+id|devfs_handle_t
+)paren
+suffix:semicolon
 r_void
 id|xtalk_intr_free
 c_func
@@ -1130,11 +1141,9 @@ id|flags
 )paren
 (brace
 macro_line|#if DEBUG
-id|cmn_err
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_PANIC
-comma
 l_string|&quot;null_xtalk_early_piotrans_addr&quot;
 )paren
 suffix:semicolon
@@ -1525,6 +1534,45 @@ id|owner_dev
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Allocate resources required for an interrupt as specified in dev_desc.&n; * Unconditionally setup resources to be non-threaded.&n; * Return resource handle in intr_hdl.&n; */
+id|xtalk_intr_t
+DECL|function|xtalk_intr_alloc_nothd
+id|xtalk_intr_alloc_nothd
+c_func
+(paren
+id|devfs_handle_t
+id|dev
+comma
+multiline_comment|/* which Crosstalk device */
+id|device_desc_t
+id|dev_desc
+comma
+multiline_comment|/* device descriptor */
+id|devfs_handle_t
+id|owner_dev
+)paren
+multiline_comment|/* owner of this interrupt */
+(brace
+r_return
+(paren
+id|xtalk_intr_t
+)paren
+id|DEV_FUNC
+c_func
+(paren
+id|dev
+comma
+id|intr_alloc_nothd
+)paren
+(paren
+id|dev
+comma
+id|dev_desc
+comma
+id|owner_dev
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Free resources consumed by intr_alloc.&n; */
 r_void
 DECL|function|xtalk_intr_free
@@ -1689,16 +1737,25 @@ id|xwidget_info_t
 id|xwidget_info
 suffix:semicolon
 macro_line|#if DEBUG &amp;&amp; ERROR_DEBUG
-id|cmn_err
+macro_line|#ifdef SUPPORT_PRINTING_V_FORMAT
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;%v: xtalk_error_handler&bslash;n&quot;
 comma
 id|xconn
 )paren
 suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+l_string|&quot;%x: xtalk_error_handler&bslash;n&quot;
+comma
+id|xconn
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 id|xwidget_info
 op_assign
@@ -1753,18 +1810,27 @@ id|MODE_DEVREENABLE
 r_return
 id|IOERROR_HANDLED
 suffix:semicolon
-macro_line|#ifdef IRIX
-id|cmn_err
+macro_line|#ifdef&t;LATER
+macro_line|#ifdef SUPPORT_PRINTING_V_FORMAT
+id|PRINT_WARNING
 c_func
 (paren
-id|CE_WARN
-comma
 l_string|&quot;Xbow at %v encountered Fatal error&quot;
 comma
 id|xconn
 )paren
 suffix:semicolon
+macro_line|#else
+id|PRINT_WARNING
+c_func
+(paren
+l_string|&quot;Xbow at %x encountered Fatal error&quot;
+comma
+id|xconn
+)paren
+suffix:semicolon
 macro_line|#endif
+macro_line|#endif&t;/* LATER */
 id|ioerror_dump
 c_func
 (paren
@@ -2014,19 +2080,6 @@ id|xtalk_intr-&gt;xi_sfarg
 )paren
 suffix:semicolon
 )brace
-r_int
-DECL|function|xtalk_intr_flags_get
-id|xtalk_intr_flags_get
-c_func
-(paren
-id|xtalk_intr_t
-id|xtalk_intr
-)paren
-(brace
-r_return
-id|xtalk_intr-&gt;xi_flags
-suffix:semicolon
-)brace
 multiline_comment|/****** Generic crosstalk pio interfaces ******/
 id|devfs_handle_t
 DECL|function|xtalk_pio_dev_get
@@ -2191,7 +2244,7 @@ c_func
 id|xwidget
 )paren
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef&t;LATER
 r_if
 c_cond
 (paren
@@ -2207,17 +2260,26 @@ op_ne
 id|widget_info_fingerprint
 )paren
 )paren
-id|cmn_err
+macro_line|#ifdef SUPPORT_PRINTING_V_FORMAT
+id|PRINT_PANIC
 c_func
 (paren
-id|CE_PANIC
-comma
 l_string|&quot;%v bad xwidget_info&quot;
 comma
 id|xwidget
 )paren
 suffix:semicolon
+macro_line|#else
+id|PRINT_PANIC
+c_func
+(paren
+l_string|&quot;%x bad xwidget_info&quot;
+comma
+id|xwidget
+)paren
+suffix:semicolon
 macro_line|#endif
+macro_line|#endif&t;/* LATER */
 r_return
 (paren
 id|widget_info
@@ -2673,6 +2735,8 @@ comma
 id|driver_prefix
 comma
 id|flags
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2702,6 +2766,8 @@ c_func
 id|xtalk_registry
 comma
 id|driver_prefix
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -2836,16 +2902,6 @@ comma
 id|MAXDEVNAME
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;xwidget_register: dev_to_name widget id 0x%p, s = %s&bslash;n&quot;
-comma
-id|widget
-comma
-id|s
-)paren
-suffix:semicolon
 id|widget_info-&gt;w_name
 op_assign
 id|kmalloc
@@ -2920,6 +2976,8 @@ comma
 id|hwid-&gt;mfg_num
 comma
 id|widget
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -2996,6 +3054,8 @@ comma
 id|hwid-&gt;mfg_num
 comma
 id|widget
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Clean out the xwidget information */
@@ -3120,7 +3180,7 @@ c_func
 id|xwidget
 )paren
 suffix:semicolon
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 id|ASSERT_ALWAYS
 c_func
 (paren
@@ -3203,55 +3263,6 @@ c_func
 (paren
 id|info
 )paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * xtalk_device_powerup&n; *&t;Reset and initialize the specified xtalk widget&n; */
-r_int
-DECL|function|xtalk_device_powerup
-id|xtalk_device_powerup
-c_func
-(paren
-id|devfs_handle_t
-id|xbus_vhdl
-comma
-id|xwidgetnum_t
-id|widget
-)paren
-(brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
-r_extern
-r_void
-id|io_xswitch_widget_init
-c_func
-(paren
-id|devfs_handle_t
-comma
-id|devfs_handle_t
-comma
-id|xwidgetnum_t
-comma
-id|async_attach_t
-)paren
-suffix:semicolon
-id|io_xswitch_widget_init
-c_func
-(paren
-id|xbus_vhdl
-comma
-id|hwgraph_connectpt_get
-c_func
-(paren
-id|xbus_vhdl
-)paren
-comma
-id|widget
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO */
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * xtalk_device_shutdown&n; *&t;Disable  the specified xtalk widget and clean out all the software&n; *&t;state associated with it.&n; */

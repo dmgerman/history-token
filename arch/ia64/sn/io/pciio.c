@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
+macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;&t;/* Must be before iograph.h to get MAX_PORT_NUM */
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
@@ -14,6 +15,7 @@ macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/ioerror_handling.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio_private.h&gt;
+macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 DECL|macro|DEBUG_PCIIO
 mdefine_line|#define DEBUG_PCIIO
 DECL|macro|DEBUG_PCIIO
@@ -55,6 +57,16 @@ op_star
 id|ptr
 )paren
 (brace
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+r_volatile
+r_void
+op_star
+id|new_addr
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -64,20 +76,10 @@ id|len
 r_case
 l_int|4
 suffix:colon
-op_star
-(paren
-r_volatile
-id|u32
-op_star
-)paren
-id|ptr
+id|new_addr
 op_assign
-op_star
 (paren
-(paren
-(paren
-r_volatile
-id|u32
+r_void
 op_star
 )paren
 (paren
@@ -90,44 +92,58 @@ id|addr
 op_xor
 l_int|4
 )paren
+suffix:semicolon
+id|ret
+op_assign
+id|ia64_sn_probe_io_slot
+c_func
+(paren
+(paren
+r_int
 )paren
+id|new_addr
+comma
+id|len
+comma
+(paren
+r_void
+op_star
 )paren
+id|ptr
+)paren
+suffix:semicolon
+r_break
 suffix:semicolon
 r_default
 suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;FIXME: argh fix badaddr_val&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;badaddr_val given len %x but supports len of 4 only&bslash;n&quot;
+comma
+id|len
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* no such thing as a bad addr .... */
-r_return
+r_if
+c_cond
+(paren
+id|ret
+OL
 l_int|0
-suffix:semicolon
-)brace
-r_void
-DECL|function|cmn_err_tag
-id|cmn_err_tag
+)paren
+id|panic
 c_func
 (paren
-r_int
-id|seqnumber
+l_string|&quot;badaddr_val: unexpected status (%d) in probing&quot;
 comma
-r_register
-r_int
-id|level
-comma
-r_char
-op_star
-id|fmt
-comma
-dot
-dot
-dot
+id|ret
 )paren
-(brace
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
 id|nasid_t
 DECL|function|get_console_nasid
@@ -137,15 +153,13 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef IRIX
+r_extern
+id|nasid_t
+id|console_nasid
+suffix:semicolon
 r_return
 id|console_nasid
 suffix:semicolon
-macro_line|#else
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#endif
 )brace
 r_int
 DECL|function|hub_dma_enabled
@@ -922,6 +936,8 @@ id|pciio_device_attach
 c_func
 (paren
 id|devfs_handle_t
+comma
+r_int
 )paren
 suffix:semicolon
 r_int
@@ -929,6 +945,8 @@ id|pciio_device_detach
 c_func
 (paren
 id|devfs_handle_t
+comma
+r_int
 )paren
 suffix:semicolon
 r_void
@@ -984,6 +1002,23 @@ id|pciio_provider_t
 op_star
 id|provider_fns
 suffix:semicolon
+multiline_comment|/*&n;     * We&squot;re called with two types of vertices, one is&n;     * the bridge vertex (ends with &quot;pci&quot;) and the other is the&n;     * pci slot vertex (ends with &quot;pci/[0-8]&quot;).  For the first type&n;     * we need to get the provider from the PFUNCS label.  For&n;     * the second we get it from fastinfo/c_pops.&n;     */
+id|provider_fns
+op_assign
+id|pciio_provider_fns_get
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|provider_fns
+op_eq
+l_int|NULL
+)paren
+(brace
 id|card_info
 op_assign
 id|pciio_info_get
@@ -992,14 +1027,14 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
+r_if
+c_cond
 (paren
 id|card_info
 op_ne
 l_int|NULL
 )paren
-suffix:semicolon
+(brace
 id|provider_fns
 op_assign
 id|pciio_info_pops_get
@@ -1008,18 +1043,36 @@ c_func
 id|card_info
 )paren
 suffix:semicolon
-id|ASSERT
-c_func
+)brace
+)brace
+r_if
+c_cond
 (paren
 id|provider_fns
-op_ne
+op_eq
 l_int|NULL
 )paren
-suffix:semicolon
-r_return
+macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
+id|PRINT_PANIC
+c_func
 (paren
-id|provider_fns
+l_string|&quot;%v: provider_fns == NULL&quot;
+comma
+id|dev
 )paren
+suffix:semicolon
+macro_line|#else
+id|PRINT_PANIC
+c_func
+(paren
+l_string|&quot;0x%x: provider_fns == NULL&quot;
+comma
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+id|provider_fns
 suffix:semicolon
 )brace
 DECL|macro|DEV_FUNC
@@ -2399,28 +2452,34 @@ id|error_state_t
 id|e_state
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef IRIX
 macro_line|#if DEBUG &amp;&amp; ERROR_DEBUG
-id|cmn_err
+macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;%v: pciio_error_handler&bslash;n&quot;
+comma
+id|pciio_vhdl
+)paren
+suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+l_string|&quot;0x%x: pciio_error_handler&bslash;n&quot;
 comma
 id|pciio_vhdl
 )paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
 id|IOERR_PRINTF
 c_func
 (paren
-id|cmn_err
+id|printk
 c_func
 (paren
-id|CE_NOTE
-comma
 l_string|&quot;%v: PCI Bus Error: Error code: %d Error mode: %d&bslash;n&quot;
 comma
 id|pciio_vhdl
@@ -2431,6 +2490,24 @@ id|mode
 )paren
 )paren
 suffix:semicolon
+macro_line|#else
+id|IOERR_PRINTF
+c_func
+(paren
+id|printk
+c_func
+(paren
+l_string|&quot;0x%x: PCI Bus Error: Error code: %d Error mode: %d&bslash;n&quot;
+comma
+id|pciio_vhdl
+comma
+id|error_code
+comma
+id|mode
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* If there is an error handler sitting on&n;     * the &quot;no-slot&quot; connection point, give it&n;     * first crack at the error. NOTE: it is&n;     * quite possible that this function may&n;     * do further refining of the ioerror.&n;     */
 id|pciio_info
 op_assign
@@ -2540,7 +2617,7 @@ id|widgetdev
 )paren
 (brace
 multiline_comment|/*&n;&t; * NOTE : &n;&t; * widgetdev is a 4byte value encoded as slot in the higher order&n;&t; * 2 bytes and function in the lower order 2 bytes.&n;&t; */
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 id|slot
 op_assign
 id|pciio_widgetdev_slot_get
@@ -2868,11 +2945,10 @@ id|PCIDMA_ENDIAN_LITTLE
 )paren
 suffix:semicolon
 macro_line|#if DEBUG
-id|cmn_err
+macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
+id|PRINT_ALERT
 c_func
 (paren
-id|CE_ALERT
-comma
 l_string|&quot;%v: pciio_endian_set is going away.&bslash;n&quot;
 l_string|&quot;&bslash;tplease use PCIIO_BYTE_STREAM or PCIIO_WORD_VALUES in your&bslash;n&quot;
 l_string|&quot;&bslash;tpciio_dmamap_alloc and pciio_dmatrans calls instead.&bslash;n&quot;
@@ -2880,6 +2956,18 @@ comma
 id|dev
 )paren
 suffix:semicolon
+macro_line|#else
+id|PRINT_ALERT
+c_func
+(paren
+l_string|&quot;0x%x: pciio_endian_set is going away.&bslash;n&quot;
+l_string|&quot;&bslash;tplease use PCIIO_BYTE_STREAM or PCIIO_WORD_VALUES in your&bslash;n&quot;
+l_string|&quot;&bslash;tpciio_dmamap_alloc and pciio_dmatrans calls instead.&bslash;n&quot;
+comma
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 r_return
 id|DEV_FUNC
@@ -3482,16 +3570,6 @@ id|pciio_info_fingerprint
 )paren
 (brace
 macro_line|#endif /* BRINGUP */
-id|printk
-c_func
-(paren
-l_string|&quot;pciio_info_get: Found fastinfo 0x%p but wrong fingerprint %s&bslash;n&quot;
-comma
-id|pciio_info
-comma
-id|pciio_info-&gt;c_fingerprint
-)paren
-suffix:semicolon
 r_return
 (paren
 id|pciio_info_t
@@ -3910,16 +3988,25 @@ id|pciio
 )paren
 (brace
 macro_line|#if DEBUG &amp;&amp; ATTACH_DEBUG
-id|cmn_err
+macro_line|#if defined(SUPPORT_PRINTING_V_FORMAT)
+id|printk
 c_func
 (paren
-id|CE_CONT
-comma
 l_string|&quot;%v: pciio_attach&bslash;n&quot;
 comma
 id|pciio
 )paren
 suffix:semicolon
+macro_line|#else
+id|printk
+c_func
+(paren
+l_string|&quot;0x%x: pciio_attach&bslash;n&quot;
+comma
+id|pciio
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 r_return
 l_int|0
@@ -3966,19 +4053,6 @@ id|provider
 id|arbitrary_info_t
 id|ainfo
 suffix:semicolon
-macro_line|#ifdef IRIX
-id|hwgraph_info_remove_LBL
-c_func
-(paren
-id|provider
-comma
-id|INFO_LBL_PFUNCS
-comma
-op_amp
-id|ainfo
-)paren
-suffix:semicolon
-macro_line|#else
 id|hwgraph_info_remove_LBL
 c_func
 (paren
@@ -3994,7 +4068,6 @@ op_amp
 id|ainfo
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Obtain a pointer to the pciio_provider functions for a specified Crosstalk&n; * provider.&n; */
 id|pciio_provider_t
@@ -4080,6 +4153,8 @@ comma
 id|driver_prefix
 comma
 id|flags
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -4109,8 +4184,50 @@ c_func
 id|pciio_registry
 comma
 id|driver_prefix
+comma
+l_int|NULL
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/* &n; * Set the slot status for a device supported by the &n; * driver being registered.&n; */
+r_void
+DECL|function|pciio_driver_reg_callback
+id|pciio_driver_reg_callback
+c_func
+(paren
+id|devfs_handle_t
+id|pconn_vhdl
+comma
+r_int
+id|key1
+comma
+r_int
+id|key2
+comma
+r_int
+id|error
+)paren
+(brace
+)brace
+multiline_comment|/* &n; * Set the slot status for a device supported by the &n; * driver being unregistered.&n; */
+r_void
+DECL|function|pciio_driver_unreg_callback
+id|pciio_driver_unreg_callback
+c_func
+(paren
+id|devfs_handle_t
+id|pconn_vhdl
+comma
+r_int
+id|key1
+comma
+r_int
+id|key2
+comma
+r_int
+id|error
+)paren
+(brace
 )brace
 multiline_comment|/*&n; * Call some function with each vertex that&n; * might be one of this driver&squot;s attach points.&n; */
 r_void
@@ -4385,16 +4502,6 @@ comma
 id|pciio_info-&gt;c_func
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;pciio_device_info_register: connectpt 0x%p, pciio_info 0x%p&bslash;n&quot;
-comma
-id|connectpt
-comma
-id|pciio_info
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4449,6 +4556,7 @@ comma
 l_int|256
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG_PCIIO
 id|printk
 c_func
 (paren
@@ -4463,6 +4571,7 @@ id|pos
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#endif /* BRINGUP */
 multiline_comment|/*&n;     * create link to our pci provider&n;     */
@@ -4659,7 +4768,7 @@ id|devfs_handle_t
 id|pconn_vhdl
 )paren
 (brace
-macro_line|#ifdef IRIX
+macro_line|#ifdef LATER
 id|hwgraph_inventory_remove
 c_func
 (paren
@@ -4691,6 +4800,9 @@ c_func
 (paren
 id|devfs_handle_t
 id|pconn
+comma
+r_int
+id|drv_flags
 )paren
 (brace
 id|pciio_info_t
@@ -4701,6 +4813,13 @@ id|vendor_id
 suffix:semicolon
 id|pciio_device_id_t
 id|device_id
+suffix:semicolon
+r_int
+id|pciba_attach
+c_func
+(paren
+id|devfs_handle_t
+)paren
 suffix:semicolon
 id|pciio_device_inventory_add
 c_func
@@ -4724,18 +4843,6 @@ id|device_id
 op_assign
 id|pciio_info-&gt;c_device
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;pciio_device_attach: Function 0x%p, vendor 0x%x, device_id %x&bslash;n&quot;
-comma
-id|pconn
-comma
-id|vendor_id
-comma
-id|device_id
-)paren
-suffix:semicolon
 multiline_comment|/* we don&squot;t start attaching things until&n;     * all the driver init routines (including&n;     * pciio_init) have been called; so we&n;     * can assume here that we have a registry.&n;     */
 id|ASSERT
 c_func
@@ -4743,6 +4850,13 @@ c_func
 id|pciio_registry
 op_ne
 l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/*&n;     * Since pciba is not called from cdl routines .. call it here.&n;     */
+id|pciba_attach
+c_func
+(paren
+id|pconn
 )paren
 suffix:semicolon
 r_return
@@ -4756,6 +4870,8 @@ comma
 id|device_id
 comma
 id|pconn
+comma
+id|drv_flags
 )paren
 suffix:semicolon
 )brace
@@ -4766,6 +4882,9 @@ c_func
 (paren
 id|devfs_handle_t
 id|pconn
+comma
+r_int
+id|drv_flags
 )paren
 (brace
 id|pciio_info_t
@@ -4808,6 +4927,7 @@ op_ne
 l_int|NULL
 )paren
 suffix:semicolon
+r_return
 id|cdl_del_connpt
 c_func
 (paren
@@ -4818,10 +4938,9 @@ comma
 id|device_id
 comma
 id|pconn
+comma
+id|drv_flags
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * pciio_error_register:&n; * arrange for a function to be called with&n; * a specified first parameter plus other&n; * information when an error is encountered&n; * and traced to the pci slot corresponding&n; * to the connection point pconn.&n; *&n; * may also be called with a null function&n; * pointer to &quot;unregister&quot; the error handler.&n; *&n; * NOTE: subsequent calls silently overwrite&n; * previous data for this vertex. We assume that&n; * cooperating drivers, well, cooperate ...&n; */

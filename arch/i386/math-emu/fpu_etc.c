@@ -218,7 +218,7 @@ c_func
 id|SW_C3
 )paren
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 r_return
 suffix:semicolon
 )brace

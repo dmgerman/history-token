@@ -3450,6 +3450,19 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|queue
+op_eq
+l_int|NULL
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;psaux_init(): out of memory&quot;
+)paren
+suffix:semicolon
 id|memset
 c_func
 (paren

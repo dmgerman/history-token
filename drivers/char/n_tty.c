@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * n_tty.c --- implements the N_TTY line discipline.&n; * &n; * This code used to be in tty_io.c, but things are getting hairy&n; * enough that it made sense to split things off.  (The N_TTY&n; * processing has changed so much that it&squot;s hardly recognizable,&n; * anyway...)&n; *&n; * Note that the open routine for N_TTY is guaranteed never to return&n; * an error.  This is because Linux will fall back to setting a line&n; * to N_TTY if it can not switch to any other line discipline.  &n; *&n; * Written by Theodore Ts&squot;o, Copyright 1994.&n; * &n; * This file also contains code originally written by Linus Torvalds,&n; * Copyright 1991, 1992, 1993, and by Julian Cowley, Copyright 1994.&n; * &n; * This file may be redistributed under the terms of the GNU Public&n; * License.&n; *&n; * Reduced memory usage for older ARM systems  - Russell King.&n; *&n; * 2000/01/20   Fixed SMP locking on put_tty_queue using bits of &n; *&t;&t;the patch by Andrew J. Kroll &lt;ag784@freenet.buffalo.edu&gt;&n; *&t;&t;who actually finally proved there really was a race.&n; */
+multiline_comment|/*&n; * n_tty.c --- implements the N_TTY line discipline.&n; * &n; * This code used to be in tty_io.c, but things are getting hairy&n; * enough that it made sense to split things off.  (The N_TTY&n; * processing has changed so much that it&squot;s hardly recognizable,&n; * anyway...)&n; *&n; * Note that the open routine for N_TTY is guaranteed never to return&n; * an error.  This is because Linux will fall back to setting a line&n; * to N_TTY if it can not switch to any other line discipline.  &n; *&n; * Written by Theodore Ts&squot;o, Copyright 1994.&n; * &n; * This file also contains code originally written by Linus Torvalds,&n; * Copyright 1991, 1992, 1993, and by Julian Cowley, Copyright 1994.&n; * &n; * This file may be redistributed under the terms of the GNU General Public&n; * License.&n; *&n; * Reduced memory usage for older ARM systems  - Russell King.&n; *&n; * 2000/01/20   Fixed SMP locking on put_tty_queue using bits of &n; *&t;&t;the patch by Andrew J. Kroll &lt;ag784@freenet.buffalo.edu&gt;&n; *&t;&t;who actually finally proved there really was a race.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -225,7 +225,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;The problem of stomping on the buffers ends here.&n;&t; *&t;Why didn&squot;t anyone see this one comming? --AJK&n;&t;*/
+multiline_comment|/*&n;&t; *&t;The problem of stomping on the buffers ends here.&n;&t; *&t;Why didn&squot;t anyone see this one coming? --AJK&n;&t;*/
 id|spin_lock_irqsave
 c_func
 (paren

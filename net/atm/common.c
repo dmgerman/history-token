@@ -4627,7 +4627,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
-id|reset_addr
+id|atm_reset_addr
 c_func
 (paren
 id|dev
@@ -4702,7 +4702,7 @@ id|ATM_ADDADDR
 )paren
 id|ret_val
 op_assign
-id|add_addr
+id|atm_add_addr
 c_func
 (paren
 id|dev
@@ -4714,7 +4714,7 @@ suffix:semicolon
 r_else
 id|ret_val
 op_assign
-id|del_addr
+id|atm_del_addr
 c_func
 (paren
 id|dev
@@ -4732,7 +4732,7 @@ id|ATM_GETADDR
 suffix:colon
 id|size
 op_assign
-id|get_addr
+id|atm_get_addr
 c_func
 (paren
 id|dev

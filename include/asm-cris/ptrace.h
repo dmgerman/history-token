@@ -42,10 +42,10 @@ DECL|macro|PT_SRP
 mdefine_line|#define PT_SRP       18
 DECL|macro|PT_IRP
 mdefine_line|#define PT_IRP       19
-DECL|macro|PT_MAX
-mdefine_line|#define PT_MAX       19
 DECL|macro|PT_USP
-mdefine_line|#define PT_USP       42    /* special case - USP is not in the pt_regs */
+mdefine_line|#define PT_USP       20    /* special case - USP is not in the pt_regs */
+DECL|macro|PT_MAX
+mdefine_line|#define PT_MAX       20
 multiline_comment|/* Frame types */
 DECL|macro|CRIS_FRAME_NORMAL
 mdefine_line|#define CRIS_FRAME_NORMAL   0  /* normal frame like pt_regs struct */

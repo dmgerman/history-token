@@ -128,7 +128,7 @@ id|target
 suffix:semicolon
 multiline_comment|/* type, rack and slot of component to&n;&t;&t;&t;&t; * which this subchannel is directed */
 DECL|member|packet_arrived
-r_int
+id|atomic_t
 id|packet_arrived
 suffix:semicolon
 multiline_comment|/* true if packet arrived on&n;&t;&t;&t;&t; * this subchannel */
@@ -144,7 +144,7 @@ id|arrive_sv
 suffix:semicolon
 multiline_comment|/* used to wait for a packet */
 DECL|member|data_lock
-id|lock_t
+id|spinlock_t
 id|data_lock
 suffix:semicolon
 multiline_comment|/* synchronize access to input queues and&n;&t;&t;&t;&t; * other fields of the brl1_sch_s struct */
@@ -222,18 +222,8 @@ id|brl1_uartf_t
 id|getc_f
 suffix:semicolon
 multiline_comment|/* pointer to UART getc function */
-DECL|member|send_lock
-id|lock_t
-id|send_lock
-suffix:semicolon
-multiline_comment|/* arbitrates send synchronization */
-DECL|member|recv_lock
-id|lock_t
-id|recv_lock
-suffix:semicolon
-multiline_comment|/* arbitrates uart receive access */
 DECL|member|subch_lock
-id|lock_t
+id|spinlock_t
 id|subch_lock
 suffix:semicolon
 multiline_comment|/* arbitrates subchannel allocation */
@@ -406,6 +396,8 @@ DECL|macro|L1_RESP_NAVAIL
 mdefine_line|#define L1_RESP_NAVAIL&t;(-104)&t;/* requested data not available */
 DECL|macro|L1_RESP_ARGVAL
 mdefine_line|#define L1_RESP_ARGVAL&t;(-105)  /* arg value out of range       */
+DECL|macro|L1_RESP_INVAL
+mdefine_line|#define L1_RESP_INVAL   (-107)  /* requested data invalid       */
 multiline_comment|/* L1 general requests */
 multiline_comment|/* request codes */
 DECL|macro|L1_REQ_RDBG
@@ -429,9 +421,9 @@ mdefine_line|#define L1_REQ_PARTITION_GET&t;0x0009&t;/* read partition id */
 DECL|macro|L1_REQ_PORTSPEED
 mdefine_line|#define L1_REQ_PORTSPEED&t;0x000a&t;/* get ioport speed */
 DECL|macro|L1_REQ_CONS_SUBCH
-mdefine_line|#define L1_REQ_CONS_SUBCH&t;0x1002  /* select this node&squot;s console &n;&t;&t;&t;&t;&t; * subchannel */
+mdefine_line|#define L1_REQ_CONS_SUBCH&t;0x1002  /* select this node&squot;s console &n;&t;&t;&t;&t;&t;   subchannel */
 DECL|macro|L1_REQ_CONS_NODE
-mdefine_line|#define L1_REQ_CONS_NODE&t;0x1003  /* volunteer to be the master &n;&t;&t;&t;&t;&t; * (console-hosting) node */
+mdefine_line|#define L1_REQ_CONS_NODE&t;0x1003  /* volunteer to be the master &n;&t;&t;&t;&t;&t;   (console-hosting) node */
 DECL|macro|L1_REQ_DISP1
 mdefine_line|#define L1_REQ_DISP1&t;&t;0x1004  /* write line 1 of L1 display */
 DECL|macro|L1_REQ_DISP2
@@ -441,7 +433,13 @@ mdefine_line|#define L1_REQ_PARTITION_SET&t;0x1006&t;/* set partition id */
 DECL|macro|L1_REQ_EVENT_SUBCH
 mdefine_line|#define L1_REQ_EVENT_SUBCH&t;0x1007&t;/* set the subchannel for system&n;&t;&t;&t;&t;&t;   controller event transmission */
 DECL|macro|L1_REQ_RESET
-mdefine_line|#define L1_REQ_RESET&t;&t;0x2001&t;/* request a full system reset */
+mdefine_line|#define L1_REQ_RESET&t;&t;0x2000&t;/* request a full system reset */
+DECL|macro|L1_REQ_PCI_UP
+mdefine_line|#define L1_REQ_PCI_UP&t;&t;0x2001  /* power up pci slot or bus */
+DECL|macro|L1_REQ_PCI_DOWN
+mdefine_line|#define L1_REQ_PCI_DOWN&t;&t;0x2002  /* power down pci slot or bus */
+DECL|macro|L1_REQ_PCI_RESET
+mdefine_line|#define L1_REQ_PCI_RESET&t;0x2003  /* reset pci bus or slot */
 multiline_comment|/* L1 command interpreter requests */
 multiline_comment|/* request codes */
 DECL|macro|L1_REQ_EXEC_CMD
@@ -707,103 +705,6 @@ op_star
 id|sc
 )paren
 suffix:semicolon
-macro_line|#if 0
-r_int
-id|sc_portspeed_get
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-macro_line|#endif
-r_int
-id|l1_cons_poll
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_int
-id|l1_cons_getc
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_void
-id|l1_cons_init
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-)paren
-suffix:semicolon
-r_int
-id|l1_cons_read
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-comma
-r_char
-op_star
-id|buf
-comma
-r_int
-id|avail
-)paren
-suffix:semicolon
-r_int
-id|l1_cons_write
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-comma
-r_char
-op_star
-id|msg
-comma
-r_int
-id|len
-comma
-r_int
-id|wait
-)paren
-suffix:semicolon
-r_void
-id|l1_cons_tx_notif
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-comma
-id|brl1_notif_t
-id|func
-)paren
-suffix:semicolon
-r_void
-id|l1_cons_rx_notif
-c_func
-(paren
-id|l1sc_t
-op_star
-id|sc
-comma
-id|brl1_notif_t
-id|func
-)paren
-suffix:semicolon
 r_int
 id|_elscuart_putc
 c_func
@@ -963,20 +864,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|set_elsc
-c_func
-(paren
-id|l1sc_t
-op_star
-id|e
-)paren
-suffix:semicolon
 DECL|macro|get_l1sc
 mdefine_line|#define get_l1sc&t;get_elsc
-DECL|macro|set_l1sc
-mdefine_line|#define set_l1sc(e)&t;set_elsc(e)
 DECL|macro|get_master_l1sc
 mdefine_line|#define get_master_l1sc get_l1sc
 r_int

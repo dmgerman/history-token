@@ -19,6 +19,12 @@ macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
+macro_line|#include &lt;asm/sn/intr.h&gt;
+macro_line|#if defined (CONFIG_SGI_IP35)
+macro_line|#include &lt;asm/sn/pci/pciio.h&gt;&t;&t;/* For SN1 + pcibr Addressing Limitation */
+macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;&t;&t;/* For SN1 + pcibr Addressing Limitation */
+macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;&t;/* For SN1 + pcibr Addressing Limitation */
+macro_line|#endif /* SN1 */
 macro_line|#if DEBUG_INTR_TSTAMP_DEBUG
 macro_line|#include &lt;sys/debug.h&gt;
 macro_line|#include &lt;sys/idbg.h&gt;
@@ -86,6 +92,23 @@ c_func
 (paren
 id|devfs_handle_t
 id|vhdl
+)paren
+suffix:semicolon
+r_extern
+id|snia_error_intr_handler
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|devid
+comma
+r_struct
+id|pt_regs
+op_star
+id|pt_regs
 )paren
 suffix:semicolon
 DECL|macro|INTR_LOCK
@@ -211,7 +234,7 @@ op_star
 id|lvl
 )paren
 (brace
-id|printk
+id|PRINT_WARNING
 c_func
 (paren
 l_string|&quot;Stray Interrupt - level %ld to cpu %d&quot;
@@ -281,7 +304,7 @@ r_uint64
 id|intr_dev_targ_map_size
 suffix:semicolon
 DECL|variable|intr_dev_targ_map_lock
-id|lock_t
+id|spinlock_t
 id|intr_dev_targ_map_lock
 suffix:semicolon
 multiline_comment|/* Print out the device - target cpu mapping.&n; * This routine is used only in the idbg command&n; * &quot;intrmap&quot; &n; */
@@ -814,13 +837,11 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* No CPU yet. */
 )brace
-id|spinlock_init
+id|mutex_spinlock_init
 c_func
 (paren
 op_amp
 id|vecblk-&gt;vector_lock
-comma
-l_string|&quot;ivecb&quot;
 )paren
 suffix:semicolon
 id|vecblk-&gt;vector_count
@@ -898,6 +919,7 @@ id|hub_intmasks_t
 op_star
 id|hub_intmasks
 suffix:semicolon
+r_int
 r_int
 id|s
 suffix:semicolon
@@ -1039,12 +1061,10 @@ op_minus
 l_int|1
 )paren
 (brace
-singleline_comment|// bit = 0;
 id|bit
 op_assign
-l_int|7
+l_int|0
 suffix:semicolon
-multiline_comment|/* First available on SNIA */
 id|ASSERT
 c_func
 (paren
@@ -1687,15 +1707,16 @@ op_star
 id|intpend_masks
 suffix:semicolon
 r_int
-id|s
-suffix:semicolon
-r_int
 id|rv
 op_assign
 l_int|0
 suffix:semicolon
 r_int
 id|ip
+suffix:semicolon
+r_int
+r_int
+id|s
 suffix:semicolon
 id|ASSERT
 c_func
@@ -1981,6 +2002,7 @@ op_star
 id|intpend_masks
 suffix:semicolon
 r_int
+r_int
 id|s
 suffix:semicolon
 r_int
@@ -2250,10 +2272,11 @@ op_star
 id|vecblk
 suffix:semicolon
 r_int
-id|s
+id|ip
 suffix:semicolon
 r_int
-id|ip
+r_int
+id|s
 suffix:semicolon
 id|hubreg_t
 op_star
@@ -2561,14 +2584,6 @@ comma
 id|slice
 )paren
 suffix:semicolon
-id|cpu
-op_assign
-id|cpu_logical_id
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2704,7 +2719,7 @@ id|which_subnode
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 multiline_comment|/*&n; * Convert a subnode vertex into a (cnodeid, which_subnode) pair.&n; * Return 0 on success, non-zero on failure.&n; */
 r_static
 r_int
@@ -2789,7 +2804,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* success */
 )brace
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
+macro_line|#endif /* LATER */
 multiline_comment|/* Make it easy to identify subnode vertices in the hwgraph */
 r_void
 DECL|function|mark_subnodevertex_as_subnode
@@ -2869,8 +2884,8 @@ id|GRAPH_SUCCESS
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_IA64_SGI_IO
 multiline_comment|/*&n; * Given a device descriptor, extract interrupt target information and&n; * choose an appropriate CPU.  Return CPU_NONE if we can&squot;t make sense&n; * out of the target information.&n; * TBD: Should this be considered platform-independent code?&n; */
+macro_line|#ifdef&t;LATER
 r_static
 id|cpuid_t
 DECL|function|intr_target_from_desc
@@ -3004,8 +3019,8 @@ r_return
 id|cpuid
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#endif&t;/* LATER */
+macro_line|#ifdef&t;LATER
 multiline_comment|/*&n; * Check if we had already visited this candidate cnode&n; */
 r_static
 r_void
@@ -3098,7 +3113,7 @@ r_return
 id|visited_cnodes
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
+macro_line|#endif /* LATER */
 multiline_comment|/*&n; * intr_bit_reserve_test(cpuid,which_subnode,cnode,req_bit,intr_resflags,&n; *&t;&t;owner_dev,intr_name,*resp_bit)&n; *&t;Either cpuid is not CPU_NONE or cnodeid not CNODE_NONE but&n; * &t;not both.&n; * 1. &t;If cpuid is specified, this routine tests if this cpu can be a valid&n; * &t;interrupt target candidate.&n; * 2. &t;If cnodeid is specified, this routine tests if there is a cpu on &n; *&t;this node which can be a valid interrupt target candidate.&n; * 3.&t;If a valid interrupt target cpu candidate is found then an attempt at &n; * &t;reserving an interrupt bit on the corresponding cnode is made.&n; *&n; * If steps 1 &amp; 2 both fail or step 3 fails then we are not able to get a valid&n; * interrupt target cpu then routine returns CPU_NONE (failure)&n; * Otherwise routine returns cpuid of interrupt target (success)&n; */
 r_static
 id|cpuid_t
@@ -3253,7 +3268,7 @@ id|cnodeid_t
 id|candidate
 suffix:semicolon
 multiline_comment|/* possible canidate */
-macro_line|#ifndef BRINGUP
+macro_line|#ifdef LATER
 id|cnodeid_t
 id|visited_cnodes
 (braket
@@ -3290,13 +3305,13 @@ r_void
 op_star
 id|rv
 suffix:semicolon
-macro_line|#endif /* BRINGUP */
+macro_line|#endif /* LATER */
 r_int
 id|which_subnode
 op_assign
 id|SUBNODE_ANY
 suffix:semicolon
-macro_line|#if CONFIG_IA64_SGI_IO /* SN1 + pcibr Addressing Limitation */
+multiline_comment|/* SN1 + pcibr Addressing Limitation */
 (brace
 id|devfs_handle_t
 id|pconn_vhdl
@@ -3363,8 +3378,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* CONFIG_IA64_SGI_IO */
-macro_line|#ifndef CONFIG_IA64_SGI_IO
+macro_line|#ifdef&t;LATER
 multiline_comment|/* &n;&t; * If an interrupt target was specified for this&n;&t; * interrupt allocation, try to use it.&n;&t; */
 r_if
 c_cond
@@ -3446,7 +3460,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Fall through on to the next step in the search for&n;&t;&t; * the interrupt candidate.&n;&t;&t; */
 )brace
-macro_line|#endif  /* CONFIG_IA64_SGI_IO */
+macro_line|#endif  /* LATER */
 multiline_comment|/* Check if we can find a valid interrupt target candidate on&n;&t; * the master node for the device.&n;&t; */
 id|cpuid
 op_assign
@@ -3508,7 +3522,7 @@ id|resp_bit
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|PRINT_WARNING
 c_func
 (paren
 l_string|&quot;Cannot target interrupts to closest node(%d): %ld (0x%lx)&bslash;n&quot;
@@ -3671,13 +3685,14 @@ r_static
 id|cnodeid_t
 id|last_node
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|last_node
-OG
+op_ge
 id|numnodes
 )paren
 id|last_node
@@ -3690,15 +3705,28 @@ c_loop
 id|candidate
 op_assign
 id|last_node
+op_plus
+l_int|1
 suffix:semicolon
 id|candidate
-op_le
-id|numnodes
+op_ne
+id|last_node
 suffix:semicolon
 id|candidate
 op_increment
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|candidate
+op_eq
+id|numnodes
+)paren
+id|candidate
+op_assign
+l_int|0
+suffix:semicolon
 id|cpuid
 op_assign
 id|intr_bit_reserve_test
@@ -3742,7 +3770,8 @@ id|which_subnode
 )paren
 (brace
 id|last_node
-op_increment
+op_assign
+id|candidate
 suffix:semicolon
 r_return
 id|cpuid
@@ -3760,13 +3789,14 @@ id|resp_bit
 )paren
 suffix:semicolon
 )brace
+)brace
 id|last_node
-op_increment
+op_assign
+id|candidate
 suffix:semicolon
 )brace
-)brace
 macro_line|#endif
-id|printk
+id|PRINT_WARNING
 c_func
 (paren
 l_string|&quot;Cannot target interrupts to any close node: %ld (0x%lx)&bslash;n&quot;
@@ -3849,7 +3879,7 @@ id|resp_bit
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|PRINT_WARNING
 c_func
 (paren
 l_string|&quot;Cannot target interrupts: %ld (0x%lx)&bslash;n&quot;
@@ -5239,6 +5269,7 @@ id|level
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* BRINGUP */
 DECL|struct|hardwired_intr_s
 r_struct
 id|hardwired_intr_s
@@ -5305,7 +5336,6 @@ comma
 l_string|&quot;Migration&quot;
 )brace
 comma
-macro_line|#if defined(SN1) &amp;&amp; !defined(DIRECT_L1_CONSOLE)
 (brace
 id|INT_PEND0_BASELVL
 op_plus
@@ -5316,18 +5346,6 @@ comma
 l_string|&quot;Bedrock/L1&quot;
 )brace
 comma
-macro_line|#else
-(brace
-id|INT_PEND0_BASELVL
-op_plus
-id|UART_INTR
-comma
-l_int|0
-comma
-l_string|&quot;Hub I2C&quot;
-)brace
-comma
-macro_line|#endif
 (brace
 id|INT_PEND0_BASELVL
 op_plus
@@ -5346,46 +5364,6 @@ comma
 l_int|0
 comma
 l_string|&quot;Crosscall B&quot;
-)brace
-comma
-(brace
-id|INT_PEND0_BASELVL
-op_plus
-id|MSC_MESG_INTR
-comma
-id|II_THREADED
-comma
-l_string|&quot;MSC Message&quot;
-)brace
-comma
-(brace
-id|INT_PEND0_BASELVL
-op_plus
-id|CPU_ACTION_A
-comma
-l_int|0
-comma
-l_string|&quot;CPU Action A&quot;
-)brace
-comma
-(brace
-id|INT_PEND0_BASELVL
-op_plus
-id|CPU_ACTION_B
-comma
-l_int|0
-comma
-l_string|&quot;CPU Action B&quot;
-)brace
-comma
-(brace
-id|INT_PEND1_BASELVL
-op_plus
-id|IO_ERROR_INTR
-comma
-id|II_ERRORINT
-comma
-l_string|&quot;IO Error&quot;
 )brace
 comma
 (brace
@@ -5488,7 +5466,6 @@ comma
 l_string|&quot;LLP Pfail WAR&quot;
 )brace
 comma
-macro_line|#ifdef SN1
 (brace
 id|INT_PEND1_BASELVL
 op_plus
@@ -5529,7 +5506,6 @@ comma
 l_string|&quot;Local XBar Error&quot;
 )brace
 comma
-macro_line|#endif /* SN1 */&t;
 (brace
 op_minus
 l_int|1
@@ -5542,6 +5518,7 @@ op_star
 )paren
 l_int|NULL
 )brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Reserve all of the hardwired interrupt levels so they&squot;re not used as&n; * general purpose bits later.&n; */
@@ -5569,13 +5546,48 @@ id|subnode_done
 id|NUM_SUBNODES
 )braket
 suffix:semicolon
+singleline_comment|// cpu = cnodetocpu(cnode);
+r_for
+c_loop
+(paren
 id|cpu
 op_assign
-id|cnodetocpu
+l_int|0
+suffix:semicolon
+id|cpu
+OL
+id|smp_num_cpus
+suffix:semicolon
+id|cpu
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpuid_to_cnodeid
 c_func
 (paren
+id|cpu
+)paren
+op_eq
 id|cnode
 )paren
+(brace
+r_break
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|cpu
+op_eq
+id|smp_num_cpus
+)paren
+id|cpu
+op_assign
+id|CPU_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -5623,7 +5635,7 @@ c_loop
 suffix:semicolon
 id|cpu
 OL
-id|maxcpus
+id|smp_num_cpus
 op_logical_and
 id|cpu_enabled
 c_func
@@ -5631,7 +5643,7 @@ c_func
 id|cpu
 )paren
 op_logical_and
-id|cputocnode
+id|cpuid_to_cnodeid
 c_func
 (paren
 id|cpu
@@ -5742,7 +5754,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* BRINGUP */
 multiline_comment|/*&n; * Check and clear interrupts.&n; */
 multiline_comment|/*ARGSUSED*/
 r_static
@@ -5819,7 +5830,7 @@ id|i
 )paren
 (brace
 macro_line|#ifdef INTRDEBUG
-id|printk
+id|PRINT_WARNING
 c_func
 (paren
 l_string|&quot;Nasid %d interrupt bit %d set in %s&quot;

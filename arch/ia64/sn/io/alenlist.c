@@ -149,9 +149,9 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Currently allocate cursors */
 DECL|macro|INCR_COUNT
-mdefine_line|#define INCR_COUNT(ptr) atomicAddInt((ptr), 1);
+mdefine_line|#define INCR_COUNT(ptr) atomic_inc((ptr));
 DECL|macro|DECR_COUNT
-mdefine_line|#define DECR_COUNT(ptr) atomicAddInt((ptr), -1);
+mdefine_line|#define DECR_COUNT(ptr) atomic_dec((ptr));
 macro_line|#else
 DECL|macro|INCR_COUNT
 mdefine_line|#define INCR_COUNT(ptr)

@@ -63,6 +63,10 @@ DECL|macro|IIO_PRTE_0
 mdefine_line|#define IIO_PRTE_0      &t;IIO_IPRTE0        /* PIO Read address table entry 0 */
 DECL|macro|IIO_PRTE
 mdefine_line|#define IIO_PRTE(_x)    &t;(IIO_PRTE_0 + (8 * (_x)))
+DECL|macro|IIO_NUM_IPRBS
+mdefine_line|#define IIO_NUM_IPRBS &t;&t;(9) 
+DECL|macro|IIO_WIDPRTE
+mdefine_line|#define IIO_WIDPRTE(x)  IIO_PRTE(((x) - 8)) /* widget ID to its PRTE num */
 DECL|macro|IIO_LLP_CSR_IS_UP
 mdefine_line|#define IIO_LLP_CSR_IS_UP               0x00002000
 DECL|macro|IIO_LLP_CSR_LLP_STAT_MASK
@@ -243,6 +247,20 @@ DECL|macro|HUBII_XBOW_CREDIT
 mdefine_line|#define       HUBII_XBOW_CREDIT       3
 DECL|macro|HUBII_XBOW_REV2_CREDIT
 mdefine_line|#define       HUBII_XBOW_REV2_CREDIT  4
+multiline_comment|/*&n; * Number of credits that xtalk devices should use when communicating&n; * with a Bedrock (depth of Bedrock&squot;s queue).&n; */
+DECL|macro|HUB_CREDIT
+mdefine_line|#define HUB_CREDIT 4
+multiline_comment|/*&n; * Some IIO_PRB fields&n; */
+DECL|macro|IIO_PRB_MULTI_ERR
+mdefine_line|#define IIO_PRB_MULTI_ERR&t;(1LL &lt;&lt; 63)
+DECL|macro|IIO_PRB_SPUR_RD
+mdefine_line|#define IIO_PRB_SPUR_RD&t;&t;(1LL &lt;&lt; 51)
+DECL|macro|IIO_PRB_SPUR_WR
+mdefine_line|#define IIO_PRB_SPUR_WR&t;&t;(1LL &lt;&lt; 50)
+DECL|macro|IIO_PRB_RD_TO
+mdefine_line|#define IIO_PRB_RD_TO&t;&t;(1LL &lt;&lt; 49)
+DECL|macro|IIO_PRB_ERROR
+mdefine_line|#define IIO_PRB_ERROR&t;&t;(1LL &lt;&lt; 48)
 multiline_comment|/*************************************************************************&n;&n; Some of the IIO field masks and shifts are defined here.&n; This is in order to maintain compatibility in SN0 and SN1 code&n; &n;**************************************************************************/
 multiline_comment|/*&n; * ICMR register fields&n; * (Note: the IIO_ICMR_P_CNT and IIO_ICMR_PC_VLD from Hub are not&n; * present in Bedrock)&n; */
 DECL|macro|IIO_ICMR_CRB_VLD_SHFT
@@ -285,6 +303,41 @@ DECL|macro|IBCT_NOTIFY
 mdefine_line|#define IBCT_NOTIFY&t;&t;(0x1 &lt;&lt; 4)
 DECL|macro|IBCT_ZFIL_MODE
 mdefine_line|#define IBCT_ZFIL_MODE&t;&t;(0x1 &lt;&lt; 0)
+multiline_comment|/*&n; * IIO Incoming Error Packet Header (IIO_IIEPH1/IIO_IIEPH2)&n; */
+DECL|macro|IIEPH1_VALID
+mdefine_line|#define IIEPH1_VALID&t;&t;(1 &lt;&lt; 44)
+DECL|macro|IIEPH1_OVERRUN
+mdefine_line|#define IIEPH1_OVERRUN&t;&t;(1 &lt;&lt; 40)
+DECL|macro|IIEPH1_ERR_TYPE_SHFT
+mdefine_line|#define IIEPH1_ERR_TYPE_SHFT&t;32
+DECL|macro|IIEPH1_ERR_TYPE_MASK
+mdefine_line|#define IIEPH1_ERR_TYPE_MASK&t;0xf
+DECL|macro|IIEPH1_SOURCE_SHFT
+mdefine_line|#define IIEPH1_SOURCE_SHFT&t;20
+DECL|macro|IIEPH1_SOURCE_MASK
+mdefine_line|#define IIEPH1_SOURCE_MASK&t;11
+DECL|macro|IIEPH1_SUPPL_SHFT
+mdefine_line|#define IIEPH1_SUPPL_SHFT&t;8
+DECL|macro|IIEPH1_SUPPL_MASK
+mdefine_line|#define IIEPH1_SUPPL_MASK&t;11
+DECL|macro|IIEPH1_CMD_SHFT
+mdefine_line|#define IIEPH1_CMD_SHFT&t;&t;0
+DECL|macro|IIEPH1_CMD_MASK
+mdefine_line|#define IIEPH1_CMD_MASK&t;&t;7
+DECL|macro|IIEPH2_TAIL
+mdefine_line|#define IIEPH2_TAIL&t;&t;(1 &lt;&lt; 40)
+DECL|macro|IIEPH2_ADDRESS_SHFT
+mdefine_line|#define IIEPH2_ADDRESS_SHFT&t;0
+DECL|macro|IIEPH2_ADDRESS_MASK
+mdefine_line|#define IIEPH2_ADDRESS_MASK&t;38
+DECL|macro|IIEPH1_ERR_SHORT_REQ
+mdefine_line|#define IIEPH1_ERR_SHORT_REQ&t;2
+DECL|macro|IIEPH1_ERR_SHORT_REPLY
+mdefine_line|#define IIEPH1_ERR_SHORT_REPLY&t;3
+DECL|macro|IIEPH1_ERR_LONG_REQ
+mdefine_line|#define IIEPH1_ERR_LONG_REQ&t;4
+DECL|macro|IIEPH1_ERR_LONG_REPLY
+mdefine_line|#define IIEPH1_ERR_LONG_REPLY&t;5
 multiline_comment|/*&n; * IO Error Clear register bit field definitions&n; */
 DECL|macro|IECLR_PI1_FWD_INT
 mdefine_line|#define IECLR_PI1_FWD_INT&t;(1 &lt;&lt; 31)  /* clear PI1_FORWARD_INT in iidsr */
@@ -441,6 +494,14 @@ DECL|macro|iprb_t
 mdefine_line|#define iprb_t          ii_iprb0_u_t
 DECL|macro|iprb_regval
 mdefine_line|#define iprb_regval     ii_iprb0_regval
+DECL|macro|iprb_mult_err
+mdefine_line|#define iprb_mult_err&t;ii_iprb0_fld_s.i_mult_err
+DECL|macro|iprb_spur_rd
+mdefine_line|#define iprb_spur_rd&t;ii_iprb0_fld_s.i_spur_rd
+DECL|macro|iprb_spur_wr
+mdefine_line|#define iprb_spur_wr&t;ii_iprb0_fld_s.i_spur_wr
+DECL|macro|iprb_rd_to
+mdefine_line|#define iprb_rd_to&t;ii_iprb0_fld_s.i_rd_to
 DECL|macro|iprb_ovflow
 mdefine_line|#define iprb_ovflow     ii_iprb0_fld_s.i_of_cnt
 DECL|macro|iprb_error
@@ -471,7 +532,6 @@ mdefine_line|#define IIO_WSTAT_TXRETRY_CNT(w)        (((w) &gt;&gt; IIO_WSTAT_TX
 multiline_comment|/* Number of II perf. counters we can multiplex at once */
 DECL|macro|IO_PERF_SETS
 mdefine_line|#define IO_PERF_SETS&t;32
-macro_line|#ifdef BRINGUP
 macro_line|#if __KERNEL__
 macro_line|#if _LANGUAGE_C
 multiline_comment|/* XXX moved over from SN/SN0/hubio.h -- each should be checked for SN1 */
@@ -1254,6 +1314,24 @@ id|owner_dev
 suffix:semicolon
 multiline_comment|/* owner of this interrupt */
 r_extern
+id|hub_intr_t
+id|hub_intr_alloc_nothd
+c_func
+(paren
+id|devfs_handle_t
+id|dev
+comma
+multiline_comment|/* which device */
+id|device_desc_t
+id|dev_desc
+comma
+multiline_comment|/* device descriptor */
+id|devfs_handle_t
+id|owner_dev
+)paren
+suffix:semicolon
+multiline_comment|/* owner of this interrupt */
+r_extern
 r_void
 id|hub_intr_free
 c_func
@@ -1462,6 +1540,5 @@ id|devfs_handle_t
 suffix:semicolon
 macro_line|#endif /* _LANGUAGE_C */
 macro_line|#endif /* _KERNEL */
-macro_line|#endif /* BRINGUP */
 macro_line|#endif  /* _ASM_SN_SN1_HUBIO_NEXT_H */
 eof

@@ -349,7 +349,7 @@ op_or
 l_int|0x140
 )paren
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 r_switch
 c_cond
@@ -453,7 +453,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif PARANOID
+macro_line|#endif /* PARANOID */
 )brace
 r_switch
 c_cond
@@ -1039,7 +1039,7 @@ op_or_assign
 l_int|0x40
 suffix:semicolon
 multiline_comment|/* An 80486 appears to always set this bit */
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 r_return
 l_int|1
 suffix:semicolon

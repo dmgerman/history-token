@@ -2,10 +2,10 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef&t;_ASM_SN_KLCONFIG_H
 DECL|macro|_ASM_SN_KLCONFIG_H
 mdefine_line|#define&t;_ASM_SN_KLCONFIG_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * klconfig.h&n; */
 multiline_comment|/*&n; * The KLCONFIG structures store info about the various BOARDs found&n; * during Hardware Discovery. In addition, it stores info about the&n; * components found on the BOARDs.&n; */
 multiline_comment|/*&n; * WARNING:&n; *&t;Certain assembly language routines (notably xxxxx.s) in the IP27PROM &n; *&t;will depend on the format of the data structures in this file.  In &n; *      most cases, rearranging the fields can seriously break things.   &n; *      Adding fields in the beginning or middle can also break things.&n; *      Add fields if necessary, to the end of a struct in such a way&n; *      that offsets of existing fields do not change.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/slotnum.h&gt;
@@ -35,9 +35,9 @@ mdefine_line|#define&t;MAX_MODULE_ID&t;&t;255
 DECL|macro|SIZE_PAD
 mdefine_line|#define SIZE_PAD&t;&t;4096 /* 4k padding for structures */
 macro_line|#if (defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)) &amp;&amp; defined(BRINGUP) /* MAX_SLOTS_PER_NODE??? */
-multiline_comment|/* &n; * 1 NODE brick, 2 Router bricks (1 local, 1 meta), 6 XIO Widgets, &n; * 1 Midplane (midplane will likely become IO brick when Bruce cleans&n; * up IP35 klconfig)&n; */
+multiline_comment|/* &n; * 1 NODE brick, 3 Router bricks (1 local, 1 meta, 1 repeater),&n; * 6 XIO Widgets, 1 Xbow, 1 gfx&n; */
 DECL|macro|MAX_SLOTS_PER_NODE
-mdefine_line|#define MAX_SLOTS_PER_NODE&t;(1 + 2 + 6 + 1) 
+mdefine_line|#define MAX_SLOTS_PER_NODE&t;(1 + 3 + 6 + 1 + 1) 
 macro_line|#else
 multiline_comment|/* &n; * 1 NODE brd, 2 Router brd (1 8p, 1 meta), 6 Widgets, &n; * 2 Midplanes assuming no pci card cages &n; */
 DECL|macro|MAX_SLOTS_PER_NODE
@@ -60,8 +60,8 @@ DECL|macro|LOCAL_MASTER_IO6
 mdefine_line|#define LOCAL_MASTER_IO6&t;0x10 &t;/* master io6 for that node */
 DECL|macro|GLOBAL_MASTER_IO6
 mdefine_line|#define GLOBAL_MASTER_IO6&t;0x20
-DECL|macro|THIRD_NIC_PRESENT
-mdefine_line|#define THIRD_NIC_PRESENT &t;0x40  &t;/* for future use */
+DECL|macro|GLOBAL_MASTER_EXT
+mdefine_line|#define GLOBAL_MASTER_EXT &t;0x40  &t;/* extend master io6 to other bus on ibrick */
 DECL|macro|SECOND_NIC_PRESENT
 mdefine_line|#define SECOND_NIC_PRESENT &t;0x80 &t;/* addons like MIO are present */
 multiline_comment|/* klinfo-&gt;flags fields */
@@ -102,7 +102,6 @@ r_typedef
 r_struct
 id|console_s
 (brace
-macro_line|#if defined(CONFIG_IA64_SGI_IO)&t;/* FIXME */
 DECL|member|uart_base
 id|__psunsigned_t
 id|uart_base
@@ -115,20 +114,6 @@ DECL|member|memory_base
 id|__psunsigned_t
 id|memory_base
 suffix:semicolon
-macro_line|#else
-r_int
-r_int
-id|uart_base
-suffix:semicolon
-r_int
-r_int
-id|config_base
-suffix:semicolon
-r_int
-r_int
-id|memory_base
-suffix:semicolon
-macro_line|#endif
 DECL|member|baud
 r_int
 id|baud
@@ -245,19 +230,15 @@ DECL|macro|KL_CONFIG_INFO_OFFSET
 mdefine_line|#define KL_CONFIG_INFO_OFFSET(_nasid)&t;&t;&t;&t;&t;&bslash;&n;        (KL_CONFIG_HDR(_nasid)-&gt;ch_board_info)
 DECL|macro|KL_CONFIG_INFO_SET_OFFSET
 mdefine_line|#define KL_CONFIG_INFO_SET_OFFSET(_nasid, _off)&t;&t;&t;&t;&bslash;&n;        (KL_CONFIG_HDR(_nasid)-&gt;ch_board_info = (_off))
-macro_line|#if !defined(SIMULATED_KLGRAPH)
+macro_line|#ifndef __ia64
 DECL|macro|KL_CONFIG_INFO
 mdefine_line|#define KL_CONFIG_INFO(_nasid) &t;&t;&t;&t;&t;&t;&bslash;&n;        (lboard_t *)((KL_CONFIG_HDR(_nasid)-&gt;ch_board_info) ?&t;&t;&bslash;&n;&t; NODE_OFFSET_TO_K0((_nasid), KL_CONFIG_HDR(_nasid)-&gt;ch_board_info) : &bslash;&n;&t; 0)
 macro_line|#else
-multiline_comment|/*&n; * For Fake klgraph info.&n; */
-r_extern
-id|kl_config_hdr_t
-op_star
-id|linux_klcfg
-suffix:semicolon
+DECL|macro|NODE_OFFSET_TO_LBOARD
+mdefine_line|#define NODE_OFFSET_TO_LBOARD(nasid,off)        (lboard_t*)(NODE_CAC_BASE(nasid) + (off))
 DECL|macro|KL_CONFIG_INFO
-mdefine_line|#define KL_CONFIG_INFO(_nasid) (lboard_t *)((ulong)linux_klcfg-&gt;ch_board_info | 0xe000000000000000)
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO */
+mdefine_line|#define KL_CONFIG_INFO(_nasid)                                          &bslash;&n;&t;(lboard_t *)((KL_CONFIG_HDR(_nasid)-&gt;ch_board_info) ?           &bslash;&n;&t; NODE_OFFSET_TO_LBOARD((_nasid), KL_CONFIG_HDR(_nasid)-&gt;ch_board_info) : &bslash;&n;&t; NULL)
+macro_line|#endif&t;/* __ia64 */
 DECL|macro|KL_CONFIG_MAGIC
 mdefine_line|#define KL_CONFIG_MAGIC(_nasid)&t;&t;(KL_CONFIG_HDR(_nasid)-&gt;ch_magic)
 DECL|macro|KL_CONFIG_CHECK_MAGIC
@@ -265,22 +246,12 @@ mdefine_line|#define KL_CONFIG_CHECK_MAGIC(_nasid)&t;&t;&t;&t;&t;&bslash;&n;    
 DECL|macro|KL_CONFIG_HDR_INIT_MAGIC
 mdefine_line|#define KL_CONFIG_HDR_INIT_MAGIC(_nasid)&t;&bslash;&n;                  (KL_CONFIG_HDR(_nasid)-&gt;ch_magic = KLCFGINFO_MAGIC)
 multiline_comment|/* --- New Macros for the changed kl_config_hdr_t structure --- */
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 DECL|macro|PTR_CH_MALLOC_HDR
 mdefine_line|#define PTR_CH_MALLOC_HDR(_k)   ((klc_malloc_hdr_t *)&bslash;&n;&t;&t;&t;((__psunsigned_t)_k + (_k-&gt;ch_malloc_hdr_off)))
-macro_line|#else
-DECL|macro|PTR_CH_MALLOC_HDR
-mdefine_line|#define PTR_CH_MALLOC_HDR(_k)   ((klc_malloc_hdr_t *)&bslash;&n;&t;&t;&t;(unsigned long)_k + (_k-&gt;ch_malloc_hdr_off)))
-macro_line|#endif
 DECL|macro|KL_CONFIG_CH_MALLOC_HDR
 mdefine_line|#define KL_CONFIG_CH_MALLOC_HDR(_n)   PTR_CH_MALLOC_HDR(KL_CONFIG_HDR(_n))
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 DECL|macro|PTR_CH_CONS_INFO
 mdefine_line|#define PTR_CH_CONS_INFO(_k)&t;((console_t *)&bslash;&n;&t;&t;&t;((__psunsigned_t)_k + (_k-&gt;ch_cons_off)))
-macro_line|#else
-DECL|macro|PTR_CH_CONS_INFO
-mdefine_line|#define PTR_CH_CONS_INFO(_k)&t;((console_t *)&bslash;&n;&t;&t;&t;((unsigned long)_k + (_k-&gt;ch_cons_off)))
-macro_line|#endif
 DECL|macro|KL_CONFIG_CH_CONS_INFO
 mdefine_line|#define KL_CONFIG_CH_CONS_INFO(_n)   PTR_CH_CONS_INFO(KL_CONFIG_HDR(_n))
 multiline_comment|/* ------------------------------------------------------------- */
@@ -363,6 +334,8 @@ mdefine_line|#define KLTYPE_IP27&t;(KLCLASS_CPU | 0x1) /* 2 CPUs(R10K) per board
 macro_line|#if defined(CONFIG_SGI_IP35) || defined(CONFIG_IA64_SGI_SN1) || defined(CONFIG_IA64_GENERIC)
 DECL|macro|KLTYPE_IP35
 mdefine_line|#define KLTYPE_IP35&t;KLTYPE_IP27
+DECL|macro|KLTYPE_IP37
+mdefine_line|#define KLTYPE_IP37&t;KLTYPE_IP35
 macro_line|#endif
 DECL|macro|KLTYPE_WEIRDIO
 mdefine_line|#define KLTYPE_WEIRDIO&t;(KLCLASS_IO  | 0x0)
@@ -400,6 +373,10 @@ DECL|macro|KLTYPE_GSN_A
 mdefine_line|#define KLTYPE_GSN_A   &t;(KLCLASS_IO  | 0xC) /* Main GSN board */
 DECL|macro|KLTYPE_GSN_B
 mdefine_line|#define KLTYPE_GSN_B   &t;(KLCLASS_IO  | 0xD) /* Auxiliary GSN board */
+DECL|macro|KLTYPE_SHOEHORN
+mdefine_line|#define KLTYPE_SHOEHORN (KLCLASS_IO  | 0xE)
+DECL|macro|KLTYPE_SERIAL_HIPPI
+mdefine_line|#define KLTYPE_SERIAL_HIPPI (KLCLASS_IO  | 0xF)
 DECL|macro|KLTYPE_GFX
 mdefine_line|#define KLTYPE_GFX&t;(KLCLASS_GFX | 0x0) /* unknown graphics type */
 DECL|macro|KLTYPE_GFX_KONA
@@ -416,14 +393,16 @@ DECL|macro|KLTYPE_NULL_ROUTER
 mdefine_line|#define KLTYPE_NULL_ROUTER (KLCLASS_ROUTER | 0x2)
 DECL|macro|KLTYPE_META_ROUTER
 mdefine_line|#define KLTYPE_META_ROUTER (KLCLASS_ROUTER | 0x3)
+DECL|macro|KLTYPE_REPEATER_ROUTER
+mdefine_line|#define KLTYPE_REPEATER_ROUTER (KLCLASS_ROUTER | 0x4)
 DECL|macro|KLTYPE_WEIRDMIDPLANE
 mdefine_line|#define KLTYPE_WEIRDMIDPLANE (KLCLASS_MIDPLANE | 0x0)
 DECL|macro|KLTYPE_MIDPLANE8
 mdefine_line|#define KLTYPE_MIDPLANE8  (KLCLASS_MIDPLANE | 0x1) /* 8 slot backplane */
 DECL|macro|KLTYPE_MIDPLANE
 mdefine_line|#define KLTYPE_MIDPLANE    KLTYPE_MIDPLANE8
-DECL|macro|KLTYPE_PBRICK_XBOW
-mdefine_line|#define KLTYPE_PBRICK_XBOW&t;(KLCLASS_MIDPLANE | 0x2)
+DECL|macro|KLTYPE_IOBRICK_XBOW
+mdefine_line|#define KLTYPE_IOBRICK_XBOW&t;(KLCLASS_MIDPLANE | 0x2)
 DECL|macro|KLTYPE_IOBRICK
 mdefine_line|#define KLTYPE_IOBRICK&t;&t;(KLCLASS_IOBRICK | 0x0)
 DECL|macro|KLTYPE_IBRICK
@@ -621,7 +600,7 @@ DECL|macro|KLCF_NUM_COMPS
 mdefine_line|#define KLCF_NUM_COMPS(_brd)&t;((_brd)-&gt;brd_numcompts)
 DECL|macro|KLCF_MODULE_ID
 mdefine_line|#define KLCF_MODULE_ID(_brd)&t;((_brd)-&gt;brd_module)
-macro_line|#ifndef SIMULATED_KLGRAPH
+macro_line|#ifndef __ia64
 DECL|macro|KLCF_NEXT
 mdefine_line|#define KLCF_NEXT(_brd) &t;&t;((_brd)-&gt;brd_next ? (lboard_t *)((_brd)-&gt;brd_next):  NULL)
 DECL|macro|KLCF_COMP
@@ -629,14 +608,15 @@ mdefine_line|#define KLCF_COMP(_brd, _ndx)   &bslash;&n;&t;&t;(klinfo_t *)(NODE_
 DECL|macro|KLCF_COMP_ERROR
 mdefine_line|#define KLCF_COMP_ERROR(_brd, _comp)    &bslash;&n;&t;&t;(NODE_OFFSET_TO_K0(NASID_GET(_brd), (_comp)-&gt;errinfo))
 macro_line|#else
-multiline_comment|/*&n; * For fake klgraph info.&n; */
-DECL|macro|KLCF_COMP
-mdefine_line|#define KLCF_COMP(_brd, _ndx)           (klinfo_t *)((ulong) 0xe000000000000000 |((_brd)-&gt;brd_compts[(_ndx)]))
+DECL|macro|NODE_OFFSET_TO_KLINFO
+mdefine_line|#define NODE_OFFSET_TO_KLINFO(n,off)    ((klinfo_t*) TO_NODE_CAC(n,off))
 DECL|macro|KLCF_NEXT
-mdefine_line|#define KLCF_NEXT(_brd)&t;((_brd)-&gt;brd_next ? (lboard_t *)((ulong) 0xe000000000000000 | (_brd-&gt;brd_next)) : NULL)
+mdefine_line|#define KLCF_NEXT(_brd)         &bslash;&n;        ((_brd)-&gt;brd_next ?     &bslash;&n;         (NODE_OFFSET_TO_LBOARD(NASID_GET(_brd), (_brd)-&gt;brd_next)): NULL)
+DECL|macro|KLCF_COMP
+mdefine_line|#define KLCF_COMP(_brd, _ndx)   &bslash;&n;                (NODE_OFFSET_TO_KLINFO(NASID_GET(_brd), (_brd)-&gt;brd_compts[(_ndx)]))
 DECL|macro|KLCF_COMP_ERROR
-mdefine_line|#define KLCF_COMP_ERROR(_brd, _comp)    (_brd = _brd , (_comp)-&gt;errinfo)
-macro_line|#endif&t;/* SIMULATED_KLGRAPH */
+mdefine_line|#define KLCF_COMP_ERROR(_brd, _comp)    &bslash;&n;                (NODE_OFFSET_TO_K0(NASID_GET(_brd), (_comp)-&gt;errinfo))
+macro_line|#endif /* __ia64 */
 DECL|macro|KLCF_COMP_TYPE
 mdefine_line|#define KLCF_COMP_TYPE(_comp)&t;((_comp)-&gt;struct_type)
 DECL|macro|KLCF_BRIDGE_W_ID
@@ -829,6 +809,16 @@ DECL|macro|KLSTRUCT_GSN_B
 mdefine_line|#define KLSTRUCT_GSN_B          30
 DECL|macro|KLSTRUCT_XTHD
 mdefine_line|#define KLSTRUCT_XTHD           31
+DECL|macro|KLSTRUCT_QLFIBRE
+mdefine_line|#define KLSTRUCT_QLFIBRE        32
+DECL|macro|KLSTRUCT_1394
+mdefine_line|#define KLSTRUCT_1394           33
+DECL|macro|KLSTRUCT_USB
+mdefine_line|#define KLSTRUCT_USB&t;&t;34
+DECL|macro|KLSTRUCT_USBKBD
+mdefine_line|#define KLSTRUCT_USBKBD&t;&t;35
+DECL|macro|KLSTRUCT_USBMS
+mdefine_line|#define KLSTRUCT_USBMS&t;&t;36
 multiline_comment|/*&n; * These are the indices of various components within a lboard structure.&n; */
 DECL|macro|IP27_CPU0_INDEX
 mdefine_line|#define IP27_CPU0_INDEX 0
@@ -1651,6 +1641,32 @@ DECL|typedef|klmio_t
 )brace
 id|klmio_t
 suffix:semicolon
+multiline_comment|/*&n; * USB info&n; */
+DECL|struct|klusb_s
+r_typedef
+r_struct
+id|klusb_s
+(brace
+DECL|member|usb_info
+id|klinfo_t
+id|usb_info
+suffix:semicolon
+multiline_comment|/* controller info */
+DECL|member|usb_bus
+r_void
+op_star
+id|usb_bus
+suffix:semicolon
+multiline_comment|/* handle to usb_bus_t */
+DECL|member|usb_controller
+r_uint64
+id|usb_controller
+suffix:semicolon
+multiline_comment|/* ptr to controller info */
+DECL|typedef|klusb_t
+)brace
+id|klusb_t
+suffix:semicolon
 DECL|union|klcomp_s
 r_typedef
 r_union
@@ -1715,6 +1731,10 @@ suffix:semicolon
 DECL|member|kc_snum
 id|klmod_serial_num_t
 id|kc_snum
+suffix:semicolon
+DECL|member|kc_usb
+id|klusb_t
+id|kc_usb
 suffix:semicolon
 DECL|typedef|klcomp_t
 )brace
@@ -1850,7 +1870,6 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_IA64_SGI_IO)
 r_extern
 id|xwidgetnum_t
 id|nodevertex_widgetnum_get
@@ -2200,17 +2219,5 @@ comma
 r_int
 )paren
 suffix:semicolon
-macro_line|#else&t;/* CONFIG_IA64_SGI_IO */
-r_extern
-id|klcpu_t
-op_star
-id|sn_get_cpuinfo
-c_func
-(paren
-id|cpuid_t
-id|cpu
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* CONFIG_IA64_SGI_IO */
 macro_line|#endif /* _ASM_SN_KLCONFIG_H */
 eof

@@ -27,7 +27,7 @@ multiline_comment|/*&n; * Linux has a controller-independent x86 interrupt archi
 multiline_comment|/*&n; * Controller mappings for all interrupt sources:&n; */
 DECL|variable|__cacheline_aligned
 id|irq_desc_t
-id|irq_desc
+id|_irq_desc
 (braket
 id|NR_IRQS
 )braket
@@ -227,6 +227,10 @@ id|irqaction
 op_star
 id|action
 suffix:semicolon
+id|irq_desc_t
+op_star
+id|idesc
+suffix:semicolon
 r_char
 op_star
 id|p
@@ -290,14 +294,17 @@ id|i
 op_increment
 )paren
 (brace
-id|action
+id|idesc
 op_assign
 id|irq_desc
-(braket
+c_func
+(paren
 id|i
-)braket
-dot
+)paren
+suffix:semicolon
 id|action
+op_assign
+id|idesc-&gt;action
 suffix:semicolon
 r_if
 c_cond
@@ -383,12 +390,7 @@ id|p
 comma
 l_string|&quot; %14s&quot;
 comma
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|handler
+id|idesc-&gt;handler
 op_member_access_from_pointer
 r_typename
 )paren
@@ -654,7 +656,7 @@ c_func
 (paren
 l_string|&quot; %d&quot;
 comma
-id|local_irq_count
+id|irq_count
 c_func
 (paren
 id|i
@@ -700,7 +702,7 @@ c_func
 (paren
 l_string|&quot; %d&quot;
 comma
-id|local_bh_count
+id|bh_count
 c_func
 (paren
 id|i
@@ -863,8 +865,7 @@ r_void
 id|wait_on_irq
 c_func
 (paren
-r_int
-id|cpu
+r_void
 )paren
 (brace
 r_int
@@ -895,7 +896,6 @@ c_cond
 id|local_bh_count
 c_func
 (paren
-id|cpu
 )paren
 op_logical_or
 op_logical_neg
@@ -953,7 +953,10 @@ suffix:semicolon
 id|SYNC_OTHER_CORES
 c_func
 (paren
-id|cpu
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|__cli
@@ -985,7 +988,6 @@ op_logical_neg
 id|local_bh_count
 c_func
 (paren
-id|cpu
 )paren
 op_logical_and
 id|spin_is_locked
@@ -1053,8 +1055,7 @@ r_void
 id|get_irqlock
 c_func
 (paren
-r_int
-id|cpu
+r_void
 )paren
 (brace
 r_if
@@ -1074,7 +1075,10 @@ multiline_comment|/* do we already hold the lock? */
 r_if
 c_cond
 (paren
-id|cpu
+id|smp_processor_id
+c_func
+(paren
+)paren
 op_eq
 id|global_irq_holder
 )paren
@@ -1114,17 +1118,19 @@ id|global_irq_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * We also to make sure that nobody else is running&n;&t; * in an interrupt context. &n;&t; */
+multiline_comment|/*&n;&t; * We also to make sure that nobody else is running&n;&t; * in an interrupt context.&n;&t; */
 id|wait_on_irq
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ok, finally..&n;&t; */
 id|global_irq_holder
 op_assign
-id|cpu
+id|smp_processor_id
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|macro|EFLAGS_IF_SHIFT
@@ -1157,14 +1163,6 @@ op_amp
 id|IA64_PSR_I
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|__cli
 c_func
 (paren
@@ -1177,13 +1175,11 @@ op_logical_neg
 id|local_irq_count
 c_func
 (paren
-id|cpu
 )paren
 )paren
 id|get_irqlock
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 )brace
@@ -1206,14 +1202,6 @@ id|EFLAGS_IF_SHIFT
 )paren
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 id|__cli
 c_func
 (paren
@@ -1226,13 +1214,11 @@ op_logical_neg
 id|local_irq_count
 c_func
 (paren
-id|cpu
 )paren
 )paren
 id|get_irqlock
 c_func
 (paren
-id|cpu
 )paren
 suffix:semicolon
 )brace
@@ -1246,14 +1232,6 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1261,13 +1239,15 @@ op_logical_neg
 id|local_irq_count
 c_func
 (paren
-id|cpu
 )paren
 )paren
 id|release_irqlock
 c_func
 (paren
-id|cpu
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|__sti
@@ -1348,7 +1328,6 @@ op_logical_neg
 id|local_irq_count
 c_func
 (paren
-id|cpu
 )paren
 )paren
 (brace
@@ -1479,19 +1458,9 @@ id|action
 r_int
 id|status
 suffix:semicolon
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
+id|local_irq_enter
 c_func
 (paren
-)paren
-suffix:semicolon
-id|irq_enter
-c_func
-(paren
-id|cpu
-comma
 id|irq
 )paren
 suffix:semicolon
@@ -1562,11 +1531,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|irq_exit
+id|local_irq_exit
 c_func
 (paren
-id|cpu
-comma
 id|irq
 )paren
 suffix:semicolon
@@ -1574,7 +1541,7 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Generic enable/disable code: this just calls&n; * down into the PIC-specific version for the actual&n; * hardware disable after having gotten the irq&n; * controller lock. &n; */
+multiline_comment|/*&n; * Generic enable/disable code: this just calls&n; * down into the PIC-specific version for the actual&n; * hardware disable after having gotten the irq&n; * controller lock.&n; */
 DECL|function|disable_irq_nosync
 r_void
 r_inline
@@ -1591,8 +1558,10 @@ op_star
 id|desc
 op_assign
 id|irq_desc
-op_plus
+c_func
+(paren
 id|irq
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -1663,10 +1632,6 @@ op_logical_neg
 id|local_irq_count
 c_func
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 )paren
 (brace
@@ -1682,10 +1647,11 @@ r_while
 c_loop
 (paren
 id|irq_desc
-(braket
+c_func
+(paren
 id|irq
-)braket
-dot
+)paren
+op_member_access_from_pointer
 id|status
 op_amp
 id|IRQ_INPROGRESS
@@ -1709,8 +1675,10 @@ op_star
 id|desc
 op_assign
 id|irq_desc
-op_plus
+c_func
+(paren
 id|irq
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -1826,9 +1794,11 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_IRQ_per_cpu
-r_void
-id|do_IRQ_per_cpu
+multiline_comment|/*&n; * do_IRQ handles all normal device IRQ&squot;s (the special&n; * SMP cross-CPU interrupts have their own specific&n; * handlers).&n; */
+DECL|function|do_IRQ
+r_int
+r_int
+id|do_IRQ
 c_func
 (paren
 r_int
@@ -1841,14 +1811,7 @@ op_star
 id|regs
 )paren
 (brace
-id|irq_desc_t
-op_star
-id|desc
-op_assign
-id|irq_desc
-op_plus
-id|irq
-suffix:semicolon
+multiline_comment|/*&n;&t; * We ack quickly, we don&squot;t want the irq controller&n;&t; * thinking we&squot;re snobs just because some other CPU has&n;&t; * disabled global interrupts (we have already done the&n;&t; * INT_ACK cycles, it&squot;s too late to try to pretend to the&n;&t; * controller that we aren&squot;t taking the interrupt).&n;&t; *&n;&t; * 0 return value means that this irq is already being&n;&t; * handled by some other CPU. (or is disabled)&n;&t; */
 r_int
 id|cpu
 op_assign
@@ -1856,6 +1819,25 @@ id|smp_processor_id
 c_func
 (paren
 )paren
+suffix:semicolon
+id|irq_desc_t
+op_star
+id|desc
+op_assign
+id|irq_desc
+c_func
+(paren
+id|irq
+)paren
+suffix:semicolon
+r_struct
+id|irqaction
+op_star
+id|action
+suffix:semicolon
+r_int
+r_int
+id|status
 suffix:semicolon
 id|kstat.irqs
 (braket
@@ -1866,6 +1848,15 @@ id|irq
 )braket
 op_increment
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|desc-&gt;status
+op_amp
+id|IRQ_PER_CPU
+)paren
+(brace
+multiline_comment|/* no locking required for CPU-local interrupts: */
 id|desc-&gt;handler
 op_member_access_from_pointer
 id|ack
@@ -1893,58 +1884,8 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_IRQ handles all normal device IRQ&squot;s (the special&n; * SMP cross-CPU interrupts have their own specific&n; * handlers).&n; */
-DECL|function|do_IRQ
-r_int
-r_int
-id|do_IRQ
-c_func
-(paren
-r_int
-r_int
-id|irq
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
+r_else
 (brace
-multiline_comment|/* &n;&t; * We ack quickly, we don&squot;t want the irq controller&n;&t; * thinking we&squot;re snobs just because some other CPU has&n;&t; * disabled global interrupts (we have already done the&n;&t; * INT_ACK cycles, it&squot;s too late to try to pretend to the&n;&t; * controller that we aren&squot;t taking the interrupt).&n;&t; *&n;&t; * 0 return value means that this irq is already being&n;&t; * handled by some other CPU. (or is disabled)&n;&t; */
-r_int
-id|cpu
-op_assign
-id|smp_processor_id
-c_func
-(paren
-)paren
-suffix:semicolon
-id|irq_desc_t
-op_star
-id|desc
-op_assign
-id|irq_desc
-op_plus
-id|irq
-suffix:semicolon
-r_struct
-id|irqaction
-op_star
-id|action
-suffix:semicolon
-r_int
-r_int
-id|status
-suffix:semicolon
-id|kstat.irqs
-(braket
-id|cpu
-)braket
-(braket
-id|irq
-)braket
-op_increment
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1960,7 +1901,7 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;   REPLAY is when Linux resends an IRQ that was dropped earlier&n;&t;   WAITING is used by probe to mark irqs that are being tested&n;&t;   */
+multiline_comment|/*&n;&t;&t; * REPLAY is when Linux resends an IRQ that was dropped earlier&n;&t;&t; * WAITING is used by probe to mark irqs that are being tested&n;&t;&t; */
 id|status
 op_assign
 id|desc-&gt;status
@@ -1977,7 +1918,7 @@ op_or_assign
 id|IRQ_PENDING
 suffix:semicolon
 multiline_comment|/* we _want_ to handle it */
-multiline_comment|/*&n;&t; * If the IRQ is disabled for whatever reason, we cannot&n;&t; * use the action we have.&n;&t; */
+multiline_comment|/*&n;&t;&t; * If the IRQ is disabled for whatever reason, we cannot&n;&t;&t; * use the action we have.&n;&t;&t; */
 id|action
 op_assign
 l_int|NULL
@@ -2017,7 +1958,7 @@ id|desc-&gt;status
 op_assign
 id|status
 suffix:semicolon
-multiline_comment|/*&n;&t; * If there is no IRQ handler or it was disabled, exit early.&n;&t; * Since we set PENDING, if another processor is handling&n;&t; * a different instance of this same irq, the other processor&n;&t; * will take care of it.&n;&t; */
+multiline_comment|/*&n;&t;&t; * If there is no IRQ handler or it was disabled, exit early.&n;&t;&t; * Since we set PENDING, if another processor is handling&n;&t;&t; * a different instance of this same irq, the other processor&n;&t;&t; * will take care of it.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2027,7 +1968,7 @@ id|action
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * Edge triggered interrupts need to remember&n;&t; * pending events.&n;&t; * This applies to any hw interrupts that allow a second&n;&t; * instance of the same irq to arrive while we are in do_IRQ&n;&t; * or in the handler. But the code here only handles the _second_&n;&t; * instance of the irq, not the third or fourth. So it is mostly&n;&t; * useful for irq hardware that does not mask cleanly in an&n;&t; * SMP environment.&n;&t; */
+multiline_comment|/*&n;&t;&t; * Edge triggered interrupts need to remember&n;&t;&t; * pending events.&n;&t;&t; * This applies to any hw interrupts that allow a second&n;&t;&t; * instance of the same irq to arrive while we are in do_IRQ&n;&t;&t; * or in the handler. But the code here only handles the _second_&n;&t;&t; * instance of the irq, not the third or fourth. So it is mostly&n;&t;&t; * useful for irq hardware that does not mask cleanly in an&n;&t;&t; * SMP environment.&n;&t;&t; */
 r_for
 c_loop
 (paren
@@ -2084,7 +2025,7 @@ id|IRQ_INPROGRESS
 suffix:semicolon
 id|out
 suffix:colon
-multiline_comment|/*&n;&t; * The -&gt;end() handler has to deal with interrupts which got&n;&t; * disabled while the handler was running.&n;&t; */
+multiline_comment|/*&n;&t;&t; * The -&gt;end() handler has to deal with interrupts which got&n;&t;&t; * disabled while the handler was running.&n;&t;&t; */
 id|desc-&gt;handler
 op_member_access_from_pointer
 id|end
@@ -2100,6 +2041,7 @@ op_amp
 id|desc-&gt;lock
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|1
 suffix:semicolon
@@ -2170,18 +2112,9 @@ id|dev_id
 id|printk
 c_func
 (paren
-l_string|&quot;Bad boy: %s (at 0x%x) called us without a dev_id!&bslash;n&quot;
+l_string|&quot;Bad boy: %s called us without a dev_id!&bslash;n&quot;
 comma
 id|devname
-comma
-(paren
-op_amp
-id|irq
-)paren
-(braket
-op_minus
-l_int|1
-)braket
 )paren
 suffix:semicolon
 )brace
@@ -2325,8 +2258,10 @@ suffix:semicolon
 id|desc
 op_assign
 id|irq_desc
-op_plus
+c_func
+(paren
 id|irq
+)paren
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -2491,7 +2426,7 @@ r_int
 r_int
 id|delay
 suffix:semicolon
-multiline_comment|/* &n;&t; * something may have generated an irq long ago and we want to&n;&t; * flush such a longstanding irq before considering it as spurious. &n;&t; */
+multiline_comment|/*&n;&t; * something may have generated an irq long ago and we want to&n;&t; * flush such a longstanding irq before considering it as spurious.&n;&t; */
 r_for
 c_loop
 (paren
@@ -2512,8 +2447,10 @@ op_decrement
 id|desc
 op_assign
 id|irq_desc
-op_plus
+c_func
+(paren
 id|i
+)paren
 suffix:semicolon
 id|spin_lock_irq
 c_func
@@ -2526,19 +2463,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|action
+id|desc-&gt;action
 )paren
-id|irq_desc
-(braket
-id|i
-)braket
-dot
-id|handler
+id|desc-&gt;handler
 op_member_access_from_pointer
 id|startup
 c_func
@@ -2602,8 +2529,10 @@ op_decrement
 id|desc
 op_assign
 id|irq_desc
-op_plus
+c_func
+(paren
 id|i
+)paren
 suffix:semicolon
 id|spin_lock_irq
 c_func
@@ -2701,8 +2630,10 @@ op_star
 id|desc
 op_assign
 id|irq_desc
-op_plus
+c_func
+(paren
 id|i
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -2825,8 +2756,10 @@ op_star
 id|desc
 op_assign
 id|irq_desc
-op_plus
+c_func
+(paren
 id|i
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -2943,8 +2876,10 @@ op_star
 id|desc
 op_assign
 id|irq_desc
-op_plus
+c_func
+(paren
 id|i
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -3034,7 +2969,6 @@ r_return
 id|irq_found
 suffix:semicolon
 )brace
-multiline_comment|/* this was setup_x86_irq but it seems pretty generic */
 DECL|function|setup_irq
 r_int
 id|setup_irq
@@ -3073,8 +3007,10 @@ op_star
 id|desc
 op_assign
 id|irq_desc
-op_plus
+c_func
+(paren
 id|irq
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Some drivers like serial.c use request_irq() heavily,&n;&t; * so we have to be careful not to interfere with a&n;&t; * running system.&n;&t; */
 r_if
@@ -3565,10 +3501,11 @@ c_cond
 (paren
 op_logical_neg
 id|irq_desc
-(braket
+c_func
+(paren
 id|irq
-)braket
-dot
+)paren
+op_member_access_from_pointer
 id|handler-&gt;set_affinity
 )paren
 r_return
@@ -3613,10 +3550,11 @@ op_assign
 id|new_value
 suffix:semicolon
 id|irq_desc
-(braket
+c_func
+(paren
 id|irq
-)braket
-dot
+)paren
+op_member_access_from_pointer
 id|handler
 op_member_access_from_pointer
 id|set_affinity
@@ -3804,10 +3742,11 @@ id|root_irq_dir
 op_logical_or
 (paren
 id|irq_desc
-(braket
+c_func
+(paren
 id|irq
-)braket
-dot
+)paren
+op_member_access_from_pointer
 id|handler
 op_eq
 op_amp
@@ -3985,10 +3924,11 @@ r_if
 c_cond
 (paren
 id|irq_desc
-(braket
+c_func
+(paren
 id|i
-)braket
-dot
+)paren
+op_member_access_from_pointer
 id|handler
 op_eq
 op_amp

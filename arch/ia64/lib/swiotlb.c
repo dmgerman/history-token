@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Dynamic DMA mapping support.&n; *&n; * This implementation is for IA-64 platforms that do not support&n; * I/O TLBs (aka DMA address translation hardware).&n; * Copyright (C) 2000 Asit Mallick &lt;Asit.K.Mallick@intel.com&gt;&n; * Copyright (C) 2000 Goutham Rao &lt;goutham.rao@intel.com&gt;&n; *&n; * 00/12/13 davidm&t;Rename to swiotlb.c and add mark_clean() to avoid&n; *&t;&t;&t;unnecessary i-cache flushing.&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -48,7 +49,7 @@ r_int
 r_int
 id|io_tlb_index
 suffix:semicolon
-multiline_comment|/*&n; * We need to save away the original address corresponding to a mapped entry for the sync &n; * operations.&n; */
+multiline_comment|/*&n; * We need to save away the original address corresponding to a mapped entry for the sync&n; * operations.&n; */
 DECL|variable|io_tlb_orig_addr
 r_static
 r_int
@@ -496,7 +497,7 @@ op_ne
 id|wrap
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * XXX What is a suitable recovery mechanism here?  We cannot &n;&t;&t; * sleep because we are called from with in interrupts!&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * XXX What is a suitable recovery mechanism here?  We cannot&n;&t;&t; * sleep because we are called from with in interrupts!&n;&t;&t; */
 id|panic
 c_func
 (paren
@@ -505,9 +506,9 @@ comma
 id|size
 )paren
 suffix:semicolon
+)brace
 id|found
 suffix:colon
-)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -629,7 +630,7 @@ op_eq
 id|PCI_DMA_BIDIRECTIONAL
 )paren
 )paren
-multiline_comment|/*&n; &t; &t; * bounce... copy the data back into the original buffer * and delete the&n; &t; &t; * bounce buffer.&n; &t; &t; */
+multiline_comment|/*&n;&t;&t; * bounce... copy the data back into the original buffer * and delete the&n;&t;&t; * bounce buffer.&n;&t;&t; */
 id|memcpy
 c_func
 (paren
@@ -785,7 +786,7 @@ id|io_tlb_orig_addr
 id|index
 )braket
 suffix:semicolon
-multiline_comment|/*&n;  &t; * bounce... copy the data back into/from the original buffer&n;&t; * XXX How do you handle PCI_DMA_BIDIRECTIONAL here ?&n; &t; */
+multiline_comment|/*&n;&t; * bounce... copy the data back into/from the original buffer&n;&t; * XXX How do you handle PCI_DMA_BIDIRECTIONAL here ?&n;&t; */
 r_if
 c_cond
 (paren
@@ -1043,7 +1044,7 @@ multiline_comment|/*&n;&t;&t; * Device is bit capable of DMA&squot;ing to the bu
 r_return
 id|pci_addr
 suffix:semicolon
-multiline_comment|/* &n;&t; * get a bounce buffer: &n;&t; */
+multiline_comment|/*&n;&t; * get a bounce buffer:&n;&t; */
 id|pci_addr
 op_assign
 id|virt_to_phys
@@ -1137,43 +1138,26 @@ op_le
 id|end
 )paren
 (brace
-macro_line|#if 0
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|virt_to_page
+c_func
+(paren
+id|pg_addr
+)paren
+suffix:semicolon
 id|set_bit
 c_func
 (paren
 id|PG_arch_1
 comma
-id|virt_to_page
-c_func
-(paren
-id|pg_addr
-)paren
+op_amp
+id|page-&gt;flags
 )paren
 suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|VALID_PAGE
-c_func
-(paren
-id|virt_to_page
-c_func
-(paren
-id|pg_addr
-)paren
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;Invalid addr %lx!!!&bslash;n&quot;
-comma
-id|pg_addr
-)paren
-suffix:semicolon
-macro_line|#endif
 id|pg_addr
 op_add_assign
 id|PAGE_SIZE
@@ -1629,4 +1613,74 @@ id|sg-&gt;address
 )paren
 suffix:semicolon
 )brace
+DECL|variable|swiotlb_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_init
+)paren
+suffix:semicolon
+DECL|variable|swiotlb_map_single
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_map_single
+)paren
+suffix:semicolon
+DECL|variable|swiotlb_unmap_single
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_unmap_single
+)paren
+suffix:semicolon
+DECL|variable|swiotlb_map_sg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_map_sg
+)paren
+suffix:semicolon
+DECL|variable|swiotlb_unmap_sg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_unmap_sg
+)paren
+suffix:semicolon
+DECL|variable|swiotlb_sync_single
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_sync_single
+)paren
+suffix:semicolon
+DECL|variable|swiotlb_sync_sg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_sync_sg
+)paren
+suffix:semicolon
+DECL|variable|swiotlb_dma_address
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_dma_address
+)paren
+suffix:semicolon
+DECL|variable|swiotlb_alloc_consistent
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_alloc_consistent
+)paren
+suffix:semicolon
+DECL|variable|swiotlb_free_consistent
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|swiotlb_free_consistent
+)paren
+suffix:semicolon
 eof

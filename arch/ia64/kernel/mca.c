@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File: &t;mca.c&n; * Purpose: &t;Generic MCA handling layer&n; *&n; * Updated for latest kernel&n; * Copyright (C) 2000 Intel&n; * Copyright (C) Chuck Fleckenstein (cfleck@co.intel.com)&n; *  &n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander(vijay@engr.sgi.com)&n; *&n; * 00/03/29 C. Fleckenstein  Fixed PAL/SAL update issues, began MCA bug fixes, logging issues, &n; *                           added min save state dump, added INIT handler. &n; */
+multiline_comment|/*&n; * File:&t;mca.c&n; * Purpose:&t;Generic MCA handling layer&n; *&n; * Updated for latest kernel&n; * Copyright (C) 2000 Intel&n; * Copyright (C) Chuck Fleckenstein (cfleck@co.intel.com)&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander(vijay@engr.sgi.com)&n; *&n; * 00/03/29 C. Fleckenstein  Fixed PAL/SAL update issues, began MCA bug fixes, logging issues,&n; *                           added min save state dump, added INIT handler.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/machvec.h&gt;
 DECL|struct|ia64_fptr
 r_typedef
 r_struct
@@ -686,8 +687,8 @@ op_assign
 id|IA64_MCA_RENDEZ_CHECKIN_NOTDONE
 suffix:semicolon
 )brace
-multiline_comment|/* NOTE : The actual irqs for the rendez, wakeup and &n;&t; * cmc interrupts are requested in the platform-specific&n;&t; * mca initialization code.&n;&t; */
-multiline_comment|/* &n;&t; * Register the rendezvous spinloop and wakeup mechanism with SAL&n;&t; */
+multiline_comment|/* NOTE : The actual irqs for the rendez, wakeup and&n;&t; * cmc interrupts are requested in the platform-specific&n;&t; * mca initialization code.&n;&t; */
+multiline_comment|/*&n;&t; * Register the rendezvous spinloop and wakeup mechanism with SAL&n;&t; */
 multiline_comment|/* Register the rendezvous interrupt vector with SAL */
 r_if
 c_cond
@@ -699,9 +700,11 @@ id|SAL_MC_PARAM_RENDEZ_INT
 comma
 id|SAL_MC_PARAM_MECHANISM_INT
 comma
-id|IA64_MCA_RENDEZ_INT_VECTOR
+id|IA64_MCA_RENDEZ_VECTOR
 comma
 id|IA64_MCA_RENDEZ_TIMEOUT
+comma
+l_int|0
 )paren
 )paren
 r_return
@@ -717,7 +720,9 @@ id|SAL_MC_PARAM_RENDEZ_WAKEUP
 comma
 id|SAL_MC_PARAM_MECHANISM_INT
 comma
-id|IA64_MCA_WAKEUP_INT_VECTOR
+id|IA64_MCA_WAKEUP_VECTOR
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -736,7 +741,7 @@ c_func
 (paren
 id|IA64_CMC_INT_ENABLE
 comma
-id|IA64_MCA_CMC_INT_VECTOR
+id|IA64_CMC_VECTOR
 )paren
 suffix:semicolon
 id|IA64_MCA_DEBUG
@@ -795,7 +800,7 @@ c_func
 l_string|&quot;ia64_mca_init : registered os mca handler with SAL&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * XXX - disable SAL checksum by setting size to 0, should be&n;&t; * IA64_INIT_HANDLER_SIZE &n;&t; */
+multiline_comment|/*&n;&t; * XXX - disable SAL checksum by setting size to 0, should be&n;&t; * IA64_INIT_HANDLER_SIZE&n;&t; */
 id|ia64_mc_info.imi_monarch_init_handler
 op_assign
 id|__pa
@@ -872,7 +877,7 @@ c_func
 l_string|&quot;ia64_mca_init : registered os init handler with SAL&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize the areas set aside by the OS to buffer the &n;&t; * platform/processor error states for MCA/INIT/CMC&n;&t; * handling.&n;&t; */
+multiline_comment|/* Initialize the areas set aside by the OS to buffer the&n;&t; * platform/processor error states for MCA/INIT/CMC&n;&t; * handling.&n;&t; */
 id|ia64_log_init
 c_func
 (paren
@@ -946,7 +951,7 @@ l_string|&quot;Mca related initialization done&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_mca_wakeup_ipi_wait&n; *&t;Wait for the inter-cpu interrupt to be sent by the&n; * &t;monarch processor once it is done with handling the&n; *&t;MCA.&n; * Inputs &n; *&t;None&n; * Outputs&n; *&t;None&n; */
+multiline_comment|/*&n; * ia64_mca_wakeup_ipi_wait&n; *&t;Wait for the inter-cpu interrupt to be sent by the&n; *&t;monarch processor once it is done with handling the&n; *&t;MCA.&n; * Inputs&n; *&t;None&n; * Outputs&n; *&t;None&n; */
 r_void
 DECL|function|ia64_mca_wakeup_ipi_wait
 id|ia64_mca_wakeup_ipi_wait
@@ -959,7 +964,7 @@ r_int
 id|irr_num
 op_assign
 (paren
-id|IA64_MCA_WAKEUP_INT_VECTOR
+id|IA64_MCA_WAKEUP_VECTOR
 op_rshift
 l_int|6
 )paren
@@ -968,7 +973,7 @@ r_int
 id|irr_bit
 op_assign
 (paren
-id|IA64_MCA_WAKEUP_INT_VECTOR
+id|IA64_MCA_WAKEUP_VECTOR
 op_amp
 l_int|0x3f
 )paren
@@ -1052,7 +1057,7 @@ id|irr_bit
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_mca_wakeup&n; *&t;Send an inter-cpu interrupt to wake-up a particular cpu&n; * &t;and mark that cpu to be out of rendez.&n; * Inputs&n; *&t;cpuid&n; * Outputs&n; *&t;None&n; */
+multiline_comment|/*&n; * ia64_mca_wakeup&n; *&t;Send an inter-cpu interrupt to wake-up a particular cpu&n; *&t;and mark that cpu to be out of rendez.&n; * Inputs&n; *&t;cpuid&n; * Outputs&n; *&t;None&n; */
 r_void
 DECL|function|ia64_mca_wakeup
 id|ia64_mca_wakeup
@@ -1067,7 +1072,7 @@ c_func
 (paren
 id|cpu
 comma
-id|IA64_MCA_WAKEUP_INT_VECTOR
+id|IA64_MCA_WAKEUP_VECTOR
 comma
 id|IA64_IPI_DM_INT
 comma
@@ -1126,7 +1131,7 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_mca_rendez_interrupt_handler&n; *&t;This is handler used to put slave processors into spinloop &n; *&t;while the monarch processor does the mca handling and later&n; *&t;wake each slave up once the monarch is done.&n; * Inputs &n; *&t;None&n; * Outputs&n; *&t;None&n; */
+multiline_comment|/*&n; * ia64_mca_rendez_interrupt_handler&n; *&t;This is handler used to put slave processors into spinloop&n; *&t;while the monarch processor does the mca handling and later&n; *&t;wake each slave up once the monarch is done.&n; * Inputs&n; *&t;None&n; * Outputs&n; *&t;None&n; */
 r_void
 DECL|function|ia64_mca_rendez_int_handler
 id|ia64_mca_rendez_int_handler
@@ -1185,7 +1190,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Wait for the wakeup IPI from the monarch &n;&t; * This waiting is done by polling on the wakeup-interrupt&n;&t; * vector bit in the processor&squot;s IRRs&n;&t; */
+multiline_comment|/* Wait for the wakeup IPI from the monarch&n;&t; * This waiting is done by polling on the wakeup-interrupt&n;&t; * vector bit in the processor&squot;s IRRs&n;&t; */
 id|ia64_mca_wakeup_ipi_wait
 c_func
 (paren
@@ -1199,7 +1204,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_mca_wakeup_int_handler&n; *&t;The interrupt handler for processing the inter-cpu interrupt to the&n; * &t;slave cpu which was spinning in the rendez loop.&n; *&t;Since this spinning is done by turning off the interrupts and&n; *&t;polling on the wakeup-interrupt bit in the IRR, there is &n; *&t;nothing useful to be done in the handler.&n; *  Inputs&n; *&t;wakeup_irq&t;(Wakeup-interrupt bit)&n; *&t;arg&t;&t;(Interrupt handler specific argument)&n; *&t;ptregs&t;&t;(Exception frame at the time of the interrupt)&n; *  Outputs&n; *&t;&n; */
+multiline_comment|/*&n; * ia64_mca_wakeup_int_handler&n; *&t;The interrupt handler for processing the inter-cpu interrupt to the&n; *&t;slave cpu which was spinning in the rendez loop.&n; *&t;Since this spinning is done by turning off the interrupts and&n; *&t;polling on the wakeup-interrupt bit in the IRR, there is&n; *&t;nothing useful to be done in the handler.&n; *  Inputs&n; *&t;wakeup_irq&t;(Wakeup-interrupt bit)&n; *&t;arg&t;&t;(Interrupt handler specific argument)&n; *&t;ptregs&t;&t;(Exception frame at the time of the interrupt)&n; *  Outputs&n; *&n; */
 r_void
 DECL|function|ia64_mca_wakeup_int_handler
 id|ia64_mca_wakeup_int_handler
@@ -1219,7 +1224,7 @@ id|ptregs
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * ia64_return_to_sal_check&n; *&t;This is function called before going back from the OS_MCA handler&n; * &t;to the OS_MCA dispatch code which finally takes the control back&n; * &t;to the SAL.&n; *&t;The main purpose of this routine is to setup the OS_MCA to SAL&n; *&t;return state which can be used by the OS_MCA dispatch code &n; *&t;just before going back to SAL.&n; * Inputs&n; *&t;None&n; * Outputs&n; *&t;None&n; */
+multiline_comment|/*&n; * ia64_return_to_sal_check&n; *&t;This is function called before going back from the OS_MCA handler&n; *&t;to the OS_MCA dispatch code which finally takes the control back&n; *&t;to the SAL.&n; *&t;The main purpose of this routine is to setup the OS_MCA to SAL&n; *&t;return state which can be used by the OS_MCA dispatch code&n; *&t;just before going back to SAL.&n; * Inputs&n; *&t;None&n; * Outputs&n; *&t;None&n; */
 r_void
 DECL|function|ia64_return_to_sal_check
 id|ia64_return_to_sal_check
@@ -1243,7 +1248,7 @@ op_assign
 id|IA64_MCA_CORRECTED
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * ia64_mca_ucmc_handler&n; *&t;This is uncorrectable machine check handler called from OS_MCA&n; *&t;dispatch code which is in turn called from SAL_CHECK().&n; *&t;This is the place where the core of OS MCA handling is done.&n; *&t;Right now the logs are extracted and displayed in a well-defined&n; *&t;format. This handler code is supposed to be run only on the&n; *&t;monarch processor. Once the  monarch is done with MCA handling&n; *&t;further MCA logging is enabled by clearing logs.&n; *&t;Monarch also has the duty of sending wakeup-IPIs to pull the&n; *&t;slave processors out of rendez. spinloop.&n; * Inputs&n; *&t;None&n; * Outputs&n; *&t;None&n; */
+multiline_comment|/*&n; * ia64_mca_ucmc_handler&n; *&t;This is uncorrectable machine check handler called from OS_MCA&n; *&t;dispatch code which is in turn called from SAL_CHECK().&n; *&t;This is the place where the core of OS MCA handling is done.&n; *&t;Right now the logs are extracted and displayed in a well-defined&n; *&t;format. This handler code is supposed to be run only on the&n; *&t;monarch processor. Once the  monarch is done with MCA handling&n; *&t;further MCA logging is enabled by clearing logs.&n; *&t;Monarch also has the duty of sending wakeup-IPIs to pull the&n; *&t;slave processors out of rendez. spinloop.&n; * Inputs&n; *&t;None&n; * Outputs&n; *&t;None&n; */
 r_void
 DECL|function|ia64_mca_ucmc_handler
 id|ia64_mca_ucmc_handler
@@ -1293,7 +1298,7 @@ id|prfunc_t
 id|printk
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Do some error handling - Platform-specific mca handler is called at this point&n;&t; */
+multiline_comment|/*&n;&t; * Do some error handling - Platform-specific mca handler is called at this point&n;&t; */
 id|mca_handler_platform
 c_func
 (paren
@@ -1336,7 +1341,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * ia64_mca_cmc_int_handler&n; *&t;This is correctable machine check interrupt handler.&n; *&t;Right now the logs are extracted and displayed in a well-defined&n; *&t;format. &n; * Inputs&n; *&t;None&n; * Outputs&n; *&t;None&n; */
+multiline_comment|/*&n; * ia64_mca_cmc_int_handler&n; *&t;This is correctable machine check interrupt handler.&n; *&t;Right now the logs are extracted and displayed in a well-defined&n; *&t;format.&n; * Inputs&n; *&t;None&n; * Outputs&n; *&t;None&n; */
 r_void
 DECL|function|ia64_mca_cmc_int_handler
 id|ia64_mca_cmc_int_handler
@@ -1411,16 +1416,6 @@ id|ia64_sal_clear_state_info
 c_func
 (paren
 id|SAL_INFO_TYPE_CMC
-comma
-id|SAL_SUB_INFO_TYPE_PROCESSOR
-)paren
-suffix:semicolon
-id|ia64_sal_clear_state_info
-c_func
-(paren
-id|SAL_INFO_TYPE_CMC
-comma
-id|SAL_SUB_INFO_TYPE_PLATFORM
 )paren
 suffix:semicolon
 )brace
@@ -1470,22 +1465,22 @@ suffix:semicolon
 DECL|macro|IA64_LOG_LOCK_INIT
 mdefine_line|#define IA64_LOG_LOCK_INIT(it, sit)&t;spin_lock_init(&amp;ia64_state_log[it][sit].isl_lock)
 DECL|macro|IA64_LOG_LOCK
-mdefine_line|#define IA64_LOG_LOCK(it, sit)&t; &t;spin_lock_irqsave(&amp;ia64_state_log[it][sit].isl_lock, s)
+mdefine_line|#define IA64_LOG_LOCK(it, sit)&t;&t;spin_lock_irqsave(&amp;ia64_state_log[it][sit].isl_lock, s)
 DECL|macro|IA64_LOG_UNLOCK
-mdefine_line|#define IA64_LOG_UNLOCK(it, sit) &t;spin_unlock_irqrestore(&amp;ia64_state_log[it][sit].isl_lock,&bslash;&n;&t;&t;&t;&t;&t;&t;&t;       s)
+mdefine_line|#define IA64_LOG_UNLOCK(it, sit)&t;spin_unlock_irqrestore(&amp;ia64_state_log[it][sit].isl_lock,&bslash;&n;&t;&t;&t;&t;&t;&t;&t;       s)
 DECL|macro|IA64_LOG_NEXT_INDEX
 mdefine_line|#define IA64_LOG_NEXT_INDEX(it, sit)&t;ia64_state_log[it][sit].isl_index
 DECL|macro|IA64_LOG_CURR_INDEX
-mdefine_line|#define IA64_LOG_CURR_INDEX(it, sit) &t;1 - ia64_state_log[it][sit].isl_index
+mdefine_line|#define IA64_LOG_CURR_INDEX(it, sit)&t;1 - ia64_state_log[it][sit].isl_index
 DECL|macro|IA64_LOG_INDEX_INC
 mdefine_line|#define IA64_LOG_INDEX_INC(it, sit)&t;&bslash;&n;&t;ia64_state_log[it][sit].isl_index = 1 - ia64_state_log[it][sit].isl_index
 DECL|macro|IA64_LOG_INDEX_DEC
 mdefine_line|#define IA64_LOG_INDEX_DEC(it, sit)&t;&bslash;&n;&t;ia64_state_log[it][sit].isl_index = 1 - ia64_state_log[it][sit].isl_index
 DECL|macro|IA64_LOG_NEXT_BUFFER
-mdefine_line|#define IA64_LOG_NEXT_BUFFER(it, sit) &t;(void *)(&amp;(ia64_state_log[it][sit].isl_log[IA64_LOG_NEXT_INDEX(it,sit)]))
+mdefine_line|#define IA64_LOG_NEXT_BUFFER(it, sit)&t;(void *)(&amp;(ia64_state_log[it][sit].isl_log[IA64_LOG_NEXT_INDEX(it,sit)]))
 DECL|macro|IA64_LOG_CURR_BUFFER
-mdefine_line|#define IA64_LOG_CURR_BUFFER(it, sit) &t;(void *)(&amp;(ia64_state_log[it][sit].isl_log[IA64_LOG_CURR_INDEX(it,sit)]))
-multiline_comment|/*&n; * C portion of the OS INIT handler&n; *&n; * Called from ia64_&lt;monarch/slave&gt;_init_handler&n; *&n; * Inputs: pointer to pt_regs where processor info was saved.&n; *&n; * Returns: &n; *   0 if SAL must warm boot the System&n; *   1 if SAL must retrun to interrupted context using PAL_MC_RESUME&n; *&n; */
+mdefine_line|#define IA64_LOG_CURR_BUFFER(it, sit)&t;(void *)(&amp;(ia64_state_log[it][sit].isl_log[IA64_LOG_CURR_INDEX(it,sit)]))
+multiline_comment|/*&n; * C portion of the OS INIT handler&n; *&n; * Called from ia64_&lt;monarch/slave&gt;_init_handler&n; *&n; * Inputs: pointer to pt_regs where processor info was saved.&n; *&n; * Returns:&n; *   0 if SAL must warm boot the System&n; *   1 if SAL must retrun to interrupted context using PAL_MC_RESUME&n; *&n; */
 r_void
 DECL|function|ia64_init_handler
 id|ia64_init_handler
@@ -1538,7 +1533,7 @@ id|prfunc_t
 id|printk
 )paren
 suffix:semicolon
-macro_line|#ifdef IA64_DUMP_ALL_PROC_INFO 
+macro_line|#ifdef IA64_DUMP_ALL_PROC_INFO
 id|ia64_log_print
 c_func
 (paren
@@ -1552,8 +1547,8 @@ id|prfunc_t
 id|printk
 )paren
 suffix:semicolon
-macro_line|#endif 
-multiline_comment|/* &n;&t; * get pointer to min state save area&n;&t; *&n;&t; */
+macro_line|#endif
+multiline_comment|/*&n;&t; * get pointer to min state save area&n;&t; *&n;&t; */
 id|plog_ptr
 op_assign
 (paren
@@ -1594,20 +1589,10 @@ id|ia64_sal_clear_state_info
 c_func
 (paren
 id|SAL_INFO_TYPE_INIT
-comma
-id|SAL_SUB_INFO_TYPE_PROCESSOR
-)paren
-suffix:semicolon
-id|ia64_sal_clear_state_info
-c_func
-(paren
-id|SAL_INFO_TYPE_INIT
-comma
-id|SAL_SUB_INFO_TYPE_PLATFORM
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_log_init&n; * &t;Reset the OS ia64 log buffer&n; * Inputs &t;:&t;info_type &t;(SAL_INFO_TYPE_{MCA,INIT,CMC})&n; *&t;&t;&t;sub_info_type&t;(SAL_SUB_INFO_TYPE_{PROCESSOR,PLATFORM})&n; * Outputs&t;: &t;None&n; */
+multiline_comment|/*&n; * ia64_log_init&n; *&t;Reset the OS ia64 log buffer&n; * Inputs&t;:&t;info_type&t;(SAL_INFO_TYPE_{MCA,INIT,CMC})&n; *&t;&t;&t;sub_info_type&t;(SAL_SUB_INFO_TYPE_{PROCESSOR,PLATFORM})&n; * Outputs&t;:&t;None&n; */
 r_void
 DECL|function|ia64_log_init
 id|ia64_log_init
@@ -1660,7 +1645,7 @@ id|IA64_MAX_LOGS
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * ia64_log_get&n; * &t;Get the current MCA log from SAL and copy it into the OS log buffer.&n; * Inputs &t;:&t;info_type &t;(SAL_INFO_TYPE_{MCA,INIT,CMC})&n; *&t;&t;&t;sub_info_type&t;(SAL_SUB_INFO_TYPE_{PROCESSOR,PLATFORM})&n; * Outputs&t;: &t;None&n; *&n; */
+multiline_comment|/*&n; * ia64_log_get&n; *&t;Get the current MCA log from SAL and copy it into the OS log buffer.&n; * Inputs&t;:&t;info_type&t;(SAL_INFO_TYPE_{MCA,INIT,CMC})&n; *&t;&t;&t;sub_info_type&t;(SAL_SUB_INFO_TYPE_{PROCESSOR,PLATFORM})&n; * Outputs&t;:&t;None&n; *&n; */
 r_void
 DECL|function|ia64_log_get
 id|ia64_log_get
@@ -1718,8 +1703,6 @@ c_func
 (paren
 id|sal_info_type
 comma
-id|sal_sub_info_type
-comma
 (paren
 id|u64
 op_star
@@ -1759,7 +1742,7 @@ id|sal_sub_info_type
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * ia64_log_clear&n; * &t;Clear the current MCA log from SAL and dpending on the clear_os_buffer flags&n; *&t;clear the OS log buffer also&n; * Inputs &t;:&t;info_type &t;(SAL_INFO_TYPE_{MCA,INIT,CMC})&n; *&t;&t;&t;sub_info_type&t;(SAL_SUB_INFO_TYPE_{PROCESSOR,PLATFORM})&n; *&t;&t;&t;clear_os_buffer &n; *&t;&t;&t;prfunc&t;&t;(print function)&n; * Outputs&t;: &t;None&n; *&n; */
+multiline_comment|/*&n; * ia64_log_clear&n; *&t;Clear the current MCA log from SAL and dpending on the clear_os_buffer flags&n; *&t;clear the OS log buffer also&n; * Inputs&t;:&t;info_type&t;(SAL_INFO_TYPE_{MCA,INIT,CMC})&n; *&t;&t;&t;sub_info_type&t;(SAL_SUB_INFO_TYPE_{PROCESSOR,PLATFORM})&n; *&t;&t;&t;clear_os_buffer&n; *&t;&t;&t;prfunc&t;&t;(print function)&n; * Outputs&t;:&t;None&n; *&n; */
 r_void
 DECL|function|ia64_log_clear
 id|ia64_log_clear
@@ -1785,8 +1768,6 @@ id|ia64_sal_clear_state_info
 c_func
 (paren
 id|sal_info_type
-comma
-id|sal_sub_info_type
 )paren
 )paren
 id|prfunc
@@ -1858,7 +1839,7 @@ id|sal_sub_info_type
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * ia64_log_processor_regs_print&n; *&t;Print the contents of the saved processor register(s) in the format&n; *&t;&t;&lt;reg_prefix&gt;[&lt;index&gt;] &lt;value&gt;&n; *&t;&t;&n; * Inputs&t;:&t;regs &t;&t;(Register save buffer)&n; *&t;&t;&t;reg_num &t;(# of registers)&n; *&t;&t;&t;reg_class&t;(application/banked/control/bank1_general)&n; *&t;&t;&t;reg_prefix&t;(ar/br/cr/b1_gr)&n; * Outputs&t;: &t;None&n; *&n; */
+multiline_comment|/*&n; * ia64_log_processor_regs_print&n; *&t;Print the contents of the saved processor register(s) in the format&n; *&t;&t;&lt;reg_prefix&gt;[&lt;index&gt;] &lt;value&gt;&n; *&n; * Inputs&t;:&t;regs&t;&t;(Register save buffer)&n; *&t;&t;&t;reg_num&t;(# of registers)&n; *&t;&t;&t;reg_class&t;(application/banked/control/bank1_general)&n; *&t;&t;&t;reg_prefix&t;(ar/br/cr/b1_gr)&n; * Outputs&t;:&t;None&n; *&n; */
 r_void
 DECL|function|ia64_log_processor_regs_print
 id|ia64_log_processor_regs_print
@@ -1976,7 +1957,7 @@ comma
 l_string|&quot;Reserved&quot;
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * ia64_log_cache_check_info_print&n; *&t;Display the machine check information related to cache error(s).&n; * Inputs&t;:&t;i&t;&t;(Multiple errors are logged, i - index of logged error)&n; *&t;&t;&t;info&t;&t;(Machine check info logged by the PAL and later &n; *&t;&t;&t;&t;&t; captured by the SAL)&n; *&t;&t;&t;target_addr&t;(Address which caused the cache error)&n; * Outputs&t;: &t;None&n; */
+multiline_comment|/*&n; * ia64_log_cache_check_info_print&n; *&t;Display the machine check information related to cache error(s).&n; * Inputs&t;:&t;i&t;&t;(Multiple errors are logged, i - index of logged error)&n; *&t;&t;&t;info&t;&t;(Machine check info logged by the PAL and later&n; *&t;&t;&t;&t;&t; captured by the SAL)&n; *&t;&t;&t;target_addr&t;(Address which caused the cache error)&n; * Outputs&t;:&t;None&n; */
 r_void
 DECL|function|ia64_log_cache_check_info_print
 id|ia64_log_cache_check_info_print
@@ -2134,7 +2115,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_log_tlb_check_info_print&n; *&t;Display the machine check information related to tlb error(s).&n; * Inputs&t;:&t;i&t;&t;(Multiple errors are logged, i - index of logged error)&n; *&t;&t;&t;info&t;&t;(Machine check info logged by the PAL and later &n; *&t;&t;&t;&t;&t; captured by the SAL)&n; * Outputs&t;: &t;None&n; */
+multiline_comment|/*&n; * ia64_log_tlb_check_info_print&n; *&t;Display the machine check information related to tlb error(s).&n; * Inputs&t;:&t;i&t;&t;(Multiple errors are logged, i - index of logged error)&n; *&t;&t;&t;info&t;&t;(Machine check info logged by the PAL and later&n; *&t;&t;&t;&t;&t; captured by the SAL)&n; * Outputs&t;:&t;None&n; */
 r_void
 DECL|function|ia64_log_tlb_check_info_print
 id|ia64_log_tlb_check_info_print
@@ -2240,7 +2221,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_log_bus_check_info_print&n; *&t;Display the machine check information related to bus error(s).&n; * Inputs&t;:&t;i&t;&t;(Multiple errors are logged, i - index of logged error)&n; *&t;&t;&t;info&t;&t;(Machine check info logged by the PAL and later &n; *&t;&t;&t;&t;&t; captured by the SAL)&n; *&t;&t;&t;req_addr&t;(Address of the requestor of the transaction)&n; *&t;&t;&t;resp_addr&t;(Address of the responder of the transaction)&n; *&t;&t;&t;target_addr&t;(Address where the data was to be delivered to  or&n; *&t;&t;&t;&t;&t; obtained from)&n; * Outputs&t;: &t;None&n; */
+multiline_comment|/*&n; * ia64_log_bus_check_info_print&n; *&t;Display the machine check information related to bus error(s).&n; * Inputs&t;:&t;i&t;&t;(Multiple errors are logged, i - index of logged error)&n; *&t;&t;&t;info&t;&t;(Machine check info logged by the PAL and later&n; *&t;&t;&t;&t;&t; captured by the SAL)&n; *&t;&t;&t;req_addr&t;(Address of the requestor of the transaction)&n; *&t;&t;&t;resp_addr&t;(Address of the responder of the transaction)&n; *&t;&t;&t;target_addr&t;(Address where the data was to be delivered to  or&n; *&t;&t;&t;&t;&t; obtained from)&n; * Outputs&t;:&t;None&n; */
 r_void
 DECL|function|ia64_log_bus_check_info_print
 id|ia64_log_bus_check_info_print
@@ -2395,7 +2376,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_log_processor_info_print&n; *&t;Display the processor-specific information logged by PAL as a part&n; *&t;of MCA or INIT or CMC.&n; * Inputs &t;:&t;lh&t;(Pointer of the sal log header which specifies the format&n; *&t;&t;&t;&t; of SAL state info as specified by the SAL spec).&n; * Outputs&t;: &t;None&n; */
+multiline_comment|/*&n; * ia64_log_processor_info_print&n; *&t;Display the processor-specific information logged by PAL as a part&n; *&t;of MCA or INIT or CMC.&n; * Inputs&t;:&t;lh&t;(Pointer of the sal log header which specifies the format&n; *&t;&t;&t;&t; of SAL state info as specified by the SAL spec).&n; * Outputs&t;:&t;None&n; */
 r_void
 DECL|function|ia64_log_processor_info_print
 id|ia64_log_processor_info_print
@@ -2686,7 +2667,7 @@ id|prfunc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * ia64_log_print&n; * &t;Display the contents of the OS error log information&n; * Inputs &t;:&t;info_type &t;(SAL_INFO_TYPE_{MCA,INIT,CMC})&n; *&t;&t;&t;sub_info_type&t;(SAL_SUB_INFO_TYPE_{PROCESSOR,PLATFORM})&n; * Outputs&t;: &t;None&n; */
+multiline_comment|/*&n; * ia64_log_print&n; *&t;Display the contents of the OS error log information&n; * Inputs&t;:&t;info_type&t;(SAL_INFO_TYPE_{MCA,INIT,CMC})&n; *&t;&t;&t;sub_info_type&t;(SAL_SUB_INFO_TYPE_{PROCESSOR,PLATFORM})&n; * Outputs&t;:&t;None&n; */
 r_void
 DECL|function|ia64_log_print
 id|ia64_log_print

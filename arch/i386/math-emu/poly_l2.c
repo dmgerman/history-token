@@ -628,7 +628,7 @@ l_int|0
 r_return
 l_int|1
 suffix:semicolon
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 )brace
 multiline_comment|/* 80486 appears to do this */
 r_if
@@ -937,7 +937,7 @@ l_int|0xafb0ccc0
 multiline_comment|/* The argument is too large */
 )brace
 )brace
-macro_line|#endif PECULIAR_486
+macro_line|#endif /* PECULIAR_486 */
 id|arg_signif.lsw
 op_assign
 id|argSignif.lsw

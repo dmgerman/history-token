@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Physical mapping layer for MTD using the Axis partitiontable format&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under the GPL.&n; *&n; * First partition is always sector 0 regardless of if we find a partitiontable&n; * or not. In the start of the next sector, there can be a partitiontable that&n; * tells us what other partitions to define. If there isn&squot;t, we use a default&n; * partition split defined below.&n; *&n; * $Log: axisflashmap.c,v $&n; * Revision 1.1  2001/01/12 17:01:18  bjornw&n; * * Added axisflashmap.c, a physical mapping for MTD that reads and understands&n; *   Axis partition-table format.&n; *&n; *&n; */
+multiline_comment|/*&n; * Physical mapping layer for MTD using the Axis partitiontable format&n; *&n; * Copyright (c) 2001 Axis Communications AB&n; *&n; * This file is under the GPL.&n; *&n; * First partition is always sector 0 regardless of if we find a partitiontable&n; * or not. In the start of the next sector, there can be a partitiontable that&n; * tells us what other partitions to define. If there isn&squot;t, we use a default&n; * partition split defined below.&n; *&n; * $Log: axisflashmap.c,v $&n; * Revision 1.4  2001/02/23 12:47:15  bjornw&n; * Uncached flash in LOW_MAP moved from 0xe to 0x8&n; *&n; * Revision 1.3  2001/02/16 12:11:45  jonashg&n; * MTD driver amd_flash is now included in MTD CVS repository.&n; * (It&squot;s now in drivers/mtd).&n; *&n; * Revision 1.2  2001/02/09 11:12:22  jonashg&n; * Support for AMD compatible non-CFI flash chips.&n; * Only tested with Toshiba TC58FVT160 so far.&n; *&n; * Revision 1.1  2001/01/12 17:01:18  bjornw&n; * * Added axisflashmap.c, a physical mapping for MTD that reads and understands&n; *   Axis partition-table format.&n; *&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -10,7 +10,7 @@ macro_line|#include &lt;asm/axisflashmap.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#ifdef CONFIG_CRIS_LOW_MAP
 DECL|macro|FLASH_UNCACHED_ADDR
-mdefine_line|#define FLASH_UNCACHED_ADDR  KSEG_E
+mdefine_line|#define FLASH_UNCACHED_ADDR  KSEG_8
 DECL|macro|FLASH_CACHED_ADDR
 mdefine_line|#define FLASH_CACHED_ADDR    KSEG_5
 macro_line|#else
@@ -590,6 +590,25 @@ op_amp
 id|axis_map
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MTD_AMDSTD
+r_if
+c_cond
+(paren
+op_logical_neg
+id|mymtd
+)paren
+(brace
+id|mymtd
+op_assign
+id|do_amd_flash_probe
+c_func
+(paren
+op_amp
+id|axis_map
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -600,9 +619,9 @@ id|mymtd
 id|printk
 c_func
 (paren
-l_string|&quot;cfi_probe erred %d&bslash;n&quot;
+l_string|&quot;%s: No flash chip found!&bslash;n&quot;
 comma
-id|mymtd
+id|axis_map.name
 )paren
 suffix:semicolon
 r_return
@@ -617,11 +636,18 @@ suffix:semicolon
 multiline_comment|/* The partition-table is at an offset within the second &n;&t; * sector of the flash. We _define_ this to be at offset 64k&n;&t; * even if the actual sector-size in the flash changes.. for&n;&t; * now at least.&n;&t; */
 id|ptable_head
 op_assign
+(paren
+r_struct
+id|partitiontable_head
+op_star
+)paren
+(paren
 id|FLASH_CACHED_ADDR
 op_plus
 id|PTABLE_SECTOR
 op_plus
 id|PARTITION_TABLE_OFFSET
+)paren
 suffix:semicolon
 id|pidx
 op_increment

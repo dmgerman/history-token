@@ -314,6 +314,12 @@ DECL|macro|IP27C_R10000_SCCD_MASK
 mdefine_line|#define&t;IP27C_R10000_SCCD_MASK&t;&t;(7 &lt;&lt; IP27C_R10000_SCCD_SHFT)
 DECL|macro|IP27C_R10000_SCCD
 mdefine_line|#define&t;IP27C_R10000_SCCD(_B)&t;&t;((_B) &lt;&lt; IP27C_R10000_SCCD_SHFT)
+DECL|macro|IP27C_R10000_DDR_SHFT
+mdefine_line|#define&t;IP27C_R10000_DDR_SHFT&t;&t;23
+DECL|macro|IP27C_R10000_DDR_MASK
+mdefine_line|#define&t;IP27C_R10000_DDR_MASK&t;&t;(1 &lt;&lt; IP27C_R10000_DDR_SHFT)
+DECL|macro|IP27C_R10000_DDR
+mdefine_line|#define&t;IP27C_R10000_DDR(_B)&t;&t;((_B) &lt;&lt; IP27C_R10000_DDR_SHFT)
 DECL|macro|IP27C_R10000_SCCT_SHFT
 mdefine_line|#define&t;IP27C_R10000_SCCT_SHFT&t;&t;25
 DECL|macro|IP27C_R10000_SCCT_MASK
@@ -914,6 +920,13 @@ l_int|4
 )paren
 op_plus
 "&bslash;"
+id|IP27C_R10000_DDR
+c_func
+(paren
+l_int|1
+)paren
+op_plus
+"&bslash;"
 id|IP27C_R10000_SCCD
 c_func
 (paren
@@ -1320,14 +1333,8 @@ macro_line|#endif /* _LANGUAGE_C */
 macro_line|#if _LANGUAGE_ASSEMBLY
 multiline_comment|/* these need to be in here since we need assembly definitions&n; * for building hex images (as required by start.s)&n; */
 macro_line|#ifdef IP27_CONFIG_SN00_4MB_100_200_133
-macro_line|#ifdef IRIX
-multiline_comment|/* Set PrcReqMax to 0 to reduce memory problems */
-DECL|macro|BRINGUP_PRM_VAL
-mdefine_line|#define&t;BRINGUP_PRM_VAL&t;0
-macro_line|#else
 DECL|macro|BRINGUP_PRM_VAL
 mdefine_line|#define&t;BRINGUP_PRM_VAL&t;3
-macro_line|#endif
 DECL|macro|CONFIG_CPU_MODE
 mdefine_line|#define CONFIG_CPU_MODE &bslash;&n;&t;(IP27C_R10000_KSEG0CA(5) + &bslash;&n;&t; IP27C_R10000_DEVNUM(0)&t; + &bslash;&n;&t; IP27C_R10000_CPRT(0)&t; + &bslash;&n;&t; IP27C_R10000_PER(0)&t; + &bslash;&n;&t; IP27C_R10000_PRM(BRINGUP_PRM_VAL)&t; + &bslash;&n;&t; IP27C_R10000_SCD(3)&t; + &bslash;&n;&t; IP27C_R10000_SCBS(1)&t; + &bslash;&n;&t; IP27C_R10000_SCCE(0)&t; + &bslash;&n;&t; IP27C_R10000_ME(1)&t; + &bslash;&n;&t; IP27C_R10000_SCS(3)&t; + &bslash;&n;&t; IP27C_R10000_SCCD(2)&t; + &bslash;&n;&t; IP27C_R10000_SCCT(9)&t; + &bslash;&n;&t; IP27C_R10000_ODSC(0)&t; + &bslash;&n;&t; IP27C_R10000_ODSYS(0)&t; + &bslash;&n;&t; IP27C_R10000_CTM(0))
 DECL|macro|CONFIG_FREQ_CPU
@@ -1371,7 +1378,7 @@ mdefine_line|#define CONFIG_FPROM_WR CONFIG_FPROM_ENABLE
 macro_line|#endif /* IP27_CONFIG_SN1_4MB_200_400_267 */
 macro_line|#ifdef IP27_CONFIG_SN1_8MB_200_500_250
 DECL|macro|CONFIG_CPU_MODE
-mdefine_line|#define CONFIG_CPU_MODE &bslash;&n;&t;(IP27C_R10000_KSEG0CA(5) + &bslash;&n;&t; IP27C_R10000_DEVNUM(0)&t; + &bslash;&n;&t; IP27C_R10000_CPRT(0)&t; + &bslash;&n;&t; IP27C_R10000_PER(0)&t; + &bslash;&n;&t; IP27C_R10000_PRM(3)&t; + &bslash;&n;&t; IP27C_R10000_SCD(4)&t; + &bslash;&n;&t; IP27C_R10000_SCBS(1)&t; + &bslash;&n;&t; IP27C_R10000_SCCE(0)&t; + &bslash;&n;&t; IP27C_R10000_ME(1)&t; + &bslash;&n;&t; IP27C_R10000_SCS(4)&t; + &bslash;&n;&t; IP27C_R10000_SCCD(3)&t; + &bslash;&n;&t; IP27C_R10000_SCCT(0xa)&t; + &bslash;&n;&t; IP27C_R10000_ODSC(0)&t; + &bslash;&n;&t; IP27C_R10000_ODSYS(1)&t; + &bslash;&n;&t; IP27C_R10000_CTM(0))
+mdefine_line|#define CONFIG_CPU_MODE &bslash;&n;&t;(IP27C_R10000_KSEG0CA(5) + &bslash;&n;&t; IP27C_R10000_DEVNUM(0)&t; + &bslash;&n;&t; IP27C_R10000_CPRT(0)&t; + &bslash;&n;&t; IP27C_R10000_PER(0)&t; + &bslash;&n;&t; IP27C_R10000_PRM(3)&t; + &bslash;&n;&t; IP27C_R10000_SCD(4)&t; + &bslash;&n;&t; IP27C_R10000_SCBS(1)&t; + &bslash;&n;&t; IP27C_R10000_SCCE(0)&t; + &bslash;&n;&t; IP27C_R10000_ME(1)&t; + &bslash;&n;&t; IP27C_R10000_SCS(4)&t; + &bslash;&n;&t; IP27C_R10000_SCCD(3)&t; + &bslash;&n;         IP27C_R10000_DDR(1)     + &bslash;&n;&t; IP27C_R10000_SCCT(0xa)&t; + &bslash;&n;&t; IP27C_R10000_ODSC(0)&t; + &bslash;&n;&t; IP27C_R10000_ODSYS(1)&t; + &bslash;&n;&t; IP27C_R10000_CTM(0))
 DECL|macro|CONFIG_FREQ_CPU
 mdefine_line|#define CONFIG_FREQ_CPU IP27C_MHZ(500)
 DECL|macro|CONFIG_FREQ_HUB

@@ -2,6 +2,7 @@ multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and condit
 macro_line|#ifndef _ASM_SN_IOERROR_H
 DECL|macro|_ASM_SN_IOERROR_H
 mdefine_line|#define _ASM_SN_IOERROR_H
+macro_line|#if defined(_LANGUAGE_C) || defined(_LANGUAGE_C_PLUS_PLUS)
 multiline_comment|/*&n; * Macros defining the various Errors to be handled as part of&n; * IO Error handling.&n; */
 multiline_comment|/*&n; * List of errors to be handled by each subsystem.&n; * &quot;error_code&quot; field will take one of these values.&n; * The error code is built up of single bits expressing&n; * our confidence that the error was that type; note&n; * that it is possible to have a PIO or DMA error where&n; * we don&squot;t know whether it was a READ or a WRITE, or&n; * even a READ or WRITE error that we&squot;re not sure whether&n; * to call a PIO or DMA.&n; *&n; * It is also possible to set both PIO and DMA, and possible&n; * to set both READ and WRITE; the first may be nonsensical&n; * but the second *could* be used to designate an access&n; * that is known to be a read-modify-write cycle. It is&n; * quite possible that nobody will ever use PIO|DMA or&n; * READ|WRITE ... but being flexible is good.&n; */
 DECL|macro|IOECODE_UNSPEC
@@ -283,6 +284,7 @@ DECL|typedef|ioerror_mode_t
 )brace
 id|ioerror_mode_t
 suffix:semicolon
+macro_line|#endif&t;&t;&t;&t;/* C || C++ */
 DECL|typedef|error_handler_f
 r_typedef
 r_int

@@ -210,8 +210,9 @@ DECL|macro|AC97_SUPPORTED_MASK
 mdefine_line|#define AC97_SUPPORTED_MASK (AC97_STEREO_MASK | &bslash;&n;&t;SOUND_MASK_BASS|SOUND_MASK_TREBLE|&bslash;&n;&t;SOUND_MASK_SPEAKER|SOUND_MASK_MIC|&bslash;&n;&t;SOUND_MASK_PHONEIN|SOUND_MASK_PHONEOUT)
 DECL|macro|AC97_RECORD_MASK
 mdefine_line|#define AC97_RECORD_MASK (SOUND_MASK_MIC|&bslash;&n;&t;SOUND_MASK_CD|SOUND_MASK_IGAIN|SOUND_MASK_VIDEO|&bslash;&n;&t;SOUND_MASK_LINE1| SOUND_MASK_LINE|&bslash;&n;&t;SOUND_MASK_PHONEIN)
+multiline_comment|/* original check is not good enough in case FOO is greater than&n; * SOUND_MIXER_NRDEVICES because the supported_mixers has exactly&n; * SOUND_MIXER_NRDEVICES elements.&n; * before matching the given mixer against the bitmask in supported_mixers we&n; * check if mixer number exceeds maximum allowed size which is as mentioned&n; * above SOUND_MIXER_NRDEVICES */
 DECL|macro|supported_mixer
-mdefine_line|#define supported_mixer(CODEC,FOO) ((CODEC)-&gt;supported_mixers &amp; (1&lt;&lt;FOO) )
+mdefine_line|#define supported_mixer(CODEC,FOO) ((FOO &gt;= 0) &amp;&amp; &bslash;&n;                                    (FOO &lt; SOUND_MIXER_NRDEVICES) &amp;&amp; &bslash;&n;                                    (CODEC)-&gt;supported_mixers &amp; (1&lt;&lt;FOO) )
 DECL|struct|ac97_codec
 r_struct
 id|ac97_codec

@@ -1,8 +1,10 @@
-multiline_comment|/* $Id: bitops.h,v 1.3 2000/10/17 14:56:27 bjornw Exp $ */
+multiline_comment|/* $Id: bitops.h,v 1.4 2001/02/28 04:26:11 hp Exp $ */
 multiline_comment|/* all of these should probably be rewritten in assembler for speed. */
 macro_line|#ifndef _CRIS_BITOPS_H
 DECL|macro|_CRIS_BITOPS_H
 mdefine_line|#define _CRIS_BITOPS_H
+multiline_comment|/* Currently this is unsuitable for consumption outside the kernel.  */
+macro_line|#ifdef __KERNEL__ 
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * These have to be done with inline assembly: that way the bit-setting&n; * is guaranteed to be atomic. All bit operations return 0 if the bit&n; * was cleared before the operation and != 0 if it was not.&n; *&n; * bit 0 is the LSB of addr; bit 32 is the LSB of (addr+1).&n; */
 multiline_comment|/*&n; * Some hacks to defeat gcc over-optimizations..&n; */
@@ -645,7 +647,6 @@ suffix:semicolon
 )brace
 DECL|macro|find_first_zero_bit
 mdefine_line|#define find_first_zero_bit(addr, size) &bslash;&n;        find_next_zero_bit((addr), (size), 0)
-macro_line|#ifdef __KERNEL__ 
 DECL|macro|ext2_set_bit
 mdefine_line|#define ext2_set_bit                 test_and_set_bit
 DECL|macro|ext2_clear_bit

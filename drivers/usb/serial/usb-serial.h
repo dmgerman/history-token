@@ -840,9 +840,16 @@ op_star
 id|data
 )paren
 (brace
-macro_line|#ifdef CONFIG_USB_SERIAL_DEBUG
 r_int
 id|i
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|debug
+)paren
+r_return
 suffix:semicolon
 id|printk
 (paren
@@ -887,7 +894,11 @@ id|printk
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
+multiline_comment|/* Use our own dbg macro */
+DECL|macro|dbg
+macro_line|#undef dbg
+DECL|macro|dbg
+mdefine_line|#define dbg(format, arg...) do { if (debug) printk(KERN_DEBUG __FILE__ &quot;: &quot; format &quot;&bslash;n&quot; , ## arg); } while (0)
 macro_line|#endif&t;/* ifdef __LINUX_USB_SERIAL_H */
 eof
