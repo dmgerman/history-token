@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   fs/cifs/transport.c&n; *&n; *   Copyright (c) International Business Machines  Corp., 2002&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA &n; */
+multiline_comment|/*&n; *   fs/cifs/transport.c&n; *&n; *   Copyright (C) International Business Machines  Corp., 2002,2003&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA &n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
@@ -49,7 +49,6 @@ l_int|10
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/* BB add spinlock to protect midq for each session BB */
 r_if
 c_cond
 (paren
@@ -219,7 +218,7 @@ op_eq
 id|CifsGood
 )paren
 (brace
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -247,7 +246,7 @@ id|temp-&gt;midState
 op_assign
 id|MID_REQUEST_ALLOCATED
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -299,8 +298,7 @@ op_star
 id|midEntry
 )paren
 (brace
-multiline_comment|/* BB add spinlock to protect midq for each session BB */
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -325,7 +323,7 @@ op_amp
 id|midCount
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -442,7 +440,7 @@ id|temp-&gt;netfid
 op_assign
 id|fid
 suffix:semicolon
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -459,7 +457,7 @@ op_amp
 id|GlobalOplock_Q
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -482,8 +480,7 @@ op_star
 id|oplockEntry
 )paren
 (brace
-multiline_comment|/* BB add spinlock to protect midq for each session BB */
-id|write_lock
+id|spin_lock
 c_func
 (paren
 op_amp
@@ -498,7 +495,7 @@ op_amp
 id|oplockEntry-&gt;qhead
 )paren
 suffix:semicolon
-id|write_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
