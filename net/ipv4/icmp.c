@@ -3870,6 +3870,7 @@ id|sk-&gt;sk_allocation
 op_assign
 id|GFP_ATOMIC
 suffix:semicolon
+multiline_comment|/* Enough space for 2 64K ICMP packets, including&n;&t;&t; * sk_buff struct overhead.&n;&t;&t; */
 id|per_cpu
 c_func
 (paren
@@ -3880,9 +3881,23 @@ id|i
 op_member_access_from_pointer
 id|sk-&gt;sk_sndbuf
 op_assign
-id|SK_WMEM_MAX
-op_star
+(paren
 l_int|2
+op_star
+(paren
+(paren
+l_int|64
+op_star
+l_int|1024
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|sk_buff
+)paren
+)paren
+)paren
 suffix:semicolon
 id|inet
 op_assign
