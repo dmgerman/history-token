@@ -275,7 +275,7 @@ mdefine_line|#define DEB(x)
 macro_line|#endif
 macro_line|#ifndef DDB
 DECL|macro|DDB
-mdefine_line|#define DDB(x) {}
+mdefine_line|#define DDB(x) do {} while (0)
 macro_line|#endif
 macro_line|#ifndef MDB
 macro_line|#ifdef MODULE
