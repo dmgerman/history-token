@@ -4806,8 +4806,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SMP
-multiline_comment|/**&n; * __wake_up - sync- wake up threads blocked on a waitqueue.&n; * @q: the waitqueue&n; * @mode: which threads&n; * @nr_exclusive: how many wake-one or wake-many threads to wake up&n; *&n; * The sync wakeup differs that the waker knows that it will schedule&n; * away soon, so while the target thread will be woken up, it will not&n; * be migrated to another CPU - ie. the two threads are &squot;synchronized&squot;&n; * with each other. This can prevent needless bouncing between CPUs.&n; */
+multiline_comment|/**&n; * __wake_up - sync- wake up threads blocked on a waitqueue.&n; * @q: the waitqueue&n; * @mode: which threads&n; * @nr_exclusive: how many wake-one or wake-many threads to wake up&n; *&n; * The sync wakeup differs that the waker knows that it will schedule&n; * away soon, so while the target thread will be woken up, it will not&n; * be migrated to another CPU - ie. the two threads are &squot;synchronized&squot;&n; * with each other. This can prevent needless bouncing between CPUs.&n; *&n; * On UP it can prevent extra preemption.&n; */
 DECL|function|__wake_up_sync
 r_void
 id|__wake_up_sync
@@ -4894,7 +4893,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|complete
 r_void
 id|complete
