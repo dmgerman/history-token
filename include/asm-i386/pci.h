@@ -377,6 +377,31 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|HAVE_PCI_MMAP
+mdefine_line|#define HAVE_PCI_MMAP
+r_extern
+r_int
+id|pci_mmap_page_range
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_enum
+id|pci_mmap_state
+id|mmap_state
+comma
+r_int
+id|write_combine
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __i386_PCI_H */
 eof

@@ -2105,12 +2105,17 @@ id|hwif-&gt;dma_base
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifndef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#else /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA 
+r_if
+c_cond
+(paren
+op_logical_neg
+id|noautodma
+)paren
 id|hwif-&gt;autodma
 op_assign
 l_int|1

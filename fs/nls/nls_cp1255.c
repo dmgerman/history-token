@@ -2940,9 +2940,9 @@ op_assign
 (brace
 id|page00
 comma
-l_int|NULL
+id|page01
 comma
-l_int|NULL
+id|page02
 comma
 l_int|NULL
 comma

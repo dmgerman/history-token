@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;PF_INET6 protocol dispatch tables.&n; *&n; * Version:&t;$Id: protocol.c,v 1.9 2000/10/03 07:29:01 anton Exp $&n; *&n; * Authors:&t;Pedro Roque&t;&lt;roque@di.fc.ul.pt&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;PF_INET6 protocol dispatch tables.&n; *&n; * Version:&t;$Id: protocol.c,v 1.10 2001/05/18 02:25:49 davem Exp $&n; *&n; * Authors:&t;Pedro Roque&t;&lt;roque@di.fc.ul.pt&gt;&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *      Changes:&n; *&n; *      Vince Laviano (vince@cs.stanford.edu)       16 May 2001&n; *      - Removed unused variable &squot;inet6_protocol_base&squot;&n; *      - Modified inet6_del_protocol() to correctly maintain copy bit.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -13,12 +14,6 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
-DECL|variable|inet6_protocol_base
-r_struct
-id|inet6_protocol
-op_star
-id|inet6_protocol_base
-suffix:semicolon
 DECL|variable|inet6_protos
 r_struct
 id|inet6_protocol
@@ -226,6 +221,21 @@ id|inet6_protos
 id|hash
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p
+op_ne
+l_int|NULL
+op_logical_and
+id|p-&gt;protocol
+op_eq
+id|prot-&gt;protocol
+)paren
+id|lp
+op_assign
+id|p
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -251,7 +261,7 @@ multiline_comment|/*&n;&t;&t;&t; * if we are the last one with this protocol and
 r_if
 c_cond
 (paren
-id|p-&gt;copy
+id|prot-&gt;copy
 op_eq
 l_int|0
 op_logical_and
@@ -290,7 +300,7 @@ id|prot-&gt;protocol
 )paren
 id|lp
 op_assign
-id|p
+id|p-&gt;next
 suffix:semicolon
 id|p
 op_assign

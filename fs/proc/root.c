@@ -190,6 +190,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_RTAS
+id|proc_rtas_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|proc_bus
 op_assign
 id|proc_mkdir

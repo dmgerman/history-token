@@ -1,5 +1,11 @@
 multiline_comment|/* hamachi.c: A Packet Engines GNIC-II Gigabit Ethernet driver for Linux. */
-multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&t;Updates 2000 by Keith Underwood.&n;&n;&t;This software may be used and distributed according to the terms of &n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;This driver is for the Packet Engines GNIC-II PCI Gigabit Ethernet&n;&t;adapter.&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/hamachi.html&n;&t;or&n;&t;http://www.parl.clemson.edu/~keithu/hamachi.html&n;&n;&t;For best viewing, set your tabs to 3.&n;&n;*/
+multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&t;Updates 2000 by Keith Underwood.&n;&n;&t;This software may be used and distributed according to the terms of &n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;This driver is for the Packet Engines GNIC-II PCI Gigabit Ethernet&n;&t;adapter.&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/hamachi.html&n;&t;or&n;&t;http://www.parl.clemson.edu/~keithu/hamachi.html&n;&n;&n;&n;&t;Linux kernel changelog:&n;&n;&t;LK1.0.1:&n;&t;- fix lack of pci_dev&lt;-&gt;dev association&n;&t;- ethtool support (jgarzik)&n;&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;hamachi&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.01+LK1.0.1&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;5/18/2001&quot;
 multiline_comment|/* A few user-configurable values. */
 DECL|variable|debug
 r_static
@@ -229,7 +235,7 @@ DECL|macro|TX_RING_SIZE
 mdefine_line|#define TX_RING_SIZE&t;64
 DECL|macro|RX_RING_SIZE
 mdefine_line|#define RX_RING_SIZE&t;512
-multiline_comment|/*&n; * Enable mii_ioctl.  Added interrupt coalescing parameter adjustment.&n; * 2/19/99 Pete Wyckoff &lt;wyckoff@ca.sandia.gov&gt;&n; */
+multiline_comment|/*&n; * Enable netdev_ioctl.  Added interrupt coalescing parameter adjustment.&n; * 2/19/99 Pete Wyckoff &lt;wyckoff@ca.sandia.gov&gt;&n; */
 multiline_comment|/* play with 64-bit addrlen; seems to be a teensy bit slower  --pw */
 multiline_comment|/* #define ADDRLEN 64 */
 multiline_comment|/*&n; * RX_CHECKSUM turns on card-generated receive checksum generation for&n; *   TCP and UDP packets.  Otherwise the upper layers do the calculation.&n; * TX_CHECKSUM won&squot;t do anything too useful, even if it works.  There&squot;s no&n; *   easy mechanism by which to tell the TCP/UDP stack that it need not&n; *   generate checksums for this device.  But if somebody can find a way&n; *   to get that to work, most of the card work is in here already.&n; * 3/10/1999 Pete Wyckoff &lt;wyckoff@ca.sandia.gov&gt;&n; */
@@ -254,6 +260,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -273,7 +281,12 @@ id|version
 id|__initdata
 op_assign
 id|KERN_INFO
-l_string|&quot;hamachi.c:v1.01 5/16/2000  Written by Donald Becker&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:v&quot;
+id|DRV_VERSION
+l_string|&quot; &quot;
+id|DRV_RELDATE
+l_string|&quot;  Written by Donald Becker&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;   Some modifications by Eric kasten &lt;kasten@nscl.msu.edu&gt;&bslash;n&quot;
 id|KERN_INFO
@@ -933,14 +946,12 @@ id|u_int32_t
 id|option
 suffix:semicolon
 multiline_comment|/* Hold on to a copy of the options */
-DECL|member|pad
-id|u_int8_t
-id|pad
-(braket
-l_int|16
-)braket
+DECL|member|pci_dev
+r_struct
+id|pci_dev
+op_star
+id|pci_dev
 suffix:semicolon
-multiline_comment|/* Used for 32-byte alignment */
 )brace
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -1157,7 +1168,7 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -1439,7 +1450,7 @@ c_func
 (paren
 id|pdev
 comma
-l_string|&quot;hamachi&quot;
+id|DRV_NAME
 )paren
 suffix:semicolon
 r_if
@@ -1790,9 +1801,21 @@ id|dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+id|dev
+)paren
+suffix:semicolon
 id|hmp-&gt;chip_id
 op_assign
 id|chip_id
+suffix:semicolon
+id|hmp-&gt;pci_dev
+op_assign
+id|pdev
 suffix:semicolon
 multiline_comment|/* The lower four bits are the media type. */
 r_if
@@ -2011,7 +2034,7 @@ suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
 op_amp
-id|mii_ioctl
+id|netdev_ioctl
 suffix:semicolon
 id|dev-&gt;tx_timeout
 op_assign
@@ -2065,6 +2088,14 @@ id|pci_release_regions
 c_func
 (paren
 id|pdev
+)paren
+suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -7890,10 +7921,130 @@ id|AddrMode
 suffix:semicolon
 )brace
 )brace
-DECL|function|mii_ioctl
+DECL|function|netdev_ethtool_ioctl
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+r_struct
+id|hamachi_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|ethcmd
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|ethcmd
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.bus_info
+comma
+id|np-&gt;pci_dev-&gt;slot_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -7932,6 +8083,22 @@ c_cond
 id|cmd
 )paren
 (brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+r_return
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
 r_case
 id|SIOCDEVPRIVATE
 suffix:colon
@@ -8255,7 +8422,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;hamachi&quot;
+id|DRV_NAME
 comma
 id|id_table
 suffix:colon

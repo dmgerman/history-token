@@ -1,5 +1,11 @@
 multiline_comment|/* epic100.c: A SMC 83c170 EPIC/100 Fast Ethernet driver for Linux. */
-multiline_comment|/*&n;&t;Written/copyright 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the SMC83c170/175 &quot;EPIC&quot; series, as used on the&n;&t;SMC EtherPower II 9432 PCI adapter, and several CardBus cards.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Information and updates available at&n;&t;http://www.scyld.com/network/epic100.html&n;&n;&t;---------------------------------------------------------------------&n;&t;&n;&t;Linux kernel-specific changes:&n;&t;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge becker version 1.09 (4/08/2000)&n;&n;&t;LK1.1.3:&n;&t;* Major bugfix to 1.09 driver (Francis Romieu)&n;&t;&n;&t;LK1.1.4 (jgarzik):&n;&t;* Merge becker test version 1.09 (5/29/2000)&n;&n;&t;LK1.1.5:&n;&t;* Fix locking (jgarzik)&n;&t;* Limit 83c175 probe to ethernet-class PCI devices (rgooch)&n;&n;&t;LK1.1.6:&n;&t;* Merge becker version 1.11&n;&t;* Move pci_enable_device before any PCI BAR len checks&n;&n;*/
+multiline_comment|/*&n;&t;Written/copyright 1997-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is for the SMC83c170/175 &quot;EPIC&quot; series, as used on the&n;&t;SMC EtherPower II 9432 PCI adapter, and several CardBus cards.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Information and updates available at&n;&t;http://www.scyld.com/network/epic100.html&n;&n;&t;---------------------------------------------------------------------&n;&t;&n;&t;Linux kernel-specific changes:&n;&t;&n;&t;LK1.1.2 (jgarzik):&n;&t;* Merge becker version 1.09 (4/08/2000)&n;&n;&t;LK1.1.3:&n;&t;* Major bugfix to 1.09 driver (Francis Romieu)&n;&t;&n;&t;LK1.1.4 (jgarzik):&n;&t;* Merge becker test version 1.09 (5/29/2000)&n;&n;&t;LK1.1.5:&n;&t;* Fix locking (jgarzik)&n;&t;* Limit 83c175 probe to ethernet-class PCI devices (rgooch)&n;&n;&t;LK1.1.6:&n;&t;* Merge becker version 1.11&n;&t;* Move pci_enable_device before any PCI BAR len checks&n;&n;&t;LK1.1.7:&n;&t;* { fill me in }&n;&n;&t;LK1.1.8:&n;&t;* ethtool support (jgarzik)&n;&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;epic100&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.11+LK1.1.8&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;May 18, 2001&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -138,8 +144,10 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* These identify the driver base version and may not be removed. */
 DECL|variable|__devinitdata
 r_static
@@ -149,7 +157,8 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;epic100.c:v1.11 1/7/2001 Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:v1.11 1/7/2001 Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
 suffix:semicolon
 DECL|variable|__devinitdata
 r_static
@@ -169,7 +178,11 @@ id|version3
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;  (unofficial 2.4.x kernel port, version 1.1.7, April 17, 2001)&bslash;n&quot;
+l_string|&quot;  (unofficial 2.4.x kernel port, version &quot;
+id|DRV_VERSION
+l_string|&quot;, &quot;
+id|DRV_RELDATE
+l_string|&quot;)&bslash;n&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -1238,7 +1251,7 @@ id|regs
 suffix:semicolon
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -1495,7 +1508,7 @@ c_func
 (paren
 id|pdev
 comma
-l_string|&quot;epic100&quot;
+id|DRV_NAME
 )paren
 )paren
 r_goto
@@ -1548,7 +1561,8 @@ id|ioaddr
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;epic100 %d: ioremap failed&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot; %d: ioremap failed&bslash;n&quot;
 comma
 id|card_idx
 )paren
@@ -1860,7 +1874,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;epic100(%s): EEPROM contents&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;(%s): EEPROM contents&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
 )paren
@@ -1990,7 +2005,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;epic100(%s): MII transceiver #%d control &quot;
+id|DRV_NAME
+l_string|&quot;(%s): MII transceiver #%d control &quot;
 l_string|&quot;%4.4x status %4.4x.&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
@@ -2047,7 +2063,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;epic100(%s): Autonegotiation advertising %4.4x link &quot;
+id|DRV_NAME
+l_string|&quot;(%s): Autonegotiation advertising %4.4x link &quot;
 l_string|&quot;partner %4.4x.&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
@@ -2082,7 +2099,8 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;epic100(%s): ***WARNING***: No MII transceiver found!&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;(%s): ***WARNING***: No MII transceiver found!&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
 )paren
@@ -2151,7 +2169,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;epic100(%s):  Forced full duplex operation requested.&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;(%s):  Forced full duplex operation requested.&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
 )paren
@@ -2201,7 +2220,7 @@ suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
 op_amp
-id|mii_ioctl
+id|netdev_ioctl
 suffix:semicolon
 id|dev-&gt;watchdog_timeo
 op_assign
@@ -6936,10 +6955,130 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-DECL|function|mii_ioctl
+DECL|function|netdev_ethtool_ioctl
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+r_struct
+id|epic_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|ethcmd
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|ethcmd
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.bus_info
+comma
+id|np-&gt;pci_dev-&gt;slot_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -6985,6 +7124,22 @@ c_cond
 id|cmd
 )paren
 (brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+r_return
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
 r_case
 id|SIOCDEVPRIVATE
 suffix:colon
@@ -7559,7 +7714,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;epic100&quot;
+id|DRV_NAME
 comma
 id|id_table
 suffix:colon

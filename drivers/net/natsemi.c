@@ -1,5 +1,11 @@
 multiline_comment|/* natsemi.c: A Linux PCI Ethernet driver for the NatSemi DP8381x series. */
-multiline_comment|/*&n;&t;Written/copyright 1999-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.  License for under other terms may be&n;&t;available.  Contact the original author for details.&n;&n;&t;The original author may be reached as becker@scyld.com, or at&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support information and updates available at&n;&t;http://www.scyld.com/network/netsemi.html&n;&n;&n;&t;Linux kernel modifications:&n;&n;&t;Version 1.0.1:&n;&t;&t;- Spinlock fixes&n;&t;&t;- Bug fixes and better intr performance (Tjeerd)&n;&t;Version 1.0.2:&n;&t;&t;- Now reads correct MAC address from eeprom&n;&t;Version 1.0.3:&n;&t;&t;- Eliminate redundant priv-&gt;tx_full flag&n;&t;&t;- Call netif_start_queue from dev-&gt;tx_timeout&n;&t;&t;- wmb() in start_tx() to flush data&n;&t;&t;- Update Tx locking&n;&t;&t;- Clean up PCI enable (davej)&n;&t;Version 1.0.4:&n;&t;&t;- Merge Donald Becker&squot;s natsemi.c version 1.07&n;&n;*/
+multiline_comment|/*&n;&t;Written/copyright 1999-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.  License for under other terms may be&n;&t;available.  Contact the original author for details.&n;&n;&t;The original author may be reached as becker@scyld.com, or at&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support information and updates available at&n;&t;http://www.scyld.com/network/netsemi.html&n;&n;&n;&t;Linux kernel modifications:&n;&n;&t;Version 1.0.1:&n;&t;&t;- Spinlock fixes&n;&t;&t;- Bug fixes and better intr performance (Tjeerd)&n;&t;Version 1.0.2:&n;&t;&t;- Now reads correct MAC address from eeprom&n;&t;Version 1.0.3:&n;&t;&t;- Eliminate redundant priv-&gt;tx_full flag&n;&t;&t;- Call netif_start_queue from dev-&gt;tx_timeout&n;&t;&t;- wmb() in start_tx() to flush data&n;&t;&t;- Update Tx locking&n;&t;&t;- Clean up PCI enable (davej)&n;&t;Version 1.0.4:&n;&t;&t;- Merge Donald Becker&squot;s natsemi.c version 1.07&n;&t;Version 1.0.5:&n;&t;&t;- { fill me in }&n;&t;Version 1.0.6:&n;&t;&t;* ethtool support (jgarzik)&n;&t;&t;* Proper initialization of the card (which sometimes&n;&t;&t;fails to occur and leaves the card in a non-functional&n;&t;&t;state). (uzi)&n;&n;&t;&t;* Some documented register settings to optimize some&n;&t;&t;of the 100Mbit autodetection circuitry in rev C cards. (uzi)&n;&n;&t;&t;* Polling of the PHY intr for stuff like link state&n;&t;&t;change and auto- negotiation to finally work properly. (uzi)&n;&n;&t;&t;* One-liner removal of a duplicate declaration of&n;&t;&t;netdev_error(). (uzi)&n;&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;natsemi&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;1.07+LK1.0.6&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;May 18, 2001&quot;
 multiline_comment|/* Updated to recommendations in pci-skeleton v2.03. */
 multiline_comment|/* Automatically extracted configuration info:&n;probe-func: natsemi_probe&n;config-in: tristate &squot;National Semiconductor DP8381x series PCI Ethernet support&squot; CONFIG_NATSEMI&n;&n;c-help-name: National Semiconductor DP8381x series PCI Ethernet support&n;c-help-symbol: CONFIG_NATSEMI&n;c-help: This driver is for the National Semiconductor DP8381x series,&n;c-help: including the 83815 chip.&n;c-help: More specific information and updates are available from &n;c-help: http://www.scyld.com/network/natsemi.html&n;*/
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
@@ -123,15 +129,11 @@ DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT  (2*HZ)
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ&t;&t;1536&t;&t;&t;/* Size of each temporary Rx buffer.*/
-DECL|macro|final_version
-mdefine_line|#define final_version
 macro_line|#if !defined(__OPTIMIZE__)
 macro_line|#warning  You must compile this file with the correct options!
 macro_line|#warning  See the last lines of the source file.
 macro_line|#error You must compile this driver with &quot;-O&quot;.
 macro_line|#endif
-multiline_comment|/* Include files, designed to support most kernel versions 2.0.0 and later. */
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -146,9 +148,11 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* These identify the driver base version and may not be removed. */
 DECL|variable|__devinitdata
 r_static
@@ -159,11 +163,16 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;natsemi.c:v1.07 1/9/2001  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
+id|DRV_NAME
+l_string|&quot;.c:v1.07 1/9/2001  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;  http://www.scyld.com/network/natsemi.html&bslash;n&quot;
 id|KERN_INFO
-l_string|&quot;  (unofficial 2.4.x kernel port, version 1.0.5, April 17, 2001 Jeff Garzik, Tjeerd Mulder)&bslash;n&quot;
+l_string|&quot;  (unofficial 2.4.x kernel port, version &quot;
+id|DRV_VERSION
+l_string|&quot;, &quot;
+id|DRV_RELDATE
+l_string|&quot;  Jeff Garzik, Tjeerd Mulder)&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* Condensed operations for readability. */
 DECL|macro|virt_to_le32desc
@@ -432,8 +441,8 @@ l_int|0x4C
 comma
 DECL|enumerator|BootRomAddr
 DECL|enumerator|BootRomData
+DECL|enumerator|SiliconRev
 DECL|enumerator|StatsCtrl
-DECL|enumerator|StatsData
 id|BootRomAddr
 op_assign
 l_int|0x50
@@ -442,17 +451,22 @@ id|BootRomData
 op_assign
 l_int|0x54
 comma
+id|SiliconRev
+op_assign
+l_int|0x58
+comma
 id|StatsCtrl
 op_assign
 l_int|0x5C
 comma
+DECL|enumerator|StatsData
+DECL|enumerator|RxPktErrs
+DECL|enumerator|RxMissed
+DECL|enumerator|RxCRCErrs
 id|StatsData
 op_assign
 l_int|0x60
 comma
-DECL|enumerator|RxPktErrs
-DECL|enumerator|RxMissed
-DECL|enumerator|RxCRCErrs
 id|RxPktErrs
 op_assign
 l_int|0x60
@@ -466,10 +480,50 @@ op_assign
 l_int|0x64
 comma
 DECL|enumerator|PCIPM
+DECL|enumerator|PhyStatus
+DECL|enumerator|MIntrCtrl
+DECL|enumerator|MIntrStatus
 id|PCIPM
 op_assign
 l_int|0x44
 comma
+id|PhyStatus
+op_assign
+l_int|0xC0
+comma
+id|MIntrCtrl
+op_assign
+l_int|0xC4
+comma
+id|MIntrStatus
+op_assign
+l_int|0xC8
+comma
+multiline_comment|/* These are from the spec, around page 78... on a separate table. */
+DECL|enumerator|PGSEL
+DECL|enumerator|PMDCSR
+DECL|enumerator|TSTDAT
+DECL|enumerator|DSPCFG
+DECL|enumerator|SDCFG
+id|PGSEL
+op_assign
+l_int|0xCC
+comma
+id|PMDCSR
+op_assign
+l_int|0xE4
+comma
+id|TSTDAT
+op_assign
+l_int|0xFC
+comma
+id|DSPCFG
+op_assign
+l_int|0xF4
+comma
+id|SDCFG
+op_assign
+l_int|0x8C
 )brace
 suffix:semicolon
 multiline_comment|/* Bit in ChipCmd. */
@@ -1027,20 +1081,6 @@ id|dev
 suffix:semicolon
 r_static
 r_void
-id|netdev_error
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_int
-id|intr_status
-)paren
-suffix:semicolon
-r_static
-r_void
 id|set_rx_mode
 c_func
 (paren
@@ -1065,7 +1105,7 @@ id|dev
 suffix:semicolon
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -1617,7 +1657,7 @@ suffix:semicolon
 id|dev-&gt;do_ioctl
 op_assign
 op_amp
-id|mii_ioctl
+id|netdev_ioctl
 suffix:semicolon
 id|dev-&gt;tx_timeout
 op_assign
@@ -2201,7 +2241,94 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* Do we need to reset the chip??? */
+multiline_comment|/* Reset the chip, just in case. */
+id|writel
+c_func
+(paren
+id|ChipReset
+comma
+id|ioaddr
+op_plus
+id|ChipCmd
+)paren
+suffix:semicolon
+multiline_comment|/* On page 78 of the spec, they recommend some settings for &quot;optimum&n;&t;   performance&quot; to be done in sequence.  These settings optimize some&n;&t;   of the 100Mbit autodetection circuitry.  Also, we only want to do&n;&t;   this for rev C of the chip.&n;&t;*/
+r_if
+c_cond
+(paren
+id|readl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|SiliconRev
+)paren
+op_eq
+l_int|0x302
+)paren
+(brace
+id|writew
+c_func
+(paren
+l_int|0x0001
+comma
+id|ioaddr
+op_plus
+id|PGSEL
+)paren
+suffix:semicolon
+id|writew
+c_func
+(paren
+l_int|0x189C
+comma
+id|ioaddr
+op_plus
+id|PMDCSR
+)paren
+suffix:semicolon
+id|writew
+c_func
+(paren
+l_int|0x0000
+comma
+id|ioaddr
+op_plus
+id|TSTDAT
+)paren
+suffix:semicolon
+id|writew
+c_func
+(paren
+l_int|0x5040
+comma
+id|ioaddr
+op_plus
+id|DSPCFG
+)paren
+suffix:semicolon
+id|writew
+c_func
+(paren
+l_int|0x008C
+comma
+id|ioaddr
+op_plus
+id|SDCFG
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Enable PHY Specific event based interrupts.  Link state change&n;&t;   and Auto-Negotiation Completion are among the affected.&n;&t;*/
+id|writew
+c_func
+(paren
+l_int|0x0002
+comma
+id|ioaddr
+op_plus
+id|MIntrCtrl
+)paren
+suffix:semicolon
 id|i
 op_assign
 id|request_irq
@@ -3433,28 +3560,6 @@ id|boguscnt
 op_assign
 id|max_interrupt_work
 suffix:semicolon
-macro_line|#ifndef final_version&t;&t;&t;/* Can never occur. */
-r_if
-c_cond
-(paren
-id|dev
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-(paren
-id|KERN_ERR
-l_string|&quot;Netdev interrupt handler(): IRQ %d for unknown &quot;
-l_string|&quot;device.&bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -3599,7 +3704,6 @@ l_int|0x08000000
 id|np-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; 0x20127
 id|np-&gt;stats.tx_bytes
 op_add_assign
 id|np-&gt;tx_skbuff
@@ -3609,7 +3713,6 @@ id|entry
 op_member_access_from_pointer
 id|len
 suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace
@@ -3797,51 +3900,6 @@ id|IntrStatus
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifndef final_version
-multiline_comment|/* Code that should never be run!  Perhaps remove after testing.. */
-(brace
-r_static
-r_int
-id|stopit
-op_assign
-l_int|10
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|netif_running
-c_func
-(paren
-id|dev
-)paren
-op_logical_and
-op_decrement
-id|stopit
-OL
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: Emergency stop, looping startup interrupt.&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-id|free_irq
-c_func
-(paren
-id|irq
-comma
-id|dev
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
 )brace
 multiline_comment|/* This routine is logically part of the interrupt handler, but separated&n;   for clarity and better register allocation. */
 DECL|function|netdev_rx
@@ -4209,115 +4267,6 @@ id|temp
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifndef final_version&t;&t;&t;&t;/* Remove after testing. */
-multiline_comment|/* You will want this info for the initial debug. */
-r_if
-c_cond
-(paren
-id|debug
-OG
-l_int|5
-)paren
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;  Rx data %2.2x:%2.2x:%2.2x:%2.2x:%2.2x:&quot;
-l_string|&quot;%2.2x %2.2x:%2.2x:%2.2x:%2.2x:%2.2x:%2.2x %2.2x%2.2x &quot;
-l_string|&quot;%d.%d.%d.%d.&bslash;n&quot;
-comma
-id|skb-&gt;data
-(braket
-l_int|0
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|1
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|2
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|3
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|4
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|5
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|6
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|7
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|8
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|9
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|10
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|11
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|12
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|13
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|14
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|15
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|16
-)braket
-comma
-id|skb-&gt;data
-(braket
-l_int|17
-)braket
-)paren
-suffix:semicolon
-macro_line|#endif
 id|skb-&gt;protocol
 op_assign
 id|eth_type_trans
@@ -4342,12 +4291,10 @@ suffix:semicolon
 id|np-&gt;stats.rx_packets
 op_increment
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; 0x20127
 id|np-&gt;stats.rx_bytes
 op_add_assign
 id|pkt_len
 suffix:semicolon
-macro_line|#endif
 )brace
 id|entry
 op_assign
@@ -4552,6 +4499,15 @@ id|ioaddr
 op_plus
 l_int|0x94
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* read MII int status to clear the flag */
+id|readw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|MIntrStatus
 )paren
 suffix:semicolon
 id|check_duplex
@@ -5077,10 +5033,130 @@ op_assign
 id|rx_mode
 suffix:semicolon
 )brace
-DECL|function|mii_ioctl
+DECL|function|netdev_ethtool_ioctl
 r_static
 r_int
-id|mii_ioctl
+id|netdev_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|ethcmd
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|ethcmd
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.bus_info
+comma
+id|np-&gt;pci_dev-&gt;slot_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
+DECL|function|netdev_ioctl
+r_static
+r_int
+id|netdev_ioctl
 c_func
 (paren
 r_struct
@@ -5121,6 +5197,22 @@ c_cond
 id|cmd
 )paren
 (brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+r_return
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
 r_case
 id|SIOCDEVPRIVATE
 suffix:colon
@@ -5612,17 +5704,6 @@ id|i
 )braket
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &lt; 0x20100
-id|np-&gt;rx_skbuff
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|free
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 id|dev_kfree_skb
 c_func
 (paren
@@ -5775,7 +5856,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-l_string|&quot;natsemi&quot;
+id|DRV_NAME
 comma
 id|id_table
 suffix:colon

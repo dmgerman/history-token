@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *&n; * Eicon File Revision :    1.15  &n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY OF ANY KIND WHATSOEVER INCLUDING ANY &n; * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  &n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+macro_line|#include &quot;eicon.h&quot;
 macro_line|#include &quot;sys.h&quot;
 macro_line|#include &quot;idi.h&quot;
 macro_line|#include &quot;constant.h&quot;
@@ -6,9 +7,6 @@ macro_line|#include &quot;divas.h&quot;
 macro_line|#include &quot;pc.h&quot;
 macro_line|#include &quot;pr_pc.h&quot;
 macro_line|#include &quot;uxio.h&quot;
-macro_line|#include &lt;sys/types.h&gt;
-DECL|macro|MAX_ADDR_LEN
-mdefine_line|#define MAX_ADDR_LEN
 DECL|macro|DIVAS_LOAD_CMD
 mdefine_line|#define DIVAS_LOAD_CMD&t;&t;0x02
 DECL|macro|DIVAS_START_CMD
@@ -17,14 +15,10 @@ DECL|macro|DIVAS_IRQ_RESET
 mdefine_line|#define DIVAS_IRQ_RESET&t;&t;0xC18
 DECL|macro|DIVAS_IRQ_RESET_VAL
 mdefine_line|#define DIVAS_IRQ_RESET_VAL&t;0xFE
-DECL|macro|PCI_COMMAND
-mdefine_line|#define&t;PCI_COMMAND&t;0x04
-DECL|macro|PCI_STATUS
-mdefine_line|#define&t;PCI_STATUS&t;0x06
 DECL|macro|PCI_LATENCY
-mdefine_line|#define&t;PCI_LATENCY&t;0x0D
+mdefine_line|#define&t;PCI_LATENCY&t;PCI_LATENCY_TIMER
 DECL|macro|PCI_INTERRUPT
-mdefine_line|#define PCI_INTERRUPT&t;0x3C
+mdefine_line|#define PCI_INTERRUPT&t;PCI_INTERRUPT_LINE
 DECL|macro|TEST_INT_DIVAS
 mdefine_line|#define TEST_INT_DIVAS&t;&t;0x11
 DECL|macro|TEST_INT_DIVAS_BRI
@@ -206,12 +200,14 @@ id|bcopy
 c_func
 (paren
 (paren
-id|caddr_t
+r_void
+op_star
 )paren
 id|DIDD_Table
 comma
 (paren
-id|caddr_t
+r_void
+op_star
 )paren
 id|table
 comma
@@ -255,12 +251,14 @@ id|bcopy
 c_func
 (paren
 (paren
-id|caddr_t
+r_void
+op_star
 )paren
 id|table
 comma
 (paren
-id|caddr_t
+r_void
+op_star
 )paren
 id|DIDD_Table
 comma
@@ -2250,7 +2248,7 @@ r_sizeof
 id|b
 )paren
 comma
-id|PCI_INTERRUPT
+id|PCI_INTERRUPT_LINE
 comma
 op_amp
 id|b

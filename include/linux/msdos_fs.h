@@ -67,7 +67,7 @@ mdefine_line|#define SCAN_NOTANY  3  /* test name, then use SCAN_HID or SCAN_NOT
 DECL|macro|DELETED_FLAG
 mdefine_line|#define DELETED_FLAG 0xe5 /* marks file as deleted when in name[0] */
 DECL|macro|IS_FREE
-mdefine_line|#define IS_FREE(n) (!*(n) || *(const unsigned char *) (n) == DELETED_FLAG || &bslash;&n;  *(const unsigned char *) (n) == FD_FILL_BYTE)
+mdefine_line|#define IS_FREE(n) (!*(n) || *(const unsigned char *) (n) == DELETED_FLAG)
 DECL|macro|MSDOS_VALID_MODE
 mdefine_line|#define MSDOS_VALID_MODE (S_IFREG | S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO)
 multiline_comment|/* valid file mode bits */

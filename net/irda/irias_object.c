@@ -25,10 +25,6 @@ comma
 l_int|0
 comma
 l_int|0
-comma
-(brace
-l_int|0
-)brace
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Function strdup (str)&n; *&n; *    My own kernel version of strdup!&n; *&n; */

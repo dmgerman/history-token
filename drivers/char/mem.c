@@ -25,16 +25,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_VIDEO_DEV
-r_extern
-r_int
-id|videodev_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_FB
 r_extern
 r_void
@@ -2718,13 +2708,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_ADB)
 id|adbdev_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_VIDEO_DEV
-id|videodev_init
 c_func
 (paren
 )paren

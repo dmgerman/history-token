@@ -75,7 +75,7 @@ mdefine_line|#define kbd_leds(leds)                  do {} while (0)
 DECL|macro|kbd_init_hw
 mdefine_line|#define kbd_init_hw()                   l7200kbd_init_hw()
 DECL|macro|kbd_sysrq_xlate
-mdefine_line|#define kbd_sysrq_xlate                 do {} while (0)
+mdefine_line|#define kbd_sysrq_xlate                 ((unsigned char *)NULL)
 DECL|macro|kbd_disable_irq
 mdefine_line|#define kbd_disable_irq()               disable_irq(IRQ_GCTC2)
 DECL|macro|kbd_enable_irq

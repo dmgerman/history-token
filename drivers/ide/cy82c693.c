@@ -1242,6 +1242,12 @@ op_assign
 op_amp
 id|cy82c693_dmaproc
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|noautodma
+)paren
 id|hwif-&gt;autodma
 op_assign
 l_int|1

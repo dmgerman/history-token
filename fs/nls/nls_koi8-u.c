@@ -1295,6 +1295,23 @@ l_int|0x00
 comma
 l_int|0x00
 comma
+multiline_comment|/* 0x58-0x5f */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
 multiline_comment|/* 0x60-0x67 */
 l_int|0x00
 comma

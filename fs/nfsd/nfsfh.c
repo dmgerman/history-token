@@ -1707,7 +1707,7 @@ id|result
 op_assign
 id|tmp
 suffix:semicolon
-multiline_comment|/* If !found, then this is really wierd, but it shouldn&squot;t hurt */
+multiline_comment|/* If !found, then this is really weird, but it shouldn&squot;t hurt */
 )brace
 )brace
 )brace

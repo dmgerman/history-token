@@ -519,6 +519,7 @@ id|inode-&gt;i_count
 suffix:semicolon
 id|out
 suffix:colon
+suffix:semicolon
 )brace
 multiline_comment|/* Protect me using the BKL */
 DECL|function|inode_remove_flushd

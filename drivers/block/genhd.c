@@ -80,7 +80,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|function|device_init
-r_void
+r_int
 id|__init
 id|device_init
 c_func
@@ -158,5 +158,15 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|device_init
+id|__initcall
+c_func
+(paren
+id|device_init
+)paren
+suffix:semicolon
 eof

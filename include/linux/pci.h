@@ -475,8 +475,6 @@ DECL|macro|PCI_ANY_ID
 mdefine_line|#define PCI_ANY_ID (~0)
 DECL|macro|pci_present
 mdefine_line|#define pci_present pcibios_present
-DECL|macro|pci_for_each_dev
-mdefine_line|#define pci_for_each_dev(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.next); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.next))
 DECL|macro|pci_for_each_dev_reverse
 mdefine_line|#define pci_for_each_dev_reverse(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.prev); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.prev))
 multiline_comment|/*&n; * The pci_dev structure is used to describe both PCI and ISAPnP devices.&n; */
@@ -1156,6 +1154,8 @@ multiline_comment|/* Device woken up */
 suffix:semicolon
 multiline_comment|/* these external functions are only available when PCI support is enabled */
 macro_line|#ifdef CONFIG_PCI
+DECL|macro|pci_for_each_dev
+mdefine_line|#define pci_for_each_dev(dev) &bslash;&n;&t;for(dev = pci_dev_g(pci_devices.next); dev != pci_dev_g(&amp;pci_devices); dev = pci_dev_g(dev-&gt;global_list.next))
 r_void
 id|pcibios_init
 c_func
@@ -2424,6 +2424,35 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|pci_match_device
+r_static
+r_inline
+r_const
+r_struct
+id|pci_device_id
+op_star
+id|pci_match_device
+c_func
+(paren
+r_const
+r_struct
+id|pci_device_id
+op_star
+id|ids
+comma
+r_const
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|macro|pci_for_each_dev
+mdefine_line|#define pci_for_each_dev(dev) &bslash;&n;&t;for(dev = NULL; 0; )
 macro_line|#else
 multiline_comment|/*&n; * a helper function which helps ensure correct pci_driver&n; * setup and cleanup for commonly-encountered hotplug/modular cases&n; *&n; * This MUST stay in a header, as it checks for -DMODULE&n; */
 DECL|function|pci_module_init

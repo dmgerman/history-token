@@ -44,6 +44,14 @@ id|io
 op_assign
 id|CONFIG_RADIO_SF16FMI_PORT
 suffix:semicolon
+DECL|variable|radio_nr
+r_static
+r_int
+id|radio_nr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 DECL|variable|users
 r_static
 r_int
@@ -1306,6 +1314,8 @@ op_amp
 id|fmi_radio
 comma
 id|VFL_TYPE_RADIO
+comma
+id|radio_nr
 )paren
 op_eq
 op_minus
@@ -1378,6 +1388,14 @@ c_func
 id|io
 comma
 l_string|&quot;I/O address of the SF16MI card (0x284 or 0x384)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|radio_nr
+comma
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|EXPORT_NO_SYMBOLS

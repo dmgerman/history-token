@@ -2767,6 +2767,22 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; *  make sure the skb-&gt;sk accounting of memory usage is sane&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|skb-&gt;sk
+op_ne
+l_int|NULL
+)paren
+id|skb_set_owner_w
+c_func
+(paren
+id|tx_skb
+comma
+id|skb-&gt;sk
+)paren
+suffix:semicolon
 multiline_comment|/* &n;&t;&t; *  Insert frame in store, in case of retransmissions &n;&t;&t; */
 id|skb_queue_tail
 c_func
@@ -2913,6 +2929,22 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; *  make sure the skb-&gt;sk accounting of memory usage is sane&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|skb-&gt;sk
+op_ne
+l_int|NULL
+)paren
+id|skb_set_owner_w
+c_func
+(paren
+id|tx_skb
+comma
+id|skb-&gt;sk
+)paren
+suffix:semicolon
 multiline_comment|/* &n;&t;&t; *  Insert frame in store, in case of retransmissions &n;&t;&t; */
 id|skb_queue_tail
 c_func
@@ -3177,6 +3209,21 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|skb-&gt;sk
+op_ne
+l_int|NULL
+)paren
+id|skb_set_owner_w
+c_func
+(paren
+id|tx_skb
+comma
+id|skb-&gt;sk
+)paren
+suffix:semicolon
 multiline_comment|/* Insert frame in store */
 id|skb_queue_tail
 c_func
@@ -3383,6 +3430,21 @@ l_int|NULL
 r_return
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|skb-&gt;sk
+op_ne
+l_int|NULL
+)paren
+id|skb_set_owner_w
+c_func
+(paren
+id|tx_skb
+comma
+id|skb-&gt;sk
+)paren
+suffix:semicolon
 multiline_comment|/* Insert frame in store */
 id|skb_queue_tail
 c_func
@@ -3584,6 +3646,22 @@ suffix:semicolon
 id|tx_skb-&gt;list
 op_assign
 l_int|NULL
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; *  make sure the skb-&gt;sk accounting of memory usage is sane&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|skb-&gt;sk
+op_ne
+l_int|NULL
+)paren
+id|skb_set_owner_w
+c_func
+(paren
+id|tx_skb
+comma
+id|skb-&gt;sk
+)paren
 suffix:semicolon
 multiline_comment|/* Clear old Nr field + poll bit */
 id|tx_skb-&gt;data
@@ -3889,6 +3967,22 @@ suffix:semicolon
 id|tx_skb-&gt;list
 op_assign
 l_int|NULL
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; *  make sure the skb-&gt;sk accounting of memory usage is sane&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|skb-&gt;sk
+op_ne
+l_int|NULL
+)paren
+id|skb_set_owner_w
+c_func
+(paren
+id|tx_skb
+comma
+id|skb-&gt;sk
+)paren
 suffix:semicolon
 multiline_comment|/* Clear old Nr field + poll bit */
 id|tx_skb-&gt;data

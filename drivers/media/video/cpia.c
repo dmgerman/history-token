@@ -38,7 +38,23 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|video_nr
+r_static
+r_int
+id|video_nr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 macro_line|#ifdef MODULE
+id|MODULE_PARM
+c_func
+(paren
+id|video_nr
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -2376,6 +2392,11 @@ op_star
 id|data
 )paren
 (brace
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+macro_line|#if 0
 r_struct
 id|cam_data
 op_star
@@ -2464,11 +2485,8 @@ id|new_mains
 op_assign
 id|cam-&gt;mainsFreq
 suffix:semicolon
-DECL|macro|MATCH
 mdefine_line|#define MATCH(x) &bslash;&n;&t;({ &bslash;&n;&t;&t;int _len = strlen(x), _ret, _colon_found; &bslash;&n;&t;&t;_ret = (_len &lt;= count &amp;&amp; strncmp(buffer, x, _len) == 0); &bslash;&n;&t;&t;if (_ret) { &bslash;&n;&t;&t;&t;buffer += _len; &bslash;&n;&t;&t;&t;count -= _len; &bslash;&n;&t;&t;&t;if (find_colon) { &bslash;&n;&t;&t;&t;&t;_colon_found = 0; &bslash;&n;&t;&t;&t;&t;while (count &amp;&amp; (*buffer == &squot; &squot; || *buffer == &squot;&bslash;t&squot; || &bslash;&n;&t;&t;&t;&t;       (!_colon_found &amp;&amp; *buffer == &squot;:&squot;))) { &bslash;&n;&t;&t;&t;&t;&t;if (*buffer == &squot;:&squot;)  &bslash;&n;&t;&t;&t;&t;&t;&t;_colon_found = 1; &bslash;&n;&t;&t;&t;&t;&t;--count; &bslash;&n;&t;&t;&t;&t;&t;++buffer; &bslash;&n;&t;&t;&t;&t;} &bslash;&n;&t;&t;&t;&t;if (!count || !_colon_found) &bslash;&n;&t;&t;&t;&t;&t;retval = -EINVAL; &bslash;&n;&t;&t;&t;&t;find_colon = 0; &bslash;&n;&t;&t;&t;} &bslash;&n;&t;&t;} &bslash;&n;&t;&t;_ret; &bslash;&n;&t;})
-DECL|macro|FIRMWARE_VERSION
 mdefine_line|#define FIRMWARE_VERSION(x,y) (new_params.version.firmwareVersion == (x) &amp;&amp; &bslash;&n;                               new_params.version.firmwareRevision == (y))
-DECL|macro|VALUE
 mdefine_line|#define VALUE &bslash;&n;&t;({ &bslash;&n;&t;&t;char *_p; &bslash;&n;&t;&t;unsigned long int _ret; &bslash;&n;&t;&t;_ret = simple_strtoul(buffer, &amp;_p, 0); &bslash;&n;&t;&t;if (_p == buffer) &bslash;&n;&t;&t;&t;retval = -EINVAL; &bslash;&n;&t;&t;else { &bslash;&n;&t;&t;&t;count -= _p - buffer; &bslash;&n;&t;&t;&t;buffer = _p; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;_ret; &bslash;&n;&t;})
 id|retval
 op_assign
@@ -5436,15 +5454,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|macro|MATCH
 macro_line|#undef MATCH&t;
-DECL|macro|FIRMWARE_VERSION
 macro_line|#undef FIRMWARE_VERSION
-DECL|macro|VALUE
 macro_line|#undef VALUE
-DECL|macro|FIND_VALUE
 macro_line|#undef FIND_VALUE
-DECL|macro|FIND_END
 macro_line|#undef FIND_END
 r_if
 c_cond
@@ -5535,6 +5548,7 @@ suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|function|create_proc_cpia_cam
 r_static
@@ -14073,6 +14087,8 @@ op_amp
 id|camera-&gt;vdev
 comma
 id|VFL_TYPE_GRABBER
+comma
+id|video_nr
 )paren
 op_eq
 op_minus

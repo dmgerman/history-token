@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: i2c.h,v 1.2 2001/01/18 15:49:30 bjornw Exp $ */
+multiline_comment|/* $Id: i2c.h,v 1.3 2001/03/19 12:43:01 markusl Exp $ */
 multiline_comment|/* High level I2C actions */
 r_int
 id|i2c_writereg
@@ -32,7 +32,6 @@ id|theReg
 )paren
 suffix:semicolon
 multiline_comment|/* Low level I2C */
-r_static
 r_void
 id|i2c_start
 c_func
@@ -40,7 +39,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_static
 r_void
 id|i2c_stop
 c_func
@@ -48,7 +46,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_static
 r_void
 id|i2c_outbyte
 c_func
@@ -58,7 +55,6 @@ r_char
 id|x
 )paren
 suffix:semicolon
-r_static
 r_int
 r_char
 id|i2c_inbyte
@@ -67,7 +63,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_static
 r_int
 id|i2c_getack
 c_func
@@ -75,7 +70,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_static
 r_void
 id|i2c_sendack
 c_func

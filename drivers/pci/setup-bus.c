@@ -509,6 +509,7 @@ id|DBGC
 c_func
 (paren
 (paren
+id|KERN_ERR
 l_string|&quot;PCI: Bus %d, bridge: %s&bslash;n&quot;
 comma
 id|bus-&gt;number
@@ -521,6 +522,7 @@ id|DBGC
 c_func
 (paren
 (paren
+id|KERN_ERR
 l_string|&quot;  IO window: %04lx-%04lx&bslash;n&quot;
 comma
 id|ranges.io_start
@@ -533,6 +535,7 @@ id|DBGC
 c_func
 (paren
 (paren
+id|KERN_ERR
 l_string|&quot;  MEM window: %08lx-%08lx&bslash;n&quot;
 comma
 id|ranges.mem_start

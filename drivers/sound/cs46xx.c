@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Crystal SoundFusion CS46xx driver&n; *&n; *&t;Copyright 1998-2001 Cirrus Logic Corporation &lt;pcaudio@crystal.cirrus.com&gt;&n; *&t;&t;&t;&t;&t;&t;&lt;twoller@crystal.cirrus.com&gt;&n; *&t;Copyright 1999-2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&t;Copyright 2000 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The core of this code is taken from the ALSA project driver by &n; *&t;Jaroslav. Please send Jaroslav the credit for the driver and &n; *&t;report bugs in this port to &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&t;Current maintainers:&n; *&t;&t;Cirrus Logic Corporation, Thomas Woller (tw)&n; *&t;&t;&t;&lt;twoller@crystal.cirrus.com&gt;&n; *&t;&t;Nils Faerber (nf)&n; *&t;&t;&t;&lt;nils@kernelconcepts.de&gt;&n; *&t;&t;Thanks to David Pollard for testing.&n; *&n; *&t;Changes:&n; *&t;20000909-nf&t;Changed cs_read, cs_write and drain_dac&n; *&t;20001025-tw&t;Separate Playback/Capture structs and buffers.&n; *&t;&t;&t;Added Scatter/Gather support for Playback.&n; *&t;&t;&t;Added Capture.&n; *&t;20001027-nf&t;Port to kernel 2.4.0-test9, some clean-ups&n; *&t;&t;&t;Start of powermanagement support (CS46XX_PM).&n; *&t;20001128-tw&t;Add module parm for default buffer order.&n; *&t;&t;&t;added DMA_GFP flag to kmalloc dma buffer allocs.&n; *&t;&t;&t;backfill silence to eliminate stuttering on&n; *&t;&t;&t;underruns.&n; *&t;20001201-tw&t;add resyncing of swptr on underruns.&n; *&t;20001205-tw-nf&t;fixed GETOSPACE ioctl() after open()&n; *&t;20010113-tw&t;patch from Hans Grobler general cleanup.&n; *&t;20010117-tw&t;2.4.0 pci cleanup, wrapper code for 2.2.16-2.4.0&n; *&t;20010118-tw&t;basic PM support for 2.2.16+ and 2.4.0/2.4.2.&n; *&t;20010228-dh&t;patch from David Huggins - cs_update_ptr recursion.&n; *&n; *&t;Status:&n; *&t;Playback/Capture supported from 8k-48k.&n; *&t;16Bit Signed LE &amp; 8Bit Unsigned, with Mono or Stereo supported.&n; *&n; *&t;APM/PM - 2.2.x APM is enabled and functioning fine. APM can also&n; *&t;be enabled for 2.4.x by modifying the CS46XX_ACPI_SUPPORT macro&n; *&t;definition.&n; *&n; *      Hercules Game Pro XP - the EGPIO2 pin controls the external Amp,&n; *&t;but the static image can not modify the EGPIO pins, so we can not&n; *&t;turn on the external amp.&n; *&n; *&t;VTB Santa Cruz - the GPIO7/GPIO8 on the Secondary Codec control&n; *&t;the external amplifier for the &quot;back&quot; speakers, since we do not&n; *&t;support the secondary codec then this external amp is also not&n; *&t;turned on.&n; */
+multiline_comment|/*&n; *&t;Crystal SoundFusion CS46xx driver&n; *&n; *&t;Copyright 1998-2001 Cirrus Logic Corporation &lt;pcaudio@crystal.cirrus.com&gt;&n; *&t;&t;&t;&t;&t;&t;&lt;twoller@crystal.cirrus.com&gt;&n; *&t;Copyright 1999-2000 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&t;Copyright 2000 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *&t;The core of this code is taken from the ALSA project driver by &n; *&t;Jaroslav. Please send Jaroslav the credit for the driver and &n; *&t;report bugs in this port to &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&t;Current maintainers:&n; *&t;&t;Cirrus Logic Corporation, Thomas Woller (tw)&n; *&t;&t;&t;&lt;twoller@crystal.cirrus.com&gt;&n; *&t;&t;Nils Faerber (nf)&n; *&t;&t;&t;&lt;nils@kernelconcepts.de&gt;&n; *&t;&t;Thanks to David Pollard for testing.&n; *&n; *&t;Changes:&n; *&t;20000909-nf&t;Changed cs_read, cs_write and drain_dac&n; *&t;20001025-tw&t;Separate Playback/Capture structs and buffers.&n; *&t;&t;&t;Added Scatter/Gather support for Playback.&n; *&t;&t;&t;Added Capture.&n; *&t;20001027-nf&t;Port to kernel 2.4.0-test9, some clean-ups&n; *&t;&t;&t;Start of powermanagement support (CS46XX_PM).&n; *&t;20001128-tw&t;Add module parm for default buffer order.&n; *&t;&t;&t;added DMA_GFP flag to kmalloc dma buffer allocs.&n; *&t;&t;&t;backfill silence to eliminate stuttering on&n; *&t;&t;&t;underruns.&n; *&t;20001201-tw&t;add resyncing of swptr on underruns.&n; *&t;20001205-tw-nf&t;fixed GETOSPACE ioctl() after open()&n; *&t;20010113-tw&t;patch from Hans Grobler general cleanup.&n; *&t;20010117-tw&t;2.4.0 pci cleanup, wrapper code for 2.2.16-2.4.0&n; *&t;20010118-tw&t;basic PM support for 2.2.16+ and 2.4.0/2.4.2.&n; *&t;20010228-dh&t;patch from David Huggins - cs_update_ptr recursion.&n; *&t;20010409-tw&t;add hercules game theatre XP amp code.&n; *&t;20010420-tw&t;cleanup powerdown/up code.&n; *&n; *&t;Status:&n; *&t;Playback/Capture supported from 8k-48k.&n; *&t;16Bit Signed LE &amp; 8Bit Unsigned, with Mono or Stereo supported.&n; *&n; *&t;APM/PM - 2.2.x APM is enabled and functioning fine. APM can also&n; *&t;be enabled for 2.4.x by modifying the CS46XX_ACPI_SUPPORT macro&n; *&t;definition.&n; *&n; *      Hercules Game Theatre XP - the EGPIO2 pin controls the external Amp,&n; *&t;so, use the drain/polarity to enable.  &n; *&t;hercules_egpio_disable set to 1, will force a 0 to EGPIODR.&n; *&n; *&t;VTB Santa Cruz - the GPIO7/GPIO8 on the Secondary Codec control&n; *&t;the external amplifier for the &quot;back&quot; speakers, since we do not&n; *&t;support the secondary codec then this external amp is also not&n; *&t;turned on.&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -46,6 +46,14 @@ DECL|macro|CS_TRUE
 mdefine_line|#define CS_TRUE &t;1
 DECL|macro|CS_FALSE
 mdefine_line|#define CS_FALSE &t;0
+DECL|macro|CS_INC_USE_COUNT
+mdefine_line|#define CS_INC_USE_COUNT(m) (atomic_inc(m))
+DECL|macro|CS_DEC_USE_COUNT
+mdefine_line|#define CS_DEC_USE_COUNT(m) (atomic_dec(m))
+DECL|macro|CS_DEC_AND_TEST
+mdefine_line|#define CS_DEC_AND_TEST(m) (atomic_dec_and_test(m))
+DECL|macro|CS_IN_USE
+mdefine_line|#define CS_IN_USE(m) (atomic_read(m) != 0)
 DECL|macro|CS_DBGBREAKPOINT
 mdefine_line|#define CS_DBGBREAKPOINT {__asm__(&quot;INT $3&quot;);}
 multiline_comment|/*&n; *&t;CS461x definitions&n; */
@@ -150,6 +158,23 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|hercules_egpio_disable
+r_static
+r_int
+r_int
+id|hercules_egpio_disable
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* if non-zero set all EGPIO to 0 */
+id|MODULE_PARM
+c_func
+(paren
+id|hercules_egpio_disable
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 DECL|variable|initdelay
 r_static
 r_int
@@ -251,7 +276,7 @@ suffix:semicolon
 DECL|macro|CS46XX_MAJOR_VERSION
 mdefine_line|#define CS46XX_MAJOR_VERSION &quot;1&quot;
 DECL|macro|CS46XX_MINOR_VERSION
-mdefine_line|#define CS46XX_MINOR_VERSION &quot;22&quot;
+mdefine_line|#define CS46XX_MINOR_VERSION &quot;26&quot;
 macro_line|#ifdef __ia64__
 DECL|macro|CS46XX_ARCH
 mdefine_line|#define CS46XX_ARCH&t;     &t;&quot;64&quot;&t;
@@ -571,6 +596,11 @@ multiline_comment|/* The cs461x has a certain amount of cross channel interactio
 DECL|member|lock
 id|spinlock_t
 id|lock
+suffix:semicolon
+multiline_comment|/* mixer use count */
+DECL|member|mixer_use_cnt
+id|atomic_t
+id|mixer_use_cnt
 suffix:semicolon
 multiline_comment|/* PCI device stuff */
 DECL|member|pci_dev
@@ -965,6 +995,20 @@ op_star
 id|card
 comma
 r_int
+r_int
+id|type
+)paren
+suffix:semicolon
+r_static
+r_void
+id|cs461x_clear_serial_FIFOs
+c_func
+(paren
+r_struct
+id|cs_card
+op_star
+id|card
+comma
 r_int
 id|type
 )paren
@@ -2672,6 +2716,214 @@ id|dmabuf-&gt;divisor
 )paren
 )paren
 suffix:semicolon
+)brace
+multiline_comment|/*&n;* mute some of the more prevalent registers to avoid popping.&n;*/
+DECL|function|cs_mute
+r_static
+r_void
+id|cs_mute
+c_func
+(paren
+r_struct
+id|cs_card
+op_star
+id|card
+comma
+r_int
+id|state
+)paren
+(brace
+r_struct
+id|ac97_codec
+op_star
+id|dev
+op_assign
+id|card-&gt;ac97_codec
+(braket
+l_int|0
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|CS_TRUE
+)paren
+(brace
+multiline_comment|/*&n;&t;* fix pops when powering up on thinkpads&n;&t;*/
+id|card-&gt;pm.u32AC97_master_volume
+op_assign
+(paren
+id|u32
+)paren
+id|cs_ac97_get
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_MASTER_VOLUME
+)paren
+suffix:semicolon
+id|card-&gt;pm.u32AC97_headphone_volume
+op_assign
+(paren
+id|u32
+)paren
+id|cs_ac97_get
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_HEADPHONE_VOLUME
+)paren
+suffix:semicolon
+id|card-&gt;pm.u32AC97_master_volume_mono
+op_assign
+(paren
+id|u32
+)paren
+id|cs_ac97_get
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_MASTER_VOLUME_MONO
+)paren
+suffix:semicolon
+id|card-&gt;pm.u32AC97_pcm_out_volume
+op_assign
+(paren
+id|u32
+)paren
+id|cs_ac97_get
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_PCM_OUT_VOLUME
+)paren
+suffix:semicolon
+id|cs_ac97_set
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_MASTER_VOLUME
+comma
+l_int|0x8000
+)paren
+suffix:semicolon
+id|cs_ac97_set
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_HEADPHONE_VOLUME
+comma
+l_int|0x8000
+)paren
+suffix:semicolon
+id|cs_ac97_set
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_MASTER_VOLUME_MONO
+comma
+l_int|0x8000
+)paren
+suffix:semicolon
+id|cs_ac97_set
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_PCM_OUT_VOLUME
+comma
+l_int|0x8000
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cs_ac97_set
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_MASTER_VOLUME
+comma
+id|card-&gt;pm.u32AC97_master_volume
+)paren
+suffix:semicolon
+id|cs_ac97_set
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_HEADPHONE_VOLUME
+comma
+id|card-&gt;pm.u32AC97_headphone_volume
+)paren
+suffix:semicolon
+id|cs_ac97_set
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_MASTER_VOLUME_MONO
+comma
+id|card-&gt;pm.u32AC97_master_volume_mono
+)paren
+suffix:semicolon
+id|cs_ac97_set
+c_func
+(paren
+id|dev
+comma
+(paren
+id|u8
+)paren
+id|BA0_AC97_PCM_OUT_VOLUME
+comma
+id|card-&gt;pm.u32AC97_pcm_out_volume
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* set playback sample rate */
 DECL|function|cs_set_dac_rate
@@ -6162,6 +6414,13 @@ op_assign
 op_amp
 id|state-&gt;dmabuf
 suffix:semicolon
+r_struct
+id|cs_card
+op_star
+id|card
+op_assign
+id|state-&gt;card
+suffix:semicolon
 r_int
 r_int
 id|flags
@@ -6173,6 +6432,20 @@ suffix:semicolon
 r_int
 id|count
 suffix:semicolon
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_FUNCTION
+comma
+l_int|4
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;cs46xx: drain_dac()+ &bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6181,9 +6454,25 @@ op_logical_or
 op_logical_neg
 id|dmabuf-&gt;ready
 )paren
+(brace
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_FUNCTION
+comma
+l_int|4
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;cs46xx: drain_dac()- 0, not ready&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|add_wait_queue
 c_func
 (paren
@@ -6354,9 +6643,67 @@ c_func
 id|current
 )paren
 )paren
+(brace
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_FUNCTION
+comma
+l_int|4
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;cs46xx: drain_dac()- -ERESTARTSYS&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;* set to silence and let that clear the fifos.&n;&t;&t;*/
+id|memset
+c_func
+(paren
+id|dmabuf-&gt;rawbuf
+comma
+(paren
+id|dmabuf-&gt;fmt
+op_amp
+id|CS_FMT_16BIT
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+l_int|0x80
+comma
+id|dmabuf-&gt;dmasize
+)paren
+suffix:semicolon
+id|cs461x_clear_serial_FIFOs
+c_func
+(paren
+id|card
+comma
+id|CS_TYPE_DAC
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ERESTARTSYS
+suffix:semicolon
+)brace
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_FUNCTION
+comma
+l_int|4
+comma
+id|printk
+c_func
+(paren
+l_string|&quot;cs46xx: drain_dac()- 0&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -6769,6 +7116,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;cs46xx: ERROR DAC count&lt;0 or count &gt; dmasize (%d)&bslash;n&quot;
 comma
 id|dmabuf-&gt;count
@@ -7072,7 +7420,7 @@ c_func
 (paren
 id|CS_INTERRUPT
 comma
-l_int|4
+l_int|9
 comma
 id|printk
 c_func
@@ -7228,7 +7576,7 @@ c_func
 (paren
 id|CS_INTERRUPT
 comma
-l_int|4
+l_int|9
 comma
 id|printk
 c_func
@@ -10762,7 +11110,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs_mmap() VM_WRITE - state CS_TRUE prog_dmabuf DAC&bslash;n&quot;
+l_string|&quot;cs46xx: cs_mmap() VM_WRITE - state TRUE prog_dmabuf DAC&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -10818,7 +11166,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs_mmap() VM_READ - state CS_TRUE prog_dmabuf ADC&bslash;n&quot;
+l_string|&quot;cs46xx: cs_mmap() VM_READ - state TRUE prog_dmabuf ADC&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -14117,11 +14465,11 @@ l_int|0x8000
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;For the VTB Santa Cruz card, the Secondary Codec must have the &n; *&t;GPIO pins 7 and 8 manipulated, not the Primary codec.&n; *&t;Currently, only the primary codec is supported, so the following&n; *&t;code will not function.  Additionally, slot 12 must be setup&n; *&t;to allow proper output for 7 and 8 to occur (trw).&n; */
-DECL|function|amp_voyetra_4294
+multiline_comment|/*&n; *&t;Game Theatre XP card - EGPIO[2] is used to enable the external amp.&n; */
+DECL|function|amp_hercules
 r_static
 r_void
-id|amp_voyetra_4294
+id|amp_hercules
 c_func
 (paren
 r_struct
@@ -14133,16 +14481,36 @@ r_int
 id|change
 )paren
 (brace
-r_struct
-id|ac97_codec
-op_star
-id|c
+r_int
+id|old
 op_assign
-id|card-&gt;ac97_codec
-(braket
-l_int|0
-)braket
+id|card-&gt;amplifier
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|card
+)paren
+(brace
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_ERROR
+comma
+l_int|2
+comma
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cs46xx: amp_hercules() called before initialized.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|card-&gt;amplifier
 op_add_assign
 id|change
@@ -14150,87 +14518,104 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|card-&gt;amplifier
+op_logical_and
+op_logical_neg
+id|old
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|hercules_egpio_disable
+)paren
+)paren
+(brace
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_PARMS
+comma
+l_int|4
+comma
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cs46xx: amp_hercules() external amp enabled&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|cs461x_pokeBA0
+c_func
+(paren
+id|card
+comma
+id|BA0_EGPIODR
+comma
+id|EGPIODR_GPOE2
+)paren
+suffix:semicolon
+multiline_comment|/* enable EGPIO2 output */
+id|cs461x_pokeBA0
+c_func
+(paren
+id|card
+comma
+id|BA0_EGPIOPTR
+comma
+id|EGPIOPTR_GPPT2
+)paren
+suffix:semicolon
+multiline_comment|/* open-drain on output */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|old
+op_logical_and
+op_logical_neg
 id|card-&gt;amplifier
 )paren
 (brace
-multiline_comment|/* Switch the GPIO pins 7 and 8 to open drain */
-id|cs_ac97_set
+id|CS_DBGOUT
 c_func
 (paren
-id|c
+id|CS_PARMS
 comma
-l_int|0x4C
+l_int|4
 comma
-id|cs_ac97_get
+id|printk
 c_func
 (paren
-id|c
-comma
-l_int|0x4C
+id|KERN_INFO
+l_string|&quot;cs46xx: amp_hercules() external amp disabled&bslash;n&quot;
 )paren
-op_amp
-l_int|0xFE7F
 )paren
 suffix:semicolon
-id|cs_ac97_set
+id|cs461x_pokeBA0
 c_func
 (paren
-id|c
+id|card
 comma
-l_int|0x4E
+id|BA0_EGPIODR
 comma
-id|cs_ac97_get
-c_func
-(paren
-id|c
-comma
-l_int|0x4E
-)paren
-op_or
-l_int|0x0180
+l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Now wake the AMP (this might be backwards) */
-id|cs_ac97_set
+multiline_comment|/* disable */
+id|cs461x_pokeBA0
 c_func
 (paren
-id|c
+id|card
 comma
-l_int|0x54
+id|BA0_EGPIOPTR
 comma
-id|cs_ac97_get
-c_func
-(paren
-id|c
-comma
-l_int|0x54
-)paren
-op_amp
-op_complement
-l_int|0x0180
+l_int|0
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|cs_ac97_set
-c_func
-(paren
-id|c
-comma
-l_int|0x54
-comma
-id|cs_ac97_get
-c_func
-(paren
-id|c
-comma
-l_int|0x54
-)paren
-op_or
-l_int|0x0180
-)paren
-suffix:semicolon
+multiline_comment|/* disable */
 )brace
 )brace
 multiline_comment|/*&n; *&t;Handle the CLKRUN on a thinkpad. We must disable CLKRUN support&n; *&t;whenever we need to beat on the chip.&n; *&n; *&t;The original idea and code for this hack comes from David Kaiser at&n; *&t;Linuxcare. Perhaps one day Crystal will document their chips well&n; *&t;enough to make them useful.&n; */
@@ -14346,6 +14731,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;cs46xx: clkrun() enable clkrun - change=%d active=%d&bslash;n&quot;
 comma
 id|change
@@ -14380,6 +14766,7 @@ comma
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;cs46xx: clkrun() disable clkrun - change=%d active=%d&bslash;n&quot;
 comma
 id|change
@@ -16466,7 +16853,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs4281: cs46xx_ac97_suspend()-&bslash;n&quot;
+l_string|&quot;cs46xx: cs46xx_ac97_suspend()-&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -16508,7 +16895,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs4281: cs46xx_ac97_resume()+&bslash;n&quot;
+l_string|&quot;cs46xx: cs46xx_ac97_resume()+&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -16656,7 +17043,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs4281: cs46xx_ac97_resume()-&bslash;n&quot;
+l_string|&quot;cs46xx: cs46xx_ac97_resume()-&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -17034,7 +17421,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs46xx_suspend()+ flags=%d s=0x%x&bslash;n&quot;
+l_string|&quot;cs46xx: cs46xx_suspend()+ flags=0x%x s=0x%x&bslash;n&quot;
 comma
 (paren
 r_int
@@ -17367,7 +17754,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs46xx_suspend()- flags=%d&bslash;n&quot;
+l_string|&quot;cs46xx: cs46xx_suspend()- flags=0x%x&bslash;n&quot;
 comma
 (paren
 r_int
@@ -17406,7 +17793,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs46xx_resume()+ flags=%d&bslash;n&quot;
+l_string|&quot;cs46xx: cs46xx_resume()+ flags=0x%x&bslash;n&quot;
 comma
 (paren
 r_int
@@ -17612,7 +17999,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;cs46xx: cs46xx_resume()- flags=%d&bslash;n&quot;
+l_string|&quot;cs46xx: cs46xx_resume()- flags=0x%x&bslash;n&quot;
 comma
 (paren
 r_int
@@ -18514,6 +18901,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|CS_IN_USE
+c_func
+(paren
+op_amp
+id|card-&gt;mixer_use_cnt
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
 (paren
 id|tmp
 op_assign
@@ -18551,6 +18950,24 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+)brace
+id|card
+op_member_access_from_pointer
+id|amplifier_ctrl
+c_func
+(paren
+id|card
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|CS_INC_USE_COUNT
+c_func
+(paren
+op_amp
+id|card-&gt;mixer_use_cnt
+)paren
+suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|CS_DBGOUT
@@ -18618,6 +19035,23 @@ suffix:semicolon
 r_int
 r_int
 id|tmp
+suffix:semicolon
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_FUNCTION
+op_or
+id|CS_RELEASE
+comma
+l_int|4
+comma
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cs46xx: cs_release_mixdev()+&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
 id|list_for_each
 c_func
@@ -18711,6 +19145,64 @@ suffix:semicolon
 )brace
 id|match
 suffix:colon
+id|card
+op_member_access_from_pointer
+id|active_ctrl
+c_func
+(paren
+id|card
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|card
+op_member_access_from_pointer
+id|amplifier_ctrl
+c_func
+(paren
+id|card
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|CS_DEC_AND_TEST
+c_func
+(paren
+op_amp
+id|card-&gt;mixer_use_cnt
+)paren
+)paren
+(brace
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_FUNCTION
+op_or
+id|CS_RELEASE
+comma
+l_int|4
+comma
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cs46xx: cs_release_mixdev()- no powerdown, usecnt&gt;0&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n;* ok, no outstanding mixer opens, so powerdown.&n;*/
 r_if
 c_cond
 (paren
@@ -18751,18 +19243,22 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|card
-op_member_access_from_pointer
-id|active_ctrl
+id|CS_DBGOUT
 c_func
 (paren
-id|card
+id|CS_FUNCTION
+op_or
+id|CS_RELEASE
 comma
-op_minus
-l_int|1
+l_int|4
+comma
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cs46xx: cs_release_mixdev()- 0&bslash;n&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -19076,7 +19572,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: mixer_ioctl(): invalid APM cmd (%d)&bslash;n&quot;
+l_string|&quot;cs46xx: mixer_ioctl(): invalid APM cmd (%d)&bslash;n&quot;
 comma
 id|val
 )paren
@@ -19786,6 +20282,9 @@ r_struct
 id|cs_card
 op_star
 id|card
+comma
+r_int
+id|type
 )paren
 (brace
 r_int
@@ -19793,7 +20292,15 @@ id|idx
 comma
 id|loop
 comma
-id|powerdown
+id|startfifo
+op_assign
+l_int|0
+comma
+id|endfifo
+op_assign
+l_int|0
+comma
+id|powerdown1
 op_assign
 l_int|0
 suffix:semicolon
@@ -19835,7 +20342,7 @@ op_or
 id|CLKCR1_SWCE
 )paren
 suffix:semicolon
-id|powerdown
+id|powerdown1
 op_assign
 l_int|1
 suffix:semicolon
@@ -19851,17 +20358,60 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Fill all 256 sample FIFO locations.&n;&t; */
+multiline_comment|/*&n;&t;* Check for which FIFO locations to clear, if we are currently&n;&t;* playing or capturing then we don&squot;t want to put in 128 bytes of&n;&t;* &quot;noise&quot;.&n;&t; */
+r_if
+c_cond
+(paren
+id|type
+op_amp
+id|CS_TYPE_DAC
+)paren
+(brace
+id|startfifo
+op_assign
+l_int|128
+suffix:semicolon
+id|endfifo
+op_assign
+l_int|256
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|type
+op_amp
+id|CS_TYPE_ADC
+)paren
+(brace
+id|startfifo
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|endfifo
+)paren
+(brace
+id|endfifo
+op_assign
+l_int|128
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; *  Fill sample FIFO locations (256 locations total).&n;&t; */
 r_for
 c_loop
 (paren
 id|idx
 op_assign
-l_int|0
+id|startfifo
 suffix:semicolon
 id|idx
 OL
-l_int|256
+id|endfifo
 suffix:semicolon
 id|idx
 op_increment
@@ -19925,7 +20475,7 @@ id|SERBST_WBSY
 r_if
 c_cond
 (paren
-id|powerdown
+id|powerdown1
 )paren
 id|cs461x_pokeBA0
 c_func
@@ -19965,7 +20515,7 @@ multiline_comment|/*&n;&t; *  Now, if we powered up the devices, then power them
 r_if
 c_cond
 (paren
-id|powerdown
+id|powerdown1
 )paren
 id|cs461x_pokeBA0
 c_func
@@ -20142,6 +20692,14 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|cs_mute
+c_func
+(paren
+id|card
+comma
+id|CS_TRUE
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; *  Power down indicated areas.&n;&t; */
 r_if
 c_cond
@@ -20744,6 +21302,14 @@ comma
 id|AC97_POWER_CONTROL
 )paren
 suffix:semicolon
+id|cs_mute
+c_func
+(paren
+id|card
+comma
+id|CS_FALSE
+)paren
+suffix:semicolon
 id|CS_DBGOUT
 c_func
 (paren
@@ -20840,6 +21406,14 @@ op_or
 id|CS_POWER_MIXVOFF
 suffix:semicolon
 )brace
+id|cs_mute
+c_func
+(paren
+id|card
+comma
+id|CS_TRUE
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; *  Power up indicated areas.&n;&t; */
 r_if
 c_cond
@@ -21458,6 +22032,14 @@ comma
 id|AC97_POWER_CONTROL
 )paren
 suffix:semicolon
+id|cs_mute
+c_func
+(paren
+id|card
+comma
+id|CS_FALSE
+)paren
+suffix:semicolon
 id|CS_DBGOUT
 c_func
 (paren
@@ -21856,6 +22438,10 @@ id|cs461x_clear_serial_FIFOs
 c_func
 (paren
 id|card
+comma
+id|CS_TYPE_DAC
+op_or
+id|CS_TYPE_ADC
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Set the serial port FIFO pointer to the first sample in the FIFO.&n;&t; */
@@ -22493,6 +23079,60 @@ id|CS46XX_PM_IDLE
 r_if
 c_cond
 (paren
+op_logical_neg
+id|powerdown
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|tmp
+op_assign
+id|cs46xx_powerup
+c_func
+(paren
+id|card
+comma
+id|CS_POWER_DAC
+op_or
+id|CS_POWER_ADC
+op_or
+id|CS_POWER_MIXVON
+)paren
+)paren
+)paren
+(brace
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_ERROR
+op_or
+id|CS_INIT
+comma
+l_int|1
+comma
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;cs46xx: cs461x_powerup() failure (0x%x)&bslash;n&quot;
+comma
+id|tmp
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
 (paren
 id|tmp
 op_assign
@@ -22533,6 +23173,7 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
 )brace
 )brace
 id|CS_DBGOUT
@@ -22744,6 +23385,38 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pci_enable_device
+c_func
+(paren
+id|pci_dev
+)paren
+)paren
+(brace
+id|CS_DBGOUT
+c_func
+(paren
+id|CS_INIT
+op_or
+id|CS_ERROR
+comma
+l_int|1
+comma
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;cs46xx: pci_enable_device() failed&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 op_logical_neg
 id|RSRCISMEMORYREGION
 c_func
@@ -22919,37 +23592,6 @@ id|card
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_enable_device
-c_func
-(paren
-id|pci_dev
-)paren
-)paren
-(brace
-id|CS_DBGOUT
-c_func
-(paren
-id|CS_INIT
-op_or
-id|CS_ERROR
-comma
-l_int|1
-comma
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;cs46xx: pci_enable_device() failed&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_goto
-id|fail2
-suffix:semicolon
-)brace
 id|card-&gt;ba0_addr
 op_assign
 id|RSRCADDRESS
@@ -23270,7 +23912,12 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs46xx: card-&gt;ba0=0x%.08x&bslash;n&quot;
+l_string|&quot;cs46xx: card=0x%x card-&gt;ba0=0x%.08x&bslash;n&quot;
+comma
+(paren
+r_int
+)paren
+id|card
 comma
 (paren
 r_int
@@ -24287,6 +24934,13 @@ id|card-&gt;dev_midi
 )paren
 suffix:semicolon
 )brace
+id|list_del
+c_func
+(paren
+op_amp
+id|card-&gt;list
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -24299,13 +24953,6 @@ c_func
 id|pci_dev
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|list_del
-c_func
-(paren
-op_amp
-id|card-&gt;list
 )paren
 suffix:semicolon
 id|CS_DBGOUT
@@ -24336,11 +24983,11 @@ comma
 DECL|enumerator|CS46XX_4612
 id|CS46XX_4612
 comma
-multiline_comment|/* same as 4624 */
+multiline_comment|/* same as 4630 */
 DECL|enumerator|CS46XX_4615
 id|CS46XX_4615
 comma
-multiline_comment|/* same as 4630 */
+multiline_comment|/* same as 4624 */
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata

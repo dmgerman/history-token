@@ -1,4 +1,4 @@
-multiline_comment|/* Low-level parallel-port routines for 8255-based PC-style hardware.&n; * &n; * Authors: Phil Blundell &lt;Philip.Blundell@pobox.com&gt;&n; *          Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&t;    Jose Renau &lt;renau@acm.org&gt;&n; *          David Campbell &lt;campbell@torque.net&gt;&n; *          Andrea Arcangeli&n; *&n; * based on work by Grant Guenther &lt;grant@torque.net&gt; and Phil Blundell.&n; *&n; * Cleaned up include files - Russell King &lt;linux@arm.uk.linux.org&gt;&n; * DMA support - Bert De Jonghe &lt;bert@sophis.be&gt;&n; * Many ECP bugs fixed.  Fred Barnes &amp; Jamie Lokier, 1999&n; * More PCI support now conditional on CONFIG_PCI, 03/2001, Paul G. &n; */
+multiline_comment|/* Low-level parallel-port routines for 8255-based PC-style hardware.&n; * &n; * Authors: Phil Blundell &lt;Philip.Blundell@pobox.com&gt;&n; *          Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&t;    Jose Renau &lt;renau@acm.org&gt;&n; *          David Campbell &lt;campbell@torque.net&gt;&n; *          Andrea Arcangeli&n; *&n; * based on work by Grant Guenther &lt;grant@torque.net&gt; and Phil Blundell.&n; *&n; * Cleaned up include files - Russell King &lt;linux@arm.uk.linux.org&gt;&n; * DMA support - Bert De Jonghe &lt;bert@sophis.be&gt;&n; * Many ECP bugs fixed.  Fred Barnes &amp; Jamie Lokier, 1999&n; * More PCI support now conditional on CONFIG_PCI, 03/2001, Paul G. &n; * Various hacks, Fred Barnes, 04/2001&n; */
 multiline_comment|/* This driver should work with any hardware that is broadly compatible&n; * with that in the IBM PC.  This applies to the majority of integrated&n; * I/O chipsets that are commonly available.  The expected register&n; * layout is:&n; *&n; *&t;base+0&t;&t;data&n; *&t;base+1&t;&t;status&n; *&t;base+2&t;&t;control&n; *&n; * In addition, there are some optional registers:&n; *&n; *&t;base+3&t;&t;EPP address&n; *&t;base+4&t;&t;EPP data&n; *&t;base+0x400&t;ECP config A&n; *&t;base+0x401&t;ECP config B&n; *&t;base+0x402&t;ECP control&n; *&n; * All registers are 8 bits wide and read/write.  If your hardware differs&n; * only in register addresses (eg because your registers are on 32-bit&n; * word boundaries) then you can alter the constants in parport_pc.h to&n; * accomodate this.&n; *&n; * Note that the ECP registers may not start at offset 0x400 for PCI cards,&n; * but rather will start at port-&gt;base_hi.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -631,6 +631,20 @@ comma
 id|ECR_PS2
 op_lshift
 l_int|5
+)paren
+suffix:semicolon
+id|DPRINTK
+(paren
+id|KERN_DEBUG
+l_string|&quot;*** get_fifo_residue: done residue collecting (ecr = 0x%2.2x)&bslash;n&quot;
+comma
+id|inb
+(paren
+id|ECONTROL
+(paren
+id|p
+)paren
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1289,6 +1303,291 @@ id|got
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|PARPORT_W91284PIC
+)paren
+(brace
+r_int
+r_char
+id|status
+suffix:semicolon
+r_int
+id|left
+op_assign
+id|length
+suffix:semicolon
+multiline_comment|/* use knowledge about data lines..:&n;&t;&t; *  nFault is 0 if there is at least 1 byte in the Warp&squot;s FIFO&n;&t;&t; *  pError is 1 if there are 16 bytes in the Warp&squot;s FIFO&n;&t;&t; */
+id|status
+op_assign
+id|inb
+(paren
+id|STATUS
+(paren
+id|port
+)paren
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+(paren
+id|status
+op_amp
+l_int|0x08
+)paren
+op_logical_and
+(paren
+id|got
+OL
+id|length
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|left
+op_ge
+l_int|16
+)paren
+op_logical_and
+(paren
+id|status
+op_amp
+l_int|0x20
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|status
+op_amp
+l_int|0x08
+)paren
+)paren
+(brace
+multiline_comment|/* can grab 16 bytes from warp fifo */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+(paren
+r_int
+)paren
+id|buf
+op_amp
+l_int|0x03
+)paren
+)paren
+(brace
+id|insl
+(paren
+id|EPPDATA
+(paren
+id|port
+)paren
+comma
+id|buf
+comma
+l_int|4
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|insb
+(paren
+id|EPPDATA
+(paren
+id|port
+)paren
+comma
+id|buf
+comma
+l_int|16
+)paren
+suffix:semicolon
+)brace
+id|buf
+op_add_assign
+l_int|16
+suffix:semicolon
+id|got
+op_add_assign
+l_int|16
+suffix:semicolon
+id|left
+op_sub_assign
+l_int|16
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* grab single byte from the warp fifo */
+op_star
+(paren
+(paren
+r_char
+op_star
+)paren
+id|buf
+)paren
+op_increment
+op_assign
+id|inb
+(paren
+id|EPPDATA
+(paren
+id|port
+)paren
+)paren
+suffix:semicolon
+id|got
+op_increment
+suffix:semicolon
+id|left
+op_decrement
+suffix:semicolon
+)brace
+id|status
+op_assign
+id|inb
+(paren
+id|STATUS
+(paren
+id|port
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_amp
+l_int|0x01
+)paren
+(brace
+multiline_comment|/* EPP timeout should never occur... */
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: EPP timeout occured while talking to &quot;
+l_string|&quot;w91284pic (should not have done)&bslash;n&quot;
+comma
+id|port-&gt;name
+)paren
+suffix:semicolon
+id|clear_epp_timeout
+(paren
+id|port
+)paren
+suffix:semicolon
+)brace
+)brace
+r_return
+id|got
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|flags
+op_amp
+id|PARPORT_EPP_FAST
+)paren
+op_logical_and
+(paren
+id|length
+OG
+l_int|1
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+(paren
+(paren
+r_int
+)paren
+id|buf
+op_or
+id|length
+)paren
+op_amp
+l_int|0x03
+)paren
+)paren
+(brace
+id|insl
+(paren
+id|EPPDATA
+(paren
+id|port
+)paren
+comma
+id|buf
+comma
+(paren
+id|length
+op_rshift
+l_int|2
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|insb
+(paren
+id|EPPDATA
+(paren
+id|port
+)paren
+comma
+id|buf
+comma
+id|length
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|inb
+(paren
+id|STATUS
+(paren
+id|port
+)paren
+)paren
+op_amp
+l_int|0x01
+)paren
+(brace
+id|clear_epp_timeout
+(paren
+id|port
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_return
+id|length
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -1326,7 +1625,6 @@ c_cond
 id|inb
 (paren
 id|STATUS
-c_func
 (paren
 id|port
 )paren
@@ -1335,6 +1633,7 @@ op_amp
 l_int|0x01
 )paren
 (brace
+multiline_comment|/* EPP timeout */
 id|clear_epp_timeout
 (paren
 id|port
@@ -1375,6 +1674,100 @@ id|written
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|flags
+op_amp
+id|PARPORT_EPP_FAST
+)paren
+op_logical_and
+(paren
+id|length
+OG
+l_int|1
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+(paren
+(paren
+r_int
+)paren
+id|buf
+op_or
+id|length
+)paren
+op_amp
+l_int|0x03
+)paren
+)paren
+(brace
+id|outsl
+(paren
+id|EPPDATA
+(paren
+id|port
+)paren
+comma
+id|buf
+comma
+(paren
+id|length
+op_rshift
+l_int|2
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|outsb
+(paren
+id|EPPDATA
+(paren
+id|port
+)paren
+comma
+id|buf
+comma
+id|length
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|inb
+(paren
+id|STATUS
+(paren
+id|port
+)paren
+)paren
+op_amp
+l_int|0x01
+)paren
+(brace
+id|clear_epp_timeout
+(paren
+id|port
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_return
+id|length
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -1460,6 +1853,62 @@ id|got
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|flags
+op_amp
+id|PARPORT_EPP_FAST
+)paren
+op_logical_and
+(paren
+id|length
+OG
+l_int|1
+)paren
+)paren
+(brace
+id|insb
+(paren
+id|EPPADDR
+(paren
+id|port
+)paren
+comma
+id|buf
+comma
+id|length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|inb
+(paren
+id|STATUS
+(paren
+id|port
+)paren
+)paren
+op_amp
+l_int|0x01
+)paren
+(brace
+id|clear_epp_timeout
+(paren
+id|port
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_return
+id|length
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -1544,6 +1993,62 @@ id|written
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|flags
+op_amp
+id|PARPORT_EPP_FAST
+)paren
+op_logical_and
+(paren
+id|length
+OG
+l_int|1
+)paren
+)paren
+(brace
+id|outsb
+(paren
+id|EPPADDR
+(paren
+id|port
+)paren
+comma
+id|buf
+comma
+id|length
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|inb
+(paren
+id|STATUS
+(paren
+id|port
+)paren
+)paren
+op_amp
+l_int|0x01
+)paren
+(brace
+id|clear_epp_timeout
+(paren
+id|port
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+r_return
+id|length
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -1988,6 +2493,7 @@ id|parport_pc_disable_irq
 id|port
 )paren
 suffix:semicolon
+multiline_comment|/* set nErrIntrEn and serviceIntr */
 id|frob_econtrol
 (paren
 id|port
@@ -1997,15 +2503,26 @@ l_int|1
 op_lshift
 l_int|4
 )paren
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
 comma
 (paren
 l_int|1
 op_lshift
 l_int|4
 )paren
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
 )paren
 suffix:semicolon
-multiline_comment|/* nErrIntrEn */
 multiline_comment|/* Forward mode. */
 id|parport_pc_data_forward
 (paren
@@ -2317,6 +2834,13 @@ id|left
 op_decrement
 suffix:semicolon
 )brace
+id|dump_parport_state
+(paren
+l_string|&quot;leave fifo_write_block_dma&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 r_return
 id|length
 op_minus
@@ -2399,6 +2923,13 @@ id|length
 op_minus
 l_int|1
 suffix:semicolon
+id|dump_parport_state
+(paren
+l_string|&quot;enter fifo_write_block_dma&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2478,6 +3009,7 @@ id|parport_pc_disable_irq
 id|port
 )paren
 suffix:semicolon
+multiline_comment|/* set nErrIntrEn and serviceIntr */
 id|frob_econtrol
 (paren
 id|port
@@ -2487,15 +3019,26 @@ l_int|1
 op_lshift
 l_int|4
 )paren
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
 comma
 (paren
 l_int|1
 op_lshift
 l_int|4
 )paren
+op_or
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
 )paren
 suffix:semicolon
-multiline_comment|/* nErrIntrEn */
 multiline_comment|/* Forward mode. */
 id|parport_pc_data_forward
 (paren
@@ -2871,6 +3414,13 @@ comma
 id|PCI_DMA_TODEVICE
 )paren
 suffix:semicolon
+id|dump_parport_state
+(paren
+l_string|&quot;leave fifo_write_block_dma&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 r_return
 id|length
 op_minus
@@ -3067,9 +3617,11 @@ id|port
 op_amp
 l_int|0x2
 )paren
+(brace
 multiline_comment|/* Full up. */
 r_break
 suffix:semicolon
+)brace
 id|outb
 (paren
 l_int|0
@@ -3216,6 +3768,7 @@ c_cond
 (paren
 id|r
 )paren
+(brace
 id|printk
 (paren
 id|KERN_DEBUG
@@ -3227,6 +3780,7 @@ comma
 id|r
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Set up ECP parallel port mode.*/
 id|parport_pc_data_forward
@@ -3373,9 +3927,11 @@ id|port
 op_amp
 l_int|0x2
 )paren
+(brace
 multiline_comment|/* Full up. */
 r_break
 suffix:semicolon
+)brace
 id|outb
 (paren
 l_int|0
@@ -3585,6 +4141,19 @@ id|port
 op_assign
 id|port-&gt;physport
 suffix:semicolon
+id|DPRINTK
+(paren
+id|KERN_DEBUG
+l_string|&quot;parport_pc: parport_pc_ecp_read_block_pio&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dump_parport_state
+(paren
+l_string|&quot;enter fcn&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 multiline_comment|/* Special case: a timeout of zero means we cannot call schedule(). */
 r_if
 c_cond
@@ -3604,10 +4173,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|fifofull
-op_assign
-id|fifo_depth
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3615,12 +4180,21 @@ id|port-&gt;ieee1284.mode
 op_eq
 id|IEEE1284_MODE_ECPRLE
 )paren
+(brace
 multiline_comment|/* If the peripheral is allowed to send RLE compressed&n;&t;&t; * data, it is possible for a byte to expand to 128&n;&t;&t; * bytes in the FIFO. */
 id|fifofull
 op_assign
 l_int|128
 suffix:semicolon
-multiline_comment|/* If the caller wants less than a full FIFO&squot;s worth of data,&n;&t; * go through software emulation.  Otherwise we may have to through&n;&t; * away data. */
+)brace
+r_else
+(brace
+id|fifofull
+op_assign
+id|fifo_depth
+suffix:semicolon
+)brace
+multiline_comment|/* If the caller wants less than a full FIFO&squot;s worth of data,&n;&t; * go through software emulation.  Otherwise we may have to throw&n;&t; * away data. */
 r_if
 c_cond
 (paren
@@ -3640,29 +4214,23 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Switch to reverse mode if necessary. */
 r_if
 c_cond
-(paren
 (paren
 id|port-&gt;ieee1284.phase
 op_ne
 id|IEEE1284_PH_REV_IDLE
 )paren
-op_logical_and
-(paren
-id|port-&gt;ieee1284.phase
-op_ne
-id|IEEE1284_PH_REV_DATA
-)paren
-)paren
 (brace
-multiline_comment|/* Event 38: Set nAutoFd low */
+multiline_comment|/* change to reverse-idle phase (must be in forward-idle) */
+multiline_comment|/* Event 38: Set nAutoFd low (also make sure nStrobe is high) */
 id|parport_frob_control
 (paren
 id|port
 comma
 id|PARPORT_CONTROL_AUTOFD
+op_or
+id|PARPORT_CONTROL_STROBE
 comma
 id|PARPORT_CONTROL_AUTOFD
 )paren
@@ -3688,7 +4256,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Event 40: PError goes low */
+multiline_comment|/* Event 40: Wait for  nAckReverse (PError) to go low */
 id|r
 op_assign
 id|parport_wait_peripheral
@@ -3705,6 +4273,7 @@ c_cond
 (paren
 id|r
 )paren
+(brace
 id|printk
 (paren
 id|KERN_DEBUG
@@ -3716,25 +4285,13 @@ comma
 id|r
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Set up ECP FIFO mode.*/
-id|parport_pc_data_reverse
-(paren
-id|port
-)paren
-suffix:semicolon
-multiline_comment|/* Must be in PS2 mode */
-id|parport_pc_frob_control
-(paren
-id|port
-comma
-id|PARPORT_CONTROL_STROBE
-op_or
-id|PARPORT_CONTROL_AUTOFD
-comma
-l_int|0
-)paren
-suffix:semicolon
+multiline_comment|/*&t;parport_pc_frob_control (port,&n;&t;&t;&t;&t; PARPORT_CONTROL_STROBE |&n;&t;&t;&t;&t; PARPORT_CONTROL_AUTOFD,&n;&t;&t;&t;&t; PARPORT_CONTROL_AUTOFD); */
 id|r
 op_assign
 id|change_mode
@@ -3761,6 +4318,131 @@ suffix:semicolon
 id|port-&gt;ieee1284.phase
 op_assign
 id|IEEE1284_PH_REV_DATA
+suffix:semicolon
+multiline_comment|/* the first byte must be collected manually */
+id|dump_parport_state
+(paren
+l_string|&quot;pre 43&quot;
+comma
+id|port
+)paren
+suffix:semicolon
+multiline_comment|/* Event 43: Wait for nAck to go low */
+id|r
+op_assign
+id|parport_wait_peripheral
+(paren
+id|port
+comma
+id|PARPORT_STATUS_ACK
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|r
+)paren
+(brace
+multiline_comment|/* timed out while reading -- no data */
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;PIO read timed out (initial byte)&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|out_no_data
+suffix:semicolon
+)brace
+multiline_comment|/* read byte */
+op_star
+id|bufp
+op_increment
+op_assign
+id|inb
+(paren
+id|DATA
+(paren
+id|port
+)paren
+)paren
+suffix:semicolon
+id|left
+op_decrement
+suffix:semicolon
+id|dump_parport_state
+(paren
+l_string|&quot;43-44&quot;
+comma
+id|port
+)paren
+suffix:semicolon
+multiline_comment|/* Event 44: nAutoFd (HostAck) goes high to acknowledge */
+id|parport_pc_frob_control
+(paren
+id|port
+comma
+id|PARPORT_CONTROL_AUTOFD
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|dump_parport_state
+(paren
+l_string|&quot;pre 45&quot;
+comma
+id|port
+)paren
+suffix:semicolon
+multiline_comment|/* Event 45: Wait for nAck to go high */
+multiline_comment|/*&t;r = parport_wait_peripheral (port, PARPORT_STATUS_ACK, PARPORT_STATUS_ACK); */
+id|dump_parport_state
+(paren
+l_string|&quot;post 45&quot;
+comma
+id|port
+)paren
+suffix:semicolon
+id|r
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|r
+)paren
+(brace
+multiline_comment|/* timed out while waiting for peripheral to respond to ack */
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;ECP PIO read timed out (waiting for nAck)&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* keep hold of the byte we&squot;ve got already */
+r_goto
+id|out_no_data
+suffix:semicolon
+)brace
+multiline_comment|/* Event 46: nAutoFd (HostAck) goes low to accept more data */
+id|parport_pc_frob_control
+(paren
+id|port
+comma
+id|PARPORT_CONTROL_AUTOFD
+comma
+id|PARPORT_CONTROL_AUTOFD
+)paren
+suffix:semicolon
+id|dump_parport_state
+(paren
+l_string|&quot;rev idle&quot;
+comma
+id|port
+)paren
 suffix:semicolon
 multiline_comment|/* Do the transfer. */
 r_while
@@ -3821,6 +4503,13 @@ l_int|0x01
 )paren
 (brace
 multiline_comment|/* FIFO is empty. Wait for interrupt. */
+id|dump_parport_state
+(paren
+l_string|&quot;FIFO empty&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 multiline_comment|/* Anyone else waiting for the port? */
 r_if
 c_cond
@@ -3857,6 +4546,13 @@ id|port
 suffix:semicolon
 id|false_alarm
 suffix:colon
+id|dump_parport_state
+(paren
+l_string|&quot;waiting&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|parport_wait_event
@@ -3864,6 +4560,14 @@ id|parport_wait_event
 id|port
 comma
 id|HZ
+)paren
+suffix:semicolon
+id|DPRINTK
+(paren
+id|KERN_DEBUG
+l_string|&quot;parport_wait_event returned %d&bslash;n&quot;
+comma
+id|ret
 )paren
 suffix:semicolon
 r_if
@@ -3892,6 +4596,13 @@ id|expire
 )paren
 (brace
 multiline_comment|/* Timed out. */
+id|dump_parport_state
+(paren
+l_string|&quot;timeout&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_DEBUG
@@ -3938,10 +4649,12 @@ comma
 id|expire
 )paren
 )paren
+(brace
 id|schedule
 (paren
 )paren
 suffix:semicolon
+)brace
 r_goto
 id|false_alarm
 suffix:semicolon
@@ -3959,6 +4672,13 @@ l_int|0x02
 )paren
 (brace
 multiline_comment|/* FIFO is full. */
+id|dump_parport_state
+(paren
+l_string|&quot;FIFO full&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 id|insb
 (paren
 id|fifo
@@ -3979,7 +4699,46 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|DPRINTK
+(paren
+id|KERN_DEBUG
+l_string|&quot;*** ecp_read_block_pio: reading one byte from the FIFO&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* FIFO not filled.  We will cycle this loop for a while&n;                 * and either the peripheral will fill it faster,&n;                 * tripping a fast empty with insb, or we empty it. */
+op_star
+id|bufp
+op_increment
+op_assign
+id|inb
+(paren
+id|fifo
+)paren
+suffix:semicolon
+id|left
+op_decrement
+suffix:semicolon
+)brace
+multiline_comment|/* scoop up anything left in the FIFO */
+r_while
+c_loop
+(paren
+id|left
+op_logical_and
+op_logical_neg
+(paren
+id|inb
+(paren
+id|ECONTROL
+(paren
+id|port
+)paren
+op_amp
+l_int|0x01
+)paren
+)paren
+)paren
+(brace
 op_star
 id|bufp
 op_increment
@@ -3997,16 +4756,26 @@ id|port-&gt;ieee1284.phase
 op_assign
 id|IEEE1284_PH_REV_IDLE
 suffix:semicolon
-multiline_comment|/* Go to forward idle mode to shut the peripheral up. */
+id|dump_parport_state
+(paren
+l_string|&quot;rev idle2&quot;
+comma
+id|port
+)paren
+suffix:semicolon
+id|out_no_data
+suffix:colon
+multiline_comment|/* Go to forward idle mode to shut the peripheral up (event 47). */
 id|parport_frob_control
 (paren
 id|port
 comma
 id|PARPORT_CONTROL_INIT
 comma
-l_int|0
+id|PARPORT_CONTROL_INIT
 )paren
 suffix:semicolon
+multiline_comment|/* event 49: PError goes high */
 id|r
 op_assign
 id|parport_wait_peripheral
@@ -4023,6 +4792,7 @@ c_cond
 (paren
 id|r
 )paren
+(brace
 id|printk
 (paren
 id|KERN_DEBUG
@@ -4033,6 +4803,7 @@ comma
 id|r
 )paren
 suffix:semicolon
+)brace
 id|port-&gt;ieee1284.phase
 op_assign
 id|IEEE1284_PH_FWD_IDLE
@@ -4064,6 +4835,13 @@ id|lost
 )paren
 suffix:semicolon
 )brace
+id|dump_parport_state
+(paren
+l_string|&quot;fwd idle&quot;
+comma
+id|port
+)paren
+suffix:semicolon
 r_return
 id|length
 op_minus
@@ -4072,6 +4850,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* IEEE 1284 support */
 macro_line|#endif /* Allowed to use FIFO/DMA */
+multiline_comment|/*&n; *&t;******************************************&n; *&t;INITIALISATION AND MODULE STUFF BELOW HERE&n; *&t;******************************************&n; */
 DECL|function|parport_pc_inc_use_count
 r_void
 id|parport_pc_inc_use_count
@@ -7743,10 +8522,12 @@ c_func
 id|pb
 )paren
 )paren
+(brace
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* No way to clear timeout */
+)brace
 multiline_comment|/* Check for Intel bug. */
 r_if
 c_cond
@@ -7792,10 +8573,12 @@ id|clear_epp_timeout
 id|pb
 )paren
 )paren
+(brace
 multiline_comment|/* Phony EPP in ECP. */
 r_return
 l_int|0
 suffix:semicolon
+)brace
 )brace
 )brace
 id|pb-&gt;modes
@@ -7856,9 +8639,11 @@ c_cond
 op_logical_neg
 id|priv-&gt;ecr
 )paren
+(brace
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|oecr
 op_assign
 id|inb
@@ -8506,6 +9291,7 @@ id|pb-&gt;modes
 op_amp
 id|PARPORT_MODE_ECP
 )paren
+(brace
 id|pb-&gt;irq
 op_assign
 id|irq_probe_ECP
@@ -8514,12 +9300,15 @@ c_func
 id|pb
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
+(paren
 (paren
 id|pb-&gt;irq
 op_eq
 id|PARPORT_IRQ_NONE
+)paren
 op_logical_and
 id|priv-&gt;ecr
 op_logical_and
@@ -8728,6 +9517,7 @@ id|p-&gt;dma
 op_eq
 id|PARPORT_DMA_NONE
 )paren
+(brace
 multiline_comment|/* ask known Super-IO chips proper, although these&n;&t;&t;   claim ECP compatible, some don&squot;t report their DMA&n;&t;&t;   conforming to ECP standards */
 id|p-&gt;dma
 op_assign
@@ -8737,6 +9527,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
+)brace
 r_return
 id|p-&gt;dma
 suffix:semicolon
@@ -9281,6 +10072,8 @@ id|p-&gt;ops-&gt;ecp_write_data
 op_assign
 id|parport_pc_ecp_write_block_pio
 suffix:semicolon
+multiline_comment|/* currently broken, but working on it.. (FB) */
+multiline_comment|/* p-&gt;ops-&gt;ecp_read_data = parport_pc_ecp_read_block_pio; */
 macro_line|#endif /* IEEE 1284 support */
 r_if
 c_cond
@@ -12283,7 +13076,11 @@ id|__init
 id|parport_pc_init_superio
 c_func
 (paren
-r_void
+r_int
+id|autoirq
+comma
+r_int
+id|autodma
 )paren
 (brace
 r_return

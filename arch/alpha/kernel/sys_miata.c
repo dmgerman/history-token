@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -778,6 +779,15 @@ r_int
 id|mode
 )paren
 (brace
+r_switch
+c_cond
+(paren
+id|mode
+)paren
+(brace
+r_case
+id|LINUX_REBOOT_CMD_RESTART
+suffix:colon
 multiline_comment|/* Who said DEC engineers have no sense of humor? ;-)  */
 r_if
 c_cond
@@ -799,6 +809,24 @@ c_func
 )paren
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+r_case
+id|LINUX_REBOOT_CMD_HALT
+suffix:colon
+r_break
+suffix:semicolon
+r_case
+id|LINUX_REBOOT_CMD_POWER_OFF
+suffix:colon
+r_break
+suffix:semicolon
+)brace
+id|halt
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * The System Vector&n; */
 DECL|variable|__initmv

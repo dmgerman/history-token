@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * keyspan_pda_fw.h&n; *&n; * Generated from keyspan_pda.s by ezusb_convert.pl&n; * This file is presumed to be under the same copyright as the source file&n; * from which it was derived.&n; */
+multiline_comment|/*&n; * USB Keyspan PDA Firmware&n; *&n; * Copyright (c) 1999, 2000 Brian Warner&t;&lt;warner@lothar.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * Generated from keyspan_pda.s by ezusb_convert.pl&n; *&n; */
 DECL|variable|keyspan_pda_firmware
 r_static
 r_const

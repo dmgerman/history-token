@@ -377,6 +377,13 @@ OG
 l_int|0
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|curtask-&gt;sigmask_lock
+)paren
+suffix:semicolon
 id|flush_signals
 c_func
 (paren
@@ -387,6 +394,13 @@ id|recalc_sigpending
 c_func
 (paren
 id|curtask
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|curtask-&gt;sigmask_lock
 )paren
 suffix:semicolon
 )brace

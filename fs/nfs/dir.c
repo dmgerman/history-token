@@ -3327,12 +3327,14 @@ id|silly
 suffix:semicolon
 id|sdentry
 op_assign
-id|lookup_one
+id|lookup_one_len
 c_func
 (paren
 id|silly
 comma
 id|dentry-&gt;d_parent
+comma
+id|slen
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * N.B. Better to return EBUSY here ... it could be&n;&t;&t; * dangerous to delete the file while it&squot;s in use.&n;&t;&t; */

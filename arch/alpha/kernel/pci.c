@@ -559,7 +559,7 @@ id|start
 op_assign
 id|PCIBIOS_MIN_MEM
 op_plus
-id|hose-&gt;io_space-&gt;start
+id|hose-&gt;mem_space-&gt;start
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * The following holds at least for the Low Cost&n;&t;&t; * Alpha implementation of the PCI interface:&n;&t;&t; *&n;&t;&t; * In sparse memory address space, the first&n;&t;&t; * octant (16MB) of every 128MB segment is&n;&t;&t; * aliased to the very first 16 MB of the&n;&t;&t; * address space (i.e., it aliases the ISA&n;&t;&t; * memory address space).  Thus, we try to&n;&t;&t; * avoid allocating PCI devices in that range.&n;&t;&t; * Can be allocated in 2nd-7th octant only.&n;&t;&t; * Devices that need more than 112MB of&n;&t;&t; * address space must be accessed through&n;&t;&t; * dense memory space only!&n;&t;&t; */
 multiline_comment|/* Align to multiple of size of minimum base.  */

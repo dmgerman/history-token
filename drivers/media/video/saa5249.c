@@ -730,6 +730,9 @@ c_func
 id|vd
 comma
 id|VFL_TYPE_VTX
+comma
+op_minus
+l_int|1
 )paren
 )paren
 OL

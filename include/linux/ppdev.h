@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/char/ppdev.h&n; *&n; * User-space parallel port device driver (header file).&n; *&n; * Copyright (C) 1998-9 Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Added PPGETTIME/PPSETTIME, Fred Barnes, 1999&n; */
+multiline_comment|/*&n; * linux/drivers/char/ppdev.h&n; *&n; * User-space parallel port device driver (header file).&n; *&n; * Copyright (C) 1998-9 Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; *&n; * Added PPGETTIME/PPSETTIME, Fred Barnes, 1999&n; * Added PPGETMODES/PPGETMODE/PPGETPHASE, Fred Barnes &lt;frmb2@ukc.ac.uk&gt;, 03/01/2001&n; */
 DECL|macro|PP_MAJOR
 mdefine_line|#define PP_MAJOR&t;99
 DECL|macro|PP_IOCTL
@@ -81,4 +81,27 @@ DECL|macro|PPGETTIME
 mdefine_line|#define PPGETTIME&t;_IOR(PP_IOCTL, 0x95, struct timeval)
 DECL|macro|PPSETTIME
 mdefine_line|#define PPSETTIME&t;_IOW(PP_IOCTL, 0x96, struct timeval)
+multiline_comment|/* Get available modes (what the hardware can do) */
+DECL|macro|PPGETMODES
+mdefine_line|#define PPGETMODES&t;_IOR(PP_IOCTL, 0x97, unsigned int)
+multiline_comment|/* Get the current mode and phaze */
+DECL|macro|PPGETMODE
+mdefine_line|#define PPGETMODE&t;_IOR(PP_IOCTL, 0x98, int)
+DECL|macro|PPGETPHASE
+mdefine_line|#define PPGETPHASE&t;_IOR(PP_IOCTL, 0x99, int)
+multiline_comment|/* get/set flags */
+DECL|macro|PPGETFLAGS
+mdefine_line|#define PPGETFLAGS&t;_IOR(PP_IOCTL, 0x9a, int)
+DECL|macro|PPSETFLAGS
+mdefine_line|#define PPSETFLAGS&t;_IOW(PP_IOCTL, 0x9b, int)
+multiline_comment|/* flags visible to the world */
+DECL|macro|PP_FASTWRITE
+mdefine_line|#define PP_FASTWRITE&t;(1&lt;&lt;2)
+DECL|macro|PP_FASTREAD
+mdefine_line|#define PP_FASTREAD&t;(1&lt;&lt;3)
+DECL|macro|PP_W91284PIC
+mdefine_line|#define PP_W91284PIC&t;(1&lt;&lt;4)
+multiline_comment|/* only masks user-visible flags */
+DECL|macro|PP_FLAGMASK
+mdefine_line|#define PP_FLAGMASK&t;(PP_FASTWRITE | PP_FASTREAD | PP_W91284PIC)
 eof

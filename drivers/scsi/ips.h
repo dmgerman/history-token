@@ -155,11 +155,11 @@ mdefine_line|#define IPS_HA(x)                   ((ips_ha_t *) x-&gt;hostdata)
 DECL|macro|IPS_COMMAND_ID
 mdefine_line|#define IPS_COMMAND_ID(ha, scb)     (int) (scb - ha-&gt;scbs)
 DECL|macro|IPS_IS_TROMBONE
-mdefine_line|#define IPS_IS_TROMBONE(ha)         (((ha-&gt;device_id == IPS_COPPERHEAD_DEVICEID) &amp;&amp; &bslash;&n;                                         (ha-&gt;revision_id &gt;= IPS_REVID_TROMBONE32) &amp;&amp; &bslash;&n;                                         (ha-&gt;revision_id &lt;= IPS_REVID_TROMBONE64)) ? 1 : 0)
+mdefine_line|#define IPS_IS_TROMBONE(ha)         (((ha-&gt;device_id == IPS_DEVICEID_COPPERHEAD) &amp;&amp; &bslash;&n;                                         (ha-&gt;revision_id &gt;= IPS_REVID_TROMBONE32) &amp;&amp; &bslash;&n;                                         (ha-&gt;revision_id &lt;= IPS_REVID_TROMBONE64)) ? 1 : 0)
 DECL|macro|IPS_IS_CLARINET
-mdefine_line|#define IPS_IS_CLARINET(ha)         (((ha-&gt;device_id == IPS_COPPERHEAD_DEVICEID) &amp;&amp; &bslash;&n;                                         (ha-&gt;revision_id &gt;= IPS_REVID_CLARINETP1) &amp;&amp; &bslash;&n;                                         (ha-&gt;revision_id &lt;= IPS_REVID_CLARINETP3)) ? 1 : 0)
+mdefine_line|#define IPS_IS_CLARINET(ha)         (((ha-&gt;device_id == IPS_DEVICEID_COPPERHEAD) &amp;&amp; &bslash;&n;                                         (ha-&gt;revision_id &gt;= IPS_REVID_CLARINETP1) &amp;&amp; &bslash;&n;                                         (ha-&gt;revision_id &lt;= IPS_REVID_CLARINETP3)) ? 1 : 0)
 DECL|macro|IPS_IS_MORPHEUS
-mdefine_line|#define IPS_IS_MORPHEUS(ha)         (ha-&gt;device_id == IPS_MORPHEUS_DEVICEID)
+mdefine_line|#define IPS_IS_MORPHEUS(ha)         (ha-&gt;device_id == IPS_DEVICEID_MORPHEUS)
 DECL|macro|IPS_USE_I2O_DELIVER
 mdefine_line|#define IPS_USE_I2O_DELIVER(ha)     ((IPS_IS_MORPHEUS(ha) || &bslash;&n;                                         (IPS_IS_TROMBONE(ha) &amp;&amp; &bslash;&n;                                          (ips_force_i2o))) ? 1 : 0)
 DECL|macro|IPS_USE_I2O_STATUS
@@ -182,21 +182,9 @@ macro_line|#ifndef verify_area_20
 DECL|macro|verify_area_20
 mdefine_line|#define verify_area_20(t,a,sz)   (0) /* success */
 macro_line|#endif
-macro_line|#ifndef PUT_USER
-DECL|macro|PUT_USER
-mdefine_line|#define PUT_USER                 put_user
-macro_line|#endif
-macro_line|#ifndef __PUT_USER
-DECL|macro|__PUT_USER
-mdefine_line|#define __PUT_USER               __put_user
-macro_line|#endif
-macro_line|#ifndef GET_USER
-DECL|macro|GET_USER
-mdefine_line|#define GET_USER                 get_user
-macro_line|#endif
-macro_line|#ifndef __GET_USER
-DECL|macro|__GET_USER
-mdefine_line|#define __GET_USER               __get_user
+macro_line|#ifndef DECLARE_MUTEX_LOCKED
+DECL|macro|DECLARE_MUTEX_LOCKED
+mdefine_line|#define DECLARE_MUTEX_LOCKED(sem) struct semaphore sem = MUTEX_LOCKED;
 macro_line|#endif
 multiline_comment|/*&n;    * Lock macros&n;    */
 DECL|macro|IPS_SCB_LOCK
@@ -312,6 +300,8 @@ DECL|macro|IPS_CMD_CONFIG_SYNC
 mdefine_line|#define IPS_CMD_CONFIG_SYNC          0x58
 DECL|macro|IPS_CMD_ERROR_TABLE
 mdefine_line|#define IPS_CMD_ERROR_TABLE          0x17
+DECL|macro|IPS_CMD_RW_BIOSFW
+mdefine_line|#define IPS_CMD_RW_BIOSFW            0x22
 multiline_comment|/*&n;    * Adapter Equates&n;    */
 DECL|macro|IPS_CSL
 mdefine_line|#define IPS_CSL                      0xFF
@@ -367,16 +357,26 @@ DECL|macro|IPS_ADAPTER_ID
 mdefine_line|#define IPS_ADAPTER_ID               0xF
 DECL|macro|IPS_VENDORID
 mdefine_line|#define IPS_VENDORID                 0x1014
-DECL|macro|IPS_COPPERHEAD_DEVICEID
-mdefine_line|#define IPS_COPPERHEAD_DEVICEID      0x002E
-DECL|macro|IPS_MORPHEUS_DEVICEID
-mdefine_line|#define IPS_MORPHEUS_DEVICEID        0x01BD
+DECL|macro|IPS_DEVICEID_COPPERHEAD
+mdefine_line|#define IPS_DEVICEID_COPPERHEAD      0x002E
+DECL|macro|IPS_DEVICEID_MORPHEUS
+mdefine_line|#define IPS_DEVICEID_MORPHEUS        0x01BD
+DECL|macro|IPS_SUBDEVICEID_4M
+mdefine_line|#define IPS_SUBDEVICEID_4M           0x01BE
+DECL|macro|IPS_SUBDEVICEID_4L
+mdefine_line|#define IPS_SUBDEVICEID_4L           0x01BF
+DECL|macro|IPS_SUBDEVICEID_4MX
+mdefine_line|#define IPS_SUBDEVICEID_4MX          0x0208
+DECL|macro|IPS_SUBDEVICEID_4LX
+mdefine_line|#define IPS_SUBDEVICEID_4LX          0x020E
 DECL|macro|IPS_IOCTL_SIZE
 mdefine_line|#define IPS_IOCTL_SIZE               8192
 DECL|macro|IPS_STATUS_SIZE
 mdefine_line|#define IPS_STATUS_SIZE              4
 DECL|macro|IPS_STATUS_Q_SIZE
 mdefine_line|#define IPS_STATUS_Q_SIZE            (IPS_MAX_CMDS+1) * IPS_STATUS_SIZE
+DECL|macro|IPS_IMAGE_SIZE
+mdefine_line|#define IPS_IMAGE_SIZE               500 * 1024
 DECL|macro|IPS_MEMMAP_SIZE
 mdefine_line|#define IPS_MEMMAP_SIZE              128
 DECL|macro|IPS_ONE_MSEC
@@ -464,6 +464,29 @@ DECL|macro|IPS_REVID_TROMBONE32
 mdefine_line|#define IPS_REVID_TROMBONE32         0x0F
 DECL|macro|IPS_REVID_TROMBONE64
 mdefine_line|#define IPS_REVID_TROMBONE64         0x10
+multiline_comment|/*&n;    * NVRAM Page 5 Adapter Defines&n;    */
+DECL|macro|IPS_ADTYPE_SERVERAID
+mdefine_line|#define IPS_ADTYPE_SERVERAID         0x01
+DECL|macro|IPS_ADTYPE_SERVERAID2
+mdefine_line|#define IPS_ADTYPE_SERVERAID2        0x02
+DECL|macro|IPS_ADTYPE_NAVAJO
+mdefine_line|#define IPS_ADTYPE_NAVAJO            0x03
+DECL|macro|IPS_ADTYPE_KIOWA
+mdefine_line|#define IPS_ADTYPE_KIOWA             0x04
+DECL|macro|IPS_ADTYPE_SERVERAID3
+mdefine_line|#define IPS_ADTYPE_SERVERAID3        0x05
+DECL|macro|IPS_ADTYPE_SERVERAID3L
+mdefine_line|#define IPS_ADTYPE_SERVERAID3L       0x06
+DECL|macro|IPS_ADTYPE_SERVERAID4H
+mdefine_line|#define IPS_ADTYPE_SERVERAID4H       0x07
+DECL|macro|IPS_ADTYPE_SERVERAID4M
+mdefine_line|#define IPS_ADTYPE_SERVERAID4M       0x08
+DECL|macro|IPS_ADTYPE_SERVERAID4L
+mdefine_line|#define IPS_ADTYPE_SERVERAID4L       0x09
+DECL|macro|IPS_ADTYPE_SERVERAID4MX
+mdefine_line|#define IPS_ADTYPE_SERVERAID4MX      0x0A
+DECL|macro|IPS_ADTYPE_SERVERAID4LX
+mdefine_line|#define IPS_ADTYPE_SERVERAID4LX      0x0B
 multiline_comment|/*&n;    * Adapter Command/Status Packet Definitions&n;    */
 DECL|macro|IPS_SUCCESS
 mdefine_line|#define IPS_SUCCESS                  0x01 /* Successfully completed       */
@@ -1036,6 +1059,92 @@ op_star
 id|PIPS_FFDC_CMD
 suffix:semicolon
 r_typedef
+r_struct
+(brace
+DECL|member|op_code
+id|u8
+id|op_code
+suffix:semicolon
+DECL|member|command_id
+id|u8
+id|command_id
+suffix:semicolon
+DECL|member|type
+id|u8
+id|type
+suffix:semicolon
+DECL|member|direction
+id|u8
+id|direction
+suffix:semicolon
+DECL|member|count
+id|u32
+id|count
+suffix:semicolon
+DECL|member|buffer_addr
+id|u32
+id|buffer_addr
+suffix:semicolon
+DECL|member|total_packets
+id|u8
+id|total_packets
+suffix:semicolon
+DECL|member|packet_num
+id|u8
+id|packet_num
+suffix:semicolon
+DECL|member|reserved
+id|u16
+id|reserved
+suffix:semicolon
+DECL|typedef|IPS_FLASHFW_CMD
+DECL|typedef|PIPS_FLASHFW_CMD
+)brace
+id|IPS_FLASHFW_CMD
+comma
+op_star
+id|PIPS_FLASHFW_CMD
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|op_code
+id|u8
+id|op_code
+suffix:semicolon
+DECL|member|command_id
+id|u8
+id|command_id
+suffix:semicolon
+DECL|member|type
+id|u8
+id|type
+suffix:semicolon
+DECL|member|direction
+id|u8
+id|direction
+suffix:semicolon
+DECL|member|count
+id|u32
+id|count
+suffix:semicolon
+DECL|member|buffer_addr
+id|u32
+id|buffer_addr
+suffix:semicolon
+DECL|member|offset
+id|u32
+id|offset
+suffix:semicolon
+DECL|typedef|IPS_FLASHBIOS_CMD
+DECL|typedef|PIPS_FLASHBIOS_CMD
+)brace
+id|IPS_FLASHBIOS_CMD
+comma
+op_star
+id|PIPS_FLASHBIOS_CMD
+suffix:semicolon
+r_typedef
 r_union
 (brace
 DECL|member|basic_io
@@ -1077,6 +1186,14 @@ suffix:semicolon
 DECL|member|ffdc
 id|IPS_FFDC_CMD
 id|ffdc
+suffix:semicolon
+DECL|member|flashfw
+id|IPS_FLASHFW_CMD
+id|flashfw
+suffix:semicolon
+DECL|member|flashbios
+id|IPS_FLASHBIOS_CMD
+id|flashbios
 suffix:semicolon
 DECL|typedef|IPS_HOST_COMMAND
 DECL|typedef|PIPS_HOST_COMMAND
@@ -2344,6 +2461,60 @@ DECL|typedef|IPS_OPTION
 )brace
 id|IPS_OPTION
 suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|userbuffer
+r_void
+op_star
+id|userbuffer
+suffix:semicolon
+DECL|member|usersize
+id|u32
+id|usersize
+suffix:semicolon
+DECL|member|kernbuffer
+r_void
+op_star
+id|kernbuffer
+suffix:semicolon
+DECL|member|kernsize
+id|u32
+id|kernsize
+suffix:semicolon
+DECL|member|ha
+r_void
+op_star
+id|ha
+suffix:semicolon
+DECL|member|SC
+r_void
+op_star
+id|SC
+suffix:semicolon
+DECL|member|pt
+r_void
+op_star
+id|pt
+suffix:semicolon
+DECL|member|sem
+r_struct
+id|semaphore
+op_star
+id|sem
+suffix:semicolon
+DECL|member|offset
+id|u32
+id|offset
+suffix:semicolon
+DECL|member|retcode
+id|u32
+id|retcode
+suffix:semicolon
+DECL|typedef|IPS_FLASH_DATA
+)brace
+id|IPS_FLASH_DATA
+suffix:semicolon
 multiline_comment|/*&n; * Status Info&n; */
 DECL|struct|ips_stat
 r_typedef
@@ -2584,7 +2755,9 @@ comma
 r_char
 op_star
 comma
-r_int
+id|u32
+comma
+id|u32
 )paren
 suffix:semicolon
 DECL|member|verifybios
@@ -2601,7 +2774,9 @@ comma
 r_char
 op_star
 comma
-r_int
+id|u32
+comma
+id|u32
 )paren
 suffix:semicolon
 DECL|member|statupd
@@ -2847,10 +3022,34 @@ id|u16
 id|device_id
 suffix:semicolon
 multiline_comment|/* PCI device ID              */
-DECL|member|reserved
+DECL|member|slot_num
 id|u8
-id|reserved
+id|slot_num
 suffix:semicolon
+multiline_comment|/* PCI Slot Number            */
+DECL|member|subdevice_id
+id|u16
+id|subdevice_id
+suffix:semicolon
+multiline_comment|/* Subsystem device ID        */
+DECL|member|ioctl_order
+id|u8
+id|ioctl_order
+suffix:semicolon
+multiline_comment|/* Number of pages in ioctl   */
+DECL|member|reserved2
+id|u8
+id|reserved2
+suffix:semicolon
+multiline_comment|/* Empty                      */
+DECL|member|bios_version
+id|u8
+id|bios_version
+(braket
+l_int|8
+)braket
+suffix:semicolon
+multiline_comment|/* BIOS Revision              */
 DECL|member|mem_addr
 id|u32
 id|mem_addr
@@ -2902,6 +3101,22 @@ DECL|member|ips_lock
 id|spinlock_t
 id|ips_lock
 suffix:semicolon
+DECL|member|save_ioctl_data
+r_char
+op_star
+id|save_ioctl_data
+suffix:semicolon
+multiline_comment|/* Save Area for ioctl_data   */
+DECL|member|save_ioctl_order
+id|u8
+id|save_ioctl_order
+suffix:semicolon
+multiline_comment|/* Save Area for ioctl_order  */
+DECL|member|save_ioctl_datasize
+id|u32
+id|save_ioctl_datasize
+suffix:semicolon
+multiline_comment|/* Save Area for ioctl_datasize */
 DECL|typedef|ips_ha_t
 )brace
 id|ips_ha_t
@@ -2976,8 +3191,12 @@ id|u8
 id|extended_status
 suffix:semicolon
 DECL|member|breakup
-id|u16
+id|u8
 id|breakup
+suffix:semicolon
+DECL|member|sg_break
+id|u8
+id|sg_break
 suffix:semicolon
 DECL|member|data_len
 id|u32

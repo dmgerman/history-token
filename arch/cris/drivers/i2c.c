@@ -1,5 +1,5 @@
-multiline_comment|/*!***************************************************************************&n;*!&n;*! FILE NAME  : i2c.c&n;*!&n;*! DESCRIPTION: implements an interface for IIC/I2C, both directly from other&n;*!              kernel modules (i2c_writereg/readreg) and from userspace using&n;*!              ioctl()&squot;s&n;*!&n;*! Nov 30 1998  Torbjorn Eliasson  Initial version.&n;*!              Bjorn Wesen        Elinux kernel version.&n;*! Jan 14 2000  Johan Adolfsson    Fixed PB shadow register stuff - &n;*!                                 don&squot;t use PB_I2C if DS1302 uses same bits,&n;*!                                 use PB.&n;*! $Log: i2c.c,v $&n;*! Revision 1.5  2001/02/27 13:52:48  bjornw&n;*! malloc.h -&gt; slab.h&n;*!&n;*! Revision 1.4  2001/02/15 07:17:40  starvik&n;*! Corrected usage if port_pb_i2c_shadow&n;*!&n;*! Revision 1.3  2001/01/26 17:55:13  bjornw&n;*! * Made I2C_USES_PB_NOT_PB_I2C a CONFIG option instead of assigning it&n;*!   magically. Config.in needs to set it for the options that need it, like&n;*!   Dallas 1302 support. Actually, it should be default since it screws up&n;*!   the PB bits even if you don&squot;t use I2C..&n;*! * Include linux/config.h to get the above&n;*!&n;*! Revision 1.2  2001/01/18 15:49:30  bjornw&n;*! 2.4 port of I2C including some cleanups (untested of course)&n;*!&n;*! Revision 1.1  2001/01/18 15:35:25  bjornw&n;*! Verbatim copy of the Etrax i2c driver, 2.0 elinux version&n;*!&n;*!&n;*! ---------------------------------------------------------------------------&n;*!&n;*! (C) Copyright 1999, 2000, 2001 Axis Communications AB, LUND, SWEDEN&n;*!&n;*!***************************************************************************/
-multiline_comment|/* $Id: i2c.c,v 1.5 2001/02/27 13:52:48 bjornw Exp $ */
+multiline_comment|/*!***************************************************************************&n;*!&n;*! FILE NAME  : i2c.c&n;*!&n;*! DESCRIPTION: implements an interface for IIC/I2C, both directly from other&n;*!              kernel modules (i2c_writereg/readreg) and from userspace using&n;*!              ioctl()&squot;s&n;*!&n;*! Nov 30 1998  Torbjorn Eliasson  Initial version.&n;*!              Bjorn Wesen        Elinux kernel version.&n;*! Jan 14 2000  Johan Adolfsson    Fixed PB shadow register stuff - &n;*!                                 don&squot;t use PB_I2C if DS1302 uses same bits,&n;*!                                 use PB.&n;*! $Log: i2c.c,v $&n;*! Revision 1.7  2001/04/04 13:11:36  markusl&n;*! Updated according to review remarks&n;*!&n;*! Revision 1.6  2001/03/19 12:43:00  markusl&n;*! Made some symbols unstatic (used by the eeprom driver)&n;*!&n;*! Revision 1.5  2001/02/27 13:52:48  bjornw&n;*! malloc.h -&gt; slab.h&n;*!&n;*! Revision 1.4  2001/02/15 07:17:40  starvik&n;*! Corrected usage if port_pb_i2c_shadow&n;*!&n;*! Revision 1.3  2001/01/26 17:55:13  bjornw&n;*! * Made I2C_USES_PB_NOT_PB_I2C a CONFIG option instead of assigning it&n;*!   magically. Config.in needs to set it for the options that need it, like&n;*!   Dallas 1302 support. Actually, it should be default since it screws up&n;*!   the PB bits even if you don&squot;t use I2C..&n;*! * Include linux/config.h to get the above&n;*!&n;*! Revision 1.2  2001/01/18 15:49:30  bjornw&n;*! 2.4 port of I2C including some cleanups (untested of course)&n;*!&n;*! Revision 1.1  2001/01/18 15:35:25  bjornw&n;*! Verbatim copy of the Etrax i2c driver, 2.0 elinux version&n;*!&n;*!&n;*! ---------------------------------------------------------------------------&n;*!&n;*! (C) Copyright 1999, 2000, 2001 Axis Communications AB, LUND, SWEDEN&n;*!&n;*!***************************************************************************/
+multiline_comment|/* $Id: i2c.c,v 1.7 2001/04/04 13:11:36 markusl Exp $ */
 multiline_comment|/****************** INCLUDE FILES SECTION ***********************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -105,7 +105,6 @@ DECL|macro|i2c_delay
 mdefine_line|#define i2c_delay(usecs) udelay(usecs)
 multiline_comment|/****************** FUNCTION DEFINITION SECTION *************************/
 multiline_comment|/* generate i2c start condition */
-r_static
 r_void
 DECL|function|i2c_start
 id|i2c_start
@@ -114,9 +113,7 @@ c_func
 r_void
 )paren
 (brace
-singleline_comment|//
-singleline_comment|// SCL=1 SDA=1
-singleline_comment|//
+multiline_comment|/*&n;&t; * SCL=1 SDA=1&n;&t; */
 id|i2c_dir_out
 c_func
 (paren
@@ -148,9 +145,7 @@ c_func
 id|CLOCK_HIGH_TIME
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// SCL=1 SDA=0
-singleline_comment|//
+multiline_comment|/*&n;&t; * SCL=1 SDA=0&n;&t; */
 id|i2c_data
 c_func
 (paren
@@ -163,9 +158,7 @@ c_func
 id|START_CONDITION_HOLD_TIME
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// SCL=0 SDA=0
-singleline_comment|//
+multiline_comment|/*&n;&t; * SCL=0 SDA=0&n;&t; */
 id|i2c_clk
 c_func
 (paren
@@ -180,7 +173,6 @@ id|CLOCK_LOW_TIME
 suffix:semicolon
 )brace
 multiline_comment|/* generate i2c stop condition */
-r_static
 r_void
 DECL|function|i2c_stop
 id|i2c_stop
@@ -194,9 +186,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// SCL=0 SDA=0
-singleline_comment|//
+multiline_comment|/*&n;&t; * SCL=0 SDA=0&n;&t; */
 id|i2c_clk
 c_func
 (paren
@@ -217,9 +207,7 @@ op_star
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// SCL=1 SDA=0
-singleline_comment|//
+multiline_comment|/*&n;&t; * SCL=1 SDA=0&n;&t; */
 id|i2c_clk
 c_func
 (paren
@@ -234,9 +222,7 @@ op_star
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// SCL=1 SDA=1
-singleline_comment|//
+multiline_comment|/*&n;&t; * SCL=1 SDA=1&n;&t; */
 id|i2c_data
 c_func
 (paren
@@ -256,7 +242,6 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* write a byte to the i2c interface */
-r_static
 r_void
 DECL|function|i2c_outbyte
 id|i2c_outbyte
@@ -363,9 +348,7 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// enable input
-singleline_comment|//
+multiline_comment|/*&n;&t; * enable input&n;&t; */
 id|i2c_dir_in
 c_func
 (paren
@@ -373,7 +356,6 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* read a byte from the i2c interface */
-r_static
 r_int
 r_char
 DECL|function|i2c_inbyte
@@ -395,37 +377,26 @@ suffix:semicolon
 r_int
 id|iaa
 suffix:semicolon
-singleline_comment|//int dd= 0;
-singleline_comment|//
-singleline_comment|// enable output
-singleline_comment|//
+multiline_comment|/*&n;&t; * enable output&n;&t; */
 id|i2c_dir_out
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// Release data bus by setting
-singleline_comment|// data high
-singleline_comment|//
+multiline_comment|/*&n;&t; * Release data bus by setting&n;&t; * data high&n;&t; */
 id|i2c_data
 c_func
 (paren
 id|I2C_DATA_HIGH
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// enable input
-singleline_comment|//
+multiline_comment|/*&n;&t; * enable input&n;&t; */
 id|i2c_dir_in
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// Use PORT PB instead of I2C
-singleline_comment|// for input. (I2C not working)
-singleline_comment|//
+multiline_comment|/*&n;&t; * Use PORT PB instead of I2C&n;&t; * for input. (I2C not working)&n;&t; */
 id|i2c_clk
 c_func
 (paren
@@ -438,10 +409,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&t;*R_PORT_PB_DATA = *R_PORT_PB_READ | 0x03;*/
-singleline_comment|//
-singleline_comment|// get bits
-singleline_comment|//
+multiline_comment|/*&n;&t; * get bits&n;&t; */
 r_for
 c_loop
 (paren
@@ -465,18 +433,14 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// low clock period
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * low clock period&n;&t;&t; */
 id|i2c_clk
 c_func
 (paren
 id|I2C_CLOCK_HIGH
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// switch off I2C
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * switch off I2C&n;&t;&t; */
 id|i2c_data
 c_func
 (paren
@@ -493,9 +457,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// wait before getting bit
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * wait before getting bit&n;&t;&t; */
 id|i2c_delay
 c_func
 (paren
@@ -525,10 +487,7 @@ id|aBitByte
 op_or
 id|iaa
 suffix:semicolon
-singleline_comment|//if (iaa &gt; 0) dd++;
-singleline_comment|//
-singleline_comment|// wait
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * wait&n;&t;&t; */
 id|i2c_delay
 c_func
 (paren
@@ -537,9 +496,7 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// end clock puls
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * end clock puls&n;&t;&t; */
 id|i2c_enable
 c_func
 (paren
@@ -556,9 +513,7 @@ c_func
 id|I2C_CLOCK_LOW
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// low clock period
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * low clock period&n;&t;&t; */
 id|i2c_delay
 c_func
 (paren
@@ -578,7 +533,6 @@ id|aBitByte
 suffix:semicolon
 )brace
 multiline_comment|/*#---------------------------------------------------------------------------&n;*#&n;*# FUNCTION NAME: i2c_getack&n;*#&n;*# DESCRIPTION  : checks if ack was received from ic2&n;*#&n;*#--------------------------------------------------------------------------*/
-r_static
 r_int
 DECL|function|i2c_getack
 id|i2c_getack
@@ -592,27 +546,20 @@ id|ack
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// enable output
-singleline_comment|//
+multiline_comment|/*&n;&t; * enable output&n;&t; */
 id|i2c_dir_out
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// Release data bus by setting
-singleline_comment|// data high
-singleline_comment|//
+multiline_comment|/*&n;&t; * Release data bus by setting&n;&t; * data high&n;&t; */
 id|i2c_data
 c_func
 (paren
 id|I2C_DATA_HIGH
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// enable input
-singleline_comment|//
+multiline_comment|/*&n;&t; * enable input&n;&t; */
 id|i2c_dir_in
 c_func
 (paren
@@ -626,19 +573,14 @@ op_div
 l_int|4
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// generate ACK clock pulse
-singleline_comment|//
+multiline_comment|/*&n;&t; * generate ACK clock pulse&n;&t; */
 id|i2c_clk
 c_func
 (paren
 id|I2C_CLOCK_HIGH
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// Use PORT PB instead of I2C
-singleline_comment|// for input. (I2C not working)
-singleline_comment|//
+multiline_comment|/*&n;&t; * Use PORT PB instead of I2C&n;&t; * for input. (I2C not working)&n;&t; */
 id|i2c_clk
 c_func
 (paren
@@ -651,10 +593,7 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/*&t;*R_PORT_PB_DATA = *R_PORT_PB_READ | 0x03;*/
-singleline_comment|//
-singleline_comment|// switch off I2C
-singleline_comment|//
+multiline_comment|/*&n;&t; * switch off I2C&n;&t; */
 id|i2c_data
 c_func
 (paren
@@ -671,9 +610,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// now wait for ack
-singleline_comment|//
+multiline_comment|/*&n;&t; * now wait for ack&n;&t; */
 id|i2c_delay
 c_func
 (paren
@@ -682,9 +619,7 @@ op_div
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// check for ack
-singleline_comment|//
+multiline_comment|/*&n;&t; * check for ack&n;&t; */
 r_if
 c_cond
 (paren
@@ -739,9 +674,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// end clock pulse
-singleline_comment|//
+multiline_comment|/*&n;&t; * end clock pulse&n;&t; */
 id|i2c_enable
 c_func
 (paren
@@ -766,17 +699,13 @@ op_div
 l_int|4
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// enable output
-singleline_comment|//
+multiline_comment|/*&n;&t; * enable output&n;&t; */
 id|i2c_dir_out
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// remove ACK clock pulse
-singleline_comment|//
+multiline_comment|/*&n;&t; * remove ACK clock pulse&n;&t; */
 id|i2c_data
 c_func
 (paren
@@ -796,7 +725,6 @@ id|ack
 suffix:semicolon
 )brace
 multiline_comment|/*#---------------------------------------------------------------------------&n;*#&n;*# FUNCTION NAME: I2C::sendAck&n;*#&n;*# DESCRIPTION  : Send ACK on received data&n;*#&n;*#--------------------------------------------------------------------------*/
-r_static
 r_void
 DECL|function|i2c_sendack
 id|i2c_sendack
@@ -805,9 +733,7 @@ c_func
 r_void
 )paren
 (brace
-singleline_comment|//
-singleline_comment|// enable output
-singleline_comment|//
+multiline_comment|/*&n;&t; * enable output&n;&t; */
 id|i2c_delay
 c_func
 (paren
@@ -819,18 +745,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// set ack pulse high
-singleline_comment|//
+multiline_comment|/*&n;&t; * set ack pulse high&n;&t; */
 id|i2c_data
 c_func
 (paren
 id|I2C_DATA_LOW
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// generate clock pulse
-singleline_comment|//
+multiline_comment|/*&n;&t; * generate clock pulse&n;&t; */
 id|i2c_delay
 c_func
 (paren
@@ -865,9 +787,7 @@ op_div
 l_int|6
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// reset data out
-singleline_comment|//
+multiline_comment|/*&n;&t; * reset data out&n;&t; */
 id|i2c_data
 c_func
 (paren
@@ -880,7 +800,6 @@ c_func
 id|CLOCK_LOW_TIME
 )paren
 suffix:semicolon
-singleline_comment|//
 id|i2c_dir_in
 c_func
 (paren
@@ -913,31 +832,35 @@ id|cntr
 op_assign
 l_int|3
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_do
 (brace
 id|error
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// we don&squot;t like to be interrupted
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * we don&squot;t like to be interrupted&n;&t;&t; */
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|cli
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// generate start condition
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * generate start condition&n;&t;&t; */
 id|i2c_start
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// dummy preamble
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * dummy preamble&n;&t;&t; */
 id|i2c_outbyte
 c_func
 (paren
@@ -1017,18 +940,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// send slave address
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * send slave address&n;&t;&t; */
 id|i2c_outbyte
 c_func
 (paren
 id|theSlave
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// wait for ack
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * wait for ack&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1044,9 +963,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// now select register
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * now select register&n;&t;&t; */
 id|i2c_dir_out
 c_func
 (paren
@@ -1058,9 +975,7 @@ c_func
 id|theReg
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// now it&squot;s time to wait for ack
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * now it&squot;s time to wait for ack&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1076,18 +991,14 @@ op_or_assign
 l_int|2
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// send register register data
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * send register register data&n;&t;&t; */
 id|i2c_outbyte
 c_func
 (paren
 id|theValue
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// now it&squot;s time to wait for ack
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * now it&squot;s time to wait for ack&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1103,20 +1014,17 @@ op_or_assign
 l_int|4
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// end byte stream
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * end byte stream&n;&t;&t; */
 id|i2c_stop
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// enable interrupt again
-singleline_comment|//
-id|sti
+multiline_comment|/*&n;&t;&t; * enable interrupt again&n;&t;&t; */
+id|restore_flags
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1171,31 +1079,35 @@ id|cntr
 op_assign
 l_int|3
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_do
 (brace
 id|error
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// we don&squot;t like to be interrupted
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * we don&squot;t like to be interrupted&n;&t;&t; */
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|cli
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// generate start condition
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * generate start condition&n;&t;&t; */
 id|i2c_start
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// dummy preamble
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * dummy preamble&n;&t;&t; */
 id|i2c_outbyte
 c_func
 (paren
@@ -1275,18 +1187,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// send slave address
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * send slave address&n;&t;&t; */
 id|i2c_outbyte
 c_func
 (paren
 id|theSlave
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// wait for ack
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * wait for ack&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1302,9 +1210,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// now select register
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * now select register&n;&t;&t; */
 id|i2c_dir_out
 c_func
 (paren
@@ -1316,9 +1222,7 @@ c_func
 id|theReg
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// now it&squot;s time to wait for ack
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * now it&squot;s time to wait for ack&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1334,9 +1238,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// repeat start condition
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * repeat start condition&n;&t;&t; */
 id|i2c_delay
 c_func
 (paren
@@ -1348,9 +1250,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// send slave address
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * send slave address&n;&t;&t; */
 id|i2c_outbyte
 c_func
 (paren
@@ -1359,9 +1259,7 @@ op_or
 l_int|0x01
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// wait for ack
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * wait for ack&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1377,9 +1275,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|//
-singleline_comment|// fetch register
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * fetch register&n;&t;&t; */
 id|b
 op_assign
 id|i2c_inbyte
@@ -1387,28 +1283,23 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// send Ack
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * send Ack&n;&t;&t; */
 id|i2c_sendack
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// end sequence
-singleline_comment|//
+multiline_comment|/*&n;&t;&t; * end sequence&n;&t;&t; */
 id|i2c_stop
 c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|//
-singleline_comment|// enable interrupt again
-singleline_comment|//
-id|sti
+multiline_comment|/*&n;&t;&t; * enable interrupt again&n;&t;&t; */
+id|restore_flags
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1525,7 +1416,7 @@ id|cmd
 r_case
 id|I2C_WRITEREG
 suffix:colon
-singleline_comment|// write to an i2c slave
+multiline_comment|/* write to an i2c slave */
 id|D
 c_func
 (paren
@@ -1585,7 +1476,7 @@ r_int
 r_char
 id|val
 suffix:semicolon
-singleline_comment|// read from an i2c slave
+multiline_comment|/* read from an i2c slave */
 id|D
 c_func
 (paren
@@ -1826,6 +1717,9 @@ c_func
 (paren
 l_string|&quot;I2C driver v2.2, (c) 1999-2001 Axis Communications AB&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* this makes sure that i2c_init is called during boot */

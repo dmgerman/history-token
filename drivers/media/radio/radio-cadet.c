@@ -19,6 +19,14 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* default to isapnp activation */
+DECL|variable|radio_nr
+r_static
+r_int
+id|radio_nr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 DECL|variable|users
 r_static
 r_int
@@ -2734,6 +2742,8 @@ op_amp
 id|cadet_radio
 comma
 id|VFL_TYPE_RADIO
+comma
+id|radio_nr
 )paren
 op_eq
 op_minus
@@ -2792,6 +2802,14 @@ c_func
 id|io
 comma
 l_string|&quot;I/O address of Cadet card (0x330,0x332,0x334,0x336,0x338,0x33a,0x33c,0x33e)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|radio_nr
+comma
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 DECL|variable|__devinitdata

@@ -145,6 +145,8 @@ mdefine_line|#define IEEE1284_DATA&t;&t;&t; 0&t;/* So is this */
 multiline_comment|/* Flags for block transfer operations. */
 DECL|macro|PARPORT_EPP_FAST
 mdefine_line|#define PARPORT_EPP_FAST&t;&t;(1&lt;&lt;0) /* Unreliable counts. */
+DECL|macro|PARPORT_W91284PIC
+mdefine_line|#define PARPORT_W91284PIC&t;&t;(1&lt;&lt;1) /* have a Warp9 w91284pic in the device */
 multiline_comment|/* The rest is for the kernel only */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/wait.h&gt;

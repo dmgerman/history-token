@@ -1,5 +1,11 @@
 multiline_comment|/* tulip_core.c: A DEC 21040-family ethernet driver for Linux. */
 multiline_comment|/*&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2000,2001  The Linux Kernel Team&n;&t;Written/copyright 1994-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;Please refer to Documentation/DocBook/tulip.{pdf,ps,html}&n;&t;for more information on this driver, or visit the project&n;&t;Web page at http://sourceforge.net/projects/tulip/&n;&n;*/
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;tulip&quot;
+DECL|macro|DRV_VERSION
+mdefine_line|#define DRV_VERSION&t;&quot;0.9.15-pre2&quot;
+DECL|macro|DRV_RELDATE
+mdefine_line|#define DRV_RELDATE&t;&quot;May 16, 2001&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;tulip.h&quot;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -7,7 +13,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|__devinitdata
 r_static
 r_char
@@ -16,7 +24,11 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;Linux Tulip driver version 0.9.15-pre1 (May 12, 2001)&bslash;n&quot;
+l_string|&quot;Linux Tulip driver version &quot;
+id|DRV_VERSION
+l_string|&quot; (&quot;
+id|DRV_RELDATE
+l_string|&quot;)&bslash;n&quot;
 suffix:semicolon
 multiline_comment|/* A few user-configurable values. */
 multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
@@ -282,10 +294,8 @@ id|MAX_UNITS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-DECL|macro|TULIP_MODULE_NAME
-mdefine_line|#define TULIP_MODULE_NAME &quot;tulip&quot;
 DECL|macro|PFX
-mdefine_line|#define PFX TULIP_MODULE_NAME &quot;: &quot;
+mdefine_line|#define PFX DRV_NAME &quot;: &quot;
 macro_line|#ifdef TULIP_DEBUG
 DECL|variable|tulip_debug
 r_int
@@ -2819,6 +2829,74 @@ id|tp-&gt;timer
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
+multiline_comment|/* Enable receiver */
+DECL|function|tulip_xon
+r_void
+id|tulip_xon
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|tulip_private
+op_star
+id|tp
+op_assign
+(paren
+r_struct
+id|tulip_private
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|tp-&gt;fc_bit
+comma
+op_amp
+id|netdev_fc_xoff
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|netif_running
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
+id|tulip_refill_rx
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|tulip_tbl
+(braket
+id|tp-&gt;chip_id
+)braket
+dot
+id|valid_intrs
+comma
+id|dev-&gt;base_addr
+op_plus
+id|CSR7
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 r_static
 r_int
 DECL|function|tulip_open
@@ -2831,6 +2909,20 @@ op_star
 id|dev
 )paren
 (brace
+macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
+r_struct
+id|tulip_private
+op_star
+id|tp
+op_assign
+(paren
+r_struct
+id|tulip_private
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+macro_line|#endif
 r_int
 id|retval
 suffix:semicolon
@@ -2875,6 +2967,18 @@ id|tulip_up
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
+id|tp-&gt;fc_bit
+op_assign
+id|netdev_register_fc
+c_func
+(paren
+id|dev
+comma
+id|tulip_xon
+)paren
+suffix:semicolon
+macro_line|#endif
 id|netif_start_queue
 (paren
 id|dev
@@ -3643,6 +3747,28 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Stop and restart the chip&squot;s Tx processes . */
+macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
+r_if
+c_cond
+(paren
+id|tp-&gt;fc_bit
+op_logical_and
+id|test_bit
+c_func
+(paren
+id|tp-&gt;fc_bit
+comma
+op_amp
+id|netdev_fc_xoff
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;BUG tx_timeout restarting rx when fc on&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|tulip_restart_rxtx
 c_func
 (paren
@@ -4469,6 +4595,30 @@ id|netif_stop_queue
 id|dev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
+r_if
+c_cond
+(paren
+id|tp-&gt;fc_bit
+)paren
+(brace
+r_int
+id|bit
+op_assign
+id|tp-&gt;fc_bit
+suffix:semicolon
+id|tp-&gt;fc_bit
+op_assign
+l_int|0
+suffix:semicolon
+id|netdev_unregister_fc
+c_func
+(paren
+id|bit
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|tulip_down
 (paren
 id|dev
@@ -4776,6 +4926,126 @@ op_amp
 id|tp-&gt;stats
 suffix:semicolon
 )brace
+DECL|function|netdev_ethtool_ioctl
+r_static
+r_int
+id|netdev_ethtool_ioctl
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_void
+op_star
+id|useraddr
+)paren
+(brace
+r_struct
+id|tulip_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|u32
+id|ethcmd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|ethcmd
+comma
+id|useraddr
+comma
+r_sizeof
+(paren
+id|ethcmd
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|ethcmd
+)paren
+(brace
+r_case
+id|ETHTOOL_GDRVINFO
+suffix:colon
+(brace
+r_struct
+id|ethtool_drvinfo
+id|info
+op_assign
+(brace
+id|ETHTOOL_GDRVINFO
+)brace
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.driver
+comma
+id|DRV_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.version
+comma
+id|DRV_VERSION
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info.bus_info
+comma
+id|np-&gt;pdev-&gt;slot_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|useraddr
+comma
+op_amp
+id|info
+comma
+r_sizeof
+(paren
+id|info
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+)brace
 multiline_comment|/* Provide ioctl() calls to examine the MII xcvr state. */
 DECL|function|private_ioctl
 r_static
@@ -4851,6 +5121,22 @@ c_cond
 id|cmd
 )paren
 (brace
+r_case
+id|SIOCETHTOOL
+suffix:colon
+r_return
+id|netdev_ethtool_ioctl
+c_func
+(paren
+id|dev
+comma
+(paren
+r_void
+op_star
+)paren
+id|rq-&gt;ifr_data
+)paren
+suffix:semicolon
 r_case
 id|SIOCDEVPRIVATE
 suffix:colon
@@ -9582,7 +9868,7 @@ op_assign
 (brace
 id|name
 suffix:colon
-id|TULIP_MODULE_NAME
+id|DRV_NAME
 comma
 id|id_table
 suffix:colon

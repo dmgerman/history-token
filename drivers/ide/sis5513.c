@@ -3414,6 +3414,12 @@ suffix:colon
 r_case
 id|PCI_DEVICE_ID_SI_5591
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|noautodma
+)paren
 id|hwif-&gt;autodma
 op_assign
 l_int|1

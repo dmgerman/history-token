@@ -5189,7 +5189,7 @@ r_extern
 r_struct
 id|dentry
 op_star
-id|lookup_one
+id|lookup_one_len
 c_func
 (paren
 r_const
@@ -5199,6 +5199,8 @@ comma
 r_struct
 id|dentry
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

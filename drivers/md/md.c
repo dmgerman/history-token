@@ -11983,6 +11983,7 @@ id|rt
 suffix:semicolon
 id|resync
 op_assign
+(paren
 id|mddev-&gt;curr_resync
 op_minus
 id|atomic_read
@@ -11991,6 +11992,9 @@ c_func
 op_amp
 id|mddev-&gt;recovery_active
 )paren
+)paren
+op_div
+l_int|2
 suffix:semicolon
 id|max_blocks
 op_assign
@@ -12219,7 +12223,11 @@ id|db
 op_assign
 id|resync
 op_minus
+(paren
 id|mddev-&gt;resync_mark_cnt
+op_div
+l_int|2
+)paren
 suffix:semicolon
 id|rt
 op_assign
@@ -13188,7 +13196,7 @@ r_int
 id|ok
 )paren
 (brace
-multiline_comment|/* another &quot;blocks&quot; (1K) blocks have been synced */
+multiline_comment|/* another &quot;blocks&quot; (512byte) blocks have been synced */
 id|atomic_sub
 c_func
 (paren
@@ -13239,7 +13247,7 @@ id|mddev2
 suffix:semicolon
 r_int
 r_int
-id|max_blocks
+id|max_sectors
 comma
 id|currspeed
 comma
@@ -13414,9 +13422,11 @@ id|mddev-&gt;curr_resync
 op_assign
 l_int|1
 suffix:semicolon
-id|max_blocks
+id|max_sectors
 op_assign
 id|mddev-&gt;sb-&gt;size
+op_lshift
+l_int|1
 suffix:semicolon
 id|printk
 c_func
@@ -13517,7 +13527,7 @@ op_star
 (paren
 id|PAGE_SIZE
 op_div
-l_int|1024
+l_int|512
 )paren
 suffix:semicolon
 id|printk
@@ -13527,8 +13537,12 @@ id|KERN_INFO
 l_string|&quot;md: using %dk window, over a total of %d blocks.&bslash;n&quot;
 comma
 id|window
+op_div
+l_int|2
 comma
-id|max_blocks
+id|max_sectors
+op_div
+l_int|2
 )paren
 suffix:semicolon
 id|atomic_set
@@ -13560,14 +13574,14 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|max_blocks
+id|max_sectors
 suffix:semicolon
 )paren
 (brace
 r_int
-id|blocks
+id|sectors
 suffix:semicolon
-id|blocks
+id|sectors
 op_assign
 id|mddev-&gt;pers
 op_member_access_from_pointer
@@ -13582,14 +13596,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|blocks
+id|sectors
 OL
 l_int|0
 )paren
 (brace
 id|err
 op_assign
-id|blocks
+id|sectors
 suffix:semicolon
 r_goto
 id|out
@@ -13598,7 +13612,7 @@ suffix:semicolon
 id|atomic_add
 c_func
 (paren
-id|blocks
+id|sectors
 comma
 op_amp
 id|mddev-&gt;recovery_active
@@ -13606,7 +13620,7 @@ id|mddev-&gt;recovery_active
 suffix:semicolon
 id|j
 op_add_assign
-id|blocks
+id|sectors
 suffix:semicolon
 id|mddev-&gt;curr_resync
 op_assign
@@ -13755,6 +13769,8 @@ id|j
 op_minus
 id|mddev-&gt;resync_mark_cnt
 )paren
+op_div
+l_int|2
 op_div
 (paren
 (paren

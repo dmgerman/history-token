@@ -19,6 +19,14 @@ id|io
 op_assign
 id|CONFIG_RADIO_GEMTEK_PORT
 suffix:semicolon
+DECL|variable|radio_nr
+r_static
+r_int
+id|radio_nr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 DECL|variable|users
 r_static
 r_int
@@ -1137,6 +1145,8 @@ op_amp
 id|gemtek_radio
 comma
 id|VFL_TYPE_RADIO
+comma
+id|radio_nr
 )paren
 op_eq
 op_minus
@@ -1228,6 +1238,14 @@ c_func
 id|io
 comma
 l_string|&quot;I/O address of the GemTek card (0x20c, 0x30c, 0x24c or 0x34c (0x20c or 0x248 have been reported to work for the combined sound/radiocard)).&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|radio_nr
+comma
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|EXPORT_NO_SYMBOLS

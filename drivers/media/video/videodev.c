@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 DECL|macro|VIDEO_NUM_DEVICES
 mdefine_line|#define VIDEO_NUM_DEVICES&t;256 
@@ -1482,6 +1483,7 @@ id|d-&gt;proc_list
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|d
 )paren
@@ -1497,7 +1499,14 @@ r_struct
 id|file_operations
 id|video_fops
 suffix:semicolon
-multiline_comment|/**&n; *&t;video_register_device - register video4linux devices&n; *&t;@vfd: video device structure we want to register&n; *&t;@type: type of device to register&n; *&t;FIXME: needs a semaphore on 2.3.x&n; *&t;&n; *&t;The registration code assigns minor numbers based on the type&n; *&t;requested. -ENFILE is returned in all the device slots for this&n; *&t;category are full. If not then the minor field is set and the&n; *&t;driver initialize function is called (if non %NULL).&n; *&n; *&t;Zero is returned on success.&n; *&n; *&t;Valid types are&n; *&n; *&t;%VFL_TYPE_GRABBER - A frame grabber&n; *&n; *&t;%VFL_TYPE_VTX - A teletext device&n; *&n; *&t;%VFL_TYPE_VBI - Vertical blank data (undecoded)&n; *&n; *&t;%VFL_TYPE_RADIO - A radio card&t;&n; */
+multiline_comment|/**&n; *&t;video_register_device - register video4linux devices&n; *&t;@vfd:  video device structure we want to register&n; *&t;@type: type of device to register&n; *&t;@nr:   which device number (0 == /dev/video0, 1 == /dev/video1, ...&n; *             -1 == first free)&n; *&t;&n; *&t;The registration code assigns minor numbers based on the type&n; *&t;requested. -ENFILE is returned in all the device slots for this&n; *&t;category are full. If not then the minor field is set and the&n; *&t;driver initialize function is called (if non %NULL).&n; *&n; *&t;Zero is returned on success.&n; *&n; *&t;Valid types are&n; *&n; *&t;%VFL_TYPE_GRABBER - A frame grabber&n; *&n; *&t;%VFL_TYPE_VTX - A teletext device&n; *&n; *&t;%VFL_TYPE_VBI - Vertical blank data (undecoded)&n; *&n; *&t;%VFL_TYPE_RADIO - A radio card&t;&n; */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|videodev_register_lock
+)paren
+suffix:semicolon
 DECL|function|video_register_device
 r_int
 id|video_register_device
@@ -1510,6 +1519,9 @@ id|vfd
 comma
 r_int
 id|type
+comma
+r_int
+id|nr
 )paren
 (brace
 r_int
@@ -1529,6 +1541,12 @@ suffix:semicolon
 r_char
 op_star
 id|name_base
+suffix:semicolon
+r_char
+id|name
+(braket
+l_int|16
+)braket
 suffix:semicolon
 r_switch
 c_cond
@@ -1611,6 +1629,24 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* pick a minor number */
+id|down
+c_func
+(paren
+op_amp
+id|videodev_register_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_minus
+l_int|1
+op_eq
+id|nr
+)paren
+(brace
+multiline_comment|/* use first free */
 r_for
 c_loop
 (paren
@@ -1625,24 +1661,72 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 r_if
 c_cond
 (paren
+l_int|NULL
+op_eq
 id|video_device
 (braket
 id|i
 )braket
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
 op_eq
-l_int|NULL
+id|end
 )paren
 (brace
-r_char
-id|name
-(braket
-l_int|16
-)braket
+id|up
+c_func
+(paren
+op_amp
+id|videodev_register_lock
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|ENFILE
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* use the one the driver asked for */
+id|i
+op_assign
+id|base
+op_plus
+id|nr
+suffix:semicolon
+r_if
+c_cond
+(paren
+l_int|NULL
+op_ne
+id|video_device
+(braket
+id|i
+)braket
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|videodev_register_lock
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENFILE
+suffix:semicolon
+)brace
+)brace
 id|video_device
 (braket
 id|i
@@ -1654,7 +1738,14 @@ id|vfd-&gt;minor
 op_assign
 id|i
 suffix:semicolon
-multiline_comment|/* The init call may sleep so we book the slot out&n;&t;&t;&t;   then call */
+id|up
+c_func
+(paren
+op_amp
+id|videodev_register_lock
+)paren
+suffix:semicolon
+multiline_comment|/* The init call may sleep so we book the slot out&n;&t;   then call */
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
@@ -1708,7 +1799,7 @@ op_minus
 id|base
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *&t;Start the device root only. Anything else&n;&t;&t;&t; *&t;has serious privacy issues.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t; *&t;Start the device root only. Anything else&n;&t; *&t;has serious privacy issues.&n;&t; */
 id|vfd-&gt;devfs_handle
 op_assign
 id|devfs_register
@@ -1759,12 +1850,6 @@ suffix:semicolon
 macro_line|#endif
 r_return
 l_int|0
-suffix:semicolon
-)brace
-)brace
-r_return
-op_minus
-id|ENFILE
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;video_unregister_device - unregister a video4linux device&n; *&t;@vfd: the device to unregister&n; *&n; *&t;This unregisters the passed device and deassigns the minor&n; *&t;number. Future open calls will be met with errors.&n; */
@@ -1866,6 +1951,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; *&t;Initialise video for linux&n; */
 DECL|function|videodev_init
+r_static
 r_int
 id|__init
 id|videodev_init
@@ -1947,35 +2033,23 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|videodev_exit
+r_static
+r_void
+id|__exit
+id|videodev_exit
+c_func
+(paren
+r_void
+)paren
+(brace
 macro_line|#ifdef MODULE&t;&t;
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|videodev_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
-c_func
-(paren
-r_void
-)paren
-(brace
 macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_VIDEO_PROC_FS)
 id|videodev_proc_destroy
 (paren
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 id|devfs_unregister_chrdev
 c_func
@@ -1986,15 +2060,23 @@ l_string|&quot;video_capture&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
-DECL|variable|video_register_device
+id|module_init
+c_func
+(paren
+id|videodev_init
+)paren
+id|module_exit
+c_func
+(paren
+id|videodev_exit
+)paren
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|video_register_device
 )paren
 suffix:semicolon
-DECL|variable|video_unregister_device
+DECL|variable|EXPORT_SYMBOL
 id|EXPORT_SYMBOL
 c_func
 (paren
@@ -2013,4 +2095,5 @@ c_func
 l_string|&quot;Device registrar for Video4Linux drivers&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */
 eof

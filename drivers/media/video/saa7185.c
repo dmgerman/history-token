@@ -1,11 +1,12 @@
-multiline_comment|/* &n;   saa7185 - Philips SAA7185B video encoder driver version 0.0.3&n;&n;   Copyright (C) 1998 Dave Perks &lt;dperks@ibm.net&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* &n;    saa7185 - Philips SAA7185B video encoder driver version 0.0.3&n;&n;    Copyright (C) 1998 Dave Perks &lt;dperks@ibm.net&gt;&n;&n;    Slight changes for video timing and attachment output by&n;    Wolfgang Scherr &lt;scherr@net4you.net&gt;&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -22,7 +23,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/i2c-old.h&gt;
 macro_line|#include &lt;linux/video_encoder.h&gt;
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG(x)   x&t;&t;/* Debug driver */
+mdefine_line|#define DEBUG(x)&t;&t;/* Debug driver */
 multiline_comment|/* ----------------------------------------------------------------------- */
 DECL|struct|saa7185
 r_struct
@@ -77,6 +78,71 @@ mdefine_line|#define   I2C_SAA7185        0x88
 DECL|macro|I2C_DELAY
 mdefine_line|#define I2C_DELAY   10
 multiline_comment|/* ----------------------------------------------------------------------- */
+DECL|function|saa7185_read
+r_static
+r_int
+id|saa7185_read
+c_func
+(paren
+r_struct
+id|saa7185
+op_star
+id|dev
+)paren
+(brace
+r_int
+id|ack
+suffix:semicolon
+id|LOCK_I2C_BUS
+c_func
+(paren
+id|dev-&gt;bus
+)paren
+suffix:semicolon
+id|i2c_start
+c_func
+(paren
+id|dev-&gt;bus
+)paren
+suffix:semicolon
+id|i2c_sendbyte
+c_func
+(paren
+id|dev-&gt;bus
+comma
+id|dev-&gt;addr
+op_or
+l_int|1
+comma
+id|I2C_DELAY
+)paren
+suffix:semicolon
+id|ack
+op_assign
+id|i2c_readbyte
+c_func
+(paren
+id|dev-&gt;bus
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|i2c_stop
+c_func
+(paren
+id|dev-&gt;bus
+)paren
+suffix:semicolon
+id|UNLOCK_I2C_BUS
+c_func
+(paren
+id|dev-&gt;bus
+)paren
+suffix:semicolon
+r_return
+id|ack
+suffix:semicolon
+)brace
 DECL|function|saa7185_write
 r_static
 r_int
@@ -100,6 +166,20 @@ id|data
 r_int
 id|ack
 suffix:semicolon
+id|DEBUG
+c_func
+(paren
+id|printk
+(paren
+id|KERN_DEBUG
+l_string|&quot;SAA7185: %02x set to %02x&bslash;n&quot;
+comma
+id|subaddr
+comma
+id|data
+)paren
+suffix:semicolon
+)paren
 id|LOCK_I2C_BUS
 c_func
 (paren
@@ -192,7 +272,8 @@ id|len
 r_int
 id|ack
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_int
 id|subaddr
@@ -541,7 +622,7 @@ l_int|0x6e
 comma
 l_int|0x0e
 comma
-multiline_comment|/* HTRIG=0x00e, approx. centered, at least for PAL */
+multiline_comment|/* HTRIG=0x005, approx. centered, at least for PAL */
 l_int|0x6f
 comma
 l_int|0x00
@@ -726,6 +807,8 @@ id|saa7185
 op_star
 id|encoder
 suffix:semicolon
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|device-&gt;data
 op_assign
 id|encoder
@@ -750,13 +833,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -854,6 +937,26 @@ id|i
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s_attach: chip version %d&bslash;n&quot;
+comma
+id|device-&gt;name
+comma
+id|saa7185_read
+c_func
+(paren
+id|encoder
+)paren
+op_rshift
+l_int|5
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -870,10 +973,36 @@ op_star
 id|device
 )paren
 (brace
+r_struct
+id|saa7185
+op_star
+id|encoder
+op_assign
+id|device-&gt;data
+suffix:semicolon
+id|saa7185_write
+c_func
+(paren
+id|encoder
+comma
+l_int|0x61
+comma
+(paren
+id|encoder-&gt;reg
+(braket
+l_int|0x61
+)braket
+)paren
+op_or
+l_int|0x40
+)paren
+suffix:semicolon
+multiline_comment|/* SW: output off is active */
+singleline_comment|//saa7185_write(encoder, 0x3a, (encoder-&gt;reg[0x3a]) | 0x80); /* SW: color bar */
 id|kfree
 c_func
 (paren
-id|device-&gt;data
+id|encoder
 )paren
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
@@ -1028,23 +1157,6 @@ id|iarg
 op_assign
 id|arg
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* not much choice of inputs */
-r_if
-c_cond
-(paren
-op_star
-id|iarg
-op_ne
-l_int|0
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-macro_line|#else
 multiline_comment|/* RJ: *iarg = 0: input is from SA7111&n;&t;&t;&t;   *iarg = 1: input is from ZR36060 */
 r_switch
 c_cond
@@ -1065,7 +1177,9 @@ comma
 l_int|0x61
 comma
 (paren
-id|encoder-&gt;reg
+id|encoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x61
 )braket
@@ -1074,6 +1188,16 @@ l_int|0xf7
 )paren
 op_or
 l_int|0x08
+)paren
+suffix:semicolon
+id|saa7185_write
+c_func
+(paren
+id|encoder
+comma
+l_int|0x6e
+comma
+l_int|0x01
 )paren
 suffix:semicolon
 r_break
@@ -1090,7 +1214,9 @@ comma
 l_int|0x61
 comma
 (paren
-id|encoder-&gt;reg
+id|encoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x61
 )braket
@@ -1098,6 +1224,17 @@ op_amp
 l_int|0xf7
 )paren
 op_or
+l_int|0x00
+)paren
+suffix:semicolon
+multiline_comment|/* SW: a slight sync problem... */
+id|saa7185_write
+c_func
+(paren
+id|encoder
+comma
+l_int|0x6e
+comma
 l_int|0x00
 )paren
 suffix:semicolon
@@ -1110,7 +1247,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 r_break
 suffix:semicolon
@@ -1167,7 +1303,9 @@ comma
 l_int|0x61
 comma
 (paren
-id|encoder-&gt;reg
+id|encoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x61
 )braket
@@ -1176,7 +1314,9 @@ l_int|0xbf
 )paren
 op_or
 (paren
-id|encoder-&gt;enable
+id|encoder
+op_member_access_from_pointer
+id|enable
 ques
 c_cond
 l_int|0x00
@@ -1201,6 +1341,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 DECL|variable|i2c_driver_saa7185
+r_static
 r_struct
 id|i2c_driver
 id|i2c_driver_saa7185
@@ -1227,22 +1368,14 @@ id|saa7185_command
 suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-macro_line|#else
+DECL|function|saa7185_init
+r_static
 r_int
 id|saa7185_init
 c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 r_return
 id|i2c_register_driver
@@ -1253,10 +1386,10 @@ id|i2c_driver_saa7185
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|saa7185_exit
+r_static
 r_void
-id|cleanup_module
+id|saa7185_exit
 c_func
 (paren
 r_void
@@ -1270,5 +1403,18 @@ id|i2c_driver_saa7185
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|saa7185_init
+id|module_init
+c_func
+(paren
+id|saa7185_init
+)paren
+suffix:semicolon
+DECL|variable|saa7185_exit
+id|module_exit
+c_func
+(paren
+id|saa7185_exit
+)paren
+suffix:semicolon
 eof

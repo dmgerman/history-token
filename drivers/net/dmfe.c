@@ -1,6 +1,6 @@
-multiline_comment|/*&n;   dmfe.c: Version 1.30 06/11/2000&n;&n;   A Davicom DM9102(A)/DM9132/DM9801 fast ethernet driver for Linux. &n;   Copyright (C) 1997  Sten Wang&n;   (C)Copyright 1997-1998 DAVICOM Semiconductor,Inc. All Rights Reserved.&n;&n;   This program is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU General Public License&n;   as published by the Free Software Foundation; either version 2&n;   of the License, or (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;&n;   Compiler command:&n;   &quot;gcc -DMODULE -D__KERNEL__ -I/usr/src/linux/net/inet -Wall &n;   -Wstrict-prototypes -O6 -c dmfe.c&quot;&n;   OR&n;   &quot;gcc -DMODULE -D__KERNEL__ -I/usr/src/linux/net -Wall &n;   -Wstrict-prototypes -O6 -c dmfe.c&quot;&n;&n;   The following steps teach you how to active DM9102 board:&n;   1. Used the upper compiler command to compile dmfe.c&n;   2. insert dmfe module into kernel&n;   &quot;insmod dmfe&quot;        ;;Auto Detection Mode&n;   &quot;insmod dmfe mode=0&quot; ;;Force 10M Half Duplex&n;   &quot;insmod dmfe mode=1&quot; ;;Force 100M Half Duplex&n;   &quot;insmod dmfe mode=4&quot; ;;Force 10M Full Duplex&n;   &quot;insmod dmfe mode=5&quot; ;;Force 100M Full Duplex&n;   3. config a dm9102 network interface&n;   &quot;ifconfig eth0 172.22.3.18&quot;&n;   4. active the IP routing table&n;   &quot;route add -net 172.22.3.0 eth0&quot;&n;   5. Well done. Your DM9102 adapter actived now.&n;&n;   Author: Sten Wang, 886-3-5798797-8517, E-mail: sten_wang@davicom.com.tw&n;&n;   Date:   10/28,1998&n;&n;   (C)Copyright 1997-1998 DAVICOM Semiconductor, Inc. All Rights Reserved.&n;&n;   Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; : &n;   Made it compile in 2.3 (device to net_device)&n;   &n;   Alan Cox &lt;alan@redhat.com&gt; :&n;   Cleaned up for kernel merge.&n;   Removed the back compatibility support&n;   Reformatted, fixing spelling etc as I went&n;   Removed IRQ 0-15 assumption&n;&n;   Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; :&n;   Updated to use new PCI driver API.&n;   Resource usage cleanups.&n;   Report driver version to user.&n;&n;   Tobias Ringstr&#xfffd;m &lt;zajbot@goteborg.utfors.se&gt; :&n;   Added additional proper locking&n;   Rewrote the transmit code to actually use the ring buffer,&n;   and to generate a lot fewer interrupts.&n;&n;   Frank Davis &lt;fdavis112@juno.com&gt;&n;   Added SMP-safe locking mechanisms in addition to Andrew Morton&squot;s work&n;&n;   TODO&n;&n;   Implement pci_driver::suspend() and pci_driver::resume()&n;   power management methods.&n;&n;   Check and fix on 64bit and big endian boxes.&n;&n;   Test and make sure PCI latency is now correct for all cases.&n;&n; */
+multiline_comment|/*&n;    dmfe.c: Version 1.36p1 2001-05-12 for Linux kernel 2.4.x&n;&n;    A Davicom DM9102/DM9102A/DM9102A+DM9801/DM9102A+DM9802 NIC fast&n;    ethernet driver for Linux.&n;    Copyright (C) 1997  Sten Wang&n;&n;    This program is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU General Public License&n;    as published by the Free Software Foundation; either version 2&n;    of the License, or (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    DAVICOM Web-Site: www.davicom.com.tw&n;&n;    Author: Sten Wang, 886-3-5798797-8517, E-mail: sten_wang@davicom.com.tw&n;    Maintainer: Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt;&n;&n;    (C)Copyright 1997-1998 DAVICOM Semiconductor,Inc. All Rights Reserved.&n;&n;    Marcelo Tosatti &lt;marcelo@conectiva.com.br&gt; :&n;    Made it compile in 2.3 (device to net_device)&n;&n;    Alan Cox &lt;alan@redhat.com&gt; :&n;    Cleaned up for kernel merge.&n;    Removed the back compatibility support&n;    Reformatted, fixing spelling etc as I went&n;    Removed IRQ 0-15 assumption&n;&n;    Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt; :&n;    Updated to use new PCI driver API.&n;    Resource usage cleanups.&n;    Report driver version to user.&n;&n;    Tobias Ringstrom &lt;tori@unhappy.mine.nu&gt; :&n;    Cleaned up and added SMP safety.  Thanks go to Jeff Garzik,&n;&t;Andrew Morton and Frank Davis for the SMP safety fixes.&n;&n;    TODO&n;&n;    Implement pci_driver::suspend() and pci_driver::resume()&n;    power management methods.&n;&n;    Check and fix on 64bit and big endian boxes.&n;&n;    Test and make sure PCI latency is now correct for all cases.&n;*/
 DECL|macro|DMFE_VERSION
-mdefine_line|#define DMFE_VERSION &quot;1.30p3 (April 17, 2001)&quot;
+mdefine_line|#define DMFE_VERSION &quot;1.36p1 (May 12, 2001)&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -23,66 +23,61 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-DECL|variable|__initdata
-r_static
-r_char
-id|version
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_INFO
-l_string|&quot;Davicom DM91xx net driver, version &quot;
-id|DMFE_VERSION
-l_string|&quot;&bslash;n&quot;
-suffix:semicolon
 multiline_comment|/* Board/System/Debug information/definition ---------------- */
 DECL|macro|PCI_DM9132_ID
-mdefine_line|#define PCI_DM9132_ID   0x91321282&t;/* Davicom DM9132 ID */
+mdefine_line|#define PCI_DM9132_ID   0x91321282      /* Davicom DM9132 ID */
 DECL|macro|PCI_DM9102_ID
-mdefine_line|#define PCI_DM9102_ID   0x91021282&t;/* Davicom DM9102 ID */
+mdefine_line|#define PCI_DM9102_ID   0x91021282      /* Davicom DM9102 ID */
 DECL|macro|PCI_DM9100_ID
-mdefine_line|#define PCI_DM9100_ID   0x91001282&t;/* Davicom DM9100 ID */
+mdefine_line|#define PCI_DM9100_ID   0x91001282      /* Davicom DM9100 ID */
+DECL|macro|PCI_DM9009_ID
+mdefine_line|#define PCI_DM9009_ID   0x90091282      /* Davicom DM9009 ID */
 DECL|macro|DMFE_SUCC
 mdefine_line|#define DMFE_SUCC       0
 DECL|macro|DM9102_IO_SIZE
 mdefine_line|#define DM9102_IO_SIZE  0x80
 DECL|macro|DM9102A_IO_SIZE
 mdefine_line|#define DM9102A_IO_SIZE 0x100
-DECL|macro|TX_FREE_DESC_CNT
-mdefine_line|#define TX_FREE_DESC_CNT 0xc&t;/* Tx packet count */
 DECL|macro|TX_MAX_SEND_CNT
-mdefine_line|#define TX_MAX_SEND_CNT 0x1&t;/* Maximum tx packet per time */
+mdefine_line|#define TX_MAX_SEND_CNT 0x1             /* Maximum tx packet per time */
 DECL|macro|TX_DESC_CNT
-mdefine_line|#define TX_DESC_CNT     0x10&t;/* Allocated Tx descriptors */
+mdefine_line|#define TX_DESC_CNT     0x10            /* Allocated Tx descriptors */
 DECL|macro|RX_DESC_CNT
-mdefine_line|#define RX_DESC_CNT     0x10&t;/* Allocated Rx descriptors */
-DECL|macro|TX_IRQ_THR
-mdefine_line|#define TX_IRQ_THR      12
+mdefine_line|#define RX_DESC_CNT     0x20            /* Allocated Rx descriptors */
+DECL|macro|TX_FREE_DESC_CNT
+mdefine_line|#define TX_FREE_DESC_CNT (TX_DESC_CNT - 2)&t;/* Max TX packet count */
+DECL|macro|TX_WAKE_DESC_CNT
+mdefine_line|#define TX_WAKE_DESC_CNT (TX_DESC_CNT - 3)&t;/* TX wakeup count */
 DECL|macro|DESC_ALL_CNT
-mdefine_line|#define DESC_ALL_CNT    TX_DESC_CNT+RX_DESC_CNT
+mdefine_line|#define DESC_ALL_CNT    (TX_DESC_CNT + RX_DESC_CNT)
 DECL|macro|TX_BUF_ALLOC
 mdefine_line|#define TX_BUF_ALLOC    0x600
 DECL|macro|RX_ALLOC_SIZE
 mdefine_line|#define RX_ALLOC_SIZE   0x620
 DECL|macro|DM910X_RESET
 mdefine_line|#define DM910X_RESET    1
+DECL|macro|CR0_DEFAULT
+mdefine_line|#define CR0_DEFAULT     0x00E00000      /* TX &amp; RX burst mode */
 DECL|macro|CR6_DEFAULT
-mdefine_line|#define CR6_DEFAULT     0x00280000&t;/* SF, HD */
+mdefine_line|#define CR6_DEFAULT     0x00080000      /* HD */
 DECL|macro|CR7_DEFAULT
-mdefine_line|#define CR7_DEFAULT     0x1a2cd
+mdefine_line|#define CR7_DEFAULT     0x180c1
 DECL|macro|CR15_DEFAULT
-mdefine_line|#define CR15_DEFAULT    0x06&t;/* TxJabber RxWatchdog */
+mdefine_line|#define CR15_DEFAULT    0x06            /* TxJabber RxWatchdog */
 DECL|macro|TDES0_ERR_MASK
-mdefine_line|#define TDES0_ERR_MASK  0x4302&t;/* TXJT, LC, EC, FUE */
+mdefine_line|#define TDES0_ERR_MASK  0x4302          /* TXJT, LC, EC, FUE */
 DECL|macro|MAX_PACKET_SIZE
 mdefine_line|#define MAX_PACKET_SIZE 1514
 DECL|macro|DMFE_MAX_MULTICAST
 mdefine_line|#define DMFE_MAX_MULTICAST 14
-DECL|macro|RX_MAX_TRAFFIC
-mdefine_line|#define RX_MAX_TRAFFIC  0x14000
+DECL|macro|RX_COPY_SIZE
+mdefine_line|#define RX_COPY_SIZE&t;100
 DECL|macro|MAX_CHECK_PACKET
 mdefine_line|#define MAX_CHECK_PACKET 0x8000
+DECL|macro|DM9801_NOISE_FLOOR
+mdefine_line|#define DM9801_NOISE_FLOOR 8
+DECL|macro|DM9802_NOISE_FLOOR
+mdefine_line|#define DM9802_NOISE_FLOOR 5
 DECL|macro|DMFE_10MHF
 mdefine_line|#define DMFE_10MHF      0
 DECL|macro|DMFE_100MHF
@@ -93,14 +88,30 @@ DECL|macro|DMFE_100MFD
 mdefine_line|#define DMFE_100MFD     5
 DECL|macro|DMFE_AUTO
 mdefine_line|#define DMFE_AUTO       8
+DECL|macro|DMFE_1M_HPNA
+mdefine_line|#define DMFE_1M_HPNA    0x10
+DECL|macro|DMFE_TXTH_72
+mdefine_line|#define DMFE_TXTH_72&t;0x400000&t;/* TX TH 72 byte */
+DECL|macro|DMFE_TXTH_96
+mdefine_line|#define DMFE_TXTH_96&t;0x404000&t;/* TX TH 96 byte */
+DECL|macro|DMFE_TXTH_128
+mdefine_line|#define DMFE_TXTH_128&t;0x0000&t;&t;/* TX TH 128 byte */
+DECL|macro|DMFE_TXTH_256
+mdefine_line|#define DMFE_TXTH_256&t;0x4000&t;&t;/* TX TH 256 byte */
+DECL|macro|DMFE_TXTH_512
+mdefine_line|#define DMFE_TXTH_512&t;0x8000&t;&t;/* TX TH 512 byte */
+DECL|macro|DMFE_TXTH_1K
+mdefine_line|#define DMFE_TXTH_1K&t;0xC000&t;&t;/* TX TH 1K  byte */
 DECL|macro|DMFE_TIMER_WUT
-mdefine_line|#define DMFE_TIMER_WUT  (HZ)&t;/* timer wakeup time : 1 second */
+mdefine_line|#define DMFE_TIMER_WUT  (jiffies + HZ * 1)/* timer wakeup time : 1 second */
 DECL|macro|DMFE_TX_TIMEOUT
-mdefine_line|#define DMFE_TX_TIMEOUT ((HZ*3)/2)&t;/* tx packet time-out time 1.5 s&quot; */
+mdefine_line|#define DMFE_TX_TIMEOUT (HZ * 1.5)&t;/* tx packet time-out time 1.5 s&quot; */
+DECL|macro|DMFE_TX_KICK
+mdefine_line|#define DMFE_TX_KICK &t;(HZ * 0.5)&t;/* tx packet Kick-out time 0.5 s&quot; */
 DECL|macro|DMFE_DBUG
-mdefine_line|#define DMFE_DBUG(dbug_now, msg, value)&t;&bslash;&n;&t;if (dmfe_debug || dbug_now)&t;&bslash;&n;&t;&t;printk(&quot;DBUG: %s %x&bslash;n&quot;, msg, value)
+mdefine_line|#define DMFE_DBUG(dbug_now, msg, vaule) if (dmfe_debug || dbug_now) printk(KERN_ERR &quot;&lt;DMFE&gt;: %s %x&bslash;n&quot;, msg, vaule)
 DECL|macro|SHOW_MEDIA_TYPE
-mdefine_line|#define SHOW_MEDIA_TYPE(mode) &bslash;&n; &t;printk(KERN_WARNING &quot;dmfe: Change Speed to %sMhz %s duplex&bslash;n&quot;,&t;&bslash;&n;&t;       mode &amp; 1 ? &quot;100&quot; : &quot;10&quot;,&t;&t;&t;&t;&t;&bslash;&n;&t;       mode &amp; 4 ? &quot;full&quot;:&quot;half&quot;);
+mdefine_line|#define SHOW_MEDIA_TYPE(mode) printk(KERN_ERR &quot;&lt;DMFE&gt;: Change Speed to %sMhz %s duplex&bslash;n&quot;,mode &amp; 1 ?&quot;100&quot;:&quot;10&quot;, mode &amp; 4 ? &quot;full&quot;:&quot;half&quot;);
 multiline_comment|/* CR9 definition: SROM/MII */
 DECL|macro|CR9_SROM_READ
 mdefine_line|#define CR9_SROM_READ   0x4800
@@ -120,12 +131,19 @@ DECL|macro|PHY_DATA_0
 mdefine_line|#define PHY_DATA_0      0x00000
 DECL|macro|MDCLKH
 mdefine_line|#define MDCLKH          0x10000
+DECL|macro|PHY_POWER_DOWN
+mdefine_line|#define PHY_POWER_DOWN&t;0x800
+DECL|macro|SROM_V41_CODE
+mdefine_line|#define SROM_V41_CODE   0x14
 DECL|macro|SROM_CLK_WRITE
-mdefine_line|#define SROM_CLK_WRITE(data, ioaddr) &bslash;&n;&t;outl(data | CR9_SROM_READ | CR9_SRCS , ioaddr);&t;&t;&t;&bslash;&n;&t;udelay(5);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;outl(data | CR9_SROM_READ | CR9_SRCS | CR9_SRCLK, ioaddr);&t;&bslash;&n;&t;udelay(5);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;outl(data | CR9_SROM_READ | CR9_SRCS , ioaddr);&t;&t;&t;&bslash;&n;&t;udelay(5);
+mdefine_line|#define SROM_CLK_WRITE(data, ioaddr) outl(data|CR9_SROM_READ|CR9_SRCS,ioaddr);udelay(5);outl(data|CR9_SROM_READ|CR9_SRCS|CR9_SRCLK,ioaddr);udelay(5);outl(data|CR9_SROM_READ|CR9_SRCS,ioaddr);udelay(5);
 DECL|macro|__CHK_IO_SIZE
-mdefine_line|#define __CHK_IO_SIZE(pci_id, dev_rev) &bslash;&n;&t;( ((pci_id)==PCI_DM9132_ID) || ((dev_rev) &gt;= 0x02000030) ) ? &bslash;&n;&t;&t;DM9102A_IO_SIZE : DM9102_IO_SIZE
+mdefine_line|#define __CHK_IO_SIZE(pci_id, dev_rev) ( ((pci_id)==PCI_DM9132_ID) || ((dev_rev) &gt;= 0x02000030) ) ? DM9102A_IO_SIZE: DM9102_IO_SIZE
 DECL|macro|CHK_IO_SIZE
-mdefine_line|#define CHK_IO_SIZE(pci_dev, dev_rev) &bslash;&n;&t;__CHK_IO_SIZE(((pci_dev)-&gt;device &lt;&lt; 16) | (pci_dev)-&gt;vendor, dev_rev)
+mdefine_line|#define CHK_IO_SIZE(pci_dev, dev_rev) __CHK_IO_SIZE(((pci_dev)-&gt;device &lt;&lt; 16) | (pci_dev)-&gt;vendor, dev_rev)
+multiline_comment|/* Sten Check */
+DECL|macro|DEVICE
+mdefine_line|#define DEVICE net_device
 multiline_comment|/* Structure/enum declaration ------------------------------- */
 DECL|struct|tx_desc
 r_struct
@@ -213,16 +231,11 @@ suffix:semicolon
 multiline_comment|/* Chip revision */
 DECL|member|next_dev
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|next_dev
 suffix:semicolon
 multiline_comment|/* next device */
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-multiline_comment|/* Spinlock */
 DECL|member|net_dev
 r_struct
 id|pci_dev
@@ -230,9 +243,12 @@ op_star
 id|net_dev
 suffix:semicolon
 multiline_comment|/* PCI device */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|ioaddr
-r_int
-r_int
+id|u32
 id|ioaddr
 suffix:semicolon
 multiline_comment|/* I/O base address */
@@ -255,6 +271,30 @@ suffix:semicolon
 DECL|member|cr15_data
 id|u32
 id|cr15_data
+suffix:semicolon
+multiline_comment|/* pointer for memory physical address */
+DECL|member|buf_pool_dma_ptr
+id|dma_addr_t
+id|buf_pool_dma_ptr
+suffix:semicolon
+multiline_comment|/* Tx buffer pool memory */
+DECL|member|buf_pool_dma_start
+id|dma_addr_t
+id|buf_pool_dma_start
+suffix:semicolon
+multiline_comment|/* Tx buffer pool align dword */
+DECL|member|desc_pool_dma_ptr
+id|dma_addr_t
+id|desc_pool_dma_ptr
+suffix:semicolon
+multiline_comment|/* descriptor pool memory */
+DECL|member|first_tx_desc_dma
+id|dma_addr_t
+id|first_tx_desc_dma
+suffix:semicolon
+DECL|member|first_rx_desc_dma
+id|dma_addr_t
+id|first_rx_desc_dma
 suffix:semicolon
 multiline_comment|/* descriptor pointer */
 DECL|member|buf_pool_ptr
@@ -315,16 +355,16 @@ op_star
 id|rx_ready_ptr
 suffix:semicolon
 multiline_comment|/* packet come pointer */
-DECL|member|tx_int_pkt_num
-r_int
-id|tx_int_pkt_num
-suffix:semicolon
-multiline_comment|/* number of packets to transmit until&n;&t;&t;&t;&t; * a transmit interrupt is requested */
-DECL|member|tx_live_cnt
+DECL|member|tx_packet_cnt
 id|u32
-id|tx_live_cnt
+id|tx_packet_cnt
 suffix:semicolon
-multiline_comment|/* number of used/live tx slots */
+multiline_comment|/* transmitted packet count */
+DECL|member|tx_queue_cnt
+id|u32
+id|tx_queue_cnt
+suffix:semicolon
+multiline_comment|/* wait to send packet count */
 DECL|member|rx_avail_cnt
 id|u32
 id|rx_avail_cnt
@@ -335,11 +375,40 @@ id|u32
 id|interval_rx_cnt
 suffix:semicolon
 multiline_comment|/* rx packet count a callback time */
-DECL|member|phy_id2
+DECL|member|HPNA_command
 id|u16
-id|phy_id2
+id|HPNA_command
 suffix:semicolon
-multiline_comment|/* Phyxcer ID2 */
+multiline_comment|/* For HPNA register 16 */
+DECL|member|HPNA_timer
+id|u16
+id|HPNA_timer
+suffix:semicolon
+multiline_comment|/* For HPNA remote device check */
+DECL|member|dbug_cnt
+id|u16
+id|dbug_cnt
+suffix:semicolon
+DECL|member|NIC_capability
+id|u16
+id|NIC_capability
+suffix:semicolon
+multiline_comment|/* NIC media capability */
+DECL|member|PHY_reg4
+id|u16
+id|PHY_reg4
+suffix:semicolon
+multiline_comment|/* Saved Phyxcer register 4 value */
+DECL|member|HPNA_present
+id|u8
+id|HPNA_present
+suffix:semicolon
+multiline_comment|/* 0:none, 1:DM9801, 2:DM9802 */
+DECL|member|chip_type
+id|u8
+id|chip_type
+suffix:semicolon
+multiline_comment|/* Keep DM9102A chip type */
 DECL|member|media_mode
 id|u8
 id|media_mode
@@ -364,32 +433,79 @@ id|u8
 id|wait_reset
 suffix:semicolon
 multiline_comment|/* Hardware failed, need to reset */
-DECL|member|in_reset_state
-id|u8
-id|in_reset_state
-suffix:semicolon
-multiline_comment|/* Now driver in reset routine */
-DECL|member|rx_error_cnt
-id|u8
-id|rx_error_cnt
-suffix:semicolon
-multiline_comment|/* recieved abnormal case count */
 DECL|member|dm910x_chk_mode
 id|u8
 id|dm910x_chk_mode
 suffix:semicolon
 multiline_comment|/* Operating mode check */
+DECL|member|first_in_callback
+id|u8
+id|first_in_callback
+suffix:semicolon
+multiline_comment|/* Flag to record state */
 DECL|member|timer
 r_struct
 id|timer_list
 id|timer
 suffix:semicolon
+multiline_comment|/* System defined statistic counter */
 DECL|member|stats
 r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
-multiline_comment|/* statistic counter */
+multiline_comment|/* Driver defined statistic counter */
+DECL|member|tx_fifo_underrun
+r_int
+r_int
+id|tx_fifo_underrun
+suffix:semicolon
+DECL|member|tx_loss_carrier
+r_int
+r_int
+id|tx_loss_carrier
+suffix:semicolon
+DECL|member|tx_no_carrier
+r_int
+r_int
+id|tx_no_carrier
+suffix:semicolon
+DECL|member|tx_late_collision
+r_int
+r_int
+id|tx_late_collision
+suffix:semicolon
+DECL|member|tx_excessive_collision
+r_int
+r_int
+id|tx_excessive_collision
+suffix:semicolon
+DECL|member|tx_jabber_timeout
+r_int
+r_int
+id|tx_jabber_timeout
+suffix:semicolon
+DECL|member|reset_count
+r_int
+r_int
+id|reset_count
+suffix:semicolon
+DECL|member|reset_cr8
+r_int
+r_int
+id|reset_cr8
+suffix:semicolon
+DECL|member|reset_fatal
+r_int
+r_int
+id|reset_fatal
+suffix:semicolon
+DECL|member|reset_TXtimeout
+r_int
+r_int
+id|reset_TXtimeout
+suffix:semicolon
+multiline_comment|/* NIC SROM data */
 DECL|member|srom
 r_int
 r_char
@@ -409,10 +525,9 @@ DECL|enumerator|DCR1
 DECL|enumerator|DCR2
 DECL|enumerator|DCR3
 DECL|enumerator|DCR4
-DECL|enumerator|DCR5
 id|DCR0
 op_assign
-l_int|0
+l_int|0x00
 comma
 id|DCR1
 op_assign
@@ -430,16 +545,15 @@ id|DCR4
 op_assign
 l_int|0x20
 comma
-id|DCR5
-op_assign
-l_int|0x28
-comma
+DECL|enumerator|DCR5
 DECL|enumerator|DCR6
 DECL|enumerator|DCR7
 DECL|enumerator|DCR8
 DECL|enumerator|DCR9
-DECL|enumerator|DCR10
-DECL|enumerator|DCR11
+id|DCR5
+op_assign
+l_int|0x28
+comma
 id|DCR6
 op_assign
 l_int|0x30
@@ -456,6 +570,11 @@ id|DCR9
 op_assign
 l_int|0x48
 comma
+DECL|enumerator|DCR10
+DECL|enumerator|DCR11
+DECL|enumerator|DCR12
+DECL|enumerator|DCR13
+DECL|enumerator|DCR14
 id|DCR10
 op_assign
 l_int|0x50
@@ -464,10 +583,6 @@ id|DCR11
 op_assign
 l_int|0x58
 comma
-DECL|enumerator|DCR12
-DECL|enumerator|DCR13
-DECL|enumerator|DCR14
-DECL|enumerator|DCR15
 id|DCR12
 op_assign
 l_int|0x60
@@ -480,6 +595,7 @@ id|DCR14
 op_assign
 l_int|0x70
 comma
+DECL|enumerator|DCR15
 id|DCR15
 op_assign
 l_int|0x78
@@ -493,7 +609,6 @@ DECL|enumerator|CR6_RXSC
 DECL|enumerator|CR6_PBF
 DECL|enumerator|CR6_PM
 DECL|enumerator|CR6_PAM
-DECL|enumerator|CR6_FDM
 id|CR6_RXSC
 op_assign
 l_int|0x2
@@ -510,14 +625,13 @@ id|CR6_PAM
 op_assign
 l_int|0x80
 comma
+DECL|enumerator|CR6_FDM
+DECL|enumerator|CR6_TXSC
+DECL|enumerator|CR6_STI
 id|CR6_FDM
 op_assign
 l_int|0x200
 comma
-DECL|enumerator|CR6_TXSC
-DECL|enumerator|CR6_STI
-DECL|enumerator|CR6_SFT
-DECL|enumerator|CR6_RXA
 id|CR6_TXSC
 op_assign
 l_int|0x2000
@@ -526,6 +640,9 @@ id|CR6_STI
 op_assign
 l_int|0x100000
 comma
+DECL|enumerator|CR6_SFT
+DECL|enumerator|CR6_RXA
+DECL|enumerator|CR6_NO_PURGE
 id|CR6_SFT
 op_assign
 l_int|0x200000
@@ -534,17 +651,37 @@ id|CR6_RXA
 op_assign
 l_int|0x40000000
 comma
-DECL|enumerator|CR6_NO_PURGE
 id|CR6_NO_PURGE
 op_assign
 l_int|0x20000000
 )brace
 suffix:semicolon
 multiline_comment|/* Global variable declaration ----------------------------- */
+DECL|variable|printed_version
+r_static
+r_int
+id|__devinitdata
+id|printed_version
+suffix:semicolon
+DECL|variable|__devinitdata
+r_static
+r_char
+id|version
+(braket
+)braket
+id|__devinitdata
+op_assign
+id|KERN_INFO
+l_string|&quot;Davicom DM9xxx net driver, version &quot;
+id|DMFE_VERSION
+l_string|&quot;&bslash;n&quot;
+suffix:semicolon
 DECL|variable|dmfe_debug
 r_static
 r_int
 id|dmfe_debug
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|dmfe_media_mode
 r_static
@@ -552,23 +689,29 @@ r_int
 r_char
 id|dmfe_media_mode
 op_assign
-l_int|8
+id|DMFE_AUTO
 suffix:semicolon
 DECL|variable|dmfe_cr6_user_set
 r_static
 id|u32
 id|dmfe_cr6_user_set
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* For module input parameter */
 DECL|variable|debug
 r_static
 r_int
 id|debug
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|cr6set
 r_static
 id|u32
 id|cr6set
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|mode
 r_static
@@ -585,8 +728,47 @@ id|chkmode
 op_assign
 l_int|1
 suffix:semicolon
-DECL|variable|CrcTable
+DECL|variable|HPNA_mode
 r_static
+id|u8
+id|HPNA_mode
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Default: Low Power/High Speed */
+DECL|variable|HPNA_rx_cmd
+r_static
+id|u8
+id|HPNA_rx_cmd
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Default: Disable Rx remote command */
+DECL|variable|HPNA_tx_cmd
+r_static
+id|u8
+id|HPNA_tx_cmd
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Default: Don&squot;t issue remote command */
+DECL|variable|HPNA_NoiseFloor
+r_static
+id|u8
+id|HPNA_NoiseFloor
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Default: HPNA NoiseFloor */
+DECL|variable|SF_mode
+r_static
+id|u8
+id|SF_mode
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Special Function: 1:VLAN, 2:RX Flow Control&n;&t;&t;&t;&t;   4: TX pause packet */
+DECL|variable|CrcTable
 r_int
 r_int
 id|CrcTable
@@ -1115,7 +1297,7 @@ id|dmfe_open
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 )paren
 suffix:semicolon
@@ -1129,7 +1311,7 @@ id|sk_buff
 op_star
 comma
 r_struct
-id|net_device
+id|DEVICE
 op_star
 )paren
 suffix:semicolon
@@ -1139,7 +1321,7 @@ id|dmfe_stop
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 )paren
 suffix:semicolon
@@ -1151,7 +1333,7 @@ id|dmfe_get_stats
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 )paren
 suffix:semicolon
@@ -1161,7 +1343,7 @@ id|dmfe_set_filter_mode
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 )paren
 suffix:semicolon
@@ -1171,7 +1353,7 @@ id|dmfe_do_ioctl
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 comma
 r_struct
@@ -1244,7 +1426,7 @@ id|send_filter_frame
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 comma
 r_int
@@ -1256,7 +1438,7 @@ id|dm9132_id_table
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 comma
 r_int
@@ -1311,7 +1493,7 @@ id|u32
 )paren
 suffix:semicolon
 r_static
-r_void
+id|u8
 id|dmfe_sense_speed
 c_func
 (paren
@@ -1345,7 +1527,21 @@ id|dmfe_rx_packet
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
+op_star
+comma
+r_struct
+id|dmfe_board_info
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|dmfe_free_tx_pkt
+c_func
+(paren
+r_struct
+id|DEVICE
 op_star
 comma
 r_struct
@@ -1373,7 +1569,7 @@ id|dmfe_dynamic_reset
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 )paren
 suffix:semicolon
@@ -1393,7 +1589,7 @@ id|dmfe_init_dm910x
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 )paren
 suffix:semicolon
@@ -1413,12 +1609,64 @@ comma
 id|u8
 )paren
 suffix:semicolon
-multiline_comment|/* DM910X network board routine ---------------------------- */
-multiline_comment|/*&n; *&t;Search DM910X board, allocate space and register it&n; */
+r_static
+r_void
+id|dmfe_parse_srom
+c_func
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|dmfe_program_DM9801
+c_func
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_static
+r_void
+id|dmfe_program_DM9802
+c_func
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|dmfe_HPNA_remote_cmd_chk
+c_func
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+)paren
+suffix:semicolon
+r_static
+r_void
+id|dmfe_set_phyxcer
+c_func
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* DM910X network baord routine ---------------------------- */
+multiline_comment|/*&n; *&t;Search DM910X board ,allocate space and register it&n; */
 DECL|function|dmfe_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|dmfe_init_one
 (paren
 r_struct
@@ -1445,7 +1693,7 @@ id|dmfe_board_info
 op_star
 id|db
 suffix:semicolon
-multiline_comment|/* Point a board information structure */
+multiline_comment|/* board information structure */
 r_int
 id|i
 suffix:semicolon
@@ -1456,15 +1704,8 @@ id|dev
 suffix:semicolon
 id|u32
 id|dev_rev
-suffix:semicolon
-id|u16
-id|pci_command
-suffix:semicolon
-multiline_comment|/* when built into the kernel, we only print version if device is found */
-macro_line|#ifndef MODULE
-r_static
-r_int
-id|printed_version
+comma
+id|pci_pmr
 suffix:semicolon
 r_if
 c_cond
@@ -1479,13 +1720,12 @@ c_func
 id|version
 )paren
 suffix:semicolon
-macro_line|#endif
 id|DMFE_DBUG
 c_func
 (paren
 l_int|0
 comma
-l_string|&quot;dmfe_probe()&quot;
+l_string|&quot;dmfe_init_one()&quot;
 comma
 l_int|0
 )paren
@@ -1513,32 +1753,6 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
-id|pci_read_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_COMMAND
-comma
-op_amp
-id|pci_command
-)paren
-suffix:semicolon
-id|pci_command
-op_and_assign
-op_complement
-id|PCI_COMMAND_MEMORY
-suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_COMMAND
-comma
-id|pci_command
-)paren
-suffix:semicolon
 id|pci_iobase
 op_assign
 id|pci_resource_start
@@ -1553,30 +1767,6 @@ id|pci_irqline
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
-multiline_comment|/* Interrupt check */
-r_if
-c_cond
-(paren
-id|pci_irqline
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;dmfe(%s): Interrupt wrong : IRQ=%d&bslash;n&quot;
-comma
-id|pdev-&gt;slot_name
-comma
-id|pci_irqline
-)paren
-suffix:semicolon
-r_goto
-id|err_out
-suffix:semicolon
-)brace
 multiline_comment|/* iobase check */
 r_if
 c_cond
@@ -1584,29 +1774,18 @@ c_cond
 id|pci_iobase
 op_eq
 l_int|0
-op_logical_or
-id|pci_resource_len
-c_func
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-op_eq
-l_int|0
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;dmfe(%s): I/O base is zero&bslash;n&quot;
-comma
-id|pdev-&gt;slot_name
+l_string|&quot;&lt;DMFE&gt;: I/O base is zero&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|err_out
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 macro_line|#if 0&t;/* pci_{enable_device,set_master} sets minimum latency for us now */
@@ -1655,8 +1834,9 @@ id|dev
 op_eq
 l_int|NULL
 )paren
-r_goto
-id|err_out
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
@@ -1664,38 +1844,148 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* IO range check */
 r_if
 c_cond
 (paren
-id|pci_request_regions
+id|pci_resource_len
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+OL
+(paren
+id|CHK_IO_SIZE
 c_func
 (paren
 id|pdev
 comma
-l_string|&quot;dmfe&quot;
+id|dev_rev
 )paren
 )paren
-r_goto
-id|err_out_netdev
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;&lt;DMFE&gt;: Allocated I/O size too small&bslash;n&quot;
+)paren
 suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|pci_iobase
+comma
+id|pci_resource_len
+(paren
+id|pdev
+comma
+l_int|0
+)paren
+comma
+id|dev-&gt;name
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;&lt;DMFE&gt;: I/O conflict : IO=%lx Range=%x&bslash;n&quot;
+comma
+id|pci_iobase
+comma
+id|CHK_IO_SIZE
+c_func
+(paren
+id|pdev
+comma
+id|dev_rev
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|err_out
+suffix:semicolon
+)brace
+multiline_comment|/* Init system &amp; device */
 id|db
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|pci_set_drvdata
+multiline_comment|/* Allocated Tx/Rx descriptor memory */
+id|db-&gt;desc_pool_ptr
+op_assign
+id|pci_alloc_consistent
 c_func
 (paren
 id|pdev
 comma
-id|dev
+r_sizeof
+(paren
+r_struct
+id|tx_desc
+)paren
+op_star
+id|DESC_ALL_CNT
+op_plus
+l_int|0x20
+comma
+op_amp
+id|db-&gt;desc_pool_dma_ptr
 )paren
 suffix:semicolon
-id|spin_lock_init
+id|db-&gt;buf_pool_ptr
+op_assign
+id|pci_alloc_consistent
 c_func
 (paren
+id|pdev
+comma
+id|TX_BUF_ALLOC
+op_star
+id|TX_DESC_CNT
+op_plus
+l_int|4
+comma
 op_amp
-id|db-&gt;lock
+id|db-&gt;buf_pool_dma_ptr
 )paren
+suffix:semicolon
+id|db-&gt;first_tx_desc
+op_assign
+(paren
+r_struct
+id|tx_desc
+op_star
+)paren
+id|db-&gt;desc_pool_ptr
+suffix:semicolon
+id|db-&gt;first_tx_desc_dma
+op_assign
+id|db-&gt;desc_pool_dma_ptr
+suffix:semicolon
+id|db-&gt;buf_pool_start
+op_assign
+id|db-&gt;buf_pool_ptr
+suffix:semicolon
+id|db-&gt;buf_pool_dma_start
+op_assign
+id|db-&gt;buf_pool_dma_ptr
+suffix:semicolon
+id|pdev-&gt;driver_data
+op_assign
+id|dev
 suffix:semicolon
 id|db-&gt;chip_id
 op_assign
@@ -1720,6 +2010,14 @@ suffix:semicolon
 id|dev-&gt;irq
 op_assign
 id|pci_irqline
+suffix:semicolon
+id|pci_set_drvdata
+c_func
+(paren
+id|pdev
+comma
+id|dev
+)paren
 suffix:semicolon
 id|dev-&gt;open
 op_assign
@@ -1750,6 +2048,53 @@ id|dev-&gt;do_ioctl
 op_assign
 op_amp
 id|dmfe_do_ioctl
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|db-&gt;lock
+)paren
+suffix:semicolon
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+l_int|0x50
+comma
+op_amp
+id|pci_pmr
+)paren
+suffix:semicolon
+id|pci_pmr
+op_and_assign
+l_int|0x70000
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|pci_pmr
+op_eq
+l_int|0x10000
+)paren
+op_logical_and
+(paren
+id|dev_rev
+op_eq
+l_int|0x02000031
+)paren
+)paren
+id|db-&gt;chip_type
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* DM9102A E3 */
+r_else
+id|db-&gt;chip_type
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* read 64 word srom data */
 r_for
@@ -1815,7 +2160,6 @@ suffix:semicolon
 id|i
 op_assign
 id|register_netdev
-c_func
 (paren
 id|dev
 )paren
@@ -1826,7 +2170,7 @@ c_cond
 id|i
 )paren
 r_goto
-id|err_out_res
+id|err_out
 suffix:semicolon
 id|printk
 c_func
@@ -1886,24 +2230,22 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|err_out_res
+id|err_out
 suffix:colon
-id|pci_release_regions
+id|pci_set_drvdata
 c_func
 (paren
 id|pdev
+comma
+l_int|NULL
 )paren
 suffix:semicolon
-id|err_out_netdev
-suffix:colon
 id|kfree
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|err_out
-suffix:colon
 r_return
 op_minus
 id|ENODEV
@@ -1936,6 +2278,8 @@ r_struct
 id|dmfe_board_info
 op_star
 id|db
+op_assign
+id|dev-&gt;priv
 suffix:semicolon
 id|DMFE_DBUG
 c_func
@@ -1947,9 +2291,47 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|db
-op_assign
-id|dev-&gt;priv
+r_if
+c_cond
+(paren
+id|dev
+)paren
+(brace
+id|pci_free_consistent
+c_func
+(paren
+id|db-&gt;net_dev
+comma
+r_sizeof
+(paren
+r_struct
+id|tx_desc
+)paren
+op_star
+id|DESC_ALL_CNT
+op_plus
+l_int|0x20
+comma
+id|db-&gt;desc_pool_ptr
+comma
+id|db-&gt;desc_pool_dma_ptr
+)paren
+suffix:semicolon
+id|pci_free_consistent
+c_func
+(paren
+id|db-&gt;net_dev
+comma
+id|TX_BUF_ALLOC
+op_star
+id|TX_DESC_CNT
+op_plus
+l_int|4
+comma
+id|db-&gt;buf_pool_ptr
+comma
+id|db-&gt;buf_pool_dma_ptr
+)paren
 suffix:semicolon
 id|unregister_netdev
 c_func
@@ -1957,10 +2339,18 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|pci_release_regions
+id|release_region
+c_func
+(paren
+id|dev-&gt;base_addr
+comma
+id|CHK_IO_SIZE
 c_func
 (paren
 id|pdev
+comma
+id|db-&gt;chip_revision
+)paren
 )paren
 suffix:semicolon
 id|kfree
@@ -1978,6 +2368,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+)brace
 id|DMFE_DBUG
 c_func
 (paren
@@ -1997,7 +2388,7 @@ id|dmfe_open
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 )paren
@@ -2047,150 +2438,6 @@ id|ret
 r_return
 id|ret
 suffix:semicolon
-multiline_comment|/* Allocated Tx/Rx descriptor memory */
-id|db-&gt;desc_pool_ptr
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|tx_desc
-)paren
-op_star
-id|DESC_ALL_CNT
-op_plus
-l_int|0x20
-comma
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|db-&gt;desc_pool_ptr
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|u32
-)paren
-id|db-&gt;desc_pool_ptr
-op_amp
-l_int|0x1f
-)paren
-id|db-&gt;first_tx_desc
-op_assign
-(paren
-r_struct
-id|tx_desc
-op_star
-)paren
-(paren
-(paren
-(paren
-id|u32
-)paren
-id|db-&gt;desc_pool_ptr
-op_amp
-op_complement
-l_int|0x1f
-)paren
-op_plus
-l_int|0x20
-)paren
-suffix:semicolon
-r_else
-id|db-&gt;first_tx_desc
-op_assign
-(paren
-r_struct
-id|tx_desc
-op_star
-)paren
-id|db-&gt;desc_pool_ptr
-suffix:semicolon
-multiline_comment|/* Allocated Tx buffer memory */
-id|db-&gt;buf_pool_ptr
-op_assign
-id|kmalloc
-c_func
-(paren
-id|TX_BUF_ALLOC
-op_star
-id|TX_DESC_CNT
-op_plus
-l_int|4
-comma
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|db-&gt;buf_pool_ptr
-op_eq
-l_int|NULL
-)paren
-(brace
-id|kfree
-c_func
-(paren
-id|db-&gt;desc_pool_ptr
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|u32
-)paren
-id|db-&gt;buf_pool_ptr
-op_amp
-l_int|0x3
-)paren
-id|db-&gt;buf_pool_start
-op_assign
-(paren
-r_char
-op_star
-)paren
-(paren
-(paren
-(paren
-id|u32
-)paren
-id|db-&gt;buf_pool_ptr
-op_amp
-op_complement
-l_int|0x3
-)paren
-op_plus
-l_int|0x4
-)paren
-suffix:semicolon
-r_else
-id|db-&gt;buf_pool_start
-op_assign
-id|db-&gt;buf_pool_ptr
-suffix:semicolon
 multiline_comment|/* system variable init */
 id|db-&gt;cr6_data
 op_assign
@@ -2198,11 +2445,11 @@ id|CR6_DEFAULT
 op_or
 id|dmfe_cr6_user_set
 suffix:semicolon
-id|db-&gt;tx_int_pkt_num
+id|db-&gt;tx_packet_cnt
 op_assign
-id|TX_IRQ_THR
+l_int|0
 suffix:semicolon
-id|db-&gt;tx_live_cnt
+id|db-&gt;tx_queue_cnt
 op_assign
 l_int|0
 suffix:semicolon
@@ -2212,20 +2459,26 @@ l_int|0
 suffix:semicolon
 id|db-&gt;link_failed
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|db-&gt;wait_reset
 op_assign
 l_int|0
 suffix:semicolon
-id|db-&gt;in_reset_state
+id|db-&gt;first_in_callback
 op_assign
 l_int|0
 suffix:semicolon
-id|db-&gt;rx_error_cnt
+id|db-&gt;NIC_capability
 op_assign
-l_int|0
+l_int|0xf
 suffix:semicolon
+multiline_comment|/* All capability*/
+id|db-&gt;PHY_reg4
+op_assign
+l_int|0x1e0
+suffix:semicolon
+multiline_comment|/* CR6 operation mode decision */
 r_if
 c_cond
 (paren
@@ -2245,13 +2498,14 @@ l_int|0x02000030
 )paren
 )paren
 (brace
-singleline_comment|//db-&gt;cr6_data &amp;= ~CR6_SFT;         /* Used Tx threshold */
-singleline_comment|//db-&gt;cr6_data |= CR6_NO_PURGE;     /* No purge if rx unavailable */
+id|db-&gt;cr6_data
+op_or_assign
+id|DMFE_TXTH_256
+suffix:semicolon
 id|db-&gt;cr0_data
 op_assign
-l_int|0xc00000
+id|CR0_DEFAULT
 suffix:semicolon
-multiline_comment|/* TX/RX desc burst mode */
 id|db-&gt;dm910x_chk_mode
 op_assign
 l_int|4
@@ -2260,6 +2514,11 @@ multiline_comment|/* Enter the normal mode */
 )brace
 r_else
 (brace
+id|db-&gt;cr6_data
+op_or_assign
+id|CR6_SFT
+suffix:semicolon
+multiline_comment|/* Store &amp; Forward mode */
 id|db-&gt;cr0_data
 op_assign
 l_int|0
@@ -2270,8 +2529,15 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Enter the check mode */
 )brace
-multiline_comment|/* Initialize DM910X board */
+multiline_comment|/* Initilize DM910X board */
 id|dmfe_init_dm910x
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* Active System Interface */
+id|netif_wake_queue
 c_func
 (paren
 id|dev
@@ -2287,9 +2553,11 @@ id|db-&gt;timer
 suffix:semicolon
 id|db-&gt;timer.expires
 op_assign
-id|jiffies
-op_plus
 id|DMFE_TIMER_WUT
+op_plus
+id|HZ
+op_star
+l_int|2
 suffix:semicolon
 id|db-&gt;timer.data
 op_assign
@@ -2311,17 +2579,11 @@ op_amp
 id|db-&gt;timer
 )paren
 suffix:semicolon
-id|netif_wake_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize DM910X board&n;   Reset DM910X board&n;   Initialize TX/Rx descriptor chain structure&n;   Send the set-up frame&n;   Enable Tx/Rx machine&n; */
+multiline_comment|/*&t;Initilize DM910X board&n; *&t;Reset DM910X board&n; *&t;Initilize TX/Rx descriptor chain structure&n; *&t;Send the set-up frame&n; *&t;Enable Tx/Rx machine&n; */
 DECL|function|dmfe_init_dm910x
 r_static
 r_void
@@ -2329,7 +2591,7 @@ id|dmfe_init_dm910x
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 )paren
@@ -2356,7 +2618,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Reset DM910x board : need 32 PCI clock to complete */
+multiline_comment|/* Reset DM910x MAC controller */
 id|outl
 c_func
 (paren
@@ -2371,7 +2633,7 @@ multiline_comment|/* RESET MAC */
 id|udelay
 c_func
 (paren
-l_int|5
+l_int|100
 )paren
 suffix:semicolon
 id|outl
@@ -2384,6 +2646,29 @@ op_plus
 id|DCR0
 )paren
 suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+multiline_comment|/* Phy addr : DM910(A)2/DM9132/9801, phy address = 1 */
+id|db-&gt;phy_addr
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Parser SROM and media mode */
+id|dmfe_parse_srom
+c_func
+(paren
+id|db
+)paren
+suffix:semicolon
+id|db-&gt;media_mode
+op_assign
+id|dmfe_media_mode
+suffix:semicolon
+multiline_comment|/* RESET Phyxcer Chip by GPR port bit 7 */
 id|outl
 c_func
 (paren
@@ -2395,6 +2680,14 @@ id|DCR12
 )paren
 suffix:semicolon
 multiline_comment|/* Let bit 7 output port */
+r_if
+c_cond
+(paren
+id|db-&gt;chip_id
+op_eq
+id|PCI_DM9009_ID
+)paren
+(brace
 id|outl
 c_func
 (paren
@@ -2405,7 +2698,15 @@ op_plus
 id|DCR12
 )paren
 suffix:semicolon
-multiline_comment|/* RESET DM9102 phyxcer */
+multiline_comment|/* Issue RESET signal */
+id|mdelay
+c_func
+(paren
+l_int|300
+)paren
+suffix:semicolon
+multiline_comment|/* Delay 300 ms */
+)brace
 id|outl
 c_func
 (paren
@@ -2417,41 +2718,41 @@ id|DCR12
 )paren
 suffix:semicolon
 multiline_comment|/* Clear RESET signal */
-multiline_comment|/* Phy addr : DM910(A)2/DM9132/9801, phy address = 1 */
-id|db-&gt;phy_addr
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Media Mode Check */
-id|db-&gt;media_mode
-op_assign
-id|dmfe_media_mode
-suffix:semicolon
+multiline_comment|/* Process Phyxcer Media Mode */
 r_if
 c_cond
+(paren
+op_logical_neg
+(paren
+id|db-&gt;media_mode
+op_amp
+l_int|0x10
+)paren
+)paren
+multiline_comment|/* Force 1M mode */
+id|dmfe_set_phyxcer
+c_func
+(paren
+id|db
+)paren
+suffix:semicolon
+multiline_comment|/* Media Mode Process */
+r_if
+c_cond
+(paren
+op_logical_neg
 (paren
 id|db-&gt;media_mode
 op_amp
 id|DMFE_AUTO
 )paren
-id|dmfe_sense_speed
-c_func
-(paren
-id|db
 )paren
-suffix:semicolon
-r_else
 id|db-&gt;op_mode
 op_assign
 id|db-&gt;media_mode
 suffix:semicolon
-id|dmfe_process_mode
-c_func
-(paren
-id|db
-)paren
-suffix:semicolon
-multiline_comment|/* Initialize Transmit/Receive decriptor and CR3/4 */
+multiline_comment|/* Force Mode */
+multiline_comment|/* Initiliaze Transmit/Receive decriptor and CR3/4 */
 id|dmfe_descriptor_init
 c_func
 (paren
@@ -2496,18 +2797,7 @@ id|dev-&gt;mc_count
 )paren
 suffix:semicolon
 multiline_comment|/* DM9102/DM9102A */
-multiline_comment|/* Init CR5/CR7, interrupt active bit */
-id|outl
-c_func
-(paren
-l_int|0xffffffff
-comma
-id|ioaddr
-op_plus
-id|DCR5
-)paren
-suffix:semicolon
-multiline_comment|/* clear all CR5 status */
+multiline_comment|/* Init CR7, interrupt active bit */
 id|db-&gt;cr7_data
 op_assign
 id|CR7_DEFAULT
@@ -2523,10 +2813,6 @@ id|DCR7
 )paren
 suffix:semicolon
 multiline_comment|/* Init CR15, Tx jabber and Rx watchdog timer */
-id|db-&gt;cr15_data
-op_assign
-id|CR15_DEFAULT
-suffix:semicolon
 id|outl
 c_func
 (paren
@@ -2543,6 +2829,8 @@ op_or_assign
 id|CR6_RXSC
 op_or
 id|CR6_TXSC
+op_or
+l_int|0x40000
 suffix:semicolon
 id|update_cr6
 c_func
@@ -2553,7 +2841,7 @@ id|ioaddr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Hardware start transmission.&n;   Send a packet to media from the upper layer.&n; */
+multiline_comment|/*&n; *&t;Hardware start transmission.&n; *&t;Send a packet to media from the upper layer.&n; */
 DECL|function|dmfe_start_xmit
 r_static
 r_int
@@ -2566,7 +2854,7 @@ op_star
 id|skb
 comma
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 )paren
@@ -2597,6 +2885,44 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Resource flag check */
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* Too large packet check */
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+OG
+id|MAX_PACKET_SIZE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;&lt;DMFE&gt;: big packet = %d&bslash;n&quot;
+comma
+(paren
+id|u16
+)paren
+id|skb-&gt;len
+)paren
+suffix:semicolon
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2604,6 +2930,48 @@ op_amp
 id|db-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* No Tx resource check, it never happen nromally */
+r_if
+c_cond
+(paren
+id|db-&gt;tx_queue_cnt
+op_ge
+id|TX_FREE_DESC_CNT
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|db-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;&lt;DMFE&gt;: No Tx resource %d&bslash;n&quot;
+comma
+id|db-&gt;tx_queue_cnt
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* Disable NIC interrupt */
+id|outl
+c_func
+(paren
+l_int|0
+comma
+id|dev-&gt;base_addr
+op_plus
+id|DCR7
 )paren
 suffix:semicolon
 multiline_comment|/* transmit this packet */
@@ -2629,39 +2997,55 @@ comma
 id|skb-&gt;len
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_decrement
-id|db-&gt;tx_int_pkt_num
-OL
-l_int|0
-)paren
-(brace
 id|txptr-&gt;tdes1
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0xe1000000
 op_or
 id|skb-&gt;len
+)paren
 suffix:semicolon
-id|db-&gt;tx_int_pkt_num
+multiline_comment|/* Point to next transmit free descriptor */
+id|db-&gt;tx_insert_ptr
 op_assign
-id|TX_IRQ_THR
-suffix:semicolon
-)brace
-r_else
-id|txptr-&gt;tdes1
-op_assign
-l_int|0x61000000
-op_or
-id|skb-&gt;len
+(paren
+r_struct
+id|tx_desc
+op_star
+)paren
+id|txptr-&gt;next_tx_desc
 suffix:semicolon
 multiline_comment|/* Transmit Packet Process */
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|db-&gt;tx_queue_cnt
+)paren
+op_logical_and
+(paren
+id|db-&gt;tx_packet_cnt
+OL
+id|TX_MAX_SEND_CNT
+)paren
+)paren
+(brace
 id|txptr-&gt;tdes0
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0x80000000
+)paren
 suffix:semicolon
-multiline_comment|/* set owner bit to DM910X */
+multiline_comment|/* Set owner bit */
+id|db-&gt;tx_packet_cnt
+op_increment
+suffix:semicolon
+multiline_comment|/* Ready to send */
 id|outl
 c_func
 (paren
@@ -2672,42 +3056,53 @@ op_plus
 id|DCR1
 )paren
 suffix:semicolon
-multiline_comment|/* Issue Tx polling command */
+multiline_comment|/* Issue Tx polling */
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/* saved the time stamp */
-multiline_comment|/* Point to next transmit free descriptor */
-id|txptr
-op_assign
-(paren
-r_struct
-id|tx_desc
-op_star
-)paren
-id|txptr-&gt;next_tx_desc
+multiline_comment|/* saved time stamp */
+)brace
+r_else
+(brace
+id|db-&gt;tx_queue_cnt
+op_increment
 suffix:semicolon
+multiline_comment|/* queue TX packet */
+id|outl
+c_func
+(paren
+l_int|0x1
+comma
+id|dev-&gt;base_addr
+op_plus
+id|DCR1
+)paren
+suffix:semicolon
+multiline_comment|/* Issue Tx polling */
+)brace
+multiline_comment|/* Tx resource check */
 r_if
 c_cond
 (paren
-id|txptr-&gt;tdes0
-op_amp
-l_int|0x80000000
+id|db-&gt;tx_queue_cnt
+OL
+id|TX_FREE_DESC_CNT
 )paren
-id|netif_stop_queue
+id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-id|db-&gt;tx_insert_ptr
-op_assign
-id|txptr
+multiline_comment|/* free this SKB */
+id|dev_kfree_skb
+c_func
+(paren
+id|skb
+)paren
 suffix:semicolon
-id|db-&gt;tx_live_cnt
-op_increment
-suffix:semicolon
+multiline_comment|/* Restore CR7 to enable interrupt */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2717,11 +3112,14 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* free this SKB */
-id|dev_kfree_skb
+id|outl
 c_func
 (paren
-id|skb
+id|db-&gt;cr7_data
+comma
+id|dev-&gt;base_addr
+op_plus
+id|DCR7
 )paren
 suffix:semicolon
 r_return
@@ -2736,7 +3134,7 @@ id|dmfe_stop
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 )paren
@@ -2763,10 +3161,19 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* disable system */
 id|netif_stop_queue
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* deleted timer */
+id|del_timer_sync
+c_func
+(paren
+op_amp
+id|db-&gt;timer
 )paren
 suffix:semicolon
 multiline_comment|/* Reset &amp; stop DM910X board */
@@ -2786,12 +3193,18 @@ c_func
 l_int|5
 )paren
 suffix:semicolon
-multiline_comment|/* deleted timer */
-id|del_timer_sync
+id|phy_write
 c_func
 (paren
-op_amp
-id|db-&gt;timer
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|0
+comma
+l_int|0x8000
+comma
+id|db-&gt;chip_id
 )paren
 suffix:semicolon
 multiline_comment|/* free interrupt */
@@ -2810,24 +3223,40 @@ c_func
 id|db
 )paren
 suffix:semicolon
-multiline_comment|/* free all descriptor memory and buffer memory */
-id|kfree
+macro_line|#if 0
+multiline_comment|/* show statistic counter */
+id|printk
 c_func
 (paren
-id|db-&gt;desc_pool_ptr
+l_string|&quot;&lt;DMFE&gt;: FU:%lx EC:%lx LC:%lx NC:%lx LOC:%lx TXJT:%lx RESET:%lx RCR8:%lx FAL:%lx TT:%lx&bslash;n&quot;
+comma
+id|db-&gt;tx_fifo_underrun
+comma
+id|db-&gt;tx_excessive_collision
+comma
+id|db-&gt;tx_late_collision
+comma
+id|db-&gt;tx_no_carrier
+comma
+id|db-&gt;tx_loss_carrier
+comma
+id|db-&gt;tx_jabber_timeout
+comma
+id|db-&gt;reset_count
+comma
+id|db-&gt;reset_cr8
+comma
+id|db-&gt;reset_fatal
+comma
+id|db-&gt;reset_TXtimeout
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|db-&gt;buf_pool_ptr
-)paren
-suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   DM9102 interrupt handler&n;   receive the packet to upper layer, free the transmitted packet&n; */
+multiline_comment|/*&n; *&t;DM9102 insterrupt handler&n; *&t;receive the packet to upper layer, free the transmitted packet&n; */
 DECL|function|dmfe_interrupt
 r_static
 r_void
@@ -2848,28 +3277,42 @@ id|regs
 )paren
 (brace
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 op_assign
 id|dev_id
 suffix:semicolon
 r_struct
-id|tx_desc
-op_star
-id|txptr
-suffix:semicolon
-r_struct
 id|dmfe_board_info
 op_star
 id|db
+op_assign
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+)paren
+id|dev-&gt;priv
 suffix:semicolon
 id|u32
 id|ioaddr
+op_assign
+id|dev-&gt;base_addr
 suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+id|DMFE_DBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;dmfe_interrupt()&quot;
+comma
+l_int|0
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2883,7 +3326,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;dmfe_interrupt() without device arg&quot;
+l_string|&quot;dmfe_interrupt() without DEVICE arg&quot;
 comma
 l_int|0
 )paren
@@ -2891,30 +3334,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* A real interrupt coming */
-id|db
-op_assign
-(paren
-r_struct
-id|dmfe_board_info
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-id|ioaddr
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
-id|DMFE_DBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;dmfe_interrupt()&quot;
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2922,17 +3341,6 @@ op_amp
 id|db-&gt;lock
 comma
 id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* Disable all interrupt in CR7 to solve the interrupt edge problem */
-id|outl
-c_func
-(paren
-l_int|0
-comma
-id|ioaddr
-op_plus
-id|DCR7
 )paren
 suffix:semicolon
 multiline_comment|/* Got DM910X status */
@@ -2956,49 +3364,17 @@ op_plus
 id|DCR5
 )paren
 suffix:semicolon
-multiline_comment|/* printk(&quot;CR5=%x&bslash;n&quot;, db-&gt;cr5_data); */
-multiline_comment|/* Check system status */
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|db-&gt;cr5_data
 op_amp
-l_int|0x2000
+l_int|0xc1
+)paren
 )paren
 (brace
-multiline_comment|/* A system bus error occurred */
-id|DMFE_DBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;A system bus error occurred. CR5=&quot;
-comma
-id|db-&gt;cr5_data
-)paren
-suffix:semicolon
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|db-&gt;wait_reset
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Need to RESET */
-id|outl
-c_func
-(paren
-l_int|0
-comma
-id|ioaddr
-op_plus
-id|DCR7
-)paren
-suffix:semicolon
-multiline_comment|/* disable all interrupt */
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3011,133 +3387,67 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Free the transmitted descriptor */
-id|txptr
-op_assign
-id|db-&gt;tx_remove_ptr
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|db-&gt;tx_live_cnt
-OG
-l_int|0
-op_logical_and
-(paren
-id|txptr-&gt;tdes0
-op_amp
-l_int|0x80000000
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* printk(&quot;tdes0=%x&bslash;n&quot;, txptr-&gt;tdes0); */
-id|db-&gt;stats.tx_packets
-op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|txptr-&gt;tdes0
-op_amp
-id|TDES0_ERR_MASK
-)paren
-op_logical_and
-(paren
-id|txptr-&gt;tdes0
-op_ne
-l_int|0x7fffffff
-)paren
-)paren
-(brace
-multiline_comment|/* printk(&quot;tdes0=%x&bslash;n&quot;, txptr-&gt;tdes0); */
-id|db-&gt;stats.tx_errors
-op_increment
-suffix:semicolon
-)brace
-multiline_comment|/* Transmit statistic counter */
-r_if
-c_cond
-(paren
-id|txptr-&gt;tdes0
-op_ne
-l_int|0x7fffffff
-)paren
-(brace
-multiline_comment|/* printk(&quot;tdes0=%x&bslash;n&quot;, txptr-&gt;tdes0); */
-id|db-&gt;stats.collisions
-op_add_assign
-(paren
-id|txptr-&gt;tdes0
-op_rshift
-l_int|3
-)paren
-op_amp
-l_int|0xf
-suffix:semicolon
-id|db-&gt;stats.tx_bytes
-op_add_assign
-id|txptr-&gt;tdes1
-op_amp
-l_int|0x7ff
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|txptr-&gt;tdes0
-op_amp
-id|TDES0_ERR_MASK
-)paren
-id|db-&gt;stats.tx_errors
-op_increment
-suffix:semicolon
-)brace
-id|txptr
-op_assign
-(paren
-r_struct
-id|tx_desc
-op_star
-)paren
-id|txptr-&gt;next_tx_desc
-suffix:semicolon
-id|db-&gt;tx_live_cnt
-op_decrement
-suffix:semicolon
-)brace
-multiline_comment|/* Update TX remove pointer to next */
-id|db-&gt;tx_remove_ptr
-op_assign
-(paren
-r_struct
-id|tx_desc
-op_star
-)paren
-id|txptr
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|db-&gt;tx_insert_ptr-&gt;tdes0
-op_amp
-l_int|0x80000000
-)paren
-op_eq
-l_int|0
-)paren
-id|netif_wake_queue
+multiline_comment|/* Disable all interrupt in CR7 to solve the interrupt edge problem */
+id|outl
 c_func
 (paren
-id|dev
+l_int|0
+comma
+id|ioaddr
+op_plus
+id|DCR7
 )paren
 suffix:semicolon
+multiline_comment|/* Check system status */
+r_if
+c_cond
+(paren
+id|db-&gt;cr5_data
+op_amp
+l_int|0x2000
+)paren
+(brace
+multiline_comment|/* system bus error happen */
+id|DMFE_DBUG
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;System bus error happen. CR5=&quot;
+comma
+id|db-&gt;cr5_data
+)paren
+suffix:semicolon
+id|db-&gt;reset_fatal
+op_increment
+suffix:semicolon
+id|db-&gt;wait_reset
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Need to RESET */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|db-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Received the coming packet */
 r_if
 c_cond
 (paren
+(paren
+id|db-&gt;cr5_data
+op_amp
+l_int|0x40
+)paren
+op_logical_and
 id|db-&gt;rx_avail_cnt
 )paren
 id|dmfe_rx_packet
@@ -3159,6 +3469,22 @@ id|RX_DESC_CNT
 id|allocated_rx_buffer
 c_func
 (paren
+id|db
+)paren
+suffix:semicolon
+multiline_comment|/* Free the transmitted descriptor */
+r_if
+c_cond
+(paren
+id|db-&gt;cr5_data
+op_amp
+l_int|0x01
+)paren
+id|dmfe_free_tx_pkt
+c_func
+(paren
+id|dev
+comma
 id|db
 )paren
 suffix:semicolon
@@ -3189,22 +3515,6 @@ id|db-&gt;ioaddr
 suffix:semicolon
 )brace
 multiline_comment|/* Restore CR7 to enable interrupt mask */
-r_if
-c_cond
-(paren
-id|db-&gt;interval_rx_cnt
-OG
-id|RX_MAX_TRAFFIC
-)paren
-id|db-&gt;cr7_data
-op_assign
-l_int|0x1a28d
-suffix:semicolon
-r_else
-id|db-&gt;cr7_data
-op_assign
-l_int|0x1a2cd
-suffix:semicolon
 id|outl
 c_func
 (paren
@@ -3225,7 +3535,273 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Receive the come packet and pass to upper layer&n; */
+multiline_comment|/*&n; *&t;Free TX resource after TX complete&n; */
+DECL|function|dmfe_free_tx_pkt
+r_static
+r_void
+id|dmfe_free_tx_pkt
+c_func
+(paren
+r_struct
+id|DEVICE
+op_star
+id|dev
+comma
+r_struct
+id|dmfe_board_info
+op_star
+id|db
+)paren
+(brace
+r_struct
+id|tx_desc
+op_star
+id|txptr
+suffix:semicolon
+id|u32
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+id|txptr
+op_assign
+id|db-&gt;tx_remove_ptr
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|db-&gt;tx_packet_cnt
+)paren
+(brace
+multiline_comment|/* printk(&quot;&lt;DMFE&gt;: tdes0=%x&bslash;n&quot;, txptr-&gt;tdes0); */
+r_if
+c_cond
+(paren
+id|txptr-&gt;tdes0
+op_amp
+l_int|0x80000000
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* A packet sent completed */
+id|db-&gt;tx_packet_cnt
+op_decrement
+suffix:semicolon
+id|db-&gt;stats.tx_packets
+op_increment
+suffix:semicolon
+multiline_comment|/* Transmit statistic counter */
+r_if
+c_cond
+(paren
+id|txptr-&gt;tdes0
+op_ne
+l_int|0x7fffffff
+)paren
+(brace
+multiline_comment|/* printk(&quot;&lt;DMFE&gt;: tdes0=%x&bslash;n&quot;, txptr-&gt;tdes0); */
+id|db-&gt;stats.collisions
+op_add_assign
+(paren
+id|txptr-&gt;tdes0
+op_rshift
+l_int|3
+)paren
+op_amp
+l_int|0xf
+suffix:semicolon
+id|db-&gt;stats.tx_bytes
+op_add_assign
+id|txptr-&gt;tdes1
+op_amp
+l_int|0x7ff
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|txptr-&gt;tdes0
+op_amp
+id|TDES0_ERR_MASK
+)paren
+(brace
+id|db-&gt;stats.tx_errors
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|txptr-&gt;tdes0
+op_amp
+l_int|0x0002
+)paren
+(brace
+multiline_comment|/* UnderRun */
+id|db-&gt;tx_fifo_underrun
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|db-&gt;cr6_data
+op_amp
+id|CR6_SFT
+)paren
+)paren
+(brace
+id|db-&gt;cr6_data
+op_assign
+id|db-&gt;cr6_data
+op_or
+id|CR6_SFT
+suffix:semicolon
+id|update_cr6
+c_func
+(paren
+id|db-&gt;cr6_data
+comma
+id|db-&gt;ioaddr
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|txptr-&gt;tdes0
+op_amp
+l_int|0x0100
+)paren
+id|db-&gt;tx_excessive_collision
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|txptr-&gt;tdes0
+op_amp
+l_int|0x0200
+)paren
+id|db-&gt;tx_late_collision
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|txptr-&gt;tdes0
+op_amp
+l_int|0x0400
+)paren
+id|db-&gt;tx_no_carrier
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|txptr-&gt;tdes0
+op_amp
+l_int|0x0800
+)paren
+id|db-&gt;tx_loss_carrier
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|txptr-&gt;tdes0
+op_amp
+l_int|0x4000
+)paren
+id|db-&gt;tx_jabber_timeout
+op_increment
+suffix:semicolon
+)brace
+)brace
+id|txptr
+op_assign
+(paren
+r_struct
+id|tx_desc
+op_star
+)paren
+id|txptr-&gt;next_tx_desc
+suffix:semicolon
+)brace
+multiline_comment|/* End of while */
+multiline_comment|/* Update TX remove pointer to next */
+id|db-&gt;tx_remove_ptr
+op_assign
+(paren
+r_struct
+id|tx_desc
+op_star
+)paren
+id|txptr
+suffix:semicolon
+multiline_comment|/* Send the Tx packet in queue */
+r_if
+c_cond
+(paren
+(paren
+id|db-&gt;tx_packet_cnt
+OL
+id|TX_MAX_SEND_CNT
+)paren
+op_logical_and
+id|db-&gt;tx_queue_cnt
+)paren
+(brace
+id|txptr-&gt;tdes0
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+l_int|0x80000000
+)paren
+suffix:semicolon
+multiline_comment|/* Set owner bit */
+id|db-&gt;tx_packet_cnt
+op_increment
+suffix:semicolon
+multiline_comment|/* Ready to send */
+id|db-&gt;tx_queue_cnt
+op_decrement
+suffix:semicolon
+id|outl
+c_func
+(paren
+l_int|0x1
+comma
+id|ioaddr
+op_plus
+id|DCR1
+)paren
+suffix:semicolon
+multiline_comment|/* Issue Tx polling */
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
+multiline_comment|/* saved time stamp */
+)brace
+multiline_comment|/* Resource available check */
+r_if
+c_cond
+(paren
+id|db-&gt;tx_queue_cnt
+OL
+id|TX_WAKE_DESC_CNT
+)paren
+id|netif_wake_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+multiline_comment|/* Active upper layer, send again */
+)brace
+multiline_comment|/*&n; *&t;Receive the come packet and pass to upper layer&n; */
 DECL|function|dmfe_rx_packet
 r_static
 r_void
@@ -3233,7 +3809,7 @@ id|dmfe_rx_packet
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 comma
@@ -3319,7 +3895,6 @@ op_star
 id|rxptr-&gt;rx_skb_ptr
 )paren
 suffix:semicolon
-multiline_comment|/* db-&gt;rx_error_cnt++; */
 )brace
 r_else
 (brace
@@ -3338,7 +3913,7 @@ l_int|0x3fff
 op_minus
 l_int|4
 suffix:semicolon
-multiline_comment|/* skip CRC */
+multiline_comment|/* error summary bit check */
 r_if
 c_cond
 (paren
@@ -3347,9 +3922,8 @@ op_amp
 l_int|0x8000
 )paren
 (brace
-multiline_comment|/* error summary bit check */
 multiline_comment|/* This is a error packet */
-multiline_comment|/* printk(&quot;rdes0 error : %x &bslash;n&quot;, rxptr-&gt;rdes0); */
+singleline_comment|//printk(&quot;&lt;DMFE&gt;: rdes0: %lx&bslash;n&quot;, rxptr-&gt;rdes0);
 id|db-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
@@ -3476,7 +4050,89 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* A good packet coming, send to upper layer */
+multiline_comment|/* Good packet, send to upper layer */
+multiline_comment|/* Shorst packet used new SKB */
+r_if
+c_cond
+(paren
+(paren
+id|rxlen
+OL
+id|RX_COPY_SIZE
+)paren
+op_logical_and
+(paren
+(paren
+id|skb
+op_assign
+id|dev_alloc_skb
+c_func
+(paren
+id|rxlen
+op_plus
+l_int|2
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+)paren
+(brace
+multiline_comment|/* size less than COPY_SIZE, allocated a rxlen SKB */
+id|skb-&gt;dev
+op_assign
+id|dev
+suffix:semicolon
+id|skb_reserve
+c_func
+(paren
+id|skb
+comma
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* 16byte align */
+id|memcpy
+c_func
+(paren
+id|skb_put
+c_func
+(paren
+id|skb
+comma
+id|rxlen
+)paren
+comma
+(paren
+(paren
+r_struct
+id|sk_buff
+op_star
+)paren
+id|rxptr-&gt;rx_skb_ptr
+)paren
+op_member_access_from_pointer
+id|tail
+comma
+id|rxlen
+)paren
+suffix:semicolon
+id|dmfe_reused_skb
+c_func
+(paren
+id|db
+comma
+(paren
+r_struct
+id|sk_buff
+op_star
+)paren
+id|rxptr-&gt;rx_skb_ptr
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|skb-&gt;dev
 op_assign
 id|dev
@@ -3489,6 +4145,7 @@ comma
 id|rxlen
 )paren
 suffix:semicolon
+)brace
 id|skb-&gt;protocol
 op_assign
 id|eth_type_trans
@@ -3505,7 +4162,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* Send to upper layer */
 id|dev-&gt;last_rx
 op_assign
 id|jiffies
@@ -3562,7 +4218,7 @@ op_assign
 id|rxptr
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Get statistics from driver.&n; */
+multiline_comment|/*&n; *&t;Get statistics from driver.&n; */
 DECL|function|dmfe_get_stats
 r_static
 r_struct
@@ -3572,7 +4228,7 @@ id|dmfe_get_stats
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 )paren
@@ -3604,7 +4260,7 @@ op_amp
 id|db-&gt;stats
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Set DM910X multicast address&n; */
+multiline_comment|/*&n; * Set DM910X multicast address&n; */
 DECL|function|dmfe_set_filter_mode
 r_static
 r_void
@@ -3612,7 +4268,7 @@ id|dmfe_set_filter_mode
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 )paren
@@ -3784,8 +4440,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Process the upper socket ioctl command&n; */
-multiline_comment|/* &n; * The following function just returns 0. Shouldn&squot;t it do more? &n; */
+multiline_comment|/*&n; *&t;Process the upper socket ioctl command&n; */
 DECL|function|dmfe_do_ioctl
 r_static
 r_int
@@ -3793,7 +4448,7 @@ id|dmfe_do_ioctl
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 comma
@@ -3820,7 +4475,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   A periodic timer routine&n;   Dynamic media sense, allocated Rx buffer...&n; */
+multiline_comment|/*&n; *&t;A periodic timer routine&n; *&t;Dynamic media sense, allocated Rx buffer...&n; */
 DECL|function|dmfe_timer
 r_static
 r_void
@@ -3840,13 +4495,13 @@ r_char
 id|tmp_cr12
 suffix:semicolon
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 op_assign
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 )paren
 id|data
@@ -3886,13 +4541,85 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Do reset now */
+multiline_comment|/* Media mode process when Link OK before enter this route */
 r_if
 c_cond
 (paren
-id|db-&gt;in_reset_state
+id|db-&gt;first_in_callback
+op_eq
+l_int|0
 )paren
 (brace
+id|db-&gt;first_in_callback
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|db-&gt;chip_type
+op_logical_and
+(paren
+id|db-&gt;chip_id
+op_eq
+id|PCI_DM9102_ID
+)paren
+)paren
+(brace
+id|db-&gt;cr6_data
+op_and_assign
+op_complement
+l_int|0x40000
+suffix:semicolon
+id|update_cr6
+c_func
+(paren
+id|db-&gt;cr6_data
+comma
+id|db-&gt;ioaddr
+)paren
+suffix:semicolon
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|0
+comma
+l_int|0x1000
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|db-&gt;cr6_data
+op_or_assign
+l_int|0x40000
+suffix:semicolon
+id|update_cr6
+c_func
+(paren
+id|db-&gt;cr6_data
+comma
+id|db-&gt;ioaddr
+)paren
+suffix:semicolon
+id|db-&gt;timer.expires
+op_assign
+id|DMFE_TIMER_WUT
+op_plus
+id|HZ
+op_star
+l_int|2
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|db-&gt;timer
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3904,6 +4631,7 @@ id|flags
 suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Operating Mode Check */
 r_if
@@ -3921,12 +4649,10 @@ OG
 id|MAX_CHECK_PACKET
 )paren
 )paren
-(brace
 id|db-&gt;dm910x_chk_mode
 op_assign
 l_int|0x4
 suffix:semicolon
-)brace
 multiline_comment|/* Dynamic reset DM910X : system error or transmit time-out */
 id|tmp_cr8
 op_assign
@@ -3952,53 +4678,49 @@ id|tmp_cr8
 )paren
 )paren
 (brace
+id|db-&gt;reset_cr8
+op_increment
+suffix:semicolon
 id|db-&gt;wait_reset
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* printk(&quot;CR8 %x, Interval Rx %x&bslash;n&quot;, tmp_cr8, db-&gt;interval_rx_cnt); */
 )brace
-multiline_comment|/* Receiving Traffic check */
+id|db-&gt;interval_rx_cnt
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* TX polling kick monitor */
 r_if
 c_cond
 (paren
-id|db-&gt;interval_rx_cnt
-OG
-id|RX_MAX_TRAFFIC
+id|db-&gt;tx_packet_cnt
+op_logical_and
+(paren
+(paren
+id|jiffies
+op_minus
+id|dev-&gt;trans_start
 )paren
-id|db-&gt;cr7_data
-op_assign
-l_int|0x1a28d
-suffix:semicolon
-r_else
-id|db-&gt;cr7_data
-op_assign
-l_int|0x1a2cd
-suffix:semicolon
+OG
+id|DMFE_TX_KICK
+)paren
+)paren
+(brace
 id|outl
 c_func
 (paren
-id|db-&gt;cr7_data
+l_int|0x1
 comma
-id|db-&gt;ioaddr
+id|dev-&gt;base_addr
 op_plus
-id|DCR7
+id|DCR1
 )paren
 suffix:semicolon
-id|db-&gt;interval_rx_cnt
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* Tx polling again */
+multiline_comment|/* TX Timeout */
 r_if
 c_cond
-(paren
-id|db-&gt;wait_reset
-op_logical_or
-(paren
-id|db-&gt;tx_live_cnt
-OG
-l_int|0
-op_logical_and
 (paren
 (paren
 id|jiffies
@@ -4008,25 +4730,43 @@ id|dev-&gt;trans_start
 OG
 id|DMFE_TX_TIMEOUT
 )paren
-)paren
-op_logical_or
+(brace
+id|db-&gt;reset_TXtimeout
+op_increment
+suffix:semicolon
+id|db-&gt;wait_reset
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
 (paren
-id|db-&gt;rx_error_cnt
-OG
-l_int|3
+id|KERN_WARNING
+l_string|&quot;%s: Tx timeout - resetting&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|db-&gt;wait_reset
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;   printk(&quot;wait_reset %x, tx cnt %x, rx err %x, time %x&bslash;n&quot;, db-&gt;wait_reset, db-&gt;tx_packet_cnt, db-&gt;rx_error_cnt, jiffies-dev-&gt;trans_start);&n;&t;&t; */
 id|DMFE_DBUG
 c_func
 (paren
 l_int|0
 comma
-l_string|&quot;Warn!! Warn!! Tx/Rx monitor step1&quot;
+l_string|&quot;Dynamic Reset device&quot;
 comma
-l_int|0
+id|db-&gt;tx_packet_cnt
 )paren
+suffix:semicolon
+id|db-&gt;reset_count
+op_increment
 suffix:semicolon
 id|dmfe_dynamic_reset
 c_func
@@ -4034,10 +4774,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|db-&gt;first_in_callback
+op_assign
+l_int|0
+suffix:semicolon
 id|db-&gt;timer.expires
 op_assign
-id|jiffies
-op_plus
 id|DMFE_TIMER_WUT
 suffix:semicolon
 id|add_timer
@@ -4059,11 +4801,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|db-&gt;rx_error_cnt
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Clear previos counter */
 multiline_comment|/* Link status check, Dynamic media type change */
 r_if
 c_cond
@@ -4178,6 +4915,18 @@ id|db-&gt;link_failed
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* For Force 10/100M Half/Full mode: Enable Auto-Nego mode */
+multiline_comment|/* AUTO or force 1M Homerun/Longrun don&squot;t need */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|db-&gt;media_mode
+op_amp
+l_int|0x38
+)paren
+)paren
 id|phy_write
 c_func
 (paren
@@ -4187,24 +4936,32 @@ id|db-&gt;phy_addr
 comma
 l_int|0
 comma
-l_int|0x8000
+l_int|0x1000
 comma
 id|db-&gt;chip_id
 )paren
 suffix:semicolon
-multiline_comment|/* reset Phy */
+multiline_comment|/* AUTO mode, if INT phyxcer link failed, select EXT device */
+r_if
+c_cond
+(paren
+id|db-&gt;media_mode
+op_amp
+id|DMFE_AUTO
+)paren
+(brace
 multiline_comment|/* 10/100M link failed, used 1M Home-Net */
 id|db-&gt;cr6_data
 op_or_assign
 l_int|0x00040000
 suffix:semicolon
-multiline_comment|/* CR6 bit18 = 1, select Home-Net */
+multiline_comment|/* bit18=1, MII */
 id|db-&gt;cr6_data
 op_and_assign
 op_complement
 l_int|0x00000200
 suffix:semicolon
-multiline_comment|/* CR6 bit9 =0, half duplex mode */
+multiline_comment|/* bit9=0, HD mode */
 id|update_cr6
 c_func
 (paren
@@ -4213,42 +4970,7 @@ comma
 id|db-&gt;ioaddr
 )paren
 suffix:semicolon
-multiline_comment|/* For DM9801 : PHY ID1 0181h, PHY ID2 B900h */
-id|db-&gt;phy_id2
-op_assign
-id|phy_read
-c_func
-(paren
-id|db-&gt;ioaddr
-comma
-id|db-&gt;phy_addr
-comma
-l_int|3
-comma
-id|db-&gt;chip_id
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|db-&gt;phy_id2
-op_eq
-l_int|0xb900
-)paren
-id|phy_write
-c_func
-(paren
-id|db-&gt;ioaddr
-comma
-id|db-&gt;phy_addr
-comma
-l_int|25
-comma
-l_int|0x7e08
-comma
-id|db-&gt;chip_id
-)paren
-suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -4277,33 +4999,25 @@ id|db-&gt;link_failed
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* CR6 bit18=0, select 10/100M */
-id|db-&gt;cr6_data
-op_and_assign
-op_complement
-l_int|0x00040000
-suffix:semicolon
-id|update_cr6
-c_func
-(paren
-id|db-&gt;cr6_data
-comma
-id|db-&gt;ioaddr
-)paren
-suffix:semicolon
 multiline_comment|/* Auto Sense Speed */
 r_if
 c_cond
+(paren
 (paren
 id|db-&gt;media_mode
 op_amp
 id|DMFE_AUTO
 )paren
+op_logical_and
 id|dmfe_sense_speed
 c_func
 (paren
 id|db
 )paren
+)paren
+id|db-&gt;link_failed
+op_assign
+l_int|1
 suffix:semicolon
 id|dmfe_process_mode
 c_func
@@ -4311,35 +5025,36 @@ c_func
 id|db
 )paren
 suffix:semicolon
-id|update_cr6
-c_func
-(paren
-id|db-&gt;cr6_data
-comma
-id|db-&gt;ioaddr
-)paren
-suffix:semicolon
 multiline_comment|/* SHOW_MEDIA_TYPE(db-&gt;op_mode); */
 )brace
-multiline_comment|/* reallocated rx descriptor buffer */
+multiline_comment|/* HPNA remote command check */
 r_if
 c_cond
 (paren
-id|db-&gt;rx_avail_cnt
-OL
-id|RX_DESC_CNT
+id|db-&gt;HPNA_command
+op_amp
+l_int|0xf00
 )paren
-id|allocated_rx_buffer
+(brace
+id|db-&gt;HPNA_timer
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|db-&gt;HPNA_timer
+)paren
+id|dmfe_HPNA_remote_cmd_chk
 c_func
 (paren
 id|db
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Timer active again */
 id|db-&gt;timer.expires
 op_assign
-id|jiffies
-op_plus
 id|DMFE_TIMER_WUT
 suffix:semicolon
 id|add_timer
@@ -4359,7 +5074,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Dynamic reset the DM910X board&n;   Stop DM910X board&n;   Free Tx/Rx allocated memory&n;   Reset DM910X board&n;   Re-initialize DM910X board&n; */
+multiline_comment|/*&n; *&t;Dynamic reset the DM910X board&n; *&t;Stop DM910X board&n; *&t;Free Tx/Rx allocated memory&n; *&t;Reset DM910X board&n; *&t;Re-initilize DM910X board&n; */
 DECL|function|dmfe_dynamic_reset
 r_static
 r_void
@@ -4367,7 +5082,7 @@ id|dmfe_dynamic_reset
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 )paren
@@ -4389,18 +5104,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Enter dynamic reset route */
-id|db-&gt;in_reset_state
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* Disable upper layer interface */
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
+multiline_comment|/* Sopt MAC controller */
 id|db-&gt;cr6_data
 op_and_assign
 op_complement
@@ -4419,6 +5123,40 @@ comma
 id|dev-&gt;base_addr
 )paren
 suffix:semicolon
+id|outl
+c_func
+(paren
+l_int|0
+comma
+id|dev-&gt;base_addr
+op_plus
+id|DCR7
+)paren
+suffix:semicolon
+multiline_comment|/* Disable Interrupt */
+id|outl
+c_func
+(paren
+id|inl
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|DCR5
+)paren
+comma
+id|dev-&gt;base_addr
+op_plus
+id|DCR5
+)paren
+suffix:semicolon
+multiline_comment|/* Disable upper layer interface */
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* Free Rx Allocate buffer */
 id|dmfe_free_rxbuffer
 c_func
@@ -4427,11 +5165,11 @@ id|db
 )paren
 suffix:semicolon
 multiline_comment|/* system variable init */
-id|db-&gt;tx_int_pkt_num
+id|db-&gt;tx_packet_cnt
 op_assign
-id|TX_IRQ_THR
+l_int|0
 suffix:semicolon
-id|db-&gt;tx_live_cnt
+id|db-&gt;tx_queue_cnt
 op_assign
 l_int|0
 suffix:semicolon
@@ -4441,27 +5179,18 @@ l_int|0
 suffix:semicolon
 id|db-&gt;link_failed
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 id|db-&gt;wait_reset
 op_assign
 l_int|0
 suffix:semicolon
-id|db-&gt;rx_error_cnt
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Re-initialize DM910X board */
+multiline_comment|/* Re-initilize DM910X board */
 id|dmfe_init_dm910x
 c_func
 (paren
 id|dev
 )paren
-suffix:semicolon
-multiline_comment|/* Leave dynamic reser route */
-id|db-&gt;in_reset_state
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Restart upper layer interface */
 id|netif_wake_queue
@@ -4471,7 +5200,7 @@ id|dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   free all allocated rx buffer &n; */
+multiline_comment|/*&n; *&t;free all allocated rx buffer&n; */
 DECL|function|dmfe_free_rxbuffer
 r_static
 r_void
@@ -4527,7 +5256,7 @@ op_decrement
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;   Reused the SK buffer&n; */
+multiline_comment|/*&n; *&t;Reused the SK buffer&n; */
 DECL|function|dmfe_reused_skb
 r_static
 r_void
@@ -4572,15 +5301,29 @@ id|skb
 suffix:semicolon
 id|rxptr-&gt;rdes2
 op_assign
-id|virt_to_bus
+id|cpu_to_le32
 c_func
 (paren
+id|pci_map_single
+c_func
+(paren
+id|db-&gt;net_dev
+comma
 id|skb-&gt;tail
+comma
+id|RX_ALLOC_SIZE
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
 )paren
 suffix:semicolon
 id|rxptr-&gt;rdes0
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0x80000000
+)paren
 suffix:semicolon
 id|db-&gt;rx_avail_cnt
 op_increment
@@ -4607,7 +5350,7 @@ id|db-&gt;rx_avail_cnt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Initialize transmit/Receive descriptor &n;   Using Chain structure, and allocated Tx/Rx buffer&n; */
+multiline_comment|/*&n; *&t;Initialize transmit/Receive descriptor&n; *&t;Using Chain structure, and allocated Tx/Rx buffer&n; */
 DECL|function|dmfe_descriptor_init
 r_static
 r_void
@@ -4638,6 +5381,14 @@ r_char
 op_star
 id|tmp_buf
 suffix:semicolon
+id|dma_addr_t
+id|tmp_tx_dma
+comma
+id|tmp_rx_dma
+suffix:semicolon
+id|dma_addr_t
+id|tmp_buf_dma
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -4663,18 +5414,14 @@ suffix:semicolon
 id|outl
 c_func
 (paren
-id|virt_to_bus
-c_func
-(paren
-id|db-&gt;first_tx_desc
-)paren
+id|db-&gt;first_tx_desc_dma
 comma
 id|ioaddr
 op_plus
 id|DCR4
 )paren
 suffix:semicolon
-multiline_comment|/* Init CR4 */
+multiline_comment|/* TX DESC address */
 multiline_comment|/* rx descriptor start pointer */
 id|db-&gt;first_rx_desc
 op_assign
@@ -4698,6 +5445,20 @@ op_star
 id|TX_DESC_CNT
 )paren
 suffix:semicolon
+id|db-&gt;first_rx_desc_dma
+op_assign
+(paren
+id|db-&gt;first_tx_desc_dma
+op_plus
+r_sizeof
+(paren
+r_struct
+id|rx_desc
+)paren
+op_star
+id|TX_DESC_CNT
+)paren
+suffix:semicolon
 id|db-&gt;rx_insert_ptr
 op_assign
 id|db-&gt;first_rx_desc
@@ -4709,22 +5470,26 @@ suffix:semicolon
 id|outl
 c_func
 (paren
-id|virt_to_bus
-c_func
-(paren
-id|db-&gt;first_rx_desc
-)paren
+id|db-&gt;first_rx_desc_dma
 comma
 id|ioaddr
 op_plus
 id|DCR3
 )paren
 suffix:semicolon
-multiline_comment|/* Init CR3 */
+multiline_comment|/* RX DESC address */
 multiline_comment|/* Init Transmit chain */
 id|tmp_buf
 op_assign
 id|db-&gt;buf_pool_start
+suffix:semicolon
+id|tmp_buf_dma
+op_assign
+id|db-&gt;buf_pool_dma_start
+suffix:semicolon
+id|tmp_tx_dma
+op_assign
+id|db-&gt;first_tx_desc_dma
 suffix:semicolon
 r_for
 c_loop
@@ -4757,39 +5522,43 @@ id|tmp_buf
 suffix:semicolon
 id|tmp_tx-&gt;tdes0
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|tmp_tx-&gt;tdes1
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0x81000000
+)paren
 suffix:semicolon
 multiline_comment|/* IC, chain */
 id|tmp_tx-&gt;tdes2
 op_assign
-(paren
-id|u32
-)paren
-id|virt_to_bus
+id|cpu_to_le32
 c_func
 (paren
-id|tmp_buf
+id|tmp_buf_dma
 )paren
 suffix:semicolon
-id|tmp_tx-&gt;tdes3
-op_assign
-(paren
-id|u32
-)paren
-id|virt_to_bus
-c_func
-(paren
-id|tmp_tx
-)paren
-op_plus
+id|tmp_tx_dma
+op_add_assign
 r_sizeof
 (paren
 r_struct
 id|tx_desc
+)paren
+suffix:semicolon
+id|tmp_tx-&gt;tdes3
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|tmp_tx_dma
 )paren
 suffix:semicolon
 id|tmp_tx-&gt;next_tx_desc
@@ -4826,6 +5595,12 @@ op_plus
 id|TX_BUF_ALLOC
 )paren
 suffix:semicolon
+id|tmp_buf_dma
+op_assign
+id|tmp_buf_dma
+op_plus
+id|TX_BUF_ALLOC
+suffix:semicolon
 )brace
 (paren
 op_decrement
@@ -4834,13 +5609,10 @@ id|tmp_tx
 op_member_access_from_pointer
 id|tdes3
 op_assign
-(paren
-id|u32
-)paren
-id|virt_to_bus
+id|cpu_to_le32
 c_func
 (paren
-id|db-&gt;first_tx_desc
+id|db-&gt;first_tx_desc_dma
 )paren
 suffix:semicolon
 id|tmp_tx-&gt;next_tx_desc
@@ -4851,6 +5623,10 @@ id|u32
 id|db-&gt;first_tx_desc
 suffix:semicolon
 multiline_comment|/* Init Receive descriptor chain */
+id|tmp_rx_dma
+op_assign
+id|db-&gt;first_rx_desc_dma
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -4875,27 +5651,34 @@ op_increment
 (brace
 id|tmp_rx-&gt;rdes0
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
 id|tmp_rx-&gt;rdes1
 op_assign
-l_int|0x01000600
-suffix:semicolon
-id|tmp_rx-&gt;rdes3
-op_assign
-(paren
-id|u32
-)paren
-id|virt_to_bus
+id|cpu_to_le32
 c_func
 (paren
-id|tmp_rx
+l_int|0x01000600
 )paren
-op_plus
+suffix:semicolon
+id|tmp_rx_dma
+op_add_assign
 r_sizeof
 (paren
 r_struct
 id|rx_desc
+)paren
+suffix:semicolon
+id|tmp_rx-&gt;rdes3
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|tmp_rx_dma
 )paren
 suffix:semicolon
 id|tmp_rx-&gt;next_rx_desc
@@ -4924,13 +5707,10 @@ id|tmp_rx
 op_member_access_from_pointer
 id|rdes3
 op_assign
-(paren
-id|u32
-)paren
-id|virt_to_bus
+id|cpu_to_le32
 c_func
 (paren
-id|db-&gt;first_rx_desc
+id|db-&gt;first_rx_desc_dma
 )paren
 suffix:semicolon
 id|tmp_rx-&gt;next_rx_desc
@@ -4948,7 +5728,7 @@ id|db
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Update CR6 value&n;   Firstly stop DM910X , then written value and start&n; */
+multiline_comment|/*&n; *&t;Update CR6 vaule&n; *&t;Firstly stop DM910X , then written value and start&n; */
 DECL|function|update_cr6
 r_static
 r_void
@@ -4999,19 +5779,14 @@ op_plus
 id|DCR6
 )paren
 suffix:semicolon
-id|cr6_tmp
-op_assign
-id|inl
+id|udelay
 c_func
 (paren
-id|ioaddr
-op_plus
-id|DCR6
+l_int|5
 )paren
 suffix:semicolon
-multiline_comment|/* printk(&quot;CR6 update %x &quot;, cr6_tmp); */
 )brace
-multiline_comment|/* Send a setup frame for DM9132&n;   This setup frame initialize DM910X address filter mode&n; */
+multiline_comment|/*&n; *&t;Send a setup frame for DM9132&n; *&t;This setup frame initilize DM910X addres filter mode&n;*/
 DECL|function|dm9132_id_table
 r_static
 r_void
@@ -5019,7 +5794,7 @@ id|dm9132_id_table
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 comma
@@ -5229,7 +6004,6 @@ id|ioaddr
 op_add_assign
 l_int|4
 )paren
-(brace
 id|outw
 c_func
 (paren
@@ -5242,8 +6016,7 @@ id|ioaddr
 )paren
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* Send a setup frame for DM9102/DM9102A&n;   This setup frame initialize DM910X address filter mode&n; */
+multiline_comment|/*&n; *&t;Send a setup frame for DM9102/DM9102A&n; *&t;This setup frame initilize DM910X addres filter mode&n; */
 DECL|function|send_filter_frame
 r_static
 r_void
@@ -5251,7 +6024,7 @@ id|send_filter_frame
 c_func
 (paren
 r_struct
-id|net_device
+id|DEVICE
 op_star
 id|dev
 comma
@@ -5309,26 +6082,6 @@ op_star
 )paren
 id|txptr-&gt;tx_buf_ptr
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|txptr-&gt;tdes0
-op_amp
-l_int|0x80000000
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: Too busy to send filter frame&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Node address */
 id|addrptr
 op_assign
@@ -5447,9 +6200,6 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
-op_assign
-l_int|0
 suffix:semicolon
 id|i
 OL
@@ -5458,6 +6208,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 op_star
 id|suptr
 op_increment
@@ -5476,6 +6227,7 @@ op_increment
 op_assign
 l_int|0xffff
 suffix:semicolon
+)brace
 multiline_comment|/* prepare the setup frame */
 id|db-&gt;tx_insert_ptr
 op_assign
@@ -5486,17 +6238,33 @@ op_star
 )paren
 id|txptr-&gt;next_tx_desc
 suffix:semicolon
-id|db-&gt;tx_live_cnt
-op_increment
-suffix:semicolon
 id|txptr-&gt;tdes1
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0x890000c0
+)paren
 suffix:semicolon
-multiline_comment|/* Send the setup packet */
+multiline_comment|/* Resource Check and Send the setup packet */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|db-&gt;tx_packet_cnt
+)paren
+(brace
+multiline_comment|/* Resource Empty */
+id|db-&gt;tx_packet_cnt
+op_increment
+suffix:semicolon
 id|txptr-&gt;tdes0
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0x80000000
+)paren
 suffix:semicolon
 id|update_cr6
 c_func
@@ -5518,7 +6286,7 @@ op_plus
 id|DCR1
 )paren
 suffix:semicolon
-multiline_comment|/* Issue Tx polling command */
+multiline_comment|/* Issue Tx polling */
 id|update_cr6
 c_func
 (paren
@@ -5527,8 +6295,18 @@ comma
 id|dev-&gt;base_addr
 )paren
 suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Allocate rx buffer,&n; *&t;Allocate as many Rx buffers as possible.&n; */
+r_else
+id|db-&gt;tx_queue_cnt
+op_increment
+suffix:semicolon
+multiline_comment|/* Put in TX queue */
+)brace
+multiline_comment|/*&n; *&t;Allocate rx buffer,&n; *&t;As possible as allocated maxiumn Rx buffer&n; */
 DECL|function|allocated_rx_buffer
 r_static
 r_void
@@ -5589,15 +6367,29 @@ id|skb
 suffix:semicolon
 id|rxptr-&gt;rdes2
 op_assign
-id|virt_to_bus
+id|cpu_to_le32
 c_func
 (paren
+id|pci_map_single
+c_func
+(paren
+id|db-&gt;net_dev
+comma
 id|skb-&gt;tail
+comma
+id|RX_ALLOC_SIZE
+comma
+id|PCI_DMA_FROMDEVICE
+)paren
 )paren
 suffix:semicolon
 id|rxptr-&gt;rdes0
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 l_int|0x80000000
+)paren
 suffix:semicolon
 id|rxptr
 op_assign
@@ -5617,7 +6409,7 @@ op_assign
 id|rxptr
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Read one word data from the serial ROM&n; */
+multiline_comment|/*&n; *&t;Read one word data from the serial ROM&n; */
 DECL|function|read_srom_word
 r_static
 id|u16
@@ -5831,7 +6623,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Auto sense the media mode&n; */
 DECL|function|dmfe_sense_speed
 r_static
-r_void
+id|u8
 id|dmfe_sense_speed
 c_func
 (paren
@@ -5841,31 +6633,40 @@ op_star
 id|db
 )paren
 (brace
-r_int
-id|i
-suffix:semicolon
-id|u16
-id|phy_mode
+id|u8
+id|ErrFlag
 op_assign
 l_int|0
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|1000
+id|u16
+id|phy_mode
 suffix:semicolon
-id|i
-suffix:semicolon
-id|i
-op_decrement
-)paren
-(brace
-id|udelay
+multiline_comment|/* CR6 bit18=0, select 10/100M */
+id|update_cr6
 c_func
 (paren
-l_int|5
+(paren
+id|db-&gt;cr6_data
+op_amp
+op_complement
+l_int|0x40000
+)paren
+comma
+id|db-&gt;ioaddr
+)paren
+suffix:semicolon
+id|phy_mode
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|1
+comma
+id|db-&gt;chip_id
 )paren
 suffix:semicolon
 id|phy_mode
@@ -5892,14 +6693,6 @@ l_int|0x24
 )paren
 op_eq
 l_int|0x24
-)paren
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|i
 )paren
 (brace
 r_if
@@ -5944,7 +6737,7 @@ id|db-&gt;chip_id
 op_amp
 l_int|0xf000
 suffix:semicolon
-multiline_comment|/* printk(&quot;Phy_mode %x &quot;,phy_mode); */
+multiline_comment|/* printk(&quot;&lt;DMFE&gt;: Phy_mode %x &quot;,phy_mode); */
 r_switch
 c_cond
 (paren
@@ -5993,15 +6786,9 @@ id|db-&gt;op_mode
 op_assign
 id|DMFE_10MHF
 suffix:semicolon
-id|DMFE_DBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;Media Type error, phy reg17&quot;
-comma
-id|phy_mode
-)paren
+id|ErrFlag
+op_assign
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -6023,13 +6810,20 @@ comma
 id|phy_mode
 )paren
 suffix:semicolon
+id|ErrFlag
+op_assign
+l_int|1
+suffix:semicolon
 )brace
+r_return
+id|ErrFlag
+suffix:semicolon
 )brace
-multiline_comment|/*&n;   Process op-mode&n;   AUTO mode : PHY controller in Auto-negotiation Mode&n;   Force mode: PHY controller in force mode with HUB&n;   N-way force capability with SWITCH&n; */
-DECL|function|dmfe_process_mode
+multiline_comment|/*&n; *&t;Set 10/100 phyxcer capability&n; *&t;AUTO mode : phyxcer register4 is NIC capability&n; *&t;Force mode: phyxcer register4 is the force media&n; */
+DECL|function|dmfe_set_phyxcer
 r_static
 r_void
-id|dmfe_process_mode
+id|dmfe_set_phyxcer
 c_func
 (paren
 r_struct
@@ -6041,37 +6835,29 @@ id|db
 id|u16
 id|phy_reg
 suffix:semicolon
-multiline_comment|/* Full Duplex Mode Check */
+multiline_comment|/* Select 10/100M phyxcer */
 id|db-&gt;cr6_data
 op_and_assign
 op_complement
-id|CR6_FDM
+l_int|0x40000
 suffix:semicolon
-multiline_comment|/* Clear Full Duplex Bit */
-r_if
-c_cond
+id|update_cr6
+c_func
 (paren
-id|db-&gt;op_mode
-op_amp
-l_int|0x4
-)paren
 id|db-&gt;cr6_data
-op_or_assign
-id|CR6_FDM
+comma
+id|db-&gt;ioaddr
+)paren
 suffix:semicolon
+multiline_comment|/* DM9009 Chip: Phyxcer reg18 bit12=0 */
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|db-&gt;media_mode
-op_amp
-id|DMFE_AUTO
-)paren
+id|db-&gt;chip_id
+op_eq
+id|PCI_DM9009_ID
 )paren
 (brace
-multiline_comment|/* Force Mode Check */
-multiline_comment|/* User force the media type */
 id|phy_reg
 op_assign
 id|phy_read
@@ -6081,21 +6867,30 @@ id|db-&gt;ioaddr
 comma
 id|db-&gt;phy_addr
 comma
-l_int|5
+l_int|18
+comma
+id|db-&gt;chip_id
+)paren
+op_amp
+op_complement
+l_int|0x1000
+suffix:semicolon
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|18
+comma
+id|phy_reg
 comma
 id|db-&gt;chip_id
 )paren
 suffix:semicolon
-multiline_comment|/* printk(&quot;Nway phy_reg5 %x &quot;,phy_reg); */
-r_if
-c_cond
-(paren
-id|phy_reg
-op_amp
-l_int|0x1
-)paren
-(brace
-multiline_comment|/* parter own the N-Way capability */
+)brace
+multiline_comment|/* Phyxcer capability setting */
 id|phy_reg
 op_assign
 id|phy_read
@@ -6111,12 +6906,29 @@ id|db-&gt;chip_id
 )paren
 op_amp
 op_complement
-l_int|0x1e0
+l_int|0x01e0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|db-&gt;media_mode
+op_amp
+id|DMFE_AUTO
+)paren
+(brace
+multiline_comment|/* AUTO Mode */
+id|phy_reg
+op_or_assign
+id|db-&gt;PHY_reg4
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Force Mode */
 r_switch
 c_cond
 (paren
-id|db-&gt;op_mode
+id|db-&gt;media_mode
 )paren
 (brace
 r_case
@@ -6156,6 +6968,39 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|db-&gt;chip_id
+op_eq
+id|PCI_DM9009_ID
+)paren
+id|phy_reg
+op_and_assign
+l_int|0x61
+suffix:semicolon
+)brace
+multiline_comment|/* Write new capability to Phyxcer Reg4 */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|phy_reg
+op_amp
+l_int|0x01e0
+)paren
+)paren
+(brace
+id|phy_reg
+op_or_assign
+id|db-&gt;PHY_reg4
+suffix:semicolon
+id|db-&gt;media_mode
+op_or_assign
+id|DMFE_AUTO
+suffix:semicolon
+)brace
 id|phy_write
 c_func
 (paren
@@ -6170,10 +7015,161 @@ comma
 id|db-&gt;chip_id
 )paren
 suffix:semicolon
+multiline_comment|/* Restart Auto-Negotiation */
+r_if
+c_cond
+(paren
+id|db-&gt;chip_type
+op_logical_and
+(paren
+id|db-&gt;chip_id
+op_eq
+id|PCI_DM9102_ID
+)paren
+)paren
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|0
+comma
+l_int|0x1800
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|db-&gt;chip_type
+)paren
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|0
+comma
+l_int|0x1200
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
 )brace
-r_else
+multiline_comment|/*&n; *&t;Process op-mode&n; *&t;AUTO mode : PHY controller in Auto-negotiation Mode&n; *&t;Force mode: PHY controller in force mode with HUB&n; *&t;&t;&t;N-way force capability with SWITCH&n; */
+DECL|function|dmfe_process_mode
+r_static
+r_void
+id|dmfe_process_mode
+c_func
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+id|db
+)paren
 (brace
-multiline_comment|/* parter without the N-Way capability */
+id|u16
+id|phy_reg
+suffix:semicolon
+multiline_comment|/* Full Duplex Mode Check */
+r_if
+c_cond
+(paren
+id|db-&gt;op_mode
+op_amp
+l_int|0x4
+)paren
+id|db-&gt;cr6_data
+op_or_assign
+id|CR6_FDM
+suffix:semicolon
+multiline_comment|/* Set Full Duplex Bit */
+r_else
+id|db-&gt;cr6_data
+op_and_assign
+op_complement
+id|CR6_FDM
+suffix:semicolon
+multiline_comment|/* Clear Full Duplex Bit */
+multiline_comment|/* Transciver Selection */
+r_if
+c_cond
+(paren
+id|db-&gt;op_mode
+op_amp
+l_int|0x10
+)paren
+multiline_comment|/* 1M HomePNA */
+id|db-&gt;cr6_data
+op_or_assign
+l_int|0x40000
+suffix:semicolon
+multiline_comment|/* External MII select */
+r_else
+id|db-&gt;cr6_data
+op_and_assign
+op_complement
+l_int|0x40000
+suffix:semicolon
+multiline_comment|/* Internal 10/100 transciver */
+id|update_cr6
+c_func
+(paren
+id|db-&gt;cr6_data
+comma
+id|db-&gt;ioaddr
+)paren
+suffix:semicolon
+multiline_comment|/* 10/100M phyxcer force mode need */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|db-&gt;media_mode
+op_amp
+l_int|0x18
+)paren
+)paren
+(brace
+multiline_comment|/* Forece Mode */
+id|phy_reg
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|6
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|phy_reg
+op_amp
+l_int|0x1
+)paren
+)paren
+(brace
+multiline_comment|/* parter without N-Way capability */
+id|phy_reg
+op_assign
+l_int|0x0
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -6231,10 +7227,41 @@ comma
 id|db-&gt;chip_id
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|db-&gt;chip_type
+op_logical_and
+(paren
+id|db-&gt;chip_id
+op_eq
+id|PCI_DM9102_ID
+)paren
+)paren
+id|mdelay
+c_func
+(paren
+l_int|20
+)paren
+suffix:semicolon
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|0
+comma
+id|phy_reg
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n;   Write a word to Phy register&n; */
+multiline_comment|/*&n; *&t;Write a word to Phy register&n; */
 DECL|function|phy_write
 r_static
 r_void
@@ -6356,7 +7383,7 @@ comma
 id|PHY_DATA_1
 )paren
 suffix:semicolon
-multiline_comment|/* Send Phy address */
+multiline_comment|/* Send Phy addres */
 r_for
 c_loop
 (paren
@@ -6389,7 +7416,7 @@ suffix:colon
 id|PHY_DATA_0
 )paren
 suffix:semicolon
-multiline_comment|/* Send register address */
+multiline_comment|/* Send register addres */
 r_for
 c_loop
 (paren
@@ -6472,7 +7499,7 @@ id|PHY_DATA_0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;   Read a word data from phy register&n; */
+multiline_comment|/*&n; *&t;Read a word data from phy register&n; */
 DECL|function|phy_read
 r_static
 id|u16
@@ -6595,7 +7622,7 @@ comma
 id|PHY_DATA_0
 )paren
 suffix:semicolon
-multiline_comment|/* Send Phy address */
+multiline_comment|/* Send Phy addres */
 r_for
 c_loop
 (paren
@@ -6628,7 +7655,7 @@ suffix:colon
 id|PHY_DATA_0
 )paren
 suffix:semicolon
-multiline_comment|/* Send register address */
+multiline_comment|/* Send register addres */
 r_for
 c_loop
 (paren
@@ -6706,7 +7733,7 @@ r_return
 id|phy_data
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Write one bit data to Phy Controller&n; */
+multiline_comment|/*&n; *&t;Write one bit data to Phy Controller&n; */
 DECL|function|phy_write_1bit
 r_static
 r_void
@@ -6768,7 +7795,7 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Read one bit phy data from PHY controller&n; */
+multiline_comment|/*&n; *&t;Read one bit phy data from PHY controller&n; */
 DECL|function|phy_read_1bit
 r_static
 id|u16
@@ -6828,7 +7855,7 @@ r_return
 id|phy_data
 suffix:semicolon
 )brace
-multiline_comment|/*&n;   Calculate the CRC valude of the Rx packet&n;   flag = 1 : return the reverse CRC (for the received packet CRC)&n;   0 : return the normal CRC (for Hash Table index)&n; */
+multiline_comment|/*&n; *&t;Calculate the CRC valude of the Rx packet&n; *&t;flag = &t;1 : return the reverse CRC (for the received packet CRC)&n; *&t;&t;0 : return the normal CRC (for Hash Table index)&n; */
 DECL|function|cal_CRC
 r_int
 r_int
@@ -6897,14 +7924,966 @@ r_return
 id|Crc
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+multiline_comment|/*&n; *&t;Parser SROM and media mode&n; */
+DECL|function|dmfe_parse_srom
+r_static
+r_void
+id|dmfe_parse_srom
+c_func
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+id|db
+)paren
+(brace
+r_char
+op_star
+id|srom
+op_assign
+id|db-&gt;srom
+suffix:semicolon
+r_int
+id|dmfe_mode
+comma
+id|tmp_reg
+suffix:semicolon
+id|DMFE_DBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;dmfe_parse_srom() &quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Init CR15 */
+id|db-&gt;cr15_data
+op_assign
+id|CR15_DEFAULT
+suffix:semicolon
+multiline_comment|/* Check SROM Version */
+r_if
+c_cond
+(paren
+(paren
+(paren
+r_int
+)paren
+id|srom
+(braket
+l_int|18
+)braket
+op_amp
+l_int|0xff
+)paren
+op_eq
+id|SROM_V41_CODE
+)paren
+(brace
+multiline_comment|/* SROM V4.01 */
+multiline_comment|/* Get NIC support media mode */
+id|db-&gt;NIC_capability
+op_assign
+op_star
+(paren
+id|u16
+op_star
+)paren
+(paren
+op_amp
+id|srom
+(braket
+l_int|34
+)braket
+)paren
+suffix:semicolon
+id|db-&gt;PHY_reg4
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|tmp_reg
+op_assign
+l_int|1
+suffix:semicolon
+id|tmp_reg
+OL
+l_int|0x10
+suffix:semicolon
+id|tmp_reg
+op_lshift_assign
+l_int|1
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|db-&gt;NIC_capability
+op_amp
+id|tmp_reg
+)paren
+(brace
+r_case
+l_int|0x1
+suffix:colon
+id|db-&gt;PHY_reg4
+op_or_assign
+l_int|0x0020
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x2
+suffix:colon
+id|db-&gt;PHY_reg4
+op_or_assign
+l_int|0x0040
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x4
+suffix:colon
+id|db-&gt;PHY_reg4
+op_or_assign
+l_int|0x0080
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x8
+suffix:colon
+id|db-&gt;PHY_reg4
+op_or_assign
+l_int|0x0100
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* Media Mode Force or not check */
+id|dmfe_mode
+op_assign
+op_star
+(paren
+(paren
+r_int
+op_star
+)paren
+op_amp
+id|srom
+(braket
+l_int|34
+)braket
+)paren
+op_amp
+op_star
+(paren
+(paren
+r_int
+op_star
+)paren
+op_amp
+id|srom
+(braket
+l_int|36
+)braket
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|dmfe_mode
+)paren
+(brace
+r_case
+l_int|0x4
+suffix:colon
+id|dmfe_media_mode
+op_assign
+id|DMFE_100MHF
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* 100MHF */
+r_case
+l_int|0x2
+suffix:colon
+id|dmfe_media_mode
+op_assign
+id|DMFE_10MFD
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* 10MFD */
+r_case
+l_int|0x8
+suffix:colon
+id|dmfe_media_mode
+op_assign
+id|DMFE_100MFD
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* 100MFD */
+r_case
+l_int|0x100
+suffix:colon
+r_case
+l_int|0x200
+suffix:colon
+id|dmfe_media_mode
+op_assign
+id|DMFE_1M_HPNA
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* HomePNA */
+)brace
+multiline_comment|/* Special Function setting */
+multiline_comment|/* VLAN function */
+r_if
+c_cond
+(paren
+(paren
+id|SF_mode
+op_amp
+l_int|0x1
+)paren
+op_logical_or
+(paren
+id|srom
+(braket
+l_int|43
+)braket
+op_amp
+l_int|0x80
+)paren
+)paren
+id|db-&gt;cr15_data
+op_or_assign
+l_int|0x40
+suffix:semicolon
+multiline_comment|/* Flow Control */
+r_if
+c_cond
+(paren
+(paren
+id|SF_mode
+op_amp
+l_int|0x2
+)paren
+op_logical_or
+(paren
+id|srom
+(braket
+l_int|40
+)braket
+op_amp
+l_int|0x1
+)paren
+)paren
+id|db-&gt;cr15_data
+op_or_assign
+l_int|0x400
+suffix:semicolon
+multiline_comment|/* TX pause packet */
+r_if
+c_cond
+(paren
+(paren
+id|SF_mode
+op_amp
+l_int|0x4
+)paren
+op_logical_or
+(paren
+id|srom
+(braket
+l_int|40
+)braket
+op_amp
+l_int|0xe
+)paren
+)paren
+id|db-&gt;cr15_data
+op_or_assign
+l_int|0x9800
+suffix:semicolon
+)brace
+multiline_comment|/* Parse HPNA parameter */
+id|db-&gt;HPNA_command
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Accept remote command or not */
+r_if
+c_cond
+(paren
+id|HPNA_rx_cmd
+op_eq
+l_int|0
+)paren
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x8000
+suffix:semicolon
+multiline_comment|/* Issue remote command &amp; operation mode */
+r_if
+c_cond
+(paren
+id|HPNA_tx_cmd
+op_eq
+l_int|1
+)paren
+r_switch
+c_cond
+(paren
+id|HPNA_mode
+)paren
+(brace
+multiline_comment|/* Issue Remote Command */
+r_case
+l_int|0
+suffix:colon
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x0904
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x0a00
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x0506
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x0602
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_else
+r_switch
+c_cond
+(paren
+id|HPNA_mode
+)paren
+(brace
+multiline_comment|/* Don&squot;t Issue */
+r_case
+l_int|0
+suffix:colon
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x0004
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x0000
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x0006
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x0002
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Check DM9801 or DM9802 present or not */
+id|db-&gt;HPNA_present
+op_assign
+l_int|0
+suffix:semicolon
+id|update_cr6
+c_func
+(paren
+id|db-&gt;cr6_data
+op_or
+l_int|0x40000
+comma
+id|db-&gt;ioaddr
+)paren
+suffix:semicolon
+id|tmp_reg
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|3
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|tmp_reg
+op_amp
+l_int|0xfff0
+)paren
+op_eq
+l_int|0xb900
+)paren
+(brace
+multiline_comment|/* DM9801 or DM9802 present */
+id|db-&gt;HPNA_timer
+op_assign
+l_int|8
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|31
+comma
+id|db-&gt;chip_id
+)paren
+op_eq
+l_int|0x4404
+)paren
+(brace
+multiline_comment|/* DM9801 HomeRun */
+id|db-&gt;HPNA_present
+op_assign
+l_int|1
+suffix:semicolon
+id|dmfe_program_DM9801
+c_func
+(paren
+id|db
+comma
+id|tmp_reg
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* DM9802 LongRun */
+id|db-&gt;HPNA_present
+op_assign
+l_int|2
+suffix:semicolon
+id|dmfe_program_DM9802
+c_func
+(paren
+id|db
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+multiline_comment|/*&n; *&t;Init HomeRun DM9801&n; */
+DECL|function|dmfe_program_DM9801
+r_static
+r_void
+id|dmfe_program_DM9801
+c_func
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+id|db
+comma
+r_int
+id|HPNA_rev
+)paren
+(brace
+id|uint
+id|reg17
+comma
+id|reg25
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|HPNA_NoiseFloor
+)paren
+id|HPNA_NoiseFloor
+op_assign
+id|DM9801_NOISE_FLOOR
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|HPNA_rev
+)paren
+(brace
+r_case
+l_int|0xb900
+suffix:colon
+multiline_comment|/* DM9801 E3 */
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x1000
+suffix:semicolon
+id|reg25
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|24
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|reg25
+op_assign
+(paren
+(paren
+id|reg25
+op_plus
+id|HPNA_NoiseFloor
+)paren
+op_amp
+l_int|0xff
+)paren
+op_or
+l_int|0xf000
+suffix:semicolon
+id|reg17
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|17
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0xb901
+suffix:colon
+multiline_comment|/* DM9801 E4 */
+id|reg25
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|25
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|reg25
+op_assign
+(paren
+id|reg25
+op_amp
+l_int|0xff00
+)paren
+op_plus
+id|HPNA_NoiseFloor
+suffix:semicolon
+id|reg17
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|17
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|reg17
+op_assign
+(paren
+id|reg17
+op_amp
+l_int|0xfff0
+)paren
+op_plus
+id|HPNA_NoiseFloor
+op_plus
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0xb902
+suffix:colon
+multiline_comment|/* DM9801 E5 */
+r_case
+l_int|0xb903
+suffix:colon
+multiline_comment|/* DM9801 E6 */
+r_default
+suffix:colon
+id|db-&gt;HPNA_command
+op_or_assign
+l_int|0x1000
+suffix:semicolon
+id|reg25
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|25
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|reg25
+op_assign
+(paren
+id|reg25
+op_amp
+l_int|0xff00
+)paren
+op_plus
+id|HPNA_NoiseFloor
+op_minus
+l_int|5
+suffix:semicolon
+id|reg17
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|17
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|reg17
+op_assign
+(paren
+id|reg17
+op_amp
+l_int|0xfff0
+)paren
+op_plus
+id|HPNA_NoiseFloor
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|16
+comma
+id|db-&gt;HPNA_command
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|17
+comma
+id|reg17
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|25
+comma
+id|reg25
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;Init HomeRun DM9802&n; */
+DECL|function|dmfe_program_DM9802
+r_static
+r_void
+id|dmfe_program_DM9802
+c_func
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+id|db
+)paren
+(brace
+id|uint
+id|phy_reg
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|HPNA_NoiseFloor
+)paren
+id|HPNA_NoiseFloor
+op_assign
+id|DM9802_NOISE_FLOOR
+suffix:semicolon
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|16
+comma
+id|db-&gt;HPNA_command
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|phy_reg
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|25
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|phy_reg
+op_assign
+(paren
+id|phy_reg
+op_amp
+l_int|0xff00
+)paren
+op_plus
+id|HPNA_NoiseFloor
+suffix:semicolon
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|25
+comma
+id|phy_reg
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;Check remote HPNA power and speed status. If not correct,&n; *&t;issue command again.&n;*/
+DECL|function|dmfe_HPNA_remote_cmd_chk
+r_static
+r_void
+id|dmfe_HPNA_remote_cmd_chk
+c_func
+(paren
+r_struct
+id|dmfe_board_info
+op_star
+id|db
+)paren
+(brace
+id|uint
+id|phy_reg
+suffix:semicolon
+multiline_comment|/* Got remote device status */
+id|phy_reg
+op_assign
+id|phy_read
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|17
+comma
+id|db-&gt;chip_id
+)paren
+op_amp
+l_int|0x60
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|phy_reg
+)paren
+(brace
+r_case
+l_int|0x00
+suffix:colon
+id|phy_reg
+op_assign
+l_int|0x0a00
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* LP/LS */
+r_case
+l_int|0x20
+suffix:colon
+id|phy_reg
+op_assign
+l_int|0x0900
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* LP/HS */
+r_case
+l_int|0x40
+suffix:colon
+id|phy_reg
+op_assign
+l_int|0x0600
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* HP/LS */
+r_case
+l_int|0x60
+suffix:colon
+id|phy_reg
+op_assign
+l_int|0x0500
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* HP/HS */
+)brace
+multiline_comment|/* Check remote device status match our setting ot not */
+r_if
+c_cond
+(paren
+id|phy_reg
+op_ne
+(paren
+id|db-&gt;HPNA_command
+op_amp
+l_int|0x0f00
+)paren
+)paren
+(brace
+id|phy_write
+c_func
+(paren
+id|db-&gt;ioaddr
+comma
+id|db-&gt;phy_addr
+comma
+l_int|16
+comma
+id|db-&gt;HPNA_command
+comma
+id|db-&gt;chip_id
+)paren
+suffix:semicolon
+id|db-&gt;HPNA_timer
+op_assign
+l_int|8
+suffix:semicolon
+)brace
+r_else
+id|db-&gt;HPNA_timer
+op_assign
+l_int|600
+suffix:semicolon
+multiline_comment|/* Match, every 10 minutes, check */
+)brace
+DECL|variable|__devinitdata
 r_static
 r_struct
 id|pci_device_id
 id|dmfe_pci_tbl
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 (brace
 (brace
@@ -6953,6 +8932,22 @@ comma
 l_int|0
 comma
 id|PCI_DM9100_ID
+)brace
+comma
+(brace
+l_int|0x1282
+comma
+l_int|0x9009
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|PCI_DM9009_ID
 )brace
 comma
 (brace
@@ -7038,7 +9033,47 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&t;Description: &n; *&t;when user used insmod to add module, system invoked init_module()&n; *&t;to initialize and register.&n; */
+id|MODULE_PARM
+c_func
+(paren
+id|HPNA_mode
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|HPNA_rx_cmd
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|HPNA_tx_cmd
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|HPNA_NoiseFloor
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|SF_mode
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&t;Description:&n; *&t;when user used insmod to add module, system invoked init_module()&n; *&t;to initilize and register.&n; */
 DECL|function|dmfe_init_module
 r_static
 r_int
@@ -7052,15 +9087,16 @@ r_void
 r_int
 id|rc
 suffix:semicolon
-multiline_comment|/* when a module, this is printed whether or not devices are found in probe */
-macro_line|#ifdef MODULE
 id|printk
 c_func
 (paren
 id|version
 )paren
 suffix:semicolon
-macro_line|#endif
+id|printed_version
+op_assign
+l_int|1
+suffix:semicolon
 id|DMFE_DBUG
 c_func
 (paren
@@ -7097,16 +9133,19 @@ id|mode
 )paren
 (brace
 r_case
-l_int|0
+id|DMFE_10MHF
 suffix:colon
 r_case
-l_int|1
+id|DMFE_100MHF
 suffix:colon
 r_case
-l_int|4
+id|DMFE_10MFD
 suffix:colon
 r_case
-l_int|5
+id|DMFE_100MFD
+suffix:colon
+r_case
+id|DMFE_1M_HPNA
 suffix:colon
 id|dmfe_media_mode
 op_assign
@@ -7118,11 +9157,58 @@ r_default
 suffix:colon
 id|dmfe_media_mode
 op_assign
-l_int|8
+id|DMFE_AUTO
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|HPNA_mode
+OG
+l_int|4
+)paren
+id|HPNA_mode
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Default: LP/HS */
+r_if
+c_cond
+(paren
+id|HPNA_rx_cmd
+OG
+l_int|1
+)paren
+id|HPNA_rx_cmd
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Default: Ignored remote cmd */
+r_if
+c_cond
+(paren
+id|HPNA_tx_cmd
+OG
+l_int|1
+)paren
+id|HPNA_tx_cmd
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Default: Don&squot;t issue remote cmd */
+r_if
+c_cond
+(paren
+id|HPNA_NoiseFloor
+OG
+l_int|15
+)paren
+id|HPNA_NoiseFloor
+op_assign
+l_int|0
+suffix:semicolon
 id|rc
 op_assign
 id|pci_module_init
@@ -7146,7 +9232,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Description: &n; *&t;when user used rmmod to delete module, system invoked clean_module()&n; *&t;to un-register all registered services.&n; */
+multiline_comment|/*&n; *&t;Description:&n; *&t;when user used rmmod to delete module, system invoked clean_module()&n; *&t;to un-register all registered services.&n; */
 DECL|function|dmfe_cleanup_module
 r_static
 r_void
@@ -7157,6 +9243,16 @@ c_func
 r_void
 )paren
 (brace
+id|DMFE_DBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;dmfe_clean_module() &quot;
+comma
+id|debug
+)paren
+suffix:semicolon
 id|pci_unregister_driver
 c_func
 (paren

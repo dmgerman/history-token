@@ -174,12 +174,6 @@ r_extern
 r_struct
 id|inet6_protocol
 op_star
-id|inet6_protocol_base
-suffix:semicolon
-r_extern
-r_struct
-id|inet6_protocol
-op_star
 id|inet6_protos
 (braket
 id|MAX_INET_PROTOS

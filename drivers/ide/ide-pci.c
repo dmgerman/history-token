@@ -4547,6 +4547,17 @@ id|PCI_COMMAND_MASTER
 )paren
 (brace
 multiline_comment|/*&n; &t; &t;&t;&t; * Set up BM-DMA capability (PnP BIOS should have done this)&n; &t; &t;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|IDE_PCI_DEVID_EQ
+c_func
+(paren
+id|d-&gt;devid
+comma
+id|DEVID_CS5530
+)paren
 id|hwif-&gt;autodma
 op_assign
 l_int|0

@@ -764,12 +764,14 @@ id|dirfhp
 suffix:semicolon
 id|dchild
 op_assign
-id|lookup_one
+id|lookup_one_len
 c_func
 (paren
 id|argp-&gt;name
 comma
 id|dirfhp-&gt;fh_dentry
+comma
+id|argp-&gt;len
 )paren
 suffix:semicolon
 r_if

@@ -510,9 +510,12 @@ id|qos_info
 )paren
 )paren
 suffix:semicolon
-id|kfree_skb
+id|skb_queue_tail
 c_func
 (paren
+op_amp
+id|sk-&gt;receive_queue
+comma
 id|skb
 )paren
 suffix:semicolon
@@ -2284,6 +2287,11 @@ id|irda_sock
 op_star
 id|self
 suffix:semicolon
+id|__u16
+id|hints
+op_assign
+l_int|0
+suffix:semicolon
 r_int
 id|err
 suffix:semicolon
@@ -2469,6 +2477,45 @@ c_func
 id|self-&gt;ias_obj
 )paren
 suffix:semicolon
+macro_line|#if 1 /* Will be removed in near future */
+multiline_comment|/* Fill in some default hint bits values */
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|addr-&gt;sir_name
+comma
+l_string|&quot;OBEX&quot;
+comma
+l_int|4
+)paren
+op_eq
+l_int|0
+)paren
+id|hints
+op_assign
+id|irlmp_service_to_hint
+c_func
+(paren
+id|S_OBEX
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hints
+)paren
+id|self-&gt;skey
+op_assign
+id|irlmp_register_service
+c_func
+(paren
+id|hints
+)paren
+suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -5449,11 +5496,6 @@ r_int
 r_int
 id|mask
 suffix:semicolon
-r_struct
-id|irda_sock
-op_star
-id|self
-suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
@@ -5462,10 +5504,6 @@ comma
 id|__FUNCTION__
 l_string|&quot;()&bslash;n&quot;
 )paren
-suffix:semicolon
-id|self
-op_assign
-id|sk-&gt;protinfo.irda
 suffix:semicolon
 id|poll_wait
 c_func
@@ -5481,7 +5519,7 @@ id|mask
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Exceptional events? */
+multiline_comment|/* exceptional events? */
 r_if
 c_cond
 (paren
@@ -5502,7 +5540,7 @@ id|mask
 op_or_assign
 id|POLLHUP
 suffix:semicolon
-multiline_comment|/* Readable? */
+multiline_comment|/* readable? */
 r_if
 c_cond
 (paren
@@ -5531,18 +5569,13 @@ id|POLLRDNORM
 suffix:semicolon
 )brace
 multiline_comment|/* Connection-based need to check for termination and startup */
-r_switch
-c_cond
-(paren
-id|sk-&gt;type
-)paren
-(brace
-r_case
-id|SOCK_STREAM
-suffix:colon
 r_if
 c_cond
 (paren
+id|sk-&gt;type
+op_eq
+id|SOCK_STREAM
+op_logical_and
 id|sk-&gt;state
 op_eq
 id|TCP_CLOSE
@@ -5551,95 +5584,7 @@ id|mask
 op_or_assign
 id|POLLHUP
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sk-&gt;state
-op_eq
-id|TCP_ESTABLISHED
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|self-&gt;tx_flow
-op_eq
-id|FLOW_START
-)paren
-op_logical_and
-(paren
-id|sk-&gt;sndbuf
-op_minus
-(paren
-r_int
-)paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|sk-&gt;wmem_alloc
-)paren
-op_ge
-id|SOCK_MIN_WRITE_SPACE
-)paren
-)paren
-(brace
-id|mask
-op_or_assign
-id|POLLOUT
-op_or
-id|POLLWRNORM
-op_or
-id|POLLWRBAND
-suffix:semicolon
-)brace
-)brace
-r_break
-suffix:semicolon
-r_case
-id|SOCK_SEQPACKET
-suffix:colon
-r_if
-c_cond
-(paren
-(paren
-id|self-&gt;tx_flow
-op_eq
-id|FLOW_START
-)paren
-op_logical_and
-(paren
-id|sk-&gt;sndbuf
-op_minus
-(paren
-r_int
-)paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|sk-&gt;wmem_alloc
-)paren
-op_ge
-id|SOCK_MIN_WRITE_SPACE
-)paren
-)paren
-(brace
-id|mask
-op_or_assign
-id|POLLOUT
-op_or
-id|POLLWRNORM
-op_or
-id|POLLWRBAND
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-id|SOCK_DGRAM
-suffix:colon
+multiline_comment|/*&n;&t; * we set writable also when the other side has shut down the&n;&t; * connection. This prevents stuck sockets.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5665,13 +5610,6 @@ id|POLLWRNORM
 op_or
 id|POLLWRBAND
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
 r_return
 id|mask
 suffix:semicolon
@@ -8050,16 +7988,6 @@ comma
 id|PF_IRDA
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_ULTRA
-id|SOCKOPS_WRAP
-c_func
-(paren
-id|irda_ultra
-comma
-id|PF_IRDA
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_IRDA_ULTRA */
 multiline_comment|/*&n; * Function irda_device_event (this, event, ptr)&n; *&n; *    Called when a device is taken up or down&n; *&n; */
 DECL|function|irda_device_event
 r_static
@@ -8271,7 +8199,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|variable|irda_proto_init
 id|module_init
 c_func
@@ -8279,8 +8206,6 @@ c_func
 id|irda_proto_init
 )paren
 suffix:semicolon
-multiline_comment|/* If non-module, called from init/main.c */
-macro_line|#endif
 multiline_comment|/*&n; * Function irda_proto_cleanup (void)&n; *&n; *    Remove IrDA protocol layer&n; *&n; */
 macro_line|#ifdef MODULE
 DECL|function|irda_proto_cleanup
@@ -8346,6 +8271,7 @@ c_func
 l_string|&quot;The Linux IrDA Protocol Subsystem&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_DEBUG
 id|MODULE_PARM
 c_func
 (paren
@@ -8354,5 +8280,6 @@ comma
 l_string|&quot;1l&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* MODULE */
 eof

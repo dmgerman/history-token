@@ -45,11 +45,6 @@ r_char
 op_star
 id|name
 suffix:semicolon
-DECL|member|server
-r_struct
-id|irq_server
-id|server
-suffix:semicolon
 DECL|member|irq_list
 id|irq_handler_t
 id|irq_list
@@ -78,12 +73,6 @@ comma
 id|IRQ_AMIGA_PORTS
 comma
 l_string|&quot;CIAA handler&quot;
-comma
-(brace
-l_int|0
-comma
-l_int|0
-)brace
 DECL|variable|ciab_base
 )brace
 comma
@@ -106,12 +95,6 @@ comma
 id|IRQ_AMIGA_EXTER
 comma
 l_string|&quot;CIAB handler&quot;
-comma
-(brace
-l_int|0
-comma
-l_int|0
-)brace
 )brace
 suffix:semicolon
 DECL|macro|CIA_SET_BASE_ADJUST_IRQ
@@ -846,9 +829,6 @@ c_func
 id|base-&gt;server_irq
 comma
 id|fp
-comma
-op_amp
-id|base-&gt;server
 )paren
 suffix:semicolon
 )brace

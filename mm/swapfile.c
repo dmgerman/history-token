@@ -498,8 +498,8 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-r_goto
-id|out
+r_return
+id|entry
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Caller has made sure that the swapdevice corresponding to entry&n; * is still around or has not been recycled.&n; */

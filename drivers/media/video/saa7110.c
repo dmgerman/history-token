@@ -1,5 +1,6 @@
 multiline_comment|/*&n;    saa7110 - Philips SAA7110(A) video decoder driver&n;&n;    Copyright (C) 1998 Pauline Middelink &lt;middelin@polyware.nl&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -2045,6 +2046,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 DECL|variable|i2c_driver_saa7110
+r_static
 r_struct
 id|i2c_driver
 id|i2c_driver_saa7110
@@ -2072,22 +2074,14 @@ id|saa7110_command
 suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-macro_line|#else
+DECL|function|saa7110_init
+r_static
 r_int
 id|saa7110_init
 c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 r_return
 id|i2c_register_driver
@@ -2098,10 +2092,10 @@ id|i2c_driver_saa7110
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|saa7110_exit
+r_static
 r_void
-id|cleanup_module
+id|saa7110_exit
 c_func
 (paren
 r_void
@@ -2115,5 +2109,18 @@ id|i2c_driver_saa7110
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|saa7110_init
+id|module_init
+c_func
+(paren
+id|saa7110_init
+)paren
+suffix:semicolon
+DECL|variable|saa7110_exit
+id|module_exit
+c_func
+(paren
+id|saa7110_exit
+)paren
+suffix:semicolon
 eof

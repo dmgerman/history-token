@@ -51,6 +51,22 @@ DECL|macro|FREQ2BITS
 mdefine_line|#define FREQ2BITS(x)&t;((((unsigned int)(x)+FREQ_IF+(FREQ_STEP&lt;&lt;1))&bslash;&n;&t;&t;&t;/(FREQ_STEP&lt;&lt;2))&lt;&lt;2) /* (x==fmhz*16*1000) -&gt; bits */
 DECL|macro|BITS2FREQ
 mdefine_line|#define BITS2FREQ(x)&t;((x) * FREQ_STEP - FREQ_IF)
+DECL|variable|radio_nr
+r_static
+r_int
+id|radio_nr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|radio_nr
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 id|radio_open
@@ -1852,6 +1868,8 @@ op_amp
 id|maestro_radio
 comma
 id|VFL_TYPE_RADIO
+comma
+id|radio_nr
 )paren
 op_eq
 op_minus

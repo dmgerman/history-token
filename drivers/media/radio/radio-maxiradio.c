@@ -48,6 +48,22 @@ id|power
 op_assign
 l_int|16
 suffix:semicolon
+DECL|variable|radio_nr
+r_static
+r_int
+id|radio_nr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|radio_nr
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 DECL|macro|FREQ_LO
 mdefine_line|#define FREQ_LO&t;&t; 50*16000
 DECL|macro|FREQ_HI
@@ -1385,6 +1401,8 @@ op_amp
 id|maxiradio_radio
 comma
 id|VFL_TYPE_RADIO
+comma
+id|radio_nr
 )paren
 op_eq
 op_minus

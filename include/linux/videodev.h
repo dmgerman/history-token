@@ -193,14 +193,6 @@ id|devfs_handle
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-r_int
-id|videodev_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|macro|VIDEO_MAJOR
 mdefine_line|#define VIDEO_MAJOR&t;81
 r_extern
@@ -214,6 +206,9 @@ op_star
 comma
 r_int
 id|type
+comma
+r_int
+id|nr
 )paren
 suffix:semicolon
 DECL|macro|VFL_TYPE_GRABBER

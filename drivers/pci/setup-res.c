@@ -430,6 +430,7 @@ id|DBGC
 c_func
 (paren
 (paren
+id|KERN_ERR
 l_string|&quot;  got res[%lx:%lx] for resource %d of %s&bslash;n&quot;
 comma
 id|res-&gt;start
@@ -643,6 +644,7 @@ id|tmp
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;pdev_sort_resources(): kmalloc() failed!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -696,6 +698,7 @@ id|DBGC
 c_func
 (paren
 (paren
+id|KERN_ERR
 l_string|&quot;PCI enable device: (%s)&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -901,6 +904,7 @@ id|DBGC
 c_func
 (paren
 (paren
+id|KERN_ERR
 l_string|&quot;  cmd reg 0x%x&bslash;n&quot;
 comma
 id|cmd

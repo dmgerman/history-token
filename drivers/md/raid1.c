@@ -4569,7 +4569,7 @@ id|mddev
 comma
 id|bh-&gt;b_size
 op_rshift
-l_int|10
+l_int|9
 comma
 l_int|0
 )paren
@@ -4801,7 +4801,7 @@ id|mddev
 comma
 r_int
 r_int
-id|block_nr
+id|sector_nr
 )paren
 (brace
 id|raid1_conf_t
@@ -4846,7 +4846,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|block_nr
+id|sector_nr
 )paren
 (brace
 multiline_comment|/* initialize ...*/
@@ -4946,11 +4946,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-(paren
-id|block_nr
-op_lshift
-l_int|1
-)paren
+id|sector_nr
 op_ge
 id|conf-&gt;start_pending
 )paren
@@ -4960,9 +4956,7 @@ c_func
 (paren
 l_string|&quot;wait .. sect=%lu start_active=%d ready=%d pending=%d future=%d, cnt_done=%d active=%d ready=%d pending=%d future=%d&bslash;n&quot;
 comma
-id|block_nr
-op_lshift
-l_int|1
+id|sector_nr
 comma
 id|conf-&gt;start_active
 comma
@@ -5142,11 +5136,11 @@ id|r1_bh-&gt;bh_req
 suffix:semicolon
 id|bh-&gt;b_blocknr
 op_assign
-id|block_nr
+id|sector_nr
 suffix:semicolon
 id|bsize
 op_assign
-l_int|1024
+l_int|512
 suffix:semicolon
 r_while
 c_loop
@@ -5171,10 +5165,14 @@ op_star
 (paren
 id|bsize
 op_rshift
-l_int|10
+l_int|9
 )paren
 OL
+(paren
 id|mddev-&gt;sb-&gt;size
+op_star
+l_int|2
+)paren
 )paren
 (brace
 id|bh-&gt;b_blocknr
@@ -5270,9 +5268,7 @@ id|r1_bh
 suffix:semicolon
 id|bh-&gt;b_rsector
 op_assign
-id|block_nr
-op_lshift
-l_int|1
+id|sector_nr
 suffix:semicolon
 id|init_waitqueue_head
 c_func
@@ -5303,7 +5299,7 @@ r_return
 (paren
 id|bsize
 op_rshift
-l_int|10
+l_int|9
 )paren
 suffix:semicolon
 id|nomem
@@ -5487,7 +5483,7 @@ id|mddev
 comma
 id|size
 op_rshift
-l_int|10
+l_int|9
 comma
 id|uptodate
 )paren

@@ -210,9 +210,9 @@ mdefine_line|#define TDA9875_DACOS       0x13  /*DAC i/o select (ADC) 0b0000100*
 DECL|macro|TDA9875_LOSR
 mdefine_line|#define TDA9875_LOSR        0x16  /*Line output select regirter 0b0100 0001*/
 DECL|macro|TDA9875_CH1V
-mdefine_line|#define TDA9875_CH1V        0x0c  /*Chanel 1 volume (mute)*/
+mdefine_line|#define TDA9875_CH1V        0x0c  /*Channel 1 volume (mute)*/
 DECL|macro|TDA9875_CH2V
-mdefine_line|#define TDA9875_CH2V        0x0d  /*Chanel 2 volume (mute)*/
+mdefine_line|#define TDA9875_CH2V        0x0d  /*Channel 2 volume (mute)*/
 DECL|macro|TDA9875_SC1
 mdefine_line|#define TDA9875_SC1         0x14  /*SCART 1 in (mono)*/
 DECL|macro|TDA9875_SC2
@@ -704,7 +704,7 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
-multiline_comment|/* Chanel volume 1 mute*/
+multiline_comment|/* Channel volume 1 mute*/
 id|tda9875_write
 c_func
 (paren
@@ -715,7 +715,7 @@ comma
 l_int|0x10
 )paren
 suffix:semicolon
-multiline_comment|/* Chanel volume 2 mute */
+multiline_comment|/* Channel volume 2 mute */
 id|tda9875_write
 c_func
 (paren

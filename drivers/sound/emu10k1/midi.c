@@ -90,7 +90,6 @@ r_sizeof
 (paren
 r_struct
 id|midi_hdr
-op_star
 )paren
 comma
 id|GFP_KERNEL
@@ -1364,7 +1363,6 @@ r_sizeof
 (paren
 r_struct
 id|midi_hdr
-op_star
 )paren
 comma
 id|GFP_KERNEL

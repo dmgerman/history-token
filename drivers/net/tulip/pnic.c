@@ -477,16 +477,6 @@ id|CSR7
 suffix:semicolon
 )brace
 )brace
-r_int
-id|tulip_refill_rx
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
 DECL|function|pnic_timer
 r_void
 id|pnic_timer

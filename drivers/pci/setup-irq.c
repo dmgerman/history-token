@@ -140,6 +140,7 @@ id|DBGC
 c_func
 (paren
 (paren
+id|KERN_ERR
 l_string|&quot;PCI fixup irq: (%s) got %d&bslash;n&quot;
 comma
 id|dev-&gt;name

@@ -1,7 +1,7 @@
 macro_line|#ifndef _GDTH_IOCTL_H
 DECL|macro|_GDTH_IOCTL_H
 mdefine_line|#define _GDTH_IOCTL_H
-multiline_comment|/* gdth_ioctl.h&n; * $Id: gdth_ioctl.h,v 1.2 1998/12/17 15:42:49 achim Exp $&n; */
+multiline_comment|/* gdth_ioctl.h&n; * $Id: gdth_ioctl.h,v 1.9 2001/01/10 14:39:37 achim Exp $&n; */
 multiline_comment|/* IOCTLs */
 DECL|macro|GDTIOCTL_MASK
 mdefine_line|#define GDTIOCTL_MASK       (&squot;J&squot;&lt;&lt;8)
@@ -13,6 +13,8 @@ DECL|macro|GDTIOCTL_CTRTYPE
 mdefine_line|#define GDTIOCTL_CTRTYPE    (GDTIOCTL_MASK | 2) /* get controller type */
 DECL|macro|GDTIOCTL_OSVERS
 mdefine_line|#define GDTIOCTL_OSVERS     (GDTIOCTL_MASK | 3) /* get OS version */
+DECL|macro|GDTIOCTL_HDRLIST
+mdefine_line|#define GDTIOCTL_HDRLIST    (GDTIOCTL_MASK | 4) /* get host drive list */
 DECL|macro|GDTIOCTL_CTRCNT
 mdefine_line|#define GDTIOCTL_CTRCNT     (GDTIOCTL_MASK | 5) /* get controller count */
 DECL|macro|GDTIOCTL_LOCKDRV
@@ -21,8 +23,20 @@ DECL|macro|GDTIOCTL_LOCKCHN
 mdefine_line|#define GDTIOCTL_LOCKCHN    (GDTIOCTL_MASK | 7) /* lock channel */
 DECL|macro|GDTIOCTL_EVENT
 mdefine_line|#define GDTIOCTL_EVENT      (GDTIOCTL_MASK | 8) /* read controller events */
+DECL|macro|GDTIOCTL_SCSI
+mdefine_line|#define GDTIOCTL_SCSI       (GDTIOCTL_MASK | 9) /* SCSI command */
+DECL|macro|GDTIOCTL_RESET_BUS
+mdefine_line|#define GDTIOCTL_RESET_BUS  (GDTIOCTL_MASK |10) /* reset SCSI bus */
+DECL|macro|GDTIOCTL_RESCAN
+mdefine_line|#define GDTIOCTL_RESCAN     (GDTIOCTL_MASK |11) /* rescan host drives */
+DECL|macro|GDTIOCTL_RESET_DRV
+mdefine_line|#define GDTIOCTL_RESET_DRV  (GDTIOCTL_MASK |12) /* reset (remote) drv. res. */
 DECL|macro|GDTIOCTL_MAGIC
-mdefine_line|#define GDTIOCTL_MAGIC      0xaffe0001UL
+mdefine_line|#define GDTIOCTL_MAGIC      0xaffe0004
+DECL|macro|EVENT_SIZE
+mdefine_line|#define EVENT_SIZE          294 
+DECL|macro|MAX_HDRIVES
+mdefine_line|#define MAX_HDRIVES         100                     
 multiline_comment|/* IOCTL structure (write) */
 r_typedef
 r_struct
@@ -92,7 +106,7 @@ DECL|member|drives
 id|ushort
 id|drives
 (braket
-l_int|35
+id|MAX_HDRIVES
 )braket
 suffix:semicolon
 multiline_comment|/* drives */
@@ -131,13 +145,63 @@ DECL|member|evt
 id|unchar
 id|evt
 (braket
-l_int|34
+id|EVENT_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* event structure */
 DECL|member|event
 )brace
 id|event
+suffix:semicolon
+r_struct
+(brace
+DECL|member|bus
+id|unchar
+id|bus
+suffix:semicolon
+multiline_comment|/* SCSI bus */
+DECL|member|target
+id|unchar
+id|target
+suffix:semicolon
+multiline_comment|/* target ID */
+DECL|member|lun
+id|unchar
+id|lun
+suffix:semicolon
+multiline_comment|/* LUN */
+DECL|member|cmd_len
+id|unchar
+id|cmd_len
+suffix:semicolon
+multiline_comment|/* command length */
+DECL|member|cmd
+id|unchar
+id|cmd
+(braket
+l_int|12
+)braket
+suffix:semicolon
+multiline_comment|/* SCSI command */
+DECL|member|scsi
+)brace
+id|scsi
+suffix:semicolon
+r_struct
+(brace
+DECL|member|hdr_no
+id|ushort
+id|hdr_no
+suffix:semicolon
+multiline_comment|/* host drive number */
+DECL|member|flag
+id|unchar
+id|flag
+suffix:semicolon
+multiline_comment|/* old meth./add/remove */
+DECL|member|rescan
+)brace
+id|rescan
 suffix:semicolon
 DECL|member|iu
 )brace
@@ -266,7 +330,7 @@ DECL|member|evt
 id|unchar
 id|evt
 (braket
-l_int|34
+id|EVENT_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* event structure */
@@ -274,6 +338,36 @@ DECL|member|event
 )brace
 id|event
 suffix:semicolon
+r_struct
+(brace
+DECL|member|bus
+id|unchar
+id|bus
+suffix:semicolon
+multiline_comment|/* SCSI bus, 0xff: invalid */
+DECL|member|target
+id|unchar
+id|target
+suffix:semicolon
+multiline_comment|/* target ID */
+DECL|member|lun
+id|unchar
+id|lun
+suffix:semicolon
+multiline_comment|/* LUN */
+DECL|member|cluster_type
+id|unchar
+id|cluster_type
+suffix:semicolon
+multiline_comment|/* cluster properties */
+DECL|member|hdr_list
+)brace
+id|hdr_list
+(braket
+id|MAX_HDRIVES
+)braket
+suffix:semicolon
+multiline_comment|/* index is host drive number */
 DECL|member|iu
 )brace
 id|iu

@@ -1,24 +1,16 @@
-multiline_comment|/* &n;   saa7111 - Philips SAA7111A video decoder driver version 0.0.3&n;&n;   Copyright (C) 1998 Dave Perks &lt;dperks@ibm.net&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* &n;    saa7111 - Philips SAA7111A video decoder driver version 0.0.3&n;&n;    Copyright (C) 1998 Dave Perks &lt;dperks@ibm.net&gt;&n;&n;    Slight changes for video timing and attachment output by&n;    Wolfgang Scherr &lt;scherr@net4you.net&gt;&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/malloc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/i2c-old.h&gt;
 macro_line|#include &lt;linux/video_decoder.h&gt;
 DECL|macro|DEBUG
@@ -196,7 +188,8 @@ id|len
 r_int
 id|ack
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_int
 id|subaddr
@@ -493,12 +486,12 @@ multiline_comment|/* 05 - GAI2=256 */
 multiline_comment|/* decoder */
 l_int|0x06
 comma
-l_int|0xf6
+l_int|0xf3
 comma
 multiline_comment|/* 06 - HSB at  13(50Hz) /  17(60Hz) pixels after end of last line */
 l_int|0x07
 comma
-l_int|0xdd
+l_int|0x13
 comma
 multiline_comment|/* 07 - HSS at 113(50Hz) / 117(60Hz) pixels after end of last line */
 l_int|0x08
@@ -583,6 +576,8 @@ comma
 multiline_comment|/* 17 - VBI */
 )brace
 suffix:semicolon
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|device-&gt;data
 op_assign
 id|decoder
@@ -607,13 +602,13 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -724,6 +719,8 @@ id|decoder
 comma
 l_int|0x00
 )paren
+op_rshift
+l_int|4
 )paren
 suffix:semicolon
 )brace
@@ -1070,7 +1067,9 @@ comma
 l_int|0x08
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x08
 )braket
@@ -1094,7 +1093,9 @@ comma
 l_int|0x08
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x08
 )braket
@@ -1118,7 +1119,9 @@ comma
 l_int|0x08
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x08
 )braket
@@ -1193,7 +1196,9 @@ comma
 l_int|0x02
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x02
 )braket
@@ -1213,7 +1218,9 @@ comma
 l_int|0x09
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x09
 )braket
@@ -1318,7 +1325,9 @@ comma
 l_int|0x02
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x02
 )braket
@@ -1337,7 +1346,9 @@ comma
 l_int|0x08
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x08
 )braket
@@ -1354,7 +1365,9 @@ comma
 l_int|0x11
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x11
 )braket
@@ -1376,7 +1389,9 @@ comma
 l_int|0x02
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x02
 )braket
@@ -1393,7 +1408,9 @@ comma
 l_int|0x08
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x08
 )braket
@@ -1412,7 +1429,9 @@ comma
 l_int|0x11
 comma
 (paren
-id|decoder-&gt;reg
+id|decoder
+op_member_access_from_pointer
+id|reg
 (braket
 l_int|0x11
 )braket
@@ -1561,6 +1580,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 DECL|variable|i2c_driver_saa7111
+r_static
 r_struct
 id|i2c_driver
 id|i2c_driver_saa7111
@@ -1587,22 +1607,14 @@ id|saa7111_command
 suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-macro_line|#else
+DECL|function|saa7111_init
+r_static
 r_int
 id|saa7111_init
 c_func
 (paren
 r_void
 )paren
-macro_line|#endif
 (brace
 r_return
 id|i2c_register_driver
@@ -1613,10 +1625,10 @@ id|i2c_driver_saa7111
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|cleanup_module
+DECL|function|saa7111_exit
+r_static
 r_void
-id|cleanup_module
+id|saa7111_exit
 c_func
 (paren
 r_void
@@ -1630,5 +1642,18 @@ id|i2c_driver_saa7111
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+DECL|variable|saa7111_init
+id|module_init
+c_func
+(paren
+id|saa7111_init
+)paren
+suffix:semicolon
+DECL|variable|saa7111_exit
+id|module_exit
+c_func
+(paren
+id|saa7111_exit
+)paren
+suffix:semicolon
 eof

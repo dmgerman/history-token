@@ -3572,6 +3572,11 @@ op_star
 )paren
 id|instance
 suffix:semicolon
+id|LOCAL_FLOW
+id|oldflow
+op_assign
+id|self-&gt;tx_flow
+suffix:semicolon
 id|DENTER
 c_func
 (paren

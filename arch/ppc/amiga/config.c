@@ -1,23 +1,5 @@
 DECL|macro|m68k_debug_device
 mdefine_line|#define m68k_debug_device debug_device
-macro_line|#include &lt;linux/init.h&gt;
-multiline_comment|/* machine dependent &quot;kbd-reset&quot; setup function */
-r_void
-(paren
-op_star
-id|mach_kbd_reset_setup
-)paren
-(paren
-r_char
-op_star
-comma
-r_int
-)paren
-id|__initdata
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; *  linux/arch/m68k/amiga/config.c&n; *&n; *  Copyright (C) 1993 Hamish Macdonald&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 multiline_comment|/*&n; * Miscellaneous Amiga stuff&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -27,6 +9,10 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#ifdef CONFIG_ZORRO
+macro_line|#include &lt;linux/zorro.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -34,12 +20,18 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;linux/zorro.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|powerup_PCI_present
 r_int
 r_int
 id|powerup_PCI_present
+suffix:semicolon
+DECL|variable|powerup_BPPCPLUS_present
+r_int
+r_int
+id|powerup_BPPCPLUS_present
 suffix:semicolon
 DECL|variable|amiga_model
 r_int
@@ -688,7 +680,6 @@ comma
 suffix:semicolon
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|variable|amiga_sysrq_xlate
-r_static
 r_char
 id|amiga_sysrq_xlate
 (braket
@@ -728,23 +719,31 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n;     *  Motherboard Resources present in all Amiga models&n;     */
-DECL|variable|mb_res
 r_static
 r_struct
+(brace
+DECL|member|_ciab
+DECL|member|_ciaa
+DECL|member|_custom
+DECL|member|_kickstart
+r_struct
 id|resource
-id|mb_res
-(braket
-)braket
+id|_ciab
+comma
+id|_ciaa
+comma
+id|_custom
+comma
+id|_kickstart
+suffix:semicolon
+DECL|variable|mb_resources
+)brace
+id|mb_resources
 op_assign
 (brace
-(brace
-l_string|&quot;Ranger Memory&quot;
-comma
-l_int|0x00c00000
-comma
-l_int|0x00c7ffff
-)brace
-comma
+singleline_comment|//    { &quot;Ranger Memory&quot;, 0x00c00000, 0x00c7ffff },
+id|_ciab
+suffix:colon
 (brace
 l_string|&quot;CIA B&quot;
 comma
@@ -753,6 +752,8 @@ comma
 l_int|0x00bfdfff
 )brace
 comma
+id|_ciaa
+suffix:colon
 (brace
 l_string|&quot;CIA A&quot;
 comma
@@ -761,6 +762,8 @@ comma
 l_int|0x00bfefff
 )brace
 comma
+id|_custom
+suffix:colon
 (brace
 l_string|&quot;Custom I/O&quot;
 comma
@@ -769,6 +772,8 @@ comma
 l_int|0x00dfffff
 )brace
 comma
+id|_kickstart
+suffix:colon
 (brace
 l_string|&quot;Kickstart ROM&quot;
 comma
@@ -785,7 +790,7 @@ id|resource
 id|rtc_resource
 op_assign
 (brace
-l_string|&quot;A2000 RTC&quot;
+l_int|NULL
 comma
 l_int|0x00dc0000
 comma
@@ -929,6 +934,7 @@ suffix:semicolon
 r_case
 id|BI_AMIGA_AUTOCON
 suffix:colon
+macro_line|#ifdef CONFIG_ZORRO
 r_if
 c_cond
 (paren
@@ -998,12 +1004,45 @@ c_func
 l_string|&quot;amiga_parse_bootinfo: too many AutoConfig devices&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_ZORRO */
 r_break
 suffix:semicolon
 r_case
 id|BI_AMIGA_SERPER
 suffix:colon
 multiline_comment|/* serial port period: ignored here */
+r_break
+suffix:semicolon
+r_case
+id|BI_AMIGA_PUP_BRIDGE
+suffix:colon
+id|powerup_PCI_present
+op_assign
+op_star
+(paren
+r_const
+r_int
+r_int
+op_star
+)paren
+id|data
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|BI_AMIGA_BPPC_SCSI
+suffix:colon
+id|powerup_BPPCPLUS_present
+op_assign
+op_star
+(paren
+r_const
+r_int
+r_int
+op_star
+)paren
+id|data
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -1788,36 +1827,20 @@ id|iomem_resource.name
 op_assign
 l_string|&quot;Memory&quot;
 suffix:semicolon
-id|request_resource
-c_func
+r_for
+c_loop
 (paren
-op_amp
-id|iomem_resource
-comma
-op_amp
-id|ranger_resource
-)paren
+id|i
+op_assign
+l_int|0
 suffix:semicolon
-id|request_resource
-c_func
-(paren
-op_amp
-id|iomem_resource
-comma
-op_amp
-id|ciab_resource
-)paren
+id|i
+OL
+l_int|4
 suffix:semicolon
-id|request_resource
-c_func
-(paren
-op_amp
-id|iomem_resource
-comma
-op_amp
-id|ciaa_resource
+id|i
+op_increment
 )paren
-suffix:semicolon
 id|request_resource
 c_func
 (paren
@@ -1825,17 +1848,18 @@ op_amp
 id|iomem_resource
 comma
 op_amp
-id|custom_chips_resource
+(paren
+(paren
+r_struct
+id|resource
+op_star
 )paren
-suffix:semicolon
-id|request_resource
-c_func
-(paren
 op_amp
-id|iomem_resource
-comma
-op_amp
-id|kickstart_resource
+id|mb_resources
+)paren
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
 id|mach_sched_init
@@ -1908,11 +1932,8 @@ op_assign
 id|a3000_gettod
 suffix:semicolon
 id|rtc_resource.name
-(braket
-l_int|1
-)braket
 op_assign
-l_char|&squot;3&squot;
+l_string|&quot;A3000 RTC&quot;
 suffix:semicolon
 id|request_resource
 c_func
@@ -1931,6 +1952,10 @@ multiline_comment|/* if (AMIGAHW_PRESENT(A2000_CLK)) */
 id|mach_gettod
 op_assign
 id|a2000_gettod
+suffix:semicolon
+id|rtc_resource.name
+op_assign
+l_string|&quot;A2000 RTC&quot;
 suffix:semicolon
 id|request_resource
 c_func
@@ -1966,36 +1991,17 @@ id|mach_reset
 op_assign
 id|amiga_reset
 suffix:semicolon
+macro_line|#ifdef CONFIG_DUMMY_CONSOLE
 id|conswitchp
 op_assign
 op_amp
 id|dummy_con
 suffix:semicolon
+macro_line|#endif
 id|kd_mksound
 op_assign
 id|amiga_mksound
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|mach_sysrq_key
-op_assign
-l_int|0x5f
-suffix:semicolon
-multiline_comment|/* HELP */
-id|mach_sysrq_shift_state
-op_assign
-l_int|0x03
-suffix:semicolon
-multiline_comment|/* SHIFT+ALTGR */
-id|mach_sysrq_shift_mask
-op_assign
-l_int|0xff
-suffix:semicolon
-multiline_comment|/* all modifiers except CapsLock */
-id|mach_sysrq_xlate
-op_assign
-id|amiga_sysrq_xlate
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT
 id|mach_heartbeat
 op_assign
@@ -2258,6 +2264,20 @@ op_star
 )paren
 )paren
 (brace
+r_static
+r_struct
+id|resource
+id|sched_res
+op_assign
+(brace
+l_string|&quot;timer&quot;
+comma
+l_int|0x00bfd400
+comma
+l_int|0x00bfd5ff
+comma
+)brace
+suffix:semicolon
 id|jiffy_ticks
 op_assign
 (paren
@@ -2273,17 +2293,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|request_mem_region
+id|request_resource
 c_func
 (paren
-id|CIAB_PHYSADDR
-op_plus
-l_int|0x400
+op_amp
+id|mb_resources._ciab
 comma
-l_int|0x200
-comma
-l_string|&quot;timer&quot;
+op_amp
+id|sched_res
 )paren
 )paren
 id|printk
@@ -2820,6 +2837,17 @@ l_int|10
 op_plus
 id|tod-&gt;year2
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|t-&gt;year
+op_le
+l_int|69
+)paren
+id|t-&gt;year
+op_add_assign
+l_int|100
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -2902,6 +2930,17 @@ l_int|1
 )paren
 op_mod
 l_int|10
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t-&gt;year
+op_ge
+l_int|100
+)paren
+id|t-&gt;year
+op_sub_assign
+l_int|100
 suffix:semicolon
 id|tod-&gt;year1
 op_assign
@@ -3009,6 +3048,17 @@ op_star
 l_int|10
 op_plus
 id|tod-&gt;year2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t-&gt;year
+op_le
+l_int|69
+)paren
+id|t-&gt;year
+op_add_assign
+l_int|100
 suffix:semicolon
 r_if
 c_cond
@@ -3174,6 +3224,17 @@ l_int|1
 )paren
 op_mod
 l_int|10
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|t-&gt;year
+op_ge
+l_int|100
+)paren
+id|t-&gt;year
+op_sub_assign
+l_int|100
 suffix:semicolon
 id|tod-&gt;year1
 op_assign
@@ -3663,19 +3724,24 @@ c_func
 r_void
 )paren
 (brace
+r_static
+r_struct
+id|resource
+id|debug_res
+op_assign
+(brace
+l_string|&quot;Debug&quot;
+)brace
+suffix:semicolon
 id|savekmsg
 op_assign
-(paren
-r_struct
-id|savekmsg
-op_star
-)paren
-id|amiga_chip_alloc
+id|amiga_chip_alloc_res
 c_func
 (paren
 id|SAVEKMSG_MAXMEM
 comma
-l_string|&quot;Debug&quot;
+op_amp
+id|debug_res
 )paren
 suffix:semicolon
 id|savekmsg-&gt;magic1

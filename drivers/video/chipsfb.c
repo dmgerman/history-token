@@ -14,17 +14,18 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
 macro_line|#include &lt;asm/vc_ioctl.h&gt;
-macro_line|#endif
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_PMAC_PBOOK
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
+macro_line|#endif
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
@@ -79,6 +80,12 @@ id|palette
 l_int|256
 )braket
 suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
 DECL|member|frame_buffer_phys
 r_int
 r_int
@@ -109,16 +116,6 @@ id|__u8
 op_star
 id|blitter_data
 suffix:semicolon
-DECL|member|io_base_phys
-r_int
-r_int
-id|io_base_phys
-suffix:semicolon
-DECL|member|io_base
-id|__u8
-op_star
-id|io_base
-suffix:semicolon
 DECL|member|next
 r_struct
 id|fb_info_chips
@@ -145,9 +142,9 @@ macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|write_ind
-mdefine_line|#define write_ind(num, val, ap, dp)&t;do { &bslash;&n;&t;out_8(p-&gt;io_base + (ap), (num)); out_8(p-&gt;io_base + (dp), (val)); &bslash;&n;} while (0)
+mdefine_line|#define write_ind(num, val, ap, dp)&t;do { &bslash;&n;&t;outb((num), (ap)); outb((val), (dp)); &bslash;&n;} while (0)
 DECL|macro|read_ind
-mdefine_line|#define read_ind(num, var, ap, dp)&t;do { &bslash;&n;&t;out_8(p-&gt;io_base + (ap), (num)); var = in_8(p-&gt;io_base + (dp)); &bslash;&n;} while (0);
+mdefine_line|#define read_ind(num, var, ap, dp)&t;do { &bslash;&n;&t;outb((num), (ap)); var = inb((dp)); &bslash;&n;} while (0);
 multiline_comment|/* extension registers */
 DECL|macro|write_xr
 mdefine_line|#define write_xr(num, val)&t;write_ind(num, val, 0x3d6, 0x3d7)
@@ -175,9 +172,9 @@ DECL|macro|read_sr
 mdefine_line|#define read_sr(num, var)&t;read_ind(num, var, 0x3c4, 0x3c5)
 multiline_comment|/* attribute registers - slightly strange */
 DECL|macro|write_ar
-mdefine_line|#define write_ar(num, val)&t;do { &bslash;&n;&t;in_8(p-&gt;io_base + 0x3da); write_ind(num, val, 0x3c0, 0x3c0); &bslash;&n;} while (0)
+mdefine_line|#define write_ar(num, val)&t;do { &bslash;&n;&t;inb(0x3da); write_ind(num, val, 0x3c0, 0x3c0); &bslash;&n;} while (0)
 DECL|macro|read_ar
-mdefine_line|#define read_ar(num, var)&t;do { &bslash;&n;&t;in_8(p-&gt;io_base + 0x3da); read_ind(num, var, 0x3c0, 0x3c1); &bslash;&n;} while (0)
+mdefine_line|#define read_ar(num, var)&t;do { &bslash;&n;&t;inb(0x3da); read_ind(num, var, 0x3c0, 0x3c1); &bslash;&n;} while (0)
 DECL|variable|all_chips
 r_static
 r_struct
@@ -223,11 +220,11 @@ r_void
 suffix:semicolon
 r_static
 r_void
-id|chips_of_init
+id|chips_pci_init
 c_func
 (paren
 r_struct
-id|device_node
+id|pci_dev
 op_star
 id|dp
 )paren
@@ -1117,14 +1114,12 @@ op_increment
 id|i
 )paren
 (brace
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c7
-comma
 id|i
+comma
+l_int|0x3c7
 )paren
 suffix:semicolon
 id|udelay
@@ -1140,11 +1135,9 @@ id|i
 dot
 id|red
 op_assign
-id|in_8
+id|inb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
 l_int|0x3c9
 )paren
 suffix:semicolon
@@ -1155,11 +1148,9 @@ id|i
 dot
 id|green
 op_assign
-id|in_8
+id|inb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
 l_int|0x3c9
 )paren
 suffix:semicolon
@@ -1170,11 +1161,9 @@ id|i
 dot
 id|blue
 op_assign
-id|in_8
+id|inb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
 l_int|0x3c9
 )paren
 suffix:semicolon
@@ -1194,14 +1183,12 @@ op_increment
 id|i
 )paren
 (brace
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c8
-comma
 id|i
+comma
+l_int|0x3c8
 )paren
 suffix:semicolon
 id|udelay
@@ -1210,34 +1197,28 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c9
-comma
 l_int|0
+comma
+l_int|0x3c9
 )paren
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c9
-comma
 l_int|0
+comma
+l_int|0x3c9
 )paren
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c9
-comma
 l_int|0
+comma
+l_int|0x3c9
 )paren
 suffix:semicolon
 )brace
@@ -1267,14 +1248,12 @@ op_increment
 id|i
 )paren
 (brace
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c8
-comma
 id|i
+comma
+l_int|0x3c8
 )paren
 suffix:semicolon
 id|udelay
@@ -1283,49 +1262,43 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c9
-comma
 id|p-&gt;palette
 (braket
 id|i
 )braket
 dot
 id|red
+comma
+l_int|0x3c9
 )paren
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c9
-comma
 id|p-&gt;palette
 (braket
 id|i
 )braket
 dot
 id|green
+comma
+l_int|0x3c9
 )paren
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c9
-comma
 id|p-&gt;palette
 (braket
 id|i
 )braket
 dot
 id|blue
+comma
+l_int|0x3c9
 )paren
 suffix:semicolon
 )brace
@@ -1544,14 +1517,12 @@ id|blue
 op_assign
 id|blue
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c8
-comma
 id|regno
+comma
+l_int|0x3c8
 )paren
 suffix:semicolon
 id|udelay
@@ -1560,34 +1531,28 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c9
-comma
 id|red
+comma
+l_int|0x3c9
 )paren
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c9
-comma
 id|green
+comma
+l_int|0x3c9
 )paren
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c9
-comma
 id|blue
+comma
+l_int|0x3c9
 )paren
 suffix:semicolon
 macro_line|#ifdef FBCON_HAS_CFB16
@@ -1979,7 +1944,7 @@ op_assign
 op_star
 id|var
 suffix:semicolon
-macro_line|#if (defined(CONFIG_PMAC_PBOOK) || defined(CONFIG_FB_COMPAT_XPMAC))
+macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
 id|display_info.depth
 op_assign
 id|bpp
@@ -2673,14 +2638,12 @@ dot
 id|data
 )paren
 suffix:semicolon
-id|out_8
+id|outb
 c_func
 (paren
-id|p-&gt;io_base
-op_plus
-l_int|0x3c2
-comma
 l_int|0x29
+comma
+l_int|0x3c2
 )paren
 suffix:semicolon
 multiline_comment|/* set misc output reg */
@@ -2905,10 +2868,6 @@ op_assign
 l_int|0x100000
 suffix:semicolon
 singleline_comment|// 1MB
-id|p-&gt;fix.mmio_start
-op_assign
-id|p-&gt;io_base_phys
-suffix:semicolon
 id|p-&gt;fix.type
 op_assign
 id|FB_TYPE_PACKED_PIXELS
@@ -3200,6 +3159,10 @@ op_logical_neg
 id|console_fb_info
 )paren
 (brace
+r_int
+r_int
+id|iobase
+suffix:semicolon
 id|display_info.height
 op_assign
 id|p-&gt;var.yres
@@ -3237,15 +3200,23 @@ id|display_info.fb_address
 op_assign
 id|p-&gt;frame_buffer_phys
 suffix:semicolon
+id|iobase
+op_assign
+id|pci_bus_io_base_phys
+c_func
+(paren
+id|p-&gt;pdev-&gt;bus-&gt;number
+)paren
+suffix:semicolon
 id|display_info.cmap_adr_address
 op_assign
-id|p-&gt;io_base_phys
+id|iobase
 op_plus
 l_int|0x3c8
 suffix:semicolon
 id|display_info.cmap_data_address
 op_assign
-id|p-&gt;io_base_phys
+id|iobase
 op_plus
 l_int|0x3c9
 suffix:semicolon
@@ -3295,44 +3266,69 @@ r_void
 )paren
 (brace
 r_struct
-id|device_node
+id|pci_dev
 op_star
 id|dp
+op_assign
+l_int|NULL
 suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
 id|dp
 op_assign
-id|find_devices
+id|pci_find_device
 c_func
 (paren
-l_string|&quot;chips65550&quot;
+id|PCI_VENDOR_ID_CT
+comma
+id|PCI_DEVICE_ID_CT_65550
+comma
+id|dp
 )paren
-suffix:semicolon
+)paren
+op_ne
+l_int|NULL
+)paren
 r_if
 c_cond
 (paren
+(paren
 id|dp
-op_ne
-l_int|0
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|16
 )paren
-id|chips_of_init
+op_eq
+id|PCI_BASE_CLASS_DISPLAY
+)paren
+id|chips_pci_init
 c_func
 (paren
 id|dp
 )paren
 suffix:semicolon
 r_return
+id|all_chips
+ques
+c_cond
 l_int|0
+suffix:colon
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
-DECL|function|chips_of_init
+DECL|function|chips_pci_init
 r_static
 r_void
 id|__init
-id|chips_of_init
+id|chips_pci_init
 c_func
 (paren
 r_struct
-id|device_node
+id|pci_dev
 op_star
 id|dp
 )paren
@@ -3345,12 +3341,8 @@ suffix:semicolon
 r_int
 r_int
 id|addr
-suffix:semicolon
-r_int
-r_char
-id|bus
 comma
-id|devfn
+id|size
 suffix:semicolon
 r_int
 r_int
@@ -3359,7 +3351,47 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dp-&gt;n_addrs
+(paren
+id|dp-&gt;resource
+(braket
+l_int|0
+)braket
+dot
+id|flags
+op_amp
+id|IORESOURCE_MEM
+)paren
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
+id|addr
+op_assign
+id|dp-&gt;resource
+(braket
+l_int|0
+)braket
+dot
+id|start
+suffix:semicolon
+id|size
+op_assign
+id|dp-&gt;resource
+(braket
+l_int|0
+)braket
+dot
+id|end
+op_plus
+l_int|1
+op_minus
+id|addr
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|addr
 op_eq
 l_int|0
 )paren
@@ -3402,15 +3434,6 @@ id|p
 )paren
 )paren
 suffix:semicolon
-id|addr
-op_assign
-id|dp-&gt;addrs
-(braket
-l_int|0
-)braket
-dot
-id|address
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3420,11 +3443,6 @@ c_func
 (paren
 id|addr
 comma
-id|dp-&gt;addrs
-(braket
-l_int|0
-)braket
-dot
 id|size
 comma
 l_string|&quot;chipsfb&quot;
@@ -3447,6 +3465,10 @@ l_int|0x800000
 suffix:semicolon
 singleline_comment|// Use big-endian aperture
 macro_line|#endif
+id|p-&gt;pdev
+op_assign
+id|dp
+suffix:semicolon
 id|p-&gt;frame_buffer_phys
 op_assign
 id|addr
@@ -3499,30 +3521,11 @@ comma
 l_int|0x10000
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pci_device_loc
+multiline_comment|/* we should use pci_enable_device here, but,&n;&t;   the device doesn&squot;t declare its I/O ports in its BARs&n;&t;   so pci_enable_device won&squot;t turn on I/O responses */
+id|pci_read_config_word
 c_func
 (paren
 id|dp
-comma
-op_amp
-id|bus
-comma
-op_amp
-id|devfn
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|pcibios_read_config_word
-c_func
-(paren
-id|bus
-comma
-id|devfn
 comma
 id|PCI_COMMAND
 comma
@@ -3535,44 +3538,16 @@ op_or_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/* enable memory and IO space */
-id|pcibios_write_config_word
+id|pci_write_config_word
 c_func
 (paren
-id|bus
-comma
-id|devfn
+id|dp
 comma
 id|PCI_COMMAND
 comma
 id|cmd
 )paren
 suffix:semicolon
-id|p-&gt;io_base
-op_assign
-(paren
-id|__u8
-op_star
-)paren
-id|pci_io_base
-c_func
-(paren
-id|bus
-)paren
-suffix:semicolon
-multiline_comment|/* XXX really want the physical address here */
-id|p-&gt;io_base_phys
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|pci_io_base
-c_func
-(paren
-id|bus
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Clear the entire framebuffer */
 id|memset
 c_func

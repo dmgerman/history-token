@@ -397,8 +397,8 @@ id|error
 suffix:semicolon
 )brace
 r_static
-r_void
 r_inline
+r_void
 DECL|function|update_thread_usage
 id|update_thread_usage
 c_func
@@ -915,6 +915,7 @@ suffix:semicolon
 r_case
 id|RC_DOIT
 suffix:colon
+suffix:semicolon
 multiline_comment|/* do it */
 )brace
 multiline_comment|/* Decode arguments */

@@ -6929,25 +6929,7 @@ op_amp
 id|pool-&gt;waitq
 )paren
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-op_logical_neg
-id|is_page_busy
-(paren
-id|pool-&gt;blocks_per_page
-comma
-id|page-&gt;bitmap
-)paren
-)paren
-id|pool_free_page
-(paren
-id|pool
-comma
-id|page
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Resist a temptation to do&n;&t; *    if (!is_page_busy(bpp, page-&gt;bitmap)) pool_free_page(pool, page);&n;&t; * it is not interrupt safe. Better have empty pages hang around.&n;&t; */
 id|spin_unlock_irqrestore
 (paren
 op_amp

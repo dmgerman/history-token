@@ -56,6 +56,22 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* number of SAA7146s in use */
+DECL|variable|video_nr
+r_static
+r_int
+id|video_nr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|video_nr
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
 DECL|macro|nDebNormal
 mdefine_line|#define nDebNormal&t;0x00480000
 DECL|macro|nDebNoInc
@@ -12472,6 +12488,8 @@ op_amp
 id|saa-&gt;video_dev
 comma
 id|VFL_TYPE_GRABBER
+comma
+id|video_nr
 )paren
 OL
 l_int|0

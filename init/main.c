@@ -205,16 +205,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_QUOTA)
-r_extern
-r_void
-id|dquot_init_hash
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * Boot command-line arguments&n; */
 DECL|macro|MAX_INIT_ARGS
 mdefine_line|#define MAX_INIT_ARGS 8
@@ -2398,13 +2388,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_QUOTA)
-id|dquot_init_hash
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|check_bugs
 c_func
 (paren
@@ -2612,11 +2595,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-r_int
-id|real_root_mountflags
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Tell the world that we&squot;re going to be the grim&n;&t; * reaper of innocent orphaned children.&n;&t; *&n;&t; * We don&squot;t want people to have to make incorrect&n;&t; * assumptions about where in the task array this&n;&t; * can be found.&n;&t; */
 id|child_reaper
 op_assign
@@ -2721,33 +2699,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-id|real_root_dev
-op_assign
-id|ROOT_DEV
-suffix:semicolon
-id|real_root_mountflags
-op_assign
-id|root_mountflags
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|initrd_start
-op_logical_and
-id|mount_initrd
-)paren
-id|root_mountflags
-op_and_assign
-op_complement
-id|MS_RDONLY
-suffix:semicolon
-r_else
-id|mount_initrd
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 id|start_context_thread
 c_func
 (paren
@@ -2778,6 +2729,84 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Do this last */
+macro_line|#endif
+)brace
+r_extern
+r_void
+id|rd_load
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|initrd_load
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Prepare the namespace - decide what/where to mount, load ramdisks, etc.&n; */
+DECL|function|prepare_namespace
+r_static
+r_void
+id|prepare_namespace
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+r_int
+id|real_root_mountflags
+op_assign
+id|root_mountflags
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|initrd_start
+)paren
+id|mount_initrd
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mount_initrd
+)paren
+id|root_mountflags
+op_and_assign
+op_complement
+id|MS_RDONLY
+suffix:semicolon
+id|real_root_dev
+op_assign
+id|ROOT_DEV
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_RAM
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+r_if
+c_cond
+(paren
+id|mount_initrd
+)paren
+id|initrd_load
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+macro_line|#endif
+id|rd_load
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Mount the root filesystem.. */
 id|mount_root
@@ -2926,6 +2955,11 @@ c_func
 )paren
 suffix:semicolon
 id|do_basic_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|prepare_namespace
 c_func
 (paren
 )paren

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/capi.h&gt;
+macro_line|#include &lt;linux/kernelcapi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;capicmd.h&quot;
@@ -19,7 +20,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.16.6.4 $&quot;
+l_string|&quot;$Revision: 1.16.6.6 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 id|MODULE_AUTHOR
@@ -1678,7 +1679,7 @@ c_func
 (paren
 id|port
 comma
-id|AVM_NAPPS
+id|CAPI_MAXAPPL
 )paren
 suffix:semicolon
 id|b1_put_word

@@ -1245,6 +1245,23 @@ comma
 id|dirty_tx
 suffix:semicolon
 multiline_comment|/* The ring entries to be free()ed. */
+macro_line|#ifdef CONFIG_NET_HW_FLOWCONTROL
+DECL|macro|RX_A_NBF_STOP
+mdefine_line|#define RX_A_NBF_STOP 0xffffff3f /* To disable RX and RX-NOBUF ints. */
+DECL|member|fc_bit
+r_int
+id|fc_bit
+suffix:semicolon
+DECL|member|mit_sel
+r_int
+id|mit_sel
+suffix:semicolon
+DECL|member|mit_change
+r_int
+id|mit_change
+suffix:semicolon
+multiline_comment|/* Signal for Interrupt Mitigtion */
+macro_line|#endif
 DECL|member|full_duplex
 r_int
 r_int
@@ -1567,6 +1584,16 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+)paren
+suffix:semicolon
+r_int
+id|tulip_refill_rx
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* media.c */

@@ -21,7 +21,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.13.6.3 $&quot;
+l_string|&quot;$Revision: 1.13.6.5 $&quot;
 suffix:semicolon
 DECL|macro|CONFIG_T1PCI_DEBUG
 macro_line|#undef CONFIG_T1PCI_DEBUG

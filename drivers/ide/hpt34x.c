@@ -2258,6 +2258,12 @@ op_amp
 id|pcicmd
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|noautodma
+)paren
 id|hwif-&gt;autodma
 op_assign
 (paren
@@ -2269,6 +2275,11 @@ ques
 c_cond
 l_int|1
 suffix:colon
+l_int|0
+suffix:semicolon
+r_else
+id|hwif-&gt;autodma
+op_assign
 l_int|0
 suffix:semicolon
 id|hwif-&gt;dmaproc

@@ -37,6 +37,14 @@ op_assign
 l_int|4
 suffix:semicolon
 multiline_comment|/* Yield after this many during capture */
+DECL|variable|video_nr
+r_static
+r_int
+id|video_nr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= 0x020117
 id|MODULE_PARM
 c_func
@@ -50,6 +58,14 @@ id|MODULE_PARM
 c_func
 (paren
 id|yieldlines
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|video_nr
 comma
 l_string|&quot;i&quot;
 )paren
@@ -3788,6 +3804,8 @@ op_amp
 id|qcam-&gt;vdev
 comma
 id|VFL_TYPE_GRABBER
+comma
+id|video_nr
 )paren
 op_eq
 op_minus

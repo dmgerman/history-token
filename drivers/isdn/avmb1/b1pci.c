@@ -21,7 +21,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.29.6.3 $&quot;
+l_string|&quot;$Revision: 1.29.6.4 $&quot;
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 DECL|variable|__initdata

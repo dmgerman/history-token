@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: gpio.c,v 1.4 2001/02/27 13:52:48 bjornw Exp $&n; *&n; * Etrax general port I/O device&n; *&n; * Copyright (c) 1999, 2000, 2001 Axis Communications AB&n; *&n; * Authors:    Bjorn Wesen      (initial version)&n; *             Ola Knutsson     (LED handling)&n; *             Johan Adolfsson  (read/set directions)&n; *&n; * $Log: gpio.c,v $&n; * Revision 1.4  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.3  2001/01/24 15:06:48  bjornw&n; * gpio_wq correct type&n; *&n; * Revision 1.2  2001/01/18 16:07:30  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2001/01/18 15:55:16  bjornw&n; * Verbatim copy of etraxgpio.c from elinux 2.0 added&n; *&n; *&n; */
+multiline_comment|/* $Id: gpio.c,v 1.7 2001/04/04 13:30:08 matsfg Exp $&n; *&n; * Etrax general port I/O device&n; *&n; * Copyright (c) 1999, 2000, 2001 Axis Communications AB&n; *&n; * Authors:    Bjorn Wesen      (initial version)&n; *             Ola Knutsson     (LED handling)&n; *             Johan Adolfsson  (read/set directions)&n; *&n; * $Log: gpio.c,v $&n; * Revision 1.7  2001/04/04 13:30:08  matsfg&n; * Added bitset and bitclear for leds. Calls init_ioremap to set up memmapping&n; *&n; * Revision 1.6  2001/03/26 16:03:06  bjornw&n; * Needs linux/config.h&n; *&n; * Revision 1.5  2001/03/26 14:22:03  bjornw&n; * Namechange of some config options&n; *&n; * Revision 1.4  2001/02/27 13:52:48  bjornw&n; * malloc.h -&gt; slab.h&n; *&n; * Revision 1.3  2001/01/24 15:06:48  bjornw&n; * gpio_wq correct type&n; *&n; * Revision 1.2  2001/01/18 16:07:30  bjornw&n; * 2.4 port&n; *&n; * Revision 1.1  2001/01/18 15:55:16  bjornw&n; * Verbatim copy of etraxgpio.c from elinux 2.0 added&n; *&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -216,21 +216,21 @@ id|port_pb_data_shadow
 )brace
 suffix:semicolon
 multiline_comment|/* What direction bits that are user changeable 1=changeable*/
-macro_line|#ifndef CONFIG_PA_CHANGEABLE_DIR
-DECL|macro|CONFIG_PA_CHANGEABLE_DIR
-mdefine_line|#define CONFIG_PA_CHANGEABLE_DIR 0x00
+macro_line|#ifndef CONFIG_ETRAX_PA_CHANGEABLE_DIR
+DECL|macro|CONFIG_ETRAX_PA_CHANGEABLE_DIR
+mdefine_line|#define CONFIG_ETRAX_PA_CHANGEABLE_DIR 0x00
 macro_line|#endif
-macro_line|#ifndef CONFIG_PB_CHANGEABLE_DIR
-DECL|macro|CONFIG_PB_CHANGEABLE_DIR
-mdefine_line|#define CONFIG_PB_CHANGEABLE_DIR 0x00
+macro_line|#ifndef CONFIG_ETRAX_PB_CHANGEABLE_DIR
+DECL|macro|CONFIG_ETRAX_PB_CHANGEABLE_DIR
+mdefine_line|#define CONFIG_ETRAX_PB_CHANGEABLE_DIR 0x00
 macro_line|#endif
-macro_line|#ifndef CONFIG_PA_CHANGEABLE_BITS
-DECL|macro|CONFIG_PA_CHANGEABLE_BITS
-mdefine_line|#define CONFIG_PA_CHANGEABLE_BITS 0xFF
+macro_line|#ifndef CONFIG_ETRAX_PA_CHANGEABLE_BITS
+DECL|macro|CONFIG_ETRAX_PA_CHANGEABLE_BITS
+mdefine_line|#define CONFIG_ETRAX_PA_CHANGEABLE_BITS 0xFF
 macro_line|#endif
-macro_line|#ifndef CONFIG_PB_CHANGEABLE_BITS
-DECL|macro|CONFIG_PB_CHANGEABLE_BITS
-mdefine_line|#define CONFIG_PB_CHANGEABLE_BITS 0xFF
+macro_line|#ifndef CONFIG_ETRAX_PB_CHANGEABLE_BITS
+DECL|macro|CONFIG_ETRAX_PB_CHANGEABLE_BITS
+mdefine_line|#define CONFIG_ETRAX_PB_CHANGEABLE_BITS 0xFF
 macro_line|#endif
 DECL|variable|changeable_dir
 r_static
@@ -242,9 +242,9 @@ l_int|2
 )braket
 op_assign
 (brace
-id|CONFIG_PA_CHANGEABLE_DIR
+id|CONFIG_ETRAX_PA_CHANGEABLE_DIR
 comma
-id|CONFIG_PB_CHANGEABLE_DIR
+id|CONFIG_ETRAX_PB_CHANGEABLE_DIR
 )brace
 suffix:semicolon
 DECL|variable|changeable_bits
@@ -257,9 +257,9 @@ l_int|2
 )braket
 op_assign
 (brace
-id|CONFIG_PA_CHANGEABLE_BITS
+id|CONFIG_ETRAX_PA_CHANGEABLE_BITS
 comma
-id|CONFIG_PB_CHANGEABLE_BITS
+id|CONFIG_ETRAX_PB_CHANGEABLE_BITS
 )brace
 suffix:semicolon
 DECL|variable|dir
@@ -902,6 +902,29 @@ r_int
 r_char
 id|red
 suffix:semicolon
+r_static
+r_int
+id|initialized
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|initialized
+)paren
+(brace
+id|initialized
+op_assign
+l_int|1
+suffix:semicolon
+id|init_ioremap
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -956,6 +979,26 @@ id|red
 )paren
 suffix:semicolon
 r_break
+suffix:semicolon
+r_case
+id|IO_LED_SETBIT
+suffix:colon
+id|LED_BIT_SET
+c_func
+(paren
+id|arg
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IO_LED_CLRBIT
+suffix:colon
+id|LED_BIT_CLR
+c_func
+(paren
+id|arg
+)paren
 suffix:semicolon
 r_default
 suffix:colon

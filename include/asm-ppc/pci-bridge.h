@@ -125,6 +125,11 @@ DECL|struct|pci_controller
 r_struct
 id|pci_controller
 (brace
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
+multiline_comment|/* used for pci_controller_num */
 DECL|member|next
 r_struct
 id|pci_controller

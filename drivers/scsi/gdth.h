@@ -1,7 +1,7 @@
 macro_line|#ifndef _GDTH_H
 DECL|macro|_GDTH_H
 mdefine_line|#define _GDTH_H
-multiline_comment|/*&n; * Header file for the GDT ISA/EISA/PCI Disk Array Controller driver for Linux&n; * &n; * gdth.h Copyright (C) 1995-99 ICP vortex Computersysteme GmbH, Achim Leubner&n; * See gdth.c for further informations and &n; * below for supported controller types&n; *&n; * &lt;achim@vortex.de&gt;&n; *&n; * $Id: gdth.h,v 1.21 1999/03/26 09:12:24 achim Exp $&n; */
+multiline_comment|/*&n; * Header file for the GDT ISA/EISA/PCI Disk Array Controller driver for Linux&n; * &n; * gdth.h Copyright (C) 1995-01 ICP vortex Computersysteme GmbH, Achim Leubner&n; * See gdth.c for further informations and &n; * below for supported controller types&n; *&n; * &lt;achim@vortex.de&gt;&n; *&n; * $Id: gdth.h,v 1.38 2001/03/15 15:06:23 achim Exp $&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#ifndef NULL
@@ -19,11 +19,11 @@ macro_line|#endif
 multiline_comment|/* defines, macros */
 multiline_comment|/* driver version */
 DECL|macro|GDTH_VERSION_STR
-mdefine_line|#define GDTH_VERSION_STR        &quot;1.14&quot;
+mdefine_line|#define GDTH_VERSION_STR        &quot;1.28&quot;
 DECL|macro|GDTH_VERSION
 mdefine_line|#define GDTH_VERSION            1
 DECL|macro|GDTH_SUBVERSION
-mdefine_line|#define GDTH_SUBVERSION         14
+mdefine_line|#define GDTH_SUBVERSION         28
 multiline_comment|/* protocol version */
 DECL|macro|PROTOCOL_VERSION
 mdefine_line|#define PROTOCOL_VERSION        1
@@ -157,7 +157,7 @@ mdefine_line|#define PCI_DEVICE_ID_VORTEX_GDTMAXRP   0x2ff
 macro_line|#endif
 multiline_comment|/* limits */
 DECL|macro|GDTH_SCRATCH
-mdefine_line|#define GDTH_SCRATCH    PAGE_SIZE                    /* 4KB scratch buffer */
+mdefine_line|#define GDTH_SCRATCH    PAGE_SIZE               /* 4KB scratch buffer */
 DECL|macro|GDTH_SCRATCH_ORD
 mdefine_line|#define GDTH_SCRATCH_ORD 0                      /* order 0 means 1 page */
 DECL|macro|GDTH_MAXCMDS
@@ -177,7 +177,9 @@ mdefine_line|#define MAXLUN          8
 DECL|macro|MAXBUS
 mdefine_line|#define MAXBUS          6
 DECL|macro|MAX_HDRIVES
-mdefine_line|#define MAX_HDRIVES     35                      /* max. host drive count */
+mdefine_line|#define MAX_HDRIVES     100                     /* max. host drive count */
+DECL|macro|MAX_LDRIVES
+mdefine_line|#define MAX_LDRIVES     255                     /* max. log. drive count */
 DECL|macro|MAX_EVENTS
 mdefine_line|#define MAX_EVENTS      100                     /* event buffer count */
 DECL|macro|MAX_RES_ARGS
@@ -233,7 +235,16 @@ DECL|macro|IC_QUEUE_BYTES
 mdefine_line|#define IC_QUEUE_BYTES  4
 DECL|macro|DPMEM_COMMAND_OFFSET
 mdefine_line|#define DPMEM_COMMAND_OFFSET    IC_HEADER_BYTES+IC_QUEUE_BYTES*MAXOFFSETS
-multiline_comment|/* cache/raw service commands */
+multiline_comment|/* cluster_type constants */
+DECL|macro|CLUSTER_DRIVE
+mdefine_line|#define CLUSTER_DRIVE         1
+DECL|macro|CLUSTER_MOUNTED
+mdefine_line|#define CLUSTER_MOUNTED       2
+DECL|macro|CLUSTER_RESERVED
+mdefine_line|#define CLUSTER_RESERVED      4
+DECL|macro|CLUSTER_RESERVE_STATE
+mdefine_line|#define CLUSTER_RESERVE_STATE (CLUSTER_DRIVE|CLUSTER_MOUNTED|CLUSTER_RESERVED)
+multiline_comment|/* commands for all services, cache service */
 DECL|macro|GDT_INIT
 mdefine_line|#define GDT_INIT        0                       /* service initialization */
 DECL|macro|GDT_READ
@@ -264,7 +275,17 @@ DECL|macro|GDT_EXT_INFO
 mdefine_line|#define GDT_EXT_INFO    18                      /* extended info */
 DECL|macro|GDT_RESET
 mdefine_line|#define GDT_RESET       19                      /* controller reset */
-multiline_comment|/* additional raw service commands */
+DECL|macro|GDT_RESERVE_DRV
+mdefine_line|#define GDT_RESERVE_DRV 20                      /* reserve host drive */
+DECL|macro|GDT_RELEASE_DRV
+mdefine_line|#define GDT_RELEASE_DRV 21                      /* release host drive */
+DECL|macro|GDT_CLUST_INFO
+mdefine_line|#define GDT_CLUST_INFO  22                      /* cluster info */
+DECL|macro|GDT_RW_ATTRIBS
+mdefine_line|#define GDT_RW_ATTRIBS  23                      /* R/W attribs (write thru,..)*/
+DECL|macro|GDT_CLUST_RESET
+mdefine_line|#define GDT_CLUST_RESET 24                      /* releases the cluster drives*/
+multiline_comment|/* raw service commands */
 DECL|macro|GDT_RESERVE
 mdefine_line|#define GDT_RESERVE     14                      /* reserve dev. to raw serv. */
 DECL|macro|GDT_RELEASE
@@ -279,6 +300,9 @@ DECL|macro|GDT_SCAN_START
 mdefine_line|#define GDT_SCAN_START  19                      /* start device scan */
 DECL|macro|GDT_SCAN_END
 mdefine_line|#define GDT_SCAN_END    20                      /* stop device scan */  
+multiline_comment|/* screen service commands */
+DECL|macro|GDT_REALTIME
+mdefine_line|#define GDT_REALTIME    3                       /* realtime clock to screens. */
 multiline_comment|/* IOCTL command defines */
 DECL|macro|SCSI_DR_INFO
 mdefine_line|#define SCSI_DR_INFO    0x00                    /* SCSI drive info */                   
@@ -293,13 +317,15 @@ mdefine_line|#define DSK_STATISTICS  0x4b                    /* SCSI disk statis
 DECL|macro|IOCHAN_DESC
 mdefine_line|#define IOCHAN_DESC     0x5d                    /* description of IO channel */
 DECL|macro|IOCHAN_RAW_DESC
-mdefine_line|#define IOCHAN_RAW_DESC 0x5e                    /* description of raw IO channel */
+mdefine_line|#define IOCHAN_RAW_DESC 0x5e                    /* description of raw IO chn. */
 DECL|macro|L_CTRL_PATTERN
 mdefine_line|#define L_CTRL_PATTERN  0x20000000L             /* SCSI IOCTL mask */
 DECL|macro|ARRAY_INFO
 mdefine_line|#define ARRAY_INFO      0x12                    /* array drive info */
 DECL|macro|ARRAY_DRV_LIST
 mdefine_line|#define ARRAY_DRV_LIST  0x0f                    /* array drive list */
+DECL|macro|ARRAY_DRV_LIST2
+mdefine_line|#define ARRAY_DRV_LIST2 0x34                    /* array drive list (new) */
 DECL|macro|LA_CTRL_PATTERN
 mdefine_line|#define LA_CTRL_PATTERN 0x10000000L             /* array IOCTL mask */
 DECL|macro|CACHE_DRV_CNT
@@ -322,28 +348,15 @@ DECL|macro|IO_CHANNEL
 mdefine_line|#define IO_CHANNEL      0x00020000L             /* default IO channel */
 DECL|macro|INVALID_CHANNEL
 mdefine_line|#define INVALID_CHANNEL 0x0000ffffL             /* invalid channel */
-multiline_comment|/* IOCTLs */
-DECL|macro|GDTIOCTL_MASK
-mdefine_line|#define GDTIOCTL_MASK       (&squot;J&squot;&lt;&lt;8)
-DECL|macro|GDTIOCTL_GENERAL
-mdefine_line|#define GDTIOCTL_GENERAL    (GDTIOCTL_MASK | 0) /* general IOCTL */
-DECL|macro|GDTIOCTL_DRVERS
-mdefine_line|#define GDTIOCTL_DRVERS     (GDTIOCTL_MASK | 1) /* get driver version */
-DECL|macro|GDTIOCTL_CTRTYPE
-mdefine_line|#define GDTIOCTL_CTRTYPE    (GDTIOCTL_MASK | 2) /* get controller type */
-DECL|macro|GDTIOCTL_CTRCNT
-mdefine_line|#define GDTIOCTL_CTRCNT     (GDTIOCTL_MASK | 5) /* get controller count */
-DECL|macro|GDTIOCTL_LOCKDRV
-mdefine_line|#define GDTIOCTL_LOCKDRV    (GDTIOCTL_MASK | 6) /* lock host drive */
-DECL|macro|GDTIOCTL_LOCKCHN
-mdefine_line|#define GDTIOCTL_LOCKCHN    (GDTIOCTL_MASK | 7) /* lock channel */
-DECL|macro|GDTIOCTL_EVENT
-mdefine_line|#define GDTIOCTL_EVENT      (GDTIOCTL_MASK | 8) /* read controller events */
 multiline_comment|/* service errors */
 DECL|macro|S_OK
 mdefine_line|#define S_OK            1                       /* no error */
+DECL|macro|S_GENERR
+mdefine_line|#define S_GENERR        6                       /* general error */
 DECL|macro|S_BSY
 mdefine_line|#define S_BSY           7                       /* controller busy */
+DECL|macro|S_CACHE_UNKNOWN
+mdefine_line|#define S_CACHE_UNKNOWN 12                      /* cache serv.: drive unknown */
 DECL|macro|S_RAW_SCSI
 mdefine_line|#define S_RAW_SCSI      12                      /* raw serv.: target error */
 DECL|macro|S_RAW_ILL
@@ -363,10 +376,10 @@ mdefine_line|#define IOCTL_PRI       0x10
 DECL|macro|HIGH_PRI
 mdefine_line|#define HIGH_PRI        0x08
 multiline_comment|/* data directions */
-DECL|macro|DATA_IN
-mdefine_line|#define DATA_IN         0x01000000L             /* data from target */
-DECL|macro|DATA_OUT
-mdefine_line|#define DATA_OUT        0x00000000L             /* data to target */
+DECL|macro|GDTH_DATA_IN
+mdefine_line|#define GDTH_DATA_IN    0x01000000L             /* data from target */
+DECL|macro|GDTH_DATA_OUT
+mdefine_line|#define GDTH_DATA_OUT   0x00000000L             /* data to target */
 multiline_comment|/* BMIC registers (EISA controllers) */
 DECL|macro|ID0REG
 mdefine_line|#define ID0REG          0x0c80                  /* board ID */
@@ -507,7 +520,7 @@ DECL|member|no_ldrive
 id|ulong32
 id|no_ldrive
 suffix:semicolon
-multiline_comment|/* belongs to this logical drv.*/
+multiline_comment|/* belongs to this log. drv.*/
 DECL|member|blkcnt
 id|ulong32
 id|blkcnt
@@ -1189,10 +1202,46 @@ id|res
 l_int|3
 )braket
 suffix:semicolon
-DECL|typedef|gdth_arraylist_str
+DECL|typedef|gdth_alist_str
 )brace
 id|PACKED
-id|gdth_arraylist_str
+id|gdth_alist_str
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|entries_avail
+id|ulong32
+id|entries_avail
+suffix:semicolon
+multiline_comment|/* allocated entries */
+DECL|member|entries_init
+id|ulong32
+id|entries_init
+suffix:semicolon
+multiline_comment|/* returned entries */
+DECL|member|first_entry
+id|ulong32
+id|first_entry
+suffix:semicolon
+multiline_comment|/* first entry number */
+DECL|member|list_offset
+id|ulong32
+id|list_offset
+suffix:semicolon
+multiline_comment|/* offset of following list */
+DECL|member|list
+id|gdth_alist_str
+id|list
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* list */
+DECL|typedef|gdth_arcdl_str
+)brace
+id|PACKED
+id|gdth_arcdl_str
 suffix:semicolon
 multiline_comment|/* cache info/config IOCTL */
 r_typedef
@@ -1758,6 +1807,10 @@ DECL|member|reserved
 id|ushort
 id|reserved
 suffix:semicolon
+r_union
+(brace
+r_struct
+(brace
 DECL|member|msg_handle
 id|ulong32
 id|msg_handle
@@ -1768,6 +1821,23 @@ id|ulong32
 id|msg_addr
 suffix:semicolon
 multiline_comment|/* message buffer address */
+DECL|member|msg
+)brace
+id|PACKED
+id|msg
+suffix:semicolon
+DECL|member|data
+id|unchar
+id|data
+(braket
+l_int|12
+)braket
+suffix:semicolon
+multiline_comment|/* buffer for rtc data, ... */
+DECL|member|su
+)brace
+id|su
+suffix:semicolon
 DECL|member|screen
 )brace
 id|PACKED
@@ -1849,9 +1919,7 @@ id|sense_data
 suffix:semicolon
 multiline_comment|/* sense data addr. */
 DECL|member|link_p
-r_struct
-id|raw
-op_star
+id|ulong32
 id|link_p
 suffix:semicolon
 multiline_comment|/* linked cmds (not supp.) */
@@ -2041,6 +2109,17 @@ suffix:semicolon
 DECL|member|eu
 )brace
 id|eu
+suffix:semicolon
+DECL|member|severity
+id|ulong32
+id|severity
+suffix:semicolon
+DECL|member|event_string
+id|unchar
+id|event_string
+(braket
+l_int|256
+)braket
 suffix:semicolon
 DECL|typedef|gdth_evt_data
 )brace
@@ -2745,10 +2824,21 @@ DECL|member|unused7
 id|ulong32
 id|unused7
 (braket
-l_int|1004
+l_int|939
 )braket
 suffix:semicolon
-multiline_comment|/* size: 4 KB */
+DECL|member|severity
+id|ulong32
+id|severity
+suffix:semicolon
+DECL|member|evt_str
+r_char
+id|evt_str
+(braket
+l_int|256
+)braket
+suffix:semicolon
+multiline_comment|/* event string */
 DECL|typedef|gdt6m_i960_regs
 )brace
 id|PACKED
@@ -2800,12 +2890,14 @@ multiline_comment|/* PCI resources */
 r_typedef
 r_struct
 (brace
+macro_line|#if LINUX_VERSION_CODE &gt;= 0x02015C
 DECL|member|pdev
 r_struct
 id|pci_dev
 op_star
 id|pdev
 suffix:semicolon
+macro_line|#endif
 DECL|member|device_id
 id|ushort
 id|device_id
@@ -2864,6 +2956,11 @@ id|ulong32
 id|stype
 suffix:semicolon
 multiline_comment|/* controller subtype */
+DECL|member|fw_vers
+id|ushort
+id|fw_vers
+suffix:semicolon
+multiline_comment|/* firmware version */
 DECL|member|cache_feat
 id|ushort
 id|cache_feat
@@ -2928,6 +3025,11 @@ id|ushort
 id|status
 suffix:semicolon
 multiline_comment|/* command status */
+DECL|member|service
+id|ushort
+id|service
+suffix:semicolon
+multiline_comment|/* service/firmware ver./.. */
 DECL|member|info
 id|ulong32
 id|info
@@ -2954,7 +3056,7 @@ DECL|member|is_logdrv
 id|unchar
 id|is_logdrv
 suffix:semicolon
-multiline_comment|/* Flag: logical drive (master)? */
+multiline_comment|/* Flag: log. drive (master)? */
 DECL|member|is_arraydrv
 id|unchar
 id|is_arraydrv
@@ -3014,6 +3116,16 @@ id|unchar
 id|rw_attribs
 suffix:semicolon
 multiline_comment|/* r/w attributes */
+DECL|member|cluster_type
+id|unchar
+id|cluster_type
+suffix:semicolon
+multiline_comment|/* cluster properties */
+DECL|member|media_changed
+id|unchar
+id|media_changed
+suffix:semicolon
+multiline_comment|/* Flag:MOUNT/UNMOUNT occured */
 DECL|member|start_sec
 id|ulong32
 id|start_sec
@@ -3023,7 +3135,7 @@ DECL|member|hdr
 )brace
 id|hdr
 (braket
-id|MAX_HDRIVES
+id|MAX_LDRIVES
 )braket
 suffix:semicolon
 multiline_comment|/* host drives */
@@ -3157,10 +3269,17 @@ id|gdth_binfo_str
 id|binfo
 suffix:semicolon
 multiline_comment|/* controller info */
+DECL|member|dvr
+id|gdth_evt_data
+id|dvr
+suffix:semicolon
+multiline_comment|/* event structure */
+macro_line|#if LINUX_VERSION_CODE &gt;= 0x02015F
 DECL|member|smp_lock
 id|spinlock_t
 id|smp_lock
 suffix:semicolon
+macro_line|#endif
 DECL|typedef|gdth_ha_str
 )brace
 id|gdth_ha_str
@@ -3430,14 +3549,6 @@ op_star
 )paren
 suffix:semicolon
 r_int
-id|gdth_command
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_int
 id|gdth_queuecommand
 c_func
 (paren
@@ -3463,6 +3574,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= 0x010346
 r_int
 id|gdth_reset
 c_func
@@ -3475,6 +3587,16 @@ r_int
 id|reset_flags
 )paren
 suffix:semicolon
+macro_line|#else
+r_int
+id|gdth_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 r_const
 r_char
 op_star
@@ -3486,6 +3608,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &gt;= 0x020322
 r_int
 id|gdth_bios_param
 c_func
@@ -3556,6 +3679,141 @@ id|scp
 )paren
 suffix:semicolon
 DECL|macro|GDTH
-mdefine_line|#define GDTH { proc_name:       &quot;gdth&quot;,                          &bslash;&n;               proc_info:       gdth_proc_info,                  &bslash;&n;               name:            &quot;GDT SCSI Disk Array Controller&quot;,&bslash;&n;               detect:          gdth_detect,                     &bslash;&n;               release:         gdth_release,                    &bslash;&n;               info:            gdth_info,                       &bslash;&n;               command:         gdth_command,                    &bslash;&n;               queuecommand:    gdth_queuecommand,               &bslash;&n;               eh_abort_handler: gdth_eh_abort,                  &bslash;&n;               eh_device_reset_handler: gdth_eh_device_reset,    &bslash;&n;               eh_bus_reset_handler: gdth_eh_bus_reset,          &bslash;&n;               eh_host_reset_handler: gdth_eh_host_reset,        &bslash;&n;               abort:           gdth_abort,                      &bslash;&n;               reset:           gdth_reset,                      &bslash;&n;               bios_param:      gdth_bios_param,                 &bslash;&n;               can_queue:       GDTH_MAXCMDS,                    &bslash;&n;               this_id:         -1,                              &bslash;&n;               sg_tablesize:    GDTH_MAXSG,                      &bslash;&n;               cmd_per_lun:     GDTH_MAXC_P_L,                   &bslash;&n;               present:         0,                               &bslash;&n;               unchecked_isa_dma: 1,                             &bslash;&n;               use_clustering:  ENABLE_CLUSTERING,               &bslash;&n;               use_new_eh_code: 1       /* use new error code */ }    
+mdefine_line|#define GDTH { proc_name:       &quot;gdth&quot;,                          &bslash;&n;               proc_info:       gdth_proc_info,                  &bslash;&n;               name:            &quot;GDT SCSI Disk Array Controller&quot;,&bslash;&n;               detect:          gdth_detect,                     &bslash;&n;               release:         gdth_release,                    &bslash;&n;               info:            gdth_info,                       &bslash;&n;               command:         NULL,                            &bslash;&n;               queuecommand:    gdth_queuecommand,               &bslash;&n;               eh_abort_handler: gdth_eh_abort,                  &bslash;&n;               eh_device_reset_handler: gdth_eh_device_reset,    &bslash;&n;               eh_bus_reset_handler: gdth_eh_bus_reset,          &bslash;&n;               eh_host_reset_handler: gdth_eh_host_reset,        &bslash;&n;               abort:           gdth_abort,                      &bslash;&n;               reset:           gdth_reset,                      &bslash;&n;               bios_param:      gdth_bios_param,                 &bslash;&n;               can_queue:       GDTH_MAXCMDS,                    &bslash;&n;               this_id:         -1,                              &bslash;&n;               sg_tablesize:    GDTH_MAXSG,                      &bslash;&n;               cmd_per_lun:     GDTH_MAXC_P_L,                   &bslash;&n;               present:         0,                               &bslash;&n;               unchecked_isa_dma: 1,                             &bslash;&n;               use_clustering:  ENABLE_CLUSTERING,               &bslash;&n;               use_new_eh_code: 1       /* use new error code */ }    
+macro_line|#elif LINUX_VERSION_CODE &gt;= 0x02015F
+r_int
+id|gdth_bios_param
+c_func
+(paren
+id|Disk
+op_star
+comma
+id|kdev_t
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|proc_dir_entry
+id|proc_scsi_gdth
+suffix:semicolon
+r_int
+id|gdth_proc_info
+c_func
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_int
+id|gdth_eh_abort
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|scp
+)paren
+suffix:semicolon
+r_int
+id|gdth_eh_device_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|scp
+)paren
+suffix:semicolon
+r_int
+id|gdth_eh_bus_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|scp
+)paren
+suffix:semicolon
+r_int
+id|gdth_eh_host_reset
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|scp
+)paren
+suffix:semicolon
+DECL|macro|GDTH
+mdefine_line|#define GDTH { proc_dir:        &amp;proc_scsi_gdth,                 &bslash;&n;               proc_info:       gdth_proc_info,                  &bslash;&n;               name:            &quot;GDT SCSI Disk Array Controller&quot;,&bslash;&n;               detect:          gdth_detect,                     &bslash;&n;               release:         gdth_release,                    &bslash;&n;               info:            gdth_info,                       &bslash;&n;               command:         NULL,                            &bslash;&n;               queuecommand:    gdth_queuecommand,               &bslash;&n;               eh_abort_handler: gdth_eh_abort,                  &bslash;&n;               eh_device_reset_handler: gdth_eh_device_reset,    &bslash;&n;               eh_bus_reset_handler: gdth_eh_bus_reset,          &bslash;&n;               eh_host_reset_handler: gdth_eh_host_reset,        &bslash;&n;               abort:           gdth_abort,                      &bslash;&n;               reset:           gdth_reset,                      &bslash;&n;               bios_param:      gdth_bios_param,                 &bslash;&n;               can_queue:       GDTH_MAXCMDS,                    &bslash;&n;               this_id:         -1,                              &bslash;&n;               sg_tablesize:    GDTH_MAXSG,                      &bslash;&n;               cmd_per_lun:     GDTH_MAXC_P_L,                   &bslash;&n;               present:         0,                               &bslash;&n;               unchecked_isa_dma: 1,                             &bslash;&n;               use_clustering:  ENABLE_CLUSTERING,               &bslash;&n;               use_new_eh_code: 1       /* use new error code */ }    
+macro_line|#elif LINUX_VERSION_CODE &gt;= 0x010300
+r_int
+id|gdth_bios_param
+c_func
+(paren
+id|Disk
+op_star
+comma
+id|kdev_t
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|proc_dir_entry
+id|proc_scsi_gdth
+suffix:semicolon
+r_int
+id|gdth_proc_info
+c_func
+(paren
+r_char
+op_star
+comma
+r_char
+op_star
+op_star
+comma
+id|off_t
+comma
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|macro|GDTH
+mdefine_line|#define GDTH { NULL, NULL,                              &bslash;&n;                   &amp;proc_scsi_gdth,                     &bslash;&n;                   gdth_proc_info,                      &bslash;&n;                   &quot;GDT SCSI Disk Array Controller&quot;,    &bslash;&n;                   gdth_detect,                         &bslash;&n;                   gdth_release,                        &bslash;&n;                   gdth_info,                           &bslash;&n;                   NULL,                                &bslash;&n;                   gdth_queuecommand,                   &bslash;&n;                   gdth_abort,                          &bslash;&n;                   gdth_reset,                          &bslash;&n;                   NULL,                                &bslash;&n;                   gdth_bios_param,                     &bslash;&n;                   GDTH_MAXCMDS,                        &bslash;&n;                   -1,                                  &bslash;&n;                   GDTH_MAXSG,                          &bslash;&n;                   GDTH_MAXC_P_L,                       &bslash;&n;                   0,                                   &bslash;&n;                   1,                                   &bslash;&n;                   ENABLE_CLUSTERING}
+macro_line|#else
+r_int
+id|gdth_bios_param
+c_func
+(paren
+id|Disk
+op_star
+comma
+r_int
+comma
+r_int
+op_star
+)paren
+suffix:semicolon
+DECL|macro|GDTH
+mdefine_line|#define GDTH { NULL, NULL,                              &bslash;&n;                   &quot;GDT SCSI Disk Array Controller&quot;,    &bslash;&n;                   gdth_detect,                         &bslash;&n;                   gdth_release,                        &bslash;&n;                   gdth_info,                           &bslash;&n;                   NULL,                                &bslash;&n;                   gdth_queuecommand,                   &bslash;&n;                   gdth_abort,                          &bslash;&n;                   gdth_reset,                          &bslash;&n;                   NULL,                                &bslash;&n;                   gdth_bios_param,                     &bslash;&n;                   GDTH_MAXCMDS,                        &bslash;&n;                   -1,                                  &bslash;&n;                   GDTH_MAXSG,                          &bslash;&n;                   GDTH_MAXC_P_L,                       &bslash;&n;                   0,                                   &bslash;&n;                   1,                                   &bslash;&n;                   ENABLE_CLUSTERING}
+macro_line|#endif
 macro_line|#endif
 eof

@@ -412,8 +412,43 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Return the index of the PCI controller for device PDEV. */
-DECL|macro|pci_controller_num
-mdefine_line|#define pci_controller_num(PDEV)&t;(0)
+r_extern
+r_int
+id|pci_controller_num
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
+multiline_comment|/* Map a range of PCI memory or I/O space for a device into user space */
+r_int
+id|pci_mmap_page_range
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_enum
+id|pci_mmap_state
+id|mmap_state
+comma
+r_int
+id|write_combine
+)paren
+suffix:semicolon
+multiline_comment|/* Tell drivers/pci/proc.c that we have pci_mmap_page_range() */
+DECL|macro|HAVE_PCI_MMAP
+mdefine_line|#define HAVE_PCI_MMAP&t;1
 DECL|macro|sg_dma_address
 mdefine_line|#define sg_dma_address(sg)&t;(virt_to_bus((sg)-&gt;address))
 DECL|macro|sg_dma_len

@@ -379,14 +379,13 @@ id|u_platform
 op_assign
 id|p
 suffix:semicolon
-multiline_comment|/*&n;&t; * Force 16 byte _final_ alignment here for generality.&n;&t; * Leave an extra 16 bytes free so that on the PowerPC we&n;&t; * can move the aux table up to start on a 16-byte boundary.&n;&t; */
+multiline_comment|/*&n;&t; * Force 16 byte _final_ alignment here for generality.&n;&t; */
 id|sp
 op_assign
 (paren
 id|elf_addr_t
 op_star
 )paren
-(paren
 (paren
 op_complement
 l_int|15UL
@@ -399,9 +398,6 @@ r_int
 id|u_platform
 )paren
 )paren
-op_minus
-l_int|16UL
-)paren
 suffix:semicolon
 id|csp
 op_assign
@@ -409,7 +405,11 @@ id|sp
 suffix:semicolon
 id|csp
 op_sub_assign
+(paren
+l_int|1
+op_plus
 id|DLINFO_ITEMS
+)paren
 op_star
 l_int|2
 op_plus
@@ -422,6 +422,14 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#ifdef DLINFO_ARCH_ITEMS
+id|csp
+op_sub_assign
+id|DLINFO_ARCH_ITEMS
+op_star
+l_int|2
+suffix:semicolon
+macro_line|#endif
 id|csp
 op_sub_assign
 id|envc
@@ -677,6 +685,11 @@ id|elf_addr_t
 id|current-&gt;egid
 )paren
 suffix:semicolon
+macro_line|#ifdef ARCH_DLINFO
+multiline_comment|/* &n;&t; * ARCH_DLINFO must come last so platform specific code can enforce&n;&t; * special alignment requirements on the AUXV if necessary (eg. PPC).&n;&t; */
+id|ARCH_DLINFO
+suffix:semicolon
+macro_line|#endif
 DECL|macro|NEW_AUX_ENT
 macro_line|#undef NEW_AUX_ENT
 id|sp

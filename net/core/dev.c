@@ -2841,7 +2841,7 @@ DECL|variable|netdev_fc_slots
 )brace
 id|netdev_fc_slots
 (braket
-l_int|32
+id|BITS_PER_LONG
 )braket
 suffix:semicolon
 DECL|function|netdev_register_fc

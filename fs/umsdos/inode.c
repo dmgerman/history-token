@@ -1335,12 +1335,14 @@ l_string|&quot;check_pseudo_root: mounted as root&bslash;n&quot;
 suffix:semicolon
 id|root
 op_assign
-id|lookup_one
+id|lookup_one_len
 c_func
 (paren
 id|UMSDOS_PSDROOT_NAME
 comma
 id|sb-&gt;s_root
+comma
+id|UMSDOS_PSDROOT_LEN
 )paren
 suffix:semicolon
 r_if
@@ -1385,12 +1387,14 @@ suffix:semicolon
 multiline_comment|/* look for /sbin/init */
 id|sbin
 op_assign
-id|lookup_one
+id|lookup_one_len
 c_func
 (paren
 l_string|&quot;sbin&quot;
 comma
 id|root
+comma
+l_int|4
 )paren
 suffix:semicolon
 r_if
@@ -1423,12 +1427,14 @@ id|out_dput_sbin
 suffix:semicolon
 id|init
 op_assign
-id|lookup_one
+id|lookup_one_len
 c_func
 (paren
 l_string|&quot;init&quot;
 comma
 id|sbin
+comma
+l_int|4
 )paren
 suffix:semicolon
 r_if

@@ -9302,9 +9302,10 @@ op_ge
 l_int|0
 )paren
 (brace
+multiline_comment|/* 0x0020: 1 - 10 bits of I/O address decoded, 0 - 16 bits. */
 id|v
 op_assign
-l_int|0x003e
+l_int|0x001e
 suffix:semicolon
 id|pci_write_config_word
 c_func

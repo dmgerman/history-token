@@ -2,9 +2,6 @@ multiline_comment|/* -*- mode: c; c-basic-offset: 2 -*- */
 macro_line|#ifndef _LINUX_ISDN_PPP_H
 DECL|macro|_LINUX_ISDN_PPP_H
 mdefine_line|#define _LINUX_ISDN_PPP_H
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#endif
 DECL|macro|CALLTYPE_INCOMING
 mdefine_line|#define CALLTYPE_INCOMING 0x1
 DECL|macro|CALLTYPE_OUTGOING
@@ -85,14 +82,6 @@ DECL|macro|SC_LINK_DECOMP_DISCARD
 mdefine_line|#define SC_LINK_DECOMP_DISCARD&t;0x40
 DECL|macro|SC_LINK_COMP_DISCARD
 mdefine_line|#define SC_LINK_COMP_DISCARD&t;0x80
-DECL|macro|DECOMP_ERR_NOMEM
-mdefine_line|#define DECOMP_ERR_NOMEM&t;(-10)
-DECL|macro|MP_END_FRAG
-mdefine_line|#define MP_END_FRAG    0x40
-DECL|macro|MP_BEGIN_FRAG
-mdefine_line|#define MP_BEGIN_FRAG  0x80
-DECL|macro|MP_MAX_QUEUE_LEN
-mdefine_line|#define MP_MAX_QUEUE_LEN&t;16
 DECL|macro|ISDN_PPP_COMP_MAX_OPTIONS
 mdefine_line|#define ISDN_PPP_COMP_MAX_OPTIONS 16
 DECL|macro|IPPP_COMP_FLAG_XMIT
@@ -126,6 +115,15 @@ suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
+DECL|macro|DECOMP_ERR_NOMEM
+mdefine_line|#define DECOMP_ERR_NOMEM&t;(-10)
+DECL|macro|MP_END_FRAG
+mdefine_line|#define MP_END_FRAG    0x40
+DECL|macro|MP_BEGIN_FRAG
+mdefine_line|#define MP_BEGIN_FRAG  0x80
+DECL|macro|MP_MAX_QUEUE_LEN
+mdefine_line|#define MP_MAX_QUEUE_LEN&t;16
 multiline_comment|/*&n; * We need a way for the decompressor to influence the generation of CCP&n; * Reset-Requests in a variety of ways. The decompressor is already returning&n; * a lot of information (generated skb length, error conditions) so we use&n; * another parameter. This parameter is a pointer to a structure which is&n; * to be marked valid by the decompressor and only in this case is ever used.&n; * Furthermore, the only case where this data is used is when the decom-&n; * pressor returns DECOMP_ERROR.&n; *&n; * We use this same struct for the reset entry of the compressor to commu-&n; * nicate to its caller how to deal with sending of a Reset Ack. In this&n; * case, expra is not used, but other options still apply (suppressing&n; * sending with rsend, appending arbitrary data, etc).&n; */
 DECL|macro|IPPP_RESET_MAXDATABYTES
 mdefine_line|#define IPPP_RESET_MAXDATABYTES&t;32

@@ -1,10 +1,10 @@
-multiline_comment|/* IEEE-1284 operations for parport.&n; *&n; * This file is for generic IEEE 1284 operations.  The idea is that&n; * they are used by the low-level drivers.  If they have a special way&n; * of doing something, they can provide their own routines (and put&n; * the function pointers in port-&gt;ops); if not, they can just use these&n; * as a fallback.&n; *&n; * Note: Make no assumptions about hardware or architecture in this file!&n; *&n; * Author: Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; * Fixed AUTOFD polarity in ecp_forward_to_reverse().  Fred Barnes, 1999&n; */
+multiline_comment|/* IEEE-1284 operations for parport.&n; *&n; * This file is for generic IEEE 1284 operations.  The idea is that&n; * they are used by the low-level drivers.  If they have a special way&n; * of doing something, they can provide their own routines (and put&n; * the function pointers in port-&gt;ops); if not, they can just use these&n; * as a fallback.&n; *&n; * Note: Make no assumptions about hardware or architecture in this file!&n; *&n; * Author: Tim Waugh &lt;tim@cyberelk.demon.co.uk&gt;&n; * Fixed AUTOFD polarity in ecp_forward_to_reverse().  Fred Barnes, 1999&n; * Software emulated EPP fixes, Fred Barnes, 04/2001.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG /* undef me for production */
+macro_line|#undef DEBUG /* undef me for production */
 macro_line|#ifdef CONFIG_LP_CONSOLE
 DECL|macro|DEBUG
 macro_line|#undef DEBUG /* Don&squot;t want a garbled console */
@@ -2303,7 +2303,6 @@ r_int
 id|flags
 )paren
 (brace
-multiline_comment|/* This is untested */
 r_int
 r_char
 op_star
@@ -2321,6 +2320,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* set EPP idle state (just to make sure) with strobe low */
 id|parport_frob_control
 (paren
 id|port
@@ -2330,10 +2330,12 @@ op_or
 id|PARPORT_CONTROL_AUTOFD
 op_or
 id|PARPORT_CONTROL_SELECT
+op_or
+id|PARPORT_CONTROL_INIT
 comma
 id|PARPORT_CONTROL_STROBE
 op_or
-id|PARPORT_CONTROL_SELECT
+id|PARPORT_CONTROL_INIT
 )paren
 suffix:semicolon
 id|port-&gt;ops-&gt;data_forward
@@ -2356,7 +2358,7 @@ id|bp
 op_increment
 )paren
 (brace
-multiline_comment|/* Event 62: Write data and strobe data */
+multiline_comment|/* Event 62: Write data and set autofd low */
 id|parport_write_data
 (paren
 id|port
@@ -2374,7 +2376,7 @@ comma
 id|PARPORT_CONTROL_AUTOFD
 )paren
 suffix:semicolon
-multiline_comment|/* Event 58 */
+multiline_comment|/* Event 58: wait for busy (nWait) to go high */
 r_if
 c_cond
 (paren
@@ -2391,7 +2393,7 @@ l_int|10
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* Event 63 */
+multiline_comment|/* Event 63: set nAutoFd (nDStrb) high */
 id|parport_frob_control
 (paren
 id|port
@@ -2401,7 +2403,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Event 60 */
+multiline_comment|/* Event 60: wait for busy (nWait) to go low */
 r_if
 c_cond
 (paren
@@ -2422,7 +2424,7 @@ id|ret
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* Event 61 */
+multiline_comment|/* Event 61: set strobe (nWrite) high */
 id|parport_frob_control
 (paren
 id|port
@@ -2457,7 +2459,6 @@ r_int
 id|flags
 )paren
 (brace
-multiline_comment|/* This is untested. */
 r_int
 r_char
 op_star
@@ -2475,15 +2476,20 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* set EPP idle state (just to make sure) with strobe high */
 id|parport_frob_control
 (paren
 id|port
 comma
 id|PARPORT_CONTROL_STROBE
 op_or
+id|PARPORT_CONTROL_AUTOFD
+op_or
 id|PARPORT_CONTROL_SELECT
+op_or
+id|PARPORT_CONTROL_INIT
 comma
-l_int|0
+id|PARPORT_CONTROL_INIT
 )paren
 suffix:semicolon
 id|port-&gt;ops-&gt;data_reverse
@@ -2506,32 +2512,33 @@ id|bp
 op_increment
 )paren
 (brace
+multiline_comment|/* Event 67: set nAutoFd (nDStrb) low */
 id|parport_frob_control
 (paren
 id|port
 comma
 id|PARPORT_CONTROL_AUTOFD
 comma
-l_int|0
+id|PARPORT_CONTROL_AUTOFD
 )paren
 suffix:semicolon
-multiline_comment|/* Event 58 */
+multiline_comment|/* Event 58: wait for Busy to go high */
 r_if
 c_cond
 (paren
-id|parport_poll_peripheral
+id|parport_wait_peripheral
 (paren
 id|port
 comma
 id|PARPORT_STATUS_BUSY
 comma
-id|PARPORT_STATUS_BUSY
-comma
-l_int|10
+l_int|0
 )paren
 )paren
+(brace
 r_break
 suffix:semicolon
+)brace
 op_star
 id|bp
 op_assign
@@ -2540,15 +2547,17 @@ id|parport_read_data
 id|port
 )paren
 suffix:semicolon
+multiline_comment|/* Event 63: set nAutoFd (nDStrb) high */
 id|parport_frob_control
 (paren
 id|port
 comma
 id|PARPORT_CONTROL_AUTOFD
 comma
-id|PARPORT_CONTROL_AUTOFD
+l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Event 60: wait for Busy to go low */
 r_if
 c_cond
 (paren
@@ -2558,13 +2567,15 @@ id|port
 comma
 id|PARPORT_STATUS_BUSY
 comma
-l_int|0
+id|PARPORT_STATUS_BUSY
 comma
 l_int|5
 )paren
 )paren
+(brace
 r_break
 suffix:semicolon
+)brace
 id|ret
 op_increment
 suffix:semicolon

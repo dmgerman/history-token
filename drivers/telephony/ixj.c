@@ -22013,7 +22013,7 @@ c_func
 (paren
 r_sizeof
 (paren
-id|IXJ_CADENCE
+id|IXJ_FILTER_CADENCE
 )paren
 comma
 id|GFP_KERNEL

@@ -15843,7 +15843,6 @@ c_cond
 id|get_user
 c_func
 (paren
-op_amp
 id|c
 comma
 id|buffer

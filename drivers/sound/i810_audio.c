@@ -32,6 +32,10 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH2
 DECL|macro|PCI_DEVICE_ID_INTEL_ICH2
 mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH2&t;0x2445
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_ICH3
+DECL|macro|PCI_DEVICE_ID_INTEL_ICH3
+mdefine_line|#define PCI_DEVICE_ID_INTEL_ICH3&t;0x2485
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_440MX
 DECL|macro|PCI_DEVICE_ID_INTEL_440MX
 mdefine_line|#define PCI_DEVICE_ID_INTEL_440MX&t;0x7195
@@ -293,6 +297,8 @@ comma
 DECL|enumerator|INTELICH2
 id|INTELICH2
 comma
+DECL|enumerator|INTELICH3
+id|INTELICH3
 )brace
 suffix:semicolon
 DECL|variable|card_names
@@ -311,6 +317,8 @@ comma
 l_string|&quot;Intel 440MX&quot;
 comma
 l_string|&quot;Intel ICH2&quot;
+comma
+l_string|&quot;Intel ICH3&quot;
 )brace
 suffix:semicolon
 DECL|variable|__initdata
@@ -385,6 +393,22 @@ comma
 l_int|0
 comma
 id|INTELICH2
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_INTEL
+comma
+id|PCI_DEVICE_ID_INTEL_ICH3
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|INTELICH3
 )brace
 comma
 (brace

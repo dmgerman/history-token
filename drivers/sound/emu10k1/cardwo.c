@@ -309,6 +309,9 @@ id|card-&gt;virtualpagetable.addr
 id|pageindex
 )braket
 op_assign
+id|cpu_to_le32
+c_func
+(paren
 (paren
 id|busaddx
 op_star
@@ -316,6 +319,7 @@ l_int|2
 )paren
 op_or
 id|pageindex
+)paren
 suffix:semicolon
 )brace
 )brace

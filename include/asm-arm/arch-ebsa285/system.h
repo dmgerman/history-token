@@ -189,11 +189,16 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* To reboot, we set up the 21285 watchdog and&n;&t;&t;&t; * enable it.  We then wait for it to timeout.&n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t;&t; * Force the watchdog to do a CPU reset.&n;&t;&t;&t; *&n;&t;&t;&t; * After making sure that the watchdog is disabled&n;&t;&t;&t; * (so we can change the timer registers) we first&n;&t;&t;&t; * enable the timer to autoreload itself.  Next, the&n;&t;&t;&t; * timer interval is set really short and any&n;&t;&t;&t; * current interrupt request is cleared (so we can&n;&t;&t;&t; * see an edge transition).  Finally, TIMER4 is&n;&t;&t;&t; * enabled as the watchdog.&n;&t;&t;&t; */
 op_star
-id|CSR_TIMER4_LOAD
-op_assign
-l_int|0x8000
+id|CSR_SA110_CNTL
+op_and_assign
+op_complement
+(paren
+l_int|1
+op_lshift
+l_int|13
+)paren
 suffix:semicolon
 op_star
 id|CSR_TIMER4_CNTL
@@ -205,11 +210,23 @@ op_or
 id|TIMER_CNTL_DIV16
 suffix:semicolon
 op_star
+id|CSR_TIMER4_LOAD
+op_assign
+l_int|0x2
+suffix:semicolon
+op_star
+id|CSR_TIMER4_CLR
+op_assign
+l_int|0
+suffix:semicolon
+op_star
 id|CSR_SA110_CNTL
 op_or_assign
+(paren
 l_int|1
 op_lshift
 l_int|13
+)paren
 suffix:semicolon
 )brace
 )brace

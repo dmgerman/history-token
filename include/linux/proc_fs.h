@@ -492,6 +492,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * proc_rtas.c&n; */
+r_extern
+r_void
+id|proc_rtas_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|proc_dir_entry

@@ -77,6 +77,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;PCI: PIIX3: Enabling Passive Release on %s&bslash;n&quot;
 comma
 id|d-&gt;slot_name
@@ -222,7 +223,7 @@ id|PCIPCI_TRITON
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;VIA Apollo KT133 needs PCI latency patch&n; *&t;Made according to a windows driver based patch by George E. Breese&n; *&t;see PCI Latency Adjust on http://www.viahardware.com/download/viatweak.shtm&n; */
+multiline_comment|/*&n; *&t;VIA Apollo KT133 needs PCI latency patch&n; *&t;Made according to a windows driver based patch by George E. Breese&n; *&t;see PCI Latency Adjust on http://www.viahardware.com/download/viatweak.shtm&n; *      Also see http://home.tiscalinet.de/au-ja/review-kt133a-1-en.html for&n; *      the info on which Mr Breese based his work.&n; */
 DECL|function|quirk_vialatency
 r_static
 r_void
@@ -239,14 +240,65 @@ id|dev
 id|u8
 id|r70
 suffix:semicolon
+id|u8
+id|rev
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|vt82c686
+suffix:semicolon
+multiline_comment|/* we want to look for a VT82C686 south bridge, and then apply the via latency&n;&t; * patch if we find that it&squot;s a 686B (by revision) &lt;cpbotha@ieee.org&gt;&n;&t; */
+id|vt82c686
+op_assign
+id|pci_find_device
+c_func
+(paren
+id|PCI_VENDOR_ID_VIA
+comma
+id|PCI_DEVICE_ID_VIA_82C686
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vt82c686
+)paren
+(brace
+id|pci_read_config_byte
+c_func
+(paren
+id|vt82c686
+comma
+id|PCI_CLASS_REVISION
+comma
+op_amp
+id|rev
+)paren
+suffix:semicolon
+multiline_comment|/* 0x40 - 0x4f == 686B, 0x10 - 0x2f == 686A; thanks Dan Hollis */
+r_if
+c_cond
+(paren
+id|rev
+op_ge
+l_int|0x40
+op_logical_and
+id|rev
+op_le
+l_int|0x4f
+)paren
+(brace
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Applying VIA PCI latency patch.&bslash;n&quot;
+l_string|&quot;Applying VIA PCI latency patch (found VT82C686B).&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *    In register 0x70, mask off bit 2 (PCI Master read caching)&n;&t; *    and 1 (Delay Transaction)&n;&t; */
+multiline_comment|/*&n;&t; &t;&t; *    In register 0x70, mask off bit 2 (PCI Master read caching)&n;&t; &t;&t; *    and 1 (Delay Transaction)&n;&t; &t;&t; */
 id|pci_read_config_byte
 c_func
 (paren
@@ -272,7 +324,7 @@ comma
 id|r70
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *    Turn off PCI Latency timeout (set to 0 clocks)&n;&t; */
+multiline_comment|/*&n;&t; &t; &t; *    Turn off PCI Latency timeout (set to 0 clocks)&n;&t; &t; &t; */
 id|pci_write_config_byte
 c_func
 (paren
@@ -283,6 +335,19 @@ comma
 l_int|0x80
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Found VT82C686A, not applying VIA latency patch.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* if (vt82c686) ... */
 )brace
 multiline_comment|/*&n; *&t;VIA Apollo VP3 needs ETBF on BT848/878&n; */
 DECL|function|quirk_viaetbf
@@ -1328,6 +1393,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PCI: Calling quirk %p for %s&bslash;n&quot;
 comma
 id|f-&gt;hook

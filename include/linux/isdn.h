@@ -1,72 +1,8 @@
-multiline_comment|/* $Id: isdn.h,v 1.111.6.5 2001/04/20 02:40:48 keil Exp $&n;&n; * Main header for the Linux ISDN subsystem (linklevel).&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
-macro_line|#ifndef isdn_h
-DECL|macro|isdn_h
-mdefine_line|#define isdn_h
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/config.h&gt;
-macro_line|#endif
+multiline_comment|/* $Id: isdn.h,v 1.111.6.6 2001/05/17 21:15:34 kai Exp $&n;&n; * Main header for the Linux ISDN subsystem (linklevel).&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; * Copyright 1995,96    by Thinking Objects Software GmbH Wuerzburg&n; * Copyright 1995,96    by Michael Hipp (Michael.Hipp@student.uni-tuebingen.de)&n; * &n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA. &n; *&n; */
+macro_line|#ifndef __ISDN_H__
+DECL|macro|__ISDN_H__
+mdefine_line|#define __ISDN_H__
 macro_line|#include &lt;linux/ioctl.h&gt;
-DECL|macro|ISDN_TTY_MAJOR
-mdefine_line|#define ISDN_TTY_MAJOR    43
-DECL|macro|ISDN_TTYAUX_MAJOR
-mdefine_line|#define ISDN_TTYAUX_MAJOR 44
-DECL|macro|ISDN_MAJOR
-mdefine_line|#define ISDN_MAJOR        45
-multiline_comment|/* The minor-devicenumbers for Channel 0 and 1 are used as arguments for&n; * physical Channel-Mapping, so they MUST NOT be changed without changing&n; * the correspondent code in isdn.c&n; */
-macro_line|#ifdef USE_MINIMUM_MEM
-multiline_comment|/* Save memory */
-DECL|macro|ISDN_MAX_DRIVERS
-mdefine_line|#define ISDN_MAX_DRIVERS    2
-DECL|macro|ISDN_MAX_CHANNELS
-mdefine_line|#define ISDN_MAX_CHANNELS   8
-macro_line|#else
-DECL|macro|ISDN_MAX_DRIVERS
-mdefine_line|#define ISDN_MAX_DRIVERS    32
-DECL|macro|ISDN_MAX_CHANNELS
-mdefine_line|#define ISDN_MAX_CHANNELS   64
-macro_line|#endif
-DECL|macro|ISDN_MINOR_B
-mdefine_line|#define ISDN_MINOR_B        0
-DECL|macro|ISDN_MINOR_BMAX
-mdefine_line|#define ISDN_MINOR_BMAX     (ISDN_MAX_CHANNELS-1)
-DECL|macro|ISDN_MINOR_CTRL
-mdefine_line|#define ISDN_MINOR_CTRL     64
-DECL|macro|ISDN_MINOR_CTRLMAX
-mdefine_line|#define ISDN_MINOR_CTRLMAX  (64 + (ISDN_MAX_CHANNELS-1))
-DECL|macro|ISDN_MINOR_PPP
-mdefine_line|#define ISDN_MINOR_PPP      128
-DECL|macro|ISDN_MINOR_PPPMAX
-mdefine_line|#define ISDN_MINOR_PPPMAX   (128 + (ISDN_MAX_CHANNELS-1))
-DECL|macro|ISDN_MINOR_STATUS
-mdefine_line|#define ISDN_MINOR_STATUS   255
-DECL|macro|CONFIG_ISDN_WITH_ABC_CALLB
-macro_line|#undef CONFIG_ISDN_WITH_ABC_CALLB
-DECL|macro|CONFIG_ISDN_WITH_ABC_UDP_CHECK
-macro_line|#undef CONFIG_ISDN_WITH_ABC_UDP_CHECK
-DECL|macro|CONFIG_ISDN_WITH_ABC_UDP_CHECK_HANGUP
-macro_line|#undef CONFIG_ISDN_WITH_ABC_UDP_CHECK_HANGUP
-DECL|macro|CONFIG_ISDN_WITH_ABC_UDP_CHECK_DIAL
-macro_line|#undef CONFIG_ISDN_WITH_ABC_UDP_CHECK_DIAL
-DECL|macro|CONFIG_ISDN_WITH_ABC_OUTGOING_EAZ
-macro_line|#undef CONFIG_ISDN_WITH_ABC_OUTGOING_EAZ
-DECL|macro|CONFIG_ISDN_WITH_ABC_LCR_SUPPORT
-macro_line|#undef CONFIG_ISDN_WITH_ABC_LCR_SUPPORT
-DECL|macro|CONFIG_ISDN_WITH_ABC_IPV4_TCP_KEEPALIVE
-macro_line|#undef CONFIG_ISDN_WITH_ABC_IPV4_TCP_KEEPALIVE
-DECL|macro|CONFIG_ISDN_WITH_ABC_IPV4_DYNADDR
-macro_line|#undef CONFIG_ISDN_WITH_ABC_IPV4_DYNADDR
-DECL|macro|CONFIG_ISDN_WITH_ABC_RCV_NO_HUPTIMER
-macro_line|#undef CONFIG_ISDN_WITH_ABC_RCV_NO_HUPTIMER
-DECL|macro|CONFIG_ISDN_WITH_ABC_ICALL_BIND
-macro_line|#undef CONFIG_ISDN_WITH_ABC_ICALL_BIND
-DECL|macro|CONFIG_ISDN_WITH_ABC_CH_EXTINUSE
-macro_line|#undef CONFIG_ISDN_WITH_ABC_CH_EXTINUSE
-DECL|macro|CONFIG_ISDN_WITH_ABC_CONN_ERROR
-macro_line|#undef CONFIG_ISDN_WITH_ABC_CONN_ERROR
-DECL|macro|CONFIG_ISDN_WITH_ABC_RAWIPCOMPRESS
-macro_line|#undef CONFIG_ISDN_WITH_ABC_RAWIPCOMPRESS
-DECL|macro|CONFIG_ISDN_WITH_ABC_IPTABLES_NETFILTER
-macro_line|#undef CONFIG_ISDN_WITH_ABC_IPTABLES_NETFILTER
 multiline_comment|/* New ioctl-codes */
 DECL|macro|IIOCNETAIF
 mdefine_line|#define IIOCNETAIF  _IO(&squot;I&squot;,1)
@@ -207,34 +143,6 @@ suffix:semicolon
 DECL|typedef|isdn_ioctl_struct
 )brace
 id|isdn_ioctl_struct
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|isdndev
-r_int
-r_int
-id|isdndev
-suffix:semicolon
-DECL|member|atmodem
-r_int
-r_int
-id|atmodem
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-DECL|member|info
-r_int
-r_int
-id|info
-(braket
-id|ISDN_MAX_CHANNELS
-)braket
-suffix:semicolon
-DECL|typedef|debugvar_addr
-)brace
-id|debugvar_addr
 suffix:semicolon
 r_typedef
 r_struct
@@ -409,16 +317,17 @@ DECL|typedef|isdn_net_ioctl_cfg
 id|isdn_net_ioctl_cfg
 suffix:semicolon
 DECL|macro|ISDN_NET_DIALMODE_MASK
-mdefine_line|#define ISDN_NET_DIALMODE_MASK 0xC0  /* bits for status                   */
+mdefine_line|#define ISDN_NET_DIALMODE_MASK  0xC0    /* bits for status                */
 DECL|macro|ISDN_NET_DM_OFF
-mdefine_line|#define  ISDN_NET_DM_OFF&t;0x00    /* this interface is stopped      */
+mdefine_line|#define ISDN_NET_DM_OFF&t;        0x00    /* this interface is stopped      */
 DECL|macro|ISDN_NET_DM_MANUAL
-mdefine_line|#define  ISDN_NET_DM_MANUAL&t;0x40    /* this interface is on (manual)  */
+mdefine_line|#define ISDN_NET_DM_MANUAL&t;0x40    /* this interface is on (manual)  */
 DECL|macro|ISDN_NET_DM_AUTO
-mdefine_line|#define  ISDN_NET_DM_AUTO&t;0x80    /* this interface is autodial     */
+mdefine_line|#define ISDN_NET_DM_AUTO&t;0x80    /* this interface is autodial     */
 DECL|macro|ISDN_NET_DIALMODE
 mdefine_line|#define ISDN_NET_DIALMODE(x) ((&amp;(x))-&gt;flags &amp; ISDN_NET_DIALMODE_MASK)
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -441,6 +350,39 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
+DECL|macro|ISDN_TTY_MAJOR
+mdefine_line|#define ISDN_TTY_MAJOR    43
+DECL|macro|ISDN_TTYAUX_MAJOR
+mdefine_line|#define ISDN_TTYAUX_MAJOR 44
+DECL|macro|ISDN_MAJOR
+mdefine_line|#define ISDN_MAJOR        45
+multiline_comment|/* The minor-devicenumbers for Channel 0 and 1 are used as arguments for&n; * physical Channel-Mapping, so they MUST NOT be changed without changing&n; * the correspondent code in isdn.c&n; */
+macro_line|#ifdef CONFIG_COBALT_MICRO_SERVER
+multiline_comment|/* Save memory */
+DECL|macro|ISDN_MAX_DRIVERS
+mdefine_line|#define ISDN_MAX_DRIVERS    2
+DECL|macro|ISDN_MAX_CHANNELS
+mdefine_line|#define ISDN_MAX_CHANNELS   8
+macro_line|#else
+DECL|macro|ISDN_MAX_DRIVERS
+mdefine_line|#define ISDN_MAX_DRIVERS    32
+DECL|macro|ISDN_MAX_CHANNELS
+mdefine_line|#define ISDN_MAX_CHANNELS   64
+macro_line|#endif
+DECL|macro|ISDN_MINOR_B
+mdefine_line|#define ISDN_MINOR_B        0
+DECL|macro|ISDN_MINOR_BMAX
+mdefine_line|#define ISDN_MINOR_BMAX     (ISDN_MAX_CHANNELS-1)
+DECL|macro|ISDN_MINOR_CTRL
+mdefine_line|#define ISDN_MINOR_CTRL     64
+DECL|macro|ISDN_MINOR_CTRLMAX
+mdefine_line|#define ISDN_MINOR_CTRLMAX  (64 + (ISDN_MAX_CHANNELS-1))
+DECL|macro|ISDN_MINOR_PPP
+mdefine_line|#define ISDN_MINOR_PPP      128
+DECL|macro|ISDN_MINOR_PPPMAX
+mdefine_line|#define ISDN_MINOR_PPPMAX   (128 + (ISDN_MAX_CHANNELS-1))
+DECL|macro|ISDN_MINOR_STATUS
+mdefine_line|#define ISDN_MINOR_STATUS   255
 macro_line|#ifdef CONFIG_ISDN_PPP
 macro_line|#ifdef CONFIG_ISDN_PPP_VJ
 macro_line|#  include &lt;net/slhc_vj.h&gt;
@@ -2041,5 +1983,5 @@ mdefine_line|#define MIN(a,b) ((a&lt;b)?a:b)
 DECL|macro|MAX
 mdefine_line|#define MAX(a,b) ((a&gt;b)?a:b)
 macro_line|#endif /* __KERNEL__ */
-macro_line|#endif /* isdn_h */
+macro_line|#endif /* __ISDN_H__ */
 eof

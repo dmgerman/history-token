@@ -663,6 +663,23 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
+multiline_comment|/* if we insert more than TTY_FLIPBUF_SIZE characters,&n;&t;&t;&t; * we drop them. */
+r_if
+c_cond
+(paren
+id|tty-&gt;flip.count
+op_ge
+id|TTY_FLIPBUF_SIZE
+)paren
+(brace
+id|tty_flip_buffer_push
+c_func
+(paren
+id|tty
+)paren
+suffix:semicolon
+)brace
 id|tty_insert_flip_char
 c_func
 (paren
@@ -676,6 +693,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 id|tty_flip_buffer_push
 c_func
 (paren
@@ -982,6 +1000,11 @@ id|ACM_CTRL_DTR
 op_or
 id|ACM_CTRL_RTS
 )paren
+suffix:semicolon
+multiline_comment|/* force low_latency on so that our tty_push actually forces the data through, &n;&t;   otherwise it is scheduled, and with high data rates data can get lost. */
+id|tty-&gt;low_latency
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 l_int|0

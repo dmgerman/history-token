@@ -65,6 +65,14 @@ op_assign
 id|PLANB_DEF_NORM
 suffix:semicolon
 multiline_comment|/* default norm */
+DECL|variable|video_nr
+r_static
+r_int
+id|video_nr
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -79,6 +87,14 @@ c_func
 id|def_norm
 comma
 l_string|&quot;Default startup norm (0=PAL, 1=NTSC, 2=SECAM)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|video_nr
+comma
+l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ------------------ PlanB Exported Functions ------------------ */
@@ -12136,6 +12152,8 @@ op_amp
 id|pb-&gt;video_dev
 comma
 id|VFL_TYPE_GRABBER
+comma
+id|video_nr
 )paren
 OL
 l_int|0

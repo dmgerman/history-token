@@ -139,6 +139,16 @@ comma
 id|n
 )paren
 suffix:semicolon
+r_else
+multiline_comment|/* security hole - plug it */
+id|memzero
+c_func
+(paren
+id|to
+comma
+id|n
+)paren
+suffix:semicolon
 r_return
 id|n
 suffix:semicolon
