@@ -2267,10 +2267,6 @@ c_func
 l_int|30
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
-suffix:semicolon
 id|irq
 op_assign
 id|probe_irq_off
@@ -7381,10 +7377,6 @@ id|HZ
 op_div
 l_int|2
 )paren
-suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_RUNNING
 suffix:semicolon
 macro_line|#else
 id|udelay
