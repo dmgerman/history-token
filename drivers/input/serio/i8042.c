@@ -240,6 +240,35 @@ l_string|&quot;Do not use ACPI to detect controller settings&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG
+macro_line|#ifdef DEBUG
+DECL|variable|i8042_debug
+r_static
+r_int
+id|i8042_debug
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|debug
+comma
+id|i8042_debug
+comma
+r_bool
+comma
+l_int|600
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Turn i8042 debugging mode on and off&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|__obsolete_setup
 c_func
 (paren
@@ -276,8 +305,6 @@ c_func
 l_string|&quot;i8042_dumbkbd&quot;
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-macro_line|#undef DEBUG
 macro_line|#include &quot;i8042.h&quot;
 DECL|variable|i8042_lock
 id|spinlock_t
