@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/iSeries/HvReleaseData.h&gt;
 macro_line|#include &lt;asm/iSeries/LparMap.h&gt;
 macro_line|#include &lt;asm/iSeries/ItVpdAreas.h&gt;
 macro_line|#include &lt;asm/iSeries/ItIplParmsReal.h&gt;
+macro_line|#include &lt;asm/iSeries/ItExtVpdPanel.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/IoHriProcessorVpd.h&gt;
 macro_line|#include &lt;asm/iSeries/ItSpCommArea.h&gt;
@@ -522,6 +523,14 @@ op_assign
 (brace
 )brace
 suffix:semicolon
+DECL|variable|xItExtVpdPanel
+r_struct
+id|ItExtVpdPanel
+id|xItExtVpdPanel
+op_assign
+(brace
+)brace
+suffix:semicolon
 DECL|macro|maxPhysicalProcessors
 mdefine_line|#define maxPhysicalProcessors 32
 DECL|variable|xIoHriProcessorVpd
@@ -706,9 +715,13 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+multiline_comment|/*  0 - 2 */
+r_sizeof
+(paren
+id|xItExtVpdPanel
+)paren
 comma
-multiline_comment|/*  0 -  3 */
+multiline_comment|/*       3 Extended VPD   */
 r_sizeof
 (paren
 r_struct
@@ -800,9 +813,11 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+multiline_comment|/*&t; 0 -  2 */
+op_amp
+id|xItExtVpdPanel
 comma
-multiline_comment|/*&t; 0 -  3 */
+multiline_comment|/*       3 Extended VPD */
 op_amp
 id|paca
 (braket
