@@ -1090,11 +1090,11 @@ r_return
 id|APM_SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;apm_set_power_state - set system wide power state&n; *&t;@state: which state to enter&n; *&n; *&t;Transition the entire system into a new APM power state.&n; */
-DECL|function|apm_set_power_state
+multiline_comment|/**&n; *&t;set_system_power_state - set system wide power state&n; *&t;@state: which state to enter&n; *&n; *&t;Transition the entire system into a new APM power state.&n; */
+DECL|function|set_system_power_state
 r_static
 r_int
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|u_short
@@ -1675,7 +1675,7 @@ r_else
 (paren
 r_void
 )paren
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_OFF
@@ -2763,7 +2763,7 @@ id|apm_info.connection_version
 OG
 l_int|0x100
 )paren
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_REJECT
@@ -2809,7 +2809,7 @@ c_func
 suffix:semicolon
 id|err
 op_assign
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_SUSPEND
@@ -2966,7 +2966,7 @@ c_func
 suffix:semicolon
 id|err
 op_assign
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_STANDBY
@@ -3208,7 +3208,7 @@ id|apm_info.connection_version
 OG
 l_int|0x100
 )paren
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_REJECT
@@ -3233,7 +3233,7 @@ id|apm_info.connection_version
 OG
 l_int|0x100
 )paren
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_REJECT
@@ -3466,7 +3466,7 @@ l_string|&quot;apm: setting state busy&bslash;n&quot;
 suffix:semicolon
 id|err
 op_assign
-id|apm_set_power_state
+id|set_system_power_state
 c_func
 (paren
 id|APM_STATE_BUSY
