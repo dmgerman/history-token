@@ -1282,13 +1282,13 @@ id|tty
 )paren
 (brace
 r_struct
-id|vt_struct
+id|vc_data
 op_star
-id|vt
+id|vc
 op_assign
 (paren
 r_struct
-id|vt_struct
+id|vc_data
 op_star
 )paren
 id|tty-&gt;driver_data
@@ -1340,7 +1340,7 @@ id|add_wait_queue
 c_func
 (paren
 op_amp
-id|vt-&gt;paste_wait
+id|vc-&gt;paste_wait
 comma
 op_amp
 id|wait
@@ -1430,7 +1430,7 @@ id|remove_wait_queue
 c_func
 (paren
 op_amp
-id|vt-&gt;paste_wait
+id|vc-&gt;paste_wait
 comma
 op_amp
 id|wait

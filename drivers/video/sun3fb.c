@@ -2705,12 +2705,12 @@ r_else
 r_if
 c_cond
 (paren
-id|vt_cons
+id|vc_cons
 (braket
 id|i
 )braket
-op_member_access_from_pointer
-id|vc_mode
+dot
+id|d-&gt;vc_mode
 op_ne
 id|KD_GRAPHICS
 )paren

@@ -13,46 +13,6 @@ macro_line|#ifdef CONFIG_VGA_CONSOLE
 DECL|macro|BROKEN_GRAPHICS_PROGRAMS
 mdefine_line|#define BROKEN_GRAPHICS_PROGRAMS 1
 macro_line|#endif
-DECL|struct|vt_struct
-r_extern
-r_struct
-id|vt_struct
-(brace
-DECL|member|vc_num
-r_int
-id|vc_num
-suffix:semicolon
-multiline_comment|/* The console number */
-DECL|member|vc_mode
-r_int
-r_char
-id|vc_mode
-suffix:semicolon
-multiline_comment|/* KD_TEXT, ... */
-DECL|member|vt_mode
-r_struct
-id|vt_mode
-id|vt_mode
-suffix:semicolon
-DECL|member|vt_pid
-r_int
-id|vt_pid
-suffix:semicolon
-DECL|member|vt_newvt
-r_int
-id|vt_newvt
-suffix:semicolon
-DECL|member|paste_wait
-id|wait_queue_head_t
-id|paste_wait
-suffix:semicolon
-)brace
-op_star
-id|vt_cons
-(braket
-id|MAX_NR_CONSOLES
-)braket
-suffix:semicolon
 r_extern
 r_void
 id|kd_mksound
