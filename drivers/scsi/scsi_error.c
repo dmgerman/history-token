@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  scsi_error.c Copyright (C) 1997 Eric Youngdale&n; *&n; *  SCSI error/timeout handling&n; *      Initial versions: Eric Youngdale.  Based upon conversations with&n; *                        Leonard Zubkoff and David Miller at Linux Expo, &n; *                        ideas originating from all over the place.&n; *&n; *&t;Restructured scsi_unjam_host and associated functions.&n; *&t;September 04, 2002 Mike Anderson (andmike@us.ibm.com)&n; */
+multiline_comment|/*&n; *  scsi_error.c Copyright (C) 1997 Eric Youngdale&n; *&n; *  SCSI error/timeout handling&n; *      Initial versions: Eric Youngdale.  Based upon conversations with&n; *                        Leonard Zubkoff and David Miller at Linux Expo, &n; *                        ideas originating from all over the place.&n; *&n; *&t;Restructured scsi_unjam_host and associated functions.&n; *&t;September 04, 2002 Mike Anderson (andmike@us.ibm.com)&n; *&n; *&t;Forward port of Russell King&squot;s (rmk@arm.linux.org.uk) changes and&n; *&t;minor  cleanups.&n; *&t;September 30, 2002 Mike Anderson (andmike@us.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -19,6 +19,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_ioctl.h&gt; /* grr */
 multiline_comment|/*&n; * We must always allow SHUTDOWN_SIGS.  Even if we are not a module,&n; * the host drivers that we are using may be loaded as modules, and&n; * when we unload these,  we need to ensure that the error handler thread&n; * can be shut down.&n; *&n; * Note - when we unload a module, we send a SIGHUP.  We mustn&squot;t&n; * enable SIGTERM, as this is how the init shuts things down when you&n; * go to single-user mode.  For that matter, init also sends SIGKILL,&n; * so we mustn&squot;t enable that one either.  We use SIGHUP instead.  Other&n; * options would be SIGPWR, I suppose.&n; */
 DECL|macro|SHUTDOWN_SIGS
 mdefine_line|#define SHUTDOWN_SIGS&t;(sigmask(SIGHUP))
@@ -31,7 +32,7 @@ mdefine_line|#define SENSE_TIMEOUT (10*HZ)
 macro_line|#endif
 multiline_comment|/*&n; * These should *probably* be handled by the host itself.&n; * Since it is allowed to sleep, it probably should.&n; */
 DECL|macro|BUS_RESET_SETTLE_TIME
-mdefine_line|#define BUS_RESET_SETTLE_TIME   5*HZ
+mdefine_line|#define BUS_RESET_SETTLE_TIME   10*HZ
 DECL|macro|HOST_RESET_SETTLE_TIME
 mdefine_line|#define HOST_RESET_SETTLE_TIME  10*HZ
 multiline_comment|/**&n; * scsi_add_timer - Start timeout timer for a single scsi command.&n; * @scmd:&t;scsi command that is about to start running.&n; * @timeout:&t;amount of time to allow this command to run.&n; * @complete:&t;timeout function to call if timer isn&squot;t canceled.&n; *&n; * Notes:&n; *    This should be turned into an inline function.  Each scsi command&n; *    has it&squot;s own timer, and as it is added to the queue, we set up the&n; *    timer.  When the command completes, we cancel the timer.  Pretty&n; *    simple, really, especially compared to the old way of handling this&n; *    crap.&n; **/
@@ -111,8 +112,10 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Adding timer for command %p at&quot;
-l_string|&quot;%d (%p)&bslash;n&quot;
+l_string|&quot;%s: scmd: %p, time:&quot;
+l_string|&quot; %d, (%p)&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|scmd
 comma
@@ -161,8 +164,10 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Clearing timer for command %p&quot;
-l_string|&quot; %d&bslash;n&quot;
+l_string|&quot;%s: scmd: %p,&quot;
+l_string|&quot; rtn: %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|scmd
 comma
@@ -250,7 +255,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;Command timed out active=%d busy=%d &quot;
-l_string|&quot;failed=%d&bslash;n&quot;
+l_string|&quot; failed=%d&bslash;n&quot;
 comma
 id|atomic_read
 c_func
@@ -294,7 +299,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Open returning %d&bslash;n&quot;
+l_string|&quot;%s: rtn: %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|sdev-&gt;online
 )paren
@@ -425,8 +432,10 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;scsi_eh: %d:%d:%d:%d cmds failed: %d,&quot;
-l_string|&quot;timedout: %d&bslash;n&quot;
+l_string|&quot;%s: %d:%d:%d:%d cmds failed: %d,&quot;
+l_string|&quot; timedout: %d&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|shost-&gt;host_no
 comma
@@ -463,8 +472,8 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Total of %d commands on %d &quot;
-l_string|&quot;devices require eh work&bslash;n&quot;
+l_string|&quot;Total of %d commands on %d&quot;
+l_string|&quot; devices require eh work&bslash;n&quot;
 comma
 id|total_failures
 comma
@@ -585,10 +594,10 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Error hdlr &quot;
-l_string|&quot;prematurely woken &quot;
-l_string|&quot;cmds still active &quot;
-l_string|&quot;(%p %x %d)&bslash;n&quot;
+l_string|&quot;Error hdlr&quot;
+l_string|&quot; prematurely woken&quot;
+l_string|&quot; cmds still active&quot;
+l_string|&quot; (%p %x %d)&bslash;n&quot;
 comma
 id|scmd
 comma
@@ -617,16 +626,28 @@ id|shost
 )paren
 )paren
 suffix:semicolon
-id|BUG_ON
-c_func
+r_if
+c_cond
 (paren
 id|shost-&gt;host_failed
 op_ne
 id|found
 )paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: host_failed: %d != found: %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|shost-&gt;host_failed
+comma
+id|found
+)paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_check_sense - Examine scsi cmd sense&n; * @scmd:&t;Cmd to have sense checked.&n; **/
+multiline_comment|/**&n; * scsi_check_sense - Examine scsi cmd sense&n; * @scmd:&t;Cmd to have sense checked.&n; *&n; * Return value:&n; * &t;SUCCESS or FAILED or NEEDS_RETRY&n; **/
 DECL|function|scsi_check_sense
 r_static
 r_int
@@ -797,9 +818,6 @@ op_star
 id|scmd
 )paren
 (brace
-r_int
-id|rtn
-suffix:semicolon
 multiline_comment|/*&n;&t; * first check the host byte, to see if there is anything in there&n;&t; * that would indicate what we need to do.&n;&t; */
 r_if
 c_cond
@@ -827,31 +845,17 @@ op_and_assign
 op_complement
 id|IS_RESETTING
 suffix:semicolon
-r_goto
-id|maybe_retry
+r_return
+id|NEEDS_RETRY
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * rats.  we are already in the error handler, so we now&n;&t;&t; * get to try and figure out what to do next.  if the sense&n;&t;&t; * is valid, we have a pretty good idea of what to do.&n;&t;&t; * if not, we mark it as FAILED.&n;&t;&t; */
-id|rtn
-op_assign
+r_return
 id|scsi_check_sense
 c_func
 (paren
 id|scmd
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rtn
-op_eq
-id|NEEDS_RETRY
-)paren
-r_goto
-id|maybe_retry
-suffix:semicolon
-r_return
-id|rtn
 suffix:semicolon
 )brace
 r_if
@@ -910,26 +914,12 @@ suffix:semicolon
 r_case
 id|CHECK_CONDITION
 suffix:colon
-id|rtn
-op_assign
+r_return
 id|scsi_check_sense
 c_func
 (paren
 id|scmd
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rtn
-op_eq
-id|NEEDS_RETRY
-)paren
-r_goto
-id|maybe_retry
-suffix:semicolon
-r_return
-id|rtn
 suffix:semicolon
 r_case
 id|CONDITION_GOOD
@@ -962,30 +952,6 @@ suffix:semicolon
 r_return
 id|FAILED
 suffix:semicolon
-id|maybe_retry
-suffix:colon
-r_if
-c_cond
-(paren
-(paren
-op_increment
-id|scmd-&gt;retries
-)paren
-OL
-id|scmd-&gt;allowed
-)paren
-(brace
-r_return
-id|NEEDS_RETRY
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* no more retries - report this one back to upper level */
-r_return
-id|SUCCESS
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/**&n; * scsi_eh_times_out - timeout function for error handling.&n; * @scmd:&t;Cmd that is timing out.&n; *&n; * Notes:&n; *    During error handling, the kernel thread will be sleeping waiting&n; *    for some action to complete on the device.  our only job is to&n; *    record that it timed out, and to wake up the thread.&n; **/
 DECL|function|scsi_eh_times_out
@@ -1015,7 +981,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;in scsi_eh_times_out %p&bslash;n&quot;
+l_string|&quot;%s: scmd:%p&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|scmd
 )paren
@@ -1038,7 +1006,9 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;missing scsi error handler thread&bslash;n&quot;
+l_string|&quot;%s: eh_action NULL&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 )brace
@@ -1093,7 +1063,9 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;in eh_done %p result:%x&bslash;n&quot;
+l_string|&quot;%s scmd: %p result: %x&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|scmd
 comma
@@ -1115,7 +1087,7 @@ id|scmd-&gt;host-&gt;eh_action
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * scsi_send_eh_cmnd  - send a cmd to a device as part of error recovery.&n; * @scmd:&t;SCSI Cmd to send.&n; * @timeout:&t;Timeout for cmd.&n; *&n; * Notes:&n; *    The initialization of the structures is quite a bit different in&n; *    this case, and furthermore, there is a different completion handler&n; *    vs scsi_dispatch_cmd.&n; * Return value:&n; *    SUCCESS/FAILED&n; **/
+multiline_comment|/**&n; * scsi_send_eh_cmnd  - send a cmd to a device as part of error recovery.&n; * @scmd:&t;SCSI Cmd to send.&n; * @timeout:&t;Timeout for cmd.&n; *&n; * Notes:&n; *    The initialization of the structures is quite a bit different in&n; *    this case, and furthermore, there is a different completion handler&n; *    vs scsi_dispatch_cmd.&n; * Return value:&n; *    SUCCESS or FAILED or NEEDS_RETRY&n; **/
 DECL|function|scsi_send_eh_cmnd
 r_static
 r_int
@@ -1154,8 +1126,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|retry
-suffix:colon
 multiline_comment|/*&n;&t; * we will use a queued command if possible, otherwise we will&n;&t; * emulate the queuing and calling of completion function ourselves.&n;&t; */
 id|scmd-&gt;owner
 op_assign
@@ -1306,7 +1276,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %p rtn:%x&bslash;n&quot;
+l_string|&quot;%s: scmd: %p, rtn:%x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1365,7 +1335,7 @@ id|SUCCESS
 )paren
 (brace
 r_int
-id|ret
+id|rtn
 op_assign
 id|scsi_eh_completed_normally
 c_func
@@ -1385,30 +1355,27 @@ l_string|&quot;%s: scsi_eh_completed_normally %x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|ret
+id|rtn
 )paren
 )paren
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|ret
+id|rtn
 )paren
 (brace
 r_case
 id|SUCCESS
 suffix:colon
-r_break
-suffix:semicolon
 r_case
 id|NEEDS_RETRY
 suffix:colon
-r_goto
-id|retry
-suffix:semicolon
 r_case
 id|FAILED
 suffix:colon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|rtn
@@ -1547,7 +1514,9 @@ l_int|NULL
 id|printk
 c_func
 (paren
-l_string|&quot;cannot allocate scsi_result in scsi_request_sense.&bslash;n&quot;
+l_string|&quot;%s: cannot allocate scsi_result.&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -1681,54 +1650,15 @@ id|scsi_result
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * when we eventually call scsi_finish, we really wish to complete&n;&t; * the original request, so let&squot;s restore the original data. (db)&n;&t; */
-id|memcpy
+id|scsi_setup_cmd_retry
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|scmd-&gt;cmnd
-comma
-(paren
-r_void
-op_star
-)paren
-id|scmd-&gt;data_cmnd
-comma
-r_sizeof
-(paren
-id|scmd-&gt;data_cmnd
-)paren
+id|scmd
 )paren
 suffix:semicolon
 id|scmd-&gt;result
 op_assign
 id|saved_result
-suffix:semicolon
-id|scmd-&gt;request_buffer
-op_assign
-id|scmd-&gt;buffer
-suffix:semicolon
-id|scmd-&gt;request_bufflen
-op_assign
-id|scmd-&gt;bufflen
-suffix:semicolon
-id|scmd-&gt;use_sg
-op_assign
-id|scmd-&gt;old_use_sg
-suffix:semicolon
-id|scmd-&gt;cmd_len
-op_assign
-id|scmd-&gt;old_cmd_len
-suffix:semicolon
-id|scmd-&gt;sc_data_direction
-op_assign
-id|scmd-&gt;sc_old_data_direction
-suffix:semicolon
-id|scmd-&gt;underflow
-op_assign
-id|scmd-&gt;old_underflow
 suffix:semicolon
 multiline_comment|/*&n;&t; * hey, we are done.  let&squot;s look to see what happened.&n;&t; */
 r_return
@@ -1747,52 +1677,31 @@ op_star
 id|scmd
 )paren
 (brace
-id|memcpy
+r_int
+id|rtn
+op_assign
+id|SUCCESS
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|scmd-&gt;retries
+OL
+id|scmd-&gt;allowed
+suffix:semicolon
+id|scmd-&gt;retries
+op_increment
+)paren
+(brace
+id|scsi_setup_cmd_retry
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|scmd-&gt;cmnd
-comma
-(paren
-r_void
-op_star
-)paren
-id|scmd-&gt;data_cmnd
-comma
-r_sizeof
-(paren
-id|scmd-&gt;data_cmnd
-)paren
+id|scmd
 )paren
 suffix:semicolon
-id|scmd-&gt;request_buffer
+id|rtn
 op_assign
-id|scmd-&gt;buffer
-suffix:semicolon
-id|scmd-&gt;request_bufflen
-op_assign
-id|scmd-&gt;bufflen
-suffix:semicolon
-id|scmd-&gt;use_sg
-op_assign
-id|scmd-&gt;old_use_sg
-suffix:semicolon
-id|scmd-&gt;cmd_len
-op_assign
-id|scmd-&gt;old_cmd_len
-suffix:semicolon
-id|scmd-&gt;sc_data_direction
-op_assign
-id|scmd-&gt;sc_old_data_direction
-suffix:semicolon
-id|scmd-&gt;underflow
-op_assign
-id|scmd-&gt;old_underflow
-suffix:semicolon
-r_return
 id|scsi_send_eh_cmnd
 c_func
 (paren
@@ -1800,6 +1709,19 @@ id|scmd
 comma
 id|scmd-&gt;timeout_per_command
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rtn
+op_ne
+id|NEEDS_RETRY
+)paren
+r_break
+suffix:semicolon
+)brace
+r_return
+id|rtn
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_eh_finish_cmd - Handle a cmd that eh is finished with.&n; * @scmd:&t;Original SCSI cmd that eh has finished.&n; * @shost:&t;SCSI host that cmd originally failed on.&n; *&n; * Notes:&n; *    We don&squot;t want to use the normal command completion while we are are&n; *    still handling errors - it may cause other commands to be queued,&n; *    and that would disturb what we are doing.  thus we really want to&n; *    keep a list of pending commands for final completion, and once we&n; *    are ready to leave error handling we handle completion for real.&n; **/
@@ -1833,17 +1755,11 @@ id|scmd
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * set this back so that the upper level can correctly free up&n;&t; * things.&n;&t; */
-id|scmd-&gt;use_sg
-op_assign
-id|scmd-&gt;old_use_sg
-suffix:semicolon
-id|scmd-&gt;sc_data_direction
-op_assign
-id|scmd-&gt;sc_old_data_direction
-suffix:semicolon
-id|scmd-&gt;underflow
-op_assign
-id|scmd-&gt;old_underflow
+id|scsi_setup_cmd_retry
+c_func
+(paren
+id|scmd
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_eh_get_sense - Get device sense data.&n; * @sc_todo:&t;list of cmds that have failed.&n; * @shost:&t;scsi host being recovered.&n; *&n; * Description:&n; *    See if we need to request sense information.  if so, then get it&n; *    now, so we have a better idea of what to do.  &n; *&n; *&n; * Notes:&n; *    This has the unfortunate side effect that if a shost adapter does&n; *    not automatically request sense information, that we end up shutting&n; *    it down before we request it.  All shosts should be doing this&n; *    anyways, so for now all I have to say is tough noogies if you end up&n; *    in here.  On second thought, this is probably a good idea.  We&n; *    *really* want to give authors an incentive to automatically request&n; *    this.&n; *&n; *    In 2.5 this capability will be going away.&n; **/
@@ -1928,7 +1844,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;%s: requesting sense&quot;
-l_string|&quot;for %d&bslash;n&quot;
+l_string|&quot; for tgt: %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1962,7 +1878,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;sense requested for %p&quot;
-l_string|&quot;- result %x&bslash;n&quot;
+l_string|&quot; result %x&bslash;n&quot;
 comma
 id|scmd
 comma
@@ -2168,6 +2084,13 @@ suffix:semicolon
 r_int
 id|rtn
 suffix:semicolon
+r_int
+id|retry_cnt
+op_assign
+l_int|1
+suffix:semicolon
+id|retry_tur
+suffix:colon
 id|memcpy
 c_func
 (paren
@@ -2265,50 +2188,11 @@ id|SENSE_TIMEOUT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * when we eventually call scsi_finish, we really wish to complete&n;&t; * the original request, so let&squot;s restore the original data. (db)&n;&t; */
-id|memcpy
+id|scsi_setup_cmd_retry
 c_func
 (paren
-(paren
-r_void
-op_star
+id|scmd
 )paren
-id|scmd-&gt;cmnd
-comma
-(paren
-r_void
-op_star
-)paren
-id|scmd-&gt;data_cmnd
-comma
-r_sizeof
-(paren
-id|scmd-&gt;data_cmnd
-)paren
-)paren
-suffix:semicolon
-id|scmd-&gt;request_buffer
-op_assign
-id|scmd-&gt;buffer
-suffix:semicolon
-id|scmd-&gt;request_bufflen
-op_assign
-id|scmd-&gt;bufflen
-suffix:semicolon
-id|scmd-&gt;use_sg
-op_assign
-id|scmd-&gt;old_use_sg
-suffix:semicolon
-id|scmd-&gt;cmd_len
-op_assign
-id|scmd-&gt;old_cmd_len
-suffix:semicolon
-id|scmd-&gt;sc_data_direction
-op_assign
-id|scmd-&gt;sc_old_data_direction
-suffix:semicolon
-id|scmd-&gt;underflow
-op_assign
-id|scmd-&gt;old_underflow
 suffix:semicolon
 multiline_comment|/*&n;&t; * hey, we are done.  let&squot;s look to see what happened.&n;&t; */
 id|SCSI_LOG_ERROR_RECOVERY
@@ -2332,98 +2216,30 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|rtn
 op_eq
 id|SUCCESS
 )paren
-op_logical_and
-id|scmd-&gt;result
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|driver_byte
-c_func
-(paren
-id|scmd-&gt;result
-)paren
-op_amp
-id|DRIVER_SENSE
-)paren
-op_logical_or
-(paren
-id|status_byte
-c_func
-(paren
-id|scmd-&gt;result
-)paren
-op_amp
-id|CHECK_CONDITION
-)paren
-)paren
-op_logical_and
-(paren
-id|SCSI_SENSE_VALID
-c_func
-(paren
-id|scmd
-)paren
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-(paren
-id|scmd-&gt;sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0xf
-)paren
-op_ne
-id|NOT_READY
-)paren
-op_logical_and
-(paren
-(paren
-id|scmd-&gt;sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0xf
-)paren
-op_ne
-id|UNIT_ATTENTION
-)paren
-op_logical_and
-(paren
-(paren
-id|scmd-&gt;sense_buffer
-(braket
-l_int|2
-)braket
-op_amp
-l_int|0xf
-)paren
-op_ne
-id|ILLEGAL_REQUEST
-)paren
-)paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
-)brace
-)brace
+r_else
+r_if
+c_cond
+(paren
+id|rtn
+op_eq
+id|NEEDS_RETRY
+)paren
+r_if
+c_cond
+(paren
+id|retry_cnt
+op_decrement
+)paren
+r_goto
+id|retry_tur
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -2514,6 +2330,7 @@ id|SUCCESS
 r_if
 c_cond
 (paren
+op_logical_neg
 id|scsi_eh_tur
 c_func
 (paren
@@ -2614,6 +2431,23 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rtn
+op_eq
+id|SUCCESS
+)paren
+(brace
+id|scmd-&gt;device-&gt;was_reset
+op_assign
+l_int|1
+suffix:semicolon
+id|scmd-&gt;device-&gt;expecting_cc_ua
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 r_return
 id|rtn
 suffix:semicolon
@@ -2733,6 +2567,7 @@ id|SUCCESS
 )paren
 op_logical_and
 (paren
+op_logical_neg
 id|scsi_eh_tur
 c_func
 (paren
@@ -3245,6 +3080,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|scsi_eh_tur
 c_func
 (paren
@@ -3336,10 +3172,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Device set offline - not&quot;
-l_string|&quot;ready or command retry failed&quot;
-l_string|&quot;after error recovery: host&quot;
-l_string|&quot;%d channel %d id %d lun %d&bslash;n&quot;
+l_string|&quot;%s: Device offlined - not&quot;
+l_string|&quot; ready or command retry failed&quot;
+l_string|&quot; after error recovery: host&quot;
+l_string|&quot; %d channel %d id %d lun %d&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -3521,7 +3357,7 @@ id|printk
 c_func
 (paren
 l_string|&quot;%s: device offline - report&quot;
-l_string|&quot;as SUCCESS&bslash;n&quot;
+l_string|&quot; as SUCCESS&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -3820,6 +3656,193 @@ id|SUCCESS
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * scsi_eh_lock_done - done function for eh door lock request&n; * @scmd:&t;SCSI command block for the door lock request&n; *&n; * Notes:&n; * &t;We completed the asynchronous door lock request, and it has either&n; * &t;locked the door or failed.  We must free the command structures&n; * &t;associated with this request.&n; **/
+DECL|function|scsi_eh_lock_done
+r_static
+r_void
+id|scsi_eh_lock_done
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|scmd
+)paren
+(brace
+r_struct
+id|scsi_request
+op_star
+id|sreq
+op_assign
+id|scmd-&gt;sc_request
+suffix:semicolon
+id|scmd-&gt;sc_request
+op_assign
+l_int|NULL
+suffix:semicolon
+id|sreq-&gt;sr_command
+op_assign
+l_int|NULL
+suffix:semicolon
+id|scsi_release_command
+c_func
+(paren
+id|scmd
+)paren
+suffix:semicolon
+id|scsi_release_request
+c_func
+(paren
+id|sreq
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * scsi_eh_lock_door - Prevent medium removal for the specified device&n; * @sdev:&t;SCSI device to prevent medium removal&n; *&n; * Locking:&n; * &t;We must be called from process context; scsi_allocate_request()&n; * &t;may sleep.&n; *&n; * Notes:&n; * &t;We queue up an asynchronous &quot;ALLOW MEDIUM REMOVAL&quot; request on the&n; * &t;head of the devices request queue, and continue.&n; *&n; * Bugs:&n; * &t;scsi_allocate_request() may sleep waiting for existing requests to&n; * &t;be processed.  However, since we haven&squot;t kicked off any request&n; * &t;processing for this host, this may deadlock.&n; *&n; *&t;If scsi_allocate_request() fails for what ever reason, we&n; *&t;completely forget to lock the door.&n; **/
+DECL|function|scsi_eh_lock_door
+r_static
+r_void
+id|scsi_eh_lock_door
+c_func
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+)paren
+(brace
+r_struct
+id|scsi_request
+op_star
+id|sreq
+op_assign
+id|scsi_allocate_request
+c_func
+(paren
+id|sdev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sreq
+op_eq
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: request allocate failed,&quot;
+l_string|&quot;prevent media removal cmd not sent&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|sreq-&gt;sr_cmnd
+(braket
+l_int|0
+)braket
+op_assign
+id|ALLOW_MEDIUM_REMOVAL
+suffix:semicolon
+id|sreq-&gt;sr_cmnd
+(braket
+l_int|1
+)braket
+op_assign
+(paren
+id|sdev-&gt;scsi_level
+op_le
+id|SCSI_2
+)paren
+ques
+c_cond
+(paren
+id|sdev-&gt;lun
+op_lshift
+l_int|5
+)paren
+suffix:colon
+l_int|0
+suffix:semicolon
+id|sreq-&gt;sr_cmnd
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|sreq-&gt;sr_cmnd
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|sreq-&gt;sr_cmnd
+(braket
+l_int|4
+)braket
+op_assign
+id|SCSI_REMOVAL_PREVENT
+suffix:semicolon
+id|sreq-&gt;sr_cmnd
+(braket
+l_int|5
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|sreq-&gt;sr_data_direction
+op_assign
+id|SCSI_DATA_NONE
+suffix:semicolon
+id|sreq-&gt;sr_bufflen
+op_assign
+l_int|0
+suffix:semicolon
+id|sreq-&gt;sr_buffer
+op_assign
+l_int|NULL
+suffix:semicolon
+id|sreq-&gt;sr_allowed
+op_assign
+l_int|5
+suffix:semicolon
+id|sreq-&gt;sr_done
+op_assign
+id|scsi_eh_lock_done
+suffix:semicolon
+id|sreq-&gt;sr_timeout_per_command
+op_assign
+l_int|10
+op_star
+id|HZ
+suffix:semicolon
+id|sreq-&gt;sr_cmd_len
+op_assign
+id|COMMAND_SIZE
+c_func
+(paren
+id|sreq-&gt;sr_cmnd
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+id|scsi_insert_special_req
+c_func
+(paren
+id|sreq
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; * scsi_restart_operations - restart io operations to the specified host.&n; * @shost:&t;Host we are restarting.&n; *&n; * Notes:&n; *    When we entered the error handler, we blocked all further i/o to&n; *    this device.  we need to &squot;reverse&squot; this process.&n; **/
 DECL|function|scsi_restart_operations
 r_static
@@ -3847,6 +3870,33 @@ c_func
 id|shost-&gt;host_lock
 comma
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * If the door was locked, we need to insert a door lock request&n;&t; * onto the head of the SCSI request queue for the device.  There&n;&t; * is no point trying to lock the door of an off-line device.&n;&t; */
+r_for
+c_loop
+(paren
+id|sdev
+op_assign
+id|shost-&gt;host_queue
+suffix:semicolon
+id|sdev
+suffix:semicolon
+id|sdev
+op_assign
+id|sdev-&gt;next
+)paren
+r_if
+c_cond
+(paren
+id|sdev-&gt;online
+op_logical_and
+id|sdev-&gt;locked
+)paren
+id|scsi_eh_lock_door
+c_func
+(paren
+id|sdev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * next free up anything directly waiting upon the host.  this&n;&t; * will be requests for character device operations, and also for&n;&t; * ioctls to queued block devices.&n;&t; */
@@ -3922,10 +3972,6 @@ id|shost-&gt;host_blocked
 op_logical_or
 (paren
 id|shost-&gt;host_self_blocked
-)paren
-op_logical_or
-(paren
-id|sdev-&gt;device_blocked
 )paren
 )paren
 (brace
@@ -4035,7 +4081,6 @@ comma
 id|shost
 )paren
 )paren
-(brace
 id|scsi_eh_offline_sdevs
 c_func
 (paren
@@ -4044,7 +4089,6 @@ comma
 id|shost
 )paren
 suffix:semicolon
-)brace
 id|BUG_ON
 c_func
 (paren
@@ -4185,9 +4229,7 @@ comma
 id|printk
 c_func
 (paren
-l_string|&quot;Wake up parent %d&bslash;n&quot;
-comma
-id|shost-&gt;eh_notify-&gt;count.counter
+l_string|&quot;Wake up parent &bslash;n&quot;
 )paren
 )paren
 suffix:semicolon

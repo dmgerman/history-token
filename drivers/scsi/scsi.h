@@ -728,6 +728,16 @@ id|SCpnt
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|scsi_setup_cmd_retry
+c_func
+(paren
+id|Scsi_Cmnd
+op_star
+id|SCpnt
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|scsi_insert_special_cmd
 c_func
@@ -1400,6 +1410,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Able to prevent media removal */
+DECL|member|locked
+r_int
+id|locked
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Media removal disabled */
 DECL|member|borken
 r_int
 id|borken
@@ -1407,7 +1424,13 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Tell the Seagate driver to be &n;&t;&t;&t;&t; * painfully slow on this device */
-singleline_comment|//&t;unsigned disconnect:1;&t;/* can disconnect */
+DECL|member|disconnect
+r_int
+id|disconnect
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* can disconnect */
 DECL|member|soft_reset
 r_int
 id|soft_reset
