@@ -107,7 +107,7 @@ c_cond
 (paren
 id|ie
 op_assign
-id|inquiry_cache_lookup
+id|hci_inquiry_cache_lookup
 c_func
 (paren
 id|hdev

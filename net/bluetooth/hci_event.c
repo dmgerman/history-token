@@ -2046,7 +2046,7 @@ suffix:semicolon
 id|num_rsp
 op_decrement
 )paren
-id|inquiry_cache_update
+id|hci_inquiry_cache_update
 c_func
 (paren
 id|hdev
@@ -2179,7 +2179,7 @@ suffix:semicolon
 id|info
 op_increment
 suffix:semicolon
-id|inquiry_cache_update
+id|hci_inquiry_cache_update
 c_func
 (paren
 id|hdev
