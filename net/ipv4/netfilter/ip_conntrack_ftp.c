@@ -2000,14 +2000,9 @@ suffix:semicolon
 id|DEBUGP
 c_func
 (paren
-l_string|&quot;conntrack_ftp: match `%.*s&squot; (%u bytes at %u)&bslash;n&quot;
+l_string|&quot;conntrack_ftp: match `%s&squot; (%u bytes at %u)&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
-id|matchlen
-comma
-id|data
+id|fb_ptr
 op_plus
 id|matchoff
 comma

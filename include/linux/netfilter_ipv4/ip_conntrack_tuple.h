@@ -143,12 +143,12 @@ id|u
 suffix:semicolon
 multiline_comment|/* The protocol. */
 DECL|member|protonum
-id|u8
+id|u_int8_t
 id|protonum
 suffix:semicolon
 multiline_comment|/* The direction (for tuplehash) */
 DECL|member|dir
-id|u8
+id|u_int8_t
 id|dir
 suffix:semicolon
 DECL|member|dst

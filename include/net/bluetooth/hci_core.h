@@ -307,6 +307,11 @@ r_struct
 id|hci_dev_stats
 id|stat
 suffix:semicolon
+DECL|member|driver_init
+r_struct
+id|sk_buff_head
+id|driver_init
+suffix:semicolon
 DECL|member|driver_data
 r_void
 op_star
