@@ -692,7 +692,10 @@ op_div
 l_int|2
 )paren
 (brace
-multiline_comment|/* horrible...FIXME */
+id|last_rtc_update
+op_assign
+id|xtime.tv_sec
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -707,18 +710,9 @@ c_func
 (paren
 id|xtime.tv_sec
 )paren
-op_eq
-l_int|0
 )paren
 id|last_rtc_update
-op_assign
-id|xtime.tv_sec
-suffix:semicolon
-r_else
-id|last_rtc_update
-op_assign
-id|xtime.tv_sec
-op_minus
+op_sub_assign
 l_int|600
 suffix:semicolon
 )brace
@@ -731,21 +725,11 @@ c_func
 (paren
 id|xtime.tv_sec
 )paren
-op_eq
-l_int|0
 )paren
 id|last_rtc_update
-op_assign
-id|xtime.tv_sec
-suffix:semicolon
-r_else
-id|last_rtc_update
-op_assign
-id|xtime.tv_sec
-op_minus
+op_sub_assign
 l_int|600
 suffix:semicolon
-multiline_comment|/* do it again in 60 s */
 )brace
 r_if
 c_cond
