@@ -111,7 +111,7 @@ c_func
 id|panic_blink
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;panic - halt the system&n; *&t;@fmt: The text string to print&n; *&n; *&t;Display a message, then perform cleanups. Functions in the panic&n; *&t;notifier list are called after the filesystem cache is flushed (when possible).&n; *&n; *&t;This function never returns.&n; */
+multiline_comment|/**&n; *&t;panic - halt the system&n; *&t;@fmt: The text string to print&n; *&n; *&t;Display a message, then perform cleanups.&n; *&n; *&t;This function never returns.&n; */
 DECL|function|panic
 id|NORET_TYPE
 r_void
