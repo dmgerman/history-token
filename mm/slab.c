@@ -498,7 +498,6 @@ mdefine_line|#define&t;POISON_END&t;0xa5&t;/* end-byte of poisoning */
 multiline_comment|/* memory layout of objects:&n; * 0&t;&t;: objp&n; * 0 .. cachep-&gt;dbghead - BYTES_PER_WORD - 1: padding. This ensures that&n; * &t;&t;the end of an object is aligned with the end of the real&n; * &t;&t;allocation. Catches writes behind the end of the allocation.&n; * cachep-&gt;dbghead - BYTES_PER_WORD .. cachep-&gt;dbghead - 1:&n; * &t;&t;redzone word.&n; * cachep-&gt;dbghead: The real object.&n; * cachep-&gt;objsize - 2* BYTES_PER_WORD: redzone word [BYTES_PER_WORD long]&n; * cachep-&gt;objsize - 1* BYTES_PER_WORD: last caller address [BYTES_PER_WORD long]&n; */
 DECL|function|obj_dbghead
 r_static
-r_inline
 r_int
 id|obj_dbghead
 c_func
@@ -514,7 +513,6 @@ suffix:semicolon
 )brace
 DECL|function|obj_reallen
 r_static
-r_inline
 r_int
 id|obj_reallen
 c_func
@@ -685,119 +683,16 @@ id|BYTES_PER_WORD
 suffix:semicolon
 )brace
 macro_line|#else
-DECL|function|obj_dbghead
-r_static
-r_inline
-r_int
-id|obj_dbghead
-c_func
-(paren
-id|kmem_cache_t
-op_star
-id|cachep
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|obj_reallen
-r_static
-r_inline
-r_int
-id|obj_reallen
-c_func
-(paren
-id|kmem_cache_t
-op_star
-id|cachep
-)paren
-(brace
-r_return
-id|cachep-&gt;objsize
-suffix:semicolon
-)brace
-DECL|function|dbg_redzone1
-r_static
-r_inline
-r_int
-r_int
-op_star
-id|dbg_redzone1
-c_func
-(paren
-id|kmem_cache_t
-op_star
-id|cachep
-comma
-r_void
-op_star
-id|objp
-)paren
-(brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|dbg_redzone2
-r_static
-r_inline
-r_int
-r_int
-op_star
-id|dbg_redzone2
-c_func
-(paren
-id|kmem_cache_t
-op_star
-id|cachep
-comma
-r_void
-op_star
-id|objp
-)paren
-(brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|dbg_userword
-r_static
-r_inline
-r_void
-op_star
-op_star
-id|dbg_userword
-c_func
-(paren
-id|kmem_cache_t
-op_star
-id|cachep
-comma
-r_void
-op_star
-id|objp
-)paren
-(brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
+DECL|macro|obj_dbghead
+mdefine_line|#define obj_dbghead(x)&t;&t;&t;0
+DECL|macro|obj_reallen
+mdefine_line|#define obj_reallen(cachep)&t;&t;(cachep-&gt;objsize)
+DECL|macro|dbg_redzone1
+mdefine_line|#define dbg_redzone1(cachep, objp)&t;({BUG(); (unsigned long *)NULL;})
+DECL|macro|dbg_redzone2
+mdefine_line|#define dbg_redzone2(cachep, objp)&t;({BUG(); (unsigned long *)NULL;})
+DECL|macro|dbg_userword
+mdefine_line|#define dbg_userword(cachep, objp)&t;({BUG(); (void **)NULL;})
 macro_line|#endif
 multiline_comment|/*&n; * Maximum size of an obj (in 2^order pages)&n; * and absolute limit for the gfp order.&n; */
 macro_line|#if defined(CONFIG_LARGE_ALLOCS)
@@ -2541,7 +2436,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Interface to system&squot;s page release.&n; */
 DECL|function|kmem_freepages
 r_static
-r_inline
 r_void
 id|kmem_freepages
 c_func
@@ -4958,9 +4852,9 @@ c_func
 id|kmem_cache_create
 )paren
 suffix:semicolon
+macro_line|#if DEBUG
 DECL|function|check_irq_off
 r_static
-r_inline
 r_void
 id|check_irq_off
 c_func
@@ -4968,7 +4862,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if DEBUG
 id|BUG_ON
 c_func
 (paren
@@ -4979,11 +4872,9 @@ c_func
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|check_irq_on
 r_static
-r_inline
 r_void
 id|check_irq_on
 c_func
@@ -4991,7 +4882,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if DEBUG
 id|BUG_ON
 c_func
 (paren
@@ -5001,11 +4891,9 @@ c_func
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|check_spinlock_acquired
 r_static
-r_inline
 r_void
 id|check_spinlock_acquired
 c_func
@@ -5034,6 +4922,14 @@ id|cachep-&gt;spinlock
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#else
+DECL|macro|check_irq_off
+mdefine_line|#define check_irq_off()&t;do { } while(0)
+DECL|macro|check_irq_on
+mdefine_line|#define check_irq_on()&t;do { } while(0)
+DECL|macro|check_spinlock_acquired
+mdefine_line|#define check_spinlock_acquired(x) do { } while(0)
+macro_line|#endif
 multiline_comment|/*&n; * Waits for all CPUs to execute func().&n; */
 DECL|function|smp_call_function_all_cpus
 r_static
@@ -5623,7 +5519,6 @@ suffix:semicolon
 multiline_comment|/* Get the memory for a slab management obj. */
 DECL|function|alloc_slabmgmt
 r_static
-r_inline
 r_struct
 id|slab
 op_star
@@ -6471,10 +6366,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#if DEBUG
 multiline_comment|/*&n; * Perform extra freeing checks:&n; * - detect bad pointers.&n; * - POISON/RED_ZONE checking&n; * - destructor calls, for caches with POISON+dtor&n; */
 DECL|function|kfree_debugcheck
 r_static
-r_inline
 r_void
 id|kfree_debugcheck
 c_func
@@ -6485,7 +6380,6 @@ op_star
 id|objp
 )paren
 (brace
-macro_line|#if DEBUG
 r_struct
 id|page
 op_star
@@ -6559,11 +6453,9 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif 
 )brace
 DECL|function|cache_free_debugcheck
 r_static
-r_inline
 r_void
 op_star
 id|cache_free_debugcheck
@@ -6581,7 +6473,6 @@ op_star
 id|caller
 )paren
 (brace
-macro_line|#if DEBUG
 r_struct
 id|page
 op_star
@@ -6978,14 +6869,12 @@ id|POISON_FREE
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#endif
 r_return
 id|objp
 suffix:semicolon
 )brace
 DECL|function|check_slabp
 r_static
-r_inline
 r_void
 id|check_slabp
 c_func
@@ -7000,7 +6889,6 @@ op_star
 id|slabp
 )paren
 (brace
-macro_line|#if DEBUG
 r_int
 id|i
 suffix:semicolon
@@ -7166,8 +7054,15 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
+macro_line|#else
+DECL|macro|kfree_debugcheck
+mdefine_line|#define kfree_debugcheck(x) do { } while(0)
+DECL|macro|cache_free_debugcheck
+mdefine_line|#define cache_free_debugcheck(x,objp,z) (objp)
+DECL|macro|check_slabp
+mdefine_line|#define check_slabp(x,y) do { } while(0)
+macro_line|#endif
 DECL|function|cache_alloc_refill
 r_static
 r_void
@@ -7658,8 +7553,8 @@ id|flags
 suffix:semicolon
 macro_line|#endif
 )brace
+macro_line|#if DEBUG
 r_static
-r_inline
 r_void
 op_star
 DECL|function|cache_alloc_debugcheck_after
@@ -7683,7 +7578,6 @@ op_star
 id|caller
 )paren
 (brace
-macro_line|#if DEBUG
 r_if
 c_cond
 (paren
@@ -7928,11 +7822,14 @@ id|ctor_flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 id|objp
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|cache_alloc_debugcheck_after
+mdefine_line|#define cache_alloc_debugcheck_after(a,b,objp,d) (objp)
+macro_line|#endif
 DECL|function|__cache_alloc
 r_static
 r_inline
@@ -10641,7 +10538,6 @@ suffix:semicolon
 multiline_comment|/**&n; * cache_reap - Reclaim memory from caches.&n; *&n; * Called from a timer, every few seconds&n; * Purpose:&n; * - clear the per-cpu caches for this CPU.&n; * - return freeable pages to the main free memory pool.&n; *&n; * If we cannot acquire the cache chain semaphore then just give up - we&squot;ll&n; * try again next timer interrupt.&n; */
 DECL|function|cache_reap
 r_static
-r_inline
 r_void
 id|cache_reap
 (paren
