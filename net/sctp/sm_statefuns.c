@@ -5505,6 +5505,20 @@ op_amp
 id|bht
 )paren
 suffix:semicolon
+multiline_comment|/* Clear peer&squot;s init_tag cached in assoc as we are sending a new INIT */
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_CLEAR_INIT_TAG
+comma
+id|SCTP_NULL
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Cast away the const modifier, as we want to just&n;&t; * rerun it through as a sideffect.&n;&t; */
 id|sctp_add_cmd_sf
 c_func

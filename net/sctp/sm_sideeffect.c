@@ -3945,6 +3945,15 @@ id|chunk
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SCTP_CMD_CLEAR_INIT_TAG
+suffix:colon
+id|asoc-&gt;peer.i.init_tag
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|printk
