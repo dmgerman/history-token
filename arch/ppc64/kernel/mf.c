@@ -3605,8 +3605,7 @@ id|iSeries_vio_dev
 comma
 id|dma_addr
 comma
-op_star
-id|size
+id|len
 comma
 id|PCI_DMA_FROMDEVICE
 )paren
