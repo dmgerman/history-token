@@ -3810,13 +3810,28 @@ id|pb
 comma
 multiline_comment|/* buffer to mark&t;&t;*/
 r_int
-r_int
 id|error
 )paren
 multiline_comment|/* error to store (0 if none)&t;*/
 (brace
+id|ASSERT
+c_func
+(paren
+id|error
+op_ge
+l_int|0
+op_logical_and
+id|error
+op_le
+l_int|0xffff
+)paren
+suffix:semicolon
 id|pb-&gt;pb_error
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|error
 suffix:semicolon
 id|PB_TRACE

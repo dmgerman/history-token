@@ -786,7 +786,6 @@ op_star
 comma
 multiline_comment|/* buffer to mark&t;&t;*/
 r_int
-r_int
 )paren
 suffix:semicolon
 multiline_comment|/* error to store (0 if none)&t;*/
