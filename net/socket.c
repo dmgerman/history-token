@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
-macro_line|#include &lt;linux/wireless.h&gt;
 macro_line|#include &lt;linux/divert.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#if defined(CONFIG_KMOD) &amp;&amp; defined(CONFIG_NET)
