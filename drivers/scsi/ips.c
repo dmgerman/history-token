@@ -180,7 +180,7 @@ multiline_comment|/*&n; * DRIVER_VER&n; */
 DECL|macro|IPS_VERSION_HIGH
 mdefine_line|#define IPS_VERSION_HIGH        &quot;5.99&quot;
 DECL|macro|IPS_VERSION_LOW
-mdefine_line|#define IPS_VERSION_LOW         &quot;.00-BETA&quot;
+mdefine_line|#define IPS_VERSION_LOW         &quot;.01-BETA&quot;
 macro_line|#if !defined(__i386__) &amp;&amp; !defined(__ia64__)
 macro_line|#error &quot;This driver has only been tested on the x86/ia64 platforms&quot;
 macro_line|#endif
@@ -276,6 +276,11 @@ r_int
 id|ips_released_controllers
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|ips_hotplug
+r_static
+r_int
+id|ips_hotplug
 suffix:semicolon
 DECL|variable|ips_cmd_timeout
 r_static
@@ -2720,6 +2725,10 @@ id|ips_released_controllers
 op_increment
 suffix:semicolon
 )brace
+id|ips_hotplug
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 (paren
 id|ips_num_controllers
@@ -3201,6 +3210,12 @@ c_func
 id|ha-&gt;irq
 comma
 id|ha
+)paren
+suffix:semicolon
+id|IPS_REMOVE_HOST
+c_func
+(paren
+id|sh
 )paren
 suffix:semicolon
 id|scsi_unregister
@@ -26709,6 +26724,14 @@ id|ha-&gt;max_cmds
 op_minus
 l_int|1
 suffix:semicolon
+id|IPS_ADD_HOST
+c_func
+(paren
+id|sh
+comma
+l_int|NULL
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -26854,7 +26877,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|scsi_register_host
+id|IPS_REGISTER_HOSTS
 c_func
 (paren
 op_amp
@@ -26904,7 +26927,7 @@ c_func
 r_void
 )paren
 (brace
-id|scsi_unregister_host
+id|IPS_UNREGISTER_HOSTS
 c_func
 (paren
 op_amp
@@ -27022,6 +27045,36 @@ c_func
 id|index
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ips_hotplug
+)paren
+r_if
+c_cond
+(paren
+id|ips_register_scsi
+c_func
+(paren
+id|index
+)paren
+)paren
+(brace
+id|ips_free
+c_func
+(paren
+id|ips_ha
+(braket
+id|index
+)braket
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -158,10 +158,23 @@ DECL|macro|scsi_set_pci_device
 mdefine_line|#define scsi_set_pci_device(sh,dev) (0)
 macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
-DECL|macro|scsi_register_host
-mdefine_line|#define scsi_register_host(x)    scsi_register_module(MODULE_SCSI_HA,x)
-DECL|macro|scsi_unregister_host
-mdefine_line|#define scsi_unregister_host(x)  scsi_unregister_module(MODULE_SCSI_HA,x)
+DECL|macro|IPS_REGISTER_HOSTS
+mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      scsi_register_module(MODULE_SCSI_HA,SHT)
+DECL|macro|IPS_UNREGISTER_HOSTS
+mdefine_line|#define IPS_UNREGISTER_HOSTS(SHT)    scsi_unregister_module(MODULE_SCSI_HA,SHT)
+DECL|macro|IPS_ADD_HOST
+mdefine_line|#define IPS_ADD_HOST(shost,device)
+DECL|macro|IPS_REMOVE_HOST
+mdefine_line|#define IPS_REMOVE_HOST(shost)
+macro_line|#else
+DECL|macro|IPS_REGISTER_HOSTS
+mdefine_line|#define IPS_REGISTER_HOSTS(SHT)      (!ips_detect(SHT))
+DECL|macro|IPS_UNREGISTER_HOSTS
+mdefine_line|#define IPS_UNREGISTER_HOSTS(SHT)
+DECL|macro|IPS_ADD_HOST
+mdefine_line|#define IPS_ADD_HOST(shost,device)   scsi_add_host(shost,device)
+DECL|macro|IPS_REMOVE_HOST
+mdefine_line|#define IPS_REMOVE_HOST(shost)       scsi_remove_host(shost)
 macro_line|#endif
 macro_line|#ifndef MDELAY
 DECL|macro|MDELAY
