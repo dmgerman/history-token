@@ -671,7 +671,6 @@ c_cond
 (paren
 id|ret
 )paren
-(brace
 id|read_pages
 c_func
 (paren
@@ -685,12 +684,6 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 id|BUG_ON
 c_func
 (paren

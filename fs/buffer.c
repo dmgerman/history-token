@@ -330,11 +330,6 @@ comma
 id|TASK_UNINTERRUPTIBLE
 )paren
 suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -344,11 +339,18 @@ c_func
 id|bh
 )paren
 )paren
+(brace
+id|blk_run_queues
+c_func
+(paren
+)paren
+suffix:semicolon
 id|io_schedule
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 r_while
 c_loop
@@ -3063,11 +3065,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* We&squot;re _really_ low on memory. Now we just&n;&t; * wait for old buffer heads to become free due to&n;&t; * finishing IO.  Since this is an async request and&n;&t; * the reserve list is empty, we&squot;re sure there are &n;&t; * async buffer heads in use.&n;&t; */
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 id|free_more_memory
 c_func
 (paren

@@ -130,10 +130,10 @@ r_void
 r_if
 c_cond
 (paren
-id|current_cpu_data.hlt_works_ok
-op_logical_and
 op_logical_neg
 id|hlt_counter
+op_logical_and
+id|current_cpu_data.hlt_works_ok
 )paren
 (brace
 id|local_irq_disable

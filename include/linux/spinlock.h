@@ -20,14 +20,74 @@ mdefine_line|#define LOCK_SECTION_END&t;&t;&t;&bslash;&n;&t;&quot;.previous&bsla
 multiline_comment|/*&n; * If CONFIG_SMP is set, pull in the _raw_* definitions&n; */
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/spinlock.h&gt;
-multiline_comment|/*&n; * !CONFIG_SMP and spin_lock_init not previously defined&n; * (e.g. by including include/asm/spinlock.h)&n; */
-macro_line|#elif !defined(spin_lock_init)
-macro_line|#ifndef CONFIG_PREEMPT
+macro_line|#else
+macro_line|#if !defined(CONFIG_PREEMPT) &amp;&amp; !defined(CONFIG_DEBUG_SPINLOCK)
 DECL|macro|atomic_dec_and_lock
 macro_line|# define atomic_dec_and_lock(atomic,lock) atomic_dec_and_test(atomic)
 DECL|macro|ATOMIC_DEC_AND_LOCK
 macro_line|# define ATOMIC_DEC_AND_LOCK
 macro_line|#endif
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
+DECL|macro|SPINLOCK_MAGIC
+mdefine_line|#define SPINLOCK_MAGIC&t;0x1D244B3C
+r_typedef
+r_struct
+(brace
+DECL|member|magic
+r_int
+r_int
+id|magic
+suffix:semicolon
+DECL|member|lock
+r_volatile
+r_int
+r_int
+id|lock
+suffix:semicolon
+DECL|member|babble
+r_volatile
+r_int
+r_int
+id|babble
+suffix:semicolon
+DECL|member|module
+r_const
+r_char
+op_star
+id|module
+suffix:semicolon
+DECL|member|owner
+r_char
+op_star
+id|owner
+suffix:semicolon
+DECL|member|oline
+r_int
+id|oline
+suffix:semicolon
+DECL|typedef|spinlock_t
+)brace
+id|spinlock_t
+suffix:semicolon
+DECL|macro|SPIN_LOCK_UNLOCKED
+mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { SPINLOCK_MAGIC, 0, 10, __FILE__ , NULL, 0}
+DECL|macro|spin_lock_init
+mdefine_line|#define spin_lock_init(x) &bslash;&n;&t;do { &bslash;&n;&t;&t;(x)-&gt;magic = SPINLOCK_MAGIC; &bslash;&n;&t;&t;(x)-&gt;lock = 0; &bslash;&n;&t;&t;(x)-&gt;babble = 5; &bslash;&n;&t;&t;(x)-&gt;module = __FILE__; &bslash;&n;&t;&t;(x)-&gt;owner = NULL; &bslash;&n;&t;&t;(x)-&gt;oline = 0; &bslash;&n;&t;} while (0)
+DECL|macro|CHECK_LOCK
+mdefine_line|#define CHECK_LOCK(x) &bslash;&n;&t;do { &bslash;&n;&t; &t;if ((x)-&gt;magic != SPINLOCK_MAGIC) { &bslash;&n;&t;&t;&t;printk(KERN_ERR &quot;%s:%d: spin_is_locked on uninitialized spinlock %p.&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;__FILE__, __LINE__, (x)); &bslash;&n;&t;&t;} &bslash;&n;&t;} while(0)
+DECL|macro|_raw_spin_lock
+mdefine_line|#define _raw_spin_lock(x)&t;&t;&bslash;&n;&t;do { &bslash;&n;&t; &t;CHECK_LOCK(x); &bslash;&n;&t;&t;if ((x)-&gt;lock&amp;&amp;(x)-&gt;babble) { &bslash;&n;&t;&t;&t;printk(&quot;%s:%d: spin_lock(%s:%p) already locked by %s/%d&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;__FILE__,__LINE__, (x)-&gt;module, &bslash;&n;&t;&t;&t;&t;&t;(x), (x)-&gt;owner, (x)-&gt;oline); &bslash;&n;&t;&t;&t;(x)-&gt;babble--; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;(x)-&gt;lock = 1; &bslash;&n;&t;&t;(x)-&gt;owner = __FILE__; &bslash;&n;&t;&t;(x)-&gt;oline = __LINE__; &bslash;&n;&t;} while (0)
+multiline_comment|/* without debugging, spin_is_locked on UP always says&n; * FALSE. --&gt; printk if already locked. */
+DECL|macro|spin_is_locked
+mdefine_line|#define spin_is_locked(x) &bslash;&n;&t;({ &bslash;&n;&t; &t;CHECK_LOCK(x); &bslash;&n;&t;&t;if ((x)-&gt;lock&amp;&amp;(x)-&gt;babble) { &bslash;&n;&t;&t;&t;printk(&quot;%s:%d: spin_is_locked(%s:%p) already locked by %s/%d&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;__FILE__,__LINE__, (x)-&gt;module, &bslash;&n;&t;&t;&t;&t;&t;(x), (x)-&gt;owner, (x)-&gt;oline); &bslash;&n;&t;&t;&t;(x)-&gt;babble--; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;0; &bslash;&n;&t;})
+multiline_comment|/* without debugging, spin_trylock on UP always says&n; * TRUE. --&gt; printk if already locked. */
+DECL|macro|_raw_spin_trylock
+mdefine_line|#define _raw_spin_trylock(x) &bslash;&n;&t;({ &bslash;&n;&t; &t;CHECK_LOCK(x); &bslash;&n;&t;&t;if ((x)-&gt;lock&amp;&amp;(x)-&gt;babble) { &bslash;&n;&t;&t;&t;printk(&quot;%s:%d: spin_trylock(%s:%p) already locked by %s/%d&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;__FILE__,__LINE__, (x)-&gt;module, &bslash;&n;&t;&t;&t;&t;&t;(x), (x)-&gt;owner, (x)-&gt;oline); &bslash;&n;&t;&t;&t;(x)-&gt;babble--; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;(x)-&gt;lock = 1; &bslash;&n;&t;&t;(x)-&gt;owner = __FILE__; &bslash;&n;&t;&t;(x)-&gt;oline = __LINE__; &bslash;&n;&t;&t;1; &bslash;&n;&t;})
+DECL|macro|spin_unlock_wait
+mdefine_line|#define spin_unlock_wait(x)&t;&bslash;&n;&t;do { &bslash;&n;&t; &t;CHECK_LOCK(x); &bslash;&n;&t;&t;if ((x)-&gt;lock&amp;&amp;(x)-&gt;babble) { &bslash;&n;&t;&t;&t;printk(&quot;%s:%d: spin_unlock_wait(%s:%p) owned by %s/%d&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;__FILE__,__LINE__, (x)-&gt;module, (x), &bslash;&n;&t;&t;&t;&t;&t;(x)-&gt;owner, (x)-&gt;oline); &bslash;&n;&t;&t;&t;(x)-&gt;babble--; &bslash;&n;&t;&t;}&bslash;&n;&t;} while (0)
+DECL|macro|_raw_spin_unlock
+mdefine_line|#define _raw_spin_unlock(x) &bslash;&n;&t;do { &bslash;&n;&t; &t;CHECK_LOCK(x); &bslash;&n;&t;&t;if (!(x)-&gt;lock&amp;&amp;(x)-&gt;babble) { &bslash;&n;&t;&t;&t;printk(&quot;%s:%d: spin_unlock(%s:%p) not locked&bslash;n&quot;, &bslash;&n;&t;&t;&t;&t;&t;__FILE__,__LINE__, (x)-&gt;module, (x));&bslash;&n;&t;&t;&t;(x)-&gt;babble--; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;(x)-&gt;lock = 0; &bslash;&n;&t;} while (0)
+macro_line|#else
 multiline_comment|/*&n; * gcc versions before ~2.95 have a nasty bug with empty initializers.&n; */
 macro_line|#if (__GNUC__ &gt; 2)
 DECL|typedef|spinlock_t
@@ -37,17 +97,8 @@ r_struct
 )brace
 id|spinlock_t
 suffix:semicolon
-DECL|typedef|rwlock_t
-r_typedef
-r_struct
-(brace
-)brace
-id|rwlock_t
-suffix:semicolon
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { }
-DECL|macro|RW_LOCK_UNLOCKED
-mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { }
 macro_line|#else
 DECL|member|gcc_is_buggy
 DECL|typedef|spinlock_t
@@ -60,21 +111,8 @@ suffix:semicolon
 )brace
 id|spinlock_t
 suffix:semicolon
-DECL|member|gcc_is_buggy
-DECL|typedef|rwlock_t
-r_typedef
-r_struct
-(brace
-r_int
-id|gcc_is_buggy
-suffix:semicolon
-)brace
-id|rwlock_t
-suffix:semicolon
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) { 0 }
-DECL|macro|RW_LOCK_UNLOCKED
-mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 }
 macro_line|#endif
 multiline_comment|/*&n; * If CONFIG_SMP is unset, declare the _raw_* definitions as nops&n; */
 DECL|macro|spin_lock_init
@@ -89,6 +127,33 @@ DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(lock)&t;do { (void)(lock); } while(0)
 DECL|macro|_raw_spin_unlock
 mdefine_line|#define _raw_spin_unlock(lock)&t;do { (void)(lock); } while(0)
+macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
+multiline_comment|/* RW spinlocks: No debug version */
+macro_line|#if (__GNUC__ &gt; 2)
+DECL|typedef|rwlock_t
+r_typedef
+r_struct
+(brace
+)brace
+id|rwlock_t
+suffix:semicolon
+DECL|macro|RW_LOCK_UNLOCKED
+mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { }
+macro_line|#else
+DECL|member|gcc_is_buggy
+DECL|typedef|rwlock_t
+r_typedef
+r_struct
+(brace
+r_int
+id|gcc_is_buggy
+suffix:semicolon
+)brace
+id|rwlock_t
+suffix:semicolon
+DECL|macro|RW_LOCK_UNLOCKED
+mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 }
+macro_line|#endif
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lock)&t;do { (void)(lock); } while(0)
 DECL|macro|_raw_read_lock
