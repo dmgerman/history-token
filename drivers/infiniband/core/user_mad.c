@@ -10,7 +10,6 @@ macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/kref.h&gt;
-macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;ib_mad.h&gt;
 macro_line|#include &lt;ib_user_mad.h&gt;
@@ -3251,13 +3250,6 @@ suffix:semicolon
 )brace
 r_return
 l_int|0
-suffix:semicolon
-id|ib_unregister_client
-c_func
-(paren
-op_amp
-id|umad_client
-)paren
 suffix:semicolon
 id|out_class
 suffix:colon
