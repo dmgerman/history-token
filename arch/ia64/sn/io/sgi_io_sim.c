@@ -43,11 +43,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Routines provided by ml/SN/promif.c.&n; */
-DECL|variable|master_bridge_base
-r_static
-id|__psunsigned_t
-id|master_bridge_base
-suffix:semicolon
 DECL|variable|console_nasid
 id|nasid_t
 id|console_nasid
@@ -61,16 +56,6 @@ suffix:semicolon
 DECL|variable|master_baseio_wid
 r_char
 id|master_baseio_wid
-suffix:semicolon
-DECL|variable|console_wid
-r_static
-r_char
-id|console_wid
-suffix:semicolon
-DECL|variable|console_pcislot
-r_static
-r_char
-id|console_pcislot
 suffix:semicolon
 r_int
 DECL|function|check_nasid_equiv

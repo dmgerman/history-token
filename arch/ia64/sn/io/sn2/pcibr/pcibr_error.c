@@ -687,9 +687,8 @@ l_string|&quot;&quot;
 comma
 l_string|&quot;&quot;
 comma
-l_string|&quot;08: GIO non-contiguous byte enable in crosstalk packet&quot;
+l_string|&quot;08: Reserved Bit 08&quot;
 comma
-multiline_comment|/* BRIDGE ONLY */
 l_string|&quot;09: PCI to Crosstalk read request timeout&quot;
 comma
 l_string|&quot;10: PCI retry operation count exhausted.&quot;
@@ -704,19 +703,23 @@ l_string|&quot;14: PCI Bridge detected parity error&quot;
 comma
 l_string|&quot;15: PCI abort condition&quot;
 comma
-l_string|&quot;16: SSRAM parity error&quot;
+l_string|&quot;16: Reserved Bit 16&quot;
 comma
-multiline_comment|/* BRIDGE ONLY */
 l_string|&quot;17: LLP Transmitter Retry count wrapped&quot;
 comma
+multiline_comment|/* PIC ONLY */
 l_string|&quot;18: LLP Transmitter side required Retry&quot;
 comma
+multiline_comment|/* PIC ONLY */
 l_string|&quot;19: LLP Receiver retry count wrapped&quot;
 comma
+multiline_comment|/* PIC ONLY */
 l_string|&quot;20: LLP Receiver check bit error&quot;
 comma
+multiline_comment|/* PIC ONLY */
 l_string|&quot;21: LLP Receiver sequence number error&quot;
 comma
+multiline_comment|/* PIC ONLY */
 l_string|&quot;22: Request packet overflow&quot;
 comma
 l_string|&quot;23: Request operation not supported by bridge&quot;
@@ -735,10 +738,8 @@ l_string|&quot;29: Unexpected response arrived&quot;
 comma
 l_string|&quot;30: PMU Access Fault&quot;
 comma
-l_string|&quot;31: Multiple errors occurred&quot;
+l_string|&quot;31: Reserved Bit 31&quot;
 comma
-multiline_comment|/* BRIDGE ONLY */
-multiline_comment|/* bits 32-45 are PIC ONLY */
 l_string|&quot;32: PCI-X address or attribute cycle parity error&quot;
 comma
 l_string|&quot;33: PCI-X data cycle parity error&quot;
@@ -1168,17 +1169,11 @@ suffix:semicolon
 r_uint64
 id|int_status
 suffix:semicolon
-id|bridgereg_t
-id|int_status_32
-suffix:semicolon
 id|picreg_t
 id|int_status_64
 suffix:semicolon
 r_uint64
 id|mult_int
-suffix:semicolon
-id|bridgereg_t
-id|mult_int_32
 suffix:semicolon
 id|picreg_t
 id|mult_int_64
@@ -1204,17 +1199,6 @@ id|paddr_t
 )paren
 l_int|0
 suffix:semicolon
-multiline_comment|/* We read the INT_STATUS register as a 64bit picreg_t for PIC and a&n;     * 32bit bridgereg_t for BRIDGE, but always process the result as a&n;     * 64bit value so the code can be &quot;common&quot; for both PIC and BRIDGE...&n;     */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|int_status_64
 op_assign
 (paren
@@ -1235,34 +1219,6 @@ id|number_bits
 op_assign
 id|PCIBR_ISR_MAX_ERRS_PIC
 suffix:semicolon
-)brace
-r_else
-(brace
-id|int_status_32
-op_assign
-(paren
-id|bridge-&gt;b_int_status
-op_amp
-op_complement
-id|BRIDGE_ISR_INT_MSK
-)paren
-suffix:semicolon
-id|int_status
-op_assign
-(paren
-(paren
-r_uint64
-)paren
-id|int_status_32
-)paren
-op_amp
-l_int|0xffffffff
-suffix:semicolon
-id|number_bits
-op_assign
-id|PCIBR_ISR_MAX_ERRS_BRIDGE
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1299,29 +1255,7 @@ id|int_status
 comma
 id|pcibr_soft-&gt;bs_name
 comma
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-ques
-c_cond
 l_string|&quot;PIC&quot;
-suffix:colon
-(paren
-id|IS_BRIDGE_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-ques
-c_cond
-l_string|&quot;BRIDGE&quot;
-suffix:colon
-l_string|&quot;XBRIDGE&quot;
-)paren
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -1349,20 +1283,6 @@ multiline_comment|/*&n;&t; * A number of int_status bits are only defined for Br
 r_if
 c_cond
 (paren
-(paren
-id|IS_XBRIDGE_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-op_logical_or
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-op_logical_and
 (paren
 (paren
 id|bit
@@ -1392,12 +1312,6 @@ r_if
 c_cond
 (paren
 (paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-op_logical_and
 (paren
 id|pcibr_soft-&gt;bs_busnum
 op_ne
@@ -1598,23 +1512,9 @@ r_case
 id|BRIDGE_ISR_PAGE_FAULT
 suffix:colon
 multiline_comment|/* bit30&t;PMU_PAGE_FAULT */
-r_if
-c_cond
-(paren
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
 id|reg_desc
 op_assign
 l_string|&quot;Map Fault Address&quot;
-suffix:semicolon
-r_else
-id|reg_desc
-op_assign
-l_string|&quot;SSRAM Parity Error&quot;
 suffix:semicolon
 id|printk
 c_func
@@ -1644,12 +1544,6 @@ multiline_comment|/* PIC in PCI-X mode, dump the PCIX DMA Request registers */
 r_if
 c_cond
 (paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-op_logical_and
 id|IS_PCIX
 c_func
 (paren
@@ -1680,16 +1574,6 @@ r_case
 id|BRIDGE_ISR_RESP_XTLK_ERR
 suffix:colon
 multiline_comment|/* bit26&t;RESP_XTALK_ERROR */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|print_bridge_errcmd
 c_func
 (paren
@@ -1698,18 +1582,6 @@ comma
 l_string|&quot;Aux &quot;
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* If PIC in PCI-X mode, DMA Request Error registers are&n;&t;&t; * valid.  But PIC in PCI mode, Response Buffer Address &n;&t;&t; * register are valid.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|IS_PCIX
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 multiline_comment|/* XXX: should breakdown meaning of attribute bit */
 id|printk
 c_func
@@ -1722,63 +1594,6 @@ comma
 id|bridge-&gt;p_pcix_dma_req_err_attr_64
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|addr
-op_assign
-(paren
-(paren
-(paren
-r_uint64
-)paren
-(paren
-id|bridge-&gt;b_wid_resp_upper
-op_amp
-l_int|0xFFFF
-)paren
-op_lshift
-l_int|32
-)paren
-op_or
-id|bridge-&gt;b_wid_resp_lower
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;t    Bridge Response Buf Error Upper Addr Reg: 0x%x&bslash;n&quot;
-l_string|&quot;&bslash;t    Bridge Response Buf Error Lower Addr Reg: 0x%x&bslash;n&quot;
-l_string|&quot;&bslash;t    dev-num %d buff-num %d addr 0x%lx&bslash;n&quot;
-comma
-id|bridge-&gt;b_wid_resp_upper
-comma
-id|bridge-&gt;b_wid_resp_lower
-comma
-(paren
-(paren
-id|bridge-&gt;b_wid_resp_upper
-op_rshift
-l_int|20
-)paren
-op_amp
-l_int|0x3
-)paren
-comma
-(paren
-(paren
-id|bridge-&gt;b_wid_resp_upper
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0xF
-)paren
-comma
-id|addr
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1856,16 +1671,6 @@ r_case
 id|BRIDGE_ISR_UNSUPPORTED_XOP
 suffix:colon
 multiline_comment|/* bit23&t;UNSUPPORTED_XOP */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|print_bridge_errcmd
 c_func
 (paren
@@ -1882,66 +1687,12 @@ comma
 id|bridge-&gt;p_addr_lkerr_64
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|print_bridge_errcmd
-c_func
-(paren
-id|bridge-&gt;b_wid_err_cmdword
-comma
-l_string|&quot;&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;t    Bridge Error Upper Address Register: 0x%lx&bslash;n&quot;
-l_string|&quot;&bslash;t    Bridge Error Lower Address Register: 0x%lx&bslash;n&quot;
-l_string|&quot;&bslash;t    Bridge Error Address: 0x%lx&bslash;n&quot;
-comma
-(paren
-r_uint64
-)paren
-id|bridge-&gt;b_wid_err_upper
-comma
-(paren
-r_uint64
-)paren
-id|bridge-&gt;b_wid_err_lower
-comma
-(paren
-(paren
-(paren
-r_uint64
-)paren
-id|bridge-&gt;b_wid_err_upper
-op_lshift
-l_int|32
-)paren
-op_or
-id|bridge-&gt;b_wid_err_lower
-)paren
-)paren
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
 id|BRIDGE_ISR_XREQ_FIFO_OFLOW
 suffix:colon
 multiline_comment|/* bit22&t;XREQ_FIFO_OFLOW */
-multiline_comment|/* Link side error registers are only valid for PIC */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|print_bridge_errcmd
 c_func
 (paren
@@ -1958,32 +1709,6 @@ comma
 id|bridge-&gt;p_addr_lkerr_64
 )paren
 suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-id|BRIDGE_ISR_SSRAM_PERR
-suffix:colon
-multiline_comment|/* bit16&t;SSRAM_PERR */
-r_if
-c_cond
-(paren
-id|IS_BRIDGE_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;t    Bridge SSRAM Parity Error Register: 0x%x&bslash;n&quot;
-comma
-id|bridge-&gt;b_ram_perr
-)paren
-suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -2109,17 +1834,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/* We read the INT_MULT register as a 64bit picreg_t for PIC and a&n;     * 32bit bridgereg_t for BRIDGE, but always process the result as a&n;     * 64bit value so the code can be &quot;common&quot; for both PIC and BRIDGE...&n;     */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|mult_int_64
 op_assign
 (paren
@@ -2140,49 +1854,13 @@ id|number_bits
 op_assign
 id|PCIBR_ISR_MAX_ERRS_PIC
 suffix:semicolon
-)brace
-r_else
-(brace
-id|mult_int_32
-op_assign
-(paren
-id|bridge-&gt;b_mult_int
-op_amp
-op_complement
-id|BRIDGE_ISR_INT_MSK
-)paren
-suffix:semicolon
-id|mult_int
-op_assign
-(paren
-(paren
-r_uint64
-)paren
-id|mult_int_32
-)paren
-op_amp
-l_int|0xffffffff
-suffix:semicolon
-id|number_bits
-op_assign
-id|PCIBR_ISR_MAX_ERRS_BRIDGE
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
-id|IS_XBRIDGE_OR_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-op_logical_and
-(paren
 id|mult_int
 op_amp
 op_complement
 id|BRIDGE_ISR_INT_MSK
-)paren
 )paren
 (brace
 id|printk
@@ -2190,16 +1868,7 @@ c_func
 (paren
 l_string|&quot;    %s Multiple Interrupt Register is 0x%lx&bslash;n&quot;
 comma
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-ques
-c_cond
 l_string|&quot;PIC&quot;
-suffix:colon
-l_string|&quot;XBridge&quot;
 comma
 id|mult_int
 )paren
@@ -2244,91 +1913,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_static
-r_uint32
-DECL|function|pcibr_errintr_group
-id|pcibr_errintr_group
-c_func
-(paren
-r_uint32
-id|error
-)paren
-(brace
-r_uint32
-id|group
-op_assign
-id|BRIDGE_IRR_MULTI_CLR
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_amp
-id|BRIDGE_IRR_PCI_GRP
-)paren
-id|group
-op_or_assign
-id|BRIDGE_IRR_PCI_GRP_CLR
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_amp
-id|BRIDGE_IRR_SSRAM_GRP
-)paren
-id|group
-op_or_assign
-id|BRIDGE_IRR_SSRAM_GRP_CLR
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_amp
-id|BRIDGE_IRR_LLP_GRP
-)paren
-id|group
-op_or_assign
-id|BRIDGE_IRR_LLP_GRP_CLR
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_amp
-id|BRIDGE_IRR_REQ_DSP_GRP
-)paren
-id|group
-op_or_assign
-id|BRIDGE_IRR_REQ_DSP_GRP_CLR
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_amp
-id|BRIDGE_IRR_RESP_BUF_GRP
-)paren
-id|group
-op_or_assign
-id|BRIDGE_IRR_RESP_BUF_GRP_CLR
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-op_amp
-id|BRIDGE_IRR_CRP_GRP
-)paren
-id|group
-op_or_assign
-id|BRIDGE_IRR_CRP_GRP_CLR
-suffix:semicolon
-r_return
-id|group
-suffix:semicolon
-)brace
 multiline_comment|/* pcibr_pioerr_check():&n; *&t;Check to see if this pcibr has a PCI PIO&n; *&t;TIMEOUT error; if so, bump the timeout-count&n; *&t;on any piomaps that could cover the address.&n; */
 r_static
 r_void
@@ -2346,9 +1930,6 @@ id|bridge
 suffix:semicolon
 r_uint64
 id|int_status
-suffix:semicolon
-id|bridgereg_t
-id|int_status_32
 suffix:semicolon
 id|picreg_t
 id|int_status_64
@@ -2384,17 +1965,6 @@ id|bridge
 op_assign
 id|soft-&gt;bs_base
 suffix:semicolon
-multiline_comment|/* We read the INT_STATUS register as a 64bit picreg_t for PIC and a&n;     * 32bit bridgereg_t for BRIDGE, but always process the result as a&n;     * 64bit value so the code can be &quot;common&quot; for both PIC and BRIDGE...&n;     */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|soft
-)paren
-)paren
-(brace
 id|int_status_64
 op_assign
 (paren
@@ -2411,30 +1981,6 @@ r_uint64
 )paren
 id|int_status_64
 suffix:semicolon
-)brace
-r_else
-(brace
-id|int_status_32
-op_assign
-(paren
-id|bridge-&gt;b_int_status
-op_amp
-op_complement
-id|BRIDGE_ISR_INT_MSK
-)paren
-suffix:semicolon
-id|int_status
-op_assign
-(paren
-(paren
-r_uint64
-)paren
-id|int_status_32
-)paren
-op_amp
-l_int|0xffffffff
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2668,9 +2214,6 @@ suffix:semicolon
 r_uint64
 id|err_status
 suffix:semicolon
-id|bridgereg_t
-id|int_status_32
-suffix:semicolon
 id|picreg_t
 id|int_status_64
 suffix:semicolon
@@ -2810,17 +2353,6 @@ id|ep
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We read the INT_STATUS register as a 64bit picreg_t for PIC and a&n;     * 32bit bridgereg_t for BRIDGE, but always process the result as a&n;     * 64bit value so the code can be &quot;common&quot; for both PIC and BRIDGE...&n;     */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|int_status_64
 op_assign
 (paren
@@ -2841,34 +2373,6 @@ id|number_bits
 op_assign
 id|PCIBR_ISR_MAX_ERRS_PIC
 suffix:semicolon
-)brace
-r_else
-(brace
-id|int_status_32
-op_assign
-(paren
-id|bridge-&gt;b_int_status
-op_amp
-op_complement
-id|BRIDGE_ISR_INT_MSK
-)paren
-suffix:semicolon
-id|int_status
-op_assign
-(paren
-(paren
-r_uint64
-)paren
-id|int_status_32
-)paren
-op_amp
-l_int|0xffffffff
-suffix:semicolon
-id|number_bits
-op_assign
-id|PCIBR_ISR_MAX_ERRS_BRIDGE
-suffix:semicolon
-)brace
 id|PCIBR_DEBUG_ALWAYS
 c_func
 (paren
@@ -3196,12 +2700,6 @@ multiline_comment|/* PIC BRINGUP WAR (PV# 856155):&n;&t;&t; * Dont disable PCI_X
 r_if
 c_cond
 (paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-op_logical_and
 op_logical_neg
 (paren
 id|err_status
@@ -3275,16 +2773,6 @@ c_func
 id|pcibr_soft
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;p_int_enable_64
 op_and_assign
 (paren
@@ -3295,20 +2783,6 @@ op_complement
 id|disable_errintr_mask
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|bridge-&gt;b_int_enable
-op_and_assign
-(paren
-id|bridgereg_t
-)paren
-(paren
-op_complement
-id|disable_errintr_mask
-)paren
-suffix:semicolon
-)brace
 id|pcibr_unlock
 c_func
 (paren
@@ -3436,12 +2910,6 @@ multiline_comment|/* PIC BRINGUP WAR (PV# 867308):&n;     * Make BRIDGE_ISR_LLP_
 r_if
 c_cond
 (paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-op_logical_and
 id|PCIBR_WAR_ENABLED
 c_func
 (paren
@@ -3499,16 +2967,6 @@ suffix:semicolon
 multiline_comment|/*NOTREACHED */
 )brace
 multiline_comment|/*&n;     * We can&squot;t return without re-enabling the interrupt, since&n;     * it would cause problems for devices like IOC3 (Lost&n;     * interrupts ?.). So, just cleanup the interrupt, and&n;     * use saved values later..&n;     * &n;     * PIC doesn&squot;t require groups of interrupts to be cleared...&n;     */
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;p_int_rst_stat_64
 op_assign
 (paren
@@ -3520,31 +2978,10 @@ op_or
 id|BRIDGE_IRR_MULTI_CLR
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|bridge-&gt;b_int_rst_stat
-op_assign
-(paren
-id|bridgereg_t
-)paren
-id|pcibr_errintr_group
-c_func
-(paren
-id|int_status
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* PIC BRINGUP WAR (PV# 856155):&n;     * On a PCI_X_ARB_ERR error interrupt clear the DEV_BROKE bits from&n;     * the b_arb register to re-enable the device.&n;     */
 r_if
 c_cond
 (paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-op_logical_and
 (paren
 id|err_status
 op_amp
@@ -3605,16 +3042,6 @@ id|error_code
 op_assign
 id|error_code
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
 id|bridge-&gt;p_int_rst_stat_64
 op_assign
 id|BRIDGE_IRR_PCI_GRP_CLR
@@ -3623,16 +3050,6 @@ id|PIC_PCIX_GRP_CLR
 op_or
 id|BRIDGE_IRR_MULTI_CLR
 suffix:semicolon
-)brace
-r_else
-(brace
-id|bridge-&gt;b_int_rst_stat
-op_assign
-id|BRIDGE_IRR_PCI_GRP_CLR
-op_or
-id|BRIDGE_IRR_MULTI_CLR
-suffix:semicolon
-)brace
 (paren
 r_void
 )paren
@@ -4918,16 +4335,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|IS_PIC_SOFT
-c_func
-(paren
-id|pcibr_soft
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|bridge-&gt;p_int_status_64
 op_amp
 (paren
@@ -4941,26 +4348,6 @@ c_func
 id|pcibr_soft
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|bridge-&gt;b_int_status
-op_amp
-(paren
-id|bridgereg_t
-)paren
-id|BRIDGE_ISR_PCIBUS_PIOERR
-)paren
-id|pcibr_error_dump
-c_func
-(paren
-id|pcibr_soft
-)paren
-suffix:semicolon
-)brace
 id|BEM_ADD_SPC
 c_func
 (paren

@@ -32,8 +32,6 @@ DECL|macro|IS_PCI32G
 mdefine_line|#define IS_PCI32G(dev)&t;((dev)-&gt;dma_mask &gt;= 0xffffffff)
 DECL|macro|IS_PCI32L
 mdefine_line|#define IS_PCI32L(dev)&t;((dev)-&gt;dma_mask &lt; 0xffffffff)
-DECL|macro|IS_PIC_DEVICE
-mdefine_line|#define IS_PIC_DEVICE(dev) ((struct sn_device_sysdata *)dev-&gt;sysdata)-&gt;isPIC
 DECL|macro|PCIDEV_VERTEX
 mdefine_line|#define PCIDEV_VERTEX(pci_dev) &bslash;&n;&t;(((struct sn_device_sysdata *)((pci_dev)-&gt;sysdata))-&gt;vhdl)
 DECL|macro|PCIBUS_VERTEX
@@ -59,10 +57,6 @@ suffix:semicolon
 DECL|member|isa64
 r_int
 id|isa64
-suffix:semicolon
-DECL|member|isPIC
-r_int
-id|isPIC
 suffix:semicolon
 DECL|member|dma_buf_sync
 r_volatile

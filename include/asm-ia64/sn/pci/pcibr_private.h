@@ -485,9 +485,9 @@ mdefine_line|#define PCIBR_INFO_SLOT_GET_EXT(info)&t;    (((pcibr_info_t)info)-&
 DECL|macro|PCIBR_INFO_SLOT_GET_INT
 mdefine_line|#define PCIBR_INFO_SLOT_GET_INT(info)&t;    (((pcibr_info_t)info)-&gt;f_dev)
 DECL|macro|PCIBR_DEVICE_TO_SLOT
-mdefine_line|#define PCIBR_DEVICE_TO_SLOT(pcibr_soft, dev_num) &bslash;&n;&t;(((dev_num) != PCIIO_SLOT_NONE) ? &bslash;&n;&t;    (IS_PIC_SOFT((pcibr_soft)) ? ((dev_num) + 1) : (dev_num)) : &bslash;&n;&t;    PCIIO_SLOT_NONE)
+mdefine_line|#define PCIBR_DEVICE_TO_SLOT(pcibr_soft, dev_num) &bslash;&n;&t;(((dev_num) != PCIIO_SLOT_NONE) ? ((dev_num) + 1) : PCIIO_SLOT_NONE)
 DECL|macro|PCIBR_SLOT_TO_DEVICE
-mdefine_line|#define PCIBR_SLOT_TO_DEVICE(pcibr_soft, slot) &bslash;&n;        (((slot) != PCIIO_SLOT_NONE) ? &bslash;&n;            (IS_PIC_SOFT((pcibr_soft)) ? ((slot) - 1) : (slot)) : &bslash;&n;            PCIIO_SLOT_NONE)
+mdefine_line|#define PCIBR_SLOT_TO_DEVICE(pcibr_soft, slot) &bslash;&n;        (((slot) != PCIIO_SLOT_NONE) ? ((slot) - 1) : PCIIO_SLOT_NONE)
 multiline_comment|/*&n; * per-connect point pcibr data, including standard pciio data in-line:&n; */
 DECL|struct|pcibr_info_s
 r_struct
@@ -661,16 +661,8 @@ DECL|macro|PCIBR_BRIDGETYPE_XBRIDGE
 mdefine_line|#define PCIBR_BRIDGETYPE_XBRIDGE&t;1
 DECL|macro|PCIBR_BRIDGETYPE_PIC
 mdefine_line|#define PCIBR_BRIDGETYPE_PIC&t;&t;2
-DECL|macro|IS_XBRIDGE_SOFT
-mdefine_line|#define IS_XBRIDGE_SOFT(ps) (ps-&gt;bs_bridge_type == PCIBR_BRIDGETYPE_XBRIDGE)
-DECL|macro|IS_PIC_SOFT
-mdefine_line|#define IS_PIC_SOFT(ps)     (ps-&gt;bs_bridge_type == PCIBR_BRIDGETYPE_PIC)
 DECL|macro|IS_PIC_BUSNUM_SOFT
-mdefine_line|#define IS_PIC_BUSNUM_SOFT(ps, bus)&t;&bslash;&n;&t;&t;(IS_PIC_SOFT(ps) &amp;&amp; ((ps)-&gt;bs_busnum == (bus)))
-DECL|macro|IS_BRIDGE_SOFT
-mdefine_line|#define IS_BRIDGE_SOFT(ps)  (ps-&gt;bs_bridge_type == PCIBR_BRIDGETYPE_BRIDGE)
-DECL|macro|IS_XBRIDGE_OR_PIC_SOFT
-mdefine_line|#define IS_XBRIDGE_OR_PIC_SOFT(ps) (IS_XBRIDGE_SOFT(ps) || IS_PIC_SOFT(ps))
+mdefine_line|#define IS_PIC_BUSNUM_SOFT(ps, bus)&t;((ps)-&gt;bs_busnum == (bus))
 multiline_comment|/*&n; * Runtime checks for workarounds.&n; */
 DECL|macro|PCIBR_WAR_ENABLED
 mdefine_line|#define PCIBR_WAR_ENABLED(pv, pcibr_soft) &bslash;&n;&t;((1 &lt;&lt; XWIDGET_PART_REV_NUM_REV(pcibr_soft-&gt;bs_rev_num)) &amp; pv)

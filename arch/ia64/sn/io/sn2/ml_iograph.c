@@ -1299,24 +1299,6 @@ comma
 (paren
 id|board-&gt;brd_type
 op_eq
-id|KLTYPE_IBRICK
-)paren
-ques
-c_cond
-id|EDGE_LBL_IBRICK
-suffix:colon
-(paren
-id|board-&gt;brd_type
-op_eq
-id|KLTYPE_PBRICK
-)paren
-ques
-c_cond
-id|EDGE_LBL_PBRICK
-suffix:colon
-(paren
-id|board-&gt;brd_type
-op_eq
 id|KLTYPE_PXBRICK
 )paren
 ques
@@ -1331,15 +1313,6 @@ id|KLTYPE_IXBRICK
 ques
 c_cond
 id|EDGE_LBL_IXBRICK
-suffix:colon
-(paren
-id|board-&gt;brd_type
-op_eq
-id|KLTYPE_XBRICK
-)paren
-ques
-c_cond
-id|EDGE_LBL_XBRICK
 suffix:colon
 l_string|&quot;?brick&quot;
 comma
@@ -2097,11 +2070,6 @@ suffix:semicolon
 r_uint32
 id|widget_partnum
 suffix:semicolon
-id|cpu_cookie_t
-id|c
-op_assign
-l_int|0
-suffix:semicolon
 id|npdap
 op_assign
 id|NODEPDA
@@ -2807,104 +2775,6 @@ id|io_brick_tab
 )braket
 op_assign
 (brace
-multiline_comment|/* Ibrick widget number to PCI bus number map */
-(brace
-id|MODULE_IBRICK
-comma
-multiline_comment|/* Ibrick type    */
-multiline_comment|/*  PCI Bus #                                  Widget #       */
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* 0x0 - 0x7      */
-l_int|0
-comma
-multiline_comment|/* 0x8            */
-l_int|0
-comma
-multiline_comment|/* 0x9            */
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* 0xa - 0xb      */
-l_int|0
-comma
-multiline_comment|/* 0xc            */
-l_int|0
-comma
-multiline_comment|/* 0xd            */
-l_int|2
-comma
-multiline_comment|/* 0xe            */
-l_int|1
-multiline_comment|/* 0xf            */
-)brace
-)brace
-comma
-multiline_comment|/* Pbrick widget number to PCI bus number map */
-(brace
-id|MODULE_PBRICK
-comma
-multiline_comment|/* Pbrick type    */
-multiline_comment|/*  PCI Bus #                                  Widget #       */
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* 0x0 - 0x7      */
-l_int|2
-comma
-multiline_comment|/* 0x8            */
-l_int|1
-comma
-multiline_comment|/* 0x9            */
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* 0xa - 0xb      */
-l_int|4
-comma
-multiline_comment|/* 0xc            */
-l_int|6
-comma
-multiline_comment|/* 0xd            */
-l_int|3
-comma
-multiline_comment|/* 0xe            */
-l_int|5
-multiline_comment|/* 0xf            */
-)brace
-)brace
-comma
 multiline_comment|/* PXbrick widget number to PCI bus number map */
 (brace
 id|MODULE_PXBRICK
@@ -3003,54 +2873,6 @@ multiline_comment|/* 0xf            */
 )brace
 )brace
 comma
-multiline_comment|/* Xbrick widget to XIO slot map */
-(brace
-id|MODULE_XBRICK
-comma
-multiline_comment|/* Xbrick type    */
-multiline_comment|/*  XIO Slot #                                 Widget #       */
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* 0x0 - 0x7      */
-l_int|1
-comma
-multiline_comment|/* 0x8            */
-l_int|3
-comma
-multiline_comment|/* 0x9            */
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* 0xa - 0xb      */
-l_int|2
-comma
-multiline_comment|/* 0xc            */
-l_int|4
-comma
-multiline_comment|/* 0xd            */
-l_int|0
-comma
-multiline_comment|/* 0xe            */
-l_int|0
-multiline_comment|/* 0xf            */
-)brace
-)brace
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Use the brick&squot;s type to map a widget number to a meaningful int&n; */

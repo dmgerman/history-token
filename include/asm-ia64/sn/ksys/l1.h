@@ -106,20 +106,10 @@ DECL|macro|L1_BRICKTYPE_IP45
 mdefine_line|#define L1_BRICKTYPE_IP45       0x34            /* 4 */
 DECL|macro|L1_BRICKTYPE_C
 mdefine_line|#define L1_BRICKTYPE_C          0x43            /* C */
-DECL|macro|L1_BRICKTYPE_I
-mdefine_line|#define L1_BRICKTYPE_I          0x49            /* I */
-DECL|macro|L1_BRICKTYPE_P
-mdefine_line|#define L1_BRICKTYPE_P          0x50            /* P */
 DECL|macro|L1_BRICKTYPE_R
 mdefine_line|#define L1_BRICKTYPE_R          0x52            /* R */
-DECL|macro|L1_BRICKTYPE_X
-mdefine_line|#define L1_BRICKTYPE_X          0x58            /* X */
-DECL|macro|L1_BRICKTYPE_X2
-mdefine_line|#define L1_BRICKTYPE_X2         0x59            /* Y */
 DECL|macro|L1_BRICKTYPE_N
 mdefine_line|#define L1_BRICKTYPE_N          0x4e            /* N */
-DECL|macro|L1_BRICKTYPE_PE
-mdefine_line|#define L1_BRICKTYPE_PE&t;&t;0x25&t;&t;/* % */
 DECL|macro|L1_BRICKTYPE_PX
 mdefine_line|#define L1_BRICKTYPE_PX&t;&t;0x23&t;&t;/* # */
 DECL|macro|L1_BRICKTYPE_IX

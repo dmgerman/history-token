@@ -47,13 +47,9 @@ mdefine_line|#define DUPLICATE_BOARD &t;0x04    /* Boards like midplanes/routers
 DECL|macro|VISITED_BOARD
 mdefine_line|#define VISITED_BOARD&t;&t;0x08&t;/* Used for compact hub numbering. */
 DECL|macro|LOCAL_MASTER_IO6
-mdefine_line|#define LOCAL_MASTER_IO6&t;0x10 &t;/* master io6 for that node */
-DECL|macro|GLOBAL_MASTER_IO6
-mdefine_line|#define GLOBAL_MASTER_IO6&t;0x20
-DECL|macro|GLOBAL_MASTER_EXT
-mdefine_line|#define GLOBAL_MASTER_EXT &t;0x40  &t;/* extend master io6 to other bus on ibrick */
-DECL|macro|SECOND_NIC_PRESENT
-mdefine_line|#define SECOND_NIC_PRESENT &t;0x80 &t;/* addons like MIO are present */
+mdefine_line|#define LOCAL_MASTER_IO6&t;0x10    /* master io6 for that node */
+DECL|macro|KLTYPE_IOBRICK_XBOW
+mdefine_line|#define KLTYPE_IOBRICK_XBOW&t;(KLCLASS_MIDPLANE | 0x2)
 multiline_comment|/* klinfo-&gt;flags fields */
 DECL|macro|KLINFO_ENABLE
 mdefine_line|#define KLINFO_ENABLE &t;&t;0x01    /* This component is enabled */
@@ -325,80 +321,26 @@ DECL|macro|KLTYPE_WEIRDIO
 mdefine_line|#define KLTYPE_WEIRDIO&t;(KLCLASS_IOBRICK  | 0x0)
 DECL|macro|KLTYPE_BASEIO
 mdefine_line|#define KLTYPE_BASEIO&t;(KLCLASS_IO  | 0x1) /* IOC3, SuperIO, Bridge, SCSI */
-DECL|macro|KLTYPE_IO6
-mdefine_line|#define KLTYPE_IO6&t;KLTYPE_BASEIO       /* Additional name */
-DECL|macro|KLTYPE_4CHSCSI
-mdefine_line|#define KLTYPE_4CHSCSI&t;(KLCLASS_IO  | 0x2)
-DECL|macro|KLTYPE_MSCSI
-mdefine_line|#define KLTYPE_MSCSI&t;KLTYPE_4CHSCSI      /* Additional name */
 DECL|macro|KLTYPE_ETHERNET
 mdefine_line|#define KLTYPE_ETHERNET&t;(KLCLASS_IO  | 0x3)
-DECL|macro|KLTYPE_MENET
-mdefine_line|#define KLTYPE_MENET&t;KLTYPE_ETHERNET     /* Additional name */
 DECL|macro|KLTYPE_FDDI
 mdefine_line|#define KLTYPE_FDDI  &t;(KLCLASS_IO  | 0x4)
-DECL|macro|KLTYPE_UNUSED
-mdefine_line|#define KLTYPE_UNUSED&t;(KLCLASS_IO  | 0x5) /* XXX UNUSED */
-DECL|macro|KLTYPE_HAROLD
-mdefine_line|#define KLTYPE_HAROLD   (KLCLASS_IO  | 0x6) /* PCI SHOE BOX */
-DECL|macro|KLTYPE_PCI
-mdefine_line|#define KLTYPE_PCI&t;KLTYPE_HAROLD
-DECL|macro|KLTYPE_VME
-mdefine_line|#define KLTYPE_VME      (KLCLASS_IO  | 0x7) /* Any 3rd party VME card */
-DECL|macro|KLTYPE_MIO
-mdefine_line|#define KLTYPE_MIO   &t;(KLCLASS_IO  | 0x8)
 DECL|macro|KLTYPE_FC
 mdefine_line|#define KLTYPE_FC    &t;(KLCLASS_IO  | 0x9)
-DECL|macro|KLTYPE_LINC
-mdefine_line|#define KLTYPE_LINC    &t;(KLCLASS_IO  | 0xA)
-DECL|macro|KLTYPE_TPU
-mdefine_line|#define KLTYPE_TPU    &t;(KLCLASS_IO  | 0xB) /* Tensor Processing Unit */
 DECL|macro|KLTYPE_GSN_A
 mdefine_line|#define KLTYPE_GSN_A   &t;(KLCLASS_IO  | 0xC) /* Main GSN board */
 DECL|macro|KLTYPE_GSN_B
 mdefine_line|#define KLTYPE_GSN_B   &t;(KLCLASS_IO  | 0xD) /* Auxiliary GSN board */
-DECL|macro|KLTYPE_SHOEHORN
-mdefine_line|#define KLTYPE_SHOEHORN (KLCLASS_IO  | 0xE)
-DECL|macro|KLTYPE_SERIAL_HIPPI
-mdefine_line|#define KLTYPE_SERIAL_HIPPI (KLCLASS_IO  | 0xF)
-DECL|macro|KLTYPE_GFX
-mdefine_line|#define KLTYPE_GFX&t;(KLCLASS_GFX | 0x0) /* unknown graphics type */
-DECL|macro|KLTYPE_GFX_KONA
-mdefine_line|#define KLTYPE_GFX_KONA (KLCLASS_GFX | 0x1) /* KONA graphics on IP27 */
-DECL|macro|KLTYPE_GFX_MGRA
-mdefine_line|#define KLTYPE_GFX_MGRA (KLCLASS_GFX | 0x3) /* MGRAS graphics on IP27 */
-DECL|macro|KLTYPE_WEIRDROUTER
-mdefine_line|#define KLTYPE_WEIRDROUTER (KLCLASS_ROUTER | 0x0)
 DECL|macro|KLTYPE_ROUTER
 mdefine_line|#define KLTYPE_ROUTER     (KLCLASS_ROUTER | 0x1)
-DECL|macro|KLTYPE_ROUTER2
-mdefine_line|#define KLTYPE_ROUTER2    KLTYPE_ROUTER&t;&t;/* Obsolete! */
-DECL|macro|KLTYPE_NULL_ROUTER
-mdefine_line|#define KLTYPE_NULL_ROUTER (KLCLASS_ROUTER | 0x2)
 DECL|macro|KLTYPE_META_ROUTER
 mdefine_line|#define KLTYPE_META_ROUTER (KLCLASS_ROUTER | 0x3)
 DECL|macro|KLTYPE_REPEATER_ROUTER
 mdefine_line|#define KLTYPE_REPEATER_ROUTER (KLCLASS_ROUTER | 0x4)
-DECL|macro|KLTYPE_WEIRDMIDPLANE
-mdefine_line|#define KLTYPE_WEIRDMIDPLANE (KLCLASS_MIDPLANE | 0x0)
-DECL|macro|KLTYPE_MIDPLANE8
-mdefine_line|#define KLTYPE_MIDPLANE8  (KLCLASS_MIDPLANE | 0x1) /* 8 slot backplane */
-DECL|macro|KLTYPE_MIDPLANE
-mdefine_line|#define KLTYPE_MIDPLANE    KLTYPE_MIDPLANE8
-DECL|macro|KLTYPE_IOBRICK_XBOW
-mdefine_line|#define KLTYPE_IOBRICK_XBOW&t;(KLCLASS_MIDPLANE | 0x2)
 DECL|macro|KLTYPE_IOBRICK
 mdefine_line|#define KLTYPE_IOBRICK&t;&t;(KLCLASS_IOBRICK | 0x0)
-DECL|macro|KLTYPE_IBRICK
-mdefine_line|#define KLTYPE_IBRICK&t;&t;(KLCLASS_IOBRICK | 0x1)
-DECL|macro|KLTYPE_PBRICK
-mdefine_line|#define KLTYPE_PBRICK&t;&t;(KLCLASS_IOBRICK | 0x2)
-DECL|macro|KLTYPE_XBRICK
-mdefine_line|#define KLTYPE_XBRICK&t;&t;(KLCLASS_IOBRICK | 0x3)
 DECL|macro|KLTYPE_NBRICK
 mdefine_line|#define KLTYPE_NBRICK&t;&t;(KLCLASS_IOBRICK | 0x4)
-DECL|macro|KLTYPE_PEBRICK
-mdefine_line|#define KLTYPE_PEBRICK&t;&t;(KLCLASS_IOBRICK | 0x5)
 DECL|macro|KLTYPE_PXBRICK
 mdefine_line|#define KLTYPE_PXBRICK&t;&t;(KLCLASS_IOBRICK | 0x6)
 DECL|macro|KLTYPE_IXBRICK
@@ -414,10 +356,6 @@ DECL|macro|KLTYPE_UNKNOWN
 mdefine_line|#define KLTYPE_UNKNOWN&t;(KLCLASS_UNKNOWN | 0xf)
 DECL|macro|KLTYPE
 mdefine_line|#define KLTYPE(_x) &t;((_x) &amp; KLTYPE_MASK)
-DECL|macro|IS_MIO_PRESENT
-mdefine_line|#define IS_MIO_PRESENT(l)&t;((l-&gt;brd_type == KLTYPE_BASEIO) &amp;&amp; &bslash;&n;&t;&t;&t;&t; (l-&gt;brd_flags &amp; SECOND_NIC_PRESENT))
-DECL|macro|IS_MIO_IOC3
-mdefine_line|#define IS_MIO_IOC3(l,n)&t;(IS_MIO_PRESENT(l) &amp;&amp; (n &gt; 2))
 multiline_comment|/* &n; * board structures&n; */
 DECL|macro|MAX_COMPTS_PER_BRD
 mdefine_line|#define MAX_COMPTS_PER_BRD 24

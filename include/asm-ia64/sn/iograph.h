@@ -8,10 +8,6 @@ DECL|macro|EDGE_LBL_BUS
 mdefine_line|#define EDGE_LBL_BUS&t;&t;&t;&quot;bus&quot;
 DECL|macro|EDGE_LBL_CONN
 mdefine_line|#define EDGE_LBL_CONN&t;&t;&t;&quot;.connection&quot;
-DECL|macro|EDGE_LBL_ECP
-mdefine_line|#define EDGE_LBL_ECP&t;&t;&t;&quot;ecp&quot;&t;&t;/* EPP/ECP plp */
-DECL|macro|EDGE_LBL_ECPP
-mdefine_line|#define EDGE_LBL_ECPP&t;&t;&t;&quot;ecpp&quot;
 DECL|macro|EDGE_LBL_GUEST
 mdefine_line|#define EDGE_LBL_GUEST&t;&t;&t;&quot;.guest&quot;&t;/* For IOC3 */
 DECL|macro|EDGE_LBL_HOST
@@ -20,8 +16,6 @@ DECL|macro|EDGE_LBL_PERFMON
 mdefine_line|#define EDGE_LBL_PERFMON&t;&t;&quot;mon&quot;
 DECL|macro|EDGE_LBL_USRPCI
 mdefine_line|#define EDGE_LBL_USRPCI&t;&t;&t;&quot;usrpci&quot;
-DECL|macro|EDGE_LBL_VME
-mdefine_line|#define EDGE_LBL_VME&t;&t;&t;&quot;vmebus&quot;
 DECL|macro|EDGE_LBL_BLOCK
 mdefine_line|#define EDGE_LBL_BLOCK&t;&t;&t;&quot;block&quot;
 DECL|macro|EDGE_LBL_BOARD
@@ -40,90 +34,20 @@ DECL|macro|EDGE_LBL_DISABLED
 mdefine_line|#define EDGE_LBL_DISABLED&t;&t;&quot;disabled&quot;
 DECL|macro|EDGE_LBL_DISK
 mdefine_line|#define EDGE_LBL_DISK&t;&t;&t;&quot;disk&quot;
-DECL|macro|EDGE_LBL_DMA_ENGINE
-mdefine_line|#define EDGE_LBL_DMA_ENGINE             &quot;dma_engine&quot;    /* Only available on&n;&t;&t;&t;&t;&t;&t;&t;   VMEbus now        */
-DECL|macro|EDGE_LBL_NET
-mdefine_line|#define EDGE_LBL_NET&t;&t;&t;&quot;net&quot;&t;&t;/* all nw. devs */
-DECL|macro|EDGE_LBL_EF
-mdefine_line|#define EDGE_LBL_EF&t;&t;&t;&quot;ef&quot;&t;&t;/* For if_ef ethernet */
-DECL|macro|EDGE_LBL_ET
-mdefine_line|#define EDGE_LBL_ET&t;&t;&t;&quot;et&quot;&t;&t;/* For if_ee ethernet */
-DECL|macro|EDGE_LBL_EC
-mdefine_line|#define EDGE_LBL_EC&t;&t;&t;&quot;ec&quot;&t;&t;/* For if_ec2 ether */
-DECL|macro|EDGE_LBL_ECF
-mdefine_line|#define EDGE_LBL_ECF&t;&t;&t;&quot;ec&quot;&t;&t;/* For if_ecf enet */
-DECL|macro|EDGE_LBL_EM
-mdefine_line|#define EDGE_LBL_EM&t;&t;&t;&quot;ec&quot;&t;&t;/* For O2 ether */
-DECL|macro|EDGE_LBL_IPG
-mdefine_line|#define EDGE_LBL_IPG&t;&t;&t;&quot;ipg&quot;&t;&t;/* For IPG FDDI */
-DECL|macro|EDGE_LBL_XPI
-mdefine_line|#define EDGE_LBL_XPI&t;&t;&t;&quot;xpi&quot;&t;&t;/* For IPG FDDI */
-DECL|macro|EDGE_LBL_HIP
-mdefine_line|#define EDGE_LBL_HIP&t;&t;&t;&quot;hip&quot;&t;&t;/* For HIPPI */
-DECL|macro|EDGE_LBL_GSN
-mdefine_line|#define EDGE_LBL_GSN                    &quot;gsn&quot;           /* For GSN */
-DECL|macro|EDGE_LBL_ATM
-mdefine_line|#define EDGE_LBL_ATM&t;&t;&t;&quot;atm&quot;&t;&t;/* For ATM */
-DECL|macro|EDGE_LBL_FXP
-mdefine_line|#define EDGE_LBL_FXP&t;&t;&t;&quot;fxp&quot;&t;&t;/* For FXP ether */
-DECL|macro|EDGE_LBL_EP
-mdefine_line|#define EDGE_LBL_EP&t;&t;&t;&quot;ep&quot;&t;&t;/* For eplex ether */
-DECL|macro|EDGE_LBL_VFE
-mdefine_line|#define EDGE_LBL_VFE&t;&t;&t;&quot;vfe&quot;&t;&t;/* For VFE ether */
-DECL|macro|EDGE_LBL_GFE
-mdefine_line|#define EDGE_LBL_GFE&t;&t;&t;&quot;gfe&quot;&t;&t;/* For GFE ether */
-DECL|macro|EDGE_LBL_RNS
-mdefine_line|#define EDGE_LBL_RNS&t;&t;&t;&quot;rns&quot;&t;&t;/* RNS PCI FDDI card */
-DECL|macro|EDGE_LBL_MTR
-mdefine_line|#define EDGE_LBL_MTR&t;&t;&t;&quot;mtr&quot;&t;&t;/* MTR PCI 802.5 card */
-DECL|macro|EDGE_LBL_FV
-mdefine_line|#define EDGE_LBL_FV&t;&t;&t;&quot;fv&quot;&t;&t;/* FV VME 802.5 card */
-DECL|macro|EDGE_LBL_GTR
-mdefine_line|#define EDGE_LBL_GTR&t;&t;&t;&quot;gtr&quot;&t;&t;/* GTR GIO 802.5 card */
-DECL|macro|EDGE_LBL_ISDN
-mdefine_line|#define EDGE_LBL_ISDN                   &quot;isdn&quot;&t;&t;/* Digi PCI ISDN-BRI card */
-DECL|macro|EDGE_LBL_EISA
-mdefine_line|#define EDGE_LBL_EISA&t;&t;&t;&quot;eisa&quot;
-DECL|macro|EDGE_LBL_ENET
-mdefine_line|#define EDGE_LBL_ENET&t;&t;&t;&quot;ethernet&quot;
-DECL|macro|EDGE_LBL_FLOPPY
-mdefine_line|#define EDGE_LBL_FLOPPY&t;&t;&t;&quot;floppy&quot;
-DECL|macro|EDGE_LBL_PFD
-mdefine_line|#define EDGE_LBL_PFD&t;&t;&t;&quot;pfd&quot;&t;&t;/* For O2 pfd floppy */
-DECL|macro|EDGE_LBL_FOP
-mdefine_line|#define EDGE_LBL_FOP                    &quot;fop&quot;           /* Fetchop pseudo device */
-DECL|macro|EDGE_LBL_GIO
-mdefine_line|#define EDGE_LBL_GIO&t;&t;&t;&quot;gio&quot;
-DECL|macro|EDGE_LBL_HEART
-mdefine_line|#define EDGE_LBL_HEART&t;&t;&t;&quot;heart&quot;&t;&t;/* For RACER */
-DECL|macro|EDGE_LBL_HPC
-mdefine_line|#define EDGE_LBL_HPC&t;&t;&t;&quot;hpc&quot;
-DECL|macro|EDGE_LBL_GFX
-mdefine_line|#define EDGE_LBL_GFX&t;&t;&t;&quot;gfx&quot;
 DECL|macro|EDGE_LBL_HUB
 mdefine_line|#define EDGE_LBL_HUB&t;&t;&t;&quot;hub&quot;&t;&t;/* For SN0 */
 DECL|macro|EDGE_LBL_HW
 mdefine_line|#define EDGE_LBL_HW&t;&t;&t;&quot;hw&quot;
-DECL|macro|EDGE_LBL_SYNERGY
-mdefine_line|#define EDGE_LBL_SYNERGY&t;&t;&quot;synergy&quot;&t;/* For SNIA only */
-DECL|macro|EDGE_LBL_IBUS
-mdefine_line|#define EDGE_LBL_IBUS&t;&t;&t;&quot;ibus&quot;&t;&t;/* For EVEREST */
 DECL|macro|EDGE_LBL_INTERCONNECT
 mdefine_line|#define EDGE_LBL_INTERCONNECT&t;&t;&quot;link&quot;
 DECL|macro|EDGE_LBL_IO
 mdefine_line|#define EDGE_LBL_IO&t;&t;&t;&quot;io&quot;
-DECL|macro|EDGE_LBL_IO4
-mdefine_line|#define EDGE_LBL_IO4&t;&t;&t;&quot;io4&quot;&t;&t;/* For EVEREST */
-DECL|macro|EDGE_LBL_IOC3
-mdefine_line|#define EDGE_LBL_IOC3&t;&t;&t;&quot;ioc3&quot;
 DECL|macro|EDGE_LBL_LUN
 mdefine_line|#define EDGE_LBL_LUN                    &quot;lun&quot;
 DECL|macro|EDGE_LBL_LINUX
 mdefine_line|#define EDGE_LBL_LINUX                  &quot;linux&quot;
 DECL|macro|EDGE_LBL_LINUX_BUS
 mdefine_line|#define EDGE_LBL_LINUX_BUS              EDGE_LBL_LINUX &quot;/bus/pci-x&quot;
-DECL|macro|EDGE_LBL_MACE
-mdefine_line|#define EDGE_LBL_MACE                   &quot;mace&quot; &t;&t;/* O2 mace */
 DECL|macro|EDGE_LBL_MACHDEP
 mdefine_line|#define EDGE_LBL_MACHDEP                &quot;machdep&quot;       /* Platform depedent devices */
 DECL|macro|EDGE_LBL_MASTER
@@ -172,16 +96,10 @@ DECL|macro|EDGE_LBL_SCSI_CTLR
 mdefine_line|#define EDGE_LBL_SCSI_CTLR&t;&t;&quot;scsi_ctlr&quot;
 DECL|macro|EDGE_LBL_SLOT
 mdefine_line|#define EDGE_LBL_SLOT&t;&t;&t;&quot;slot&quot;
-DECL|macro|EDGE_LBL_TAPE
-mdefine_line|#define EDGE_LBL_TAPE&t;&t;&t;&quot;tape&quot;
 DECL|macro|EDGE_LBL_TARGET
 mdefine_line|#define EDGE_LBL_TARGET                 &quot;target&quot;
 DECL|macro|EDGE_LBL_UNKNOWN
 mdefine_line|#define EDGE_LBL_UNKNOWN&t;&t;&quot;unknown&quot;
-DECL|macro|EDGE_LBL_VOLUME
-mdefine_line|#define EDGE_LBL_VOLUME&t;&t;&t;&quot;volume&quot;
-DECL|macro|EDGE_LBL_VOLUME_HEADER
-mdefine_line|#define EDGE_LBL_VOLUME_HEADER&t;&t;&quot;volume_header&quot;
 DECL|macro|EDGE_LBL_XBOW
 mdefine_line|#define EDGE_LBL_XBOW&t;&t;&t;&quot;xbow&quot;
 DECL|macro|EDGE_LBL_XIO
@@ -196,8 +114,6 @@ DECL|macro|EDGE_LBL_ELSC
 mdefine_line|#define EDGE_LBL_ELSC&t;&t;&t;&quot;elsc&quot;
 DECL|macro|EDGE_LBL_L1
 mdefine_line|#define EDGE_LBL_L1&t;&t;&t;&quot;L1&quot;
-DECL|macro|EDGE_LBL_MADGE_TR
-mdefine_line|#define EDGE_LBL_MADGE_TR               &quot;Madge-tokenring&quot;
 DECL|macro|EDGE_LBL_XPLINK
 mdefine_line|#define EDGE_LBL_XPLINK&t;&t;&t;&quot;xplink&quot; &t;/* Cross partition */
 DECL|macro|EDGE_LBL_XPLINK_NET
@@ -210,26 +126,12 @@ DECL|macro|EDGE_LBL_XPLINK_KERNEL
 mdefine_line|#define&t;EDGE_LBL_XPLINK_KERNEL&t;&t;&quot;kernel&quot;&t;/* XP kernel devs */
 DECL|macro|EDGE_LBL_XPLINK_ADMIN
 mdefine_line|#define&t;EDGE_LBL_XPLINK_ADMIN&t;&t;&quot;admin&quot;&t;   &t;/* Partition admin */
-DECL|macro|EDGE_LBL_KAIO
-mdefine_line|#define&t;EDGE_LBL_KAIO&t;&t;&t;&quot;kaio&quot;&t;   &t;/* Kernel async i/o poll */
-DECL|macro|EDGE_LBL_RPS
-mdefine_line|#define EDGE_LBL_RPS                    &quot;rps&quot;           /* redundant power supply */ 
-DECL|macro|EDGE_LBL_XBOX_RPS
-mdefine_line|#define EDGE_LBL_XBOX_RPS               &quot;xbox_rps&quot;      /* redundant power supply for xbox unit */ 
 DECL|macro|EDGE_LBL_IOBRICK
 mdefine_line|#define EDGE_LBL_IOBRICK&t;&t;&quot;iobrick&quot;
-DECL|macro|EDGE_LBL_PBRICK
-mdefine_line|#define EDGE_LBL_PBRICK&t;&t;&t;&quot;Pbrick&quot;
-DECL|macro|EDGE_LBL_PEBRICK
-mdefine_line|#define EDGE_LBL_PEBRICK&t;&t;&quot;PEbrick&quot;
 DECL|macro|EDGE_LBL_PXBRICK
 mdefine_line|#define EDGE_LBL_PXBRICK&t;&t;&quot;PXbrick&quot;
 DECL|macro|EDGE_LBL_IXBRICK
 mdefine_line|#define EDGE_LBL_IXBRICK&t;&t;&quot;IXbrick&quot;
-DECL|macro|EDGE_LBL_IBRICK
-mdefine_line|#define EDGE_LBL_IBRICK&t;&t;&t;&quot;Ibrick&quot;
-DECL|macro|EDGE_LBL_XBRICK
-mdefine_line|#define EDGE_LBL_XBRICK&t;&t;&t;&quot;Xbrick&quot;
 DECL|macro|EDGE_LBL_CGBRICK
 mdefine_line|#define EDGE_LBL_CGBRICK&t;&t;&quot;CGbrick&quot;
 DECL|macro|EDGE_LBL_CPUBUS
@@ -259,32 +161,16 @@ DECL|macro|INFO_LBL_ELSC
 mdefine_line|#define INFO_LBL_ELSC&t;&t;&t;&quot;_elsc&quot;
 DECL|macro|INFO_LBL_SUBCH
 mdefine_line|#define&t;INFO_LBL_SUBCH&t;&t;&t;&quot;_subch&quot;&t;/* system controller subchannel */
-DECL|macro|INFO_LBL_L1SCP
-mdefine_line|#define INFO_LBL_L1SCP&t;&t;&t;&quot;_l1scp&quot;&t;/* points to l1sc_t */
-DECL|macro|INFO_LBL_FC_PORTNAME
-mdefine_line|#define INFO_LBL_FC_PORTNAME&t;&t;&quot;_fc_portname&quot;
-DECL|macro|INFO_LBL_GIOIO
-mdefine_line|#define INFO_LBL_GIOIO&t;&t;&t;&quot;_gioio&quot;
-DECL|macro|INFO_LBL_GFUNCS
-mdefine_line|#define INFO_LBL_GFUNCS&t;&t;&t;&quot;_gioio_ops&quot;&t;/* ops vector for gio providers */
 DECL|macro|INFO_LBL_HUB_INFO
 mdefine_line|#define INFO_LBL_HUB_INFO&t;&t;&quot;_hubinfo&quot;
 DECL|macro|INFO_LBL_HWGFSLIST
 mdefine_line|#define INFO_LBL_HWGFSLIST&t;&t;&quot;_hwgfs_list&quot;
 DECL|macro|INFO_LBL_TRAVERSE
 mdefine_line|#define INFO_LBL_TRAVERSE&t;&t;&quot;_hwg_traverse&quot; /* hwgraph traverse function */
-DECL|macro|INFO_LBL_INVENT
-mdefine_line|#define INFO_LBL_INVENT &t;&t;&quot;_invent&quot;&t;/* inventory data */
-DECL|macro|INFO_LBL_MLRESET
-mdefine_line|#define INFO_LBL_MLRESET&t;&t;&quot;_mlreset&quot;&t;/* present if device preinitialized */
 DECL|macro|INFO_LBL_MODULE_INFO
 mdefine_line|#define INFO_LBL_MODULE_INFO&t;&t;&quot;_module&quot;&t;/* module data ptr */
-DECL|macro|INFO_LBL_MONDATA
-mdefine_line|#define INFO_LBL_MONDATA&t;&t;&quot;_mon&quot;&t;&t;/* monitor data ptr */
 DECL|macro|INFO_LBL_MDPERF_DATA
 mdefine_line|#define INFO_LBL_MDPERF_DATA&t;&t;&quot;_mdperf&quot;&t;/* mdperf monitoring*/
-DECL|macro|INFO_LBL_NIC
-mdefine_line|#define INFO_LBL_NIC&t;&t;&t;&quot;_nic&quot;
 DECL|macro|INFO_LBL_NODE_INFO
 mdefine_line|#define INFO_LBL_NODE_INFO&t;&t;&quot;_node&quot;
 DECL|macro|INFO_LBL_PCIBR_HINTS
@@ -299,8 +185,6 @@ DECL|macro|INFO_LBL_ROUTER_INFO
 mdefine_line|#define INFO_LBL_ROUTER_INFO&t;&t;&quot;_router&quot;
 DECL|macro|INFO_LBL_SUBDEVS
 mdefine_line|#define INFO_LBL_SUBDEVS&t;&t;&quot;_subdevs&quot;&t;/* subdevice enable bits */
-DECL|macro|INFO_LBL_VME_FUNCS
-mdefine_line|#define INFO_LBL_VME_FUNCS&t;&t;&quot;_vmeio_ops&quot;&t;/* ops vector for VME providers */
 DECL|macro|INFO_LBL_XSWITCH
 mdefine_line|#define INFO_LBL_XSWITCH&t;&t;&quot;_xswitch&quot;
 DECL|macro|INFO_LBL_XSWITCH_ID
@@ -311,12 +195,6 @@ DECL|macro|INFO_LBL_XFUNCS
 mdefine_line|#define INFO_LBL_XFUNCS&t;&t;&t;&quot;_xtalk_ops&quot;&t;/* ops vector for gio providers */
 DECL|macro|INFO_LBL_XWIDGET
 mdefine_line|#define INFO_LBL_XWIDGET&t;&t;&quot;_xwidget&quot;
-DECL|macro|INFO_LBL_GRIO_DSK
-mdefine_line|#define INFO_LBL_GRIO_DSK&t;&t;&quot;_grio_disk&quot;&t;/* guaranteed rate I/O */
-DECL|macro|INFO_LBL_ASYNC_ATTACH
-mdefine_line|#define INFO_LBL_ASYNC_ATTACH           &quot;_async_attach&quot;&t;/* parallel attachment */
-DECL|macro|INFO_LBL_GFXID
-mdefine_line|#define INFO_LBL_GFXID&t;&t;&t;&quot;_gfxid&quot;&t;/* gfx pipe ID #s */
 multiline_comment|/* Device/Driver  Admin directive labels  */
 DECL|macro|ADMIN_LBL_INTR_TARGET
 mdefine_line|#define ADMIN_LBL_INTR_TARGET&t;&t;&quot;INTR_TARGET&quot;&t;/* Target cpu for device interrupts*/
