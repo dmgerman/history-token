@@ -905,6 +905,9 @@ suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_EWS88MT_NEW
 suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_PHASE88
+suffix:colon
 id|snd_runtime_check
 c_func
 (paren
@@ -1788,6 +1791,9 @@ suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_EWS88MT_NEW
 suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_PHASE88
+suffix:colon
 id|ice-&gt;num_total_dacs
 op_assign
 l_int|8
@@ -1924,6 +1930,9 @@ id|ICE1712_SUBDEVICE_EWS88MT
 suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_EWS88MT_NEW
+suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_PHASE88
 suffix:colon
 r_if
 c_cond
@@ -2159,6 +2168,9 @@ r_case
 id|ICE1712_SUBDEVICE_EWS88MT_NEW
 suffix:colon
 r_case
+id|ICE1712_SUBDEVICE_PHASE88
+suffix:colon
+r_case
 id|ICE1712_SUBDEVICE_EWS88D
 suffix:colon
 multiline_comment|/* set up CS8404 */
@@ -2253,6 +2265,9 @@ id|ICE1712_SUBDEVICE_EWS88MT
 suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_EWS88MT_NEW
+suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_PHASE88
 suffix:colon
 id|err
 op_assign
@@ -4577,6 +4592,9 @@ r_case
 id|ICE1712_SUBDEVICE_EWS88MT_NEW
 suffix:colon
 r_case
+id|ICE1712_SUBDEVICE_PHASE88
+suffix:colon
+r_case
 id|ICE1712_SUBDEVICE_DMX6FIRE
 suffix:colon
 id|err
@@ -4667,6 +4685,9 @@ id|ICE1712_SUBDEVICE_EWS88MT
 suffix:colon
 r_case
 id|ICE1712_SUBDEVICE_EWS88MT_NEW
+suffix:colon
+r_case
+id|ICE1712_SUBDEVICE_PHASE88
 suffix:colon
 id|err
 op_assign
@@ -4920,6 +4941,34 @@ dot
 id|model
 op_assign
 l_string|&quot;ews88mt_new&quot;
+comma
+dot
+id|chip_init
+op_assign
+id|snd_ice1712_ews_init
+comma
+dot
+id|build_controls
+op_assign
+id|snd_ice1712_ews_add_controls
+comma
+)brace
+comma
+(brace
+dot
+id|subvendor
+op_assign
+id|ICE1712_SUBDEVICE_PHASE88
+comma
+dot
+id|name
+op_assign
+l_string|&quot;TerraTec Phase88&quot;
+comma
+dot
+id|model
+op_assign
+l_string|&quot;phase88&quot;
 comma
 dot
 id|chip_init

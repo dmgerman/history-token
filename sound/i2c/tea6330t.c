@@ -1177,8 +1177,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|TEA6330T_CONTROLS
-mdefine_line|#define TEA6330T_CONTROLS (sizeof(snd_tea6330t_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_tea6330t_controls
 r_static
 id|snd_kcontrol_new_t
@@ -1587,7 +1585,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|TEA6330T_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_tea6330t_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

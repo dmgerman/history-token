@@ -715,8 +715,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|GF1_CONTROLS
-mdefine_line|#define GF1_CONTROLS (sizeof(snd_gf1_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_gf1_controls
 r_static
 id|snd_kcontrol_new_t
@@ -762,8 +760,6 @@ l_int|0
 )paren
 )brace
 suffix:semicolon
-DECL|macro|ICS_CONTROLS
-mdefine_line|#define ICS_CONTROLS (sizeof(snd_ics_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_ics_controls
 r_static
 id|snd_kcontrol_new_t
@@ -986,7 +982,11 @@ ques
 c_cond
 l_int|1
 suffix:colon
-id|GF1_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_gf1_controls
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1046,7 +1046,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|ICS_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_ics_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

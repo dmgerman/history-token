@@ -3919,8 +3919,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|CS4236_CONTROLS
-mdefine_line|#define CS4236_CONTROLS (sizeof(snd_cs4236_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_cs4236_controls
 r_static
 id|snd_kcontrol_new_t
@@ -4606,8 +4604,6 @@ l_int|1
 )paren
 )brace
 suffix:semicolon
-DECL|macro|CS4235_CONTROLS
-mdefine_line|#define CS4235_CONTROLS (sizeof(snd_cs4235_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_cs4235_controls
 r_static
 id|snd_kcontrol_new_t
@@ -5525,8 +5521,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|CS4236_IEC958_CONTROLS
-mdefine_line|#define CS4236_IEC958_CONTROLS (sizeof(snd_cs4236_iec958_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_cs4236_iec958_controls
 r_static
 id|snd_kcontrol_new_t
@@ -5624,8 +5618,6 @@ l_int|0
 )paren
 )brace
 suffix:semicolon
-DECL|macro|CS4236_3D_CONTROLS_CS4235
-mdefine_line|#define CS4236_3D_CONTROLS_CS4235 (sizeof(snd_cs4236_3d_controls_cs4235)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_cs4236_3d_controls_cs4235
 r_static
 id|snd_kcontrol_new_t
@@ -5667,8 +5659,6 @@ l_int|1
 )paren
 )brace
 suffix:semicolon
-DECL|macro|CS4236_3D_CONTROLS_CS4237
-mdefine_line|#define CS4236_3D_CONTROLS_CS4237 (sizeof(snd_cs4236_3d_controls_cs4237)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_cs4236_3d_controls_cs4237
 r_static
 id|snd_kcontrol_new_t
@@ -5758,8 +5748,6 @@ l_int|0
 )paren
 )brace
 suffix:semicolon
-DECL|macro|CS4236_3D_CONTROLS_CS4238
-mdefine_line|#define CS4236_3D_CONTROLS_CS4238 (sizeof(snd_cs4236_3d_controls_cs4238)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_cs4236_3d_controls_cs4238
 r_static
 id|snd_kcontrol_new_t
@@ -5913,7 +5901,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|CS4235_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_cs4235_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment
@@ -5962,7 +5954,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|CS4236_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_cs4236_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment
@@ -6014,7 +6010,11 @@ id|CS4231_HW_CS4239
 suffix:colon
 id|count
 op_assign
-id|CS4236_3D_CONTROLS_CS4235
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_cs4236_3d_controls_cs4235
+)paren
 suffix:semicolon
 id|kcontrol
 op_assign
@@ -6027,7 +6027,11 @@ id|CS4231_HW_CS4237B
 suffix:colon
 id|count
 op_assign
-id|CS4236_3D_CONTROLS_CS4237
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_cs4236_3d_controls_cs4237
+)paren
 suffix:semicolon
 id|kcontrol
 op_assign
@@ -6040,7 +6044,11 @@ id|CS4231_HW_CS4238B
 suffix:colon
 id|count
 op_assign
-id|CS4236_3D_CONTROLS_CS4238
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_cs4236_3d_controls_cs4238
+)paren
 suffix:semicolon
 id|kcontrol
 op_assign
@@ -6125,7 +6133,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|CS4236_IEC958_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_cs4236_iec958_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

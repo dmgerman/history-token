@@ -1418,8 +1418,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|AK4531_CONTROLS
-mdefine_line|#define AK4531_CONTROLS (sizeof(snd_ak4531_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_ak4531_controls
 r_static
 id|snd_kcontrol_new_t
@@ -2579,7 +2577,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|AK4531_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_ak4531_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

@@ -3124,7 +3124,7 @@ l_int|48000
 )brace
 suffix:semicolon
 DECL|macro|RATES
-mdefine_line|#define RATES sizeof(rates) / sizeof(rates[0])
+mdefine_line|#define RATES ARRAY_SIZE(rates)
 DECL|variable|hw_constraints_rates
 r_static
 id|snd_pcm_hw_constraint_list_t
@@ -7197,8 +7197,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|OPTi93X_CONTROLS
-mdefine_line|#define OPTi93X_CONTROLS (sizeof(snd_opti93x_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_opti93x_controls
 r_static
 id|snd_kcontrol_new_t
@@ -7621,7 +7619,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|OPTi93X_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_opti93x_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment

@@ -134,7 +134,7 @@ r_int
 r_int
 id|cur_freqs
 suffix:semicolon
-multiline_comment|/* currently available frequences */
+multiline_comment|/* currently available frequencies */
 DECL|member|cur_formats
 r_int
 r_int

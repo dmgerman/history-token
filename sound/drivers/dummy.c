@@ -2284,8 +2284,6 @@ r_return
 id|change
 suffix:semicolon
 )brace
-DECL|macro|DUMMY_CONTROLS
-mdefine_line|#define DUMMY_CONTROLS (sizeof(snd_dummy_controls)/sizeof(snd_kcontrol_new_t))
 DECL|variable|snd_dummy_controls
 r_static
 id|snd_kcontrol_new_t
@@ -2455,7 +2453,11 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-id|DUMMY_CONTROLS
+id|ARRAY_SIZE
+c_func
+(paren
+id|snd_dummy_controls
+)paren
 suffix:semicolon
 id|idx
 op_increment
