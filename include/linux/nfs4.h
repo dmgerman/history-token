@@ -936,10 +936,6 @@ op_assign
 l_int|0
 comma
 multiline_comment|/* Unused */
-DECL|enumerator|NFSPROC4_CLNT_COMPOUND
-id|NFSPROC4_CLNT_COMPOUND
-comma
-multiline_comment|/* Soon to be unused */
 DECL|enumerator|NFSPROC4_CLNT_READ
 id|NFSPROC4_CLNT_READ
 comma
@@ -1020,6 +1016,9 @@ id|NFSPROC4_CLNT_STATFS
 comma
 DECL|enumerator|NFSPROC4_CLNT_READLINK
 id|NFSPROC4_CLNT_READLINK
+comma
+DECL|enumerator|NFSPROC4_CLNT_READDIR
+id|NFSPROC4_CLNT_READDIR
 comma
 )brace
 suffix:semicolon

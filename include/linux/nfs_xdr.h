@@ -1765,23 +1765,6 @@ id|access
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|nfs4_close
-r_struct
-id|nfs4_close
-(brace
-DECL|member|cl_stateid
-r_char
-op_star
-id|cl_stateid
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|cl_seqid
-id|u32
-id|cl_seqid
-suffix:semicolon
-multiline_comment|/* request */
-)brace
-suffix:semicolon
 DECL|struct|nfs4_create_arg
 r_struct
 id|nfs4_create_arg
@@ -1884,14 +1867,6 @@ id|dir_cinfo
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|cr_textlen
-mdefine_line|#define cr_textlen&t;&t;&t;u.symlink.textlen
-DECL|macro|cr_text
-mdefine_line|#define cr_text&t;&t;&t;&t;u.symlink.text
-DECL|macro|cr_specdata1
-mdefine_line|#define cr_specdata1&t;&t;&t;u.device.specdata1
-DECL|macro|cr_specdata2
-mdefine_line|#define cr_specdata2&t;&t;&t;u.device.specdata2
 DECL|struct|nfs4_getattr
 r_struct
 id|nfs4_getattr
@@ -2046,95 +2021,6 @@ id|bitmask
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|nfs4_open
-r_struct
-id|nfs4_open
-(brace
-DECL|member|op_client_state
-r_struct
-id|nfs4_client
-op_star
-id|op_client_state
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|op_share_access
-id|u32
-id|op_share_access
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|op_opentype
-id|u32
-id|op_opentype
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|op_createmode
-id|u32
-id|op_createmode
-suffix:semicolon
-multiline_comment|/* request */
-r_union
-(brace
-multiline_comment|/* request */
-DECL|member|attrs
-r_struct
-id|iattr
-op_star
-id|attrs
-suffix:semicolon
-multiline_comment|/* UNCHECKED, GUARDED */
-DECL|member|verifier
-id|nfs4_verifier
-id|verifier
-suffix:semicolon
-multiline_comment|/* EXCLUSIVE */
-DECL|member|u
-)brace
-id|u
-suffix:semicolon
-DECL|member|op_name
-r_struct
-id|qstr
-op_star
-id|op_name
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|op_stateid
-r_char
-op_star
-id|op_stateid
-suffix:semicolon
-multiline_comment|/* response */
-DECL|member|op_cinfo
-r_struct
-id|nfs4_change_info
-op_star
-id|op_cinfo
-suffix:semicolon
-multiline_comment|/* response */
-DECL|member|op_rflags
-id|u32
-op_star
-id|op_rflags
-suffix:semicolon
-multiline_comment|/* response */
-)brace
-suffix:semicolon
-DECL|macro|op_attrs
-mdefine_line|#define op_attrs     u.attrs
-DECL|macro|op_verifier
-mdefine_line|#define op_verifier  u.verifier
-DECL|struct|nfs4_open_confirm
-r_struct
-id|nfs4_open_confirm
-(brace
-DECL|member|oc_stateid
-r_char
-op_star
-id|oc_stateid
-suffix:semicolon
-multiline_comment|/* request */
-)brace
-suffix:semicolon
 DECL|struct|nfs4_pathconf_arg
 r_struct
 id|nfs4_pathconf_arg
@@ -2154,65 +2040,58 @@ id|bitmask
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|nfs4_putfh
+DECL|struct|nfs4_readdir_arg
 r_struct
-id|nfs4_putfh
+id|nfs4_readdir_arg
 (brace
-DECL|member|pf_fhandle
+DECL|member|fh
+r_const
 r_struct
 id|nfs_fh
 op_star
-id|pf_fhandle
+id|fh
 suffix:semicolon
-multiline_comment|/* request */
-)brace
-suffix:semicolon
-DECL|struct|nfs4_readdir
-r_struct
-id|nfs4_readdir
-(brace
-DECL|member|rd_cookie
+DECL|member|cookie
 id|u64
-id|rd_cookie
+id|cookie
 suffix:semicolon
-multiline_comment|/* request */
-DECL|member|rd_req_verifier
+DECL|member|verifier
 id|nfs4_verifier
-id|rd_req_verifier
+id|verifier
 suffix:semicolon
-multiline_comment|/* request */
-DECL|member|rd_count
+DECL|member|count
 id|u32
-id|rd_count
+id|count
 suffix:semicolon
-multiline_comment|/* request */
-DECL|member|rd_bmval
-id|u32
-id|rd_bmval
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|rd_resp_verifier
-id|nfs4_verifier
-id|rd_resp_verifier
-suffix:semicolon
-multiline_comment|/* response */
-DECL|member|rd_pages
+DECL|member|pages
 r_struct
 id|page
 op_star
 op_star
-id|rd_pages
+id|pages
 suffix:semicolon
 multiline_comment|/* zero-copy data */
-DECL|member|rd_pgbase
+DECL|member|pgbase
 r_int
 r_int
-id|rd_pgbase
+id|pgbase
 suffix:semicolon
 multiline_comment|/* zero-copy data */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_readdir_res
+r_struct
+id|nfs4_readdir_res
+(brace
+DECL|member|verifier
+id|nfs4_verifier
+id|verifier
+suffix:semicolon
+DECL|member|pgbase
+r_int
+r_int
+id|pgbase
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfs4_readlink
@@ -2311,25 +2190,6 @@ id|new_cinfo
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|nfs4_setattr
-r_struct
-id|nfs4_setattr
-(brace
-DECL|member|st_stateid
-r_char
-op_star
-id|st_stateid
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|st_iap
-r_struct
-id|iattr
-op_star
-id|st_iap
-suffix:semicolon
-multiline_comment|/* request */
-)brace
-suffix:semicolon
 DECL|struct|nfs4_setclientid
 r_struct
 id|nfs4_setclientid
@@ -2396,136 +2256,6 @@ r_const
 id|u32
 op_star
 id|bitmask
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|nfs4_op
-r_struct
-id|nfs4_op
-(brace
-DECL|member|opnum
-id|u32
-id|opnum
-suffix:semicolon
-r_union
-(brace
-DECL|member|close
-r_struct
-id|nfs4_close
-id|close
-suffix:semicolon
-DECL|member|open
-r_struct
-id|nfs4_open
-id|open
-suffix:semicolon
-DECL|member|open_confirm
-r_struct
-id|nfs4_open_confirm
-id|open_confirm
-suffix:semicolon
-DECL|member|putfh
-r_struct
-id|nfs4_putfh
-id|putfh
-suffix:semicolon
-DECL|member|readdir
-r_struct
-id|nfs4_readdir
-id|readdir
-suffix:semicolon
-DECL|member|readlink
-r_struct
-id|nfs4_readlink
-id|readlink
-suffix:semicolon
-DECL|member|renew
-r_struct
-id|nfs4_client
-op_star
-id|renew
-suffix:semicolon
-DECL|member|setattr
-r_struct
-id|nfs4_setattr
-id|setattr
-suffix:semicolon
-DECL|member|u
-)brace
-id|u
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|nfs4_compound
-r_struct
-id|nfs4_compound
-(brace
-DECL|member|flags
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* defined below */
-DECL|member|server
-r_struct
-id|nfs_server
-op_star
-id|server
-suffix:semicolon
-multiline_comment|/* RENEW information */
-DECL|member|renew_index
-r_int
-id|renew_index
-suffix:semicolon
-DECL|member|timestamp
-r_int
-r_int
-id|timestamp
-suffix:semicolon
-multiline_comment|/* scratch variables for XDR encode/decode */
-DECL|member|nops
-r_int
-id|nops
-suffix:semicolon
-DECL|member|p
-id|u32
-op_star
-id|p
-suffix:semicolon
-DECL|member|end
-id|u32
-op_star
-id|end
-suffix:semicolon
-multiline_comment|/* the individual COMPOUND operations */
-DECL|member|ops
-r_struct
-id|nfs4_op
-op_star
-id|ops
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|req_nops
-r_int
-id|req_nops
-suffix:semicolon
-DECL|member|taglen
-id|u32
-id|taglen
-suffix:semicolon
-DECL|member|tag
-r_char
-op_star
-id|tag
-suffix:semicolon
-multiline_comment|/* response */
-DECL|member|resp_nops
-r_int
-id|resp_nops
-suffix:semicolon
-DECL|member|toplevel_status
-r_int
-id|toplevel_status
 suffix:semicolon
 )brace
 suffix:semicolon
