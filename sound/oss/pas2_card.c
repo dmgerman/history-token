@@ -2,6 +2,7 @@ multiline_comment|/*&n; * sound/pas2_card.c&n; *&n; * Detection routine for the 
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &quot;pas2.h&quot;
 macro_line|#include &quot;sb.h&quot;
@@ -166,6 +167,12 @@ r_int
 id|pas_sb_base
 op_assign
 l_int|0
+suffix:semicolon
+DECL|variable|lock
+id|spinlock_t
+id|lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 macro_line|#ifndef CONFIG_PAS_JOYSTICK
 DECL|variable|joystick
