@@ -935,6 +935,7 @@ comma
 r_int
 id|len
 comma
+r_const
 r_char
 op_star
 id|label
@@ -1097,6 +1098,7 @@ comma
 r_int
 id|len
 comma
+r_const
 r_char
 op_star
 id|label
@@ -1216,9 +1218,9 @@ comma
 l_string|&quot;??&quot;
 )brace
 suffix:semicolon
-DECL|function|dbg_command_buf
 r_static
 r_int
+DECL|function|dbg_command_buf
 id|dbg_command_buf
 (paren
 r_char
@@ -1228,6 +1230,7 @@ comma
 r_int
 id|len
 comma
+r_const
 r_char
 op_star
 id|label
@@ -1374,6 +1377,7 @@ comma
 r_int
 id|len
 comma
+r_const
 r_char
 op_star
 id|label
@@ -1645,6 +1649,7 @@ comma
 r_int
 id|len
 comma
+r_const
 r_char
 op_star
 id|label
@@ -1677,6 +1682,7 @@ comma
 r_int
 id|len
 comma
+r_const
 r_char
 op_star
 id|label
@@ -1709,6 +1715,7 @@ comma
 r_int
 id|len
 comma
+r_const
 r_char
 op_star
 id|label
@@ -1741,6 +1748,7 @@ comma
 r_int
 id|len
 comma
+r_const
 r_char
 op_star
 id|label

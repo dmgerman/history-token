@@ -8115,7 +8115,7 @@ id|device_desc.bcdDevice
 op_assign
 id|__constant_cpu_to_le16
 (paren
-l_int|0x020a
+l_int|0x0210
 )paren
 suffix:semicolon
 )brace

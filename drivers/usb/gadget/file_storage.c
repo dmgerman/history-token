@@ -46,7 +46,7 @@ mdefine_line|#define DRIVER_DESC&t;&t;&quot;File-backed Storage Gadget&quot;
 DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME&t;&t;&quot;g_file_storage&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION&t;&t;&quot;31 August 2004&quot;
+mdefine_line|#define DRIVER_VERSION&t;&t;&quot;20 October 2004&quot;
 DECL|variable|longname
 r_static
 r_const
@@ -559,7 +559,7 @@ r_struct
 id|bulk_cb_wrap
 (brace
 DECL|member|Signature
-id|u32
+id|__le32
 id|Signature
 suffix:semicolon
 singleline_comment|// Contains &squot;USBC&squot;
@@ -569,7 +569,7 @@ id|Tag
 suffix:semicolon
 singleline_comment|// Unique per command id
 DECL|member|DataTransferLength
-id|u32
+id|__le32
 id|DataTransferLength
 suffix:semicolon
 singleline_comment|// Size of the data
@@ -611,7 +611,7 @@ r_struct
 id|bulk_cs_wrap
 (brace
 DECL|member|Signature
-id|u32
+id|__le32
 id|Signature
 suffix:semicolon
 singleline_comment|// Should = &squot;USBS&squot;
@@ -621,7 +621,7 @@ id|Tag
 suffix:semicolon
 singleline_comment|// Same as original command
 DECL|member|Residue
-id|u32
+id|__le32
 id|Residue
 suffix:semicolon
 singleline_comment|// Amount not transferred
@@ -14558,11 +14558,7 @@ id|fsg-&gt;gadget
 )paren
 id|mod_data.release
 op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
 l_int|0x0301
-)paren
 suffix:semicolon
 r_else
 r_if
@@ -14576,11 +14572,7 @@ id|fsg-&gt;gadget
 )paren
 id|mod_data.release
 op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
 l_int|0x0302
-)paren
 suffix:semicolon
 r_else
 r_if
@@ -14594,11 +14586,7 @@ id|fsg-&gt;gadget
 )paren
 id|mod_data.release
 op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
 l_int|0x0303
-)paren
 suffix:semicolon
 r_else
 r_if
@@ -14612,11 +14600,7 @@ id|fsg-&gt;gadget
 )paren
 id|mod_data.release
 op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
 l_int|0x0304
-)paren
 suffix:semicolon
 multiline_comment|/* The sa1100 controller is not supported */
 r_else
@@ -14631,11 +14615,7 @@ id|fsg-&gt;gadget
 )paren
 id|mod_data.release
 op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
 l_int|0x0306
-)paren
 suffix:semicolon
 r_else
 r_if
@@ -14649,11 +14629,7 @@ id|fsg-&gt;gadget
 )paren
 id|mod_data.release
 op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
 l_int|0x0307
-)paren
 suffix:semicolon
 r_else
 r_if
@@ -14667,11 +14643,7 @@ id|fsg-&gt;gadget
 )paren
 id|mod_data.release
 op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
 l_int|0x0308
-)paren
 suffix:semicolon
 r_else
 r_if
@@ -14685,10 +14657,7 @@ id|fsg-&gt;gadget
 )paren
 id|mod_data.release
 op_assign
-id|__constant_cpu_to_le16
-(paren
 l_int|0x0309
-)paren
 suffix:semicolon
 r_else
 r_if
@@ -14702,10 +14671,7 @@ id|fsg-&gt;gadget
 )paren
 id|mod_data.release
 op_assign
-id|__constant_cpu_to_le16
-(paren
-l_int|0x030a
-)paren
+l_int|0x0310
 suffix:semicolon
 r_else
 (brace
@@ -14721,11 +14687,7 @@ id|fsg-&gt;gadget-&gt;name
 suffix:semicolon
 id|mod_data.release
 op_assign
-id|__constant_cpu_to_le16
-c_func
-(paren
 l_int|0x0399
-)paren
 suffix:semicolon
 )brace
 )brace

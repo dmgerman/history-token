@@ -3002,13 +3002,17 @@ comma
 id|UHCI_PTR_BREADTH
 )paren
 suffix:semicolon
-multiline_comment|/* Low-speed transfers get a different queue, and won&squot;t hog the bus */
+multiline_comment|/* Low-speed transfers get a different queue, and won&squot;t hog the bus.&n;&t; * Also, some devices enumerate better without FSBR; the easiest way&n;&t; * to do that is to put URBs on the low-speed queue while the device&n;&t; * is in the DEFAULT state. */
 r_if
 c_cond
 (paren
 id|urb-&gt;dev-&gt;speed
 op_eq
 id|USB_SPEED_LOW
+op_logical_or
+id|urb-&gt;dev-&gt;state
+op_eq
+id|USB_STATE_DEFAULT
 )paren
 id|skelqh
 op_assign

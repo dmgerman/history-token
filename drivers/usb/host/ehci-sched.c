@@ -1125,13 +1125,15 @@ id|qh-&gt;c_usecs
 op_div
 id|qh-&gt;period
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;descheduled qh %p, period = %d frame = %d count = %d, urbs = %d&quot;
+id|ehci
 comma
-id|qh
+l_string|&quot;descheduled qh%d/%p frame=%d count=%d, urbs=%d&bslash;n&quot;
 comma
 id|qh-&gt;period
+comma
+id|qh
 comma
 id|frame
 comma
@@ -1588,9 +1590,11 @@ id|c_mask
 suffix:semicolon
 )brace
 r_else
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;reused previous qh %p schedule&quot;
+id|ehci
+comma
+l_string|&quot;reused qh %p schedule&bslash;n&quot;
 comma
 id|qh
 )paren
@@ -1600,17 +1604,20 @@ id|qh-&gt;qh_state
 op_assign
 id|QH_STATE_LINKED
 suffix:semicolon
-id|dbg
+id|ehci_dbg
+c_func
 (paren
-l_string|&quot;scheduled qh %p usecs %d/%d period %d.0 starting %d.%d (gap %d)&quot;
+id|ehci
+comma
+l_string|&quot;scheduled qh%d/%p usecs %d/%d starting %d.%d (gap %d)&bslash;n&quot;
+comma
+id|qh-&gt;period
 comma
 id|qh
 comma
 id|qh-&gt;usecs
 comma
 id|qh-&gt;c_usecs
-comma
-id|qh-&gt;period
 comma
 id|frame
 comma
