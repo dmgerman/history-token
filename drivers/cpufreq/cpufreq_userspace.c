@@ -1376,6 +1376,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|cpufreq_sysctl_table
+r_static
 r_struct
 id|ctl_table_header
 op_star
