@@ -16589,11 +16589,13 @@ id|dev
 (brace
 DECL|macro|NO_GEOM
 mdefine_line|#define NO_GEOM (!current_type[drive] &amp;&amp; !TYPE(dev))
+macro_line|#if 0
 r_struct
 id|buffer_head
 op_star
 id|bh
 suffix:semicolon
+macro_line|#endif
 r_int
 id|drive
 op_assign
