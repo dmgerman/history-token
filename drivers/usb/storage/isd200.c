@@ -1074,6 +1074,30 @@ r_return
 id|ISD200_TRANSPORT_GOOD
 suffix:semicolon
 )brace
+multiline_comment|/* did we abort this command? */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;isd200_transfer_partial(): transfer aborted&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|ISD200_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 multiline_comment|/* uh oh... we have an error code, so something went wrong. */
 r_if
 c_cond
@@ -1099,26 +1123,6 @@ l_string|&quot;isd200_transfer_partial(): device NAKed&bslash;n&quot;
 suffix:semicolon
 r_return
 id|ISD200_TRANSPORT_FAILED
-suffix:semicolon
-)brace
-multiline_comment|/* -ENOENT -- we canceled this transfer */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-op_minus
-id|ENOENT
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;isd200_transfer_partial(): transfer aborted&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-id|ISD200_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 multiline_comment|/* the catch-all case */
@@ -1596,17 +1600,24 @@ comma
 id|result
 )paren
 suffix:semicolon
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
 r_return
-id|ISD200_TRANSPORT_ABORTED
+id|ISD200_TRANSFER_ABORTED
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -1718,17 +1729,24 @@ op_amp
 id|partial
 )paren
 suffix:semicolon
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
 r_return
-id|ISD200_TRANSPORT_ABORTED
+id|ISD200_TRANSFER_ABORTED
 suffix:semicolon
+)brace
 multiline_comment|/* did the attempt to read the CSW fail? */
 r_if
 c_cond
@@ -1784,14 +1802,20 @@ multiline_comment|/* if the command was aborted, indicate that */
 r_if
 c_cond
 (paren
-id|result
-op_eq
-op_minus
-id|ENOENT
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
 r_return
-id|ISD200_TRANSPORT_ABORTED
+id|ISD200_TRANSFER_ABORTED
 suffix:semicolon
+)brace
 multiline_comment|/* if it fails again, we need a reset and return an error*/
 r_if
 c_cond

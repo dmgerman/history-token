@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common routines for a handful of drivers.&n; * Unrelated to CF/SM - just USB stuff.&n; *&n; * This is mostly a thin layer on top of transport.c.&n; * It converts routines that return values like -ENOENT and -EPIPE&n; * into routines that return USB_STOR_TRANSPORT_ABORTED etc.&n; *&n; * There is also some debug printing here.&n; */
+multiline_comment|/*&n; * Common routines for a handful of drivers.&n; * Unrelated to CF/SM - just USB stuff.&n; *&n; * This is mostly a thin layer on top of transport.c.&n; * It converts routines that return values like -EPIPE&n; * into routines that return USB_STOR_TRANSPORT_ABORTED etc.&n; *&n; * There is also some debug printing here.&n; */
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;raw_bulk.h&quot;
@@ -76,6 +76,30 @@ comma
 id|xfer_len
 )paren
 suffix:semicolon
+multiline_comment|/* did we abort this command? */
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+op_eq
+id|US_STATE_ABORTING
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;usb_stor_send_control(): transfer aborted&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|US_BULK_TRANSFER_ABORTED
+suffix:semicolon
+)brace
 singleline_comment|// Check the return code for the command.
 r_if
 c_cond
@@ -85,18 +109,6 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* if the command was aborted, indicate that */
-r_if
-c_cond
-(paren
-id|result
-op_eq
-op_minus
-id|ENOENT
-)paren
-r_return
-id|USB_STOR_TRANSPORT_ABORTED
-suffix:semicolon
 multiline_comment|/* a stall is a fatal condition from the device */
 r_if
 c_cond
@@ -254,32 +266,36 @@ id|pipe
 suffix:semicolon
 multiline_comment|/* return US_BULK_TRANSFER_SHORT; */
 )brace
+multiline_comment|/* did we abort this command? */
 r_if
 c_cond
 (paren
-id|result
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
 )paren
-(brace
-multiline_comment|/* -ENOENT -- we canceled this transfer */
-r_if
-c_cond
-(paren
-id|result
 op_eq
-op_minus
-id|ENOENT
+id|US_STATE_ABORTING
 )paren
 (brace
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;raw_bulk(): transfer aborted&bslash;n&quot;
+l_string|&quot;usb_storage_raw_bulk(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
 id|US_BULK_TRANSFER_ABORTED
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
 multiline_comment|/* NAK - that means we&squot;ve retried a few times already */
 r_if
 c_cond
