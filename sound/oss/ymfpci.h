@@ -685,6 +685,10 @@ DECL|member|voice_lock
 id|spinlock_t
 id|voice_lock
 suffix:semicolon
+DECL|member|ac97_lock
+id|spinlock_t
+id|ac97_lock
+suffix:semicolon
 multiline_comment|/* soundcore stuff */
 DECL|member|dev_audio
 r_int
