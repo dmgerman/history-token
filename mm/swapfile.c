@@ -2633,6 +2633,10 @@ id|read_swap_cache_async
 c_func
 (paren
 id|entry
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
