@@ -193,7 +193,7 @@ op_assign
 id|sock-&gt;sk
 suffix:semicolon
 r_struct
-id|pppox_opt
+id|pppox_sock
 op_star
 id|po
 op_assign

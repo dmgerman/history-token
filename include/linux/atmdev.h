@@ -21,10 +21,6 @@ multiline_comment|/* OC12 link rate: 622080000 bps&n;&t;&t;&t;   SONET overhead:
 DECL|macro|ATM_DS3_PCR
 mdefine_line|#define ATM_DS3_PCR&t;(8000*12)
 multiline_comment|/* DS3: 12 cells in a 125 usec time slot */
-DECL|macro|atm_sk
-mdefine_line|#define atm_sk(__sk) ((struct atm_vcc *)(__sk)-&gt;sk_protinfo)
-DECL|macro|ATM_SD
-mdefine_line|#define ATM_SD(s)&t;(atm_sk((s)-&gt;sk))
 DECL|macro|__AAL_STAT_ITEMS
 mdefine_line|#define __AAL_STAT_ITEMS &bslash;&n;    __HANDLE_ITEM(tx);&t;&t;&t;/* TX okay */ &bslash;&n;    __HANDLE_ITEM(tx_err);&t;&t;/* TX errors */ &bslash;&n;    __HANDLE_ITEM(rx);&t;&t;&t;/* RX okay */ &bslash;&n;    __HANDLE_ITEM(rx_err);&t;&t;/* RX errors */ &bslash;&n;    __HANDLE_ITEM(rx_drop);&t;&t;/* RX out of memory */
 DECL|struct|atm_aal_stats
@@ -385,6 +381,12 @@ DECL|struct|atm_vcc
 r_struct
 id|atm_vcc
 (brace
+multiline_comment|/* struct sock has to be the first member of atm_vcc */
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int
@@ -523,13 +525,6 @@ op_star
 id|stats
 suffix:semicolon
 multiline_comment|/* pointer to AAL stats group */
-DECL|member|sk
-r_struct
-id|sock
-op_star
-id|sk
-suffix:semicolon
-multiline_comment|/* socket backpointer */
 multiline_comment|/* SVC part --- may move later ------------------------------------- */
 DECL|member|itf
 r_int
@@ -565,6 +560,77 @@ multiline_comment|/* native ATM stack. Currently used */
 multiline_comment|/* by CLIP and sch_atm. */
 )brace
 suffix:semicolon
+DECL|function|atm_sk
+r_static
+r_inline
+r_struct
+id|atm_vcc
+op_star
+id|atm_sk
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|atm_vcc
+op_star
+)paren
+id|sk
+suffix:semicolon
+)brace
+DECL|function|ATM_SD
+r_static
+r_inline
+r_struct
+id|atm_vcc
+op_star
+id|ATM_SD
+c_func
+(paren
+r_struct
+id|socket
+op_star
+id|sock
+)paren
+(brace
+r_return
+id|atm_sk
+c_func
+(paren
+id|sock-&gt;sk
+)paren
+suffix:semicolon
+)brace
+DECL|function|sk_atm
+r_static
+r_inline
+r_struct
+id|sock
+op_star
+id|sk_atm
+c_func
+(paren
+r_struct
+id|atm_vcc
+op_star
+id|vcc
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|sock
+op_star
+)paren
+id|vcc
+suffix:semicolon
+)brace
 DECL|struct|atm_dev_addr
 r_struct
 id|atm_dev_addr
@@ -1176,7 +1242,13 @@ c_func
 id|truesize
 comma
 op_amp
-id|vcc-&gt;sk-&gt;sk_rmem_alloc
+id|sk_atm
+c_func
+(paren
+id|vcc
+)paren
+op_member_access_from_pointer
+id|sk_rmem_alloc
 )paren
 suffix:semicolon
 )brace
@@ -1202,7 +1274,13 @@ c_func
 id|truesize
 comma
 op_amp
-id|vcc-&gt;sk-&gt;sk_rmem_alloc
+id|sk_atm
+c_func
+(paren
+id|vcc
+)paren
+op_member_access_from_pointer
+id|sk_rmem_alloc
 )paren
 suffix:semicolon
 )brace
@@ -1231,11 +1309,23 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;sk_wmem_alloc
+id|sk_atm
+c_func
+(paren
+id|vcc
+)paren
+op_member_access_from_pointer
+id|sk_wmem_alloc
 )paren
 )paren
 OL
-id|vcc-&gt;sk-&gt;sk_sndbuf
+id|sk_atm
+c_func
+(paren
+id|vcc
+)paren
+op_member_access_from_pointer
+id|sk_sndbuf
 suffix:semicolon
 )brace
 DECL|function|atm_dev_hold

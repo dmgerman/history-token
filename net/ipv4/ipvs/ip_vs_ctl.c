@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -189,7 +189,7 @@ id|sysctl_ip_vs_debug_level
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; *&t;update_defense_level is called from timer bh and from sysctl.&n; */
+multiline_comment|/*&n; *&t;update_defense_level is called from keventd and from sysctl.&n; */
 DECL|function|update_defense_level
 r_static
 r_void
@@ -638,22 +638,37 @@ id|__ip_vs_securetcp_lock
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Timer for checking the defense&n; */
-DECL|variable|defense_timer
-r_static
-r_struct
-id|timer_list
-id|defense_timer
-suffix:semicolon
 DECL|macro|DEFENSE_TIMER_PERIOD
 mdefine_line|#define DEFENSE_TIMER_PERIOD&t;1*HZ
-DECL|function|defense_timer_handler
 r_static
 r_void
-id|defense_timer_handler
+id|defense_work_handler
 c_func
 (paren
-r_int
-r_int
+r_void
+op_star
+id|data
+)paren
+suffix:semicolon
+r_static
+id|DECLARE_WORK
+c_func
+(paren
+id|defense_work
+comma
+id|defense_work_handler
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+DECL|function|defense_work_handler
+r_static
+r_void
+id|defense_work_handler
+c_func
+(paren
+r_void
+op_star
 id|data
 )paren
 (brace
@@ -677,14 +692,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|mod_timer
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|defense_timer
+id|defense_work
 comma
-id|jiffies
-op_plus
 id|DEFENSE_TIMER_PERIOD
 )paren
 suffix:semicolon
@@ -9295,28 +9308,13 @@ id|ip_vs_stats
 )paren
 suffix:semicolon
 multiline_comment|/* Hook the defense timer */
-id|init_timer
+id|schedule_delayed_work
 c_func
 (paren
 op_amp
-id|defense_timer
-)paren
-suffix:semicolon
-id|defense_timer.function
-op_assign
-id|defense_timer_handler
-suffix:semicolon
-id|defense_timer.expires
-op_assign
-id|jiffies
-op_plus
+id|defense_work
+comma
 id|DEFENSE_TIMER_PERIOD
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|defense_timer
 )paren
 suffix:semicolon
 id|LeaveFunction
@@ -9348,11 +9346,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|del_timer_sync
+id|cancel_rearming_delayed_work
 c_func
 (paren
 op_amp
-id|defense_timer
+id|defense_work
 )paren
 suffix:semicolon
 id|ip_vs_kill_estimator

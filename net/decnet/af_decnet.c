@@ -1524,21 +1524,6 @@ id|sk
 r_goto
 id|out
 suffix:semicolon
-id|sk-&gt;sk_protinfo
-op_assign
-id|scp
-op_assign
-(paren
-r_struct
-id|dn_scp
-op_star
-)paren
-(paren
-id|sk
-op_plus
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1590,6 +1575,14 @@ op_assign
 id|gfp
 suffix:semicolon
 multiline_comment|/* Initialization of DECnet Session Control Port&t;&t;*/
+id|scp
+op_assign
+id|DN_SK
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|scp-&gt;state
 op_assign
 id|DN_O

@@ -854,7 +854,7 @@ id|sap-&gt;sk_list.list
 )paren
 (brace
 r_struct
-id|llc_opt
+id|llc_sock
 op_star
 id|llc
 op_assign

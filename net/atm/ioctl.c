@@ -134,6 +134,13 @@ id|arg
 )paren
 (brace
 r_struct
+id|sock
+op_star
+id|sk
+op_assign
+id|sock-&gt;sk
+suffix:semicolon
+r_struct
 id|atm_vcc
 op_star
 id|vcc
@@ -207,13 +214,13 @@ op_assign
 id|put_user
 c_func
 (paren
-id|vcc-&gt;sk-&gt;sk_sndbuf
+id|sk-&gt;sk_sndbuf
 op_minus
 id|atomic_read
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;sk_wmem_alloc
+id|sk-&gt;sk_wmem_alloc
 )paren
 comma
 (paren
@@ -265,7 +272,7 @@ id|skb_peek
 c_func
 (paren
 op_amp
-id|vcc-&gt;sk-&gt;sk_receive_queue
+id|sk-&gt;sk_receive_queue
 )paren
 suffix:semicolon
 id|error
@@ -307,7 +314,7 @@ op_assign
 id|sock_get_timestamp
 c_func
 (paren
-id|vcc-&gt;sk
+id|sk
 comma
 id|argp
 )paren
