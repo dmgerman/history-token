@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 multiline_comment|/**&n; *&t;__mark_inode_dirty -&t;internal function&n; *&t;@inode: inode to mark&n; *&t;@flags: what kind of dirty (i.e. I_DIRTY_SYNC)&n; *&t;Mark an inode as dirty. Callers should use mark_inode_dirty or&n; *  &t;mark_inode_dirty_sync.&n; *&n; * Put the inode on the super block&squot;s dirty list.&n; *&n; * CAREFUL! We mark it dirty unconditionally, but move it onto the&n; * dirty list only if it is hashed or if it refers to a blockdev.&n; * If it was not hashed, it will never be added to the dirty list&n; * even if it is later hashed, as it will have been marked dirty already.&n; *&n; * In short, make sure you hash any inodes _before_ you start marking&n; * them dirty.&n; *&n; * This function *must* be atomic for the I_DIRTY_PAGES case -&n; * set_page_dirty() is called under spinlock in several places.&n; */
 DECL|function|__mark_inode_dirty
@@ -322,10 +323,12 @@ id|nr_to_write
 )paren
 suffix:semicolon
 r_else
-id|filemap_fdatawrite
+id|generic_writeback_mapping
 c_func
 (paren
 id|mapping
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t write the inode if only I_DIRTY_PAGES was set */
