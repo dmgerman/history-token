@@ -32966,10 +32966,14 @@ c_func
 suffix:semicolon
 id|in_dev
 op_assign
+id|rcu_dereference
+c_func
+(paren
 id|__in_dev_get
 c_func
 (paren
 id|dev
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -32994,12 +32998,6 @@ id|parms
 op_assign
 id|in_dev-&gt;arp_parms
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|parms
-)paren
-(brace
 id|__neigh_parms_put
 c_func
 (paren
@@ -33014,7 +33012,6 @@ c_func
 id|parms
 )paren
 suffix:semicolon
-)brace
 id|rcu_read_unlock
 c_func
 (paren

@@ -1171,12 +1171,6 @@ id|parms
 op_assign
 id|in6_dev-&gt;nd_parms
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|parms
-)paren
-(brace
 id|__neigh_parms_put
 c_func
 (paren
@@ -1191,7 +1185,6 @@ c_func
 id|parms
 )paren
 suffix:semicolon
-)brace
 id|rcu_read_unlock
 c_func
 (paren
