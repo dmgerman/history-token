@@ -8987,6 +8987,12 @@ suffix:semicolon
 r_goto
 id|fail
 suffix:semicolon
+r_case
+id|nfserr_dropit
+suffix:colon
+r_goto
+id|fail
+suffix:semicolon
 r_default
 suffix:colon
 (brace
