@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  drivers/cpufreq/cpufreq_ondemand.c&n; *&n; *  Copyright (C)  2001 Russell King&n; *            (C)  2003 Venkatesh Pallipadi &lt;venkatesh.pallipadi@intel.com&gt;.&n; *                      Jun Nakajima &lt;jun.nakajima@intel.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -15,7 +14,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 multiline_comment|/*&n; * dbs is used in this file as a shortform for demandbased switching&n; * It helps to keep variable names smaller, simpler&n; */
