@@ -1239,6 +1239,15 @@ id|EROFS
 suffix:semicolon
 )brace
 )brace
+singleline_comment|// TODO:  For now we enforce no atime and dir atime updates as they are
+singleline_comment|// not implemented.
+op_star
+id|flags
+op_or_assign
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
 macro_line|#endif
 singleline_comment|// FIXME/TODO: If left like this we will have problems with rw-&gt;ro and
 singleline_comment|// ro-&gt;rw, as well as with sync-&gt;async and vice versa remounts.
@@ -5401,6 +5410,15 @@ id|sb-&gt;s_flags
 op_or_assign
 id|MS_RDONLY
 op_or
+id|MS_NOATIME
+op_or
+id|MS_NODIRATIME
+suffix:semicolon
+macro_line|#else
+singleline_comment|// TODO:  For now we enforce no atime and dir atime updates as they are
+singleline_comment|// not implemented.
+id|sb-&gt;s_flags
+op_or_assign
 id|MS_NOATIME
 op_or
 id|MS_NODIRATIME
