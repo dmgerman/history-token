@@ -14873,6 +14873,15 @@ c_func
 id|sk
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure socket is routed, for correct metrics.  */
+id|tp-&gt;af_specific
+op_member_access_from_pointer
+id|rebuild_header
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
 id|tcp_init_metrics
 c_func
 (paren
@@ -15746,6 +15755,15 @@ id|tp-&gt;tstamp_ok
 id|tp-&gt;advmss
 op_sub_assign
 id|TCPOLEN_TSTAMP_ALIGNED
+suffix:semicolon
+multiline_comment|/* Make sure socket is routed, for&n;&t;&t;&t;&t; * correct metrics.&n;&t;&t;&t;&t; */
+id|tp-&gt;af_specific
+op_member_access_from_pointer
+id|rebuild_header
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 id|tcp_init_metrics
 c_func
