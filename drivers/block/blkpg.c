@@ -136,6 +136,8 @@ c_func
 (paren
 id|dev
 )paren
+op_minus
+id|g-&gt;first_minor
 suffix:semicolon
 multiline_comment|/* existing drive? */
 multiline_comment|/* drive and partition number OK? */
@@ -350,6 +352,8 @@ c_func
 (paren
 id|dev
 )paren
+op_minus
+id|g-&gt;first_minor
 suffix:semicolon
 r_if
 c_cond

@@ -227,6 +227,10 @@ r_int
 id|major
 suffix:semicolon
 multiline_comment|/* major number of driver */
+DECL|member|first_minor
+r_int
+id|first_minor
+suffix:semicolon
 DECL|member|major_name
 r_const
 r_char
