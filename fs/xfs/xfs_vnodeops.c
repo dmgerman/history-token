@@ -1865,7 +1865,11 @@ multiline_comment|/*&n;&t;&t; * Can&squot;t change extent size if any extents ar
 r_if
 c_cond
 (paren
+(paren
 id|ip-&gt;i_d.di_nextents
+op_logical_or
+id|ip-&gt;i_delayed_blks
+)paren
 op_logical_and
 (paren
 id|mask
