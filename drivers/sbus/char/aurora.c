@@ -1054,7 +1054,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 id|aurora_interrupt
 c_func
 (paren
@@ -3507,7 +3507,7 @@ suffix:semicolon
 multiline_comment|/* The main interrupt processing routine */
 DECL|function|aurora_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|aurora_interrupt
 c_func
 (paren
@@ -3599,8 +3599,9 @@ id|AURORA_BOARD_ACTIVE
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
-multiline_comment|/*&t;The while() below takes care of this.&n;&t;status = sbus_readb(&amp;bp-&gt;r[0]-&gt;r[CD180_SRSR]);&n;#ifdef AURORA_INT_DEBUG&n;&t;printk(&quot;mumu: %02x&bslash;n&quot;, status);&n;#endif&n;&t;if (!(status&amp;SRSR_ANYINT))&n;&t;&t;return; * Nobody has anything to say, so exit *&n;*/
+multiline_comment|/*&t;The while() below takes care of this.&n;&t;status = sbus_readb(&amp;bp-&gt;r[0]-&gt;r[CD180_SRSR]);&n;#ifdef AURORA_INT_DEBUG&n;&t;printk(&quot;mumu: %02x&bslash;n&quot;, status);&n;#endif&n;&t;if (!(status&amp;SRSR_ANYINT))&n;&t;&t;return IRQ_NONE; * Nobody has anything to say, so exit *&n;*/
 r_while
 c_loop
 (paren
@@ -4606,6 +4607,9 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#ifdef AURORA_INT_DEBUG
 r_static

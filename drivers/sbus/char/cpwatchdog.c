@@ -396,7 +396,7 @@ r_void
 suffix:semicolon
 macro_line|#endif
 r_static
-r_void
+id|irqreturn_t
 id|wd_interrupt
 c_func
 (paren
@@ -1445,7 +1445,7 @@ macro_line|#endif /* ifdef WD_DEBUG */
 )brace
 DECL|function|wd_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|wd_interrupt
 c_func
 (paren
@@ -1514,6 +1514,7 @@ id|wd_dev.lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|wd_fops
