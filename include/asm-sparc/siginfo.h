@@ -6,8 +6,6 @@ DECL|macro|__ARCH_SI_UID_T
 mdefine_line|#define __ARCH_SI_UID_T&t;&t;unsigned int
 DECL|macro|__ARCH_SI_TRAPNO
 mdefine_line|#define __ARCH_SI_TRAPNO
-DECL|macro|HAVE_ARCH_COPY_SIGINFO_TO_USER
-mdefine_line|#define HAVE_ARCH_COPY_SIGINFO_TO_USER
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 DECL|macro|SI_NOINFO
 mdefine_line|#define SI_NOINFO&t;32767&t;&t;/* no information in siginfo_t */

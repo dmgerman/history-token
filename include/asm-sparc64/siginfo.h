@@ -11,8 +11,6 @@ DECL|macro|__ARCH_SI_PREAMBLE_SIZE
 mdefine_line|#define __ARCH_SI_PREAMBLE_SIZE&t;(4 * sizeof(int))
 DECL|macro|__ARCH_SI_TRAPNO
 mdefine_line|#define __ARCH_SI_TRAPNO
-DECL|macro|HAVE_ARCH_COPY_SIGINFO_TO_USER
-mdefine_line|#define HAVE_ARCH_COPY_SIGINFO_TO_USER
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 macro_line|#ifdef __KERNEL__
 DECL|union|sigval32
