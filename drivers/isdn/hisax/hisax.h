@@ -1448,10 +1448,9 @@ id|u_int
 op_star
 id|send
 suffix:semicolon
-DECL|member|s_irq
-id|u_int
-op_star
-id|s_irq
+DECL|member|send_dma
+id|dma_addr_t
+id|send_dma
 suffix:semicolon
 DECL|member|s_end
 id|u_int
@@ -1467,6 +1466,10 @@ DECL|member|rec
 id|u_int
 op_star
 id|rec
+suffix:semicolon
+DECL|member|rec_dma
+id|dma_addr_t
+id|rec_dma
 suffix:semicolon
 DECL|member|free
 r_int
@@ -2425,6 +2428,12 @@ DECL|member|last_is0
 r_int
 r_char
 id|last_is0
+suffix:semicolon
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -826,6 +826,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|cs-&gt;hw.njet.pdev
+op_assign
+id|dev_netjet
+suffix:semicolon
 )brace
 r_else
 (brace
