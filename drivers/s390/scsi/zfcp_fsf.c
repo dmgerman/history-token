@@ -16912,6 +16912,11 @@ op_star
 id|lock_flags
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
 r_goto
 id|failed_sbals
 suffix:semicolon
