@@ -714,6 +714,12 @@ op_or
 id|VM_SHARED
 )paren
 )paren
+op_logical_and
+id|VM_MAYACCT
+c_func
+(paren
+id|vma
+)paren
 )paren
 (brace
 id|charged
