@@ -17696,6 +17696,14 @@ OL
 l_int|1
 )paren
 (brace
+multiline_comment|/* altsetting 0 should never have iso EPs */
+r_if
+c_cond
+(paren
+id|alts-&gt;desc.bAlternateSetting
+op_ne
+l_int|0
+)paren
 id|printk
 c_func
 (paren
