@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;

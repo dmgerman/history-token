@@ -3,6 +3,8 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/es1688.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
@@ -2344,7 +2346,7 @@ c_func
 (paren
 id|chip-&gt;dma8
 comma
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|size
 comma
@@ -2770,7 +2772,7 @@ c_func
 (paren
 id|chip-&gt;dma8
 comma
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|size
 comma
@@ -3403,6 +3405,12 @@ l_int|0
 )paren
 suffix:semicolon
 id|release_resource
+c_func
+(paren
+id|chip-&gt;res_port
+)paren
+suffix:semicolon
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_port
@@ -4107,10 +4115,6 @@ comma
 l_int|64
 op_star
 l_int|1024
-comma
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 r_if
@@ -4121,7 +4125,7 @@ id|rpcm
 op_star
 id|rpcm
 op_assign
-l_int|NULL
+id|pcm
 suffix:semicolon
 r_return
 l_int|0

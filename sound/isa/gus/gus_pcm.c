@@ -3,6 +3,7 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;
@@ -275,6 +276,12 @@ suffix:semicolon
 id|block.buffer
 op_assign
 id|runtime-&gt;dma_area
+op_plus
+id|offset
+suffix:semicolon
+id|block.buf_addr
+op_assign
+id|runtime-&gt;dma_addr
 op_plus
 id|offset
 suffix:semicolon
@@ -3458,8 +3465,7 @@ c_func
 (paren
 id|gus-&gt;gf1.dma2
 comma
-op_amp
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|gus-&gt;c_period_size
 comma
@@ -4958,10 +4964,6 @@ suffix:colon
 l_int|64
 op_star
 l_int|1024
-comma
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 id|pcm-&gt;info_flags
@@ -5026,10 +5028,6 @@ suffix:colon
 l_int|64
 op_star
 l_int|1024
-comma
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 )brace

@@ -1,9 +1,11 @@
-multiline_comment|/*&n; *  Copyright (c) 1998-1999 by Paul Barton-Davis &lt;pbd@op.net&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
+multiline_comment|/*&n; *  Copyright (c) 1998-2002 by Paul Davis &lt;pbd@op.net&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/snd_wavefront.h&gt;
 macro_line|#include &lt;sound/yss225.h&gt;
@@ -12,7 +14,7 @@ macro_line|#if 0
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Paul Barton-Davis &lt;pbd@op.net&gt;&quot;
+l_string|&quot;Paul Davis &lt;pbd@op.net&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -4113,12 +4115,14 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* wierd stuff, derived from port I/O tracing with dosemu */
-DECL|variable|page_zero
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_zero
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x01
@@ -4634,12 +4638,14 @@ comma
 l_int|0xdf
 )brace
 suffix:semicolon
-DECL|variable|page_one
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_one
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x00
@@ -5155,12 +5161,14 @@ comma
 l_int|0x1b
 )brace
 suffix:semicolon
-DECL|variable|page_two
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_two
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0xc4
@@ -5420,12 +5428,14 @@ comma
 l_int|0x44
 )brace
 suffix:semicolon
-DECL|variable|page_three
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_three
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x07
@@ -5685,12 +5695,14 @@ comma
 l_int|0x40
 )brace
 suffix:semicolon
-DECL|variable|page_four
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_four
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x63
@@ -5950,12 +5962,14 @@ comma
 l_int|0x01
 )brace
 suffix:semicolon
-DECL|variable|page_six
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_six
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x00
@@ -6343,12 +6357,14 @@ comma
 l_int|0x80
 )brace
 suffix:semicolon
-DECL|variable|page_seven
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_seven
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x0f
@@ -6864,12 +6880,14 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-DECL|variable|page_zero_v2
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_zero_v2
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x00
@@ -7065,12 +7083,14 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-DECL|variable|page_one_v2
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_one_v2
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x01
@@ -7266,12 +7286,14 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-DECL|variable|page_two_v2
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_two_v2
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x46
@@ -7371,12 +7393,14 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-DECL|variable|page_three_v2
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_three_v2
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x00
@@ -7476,12 +7500,14 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-DECL|variable|page_four_v2
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_four_v2
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x00
@@ -7581,12 +7607,14 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-DECL|variable|page_seven_v2
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|page_seven_v2
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x0f
@@ -7782,12 +7810,14 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-DECL|variable|mod_v2
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|mod_v2
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x01
@@ -8399,12 +8429,14 @@ comma
 l_int|0x01
 )brace
 suffix:semicolon
-DECL|variable|coefficients
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|coefficients
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x07
@@ -9136,12 +9168,14 @@ comma
 l_int|0xba
 )brace
 suffix:semicolon
-DECL|variable|coefficients2
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|coefficients2
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x07
@@ -9257,12 +9291,14 @@ comma
 l_int|0x00
 )brace
 suffix:semicolon
-DECL|variable|coefficients3
+DECL|variable|__initdata
+r_static
 r_int
 r_char
 id|coefficients3
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 l_int|0x00

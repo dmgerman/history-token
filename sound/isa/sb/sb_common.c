@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
@@ -119,8 +120,9 @@ suffix:semicolon
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s [0x%lx]: timeout (0x%x)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; [0x%lx]: timeout (0x%x)&bslash;n&quot;
 comma
 id|chip-&gt;port
 comma
@@ -210,8 +212,9 @@ suffix:semicolon
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s [0x%lx]: timeout&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; [0x%lx]: timeout&bslash;n&quot;
 comma
 id|chip-&gt;port
 )paren
@@ -331,8 +334,9 @@ suffix:semicolon
 id|snd_printdd
 c_func
 (paren
+l_string|&quot;%s [0x%lx] failed...&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; [0x%lx] failed...&bslash;n&quot;
 comma
 id|chip-&gt;port
 )paren
@@ -699,7 +703,7 @@ c_func
 id|chip-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_port
@@ -718,7 +722,7 @@ c_func
 id|chip-&gt;res_alt_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_alt_port

@@ -2584,9 +2584,6 @@ c_func
 id|cs46xx_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 suffix:semicolon
 r_void
@@ -2596,9 +2593,6 @@ c_func
 id|cs46xx_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 suffix:semicolon
 macro_line|#endif

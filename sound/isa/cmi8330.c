@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Driver for C-Media&squot;s CMI8330 soundcards.&n; *  
 multiline_comment|/*&n; * NOTES&n; *&n; *  The extended registers contain mixer settings which are largely&n; *  untapped for the time being.&n; *&n; *  MPU401 and SPDIF are not supported yet.  I don&squot;t have the hardware&n; *  to aid in coding and testing, so I won&squot;t bother.&n; *&n; *  To quickly load the module,&n; *&n; *  modprobe -a snd-card-cmi8330 snd_sbport=0x220 snd_sbirq=5 snd_sbdma8=1&n; *    snd_sbdma16=5 snd_wssport=0x530 snd_wssirq=11 snd_wssdma=0&n; *&n; *  This card has two mixers and two PCM devices.  I&squot;ve cheesed it such&n; *  that recording and playback can be done through the same device.&n; *  The driver &quot;magically&quot; routes the capturing to the AD1848 codec,&n; *  and playback to the SB16 codec.  This allows for full-duplex mode&n; *  to some extent.&n; *  The utilities in alsa-utils are aware of both devices, so passing&n; *  the appropriate parameters to amixer and alsactl will give you&n; *  full control over both mixers.&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/ad1848.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;

@@ -2358,8 +2358,9 @@ id|update
 )paren
 suffix:semicolon
 )brace
+macro_line|#if 0 
+singleline_comment|// not used
 multiline_comment|/* table for volume target calculation */
-DECL|variable|voltarget
 r_static
 r_int
 r_int
@@ -2402,6 +2403,7 @@ comma
 l_int|0x7A90
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|macro|LO_BYTE
 mdefine_line|#define LO_BYTE(v)&t;((v) &amp; 0xff)
 DECL|macro|HI_BYTE

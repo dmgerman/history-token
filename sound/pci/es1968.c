@@ -5,8 +5,8 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
@@ -105,30 +105,6 @@ l_int|1
 )braket
 op_assign
 l_int|1024
-)brace
-suffix:semicolon
-DECL|variable|snd_midi_enable
-r_static
-r_int
-id|snd_midi_enable
-(braket
-id|SNDRV_CARDS
-)braket
-op_assign
-(brace
-(braket
-l_int|0
-dot
-dot
-dot
-(paren
-id|SNDRV_CARDS
-op_minus
-l_int|1
-)paren
-)braket
-op_assign
-l_int|0
 )brace
 suffix:semicolon
 DECL|variable|snd_pcm_substreams_p
@@ -328,40 +304,6 @@ id|snd_total_bufsize
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,allows:{{1,4096}},skill:advanced&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|snd_midi_enable
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|snd_midi_enable
-comma
-l_string|&quot;Midi enabled for &quot;
-id|CARD_NAME
-l_string|&quot; soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|snd_midi_enable
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -1163,11 +1105,6 @@ r_struct
 id|snd_es1968
 (brace
 multiline_comment|/* Module Config */
-DECL|member|midi_enabled
-r_int
-id|midi_enabled
-suffix:semicolon
-multiline_comment|/* bool */
 DECL|member|total_bufsize
 r_int
 id|total_bufsize
@@ -2080,6 +2017,18 @@ comma
 r_return
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PM
+id|chip-&gt;apu_map
+(braket
+id|channel
+)braket
+(braket
+id|reg
+)braket
+op_assign
+id|data
+suffix:semicolon
+macro_line|#endif
 id|reg
 op_or_assign
 (paren
@@ -2104,18 +2053,6 @@ comma
 id|data
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-id|chip-&gt;apu_map
-(braket
-id|channel
-)braket
-(braket
-id|reg
-)braket
-op_assign
-id|data
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|apu_set_register
 r_inline
@@ -3745,6 +3682,9 @@ id|channel
 comma
 id|u32
 id|addr
+comma
+r_int
+id|capture
 )paren
 (brace
 id|u32
@@ -3758,6 +3698,13 @@ l_int|0x10
 op_amp
 l_int|0xFFF8
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capture
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -3785,6 +3732,7 @@ op_or_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* stereo */
+)brace
 multiline_comment|/* set the wavecache control reg */
 id|wave_set_register
 c_func
@@ -3903,6 +3851,8 @@ comma
 id|channel
 comma
 id|es-&gt;memory-&gt;addr
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Offset to PCMBAR */
@@ -4528,6 +4478,8 @@ comma
 id|channel
 comma
 id|pa
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Offset to PCMBAR */
@@ -4663,7 +4615,7 @@ comma
 id|bsize
 )paren
 suffix:semicolon
-macro_line|#if 1
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -4677,10 +4629,7 @@ c_func
 (paren
 id|chip
 comma
-id|es-&gt;apu
-(braket
-id|channel
-)braket
+id|apu
 comma
 l_int|7
 comma
@@ -5528,11 +5477,9 @@ l_int|1024
 )paren
 id|max_size
 op_assign
-l_int|128
+l_int|127
 op_star
 l_int|1024
-op_minus
-l_int|2
 suffix:semicolon
 r_return
 id|max_size
@@ -5946,7 +5893,7 @@ op_amp
 id|chip-&gt;dma_buf_size
 )paren
 suffix:semicolon
-singleline_comment|//snd_printd(&quot;es1968: allocated buffer size %ld&bslash;n&quot;, chip-&gt;dma_buf_size);
+singleline_comment|//snd_printd(&quot;es1968: allocated buffer size %ld at %p&bslash;n&quot;, chip-&gt;dma_buf_size, chip-&gt;dma_buf);
 r_if
 c_cond
 (paren
@@ -7659,6 +7606,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#if 0
 id|set_current_state
 c_func
 (paren
@@ -7674,6 +7622,15 @@ l_int|20
 )paren
 suffix:semicolon
 multiline_comment|/* 50 msec */
+macro_line|#else
+multiline_comment|/* FIXME:&n;&t; * schedule() above may be too inaccurate and the pointer can&n;&t; * overlap the boundary..&n;&t; */
+id|mdelay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -7815,6 +7772,18 @@ id|offset
 template_param
 l_int|48500
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|offset
+op_ge
+l_int|40000
+op_logical_and
+id|offset
+op_le
+l_int|50000
+)paren
 id|chip-&gt;clock
 op_assign
 (paren
@@ -7825,10 +7794,12 @@ id|offset
 op_div
 l_int|48000
 suffix:semicolon
-id|snd_printd
+)brace
+id|printk
 c_func
 (paren
-l_string|&quot;setting clock to %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;es1968: clocking to %d&bslash;n&quot;
 comma
 id|chip-&gt;clock
 )paren
@@ -10145,21 +10116,11 @@ id|ASSP_CONTROL_C
 suffix:semicolon
 multiline_comment|/* M: Disable ASSP, ASSP IRQ&squot;s and FM Port */
 multiline_comment|/* Enable IRQ&squot;s */
-r_if
-c_cond
-(paren
-id|chip-&gt;midi_enabled
-)paren
 id|w
 op_assign
 id|ESM_HIRQ_DSIE
 op_or
 id|ESM_HIRQ_MPU401
-suffix:semicolon
-r_else
-id|w
-op_assign
-id|ESM_HIRQ_DSIE
 suffix:semicolon
 id|outw
 c_func
@@ -10558,9 +10519,6 @@ c_func
 id|es1968_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|snd_card_t
@@ -10573,8 +10531,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -10625,9 +10581,6 @@ c_func
 id|es1968_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|snd_card_t
@@ -10640,8 +10593,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -10769,8 +10720,6 @@ id|es1968_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -10813,8 +10762,6 @@ id|es1968_resume
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -10856,8 +10803,6 @@ id|es1968_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -10895,8 +10840,6 @@ id|es1968_resume
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -10952,8 +10895,6 @@ id|es1968_resume
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -10968,8 +10909,6 @@ id|es1968_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -11025,7 +10964,7 @@ c_func
 id|chip-&gt;res_io_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_io_port
@@ -11111,9 +11050,6 @@ r_struct
 id|pci_dev
 op_star
 id|pci
-comma
-r_int
-id|midi_enabled
 comma
 r_int
 id|total_bufsize
@@ -11313,10 +11249,6 @@ id|chip-&gt;irq
 op_assign
 op_minus
 l_int|1
-suffix:semicolon
-id|chip-&gt;midi_enabled
-op_assign
-id|midi_enabled
 suffix:semicolon
 id|chip-&gt;total_bufsize
 op_assign
@@ -11546,99 +11478,6 @@ op_star
 id|chip_ret
 op_assign
 id|chip
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* *************&n;   * Midi Part *&n;   *************/
-r_static
-r_int
-id|__devinit
-DECL|function|snd_es1968_midi
-id|snd_es1968_midi
-c_func
-(paren
-id|es1968_t
-op_star
-id|chip
-comma
-r_int
-id|device
-comma
-id|snd_rawmidi_t
-op_star
-op_star
-id|rawmidi
-)paren
-(brace
-r_int
-r_int
-id|mpu_port
-suffix:semicolon
-r_int
-id|err
-suffix:semicolon
-id|snd_rawmidi_t
-op_star
-id|rm
-suffix:semicolon
-id|rm
-op_assign
-l_int|NULL
-suffix:semicolon
-id|mpu_port
-op_assign
-id|chip-&gt;io_port
-op_plus
-id|ESM_MPU401_PORT
-suffix:semicolon
-id|err
-op_assign
-id|snd_mpu401_uart_new
-c_func
-(paren
-id|chip-&gt;card
-comma
-id|device
-comma
-id|MPU401_HW_MPU401
-comma
-id|mpu_port
-comma
-l_int|1
-comma
-id|chip-&gt;irq
-comma
-l_int|0
-comma
-op_amp
-id|rm
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|err
-OL
-l_int|0
-)paren
-r_return
-id|err
-suffix:semicolon
-id|chip-&gt;rmidi
-op_assign
-id|rm
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rawmidi
-)paren
-op_star
-id|rawmidi
-op_assign
-id|rm
 suffix:semicolon
 r_return
 l_int|0
@@ -12006,11 +11845,6 @@ id|card
 comma
 id|pci
 comma
-id|snd_midi_enable
-(braket
-id|dev
-)braket
-comma
 id|snd_total_bufsize
 (braket
 id|dev
@@ -12174,42 +12008,43 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|snd_midi_enable
-(braket
-id|dev
-)braket
-)paren
-(brace
-r_if
-c_cond
-(paren
 (paren
 id|err
 op_assign
-id|snd_es1968_midi
+id|snd_mpu401_uart_new
 c_func
 (paren
-id|chip
+id|card
 comma
 l_int|0
 comma
-l_int|NULL
+id|MPU401_HW_MPU401
+comma
+id|chip-&gt;io_port
+op_plus
+id|ESM_MPU401_PORT
+comma
+l_int|1
+comma
+id|chip-&gt;irq
+comma
+l_int|0
+comma
+op_amp
+id|chip-&gt;rmidi
 )paren
 )paren
 OL
 l_int|0
 )paren
 (brace
-id|snd_card_free
+id|printk
 c_func
 (paren
-id|card
+id|KERN_INFO
+l_string|&quot;es1968: skipping MPU-401 MIDI support..&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-id|err
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* card switches */
 r_for
@@ -12277,6 +12112,12 @@ id|snd_clock
 id|dev
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chip-&gt;clock
+)paren
 id|es1968_measure_clock
 c_func
 (paren
@@ -12581,7 +12422,7 @@ c_func
 id|alsa_card_es1968_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-es1968=snd_enable,snd_index,snd_id,&n;&t;&t;&t; snd_total_bufsize,snd_midi_enable,&n;&t;&t;&t; snd_pcm_substreams_p,&n;&t;&t;&t; snd_pcm_substreams_c,&n;&t;&t;&t; snd_clock&n;*/
+multiline_comment|/* format is: snd-es1968=snd_enable,snd_index,snd_id,&n;&t;&t;&t; snd_total_bufsize,&n;&t;&t;&t; snd_pcm_substreams_p,&n;&t;&t;&t; snd_pcm_substreams_c,&n;&t;&t;&t; snd_clock&n;*/
 DECL|function|alsa_card_es1968_setup
 r_static
 r_int
@@ -12668,21 +12509,6 @@ id|str
 comma
 op_amp
 id|snd_total_bufsize
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|snd_midi_enable
 (braket
 id|nr_dev
 )braket

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Interface for OSS sequencer emulation&n; *&n; *  Copy
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &quot;opl3_voice.h&quot;
+macro_line|#include &lt;linux/slab.h&gt;
 r_static
 r_int
 id|snd_opl3_open_seq_oss

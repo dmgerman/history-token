@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/opl3.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -1402,7 +1403,7 @@ c_func
 id|opl3-&gt;res_l_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|opl3-&gt;res_l_port
@@ -1421,7 +1422,7 @@ c_func
 id|opl3-&gt;res_r_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|opl3-&gt;res_r_port

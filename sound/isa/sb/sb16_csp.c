@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Copyright (c) 1999 by Uros Bizjak &lt;uros@kss-loka.s
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -36,19 +37,14 @@ suffix:semicolon
 macro_line|#ifdef SNDRV_LITTLE_ENDIAN
 DECL|macro|CSP_HDR_VALUE
 mdefine_line|#define CSP_HDR_VALUE(a,b,c,d)&t;((a) | ((b)&lt;&lt;8) | ((c)&lt;&lt;16) | ((d)&lt;&lt;24))
-DECL|macro|LE_SHORT
-mdefine_line|#define LE_SHORT(v)&t;&t;(v)
-DECL|macro|LE_INT
-mdefine_line|#define LE_INT(v)&t;&t;(v)
 macro_line|#else
-macro_line|#include &lt;byteswap.h&gt;
 DECL|macro|CSP_HDR_VALUE
 mdefine_line|#define CSP_HDR_VALUE(a,b,c,d)&t;((d) | ((c)&lt;&lt;8) | ((b)&lt;&lt;16) | ((a)&lt;&lt;24))
-DECL|macro|LE_SHORT
-mdefine_line|#define LE_SHORT(v)&t;&t;bswap_16(v)
-DECL|macro|LE_INT
-mdefine_line|#define LE_INT(v)&t;&t;bswap_32(v)
 macro_line|#endif
+DECL|macro|LE_SHORT
+mdefine_line|#define LE_SHORT(v)&t;&t;le16_to_cpu(v)
+DECL|macro|LE_INT
+mdefine_line|#define LE_INT(v)&t;&t;le32_to_cpu(v)
 DECL|macro|RIFF_HEADER
 mdefine_line|#define RIFF_HEADER&t;CSP_HDR_VALUE(&squot;R&squot;, &squot;I&squot;, &squot;F&squot;, &squot;F&squot;)
 DECL|macro|CSP__HEADER
@@ -1361,8 +1357,9 @@ id|file_h
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Invalid RIFF header&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Invalid RIFF header&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1419,8 +1416,9 @@ id|CSP__HEADER
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Invalid RIFF file type&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Invalid RIFF file type&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1727,8 +1725,9 @@ id|MAIN_HEADER
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Missing &squot;main&squot; microcode&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Missing &squot;main&squot; microcode&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1935,8 +1934,9 @@ suffix:semicolon
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Unsupported CSP codec type: 0x%04x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Unsupported CSP codec type: 0x%04x&bslash;n&quot;
 comma
 id|LE_SHORT
 c_func
@@ -2023,8 +2023,9 @@ suffix:semicolon
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Function #%d not found&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Function #%d not found&bslash;n&quot;
 comma
 id|info.func_req
 )paren
@@ -2709,8 +2710,9 @@ l_int|0x1f
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Invalid CSP version: 0x%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Invalid CSP version: 0x%x&bslash;n&quot;
 comma
 id|p-&gt;version
 )paren
@@ -2796,8 +2798,9 @@ id|p-&gt;chip
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Download command failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Download command failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3044,8 +3047,9 @@ l_int|0x55
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Microcode initialization failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Microcode initialization failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3611,8 +3615,9 @@ id|SNDRV_SB_CSP_ST_AUTO
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Microcode not loaded&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Microcode not loaded&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3631,8 +3636,9 @@ id|SNDRV_SB_CSP_ST_RUNNING
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: CSP already running&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: CSP already running&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3654,8 +3660,9 @@ id|p-&gt;acc_width
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Unsupported PCM sample width&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Unsupported PCM sample width&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3677,8 +3684,9 @@ id|p-&gt;acc_channels
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Invalid number of channels&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Invalid number of channels&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3814,8 +3822,9 @@ id|s_type
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Set sample type command failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Set sample type command failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -3839,8 +3848,9 @@ l_int|0x00
 id|snd_printd
 c_func
 (paren
+l_string|&quot;%s: Codec start command failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: Codec start command failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto

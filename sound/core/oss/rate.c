@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Rate conversion Plug-In&n; *  Copyright (c) 1999 by J
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &quot;pcm_plugin.h&quot;
@@ -9,8 +10,8 @@ DECL|macro|SHIFT
 mdefine_line|#define SHIFT&t;11
 DECL|macro|BITS
 mdefine_line|#define BITS&t;(1&lt;&lt;SHIFT)
-DECL|macro|MASK
-mdefine_line|#define MASK&t;(BITS-1)
+DECL|macro|R_MASK
+mdefine_line|#define R_MASK&t;(BITS-1)
 multiline_comment|/*&n; *  Basic rate conversion plugin&n; */
 r_typedef
 r_struct
@@ -456,7 +457,7 @@ c_cond
 id|pos
 op_amp
 op_complement
-id|MASK
+id|R_MASK
 )paren
 (brace
 id|get_s16_end
@@ -472,7 +473,7 @@ id|after_get1
 suffix:colon
 id|pos
 op_and_assign
-id|MASK
+id|R_MASK
 suffix:semicolon
 id|S1
 op_assign
@@ -486,7 +487,7 @@ id|src
 op_add_assign
 id|src_step
 suffix:semicolon
-id|src_frames
+id|src_frames1
 op_decrement
 suffix:semicolon
 )brace
@@ -505,12 +506,12 @@ c_cond
 id|pos
 op_amp
 op_complement
-id|MASK
+id|R_MASK
 )paren
 (brace
 id|pos
 op_and_assign
-id|MASK
+id|R_MASK
 suffix:semicolon
 id|S1
 op_assign
@@ -953,12 +954,12 @@ c_cond
 id|pos
 op_amp
 op_complement
-id|MASK
+id|R_MASK
 )paren
 (brace
 id|pos
 op_and_assign
-id|MASK
+id|R_MASK
 suffix:semicolon
 id|val
 op_assign

@@ -3,6 +3,8 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -1067,12 +1069,11 @@ id|info_mutex
 suffix:semicolon
 id|p
 op_assign
+id|PDE
+c_func
 (paren
-r_struct
-id|proc_dir_entry
-op_star
+id|inode
 )paren
-id|inode-&gt;u.generic_ip
 suffix:semicolon
 id|entry
 op_assign
@@ -2304,13 +2305,10 @@ r_char
 op_star
 id|s
 op_assign
+id|PDE
+c_func
 (paren
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-id|dentry-&gt;d_inode-&gt;u.generic_ip
+id|dentry-&gt;d_inode
 )paren
 op_member_access_from_pointer
 id|data
@@ -2407,13 +2405,10 @@ r_char
 op_star
 id|s
 op_assign
+id|PDE
+c_func
 (paren
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-id|dentry-&gt;d_inode-&gt;u.generic_ip
+id|dentry-&gt;d_inode
 )paren
 op_member_access_from_pointer
 id|data
@@ -2456,13 +2451,10 @@ r_char
 op_star
 id|s
 op_assign
+id|PDE
+c_func
 (paren
-(paren
-r_struct
-id|proc_dir_entry
-op_star
-)paren
-id|dentry-&gt;d_inode-&gt;u.generic_ip
+id|dentry-&gt;d_inode
 )paren
 op_member_access_from_pointer
 id|data
@@ -3703,12 +3695,11 @@ id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|de
 op_assign
+id|PDE
+c_func
 (paren
-r_struct
-id|proc_dir_entry
-op_star
+id|inode
 )paren
-id|inode-&gt;u.generic_ip
 suffix:semicolon
 r_if
 c_cond
@@ -4484,6 +4475,7 @@ id|buffer
 comma
 l_string|&quot;Advanced Linux Sound Architecture Driver Version &quot;
 id|CONFIG_SND_VERSION
+id|CONFIG_SND_DATE
 l_string|&quot;.&bslash;n&quot;
 l_string|&quot;Compiled on &quot;
 id|__DATE__

@@ -4,6 +4,14 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#ifndef LINUX_ISAPNP_H
+macro_line|#include &lt;linux/isapnp.h&gt;
+DECL|macro|isapnp_card
+mdefine_line|#define isapnp_card pci_bus
+DECL|macro|isapnp_dev
+mdefine_line|#define isapnp_dev pci_dev
+macro_line|#endif
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#ifdef CS4231
 macro_line|#include &lt;sound/cs4231.h&gt;
@@ -4143,7 +4151,7 @@ c_func
 (paren
 id|chip-&gt;dma1
 comma
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|size
 comma
@@ -4330,7 +4338,7 @@ c_func
 (paren
 id|chip-&gt;dma2
 comma
-id|runtime-&gt;dma_area
+id|runtime-&gt;dma_addr
 comma
 id|size
 comma
@@ -5310,7 +5318,7 @@ c_func
 id|chip-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_port
@@ -5962,10 +5970,6 @@ suffix:colon
 l_int|64
 op_star
 l_int|1024
-comma
-id|GFP_KERNEL
-op_or
-id|GFP_DMA
 )paren
 suffix:semicolon
 id|codec-&gt;pcm
@@ -9177,7 +9181,7 @@ c_func
 id|chip-&gt;res_mc_base
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_mc_base

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  PCM I/O Plug-In Interface&n; *  Copyright (c) 1999 by
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &quot;pcm_plugin.h&quot;

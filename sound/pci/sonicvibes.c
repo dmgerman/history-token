@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -7005,7 +7006,7 @@ c_func
 id|sonic-&gt;res_sb_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|sonic-&gt;res_sb_port
@@ -7024,7 +7025,7 @@ c_func
 id|sonic-&gt;res_enh_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|sonic-&gt;res_enh_port
@@ -7043,7 +7044,7 @@ c_func
 id|sonic-&gt;res_synth_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|sonic-&gt;res_synth_port
@@ -7062,7 +7063,7 @@ c_func
 id|sonic-&gt;res_midi_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|sonic-&gt;res_midi_port
@@ -7081,7 +7082,7 @@ c_func
 id|sonic-&gt;res_dmaa
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|sonic-&gt;res_dmaa
@@ -7100,7 +7101,7 @@ c_func
 id|sonic-&gt;res_dmac
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|sonic-&gt;res_dmac

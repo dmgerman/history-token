@@ -1654,6 +1654,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PMAC_PBOOK
 multiline_comment|/* Recalibrate chip */
 r_if
 c_cond
@@ -1668,6 +1669,7 @@ c_func
 id|chip
 )paren
 suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

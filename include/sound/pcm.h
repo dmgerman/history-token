@@ -3836,10 +3836,6 @@ id|size
 comma
 r_int
 id|max
-comma
-r_int
-r_int
-id|flags
 )paren
 suffix:semicolon
 r_int
@@ -3855,10 +3851,6 @@ id|size
 comma
 r_int
 id|max
-comma
-r_int
-r_int
-id|flags
 )paren
 suffix:semicolon
 macro_line|#endif

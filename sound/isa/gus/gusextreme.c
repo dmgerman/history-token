@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  Driver for Gravis UltraSound Extreme soundcards&n; * 
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/gus.h&gt;
 macro_line|#include &lt;sound/es1688.h&gt;

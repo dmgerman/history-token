@@ -2,6 +2,8 @@ multiline_comment|/*&n; *  Timers abstract layer&n; *  Copyright (c) by Jaroslav
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/timer.h&gt;
 macro_line|#include &lt;sound/control.h&gt;

@@ -401,6 +401,12 @@ op_star
 id|buffer
 suffix:semicolon
 multiline_comment|/* buffer in computer&squot;s RAM */
+DECL|member|buf_addr
+r_int
+r_int
+id|buf_addr
+suffix:semicolon
+multiline_comment|/* buffer address */
 DECL|member|addr
 r_int
 r_int
@@ -2689,10 +2695,9 @@ r_int
 r_int
 id|addr
 comma
-r_const
-r_void
-op_star
-id|buf
+r_int
+r_int
+id|buf_addr
 comma
 r_int
 r_int

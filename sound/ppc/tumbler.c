@@ -3,6 +3,7 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 singleline_comment|// #define TUMBLER_TONE_CONTROL_SUPPORT

@@ -6,8 +6,10 @@ macro_line|#ifdef CONFIG_SND_OSSEMUL
 macro_line|#if !defined(CONFIG_SOUND) &amp;&amp; !defined(CONFIG_SOUND_MODULE)
 macro_line|#error &quot;Enable the OSS soundcore multiplexer (CONFIG_SOUND) in the kernel.&quot;
 macro_line|#endif
-macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;

@@ -3,7 +3,6 @@ DECL|macro|SNDRV_MAIN_OBJECT_FILE
 mdefine_line|#define SNDRV_MAIN_OBJECT_FILE
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
-macro_line|#ifndef MODULE
 DECL|function|alsa_sound_last_init
 r_static
 r_int
@@ -88,10 +87,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|module_init
+DECL|variable|alsa_sound_last_init
+id|__initcall
 c_func
 (paren
 id|alsa_sound_last_init
 )paren
-macro_line|#endif /* MODULE */
+suffix:semicolon
 eof

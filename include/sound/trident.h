@@ -1731,9 +1731,6 @@ c_func
 id|trident_t
 op_star
 id|trident
-comma
-r_int
-id|can_schedule
 )paren
 suffix:semicolon
 r_void
@@ -1743,9 +1740,6 @@ c_func
 id|trident_t
 op_star
 id|trident
-comma
-r_int
-id|can_schedule
 )paren
 suffix:semicolon
 macro_line|#endif

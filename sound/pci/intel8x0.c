@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
@@ -104,7 +105,7 @@ l_int|1
 )paren
 )braket
 op_assign
-l_int|48000
+l_int|0
 )brace
 suffix:semicolon
 id|MODULE_PARM
@@ -216,7 +217,7 @@ c_func
 (paren
 id|snd_ac97_clock
 comma
-l_string|&quot;AC&squot;97 codec clock (default 48000Hz).&quot;
+l_string|&quot;AC&squot;97 codec clock (0 = auto-detect).&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -225,7 +226,7 @@ c_func
 id|snd_ac97_clock
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,default:48000&quot;
+l_string|&quot;,default:0&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  Direct registers&n; */
@@ -407,26 +408,28 @@ r_int
 id|reg_offset
 suffix:semicolon
 DECL|member|bdbar
-r_int
-r_int
+id|u32
 op_star
 id|bdbar
 suffix:semicolon
-multiline_comment|/* CPU address */
+multiline_comment|/* CPU address (32bit) */
 DECL|member|bdbar_addr
-id|dma_addr_t
+r_int
+r_int
 id|bdbar_addr
 suffix:semicolon
-multiline_comment|/* PCI bus address */
+multiline_comment|/* PCI bus address (32bit) */
 DECL|member|substream
 id|snd_pcm_substream_t
 op_star
 id|substream
 suffix:semicolon
 DECL|member|physbuf
-id|dma_addr_t
+r_int
+r_int
 id|physbuf
 suffix:semicolon
+multiline_comment|/* physical address (32bit) */
 DECL|member|size
 r_int
 r_int
@@ -590,6 +593,12 @@ id|multi6
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|in_ac97_init
+r_int
+id|in_ac97_init
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|ac97
 id|ac97_t
 op_star
@@ -614,8 +623,7 @@ op_star
 id|proc_entry
 suffix:semicolon
 DECL|member|bdbars
-r_int
-r_int
+id|u32
 op_star
 id|bdbars
 suffix:semicolon
@@ -1014,6 +1022,13 @@ id|ac97-&gt;num
 OL
 l_int|0
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chip-&gt;in_ac97_init
+)paren
 id|snd_printk
 c_func
 (paren
@@ -1024,6 +1039,7 @@ comma
 id|reg
 )paren
 suffix:semicolon
+)brace
 id|outw
 c_func
 (paren
@@ -1107,6 +1123,12 @@ OL
 l_int|0
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chip-&gt;in_ac97_init
+)paren
 id|snd_printk
 c_func
 (paren
@@ -1184,6 +1206,12 @@ id|GLOB_STA
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|chip-&gt;in_ac97_init
+)paren
 id|snd_printk
 c_func
 (paren
@@ -1371,8 +1399,7 @@ id|ichdev
 r_int
 id|idx
 suffix:semicolon
-r_int
-r_int
+id|u32
 op_star
 id|bdbar
 op_assign
@@ -3323,7 +3350,7 @@ c_func
 (paren
 id|pcm-&gt;name
 comma
-l_string|&quot;Intel ICH&quot;
+id|chip-&gt;card-&gt;shortname
 )paren
 suffix:semicolon
 id|chip-&gt;pcm
@@ -3949,12 +3976,14 @@ id|pcm-&gt;info_flags
 op_assign
 l_int|0
 suffix:semicolon
-id|strcpy
+id|sprintf
 c_func
 (paren
 id|pcm-&gt;name
 comma
-l_string|&quot;Intel ICH - MIC ADC&quot;
+l_string|&quot;%s - MIC ADC&quot;
+comma
+id|chip-&gt;card-&gt;shortname
 )paren
 suffix:semicolon
 id|chip-&gt;pcm_mic
@@ -4081,6 +4110,10 @@ id|ac97
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+id|chip-&gt;in_ac97_init
+op_assign
+l_int|1
 suffix:semicolon
 id|memset
 c_func
@@ -4281,6 +4314,10 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|chip-&gt;in_ac97_init
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4940,8 +4977,7 @@ l_int|3
 op_star
 r_sizeof
 (paren
-r_int
-r_int
+id|u32
 )paren
 op_star
 id|ICH_MAX_FRAGS
@@ -4965,7 +5001,7 @@ c_func
 id|chip-&gt;res_port
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_port
@@ -4984,7 +5020,7 @@ c_func
 id|chip-&gt;res_bmport
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_nocheck
 c_func
 (paren
 id|chip-&gt;res_bmport
@@ -5031,9 +5067,6 @@ c_func
 id|intel8x0_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|snd_card_t
@@ -5046,8 +5079,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -5103,9 +5134,6 @@ c_func
 id|intel8x0_t
 op_star
 id|chip
-comma
-r_int
-id|can_schedule
 )paren
 (brace
 id|snd_card_t
@@ -5118,8 +5146,6 @@ id|snd_power_lock
 c_func
 (paren
 id|card
-comma
-id|can_schedule
 )paren
 suffix:semicolon
 r_if
@@ -5211,8 +5237,6 @@ id|intel8x0_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -5255,8 +5279,6 @@ id|intel8x0_resume
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -5298,8 +5320,6 @@ id|intel8x0_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -5337,8 +5357,6 @@ id|intel8x0_resume
 c_func
 (paren
 id|chip
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -5394,8 +5412,6 @@ id|intel8x0_resume
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -5410,8 +5426,6 @@ id|intel8x0_suspend
 c_func
 (paren
 id|chip
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_break
@@ -5584,6 +5598,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#if 0
 id|set_current_state
 c_func
 (paren
@@ -5598,6 +5613,15 @@ op_div
 l_int|20
 )paren
 suffix:semicolon
+macro_line|#else
+multiline_comment|/* FIXME: schedule() can take too long time and overlap the boundary.. */
+id|mdelay
+c_func
+(paren
+l_int|50
+)paren
+suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5791,16 +5815,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|pos
+OG
+l_int|40000
 op_logical_and
+id|pos
+OL
+l_int|47500
+)paren
+op_logical_or
 (paren
 id|pos
 OG
 l_int|48500
-op_logical_or
+op_logical_and
 id|pos
 OL
-l_int|47500
+l_int|50000
 )paren
 )paren
 (brace
@@ -5814,10 +5846,11 @@ l_int|48000
 op_div
 id|pos
 suffix:semicolon
-id|snd_printd
+id|printk
 c_func
 (paren
-l_string|&quot;setting clocking to %d&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;intel8x0: clocking to %d&bslash;n&quot;
 comma
 id|chip-&gt;ac97-&gt;clock
 )paren
@@ -5902,6 +5935,12 @@ suffix:colon
 id|snd_intel8x0_dev_free
 comma
 )brace
+suffix:semicolon
+r_char
+id|name
+(braket
+l_int|32
+)braket
 suffix:semicolon
 op_star
 id|r_intel8x0
@@ -5990,6 +6029,16 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|name
+comma
+l_string|&quot;%s - AC&squot;97&quot;
+comma
+id|card-&gt;shortname
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6003,7 +6052,7 @@ id|chip-&gt;port
 comma
 l_int|256
 comma
-l_string|&quot;Intel ICH - AC&squot;97&quot;
+id|name
 )paren
 )paren
 op_eq
@@ -6035,6 +6084,16 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+id|sprintf
+c_func
+(paren
+id|name
+comma
+l_string|&quot;%s - Controller&quot;
+comma
+id|card-&gt;shortname
+)paren
+suffix:semicolon
 id|chip-&gt;bmport
 op_assign
 id|pci_resource_start
@@ -6058,7 +6117,7 @@ id|chip-&gt;bmport
 comma
 l_int|64
 comma
-l_string|&quot;Intel ICH - Controller&quot;
+id|name
 )paren
 )paren
 op_eq
@@ -6104,7 +6163,7 @@ id|SA_INTERRUPT
 op_or
 id|SA_SHIRQ
 comma
-l_string|&quot;Intel ICH&quot;
+id|card-&gt;shortname
 comma
 (paren
 r_void
@@ -6223,8 +6282,7 @@ multiline_comment|/* the start of each lists must be aligned to 8 bytes */
 id|chip-&gt;bdbars
 op_assign
 (paren
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|snd_malloc_pci_pages
@@ -6267,13 +6325,60 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* tables must be aligned to 8 bytes here, but the kernel pages&n;&t;   are much bigger, so we don&squot;t care */
+multiline_comment|/* tables must be aligned to 8 bytes here, but the kernel pages&n;&t;   are much bigger, so we don&squot;t care (on i386) */
+macro_line|#ifndef __i386__
+multiline_comment|/* .. not sure on other architectures, so we check now. */
+r_if
+c_cond
+(paren
+id|chip-&gt;bdbars_addr
+op_amp
+op_complement
+(paren
+(paren
+id|dma_addr_t
+)paren
+l_int|0xffffffff
+op_or
+l_int|0x07
+)paren
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+l_string|&quot;invalid i/o port address %lx&bslash;n&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|chip-&gt;bdbars_addr
+)paren
+suffix:semicolon
+id|snd_intel8x0_free
+c_func
+(paren
+id|chip
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+macro_line|#endif
 id|chip-&gt;playback.bdbar
 op_assign
 id|chip-&gt;bdbars
 suffix:semicolon
+multiline_comment|/* crop to 32bit */
 id|chip-&gt;playback.bdbar_addr
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|chip-&gt;bdbars_addr
 suffix:semicolon
 id|chip-&gt;capture.bdbar
@@ -6290,8 +6395,7 @@ id|chip-&gt;playback.bdbar_addr
 op_plus
 r_sizeof
 (paren
-r_int
-r_int
+id|u32
 )paren
 op_star
 id|ICH_MAX_FRAGS
@@ -6312,8 +6416,7 @@ id|chip-&gt;capture.bdbar_addr
 op_plus
 r_sizeof
 (paren
-r_int
-r_int
+id|u32
 )paren
 op_star
 id|ICH_MAX_FRAGS
@@ -6455,7 +6558,7 @@ comma
 (brace
 id|PCI_DEVICE_ID_NVIDIA_MCP_AUDIO
 comma
-l_string|&quot;NVidia NForce Audio&quot;
+l_string|&quot;NVidia NForce&quot;
 )brace
 comma
 (brace
@@ -6571,6 +6674,55 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|card-&gt;driver
+comma
+l_string|&quot;ICH&quot;
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|card-&gt;shortname
+comma
+l_string|&quot;Intel ICH&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|name
+op_assign
+id|shortnames
+suffix:semicolon
+id|name-&gt;id
+suffix:semicolon
+id|name
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pci-&gt;device
+op_eq
+id|name-&gt;id
+)paren
+(brace
+id|strcpy
+c_func
+(paren
+id|card-&gt;shortname
+comma
+id|name-&gt;s
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -6707,55 +6859,6 @@ id|err
 suffix:semicolon
 )brace
 )brace
-id|strcpy
-c_func
-(paren
-id|card-&gt;driver
-comma
-l_string|&quot;ICH&quot;
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|card-&gt;shortname
-comma
-l_string|&quot;Intel ICH&quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|name
-op_assign
-id|shortnames
-suffix:semicolon
-id|name-&gt;id
-suffix:semicolon
-id|name
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|chip-&gt;pci-&gt;device
-op_eq
-id|name-&gt;id
-)paren
-(brace
-id|strcpy
-c_func
-(paren
-id|card-&gt;shortname
-comma
-id|name-&gt;s
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
 id|sprintf
 c_func
 (paren
@@ -6773,9 +6876,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|chip-&gt;ac97-&gt;clock
-op_eq
-l_int|48000
+op_logical_neg
+id|snd_ac97_clock
+(braket
+id|dev
+)braket
 )paren
 id|intel8x0_measure_ac97_clock
 c_func

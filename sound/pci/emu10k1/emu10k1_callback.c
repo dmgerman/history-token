@@ -6,13 +6,16 @@ macro_line|#include &lt;sound/asoundef.h&gt;
 multiline_comment|/* voice status */
 r_enum
 (brace
+DECL|enumerator|V_FREE
 DECL|enumerator|V_OFF
 DECL|enumerator|V_RELEASED
 DECL|enumerator|V_PLAYING
 DECL|enumerator|V_END
-id|V_OFF
+id|V_FREE
 op_assign
 l_int|0
+comma
+id|V_OFF
 comma
 id|V_RELEASED
 comma
@@ -987,7 +990,14 @@ id|active_only
 )paren
 r_continue
 suffix:semicolon
+id|bp
+op_assign
+id|best
+op_plus
+id|V_FREE
+suffix:semicolon
 )brace
+r_else
 id|bp
 op_assign
 id|best
@@ -1077,6 +1087,12 @@ op_ne
 id|best
 op_plus
 id|V_OFF
+op_logical_and
+id|bp
+op_ne
+id|best
+op_plus
+id|V_FREE
 op_logical_and
 (paren
 id|vp-&gt;reg.sample_mode
