@@ -180,7 +180,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|cifs_small_rcv
+id|cifs_min_small
 comma
 l_string|&quot;Small network buffers in pool. Default: 30 Range: 2 to 256&quot;
 )paren

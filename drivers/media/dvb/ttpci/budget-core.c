@@ -21,7 +21,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|budget_debug
+id|debug
 comma
 l_string|&quot;Turn on/off budget debugging (default:off).&quot;
 )paren

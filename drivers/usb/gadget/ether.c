@@ -382,7 +382,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|iProduct
+id|dev_addr
 comma
 l_string|&quot;Device Ethernet Address&quot;
 )paren

@@ -48,7 +48,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|bt878_verbose
+id|verbose
 comma
 l_string|&quot;verbose startup messages, default is 1 (yes)&quot;
 )paren
@@ -68,7 +68,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|bt878_debug
+id|debug
 comma
 l_string|&quot;Turn on/off debugging (default:off).&quot;
 )paren
