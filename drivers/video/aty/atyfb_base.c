@@ -1909,12 +1909,11 @@ op_ne
 l_int|0x00d7
 )paren
 (brace
-suffix:semicolon
-)brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1928,12 +1927,11 @@ op_ne
 l_int|0x0057
 )paren
 (brace
-suffix:semicolon
-)brace
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 macro_line|#endif
