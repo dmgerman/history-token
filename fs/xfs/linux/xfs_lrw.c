@@ -1327,15 +1327,12 @@ id|IO_INVIS
 )paren
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
 id|vrwlock_t
 id|locktype
 op_assign
 id|VRWLOCK_READ
 suffix:semicolon
-id|error
+id|ret
 op_assign
 id|XFS_SEND_DATA
 c_func
@@ -1368,7 +1365,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+id|ret
 )paren
 (brace
 id|xfs_iunlock
@@ -1381,7 +1378,7 @@ id|XFS_IOLOCK_SHARED
 suffix:semicolon
 r_return
 op_minus
-id|error
+id|ret
 suffix:semicolon
 )brace
 )brace

@@ -20,6 +20,22 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_XFS_QUOTA
 DECL|macro|vfs_insertquota
 macro_line|# define vfs_insertquota(vfs)&t;vfs_insertops(vfsp, &amp;xfs_qmops)
+r_extern
+r_void
+id|xfs_qm_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_qm_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|vfs_initquota
 macro_line|# define vfs_initquota()&t;xfs_qm_init()
 DECL|macro|vfs_exitquota
