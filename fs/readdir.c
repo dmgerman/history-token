@@ -1015,7 +1015,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|put_user
+id|__put_user
 c_func
 (paren
 l_int|0
@@ -1108,11 +1108,7 @@ id|VERIFY_WRITE
 comma
 id|dirent
 comma
-r_sizeof
-(paren
-r_struct
-id|linux_dirent64
-)paren
+id|count
 )paren
 )paren
 r_goto
