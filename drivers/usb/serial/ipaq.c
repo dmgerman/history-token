@@ -1509,6 +1509,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|tty
+op_logical_and
 id|urb-&gt;actual_length
 )paren
 (brace
