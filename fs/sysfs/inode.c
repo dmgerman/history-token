@@ -167,6 +167,10 @@ suffix:semicolon
 r_case
 id|S_IFREG
 suffix:colon
+id|inode-&gt;i_size
+op_assign
+id|PAGE_SIZE
+suffix:semicolon
 id|inode-&gt;i_fop
 op_assign
 op_amp
