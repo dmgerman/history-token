@@ -4599,11 +4599,13 @@ id|dev-&gt;irq
 r_char
 op_star
 id|msg
-suffix:semicolon
-id|msg
 op_assign
 l_string|&quot;&quot;
 suffix:semicolon
+id|pin
+op_decrement
+suffix:semicolon
+multiline_comment|/* interrupt pins are numbered starting from 1 */
 r_if
 c_cond
 (paren
@@ -4613,16 +4615,6 @@ id|io_apic_assign_pci_irqs
 r_int
 id|irq
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pin
-)paren
-(brace
-id|pin
-op_decrement
-suffix:semicolon
-multiline_comment|/* interrupt pins are numbered starting from 1 */
 id|irq
 op_assign
 id|IO_APIC_get_PCI_irq_vector
@@ -4639,7 +4631,7 @@ comma
 id|pin
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Busses behind bridges are typically not listed in the MP-table.&n;&t;&t;&t;&t; * In this case we have to look up the IRQ based on the parent bus,&n;&t;&t;&t;&t; * parent slot, and pin number. The SMP code detects such bridged&n;&t;&t;&t;&t; * busses itself so we should get into this branch reliably.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Busses behind bridges are typically not listed in the MP-table.&n;&t;&t;&t; * In this case we have to look up the IRQ based on the parent bus,&n;&t;&t;&t; * parent slot, and pin number. The SMP code detects such bridged&n;&t;&t;&t; * busses itself so we should get into this branch reliably.&n;&t;&t;&t; */
 id|temp_dev
 op_assign
 id|dev
@@ -4788,7 +4780,6 @@ op_assign
 l_string|&quot; Probably buggy MP table.&quot;
 suffix:semicolon
 )brace
-)brace
 r_else
 r_if
 c_cond
@@ -4839,8 +4830,6 @@ comma
 l_char|&squot;A&squot;
 op_plus
 id|pin
-op_minus
-l_int|1
 comma
 id|pci_name
 c_func
