@@ -1392,6 +1392,11 @@ id|NET_IPV4_CONF_FORCE_IGMP_VERSION
 op_assign
 l_int|17
 comma
+DECL|enumerator|NET_IPV4_CONF_ARP_ANNOUNCE
+id|NET_IPV4_CONF_ARP_ANNOUNCE
+op_assign
+l_int|18
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv4/netfilter */

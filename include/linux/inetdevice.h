@@ -58,6 +58,10 @@ DECL|member|arp_filter
 r_int
 id|arp_filter
 suffix:semicolon
+DECL|member|arp_announce
+r_int
+id|arp_announce
+suffix:semicolon
 DECL|member|medium_id
 r_int
 id|medium_id
@@ -216,6 +220,8 @@ DECL|macro|IN_DEV_RX_REDIRECTS
 mdefine_line|#define IN_DEV_RX_REDIRECTS(in_dev) &bslash;&n;&t;((IN_DEV_FORWARD(in_dev) &amp;&amp; &bslash;&n;&t;  (ipv4_devconf.accept_redirects &amp;&amp; (in_dev)-&gt;cnf.accept_redirects)) &bslash;&n;&t; || (!IN_DEV_FORWARD(in_dev) &amp;&amp; &bslash;&n;&t;  (ipv4_devconf.accept_redirects || (in_dev)-&gt;cnf.accept_redirects)))
 DECL|macro|IN_DEV_ARPFILTER
 mdefine_line|#define IN_DEV_ARPFILTER(in_dev)&t;(ipv4_devconf.arp_filter || (in_dev)-&gt;cnf.arp_filter)
+DECL|macro|IN_DEV_ARP_ANNOUNCE
+mdefine_line|#define IN_DEV_ARP_ANNOUNCE(in_dev)&t;(max(ipv4_devconf.arp_announce, (in_dev)-&gt;cnf.arp_announce))
 DECL|struct|in_ifaddr
 r_struct
 id|in_ifaddr
