@@ -2252,17 +2252,6 @@ id|dev-&gt;device
 r_case
 id|PCI_DEVICE_ID_SERVERWORKS_HE
 suffix:colon
-id|agp_bridge-&gt;type
-op_assign
-id|SVWRKS_HE
-suffix:semicolon
-r_return
-id|serverworks_setup
-c_func
-(paren
-id|bridge_dev
-)paren
-suffix:semicolon
 r_case
 id|PCI_DEVICE_ID_SERVERWORKS_LE
 suffix:colon
@@ -2271,7 +2260,7 @@ l_int|0x0007
 suffix:colon
 id|agp_bridge-&gt;type
 op_assign
-id|SVWRKS_LE
+id|SVWRKS_GENERIC
 suffix:semicolon
 r_return
 id|serverworks_setup

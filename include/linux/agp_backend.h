@@ -50,12 +50,6 @@ comma
 DECL|enumerator|ALI_GENERIC
 id|ALI_GENERIC
 comma
-DECL|enumerator|SVWRKS_HE
-id|SVWRKS_HE
-comma
-DECL|enumerator|SVWRKS_LE
-id|SVWRKS_LE
-comma
 DECL|enumerator|SVWRKS_GENERIC
 id|SVWRKS_GENERIC
 comma
