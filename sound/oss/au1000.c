@@ -7870,6 +7870,12 @@ r_sizeof
 id|cinfo
 )paren
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 r_case
 id|SNDCTL_DSP_GETOPTR
@@ -8010,6 +8016,12 @@ r_sizeof
 id|cinfo
 )paren
 )paren
+ques
+c_cond
+op_minus
+id|EFAULT
+suffix:colon
+l_int|0
 suffix:semicolon
 r_case
 id|SNDCTL_DSP_GETBLKSIZE
