@@ -372,6 +372,36 @@ id|cred
 op_star
 )paren
 suffix:semicolon
+DECL|typedef|vop_sendfile_t
+r_typedef
+id|ssize_t
+(paren
+op_star
+id|vop_sendfile_t
+)paren
+(paren
+id|bhv_desc_t
+op_star
+comma
+r_struct
+id|file
+op_star
+comma
+id|loff_t
+op_star
+comma
+r_int
+comma
+id|read_actor_t
+comma
+r_void
+op_star
+comma
+r_struct
+id|cred
+op_star
+)paren
+suffix:semicolon
 DECL|typedef|vop_ioctl_t
 r_typedef
 r_int
@@ -1066,6 +1096,10 @@ DECL|member|vop_write
 id|vop_write_t
 id|vop_write
 suffix:semicolon
+DECL|member|vop_sendfile
+id|vop_sendfile_t
+id|vop_sendfile
+suffix:semicolon
 DECL|member|vop_ioctl
 id|vop_ioctl_t
 id|vop_ioctl
@@ -1205,6 +1239,8 @@ DECL|macro|VOP_READ
 mdefine_line|#define VOP_READ(vp,file,iov,segs,offset,cr,rv)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_read, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr); &bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|VOP_WRITE
 mdefine_line|#define VOP_WRITE(vp,file,iov,segs,offset,cr,rv)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_write, vp)((vp)-&gt;v_fbhv,file,iov,segs,offset,cr);&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
+DECL|macro|VOP_SENDFILE
+mdefine_line|#define VOP_SENDFILE(vp,f,of,cnt,act,targ,cr,rv)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_sendfile, vp)((vp)-&gt;v_fbhv,f,of,cnt,act,targ,cr);&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|VOP_BMAP
 mdefine_line|#define VOP_BMAP(vp,of,sz,rw,b,n,rv)&t;&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;VN_BHV_READ_LOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&t;&bslash;&n;&t;rv = _VOP_(vop_bmap, vp)((vp)-&gt;v_fbhv,of,sz,rw,b,n);&t;&t;&bslash;&n;&t;VN_BHV_READ_UNLOCK(&amp;(vp)-&gt;v_bh);&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|VOP_OPEN
