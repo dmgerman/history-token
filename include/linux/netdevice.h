@@ -1346,20 +1346,6 @@ r_struct
 id|class_device
 id|class_dev
 suffix:semicolon
-DECL|member|last_stats
-r_struct
-id|net_device_stats
-op_star
-(paren
-op_star
-id|last_stats
-)paren
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* how much padding had been added by alloc_netdev() */
 DECL|member|padded
 r_int
