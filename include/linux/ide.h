@@ -3672,7 +3672,13 @@ DECL|typedef|ide_settings_t
 )brace
 id|ide_settings_t
 suffix:semicolon
-r_void
+r_extern
+r_struct
+id|semaphore
+id|ide_setting_sem
+suffix:semicolon
+r_extern
+r_int
 id|ide_add_setting
 c_func
 (paren
@@ -3718,6 +3724,7 @@ op_star
 id|set
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_remove_setting
 c_func
@@ -3731,6 +3738,7 @@ op_star
 id|name
 )paren
 suffix:semicolon
+r_extern
 id|ide_settings_t
 op_star
 id|ide_find_setting_by_name
@@ -3745,6 +3753,7 @@ op_star
 id|name
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_read_setting
 c_func
@@ -3758,6 +3767,7 @@ op_star
 id|setting
 )paren
 suffix:semicolon
+r_extern
 r_int
 id|ide_write_setting
 c_func
@@ -3774,6 +3784,7 @@ r_int
 id|val
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ide_add_generic_settings
 c_func
@@ -4344,7 +4355,7 @@ r_int
 id|nrsecs
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is used on exit from the driver, to designate the next irq handler&n; * and also to start the safety timer.&n; */
+multiline_comment|/*&n; * This is used on exit from the driver to designate the next irq handler&n; * and also to start the safety timer.&n; */
 r_extern
 r_void
 id|ide_set_handler
@@ -4364,6 +4375,28 @@ comma
 id|ide_expiry_t
 op_star
 id|expiry
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * This is used on exit from the driver to designate the next irq handler&n; * and start the safety time safely and atomically from the IRQ handler&n; * with respect to the command issue (which it also does)&n; */
+r_extern
+r_void
+id|ide_execute_command
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+id|task_ioreg_t
+id|cmd
+comma
+id|ide_handler_t
+op_star
+comma
+r_int
+r_int
+comma
+id|ide_expiry_t
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; *&n; * (drive, msg, status)&n; */
@@ -5405,16 +5438,6 @@ comma
 r_int
 r_int
 id|timeout
-)paren
-suffix:semicolon
-multiline_comment|/*&n; * CompactFlash cards and their brethern pretend to be removable hard disks,&n; * but they never have a slave unit, and they don&squot;t have doorlock mechanisms.&n; * This test catches them, and is invoked elsewhere when setting appropriate&n; * config bits.&n; */
-r_extern
-r_int
-id|drive_is_flashcard
-(paren
-id|ide_drive_t
-op_star
-id|drive
 )paren
 suffix:semicolon
 r_extern
