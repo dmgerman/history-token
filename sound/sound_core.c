@@ -283,7 +283,9 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;Remove a node from the chain. Called with the lock asserted&n; */
 DECL|function|__sound_remove_unit
 r_static
-r_void
+r_struct
+id|sound_unit
+op_star
 id|__sound_remove_unit
 c_func
 (paren
@@ -325,18 +327,8 @@ id|list
 op_assign
 id|p-&gt;next
 suffix:semicolon
-id|devfs_unregister
-(paren
-id|p-&gt;de
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 r_return
+id|p
 suffix:semicolon
 )brace
 id|list
@@ -355,6 +347,9 @@ l_string|&quot;Sound device %d went missing!&bslash;n&quot;
 comma
 id|unit
 )paren
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;This lock guards the sound loader list.&n; */
@@ -574,6 +569,11 @@ r_int
 id|unit
 )paren
 (brace
+r_struct
+id|sound_unit
+op_star
+id|p
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -581,6 +581,8 @@ op_amp
 id|sound_loader_lock
 )paren
 suffix:semicolon
+id|p
+op_assign
 id|__sound_remove_unit
 c_func
 (paren
@@ -596,6 +598,24 @@ op_amp
 id|sound_loader_lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p
+)paren
+(brace
+id|devfs_unregister
+(paren
+id|p-&gt;de
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; *&t;Allocations&n; *&n; *&t;0&t;*16&t;&t;Mixers&n; *&t;1&t;*8&t;&t;Sequencers&n; *&t;2&t;*16&t;&t;Midi&n; *&t;3&t;*16&t;&t;DSP&n; *&t;4&t;*16&t;&t;SunDSP&n; *&t;5&t;*16&t;&t;DSP16&n; *&t;6&t;--&t;&t;sndstat (obsolete)&n; *&t;7&t;*16&t;&t;unused&n; *&t;8&t;--&t;&t;alternate sequencer (see above)&n; *&t;9&t;*16&t;&t;raw synthesizer access&n; *&t;10&t;*16&t;&t;unused&n; *&t;11&t;*16&t;&t;unused&n; *&t;12&t;*16&t;&t;unused&n; *&t;13&t;*16&t;&t;unused&n; *&t;14&t;*16&t;&t;unused&n; *&t;15&t;*16&t;&t;unused&n; */
 DECL|variable|chains
