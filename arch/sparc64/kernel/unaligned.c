@@ -231,6 +231,10 @@ op_member_access_from_pointer
 id|kregs
 )paren
 suffix:semicolon
+multiline_comment|/* GCC should never warn that control reaches the end&n;&t;&t; * of this function without returning a value because&n;&t;&t; * die_if_kernel() is marked with attribute &squot;noreturn&squot;.&n;&t;&t; * Alas, some versions do...&n;&t;&t; */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 )brace
 DECL|function|decode_asi
