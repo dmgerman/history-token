@@ -255,6 +255,12 @@ id|cardbus_type
 op_star
 id|type
 suffix:semicolon
+multiline_comment|/* for PCI interrupt probing */
+DECL|member|probe_status
+r_int
+r_int
+id|probe_status
+suffix:semicolon
 multiline_comment|/* A few words of private data for special stuff of overrides... */
 DECL|member|private
 r_int

@@ -1269,6 +1269,8 @@ DECL|macro|PCI_DEVICE_ID_TI_TVP4010
 mdefine_line|#define PCI_DEVICE_ID_TI_TVP4010&t;0x3d04
 DECL|macro|PCI_DEVICE_ID_TI_TVP4020
 mdefine_line|#define PCI_DEVICE_ID_TI_TVP4020&t;0x3d07
+DECL|macro|PCI_DEVICE_ID_TI_4450
+mdefine_line|#define PCI_DEVICE_ID_TI_4450&t;&t;0x8011
 DECL|macro|PCI_DEVICE_ID_TI_1130
 mdefine_line|#define PCI_DEVICE_ID_TI_1130&t;&t;0xac12
 DECL|macro|PCI_DEVICE_ID_TI_1031
@@ -1301,6 +1303,8 @@ DECL|macro|PCI_DEVICE_ID_TI_1410
 mdefine_line|#define PCI_DEVICE_ID_TI_1410&t;&t;0xac50
 DECL|macro|PCI_DEVICE_ID_TI_1420
 mdefine_line|#define PCI_DEVICE_ID_TI_1420&t;&t;0xac51
+DECL|macro|PCI_DEVICE_ID_TI_1451A
+mdefine_line|#define PCI_DEVICE_ID_TI_1451A&t;&t;0xac52
 DECL|macro|PCI_DEVICE_ID_TI_1520
 mdefine_line|#define PCI_DEVICE_ID_TI_1520&t;&t;0xac55
 DECL|macro|PCI_DEVICE_ID_TI_1510
