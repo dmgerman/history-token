@@ -1575,18 +1575,10 @@ id|KERN_EMERG
 l_string|&quot;Fatal exception: panic in 5 seconds&bslash;n&quot;
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|ssleep
 c_func
 (paren
 l_int|5
-op_star
-id|HZ
 )paren
 suffix:semicolon
 id|panic
