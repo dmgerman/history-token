@@ -2866,7 +2866,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|sysfs_pwm
-mdefine_line|#define sysfs_pwm(offset) &bslash;&n;static ssize_t show_regs_pwm_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwm_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t &bslash;&n;store_regs_pwm_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwm_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(fan##offset##_pwm, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;  show_regs_pwm_##offset, store_regs_pwm_##offset);
+mdefine_line|#define sysfs_pwm(offset) &bslash;&n;static ssize_t show_regs_pwm_##offset (struct device *dev, char *buf) &bslash;&n;{ &bslash;&n;&t;return show_pwm_reg(dev, buf, offset); &bslash;&n;} &bslash;&n;static ssize_t &bslash;&n;store_regs_pwm_##offset (struct device *dev, const char *buf, size_t count) &bslash;&n;{ &bslash;&n;&t;return store_pwm_reg(dev, buf, count, offset); &bslash;&n;} &bslash;&n;static DEVICE_ATTR(pwm##offset, S_IRUGO | S_IWUSR, &bslash;&n;&t;&t;  show_regs_pwm_##offset, store_regs_pwm_##offset);
 id|sysfs_pwm
 c_func
 (paren
@@ -2886,7 +2886,7 @@ l_int|3
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_pwm
-mdefine_line|#define device_create_file_pwm(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_fan##offset##_pwm); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_pwm(client, offset) &bslash;&n;do { &bslash;&n;device_create_file(&amp;client-&gt;dev, &amp;dev_attr_pwm##offset); &bslash;&n;} while (0)
 r_static
 id|ssize_t
 DECL|function|show_sensor_reg

@@ -690,10 +690,10 @@ id|nr
 )paren
 suffix:semicolon
 )brace
-DECL|function|get_fan_pwm
+DECL|function|get_pwm
 r_static
 id|ssize_t
-id|get_fan_pwm
+id|get_pwm
 c_func
 (paren
 r_struct
@@ -741,10 +741,10 @@ id|nr
 )paren
 suffix:semicolon
 )brace
-DECL|function|get_fan_pwm_en
+DECL|function|get_pwm_en
 r_static
 id|ssize_t
-id|get_fan_pwm_en
+id|get_pwm_en
 c_func
 (paren
 r_struct
@@ -1206,10 +1206,10 @@ r_return
 id|count
 suffix:semicolon
 )brace
-DECL|function|set_fan_pwm
+DECL|function|set_pwm
 r_static
 id|ssize_t
-id|set_fan_pwm
+id|set_pwm
 c_func
 (paren
 r_struct
@@ -1315,10 +1315,10 @@ r_return
 id|count
 suffix:semicolon
 )brace
-DECL|function|set_fan_pwm_en
+DECL|function|set_pwm_en
 r_static
 id|ssize_t
-id|set_fan_pwm_en
+id|set_pwm_en
 c_func
 (paren
 r_struct
@@ -1426,7 +1426,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|fan_present
-mdefine_line|#define fan_present(offset)&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t get_fan##offset (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return get_fan(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t get_fan##offset##_min (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return get_fan_min(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_fan##offset##_min (struct device *dev,&t;&t;&bslash;&n;&t;&t;const char *buf, size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_fan_min(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t get_fan##offset##_div (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return get_fan_div(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_fan##offset##_div (struct device *dev,&t;&t;&bslash;&n;&t;&t;const char *buf, size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_fan_div(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t get_fan##offset##_pwm (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return get_fan_pwm(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_fan##offset##_pwm (struct device *dev,&t;&t;&bslash;&n;&t;&t;const char *buf, size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_fan_pwm(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t get_fan##offset##_pwm_en (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return get_fan_pwm_en(dev, buf, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_fan##offset##_pwm_en (struct device *dev,&t;&t;&bslash;&n;&t;&t;const char *buf, size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_fan_pwm_en(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_input, S_IRUGO, get_fan##offset,&t;&bslash;&n;&t;&t;NULL);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_min, S_IRUGO | S_IWUSR,&t;&t;&bslash;&n;&t;&t;get_fan##offset##_min, set_fan##offset##_min);&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_div, S_IRUGO | S_IWUSR,&t;&t;&bslash;&n;&t;&t;get_fan##offset##_div, set_fan##offset##_div);&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_pwm, S_IRUGO | S_IWUSR,&t;&t;&bslash;&n;&t;&t;get_fan##offset##_pwm, set_fan##offset##_pwm);&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_pwm_enable, S_IRUGO | S_IWUSR,&t;&t;&bslash;&n;&t;&t;get_fan##offset##_pwm_en, set_fan##offset##_pwm_en);
+mdefine_line|#define fan_present(offset)&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t get_fan##offset (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return get_fan(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t get_fan##offset##_min (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return get_fan_min(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_fan##offset##_min (struct device *dev,&t;&t;&bslash;&n;&t;&t;const char *buf, size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_fan_min(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t get_fan##offset##_div (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return get_fan_div(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_fan##offset##_div (struct device *dev,&t;&t;&bslash;&n;&t;&t;const char *buf, size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_fan_div(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t get_pwm##offset (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return get_pwm(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_pwm##offset (struct device *dev,&t;&t;&t;&bslash;&n;&t;&t;const char *buf, size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_pwm(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t get_pwm##offset##_en (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return get_pwm_en(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_pwm##offset##_en (struct device *dev,&t;&t;&bslash;&n;&t;&t;const char *buf, size_t count)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_pwm_en(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_input, S_IRUGO, get_fan##offset,&t;&bslash;&n;&t;&t;NULL);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_min, S_IRUGO | S_IWUSR,&t;&t;&bslash;&n;&t;&t;get_fan##offset##_min, set_fan##offset##_min);&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_div, S_IRUGO | S_IWUSR,&t;&t;&bslash;&n;&t;&t;get_fan##offset##_div, set_fan##offset##_div);&t;&t;&bslash;&n;static DEVICE_ATTR(pwm##offset, S_IRUGO | S_IWUSR,&t;&t;&t;&bslash;&n;&t;&t;get_pwm##offset, set_pwm##offset);&t;&t;&t;&bslash;&n;static DEVICE_ATTR(pwm##offset##_enable, S_IRUGO | S_IWUSR,&t;&t;&bslash;&n;&t;&t;get_pwm##offset##_en, set_pwm##offset##_en);
 id|fan_present
 c_func
 (paren
@@ -2018,7 +2018,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan1_pwm
+id|dev_attr_pwm1
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2028,7 +2028,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan1_pwm_enable
+id|dev_attr_pwm1_enable
 )paren
 suffix:semicolon
 )brace
@@ -2072,7 +2072,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan2_pwm
+id|dev_attr_pwm2
 )paren
 suffix:semicolon
 id|device_create_file
@@ -2082,7 +2082,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan2_pwm_enable
+id|dev_attr_pwm2_enable
 )paren
 suffix:semicolon
 )brace

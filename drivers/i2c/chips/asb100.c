@@ -2106,7 +2106,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan1_pwm
+id|pwm1
 comma
 id|S_IRUGO
 op_or
@@ -2121,7 +2121,7 @@ r_static
 id|DEVICE_ATTR
 c_func
 (paren
-id|fan1_pwm_enable
+id|pwm1_enable
 comma
 id|S_IRUGO
 op_or
@@ -2133,7 +2133,7 @@ id|set_pwm_enable1
 )paren
 suffix:semicolon
 DECL|macro|device_create_file_pwm1
-mdefine_line|#define device_create_file_pwm1(client) do { &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_fan1_pwm); &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_fan1_pwm_enable); &bslash;&n;} while (0)
+mdefine_line|#define device_create_file_pwm1(client) do { &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_pwm1); &bslash;&n;&t;device_create_file(&amp;new_client-&gt;dev, &amp;dev_attr_pwm1_enable); &bslash;&n;} while (0)
 multiline_comment|/* This function is called when:&n;&t;asb100_driver is inserted (when this module is loaded), for each&n;&t;&t;available adapter&n;&t;when a new adapter is inserted (and asb100_driver is still present)&n; */
 DECL|function|asb100_attach_adapter
 r_static

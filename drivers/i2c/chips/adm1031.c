@@ -1893,7 +1893,7 @@ id|count
 suffix:semicolon
 )brace
 DECL|macro|pwm_reg
-mdefine_line|#define pwm_reg(offset)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_pwm_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_pwm(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_pwm_##offset (struct device *dev,&t;&t;&t;&bslash;&n;&t;&t;&t;&t; const char *buf, size_t count)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_pwm(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(fan##offset##_pwm, S_IRUGO | S_IWUSR,&t;&t;&bslash;&n;&t;&t;   show_pwm_##offset, set_pwm_##offset)
+mdefine_line|#define pwm_reg(offset)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t show_pwm_##offset (struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return show_pwm(dev, buf, 0x##offset - 1);&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t set_pwm_##offset (struct device *dev,&t;&t;&t;&bslash;&n;&t;&t;&t;&t; const char *buf, size_t count)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return set_pwm(dev, buf, count, 0x##offset - 1);&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(pwm##offset, S_IRUGO | S_IWUSR,&t;&t;&t;&bslash;&n;&t;&t;   show_pwm_##offset, set_pwm_##offset)
 id|pwm_reg
 c_func
 (paren
@@ -3742,7 +3742,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan1_pwm
+id|dev_attr_pwm1
 )paren
 suffix:semicolon
 id|device_create_file
@@ -3960,7 +3960,7 @@ op_amp
 id|new_client-&gt;dev
 comma
 op_amp
-id|dev_attr_fan2_pwm
+id|dev_attr_pwm2
 )paren
 suffix:semicolon
 id|device_create_file
