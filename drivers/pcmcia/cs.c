@@ -218,15 +218,11 @@ id|socket_state_t
 id|dead_socket
 op_assign
 (brace
-l_int|0
-comma
+dot
+id|csc_mask
+op_assign
 id|SS_DETECT
 comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
 )brace
 suffix:semicolon
 multiline_comment|/* List of all sockets, protected by a rwsem */
