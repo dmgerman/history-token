@@ -459,7 +459,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|swsusp_save
+id|swsusp_suspend
 c_func
 (paren
 )paren
