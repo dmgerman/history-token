@@ -3134,34 +3134,18 @@ id|filename
 r_goto
 id|out
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|regs-&gt;msr
-op_amp
-id|MSR_FP
-)paren
-id|giveup_fpu
+id|flush_fp_to_thread
 c_func
 (paren
 id|current
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ALTIVEC
-r_if
-c_cond
-(paren
-id|regs-&gt;msr
-op_amp
-id|MSR_VEC
-)paren
-id|giveup_altivec
+id|flush_altivec_to_thread
 c_func
 (paren
 id|current
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_ALTIVEC */
 id|error
 op_assign
 id|compat_do_execve

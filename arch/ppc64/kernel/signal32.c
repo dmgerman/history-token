@@ -387,14 +387,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Make sure floating point registers are stored in regs */
-r_if
-c_cond
-(paren
-id|regs-&gt;msr
-op_amp
-id|MSR_FP
-)paren
-id|giveup_fpu
+id|flush_fp_to_thread
 c_func
 (paren
 id|current
@@ -475,14 +468,7 @@ c_cond
 id|current-&gt;thread.used_vr
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|regs-&gt;msr
-op_amp
-id|MSR_VEC
-)paren
-id|giveup_altivec
+id|flush_altivec_to_thread
 c_func
 (paren
 id|current

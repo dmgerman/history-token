@@ -64,6 +64,20 @@ id|flags
 )paren
 )paren
 suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|TI_PREEMPT
+comma
+m_offsetof
+(paren
+r_struct
+id|thread_info
+comma
+id|preempt_count
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* task_struct-&gt;thread */
 id|DEFINE
 c_func
