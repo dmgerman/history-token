@@ -36,7 +36,7 @@ id|s
 l_int|60
 )braket
 suffix:semicolon
-macro_line|#ifdef CODA_FS_OLD_API
+macro_line|#ifdef CONFIG_CODA_FS_OLD_API
 id|sprintf
 c_func
 (paren
