@@ -6,14 +6,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 r_extern
 r_int
-id|x25_asy_init_ctrl_dev
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|dmascc_init
 c_func
 (paren
@@ -241,25 +233,6 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;Initialise the line discipline drivers&n; */
-DECL|function|network_ldisc_init
-r_static
-r_void
-id|__init
-id|network_ldisc_init
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#if defined(CONFIG_X25_ASY)
-id|x25_asy_init_ctrl_dev
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 DECL|function|special_device_init
 r_static
 r_void
@@ -320,14 +293,8 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* Devices supporting the new probing API */
+multiline_comment|/* Devices supporting the new^H^H^Hold probing API */
 id|network_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Line disciplines */
-id|network_ldisc_init
 c_func
 (paren
 )paren
@@ -338,6 +305,5 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* That kicks off the legacy init functions */
 )brace
 eof
