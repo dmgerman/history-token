@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/* &n; * The timezone where the local system is located.  Used as a default by some&n; * programs who obtain this value by using gettimeofday.&n; */
@@ -1779,6 +1780,13 @@ op_assign
 id|nsec
 suffix:semicolon
 )brace
+DECL|variable|getnstimeofday
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|getnstimeofday
+)paren
+suffix:semicolon
 DECL|function|do_settimeofday
 r_int
 id|do_settimeofday

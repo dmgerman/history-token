@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/posix-timers.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifndef div_long_long_rem
 macro_line|#include &lt;asm/div64.h&gt;
 DECL|macro|div_long_long_rem
@@ -1208,6 +1209,13 @@ id|timr-&gt;it_process
 suffix:semicolon
 )brace
 )brace
+DECL|variable|posix_timer_event
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|posix_timer_event
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This function gets called when a POSIX.1b interval timer expires.  It&n; * is used as a callback from the kernel internal timer.  The&n; * run_timer_list code ALWAYS calls with interrupts on.&n;&n; * This code is for CLOCK_REALTIME* and CLOCK_MONOTONIC* timers.&n; */
 DECL|function|posix_timer_fn
 r_static
@@ -1609,6 +1617,13 @@ op_star
 id|new_clock
 suffix:semicolon
 )brace
+DECL|variable|register_posix_clock
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|register_posix_clock
+)paren
+suffix:semicolon
 DECL|function|alloc_posix_timer
 r_static
 r_struct
@@ -4114,6 +4129,13 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+DECL|variable|do_posix_clock_nosettime
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|do_posix_clock_nosettime
+)paren
+suffix:semicolon
 DECL|function|do_posix_clock_notimer_create
 r_int
 id|do_posix_clock_notimer_create
@@ -4130,6 +4152,13 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+DECL|variable|do_posix_clock_notimer_create
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|do_posix_clock_notimer_create
+)paren
+suffix:semicolon
 DECL|function|do_posix_clock_nonanosleep
 r_int
 id|do_posix_clock_nonanosleep
@@ -4160,6 +4189,13 @@ id|ENOTSUP
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|variable|do_posix_clock_nonanosleep
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|do_posix_clock_nonanosleep
+)paren
+suffix:semicolon
 id|asmlinkage
 r_int
 DECL|function|sys_clock_settime
