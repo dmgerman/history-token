@@ -30,6 +30,7 @@ macro_line|#include &quot;signal_user.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
+macro_line|#include &quot;time_user.h&quot;
 macro_line|#include &quot;tlb.h&quot;
 macro_line|#include &quot;frame_kern.h&quot;
 macro_line|#include &quot;sigcontext.h&quot;
