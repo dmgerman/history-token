@@ -381,6 +381,8 @@ DECL|macro|VENDOR_SOHOWARE
 mdefine_line|#define&t;VENDOR_SOHOWARE&t;&t;0x15e8
 DECL|macro|VENDOR_SIEMENS
 mdefine_line|#define&t;VENDOR_SIEMENS&t;&t;0x067c
+DECL|macro|VENDOR_JTEC
+mdefine_line|#define&t;VENDOR_JTEC&t;&t;0x11ad
 macro_line|#else&t;/* PEGASUS_DEV */
 id|PEGASUS_DEV
 c_func
@@ -1091,6 +1093,19 @@ comma
 id|VENDOR_SIEMENS
 comma
 l_int|0x1001
+comma
+id|DEFAULT_GPIO_RESET
+op_or
+id|PEGASUS_II
+)paren
+id|PEGASUS_DEV
+c_func
+(paren
+l_string|&quot;FA8101 USB To ETHERNET&quot;
+comma
+id|VENDOR_JTEC
+comma
+l_int|0x8101
 comma
 id|DEFAULT_GPIO_RESET
 op_or
