@@ -30,26 +30,12 @@ DECL|macro|FL_BASE4
 mdefine_line|#define FL_BASE4&t;&t;0x0004
 DECL|macro|FL_GET_BASE
 mdefine_line|#define FL_GET_BASE(x)&t;&t;(x &amp; FL_BASE_MASK)
-DECL|macro|FL_IRQ_MASK
-mdefine_line|#define FL_IRQ_MASK&t;&t;(0x0007 &lt;&lt; 4)
-DECL|macro|FL_IRQBASE0
-mdefine_line|#define FL_IRQBASE0&t;&t;(0x0000 &lt;&lt; 4)
-DECL|macro|FL_IRQBASE1
-mdefine_line|#define FL_IRQBASE1&t;&t;(0x0001 &lt;&lt; 4)
-DECL|macro|FL_IRQBASE2
-mdefine_line|#define FL_IRQBASE2&t;&t;(0x0002 &lt;&lt; 4)
-DECL|macro|FL_IRQBASE3
-mdefine_line|#define FL_IRQBASE3&t;&t;(0x0003 &lt;&lt; 4)
-DECL|macro|FL_IRQBASE4
-mdefine_line|#define FL_IRQBASE4&t;&t;(0x0004 &lt;&lt; 4)
-DECL|macro|FL_GET_IRQBASE
-mdefine_line|#define FL_GET_IRQBASE(x)&t;((x &amp; FL_IRQ_MASK) &gt;&gt; 4)
 multiline_comment|/* Use successive BARs (PCI base address registers),&n;   else use offset into some specified BAR */
 DECL|macro|FL_BASE_BARS
 mdefine_line|#define FL_BASE_BARS&t;&t;0x0008
-multiline_comment|/* Use the irq resource table instead of dev-&gt;irq */
-DECL|macro|FL_IRQRESOURCE
-mdefine_line|#define FL_IRQRESOURCE&t;&t;0x0080
+multiline_comment|/* do not assign an irq */
+DECL|macro|FL_NOIRQ
+mdefine_line|#define FL_NOIRQ&t;&t;0x0080
 multiline_comment|/* Use the Base address register size to cap number of ports */
 DECL|macro|FL_REGION_SZ_CAP
 mdefine_line|#define FL_REGION_SZ_CAP&t;0x0100
@@ -3193,48 +3179,19 @@ r_int
 id|idx
 )paren
 (brace
-r_int
-id|base_idx
-suffix:semicolon
 r_if
 c_cond
-(paren
 (paren
 id|board-&gt;flags
 op_amp
-id|FL_IRQRESOURCE
+id|FL_NOIRQ
 )paren
-op_eq
+r_return
 l_int|0
-)paren
+suffix:semicolon
+r_else
 r_return
 id|dev-&gt;irq
-suffix:semicolon
-id|base_idx
-op_assign
-id|FL_GET_IRQBASE
-c_func
-(paren
-id|board-&gt;flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|base_idx
-OG
-id|DEVICE_COUNT_IRQ
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-id|dev-&gt;irq_resource
-(braket
-id|base_idx
-)braket
-dot
-id|start
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the configuration table for all of the PCI serial boards&n; * which we support.  It is directly indexed by the pci_board_num_t enum&n; * value, which is encoded in the pci_device_id PCI probe table&squot;s&n; * driver_data member.&n; *&n; * The makeup of these names are:&n; *  pbn_bn{_bt}_n_baud&n; *&n; *  bn   = PCI BAR number&n; *  bt   = Index using PCI BARs&n; *  n    = number of serial ports&n; *  baud = baud rate&n; *&n; * Please note: in theory if n = 1, _bt infix should make no difference.&n; * ie, pbn_b0_1_115200 is the same as pbn_b0_bt_1_115200&n; */
@@ -4924,7 +4881,7 @@ id|flags
 op_assign
 id|FL_BASE0
 op_or
-id|FL_IRQRESOURCE
+id|FL_NOIRQ
 comma
 dot
 id|num_ports

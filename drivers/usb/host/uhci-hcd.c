@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Universal Host Controller Interface driver for USB.&n; *&n; * Maintainer: Johannes Erdfelt &lt;johannes@erdfelt.com&gt;&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999-2002 Johannes Erdfelt, johannes@erdfelt.com&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Georg Acher, acher@in.tum.de&n; * (C) Copyright 1999 Deti Fliegl, deti@fliegl.de&n; * (C) Copyright 1999 Thomas Sailer, sailer@ife.ee.ethz.ch&n; * (C) Copyright 1999 Roman Weissgaerber, weissg@vienna.at&n; * (C) Copyright 2000 Yggdrasil Computing, Inc. (port of new PCI interface&n; *               support from usb-ohci.c by Adam Richter, adam@yggdrasil.com).&n; * (C) Copyright 1999 Gregory P. Smith (from usb-ohci.c)&n; *&n; * Intel documents this fairly well, and as far as I know there&n; * are no royalties or anything like that, but even so there are&n; * people who decided that they want to do the same thing in a&n; * completely different way.&n; *&n; * WARNING! The USB documentation is downright evil. Most of it&n; * is just crap, written by a committee. You&squot;re better off ignoring&n; * most of it, the important stuff is:&n; *  - the low-level protocol (fairly simple but lots of small details)&n; *  - working around the horridness of the rest&n; */
+multiline_comment|/*&n; * Universal Host Controller Interface driver for USB.&n; *&n; * Maintainer: Alan Stern &lt;stern@rowland.harvard.edu&gt;&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999-2002 Johannes Erdfelt, johannes@erdfelt.com&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Georg Acher, acher@in.tum.de&n; * (C) Copyright 1999 Deti Fliegl, deti@fliegl.de&n; * (C) Copyright 1999 Thomas Sailer, sailer@ife.ee.ethz.ch&n; * (C) Copyright 1999 Roman Weissgaerber, weissg@vienna.at&n; * (C) Copyright 2000 Yggdrasil Computing, Inc. (port of new PCI interface&n; *               support from usb-ohci.c by Adam Richter, adam@yggdrasil.com).&n; * (C) Copyright 1999 Gregory P. Smith (from usb-ohci.c)&n; *&n; * Intel documents this fairly well, and as far as I know there&n; * are no royalties or anything like that, but even so there are&n; * people who decided that they want to do the same thing in a&n; * completely different way.&n; *&n; * WARNING! The USB documentation is downright evil. Most of it&n; * is just crap, written by a committee. You&squot;re better off ignoring&n; * most of it, the important stuff is:&n; *  - the low-level protocol (fairly simple but lots of small details)&n; *  - working around the horridness of the rest&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -2535,10 +2535,6 @@ suffix:semicolon
 id|urbp-&gt;urb
 op_assign
 id|urb
-suffix:semicolon
-id|urbp-&gt;dev
-op_assign
-id|urb-&gt;dev
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -8069,7 +8065,7 @@ suffix:semicolon
 )brace
 DECL|function|uhci_irq
 r_static
-r_void
+id|irqreturn_t
 id|uhci_irq
 c_func
 (paren
@@ -8132,6 +8128,7 @@ id|status
 )paren
 multiline_comment|/* shared interrupt, not mine */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|outw
 c_func
@@ -8325,6 +8322,9 @@ id|hcd
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|reset_hc
@@ -9689,6 +9689,8 @@ l_int|NULL
 comma
 op_amp
 id|hcd-&gt;self
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if

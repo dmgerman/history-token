@@ -12,6 +12,7 @@ macro_line|# define __user
 DECL|macro|__kernel
 macro_line|# define __kernel
 macro_line|#endif
+macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#if __GNUC__ &gt; 3
 macro_line|# include &lt;linux/compiler-gcc+.h&gt;&t;/* catch-all for GCC 4, 5, etc. */
@@ -61,5 +62,6 @@ macro_line|#ifndef RELOC_HIDE
 DECL|macro|RELOC_HIDE
 macro_line|# define RELOC_HIDE(ptr, off)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __ptr;&t;&t;&t;&t;&t;&bslash;&n;     __ptr = (unsigned long) (ptr);&t;&t;&t;&t;&bslash;&n;    (typeof(ptr)) (__ptr + (off)); })
 macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __LINUX_COMPILER_H */
 eof

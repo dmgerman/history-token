@@ -88,7 +88,6 @@ id|rpc_portmap
 op_star
 id|map
 op_assign
-op_amp
 id|clnt-&gt;cl_pmap
 suffix:semicolon
 r_struct
@@ -166,14 +165,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|clnt-&gt;cl_binding
+id|map-&gt;pm_binding
 )paren
 (brace
 id|rpc_sleep_on
 c_func
 (paren
 op_amp
-id|clnt-&gt;cl_bindwait
+id|map-&gt;pm_bindwait
 comma
 id|task
 comma
@@ -192,7 +191,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|clnt-&gt;cl_binding
+id|map-&gt;pm_binding
 op_assign
 l_int|1
 suffix:semicolon
@@ -288,7 +287,7 @@ op_amp
 id|pmap_lock
 )paren
 suffix:semicolon
-id|clnt-&gt;cl_binding
+id|map-&gt;pm_binding
 op_assign
 l_int|0
 suffix:semicolon
@@ -296,7 +295,7 @@ id|rpc_wake_up
 c_func
 (paren
 op_amp
-id|clnt-&gt;cl_bindwait
+id|map-&gt;pm_bindwait
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -498,6 +497,13 @@ id|clnt
 op_assign
 id|task-&gt;tk_client
 suffix:semicolon
+r_struct
+id|rpc_portmap
+op_star
+id|map
+op_assign
+id|clnt-&gt;cl_pmap
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -567,7 +573,7 @@ op_amp
 id|pmap_lock
 )paren
 suffix:semicolon
-id|clnt-&gt;cl_binding
+id|map-&gt;pm_binding
 op_assign
 l_int|0
 suffix:semicolon
@@ -575,7 +581,7 @@ id|rpc_wake_up
 c_func
 (paren
 op_amp
-id|clnt-&gt;cl_bindwait
+id|map-&gt;pm_bindwait
 )paren
 suffix:semicolon
 id|spin_unlock

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/nfs_mount.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/lockd/bind.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1164,33 +1163,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* This will be in a forthcoming patch. */
-r_if
-c_cond
-(paren
-id|NFS_PROTO
-c_func
-(paren
-id|inode
-)paren
-op_member_access_from_pointer
-id|version
-op_eq
-l_int|4
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;NFS: file locking over NFSv4 is not yet supported&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 multiline_comment|/* No mandatory locks over NFS */
 r_if
 c_cond
@@ -1211,6 +1183,20 @@ r_return
 op_minus
 id|ENOLCK
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|NFS_PROTO
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|version
+op_ne
+l_int|4
+)paren
+(brace
 multiline_comment|/* Fake OK code if mounted without NLM support */
 r_if
 c_cond
@@ -1243,6 +1229,7 @@ r_goto
 id|out_ok
 suffix:semicolon
 )brace
+)brace
 multiline_comment|/*&n;&t; * No BSD flocks over NFS allowed.&n;&t; * Note: we could try to fake a POSIX lock request here by&n;&t; * using ((u32) filp | 0x80000000) or some such as the pid.&n;&t; * Not sure whether that would be unique, though, or whether&n;&t; * that would break in other places.&n;&t; */
 r_if
 c_cond
@@ -1250,13 +1237,12 @@ c_cond
 op_logical_neg
 id|fl-&gt;fl_owner
 op_logical_or
+op_logical_neg
 (paren
 id|fl-&gt;fl_flags
 op_amp
 id|FL_POSIX
 )paren
-op_ne
-id|FL_POSIX
 )paren
 r_return
 op_minus
@@ -1338,10 +1324,16 @@ c_func
 suffix:semicolon
 id|status
 op_assign
-id|nlmclnt_proc
+id|NFS_PROTO
 c_func
 (paren
 id|inode
+)paren
+op_member_access_from_pointer
+id|lock
+c_func
+(paren
+id|filp
 comma
 id|cmd
 comma

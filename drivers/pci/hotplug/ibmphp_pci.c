@@ -92,8 +92,6 @@ id|class_code
 (brace
 r_int
 id|j
-op_assign
-l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -234,7 +232,7 @@ suffix:semicolon
 multiline_comment|/* to see if we are able to read from card any device info at all */
 id|debug
 (paren
-l_string|&quot;inside configure_card, func-&gt;busno = %x &bslash;n&quot;
+l_string|&quot;inside configure_card, func-&gt;busno = %x&bslash;n&quot;
 comma
 id|func-&gt;busno
 )paren
@@ -366,7 +364,7 @@ l_int|24
 suffix:semicolon
 id|debug
 (paren
-l_string|&quot;hrd_type = %x, class = %x, class_code %x &bslash;n&quot;
+l_string|&quot;hrd_type = %x, class = %x, class_code %x&bslash;n&quot;
 comma
 id|hdr_type
 comma
@@ -468,7 +466,7 @@ l_int|0
 multiline_comment|/* We need to do this in case some other BARs were properly inserted */
 id|err
 (paren
-l_string|&quot;was not able to configure devfunc %x on bus %x. &bslash;n&quot;
+l_string|&quot;was not able to configure devfunc %x on bus %x.&bslash;n&quot;
 comma
 id|cur_func-&gt;device
 comma
@@ -563,7 +561,7 @@ id|newfunc
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -687,7 +685,7 @@ l_string|&quot;You chose to insert Single Bridge, or nested bridges, this is not
 suffix:semicolon
 id|err
 (paren
-l_string|&quot;Bus %x, devfunc %x &bslash;n&quot;
+l_string|&quot;Bus %x, devfunc %x&bslash;n&quot;
 comma
 id|cur_func-&gt;busno
 comma
@@ -790,7 +788,7 @@ id|newfunc
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -939,7 +937,7 @@ id|newfunc
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1091,7 +1089,7 @@ l_string|&quot;You chose to insert Single Bridge, or nested bridges, this is not
 suffix:semicolon
 id|err
 (paren
-l_string|&quot;Bus %x, devfunc %x &bslash;n&quot;
+l_string|&quot;Bus %x, devfunc %x&bslash;n&quot;
 comma
 id|cur_func-&gt;busno
 comma
@@ -1219,7 +1217,7 @@ id|newfunc
 (brace
 id|err
 (paren
-l_string|&quot; out of system memory &bslash;n&quot;
+l_string|&quot; out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1750,7 +1748,7 @@ id|count
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2039,7 +2037,7 @@ id|count
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2182,7 +2180,7 @@ id|mem_tmp
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -2529,7 +2527,7 @@ id|count
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3107,7 +3105,7 @@ l_int|0xff
 (brace
 id|err
 (paren
-l_string|&quot;cannot allocate secondary bus number for the bridged device &bslash;n&quot;
+l_string|&quot;cannot allocate secondary bus number for the bridged device&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3360,7 +3358,7 @@ id|count
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -3601,7 +3599,7 @@ id|count
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -3748,7 +3746,7 @@ id|mem_tmp
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -4012,7 +4010,7 @@ id|count
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -4277,7 +4275,7 @@ id|amount_needed-&gt;not_correct
 (brace
 id|debug
 (paren
-l_string|&quot;amount_needed is not correct &bslash;n&quot;
+l_string|&quot;amount_needed is not correct&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for
@@ -4406,7 +4404,7 @@ r_else
 (brace
 id|debug
 (paren
-l_string|&quot;it wants %x IO behind the bridge &bslash;n&quot;
+l_string|&quot;it wants %x IO behind the bridge&bslash;n&quot;
 comma
 id|amount_needed-&gt;io
 )paren
@@ -4433,7 +4431,7 @@ id|io
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -4563,7 +4561,7 @@ id|mem
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -4693,7 +4691,7 @@ id|pfmem
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -4797,7 +4795,7 @@ id|mem_tmp
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -4939,7 +4937,7 @@ id|bus
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -5027,7 +5025,7 @@ r_else
 (brace
 id|err
 (paren
-l_string|&quot;expected bus structure not empty? &bslash;n&quot;
+l_string|&quot;expected bus structure not empty?&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -5548,7 +5546,7 @@ r_else
 (brace
 id|err
 (paren
-l_string|&quot;Configuring bridge was unsuccessful... &bslash;n&quot;
+l_string|&quot;Configuring bridge was unsuccessful...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|mem_tmp
@@ -6097,7 +6095,7 @@ suffix:semicolon
 singleline_comment|//tmp_bar = bar[count];
 id|debug
 (paren
-l_string|&quot;count %d device %x function %x wants %x resources &bslash;n&quot;
+l_string|&quot;count %d device %x function %x wants %x resources&bslash;n&quot;
 comma
 id|count
 comma
@@ -7702,7 +7700,7 @@ id|rc
 (brace
 id|err
 (paren
-l_string|&quot;was not able to unconfigure device %x func %x on bus %x. bailing out... &bslash;n&quot;
+l_string|&quot;was not able to unconfigure device %x func %x on bus %x. bailing out...&bslash;n&quot;
 comma
 id|device
 comma
@@ -7743,7 +7741,7 @@ id|rc
 (brace
 id|err
 (paren
-l_string|&quot;was not able to unconfigure device %x func %x on bus %x. bailing out... &bslash;n&quot;
+l_string|&quot;was not able to unconfigure device %x func %x on bus %x. bailing out...&bslash;n&quot;
 comma
 id|device
 comma
@@ -7888,7 +7886,7 @@ r_default
 suffix:colon
 id|err
 (paren
-l_string|&quot;MAJOR PROBLEM!!!! Cannot read device&squot;s header &bslash;n&quot;
+l_string|&quot;MAJOR PROBLEM!!!! Cannot read device&squot;s header&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7912,7 +7910,7 @@ id|valid_device
 (brace
 id|err
 (paren
-l_string|&quot;Could not find device to unconfigure.  Or could not read the card. &bslash;n&quot;
+l_string|&quot;Could not find device to unconfigure.  Or could not read the card.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8083,7 +8081,7 @@ id|i
 (brace
 id|debug
 (paren
-l_string|&quot;io[%d] exists &bslash;n&quot;
+l_string|&quot;io[%d] exists&bslash;n&quot;
 comma
 id|i
 )paren
@@ -8122,7 +8120,7 @@ id|i
 (brace
 id|debug
 (paren
-l_string|&quot;mem[%d] exists &bslash;n&quot;
+l_string|&quot;mem[%d] exists&bslash;n&quot;
 comma
 id|i
 )paren
@@ -8161,7 +8159,7 @@ id|i
 (brace
 id|debug
 (paren
-l_string|&quot;pfmem[%d] exists &bslash;n&quot;
+l_string|&quot;pfmem[%d] exists&bslash;n&quot;
 comma
 id|i
 )paren
@@ -8354,7 +8352,7 @@ id|io_range
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8424,7 +8422,7 @@ id|mem_range
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8494,7 +8492,7 @@ id|pfmem_range
 (brace
 id|err
 (paren
-l_string|&quot;out of system memory &bslash;n&quot;
+l_string|&quot;out of system memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -470,6 +470,17 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pcibios_add_platform_entries
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* __KERNEL__ */
 macro_line|#endif /* __PPC64_PCI_H */
 eof
