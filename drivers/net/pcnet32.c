@@ -4436,7 +4436,7 @@ id|lp-&gt;rx_dma_addr
 id|i
 )braket
 op_eq
-l_int|NULL
+l_int|0
 )paren
 id|lp-&gt;rx_dma_addr
 (braket
