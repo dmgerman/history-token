@@ -4395,7 +4395,8 @@ id|data
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|rc
