@@ -11115,6 +11115,9 @@ id|xlog_ticket_t
 op_star
 id|tic
 suffix:semicolon
+id|uint
+id|num_headers
+suffix:semicolon
 id|SPLDECL
 c_func
 (paren
@@ -11195,20 +11198,73 @@ comma
 id|s
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Permanent reservations have up to &squot;cnt&squot;-1 active log operations&n;&t; * in the log.  A unit in this case is the amount of space for one&n;&t; * of these log operations.  Normal reservations have a cnt of 1&n;&t; * and their unit amount is the total amount of space required.&n;&t; * The following line of code adds one log record header length&n;&t; * for each part of an operation which may fall on a different&n;&t; * log record.&n;&t; *&n;&t; * One more XLOG_HEADER_SIZE is added to account for possible&n;&t; * round off errors when syncing a LR to disk.  The bytes are&n;&t; * subtracted if the thread using this ticket is the first writer&n;&t; * to a new LR.&n;&t; *&n;&t; * We add an extra log header for the possibility that the commit&n;&t; * record is the first data written to a new log record.  In this&n;&t; * case it is separate from the rest of the transaction data and&n;&t; * will be charged for the log record header.&n;&t; */
+multiline_comment|/*&n;&t; * Permanent reservations have up to &squot;cnt&squot;-1 active log operations&n;&t; * in the log.  A unit in this case is the amount of space for one&n;&t; * of these log operations.  Normal reservations have a cnt of 1&n;&t; * and their unit amount is the total amount of space required.&n;&t; *&n;&t; * The following lines of code account for non-transaction data&n;&t; * which occupy space in the on-disk log. &n;&t; */
+multiline_comment|/* for start-rec */
+id|unit_bytes
+op_add_assign
+r_sizeof
+(paren
+id|xlog_op_header_t
+)paren
+suffix:semicolon
+multiline_comment|/* for padding */
+r_if
+c_cond
+(paren
+id|XFS_SB_VERSION_HASLOGV2
+c_func
+(paren
+op_amp
+id|log-&gt;l_mp-&gt;m_sb
+)paren
+op_logical_and
+id|log-&gt;l_mp-&gt;m_sb.sb_logsunit
+OG
+l_int|1
+)paren
+(brace
+multiline_comment|/* log su roundoff */
+id|unit_bytes
+op_add_assign
+id|log-&gt;l_mp-&gt;m_sb.sb_logsunit
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* BB roundoff */
+id|unit_bytes
+op_add_assign
+id|BBSIZE
+suffix:semicolon
+)brace
+multiline_comment|/* for commit-rec */
+id|unit_bytes
+op_add_assign
+r_sizeof
+(paren
+id|xlog_op_header_t
+)paren
+suffix:semicolon
+multiline_comment|/* for LR headers */
+id|num_headers
+op_assign
+(paren
+(paren
+id|unit_bytes
+op_plus
+id|log-&gt;l_iclog_size
+op_minus
+l_int|1
+)paren
+op_rshift
+id|log-&gt;l_iclog_size_log
+)paren
+suffix:semicolon
 id|unit_bytes
 op_add_assign
 id|log-&gt;l_iclog_hsize
 op_star
-(paren
-id|XLOG_BTOLRBB
-c_func
-(paren
-id|unit_bytes
-)paren
-op_plus
-l_int|2
-)paren
+id|num_headers
 suffix:semicolon
 id|tic-&gt;t_unit_res
 op_assign
