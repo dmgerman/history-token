@@ -1,17 +1,12 @@
-multiline_comment|/* OEM Data for 300 series */
-DECL|variable|SiS310_CRT2DelayCompensation1
+multiline_comment|/* OEM Data for 310/325/330 series */
+DECL|variable|SiS310_LCDDelayCompensation_301
+r_const
 id|UCHAR
-id|SiS310_CRT2DelayCompensation1
-op_assign
-l_int|0x04
-suffix:semicolon
-multiline_comment|/* 301A */
-DECL|variable|SiS310_LCDDelayCompensation1
-id|UCHAR
-id|SiS310_LCDDelayCompensation1
+id|SiS310_LCDDelayCompensation_301
 (braket
 )braket
 op_assign
+multiline_comment|/* 301 */
 (brace
 l_int|0x00
 comma
@@ -19,159 +14,70 @@ l_int|0x00
 comma
 l_int|0x00
 comma
+multiline_comment|/*   800x600 */
 l_int|0x0b
 comma
 l_int|0x0b
 comma
 l_int|0x0b
 comma
+multiline_comment|/*  1024x768 */
 l_int|0x08
 comma
 l_int|0x08
 comma
 l_int|0x08
-comma
-l_int|0x08
-comma
-l_int|0x08
-comma
-l_int|0x08
-comma
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-)brace
-suffix:semicolon
-DECL|variable|SiS310_TVDelayCompensation1
-id|UCHAR
-id|SiS310_TVDelayCompensation1
-(braket
-)braket
-op_assign
-(brace
-l_int|0x02
-comma
-l_int|0x02
-comma
-multiline_comment|/* NTSC Enhanced, Standard */
-l_int|0x02
-comma
-l_int|0x02
-comma
-multiline_comment|/* PAL */
-l_int|0x08
-comma
-l_int|0x0b
-multiline_comment|/* HiVision */
-)brace
-suffix:semicolon
-DECL|variable|SiS310_CRT2DelayCompensation2
-id|UCHAR
-id|SiS310_CRT2DelayCompensation2
-op_assign
-l_int|0x00
-suffix:semicolon
-multiline_comment|/* TW: From 650/301LV BIOS; was 0x0C; */
-multiline_comment|/* 301B */
-DECL|variable|SiS310_LCDDelayCompensation2
-id|UCHAR
-id|SiS310_LCDDelayCompensation2
-(braket
-)braket
-op_assign
-(brace
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-multiline_comment|/* TW: From 650/301LV BIOS */
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-comma
-l_int|0x01
-macro_line|#if 0
-l_int|0x00
-comma
-l_int|0x00
-comma
-l_int|0x00
-comma
-multiline_comment|/* 800x600 VESA, non-VESA, non-expanding */
-l_int|0x0C
-comma
-l_int|0x0C
-comma
-l_int|0x0C
-comma
-multiline_comment|/* 1024x768 */
-l_int|0x0C
-comma
-l_int|0x0C
-comma
-l_int|0x0C
 comma
 multiline_comment|/* 1280x1024 */
-l_int|0x08
-comma
-l_int|0x08
-comma
-l_int|0x08
-comma
-multiline_comment|/* 1280x960 */
 l_int|0x00
 comma
 l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/* 640x480 */
+multiline_comment|/*   640x480 (unknown) */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+multiline_comment|/*  1024x600 (unknown) */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+multiline_comment|/*  1152x864 (unknown) */
+l_int|0x08
+comma
+l_int|0x08
+comma
+l_int|0x08
+comma
+multiline_comment|/*  1280x960 (guessed) */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+multiline_comment|/*  1152x768 (unknown) */
+l_int|0x08
+comma
+l_int|0x08
+comma
+l_int|0x08
+comma
+multiline_comment|/* 1400x1050 */
+l_int|0x08
+comma
+l_int|0x08
+comma
+l_int|0x08
+comma
+multiline_comment|/*  1280x768  (guessed) */
 l_int|0x00
 comma
 l_int|0x00
@@ -184,60 +90,257 @@ comma
 l_int|0x00
 comma
 l_int|0x00
-multiline_comment|/* 1920x1440 */
-macro_line|#endif
+comma
+multiline_comment|/*   320x480 (unknown) */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
 )brace
 suffix:semicolon
-DECL|variable|SiS310_TVDelayCompensation2
+multiline_comment|/* This is contained in 650+301B BIOSes, but it is wrong - so we don&squot;t use it */
+DECL|variable|SiS310_LCDDelayCompensation_650301B
 id|UCHAR
-id|SiS310_TVDelayCompensation2
+id|SiS310_LCDDelayCompensation_650301B
 (braket
 )braket
 op_assign
+multiline_comment|/* 30xB,LV */
 (brace
-l_int|0x05
+l_int|0x01
 comma
-l_int|0x05
+l_int|0x01
 comma
-multiline_comment|/* TW: From 650/301LV BIOS */
-l_int|0x05
+l_int|0x01
 comma
-l_int|0x05
+multiline_comment|/*   800x600 */
+l_int|0x01
 comma
-l_int|0x05
+l_int|0x01
 comma
-l_int|0x05
-macro_line|#if 0
-l_int|0x03
+l_int|0x01
 comma
-l_int|0x03
+multiline_comment|/*  1024x768 */
+l_int|0x01
 comma
-multiline_comment|/* NTSC Enhanced, Standard */
-l_int|0x03
+l_int|0x01
 comma
-l_int|0x03
+l_int|0x01
 comma
-multiline_comment|/* PAL */
+multiline_comment|/* 1280x1024 */
+l_int|0x01
+comma
+l_int|0x01
+comma
+l_int|0x01
+comma
+multiline_comment|/*   640x480 (unknown) */
+l_int|0x01
+comma
+l_int|0x01
+comma
+l_int|0x01
+comma
+multiline_comment|/*  1024x600 (unknown) */
+l_int|0x01
+comma
+l_int|0x01
+comma
+l_int|0x01
+comma
+multiline_comment|/*  1152x864 (unknown) */
+l_int|0x01
+comma
+l_int|0x01
+comma
+l_int|0x01
+comma
+multiline_comment|/*  1280x960 (guessed) */
+l_int|0x01
+comma
+l_int|0x01
+comma
+l_int|0x01
+comma
+multiline_comment|/*  1152x768 (unknown) */
+l_int|0x01
+comma
+l_int|0x01
+comma
+l_int|0x01
+comma
+multiline_comment|/* 1400x1050 */
+l_int|0x01
+comma
+l_int|0x01
+comma
+l_int|0x01
+comma
+multiline_comment|/*  1280x768  (guessed) */
+l_int|0x01
+comma
+l_int|0x01
+comma
+l_int|0x01
+comma
+multiline_comment|/* 1600x1200 */
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+)brace
+suffix:semicolon
+multiline_comment|/* This data is correct, so we use it instead of the table above */
+DECL|variable|SiS310_LCDDelayCompensation_3xx301B
+id|UCHAR
+id|SiS310_LCDDelayCompensation_3xx301B
+(braket
+)braket
+op_assign
+multiline_comment|/* 30xB,LV */
+(brace
+l_int|0x01
+comma
+l_int|0x01
+comma
+l_int|0x01
+comma
+multiline_comment|/*   800x600 */
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+multiline_comment|/*  1024x768 */
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+multiline_comment|/* 1280x1024 */
 l_int|0x08
 comma
-l_int|0x0b
-multiline_comment|/* HiVision */
-macro_line|#endif
+l_int|0x08
+comma
+l_int|0x08
+comma
+multiline_comment|/*   640x480 */
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+multiline_comment|/*  1024x600 (guessed) */
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+multiline_comment|/*  1152x864 (guessed) */
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+multiline_comment|/*  1280x960 (guessed) */
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+multiline_comment|/*  1152x768 (guessed) */
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+multiline_comment|/* 1400x1050 (guessed) */
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+multiline_comment|/*  1280x768 (guessed) */
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+l_int|0x0C
+comma
+multiline_comment|/* 1600x1200 (guessed) */
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
+comma
+l_int|0x02
 )brace
 suffix:semicolon
-DECL|variable|SiS310_CRT2DelayCompensation3
+DECL|variable|SiS310_LCDDelayCompensation_LVDS
+r_const
 id|UCHAR
-id|SiS310_CRT2DelayCompensation3
-op_assign
-l_int|0x00
-suffix:semicolon
-multiline_comment|/* LVDS */
-DECL|variable|SiS310_LCDDelayCompensation3
-id|UCHAR
-id|SiS310_LCDDelayCompensation3
+id|SiS310_LCDDelayCompensation_LVDS
 (braket
 )braket
 op_assign
+multiline_comment|/* LVDS */
 (brace
 l_int|0x00
 comma
@@ -245,14 +348,14 @@ l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/* 800x600 */
+multiline_comment|/*   800x600 */
 l_int|0x00
 comma
 l_int|0x00
 comma
 l_int|0x00
 comma
-multiline_comment|/* 1024x768 */
+multiline_comment|/*  1024x768 */
 l_int|0x00
 comma
 l_int|0x00
@@ -260,6 +363,41 @@ comma
 l_int|0x00
 comma
 multiline_comment|/* 1280x1024 */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+multiline_comment|/*   640x480 (unknown) */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+multiline_comment|/*  1024x600 (unknown) */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+multiline_comment|/*  1152x864 (unknown) */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+multiline_comment|/*  1280x960 (guessed) */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+multiline_comment|/*  1152x768 (unknown) */
 l_int|0x00
 comma
 l_int|0x00
@@ -272,15 +410,339 @@ comma
 l_int|0x00
 comma
 l_int|0x00
+comma
+multiline_comment|/*  1280x768  (guessed) */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
 multiline_comment|/* 1600x1200 */
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
+comma
+l_int|0x00
 )brace
 suffix:semicolon
-DECL|variable|SiS310_TVDelayCompensation3
+DECL|variable|SiS310_LCDDelayCompensation_651301LV
+r_const
 id|UCHAR
-id|SiS310_TVDelayCompensation3
+id|SiS310_LCDDelayCompensation_651301LV
 (braket
 )braket
 op_assign
+multiline_comment|/* M650/651 301LV */
+(brace
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*   800x600 (guessed) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1024x768 */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/* 1280x1024 */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*   640x480 (unknown) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1024x600 (unknown) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1152x864 (unknown) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1280x960 (guessed) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1152x768 (unknown) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/* 1400x1050 */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1280x768  (guessed) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/* 1600x1200 */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+)brace
+suffix:semicolon
+DECL|variable|SiS310_LCDDelayCompensation_651302LV
+r_const
+id|UCHAR
+id|SiS310_LCDDelayCompensation_651302LV
+(braket
+)braket
+op_assign
+multiline_comment|/* M650/651 302LV */
+(brace
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*   800x600 (guessed) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1024x768 */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/* 1280x1024 */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*   640x480 (unknown) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1024x600 (unknown) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1152x864 (unknown) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1280x960 (guessed) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1152x768 (unknown) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/* 1400x1050 */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/*  1280x768  (guessed) */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+multiline_comment|/* 1600x1200 */
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+)brace
+suffix:semicolon
+DECL|variable|SiS310_TVDelayCompensation_301
+r_const
+id|UCHAR
+id|SiS310_TVDelayCompensation_301
+(braket
+)braket
+op_assign
+multiline_comment|/* 301 */
+(brace
+l_int|0x02
+comma
+l_int|0x02
+comma
+multiline_comment|/* NTSC Enhanced, Standard */
+l_int|0x02
+comma
+l_int|0x02
+comma
+multiline_comment|/* PAL */
+l_int|0x08
+comma
+l_int|0x0b
+multiline_comment|/* HiVision */
+)brace
+suffix:semicolon
+DECL|variable|SiS310_TVDelayCompensation_301B
+r_const
+id|UCHAR
+id|SiS310_TVDelayCompensation_301B
+(braket
+)braket
+op_assign
+multiline_comment|/* 30xB, 30xLV */
+(brace
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+comma
+l_int|0x03
+)brace
+suffix:semicolon
+DECL|variable|SiS310_TVDelayCompensation_740301B
+r_const
+id|UCHAR
+id|SiS310_TVDelayCompensation_740301B
+(braket
+)braket
+op_assign
+multiline_comment|/* 740 + 30xB (30xLV?) */
+(brace
+l_int|0x05
+comma
+l_int|0x05
+comma
+l_int|0x05
+comma
+l_int|0x05
+comma
+l_int|0x05
+comma
+l_int|0x05
+)brace
+suffix:semicolon
+DECL|variable|SiS310_TVDelayCompensation_LVDS
+r_const
+id|UCHAR
+id|SiS310_TVDelayCompensation_LVDS
+(braket
+)braket
+op_assign
+multiline_comment|/* LVDS */
 (brace
 l_int|0x0a
 comma
@@ -295,7 +757,52 @@ comma
 l_int|0x0a
 )brace
 suffix:semicolon
+DECL|variable|SiS310_TVDelayCompensation_651301LV
+r_const
+id|UCHAR
+id|SiS310_TVDelayCompensation_651301LV
+(braket
+)braket
+op_assign
+multiline_comment|/* M650, 651, 301LV */
+(brace
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+)brace
+suffix:semicolon
+DECL|variable|SiS310_TVDelayCompensation_651302LV
+r_const
+id|UCHAR
+id|SiS310_TVDelayCompensation_651302LV
+(braket
+)braket
+op_assign
+multiline_comment|/* M650, 651, 302LV */
+(brace
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+comma
+l_int|0x33
+)brace
+suffix:semicolon
 DECL|variable|SiS310_TVAntiFlick1
+r_const
 id|UCHAR
 id|SiS310_TVAntiFlick1
 (braket
@@ -326,6 +833,7 @@ l_int|0x0
 )brace
 suffix:semicolon
 DECL|variable|SiS310_TVEdge1
+r_const
 id|UCHAR
 id|SiS310_TVEdge1
 (braket
@@ -356,6 +864,7 @@ l_int|0x0
 )brace
 suffix:semicolon
 DECL|variable|SiS310_TVYFilter1
+r_const
 id|UCHAR
 id|SiS310_TVYFilter1
 (braket
@@ -617,6 +1126,7 @@ l_int|0x08
 )brace
 suffix:semicolon
 DECL|variable|SiS310_TVYFilter2
+r_const
 id|UCHAR
 id|SiS310_TVYFilter2
 (braket
@@ -1054,10 +1564,11 @@ l_int|0x22
 )brace
 suffix:semicolon
 DECL|variable|SiS310_PALMFilter
+r_const
 id|UCHAR
 id|SiS310_PALMFilter
 (braket
-l_int|17
+l_int|16
 )braket
 (braket
 l_int|4
@@ -1222,24 +1733,15 @@ comma
 l_int|0x25
 comma
 l_int|0x18
-)brace
-comma
-(brace
-l_int|0xff
-comma
-l_int|0xff
-comma
-l_int|0xff
-comma
-l_int|0xff
 )brace
 )brace
 suffix:semicolon
 DECL|variable|SiS310_PALNFilter
+r_const
 id|UCHAR
 id|SiS310_PALNFilter
 (braket
-l_int|17
+l_int|16
 )braket
 (braket
 l_int|4
@@ -1405,19 +1907,10 @@ l_int|0x25
 comma
 l_int|0x18
 )brace
-comma
-(brace
-l_int|0xff
-comma
-l_int|0xff
-comma
-l_int|0xff
-comma
-l_int|0xff
-)brace
 )brace
 suffix:semicolon
 DECL|variable|SiS310_PALMFilter2
+r_const
 id|UCHAR
 id|SiS310_PALMFilter2
 (braket
@@ -1574,6 +2067,7 @@ l_int|0x28
 )brace
 suffix:semicolon
 DECL|variable|SiS310_PALNFilter2
+r_const
 id|UCHAR
 id|SiS310_PALNFilter2
 (braket
@@ -1730,6 +2224,7 @@ l_int|0x28
 )brace
 suffix:semicolon
 DECL|variable|SiS310_TVPhaseIncr1
+r_const
 id|UCHAR
 id|SiS310_TVPhaseIncr1
 (braket
@@ -1811,6 +2306,7 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|SiS310_TVPhaseIncr2
+r_const
 id|UCHAR
 id|SiS310_TVPhaseIncr2
 (braket
@@ -1828,44 +2324,48 @@ op_assign
 (brace
 l_int|0x21
 comma
-l_int|0xF1
+l_int|0xf0
 comma
-l_int|0x37
+l_int|0x7b
 comma
-l_int|0x56
+l_int|0xd6
 )brace
 comma
+multiline_comment|/* 1.10.7w;  1.10.6s: {0x1e,0x8b,0xda,0xa7},   old: {0x21,0xF1,0x37,0x56} */
 (brace
 l_int|0x21
 comma
-l_int|0xF1
+l_int|0xf0
 comma
-l_int|0x37
+l_int|0x7b
 comma
-l_int|0x56
+l_int|0xd6
 )brace
+multiline_comment|/* 1.10.7w;  1.10.6s: {0x1e,0x8b,0xda,0xa7}    old: {0x21,0xF1,0x37,0x56} */
 )brace
 comma
 (brace
 (brace
 l_int|0x2a
 comma
-l_int|0x09
+l_int|0x0a
 comma
-l_int|0x86
+l_int|0x41
 comma
 l_int|0xe9
 )brace
 comma
+multiline_comment|/* 1.10.7w, 1.10.6s. old: {0x2a,0x09,0x86,0xe9}, */
 (brace
 l_int|0x2a
 comma
-l_int|0x09
+l_int|0x0a
 comma
-l_int|0x86
+l_int|0x41
 comma
 l_int|0xe9
 )brace
+multiline_comment|/* 1.10.7w, 1.10.6s. old: {0x2a,0x09,0x86,0xe9}  */
 )brace
 comma
 (brace

@@ -180,14 +180,11 @@ multiline_comment|/* SiS 325 */
 DECL|enumerator|SIS_550
 id|SIS_550
 comma
-DECL|enumerator|SIS_640
-id|SIS_640
+DECL|enumerator|SIS_650
+id|SIS_650
 comma
 DECL|enumerator|SIS_740
 id|SIS_740
-comma
-DECL|enumerator|SIS_650
-id|SIS_650
 comma
 DECL|enumerator|SIS_330
 id|SIS_330
@@ -230,9 +227,6 @@ id|VB_CHIP_302B
 comma
 DECL|enumerator|VB_CHIP_302LV
 id|VB_CHIP_302LV
-comma
-DECL|enumerator|VB_CHIP_303
-id|VB_CHIP_303
 comma
 DECL|enumerator|VB_CHIP_UNKNOWN
 id|VB_CHIP_UNKNOWN
@@ -380,6 +374,11 @@ multiline_comment|/* base virtual address of VBIOS ROM Space */
 multiline_comment|/* or base virtual address of ROM image file. */
 multiline_comment|/* if NULL, then read from pjROMImage; */
 multiline_comment|/* Note:ROM image file is the file of VBIOS ROM */
+DECL|member|UseROM
+id|BOOLEAN
+id|UseROM
+suffix:semicolon
+multiline_comment|/* TW: Use the ROM image if provided */
 DECL|member|pjCustomizedROMImage
 id|UCHAR
 op_star
@@ -443,6 +442,7 @@ multiline_comment|/*             010:LVDS */
 multiline_comment|/*             011:Trumpion LVDS Scaling Chip */
 multiline_comment|/*             100:LVDS(LCD-out)+Chrontel 7005 */
 multiline_comment|/*             101:Single Chrontel 7005 */
+multiline_comment|/* TW: This has changed on 310/325 series! */
 DECL|member|ulCRT2LCDType
 id|ULONG
 id|ulCRT2LCDType
@@ -499,6 +499,12 @@ id|UCHAR
 id|pdc
 suffix:semicolon
 multiline_comment|/* TW: PanelDelayCompensation */
+macro_line|#ifdef LINUX_KERNEL
+DECL|member|Is301BDH
+id|BOOLEAN
+id|Is301BDH
+suffix:semicolon
+macro_line|#endif        
 macro_line|#ifdef LINUX_XF86
 DECL|member|PciTag
 id|PCITAG
@@ -509,7 +515,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#endif /*~ mark by Paul ,Move definition to sisv.h  */
+macro_line|#endif 
 multiline_comment|/* TW: Addtional IOCTL for communication sisfb &lt;&gt; X driver        */
 multiline_comment|/*     If changing this, sisfb.h must also be changed (for sisfb) */
 macro_line|#ifdef LINUX_XF86  /* We don&squot;t want the X driver to depend on the kernel source */
@@ -577,11 +583,48 @@ r_int
 r_char
 id|sisfb_patchlevel
 suffix:semicolon
+DECL|member|sisfb_caps
+r_int
+r_char
+id|sisfb_caps
+suffix:semicolon
+multiline_comment|/* sisfb&squot;s capabilities */
+DECL|member|sisfb_tqlen
+r_int
+id|sisfb_tqlen
+suffix:semicolon
+multiline_comment|/* turbo queue length (in KB) */
+DECL|member|sisfb_pcibus
+r_int
+r_int
+id|sisfb_pcibus
+suffix:semicolon
+multiline_comment|/* The card&squot;s PCI ID */
+DECL|member|sisfb_pcislot
+r_int
+r_int
+id|sisfb_pcislot
+suffix:semicolon
+DECL|member|sisfb_pcifunc
+r_int
+r_int
+id|sisfb_pcifunc
+suffix:semicolon
+DECL|member|sisfb_lcdpdc
+r_int
+r_char
+id|sisfb_lcdpdc
+suffix:semicolon
+DECL|member|sisfb_lcda
+r_int
+r_char
+id|sisfb_lcda
+suffix:semicolon
 DECL|member|reserved
 r_char
 id|reserved
 (braket
-l_int|253
+l_int|235
 )braket
 suffix:semicolon
 multiline_comment|/* for future use */

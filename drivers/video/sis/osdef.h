@@ -8,6 +8,7 @@ multiline_comment|/* XFree86 */
 multiline_comment|/**********************************************************************/
 macro_line|#ifdef LINUX_KERNEL
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifdef CONFIG_FB_SIS_300
 DECL|macro|SIS300
 mdefine_line|#define SIS300
@@ -15,6 +16,14 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_FB_SIS_315
 DECL|macro|SIS315H
 mdefine_line|#define SIS315H
+macro_line|#endif
+macro_line|#if 1
+DECL|macro|SISFBACCEL
+mdefine_line|#define SISFBACCEL&t;/* Include 2D acceleration */
+macro_line|#endif
+macro_line|#if 1
+DECL|macro|SISFB_PAN
+mdefine_line|#define SISFB_PAN&t;/* Include Y-Panning code */
 macro_line|#endif
 macro_line|#else
 multiline_comment|/*&t;#define SIS300*/
@@ -140,6 +149,9 @@ mdefine_line|#define InPortWord(p)    inw((CARD16)(p))
 DECL|macro|InPortLong
 mdefine_line|#define InPortLong(p)    inl((CARD16)(p))
 macro_line|#endif
+multiline_comment|/**********************************************************************/
+multiline_comment|/*  LINUX KERNEL                                                      */
+multiline_comment|/**********************************************************************/
 macro_line|#ifdef LINUX_KERNEL
 DECL|macro|OutPortByte
 mdefine_line|#define OutPortByte(p,v) outb((u8)(v),(u16)(p))
@@ -172,7 +184,7 @@ DECL|macro|InPortLong
 mdefine_line|#define InPortLong(p)    VideoPortReadPortUlong  ((PULONG) (p))
 macro_line|#endif
 multiline_comment|/**********************************************************************/
-multiline_comment|/*  WIN CE                                                          */
+multiline_comment|/*  WIN CE                                                            */
 multiline_comment|/**********************************************************************/
 macro_line|#ifdef WINCE_HEADER
 DECL|macro|OutPortByte

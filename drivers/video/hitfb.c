@@ -352,7 +352,6 @@ c_cond
 id|info-&gt;var.bits_per_pixel
 )paren
 (brace
-macro_line|#ifdef FBCON_HAS_CFB16
 r_case
 l_int|16
 suffix:colon
@@ -399,7 +398,6 @@ l_int|11
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 r_return
