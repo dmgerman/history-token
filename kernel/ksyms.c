@@ -2693,6 +2693,13 @@ c_func
 id|cdevname
 )paren
 suffix:semicolon
+DECL|variable|simple_strtoull
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|simple_strtoull
+)paren
+suffix:semicolon
 DECL|variable|simple_strtoul
 id|EXPORT_SYMBOL
 c_func
