@@ -302,7 +302,7 @@ op_assign
 dot
 id|num_items
 op_assign
-l_int|3
+l_int|4
 comma
 dot
 id|items
@@ -312,6 +312,12 @@ op_assign
 l_string|&quot;Mic&quot;
 comma
 l_int|0x0
+)brace
+comma
+(brace
+l_string|&quot;Front Mic&quot;
+comma
+l_int|0x1
 )brace
 comma
 (brace
@@ -5375,6 +5381,30 @@ comma
 l_int|0x07
 comma
 l_int|0x0
+comma
+id|HDA_INPUT
+)paren
+comma
+id|HDA_CODEC_VOLUME
+c_func
+(paren
+l_string|&quot;Front Mic Playback Volume&quot;
+comma
+l_int|0x07
+comma
+l_int|0x01
+comma
+id|HDA_INPUT
+)paren
+comma
+id|HDA_CODEC_MUTE
+c_func
+(paren
+l_string|&quot;Front Mic Playback Switch&quot;
+comma
+l_int|0x07
+comma
+l_int|0x01
 comma
 id|HDA_INPUT
 )paren
