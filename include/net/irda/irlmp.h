@@ -180,8 +180,10 @@ id|magic
 suffix:semicolon
 DECL|member|connected
 r_int
+r_int
 id|connected
 suffix:semicolon
+multiline_comment|/* set_bit used on this */
 DECL|member|persistent
 r_int
 id|persistent
@@ -239,6 +241,32 @@ id|lap
 suffix:semicolon
 multiline_comment|/* Pointer to LAP connection structure */
 )brace
+suffix:semicolon
+multiline_comment|/*&n; *  Used for caching the last slsap-&gt;dlsap-&gt;handle mapping&n; *&n; * We don&squot;t need to keep/match the remote address in the cache because&n; * we are associated with a specific LAP (which implies it).&n; * Jean II&n; */
+r_typedef
+r_struct
+(brace
+DECL|member|valid
+r_int
+id|valid
+suffix:semicolon
+DECL|member|slsap_sel
+id|__u8
+id|slsap_sel
+suffix:semicolon
+DECL|member|dlsap_sel
+id|__u8
+id|dlsap_sel
+suffix:semicolon
+DECL|member|lsap
+r_struct
+id|lsap_cb
+op_star
+id|lsap
+suffix:semicolon
+DECL|typedef|CACHE_ENTRY
+)brace
+id|CACHE_ENTRY
 suffix:semicolon
 multiline_comment|/*&n; *  Information about each registred IrLAP layer&n; */
 DECL|struct|lap_cb
@@ -310,33 +338,15 @@ r_struct
 id|timer_list
 id|idle_timer
 suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; *  Used for caching the last slsap-&gt;dlsap-&gt;handle mapping&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|valid
-r_int
-id|valid
-suffix:semicolon
-DECL|member|slsap_sel
-id|__u8
-id|slsap_sel
-suffix:semicolon
-DECL|member|dlsap_sel
-id|__u8
-id|dlsap_sel
-suffix:semicolon
-DECL|member|lsap
-r_struct
-id|lsap_cb
-op_star
-id|lsap
-suffix:semicolon
-DECL|typedef|CACHE_ENTRY
-)brace
+macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
+multiline_comment|/* The lsap cache was moved from struct irlmp_cb to here because&n;&t; * it must be associated with the specific LAP. Also, this&n;&t; * improves performance. - Jean II */
+DECL|member|cache
 id|CACHE_ENTRY
+id|cache
+suffix:semicolon
+multiline_comment|/* Caching last slsap-&gt;dlsap-&gt;handle mapping */
+macro_line|#endif
+)brace
 suffix:semicolon
 multiline_comment|/*&n; *  Main structure for IrLMP&n; */
 DECL|struct|irlmp_cb
@@ -365,13 +375,6 @@ DECL|member|free_lsap_sel
 r_int
 id|free_lsap_sel
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
-DECL|member|cache
-id|CACHE_ENTRY
-id|cache
-suffix:semicolon
-multiline_comment|/* Caching last slsap-&gt;dlsap-&gt;handle mapping */
-macro_line|#endif
 DECL|member|discovery_timer
 r_struct
 id|timer_list
