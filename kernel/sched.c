@@ -6226,6 +6226,17 @@ id|rq-&gt;idle
 op_assign
 id|current
 suffix:semicolon
+id|set_task_cpu
+c_func
+(paren
+id|current
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|wake_up_process
 c_func
 (paren
