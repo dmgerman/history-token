@@ -5254,6 +5254,11 @@ op_amp
 id|msg-&gt;header.command
 )paren
 suffix:semicolon
+id|u16
+id|retval
+op_assign
+id|CAPI_NOERROR
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5424,6 +5429,10 @@ c_func
 l_string|&quot;Write - invalid message size&quot;
 )paren
 )paren
+id|retval
+op_assign
+id|CAPI_ILLCMDORSUBCMDORMSGTOSMALL
+suffix:semicolon
 r_goto
 id|write_end
 suffix:semicolon
@@ -5471,6 +5480,10 @@ c_func
 l_string|&quot;Write - too many data pending&quot;
 )paren
 )paren
+id|retval
+op_assign
+id|CAPI_SENDQUEUEFULL
+suffix:semicolon
 r_goto
 id|write_end
 suffix:semicolon
@@ -5681,6 +5694,10 @@ c_func
 l_string|&quot;Write - bad message&quot;
 )paren
 )paren
+id|retval
+op_assign
+id|CAPI_ILLCMDORSUBCMDORMSGTOSMALL
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -5693,6 +5710,10 @@ c_func
 l_string|&quot;Write - queue full&quot;
 )paren
 )paren
+id|retval
+op_assign
+id|CAPI_SENDQUEUEFULL
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -5704,6 +5725,10 @@ c_func
 l_string|&quot;Write - api_put returned unknown error&quot;
 )paren
 )paren
+id|retval
+op_assign
+id|CAPI_UNKNOWNNOTPAR
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -5727,7 +5752,7 @@ id|dmb
 )paren
 suffix:semicolon
 r_return
-id|CAPI_NOERROR
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * cards request function&n; */

@@ -1,9 +1,10 @@
-multiline_comment|/* $Id: divasproc.c,v 1.1.2.2 2002/10/02 14:38:37 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; * /proc functions&n; *&n; * Copyright 2000,2001 by Armin Schindler (mac@melware.de)&n; * Copyright 2000,2001 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasproc.c,v 1.1.2.4 2001/02/16 08:40:36 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; * /proc functions&n; *&n; * Copyright 2000,2001 by Armin Schindler (mac@melware.de)&n; * Copyright 2000,2001 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;platform.h&quot;
 macro_line|#include &quot;debuglib.h&quot;
 macro_line|#include &quot;dlist.h&quot;
@@ -439,57 +440,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-r_static
-r_int
-DECL|function|divas_ioctl
-id|divas_ioctl
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-comma
-id|uint
-id|cmd
-comma
-id|ulong
-id|arg
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-r_static
-id|loff_t
-DECL|function|divas_lseek
-id|divas_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|orig
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|variable|divas_fops
 r_static
 r_struct
@@ -497,38 +447,40 @@ id|file_operations
 id|divas_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|llseek
-suffix:colon
-id|divas_lseek
+op_assign
+id|no_llseek
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|divas_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|divas_write
 comma
+dot
 id|poll
-suffix:colon
+op_assign
 id|divas_poll
 comma
-id|ioctl
-suffix:colon
-id|divas_ioctl
-comma
+dot
 id|open
-suffix:colon
+op_assign
 id|divas_open
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|divas_close
-comma
 )brace
 suffix:semicolon
 r_int
@@ -1698,6 +1650,27 @@ id|tmp
 l_int|16
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
+(brace
+multiline_comment|/* FIXME */
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;divasproc: create_proc in_interrupt, not creating&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|sprintf
 c_func
 (paren
