@@ -3383,10 +3383,6 @@ id|adap-&gt;flags
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|i2c_add_adapter
 c_func
 (paren
@@ -3559,10 +3555,6 @@ id|adap-&gt;name
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
