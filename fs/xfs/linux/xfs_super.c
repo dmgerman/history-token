@@ -2240,6 +2240,7 @@ id|error
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|error
 suffix:semicolon
 )brace
@@ -2313,6 +2314,11 @@ op_star
 id|bdev
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|bdev
+)paren
 id|blkdev_put
 c_func
 (paren
