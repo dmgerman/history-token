@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/netpoll.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 multiline_comment|/*&n; * We maintain a small pool of fully-sized skbs, to make sure the&n; * message gets out even in extreme OOM situations.&n; */
@@ -2900,9 +2901,14 @@ op_logical_neg
 id|np-&gt;local_ip
 )paren
 (brace
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|in_dev
 op_assign
-id|in_dev_get
+id|__in_dev_get
 c_func
 (paren
 id|ndev
@@ -2915,6 +2921,11 @@ op_logical_neg
 id|in_dev
 )paren
 (brace
+id|rcu_read_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -2938,10 +2949,9 @@ c_func
 id|in_dev-&gt;ifa_list-&gt;ifa_local
 )paren
 suffix:semicolon
-id|in_dev_put
+id|rcu_read_unlock
 c_func
 (paren
-id|in_dev
 )paren
 suffix:semicolon
 id|printk
@@ -3063,6 +3073,11 @@ id|np-&gt;rx_list
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NETPOLL_RX
+r_if
+c_cond
+(paren
+id|np-&gt;dev
+)paren
 id|np-&gt;dev-&gt;netpoll_rx
 op_assign
 l_int|0

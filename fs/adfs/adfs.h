@@ -324,16 +324,6 @@ id|obj
 )paren
 suffix:semicolon
 r_void
-id|adfs_read_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-suffix:semicolon
-r_void
 id|adfs_write_inode
 c_func
 (paren

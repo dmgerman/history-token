@@ -5507,7 +5507,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;SIS IDE&quot;
+l_string|&quot;SIS_IDE&quot;
 comma
 dot
 id|id_table

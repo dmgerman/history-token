@@ -19,6 +19,11 @@ macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;asm/hpet.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
+multiline_comment|/*&n; * Debug level&n; */
+DECL|variable|apic_verbosity
+r_int
+id|apic_verbosity
+suffix:semicolon
 r_static
 r_void
 id|apic_pm_activate
@@ -585,10 +590,13 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * PIC mode, enable APIC mode in the IMCR, i.e.&n;&t;&t; * connect BSP&squot;s local APIC to INT and NMI lines.&n;&t;&t; */
-id|printk
+id|apic_printk
 c_func
 (paren
-l_string|&quot;leaving PIC mode, enabling APIC mode.&bslash;n&quot;
+id|APIC_VERBOSE
+comma
+l_string|&quot;leaving PIC mode, &quot;
+l_string|&quot;enabling APIC mode.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|outb
@@ -629,10 +637,13 @@ id|pic_mode
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Put the board back into PIC mode (has an effect&n;&t;&t; * only on certain older boards).  Note that APIC&n;&t;&t; * interrupts, including IPIs, won&squot;t work beyond&n;&t;&t; * this point!  The only exception are INIT IPIs.&n;&t;&t; */
-id|printk
+id|apic_printk
 c_func
 (paren
-l_string|&quot;disabling APIC mode, entering PIC mode.&bslash;n&quot;
+id|APIC_VERBOSE
+comma
+l_string|&quot;disabling APIC mode, &quot;
+l_string|&quot;entering PIC mode.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|outb
@@ -756,9 +767,11 @@ c_func
 id|APIC_LVR
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting VERSION: %x&bslash;n&quot;
 comma
 id|reg0
@@ -782,9 +795,11 @@ c_func
 id|APIC_LVR
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting VERSION: %x&bslash;n&quot;
 comma
 id|reg1
@@ -854,9 +869,11 @@ c_func
 id|APIC_ID
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting ID: %x&bslash;n&quot;
 comma
 id|reg0
@@ -871,9 +888,11 @@ c_func
 id|APIC_LVT0
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting LVT0: %x&bslash;n&quot;
 comma
 id|reg0
@@ -887,9 +906,11 @@ c_func
 id|APIC_LVT1
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Getting LVT1: %x&bslash;n&quot;
 comma
 id|reg1
@@ -914,9 +935,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;Synchronizing Arb IDs.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1294,9 +1317,11 @@ id|value
 op_assign
 id|APIC_DM_EXTINT
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;enabled ExtINT on CPU#%d&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -1314,9 +1339,11 @@ id|APIC_DM_EXTINT
 op_or
 id|APIC_LVT_MASKED
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;masked ExtINT on CPU#%d&bslash;n&quot;
 comma
 id|smp_processor_id
@@ -1423,10 +1450,13 @@ c_func
 id|APIC_ESR
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
-l_string|&quot;ESR value before enabling vector: %08lx&bslash;n&quot;
+id|APIC_VERBOSE
+comma
+l_string|&quot;ESR value before enabling vector:&quot;
+l_string|&quot; %08lx&bslash;n&quot;
 comma
 id|value
 )paren
@@ -1468,10 +1498,13 @@ c_func
 id|APIC_ESR
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
-l_string|&quot;ESR value after enabling vector: %08lx&bslash;n&quot;
+id|APIC_VERBOSE
+comma
+l_string|&quot;ESR value after enabling vector:&quot;
+l_string|&quot; %08lx&bslash;n&quot;
 comma
 id|value
 )paren
@@ -2175,6 +2208,76 @@ comma
 id|lapic_enable
 )paren
 suffix:semicolon
+DECL|function|apic_set_verbosity
+r_static
+r_int
+id|__init
+id|apic_set_verbosity
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+l_string|&quot;debug&quot;
+comma
+id|str
+)paren
+op_eq
+l_int|0
+)paren
+id|apic_verbosity
+op_assign
+id|APIC_DEBUG
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+l_string|&quot;verbose&quot;
+comma
+id|str
+)paren
+op_eq
+l_int|0
+)paren
+id|apic_verbosity
+op_assign
+id|APIC_VERBOSE
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;APIC Verbosity level %s not recognised&quot;
+l_string|&quot; use apic=verbose or apic=debug&quot;
+comma
+id|str
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;apic=&quot;
+comma
+id|apic_set_verbosity
+)paren
+suffix:semicolon
 DECL|function|detect_init_APIC
 r_static
 r_int
@@ -2326,10 +2429,13 @@ id|MSR_IA32_APICBASE_ENABLE
 )paren
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
-l_string|&quot;Local APIC disabled by BIOS -- reenabling.&bslash;n&quot;
+id|APIC_VERBOSE
+comma
+l_string|&quot;Local APIC disabled &quot;
+l_string|&quot;by BIOS -- reenabling.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|l
@@ -2441,9 +2547,11 @@ id|nmi_watchdog
 op_assign
 id|NMI_LOCAL_APIC
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;Found and enabled local APIC!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2528,9 +2636,11 @@ comma
 id|apic_phys
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 l_string|&quot;mapped APIC to %08lx (%08lx)&bslash;n&quot;
 comma
 id|APIC_BASE
@@ -2662,10 +2772,13 @@ comma
 id|ioapic_phys
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
-l_string|&quot;mapped IOAPIC to %08lx (%08lx)&bslash;n&quot;
+id|APIC_DEBUG
+comma
+l_string|&quot;mapped IOAPIC to &quot;
+l_string|&quot;%08lx (%08lx)&bslash;n&quot;
 comma
 id|__fix_to_virt
 c_func
@@ -3013,9 +3126,11 @@ id|HZ
 op_div
 l_int|10
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;calibrating APIC timer ...&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3109,10 +3224,13 @@ c_cond
 (paren
 id|cpu_has_tsc
 )paren
-id|printk
+id|apic_printk
 c_func
 (paren
-l_string|&quot;..... CPU clock speed is %ld.%04ld MHz.&bslash;n&quot;
+id|APIC_VERBOSE
+comma
+l_string|&quot;..... CPU clock speed is &quot;
+l_string|&quot;%ld.%04ld MHz.&bslash;n&quot;
 comma
 (paren
 (paren
@@ -3153,10 +3271,13 @@ id|HZ
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
-l_string|&quot;..... host bus clock speed is %ld.%04ld MHz.&bslash;n&quot;
+id|APIC_VERBOSE
+comma
+l_string|&quot;..... host bus clock speed is &quot;
+l_string|&quot;%ld.%04ld MHz.&bslash;n&quot;
 comma
 id|result
 op_div
@@ -3194,9 +3315,11 @@ c_func
 r_void
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;Using local APIC timer interrupts.&bslash;n&quot;
 )paren
 suffix:semicolon

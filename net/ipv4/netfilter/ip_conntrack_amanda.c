@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
@@ -34,12 +35,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|master_timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0600
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -115,6 +118,9 @@ id|exp_amanda_info
 suffix:semicolon
 r_char
 op_star
+id|amp
+comma
+op_star
 id|data
 comma
 op_star
@@ -150,10 +156,14 @@ r_return
 id|NF_ACCEPT
 suffix:semicolon
 multiline_comment|/* increase the UDP timeout of the master connection as replies from&n;&t; * Amanda clients to the server can be quite delayed */
-id|ip_ct_refresh
+id|ip_ct_refresh_acct
 c_func
 (paren
 id|ct
+comma
+id|ctinfo
+comma
+l_int|NULL
 comma
 id|master_timeout
 op_star
@@ -208,27 +218,37 @@ op_amp
 id|amanda_buffer_lock
 )paren
 suffix:semicolon
-id|skb_copy_bits
+id|amp
+op_assign
+id|skb_header_pointer
 c_func
 (paren
 id|skb
 comma
 id|dataoff
 comma
-id|amanda_buffer
-comma
 id|skb-&gt;len
 op_minus
 id|dataoff
+comma
+id|amanda_buffer
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|amp
+op_eq
+l_int|NULL
 )paren
 suffix:semicolon
 id|data
 op_assign
-id|amanda_buffer
+id|amp
 suffix:semicolon
 id|data_limit
 op_assign
-id|amanda_buffer
+id|amp
 op_plus
 id|skb-&gt;len
 op_minus
@@ -441,7 +461,7 @@ id|exp_amanda_info-&gt;offset
 op_assign
 id|tmp
 op_minus
-id|amanda_buffer
+id|amp
 suffix:semicolon
 id|exp_amanda_info-&gt;port
 op_assign

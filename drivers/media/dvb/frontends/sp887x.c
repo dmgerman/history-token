@@ -94,11 +94,6 @@ op_or
 id|FE_CAN_RECOVER
 )brace
 suffix:semicolon
-DECL|variable|errno
-r_static
-r_int
-id|errno
-suffix:semicolon
 r_static
 DECL|function|i2c_writebytes
 r_int

@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/gfp.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
@@ -2148,6 +2149,17 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* drivers will send hotplug events */
+id|init_workqueues
+c_func
+(paren
+)paren
+suffix:semicolon
+id|usermodehelper_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|driver_init
 c_func
 (paren
@@ -2162,11 +2174,6 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Networking initialization needs a process context */
 id|sock_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|init_workqueues
 c_func
 (paren
 )paren

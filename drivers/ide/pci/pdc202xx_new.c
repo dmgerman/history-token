@@ -2725,7 +2725,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Promise IDE&quot;
+l_string|&quot;Promise_IDE&quot;
 comma
 dot
 id|id_table

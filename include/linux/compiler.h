@@ -91,5 +91,9 @@ macro_line|#ifndef noinline
 DECL|macro|noinline
 mdefine_line|#define noinline
 macro_line|#endif
+macro_line|#ifndef __always_inline
+DECL|macro|__always_inline
+mdefine_line|#define __always_inline inline
+macro_line|#endif
 macro_line|#endif /* __LINUX_COMPILER_H */
 eof

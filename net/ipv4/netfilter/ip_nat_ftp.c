@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_nat_helper.h&gt;
@@ -49,18 +50,16 @@ r_static
 r_int
 id|ports_c
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|ports
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_PORTS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|ports_c
+comma
+l_int|0400
 )paren
 suffix:semicolon
 DECL|variable|ip_ftp_lock
@@ -1429,16 +1428,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ports
-(braket
-l_int|0
-)braket
+id|ports_c
 op_eq
 l_int|0
 )paren
 id|ports
 (braket
-l_int|0
+id|ports_c
 )braket
 op_assign
 id|FTP_PORT
@@ -1450,16 +1446,9 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-(paren
 id|i
 OL
-id|MAX_PORTS
-)paren
-op_logical_and
-id|ports
-(braket
-id|i
-)braket
+id|ports_c
 suffix:semicolon
 id|i
 op_increment
@@ -1643,9 +1632,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|ports_c
-op_increment
-suffix:semicolon
 )brace
 r_return
 id|ret

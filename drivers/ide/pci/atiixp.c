@@ -2249,7 +2249,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;ATIIXP IDE&quot;
+l_string|&quot;ATIIXP_IDE&quot;
 comma
 dot
 id|id_table

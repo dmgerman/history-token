@@ -136,6 +136,22 @@ c_func
 )paren
 )paren
 suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;pc is at %s&bslash;n&quot;
+comma
+id|regs-&gt;pc
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;ra is at %s&bslash;n&quot;
+comma
+id|regs-&gt;r26
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

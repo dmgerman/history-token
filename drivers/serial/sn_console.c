@@ -1807,6 +1807,8 @@ comma
 id|sn_sal_interrupt
 comma
 id|SA_INTERRUPT
+op_or
+id|SA_SHIRQ
 comma
 l_string|&quot;SAL console driver&quot;
 comma

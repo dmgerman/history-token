@@ -87,11 +87,14 @@ id|use_dma
 op_assign
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|use_dma
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -163,11 +166,14 @@ id|fifo_mode
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|fifo_mode
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5684,12 +5690,10 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* caller must be able to sleep in order to cope&n;&t; * with startup transients.&n;&t; */
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 multiline_comment|/* enable suspend/resume and reset irqs */

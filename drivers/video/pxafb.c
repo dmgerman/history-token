@@ -3783,7 +3783,7 @@ id|pxafb_ops
 suffix:semicolon
 id|fbi-&gt;fb.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|fbi-&gt;fb.node
 op_assign

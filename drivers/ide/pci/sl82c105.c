@@ -1857,7 +1857,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;W82C105 IDE&quot;
+l_string|&quot;W82C105_IDE&quot;
 comma
 dot
 id|id_table

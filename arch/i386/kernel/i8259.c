@@ -4,17 +4,18 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/sysdev.h&gt;
+macro_line|#include &lt;asm/8253pit.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/timer.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -1303,192 +1304,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-DECL|function|setup_timer
-r_static
-r_void
-id|setup_timer
-c_func
-(paren
-r_void
-)paren
-(brace
-r_extern
-id|spinlock_t
-id|i8253_lock
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|i8253_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x34
-comma
-id|PIT_MODE
-)paren
-suffix:semicolon
-multiline_comment|/* binary, mode 2, LSB/MSB, ch 0 */
-id|udelay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-id|LATCH
-op_amp
-l_int|0xff
-comma
-id|PIT_CH0
-)paren
-suffix:semicolon
-multiline_comment|/* LSB */
-id|udelay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|LATCH
-op_rshift
-l_int|8
-comma
-id|PIT_CH0
-)paren
-suffix:semicolon
-multiline_comment|/* MSB */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|i8253_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-)brace
-DECL|function|timer_resume
-r_static
-r_int
-id|timer_resume
-c_func
-(paren
-r_struct
-id|sys_device
-op_star
-id|dev
-)paren
-(brace
-id|setup_timer
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|variable|timer_sysclass
-r_static
-r_struct
-id|sysdev_class
-id|timer_sysclass
-op_assign
-(brace
-id|set_kset_name
-c_func
-(paren
-l_string|&quot;timer&quot;
-)paren
-comma
-dot
-id|resume
-op_assign
-id|timer_resume
-comma
-)brace
-suffix:semicolon
-DECL|variable|device_timer
-r_static
-r_struct
-id|sys_device
-id|device_timer
-op_assign
-(brace
-dot
-id|id
-op_assign
-l_int|0
-comma
-dot
-id|cls
-op_assign
-op_amp
-id|timer_sysclass
-comma
-)brace
-suffix:semicolon
-DECL|function|init_timer_sysfs
-r_static
-r_int
-id|__init
-id|init_timer_sysfs
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|error
-op_assign
-id|sysdev_class_register
-c_func
-(paren
-op_amp
-id|timer_sysclass
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|error
-)paren
-id|error
-op_assign
-id|sysdev_register
-c_func
-(paren
-op_amp
-id|device_timer
-)paren
-suffix:semicolon
-r_return
-id|error
-suffix:semicolon
-)brace
-DECL|variable|init_timer_sysfs
-id|device_initcall
-c_func
-(paren
-id|init_timer_sysfs
-)paren
-suffix:semicolon
 DECL|function|init_IRQ
 r_void
 id|__init
@@ -1569,7 +1384,7 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Set the clock to HZ Hz, we already have a valid&n;&t; * vector now:&n;&t; */
-id|setup_timer
+id|setup_pit_timer
 c_func
 (paren
 )paren

@@ -383,26 +383,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* (actually HCDs may need to duplicate this, endpoint might yet&n;&t; * stall due to queued bulk/intr transactions that complete after&n;&t; * we check)&n;&t; */
-r_if
-c_cond
-(paren
-id|usb_endpoint_halted
-(paren
-id|dev
-comma
-id|usb_pipeendpoint
-(paren
-id|pipe
-)paren
-comma
-id|is_out
-)paren
-)paren
-r_return
-op_minus
-id|EPIPE
-suffix:semicolon
 multiline_comment|/* FIXME there should be a sharable lock protecting us against&n;&t; * config/altsetting changes and disconnects, kicking in here.&n;&t; * (here == before maxpacket, and eventually endpoint type,&n;&t; * checks get made.)&n;&t; */
 id|max
 op_assign

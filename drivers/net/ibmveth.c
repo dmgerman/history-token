@@ -2,8 +2,8 @@ multiline_comment|/*************************************************************
 multiline_comment|/*                                                                        */
 multiline_comment|/* IBM eServer i/pSeries Virtual Ethernet Device Driver                   */
 multiline_comment|/* Copyright (C) 2003 IBM Corp.                                           */
-multiline_comment|/*  Dave Larson (larson1@us.ibm.com)                                      */
-multiline_comment|/*  Santiago Leon (santil@us.ibm.com)                                     */
+multiline_comment|/*  Originally written by Dave Larson (larson1@us.ibm.com)                */
+multiline_comment|/*  Maintained by Santiago Leon (santil@us.ibm.com)                       */
 multiline_comment|/*                                                                        */
 multiline_comment|/*  This program is free software; you can redistribute it and/or modify  */
 multiline_comment|/*  it under the terms of the GNU General Public License as published by  */
@@ -269,20 +269,12 @@ id|ibmveth_driver_string
 op_assign
 l_string|&quot;IBM i/pSeries Virtual Ethernet Driver&quot;
 suffix:semicolon
-DECL|variable|ibmveth_driver_version
-r_static
-r_const
-r_char
-id|ibmveth_driver_version
-(braket
-)braket
-op_assign
-l_string|&quot;1.0&quot;
-suffix:semicolon
+DECL|macro|ibmveth_driver_version
+mdefine_line|#define ibmveth_driver_version &quot;1.02&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Dave Larson &lt;larson1@us.ibm.com&gt;&quot;
+l_string|&quot;Santiago Leon &lt;santil@us.ibm.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -295,6 +287,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|ibmveth_driver_version
+id|MODULE_VERSION
+c_func
+(paren
+id|ibmveth_driver_version
 )paren
 suffix:semicolon
 multiline_comment|/* simple methods of getting data from the current rxq entry */
@@ -771,7 +770,7 @@ c_func
 (paren
 id|index
 op_ne
-l_int|0xffff
+id|IBM_VETH_INVALID_MAP
 )paren
 suffix:semicolon
 id|ibmveth_assert
@@ -798,6 +797,13 @@ id|pool-&gt;buff_size
 comma
 id|DMA_FROM_DEVICE
 )paren
+suffix:semicolon
+id|pool-&gt;free_map
+(braket
+id|free_index
+)braket
+op_assign
+id|IBM_VETH_INVALID_MAP
 suffix:semicolon
 id|pool-&gt;dma_addr
 (braket
@@ -869,6 +875,13 @@ op_ne
 id|H_Success
 )paren
 (brace
+id|pool-&gt;free_map
+(braket
+id|free_index
+)braket
+op_assign
+id|IBM_VETH_INVALID_MAP
+suffix:semicolon
 id|pool-&gt;skbuff
 (braket
 id|index
@@ -908,13 +921,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|pool-&gt;free_map
-(braket
-id|free_index
-)braket
-op_assign
-l_int|0xffff
-suffix:semicolon
 id|buffers_added
 op_increment
 suffix:semicolon
@@ -1099,19 +1105,6 @@ c_func
 (paren
 op_amp
 id|adapter-&gt;not_replenishing
-)paren
-suffix:semicolon
-id|ibmveth_assert
-c_func
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|adapter-&gt;not_replenishing
-)paren
-op_eq
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -2435,10 +2428,18 @@ suffix:semicolon
 )brace
 r_while
 c_loop
+(paren
 id|H_isLongBusy
 c_func
 (paren
 id|rc
+)paren
+op_logical_or
+(paren
+id|rc
+op_eq
+id|H_Busy
+)paren
 )paren
 suffix:semicolon
 id|ibmveth_cleanup
@@ -2546,10 +2547,18 @@ suffix:semicolon
 )brace
 r_while
 c_loop
+(paren
 id|H_isLongBusy
 c_func
 (paren
 id|lpar_rc
+)paren
+op_logical_or
+(paren
+id|lpar_rc
+op_eq
+id|H_Busy
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -3441,6 +3450,11 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+suffix:semicolon
+id|rmb
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond

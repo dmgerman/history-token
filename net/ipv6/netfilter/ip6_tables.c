@@ -63,6 +63,13 @@ mdefine_line|#define IP_NF_ASSERT(x)
 macro_line|#endif
 DECL|macro|SMP_ALIGN
 mdefine_line|#define SMP_ALIGN(x) (((x) + SMP_CACHE_BYTES-1) &amp; ~(SMP_CACHE_BYTES-1))
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|ip6t_mutex
+)paren
+suffix:semicolon
 multiline_comment|/* Must have mutex */
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) IP_NF_ASSERT(down_trylock(&amp;ip6t_mutex) != 0)

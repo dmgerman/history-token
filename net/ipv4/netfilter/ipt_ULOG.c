@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * netfilter module for userspace packet logging daemons&n; *&n; * (C) 2000-2002 by Harald Welte &lt;laforge@netfilter.org&gt;&n; *&n; * 2000/09/22 ulog-cprange feature added&n; * 2001/01/04 in-kernel queue as proposed by Sebastian Zander &n; * &t;&t;&t;&t;&t;&t;&lt;zander@fokus.gmd.de&gt;&n; * 2001/01/30 per-rule nlgroup conflicts with global queue. &n; *            nlgroup now global (sysctl)&n; * 2001/04/19 ulog-queue reworked, now fixed buffer size specified at&n; * &t;      module loadtime -HW&n; * 2002/07/07 remove broken nflog_rcv() function -HW&n; * 2002/08/29 fix shifted/unshifted nlgroup bug -HW&n; * 2002/10/30 fix uninitialized mac_len field - &lt;Anders K. Pedersen&gt;&n; *&n; * (C) 1999-2001 Paul `Rusty&squot; Russell&n; * (C) 2002-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This module accepts two parameters: &n; * &n; * nlbufsiz:&n; *   The parameter specifies how big the buffer for each netlink multicast&n; * group is. e.g. If you say nlbufsiz=8192, up to eight kb of packets will&n; * get accumulated in the kernel until they are sent to userspace. It is&n; * NOT possible to allocate more than 128kB, and it is strongly discouraged,&n; * because atomically allocating 128kB inside the network rx softirq is not&n; * reliable. Please also keep in mind that this buffer size is allocated for&n; * each nlgroup you are using, so the total kernel memory usage increases&n; * by that factor.&n; *&n; * flushtimeout:&n; *   Specify, after how many clock ticks (intel: 100 per second) the queue&n; * should be flushed even if it is not full yet.&n; *&n; * ipt_ULOG.c,v 1.22 2002/10/30 09:07:31 laforge Exp&n; */
+multiline_comment|/*&n; * netfilter module for userspace packet logging daemons&n; *&n; * (C) 2000-2002 by Harald Welte &lt;laforge@netfilter.org&gt;&n; *&n; * 2000/09/22 ulog-cprange feature added&n; * 2001/01/04 in-kernel queue as proposed by Sebastian Zander &n; * &t;&t;&t;&t;&t;&t;&lt;zander@fokus.gmd.de&gt;&n; * 2001/01/30 per-rule nlgroup conflicts with global queue. &n; *            nlgroup now global (sysctl)&n; * 2001/04/19 ulog-queue reworked, now fixed buffer size specified at&n; * &t;      module loadtime -HW&n; * 2002/07/07 remove broken nflog_rcv() function -HW&n; * 2002/08/29 fix shifted/unshifted nlgroup bug -HW&n; * 2002/10/30 fix uninitialized mac_len field - &lt;Anders K. Pedersen&gt;&n; *&n; * (C) 1999-2001 Paul `Rusty&squot; Russell&n; * (C) 2002-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This module accepts two parameters: &n; * &n; * nlbufsiz:&n; *   The parameter specifies how big the buffer for each netlink multicast&n; * group is. e.g. If you say nlbufsiz=8192, up to eight kb of packets will&n; * get accumulated in the kernel until they are sent to userspace. It is&n; * NOT possible to allocate more than 128kB, and it is strongly discouraged,&n; * because atomically allocating 128kB inside the network rx softirq is not&n; * reliable. Please also keep in mind that this buffer size is allocated for&n; * each nlgroup you are using, so the total kernel memory usage increases&n; * by that factor.&n; *&n; * flushtimeout:&n; *   Specify, after how many hundredths of a second the queue should be&n; *   flushed even if it is not full yet.&n; *&n; * ipt_ULOG.c,v 1.22 2002/10/30 09:07:31 laforge Exp&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/netlink.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_ULOG.h&gt;
@@ -53,14 +54,17 @@ id|nlbufsiz
 op_assign
 l_int|4096
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nlbufsiz
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0600
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: Check size &lt; 128k --RR */
 id|MODULE_PARM_DESC
 c_func
 (paren
@@ -76,15 +80,15 @@ r_int
 id|flushtimeout
 op_assign
 l_int|10
-op_star
-id|HZ
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|flushtimeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0600
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -92,7 +96,7 @@ c_func
 (paren
 id|flushtimeout
 comma
-l_string|&quot;buffer flush timeout&quot;
+l_string|&quot;buffer flush timeout (hundredths of a second)&quot;
 )paren
 suffix:semicolon
 DECL|variable|nflog
@@ -103,12 +107,14 @@ id|nflog
 op_assign
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nflog
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0400
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -170,12 +176,6 @@ op_star
 id|nflognl
 suffix:semicolon
 multiline_comment|/* our socket */
-DECL|variable|qlen
-r_static
-r_int
-id|qlen
-suffix:semicolon
-multiline_comment|/* current length of multipart-nlmsg */
 DECL|variable|ulog_lock
 id|DECLARE_LOCK
 c_func
@@ -264,7 +264,7 @@ l_string|&quot;ipt_ULOG: throwing %d packets to netlink mask %u&bslash;n&quot;
 comma
 id|ub-&gt;qlen
 comma
-id|nlgroup
+id|nlgroupnum
 )paren
 suffix:semicolon
 id|netlink_broadcast
@@ -298,7 +298,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* timer function to flush queue in ULOG_FLUSH_INTERVAL time */
+multiline_comment|/* timer function to flush queue in flushtimeout time */
 DECL|function|ulog_timer
 r_static
 r_void
@@ -875,27 +875,6 @@ op_or_assign
 id|NLM_F_MULTI
 suffix:semicolon
 )brace
-multiline_comment|/* if threshold is reached, send message to userspace */
-r_if
-c_cond
-(paren
-id|qlen
-op_ge
-id|loginfo-&gt;qthreshold
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|loginfo-&gt;qthreshold
-OG
-l_int|1
-)paren
-id|nlh-&gt;nlmsg_type
-op_assign
-id|NLMSG_DONE
-suffix:semicolon
-)brace
 id|ub-&gt;lastnlh
 op_assign
 id|nlh
@@ -918,12 +897,43 @@ op_assign
 id|jiffies
 op_plus
 id|flushtimeout
+op_star
+id|HZ
+op_div
+l_int|100
 suffix:semicolon
 id|add_timer
 c_func
 (paren
 op_amp
 id|ub-&gt;timer
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* if threshold is reached, send message to userspace */
+r_if
+c_cond
+(paren
+id|ub-&gt;qlen
+op_ge
+id|loginfo-&gt;qthreshold
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|loginfo-&gt;qthreshold
+OG
+l_int|1
+)paren
+id|nlh-&gt;nlmsg_type
+op_assign
+id|NLMSG_DONE
+suffix:semicolon
+id|ulog_send
+c_func
+(paren
+id|groupnum
 )paren
 suffix:semicolon
 )brace

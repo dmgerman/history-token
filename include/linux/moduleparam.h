@@ -150,7 +150,7 @@ DECL|macro|module_param
 mdefine_line|#define module_param(name, type, perm)&t;&t;&t;&t;&bslash;&n;&t;module_param_named(name, name, type, perm)
 multiline_comment|/* Actually copy string: maxlen param is usually sizeof(string). */
 DECL|macro|module_param_string
-mdefine_line|#define module_param_string(name, string, len, perm)&t;&t;&t;&bslash;&n;&t;static struct kparam_string __param_string_##name&t;&t;&bslash;&n;&t;&t;= { len, string };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_set_copystring, param_get_charp,&t;&bslash;&n;&t;&t;   &amp;__param_string_##name, perm)
+mdefine_line|#define module_param_string(name, string, len, perm)&t;&t;&t;&bslash;&n;&t;static struct kparam_string __param_string_##name&t;&t;&bslash;&n;&t;&t;= { len, string };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_set_copystring, param_get_string,&t;&bslash;&n;&t;&t;   &amp;__param_string_##name, perm)
 multiline_comment|/* Called on module insert or kernel boot */
 r_extern
 r_int
@@ -194,6 +194,39 @@ multiline_comment|/* All the helper functions */
 multiline_comment|/* The macros to do compile-time type checking stolen from Jakub&n;   Jelinek, who IIRC came up with this idea for the 2.4 module init code. */
 DECL|macro|__param_check
 mdefine_line|#define __param_check(name, p, type) &bslash;&n;&t;static inline type *__check_##name(void) { return(p); }
+r_extern
+r_int
+id|param_set_byte
+c_func
+(paren
+r_const
+r_char
+op_star
+id|val
+comma
+r_struct
+id|kernel_param
+op_star
+id|kp
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|param_get_byte
+c_func
+(paren
+r_char
+op_star
+id|buffer
+comma
+r_struct
+id|kernel_param
+op_star
+id|kp
+)paren
+suffix:semicolon
+DECL|macro|param_check_byte
+mdefine_line|#define param_check_byte(name, p) __param_check(name, p, unsigned char)
 r_extern
 r_int
 id|param_set_short
@@ -536,6 +569,21 @@ r_const
 r_char
 op_star
 id|val
+comma
+r_struct
+id|kernel_param
+op_star
+id|kp
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|param_get_string
+c_func
+(paren
+r_char
+op_star
+id|buffer
 comma
 r_struct
 id|kernel_param

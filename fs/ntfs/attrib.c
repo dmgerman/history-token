@@ -1709,9 +1709,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 id|IS_ERR
 c_func
 (paren
@@ -1722,7 +1719,6 @@ id|IS_ERR
 c_func
 (paren
 id|drl
-)paren
 )paren
 )paren
 r_return
@@ -4053,14 +4049,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|unlikely
-c_func
-(paren
 id|IS_ERR
 c_func
 (paren
 id|rl
-)paren
 )paren
 )paren
 id|err

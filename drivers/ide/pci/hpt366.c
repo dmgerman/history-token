@@ -5067,30 +5067,6 @@ id|dev
 r_goto
 id|init_hpt37X_done
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hpt_minimum_revision
-c_func
-(paren
-id|dev
-comma
-l_int|8
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;HPT374: Only 33MHz PCI timings are supported.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EOPNOTSUPP
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * adjust PLL based upon PCI clock, enable it, and wait for&n;&t; * stabilization.&n;&t; */
 id|adjust
 op_assign
@@ -7282,7 +7258,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;HPT366 IDE&quot;
+l_string|&quot;HPT366_IDE&quot;
 comma
 dot
 id|id_table

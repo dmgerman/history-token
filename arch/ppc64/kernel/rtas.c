@@ -9,7 +9,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -39,6 +38,13 @@ id|lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 )brace
+suffix:semicolon
+DECL|variable|rtas
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|rtas
+)paren
 suffix:semicolon
 DECL|variable|rtas_err_buf
 r_char
@@ -224,6 +230,45 @@ id|err_args
 comma
 id|save_args
 suffix:semicolon
+id|u32
+id|bufsz
+suffix:semicolon
+id|bufsz
+op_assign
+id|rtas_token
+(paren
+l_string|&quot;rtas-error-log-max&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|bufsz
+op_eq
+id|RTAS_UNKNOWN_SERVICE
+)paren
+op_logical_or
+(paren
+id|bufsz
+OG
+id|RTAS_ERROR_LOG_MAX
+)paren
+)paren
+(brace
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;RTAS: bad log buffer size %d&bslash;n&quot;
+comma
+id|bufsz
+)paren
+suffix:semicolon
+id|bufsz
+op_assign
+id|RTAS_ERROR_LOG_MAX
+suffix:semicolon
+)brace
 id|err_args.token
 op_assign
 id|rtas_token
@@ -239,20 +284,6 @@ suffix:semicolon
 id|err_args.nret
 op_assign
 l_int|1
-suffix:semicolon
-id|err_args.rets
-op_assign
-(paren
-id|rtas_arg_t
-op_star
-)paren
-op_amp
-(paren
-id|err_args.args
-(braket
-l_int|2
-)braket
-)paren
 suffix:semicolon
 id|err_args.args
 (braket
@@ -273,7 +304,7 @@ id|err_args.args
 l_int|1
 )braket
 op_assign
-id|RTAS_ERROR_LOG_MAX
+id|bufsz
 suffix:semicolon
 id|err_args.args
 (braket
@@ -290,21 +321,6 @@ id|rtas.args
 op_assign
 id|err_args
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_RTAS
-comma
-l_string|&quot;&bslash;tentering rtas with 0x%lx&bslash;n&quot;
-comma
-id|__pa
-c_func
-(paren
-op_amp
-id|err_args
-)paren
-)paren
-suffix:semicolon
 id|enter_rtas
 c_func
 (paren
@@ -316,14 +332,6 @@ id|rtas.args
 )paren
 )paren
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_RTAS
-comma
-l_string|&quot;&bslash;treturned from rtas ...&bslash;n&quot;
-)paren
-suffix:semicolon
 id|err_args
 op_assign
 id|rtas.args
@@ -333,9 +341,9 @@ op_assign
 id|save_args
 suffix:semicolon
 r_return
-id|err_args.rets
+id|err_args.args
 (braket
-l_int|0
+l_int|2
 )braket
 suffix:semicolon
 )brace
@@ -731,6 +739,16 @@ id|logit
 (brace
 id|buff_copy
 op_assign
+id|rtas_err_buf
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mem_init_done
+)paren
+(brace
+id|buff_copy
+op_assign
 id|kmalloc
 c_func
 (paren
@@ -744,7 +762,6 @@ c_cond
 (paren
 id|buff_copy
 )paren
-(brace
 id|memcpy
 c_func
 (paren
@@ -783,6 +800,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mem_init_done
+)paren
 id|kfree
 c_func
 (paren

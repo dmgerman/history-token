@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * linux/fs/nfsd/lockd.c&n; *&n; * This file contains all the stubs needed when communicating with lockd.&n; * This level of indirection is necessary so we can run nfsd+lockd without&n; * requiring the nfs client to be compiled in/loaded, and vice versa.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
@@ -27,6 +28,7 @@ id|f
 comma
 r_struct
 id|file
+op_star
 op_star
 id|filp
 )paren
@@ -93,26 +95,6 @@ comma
 id|filp
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|nfserr
-)paren
-(brace
-id|dget
-c_func
-(paren
-id|filp-&gt;f_dentry
-)paren
-suffix:semicolon
-id|mntget
-c_func
-(paren
-id|filp-&gt;f_vfsmnt
-)paren
-suffix:semicolon
-)brace
 id|fh_put
 c_func
 (paren
@@ -167,22 +149,10 @@ op_star
 id|filp
 )paren
 (brace
-id|nfsd_close
+id|fput
 c_func
 (paren
 id|filp
-)paren
-suffix:semicolon
-id|dput
-c_func
-(paren
-id|filp-&gt;f_dentry
-)paren
-suffix:semicolon
-id|mntput
-c_func
-(paren
-id|filp-&gt;f_vfsmnt
 )paren
 suffix:semicolon
 )brace

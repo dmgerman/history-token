@@ -149,8 +149,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*&n;&t; * We need to be sure we have cleared all pending exceptions before&n;&t; * removing the interrupt handler. For the moment we play it safe and&n;&t; * leave it in&n;&t; */
-macro_line|#if 0
 id|mb
 c_func
 (paren
@@ -161,7 +159,6 @@ id|perf_irq
 op_assign
 id|save_perf_irq
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|op_ppc64_cpu_start
 r_static
@@ -269,6 +266,46 @@ id|root
 (brace
 r_int
 id|i
+suffix:semicolon
+multiline_comment|/*&n;&t; * There is one mmcr0, mmcr1 and mmcra for setting the events for&n;&t; * all of the counters.&n;&t; */
+id|oprofilefs_create_ulong
+c_func
+(paren
+id|sb
+comma
+id|root
+comma
+l_string|&quot;mmcr0&quot;
+comma
+op_amp
+id|sys.mmcr0
+)paren
+suffix:semicolon
+id|oprofilefs_create_ulong
+c_func
+(paren
+id|sb
+comma
+id|root
+comma
+l_string|&quot;mmcr1&quot;
+comma
+op_amp
+id|sys.mmcr1
+)paren
+suffix:semicolon
+id|oprofilefs_create_ulong
+c_func
+(paren
+id|sb
+comma
+id|root
+comma
+l_string|&quot;mmcra&quot;
+comma
+op_amp
+id|sys.mmcra
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -456,6 +493,15 @@ comma
 op_amp
 id|sys.enable_user
 )paren
+suffix:semicolon
+multiline_comment|/* Default to tracing both kernel and user */
+id|sys.enable_kernel
+op_assign
+l_int|1
+suffix:semicolon
+id|sys.enable_user
+op_assign
+l_int|1
 suffix:semicolon
 r_return
 l_int|0

@@ -426,15 +426,6 @@ r_int
 suffix:semicolon
 multiline_comment|/* dquot stuff */
 r_extern
-r_void
-id|xfs_qm_dqunlink
-c_func
-(paren
-id|xfs_dquot_t
-op_star
-)paren
-suffix:semicolon
-r_extern
 id|boolean_t
 id|xfs_qm_dqalloc_incore
 c_func

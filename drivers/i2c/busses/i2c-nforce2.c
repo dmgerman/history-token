@@ -766,16 +766,10 @@ op_amp
 id|NVIDIA_SMB_STS_DONE
 )paren
 (brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 id|temp
@@ -1523,7 +1517,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;nForce2 SMBus&quot;
+l_string|&quot;nForce2_smbus&quot;
 comma
 dot
 id|id_table

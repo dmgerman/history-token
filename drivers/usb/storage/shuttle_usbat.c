@@ -1,12 +1,15 @@
 multiline_comment|/* Driver for SCM Microsystems USB-ATAPI cable&n; *&n; * $Id: shuttle_usbat.c,v 1.17 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * Many originally ATAPI devices were slightly modified to meet the USB&n; * market by using some kind of translation from ATAPI to USB on the host,&n; * and the peripheral would translate from USB back to ATAPI.&n; *&n; * SCM Microsystems (www.scmmicro.com) makes a device, sold to OEM&squot;s only, &n; * which does the USB-to-ATAPI conversion.  By obtaining the data sheet on&n; * their device under nondisclosure agreement, I have been able to write&n; * this driver for Linux.&n; *&n; * The chip used in the device can also be used for EPP and ISA translation&n; * as well. This driver is only guaranteed to work with the ATAPI&n; * translation.&n; *&n; * The only peripheral that I know of (as of 27 Mar 2001) that uses this&n; * device is the Hewlett-Packard 8200e/8210e/8230e CD-Writer Plus.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/cdrom.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;shuttle_usbat.h&quot;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|short_pack
 mdefine_line|#define short_pack(LSB,MSB) ( ((u16)(LSB)) | ( ((u16)(MSB))&lt;&lt;8 ) )
 DECL|macro|LSB_of
@@ -913,7 +916,7 @@ op_assign
 (paren
 id|direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 )paren
 ques
 c_cond
@@ -1076,7 +1079,7 @@ op_assign
 (paren
 id|direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 ques
 c_cond
 l_int|0x40
@@ -1096,7 +1099,7 @@ op_or
 (paren
 id|direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 ques
 c_cond
 l_int|0x05
@@ -1280,7 +1283,7 @@ id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 singleline_comment|//US_DEBUGP(&quot;Transfer %s %d bytes, sg buffers %d&bslash;n&quot;,
-singleline_comment|//&t;direction == SCSI_DATA_WRITE ? &quot;out&quot; : &quot;in&quot;,
+singleline_comment|//&t;direction == DMA_TO_DEVICE ? &quot;out&quot; : &quot;in&quot;,
 singleline_comment|//&t;len, use_sg);
 id|result
 op_assign
@@ -1319,7 +1322,7 @@ c_cond
 (paren
 id|direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 op_logical_and
 id|i
 op_eq
@@ -1355,7 +1358,7 @@ id|USBAT_ATA
 comma
 id|direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 ques
 c_cond
 l_int|0x17
@@ -1406,7 +1409,7 @@ l_string|&quot;Redoing %s&bslash;n&quot;
 comma
 id|direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 ques
 c_cond
 l_string|&quot;write&quot;
@@ -1444,7 +1447,7 @@ l_string|&quot;Bummer! %s bulk data 20 times failed.&bslash;n&quot;
 comma
 id|direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 ques
 c_cond
 l_string|&quot;Writing&quot;
@@ -1824,7 +1827,8 @@ r_char
 op_star
 id|data
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 )paren
@@ -1898,7 +1902,7 @@ l_int|0xFD
 comma
 l_int|0x30
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|srb-&gt;request_buffer
 comma
@@ -2291,7 +2295,7 @@ l_int|0xFD
 comma
 l_int|0x30
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|buffer
 comma
@@ -3014,7 +3018,8 @@ r_int
 id|hp8200e_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -3274,7 +3279,7 @@ c_cond
 (paren
 id|srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 )paren
 (brace
 id|result
@@ -3300,7 +3305,7 @@ l_int|0xFD
 comma
 l_int|0x30
 comma
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 comma
 id|srb-&gt;request_buffer
 comma
@@ -3476,7 +3481,7 @@ op_logical_and
 (paren
 id|srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 )paren
 )paren
 (brace

@@ -2548,16 +2548,6 @@ id|portnr
 )paren
 suffix:semicolon
 r_static
-r_inline
-r_int
-id|stli_initbrds
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_inline
 r_int
 id|stli_initecp
 c_func
@@ -2568,7 +2558,6 @@ id|brdp
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|stli_initonb
 c_func
@@ -2579,16 +2568,6 @@ id|brdp
 )paren
 suffix:semicolon
 r_static
-r_inline
-r_int
-id|stli_findeisabrds
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_inline
 r_int
 id|stli_eisamemprobe
 c_func
@@ -2599,7 +2578,6 @@ id|brdp
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|stli_initports
 c_func
@@ -2609,27 +2587,8 @@ op_star
 id|brdp
 )paren
 suffix:semicolon
-r_static
-r_inline
-r_int
-id|stli_getbrdnr
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifdef&t;CONFIG_PCI
 r_static
-r_inline
-r_int
-id|stli_findpcibrds
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_inline
 r_int
 id|stli_initpcibrd
 c_func
@@ -11839,7 +11798,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Read data from shared memory. This assumes that the shared memory&n; *&t;is enabled and that interrupts are off. Basically we just empty out&n; *&t;the shared memory buffer into the tty buffer. Must be careful to&n; *&t;handle the case where we fill up the tty buffer, but still have&n; *&t;more chars to unload.&n; */
 DECL|function|stli_read
 r_static
-r_inline
 r_void
 id|stli_read
 c_func
@@ -12196,7 +12154,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Set up and carry out any delayed commands. There is only a small set&n; *&t;of slave commands that can be done &quot;off-level&quot;. So it is not too&n; *&t;difficult to deal with them here.&n; */
 DECL|function|stli_dodelaycmd
 r_static
-r_inline
 r_void
 id|stli_dodelaycmd
 c_func
@@ -12496,7 +12453,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Host command service checking. This handles commands or messages&n; *&t;coming from the slave to the host. Must have board shared memory&n; *&t;enabled and interrupts off when called. Notice that by servicing the&n; *&t;read data last we don&squot;t need to change the shared memory pointer&n; *&t;during processing (which is a slow IO operation).&n; *&t;Return value indicates if this port is still awaiting actions from&n; *&t;the slave (like open, command, or even TX data being sent). If 0&n; *&t;then port is still busy, otherwise no longer busy.&n; */
 DECL|function|stli_hostcmd
 r_static
-r_inline
 r_int
 id|stli_hostcmd
 c_func
@@ -13237,7 +13193,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Service all ports on a particular board. Assumes that the boards&n; *&t;shared memory is enabled, and that the page pointer is pointed&n; *&t;at the cdk header structure.&n; */
 DECL|function|stli_brdpoll
 r_static
-r_inline
 r_void
 id|stli_brdpoll
 c_func
@@ -14405,7 +14360,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;All panels and ports actually attached have been worked out. All&n; *&t;we need to do here is set up the appropriate per port data structures.&n; */
 DECL|function|stli_initports
 r_static
-r_inline
 r_int
 id|stli_initports
 c_func
@@ -17026,7 +16980,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Try to find an ECP board and initialize it. This handles only ECP&n; *&t;board types.&n; */
 DECL|function|stli_initecp
 r_static
-r_inline
 r_int
 id|stli_initecp
 c_func
@@ -17655,7 +17608,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Try to find an ONboard, Brumby or Stallion board and initialize it.&n; *&t;This handles only these board types.&n; */
 DECL|function|stli_initonb
 r_static
-r_inline
 r_int
 id|stli_initonb
 c_func
@@ -18988,7 +18940,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Probe around trying to find where the EISA boards shared memory&n; *&t;might be. This is a bit if hack, but it is the best we can do.&n; */
 DECL|function|stli_eisamemprobe
 r_static
-r_inline
 r_int
 id|stli_eisamemprobe
 c_func
@@ -19436,7 +19387,6 @@ suffix:semicolon
 )brace
 DECL|function|stli_getbrdnr
 r_static
-r_inline
 r_int
 id|stli_getbrdnr
 c_func
@@ -19499,7 +19449,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Probe around and try to find any EISA boards in system. The biggest&n; *&t;problem here is finding out what memory address is associated with&n; *&t;an EISA board after it is found. The registers of the ECPE and&n; *&t;ONboardE are not readable - so we can&squot;t read them from there. We&n; *&t;don&squot;t have access to the EISA CMOS (or EISA BIOS) so we don&squot;t&n; *&t;actually have any way to find out the real value. The best we can&n; *&t;do is go probing around in the usual places hoping we can find it.&n; */
 DECL|function|stli_findeisabrds
 r_static
-r_inline
 r_int
 id|stli_findeisabrds
 c_func
@@ -19805,7 +19754,6 @@ macro_line|#ifdef&t;CONFIG_PCI
 multiline_comment|/*&n; *&t;We have a Stallion board. Allocate a board structure and&n; *&t;initialize it. Read its IO and MEMORY resources from PCI&n; *&t;configuration space.&n; */
 DECL|function|stli_initpcibrd
 r_static
-r_inline
 r_int
 id|stli_initpcibrd
 c_func
@@ -19986,7 +19934,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Find all Stallion PCI boards that might be installed. Initialize each&n; *&t;one as it is found.&n; */
 DECL|function|stli_findpcibrds
 r_static
-r_inline
 r_int
 id|stli_findpcibrds
 c_func
@@ -20143,7 +20090,6 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;Scan through all the boards in the configuration and see what we&n; *&t;can find.&n; */
 DECL|function|stli_initbrds
 r_static
-r_inline
 r_int
 id|stli_initbrds
 c_func

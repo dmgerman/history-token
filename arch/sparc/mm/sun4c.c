@@ -1269,8 +1269,6 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|num_context_patch2
-comma
 id|num_context_patch2_16
 suffix:semicolon
 r_extern

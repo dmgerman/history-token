@@ -112,9 +112,13 @@ id|u32
 id|h_nsmstate
 suffix:semicolon
 multiline_comment|/* true remote NSM state */
+DECL|member|h_pidcount
+id|u32
+id|h_pidcount
+suffix:semicolon
+multiline_comment|/* Pseudopids */
 DECL|member|h_count
-r_int
-r_int
+id|atomic_t
 id|h_count
 suffix:semicolon
 multiline_comment|/* reference count */
@@ -136,6 +140,46 @@ r_int
 id|h_expires
 suffix:semicolon
 multiline_comment|/* eligible for GC */
+DECL|member|h_lockowners
+r_struct
+id|list_head
+id|h_lockowners
+suffix:semicolon
+multiline_comment|/* Lockowners for the client */
+DECL|member|h_lock
+id|spinlock_t
+id|h_lock
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Map an fl_owner_t into a unique 32-bit &quot;pid&quot;&n; */
+DECL|struct|nlm_lockowner
+r_struct
+id|nlm_lockowner
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|count
+id|atomic_t
+id|count
+suffix:semicolon
+DECL|member|host
+r_struct
+id|nlm_host
+op_star
+id|host
+suffix:semicolon
+DECL|member|owner
+id|fl_owner_t
+id|owner
+suffix:semicolon
+DECL|member|pid
+r_uint32
+id|pid
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Memory chunk for NLM client RPC request.&n; */
@@ -200,6 +244,7 @@ multiline_comment|/* NFS file handle */
 DECL|member|f_file
 r_struct
 id|file
+op_star
 id|f_file
 suffix:semicolon
 multiline_comment|/* VFS file pointer */
@@ -772,7 +817,7 @@ id|file
 )paren
 (brace
 r_return
-id|file-&gt;f_file.f_dentry-&gt;d_inode
+id|file-&gt;f_file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Compare two host addresses (needs modifying for ipv6)&n; */
@@ -843,6 +888,11 @@ id|F_UNLCK
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|lock_manager_operations
+id|nlmsvc_lock_operations
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* LINUX_LOCKD_LOCKD_H */
 eof

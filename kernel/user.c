@@ -82,6 +82,12 @@ dot
 id|mq_bytes
 op_assign
 l_int|0
+comma
+dot
+id|locked_shm
+op_assign
+l_int|0
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * These routines must be called with the uidhash spinlock held!&n; */
@@ -441,6 +447,12 @@ suffix:semicolon
 r_new
 op_member_access_from_pointer
 id|mq_bytes
+op_assign
+l_int|0
+suffix:semicolon
+r_new
+op_member_access_from_pointer
+id|locked_shm
 op_assign
 l_int|0
 suffix:semicolon

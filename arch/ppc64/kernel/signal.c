@@ -351,6 +351,8 @@ r_int
 r_int
 )paren
 id|sc-&gt;vmx_reserve
+op_plus
+l_int|15
 )paren
 op_amp
 op_complement

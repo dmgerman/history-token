@@ -105,6 +105,7 @@ id|EPERM
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/**&n; * hvcs_free_partner_info - free pi allocated by hvcs_get_partner_info&n; * @head: list_head pointer for an allocated list of partner info structs to&n; *&t;free.&n; *&n; * This function is used to free the partner info list that was returned by&n; * calling hvcs_get_partner_info().&n; */
 DECL|function|hvcs_free_partner_info
 r_int
 id|hvcs_free_partner_info
@@ -132,12 +133,10 @@ c_cond
 op_logical_neg
 id|head
 )paren
-(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-)brace
 r_while
 c_loop
 (paren
@@ -196,8 +195,7 @@ r_int
 id|hvcs_next_partner
 c_func
 (paren
-r_int
-r_int
+r_uint32
 id|unit_address
 comma
 r_int
@@ -245,14 +243,13 @@ id|retval
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The unit_address parameter is the unit address of the vty-server vdevice&n; * in whose partner information the caller is interested.  This function&n; * uses a pointer to a list_head instance in which to store the partner info.&n; * This function returns non-zero on success, or if there is no partner info.&n; *&n; * Invocation of this function should always be followed by an invocation of&n; * hvcs_free_partner_info() using a pointer to the SAME list head instance&n; * that was used to store the partner_info list.&n; */
+multiline_comment|/**&n; * hvcs_get_partner_info - Get all of the partner info for a vty-server adapter&n; * @unit_address: The unit_address of the vty-server adapter for which this&n; *&t;function is fetching partner info.&n; * @head: An initialized list_head pointer to an empty list to use to return the&n; *&t;list of partner info fetched from the hypervisor to the caller.&n; * @pi_buff: A page sized buffer pre-allocated prior to calling this function&n; *&t;that is to be used to be used by firmware as an iterator to keep track&n; *&t;of the partner info retrieval.&n; *&n; * This function returns non-zero on success, or if there is no partner info.&n; *&n; * The pi_buff is pre-allocated prior to calling this function because this&n; * function may be called with a spin_lock held and kmalloc of a page is not&n; * recommended as GFP_ATOMIC.&n; *&n; * The first long of this buffer is used to store a partner unit address.  The&n; * second long is used to store a partner partition ID and starting at&n; * pi_buff[2] is the 79 character Converged Location Code (diff size than the&n; * unsigned longs, hence the casting mumbo jumbo you see later).&n; *&n; * Invocation of this function should always be followed by an invocation of&n; * hvcs_free_partner_info() using a pointer to the SAME list head instance&n; * that was passed as a parameter to this function.&n; */
 DECL|function|hvcs_get_partner_info
 r_int
 id|hvcs_get_partner_info
 c_func
 (paren
-r_int
-r_int
+r_uint32
 id|unit_address
 comma
 r_struct
@@ -266,7 +263,7 @@ op_star
 id|pi_buff
 )paren
 (brace
-multiline_comment|/*&n;&t; * This is a page sized buffer to be passed to hvcall per invocation.&n;&t; * NOTE: the first long returned is unit_address.  The second long&n;&t; * returned is the partition ID and starting with pi_buff[2] are&n;&t; * HVCS_CLC_LENGTH characters, which are diff size than the unsigned&n;&t; * long, hence the casting mumbojumbo you see later.&n;&t; */
+multiline_comment|/*&n;&t; * Dealt with as longs because of the hcall interface even though the&n;&t; * values are uint32_t.&n;&t; */
 r_int
 r_int
 id|last_p_partition_ID
@@ -306,6 +303,9 @@ c_cond
 (paren
 op_logical_neg
 id|head
+op_logical_or
+op_logical_neg
+id|pi_buff
 )paren
 r_return
 op_minus
@@ -323,16 +323,6 @@ c_func
 (paren
 id|head
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pi_buff
-)paren
-r_return
-op_minus
-id|ENOMEM
 suffix:semicolon
 r_do
 (brace
@@ -531,22 +521,19 @@ c_func
 id|hvcs_get_partner_info
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * If this function is called once and -EINVAL is returned it may&n; * indicate that the partner info needs to be refreshed for the&n; * target unit address at which point the caller must invoke&n; * hvcs_get_partner_info() and then call this function again.  If,&n; * for a second time, -EINVAL is returned then it indicates that&n; * there is probably already a partner connection registered to a&n; * different vty-server@ vdevice.  It is also possible that a second&n; * -EINVAL may indicate that one of the parms is not valid, for&n; * instance if the link was removed between the vty-server@ vdevice&n; * and the vty@ vdevice that you are trying to open.  Don&squot;t shoot the&n; * messenger.  Firmware implemented it this way.&n; */
+multiline_comment|/**&n; * hvcs_register_connection - establish a connection between this vty-server and&n; *&t;a vty.&n; * @unit_address: The unit address of the vty-server adapter that is to be&n; *&t;establish a connection.&n; * @p_partition_ID: The partition ID of the vty adapter that is to be connected.&n; * @p_unit_address: The unit address of the vty adapter to which the vty-server&n; *&t;is to be connected.&n; *&n; * If this function is called once and -EINVAL is returned it may&n; * indicate that the partner info needs to be refreshed for the&n; * target unit address at which point the caller must invoke&n; * hvcs_get_partner_info() and then call this function again.  If,&n; * for a second time, -EINVAL is returned then it indicates that&n; * there is probably already a partner connection registered to a&n; * different vty-server adapter.  It is also possible that a second&n; * -EINVAL may indicate that one of the parms is not valid, for&n; * instance if the link was removed between the vty-server adapter&n; * and the vty adapter that you are trying to open.  Don&squot;t shoot the&n; * messenger.  Firmware implemented it this way.&n; */
 DECL|function|hvcs_register_connection
 r_int
 id|hvcs_register_connection
 c_func
 (paren
-r_int
-r_int
+r_uint32
 id|unit_address
 comma
-r_int
-r_int
+r_uint32
 id|p_partition_ID
 comma
-r_int
-r_int
+r_uint32
 id|p_unit_address
 )paren
 (brace
@@ -582,14 +569,13 @@ c_func
 id|hvcs_register_connection
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * If -EBUSY is returned continue to call this function&n; * until 0 is returned.&n; */
+multiline_comment|/**&n; * hvcs_free_connection - free the connection between a vty-server and vty&n; * @unit_address: The unit address of the vty-server that is to have its&n; *&t;connection severed.&n; *&n; * This function is used to free the partner connection between a vty-server&n; * adapter and a vty adapter.&n; *&n; * If -EBUSY is returned continue to call this function until 0 is returned.&n; */
 DECL|function|hvcs_free_connection
 r_int
 id|hvcs_free_connection
 c_func
 (paren
-r_int
-r_int
+r_uint32
 id|unit_address
 )paren
 (brace

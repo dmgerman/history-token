@@ -36,11 +36,6 @@ mdefine_line|#define SP8870_FIRMWARE_SIZE 16382
 multiline_comment|/* starting point for firmware in file &squot;Sc_main.mc&squot; */
 DECL|macro|SP8870_FIRMWARE_OFFSET
 mdefine_line|#define SP8870_FIRMWARE_OFFSET 0x0A
-DECL|variable|errno
-r_static
-r_int
-id|errno
-suffix:semicolon
 DECL|variable|tdlb7_info
 r_static
 r_struct

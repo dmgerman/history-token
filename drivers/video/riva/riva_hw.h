@@ -69,7 +69,7 @@ DECL|macro|VGA_WR08
 mdefine_line|#define VGA_WR08(p,i,d) NV_WR08(p,i,d)
 DECL|macro|VGA_RD08
 mdefine_line|#define VGA_RD08(p,i)   NV_RD08(p,i)
-multiline_comment|/*&n; * Define supported architectures.&n; */
+multiline_comment|/*&n; * Define different architectures.&n; */
 DECL|macro|NV_ARCH_03
 mdefine_line|#define NV_ARCH_03  0x03
 DECL|macro|NV_ARCH_04
@@ -78,6 +78,10 @@ DECL|macro|NV_ARCH_10
 mdefine_line|#define NV_ARCH_10  0x10
 DECL|macro|NV_ARCH_20
 mdefine_line|#define NV_ARCH_20  0x20
+DECL|macro|NV_ARCH_30
+mdefine_line|#define NV_ARCH_30  0x30
+DECL|macro|NV_ARCH_40
+mdefine_line|#define NV_ARCH_40  0x40
 multiline_comment|/***************************************************************************&bslash;&n;*                                                                           *&n;*                             FIFO registers.                               *&n;*                                                                           *&n;&bslash;***************************************************************************/
 multiline_comment|/*&n; * Raster OPeration. Windows style ROP3.&n; */
 r_typedef

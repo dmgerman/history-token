@@ -234,7 +234,7 @@ r_int
 id|more
 )paren
 (brace
-multiline_comment|/* walk-&gt;data may be pointing the first byte of the next page;&n;&t;   however, we know we transfered at least one byte.  So,&n;&t;   walk-&gt;data - 1 will be a virutual address in the mapped page. */
+multiline_comment|/* walk-&gt;data may be pointing the first byte of the next page;&n;&t;   however, we know we transfered at least one byte.  So,&n;&t;   walk-&gt;data - 1 will be a virtual address in the mapped page. */
 r_if
 c_cond
 (paren

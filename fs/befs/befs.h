@@ -333,19 +333,6 @@ id|befs_btree_nodehead
 op_star
 )paren
 suffix:semicolon
-r_void
-id|befs_dump_inode_addr
-c_func
-(paren
-r_const
-r_struct
-id|super_block
-op_star
-id|sb
-comma
-id|befs_inode_addr
-)paren
-suffix:semicolon
 multiline_comment|/****************************/
 multiline_comment|/* Gets a pointer to the private portion of the super_block&n; * structure from the public part&n; */
 r_static

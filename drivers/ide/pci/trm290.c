@@ -1349,7 +1349,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;TRM290 IDE&quot;
+l_string|&quot;TRM290_IDE&quot;
 comma
 dot
 id|id_table

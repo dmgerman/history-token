@@ -735,12 +735,14 @@ DECL|macro|GPCMD_REQUEST_SENSE
 mdefine_line|#define GPCMD_REQUEST_SENSE&t;&t;    0x03
 DECL|macro|GPCMD_RESERVE_RZONE_TRACK
 mdefine_line|#define GPCMD_RESERVE_RZONE_TRACK&t;    0x53
+DECL|macro|GPCMD_SEND_CUE_SHEET
+mdefine_line|#define GPCMD_SEND_CUE_SHEET&t;&t;    0x5d
 DECL|macro|GPCMD_SCAN
 mdefine_line|#define GPCMD_SCAN&t;&t;&t;    0xba
 DECL|macro|GPCMD_SEEK
 mdefine_line|#define GPCMD_SEEK&t;&t;&t;    0x2b
 DECL|macro|GPCMD_SEND_DVD_STRUCTURE
-mdefine_line|#define GPCMD_SEND_DVD_STRUCTURE&t;    0xad
+mdefine_line|#define GPCMD_SEND_DVD_STRUCTURE&t;    0xbf
 DECL|macro|GPCMD_SEND_EVENT
 mdefine_line|#define GPCMD_SEND_EVENT&t;&t;    0xa2
 DECL|macro|GPCMD_SEND_KEY

@@ -150,6 +150,8 @@ DECL|macro|READ_SYNC
 mdefine_line|#define READ_SYNC&t;(READ | (1 &lt;&lt; BIO_RW_SYNC))
 DECL|macro|WRITE_SYNC
 mdefine_line|#define WRITE_SYNC&t;(WRITE | (1 &lt;&lt; BIO_RW_SYNC))
+DECL|macro|WRITE_BARRIER
+mdefine_line|#define WRITE_BARRIER&t;((1 &lt;&lt; BIO_RW) | (1 &lt;&lt; BIO_RW_BARRIER))
 DECL|macro|SEL_IN
 mdefine_line|#define SEL_IN&t;&t;1
 DECL|macro|SEL_OUT
@@ -1557,18 +1559,18 @@ r_int
 r_int
 id|ahead_size
 suffix:semicolon
-DECL|member|serial_cnt
+DECL|member|currnt_wnd_hit
 r_int
 r_int
-id|serial_cnt
+id|currnt_wnd_hit
 suffix:semicolon
-multiline_comment|/* measure of sequentiality */
+multiline_comment|/* locality in the current window */
 DECL|member|average
 r_int
 r_int
 id|average
 suffix:semicolon
-multiline_comment|/* another measure of sequentiality */
+multiline_comment|/* size of next current window */
 DECL|member|ra_pages
 r_int
 r_int
@@ -1703,35 +1705,6 @@ DECL|macro|get_file
 mdefine_line|#define get_file(x)&t;atomic_inc(&amp;(x)-&gt;f_count)
 DECL|macro|file_count
 mdefine_line|#define file_count(x)&t;atomic_read(&amp;(x)-&gt;f_count)
-multiline_comment|/* Initialize and open a private file and allocate its security structure. */
-r_extern
-r_int
-id|open_private_file
-c_func
-(paren
-r_struct
-id|file
-op_star
-comma
-r_struct
-id|dentry
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-multiline_comment|/* Release a private file and free its security structure. */
-r_extern
-r_void
-id|close_private_file
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-)paren
-suffix:semicolon
 DECL|macro|MAX_NON_LFS
 mdefine_line|#define&t;MAX_NON_LFS&t;((1UL&lt;&lt;31) - 1)
 multiline_comment|/* Page cache limit. The filesystems should put that into their s_maxbytes &n;   limits, otherwise bad things can happen in VM. */
@@ -1761,6 +1734,101 @@ r_struct
 id|files_struct
 op_star
 id|fl_owner_t
+suffix:semicolon
+DECL|struct|file_lock_operations
+r_struct
+id|file_lock_operations
+(brace
+DECL|member|fl_insert
+r_void
+(paren
+op_star
+id|fl_insert
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* lock insertion callback */
+DECL|member|fl_remove
+r_void
+(paren
+op_star
+id|fl_remove
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* lock removal callback */
+DECL|member|fl_copy_lock
+r_void
+(paren
+op_star
+id|fl_copy_lock
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+comma
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+DECL|member|fl_release_private
+r_void
+(paren
+op_star
+id|fl_release_private
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|lock_manager_operations
+r_struct
+id|lock_manager_operations
+(brace
+DECL|member|fl_compare_owner
+r_int
+(paren
+op_star
+id|fl_compare_owner
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+comma
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+DECL|member|fl_notify
+r_void
+(paren
+op_star
+id|fl_notify
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* unblock callback */
+)brace
 suffix:semicolon
 multiline_comment|/* that will die - we need it for nfs_lock_info */
 macro_line|#include &lt;linux/nfs_fs_i.h&gt;
@@ -1824,45 +1892,6 @@ DECL|member|fl_end
 id|loff_t
 id|fl_end
 suffix:semicolon
-DECL|member|fl_notify
-r_void
-(paren
-op_star
-id|fl_notify
-)paren
-(paren
-r_struct
-id|file_lock
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* unblock callback */
-DECL|member|fl_insert
-r_void
-(paren
-op_star
-id|fl_insert
-)paren
-(paren
-r_struct
-id|file_lock
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* lock insertion callback */
-DECL|member|fl_remove
-r_void
-(paren
-op_star
-id|fl_remove
-)paren
-(paren
-r_struct
-id|file_lock
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* lock removal callback */
 DECL|member|fl_fasync
 r_struct
 id|fasync_struct
@@ -1876,6 +1905,20 @@ r_int
 id|fl_break_time
 suffix:semicolon
 multiline_comment|/* for nonblocking lease breaks */
+DECL|member|fl_ops
+r_struct
+id|file_lock_operations
+op_star
+id|fl_ops
+suffix:semicolon
+multiline_comment|/* Callbacks for filesystems */
+DECL|member|fl_lmops
+r_struct
+id|lock_manager_operations
+op_star
+id|fl_lmops
+suffix:semicolon
+multiline_comment|/* Callbacks for lockmanagers */
 r_union
 (brace
 DECL|member|nfs_fl
@@ -2084,6 +2127,20 @@ suffix:semicolon
 r_extern
 r_int
 id|posix_lock_file
+c_func
+(paren
+r_struct
+id|file
+op_star
+comma
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|posix_lock_file_wait
 c_func
 (paren
 r_struct
@@ -2748,6 +2805,18 @@ id|dentry
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * VFS dentry helper functions.&n; */
+r_extern
+r_void
+id|dentry_unhash
+c_func
+(paren
+r_struct
+id|dentry
+op_star
+id|dentry
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * File types&n; *&n; * NOTE! These match bits 12..15 of stat.st_mode&n; * (ie &quot;(i_mode &gt;&gt; 12) &amp; 15&quot;).&n; */
 DECL|macro|DT_UNKNOWN
 mdefine_line|#define DT_UNKNOWN&t;0
@@ -2767,6 +2836,27 @@ DECL|macro|DT_SOCK
 mdefine_line|#define DT_SOCK&t;&t;12
 DECL|macro|DT_WHT
 mdefine_line|#define DT_WHT&t;&t;14
+DECL|macro|OSYNC_METADATA
+mdefine_line|#define OSYNC_METADATA&t;(1&lt;&lt;0)
+DECL|macro|OSYNC_DATA
+mdefine_line|#define OSYNC_DATA&t;(1&lt;&lt;1)
+DECL|macro|OSYNC_INODE
+mdefine_line|#define OSYNC_INODE&t;(1&lt;&lt;2)
+r_int
+id|generic_osync_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+comma
+r_struct
+id|address_space
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This is the &quot;filldir&quot; function type, used by readdir() to let&n; * the kernel specify what kind of dirent layout it wants to have.&n; * This allows the kernel to read directories into kernel space or&n; * to have different dirent layouts depending on the binary type.&n; */
 DECL|typedef|filldir_t
 r_typedef
@@ -6792,6 +6882,61 @@ r_int
 comma
 id|loff_t
 op_star
+)paren
+suffix:semicolon
+r_extern
+id|ssize_t
+id|generic_file_direct_write
+c_func
+(paren
+r_struct
+id|kiocb
+op_star
+comma
+r_const
+r_struct
+id|iovec
+op_star
+comma
+r_int
+r_int
+op_star
+comma
+id|loff_t
+comma
+id|loff_t
+op_star
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+r_extern
+id|ssize_t
+id|generic_file_buffered_write
+c_func
+(paren
+r_struct
+id|kiocb
+op_star
+comma
+r_const
+r_struct
+id|iovec
+op_star
+comma
+r_int
+r_int
+comma
+id|loff_t
+comma
+id|loff_t
+op_star
+comma
+r_int
+comma
+id|ssize_t
 )paren
 suffix:semicolon
 r_extern

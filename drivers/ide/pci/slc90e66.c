@@ -2240,7 +2240,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;SLC90e66 IDE&quot;
+l_string|&quot;SLC90e66_IDE&quot;
 comma
 dot
 id|id_table

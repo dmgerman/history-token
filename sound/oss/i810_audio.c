@@ -13877,6 +13877,10 @@ l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/* claim our iospace and irq */
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -13889,7 +13893,25 @@ id|card_names
 id|pci_id-&gt;driver_data
 )braket
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i810_audio: unable to allocate region %lx&bslash;n&quot;
+comma
+id|card-&gt;iobase
+)paren
 suffix:semicolon
+r_goto
+id|out_region1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|request_region
 c_func
 (paren
@@ -13902,7 +13924,21 @@ id|card_names
 id|pci_id-&gt;driver_data
 )braket
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;i810_audio: unable to allocate region %lx&bslash;n&quot;
+comma
+id|card-&gt;ac97base
+)paren
 suffix:semicolon
+r_goto
+id|out_region2
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -14285,6 +14321,8 @@ comma
 l_int|64
 )paren
 suffix:semicolon
+id|out_region2
+suffix:colon
 id|release_region
 c_func
 (paren
@@ -14293,6 +14331,8 @@ comma
 l_int|256
 )paren
 suffix:semicolon
+id|out_region1
+suffix:colon
 id|pci_free_consistent
 c_func
 (paren

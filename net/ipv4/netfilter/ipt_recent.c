@@ -13,6 +13,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_recent.h&gt;
 DECL|macro|DEBUG
@@ -89,45 +90,55 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ip_list_tot
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0400
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ip_pkt_list_tot
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0400
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ip_list_hash_size
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0400
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ip_list_perms
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0400
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0600
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

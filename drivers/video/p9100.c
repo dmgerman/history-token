@@ -1144,7 +1144,7 @@ l_string|&quot;p9100 regs&quot;
 suffix:semicolon
 id|all-&gt;info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|all-&gt;info.fbops
 op_assign

@@ -2166,12 +2166,14 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|hmc_mode
 comma
-l_string|&quot;hmc_mode&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|function|ohci_hcd_omap_cleanup

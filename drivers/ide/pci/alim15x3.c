@@ -3719,7 +3719,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;ALI15x3 IDE&quot;
+l_string|&quot;ALI15x3_IDE&quot;
 comma
 dot
 id|id_table

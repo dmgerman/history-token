@@ -769,9 +769,8 @@ id|call_usermodehelper
 )paren
 suffix:semicolon
 DECL|function|usermodehelper_init
-r_static
+r_void
 id|__init
-r_int
 id|usermodehelper_init
 c_func
 (paren
@@ -793,15 +792,5 @@ op_logical_neg
 id|khelper_wq
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
-DECL|variable|usermodehelper_init
-id|core_initcall
-c_func
-(paren
-id|usermodehelper_init
-)paren
-suffix:semicolon
 eof

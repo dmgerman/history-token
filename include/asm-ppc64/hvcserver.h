@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/* Converged Location Code length */
 DECL|macro|HVCS_CLC_LENGTH
 mdefine_line|#define HVCS_CLC_LENGTH&t;79
+multiline_comment|/**&n; * hvcs_partner_info - an element in a list of partner info&n; * @node: list_head denoting this partner_info struct&squot;s position in the list of&n; *&t;partner info.&n; * @unit_address: The partner unit address of this entry.&n; * @partition_ID: The partner partition ID of this entry.&n; * @location_code: The converged location code of this entry + 1 char for the&n; *&t;null-term.&n; *&n; * This structure outlines the format that partner info is presented to a caller&n; * of the hvcs partner info fetching functions.  These are strung together into&n; * a list using linux kernel lists.&n; */
 DECL|struct|hvcs_partner_info
 r_struct
 id|hvcs_partner_info
@@ -16,13 +17,11 @@ id|list_head
 id|node
 suffix:semicolon
 DECL|member|unit_address
-r_int
-r_int
+r_uint32
 id|unit_address
 suffix:semicolon
 DECL|member|partition_ID
-r_int
-r_int
+r_uint32
 id|partition_ID
 suffix:semicolon
 DECL|member|location_code
@@ -53,8 +52,7 @@ r_int
 id|hvcs_get_partner_info
 c_func
 (paren
-r_int
-r_int
+r_uint32
 id|unit_address
 comma
 r_struct
@@ -73,16 +71,13 @@ r_int
 id|hvcs_register_connection
 c_func
 (paren
-r_int
-r_int
+r_uint32
 id|unit_address
 comma
-r_int
-r_int
+r_uint32
 id|p_partition_ID
 comma
-r_int
-r_int
+r_uint32
 id|p_unit_address
 )paren
 suffix:semicolon
@@ -91,8 +86,7 @@ r_int
 id|hvcs_free_connection
 c_func
 (paren
-r_int
-r_int
+r_uint32
 id|unit_address
 )paren
 suffix:semicolon

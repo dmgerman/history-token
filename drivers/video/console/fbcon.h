@@ -48,6 +48,64 @@ DECL|member|cursor_shape
 r_int
 id|cursor_shape
 suffix:semicolon
+DECL|member|xres_virtual
+id|u32
+id|xres_virtual
+suffix:semicolon
+DECL|member|yres_virtual
+id|u32
+id|yres_virtual
+suffix:semicolon
+DECL|member|height
+id|u32
+id|height
+suffix:semicolon
+DECL|member|width
+id|u32
+id|width
+suffix:semicolon
+DECL|member|bits_per_pixel
+id|u32
+id|bits_per_pixel
+suffix:semicolon
+DECL|member|grayscale
+id|u32
+id|grayscale
+suffix:semicolon
+DECL|member|nonstd
+id|u32
+id|nonstd
+suffix:semicolon
+DECL|member|accel_flags
+id|u32
+id|accel_flags
+suffix:semicolon
+DECL|member|red
+r_struct
+id|fb_bitfield
+id|red
+suffix:semicolon
+DECL|member|green
+r_struct
+id|fb_bitfield
+id|green
+suffix:semicolon
+DECL|member|blue
+r_struct
+id|fb_bitfield
+id|blue
+suffix:semicolon
+DECL|member|transp
+r_struct
+id|fb_bitfield
+id|transp
+suffix:semicolon
+DECL|member|mode
+r_struct
+id|fb_videomode
+op_star
+id|mode
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* drivers/video/console/fbcon.c */
@@ -85,7 +143,7 @@ multiline_comment|/* Monochrome */
 DECL|macro|attr_bold
 mdefine_line|#define attr_bold(s) &bslash;&n;&t;((s) &amp; 0x200)
 DECL|macro|attr_reverse
-mdefine_line|#define attr_reverse(s, inverse) &bslash;&n;&t;(((s) &amp; 0x800) ^ (inverse ? 0x800 : 0))
+mdefine_line|#define attr_reverse(s) &bslash;&n;&t;((s) &amp; 0x800)
 DECL|macro|attr_underline
 mdefine_line|#define attr_underline(s) &bslash;&n;&t;((s) &amp; 0x400)
 DECL|macro|attr_blink

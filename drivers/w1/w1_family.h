@@ -9,8 +9,8 @@ DECL|macro|W1_FAMILY_DEFAULT
 mdefine_line|#define W1_FAMILY_DEFAULT&t;0
 DECL|macro|W1_FAMILY_THERM
 mdefine_line|#define W1_FAMILY_THERM&t;&t;0x10
-DECL|macro|W1_FAMILY_IBUT
-mdefine_line|#define W1_FAMILY_IBUT&t;&t;0xff /* ? */
+DECL|macro|W1_FAMILY_SMEM
+mdefine_line|#define W1_FAMILY_SMEM&t;&t;0x01
 DECL|macro|MAXNAMELEN
 mdefine_line|#define MAXNAMELEN&t;&t;32
 DECL|struct|w1_family_ops

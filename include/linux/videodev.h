@@ -1,6 +1,7 @@
 macro_line|#ifndef __LINUX_VIDEODEV_H
 DECL|macro|__LINUX_VIDEODEV_H
 mdefine_line|#define __LINUX_VIDEODEV_H
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|HAVE_V4L2

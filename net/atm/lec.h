@@ -461,16 +461,6 @@ id|itf
 )paren
 suffix:semicolon
 r_int
-id|make_lec
-c_func
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-)paren
-suffix:semicolon
-r_int
 id|send_to_lecd
 c_func
 (paren

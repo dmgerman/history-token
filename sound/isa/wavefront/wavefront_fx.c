@@ -16,7 +16,6 @@ DECL|macro|FX_AUTO_INCR
 mdefine_line|#define FX_AUTO_INCR    0x04    /* auto-increment DSP address after transfer */
 multiline_comment|/* weird stuff, derived from port I/O tracing with dosemu */
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_zero
@@ -539,7 +538,6 @@ l_int|0xdf
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_one
@@ -1062,7 +1060,6 @@ l_int|0x1b
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_two
@@ -1329,7 +1326,6 @@ l_int|0x44
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_three
@@ -1596,7 +1592,6 @@ l_int|0x40
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_four
@@ -1863,7 +1858,6 @@ l_int|0x01
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_six
@@ -2258,7 +2252,6 @@ l_int|0x80
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_seven
@@ -2781,7 +2774,6 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_zero_v2
@@ -2984,7 +2976,6 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_one_v2
@@ -3187,7 +3178,6 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_two_v2
@@ -3294,7 +3284,6 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_three_v2
@@ -3401,7 +3390,6 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_four_v2
@@ -3508,7 +3496,6 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|page_seven_v2
@@ -3711,7 +3698,6 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|mod_v2
@@ -4330,7 +4316,6 @@ l_int|0x01
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|coefficients
@@ -5069,7 +5054,6 @@ l_int|0xba
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|coefficients2
@@ -5192,7 +5176,6 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|__initdata
-r_static
 r_int
 r_char
 id|coefficients3

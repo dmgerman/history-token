@@ -1284,6 +1284,13 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|variable|__dma_sync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__dma_sync
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
 multiline_comment|/*&n; * __dma_sync_page() implementation for systems using highmem.&n; * In this case, each page of a buffer must be kmapped/kunmapped&n; * in order to have a virtual address for __dma_sync(). This must&n; * not sleep so kmap_atmomic()/kunmap_atomic() are used.&n; *&n; * Note: yes, it is possible and correct to have a buffer extend&n; * beyond the first page.&n; */
 DECL|function|__dma_sync_page_highmem
@@ -1528,4 +1535,11 @@ id|direction
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|variable|__dma_sync_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__dma_sync_page
+)paren
+suffix:semicolon
 eof

@@ -89,6 +89,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|setup_pit_timer
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Modifiers for buggy PIT handling */
 r_extern
 r_int

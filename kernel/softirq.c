@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/kthread.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n;   - No shared variables, all the data are CPU local.&n;   - If a softirq needs serialization, let it serialize itself&n;     by its own spinlocks.&n;   - Even if softirq is serialized, only local cpu is marked for&n;     execution. Hence, we get something sort of weak cpu binding.&n;     Though it is still not clear, will it result in better locality&n;     or will not.&n;&n;   Examples:&n;   - NET RX softirq. It is multithreaded and does not require&n;     any global serialization.&n;   - NET TX softirq. It kicks software netdevice queues, hence&n;     it is logically serialized per device, but this serialization&n;     is invisible to common code.&n;   - Tasklets: serialized wrt itself.&n; */
 macro_line|#ifndef __ARCH_IRQ_STAT
@@ -112,6 +113,9 @@ id|max_restart
 op_assign
 id|MAX_SOFTIRQ_RESTART
 suffix:semicolon
+r_int
+id|cpu
+suffix:semicolon
 id|pending
 op_assign
 id|local_softirq_pending
@@ -120,6 +124,13 @@ c_func
 )paren
 suffix:semicolon
 id|local_bh_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+id|cpu
+op_assign
+id|smp_processor_id
 c_func
 (paren
 )paren
@@ -152,6 +163,7 @@ id|pending
 op_amp
 l_int|1
 )paren
+(brace
 id|h
 op_member_access_from_pointer
 id|action
@@ -160,6 +172,13 @@ c_func
 id|h
 )paren
 suffix:semicolon
+id|rcu_bh_qsctr_inc
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+)brace
 id|h
 op_increment
 suffix:semicolon

@@ -97,16 +97,6 @@ op_star
 id|peer
 suffix:semicolon
 multiline_comment|/* long-living peer info */
-macro_line|#ifdef CONFIG_IP_ROUTE_NAT
-DECL|member|rt_src_map
-id|__u32
-id|rt_src_map
-suffix:semicolon
-DECL|member|rt_dst_map
-id|__u32
-id|rt_dst_map
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|ip_rt_acct

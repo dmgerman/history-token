@@ -1,5 +1,7 @@
 multiline_comment|/* Driver for USB Mass Storage compliant devices&n; *&n; * $Id: protocol.c,v 1.14 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 1999-2002 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Developed with the assistance of:&n; *   (c) 2000 David L. Brown, Jr. (usb-storage@davidb.org)&n; *   (c) 2002 Alan Stern (stern@rowland.org)&n; *&n; * Initial work by:&n; *   (c) 1999 Michael Gee (michael@linuxspecific.com)&n; *&n; * This driver is based on the &squot;USB Mass Storage Class&squot; document. This&n; * describes in detail the protocol used to communicate with such&n; * devices.  Clearly, the designers had SCSI and ATAPI commands in&n; * mind when they created this document.  The commands are all very&n; * similar to commands in the SCSI-II and ATAPI specifications.&n; *&n; * It is important to note that in a number of cases this class&n; * exhibits class-specific exemptions from the USB specification.&n; * Notably the usage of NAK, STALL and ACK differs from the norm, in&n; * that they are used to communicate wait, failed and OK on commands.&n; *&n; * Also, for certain devices, the interrupt endpoint is used to convey&n; * status of a command.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
@@ -13,7 +15,8 @@ r_void
 id|fix_inquiry_data
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 )paren
@@ -163,7 +166,8 @@ r_void
 id|fix_read_capacity
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 )paren
@@ -298,7 +302,8 @@ r_void
 id|usb_stor_qic157_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -308,7 +313,7 @@ op_star
 id|us
 )paren
 (brace
-multiline_comment|/* Pad the ATAPI command with zeros &n;&t; *&n;&t; * NOTE: This only works because a Scsi_Cmnd struct field contains&n;&t; * a unsigned char cmnd[16], so we know we have storage available&n;&t; */
+multiline_comment|/* Pad the ATAPI command with zeros &n;&t; *&n;&t; * NOTE: This only works because a scsi_cmnd struct field contains&n;&t; * a unsigned char cmnd[16], so we know we have storage available&n;&t; */
 r_for
 c_loop
 (paren
@@ -363,7 +368,8 @@ r_void
 id|usb_stor_ATAPI_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -373,7 +379,7 @@ op_star
 id|us
 )paren
 (brace
-multiline_comment|/* Pad the ATAPI command with zeros &n;&t; *&n;&t; * NOTE: This only works because a Scsi_Cmnd struct field contains&n;&t; * a unsigned char cmnd[16], so we know we have storage available&n;&t; */
+multiline_comment|/* Pad the ATAPI command with zeros &n;&t; *&n;&t; * NOTE: This only works because a scsi_cmnd struct field contains&n;&t; * a unsigned char cmnd[16], so we know we have storage available&n;&t; */
 multiline_comment|/* Pad the ATAPI command with zeros */
 r_for
 c_loop
@@ -429,7 +435,8 @@ r_void
 id|usb_stor_ufi_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -439,7 +446,7 @@ op_star
 id|us
 )paren
 (brace
-multiline_comment|/* fix some commands -- this is a form of mode translation&n;&t; * UFI devices only accept 12 byte long commands &n;&t; *&n;&t; * NOTE: This only works because a Scsi_Cmnd struct field contains&n;&t; * a unsigned char cmnd[16], so we know we have storage available&n;&t; */
+multiline_comment|/* fix some commands -- this is a form of mode translation&n;&t; * UFI devices only accept 12 byte long commands &n;&t; *&n;&t; * NOTE: This only works because a scsi_cmnd struct field contains&n;&t; * a unsigned char cmnd[16], so we know we have storage available&n;&t; */
 multiline_comment|/* Pad the ATAPI command with zeros */
 r_for
 c_loop
@@ -554,7 +561,8 @@ r_void
 id|usb_stor_transparent_scsi_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -621,7 +629,8 @@ r_int
 r_int
 id|buflen
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -965,7 +974,8 @@ r_int
 r_int
 id|buflen
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 )paren

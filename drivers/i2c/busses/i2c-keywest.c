@@ -67,20 +67,20 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|probe
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|probe
 r_static
 r_int
 id|probe
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef POLLED_MODE
 multiline_comment|/* Don&squot;t schedule, the g5 fan controller is too&n; * timing sensitive&n; */
@@ -2713,20 +2713,10 @@ op_amp
 id|iface-&gt;lock
 )paren
 suffix:semicolon
-id|set_task_state
+id|msleep
 c_func
 (paren
-id|current
-comma
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 id|spin_lock_irq

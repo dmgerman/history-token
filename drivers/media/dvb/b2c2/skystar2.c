@@ -10321,7 +10321,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;Technisat SkyStar2 driver&quot;
+l_string|&quot;SkyStar2&quot;
 comma
 dot
 id|id_table

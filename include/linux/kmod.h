@@ -88,6 +88,14 @@ r_int
 id|wait
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|usermodehelper_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HOTPLUG
 r_extern
 r_char

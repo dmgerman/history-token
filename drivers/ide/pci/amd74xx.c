@@ -3266,7 +3266,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;AMD IDE&quot;
+l_string|&quot;AMD_IDE&quot;
 comma
 dot
 id|id_table

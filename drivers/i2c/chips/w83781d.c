@@ -100,12 +100,14 @@ id|init
 op_assign
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|init
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2703,8 +2705,7 @@ suffix:colon
 id|dev_err
 c_func
 (paren
-op_amp
-id|client-&gt;dev
+id|dev
 comma
 l_string|&quot;Invalid sensor type %ld; must be 1, 2, or %d&bslash;n&quot;
 comma
@@ -6306,7 +6307,10 @@ suffix:semicolon
 )brace
 id|data-&gt;vrm
 op_assign
-l_int|82
+id|i2c_which_vrm
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6695,9 +6699,11 @@ op_logical_neg
 id|data-&gt;valid
 )paren
 (brace
-id|pr_debug
+id|dev_dbg
 c_func
 (paren
+id|dev
+comma
 l_string|&quot;Starting device update&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -2,10 +2,13 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * SCSI Con
 macro_line|#ifndef _SCSIGLUE_H_
 DECL|macro|_SCSIGLUE_H_
 mdefine_line|#define _SCSIGLUE_H_
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#include &quot;usb.h&quot;
+r_struct
+id|us_data
+suffix:semicolon
+r_struct
+id|scsi_cmnd
+suffix:semicolon
 r_extern
 r_void
 id|usb_stor_report_device_reset
@@ -37,24 +40,6 @@ r_extern
 r_struct
 id|scsi_host_template
 id|usb_stor_host_template
-suffix:semicolon
-r_extern
-r_int
-id|usb_stor_scsiSense10to6
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usb_stor_scsiSense6to10
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
 suffix:semicolon
 macro_line|#endif
 eof

@@ -646,7 +646,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;vortex&quot;
+l_string|&quot;vortex_gameport&quot;
 comma
 dot
 id|id_table

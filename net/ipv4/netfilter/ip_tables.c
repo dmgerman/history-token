@@ -59,6 +59,13 @@ mdefine_line|#define IP_NF_ASSERT(x)
 macro_line|#endif
 DECL|macro|SMP_ALIGN
 mdefine_line|#define SMP_ALIGN(x) (((x) + SMP_CACHE_BYTES-1) &amp; ~(SMP_CACHE_BYTES-1))
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|ipt_mutex
+)paren
+suffix:semicolon
 multiline_comment|/* Must have mutex */
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) IP_NF_ASSERT(down_trylock(&amp;ipt_mutex) != 0)
@@ -6462,7 +6469,7 @@ id|hotdrop
 (brace
 multiline_comment|/* tcp.doff is only 4 bits, ie. max 15 * 4 bytes */
 id|u_int8_t
-id|opt
+id|_opt
 (braket
 l_int|60
 op_minus
@@ -6472,6 +6479,9 @@ r_struct
 id|tcphdr
 )paren
 )braket
+comma
+op_star
+id|op
 suffix:semicolon
 r_int
 r_int
@@ -6484,10 +6494,16 @@ l_string|&quot;tcp_match: finding option&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* If we don&squot;t have the whole header, drop packet. */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
-id|skb_copy_bits
+op_logical_neg
+id|optlen
+)paren
+suffix:semicolon
+id|op
+op_assign
+id|skb_header_pointer
 c_func
 (paren
 id|skb
@@ -6502,12 +6518,17 @@ r_struct
 id|tcphdr
 )paren
 comma
-id|opt
-comma
 id|optlen
+comma
+id|_opt
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|op
+op_eq
+l_int|NULL
 )paren
 (brace
 op_star
@@ -6535,7 +6556,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opt
+id|op
 (braket
 id|i
 )braket
@@ -6549,7 +6570,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|opt
+id|op
 (braket
 id|i
 )braket
@@ -6562,7 +6583,7 @@ suffix:semicolon
 r_else
 id|i
 op_add_assign
-id|opt
+id|op
 (braket
 id|i
 op_plus
@@ -6617,7 +6638,10 @@ id|hotdrop
 (brace
 r_struct
 id|tcphdr
-id|tcph
+id|_tcph
+comma
+op_star
+id|th
 suffix:semicolon
 r_const
 r_struct
@@ -6661,10 +6685,9 @@ suffix:semicolon
 )brace
 DECL|macro|FWINVTCP
 mdefine_line|#define FWINVTCP(bool,invflg) ((bool) ^ !!(tcpinfo-&gt;invflags &amp; invflg))
-r_if
-c_cond
-(paren
-id|skb_copy_bits
+id|th
+op_assign
+id|skb_header_pointer
 c_func
 (paren
 id|skb
@@ -6673,16 +6696,21 @@ id|skb-&gt;nh.iph-&gt;ihl
 op_star
 l_int|4
 comma
-op_amp
-id|tcph
-comma
 r_sizeof
 (paren
-id|tcph
+id|_tcph
 )paren
+comma
+op_amp
+id|_tcph
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|th
+op_eq
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* We&squot;ve been asked to examine this packet, and we&n;&t;&t;   can&squot;t.  Hence, no choice but to drop. */
@@ -6721,7 +6749,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|tcph.source
+id|th-&gt;source
 )paren
 comma
 op_logical_neg
@@ -6756,7 +6784,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|tcph.dest
+id|th-&gt;dest
 )paren
 comma
 op_logical_neg
@@ -6785,8 +6813,7 @@ r_int
 r_char
 op_star
 )paren
-op_amp
-id|tcph
+id|th
 )paren
 (braket
 l_int|13
@@ -6812,13 +6839,13 @@ id|tcpinfo-&gt;option
 r_if
 c_cond
 (paren
-id|tcph.doff
+id|th-&gt;doff
 op_star
 l_int|4
 OL
 r_sizeof
 (paren
-id|tcph
+id|_tcph
 )paren
 )paren
 (brace
@@ -6842,13 +6869,13 @@ id|tcpinfo-&gt;option
 comma
 id|skb
 comma
-id|tcph.doff
+id|th-&gt;doff
 op_star
 l_int|4
 op_minus
 r_sizeof
 (paren
-id|tcph
+id|_tcph
 )paren
 comma
 id|tcpinfo-&gt;invflags
@@ -6978,7 +7005,10 @@ id|hotdrop
 (brace
 r_struct
 id|udphdr
-id|udph
+id|_udph
+comma
+op_star
+id|uh
 suffix:semicolon
 r_const
 r_struct
@@ -6997,10 +7027,9 @@ id|offset
 r_return
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb_copy_bits
+id|uh
+op_assign
+id|skb_header_pointer
 c_func
 (paren
 id|skb
@@ -7009,16 +7038,21 @@ id|skb-&gt;nh.iph-&gt;ihl
 op_star
 l_int|4
 comma
-op_amp
-id|udph
-comma
 r_sizeof
 (paren
-id|udph
+id|_udph
 )paren
+comma
+op_amp
+id|_udph
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|uh
+op_eq
+l_int|NULL
 )paren
 (brace
 multiline_comment|/* We&squot;ve been asked to examine this packet, and we&n;&t;&t;   can&squot;t.  Hence, no choice but to drop. */
@@ -7054,7 +7088,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|udph.source
+id|uh-&gt;source
 )paren
 comma
 op_logical_neg
@@ -7082,7 +7116,7 @@ comma
 id|ntohs
 c_func
 (paren
-id|udph.dest
+id|uh-&gt;dest
 )paren
 comma
 op_logical_neg
@@ -7318,7 +7352,10 @@ id|hotdrop
 (brace
 r_struct
 id|icmphdr
-id|icmph
+id|_icmph
+comma
+op_star
+id|ic
 suffix:semicolon
 r_const
 r_struct
@@ -7337,10 +7374,9 @@ id|offset
 r_return
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb_copy_bits
+id|ic
+op_assign
+id|skb_header_pointer
 c_func
 (paren
 id|skb
@@ -7349,19 +7385,24 @@ id|skb-&gt;nh.iph-&gt;ihl
 op_star
 l_int|4
 comma
-op_amp
-id|icmph
-comma
 r_sizeof
 (paren
-id|icmph
+id|_icmph
 )paren
+comma
+op_amp
+id|_icmph
 )paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ic
+op_eq
+l_int|NULL
 )paren
 (brace
-multiline_comment|/* We&squot;ve been asked to examine this packet, and we&n;&t;&t;   can&squot;t.  Hence, no choice but to drop. */
+multiline_comment|/* We&squot;ve been asked to examine this packet, and we&n;&t;&t; * can&squot;t.  Hence, no choice but to drop.&n;&t;&t; */
 id|duprintf
 c_func
 (paren
@@ -7393,9 +7434,9 @@ id|icmpinfo-&gt;code
 l_int|1
 )braket
 comma
-id|icmph.type
+id|ic-&gt;type
 comma
-id|icmph.code
+id|ic-&gt;code
 comma
 op_logical_neg
 op_logical_neg

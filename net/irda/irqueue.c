@@ -1384,8 +1384,12 @@ l_int|NULL
 )paren
 )paren
 (brace
-r_return
+id|entry
+op_assign
 l_int|NULL
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Locate hashbin&n;&t; */
@@ -1446,6 +1450,8 @@ id|hashbin-&gt;hb_current
 op_assign
 l_int|NULL
 suffix:semicolon
+id|out
+suffix:colon
 multiline_comment|/* Release lock */
 r_if
 c_cond

@@ -1187,7 +1187,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;IT8172IDE&quot;
+l_string|&quot;IT8172_IDE&quot;
 comma
 dot
 id|id_table

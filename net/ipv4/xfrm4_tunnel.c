@@ -1,5 +1,6 @@
 multiline_comment|/* xfrm4_tunnel.c: Generic IP tunnel transformer.&n; *&n; * Copyright (C) 2003 David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
@@ -12,18 +13,9 @@ c_func
 r_struct
 id|sk_buff
 op_star
-op_star
-id|pskb
+id|skb
 )paren
 (brace
-r_struct
-id|sk_buff
-op_star
-id|skb
-op_assign
-op_star
-id|pskb
-suffix:semicolon
 r_struct
 id|iphdr
 op_star
@@ -149,6 +141,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|xfrm4_tunnel_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm4_tunnel_register
+)paren
+suffix:semicolon
 DECL|function|xfrm4_tunnel_deregister
 r_int
 id|xfrm4_tunnel_deregister
@@ -212,6 +211,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|xfrm4_tunnel_deregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfrm4_tunnel_deregister
+)paren
+suffix:semicolon
 DECL|function|ipip_rcv
 r_static
 r_int
@@ -251,12 +257,10 @@ r_return
 l_int|0
 suffix:semicolon
 r_return
-id|xfrm4_rcv_encap
+id|xfrm4_rcv
 c_func
 (paren
 id|skb
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -325,6 +329,15 @@ c_cond
 (paren
 op_logical_neg
 id|x-&gt;props.mode
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|x-&gt;encap
 )paren
 r_return
 op_minus

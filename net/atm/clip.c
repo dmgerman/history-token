@@ -41,20 +41,18 @@ DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(format,args...)
 macro_line|#endif
 DECL|variable|clip_devs
+r_static
 r_struct
 id|net_device
 op_star
 id|clip_devs
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|atmarpd
+r_static
 r_struct
 id|atm_vcc
 op_star
 id|atmarpd
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|clip_tbl
 r_static

@@ -58,6 +58,18 @@ r_void
 op_star
 id|addr
 suffix:semicolon
+DECL|member|regspacing
+r_int
+id|regspacing
+suffix:semicolon
+DECL|member|regsize
+r_int
+id|regsize
+suffix:semicolon
+DECL|member|regshift
+r_int
+id|regshift
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Results of SMI events. */

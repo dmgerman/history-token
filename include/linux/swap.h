@@ -863,6 +863,81 @@ DECL|macro|swap_device_lock
 mdefine_line|#define swap_device_lock(p)&t;spin_lock(&amp;p-&gt;sdev_lock)
 DECL|macro|swap_device_unlock
 mdefine_line|#define swap_device_unlock(p)&t;spin_unlock(&amp;p-&gt;sdev_lock)
+multiline_comment|/* linux/mm/thrash.c */
+r_extern
+r_struct
+id|mm_struct
+op_star
+id|swap_token_mm
+suffix:semicolon
+r_extern
+r_void
+id|grab_swap_token
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__put_swap_token
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+)paren
+suffix:semicolon
+DECL|function|has_swap_token
+r_static
+r_inline
+r_int
+id|has_swap_token
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+r_return
+(paren
+id|mm
+op_eq
+id|swap_token_mm
+)paren
+suffix:semicolon
+)brace
+DECL|function|put_swap_token
+r_static
+r_inline
+r_void
+id|put_swap_token
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|has_swap_token
+c_func
+(paren
+id|mm
+)paren
+)paren
+id|__put_swap_token
+c_func
+(paren
+id|mm
+)paren
+suffix:semicolon
+)brace
 macro_line|#else /* CONFIG_SWAP */
 DECL|macro|total_swap_pages
 mdefine_line|#define total_swap_pages&t;&t;&t;0
@@ -936,6 +1011,13 @@ r_return
 id|entry
 suffix:semicolon
 )brace
+multiline_comment|/* linux/mm/thrash.c */
+DECL|macro|put_swap_token
+mdefine_line|#define put_swap_token(x) do { } while(0)
+DECL|macro|grab_swap_token
+mdefine_line|#define grab_swap_token()  do { } while(0)
+DECL|macro|has_swap_token
+mdefine_line|#define has_swap_token(x) 0
 macro_line|#endif /* CONFIG_SWAP */
 macro_line|#endif /* __KERNEL__*/
 macro_line|#endif /* _LINUX_SWAP_H */

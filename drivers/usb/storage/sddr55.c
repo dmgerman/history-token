@@ -1,12 +1,14 @@
 multiline_comment|/* Driver for SanDisk SDDR-55 SmartMedia reader&n; *&n; * $Id:$&n; *&n; * SDDR55 driver v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (c) 2002 Simon Munton&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;sddr55.h&quot;
-macro_line|#include &lt;linux/jiffies.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|short_pack
 mdefine_line|#define short_pack(lsb,msb) ( ((u16)(lsb)) | ( ((u16)(msb))&lt;&lt;8 ) )
 DECL|macro|LSB_of
@@ -151,7 +153,7 @@ op_assign
 (paren
 id|direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 )paren
 ques
 c_cond
@@ -262,7 +264,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 comma
 id|command
 comma
@@ -306,7 +308,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|status
 comma
@@ -421,7 +423,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|status
 comma
@@ -778,7 +780,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 comma
 id|command
 comma
@@ -817,7 +819,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|buffer
 comma
@@ -848,7 +850,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|status
 comma
@@ -1482,7 +1484,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 comma
 id|command
 comma
@@ -1532,7 +1534,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 comma
 id|buffer
 comma
@@ -1582,7 +1584,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|status
 comma
@@ -1880,7 +1882,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 comma
 id|command
 comma
@@ -1912,7 +1914,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|content
 comma
@@ -1963,7 +1965,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|content
 comma
@@ -2398,7 +2400,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 comma
 id|command
 comma
@@ -2430,7 +2432,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|buffer
 comma
@@ -2464,7 +2466,7 @@ c_func
 (paren
 id|us
 comma
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 comma
 id|command
 comma
@@ -2854,7 +2856,8 @@ r_int
 id|sddr55_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma

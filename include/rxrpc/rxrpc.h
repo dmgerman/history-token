@@ -7,6 +7,7 @@ r_extern
 r_uint32
 id|rxrpc_epoch
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_int
 id|rxrpc_ktrace
@@ -23,6 +24,16 @@ r_extern
 r_int
 id|rxrpc_knet
 suffix:semicolon
+macro_line|#else
+DECL|macro|rxrpc_ktrace
+mdefine_line|#define rxrpc_ktrace&t;0
+DECL|macro|rxrpc_kdebug
+mdefine_line|#define rxrpc_kdebug&t;0
+DECL|macro|rxrpc_kproto
+mdefine_line|#define rxrpc_kproto&t;0
+DECL|macro|rxrpc_knet
+mdefine_line|#define rxrpc_knet&t;0
+macro_line|#endif
 r_extern
 r_int
 id|rxrpc_sysctl_init

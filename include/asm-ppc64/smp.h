@@ -38,27 +38,6 @@ DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (get_paca()-&gt;paca_index)
 DECL|macro|hard_smp_processor_id
 mdefine_line|#define hard_smp_processor_id() (get_paca()-&gt;hw_cpu_id)
-multiline_comment|/*&n; * Retrieve the state of a CPU:&n; * online:          CPU is in a normal run state&n; * possible:        CPU is a candidate to be made online&n; * available:       CPU is candidate for the &squot;possible&squot; pool&n; *                  Used to get SMT threads started at boot time.&n; * present_at_boot: CPU was available at boot time.  Used in DLPAR&n; *                  code to handle special cases for processor start up.&n; */
-r_extern
-id|cpumask_t
-id|cpu_present_at_boot
-suffix:semicolon
-r_extern
-id|cpumask_t
-id|cpu_online_map
-suffix:semicolon
-r_extern
-id|cpumask_t
-id|cpu_possible_map
-suffix:semicolon
-r_extern
-id|cpumask_t
-id|cpu_available_map
-suffix:semicolon
-DECL|macro|cpu_present_at_boot
-mdefine_line|#define cpu_present_at_boot(cpu) cpu_isset(cpu, cpu_present_at_boot)
-DECL|macro|cpu_available
-mdefine_line|#define cpu_available(cpu)       cpu_isset(cpu, cpu_available_map) 
 multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; *&n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */
 DECL|macro|PPC_MSG_CALL_FUNCTION
 mdefine_line|#define PPC_MSG_CALL_FUNCTION   0
@@ -121,6 +100,16 @@ c_func
 (paren
 id|noreturn
 )paren
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|query_cpu_stopped
+c_func
+(paren
+r_int
+r_int
+id|pcpu
 )paren
 suffix:semicolon
 macro_line|#endif /* !(CONFIG_SMP) */

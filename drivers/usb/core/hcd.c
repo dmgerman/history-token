@@ -3966,16 +3966,6 @@ id|endpoint
 op_amp
 id|USB_DIR_IN
 )paren
-(brace
-id|usb_endpoint_halt
-(paren
-id|udev
-comma
-id|epnum
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|udev-&gt;epmaxpacketin
 (braket
 id|epnum
@@ -3983,18 +3973,7 @@ id|epnum
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_else
-(brace
-id|usb_endpoint_halt
-(paren
-id|udev
-comma
-id|epnum
-comma
-l_int|1
-)paren
-suffix:semicolon
 id|udev-&gt;epmaxpacketout
 (braket
 id|epnum
@@ -4002,7 +3981,6 @@ id|epnum
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 multiline_comment|/* then kill any current requests */
 id|spin_lock
 (paren

@@ -64,21 +64,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-r_void
-id|eeh_register_disable_func
-c_func
-(paren
-r_int
-(paren
-op_star
-)paren
-(paren
-r_struct
-id|pci_dev
-op_star
-)paren
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -1832,14 +1817,6 @@ id|DRIVER_VERSION
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* let EEH know they can use hotplug */
-id|eeh_register_disable_func
-c_func
-(paren
-op_amp
-id|rpaphp_disable_slot
-)paren
-suffix:semicolon
 multiline_comment|/* read all the PRA info from the system */
 r_return
 id|init_rpa
@@ -1858,13 +1835,6 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* let EEH know we are going away */
-id|eeh_register_disable_func
-c_func
-(paren
-l_int|NULL
-)paren
-suffix:semicolon
 id|cleanup_slots
 c_func
 (paren

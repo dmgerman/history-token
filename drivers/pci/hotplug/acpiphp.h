@@ -312,6 +312,52 @@ id|bus_head
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * struct acpiphp_attention_info - device specific attention registration&n; *&n; * ACPI has no generic method of setting/getting attention status&n; * this allows for device specific driver registration&n; */
+DECL|struct|acpiphp_attention_info
+r_struct
+id|acpiphp_attention_info
+(brace
+DECL|member|set_attn
+r_int
+(paren
+op_star
+id|set_attn
+)paren
+(paren
+r_struct
+id|hotplug_slot
+op_star
+id|slot
+comma
+id|u8
+id|status
+)paren
+suffix:semicolon
+DECL|member|get_attn
+r_int
+(paren
+op_star
+id|get_attn
+)paren
+(paren
+r_struct
+id|hotplug_slot
+op_star
+id|slot
+comma
+id|u8
+op_star
+id|status
+)paren
+suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* PCI bus bridge HID */
 DECL|macro|ACPI_PCI_HOST_HID
 mdefine_line|#define ACPI_PCI_HOST_HID&t;&t;&quot;PNP0A03&quot;
@@ -367,6 +413,29 @@ mdefine_line|#define FUNC_HAS_PS2&t;&t;(0x00000040)
 DECL|macro|FUNC_HAS_PS3
 mdefine_line|#define FUNC_HAS_PS3&t;&t;(0x00000080)
 multiline_comment|/* function prototypes */
+multiline_comment|/* acpiphp_core.c */
+r_extern
+r_int
+id|acpiphp_register_attention
+c_func
+(paren
+r_struct
+id|acpiphp_attention_info
+op_star
+id|info
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|acpiphp_unregister_attention
+c_func
+(paren
+r_struct
+id|acpiphp_attention_info
+op_star
+id|info
+)paren
+suffix:semicolon
 multiline_comment|/* acpiphp_glue.c */
 r_extern
 r_int

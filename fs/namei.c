@@ -6832,10 +6832,9 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We try to drop the dentry early: we should have&n; * a usage count of 2 if we&squot;re the only user of this&n; * dentry, and if that is true (possibly after pruning&n; * the dcache), then we drop the dentry now.&n; *&n; * A low-level filesystem can, if it choses, legally&n; * do a&n; *&n; *&t;if (!d_unhashed(dentry))&n; *&t;&t;return -EBUSY;&n; *&n; * if it cannot handle the case of removing a directory&n; * that is still in use by something else..&n; */
-DECL|function|d_unhash
-r_static
+DECL|function|dentry_unhash
 r_void
-id|d_unhash
+id|dentry_unhash
 c_func
 (paren
 r_struct
@@ -6985,7 +6984,7 @@ op_amp
 id|dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
-id|d_unhash
+id|dentry_unhash
 c_func
 (paren
 id|dentry
@@ -8528,7 +8527,7 @@ op_amp
 id|target-&gt;i_sem
 )paren
 suffix:semicolon
-id|d_unhash
+id|dentry_unhash
 c_func
 (paren
 id|new_dentry
@@ -10583,6 +10582,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|vfs_unlink
+)paren
+suffix:semicolon
+DECL|variable|dentry_unhash
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dentry_unhash
 )paren
 suffix:semicolon
 DECL|variable|generic_readlink

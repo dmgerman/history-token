@@ -30,6 +30,7 @@ comma
 r_struct
 id|file
 op_star
+op_star
 )paren
 suffix:semicolon
 DECL|member|fclose

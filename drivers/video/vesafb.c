@@ -314,6 +314,11 @@ id|green
 comma
 r_int
 id|blue
+comma
+r_struct
+id|fb_var_screeninfo
+op_star
+id|var
 )paren
 (brace
 macro_line|#ifdef __i386__
@@ -331,6 +336,13 @@ suffix:semicolon
 )brace
 id|entry
 suffix:semicolon
+r_int
+id|shift
+op_assign
+l_int|16
+op_minus
+id|var-&gt;green.length
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -341,19 +353,19 @@ id|entry.red
 op_assign
 id|red
 op_rshift
-l_int|10
+id|shift
 suffix:semicolon
 id|entry.green
 op_assign
 id|green
 op_rshift
-l_int|10
+id|shift
 suffix:semicolon
 id|entry.blue
 op_assign
 id|blue
 op_rshift
-l_int|10
+id|shift
 suffix:semicolon
 id|entry.pad
 op_assign
@@ -423,7 +435,7 @@ c_func
 (paren
 id|red
 op_rshift
-l_int|10
+id|shift
 comma
 id|dac_val
 )paren
@@ -433,7 +445,7 @@ c_func
 (paren
 id|green
 op_rshift
-l_int|10
+id|shift
 comma
 id|dac_val
 )paren
@@ -443,7 +455,7 @@ c_func
 (paren
 id|blue
 op_rshift
-l_int|10
+id|shift
 comma
 id|dac_val
 )paren
@@ -508,6 +520,9 @@ comma
 id|green
 comma
 id|blue
+comma
+op_amp
+id|info-&gt;var
 )paren
 suffix:semicolon
 r_break
@@ -1567,14 +1582,6 @@ l_int|8
 op_amp
 l_int|0xf8
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|vesafb_defined.bits_per_pixel
-OG
-l_int|8
-)paren
-(brace
 id|vesafb_defined.red.offset
 op_assign
 id|screen_info.red_pos
@@ -1611,8 +1618,19 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;vesafb: directcolor: &quot;
+l_string|&quot;vesafb: %s: &quot;
 l_string|&quot;size=%d:%d:%d:%d, shift=%d:%d:%d:%d&bslash;n&quot;
+comma
+(paren
+id|vesafb_defined.bits_per_pixel
+OG
+l_int|8
+)paren
+ques
+c_cond
+l_string|&quot;Truecolor&quot;
+suffix:colon
+l_string|&quot;Pseudocolor&quot;
 comma
 id|screen_info.rsvd_size
 comma
@@ -1631,22 +1649,6 @@ comma
 id|screen_info.blue_pos
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|vesafb_defined.red.length
-op_assign
-l_int|6
-suffix:semicolon
-id|vesafb_defined.green.length
-op_assign
-l_int|6
-suffix:semicolon
-id|vesafb_defined.blue.length
-op_assign
-l_int|6
-suffix:semicolon
-)brace
 id|vesafb_fix.ypanstep
 op_assign
 id|ypan

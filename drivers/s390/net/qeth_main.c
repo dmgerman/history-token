@@ -44,6 +44,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/qeth.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &quot;qeth.h&quot;
 macro_line|#include &quot;qeth_mpc.h&quot;
 macro_line|#include &quot;qeth_fs.h&quot;
@@ -23506,9 +23507,14 @@ id|card-&gt;vlangrp
 )paren
 r_return
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 id|in_dev
 op_assign
-id|in_dev_get
+id|__in_dev_get
 c_func
 (paren
 id|card-&gt;vlangrp-&gt;vlan_devices
@@ -23523,7 +23529,8 @@ c_cond
 op_logical_neg
 id|in_dev
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 r_for
 c_loop
@@ -23585,10 +23592,11 @@ id|addr
 suffix:semicolon
 )brace
 )brace
-id|in_dev_put
+id|out
+suffix:colon
+id|rcu_read_unlock
 c_func
 (paren
-id|in_dev
 )paren
 suffix:semicolon
 )brace
@@ -24503,7 +24511,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|qeth_add_mc
@@ -24518,7 +24526,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|in_dev_put
@@ -24578,7 +24586,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in4_dev-&gt;lock
+id|in4_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|qeth_add_mc
@@ -24599,7 +24607,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in4_dev-&gt;lock
+id|in4_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|in_dev_put

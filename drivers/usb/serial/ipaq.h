@@ -102,6 +102,8 @@ DECL|macro|HTC_VENDOR_ID
 mdefine_line|#define HTC_VENDOR_ID&t;&t;0x0bb4
 DECL|macro|HTC_PRODUCT_ID
 mdefine_line|#define HTC_PRODUCT_ID&t;&t;0x00ce
+DECL|macro|HTC_HIMALAYA_ID
+mdefine_line|#define HTC_HIMALAYA_ID&t;&t;0x0a02
 DECL|macro|NEC_VENDOR_ID
 mdefine_line|#define NEC_VENDOR_ID&t;&t;0x0409
 DECL|macro|NEC_PRODUCT_ID

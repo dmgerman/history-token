@@ -6092,7 +6092,7 @@ id|sa1100fb_ops
 suffix:semicolon
 id|fbi-&gt;fb.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|fbi-&gt;fb.monspecs
 op_assign

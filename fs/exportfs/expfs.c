@@ -1,4 +1,5 @@
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
@@ -1362,6 +1363,7 @@ id|error
 suffix:semicolon
 r_struct
 id|file
+op_star
 id|file
 suffix:semicolon
 r_struct
@@ -1404,23 +1406,38 @@ r_goto
 id|out
 suffix:semicolon
 multiline_comment|/*&n;&t; * Open the directory ...&n;&t; */
-id|error
+id|file
 op_assign
-id|open_private_file
+id|dentry_open
 c_func
 (paren
-op_amp
-id|file
-comma
+id|dget
+c_func
+(paren
 id|dentry
+)paren
+comma
+l_int|NULL
 comma
 id|O_RDONLY
+)paren
+suffix:semicolon
+id|error
+op_assign
+id|PTR_ERR
+c_func
+(paren
+id|file
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|error
+id|IS_ERR
+c_func
+(paren
+id|file
+)paren
 )paren
 r_goto
 id|out
@@ -1434,7 +1451,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|file.f_op-&gt;readdir
+id|file-&gt;f_op-&gt;readdir
 )paren
 r_goto
 id|out_close
@@ -1471,7 +1488,6 @@ op_assign
 id|vfs_readdir
 c_func
 (paren
-op_amp
 id|file
 comma
 id|filldir_one
@@ -1517,10 +1533,9 @@ suffix:semicolon
 )brace
 id|out_close
 suffix:colon
-id|close_private_file
+id|fput
 c_func
 (paren
-op_amp
 id|file
 )paren
 suffix:semicolon

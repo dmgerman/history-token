@@ -1050,7 +1050,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;NS87415IDE&quot;
+l_string|&quot;NS87415_IDE&quot;
 comma
 dot
 id|id_table

@@ -1423,6 +1423,7 @@ r_void
 op_star
 id|dest
 comma
+r_const
 r_void
 op_star
 id|src

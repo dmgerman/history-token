@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  include/linux/nfsd/xdr4.h&n; *&n; *  Server-side type
 macro_line|#ifndef _LINUX_NFSD_XDR4_H
 DECL|macro|_LINUX_NFSD_XDR4_H
 mdefine_line|#define _LINUX_NFSD_XDR4_H
+macro_line|#include &lt;linux/nfs4.h&gt;
 DECL|macro|NFSD4_MAX_TAGLEN
 mdefine_line|#define NFSD4_MAX_TAGLEN&t;128
 DECL|macro|XDR_LEN
@@ -209,6 +210,12 @@ id|nfsd4_change_info
 id|cr_cinfo
 suffix:semicolon
 multiline_comment|/* response */
+DECL|member|cr_acl
+r_struct
+id|nfs4_acl
+op_star
+id|cr_acl
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|cr_linklen
@@ -629,6 +636,12 @@ op_star
 id|op_stateowner
 suffix:semicolon
 multiline_comment|/* used during processing */
+DECL|member|op_acl
+r_struct
+id|nfs4_acl
+op_star
+id|op_acl
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|op_iattr
@@ -926,6 +939,12 @@ id|iattr
 id|sa_iattr
 suffix:semicolon
 multiline_comment|/* request */
+DECL|member|sa_acl
+r_struct
+id|nfs4_acl
+op_star
+id|sa_acl
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfsd4_setclientid

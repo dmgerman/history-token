@@ -3139,9 +3139,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|struct|timeout
+DECL|struct|aio_timeout
 r_struct
-id|timeout
+id|aio_timeout
 (brace
 DECL|member|timer
 r_struct
@@ -3172,13 +3172,13 @@ id|data
 )paren
 (brace
 r_struct
-id|timeout
+id|aio_timeout
 op_star
 id|to
 op_assign
 (paren
 r_struct
-id|timeout
+id|aio_timeout
 op_star
 )paren
 id|data
@@ -3202,7 +3202,7 @@ id|init_timeout
 c_func
 (paren
 r_struct
-id|timeout
+id|aio_timeout
 op_star
 id|to
 )paren
@@ -3246,7 +3246,7 @@ r_int
 id|start_jiffies
 comma
 r_struct
-id|timeout
+id|aio_timeout
 op_star
 id|to
 comma
@@ -3299,7 +3299,7 @@ id|clear_timeout
 c_func
 (paren
 r_struct
-id|timeout
+id|aio_timeout
 op_star
 id|to
 )paren
@@ -3375,7 +3375,7 @@ id|io_event
 id|ent
 suffix:semicolon
 r_struct
-id|timeout
+id|aio_timeout
 id|to
 suffix:semicolon
 multiline_comment|/* needed to zero any padding within an entry (there shouldn&squot;t be &n;&t; * any, but C is fun!&n;&t; */

@@ -14,8 +14,10 @@ mdefine_line|#define IP6_RT_FLOW_MASK&t;0x00ff
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;net/ip6_fib.h&gt;
+macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;linux/ipv6.h&gt;
 DECL|struct|pol_chain
 r_struct
 id|pol_chain
@@ -131,6 +133,24 @@ r_struct
 id|in6_rtmsg
 op_star
 id|rtmsg
+comma
+r_struct
+id|nlmsghdr
+op_star
+comma
+r_void
+op_star
+id|rtattr
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ip6_ins_rt
+c_func
+(paren
+r_struct
+id|rt6_info
+op_star
 comma
 r_struct
 id|nlmsghdr
@@ -310,6 +330,28 @@ id|fib6_force_start_gc
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|rt6_info
+op_star
+id|addrconf_dst_alloc
+c_func
+(paren
+r_struct
+id|inet6_dev
+op_star
+id|idev
+comma
+r_const
+r_struct
+id|in6_addr
+op_star
+id|addr
+comma
+r_int
+id|anycast
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;support functions for ND&n; *&n; */

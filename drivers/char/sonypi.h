@@ -1356,10 +1356,6 @@ macro_line|#else
 DECL|macro|SONYPI_ACPI_ACTIVE
 mdefine_line|#define SONYPI_ACPI_ACTIVE 0
 macro_line|#endif /* CONFIG_ACPI */
-r_extern
-r_int
-id|verbose
-suffix:semicolon
 DECL|function|sonypi_ec_write
 r_static
 r_inline

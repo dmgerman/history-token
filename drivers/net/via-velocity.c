@@ -32,7 +32,7 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
-macro_line|#include &lt;linux/crc16.h&gt;
+macro_line|#include &lt;linux/crc-ccitt.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &quot;via-velocity.h&quot;
 DECL|variable|velocity_nics
@@ -11777,7 +11777,7 @@ l_int|1
 suffix:semicolon
 id|crc
 op_assign
-id|crc16
+id|crc_ccitt
 c_func
 (paren
 id|crc

@@ -723,13 +723,6 @@ r_void
 r_int
 id|err
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;udf: registering filesystem&bslash;n&quot;
-)paren
-suffix:semicolon
 id|err
 op_assign
 id|init_inodecache
@@ -788,13 +781,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;udf: unregistering filesystem&bslash;n&quot;
-)paren
-suffix:semicolon
 id|unregister_filesystem
 c_func
 (paren

@@ -1472,7 +1472,7 @@ id|igafb_ops
 suffix:semicolon
 id|info-&gt;flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|fb_alloc_cmap
 c_func

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &quot;w1.h&quot;
 macro_line|#include &quot;w1_log.h&quot;
+macro_line|#include &quot;w1_netlink.h&quot;
 DECL|variable|w1_ids
 r_static
 id|u32
@@ -24,11 +25,6 @@ r_extern
 r_struct
 id|device
 id|w1_device
-suffix:semicolon
-r_extern
-r_struct
-id|device_attribute
-id|w1_master_attribute
 suffix:semicolon
 r_extern
 r_int
@@ -484,6 +480,10 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
+id|w1_netlink_msg
+id|msg
+suffix:semicolon
 id|dev
 op_assign
 id|w1_alloc_dev
@@ -553,14 +553,10 @@ suffix:semicolon
 )brace
 id|retval
 op_assign
-id|device_create_file
+id|w1_create_master_attributes
 c_func
 (paren
-op_amp
-id|dev-&gt;dev
-comma
-op_amp
-id|w1_master_attribute
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -611,6 +607,27 @@ c_func
 (paren
 op_amp
 id|w1_mlock
+)paren
+suffix:semicolon
+id|msg.id.mst.id
+op_assign
+id|dev-&gt;id
+suffix:semicolon
+id|msg.id.mst.pid
+op_assign
+id|dev-&gt;kpid
+suffix:semicolon
+id|msg.type
+op_assign
+id|W1_MASTER_ADD
+suffix:semicolon
+id|w1_netlink_send
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|msg
 )paren
 suffix:semicolon
 r_return
@@ -679,6 +696,10 @@ id|dev
 r_int
 id|err
 suffix:semicolon
+r_struct
+id|w1_netlink_msg
+id|msg
+suffix:semicolon
 id|dev-&gt;need_exit
 op_assign
 l_int|1
@@ -727,6 +748,27 @@ id|schedule_timeout
 c_func
 (paren
 l_int|10
+)paren
+suffix:semicolon
+id|msg.id.mst.id
+op_assign
+id|dev-&gt;id
+suffix:semicolon
+id|msg.id.mst.pid
+op_assign
+id|dev-&gt;kpid
+suffix:semicolon
+id|msg.type
+op_assign
+id|W1_MASTER_REMOVE
+suffix:semicolon
+id|w1_netlink_send
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|msg
 )paren
 suffix:semicolon
 id|w1_free_dev

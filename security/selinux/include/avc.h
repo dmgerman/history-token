@@ -269,20 +269,6 @@ id|u16
 id|tclass
 )paren
 suffix:semicolon
-r_void
-id|avc_dump_cache
-c_func
-(paren
-r_struct
-id|audit_buffer
-op_star
-id|ab
-comma
-r_char
-op_star
-id|tag
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * AVC operations&n; */
 r_void
 id|__init

@@ -1410,19 +1410,6 @@ id|hfsplus_sb_info
 op_star
 )paren
 suffix:semicolon
-r_void
-id|fill_current
-c_func
-(paren
-r_struct
-id|hfsplus_sb_info
-op_star
-comma
-r_struct
-id|hfsplus_sb_info
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* tables.c */
 r_extern
 id|u16

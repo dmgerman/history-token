@@ -109,11 +109,10 @@ suffix:semicolon
 (brace
 id|entry
 op_assign
-id|mcelog.next
-suffix:semicolon
-id|read_barrier_depends
+id|rcu_dereference
 c_func
 (paren
+id|mcelog.next
 )paren
 suffix:semicolon
 multiline_comment|/* When the buffer fills up discard new entries. Assume &n;&t;&t;   that the earlier errors are the more interesting. */
@@ -1459,11 +1458,10 @@ id|mce_read_sem
 suffix:semicolon
 id|next
 op_assign
-id|mcelog.next
-suffix:semicolon
-id|read_barrier_depends
+id|rcu_dereference
 c_func
 (paren
+id|mcelog.next
 )paren
 suffix:semicolon
 multiline_comment|/* Only supports full reads right now */

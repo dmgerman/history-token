@@ -2377,7 +2377,9 @@ l_int|0x400000
 suffix:semicolon
 id|all-&gt;info.flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
+op_or
+id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
 id|all-&gt;info.fbops
 op_assign

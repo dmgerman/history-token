@@ -707,7 +707,7 @@ op_logical_and
 (paren
 id|rtas_elog-&gt;severity
 op_ge
-id|SEVERITY_ERROR_SYNC
+id|RTAS_SEVERITY_ERROR_SYNC
 )paren
 )paren
 id|fatal

@@ -3382,16 +3382,4 @@ c_func
 id|iSeries_Write_Long
 )paren
 suffix:semicolon
-DECL|function|pcibios_name_device
-r_void
-id|pcibios_name_device
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-)brace
 eof

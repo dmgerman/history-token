@@ -2230,7 +2230,7 @@ l_int|0x1000
 suffix:semicolon
 id|info-&gt;flags
 op_assign
-id|FBINFO_FLAG_DEFAULT
+id|FBINFO_DEFAULT
 suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign

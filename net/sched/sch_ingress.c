@@ -908,8 +908,9 @@ c_func
 l_string|&quot;You MUST compile classifier actions into the kernel&bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|error
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 macro_line|#else
 id|printk
@@ -920,16 +921,6 @@ l_string|&quot;Ingress scheduler: Classifier actions prefered over netfilter&bsl
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|p
-)paren
-r_goto
-id|error
-suffix:semicolon
 macro_line|#ifndef CONFIG_NET_CLS_ACT
 macro_line|#ifdef CONFIG_NETFILTER
 r_if
@@ -958,8 +949,9 @@ c_func
 l_string|&quot;ingress qdisc registration error &bslash;n&quot;
 )paren
 suffix:semicolon
-r_goto
-id|error
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|nf_registered
@@ -980,24 +972,6 @@ comma
 id|opt
 )paren
 suffix:semicolon
-id|memset
-c_func
-(paren
-id|p
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|p
-)paren
-)paren
-suffix:semicolon
-id|p-&gt;filter_list
-op_assign
-l_int|NULL
-suffix:semicolon
 id|p-&gt;q
 op_assign
 op_amp
@@ -1005,12 +979,6 @@ id|noop_qdisc
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|error
-suffix:colon
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|ingress_reset
@@ -1117,24 +1085,6 @@ id|tp
 )paren
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|p
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|p
-)paren
-)paren
-suffix:semicolon
-id|p-&gt;filter_list
-op_assign
-l_int|NULL
-suffix:semicolon
 macro_line|#if 0
 multiline_comment|/* for future use */
 id|qdisc_destroy

@@ -8227,10 +8227,10 @@ multiline_comment|/* &n; * Initialization code &amp; module stuff &n; */
 DECL|variable|size
 r_static
 r_char
-op_star
 id|size
-op_assign
-l_int|NULL
+(braket
+id|PSZ_MAX
+)braket
 suffix:semicolon
 DECL|variable|fps
 r_static
@@ -8269,22 +8269,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|variable|leds
-r_static
-r_int
-id|leds
-(braket
-l_int|2
-)braket
-op_assign
-(brace
-op_minus
-l_int|1
-comma
-op_minus
-l_int|1
-)brace
-suffix:semicolon
 DECL|variable|dev_hint
 r_static
 r_char
@@ -8297,12 +8281,16 @@ op_assign
 (brace
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_string
 c_func
 (paren
 id|size
 comma
-l_string|&quot;s&quot;
+id|size
+comma
+id|PSZ_MAX
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8313,12 +8301,14 @@ comma
 l_string|&quot;Initial image size. One of sqcif, qsif, qcif, sif, cif, vga&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|fps
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8329,12 +8319,14 @@ comma
 l_string|&quot;Initial frames per second. Varies with model, useful range 5-30&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|fbufs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8345,12 +8337,14 @@ comma
 l_string|&quot;Number of internal frame buffers to reserve&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mbufs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8361,12 +8355,14 @@ comma
 l_string|&quot;Number of external (mmap()ed) image buffers&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|trace
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8377,12 +8373,14 @@ comma
 l_string|&quot;For debugging purposes&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|power_save
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8393,12 +8391,14 @@ comma
 l_string|&quot;Turn power save feature in camera on or off&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|compression
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8409,38 +8409,45 @@ comma
 l_string|&quot;Preferred compression quality. Range 0 (uncompressed) to 3 (high compression)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
-id|leds
+id|led_on
 comma
-l_string|&quot;2i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|leds
+id|led_on
 comma
-l_string|&quot;LED on,off time in milliseconds&quot;
+l_string|&quot;LED on time in milliseconds&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
-id|dev_hint
+id|led_off
 comma
-l_string|&quot;0-20s&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|dev_hint
+id|led_off
 comma
-l_string|&quot;Device node hints&quot;
+l_string|&quot;LED off time in milliseconds&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Commented out, as you should be using udev instead of crud like this... */
+multiline_comment|/* MODULE_PARM(dev_hint, &quot;0-20s&quot;); */
+multiline_comment|/* MODULE_PARM_DESC(dev_hint, &quot;Device node hints&quot;); */
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -8562,7 +8569,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|strlen
+c_func
+(paren
 id|size
+)paren
 )paren
 (brace
 multiline_comment|/* string; try matching with array */
@@ -8802,40 +8813,6 @@ c_func
 (paren
 l_string|&quot;Enabling power save on open/close.&bslash;n&quot;
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|leds
-(braket
-l_int|0
-)braket
-op_ge
-l_int|0
-)paren
-id|led_on
-op_assign
-id|leds
-(braket
-l_int|0
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|leds
-(braket
-l_int|1
-)braket
-op_ge
-l_int|0
-)paren
-id|led_off
-op_assign
-id|leds
-(braket
-l_int|1
-)braket
 suffix:semicolon
 multiline_comment|/* Big device node whoopla. Basicly, it allows you to assign a&n;&t;   device node (/dev/videoX) to a camera, based on its type&n;&t;   &amp; serial number. The format is [type[.serialnumber]:]node.&n;&n;&t;   Any camera that isn&squot;t matched by these rules gets the next&n;&t;   available free device node.&n;&t; */
 r_for

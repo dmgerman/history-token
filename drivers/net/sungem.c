@@ -3529,7 +3529,7 @@ id|gem_status
 )paren
 )paren
 r_goto
-id|out
+id|out_unlock
 suffix:semicolon
 )brace
 r_if
@@ -3566,7 +3566,7 @@ c_func
 id|gp
 )paren
 suffix:semicolon
-id|out
+id|out_unlock
 suffix:colon
 id|spin_unlock
 c_func
@@ -3575,6 +3575,8 @@ op_amp
 id|gp-&gt;lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 r_return
 id|IRQ_HANDLED
 suffix:semicolon

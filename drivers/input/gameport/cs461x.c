@@ -1206,7 +1206,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;CS461x Gameport&quot;
+l_string|&quot;CS461x_gameport&quot;
 comma
 dot
 id|id_table
