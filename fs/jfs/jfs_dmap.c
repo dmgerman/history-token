@@ -4827,6 +4827,10 @@ id|lword
 comma
 id|rc
 suffix:semicolon
+id|s8
+op_star
+id|leaf
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4852,8 +4856,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|s8
-op_star
 id|leaf
 op_assign
 id|dp-&gt;tree.stree
