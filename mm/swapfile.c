@@ -4072,7 +4072,8 @@ c_func
 id|i
 comma
 (paren
-r_char
+r_int
+r_int
 op_star
 )paren
 id|swap_header
@@ -4161,7 +4162,8 @@ c_func
 id|i
 comma
 (paren
-r_char
+r_int
+r_int
 op_star
 )paren
 id|swap_header

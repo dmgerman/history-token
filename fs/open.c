@@ -3000,7 +3000,7 @@ op_assign
 id|find_next_zero_bit
 c_func
 (paren
-id|files-&gt;open_fds
+id|files-&gt;open_fds-&gt;fds_bits
 comma
 id|files-&gt;max_fdset
 comma
