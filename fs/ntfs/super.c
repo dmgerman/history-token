@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;sysctl.h&quot;
 macro_line|#include &quot;logfile.h&quot;
@@ -9119,6 +9120,11 @@ id|vol-&gt;dmask
 op_assign
 l_int|0077
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Important to get the mount options dealt with now. */
 r_if
 c_cond
@@ -9564,6 +9570,11 @@ op_assign
 op_amp
 id|ntfs_export_ops
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9940,6 +9951,11 @@ suffix:semicolon
 multiline_comment|/* Errors at this stage are irrelevant. */
 id|err_out_now
 suffix:colon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|sb-&gt;s_fs_info
 op_assign
 l_int|NULL
