@@ -19,7 +19,7 @@ mdefine_line|#define&t;spinlock_destroy(lock)
 DECL|macro|mutex_spinlock
 mdefine_line|#define mutex_spinlock(lock)&t;&t;({ spin_lock(lock); 0; })
 DECL|macro|mutex_spinunlock
-mdefine_line|#define mutex_spinunlock(lock, s)&t;spin_unlock(lock)
+mdefine_line|#define mutex_spinunlock(lock, s)&t;do { spin_unlock(lock); (void)s; } while (0)
 DECL|macro|nested_spinlock
 mdefine_line|#define nested_spinlock(lock)&t;&t;spin_lock(lock)
 DECL|macro|nested_spinunlock
