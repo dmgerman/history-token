@@ -5363,14 +5363,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|remove_driver
+id|driver_unregister
 c_func
 (paren
 op_amp
 id|sdebug_driverfs_driver
 )paren
 suffix:semicolon
-singleline_comment|// driver_unregister(&amp;sdebug_driverfs_driver);
 macro_line|#endif
 id|vfree
 c_func

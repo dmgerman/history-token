@@ -20964,7 +20964,7 @@ id|st_template.dev_max
 op_assign
 l_int|0
 suffix:semicolon
-id|remove_driver
+id|driver_unregister
 c_func
 (paren
 op_amp
