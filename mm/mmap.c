@@ -3728,6 +3728,17 @@ c_func
 id|first
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|start_index
+OL
+id|FIRST_USER_PGD_NR
+)paren
+id|start_index
+op_assign
+id|FIRST_USER_PGD_NR
+suffix:semicolon
 id|end_index
 op_assign
 id|pgd_index
