@@ -1234,6 +1234,19 @@ op_star
 id|status
 )paren
 suffix:semicolon
+DECL|member|adapter_check_health
+r_int
+(paren
+op_star
+id|adapter_check_health
+)paren
+(paren
+r_struct
+id|aac_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *&t;Define which interrupt handler needs to be installed&n; */
@@ -2365,6 +2378,8 @@ DECL|macro|aac_adapter_enable_int
 mdefine_line|#define aac_adapter_enable_int(dev, event) &bslash;&n;&t;dev-&gt;a_ops.adapter_enable_int(dev, event)
 DECL|macro|aac_adapter_disable_int
 mdefine_line|#define aac_adapter_disable_int(dev, event) &bslash;&n;&t;dev-&gt;a_ops.adapter_disable_int(dev, event)
+DECL|macro|aac_adapter_check_health
+mdefine_line|#define aac_adapter_check_health(dev) &bslash;&n;&t;(dev)-&gt;a_ops.adapter_check_health(dev)
 DECL|macro|FIB_CONTEXT_FLAG_TIMED_OUT
 mdefine_line|#define FIB_CONTEXT_FLAG_TIMED_OUT&t;&t;(0x00000001)
 multiline_comment|/*&n; *&t;Define the command values&n; */
