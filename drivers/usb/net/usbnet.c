@@ -1154,6 +1154,18 @@ comma
 id|status
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|req
+)paren
+suffix:semicolon
+id|usb_free_urb
+c_func
+(paren
+id|urb
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|ax8817x_set_multicast
@@ -1238,6 +1250,7 @@ op_assign
 id|u8
 op_star
 )paren
+op_amp
 id|dev-&gt;data
 suffix:semicolon
 r_struct
