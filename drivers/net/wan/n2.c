@@ -210,6 +210,7 @@ id|card_s
 (brace
 DECL|member|winbase
 id|u8
+id|__iomem
 op_star
 id|winbase
 suffix:semicolon
