@@ -1410,11 +1410,11 @@ c_func
 id|find_lock_page
 )paren
 suffix:semicolon
-DECL|variable|grab_cache_page
+DECL|variable|find_or_create_page
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|grab_cache_page
+id|find_or_create_page
 )paren
 suffix:semicolon
 DECL|variable|grab_cache_page_nowait
