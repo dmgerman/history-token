@@ -852,10 +852,6 @@ id|mem_start
 r_int
 id|err
 suffix:semicolon
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.fbops
 op_assign
 op_amp

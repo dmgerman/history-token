@@ -266,7 +266,7 @@ id|unlock_and_exit
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * If the caller hasn&squot;t specified a setup routine, use the default&n;&t; */
+multiline_comment|/* If the caller hasn&squot;t specified a setup routine, use the default */
 r_if
 c_cond
 (paren
@@ -279,7 +279,7 @@ op_assign
 id|acpi_ev_default_region_setup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Check for an existing internal object&n;&t; */
+multiline_comment|/* Check for an existing internal object */
 id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
@@ -305,7 +305,7 @@ c_loop
 id|handler_obj
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * We have an Address handler, see if user requested this&n;&t;&t;&t; * address space.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Found an Address handler, see if user requested this&n;&t;&t;&t; * address space.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -322,7 +322,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Move through the linked list of handlers&n;&t;&t;&t; */
+multiline_comment|/* Walk the linked list of handlers */
 id|handler_obj
 op_assign
 id|handler_obj-&gt;addr_handler.next
@@ -446,7 +446,7 @@ id|obj_desc
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now we can install the handler&n;&t; *&n;&t; * At this point we know that there is no existing handler.&n;&t; * So, we just allocate the object for the handler and link it&n;&t; * into the list.&n;&t; */
+multiline_comment|/*&n;&t; * Install the handler&n;&t; *&n;&t; * At this point there is no existing handler.&n;&t; * Just allocate the object for the handler and link it&n;&t; * into the list.&n;&t; */
 id|handler_obj
 op_assign
 id|acpi_ut_create_internal_object
@@ -504,7 +504,7 @@ id|handler_obj-&gt;addr_handler.setup
 op_assign
 id|setup
 suffix:semicolon
-multiline_comment|/*&n;&t; * Now walk the namespace finding all of the regions this&n;&t; * handler will manage.&n;&t; *&n;&t; * We start at the device and search the branch toward&n;&t; * the leaf nodes until either the leaf is encountered or&n;&t; * a device is detected that has an address handler of the&n;&t; * same type.&n;&t; *&n;&t; * In either case we back up and search down the remainder&n;&t; * of the branch&n;&t; */
+multiline_comment|/*&n;&t; * Walk the namespace finding all of the regions this&n;&t; * handler will manage.&n;&t; *&n;&t; * Start at the device and search the branch toward&n;&t; * the leaf nodes until either the leaf is encountered or&n;&t; * a device is detected that has an address handler of the&n;&t; * same type.&n;&t; *&n;&t; * In either case, back up and search down the remainder&n;&t; * of the branch&n;&t; */
 id|status
 op_assign
 id|acpi_ns_walk_namespace
@@ -524,7 +524,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Place this handler 1st on the list&n;&t; */
+multiline_comment|/* Place this handler 1st on the list */
 id|handler_obj-&gt;common.reference_count
 op_assign
 (paren
@@ -558,7 +558,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_address_space_handler&n; *&n; * PARAMETERS:  space_id        - The address space ID&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install a handler for accesses on an Operation Region&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_remove_address_space_handler&n; *&n; * PARAMETERS:  Device          - Handle for the device&n; *              space_id        - The address space ID&n; *              Handler         - Address of the handler&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a previously installed handler.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_remove_address_space_handler
 id|acpi_remove_address_space_handler
@@ -689,7 +689,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * find the address handler the user requested&n;&t; */
+multiline_comment|/* Find the address handler the user requested */
 id|handler_obj
 op_assign
 id|obj_desc-&gt;device.addr_handler
@@ -705,7 +705,7 @@ c_loop
 id|handler_obj
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * We have a handler, see if user requested this one&n;&t;&t; */
+multiline_comment|/* We have a handler, see if user requested this one */
 r_if
 c_cond
 (paren
@@ -714,7 +714,7 @@ op_eq
 id|space_id
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Got it, first dereference this in the Regions&n;&t;&t;&t; */
+multiline_comment|/* Matched space_id, first dereference this in the Regions */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
@@ -756,24 +756,19 @@ comma
 id|TRUE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * Walk the list, since we took the first region and it&n;&t;&t;&t;&t; * was removed from the list by the dissassociate call&n;&t;&t;&t;&t; * we just get the first item on the list again&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Walk the list: Just grab the head because the&n;&t;&t;&t;&t; * detach_region removed the previous head.&n;&t;&t;&t;&t; */
 id|region_obj
 op_assign
 id|handler_obj-&gt;addr_handler.region_list
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Remove this Handler object from the list&n;&t;&t;&t; */
+multiline_comment|/* Remove this Handler object from the list */
 op_star
 id|last_obj_ptr
 op_assign
 id|handler_obj-&gt;addr_handler.next
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Now we can delete the handler object&n;&t;&t;&t; */
-id|acpi_ut_remove_reference
-(paren
-id|handler_obj
-)paren
-suffix:semicolon
+multiline_comment|/* Now we can delete the handler object */
 id|acpi_ut_remove_reference
 (paren
 id|handler_obj
@@ -783,7 +778,7 @@ r_goto
 id|unlock_and_exit
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Move through the linked list of handlers&n;&t;&t; */
+multiline_comment|/* Walk the linked list of handlers */
 id|last_obj_ptr
 op_assign
 op_amp
@@ -794,7 +789,7 @@ op_assign
 id|handler_obj-&gt;addr_handler.next
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The handler does not exist&n;&t; */
+multiline_comment|/* The handler does not exist */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren

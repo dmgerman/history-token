@@ -562,6 +562,7 @@ r_int
 id|bytes_left
 suffix:semicolon
 r_int
+r_int
 id|i
 suffix:semicolon
 r_int
@@ -2172,7 +2173,9 @@ r_int
 id|irq
 comma
 id|irqs
-comma
+suffix:semicolon
+r_int
+r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Clear interrupt register */

@@ -1959,13 +1959,7 @@ c_func
 (paren
 l_string|&quot;uart_flush_buffer(%d) called&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2481,7 +2475,7 @@ id|HIGH_BITS_OFFSET
 suffix:semicolon
 id|new_serial.irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|new_serial.irq
@@ -3028,7 +3022,7 @@ l_string|&quot;%s sets custom speed on %s%d. This is deprecated.&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
-id|state-&gt;info-&gt;tty-&gt;driver.name
+id|state-&gt;info-&gt;tty-&gt;driver-&gt;name
 comma
 id|state-&gt;port-&gt;line
 )paren
@@ -4599,11 +4593,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;rs_close: bad serial port count for %s%d: %d&bslash;n&quot;
+l_string|&quot;rs_close: bad serial port count for %s: %d&bslash;n&quot;
 comma
-id|tty-&gt;driver.name
-comma
-id|port-&gt;line
+id|tty-&gt;name
 comma
 id|state-&gt;count
 )paren
@@ -5680,7 +5672,7 @@ r_struct
 id|uart_driver
 op_star
 )paren
-id|tty-&gt;driver.driver_state
+id|tty-&gt;driver-&gt;driver_state
 suffix:semicolon
 r_struct
 id|uart_state
@@ -5692,13 +5684,7 @@ id|retval
 comma
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -5718,7 +5704,7 @@ comma
 id|line
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * tty-&gt;driver.num won&squot;t change, so we won&squot;t fail here with&n;&t; * tty-&gt;driver_data set to something non-NULL (and therefore&n;&t; * we won&squot;t get caught by uart_close()).&n;&t; */
+multiline_comment|/*&n;&t; * tty-&gt;driver-&gt;num won&squot;t change, so we won&squot;t fail here with&n;&t; * tty-&gt;driver_data set to something non-NULL (and therefore&n;&t; * we won&squot;t get caught by uart_close()).&n;&t; */
 id|retval
 op_assign
 op_minus
@@ -5729,7 +5715,7 @@ c_cond
 (paren
 id|line
 op_ge
-id|tty-&gt;driver.num
+id|tty-&gt;driver-&gt;num
 )paren
 r_goto
 id|fail
@@ -7396,6 +7382,8 @@ id|port
 id|printk
 c_func
 (paren
+l_string|&quot;%s%d&quot;
+comma
 id|drv-&gt;dev_name
 comma
 id|port-&gt;line
@@ -8213,10 +8201,21 @@ op_star
 id|drv
 )paren
 (brace
+r_struct
+id|tty_driver
+op_star
+id|p
+op_assign
+id|drv-&gt;tty_driver
+suffix:semicolon
+id|drv-&gt;tty_driver
+op_assign
+l_int|NULL
+suffix:semicolon
 id|tty_unregister_driver
 c_func
 (paren
-id|drv-&gt;tty_driver
+id|p
 )paren
 suffix:semicolon
 id|kfree
@@ -8236,6 +8235,39 @@ c_func
 (paren
 id|drv-&gt;tty_driver
 )paren
+suffix:semicolon
+)brace
+DECL|function|uart_console_device
+r_struct
+id|tty_driver
+op_star
+id|uart_console_device
+c_func
+(paren
+r_struct
+id|console
+op_star
+id|co
+comma
+r_int
+op_star
+id|index
+)paren
+(brace
+r_struct
+id|uart_driver
+op_star
+id|p
+op_assign
+id|co-&gt;data
+suffix:semicolon
+op_star
+id|index
+op_assign
+id|co-&gt;index
+suffix:semicolon
+r_return
+id|p-&gt;tty_driver
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;uart_add_one_port - attach a driver-defined port structure&n; *&t;@drv: pointer to the uart low level driver structure for this port&n; *&t;@port: uart port structure to use for this port.&n; *&n; *&t;This allows the driver to register its own uart_port structure&n; *&t;with the core driver.  The main purpose is to allow the low&n; *&t;level uart drivers to expand uart_port, rather than having yet&n; *&t;more levels of structures.&n; */
@@ -8348,8 +8380,6 @@ c_func
 (paren
 id|drv-&gt;tty_driver
 comma
-id|drv-&gt;minor
-op_plus
 id|port-&gt;line
 )paren
 suffix:semicolon
@@ -8432,8 +8462,6 @@ c_func
 (paren
 id|drv-&gt;tty_driver
 comma
-id|drv-&gt;minor
-op_plus
 id|port-&gt;line
 )paren
 suffix:semicolon
@@ -8893,6 +8921,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+l_string|&quot;%s%d&quot;
+comma
 id|drv-&gt;dev_name
 comma
 id|line

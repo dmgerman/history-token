@@ -10,8 +10,6 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/wanrouter.h&gt;
-macro_line|#include &lt;linux/netlink.h&gt;
-macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
@@ -341,6 +339,140 @@ id|net_families
 id|NPROTO
 )braket
 suffix:semicolon
+DECL|function|net_family_bug
+r_static
+id|__inline__
+r_void
+id|net_family_bug
+c_func
+(paren
+r_int
+id|family
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%d is not yet sock_registered!&bslash;n&quot;
+comma
+id|family
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|net_family_get
+r_int
+id|net_family_get
+c_func
+(paren
+r_int
+id|family
+)paren
+(brace
+r_struct
+id|net_proto_family
+op_star
+id|prot
+op_assign
+id|net_families
+(braket
+id|family
+)braket
+suffix:semicolon
+r_int
+id|rc
+op_assign
+l_int|1
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|prot
+op_ne
+l_int|NULL
+)paren
+)paren
+id|rc
+op_assign
+id|try_module_get
+c_func
+(paren
+id|prot-&gt;owner
+)paren
+suffix:semicolon
+r_else
+id|net_family_bug
+c_func
+(paren
+id|family
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
+DECL|function|net_family_put
+r_void
+id|net_family_put
+c_func
+(paren
+r_int
+id|family
+)paren
+(brace
+r_struct
+id|net_proto_family
+op_star
+id|prot
+op_assign
+id|net_families
+(braket
+id|family
+)braket
+suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|prot
+op_ne
+l_int|NULL
+)paren
+)paren
+id|module_put
+c_func
+(paren
+id|prot-&gt;owner
+)paren
+suffix:semicolon
+r_else
+id|net_family_bug
+c_func
+(paren
+id|family
+)paren
+suffix:semicolon
+)brace
 macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
 DECL|variable|net_family_lockct
 r_static
@@ -1508,15 +1640,10 @@ id|sock-&gt;ops
 op_assign
 l_int|NULL
 suffix:semicolon
-id|module_put
+id|net_family_put
 c_func
 (paren
-id|net_families
-(braket
 id|family
-)braket
-op_member_access_from_pointer
-id|owner
 )paren
 suffix:semicolon
 )brace
@@ -3942,15 +4069,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|try_module_get
+id|net_family_get
 c_func
 (paren
-id|net_families
-(braket
 id|family
-)braket
-op_member_access_from_pointer
-id|owner
 )paren
 )paren
 r_goto
@@ -7867,21 +7989,6 @@ id|sock_fs_type
 )paren
 suffix:semicolon
 multiline_comment|/* The real protocol initialization is performed when&n;&t; *  do_initcalls is run.  &n;&t; */
-multiline_comment|/*&n;&t; * The netlink device handler may be needed early.&n;&t; */
-macro_line|#ifdef CONFIG_NET
-id|rtnetlink_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NETLINK_DEV
-id|init_netlink
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_NETFILTER
 id|netfilter_init
 c_func

@@ -59,7 +59,7 @@ suffix:semicolon
 id|acpi_size
 id|window_size
 suffix:semicolon
-macro_line|#ifndef _HW_ALIGNMENT_SUPPORT
+macro_line|#ifndef ACPI_MISALIGNED_TRANSFERS
 id|u32
 id|remainder
 suffix:semicolon
@@ -131,7 +131,7 @@ id|AE_AML_OPERAND_VALUE
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef _HW_ALIGNMENT_SUPPORT
+macro_line|#ifndef ACPI_MISALIGNED_TRANSFERS
 multiline_comment|/*&n;&t; * Hardware does not support non-aligned data transfers, we must verify&n;&t; * the request.&n;&t; */
 (paren
 r_void
@@ -604,6 +604,9 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+id|u32
+id|value32
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ex_system_io_space_handler&quot;
@@ -642,11 +645,6 @@ id|function
 r_case
 id|ACPI_READ
 suffix:colon
-op_star
-id|value
-op_assign
-l_int|0
-suffix:semicolon
 id|status
 op_assign
 id|acpi_os_read_port
@@ -656,10 +654,16 @@ id|acpi_io_address
 )paren
 id|address
 comma
-id|value
+op_amp
+id|value32
 comma
 id|bit_width
 )paren
+suffix:semicolon
+op_star
+id|value
+op_assign
+id|value32
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -675,6 +679,9 @@ id|acpi_io_address
 )paren
 id|address
 comma
+(paren
+id|u32
+)paren
 op_star
 id|value
 comma

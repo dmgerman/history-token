@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 r_enum
 (brace
 multiline_comment|/* These three have identical behaviour; use the second one if DOS FDISK gets&n;   confused about extended/logical partitions starting past cylinder 1023. */
@@ -178,7 +179,6 @@ id|packed
 )paren
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;&t;/* we don&squot;t need any devfs crap&n;&t;&t;&t;&t;&t;   here, but some of the implicitly&n;&t;&t;&t;&t;&t;   included headers.   will clean&n;&t;&t;&t;&t;&t;   this mess up later.&t;--hch */
 DECL|struct|hd_struct
 r_struct
 id|hd_struct

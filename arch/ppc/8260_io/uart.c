@@ -464,8 +464,9 @@ id|ser_info_t
 op_star
 id|info
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -502,11 +503,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -528,11 +525,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -646,7 +639,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_stop&quot;
 )paren
@@ -762,7 +755,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_stop&quot;
 )paren
@@ -3033,7 +3026,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_put_char&quot;
 )paren
@@ -3162,7 +3155,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_write&quot;
 )paren
@@ -3361,7 +3354,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_write_room&quot;
 )paren
@@ -3437,7 +3430,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_chars_in_buffer&quot;
 )paren
@@ -3479,7 +3472,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_flush_buffer&quot;
 )paren
@@ -3561,7 +3554,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_send_char&quot;
 )paren
@@ -3689,7 +3682,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_throttle&quot;
 )paren
@@ -3812,7 +3805,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_unthrottle&quot;
 )paren
@@ -4851,7 +4844,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_ioctl&quot;
 )paren
@@ -5818,7 +5811,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_close&quot;
 )paren
@@ -6093,10 +6086,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -6232,7 +6225,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_wait_until_sent&quot;
 )paren
@@ -6420,7 +6413,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_hangup&quot;
 )paren
@@ -6578,7 +6571,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -7107,13 +7100,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -7161,7 +7148,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_open&quot;
 )paren
@@ -7174,11 +7161,9 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;rs_open %s%d, count = %d&bslash;n&quot;
+l_string|&quot;rs_open %s, count = %d&bslash;n&quot;
 comma
-id|tty-&gt;driver.name
-comma
-id|info-&gt;line
+id|tty-&gt;name
 comma
 id|info-&gt;state-&gt;count
 )paren
@@ -7262,7 +7247,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -7296,9 +7281,9 @@ macro_line|#ifdef SERIAL_DEBUG_OPEN
 id|printk
 c_func
 (paren
-l_string|&quot;rs_open ttys%d successful...&quot;
+l_string|&quot;rs_open %s successful...&quot;
 comma
-id|info-&gt;line
+id|line
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -8854,16 +8839,14 @@ op_star
 id|c
 )paren
 (brace
-r_return
-id|mk_kdev
-c_func
-(paren
-id|TTY_MAJOR
-comma
-l_int|64
-op_plus
+op_star
+id|index
+op_assign
 id|c-&gt;index
-)paren
+suffix:semicolon
+r_return
+op_amp
+id|serial_driver
 suffix:semicolon
 )brace
 DECL|variable|sercons
@@ -9044,7 +9027,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|serial_driver.name
 op_assign
-l_string|&quot;tts/%d&quot;
+l_string|&quot;tts/&quot;
 suffix:semicolon
 macro_line|#else
 id|serial_driver.name
@@ -9185,7 +9168,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|callout_driver.name
 op_assign
-l_string|&quot;cua/%d&quot;
+l_string|&quot;cua/&quot;
 suffix:semicolon
 macro_line|#else
 id|callout_driver.name

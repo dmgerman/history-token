@@ -6455,10 +6455,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|irqreturn_t
-id|retval
+r_int
+id|handled
 op_assign
-id|IRQ_NONE
+l_int|0
 suffix:semicolon
 multiline_comment|/* Use the host lock to serialise acess to the 53c700&n;&t; * hardware.  Note: In future, we may need to take the queue&n;&t; * lock to enter the done routines.  When that happens, we&n;&t; * need to ensure that for this driver, the host lock and the&n;&t; * queue lock point to the same thing. */
 id|spin_lock_irqsave
@@ -6516,9 +6516,9 @@ r_enum
 id|NCR_700_Host_State
 id|state
 suffix:semicolon
-id|retval
+id|handled
 op_assign
-id|IRQ_HANDLED
+l_int|1
 suffix:semicolon
 id|state
 op_assign
@@ -7809,7 +7809,11 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|retval
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* FIXME: Need to put some proc information in and plumb it&n; * into the scsi proc system */

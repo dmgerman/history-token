@@ -67,12 +67,12 @@ id|i
 )paren
 suffix:semicolon
 multiline_comment|/* Optional, may be NULL. */
-DECL|member|irq_cannonicalize
+DECL|member|irq_canonicalize
 r_int
 r_int
 (paren
 op_star
-id|irq_cannonicalize
+id|irq_canonicalize
 )paren
 (paren
 r_int

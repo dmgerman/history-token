@@ -824,9 +824,11 @@ r_void
 )paren
 (brace
 r_int
-id|i
-comma
 id|k
+suffix:semicolon
+r_int
+r_int
+id|i
 suffix:semicolon
 id|k
 op_assign
@@ -1236,7 +1238,9 @@ r_int
 id|i
 comma
 id|j
-comma
+suffix:semicolon
+r_int
+r_int
 id|k
 suffix:semicolon
 r_int

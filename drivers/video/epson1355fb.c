@@ -2010,10 +2010,6 @@ id|fb_info.gen.info.changevar
 op_assign
 l_int|NULL
 suffix:semicolon
-id|fb_info.gen.info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.gen.info.fbops
 op_assign
 op_amp
@@ -2133,11 +2129,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.gen.info.node
-)paren
 comma
 id|fb_info.gen.info.modename
 )paren

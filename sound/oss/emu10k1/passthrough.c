@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &quot;hwaccess.h&quot;
 macro_line|#include &quot;cardwo.h&quot;
 macro_line|#include &quot;cardwi.h&quot;

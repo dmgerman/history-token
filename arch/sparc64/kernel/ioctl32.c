@@ -13751,7 +13751,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.ioctl
+id|tty-&gt;driver-&gt;ioctl
 op_ne
 id|vt_ioctl
 )paren

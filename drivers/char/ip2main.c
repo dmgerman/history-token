@@ -510,7 +510,7 @@ id|pB
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|ip2_interrupt
 c_func
 (paren
@@ -952,7 +952,7 @@ multiline_comment|/* Macros */
 multiline_comment|/**********/
 macro_line|#if defined(MODULE) &amp;&amp; defined(IP2DEBUG_OPEN)
 DECL|macro|DBG_CNT
-mdefine_line|#define DBG_CNT(s) printk(KERN_DEBUG &quot;(%s): [%x] refc=%d, ttyc=%d, modc=%x -&gt; %s&bslash;n&quot;, &bslash;&n;&t;&t;    cdevname(tty-&gt;device),(pCh-&gt;flags),ref_count, &bslash;&n;&t;&t;    tty-&gt;count,/*GET_USE_COUNT(module)*/0,s)
+mdefine_line|#define DBG_CNT(s) printk(KERN_DEBUG &quot;(%s): [%x] refc=%d, ttyc=%d, modc=%x -&gt; %s&bslash;n&quot;, &bslash;&n;&t;&t;    tty-&gt;name,(pCh-&gt;flags),ref_count, &bslash;&n;&t;&t;    tty-&gt;count,/*GET_USE_COUNT(module)*/0,s)
 macro_line|#else
 DECL|macro|DBG_CNT
 mdefine_line|#define DBG_CNT(s)
@@ -5132,7 +5132,7 @@ multiline_comment|/*                                                            
 multiline_comment|/*                                                                            */
 multiline_comment|/******************************************************************************/
 r_static
-r_void
+id|irqreturn_t
 DECL|function|ip2_interrupt
 id|ip2_interrupt
 c_func
@@ -5155,6 +5155,11 @@ id|i
 suffix:semicolon
 id|i2eBordStrPtr
 id|pB
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|ip2trace
 (paren
@@ -5206,6 +5211,10 @@ id|irq
 )paren
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 macro_line|#ifdef USE_IQI
 r_if
 c_cond
@@ -5266,6 +5275,13 @@ comma
 id|ITRC_RETURN
 comma
 l_int|0
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace
@@ -6043,20 +6059,12 @@ id|pCh
 op_assign
 id|DevTable
 (braket
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )braket
 suffix:semicolon
 id|ip2trace
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 comma
 id|ITRC_OPEN
 comma
@@ -6095,25 +6103,13 @@ c_func
 (paren
 id|KERN_DEBUG
 "&bslash;"
-l_string|&quot;IP2:open(tty=%p,pFile=%p):dev=%x,maj=%d,min=%d,ch=%d,idx=%d&bslash;n&quot;
+l_string|&quot;IP2:open(tty=%p,pFile=%p):dev=%s,ch=%d,idx=%d&bslash;n&quot;
 comma
 id|tty
 comma
 id|pFile
 comma
-id|tty-&gt;device
-comma
-id|major
-c_func
-(paren
-id|tty-&gt;device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;name
 comma
 id|pCh-&gt;infl.hd.i2sChannel
 comma
@@ -6279,7 +6275,7 @@ multiline_comment|/*&n;&t; * 2. If this is a callout device, make sure the norma
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -6794,7 +6790,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -6923,13 +6919,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;IP2:close ttyF%02X:&bslash;n&quot;
+l_string|&quot;IP2:close %s:&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7132,10 +7124,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -8277,11 +8269,7 @@ id|pCh
 op_assign
 id|DevTable
 (braket
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )braket
 suffix:semicolon
 id|i2QueueCommands
@@ -8349,11 +8337,7 @@ id|pCh
 op_assign
 id|DevTable
 (braket
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )braket
 suffix:semicolon
 id|i2QueueCommands
@@ -8422,11 +8406,7 @@ id|pCh
 op_assign
 id|DevTable
 (braket
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )braket
 suffix:semicolon
 r_struct

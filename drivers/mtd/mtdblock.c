@@ -14,8 +14,6 @@ DECL|macro|DEVICE_NAME
 mdefine_line|#define DEVICE_NAME &quot;mtdblock&quot;
 DECL|macro|DEVICE_NR
 mdefine_line|#define DEVICE_NR(device) (device)
-DECL|macro|LOCAL_END_REQUEST
-mdefine_line|#define LOCAL_END_REQUEST
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 r_static

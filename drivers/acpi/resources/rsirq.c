@@ -105,7 +105,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -440,7 +440,7 @@ op_lshift
 id|temp8
 suffix:semicolon
 )brace
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 id|buffer
 comma
@@ -607,7 +607,7 @@ id|buffer
 op_add_assign
 l_int|1
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -724,7 +724,7 @@ id|index
 op_increment
 )paren
 (brace
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|output_struct-&gt;data.extended_irq.interrupts
@@ -1065,7 +1065,7 @@ id|index
 op_increment
 )paren
 (brace
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 id|buffer
 comma
@@ -1121,6 +1121,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Buffer needs to be set to the length of the sting + one for the&n;&t;&t; * terminating null&n;&t;&t; */
 id|buffer
 op_add_assign
+(paren
+id|acpi_size
+)paren
 (paren
 id|ACPI_STRLEN
 (paren

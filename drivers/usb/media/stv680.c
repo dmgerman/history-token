@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -240,7 +239,7 @@ OG
 l_int|0
 )paren
 (brace
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|vmalloc_to_page
@@ -312,7 +311,7 @@ OG
 l_int|0
 )paren
 (brace
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|vmalloc_to_page

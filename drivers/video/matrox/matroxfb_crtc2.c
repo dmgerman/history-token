@@ -3942,10 +3942,6 @@ id|m2info-&gt;fbcon.changevar
 op_assign
 l_int|NULL
 suffix:semicolon
-id|m2info-&gt;fbcon.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|m2info-&gt;fbcon.fbops
 op_assign
 op_amp
@@ -4356,21 +4352,13 @@ c_func
 id|KERN_INFO
 l_string|&quot;matroxfb_crtc2: secondary head of fb%u was registered as fb%u&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|ACCESS_FBINFO
 c_func
 (paren
 id|fbcon.node
 )paren
-)paren
 comma
-id|minor
-c_func
-(paren
 id|m2info-&gt;fbcon.node
-)paren
 )paren
 suffix:semicolon
 id|m2info-&gt;fbcon_registered
@@ -4487,11 +4475,7 @@ suffix:semicolon
 )brace
 id|id
 op_assign
-id|minor
-c_func
-(paren
 id|m2info-&gt;fbcon.node
-)paren
 suffix:semicolon
 id|unregister_framebuffer
 c_func

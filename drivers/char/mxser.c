@@ -65,7 +65,7 @@ mdefine_line|#define &t;UART_MCR_AFE&t;&t;0x20
 DECL|macro|UART_LSR_SPECIAL
 mdefine_line|#define &t;UART_LSR_SPECIAL&t;0x1E
 DECL|macro|PORTNO
-mdefine_line|#define PORTNO(x)&t;&t;(minor((x)-&gt;device) - (x)-&gt;driver.minor_start)
+mdefine_line|#define PORTNO(x)&t;&t;((x)-&gt;index)
 DECL|macro|RELEVANT_IFLAG
 mdefine_line|#define RELEVANT_IFLAG(iflag)&t;(iflag &amp; (IGNBRK|BRKINT|IGNPAR|PARMRK|INPCK))
 DECL|macro|IRQ_T
@@ -1104,7 +1104,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|mxser_interrupt
 c_func
 (paren
@@ -3255,7 +3255,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -3592,10 +3592,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -6237,7 +6237,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This is the serial driver&squot;s generic interrupt routine&n; */
 DECL|function|mxser_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|mxser_interrupt
 c_func
 (paren
@@ -6280,6 +6280,11 @@ id|msr
 suffix:semicolon
 r_int
 id|pass_counter
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|handled
 op_assign
 l_int|0
 suffix:semicolon
@@ -6334,6 +6339,7 @@ op_eq
 id|MXSER_BOARDS
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -6343,6 +6349,7 @@ op_eq
 l_int|0
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|max
 op_assign
@@ -6380,6 +6387,10 @@ op_eq
 id|port-&gt;vectormask
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_for
 c_loop
@@ -6544,6 +6555,13 @@ suffix:semicolon
 multiline_comment|/* Prevent infinite loops */
 )brace
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 DECL|function|mxser_receive_chars
 r_static
@@ -7335,7 +7353,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren

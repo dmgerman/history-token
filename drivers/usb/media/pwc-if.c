@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;pwc.h&quot;
 macro_line|#include &quot;pwc-ioctl.h&quot;
@@ -761,7 +760,7 @@ OG
 l_int|0
 )paren
 (brace
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|vmalloc_to_page
@@ -833,7 +832,7 @@ OG
 l_int|0
 )paren
 (brace
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|vmalloc_to_page

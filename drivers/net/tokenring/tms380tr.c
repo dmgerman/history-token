@@ -322,23 +322,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_void
-id|tms380tr_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 multiline_comment|/* &quot;M&quot; */
 multiline_comment|/* &quot;O&quot; */
 r_int
@@ -3194,7 +3177,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The typical workload of the driver: Handle the network interface interrupts.&n; */
 DECL|function|tms380tr_interrupt
-r_void
+id|irqreturn_t
 id|tms380tr_interrupt
 c_func
 (paren
@@ -3227,6 +3210,11 @@ r_int
 r_int
 id|irq_type
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3247,6 +3235,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|tp
@@ -3274,6 +3263,10 @@ op_amp
 id|STS_SYSTEM_IRQ
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|irq_type
 op_and_assign
 id|STS_IRQ_MASK
@@ -3503,6 +3496,11 @@ id|SIFSTS
 suffix:semicolon
 )brace
 r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Reset the INTERRUPT SYSTEM bit and issue SSB CLEAR command.&n; */

@@ -2219,7 +2219,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|diva_os_irq_wrapper
-r_void
+id|irqreturn_t
 id|diva_os_irq_wrapper
 c_func
 (paren
@@ -2260,6 +2260,7 @@ id|a-&gt;xdi_adapter.diva_isr_handler
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -2285,6 +2286,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 (paren
@@ -2297,6 +2299,9 @@ id|a-&gt;xdi_adapter.diva_isr_handler
 op_amp
 id|a-&gt;xdi_adapter
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|diva_init_request_array

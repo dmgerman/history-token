@@ -248,7 +248,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Dereference */
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 op_amp
 id|temp16
@@ -440,7 +440,7 @@ id|u16
 )paren
 id|linked_list-&gt;data.vendor_specific.length
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED16_TO_16
+id|ACPI_MOVE_16_TO_16
 (paren
 id|buffer
 comma

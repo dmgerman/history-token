@@ -1,7 +1,6 @@
 macro_line|#ifndef _LINUX_MISCDEVICE_H
 DECL|macro|_LINUX_MISCDEVICE_H
 mdefine_line|#define _LINUX_MISCDEVICE_H
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|BUSMOUSE_MINOR
 mdefine_line|#define BUSMOUSE_MINOR 0
 DECL|macro|PSMOUSE_MINOR

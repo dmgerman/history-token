@@ -713,8 +713,8 @@ suffix:semicolon
 )brace
 r_static
 id|u32
-DECL|function|sandpoint_irq_cannonicalize
-id|sandpoint_irq_cannonicalize
+DECL|function|sandpoint_irq_canonicalize
+id|sandpoint_irq_canonicalize
 c_func
 (paren
 id|u32
@@ -1649,9 +1649,9 @@ id|ppc_md.show_cpuinfo
 op_assign
 id|sandpoint_show_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
-id|sandpoint_irq_cannonicalize
+id|sandpoint_irq_canonicalize
 suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign

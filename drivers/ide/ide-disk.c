@@ -17,7 +17,6 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;
 DECL|macro|_IDE_DISK
 mdefine_line|#define _IDE_DISK
 macro_line|#include &lt;linux/ide.h&gt;
@@ -9670,14 +9669,6 @@ c_func
 (paren
 op_amp
 id|args
-)paren
-suffix:semicolon
-id|invalidate_bdev
-c_func
-(paren
-id|inode-&gt;i_bdev
-comma
-l_int|0
 )paren
 suffix:semicolon
 r_if

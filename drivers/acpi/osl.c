@@ -701,6 +701,7 @@ op_star
 id|regs
 )paren
 (brace
+r_return
 (paren
 op_star
 id|acpi_irq_handler
@@ -708,10 +709,6 @@ id|acpi_irq_handler
 (paren
 id|acpi_irq_context
 )paren
-suffix:semicolon
-multiline_comment|/* FIXME!! We really should check that the irq was really ours! */
-r_return
-id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|acpi_status
@@ -916,7 +913,7 @@ c_func
 id|acpi_io_address
 id|port
 comma
-r_void
+id|u32
 op_star
 id|value
 comma
@@ -1018,7 +1015,7 @@ c_func
 id|acpi_io_address
 id|port
 comma
-id|acpi_integer
+id|u32
 id|value
 comma
 id|u32
@@ -1090,7 +1087,7 @@ c_func
 id|acpi_physical_address
 id|phys_addr
 comma
-r_void
+id|u32
 op_star
 id|value
 comma
@@ -1266,7 +1263,7 @@ c_func
 id|acpi_physical_address
 id|phys_addr
 comma
-id|acpi_integer
+id|u32
 id|value
 comma
 id|u32

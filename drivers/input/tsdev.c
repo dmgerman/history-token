@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#ifndef CONFIG_INPUT_TSDEV_SCREEN_X
 DECL|macro|CONFIG_INPUT_TSDEV_SCREEN_X
 mdefine_line|#define CONFIG_INPUT_TSDEV_SCREEN_X&t;240

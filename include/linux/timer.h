@@ -160,7 +160,7 @@ r_int
 id|expires
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int
 id|del_timer_sync

@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
@@ -541,7 +540,7 @@ OG
 l_int|0
 )paren
 (brace
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|vmalloc_to_page
@@ -614,7 +613,7 @@ OG
 l_int|0
 )paren
 (brace
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|vmalloc_to_page

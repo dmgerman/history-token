@@ -3671,13 +3671,7 @@ c_func
 (paren
 l_string|&quot;siccuart_flush_buffer(%d) called&bslash;n&quot;
 comma
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5661,11 +5655,9 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;rs_close: bad serial port count for %s%d: %d&bslash;n&quot;
+l_string|&quot;rs_close: bad serial port count for %s: %d&bslash;n&quot;
 comma
-id|tty-&gt;driver.name
-comma
-id|info-&gt;state-&gt;line
+id|tty-&gt;name
 comma
 id|state-&gt;count
 )paren
@@ -5781,10 +5773,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -5989,13 +5981,7 @@ c_func
 (paren
 l_string|&quot;siccuart_wait_until_sent(%d), jiff=%lu, expire=%lu  char_time=%lu...&bslash;n&quot;
 comma
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 comma
 id|jiffies
 comma
@@ -6247,7 +6233,7 @@ multiline_comment|/*&n;     * If this is a callout device, then just make sure t
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -6814,13 +6800,7 @@ id|retval
 comma
 id|line
 op_assign
-id|MINOR
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 singleline_comment|// is this a line that we&squot;ve got?
 id|MOD_INC_USE_COUNT
@@ -7034,7 +7014,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -7736,7 +7716,9 @@ suffix:semicolon
 )brace
 DECL|function|siccuart_console_device
 r_static
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 id|siccuart_console_device
 c_func
 (paren
@@ -7744,18 +7726,20 @@ r_struct
 id|console
 op_star
 id|c
+comma
+r_int
+op_star
+id|index
 )paren
 (brace
-r_return
-id|MKDEV
-c_func
-(paren
-id|SERIAL_SICC_MAJOR
-comma
-id|SERIAL_SICC_MINOR
-op_plus
+op_star
+id|index
+op_assign
 id|c-&gt;index
-)paren
+suffix:semicolon
+r_return
+op_amp
+id|siccnormal_driver
 suffix:semicolon
 )brace
 DECL|function|siccuart_console_setup

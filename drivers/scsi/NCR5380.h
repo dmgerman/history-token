@@ -251,8 +251,8 @@ mdefine_line|#define TAG_NEXT&t;-1&t;/* Use next free tag */
 DECL|macro|TAG_NONE
 mdefine_line|#define TAG_NONE&t;-2&t;/* &n;&t;&t;&t;&t; * Establish I_T_L nexus instead of I_T_L_Q&n;&t;&t;&t;&t; * even on SCSI-II devices.&n;&t;&t;&t;&t; */
 multiline_comment|/*&n; * These are &quot;special&quot; values for the irq and dma_channel fields of the &n; * Scsi_Host structure&n; */
-DECL|macro|IRQ_NONE
-mdefine_line|#define IRQ_NONE&t;255
+DECL|macro|SCSI_IRQ_NONE
+mdefine_line|#define SCSI_IRQ_NONE&t;255
 DECL|macro|DMA_NONE
 mdefine_line|#define DMA_NONE&t;255
 DECL|macro|IRQ_AUTO

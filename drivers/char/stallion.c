@@ -1683,24 +1683,6 @@ id|len
 suffix:semicolon
 r_static
 r_void
-id|stl_intr
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
-r_void
 id|stl_eiointr
 c_func
 (paren
@@ -4276,7 +4258,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
-l_string|&quot;stl_open(tty=%x,filp=%x): device=%x&bslash;n&quot;
+l_string|&quot;stl_open(tty=%x,filp=%x): device=%s&bslash;n&quot;
 comma
 (paren
 r_int
@@ -4288,17 +4270,13 @@ r_int
 )paren
 id|filp
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
 id|minordev
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 suffix:semicolon
 id|brdnr
 op_assign
@@ -4625,7 +4603,7 @@ multiline_comment|/*&n; *&t;Based on type of open being done check if it can ove
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|STL_DRVTYPCALLOUT
 )paren
@@ -4762,7 +4740,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|STL_DRVTYPSERIAL
 )paren
@@ -9309,7 +9287,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; *&t;All board interrupts are vectored through here first. This code then&n; *&t;calls off to the approrpriate board interrupt handlers.&n; */
 DECL|function|stl_intr
 r_static
-r_void
+id|irqreturn_t
 id|stl_intr
 c_func
 (paren
@@ -9332,6 +9310,11 @@ id|brdp
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 macro_line|#if DEBUG
 id|printk
@@ -9394,6 +9377,10 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 (paren
 op_star
 id|brdp-&gt;isr
@@ -9403,6 +9390,13 @@ id|brdp
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;Interrupt service routine for EasyIO board types.&n; */

@@ -821,7 +821,7 @@ suffix:semicolon
 r_case
 id|DB_WORD_DISPLAY
 suffix:colon
-id|ACPI_MOVE_UNALIGNED16_TO_32
+id|ACPI_MOVE_16_TO_32
 (paren
 op_amp
 id|temp32
@@ -851,7 +851,7 @@ suffix:semicolon
 r_case
 id|DB_DWORD_DISPLAY
 suffix:colon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|temp32
@@ -881,7 +881,7 @@ suffix:semicolon
 r_case
 id|DB_QWORD_DISPLAY
 suffix:colon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|temp32
@@ -902,7 +902,7 @@ comma
 id|temp32
 )paren
 suffix:semicolon
-id|ACPI_MOVE_UNALIGNED32_TO_32
+id|ACPI_MOVE_32_TO_32
 (paren
 op_amp
 id|temp32

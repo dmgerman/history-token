@@ -1182,11 +1182,7 @@ id|task-&gt;tty-&gt;pgrp
 suffix:semicolon
 id|tty_nr
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
 id|task-&gt;tty-&gt;device
-)paren
 suffix:semicolon
 )brace
 id|task_unlock

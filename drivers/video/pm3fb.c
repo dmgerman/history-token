@@ -7414,10 +7414,6 @@ id|l_fb_info-&gt;gen.info.changevar
 op_assign
 l_int|NULL
 suffix:semicolon
-id|l_fb_info-&gt;gen.info.node
-op_assign
-id|B_FREE
-suffix:semicolon
 id|l_fb_info-&gt;gen.info.fbops
 op_assign
 op_amp
@@ -7653,11 +7649,7 @@ c_func
 (paren
 l_string|&quot;fb%d: %s, using %uK of video memory (%s)&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|l_fb_info-&gt;gen.info.node
-)paren
 comma
 id|permedia3_name
 comma

@@ -2680,7 +2680,7 @@ suffix:semicolon
 )brace
 DECL|function|saa7134_irq
 r_static
-r_void
+id|irqreturn_t
 id|saa7134_irq
 c_func
 (paren
@@ -2781,7 +2781,8 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -2968,6 +2969,11 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------ */
 DECL|function|saa7134_hwinit

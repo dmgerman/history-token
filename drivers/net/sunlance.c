@@ -6519,12 +6519,10 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|set_auxio
+id|auxio_set_lte
 c_func
 (paren
-id|AUXIO_LINK_TEST
-comma
-l_int|0
+id|AUXIO_LTE_ON
 )paren
 suffix:semicolon
 )brace

@@ -1,10 +1,5 @@
 multiline_comment|/*&n; * (C) Copyright David Brownell 2000-2002&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
@@ -12,6 +7,11 @@ macro_line|#else
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#endif
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;hcd.h&quot;
 multiline_comment|/* PCI-based HCs are normal, but custom bus glue should be ok */
@@ -708,7 +708,6 @@ id|USB_STATE_QUIESCING
 suffix:semicolon
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;roothub graceful disconnect&bslash;n&quot;
@@ -1014,7 +1013,6 @@ id|USB_STATE_SUSPENDED
 (brace
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;can&squot;t resume, not suspended!&bslash;n&quot;
@@ -1061,7 +1059,6 @@ id|hcd-&gt;state
 (brace
 id|dev_dbg
 (paren
-op_star
 id|hcd-&gt;controller
 comma
 l_string|&quot;resume fail, retval %d&bslash;n&quot;

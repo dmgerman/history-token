@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * USB ViCam WebCam driver&n; * Copyright (c) 2002 Joe Burks (jburks@wavicle.org),&n; *                    John Tyner (jtyner@cs.ucr.edu)&n; *&n; * Supports 3COM HomeConnect PC Digital WebCam&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * This source code is based heavily on the CPiA webcam driver which was&n; * written by Peter Pregler, Scott J. Bertin and Johannes Erdfelt&n; *&n; * Portions of this code were also copied from usbvideo.c&n; *&n; * Special thanks to the the whole team at Sourceforge for help making&n; * this driver become a reality.  Notably:&n; * Andy Armstrong who reverse engineered the color encoding and&n; * Pavel Machek and Chris Cheney who worked on reverse engineering the&n; *    camera controls and wrote the first generation driver.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
@@ -4330,7 +4329,7 @@ OG
 l_int|0
 )paren
 (brace
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|vmalloc_to_page
@@ -4403,7 +4402,7 @@ OG
 l_int|0
 )paren
 (brace
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|vmalloc_to_page

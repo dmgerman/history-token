@@ -3473,16 +3473,12 @@ id|clen
 comma
 l_string|&quot;%d %s&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 (paren
 op_star
 id|fi
 )paren
 op_member_access_from_pointer
 id|node
-)paren
 comma
 (paren
 op_star
@@ -5912,13 +5908,7 @@ r_break
 suffix:semicolon
 id|fb_info-&gt;node
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|FB_MAJOR
-comma
 id|i
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6058,11 +6048,7 @@ id|i
 suffix:semicolon
 id|i
 op_assign
-id|minor
-c_func
-(paren
 id|fb_info-&gt;node
-)paren
 suffix:semicolon
 r_if
 c_cond

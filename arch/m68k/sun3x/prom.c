@@ -301,31 +301,27 @@ id|console
 id|sun3x_debug
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;debug&quot;
 comma
+dot
+id|write
+op_assign
 id|sun3x_prom_write
 comma
-multiline_comment|/* write */
-l_int|NULL
-comma
-multiline_comment|/* read */
-l_int|NULL
-comma
-multiline_comment|/* device */
-l_int|NULL
-comma
-multiline_comment|/* unblank */
-l_int|NULL
-comma
-multiline_comment|/* setup */
+dot
+id|flags
+op_assign
 id|CON_PRINTBUFFER
 comma
+dot
+id|index
+op_assign
 op_minus
 l_int|1
 comma
-l_int|0
-comma
-l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|sun3x_prom_init

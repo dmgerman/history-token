@@ -529,7 +529,12 @@ suffix:semicolon
 DECL|member|driver
 r_struct
 id|tty_driver
+op_star
 id|driver
+suffix:semicolon
+DECL|member|index
+r_int
+id|index
 suffix:semicolon
 DECL|member|ldisc
 r_struct
@@ -546,6 +551,13 @@ comma
 op_star
 id|termios_locked
 suffix:semicolon
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|64
+)braket
+suffix:semicolon
 DECL|member|pgrp
 r_int
 id|pgrp
@@ -555,7 +567,7 @@ r_int
 id|session
 suffix:semicolon
 DECL|member|device
-id|kdev_t
+id|dev_t
 id|device
 suffix:semicolon
 DECL|member|flags
@@ -1155,7 +1167,7 @@ op_star
 id|driver
 comma
 r_int
-id|minor
+id|index
 )paren
 suffix:semicolon
 r_extern
@@ -1169,7 +1181,7 @@ op_star
 id|driver
 comma
 r_int
-id|minor
+id|index
 )paren
 suffix:semicolon
 r_extern

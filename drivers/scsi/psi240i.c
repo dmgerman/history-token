@@ -1302,7 +1302,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: we should check to see if this is true */
 r_return
 id|IRQ_HANDLED
 suffix:semicolon

@@ -2284,7 +2284,7 @@ id|ppc_md.show_cpuinfo
 op_assign
 id|gemini_show_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -940,10 +940,14 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* Internal numbers to terminate lists */
 DECL|macro|I2C_CLIENT_END
-mdefine_line|#define I2C_CLIENT_END 0xfffe
+mdefine_line|#define I2C_CLIENT_END&t;&t;0xfffe
+DECL|macro|I2C_CLIENT_ISA_END
+mdefine_line|#define I2C_CLIENT_ISA_END&t;0xfffefffe
 multiline_comment|/* The numbers to use to set I2C bus address */
 DECL|macro|ANY_I2C_BUS
-mdefine_line|#define ANY_I2C_BUS 0xffff
+mdefine_line|#define ANY_I2C_BUS&t;&t;0xffff
+DECL|macro|ANY_I2C_ISA_BUS
+mdefine_line|#define ANY_I2C_ISA_BUS&t;&t;9191
 multiline_comment|/* The length of the option lists */
 DECL|macro|I2C_CLIENT_MAX_OPTS
 mdefine_line|#define I2C_CLIENT_MAX_OPTS 48
@@ -1065,27 +1069,6 @@ id|addr
 )paren
 suffix:semicolon
 multiline_comment|/* Detect function. It iterates over all possible addresses itself.&n; * It will only call found_proc if some client is connected at the&n; * specific address (unless a &squot;force&squot; matched);&n; */
-DECL|typedef|i2c_client_found_addr_proc
-r_typedef
-r_int
-id|i2c_client_found_addr_proc
-(paren
-r_struct
-id|i2c_adapter
-op_star
-id|adapter
-comma
-r_int
-id|addr
-comma
-r_int
-r_int
-id|flags
-comma
-r_int
-id|kind
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|i2c_probe
@@ -1101,9 +1084,20 @@ id|i2c_client_address_data
 op_star
 id|address_data
 comma
-id|i2c_client_found_addr_proc
+r_int
+(paren
 op_star
 id|found_proc
+)paren
+(paren
+r_struct
+id|i2c_adapter
+op_star
+comma
+r_int
+comma
+r_int
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* An ioctl like call to set div. parameters of the adapter.&n; */
@@ -1396,7 +1390,7 @@ DECL|macro|I2C_CLIENT_MODULE_PARM
 mdefine_line|#define I2C_CLIENT_MODULE_PARM(var,desc) &bslash;&n;  static unsigned short var[I2C_CLIENT_MAX_OPTS] = I2C_CLIENT_DEFAULTS; &bslash;&n;  MODULE_PARM(var,I2C_CLIENT_MODPARM); &bslash;&n;  MODULE_PARM_DESC(var,desc)
 multiline_comment|/* This is the one you want to use in your own modules */
 DECL|macro|I2C_CLIENT_INSMOD
-mdefine_line|#define I2C_CLIENT_INSMOD &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe, &bslash;&n;                      &quot;List of adapter,address pairs to scan additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe_range, &bslash;&n;                      &quot;List of adapter,start-addr,end-addr triples to scan &quot; &bslash;&n;                      &quot;additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore, &bslash;&n;                      &quot;List of adapter,address pairs not to scan&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore_range, &bslash;&n;                      &quot;List of adapter,start-addr,end-addr triples not to &quot; &bslash;&n;                      &quot;scan&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(force, &bslash;&n;                      &quot;List of adapter,address pairs to boldly assume &quot; &bslash;&n;                      &quot;to be present&quot;); &bslash;&n;  static struct i2c_client_address_data addr_data = &bslash;&n;                                       {normal_i2c, normal_i2c_range, &bslash;&n;                                        probe, probe_range, &bslash;&n;                                        ignore, ignore_range, &bslash;&n;                                        force}
+mdefine_line|#define I2C_CLIENT_INSMOD &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe, &bslash;&n;                      &quot;List of adapter,address pairs to scan additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(probe_range, &bslash;&n;                      &quot;List of adapter,start-addr,end-addr triples to scan &quot; &bslash;&n;                      &quot;additionally&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore, &bslash;&n;                      &quot;List of adapter,address pairs not to scan&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(ignore_range, &bslash;&n;                      &quot;List of adapter,start-addr,end-addr triples not to &quot; &bslash;&n;                      &quot;scan&quot;); &bslash;&n;  I2C_CLIENT_MODULE_PARM(force, &bslash;&n;                      &quot;List of adapter,address pairs to boldly assume &quot; &bslash;&n;                      &quot;to be present&quot;); &bslash;&n;&t;static struct i2c_client_address_data addr_data = {&t;&t;&bslash;&n;&t;&t;&t;.normal_i2c = &t;&t;normal_i2c,&t;&t;&bslash;&n;&t;&t;&t;.normal_i2c_range =&t;normal_i2c_range,&t;&bslash;&n;&t;&t;&t;.probe =&t;&t;probe,&t;&t;&t;&bslash;&n;&t;&t;&t;.probe_range =&t;&t;probe_range,&t;&t;&bslash;&n;&t;&t;&t;.ignore =&t;&t;ignore,&t;&t;&t;&bslash;&n;&t;&t;&t;.ignore_range =&t;&t;ignore_range,&t;&t;&bslash;&n;&t;&t;&t;.force =&t;&t;force,&t;&t;&t;&bslash;&n;&t;&t;}
 multiline_comment|/* Detect whether we are on the isa bus. If this returns true, all i2c&n;   access will fail! */
 DECL|macro|i2c_is_isa_client
 mdefine_line|#define i2c_is_isa_client(clientptr) &bslash;&n;        ((clientptr)-&gt;adapter-&gt;algo-&gt;id == I2C_ALGO_ISA)

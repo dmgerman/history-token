@@ -275,7 +275,7 @@ id|timer_list
 id|missed_irq_timer
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|sx_interrupt
 c_func
 (paren
@@ -306,8 +306,9 @@ r_const
 op_star
 id|port
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -346,11 +347,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -372,11 +369,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|cdevname
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -3337,7 +3330,7 @@ suffix:semicolon
 multiline_comment|/* The main interrupt processing routine */
 DECL|function|sx_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|sx_interrupt
 c_func
 (paren
@@ -3405,6 +3398,7 @@ id|irq
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|saved_reg
@@ -3644,6 +3638,9 @@ id|bp-&gt;base
 op_plus
 id|SX_ADDR_REG
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Routines for open &amp; close processing.&n; */
@@ -5515,7 +5512,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SPECIALIX_TYPE_CALLOUT
 )paren
@@ -5982,11 +5979,7 @@ op_assign
 id|SX_BOARD
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 suffix:semicolon
 r_if
@@ -6031,11 +6024,7 @@ op_plus
 id|SX_PORT
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_SPECIALIX
@@ -6053,11 +6042,7 @@ comma
 id|SX_PORT
 c_func
 (paren
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
+id|tty-&gt;index
 )paren
 )paren
 suffix:semicolon
@@ -6070,7 +6055,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_open&quot;
 )paren
@@ -6163,7 +6148,7 @@ id|ASYNC_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SPECIALIX_TYPE_NORMAL
 )paren
@@ -6269,7 +6254,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;close&quot;
 )paren
@@ -6556,10 +6541,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -6707,7 +6692,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_write&quot;
 )paren
@@ -7116,7 +7101,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_put_char&quot;
 )paren
@@ -7224,7 +7209,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_flush_chars&quot;
 )paren
@@ -7336,7 +7321,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_write_room&quot;
 )paren
@@ -7399,7 +7384,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_chars_in_buffer&quot;
 )paren
@@ -7447,7 +7432,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_flush_buffer&quot;
 )paren
@@ -8688,7 +8673,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_ioctl&quot;
 )paren
@@ -9053,7 +9038,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_throttle&quot;
 )paren
@@ -9214,7 +9199,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_unthrottle&quot;
 )paren
@@ -9362,7 +9347,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_stop&quot;
 )paren
@@ -9465,7 +9450,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_start&quot;
 )paren
@@ -9627,7 +9612,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_hangup&quot;
 )paren
@@ -9720,7 +9705,7 @@ c_func
 (paren
 id|port
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;sx_set_termios&quot;
 )paren

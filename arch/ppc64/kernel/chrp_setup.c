@@ -142,7 +142,7 @@ id|fwnmi_active
 suffix:semicolon
 multiline_comment|/* TRUE if an FWNMI handler is present */
 DECL|variable|boot_dev
-id|kdev_t
+id|dev_t
 id|boot_dev
 suffix:semicolon
 DECL|variable|virtPython0Facilities

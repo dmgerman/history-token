@@ -75,8 +75,8 @@ macro_line|#endif
 r_static
 id|__inline__
 r_int
-DECL|function|irq_cannonicalize
-id|irq_cannonicalize
+DECL|function|irq_canonicalize
+id|irq_canonicalize
 c_func
 (paren
 r_int
@@ -98,8 +98,8 @@ mdefine_line|#define&t;NR_IRQS&t;&t;(NR_UIC_IRQS + NR_BOARD_IRQS)
 r_static
 id|__inline__
 r_int
-DECL|function|irq_cannonicalize
-id|irq_cannonicalize
+DECL|function|irq_canonicalize
+id|irq_canonicalize
 c_func
 (paren
 r_int
@@ -174,11 +174,11 @@ multiline_comment|/* Some internal interrupt registers use an 8-bit mask for the
 DECL|macro|mk_int_int_mask
 mdefine_line|#define&t;mk_int_int_mask(IL) (1 &lt;&lt; (7 - (IL/2)))
 multiline_comment|/* always the same on 8xx -- Cort */
-DECL|function|irq_cannonicalize
+DECL|function|irq_canonicalize
 r_static
 id|__inline__
 r_int
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 r_int
@@ -221,11 +221,11 @@ DECL|macro|SIU_INT_SCC4
 mdefine_line|#define&t;SIU_INT_SCC4&t;&t;((uint)0x2b)
 macro_line|#endif /* CONFIG_8260 */
 multiline_comment|/*&n; * This gets called from serial.c, which is now used on&n; * powermacs as well as prep/chrp boxes.&n; * Prep and chrp both have cascaded 8259 PICs.&n; */
-DECL|function|irq_cannonicalize
+DECL|function|irq_canonicalize
 r_static
 id|__inline__
 r_int
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 r_int
@@ -235,12 +235,12 @@ id|irq
 r_if
 c_cond
 (paren
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 )paren
 r_return
 id|ppc_md
 dot
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|irq

@@ -22,6 +22,6 @@ mdefine_line|#define LAST_IRQ&t;&t;IRQ_SYSERR
 multiline_comment|/* timer is part of the DUART */
 DECL|macro|IRQ_TIMER
 mdefine_line|#define IRQ_TIMER&t;&t;IRQ_DUART
-DECL|macro|irq_cannonicalize
-mdefine_line|#define irq_cannonicalize(i)&t;(i)
+DECL|macro|irq_canonicalize
+mdefine_line|#define irq_canonicalize(i)&t;(i)
 eof

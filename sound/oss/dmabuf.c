@@ -5,7 +5,6 @@ mdefine_line|#define BE_CONSERVATIVE
 DECL|macro|SAMPLE_ROUNDUP
 mdefine_line|#define SAMPLE_ROUNDUP 0
 macro_line|#include &quot;sound_config.h&quot;
-macro_line|#include &lt;linux/wrapper.h&gt;
 DECL|macro|DMAP_FREE_ON_CLOSE
 mdefine_line|#define DMAP_FREE_ON_CLOSE      0
 DECL|macro|DMAP_KEEP_ON_CLOSE
@@ -477,7 +476,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|page
@@ -593,7 +592,7 @@ suffix:semicolon
 id|page
 op_increment
 )paren
-id|mem_map_unreserve
+id|ClearPageReserved
 c_func
 (paren
 id|page

@@ -6582,6 +6582,15 @@ r_case
 l_int|0x02
 suffix:colon
 multiline_comment|/* ERROR_ABORTED, i.e.&n;&t;&t;&t;&t;   SCSI_STATUS_CHECK_CONDITION */
+id|out
+suffix:colon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 multiline_comment|/* set sense_buffer and result fields */
 r_if
 c_cond

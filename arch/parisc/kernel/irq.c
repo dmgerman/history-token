@@ -470,7 +470,7 @@ id|cpu_eiem
 suffix:semicolon
 id|irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|irq
@@ -549,7 +549,7 @@ id|cpu_eiem
 suffix:semicolon
 id|irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|irq
@@ -628,7 +628,7 @@ id|cpu_eiem
 suffix:semicolon
 id|irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|irq
@@ -713,7 +713,7 @@ id|cpu_eiem
 suffix:semicolon
 id|irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|irq
@@ -2314,7 +2314,7 @@ suffix:semicolon
 macro_line|#endif
 id|irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|irq
@@ -2566,7 +2566,7 @@ suffix:semicolon
 multiline_comment|/* See comments in request_irq() about interrupt context */
 id|irq
 op_assign
-id|irq_cannonicalize
+id|irq_canonicalize
 c_func
 (paren
 id|irq

@@ -141,7 +141,7 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-id|kdev_t
+id|dev_t
 id|boot_dev
 suffix:semicolon
 r_extern
@@ -1183,8 +1183,8 @@ suffix:semicolon
 )brace
 id|u_int
 id|__chrp
-DECL|function|chrp_irq_cannonicalize
-id|chrp_irq_cannonicalize
+DECL|function|chrp_irq_canonicalize
+id|chrp_irq_canonicalize
 c_func
 (paren
 id|u_int
@@ -1957,9 +1957,9 @@ id|ppc_md.show_cpuinfo
 op_assign
 id|chrp_show_cpuinfo
 suffix:semicolon
-id|ppc_md.irq_cannonicalize
+id|ppc_md.irq_canonicalize
 op_assign
-id|chrp_irq_cannonicalize
+id|chrp_irq_canonicalize
 suffix:semicolon
 id|ppc_md.init_IRQ
 op_assign

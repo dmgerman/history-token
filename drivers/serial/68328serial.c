@@ -251,8 +251,9 @@ id|m68k_serial
 op_star
 id|info
 comma
-id|kdev_t
-id|device
+r_char
+op_star
+id|name
 comma
 r_const
 r_char
@@ -267,7 +268,7 @@ r_char
 op_star
 id|badmagic
 op_assign
-l_string|&quot;Warning: bad magic number for serial struct (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;Warning: bad magic number for serial struct %s in %s&bslash;n&quot;
 suffix:semicolon
 r_static
 r_const
@@ -275,7 +276,7 @@ r_char
 op_star
 id|badinfo
 op_assign
-l_string|&quot;Warning: null m68k_serial for (%d, %d) in %s&bslash;n&quot;
+l_string|&quot;Warning: null m68k_serial for %s in %s&bslash;n&quot;
 suffix:semicolon
 r_if
 c_cond
@@ -289,17 +290,7 @@ c_func
 (paren
 id|badinfo
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -321,17 +312,7 @@ c_func
 (paren
 id|badmagic
 comma
-id|major
-c_func
-(paren
-id|device
-)paren
-comma
-id|minor
-c_func
-(paren
-id|device
-)paren
+id|name
 comma
 id|routine
 )paren
@@ -537,7 +518,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_stop&quot;
 )paren
@@ -685,7 +666,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_start&quot;
 )paren
@@ -2590,7 +2571,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_set_ldisc&quot;
 )paren
@@ -2667,7 +2648,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_flush_chars&quot;
 )paren
@@ -2877,7 +2858,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_write&quot;
 )paren
@@ -3198,7 +3179,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_write_room&quot;
 )paren
@@ -3261,7 +3242,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_chars_in_buffer&quot;
 )paren
@@ -3305,7 +3286,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_flush_buffer&quot;
 )paren
@@ -3393,7 +3374,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_throttle&quot;
 )paren
@@ -3451,7 +3432,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_unthrottle&quot;
 )paren
@@ -3989,7 +3970,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_ioctl&quot;
 )paren
@@ -4555,7 +4536,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_close&quot;
 )paren
@@ -4735,10 +4716,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.flush_buffer
+id|tty-&gt;driver-&gt;flush_buffer
 )paren
 id|tty-&gt;driver
-dot
+op_member_access_from_pointer
 id|flush_buffer
 c_func
 (paren
@@ -4907,7 +4888,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_hangup&quot;
 )paren
@@ -5038,7 +5019,7 @@ multiline_comment|/*&n;&t; * If this is a callout device, then just make sure th
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_CALLOUT
 )paren
@@ -5411,13 +5392,7 @@ id|line
 suffix:semicolon
 id|line
 op_assign
-id|minor
-c_func
-(paren
-id|tty-&gt;device
-)paren
-op_minus
-id|tty-&gt;driver.minor_start
+id|tty-&gt;index
 suffix:semicolon
 r_if
 c_cond
@@ -5451,7 +5426,7 @@ c_func
 (paren
 id|info
 comma
-id|tty-&gt;device
+id|tty-&gt;name
 comma
 l_string|&quot;rs_open&quot;
 )paren
@@ -5529,7 +5504,7 @@ id|S_SPLIT_TERMIOS
 r_if
 c_cond
 (paren
-id|tty-&gt;driver.subtype
+id|tty-&gt;driver-&gt;subtype
 op_eq
 id|SERIAL_TYPE_NORMAL
 )paren
@@ -6539,7 +6514,9 @@ suffix:semicolon
 )brace
 DECL|function|m68328_console_device
 r_static
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 id|m68328_console_device
 c_func
 (paren
@@ -6547,18 +6524,20 @@ r_struct
 id|console
 op_star
 id|c
+comma
+r_int
+op_star
+id|index
 )paren
 (brace
-r_return
-id|mk_kdev
-c_func
-(paren
-id|TTY_MAJOR
-comma
-l_int|64
-op_plus
+op_star
+id|index
+op_assign
 id|c-&gt;index
-)paren
+suffix:semicolon
+r_return
+op_amp
+id|serial_driver
 suffix:semicolon
 )brace
 DECL|function|m68328_console_write

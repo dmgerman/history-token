@@ -13,7 +13,6 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/ac97_codec.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
@@ -5209,7 +5208,7 @@ suffix:semicolon
 id|map
 op_increment
 )paren
-id|cs4x_mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|map
@@ -5356,7 +5355,7 @@ suffix:semicolon
 id|map
 op_increment
 )paren
-id|cs4x_mem_map_reserve
+id|SetPageReserved
 c_func
 (paren
 id|map
@@ -5436,7 +5435,7 @@ suffix:semicolon
 id|map
 op_increment
 )paren
-id|cs4x_mem_map_unreserve
+id|cs4x_ClearPageReserved
 c_func
 (paren
 id|map
@@ -5492,7 +5491,7 @@ suffix:semicolon
 id|map
 op_increment
 )paren
-id|cs4x_mem_map_unreserve
+id|cs4x_ClearPageReserved
 c_func
 (paren
 id|map
