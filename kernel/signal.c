@@ -5988,4 +5988,29 @@ id|old_sa.sa.sa_handler
 suffix:semicolon
 )brace
 macro_line|#endif /* !alpha &amp;&amp; !__ia64__ &amp;&amp; !defined(__mips__) &amp;&amp; !defined(__arm__) */
+macro_line|#ifndef HAVE_ARCH_SYS_PAUSE
+id|asmlinkage
+r_int
+DECL|function|sys_pause
+id|sys_pause
+c_func
+(paren
+r_void
+)paren
+(brace
+id|current-&gt;state
+op_assign
+id|TASK_INTERRUPTIBLE
+suffix:semicolon
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ERESTARTNOHAND
+suffix:semicolon
+)brace
+macro_line|#endif /* HAVE_ARCH_SYS_PAUSE */
 eof

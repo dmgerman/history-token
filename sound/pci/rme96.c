@@ -13,6 +13,7 @@ macro_line|#include &lt;sound/asoundef.h&gt;
 DECL|macro|SNDRV_GET_ID
 mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
+multiline_comment|/* note, two last pcis should be equal, it is not a bug */
 id|MODULE_AUTHOR
 c_func
 (paren

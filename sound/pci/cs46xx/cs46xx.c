@@ -3,7 +3,6 @@ multiline_comment|/*&n;  NOTES:&n;  - sometimes the sound is metallic and sibila
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/cs46xx.h&gt;
 DECL|macro|SNDRV_GET_ID

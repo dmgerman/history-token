@@ -3812,10 +3812,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
-suffix:semicolon
 id|outb
 c_func
 (paren
@@ -3987,10 +3983,6 @@ id|msc_stat
 op_or
 l_int|0x30
 )paren
-suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
 suffix:semicolon
 id|outb
 c_func

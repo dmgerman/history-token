@@ -1163,6 +1163,8 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
+r_return
+suffix:semicolon
 )brace
 DECL|function|nbd_clear_que
 r_void

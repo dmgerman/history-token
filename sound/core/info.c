@@ -255,10 +255,15 @@ id|fmt
 suffix:semicolon
 id|res
 op_assign
-id|vsprintf
+id|vsnprintf
 c_func
 (paren
 id|sbuffer
+comma
+r_sizeof
+(paren
+id|sbuffer
+)paren
 comma
 id|fmt
 comma

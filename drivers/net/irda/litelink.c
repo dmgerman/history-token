@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 DECL|macro|MIN_DELAY
 mdefine_line|#define MIN_DELAY 25      /* 15 us, but wait a little more to be sure */
@@ -119,6 +118,7 @@ suffix:semicolon
 )brace
 DECL|function|litelink_cleanup
 r_void
+id|__exit
 id|litelink_cleanup
 c_func
 (paren
@@ -446,7 +446,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -466,35 +465,19 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize Litelink module&n; *&n; */
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|litelink_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|litelink_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Function cleanup_module (void)&n; *&n; *    Cleanup Litelink module&n; *&n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|litelink_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|litelink_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof

@@ -214,12 +214,14 @@ multiline_comment|/* Lock for serializing accesses to the&n;&t;&t;&t;&t;&t;    m
 r_union
 (brace
 DECL|member|nr_mft_records
-id|s64
+r_int
+r_int
 id|nr_mft_records
 suffix:semicolon
-multiline_comment|/* Number of records in the mft. */
+multiline_comment|/* Number of mft records. */
 DECL|member|nr_mft_bits
-id|s64
+r_int
+r_int
 id|nr_mft_bits
 suffix:semicolon
 multiline_comment|/* Number of bits in mft bitmap. */

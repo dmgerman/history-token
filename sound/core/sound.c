@@ -1916,7 +1916,7 @@ c_func
 id|snd_free_pages
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
+macro_line|#if defined(CONFIG_ISA) &amp;&amp; ! defined(CONFIG_PCI)
 DECL|variable|snd_malloc_isa_pages
 id|EXPORT_SYMBOL
 c_func
@@ -1984,7 +1984,7 @@ c_func
 id|snd_cards
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 DECL|variable|snd_mixer_oss_notify_callback
 id|EXPORT_SYMBOL
 c_func

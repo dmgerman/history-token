@@ -3,6 +3,9 @@ DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/i2c.h&gt;
+macro_line|#include &lt;linux/i2c-dev.h&gt;
+macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 DECL|macro|chip_t
@@ -61,10 +64,6 @@ r_int
 id|daca_init_client
 c_func
 (paren
-id|pmac_t
-op_star
-id|chip
-comma
 id|pmac_keywest_t
 op_star
 id|i2c
@@ -152,7 +151,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|mix-&gt;i2c.base
+id|mix-&gt;i2c.client
 )paren
 r_return
 op_minus
@@ -958,6 +957,14 @@ id|pmac_daca_t
 op_star
 id|mix
 suffix:semicolon
+macro_line|#ifdef CONFIG_KMOD
+id|request_module
+c_func
+(paren
+l_string|&quot;i2c-keywest&quot;
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_KMOD */&t;
 id|mix
 op_assign
 id|kmalloc
@@ -1009,23 +1016,29 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* default on */
+id|mix-&gt;i2c.addr
+op_assign
+id|DACA_I2C_ADDR
+suffix:semicolon
+id|mix-&gt;i2c.init_client
+op_assign
+id|daca_init_client
+suffix:semicolon
+id|mix-&gt;i2c.name
+op_assign
+l_string|&quot;DACA&quot;
+suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
 id|err
 op_assign
-id|snd_pmac_keywest_find
+id|snd_pmac_keywest_init
 c_func
 (paren
-id|chip
-comma
 op_amp
 id|mix-&gt;i2c
-comma
-id|DACA_I2C_ADDR
-comma
-id|daca_init_client
 )paren
 )paren
 OL

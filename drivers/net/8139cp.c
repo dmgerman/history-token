@@ -4023,16 +4023,12 @@ op_rshift
 l_int|5
 )braket
 op_or_assign
-id|cpu_to_le32
-c_func
-(paren
 l_int|1
 op_lshift
 (paren
 id|bit_nr
 op_amp
 l_int|31
-)paren
 )paren
 suffix:semicolon
 id|rx_mode

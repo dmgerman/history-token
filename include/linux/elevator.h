@@ -215,17 +215,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|request
-op_star
-id|__elv_next_request
-c_func
-(paren
-id|request_queue_t
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|elv_merge_cleanup
 c_func

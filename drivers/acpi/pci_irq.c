@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &quot;acpi_bus.h&quot;
 macro_line|#include &quot;acpi_drivers.h&quot;
 DECL|macro|_COMPONENT

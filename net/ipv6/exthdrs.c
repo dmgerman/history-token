@@ -75,6 +75,7 @@ suffix:semicolon
 multiline_comment|/*********************&n;  Generic functions&n; *********************/
 multiline_comment|/* An unknown option is detected, decide what to do */
 DECL|function|ip6_tlvopt_unknown
+r_static
 r_int
 id|ip6_tlvopt_unknown
 c_func
@@ -404,6 +405,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************&n;  Destination options header.&n; *****************************/
 DECL|variable|tlvprocdestopt_lst
+r_static
 r_struct
 id|tlvtype_proc
 id|tlvprocdestopt_lst
@@ -1470,6 +1472,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This list MUST NOT contain entry for NEXTHDR_HOP.&n;   It is parsed immediately after packet received&n;   and if it occurs somewhere in another place we must&n;   generate error.&n; */
 DECL|variable|hdrproc_lst
+r_static
 r_struct
 id|hdrtype_proc
 id|hdrproc_lst
@@ -1908,6 +1911,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|tlvprochopopt_lst
+r_static
 r_struct
 id|tlvtype_proc
 id|tlvprochopopt_lst
@@ -1991,6 +1995,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Creating outbound headers.&n; *&n; *&t;&quot;build&quot; functions work when skb is filled from head to tail (datagram)&n; *&t;&quot;push&quot;&t;functions work when headers are added from tail to head (tcp)&n; *&n; *&t;In both cases we assume, that caller reserved enough room&n; *&t;for headers.&n; */
 DECL|function|ipv6_build_rthdr
+r_static
 id|u8
 op_star
 id|ipv6_build_rthdr

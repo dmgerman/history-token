@@ -109,7 +109,7 @@ op_star
 id|chset
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 r_static
 r_int
 id|oss_ioctl
@@ -329,7 +329,7 @@ id|sysex
 suffix:colon
 id|sysex
 comma
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 id|oss_ioctl
 suffix:colon
 id|oss_ioctl
@@ -2154,7 +2154,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 multiline_comment|/*&n; * OSS ioctl callback&n; */
 r_static
 r_int

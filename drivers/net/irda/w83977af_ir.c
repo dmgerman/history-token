@@ -14,7 +14,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/w83977af.h&gt;
@@ -502,9 +501,9 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function w83977af_cleanup ()&n; *&n; *    Close all configured chips&n; *&n; */
-macro_line|#ifdef MODULE
 DECL|function|w83977af_cleanup
 r_void
+id|__exit
 id|w83977af_cleanup
 c_func
 (paren
@@ -557,7 +556,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* MODULE */
 multiline_comment|/*&n; * Function w83977af_open (iobase, irq)&n; *&n; *    Open driver instance&n; *&n; */
 DECL|function|w83977af_open
 r_int
@@ -5291,7 +5289,6 @@ op_amp
 id|self-&gt;stats
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -5359,35 +5356,19 @@ l_string|&quot;IRQ lines&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    &n; *&n; */
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|w83977af_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|w83977af_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Function cleanup_module (void)&n; *&n; *    &n; *&n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|w83977af_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|w83977af_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof

@@ -160,6 +160,21 @@ DECL|macro|AC97_AD_SERIAL_CFG
 mdefine_line|#define AC97_AD_SERIAL_CFG&t;0x74&t;/* Serial Configuration */
 DECL|macro|AC97_AD_MISC
 mdefine_line|#define AC97_AD_MISC&t;&t;0x76&t;/* Misc Control Bits */
+multiline_comment|/* specific - Cirrus Logic */
+DECL|macro|AC97_CSR_ACMODE
+mdefine_line|#define AC97_CSR_ACMODE&t;&t;0x5e&t;/* AC Mode Register */
+DECL|macro|AC97_CSR_MISC_CRYSTAL
+mdefine_line|#define AC97_CSR_MISC_CRYSTAL&t;0x60&t;/* Misc Crystal Control */
+DECL|macro|AC97_CSR_SPDIF
+mdefine_line|#define AC97_CSR_SPDIF&t;&t;0x68&t;/* S/PDIF Register */
+DECL|macro|AC97_CSR_SERIAL
+mdefine_line|#define AC97_CSR_SERIAL&t;&t;0x6a&t;/* Serial Port Control */
+DECL|macro|AC97_CSR_SPECF_ADDR
+mdefine_line|#define AC97_CSR_SPECF_ADDR&t;0x6c&t;/* Special Feature Address */
+DECL|macro|AC97_CSR_SPECF_DATA
+mdefine_line|#define AC97_CSR_SPECF_DATA&t;0x6e&t;/* Special Feature Data */
+DECL|macro|AC97_CSR_BDI_STATUS
+mdefine_line|#define AC97_CSR_BDI_STATUS&t;0x7a&t;/* BDI Status */
 multiline_comment|/* ac97-&gt;scaps */
 DECL|macro|AC97_SCAP_SURROUND_DAC
 mdefine_line|#define AC97_SCAP_SURROUND_DAC&t;(1&lt;&lt;0)&t;/* surround L&amp;R DACs are present */

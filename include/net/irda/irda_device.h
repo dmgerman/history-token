@@ -1,15 +1,20 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irda_device.h&n; * Version:       0.9&n; * Description:   Contains various declarations used by the drivers&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Apr 14 12:41:42 1998&n; * Modified at:   Mon Mar 20 09:08:57 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 1998 Thomas Davis, &lt;ratbert@radiks.net&gt;,&n; *&n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irda_device.h&n; * Version:       0.9&n; * Description:   Contains various declarations used by the drivers&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Tue Apr 14 12:41:42 1998&n; * Modified at:   Mon Mar 20 09:08:57 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 1998 Thomas Davis, &lt;ratbert@radiks.net&gt;,&n; *     Copyright (c) 2000-2002 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*&n; * This header contains all the IrDA definitions a driver really&n; * needs, and therefore the driver should not need to include&n; * any other IrDA headers - Jean II&n; */
 macro_line|#ifndef IRDA_DEVICE_H
 DECL|macro|IRDA_DEVICE_H
 mdefine_line|#define IRDA_DEVICE_H
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/skbuff.h&gt;&t;&t;/* struct sk_buff */
 macro_line|#include &lt;linux/irda.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/qos.h&gt;
-macro_line|#include &lt;net/irda/irqueue.h&gt;
-macro_line|#include &lt;net/irda/irlap_frame.h&gt;
+macro_line|#include &lt;net/irda/qos.h&gt;&t;&t;/* struct qos_info */
+macro_line|#include &lt;net/irda/irqueue.h&gt;&t;&t;/* irda_queue_t */
+multiline_comment|/* A few forward declarations (to make compiler happy) */
+r_struct
+id|irlap_cb
+suffix:semicolon
 multiline_comment|/* Some non-standard interface flags (should not conflict with any in if.h) */
 DECL|macro|IFF_SIR
 mdefine_line|#define IFF_SIR &t;0x0001 /* Supports SIR speeds */
@@ -349,6 +354,68 @@ id|task
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* &n; * Per-packet information we need to hide inside sk_buff &n; * (must not exceed 48 bytes, check with struct sk_buff) &n; */
+DECL|struct|irda_skb_cb
+r_struct
+id|irda_skb_cb
+(brace
+DECL|member|magic
+id|magic_t
+id|magic
+suffix:semicolon
+multiline_comment|/* Be sure that we can trust the information */
+DECL|member|next_speed
+id|__u32
+id|next_speed
+suffix:semicolon
+multiline_comment|/* The Speed to be set *after* this frame */
+DECL|member|mtt
+id|__u16
+id|mtt
+suffix:semicolon
+multiline_comment|/* Minimum turn around time */
+DECL|member|xbofs
+id|__u16
+id|xbofs
+suffix:semicolon
+multiline_comment|/* Number of xbofs required, used by SIR mode */
+DECL|member|next_xbofs
+id|__u16
+id|next_xbofs
+suffix:semicolon
+multiline_comment|/* Number of xbofs required *after* this frame */
+DECL|member|context
+r_void
+op_star
+id|context
+suffix:semicolon
+multiline_comment|/* May be used by drivers */
+DECL|member|destructor
+r_void
+(paren
+op_star
+id|destructor
+)paren
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
+multiline_comment|/* Used for flow control */
+DECL|member|xbofs_delay
+id|__u16
+id|xbofs_delay
+suffix:semicolon
+multiline_comment|/* Number of xbofs used for generating the mtt */
+DECL|member|line
+id|__u8
+id|line
+suffix:semicolon
+multiline_comment|/* Used by IrCOMM in IrLPT mode */
+)brace
+suffix:semicolon
 multiline_comment|/* Chip specific info */
 r_typedef
 r_struct
@@ -506,6 +573,38 @@ id|irda_device_cleanup
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+multiline_comment|/* IrLAP entry points used by the drivers.&n; * We declare them here to avoid the driver pulling a whole bunch stack&n; * headers they don&squot;t really need - Jean II */
+r_struct
+id|irlap_cb
+op_star
+id|irlap_open
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|qos_info
+op_star
+id|qos
+comma
+r_char
+op_star
+id|hw_name
+)paren
+suffix:semicolon
+r_void
+id|irlap_close
+c_func
+(paren
+r_struct
+id|irlap_cb
+op_star
+id|self
 )paren
 suffix:semicolon
 multiline_comment|/* Interface to be uses by IrLAP */

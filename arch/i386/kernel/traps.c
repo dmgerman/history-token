@@ -289,6 +289,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|variable|kstack_depth_to_print
+r_static
 r_int
 id|kstack_depth_to_print
 op_assign

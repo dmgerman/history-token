@@ -3402,6 +3402,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|tcp_v6_err
+r_static
 r_void
 id|tcp_v6_err
 c_func
@@ -7372,6 +7373,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|tcp_v6_rcv
+r_static
 r_int
 id|tcp_v6_rcv
 c_func

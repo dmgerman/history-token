@@ -93,14 +93,6 @@ multiline_comment|/* filter flags */
 id|bitmap_member
 c_func
 (paren
-id|client_filter
-comma
-l_int|256
-)paren
-suffix:semicolon
-id|bitmap_member
-c_func
-(paren
 id|event_filter
 comma
 l_int|256

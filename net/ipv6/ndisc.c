@@ -1301,6 +1301,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Send a Neighbour Advertisement&n; */
 DECL|function|ndisc_send_na
+r_static
 r_void
 id|ndisc_send_na
 c_func

@@ -12,7 +12,7 @@ macro_line|#include &quot;jfs_filsys.h&quot;
 macro_line|#include &quot;jfs_metapage.h&quot;
 macro_line|#include &quot;jfs_txnmgr.h&quot;
 macro_line|#include &quot;jfs_debug.h&quot;
-multiline_comment|/*&n; * lbuf&squot;s ready to be redriven.  Protected by log_redrive_lock (jfsIOtask)&n; */
+multiline_comment|/*&n; * lbuf&squot;s ready to be redriven.  Protected by log_redrive_lock (jfsIO thread)&n; */
 DECL|variable|log_redrive_list
 r_static
 id|lbuf_t
@@ -25,6 +25,13 @@ id|spinlock_t
 id|log_redrive_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|variable|jfs_IO_thread_wait
+id|DECLARE_WAIT_QUEUE_HEAD
+c_func
+(paren
+id|jfs_IO_thread_wait
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;log read/write serialization (per log)&n; */
 DECL|macro|LOG_LOCK_INIT
@@ -98,17 +105,7 @@ id|tblk
 suffix:semicolon
 r_extern
 r_int
-id|jfs_thread_stopped
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|task_struct
-op_star
-id|jfsIOtask
+id|jfs_stop_threads
 suffix:semicolon
 r_extern
 r_struct
@@ -564,14 +561,7 @@ op_assign
 id|mp-&gt;lsn
 suffix:semicolon
 multiline_comment|/* move tblock after page on logsynclist */
-id|list_del
-c_func
-(paren
-op_amp
-id|tblk-&gt;synclist
-)paren
-suffix:semicolon
-id|list_add
+id|list_move
 c_func
 (paren
 op_amp
@@ -2943,7 +2933,7 @@ id|log
 )paren
 )paren
 r_goto
-id|errout10
+id|free
 suffix:semicolon
 r_goto
 id|out
@@ -2951,7 +2941,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; *      external log as separate logical volume&n;&t; *&n;&t; * file systems to log may have n-to-1 relationship;&n;&t; */
 id|externalLog
 suffix:colon
-multiline_comment|/*&n;&t; * TODO: Check for already opened log devices&n;&t; */
 r_if
 c_cond
 (paren
@@ -2982,7 +2971,7 @@ op_assign
 id|ENODEV
 suffix:semicolon
 r_goto
-id|errout10
+id|free
 suffix:semicolon
 )brace
 r_if
@@ -3013,7 +3002,32 @@ op_minus
 id|rc
 suffix:semicolon
 r_goto
-id|errout10
+id|bdput
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|rc
+op_assign
+id|bd_claim
+c_func
+(paren
+id|bdev
+comma
+id|log
+)paren
+)paren
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|rc
+suffix:semicolon
+r_goto
+id|close
 suffix:semicolon
 )brace
 id|log-&gt;bdev
@@ -3054,7 +3068,7 @@ id|log
 )paren
 )paren
 r_goto
-id|errout20
+id|unclaim
 suffix:semicolon
 multiline_comment|/*&n;&t; * add file system to log active file system list&n;&t; */
 r_if
@@ -3081,7 +3095,7 @@ l_int|1
 )paren
 )paren
 r_goto
-id|errout30
+id|shutdown
 suffix:semicolon
 id|out
 suffix:colon
@@ -3104,7 +3118,7 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; *      unwind on error&n;&t; */
-id|errout30
+id|shutdown
 suffix:colon
 multiline_comment|/* unwind lbmLogInit() */
 id|lbmLogShutdown
@@ -3113,7 +3127,15 @@ c_func
 id|log
 )paren
 suffix:semicolon
-id|errout20
+id|unclaim
+suffix:colon
+id|bd_release
+c_func
+(paren
+id|bdev
+)paren
+suffix:semicolon
+id|close
 suffix:colon
 multiline_comment|/* close external log device */
 id|blkdev_put
@@ -3124,7 +3146,15 @@ comma
 id|BDEV_FS
 )paren
 suffix:semicolon
-id|errout10
+id|bdput
+suffix:colon
+id|bdput
+c_func
+(paren
+id|bdev
+)paren
+suffix:semicolon
+id|free
 suffix:colon
 multiline_comment|/* free log descriptor */
 id|kfree
@@ -3887,6 +3917,13 @@ op_star
 id|log
 )paren
 (brace
+r_struct
+id|block_device
+op_star
+id|bdev
+op_assign
+id|log-&gt;bdev
+suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
@@ -3954,12 +3991,24 @@ c_func
 id|log
 )paren
 suffix:semicolon
+id|bd_release
+c_func
+(paren
+id|bdev
+)paren
+suffix:semicolon
 id|blkdev_put
 c_func
 (paren
-id|log-&gt;bdev
+id|bdev
 comma
 id|BDEV_FS
+)paren
+suffix:semicolon
+id|bdput
+c_func
+(paren
+id|bdev
 )paren
 suffix:semicolon
 id|out
@@ -5135,10 +5184,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|wake_up_process
+id|wake_up
 c_func
 (paren
-id|jfsIOtask
+op_amp
+id|jfs_IO_thread_wait
 )paren
 suffix:semicolon
 )brace
@@ -6214,10 +6264,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|jfsIOtask
-op_assign
-id|current
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -6225,35 +6271,16 @@ op_amp
 id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
-id|siginitsetinv
+id|sigfillset
 c_func
 (paren
 op_amp
 id|current-&gt;blocked
-comma
-id|sigmask
+)paren
+suffix:semicolon
+id|recalc_sigpending
 c_func
 (paren
-id|SIGHUP
-)paren
-op_or
-id|sigmask
-c_func
-(paren
-id|SIGKILL
-)paren
-op_or
-id|sigmask
-c_func
-(paren
-id|SIGSTOP
-)paren
-op_or
-id|sigmask
-c_func
-(paren
-id|SIGCONT
-)paren
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -6272,6 +6299,14 @@ id|jfsIOwait
 suffix:semicolon
 r_do
 (brace
+id|DECLARE_WAITQUEUE
+c_func
+(paren
+id|wq
+comma
+id|current
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -6318,11 +6353,14 @@ id|log_redrive_lock
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irq
+id|add_wait_queue
 c_func
 (paren
 op_amp
-id|log_redrive_lock
+id|jfs_IO_thread_wait
+comma
+op_amp
+id|wq
 )paren
 suffix:semicolon
 id|set_current_state
@@ -6331,9 +6369,30 @@ c_func
 id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|log_redrive_lock
+)paren
+suffix:semicolon
 id|schedule
 c_func
 (paren
+)paren
+suffix:semicolon
+id|current-&gt;state
+op_assign
+id|TASK_RUNNING
+suffix:semicolon
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|jfs_IO_thread_wait
+comma
+op_amp
+id|wq
 )paren
 suffix:semicolon
 )brace
@@ -6341,10 +6400,7 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|jfs_thread_stopped
-c_func
-(paren
-)paren
+id|jfs_stop_threads
 )paren
 suffix:semicolon
 id|jFYI

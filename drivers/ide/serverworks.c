@@ -1152,10 +1152,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
-suffix:semicolon
 id|outb
 c_func
 (paren

@@ -563,7 +563,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 id|card-&gt;mixer_oss_change_count
 op_increment
 suffix:semicolon

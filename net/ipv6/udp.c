@@ -1641,6 +1641,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * &t;This should be easy, if there is something there we&n; * &t;return it, otherwise we block.&n; */
 DECL|function|udpv6_recvmsg
+r_static
 r_int
 id|udpv6_recvmsg
 c_func
@@ -2175,6 +2176,7 @@ id|out_free
 suffix:semicolon
 )brace
 DECL|function|udpv6_err
+r_static
 r_void
 id|udpv6_err
 c_func
@@ -2932,6 +2934,7 @@ id|udp_hash_lock
 suffix:semicolon
 )brace
 DECL|function|udpv6_rcv
+r_static
 r_int
 id|udpv6_rcv
 c_func

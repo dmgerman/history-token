@@ -145,6 +145,7 @@ DECL|variable|num_processors
 r_static
 r_int
 r_int
+id|__initdata
 id|num_processors
 suffix:semicolon
 multiline_comment|/* Bitmask of physically existing CPUs */

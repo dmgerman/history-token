@@ -5769,7 +5769,7 @@ l_int|1
 id|printk
 c_func
 (paren
-l_string|&quot;radeonfb: using max availabe virtual resolution&bslash;n&quot;
+l_string|&quot;radeonfb: using max available virtual resolution&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for

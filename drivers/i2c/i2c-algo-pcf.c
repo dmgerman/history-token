@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-pcf.h&gt;
 macro_line|#include &quot;i2c-pcf8584.h&quot;
@@ -234,6 +233,7 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;Timeout waiting for Bus Busy&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -372,6 +372,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: PCF state 0x%02x&bslash;n&quot;
 comma
 id|get_pcf
@@ -396,9 +397,9 @@ id|I2C_PCF_PIN
 )paren
 suffix:semicolon
 multiline_comment|/* check to see S1 now used as R/W ctrl -&n;&t;   PCF8584 does that when ESO is zero */
-multiline_comment|/* PCF also resets PIN bit */
 r_if
 c_cond
+(paren
 (paren
 (paren
 id|temp
@@ -410,6 +411,9 @@ id|adap
 comma
 l_int|1
 )paren
+)paren
+op_amp
+l_int|0x7f
 )paren
 op_ne
 (paren
@@ -423,6 +427,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: PCF detection failed -- can&squot;t select S0 (0x%02x).&bslash;n&quot;
 comma
 id|temp
@@ -475,6 +480,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: PCF detection failed -- can&squot;t set S0 (0x%02x).&bslash;n&quot;
 comma
 id|temp
@@ -504,6 +510,7 @@ r_if
 c_cond
 (paren
 (paren
+(paren
 id|temp
 op_assign
 id|get_pcf
@@ -513,6 +520,9 @@ id|adap
 comma
 l_int|1
 )paren
+)paren
+op_amp
+l_int|0x7f
 )paren
 op_ne
 id|I2C_PCF_ES1
@@ -524,6 +534,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: PCF detection failed -- can&squot;t select S2 (0x%02x).&bslash;n&quot;
 comma
 id|temp
@@ -579,6 +590,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: PCF detection failed -- can&squot;t set S2 (0x%02x).&bslash;n&quot;
 comma
 id|temp
@@ -630,6 +642,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: PCF detection failed -- can&squot;t select S1` (0x%02x).&bslash;n&quot;
 comma
 id|temp
@@ -644,6 +657,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: deteted and initialized PCF8584.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -782,6 +796,7 @@ id|i
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: needed %d retries for %d&bslash;n&quot;
 comma
 id|i
@@ -852,6 +867,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: %s i2c_write: writing %2.2X&bslash;n&quot;
 comma
 id|i2c_adap-&gt;name
@@ -902,6 +918,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: %s i2c_write: &quot;
 l_string|&quot;error - timeout.&bslash;n&quot;
 comma
@@ -932,6 +949,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: %s i2c_write: &quot;
 l_string|&quot;error - no ack.&bslash;n&quot;
 comma
@@ -1046,6 +1064,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: pcf_readbytes timed out.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1082,6 +1101,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: i2c_read: i2c_inb, No ack.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1251,6 +1271,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;addr0: %d&bslash;n&quot;
 comma
 id|addr
@@ -1281,6 +1302,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;died at extended address code.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1312,6 +1334,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;died at 2nd address code.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1362,6 +1385,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;died at extended address code.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1484,6 +1508,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: &quot;
 l_string|&quot;Timeout waiting for BB in pcf_xfer&bslash;n&quot;
 )paren
@@ -1527,6 +1552,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: Doing %s %d bytes to 0x%02x - %d of %d messages&bslash;n&quot;
 comma
 id|pmsg-&gt;flags
@@ -1608,6 +1634,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: Timeout waiting &quot;
 l_string|&quot;for PIN(1) in pcf_xfer&bslash;n&quot;
 )paren
@@ -1642,6 +1669,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;i2c-algo-pcf.o: No LRB(1) in pcf_xfer&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1660,6 +1688,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: Msg %d, addr=0x%x, flags=0x%x, len=%d&bslash;n&quot;
 comma
 id|i
@@ -1731,6 +1760,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: fail: &quot;
 l_string|&quot;only read %d bytes.&bslash;n&quot;
 comma
@@ -1747,6 +1777,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: read %d bytes.&bslash;n&quot;
 comma
 id|ret
@@ -1792,6 +1823,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: fail: &quot;
 l_string|&quot;only wrote %d bytes.&bslash;n&quot;
 comma
@@ -1808,6 +1840,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: wrote %d bytes.&bslash;n&quot;
 comma
 id|ret
@@ -1927,6 +1960,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: hw routines for %s registered.&bslash;n&quot;
 comma
 id|adap-&gt;name
@@ -2158,6 +2192,7 @@ c_func
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;i2c-algo-pcf.o: adapter unregistered: %s&bslash;n&quot;
 comma
 id|adap-&gt;name
@@ -2183,7 +2218,12 @@ r_void
 id|printk
 c_func
 (paren
-l_string|&quot;i2c-algo-pcf.o: i2c pcf8584 algorithm module&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;i2c-algo-pcf.o: i2c pcf8584 algorithm module version %s (%s)&bslash;n&quot;
+comma
+id|I2C_VERSION
+comma
+id|I2C_DATE
 )paren
 suffix:semicolon
 r_return

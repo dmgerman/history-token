@@ -15,7 +15,7 @@ r_struct
 id|prom_cpuinfo
 id|linux_cpus
 (braket
-l_int|64
+id|NR_CPUS
 )braket
 id|__initdata
 op_assign
@@ -29,7 +29,7 @@ DECL|variable|prom_cpu_nodes
 r_int
 id|prom_cpu_nodes
 (braket
-l_int|64
+id|NR_CPUS
 )braket
 suffix:semicolon
 DECL|variable|linux_num_cpus

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
@@ -311,7 +310,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|ep7211_ir_init
 id|module_init
 c_func
@@ -319,7 +317,6 @@ c_func
 id|ep7211_ir_init
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
 DECL|variable|ep7211_ir_cleanup
 id|module_exit
 c_func

@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/timer.h&gt;
 macro_line|#include &lt;net/irda/qos.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
@@ -267,6 +266,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function irlmp_cleanup (void)&n; *&n; *    Remove IrLMP layer&n; *&n; */
 DECL|function|irlmp_cleanup
 r_void
+id|__exit
 id|irlmp_cleanup
 c_func
 (paren
@@ -2371,6 +2371,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
+id|self-&gt;lap-&gt;cache.valid
+op_assign
+id|FALSE
+suffix:semicolon
+macro_line|#endif
 id|ASSERT
 c_func
 (paren

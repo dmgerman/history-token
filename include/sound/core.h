@@ -318,7 +318,7 @@ r_struct
 id|_snd_hwdep
 id|snd_hwdep_t
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 DECL|typedef|snd_mixer_oss_t
 r_typedef
 r_struct
@@ -507,7 +507,7 @@ id|wait_queue_head_t
 id|power_sleep
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 DECL|member|mixer_oss
 id|snd_mixer_oss_t
 op_star
@@ -983,43 +983,6 @@ r_int
 id|size
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISA
-r_void
-op_star
-id|snd_malloc_isa_pages
-c_func
-(paren
-r_int
-r_int
-id|size
-comma
-id|dma_addr_t
-op_star
-id|dma_addr
-)paren
-suffix:semicolon
-r_void
-op_star
-id|snd_malloc_isa_pages_fallback
-c_func
-(paren
-r_int
-r_int
-id|size
-comma
-id|dma_addr_t
-op_star
-id|dma_addr
-comma
-r_int
-r_int
-op_star
-id|res_size
-)paren
-suffix:semicolon
-DECL|macro|snd_free_isa_pages
-mdefine_line|#define snd_free_isa_pages(size, ptr, dma_addr) snd_free_pages(ptr, size)
-macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 r_void
 op_star
@@ -1086,6 +1049,52 @@ id|dma_addr
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_ISA
+macro_line|#ifdef CONFIG_PCI
+DECL|macro|snd_malloc_isa_pages
+mdefine_line|#define snd_malloc_isa_pages(size, dma_addr) snd_malloc_pci_pages(NULL, size, dma_addr)
+DECL|macro|snd_malloc_isa_pages_fallback
+mdefine_line|#define snd_malloc_isa_pages_fallback(size, dma_addr, res_size) snd_malloc_pci_pages_fallback(NULL, size, dma_addr, res_size)
+DECL|macro|snd_free_isa_pages
+mdefine_line|#define snd_free_isa_pages(size, ptr, dma_addr) snd_free_pci_pages(NULL, size, ptr, dma_addr)
+macro_line|#else /* !CONFIG_PCI */
+r_void
+op_star
+id|snd_malloc_isa_pages
+c_func
+(paren
+r_int
+r_int
+id|size
+comma
+id|dma_addr_t
+op_star
+id|dma_addr
+)paren
+suffix:semicolon
+r_void
+op_star
+id|snd_malloc_isa_pages_fallback
+c_func
+(paren
+r_int
+r_int
+id|size
+comma
+id|dma_addr_t
+op_star
+id|dma_addr
+comma
+r_int
+r_int
+op_star
+id|res_size
+)paren
+suffix:semicolon
+DECL|macro|snd_free_isa_pages
+mdefine_line|#define snd_free_isa_pages(size, ptr, dma_addr) snd_free_pages(ptr, size)
+macro_line|#endif /* CONFIG_PCI */
+macro_line|#endif /* CONFIG_ISA */
 r_int
 id|copy_to_user_fromio
 c_func
@@ -1136,7 +1145,7 @@ r_extern
 id|rwlock_t
 id|snd_card_rwlock
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_MIXER_OSS) || defined(CONFIG_SND_MIXER_OSS_MODULE)
 r_extern
 r_int
 (paren

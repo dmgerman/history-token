@@ -6456,10 +6456,6 @@ op_eq
 id|controller_kl_ata4_80
 )paren
 suffix:semicolon
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|0
-suffix:semicolon
 id|dstat
 op_assign
 id|in_le32
@@ -6721,10 +6717,6 @@ id|_IO_BASE
 )paren
 suffix:semicolon
 )brace
-id|drive-&gt;waiting_for_dma
-op_assign
-l_int|1
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6903,7 +6895,7 @@ op_eq
 id|controller_kl_ata4_80
 )paren
 suffix:semicolon
-multiline_comment|/* We have to things to deal with here:&n;&t; *&n;&t; * - The dbdma won&squot;t stop if the command was started but completed with&n;&t; * an error without transfering all datas. This happens when bad blocks&n;&t; * are met during a multi-block transfer.&n;&t; *&n;&t; * - The dbdma fifo hasn&squot;t yet finished flushing to to system memory&n;&t; * when the disk interrupt occurs.&n;&t; *&n;&t; * The trick here is to increment drive-&gt;waiting_for_dma, and return as&n;&t; * if no interrupt occured. If the counter reach a certain timeout&n;&t; * value, we then return 1. If we really got the interrupt, it will&n;&t; * happen right away again.  Apple&squot;s solution here may be more elegant.&n;&t; * They issue a DMA channel interrupt (a separate irq line) via a DBDMA&n;&t; * NOP command just before the STOP, and wait for both the disk and&n;&t; * DBDMA interrupts to have completed.&n;&t; */
+multiline_comment|/* We have to things to deal with here:&n;&t; *&n;&t; * - The dbdma won&squot;t stop if the command was started but completed with&n;&t; * an error without transfering all datas. This happens when bad blocks&n;&t; * are met during a multi-block transfer.&n;&t; *&n;&t; * - The dbdma fifo hasn&squot;t yet finished flushing to to system memory&n;&t; * when the disk interrupt occurs.&n;&t; *&n;&t; * FIXME: The following *trick* is broken:&n;&t; *&n;&t; * The trick here is to increment drive-&gt;waiting_for_dma, and return as&n;&t; * if no interrupt occured. If the counter reach a certain timeout&n;&t; * value, we then return 1. If we really got the interrupt, it will&n;&t; * happen right away again.  Apple&squot;s solution here may be more elegant.&n;&t; * They issue a DMA channel interrupt (a separate irq line) via a DBDMA&n;&t; * NOP command just before the STOP, and wait for both the disk and&n;&t; * DBDMA interrupts to have completed.&n;&t; */
 multiline_comment|/* If ACTIVE is cleared, the STOP command have passed and&n;&t; * transfer is complete.&n;&t; */
 r_if
 c_cond
@@ -6927,7 +6919,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|drive-&gt;waiting_for_dma
+id|test_bit
+c_func
+(paren
+id|IDE_DMA
+comma
+id|drive-&gt;channel-&gt;active
+)paren
 )paren
 id|printk
 c_func
@@ -6939,22 +6937,24 @@ id|ix
 )paren
 suffix:semicolon
 multiline_comment|/* If dbdma didn&squot;t execute the STOP command yet, the&n;&t; * active bit is still set */
-id|drive-&gt;waiting_for_dma
-op_increment
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|drive-&gt;waiting_for_dma
-op_ge
-id|DMA_WAIT_TIMEOUT
-)paren
-(brace
-id|printk
+id|set_bit
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;ide%d, timeout waiting &bslash;&n;&t;&t;&t;&t;for dbdma command stop&bslash;n&quot;
+id|IDE_DMA
+comma
+id|drive-&gt;channel-&gt;active
+)paren
+suffix:semicolon
+singleline_comment|//&t;if (drive-&gt;waiting_for_dma &gt;= DMA_WAIT_TIMEOUT) {
+singleline_comment|//&t;&t;printk(KERN_WARNING &quot;ide%d, timeout waiting &bslash;
+r_for
+c_loop
+id|dbdma
+id|command
+id|stop
+"&bslash;"
+id|n
+"&quot;"
 comma
 id|ix
 )paren
@@ -6973,7 +6973,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pmac_udma_setup
 r_static
 r_int
 id|pmac_udma_setup
@@ -7005,7 +7004,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|idepmac_sleep_device
 r_static
 r_void
 id|idepmac_sleep_device
@@ -7197,7 +7195,6 @@ macro_line|#ifdef CONFIG_PMAC_PBOOK
 r_static
 r_void
 id|__pmac
-DECL|function|idepmac_wake_device
 id|idepmac_wake_device
 c_func
 (paren
@@ -7306,7 +7303,6 @@ macro_line|#endif
 r_static
 r_void
 id|__pmac
-DECL|function|idepmac_sleep_interface
 id|idepmac_sleep_interface
 c_func
 (paren
@@ -7389,7 +7385,6 @@ suffix:semicolon
 r_static
 r_void
 id|__pmac
-DECL|function|idepmac_wake_interface
 id|idepmac_wake_interface
 c_func
 (paren
@@ -7491,7 +7486,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|idepmac_sleep_drive
 id|idepmac_sleep_drive
 c_func
 (paren
@@ -7554,7 +7548,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|idepmac_wake_drive
 id|idepmac_wake_drive
 c_func
 (paren
@@ -7701,7 +7694,6 @@ multiline_comment|/* Note: We support only master drives for now. This will have
 r_static
 r_int
 id|__pmac
-DECL|function|idepmac_notify_sleep
 id|idepmac_notify_sleep
 c_func
 (paren

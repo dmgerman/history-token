@@ -5204,7 +5204,8 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * get_nr_free_mft_records - return the number of free inodes on a volume&n; * @vol:&t;ntfs volume for which to obtain free inode count&n; *&n; * Calculate the number of free mft records (inodes) on the mounted NTFS&n; * volume @vol.&n; *&n; * Errors are ignored and we just return the number of free inodes we have&n; * found. This means we return an underestimate on error.&n; */
 DECL|function|get_nr_free_mft_records
-id|s64
+r_int
+r_int
 id|get_nr_free_mft_records
 c_func
 (paren
@@ -5232,17 +5233,16 @@ r_int
 id|index
 comma
 id|max_index
+comma
+id|nr_free
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
 id|max_size
 comma
 id|i
-suffix:semicolon
-id|s64
-id|nr_free
-op_assign
-l_int|0LL
 suffix:semicolon
 id|u32
 op_star
@@ -5441,10 +5441,6 @@ op_increment
 )paren
 id|nr_free
 op_add_assign
-(paren
-id|s64
-)paren
-(paren
 l_int|32
 op_minus
 id|hweight32
@@ -5454,7 +5450,6 @@ id|b
 (braket
 id|i
 )braket
-)paren
 )paren
 suffix:semicolon
 id|kunmap
@@ -5535,14 +5530,9 @@ l_int|31
 )paren
 id|nr_free
 op_sub_assign
-(paren
-id|s64
-)paren
-(paren
 l_int|32
 op_minus
 id|i
-)paren
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -5684,28 +5674,13 @@ op_rshift
 id|vol-&gt;mft_record_size_bits
 suffix:semicolon
 multiline_comment|/* Free file nodes in fs (based on current total count). */
-id|size
+id|sfs-&gt;f_ffree
 op_assign
 id|get_nr_free_mft_records
 c_func
 (paren
 id|vol
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|size
-OL
-l_int|0LL
-)paren
-id|size
-op_assign
-l_int|0LL
-suffix:semicolon
-id|sfs-&gt;f_ffree
-op_assign
-id|size
 suffix:semicolon
 multiline_comment|/*&n;&t; * File system id. This is extremely *nix flavour dependent and even&n;&t; * within Linux itself all fs do their own thing. I interpret this to&n;&t; * mean a unique id associated with the mounted fs and not the id&n;&t; * associated with the file system driver, the latter is already given&n;&t; * by the file system type in sfs-&gt;f_type. Thus we use the 64-bit&n;&t; * volume serial number splitting it into two 32-bit parts. We enter&n;&t; * the least significant 32-bits in f_fsid[0] and the most significant&n;&t; * 32-bits in f_fsid[1].&n;&t; */
 id|sfs-&gt;f_fsid.val

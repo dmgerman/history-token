@@ -15,52 +15,52 @@ id|tw_aen_string
 )braket
 op_assign
 (brace
-l_string|&quot;AEN queue empty&quot;
+l_string|&quot;INFO: AEN queue empty&quot;
 comma
 singleline_comment|// 0x000
-l_string|&quot;Soft reset occurred&quot;
+l_string|&quot;INFO: Soft reset occurred&quot;
 comma
 singleline_comment|// 0x001
-l_string|&quot;Unit degraded: Unit #&quot;
+l_string|&quot;ERROR: Unit degraded: Unit #&quot;
 comma
 singleline_comment|// 0x002
-l_string|&quot;Controller error&quot;
+l_string|&quot;ERROR: Controller error&quot;
 comma
 singleline_comment|// 0x003 
-l_string|&quot;Rebuild failed: Unit #&quot;
+l_string|&quot;ERROR: Rebuild failed: Unit #&quot;
 comma
 singleline_comment|// 0x004
-l_string|&quot;Rebuild complete: Unit #&quot;
+l_string|&quot;INFO: Rebuild complete: Unit #&quot;
 comma
 singleline_comment|// 0x005
-l_string|&quot;Incomplete unit detected: Unit #&quot;
+l_string|&quot;ERROR: Incomplete unit detected: Unit #&quot;
 comma
 singleline_comment|// 0x006
-l_string|&quot;Initialization complete: Unit #&quot;
+l_string|&quot;INFO: Initialization complete: Unit #&quot;
 comma
 singleline_comment|// 0x007
-l_string|&quot;Unclean shutdown detected: Unit #&quot;
+l_string|&quot;WARNING: Unclean shutdown detected: Unit #&quot;
 comma
 singleline_comment|// 0x008
-l_string|&quot;ATA port timeout: Port #&quot;
+l_string|&quot;WARNING: ATA port timeout: Port #&quot;
 comma
 singleline_comment|// 0x009
-l_string|&quot;Drive error: Port #&quot;
+l_string|&quot;ERROR: Drive error: Port #&quot;
 comma
 singleline_comment|// 0x00A
-l_string|&quot;Rebuild started: Unit #&quot;
+l_string|&quot;INFO: Rebuild started: Unit #&quot;
 comma
 singleline_comment|// 0x00B 
-l_string|&quot;Initialization started: Unit #&quot;
+l_string|&quot;INFO: Initialization started: Unit #&quot;
 comma
 singleline_comment|// 0x00C
-l_string|&quot;Logical unit deleted: Unit #&quot;
+l_string|&quot;ERROR: Logical unit deleted: Unit #&quot;
 comma
 singleline_comment|// 0x00D
 l_int|NULL
 comma
 singleline_comment|// 0x00E unused
-l_string|&quot;SMART threshold exceeded: Port #&quot;
+l_string|&quot;WARNING: SMART threshold exceeded: Port #&quot;
 comma
 singleline_comment|// 0x00F
 l_int|NULL
@@ -98,51 +98,54 @@ comma
 l_int|NULL
 comma
 singleline_comment|// 0x010-0x020 unused
-l_string|&quot;ATA UDMA downgrade: Port #&quot;
+l_string|&quot;WARNING: ATA UDMA downgrade: Port #&quot;
 comma
 singleline_comment|// 0x021
-l_string|&quot;ATA UDMA upgrade: Port #&quot;
+l_string|&quot;WARNING: ATA UDMA upgrade: Port #&quot;
 comma
 singleline_comment|// 0x022
-l_string|&quot;Sector repair occurred: Port #&quot;
+l_string|&quot;WARNING: Sector repair occurred: Port #&quot;
 comma
 singleline_comment|// 0x023
-l_string|&quot;SBUF integrity check failure&quot;
+l_string|&quot;ERROR: SBUF integrity check failure&quot;
 comma
 singleline_comment|// 0x024
-l_string|&quot;Lost cached write: Port #&quot;
+l_string|&quot;ERROR: Lost cached write: Port #&quot;
 comma
 singleline_comment|// 0x025
-l_string|&quot;Drive ECC error detected: Port #&quot;
+l_string|&quot;ERROR: Drive ECC error detected: Port #&quot;
 comma
 singleline_comment|// 0x026
-l_string|&quot;DCB checksum error: Port #&quot;
+l_string|&quot;ERROR: DCB checksum error: Port #&quot;
 comma
 singleline_comment|// 0x027
-l_string|&quot;DCB unsupported version: Port #&quot;
+l_string|&quot;ERROR: DCB unsupported version: Port #&quot;
 comma
 singleline_comment|// 0x028
-l_string|&quot;Verify started: Unit #&quot;
+l_string|&quot;INFO: Verify started: Unit #&quot;
 comma
 singleline_comment|// 0x029
-l_string|&quot;Verify failed: Port #&quot;
+l_string|&quot;ERROR: Verify failed: Port #&quot;
 comma
 singleline_comment|// 0x02A
-l_string|&quot;Verify complete: Unit #&quot;
+l_string|&quot;INFO: Verify complete: Unit #&quot;
 comma
 singleline_comment|// 0x02B
-l_string|&quot;Overwrote bad sector during rebuild: Port #&quot;
+l_string|&quot;ERROR: Overwrote bad sector during rebuild: Port #&quot;
 comma
-singleline_comment|//0x2C
-l_string|&quot;Encountered bad sector during rebuild: Port #&quot;
+singleline_comment|//0x02C
+l_string|&quot;ERROR: Encountered bad sector during rebuild: Port #&quot;
 comma
-singleline_comment|//0x2D
-l_string|&quot;Replacement drive is too small: Port #&quot;
-singleline_comment|//0x2E
+singleline_comment|//0x02D
+l_string|&quot;INFO: Replacement drive is too small: Port #&quot;
+comma
+singleline_comment|//0x02E
+l_string|&quot;WARNING: Verify error: Unit not previously initialized: Unit #&quot;
+singleline_comment|//0x02F
 )brace
 suffix:semicolon
 DECL|macro|TW_AEN_STRING_MAX
-mdefine_line|#define TW_AEN_STRING_MAX                      0x02F
+mdefine_line|#define TW_AEN_STRING_MAX                      0x030
 multiline_comment|/*&n;   Sense key lookup table&n;   Format: ESDC/flags,SenseKey,AdditionalSenseCode,AdditionalSenseCodeQualifier&n;*/
 DECL|variable|tw_sense_table
 r_static
@@ -469,6 +472,8 @@ DECL|macro|TW_UNIT_ONLINE
 mdefine_line|#define TW_UNIT_ONLINE                        1
 DECL|macro|TW_IN_INTR
 mdefine_line|#define TW_IN_INTR                            1
+DECL|macro|TW_IN_IOCTL
+mdefine_line|#define TW_IN_IOCTL                           2
 DECL|macro|TW_MAX_SECTORS
 mdefine_line|#define TW_MAX_SECTORS                        256
 DECL|macro|TW_AEN_WAIT_TIME
@@ -479,6 +484,8 @@ DECL|macro|TW_ISR_DONT_COMPLETE
 mdefine_line|#define TW_ISR_DONT_COMPLETE                  2
 DECL|macro|TW_ISR_DONT_RESULT
 mdefine_line|#define TW_ISR_DONT_RESULT                    3
+DECL|macro|TW_IOCTL_TIMEOUT
+mdefine_line|#define TW_IOCTL_TIMEOUT                      25 /* 25 seconds */
 multiline_comment|/* Macros */
 DECL|macro|TW_STATUS_ERRORS
 mdefine_line|#define TW_STATUS_ERRORS(x) &bslash;&n;&t;(((x &amp; TW_STATUS_PCI_ABORT) || &bslash;&n;&t;(x &amp; TW_STATUS_PCI_PARITY_ERROR) || &bslash;&n;&t;(x &amp; TW_STATUS_QUEUE_ERROR) || &bslash;&n;&t;(x &amp; TW_STATUS_MICROCONTROLLER_ERROR)) &amp;&amp; &bslash;&n;&t;(x &amp; TW_STATUS_MICROCONTROLLER_READY))

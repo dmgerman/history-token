@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hd64465.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;

@@ -88,7 +88,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 id|emu-&gt;oss_synth
 op_assign
 l_int|NULL
@@ -318,7 +318,7 @@ comma
 id|index
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 id|snd_emux_init_seq_oss
 c_func
 (paren
@@ -419,7 +419,7 @@ c_func
 id|emu
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#ifdef CONFIG_SND_SEQUENCER_OSS
 id|snd_emux_detach_seq_oss
 c_func
 (paren
@@ -516,6 +516,14 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_emux_unlock_voice
+)paren
+suffix:semicolon
+multiline_comment|/* soundfont.c */
+DECL|variable|snd_sf_linear_to_log
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_sf_linear_to_log
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *  INIT part&n; */

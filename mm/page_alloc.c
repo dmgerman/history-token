@@ -2,11 +2,9 @@ multiline_comment|/*&n; *  linux/mm/page_alloc.c&n; *&n; *  Manages the free lis
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
-macro_line|#include &lt;linux/swapctl.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
@@ -132,10 +130,69 @@ l_int|255
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Temporary debugging check.&n; */
-DECL|macro|BAD_RANGE
-mdefine_line|#define BAD_RANGE(zone, page)&t;&t;&t;&t;&t;&t;&bslash;&n;(&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;(((page) - mem_map) &gt;= ((zone)-&gt;zone_start_mapnr+(zone)-&gt;size))&t;&bslash;&n;&t;|| (((page) - mem_map) &lt; (zone)-&gt;zone_start_mapnr)&t;&t;&bslash;&n;&t;|| ((zone) != page_zone(page))&t;&t;&t;&t;&t;&bslash;&n;)
-multiline_comment|/*&n; * Freeing function for a buddy system allocator.&n; *&n; * The concept of a buddy system is to maintain direct-mapped table&n; * (containing bit values) for memory blocks of various &quot;orders&quot;.&n; * The bottom level table contains the map for the smallest allocatable&n; * units of memory (here, pages), and each level above it describes&n; * pairs of units from the levels below, hence, &quot;buddies&quot;.&n; * At a high level, all that happens here is marking the table entry&n; * at the bottom level available, and propagating the changes upward&n; * as necessary, plus some accounting needed to play nicely with other&n; * parts of the VM system.&n; *&n; * TODO: give references to descriptions of buddy system allocators,&n; * describe precisely the silly trick buddy allocators use to avoid&n; * storing an extra bit, utilizing entry point information.&n; *&n; * -- wli&n; */
+multiline_comment|/*&n; * Temporary debugging check for pages not lying within a given zone.&n; */
+DECL|function|bad_range
+r_static
+r_inline
+r_int
+id|bad_range
+c_func
+(paren
+id|zone_t
+op_star
+id|zone
+comma
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|page
+op_minus
+id|mem_map
+op_ge
+id|zone-&gt;zone_start_mapnr
+op_plus
+id|zone-&gt;size
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|page
+op_minus
+id|mem_map
+OL
+id|zone-&gt;zone_start_mapnr
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|zone
+op_ne
+id|page_zone
+c_func
+(paren
+id|page
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Freeing function for a buddy system allocator.&n; *&n; * The concept of a buddy system is to maintain direct-mapped table&n; * (containing bit values) for memory blocks of various &quot;orders&quot;.&n; * The bottom level table contains the map for the smallest allocatable&n; * units of memory (here, pages), and each level above it describes&n; * pairs of units from the levels below, hence, &quot;buddies&quot;.&n; * At a high level, all that happens here is marking the table entry&n; * at the bottom level available, and propagating the changes upward&n; * as necessary, plus some accounting needed to play nicely with other&n; * parts of the VM system.&n; * At each level, we keep one bit for each pair of blocks, which&n; * is set to 1 iff only one of the pair is allocated.  So when we&n; * are allocating or freeing one, we can derive the state of the&n; * other.  That is, if we allocate a small block, and both were   &n; * free, the remainder of the region must be split into blocks.   &n; * If a block is freed, and its buddy is also free, then this&n; * triggers coalescing into a block of larger size.            &n; *&n; * -- wli&n; */
 r_static
 r_void
 id|FASTCALL
@@ -442,7 +499,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|BAD_RANGE
+id|bad_range
 c_func
 (paren
 id|zone
@@ -458,7 +515,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|BAD_RANGE
+id|bad_range
 c_func
 (paren
 id|zone
@@ -613,7 +670,7 @@ id|low
 r_if
 c_cond
 (paren
-id|BAD_RANGE
+id|bad_range
 c_func
 (paren
 id|zone
@@ -640,18 +697,10 @@ id|list_add
 c_func
 (paren
 op_amp
-(paren
-id|page
-)paren
-op_member_access_from_pointer
-id|list
+id|page-&gt;list
 comma
 op_amp
-(paren
-id|area
-)paren
-op_member_access_from_pointer
-id|free_list
+id|area-&gt;free_list
 )paren
 suffix:semicolon
 id|MARK_USED
@@ -676,7 +725,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|BAD_RANGE
+id|bad_range
 c_func
 (paren
 id|zone
@@ -809,7 +858,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|BAD_RANGE
+id|bad_range
 c_func
 (paren
 id|zone
@@ -897,7 +946,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|BAD_RANGE
+id|bad_range
 c_func
 (paren
 id|zone
@@ -2251,53 +2300,52 @@ r_void
 (brace
 r_int
 r_int
-id|sum
-suffix:semicolon
-id|zone_t
-op_star
-id|zone
-suffix:semicolon
-id|pg_data_t
-op_star
-id|pgdat
-op_assign
-id|pgdat_list
-suffix:semicolon
+id|i
+comma
 id|sum
 op_assign
 l_int|0
 suffix:semicolon
-r_while
-c_loop
-(paren
+id|pg_data_t
+op_star
 id|pgdat
-)paren
-(brace
+suffix:semicolon
 r_for
 c_loop
 (paren
-id|zone
+id|pgdat
 op_assign
-id|pgdat-&gt;node_zones
+id|pgdat_list
 suffix:semicolon
-id|zone
-OL
-id|pgdat-&gt;node_zones
-op_plus
-id|MAX_NR_ZONES
-suffix:semicolon
-id|zone
-op_increment
-)paren
-id|sum
-op_add_assign
-id|zone-&gt;free_pages
+id|pgdat
 suffix:semicolon
 id|pgdat
 op_assign
 id|pgdat-&gt;node_next
+)paren
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
 suffix:semicolon
-)brace
+id|i
+OL
+id|MAX_NR_ZONES
+suffix:semicolon
+op_increment
+id|i
+)paren
+id|sum
+op_add_assign
+id|pgdat-&gt;node_zones
+(braket
+id|i
+)braket
+dot
+id|free_pages
+suffix:semicolon
 r_return
 id|sum
 suffix:semicolon

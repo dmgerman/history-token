@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irport.h&gt;
 DECL|macro|IO_EXTENT
@@ -408,10 +407,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irport_cleanup ()&n; *&n; *    Close all configured ports&n; *&n; */
-macro_line|#ifdef MODULE
 DECL|function|irport_cleanup
 r_static
 r_void
+id|__exit
 id|irport_cleanup
 c_func
 (paren
@@ -464,7 +463,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* MODULE */
 r_struct
 id|irport_cb
 op_star
@@ -3609,7 +3607,6 @@ op_amp
 id|self-&gt;stats
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_PARM
 c_func
 (paren
@@ -3660,34 +3657,18 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|irport_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-id|irport_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
 id|irport_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
+DECL|variable|irport_cleanup
+id|module_exit
+c_func
+(paren
+id|irport_cleanup
+)paren
+suffix:semicolon
 eof

@@ -2333,10 +2333,14 @@ DECL|enumerator|SNDRV_CTL_ELEM_TYPE_IEC958
 id|SNDRV_CTL_ELEM_TYPE_IEC958
 comma
 multiline_comment|/* IEC958 (S/PDIF) setup */
+DECL|enumerator|SNDRV_CTL_ELEM_TYPE_INTEGER64
+id|SNDRV_CTL_ELEM_TYPE_INTEGER64
+comma
+multiline_comment|/* 64-bit integer type */
 DECL|enumerator|SNDRV_CTL_ELEM_TYPE_LAST
 id|SNDRV_CTL_ELEM_TYPE_LAST
 op_assign
-id|SNDRV_CTL_ELEM_TYPE_IEC958
+id|SNDRV_CTL_ELEM_TYPE_INTEGER64
 comma
 )brace
 suffix:semicolon
@@ -2558,6 +2562,30 @@ id|integer
 suffix:semicolon
 r_struct
 (brace
+DECL|member|min
+r_int
+r_int
+id|min
+suffix:semicolon
+multiline_comment|/* R: minimum value */
+DECL|member|max
+r_int
+r_int
+id|max
+suffix:semicolon
+multiline_comment|/* R: maximum value */
+DECL|member|step
+r_int
+r_int
+id|step
+suffix:semicolon
+multiline_comment|/* R: step (0 variable) */
+DECL|member|integer64
+)brace
+id|integer64
+suffix:semicolon
+r_struct
+(brace
 DECL|member|items
 r_int
 r_int
@@ -2641,6 +2669,26 @@ suffix:semicolon
 DECL|member|integer
 )brace
 id|integer
+suffix:semicolon
+r_union
+(brace
+DECL|member|value
+r_int
+r_int
+id|value
+(braket
+l_int|64
+)braket
+suffix:semicolon
+DECL|member|value_ptr
+r_int
+r_int
+op_star
+id|value_ptr
+suffix:semicolon
+DECL|member|integer64
+)brace
+id|integer64
 suffix:semicolon
 r_union
 (brace

@@ -82,6 +82,15 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable switches */
+DECL|variable|snd_dual_codec
+r_static
+r_int
+id|snd_dual_codec
+(braket
+id|SNDRV_CARDS
+)braket
+suffix:semicolon
+multiline_comment|/* dual codec */
 id|MODULE_PARM
 c_func
 (paren
@@ -170,6 +179,37 @@ c_func
 id|snd_enable
 comma
 id|SNDRV_ENABLE_DESC
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|snd_dual_codec
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|SNDRV_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|snd_dual_codec
+comma
+l_string|&quot;Secondary Codec ID (0 = disabled).&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|snd_dual_codec
+comma
+id|SNDRV_ENABLED
+l_string|&quot;,allows:{{0,3}}&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&n; */
@@ -946,10 +986,19 @@ id|resource
 op_star
 id|ba1_res
 suffix:semicolon
+DECL|member|dual_codec
+r_int
+id|dual_codec
+suffix:semicolon
 DECL|member|ac97
 id|ac97_t
 op_star
 id|ac97
+suffix:semicolon
+DECL|member|ac97_secondary
+id|ac97_t
+op_star
+id|ac97_secondary
 suffix:semicolon
 DECL|member|pci
 r_struct
@@ -1338,6 +1387,15 @@ op_or
 id|BA0_ACCTL_VFRM
 op_or
 id|BA0_ACCTL_ESYN
+op_or
+(paren
+id|ac97-&gt;num
+ques
+c_cond
+id|BA0_ACCTL_TC
+suffix:colon
+l_int|0
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -1387,6 +1445,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;AC&squot;97 write problem, reg = 0x%x, val = 0x%x&bslash;n&quot;
 comma
 id|reg
@@ -1440,6 +1499,11 @@ c_func
 (paren
 id|chip
 comma
+id|ac97-&gt;num
+ques
+c_cond
+id|BA0_ACSDA2
+suffix:colon
 id|BA0_ACSDA
 )paren
 suffix:semicolon
@@ -1478,6 +1542,15 @@ op_or
 id|BA0_ACCTL_VFRM
 op_or
 id|BA0_ACCTL_ESYN
+op_or
+(paren
+id|ac97-&gt;num
+ques
+c_cond
+id|BA0_ACCTL_TC
+suffix:colon
+l_int|0
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *  Wait for the read to occur.&n;&t; */
@@ -1527,6 +1600,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;AC&squot;97 read problem (ACCTL_DCV), reg = 0x%x&bslash;n&quot;
 comma
 id|reg
@@ -1566,6 +1640,11 @@ c_func
 (paren
 id|chip
 comma
+id|ac97-&gt;num
+ques
+c_cond
+id|BA0_ACSTS2
+suffix:colon
 id|BA0_ACSTS
 )paren
 op_amp
@@ -1584,6 +1663,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;AC&squot;97 read problem (ACSTS_VSTS), reg = 0x%x&bslash;n&quot;
 comma
 id|reg
@@ -1606,6 +1686,11 @@ c_func
 (paren
 id|chip
 comma
+id|ac97-&gt;num
+ques
+c_cond
+id|BA0_ACSDA2
+suffix:colon
 id|BA0_ACSDA
 )paren
 suffix:semicolon
@@ -2687,19 +2772,19 @@ id|SNDRV_PCM_FMTBIT_U8
 op_or
 id|SNDRV_PCM_FMTBIT_S8
 op_or
-id|SNDRV_PCM_FMTBIT_S16_LE
+id|SNDRV_PCM_FMTBIT_U16_LE
 op_or
 id|SNDRV_PCM_FMTBIT_S16_LE
 op_or
-id|SNDRV_PCM_FMTBIT_S16_BE
+id|SNDRV_PCM_FMTBIT_U16_BE
 op_or
 id|SNDRV_PCM_FMTBIT_S16_BE
 op_or
-id|SNDRV_PCM_FMTBIT_S32_LE
+id|SNDRV_PCM_FMTBIT_U32_LE
 op_or
 id|SNDRV_PCM_FMTBIT_S32_LE
 op_or
-id|SNDRV_PCM_FMTBIT_S32_BE
+id|SNDRV_PCM_FMTBIT_U32_BE
 op_or
 id|SNDRV_PCM_FMTBIT_S32_BE
 comma
@@ -2751,7 +2836,7 @@ l_int|1
 comma
 id|periods_max
 suffix:colon
-l_int|1024
+l_int|2
 comma
 id|fifo_size
 suffix:colon
@@ -3265,6 +3350,16 @@ comma
 r_return
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ac97-&gt;num
+)paren
+id|chip-&gt;ac97_secondary
+op_assign
+l_int|NULL
+suffix:semicolon
+r_else
 id|chip-&gt;ac97
 op_assign
 l_int|NULL
@@ -3348,6 +3443,41 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;dual_codec
+)paren
+(brace
+id|ac97.num
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|snd_ac97_mixer
+c_func
+(paren
+id|card
+comma
+op_amp
+id|ac97
+comma
+op_amp
+id|chip-&gt;ac97_secondary
+)paren
+)paren
+OL
+l_int|0
+)paren
+r_return
+id|err
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4489,6 +4619,7 @@ id|gp
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;cannot allocate gameport area&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -4804,6 +4935,9 @@ id|cs4281_t
 op_star
 op_star
 id|rchip
+comma
+r_int
+id|dual_codec
 )paren
 (brace
 id|cs4281_t
@@ -4927,6 +5061,32 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dual_codec
+template_param
+l_int|3
+)paren
+(brace
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;invalid snd_dual_codec option %d&bslash;n&quot;
+comma
+id|dual_codec
+)paren
+suffix:semicolon
+id|dual_codec
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|chip-&gt;dual_codec
+op_assign
+id|dual_codec
+suffix:semicolon
+r_if
+c_cond
+(paren
 (paren
 id|chip-&gt;ba0_res
 op_assign
@@ -4953,6 +5113,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to grab memory region 0x%lx-0x%lx&bslash;n&quot;
 comma
 id|chip-&gt;ba0_addr
@@ -4998,6 +5159,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to grab memory region 0x%lx-0x%lx&bslash;n&quot;
 comma
 id|chip-&gt;ba1_addr
@@ -5047,6 +5209,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;unable to grab IRQ %d&bslash;n&quot;
 comma
 id|pci-&gt;irq
@@ -5159,6 +5322,7 @@ id|BA0_CFLR_DEFAULT
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;CFLR setup failed (0x%x)&bslash;n&quot;
 comma
 id|tmp
@@ -5212,6 +5376,7 @@ id|BA0_SERC1_AC97
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SERC1 AC&squot;97 check failed (0x%x)&bslash;n&quot;
 comma
 id|tmp
@@ -5253,6 +5418,7 @@ id|BA0_SERC2_AC97
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;SERC2 AC&squot;97 check failed (0x%x)&bslash;n&quot;
 comma
 id|tmp
@@ -5362,6 +5528,23 @@ c_func
 l_int|50000
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|chip-&gt;dual_codec
+)paren
+id|snd_cs4281_pokeBA0
+c_func
+(paren
+id|chip
+comma
+id|BA0_SPMC
+comma
+id|BA0_SPMC_RSTN
+op_or
+id|BA0_SPMC_ASDI2E
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; *  Set the serial port timing configuration.&n;&t; */
 id|snd_cs4281_pokeBA0
 c_func
@@ -5370,10 +5553,21 @@ id|chip
 comma
 id|BA0_SERMC
 comma
+(paren
+id|chip-&gt;dual_codec
+ques
+c_cond
+id|BA0_SERMC_TCID
+c_func
+(paren
+id|chip-&gt;dual_codec
+)paren
+suffix:colon
 id|BA0_SERMC_TCID
 c_func
 (paren
 l_int|1
+)paren
 )paren
 op_or
 id|BA0_SERMC_PTC_AC97
@@ -5472,6 +5666,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;DLLRDY not seen&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5564,6 +5759,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;never read codec ready from AC&squot;97 (0x%x)&bslash;n&quot;
 comma
 id|snd_cs4281_peekBA0
@@ -5587,6 +5783,88 @@ id|EIO
 suffix:semicolon
 id|__ok1
 suffix:colon
+r_if
+c_cond
+(paren
+id|chip-&gt;dual_codec
+)paren
+(brace
+id|end_time
+op_assign
+(paren
+id|jiffies
+op_plus
+(paren
+l_int|3
+op_star
+id|HZ
+)paren
+op_div
+l_int|4
+)paren
+op_plus
+l_int|1
+suffix:semicolon
+r_do
+(brace
+r_if
+c_cond
+(paren
+id|snd_cs4281_peekBA0
+c_func
+(paren
+id|chip
+comma
+id|BA0_ACSTS2
+)paren
+op_amp
+id|BA0_ACSTS_CRDY
+)paren
+r_goto
+id|__codec2_ok
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|end_time
+op_minus
+(paren
+r_int
+r_int
+)paren
+id|jiffies
+op_ge
+l_int|0
+)paren
+suffix:semicolon
+id|snd_printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;secondary codec doesn&squot;t respond. disable it...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|chip-&gt;dual_codec
+op_assign
+l_int|0
+suffix:semicolon
+id|__codec2_ok
+suffix:colon
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *  Assert the valid frame signal so that we can start sending commands&n;&t; *  to the AC97 codec.&n;&t; */
 id|snd_cs4281_pokeBA0
 c_func
@@ -5694,6 +5972,7 @@ suffix:semicolon
 id|snd_printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;never read ISV3 and ISV4 from AC&squot;97&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7466,6 +7745,11 @@ id|pci
 comma
 op_amp
 id|chip
+comma
+id|snd_dual_codec
+(braket
+id|dev
+)braket
 )paren
 )paren
 OL

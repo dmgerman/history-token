@@ -10011,7 +10011,7 @@ op_amp
 id|O_NONBLOCK
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 r_if
 c_cond
 (paren
@@ -10060,6 +10060,10 @@ c_cond
 id|runtime-&gt;access
 op_ne
 id|SNDRV_PCM_ACCESS_RW_INTERLEAVED
+op_logical_and
+id|runtime-&gt;channels
+OG
+l_int|1
 )paren
 r_return
 op_minus
@@ -10478,7 +10482,7 @@ op_amp
 id|O_NONBLOCK
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 r_if
 c_cond
 (paren
@@ -11560,7 +11564,7 @@ op_amp
 id|O_NONBLOCK
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 r_if
 c_cond
 (paren
@@ -11977,7 +11981,7 @@ op_amp
 id|O_NONBLOCK
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_OSSEMUL
+macro_line|#if defined(CONFIG_SND_PCM_OSS) || defined(CONFIG_SND_PCM_OSS_MODULE)
 r_if
 c_cond
 (paren

@@ -64,13 +64,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 r_extern
-r_int
-id|prom_cpu_nodes
-(braket
-l_int|64
-)braket
-suffix:semicolon
-r_extern
 r_void
 id|die_if_kernel
 c_func
@@ -555,10 +548,6 @@ r_extern
 id|spinlock_t
 id|kernel_flag
 suffix:semicolon
-r_extern
-r_int
-id|smp_num_cpus
-suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 r_extern
 r_void
@@ -766,28 +755,19 @@ c_func
 id|cpu_data
 )paren
 suffix:semicolon
-multiline_comment|/* Misc SMP information */
-macro_line|#ifdef CONFIG_SMP
-DECL|variable|smp_num_cpus
+multiline_comment|/* CPU online map and active count.  */
+DECL|variable|cpu_online_map
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|smp_num_cpus
+id|cpu_online_map
 )paren
 suffix:semicolon
-macro_line|#endif
-DECL|variable|__cpu_number_map
+DECL|variable|sparc64_num_cpus_online
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__cpu_number_map
-)paren
-suffix:semicolon
-DECL|variable|__cpu_logical_map
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__cpu_logical_map
+id|sparc64_num_cpus_online
 )paren
 suffix:semicolon
 multiline_comment|/* Spinlock debugging library, optional. */

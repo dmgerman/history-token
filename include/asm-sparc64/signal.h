@@ -494,6 +494,8 @@ id|stack_t32
 suffix:semicolon
 DECL|macro|HAVE_ARCH_GET_SIGNAL_TO_DELIVER
 mdefine_line|#define HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+DECL|macro|HAVE_ARCH_SYS_PAUSE
+mdefine_line|#define HAVE_ARCH_SYS_PAUSE
 macro_line|#endif
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(_ASMSPARC64_SIGNAL_H) */

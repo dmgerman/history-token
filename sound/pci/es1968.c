@@ -8259,7 +8259,7 @@ c_func
 (paren
 id|chip-&gt;ac97
 comma
-l_int|0
+id|AC97_MASTER
 comma
 id|val
 op_xor
@@ -8324,7 +8324,7 @@ op_amp
 l_int|0xff00
 )paren
 OG
-l_int|0x100
+l_int|0
 )paren
 id|val
 op_sub_assign
@@ -8369,7 +8369,7 @@ c_func
 (paren
 id|chip-&gt;ac97
 comma
-l_int|0
+id|AC97_MASTER
 comma
 id|val
 )paren

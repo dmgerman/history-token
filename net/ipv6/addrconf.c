@@ -104,6 +104,7 @@ id|addrconf_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
+r_static
 r_void
 id|addrconf_verify
 c_func
@@ -2318,6 +2319,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|ipv6_count_addresses
+r_static
 r_int
 id|ipv6_count_addresses
 c_func
@@ -6777,6 +6779,7 @@ suffix:semicolon
 macro_line|#endif&t;/* CONFIG_PROC_FS */
 multiline_comment|/*&n; *&t;Periodic address status verification&n; */
 DECL|function|addrconf_verify
+r_static
 r_void
 id|addrconf_verify
 c_func
