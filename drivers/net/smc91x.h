@@ -467,7 +467,7 @@ id|dmabuf
 comma
 id|len
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 )brace
@@ -588,7 +588,7 @@ id|buf
 comma
 id|len
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|DCSR

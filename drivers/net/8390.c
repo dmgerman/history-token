@@ -2676,12 +2676,10 @@ id|ei_local-&gt;stat.rx_over_errors
 op_increment
 suffix:semicolon
 multiline_comment|/* &n;&t; * Wait a full Tx time (1.2ms) + some guard time, NS says 1.6ms total.&n;&t; * Early datasheets said to poll the reset bit, but now they say that&n;&t; * it &quot;is not a reliable indicator and subsequently should be ignored.&quot;&n;&t; * We wait at least 10ms.&n;&t; */
-id|udelay
+id|mdelay
 c_func
 (paren
 l_int|10
-op_star
-l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Reset RBCR[01] back to zero as per magic incantation.&n;&t; */

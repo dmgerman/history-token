@@ -1656,22 +1656,10 @@ id|PORT_CMD
 suffix:semicolon
 multiline_comment|/* flush */
 multiline_comment|/* spec says 500 msecs for each PORT_CMD_{START,FIS_RX} bit, so&n;&t; * this is slightly incorrect.&n;&t; */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_div
-l_int|2
-)paren
-op_plus
-l_int|1
+l_int|500
 )paren
 suffix:semicolon
 id|ap-&gt;private_data
@@ -3378,17 +3366,9 @@ suffix:semicolon
 multiline_comment|/* flush */
 )brace
 multiline_comment|/* reset must complete within 1 second, or&n;&t; * the hardware should be considered fried.&n;&t; */
-id|set_current_state
+id|ssleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_plus
 l_int|1
 )paren
 suffix:semicolon
@@ -3837,22 +3817,10 @@ id|PORT_CMD
 suffix:semicolon
 multiline_comment|/* flush */
 multiline_comment|/* spec says 500 msecs for each bit, so&n;&t;&t;&t; * this is slightly incorrect.&n;&t;&t;&t; */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-(paren
-id|HZ
-op_div
-l_int|2
-)paren
-op_plus
-l_int|1
+l_int|500
 )paren
 suffix:semicolon
 )brace
