@@ -14,7 +14,6 @@ mdefine_line|#define PERCPU_ADDR&t;&t;(0xa000000000000000 + PERCPU_PAGE_SIZE)
 DECL|macro|GATE_ADDR
 mdefine_line|#define GATE_ADDR&t;&t;(0xa000000000000000 + 2*PERCPU_PAGE_SIZE)
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 DECL|struct|pci_vector_struct
