@@ -984,6 +984,22 @@ id|COMET
 )brace
 comma
 (brace
+l_int|0x1626
+comma
+l_int|0x8410
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|COMET
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* terminate list */
 )brace
