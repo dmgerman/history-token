@@ -80,7 +80,7 @@ l_string|&quot;ran out of descriptors parsing&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -102,7 +102,8 @@ id|USB_DT_ENDPOINT
 )paren
 suffix:semicolon
 r_return
-id|parsed
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -203,7 +204,7 @@ id|header-&gt;bLength
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* If we find another &quot;proper&quot; descriptor then we&squot;re done  */
@@ -601,7 +602,7 @@ l_string|&quot;couldn&squot;t kmalloc interface-&gt;altsetting&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 r_while
@@ -661,7 +662,7 @@ id|USB_MAXALTSETTING
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 id|ptr
@@ -696,7 +697,7 @@ l_string|&quot;couldn&squot;t kmalloc interface-&gt;altsetting&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memcpy
@@ -818,7 +819,7 @@ id|header-&gt;bLength
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* If we find another &quot;proper&quot; descriptor then we&squot;re done  */
@@ -928,7 +929,7 @@ l_int|0
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memcpy
@@ -1002,7 +1003,7 @@ l_string|&quot;too many endpoints&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 id|ifp-&gt;endpoint
@@ -1041,7 +1042,7 @@ l_string|&quot;out of memory&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset
@@ -1100,7 +1101,7 @@ l_string|&quot;ran out of descriptors parsing&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 id|retval
@@ -1449,7 +1450,7 @@ id|header-&gt;bLength
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 multiline_comment|/* If we find another &quot;proper&quot; descriptor then we&squot;re done  */
@@ -1578,7 +1579,7 @@ l_int|0
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memcpy
