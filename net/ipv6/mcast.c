@@ -4600,22 +4600,25 @@ id|delay
 op_assign
 id|resptime
 suffix:semicolon
-multiline_comment|/* Do not start timer for addresses with link/host scope */
+multiline_comment|/* Do not start timer for these addresses */
 r_if
 c_cond
 (paren
-id|ipv6_addr_type
+id|ipv6_addr_is_ll_all_nodes
 c_func
 (paren
 op_amp
 id|ma-&gt;mca_addr
 )paren
-op_amp
+op_logical_or
+id|IPV6_ADDR_MC_SCOPE
+c_func
 (paren
-id|IPV6_ADDR_LINKLOCAL
-op_or
-id|IPV6_ADDR_LOOPBACK
+op_amp
+id|ma-&gt;mca_addr
 )paren
+OL
+id|IPV6_ADDR_SCOPE_LINKLOCAL
 )paren
 r_return
 suffix:semicolon
