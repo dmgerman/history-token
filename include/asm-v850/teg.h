@@ -34,29 +34,29 @@ multiline_comment|/* For &lt;asm/irq.h&gt; */
 DECL|macro|NUM_CPU_IRQS
 mdefine_line|#define NUM_CPU_IRQS&t;64
 multiline_comment|/* TEG UART details.  */
-DECL|macro|NB85E_UART_BASE_ADDR
-mdefine_line|#define NB85E_UART_BASE_ADDR(n)&t;&t;(0xFFFFF600 + 0x10 * (n))
-DECL|macro|NB85E_UART_ASIM_ADDR
-mdefine_line|#define NB85E_UART_ASIM_ADDR(n)&t;&t;(NB85E_UART_BASE_ADDR(n) + 0x0)
-DECL|macro|NB85E_UART_ASIS_ADDR
-mdefine_line|#define NB85E_UART_ASIS_ADDR(n)&t;&t;(NB85E_UART_BASE_ADDR(n) + 0x2)
-DECL|macro|NB85E_UART_ASIF_ADDR
-mdefine_line|#define NB85E_UART_ASIF_ADDR(n)&t;&t;(NB85E_UART_BASE_ADDR(n) + 0x4)
-DECL|macro|NB85E_UART_CKSR_ADDR
-mdefine_line|#define NB85E_UART_CKSR_ADDR(n)&t;&t;(NB85E_UART_BASE_ADDR(n) + 0x6)
-DECL|macro|NB85E_UART_BRGC_ADDR
-mdefine_line|#define NB85E_UART_BRGC_ADDR(n)&t;&t;(NB85E_UART_BASE_ADDR(n) + 0x8)
-DECL|macro|NB85E_UART_TXB_ADDR
-mdefine_line|#define NB85E_UART_TXB_ADDR(n)&t;&t;(NB85E_UART_BASE_ADDR(n) + 0xA)
-DECL|macro|NB85E_UART_RXB_ADDR
-mdefine_line|#define NB85E_UART_RXB_ADDR(n)&t;&t;(NB85E_UART_BASE_ADDR(n) + 0xC)
-DECL|macro|NB85E_UART_NUM_CHANNELS
-mdefine_line|#define NB85E_UART_NUM_CHANNELS&t;&t;1
-DECL|macro|NB85E_UART_BASE_FREQ
-mdefine_line|#define NB85E_UART_BASE_FREQ&t;&t;CPU_CLOCK_FREQ
+DECL|macro|V850E_UART_BASE_ADDR
+mdefine_line|#define V850E_UART_BASE_ADDR(n)&t;&t;(0xFFFFF600 + 0x10 * (n))
+DECL|macro|V850E_UART_ASIM_ADDR
+mdefine_line|#define V850E_UART_ASIM_ADDR(n)&t;&t;(V850E_UART_BASE_ADDR(n) + 0x0)
+DECL|macro|V850E_UART_ASIS_ADDR
+mdefine_line|#define V850E_UART_ASIS_ADDR(n)&t;&t;(V850E_UART_BASE_ADDR(n) + 0x2)
+DECL|macro|V850E_UART_ASIF_ADDR
+mdefine_line|#define V850E_UART_ASIF_ADDR(n)&t;&t;(V850E_UART_BASE_ADDR(n) + 0x4)
+DECL|macro|V850E_UART_CKSR_ADDR
+mdefine_line|#define V850E_UART_CKSR_ADDR(n)&t;&t;(V850E_UART_BASE_ADDR(n) + 0x6)
+DECL|macro|V850E_UART_BRGC_ADDR
+mdefine_line|#define V850E_UART_BRGC_ADDR(n)&t;&t;(V850E_UART_BASE_ADDR(n) + 0x8)
+DECL|macro|V850E_UART_TXB_ADDR
+mdefine_line|#define V850E_UART_TXB_ADDR(n)&t;&t;(V850E_UART_BASE_ADDR(n) + 0xA)
+DECL|macro|V850E_UART_RXB_ADDR
+mdefine_line|#define V850E_UART_RXB_ADDR(n)&t;&t;(V850E_UART_BASE_ADDR(n) + 0xC)
+DECL|macro|V850E_UART_NUM_CHANNELS
+mdefine_line|#define V850E_UART_NUM_CHANNELS&t;&t;1
+DECL|macro|V850E_UART_BASE_FREQ
+mdefine_line|#define V850E_UART_BASE_FREQ&t;&t;CPU_CLOCK_FREQ
 multiline_comment|/* This is a function that gets called before configuring the UART.  */
-DECL|macro|NB85E_UART_PRE_CONFIGURE
-mdefine_line|#define NB85E_UART_PRE_CONFIGURE&t;teg_uart_pre_configure
+DECL|macro|V850E_UART_PRE_CONFIGURE
+mdefine_line|#define V850E_UART_PRE_CONFIGURE&t;teg_uart_pre_configure
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void

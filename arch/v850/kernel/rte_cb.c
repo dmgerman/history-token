@@ -146,35 +146,12 @@ l_string|&quot; RTE-MOTHER-A motherboard&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined (CONFIG_V850E_NB85E_UART_CONSOLE) &amp;&amp; !defined (CONFIG_TIME_BOOTUP)
-id|nb85e_uart_cons_init
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
+macro_line|#endif /* CONFIG_RTE_MB_A_PCI */
 id|mach_tick
 op_assign
 id|led_tick
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_TIME_BOOTUP
-DECL|function|initial_boot_done
-r_void
-id|initial_boot_done
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef CONFIG_V850E_NB85E_UART_CONSOLE
-id|nb85e_uart_cons_init
-(paren
-l_int|0
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#endif
 DECL|function|machine_restart
 r_void
 id|machine_restart

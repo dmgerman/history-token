@@ -80,10 +80,10 @@ mdefine_line|#define LED(n)&t;&t;(*(volatile unsigned char *)LED_ADDR(n))
 DECL|macro|LED_NUM_DIGITS
 mdefine_line|#define LED_NUM_DIGITS&t;4
 multiline_comment|/* Override the basic TEG UART pre-initialization so that we can&n;   initialize extra stuff.  */
-DECL|macro|NB85E_UART_PRE_CONFIGURE
-macro_line|#undef NB85E_UART_PRE_CONFIGURE&t;/* should be defined by &lt;asm/teg.h&gt; */
-DECL|macro|NB85E_UART_PRE_CONFIGURE
-mdefine_line|#define NB85E_UART_PRE_CONFIGURE&t;rte_nb85e_cb_uart_pre_configure
+DECL|macro|V850E_UART_PRE_CONFIGURE
+macro_line|#undef V850E_UART_PRE_CONFIGURE&t;/* should be defined by &lt;asm/teg.h&gt; */
+DECL|macro|V850E_UART_PRE_CONFIGURE
+mdefine_line|#define V850E_UART_PRE_CONFIGURE&t;rte_nb85e_cb_uart_pre_configure
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
@@ -102,10 +102,10 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* This board supports RTS/CTS for the on-chip UART. */
 multiline_comment|/* CTS is pin P00.  */
-DECL|macro|NB85E_UART_CTS
-mdefine_line|#define NB85E_UART_CTS(chan)&t;(! (TEG_PORT0_IO &amp; 0x1))
+DECL|macro|V850E_UART_CTS
+mdefine_line|#define V850E_UART_CTS(chan)&t;(! (TEG_PORT0_IO &amp; 0x1))
 multiline_comment|/* RTS is pin P02.  */
-DECL|macro|NB85E_UART_SET_RTS
-mdefine_line|#define NB85E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   unsigned old = TEG_PORT0_IO;&t;&t;&t;&t;&t;      &bslash;&n;&t;   TEG_PORT0_IO = val ? (old &amp; ~0x4) : (old | 0x4);&t;&t;      &bslash;&n;   } while (0)
+DECL|macro|V850E_UART_SET_RTS
+mdefine_line|#define V850E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   unsigned old = TEG_PORT0_IO;&t;&t;&t;&t;&t;      &bslash;&n;&t;   TEG_PORT0_IO = val ? (old &amp; ~0x4) : (old | 0x4);&t;&t;      &bslash;&n;   } while (0)
 macro_line|#endif /* __V850_RTE_NB85E_CB_H__ */
 eof

@@ -137,15 +137,15 @@ r_void
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* AS85EP1 UART details (basically the same as the V850E/MA1, but 2 channels).  */
-DECL|macro|NB85E_UART_NUM_CHANNELS
-mdefine_line|#define NB85E_UART_NUM_CHANNELS&t;&t;2
-DECL|macro|NB85E_UART_BASE_FREQ
-mdefine_line|#define NB85E_UART_BASE_FREQ&t;&t;(SYS_CLOCK_FREQ / 4)
-DECL|macro|NB85E_UART_CHIP_NAME
-mdefine_line|#define NB85E_UART_CHIP_NAME &t;&t;&quot;V850E/NA85E&quot;
+DECL|macro|V850E_UART_NUM_CHANNELS
+mdefine_line|#define V850E_UART_NUM_CHANNELS&t;&t;2
+DECL|macro|V850E_UART_BASE_FREQ
+mdefine_line|#define V850E_UART_BASE_FREQ&t;&t;(SYS_CLOCK_FREQ / 4)
+DECL|macro|V850E_UART_CHIP_NAME
+mdefine_line|#define V850E_UART_CHIP_NAME &t;&t;&quot;V850E/NA85E&quot;
 multiline_comment|/* This is a function that gets called before configuring the UART.  */
-DECL|macro|NB85E_UART_PRE_CONFIGURE
-mdefine_line|#define NB85E_UART_PRE_CONFIGURE&t;as85ep1_uart_pre_configure
+DECL|macro|V850E_UART_PRE_CONFIGURE
+mdefine_line|#define V850E_UART_PRE_CONFIGURE&t;as85ep1_uart_pre_configure
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
@@ -164,11 +164,11 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* This board supports RTS/CTS for the on-chip UART, but only for channel 1. */
 multiline_comment|/* CTS for UART channel 1 is pin P54 (bit 4 of port 5).  */
-DECL|macro|NB85E_UART_CTS
-mdefine_line|#define NB85E_UART_CTS(chan)   ((chan) == 1 ? !(AS85EP1_PORT_IO(5) &amp; 0x10) : 1)
+DECL|macro|V850E_UART_CTS
+mdefine_line|#define V850E_UART_CTS(chan)   ((chan) == 1 ? !(AS85EP1_PORT_IO(5) &amp; 0x10) : 1)
 multiline_comment|/* RTS for UART channel 1 is pin P53 (bit 3 of port 5).  */
-DECL|macro|NB85E_UART_SET_RTS
-mdefine_line|#define NB85E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   if (chan == 1) {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;   unsigned old = AS85EP1_PORT_IO(5); &t;&t;&t;      &bslash;&n;&t;&t;   if (val)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   AS85EP1_PORT_IO(5) = old &amp; ~0x8;&t;&t;      &bslash;&n;&t;&t;   else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   AS85EP1_PORT_IO(5) = old | 0x8;&t;&t;      &bslash;&n;&t;   }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;   } while (0)
+DECL|macro|V850E_UART_SET_RTS
+mdefine_line|#define V850E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   if (chan == 1) {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;   unsigned old = AS85EP1_PORT_IO(5); &t;&t;&t;      &bslash;&n;&t;&t;   if (val)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   AS85EP1_PORT_IO(5) = old &amp; ~0x8;&t;&t;      &bslash;&n;&t;&t;   else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   AS85EP1_PORT_IO(5) = old | 0x8;&t;&t;      &bslash;&n;&t;   }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;   } while (0)
 multiline_comment|/* Timer C details.  */
 DECL|macro|V850E_TIMER_C_BASE_ADDR
 mdefine_line|#define V850E_TIMER_C_BASE_ADDR&t;&t;0xFFFFF600

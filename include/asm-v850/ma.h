@@ -9,11 +9,11 @@ multiline_comment|/* We use on-chip RAM, for a few miscellaneous variables that 
 DECL|macro|R0_RAM_ADDR
 mdefine_line|#define R0_RAM_ADDR&t;&t;&t;0xFFFFC000
 multiline_comment|/* MA series UART details.  */
-DECL|macro|NB85E_UART_BASE_FREQ
-mdefine_line|#define NB85E_UART_BASE_FREQ&t;&t;CPU_CLOCK_FREQ
+DECL|macro|V850E_UART_BASE_FREQ
+mdefine_line|#define V850E_UART_BASE_FREQ&t;&t;CPU_CLOCK_FREQ
 multiline_comment|/* This is a function that gets called before configuring the UART.  */
-DECL|macro|NB85E_UART_PRE_CONFIGURE
-mdefine_line|#define NB85E_UART_PRE_CONFIGURE&t;ma_uart_pre_configure
+DECL|macro|V850E_UART_PRE_CONFIGURE
+mdefine_line|#define V850E_UART_PRE_CONFIGURE&t;ma_uart_pre_configure
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void

@@ -78,10 +78,10 @@ mdefine_line|#define LED(n)&t;&t;&t;(*(volatile unsigned char *)LED_ADDR(n))
 DECL|macro|LED_NUM_DIGITS
 mdefine_line|#define LED_NUM_DIGITS&t;&t;2
 multiline_comment|/* Override the basic MA uart pre-initialization so that we can&n;   initialize extra stuff.  */
-DECL|macro|NB85E_UART_PRE_CONFIGURE
-macro_line|#undef NB85E_UART_PRE_CONFIGURE&t;/* should be defined by &lt;asm/ma.h&gt; */
-DECL|macro|NB85E_UART_PRE_CONFIGURE
-mdefine_line|#define NB85E_UART_PRE_CONFIGURE&t;rte_ma1_cb_uart_pre_configure
+DECL|macro|V850E_UART_PRE_CONFIGURE
+macro_line|#undef V850E_UART_PRE_CONFIGURE&t;/* should be defined by &lt;asm/ma.h&gt; */
+DECL|macro|V850E_UART_PRE_CONFIGURE
+mdefine_line|#define V850E_UART_PRE_CONFIGURE&t;rte_ma1_cb_uart_pre_configure
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
@@ -100,10 +100,10 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* This board supports RTS/CTS for the on-chip UART, but only for channel 0. */
 multiline_comment|/* CTS for UART channel 0 is pin P43 (bit 3 of port 4).  */
-DECL|macro|NB85E_UART_CTS
-mdefine_line|#define NB85E_UART_CTS(chan)&t;((chan) == 0 ? !(MA_PORT4_IO &amp; 0x8) : 1)
+DECL|macro|V850E_UART_CTS
+mdefine_line|#define V850E_UART_CTS(chan)&t;((chan) == 0 ? !(MA_PORT4_IO &amp; 0x8) : 1)
 multiline_comment|/* RTS for UART channel 0 is pin P42 (bit 2 of port 4).  */
-DECL|macro|NB85E_UART_SET_RTS
-mdefine_line|#define NB85E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   if (chan == 0) {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;   unsigned old = MA_PORT4_IO; &t;&t;&t;&t;      &bslash;&n;&t;&t;   if (val)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   MA_PORT4_IO = old &amp; ~0x4;&t;&t;&t;      &bslash;&n;&t;&t;   else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   MA_PORT4_IO = old | 0x4;&t;&t;&t;      &bslash;&n;&t;   }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;   } while (0)
+DECL|macro|V850E_UART_SET_RTS
+mdefine_line|#define V850E_UART_SET_RTS(chan, val)&t;&t;&t;&t;&t;      &bslash;&n;   do {&t;&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;   if (chan == 0) {&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;   unsigned old = MA_PORT4_IO; &t;&t;&t;&t;      &bslash;&n;&t;&t;   if (val)&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   MA_PORT4_IO = old &amp; ~0x4;&t;&t;&t;      &bslash;&n;&t;&t;   else&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;&t;&t;&t;   MA_PORT4_IO = old | 0x4;&t;&t;&t;      &bslash;&n;&t;   }&t;&t;&t;&t;&t;&t;&t;&t;      &bslash;&n;   } while (0)
 macro_line|#endif /* __V850_RTE_MA1_CB_H__ */
 eof

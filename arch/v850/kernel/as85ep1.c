@@ -315,13 +315,6 @@ op_star
 id|cmdline
 )paren
 (brace
-macro_line|#ifdef CONFIG_V850E_NB85E_UART_CONSOLE
-id|nb85e_uart_cons_init
-(paren
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
 id|AS85EP1_PORT_PMC
 (paren
 id|LEDS_PORT
