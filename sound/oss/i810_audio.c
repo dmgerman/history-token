@@ -10692,6 +10692,26 @@ op_eq
 l_int|NULL
 )paren
 (brace
+multiline_comment|/* free any read channel allocated earlier */
+r_if
+c_cond
+(paren
+id|file-&gt;f_mode
+op_amp
+id|FMODE_READ
+)paren
+(brace
+id|card
+op_member_access_from_pointer
+id|free_pcm_channel
+c_func
+(paren
+id|card
+comma
+id|dmabuf-&gt;read_channel-&gt;num
+)paren
+suffix:semicolon
+)brace
 id|kfree
 (paren
 id|card-&gt;states
