@@ -104,8 +104,6 @@ DECL|macro|ATARI_FALCON_SG_TABLESIZE
 mdefine_line|#define ATARI_FALCON_SG_TABLESIZE&t;SG_NONE
 DECL|macro|DEFAULT_USE_TAGGED_QUEUING
 mdefine_line|#define&t;DEFAULT_USE_TAGGED_QUEUING&t;0
-DECL|macro|ATARI_SCSI
-mdefine_line|#define ATARI_SCSI {    .proc_info         = atari_scsi_proc_info,&t;&bslash;&n;&t;&t;&t;.name              = &quot;Atari native SCSI&quot;,&t;&t;&bslash;&n;&t;&t;&t;.detect            = atari_scsi_detect,&t;&t;&bslash;&n;&t;&t;&t;.release           = atari_scsi_release,&t;&t;&bslash;&n;&t;&t;&t;.info              = atari_scsi_info,&t;&t;&bslash;&n;&t;&t;&t;.queuecommand      = atari_scsi_queue_command,&t;&bslash;&n;&t;&t;&t;.abort             = atari_scsi_abort,&t;&t;&bslash;&n;&t;&t;&t;.reset             = atari_scsi_reset,&t;&t;&bslash;&n;&t;&t;&t;.can_queue         = 0, /* initialized at run-time */&t;&bslash;&n;&t;&t;&t;.this_id           = 0, /* initialized at run-time */&t;&bslash;&n;&t;&t;&t;.sg_tablesize      = 0, /* initialized at run-time */&t;&bslash;&n;&t;&t;&t;.cmd_per_lun       = 0, /* initialized at run-time */&t;&bslash;&n;&t;&t;&t;.use_clustering&t;   = DISABLE_CLUSTERING }
 DECL|macro|NCR5380_implementation_fields
 mdefine_line|#define&t;NCR5380_implementation_fields&t;/* none */
 DECL|macro|NCR5380_read

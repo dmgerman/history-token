@@ -94,7 +94,5 @@ DECL|macro|CAN_QUEUE
 mdefine_line|#define CAN_QUEUE 24
 macro_line|#endif
 macro_line|#include &lt;scsi/scsicam.h&gt;
-DECL|macro|BVME6000_SCSI
-mdefine_line|#define BVME6000_SCSI  {.name                = &quot;BVME6000 NCR53c710 SCSI&quot;, &bslash;&n;&t;&t;       .detect              = bvme6000_scsi_detect,    &bslash;&n;&t;&t;       .queuecommand        = NCR53c7xx_queue_command, &bslash;&n;&t;&t;       .abort               = NCR53c7xx_abort,   &bslash;&n;&t;&t;       .reset               = NCR53c7xx_reset,   &bslash;&n;&t;&t;       .can_queue           = 24,       &bslash;&n;&t;&t;       .this_id             = 7,               &bslash;&n;&t;&t;       .sg_tablesize        = 63,          &bslash;&n;&t;&t;       .cmd_per_lun&t;    = 3,     &bslash;&n;&t;&t;       .use_clustering      = DISABLE_CLUSTERING }
 macro_line|#endif /* BVME6000_SCSI_H */
 eof

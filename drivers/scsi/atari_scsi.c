@@ -3449,7 +3449,76 @@ r_static
 id|Scsi_Host_Template
 id|driver_template
 op_assign
-id|ATARI_SCSI
+(brace
+dot
+id|proc_info
+op_assign
+id|atari_scsi_proc_info
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Atari native SCSI&quot;
+comma
+dot
+id|detect
+op_assign
+id|atari_scsi_detect
+comma
+dot
+id|release
+op_assign
+id|atari_scsi_release
+comma
+dot
+id|info
+op_assign
+id|atari_scsi_info
+comma
+dot
+id|queuecommand
+op_assign
+id|atari_scsi_queue_command
+comma
+dot
+m_abort
+op_assign
+id|atari_scsi_abort
+comma
+dot
+id|reset
+op_assign
+id|atari_scsi_reset
+comma
+dot
+id|can_queue
+op_assign
+l_int|0
+comma
+multiline_comment|/* initialized at run-time */
+dot
+id|this_id
+op_assign
+l_int|0
+comma
+multiline_comment|/* initialized at run-time */
+dot
+id|sg_tablesize
+op_assign
+l_int|0
+comma
+multiline_comment|/* initialized at run-time */
+dot
+id|cmd_per_lun
+op_assign
+l_int|0
+comma
+multiline_comment|/* initialized at run-time */
+dot
+id|use_clustering
+op_assign
+id|DISABLE_CLUSTERING
+)brace
 suffix:semicolon
 macro_line|#include &quot;scsi_module.c&quot;
 id|MODULE_LICENSE

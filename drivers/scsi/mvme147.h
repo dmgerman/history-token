@@ -76,9 +76,5 @@ macro_line|#ifndef CAN_QUEUE
 DECL|macro|CAN_QUEUE
 mdefine_line|#define CAN_QUEUE 16
 macro_line|#endif
-macro_line|#ifdef HOSTS_C
-DECL|macro|MVME147_SCSI
-mdefine_line|#define MVME147_SCSI {.proc_name&t;   = &quot;MVME147&quot;,&t;&t;&t;&bslash;&n;&t;&t;      .proc_info           = NULL,&t;&t;&t;&bslash;&n;&t;&t;      .name                = &quot;MVME147 built-in SCSI&quot;,&t;&bslash;&n;&t;&t;      .detect              = mvme147_detect,&t;&t;&bslash;&n;&t;&t;      .release             = mvme147_release,&t;&t;&bslash;&n;&t;&t;      .queuecommand        = wd33c93_queuecommand,&t;&bslash;&n;&t;&t;      .abort               = wd33c93_abort,&t;&t;&bslash;&n;&t;&t;      .reset               = wd33c93_reset,&t;&t;&bslash;&n;&t;&t;      .can_queue           = CAN_QUEUE,&t;&t;&t;&bslash;&n;&t;&t;      .this_id             = 7,&t;&t;&t;&t;&bslash;&n;&t;&t;      .sg_tablesize        = SG_ALL,&t;&t;&t;&bslash;&n;&t;&t;      .cmd_per_lun&t;   = CMD_PER_LUN,&t;&t;&t;&bslash;&n;&t;&t;      .use_clustering      = ENABLE_CLUSTERING }
-macro_line|#endif /* else def HOSTS_C */
 macro_line|#endif /* MVME147_H */
 eof

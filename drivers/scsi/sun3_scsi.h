@@ -142,8 +142,6 @@ macro_line|#else
 DECL|macro|SUN3_SCSI_NAME
 mdefine_line|#define SUN3_SCSI_NAME &quot;Sun3 NCR5380 SCSI&quot;
 macro_line|#endif
-DECL|macro|SUN3_NCR5380
-mdefine_line|#define SUN3_NCR5380 {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;.name =&t;&t;&t;SUN3_SCSI_NAME,&t;&t;&t;&t;&t;&bslash;&n;.detect =&t;&t;sun3scsi_detect,&t;&t;&t;&t;&bslash;&n;.release =&t;&t;sun3scsi_release,&t;/* Release */&t;&t;&bslash;&n;.info =&t;&t;&t;sun3scsi_info,&t;&t;&t;&t;&t;&bslash;&n;.queuecommand =&t;&t;sun3scsi_queue_command,&t;&t;&t;&t;&bslash;&n;.abort =&t;&t;sun3scsi_abort,&t;&t;&t;&t;&t;&bslash;&n;.reset =&t;&t;sun3scsi_reset,&t;&t;&t;&t;&t;&bslash;&n;.can_queue =&t;&t;CAN_QUEUE,&t;&t;/* can queue */&t;&t;&bslash;&n;.this_id =&t;&t;7,&t;&t;&t;/* id */&t;&t;&bslash;&n;.sg_tablesize =&t;&t;SG_TABLESIZE,&t;&t;/* sg_tablesize */&t;&bslash;&n;.cmd_per_lun =&t;&t;CMD_PER_LUN,&t;&t;/* cmd per lun */&t;&bslash;&n;.unchecked_isa_dma =&t;0,&t;&t;&t;/* unchecked_isa_dma */&t;&bslash;&n;.use_clustering =&t;DISABLE_CLUSTERING&t;&t;&t;&t;&bslash;&n;&t;}
 macro_line|#ifndef HOSTS_C
 DECL|macro|NCR5380_implementation_fields
 mdefine_line|#define NCR5380_implementation_fields &bslash;&n;    int port, ctrl
