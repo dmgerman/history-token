@@ -36,12 +36,11 @@ DECL|macro|TG3_VLAN_TAG_USED
 mdefine_line|#define TG3_VLAN_TAG_USED 0
 macro_line|#endif
 macro_line|#ifdef NETIF_F_TSO
-multiline_comment|/* XXX Disable until more performance analysis is done. */
-DECL|macro|TG3_DO_TSO
-mdefine_line|#define TG3_DO_TSO&t;0
+DECL|macro|TG3_TSO_SUPPORT
+mdefine_line|#define TG3_TSO_SUPPORT&t;1
 macro_line|#else
-DECL|macro|TG3_DO_TSO
-mdefine_line|#define TG3_DO_TSO&t;0
+DECL|macro|TG3_TSO_SUPPORT
+mdefine_line|#define TG3_TSO_SUPPORT&t;0
 macro_line|#endif
 macro_line|#include &quot;tg3.h&quot;
 DECL|macro|DRV_MODULE_NAME
@@ -11510,7 +11509,7 @@ id|base_flags
 op_or_assign
 id|TXD_FLAG_TCPUDP_CSUM
 suffix:semicolon
-macro_line|#if TG3_DO_TSO != 0
+macro_line|#if TG3_TSO_SUPPORT != 0
 id|mss
 op_assign
 l_int|0
@@ -12421,7 +12420,7 @@ id|base_flags
 op_or_assign
 id|TXD_FLAG_TCPUDP_CSUM
 suffix:semicolon
-macro_line|#if TG3_DO_TSO != 0
+macro_line|#if TG3_TSO_SUPPORT != 0
 id|mss
 op_assign
 l_int|0
@@ -17810,7 +17809,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if TG3_DO_TSO != 0
+macro_line|#if TG3_TSO_SUPPORT != 0
 DECL|macro|TG3_TSO_FW_RELEASE_MAJOR
 mdefine_line|#define TG3_TSO_FW_RELEASE_MAJOR&t;0x1
 DECL|macro|TG3_TSO_FW_RELASE_MINOR
@@ -23723,7 +23722,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* TG3_DO_TSO != 0 */
+macro_line|#endif /* TG3_TSO_SUPPORT != 0 */
 multiline_comment|/* tp-&gt;lock is held. */
 DECL|function|__tg3_set_mac_addr
 r_static
@@ -24672,7 +24671,7 @@ id|NIC_SRAM_DMA_DESC_POOL_SIZE
 )paren
 suffix:semicolon
 )brace
-macro_line|#if TG3_DO_TSO != 0
+macro_line|#if TG3_TSO_SUPPORT != 0
 r_else
 r_if
 c_cond
@@ -26433,7 +26432,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-macro_line|#if TG3_DO_TSO != 0
+macro_line|#if TG3_TSO_SUPPORT != 0
 r_if
 c_cond
 (paren
@@ -31456,6 +31455,97 @@ op_assign
 id|value
 suffix:semicolon
 )brace
+DECL|function|tg3_get_tso
+r_static
+id|u32
+id|tg3_get_tso
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_return
+(paren
+id|dev-&gt;features
+op_amp
+id|NETIF_F_TSO
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|tg3_set_tso
+r_static
+r_int
+id|tg3_set_tso
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+id|u32
+id|value
+)paren
+(brace
+r_struct
+id|tg3
+op_star
+id|tp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|tp-&gt;tg3_flags2
+op_amp
+id|TG3_FLG2_TSO_CAPABLE
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|value
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|value
+)paren
+id|dev-&gt;features
+op_and_assign
+op_complement
+id|NETIF_F_TSO
+suffix:semicolon
+r_else
+id|dev-&gt;features
+op_or_assign
+id|NETIF_F_TSO
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)brace
 DECL|function|tg3_nway_reset
 r_static
 r_int
@@ -32518,6 +32608,16 @@ dot
 id|set_sg
 op_assign
 id|ethtool_op_set_sg
+comma
+dot
+id|get_tso
+op_assign
+id|tg3_get_tso
+comma
+dot
+id|set_tso
+op_assign
+id|tg3_set_tso
 comma
 )brace
 suffix:semicolon
@@ -38499,7 +38599,7 @@ op_assign
 id|DEFAULT_MB_HIGH_WATER_5705
 suffix:semicolon
 )brace
-macro_line|#if TG3_DO_TSO != 0
+macro_line|#if TG3_TSO_SUPPORT != 0
 r_if
 c_cond
 (paren
@@ -38551,6 +38651,8 @@ op_or_assign
 id|TG3_FLG2_TSO_CAPABLE
 suffix:semicolon
 )brace
+multiline_comment|/* TSO is off by default, user can enable using ethtool.  */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -38562,6 +38664,7 @@ id|dev-&gt;features
 op_or_assign
 id|NETIF_F_TSO
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 r_if
 c_cond
