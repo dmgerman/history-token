@@ -1629,7 +1629,6 @@ suffix:semicolon
 op_star
 id|cmd
 op_or_assign
-op_complement
 id|AGPSTAT3_4X
 suffix:semicolon
 id|printk
@@ -1667,7 +1666,6 @@ suffix:semicolon
 op_star
 id|cmd
 op_or_assign
-op_complement
 id|AGPSTAT3_4X
 suffix:semicolon
 id|printk
@@ -1727,7 +1725,6 @@ id|AGPSTAT3_4X
 op_star
 id|cmd
 op_or_assign
-op_complement
 id|AGPSTAT3_4X
 suffix:semicolon
 r_else
