@@ -9496,6 +9496,10 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; * change_port_settings&n; *&t;This routine is called to set the UART on the device to match the specified&n; *&t;new settings.&n; *****************************************************************************/
+macro_line|#ifndef CMSPAR
+DECL|macro|CMSPAR
+mdefine_line|#define CMSPAR 0
+macro_line|#endif
 DECL|function|change_port_settings
 r_static
 r_void
