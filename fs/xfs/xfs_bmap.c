@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
 macro_line|#include &quot;xfs_types.h&quot;
@@ -15501,6 +15501,30 @@ r_int
 id|low
 suffix:semicolon
 multiline_comment|/* low index of binary search */
+multiline_comment|/* Initialize the extent entry structure to catch access to&n;&t;* uninitialized br_startblock field.&n;&t;*/
+id|got.br_startoff
+op_assign
+l_int|0xffa5a5a5a5a5a5a5
+suffix:semicolon
+id|got.br_blockcount
+op_assign
+l_int|0xa55a5a5a5a5a5a5a
+suffix:semicolon
+id|got.br_state
+op_assign
+id|XFS_EXT_INVALID
+suffix:semicolon
+macro_line|#if XFS_BIG_BLKNOS
+id|got.br_startblock
+op_assign
+l_int|0xffffa5a5a5a5a5a5
+suffix:semicolon
+macro_line|#else
+id|got.br_startblock
+op_assign
+l_int|0xffffa5a5
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -16012,6 +16036,15 @@ id|xfs_extnum_t
 id|nextents
 suffix:semicolon
 multiline_comment|/* extent list size */
+id|xfs_bmbt_rec_t
+op_star
+id|ep
+suffix:semicolon
+multiline_comment|/* extent list entry pointer */
+r_int
+id|rt
+suffix:semicolon
+multiline_comment|/* realtime flag    */
 id|XFS_STATS_INC
 c_func
 (paren
@@ -16052,7 +16085,8 @@ id|ifp-&gt;if_u1.if_extents
 l_int|0
 )braket
 suffix:semicolon
-r_return
+id|ep
+op_assign
 id|xfs_bmap_do_search_extents
 c_func
 (paren
@@ -16072,6 +16106,63 @@ id|gotp
 comma
 id|prevp
 )paren
+suffix:semicolon
+id|rt
+op_assign
+id|ip-&gt;i_d.di_flags
+op_amp
+id|XFS_DIFLAG_REALTIME
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rt
+op_logical_and
+op_logical_neg
+id|gotp-&gt;br_startblock
+op_logical_and
+(paren
+op_star
+id|lastxp
+op_ne
+id|NULLEXTNUM
+)paren
+)paren
+(brace
+id|cmn_err
+c_func
+(paren
+id|CE_PANIC
+comma
+l_string|&quot;Access to block zero: fs: &lt;%s&gt; inode: %lld &quot;
+l_string|&quot;start_block : %llx start_off : %llx blkcnt : %llx &quot;
+l_string|&quot;extent-state : %x &bslash;n&quot;
+comma
+(paren
+id|ip-&gt;i_mount
+)paren
+op_member_access_from_pointer
+id|m_fsname
+comma
+(paren
+r_int
+r_int
+)paren
+id|ip-&gt;i_ino
+comma
+id|gotp-&gt;br_startblock
+comma
+id|gotp-&gt;br_startoff
+comma
+id|gotp-&gt;br_blockcount
+comma
+id|gotp-&gt;br_state
+)paren
+suffix:semicolon
+)brace
+r_return
+id|ep
 suffix:semicolon
 )brace
 macro_line|#ifdef XFS_BMAP_TRACE
