@@ -264,6 +264,8 @@ c_func
 id|IP_DF
 )paren
 )paren
+op_logical_or
+id|skb-&gt;local_df
 )paren
 r_goto
 id|out
