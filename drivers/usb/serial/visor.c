@@ -2032,13 +2032,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|dev_dbg
+id|dbg
 c_func
 (paren
-op_amp
-id|port-&gt;dev
+l_string|&quot;%s - write limit hit&bslash;n&quot;
 comma
-l_string|&quot;write limit hit&bslash;n&quot;
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
