@@ -827,6 +827,20 @@ comma
 id|STACK_FRAME_OVERHEAD
 )paren
 suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|SWITCH_FRAME_SIZE
+comma
+id|STACK_FRAME_OVERHEAD
+op_plus
+r_sizeof
+(paren
+r_struct
+id|pt_regs
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* 288 = # of volatile regs, int &amp; fp, for leaf routines */
 multiline_comment|/* which do not stack a frame.  See the PPC64 ABI.       */
 id|DEFINE
@@ -860,8 +874,6 @@ id|pt_regs
 )paren
 op_plus
 l_int|16
-op_plus
-l_int|288
 )paren
 suffix:semicolon
 id|DEFINE
@@ -878,8 +890,6 @@ id|pt_regs
 )paren
 op_plus
 l_int|16
-op_plus
-l_int|288
 )paren
 suffix:semicolon
 id|DEFINE
