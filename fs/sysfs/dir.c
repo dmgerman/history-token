@@ -742,6 +742,8 @@ c_func
 (paren
 id|kobj
 comma
+l_string|&quot;%s&quot;
+comma
 id|new_name
 )paren
 suffix:semicolon

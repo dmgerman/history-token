@@ -5401,6 +5401,8 @@ c_func
 op_amp
 id|mod-&gt;mkobj-&gt;kobj
 comma
+l_string|&quot;%s&quot;
+comma
 id|mod-&gt;name
 )paren
 suffix:semicolon

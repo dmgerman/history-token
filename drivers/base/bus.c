@@ -1878,6 +1878,8 @@ c_func
 op_amp
 id|drv-&gt;kobj
 comma
+l_string|&quot;%s&quot;
+comma
 id|drv-&gt;name
 )paren
 suffix:semicolon
@@ -2397,6 +2399,8 @@ c_func
 (paren
 op_amp
 id|bus-&gt;subsys.kset.kobj
+comma
+l_string|&quot;%s&quot;
 comma
 id|bus-&gt;name
 )paren
