@@ -4851,7 +4851,7 @@ id|i
 op_increment
 )paren
 (brace
-r_char
+id|s8
 id|d
 (braket
 l_int|2
