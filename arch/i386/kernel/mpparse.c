@@ -691,7 +691,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;NR_CPUS limit of %i reached.  Cannot &quot;
-l_string|&quot;boot CPU(apicid 0x%d).&bslash;n&quot;
+l_string|&quot;boot CPU(apicid 0x%x).&bslash;n&quot;
 comma
 id|NR_CPUS
 comma

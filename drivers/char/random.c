@@ -8777,7 +8777,7 @@ id|tmp
 )paren
 r_return
 op_minus
-id|EFAULT
+id|ENOMEM
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
