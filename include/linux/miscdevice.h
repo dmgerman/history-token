@@ -45,19 +45,6 @@ DECL|macro|MPT_MINOR
 mdefine_line|#define MPT_MINOR&t;220
 DECL|macro|MISC_DYNAMIC_MINOR
 mdefine_line|#define MISC_DYNAMIC_MINOR 255
-DECL|macro|SGI_GRAPHICS_MINOR
-mdefine_line|#define SGI_GRAPHICS_MINOR   146
-DECL|macro|SGI_OPENGL_MINOR
-mdefine_line|#define SGI_OPENGL_MINOR     147
-DECL|macro|SGI_GFX_MINOR
-mdefine_line|#define SGI_GFX_MINOR        148
-DECL|macro|SGI_STREAMS_MOUSE
-mdefine_line|#define SGI_STREAMS_MOUSE    149
-DECL|macro|SGI_STREAMS_KEYBOARD
-mdefine_line|#define SGI_STREAMS_KEYBOARD 150
-multiline_comment|/* drivers/sgi/char/usema.c */
-DECL|macro|SGI_USEMACLONE
-mdefine_line|#define SGI_USEMACLONE&t;     151
 DECL|macro|TUN_MINOR
 mdefine_line|#define TUN_MINOR&t;     200
 DECL|macro|HPET_MINOR
