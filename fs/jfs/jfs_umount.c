@@ -100,7 +100,7 @@ c_func
 (paren
 id|log
 comma
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * close fileset inode allocation map (aka fileset inode)&n;&t; */
@@ -300,7 +300,7 @@ c_func
 (paren
 id|log
 comma
-l_int|1
+l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure all metadata makes it to disk&n;&t; */

@@ -633,6 +633,13 @@ DECL|member|cqueue
 )brace
 id|cqueue
 suffix:semicolon
+DECL|member|flush_tblk
+r_struct
+id|tblock
+op_star
+id|flush_tblk
+suffix:semicolon
+multiline_comment|/* tblk we&squot;re waiting on for flush */
 DECL|member|gcrtc
 r_int
 id|gcrtc
