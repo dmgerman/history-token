@@ -6792,7 +6792,7 @@ suffix:semicolon
 )brace
 DECL|macro|OGIN
 macro_line|#undef OGIN
-multiline_comment|/*&n;&t; * This is needed to get ntfs_clear_inode() called for each inode we&n;&t; * have ever called iget()/iput() on, otherwise we A) leak resources&n;&t; * and B) a subsequent mount fails automatically due to iget() never&n;&t; * calling down into our ntfs_read_inode{_mount}() methods again...&n;&t; */
+multiline_comment|/*&n;&t; * This is needed to get ntfs_clear_extent_inode() called for each&n;&t; * inode we have ever called iget()/iput() on, otherwise we A) leak&n;&t; * resources and B) a subsequent mount fails automatically due to&n;&t; * iget() never calling down into our ntfs_read_inode{_mount}() methods&n;&t; * again...&n;&t; */
 r_if
 c_cond
 (paren
