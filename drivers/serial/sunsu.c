@@ -28,8 +28,7 @@ macro_line|#include &lt;asm/ebus.h&gt;
 macro_line|#ifdef CONFIG_SPARC64
 macro_line|#include &lt;asm/isa.h&gt;
 macro_line|#endif
-multiline_comment|/* #if defined(CONFIG_SERIAL_8250_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ) */
-macro_line|#if defined(CONFIG_MAGIC_SYSRQ)
+macro_line|#if defined(CONFIG_SERIAL_SUNSU_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
 macro_line|#endif
@@ -5741,6 +5740,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ------------------------------------------------------------&n; * Serial console driver&n; * ------------------------------------------------------------&n; */
+macro_line|#ifdef CONFIG_SERIAL_SUNSU_CONSOLE
 DECL|macro|BOTH_EMPTY
 mdefine_line|#define BOTH_EMPTY (UART_LSR_TEMT | UART_LSR_THRE)
 multiline_comment|/*&n; *&t;Wait for transmitter &amp; holding register to empty&n; */
@@ -6178,6 +6178,8 @@ id|sunsu_reg
 comma
 )brace
 suffix:semicolon
+DECL|macro|SUNSU_CONSOLE
+mdefine_line|#define SUNSU_CONSOLE&t;(&amp;sunsu_cons)
 multiline_comment|/*&n; *&t;Register console.&n; */
 DECL|function|sunsu_serial_console_init
 r_static
@@ -6283,6 +6285,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|SUNSU_CONSOLE
+mdefine_line|#define SUNSU_CONSOLE&t;&t;&t;(NULL)
+DECL|macro|sunsu_serial_console_init
+mdefine_line|#define sunsu_serial_console_init()&t;do { } while (0)
+macro_line|#endif
 DECL|function|sunsu_serial_init
 r_static
 r_int
@@ -6400,8 +6408,7 @@ id|instance
 suffix:semicolon
 id|sunsu_reg.cons
 op_assign
-op_amp
-id|sunsu_cons
+id|SUNSU_CONSOLE
 suffix:semicolon
 id|ret
 op_assign
