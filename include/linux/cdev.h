@@ -113,8 +113,6 @@ id|inode
 op_star
 )paren
 suffix:semicolon
-DECL|macro|cdev_set_name
-mdefine_line|#define cdev_set_name(cdev, args...) kobject_set_name(&amp;((cdev)-&gt;kobj), ##args)
 macro_line|#endif
 macro_line|#endif
 eof

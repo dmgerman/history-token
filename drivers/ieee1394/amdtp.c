@@ -4810,15 +4810,6 @@ id|amdtp_cdev.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|cdev_set_name
-c_func
-(paren
-op_amp
-id|amdtp_cdev
-comma
-l_string|&quot;amdtp&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -14261,15 +14261,6 @@ id|raw1394_cdev.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
-id|cdev_set_name
-c_func
-(paren
-op_amp
-id|raw1394_cdev
-comma
-id|RAW1394_DEVICE_NAME
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|cdev_add

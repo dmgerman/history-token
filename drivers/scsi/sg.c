@@ -7695,14 +7695,6 @@ comma
 id|k
 )paren
 suffix:semicolon
-id|cdev_set_name
-c_func
-(paren
-id|cdev
-comma
-id|disk-&gt;disk_name
-)paren
-suffix:semicolon
 id|cdev-&gt;owner
 op_assign
 id|THIS_MODULE
