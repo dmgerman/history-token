@@ -6707,12 +6707,16 @@ id|ptr
 l_int|0
 )braket
 op_assign
+id|cpu_to_be16
+c_func
+(paren
 r_sizeof
 (paren
 id|mode_page_01
 )paren
 op_minus
 l_int|2
+)paren
 suffix:semicolon
 id|ptr
 (braket
