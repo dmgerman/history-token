@@ -28,6 +28,8 @@ DECL|macro|E820_MAP
 mdefine_line|#define E820_MAP    ((struct e820entry *) (PARAM+E820MAP))
 DECL|macro|APM_BIOS_INFO
 mdefine_line|#define APM_BIOS_INFO (*(struct apm_bios_info *) (PARAM+0x40))
+DECL|macro|IST_INFO
+mdefine_line|#define IST_INFO   (*(struct ist_info *) (PARAM+0x60))
 DECL|macro|DRIVE_INFO
 mdefine_line|#define DRIVE_INFO (*(struct drive_info_struct *) (PARAM+0x80))
 DECL|macro|SYS_DESC_TABLE

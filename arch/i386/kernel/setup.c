@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/io_apic.h&gt;
+macro_line|#include &lt;asm/ist.h&gt;
 macro_line|#include &quot;setup_arch_pre.h&quot;
 macro_line|#include &quot;mach_resources.h&quot;
 DECL|variable|__initdata
@@ -252,6 +253,11 @@ DECL|variable|edid_info
 r_struct
 id|edid_info
 id|edid_info
+suffix:semicolon
+DECL|variable|ist_info
+r_struct
+id|ist_info
+id|ist_info
 suffix:semicolon
 DECL|variable|e820
 r_struct
@@ -4018,6 +4024,10 @@ suffix:semicolon
 id|apm_info.bios
 op_assign
 id|APM_BIOS_INFO
+suffix:semicolon
+id|ist_info
+op_assign
+id|IST_INFO
 suffix:semicolon
 id|saved_videomode
 op_assign
