@@ -255,7 +255,7 @@ id|size
 )paren
 )paren
 (brace
-id|kfree
+id|vfree
 c_func
 (paren
 id|buf
@@ -394,7 +394,7 @@ id|size
 )paren
 )paren
 (brace
-id|kfree
+id|vfree
 c_func
 (paren
 id|buf
