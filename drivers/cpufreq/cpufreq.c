@@ -1807,11 +1807,11 @@ id|i
 suffix:semicolon
 )brace
 DECL|macro|define_one_ro
-mdefine_line|#define define_one_ro(_name) &bslash;&n;static struct freq_attr _name = { &bslash;&n;&t;.attr = { .name = __stringify(_name), .mode = 0444 }, &bslash;&n;&t;.show = show_##_name, &bslash;&n;}
+mdefine_line|#define define_one_ro(_name) &bslash;&n;static struct freq_attr _name = &bslash;&n;__ATTR(_name, 0444, show_##_name, NULL)
 DECL|macro|define_one_ro0400
-mdefine_line|#define define_one_ro0400(_name) &bslash;&n;static struct freq_attr _name = { &bslash;&n;&t;.attr = { .name = __stringify(_name), .mode = 0400 }, &bslash;&n;&t;.show = show_##_name, &bslash;&n;}
+mdefine_line|#define define_one_ro0400(_name) &bslash;&n;static struct freq_attr _name = &bslash;&n;__ATTR(_name, 0400, show_##_name, NULL)
 DECL|macro|define_one_rw
-mdefine_line|#define define_one_rw(_name) &bslash;&n;static struct freq_attr _name = { &bslash;&n;&t;.attr = { .name = __stringify(_name), .mode = 0644 }, &bslash;&n;&t;.show = show_##_name, &bslash;&n;&t;.store = store_##_name, &bslash;&n;}
+mdefine_line|#define define_one_rw(_name) &bslash;&n;static struct freq_attr _name = &bslash;&n;__ATTR(_name, 0644, show_##_name, store_##_name)
 DECL|variable|cpuinfo_cur_freq
 id|define_one_ro0400
 c_func
