@@ -8809,8 +8809,6 @@ id|aty128_find_mem_vbios
 c_func
 (paren
 id|par
-comma
-id|pdev
 )paren
 suffix:semicolon
 macro_line|#endif
