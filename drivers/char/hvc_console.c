@@ -861,8 +861,6 @@ id|i
 comma
 l_int|NULL
 comma
-l_int|NULL
-comma
 id|tty
 )paren
 suffix:semicolon
