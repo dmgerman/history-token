@@ -2848,6 +2848,9 @@ id|min
 (paren
 id|len
 comma
+(paren
+r_int
+)paren
 id|dev-&gt;req-&gt;actual
 )paren
 suffix:semicolon
@@ -6174,7 +6177,7 @@ id|dev-&gt;lock
 suffix:semicolon
 id|pr_debug
 (paren
-l_string|&quot;%s: %s fail %d, %p&bslash;n&quot;
+l_string|&quot;%s: %s fail %Zd, %p&bslash;n&quot;
 comma
 id|shortname
 comma
