@@ -21,7 +21,7 @@ multiline_comment|/* Module and version information */
 DECL|macro|WATCHDOG_VERSION
 mdefine_line|#define WATCHDOG_VERSION &quot;1.00&quot;
 DECL|macro|WATCHDOG_DATE
-mdefine_line|#define WATCHDOG_DATE &quot;09/02/2004&quot;
+mdefine_line|#define WATCHDOG_DATE &quot;13/03/2004&quot;
 DECL|macro|WATCHDOG_DRIVER_NAME
 mdefine_line|#define WATCHDOG_DRIVER_NAME &quot;PCI-PC Watchdog&quot;
 DECL|macro|WATCHDOG_NAME
@@ -58,6 +58,12 @@ DECL|macro|CMD_READ_WATCHDOG_TIMEOUT
 mdefine_line|#define CMD_READ_WATCHDOG_TIMEOUT&t;0x18
 DECL|macro|CMD_WRITE_WATCHDOG_TIMEOUT
 mdefine_line|#define CMD_WRITE_WATCHDOG_TIMEOUT&t;0x19
+multiline_comment|/* We can only use 1 card due to the /dev/watchdog restriction */
+DECL|variable|cards_found
+r_static
+r_int
+id|cards_found
+suffix:semicolon
 multiline_comment|/* internal variables */
 DECL|variable|temp_panic
 r_static
@@ -1677,10 +1683,6 @@ op_star
 id|ent
 )paren
 (brace
-r_static
-r_int
-id|cards_found
-suffix:semicolon
 r_int
 id|ret
 op_assign
@@ -1787,9 +1789,13 @@ id|PFX
 l_string|&quot;No I/O-Address for card detected&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|ENODEV
+suffix:semicolon
+r_goto
+id|err_out_disable_device
 suffix:semicolon
 )brace
 id|pcipcwd_private.pdev
@@ -2278,6 +2284,9 @@ c_func
 (paren
 id|pdev
 )paren
+suffix:semicolon
+id|cards_found
+op_decrement
 suffix:semicolon
 )brace
 DECL|variable|pcipcwd_pci_tbl
