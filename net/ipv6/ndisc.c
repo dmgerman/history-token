@@ -1938,7 +1938,7 @@ id|in6_addr
 suffix:semicolon
 id|rt
 op_assign
-id|ndisc_get_dummy_rt
+id|ip6_dst_alloc
 c_func
 (paren
 )paren
@@ -2416,7 +2416,7 @@ suffix:semicolon
 )brace
 id|rt
 op_assign
-id|ndisc_get_dummy_rt
+id|ip6_dst_alloc
 c_func
 (paren
 )paren
@@ -2801,7 +2801,7 @@ id|err
 suffix:semicolon
 id|rt
 op_assign
-id|ndisc_get_dummy_rt
+id|ip6_dst_alloc
 c_func
 (paren
 )paren
