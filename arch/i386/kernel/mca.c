@@ -837,7 +837,7 @@ comma
 id|MCA_MOTHERBOARD_SETUP_REG
 )paren
 suffix:semicolon
-id|mca_dev-&gt;dev.name
+id|mca_dev-&gt;name
 (braket
 l_int|0
 )braket
@@ -929,7 +929,7 @@ comma
 id|MCA_MOTHERBOARD_SETUP_REG
 )paren
 suffix:semicolon
-id|mca_dev-&gt;dev.name
+id|mca_dev-&gt;name
 (braket
 l_int|0
 )braket
@@ -1377,7 +1377,7 @@ c_func
 id|KERN_CRIT
 l_string|&quot;NMI: caused by MCA integrated SCSI adapter (%s)&bslash;n&quot;
 comma
-id|mca_dev-&gt;dev.name
+id|mca_dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -1396,7 +1396,7 @@ c_func
 id|KERN_CRIT
 l_string|&quot;NMI: caused by MCA integrated video adapter (%s)&bslash;n&quot;
 comma
-id|mca_dev-&gt;dev.name
+id|mca_dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -1415,7 +1415,7 @@ c_func
 id|KERN_CRIT
 l_string|&quot;NMI: caused by motherboard (%s)&bslash;n&quot;
 comma
-id|mca_dev-&gt;dev.name
+id|mca_dev-&gt;name
 )paren
 suffix:semicolon
 )brace

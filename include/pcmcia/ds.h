@@ -281,11 +281,6 @@ DECL|member|pending
 id|wait_queue_head_t
 id|pending
 suffix:semicolon
-DECL|member|release
-r_struct
-id|timer_list
-id|release
-suffix:semicolon
 DECL|member|handle
 id|client_handle_t
 id|handle
