@@ -443,7 +443,7 @@ DECL|macro|XFS_CFORK_Q
 mdefine_line|#define&t;XFS_CFORK_Q(dcp)                    xfs_cfork_q(dcp)
 macro_line|#else
 DECL|macro|XFS_CFORK_Q_DISK
-mdefine_line|#define&t;XFS_CFORK_Q_DISK(dcp)&t;&t;    (!INT_ISZERO((dcp)-&gt;di_forkoff, ARCH_CONVERT))
+mdefine_line|#define&t;XFS_CFORK_Q_DISK(dcp)&t;&t;    ((dcp)-&gt;di_forkoff != 0)
 DECL|macro|XFS_CFORK_Q
 mdefine_line|#define XFS_CFORK_Q(dcp)                    ((dcp)-&gt;di_forkoff != 0)
 macro_line|#endif

@@ -2144,13 +2144,8 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|INT_ISZERO
-c_func
-(paren
+op_logical_neg
 id|agi-&gt;agi_freecount
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Don&squot;t do anything if we&squot;re not supposed to allocate&n;&t;&t; * any blocks, just go on to the next ag.&n;&t;&t; */
@@ -6072,17 +6067,10 @@ op_increment
 id|ASSERT
 c_func
 (paren
-op_logical_neg
-id|INT_ISZERO
-c_func
-(paren
 id|agi-&gt;agi_unlinked
 (braket
 id|i
 )braket
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 suffix:semicolon
 )brace

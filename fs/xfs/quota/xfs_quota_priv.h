@@ -116,7 +116,7 @@ mdefine_line|#define XFS_DQ_HASH(mp, id, type)   (type == XFS_DQ_USER ? &bslash;
 DECL|macro|XFS_IS_DQTYPE_ON
 mdefine_line|#define XFS_IS_DQTYPE_ON(mp, type)   (type == XFS_DQ_USER ? &bslash;&n;&t;&t;&t;&t;      XFS_IS_UQUOTA_ON(mp):XFS_IS_GQUOTA_ON(mp))
 DECL|macro|XFS_IS_DQUOT_UNINITIALIZED
-mdefine_line|#define XFS_IS_DQUOT_UNINITIALIZED(dqp) ( &bslash;&n;&t;INT_ISZERO(dqp-&gt;q_core.d_blk_hardlimit, ARCH_CONVERT) &amp;&amp; &bslash;&n;&t;INT_ISZERO(dqp-&gt;q_core.d_blk_softlimit, ARCH_CONVERT) &amp;&amp; &bslash;&n;&t;INT_ISZERO(dqp-&gt;q_core.d_rtb_hardlimit, ARCH_CONVERT) &amp;&amp; &bslash;&n;&t;INT_ISZERO(dqp-&gt;q_core.d_rtb_softlimit, ARCH_CONVERT) &amp;&amp; &bslash;&n;&t;INT_ISZERO(dqp-&gt;q_core.d_ino_hardlimit, ARCH_CONVERT) &amp;&amp; &bslash;&n;&t;INT_ISZERO(dqp-&gt;q_core.d_ino_softlimit, ARCH_CONVERT) &amp;&amp; &bslash;&n;&t;INT_ISZERO(dqp-&gt;q_core.d_bcount, ARCH_CONVERT)&t;      &amp;&amp; &bslash;&n;&t;INT_ISZERO(dqp-&gt;q_core.d_rtbcount, ARCH_CONVERT)      &amp;&amp; &bslash;&n;&t;INT_ISZERO(dqp-&gt;q_core.d_icount, ARCH_CONVERT))
+mdefine_line|#define XFS_IS_DQUOT_UNINITIALIZED(dqp) ( &bslash;&n;&t;!dqp-&gt;q_core.d_blk_hardlimit &amp;&amp; &bslash;&n;&t;!dqp-&gt;q_core.d_blk_softlimit &amp;&amp; &bslash;&n;&t;!dqp-&gt;q_core.d_rtb_hardlimit &amp;&amp; &bslash;&n;&t;!dqp-&gt;q_core.d_rtb_softlimit &amp;&amp; &bslash;&n;&t;!dqp-&gt;q_core.d_ino_hardlimit &amp;&amp; &bslash;&n;&t;!dqp-&gt;q_core.d_ino_softlimit &amp;&amp; &bslash;&n;&t;!dqp-&gt;q_core.d_bcount &amp;&amp; &bslash;&n;&t;!dqp-&gt;q_core.d_rtbcount &amp;&amp; &bslash;&n;&t;!dqp-&gt;q_core.d_icount)
 DECL|macro|HL_PREVP
 mdefine_line|#define HL_PREVP&t;dq_hashlist.ql_prevp
 DECL|macro|HL_NEXT
@@ -150,7 +150,7 @@ mdefine_line|#define XFS_DQ_IS_LOGITEM_INITD(dqp)&t;((dqp)-&gt;q_logitem.qli_dqu
 DECL|macro|XFS_QM_DQP_TO_DQACCT
 mdefine_line|#define XFS_QM_DQP_TO_DQACCT(tp, dqp)&t;(XFS_QM_ISUDQ(dqp) ? &bslash;&n;&t;&t;&t;&t;&t; (tp)-&gt;t_dqinfo-&gt;dqa_usrdquots : &bslash;&n;&t;&t;&t;&t;&t; (tp)-&gt;t_dqinfo-&gt;dqa_grpdquots)
 DECL|macro|XFS_IS_SUSER_DQUOT
-mdefine_line|#define XFS_IS_SUSER_DQUOT(dqp)&t;&t;&bslash;&n;&t;(INT_ISZERO((dqp)-&gt;q_core.d_id, ARCH_CONVERT))
+mdefine_line|#define XFS_IS_SUSER_DQUOT(dqp)&t;&t;&bslash;&n;&t;(!((dqp)-&gt;q_core.d_id))
 DECL|macro|XFS_PURGE_INODE
 mdefine_line|#define XFS_PURGE_INODE(ip)&t;&t;&bslash;&n;&t;{&t;&t;&t;&t;&bslash;&n;&t;  vmap_t dqvmap;&t;&t;&bslash;&n;&t;  vnode_t *dqvp;&t;&t;&bslash;&n;&t;  dqvp = XFS_ITOV(ip);&t;&t;&bslash;&n;&t;  VMAP(dqvp, dqvmap);&t;&t;&bslash;&n;&t;  VN_RELE(dqvp);&t;&t;&bslash;&n;&t;}
 DECL|macro|DQFLAGTO_TYPESTR

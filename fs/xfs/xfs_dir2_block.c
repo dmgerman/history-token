@@ -373,13 +373,8 @@ multiline_comment|/*&n;&t; * No stale entries?  Need space for entry and new lea
 r_if
 c_cond
 (paren
-id|INT_ISZERO
-c_func
-(paren
+op_logical_neg
 id|btp-&gt;stale
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Tag just before the first leaf entry.&n;&t;&t; */
@@ -1274,13 +1269,8 @@ multiline_comment|/*&n;&t; * No stale entries, will use enddup space to hold new
 r_if
 c_cond
 (paren
-id|INT_ISZERO
-c_func
-(paren
+op_logical_neg
 id|btp-&gt;stale
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Mark the space needed for the new leaf entry, now in use.&n;&t;&t; */
@@ -4388,13 +4378,9 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
-id|INT_ZERO
-c_func
-(paren
 id|btp-&gt;stale
-comma
-id|ARCH_CONVERT
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 id|xfs_dir2_block_log_tail
 c_func
@@ -5098,13 +5084,9 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* ., .. */
-id|INT_ZERO
-c_func
-(paren
 id|btp-&gt;stale
-comma
-id|ARCH_CONVERT
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 id|blp
 op_assign

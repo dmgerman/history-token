@@ -554,13 +554,8 @@ op_star
 id|dp-&gt;i_df.if_u1.if_data
 suffix:semicolon
 r_return
-id|INT_ISZERO
-c_func
-(paren
+op_logical_neg
 id|sfp-&gt;hdr.count
-comma
-id|ARCH_CONVERT
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialize a directory with its &quot;.&quot; and &quot;..&quot; entries.&n; */

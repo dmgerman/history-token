@@ -86,10 +86,6 @@ multiline_comment|/*&n; * INT_XLATE - copy a value in either direction between t
 multiline_comment|/* does not return a value */
 DECL|macro|INT_XLATE
 mdefine_line|#define INT_XLATE(buf,mem,dir,arch) {&bslash;&n;    ASSERT(dir); &bslash;&n;    if (dir&gt;0) { &bslash;&n;&t;(mem)=INT_GET(buf, arch); &bslash;&n;    } else { &bslash;&n;&t;INT_SET(buf, arch, mem); &bslash;&n;    } &bslash;&n;}
-DECL|macro|INT_ISZERO
-mdefine_line|#define INT_ISZERO(reference,arch) &bslash;&n;    ((reference) == 0)
-DECL|macro|INT_ZERO
-mdefine_line|#define INT_ZERO(reference,arch) &bslash;&n;    ((reference) = 0)
 DECL|macro|DIRINO4_GET_ARCH
 mdefine_line|#define DIRINO4_GET_ARCH(pointer,arch) &bslash;&n;    ( ((arch) == ARCH_NOCONVERT) &bslash;&n;&t;? &bslash;&n;&t;    (INT_GET_UNALIGNED_32(pointer)) &bslash;&n;&t;: &bslash;&n;&t;    (INT_GET_UNALIGNED_32_BE(pointer)) &bslash;&n;    )
 macro_line|#if XFS_BIG_INUMS
