@@ -4099,11 +4099,6 @@ id|__ipv6_dev_mc_dec
 c_func
 (paren
 r_struct
-id|net_device
-op_star
-id|dev
-comma
-r_struct
 id|inet6_dev
 op_star
 id|idev
@@ -4274,8 +4269,6 @@ op_assign
 id|__ipv6_dev_mc_dec
 c_func
 (paren
-id|dev
-comma
 id|idev
 comma
 id|addr
@@ -10503,8 +10496,6 @@ multiline_comment|/* We cannot call ipv6_dev_mc_dec() directly, our caller in&n;
 id|__ipv6_dev_mc_dec
 c_func
 (paren
-id|idev-&gt;dev
-comma
 id|idev
 comma
 op_amp
@@ -10527,8 +10518,6 @@ suffix:semicolon
 id|__ipv6_dev_mc_dec
 c_func
 (paren
-id|idev-&gt;dev
-comma
 id|idev
 comma
 op_amp
