@@ -168,7 +168,7 @@ comma
 l_string|&quot;pdq&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef DQUOT_TRACING
+macro_line|#ifdef XFS_DQUOT_TRACE
 id|dqp-&gt;q_trace
 op_assign
 id|ktrace_alloc
@@ -256,7 +256,7 @@ op_eq
 id|dqp-&gt;dq_flprev
 )paren
 suffix:semicolon
-macro_line|#ifdef DQUOT_TRACING
+macro_line|#ifdef XFS_DQUOT_TRACE
 id|ASSERT
 c_func
 (paren
@@ -323,7 +323,7 @@ op_amp
 id|dqp-&gt;q_pinwait
 )paren
 suffix:semicolon
-macro_line|#ifdef DQUOT_TRACING
+macro_line|#ifdef XFS_DQUOT_TRACE
 r_if
 c_cond
 (paren
@@ -416,12 +416,12 @@ id|type
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef DQUOT_TRACING
+macro_line|#ifdef XFS_DQUOT_TRACE
 multiline_comment|/*&n; * Dquot tracing for debugging.&n; */
 multiline_comment|/* ARGSUSED */
 r_void
-DECL|function|xfs_dqtrace_entry__
-id|xfs_dqtrace_entry__
+DECL|function|__xfs_dqtrace_entry
+id|__xfs_dqtrace_entry
 c_func
 (paren
 id|xfs_dquot_t
@@ -447,8 +447,10 @@ id|udqp
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
+id|xfs_ino_t
 id|ino
+op_assign
+l_int|0
 suffix:semicolon
 id|ASSERT
 c_func
@@ -623,7 +625,6 @@ comma
 id|ARCH_CONVERT
 )paren
 comma
-multiline_comment|/* 11 */
 (paren
 r_void
 op_star
