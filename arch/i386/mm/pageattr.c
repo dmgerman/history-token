@@ -746,7 +746,7 @@ id|list_add
 c_func
 (paren
 op_amp
-id|kpte_page-&gt;list
+id|kpte_page-&gt;lru
 comma
 op_amp
 id|df_list
@@ -959,7 +959,7 @@ comma
 r_struct
 id|page
 comma
-id|list
+id|lru
 )paren
 suffix:semicolon
 id|n
