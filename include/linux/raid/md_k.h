@@ -748,8 +748,10 @@ id|mddev_t
 op_star
 id|mddev
 comma
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Some personalities (RAID-1, RAID-5) can have disks hot-added and&n; * hot-removed. Hot removal is different from failure. (failure marks&n; * a disk inactive, but the disk is still part of the array) The interface&n; * to such operations is the &squot;pers-&gt;diskop()&squot; function, can be NULL.&n; *&n; * the diskop function can change the pointer pointing to the incoming&n; * descriptor, but must do so very carefully. (currently only&n; * SPARE_ACTIVE expects such a change)&n; */

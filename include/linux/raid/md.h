@@ -187,8 +187,10 @@ r_void
 id|md_sync_acct
 c_func
 (paren
-id|kdev_t
-id|dev
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 r_int
