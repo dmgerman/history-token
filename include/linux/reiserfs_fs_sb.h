@@ -367,10 +367,6 @@ op_star
 id|j_first
 suffix:semicolon
 multiline_comment|/*  oldest journal block.  start here for traverse */
-DECL|member|j_dev
-id|kdev_t
-id|j_dev
-suffix:semicolon
 DECL|member|j_dev_file
 r_struct
 id|file
@@ -1243,7 +1239,5 @@ DECL|macro|SB_JOURNAL_MAX_COMMIT_AGE
 mdefine_line|#define SB_JOURNAL_MAX_COMMIT_AGE(s) (SB_JOURNAL(s)-&gt;s_journal_max_commit_age)
 DECL|macro|SB_JOURNAL_MAX_TRANS_AGE
 mdefine_line|#define SB_JOURNAL_MAX_TRANS_AGE(s)  (SB_JOURNAL(s)-&gt;s_journal_max_trans_age)
-DECL|macro|SB_JOURNAL_DEV
-mdefine_line|#define SB_JOURNAL_DEV(s)            (SB_JOURNAL(s)-&gt;j_dev)
 macro_line|#endif&t;/* _LINUX_REISER_FS_SB */
 eof
