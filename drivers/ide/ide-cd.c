@@ -1032,7 +1032,7 @@ id|err
 suffix:semicolon
 id|err
 op_assign
-id|ide_dump_atapi_status
+id|ide_dump_status
 c_func
 (paren
 id|drive
