@@ -52,6 +52,10 @@ DECL|macro|PPCDBG_BOOT
 mdefine_line|#define PPCDBG_BOOT          PPCDBG_BITVAL(20)
 DECL|macro|PPCDBG_BUSWALK
 mdefine_line|#define PPCDBG_BUSWALK       PPCDBG_BITVAL(21)
+DECL|macro|PPCDBG_PROM
+mdefine_line|#define PPCDBG_PROM&t;     PPCDBG_BITVAL(22)
+DECL|macro|PPCDBG_RTAS
+mdefine_line|#define PPCDBG_RTAS&t;     PPCDBG_BITVAL(23)
 DECL|macro|PPCDBG_HTABSTRESS
 mdefine_line|#define PPCDBG_HTABSTRESS    PPCDBG_BITVAL(62)
 DECL|macro|PPCDBG_HTABSIZE
@@ -121,6 +125,10 @@ comma
 l_string|&quot;boot&quot;
 comma
 l_string|&quot;buswalk&quot;
+comma
+l_string|&quot;prom&quot;
+comma
+l_string|&quot;rtas&quot;
 )brace
 suffix:semicolon
 macro_line|#else

@@ -2018,10 +2018,10 @@ multiline_comment|/*************************************************************
 multiline_comment|/* I/0 Memory copy MUST use mmio commands on iSeries                    */
 multiline_comment|/* To do; For performance, include the hv call directly                 */
 multiline_comment|/************************************************************************/
-DECL|function|iSeries_memset
+DECL|function|iSeries_memset_io
 r_void
 op_star
-id|iSeries_memset
+id|iSeries_memset_io
 c_func
 (paren
 r_void

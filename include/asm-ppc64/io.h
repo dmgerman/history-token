@@ -63,7 +63,7 @@ mdefine_line|#define writew(data, addr)&t;iSeries_Write_Word(data,((void*)(addr)
 DECL|macro|writel
 mdefine_line|#define writel(data, addr)&t;iSeries_Write_Long(data,((void*)(addr)))
 DECL|macro|memset_io
-mdefine_line|#define memset_io(a,b,c)&t;iSeries_memset((void *)(a),(b),(c))
+mdefine_line|#define memset_io(a,b,c)&t;iSeries_memset_io((void *)(a),(b),(c))
 DECL|macro|memcpy_fromio
 mdefine_line|#define memcpy_fromio(a,b,c)&t;iSeries_memcpy_fromio((void *)(a), (void *)(b), (c))
 DECL|macro|memcpy_toio
@@ -113,6 +113,19 @@ DECL|macro|inl
 mdefine_line|#define inl(port)&t;&t;_inl((unsigned long)port)
 DECL|macro|outl
 mdefine_line|#define outl(val, port)&t;&t;_outl(val, (unsigned long)port)
+multiline_comment|/*&n; * The insw/outsw/insl/outsl macros don&squot;t do byte-swapping.&n; * They are only used in practice for transferring buffers which&n; * are arrays of bytes, and byte-swapping is not appropriate in&n; * that case.  - paulus */
+DECL|macro|insb
+mdefine_line|#define insb(port, buf, ns)&t;eeh_insb((u8 *)(port), (buf), (ns))
+DECL|macro|outsb
+mdefine_line|#define outsb(port, buf, ns)&t;eeh_outsb((u8 *)(port), (buf), (ns))
+DECL|macro|insw
+mdefine_line|#define insw(port, buf, ns)&t;eeh_insw_ns((u16 *)(port), (buf), (ns))
+DECL|macro|outsw
+mdefine_line|#define outsw(port, buf, ns)&t;eeh_outsw_ns((u16 *)(port), (buf), (ns))
+DECL|macro|insl
+mdefine_line|#define insl(port, buf, nl)&t;eeh_insl_ns((u32 *)(port), (buf), (nl))
+DECL|macro|outsl
+mdefine_line|#define outsl(port, buf, nl)&t;eeh_outsl_ns((u32 *)(port), (buf), (nl))
 macro_line|#endif
 multiline_comment|/*&n; * output pause versions need a delay at least for the&n; * w83c105 ide controller in a p610.&n; */
 DECL|macro|inb_p
@@ -127,21 +140,6 @@ DECL|macro|inl_p
 mdefine_line|#define inl_p(port)             inl(port)
 DECL|macro|outl_p
 mdefine_line|#define outl_p(val, port)       (udelay(1), outl((val, (port)))
-multiline_comment|/*&n; * The insw/outsw/insl/outsl macros don&squot;t do byte-swapping.&n; * They are only used in practice for transferring buffers which&n; * are arrays of bytes, and byte-swapping is not appropriate in&n; * that case.  - paulus */
-DECL|macro|_IOMAP_VADDR
-mdefine_line|#define _IOMAP_VADDR(port) (IS_MAPPED_VADDR(port) ? (port) : (port)+_IO_BASE)
-DECL|macro|insb
-mdefine_line|#define insb(port, buf, ns)&t;_insb((u8 *)(_IOMAP_VADDR(port)), (buf), (ns))
-DECL|macro|outsb
-mdefine_line|#define outsb(port, buf, ns)&t;_outsb((u8 *)(_IOMAP_VADDR(port)), (buf), (ns))
-DECL|macro|insw
-mdefine_line|#define insw(port, buf, ns)&t;_insw_ns((u16 *)(_IOMAP_VADDR(port)), (buf), (ns))
-DECL|macro|outsw
-mdefine_line|#define outsw(port, buf, ns)&t;_outsw_ns((u16 *)(_IOMAP_VADDR(port)), (buf), (ns))
-DECL|macro|insl
-mdefine_line|#define insl(port, buf, nl)&t;_insl_ns((u32 *)(_IOMAP_VADDR(port)), (buf), (nl))
-DECL|macro|outsl
-mdefine_line|#define outsl(port, buf, nl)&t;_outsl_ns((u32 *)(_IOMAP_VADDR(port)), (buf), (nl))
 r_extern
 r_void
 id|_insb
@@ -329,13 +327,13 @@ id|nl
 suffix:semicolon
 multiline_comment|/*&n; * The *_ns versions below don&squot;t do byte-swapping.&n; * Neither do the standard versions now, these are just here&n; * for older code.&n; */
 DECL|macro|insw_ns
-mdefine_line|#define insw_ns(port, buf, ns)&t;_insw_ns((u16 *)(_IOMAP_VADDR(port)), (buf), (ns))
+mdefine_line|#define insw_ns(port, buf, ns)&t;insw(port, buf, ns)
 DECL|macro|outsw_ns
-mdefine_line|#define outsw_ns(port, buf, ns)&t;_outsw_ns((u16 *)(_IOMAP_VADDR(port)), (buf), (ns))
+mdefine_line|#define outsw_ns(port, buf, ns)&t;outsw(port, buf, ns)
 DECL|macro|insl_ns
-mdefine_line|#define insl_ns(port, buf, nl)&t;_insl_ns((u32 *)(_IOMAP_VADDR(port)), (buf), (nl))
+mdefine_line|#define insl_ns(port, buf, nl)&t;insl(port, buf, nl)
 DECL|macro|outsl_ns
-mdefine_line|#define outsl_ns(port, buf, nl)&t;_outsl_ns((u32 *)(_IOMAP_VADDR(port)), (buf), (nl))
+mdefine_line|#define outsl_ns(port, buf, nl)&t;outsl(port, buf, nl)
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT ~(0UL)
 DECL|macro|MEM_SPACE_LIMIT

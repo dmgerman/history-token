@@ -353,9 +353,6 @@ id|rtas
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-mdefine_line|#define DEBUG_RTAS
-macro_line|#endif
 r_int
 DECL|function|rtas_token
 id|rtas_token
@@ -379,14 +376,14 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#ifdef DEBUG_RTAS
-id|udbg_printf
+id|PPCDBG
 c_func
 (paren
+id|PPCDBG_RTAS
+comma
 l_string|&quot;&bslash;tNo rtas device in device-tree...&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_RTAS */
 r_return
 id|RTAS_UNKNOWN_SERVICE
 suffix:semicolon
@@ -466,46 +463,54 @@ op_member_access_from_pointer
 id|xRtas
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_RTAS
-id|udbg_printf
+id|PPCDBG
 c_func
 (paren
+id|PPCDBG_RTAS
+comma
 l_string|&quot;Entering rtas_call&bslash;n&quot;
 )paren
 suffix:semicolon
-id|udbg_printf
+id|PPCDBG
 c_func
 (paren
+id|PPCDBG_RTAS
+comma
 l_string|&quot;&bslash;ttoken    = 0x%x&bslash;n&quot;
 comma
 id|token
 )paren
 suffix:semicolon
-id|udbg_printf
+id|PPCDBG
 c_func
 (paren
+id|PPCDBG_RTAS
+comma
 l_string|&quot;&bslash;tnargs    = %d&bslash;n&quot;
 comma
 id|nargs
 )paren
 suffix:semicolon
-id|udbg_printf
+id|PPCDBG
 c_func
 (paren
+id|PPCDBG_RTAS
+comma
 l_string|&quot;&bslash;tnret     = %d&bslash;n&quot;
 comma
 id|nret
 )paren
 suffix:semicolon
-id|udbg_printf
+id|PPCDBG
 c_func
 (paren
+id|PPCDBG_RTAS
+comma
 l_string|&quot;&bslash;t&amp;outputs = 0x%lx&bslash;n&quot;
 comma
 id|outputs
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_RTAS */
 r_if
 c_cond
 (paren
@@ -586,10 +591,11 @@ id|ulong
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_RTAS
-id|udbg_printf
+id|PPCDBG
 c_func
 (paren
+id|PPCDBG_RTAS
+comma
 l_string|&quot;&bslash;tnarg[%d] = 0x%lx&bslash;n&quot;
 comma
 id|i
@@ -600,7 +606,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_RTAS */
 )brace
 id|va_end
 c_func
@@ -650,10 +655,11 @@ id|s
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef DEBUG_RTAS
-id|udbg_printf
+id|PPCDBG
 c_func
 (paren
+id|PPCDBG_RTAS
+comma
 l_string|&quot;&bslash;tentering rtas with 0x%lx&bslash;n&quot;
 comma
 (paren
@@ -671,7 +677,6 @@ id|rtas_args
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_RTAS */
 id|enter_rtas
 c_func
 (paren
@@ -690,14 +695,14 @@ id|rtas_args
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_RTAS
-id|udbg_printf
+id|PPCDBG
 c_func
 (paren
+id|PPCDBG_RTAS
+comma
 l_string|&quot;&bslash;treturned from rtas ...&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* DEBUG_RTAS */
 macro_line|#if 0   /* Gotta do something different here, use global lock for now... */
 id|spin_unlock_irqrestore
 c_func
@@ -719,7 +724,12 @@ id|s
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef DEBUG_RTAS
+id|ifppcdebug
+c_func
+(paren
+id|PPCDBG_RTAS
+)paren
+(brace
 r_for
 c_loop
 (paren
@@ -752,7 +762,7 @@ id|i
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* DEBUG_RTAS */
+)brace
 r_if
 c_cond
 (paren

@@ -145,7 +145,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_static
 r_void
 id|fwnmi_init
 c_func
@@ -554,7 +553,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize firmware assisted non-maskable interrupts if&n; * the firmware supports this feature.&n; *&n; */
 DECL|function|fwnmi_init
-r_static
 r_void
 id|__init
 id|fwnmi_init

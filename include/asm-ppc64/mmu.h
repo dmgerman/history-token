@@ -384,12 +384,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Page protection bit 0 */
+DECL|member|ts
 r_int
 r_int
+id|ts
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Reserved */
+multiline_comment|/* Tag set bit */
 DECL|member|rpn
 r_int
 r_int
