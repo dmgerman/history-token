@@ -9014,12 +9014,6 @@ id|devinfo-&gt;mask
 op_assign
 l_int|0
 suffix:semicolon
-op_star
-(paren
-r_int
-op_star
-)paren
-op_amp
 id|devinfo-&gt;speed
 op_assign
 id|CDROM_STATE_FLAGS
@@ -9029,12 +9023,6 @@ id|drive
 op_member_access_from_pointer
 id|current_speed
 suffix:semicolon
-op_star
-(paren
-r_int
-op_star
-)paren
-op_amp
 id|devinfo-&gt;capacity
 op_assign
 id|nslots
