@@ -9269,7 +9269,7 @@ c_func
 (paren
 id|pci_dev
 comma
-id|PCI_D3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 id|pci_save_state
