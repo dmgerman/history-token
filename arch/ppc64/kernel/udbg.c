@@ -895,7 +895,7 @@ c_func
 (paren
 r_int
 r_int
-id|flags
+id|debug_flags
 comma
 r_const
 r_char
@@ -915,7 +915,7 @@ r_int
 r_int
 id|active_debugs
 op_assign
-id|flags
+id|debug_flags
 op_amp
 id|naca-&gt;debug_switch
 suffix:semicolon
