@@ -350,18 +350,16 @@ id|xtime_lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|div64_32
+macro_line|#ifndef CONFIG_ARCH_S390X
 r_static
 r_inline
 id|__u32
-id|div64_32
+DECL|function|__calculate_ticks
+id|__calculate_ticks
 c_func
 (paren
 id|__u64
-id|dividend
-comma
-id|__u32
-id|divisor
+id|elapsed
 )paren
 (brace
 id|register_pair
@@ -369,7 +367,9 @@ id|rp
 suffix:semicolon
 id|rp.pair
 op_assign
-id|dividend
+id|elapsed
+op_rshift
+l_int|1
 suffix:semicolon
 id|asm
 (paren
@@ -382,7 +382,9 @@ id|rp
 suffix:colon
 l_string|&quot;d&quot;
 (paren
-id|divisor
+id|CLK_TICKS_PER_JIFFY
+op_rshift
+l_int|1
 )paren
 )paren
 suffix:semicolon
@@ -390,6 +392,25 @@ r_return
 id|rp.subreg.odd
 suffix:semicolon
 )brace
+macro_line|#else /* CONFIG_ARCH_S390X */
+r_static
+r_inline
+id|__u32
+DECL|function|__calculate_ticks
+id|__calculate_ticks
+c_func
+(paren
+id|__u64
+id|elapsed
+)paren
+(brace
+r_return
+id|elapsed
+op_div
+id|CLK_TICKS_PER_JIFFY
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_ARCH_S390X */
 multiline_comment|/*&n; * timer_interrupt() needs to keep up the real-time clock,&n; * as well as call the &quot;do_timer()&quot; routine every clocktick&n; */
 DECL|function|do_comparator_interrupt
 r_static
@@ -449,16 +470,10 @@ id|CLK_TICKS_PER_JIFFY
 multiline_comment|/* more than one tick ? */
 id|ticks
 op_assign
-id|div64_32
+id|__calculate_ticks
 c_func
 (paren
 id|tmp
-op_rshift
-l_int|1
-comma
-id|CLK_TICKS_PER_JIFFY
-op_rshift
-l_int|1
 )paren
 suffix:semicolon
 id|S390_lowcore.jiffy_timer
@@ -546,16 +561,10 @@ id|CLK_TICKS_PER_JIFFY
 (brace
 id|xticks
 op_assign
-id|div64_32
+id|__calculate_ticks
 c_func
 (paren
 id|tmp
-op_rshift
-l_int|1
-comma
-id|CLK_TICKS_PER_JIFFY
-op_rshift
-l_int|1
 )paren
 suffix:semicolon
 id|xtime_cc
@@ -682,36 +691,28 @@ id|timer
 )paren
 suffix:semicolon
 multiline_comment|/* allow clock comparator timer interrupt */
-id|asm
-r_volatile
-(paren
-l_string|&quot;STCTL 0,0,%0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
+id|__ctl_store
+c_func
 (paren
 id|cr0
-)paren
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|cr0
 op_or_assign
 l_int|0x800
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;LCTL 0,0,%0&quot;
-suffix:colon
-suffix:colon
-l_string|&quot;m&quot;
+id|__ctl_load
+c_func
 (paren
 id|cr0
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

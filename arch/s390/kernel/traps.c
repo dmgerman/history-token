@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -81,6 +82,10 @@ id|do_segment_exception
 suffix:semicolon
 r_extern
 id|pgm_check_handler_t
+id|do_region_exception
+suffix:semicolon
+r_extern
+id|pgm_check_handler_t
 id|do_page_exception
 suffix:semicolon
 r_extern
@@ -124,6 +129,13 @@ id|ext_int_info_t
 id|ext_int_pfault
 suffix:semicolon
 macro_line|#endif
+DECL|macro|stack_pointer
+mdefine_line|#define stack_pointer ({ void **sp; asm(&quot;la %0,0(15)&quot; : &quot;=&amp;d&quot; (sp)); sp; })
+macro_line|#ifndef CONFIG_ARCH_S390X
+DECL|macro|RET_ADDR
+mdefine_line|#define RET_ADDR 56
+DECL|macro|FOURLONG
+mdefine_line|#define FOURLONG &quot;%08lx %08lx %08lx %08lx&bslash;n&quot;
 DECL|variable|kstack_depth_to_print
 r_static
 r_int
@@ -131,6 +143,19 @@ id|kstack_depth_to_print
 op_assign
 l_int|12
 suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+DECL|macro|RET_ADDR
+mdefine_line|#define RET_ADDR 112
+DECL|macro|FOURLONG
+mdefine_line|#define FOURLONG &quot;%016lx %016lx %016lx %016lx&bslash;n&quot;
+DECL|variable|kstack_depth_to_print
+r_static
+r_int
+id|kstack_depth_to_print
+op_assign
+l_int|20
+suffix:semicolon
+macro_line|#endif /* CONFIG_ARCH_S390X */
 DECL|function|show_trace
 r_void
 id|show_trace
@@ -152,9 +177,6 @@ id|high_addr
 comma
 id|ret_addr
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -163,18 +185,13 @@ id|stack
 )paren
 id|stack
 op_assign
-(paren
-r_int
-r_int
 op_star
-)paren
-op_amp
-id|stack
+id|stack_pointer
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Call Trace: &quot;
+l_string|&quot;Call Trace:&bslash;n&quot;
 )paren
 suffix:semicolon
 id|low_addr
@@ -218,34 +235,18 @@ op_amp
 id|PSW_ADDR_INSN
 suffix:semicolon
 multiline_comment|/* Print up to 8 lines */
-r_for
+r_while
 c_loop
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|8
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|backchain
-OL
+OG
 id|low_addr
-op_logical_or
+op_logical_and
 id|backchain
-op_ge
+op_le
 id|high_addr
 )paren
-r_break
-suffix:semicolon
+(brace
 id|ret_addr
 op_assign
 op_star
@@ -258,49 +259,24 @@ op_star
 (paren
 id|backchain
 op_plus
-l_int|56
+id|RET_ADDR
 )paren
 )paren
 op_amp
 id|PSW_ADDR_INSN
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|kernel_text_address
+id|printk
 c_func
 (paren
+l_string|&quot; [&lt;%016lx&gt;] &quot;
+comma
 id|ret_addr
 )paren
-)paren
-r_break
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-op_logical_and
-(paren
-(paren
-id|i
-op_mod
-l_int|6
-)paren
-op_eq
-l_int|0
-)paren
-)paren
-id|printk
+id|print_symbol
 c_func
 (paren
-l_string|&quot;&bslash;n   &quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;[&lt;%08lx&gt;] &quot;
+l_string|&quot;%s&bslash;n&quot;
 comma
 id|ret_addr
 )paren
@@ -395,13 +371,8 @@ l_int|NULL
 (brace
 id|sp
 op_assign
-(paren
-r_int
-r_int
 op_star
-)paren
-op_amp
-id|sp
+id|stack_pointer
 suffix:semicolon
 )brace
 id|stack
@@ -451,8 +422,13 @@ op_logical_and
 (paren
 (paren
 id|i
+op_star
+r_sizeof
+(paren
+r_int
+)paren
 op_mod
-l_int|8
+l_int|32
 )paren
 op_eq
 l_int|0
@@ -467,8 +443,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%08lx &quot;
+l_string|&quot;%p &quot;
 comma
+(paren
+r_void
+op_star
+)paren
 op_star
 id|stack
 op_increment
@@ -541,19 +521,19 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s PSW : %08lx %08lx&bslash;n&quot;
+l_string|&quot;%s PSW : %p %p&bslash;n&quot;
 comma
 id|mode
 comma
 (paren
-r_int
-r_int
+r_void
+op_star
 )paren
 id|regs-&gt;psw.mask
 comma
 (paren
-r_int
-r_int
+r_void
+op_star
 )paren
 id|regs-&gt;psw.addr
 )paren
@@ -561,7 +541,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s GPRS: %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;%s GPRS: &quot;
+id|FOURLONG
 comma
 id|mode
 comma
@@ -589,7 +570,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;           %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;           &quot;
+id|FOURLONG
 comma
 id|regs-&gt;gprs
 (braket
@@ -615,7 +597,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;           %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;           &quot;
+id|FOURLONG
 comma
 id|regs-&gt;gprs
 (braket
@@ -641,7 +624,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;           %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;           &quot;
+id|FOURLONG
 comma
 id|regs-&gt;gprs
 (braket
@@ -913,14 +897,14 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;task: %08lx, ksp: %08x&bslash;n&quot;
+l_string|&quot;task: %p, ksp: %p&bslash;n&quot;
 comma
-(paren
-r_int
-r_int
-)paren
 id|task
 comma
+(paren
+r_void
+op_star
+)paren
 id|task-&gt;thread.ksp
 )paren
 suffix:semicolon
@@ -931,17 +915,17 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;User PSW : %08lx %08lx&bslash;n&quot;
+l_string|&quot;User PSW : %p %p&bslash;n&quot;
 comma
 (paren
-r_int
-r_int
+r_void
+op_star
 )paren
 id|regs-&gt;psw.mask
 comma
 (paren
-r_int
-r_int
+r_void
+op_star
 )paren
 id|regs-&gt;psw.addr
 )paren
@@ -953,7 +937,8 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;User GPRS: %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;User GPRS: &quot;
+id|FOURLONG
 comma
 id|regs-&gt;gprs
 (braket
@@ -983,7 +968,8 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;           %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;           &quot;
+id|FOURLONG
 comma
 id|regs-&gt;gprs
 (braket
@@ -1013,7 +999,8 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;           %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;           &quot;
+id|FOURLONG
 comma
 id|regs-&gt;gprs
 (braket
@@ -1043,7 +1030,8 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;           %08x %08x %08x %08x&bslash;n&quot;
+l_string|&quot;           &quot;
+id|FOURLONG
 comma
 id|regs-&gt;gprs
 (braket
@@ -1419,7 +1407,7 @@ c_func
 (paren
 id|regs-&gt;psw.addr
 op_amp
-l_int|0x7fffffff
+id|PSW_ADDR_INSN
 )paren
 suffix:semicolon
 r_if
@@ -1431,7 +1419,8 @@ id|regs-&gt;psw.addr
 op_assign
 id|fixup-&gt;fixup
 op_or
-id|PSW_ADDR_AMODE31
+op_complement
+id|PSW_ADDR_INSN
 suffix:semicolon
 r_else
 id|die
@@ -1862,10 +1851,10 @@ op_assign
 id|__u16
 op_star
 )paren
+id|get_check_address
+c_func
 (paren
-id|regs-&gt;psw.addr
-op_minus
-id|S390_lowcore.pgm_ilc
+id|regs
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We got all needed information from the lowcore and can&n;&t; * now safely switch on interrupts.&n;&t; */
@@ -3323,6 +3312,22 @@ id|do_page_exception
 suffix:semicolon
 id|pgm_check_table
 (braket
+l_int|0x10
+)braket
+op_assign
+op_amp
+id|do_segment_exception
+suffix:semicolon
+id|pgm_check_table
+(braket
+l_int|0x11
+)braket
+op_assign
+op_amp
+id|do_page_exception
+suffix:semicolon
+id|pgm_check_table
+(braket
 l_int|0x12
 )braket
 op_assign
@@ -3337,6 +3342,7 @@ op_assign
 op_amp
 id|special_op_exception
 suffix:semicolon
+macro_line|#ifndef CONFIG_ARCH_S390X
 id|pgm_check_table
 (braket
 l_int|0x14
@@ -3345,6 +3351,24 @@ op_assign
 op_amp
 id|do_pseudo_page_fault
 suffix:semicolon
+macro_line|#else /* CONFIG_ARCH_S390X */
+id|pgm_check_table
+(braket
+l_int|0x38
+)braket
+op_assign
+op_amp
+id|addressing_exception
+suffix:semicolon
+id|pgm_check_table
+(braket
+l_int|0x3B
+)braket
+op_assign
+op_amp
+id|do_region_exception
+suffix:semicolon
+macro_line|#endif /* CONFIG_ARCH_S390X */
 id|pgm_check_table
 (braket
 l_int|0x15
@@ -3361,13 +3385,14 @@ op_assign
 op_amp
 id|privileged_op
 suffix:semicolon
-macro_line|#ifdef CONFIG_PFAULT
 r_if
 c_cond
 (paren
 id|MACHINE_IS_VM
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * First try to get pfault pseudo page faults going.&n;&t;&t; * If this isn&squot;t available turn on pagex page faults.&n;&t;&t; */
+macro_line|#ifdef CONFIG_PFAULT
 multiline_comment|/* request the 0x2603 external interrupt */
 r_if
 c_cond
@@ -3391,7 +3416,6 @@ c_func
 l_string|&quot;Couldn&squot;t request external interrupt 0x2603&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * First try to get pfault pseudo page faults going.&n;&t;&t; * If this isn&squot;t available turn on pagex page faults.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3399,10 +3423,11 @@ id|pfault_init
 c_func
 (paren
 )paren
-op_ne
+op_eq
 l_int|0
 )paren
-(brace
+r_return
+suffix:semicolon
 multiline_comment|/* Tough luck, no pfault. */
 id|unregister_early_external_interrupt
 c_func
@@ -3415,24 +3440,8 @@ op_amp
 id|ext_int_pfault
 )paren
 suffix:semicolon
-id|cpcmd
-c_func
-(paren
-l_string|&quot;SET PAGEX ON&quot;
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#else
-r_if
-c_cond
-(paren
-id|MACHINE_IS_VM
-)paren
+macro_line|#endif
+macro_line|#ifndef CONFIG_ARCH_S390X
 id|cpcmd
 c_func
 (paren
@@ -3444,6 +3453,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
 )brace
 DECL|function|handle_per_exception
 r_void

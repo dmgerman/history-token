@@ -18,6 +18,25 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
+macro_line|#ifndef CONFIG_ARCH_S390X
+DECL|macro|__FAIL_ADDR_MASK
+mdefine_line|#define __FAIL_ADDR_MASK 0x7ffff000
+DECL|macro|__FIXUP_MASK
+mdefine_line|#define __FIXUP_MASK 0x7fffffff
+DECL|macro|__SUBCODE_MASK
+mdefine_line|#define __SUBCODE_MASK 0x0200
+DECL|macro|__PF_RES_FIELD
+mdefine_line|#define __PF_RES_FIELD 0ULL
+macro_line|#else /* CONFIG_ARCH_S390X */
+DECL|macro|__FAIL_ADDR_MASK
+mdefine_line|#define __FAIL_ADDR_MASK -4096L
+DECL|macro|__FIXUP_MASK
+mdefine_line|#define __FIXUP_MASK ~0L
+DECL|macro|__SUBCODE_MASK
+mdefine_line|#define __SUBCODE_MASK 0x0600
+DECL|macro|__PF_RES_FIELD
+mdefine_line|#define __PF_RES_FIELD 0x8000000000000000ULL
+macro_line|#endif /* CONFIG_ARCH_S390X */
 macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_int
@@ -310,7 +329,7 @@ id|current
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; *&n; * error_code:&n; *   04       Protection           -&gt;  Write-Protection  (suprression)&n; *   10       Segment translation  -&gt;  Not present       (nullification)&n; *   11       Page translation     -&gt;  Not present       (nullification)&n; */
+multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; *&n; * error_code:&n; *   04       Protection           -&gt;  Write-Protection  (suprression)&n; *   10       Segment translation  -&gt;  Not present       (nullification)&n; *   11       Page translation     -&gt;  Not present       (nullification)&n; *   3b       Region third trans.  -&gt;  Not present       (nullification)&n; */
 DECL|function|do_exception
 r_extern
 r_inline
@@ -431,7 +450,7 @@ id|address
 op_assign
 id|S390_lowcore.trans_exc_code
 op_amp
-l_int|0x7ffff000
+id|__FAIL_ADDR_MASK
 suffix:semicolon
 id|user_address
 op_assign
@@ -701,7 +720,7 @@ c_func
 (paren
 id|regs-&gt;psw.addr
 op_amp
-l_int|0x7fffffff
+id|__FIXUP_MASK
 )paren
 suffix:semicolon
 r_if
@@ -714,7 +733,7 @@ id|regs-&gt;psw.addr
 op_assign
 id|fixup-&gt;fixup
 op_or
-id|PSW_ADDR_AMODE31
+id|PSW_ADDR_AMODE
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -732,8 +751,12 @@ c_func
 (paren
 id|KERN_ALERT
 l_string|&quot;Unable to handle kernel pointer dereference&quot;
-l_string|&quot; at virtual kernel address %08lx&bslash;n&quot;
+l_string|&quot; at virtual kernel address %p&bslash;n&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|address
 )paren
 suffix:semicolon
@@ -743,8 +766,12 @@ c_func
 (paren
 id|KERN_ALERT
 l_string|&quot;Unable to handle kernel paging request&quot;
-l_string|&quot; at virtual user address %08lx&bslash;n&quot;
+l_string|&quot; at virtual user address %p&bslash;n&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|address
 )paren
 suffix:semicolon
@@ -936,6 +963,32 @@ l_int|0x11
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ARCH_S390X
+r_void
+DECL|function|do_region_exception
+id|do_region_exception
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+r_int
+id|error_code
+)paren
+(brace
+id|do_exception
+c_func
+(paren
+id|regs
+comma
+l_int|0x3b
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* CONFIG_ARCH_S390X */
 DECL|struct|_pseudo_wait_t
 r_typedef
 r_struct
@@ -1233,6 +1286,7 @@ id|wait_struct.resolved
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* CONFIG_ARCH_S390X */
 macro_line|#ifdef CONFIG_PFAULT 
 multiline_comment|/*&n; * &squot;pfault&squot; pseudo page faults routines.&n; */
 DECL|variable|pfault_disable
@@ -1345,7 +1399,7 @@ l_int|1ULL
 op_lshift
 l_int|48
 comma
-l_int|0ULL
+id|__PF_RES_FIELD
 )brace
 suffix:semicolon
 r_int
@@ -1370,7 +1424,11 @@ l_string|&quot;1:  la    %0,8&bslash;n&quot;
 l_string|&quot;2:&bslash;n&quot;
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
 l_string|&quot;   .align 4&bslash;n&quot;
+macro_line|#ifndef CONFIG_ARCH_S390X
 l_string|&quot;   .long  0b,1b&bslash;n&quot;
+macro_line|#else /* CONFIG_ARCH_S390X */
+l_string|&quot;   .quad  0b,1b&bslash;n&quot;
+macro_line|#endif /* CONFIG_ARCH_S390X */
 l_string|&quot;.previous&quot;
 suffix:colon
 l_string|&quot;=d&quot;
@@ -1451,7 +1509,11 @@ l_string|&quot;    diag  %0,0,0x258&bslash;n&quot;
 l_string|&quot;0:&bslash;n&quot;
 l_string|&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;
 l_string|&quot;   .align 4&bslash;n&quot;
+macro_line|#ifndef CONFIG_ARCH_S390X
 l_string|&quot;   .long  0b,0b&bslash;n&quot;
+macro_line|#else /* CONFIG_ARCH_S390X */
+l_string|&quot;   .quad  0b,0b&bslash;n&quot;
+macro_line|#endif /* CONFIG_ARCH_S390X */
 l_string|&quot;.previous&quot;
 suffix:colon
 suffix:colon
@@ -1509,7 +1571,7 @@ op_amp
 l_int|0xff00
 )paren
 op_ne
-l_int|0x0200
+id|__SUBCODE_MASK
 )paren
 r_return
 suffix:semicolon
