@@ -279,8 +279,8 @@ DECL|macro|I2C_ALGO_OCP
 mdefine_line|#define I2C_ALGO_OCP    0x120000&t;/* IBM or otherwise On-chip I2C algorithm */
 DECL|macro|I2C_ALGO_BITHS
 mdefine_line|#define I2C_ALGO_BITHS&t;0x130000&t;/* enhanced bit style adapters&t;*/
-DECL|macro|I2C_ALGO_OCP_IOP3XX
-mdefine_line|#define I2C_ALGO_OCP_IOP3XX  0x140000&t;/* XSCALE IOP3XX On-chip I2C alg */
+DECL|macro|I2C_ALGO_IOP3XX
+mdefine_line|#define I2C_ALGO_IOP3XX&t;0x140000&t;/* XSCALE IOP3XX On-chip I2C alg */
 DECL|macro|I2C_ALGO_PCA
 mdefine_line|#define I2C_ALGO_PCA&t;0x150000&t;/* PCA 9564 style adapters&t;*/
 DECL|macro|I2C_ALGO_SIBYTE
@@ -383,8 +383,8 @@ mdefine_line|#define I2C_HW_SGI_VINO&t;0x00
 DECL|macro|I2C_HW_SGI_MACE
 mdefine_line|#define I2C_HW_SGI_MACE&t;0x01
 multiline_comment|/* --- XSCALE on-chip adapters                          */
-DECL|macro|I2C_HW_IOP321
-mdefine_line|#define I2C_HW_IOP321 0x00
+DECL|macro|I2C_HW_IOP3XX
+mdefine_line|#define I2C_HW_IOP3XX 0x00
 multiline_comment|/* --- SMBus only adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_SMBUS_PIIX4
 mdefine_line|#define I2C_HW_SMBUS_PIIX4&t;0x00
