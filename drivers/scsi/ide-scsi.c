@@ -361,7 +361,8 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|pc-&gt;sg-&gt;length
 op_minus
@@ -481,7 +482,8 @@ suffix:semicolon
 )brace
 id|count
 op_assign
-id|IDE_MIN
+id|min
+c_func
 (paren
 id|pc-&gt;sg-&gt;length
 op_minus
@@ -2075,9 +2077,11 @@ c_func
 (paren
 id|scsi_buf
 comma
-id|IDE_MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 l_int|16
 comma
 id|pc-&gt;scsi_cmd-&gt;request_bufflen
@@ -2162,9 +2166,12 @@ id|pc
 )paren
 (brace
 r_return
-id|IDE_MAX
+id|max_t
 c_func
 (paren
+r_int
+r_int
+comma
 id|WAIT_CMD
 comma
 id|pc-&gt;timeout
@@ -3009,7 +3016,7 @@ id|pc-&gt;buffer
 suffix:semicolon
 id|bcount.all
 op_assign
-id|IDE_MIN
+id|min
 c_func
 (paren
 id|pc-&gt;request_transfer

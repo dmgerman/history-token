@@ -2432,7 +2432,7 @@ id|parse_error
 suffix:semicolon
 id|len
 op_assign
-id|IDE_MIN
+id|min
 c_func
 (paren
 id|p
@@ -2449,7 +2449,7 @@ id|name
 comma
 id|start
 comma
-id|IDE_MIN
+id|min
 c_func
 (paren
 id|len

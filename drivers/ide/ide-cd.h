@@ -41,8 +41,6 @@ DECL|macro|SECTORS_MAX
 mdefine_line|#define SECTORS_MAX&t;&t;(131072 &gt;&gt; SECTOR_BITS)
 DECL|macro|BLOCKS_PER_FRAME
 mdefine_line|#define BLOCKS_PER_FRAME&t;(CD_FRAMESIZE / BLOCK_SIZE)
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a) &lt; (b) ? (a) : (b))
 multiline_comment|/* special command codes for strategy routine. */
 DECL|macro|PACKET_COMMAND
 mdefine_line|#define PACKET_COMMAND        4315

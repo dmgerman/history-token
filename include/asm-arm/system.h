@@ -68,6 +68,9 @@ DECL|macro|CR_XP
 mdefine_line|#define CR_XP&t;(1 &lt;&lt; 23)&t;/* Extended page tables&t;&t;&t;*/
 DECL|macro|CR_VE
 mdefine_line|#define CR_VE&t;(1 &lt;&lt; 24)&t;/* Vectored interrupts&t;&t;&t;*/
+multiline_comment|/*&n; * This is used to ensure the compiler did actually allocate the register we&n; * asked it for some inline assembly sequences.  Apparently we can&squot;t trust&n; * the compiler from one version to another so a bit of paranoia won&squot;t hurt.&n; * This string is meant to be concatenated with the inline asm string and&n; * will cause compilation to stop on mismatch.&n; */
+DECL|macro|__asmeq
+mdefine_line|#define __asmeq(x, y)  &quot;.ifnc &quot; x &quot;,&quot; y &quot; ; .err ; .endif&bslash;n&bslash;t&quot;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/kernel.h&gt;
 r_struct

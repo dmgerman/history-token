@@ -3271,9 +3271,11 @@ c_func
 (paren
 id|best
 comma
-id|IDE_MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|t
 comma
 l_int|10

@@ -2745,8 +2745,11 @@ multiline_comment|/* Number of sectors to read into the buffer. */
 r_int
 id|sectors_to_buffer
 op_assign
-id|MIN
+id|min_t
+c_func
 (paren
+r_int
+comma
 id|sectors_to_transfer
 comma
 (paren
@@ -3386,20 +3389,17 @@ suffix:semicolon
 multiline_comment|/* First, figure out if we need to bit-bucket&n;&t;   any of the leading sectors. */
 id|nskip
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
-(paren
 r_int
-)paren
-(paren
+comma
 id|rq-&gt;current_nr_sectors
 op_minus
 id|bio_cur_sectors
 c_func
 (paren
 id|rq-&gt;bio
-)paren
 )paren
 comma
 id|sectors_to_transfer
@@ -3509,8 +3509,11 @@ r_else
 multiline_comment|/* Transfer data to the buffers.&n;&t;&t;&t;   Figure out how many sectors we can transfer&n;&t;&t;&t;   to the current buffer. */
 id|this_transfer
 op_assign
-id|MIN
+id|min_t
+c_func
 (paren
+r_int
+comma
 id|sectors_to_transfer
 comma
 id|rq-&gt;current_nr_sectors
@@ -6358,9 +6361,11 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Figure out how many sectors we can transfer&n;&t;&t; */
 id|this_transfer
 op_assign
-id|MIN
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|sectors_to_transfer
 comma
 id|rq-&gt;current_nr_sectors

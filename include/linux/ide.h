@@ -223,10 +223,6 @@ DECL|macro|SECTOR_WORDS
 mdefine_line|#define SECTOR_WORDS&t;(SECTOR_SIZE / 4)&t;/* number of 32bit words per sector */
 DECL|macro|IDE_LARGE_SEEK
 mdefine_line|#define IDE_LARGE_SEEK(b1,b2,t)&t;(((b1) &gt; (b2) + (t)) || ((b2) &gt; (b1) + (t)))
-DECL|macro|IDE_MIN
-mdefine_line|#define IDE_MIN(a,b)&t;((a)&lt;(b) ? (a):(b))
-DECL|macro|IDE_MAX
-mdefine_line|#define IDE_MAX(a,b)&t;((a)&gt;(b) ? (a):(b))
 multiline_comment|/*&n; * Timeouts for various operations:&n; */
 DECL|macro|WAIT_DRQ
 mdefine_line|#define WAIT_DRQ&t;(HZ/10)&t;&t;/* 100msec - spec allows up to 20ms */

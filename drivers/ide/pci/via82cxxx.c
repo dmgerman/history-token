@@ -2331,9 +2331,11 @@ id|drive
 comma
 id|XFER_PIO_0
 op_plus
-id|MIN
+id|min_t
 c_func
 (paren
+id|u8
+comma
 id|pio
 comma
 l_int|5
