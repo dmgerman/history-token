@@ -46,6 +46,8 @@ DECL|macro|MV64x60_IRQ_TIMER_4_5
 mdefine_line|#define&t;MV64x60_IRQ_TIMER_4_5&t;&t;&t;10
 DECL|macro|MV64x60_IRQ_TIMER_6_7
 mdefine_line|#define&t;MV64x60_IRQ_TIMER_6_7&t;&t;&t;11
+DECL|macro|MV64x60_IRQ_DOORBELL
+mdefine_line|#define&t;MV64x60_IRQ_DOORBELL&t;&t;&t;28
 DECL|macro|MV64x60_IRQ_ETH_0
 mdefine_line|#define&t;MV64x60_IRQ_ETH_0&t;&t;&t;32
 DECL|macro|MV64x60_IRQ_ETH_1
