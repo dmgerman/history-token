@@ -1102,7 +1102,7 @@ id|cloop
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* dbg(&quot;new_slot-&gt;config_space[%x] = %x&bslash;n&quot;, cloop, new_slot-&gt;config_space[cloop]); */
+multiline_comment|/* dbg(&quot;new_slot-&gt;config_space[%x] = %x&bslash;n&quot;,&n;&t;&t;&t;&t;&t;&t;cloop, new_slot-&gt;config_space[cloop]); */
 r_if
 c_cond
 (paren
@@ -1268,8 +1268,8 @@ OL
 id|max_functions
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* End of IF (device in slot?) */
+)brace
 r_else
 r_if
 c_cond
@@ -1361,6 +1361,7 @@ multiline_comment|/*&n; * pciehp_save_slot_config&n; *&n; * Saves configuration 
 DECL|function|pciehp_save_slot_config
 r_int
 id|pciehp_save_slot_config
+c_func
 (paren
 r_struct
 id|controller
@@ -1769,6 +1770,7 @@ multiline_comment|/*&n; * pciehp_save_used_resources&n; *&n; * Stores used resou
 DECL|function|pciehp_save_used_resources
 r_int
 id|pciehp_save_used_resources
+c_func
 (paren
 r_struct
 id|controller
@@ -1933,6 +1935,7 @@ id|func-&gt;function
 suffix:semicolon
 multiline_comment|/* Save the command register */
 id|pci_bus_read_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -1970,6 +1973,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Check for Bridge */
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -2031,6 +2035,7 @@ id|command
 suffix:semicolon
 )brace
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -2043,6 +2048,7 @@ id|secondary_bus
 )paren
 suffix:semicolon
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -2056,11 +2062,6 @@ id|temp_byte
 suffix:semicolon
 id|bus_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2113,6 +2114,7 @@ id|bus_node
 suffix:semicolon
 multiline_comment|/* Save IO base and Limit registers */
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -2129,6 +2131,7 @@ op_assign
 id|temp_byte
 suffix:semicolon
 id|pci_bus_read_config_byte
+c_func
 (paren
 id|pci_bus
 comma
@@ -2167,11 +2170,6 @@ id|PCI_COMMAND_IO
 (brace
 id|io_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2233,6 +2231,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Save memory base and Limit registers */
 id|pci_bus_read_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -2245,6 +2244,7 @@ id|w_base
 )paren
 suffix:semicolon
 id|pci_bus_read_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -2279,11 +2279,6 @@ id|PCI_COMMAND_MEMORY
 (brace
 id|mem_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2341,6 +2336,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Save prefetchable memory base and Limit registers */
 id|pci_bus_read_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -2353,6 +2349,7 @@ id|w_base
 )paren
 suffix:semicolon
 id|pci_bus_read_config_word
+c_func
 (paren
 id|pci_bus
 comma
@@ -2387,11 +2384,6 @@ id|PCI_COMMAND_MEMORY
 (brace
 id|p_mem_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2491,6 +2483,7 @@ l_int|4
 )paren
 (brace
 id|pci_bus_read_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -2507,6 +2500,7 @@ op_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
 id|pci_bus_write_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -2518,6 +2512,7 @@ id|temp_register
 )paren
 suffix:semicolon
 id|pci_bus_read_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -2535,8 +2530,8 @@ c_cond
 op_logical_neg
 id|disable
 )paren
-(brace
 id|pci_bus_write_config_dword
+c_func
 (paren
 id|pci_bus
 comma
@@ -2547,7 +2542,6 @@ comma
 id|save_base
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2600,11 +2594,6 @@ l_int|1
 suffix:semicolon
 id|io_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
@@ -2682,11 +2671,6 @@ id|temp_register2
 suffix:semicolon
 id|t_mem_node
 op_assign
-(paren
-r_struct
-id|pci_resource
-op_star
-)paren
 id|kmalloc
 c_func
 (paren
