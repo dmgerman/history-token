@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ACPI PCI HotPlug glue functions to ACPI CA subsystem&n; *&n; * Copyright (c) 2002 Takayoshi Kochi (t-kouchi@cq.jp.nec.com)&n; * Copyright (c) 2002 Hiroshi Aono (h-aono@ap.jp.nec.com)&n; * Copyright (c) 2002 NEC Corporation&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;t-kouchi@cq.jp.nec.com&gt;&n; *&n; */
+multiline_comment|/*&n; * ACPI PCI HotPlug glue functions to ACPI CA subsystem&n; *&n; * Copyright (c) 2002,2003 Takayoshi Kochi (t-kochi@bq.jp.nec.com)&n; * Copyright (c) 2002 Hiroshi Aono (h-aono@ap.jp.nec.com)&n; * Copyright (c) 2002,2003 NEC Corporation&n; *&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or (at&n; * your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; * NON INFRINGEMENT.  See the GNU General Public License for more&n; * details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Send feedback to &lt;t-kochi@bq.jp.nec.com&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -708,12 +708,6 @@ id|err
 c_func
 (paren
 l_string|&quot;failed to register interrupt notify handler&bslash;n&quot;
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|newfunc
 )paren
 suffix:semicolon
 r_return
@@ -2622,24 +2616,16 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/* find hot-pluggable slots, and then find P2P bridge */
-DECL|function|add_bridges
+DECL|function|add_bridge
 r_static
 r_int
-id|add_bridges
+id|add_bridge
 c_func
 (paren
-r_struct
-id|acpi_device
-op_star
-id|device
+id|acpi_handle
+id|handle
 )paren
 (brace
-id|acpi_handle
-op_star
-id|handle
-op_assign
-id|device-&gt;handle
-suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
@@ -2890,6 +2876,17 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|remove_bridge
+r_static
+r_void
+id|remove_bridge
+(paren
+id|acpi_handle
+id|handle
+)paren
+(brace
+multiline_comment|/* No-op for now .. */
+)brace
 DECL|function|power_on_slot
 r_static
 r_int
@@ -3101,19 +3098,13 @@ c_cond
 (paren
 id|func-&gt;flags
 op_amp
+(paren
 id|FUNC_HAS_PS3
+op_or
+id|FUNC_EXISTS
+)paren
 )paren
 (brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s: executing _PS3 on %s&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|func-&gt;pci_dev-&gt;slot_name
-)paren
-suffix:semicolon
 id|status
 op_assign
 id|acpi_evaluate_object
@@ -3178,24 +3169,19 @@ comma
 id|sibling
 )paren
 suffix:semicolon
+multiline_comment|/* We don&squot;t want to call _EJ0 on non-existing functions. */
 r_if
 c_cond
 (paren
 id|func-&gt;flags
 op_amp
+(paren
 id|FUNC_HAS_EJ0
+op_or
+id|FUNC_EXISTS
+)paren
 )paren
 (brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s: executing _EJ0 on %s&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|func-&gt;pci_dev-&gt;slot_name
-)paren
-suffix:semicolon
 multiline_comment|/* _EJ0 method take one argument */
 id|arg_list.count
 op_assign
@@ -3256,6 +3242,13 @@ r_goto
 id|err_exit
 suffix:semicolon
 )brace
+id|func-&gt;flags
+op_and_assign
+(paren
+op_complement
+id|FUNC_EXISTS
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* TBD: evaluate _STA to check if the slot is disabled */
@@ -3552,6 +3545,10 @@ id|retval
 )paren
 r_goto
 id|err_exit
+suffix:semicolon
+id|func-&gt;flags
+op_or_assign
+id|FUNC_EXISTS
 suffix:semicolon
 )brace
 id|slot-&gt;flags
@@ -4172,35 +4169,20 @@ suffix:semicolon
 DECL|variable|acpi_pci_hp_driver
 r_static
 r_struct
-id|acpi_driver
+id|acpi_pci_driver
 id|acpi_pci_hp_driver
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;pci_hp&quot;
-comma
-dot
-r_class
-op_assign
-l_string|&quot;&quot;
-comma
-dot
-id|ids
-op_assign
-id|ACPI_PCI_HOST_HID
-comma
-dot
-id|ops
 op_assign
 (brace
 dot
 id|add
 op_assign
-id|add_bridges
+id|add_bridge
 comma
-)brace
+dot
+id|remove
+op_assign
+id|remove_bridge
+comma
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * acpiphp_glue_init - initializes all PCI hotplug - ACPI glue data structures&n; *&n; */
@@ -4211,8 +4193,8 @@ id|acpiphp_glue_init
 r_void
 )paren
 (brace
-id|acpi_status
-id|status
+r_int
+id|num
 suffix:semicolon
 r_if
 c_cond
@@ -4228,9 +4210,9 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-id|status
+id|num
 op_assign
-id|acpi_bus_register_driver
+id|acpi_pci_register_driver
 c_func
 (paren
 op_amp
@@ -4240,26 +4222,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ACPI_FAILURE
-c_func
-(paren
-id|status
+id|num
+op_le
+l_int|0
 )paren
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;%s: acpi_walk_namespace() failed&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5136,7 +5106,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * attention LED ON: 1&n; *              OFF: 0&n; *&n; * TBD&n; * no direct attention led status information via ACPI&n; *&n; */
+multiline_comment|/*&n; * attention LED ON: 1&n; *&t;&t;OFF: 0&n; *&n; * TBD&n; * no direct attention led status information via ACPI&n; *&n; */
 DECL|function|acpiphp_get_attention_status
 id|u8
 id|acpiphp_get_attention_status

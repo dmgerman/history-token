@@ -4791,7 +4791,7 @@ id|svc_fh
 id|tempfh
 suffix:semicolon
 r_struct
-id|statfs
+id|kstatfs
 id|statfs
 suffix:semicolon
 r_int

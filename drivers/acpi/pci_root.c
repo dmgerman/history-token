@@ -24,12 +24,6 @@ DECL|macro|ACPI_PCI_ROOT_DRIVER_NAME
 mdefine_line|#define ACPI_PCI_ROOT_DRIVER_NAME&t;&quot;ACPI PCI Root Bridge Driver&quot;
 DECL|macro|ACPI_PCI_ROOT_DEVICE_NAME
 mdefine_line|#define ACPI_PCI_ROOT_DEVICE_NAME&t;&quot;PCI Root Bridge&quot;
-r_extern
-r_struct
-id|pci_ops
-op_star
-id|pci_root_ops
-suffix:semicolon
 r_static
 r_int
 id|acpi_pci_root_add

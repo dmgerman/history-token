@@ -341,11 +341,15 @@ r_int
 id|f_namelen
 suffix:semicolon
 multiline_comment|/* SunOS ignores this field. */
+DECL|member|f_frsize
+r_int
+id|f_frsize
+suffix:semicolon
 DECL|member|f_spare
 r_int
 id|f_spare
 (braket
-l_int|6
+l_int|5
 )braket
 suffix:semicolon
 )brace

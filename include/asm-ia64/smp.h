@@ -105,6 +105,7 @@ suffix:semicolon
 r_static
 r_inline
 r_int
+r_int
 DECL|function|any_online_cpu
 id|any_online_cpu
 (paren
@@ -130,8 +131,7 @@ id|cpu_online_map
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|NR_CPUS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function to map hard smp processor id to logical id.  Slow, so don&squot;t use this in&n; * performance-critical code.&n; */

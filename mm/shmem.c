@@ -4495,9 +4495,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;i_sb
-op_logical_or
-op_logical_neg
 id|S_ISREG
 c_func
 (paren
@@ -6005,7 +6002,7 @@ op_star
 id|sb
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|buf
 )paren

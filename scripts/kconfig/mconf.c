@@ -2479,6 +2479,9 @@ op_assign
 r_void
 op_star
 )paren
+(paren
+r_int
+)paren
 op_logical_neg
 id|submenu-&gt;data
 suffix:semicolon

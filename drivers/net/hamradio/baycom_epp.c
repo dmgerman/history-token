@@ -1336,9 +1336,6 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
 multiline_comment|/* set up arguments */
 id|sprintf
 c_func
@@ -5302,10 +5299,6 @@ r_struct
 id|baycom_state
 op_star
 id|bc
-suffix:semicolon
-r_struct
-id|baycom_ioctl
-id|bi
 suffix:semicolon
 r_struct
 id|hdlcdrv_ioctl

@@ -1881,12 +1881,6 @@ comma
 id|sdev-&gt;lun
 )paren
 suffix:semicolon
-id|scsi_device_register
-c_func
-(paren
-id|sdev
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * End driverfs/devfs code.&n;&t; */
 r_if
 c_cond
@@ -2086,7 +2080,7 @@ l_int|1
 suffix:semicolon
 id|sdev-&gt;use_10_for_ms
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -2103,6 +2097,13 @@ id|sdev
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Ok, the device is now all set up, we can&n;&t; * register it and tell the rest of the kernel&n;&t; * about it.&n;&t; */
+id|scsi_device_register
+c_func
+(paren
+id|sdev
+)paren
+suffix:semicolon
 r_return
 id|SCSI_SCAN_LUN_PRESENT
 suffix:semicolon

@@ -5258,6 +5258,7 @@ id|smb
 )paren
 (brace
 r_int
+r_int
 id|i
 suffix:semicolon
 r_int
@@ -5524,6 +5525,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * calculate the size of the SMB message based on the fixed header&n; * portion, the number of word parameters and the data portion of the message&n; */
 r_int
+r_int
 DECL|function|smbCalcSize
 id|smbCalcSize
 c_func
@@ -5542,9 +5544,6 @@ r_struct
 id|smb_hdr
 )paren
 op_plus
-(paren
-r_int
-)paren
 (paren
 l_int|2
 op_star

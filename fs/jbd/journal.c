@@ -529,7 +529,7 @@ id|journal-&gt;j_state_lock
 )paren
 suffix:semicolon
 r_goto
-id|loop
+id|end_loop
 suffix:semicolon
 )brace
 id|wake_up
@@ -574,14 +574,6 @@ c_func
 (paren
 op_amp
 id|journal-&gt;j_state_lock
-)paren
-suffix:semicolon
-id|jbd_debug
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;Resuming kjournald&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -720,6 +712,8 @@ l_string|&quot;woke because of timeout&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|end_loop
+suffix:colon
 r_if
 c_cond
 (paren
@@ -816,6 +810,13 @@ op_star
 id|journal
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|journal-&gt;j_flags
 op_or_assign
 id|JFS_UNMOUNT
@@ -833,6 +834,13 @@ op_amp
 id|journal-&gt;j_wait_commit
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 id|wait_event
 c_func
 (paren
@@ -843,7 +851,21 @@ op_eq
 l_int|0
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|journal-&gt;j_state_lock
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * journal_write_metadata_buffer: write a metadata buffer to the journal.&n; *&n; * Writes a metadata buffer to a given disk block.  The actual IO is not&n; * performed but a new buffer_head is constructed which labels the data&n; * to be written with the correct destination disk block.&n; *&n; * Any magic-number escaping which needs to be done will cause a&n; * copy-out here.  If the buffer happens to start with the&n; * JFS_MAGIC_NUMBER, then we can&squot;t write it to the log directly: the&n; * magic number is only written to the log for descripter blocks.  In&n; * this case, we copy the data and replace the first word with 0, and we&n; * return a result code which indicates that this buffer needs to be&n; * marked as an escaped buffer in the corresponding log descriptor&n; * block.  The missing word can then be restored when the block is read&n; * during recovery.&n; *&n; * If the source buffer has already been modified by a new transaction&n; * since we took the last commit snapshot, we use the frozen copy of&n; * that data for IO.  If we end up using the existing buffer_head&squot;s data&n; * for the write, then we *have* to lock the buffer to prevent anyone&n; * else from using and possibly modifying it while the IO is in&n; * progress.&n; *&n; * The function returns a pointer to the buffer_heads to be used for IO.&n; *&n; * We assume that the journal has already been locked in this function.&n; *&n; * Return value:&n; *  &lt;0: Error&n; * &gt;=0: Finished OK&n; *&n; * On success:&n; * Bit 0 set == escape performed on the data&n; * Bit 1 set == buffer copy-out performed (kfree the data after IO)&n; */
 DECL|function|virt_to_offset
@@ -2896,6 +2918,38 @@ id|bh
 op_assign
 id|journal-&gt;j_sb_buffer
 suffix:semicolon
+multiline_comment|/*&n;&t; * As a special case, if the on-disk copy is already marked as needing&n;&t; * no recovery (s_start == 0) and there are no outstanding transactions&n;&t; * in the filesystem, then we can safely defer the superblock update&n;&t; * until the next commit by setting JFS_FLUSHED.  This avoids&n;&t; * attempting a write to a potential-readonly device.&n;&t; */
+r_if
+c_cond
+(paren
+id|sb-&gt;s_start
+op_eq
+l_int|0
+op_logical_and
+id|journal-&gt;j_tail_sequence
+op_eq
+id|journal-&gt;j_transaction_sequence
+)paren
+(brace
+id|jbd_debug
+c_func
+(paren
+l_int|1
+comma
+l_string|&quot;JBD: Skipping superblock update on recovered sb &quot;
+l_string|&quot;(start %ld, seq %d, errno %d)&bslash;n&quot;
+comma
+id|journal-&gt;j_tail
+comma
+id|journal-&gt;j_tail_sequence
+comma
+id|journal-&gt;j_errno
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren
@@ -2985,6 +3039,8 @@ op_amp
 id|bh
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 multiline_comment|/* If we have just flushed the log (by marking s_start==0), then&n;&t; * any future commit will have to be careful to update the&n;&t; * superblock again to re-record the true start of the log. */
 id|spin_lock
 c_func

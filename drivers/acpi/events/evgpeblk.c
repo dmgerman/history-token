@@ -35,6 +35,7 @@ id|ACPI_FUNCTION_ENTRY
 )paren
 suffix:semicolon
 multiline_comment|/* No need for spin lock since we are not changing any list elements */
+multiline_comment|/* Walk the GPE interrupt levels */
 id|gpe_xrupt_block
 op_assign
 id|acpi_gbl_gpe_xrupt_list_head
@@ -49,6 +50,7 @@ id|gpe_block
 op_assign
 id|gpe_xrupt_block-&gt;gpe_block_list_head
 suffix:semicolon
+multiline_comment|/* Walk the GPE blocks on this interrupt level */
 r_while
 c_loop
 (paren
@@ -214,7 +216,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_save_method_info&n; *&n; * PARAMETERS:  Callback from walk_namespace&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Called from acpi_walk_namespace. Expects each object to be a&n; *              control method under the _GPE portion of the namespace.&n; *              Extract the name and GPE type from the object, saving this&n; *              information for quick lookup during GPE dispatch&n; *&n; *              The name of each GPE control method is of the form:&n; *                  &quot;_Lnn&quot; or &quot;_Enn&quot;&n; *              Where:&n; *                  L      - means that the GPE is level triggered&n; *                  E      - means that the GPE is edge triggered&n; *                  nn     - is the GPE number [in HEX]&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_save_method_info&n; *&n; * PARAMETERS:  Callback from walk_namespace&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Called from acpi_walk_namespace. Expects each object to be a&n; *              control method under the _GPE portion of the namespace.&n; *              Extract the name and GPE type from the object, saving this&n; *              information for quick lookup during GPE dispatch&n; *&n; *              The name of each GPE control method is of the form:&n; *                  &quot;_Lnn&quot; or &quot;_Enn&quot;&n; *                  Where:&n; *                      L      - means that the GPE is level triggered&n; *                      E      - means that the GPE is edge triggered&n; *                      nn     - is the GPE number [in HEX]&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
 DECL|function|acpi_ev_save_method_info
@@ -299,7 +301,7 @@ id|ACPI_NAME_SIZE
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Edge/Level determination is based on the 2nd character of the method name&n;&t; */
+multiline_comment|/*&n;&t; * Edge/Level determination is based on the 2nd character&n;&t; * of the method name&n;&t; */
 r_switch
 c_cond
 (paren
@@ -445,7 +447,7 @@ op_star
 )paren
 id|obj_handle
 suffix:semicolon
-multiline_comment|/*&n;&t; * Enable the GPE (SCIs should be disabled at this point)&n;&t; */
+multiline_comment|/* Enable the GPE (SCIs should be disabled at this point) */
 id|status
 op_assign
 id|acpi_hw_enable_gpe
@@ -471,7 +473,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_ERROR
+id|ACPI_DB_LOAD
 comma
 l_string|&quot;Registered GPE method %s as GPE number 0x%.2X&bslash;n&quot;
 comma
@@ -1957,7 +1959,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * GPE0 and GPE1 do not have to be contiguous in the GPE number space,&n;&t;&t;&t; * But, GPE0 always starts at zero.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * GPE0 and GPE1 do not have to be contiguous in the GPE number&n;&t;&t;&t; * space. However, GPE0 always starts at GPE number zero.&n;&t;&t;&t; */
 id|gpe_number_max
 op_assign
 id|acpi_gbl_FADT-&gt;gpe1_base

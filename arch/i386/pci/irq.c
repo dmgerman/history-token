@@ -482,7 +482,8 @@ c_func
 (paren
 id|i
 comma
-id|pci_root_bus-&gt;ops
+op_amp
+id|pci_root_ops
 comma
 l_int|NULL
 )paren

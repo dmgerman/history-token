@@ -7,7 +7,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * ACPI_DEBUG_OUTPUT    - This switch enables all the debug facilities of the&n; *                        ACPI subsystem.  This includes the DEBUG_PRINT output&n; *                        statements.  When disabled, all DEBUG_PRINT&n; *                        statements are compiled out.&n; *&n; * ACPI_APPLICATION     - Use this switch if the subsystem is going to be run&n; *                        at the application level.&n; *&n; */
 multiline_comment|/* Version string */
 DECL|macro|ACPI_CA_VERSION
-mdefine_line|#define ACPI_CA_VERSION                 0x20030522
+mdefine_line|#define ACPI_CA_VERSION                 0x20030619
 multiline_comment|/* Maximum objects in the various object caches */
 DECL|macro|ACPI_MAX_STATE_CACHE_DEPTH
 mdefine_line|#define ACPI_MAX_STATE_CACHE_DEPTH      64          /* State objects for stacks */

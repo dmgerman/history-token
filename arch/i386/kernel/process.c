@@ -575,6 +575,8 @@ suffix:semicolon
 id|show_trace
 c_func
 (paren
+l_int|NULL
+comma
 op_amp
 id|regs-&gt;esp
 )paren
