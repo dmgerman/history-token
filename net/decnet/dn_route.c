@@ -88,6 +88,8 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|dn_rt_min_delay
+r_static
+r_const
 r_int
 id|dn_rt_min_delay
 op_assign
@@ -96,6 +98,8 @@ op_star
 id|HZ
 suffix:semicolon
 DECL|variable|dn_rt_max_delay
+r_static
+r_const
 r_int
 id|dn_rt_max_delay
 op_assign
@@ -104,6 +108,8 @@ op_star
 id|HZ
 suffix:semicolon
 DECL|variable|dn_rt_mtu_expires
+r_static
+r_const
 r_int
 id|dn_rt_mtu_expires
 op_assign
