@@ -128,7 +128,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|spin_lock
+id|_raw_spin_lock
 c_func
 (paren
 op_amp
@@ -145,7 +145,7 @@ id|addr
 op_assign
 l_int|1
 suffix:semicolon
-id|spin_unlock
+id|_raw_spin_unlock
 c_func
 (paren
 op_amp
