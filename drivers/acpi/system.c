@@ -9,6 +9,24 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_system&quot;
 )paren
+DECL|macro|ACPI_SYSTEM_CLASS
+mdefine_line|#define ACPI_SYSTEM_CLASS&t;&t;&quot;system&quot;
+DECL|macro|ACPI_SYSTEM_DRIVER_NAME
+mdefine_line|#define ACPI_SYSTEM_DRIVER_NAME&t;&t;&quot;ACPI System Driver&quot;
+DECL|macro|ACPI_SYSTEM_DEVICE_NAME
+mdefine_line|#define ACPI_SYSTEM_DEVICE_NAME&t;&t;&quot;System&quot;
+DECL|macro|ACPI_SYSTEM_FILE_INFO
+mdefine_line|#define ACPI_SYSTEM_FILE_INFO&t;&t;&quot;info&quot;
+DECL|macro|ACPI_SYSTEM_FILE_EVENT
+mdefine_line|#define ACPI_SYSTEM_FILE_EVENT&t;&t;&quot;event&quot;
+DECL|macro|ACPI_SYSTEM_FILE_ALARM
+mdefine_line|#define ACPI_SYSTEM_FILE_ALARM&t;&t;&quot;alarm&quot;
+DECL|macro|ACPI_SYSTEM_FILE_DSDT
+mdefine_line|#define ACPI_SYSTEM_FILE_DSDT&t;&t;&quot;dsdt&quot;
+DECL|macro|ACPI_SYSTEM_FILE_FADT
+mdefine_line|#define ACPI_SYSTEM_FILE_FADT&t;&t;&quot;fadt&quot;
+DECL|macro|ACPI_SYSTEM_FILE_SLEEP
+mdefine_line|#define ACPI_SYSTEM_FILE_SLEEP&t;&t;&quot;sleep&quot;
 r_extern
 id|FADT_DESCRIPTOR
 id|acpi_fadt

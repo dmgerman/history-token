@@ -38,6 +38,30 @@ DECL|macro|ACPI_BATTERY_FORMAT_BIF
 mdefine_line|#define ACPI_BATTERY_FORMAT_BIF&t;&quot;NNNNNNNNNSSSS&quot;
 DECL|macro|ACPI_BATTERY_FORMAT_BST
 mdefine_line|#define ACPI_BATTERY_FORMAT_BST&t;&quot;NNNN&quot;
+DECL|macro|ACPI_BATTERY_COMPONENT
+mdefine_line|#define ACPI_BATTERY_COMPONENT&t;&t;0x00040000
+DECL|macro|ACPI_BATTERY_CLASS
+mdefine_line|#define ACPI_BATTERY_CLASS&t;&t;&quot;battery&quot;
+DECL|macro|ACPI_BATTERY_HID
+mdefine_line|#define ACPI_BATTERY_HID&t;&t;&quot;PNP0C0A&quot;
+DECL|macro|ACPI_BATTERY_DRIVER_NAME
+mdefine_line|#define ACPI_BATTERY_DRIVER_NAME&t;&quot;ACPI Battery Driver&quot;
+DECL|macro|ACPI_BATTERY_DEVICE_NAME
+mdefine_line|#define ACPI_BATTERY_DEVICE_NAME&t;&quot;Battery&quot;
+DECL|macro|ACPI_BATTERY_FILE_INFO
+mdefine_line|#define ACPI_BATTERY_FILE_INFO&t;&t;&quot;info&quot;
+DECL|macro|ACPI_BATTERY_FILE_STATUS
+mdefine_line|#define ACPI_BATTERY_FILE_STATUS&t;&quot;state&quot;
+DECL|macro|ACPI_BATTERY_FILE_ALARM
+mdefine_line|#define ACPI_BATTERY_FILE_ALARM&t;&t;&quot;alarm&quot;
+DECL|macro|ACPI_BATTERY_NOTIFY_STATUS
+mdefine_line|#define ACPI_BATTERY_NOTIFY_STATUS&t;0x80
+DECL|macro|ACPI_BATTERY_NOTIFY_INFO
+mdefine_line|#define ACPI_BATTERY_NOTIFY_INFO&t;0x81
+DECL|macro|ACPI_BATTERY_UNITS_WATTS
+mdefine_line|#define ACPI_BATTERY_UNITS_WATTS&t;&quot;mW&quot;
+DECL|macro|ACPI_BATTERY_UNITS_AMPS
+mdefine_line|#define ACPI_BATTERY_UNITS_AMPS&t;&t;&quot;mA&quot;
 r_static
 r_int
 id|acpi_battery_add

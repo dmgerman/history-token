@@ -17,6 +17,14 @@ id|acpi_device
 op_star
 id|acpi_root
 suffix:semicolon
+DECL|macro|ACPI_BUS_CLASS
+mdefine_line|#define ACPI_BUS_CLASS&t;&t;&t;&quot;system_bus&quot;
+DECL|macro|ACPI_BUS_HID
+mdefine_line|#define ACPI_BUS_HID&t;&t;&t;&quot;ACPI_BUS&quot;
+DECL|macro|ACPI_BUS_DRIVER_NAME
+mdefine_line|#define ACPI_BUS_DRIVER_NAME&t;&t;&quot;ACPI Bus Driver&quot;
+DECL|macro|ACPI_BUS_DEVICE_NAME
+mdefine_line|#define ACPI_BUS_DEVICE_NAME&t;&t;&quot;System Bus&quot;
 r_static
 r_int
 DECL|function|acpi_device_register

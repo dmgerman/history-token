@@ -13,6 +13,24 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_power&quot;
 )paren
+DECL|macro|ACPI_POWER_COMPONENT
+mdefine_line|#define ACPI_POWER_COMPONENT&t;&t;0x00800000
+DECL|macro|ACPI_POWER_CLASS
+mdefine_line|#define ACPI_POWER_CLASS&t;&t;&quot;power_resource&quot;
+DECL|macro|ACPI_POWER_DRIVER_NAME
+mdefine_line|#define ACPI_POWER_DRIVER_NAME&t;&t;&quot;ACPI Power Resource Driver&quot;
+DECL|macro|ACPI_POWER_DEVICE_NAME
+mdefine_line|#define ACPI_POWER_DEVICE_NAME&t;&t;&quot;Power Resource&quot;
+DECL|macro|ACPI_POWER_FILE_INFO
+mdefine_line|#define ACPI_POWER_FILE_INFO&t;&t;&quot;info&quot;
+DECL|macro|ACPI_POWER_FILE_STATUS
+mdefine_line|#define ACPI_POWER_FILE_STATUS&t;&t;&quot;state&quot;
+DECL|macro|ACPI_POWER_RESOURCE_STATE_OFF
+mdefine_line|#define ACPI_POWER_RESOURCE_STATE_OFF&t;0x00
+DECL|macro|ACPI_POWER_RESOURCE_STATE_ON
+mdefine_line|#define ACPI_POWER_RESOURCE_STATE_ON&t;0x01
+DECL|macro|ACPI_POWER_RESOURCE_STATE_UNKNOWN
+mdefine_line|#define ACPI_POWER_RESOURCE_STATE_UNKNOWN 0xFF
 r_int
 id|acpi_power_add
 (paren

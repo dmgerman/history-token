@@ -15,6 +15,18 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;pci_link&quot;
 )paren
+DECL|macro|ACPI_PCI_LINK_CLASS
+mdefine_line|#define ACPI_PCI_LINK_CLASS&t;&t;&quot;pci_irq_routing&quot;
+DECL|macro|ACPI_PCI_LINK_HID
+mdefine_line|#define ACPI_PCI_LINK_HID&t;&t;&quot;PNP0C0F&quot;
+DECL|macro|ACPI_PCI_LINK_DRIVER_NAME
+mdefine_line|#define ACPI_PCI_LINK_DRIVER_NAME&t;&quot;ACPI PCI Interrupt Link Driver&quot;
+DECL|macro|ACPI_PCI_LINK_DEVICE_NAME
+mdefine_line|#define ACPI_PCI_LINK_DEVICE_NAME&t;&quot;PCI Interrupt Link&quot;
+DECL|macro|ACPI_PCI_LINK_FILE_INFO
+mdefine_line|#define ACPI_PCI_LINK_FILE_INFO&t;&t;&quot;info&quot;
+DECL|macro|ACPI_PCI_LINK_FILE_STATUS
+mdefine_line|#define ACPI_PCI_LINK_FILE_STATUS&t;&quot;state&quot;
 DECL|macro|ACPI_PCI_LINK_MAX_POSSIBLE
 mdefine_line|#define ACPI_PCI_LINK_MAX_POSSIBLE 16
 r_static

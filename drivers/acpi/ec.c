@@ -15,6 +15,18 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;acpi_ec&quot;
 )paren
+DECL|macro|ACPI_EC_COMPONENT
+mdefine_line|#define ACPI_EC_COMPONENT&t;&t;0x00100000
+DECL|macro|ACPI_EC_CLASS
+mdefine_line|#define ACPI_EC_CLASS&t;&t;&t;&quot;embedded_controller&quot;
+DECL|macro|ACPI_EC_HID
+mdefine_line|#define ACPI_EC_HID&t;&t;&t;&quot;PNP0C09&quot;
+DECL|macro|ACPI_EC_DRIVER_NAME
+mdefine_line|#define ACPI_EC_DRIVER_NAME&t;&t;&quot;ACPI Embedded Controller Driver&quot;
+DECL|macro|ACPI_EC_DEVICE_NAME
+mdefine_line|#define ACPI_EC_DEVICE_NAME&t;&t;&quot;Embedded Controller&quot;
+DECL|macro|ACPI_EC_FILE_INFO
+mdefine_line|#define ACPI_EC_FILE_INFO&t;&t;&quot;info&quot;
 DECL|macro|ACPI_EC_FLAG_OBF
 mdefine_line|#define ACPI_EC_FLAG_OBF&t;0x01&t;/* Output buffer full */
 DECL|macro|ACPI_EC_FLAG_IBF
@@ -2835,6 +2847,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 id|__init
 DECL|function|acpi_ec_ecdt_probe
@@ -3075,6 +3088,21 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * ACPI 2.0 requires the EC driver to be loaded and work before&n;&t; * the EC device is found in the namespace. This is accomplished&n;&t; * by looking for the ECDT table, and getting the EC parameters out&n;&t; * of that.&n;&t; */
+id|result
+op_assign
+id|acpi_ec_ecdt_probe
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Now register the driver for the EC */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|result
+)paren
 id|result
 op_assign
 id|acpi_bus_register_driver
@@ -3084,34 +3112,10 @@ op_amp
 id|acpi_ec_driver
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|return_VALUE
+c_func
 (paren
 id|result
-OL
-l_int|0
-)paren
-(brace
-id|remove_proc_entry
-c_func
-(paren
-id|ACPI_EC_CLASS
-comma
-id|acpi_root_dir
-)paren
-suffix:semicolon
-id|return_VALUE
-c_func
-(paren
-op_minus
-id|ENODEV
-)paren
-suffix:semicolon
-)brace
-id|return_VALUE
-c_func
-(paren
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -3122,6 +3126,7 @@ c_func
 id|acpi_ec_init
 )paren
 suffix:semicolon
+r_static
 r_void
 id|__exit
 DECL|function|acpi_ec_ecdt_exit
@@ -3165,6 +3170,7 @@ id|ec_ecdt
 )paren
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|acpi_ec_exit
