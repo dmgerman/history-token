@@ -319,8 +319,6 @@ id|DEVICE_ATTR
 (paren
 id|pools
 comma
-l_string|&quot;pools&quot;
-comma
 id|S_IRUGO
 comma
 id|show_pools
