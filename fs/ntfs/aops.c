@@ -1843,7 +1843,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode %li, attribute type 0x%x, page index &quot;
+l_string|&quot;Entering for inode 0x%lx, attribute type 0x%x, page index &quot;
 l_string|&quot;0x%lx.&quot;
 comma
 id|vi-&gt;i_ino
@@ -3413,10 +3413,17 @@ id|bytes
 op_assign
 id|PAGE_CACHE_SIZE
 suffix:semicolon
-singleline_comment|// TODO: Consider using PageWriteback() + unlock_page() in 2.6 once the
-singleline_comment|// &quot;VM fiddling has ended&quot;. Note, don&squot;t forget to replace all the
-singleline_comment|// unlock_page() calls further below with end_page_writeback() ones.
-macro_line|#if 0
+multiline_comment|/*&n;&t; * Keep the VM happy.  This must be done otherwise the radix-tree tag&n;&t; * PAGECACHE_TAG_DIRTY remains set even though the page is clean.&n;&t; */
+id|BUG_ON
+c_func
+(paren
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
 id|set_page_writeback
 c_func
 (paren
@@ -3429,8 +3436,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t; * Here, we don&squot;t need to zero the out of bounds area everytime because&n;&t; * the below memcpy() already takes care of the mmap-at-end-of-file&n;&t; * requirements. If the file is converted to a non-resident one, then&n;&t; * the code path use is switched to the non-resident one where the&n;&t; * zeroing happens on each ntfs_writepage() invocation.&n;&t; *&n;&t; * The above also applies nicely when i_size is decreased.&n;&t; *&n;&t; * When i_size is increased, the memory between the old and new i_size&n;&t; * _must_ be zeroed (or overwritten with new data). Otherwise we will&n;&t; * expose data to userspace/disk which should never have been exposed.&n;&t; *&n;&t; * FIXME: Ensure that i_size increases do the zeroing/overwriting and&n;&t; * if we cannot guarantee that, then enable the zeroing below.&n;&t; */
+multiline_comment|/*&n;&t; * Here, we don&squot;t need to zero the out of bounds area everytime because&n;&t; * the below memcpy() already takes care of the mmap-at-end-of-file&n;&t; * requirements. If the file is converted to a non-resident one, then&n;&t; * the code path use is switched to the non-resident one where the&n;&t; * zeroing happens on each ntfs_writepage() invocation.&n;&t; *&n;&t; * The above also applies nicely when i_size is decreased.&n;&t; *&n;&t; * When i_size is increased, the memory between the old and new i_size&n;&t; * _must_ be zeroed (or overwritten with new data). Otherwise we will&n;&t; * expose data to userspace/disk which should never have been exposed.&n;&t; *&n;&t; * FIXME: Ensure that i_size increases do the zeroing/overwriting and&n;&t; * if we cannot guarantee that, then enable the zeroing below.  If the&n;&t; * zeroing below is enabled, we MUST move the unlock_page() from above&n;&t; * to after the kunmap_atomic(), i.e. just before the&n;&t; * end_page_writeback().&n;&t; */
 id|kaddr
 op_assign
 id|kmap_atomic
@@ -3514,7 +3520,7 @@ comma
 id|KM_USER0
 )paren
 suffix:semicolon
-id|unlock_page
+id|end_page_writeback
 c_func
 (paren
 id|page
@@ -3737,7 +3743,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode %li, attribute type 0x%x, page index &quot;
+l_string|&quot;Entering for inode 0x%lx, attribute type 0x%x, page index &quot;
 l_string|&quot;0x%lx, from = %u, to = %u.&quot;
 comma
 id|vi-&gt;i_ino
@@ -4832,7 +4838,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode %li, attribute type 0x%x, page index &quot;
+l_string|&quot;Entering for inode 0x%lx, attribute type 0x%x, page index &quot;
 l_string|&quot;0x%lx, from = %u, to = %u.&quot;
 comma
 id|vi-&gt;i_ino
@@ -5139,7 +5145,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode %li, attribute type 0x%x, page index &quot;
+l_string|&quot;Entering for inode 0x%lx, attribute type 0x%x, page index &quot;
 l_string|&quot;0x%lx, from = %u, to = %u.&quot;
 comma
 id|vi-&gt;i_ino
@@ -5380,7 +5386,7 @@ suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Entering for inode %li, attribute type 0x%x, page index &quot;
+l_string|&quot;Entering for inode 0x%lx, attribute type 0x%x, page index &quot;
 l_string|&quot;0x%lx, from = %u, to = %u.&quot;
 comma
 id|vi-&gt;i_ino
