@@ -3,9 +3,9 @@ multiline_comment|/*&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;tulip&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.1.11&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.1.12&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;Feb 08, 2002&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;Mar 07, 2002&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &quot;tulip.h&quot;
@@ -6601,8 +6601,6 @@ id|cache
 suffix:semicolon
 id|u16
 id|pci_command
-comma
-id|new_command
 suffix:semicolon
 id|u32
 id|csr0
@@ -6629,88 +6627,6 @@ id|csr0
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* check for sane cache line size. from acenic.c. */
-id|pci_read_config_byte
-c_func
-(paren
-id|pdev
-comma
-id|PCI_CACHE_LINE_SIZE
-comma
-op_amp
-id|cache
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|cache
-op_lshift
-l_int|2
-)paren
-op_ne
-id|SMP_CACHE_BYTES
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: PCI cache line size set incorrectly &quot;
-l_string|&quot;(%i bytes) by BIOS/FW, correcting to %i&bslash;n&quot;
-comma
-id|pdev-&gt;slot_name
-comma
-(paren
-id|cache
-op_lshift
-l_int|2
-)paren
-comma
-id|SMP_CACHE_BYTES
-)paren
-suffix:semicolon
-id|pci_write_config_byte
-c_func
-(paren
-id|pdev
-comma
-id|PCI_CACHE_LINE_SIZE
-comma
-id|SMP_CACHE_BYTES
-op_rshift
-l_int|2
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|5
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* read cache line size again, hardware may not have accepted&n;&t; * our cache line size change&n;&t; */
-id|pci_read_config_byte
-c_func
-(paren
-id|pdev
-comma
-id|PCI_CACHE_LINE_SIZE
-comma
-op_amp
-id|cache
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cache
-)paren
-r_goto
-id|out
-suffix:semicolon
 multiline_comment|/* if we have any cache line size at all, we can do MRM */
 id|csr0
 op_or_assign
@@ -6736,17 +6652,6 @@ op_or_assign
 id|MWI
 suffix:semicolon
 multiline_comment|/* set or disable MWI in the standard PCI command bit.&n;&t; * Check for the case where  mwi is desired but not available&n;&t; */
-id|pci_read_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_COMMAND
-comma
-op_amp
-id|pci_command
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6754,44 +6659,20 @@ id|csr0
 op_amp
 id|MWI
 )paren
-id|new_command
-op_assign
-id|pci_command
-op_or
-id|PCI_COMMAND_INVALIDATE
-suffix:semicolon
-r_else
-id|new_command
-op_assign
-id|pci_command
-op_amp
-op_complement
-id|PCI_COMMAND_INVALIDATE
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|new_command
-op_ne
-id|pci_command
-)paren
-(brace
-id|pci_write_config_word
+id|pci_set_mwi
 c_func
 (paren
 id|pdev
-comma
-id|PCI_COMMAND
-comma
-id|new_command
 )paren
 suffix:semicolon
-id|udelay
+r_else
+id|pci_clear_mwi
 c_func
 (paren
-l_int|5
+id|pdev
 )paren
 suffix:semicolon
+multiline_comment|/* read result from hardware (in case bit refused to enable) */
 id|pci_read_config_word
 c_func
 (paren
@@ -6825,6 +6706,45 @@ id|csr0
 op_and_assign
 op_complement
 id|MWI
+suffix:semicolon
+multiline_comment|/* if cache line size hardwired to zero, no MWI */
+id|pci_read_config_byte
+c_func
+(paren
+id|pdev
+comma
+id|PCI_CACHE_LINE_SIZE
+comma
+op_amp
+id|cache
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|csr0
+op_amp
+id|MWI
+)paren
+op_logical_and
+(paren
+id|cache
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+id|csr0
+op_and_assign
+op_complement
+id|MWI
+suffix:semicolon
+id|pci_clear_mwi
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* assign per-cacheline-size cache alignment and&n;&t; * burst length values&n;&t; */
@@ -6899,17 +6819,23 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-r_goto
-id|out
+id|cache
+op_assign
+l_int|0
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
-id|tp-&gt;csr0
-op_assign
-id|csr0
-suffix:semicolon
+multiline_comment|/* if we have a good cache line size, we by now have a good&n;&t; * csr0, so save it and exit&n;&t; */
+r_if
+c_cond
+(paren
+id|cache
+)paren
 r_goto
 id|out
 suffix:semicolon
+multiline_comment|/* we don&squot;t have a good csr0 or cache line size, disable MWI */
 r_if
 c_cond
 (paren
@@ -6918,19 +6844,10 @@ op_amp
 id|MWI
 )paren
 (brace
-id|pci_command
-op_and_assign
-op_complement
-id|PCI_COMMAND_INVALIDATE
-suffix:semicolon
-id|pci_write_config_word
+id|pci_clear_mwi
 c_func
 (paren
 id|pdev
-comma
-id|PCI_COMMAND
-comma
-id|pci_command
 )paren
 suffix:semicolon
 id|csr0
@@ -6939,10 +6856,9 @@ op_complement
 id|MWI
 suffix:semicolon
 )brace
-id|tp-&gt;csr0
-op_assign
+multiline_comment|/* sane defaults for burst length and cache alignment&n;&t; * originally from de4x5 driver&n;&t; */
 id|csr0
-op_or
+op_or_assign
 (paren
 l_int|8
 op_lshift
@@ -6957,6 +6873,10 @@ id|CALShift
 suffix:semicolon
 id|out
 suffix:colon
+id|tp-&gt;csr0
+op_assign
+id|csr0
+suffix:semicolon
 r_if
 c_cond
 (paren
