@@ -22,7 +22,6 @@ macro_line|#include &lt;asm/traps.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/q40_master.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 r_extern
 r_void
 id|floppy_setup
@@ -35,24 +34,6 @@ comma
 r_int
 op_star
 id|ints
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|q40kbd_translate
-c_func
-(paren
-r_int
-r_char
-id|scancode
-comma
-r_int
-r_char
-op_star
-id|keycode
-comma
-r_char
-id|raw_mode
 )paren
 suffix:semicolon
 r_extern
@@ -270,19 +251,6 @@ id|q40_set_vectors
 r_void
 )paren
 suffix:semicolon
-r_void
-id|q40_mksound
-c_func
-(paren
-r_int
-r_int
-multiline_comment|/*freq*/
-comma
-r_int
-r_int
-multiline_comment|/*ticks*/
-)paren
-suffix:semicolon
 r_extern
 r_char
 op_star
@@ -355,34 +323,6 @@ r_static
 r_int
 id|_cpleft
 suffix:semicolon
-macro_line|#if 0
-r_int
-id|q40_kbd_translate
-c_func
-(paren
-r_int
-r_char
-id|keycode
-comma
-r_int
-r_char
-op_star
-id|keycodep
-comma
-r_char
-id|raw_mode
-)paren
-(brace
-op_star
-id|keycodep
-op_assign
-id|keycode
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|q40_mem_console_write
 r_static
 r_void
@@ -500,21 +440,6 @@ suffix:semicolon
 id|q40_mem_cptr
 op_assign
 id|p
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#if 0
-r_int
-id|q40_kbdrate
-(paren
-r_struct
-id|kbd_repeat
-op_star
-id|k
-)paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -748,16 +673,6 @@ id|mach_sched_init
 op_assign
 id|q40_sched_init
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-id|mach_keyb_init
-op_assign
-id|q40kbd_init_hw
-suffix:semicolon
-id|mach_kbd_translate
-op_assign
-id|q40kbd_translate
-suffix:semicolon
-macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|q40_init_IRQ
@@ -815,16 +730,10 @@ id|mach_get_hardware_list
 op_assign
 id|q40_get_hardware_list
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-id|kd_mksound
+macro_line|#ifdef CONFIG_INPUT_M68K_BEEP
+id|mach_beep
 op_assign
 id|q40_mksound
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|mach_sysrq_key
-op_assign
-l_int|0x54
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT

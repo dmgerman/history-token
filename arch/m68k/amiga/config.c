@@ -20,7 +20,6 @@ macro_line|#include &lt;asm/amigahw.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/rtc.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|amiga_model
@@ -293,42 +292,6 @@ op_star
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* amiga specific keyboard functions */
-r_extern
-r_int
-id|amiga_keyb_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|amiga_kbdrate
-(paren
-r_struct
-id|kbd_repeat
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|amiga_kbd_translate
-c_func
-(paren
-r_int
-r_char
-id|keycode
-comma
-r_int
-r_char
-op_star
-id|keycodep
-comma
-r_char
-id|raw_mode
-)paren
-suffix:semicolon
 multiline_comment|/* amiga specific irq functions */
 r_extern
 r_void
@@ -494,20 +457,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|amiga_mksound
-c_func
-(paren
-r_int
-r_int
-id|count
-comma
-r_int
-r_int
-id|ticks
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_AMIGA_FLOPPY
 r_extern
 r_void
@@ -628,33 +577,6 @@ l_int|1
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-DECL|variable|amiga_sysrq_xlate
-r_static
-r_char
-id|amiga_sysrq_xlate
-(braket
-l_int|128
-)braket
-op_assign
-l_string|&quot;&bslash;0001234567890-=&bslash;&bslash;&bslash;000&bslash;000&quot;
-multiline_comment|/* 0x00 - 0x0f */
-l_string|&quot;qwertyuiop[]&bslash;000123&quot;
-multiline_comment|/* 0x10 - 0x1f */
-l_string|&quot;asdfghjkl;&squot;&bslash;000&bslash;000456&quot;
-multiline_comment|/* 0x20 - 0x2f */
-l_string|&quot;&bslash;000zxcvbnm,./&bslash;000+789&quot;
-multiline_comment|/* 0x30 - 0x3f */
-l_string|&quot; &bslash;177&bslash;t&bslash;r&bslash;r&bslash;000&bslash;177&bslash;000&bslash;000&bslash;000-&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
-multiline_comment|/* 0x40 - 0x4f */
-l_string|&quot;&bslash;000&bslash;201&bslash;202&bslash;203&bslash;204&bslash;205&bslash;206&bslash;207&bslash;210&bslash;211()/*+&bslash;000&quot;
-multiline_comment|/* 0x50 - 0x5f */
-l_string|&quot;&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
-multiline_comment|/* 0x60 - 0x6f */
-l_string|&quot;&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;
-suffix:semicolon
-multiline_comment|/* 0x70 - 0x7f */
-macro_line|#endif
 multiline_comment|/*&n;     *  Motherboard Resources present in all Amiga models&n;     */
 r_static
 r_struct
@@ -1758,20 +1680,6 @@ id|mach_sched_init
 op_assign
 id|amiga_sched_init
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-id|mach_keyb_init
-op_assign
-id|amiga_keyb_init
-suffix:semicolon
-id|mach_kbdrate
-op_assign
-id|amiga_kbdrate
-suffix:semicolon
-id|mach_kbd_translate
-op_assign
-id|amiga_kbd_translate
-suffix:semicolon
-macro_line|#endif
 id|mach_init_IRQ
 op_assign
 id|amiga_init_IRQ
@@ -1890,35 +1798,10 @@ op_amp
 id|dummy_con
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_VT
-id|kd_mksound
+macro_line|#ifdef CONFIG_INPUT_M68K_BEEP
+id|mach_beep
 op_assign
 id|amiga_mksound
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|SYSRQ_KEY
-op_assign
-l_int|0xff
-suffix:semicolon
-id|mach_sysrq_key
-op_assign
-l_int|0x5f
-suffix:semicolon
-multiline_comment|/* HELP */
-id|mach_sysrq_shift_state
-op_assign
-l_int|0x03
-suffix:semicolon
-multiline_comment|/* SHIFT+ALTGR */
-id|mach_sysrq_shift_mask
-op_assign
-l_int|0xff
-suffix:semicolon
-multiline_comment|/* all modifiers except CapsLock */
-id|mach_sysrq_xlate
-op_assign
-id|amiga_sysrq_xlate
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT
@@ -3210,7 +3093,7 @@ op_logical_and
 id|jmp_addr_label
 )paren
 suffix:semicolon
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
