@@ -2966,7 +2966,7 @@ op_amp
 id|adapter-&gt;stats.ruc
 )paren
 suffix:semicolon
-multiline_comment|/* The 82542 does not have an alignment error count register */
+multiline_comment|/* The 82542 does not have some of these stats */
 r_if
 c_cond
 (paren
@@ -2982,6 +2982,24 @@ l_string|&quot;Rx_Align_Errors&quot;
 comma
 op_amp
 id|adapter-&gt;stats.algnerrc
+)paren
+suffix:semicolon
+id|LIST_ADD_U
+c_func
+(paren
+l_string|&quot;Tx_TCP_Seg_Good&quot;
+comma
+op_amp
+id|adapter-&gt;stats.tsctc
+)paren
+suffix:semicolon
+id|LIST_ADD_U
+c_func
+(paren
+l_string|&quot;Tx_TCP_Seg_Failed&quot;
+comma
+op_amp
+id|adapter-&gt;stats.tsctfc
 )paren
 suffix:semicolon
 )brace

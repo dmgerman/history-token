@@ -34,6 +34,7 @@ macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
+macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
 DECL|macro|BAR_0
