@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Implementation of the diskquota system for the LINUX operating&n; * system. QUOTA is implemented using the BSD system call interface as&n; * the means of communication with the user level. Currently only the&n; * ext2 filesystem has support for disk quotas. Other filesystems may&n; * be added in the future. This file contains the generic routines&n; * called by the different filesystems on allocation of an inode or&n; * block. These routines take care of the administration needed to&n; * have a consistent diskquota tracking system. The ideas of both&n; * user and group quotas are based on the Melbourne quota system as&n; * used on BSD derived systems. The internal implementation is &n; * based on one of the several variants of the LINUX inode-subsystem&n; * with added complexity of the diskquota system.&n; * &n; * Version: $Id: dquot.c,v 6.3 1996/11/17 18:35:34 mvw Exp mvw $&n; * &n; * Author:&t;Marco van Wieringen &lt;mvw@planets.elm.net&gt;&n; *&n; * Fixes:   Dmitry Gorodchanin &lt;pgmdsg@ibi.com&gt;, 11 Feb 96&n; *&n; *&t;&t;Revised list management to avoid races&n; *&t;&t;-- Bill Hawes, &lt;whawes@star.net&gt;, 9/98&n; *&n; *&t;&t;Fixed races in dquot_transfer(), dqget() and dquot_alloc_...().&n; *&t;&t;As the consequence the locking was moved from dquot_decr_...(),&n; *&t;&t;dquot_incr_...() to calling functions.&n; *&t;&t;invalidate_dquots() now writes modified dquots.&n; *&t;&t;Serialized quota_off() and quota_on() for mount point.&n; *&t;&t;Fixed a few bugs in grow_dquots().&n; *&t;&t;Fixed deadlock in write_dquot() - we no longer account quotas on&n; *&t;&t;quota files&n; *&t;&t;remove_dquot_ref() moved to inode.c - it now traverses through inodes&n; *&t;&t;add_dquot_ref() restarts after blocking&n; *&t;&t;Added check for bogus uid and fixed check for group in quotactl.&n; *&t;&t;Jan Kara, &lt;jack@suse.cz&gt;, sponsored by SuSE CR, 10-11/99&n; *&n; *&t;&t;Used struct list_head instead of own list struct&n; *&t;&t;Invalidation of referenced dquots is no longer possible&n; *&t;&t;Improved free_dquots list management&n; *&t;&t;Quota and i_blocks are now updated in one place to avoid races&n; *&t;&t;Warnings are now delayed so we won&squot;t block in critical section&n; *&t;&t;Write updated not to require dquot lock&n; *&t;&t;Jan Kara, &lt;jack@suse.cz&gt;, 9/2000&n; *&n; *&t;&t;Added dynamic quota structure allocation&n; *&t;&t;Jan Kara &lt;jack@suse.cz&gt; 12/2000&n; *&n; * (C) Copyright 1994 - 1997 Marco van Wieringen &n; */
+multiline_comment|/*&n; * Implementation of the diskquota system for the LINUX operating&n; * system. QUOTA is implemented using the BSD system call interface as&n; * the means of communication with the user level. Currently only the&n; * ext2 filesystem has support for disk quotas. Other filesystems may&n; * be added in the future. This file contains the generic routines&n; * called by the different filesystems on allocation of an inode or&n; * block. These routines take care of the administration needed to&n; * have a consistent diskquota tracking system. The ideas of both&n; * user and group quotas are based on the Melbourne quota system as&n; * used on BSD derived systems. The internal implementation is &n; * based on one of the several variants of the LINUX inode-subsystem&n; * with added complexity of the diskquota system.&n; * &n; * Version: $Id: dquot.c,v 6.3 1996/11/17 18:35:34 mvw Exp mvw $&n; * &n; * Author:&t;Marco van Wieringen &lt;mvw@planets.elm.net&gt;&n; *&n; * Fixes:   Dmitry Gorodchanin &lt;pgmdsg@ibi.com&gt;, 11 Feb 96&n; *&n; *&t;&t;Revised list management to avoid races&n; *&t;&t;-- Bill Hawes, &lt;whawes@star.net&gt;, 9/98&n; *&n; *&t;&t;Fixed races in dquot_transfer(), dqget() and dquot_alloc_...().&n; *&t;&t;As the consequence the locking was moved from dquot_decr_...(),&n; *&t;&t;dquot_incr_...() to calling functions.&n; *&t;&t;invalidate_dquots() now writes modified dquots.&n; *&t;&t;Serialized quota_off() and quota_on() for mount point.&n; *&t;&t;Fixed a few bugs in grow_dquots().&n; *&t;&t;Fixed deadlock in write_dquot() - we no longer account quotas on&n; *&t;&t;quota files&n; *&t;&t;remove_dquot_ref() moved to inode.c - it now traverses through inodes&n; *&t;&t;add_dquot_ref() restarts after blocking&n; *&t;&t;Added check for bogus uid and fixed check for group in quotactl.&n; *&t;&t;Jan Kara, &lt;jack@suse.cz&gt;, sponsored by SuSE CR, 10-11/99&n; *&n; *&t;&t;Used struct list_head instead of own list struct&n; *&t;&t;Invalidation of referenced dquots is no longer possible&n; *&t;&t;Improved free_dquots list management&n; *&t;&t;Quota and i_blocks are now updated in one place to avoid races&n; *&t;&t;Warnings are now delayed so we won&squot;t block in critical section&n; *&t;&t;Write updated not to require dquot lock&n; *&t;&t;Jan Kara, &lt;jack@suse.cz&gt;, 9/2000&n; *&n; *&t;&t;Added dynamic quota structure allocation&n; *&t;&t;Jan Kara &lt;jack@suse.cz&gt; 12/2000&n; *&n; *&t;&t;Rewritten quota interface. Implemented new quota format and&n; *&t;&t;formats registering.&n; *&t;&t;Jan Kara, &lt;jack@suse.cz&gt;, 2001,2002&n; *&n; * (C) Copyright 1994 - 1997 Marco van Wieringen &n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -5951,7 +5951,7 @@ id|fmt
 )paren
 r_return
 op_minus
-id|EINVAL
+id|ESRCH
 suffix:semicolon
 r_if
 c_cond
@@ -6676,9 +6676,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Generic routine for getting common part of quota file information */
-DECL|function|vfs_get_info
+DECL|function|vfs_get_dqinfo
 r_int
-id|vfs_get_info
+id|vfs_get_dqinfo
 c_func
 (paren
 r_struct
@@ -6733,9 +6733,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Generic routine for setting common part of quota file information */
-DECL|function|vfs_set_info
+DECL|function|vfs_set_dqinfo
 r_int
-id|vfs_set_info
+id|vfs_set_dqinfo
 c_func
 (paren
 r_struct
@@ -6841,11 +6841,11 @@ id|vfs_quota_sync
 comma
 id|get_info
 suffix:colon
-id|vfs_get_info
+id|vfs_get_dqinfo
 comma
 id|set_info
 suffix:colon
-id|vfs_set_info
+id|vfs_set_dqinfo
 comma
 id|get_dqblk
 suffix:colon
