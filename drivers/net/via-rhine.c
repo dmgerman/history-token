@@ -8180,6 +8180,19 @@ id|ioaddr
 op_assign
 id|rp-&gt;base
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|rp-&gt;quirks
+op_amp
+id|rqWOL
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Nothing to do for non-WOL adapters */
 id|rhine_power_init
 c_func
 (paren
