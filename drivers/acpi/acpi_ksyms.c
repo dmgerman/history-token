@@ -572,6 +572,27 @@ c_func
 id|acpi_bus_unregister_driver
 )paren
 suffix:semicolon
+DECL|variable|acpi_bus_scan
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_scan
+)paren
+suffix:semicolon
+DECL|variable|acpi_bus_trim
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_trim
+)paren
+suffix:semicolon
+DECL|variable|acpi_bus_add
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_add
+)paren
+suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_BUS*/
 multiline_comment|/* ACPI PCI Driver (pci_irq.c) */
 macro_line|#ifdef CONFIG_ACPI_PCI
