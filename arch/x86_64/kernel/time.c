@@ -696,6 +696,10 @@ id|hpet.last_tsc
 op_assign
 id|t
 suffix:semicolon
+id|timeoffset
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do the timer stuff.&n; */
 id|do_timer
