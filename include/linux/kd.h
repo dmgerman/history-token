@@ -374,6 +374,34 @@ suffix:semicolon
 DECL|member|data
 r_int
 r_char
+id|__user
+op_star
+id|data
+suffix:semicolon
+multiline_comment|/* font data with height fixed to 32 */
+)brace
+suffix:semicolon
+DECL|struct|console_font
+r_struct
+id|console_font
+(brace
+DECL|member|width
+DECL|member|height
+r_int
+r_int
+id|width
+comma
+id|height
+suffix:semicolon
+multiline_comment|/* font size */
+DECL|member|charcount
+r_int
+r_int
+id|charcount
+suffix:semicolon
+DECL|member|data
+r_int
+r_char
 op_star
 id|data
 suffix:semicolon

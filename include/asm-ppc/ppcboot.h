@@ -190,6 +190,14 @@ id|bi_immr_base
 suffix:semicolon
 multiline_comment|/* base of IMMR register */
 macro_line|#endif
+macro_line|#if defined(CONFIG_PPC_MPC52xx)
+DECL|member|bi_mbar_base
+r_int
+r_int
+id|bi_mbar_base
+suffix:semicolon
+multiline_comment|/* base of internal registers */
+macro_line|#endif
 DECL|member|bi_bootflags
 r_int
 r_int
@@ -254,6 +262,20 @@ r_int
 id|bi_vco
 suffix:semicolon
 multiline_comment|/* VCO Out from PLL, in MHz */
+macro_line|#endif
+macro_line|#if defined(CONFIG_PPC_MPC52xx)
+DECL|member|bi_ipbfreq
+r_int
+r_int
+id|bi_ipbfreq
+suffix:semicolon
+multiline_comment|/* IPB Bus Freq, in MHz */
+DECL|member|bi_pcifreq
+r_int
+r_int
+id|bi_pcifreq
+suffix:semicolon
+multiline_comment|/* PCI Bus Freq, in MHz */
 macro_line|#endif
 DECL|member|bi_baudrate
 r_int

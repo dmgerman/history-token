@@ -1196,8 +1196,6 @@ c_func
 op_amp
 id|fbi-&gt;fb.cmap
 comma
-l_int|1
-comma
 id|info
 )paren
 suffix:semicolon

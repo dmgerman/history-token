@@ -1156,7 +1156,7 @@ comma
 id|isroot
 ques
 c_cond
-l_string|&quot;propgating&quot;
+l_string|&quot;propagating&quot;
 suffix:colon
 l_string|&quot;sending tcn bpdu&quot;
 )paren

@@ -161,7 +161,6 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_struct
 id|lec_arp_table
 op_star
@@ -180,7 +179,6 @@ id|mac_addr
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|lec_arp_remove
 c_func
@@ -6862,7 +6860,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Remove entry from lec_arp_table&n; */
 r_static
-r_inline
 r_int
 DECL|function|lec_arp_remove
 id|lec_arp_remove
@@ -8422,7 +8419,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Find entry by mac_address&n; */
 r_static
-r_inline
 r_struct
 id|lec_arp_table
 op_star

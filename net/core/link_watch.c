@@ -270,17 +270,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|rtnl_exlock
-c_func
-(paren
-)paren
-suffix:semicolon
 id|linkwatch_run_queue
-c_func
-(paren
-)paren
-suffix:semicolon
-id|rtnl_exunlock
 c_func
 (paren
 )paren

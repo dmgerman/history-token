@@ -1,8 +1,8 @@
 multiline_comment|/*&n; * A collection of structures, addresses, and values associated with&n; * the Embedded Planet RPX6 (or RPX Super) MPC8260 board.&n; * Copied from the RPX-Classic and SBS8260 stuff.&n; *&n; * Copyright (c) 2001 Dan Malek &lt;dan@embeddededge.com&gt;&n; */
 macro_line|#ifdef __KERNEL__
-macro_line|#ifndef __ASM_PLATFORMS_RPXSUPER_H__
-DECL|macro|__ASM_PLATFORMS_RPXSUPER_H__
-mdefine_line|#define __ASM_PLATFORMS_RPXSUPER_H__
+macro_line|#ifndef __ASM_PLATFORMS_RPX8260_H__
+DECL|macro|__ASM_PLATFORMS_RPX8260_H__
+mdefine_line|#define __ASM_PLATFORMS_RPX8260_H__
 multiline_comment|/* A Board Information structure that is given to a program when&n; * prom starts it up.&n; */
 DECL|struct|bd_info
 r_typedef
@@ -143,11 +143,13 @@ mdefine_line|#define BCSR4_MII_READ&t;&t;((u_char)0x04)
 DECL|macro|BCSR4_MII_MDC
 mdefine_line|#define BCSR4_MII_MDC&t;&t;((u_char)0x02)
 DECL|macro|BCSR4_MII_MDIO
-mdefine_line|#define BCSR4_MII_MDIO&t;&t;((u_char)0x02)
+mdefine_line|#define BCSR4_MII_MDIO&t;&t;((u_char)0x01)
 DECL|macro|BCSR13_FETH_IRQMASK
 mdefine_line|#define BCSR13_FETH_IRQMASK&t;((u_char)0xf0)
 DECL|macro|BCSR15_FETH_IRQ
 mdefine_line|#define BCSR15_FETH_IRQ&t;&t;((u_char)0x20)
-macro_line|#endif /* __ASM_PLATFORMS_RPXSUPER_H__ */
+DECL|macro|PHY_INTERRUPT
+mdefine_line|#define PHY_INTERRUPT&t;SIU_INT_IRQ7
+macro_line|#endif /* __ASM_PLATFORMS_RPX8260_H__ */
 macro_line|#endif /* __KERNEL__ */
 eof

@@ -242,7 +242,7 @@ l_int|9600
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MBX */
-macro_line|#if defined(CONFIG_RPXLITE) || defined(CONFIG_RPXCLASSIC) || &bslash;&n;&t;defined(CONFIG_RPX6) || defined(CONFIG_EP405)
+macro_line|#if defined(CONFIG_RPXLITE) || defined(CONFIG_RPXCLASSIC) || &bslash;&n;&t;defined(CONFIG_RPX8260) || defined(CONFIG_EP405)
 multiline_comment|/* Helper functions for Embedded Planet boards.&n;*/
 multiline_comment|/* Because I didn&squot;t find anything that would do this.......&n;*/
 id|u_char
@@ -447,7 +447,7 @@ l_int|2
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_RPX6
+macro_line|#ifdef CONFIG_RPX8260
 r_static
 id|uint
 DECL|function|rpx_baseten
@@ -2001,7 +2001,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* SBS8260 */
-macro_line|#ifdef CONFIG_RPX6
+macro_line|#ifdef CONFIG_RPX8260
 r_void
 DECL|function|embed_config
 id|embed_config

@@ -22,9 +22,8 @@ DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(lock)&t;(*((volatile unsigned char *)(lock)) != 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(lock)&t;&bslash;&n;do {&t;membar(&quot;#LoadLoad&quot;);&t;&bslash;&n;} while(*((volatile unsigned char *)lock))
-DECL|function|_raw_spin_lock
-r_static
-id|__inline__
+multiline_comment|/* arch/sparc64/lib/spinlock.S */
+r_extern
 r_void
 id|_raw_spin_lock
 c_func
@@ -33,34 +32,7 @@ id|spinlock_t
 op_star
 id|lock
 )paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;1:&t;ldstub&t;&t;[%0], %%g7&bslash;n&quot;
-l_string|&quot;&t;brnz,pn&t;&t;%%g7, 2f&bslash;n&quot;
-l_string|&quot;&t; membar&t;&t;#StoreLoad | #StoreStore&bslash;n&quot;
-l_string|&quot;&t;.subsection&t;2&bslash;n&quot;
-l_string|&quot;2:&t;ldub&t;&t;[%0], %%g7&bslash;n&quot;
-l_string|&quot;&t;brnz,pt&t;&t;%%g7, 2b&bslash;n&quot;
-l_string|&quot;&t; membar&t;&t;#LoadLoad&bslash;n&quot;
-l_string|&quot;&t;b,a,pt&t;&t;%%xcc, 1b&bslash;n&quot;
-l_string|&quot;&t;.previous&bslash;n&quot;
-suffix:colon
-multiline_comment|/* no outputs */
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-id|lock
-)paren
-suffix:colon
-l_string|&quot;g7&quot;
-comma
-l_string|&quot;memory&quot;
-)paren
 suffix:semicolon
-)brace
 DECL|function|_raw_spin_trylock
 r_static
 id|__inline__

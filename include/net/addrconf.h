@@ -820,9 +820,9 @@ id|ifp
 suffix:semicolon
 )brace
 DECL|macro|__in6_ifa_put
-mdefine_line|#define __in6_ifa_put(idev)  atomic_dec(&amp;(idev)-&gt;refcnt)
+mdefine_line|#define __in6_ifa_put(ifp)&t;atomic_dec(&amp;(ifp)-&gt;refcnt)
 DECL|macro|in6_ifa_hold
-mdefine_line|#define in6_ifa_hold(idev)   atomic_inc(&amp;(idev)-&gt;refcnt)
+mdefine_line|#define in6_ifa_hold(ifp)&t;atomic_inc(&amp;(ifp)-&gt;refcnt)
 r_extern
 r_void
 id|addrconf_forwarding_on

@@ -693,6 +693,13 @@ id|__write_trylock
 )paren
 suffix:semicolon
 multiline_comment|/* Out of line spin-locking implementation. */
+DECL|variable|_raw_spin_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_raw_spin_lock
+)paren
+suffix:semicolon
 DECL|variable|_raw_spin_lock_flags
 id|EXPORT_SYMBOL
 c_func
@@ -1727,13 +1734,6 @@ id|sys_close
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Special internal versions of library functions. */
-DECL|variable|__memcpy
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__memcpy
-)paren
-suffix:semicolon
 DECL|variable|__memset
 id|EXPORT_SYMBOL
 c_func

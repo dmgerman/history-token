@@ -14,8 +14,8 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_SBS8260
 macro_line|#include &lt;platforms/sbs8260.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_RPX6
-macro_line|#include &lt;platforms/rpxsuper.h&gt;
+macro_line|#ifdef CONFIG_RPX8260
+macro_line|#include &lt;platforms/rpx8260.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_WILLOW
 macro_line|#include &lt;platforms/willow.h&gt;

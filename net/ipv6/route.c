@@ -2700,7 +2700,6 @@ suffix:semicolon
 )brace
 DECL|function|ipv6_advmss
 r_static
-r_inline
 r_int
 r_int
 id|ipv6_advmss
