@@ -1142,6 +1142,10 @@ c_cond
 id|cpu_model
 op_eq
 id|CPU_SAMUEL
+op_logical_or
+id|cpu_model
+op_eq
+id|CPU_SAMUEL2
 )paren
 id|fsb
 op_assign
