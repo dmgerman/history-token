@@ -232,12 +232,12 @@ id|ir_router_node
 id|IPX_NODE_LEN
 )braket
 suffix:semicolon
-DECL|member|ir_next
+DECL|member|node
 r_struct
-id|ipx_route
-op_star
-id|ir_next
+id|list_head
+id|node
 suffix:semicolon
+multiline_comment|/* node in ipx_routes list */
 DECL|member|refcnt
 id|atomic_t
 id|refcnt
@@ -331,8 +331,7 @@ DECL|macro|IPX_MAX_EPHEMERAL_SOCKET
 mdefine_line|#define IPX_MAX_EPHEMERAL_SOCKET&t;0x7fff
 r_extern
 r_struct
-id|ipx_route
-op_star
+id|list_head
 id|ipx_routes
 suffix:semicolon
 r_extern
