@@ -5,7 +5,7 @@ DECL|macro|__REGS_H8306x__
 mdefine_line|#define __REGS_H8306x__ 
 macro_line|#if defined(__KERNEL__)
 DECL|macro|DASTCR
-mdefine_line|#define DASTCR *(volatile unsigned char *)0xFEE01A
+mdefine_line|#define DASTCR 0xFEE01A
 DECL|macro|DADR0
 mdefine_line|#define DADR0  0xFEE09C
 DECL|macro|DADR1

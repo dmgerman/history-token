@@ -1,6 +1,9 @@
 multiline_comment|/* AE-3068 (aka. aki3068net) RTL8019AS Config */
+macro_line|#ifndef __H8300_AKI3068NET_NE__
+DECL|macro|__H8300_AKI3068NET_NE__
+mdefine_line|#define __H8300_AKI3068NET_NE__
 DECL|macro|NE2000_ADDR
-mdefine_line|#define NE2000_ADDR&t;&t;CONFIG_NE_BASE
+mdefine_line|#define NE2000_ADDR&t;&t;0x200000
 DECL|macro|NE2000_IRQ
 mdefine_line|#define NE2000_IRQ              5
 DECL|macro|NE2000_IRQ_VECTOR
@@ -27,4 +30,5 @@ DECL|macro|DTCR0B
 mdefine_line|#define DTCR0B                  0xffff2f
 DECL|macro|H8300_INIT_NE
 mdefine_line|#define H8300_INIT_NE()                  &bslash;&n;do {                                     &bslash;&n;&t;wordlength = 1;                  &bslash;&n;        outb_p(0x48, ioaddr + EN0_DCFG); &bslash;&n;} while(0)
+macro_line|#endif
 eof

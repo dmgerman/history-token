@@ -105,10 +105,10 @@ id|__asm__
 c_func
 (paren
 l_string|&quot;mov.l %0,er0&bslash;n&bslash;t&quot;
-l_string|&quot;sub.w r1,r1&bslash;n&bslash;t&quot;
 l_string|&quot;add.w e0,r0&bslash;n&bslash;t&quot;
-l_string|&quot;addx #0,r1l&bslash;n&bslash;t&quot;
-l_string|&quot;add.w r1,r0&bslash;n&bslash;t&quot;
+l_string|&quot;xor.w e0,e0&bslash;n&bslash;t&quot;
+l_string|&quot;rotxl.w e0&bslash;n&bslash;t&quot;
+l_string|&quot;add.w e0,r0&bslash;n&bslash;t&quot;
 l_string|&quot;sub.w e0,e0&bslash;n&bslash;t&quot;
 l_string|&quot;mov.l er0,%0&quot;
 suffix:colon
@@ -123,8 +123,6 @@ id|sum
 )paren
 suffix:colon
 l_string|&quot;er0&quot;
-comma
-l_string|&quot;er1&quot;
 )paren
 suffix:semicolon
 r_return

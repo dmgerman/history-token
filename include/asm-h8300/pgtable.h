@@ -24,6 +24,12 @@ DECL|macro|kern_addr_valid
 mdefine_line|#define kern_addr_valid(addr)&t;(1)
 DECL|macro|pmd_offset
 mdefine_line|#define&t;pmd_offset(a, b)&t;((void *)0)
+DECL|macro|pmd_none
+mdefine_line|#define pmd_none(pmd)           (1)
+DECL|macro|pgd_offset_k
+mdefine_line|#define pgd_offset_k(adrdress)  ((pgd_t *)0)
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(dir, address) ((pte_t *)0)
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;&t;__pgprot(0)    /* these mean nothing to NO_MM */
 DECL|macro|PAGE_SHARED
@@ -54,6 +60,21 @@ DECL|macro|__pte_to_swp_entry
 mdefine_line|#define __pte_to_swp_entry(pte)&t;((swp_entry_t) { pte_val(pte) })
 DECL|macro|__swp_entry_to_pte
 mdefine_line|#define __swp_entry_to_pte(x)&t;((pte_t) { (x).val })
+DECL|function|pte_file
+r_static
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * ZERO_PAGE is a global shared page that is always zero: used&n; * for zero-mapped memory areas etc..&n; */
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr)&t;(virt_to_page(0))
@@ -84,5 +105,15 @@ DECL|macro|pgtable_cache_init
 mdefine_line|#define pgtable_cache_init()   do { } while (0)
 DECL|macro|io_remap_page_range
 mdefine_line|#define io_remap_page_range&t;remap_page_range
+multiline_comment|/*&n; * All 32bit addresses are effectively valid for vmalloc...&n; * Sort of meaningless for non-VM targets.&n; */
+DECL|macro|VMALLOC_START
+mdefine_line|#define&t;VMALLOC_START&t;0
+DECL|macro|VMALLOC_END
+mdefine_line|#define&t;VMALLOC_END&t;0xffffffff
+multiline_comment|/*&n; * All 32bit addresses are effectively valid for vmalloc...&n; * Sort of meaningless for non-VM targets.&n; */
+DECL|macro|VMALLOC_START
+mdefine_line|#define&t;VMALLOC_START&t;0
+DECL|macro|VMALLOC_END
+mdefine_line|#define&t;VMALLOC_END&t;0xffffffff
 macro_line|#endif /* _H8300_PGTABLE_H */
 eof

@@ -17,16 +17,18 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last) { &bslash;&n;  void *_last;&t;&t;&t;&t;&t;&t;&t;&t;        &bslash;&n;  __asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;  &t;&t;&t;&quot;mov.l&t;%1, er0&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;mov.l&t;%2, er1&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&quot;jsr @_resume&quot;                                          &bslash;&n;&t;&t;       : &quot;=r&quot; (_last)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;       : &quot;r&quot; (&amp;(prev-&gt;thread)),&t;&t;&t;&t;        &bslash;&n;&t;&t;&t; &quot;r&quot; (&amp;(next-&gt;thread))&t;&t;&t;&t;        &bslash;&n;&t;&t;       : &quot;cc&quot;, &quot;er0&quot;, &quot;er1&quot;, &quot;er2&quot;, &quot;er3&quot;);&t;                &bslash;&n;  (last) = _last; &t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define switch_to(prev,next,last) {                         &bslash;&n;  void *_last;&t;&t;&t;&t;&t;&t;    &bslash;&n;  __asm__ __volatile__(&t;&t;&t;&t;&t;    &bslash;&n;  &t;&t;&t;&quot;mov.l&t;%1, er0&bslash;n&bslash;t&quot;&t;&t;    &bslash;&n;&t;&t;&t;&quot;mov.l&t;%2, er1&bslash;n&bslash;t&quot;&t;&t;    &bslash;&n;                        &quot;mov.l  %3, er2&bslash;n&bslash;t&quot;                &bslash;&n;&t;&t;&t;&quot;jsr @_resume&bslash;n&bslash;t&quot;                  &bslash;&n;                        &quot;mov.l  er2,%0&bslash;n&bslash;t&quot;                 &bslash;&n;&t;&t;       : &quot;=r&quot; (_last)&t;&t;&t;    &bslash;&n;&t;&t;       : &quot;r&quot; (&amp;(prev-&gt;thread)),&t;&t;    &bslash;&n;&t;&t;&t; &quot;r&quot; (&amp;(next-&gt;thread)),&t;&t;    &bslash;&n;                         &quot;g&quot; (prev)                         &bslash;&n;&t;&t;       : &quot;cc&quot;, &quot;er0&quot;, &quot;er1&quot;, &quot;er2&quot;, &quot;er3&quot;); &bslash;&n;  (last) = _last; &t;&t;&t;&t;&t;    &bslash;&n;}
 macro_line|#if defined(__H8300H__)
 DECL|macro|__sti
 mdefine_line|#define __sti() asm volatile (&quot;andc #0x7f,ccr&quot;)
 DECL|macro|__cli
 mdefine_line|#define __cli() asm volatile (&quot;orc  #0x80,ccr&quot;)
 DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x) &bslash;&n;       asm volatile (&quot;sub.l er0,er0&bslash;n&bslash;tstc ccr,r0l&bslash;n&bslash;tmov.l er0,%0&quot;:&quot;=r&quot; (x) : : &quot;er0&quot;)
+mdefine_line|#define __save_flags(x) &bslash;&n;       asm volatile (&quot;stc ccr,r0l&bslash;n&bslash;tmov.l er0,%0&quot;:&quot;=r&quot; (x) : : &quot;er0&quot;)
 DECL|macro|__restore_flags
 mdefine_line|#define __restore_flags(x) &bslash;&n;       asm volatile (&quot;mov.l %0,er0&bslash;n&bslash;tldc r0l,ccr&quot;: :&quot;r&quot; (x) : &quot;er0&quot;)
+DECL|macro|irqs_disabled
+mdefine_line|#define&t;irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;__save_flags(flags);&t;        &bslash;&n;&t;((flags &amp; 0x80) == 0x80);&t;&bslash;&n;})
 macro_line|#endif
 macro_line|#if defined(__H8300S__)
 DECL|macro|__sti
@@ -34,26 +36,26 @@ mdefine_line|#define __sti() asm volatile (&quot;andc #0xf8,exr&quot;)
 DECL|macro|__cli
 mdefine_line|#define __cli() asm volatile (&quot;orc  #0x07,exr&quot;)
 DECL|macro|__save_flags
-mdefine_line|#define __save_flags(x) &bslash;&n;       asm volatile (&quot;sub.l er0,er0&bslash;n&bslash;tstc exr,r0l&bslash;n&bslash;tmov.l er0,%0&quot;:&quot;=r&quot; (x) : : &quot;er0&quot;)
+mdefine_line|#define __save_flags(x) &bslash;&n;       asm volatile (&quot;stc exr,r0l&bslash;n&bslash;tmov.l er0,%0&quot;:&quot;=r&quot; (x) : : &quot;er0&quot;)
 DECL|macro|__restore_flags
 mdefine_line|#define __restore_flags(x) &bslash;&n;       asm volatile (&quot;mov.l %0,er0&bslash;n&bslash;tldc r0l,exr&quot;: :&quot;r&quot; (x) : &quot;er0&quot;)
 macro_line|#endif
 DECL|macro|irqs_disabled
-mdefine_line|#define&t;irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;__save_flags(flags);&t;&bslash;&n;&t;((flags &amp; 0x80) == 0x80);&t;&bslash;&n;})
+mdefine_line|#define&t;irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;__save_flags(flags);&t;        &bslash;&n;&t;((flags &amp; 0x07) == 0x07);&t;&bslash;&n;})
 DECL|macro|iret
 mdefine_line|#define iret() __asm__ __volatile__ (&quot;rte&quot;: : :&quot;memory&quot;, &quot;sp&quot;, &quot;cc&quot;)
 multiline_comment|/* For spinlocks etc */
 DECL|macro|local_irq_disable
-mdefine_line|#define local_irq_disable()&t;asm volatile (&quot;orc  #0x80,ccr&quot;)
+mdefine_line|#define local_irq_disable()&t;__cli()
 DECL|macro|local_irq_enable
-mdefine_line|#define local_irq_enable()      asm volatile (&quot;andc #0x7f,ccr&quot;)
+mdefine_line|#define local_irq_enable()      __sti()
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x)&t;({ __save_flags(x); local_irq_disable(); })
 DECL|macro|local_irq_restore
 mdefine_line|#define local_irq_restore(x)&t;__restore_flags(x)
 DECL|macro|local_save_flags
 mdefine_line|#define local_save_flags(x)     __save_flags(x)
-multiline_comment|/*&n; * Force strict CPU ordering.&n; * Not really required on m68k...&n; */
+multiline_comment|/*&n; * Force strict CPU ordering.&n; * Not really required on H8...&n; */
 DECL|macro|nop
 mdefine_line|#define nop()  asm volatile (&quot;nop&quot;::)
 DECL|macro|mb
