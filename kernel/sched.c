@@ -9700,6 +9700,22 @@ comma
 id|line
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;in_atomic():%d, irqs_disabled():%d&bslash;n&quot;
+comma
+id|in_atomic
+c_func
+(paren
+)paren
+comma
+id|irqs_disabled
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|dump_stack
 c_func
 (paren
