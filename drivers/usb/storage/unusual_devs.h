@@ -351,6 +351,7 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
+multiline_comment|/* Not sure who reported this originally but&n; * Pavel Machek &lt;pavel@ucw.cz&gt; reported that the extra US_FL_SINGLE_LUN&n; * flag be added */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -373,6 +374,8 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
+op_or
+id|US_FL_SINGLE_LUN
 )paren
 comma
 multiline_comment|/* Reported by Peter W&#xfffd;chtler &lt;pwaechtler@loewe-komp.de&gt;&n; * The device needs the flags only.&n; */
