@@ -9,6 +9,7 @@ op_assign
 l_string|&quot;$Id: osst.c,v 1.73 2005/01/01 21:13:34 wriede Exp $&quot;
 suffix:semicolon
 DECL|variable|osst_version
+r_static
 r_const
 r_char
 op_star
@@ -447,6 +448,7 @@ op_star
 )paren
 suffix:semicolon
 DECL|variable|osst_template
+r_static
 r_struct
 id|scsi_driver
 id|osst_template
