@@ -844,6 +844,11 @@ id|F_UNLCK
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_struct
+id|lock_manager_operations
+id|nlmsvc_lock_operations
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* LINUX_LOCKD_LOCKD_H */
 eof

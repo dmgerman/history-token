@@ -192,6 +192,11 @@ id|fl_owner_t
 )paren
 id|host
 suffix:semicolon
+id|lock-&gt;fl.fl_lmops
+op_assign
+op_amp
+id|nlmsvc_lock_operations
+suffix:semicolon
 )brace
 r_return
 l_int|0
