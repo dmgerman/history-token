@@ -58,6 +58,7 @@ id|conf_expand_value
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|in
@@ -69,6 +70,7 @@ op_star
 id|sym
 suffix:semicolon
 r_const
+r_int
 r_char
 op_star
 id|src
@@ -1457,6 +1459,9 @@ l_string|&quot;%s.tmpconfig.%d&quot;
 comma
 id|dirname
 comma
+(paren
+r_int
+)paren
 id|getpid
 c_func
 (paren

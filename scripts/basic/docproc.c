@@ -65,6 +65,7 @@ r_char
 op_star
 id|file
 comma
+r_int
 r_char
 op_star
 id|line
@@ -526,6 +527,7 @@ r_char
 op_star
 id|file
 comma
+r_int
 r_char
 op_star
 id|line
@@ -566,6 +568,7 @@ r_char
 op_star
 id|file
 comma
+r_int
 r_char
 op_star
 id|line
@@ -744,10 +747,12 @@ id|fp
 )paren
 )paren
 (brace
+r_int
 r_char
 op_star
 id|p
 suffix:semicolon
+r_int
 r_char
 op_star
 id|e
@@ -1164,6 +1169,7 @@ r_char
 op_star
 id|filename
 comma
+r_int
 r_char
 op_star
 id|line
@@ -1320,6 +1326,7 @@ id|line
 id|MAXLINESZ
 )braket
 suffix:semicolon
+r_int
 r_char
 op_star
 id|s

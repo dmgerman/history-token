@@ -1898,6 +1898,7 @@ id|parse_file
 c_func
 (paren
 r_const
+r_int
 r_char
 op_star
 id|fname
@@ -1908,6 +1909,7 @@ op_star
 id|md
 )paren
 (brace
+r_int
 r_char
 op_star
 id|file
@@ -2316,6 +2318,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_int
 r_char
 op_star
 id|p
@@ -2991,6 +2994,7 @@ r_int
 id|strip_rcs_crap
 c_func
 (paren
+r_int
 r_char
 op_star
 id|version
