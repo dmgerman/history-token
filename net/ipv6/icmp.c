@@ -359,13 +359,6 @@ id|res
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|inet6_dev
-op_star
-id|idev
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* Informational messages are not limited. */
 r_if
 c_cond
@@ -399,24 +392,6 @@ comma
 id|fl
 )paren
 suffix:semicolon
-multiline_comment|/* idev reference for IP MIBs */
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-id|dst-&gt;dev
-)paren
-)paren
-id|idev
-op_assign
-id|in6_dev_get
-c_func
-(paren
-id|dst-&gt;dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -427,14 +402,6 @@ id|IP6_INC_STATS
 c_func
 (paren
 id|Ip6OutNoRoutes
-)paren
-suffix:semicolon
-id|IPV6_INC_STATS
-c_func
-(paren
-id|idev
-comma
-id|ipStatsOutNoRoutes
 )paren
 suffix:semicolon
 )brace
@@ -506,22 +473,6 @@ id|tmo
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* release the idev reference for IP MIBs */
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-id|idev
-)paren
-)paren
-id|in6_dev_put
-c_func
-(paren
-id|idev
-)paren
-suffix:semicolon
 id|dst_release
 c_func
 (paren

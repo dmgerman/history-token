@@ -415,15 +415,6 @@ comma
 id|icmpv6
 )paren
 suffix:semicolon
-id|DEFINE_SNMP_STAT
-c_func
-(paren
-r_struct
-id|ip_stats
-comma
-id|ipv6
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|inet6_dev

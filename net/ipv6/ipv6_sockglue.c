@@ -35,15 +35,6 @@ comma
 id|ipv6_statistics
 )paren
 suffix:semicolon
-id|DEFINE_SNMP_STAT
-c_func
-(paren
-r_struct
-id|ip_stats
-comma
-id|ipv6_stats
-)paren
-suffix:semicolon
 DECL|variable|ipv6_packet_type
 r_static
 r_struct
