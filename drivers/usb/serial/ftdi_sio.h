@@ -221,9 +221,6 @@ DECL|macro|FTDI_GUDEADS_E88E_PID
 mdefine_line|#define FTDI_GUDEADS_E88E_PID    0xE88E
 DECL|macro|FTDI_GUDEADS_E88F_PID
 mdefine_line|#define FTDI_GUDEADS_E88F_PID    0xE88F
-multiline_comment|/* &n; * Gude Analog- und Digitalsysteme GmbH&n; */
-DECL|macro|FTDI_GUDEADS_889_PID
-mdefine_line|#define FTDI_GUDEADS_889_PID    0xe889  /* USB RS323 OptoBridge */ 
 multiline_comment|/* Commands */
 DECL|macro|FTDI_SIO_RESET
 mdefine_line|#define FTDI_SIO_RESET &t;&t;0 /* Reset the port */
