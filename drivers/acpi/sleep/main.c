@@ -315,10 +315,10 @@ id|state
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 r_case
 id|ACPI_STATE_S2
 suffix:colon
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 r_case
 id|ACPI_STATE_S3
 suffix:colon
@@ -328,7 +328,32 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 macro_line|#endif
+r_case
+id|ACPI_STATE_S4
+suffix:colon
+id|do_suspend_lowlevel_s4bios
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|PREFIX
+l_string|&quot;don&squot;t know how to handle %d state.&bslash;n&quot;
+comma
+id|state
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -336,6 +361,13 @@ id|local_irq_restore
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;Back to C!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -365,6 +397,21 @@ id|ACPI_STATE_S5
 r_return
 id|AE_ERROR
 suffix:semicolon
+multiline_comment|/* Since we handle S4OS via a different path (swsusp), give up if no s4bios. */
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|ACPI_STATE_S4
+op_logical_and
+op_logical_neg
+id|acpi_gbl_FACS-&gt;S4bios_f
+)paren
+r_return
+id|AE_ERROR
+suffix:semicolon
+multiline_comment|/*&n;&t; * TBD: S1 can be done without device_suspend.  Make a CONFIG_XX&n;&t; * to handle however when S1 failed without device_suspend.&n;&t; */
 id|freeze_processes
 c_func
 (paren
@@ -372,6 +419,8 @@ c_func
 suffix:semicolon
 multiline_comment|/* device_suspend needs processes to be stopped */
 multiline_comment|/* do we have a wakeup address for S2 and S3? */
+multiline_comment|/* Here, we support only S4BIOS, those we set the wakeup address */
+multiline_comment|/* S4OS is only supported for now via swsusp.. */
 r_if
 c_cond
 (paren
@@ -382,6 +431,8 @@ op_logical_or
 id|state
 op_eq
 id|ACPI_STATE_S3
+op_logical_or
+id|ACPI_STATE_S4
 )paren
 (brace
 r_if
@@ -588,6 +639,30 @@ c_func
 l_string|&quot; S%d&quot;
 comma
 id|i
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|ACPI_STATE_S4
+op_logical_and
+id|acpi_gbl_FACS-&gt;S4bios_f
+)paren
+(brace
+id|sleep_states
+(braket
+id|i
+)braket
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; S4bios&quot;
 )paren
 suffix:semicolon
 )brace
