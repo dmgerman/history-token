@@ -1593,6 +1593,9 @@ c_func
 (paren
 r_int
 id|iso_packets
+comma
+r_int
+id|mem_flags
 )paren
 suffix:semicolon
 r_extern
