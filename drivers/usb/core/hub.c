@@ -6105,13 +6105,6 @@ r_return
 id|status
 suffix:semicolon
 )brace
-DECL|variable|__usb_suspend_device
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__usb_suspend_device
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * usb_suspend_device - suspend a usb device&n; * @udev: device that&squot;s no longer in active use&n; * @state: PM_SUSPEND_MEM to suspend&n; * Context: must be able to sleep; device not locked&n; *&n; * Suspends a USB device that isn&squot;t in active use, conserving power.&n; * Devices may wake out of a suspend, if anything important happens,&n; * using the remote wakeup mechanism.  They may also be taken out of&n; * suspend by the host, using usb_resume_device().  It&squot;s also routine&n; * to disconnect devices while they are suspended.&n; *&n; * Suspending OTG devices may trigger HNP, if that&squot;s been enabled&n; * between a pair of dual-role devices.  That will change roles, such&n; * as from A-Host to A-Peripheral or from B-Host back to B-Peripheral.&n; *&n; * Returns 0 on success, else negative errno.&n; */
 DECL|function|usb_suspend_device
 r_int
