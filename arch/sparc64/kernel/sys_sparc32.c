@@ -7604,7 +7604,6 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|cp_compat_stat
-r_static
 r_int
 id|cp_compat_stat
 c_func
