@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_v110.h,v 1.4.6.1 2001/09/23 22:24:32 kai Exp $&n; *&n; * Linux ISDN subsystem, V.110 related functions (linklevel).&n; *&n; * Copyright by Thomas Pfeiffer (pfeiffer@pds.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* Linux ISDN subsystem, V.110 related functions&n; *&n; * Copyright by Thomas Pfeiffer (pfeiffer@pds.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#ifndef ISDN_V110_H
 DECL|macro|ISDN_V110_H
 mdefine_line|#define ISDN_V110_H
@@ -57,17 +57,19 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|isdn_v110_stat_callback
+r_void
+id|isdn_v110_open
 c_func
 (paren
 r_struct
+id|isdn_slot
+op_star
+id|slot
+comma
+r_struct
 id|isdn_v110
 op_star
-id|v110
-comma
-id|isdn_ctrl
-op_star
+id|iv110
 )paren
 suffix:semicolon
 r_extern
@@ -75,9 +77,31 @@ r_void
 id|isdn_v110_close
 c_func
 (paren
-id|isdn_v110_stream
+r_struct
+id|isdn_slot
 op_star
-id|v
+id|slot
+comma
+r_struct
+id|isdn_v110
+op_star
+id|iv110
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|isdn_v110_bsent
+c_func
+(paren
+r_struct
+id|isdn_slot
+op_star
+id|slot
+comma
+r_struct
+id|isdn_v110
+op_star
+id|iv110
 )paren
 suffix:semicolon
 macro_line|#endif

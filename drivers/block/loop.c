@@ -1761,7 +1761,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|err
 op_logical_or
 id|bio_rw

@@ -10,6 +10,13 @@ id|l2_revision
 op_assign
 l_string|&quot;$Revision: 2.25.6.4 $&quot;
 suffix:semicolon
+DECL|variable|isdnl2_lock
+r_static
+id|spinlock_t
+id|isdnl2_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_static
 r_void
 id|l2m_debug
@@ -7046,6 +7053,7 @@ r_int
 id|p1
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -7077,15 +7085,13 @@ id|skb
 )paren
 r_return
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|isdnl2_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -7262,9 +7268,12 @@ op_mod
 l_int|8
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|isdnl2_lock
+comma
 id|flags
 )paren
 suffix:semicolon
