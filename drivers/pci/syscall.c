@@ -28,6 +28,7 @@ r_int
 id|len
 comma
 r_void
+id|__user
 op_star
 id|buf
 )paren
@@ -367,6 +368,7 @@ r_int
 id|len
 comma
 r_void
+id|__user
 op_star
 id|buf
 )paren
