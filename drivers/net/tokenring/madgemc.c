@@ -1520,12 +1520,11 @@ suffix:semicolon
 )brace
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|net_local
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* &n;&t;&t; * The MC16 is physically a 32bit card.  However, Madge&n;&t;&t; * insists on calling it 16bit, so I&squot;ll assume here that&n;&t;&t; * they know what they&squot;re talking about.  Cut off DMA&n;&t;&t; * at 16mb.&n;&t;&t; */
 id|tp-&gt;setnselout
@@ -1846,12 +1845,11 @@ id|net_local
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|net_local
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 id|reg1
 op_assign
@@ -2628,12 +2626,11 @@ id|net_local
 op_star
 id|tp
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|net_local
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
 suffix:semicolon
 r_int
 id|i
