@@ -2,6 +2,11 @@ multiline_comment|/*&n; * linux/include/asm/arch-iop3xx/iop310.h&n; *&n; * Intel
 macro_line|#ifndef _IOP310_HW_H_
 DECL|macro|_IOP310_HW_H_
 mdefine_line|#define _IOP310_HW_H_
+multiline_comment|/*&n; * This is needed for mixed drivers that need to work on all&n; * IOP3xx variants but behave slightly differently on each.&n; */
+macro_line|#ifndef __ASSEMBLY__
+DECL|macro|iop_is_310
+mdefine_line|#define iop_is_310() ((processor_id &amp; 0xffffe3f0) == 0x69052000)
+macro_line|#endif
 multiline_comment|/*&n; * IOP310 I/O and Mem space regions for PCI autoconfiguration&n; */
 DECL|macro|IOP310_PCISEC_LOWER_IO
 mdefine_line|#define IOP310_PCISEC_LOWER_IO&t;&t;0x90010000

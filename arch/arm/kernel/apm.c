@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;asm/apm.h&gt; /* apm_power_info */
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * The apm_bios device is one of the misc char devices.&n; * This is its minor number.&n; */
 DECL|macro|APM_MINOR_DEV
@@ -166,41 +167,6 @@ op_assign
 l_string|&quot;1.13&quot;
 suffix:semicolon
 multiline_comment|/* no spaces */
-multiline_comment|/*&n; * This structure gets filled in by the machine specific &squot;get_power_status&squot;&n; * implementation.  Any fields which are not set default to a safe value.&n; */
-DECL|struct|apm_power_info
-r_struct
-id|apm_power_info
-(brace
-DECL|member|ac_line_status
-r_int
-r_char
-id|ac_line_status
-suffix:semicolon
-DECL|member|battery_status
-r_int
-r_char
-id|battery_status
-suffix:semicolon
-DECL|member|battery_flag
-r_int
-r_char
-id|battery_flag
-suffix:semicolon
-DECL|member|battery_life
-r_int
-r_char
-id|battery_life
-suffix:semicolon
-DECL|member|time
-r_int
-id|time
-suffix:semicolon
-DECL|member|units
-r_int
-id|units
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Compatibility cruft until the IPAQ people move over to the new&n; * interface.&n; */
 DECL|function|__apm_get_power_status
 r_static

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/include/asm/arch-iop3xx/iop321.h&n; *&n; * Intel
 macro_line|#ifndef _IOP321_HW_H_
 DECL|macro|_IOP321_HW_H_
 mdefine_line|#define _IOP321_HW_H_
+multiline_comment|/*&n; * This is needed for mixed drivers that need to work on all&n; * IOP3xx variants but behave slightly differently on each.&n; */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|iop_is_321
 mdefine_line|#define iop_is_321() ((processor_id &amp; 0xfffff7e0) == 0x69052420)
