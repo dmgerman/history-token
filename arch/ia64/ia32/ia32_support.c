@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &quot;ia32priv.h&quot;
 r_extern
 r_void
 id|die_if_kernel
@@ -218,7 +218,7 @@ l_int|48
 )paren
 suffix:semicolon
 multiline_comment|/* GSD */
-id|task-&gt;thread.csd
+id|regs-&gt;ar_csd
 op_assign
 id|load_desc
 c_func
@@ -229,7 +229,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* CSD */
-id|task-&gt;thread.ssd
+id|regs-&gt;ar_ssd
 op_assign
 id|load_desc
 c_func
@@ -262,10 +262,6 @@ comma
 id|fir
 comma
 id|fdr
-comma
-id|csd
-comma
-id|ssd
 suffix:semicolon
 id|asm
 (paren
@@ -274,8 +270,6 @@ l_string|&quot;mov %1=ar.fsr;&quot;
 l_string|&quot;mov %2=ar.fcr;&quot;
 l_string|&quot;mov %3=ar.fir;&quot;
 l_string|&quot;mov %4=ar.fdr;&quot;
-l_string|&quot;mov %5=ar.csd;&quot;
-l_string|&quot;mov %6=ar.ssd;&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -301,16 +295,6 @@ l_string|&quot;=r&quot;
 (paren
 id|fdr
 )paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|csd
-)paren
-comma
-l_string|&quot;=r&quot;
-(paren
-id|ssd
-)paren
 )paren
 suffix:semicolon
 id|t-&gt;thread.eflag
@@ -332,14 +316,6 @@ suffix:semicolon
 id|t-&gt;thread.fdr
 op_assign
 id|fdr
-suffix:semicolon
-id|t-&gt;thread.csd
-op_assign
-id|csd
-suffix:semicolon
-id|t-&gt;thread.ssd
-op_assign
-id|ssd
 suffix:semicolon
 id|ia64_set_kr
 c_func
@@ -379,10 +355,6 @@ comma
 id|fir
 comma
 id|fdr
-comma
-id|csd
-comma
-id|ssd
 comma
 id|tssd
 suffix:semicolon
@@ -426,14 +398,6 @@ id|fdr
 op_assign
 id|t-&gt;thread.fdr
 suffix:semicolon
-id|csd
-op_assign
-id|t-&gt;thread.csd
-suffix:semicolon
-id|ssd
-op_assign
-id|t-&gt;thread.ssd
-suffix:semicolon
 id|tssd
 op_assign
 id|load_desc
@@ -455,8 +419,6 @@ l_string|&quot;mov ar.fsr=%1;&quot;
 l_string|&quot;mov ar.fcr=%2;&quot;
 l_string|&quot;mov ar.fir=%3;&quot;
 l_string|&quot;mov ar.fdr=%4;&quot;
-l_string|&quot;mov ar.csd=%5;&quot;
-l_string|&quot;mov ar.ssd=%6;&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
@@ -481,16 +443,6 @@ comma
 l_string|&quot;r&quot;
 (paren
 id|fdr
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|csd
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|ssd
 )paren
 )paren
 suffix:semicolon
@@ -893,6 +845,35 @@ op_amp
 id|siginfo
 comma
 id|current
+)paren
+suffix:semicolon
+)brace
+r_void
+DECL|function|ia32_cpu_init
+id|ia32_cpu_init
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* initialize global ia32 state - CR0 and CR4 */
+id|asm
+r_volatile
+(paren
+l_string|&quot;mov ar.cflg = %0&quot;
+op_scope_resolution
+l_string|&quot;r&quot;
+(paren
+(paren
+(paren
+id|ulong
+)paren
+id|IA32_CR4
+op_lshift
+l_int|32
+)paren
+op_or
+id|IA32_CR0
+)paren
 )paren
 suffix:semicolon
 )brace

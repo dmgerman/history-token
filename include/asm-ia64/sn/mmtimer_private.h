@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Intel Multimedia Timer device interface&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2002 Silicon Graphics, Inc.  All rights reserved.&n; *&n; * Helper file for the SN implementation of mmtimers&n; *&n; * 11/01/01 - jbarnes - initial revision&n; */
+multiline_comment|/*&n; * Intel Multimedia Timer device interface&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2001-2003 Silicon Graphics, Inc.  All rights reserved.&n; *&n; * Helper file for the SN implementation of mmtimers&n; *&n; * 11/01/01 - jbarnes - initial revision&n; */
 macro_line|#ifndef _SN_MMTIMER_PRIVATE_H
 DECL|macro|RTC_BITS
 mdefine_line|#define RTC_BITS 55 /* 55 bits for this implementation */

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992 - 1997, 2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -11,15 +11,6 @@ macro_line|#include &lt;asm/sn/pci/bridge.h&gt;
 macro_line|#include &lt;asm/sn/ioerror_handling.h&gt;
 macro_line|#include &lt;asm/sn/pci/pciio.h&gt;
 macro_line|#include &lt;asm/sn/slotnum.h&gt;
-DECL|variable|Is_pic_on_this_nasid
-r_int
-r_char
-id|Is_pic_on_this_nasid
-(braket
-l_int|512
-)braket
-suffix:semicolon
-multiline_comment|/* non-0 when this is a pic shub */
 r_void
 op_star
 DECL|function|snia_kmem_zalloc
@@ -80,24 +71,6 @@ c_func
 (paren
 id|ptr
 )paren
-suffix:semicolon
-)brace
-r_int
-DECL|function|nic_vertex_info_match
-id|nic_vertex_info_match
-c_func
-(paren
-id|devfs_handle_t
-id|v
-comma
-r_char
-op_star
-id|s
-)paren
-(brace
-multiline_comment|/* we don&squot;t support this */
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * the alloc/free_node routines do a simple kmalloc for now ..&n; */
@@ -398,139 +371,6 @@ suffix:colon
 op_minus
 id|n
 )paren
-suffix:semicolon
-)brace
-r_char
-op_star
-DECL|function|strtok_r
-id|strtok_r
-c_func
-(paren
-r_char
-op_star
-id|string
-comma
-r_const
-r_char
-op_star
-id|sepset
-comma
-r_char
-op_star
-op_star
-id|lasts
-)paren
-(brace
-r_register
-r_char
-op_star
-id|q
-comma
-op_star
-id|r
-suffix:semicolon
-multiline_comment|/*first or subsequent call*/
-r_if
-c_cond
-(paren
-id|string
-op_eq
-l_int|NULL
-)paren
-id|string
-op_assign
-op_star
-id|lasts
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|string
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/* return if no tokens remaining */
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-id|q
-op_assign
-id|string
-op_plus
-id|strspn
-c_func
-(paren
-id|string
-comma
-id|sepset
-)paren
-suffix:semicolon
-multiline_comment|/* skip leading separators */
-r_if
-c_cond
-(paren
-op_star
-id|q
-op_eq
-l_char|&squot;&bslash;0&squot;
-)paren
-(brace
-multiline_comment|/* return if no tokens remaining */
-op_star
-id|lasts
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* indicate this is last token */
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|r
-op_assign
-id|strpbrk
-c_func
-(paren
-id|q
-comma
-id|sepset
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-multiline_comment|/* move past token */
-op_star
-id|lasts
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* indicate this is last token */
-r_else
-(brace
-op_star
-id|r
-op_assign
-l_char|&squot;&bslash;0&squot;
-suffix:semicolon
-op_star
-id|lasts
-op_assign
-id|r
-op_plus
-l_int|1
-suffix:semicolon
-)brace
-r_return
-id|q
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * print_register() allows formatted printing of bit fields.  individual&n; * bit fields are described by a struct reg_desc, multiple bit fields within&n; * a single word can be described by multiple reg_desc structures.&n; * %r outputs a string of the format &quot;&lt;bit field descriptions&gt;&quot;&n; * %R outputs a string of the format &quot;0x%x&lt;bit field descriptions&gt;&quot;&n; *&n; * The fields in a reg_desc are:&n; *&t;unsigned long long rd_mask; An appropriate mask to isolate the bit field&n; *&t;&t;&t;&t;within a word, and&squot;ed with val&n; *&n; *&t;int rd_shift;&t;&t;A shift amount to be done to the isolated&n; *&t;&t;&t;&t;bit field.  done before printing the isolate&n; *&t;&t;&t;&t;bit field with rd_format and before searching&n; *&t;&t;&t;&t;for symbolic value names in rd_values&n; *&n; *&t;char *rd_name;&t;&t;If non-null, a bit field name to label any&n; *&t;&t;&t;&t;out from rd_format or searching rd_values.&n; *&t;&t;&t;&t;if neither rd_format or rd_values is non-null&n; *&t;&t;&t;&t;rd_name is printed only if the isolated&n; *&t;&t;&t;&t;bit field is non-null.&n; *&n; *&t;char *rd_format;&t;If non-null, the shifted bit field value&n; *&t;&t;&t;&t;is printed using this format.&n; *&n; *&t;struct reg_values *rd_values;&t;If non-null, a pointer to a table&n; *&t;&t;&t;&t;matching numeric values with symbolic names.&n; *&t;&t;&t;&t;rd_values are searched and the symbolic&n; *&t;&t;&t;&t;value is printed if a match is found, if no&n; *&t;&t;&t;&t;match is found &quot;???&quot; is printed.&n; *&t;&t;&t;&t;&n; */

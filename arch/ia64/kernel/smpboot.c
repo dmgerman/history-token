@@ -1461,11 +1461,6 @@ c_cond
 (paren
 id|sapicid
 op_eq
-op_minus
-l_int|1
-op_logical_or
-id|sapicid
-op_eq
 id|boot_cpu_id
 )paren
 r_continue
@@ -1996,13 +1991,13 @@ c_func
 (paren
 id|SAL_VECTOR_OS_BOOT_RENDEZ
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|ap_startup-&gt;fp
 )paren
 comma
-id|__pa
+id|ia64_tpa
 c_func
 (paren
 id|ap_startup-&gt;gp

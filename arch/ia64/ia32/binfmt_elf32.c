@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
-macro_line|#include &lt;asm/ia32.h&gt;
+macro_line|#include &quot;ia32priv.h&quot;
 DECL|macro|CONFIG_BINFMT_ELF32
 mdefine_line|#define CONFIG_BINFMT_ELF32
 multiline_comment|/* Override some function names */

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: shub_intr.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/* $Id: shub_intr.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
@@ -25,7 +25,7 @@ DECL|function|hub_intr_init
 id|hub_intr_init
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|hubv
 )paren
 (brace
@@ -63,13 +63,13 @@ DECL|function|do_hub_intr_alloc
 id|do_hub_intr_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
 id|dev_desc
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 comma
 r_int
@@ -186,10 +186,11 @@ id|cpuphys
 suffix:semicolon
 id|cnode
 op_assign
-id|cpu_to_node_map
-(braket
+id|cpuid_to_cnodeid
+c_func
+(paren
 id|cpu
-)braket
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -328,13 +329,13 @@ DECL|function|hub_intr_alloc
 id|hub_intr_alloc
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
 id|dev_desc
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 )paren
 (brace
@@ -357,13 +358,13 @@ DECL|function|hub_intr_alloc_nothd
 id|hub_intr_alloc_nothd
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|dev
 comma
 id|device_desc_t
 id|dev_desc
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|owner_dev
 )paren
 (brace
@@ -635,37 +636,6 @@ id|intr_hdl-&gt;i_flags
 op_and_assign
 op_complement
 id|HUB_INTR_IS_CONNECTED
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Return a hwgraph vertex that represents the CPU currently&n; * targeted by an interrupt.&n; */
-id|devfs_handle_t
-DECL|function|hub_intr_cpu_get
-id|hub_intr_cpu_get
-c_func
-(paren
-id|hub_intr_t
-id|intr_hdl
-)paren
-(brace
-id|cpuid_t
-id|cpuid
-op_assign
-id|intr_hdl-&gt;i_cpuid
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|cpuid
-op_ne
-id|CPU_NONE
-)paren
-suffix:semicolon
-r_return
-id|cpuid_to_vertex
-c_func
-(paren
-id|cpuid
-)paren
 suffix:semicolon
 )brace
 eof

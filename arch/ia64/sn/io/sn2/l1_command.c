@@ -8,7 +8,6 @@ macro_line|#include &lt;asm/sn/invent.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/hcl_util.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
-macro_line|#include &lt;asm/sn/eeprom.h&gt;
 macro_line|#include &lt;asm/sn/router.h&gt;
 macro_line|#include &lt;asm/sn/module.h&gt;
 macro_line|#include &lt;asm/sn/ksys/l1.h&gt;
@@ -17,62 +16,6 @@ macro_line|#include &lt;asm/sn/clksupport.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
 macro_line|#include &lt;asm/sn/sn_sal.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-DECL|macro|ELSC_TIMEOUT
-mdefine_line|#define ELSC_TIMEOUT&t;1000000&t;&t;/* ELSC response timeout (usec) */
-DECL|macro|LOCK_TIMEOUT
-mdefine_line|#define LOCK_TIMEOUT&t;5000000&t;&t;/* Hub lock timeout (usec) */
-DECL|macro|hub_cpu_get
-mdefine_line|#define hub_cpu_get()&t;0
-DECL|macro|LBYTE
-mdefine_line|#define LBYTE(caddr)&t;(*(char *) caddr)
-r_extern
-r_char
-op_star
-id|bcopy
-c_func
-(paren
-r_const
-r_char
-op_star
-id|src
-comma
-r_char
-op_star
-id|dest
-comma
-r_int
-id|count
-)paren
-suffix:semicolon
-DECL|macro|LDEBUG
-mdefine_line|#define LDEBUG&t;&t;0
-multiline_comment|/*&n; * ELSC data is in NVRAM page 7 at the following offsets.&n; */
-DECL|macro|NVRAM_MAGIC_AD
-mdefine_line|#define NVRAM_MAGIC_AD&t;0x700&t;&t;/* magic number used for init */
-DECL|macro|NVRAM_PASS_WD
-mdefine_line|#define NVRAM_PASS_WD&t;0x701&t;&t;/* password (4 bytes in length) */
-DECL|macro|NVRAM_DBG1
-mdefine_line|#define NVRAM_DBG1&t;0x705&t;&t;/* virtual XOR debug switches */
-DECL|macro|NVRAM_DBG2
-mdefine_line|#define NVRAM_DBG2&t;0x706&t;&t;/* physical XOR debug switches */
-DECL|macro|NVRAM_CFG
-mdefine_line|#define NVRAM_CFG&t;0x707&t;&t;/* ELSC Configuration info */
-DECL|macro|NVRAM_MODULE
-mdefine_line|#define NVRAM_MODULE&t;0x708&t;&t;/* system module number */
-DECL|macro|NVRAM_BIST_FLG
-mdefine_line|#define NVRAM_BIST_FLG&t;0x709&t;&t;/* BIST flags (2 bits per nodeboard) */
-DECL|macro|NVRAM_PARTITION
-mdefine_line|#define NVRAM_PARTITION 0x70a&t;&t;/* module&squot;s partition id */
-DECL|macro|NVRAM_DOMAIN
-mdefine_line|#define&t;NVRAM_DOMAIN&t;0x70b&t;&t;/* module&squot;s domain id */
-DECL|macro|NVRAM_CLUSTER
-mdefine_line|#define&t;NVRAM_CLUSTER&t;0x70c&t;&t;/* module&squot;s cluster id */
-DECL|macro|NVRAM_CELL
-mdefine_line|#define&t;NVRAM_CELL&t;0x70d&t;&t;/* module&squot;s cellid */
-DECL|macro|NVRAM_MAGIC_NO
-mdefine_line|#define NVRAM_MAGIC_NO&t;0x37&t;&t;/* value of magic number */
-DECL|macro|NVRAM_SIZE
-mdefine_line|#define NVRAM_SIZE&t;16&t;&t;/* 16 bytes in nvram */
 multiline_comment|/* elsc_display_line writes up to 12 characters to either the top or bottom&n; * line of the L1 display.  line points to a buffer containing the message&n; * to be displayed.  The zero-based line number is specified by lnum (so&n; * lnum == 0 specifies the top line and lnum == 1 specifies the bottom).&n; * Lines longer than 12 characters, or line numbers not less than&n; * L1_DISPLAY_LINES, cause elsc_display_line to return an error.&n; */
 DECL|function|elsc_display_line
 r_int
@@ -143,10 +86,10 @@ op_assign
 (paren
 id|result
 op_amp
-id|L1_ADDR_RACK_MASK
+id|MODULE_RACK_MASK
 )paren
 op_rshift
-id|L1_ADDR_RACK_SHFT
+id|MODULE_RACK_SHFT
 suffix:semicolon
 op_star
 id|bay
@@ -154,10 +97,10 @@ op_assign
 (paren
 id|result
 op_amp
-id|L1_ADDR_BAY_MASK
+id|MODULE_BPOS_MASK
 )paren
 op_rshift
-id|L1_ADDR_BAY_SHFT
+id|MODULE_BPOS_SHFT
 suffix:semicolon
 op_star
 id|brick_type
@@ -165,10 +108,10 @@ op_assign
 (paren
 id|result
 op_amp
-id|L1_ADDR_TYPE_MASK
+id|MODULE_BTYPE_MASK
 )paren
 op_rshift
-id|L1_ADDR_TYPE_SHFT
+id|MODULE_BTYPE_SHFT
 suffix:semicolon
 op_star
 id|brick_type
@@ -403,7 +346,25 @@ id|brick_type
 )paren
 (brace
 r_case
-l_char|&squot;I&squot;
+id|L1_BRICKTYPE_IX
+suffix:colon
+id|brick_type
+op_assign
+id|MODULE_IXBRICK
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_PX
+suffix:colon
+id|brick_type
+op_assign
+id|MODULE_PXBRICK
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_I
 suffix:colon
 id|brick_type
 op_assign
@@ -412,7 +373,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_char|&squot;P&squot;
+id|L1_BRICKTYPE_P
 suffix:colon
 id|brick_type
 op_assign
@@ -421,7 +382,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_char|&squot;X&squot;
+id|L1_BRICKTYPE_X
 suffix:colon
 id|brick_type
 op_assign
@@ -446,7 +407,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n; * iobrick_module_get_nasid() returns a module_id which has the brick&n; * type encoded in bits 15-12, but this is not the true brick type...&n; * The module_id returned by iobrick_module_get_nasid() is modified&n; * to make a PEBRICKs &amp; PXBRICKs look like a PBRICK.  So this routine&n; * iobrick_type_get_nasid() returns the true unmodified brick type.&n; */
 r_int
 DECL|function|iobrick_type_get_nasid
@@ -566,7 +526,6 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* unknown brick */
 )brace
-macro_line|#endif
 DECL|function|iobrick_module_get_nasid
 r_int
 id|iobrick_module_get_nasid
@@ -579,62 +538,6 @@ id|nasid
 r_int
 id|io_moduleid
 suffix:semicolon
-macro_line|#ifdef PIC_LATER
-id|uint
-id|rack
-comma
-id|bay
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|PEBRICK_NODE
-c_func
-(paren
-id|nasid
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|peer_iobrick_rack_bay_get
-c_func
-(paren
-id|nasid
-comma
-op_amp
-id|rack
-comma
-op_amp
-id|bay
-)paren
-)paren
-(brace
-id|printf
-c_func
-(paren
-l_string|&quot;Could not read rack and bay location &quot;
-l_string|&quot;of PEBrick at nasid %d&bslash;n&quot;
-comma
-id|nasid
-)paren
-suffix:semicolon
-)brace
-id|io_moduleid
-op_assign
-id|peer_iobrick_module_get
-c_func
-(paren
-id|sc
-comma
-id|rack
-comma
-id|bay
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* PIC_LATER */
 id|io_moduleid
 op_assign
 id|iobrick_module_get
@@ -646,5 +549,71 @@ suffix:semicolon
 r_return
 id|io_moduleid
 suffix:semicolon
+)brace
+multiline_comment|/*&n; * given a L1 bricktype, return a bricktype string.  This string is the&n; * string that will be used in the hwpath for I/O bricks&n; */
+r_char
+op_star
+DECL|function|iobrick_L1bricktype_to_name
+id|iobrick_L1bricktype_to_name
+c_func
+(paren
+r_int
+id|type
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|type
+)paren
+(brace
+r_default
+suffix:colon
+r_return
+l_string|&quot;Unknown&quot;
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_X
+suffix:colon
+r_return
+l_string|&quot;Xbrick&quot;
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_I
+suffix:colon
+r_return
+l_string|&quot;Ibrick&quot;
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_P
+suffix:colon
+r_return
+l_string|&quot;Pbrick&quot;
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_PX
+suffix:colon
+r_return
+l_string|&quot;PXbrick&quot;
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_IX
+suffix:colon
+r_return
+l_string|&quot;IXbrick&quot;
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_C
+suffix:colon
+r_return
+l_string|&quot;Cbrick&quot;
+suffix:semicolon
+r_case
+id|L1_BRICKTYPE_R
+suffix:colon
+r_return
+l_string|&quot;Rbrick&quot;
+suffix:semicolon
+)brace
 )brace
 eof

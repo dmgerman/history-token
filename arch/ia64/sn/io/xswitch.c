@@ -1,4 +1,4 @@
-multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997,2000-2002 Silicon Graphics, Inc. All rights reserved.&n; */
+multiline_comment|/* $Id$&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1992-1997,2000-2003 Silicon Graphics, Inc. All rights reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
@@ -15,12 +15,6 @@ DECL|macro|NEW
 mdefine_line|#define&t;NEW(ptr)&t;(ptr = kmalloc(sizeof (*(ptr)), GFP_KERNEL))
 DECL|macro|DEL
 mdefine_line|#define&t;DEL(ptr)&t;(kfree(ptr))
-DECL|variable|xswitch_devflag
-r_int
-id|xswitch_devflag
-op_assign
-id|D_MP
-suffix:semicolon
 multiline_comment|/*&n; * This file provides generic support for Crosstalk&n; * Switches, in a way that insulates crosstalk providers&n; * from specifics about the switch chips being used.&n; */
 macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
 DECL|macro|DEV_FUNC
@@ -36,11 +30,11 @@ DECL|function|xwidget_to_provider_fns
 id|xwidget_to_provider_fns
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn
 )paren
 (brace
-id|devfs_handle_t
+id|vertex_hdl_t
 id|busv
 suffix:semicolon
 id|xswitch_info_t
@@ -131,14 +125,14 @@ r_int
 id|census
 suffix:semicolon
 DECL|member|vhdl
-id|devfs_handle_t
+id|vertex_hdl_t
 id|vhdl
 (braket
 id|XSWITCH_CENSUS_PORTS
 )braket
 suffix:semicolon
 DECL|member|master_vhdl
-id|devfs_handle_t
+id|vertex_hdl_t
 id|master_vhdl
 (braket
 id|XSWITCH_CENSUS_PORTS
@@ -156,7 +150,7 @@ DECL|function|xswitch_info_get
 id|xswitch_info_get
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 (brace
@@ -174,42 +168,6 @@ c_func
 id|xwidget
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;LATER
-r_if
-c_cond
-(paren
-(paren
-id|xswitch_info
-op_ne
-l_int|NULL
-)paren
-op_logical_and
-(paren
-id|xswitch_info-&gt;fingerprint
-op_ne
-id|xswitch_info_fingerprint
-)paren
-)paren
-macro_line|#ifdef SUPPORT_PRINTING_V_FORMAT
-id|PRINT_PANIC
-c_func
-(paren
-l_string|&quot;%v xswitch_info_get bad fingerprint&quot;
-comma
-id|xwidget
-)paren
-suffix:semicolon
-macro_line|#else
-id|PRINT_PANIC
-c_func
-(paren
-l_string|&quot;%x xswitch_info_get bad fingerprint&quot;
-comma
-id|xwidget
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif&t;/* LATER */
 r_return
 (paren
 id|xswitch_info
@@ -227,7 +185,7 @@ comma
 id|xwidgetnum_t
 id|port
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 (brace
@@ -261,7 +219,7 @@ op_assign
 id|xwidget
 suffix:semicolon
 )brace
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|function|xswitch_info_vhdl_get
 id|xswitch_info_vhdl_get
 c_func
@@ -273,21 +231,6 @@ id|xwidgetnum_t
 id|port
 )paren
 (brace
-macro_line|#ifdef&t;LATER
-r_if
-c_cond
-(paren
-id|xswitch_info
-op_eq
-l_int|NULL
-)paren
-id|PRINT_PANIC
-c_func
-(paren
-l_string|&quot;xswitch_info_vhdl_get: null xswitch_info&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#if XSWITCH_CENSUS_PORT_MIN
 r_if
 c_cond
@@ -331,7 +274,7 @@ comma
 id|xwidgetnum_t
 id|port
 comma
-id|devfs_handle_t
+id|vertex_hdl_t
 id|master_vhdl
 )paren
 (brace
@@ -365,7 +308,7 @@ op_assign
 id|master_vhdl
 suffix:semicolon
 )brace
-id|devfs_handle_t
+id|vertex_hdl_t
 DECL|function|xswitch_info_master_assignment_get
 id|xswitch_info_master_assignment_get
 c_func
@@ -413,7 +356,7 @@ DECL|function|xswitch_info_set
 id|xswitch_info_set
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 comma
 id|xswitch_info_t
@@ -441,7 +384,7 @@ DECL|function|xswitch_info_new
 id|xswitch_info_new
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xwidget
 )paren
 (brace
@@ -531,7 +474,7 @@ DECL|function|xswitch_provider_register
 id|xswitch_provider_register
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|busv
 comma
 id|xswitch_provider_t
@@ -631,7 +574,7 @@ DECL|function|xswitch_reset_link
 id|xswitch_reset_link
 c_func
 (paren
-id|devfs_handle_t
+id|vertex_hdl_t
 id|xconn_vhdl
 )paren
 (brace
@@ -645,87 +588,6 @@ id|reset_link
 )paren
 (paren
 id|xconn_vhdl
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Given a vertex handle to the xswitch get its logical&n; * id.&n; */
-r_int
-DECL|function|xswitch_id_get
-id|xswitch_id_get
-c_func
-(paren
-id|devfs_handle_t
-id|xconn_vhdl
-)paren
-(brace
-id|arbitrary_info_t
-id|xbow_num
-suffix:semicolon
-id|graph_error_t
-id|rv
-suffix:semicolon
-id|rv
-op_assign
-id|hwgraph_info_get_LBL
-c_func
-(paren
-id|xconn_vhdl
-comma
-id|INFO_LBL_XSWITCH_ID
-comma
-op_amp
-id|xbow_num
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|rv
-op_eq
-id|GRAPH_SUCCESS
-)paren
-suffix:semicolon
-r_return
-id|xbow_num
-suffix:semicolon
-)brace
-multiline_comment|/* Given a vertex handle to the xswitch set its logical&n; * id.&n; */
-r_void
-DECL|function|xswitch_id_set
-id|xswitch_id_set
-c_func
-(paren
-id|devfs_handle_t
-id|xconn_vhdl
-comma
-r_int
-id|xbow_num
-)paren
-(brace
-id|graph_error_t
-id|rv
-suffix:semicolon
-id|rv
-op_assign
-id|hwgraph_info_add_LBL
-c_func
-(paren
-id|xconn_vhdl
-comma
-id|INFO_LBL_XSWITCH_ID
-comma
-(paren
-id|arbitrary_info_t
-)paren
-id|xbow_num
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|rv
-op_eq
-id|GRAPH_SUCCESS
 )paren
 suffix:semicolon
 )brace

@@ -199,32 +199,6 @@ DECL|member|_sigpoll
 )brace
 id|_sigpoll
 suffix:semicolon
-multiline_comment|/* SIGPROF */
-r_struct
-(brace
-DECL|member|_pid
-id|pid_t
-id|_pid
-suffix:semicolon
-multiline_comment|/* which child */
-DECL|member|_uid
-id|uid_t
-id|_uid
-suffix:semicolon
-multiline_comment|/* sender&squot;s uid */
-DECL|member|_pfm_ovfl_counters
-r_int
-r_int
-id|_pfm_ovfl_counters
-(braket
-l_int|4
-)braket
-suffix:semicolon
-multiline_comment|/* which PMU counter overflowed */
-DECL|member|_sigprof
-)brace
-id|_sigprof
-suffix:semicolon
 DECL|member|_sifields
 )brace
 id|_sifields
@@ -247,11 +221,6 @@ DECL|macro|__ISR_VALID_BIT
 mdefine_line|#define __ISR_VALID_BIT&t;0
 DECL|macro|__ISR_VALID
 mdefine_line|#define __ISR_VALID&t;(1 &lt;&lt; __ISR_VALID_BIT)
-multiline_comment|/*&n; * si_code values&n; * Positive values for kernel-generated signals.&n; */
-macro_line|#ifdef __KERNEL__
-DECL|macro|__SI_PROF
-mdefine_line|#define __SI_PROF&t;(6 &lt;&lt; 16)
-macro_line|#endif
 multiline_comment|/*&n; * SIGILL si_codes&n; */
 DECL|macro|ILL_BADIADDR
 mdefine_line|#define ILL_BADIADDR&t;(__SI_FAULT|9)&t;/* unimplemented instruction address */
@@ -294,9 +263,6 @@ DECL|macro|NSIGTRAP
 macro_line|#undef NSIGTRAP
 DECL|macro|NSIGTRAP
 mdefine_line|#define NSIGTRAP&t;4
-multiline_comment|/*&n; * SIGPROF si_codes&n; */
-DECL|macro|PROF_OVFL
-mdefine_line|#define PROF_OVFL&t;(__SI_PROF|1)  /* some counters overflowed */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/string.h&gt;
 r_static
@@ -335,7 +301,7 @@ id|siginfo_t
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* _sigprof is currently the largest know union member */
+multiline_comment|/* _sigchld is currently the largest know union member */
 id|memcpy
 c_func
 (paren
@@ -352,7 +318,7 @@ r_int
 op_plus
 r_sizeof
 (paren
-id|from-&gt;_sifields._sigprof
+id|from-&gt;_sifields._sigchld
 )paren
 )paren
 suffix:semicolon

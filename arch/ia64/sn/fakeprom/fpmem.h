@@ -1,122 +1,9 @@
-multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2002 Silicon Graphics, Inc.  All rights reserved.&n; */
+multiline_comment|/* &n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2000-2003 Silicon Graphics, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; * Structure of the mem config of the node as a SN1 MI reg&n; * Medusa supports this reg config.&n; *&n; * BankSize nibble to bank size mapping&n; *&n; *      1 - 64 MB&n; *      2 - 128 MB&n; *      3 - 256 MB&n; *      4 - 512 MB&n; *      5 - 1024 MB (1GB)&n; */
+multiline_comment|/*&n; * Structure of the mem config of the node as a SN MI reg&n; * Medusa supports this reg config.&n; *&n; * BankSize nibble to bank size mapping&n; *&n; *      1 - 64 MB&n; *      2 - 128 MB&n; *      3 - 256 MB&n; *      4 - 512 MB&n; *      5 - 1024 MB (1GB)&n; */
 DECL|macro|MBSHIFT
 mdefine_line|#define MBSHIFT&t;&t;&t;&t;20
-macro_line|#ifdef CONFIG_IA64_SGI_SN1
-DECL|struct|node_memmap_s
-r_typedef
-r_struct
-id|node_memmap_s
-(brace
-DECL|member|b0
-r_int
-r_int
-id|b0
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* 0 bank 0 present */
-DECL|member|b1
-id|b1
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* 1 bank 1 present */
-DECL|member|r01
-id|r01
-suffix:colon
-l_int|2
-comma
-multiline_comment|/* 2-3 reserved */
-DECL|member|b01size
-id|b01size
-suffix:colon
-l_int|4
-comma
-multiline_comment|/* 4-7 Size of bank 0 and 1 */
-DECL|member|b2
-id|b2
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* 8 bank 2 present */
-DECL|member|b3
-id|b3
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* 9 bank 3 present */
-DECL|member|r23
-id|r23
-suffix:colon
-l_int|2
-comma
-multiline_comment|/* 10-11 reserved */
-DECL|member|b23size
-id|b23size
-suffix:colon
-l_int|4
-comma
-multiline_comment|/* 12-15 Size of bank 2 and 3 */
-DECL|member|b4
-id|b4
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* 16 bank 4 present */
-DECL|member|b5
-id|b5
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* 17 bank 5 present */
-DECL|member|r45
-id|r45
-suffix:colon
-l_int|2
-comma
-multiline_comment|/* 18-19 reserved */
-DECL|member|b45size
-id|b45size
-suffix:colon
-l_int|4
-comma
-multiline_comment|/* 20-23 Size of bank 4 and 5 */
-DECL|member|b6
-id|b6
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* 24 bank 6 present */
-DECL|member|b7
-id|b7
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* 25 bank 7 present */
-DECL|member|r67
-id|r67
-suffix:colon
-l_int|2
-comma
-multiline_comment|/* 26-27 reserved */
-DECL|member|b67size
-id|b67size
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* 28-31 Size of bank 6 and 7 */
-DECL|typedef|node_memmap_t
-)brace
-id|node_memmap_t
-suffix:semicolon
-multiline_comment|/* Support the medusa hack for 8M/16M/32M nodes */
-DECL|macro|SN1_BANK_SIZE_SHIFT
-mdefine_line|#define SN1_BANK_SIZE_SHIFT&t;&t;(MBSHIFT+6)     /* 64 MB */
-DECL|macro|BankSizeBytes
-mdefine_line|#define BankSizeBytes(bsize)            ((bsize&lt;6) ? (1&lt;&lt;((bsize-1)+SN1_BANK_SIZE_SHIFT)) :&bslash;&n;                                         (1&lt;&lt;((bsize-9)+MBSHIFT)))
-macro_line|#else
+macro_line|#ifdef SGI_SN2
 DECL|struct|node_memmap_s
 r_typedef
 r_struct
@@ -230,6 +117,10 @@ DECL|macro|BankPresent
 mdefine_line|#define BankPresent(bsize)&t;&t;(bsize&lt;6)
 DECL|macro|BankSizeBytes
 mdefine_line|#define BankSizeBytes(bsize)            (BankPresent(bsize) ? 1UL&lt;&lt;((bsize)+SN2_BANK_SIZE_SHIFT) : 0)
+DECL|macro|MD_BANKS_PER_NODE
+mdefine_line|#define MD_BANKS_PER_NODE 4
+DECL|macro|MD_BANKSIZE
+mdefine_line|#define MD_BANKSIZE&t;&t;&t;(1UL &lt;&lt; 34)
 macro_line|#endif
 DECL|struct|sn_memmap_s
 r_typedef

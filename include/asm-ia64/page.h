@@ -30,6 +30,8 @@ DECL|macro|PERCPU_PAGE_SHIFT
 mdefine_line|#define PERCPU_PAGE_SHIFT&t;16&t;/* log2() of max. size of per-CPU area */
 DECL|macro|PERCPU_PAGE_SIZE
 mdefine_line|#define PERCPU_PAGE_SIZE&t;(__IA64_UL_CONST(1) &lt;&lt; PERCPU_PAGE_SHIFT)
+DECL|macro|RGN_MAP_LIMIT
+mdefine_line|#define RGN_MAP_LIMIT&t;((1UL &lt;&lt; (4*PAGE_SHIFT - 12)) - PAGE_SIZE)&t;/* per region addr limit */
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
 macro_line|# if defined(CONFIG_HUGETLB_PAGE_SIZE_4GB)
 DECL|macro|HPAGE_SHIFT
@@ -68,6 +70,8 @@ DECL|macro|HPAGE_MASK
 macro_line|# define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 macro_line|# define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+DECL|macro|ARCH_HAS_VALID_HUGEPAGE_RANGE
+macro_line|# define ARCH_HAS_VALID_HUGEPAGE_RANGE
 macro_line|#endif /* CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|__pa
@@ -194,7 +198,7 @@ DECL|macro|HUGETLB_PAGE_ORDER
 macro_line|# define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 r_extern
 r_int
-id|is_invalid_hugepage_range
+id|check_valid_hugepage_range
 c_func
 (paren
 r_int
@@ -206,9 +210,6 @@ r_int
 id|len
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|is_invalid_hugepage_range
-mdefine_line|#define is_invalid_hugepage_range(addr, len) 0
 macro_line|#endif
 r_static
 id|__inline__
