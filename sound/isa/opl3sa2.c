@@ -4801,7 +4801,7 @@ id|enable
 (braket
 id|dev
 )braket
-op_logical_and
+op_logical_or
 op_logical_neg
 id|isapnp
 (braket
