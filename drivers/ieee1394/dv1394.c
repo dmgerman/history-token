@@ -9844,6 +9844,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*** DEVFS HELPERS *********************************************************/
+macro_line|#ifdef CONFIG_DEVFS_FS
 r_struct
 id|dv1394_devfs_entry
 op_star
@@ -10437,6 +10438,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_DEVFS */
 DECL|function|dv1394_devfs_del
 r_void
 id|dv1394_devfs_del
@@ -11239,11 +11241,6 @@ id|buf
 l_int|16
 )braket
 suffix:semicolon
-r_struct
-id|dv1394_devfs_entry
-op_star
-id|devfs_entry
-suffix:semicolon
 multiline_comment|/* We only work with the OHCI-1394 driver */
 r_if
 c_cond
@@ -11340,6 +11337,12 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_DEVFS_FS
+(brace
+r_struct
+id|dv1394_devfs_entry
+op_star
+id|devfs_entry
+suffix:semicolon
 id|devfs_entry
 op_assign
 id|dv1394_devfs_find
@@ -11402,6 +11405,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 id|dv1394_init
