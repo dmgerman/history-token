@@ -1382,32 +1382,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|sbsec-&gt;behavior
-op_ne
-id|SECURITY_FS_USE_XATTR
-)paren
-(brace
-id|rc
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;SELinux:  &quot;
-l_string|&quot;fscontext option is invalid for&quot;
-l_string|&quot; this filesystem type&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|out_free
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|seen
 op_amp
 (paren
