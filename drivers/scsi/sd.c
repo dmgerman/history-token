@@ -3446,6 +3446,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * The device does not want the automatic start to be issued.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|sdkp-&gt;device-&gt;no_start_on_add
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; * If manual intervention is required, or this is an&n;&t;&t; * absent USB storage device, a spinup is meaningless.&n;&t;&t; */
 r_if
 c_cond

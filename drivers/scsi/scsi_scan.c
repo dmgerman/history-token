@@ -2072,6 +2072,19 @@ id|sdev-&gt;borken
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; * Some devices may not want to have a start command automatically&n;&t; * issued when a device is added.&n;&t; */
+r_if
+c_cond
+(paren
+op_star
+id|bflags
+op_amp
+id|BLIST_NOSTARTONADD
+)paren
+id|sdev-&gt;no_start_on_add
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;&t; * If we need to allow I/O to only one of the luns attached to&n;&t; * this target id at a time set single_lun, and allocate or modify&n;&t; * sdev_target.&n;&t; */
 r_if
 c_cond

@@ -1087,6 +1087,13 @@ suffix:semicolon
 multiline_comment|/* support remapping  */
 singleline_comment|//&t;unsigned sync:1;&t;/* Sync transfer state, managed by host */
 singleline_comment|//&t;unsigned wide:1;&t;/* WIDE transfer state, managed by host */
+DECL|member|no_start_on_add
+r_int
+id|no_start_on_add
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* do not issue start on add */
 DECL|member|device_blocked
 r_int
 r_int
