@@ -34,8 +34,22 @@ id|last_pid
 suffix:semicolon
 DECL|macro|RESERVED_PIDS
 mdefine_line|#define RESERVED_PIDS&t;&t;300
+DECL|variable|pid_max_min
+r_int
+id|pid_max_min
+op_assign
+id|RESERVED_PIDS
+op_plus
+l_int|1
+suffix:semicolon
+DECL|variable|pid_max_max
+r_int
+id|pid_max_max
+op_assign
+id|PID_MAX_LIMIT
+suffix:semicolon
 DECL|macro|PIDMAP_ENTRIES
-mdefine_line|#define PIDMAP_ENTRIES&t;&t;(PID_MAX_LIMIT/PAGE_SIZE/8)
+mdefine_line|#define PIDMAP_ENTRIES&t;&t;((PID_MAX_LIMIT + 8*PAGE_SIZE - 1)/PAGE_SIZE/8)
 DECL|macro|BITS_PER_PAGE
 mdefine_line|#define BITS_PER_PAGE&t;&t;(PAGE_SIZE*8)
 DECL|macro|BITS_PER_PAGE_MASK
