@@ -3588,7 +3588,7 @@ suffix:colon
 id|proc_net_remove
 c_func
 (paren
-l_string|&quot;ip_conntrack_exp&quot;
+l_string|&quot;ip_conntrack_expect&quot;
 )paren
 suffix:semicolon
 id|cleanup_proc
