@@ -838,7 +838,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|do_mesh_interrupt
 c_func
 (paren
@@ -7111,7 +7111,7 @@ id|SEQ_ENBRESEL
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|do_mesh_interrupt
 id|do_mesh_interrupt
 c_func
@@ -7174,6 +7174,9 @@ id|dev-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|handle_error
