@@ -489,7 +489,6 @@ id|mops_list
 )paren
 suffix:semicolon
 DECL|variable|saa7134_devcount
-r_static
 r_int
 r_int
 id|saa7134_devcount
