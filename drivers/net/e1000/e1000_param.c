@@ -78,15 +78,6 @@ comma
 l_string|&quot;Disable or enable Receive Checksum offload&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Transmit Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 64&n; */
-id|E1000_PARAM
-c_func
-(paren
-id|TxIntDelay
-comma
-l_string|&quot;Transmit Interrupt Delay&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Receive Interrupt Delay in units of 1.024 microseconds&n; *&n; * Valid Range: 0-65535&n; *&n; * Default Value: 64/128&n; */
 id|E1000_PARAM
 c_func
@@ -136,12 +127,6 @@ DECL|macro|MIN_RXD
 mdefine_line|#define MIN_RXD                       80
 DECL|macro|MAX_82544_RXD
 mdefine_line|#define MAX_82544_RXD               4096
-DECL|macro|DEFAULT_TIDV
-mdefine_line|#define DEFAULT_TIDV                  64
-DECL|macro|MAX_TIDV
-mdefine_line|#define MAX_TIDV                  0xFFFF
-DECL|macro|MIN_TIDV
-mdefine_line|#define MIN_TIDV                       0
 DECL|macro|DEFAULT_RDTR
 mdefine_line|#define DEFAULT_RDTR                  64
 DECL|macro|DEFAULT_RADV
@@ -869,69 +854,6 @@ op_assign
 id|adapter-&gt;hw.original_fc
 op_assign
 id|fc
-suffix:semicolon
-)brace
-(brace
-multiline_comment|/* Transmit Interrupt Delay */
-r_struct
-id|e1000_option
-id|opt
-op_assign
-(brace
-id|type
-suffix:colon
-id|range_option
-comma
-id|name
-suffix:colon
-l_string|&quot;Transmit Interrupt Delay&quot;
-comma
-id|err
-suffix:colon
-l_string|&quot;using default of &quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|DEFAULT_TIDV
-)paren
-comma
-id|def
-suffix:colon
-id|DEFAULT_TIDV
-comma
-id|arg
-suffix:colon
-(brace
-id|r
-suffix:colon
-(brace
-id|min
-suffix:colon
-id|MIN_TIDV
-comma
-id|max
-suffix:colon
-id|MAX_TIDV
-)brace
-)brace
-)brace
-suffix:semicolon
-id|adapter-&gt;tx_int_delay
-op_assign
-id|TxIntDelay
-(braket
-id|bd
-)braket
-suffix:semicolon
-id|e1000_validate_option
-c_func
-(paren
-op_amp
-id|adapter-&gt;tx_int_delay
-comma
-op_amp
-id|opt
-)paren
 suffix:semicolon
 )brace
 (brace

@@ -124,17 +124,6 @@ r_int
 r_int
 id|count
 suffix:semicolon
-multiline_comment|/* (atomic) number of desc with no buffer */
-DECL|member|unused
-id|atomic_t
-id|unused
-suffix:semicolon
-multiline_comment|/* number of desc with no buffer */
-DECL|member|unused_count
-r_int
-r_int
-id|unused_count
-suffix:semicolon
 multiline_comment|/* next descriptor to associate a buffer with */
 DECL|member|next_to_use
 r_int
@@ -156,12 +145,16 @@ id|buffer_info
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|E1000_DESC_UNUSED
+mdefine_line|#define E1000_DESC_UNUSED(R) &bslash;&n;((((R)-&gt;next_to_clean + (R)-&gt;count) - ((R)-&gt;next_to_use + 1)) % ((R)-&gt;count))
+DECL|macro|E1000_GET_DESC
+mdefine_line|#define E1000_GET_DESC(R, i, type)&t;(&amp;(((struct type *)((R).desc))[i]))
 DECL|macro|E1000_RX_DESC
-mdefine_line|#define E1000_RX_DESC(ring, i) &bslash;&n;&t;(&amp;(((struct e1000_rx_desc *)((ring).desc))[i]))
+mdefine_line|#define E1000_RX_DESC(R, i)&t;&t;E1000_GET_DESC(R, i, e1000_rx_desc)
 DECL|macro|E1000_TX_DESC
-mdefine_line|#define E1000_TX_DESC(ring, i) &bslash;&n;&t;(&amp;(((struct e1000_tx_desc *)((ring).desc))[i]))
+mdefine_line|#define E1000_TX_DESC(R, i)&t;&t;E1000_GET_DESC(R, i, e1000_tx_desc)
 DECL|macro|E1000_CONTEXT_DESC
-mdefine_line|#define E1000_CONTEXT_DESC(ring, i) &bslash;&n;&t;(&amp;(((struct e1000_context_desc *)((ring).desc))[i]))
+mdefine_line|#define E1000_CONTEXT_DESC(R, i)&t;E1000_GET_DESC(R, i, e1000_context_desc)
 multiline_comment|/* board specific private data structure */
 DECL|struct|e1000_adapter
 r_struct
@@ -236,13 +229,17 @@ r_int
 r_int
 id|trans_finish
 suffix:semicolon
-DECL|member|tx_int_delay
-r_uint32
-id|tx_int_delay
+DECL|member|tx_lock
+id|spinlock_t
+id|tx_lock
 suffix:semicolon
 DECL|member|txd_cmd
 r_uint32
 id|txd_cmd
+suffix:semicolon
+DECL|member|max_data_per_txd
+r_int
+id|max_data_per_txd
 suffix:semicolon
 multiline_comment|/* RX */
 DECL|member|rx_ring
