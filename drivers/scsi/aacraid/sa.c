@@ -1298,6 +1298,10 @@ id|dev-&gt;a_ops.adapter_sync_cmd
 op_assign
 id|sa_sync_cmd
 suffix:semicolon
+id|dev-&gt;a_ops.adapter_check_health
+op_assign
+id|aac_sa_check_health
+suffix:semicolon
 id|dprintk
 c_func
 (paren

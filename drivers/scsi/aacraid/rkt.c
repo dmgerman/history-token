@@ -1315,6 +1315,10 @@ id|dev-&gt;a_ops.adapter_sync_cmd
 op_assign
 id|rkt_sync_cmd
 suffix:semicolon
+id|dev-&gt;a_ops.adapter_check_health
+op_assign
+id|aac_rkt_check_health
+suffix:semicolon
 r_if
 c_cond
 (paren
