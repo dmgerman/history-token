@@ -156,7 +156,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;CLASSIFY: invalid size (%u != %u).&bslash;n&quot;
+l_string|&quot;CLASSIFY: invalid size (%u != %Zu).&bslash;n&quot;
 comma
 id|targinfosize
 comma
