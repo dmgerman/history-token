@@ -3643,6 +3643,10 @@ id|isdn_net_local
 op_star
 id|lp
 suffix:semicolon
+id|isdn_net_dev
+op_star
+id|idev
+suffix:semicolon
 r_struct
 id|ippp_struct
 op_star
@@ -3721,6 +3725,10 @@ l_string|&quot;isdn_ppp_write: lp == NULL&bslash;n&quot;
 suffix:semicolon
 r_else
 (brace
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Don&squot;t reset huptimer for&n;&t;&t; * LCP packets. (Echo requests).&n;&t;&t; */
 r_if
 c_cond
@@ -3767,7 +3775,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|lp-&gt;isdn_slot
+id|idev-&gt;isdn_slot
 OL
 l_int|0
 )paren
@@ -3789,7 +3797,7 @@ id|dev-&gt;drv
 id|isdn_slot_driver
 c_func
 (paren
-id|lp-&gt;isdn_slot
+id|idev-&gt;isdn_slot
 )paren
 )braket
 op_member_access_from_pointer
@@ -3798,14 +3806,10 @@ op_amp
 id|DRV_FLAG_RUNNING
 )paren
 op_logical_and
-id|lp-&gt;dialstate
-op_eq
-l_int|0
-op_logical_and
-id|isdn_net_bound
+id|isdn_net_online
 c_func
 (paren
-id|lp
+id|idev
 )paren
 )paren
 (brace
@@ -3824,7 +3828,7 @@ op_assign
 id|isdn_slot_hdrlen
 c_func
 (paren
-id|lp-&gt;isdn_slot
+id|idev-&gt;isdn_slot
 )paren
 suffix:semicolon
 id|skb
@@ -5564,6 +5568,10 @@ id|mlp
 suffix:semicolon
 id|isdn_net_dev
 op_star
+id|idev
+suffix:semicolon
+id|isdn_net_dev
+op_star
 id|nd
 suffix:semicolon
 r_int
@@ -5748,6 +5756,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* we have our lp locked from now on */
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 id|slot
 op_assign
 id|lp-&gt;ppp_slot
@@ -5871,7 +5883,7 @@ op_assign
 id|isdn_slot_hdrlen
 c_func
 (paren
-id|lp-&gt;isdn_slot
+id|idev-&gt;isdn_slot
 )paren
 op_plus
 id|IPPP_MAX_HEADER
@@ -9254,7 +9266,7 @@ id|name
 macro_line|#ifdef CONFIG_ISDN_MPP
 id|isdn_net_dev
 op_star
-id|ndev
+id|idev
 suffix:semicolon
 id|isdn_net_local
 op_star
@@ -9265,19 +9277,19 @@ id|net_device
 op_star
 id|sdev
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|ndev
+id|idev
 op_assign
 id|isdn_net_findif
 c_func
 (paren
 id|name
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idev
 )paren
 r_return
 l_int|1
@@ -9285,7 +9297,7 @@ suffix:semicolon
 id|lp
 op_assign
 op_amp
-id|ndev-&gt;local
+id|idev-&gt;local
 suffix:semicolon
 r_if
 c_cond
@@ -9294,7 +9306,7 @@ op_logical_neg
 id|isdn_net_bound
 c_func
 (paren
-id|lp
+id|idev
 )paren
 )paren
 r_return
@@ -9327,7 +9339,7 @@ op_logical_neg
 id|isdn_net_bound
 c_func
 (paren
-id|mlp
+id|mlp-&gt;netdev
 )paren
 )paren
 r_break
@@ -9379,7 +9391,7 @@ id|name
 macro_line|#ifdef CONFIG_ISDN_MPP
 id|isdn_net_dev
 op_star
-id|ndev
+id|idev
 suffix:semicolon
 id|isdn_net_local
 op_star
@@ -9395,19 +9407,19 @@ id|net_device
 op_star
 id|sdev
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|ndev
+id|idev
 op_assign
 id|isdn_net_findif
 c_func
 (paren
 id|name
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idev
 )paren
 r_return
 l_int|1
@@ -9415,7 +9427,7 @@ suffix:semicolon
 id|lp
 op_assign
 op_amp
-id|ndev-&gt;local
+id|idev-&gt;local
 suffix:semicolon
 r_if
 c_cond
@@ -9424,7 +9436,7 @@ op_logical_neg
 id|isdn_net_bound
 c_func
 (paren
-id|lp
+id|idev
 )paren
 )paren
 r_return
@@ -9472,7 +9484,7 @@ op_logical_neg
 id|isdn_net_bound
 c_func
 (paren
-id|nlp
+id|nlp-&gt;netdev
 )paren
 )paren
 r_break
@@ -9485,7 +9497,7 @@ c_cond
 id|isdn_net_bound
 c_func
 (paren
-id|mlp
+id|mlp-&gt;netdev
 )paren
 )paren
 r_break
@@ -9604,13 +9616,19 @@ id|lp
 op_assign
 id|is-&gt;lp
 suffix:semicolon
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 multiline_comment|/* Alloc large enough skb */
 id|hl
 op_assign
 id|isdn_slot_hdrlen
 c_func
 (paren
-id|lp-&gt;isdn_slot
+id|idev-&gt;isdn_slot
 )paren
 suffix:semicolon
 id|skb

@@ -21,6 +21,12 @@ r_int
 id|len
 )paren
 (brace
+id|isdn_net_dev
+op_star
+id|idev
+op_assign
+id|lp-&gt;netdev
+suffix:semicolon
 r_int
 r_int
 id|hl
@@ -28,7 +34,7 @@ op_assign
 id|isdn_slot_hdrlen
 c_func
 (paren
-id|lp-&gt;isdn_slot
+id|idev-&gt;isdn_slot
 )paren
 suffix:semicolon
 r_struct
@@ -66,7 +72,7 @@ id|__LINE__
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|skb_reserve

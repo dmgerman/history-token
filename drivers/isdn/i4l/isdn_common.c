@@ -2205,7 +2205,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;local.isdn_slot
+id|p-&gt;isdn_slot
 op_eq
 id|i
 )paren

@@ -717,62 +717,25 @@ r_typedef
 r_struct
 id|isdn_net_local_s
 (brace
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|member|magic
 id|ulong
 id|magic
 suffix:semicolon
-DECL|member|dial_timer
-r_struct
-id|timer_list
-id|dial_timer
+DECL|member|lock
+id|spinlock_t
+id|lock
 suffix:semicolon
-multiline_comment|/* dial events timer                */
-DECL|member|dial_event
-r_int
-id|dial_event
-suffix:semicolon
-multiline_comment|/* event in case of timer expiry    */
 DECL|member|stats
 r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
 multiline_comment|/* Ethernet Statistics              */
-DECL|member|hup_timer
-r_struct
-id|timer_list
-id|hup_timer
-suffix:semicolon
-multiline_comment|/* auto hangup timer                */
-DECL|member|isdn_slot
-r_int
-id|isdn_slot
-suffix:semicolon
-multiline_comment|/* Index to isdn device/channel     */
 DECL|member|ppp_slot
 r_int
 id|ppp_slot
 suffix:semicolon
 multiline_comment|/* PPPD device slot number          */
-DECL|member|pre_device
-r_int
-id|pre_device
-suffix:semicolon
-multiline_comment|/* Preselected isdn-device          */
-DECL|member|pre_channel
-r_int
-id|pre_channel
-suffix:semicolon
-multiline_comment|/* Preselected isdn-channel         */
-DECL|member|exclusive
-r_int
-id|exclusive
-suffix:semicolon
-multiline_comment|/* -1 if non excl./idx to excl chan */
 DECL|member|flags
 r_int
 id|flags
@@ -806,11 +769,6 @@ id|u_char
 id|cbhup
 suffix:semicolon
 multiline_comment|/* Flag: Reject Call before Callback*/
-DECL|member|dialstate
-id|u_char
-id|dialstate
-suffix:semicolon
-multiline_comment|/* State for dialing                */
 DECL|member|p_encap
 id|u_char
 id|p_encap
@@ -1099,6 +1057,48 @@ DECL|member|local
 id|isdn_net_local
 id|local
 suffix:semicolon
+DECL|member|isdn_slot
+r_int
+id|isdn_slot
+suffix:semicolon
+multiline_comment|/* Index to isdn device/channel     */
+DECL|member|pre_device
+r_int
+id|pre_device
+suffix:semicolon
+multiline_comment|/* Preselected isdn-device          */
+DECL|member|pre_channel
+r_int
+id|pre_channel
+suffix:semicolon
+multiline_comment|/* Preselected isdn-channel         */
+DECL|member|exclusive
+r_int
+id|exclusive
+suffix:semicolon
+multiline_comment|/* -1 if non excl./idx to excl chan */
+DECL|member|dial_timer
+r_struct
+id|timer_list
+id|dial_timer
+suffix:semicolon
+multiline_comment|/* dial events timer                */
+DECL|member|dial_event
+r_int
+id|dial_event
+suffix:semicolon
+multiline_comment|/* event in case of timer expiry    */
+DECL|member|dialstate
+r_int
+id|dialstate
+suffix:semicolon
+multiline_comment|/* State for dialing                */
+DECL|member|hup_timer
+r_struct
+id|timer_list
+id|hup_timer
+suffix:semicolon
+multiline_comment|/* auto hangup timer                */
 DECL|member|queue
 id|isdn_net_local
 op_star
