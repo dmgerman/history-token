@@ -535,9 +535,6 @@ op_star
 id|mca_dev
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MCA_LEGACY
-macro_line|#include &lt;linux/mca-legacy.h&gt;
-macro_line|#endif
 macro_line|#ifdef CONFIG_MCA_PROC_FS
 r_extern
 r_void

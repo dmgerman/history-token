@@ -673,14 +673,14 @@ id|tcb_p
 id|tp
 )paren
 (brace
-id|bcopy
+id|memcpy
 c_func
 (paren
 op_amp
-id|tp-&gt;tinfo.user
+id|tp-&gt;tinfo.goal
 comma
 op_amp
-id|tp-&gt;tinfo.goal
+id|tp-&gt;tinfo.user
 comma
 r_sizeof
 (paren
