@@ -2335,10 +2335,6 @@ id|done
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|pagevec
-id|pvec
-suffix:semicolon
 r_int
 (paren
 op_star
@@ -2390,15 +2386,6 @@ l_int|NULL
 id|writepage
 op_assign
 id|mapping-&gt;a_ops-&gt;writepage
-suffix:semicolon
-id|pagevec_init
-c_func
-(paren
-op_amp
-id|pvec
-comma
-l_int|0
-)paren
 suffix:semicolon
 id|spin_lock
 c_func
