@@ -1411,6 +1411,13 @@ r_struct
 id|jffs_fmcontrol
 op_star
 id|fmc
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+id|fmc
 op_assign
 id|c-&gt;fmc
 suffix:semicolon
@@ -1491,6 +1498,11 @@ multiline_comment|/* buf-&gt;f_fsid = 0; */
 id|buf-&gt;f_namelen
 op_assign
 id|JFFS_MAX_NAME_LEN
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 l_int|0
