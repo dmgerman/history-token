@@ -4,11 +4,13 @@ macro_line|#include &quot;linux/slab.h&quot;
 macro_line|#include &quot;linux/list.h&quot;
 macro_line|#include &quot;linux/devfs_fs_kernel.h&quot;
 macro_line|#include &quot;asm/irq.h&quot;
+macro_line|#include &quot;asm/uaccess.h&quot;
 macro_line|#include &quot;chan_kern.h&quot;
 macro_line|#include &quot;irq_user.h&quot;
 macro_line|#include &quot;line.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;user_util.h&quot;
+macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|macro|LINE_BUFSIZE
 mdefine_line|#define LINE_BUFSIZE 4096
@@ -388,6 +390,9 @@ id|tty_struct
 op_star
 id|tty
 comma
+r_int
+id|from_user
+comma
 r_const
 r_char
 op_star
@@ -401,6 +406,10 @@ r_struct
 id|line
 op_star
 id|line
+suffix:semicolon
+r_char
+op_star
+r_new
 suffix:semicolon
 r_int
 r_int
@@ -421,6 +430,64 @@ id|tty-&gt;stopped
 (brace
 r_return
 l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|from_user
+)paren
+(brace
+r_new
+op_assign
+id|kmalloc
+c_func
+(paren
+id|len
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+r_new
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|n
+op_assign
+id|copy_from_user
+c_func
+(paren
+r_new
+comma
+id|buf
+comma
+id|len
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|n
+op_eq
+id|len
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
+id|buf
+op_assign
+r_new
 suffix:semicolon
 )brace
 id|i
@@ -2401,6 +2468,8 @@ id|os_kill_process
 c_func
 (paren
 id|winch-&gt;pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

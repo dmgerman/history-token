@@ -425,12 +425,8 @@ op_amp
 id|port-&gt;pending
 )paren
 suffix:semicolon
-id|ret
-op_assign
+r_return
 l_int|1
-suffix:semicolon
-r_goto
-id|out
 suffix:semicolon
 id|out_free
 suffix:colon
@@ -461,6 +457,8 @@ id|os_kill_process
 c_func
 (paren
 id|pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1003,6 +1001,8 @@ id|os_kill_process
 c_func
 (paren
 id|dev-&gt;helper_pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1019,6 +1019,8 @@ id|os_kill_process
 c_func
 (paren
 id|dev-&gt;telnetd_pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1299,7 +1301,9 @@ l_int|1
 id|os_kill_process
 c_func
 (paren
-id|dev-&gt;telnetd_pid
+id|dev-&gt;helper_pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1316,6 +1320,8 @@ id|os_kill_process
 c_func
 (paren
 id|dev-&gt;telnetd_pid
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

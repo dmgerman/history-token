@@ -281,6 +281,8 @@ id|serial_lines
 comma
 id|tty
 comma
+id|from_user
+comma
 id|buf
 comma
 id|count
@@ -309,6 +311,8 @@ c_func
 id|serial_lines
 comma
 id|tty
+comma
+l_int|0
 comma
 op_amp
 id|ch

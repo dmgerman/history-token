@@ -228,7 +228,7 @@ id|opts
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|line_setup
 c_func
 (paren
@@ -243,6 +243,9 @@ comma
 r_char
 op_star
 id|init
+comma
+r_int
+id|all_allowed
 )paren
 suffix:semicolon
 r_extern
@@ -259,6 +262,9 @@ r_struct
 id|tty_struct
 op_star
 id|tty
+comma
+r_int
+id|from_user
 comma
 r_const
 r_char
