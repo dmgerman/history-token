@@ -39,6 +39,10 @@ macro_line|#ifndef TRUE
 DECL|macro|TRUE
 mdefine_line|#define TRUE 1
 macro_line|#endif
+macro_line|#ifndef XATTR_DOS_ATTRIB
+DECL|macro|XATTR_DOS_ATTRIB
+mdefine_line|#define XATTR_DOS_ATTRIB &quot;user.DOSATTRIB&quot;
+macro_line|#endif
 multiline_comment|/*&n; * This information is kept on every Server we know about.&n; *&n; * Some things to note:&n; *&n; */
 DECL|macro|SERVER_NAME_LEN_WITH_NULL
 mdefine_line|#define SERVER_NAME_LEN_WITH_NULL&t;(SERVER_NAME_LENGTH + 1)
@@ -494,6 +498,12 @@ multiline_comment|/* ok if file system name truncated */
 DECL|member|fsUnixInfo
 id|FILE_SYSTEM_UNIX_INFO
 id|fsUnixInfo
+suffix:semicolon
+DECL|member|retry
+r_int
+id|retry
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* BB add field for back pointer to sb struct? */
 )brace

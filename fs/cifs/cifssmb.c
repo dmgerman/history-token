@@ -189,15 +189,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/* Give Demultiplex thread up to 10 seconds to &n;&t;&t;&t;&t;&t;reconnect, should be greater than cifs socket&n;&t;&t;&t;&t;&t;timeout which is 7 seconds */
+r_while
+c_loop
 (paren
 id|tcon-&gt;ses-&gt;server-&gt;tcpStatus
 op_eq
 id|CifsNeedReconnect
 )paren
 (brace
-multiline_comment|/* Give Demultiplex thread up to 10 seconds to &n;&t;&t;&t;&t;&t;reconnect, should be greater than cifs socket&n;&t;&t;&t;&t;&t;timeout which is 7 seconds */
 id|wait_event_interruptible_timeout
 c_func
 (paren
@@ -222,6 +222,23 @@ op_eq
 id|CifsNeedReconnect
 )paren
 (brace
+multiline_comment|/* on &quot;soft&quot; mounts we wait once */
+r_if
+c_cond
+(paren
+(paren
+id|tcon-&gt;retry
+op_eq
+id|FALSE
+)paren
+op_logical_or
+(paren
+id|tcon-&gt;ses-&gt;status
+op_eq
+id|CifsExiting
+)paren
+)paren
+(brace
 id|unload_nls
 c_func
 (paren
@@ -233,6 +250,12 @@ op_minus
 id|EHOSTDOWN
 suffix:semicolon
 )brace
+multiline_comment|/* else &quot;hard&quot; mount - keep retrying until &n;&t;&t;&t;&t;&t;process is killed or server comes back up */
+)brace
+r_else
+multiline_comment|/* TCP session is reestablished now */
+r_break
+suffix:semicolon
 )brace
 multiline_comment|/* need to prevent multiple threads trying to&n;&t;&t;simultaneously reconnect the same SMB session */
 id|down
@@ -517,8 +540,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-id|NegotiateRetry
-suffix:colon
 id|rc
 op_assign
 id|smb_init
@@ -990,17 +1011,6 @@ c_func
 (paren
 id|pSMB
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-op_minus
-id|EAGAIN
-)paren
-r_goto
-id|NegotiateRetry
 suffix:semicolon
 r_return
 id|rc
