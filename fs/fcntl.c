@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/fcntl.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -11,35 +12,6 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;asm/poll.h&gt;
 macro_line|#include &lt;asm/siginfo.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-r_extern
-r_int
-id|fcntl_setlease
-c_func
-(paren
-r_int
-r_int
-id|fd
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_int
-id|arg
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|fcntl_getlease
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|filp
-)paren
-suffix:semicolon
 DECL|function|set_close_on_exec
 r_void
 id|set_close_on_exec
