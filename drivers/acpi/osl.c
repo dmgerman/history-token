@@ -709,6 +709,11 @@ id|acpi_irq_handler
 (paren
 id|acpi_irq_context
 )paren
+ques
+c_cond
+id|IRQ_HANDLED
+suffix:colon
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|acpi_status
