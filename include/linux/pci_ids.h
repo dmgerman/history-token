@@ -2871,6 +2871,11 @@ DECL|macro|PCI_DEVICE_ID_PC300_TE_M_2
 mdefine_line|#define PCI_DEVICE_ID_PC300_TE_M_2&t;0x0320
 DECL|macro|PCI_DEVICE_ID_PC300_TE_M_1
 mdefine_line|#define PCI_DEVICE_ID_PC300_TE_M_1&t;0x0321
+multiline_comment|/* Allied Telesyn */
+DECL|macro|PCI_VENDOR_ID_AT
+mdefine_line|#define PCI_VENDOR_ID_AT    &t;&t;0x1259
+DECL|macro|PCI_SUBDEVICE_ID_AT_2701FX
+mdefine_line|#define PCI_SUBDEVICE_ID_AT_2701FX&t;0x2703
 DECL|macro|PCI_VENDOR_ID_ESSENTIAL
 mdefine_line|#define PCI_VENDOR_ID_ESSENTIAL&t;&t;0x120f
 DECL|macro|PCI_DEVICE_ID_ESSENTIAL_ROADRUNNER
