@@ -1016,6 +1016,40 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+DECL|function|maven_compute_deflicker
+r_static
+r_int
+r_char
+id|maven_compute_deflicker
+(paren
+r_const
+r_struct
+id|maven_data
+op_star
+id|md
+)paren
+(brace
+r_int
+r_char
+id|df
+suffix:semicolon
+id|df
+op_assign
+(paren
+id|md-&gt;version
+op_eq
+id|MGATVO_B
+ques
+c_cond
+l_int|0x40
+suffix:colon
+l_int|0x00
+)paren
+suffix:semicolon
+r_return
+id|df
+suffix:semicolon
+)brace
 DECL|function|maven_init_TVdata
 r_static
 r_void
@@ -1453,12 +1487,17 @@ id|data
 op_assign
 id|ntscregs
 suffix:semicolon
+multiline_comment|/* Set deflicker */
 id|data-&gt;regs
 (braket
 l_int|0x93
 )braket
 op_assign
-l_int|0xA2
+id|maven_compute_deflicker
+c_func
+(paren
+id|md
+)paren
 suffix:semicolon
 multiline_comment|/* gamma correction registers */
 id|data-&gt;regs
@@ -2265,7 +2304,7 @@ id|c
 comma
 l_int|0x8D
 comma
-l_int|0x00
+l_int|0x04
 )paren
 suffix:semicolon
 id|LR
@@ -2403,7 +2442,7 @@ l_int|0x8D
 suffix:semicolon
 id|val
 op_and_assign
-l_int|0x10
+l_int|0x14
 suffix:semicolon
 multiline_comment|/* 0x10 or anything ored with it */
 id|maven_set_reg
@@ -4052,7 +4091,7 @@ id|m-&gt;regs
 l_int|0x8D
 )braket
 op_assign
-l_int|0x00
+l_int|0x04
 suffix:semicolon
 multiline_comment|/* defaults to 0x10: test signal */
 id|m-&gt;regs
