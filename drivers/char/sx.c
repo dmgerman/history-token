@@ -6,7 +6,6 @@ mdefine_line|#define RCS_REV &quot;$Revision: 1.33 $&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt; 
 macro_line|#include &lt;linux/kdev_t.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -25,6 +24,8 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* The 3.0.0 version of sxboards/sxwindow.h  uses BYTE and WORD.... */
 DECL|macro|BYTE
 mdefine_line|#define BYTE u8
