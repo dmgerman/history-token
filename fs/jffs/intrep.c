@@ -690,7 +690,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -6994,7 +6994,7 @@ op_star
 id|fm
 suffix:semicolon
 r_struct
-id|iovec
+id|kvec
 id|node_iovec
 (braket
 l_int|4

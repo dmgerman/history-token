@@ -191,7 +191,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -218,7 +218,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -3993,7 +3993,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAND write with iovec&n; */
+multiline_comment|/*&n; * NAND write with kvec&n; */
 DECL|function|nand_writev
 r_static
 r_int
@@ -4006,7 +4006,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -4055,7 +4055,7 @@ id|mtd
 comma
 r_const
 r_struct
-id|iovec
+id|kvec
 op_star
 id|vecs
 comma
@@ -4294,7 +4294,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* Loop until all iovecs&squot; data has been written */
+multiline_comment|/* Loop until all kvec&squot; data has been written */
 id|len
 op_assign
 l_int|0
@@ -4320,10 +4320,6 @@ id|mtd-&gt;oobblock
 (brace
 id|this-&gt;data_poi
 op_assign
-(paren
-id|u_char
-op_star
-)paren
 id|vecs-&gt;iov_base
 suffix:semicolon
 id|this-&gt;data_poi
