@@ -4245,6 +4245,12 @@ c_func
 (paren
 id|page
 )paren
+op_logical_and
+(paren
+id|pb-&gt;pb_flags
+op_amp
+id|_PBF_PAGE_CACHE
+)paren
 )paren
 (brace
 r_int
