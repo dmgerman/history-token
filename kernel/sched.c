@@ -7,8 +7,58 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;linux/kernel_stat.h&gt;
+multiline_comment|/*&n; * Priority of a process goes from 0 to 139. The 0-99&n; * priority range is allocated to RT tasks, the 100-139&n; * range is for SCHED_OTHER tasks. Priority values are&n; * inverted: lower p-&gt;prio value means higher priority.&n; */
+DECL|macro|MAX_RT_PRIO
+mdefine_line|#define MAX_RT_PRIO&t;&t;100
+DECL|macro|MAX_PRIO
+mdefine_line|#define MAX_PRIO&t;&t;(MAX_RT_PRIO + 40)
+multiline_comment|/*&n; * Convert user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ 100 ... 139 (MAX_PRIO-1) ],&n; * and back.&n; */
+DECL|macro|NICE_TO_PRIO
+mdefine_line|#define NICE_TO_PRIO(nice)&t;(MAX_RT_PRIO + (nice) + 20)
+DECL|macro|PRIO_TO_NICE
+mdefine_line|#define PRIO_TO_NICE(prio)&t;((prio) - MAX_RT_PRIO - 20)
+DECL|macro|TASK_NICE
+mdefine_line|#define TASK_NICE(p)&t;&t;PRIO_TO_NICE((p)-&gt;static_prio)
+multiline_comment|/*&n; * &squot;User priority&squot; is the nice value converted to something we&n; * can work with better when scaling various scheduler parameters,&n; * it&squot;s a [ 0 ... 39 ] range.&n; */
+DECL|macro|USER_PRIO
+mdefine_line|#define USER_PRIO(p)&t;&t;((p)-MAX_RT_PRIO)
+DECL|macro|TASK_USER_PRIO
+mdefine_line|#define TASK_USER_PRIO(p)&t;USER_PRIO((p)-&gt;static_prio)
+DECL|macro|MAX_USER_PRIO
+mdefine_line|#define MAX_USER_PRIO&t;&t;(USER_PRIO(MAX_PRIO))
+multiline_comment|/*&n; * These are the &squot;tuning knobs&squot; of the scheduler:&n; *&n; * Minimum timeslice is 10 msecs, default timeslice is 150 msecs,&n; * maximum timeslice is 300 msecs. Timeslices get refilled after&n; * they expire.&n; */
+DECL|macro|MIN_TIMESLICE
+mdefine_line|#define MIN_TIMESLICE&t;&t;( 10 * HZ / 1000)
+DECL|macro|MAX_TIMESLICE
+mdefine_line|#define MAX_TIMESLICE&t;&t;(300 * HZ / 1000)
+DECL|macro|CHILD_PENALTY
+mdefine_line|#define CHILD_PENALTY&t;&t;95
+DECL|macro|PARENT_PENALTY
+mdefine_line|#define PARENT_PENALTY&t;&t;100
+DECL|macro|EXIT_WEIGHT
+mdefine_line|#define EXIT_WEIGHT&t;&t;3
+DECL|macro|PRIO_BONUS_RATIO
+mdefine_line|#define PRIO_BONUS_RATIO&t;25
+DECL|macro|INTERACTIVE_DELTA
+mdefine_line|#define INTERACTIVE_DELTA&t;2
+DECL|macro|MAX_SLEEP_AVG
+mdefine_line|#define MAX_SLEEP_AVG&t;&t;(2*HZ)
+DECL|macro|STARVATION_LIMIT
+mdefine_line|#define STARVATION_LIMIT&t;(2*HZ)
+multiline_comment|/*&n; * If a task is &squot;interactive&squot; then we reinsert it in the active&n; * array after it has expired its current timeslice. (it will not&n; * continue to run immediately, it will still roundrobin with&n; * other interactive tasks.)&n; *&n; * This part scales the interactivity limit depending on niceness.&n; *&n; * We scale it linearly, offset by the INTERACTIVE_DELTA delta.&n; * Here are a few examples of different nice levels:&n; *&n; *  TASK_INTERACTIVE(-20): [1,1,1,1,1,1,1,1,1,0,0]&n; *  TASK_INTERACTIVE(-10): [1,1,1,1,1,1,1,0,0,0,0]&n; *  TASK_INTERACTIVE(  0): [1,1,1,1,0,0,0,0,0,0,0]&n; *  TASK_INTERACTIVE( 10): [1,1,0,0,0,0,0,0,0,0,0]&n; *  TASK_INTERACTIVE( 19): [0,0,0,0,0,0,0,0,0,0,0]&n; *&n; * (the X axis represents the possible -5 ... 0 ... +5 dynamic&n; *  priority range a task can explore, a value of &squot;1&squot; means the&n; *  task is rated interactive.)&n; *&n; * Ie. nice +19 tasks can never get &squot;interactive&squot; enough to be&n; * reinserted into the active array. And only heavily CPU-hog nice -20&n; * tasks will be expired. Default nice 0 tasks are somewhere between,&n; * it takes some effort for them to get interactive, but it&squot;s not&n; * too hard.&n; */
+DECL|macro|SCALE
+mdefine_line|#define SCALE(v1,v1_max,v2_max) &bslash;&n;&t;(v1) * (v2_max) / (v1_max)
+DECL|macro|DELTA
+mdefine_line|#define DELTA(p) &bslash;&n;&t;(SCALE(TASK_NICE(p), 40, MAX_USER_PRIO*PRIO_BONUS_RATIO/100) + &bslash;&n;&t;&t;INTERACTIVE_DELTA)
+DECL|macro|TASK_INTERACTIVE
+mdefine_line|#define TASK_INTERACTIVE(p) &bslash;&n;&t;((p)-&gt;prio &lt;= (p)-&gt;static_prio - DELTA(p))
+multiline_comment|/*&n; * TASK_TIMESLICE scales user-nice values [ -20 ... 19 ]&n; * to time slice values.&n; *&n; * The higher a process&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority process gets MIN_TIMESLICE worth of execution time.&n; */
+DECL|macro|TASK_TIMESLICE
+mdefine_line|#define TASK_TIMESLICE(p) (MIN_TIMESLICE + &bslash;&n;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * (MAX_PRIO-1-(p)-&gt;static_prio)/39))
+multiline_comment|/*&n; * These are the runqueue data structures:&n; */
 DECL|macro|BITMAP_SIZE
-mdefine_line|#define BITMAP_SIZE ((((MAX_PRIO+7)/8)+sizeof(long)-1)/sizeof(long))
+mdefine_line|#define BITMAP_SIZE ((((MAX_PRIO+1+7)/8)+sizeof(long)-1)/sizeof(long))
 DECL|typedef|runqueue_t
 r_typedef
 r_struct
@@ -124,7 +174,7 @@ mdefine_line|#define task_rq(p)&t;&t;cpu_rq((p)-&gt;thread_info-&gt;cpu)
 DECL|macro|cpu_curr
 mdefine_line|#define cpu_curr(cpu)&t;&t;(cpu_rq(cpu)-&gt;curr)
 DECL|macro|rt_task
-mdefine_line|#define rt_task(p)&t;&t;((p)-&gt;policy != SCHED_OTHER)
+mdefine_line|#define rt_task(p)&t;&t;((p)-&gt;prio &lt; MAX_RT_PRIO)
 DECL|function|lock_task_rq
 r_static
 r_inline
@@ -337,16 +387,6 @@ op_assign
 id|array
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * A task is &squot;heavily interactive&squot; if it either has reached the&n; * bottom 25% of the SCHED_OTHER priority range, or if it is below&n; * its default priority by at least 3 priority levels. In this&n; * case we favor it by reinserting it on the active array,&n; * even after it expired its current timeslice.&n; *&n; * A task is a &squot;CPU hog&squot; if it&squot;s either in the upper 25% of the&n; * SCHED_OTHER priority range, or if&squot;s not an interactive task.&n; *&n; * A task can get a priority bonus by being &squot;somewhat&n; * interactive&squot; - and it will get a priority penalty for&n; * being a CPU hog.&n; *&n; */
-DECL|macro|PRIO_INTERACTIVE
-mdefine_line|#define PRIO_INTERACTIVE &bslash;&n;&t;&t;(MAX_RT_PRIO + MAX_USER_PRIO*PRIO_INTERACTIVE_RATIO/100)
-DECL|macro|PRIO_CPU_HOG
-mdefine_line|#define PRIO_CPU_HOG &bslash;&n;&t;&t;(MAX_RT_PRIO + MAX_USER_PRIO*PRIO_CPU_HOG_RATIO/100)
-DECL|macro|TASK_INTERACTIVE
-mdefine_line|#define TASK_INTERACTIVE(p) &bslash;&n;&t;(((p)-&gt;prio &lt;= PRIO_INTERACTIVE) || &bslash;&n;&t;(((p)-&gt;prio &lt; PRIO_CPU_HOG) &amp;&amp; &bslash;&n;&t;&t;((p)-&gt;prio &lt;= NICE_TO_PRIO((p)-&gt;__nice) - INTERACTIVE_DELTA)))
-multiline_comment|/*&n; * We place interactive tasks back into the active array, if possible.&n; *&n; * To guarantee that this does not starve expired tasks we ignore the&n; * interactivity of a task if the first expired task had to wait more&n; * than a &squot;reasonable&squot; amount of time. This deadline timeout is&n; * load-dependent, as the frequency of array switched decreases with&n; * increasing number of running tasks:&n; */
-DECL|macro|EXPIRED_STARVING
-mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;&t;((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= &bslash;&n;&t;&t;&t;STARVATION_LIMIT * ((rq)-&gt;nr_running) + 1))
 DECL|function|effective_prio
 r_static
 r_inline
@@ -364,7 +404,7 @@ id|bonus
 comma
 id|prio
 suffix:semicolon
-multiline_comment|/*&n;&t; * Here we scale the actual sleep average [0 .... MAX_SLEEP_AVG]&n;&t; * into the -14 ... +14 bonus/penalty range.&n;&t; *&n;&t; * We use 70% of the full 0...39 priority range so that:&n;&t; *&n;&t; * 1) nice +19 CPU hogs do not preempt nice 0 CPU hogs.&n;&t; * 2) nice -20 interactive tasks do not get preempted by&n;&t; *    nice 0 interactive tasks.&n;&t; *&n;&t; * Both properties are important to certain workloads.&n;&t; */
+multiline_comment|/*&n;&t; * Here we scale the actual sleep average [0 .... MAX_SLEEP_AVG]&n;&t; * into the -5 ... 0 ... +5 bonus/penalty range.&n;&t; *&n;&t; * We use 25% of the full 0...39 priority range so that:&n;&t; *&n;&t; * 1) nice +19 interactive tasks do not preempt nice 0 CPU hogs.&n;&t; * 2) nice -20 CPU hogs do not get preempted by nice 0 tasks.&n;&t; *&n;&t; * Both properties are important to certain workloads.&n;&t; */
 id|bonus
 op_assign
 id|MAX_USER_PRIO
@@ -387,11 +427,7 @@ l_int|2
 suffix:semicolon
 id|prio
 op_assign
-id|NICE_TO_PRIO
-c_func
-(paren
-id|p-&gt;__nice
-)paren
+id|p-&gt;static_prio
 op_minus
 id|bonus
 suffix:semicolon
@@ -536,10 +572,6 @@ suffix:semicolon
 id|p-&gt;array
 op_assign
 l_int|NULL
-suffix:semicolon
-id|p-&gt;sleep_timestamp
-op_assign
-id|jiffies
 suffix:semicolon
 )brace
 DECL|function|resched_task
@@ -969,11 +1001,20 @@ id|p
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * We decrease the sleep average of forking parents&n;&t;&t; * and children as well, to keep max-interactive tasks&n;&t;&t; * from forking tasks that are max-interactive.&n;&t;&t; */
+id|current-&gt;sleep_avg
+op_assign
+id|current-&gt;sleep_avg
+op_star
+id|PARENT_PENALTY
+op_div
+l_int|100
+suffix:semicolon
 id|p-&gt;sleep_avg
 op_assign
 id|p-&gt;sleep_avg
 op_star
-id|CHILD_FORK_PENALTY
+id|CHILD_PENALTY
 op_div
 l_int|100
 suffix:semicolon
@@ -984,14 +1025,6 @@ c_func
 (paren
 id|p
 )paren
-suffix:semicolon
-id|current-&gt;sleep_avg
-op_assign
-id|current-&gt;sleep_avg
-op_star
-id|PARENT_FORK_PENALTY
-op_div
-l_int|100
 suffix:semicolon
 )brace
 id|spin_lock_irq
@@ -1029,6 +1062,72 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Potentially available exiting-child timeslices are&n; * retrieved here - this way the parent does not get&n; * penalized for creating too many processes.&n; *&n; * (this cannot be used to &squot;generate&squot; timeslices&n; * artificially, because any timeslice recovered here&n; * was given away by the parent in the first place.)&n; */
+DECL|function|sched_exit
+r_void
+id|sched_exit
+c_func
+(paren
+id|task_t
+op_star
+id|p
+)paren
+(brace
+id|__cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|current-&gt;time_slice
+op_add_assign
+id|p-&gt;time_slice
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|current-&gt;time_slice
+OG
+id|MAX_TIMESLICE
+)paren
+)paren
+id|current-&gt;time_slice
+op_assign
+id|MAX_TIMESLICE
+suffix:semicolon
+id|__sti
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * If the child was a (relative-) CPU hog then decrease&n;&t; * the sleep_avg of the parent as well.&n;&t; */
+r_if
+c_cond
+(paren
+id|p-&gt;sleep_avg
+OL
+id|current-&gt;sleep_avg
+)paren
+id|current-&gt;sleep_avg
+op_assign
+(paren
+id|current-&gt;sleep_avg
+op_star
+id|EXIT_WEIGHT
+op_plus
+id|p-&gt;sleep_avg
+)paren
+op_div
+(paren
+id|EXIT_WEIGHT
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+macro_line|#if CONFIG_SMP
 DECL|function|schedule_tail
 id|asmlinkage
 r_void
@@ -1053,6 +1152,7 @@ id|lock
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|context_switch
 r_static
 r_inline
@@ -1659,13 +1759,28 @@ id|busiest-&gt;active
 suffix:semicolon
 id|new_array
 suffix:colon
-multiline_comment|/*&n;&t; * Load-balancing does not affect RT tasks, so we start the&n;&t; * searching at priority 128.&n;&t; */
+multiline_comment|/* Start searching at priority 0: */
 id|idx
 op_assign
-id|MAX_RT_PRIO
+l_int|0
 suffix:semicolon
 id|skip_bitmap
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|idx
+)paren
+id|idx
+op_assign
+id|sched_find_first_bit
+c_func
+(paren
+id|array-&gt;bitmap
+)paren
+suffix:semicolon
+r_else
 id|idx
 op_assign
 id|find_next_bit
@@ -1910,17 +2025,30 @@ id|lock
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n; * We place interactive tasks back into the active array, if possible.&n; *&n; * To guarantee that this does not starve expired tasks we ignore the&n; * interactivity of a task if the first expired task had to wait more&n; * than a &squot;reasonable&squot; amount of time. This deadline timeout is&n; * load-dependent, as the frequency of array switched decreases with&n; * increasing number of running tasks:&n; */
+DECL|macro|EXPIRED_STARVING
+mdefine_line|#define EXPIRED_STARVING(rq) &bslash;&n;&t;&t;((rq)-&gt;expired_timestamp &amp;&amp; &bslash;&n;&t;&t;(jiffies - (rq)-&gt;expired_timestamp &gt;= &bslash;&n;&t;&t;&t;STARVATION_LIMIT * ((rq)-&gt;nr_running) + 1))
 multiline_comment|/*&n; * This function gets called by the timer code, with HZ frequency.&n; * We call it with interrupts disabled.&n; */
 DECL|function|scheduler_tick
 r_void
 id|scheduler_tick
 c_func
 (paren
-id|task_t
-op_star
-id|p
+r_int
+id|user_tick
+comma
+r_int
+id|system
 )paren
 (brace
+r_int
+id|cpu
+op_assign
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|runqueue_t
 op_star
 id|rq
@@ -1930,12 +2058,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
-r_int
-r_int
-id|now
+id|task_t
+op_star
+id|p
 op_assign
-id|jiffies
+id|current
 suffix:semicolon
 r_if
 c_cond
@@ -1944,13 +2071,74 @@ id|p
 op_eq
 id|rq-&gt;idle
 )paren
-r_return
+(brace
+r_if
+c_cond
+(paren
+id|local_bh_count
+c_func
+(paren
+id|cpu
+)paren
+op_logical_or
+id|local_irq_count
+c_func
+(paren
+id|cpu
+)paren
+OG
+l_int|1
+)paren
+id|kstat.per_cpu_system
+(braket
+id|cpu
+)braket
+op_add_assign
+id|system
+suffix:semicolon
+macro_line|#if CONFIG_SMP
 id|idle_tick
 c_func
 (paren
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|TASK_NICE
+c_func
+(paren
+id|p
+)paren
+OG
+l_int|0
+)paren
+id|kstat.per_cpu_nice
+(braket
+id|cpu
+)braket
+op_add_assign
+id|user_tick
+suffix:semicolon
+r_else
+id|kstat.per_cpu_user
+(braket
+id|cpu
+)braket
+op_add_assign
+id|user_tick
+suffix:semicolon
+id|kstat.per_cpu_system
+(braket
+id|cpu
+)braket
+op_add_assign
+id|system
+suffix:semicolon
 multiline_comment|/* Task might have expired already, but not scheduled off yet */
 r_if
 c_cond
@@ -2007,10 +2195,10 @@ id|p-&gt;time_slice
 (brace
 id|p-&gt;time_slice
 op_assign
-id|NICE_TO_TIMESLICE
+id|TASK_TIMESLICE
 c_func
 (paren
-id|p-&gt;__nice
+id|p
 )paren
 suffix:semicolon
 id|set_tsk_need_resched
@@ -2082,10 +2270,10 @@ id|p
 suffix:semicolon
 id|p-&gt;time_slice
 op_assign
-id|NICE_TO_TIMESLICE
+id|TASK_TIMESLICE
 c_func
 (paren
-id|p-&gt;__nice
+id|p
 )paren
 suffix:semicolon
 r_if
@@ -2142,7 +2330,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|now
+id|jiffies
 op_mod
 id|BUSY_REBALANCE_TICK
 )paren
@@ -2249,6 +2437,10 @@ c_func
 )paren
 )paren
 suffix:semicolon
+id|prev-&gt;sleep_timestamp
+op_assign
+id|jiffies
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -2283,15 +2475,6 @@ id|prev-&gt;state
 )paren
 (brace
 r_case
-id|TASK_RUNNING
-suffix:colon
-id|prev-&gt;sleep_timestamp
-op_assign
-id|jiffies
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|TASK_INTERRUPTIBLE
 suffix:colon
 r_if
@@ -2312,10 +2495,6 @@ id|prev-&gt;state
 op_assign
 id|TASK_RUNNING
 suffix:semicolon
-id|prev-&gt;sleep_timestamp
-op_assign
-id|jiffies
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -2328,6 +2507,10 @@ id|prev
 comma
 id|rq
 )paren
+suffix:semicolon
+r_case
+id|TASK_RUNNING
+suffix:colon
 suffix:semicolon
 )brace
 macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
@@ -3084,6 +3267,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p
+op_ne
+id|current
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
 id|p-&gt;cpus_allowed
 op_assign
 id|new_mask
@@ -3166,9 +3361,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;__nice
+id|TASK_NICE
+c_func
+(paren
+id|p
+)paren
 op_eq
 id|nice
+op_logical_or
+id|nice
+template_param
+l_int|19
 )paren
 r_return
 suffix:semicolon
@@ -3194,9 +3397,13 @@ id|p
 )paren
 )paren
 (brace
-id|p-&gt;__nice
+id|p-&gt;static_prio
 op_assign
+id|NICE_TO_PRIO
+c_func
+(paren
 id|nice
+)paren
 suffix:semicolon
 r_goto
 id|out_unlock
@@ -3219,9 +3426,13 @@ comma
 id|array
 )paren
 suffix:semicolon
-id|p-&gt;__nice
+id|p-&gt;static_prio
 op_assign
+id|NICE_TO_PRIO
+c_func
+(paren
 id|nice
+)paren
 suffix:semicolon
 id|p-&gt;prio
 op_assign
@@ -3250,23 +3461,19 @@ r_if
 c_cond
 (paren
 (paren
+id|NICE_TO_PRIO
+c_func
+(paren
 id|nice
+)paren
 OL
-id|p-&gt;__nice
+id|p-&gt;static_prio
 )paren
 op_logical_or
-(paren
-(paren
-id|p-&gt;__nice
-OL
-id|nice
-)paren
-op_logical_and
 (paren
 id|p
 op_eq
 id|rq-&gt;curr
-)paren
 )paren
 )paren
 id|resched_task
@@ -3353,7 +3560,11 @@ l_int|40
 suffix:semicolon
 id|nice
 op_assign
-id|current-&gt;__nice
+id|PRIO_TO_NICE
+c_func
+(paren
+id|current-&gt;static_prio
+)paren
 op_plus
 id|increment
 suffix:semicolon
@@ -3394,6 +3605,66 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/*&n; * This is the priority value as seen by users in /proc&n; *&n; * RT tasks are offset by -200. Normal tasks are centered&n; * around 0, value goes from -16 to +15.&n; */
+DECL|function|task_prio
+r_int
+id|task_prio
+c_func
+(paren
+id|task_t
+op_star
+id|p
+)paren
+(brace
+r_return
+id|p-&gt;prio
+op_minus
+l_int|100
+suffix:semicolon
+)brace
+DECL|function|task_nice
+r_int
+id|task_nice
+c_func
+(paren
+id|task_t
+op_star
+id|p
+)paren
+(brace
+r_return
+id|TASK_NICE
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+)brace
+DECL|function|idle_cpu
+r_int
+id|idle_cpu
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+r_return
+id|cpu_curr
+c_func
+(paren
+id|cpu
+)paren
+op_eq
+id|cpu_rq
+c_func
+(paren
+id|cpu
+)paren
+op_member_access_from_pointer
+id|idle
+suffix:semicolon
+)brace
 DECL|function|find_process_by_pid
 r_static
 r_inline
@@ -3721,11 +3992,7 @@ suffix:semicolon
 r_else
 id|p-&gt;prio
 op_assign
-id|NICE_TO_PRIO
-c_func
-(paren
-id|p-&gt;__nice
-)paren
+id|p-&gt;static_prio
 suffix:semicolon
 r_if
 c_cond
@@ -4349,10 +4616,10 @@ ques
 c_cond
 l_int|0
 suffix:colon
-id|NICE_TO_TIMESLICE
+id|TASK_TIMESLICE
 c_func
 (paren
-id|p-&gt;__nice
+id|p
 )paren
 comma
 op_amp

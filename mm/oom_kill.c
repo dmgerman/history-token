@@ -153,7 +153,11 @@ multiline_comment|/*&n;&t; * Niced processes are most likely less important, so 
 r_if
 c_cond
 (paren
-id|p-&gt;__nice
+id|task_nice
+c_func
+(paren
+id|p
+)paren
 OG
 l_int|0
 )paren
@@ -329,9 +333,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * We give our sacrificial lamb high priority and access to&n;&t; * all the memory it needs. That way it should be able to&n;&t; * exit() and clear out its resources quickly...&n;&t; */
 id|p-&gt;time_slice
 op_assign
-l_int|2
-op_star
-id|MAX_TIMESLICE
+id|HZ
 suffix:semicolon
 id|p-&gt;flags
 op_or_assign

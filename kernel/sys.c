@@ -605,7 +605,11 @@ c_cond
 (paren
 id|niceval
 OL
-id|p-&gt;__nice
+id|task_nice
+c_func
+(paren
+id|p
+)paren
 op_logical_and
 op_logical_neg
 id|capable
@@ -715,7 +719,11 @@ id|niceval
 op_assign
 l_int|20
 op_minus
-id|p-&gt;__nice
+id|task_nice
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 r_if
 c_cond

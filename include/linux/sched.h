@@ -253,10 +253,11 @@ r_void
 id|scheduler_tick
 c_func
 (paren
-r_struct
-id|task_struct
-op_star
-id|p
+r_int
+id|user_tick
+comma
+r_int
+id|system
 )paren
 suffix:semicolon
 r_extern
@@ -606,12 +607,11 @@ id|lock_depth
 suffix:semicolon
 multiline_comment|/* Lock depth */
 DECL|member|prio
+DECL|member|static_prio
 r_int
 id|prio
-suffix:semicolon
-DECL|member|__nice
-r_int
-id|__nice
+comma
+id|static_prio
 suffix:semicolon
 DECL|member|run_list
 id|list_t
@@ -621,11 +621,6 @@ DECL|member|array
 id|prio_array_t
 op_star
 id|array
-suffix:semicolon
-DECL|member|time_slice
-r_int
-r_int
-id|time_slice
 suffix:semicolon
 DECL|member|sleep_avg
 r_int
@@ -646,6 +641,11 @@ DECL|member|cpus_allowed
 r_int
 r_int
 id|cpus_allowed
+suffix:semicolon
+DECL|member|time_slice
+r_int
+r_int
+id|time_slice
 suffix:semicolon
 DECL|member|next_task
 DECL|member|prev_task
@@ -1139,47 +1139,6 @@ mdefine_line|#define PT_PTRACE_CAP&t;0x00000008&t;/* ptracer can follow suid-exe
 multiline_comment|/*&n; * Limit the stack by to some sane default: root can always&n; * increase this limit if needed..  8MB seems reasonable.&n; */
 DECL|macro|_STK_LIM
 mdefine_line|#define _STK_LIM&t;(8*1024*1024)
-multiline_comment|/*&n; * RT priorites go from 0 to 99, but internally we max&n; * them out at 128 to make it easier to search the&n; * scheduler bitmap.&n; */
-DECL|macro|MAX_RT_PRIO
-mdefine_line|#define MAX_RT_PRIO&t;&t;128
-multiline_comment|/*&n; * The lower the priority of a process, the more likely it is&n; * to run. Priority of a process goes from 0 to 167. The 0-99&n; * priority range is allocated to RT tasks, the 128-167 range&n; * is for SCHED_OTHER tasks.&n; */
-DECL|macro|MAX_PRIO
-mdefine_line|#define MAX_PRIO&t;&t;(MAX_RT_PRIO + 40)
-multiline_comment|/*&n; * Scales user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ 128 ... 167 (MAX_PRIO-1) ]&n; *&n; * User-nice value of -20 == static priority 128, and&n; * user-nice value 19 == static priority 167. The lower&n; * the priority value, the higher the task&squot;s priority.&n; */
-DECL|macro|NICE_TO_PRIO
-mdefine_line|#define NICE_TO_PRIO(n)&t;&t;(MAX_RT_PRIO + (n) + 20)
-DECL|macro|DEF_USER_NICE
-mdefine_line|#define DEF_USER_NICE&t;&t;0
-multiline_comment|/*&n; * Default timeslice is 150 msecs, maximum is 300 msecs.&n; * Minimum timeslice is 10 msecs.&n; *&n; * These are the &squot;tuning knobs&squot; of the scheduler:&n; */
-DECL|macro|MIN_TIMESLICE
-mdefine_line|#define MIN_TIMESLICE&t;&t;( 10 * HZ / 1000)
-DECL|macro|MAX_TIMESLICE
-mdefine_line|#define MAX_TIMESLICE&t;&t;(300 * HZ / 1000)
-DECL|macro|CHILD_FORK_PENALTY
-mdefine_line|#define CHILD_FORK_PENALTY&t;95
-DECL|macro|PARENT_FORK_PENALTY
-mdefine_line|#define PARENT_FORK_PENALTY&t;100
-DECL|macro|EXIT_WEIGHT
-mdefine_line|#define EXIT_WEIGHT&t;&t;3
-DECL|macro|PRIO_INTERACTIVE_RATIO
-mdefine_line|#define PRIO_INTERACTIVE_RATIO&t;20
-DECL|macro|PRIO_CPU_HOG_RATIO
-mdefine_line|#define PRIO_CPU_HOG_RATIO&t;60
-DECL|macro|PRIO_BONUS_RATIO
-mdefine_line|#define PRIO_BONUS_RATIO&t;70
-DECL|macro|INTERACTIVE_DELTA
-mdefine_line|#define INTERACTIVE_DELTA&t;3
-DECL|macro|MAX_SLEEP_AVG
-mdefine_line|#define MAX_SLEEP_AVG&t;&t;(2*HZ)
-DECL|macro|STARVATION_LIMIT
-mdefine_line|#define STARVATION_LIMIT&t;(2*HZ)
-DECL|macro|USER_PRIO
-mdefine_line|#define USER_PRIO(p)&t;&t;((p)-MAX_RT_PRIO)
-DECL|macro|MAX_USER_PRIO
-mdefine_line|#define MAX_USER_PRIO&t;&t;(USER_PRIO(MAX_PRIO))
-multiline_comment|/*&n; * NICE_TO_TIMESLICE scales nice values [ -20 ... 19 ]&n; * to time slice values.&n; *&n; * The higher a process&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority process gets MIN_TIMESLICE worth of execution time.&n; */
-DECL|macro|NICE_TO_TIMESLICE
-mdefine_line|#define NICE_TO_TIMESLICE(n) (MIN_TIMESLICE + &bslash;&n;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * (19-(n))) / 39)
 r_extern
 r_void
 id|set_cpus_allowed
@@ -1205,6 +1164,35 @@ id|p
 comma
 r_int
 id|nice
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|task_prio
+c_func
+(paren
+id|task_t
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|task_nice
+c_func
+(paren
+id|task_t
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|idle_cpu
+c_func
+(paren
+r_int
+id|cpu
 )paren
 suffix:semicolon
 id|asmlinkage
@@ -1636,6 +1624,20 @@ r_struct
 id|task_struct
 op_star
 id|tsk
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|sched_exit
+c_func
+(paren
+id|task_t
+op_star
+id|p
 )paren
 )paren
 suffix:semicolon

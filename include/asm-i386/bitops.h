@@ -953,6 +953,7 @@ r_static
 id|__inline__
 r_int
 id|find_next_bit
+c_func
 (paren
 r_void
 op_star
