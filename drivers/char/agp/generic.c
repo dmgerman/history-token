@@ -2325,6 +2325,8 @@ id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_DISPLAY_VGA
+op_lshift
+l_int|8
 comma
 id|device
 )paren
