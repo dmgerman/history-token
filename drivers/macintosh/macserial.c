@@ -338,7 +338,7 @@ id|dma
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|rs_txdma_irq
 c_func
 (paren
@@ -356,7 +356,7 @@ id|regs
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|rs_rxdma_irq
 c_func
 (paren
@@ -2168,7 +2168,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This is the serial driver&squot;s generic interrupt routine&n; */
 DECL|function|rs_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|rs_interrupt
 c_func
 (paren
@@ -2208,6 +2208,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2236,6 +2241,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 multiline_comment|/* NOTE: The read register 3, which holds the irq status,&n;&t; *       does so for both channels on each chip.  Although&n;&t; *       the status value itself must be read from the A&n;&t; *       channel and is only valid when read from channel A.&n;&t; *       Yes... broken hardware...&n;&t; */
@@ -2316,6 +2322,10 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2382,11 +2392,18 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Transmit DMA interrupt - not used at present */
 DECL|function|rs_txdma_irq
 r_static
-r_void
+id|irqreturn_t
 id|rs_txdma_irq
 c_func
 (paren
@@ -2403,11 +2420,14 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Receive DMA interrupt.&n; */
 DECL|function|rs_rxdma_irq
 r_static
-r_void
+id|irqreturn_t
 id|rs_rxdma_irq
 c_func
 (paren
@@ -2449,6 +2469,7 @@ op_logical_neg
 id|info-&gt;dma_initted
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -2501,6 +2522,7 @@ id|info-&gt;rx_dma_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -2545,6 +2567,9 @@ c_func
 op_amp
 id|info-&gt;rx_dma_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * -------------------------------------------------------------------&n; * Here ends the serial interrupt routines.&n; * -------------------------------------------------------------------&n; */
@@ -12406,10 +12431,11 @@ op_amp
 id|serial_driver
 )paren
 )paren
-id|panic
+id|printk
 c_func
 (paren
-l_string|&quot;Couldn&squot;t register serial driver&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;Error: couldn&squot;t register serial driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -12422,10 +12448,11 @@ op_amp
 id|callout_driver
 )paren
 )paren
-id|panic
+id|printk
 c_func
 (paren
-l_string|&quot;Couldn&squot;t register callout driver&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;Error: couldn&squot;t register callout driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_for

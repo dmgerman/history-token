@@ -1200,15 +1200,6 @@ macro_line|#else
 singleline_comment|// Need something here for sn2.... ZXZXZX
 macro_line|#endif
 macro_line|#endif
-multiline_comment|/*&n;&t; * Set the root start and end for Mem Resource.&n;&t; */
-id|iomem_resource.start
-op_assign
-l_int|0
-suffix:semicolon
-id|iomem_resource.end
-op_assign
-l_int|0xffffffffffffffff
-suffix:semicolon
 multiline_comment|/*&n;&t; * Initialize the device vertex in the pci_dev struct.&n;&t; */
 id|pci_for_each_dev
 c_func

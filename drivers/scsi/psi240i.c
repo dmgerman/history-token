@@ -26,7 +26,7 @@ DECL|macro|DEB
 mdefine_line|#define DEB(x)
 macro_line|#endif
 DECL|macro|MAXBOARDS
-mdefine_line|#define MAXBOARDS 2&t;/* Increase this and the sizes of the arrays below, if you need more. */
+mdefine_line|#define MAXBOARDS 6&t;/* Increase this and the sizes of the arrays below, if you need more. */
 DECL|macro|PORT_DATA
 mdefine_line|#define&t;PORT_DATA&t;&t;&t;&t;0
 DECL|macro|PORT_ERROR
@@ -1341,9 +1341,8 @@ id|PADAPTER240I
 id|padapter
 op_assign
 id|HOSTDATA
-c_func
 (paren
-id|SCpnt-&gt;host
+id|SCpnt-&gt;device-&gt;host
 )paren
 suffix:semicolon
 singleline_comment|// Pointer to adapter control structure
@@ -1353,7 +1352,7 @@ op_assign
 op_amp
 id|padapter-&gt;device
 (braket
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )braket
 suffix:semicolon
 singleline_comment|// Pointer to device information
@@ -2035,6 +2034,10 @@ id|z
 suffix:semicolon
 id|USHORT
 id|port
+comma
+id|port_range
+op_assign
+l_int|16
 suffix:semicolon
 id|CHIP_CONFIG_N
 id|chipConfig
@@ -2050,9 +2053,6 @@ id|Scsi_Host
 op_star
 id|pshost
 suffix:semicolon
-id|ULONG
-id|flags
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2062,13 +2062,17 @@ l_int|0
 suffix:semicolon
 id|board
 OL
-l_int|6
+id|MAXBOARDS
 suffix:semicolon
 id|board
 op_increment
 )paren
 singleline_comment|// scan for I/O ports
 (brace
+id|pshost
+op_assign
+l_int|NULL
+suffix:semicolon
 id|port
 op_assign
 id|portAddr
@@ -2080,17 +2084,18 @@ singleline_comment|// get base address to test
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 (paren
 id|port
 comma
-l_int|16
+id|port_range
+comma
+l_string|&quot;psi240i&quot;
 )paren
 )paren
-singleline_comment|// test for I/O addresses available
 r_continue
 suffix:semicolon
-singleline_comment|//   nope
 r_if
 c_cond
 (paren
@@ -2104,7 +2109,8 @@ op_ne
 id|CHIP_ID
 )paren
 singleline_comment|// do the first test for likley hood that it is us
-r_continue
+r_goto
+id|host_init_failure
 suffix:semicolon
 id|outb_p
 (paren
@@ -2137,7 +2143,8 @@ op_ne
 l_int|0x55
 )paren
 singleline_comment|// test 1st byte
-r_continue
+r_goto
+id|host_init_failure
 suffix:semicolon
 singleline_comment|//   nope
 r_if
@@ -2153,7 +2160,8 @@ op_ne
 l_int|0xAA
 )paren
 singleline_comment|// test 2nd byte
-r_continue
+r_goto
+id|host_init_failure
 suffix:semicolon
 singleline_comment|//   nope
 singleline_comment|// at this point our board is found and can be accessed.  Now we need to initialize
@@ -2210,7 +2218,8 @@ op_logical_neg
 id|chipConfig.numDrives
 )paren
 singleline_comment|// if no devices on this board
-r_continue
+r_goto
+id|host_init_failure
 suffix:semicolon
 id|pshost
 op_assign
@@ -2232,47 +2241,8 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_continue
-suffix:semicolon
-)brace
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|request_irq
-(paren
-id|chipConfig.irq
-comma
-id|do_Irq_Handler
-comma
-l_int|0
-comma
-l_string|&quot;psi240i&quot;
-comma
-id|pshost
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;Unable to allocate IRQ for PSI-240I controller.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|restore_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
 r_goto
-id|unregister
+id|host_init_failure
 suffix:semicolon
 )brace
 id|PsiHost
@@ -2733,11 +2703,25 @@ id|blocks
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+r_if
+c_cond
 (paren
-id|flags
+id|request_irq
+(paren
+id|chipConfig.irq
+comma
+id|do_Irq_Handler
+comma
+l_int|0
+comma
+l_string|&quot;psi240i&quot;
+comma
+id|pshost
 )paren
-suffix:semicolon
+op_eq
+l_int|0
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -2759,9 +2743,26 @@ op_increment
 suffix:semicolon
 r_continue
 suffix:semicolon
-id|unregister
-suffix:colon
+)brace
+id|printk
+(paren
+l_string|&quot;Unable to allocate IRQ for PSI-240I controller.&bslash;n&quot;
+)paren
 suffix:semicolon
+id|host_init_failure
+suffix:colon
+id|release_region
+(paren
+id|port
+comma
+id|port_range
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pshost
+)paren
 id|scsi_unregister
 (paren
 id|pshost

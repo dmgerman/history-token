@@ -1387,11 +1387,6 @@ op_assign
 op_complement
 l_int|0UL
 suffix:semicolon
-id|iomem_resource.end
-op_assign
-op_complement
-l_int|0UL
-suffix:semicolon
 multiline_comment|/* Probe the hardware for info about configuration. */
 id|wildfire_hardware_probe
 c_func

@@ -5644,15 +5644,6 @@ op_star
 id|shpnt
 )paren
 (brace
-id|ASSERT_LOCK
-c_func
-(paren
-op_amp
-id|QLOCK
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

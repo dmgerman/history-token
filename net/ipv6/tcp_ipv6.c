@@ -3660,6 +3660,12 @@ l_int|NULL
 id|ICMP6_INC_STATS_BH
 c_func
 (paren
+id|__in6_dev_get
+c_func
+(paren
+id|skb-&gt;dev
+)paren
+comma
 id|Icmp6InErrors
 )paren
 suffix:semicolon

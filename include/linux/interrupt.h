@@ -138,7 +138,7 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Temporary defines for UP kernels, until all code gets fixed.&n; */
-macro_line|#if !CONFIG_SMP
+macro_line|#ifndef CONFIG_SMP
 DECL|macro|cli
 macro_line|# define cli()&t;&t;&t;local_irq_disable()
 DECL|macro|sti

@@ -119,8 +119,8 @@ id|drm_i810_ring_buffer_t
 id|ring
 suffix:semicolon
 DECL|member|hw_status_page
-r_int
-r_int
+r_void
+op_star
 id|hw_status_page
 suffix:semicolon
 DECL|member|counter

@@ -252,7 +252,7 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|cuda_interrupt
 c_func
 (paren
@@ -1842,7 +1842,7 @@ id|flags
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|cuda_interrupt
 id|cuda_interrupt
 c_func
@@ -1944,6 +1944,7 @@ id|cuda_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|status
@@ -2784,6 +2785,9 @@ id|ibuf_len
 comma
 id|regs
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static
