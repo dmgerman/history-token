@@ -4070,12 +4070,16 @@ suffix:semicolon
 id|u32
 id|ipheader
 suffix:semicolon
-id|skb_frag_t
-op_star
-id|last_frag
-suffix:semicolon
+multiline_comment|/* Since hardware can&squot;t handle unaligned fragments smaller&n;&t;&t; * than 9 bytes, if we find any, we linearize the skb&n;&t;&t; * and start again.  When I&squot;ve seen it, it&squot;s always been&n;&t;&t; * the first frag (probably near the end of the page),&n;&t;&t; * but we check all frags to be safe.&n;&t;&t; */
+r_for
+c_loop
+(paren
 id|frag
 op_assign
+l_int|0
+suffix:semicolon
+id|frag
+OL
 id|skb_shinfo
 c_func
 (paren
@@ -4083,10 +4087,16 @@ id|skb
 )paren
 op_member_access_from_pointer
 id|nr_frags
-op_minus
-l_int|1
 suffix:semicolon
-id|last_frag
+id|frag
+op_increment
+)paren
+(brace
+id|skb_frag_t
+op_star
+id|fragp
+suffix:semicolon
+id|fragp
 op_assign
 op_amp
 id|skb_shinfo
@@ -4103,11 +4113,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|last_frag-&gt;size
+id|fragp-&gt;size
 op_le
 l_int|8
 op_logical_and
-id|last_frag-&gt;page_offset
+id|fragp-&gt;page_offset
 op_amp
 l_int|0x7
 )paren
@@ -4120,9 +4130,30 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: unaligned tiny fragment&quot;
+l_string|&quot;%d of %d, fixed&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|frag
+comma
+id|skb_shinfo
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|nr_frags
+)paren
+suffix:semicolon
 r_goto
 id|linear
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* first frag which is skb header */
 id|pkt_info.byte_cnt
