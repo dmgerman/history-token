@@ -3700,13 +3700,6 @@ id|q
 )paren
 r_return
 suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|q-&gt;unplug_timer
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * was plugged, fire request_fn if queue has stuff to do&n;&t; */
 r_if
 c_cond
