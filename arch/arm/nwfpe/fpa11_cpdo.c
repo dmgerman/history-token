@@ -213,22 +213,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* If the operation succeeded, check to see if the result in the&n;      destination register is the correct size.  If not force it&n;      to be. */
-id|Fd
-op_assign
-id|getFd
-c_func
-(paren
-id|opcode
-)paren
-suffix:semicolon
-id|nType
-op_assign
-id|fpa11-&gt;fType
-(braket
-id|Fd
-)braket
-suffix:semicolon
+multiline_comment|/* The CPDO functions always set the destination type&n;      to be the same as their working size. */
 r_if
 c_cond
 (paren
@@ -245,6 +230,15 @@ id|nType
 )paren
 )paren
 (brace
+multiline_comment|/* If the operation succeeded, check to see if the result in the&n;        destination register is the correct size.  If not force it&n;        to be. */
+id|Fd
+op_assign
+id|getFd
+c_func
+(paren
+id|opcode
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
