@@ -169,7 +169,7 @@ id|prev
 op_assign
 id|prev
 suffix:semicolon
-id|wmb
+id|smp_wmb
 c_func
 (paren
 )paren
@@ -598,12 +598,12 @@ DECL|macro|list_for_each_entry
 mdefine_line|#define list_for_each_entry(pos, head, member)&t;&t;&t;&t;&bslash;&n;&t;for (pos = list_entry((head)-&gt;next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next);&t;&t;&t;&bslash;&n;&t;     &amp;pos-&gt;member != (head); &t;&t;&t;&t;&t;&bslash;&n;&t;     pos = list_entry(pos-&gt;member.next, typeof(*pos), member),&t;&bslash;&n;&t;&t;     prefetch(pos-&gt;member.next))
 multiline_comment|/**&n; * list_for_each_rcu&t;-&t;iterate over an rcu-protected list&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each_rcu
-mdefine_line|#define list_for_each_rcu(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next, prefetch(pos-&gt;next); pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, ({ read_barrier_depends(); 0;}), prefetch(pos-&gt;next))
+mdefine_line|#define list_for_each_rcu(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next, prefetch(pos-&gt;next); pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, ({ smp_read_barrier_depends(); 0;}), prefetch(pos-&gt;next))
 DECL|macro|__list_for_each_rcu
-mdefine_line|#define __list_for_each_rcu(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next; pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, ({ read_barrier_depends(); 0;}))
+mdefine_line|#define __list_for_each_rcu(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next; pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, ({ smp_read_barrier_depends(); 0;}))
 multiline_comment|/**&n; * list_for_each_safe_rcu&t;-&t;iterate over an rcu-protected list safe&n; *&t;&t;&t;&t;&t;against removal of list entry&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @n:&t;&t;another &amp;struct list_head to use as temporary storage&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each_safe_rcu
-mdefine_line|#define list_for_each_safe_rcu(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, ({ read_barrier_depends(); 0;}), n = pos-&gt;next)
+mdefine_line|#define list_for_each_safe_rcu(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, ({ smp_read_barrier_depends(); 0;}), n = pos-&gt;next)
 multiline_comment|/* &n; * Double linked lists with a single pointer list head. &n; * Mostly useful for hash tables where the two pointer list head is &n; * too wasteful.&n; * You lose the ability to access the tail in O(1).&n; */
 DECL|struct|hlist_head
 r_struct

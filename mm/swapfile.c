@@ -1534,6 +1534,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|pte_file
+c_func
+(paren
+id|pte
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|likely
 c_func
 (paren

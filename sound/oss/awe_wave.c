@@ -3616,7 +3616,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-id|__exit
 DECL|function|awe_release_region
 id|awe_release_region
 c_func

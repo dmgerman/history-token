@@ -4953,6 +4953,12 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|resume_device
 op_assign
 id|name_to_dev_t
@@ -4997,6 +5003,8 @@ id|__bdevname
 c_func
 (paren
 id|resume_device
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

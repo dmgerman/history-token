@@ -180,6 +180,12 @@ r_int
 r_int
 id|spc
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|label
 op_assign
 (paren
@@ -224,7 +230,7 @@ op_ne
 id|SUN_LABEL_MAGIC
 )paren
 (brace
-multiline_comment|/*&t;&t;printk(KERN_INFO &quot;Dev %s Sun disklabel: bad magic %04x&bslash;n&quot;,&n;&t;&t;       bdevname(bdev), be16_to_cpu(label-&gt;magic)); */
+multiline_comment|/*&t;&t;printk(KERN_INFO &quot;Dev %s Sun disklabel: bad magic %04x&bslash;n&quot;,&n;&t;&t;       bdevname(bdev, b), be16_to_cpu(label-&gt;magic)); */
 id|put_dev_sector
 c_func
 (paren
@@ -293,6 +299,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 )paren
 suffix:semicolon

@@ -95,6 +95,12 @@ id|slot
 op_assign
 l_int|1
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -157,6 +163,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 comma
 id|blk
@@ -277,6 +285,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 comma
 id|blk
@@ -362,6 +372,8 @@ id|bdevname
 c_func
 (paren
 id|bdev
+comma
+id|b
 )paren
 comma
 id|blk

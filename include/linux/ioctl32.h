@@ -4,6 +4,7 @@ mdefine_line|#define IOCTL32_H 1
 r_struct
 id|file
 suffix:semicolon
+r_extern
 r_int
 id|sys_ioctl
 c_func

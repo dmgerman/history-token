@@ -751,6 +751,12 @@ op_star
 id|bh
 )paren
 (brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|sprintf
 (paren
 id|buf
@@ -760,6 +766,8 @@ comma
 id|bdevname
 (paren
 id|bh-&gt;b_bdev
+comma
+id|b
 )paren
 comma
 id|bh-&gt;b_size
@@ -2215,6 +2223,12 @@ r_char
 op_star
 id|version
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2290,6 +2304,8 @@ comma
 id|bdevname
 (paren
 id|bh-&gt;b_bdev
+comma
+id|b
 )paren
 comma
 (paren

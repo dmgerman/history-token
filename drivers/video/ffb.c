@@ -2280,14 +2280,11 @@ id|fbc
 op_assign
 id|par-&gt;fbc
 suffix:semicolon
+r_const
 id|u8
 op_star
 id|data
 op_assign
-(paren
-id|u8
-op_star
-)paren
 id|image-&gt;data
 suffix:semicolon
 r_int

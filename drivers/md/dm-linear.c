@@ -308,6 +308,12 @@ id|ti
 op_member_access_from_pointer
 r_private
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -343,6 +349,8 @@ id|bdevname
 c_func
 (paren
 id|lc-&gt;dev-&gt;bdev
+comma
+id|b
 )paren
 comma
 id|lc-&gt;start

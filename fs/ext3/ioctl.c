@@ -351,8 +351,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 r_if
@@ -554,8 +552,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 r_return

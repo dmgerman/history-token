@@ -8360,8 +8360,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|dir
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -8526,8 +8524,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|dir
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -8978,8 +8974,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|dir
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -10296,8 +10290,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|dir
 )paren
 suffix:semicolon
 id|brelse
@@ -10563,8 +10555,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|dir
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -10875,8 +10865,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|dir
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -11029,8 +11017,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|dir
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -11753,8 +11739,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|old_dir
 )paren
 suffix:semicolon
 id|unlock_kernel

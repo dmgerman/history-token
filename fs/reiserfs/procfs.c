@@ -2037,6 +2037,12 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
 id|sb
 op_assign
 id|procinfo_prologue
@@ -2153,6 +2159,8 @@ id|sb
 )paren
 op_member_access_from_pointer
 id|j_dev_bd
+comma
+id|b
 )paren
 comma
 id|DJP

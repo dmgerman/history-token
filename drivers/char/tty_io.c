@@ -8972,10 +8972,14 @@ l_int|0
 suffix:semicolon
 id|error
 op_assign
-id|register_chrdev
+id|register_chrdev_region
 c_func
 (paren
 id|driver-&gt;major
+comma
+id|driver-&gt;minor_start
+comma
+id|driver-&gt;num
 comma
 id|driver-&gt;name
 comma

@@ -126,6 +126,8 @@ DECL|macro|_PAGE_PSE
 mdefine_line|#define _PAGE_PSE&t;0x080&t;/* 4 MB (or 2MB) page, Pentium+, if present.. */
 DECL|macro|_PAGE_GLOBAL
 mdefine_line|#define _PAGE_GLOBAL&t;0x100&t;/* Global TLB entry PPro+ */
+DECL|macro|_PAGE_FILE
+mdefine_line|#define _PAGE_FILE&t;0x040&t;/* pagecache or swap? */
 DECL|macro|_PAGE_PROTNONE
 mdefine_line|#define _PAGE_PROTNONE&t;0x080&t;/* If not present */
 DECL|macro|_PAGE_TABLE
@@ -326,6 +328,27 @@ dot
 id|pte_low
 op_amp
 id|_PAGE_RW
+suffix:semicolon
+)brace
+DECL|function|pte_file
+r_static
+r_inline
+r_int
+id|pte_file
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+r_return
+(paren
+id|pte
+)paren
+dot
+id|pte_low
+op_amp
+id|_PAGE_FILE
 suffix:semicolon
 )brace
 DECL|function|pte_rdprotect
@@ -761,7 +784,7 @@ DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma,address,pte) do { } while (0)
 multiline_comment|/* Encode and de-code a swap entry */
 DECL|macro|__swp_type
-mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 1) &amp; 0x3f)
+mdefine_line|#define __swp_type(x)&t;&t;&t;(((x).val &gt;&gt; 1) &amp; 0x1f)
 DECL|macro|__swp_offset
 mdefine_line|#define __swp_offset(x)&t;&t;&t;((x).val &gt;&gt; 8)
 DECL|macro|__swp_entry
