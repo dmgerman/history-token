@@ -485,10 +485,11 @@ DECL|member|client
 )brace
 id|client
 suffix:semicolon
-multiline_comment|/* registration by cardmgr done? */
+multiline_comment|/* device driver wanted by cardmgr */
 DECL|member|cardmgr
-r_int
-r_int
+r_struct
+id|pcmcia_driver
+op_star
 id|cardmgr
 suffix:semicolon
 DECL|member|dev
