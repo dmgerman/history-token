@@ -1715,7 +1715,7 @@ macro_line|#endif
 DECL|macro|ASM_NOP_MAX
 mdefine_line|#define ASM_NOP_MAX 8
 multiline_comment|/* Prefetch instructions for Pentium III and AMD Athlon */
-multiline_comment|/* It&squot;s not worth to care about 3dnow! prefetches for the K6&n;   because they are microcoded there and very slow. */
+multiline_comment|/* It&squot;s not worth to care about 3dnow! prefetches for the K6&n;   because they are microcoded there and very slow.&n;   However we don&squot;t do prefetches for pre XP Athlons currently&n;   That should be fixed. */
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|function|prefetch
@@ -1731,21 +1731,6 @@ op_star
 id|x
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cpu_data
-(braket
-l_int|0
-)braket
-dot
-id|x86_vendor
-op_eq
-id|X86_VENDOR_AMD
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* Some athlons fault if the address is bad */
 id|alternative_input
 c_func
 (paren

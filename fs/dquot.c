@@ -2795,11 +2795,7 @@ suffix:semicolon
 id|tty_write_message
 c_func
 (paren
-id|process_tty
-c_func
-(paren
-id|current
-)paren
+id|current-&gt;tty
 comma
 id|dquot-&gt;dq_sb-&gt;s_id
 )paren
@@ -2818,11 +2814,7 @@ id|BSOFTWARN
 id|tty_write_message
 c_func
 (paren
-id|process_tty
-c_func
-(paren
-id|current
-)paren
+id|current-&gt;tty
 comma
 l_string|&quot;: warning, &quot;
 )paren
@@ -2831,11 +2823,7 @@ r_else
 id|tty_write_message
 c_func
 (paren
-id|process_tty
-c_func
-(paren
-id|current
-)paren
+id|current-&gt;tty
 comma
 l_string|&quot;: write failed, &quot;
 )paren
@@ -2843,11 +2831,7 @@ suffix:semicolon
 id|tty_write_message
 c_func
 (paren
-id|process_tty
-c_func
-(paren
-id|current
-)paren
+id|current-&gt;tty
 comma
 id|quotatypes
 (braket
@@ -2919,11 +2903,7 @@ suffix:semicolon
 id|tty_write_message
 c_func
 (paren
-id|process_tty
-c_func
-(paren
-id|current
-)paren
+id|current-&gt;tty
 comma
 id|msg
 )paren
