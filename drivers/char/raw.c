@@ -228,6 +228,10 @@ id|filp-&gt;f_flags
 op_or_assign
 id|O_DIRECT
 suffix:semicolon
+id|filp-&gt;f_mapping
+op_assign
+id|bdev-&gt;bd_inode-&gt;i_mapping
+suffix:semicolon
 r_if
 c_cond
 (paren

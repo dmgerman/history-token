@@ -1895,6 +1895,10 @@ c_func
 id|futex_mnt-&gt;mnt_root
 )paren
 suffix:semicolon
+id|filp-&gt;f_mapping
+op_assign
+id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_mapping
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -9118,6 +9118,10 @@ id|file-&gt;f_dentry
 op_assign
 id|dentry
 suffix:semicolon
+id|file-&gt;f_mapping
+op_assign
+id|inode-&gt;i_mapping
+suffix:semicolon
 id|file-&gt;f_op
 op_assign
 op_amp

@@ -9456,9 +9456,14 @@ id|cleanup_file
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* XXX: where the fuck is -&gt;f_vfsmnt? */
 id|f-&gt;f_dentry
 op_assign
 id|dentry
+suffix:semicolon
+id|f-&gt;f_mapping
+op_assign
+id|dentry-&gt;d_inode-&gt;i_mapping
 suffix:semicolon
 id|f-&gt;f_pos
 op_assign

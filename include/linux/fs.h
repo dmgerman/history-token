@@ -1542,6 +1542,12 @@ DECL|member|f_ep_lock
 id|spinlock_t
 id|f_ep_lock
 suffix:semicolon
+DECL|member|f_mapping
+r_struct
+id|address_space
+op_star
+id|f_mapping
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

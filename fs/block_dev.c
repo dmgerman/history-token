@@ -2387,6 +2387,10 @@ suffix:semicolon
 r_int
 id|part
 suffix:semicolon
+id|file-&gt;f_mapping
+op_assign
+id|bdev-&gt;bd_inode-&gt;i_mapping
+suffix:semicolon
 id|lock_kernel
 c_func
 (paren

@@ -425,6 +425,10 @@ id|filp-&gt;f_dentry
 op_assign
 id|dentry
 suffix:semicolon
+id|filp-&gt;f_mapping
+op_assign
+id|dentry-&gt;d_inode-&gt;i_mapping
+suffix:semicolon
 id|filp-&gt;f_uid
 op_assign
 id|current-&gt;fsuid
