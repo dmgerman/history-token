@@ -278,6 +278,15 @@ id|context
 )paren
 suffix:semicolon
 r_void
+id|acpi_os_wait_events_complete
+c_func
+(paren
+r_void
+op_star
+id|context
+)paren
+suffix:semicolon
+r_void
 id|acpi_os_sleep
 (paren
 id|u32
