@@ -1103,6 +1103,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|serio-&gt;open
+op_logical_and
 id|serio
 op_member_access_from_pointer
 id|open
@@ -1137,6 +1139,11 @@ op_star
 id|serio
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|serio-&gt;close
+)paren
 id|serio
 op_member_access_from_pointer
 id|close
