@@ -3477,13 +3477,6 @@ id|all_zones_ok
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|all_zones_ok
-)paren
-r_continue
-suffix:semicolon
 )brace
 id|zone-&gt;temp_priority
 op_assign
