@@ -965,8 +965,6 @@ multiline_comment|/* we have a match */
 id|cur_cpu_spec-&gt;firmware_features
 op_or_assign
 (paren
-l_int|1UL
-op_lshift
 id|firmware_features_table
 (braket
 id|i
@@ -1007,10 +1005,11 @@ c_func
 id|dn
 )paren
 suffix:semicolon
-id|udbg_printf
+id|printk
 c_func
 (paren
-l_string|&quot;firmware_features bitmask: 0x%x &bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;firmware_features = 0x%lx&bslash;n&quot;
 comma
 id|cur_cpu_spec-&gt;firmware_features
 )paren

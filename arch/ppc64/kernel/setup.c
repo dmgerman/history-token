@@ -363,7 +363,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Do some initial setup of the system.  The paramters are those which &n; * were passed in from the bootloader.&n; */
+multiline_comment|/*&n; * Do some initial setup of the system.  The parameters are those which &n; * were passed in from the bootloader.&n; */
 DECL|function|setup_system
 r_void
 id|setup_system
@@ -907,135 +907,40 @@ comma
 l_string|&quot;cpu&bslash;t&bslash;t: &quot;
 )paren
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
-id|PVR_VER
-c_func
-(paren
-id|pvr
+id|cur_cpu_spec-&gt;pvr_mask
 )paren
-)paren
-(brace
-r_case
-id|PV_NORTHSTAR
-suffix:colon
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot;RS64-II (northstar)&bslash;n&quot;
+l_string|&quot;%s&quot;
+comma
+id|cur_cpu_spec-&gt;cpu_name
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PV_PULSAR
-suffix:colon
+r_else
 id|seq_printf
 c_func
 (paren
 id|m
 comma
-l_string|&quot;RS64-III (pulsar)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PV_POWER4
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;POWER4 (gp)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PV_ICESTAR
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;RS64-III (icestar)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PV_SSTAR
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;RS64-IV (sstar)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PV_POWER4p
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;POWER4+ (gq)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PV_630
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;POWER3 (630)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|PV_630p
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;POWER3 (630+)&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|seq_printf
-c_func
-(paren
-id|m
-comma
-l_string|&quot;Unknown (%08x)&bslash;n&quot;
+l_string|&quot;unknown (%08x)&quot;
 comma
 id|pvr
 )paren
 suffix:semicolon
-r_break
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Assume here that all clock rates are the same in a&n;&t; * smp system.  -- Cort&n;&t; */
 r_if
 c_cond
@@ -1265,7 +1170,7 @@ id|show_cpuinfo
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Fetch the cmd_line from open firmware. */
+multiline_comment|/*&n; * Fetch the cmd_line from open firmware. &n; */
 DECL|function|parse_cmd_line
 r_void
 id|parse_cmd_line
