@@ -559,7 +559,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * longhaul_set_cpu_frequency()&n; * @clock_ratio_index : bitpattern of the new multiplier.&n; *&n; * Sets a new clock ratio, and -if applicable- a new Front Side Bus&n; */
+multiline_comment|/**&n; * longhaul_set_cpu_frequency()&n; * @clock_ratio_index : bitpattern of the new multiplier.&n; *&n; * Sets a new clock ratio.&n; */
 DECL|function|longhaul_setstate
 r_static
 r_void
@@ -587,6 +587,27 @@ suffix:semicolon
 r_union
 id|msr_bcr2
 id|bcr2
+suffix:semicolon
+r_static
+r_int
+r_int
+id|old_ratio
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|old_ratio
+op_eq
+id|clock_ratio_index
+)paren
+r_return
+suffix:semicolon
+id|oldratio
+op_assign
+id|clock_ratio_index
 suffix:semicolon
 id|mult
 op_assign
@@ -2342,7 +2363,7 @@ id|printk
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;VIA %s CPU detected.&quot;
+l_string|&quot;VIA %s CPU detected.  &quot;
 comma
 id|cpuname
 )paren
