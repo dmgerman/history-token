@@ -1722,6 +1722,8 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|macro|MAX_EVENTS
+mdefine_line|#define MAX_EVENTS (INT_MAX / sizeof(struct epoll_event))
 multiline_comment|/*&n; * Implement the event wait interface for the eventpoll file. It is the kernel&n; * part of the user space epoll_wait(2).&n; */
 DECL|function|sys_epoll_wait
 id|asmlinkage
@@ -1786,6 +1788,10 @@ c_cond
 id|maxevents
 op_le
 l_int|0
+op_logical_or
+id|maxevents
+OG
+id|MAX_EVENTS
 )paren
 r_return
 op_minus
