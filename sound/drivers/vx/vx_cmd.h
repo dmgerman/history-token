@@ -379,13 +379,6 @@ mdefine_line|#define MULTIPLE_MASK_TIME_HIGH 0x00100000
 DECL|macro|STREAM_MASK_TIME_HIGH
 mdefine_line|#define STREAM_MASK_TIME_HIGH   0x00800000
 multiline_comment|/*&n; *&n; */
-r_extern
-r_struct
-id|vx_cmd_info
-id|vx_dsp_cmds
-(braket
-)braket
-suffix:semicolon
 r_void
 id|vx_init_rmh
 c_func

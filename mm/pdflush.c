@@ -34,12 +34,12 @@ c_func
 id|pdflush_list
 )paren
 suffix:semicolon
-DECL|variable|pdflush_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|pdflush_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * The count of currently-running pdflush threads.  Protected&n; * by pdflush_lock.&n; *&n; * Readable by sysctl, but not writable.  Published to userspace at&n; * /proc/sys/vm/nr_pdflush_threads.&n; */
 DECL|variable|nr_pdflush_threads

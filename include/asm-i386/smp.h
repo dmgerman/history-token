@@ -107,8 +107,8 @@ id|x86_cpu_to_apicid
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * This function is needed by all SMP systems. It must _always_ be valid&n; * from the initial startup. We map APIC_BASE very early in page_setup(),&n; * so this is correct in the x86 case.&n; */
-DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
+DECL|macro|__smp_processor_id
+mdefine_line|#define __smp_processor_id() (current_thread_info()-&gt;cpu)
 r_extern
 id|cpumask_t
 id|cpu_callout_map

@@ -5545,9 +5545,12 @@ op_amp
 id|hp-&gt;stateq
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|hp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|hp-&gt;index
 op_assign

@@ -71,9 +71,14 @@ id|instr-&gt;ops
 r_if
 c_cond
 (paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
 id|instr-&gt;ops-&gt;instr_type
-op_eq
-id|snd_seq_simple_id
+comma
+id|SNDRV_SEQ_INSTR_ID_SIMPLE
+)paren
 )paren
 id|snd_gf1_simple_init
 c_func

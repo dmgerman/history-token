@@ -246,11 +246,7 @@ id|IXDP2X00_P2P_DEVFN
 r_switch
 c_cond
 (paren
-id|PCI_SLOT
-c_func
-(paren
 id|dev-&gt;devfn
-)paren
 )paren
 (brace
 r_case

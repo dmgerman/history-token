@@ -315,14 +315,13 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Keep preemption disabled until we are done with&n;&t; * softirq processing:&n; &t; */
-id|preempt_count
+id|sub_preempt_count
 c_func
 (paren
-)paren
-op_sub_assign
 id|SOFTIRQ_OFFSET
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -381,12 +380,11 @@ c_func
 r_void
 )paren
 (brace
-id|preempt_count
+id|sub_preempt_count
 c_func
 (paren
-)paren
-op_sub_assign
 id|IRQ_EXIT_OFFSET
+)paren
 suffix:semicolon
 r_if
 c_cond

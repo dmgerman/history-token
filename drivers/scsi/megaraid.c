@@ -17349,6 +17349,13 @@ comma
 l_string|&quot;megadev&quot;
 )paren
 suffix:semicolon
+id|pci_unregister_driver
+c_func
+(paren
+op_amp
+id|megaraid_pci_driver
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
@@ -17360,13 +17367,6 @@ id|proc_root
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pci_unregister_driver
-c_func
-(paren
-op_amp
-id|megaraid_pci_driver
-)paren
-suffix:semicolon
 )brace
 DECL|variable|megaraid_init
 id|module_init

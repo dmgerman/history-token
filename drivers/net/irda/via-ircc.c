@@ -49,12 +49,14 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* default: probe */
 multiline_comment|/* We can&squot;t guess the type of connected dongle, user *must* supply it. */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dongle_id
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME : we should not need this, because instances should be automatically&n; * managed by the PCI layer. Especially that we seem to only be using the&n; * first entry. Jean II */

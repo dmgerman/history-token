@@ -34,6 +34,7 @@ l_int|NULL
 )brace
 suffix:semicolon
 DECL|variable|devpts_file_inode_operations
+r_static
 r_struct
 id|inode_operations
 id|devpts_file_inode_operations

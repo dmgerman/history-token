@@ -405,6 +405,23 @@ comma
 l_int|0
 )brace
 comma
+singleline_comment|// NF2/IGP version, GeForce 4 MX, NV18
+(brace
+id|PCI_VENDOR_ID_NVIDIA
+comma
+l_int|0x01f0
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
 (brace
 id|PCI_VENDOR_ID_NVIDIA
 comma

@@ -1376,7 +1376,7 @@ c_cond
 (paren
 id|die.lock_owner
 op_ne
-id|smp_processor_id
+id|_smp_processor_id
 c_func
 (paren
 )paren

@@ -82,7 +82,7 @@ id|GPIO2_OUTPUT
 )paren
 suffix:semicolon
 macro_line|#endif 
-singleline_comment|// defined (CONFIG_USB_OHCI) || defined (CONFIG_AU1000_USB_DEVICE)
+singleline_comment|// defined (CONFIG_USB_OHCI) || defined (CONFIG_AU1X00_USB_DEVICE)
 macro_line|#ifdef CONFIG_PCI
 macro_line|#if defined(__MIPSEB__)
 id|au_writel

@@ -376,14 +376,6 @@ id|card
 suffix:semicolon
 r_extern
 r_int
-id|snd_wavefront_interrupt_bits
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|snd_wavefront_detect_irq
 (paren
 id|snd_wavefront_t

@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hardware/icst525.h&gt;
 macro_line|#include &lt;asm/hardware/amba.h&gt;
@@ -1022,6 +1023,61 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|impd1fb_clcd_mmap
+r_static
+r_int
+id|impd1fb_clcd_mmap
+c_func
+(paren
+r_struct
+id|clcd_fb
+op_star
+id|fb
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+)paren
+(brace
+r_int
+r_int
+id|start
+comma
+id|size
+suffix:semicolon
+id|start
+op_assign
+id|vma-&gt;vm_pgoff
+op_plus
+(paren
+id|fb-&gt;fb.fix.smem_start
+op_rshift
+id|PAGE_SHIFT
+)paren
+suffix:semicolon
+id|size
+op_assign
+id|vma-&gt;vm_end
+op_minus
+id|vma-&gt;vm_start
+suffix:semicolon
+r_return
+id|remap_pfn_range
+c_func
+(paren
+id|vma
+comma
+id|vma-&gt;vm_start
+comma
+id|start
+comma
+id|size
+comma
+id|vma-&gt;vm_page_prot
+)paren
+suffix:semicolon
+)brace
 DECL|function|impd1fb_clcd_remove
 r_static
 r_void
@@ -1085,6 +1141,11 @@ dot
 id|setup
 op_assign
 id|impd1fb_clcd_setup
+comma
+dot
+id|mmap
+op_assign
+id|impd1fb_clcd_mmap
 comma
 dot
 id|remove

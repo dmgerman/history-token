@@ -13,6 +13,13 @@ r_int
 r_int
 id|lock
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|spinlock_t
 )brace
 id|spinlock_t
@@ -271,6 +278,13 @@ r_int
 r_int
 id|lock
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|rwlock_t
 )brace
 id|rwlock_t
@@ -581,6 +595,8 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|macro|_raw_read_trylock
+mdefine_line|#define _raw_read_trylock(lock) generic_raw_read_trylock(lock)
 DECL|function|_raw_write_trylock
 r_static
 r_inline

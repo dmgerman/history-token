@@ -1,4 +1,4 @@
-multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: cfi_probe.c,v 1.79 2004/10/20 23:04:01 dwmw2 Exp $&n;*/
+multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: cfi_probe.c,v 1.83 2004/11/16 18:19:02 nico Exp $&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/mtd/xip.h&gt;
 macro_line|#include &lt;linux/mtd/map.h&gt;
 macro_line|#include &lt;linux/mtd/cfi.h&gt;
 macro_line|#include &lt;linux/mtd/gen_probe.h&gt;
@@ -77,10 +78,31 @@ op_star
 id|map
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MTD_XIP
+multiline_comment|/* only needed for short periods, so this is rather simple */
+DECL|macro|xip_disable
+mdefine_line|#define xip_disable()&t;local_irq_disable()
+DECL|macro|xip_allowed
+mdefine_line|#define xip_allowed(base, map) &bslash;&n;do { &bslash;&n;&t;(void) map_read(map, base); &bslash;&n;&t;asm volatile (&quot;.rep 8; nop; .endr&quot;); &bslash;&n;&t;local_irq_enable(); &bslash;&n;} while (0)
+DECL|macro|xip_enable
+mdefine_line|#define xip_enable(base, map, cfi) &bslash;&n;do { &bslash;&n;&t;cfi_send_gen_cmd(0xF0, 0, base, map, cfi, cfi-&gt;device_type, NULL); &bslash;&n;&t;cfi_send_gen_cmd(0xFF, 0, base, map, cfi, cfi-&gt;device_type, NULL); &bslash;&n;&t;xip_allowed(base, map); &bslash;&n;} while (0)
+DECL|macro|xip_disable_qry
+mdefine_line|#define xip_disable_qry(base, map, cfi) &bslash;&n;do { &bslash;&n;&t;xip_disable(); &bslash;&n;&t;cfi_send_gen_cmd(0xF0, 0, base, map, cfi, cfi-&gt;device_type, NULL); &bslash;&n;&t;cfi_send_gen_cmd(0xFF, 0, base, map, cfi, cfi-&gt;device_type, NULL); &bslash;&n;&t;cfi_send_gen_cmd(0x98, 0x55, base, map, cfi, cfi-&gt;device_type, NULL); &bslash;&n;} while (0)
+macro_line|#else
+DECL|macro|xip_disable
+mdefine_line|#define xip_disable()&t;&t;&t;do { } while (0)
+DECL|macro|xip_allowed
+mdefine_line|#define xip_allowed(base, map)&t;&t;do { } while (0)
+DECL|macro|xip_enable
+mdefine_line|#define xip_enable(base, map, cfi)&t;do { } while (0)
+DECL|macro|xip_disable_qry
+mdefine_line|#define xip_disable_qry(base, map, cfi) do { } while (0)
+macro_line|#endif
 multiline_comment|/* check for QRY.&n;   in: interleave,type,mode&n;   ret: table index, &lt;0 for error&n; */
 DECL|function|qry_present
 r_static
 r_int
+id|__xipram
 id|qry_present
 c_func
 (paren
@@ -286,11 +308,12 @@ suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-singleline_comment|// nothing found
+singleline_comment|// &quot;QRY&quot; found
 )brace
 DECL|function|cfi_probe_chip
 r_static
 r_int
+id|__xipram
 id|cfi_probe_chip
 c_func
 (paren
@@ -384,6 +407,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|xip_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|cfi_send_gen_cmd
 c_func
 (paren
@@ -452,9 +480,21 @@ comma
 id|cfi
 )paren
 )paren
+(brace
+id|xip_enable
+c_func
+(paren
+id|base
+comma
+id|map
+comma
+id|cfi
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -588,6 +628,14 @@ id|cfi
 )paren
 )paren
 (brace
+id|xip_allowed
+c_func
+(paren
+id|base
+comma
+id|map
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -657,6 +705,14 @@ id|cfi
 )paren
 )paren
 (brace
+id|xip_allowed
+c_func
+(paren
+id|base
+comma
+id|map
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -730,6 +786,14 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|xip_allowed
+c_func
+(paren
+id|base
+comma
+id|map
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -758,6 +822,7 @@ suffix:semicolon
 DECL|function|cfi_chip_setup
 r_static
 r_int
+id|__xipram
 id|cfi_chip_setup
 c_func
 (paren
@@ -805,6 +870,16 @@ id|ofs_factor
 suffix:semicolon
 r_int
 id|i
+suffix:semicolon
+id|xip_enable
+c_func
+(paren
+id|base
+comma
+id|map
+comma
+id|cfi
+)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_CFI
 id|printk
@@ -882,6 +957,16 @@ op_assign
 id|CFI_MODE_CFI
 suffix:semicolon
 multiline_comment|/* Read the CFI info structure */
+id|xip_disable_qry
+c_func
+(paren
+id|base
+comma
+id|map
+comma
+id|cfi
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -906,7 +991,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 (paren
 (paren
 r_int
@@ -935,128 +1019,6 @@ op_star
 id|ofs_factor
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Do any necessary byteswapping */
-id|cfi-&gt;cfiq-&gt;P_ID
-op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|cfi-&gt;cfiq-&gt;P_ID
-)paren
-suffix:semicolon
-id|cfi-&gt;cfiq-&gt;P_ADR
-op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|cfi-&gt;cfiq-&gt;P_ADR
-)paren
-suffix:semicolon
-id|cfi-&gt;cfiq-&gt;A_ID
-op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|cfi-&gt;cfiq-&gt;A_ID
-)paren
-suffix:semicolon
-id|cfi-&gt;cfiq-&gt;A_ADR
-op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|cfi-&gt;cfiq-&gt;A_ADR
-)paren
-suffix:semicolon
-id|cfi-&gt;cfiq-&gt;InterfaceDesc
-op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|cfi-&gt;cfiq-&gt;InterfaceDesc
-)paren
-suffix:semicolon
-id|cfi-&gt;cfiq-&gt;MaxBufWriteSize
-op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|cfi-&gt;cfiq-&gt;MaxBufWriteSize
-)paren
-suffix:semicolon
-macro_line|#ifdef DEBUG_CFI
-multiline_comment|/* Dump the information therein */
-id|print_cfi_ident
-c_func
-(paren
-id|cfi-&gt;cfiq
-)paren
-suffix:semicolon
-macro_line|#endif
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|cfi-&gt;cfiq-&gt;NumEraseRegions
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-id|cfi-&gt;cfiq-&gt;EraseRegionInfo
-(braket
-id|i
-)braket
-op_assign
-id|le32_to_cpu
-c_func
-(paren
-id|cfi-&gt;cfiq-&gt;EraseRegionInfo
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-macro_line|#ifdef DEBUG_CFI&t;&t;
-id|printk
-c_func
-(paren
-l_string|&quot;  Erase Region #%d: BlockSize 0x%4.4X bytes, %d blocks&bslash;n&quot;
-comma
-id|i
-comma
-(paren
-id|cfi-&gt;cfiq-&gt;EraseRegionInfo
-(braket
-id|i
-)braket
-op_rshift
-l_int|8
-)paren
-op_amp
-op_complement
-l_int|0xff
-comma
-(paren
-id|cfi-&gt;cfiq-&gt;EraseRegionInfo
-(braket
-id|i
-)braket
-op_amp
-l_int|0xffff
-)paren
-op_plus
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 multiline_comment|/* Note we put the device back into Read Mode BEFORE going into Auto&n;&t; * Select Mode, as some devices support nesting of modes, others&n;&t; * don&squot;t. This way should always work.&n;&t; * On cmdset 0001 the writes of 0xaa and 0x55 are not needed, and&n;&t; * so should be treated as nops or illegal (and so put the device&n;&t; * back into Read Mode, which is a nop in this case).&n;&t; */
 id|cfi_send_gen_cmd
 c_func
@@ -1190,6 +1152,135 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|xip_allowed
+c_func
+(paren
+id|base
+comma
+id|map
+)paren
+suffix:semicolon
+multiline_comment|/* Do any necessary byteswapping */
+id|cfi-&gt;cfiq-&gt;P_ID
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|cfi-&gt;cfiq-&gt;P_ID
+)paren
+suffix:semicolon
+id|cfi-&gt;cfiq-&gt;P_ADR
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|cfi-&gt;cfiq-&gt;P_ADR
+)paren
+suffix:semicolon
+id|cfi-&gt;cfiq-&gt;A_ID
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|cfi-&gt;cfiq-&gt;A_ID
+)paren
+suffix:semicolon
+id|cfi-&gt;cfiq-&gt;A_ADR
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|cfi-&gt;cfiq-&gt;A_ADR
+)paren
+suffix:semicolon
+id|cfi-&gt;cfiq-&gt;InterfaceDesc
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|cfi-&gt;cfiq-&gt;InterfaceDesc
+)paren
+suffix:semicolon
+id|cfi-&gt;cfiq-&gt;MaxBufWriteSize
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|cfi-&gt;cfiq-&gt;MaxBufWriteSize
+)paren
+suffix:semicolon
+macro_line|#ifdef DEBUG_CFI
+multiline_comment|/* Dump the information therein */
+id|print_cfi_ident
+c_func
+(paren
+id|cfi-&gt;cfiq
+)paren
+suffix:semicolon
+macro_line|#endif
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|cfi-&gt;cfiq-&gt;NumEraseRegions
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|cfi-&gt;cfiq-&gt;EraseRegionInfo
+(braket
+id|i
+)braket
+op_assign
+id|le32_to_cpu
+c_func
+(paren
+id|cfi-&gt;cfiq-&gt;EraseRegionInfo
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+macro_line|#ifdef DEBUG_CFI&t;&t;
+id|printk
+c_func
+(paren
+l_string|&quot;  Erase Region #%d: BlockSize 0x%4.4X bytes, %d blocks&bslash;n&quot;
+comma
+id|i
+comma
+(paren
+id|cfi-&gt;cfiq-&gt;EraseRegionInfo
+(braket
+id|i
+)braket
+op_rshift
+l_int|8
+)paren
+op_amp
+op_complement
+l_int|0xff
+comma
+(paren
+id|cfi-&gt;cfiq-&gt;EraseRegionInfo
+(braket
+id|i
+)braket
+op_amp
+l_int|0xffff
+)paren
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
 id|printk
 c_func
 (paren

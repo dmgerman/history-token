@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/mtd/maps/chestnut.c&n; *&n; * Flash map driver for IBM Chestnut (750FXGX Eval)&n; *&n; * Chose not to enable 8 bit flash as it contains the firware and board&n; * info.  Thus only the 32bit flash is supported.&n; *&n; * Author: &lt;source@mvista.com&gt;&n; *&n; * 2004 (c) MontaVista Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * drivers/mtd/maps/chestnut.c&n; *&n; * $Id: chestnut.c,v 1.1 2005/01/05 16:59:50 dwmw2 Exp $&n; *&n; * Flash map driver for IBM Chestnut (750FXGX Eval)&n; *&n; * Chose not to enable 8 bit flash as it contains the firmware and board&n; * info.  Thus only the 32bit flash is supported.&n; *&n; * Author: &lt;source@mvista.com&gt;&n; *&n; * 2004 (c) MontaVista Software, Inc. This file is licensed under&n; * the terms of the GNU General Public License version 2. This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -246,7 +246,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;&lt;mvista.com&gt;&quot;
+l_string|&quot;&lt;source@mvista.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

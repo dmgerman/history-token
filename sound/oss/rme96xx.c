@@ -30,18 +30,14 @@ id|devices
 op_assign
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|devices
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|NR_DEVICE
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -544,6 +540,7 @@ id|rme96xx_info
 suffix:semicolon
 multiline_comment|/* fiddling with the card (first level hardware control) */
 DECL|function|rme96xx_set_ctrl
+r_static
 r_inline
 r_void
 id|rme96xx_set_ctrl
@@ -573,6 +570,7 @@ id|RME96xx_control_register
 suffix:semicolon
 )brace
 DECL|function|rme96xx_unset_ctrl
+r_static
 r_inline
 r_void
 id|rme96xx_unset_ctrl
@@ -605,6 +603,7 @@ id|RME96xx_control_register
 suffix:semicolon
 )brace
 DECL|function|rme96xx_get_sample_rate_status
+r_static
 r_inline
 r_int
 id|rme96xx_get_sample_rate_status
@@ -660,6 +659,7 @@ id|val
 suffix:semicolon
 )brace
 DECL|function|rme96xx_get_sample_rate_ctrl
+r_static
 r_inline
 r_int
 id|rme96xx_get_sample_rate_ctrl
@@ -1436,6 +1436,7 @@ multiline_comment|/* the function returns the hardware pointer in bytes */
 DECL|macro|RME96xx_BURSTBYTES
 mdefine_line|#define RME96xx_BURSTBYTES -64  /* bytes by which hwptr could be off */
 DECL|function|rme96xx_gethwptr
+r_static
 r_inline
 r_int
 id|rme96xx_gethwptr
@@ -1538,6 +1539,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|rme96xx_setlatency
+r_static
 r_inline
 r_void
 id|rme96xx_setlatency
@@ -1882,6 +1884,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|rme96xx_getospace
+r_static
 r_inline
 r_int
 id|rme96xx_getospace
@@ -1963,6 +1966,7 @@ id|cnt
 suffix:semicolon
 )brace
 DECL|function|rme96xx_getispace
+r_static
 r_inline
 r_int
 id|rme96xx_getispace
@@ -2044,6 +2048,7 @@ id|cnt
 suffix:semicolon
 )brace
 DECL|function|rme96xx_copyfromuser
+r_static
 r_inline
 r_int
 id|rme96xx_copyfromuser
@@ -2344,6 +2349,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The count argument is the number of bytes */
 DECL|function|rme96xx_copytouser
+r_static
 r_inline
 r_int
 id|rme96xx_copytouser
@@ -2806,6 +2812,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*---------------------------------------------------------------------------- &n; PCI detection and module initialization stuff &n; ----------------------------------------------------------------------------*/
 DECL|function|busmaster_malloc
+r_static
 r_void
 op_star
 id|busmaster_malloc
@@ -2958,6 +2965,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|busmaster_free
+r_static
 r_void
 id|busmaster_free
 c_func
@@ -3185,6 +3193,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|rme96xx_init
+r_static
 r_int
 id|rme96xx_init
 c_func

@@ -2283,9 +2283,12 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|sal_console_port.sc_port.lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Setup the port struct with the minimum needed */
 id|sal_console_port.sc_port.membase

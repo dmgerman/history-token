@@ -284,7 +284,7 @@ op_assign
 id|ia64_getreg
 c_func
 (paren
-id|_IA64_REG_AR_SP
+id|_IA64_REG_SP
 )paren
 suffix:semicolon
 r_if

@@ -13,12 +13,12 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;smapi.h&quot;
 macro_line|#include &quot;mwavedd.h&quot;
 macro_line|#include &quot;3780i.h&quot;
-DECL|variable|dsp_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|dsp_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|flags
 r_static

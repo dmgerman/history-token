@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m68knommu/mm/kmap.c&n; *&n; *  Copyright (C) 2000 Lineo, &lt;davidm@lineo.com&gt;&n; */
+multiline_comment|/* kmap.c: ioremapping handlers&n; *&n; * Copyright (C) 2003-5 Red Hat, Inc. All Rights Reserved.&n; * Written by David Howells (dhowells@redhat.com)&n; * - Derived from arch/m68k/mm/kmap.c&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

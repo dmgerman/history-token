@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;video/vga.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|variable|vga_lock
@@ -3502,6 +3503,11 @@ op_star
 id|cmapsz
 suffix:semicolon
 macro_line|#endif
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -3955,6 +3961,11 @@ c_func
 (paren
 op_amp
 id|vga_lock
+)paren
+suffix:semicolon
+id|lock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

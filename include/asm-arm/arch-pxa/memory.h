@@ -12,8 +12,6 @@ DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x)&t; __phys_to_virt(x)
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 multiline_comment|/*&n; * The nodes are matched with the physical SDRAM banks as follows:&n; *&n; * &t;node 0:  0xa0000000-0xa3ffffff&t;--&gt;  0xc0000000-0xc3ffffff&n; * &t;node 1:  0xa4000000-0xa7ffffff&t;--&gt;  0xc4000000-0xc7ffffff&n; * &t;node 2:  0xa8000000-0xabffffff&t;--&gt;  0xc8000000-0xcbffffff&n; * &t;node 3:  0xac000000-0xafffffff&t;--&gt;  0xcc000000-0xcfffffff&n; */
-DECL|macro|NR_NODES
-mdefine_line|#define NR_NODES&t;4
 multiline_comment|/*&n; * Given a kernel address, find the home node of the underlying memory.&n; */
 DECL|macro|KVADDR_TO_NID
 mdefine_line|#define KVADDR_TO_NID(addr) (((unsigned long)(addr) - PAGE_OFFSET) &gt;&gt; 26)

@@ -56,6 +56,7 @@ op_star
 id|cur_vtbl
 suffix:semicolon
 DECL|function|zft_new_vtbl_entry
+r_static
 r_inline
 r_void
 id|zft_new_vtbl_entry
@@ -933,6 +934,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* this one creates the volume headers for each volume. It is assumed&n; * that buffer already contains the old volume-table, so that vtbl&n; * entries without the zft_volume flag set can savely be ignored.&n; */
 DECL|function|zft_create_volume_headers
+r_static
 r_void
 id|zft_create_volume_headers
 c_func

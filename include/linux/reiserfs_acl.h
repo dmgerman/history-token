@@ -217,24 +217,6 @@ id|type
 )paren
 suffix:semicolon
 r_int
-id|reiserfs_set_acl
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_int
-id|type
-comma
-r_struct
-id|posix_acl
-op_star
-id|acl
-)paren
-suffix:semicolon
-r_int
 id|reiserfs_acl_chmod
 (paren
 r_struct
@@ -297,8 +279,6 @@ id|reiserfs_xattr_handler
 id|posix_acl_access_handler
 suffix:semicolon
 macro_line|#else
-DECL|macro|reiserfs_set_acl
-mdefine_line|#define reiserfs_set_acl NULL
 DECL|macro|reiserfs_get_acl
 mdefine_line|#define reiserfs_get_acl NULL
 DECL|macro|reiserfs_cache_default_acl

@@ -36,5 +36,6 @@ multiline_comment|/*&n; * Board specific bits&n; */
 macro_line|#include &quot;iq80321.h&quot;
 macro_line|#include &quot;iq31244.h&quot;
 macro_line|#include &quot;iq80331.h&quot;
+macro_line|#include &quot;iq80332.h&quot;
 macro_line|#endif  /* _ASM_ARCH_HARDWARE_H */
 eof

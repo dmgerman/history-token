@@ -7,6 +7,7 @@ macro_line|#include &quot;audio.h&quot;
 macro_line|#include &quot;cardwi.h&quot;
 multiline_comment|/**&n; * query_format - returns a valid sound format&n; *&n; * This function will return a valid sound format as close&n; * to the requested one as possible. &n; */
 DECL|function|query_format
+r_static
 r_void
 id|query_format
 c_func

@@ -33,12 +33,14 @@ id|x25_asy_maxdev
 op_assign
 id|SL_NRUNIT
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|x25_asy_maxdev
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

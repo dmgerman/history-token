@@ -22,14 +22,14 @@ suffix:semicolon
 multiline_comment|/* GPIO bits */
 DECL|macro|AUREON_CS8415_CS
 mdefine_line|#define AUREON_CS8415_CS&t;(1 &lt;&lt; 22)
-DECL|macro|AUREON_CS8415_CDTO
-mdefine_line|#define AUREON_CS8415_CDTO&t;(1 &lt;&lt; 21)
+DECL|macro|AUREON_SPI_MISO
+mdefine_line|#define AUREON_SPI_MISO&t;&t;(1 &lt;&lt; 21)
 DECL|macro|AUREON_WM_RESET
 mdefine_line|#define AUREON_WM_RESET&t;&t;(1 &lt;&lt; 20)
-DECL|macro|AUREON_WM_CLK
-mdefine_line|#define AUREON_WM_CLK&t;&t;(1 &lt;&lt; 19)
-DECL|macro|AUREON_WM_DATA
-mdefine_line|#define AUREON_WM_DATA&t;&t;(1 &lt;&lt; 18)
+DECL|macro|AUREON_SPI_CLK
+mdefine_line|#define AUREON_SPI_CLK&t;&t;(1 &lt;&lt; 19)
+DECL|macro|AUREON_SPI_MOSI
+mdefine_line|#define AUREON_SPI_MOSI&t;&t;(1 &lt;&lt; 18)
 DECL|macro|AUREON_WM_RW
 mdefine_line|#define AUREON_WM_RW&t;&t;(1 &lt;&lt; 17)
 DECL|macro|AUREON_AC97_RESET
@@ -50,10 +50,5 @@ DECL|macro|AUREON_AC97_DATA_HIGH
 mdefine_line|#define AUREON_AC97_DATA_HIGH&t;(1 &lt;&lt; 8)
 DECL|macro|AUREON_AC97_DATA_MASK
 mdefine_line|#define AUREON_AC97_DATA_MASK&t;0xFF
-multiline_comment|/* Prodigy has different pin assignment for chip select */
-DECL|macro|PRODIGY_CS8415_CS
-mdefine_line|#define PRODIGY_CS8415_CS&t;(1 &lt;&lt; 23)
-DECL|macro|PRODIGY_CS8415_CDTO
-mdefine_line|#define PRODIGY_CS8415_CDTO&t;(1 &lt;&lt; 22)
 macro_line|#endif /* __SOUND_AUREON_H */
 eof

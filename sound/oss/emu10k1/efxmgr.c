@@ -370,6 +370,7 @@ DECL|macro|VOLCTRL_STEP_SIZE
 mdefine_line|#define VOLCTRL_STEP_SIZE        5
 singleline_comment|//An internal function for setting OSS mixer controls.
 DECL|function|emu10k1_set_oss_vol
+r_static
 r_void
 id|emu10k1_set_oss_vol
 c_func

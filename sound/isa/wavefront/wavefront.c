@@ -1480,6 +1480,7 @@ r_return
 id|IRQ_HANDLED
 suffix:semicolon
 )brace
+r_static
 id|snd_hwdep_t
 op_star
 id|__devinit
@@ -1577,6 +1578,7 @@ r_return
 id|wavefront_synth
 suffix:semicolon
 )brace
+r_static
 id|snd_hwdep_t
 op_star
 id|__devinit
@@ -1681,6 +1683,7 @@ id|external_id
 op_assign
 id|external_mpu
 suffix:semicolon
+r_static
 id|snd_rawmidi_t
 op_star
 id|__devinit

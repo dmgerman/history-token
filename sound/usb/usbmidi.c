@@ -2176,11 +2176,6 @@ c_cond
 id|ep-&gt;urb
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ep-&gt;urb-&gt;transfer_buffer
-)paren
 id|kfree
 c_func
 (paren
@@ -2810,11 +2805,6 @@ c_cond
 id|ep-&gt;urb
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|ep-&gt;urb-&gt;transfer_buffer
-)paren
 id|kfree
 c_func
 (paren

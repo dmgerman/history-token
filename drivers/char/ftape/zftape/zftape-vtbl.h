@@ -220,13 +220,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|zft_new_vtbl_entry
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|zft_extract_volume_headers
 c_func

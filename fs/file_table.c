@@ -284,9 +284,12 @@ id|f-&gt;f_gid
 op_assign
 id|current-&gt;fsgid
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|f-&gt;f_owner.lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* f-&gt;f_version: 0 */
 id|INIT_LIST_HEAD

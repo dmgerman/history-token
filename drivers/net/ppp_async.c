@@ -180,12 +180,14 @@ id|flag_time
 op_assign
 id|HZ
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|flag_time
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -100,12 +100,12 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-DECL|variable|nvram_state_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|nvram_state_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|nvram_open_cnt
 r_static

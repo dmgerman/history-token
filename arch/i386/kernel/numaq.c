@@ -19,7 +19,7 @@ id|node_end_pfn
 suffix:semicolon
 DECL|macro|MB_TO_PAGES
 mdefine_line|#define&t;MB_TO_PAGES(addr) ((addr) &lt;&lt; (20 - PAGE_SHIFT))
-multiline_comment|/*&n; * Function: smp_dump_qct()&n; *&n; * Description: gets memory layout from the quad config table.  This&n; * function also increments numnodes with the number of nodes (quads)&n; * present.&n; */
+multiline_comment|/*&n; * Function: smp_dump_qct()&n; *&n; * Description: gets memory layout from the quad config table.  This&n; * function also updates node_online_map with the nodes (quads) present.&n; */
 DECL|function|smp_dump_qct
 r_static
 r_void
@@ -54,23 +54,16 @@ c_func
 id|SYS_CFG_DATA_PRIV_ADDR
 )paren
 suffix:semicolon
-id|numnodes
-op_assign
-l_int|0
+id|nodes_clear
+c_func
+(paren
+id|node_online_map
+)paren
 suffix:semicolon
-r_for
-c_loop
+id|for_each_node
+c_func
 (paren
 id|node
-op_assign
-l_int|0
-suffix:semicolon
-id|node
-OL
-id|MAX_NUMNODES
-suffix:semicolon
-id|node
-op_increment
 )paren
 (brace
 r_if
@@ -90,9 +83,6 @@ c_func
 (paren
 id|node
 )paren
-suffix:semicolon
-id|numnodes
-op_increment
 suffix:semicolon
 id|eq
 op_assign

@@ -13,13 +13,6 @@ c_func
 id|zft_cmpr_register
 )paren
 suffix:semicolon
-DECL|variable|zft_cmpr_unregister
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|zft_cmpr_unregister
-)paren
-suffix:semicolon
 multiline_comment|/* zftape-read.c */
 DECL|variable|zft_fetch_segment_fraction
 id|EXPORT_SYMBOL

@@ -5193,45 +5193,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-singleline_comment|//MODULE_PARM(max_interrupt_work, &quot;i&quot;);
-singleline_comment|//MODULE_PARM(reverse_probe, &quot;i&quot;);
-singleline_comment|//MODULE_PARM(rx_copybreak, &quot;i&quot;);
-id|MODULE_PARM
-c_func
-(paren
-id|options
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_UNITS
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|full_duplex
-comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_UNITS
-)paren
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
 DECL|variable|dev_lp486e
 r_static
 r_struct
@@ -5262,6 +5223,39 @@ r_int
 id|irq
 op_assign
 id|IRQ
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|debug
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+singleline_comment|//module_param(max_interrupt_work, int, 0);
+singleline_comment|//module_param(reverse_probe, int, 0);
+singleline_comment|//module_param(rx_copybreak, int, 0);
+id|module_param
+c_func
+(paren
+id|options
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|full_duplex
+comma
+r_int
+comma
+l_int|0
+)paren
 suffix:semicolon
 DECL|function|lp486e_init_module
 r_static

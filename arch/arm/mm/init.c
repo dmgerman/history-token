@@ -139,19 +139,10 @@ l_int|10
 )paren
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|node
-op_assign
-l_int|0
-suffix:semicolon
-id|node
-OL
-id|numnodes
-suffix:semicolon
-id|node
-op_increment
 )paren
 (brace
 r_struct
@@ -654,26 +645,12 @@ id|i
 dot
 id|node
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Make sure we haven&squot;t exceeded the maximum number of nodes&n;&t;&t; * that we have in this configuration.  If we have, we&squot;re in&n;&t;&t; * trouble.  (maybe we ought to limit, instead of bugging?)&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|node
 op_ge
-id|numnodes
-)paren
-(brace
-id|numnodes
-op_assign
-id|node
-op_plus
-l_int|1
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Make sure we haven&squot;t exceeded the maximum number&n;&t;&t;&t; * of nodes that we have in this configuration.  If&n;&t;&t;&t; * we have, we&squot;re in trouble.  (maybe we ought to&n;&t;&t;&t; * limit, instead of bugging?)&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|numnodes
-OG
 id|MAX_NUMNODES
 )paren
 id|BUG
@@ -681,7 +658,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
+id|node_set_online
+c_func
+(paren
+id|node
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Get the start and end pfns for this bank&n;&t;&t; */
 id|start
 op_assign
@@ -771,19 +753,10 @@ id|end
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Calculate the number of pages we require to&n;&t; * store the bootmem bitmaps.&n;&t; */
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numnodes
-suffix:semicolon
-id|i
-op_increment
 )paren
 (brace
 r_if
@@ -1350,7 +1323,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Initialise the bootmem nodes.&n;&t; *&n;&t; * What we really want to do is:&n;&t; *&n;&t; *   unmap_all_regions_except_kernel();&n;&t; *   for_each_node_in_reverse_order(node) {&n;&t; *     map_node(node);&n;&t; *     allocate_bootmem_map(node);&n;&t; *     init_bootmem_node(node);&n;&t; *     free_bootmem_node(node);&n;&t; *   }&n;&t; *&n;&t; * but this is a 2.5-type change.  For now, we just set&n;&t; * the nodes up in reverse order.&n;&t; *&n;&t; * (we could also do with rolling bootmem_init and paging_init&n;&t; * into one generic &quot;memory_init&quot; type function).&n;&t; */
 id|np
 op_add_assign
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -1359,7 +1335,10 @@ c_loop
 (paren
 id|node
 op_assign
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -1381,6 +1360,13 @@ c_cond
 id|np-&gt;end
 op_eq
 l_int|0
+op_logical_or
+op_logical_neg
+id|node_online
+c_func
+(paren
+id|node
+)paren
 )paren
 (brace
 r_if
@@ -1575,19 +1561,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * initialise the zones within each node&n;&t; */
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|node
-op_assign
-l_int|0
-suffix:semicolon
-id|node
-OL
-id|numnodes
-suffix:semicolon
-id|node
-op_increment
 )paren
 (brace
 r_int
@@ -1972,19 +1949,10 @@ id|meminfo
 )paren
 suffix:semicolon
 multiline_comment|/* this will put all unused low memory onto the freelists */
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|node
-op_assign
-l_int|0
-suffix:semicolon
-id|node
-OL
-id|numnodes
-suffix:semicolon
-id|node
-op_increment
 )paren
 (brace
 id|pg_data_t

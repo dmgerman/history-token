@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.87 2004/11/14 17:07:07 dedekind Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: nodelist.c,v 1.90 2004/12/08 17:59:20 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -480,6 +480,68 @@ id|next
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Returns first valid node after &squot;ref&squot;. May return &squot;ref&squot; */
+DECL|function|jffs2_first_valid_node
+r_static
+r_struct
+id|jffs2_raw_node_ref
+op_star
+id|jffs2_first_valid_node
+c_func
+(paren
+r_struct
+id|jffs2_raw_node_ref
+op_star
+id|ref
+)paren
+(brace
+r_while
+c_loop
+(paren
+id|ref
+op_logical_and
+id|ref-&gt;next_in_ino
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ref_obsolete
+c_func
+(paren
+id|ref
+)paren
+)paren
+r_return
+id|ref
+suffix:semicolon
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;node at 0x%08x is obsoleted. Ignoring.&bslash;n&quot;
+comma
+id|ref_offset
+c_func
+(paren
+id|ref
+)paren
+)paren
+)paren
+suffix:semicolon
+id|ref
+op_assign
+id|ref-&gt;next_in_ino
+suffix:semicolon
+)brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 multiline_comment|/* Get tmp_dnode_info and full_dirent for all non-obsolete nodes associated&n;   with this ino, returning the former in order of version */
 DECL|function|jffs2_get_inode_nodes
 r_int
@@ -525,8 +587,9 @@ r_struct
 id|jffs2_raw_node_ref
 op_star
 id|ref
-op_assign
-id|f-&gt;inocache-&gt;nodes
+comma
+op_star
+id|valid_ref
 suffix:semicolon
 r_struct
 id|jffs2_tmp_dnode_info
@@ -576,23 +639,6 @@ id|f-&gt;inocache-&gt;ino
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|f-&gt;inocache-&gt;nodes
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Eep. no nodes for ino #%u&bslash;n&quot;
-comma
-id|f-&gt;inocache-&gt;ino
-)paren
-suffix:semicolon
-)brace
 id|spin_lock
 c_func
 (paren
@@ -600,55 +646,48 @@ op_amp
 id|c-&gt;erase_completion_lock
 )paren
 suffix:semicolon
-r_for
-c_loop
+id|valid_ref
+op_assign
+id|jffs2_first_valid_node
+c_func
 (paren
-id|ref
-op_assign
 id|f-&gt;inocache-&gt;nodes
-suffix:semicolon
-id|ref
-op_logical_and
-id|ref-&gt;next_in_ino
-suffix:semicolon
-id|ref
-op_assign
-id|ref-&gt;next_in_ino
 )paren
-(brace
-multiline_comment|/* Work out whether it&squot;s a data node or a dirent node */
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ref_obsolete
-c_func
-(paren
-id|ref
+op_logical_neg
+id|valid_ref
 )paren
-)paren
-(brace
-multiline_comment|/* FIXME: On NAND flash we may need to read these */
-id|D1
-c_func
-(paren
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;node at 0x%08x is obsoleted. Ignoring.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;Eep. No valid nodes for ino #%u&bslash;n&quot;
 comma
-id|ref_offset
+id|f-&gt;inocache-&gt;ino
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|valid_ref
+)paren
+(brace
+multiline_comment|/* We can hold a pointer to a non-obsolete node without the spinlock,&n;&t;&t;   but _obsolete_ nodes may disappear at any time, if the block&n;&t;&t;   they&squot;re in gets erased. So if we mark &squot;ref&squot; obsolete while we&squot;re&n;&t;&t;   not holding the lock, it can go away immediately. For that reason,&n;&t;&t;   we find the next valid node first, before processing &squot;ref&squot;.&n;&t;&t;*/
+id|ref
+op_assign
+id|valid_ref
+suffix:semicolon
+id|valid_ref
+op_assign
+id|jffs2_first_valid_node
 c_func
 (paren
-id|ref
-)paren
-)paren
+id|ref-&gt;next_in_ino
 )paren
 suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/* We can hold a pointer to a non-obsolete node without the spinlock,&n;&t;&t;   but _obsolete_ nodes may disappear at any time, if the block&n;&t;&t;   they&squot;re in gets erased */
 id|spin_unlock
 c_func
 (paren
@@ -1015,24 +1054,6 @@ r_goto
 id|free_out
 suffix:semicolon
 )brace
-id|memset
-c_func
-(paren
-id|fd
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|jffs2_full_dirent
-)paren
-op_plus
-id|node.d.nsize
-op_plus
-l_int|1
-)paren
-suffix:semicolon
 id|fd-&gt;raw
 op_assign
 id|ref
@@ -1242,6 +1263,13 @@ suffix:semicolon
 id|fd-&gt;next
 op_assign
 l_int|NULL
+suffix:semicolon
+id|fd-&gt;name
+(braket
+id|node.d.nsize
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 multiline_comment|/* Wheee. We now have a complete jffs2_full_dirent structure, with&n;&t;&t;&t;&t;   the name in it and everything. Link it into the list &n;&t;&t;&t;&t;*/
 id|D1

@@ -314,6 +314,7 @@ id|regs
 suffix:semicolon
 )brace
 DECL|variable|em86_format
+r_static
 r_struct
 id|linux_binfmt
 id|em86_format

@@ -3533,12 +3533,14 @@ c_func
 l_string|&quot;Dave Jones &lt;davej@codemonkey.org.uk&gt;, Andi Kleen&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|agp_try_unsupported
 comma
-l_string|&quot;1i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

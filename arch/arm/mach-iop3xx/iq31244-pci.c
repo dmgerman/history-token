@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/arm/mach-iop3xx/iq80321-pci.c&n; *&n; * PCI support for the Intel IQ80321 reference board&n; *&n; * Author: Rory Bolt &lt;rorybolt@pacbell.net&gt;&n; * Copyright (C) 2002 Rory Bolt&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * arch/arm/mach-iop3xx/iq80321-pci.c&n; *&n; * PCI support for the Intel IQ80321 reference board&n; *&n; * Author: Rory Bolt &lt;rorybolt@pacbell.net&gt;&n; * Copyright (C) 2002 Rory Bolt&n; * Copyright (C) 2004 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -245,9 +245,9 @@ l_int|0
 dot
 id|start
 op_assign
-id|IQ31244_PCI_IO_BASE
+id|IOP321_PCI_LOWER_IO_BA
 op_plus
-l_int|0x6e000000
+id|IOP321_PCI_IO_OFFSET
 suffix:semicolon
 id|res
 (braket
@@ -256,13 +256,9 @@ l_int|0
 dot
 id|end
 op_assign
-id|IQ31244_PCI_IO_BASE
+id|IOP321_PCI_UPPER_IO_BA
 op_plus
-id|IQ31244_PCI_IO_SIZE
-op_minus
-l_int|1
-op_plus
-id|IQ31244_PCI_IO_OFFSET
+id|IOP321_PCI_IO_OFFSET
 suffix:semicolon
 id|res
 (braket
@@ -289,7 +285,9 @@ l_int|1
 dot
 id|start
 op_assign
-id|IQ31244_PCI_MEM_BASE
+id|IOP321_PCI_LOWER_MEM_BA
+op_plus
+id|IOP321_PCI_MEM_OFFSET
 suffix:semicolon
 id|res
 (braket
@@ -298,9 +296,9 @@ l_int|1
 dot
 id|end
 op_assign
-id|IQ31244_PCI_MEM_BASE
+id|IOP321_PCI_UPPER_MEM_BA
 op_plus
-id|IQ31244_PCI_MEM_SIZE
+id|IOP321_PCI_MEM_OFFSET
 suffix:semicolon
 id|res
 (braket
@@ -346,6 +344,14 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+id|sys-&gt;mem_offset
+op_assign
+id|IOP321_PCI_MEM_OFFSET
+suffix:semicolon
+id|sys-&gt;io_offset
+op_assign
+id|IOP321_PCI_IO_OFFSET
+suffix:semicolon
 id|sys-&gt;resource
 (braket
 l_int|0
@@ -375,28 +381,13 @@ l_int|2
 op_assign
 l_int|NULL
 suffix:semicolon
-id|sys-&gt;io_offset
-op_assign
-id|IQ31244_PCI_IO_OFFSET
-suffix:semicolon
-id|sys-&gt;mem_offset
-op_assign
-id|IQ80321_PCI_MEM_BASE
-op_minus
-(paren
-op_star
-id|IOP321_IABAR1
-op_amp
-id|PCI_BASE_ADDRESS_MEM_MASK
-)paren
-suffix:semicolon
 id|iop3xx_pcibios_min_io
 op_assign
-id|IQ31244_PCI_IO_BASE
+id|IOP321_PCI_LOWER_IO_VA
 suffix:semicolon
 id|iop3xx_pcibios_min_mem
 op_assign
-id|IQ31244_PCI_MEM_BASE
+id|IOP321_PCI_LOWER_MEM_VA
 suffix:semicolon
 r_return
 l_int|1
@@ -415,19 +406,6 @@ id|iop321_init
 c_func
 (paren
 )paren
-suffix:semicolon
-multiline_comment|/* setting up the second translation window */
-op_star
-id|IOP321_OMWTVR1
-op_assign
-id|IQ31244_PCI_MEM_BASE
-op_plus
-l_int|0x04000000
-suffix:semicolon
-op_star
-id|IOP321_OUMWTVR1
-op_assign
-l_int|0x0
 suffix:semicolon
 )brace
 DECL|variable|__initdata

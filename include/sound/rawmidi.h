@@ -527,28 +527,6 @@ op_star
 id|ops
 )paren
 suffix:semicolon
-multiline_comment|/* control functions */
-r_int
-id|snd_rawmidi_control_ioctl
-c_func
-(paren
-id|snd_card_t
-op_star
-id|card
-comma
-id|snd_ctl_file_t
-op_star
-id|control
-comma
-r_int
-r_int
-id|cmd
-comma
-r_int
-r_int
-id|arg
-)paren
-suffix:semicolon
 multiline_comment|/* callbacks */
 r_void
 id|snd_rawmidi_receive_reset

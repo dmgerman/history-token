@@ -66,11 +66,6 @@ DECL|macro|IRQ_IXP4XX_SW_INT1
 mdefine_line|#define IRQ_IXP4XX_SW_INT1&t;30
 DECL|macro|IRQ_IXP4XX_SW_INT2
 mdefine_line|#define IRQ_IXP4XX_SW_INT2&t;31
-macro_line|#ifndef&t;CONFIG_CPU_IXP46X
-DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS&t;&t;&t;32
-macro_line|#else
-multiline_comment|/*&n; * IXP465 adds new sources&n; */
 DECL|macro|IRQ_IXP4XX_USB_HOST
 mdefine_line|#define IRQ_IXP4XX_USB_HOST&t;32
 DECL|macro|IRQ_IXP4XX_I2C
@@ -91,6 +86,11 @@ DECL|macro|IRQ_IXP4XX_MCU_ECC
 mdefine_line|#define IRQ_IXP4XX_MCU_ECC&t;61
 DECL|macro|IRQ_IXP4XX_EXP_PE
 mdefine_line|#define IRQ_IXP4XX_EXP_PE&t;62
+multiline_comment|/*&n; * Only first 32 sources are valid if running on IXP42x systems&n; */
+macro_line|#ifndef&t;CONFIG_CPU_IXP46X
+DECL|macro|NR_IRQS
+mdefine_line|#define NR_IRQS&t;&t;&t;32
+macro_line|#else
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;64
 macro_line|#endif

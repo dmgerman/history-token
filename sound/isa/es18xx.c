@@ -837,6 +837,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|snd_es18xx_mixer_write
+r_static
 r_inline
 r_void
 id|snd_es18xx_mixer_write
@@ -911,6 +912,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|snd_es18xx_mixer_read
+r_static
 r_inline
 r_int
 id|snd_es18xx_mixer_read
@@ -7778,6 +7780,7 @@ id|pcm
 suffix:semicolon
 )brace
 DECL|function|snd_es18xx_pcm
+r_static
 r_int
 id|__devinit
 id|snd_es18xx_pcm
@@ -8085,14 +8088,6 @@ op_xor_assign
 id|ES18XX_PM_SUS
 )paren
 suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D3hot
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -8129,14 +8124,6 @@ comma
 id|chip-&gt;pm_reg
 op_xor_assign
 id|ES18XX_PM_FM
-)paren
-suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D0
 )paren
 suffix:semicolon
 r_return
@@ -9368,7 +9355,7 @@ op_assign
 id|SNDRV_DEFAULT_PORT
 suffix:semicolon
 multiline_comment|/* 0x220,0x240,0x260,0x280 */
-macro_line|#ifndef CONFIG_PNP_
+macro_line|#ifndef CONFIG_PNP
 DECL|variable|mpu_port
 r_static
 r_int
@@ -10500,7 +10487,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PNP_ */
+macro_line|#endif /* CONFIG_PNP */
 DECL|function|snd_audiodrive_probe
 r_static
 r_int

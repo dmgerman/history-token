@@ -644,12 +644,12 @@ DECL|variable|hotplug_seqnum
 id|u64
 id|hotplug_seqnum
 suffix:semicolon
-DECL|variable|sequence_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|sequence_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/**&n; * kobject_hotplug - notify userspace by executing /sbin/hotplug&n; *&n; * @action: action that is happening (usually &quot;ADD&quot; or &quot;REMOVE&quot;)&n; * @kobj: struct kobject that the action is happening to&n; */
 DECL|function|kobject_hotplug

@@ -179,22 +179,6 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 macro_line|#if !defined(PCMCIA)
 macro_line|#if defined(MODULE)
-id|MODULE_PARM
-c_func
-(paren
-id|io
-comma
-l_string|&quot;1-2i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|io
-comma
-l_string|&quot;base io address of controller&quot;
-)paren
-suffix:semicolon
 DECL|variable|io
 r_static
 r_int
@@ -208,20 +192,24 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|irq
+id|io
 comma
-l_string|&quot;1-2i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|irq
+id|io
 comma
-l_string|&quot;interrupt for controller&quot;
+l_string|&quot;base io address of controller&quot;
 )paren
 suffix:semicolon
 DECL|variable|irq
@@ -237,20 +225,24 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|scsiid
+id|irq
 comma
-l_string|&quot;1-2i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|scsiid
+id|irq
 comma
-l_string|&quot;scsi id of controller&quot;
+l_string|&quot;interrupt for controller&quot;
 )paren
 suffix:semicolon
 DECL|variable|scsiid
@@ -266,20 +258,24 @@ comma
 l_int|7
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|reconnect
+id|scsiid
 comma
-l_string|&quot;1-2i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|reconnect
+id|scsiid
 comma
-l_string|&quot;allow targets to disconnect&quot;
+l_string|&quot;scsi id of controller&quot;
 )paren
 suffix:semicolon
 DECL|variable|reconnect
@@ -295,20 +291,24 @@ comma
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|parity
+id|reconnect
 comma
-l_string|&quot;1-2i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|parity
+id|reconnect
 comma
-l_string|&quot;use scsi parity&quot;
+l_string|&quot;allow targets to disconnect&quot;
 )paren
 suffix:semicolon
 DECL|variable|parity
@@ -324,20 +324,24 @@ comma
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|sync
+id|parity
 comma
-l_string|&quot;1-2i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|sync
+id|parity
 comma
-l_string|&quot;use synchronous transfers&quot;
+l_string|&quot;use scsi parity&quot;
 )paren
 suffix:semicolon
 DECL|variable|sync
@@ -353,20 +357,24 @@ comma
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|delay
+id|sync
 comma
-l_string|&quot;1-2i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|delay
+id|sync
 comma
-l_string|&quot;scsi reset delay&quot;
+l_string|&quot;use synchronous transfers&quot;
 )paren
 suffix:semicolon
 DECL|variable|delay
@@ -382,20 +390,24 @@ comma
 id|DELAY_DEFAULT
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|exttrans
+id|delay
 comma
-l_string|&quot;1-2i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|exttrans
+id|delay
 comma
-l_string|&quot;use extended translation&quot;
+l_string|&quot;scsi reset delay&quot;
 )paren
 suffix:semicolon
 DECL|variable|exttrans
@@ -411,23 +423,27 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#if !defined(AHA152X_DEBUG)
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|aha152x
+id|exttrans
 comma
-l_string|&quot;1-8i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|aha152x
+id|exttrans
 comma
-l_string|&quot;parameters for first controller&quot;
+l_string|&quot;use extended translation&quot;
 )paren
 suffix:semicolon
+macro_line|#if !defined(AHA152X_DEBUG)
 DECL|variable|aha152x
 r_static
 r_int
@@ -453,20 +469,24 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|aha152x1
+id|aha152x
 comma
-l_string|&quot;1-8i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|aha152x1
+id|aha152x
 comma
-l_string|&quot;parameters for second controller&quot;
+l_string|&quot;parameters for first controller&quot;
 )paren
 suffix:semicolon
 DECL|variable|aha152x1
@@ -494,23 +514,27 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-macro_line|#else
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|debug
+id|aha152x1
 comma
-l_string|&quot;1-2i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|debug
+id|aha152x1
 comma
-l_string|&quot;flags for driver debugging&quot;
+l_string|&quot;parameters for second controller&quot;
 )paren
 suffix:semicolon
+macro_line|#else
 DECL|variable|debug
 r_static
 r_int
@@ -524,20 +548,24 @@ comma
 id|DEBUG_DEFAULT
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|aha152x
+id|debug
 comma
-l_string|&quot;1-9i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|aha152x
+id|debug
 comma
-l_string|&quot;parameters for first controller&quot;
+l_string|&quot;flags for driver debugging&quot;
 )paren
 suffix:semicolon
 DECL|variable|aha152x
@@ -567,20 +595,24 @@ comma
 id|DEBUG_DEFAULT
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
-id|aha152x1
+id|aha152x
 comma
-l_string|&quot;1-9i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|aha152x1
+id|aha152x
 comma
-l_string|&quot;parameters for second controller&quot;
+l_string|&quot;parameters for first controller&quot;
 )paren
 suffix:semicolon
 DECL|variable|aha152x1
@@ -609,6 +641,26 @@ l_int|0
 comma
 id|DEBUG_DEFAULT
 )brace
+suffix:semicolon
+id|module_param_array
+c_func
+(paren
+id|aha152x1
+comma
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|aha152x1
+comma
+l_string|&quot;parameters for second controller&quot;
+)paren
 suffix:semicolon
 macro_line|#endif /* !defined(AHA152X_DEBUG) */
 macro_line|#endif /* MODULE */

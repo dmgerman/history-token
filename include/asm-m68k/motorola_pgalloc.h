@@ -55,6 +55,8 @@ c_func
 id|GFP_KERNEL
 op_or
 id|__GFP_REPEAT
+op_or
+id|__GFP_ZERO
 )paren
 suffix:semicolon
 r_if
@@ -63,12 +65,6 @@ c_cond
 id|pte
 )paren
 (brace
-id|clear_page
-c_func
-(paren
-id|pte
-)paren
-suffix:semicolon
 id|__flush_page_to_ram
 c_func
 (paren
@@ -151,6 +147,8 @@ c_func
 id|GFP_KERNEL
 op_or
 id|__GFP_REPEAT
+op_or
+id|__GFP_ZERO
 comma
 l_int|0
 )paren
@@ -184,12 +182,6 @@ c_cond
 id|pte
 )paren
 (brace
-id|clear_page
-c_func
-(paren
-id|pte
-)paren
-suffix:semicolon
 id|__flush_page_to_ram
 c_func
 (paren

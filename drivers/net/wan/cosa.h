@@ -82,10 +82,12 @@ DECL|macro|COSAIOSTRT
 mdefine_line|#define COSAIOSTRT&t;_IOW(&squot;C&squot;,0xf1, int)
 multiline_comment|/* Read the block from the device memory */
 DECL|macro|COSAIORMEM
-mdefine_line|#define COSAIORMEM&t;_IOWR(&squot;C&squot;,0xf2, struct cosa_download)
+mdefine_line|#define COSAIORMEM&t;_IOWR(&squot;C&squot;,0xf2, struct cosa_download *)
+multiline_comment|/* actually the struct cosa_download itself; this is to keep&n;&t; * the ioctl number same as in 2.4 in order to keep the user-space&n;&t; * utils compatible. */
 multiline_comment|/* Write the block to the device memory (i.e. download the microcode) */
 DECL|macro|COSAIODOWNLD
-mdefine_line|#define COSAIODOWNLD&t;_IOW(&squot;C&squot;,0xf2, struct cosa_download)
+mdefine_line|#define COSAIODOWNLD&t;_IOW(&squot;C&squot;,0xf2, struct cosa_download *)
+multiline_comment|/* actually the struct cosa_download itself; this is to keep&n;&t; * the ioctl number same as in 2.4 in order to keep the user-space&n;&t; * utils compatible. */
 multiline_comment|/* Read the device type (one of &quot;srp&quot;, &quot;cosa&quot;, and &quot;cosa8&quot; for now) */
 DECL|macro|COSAIORTYPE
 mdefine_line|#define COSAIORTYPE&t;_IOR(&squot;C&squot;,0xf3, char *)

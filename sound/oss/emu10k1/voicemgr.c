@@ -14,6 +14,7 @@ mdefine_line|#define PITCH_67882 0x00005a82
 DECL|macro|PITCH_57081
 mdefine_line|#define PITCH_57081 0x00004c1c
 DECL|function|emu10k1_select_interprom
+r_static
 id|u32
 id|emu10k1_select_interprom
 c_func

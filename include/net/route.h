@@ -214,7 +214,7 @@ op_star
 id|rt_cache_stat
 suffix:semicolon
 DECL|macro|RT_CACHE_STAT_INC
-mdefine_line|#define RT_CACHE_STAT_INC(field)&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;(per_cpu_ptr(rt_cache_stat, smp_processor_id())-&gt;field++)
+mdefine_line|#define RT_CACHE_STAT_INC(field)&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;(per_cpu_ptr(rt_cache_stat, _smp_processor_id())-&gt;field++)
 r_extern
 r_struct
 id|ip_rt_acct

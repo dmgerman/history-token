@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm/arch-iop3xx/iop321.h&n; *&n; * Intel IOP321 Chip definitions&n; *&n; * Author: Rory Bolt &lt;rorybolt@pacbell.net&gt;&n; * Copyright (C) 2002 Rory Bolt&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * linux/include/asm/arch-iop3xx/iop321.h&n; *&n; * Intel IOP321 Chip definitions&n; *&n; * Author: Rory Bolt &lt;rorybolt@pacbell.net&gt;&n; * Copyright (C) 2002 Rory Bolt&n; * Copyright (C) 2004 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#ifndef _IOP321_HW_H_
 DECL|macro|_IOP321_HW_H_
 mdefine_line|#define _IOP321_HW_H_
@@ -13,22 +13,43 @@ mdefine_line|#define&t;iop_is_321()&t;0
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * IOP321 I/O and Mem space regions for PCI autoconfiguration&n; */
-DECL|macro|IOP321_PCI_LOWER_IO
-mdefine_line|#define IOP321_PCI_LOWER_IO             0x90000000
-DECL|macro|IOP321_PCI_UPPER_IO
-mdefine_line|#define IOP321_PCI_UPPER_IO             0x9000ffff
-DECL|macro|IOP321_PCI_LOWER_MEM
-mdefine_line|#define IOP321_PCI_LOWER_MEM            0x80000000
-DECL|macro|IOP321_PCI_UPPER_MEM
-mdefine_line|#define IOP321_PCI_UPPER_MEM            0x83ffffff
-DECL|macro|IOP321_PCI_WINDOW_SIZE
-mdefine_line|#define IOP321_PCI_WINDOW_SIZE          64 * 0x100000
+DECL|macro|IOP321_PCI_IO_WINDOW_SIZE
+mdefine_line|#define IOP321_PCI_IO_WINDOW_SIZE   0x10000
+DECL|macro|IOP321_PCI_LOWER_IO_PA
+mdefine_line|#define IOP321_PCI_LOWER_IO_PA      0x90000000
+DECL|macro|IOP321_PCI_LOWER_IO_VA
+mdefine_line|#define IOP321_PCI_LOWER_IO_VA      0xfe000000
+DECL|macro|IOP321_PCI_LOWER_IO_BA
+mdefine_line|#define IOP321_PCI_LOWER_IO_BA      (*IOP321_OIOWTVR)
+DECL|macro|IOP321_PCI_UPPER_IO_PA
+mdefine_line|#define IOP321_PCI_UPPER_IO_PA      (IOP321_PCI_LOWER_IO_PA + IOP321_PCI_IO_WINDOW_SIZE - 1)
+DECL|macro|IOP321_PCI_UPPER_IO_VA
+mdefine_line|#define IOP321_PCI_UPPER_IO_VA      (IOP321_PCI_LOWER_IO_VA + IOP321_PCI_IO_WINDOW_SIZE - 1)
+DECL|macro|IOP321_PCI_UPPER_IO_BA
+mdefine_line|#define IOP321_PCI_UPPER_IO_BA      (IOP321_PCI_LOWER_IO_BA + IOP321_PCI_IO_WINDOW_SIZE - 1)
+DECL|macro|IOP321_PCI_IO_OFFSET
+mdefine_line|#define IOP321_PCI_IO_OFFSET        (IOP321_PCI_LOWER_IO_VA - IOP321_PCI_LOWER_IO_BA)
+DECL|macro|IOP321_PCI_MEM_WINDOW_SIZE
+mdefine_line|#define IOP321_PCI_MEM_WINDOW_SIZE  (~*IOP321_IALR1 + 1)
+DECL|macro|IOP321_PCI_LOWER_MEM_PA
+mdefine_line|#define IOP321_PCI_LOWER_MEM_PA     0x80000000
+DECL|macro|IOP321_PCI_LOWER_MEM_VA
+mdefine_line|#define IOP321_PCI_LOWER_MEM_VA     0x80000000
+DECL|macro|IOP321_PCI_LOWER_MEM_BA
+mdefine_line|#define IOP321_PCI_LOWER_MEM_BA     (*IOP321_OMWTVR0)
+DECL|macro|IOP321_PCI_UPPER_MEM_PA
+mdefine_line|#define IOP321_PCI_UPPER_MEM_PA     (IOP321_PCI_LOWER_MEM_PA + IOP321_PCI_MEM_WINDOW_SIZE - 1)
+DECL|macro|IOP321_PCI_UPPER_MEM_VA
+mdefine_line|#define IOP321_PCI_UPPER_MEM_VA     (IOP321_PCI_LOWER_MEM_VA + IOP321_PCI_MEM_WINDOW_SIZE - 1)
+DECL|macro|IOP321_PCI_UPPER_MEM_BA
+mdefine_line|#define IOP321_PCI_UPPER_MEM_BA     (IOP321_PCI_LOWER_MEM_BA + IOP321_PCI_MEM_WINDOW_SIZE - 1)
+DECL|macro|IOP321_PCI_MEM_OFFSET
+mdefine_line|#define IOP321_PCI_MEM_OFFSET       (IOP321_PCI_LOWER_MEM_VA - IOP321_PCI_LOWER_MEM_BA)
 multiline_comment|/*&n; * IOP321 chipset registers&n; */
 DECL|macro|IOP321_VIRT_MEM_BASE
 mdefine_line|#define IOP321_VIRT_MEM_BASE 0xfeffe000  /* chip virtual mem address*/
-singleline_comment|//#define IOP321_VIRT_MEM_BASE 0xfff00000  /* chip virtual mem address*/
-DECL|macro|IOP321_PHY_MEM_BASE
-mdefine_line|#define IOP321_PHY_MEM_BASE  0xffffe000  /* chip physical memory address */
+DECL|macro|IOP321_PHYS_MEM_BASE
+mdefine_line|#define IOP321_PHYS_MEM_BASE 0xffffe000  /* chip physical memory address */
 DECL|macro|IOP321_REG_ADDR
 mdefine_line|#define IOP321_REG_ADDR(reg) (IOP321_VIRT_MEM_BASE | (reg))
 multiline_comment|/* Reserved 0x00000000 through 0x000000FF */

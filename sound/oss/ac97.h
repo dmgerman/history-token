@@ -335,37 +335,6 @@ op_star
 id|value_list
 )paren
 suffix:semicolon
-multiline_comment|/* Sets one mixer channel OSS_CHANNEL to the scaled value OSS_VALUE.&n;   Returns the resulting (rescaled) value, or a negative value&n;   representing an error code.&n;&n;   Stereo channels have two values in OSS_VALUE (the left value is in the&n;   lower 8 bits, the right value is in the upper 8 bits). */
-r_extern
-r_int
-id|ac97_set_mixer
-(paren
-r_struct
-id|ac97_hwint
-op_star
-id|dev
-comma
-r_int
-id|oss_channel
-comma
-id|u16
-id|oss_value
-)paren
-suffix:semicolon
-multiline_comment|/* Return the contents of the specified AC97 register REG; it uses the&n;   last-written value if it is available.  */
-r_extern
-r_int
-id|ac97_get_register
-(paren
-r_struct
-id|ac97_hwint
-op_star
-id|dev
-comma
-id|u8
-id|reg
-)paren
-suffix:semicolon
 multiline_comment|/* Writes the specified VALUE to the AC97 register REG in the mixer.&n;   Takes care of setting the last-written cache as well.  */
 r_extern
 r_int
@@ -381,20 +350,6 @@ id|reg
 comma
 id|u16
 id|value
-)paren
-suffix:semicolon
-multiline_comment|/* Returns the last OSS value written to the OSS_CHANNEL mixer channel.  */
-r_extern
-r_int
-id|ac97_get_mixer_scaled
-(paren
-r_struct
-id|ac97_hwint
-op_star
-id|dev
-comma
-r_int
-id|oss_channel
 )paren
 suffix:semicolon
 multiline_comment|/* Default ioctl. */

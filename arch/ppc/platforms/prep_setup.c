@@ -2292,7 +2292,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if     (defined(CONFIG_FB_VGA16) || defined(CONFIG_FB_VGA_16_MODULE) || &bslash;&n;&t; defined(CONFIG_FB_VESA))
+macro_line|#if     (defined(CONFIG_FB_VGA16) || defined(CONFIG_FB_VGA16_MODULE) || &bslash;&n;&t; defined(CONFIG_FB_VESA))
 id|PPC_DEVICE
 op_star
 id|vgadev
@@ -4058,7 +4058,7 @@ op_assign
 id|_PREP_Motorola
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PREP_PRESIDUAL
+macro_line|#ifdef CONFIG_PREP_RESIDUAL
 multiline_comment|/* Switch off all residual data processing if the user requests it */
 r_if
 c_cond

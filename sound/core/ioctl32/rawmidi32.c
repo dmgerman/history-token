@@ -47,7 +47,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|macro|CVT_sndrv_rawmidi_params
-mdefine_line|#define CVT_sndrv_rawmidi_params()&bslash;&n;{&bslash;&n;&t;COPY(stream);&bslash;&n;&t;COPY(buffer_size);&bslash;&n;&t;COPY(avail_min);&bslash;&n;&t;COPY(no_active_sensing);&bslash;&n;}
+mdefine_line|#define CVT_sndrv_rawmidi_params()&bslash;&n;{&bslash;&n;&t;COPY(stream);&bslash;&n;&t;COPY_CVT(buffer_size);&bslash;&n;&t;COPY_CVT(avail_min);&bslash;&n;&t;if (copy_in_user(((size_t __user *)&amp;dst-&gt;avail_min + 1),&bslash;&n;&t;&t;&t; ((size_t __user *)&amp;src-&gt;avail_min + 1), 4)) &bslash;&n;&t;&t;return -EFAULT;&bslash;&n;}
 DECL|struct|sndrv_rawmidi_status32
 r_struct
 id|sndrv_rawmidi_status32
@@ -87,7 +87,7 @@ id|packed
 )paren
 suffix:semicolon
 DECL|macro|CVT_sndrv_rawmidi_status
-mdefine_line|#define CVT_sndrv_rawmidi_status()&bslash;&n;{&bslash;&n;&t;COPY(stream);&bslash;&n;&t;COPY(tstamp.tv_sec);&bslash;&n;&t;COPY(tstamp.tv_nsec);&bslash;&n;&t;COPY(avail);&bslash;&n;&t;COPY(xruns);&bslash;&n;}
+mdefine_line|#define CVT_sndrv_rawmidi_status()&bslash;&n;{&bslash;&n;&t;COPY(stream);&bslash;&n;&t;COPY_CVT(tstamp.tv_sec);&bslash;&n;&t;COPY_CVT(tstamp.tv_nsec);&bslash;&n;&t;COPY_CVT(avail);&bslash;&n;&t;COPY_CVT(xruns);&bslash;&n;}
 DECL|variable|rawmidi_params
 id|DEFINE_ALSA_IOCTL
 c_func

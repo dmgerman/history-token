@@ -4344,9 +4344,14 @@ id|instr-&gt;ops
 r_if
 c_cond
 (paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
 id|instr-&gt;ops-&gt;instr_type
-op_eq
-id|snd_seq_simple_id
+comma
+id|SNDRV_SEQ_INSTR_ID_SIMPLE
+)paren
 )paren
 id|snd_trident_simple_init
 c_func
@@ -5370,6 +5375,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_trident_synth_event_input
+r_static
 r_int
 id|snd_trident_synth_event_input
 c_func

@@ -27,12 +27,14 @@ id|shuffle_freq
 op_assign
 l_int|50
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|shuffle_freq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*====================================================================*/

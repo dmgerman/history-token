@@ -350,15 +350,6 @@ op_star
 id|tty
 )paren
 suffix:semicolon
-r_void
-id|gs_do_softint
-c_func
-(paren
-r_void
-op_star
-id|private_
-)paren
-suffix:semicolon
 r_int
 id|gs_block_til_ready
 c_func

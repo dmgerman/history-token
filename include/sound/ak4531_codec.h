@@ -114,9 +114,10 @@ id|regs
 l_int|0x20
 )braket
 suffix:semicolon
-DECL|member|reg_lock
-id|spinlock_t
-id|reg_lock
+DECL|member|reg_mutex
+r_struct
+id|semaphore
+id|reg_mutex
 suffix:semicolon
 )brace
 suffix:semicolon

@@ -1097,6 +1097,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*      Read Id of first sector passing tape head.&n; */
 DECL|function|ftape_read_id
+r_static
 r_int
 id|ftape_read_id
 c_func

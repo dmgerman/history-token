@@ -21,6 +21,7 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 multiline_comment|/*&n; * create a new hardware dependent device for Emu10k1&n; */
 DECL|function|snd_emu10k1_synth_new_device
+r_static
 r_int
 id|snd_emu10k1_synth_new_device
 c_func
@@ -243,6 +244,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_emu10k1_synth_delete_device
+r_static
 r_int
 id|snd_emu10k1_synth_delete_device
 c_func

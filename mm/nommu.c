@@ -466,10 +466,11 @@ id|i
 suffix:semicolon
 )brace
 DECL|variable|vmlist_lock
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|vmlist_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|vmlist
 r_struct

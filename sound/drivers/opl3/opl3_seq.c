@@ -303,6 +303,7 @@ id|opl3-&gt;access_mutex
 suffix:semicolon
 )brace
 DECL|function|snd_opl3_synth_use
+r_static
 r_int
 id|snd_opl3_synth_use
 c_func
@@ -441,6 +442,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_opl3_synth_unuse
+r_static
 r_int
 id|snd_opl3_synth_unuse
 c_func

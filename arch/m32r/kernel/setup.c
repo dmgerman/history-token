@@ -796,9 +796,23 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_DISCONTIGMEM
-id|numnodes
-op_assign
-l_int|2
+id|nodes_clear
+c_func
+(paren
+id|node_online_map
+)paren
+suffix:semicolon
+id|node_set_online
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
+id|node_set_online
+c_func
+(paren
+l_int|1
+)paren
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_DISCONTIGMEM */
 id|init_mm.start_code

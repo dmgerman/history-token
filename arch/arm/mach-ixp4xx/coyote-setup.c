@@ -263,10 +263,14 @@ op_assign
 op_star
 id|IXP4XX_EXP_CS0
 suffix:semicolon
+id|ixp4xx_sys_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|platform_add_devices
 c_func
 (paren
-op_amp
 id|coyote_devices
 comma
 id|ARRAY_SIZE

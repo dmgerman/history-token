@@ -43,6 +43,13 @@ op_star
 id|base_file
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|spinlock_t
 )brace
 id|spinlock_t
@@ -231,6 +238,13 @@ id|read_counter
 suffix:colon
 l_int|31
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|rwlock_t
 )brace
 multiline_comment|/*__attribute__((aligned(32)))*/

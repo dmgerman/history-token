@@ -82,8 +82,9 @@ mdefine_line|#define VORTEX_RESOURCE_A3D&t;0x00000004
 DECL|macro|VORTEX_RESOURCE_LAST
 mdefine_line|#define VORTEX_RESOURCE_LAST&t;0x00000005
 multiline_comment|/* Check for SDAC bit in &quot;Extended audio ID&quot; AC97 register */
+singleline_comment|//#define VORTEX_IS_QUAD(x) (((x)-&gt;codec == NULL) ?  0 : ((x)-&gt;codec-&gt;ext_id&amp;0x80))
 DECL|macro|VORTEX_IS_QUAD
-mdefine_line|#define VORTEX_IS_QUAD(x) ((x-&gt;codec == NULL) ?  0 : (x-&gt;codec-&gt;ext_id&amp;0x80))
+mdefine_line|#define VORTEX_IS_QUAD(x) ((x)-&gt;isquad)
 multiline_comment|/* Check if chip has bug. */
 DECL|macro|IS_BAD_CHIP
 mdefine_line|#define IS_BAD_CHIP(x) (&bslash;&n;&t;(x-&gt;rev == 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_VORTEX_2) || &bslash;&n;&t;(x-&gt;rev == 0xfe &amp;&amp; x-&gt;device == PCI_DEVICE_ID_AUREAL_ADVANTAGE))
@@ -346,6 +347,11 @@ id|xt_mode
 suffix:semicolon
 multiline_comment|/* 1: speakers, 0:headphones. */
 macro_line|#endif
+DECL|member|isquad
+r_int
+id|isquad
+suffix:semicolon
+multiline_comment|/* cache of extended ID codec flag. */
 multiline_comment|/* Gameport stuff. */
 DECL|member|gameport
 r_struct
@@ -599,6 +605,19 @@ r_static
 r_int
 r_inline
 id|vortex_adbdma_getlinearpos
+c_func
+(paren
+id|vortex_t
+op_star
+id|vortex
+comma
+r_int
+id|adbdma
+)paren
+suffix:semicolon
+r_static
+r_void
+id|vortex_adbdma_resetup
 c_func
 (paren
 id|vortex_t

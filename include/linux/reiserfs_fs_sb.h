@@ -1404,8 +1404,6 @@ DECL|macro|reiserfs_error_panic
 mdefine_line|#define reiserfs_error_panic(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_ERROR_PANIC))
 DECL|macro|reiserfs_error_ro
 mdefine_line|#define reiserfs_error_ro(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_ERROR_RO))
-DECL|macro|reiserfs_error_continue
-mdefine_line|#define reiserfs_error_continue(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_ERROR_CONTINUE))
 r_void
 id|reiserfs_file_buffer
 (paren

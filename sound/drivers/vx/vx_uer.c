@@ -634,6 +634,7 @@ multiline_comment|/* The value is already correct */
 )brace
 multiline_comment|/*&n; * vx_change_clock_source - change the clock source&n; * @source: the new source&n; */
 DECL|function|vx_change_clock_source
+r_static
 r_void
 id|vx_change_clock_source
 c_func

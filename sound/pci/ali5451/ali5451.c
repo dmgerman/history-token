@@ -9547,14 +9547,6 @@ c_func
 id|chip-&gt;pci
 )paren
 suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D3hot
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9800,14 +9792,6 @@ c_func
 id|chip-&gt;ac97
 )paren
 suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D0
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9880,11 +9864,6 @@ id|codec-&gt;pci
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
-r_if
-c_cond
-(paren
-id|codec-&gt;image
-)paren
 id|kfree
 c_func
 (paren

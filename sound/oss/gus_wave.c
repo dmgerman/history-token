@@ -255,6 +255,7 @@ r_int
 id|only_8_bits
 suffix:semicolon
 DECL|variable|iw_mode
+r_static
 r_int
 id|iw_mode
 op_assign

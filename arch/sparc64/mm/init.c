@@ -8396,6 +8396,8 @@ id|alloc_pages
 c_func
 (paren
 id|GFP_KERNEL
+op_or
+id|__GFP_ZERO
 comma
 l_int|0
 )paren
@@ -8424,16 +8426,6 @@ id|SetPageReserved
 c_func
 (paren
 id|mem_map_zero
-)paren
-suffix:semicolon
-id|clear_page
-c_func
-(paren
-id|page_address
-c_func
-(paren
-id|mem_map_zero
-)paren
 )paren
 suffix:semicolon
 id|codepages

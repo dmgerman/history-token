@@ -1884,6 +1884,8 @@ op_or
 id|SNDRV_PCM_INFO_PAUSE
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
+op_or
+id|SNDRV_PCM_INFO_RESUME
 )paren
 comma
 dot
@@ -2936,6 +2938,9 @@ id|cmd
 r_case
 id|SNDRV_PCM_TRIGGER_START
 suffix:colon
+r_case
+id|SNDRV_PCM_TRIGGER_RESUME
+suffix:colon
 r_if
 c_cond
 (paren
@@ -2973,6 +2978,9 @@ r_break
 suffix:semicolon
 r_case
 id|SNDRV_PCM_TRIGGER_STOP
+suffix:colon
+r_case
+id|SNDRV_PCM_TRIGGER_SUSPEND
 suffix:colon
 id|vx_toggle_pipe
 c_func
@@ -3546,6 +3554,8 @@ op_or
 id|SNDRV_PCM_INFO_PAUSE
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
+op_or
+id|SNDRV_PCM_INFO_RESUME
 )paren
 comma
 dot

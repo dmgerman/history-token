@@ -112,7 +112,7 @@ suffix:semicolon
 DECL|variable|ixdp2400_timer
 r_static
 r_struct
-id|timer
+id|sys_timer
 id|ixdp2400_timer
 op_assign
 (brace

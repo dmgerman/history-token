@@ -265,6 +265,23 @@ id|clcd_fb
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * mmap the framebuffer memory&n;&t; */
+DECL|member|mmap
+r_int
+(paren
+op_star
+id|mmap
+)paren
+(paren
+r_struct
+id|clcd_fb
+op_star
+comma
+r_struct
+id|vm_area_struct
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Remove platform specific parts of CLCD driver&n;&t; */
 DECL|member|remove
 r_void

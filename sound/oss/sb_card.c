@@ -111,6 +111,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Logitech soundman games? */
 DECL|variable|legacy
+r_static
 r_struct
 id|sb_card_config
 op_star

@@ -18466,6 +18466,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|variable|res
+r_static
 r_struct
 id|proc_dir_entry
 op_star

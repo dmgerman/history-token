@@ -2335,9 +2335,12 @@ op_amp
 id|scsi_id-&gt;scsi_list
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|scsi_id-&gt;sbp2_command_orb_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|scsi_id-&gt;sbp2_device_type_and_lun
 op_assign

@@ -384,6 +384,7 @@ l_int|0x00
 suffix:semicolon
 multiline_comment|/*&n; * set drum voice characteristics&n; */
 DECL|function|snd_opl3_drum_voice_set
+r_static
 r_void
 id|snd_opl3_drum_voice_set
 c_func
@@ -560,6 +561,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set drum voice pitch&n; */
 DECL|function|snd_opl3_drum_note_set
+r_static
 r_void
 id|snd_opl3_drum_note_set
 c_func
@@ -632,6 +634,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set drum voice volume and position&n; */
 DECL|function|snd_opl3_drum_vol_set
+r_static
 r_void
 id|snd_opl3_drum_vol_set
 c_func

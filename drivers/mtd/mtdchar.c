@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: mtdchar.c,v 1.65 2004/09/23 23:45:47 gleixner Exp $&n; *&n; * Character-device access to raw MTD devices.&n; *&n; */
+multiline_comment|/*&n; * $Id: mtdchar.c,v 1.66 2005/01/05 18:05:11 dwmw2 Exp $&n; *&n; * Character-device access to raw MTD devices.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -211,11 +211,6 @@ id|mtd_info
 op_star
 id|mtd
 op_assign
-(paren
-r_struct
-id|mtd_info
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 r_switch
@@ -479,11 +474,6 @@ l_string|&quot;MTD_close&bslash;n&quot;
 suffix:semicolon
 id|mtd
 op_assign
-(paren
-r_struct
-id|mtd_info
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 r_if
@@ -542,11 +532,6 @@ id|mtd_info
 op_star
 id|mtd
 op_assign
-(paren
-r_struct
-id|mtd_info
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 r_int
@@ -779,11 +764,6 @@ id|mtd_info
 op_star
 id|mtd
 op_assign
-(paren
-r_struct
-id|mtd_info
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 r_char
@@ -1049,11 +1029,6 @@ id|mtd_info
 op_star
 id|mtd
 op_assign
-(paren
-r_struct
-id|mtd_info
-op_star
-)paren
 id|file-&gt;private_data
 suffix:semicolon
 r_void

@@ -128,12 +128,14 @@ l_int|NULL
 comma
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|max_bonds
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -144,12 +146,14 @@ comma
 l_string|&quot;Max number of bonded devices&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|miimon
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -160,12 +164,14 @@ comma
 l_string|&quot;Link check interval in milliseconds&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|updelay
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -176,12 +182,14 @@ comma
 l_string|&quot;Delay before considering link up, in milliseconds&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|downdelay
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -192,12 +200,14 @@ comma
 l_string|&quot;Delay before considering link down, in milliseconds&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|use_carrier
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -208,12 +218,14 @@ comma
 l_string|&quot;Use netif_carrier_ok (vs MII ioctls) in miimon; 0 for off, 1 for on (default)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mode
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -224,12 +236,14 @@ comma
 l_string|&quot;Mode of operation : 0 for round robin, 1 for active-backup, 2 for xor&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|primary
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -240,12 +254,14 @@ comma
 l_string|&quot;Primary network device to use&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|lacp_rate
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -256,12 +272,14 @@ comma
 l_string|&quot;LACPDU tx rate to request from 802.3ad partner (slow/fast)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|arp_interval
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -272,18 +290,16 @@ comma
 l_string|&quot;arp interval in milliseconds&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|arp_ip_target
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|BOND_MAX_ARP_TARGETS
-)paren
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

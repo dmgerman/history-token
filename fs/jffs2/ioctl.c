@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: ioctl.c,v 1.8 2003/10/28 16:16:28 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: ioctl.c,v 1.9 2004/11/16 20:36:11 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 DECL|function|jffs2_ioctl
 r_int

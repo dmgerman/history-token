@@ -5,6 +5,7 @@ macro_line|#include &quot;../lowlevel/ftape-tracing.h&quot;
 macro_line|#include &quot;../lowlevel/fdc-io.h&quot;
 macro_line|#include &quot;../lowlevel/fc-10.h&quot;
 DECL|variable|inbs_magic
+r_static
 id|__u16
 id|inbs_magic
 (braket
@@ -65,6 +66,7 @@ l_int|0x7
 )brace
 suffix:semicolon
 DECL|variable|fc10_ports
+r_static
 id|__u16
 id|fc10_ports
 (braket

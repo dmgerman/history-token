@@ -281,17 +281,6 @@ op_star
 id|zr
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|zr36057_init_vfe
-c_func
-(paren
-r_struct
-id|zoran
-op_star
-id|zr
-)paren
-suffix:semicolon
 multiline_comment|/* i2c */
 r_extern
 r_int

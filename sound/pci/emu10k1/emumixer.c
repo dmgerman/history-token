@@ -2823,6 +2823,11 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
+id|pbus-&gt;no_vra
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* we don&squot;t need VRA */
 id|memset
 c_func
 (paren

@@ -7357,6 +7357,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|check_after_balance_leaf
+r_static
 r_void
 id|check_after_balance_leaf
 (paren
@@ -7677,6 +7678,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|check_leaf_level
+r_static
 r_void
 id|check_leaf_level
 (paren
@@ -7712,6 +7714,7 @@ id|tb-&gt;tb_path
 suffix:semicolon
 )brace
 DECL|function|check_internal_levels
+r_static
 r_void
 id|check_internal_levels
 (paren

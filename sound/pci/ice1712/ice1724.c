@@ -9352,7 +9352,16 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;IEC958 Playback Route&quot;
+id|SNDRV_CTL_NAME_IEC958
+c_func
+(paren
+l_string|&quot;&quot;
+comma
+id|PLAYBACK
+comma
+id|NONE
+)paren
+l_string|&quot;Route&quot;
 comma
 dot
 id|info

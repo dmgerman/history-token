@@ -11974,6 +11974,7 @@ singleline_comment|// .has_remote     = 1,
 )brace
 suffix:semicolon
 DECL|variable|bttv_num_tvcards
+r_static
 r_const
 r_int
 r_int
@@ -12846,6 +12847,7 @@ suffix:semicolon
 singleline_comment|//todo: if(has_tda9874) btv-&gt;audio_hook = fv2000s_audio;
 )brace
 DECL|variable|miro_tunermap
+r_static
 r_int
 id|miro_tunermap
 (braket
@@ -12918,6 +12920,7 @@ l_int|4
 )brace
 suffix:semicolon
 DECL|variable|miro_fmtuner
+r_static
 r_int
 id|miro_fmtuner
 (braket
@@ -16482,6 +16485,7 @@ suffix:semicolon
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/* AVermedia specific stuff, from  bktr_card.c                             */
 DECL|variable|tuner_0_table
+r_static
 r_int
 id|tuner_0_table
 (braket
@@ -16541,6 +16545,7 @@ id|PHILIPS_FR1216_PAL
 suffix:semicolon
 macro_line|#endif
 DECL|variable|tuner_1_table
+r_static
 r_int
 id|tuner_1_table
 (braket
@@ -17391,6 +17396,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/* Miro Pro radio stuff -- the tea5757 is connected to some GPIO ports     */
 multiline_comment|/*&n; * Copyright (c) 1999 Csaba Halasz &lt;qgehali@uni-miskolc.hu&gt;&n; * This code is placed under the terms of the GNU General Public License&n; *&n; * Brutally hacked by Dan Sheridan &lt;dan.sheridan@contact.org.uk&gt; djs52 8/3/00&n; */
 DECL|function|bus_low
+r_static
 r_void
 id|bus_low
 c_func
@@ -17472,6 +17478,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|bus_high
+r_static
 r_void
 id|bus_high
 c_func
@@ -17553,6 +17560,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|bus_in
+r_static
 r_int
 id|bus_in
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.21 2004/08/09 13:19:43 dwmw2 Exp $&n; */
+multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.22 2005/01/05 18:05:11 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2672,11 +2672,6 @@ id|map_info
 op_star
 id|map
 op_assign
-(paren
-r_struct
-id|map_info
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 id|map_copy_from
@@ -2732,11 +2727,6 @@ id|map_info
 op_star
 id|map
 op_assign
-(paren
-r_struct
-id|map_info
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_struct
@@ -2744,11 +2734,6 @@ id|jedec_private
 op_star
 id|priv
 op_assign
-(paren
-r_struct
-id|jedec_private
-op_star
-)paren
 id|map-&gt;fldrv_priv
 suffix:semicolon
 op_star
@@ -2968,11 +2953,6 @@ id|map_info
 op_star
 id|map
 op_assign
-(paren
-r_struct
-id|map_info
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_struct
@@ -2980,11 +2960,6 @@ id|jedec_private
 op_star
 id|priv
 op_assign
-(paren
-r_struct
-id|jedec_private
-op_star
-)paren
 id|map-&gt;fldrv_priv
 suffix:semicolon
 singleline_comment|// Verify the arguments..
@@ -4075,11 +4050,6 @@ id|map_info
 op_star
 id|map
 op_assign
-(paren
-r_struct
-id|map_info
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_struct
@@ -4087,11 +4057,6 @@ id|jedec_private
 op_star
 id|priv
 op_assign
-(paren
-r_struct
-id|jedec_private
-op_star
-)paren
 id|map-&gt;fldrv_priv
 suffix:semicolon
 r_int

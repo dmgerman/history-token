@@ -188,12 +188,14 @@ id|sjcd_base
 op_assign
 id|SJCD_BASE_ADDR
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sjcd_base
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_static

@@ -8,6 +8,8 @@ mdefine_line|#define CS_OWNER .owner =
 DECL|macro|CS_THIS_MODULE
 mdefine_line|#define CS_THIS_MODULE THIS_MODULE,
 DECL|function|cs46xx_null
+r_static
+r_inline
 r_void
 id|cs46xx_null
 c_func

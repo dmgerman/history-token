@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m68k/kernel/ptrace.c&n; *&n; *  Copyright (C) 1994 by Hamish Macdonald&n; *  Taken from linux/kernel/ptrace.c and modified for M680x0.&n; *  linux/kernel/ptrace.c is by Ross Biro 1/23/92, edited by Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of&n; * this archive for more details.&n; */
+multiline_comment|/* ptrace.c: FRV specific parts of process tracing&n; *&n; * Copyright (C) 2003-5 Red Hat, Inc. All Rights Reserved.&n; * Written by David Howells (dhowells@redhat.com)&n; * - Derived from arch/m68k/kernel/ptrace.c&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -16,13 +16,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 multiline_comment|/*&n; * does not yet catch signals sent when the child dies.&n; * in exit.c or in signal.c.&n; */
-multiline_comment|/* determines which bits in the SR the user has access to. */
-multiline_comment|/* 1 = access 0 = no access */
-DECL|macro|SR_MASK
-mdefine_line|#define SR_MASK 0x001f
-multiline_comment|/* sets the trace bits. */
-DECL|macro|TRACE_BITS
-mdefine_line|#define TRACE_BITS 0x8000
 multiline_comment|/*&n; * Get contents of register REGNO in task TASK.&n; */
 DECL|function|get_reg
 r_static

@@ -3313,7 +3313,7 @@ id|gpio1_interrupt
 comma
 l_int|0
 comma
-l_string|&quot;GPIO1/ADB&quot;
+l_string|&quot;GPIO1 ADB&quot;
 comma
 (paren
 r_void

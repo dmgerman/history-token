@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  The driver for the EMU10K1 (SB Live!) based soundcards&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *  The driver for the EMU10K1 (SB Live!) based soundcards&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *  Copyright (c) by James Courtier-Dutton &lt;James@superbug.demon.co.uk&gt;&n; *      Added support for Audigy 2 Value.&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; * &n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -395,6 +395,7 @@ comma
 l_string|&quot;Enable IR.&quot;
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Class 0401: 1102:0008 (rev 00) Subsystem: 1102:1001 -&gt; Audigy2 Value  Model:SB0400&n; */
 DECL|variable|snd_emu10k1_ids
 r_static
 r_struct
@@ -439,11 +440,29 @@ l_int|1
 comma
 multiline_comment|/* Audigy */
 (brace
+l_int|0x1102
+comma
+l_int|0x0008
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|1
+)brace
+comma
+multiline_comment|/* Audigy 2 Value SB0400 */
+(brace
 l_int|0
 comma
 )brace
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Audigy 2 Value notes:&n; * A_IOCFG Input (GPIO)&n; * 0x400  = Front analog jack plugged in. (Green socket)&n; * 0x1000 = Read analog jack plugged in. (Black socket)&n; * 0x2000 = Center/LFE analog jack plugged in. (Orange socket)&n; * A_IOCFG Output (GPIO)&n; * 0x60 = Sound out of front Left.&n; * Win sets it to 0xXX61&n; */
 id|MODULE_DEVICE_TABLE
 c_func
 (paren
@@ -766,6 +785,34 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|err
+op_assign
+id|snd_emu10k1_timer
+c_func
+(paren
+id|emu
+comma
+l_int|0
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|snd_card_free
+c_func
+(paren
+id|card
+)paren
+suffix:semicolon
+r_return
+id|err
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|emu-&gt;audigy
 )paren
 (brace
@@ -943,6 +990,36 @@ c_cond
 id|emu-&gt;audigy
 op_logical_and
 (paren
+id|emu-&gt;serial
+op_eq
+l_int|0x10011102
+)paren
+)paren
+(brace
+id|strcpy
+c_func
+(paren
+id|card-&gt;driver
+comma
+l_string|&quot;Audigy2&quot;
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|card-&gt;shortname
+comma
+l_string|&quot;Sound Blaster Audigy2_Value&quot;
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|emu-&gt;audigy
+op_logical_and
+(paren
 id|emu-&gt;revision
 op_eq
 l_int|4
@@ -1038,11 +1115,13 @@ c_func
 (paren
 id|card-&gt;longname
 comma
-l_string|&quot;%s (rev.%d) at 0x%lx, irq %i&quot;
+l_string|&quot;%s (rev.%d, serial:0x%x) at 0x%lx, irq %i&quot;
 comma
 id|card-&gt;shortname
 comma
 id|emu-&gt;revision
+comma
+id|emu-&gt;serial
 comma
 id|emu-&gt;port
 comma

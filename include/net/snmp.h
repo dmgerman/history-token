@@ -172,18 +172,18 @@ mdefine_line|#define SNMP_STAT_BHPTR(name)&t;(name[0])
 DECL|macro|SNMP_STAT_USRPTR
 mdefine_line|#define SNMP_STAT_USRPTR(name)&t;(name[1])
 DECL|macro|SNMP_INC_STATS_BH
-mdefine_line|#define SNMP_INC_STATS_BH(mib, field) &t;&bslash;&n;&t;(per_cpu_ptr(mib[0], smp_processor_id())-&gt;mibs[field]++)
+mdefine_line|#define SNMP_INC_STATS_BH(mib, field) &t;&bslash;&n;&t;(per_cpu_ptr(mib[0], _smp_processor_id())-&gt;mibs[field]++)
 DECL|macro|SNMP_INC_STATS_OFFSET_BH
-mdefine_line|#define SNMP_INC_STATS_OFFSET_BH(mib, field, offset)&t;&bslash;&n;&t;(per_cpu_ptr(mib[0], smp_processor_id())-&gt;mibs[field + (offset)]++)
+mdefine_line|#define SNMP_INC_STATS_OFFSET_BH(mib, field, offset)&t;&bslash;&n;&t;(per_cpu_ptr(mib[0], _smp_processor_id())-&gt;mibs[field + (offset)]++)
 DECL|macro|SNMP_INC_STATS_USER
-mdefine_line|#define SNMP_INC_STATS_USER(mib, field) &bslash;&n;&t;(per_cpu_ptr(mib[1], smp_processor_id())-&gt;mibs[field]++)
+mdefine_line|#define SNMP_INC_STATS_USER(mib, field) &bslash;&n;&t;(per_cpu_ptr(mib[1], _smp_processor_id())-&gt;mibs[field]++)
 DECL|macro|SNMP_INC_STATS
-mdefine_line|#define SNMP_INC_STATS(mib, field) &t;&bslash;&n;&t;(per_cpu_ptr(mib[!in_softirq()], smp_processor_id())-&gt;mibs[field]++)
+mdefine_line|#define SNMP_INC_STATS(mib, field) &t;&bslash;&n;&t;(per_cpu_ptr(mib[!in_softirq()], _smp_processor_id())-&gt;mibs[field]++)
 DECL|macro|SNMP_DEC_STATS
-mdefine_line|#define SNMP_DEC_STATS(mib, field) &t;&bslash;&n;&t;(per_cpu_ptr(mib[!in_softirq()], smp_processor_id())-&gt;mibs[field]--)
+mdefine_line|#define SNMP_DEC_STATS(mib, field) &t;&bslash;&n;&t;(per_cpu_ptr(mib[!in_softirq()], _smp_processor_id())-&gt;mibs[field]--)
 DECL|macro|SNMP_ADD_STATS_BH
-mdefine_line|#define SNMP_ADD_STATS_BH(mib, field, addend) &t;&bslash;&n;&t;(per_cpu_ptr(mib[0], smp_processor_id())-&gt;mibs[field] += addend)
+mdefine_line|#define SNMP_ADD_STATS_BH(mib, field, addend) &t;&bslash;&n;&t;(per_cpu_ptr(mib[0], _smp_processor_id())-&gt;mibs[field] += addend)
 DECL|macro|SNMP_ADD_STATS_USER
-mdefine_line|#define SNMP_ADD_STATS_USER(mib, field, addend) &t;&bslash;&n;&t;(per_cpu_ptr(mib[1], smp_processor_id())-&gt;mibs[field] += addend)
+mdefine_line|#define SNMP_ADD_STATS_USER(mib, field, addend) &t;&bslash;&n;&t;(per_cpu_ptr(mib[1], _smp_processor_id())-&gt;mibs[field] += addend)
 macro_line|#endif
 eof

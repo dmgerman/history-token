@@ -22,15 +22,6 @@ macro_line|#include &lt;scsi/scsi_ioctl.h&gt;&t;/* For the door lock/unlock comm
 macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#include &quot;sr.h&quot;
-id|MODULE_PARM
-c_func
-(paren
-id|xa_test
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* see sr_ioctl.c */
 DECL|macro|SR_DISKS
 mdefine_line|#define SR_DISKS&t;256
 DECL|macro|MAX_RETRIES

@@ -1072,6 +1072,11 @@ id|stac9744
 l_int|64
 )braket
 suffix:semicolon
+DECL|member|cs8415_mux
+r_int
+r_int
+id|cs8415_mux
+suffix:semicolon
 DECL|member|master
 r_int
 r_int

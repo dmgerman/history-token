@@ -86,12 +86,12 @@ r_int
 id|console_locked
 suffix:semicolon
 multiline_comment|/*&n; * logbuf_lock protects log_buf, log_start, log_end, con_start and logged_chars&n; * It is also used in interesting ways to provide interlocking in&n; * release_console_sem().&n; */
-DECL|variable|logbuf_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|logbuf_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|__log_buf
 r_static
@@ -1016,6 +1016,11 @@ suffix:semicolon
 id|i
 op_increment
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -1224,6 +1229,11 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -1319,6 +1329,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 )brace
 r_break
@@ -2417,13 +2432,11 @@ op_assign
 id|log_end
 suffix:semicolon
 multiline_comment|/* Flush */
-id|spin_unlock_irqrestore
+id|spin_unlock
 c_func
 (paren
 op_amp
 id|logbuf_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|call_console_drivers
@@ -2432,6 +2445,12 @@ c_func
 id|_con_start
 comma
 id|_log_end
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -3263,10 +3282,11 @@ id|ratelimit_burst
 )paren
 (brace
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ratelimit_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int

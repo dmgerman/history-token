@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Common code to handle map devices which are simple RAM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_ram.c,v 1.21 2004/11/16 18:29:00 dwmw2 Exp $&n; */
+multiline_comment|/*&n; * Common code to handle map devices which are simple RAM&n; * (C) 2000 Red Hat. GPL&squot;d.&n; * $Id: map_ram.c,v 1.22 2005/01/05 18:05:12 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -384,11 +384,6 @@ id|map_info
 op_star
 id|map
 op_assign
-(paren
-r_struct
-id|map_info
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 id|map_copy_from
@@ -443,11 +438,6 @@ id|map_info
 op_star
 id|map
 op_assign
-(paren
-r_struct
-id|map_info
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 id|map_copy_to
@@ -493,11 +483,6 @@ id|map_info
 op_star
 id|map
 op_assign
-(paren
-r_struct
-id|map_info
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 id|map_word

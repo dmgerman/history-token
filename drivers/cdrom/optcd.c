@@ -110,12 +110,14 @@ op_assign
 id|OPTCD_PORTBASE
 suffix:semicolon
 multiline_comment|/* I/O base of drive. */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|optcd_port
 comma
-l_string|&quot;h&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Drive registers, read */

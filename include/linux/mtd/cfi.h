@@ -1,4 +1,4 @@
-multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.49 2004/11/15 20:56:32 nico Exp $&n; */
+multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.50 2004/11/20 12:46:51 dwmw2 Exp $&n; */
 macro_line|#ifndef __MTD_CFI_H__
 DECL|macro|__MTD_CFI_H__
 mdefine_line|#define __MTD_CFI_H__
@@ -1149,37 +1149,29 @@ r_int
 id|us
 )paren
 (brace
-r_int
-r_int
-id|t
-op_assign
-id|us
-op_star
-id|HZ
-op_div
-l_int|1000000
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|t
+id|us
+op_ge
+l_int|1000
 )paren
 (brace
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
 (paren
-id|t
+id|us
+op_plus
+l_int|999
 )paren
-suffix:semicolon
-r_return
+op_div
+l_int|1000
+)paren
 suffix:semicolon
 )brace
+r_else
+(brace
 id|udelay
 c_func
 (paren
@@ -1191,6 +1183,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|cfi_spin_lock
 r_static

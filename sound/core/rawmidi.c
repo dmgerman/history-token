@@ -173,6 +173,7 @@ id|device
 )paren
 suffix:semicolon
 DECL|variable|snd_rawmidi_devices
+r_static
 id|snd_rawmidi_t
 op_star
 id|snd_rawmidi_devices
@@ -3991,6 +3992,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|snd_rawmidi_control_ioctl
+r_static
 r_int
 id|snd_rawmidi_control_ioctl
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * struct flchip definition&n; * &n; * Contains information about the location and state of a given flash device &n; *&n; * (C) 2000 Red Hat. GPLd.&n; *&n; * $Id: flashchip.h,v 1.14 2004/06/15 16:44:59 nico Exp $&n; *&n; */
+multiline_comment|/* &n; * struct flchip definition&n; * &n; * Contains information about the location and state of a given flash device &n; *&n; * (C) 2000 Red Hat. GPLd.&n; *&n; * $Id: flashchip.h,v 1.15 2004/11/05 22:41:06 nico Exp $&n; *&n; */
 macro_line|#ifndef __MTD_FLASHCHIP_H__
 DECL|macro|__MTD_FLASHCHIP_H__
 mdefine_line|#define __MTD_FLASHCHIP_H__
@@ -57,6 +57,12 @@ id|FL_UNLOCKING
 comma
 DECL|enumerator|FL_POINT
 id|FL_POINT
+comma
+DECL|enumerator|FL_XIP_WHILE_ERASING
+id|FL_XIP_WHILE_ERASING
+comma
+DECL|enumerator|FL_XIP_WHILE_WRITING
+id|FL_XIP_WHILE_WRITING
 comma
 DECL|enumerator|FL_UNKNOWN
 id|FL_UNKNOWN

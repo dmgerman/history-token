@@ -271,10 +271,10 @@ id|direction
 )paren
 (brace
 )brace
-DECL|function|pci_dma_init_direct
+DECL|function|pci_direct_iommu_init
 r_void
 id|__init
-id|pci_dma_init_direct
+id|pci_direct_iommu_init
 c_func
 (paren
 r_void

@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Direct MTD block device access&n; *&n; * $Id: mtdblock.c,v 1.65 2004/11/16 18:28:59 dwmw2 Exp $&n; *&n; * (C) 2000-2003 Nicolas Pitre &lt;nico@cam.org&gt;&n; * (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; */
+multiline_comment|/* &n; * Direct MTD block device access&n; *&n; * $Id: mtdblock.c,v 1.66 2004/11/25 13:52:52 joern Exp $&n; *&n; * (C) 2000-2003 Nicolas Pitre &lt;nico@cam.org&gt;&n; * (C) 1999-2003 David Woodhouse &lt;dwmw2@infradead.org&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -947,6 +947,8 @@ c_func
 (paren
 op_logical_neg
 id|mtdblk-&gt;cache_data
+op_logical_and
+id|mtdblk-&gt;cache_size
 )paren
 )paren
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ALSA driver for the Aureal Vortex family of soundprocessors.&n; * Author: Manuel Jander (mjander@embedded.cl)&n; *&n; *   This driver is the result of the OpenVortex Project from Savannah&n; * (savannah.nongnu.org/projects/openvortex). I would like to thank&n; * the developers of OpenVortex, Jeff Muizelar and Kester Maddock, from&n; * whom i got plenty of help, and their codebase was invaluable.&n; *   Thanks to the ALSA developers, they helped a lot working out&n; * the ALSA part.&n; *   Thanks also to Sourceforge for maintaining the old binary drivers,&n; * and the forum, where developers could comunicate.&n; *&n; * Now at least i can play Legacy DOOM with MIDI music :-)&n; */
+multiline_comment|/*&n; * ALSA driver for the Aureal Vortex family of soundprocessors.&n; * Author: Manuel Jander (mjander@embedded.cl)&n; *&n; *   This driver is the result of the OpenVortex Project from Savannah&n; * (savannah.nongnu.org/projects/openvortex). I would like to thank&n; * the developers of OpenVortex, Jeff Muizelaar and Kester Maddock, from&n; * whom i got plenty of help, and their codebase was invaluable.&n; *   Thanks to the ALSA developers, they helped a lot working out&n; * the ALSA part.&n; *   Thanks also to Sourceforge for maintaining the old binary drivers,&n; * and the forum, where developers could comunicate.&n; *&n; * Now at least i can play Legacy DOOM with MIDI music :-)&n; */
 macro_line|#include &quot;au88x0.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -889,10 +889,6 @@ id|SA_SHIRQ
 comma
 id|CARD_NAME_SHORT
 comma
-(paren
-r_void
-op_star
-)paren
 id|chip
 )paren
 )paren
@@ -984,7 +980,6 @@ id|chip
 suffix:semicolon
 id|core_out
 suffix:colon
-singleline_comment|//FIXME: the type of chip-&gt;mmio might need to be changed??
 id|iounmap
 c_func
 (paren

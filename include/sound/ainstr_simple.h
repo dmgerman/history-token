@@ -248,11 +248,6 @@ id|simple_xinstrument_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &quot;seq_instr.h&quot;
-r_extern
-r_char
-op_star
-id|snd_seq_simple_id
-suffix:semicolon
 r_typedef
 r_struct
 (brace

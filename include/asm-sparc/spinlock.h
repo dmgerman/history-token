@@ -20,6 +20,13 @@ r_int
 r_int
 id|owner_pc
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|typedef|spinlock_t
@@ -99,6 +106,13 @@ id|reader_pc
 id|NR_CPUS
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|typedef|rwlock_t
@@ -174,14 +188,27 @@ mdefine_line|#define _raw_write_lock(lock) &bslash;&n;do {&t;unsigned long flags
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(lock) &bslash;&n;do {&t;unsigned long flags; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;_do_write_unlock(lock); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;} while(0)
 macro_line|#else /* !CONFIG_DEBUG_SPINLOCK */
-DECL|typedef|spinlock_t
 r_typedef
+r_struct
+(brace
+DECL|member|lock
 r_int
 r_char
+id|lock
+suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
+DECL|typedef|spinlock_t
+)brace
 id|spinlock_t
 suffix:semicolon
 DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED&t;0
+mdefine_line|#define SPIN_LOCK_UNLOCKED&t;{ 0, }
 DECL|macro|spin_lock_init
 mdefine_line|#define spin_lock_init(lock)   (*((unsigned char *)(lock)) = 0)
 DECL|macro|spin_is_locked
@@ -304,16 +331,23 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Read-write spinlocks, allowing multiple readers&n; * but only one writer.&n; *&n; * NOTE! it is quite common to have readers in interrupts&n; * but no interrupt writers. For those circumstances we&n; * can &quot;mix&quot; irq-safe locks - any writer needs to get a&n; * irq-safe write-lock, but readers can get non-irqsafe&n; * read-locks.&n; *&n; * XXX This might create some problems with my dual spinlock&n; * XXX scheme, deadlocks etc. -DaveM&n; */
-DECL|member|lock
-DECL|typedef|rwlock_t
 r_typedef
 r_struct
 (brace
+DECL|member|lock
 r_volatile
 r_int
 r_int
 id|lock
 suffix:semicolon
+macro_line|#ifdef CONFIG_PREEMPT
+DECL|member|break_lock
+r_int
+r_int
+id|break_lock
+suffix:semicolon
+macro_line|#endif
+DECL|typedef|rwlock_t
 )brace
 id|rwlock_t
 suffix:semicolon

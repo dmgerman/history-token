@@ -7,6 +7,14 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+multiline_comment|/*&n; * We dont want to execute off keventd since it might&n; * hold a semaphore our callers hold too:&n; */
+DECL|variable|helper_wq
+r_static
+r_struct
+id|workqueue_struct
+op_star
+id|helper_wq
+suffix:semicolon
 DECL|struct|kthread_create_info
 r_struct
 id|kthread_create_info
@@ -471,15 +479,12 @@ op_amp
 id|create.done
 )paren
 suffix:semicolon
-multiline_comment|/* If we&squot;re being called to start the first workqueue, we&n;&t; * can&squot;t use keventd. */
+multiline_comment|/*&n;&t; * The workqueue needs to start up first:&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|keventd_up
-c_func
-(paren
-)paren
+id|helper_wq
 )paren
 id|work
 dot
@@ -491,9 +496,11 @@ id|work.data
 suffix:semicolon
 r_else
 (brace
-id|schedule_work
+id|queue_work
 c_func
 (paren
+id|helper_wq
+comma
 op_amp
 id|work
 )paren
@@ -705,6 +712,42 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|kthread_stop
+)paren
+suffix:semicolon
+DECL|function|helper_init
+r_static
+id|__init
+r_int
+id|helper_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|helper_wq
+op_assign
+id|create_singlethread_workqueue
+c_func
+(paren
+l_string|&quot;kthread&quot;
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|helper_wq
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|helper_init
+id|core_initcall
+c_func
+(paren
+id|helper_init
 )paren
 suffix:semicolon
 eof

@@ -64,12 +64,16 @@ l_int|6
 )braket
 suffix:semicolon
 multiline_comment|/* accept MAC address of the form macaddr=0x08,0x00,0x20,0x30,0x40,0x50 */
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|macaddr
 comma
-l_string|&quot;6i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -788,7 +788,7 @@ id|z8530_interrupt
 comma
 id|SA_INTERRUPT
 comma
-l_string|&quot;Hostess SV/11&quot;
+l_string|&quot;Hostess SV11&quot;
 comma
 id|dev
 )paren
@@ -1252,12 +1252,14 @@ id|irq
 op_assign
 l_int|9
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1268,12 +1270,14 @@ comma
 l_string|&quot;The I/O base of the Comtrol Hostess SV11 card&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dma
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1284,12 +1288,14 @@ comma
 l_string|&quot;Set this to 1 to use DMA1/DMA3 for TX/RX&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|irq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

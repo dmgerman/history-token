@@ -5,7 +5,7 @@ macro_line|#include &lt;asm/sstep.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 r_extern
 r_char
-id|SystemCall_common
+id|system_call_common
 (braket
 )braket
 suffix:semicolon
@@ -314,7 +314,7 @@ r_int
 r_int
 )paren
 op_amp
-id|SystemCall_common
+id|system_call_common
 suffix:semicolon
 id|regs-&gt;msr
 op_assign

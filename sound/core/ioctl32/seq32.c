@@ -70,18 +70,24 @@ id|u32
 id|flags
 suffix:semicolon
 multiline_comment|/* misc. conditioning */
+DECL|member|time_queue
+r_int
+r_char
+id|time_queue
+suffix:semicolon
+multiline_comment|/* queue # for timestamping */
 DECL|member|reserved
 r_char
 id|reserved
 (braket
-l_int|60
+l_int|59
 )braket
 suffix:semicolon
 multiline_comment|/* for future use */
 )brace
 suffix:semicolon
 DECL|macro|CVT_sndrv_seq_port_info
-mdefine_line|#define CVT_sndrv_seq_port_info()&bslash;&n;{&bslash;&n;&t;COPY(addr);&bslash;&n;&t;memcpy(dst-&gt;name, src-&gt;name, sizeof(dst-&gt;name));&bslash;&n;&t;COPY(capability);&bslash;&n;&t;COPY(type);&bslash;&n;&t;COPY(midi_channels);&bslash;&n;&t;COPY(midi_voices);&bslash;&n;&t;COPY(synth_voices);&bslash;&n;&t;COPY(read_use);&bslash;&n;&t;COPY(write_use);&bslash;&n;&t;COPY(flags);&bslash;&n;}
+mdefine_line|#define CVT_sndrv_seq_port_info()&bslash;&n;{&bslash;&n;&t;COPY(addr);&bslash;&n;&t;COPY_ARRAY(name);&bslash;&n;&t;COPY(capability);&bslash;&n;&t;COPY(type);&bslash;&n;&t;COPY(midi_channels);&bslash;&n;&t;COPY(midi_voices);&bslash;&n;&t;COPY(synth_voices);&bslash;&n;&t;COPY(read_use);&bslash;&n;&t;COPY(write_use);&bslash;&n;&t;COPY(flags);&bslash;&n;&t;COPY(time_queue);&bslash;&n;}
 DECL|variable|seq_port_info
 id|DEFINE_ALSA_IOCTL
 c_func

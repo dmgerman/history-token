@@ -3353,46 +3353,6 @@ id|name
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|d1
-r_struct
-id|REGISTER_DUMP
-id|d1
-(braket
-)braket
-op_assign
-(brace
-(brace
-l_int|0x007e
-comma
-l_string|&quot;autodetect&quot;
-)brace
-comma
-(brace
-l_int|0x0023
-comma
-l_string|&quot;C_AD_BITS &quot;
-)brace
-comma
-(brace
-l_int|0x0038
-comma
-l_string|&quot;ADD_BITS  &quot;
-)brace
-comma
-(brace
-l_int|0x003e
-comma
-l_string|&quot;CIB_BITS  &quot;
-)brace
-comma
-(brace
-l_int|0x0057
-comma
-l_string|&quot;ERROR_RATE&quot;
-)brace
-comma
-)brace
-suffix:semicolon
 r_static
 r_int
 DECL|function|autodetect_stereo

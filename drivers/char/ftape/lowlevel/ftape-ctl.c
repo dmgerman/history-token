@@ -202,23 +202,6 @@ suffix:semicolon
 multiline_comment|/*  maybe return only a copy of it to assure &n;&t;&t;&t;       *  read only access&n;&t;&t;&t;       */
 macro_line|#endif
 )brace
-DECL|function|ftape_set_status
-r_void
-id|ftape_set_status
-c_func
-(paren
-r_const
-id|ftape_info
-op_star
-id|status
-)paren
-(brace
-id|ftape_status
-op_assign
-op_star
-id|status
-suffix:semicolon
-)brace
 DECL|function|ftape_not_operational
 r_static
 r_int
@@ -610,6 +593,7 @@ id|i
 suffix:semicolon
 )brace
 DECL|function|ftape_detach_drive
+r_static
 r_void
 id|ftape_detach_drive
 c_func
@@ -705,6 +689,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ftape_activate_drive
+r_static
 r_int
 id|ftape_activate_drive
 c_func
@@ -947,6 +932,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|ftape_get_drive_status
+r_static
 r_int
 id|ftape_get_drive_status
 c_func
@@ -1283,6 +1269,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ftape_log_vendor_id
+r_static
 r_void
 id|ftape_log_vendor_id
 c_func
@@ -2079,6 +2066,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ftape_init_drive
+r_static
 r_int
 id|ftape_init_drive
 c_func

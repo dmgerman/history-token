@@ -309,6 +309,8 @@ c_func
 id|GFP_KERNEL
 op_or
 id|__GFP_REPEAT
+op_or
+id|__GFP_ZERO
 )paren
 suffix:semicolon
 r_if
@@ -328,12 +330,6 @@ id|page_address
 c_func
 (paren
 id|page
-)paren
-suffix:semicolon
-id|clear_page
-c_func
-(paren
-id|ret
 )paren
 suffix:semicolon
 id|page-&gt;lru.prev

@@ -2238,6 +2238,15 @@ id|hw
 op_assign
 id|emu-&gt;hw
 suffix:semicolon
+multiline_comment|/* skip header */
+id|buf
+op_add_assign
+l_int|16
+suffix:semicolon
+id|len
+op_sub_assign
+l_int|16
+suffix:semicolon
 r_switch
 c_cond
 (paren

@@ -431,6 +431,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|gemtek_getsigstr
+r_static
 r_int
 id|gemtek_getsigstr
 c_func
@@ -1110,12 +1111,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1126,12 +1129,14 @@ comma
 l_string|&quot;I/O address of the GemTek card (0x20c, 0x30c, 0x24c or 0x34c (0x20c or 0x248 have been reported to work for the combined sound/radiocard)).&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|radio_nr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|function|gemtek_cleanup

@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
@@ -881,7 +882,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|RIOStrCmp
+id|strcmp
 c_func
 (paren
 id|MapP-&gt;Name
@@ -1497,7 +1498,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|RIOStrCmp
+id|strcmp
 c_func
 (paren
 id|p-&gt;RIOHosts
@@ -3915,60 +3916,6 @@ id|PortP-&gt;FirstOpen
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;** handle the xprint issues&n;&t;&t;*/
-macro_line|#ifdef XPRINT_SUPPORT
-id|PortP-&gt;Xprint.XpActive
-op_assign
-l_int|0
-suffix:semicolon
-id|PortP-&gt;Xprint.XttyP
-op_assign
-op_amp
-id|riox_tty
-(braket
-id|SysPort
-)braket
-suffix:semicolon
-multiline_comment|/*&t;&t;&t;&t;TO&t;&t;&t;&t;FROM&t;&t;&t;MAXLEN */
-id|RIOStrNCpy
-c_func
-(paren
-id|PortP-&gt;Xprint.XpOn
-comma
-id|RIOConf.XpOn
-comma
-id|MAX_XP_CTRL_LEN
-)paren
-suffix:semicolon
-id|RIOStrNCpy
-c_func
-(paren
-id|PortP-&gt;Xprint.XpOff
-comma
-id|RIOConf.XpOff
-comma
-id|MAX_XP_CTRL_LEN
-)paren
-suffix:semicolon
-id|PortP-&gt;Xprint.XpCps
-op_assign
-id|RIOConf.XpCps
-suffix:semicolon
-id|PortP-&gt;Xprint.XpLen
-op_assign
-id|RIOStrlen
-c_func
-(paren
-id|PortP-&gt;Xprint.XpOn
-)paren
-op_plus
-id|RIOStrlen
-c_func
-(paren
-id|PortP-&gt;Xprint.XpOff
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;&t;** Buffers &squot;n things&n;&t;&t;*/
 id|PortP-&gt;RxDataStart
 op_assign

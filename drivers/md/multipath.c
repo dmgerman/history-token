@@ -2065,9 +2065,12 @@ id|conf-&gt;mddev
 op_assign
 id|mddev
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|conf-&gt;device_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func

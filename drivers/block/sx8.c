@@ -6839,10 +6839,14 @@ c_func
 id|disk-&gt;disk_name
 comma
 id|DRV_NAME
-l_string|&quot;%u_%u&quot;
+l_string|&quot;/%u&quot;
 comma
+(paren
 id|host-&gt;id
-comma
+op_star
+id|CARM_MAX_PORTS
+)paren
+op_plus
 id|i
 )paren
 suffix:semicolon

@@ -666,7 +666,7 @@ id|port
 op_assign
 id|value
 suffix:semicolon
-macro_line|#if defined(CONFIG_HS7751RVOIP_CIDEC)
+macro_line|#if defined(CONFIG_HS7751RVOIP_CODEC)
 r_else
 r_if
 c_cond
@@ -782,7 +782,7 @@ id|port
 op_assign
 id|value
 suffix:semicolon
-macro_line|#if defined(CONFIG_HS7751RVOIP_CIDEC)
+macro_line|#if defined(CONFIG_HS7751RVOIP_CODEC)
 r_else
 r_if
 c_cond

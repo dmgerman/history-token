@@ -30,21 +30,5 @@ id|enablebits
 suffix:semicolon
 )brace
 suffix:semicolon
-r_void
-id|emu10k1_waveout_bh
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_void
-id|emu10k1_wavein_bh
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 macro_line|#endif /* _AUDIO_H */
 eof

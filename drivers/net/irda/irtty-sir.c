@@ -9,12 +9,22 @@ macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &quot;sir-dev.h&quot;
 macro_line|#include &quot;irtty-sir.h&quot;
-id|MODULE_PARM
+DECL|variable|qos_mtt_bits
+r_static
+r_int
+id|qos_mtt_bits
+op_assign
+l_int|0x03
+suffix:semicolon
+multiline_comment|/* 5 ms or more */
+id|module_param
 c_func
 (paren
 id|qos_mtt_bits
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -25,14 +35,6 @@ comma
 l_string|&quot;Minimum Turn Time&quot;
 )paren
 suffix:semicolon
-DECL|variable|qos_mtt_bits
-r_static
-r_int
-id|qos_mtt_bits
-op_assign
-l_int|0x03
-suffix:semicolon
-multiline_comment|/* 5 ms or more */
 multiline_comment|/* ------------------------------------------------------- */
 multiline_comment|/* device configuration callbacks always invoked with irda-thread context */
 multiline_comment|/* find out, how many chars we have in buffers below us&n; * this is allowed to lie, i.e. return less chars than we&n; * actually have. The returned value is used to determine&n; * how long the irdathread should wait before doing the&n; * real blocking wait_until_sent()&n; */

@@ -7092,6 +7092,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------------ */
 DECL|function|saa7134_vbi_fmt
+r_static
 r_void
 id|saa7134_vbi_fmt
 c_func
@@ -7209,6 +7210,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|saa7134_g_fmt
+r_static
 r_int
 id|saa7134_g_fmt
 c_func
@@ -7320,6 +7322,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|saa7134_try_fmt
+r_static
 r_int
 id|saa7134_try_fmt
 c_func
@@ -7589,6 +7592,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|saa7134_s_fmt
+r_static
 r_int
 id|saa7134_s_fmt
 c_func

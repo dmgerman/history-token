@@ -76,12 +76,14 @@ r_static
 id|gid_t
 id|asus_gid
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|asus_uid
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -92,12 +94,14 @@ comma
 l_string|&quot;UID for entries in /proc/acpi/asus.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|asus_gid
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

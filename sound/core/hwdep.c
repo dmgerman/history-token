@@ -29,6 +29,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|snd_hwdep_devices
+r_static
 id|snd_hwdep_t
 op_star
 id|snd_hwdep_devices

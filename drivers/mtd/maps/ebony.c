@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ebony.c,v 1.13 2004/11/04 13:24:14 gleixner Exp $&n; * &n; * Mapping for Ebony user flash&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2002-2004 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * $Id: ebony.c,v 1.15 2004/12/09 18:39:54 holindho Exp $&n; * &n; * Mapping for Ebony user flash&n; *&n; * Matt Porter &lt;mporter@kernel.crashing.org&gt;&n; *&n; * Copyright 2002-2004 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -334,7 +334,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;map_rom&quot;
+l_string|&quot;jedec_probe&quot;
 comma
 op_amp
 id|ebony_small_map
@@ -422,7 +422,7 @@ op_assign
 id|do_map_probe
 c_func
 (paren
-l_string|&quot;cfi_probe&quot;
+l_string|&quot;jedec_probe&quot;
 comma
 op_amp
 id|ebony_large_map

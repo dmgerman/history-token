@@ -7,9 +7,11 @@ macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#ifdef CONFIG_ARCH_IOP321
 DECL|macro|UTYPE
 mdefine_line|#define UTYPE unsigned char *
-macro_line|#else
+macro_line|#elif defined(CONFIG_ARCH_IOP331)
 DECL|macro|UTYPE
 mdefine_line|#define UTYPE u32 *
+macro_line|#else
+macro_line|#error &quot;Missing IOP3xx arch type def&quot;
 macro_line|#endif
 DECL|variable|uart_base
 r_static
@@ -154,6 +156,11 @@ id|machine_is_iq80331
 c_func
 (paren
 )paren
+op_logical_or
+id|machine_is_iq80332
+c_func
+(paren
+)paren
 )paren
 (brace
 id|uart_base
@@ -162,7 +169,7 @@ op_assign
 r_volatile
 id|UTYPE
 )paren
-id|IQ80331_UART0_PHYS
+id|IOP331_UART0_PHYS
 suffix:semicolon
 )brace
 r_else

@@ -27,12 +27,12 @@ id|kprobe_cpu
 op_assign
 id|NR_CPUS
 suffix:semicolon
-DECL|variable|kprobe_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|kprobe_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Locks kprobe: irqs must be disabled */
 DECL|function|lock_kprobes

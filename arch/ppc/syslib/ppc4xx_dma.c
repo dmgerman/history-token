@@ -64,7 +64,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef PPC4xx_DMA64BIT
+macro_line|#ifdef PPC4xx_DMA_64BIT
 id|mtdcr
 c_func
 (paren
@@ -133,7 +133,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef PPC4xx_DMA64BIT
+macro_line|#ifdef PPC4xx_DMA_64BIT
 id|mtdcr
 c_func
 (paren

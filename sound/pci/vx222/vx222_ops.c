@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Driver for Digigram VX222 V2/Mic soundcards&n; *&n; * VX222-specific low-level routines&n; *&n; * Copyright (c) 2002 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1436,7 +1437,8 @@ op_star
 id|chip
 comma
 r_const
-id|snd_hwdep_dsp_image_t
+r_struct
+id|firmware
 op_star
 id|xilinx
 )paren
@@ -1451,11 +1453,6 @@ id|port
 suffix:semicolon
 r_int
 r_char
-id|data
-suffix:semicolon
-r_int
-r_char
-id|__user
 op_star
 id|image
 suffix:semicolon
@@ -1533,7 +1530,7 @@ suffix:semicolon
 multiline_comment|/* VX222 V2 and VX222_MIC_BOARD with new PLX9030 use this register */
 id|image
 op_assign
-id|xilinx-&gt;image
+id|xilinx-&gt;data
 suffix:semicolon
 r_for
 c_loop
@@ -1544,7 +1541,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|xilinx-&gt;length
+id|xilinx-&gt;size
 suffix:semicolon
 id|i
 op_increment
@@ -1553,14 +1550,6 @@ id|image
 op_increment
 )paren
 (brace
-id|__get_user
-c_func
-(paren
-id|data
-comma
-id|image
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1573,7 +1562,8 @@ id|port
 comma
 l_int|8
 comma
-id|data
+op_star
+id|image
 )paren
 OL
 l_int|0
@@ -1669,8 +1659,12 @@ id|vx_core_t
 op_star
 id|vx
 comma
+r_int
+id|index
+comma
 r_const
-id|snd_hwdep_dsp_image_t
+r_struct
+id|firmware
 op_star
 id|dsp
 )paren
@@ -1678,32 +1672,14 @@ id|dsp
 r_int
 id|err
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|dsp-&gt;name
-)paren
-id|snd_printdd
-c_func
-(paren
-l_string|&quot;loading dsp [%d] %s, size = %Zd&bslash;n&quot;
-comma
-id|dsp-&gt;index
-comma
-id|dsp-&gt;name
-comma
-id|dsp-&gt;length
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dsp-&gt;index
+id|index
 )paren
 (brace
 r_case
-l_int|0
+l_int|1
 suffix:colon
 multiline_comment|/* xilinx image */
 r_if
@@ -1748,7 +1724,7 @@ r_return
 l_int|0
 suffix:semicolon
 r_case
-l_int|1
+l_int|2
 suffix:colon
 multiline_comment|/* DSP boot */
 r_return
@@ -1761,7 +1737,7 @@ id|dsp
 )paren
 suffix:semicolon
 r_case
-l_int|2
+l_int|3
 suffix:colon
 multiline_comment|/* DSP image */
 r_return

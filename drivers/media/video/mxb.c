@@ -5587,6 +5587,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|mxb_init_module
+r_static
 r_int
 id|__init
 id|mxb_init_module
@@ -5626,6 +5627,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|mxb_cleanup_module
+r_static
 r_void
 id|__exit
 id|mxb_cleanup_module

@@ -670,9 +670,12 @@ id|srmconsp-&gt;tty
 op_assign
 l_int|NULL
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|srmconsp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_timer
 c_func

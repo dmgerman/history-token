@@ -17255,7 +17255,15 @@ id|dev
 )paren
 r_break
 suffix:semicolon
-id|memcpy
+r_if
+c_cond
+(paren
+id|name
+(braket
+id|i
+)braket
+)paren
+id|strcpy
 c_func
 (paren
 id|dev-&gt;name
@@ -17264,8 +17272,6 @@ id|name
 (braket
 id|i
 )braket
-comma
-id|IFNAMSIZ
 )paren
 suffix:semicolon
 multiline_comment|/* Copy name */

@@ -1,4 +1,4 @@
-multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: jedec_probe.c,v 1.58 2004/11/16 18:29:00 dwmw2 Exp $&n;   See JEDEC (http://www.jedec.org/) standard JESD21C (section 3.5)&n;   for the standard this probe goes back to.&n;&n;   Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n;*/
+multiline_comment|/* &n;   Common Flash Interface probe code.&n;   (C) 2000 Red Hat. GPL&squot;d.&n;   $Id: jedec_probe.c,v 1.61 2004/11/19 20:52:16 thayne Exp $&n;   See JEDEC (http://www.jedec.org/) standard JESD21C (section 3.5)&n;   for the standard this probe goes back to.&n;&n;   Occasionally maintained by Thayne Harbaugh tharbaugh at lnxi dot com&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -400,6 +400,22 @@ id|addr2
 op_assign
 l_int|0x0000
 multiline_comment|/* is used - must be last entry */
+)brace
+comma
+(braket
+id|MTD_UADDR_UNNECESSARY
+)braket
+op_assign
+(brace
+dot
+id|addr1
+op_assign
+l_int|0x0000
+comma
+dot
+id|addr2
+op_assign
+l_int|0x0000
 )brace
 )brace
 suffix:semicolon
@@ -1757,28 +1773,51 @@ comma
 )brace
 comma
 (brace
+dot
 id|mfr_id
-suffix:colon
+op_assign
 id|MANUFACTURER_AMD
 comma
+dot
 id|dev_id
-suffix:colon
+op_assign
 id|AM29F002T
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;AMD AM29F002T&quot;
 comma
+dot
+id|uaddr
+op_assign
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+id|MTD_UADDR_0x0555_0x02AA
+multiline_comment|/* x8 */
+)brace
+comma
+dot
 id|DevSize
-suffix:colon
+op_assign
 id|SIZE_256KiB
 comma
+dot
+id|CmdSet
+op_assign
+id|P_ID_AMD_STD
+comma
+dot
 id|NumEraseRegions
-suffix:colon
+op_assign
 l_int|4
 comma
+dot
 id|regions
-suffix:colon
+op_assign
 (brace
 id|ERASEINFO
 c_func
@@ -1811,6 +1850,7 @@ l_int|0x04000
 comma
 l_int|1
 )paren
+comma
 )brace
 )brace
 comma
@@ -3020,28 +3060,51 @@ l_int|1
 )brace
 comma
 (brace
+dot
 id|mfr_id
-suffix:colon
+op_assign
 id|MANUFACTURER_HYUNDAI
 comma
+dot
 id|dev_id
-suffix:colon
+op_assign
 id|HY29F002T
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Hyundai HY29F002T&quot;
 comma
+dot
+id|uaddr
+op_assign
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+id|MTD_UADDR_0x0555_0x02AA
+multiline_comment|/* x8 */
+)brace
+comma
+dot
 id|DevSize
-suffix:colon
+op_assign
 id|SIZE_256KiB
 comma
+dot
+id|CmdSet
+op_assign
+id|P_ID_AMD_STD
+comma
+dot
 id|NumEraseRegions
-suffix:colon
+op_assign
 l_int|4
 comma
+dot
 id|regions
-suffix:colon
+op_assign
 (brace
 id|ERASEINFO
 c_func
@@ -3074,6 +3137,7 @@ l_int|0x04000
 comma
 l_int|1
 )paren
+comma
 )brace
 )brace
 comma
@@ -4977,28 +5041,51 @@ comma
 )brace
 comma
 (brace
+dot
 id|mfr_id
-suffix:colon
+op_assign
 id|MANUFACTURER_MACRONIX
 comma
+dot
 id|dev_id
-suffix:colon
+op_assign
 id|MX29F002T
 comma
+dot
 id|name
-suffix:colon
+op_assign
 l_string|&quot;Macronix MX29F002T&quot;
 comma
+dot
+id|uaddr
+op_assign
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+id|MTD_UADDR_0x0555_0x02AA
+multiline_comment|/* x8 */
+)brace
+comma
+dot
 id|DevSize
-suffix:colon
+op_assign
 id|SIZE_256KiB
 comma
+dot
+id|CmdSet
+op_assign
+id|P_ID_AMD_STD
+comma
+dot
 id|NumEraseRegions
-suffix:colon
+op_assign
 l_int|4
 comma
+dot
 id|regions
-suffix:colon
+op_assign
 (brace
 id|ERASEINFO
 c_func
@@ -5031,6 +5118,7 @@ l_int|0x04000
 comma
 l_int|1
 )paren
+comma
 )brace
 )brace
 comma
@@ -7870,7 +7958,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Mask out address bits which are smaller than the device type */
 id|p_cfi-&gt;addr_unlock1
 op_assign
 id|unlock_addrs
@@ -8417,7 +8504,6 @@ id|uaddr_idx
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* Mask out address bits which are smaller than the device type */
 id|cfi-&gt;addr_unlock1
 op_assign
 id|unlock_addrs

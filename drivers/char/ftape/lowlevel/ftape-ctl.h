@@ -399,14 +399,6 @@ id|qic_std
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|ftape_init_drive
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_const
 id|ftape_info
 op_star

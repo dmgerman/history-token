@@ -3302,6 +3302,11 @@ c_func
 id|gdp-&gt;bg_free_inodes_count
 )paren
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_return
 id|desc_count

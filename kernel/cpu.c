@@ -527,10 +527,15 @@ c_func
 (paren
 id|p
 comma
-id|smp_processor_id
+id|get_cpu
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* CPU is completely dead: tell everyone.  Too late to complain. */

@@ -438,9 +438,12 @@ id|i
 op_assign
 id|INVALID_CNODEID
 suffix:semicolon
-id|numnodes
-op_assign
-l_int|0
+multiline_comment|/*&n;&t; * MCD - this whole &quot;compact node&quot; stuff can probably be dropped,&n;&t; * as we can handle sparse numbering now&n;&t; */
+id|nodes_clear
+c_func
+(paren
+id|node_online_map
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -488,8 +491,14 @@ id|nasid
 op_assign
 id|i
 suffix:semicolon
-id|numnodes
-op_increment
+id|node_set_online
+c_func
+(paren
+id|num_online_nodes
+c_func
+(paren
+)paren
+)paren
 suffix:semicolon
 id|highest
 op_assign
@@ -513,7 +522,10 @@ id|highest
 op_plus
 l_int|1
 comma
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -689,19 +701,10 @@ id|max_cpus
 id|cnodeid_t
 id|cnode
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|cnode
-op_assign
-l_int|0
-suffix:semicolon
-id|cnode
-OL
-id|numnodes
-suffix:semicolon
-id|cnode
-op_increment
 )paren
 id|intr_clear_all
 c_func
@@ -716,7 +719,6 @@ suffix:semicolon
 id|replicate_kernel_text
 c_func
 (paren
-id|numnodes
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Assumption to be fixed: we&squot;re always booted on logical / physical&n;&t; * processor 0.  While we&squot;re always running on logical processor 0&n;&t; * this still means this is physical processor zero; it might for&n;&t; * example be disabled in the firwware.&n;&t; */

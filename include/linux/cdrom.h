@@ -3513,36 +3513,6 @@ op_star
 id|med
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|cdrom_is_mrw
-c_func
-(paren
-r_struct
-id|cdrom_device_info
-op_star
-id|cdi
-comma
-r_int
-op_star
-id|write
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|cdrom_is_random_writable
-c_func
-(paren
-r_struct
-id|cdrom_device_info
-op_star
-id|cdi
-comma
-r_int
-op_star
-id|write
-)paren
-suffix:semicolon
 macro_line|#endif  /* End of kernel only stuff */ 
 macro_line|#endif  /* _LINUX_CDROM_H */
 eof

@@ -1558,6 +1558,27 @@ l_string|&quot;CSC0110&quot;
 )brace
 )brace
 comma
+multiline_comment|/* Unknown SiS530 - CS4235 */
+(brace
+dot
+id|id
+op_assign
+l_string|&quot;CSC4825&quot;
+comma
+dot
+id|devs
+op_assign
+(brace
+(brace
+l_string|&quot;CSC0100&quot;
+)brace
+comma
+(brace
+l_string|&quot;CSC0110&quot;
+)brace
+)brace
+)brace
+comma
 multiline_comment|/* IBM IntelliStation M Pro 6898 11U - CS4236B */
 (brace
 dot

@@ -317,16 +317,6 @@ id|multiple
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* PnP devices */
-DECL|variable|opl3sa2_dev
-r_struct
-id|pnp_dev
-op_star
-id|opl3sa2_dev
-(braket
-id|OPL3SA2_CARDS_MAX
-)braket
-suffix:semicolon
 multiline_comment|/* Whether said devices have been activated */
 DECL|variable|opl3sa2_activated
 r_static
@@ -370,12 +360,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -386,12 +378,14 @@ comma
 l_string|&quot;Set I/O base of OPL3-SA2 or SA3 card (usually 0x370.  Address must be even and must be from 0x100 to 0xFFE)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mss_io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -402,12 +396,14 @@ comma
 l_string|&quot;Set MSS (audio) I/O base (0x530, 0xE80, or other. Address must end in 0 or 4 and must be from 0x530 to 0xF48)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mpu_io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -418,12 +414,14 @@ comma
 l_string|&quot;Set MIDI I/O base (0x330 or other. Address must be even and must be from 0x300 to 0x334)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|irq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -434,12 +432,14 @@ comma
 l_string|&quot;Set MSS (audio) IRQ (5, 7, 9, 10, 11, 12)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dma
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -450,12 +450,14 @@ comma
 l_string|&quot;Set MSS (audio) first DMA channel (0, 1, 3)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dma2
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -466,12 +468,14 @@ comma
 l_string|&quot;Set MSS (audio) second DMA channel (0, 1, 3)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ymode
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -482,12 +486,14 @@ comma
 l_string|&quot;Set Yamaha 3D enhancement mode (0 = Desktop/Normal, 1 = Notebook PC (1), 2 = Notebook PC (2), 3 = Hi-Fi)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|loopback
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -499,12 +505,14 @@ l_string|&quot;Set A/D input source. Useful for echo cancellation (0 = Mic Rch (
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|isapnp
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -515,12 +523,14 @@ comma
 l_string|&quot;When set to 0, ISA PnP support will be disabled&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|multiple
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -3003,6 +3013,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PNP
 DECL|variable|pnp_opl3sa2_list
+r_static
 r_struct
 id|pnp_device_id
 id|pnp_opl3sa2_list

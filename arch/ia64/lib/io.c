@@ -3,14 +3,16 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * Copy data from IO memory space to &quot;real&quot; memory space.&n; * This needs to be optimized.&n; */
+DECL|function|memcpy_fromio
 r_void
-DECL|function|__ia64_memcpy_fromio
-id|__ia64_memcpy_fromio
+id|memcpy_fromio
+c_func
 (paren
 r_void
 op_star
 id|to
 comma
+r_const
 r_volatile
 r_void
 id|__iomem
@@ -49,17 +51,18 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__ia64_memcpy_fromio
+DECL|variable|memcpy_fromio
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__ia64_memcpy_fromio
+id|memcpy_fromio
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Copy data from &quot;real&quot; memory space to IO memory space.&n; * This needs to be optimized.&n; */
+DECL|function|memcpy_toio
 r_void
-DECL|function|__ia64_memcpy_toio
-id|__ia64_memcpy_toio
+id|memcpy_toio
+c_func
 (paren
 r_volatile
 r_void
@@ -67,6 +70,7 @@ id|__iomem
 op_star
 id|to
 comma
+r_const
 r_void
 op_star
 id|from
@@ -75,6 +79,7 @@ r_int
 id|count
 )paren
 (brace
+r_const
 r_char
 op_star
 id|src
@@ -103,17 +108,18 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__ia64_memcpy_toio
+DECL|variable|memcpy_toio
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__ia64_memcpy_toio
+id|memcpy_toio
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * &quot;memset&quot; on IO memory space.&n; * This needs to be optimized.&n; */
+DECL|function|memset_io
 r_void
-DECL|function|__ia64_memset_c_io
-id|__ia64_memset_c_io
+id|memset_io
+c_func
 (paren
 r_volatile
 r_void
@@ -121,7 +127,6 @@ id|__iomem
 op_star
 id|dst
 comma
-r_int
 r_int
 id|c
 comma
@@ -164,11 +169,11 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-DECL|variable|__ia64_memset_c_io
+DECL|variable|memset_io
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__ia64_memset_c_io
+id|memset_io
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA64_GENERIC

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Driver for Digigram VXpocket soundcards&n; *&n; * lowlevel routines for VXpocket soundcards&n; *&n; * Copyright (c) 2002 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;vxpocket.h&quot;
@@ -501,9 +502,10 @@ op_star
 id|_chip
 comma
 r_const
-id|snd_hwdep_dsp_image_t
+r_struct
+id|firmware
 op_star
-id|xilinx
+id|fw
 )paren
 (brace
 r_struct
@@ -532,7 +534,6 @@ id|regRUER
 suffix:semicolon
 r_int
 r_char
-id|__user
 op_star
 id|image
 suffix:semicolon
@@ -628,7 +629,7 @@ id|ICR_HF1
 suffix:semicolon
 id|image
 op_assign
-id|xilinx-&gt;image
+id|fw-&gt;data
 suffix:semicolon
 r_for
 c_loop
@@ -639,7 +640,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|xilinx-&gt;length
+id|fw-&gt;size
 suffix:semicolon
 id|i
 op_increment
@@ -648,13 +649,10 @@ id|image
 op_increment
 )paren
 (brace
-id|__get_user
-c_func
-(paren
 id|data
-comma
+op_assign
+op_star
 id|image
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -829,7 +827,7 @@ l_string|&quot;xilinx: dsp size received 0x%x, orig 0x%x&bslash;n&quot;
 comma
 id|c
 comma
-id|xilinx-&gt;length
+id|fw-&gt;size
 )paren
 suffix:semicolon
 id|vx_outb
@@ -1010,37 +1008,23 @@ id|vx_core_t
 op_star
 id|vx
 comma
+r_int
+id|index
+comma
 r_const
-id|snd_hwdep_dsp_image_t
+r_struct
+id|firmware
 op_star
-id|dsp
+id|fw
 )paren
 (brace
 r_int
 id|err
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|dsp-&gt;name
-)paren
-id|snd_printdd
-c_func
-(paren
-l_string|&quot;loading dsp [%d] %s, size = %d&bslash;n&quot;
-comma
-id|dsp-&gt;index
-comma
-id|dsp-&gt;name
-comma
-id|dsp-&gt;length
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dsp-&gt;index
+id|index
 )paren
 (brace
 r_case
@@ -1076,7 +1060,7 @@ c_func
 (paren
 id|vx
 comma
-id|dsp
+id|fw
 )paren
 )paren
 OL
@@ -1098,7 +1082,7 @@ c_func
 (paren
 id|vx
 comma
-id|dsp
+id|fw
 )paren
 suffix:semicolon
 r_case
@@ -1111,7 +1095,7 @@ c_func
 (paren
 id|vx
 comma
-id|dsp
+id|fw
 )paren
 suffix:semicolon
 r_case
@@ -1124,7 +1108,7 @@ c_func
 (paren
 id|vx
 comma
-id|dsp
+id|fw
 )paren
 suffix:semicolon
 r_default

@@ -486,8 +486,6 @@ OG
 id|e
 )paren
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* Currently free_pgtables guarantees this.  */
 id|s
 op_and_assign
 id|PMD_MASK
@@ -504,7 +502,6 @@ l_int|1
 op_amp
 id|PMD_MASK
 suffix:semicolon
-macro_line|#endif
 id|vpte_base
 op_assign
 (paren

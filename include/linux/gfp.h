@@ -37,6 +37,8 @@ DECL|macro|__GFP_NO_GROW
 mdefine_line|#define __GFP_NO_GROW&t;0x2000&t;/* Slab internal usage */
 DECL|macro|__GFP_COMP
 mdefine_line|#define __GFP_COMP&t;0x4000&t;/* Add compound page metadata */
+DECL|macro|__GFP_ZERO
+mdefine_line|#define __GFP_ZERO&t;0x8000&t;/* Return zeroed page on success */
 DECL|macro|__GFP_BITS_SHIFT
 mdefine_line|#define __GFP_BITS_SHIFT 16&t;/* Room for 16 __GFP_FOO bits */
 DECL|macro|__GFP_BITS_MASK
@@ -56,6 +58,8 @@ DECL|macro|GFP_USER
 mdefine_line|#define GFP_USER&t;(__GFP_WAIT | __GFP_IO | __GFP_FS)
 DECL|macro|GFP_HIGHUSER
 mdefine_line|#define GFP_HIGHUSER&t;(__GFP_WAIT | __GFP_IO | __GFP_FS | __GFP_HIGHMEM)
+DECL|macro|GFP_HIGHZERO
+mdefine_line|#define GFP_HIGHZERO&t;(__GFP_WAIT | __GFP_IO | __GFP_FS | __GFP_HIGHMEM | __GFP_ZERO)
 multiline_comment|/* Flag - indicates that the buffer will be suitable for DMA.  Ignored on some&n;   platforms, used as appropriate on others */
 DECL|macro|GFP_DMA
 mdefine_line|#define GFP_DMA&t;&t;__GFP_DMA

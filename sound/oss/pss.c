@@ -65,7 +65,6 @@ macro_line|#ifdef CONFIG_PSS_MIXER
 DECL|variable|pss_mixer
 r_static
 r_int
-r_char
 id|pss_mixer
 op_assign
 l_int|1
@@ -74,7 +73,6 @@ macro_line|#else
 DECL|variable|pss_mixer
 r_static
 r_int
-r_char
 id|pss_mixer
 suffix:semicolon
 macro_line|#endif
@@ -2930,6 +2928,7 @@ id|pss_mixer_ioctl
 )brace
 suffix:semicolon
 DECL|function|disable_all_emulations
+r_static
 r_void
 id|disable_all_emulations
 c_func
@@ -3000,6 +2999,7 @@ id|CONF_CDROM
 suffix:semicolon
 )brace
 DECL|function|configure_nonsound_components
+r_static
 r_void
 id|configure_nonsound_components
 c_func
@@ -5638,12 +5638,14 @@ id|pss_firmware
 op_assign
 l_string|&quot;/etc/sound/pss_synth&quot;
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pss_io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5654,12 +5656,14 @@ comma
 l_string|&quot;Set i/o base of PSS card (probably 0x220 or 0x240)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mss_io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5670,12 +5674,14 @@ comma
 l_string|&quot;Set WSS (audio) i/o base (0x530, 0x604, 0xE80, 0xF40, or other. Address must end in 0 or 4 and must be from 0x100 to 0xFF4)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mss_irq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5686,12 +5692,14 @@ comma
 l_string|&quot;Set WSS (audio) IRQ (3, 5, 7, 9, 10, 11, 12)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mss_dma
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5702,12 +5710,14 @@ comma
 l_string|&quot;Set WSS (audio) DMA (0, 1, 3)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mpu_io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5718,12 +5728,14 @@ comma
 l_string|&quot;Set MIDI i/o base (0x330 or other. Address must be on 4 location boundaries and must be from 0x100 to 0xFFC)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mpu_irq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5734,12 +5746,14 @@ comma
 l_string|&quot;Set MIDI IRQ (3, 5, 7, 9, 10, 11, 12)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pss_cdrom_port
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5750,12 +5764,14 @@ comma
 l_string|&quot;Set the PSS CDROM port i/o base (0x340 or other)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pss_enable_joystick
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5766,12 +5782,14 @@ comma
 l_string|&quot;Enables the PSS joystick port (1 to enable, 0 to disable)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pss_no_sound
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5782,12 +5800,14 @@ comma
 l_string|&quot;Configure sound compoents (0 - no, 1 - yes)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pss_keep_settings
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5798,12 +5818,14 @@ comma
 l_string|&quot;Keep hardware setting at driver unloading (0 - no, 1 - yes)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pss_firmware
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -5814,12 +5836,14 @@ comma
 l_string|&quot;Location of the firmware file (default - /etc/sound/pss_synth)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pss_mixer
 comma
-l_string|&quot;b&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

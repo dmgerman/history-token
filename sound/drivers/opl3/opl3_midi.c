@@ -1310,6 +1310,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Start system timer&n; */
 DECL|function|snd_opl3_start_timer
+r_static
 r_void
 id|snd_opl3_start_timer
 c_func

@@ -31,8 +31,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR GOLDSTAR_CDROM_MAJOR
 macro_line|#include &lt;linux/blkdev.h&gt;
-DECL|macro|gscd_port
-mdefine_line|#define gscd_port gscd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
 macro_line|#include &quot;gscd.h&quot;
 DECL|variable|gscdPresent
 r_static
@@ -66,12 +64,16 @@ id|gscd_port
 op_assign
 id|GSCD_BASE_ADDR
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_named
 c_func
 (paren
 id|gscd
 comma
-l_string|&quot;h&quot;
+id|gscd_port
+comma
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* Kommt spaeter vielleicht noch mal dran ...&n; *    static DECLARE_WAIT_QUEUE_HEAD(gscd_waitq);&n; */

@@ -28,12 +28,6 @@ r_struct
 id|list_head
 id|free_list
 suffix:semicolon
-DECL|member|map
-r_int
-r_int
-op_star
-id|map
-suffix:semicolon
 DECL|member|nr_free
 r_int
 r_int
@@ -460,10 +454,6 @@ mdefine_line|#define node_present_pages(nid)&t;(NODE_DATA(nid)-&gt;node_present_
 DECL|macro|node_spanned_pages
 mdefine_line|#define node_spanned_pages(nid)&t;(NODE_DATA(nid)-&gt;node_spanned_pages)
 r_extern
-r_int
-id|numnodes
-suffix:semicolon
-r_extern
 r_struct
 id|pglist_data
 op_star
@@ -592,9 +582,9 @@ r_if
 c_cond
 (paren
 id|zone
-op_minus
-id|pgdat-&gt;node_zones
 OL
+id|pgdat-&gt;node_zones
+op_plus
 id|MAX_NR_ZONES
 op_minus
 l_int|1
@@ -683,15 +673,11 @@ id|zone
 )paren
 (brace
 r_return
-(paren
-id|is_highmem_idx
-c_func
-(paren
 id|zone
-op_minus
+op_eq
 id|zone-&gt;zone_pgdat-&gt;node_zones
-)paren
-)paren
+op_plus
+id|ZONE_HIGHMEM
 suffix:semicolon
 )brace
 DECL|function|is_normal
@@ -708,15 +694,11 @@ id|zone
 )paren
 (brace
 r_return
-(paren
-id|is_normal_idx
-c_func
-(paren
 id|zone
-op_minus
+op_eq
 id|zone-&gt;zone_pgdat-&gt;node_zones
-)paren
-)paren
+op_plus
+id|ZONE_NORMAL
 suffix:semicolon
 )brace
 multiline_comment|/* These two functions are used to setup the per zone pages min values */
@@ -779,7 +761,7 @@ suffix:semicolon
 macro_line|#include &lt;linux/topology.h&gt;
 multiline_comment|/* Returns the number of the current Node. */
 DECL|macro|numa_node_id
-mdefine_line|#define numa_node_id()&t;&t;(cpu_to_node(smp_processor_id()))
+mdefine_line|#define numa_node_id()&t;&t;(cpu_to_node(_smp_processor_id()))
 macro_line|#ifndef CONFIG_DISCONTIGMEM
 r_extern
 r_struct

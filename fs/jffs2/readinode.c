@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: readinode.c,v 1.114 2004/11/14 17:07:07 dedekind Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: readinode.c,v 1.117 2004/11/20 18:06:54 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -28,7 +28,7 @@ op_star
 id|newfrag
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_JFFS2_FS_DEBUG &gt;= 1
+macro_line|#if CONFIG_JFFS2_FS_DEBUG &gt;= 2
 DECL|function|jffs2_print_fragtree
 r_static
 r_void
@@ -245,6 +245,8 @@ id|f-&gt;metadata-&gt;raw
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
+macro_line|#if CONFIG_JFFS2_FS_DEBUG &gt;= 1
 DECL|function|jffs2_sanitycheck_fragtree
 r_static
 r_int
@@ -1124,6 +1126,8 @@ multiline_comment|/* Check if &squot;this&squot; node was on the same page as th
 r_if
 c_cond
 (paren
+id|lastend
+op_logical_and
 (paren
 id|lastend
 op_minus

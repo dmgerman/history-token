@@ -3091,10 +3091,6 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|status
-op_assign
-id|nfserr_stale_clientid
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3104,8 +3100,8 @@ c_func
 id|clid
 )paren
 )paren
-r_goto
-id|out
+r_return
+id|nfserr_stale_clientid
 suffix:semicolon
 multiline_comment|/* &n;&t; * XXX The Duplicate Request Cache (DRC) has been checked (??)&n;&t; * We get here on a DRC miss.&n;&t; */
 id|idhashval

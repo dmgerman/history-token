@@ -9,6 +9,7 @@ macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
 macro_line|#include &lt;sound/util_mem.h&gt;
 macro_line|#include &lt;sound/pcm-indirect.h&gt;
+macro_line|#include &lt;sound/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef PCI_VENDOR_ID_CREATIVE
@@ -1341,6 +1342,7 @@ suffix:semicolon
 r_typedef
 r_struct
 (brace
+multiline_comment|/* mono, left, right x 8 sends (4 on emu10k1) */
 DECL|member|send_routing
 r_int
 r_char
@@ -1383,9 +1385,9 @@ suffix:semicolon
 DECL|macro|snd_emu10k1_compose_send_routing
 mdefine_line|#define snd_emu10k1_compose_send_routing(route) &bslash;&n;((route[0] | (route[1] &lt;&lt; 4) | (route[2] &lt;&lt; 8) | (route[3] &lt;&lt; 12)) &lt;&lt; 16)
 DECL|macro|snd_emu10k1_compose_audigy_fxrt1
-mdefine_line|#define snd_emu10k1_compose_audigy_fxrt1(route) &bslash;&n;(((unsigned int)route[0] | ((unsigned int)route[1] &lt;&lt; 8) | ((unsigned int)route[2] &lt;&lt; 16) | ((unsigned int)route[3] &lt;&lt; 12)) &lt;&lt; 24)
+mdefine_line|#define snd_emu10k1_compose_audigy_fxrt1(route) &bslash;&n;((unsigned int)route[0] | ((unsigned int)route[1] &lt;&lt; 8) | ((unsigned int)route[2] &lt;&lt; 16) | ((unsigned int)route[3] &lt;&lt; 24))
 DECL|macro|snd_emu10k1_compose_audigy_fxrt2
-mdefine_line|#define snd_emu10k1_compose_audigy_fxrt2(route) &bslash;&n;(((unsigned int)route[4] | ((unsigned int)route[5] &lt;&lt; 8) | ((unsigned int)route[6] &lt;&lt; 16) | ((unsigned int)route[7] &lt;&lt; 12)) &lt;&lt; 24)
+mdefine_line|#define snd_emu10k1_compose_audigy_fxrt2(route) &bslash;&n;((unsigned int)route[4] | ((unsigned int)route[5] &lt;&lt; 8) | ((unsigned int)route[6] &lt;&lt; 16) | ((unsigned int)route[7] &lt;&lt; 24))
 DECL|struct|snd_emu10k1_memblk
 r_typedef
 r_struct
@@ -2199,6 +2201,11 @@ id|snd_pcm_substream_t
 op_star
 id|pcm_capture_efx_substream
 suffix:semicolon
+DECL|member|timer
+id|snd_timer_t
+op_star
+id|timer
+suffix:semicolon
 DECL|member|midi
 id|emu10k1_midi_t
 id|midi
@@ -2329,6 +2336,18 @@ id|emu
 )paren
 suffix:semicolon
 r_int
+id|snd_emu10k1_timer
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+r_int
+id|device
+)paren
+suffix:semicolon
+r_int
 id|snd_emu10k1_fx8010_new
 c_func
 (paren
@@ -2439,23 +2458,6 @@ comma
 r_int
 r_int
 id|chn
-comma
-r_int
-r_int
-id|data
-)paren
-suffix:semicolon
-r_void
-id|snd_emu10k1_efx_write
-c_func
-(paren
-id|emu10k1_t
-op_star
-id|emu
-comma
-r_int
-r_int
-id|pc
 comma
 r_int
 r_int
@@ -2648,16 +2650,6 @@ c_func
 r_int
 r_int
 id|rate
-)paren
-suffix:semicolon
-r_int
-r_char
-id|snd_emu10k1_sum_vol_attn
-c_func
-(paren
-r_int
-r_int
-id|value
 )paren
 suffix:semicolon
 multiline_comment|/* memory allocation */
@@ -3428,12 +3420,10 @@ l_int|0x200
 suffix:semicolon
 multiline_comment|/* bitmask of valid initializers */
 DECL|member|gpr_map
-r_int
-r_int
+id|u_int32_t
+id|__user
+op_star
 id|gpr_map
-(braket
-l_int|0x200
-)braket
 suffix:semicolon
 multiline_comment|/* initializers */
 DECL|member|gpr_add_control_count
@@ -3491,21 +3481,17 @@ l_int|0x100
 suffix:semicolon
 multiline_comment|/* bitmask of valid initializers */
 DECL|member|tram_data_map
-r_int
-r_int
+id|u_int32_t
+id|__user
+op_star
 id|tram_data_map
-(braket
-l_int|0x100
-)braket
 suffix:semicolon
 multiline_comment|/* data initializers */
 DECL|member|tram_addr_map
-r_int
-r_int
+id|u_int32_t
+id|__user
+op_star
 id|tram_addr_map
-(braket
-l_int|0x100
-)braket
 suffix:semicolon
 multiline_comment|/* map initializers */
 id|DECLARE_BITMAP
@@ -3518,15 +3504,10 @@ l_int|1024
 suffix:semicolon
 multiline_comment|/* bitmask of valid instructions */
 DECL|member|code
-r_int
-r_int
+id|u_int32_t
+id|__user
+op_star
 id|code
-(braket
-l_int|1024
-)braket
-(braket
-l_int|2
-)braket
 suffix:semicolon
 multiline_comment|/* one instruction - 64 bits */
 DECL|typedef|emu10k1_fx8010_code_t

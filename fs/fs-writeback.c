@@ -1138,6 +1138,11 @@ op_amp
 id|inode_lock
 )paren
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 id|iput
 c_func
 (paren

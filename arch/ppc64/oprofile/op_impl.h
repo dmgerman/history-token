@@ -4,44 +4,6 @@ DECL|macro|OP_IMPL_H
 mdefine_line|#define OP_IMPL_H 1
 DECL|macro|OP_MAX_COUNTER
 mdefine_line|#define OP_MAX_COUNTER 8
-DECL|macro|MSR_PMM
-mdefine_line|#define MSR_PMM&t;&t;(1UL &lt;&lt; (63 - 61))
-multiline_comment|/* freeze counters. set to 1 on a perfmon exception */
-DECL|macro|MMCR0_FC
-mdefine_line|#define MMCR0_FC&t;(1UL &lt;&lt; (31 - 0))
-multiline_comment|/* freeze in supervisor state */
-DECL|macro|MMCR0_KERNEL_DISABLE
-mdefine_line|#define MMCR0_KERNEL_DISABLE (1UL &lt;&lt; (31 - 1))
-multiline_comment|/* freeze in problem state */
-DECL|macro|MMCR0_PROBLEM_DISABLE
-mdefine_line|#define MMCR0_PROBLEM_DISABLE (1UL &lt;&lt; (31 - 2))
-multiline_comment|/* freeze counters while MSR mark = 1 */
-DECL|macro|MMCR0_FCM1
-mdefine_line|#define MMCR0_FCM1&t;(1UL &lt;&lt; (31 - 3))
-multiline_comment|/* performance monitor exception enable */
-DECL|macro|MMCR0_PMXE
-mdefine_line|#define MMCR0_PMXE&t;(1UL &lt;&lt; (31 - 5))
-multiline_comment|/* freeze counters on enabled condition or event */
-DECL|macro|MMCR0_FCECE
-mdefine_line|#define MMCR0_FCECE&t;(1UL &lt;&lt; (31 - 6))
-multiline_comment|/* PMC1 count enable*/
-DECL|macro|MMCR0_PMC1INTCONTROL
-mdefine_line|#define MMCR0_PMC1INTCONTROL&t;(1UL &lt;&lt; (31 - 16))
-multiline_comment|/* PMCn count enable*/
-DECL|macro|MMCR0_PMCNINTCONTROL
-mdefine_line|#define MMCR0_PMCNINTCONTROL&t;(1UL &lt;&lt; (31 - 17))
-multiline_comment|/* performance monitor alert has occurred, set to 0 after handling exception */
-DECL|macro|MMCR0_PMAO
-mdefine_line|#define MMCR0_PMAO&t;(1UL &lt;&lt; (31 - 24))
-multiline_comment|/* state of MSR HV when SIAR set */
-DECL|macro|MMCRA_SIHV
-mdefine_line|#define MMCRA_SIHV&t;(1UL &lt;&lt; (63 - 35))
-multiline_comment|/* state of MSR PR when SIAR set */
-DECL|macro|MMCRA_SIPR
-mdefine_line|#define MMCRA_SIPR&t;(1UL &lt;&lt; (63 - 36))
-multiline_comment|/* enable sampling */
-DECL|macro|MMCRA_SAMPLE_ENABLE
-mdefine_line|#define MMCRA_SAMPLE_ENABLE&t;(1UL &lt;&lt; (63 - 63))
 multiline_comment|/* Per-counter configuration as set via oprofilefs.  */
 DECL|struct|op_counter_config
 r_struct

@@ -2075,7 +2075,7 @@ id|down
 c_func
 (paren
 op_amp
-id|ac97-&gt;mutex
+id|ac97-&gt;page_mutex
 )paren
 suffix:semicolon
 r_if
@@ -2242,7 +2242,7 @@ id|up
 c_func
 (paren
 op_amp
-id|ac97-&gt;mutex
+id|ac97-&gt;page_mutex
 )paren
 suffix:semicolon
 )brace
@@ -2285,7 +2285,7 @@ id|down
 c_func
 (paren
 op_amp
-id|ac97-&gt;mutex
+id|ac97-&gt;page_mutex
 )paren
 suffix:semicolon
 r_while
@@ -2362,7 +2362,7 @@ id|up
 c_func
 (paren
 op_amp
-id|ac97-&gt;mutex
+id|ac97-&gt;page_mutex
 )paren
 suffix:semicolon
 )brace
@@ -2457,7 +2457,7 @@ id|down
 c_func
 (paren
 op_amp
-id|ac97-&gt;mutex
+id|ac97-&gt;page_mutex
 )paren
 suffix:semicolon
 r_if
@@ -2562,7 +2562,7 @@ id|up
 c_func
 (paren
 op_amp
-id|ac97-&gt;mutex
+id|ac97-&gt;page_mutex
 )paren
 suffix:semicolon
 )brace

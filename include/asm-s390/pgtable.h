@@ -695,6 +695,22 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|pte_read
+r_extern
+r_inline
+r_int
+id|pte_read
+c_func
+(paren
+id|pte_t
+id|pte
+)paren
+(brace
+multiline_comment|/* All pages are readable since we don&squot;t use the fetch&n;&t; * protection bit in the storage key.&n;&t; */
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * pgd/pmd/pte modification functions&n; */
 macro_line|#ifndef __s390x__
 DECL|function|pgd_clear

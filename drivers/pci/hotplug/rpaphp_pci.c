@@ -2,6 +2,7 @@ multiline_comment|/*&n; * PCI Hot Plug Controller Driver for RPA-compliant PPC64
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;../pci.h&quot;&t;&t;/* for pci_add_new_bus */
 macro_line|#include &quot;rpaphp.h&quot;
 DECL|function|rpaphp_find_pci_dev
@@ -602,6 +603,15 @@ id|dev-&gt;global_list
 (brace
 r_int
 id|i
+suffix:semicolon
+multiline_comment|/* Need to setup IOMMU tables */
+id|ppc_md
+dot
+id|iommu_dev_setup
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond

@@ -88,6 +88,7 @@ id|len
 suffix:semicolon
 )brace
 DECL|function|get_mca_info
+r_static
 r_int
 id|get_mca_info
 c_func

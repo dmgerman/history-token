@@ -6587,6 +6587,7 @@ l_int|0
 )paren
 suffix:semicolon
 DECL|function|snd_rme9652_create_controls
+r_static
 r_int
 id|snd_rme9652_create_controls
 c_func

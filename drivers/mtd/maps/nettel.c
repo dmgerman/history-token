@@ -1,5 +1,5 @@
 multiline_comment|/****************************************************************************/
-multiline_comment|/*&n; *      nettel.c -- mappings for NETtel/SecureEdge/SnapGear (x86) boards.&n; *&n; *      (C) Copyright 2000-2001, Greg Ungerer (gerg@snapgear.com)&n; *      (C) Copyright 2001-2002, SnapGear (www.snapgear.com)&n; *&n; *&t;$Id: nettel.c,v 1.8 2004/11/04 13:24:15 gleixner Exp $&n; */
+multiline_comment|/*&n; *      nettel.c -- mappings for NETtel/SecureEdge/SnapGear (x86) boards.&n; *&n; *      (C) Copyright 2000-2001, Greg Ungerer (gerg@snapgear.com)&n; *      (C) Copyright 2001-2002, SnapGear (www.snapgear.com)&n; *&n; *&t;$Id: nettel.c,v 1.10 2005/01/05 17:11:29 dwmw2 Exp $&n; */
 multiline_comment|/****************************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1092,19 +1092,11 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|nettel_amd_map.virt
 )paren
 suffix:semicolon
 id|nettel_amd_map.virt
 op_assign
-(paren
-r_int
-r_int
-)paren
 l_int|NULL
 suffix:semicolon
 macro_line|#else
@@ -1171,10 +1163,6 @@ id|intel0addr
 suffix:semicolon
 id|nettel_intel_map.virt
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -1229,10 +1217,6 @@ id|intel_mtd
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|nettel_intel_map.virt
 )paren
 suffix:semicolon
@@ -1302,10 +1286,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|nettel_intel_map.virt
 )paren
 suffix:semicolon
@@ -1315,10 +1295,6 @@ id|maxsize
 suffix:semicolon
 id|nettel_intel_map.virt
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap_nocache
 c_func
 (paren
@@ -1692,10 +1668,6 @@ id|nettel_intel_map.virt
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|nettel_intel_map.virt
 )paren
 suffix:semicolon

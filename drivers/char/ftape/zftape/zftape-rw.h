@@ -97,10 +97,6 @@ id|zft_header_changed
 suffix:semicolon
 r_extern
 r_int
-id|zft_bad_sector_map_changed
-suffix:semicolon
-r_extern
-r_int
 id|zft_qic113
 suffix:semicolon
 multiline_comment|/* conform to old specs. and old zftape */

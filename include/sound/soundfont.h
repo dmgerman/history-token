@@ -430,15 +430,6 @@ id|sflist
 )paren
 suffix:semicolon
 r_int
-id|snd_soundfont_mem_used
-c_func
-(paren
-id|snd_sf_list_t
-op_star
-id|sflist
-)paren
-suffix:semicolon
-r_int
 id|snd_soundfont_search_zone
 c_func
 (paren

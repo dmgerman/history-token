@@ -14,12 +14,22 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;bttv.h&quot;
 macro_line|#include &lt;media/audiochip.h&gt;
 macro_line|#include &lt;media/id.h&gt;
-id|MODULE_PARM
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
+multiline_comment|/* insmod parameter */
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -28,14 +38,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|debug
-r_static
-r_int
-id|debug
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* insmod parameter */
 multiline_comment|/* Addresses to scan */
 DECL|variable|normal_i2c
 r_static

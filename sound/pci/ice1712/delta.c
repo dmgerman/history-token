@@ -2329,6 +2329,16 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|ICE1712_SUBDEVICE_DELTADIO2496
+suffix:colon
+id|ice-&gt;num_total_dacs
+op_assign
+l_int|4
+suffix:semicolon
+multiline_comment|/* two AK4324 codecs */
+r_break
+suffix:semicolon
+r_case
 id|ICE1712_SUBDEVICE_VX442
 suffix:colon
 id|ice-&gt;num_total_dacs

@@ -1538,21 +1538,6 @@ id|type
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * for Emu10k1 - release at least 1 voice currently using&n; */
-r_int
-DECL|function|snd_emux_release_voice
-id|snd_emux_release_voice
-c_func
-(paren
-id|snd_emux_t
-op_star
-id|emu
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * terminate note - if free flag is true, free the terminated voice&n; */
 r_static
 r_void

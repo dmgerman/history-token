@@ -280,6 +280,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * default destructor for a bio allocated with bio_alloc()&n; */
 DECL|function|bio_destructor
+r_static
 r_void
 id|bio_destructor
 c_func

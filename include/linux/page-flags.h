@@ -422,6 +422,10 @@ DECL|macro|ClearPagePrivate
 mdefine_line|#define ClearPagePrivate(page)&t;clear_bit(PG_private, &amp;(page)-&gt;flags)
 DECL|macro|PagePrivate
 mdefine_line|#define PagePrivate(page)&t;test_bit(PG_private, &amp;(page)-&gt;flags)
+DECL|macro|__SetPagePrivate
+mdefine_line|#define __SetPagePrivate(page)  __set_bit(PG_private, &amp;(page)-&gt;flags)
+DECL|macro|__ClearPagePrivate
+mdefine_line|#define __ClearPagePrivate(page) __clear_bit(PG_private, &amp;(page)-&gt;flags)
 DECL|macro|PageWriteback
 mdefine_line|#define PageWriteback(page)&t;test_bit(PG_writeback, &amp;(page)-&gt;flags)
 DECL|macro|SetPageWriteback
@@ -462,8 +466,13 @@ DECL|macro|ClearPageReclaim
 mdefine_line|#define ClearPageReclaim(page)&t;clear_bit(PG_reclaim, &amp;(page)-&gt;flags)
 DECL|macro|TestClearPageReclaim
 mdefine_line|#define TestClearPageReclaim(page) test_and_clear_bit(PG_reclaim, &amp;(page)-&gt;flags)
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
 DECL|macro|PageCompound
 mdefine_line|#define PageCompound(page)&t;test_bit(PG_compound, &amp;(page)-&gt;flags)
+macro_line|#else
+DECL|macro|PageCompound
+mdefine_line|#define PageCompound(page)&t;0
+macro_line|#endif
 DECL|macro|SetPageCompound
 mdefine_line|#define SetPageCompound(page)&t;set_bit(PG_compound, &amp;(page)-&gt;flags)
 DECL|macro|ClearPageCompound

@@ -235,6 +235,12 @@ r_int
 r_int
 id|rmem_end
 suffix:semicolon
+DECL|member|mem
+r_void
+id|__iomem
+op_star
+id|mem
+suffix:semicolon
 DECL|member|mcfilter
 r_int
 r_char

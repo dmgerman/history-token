@@ -5040,6 +5040,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|seq_drain_midi_queues
+r_static
 r_void
 id|seq_drain_midi_queues
 c_func

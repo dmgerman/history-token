@@ -32,9 +32,6 @@ r_struct
 id|vm_area_struct
 op_star
 id|vma
-comma
-op_star
-id|prev_vma
 suffix:semicolon
 r_struct
 id|mm_struct
@@ -410,18 +407,6 @@ id|bad_area
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* find_vma_prev is just a bit slower, because it cannot use&n;&t; * the mmap_cache, so we run it only in the growsdown slow&n;&t; * path and we leave find_vma in the fast path.&n;&t; */
-id|find_vma_prev
-c_func
-(paren
-id|current-&gt;mm
-comma
-id|ear0
-comma
-op_amp
-id|prev_vma
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -431,8 +416,6 @@ c_func
 id|vma
 comma
 id|ear0
-comma
-id|prev_vma
 )paren
 )paren
 r_goto

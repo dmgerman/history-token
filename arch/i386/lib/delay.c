@@ -73,7 +73,15 @@ id|xloops
 comma
 l_string|&quot;0&quot;
 (paren
-id|current_cpu_data.loops_per_jiffy
+id|cpu_data
+(braket
+id|_smp_processor_id
+c_func
+(paren
+)paren
+)braket
+dot
+id|loops_per_jiffy
 op_star
 (paren
 id|HZ

@@ -25,10 +25,11 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 DECL|variable|swaplock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|swaplock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|nr_swapfiles
 r_int

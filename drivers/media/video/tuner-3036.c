@@ -849,6 +849,7 @@ l_string|&quot;SAB3036&quot;
 comma
 )brace
 suffix:semicolon
+r_static
 r_int
 id|__init
 DECL|function|tuner3036_init
@@ -869,6 +870,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 id|__exit
 DECL|function|tuner3036_exit
@@ -904,12 +906,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -124,7 +124,7 @@ r_int
 r_int
 id|it_size
 suffix:semicolon
-multiline_comment|/* Size in pages of iommu table */
+multiline_comment|/* Size of iommu table in entries */
 DECL|member|it_offset
 r_int
 r_int
@@ -149,12 +149,6 @@ r_int
 id|it_type
 suffix:semicolon
 multiline_comment|/* type: PCI or Virtual Bus */
-DECL|member|it_entrysize
-r_int
-r_int
-id|it_entrysize
-suffix:semicolon
-multiline_comment|/* Size of an entry in bytes */
 DECL|member|it_blocksize
 r_int
 r_int
@@ -184,12 +178,6 @@ id|spinlock_t
 id|it_lock
 suffix:semicolon
 multiline_comment|/* Protects it_map */
-DECL|member|it_mapsize
-r_int
-r_int
-id|it_mapsize
-suffix:semicolon
-multiline_comment|/* Size of map in # of entries (bits) */
 DECL|member|it_map
 r_int
 r_int
@@ -509,7 +497,7 @@ id|direction
 suffix:semicolon
 r_extern
 r_void
-id|tce_init_pSeries
+id|iommu_init_early_pSeries
 c_func
 (paren
 r_void
@@ -517,7 +505,15 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|tce_init_iSeries
+id|iommu_init_early_iSeries
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|iommu_init_early_u3
 c_func
 (paren
 r_void
@@ -533,7 +529,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|pci_dma_init_direct
+id|pci_direct_iommu_init
 c_func
 (paren
 r_void
@@ -546,10 +542,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|ppc64_iommu_off
 suffix:semicolon
 macro_line|#endif /* _ASM_IOMMU_H */
 eof

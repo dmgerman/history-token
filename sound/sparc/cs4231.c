@@ -951,6 +951,7 @@ macro_line|#endif
 )brace
 multiline_comment|/*&n; *  Basic I/O functions&n; */
 DECL|function|snd_cs4231_outm
+r_static
 r_void
 id|snd_cs4231_outm
 c_func
@@ -1536,8 +1537,8 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_DEBUG
-DECL|function|snd_cs4231_debug
+macro_line|#if 0
+r_static
 r_void
 id|snd_cs4231_debug
 c_func
@@ -2308,10 +2309,6 @@ suffix:semicolon
 r_int
 id|timeout
 suffix:semicolon
-r_int
-r_int
-id|time
-suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2543,11 +2540,10 @@ id|jiffies
 )paren
 suffix:semicolon
 macro_line|#endif
-id|time
+multiline_comment|/* in 10ms increments, check condition, up to 250ms */
+id|timeout
 op_assign
-id|HZ
-op_div
-l_int|4
+l_int|25
 suffix:semicolon
 r_while
 c_loop
@@ -2575,8 +2571,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|time
-op_le
+op_decrement
+id|timeout
+OL
 l_int|0
 )paren
 (brace
@@ -2589,18 +2586,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|time
-op_assign
-id|schedule_timeout
-c_func
-(paren
-id|time
+l_int|10
 )paren
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2623,10 +2612,9 @@ id|jiffies
 )paren
 suffix:semicolon
 macro_line|#endif
-id|time
+multiline_comment|/* in 10ms increments, check condition, up to 100ms */
+id|timeout
 op_assign
-id|HZ
-op_div
 l_int|10
 suffix:semicolon
 r_while
@@ -2661,8 +2649,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|time
-op_le
+op_decrement
+id|timeout
+OL
 l_int|0
 )paren
 (brace
@@ -2675,18 +2664,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|time
-op_assign
-id|schedule_timeout
-c_func
-(paren
-id|time
+l_int|10
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

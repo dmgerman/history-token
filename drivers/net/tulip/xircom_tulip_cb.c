@@ -9,6 +9,25 @@ mdefine_line|#define DRV_RELDATE&t;&quot;October 11, 2001&quot;
 DECL|macro|CARDBUS
 mdefine_line|#define CARDBUS 1
 multiline_comment|/* A few user-configurable values. */
+DECL|macro|xircom_debug
+mdefine_line|#define xircom_debug debug
+macro_line|#ifdef XIRCOM_DEBUG
+DECL|variable|xircom_debug
+r_static
+r_int
+id|xircom_debug
+op_assign
+id|XIRCOM_DEBUG
+suffix:semicolon
+macro_line|#else
+DECL|variable|xircom_debug
+r_static
+r_int
+id|xircom_debug
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
 DECL|variable|max_interrupt_work
 r_static
@@ -231,19 +250,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-DECL|variable|num_units
-r_static
-r_int
-id|num_units
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
 id|options
 comma
-id|num_units
-comma
 r_int
+comma
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -253,34 +267,15 @@ c_func
 (paren
 id|full_duplex
 comma
-id|num_units
-comma
 r_int
+comma
+l_int|NULL
 comma
 l_int|0
 )paren
 suffix:semicolon
 DECL|macro|RUN_AT
 mdefine_line|#define RUN_AT(x) (jiffies + (x))
-DECL|macro|xircom_debug
-mdefine_line|#define xircom_debug debug
-macro_line|#ifdef XIRCOM_DEBUG
-DECL|variable|xircom_debug
-r_static
-r_int
-id|xircom_debug
-op_assign
-id|XIRCOM_DEBUG
-suffix:semicolon
-macro_line|#else
-DECL|variable|xircom_debug
-r_static
-r_int
-id|xircom_debug
-op_assign
-l_int|1
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver was forked from the driver for the DECchip &quot;Tulip&quot;,&n;Digital&squot;s single-chip ethernet controllers for PCI.  It supports Xircom&squot;s&n;almost-Tulip-compatible CBE-100 CardBus adapters.&n;&n;II. Board-specific settings&n;&n;PCI bus devices are configured by the system at boot time, so no jumpers&n;need to be set on the board.  The system BIOS preferably should assign the&n;PCI INTA signal to an otherwise unused system IRQ line.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;The Xircom can use either ring buffers or lists of Tx and Rx descriptors.&n;This driver uses statically allocated rings of Rx and Tx descriptors, set at&n;compile time by RX/TX_RING_SIZE.  This version of the driver allocates skbuffs&n;for the Rx ring buffers at open() time and passes the skb-&gt;data field to the&n;Xircom as receive data buffers.  When an incoming frame is less than&n;RX_COPYBREAK bytes long, a fresh skbuff is allocated and the frame is&n;copied to the new skbuff.  When the incoming frame is larger, the skbuff is&n;passed directly up the protocol stack and replaced by a newly allocated&n;skbuff.&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames.  For small frames the copying cost is negligible (esp. considering&n;that we are pre-loading the cache with immediately useful header&n;information).  For large frames the copying cost is non-trivial, and the&n;larger copy might flush the cache of useful data.  A subtle aspect of this&n;choice is that the Xircom only receives into longword aligned buffers, thus&n;the IP header at offset 14 isn&squot;t longword aligned for further processing.&n;Copied frames are put into the new skbuff at an offset of &quot;+2&quot;, thus copying&n;has the beneficial effect of aligning the IP header and preloading the&n;cache.&n;&n;IIIC. Synchronization&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;tbusy flag.  The other thread is the interrupt handler, which is single&n;threaded by the hardware and other software.&n;&n;The send packet thread has partial control over the Tx ring and &squot;dev-&gt;tbusy&squot;&n;flag.  It sets the tbusy flag whenever it&squot;s queuing a Tx packet. If the next&n;queue slot is empty, it clears the tbusy flag when finished otherwise it sets&n;the &squot;tp-&gt;tx_full&squot; flag.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  (The Tx-done interrupt can&squot;t be selectively turned off, so&n;we can&squot;t avoid the interrupt overhead by having the Tx routine reap the Tx&n;stats.)&t; After reaping the stats, it marks the queue entry as empty by setting&n;the &squot;base&squot; to zero.&t; Iff the &squot;tp-&gt;tx_full&squot; flag is set, it clears both the&n;tx_full and tbusy flags.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;http://cesdis.gsfc.nasa.gov/linux/misc/NWay.html&n;http://www.digital.com  (search for current 21*4* datasheets and &quot;21X4 SROM&quot;)&n;http://www.national.com/pf/DP/DP83840A.html&n;&n;IVc. Errata&n;&n;*/
 multiline_comment|/* A full-duplex map for media types. */
 DECL|enum|MediaIs

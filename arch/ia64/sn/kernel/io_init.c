@@ -1572,7 +1572,10 @@ c_cond
 (paren
 id|node
 op_ge
-id|numnodes
+id|num_online_nodes
+c_func
+(paren
+)paren
 )paren
 multiline_comment|/* Headless/memless IO nodes */
 id|hubdev_info

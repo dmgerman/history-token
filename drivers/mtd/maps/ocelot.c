@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ocelot.c,v 1.15 2004/11/04 13:24:15 gleixner Exp $&n; *&n; * Flash on Momenco Ocelot&n; */
+multiline_comment|/*&n; * $Id: ocelot.c,v 1.16 2005/01/05 18:05:13 dwmw2 Exp $&n; *&n; * Flash on Momenco Ocelot&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -75,11 +75,6 @@ id|map_info
 op_star
 id|map
 op_assign
-(paren
-r_struct
-id|map_info
-op_star
-)paren
 id|mtd-&gt;priv
 suffix:semicolon
 r_int

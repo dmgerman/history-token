@@ -13,12 +13,14 @@ id|mem
 op_assign
 l_int|8192
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mem
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

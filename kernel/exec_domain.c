@@ -31,12 +31,12 @@ op_assign
 op_amp
 id|default_exec_domain
 suffix:semicolon
-DECL|variable|exec_domains_lock
 r_static
-id|rwlock_t
+id|DEFINE_RWLOCK
+c_func
+(paren
 id|exec_domains_lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|ident_map
 r_static

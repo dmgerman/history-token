@@ -120,12 +120,22 @@ id|vlsi_irda_table
 suffix:semicolon
 multiline_comment|/********************************************************/
 multiline_comment|/*&t;clksrc: which clock source to be used&n; *&t;&t;0: auto - try PLL, fallback to 40MHz XCLK&n; *&t;&t;1: on-chip 48MHz PLL&n; *&t;&t;2: external 48MHz XCLK&n; *&t;&t;3: external 40MHz XCLK (HP OB-800)&n; */
-id|MODULE_PARM
+DECL|variable|clksrc
+r_static
+r_int
+id|clksrc
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* default is 0(auto) */
+id|module_param
 c_func
 (paren
 id|clksrc
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -136,31 +146,7 @@ comma
 l_string|&quot;clock input source selection&quot;
 )paren
 suffix:semicolon
-DECL|variable|clksrc
-r_static
-r_int
-id|clksrc
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* default is 0(auto) */
 multiline_comment|/*&t;ringsize: size of the tx and rx descriptor rings&n; *&t;&t;independent for tx and rx&n; *&t;&t;specify as ringsize=tx[,rx]&n; *&t;&t;allowed values: 4, 8, 16, 32, 64&n; *&t;&t;Due to the IrDA 1.x max. allowed window size=7,&n; *&t;&t;there should be no gain when using rings larger than 8&n; */
-id|MODULE_PARM
-c_func
-(paren
-id|ringsize
-comma
-l_string|&quot;1-2i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|ringsize
-comma
-l_string|&quot;TX, RX ring descriptor size&quot;
-)paren
-suffix:semicolon
 DECL|variable|ringsize
 r_static
 r_int
@@ -175,13 +161,43 @@ l_int|8
 )brace
 suffix:semicolon
 multiline_comment|/* default is tx=8 / rx=8 */
+id|module_param_array
+c_func
+(paren
+id|ringsize
+comma
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ringsize
+comma
+l_string|&quot;TX, RX ring descriptor size&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&t;sirpulse: tuning of the SIR pulse width within IrPHY 1.3 limits&n; *&t;&t;0: very short, 1.5us (exception: 6us at 2.4 kbaud)&n; *&t;&t;1: nominal 3/16 bittime width&n; *&t;note: IrDA compliant peer devices should be happy regardless&n; *&t;&t;which one is used. Primary goal is to save some power&n; *&t;&t;on the sender&squot;s side - at 9.6kbaud for example the short&n; *&t;&t;pulse width saves more than 90% of the transmitted IR power.&n; */
-id|MODULE_PARM
+DECL|variable|sirpulse
+r_static
+r_int
+id|sirpulse
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* default is 3/16 bittime */
+id|module_param
 c_func
 (paren
 id|sirpulse
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -192,21 +208,23 @@ comma
 l_string|&quot;SIR pulse width tuning&quot;
 )paren
 suffix:semicolon
-DECL|variable|sirpulse
+multiline_comment|/*&t;qos_mtt_bits: encoded min-turn-time value we require the peer device&n; *&t;&t; to use before transmitting to us. &quot;Type 1&quot; (per-station)&n; *&t;&t; bitfield according to IrLAP definition (section 6.6.8)&n; *&t;&t; Don&squot;t know which transceiver is used by my OB800 - the&n; *&t;&t; pretty common HP HDLS-1100 requires 1 msec - so lets use this.&n; */
+DECL|variable|qos_mtt_bits
 r_static
 r_int
-id|sirpulse
+id|qos_mtt_bits
 op_assign
-l_int|1
+l_int|0x07
 suffix:semicolon
-multiline_comment|/* default is 3/16 bittime */
-multiline_comment|/*&t;qos_mtt_bits: encoded min-turn-time value we require the peer device&n; *&t;&t; to use before transmitting to us. &quot;Type 1&quot; (per-station)&n; *&t;&t; bitfield according to IrLAP definition (section 6.6.8)&n; *&t;&t; Don&squot;t know which transceiver is used by my OB800 - the&n; *&t;&t; pretty common HP HDLS-1100 requires 1 msec - so lets use this.&n; */
-id|MODULE_PARM
+multiline_comment|/* default is 1 ms or more */
+id|module_param
 c_func
 (paren
 id|qos_mtt_bits
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -217,14 +235,6 @@ comma
 l_string|&quot;IrLAP bitfield representing min-turn-time&quot;
 )paren
 suffix:semicolon
-DECL|variable|qos_mtt_bits
-r_static
-r_int
-id|qos_mtt_bits
-op_assign
-l_int|0x07
-suffix:semicolon
-multiline_comment|/* default is 1 ms or more */
 multiline_comment|/********************************************************/
 DECL|function|vlsi_reg_debug
 r_static

@@ -1632,7 +1632,6 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_hw_params
-r_static
 r_int
 id|snd_pcm_hw_params
 c_func
@@ -6704,8 +6703,6 @@ r_if
 c_cond
 (paren
 id|drec
-op_logical_and
-id|drec
 op_ne
 op_amp
 id|drec_tmp
@@ -9869,6 +9866,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_open
+r_static
 r_int
 id|snd_pcm_open
 c_func
@@ -10205,6 +10203,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_release
+r_static
 r_int
 id|snd_pcm_release
 c_func
@@ -10335,6 +10334,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_playback_rewind
+r_static
 id|snd_pcm_sframes_t
 id|snd_pcm_playback_rewind
 c_func
@@ -10529,6 +10529,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_capture_rewind
+r_static
 id|snd_pcm_sframes_t
 id|snd_pcm_capture_rewind
 c_func
@@ -10723,6 +10724,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_playback_forward
+r_static
 id|snd_pcm_sframes_t
 id|snd_pcm_playback_forward
 c_func
@@ -10923,6 +10925,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_capture_forward
+r_static
 id|snd_pcm_sframes_t
 id|snd_pcm_capture_forward
 c_func
@@ -14148,6 +14151,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_playback_poll
+r_static
 r_int
 r_int
 id|snd_pcm_playback_poll
@@ -14297,6 +14301,7 @@ id|mask
 suffix:semicolon
 )brace
 DECL|function|snd_pcm_capture_poll
+r_static
 r_int
 r_int
 id|snd_pcm_capture_poll

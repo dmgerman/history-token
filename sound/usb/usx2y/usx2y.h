@@ -7,6 +7,8 @@ mdefine_line|#define USX2Y_DRIVER_VERSION&t;0x0100&t;/* 0.1.0 */
 multiline_comment|/* hwdep id string */
 DECL|macro|SND_USX2Y_LOADER_ID
 mdefine_line|#define SND_USX2Y_LOADER_ID&t;&t;&quot;USX2Y Loader&quot;
+DECL|macro|SND_USX2Y_USBPCM_ID
+mdefine_line|#define SND_USX2Y_USBPCM_ID&t;&t;&quot;USX2Y USBPCM&quot;
 multiline_comment|/* hardware type */
 r_enum
 (brace
@@ -42,6 +44,16 @@ l_int|0
 )paren
 comma
 multiline_comment|/* all operational */
+DECL|enumerator|USX2Y_STAT_CHIP_MMAP_PCM_URBS
+id|USX2Y_STAT_CHIP_MMAP_PCM_URBS
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+multiline_comment|/* pcm transport over mmaped urbs */
 DECL|enumerator|USX2Y_STAT_CHIP_HUP
 id|USX2Y_STAT_CHIP_HUP
 op_assign

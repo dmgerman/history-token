@@ -8,7 +8,7 @@ macro_line|#include &quot;remote.h&quot;
 DECL|function|ibmasm_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|ibmasm_init_one
 c_func
 (paren
@@ -292,9 +292,12 @@ r_goto
 id|error_remote_queue
 suffix:semicolon
 )brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|sp-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -563,7 +566,7 @@ suffix:semicolon
 DECL|function|ibmasm_remove_one
 r_static
 r_void
-id|__exit
+id|__devexit
 id|ibmasm_remove_one
 c_func
 (paren

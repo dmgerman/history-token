@@ -886,11 +886,6 @@ id|rec
 op_assign
 id|subs-&gt;runtime-&gt;private_data
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rec
-)paren
 id|kfree
 c_func
 (paren

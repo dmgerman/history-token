@@ -53,6 +53,74 @@ macro_line|#include &quot;rioioctl.h&quot;
 macro_line|#include &quot;param.h&quot;
 macro_line|#include &quot;list.h&quot;
 macro_line|#include &quot;sam.h&quot;
+r_static
+r_int
+id|RIOCheckIsolated
+c_func
+(paren
+r_struct
+id|rio_info
+op_star
+comma
+r_struct
+id|Host
+op_star
+comma
+id|uint
+)paren
+suffix:semicolon
+r_static
+r_int
+id|RIOIsolate
+c_func
+(paren
+r_struct
+id|rio_info
+op_star
+comma
+r_struct
+id|Host
+op_star
+comma
+id|uint
+)paren
+suffix:semicolon
+r_static
+r_int
+id|RIOCheck
+c_func
+(paren
+r_struct
+id|Host
+op_star
+comma
+id|uint
+)paren
+suffix:semicolon
+r_static
+r_void
+id|RIOConCon
+c_func
+(paren
+r_struct
+id|rio_info
+op_star
+comma
+r_struct
+id|Host
+op_star
+comma
+id|uint
+comma
+id|uint
+comma
+id|uint
+comma
+id|uint
+comma
+r_int
+)paren
+suffix:semicolon
 multiline_comment|/*&n;** Incoming on the ROUTE_RUP&n;** I wrote this while I was tired. Forgive me.&n;*/
 DECL|function|RIORouteRup
 r_int
@@ -2866,6 +2934,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;** Check to see if the new disconnection has isolated this unit.&n;** If it has, then invalidate all its link information, and tell&n;** the world about it. This is done to ensure that the configurator&n;** only gets up-to-date information about what is going on.&n;*/
+r_static
 r_int
 DECL|function|RIOCheckIsolated
 id|RIOCheckIsolated
@@ -2982,6 +3051,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** Invalidate all the link interconnectivity of this unit, and of&n;** all the units attached to it. This will mean that the entire&n;** subnet will re-introduce itself.&n;*/
+r_static
 r_int
 DECL|function|RIOIsolate
 id|RIOIsolate
@@ -3168,6 +3238,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|RIOCheck
 id|RIOCheck
@@ -3510,6 +3581,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_void
 DECL|function|RIOConCon
 id|RIOConCon
@@ -3760,6 +3832,7 @@ l_string|&quot;disconnected&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** RIORemoveFromSavedTable :&n;**&n;** Delete and RTA entry from the saved table given to us&n;** by the configuration program.&n;*/
+r_static
 r_int
 DECL|function|RIORemoveFromSavedTable
 id|RIORemoveFromSavedTable
@@ -3834,6 +3907,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;** RIOCheckDisconnected :&n;**&n;** Scan the unit links to and return zero if the unit is completely&n;** disconnected.&n;*/
+r_static
 r_int
 DECL|function|RIOFreeDisconnected
 id|RIOFreeDisconnected

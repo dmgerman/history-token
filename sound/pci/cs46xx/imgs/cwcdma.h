@@ -3,6 +3,7 @@ macro_line|#ifndef __HEADER_cwcdma_H__
 DECL|macro|__HEADER_cwcdma_H__
 mdefine_line|#define __HEADER_cwcdma_H__
 DECL|variable|cwcdma_symbols
+r_static
 id|symbol_entry_t
 id|cwcdma_symbols
 (braket
@@ -229,6 +230,7 @@ comma
 suffix:semicolon
 multiline_comment|/* cwcdma symbols */
 DECL|variable|cwcdma_code
+r_static
 id|u32
 id|cwcdma_code
 (braket
@@ -347,6 +349,7 @@ l_int|0x0001c100
 suffix:semicolon
 multiline_comment|/* #CODE_END */
 DECL|variable|cwcdma_segments
+r_static
 id|segment_desc_t
 id|cwcdma_segments
 (braket
@@ -366,6 +369,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|cwcdma_module
+r_static
 id|dsp_module_desc_t
 id|cwcdma_module
 op_assign

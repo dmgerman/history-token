@@ -718,27 +718,6 @@ id|reg
 )paren
 suffix:semicolon
 r_void
-id|snd_cs4231_outm
-c_func
-(paren
-id|cs4231_t
-op_star
-id|chip
-comma
-r_int
-r_char
-id|reg
-comma
-r_int
-r_char
-id|mask
-comma
-r_int
-r_char
-id|val
-)paren
-suffix:semicolon
-r_void
 id|snd_cs4236_ext_out
 c_func
 (paren
@@ -1045,16 +1024,5 @@ op_star
 id|ucontrol
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SND_DEBUG
-r_void
-id|snd_cs4231_debug
-c_func
-(paren
-id|cs4231_t
-op_star
-id|chip
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* __SOUND_CS4231_H */
 eof

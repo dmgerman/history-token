@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/arm/mach-iop3xx/iop331-pci.c&n; *&n; * PCI support for the Intel IOP331 chipset&n; *&n; * Author: Dave Jiang (dave.jiang@intel.com)&n; * Copyright (C) 2003 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; * arch/arm/mach-iop3xx/iop331-pci.c&n; *&n; * PCI support for the Intel IOP331 chipset&n; *&n; * Author: Dave Jiang (dave.jiang@intel.com)&n; * Copyright (C) 2003, 2004 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -11,13 +11,23 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach/pci.h&gt;
 macro_line|#include &lt;asm/arch/iop331.h&gt;
-singleline_comment|//#define DEBUG
+DECL|macro|DEBUG
+macro_line|#undef DEBUG
+DECL|macro|DEBUG1
+macro_line|#undef DEBUG1
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define  DBG(x...) printk(x)
 macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define  DBG(x...) do { } while (0)
+macro_line|#endif
+macro_line|#ifdef DEBUG1
+DECL|macro|DBG1
+mdefine_line|#define  DBG1(x...) printk(x)
+macro_line|#else
+DECL|macro|DBG1
+mdefine_line|#define  DBG1(x...) do { } while (0)
 macro_line|#endif
 multiline_comment|/*&n; * This routine builds either a type0 or type1 configuration command.  If the&n; * bus is on the 80331 then a type0 made, else a type1 is created.&n; */
 DECL|function|iop331_cfg_address
@@ -610,13 +620,13 @@ c_func
 r_void
 )paren
 (brace
-id|DBG
+id|DBG1
 c_func
 (paren
 l_string|&quot;PCI:  Intel 80331 PCI init code.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|DBG
+id|DBG1
 c_func
 (paren
 l_string|&quot;&bslash;tATU: IOP331_ATUCMD=0x%04x&bslash;n&quot;
@@ -625,7 +635,7 @@ op_star
 id|IOP331_ATUCMD
 )paren
 suffix:semicolon
-id|DBG
+id|DBG1
 c_func
 (paren
 l_string|&quot;&bslash;tATU: IOP331_OMWTVR0=0x%04x, IOP331_OIOWTVR=0x%04x&bslash;n&quot;
@@ -637,7 +647,16 @@ op_star
 id|IOP331_OIOWTVR
 )paren
 suffix:semicolon
-id|DBG
+id|DBG1
+c_func
+(paren
+l_string|&quot;&bslash;tATU: IOP331_OMWTVR1=0x%04x&bslash;n&quot;
+comma
+op_star
+id|IOP331_OMWTVR1
+)paren
+suffix:semicolon
+id|DBG1
 c_func
 (paren
 l_string|&quot;&bslash;tATU: IOP331_ATUCR=0x%08x&bslash;n&quot;
@@ -646,7 +665,7 @@ op_star
 id|IOP331_ATUCR
 )paren
 suffix:semicolon
-id|DBG
+id|DBG1
 c_func
 (paren
 l_string|&quot;&bslash;tATU: IOP331_IABAR0=0x%08x IOP331_IALR0=0x%08x IOP331_IATVR0=%08x&bslash;n&quot;
@@ -661,7 +680,19 @@ op_star
 id|IOP331_IATVR0
 )paren
 suffix:semicolon
-id|DBG
+id|DBG1
+c_func
+(paren
+l_string|&quot;&bslash;tATU: IOP31_IABAR1=0x%08x IOP331_IALR1=0x%08x&bslash;n&quot;
+comma
+op_star
+id|IOP331_IABAR1
+comma
+op_star
+id|IOP331_IALR1
+)paren
+suffix:semicolon
+id|DBG1
 c_func
 (paren
 l_string|&quot;&bslash;tATU: IOP331_ERBAR=0x%08x IOP331_ERLR=0x%08x IOP331_ERTVR=%08x&bslash;n&quot;
@@ -676,7 +707,7 @@ op_star
 id|IOP331_ERTVR
 )paren
 suffix:semicolon
-id|DBG
+id|DBG1
 c_func
 (paren
 l_string|&quot;&bslash;tATU: IOP331_IABAR2=0x%08x IOP331_IALR2=0x%08x IOP331_IATVR2=%08x&bslash;n&quot;
@@ -691,7 +722,7 @@ op_star
 id|IOP331_IATVR2
 )paren
 suffix:semicolon
-id|DBG
+id|DBG1
 c_func
 (paren
 l_string|&quot;&bslash;tATU: IOP331_IABAR3=0x%08x IOP331_IALR3=0x%08x IOP331_IATVR3=%08x&bslash;n&quot;
@@ -705,14 +736,6 @@ comma
 op_star
 id|IOP331_IATVR3
 )paren
-suffix:semicolon
-multiline_comment|/* redboot changed, reset IABAR0 to something sane */
-multiline_comment|/* fixes master aborts in plugged in cards */
-multiline_comment|/* will clean up later and work nicely with redboot */
-op_star
-id|IOP331_IABAR0
-op_assign
-l_int|0x00000004
 suffix:semicolon
 id|hook_fault_code
 c_func

@@ -129,12 +129,12 @@ id|val
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|kbd_controller_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|kbd_controller_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int

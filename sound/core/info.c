@@ -1,16 +1,13 @@
 multiline_comment|/*&n; *  Information interface for ALSA driver&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/utsname.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
-macro_line|#include &lt;sound/version.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
+macro_line|#include &lt;sound/version.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;stdarg.h&gt;
@@ -322,6 +319,7 @@ id|THIS_MODULE
 suffix:semicolon
 )brace
 DECL|function|snd_remove_proc_entry
+r_static
 r_void
 id|snd_remove_proc_entry
 c_func
@@ -2255,6 +2253,7 @@ comma
 suffix:semicolon
 multiline_comment|/**&n; * snd_create_proc_entry - create a procfs entry&n; * @name: the name of the proc file&n; * @mode: the file permission bits, S_Ixxx&n; * @parent: the parent proc-directory entry&n; *&n; * Creates a new proc file entry with the given name and permission&n; * on the given directory.&n; *&n; * Returns the pointer of new instance or NULL on failure.&n; */
 DECL|function|snd_create_proc_entry
+r_static
 r_struct
 id|proc_dir_entry
 op_star
@@ -3595,18 +3594,9 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|entry-&gt;name
-)paren
 id|kfree
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|entry-&gt;name
 )paren
 suffix:semicolon
@@ -3863,13 +3853,6 @@ op_star
 id|buffer
 )paren
 (brace
-r_static
-r_char
-op_star
-id|kernel_version
-op_assign
-id|system_utsname.release
-suffix:semicolon
 id|snd_iprintf
 c_func
 (paren
@@ -3879,18 +3862,6 @@ l_string|&quot;Advanced Linux Sound Architecture Driver Version &quot;
 id|CONFIG_SND_VERSION
 id|CONFIG_SND_DATE
 l_string|&quot;.&bslash;n&quot;
-l_string|&quot;Compiled on &quot;
-id|__DATE__
-l_string|&quot; for kernel %s&quot;
-macro_line|#ifdef CONFIG_SMP
-l_string|&quot; (SMP)&quot;
-macro_line|#endif
-macro_line|#ifdef MODVERSIONS
-l_string|&quot; with versioned symbols&quot;
-macro_line|#endif
-l_string|&quot;.&bslash;n&quot;
-comma
-id|kernel_version
 )paren
 suffix:semicolon
 )brace

@@ -6745,14 +6745,6 @@ c_func
 id|chip-&gt;pci
 )paren
 suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D3hot
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6854,14 +6846,6 @@ id|d
 )paren
 suffix:semicolon
 )brace
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D0
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -6893,7 +6877,23 @@ id|IRQCONTROL
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*if (chip-&gt;rmidi)&n;&t;  snd_es1938_mixer_bits(chip, ESSSB_IREG_MPU401CONTROL, 0x40, 0);*/
+r_if
+c_cond
+(paren
+id|chip-&gt;rmidi
+)paren
+id|snd_es1938_mixer_bits
+c_func
+(paren
+id|chip
+comma
+id|ESSSB_IREG_MPU401CONTROL
+comma
+l_int|0x40
+comma
+l_int|0
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 r_if
 c_cond
@@ -7725,6 +7725,9 @@ op_amp
 l_int|0x80
 )paren
 (brace
+singleline_comment|// the following line is evil! It switches off MIDI interrupt handling after the first interrupt received.
+singleline_comment|// replacing the last 0 by 0x40 works for ESS-Solo1, but just doing nothing works as well!
+singleline_comment|// andreas@flying-snail.de
 singleline_comment|// snd_es1938_mixer_bits(chip, ESSSB_IREG_MPU401CONTROL, 0x40, 0); /* ack? */
 r_if
 c_cond
@@ -8334,7 +8337,23 @@ l_string|&quot;es1938: unable to initialize MPU-401&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*else&n;&t;    snd_es1938_mixer_bits(chip, ESSSB_IREG_MPU401CONTROL, 0x40, 0x40);*/
+r_else
+(brace
+singleline_comment|// this line is vital for MIDI interrupt handling on ess-solo1
+singleline_comment|// andreas@flying-snail.de
+id|snd_es1938_mixer_bits
+c_func
+(paren
+id|chip
+comma
+id|ESSSB_IREG_MPU401CONTROL
+comma
+l_int|0x40
+comma
+l_int|0x40
+)paren
+suffix:semicolon
+)brace
 macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 id|chip-&gt;gameport.io
 op_assign

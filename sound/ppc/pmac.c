@@ -214,8 +214,6 @@ r_if
 c_cond
 (paren
 id|rec
-op_logical_and
-id|rec-&gt;space
 )paren
 id|kfree
 c_func
@@ -1259,6 +1257,11 @@ op_amp
 id|cp-&gt;res_count
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|count
+)paren
 id|count
 op_assign
 id|rec-&gt;period_size
@@ -1716,7 +1719,7 @@ comma
 dot
 id|buffer_bytes_max
 op_assign
-l_int|32768
+l_int|131072
 comma
 dot
 id|period_bytes_min
@@ -1731,7 +1734,7 @@ comma
 dot
 id|periods_min
 op_assign
-l_int|1
+l_int|3
 comma
 dot
 id|periods_max
@@ -1794,7 +1797,7 @@ comma
 dot
 id|buffer_bytes_max
 op_assign
-l_int|32768
+l_int|131072
 comma
 dot
 id|period_bytes_min
@@ -1809,7 +1812,7 @@ comma
 dot
 id|periods_min
 op_assign
-l_int|1
+l_int|3
 comma
 dot
 id|periods_max
@@ -2334,6 +2337,15 @@ id|snd_pcm_set_sync
 c_func
 (paren
 id|subs
+)paren
+suffix:semicolon
+multiline_comment|/* constraints to fix choppy sound */
+id|snd_pcm_hw_constraint_integer
+c_func
+(paren
+id|runtime
+comma
+id|SNDRV_PCM_HW_PARAM_PERIODS
 )paren
 suffix:semicolon
 r_return
@@ -5576,14 +5588,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D3hot
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5709,14 +5713,6 @@ id|enable_irq
 c_func
 (paren
 id|chip-&gt;rx_irq
-)paren
-suffix:semicolon
-id|snd_power_change_state
-c_func
-(paren
-id|card
-comma
-id|SNDRV_CTL_POWER_D0
 )paren
 suffix:semicolon
 r_return

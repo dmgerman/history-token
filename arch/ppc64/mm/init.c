@@ -2837,19 +2837,10 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_DISCONTIGMEM
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|nid
-op_assign
-l_int|0
-suffix:semicolon
-id|nid
-OL
-id|numnodes
-suffix:semicolon
-id|nid
-op_increment
 )paren
 (brace
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m68k/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *&n; * This file contains the m68k-specific time handling details.&n; * Most of the stuff is located in the machine specific files.&n; *&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
+multiline_comment|/* time.c: FRV arch-specific time handling&n; *&n; * Copyright (C) 2003-5 Red Hat, Inc. All Rights Reserved.&n; * Written by David Howells (dhowells@redhat.com)&n; * - Derived from arch/m68k/kernel/time.c&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt; /* CONFIG_HEARTBEAT */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;

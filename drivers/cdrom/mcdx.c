@@ -29,9 +29,6 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MITSUMI_X_CDROM_MAJOR
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-multiline_comment|/* for compatible parameter passing with &quot;insmod&quot; */
-DECL|macro|mcdx_drive_map
-mdefine_line|#define&t;mcdx_drive_map mcdx
 macro_line|#include &quot;mcdx.h&quot;
 macro_line|#ifndef HZ
 macro_line|#error HZ not defined
@@ -1169,12 +1166,58 @@ id|request_queue
 op_star
 id|mcdx_queue
 suffix:semicolon
-id|MODULE_PARM
+multiline_comment|/* You can only set the first two pairs, from old MODULE_PARM code.  */
+DECL|function|mcdx_set
+r_static
+r_int
+id|mcdx_set
+c_func
+(paren
+r_const
+r_char
+op_star
+id|val
+comma
+r_struct
+id|kernel_param
+op_star
+id|kp
+)paren
+(brace
+id|get_options
+c_func
+(paren
+(paren
+r_char
+op_star
+)paren
+id|val
+comma
+l_int|4
+comma
+(paren
+r_int
+op_star
+)paren
+id|mcdx_drive_map
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|module_param_call
 c_func
 (paren
 id|mcdx
 comma
-l_string|&quot;1-4i&quot;
+id|mcdx_set
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|variable|mcdx_dops

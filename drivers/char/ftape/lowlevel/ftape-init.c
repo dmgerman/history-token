@@ -23,34 +23,6 @@ macro_line|#include &quot;../lowlevel/fdc-io.h&quot;
 macro_line|#include &quot;../lowlevel/ftape-buffer.h&quot;
 macro_line|#include &quot;../lowlevel/ftape-proc.h&quot;
 macro_line|#include &quot;../lowlevel/ftape-tracing.h&quot;
-multiline_comment|/*      Global vars.&n; */
-DECL|variable|__initdata
-r_char
-id|ft_src
-(braket
-)braket
-id|__initdata
-op_assign
-l_string|&quot;$Source: /homes/cvs/ftape-stacked/ftape/lowlevel/ftape-init.c,v $&quot;
-suffix:semicolon
-DECL|variable|__initdata
-r_char
-id|ft_rev
-(braket
-)braket
-id|__initdata
-op_assign
-l_string|&quot;$Revision: 1.8 $&quot;
-suffix:semicolon
-DECL|variable|__initdata
-r_char
-id|ft_dat
-(braket
-)braket
-id|__initdata
-op_assign
-l_string|&quot;$Date: 1997/11/06 00:38:08 $&quot;
-suffix:semicolon
 macro_line|#if defined(MODULE) &amp;&amp; !defined(CONFIG_FT_NO_TRACE_AT_ALL)
 DECL|variable|ft_tracing
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: erase.c,v 1.61 2004/10/20 23:59:49 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: erase.c,v 1.66 2004/11/16 20:36:11 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
@@ -155,6 +155,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|bad_offset
+op_assign
+id|jeb-&gt;offset
+suffix:semicolon
 macro_line|#else /* Linux */
 r_struct
 id|erase_info
@@ -1890,6 +1894,13 @@ suffix:semicolon
 r_else
 (brace
 r_struct
+id|kvec
+id|vecs
+(braket
+l_int|1
+)braket
+suffix:semicolon
+r_struct
 id|jffs2_unknown_node
 id|marker
 op_assign
@@ -1945,30 +1956,48 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* We only write the header; the rest was noise or padding anyway */
-id|ret
+id|vecs
+(braket
+l_int|0
+)braket
+dot
+id|iov_base
 op_assign
-id|jffs2_flash_write
-c_func
 (paren
-id|c
-comma
-id|jeb-&gt;offset
-comma
-r_sizeof
-(paren
-id|marker
-)paren
-comma
-op_amp
-id|retlen
-comma
-(paren
+r_int
 r_char
 op_star
 )paren
 op_amp
 id|marker
+suffix:semicolon
+id|vecs
+(braket
+l_int|0
+)braket
+dot
+id|iov_len
+op_assign
+r_sizeof
+(paren
+id|marker
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|jffs2_flash_direct_writev
+c_func
+(paren
+id|c
+comma
+id|vecs
+comma
+l_int|1
+comma
+id|jeb-&gt;offset
+comma
+op_amp
+id|retlen
 )paren
 suffix:semicolon
 r_if

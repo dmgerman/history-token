@@ -659,22 +659,9 @@ r_int
 id|dev
 )paren
 suffix:semicolon
-r_extern
-id|sb_devc
-op_star
-id|last_sb
-suffix:semicolon
 multiline_comment|/*&t;From sb_common.c */
 r_void
 id|sb_dsp_disable_midi
-c_func
-(paren
-r_int
-id|port
-)paren
-suffix:semicolon
-r_void
-id|sb_dsp_disable_recording
 c_func
 (paren
 r_int

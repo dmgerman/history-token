@@ -1143,10 +1143,6 @@ id|pfnnid_map
 )paren
 )paren
 suffix:semicolon
-id|numnodes
-op_assign
-id|npmem_ranges
-suffix:semicolon
 r_for
 c_loop
 (paren

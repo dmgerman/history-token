@@ -876,8 +876,6 @@ id|snd_pcm_uframes_t
 id|clt_size
 )paren
 suffix:semicolon
-DECL|macro|ROUTE_PLUGIN_USE_FLOAT
-mdefine_line|#define ROUTE_PLUGIN_USE_FLOAT 0
 DECL|macro|FULL
 mdefine_line|#define FULL ROUTE_PLUGIN_RESOLUTION
 DECL|macro|HALF

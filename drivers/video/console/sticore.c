@@ -3681,9 +3681,12 @@ id|sti
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|sti-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|test_rom
 suffix:colon

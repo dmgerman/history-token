@@ -425,6 +425,7 @@ DECL|macro|REISERFS_WRITE_PAGES_AT_A_TIME
 mdefine_line|#define REISERFS_WRITE_PAGES_AT_A_TIME (128 * 1024) / PAGE_CACHE_SIZE
 multiline_comment|/* Allocates blocks for a file to fulfil write request.&n;   Maps all unmapped but prepared pages from the list.&n;   Updates metadata with newly allocated blocknumbers as needed */
 DECL|function|reiserfs_allocate_blocks_for_region
+r_static
 r_int
 id|reiserfs_allocate_blocks_for_region
 c_func
@@ -2611,6 +2612,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Unlock pages prepared by reiserfs_prepare_file_region_for_write */
 DECL|function|reiserfs_unprepare_pages
+r_static
 r_void
 id|reiserfs_unprepare_pages
 c_func
@@ -2678,6 +2680,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This function will copy data from userspace to specified pages within&n;   supplied byte range */
 DECL|function|reiserfs_copy_from_user_to_file_region
+r_static
 r_int
 id|reiserfs_copy_from_user_to_file_region
 c_func
@@ -3207,6 +3210,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Submit pages for write. This was separated from actual file copying&n;   because we might want to allocate block numbers in-between.&n;   This function assumes that caller will adjust file size to correct value. */
 DECL|function|reiserfs_submit_file_region_for_write
+r_static
 r_int
 id|reiserfs_submit_file_region_for_write
 c_func
@@ -3621,6 +3625,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Look if passed writing region is going to touch file&squot;s tail&n;   (if it is present). And if it is, convert the tail to unformatted node */
 DECL|function|reiserfs_check_for_tail_and_convert
+r_static
 r_int
 id|reiserfs_check_for_tail_and_convert
 c_func
@@ -3823,6 +3828,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This function locks pages starting from @pos for @inode.&n;   @num_pages pages are locked and stored in&n;   @prepared_pages array. Also buffers are allocated for these pages.&n;   First and last page of the region is read if it is overwritten only&n;   partially. If last page did not exist before write (file hole or file&n;   append), it is zeroed, then. &n;   Returns number of unallocated blocks that should be allocated to cover&n;   new file data.*/
 DECL|function|reiserfs_prepare_file_region_for_write
+r_static
 r_int
 id|reiserfs_prepare_file_region_for_write
 c_func
@@ -5106,6 +5112,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Write @count bytes at position @ppos in a file indicated by @file&n;   from the buffer @buf.  &n;&n;   generic_file_write() is only appropriate for filesystems that are not seeking to optimize performance and want&n;   something simple that works.  It is not for serious use by general purpose filesystems, excepting the one that it was&n;   written for (ext2/3).  This is for several reasons:&n;&n;   * It has no understanding of any filesystem specific optimizations.&n;&n;   * It enters the filesystem repeatedly for each page that is written.&n;&n;   * It depends on reiserfs_get_block() function which if implemented by reiserfs performs costly search_by_key&n;   * operation for each page it is supplied with. By contrast reiserfs_file_write() feeds as much as possible at a time&n;   * to reiserfs which allows for fewer tree traversals.&n;&n;   * Each indirect pointer insertion takes a lot of cpu, because it involves memory moves inside of blocks.&n;&n;   * Asking the block allocation code for blocks one at a time is slightly less efficient.&n;&n;   All of these reasons for not using only generic file write were understood back when reiserfs was first miscoded to&n;   use it, but we were in a hurry to make code freeze, and so it couldn&squot;t be revised then.  This new code should make&n;   things right finally.&n;&n;   Future Features: providing search_by_key with hints.&n;&n;*/
 DECL|function|reiserfs_file_write
+r_static
 id|ssize_t
 id|reiserfs_file_write
 c_func

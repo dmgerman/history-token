@@ -578,12 +578,12 @@ id|interfaces_sem
 )paren
 suffix:semicolon
 multiline_comment|/* Directly protects the ipmi_interfaces data structure.  This is&n;   claimed in the timer interrupt. */
-DECL|variable|interfaces_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|interfaces_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* List of watchers that want to know when smi&squot;s are added and&n;   deleted. */
 DECL|variable|smi_watchers
@@ -12398,10 +12398,19 @@ id|notifier_block
 id|panic_block
 op_assign
 (brace
+dot
+id|notifier_call
+op_assign
 id|panic_event
 comma
+dot
+id|next
+op_assign
 l_int|NULL
 comma
+dot
+id|priority
+op_assign
 l_int|200
 multiline_comment|/* priority: INT_MAX &gt;= x &gt;= 0 */
 )brace

@@ -102,7 +102,7 @@ id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|macro|node_distance
-mdefine_line|#define node_distance(from,to) (numa_slit[(from) * numnodes + (to)])
+mdefine_line|#define node_distance(from,to) (numa_slit[(from) * num_online_nodes() + (to)])
 r_extern
 r_int
 id|paddr_to_nid

@@ -1048,12 +1048,14 @@ c_func
 l_string|&quot;BACKPACK Protocol module, compatible with PARIDE&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|verbose
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|module_init

@@ -321,12 +321,12 @@ suffix:semicolon
 multiline_comment|/* &gt; this, need CAP_SYS_RESOURCE */
 macro_line|#ifdef RTC_IRQ
 multiline_comment|/*&n; * rtc_task_lock nests inside rtc_lock.&n; */
-DECL|variable|rtc_task_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtc_task_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|rtc_callback
 r_static

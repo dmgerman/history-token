@@ -38,10 +38,6 @@ DECL|variable|zft_header_changed
 r_int
 id|zft_header_changed
 suffix:semicolon
-DECL|variable|zft_bad_sector_map_changed
-r_int
-id|zft_bad_sector_map_changed
-suffix:semicolon
 DECL|variable|zft_qic113
 r_int
 id|zft_qic113

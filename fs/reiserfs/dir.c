@@ -27,6 +27,7 @@ comma
 id|filldir_t
 )paren
 suffix:semicolon
+r_static
 r_int
 id|reiserfs_dir_fsync
 c_func
@@ -74,6 +75,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|reiserfs_dir_fsync
+r_static
 r_int
 id|reiserfs_dir_fsync
 c_func
