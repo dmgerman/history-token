@@ -1210,7 +1210,26 @@ op_star
 id|driver
 )paren
 (brace
-r_return
+r_int
+id|error
+op_assign
+l_int|0
+suffix:semicolon
+id|error
+op_assign
+id|driver-&gt;ops.match
+ques
+c_cond
+id|driver-&gt;ops
+dot
+id|match
+c_func
+(paren
+id|device
+comma
+id|driver
+)paren
+suffix:colon
 id|acpi_match_ids
 c_func
 (paren
@@ -1218,6 +1237,9 @@ id|device
 comma
 id|driver-&gt;ids
 )paren
+suffix:semicolon
+r_return
+id|error
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * acpi_bus_driver_init &n; * --------------------&n; * Used to initialize a device via its device driver.  Called whenever a &n; * driver is bound to a device.  Invokes the driver&squot;s add() and start() ops.&n; */
