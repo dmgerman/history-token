@@ -46,6 +46,19 @@ id|tap
 id|MAX_TAP
 )braket
 suffix:semicolon
+DECL|member|key
+r_char
+id|key
+(braket
+l_int|128
+)braket
+suffix:semicolon
+multiline_comment|/* only used with keyed hash algorithms */
+DECL|member|ksize
+r_int
+r_char
+id|ksize
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|hmac_testvec
