@@ -72,6 +72,15 @@ DECL|macro|E1000_RXBUFFER_8192
 mdefine_line|#define E1000_RXBUFFER_8192  8192
 DECL|macro|E1000_RXBUFFER_16384
 mdefine_line|#define E1000_RXBUFFER_16384 16384
+multiline_comment|/* Flow Control High-Watermark: 43464 bytes */
+DECL|macro|E1000_FC_HIGH_THRESH
+mdefine_line|#define E1000_FC_HIGH_THRESH 0xA9C8
+multiline_comment|/* Flow Control Low-Watermark: 43456 bytes */
+DECL|macro|E1000_FC_LOW_THRESH
+mdefine_line|#define E1000_FC_LOW_THRESH 0xA9C0
+multiline_comment|/* Flow Control Pause Time: 858 usec */
+DECL|macro|E1000_FC_PAUSE_TIME
+mdefine_line|#define E1000_FC_PAUSE_TIME 0x0680
 multiline_comment|/* How many Tx Descriptors do we need to call netif_wake_queue ? */
 DECL|macro|E1000_TX_QUEUE_WAKE
 mdefine_line|#define E1000_TX_QUEUE_WAKE&t;16

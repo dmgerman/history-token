@@ -2598,15 +2598,15 @@ suffix:semicolon
 multiline_comment|/* flow control settings */
 id|hw-&gt;fc_high_water
 op_assign
-id|FC_DEFAULT_HI_THRESH
+id|E1000_FC_HIGH_THRESH
 suffix:semicolon
 id|hw-&gt;fc_low_water
 op_assign
-id|FC_DEFAULT_LO_THRESH
+id|E1000_FC_LOW_THRESH
 suffix:semicolon
 id|hw-&gt;fc_pause_time
 op_assign
-id|FC_DEFAULT_TX_TIMER
+id|E1000_FC_PAUSE_TIME
 suffix:semicolon
 id|hw-&gt;fc_send_xon
 op_assign
