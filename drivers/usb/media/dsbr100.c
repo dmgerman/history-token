@@ -779,11 +779,6 @@ id|dsbr100_device
 op_star
 id|radio
 suffix:semicolon
-r_struct
-id|video_device
-op_star
-id|videodev
-suffix:semicolon
 r_if
 c_cond
 (paren
