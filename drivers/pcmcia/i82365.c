@@ -8248,7 +8248,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren
