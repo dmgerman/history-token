@@ -797,7 +797,6 @@ op_eq
 id|CS46XX_SECONDARY_CODEC_INDEX
 comma
 r_return
-l_int|0xffff
 )paren
 suffix:semicolon
 multiline_comment|/* HACK: voyetra uses EAPD bit in the reverse way.&n;&t; * we flip the bit to show the mixer status correctly&n;&t; */
