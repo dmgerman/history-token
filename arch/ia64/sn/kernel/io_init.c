@@ -1317,19 +1317,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|controller
-)paren
-(brace
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/* controller non-zero is BUG&squot;d in sn_alloc_pci_sysdata */
 id|bus
 op_assign
 id|pci_scan_bus
