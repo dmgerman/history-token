@@ -45,12 +45,6 @@ DECL|member|mode
 id|mode_t
 id|mode
 suffix:semicolon
-DECL|member|dentry
-r_struct
-id|dentry
-op_star
-id|dentry
-suffix:semicolon
 DECL|member|show
 id|ssize_t
 (paren

@@ -2739,10 +2739,6 @@ op_star
 )paren
 id|entry
 suffix:semicolon
-id|entry-&gt;dentry
-op_assign
-id|dentry
-suffix:semicolon
 id|entry-&gt;parent
 op_assign
 id|parent
@@ -2934,10 +2930,6 @@ r_void
 op_star
 )paren
 id|entry
-suffix:semicolon
-id|entry-&gt;dentry
-op_assign
-id|dentry
 suffix:semicolon
 id|entry-&gt;parent
 op_assign
