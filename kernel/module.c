@@ -7675,13 +7675,6 @@ id|sh_addr
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* And these should exist, but gcc whinges if we don&squot;t init them */
-id|symindex
-op_assign
-id|strindex
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -7881,6 +7874,32 @@ id|modindex
 dot
 id|sh_addr
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|symindex
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: module has no symbols (stripped?)&bslash;n&quot;
+comma
+id|mod-&gt;name
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOEXEC
+suffix:semicolon
+r_goto
+id|free_hdr
+suffix:semicolon
+)brace
 multiline_comment|/* Optional sections */
 id|exportindex
 op_assign
