@@ -3,7 +3,7 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/*&n; * OHCI Root Hub ... the nonsharable stuff&n; *&n; * Registers don&squot;t need cpu_to_le32, that happens transparently&n; */
 multiline_comment|/* AMD-756 (D2 rev) reports corrupt register contents in some cases.&n; * The erratum (#4) description is incorrect.  AMD&squot;s workaround waits&n; * till some bits (mostly reserved) are clear; ok for all revs.&n; */
 DECL|macro|read_roothub
-mdefine_line|#define read_roothub(hc, register, mask) ({ &bslash;&n;&t;u32 temp = readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;if (hc-&gt;flags &amp; OHCI_QUIRK_AMD756) &bslash;&n;&t;&t;while (temp &amp; mask) &bslash;&n;&t;&t;&t;temp = readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;temp; })
+mdefine_line|#define read_roothub(hc, register, mask) ({ &bslash;&n;&t;u32 temp = readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;if (temp == -1) &bslash;&n;&t;&t;disable (hc); &bslash;&n;&t;else if (hc-&gt;flags &amp; OHCI_QUIRK_AMD756) &bslash;&n;&t;&t;while (temp &amp; mask) &bslash;&n;&t;&t;&t;temp = readl (&amp;hc-&gt;regs-&gt;roothub.register); &bslash;&n;&t;temp; })
 DECL|function|roothub_a
 r_static
 id|u32
@@ -154,18 +154,22 @@ OG
 id|MAX_ROOT_PORTS
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ohci-&gt;disabled
+)paren
+r_return
+op_minus
+id|ESHUTDOWN
+suffix:semicolon
 id|err
 (paren
-l_string|&quot;%s: bogus NDP=%d&quot;
+l_string|&quot;%s bogus NDP=%d, rereads as NDP=%d&quot;
 comma
 id|hcd-&gt;self.bus_name
 comma
 id|ports
-)paren
-suffix:semicolon
-id|err
-(paren
-l_string|&quot;rereads as NDP=%d&quot;
 comma
 id|readl
 (paren

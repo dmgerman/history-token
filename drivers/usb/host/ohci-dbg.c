@@ -1549,7 +1549,7 @@ id|i
 suffix:semicolon
 id|dbg
 (paren
-l_string|&quot;     info %08x CC=%x DI=%d START=%04x&quot;
+l_string|&quot;     info %08x CC=%x FC=%d DI=%d SF=%04x&quot;
 comma
 id|tmp
 comma
@@ -1559,7 +1559,14 @@ c_func
 id|tmp
 )paren
 comma
-multiline_comment|/* FC, */
+(paren
+id|tmp
+op_rshift
+l_int|24
+)paren
+op_amp
+l_int|0x07
+comma
 (paren
 id|tmp
 op_amp
@@ -1608,19 +1615,53 @@ id|i
 op_increment
 )paren
 (brace
-id|dbg
+id|u16
+id|psw
+op_assign
+id|le16_to_cpup
 (paren
-l_string|&quot;       psw [%d] = %2x&quot;
-comma
-id|i
-comma
-id|le16_to_cpu
-(paren
+op_amp
 id|td-&gt;hwPSW
 (braket
 id|i
 )braket
 )paren
+suffix:semicolon
+r_int
+id|cc
+op_assign
+(paren
+id|psw
+op_rshift
+l_int|12
+)paren
+op_amp
+l_int|0x0f
+suffix:semicolon
+id|dbg
+(paren
+l_string|&quot;       psw [%d] = %2x, CC=%x %s=%d&quot;
+comma
+id|i
+comma
+id|psw
+comma
+id|cc
+comma
+(paren
+id|cc
+op_ge
+l_int|0x0e
+)paren
+ques
+c_cond
+l_string|&quot;OFFSET&quot;
+suffix:colon
+l_string|&quot;SIZE&quot;
+comma
+id|psw
+op_amp
+l_int|0x0fff
 )paren
 suffix:semicolon
 )brace

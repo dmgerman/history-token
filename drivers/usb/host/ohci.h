@@ -895,5 +895,5 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|hcd_to_ohci
-mdefine_line|#define hcd_to_ohci(hcd_ptr) list_entry(hcd_ptr, struct ohci_hcd, hcd)
+mdefine_line|#define hcd_to_ohci(hcd_ptr) container_of(hcd_ptr, struct ohci_hcd, hcd)
 eof

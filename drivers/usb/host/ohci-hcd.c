@@ -43,6 +43,27 @@ DECL|macro|OHCI_UNLINK_TIMEOUT
 mdefine_line|#define OHCI_UNLINK_TIMEOUT&t; (HZ / 10)
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#include &quot;ohci.h&quot;
+DECL|function|disable
+r_static
+r_inline
+r_void
+id|disable
+(paren
+r_struct
+id|ohci_hcd
+op_star
+id|ohci
+)paren
+(brace
+id|ohci-&gt;disabled
+op_assign
+l_int|1
+suffix:semicolon
+id|ohci-&gt;hcd.state
+op_assign
+id|USB_STATE_HALT
+suffix:semicolon
+)brace
 macro_line|#include &quot;ohci-hub.c&quot;
 macro_line|#include &quot;ohci-dbg.c&quot;
 macro_line|#include &quot;ohci-mem.c&quot;
@@ -156,23 +177,33 @@ multiline_comment|/* for the private part of the URB we need the number of TDs (
 r_switch
 c_cond
 (paren
-id|usb_pipetype
-(paren
-id|pipe
-)paren
+id|ed-&gt;type
 )paren
 (brace
 r_case
 id|PIPE_CONTROL
 suffix:colon
+multiline_comment|/* td_submit_urb() doesn&squot;t yet handle these */
+r_if
+c_cond
+(paren
+id|urb-&gt;transfer_buffer_length
+OG
+l_int|4096
+)paren
+r_return
+op_minus
+id|EMSGSIZE
+suffix:semicolon
 multiline_comment|/* 1 TD for setup, 1 for ACK, plus ... */
 id|size
 op_assign
 l_int|2
 suffix:semicolon
 multiline_comment|/* FALLTHROUGH */
-r_case
-id|PIPE_BULK
+singleline_comment|// case PIPE_INTERRUPT:
+singleline_comment|// case PIPE_BULK:
+r_default
 suffix:colon
 multiline_comment|/* one TD for every 4096 Bytes (can be upto 8K) */
 id|size
@@ -296,16 +327,6 @@ op_minus
 id|EXDEV
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
-r_case
-id|PIPE_INTERRUPT
-suffix:colon
-multiline_comment|/* one TD */
-id|size
-op_assign
-l_int|1
-suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -532,23 +553,12 @@ OL
 l_int|0
 )paren
 (brace
-id|urb_free_priv
-(paren
-id|ohci
-comma
-id|urb_priv
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ohci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
+id|retval
+op_assign
 id|bustime
+suffix:semicolon
+r_goto
+id|fail
 suffix:semicolon
 )brace
 id|usb_claim_bandwidth
@@ -588,6 +598,8 @@ suffix:semicolon
 multiline_comment|/* fill the TDs and link them to the ed; and&n;&t; * enable that part of the schedule, if needed&n;&t; */
 id|td_submit_urb
 (paren
+id|ohci
+comma
 id|urb
 )paren
 suffix:semicolon
@@ -1499,9 +1511,10 @@ op_logical_neg
 id|udev
 )paren
 (brace
-id|ohci-&gt;disabled
-op_assign
-l_int|1
+id|disable
+(paren
+id|ohci
+)paren
 suffix:semicolon
 id|ohci-&gt;hc_control
 op_and_assign
@@ -1548,9 +1561,10 @@ id|usb_free_dev
 id|udev
 )paren
 suffix:semicolon
-id|ohci-&gt;disabled
-op_assign
-l_int|1
+id|disable
+(paren
+id|ohci
+)paren
 suffix:semicolon
 id|ohci-&gt;hc_control
 op_and_assign
@@ -1656,10 +1670,12 @@ id|u32
 l_int|0
 )paren
 (brace
-id|ohci-&gt;disabled
-op_increment
+id|disable
+(paren
+id|ohci
+)paren
 suffix:semicolon
-id|err
+id|dbg
 (paren
 l_string|&quot;%s device removed!&quot;
 comma
@@ -1699,8 +1715,10 @@ op_amp
 id|OHCI_INTR_UE
 )paren
 (brace
-id|ohci-&gt;disabled
-op_increment
+id|disable
+(paren
+id|ohci
+)paren
 suffix:semicolon
 id|err
 (paren

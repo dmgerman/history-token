@@ -272,6 +272,11 @@ r_void
 id|td_submit_urb
 (paren
 r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_struct
 id|urb
 op_star
 id|urb
@@ -280,6 +285,7 @@ suffix:semicolon
 multiline_comment|/* Report interrupt transfer completion, maybe reissue */
 DECL|function|intr_resub
 r_static
+r_inline
 r_void
 id|intr_resub
 (paren
@@ -294,7 +300,8 @@ op_star
 id|urb
 )paren
 (brace
-id|urb_priv_t
+r_struct
+id|urb_priv
 op_star
 id|urb_priv
 op_assign
@@ -421,6 +428,8 @@ id|hc-&gt;lock
 suffix:semicolon
 id|td_submit_urb
 (paren
+id|hc
+comma
 id|urb
 )paren
 suffix:semicolon
@@ -2035,11 +2044,6 @@ r_void
 DECL|function|td_fill
 id|td_fill
 (paren
-r_struct
-id|ohci_hcd
-op_star
-id|ohci
-comma
 r_int
 r_int
 id|info
@@ -2067,7 +2071,8 @@ comma
 op_star
 id|td_pt
 suffix:semicolon
-id|urb_priv_t
+r_struct
+id|urb_priv
 op_star
 id|urb_priv
 op_assign
@@ -2272,33 +2277,29 @@ id|td-&gt;hwNextTD
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/* prepare all TDs of a transfer */
+multiline_comment|/* Prepare all TDs of a transfer, and queue them onto the ED.&n; * Caller guarantees HC is active.&n; * Usually the ED is already on the schedule, so TDs might be&n; * processed as soon as they&squot;re queued.&n; */
 DECL|function|td_submit_urb
 r_static
 r_void
 id|td_submit_urb
 (paren
 r_struct
+id|ohci_hcd
+op_star
+id|ohci
+comma
+r_struct
 id|urb
 op_star
 id|urb
 )paren
 (brace
-id|urb_priv_t
+r_struct
+id|urb_priv
 op_star
 id|urb_priv
 op_assign
 id|urb-&gt;hcpriv
-suffix:semicolon
-r_struct
-id|ohci_hcd
-op_star
-id|ohci
-op_assign
-id|hcd_to_ohci
-(paren
-id|urb-&gt;dev-&gt;bus-&gt;hcpriv
-)paren
 suffix:semicolon
 id|dma_addr_t
 id|data
@@ -2313,14 +2314,8 @@ id|cnt
 op_assign
 l_int|0
 suffix:semicolon
-id|__u32
+id|u32
 id|info
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-r_int
-id|toggle
 op_assign
 l_int|0
 suffix:semicolon
@@ -2332,10 +2327,11 @@ id|usb_pipeout
 id|urb-&gt;pipe
 )paren
 suffix:semicolon
-multiline_comment|/* OHCI handles the DATA-toggles itself, we just use the&n;&t; * USB-toggle bits for resetting&n;&t; */
+multiline_comment|/* OHCI handles the bulk/interrupt data toggles itself.  We just&n;&t; * use the device toggle bits for resetting, and rely on the fact&n;&t; * that resetting toggle is meaningless if the endpoint is active.&n;&t; */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|usb_gettoggle
 (paren
 id|urb-&gt;dev
@@ -2349,17 +2345,6 @@ id|is_out
 )paren
 )paren
 (brace
-id|toggle
-op_assign
-id|TD_T_TOGGLE
-suffix:semicolon
-)brace
-r_else
-(brace
-id|toggle
-op_assign
-id|TD_T_DATA0
-suffix:semicolon
 id|usb_settoggle
 (paren
 id|urb-&gt;dev
@@ -2373,6 +2358,11 @@ id|is_out
 comma
 l_int|1
 )paren
+suffix:semicolon
+id|urb_priv-&gt;ed-&gt;hwHeadP
+op_and_assign
+op_complement
+id|ED_C
 suffix:semicolon
 )brace
 id|urb_priv-&gt;td_cnt
@@ -2409,28 +2399,31 @@ id|data
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* NOTE:  TD_CC is set so we can tell which TDs the HC processed by&n;&t; * using TD_CC_GET, as well as by seeing them on the done list.&n;&t; */
+multiline_comment|/* NOTE:  TD_CC is set so we can tell which TDs the HC processed by&n;&t; * using TD_CC_GET, as well as by seeing them on the done list.&n;&t; * (CC = NotAccessed ... 0x0F, or 0x0E in PSWs for ISO.)&n;&t; */
 r_switch
 c_cond
 (paren
-id|usb_pipetype
-(paren
-id|urb-&gt;pipe
-)paren
+id|urb_priv-&gt;ed-&gt;type
 )paren
 (brace
-r_case
-id|PIPE_BULK
+multiline_comment|/* Bulk and interrupt are identical except for where in the schedule&n;&t; * their EDs live.&n;&t; */
+singleline_comment|// case PIPE_BULK:
+singleline_comment|// case PIPE_INTERRUPT:
+r_default
 suffix:colon
 id|info
 op_assign
 id|is_out
 ques
 c_cond
+id|TD_T_TOGGLE
+op_or
 id|TD_CC
 op_or
 id|TD_DP_OUT
 suffix:colon
+id|TD_T_TOGGLE
+op_or
 id|TD_CC
 op_or
 id|TD_DP_IN
@@ -2446,18 +2439,7 @@ l_int|4096
 (brace
 id|td_fill
 (paren
-id|ohci
-comma
 id|info
-op_or
-(paren
-id|cnt
-ques
-c_cond
-id|TD_T_TOGGLE
-suffix:colon
-id|toggle
-)paren
 comma
 id|data
 comma
@@ -2497,18 +2479,7 @@ id|TD_R
 suffix:semicolon
 id|td_fill
 (paren
-id|ohci
-comma
 id|info
-op_or
-(paren
-id|cnt
-ques
-c_cond
-id|TD_T_TOGGLE
-suffix:colon
-id|toggle
-)paren
 comma
 id|data
 comma
@@ -2538,18 +2509,7 @@ id|urb_priv-&gt;length
 (brace
 id|td_fill
 (paren
-id|ohci
-comma
 id|info
-op_or
-(paren
-id|cnt
-ques
-c_cond
-id|TD_T_TOGGLE
-suffix:colon
-id|toggle
-)paren
 comma
 l_int|0
 comma
@@ -2564,12 +2524,13 @@ id|cnt
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/* start bulk list */
+multiline_comment|/* maybe kickstart bulk list */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ohci-&gt;sleeping
+id|urb_priv-&gt;ed-&gt;type
+op_eq
+id|PIPE_BULK
 )paren
 (brace
 id|wmb
@@ -2587,49 +2548,10 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
-r_case
-id|PIPE_INTERRUPT
-suffix:colon
-multiline_comment|/* current policy:  only one TD per request.&n;&t;&t;&t; * otherwise identical to bulk, except for BLF&n;&t;&t;&t; */
-id|info
-op_assign
-id|TD_CC
-op_or
-id|toggle
-suffix:semicolon
-id|info
-op_or_assign
-id|is_out
-ques
-c_cond
-id|TD_DP_OUT
-suffix:colon
-id|TD_R
-op_or
-id|TD_DP_IN
-suffix:semicolon
-id|td_fill
-(paren
-id|ohci
-comma
-id|info
-comma
-id|data
-comma
-id|data_len
-comma
-id|urb
-comma
-id|cnt
-op_increment
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
+multiline_comment|/* control manages DATA0/DATA1 toggle per-request; SETUP resets it,&n;&t; * any DATA phase works normally, and the STATUS ack is special.&n;&t; */
 r_case
 id|PIPE_CONTROL
 suffix:colon
-multiline_comment|/* control requests don&squot;t use toggle state  */
 id|info
 op_assign
 id|TD_CC
@@ -2640,8 +2562,6 @@ id|TD_T_DATA0
 suffix:semicolon
 id|td_fill
 (paren
-id|ohci
-comma
 id|info
 comma
 id|pci_map_single
@@ -2691,8 +2611,6 @@ suffix:semicolon
 multiline_comment|/* NOTE:  mishandles transfers &gt;8K, some &gt;4K */
 id|td_fill
 (paren
-id|ohci
-comma
 id|info
 comma
 id|data
@@ -2725,8 +2643,6 @@ id|TD_T_DATA1
 suffix:semicolon
 id|td_fill
 (paren
-id|ohci
-comma
 id|info
 comma
 id|data
@@ -2739,14 +2655,7 @@ id|cnt
 op_increment
 )paren
 suffix:semicolon
-multiline_comment|/* start control list */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ohci-&gt;sleeping
-)paren
-(brace
+multiline_comment|/* maybe kickstart control list */
 id|wmb
 (paren
 )paren
@@ -2759,9 +2668,9 @@ op_amp
 id|ohci-&gt;regs-&gt;cmdstatus
 )paren
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
+multiline_comment|/* ISO has no retransmit, so no toggle; and it uses special TDs.&n;&t; * Each TD could handle multiple consecutive frames (interval 1);&n;&t; * we could often reduce the number of TDs here.&n;&t; */
 r_case
 id|PIPE_ISOCHRONOUS
 suffix:colon
@@ -2800,8 +2709,6 @@ l_int|0xffff
 suffix:semicolon
 id|td_fill
 (paren
-id|ohci
-comma
 id|TD_CC
 op_or
 id|TD_ISO
@@ -2907,6 +2814,7 @@ id|dlen
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* NOTE:  assumes FC in tdINFO == 0 (and MAXPSW == 1) */
 id|cc
 op_assign
 (paren
@@ -2920,9 +2828,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cc
-op_ge
-l_int|0x0E
+id|tdINFO
+op_amp
+id|TD_CC
 )paren
 multiline_comment|/* hc didn&squot;t touch? */
 r_return
