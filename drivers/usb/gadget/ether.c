@@ -2209,7 +2209,6 @@ l_int|0
 (brace
 id|netif_carrier_on
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 suffix:semicolon
@@ -2218,7 +2217,6 @@ c_cond
 (paren
 id|netif_running
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 )paren
@@ -3260,6 +3258,37 @@ id|dev-&gt;lock
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef&t;CONFIG_USB_ETH_PXA2XX
+multiline_comment|/* PXA UDC prevents us from using SET_INTERFACE in normal ways.&n;&t; * And it hides GET_CONFIGURATION and GET_INTERFACE too.&n;&t; */
+r_case
+id|USB_REQ_SET_INTERFACE
+suffix:colon
+id|spin_lock
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
+id|value
+op_assign
+id|eth_set_config
+(paren
+id|dev
+comma
+id|DEV_CONFIG_VALUE
+comma
+id|GFP_ATOMIC
+)paren
+suffix:semicolon
+id|spin_unlock
+(paren
+op_amp
+id|dev-&gt;lock
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#else&t;/* hardware that that stays out of our way */
 r_case
 id|USB_REQ_GET_CONFIGURATION
 suffix:colon
@@ -3531,6 +3560,7 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef DEV_CONFIG_CDC
 r_case
 id|CDC_SET_ETHERNET_PACKET_FILTER
@@ -4468,7 +4498,6 @@ c_cond
 op_logical_neg
 id|netif_running
 (paren
-op_amp
 id|dev-&gt;net
 )paren
 )paren
