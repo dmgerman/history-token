@@ -1479,6 +1479,25 @@ mdefine_line|#define TCAA_MAX 1
 multiline_comment|/* End of information exported to user level */
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+r_extern
+r_int
+id|rtattr_strlcpy
+c_func
+(paren
+r_char
+op_star
+id|dest
+comma
+r_const
+r_struct
+id|rtattr
+op_star
+id|rta
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
 DECL|function|rtattr_strcmp
 r_static
 id|__inline__
