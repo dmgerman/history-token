@@ -379,7 +379,7 @@ id|page
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * ntfs_mft_aops - address space operations for access to $MFT&n; *&n; * Address space operations for access to $MFT. This allows us to simply use&n; * read_cache_page() in map_mft_record().&n; */
+multiline_comment|/**&n; * ntfs_mft_aops - address space operations for access to $MFT&n; *&n; * Address space operations for access to $MFT. This allows us to simply use&n; * ntfs_map_page() in map_mft_record_page().&n; */
 DECL|variable|ntfs_mft_aops
 r_struct
 id|address_space_operations
