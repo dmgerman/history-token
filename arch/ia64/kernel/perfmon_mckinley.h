@@ -238,6 +238,9 @@ id|val13
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|is_loaded
+suffix:semicolon
 multiline_comment|/* first preserve the reserved fields */
 id|pfm_mck_reserved
 c_func
@@ -261,13 +264,42 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|is_loaded
+op_assign
+id|ctx-&gt;ctx_state
+op_eq
+id|PFM_CTX_LOADED
+op_logical_or
+id|ctx-&gt;ctx_state
+op_eq
+id|PFM_CTX_MASKED
+suffix:semicolon
 multiline_comment|/*&n;&t; * we must clear the debug registers if pmc13 has a value which enable&n;&t; * memory pipeline event constraints. In this case we need to clear the&n;&t; * the debug registers if they have not yet been accessed. This is required&n;&t; * to avoid picking stale state.&n;&t; * PMC13 is &quot;active&quot; if:&n;&t; * &t;one of the pmc13.cfg_dbrpXX field is different from 0x3&n;&t; * AND&n;&t; * &t;at the corresponding pmc13.ena_dbrpXX is set.&n;&t; *&n;&t; * For now, we just check on cfg_dbrXX != 0x3.&n;&t; */
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;cnum=%u val=0x%lx, using_dbreg=%d loaded=%d&bslash;n&quot;
+comma
+id|cnum
+comma
+op_star
+id|val
+comma
+id|ctx-&gt;ctx_fl_using_dbreg
+comma
+id|is_loaded
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|cnum
 op_eq
 l_int|13
+op_logical_and
+id|is_loaded
 op_logical_and
 (paren
 (paren
@@ -322,7 +354,7 @@ op_assign
 id|pfm_write_ibr_dbr
 c_func
 (paren
-l_int|1
+id|PFM_DATA_RR
 comma
 id|ctx
 comma
@@ -349,6 +381,8 @@ c_cond
 id|cnum
 op_eq
 l_int|14
+op_logical_and
+id|is_loaded
 op_logical_and
 (paren
 (paren
@@ -403,7 +437,7 @@ op_assign
 id|pfm_write_ibr_dbr
 c_func
 (paren
-l_int|0
+id|PFM_CODE_RR
 comma
 id|ctx
 comma
