@@ -15,9 +15,9 @@ mdefine_line|#define IA64_NUM_PMC_REGS&t;32
 DECL|macro|IA64_NUM_PMD_REGS
 mdefine_line|#define IA64_NUM_PMD_REGS&t;32
 DECL|macro|DEFAULT_MAP_BASE
-mdefine_line|#define DEFAULT_MAP_BASE&t;0x2000000000000000
+mdefine_line|#define DEFAULT_MAP_BASE&t;__IA64_UL_CONST(0x2000000000000000)
 DECL|macro|DEFAULT_TASK_SIZE
-mdefine_line|#define DEFAULT_TASK_SIZE&t;0xa000000000000000
+mdefine_line|#define DEFAULT_TASK_SIZE&t;__IA64_UL_CONST(0xa000000000000000)
 multiline_comment|/*&n; * TASK_SIZE really is a mis-named.  It really is the maximum user&n; * space address (plus one).  On IA-64, there are five regions of 2TB&n; * each (assuming 8KB page size), for a total of 8TB of user virtual&n; * address space.&n; */
 DECL|macro|TASK_SIZE
 mdefine_line|#define TASK_SIZE&t;&t;(current-&gt;thread.task_size)

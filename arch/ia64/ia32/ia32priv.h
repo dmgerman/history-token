@@ -1156,7 +1156,7 @@ multiline_comment|/* Unscramble an IA-32 segment descriptor into the IA-64 forma
 DECL|macro|IA32_SEG_UNSCRAMBLE
 mdefine_line|#define IA32_SEG_UNSCRAMBLE(sd)&t;&t;&t;&t;&t;&t;&t;&t;&t; &bslash;&n;&t;(   (((sd) &gt;&gt; IA32_SEG_BASE) &amp; 0xffffff) | ((((sd) &gt;&gt; IA32_SEG_HIGH_BASE) &amp; 0xff) &lt;&lt; 24) &bslash;&n;&t; | ((((sd) &amp; 0xffff) | ((((sd) &gt;&gt; IA32_SEG_HIGH_LIMIT) &amp; 0xf) &lt;&lt; 16)) &lt;&lt; SEG_LIM)&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_TYPE) &amp; 0xf) &lt;&lt; SEG_TYPE)&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_SYS) &amp; 0x1) &lt;&lt; SEG_SYS)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_DPL) &amp; 0x3) &lt;&lt; SEG_DPL)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_P) &amp; 0x1) &lt;&lt; SEG_P)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_AVL) &amp; 0x1) &lt;&lt; SEG_AVL)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_DB) &amp; 0x1) &lt;&lt; SEG_DB)&t;&t;&t;&t;&t;&t; &bslash;&n;&t; | ((((sd) &gt;&gt; IA32_SEG_G) &amp; 0x1) &lt;&lt; SEG_G))
 DECL|macro|IA32_IOBASE
-mdefine_line|#define IA32_IOBASE&t;0x2000000000000000 /* Virtual address for I/O space */
+mdefine_line|#define IA32_IOBASE&t;0x2000000000000000UL /* Virtual address for I/O space */
 DECL|macro|IA32_CR0
 mdefine_line|#define IA32_CR0&t;0x80000001&t;/* Enable PG and PE bits */
 DECL|macro|IA32_CR4

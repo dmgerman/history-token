@@ -8,7 +8,7 @@ mdefine_line|#define __SLOW_DOWN_IO&t;do { } while (0)
 DECL|macro|SLOW_DOWN_IO
 mdefine_line|#define SLOW_DOWN_IO&t;do { } while (0)
 DECL|macro|__IA64_UNCACHED_OFFSET
-mdefine_line|#define __IA64_UNCACHED_OFFSET&t;0xc000000000000000&t;/* region 6 */
+mdefine_line|#define __IA64_UNCACHED_OFFSET&t;0xc000000000000000UL&t;/* region 6 */
 multiline_comment|/*&n; * The legacy I/O space defined by the ia64 architecture supports only 65536 ports, but&n; * large machines may have multiple other I/O spaces so we can&squot;t place any a priori limit&n; * on IO_SPACE_LIMIT.  These additional spaces are described in ACPI.&n; */
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT&t;&t;0xffffffffffffffffUL

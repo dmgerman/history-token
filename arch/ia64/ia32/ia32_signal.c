@@ -1829,7 +1829,7 @@ id|fcr
 op_amp
 (paren
 op_complement
-l_int|0xff1000001f3f
+l_int|0xff1000001f3fUL
 )paren
 )paren
 op_or
@@ -1923,7 +1923,7 @@ id|fsr
 op_amp
 (paren
 op_complement
-l_int|0x3fffffffff
+l_int|0x3fffffffffUL
 )paren
 )paren
 op_or
@@ -1981,7 +1981,7 @@ id|fir
 op_amp
 (paren
 op_complement
-l_int|0xffffffffffff
+l_int|0xffffffffffffUL
 )paren
 )paren
 op_or
@@ -2039,7 +2039,7 @@ id|fdr
 op_amp
 (paren
 op_complement
-l_int|0xffffffffffff
+l_int|0xffffffffffffUL
 )paren
 )paren
 op_or

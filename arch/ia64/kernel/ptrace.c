@@ -3630,7 +3630,7 @@ op_star
 id|data
 )paren
 op_amp
-l_int|0x3fffffffffU
+l_int|0x3fffffffffUL
 )paren
 op_ne
 l_int|0

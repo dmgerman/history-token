@@ -5825,7 +5825,7 @@ id|ip
 )paren
 (brace
 DECL|macro|hashmagic
-macro_line|#&t;define hashmagic&t;0x9e3779b97f4a7c16&t;/* based on (sqrt(5)/2-1)*2^64 */
+macro_line|#&t;define hashmagic&t;0x9e3779b97f4a7c16UL&t;/* based on (sqrt(5)/2-1)*2^64 */
 r_return
 (paren
 id|ip

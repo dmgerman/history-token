@@ -8903,7 +8903,7 @@ id|tsk-&gt;thread.fcr
 op_amp
 (paren
 op_complement
-l_int|0xff1000000000
+l_int|0xff1000000000UL
 )paren
 )paren
 op_or
@@ -8926,7 +8926,7 @@ id|tsk-&gt;thread.fsr
 op_amp
 (paren
 op_complement
-l_int|0x3f00000000
+l_int|0x3f00000000UL
 )paren
 )paren
 op_or
