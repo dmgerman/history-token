@@ -3364,6 +3364,10 @@ id|buffer_size
 op_assign
 id|endpoint-&gt;wMaxPacketSize
 suffix:semicolon
+id|port-&gt;bulk_in_size
+op_assign
+id|buffer_size
+suffix:semicolon
 id|port-&gt;bulk_in_endpointAddress
 op_assign
 id|endpoint-&gt;bEndpointAddress
