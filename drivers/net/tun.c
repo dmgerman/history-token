@@ -203,6 +203,10 @@ comma
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;trans_start
+op_assign
+id|jiffies
+suffix:semicolon
 multiline_comment|/* Notify and wake up reader process */
 r_if
 c_cond
@@ -903,6 +907,10 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+id|tun-&gt;dev-&gt;last_rx
+op_assign
+id|jiffies
 suffix:semicolon
 id|tun-&gt;stats.rx_packets
 op_increment
