@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_SUPPORT_KTRACE_H__
 DECL|macro|__XFS_SUPPORT_KTRACE_H__
 mdefine_line|#define __XFS_SUPPORT_KTRACE_H__
+macro_line|#include &lt;support/spin.h&gt;
 multiline_comment|/*&n; * Trace buffer entry structure.&n; */
 DECL|struct|ktrace_entry
 r_typedef
@@ -75,19 +76,7 @@ DECL|typedef|ktrace_snap_t
 )brace
 id|ktrace_snap_t
 suffix:semicolon
-multiline_comment|/*&n; * Exported interfaces.&n; */
-r_extern
-id|ktrace_t
-op_star
-id|ktrace_alloc
-c_func
-(paren
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-macro_line|#if&t;(defined(DEBUG) || defined(CONFIG_XFS_VNODE_TRACING))
+macro_line|#ifdef CONFIG_XFS_TRACE
 r_extern
 r_void
 id|ktrace_init
@@ -103,6 +92,17 @@ id|ktrace_uninit
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+id|ktrace_t
+op_star
+id|ktrace_alloc
+c_func
+(paren
+r_int
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -222,10 +222,10 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#else
-DECL|macro|ktrace_free
-mdefine_line|#define&t;ktrace_free(ktp)
-DECL|macro|ktrace_enter
-mdefine_line|#define&t;ktrace_enter(ktp,v0,v1,v2,v3,v4,v5,v6,v7,v8,v9,v10,v11,v12,v13,v14,v15)
-macro_line|#endif
-macro_line|#endif /* __XFS_SUPPORT_KTRACE_H__ */
+DECL|macro|ktrace_init
+mdefine_line|#define ktrace_init(x)&t;do { } while (0)
+DECL|macro|ktrace_uninit
+mdefine_line|#define ktrace_uninit()&t;do { } while (0)
+macro_line|#endif&t;/* CONFIG_XFS_TRACE */
+macro_line|#endif&t;/* __XFS_SUPPORT_KTRACE_H__ */
 eof

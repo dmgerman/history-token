@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -7,7 +7,6 @@ macro_line|#include &quot;kmem.h&quot;
 macro_line|#include &quot;spin.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;ktrace.h&quot;
-macro_line|#if&t;(defined(DEBUG) || defined(CONFIG_XFS_VNODE_TRACING))
 DECL|variable|ktrace_hdr_zone
 r_static
 id|kmem_zone_t
@@ -452,6 +451,10 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|index
 suffix:semicolon
 id|ktrace_entry_t
@@ -467,11 +470,13 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Grab an entry by pushing the index up to the next one.&n;&t; */
-id|spin_lock
+id|spin_lock_irqsave
 c_func
 (paren
 op_amp
 id|wrap_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|index
@@ -490,11 +495,13 @@ id|ktp-&gt;kt_index
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
 id|wrap_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -786,6 +793,13 @@ r_return
 id|ktep
 suffix:semicolon
 )brace
+DECL|variable|ktrace_first
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ktrace_first
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * ktrace_next()&n; *&n; * This is used to iterate through the entries of the given&n; * trace buffer.  The caller must pass in the ktrace_snap_t&n; * structure initialized by ktrace_first().  The return value&n; * will be either a pointer to the next ktrace_entry or NULL&n; * if all of the entries have been traversed.&n; */
 id|ktrace_entry_t
 op_star
@@ -868,14 +882,6 @@ r_return
 id|ktep
 suffix:semicolon
 )brace
-macro_line|#if&t;(defined(DEBUG) || defined(CONFIG_XFS_VNODE_TRACING))
-DECL|variable|ktrace_first
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|ktrace_first
-)paren
-suffix:semicolon
 DECL|variable|ktrace_next
 id|EXPORT_SYMBOL
 c_func
@@ -883,7 +889,6 @@ c_func
 id|ktrace_next
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * ktrace_skip()&n; *&n; * Skip the next &quot;count&quot; entries and return the entry after that.&n; * Return NULL if this causes us to iterate past the beginning again.&n; */
 id|ktrace_entry_t
 op_star
@@ -1026,37 +1031,4 @@ r_return
 id|ktep
 suffix:semicolon
 )brace
-macro_line|#else
-id|ktrace_t
-op_star
-DECL|function|ktrace_alloc
-id|ktrace_alloc
-c_func
-(paren
-r_int
-id|nentries
-comma
-r_int
-id|sleep
-)paren
-(brace
-multiline_comment|/*&n;&t; * KM_SLEEP callers don&squot;t expect failure.&n;&t; */
-r_if
-c_cond
-(paren
-id|sleep
-op_amp
-id|KM_SLEEP
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;ktrace_alloc: NULL memory on KM_SLEEP request!&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-macro_line|#endif
 eof
