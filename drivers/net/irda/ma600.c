@@ -16,7 +16,7 @@ mdefine_line|#define IRDA_DEBUG(n, args...) (printk(KERN_DEBUG args))
 DECL|macro|ASSERT
 macro_line|#undef ASSERT
 DECL|macro|ASSERT
-mdefine_line|#define ASSERT(expr, func) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;        printk( &quot;Assertion failed! %s,%s,%s,line=%d&bslash;n&quot;,&bslash;&n;        &t;#expr,__FILE__,__FUNCTION__,__LINE__); &bslash;&n;&t;        ##func}
+mdefine_line|#define ASSERT(expr, func) &bslash;&n;&t;if(!(expr)) { &bslash;&n;&t;        printk( &quot;Assertion failed! %s,%s,%s,line=%d&bslash;n&quot;,&bslash;&n;        &t;#expr,__FILE__,__FUNCTION__,__LINE__); &bslash;&n;&t;        func}
 macro_line|#endif
 multiline_comment|/* convert hex value to ascii hex */
 DECL|variable|hexTbl

@@ -1377,6 +1377,8 @@ DECL|macro|__NR_epoll_wait
 mdefine_line|#define __NR_epoll_wait&t;&t;(__NR_Linux + 226)
 DECL|macro|__NR_remap_file_pages
 mdefine_line|#define __NR_remap_file_pages&t;(__NR_Linux + 227)
+DECL|macro|__NR_semtimedop
+mdefine_line|#define __NR_semtimedop&t;&t;(__NR_Linux + 228)
 DECL|macro|__NR_Linux_syscalls
 mdefine_line|#define __NR_Linux_syscalls     228
 DECL|macro|HPUX_GATEWAY_ADDR

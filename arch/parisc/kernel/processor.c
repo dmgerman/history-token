@@ -257,6 +257,10 @@ id|cpuinfo_parisc
 )paren
 )paren
 suffix:semicolon
+id|p-&gt;loops_per_jiffy
+op_assign
+id|loops_per_jiffy
+suffix:semicolon
 id|p-&gt;dev
 op_assign
 id|dev
@@ -905,6 +909,11 @@ id|m
 comma
 l_string|&quot;bogomips&bslash;t: %lu.%02lu&bslash;n&quot;
 comma
+id|cpu_data
+(braket
+id|n
+)braket
+dot
 id|loops_per_jiffy
 op_div
 (paren
@@ -914,6 +923,11 @@ id|HZ
 )paren
 comma
 (paren
+id|cpu_data
+(braket
+id|n
+)braket
+dot
 id|loops_per_jiffy
 op_div
 (paren
