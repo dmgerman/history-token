@@ -304,14 +304,6 @@ r_int
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|marvel_srmcons_allowed
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|_alpha_agp_info
 op_star
