@@ -3984,6 +3984,25 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|instance-&gt;firmware_loaded
+)paren
+(brace
+id|dbg
+(paren
+l_string|&quot;firmware not loaded!&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EAGAIN
+suffix:semicolon
+)brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|down
 (paren
 op_amp
@@ -4009,6 +4028,8 @@ id|up
 op_amp
 id|instance-&gt;serialize
 )paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -4040,6 +4061,8 @@ id|up
 op_amp
 id|instance-&gt;serialize
 )paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 op_minus
@@ -4159,13 +4182,6 @@ comma
 id|vci
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|instance-&gt;firmware_loaded
-)paren
 id|udsl_fire_receivers
 (paren
 id|instance
@@ -4442,6 +4458,13 @@ OL
 l_int|0
 )paren
 (brace
+id|dbg
+(paren
+l_string|&quot;usb_set_interface returned %d!&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
 id|up
 (paren
 op_amp
