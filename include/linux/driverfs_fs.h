@@ -2,6 +2,7 @@ multiline_comment|/*&n; * driverfs_fs.h - definitions for the device driver file
 macro_line|#ifndef _DRIVER_FS_H_
 DECL|macro|_DRIVER_FS_H_
 mdefine_line|#define _DRIVER_FS_H_
+macro_line|#include &lt;linux/sysfs.h&gt;
 r_struct
 id|driver_dir_entry
 suffix:semicolon
@@ -109,21 +110,6 @@ r_struct
 id|driverfs_ops
 op_star
 id|ops
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|attribute
-r_struct
-id|attribute
-(brace
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|mode
-id|mode_t
-id|mode
 suffix:semicolon
 )brace
 suffix:semicolon

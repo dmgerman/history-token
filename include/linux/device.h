@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/driverfs_fs.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
 DECL|macro|DEVICE_NAME_SIZE
 mdefine_line|#define DEVICE_NAME_SIZE&t;80
 DECL|macro|DEVICE_ID_SIZE
@@ -99,6 +100,21 @@ suffix:semicolon
 DECL|member|present
 id|u32
 id|present
+suffix:semicolon
+DECL|member|subsys
+r_struct
+id|subsystem
+id|subsys
+suffix:semicolon
+DECL|member|drvsubsys
+r_struct
+id|subsystem
+id|drvsubsys
+suffix:semicolon
+DECL|member|devsubsys
+r_struct
+id|subsystem
+id|devsubsys
 suffix:semicolon
 DECL|member|node
 r_struct
@@ -424,6 +440,11 @@ suffix:semicolon
 DECL|member|present
 id|u32
 id|present
+suffix:semicolon
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
 suffix:semicolon
 DECL|member|bus_list
 r_struct
@@ -1112,6 +1133,11 @@ r_struct
 id|device
 op_star
 id|parent
+suffix:semicolon
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
 suffix:semicolon
 DECL|member|name
 r_char
