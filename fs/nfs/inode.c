@@ -1956,6 +1956,11 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|server-&gt;rpc_ops
@@ -2078,6 +2083,13 @@ id|buf-&gt;f_namelen
 op_assign
 id|res.namelen
 suffix:semicolon
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2086,6 +2098,7 @@ suffix:colon
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;nfs_statfs: statfs error = %d&bslash;n&quot;
 comma
 op_minus
@@ -2103,8 +2116,8 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|function|nfs_show_options

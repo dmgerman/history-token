@@ -1076,9 +1076,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: %s on usb%d:%d.%d&bslash;n&quot;
-comma
-id|aiptek-&gt;dev.number
+l_string|&quot;input: %s on usb%d:%d.%d&bslash;n&quot;
 comma
 id|aiptek-&gt;features-&gt;name
 comma

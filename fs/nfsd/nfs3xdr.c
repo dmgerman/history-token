@@ -1299,11 +1299,7 @@ comma
 (paren
 id|u64
 )paren
-id|kdev_t_to_nr
-c_func
-(paren
 id|inode-&gt;i_dev
-)paren
 )paren
 suffix:semicolon
 id|p

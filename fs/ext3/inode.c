@@ -5760,12 +5760,18 @@ comma
 id|inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|bh
+)paren
+(brace
 id|BUFFER_TRACE
 c_func
 (paren
 id|bh
 comma
-l_string|&quot;get_write_access&quot;
+l_string|&quot;retaking write access&quot;
 )paren
 suffix:semicolon
 id|ext3_journal_get_write_access
@@ -5776,6 +5782,7 @@ comma
 id|bh
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n;&t; * Any buffers which are on the journal will be in memory. We find&n;&t; * them on the hash table so journal_revoke() will run journal_forget()&n;&t; * on them.  We&squot;ve already detached each block from the file, so&n;&t; * bforget() in journal_forget() should be safe.&n;&t; *&n;&t; * AKPM: turn on bforget in journal_forget()!!!&n;&t; */
 r_for
