@@ -4329,9 +4329,11 @@ op_assign
 id|vptr-&gt;tx_bufs
 op_plus
 (paren
-id|i
-op_plus
 id|j
+op_star
+id|vptr-&gt;options.numtx
+op_plus
+id|i
 )paren
 op_star
 id|PKT_BUF_SZ
@@ -4341,9 +4343,11 @@ op_assign
 id|vptr-&gt;tx_bufs_dma
 op_plus
 (paren
-id|i
-op_plus
 id|j
+op_star
+id|vptr-&gt;options.numtx
+op_plus
+id|i
 )paren
 op_star
 id|PKT_BUF_SZ
