@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * intf.c - class-specific interface management&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -147,14 +147,12 @@ op_amp
 id|data-&gt;dev-&gt;intf_list
 )paren
 suffix:semicolon
+r_return
 id|intf_dev_link
 c_func
 (paren
 id|data
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 r_return
