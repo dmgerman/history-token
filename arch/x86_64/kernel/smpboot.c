@@ -23,7 +23,7 @@ op_assign
 l_int|1
 suffix:semicolon
 DECL|variable|phys_proc_id
-r_int
+r_char
 id|phys_proc_id
 (braket
 id|NR_CPUS
@@ -34,6 +34,24 @@ multiline_comment|/* Bitmask of currently online CPUs */
 DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
+suffix:semicolon
+multiline_comment|/* which CPU (physical APIC ID) maps to which logical CPU number */
+DECL|variable|x86_apicid_to_cpu
+r_volatile
+r_char
+id|x86_apicid_to_cpu
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
+multiline_comment|/* which logical CPU number maps to which CPU (physical APIC ID) */
+DECL|variable|x86_cpu_to_apicid
+r_volatile
+r_char
+id|x86_cpu_to_apicid
+(braket
+id|NR_CPUS
+)braket
 suffix:semicolon
 DECL|variable|cpu_callin_map
 r_static
@@ -65,7 +83,7 @@ r_int
 id|smp_threads_ready
 suffix:semicolon
 DECL|variable|__cacheline_aligned
-r_int
+r_char
 id|cpu_sibling_map
 (braket
 id|NR_CPUS
@@ -1942,6 +1960,20 @@ c_func
 id|idle
 )paren
 suffix:semicolon
+id|x86_cpu_to_apicid
+(braket
+id|cpu
+)braket
+op_assign
+id|apicid
+suffix:semicolon
+id|x86_apicid_to_cpu
+(braket
+id|apicid
+)braket
+op_assign
+id|cpu
+suffix:semicolon
 multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue&n;&t; * once we got the process:&n;&t; */
 id|init_idle
 c_func
@@ -3184,6 +3216,9 @@ id|cpu_sibling_map
 id|cpu
 )braket
 op_eq
+(paren
+r_char
+)paren
 id|NO_PROC_ID
 )paren
 (brace

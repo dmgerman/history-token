@@ -327,6 +327,12 @@ DECL|macro|MSR_MTRRcap
 mdefine_line|#define MSR_MTRRcap&t;&t;0x0fe
 DECL|macro|MSR_IA32_BBL_CR_CTL
 mdefine_line|#define MSR_IA32_BBL_CR_CTL        0x119
+DECL|macro|MSR_IA32_SYSENTER_CS
+mdefine_line|#define MSR_IA32_SYSENTER_CS&t;0x174
+DECL|macro|MSR_IA32_SYSENTER_ESP
+mdefine_line|#define MSR_IA32_SYSENTER_ESP&t;0x175
+DECL|macro|MSR_IA32_SYSENTER_EIP
+mdefine_line|#define MSR_IA32_SYSENTER_EIP&t;0x176
 DECL|macro|MSR_IA32_MCG_CAP
 mdefine_line|#define MSR_IA32_MCG_CAP       0x179
 DECL|macro|MSR_IA32_MCG_STATUS

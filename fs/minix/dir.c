@@ -672,12 +672,6 @@ id|PAGE_CACHE_SHIFT
 op_or
 id|offset
 suffix:semicolon
-id|update_atime
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren

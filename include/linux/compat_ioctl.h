@@ -578,6 +578,11 @@ c_func
 (paren
 id|DM_TABLE_STATUS
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_LIST_VERSIONS
+)paren
 multiline_comment|/* Big K */
 id|COMPATIBLE_IOCTL
 c_func

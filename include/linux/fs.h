@@ -149,6 +149,8 @@ mdefine_line|#define SEL_EX&t;&t;4
 multiline_comment|/* public flags for file_system_type */
 DECL|macro|FS_REQUIRES_DEV
 mdefine_line|#define FS_REQUIRES_DEV 1 
+DECL|macro|FS_BINARY_MOUNTDATA
+mdefine_line|#define FS_BINARY_MOUNTDATA 2
 DECL|macro|FS_REVAL_DOT
 mdefine_line|#define FS_REVAL_DOT&t;16384&t;/* Check the paths &quot;.&quot;, &quot;..&quot; for staleness */
 DECL|macro|FS_ODD_RENAME
@@ -1449,6 +1451,18 @@ r_int
 r_int
 id|ahead_size
 suffix:semicolon
+DECL|member|serial_cnt
+r_int
+r_int
+id|serial_cnt
+suffix:semicolon
+multiline_comment|/* measure of sequentiality */
+DECL|member|average
+r_int
+r_int
+id|average
+suffix:semicolon
+multiline_comment|/* another measure of sequentiality */
 DECL|member|ra_pages
 r_int
 r_int
@@ -4896,6 +4910,19 @@ id|bdget
 c_func
 (paren
 id|dev_t
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|bd_set_size
+c_func
+(paren
+r_struct
+id|block_device
+op_star
+comma
+id|loff_t
+id|size
 )paren
 suffix:semicolon
 r_extern

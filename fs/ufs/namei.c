@@ -5,8 +5,9 @@ macro_line|#include &lt;linux/ufs_fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &quot;swab.h&quot;&t;/* will go away - see comment in mknod() */
+multiline_comment|/*&n;#undef UFS_NAMEI_DEBUG&n;*/
 DECL|macro|UFS_NAMEI_DEBUG
-macro_line|#undef UFS_NAMEI_DEBUG
+mdefine_line|#define UFS_NAMEI_DEBUG
 macro_line|#ifdef UFS_NAMEI_DEBUG
 DECL|macro|UFSD
 mdefine_line|#define UFSD(x) printk(&quot;(%s, %d), %s: &quot;, __FILE__, __LINE__, __FUNCTION__); printk x;

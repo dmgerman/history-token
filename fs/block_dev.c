@@ -464,10 +464,21 @@ id|inode
 )paren
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|create
+)paren
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * for reads, we&squot;re just trying to fill a partial page.&n;&t;&t; * return a hole, they will have to call get_block again&n;&t;&t; * before they can fill it, and they will get -EIO at that&n;&t;&t; * time&n;&t;&t; */
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|bh-&gt;b_bdev
 op_assign
 id|I_BDEV
@@ -2329,7 +2340,6 @@ id|check_disk_change
 )paren
 suffix:semicolon
 DECL|function|bd_set_size
-r_static
 r_void
 id|bd_set_size
 c_func
@@ -2391,6 +2401,13 @@ id|bsize
 )paren
 suffix:semicolon
 )brace
+DECL|variable|bd_set_size
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bd_set_size
+)paren
+suffix:semicolon
 DECL|function|do_open
 r_static
 r_int

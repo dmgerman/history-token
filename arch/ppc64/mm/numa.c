@@ -13,6 +13,13 @@ macro_line|#else
 DECL|macro|dbg
 mdefine_line|#define dbg(args...)
 macro_line|#endif
+macro_line|#ifdef DEBUG_NUMA
+DECL|macro|ARRAY_INITIALISER
+mdefine_line|#define ARRAY_INITIALISER -1
+macro_line|#else
+DECL|macro|ARRAY_INITIALISER
+mdefine_line|#define ARRAY_INITIALISER 0
+macro_line|#endif
 DECL|variable|numa_cpu_lookup_table
 r_int
 id|numa_cpu_lookup_table
@@ -33,8 +40,7 @@ l_int|1
 )paren
 )braket
 op_assign
-op_minus
-l_int|1
+id|ARRAY_INITIALISER
 )brace
 suffix:semicolon
 DECL|variable|numa_memory_lookup_table
@@ -63,8 +69,7 @@ l_int|1
 )paren
 )braket
 op_assign
-op_minus
-l_int|1
+id|ARRAY_INITIALISER
 )brace
 suffix:semicolon
 DECL|variable|numa_cpumask_lookup_table

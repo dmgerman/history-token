@@ -1379,6 +1379,10 @@ op_assign
 op_amp
 id|affs_sops
 suffix:semicolon
+id|sb-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 id|sbi
 op_assign
 id|kmalloc

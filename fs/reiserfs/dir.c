@@ -821,12 +821,6 @@ op_amp
 id|path_to_entry
 )paren
 suffix:semicolon
-id|update_atime
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 id|reiserfs_write_unlock

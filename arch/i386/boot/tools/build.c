@@ -761,32 +761,20 @@ l_int|15
 op_div
 l_int|16
 suffix:semicolon
-multiline_comment|/* 0x40000*16 = 4.0 MB, reasonable estimate for the current maximum */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|is_big_kernel
+op_logical_and
 id|sys_size
 OG
-(paren
-id|is_big_kernel
-ques
-c_cond
-l_int|0x40000
-suffix:colon
 id|DEF_SYSSIZE
-)paren
 )paren
 id|die
 c_func
 (paren
-l_string|&quot;System is too big. Try using %smodules.&quot;
-comma
-id|is_big_kernel
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot;bzImage or &quot;
+l_string|&quot;System is too big. Try using bzImage or modules.&quot;
 )paren
 suffix:semicolon
 r_while

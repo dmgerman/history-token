@@ -559,10 +559,159 @@ DECL|macro|VESA_HSYNC_SUSPEND
 mdefine_line|#define VESA_HSYNC_SUSPEND      2
 DECL|macro|VESA_POWERDOWN
 mdefine_line|#define VESA_POWERDOWN          3
+multiline_comment|/* Definitions below are used in the parsed monitor specs */
+DECL|macro|FB_DPMS_ACTIVE_OFF
+mdefine_line|#define FB_DPMS_ACTIVE_OFF&t;1
+DECL|macro|FB_DPMS_SUSPEND
+mdefine_line|#define FB_DPMS_SUSPEND&t;&t;2
+DECL|macro|FB_DPMS_STANDBY
+mdefine_line|#define FB_DPMS_STANDBY&t;&t;4
+DECL|macro|FB_DISP_DDI
+mdefine_line|#define FB_DISP_DDI&t;&t;1
+DECL|macro|FB_DISP_ANA_700_300
+mdefine_line|#define FB_DISP_ANA_700_300&t;2
+DECL|macro|FB_DISP_ANA_714_286
+mdefine_line|#define FB_DISP_ANA_714_286&t;4
+DECL|macro|FB_DISP_ANA_1000_400
+mdefine_line|#define FB_DISP_ANA_1000_400&t;8
+DECL|macro|FB_DISP_ANA_700_000
+mdefine_line|#define FB_DISP_ANA_700_000&t;16
+DECL|macro|FB_DISP_MONO
+mdefine_line|#define FB_DISP_MONO&t;&t;32
+DECL|macro|FB_DISP_RGB
+mdefine_line|#define FB_DISP_RGB&t;&t;64
+DECL|macro|FB_DISP_MULTI
+mdefine_line|#define FB_DISP_MULTI&t;&t;128
+DECL|macro|FB_DISP_UNKNOWN
+mdefine_line|#define FB_DISP_UNKNOWN&t;&t;256
+DECL|macro|FB_SIGNAL_NONE
+mdefine_line|#define FB_SIGNAL_NONE&t;&t;0
+DECL|macro|FB_SIGNAL_BLANK_BLANK
+mdefine_line|#define FB_SIGNAL_BLANK_BLANK&t;1
+DECL|macro|FB_SIGNAL_SEPARATE
+mdefine_line|#define FB_SIGNAL_SEPARATE&t;2
+DECL|macro|FB_SIGNAL_COMPOSITE
+mdefine_line|#define FB_SIGNAL_COMPOSITE&t;4
+DECL|macro|FB_SIGNAL_SYNC_ON_GREEN
+mdefine_line|#define FB_SIGNAL_SYNC_ON_GREEN&t;8
+DECL|macro|FB_SIGNAL_SERRATION_ON
+mdefine_line|#define FB_SIGNAL_SERRATION_ON&t;16
+DECL|macro|FB_MISC_PRIM_COLOR
+mdefine_line|#define FB_MISC_PRIM_COLOR&t;1
+DECL|macro|FB_MISC_1ST_DETAIL
+mdefine_line|#define FB_MISC_1ST_DETAIL&t;2&t;/* First Detailed Timing is preferred */
+DECL|struct|fb_chroma
+r_struct
+id|fb_chroma
+(brace
+DECL|member|redx
+id|__u32
+id|redx
+suffix:semicolon
+multiline_comment|/* in fraction of 1024 */
+DECL|member|greenx
+id|__u32
+id|greenx
+suffix:semicolon
+DECL|member|bluex
+id|__u32
+id|bluex
+suffix:semicolon
+DECL|member|whitex
+id|__u32
+id|whitex
+suffix:semicolon
+DECL|member|redy
+id|__u32
+id|redy
+suffix:semicolon
+DECL|member|greeny
+id|__u32
+id|greeny
+suffix:semicolon
+DECL|member|bluey
+id|__u32
+id|bluey
+suffix:semicolon
+DECL|member|whitey
+id|__u32
+id|whitey
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|fb_monspecs
 r_struct
 id|fb_monspecs
 (brace
+DECL|member|chroma
+r_struct
+id|fb_chroma
+id|chroma
+suffix:semicolon
+DECL|member|modedb
+r_struct
+id|fb_videomode
+op_star
+id|modedb
+suffix:semicolon
+multiline_comment|/* mode database */
+DECL|member|manufacturer
+id|__u8
+id|manufacturer
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* Manufacturer */
+DECL|member|monitor
+id|__u8
+id|monitor
+(braket
+l_int|14
+)braket
+suffix:semicolon
+multiline_comment|/* Monitor String */
+DECL|member|serial_no
+id|__u8
+id|serial_no
+(braket
+l_int|14
+)braket
+suffix:semicolon
+multiline_comment|/* Serial Number */
+DECL|member|ascii
+id|__u8
+id|ascii
+(braket
+l_int|14
+)braket
+suffix:semicolon
+multiline_comment|/* ? */
+DECL|member|modedb_len
+id|__u32
+id|modedb_len
+suffix:semicolon
+multiline_comment|/* mode database length */
+DECL|member|model
+id|__u32
+id|model
+suffix:semicolon
+multiline_comment|/* Monitor Model */
+DECL|member|serial
+id|__u32
+id|serial
+suffix:semicolon
+multiline_comment|/* Serial Number - Integer */
+DECL|member|year
+id|__u32
+id|year
+suffix:semicolon
+multiline_comment|/* Year manufactured */
+DECL|member|week
+id|__u32
+id|week
+suffix:semicolon
+multiline_comment|/* Week Manufactured */
 DECL|member|hfmin
 id|__u32
 id|hfmin
@@ -573,16 +722,6 @@ id|__u32
 id|hfmax
 suffix:semicolon
 multiline_comment|/* hfreq upper limit (Hz) */
-DECL|member|vfmin
-id|__u16
-id|vfmin
-suffix:semicolon
-multiline_comment|/* vfreq lower limit (Hz) */
-DECL|member|vfmax
-id|__u16
-id|vfmax
-suffix:semicolon
-multiline_comment|/* vfreq upper limit (Hz) */
 DECL|member|dclkmin
 id|__u32
 id|dclkmin
@@ -593,20 +732,68 @@ id|__u32
 id|dclkmax
 suffix:semicolon
 multiline_comment|/* pixelclock upper limit (Hz) */
+DECL|member|input
+id|__u16
+id|input
+suffix:semicolon
+multiline_comment|/* display type - see FB_DISP_* */
+DECL|member|dpms
+id|__u16
+id|dpms
+suffix:semicolon
+multiline_comment|/* DPMS support - see FB_DPMS_ */
+DECL|member|signal
+id|__u16
+id|signal
+suffix:semicolon
+multiline_comment|/* Signal Type - see FB_SIGNAL_* */
+DECL|member|vfmin
+id|__u16
+id|vfmin
+suffix:semicolon
+multiline_comment|/* vfreq lower limit (Hz) */
+DECL|member|vfmax
+id|__u16
+id|vfmax
+suffix:semicolon
+multiline_comment|/* vfreq upper limit (Hz) */
+DECL|member|gamma
+id|__u16
+id|gamma
+suffix:semicolon
+multiline_comment|/* Gamma - in fractions of 100 */
 DECL|member|gtf
-r_int
+id|__u16
 id|gtf
 suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* supports GTF */
-DECL|member|dpms
-r_int
-id|dpms
-suffix:colon
-l_int|1
+DECL|member|misc
+id|__u16
+id|misc
 suffix:semicolon
-multiline_comment|/* supports DPMS */
+multiline_comment|/* Misc flags - see FB_MISC_* */
+DECL|member|version
+id|__u8
+id|version
+suffix:semicolon
+multiline_comment|/* EDID version... */
+DECL|member|revision
+id|__u8
+id|revision
+suffix:semicolon
+multiline_comment|/* ...and revision */
+DECL|member|max_x
+id|__u8
+id|max_x
+suffix:semicolon
+multiline_comment|/* Maximum horizontal size (cm) */
+DECL|member|max_y
+id|__u8
+id|max_y
+suffix:semicolon
+multiline_comment|/* Maximum vertical size (cm) */
 )brace
 suffix:semicolon
 DECL|macro|FB_VBLANK_VBLANKING
@@ -947,7 +1134,7 @@ id|u32
 id|flags
 suffix:semicolon
 multiline_comment|/* see FB_PIXMAP_*&t;&t;&t;*/
-multiline_comment|/* access methods&t;&t;&t;*/
+multiline_comment|/* access methods */
 DECL|member|outbuf
 r_void
 (paren
@@ -992,7 +1179,7 @@ id|addr
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n;     *  Frame buffer operations&n;     */
+multiline_comment|/*&n; * Frame buffer operations&n; *&n; * LOCKING NOTE: those functions must _ALL_ be called with the console&n; * semaphore held, this is the only suitable locking mecanism we have&n; * in 2.6. Some may be called at interrupt time at this point though.&n; */
 DECL|struct|fb_ops
 r_struct
 id|fb_ops
@@ -1036,7 +1223,7 @@ r_int
 id|user
 )paren
 suffix:semicolon
-multiline_comment|/* For framebuffers with strange non linear layouts */
+multiline_comment|/* For framebuffers with strange non linear layouts or that do not&n;&t; * work with normal memory mapped access&n;&t; */
 DECL|member|fb_read
 id|ssize_t
 (paren
@@ -1364,11 +1551,6 @@ DECL|member|flags
 r_int
 id|flags
 suffix:semicolon
-DECL|member|open
-r_int
-id|open
-suffix:semicolon
-multiline_comment|/* Has this been open already ? */
 DECL|macro|FBINFO_FLAG_MODULE
 mdefine_line|#define FBINFO_FLAG_MODULE&t;1&t;/* Low-level driver is a module */
 DECL|member|var
@@ -1406,13 +1588,13 @@ r_struct
 id|fb_pixmap
 id|pixmap
 suffix:semicolon
-multiline_comment|/* Image Hardware Mapper */
+multiline_comment|/* Image hardware mapper */
 DECL|member|sprite
 r_struct
 id|fb_pixmap
 id|sprite
 suffix:semicolon
-multiline_comment|/* Cursor hardware Mapper */
+multiline_comment|/* Cursor hardware mapper */
 DECL|member|cmap
 r_struct
 id|fb_cmap
@@ -1473,8 +1655,10 @@ macro_line|#else
 DECL|macro|FBINFO_FLAG_DEFAULT
 mdefine_line|#define FBINFO_FLAG_DEFAULT&t;0
 macro_line|#endif
+singleline_comment|// This will go away
 macro_line|#if defined(__sparc__)
 multiline_comment|/* We map all of our framebuffers such that big-endian accesses&n; * are what we want, so the following is sufficient.&n; */
+singleline_comment|// This will go away
 DECL|macro|fb_readb
 mdefine_line|#define fb_readb sbus_readb
 DECL|macro|fb_readw
@@ -1493,7 +1677,7 @@ DECL|macro|fb_writeq
 mdefine_line|#define fb_writeq sbus_writeq
 DECL|macro|fb_memset
 mdefine_line|#define fb_memset sbus_memset_io
-macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) || defined(__hppa__) || defined(__sh__)
+macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) || defined(__hppa__) || defined(__sh__) || defined(__powerpc__)
 DECL|macro|fb_readb
 mdefine_line|#define fb_readb __raw_readb
 DECL|macro|fb_readw
@@ -1853,15 +2037,27 @@ id|info
 suffix:semicolon
 multiline_comment|/* drivers/video/fbmon.c */
 DECL|macro|FB_MAXTIMINGS
-mdefine_line|#define FB_MAXTIMINGS       0
+mdefine_line|#define FB_MAXTIMINGS&t;&t;0
 DECL|macro|FB_VSYNCTIMINGS
-mdefine_line|#define FB_VSYNCTIMINGS     1
+mdefine_line|#define FB_VSYNCTIMINGS&t;&t;1
 DECL|macro|FB_HSYNCTIMINGS
-mdefine_line|#define FB_HSYNCTIMINGS     2
+mdefine_line|#define FB_HSYNCTIMINGS&t;&t;2
 DECL|macro|FB_DCLKTIMINGS
-mdefine_line|#define FB_DCLKTIMINGS      3
+mdefine_line|#define FB_DCLKTIMINGS&t;&t;3
 DECL|macro|FB_IGNOREMON
-mdefine_line|#define FB_IGNOREMON    0x100
+mdefine_line|#define FB_IGNOREMON&t;&t;0x100
+DECL|macro|FB_MODE_IS_UNKNOWN
+mdefine_line|#define FB_MODE_IS_UNKNOWN&t;0
+DECL|macro|FB_MODE_IS_DETAILED
+mdefine_line|#define FB_MODE_IS_DETAILED&t;1
+DECL|macro|FB_MODE_IS_STANDARD
+mdefine_line|#define FB_MODE_IS_STANDARD&t;2
+DECL|macro|FB_MODE_IS_VESA
+mdefine_line|#define FB_MODE_IS_VESA&t;&t;4
+DECL|macro|FB_MODE_IS_CALCULATED
+mdefine_line|#define FB_MODE_IS_CALCULATED&t;8
+DECL|macro|FB_MODE_IS_FIRST
+mdefine_line|#define FB_MODE_IS_FIRST&t;16
 r_extern
 r_int
 id|fbmon_valid_timings
@@ -1922,6 +2118,7 @@ r_int
 id|fb_validate_mode
 c_func
 (paren
+r_const
 r_struct
 id|fb_var_screeninfo
 op_star
@@ -1935,7 +2132,7 @@ id|info
 suffix:semicolon
 r_extern
 r_int
-id|parse_edid
+id|fb_parse_edid
 c_func
 (paren
 r_int
@@ -1947,6 +2144,38 @@ r_struct
 id|fb_var_screeninfo
 op_star
 id|var
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|fb_get_monitor_limits
+c_func
+(paren
+r_int
+r_char
+op_star
+id|edid
+comma
+r_struct
+id|fb_monspecs
+op_star
+id|specs
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|fb_edid_to_monspecs
+c_func
+(paren
+r_int
+r_char
+op_star
+id|edid
+comma
+r_struct
+id|fb_monspecs
+op_star
+id|specs
 )paren
 suffix:semicolon
 r_extern
@@ -1991,17 +2220,6 @@ r_struct
 id|fb_videomode
 op_star
 id|modedb
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|show_edid
-c_func
-(paren
-r_int
-r_char
-op_star
-id|edid
 )paren
 suffix:semicolon
 multiline_comment|/* drivers/video/modedb.c */
@@ -2161,12 +2379,13 @@ DECL|member|vmode
 id|u32
 id|vmode
 suffix:semicolon
+DECL|member|flag
+id|u32
+id|flag
+suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|fb_find_mode
-r_static
-r_inline
+r_extern
 r_int
 id|fb_find_mode
 c_func
@@ -2206,148 +2425,7 @@ r_int
 r_int
 id|default_bpp
 )paren
-(brace
-r_extern
-r_int
-id|__fb_try_mode
-c_func
-(paren
-r_struct
-id|fb_var_screeninfo
-op_star
-id|var
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-comma
-r_const
-r_struct
-id|fb_videomode
-op_star
-id|mode
-comma
-r_int
-r_int
-id|bpp
-)paren
 suffix:semicolon
-multiline_comment|/*&n;     *  FIXME: How to make the compiler optimize vga640x400 away if&n;     *         default_mode is non-NULL?&n;     */
-r_static
-r_const
-r_struct
-id|fb_videomode
-id|vga640x400
-op_assign
-(brace
-multiline_comment|/* 640x400 @ 70 Hz, 31.5 kHz hsync */
-l_int|NULL
-comma
-l_int|70
-comma
-l_int|640
-comma
-l_int|400
-comma
-l_int|39721
-comma
-l_int|40
-comma
-l_int|24
-comma
-l_int|39
-comma
-l_int|9
-comma
-l_int|96
-comma
-l_int|2
-comma
-l_int|0
-comma
-id|FB_VMODE_NONINTERLACED
-)brace
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|default_mode
-)paren
-id|default_mode
-op_assign
-op_amp
-id|vga640x400
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|default_bpp
-)paren
-id|default_bpp
-op_assign
-l_int|8
-suffix:semicolon
-r_return
-id|__fb_try_mode
-c_func
-(paren
-id|var
-comma
-id|info
-comma
-id|default_mode
-comma
-id|default_bpp
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
-r_extern
-r_int
-id|__init
-id|fb_find_mode
-c_func
-(paren
-r_struct
-id|fb_var_screeninfo
-op_star
-id|var
-comma
-r_struct
-id|fb_info
-op_star
-id|info
-comma
-r_const
-r_char
-op_star
-id|mode_option
-comma
-r_const
-r_struct
-id|fb_videomode
-op_star
-id|db
-comma
-r_int
-r_int
-id|dbsize
-comma
-r_const
-r_struct
-id|fb_videomode
-op_star
-id|default_mode
-comma
-r_int
-r_int
-id|default_bpp
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_FB_H */
 eof

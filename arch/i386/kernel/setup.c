@@ -26,6 +26,16 @@ macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/ist.h&gt;
 macro_line|#include &quot;setup_arch_pre.h&quot;
 macro_line|#include &quot;mach_resources.h&quot;
+multiline_comment|/* This value is set up by the early boot code to point to the value&n;   immediately after the boot time page tables.  It contains a *physical*&n;   address, and must not be in the .bss segment! */
+DECL|variable|__initdata
+r_int
+r_int
+id|init_pg_tables_end
+id|__initdata
+op_assign
+op_complement
+l_int|0UL
+suffix:semicolon
 DECL|variable|__initdata
 r_int
 id|disable_pse
@@ -294,12 +304,6 @@ suffix:semicolon
 r_extern
 r_int
 id|root_mountflags
-suffix:semicolon
-r_extern
-r_char
-id|_end
-(braket
-)braket
 suffix:semicolon
 DECL|variable|saved_videomode
 r_int
@@ -3198,11 +3202,7 @@ op_assign
 id|PFN_UP
 c_func
 (paren
-id|__pa
-c_func
-(paren
-id|_end
-)paren
+id|init_pg_tables_end
 )paren
 suffix:semicolon
 id|find_max_pfn
@@ -4592,11 +4592,9 @@ id|_edata
 suffix:semicolon
 id|init_mm.brk
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|_end
+id|init_pg_tables_end
+op_plus
+id|PAGE_OFFSET
 suffix:semicolon
 id|code_resource.start
 op_assign

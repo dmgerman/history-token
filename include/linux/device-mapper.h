@@ -23,6 +23,23 @@ id|STATUSTYPE_TABLE
 )brace
 id|status_type_t
 suffix:semicolon
+DECL|union|map_info
+r_union
+id|map_info
+(brace
+DECL|member|ptr
+r_void
+op_star
+id|ptr
+suffix:semicolon
+DECL|member|ll
+r_int
+r_int
+r_int
+id|ll
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * In the constructor the target parameter will already have the&n; * table, type, begin and len fields filled in.&n; */
 DECL|typedef|dm_ctr_fn
 r_typedef
@@ -80,6 +97,39 @@ r_struct
 id|bio
 op_star
 id|bio
+comma
+r_union
+id|map_info
+op_star
+id|map_context
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Returns:&n; * &lt; 0 : error (currently ignored)&n; * 0   : ended successfully&n; * 1   : for some reason the io has still not completed (eg,&n; *       multipath target might want to requeue a failed io).&n; */
+DECL|typedef|dm_endio_fn
+r_typedef
+r_int
+(paren
+op_star
+id|dm_endio_fn
+)paren
+(paren
+r_struct
+id|dm_target
+op_star
+id|ti
+comma
+r_struct
+id|bio
+op_star
+id|bio
+comma
+r_int
+id|error
+comma
+r_union
+id|map_info
+op_star
+id|map_context
 )paren
 suffix:semicolon
 DECL|typedef|dm_suspend_fn
@@ -208,6 +258,13 @@ id|module
 op_star
 id|module
 suffix:semicolon
+DECL|member|version
+r_int
+id|version
+(braket
+l_int|3
+)braket
+suffix:semicolon
 DECL|member|ctr
 id|dm_ctr_fn
 id|ctr
@@ -219,6 +276,10 @@ suffix:semicolon
 DECL|member|map
 id|dm_map_fn
 id|map
+suffix:semicolon
+DECL|member|end_io
+id|dm_endio_fn
+id|end_io
 suffix:semicolon
 DECL|member|suspend
 id|dm_suspend_fn
@@ -300,7 +361,7 @@ DECL|member|split_io
 id|sector_t
 id|split_io
 suffix:semicolon
-multiline_comment|/*&n;&t; * These are automaticall filled in by&n;&t; * dm_table_get_device.&n;&t; */
+multiline_comment|/*&n;&t; * These are automatically filled in by&n;&t; * dm_table_get_device.&n;&t; */
 DECL|member|limits
 r_struct
 id|io_restrictions

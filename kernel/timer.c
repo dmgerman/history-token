@@ -2355,12 +2355,6 @@ suffix:semicolon
 id|xtime.tv_sec
 op_increment
 suffix:semicolon
-id|time_interpolator_update
-c_func
-(paren
-id|NSEC_PER_SEC
-)paren
-suffix:semicolon
 id|second_overflow
 c_func
 (paren

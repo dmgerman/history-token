@@ -850,6 +850,15 @@ c_func
 id|page
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|next
+OG
+id|end
+)paren
+r_break
+suffix:semicolon
 )brace
 id|pagevec_release
 c_func

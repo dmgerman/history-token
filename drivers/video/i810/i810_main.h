@@ -365,7 +365,7 @@ id|info
 )paren
 suffix:semicolon
 multiline_comment|/* Conditionals */
-macro_line|#if defined(__i386__)
+macro_line|#ifdef CONFIG_X86
 DECL|function|flush_cache
 r_inline
 r_void

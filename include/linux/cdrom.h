@@ -2035,6 +2035,13 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/fs.h&gt;&t;&t;/* not really needed, later.. */
 macro_line|#include &lt;linux/device.h&gt;
+multiline_comment|/*&n; * _OLD will use PIO transfer on atapi devices, _BPC_* will use DMA&n; */
+DECL|macro|CDDA_OLD
+mdefine_line|#define CDDA_OLD&t;&t;0&t;/* old style */
+DECL|macro|CDDA_BPC_SINGLE
+mdefine_line|#define CDDA_BPC_SINGLE&t;&t;1&t;/* single frame block pc */
+DECL|macro|CDDA_BPC_FULL
+mdefine_line|#define CDDA_BPC_FULL&t;&t;2&t;/* multi frame block pc */
 multiline_comment|/* Uniform cdrom data structures for cdrom.c */
 DECL|struct|cdrom_device_info
 r_struct
@@ -2054,6 +2061,13 @@ op_star
 id|next
 suffix:semicolon
 multiline_comment|/* next device_info for this major */
+DECL|member|disk
+r_struct
+id|gendisk
+op_star
+id|disk
+suffix:semicolon
+multiline_comment|/* matching block layer disk */
 DECL|member|handle
 r_void
 op_star
@@ -2119,6 +2133,15 @@ suffix:colon
 l_int|6
 suffix:semicolon
 multiline_comment|/* not used yet */
+DECL|member|cdda_method
+r_int
+id|cdda_method
+suffix:semicolon
+multiline_comment|/* see flags */
+DECL|member|last_sense
+id|__u8
+id|last_sense
+suffix:semicolon
 DECL|member|for_data
 r_int
 id|for_data

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/linux/ufs_fs.h&n; *&n; * Copyright (C) 1996&n; * Adrian Rodriguez (adrian@franklins-tower.rutgers.edu)&n; * Laboratory for Computer Science Research Computing Facility&n; * Rutgers, The State University of New Jersey&n; *&n; * Clean swab support by Fare &lt;fare@tunes.org&gt;&n; * just hope no one is using NNUUXXI on __?64 structure elements&n; * 64-bit clean thanks to Maciej W. Rozycki &lt;macro@ds2.pg.gda.pl&gt;&n; *&n; * 4.4BSD (FreeBSD) support added on February 1st 1998 by&n; * Niels Kristian Bech Jensen &lt;nkbj@image.dk&gt; partially based&n; * on code by Martin von Loewis &lt;martin@mira.isdn.cs.tu-berlin.de&gt;.&n; *&n; * NeXTstep support added on February 5th 1998 by&n; * Niels Kristian Bech Jensen &lt;nkbj@image.dk&gt;.&n; *&n; * Write support by Daniel Pirkl &lt;daniel.pirkl@email.cz&gt;&n; *&n; * HP/UX hfs filesystem support added by&n; * Martin K. Petersen &lt;mkp@mkp.net&gt;, August 1999&n; *&n; */
+multiline_comment|/*&n; *  linux/include/linux/ufs_fs.h&n; *&n; * Copyright (C) 1996&n; * Adrian Rodriguez (adrian@franklins-tower.rutgers.edu)&n; * Laboratory for Computer Science Research Computing Facility&n; * Rutgers, The State University of New Jersey&n; *&n; * Clean swab support by Fare &lt;fare@tunes.org&gt;&n; * just hope no one is using NNUUXXI on __?64 structure elements&n; * 64-bit clean thanks to Maciej W. Rozycki &lt;macro@ds2.pg.gda.pl&gt;&n; *&n; * 4.4BSD (FreeBSD) support added on February 1st 1998 by&n; * Niels Kristian Bech Jensen &lt;nkbj@image.dk&gt; partially based&n; * on code by Martin von Loewis &lt;martin@mira.isdn.cs.tu-berlin.de&gt;.&n; *&n; * NeXTstep support added on February 5th 1998 by&n; * Niels Kristian Bech Jensen &lt;nkbj@image.dk&gt;.&n; *&n; * Write support by Daniel Pirkl &lt;daniel.pirkl@email.cz&gt;&n; *&n; * HP/UX hfs filesystem support added by&n; * Martin K. Petersen &lt;mkp@mkp.net&gt;, August 1999&n; *&n; * UFS2 (of FreeBSD 5.x) support added by&n; * Niraj Kumar &lt;niraj17@iitbombay.org&gt;  , Jan 2004&n; *&n; */
 macro_line|#ifndef __LINUX_UFS_FS_H
 DECL|macro|__LINUX_UFS_FS_H
 mdefine_line|#define __LINUX_UFS_FS_H
@@ -22,9 +22,25 @@ mdefine_line|#define UFS_SECTOR_SIZE 512
 DECL|macro|UFS_SECTOR_BITS
 mdefine_line|#define UFS_SECTOR_BITS 9
 DECL|macro|UFS_MAGIC
-mdefine_line|#define UFS_MAGIC 0x00011954
+mdefine_line|#define UFS_MAGIC  0x00011954
+DECL|macro|UFS2_MAGIC
+mdefine_line|#define UFS2_MAGIC 0x19540119
 DECL|macro|UFS_CIGAM
-mdefine_line|#define UFS_CIGAM 0x54190100 /* byteswapped MAGIC */
+mdefine_line|#define UFS_CIGAM  0x54190100 /* byteswapped MAGIC */
+multiline_comment|/* Copied from FreeBSD */
+multiline_comment|/*&n; * Each disk drive contains some number of filesystems.&n; * A filesystem consists of a number of cylinder groups.&n; * Each cylinder group has inodes and data.&n; *&n; * A filesystem is described by its super-block, which in turn&n; * describes the cylinder groups.  The super-block is critical&n; * data and is replicated in each cylinder group to protect against&n; * catastrophic loss.  This is done at `newfs&squot; time and the critical&n; * super-block data does not change, so the copies need not be&n; * referenced further unless disaster strikes.&n; *&n; * For filesystem fs, the offsets of the various blocks of interest&n; * are given in the super block as:&n; *      [fs-&gt;fs_sblkno]         Super-block&n; *      [fs-&gt;fs_cblkno]         Cylinder group block&n; *      [fs-&gt;fs_iblkno]         Inode blocks&n; *      [fs-&gt;fs_dblkno]         Data blocks&n; * The beginning of cylinder group cg in fs, is given by&n; * the ``cgbase(fs, cg)&squot;&squot; macro.&n; *&n; * Depending on the architecture and the media, the superblock may&n; * reside in any one of four places. For tiny media where every block&n; * counts, it is placed at the very front of the partition. Historically,&n; * UFS1 placed it 8K from the front to leave room for the disk label and&n; * a small bootstrap. For UFS2 it got moved to 64K from the front to leave&n; * room for the disk label and a bigger bootstrap, and for really piggy&n; * systems we check at 256K from the front if the first three fail. In&n; * all cases the size of the superblock will be SBLOCKSIZE. All values are&n; * given in byte-offset form, so they do not imply a sector size. The&n; * SBLOCKSEARCH specifies the order in which the locations should be searched.&n; */
+DECL|macro|SBLOCK_FLOPPY
+mdefine_line|#define SBLOCK_FLOPPY        0
+DECL|macro|SBLOCK_UFS1
+mdefine_line|#define SBLOCK_UFS1       8192
+DECL|macro|SBLOCK_UFS2
+mdefine_line|#define SBLOCK_UFS2      65536
+DECL|macro|SBLOCK_PIGGY
+mdefine_line|#define SBLOCK_PIGGY    262144
+DECL|macro|SBLOCKSIZE
+mdefine_line|#define SBLOCKSIZE        8192
+DECL|macro|SBLOCKSEARCH
+mdefine_line|#define SBLOCKSEARCH &bslash;&n;        { SBLOCK_UFS2, SBLOCK_UFS1, SBLOCK_FLOPPY, SBLOCK_PIGGY, -1 }
 multiline_comment|/* HP specific MAGIC values */
 DECL|macro|UFS_MAGIC_LFN
 mdefine_line|#define UFS_MAGIC_LFN   0x00095014 /* fs supports filenames &gt; 14 chars */
@@ -133,6 +149,13 @@ DECL|macro|UFS_CG_44BSD
 mdefine_line|#define UFS_CG_44BSD&t;&t;0x00002000
 DECL|macro|UFS_CG_SUN
 mdefine_line|#define UFS_CG_SUN&t;&t;0x00001000
+multiline_comment|/* filesystem type encoding */
+DECL|macro|UFS_TYPE_MASK
+mdefine_line|#define UFS_TYPE_MASK&t;&t;0x00010000&t;/* mask for the following */
+DECL|macro|UFS_TYPE_UFS1
+mdefine_line|#define UFS_TYPE_UFS1&t;&t;0x00000000
+DECL|macro|UFS_TYPE_UFS2
+mdefine_line|#define UFS_TYPE_UFS2&t;&t;0x00010000
 multiline_comment|/* fs_inodefmt options */
 DECL|macro|UFS_42INODEFMT
 mdefine_line|#define UFS_42INODEFMT&t;-1
@@ -150,7 +173,7 @@ mdefine_line|#define UFS_MOUNT_ONERROR_UMOUNT&t;0x00000004
 DECL|macro|UFS_MOUNT_ONERROR_REPAIR
 mdefine_line|#define UFS_MOUNT_ONERROR_REPAIR&t;0x00000008
 DECL|macro|UFS_MOUNT_UFSTYPE
-mdefine_line|#define UFS_MOUNT_UFSTYPE&t;&t;0x00000FF0
+mdefine_line|#define UFS_MOUNT_UFSTYPE&t;&t;0x0000FFF0
 DECL|macro|UFS_MOUNT_UFSTYPE_OLD
 mdefine_line|#define UFS_MOUNT_UFSTYPE_OLD&t;&t;0x00000010
 DECL|macro|UFS_MOUNT_UFSTYPE_44BSD
@@ -167,6 +190,8 @@ DECL|macro|UFS_MOUNT_UFSTYPE_SUNx86
 mdefine_line|#define UFS_MOUNT_UFSTYPE_SUNx86&t;0x00000400
 DECL|macro|UFS_MOUNT_UFSTYPE_HP
 mdefine_line|#define UFS_MOUNT_UFSTYPE_HP&t;        0x00000800
+DECL|macro|UFS_MOUNT_UFSTYPE_UFS2
+mdefine_line|#define UFS_MOUNT_UFSTYPE_UFS2&t;&t;0x00001000
 DECL|macro|ufs_clear_opt
 mdefine_line|#define ufs_clear_opt(o,opt)&t;o &amp;= ~UFS_MOUNT_##opt
 DECL|macro|ufs_set_opt
@@ -187,7 +212,7 @@ multiline_comment|/*&n; * Cylinder group macros to locate things in cylinder gro
 DECL|macro|ufs_cgbase
 mdefine_line|#define&t;ufs_cgbase(c)&t;(uspi-&gt;s_fpg * (c))
 DECL|macro|ufs_cgstart
-mdefine_line|#define ufs_cgstart(c)&t;(ufs_cgbase(c)  + uspi-&gt;s_cgoffset * ((c) &amp; ~uspi-&gt;s_cgmask))
+mdefine_line|#define ufs_cgstart(c)&t;((uspi)-&gt;fs_magic == UFS2_MAGIC ?  ufs_cgbase(c) : &bslash;&n;&t;(ufs_cgbase(c)  + uspi-&gt;s_cgoffset * ((c) &amp; ~uspi-&gt;s_cgmask)))
 DECL|macro|ufs_cgsblock
 mdefine_line|#define&t;ufs_cgsblock(c)&t;(ufs_cgstart(c) + uspi-&gt;s_sblkno)&t;/* super blk */
 DECL|macro|ufs_cgcmin
@@ -242,9 +267,16 @@ DECL|macro|UFS_MAXNAMLEN
 mdefine_line|#define&t;UFS_MAXNAMLEN 255
 DECL|macro|UFS_MAXMNTLEN
 mdefine_line|#define UFS_MAXMNTLEN 512
+DECL|macro|UFS2_MAXMNTLEN
+mdefine_line|#define UFS2_MAXMNTLEN 468
+DECL|macro|UFS2_MAXVOLLEN
+mdefine_line|#define UFS2_MAXVOLLEN 32
 multiline_comment|/* #define UFS_MAXCSBUFS 31 */
 DECL|macro|UFS_LINK_MAX
 mdefine_line|#define UFS_LINK_MAX 32000
+multiline_comment|/*&n;#define&t;UFS2_NOCSPTRS&t;((128 / sizeof(void *)) - 4)&n;*/
+DECL|macro|UFS2_NOCSPTRS
+mdefine_line|#define&t;UFS2_NOCSPTRS&t;28
 multiline_comment|/*&n; * UFS_DIR_PAD defines the directory entries boundaries&n; * (must be a multiple of 4)&n; */
 DECL|macro|UFS_DIR_PAD
 mdefine_line|#define UFS_DIR_PAD&t;&t;&t;4
@@ -343,6 +375,45 @@ id|__u32
 id|cs_nffree
 suffix:semicolon
 multiline_comment|/* number of free frags */
+)brace
+suffix:semicolon
+DECL|struct|ufs2_csum_total
+r_struct
+id|ufs2_csum_total
+(brace
+DECL|member|cs_ndir
+id|__u64
+id|cs_ndir
+suffix:semicolon
+multiline_comment|/* number of directories */
+DECL|member|cs_nbfree
+id|__u64
+id|cs_nbfree
+suffix:semicolon
+multiline_comment|/* number of free blocks */
+DECL|member|cs_nifree
+id|__u64
+id|cs_nifree
+suffix:semicolon
+multiline_comment|/* number of free inodes */
+DECL|member|cs_nffree
+id|__u64
+id|cs_nffree
+suffix:semicolon
+multiline_comment|/* number of free frags */
+DECL|member|cs_numclusters
+id|__u64
+id|cs_numclusters
+suffix:semicolon
+multiline_comment|/* number of free clusters */
+DECL|member|cs_spare
+id|__u64
+id|cs_spare
+(braket
+l_int|3
+)braket
+suffix:semicolon
+multiline_comment|/* future expansion */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * This is the actual superblock, as it is laid out on the disk.&n; */
@@ -619,7 +690,7 @@ DECL|member|fs_ipg
 id|__u32
 id|fs_ipg
 suffix:semicolon
-multiline_comment|/* inodes per group */
+multiline_comment|/* inodes per cylinder group */
 DECL|member|fs_fpg
 id|__u32
 id|fs_fpg
@@ -653,6 +724,10 @@ id|__s8
 id|fs_flags
 suffix:semicolon
 multiline_comment|/* currently unused flag */
+r_union
+(brace
+r_struct
+(brace
 DECL|member|fs_fsmnt
 id|__s8
 id|fs_fsmnt
@@ -661,7 +736,6 @@ id|UFS_MAXMNTLEN
 )braket
 suffix:semicolon
 multiline_comment|/* name mounted on */
-multiline_comment|/* these fields retain the current block allocation info */
 DECL|member|fs_cgrotor
 id|__u32
 id|fs_cgrotor
@@ -674,7 +748,7 @@ id|fs_csp
 id|UFS_MAXCSBUFS
 )braket
 suffix:semicolon
-multiline_comment|/* list of fs_cs info buffers */
+multiline_comment|/*list of fs_cs info buffers */
 DECL|member|fs_maxcluster
 id|__u32
 id|fs_maxcluster
@@ -695,6 +769,138 @@ l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* old rotation block list head */
+DECL|member|fs_u1
+)brace
+id|fs_u1
+suffix:semicolon
+r_struct
+(brace
+DECL|member|fs_fsmnt
+id|__s8
+id|fs_fsmnt
+(braket
+id|UFS2_MAXMNTLEN
+)braket
+suffix:semicolon
+multiline_comment|/* name mounted on */
+DECL|member|fs_volname
+id|__u8
+id|fs_volname
+(braket
+id|UFS2_MAXVOLLEN
+)braket
+suffix:semicolon
+multiline_comment|/* volume name */
+DECL|member|fs_swuid
+id|__u64
+id|fs_swuid
+suffix:semicolon
+multiline_comment|/* system-wide uid */
+DECL|member|fs_pad
+id|__s32
+id|fs_pad
+suffix:semicolon
+multiline_comment|/* due to alignment of fs_swuid */
+DECL|member|fs_cgrotor
+id|__u32
+id|fs_cgrotor
+suffix:semicolon
+multiline_comment|/* last cg searched */
+DECL|member|fs_ocsp
+id|__u32
+id|fs_ocsp
+(braket
+id|UFS2_NOCSPTRS
+)braket
+suffix:semicolon
+multiline_comment|/*list of fs_cs info buffers */
+DECL|member|fs_contigdirs
+id|__u32
+id|fs_contigdirs
+suffix:semicolon
+multiline_comment|/*# of contiguously allocated dirs */
+DECL|member|fs_csp
+id|__u32
+id|fs_csp
+suffix:semicolon
+multiline_comment|/* cg summary info buffer for fs_cs */
+DECL|member|fs_maxcluster
+id|__u32
+id|fs_maxcluster
+suffix:semicolon
+DECL|member|fs_active
+id|__u32
+id|fs_active
+suffix:semicolon
+multiline_comment|/* used by snapshots to track fs */
+DECL|member|fs_old_cpc
+id|__s32
+id|fs_old_cpc
+suffix:semicolon
+multiline_comment|/* cyl per cycle in postbl */
+DECL|member|fs_maxbsize
+id|__s32
+id|fs_maxbsize
+suffix:semicolon
+multiline_comment|/*maximum blocking factor permitted */
+DECL|member|fs_sparecon64
+id|__s64
+id|fs_sparecon64
+(braket
+l_int|17
+)braket
+suffix:semicolon
+multiline_comment|/*old rotation block list head */
+DECL|member|fs_sblockloc
+id|__s64
+id|fs_sblockloc
+suffix:semicolon
+multiline_comment|/* byte offset of standard superblock */
+DECL|member|fs_cstotal
+r_struct
+id|ufs2_csum_total
+id|fs_cstotal
+suffix:semicolon
+multiline_comment|/*cylinder summary information*/
+DECL|member|fs_time
+r_struct
+id|ufs_timeval
+id|fs_time
+suffix:semicolon
+multiline_comment|/* last time written */
+DECL|member|fs_size
+id|__s64
+id|fs_size
+suffix:semicolon
+multiline_comment|/* number of blocks in fs */
+DECL|member|fs_dsize
+id|__s64
+id|fs_dsize
+suffix:semicolon
+multiline_comment|/* number of data blocks in fs */
+DECL|member|fs_csaddr
+id|__u64
+id|fs_csaddr
+suffix:semicolon
+multiline_comment|/* blk addr of cyl grp summary area */
+DECL|member|fs_pendingblocks
+id|__s64
+id|fs_pendingblocks
+suffix:semicolon
+multiline_comment|/* blocks in process of being freed */
+DECL|member|fs_pendinginodes
+id|__s32
+id|fs_pendinginodes
+suffix:semicolon
+multiline_comment|/*inodes in process of being freed */
+DECL|member|fs_u2
+)brace
+id|fs_u2
+suffix:semicolon
+DECL|member|fs_u11
+)brace
+id|fs_u11
+suffix:semicolon
 r_union
 (brace
 r_struct
@@ -1029,6 +1235,58 @@ DECL|member|cg_44
 )brace
 id|cg_44
 suffix:semicolon
+r_struct
+(brace
+DECL|member|cg_clustersumoff
+id|__u32
+id|cg_clustersumoff
+suffix:semicolon
+multiline_comment|/* (u_int32) counts of avail clusters */
+DECL|member|cg_clusteroff
+id|__u32
+id|cg_clusteroff
+suffix:semicolon
+multiline_comment|/* (u_int8) free cluster map */
+DECL|member|cg_nclusterblks
+id|__u32
+id|cg_nclusterblks
+suffix:semicolon
+multiline_comment|/* number of clusters this cg */
+DECL|member|cg_niblk
+id|__u32
+id|cg_niblk
+suffix:semicolon
+multiline_comment|/* number of inode blocks this cg */
+DECL|member|cg_initediblk
+id|__u32
+id|cg_initediblk
+suffix:semicolon
+multiline_comment|/* last initialized inode */
+DECL|member|cg_sparecon32
+id|__u32
+id|cg_sparecon32
+(braket
+l_int|3
+)braket
+suffix:semicolon
+multiline_comment|/* reserved for future use */
+DECL|member|cg_time
+id|__u64
+id|cg_time
+suffix:semicolon
+multiline_comment|/* time last written */
+DECL|member|cg_sparecon
+id|__u64
+id|cg_sparecon
+(braket
+l_int|3
+)braket
+suffix:semicolon
+multiline_comment|/* reserved for future use */
+DECL|member|cg_u2
+)brace
+id|cg_u2
+suffix:semicolon
 DECL|member|cg_sparecon
 id|__u32
 id|cg_sparecon
@@ -1268,6 +1526,173 @@ id|ui_u3
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|UFS_NXADDR
+mdefine_line|#define UFS_NXADDR  2            /* External addresses in inode. */
+DECL|struct|ufs2_inode
+r_struct
+id|ufs2_inode
+(brace
+DECL|member|ui_mode
+id|__u16
+id|ui_mode
+suffix:semicolon
+multiline_comment|/*   0: IFMT, permissions; see below. */
+DECL|member|ui_nlink
+id|__s16
+id|ui_nlink
+suffix:semicolon
+multiline_comment|/*   2: File link count. */
+DECL|member|ui_uid
+id|__u32
+id|ui_uid
+suffix:semicolon
+multiline_comment|/*   4: File owner. */
+DECL|member|ui_gid
+id|__u32
+id|ui_gid
+suffix:semicolon
+multiline_comment|/*   8: File group. */
+DECL|member|ui_blksize
+id|__u32
+id|ui_blksize
+suffix:semicolon
+multiline_comment|/*  12: Inode blocksize. */
+DECL|member|ui_size
+id|__u64
+id|ui_size
+suffix:semicolon
+multiline_comment|/*  16: File byte count. */
+DECL|member|ui_blocks
+id|__u64
+id|ui_blocks
+suffix:semicolon
+multiline_comment|/*  24: Bytes actually held. */
+DECL|member|ui_atime
+r_struct
+id|ufs_timeval
+id|ui_atime
+suffix:semicolon
+multiline_comment|/*  32: Last access time. */
+DECL|member|ui_mtime
+r_struct
+id|ufs_timeval
+id|ui_mtime
+suffix:semicolon
+multiline_comment|/*  40: Last modified time. */
+DECL|member|ui_ctime
+r_struct
+id|ufs_timeval
+id|ui_ctime
+suffix:semicolon
+multiline_comment|/*  48: Last inode change time. */
+DECL|member|ui_birthtime
+r_struct
+id|ufs_timeval
+id|ui_birthtime
+suffix:semicolon
+multiline_comment|/*  56: Inode creation time. */
+DECL|member|ui_mtimensec
+id|__s32
+id|ui_mtimensec
+suffix:semicolon
+multiline_comment|/*  64: Last modified time. */
+DECL|member|ui_atimensec
+id|__s32
+id|ui_atimensec
+suffix:semicolon
+multiline_comment|/*  68: Last access time. */
+DECL|member|ui_ctimensec
+id|__s32
+id|ui_ctimensec
+suffix:semicolon
+multiline_comment|/*  72: Last inode change time. */
+DECL|member|ui_birthnsec
+id|__s32
+id|ui_birthnsec
+suffix:semicolon
+multiline_comment|/*  76: Inode creation time. */
+DECL|member|ui_gen
+id|__s32
+id|ui_gen
+suffix:semicolon
+multiline_comment|/*  80: Generation number. */
+DECL|member|ui_kernflags
+id|__u32
+id|ui_kernflags
+suffix:semicolon
+multiline_comment|/*  84: Kernel flags. */
+DECL|member|ui_flags
+id|__u32
+id|ui_flags
+suffix:semicolon
+multiline_comment|/*  88: Status flags (chflags). */
+DECL|member|ui_extsize
+id|__s32
+id|ui_extsize
+suffix:semicolon
+multiline_comment|/*  92: External attributes block. */
+DECL|member|ui_extb
+id|__s64
+id|ui_extb
+(braket
+id|UFS_NXADDR
+)braket
+suffix:semicolon
+multiline_comment|/*  96: External attributes block. */
+r_union
+(brace
+r_struct
+(brace
+DECL|member|ui_db
+id|__s64
+id|ui_db
+(braket
+id|UFS_NDADDR
+)braket
+suffix:semicolon
+multiline_comment|/* 112: Direct disk blocks. */
+DECL|member|ui_ib
+id|__s64
+id|ui_ib
+(braket
+id|UFS_NINDIR
+)braket
+suffix:semicolon
+multiline_comment|/* 208: Indirect disk blocks.*/
+DECL|member|ui_addr
+)brace
+id|ui_addr
+suffix:semicolon
+DECL|member|ui_symlink
+id|__u8
+id|ui_symlink
+(braket
+l_int|2
+op_star
+l_int|4
+op_star
+(paren
+id|UFS_NDADDR
+op_plus
+id|UFS_NINDIR
+)paren
+)braket
+suffix:semicolon
+multiline_comment|/* 0x28 fast symlink */
+DECL|member|ui_u2
+)brace
+id|ui_u2
+suffix:semicolon
+DECL|member|ui_spare
+id|__s64
+id|ui_spare
+(braket
+l_int|3
+)braket
+suffix:semicolon
+multiline_comment|/* 232: Reserved; currently unused */
+)brace
+suffix:semicolon
 multiline_comment|/* FreeBSD has these in sys/stat.h */
 multiline_comment|/* ui_flags that can be set by a file owner */
 DECL|macro|UFS_UF_SETTABLE
@@ -1299,12 +1724,12 @@ r_struct
 id|ufs_buffer_head
 (brace
 DECL|member|fragment
-r_int
+id|__u64
 id|fragment
 suffix:semicolon
 multiline_comment|/* first fragment */
 DECL|member|count
-r_int
+id|__u64
 id|count
 suffix:semicolon
 multiline_comment|/* number of fragments */
@@ -1456,6 +1881,16 @@ id|__u32
 id|s_dsize
 suffix:semicolon
 multiline_comment|/* number of data blocks in fs */
+DECL|member|s_u2_size
+id|__u64
+id|s_u2_size
+suffix:semicolon
+multiline_comment|/* ufs2: number of blocks (fragments) in fs */
+DECL|member|s_u2_dsize
+id|__u64
+id|s_u2_dsize
+suffix:semicolon
+multiline_comment|/*ufs2:  number of data blocks in fs */
 DECL|member|s_ncg
 id|__u32
 id|s_ncg
@@ -1590,7 +2025,7 @@ DECL|member|s_ipg
 id|__u32
 id|s_ipg
 suffix:semicolon
-multiline_comment|/* inodes per group */
+multiline_comment|/* inodes per cylinder group */
 DECL|member|s_fpg
 id|__u32
 id|s_fpg
@@ -1716,6 +2151,11 @@ id|__u32
 id|s_maxsymlinklen
 suffix:semicolon
 multiline_comment|/* upper limit on fast symlinks&squot; size */
+DECL|member|fs_magic
+id|__s32
+id|fs_magic
+suffix:semicolon
+multiline_comment|/* filesystem magic */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Sizes of this structures are:&n; *&t;ufs_super_block_first&t;512&n; *&t;ufs_super_block_second&t;512&n; *&t;ufs_super_block_third&t;356&n; */
@@ -2470,7 +2910,7 @@ r_int
 suffix:semicolon
 multiline_comment|/* inode.c */
 r_extern
-r_int
+id|u64
 id|ufs_frag_map
 (paren
 r_struct

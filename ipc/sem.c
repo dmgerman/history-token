@@ -4030,12 +4030,6 @@ c_cond
 id|error
 )paren
 (brace
-id|sem_unlock
-c_func
-(paren
-id|sma
-)paren
-suffix:semicolon
 id|unlock_semundo
 c_func
 (paren

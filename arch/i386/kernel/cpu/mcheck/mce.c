@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/thread_info.h&gt;
 macro_line|#include &lt;asm/processor.h&gt; 
@@ -19,6 +20,14 @@ DECL|variable|nr_mce_banks
 r_int
 id|nr_mce_banks
 suffix:semicolon
+DECL|variable|nr_mce_banks
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|nr_mce_banks
+)paren
+suffix:semicolon
+multiline_comment|/* non-fatal.o */
 multiline_comment|/* Handle unconfigured int18 (should never happen) */
 DECL|function|unexpected_machine_check
 r_static

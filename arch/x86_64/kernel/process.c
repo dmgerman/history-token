@@ -50,8 +50,14 @@ op_or
 id|CLONE_UNTRACED
 suffix:semicolon
 DECL|variable|hlt_counter
-r_int
+id|atomic_t
 id|hlt_counter
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Powermanagement idle function, if any..&n; */
 DECL|variable|pm_idle
@@ -72,8 +78,12 @@ c_func
 r_void
 )paren
 (brace
+id|atomic_inc
+c_func
+(paren
+op_amp
 id|hlt_counter
-op_increment
+)paren
 suffix:semicolon
 )brace
 DECL|variable|disable_hlt
@@ -91,8 +101,12 @@ c_func
 r_void
 )paren
 (brace
+id|atomic_dec
+c_func
+(paren
+op_amp
 id|hlt_counter
-op_decrement
+)paren
 suffix:semicolon
 )brace
 DECL|variable|enable_hlt
@@ -115,7 +129,12 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|atomic_read
+c_func
+(paren
+op_amp
 id|hlt_counter
+)paren
 )paren
 (brace
 id|local_irq_disable

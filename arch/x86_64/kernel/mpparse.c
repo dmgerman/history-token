@@ -3385,6 +3385,7 @@ r_int
 id|irq
 )paren
 (brace
+macro_line|#ifdef CONFIG_ACPI_INTERPRETER
 r_int
 id|ioapic
 suffix:semicolon
@@ -3595,6 +3596,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 macro_line|#ifdef CONFIG_ACPI_PCI
 DECL|function|mp_parse_prt

@@ -279,6 +279,39 @@ DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS &bslash;&n;&t;(test_thread_flag(TIF_IA32) ? vm_data_default_flags32 : &bslash;&n;&t;  vm_data_default_flags) 
 DECL|macro|VM_STACK_DEFAULT_FLAGS
 mdefine_line|#define VM_STACK_DEFAULT_FLAGS &bslash;&n;&t;(test_thread_flag(TIF_IA32) ? vm_stack_flags32 : vm_stack_flags) 
+DECL|macro|CONFIG_ARCH_GATE_AREA
+mdefine_line|#define CONFIG_ARCH_GATE_AREA 1&t;
+macro_line|#ifndef __ASSEMBLY__
+r_struct
+id|task_struct
+suffix:semicolon
+r_struct
+id|vm_area_struct
+op_star
+id|get_gate_vma
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+)paren
+suffix:semicolon
+r_int
+id|in_gate_area
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _X86_64_PAGE_H */
 eof

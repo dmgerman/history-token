@@ -1242,12 +1242,6 @@ r_int
 r_int
 id|eax
 suffix:semicolon
-id|set_thread_flag
-c_func
-(paren
-id|TIF_IRET
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1425,12 +1419,6 @@ suffix:semicolon
 r_int
 r_int
 id|eax
-suffix:semicolon
-id|set_thread_flag
-c_func
-(paren
-id|TIF_IRET
-)paren
 suffix:semicolon
 r_if
 c_cond

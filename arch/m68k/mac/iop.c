@@ -834,7 +834,7 @@ c_cond
 id|oss_present
 )paren
 (brace
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|OSS_IRQLEV_IOPISM

@@ -141,6 +141,11 @@ id|kill_sb
 op_assign
 id|kill_anon_super
 comma
+dot
+id|fs_flags
+op_assign
+id|FS_BINARY_MOUNTDATA
+comma
 )brace
 suffix:semicolon
 DECL|variable|afs_super_ops

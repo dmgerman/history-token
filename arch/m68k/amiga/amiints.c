@@ -701,7 +701,7 @@ op_ge
 id|IRQ_AMIGA_AUTO
 )paren
 r_return
-id|sys_request_irq
+id|cpu_request_irq
 c_func
 (paren
 id|irq
@@ -940,7 +940,7 @@ id|irq
 op_ge
 id|IRQ_AMIGA_AUTO
 )paren
-id|sys_free_irq
+id|cpu_free_irq
 c_func
 (paren
 id|irq

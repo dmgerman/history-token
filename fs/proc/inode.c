@@ -913,6 +913,10 @@ id|inode
 op_star
 id|root_inode
 suffix:semicolon
+id|s-&gt;s_flags
+op_or_assign
+id|MS_NODIRATIME
+suffix:semicolon
 id|s-&gt;s_blocksize
 op_assign
 l_int|1024

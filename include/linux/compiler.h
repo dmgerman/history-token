@@ -33,6 +33,16 @@ DECL|macro|likely
 mdefine_line|#define likely(x)&t;__builtin_expect(!!(x), 1)
 DECL|macro|unlikely
 mdefine_line|#define unlikely(x)&t;__builtin_expect(!!(x), 0)
+multiline_comment|/* Optimization barrier */
+macro_line|#ifndef barrier
+DECL|macro|barrier
+macro_line|# define barrier() __memory_barrier()
+macro_line|#endif
+macro_line|#ifndef RELOC_HIDE
+DECL|macro|RELOC_HIDE
+macro_line|# define RELOC_HIDE(ptr, off)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __ptr;&t;&t;&t;&t;&t;&bslash;&n;     __ptr = (unsigned long) (ptr);&t;&t;&t;&t;&bslash;&n;    (typeof(ptr)) (__ptr + (off)); })
+macro_line|#endif
+macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * Allow us to mark functions as &squot;deprecated&squot; and have gcc emit a nice&n; * warning for each use, in hopes of speeding the functions removal.&n; * Usage is:&n; * &t;&t;int __deprecated foo(void)&n; */
 macro_line|#ifndef __deprecated
 DECL|macro|__deprecated
@@ -57,15 +67,5 @@ macro_line|#ifndef noinline
 DECL|macro|noinline
 mdefine_line|#define noinline
 macro_line|#endif
-multiline_comment|/* Optimization barrier */
-macro_line|#ifndef barrier
-DECL|macro|barrier
-macro_line|# define barrier() __memory_barrier()
-macro_line|#endif
-macro_line|#ifndef RELOC_HIDE
-DECL|macro|RELOC_HIDE
-macro_line|# define RELOC_HIDE(ptr, off)&t;&t;&t;&t;&t;&bslash;&n;  ({ unsigned long __ptr;&t;&t;&t;&t;&t;&bslash;&n;     __ptr = (unsigned long) (ptr);&t;&t;&t;&t;&bslash;&n;    (typeof(ptr)) (__ptr + (off)); })
-macro_line|#endif
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __LINUX_COMPILER_H */
 eof

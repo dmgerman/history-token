@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (C) 2001 Sistina Software (UK) Limited.&n; *&n; * This file is released under the GPL.&n; */
+multiline_comment|/*&n; * Copyright (C) 2001-2003 Sistina Software (UK) Limited.&n; *&n; * This file is released under the GPL.&n; */
 macro_line|#include &quot;dm.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -368,6 +368,16 @@ op_minus
 l_int|1
 )paren
 )paren
+op_logical_or
+(paren
+id|chunk_size
+OL
+(paren
+id|PAGE_SIZE
+op_rshift
+id|SECTOR_SHIFT
+)paren
+)paren
 )paren
 (brace
 id|ti-&gt;error
@@ -663,6 +673,11 @@ r_struct
 id|bio
 op_star
 id|bio
+comma
+r_union
+id|map_info
+op_star
+id|map_context
 )paren
 (brace
 r_struct
@@ -909,6 +924,17 @@ dot
 id|name
 op_assign
 l_string|&quot;striped&quot;
+comma
+dot
+id|version
+op_assign
+(brace
+l_int|1
+comma
+l_int|0
+comma
+l_int|1
+)brace
 comma
 dot
 id|module
