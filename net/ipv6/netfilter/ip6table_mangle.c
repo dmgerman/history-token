@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IPv6 packet mangling table, a port of the IPv4 mangle table to IPv6&n; *&n; * Copyright (C) 2000-2001 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; */
+multiline_comment|/*&n; * IPv6 packet mangling table, a port of the IPv4 mangle table to IPv6&n; *&n; * Copyright (C) 2000-2001 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; * Copyright (C) 2000-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Extended to all five netfilter hooks by Brad Chapman &amp; Harald Welte&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6_tables.h&gt;
 id|MODULE_LICENSE

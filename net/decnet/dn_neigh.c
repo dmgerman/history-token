@@ -1526,6 +1526,7 @@ op_plus
 l_int|2
 )paren
 suffix:semicolon
+op_star
 (paren
 (paren
 r_int

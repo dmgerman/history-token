@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * This is a module which is used for rejecting packets.&n; * Added support for customized reject packets (Jozsef Kadlecsik).&n; * Added support for ICMP type-3-code-13 (Maciej Soltysiak). [RFC 1812]&n; */
+multiline_comment|/* (C) 1999-2001 Paul `Rusty&squot; Russell&n; * (C) 2002-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -1969,22 +1970,13 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_return
 id|ipt_register_target
 c_func
 (paren
 op_amp
 id|ipt_reject_reg
 )paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|fini

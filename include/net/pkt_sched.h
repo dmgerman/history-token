@@ -817,6 +817,8 @@ DECL|macro|PSCHED_GET_TIME
 mdefine_line|#define PSCHED_GET_TIME(stamp) do_gettimeofday(&amp;(stamp))
 DECL|macro|PSCHED_US2JIFFIE
 mdefine_line|#define PSCHED_US2JIFFIE(usecs) (((usecs)+(1000000/HZ-1))/(1000000/HZ))
+DECL|macro|PSCHED_JIFFIE2US
+mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)*(1000000/HZ))
 DECL|macro|PSCHED_EXPORTLIST
 mdefine_line|#define PSCHED_EXPORTLIST EXPORT_SYMBOL(psched_tod_diff);
 macro_line|#else /* PSCHED_CLOCK_SOURCE != PSCHED_GETTIMEOFDAY */
@@ -874,6 +876,8 @@ mdefine_line|#define PSCHED_EXPORTLIST_1
 macro_line|#endif
 DECL|macro|PSCHED_US2JIFFIE
 mdefine_line|#define PSCHED_US2JIFFIE(delay) (((delay)+(1&lt;&lt;PSCHED_JSCALE)-1)&gt;&gt;PSCHED_JSCALE)
+DECL|macro|PSCHED_JIFFIE2US
+mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)&lt;&lt;PSCHED_JSCALE)
 macro_line|#elif PSCHED_CLOCK_SOURCE == PSCHED_CPU
 r_extern
 id|psched_tdiff_t
@@ -887,6 +891,8 @@ DECL|macro|PSCHED_EXPORTLIST_2
 mdefine_line|#define PSCHED_EXPORTLIST_2 EXPORT_SYMBOL(psched_clock_per_hz); &bslash;&n;                            EXPORT_SYMBOL(psched_clock_scale);
 DECL|macro|PSCHED_US2JIFFIE
 mdefine_line|#define PSCHED_US2JIFFIE(delay) (((delay)+psched_clock_per_hz-1)/psched_clock_per_hz)
+DECL|macro|PSCHED_JIFFIE2US
+mdefine_line|#define PSCHED_JIFFIE2US(delay) ((delay)*psched_clock_per_hz)
 macro_line|#ifdef CONFIG_X86_TSC
 DECL|macro|PSCHED_GET_TIME
 mdefine_line|#define PSCHED_GET_TIME(stamp) &bslash;&n;({ u64 __cur; &bslash;&n;   rdtscll(__cur); &bslash;&n;   (stamp) = __cur&gt;&gt;psched_clock_scale; &bslash;&n;})

@@ -1,4 +1,5 @@
 multiline_comment|/* Kernel module to match the bridge port in and&n; * out device for IP packets coming into contact with a bridge. */
+multiline_comment|/* (C) 2001-2003 Bart De Schuymer &lt;bdschuym@pandora.be&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_physdev.h&gt;

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * This is a module which is used for setting the skb-&gt;priority field&n; * of an skb for qdisc classification.&n; */
+multiline_comment|/* (C) 2001-2002 Patrick McHardy &lt;kaber@trash.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ip.h&gt;
@@ -270,22 +271,13 @@ c_func
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
+r_return
 id|ipt_register_target
 c_func
 (paren
 op_amp
 id|ipt_classify_reg
 )paren
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|fini
