@@ -4917,8 +4917,9 @@ id|vm_operations_struct
 id|generic_file_vm_ops
 op_assign
 (brace
+dot
 id|nopage
-suffix:colon
+op_assign
 id|filemap_nopage
 comma
 )brace
