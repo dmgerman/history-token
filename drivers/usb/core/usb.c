@@ -1846,9 +1846,9 @@ op_amp
 id|dev-&gt;dev
 )paren
 suffix:semicolon
-id|dev-&gt;present
+id|dev-&gt;state
 op_assign
-l_int|1
+id|USB_STATE_ATTACHED
 suffix:semicolon
 id|usb_bus_get
 c_func
@@ -2211,6 +2211,11 @@ id|pdev
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* mark the device as inactive, so any further urb submissions for&n;&t; * this device will fail.&n;&t; */
+id|dev-&gt;state
+op_assign
+id|USB_STATE_NOTATTACHED
+suffix:semicolon
 id|dev_info
 (paren
 op_amp
@@ -2349,11 +2354,6 @@ op_amp
 id|dev-&gt;dev
 )paren
 suffix:semicolon
-multiline_comment|/* mark the device as not present so any further urb submissions for&n;&t; * this device will fail. */
-id|dev-&gt;present
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Decrement the reference count, it&squot;ll auto free everything when */
 multiline_comment|/* it hits 0 which could very well be now */
 id|usb_put_dev
@@ -2467,7 +2467,37 @@ op_star
 id|dev
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;devnum
+op_eq
+l_int|0
+)paren
 r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;state
+op_ne
+id|USB_STATE_DEFAULT
+op_logical_and
+id|dev-&gt;state
+op_ne
+id|USB_STATE_ADDRESS
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|retval
+op_assign
 id|usb_control_msg
 c_func
 (paren
@@ -2481,7 +2511,6 @@ id|dev
 comma
 id|USB_REQ_SET_ADDRESS
 comma
-singleline_comment|// FIXME USB_CTRL_SET_TIMEOUT
 l_int|0
 comma
 id|dev-&gt;devnum
@@ -2494,8 +2523,22 @@ l_int|0
 comma
 id|HZ
 op_star
-id|USB_CTRL_GET_TIMEOUT
+id|USB_CTRL_SET_TIMEOUT
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+op_eq
+l_int|0
+)paren
+id|dev-&gt;state
+op_assign
+id|USB_STATE_ADDRESS
+suffix:semicolon
+r_return
+id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* improve on the default device description, if we can ... and&n; * while we&squot;re at it, maybe show the vendor and product strings.&n; */
@@ -2847,7 +2890,11 @@ id|dev-&gt;dev.dma_mask
 op_assign
 id|parent-&gt;dma_mask
 suffix:semicolon
-multiline_comment|/* USB device state == default ... it&squot;s not usable yet */
+multiline_comment|/* it&squot;s not usable yet */
+id|dev-&gt;state
+op_assign
+id|USB_STATE_DEFAULT
+suffix:semicolon
 multiline_comment|/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...&n;&t; * it&squot;s fixed size except for full speed devices.&n;&t; */
 r_switch
 c_cond
@@ -2976,6 +3023,10 @@ id|dev-&gt;devnum
 comma
 id|err
 )paren
+suffix:semicolon
+id|dev-&gt;state
+op_assign
+id|USB_STATE_DEFAULT
 suffix:semicolon
 id|clear_bit
 c_func
