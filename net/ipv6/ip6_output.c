@@ -2600,13 +2600,13 @@ c_cond
 (paren
 id|pktlength
 OG
-l_int|0xFFFF
-op_plus
 r_sizeof
 (paren
 r_struct
 id|ipv6hdr
 )paren
+op_plus
+id|IPV6_MAXPLEN
 )paren
 (brace
 multiline_comment|/* Jumbo datagram.&n;&t;&t;&t;   It is assumed, that in the case of hdrincl&n;&t;&t;&t;   jumbo option is supplied by user.&n;&t;&t;&t; */
@@ -5550,8 +5550,14 @@ r_if
 c_cond
 (paren
 id|mtu
-OL
-l_int|65576
+op_le
+r_sizeof
+(paren
+r_struct
+id|ipv6hdr
+)paren
+op_plus
+id|IPV6_MAXPLEN
 )paren
 (brace
 r_if
@@ -5561,7 +5567,7 @@ id|inet-&gt;cork.length
 op_plus
 id|length
 OG
-l_int|0xFFFF
+id|IPV6_MAXPLEN
 op_minus
 id|fragheaderlen
 )paren
@@ -6654,8 +6660,8 @@ r_if
 c_cond
 (paren
 id|skb-&gt;len
-OL
-l_int|65536
+op_le
+id|IPV6_MAXPLEN
 )paren
 id|hdr-&gt;payload_len
 op_assign

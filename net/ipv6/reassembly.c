@@ -1756,8 +1756,8 @@ r_int
 r_int
 )paren
 id|end
-op_ge
-l_int|65536
+OG
+id|IPV6_MAXPLEN
 )paren
 (brace
 id|icmpv6_param_prob
@@ -2447,7 +2447,7 @@ c_cond
 (paren
 id|payload_len
 OG
-l_int|65535
+id|IPV6_MAXPLEN
 )paren
 r_goto
 id|out_oversize

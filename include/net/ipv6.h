@@ -9,6 +9,8 @@ macro_line|#include &lt;net/flow.h&gt;
 macro_line|#include &lt;net/snmp.h&gt;
 DECL|macro|SIN6_LEN_RFC2133
 mdefine_line|#define SIN6_LEN_RFC2133&t;24
+DECL|macro|IPV6_MAXPLEN
+mdefine_line|#define IPV6_MAXPLEN&t;&t;65535
 multiline_comment|/*&n; *&t;NextHeader field of IPv6 header&n; */
 DECL|macro|NEXTHDR_HOP
 mdefine_line|#define NEXTHDR_HOP&t;&t;0&t;/* Hop-by-hop option header. */
