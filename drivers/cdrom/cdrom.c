@@ -43,7 +43,7 @@ macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/fcntl.h&gt;
+macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/* used to tell the module to turn on full debugging messages */
 DECL|variable|debug
