@@ -359,22 +359,22 @@ op_star
 id|tblk
 )paren
 suffix:semicolon
-macro_line|#ifdef _STILL_TO_PORT
 r_extern
 r_int
 id|diExtendFS
 c_func
 (paren
-id|inode_t
+r_struct
+id|inode
 op_star
 id|ipimap
 comma
-id|inode_t
+r_struct
+id|inode
 op_star
 id|ipbmap
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* _STILL_TO_PORT */
 r_extern
 r_int
 id|diMount
@@ -419,6 +419,8 @@ id|super_block
 op_star
 comma
 id|ino_t
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern
@@ -429,6 +431,8 @@ c_func
 r_struct
 id|inode
 op_star
+comma
+r_int
 )paren
 suffix:semicolon
 r_extern

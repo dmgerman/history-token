@@ -554,15 +554,10 @@ id|l2bsize
 suffix:semicolon
 multiline_comment|/* 4: log2 of bsize */
 DECL|member|flag
-id|uint
+r_int
 id|flag
 suffix:semicolon
 multiline_comment|/* 4: flag */
-DECL|member|state
-id|uint
-id|state
-suffix:semicolon
-multiline_comment|/* 4: state */
 DECL|member|lbuf_free
 r_struct
 id|lbuf
@@ -613,11 +608,6 @@ multiline_comment|/* 4: bytes to write before next syncpt */
 DECL|member|active
 r_int
 id|active
-suffix:semicolon
-multiline_comment|/* 4: */
-DECL|member|syncbarrier
-r_int
-id|syncbarrier
 suffix:semicolon
 multiline_comment|/* 4: */
 DECL|member|syncwait
@@ -727,6 +717,13 @@ DECL|typedef|log_t
 )brace
 id|log_t
 suffix:semicolon
+multiline_comment|/*&n; * Log flag&n; */
+DECL|macro|log_INLINELOG
+mdefine_line|#define log_INLINELOG&t;1
+DECL|macro|log_SYNCBARRIER
+mdefine_line|#define log_SYNCBARRIER&t;2
+DECL|macro|log_QUIESCE
+mdefine_line|#define log_QUIESCE&t;3
 multiline_comment|/*&n; * group commit flag&n; */
 multiline_comment|/* log_t */
 DECL|macro|logGC_PAGEOUT
@@ -932,7 +929,7 @@ id|nosyncwait
 suffix:semicolon
 r_extern
 r_int
-id|lmLogQuiesce
+id|lmLogShutdown
 c_func
 (paren
 id|log_t
@@ -942,17 +939,12 @@ id|log
 suffix:semicolon
 r_extern
 r_int
-id|lmLogResume
+id|lmLogInit
 c_func
 (paren
 id|log_t
 op_star
 id|log
-comma
-r_struct
-id|super_block
-op_star
-id|sb
 )paren
 suffix:semicolon
 r_extern
@@ -960,10 +952,9 @@ r_int
 id|lmLogFormat
 c_func
 (paren
-r_struct
-id|super_block
+id|log_t
 op_star
-id|sb
+id|log
 comma
 id|s64
 id|logAddress

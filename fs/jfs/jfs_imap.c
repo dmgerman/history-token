@@ -931,6 +931,8 @@ id|diWriteSpecial
 c_func
 (paren
 id|ipimap
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -1488,7 +1490,7 @@ id|rc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diReadSpecial()&n; *&n; * FUNCTION:    initialize a &squot;special&squot; inode from disk.&n; *&n; *&t;&t;this routines handles aggregate level inodes.  The&n; *&t;&t;inode cache cannot differentiate between the&n; *&t;&t;aggregate inodes and the filesystem inodes, so we&n; *&t;&t;handle these here.  We don&squot;t actually use the aggregate&n; *&t;        inode map, since these inodes are at a fixed location&n; *&t;&t;and in some cases the aggregate inode map isn&squot;t initialized&n; *&t;&t;yet.&n; *&n; * PARAMETERS:&n; *      sb - filesystem superblock&n; *&t;inum - aggregate inode number&n; *&n; * RETURN VALUES:&n; *      new inode&t;- success&n; *      NULL&t;&t;- i/o error.&n; */
+multiline_comment|/*&n; * NAME:        diReadSpecial()&n; *&n; * FUNCTION:    initialize a &squot;special&squot; inode from disk.&n; *&n; *&t;&t;this routines handles aggregate level inodes.  The&n; *&t;&t;inode cache cannot differentiate between the&n; *&t;&t;aggregate inodes and the filesystem inodes, so we&n; *&t;&t;handle these here.  We don&squot;t actually use the aggregate&n; *&t;        inode map, since these inodes are at a fixed location&n; *&t;&t;and in some cases the aggregate inode map isn&squot;t initialized&n; *&t;&t;yet.&n; *&n; * PARAMETERS:&n; *      sb - filesystem superblock&n; *&t;inum - aggregate inode number&n; *&t;secondary - 1 if secondary aggregate inode table&n; *&n; * RETURN VALUES:&n; *      new inode&t;- success&n; *      NULL&t;&t;- i/o error.&n; */
 DECL|function|diReadSpecial
 r_struct
 id|inode
@@ -1503,6 +1505,9 @@ id|sb
 comma
 id|ino_t
 id|inum
+comma
+r_int
+id|secondary
 )paren
 (brace
 r_struct
@@ -1562,13 +1567,10 @@ r_return
 id|ip
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If ip-&gt;i_number &gt;= 32 (INOSPEREXT), then read from secondary&n;&t; * aggregate inode table.&n;&t; */
 r_if
 c_cond
 (paren
-id|inum
-op_ge
-id|INOSPEREXT
+id|secondary
 )paren
 (brace
 id|address
@@ -1581,18 +1583,6 @@ id|sbi-&gt;ait2
 )paren
 op_rshift
 id|sbi-&gt;l2nbperpage
-suffix:semicolon
-id|inum
-op_sub_assign
-id|INOSPEREXT
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|inum
-OL
-id|INOSPEREXT
-)paren
 suffix:semicolon
 id|JFS_IP
 c_func
@@ -1624,6 +1614,14 @@ op_assign
 id|sbi-&gt;ipaimap
 suffix:semicolon
 )brace
+id|ASSERT
+c_func
+(paren
+id|inum
+OL
+id|INOSPEREXT
+)paren
+suffix:semicolon
 id|ip-&gt;i_ino
 op_assign
 id|inum
@@ -1823,7 +1821,7 @@ id|ip
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * NAME:        diWriteSpecial()&n; *&n; * FUNCTION:    Write the special inode to disk&n; *&n; * PARAMETERS:&n; *      ip - special inode&n; *&n; * RETURN VALUES: none&n; */
+multiline_comment|/*&n; * NAME:        diWriteSpecial()&n; *&n; * FUNCTION:    Write the special inode to disk&n; *&n; * PARAMETERS:&n; *      ip - special inode&n; *&t;secondary - 1 if secondary aggregate inode table&n; *&n; * RETURN VALUES: none&n; */
 DECL|function|diWriteSpecial
 r_void
 id|diWriteSpecial
@@ -1833,6 +1831,9 @@ r_struct
 id|inode
 op_star
 id|ip
+comma
+r_int
+id|secondary
 )paren
 (brace
 r_struct
@@ -1862,19 +1863,6 @@ id|metapage_t
 op_star
 id|mp
 suffix:semicolon
-multiline_comment|/*&n;&t; * If ip-&gt;i_number &gt;= 32 (INOSPEREXT), then write to secondary&n;&t; * aggregate inode table.&n;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|ip-&gt;i_state
-op_amp
-id|I_DIRTY
-)paren
-)paren
-r_return
-suffix:semicolon
 id|ip-&gt;i_state
 op_and_assign
 op_complement
@@ -1883,11 +1871,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inum
-op_ge
-id|INOSPEREXT
+id|secondary
 )paren
-(brace
 id|address
 op_assign
 id|addressPXD
@@ -1899,9 +1884,12 @@ id|sbi-&gt;ait2
 op_rshift
 id|sbi-&gt;l2nbperpage
 suffix:semicolon
-id|inum
-op_sub_assign
-id|INOSPEREXT
+r_else
+id|address
+op_assign
+id|AITBL_OFF
+op_rshift
+id|L2PSIZE
 suffix:semicolon
 id|ASSERT
 c_func
@@ -1911,16 +1899,6 @@ OL
 id|INOSPEREXT
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|address
-op_assign
-id|AITBL_OFF
-op_rshift
-id|L2PSIZE
-suffix:semicolon
-)brace
 id|address
 op_add_assign
 id|inum
@@ -10446,8 +10424,8 @@ c_func
 id|sb
 comma
 id|FILESYSTEM_I
-op_plus
-id|INOSPEREXT
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if

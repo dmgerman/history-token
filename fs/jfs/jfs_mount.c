@@ -124,6 +124,8 @@ c_func
 id|sb
 comma
 id|AGGREGATE_I
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -208,6 +210,8 @@ c_func
 id|sb
 comma
 id|BMAP_I
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -294,8 +298,8 @@ c_func
 id|sb
 comma
 id|AGGREGATE_I
-op_plus
-id|INOSPEREXT
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -388,6 +392,8 @@ c_func
 id|sb
 comma
 id|FILESYSTEM_I
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1362,6 +1368,10 @@ id|sbi-&gt;uuid
 )paren
 suffix:semicolon
 )brace
+id|sbi-&gt;fsckpxd
+op_assign
+id|j_sb-&gt;s_fsckpxd
+suffix:semicolon
 id|sbi-&gt;ait2
 op_assign
 id|j_sb-&gt;s_ait2
