@@ -5161,7 +5161,7 @@ id|iobase
 comma
 id|EWRK3_TOTAL_SIZE
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace
@@ -5358,7 +5358,7 @@ id|iobase
 comma
 id|EWRK3_TOTAL_SIZE
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 op_logical_and
 id|DevicePresent

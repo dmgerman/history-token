@@ -22,6 +22,8 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME&t;&quot;ac3200&quot;
 multiline_comment|/* Offsets from the base address. */
 DECL|macro|AC_NIC_BASE
 mdefine_line|#define AC_NIC_BASE&t;0x00
@@ -563,7 +565,7 @@ id|ioaddr
 comma
 id|AC_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return
@@ -837,7 +839,7 @@ id|ei_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren

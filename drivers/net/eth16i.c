@@ -1167,7 +1167,7 @@ id|ioaddr
 comma
 id|ETH16I_IO_EXTENT
 comma
-id|dev-&gt;name
+id|cardname
 )paren
 )paren
 r_return
@@ -1337,7 +1337,7 @@ id|eth16i_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|cardname
 comma
 id|dev
 )paren
@@ -1348,9 +1348,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: %s at %#3x, but is unusable due conflicting IRQ %d.&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;%s at %#3x, but is unusable due to conflicting IRQ %d.&bslash;n&quot;
 comma
 id|cardname
 comma

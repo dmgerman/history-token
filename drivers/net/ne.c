@@ -33,6 +33,8 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;ne&quot;
 multiline_comment|/* Some defines that people can play with if so inclined. */
 multiline_comment|/* Do we support clones that don&squot;t adhere to 14,15 of the SAprom ? */
 DECL|macro|SUPPORT_NE_BAD_CLONES
@@ -1203,7 +1205,7 @@ id|ioaddr
 comma
 id|NE_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return

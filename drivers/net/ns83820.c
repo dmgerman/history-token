@@ -23,6 +23,8 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;ns83820&quot;
 multiline_comment|/* Global parameters.  See MODULE_PARM near the bottom. */
 DECL|variable|ihr
 r_static
@@ -7787,7 +7789,7 @@ id|ns83820_irq
 comma
 id|SA_SHIRQ
 comma
-id|ndev-&gt;name
+id|DRV_NAME
 comma
 id|ndev
 )paren

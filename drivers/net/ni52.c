@@ -42,6 +42,8 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &quot;ni52.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;ni52&quot;
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG       /* debug on */
 DECL|macro|SYSBUSVAL
@@ -1430,7 +1432,7 @@ id|ioaddr
 comma
 id|NI52_TOTAL_SIZE
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return

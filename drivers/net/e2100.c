@@ -22,6 +22,8 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;e2100&quot;
 DECL|variable|e21_probe_list
 r_static
 r_int
@@ -557,7 +559,7 @@ id|ioaddr
 comma
 id|E21_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return

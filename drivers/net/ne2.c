@@ -29,6 +29,8 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;ne2&quot;
 multiline_comment|/* Some defines that people can play with if so inclined. */
 multiline_comment|/* Do we perform extra sanity checks on stuff ? */
 multiline_comment|/* #define NE_SANITY_CHECK */
@@ -1367,7 +1369,7 @@ id|base_addr
 comma
 id|NE_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return
@@ -1835,7 +1837,7 @@ id|ei_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren

@@ -1546,7 +1546,7 @@ id|dev-&gt;base_addr
 comma
 id|ELMC_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace

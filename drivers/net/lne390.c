@@ -20,6 +20,8 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;8390.h&quot;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;lne390&quot;
 r_static
 r_int
 id|lne390_probe1
@@ -311,7 +313,7 @@ id|ioaddr
 comma
 id|LNE390_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return
@@ -406,7 +408,7 @@ id|ioaddr
 comma
 id|LNE390_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_continue
@@ -971,7 +973,7 @@ id|ei_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren

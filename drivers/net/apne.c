@@ -16,6 +16,8 @@ macro_line|#include &lt;asm/amigayle.h&gt;
 macro_line|#include &lt;asm/amipcmcia.h&gt;
 macro_line|#include &quot;8390.h&quot;
 multiline_comment|/* ---- No user-serviceable parts below ---- */
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;apne&quot;
 DECL|macro|NE_BASE
 mdefine_line|#define NE_BASE&t; (dev-&gt;base_addr)
 DECL|macro|NE_CMD
@@ -467,7 +469,7 @@ id|IOBASE
 comma
 l_int|0x20
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace
@@ -1233,7 +1235,7 @@ id|apne_interrupt
 comma
 id|SA_SHIRQ
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren

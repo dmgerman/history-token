@@ -20,6 +20,8 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;lp486e&quot;
 multiline_comment|/* debug print flags */
 DECL|macro|LOG_SRCDST
 mdefine_line|#define LOG_SRCDST    0x80000000
@@ -3736,7 +3738,7 @@ id|IOADDR
 comma
 id|LP486E_TOTAL_SIZE
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace

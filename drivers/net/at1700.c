@@ -31,6 +31,8 @@ id|__initdata
 op_assign
 l_string|&quot;at1700.c:v1.15 4/7/98  Donald Becker (becker@cesdis.gsfc.nasa.gov)&bslash;n&quot;
 suffix:semicolon
+DECL|macro|DRV_NAME
+mdefine_line|#define DRV_NAME &quot;at1700&quot;
 multiline_comment|/* Tunable parameters. */
 multiline_comment|/* When to switch from the 64-entry multicast filter to Rx-all-multicast. */
 DECL|macro|MC_FILTERBREAK
@@ -1074,7 +1076,7 @@ id|ioaddr
 comma
 id|AT1700_IO_EXTENT
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 r_return
@@ -1111,7 +1113,7 @@ id|i
 comma
 l_int|2
 comma
-id|dev-&gt;name
+id|DRV_NAME
 )paren
 )paren
 (brace
@@ -2202,7 +2204,7 @@ id|net_interrupt
 comma
 l_int|0
 comma
-id|dev-&gt;name
+id|DRV_NAME
 comma
 id|dev
 )paren
