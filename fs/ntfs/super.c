@@ -4845,7 +4845,7 @@ r_char
 op_star
 id|es1
 op_assign
-l_string|&quot;Volume has unsupported flags set &quot;
+l_string|&quot;Volume has unsupported flags set&quot;
 suffix:semicolon
 r_static
 r_const
