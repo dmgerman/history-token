@@ -351,14 +351,12 @@ DECL|macro|ClearPageReferenced
 mdefine_line|#define ClearPageReferenced(page)&t;clear_bit(PG_referenced, &amp;(page)-&gt;flags)
 DECL|macro|TestClearPageReferenced
 mdefine_line|#define TestClearPageReferenced(page) test_and_clear_bit(PG_referenced, &amp;(page)-&gt;flags)
-macro_line|#ifndef arch_set_page_uptodate
-DECL|macro|arch_set_page_uptodate
-mdefine_line|#define arch_set_page_uptodate(page) do { } while (0)
-macro_line|#endif
 DECL|macro|PageUptodate
 mdefine_line|#define PageUptodate(page)&t;test_bit(PG_uptodate, &amp;(page)-&gt;flags)
+macro_line|#ifndef SetPageUptodate
 DECL|macro|SetPageUptodate
-mdefine_line|#define SetPageUptodate(page) &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;arch_set_page_uptodate(page);&t;&t;&t;&t;&bslash;&n;&t;&t;set_bit(PG_uptodate, &amp;(page)-&gt;flags);&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define SetPageUptodate(page)&t;set_bit(PG_uptodate, &amp;(page)-&gt;flags)
+macro_line|#endif
 DECL|macro|ClearPageUptodate
 mdefine_line|#define ClearPageUptodate(page)&t;clear_bit(PG_uptodate, &amp;(page)-&gt;flags)
 DECL|macro|PageDirty
