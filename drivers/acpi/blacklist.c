@@ -358,7 +358,6 @@ l_char|&squot;&bslash;0&squot;
 r_if
 c_cond
 (paren
-op_logical_neg
 id|acpi_get_table_header_early
 c_func
 (paren
