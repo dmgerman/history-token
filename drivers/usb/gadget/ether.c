@@ -162,7 +162,7 @@ mdefine_line|#define DRIVER_VENDOR_NUM&t;0x0525&t;&t;/* NetChip */
 DECL|macro|DRIVER_PRODUCT_NUM
 mdefine_line|#define DRIVER_PRODUCT_NUM&t;0xa4a1&t;&t;/* Linux-USB Ethernet Gadget */
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * hardware-specific configuration, controlled by which device&n; * controller driver was configured.&n; *&n; * CHIP ... hardware identifier&n; * DRIVER_VERSION_NUM ... alerts the host side driver to differences&n; * EP_*_NAME ... which endpoints do we use for which purpose?&n; * EP_*_NUM ... numbers for them (often limited by hardware)&n; * HIGHSPEED ... define if ep0 and descriptors need high speed support&n; * WAKEUP ... if hardware supports remote wakeup AND we will issue the&n; * &t;usb_gadget_wakeup() call to initiate it, USB_CONFIG_ATT_WAKEUP&n; *&n; * hw_optimize(gadget) ... for any hardware tweaks we want to kick in&n; * &t;before we enable our endpoints&n; *&n; * add other defines for other portability issues, like hardware that&n; * for some reason doesn&squot;t handle full speed bulk maxpacket of 64.&n; */
+multiline_comment|/*&n; * hardware-specific configuration, controlled by which device&n; * controller driver was configured.&n; *&n; * CHIP ... hardware identifier&n; * DRIVER_VERSION_NUM ... alerts the host side driver to differences&n; * EP_*_NAME ... which endpoints do we use for which purpose?&n; * EP_*_NUM ... numbers for them (often limited by hardware)&n; * WAKEUP ... if hardware supports remote wakeup AND we will issue the&n; * &t;usb_gadget_wakeup() call to initiate it, USB_CONFIG_ATT_WAKEUP&n; *&n; * hw_optimize(gadget) ... for any hardware tweaks we want to kick in&n; * &t;before we enable our endpoints&n; *&n; * add other defines for other portability issues, like hardware that&n; * for some reason doesn&squot;t handle full speed bulk maxpacket of 64.&n; */
 DECL|macro|DEV_CONFIG_VALUE
 mdefine_line|#define DEV_CONFIG_VALUE&t;3&t;/* some hardware cares */
 multiline_comment|/* #undef on hardware that can&squot;t implement CDC */
@@ -215,8 +215,6 @@ l_string|&quot;ep-f&quot;
 suffix:semicolon
 DECL|macro|EP_STATUS_NUM
 mdefine_line|#define EP_STATUS_NUM&t;3
-DECL|macro|HIGHSPEED
-mdefine_line|#define HIGHSPEED
 multiline_comment|/* supports remote wakeup, but this driver doesn&squot;t */
 r_extern
 r_int
@@ -451,7 +449,7 @@ macro_line|#ifndef DEFAULT_QLEN
 DECL|macro|DEFAULT_QLEN
 mdefine_line|#define DEFAULT_QLEN&t;2&t;/* double buffering by default */
 macro_line|#endif
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 DECL|variable|qmult
 r_static
 r_int
@@ -476,7 +474,7 @@ mdefine_line|#define qlen(gadget) &bslash;&n;&t;(DEFAULT_QLEN*((gadget-&gt;speed
 multiline_comment|/* also defer IRQs on highspeed TX */
 DECL|macro|TX_DELAY
 mdefine_line|#define TX_DELAY&t;DEFAULT_QLEN
-macro_line|#else&t;/* !HIGHSPEED ... full speed: */
+macro_line|#else&t;/* full speed (low speed doesn&squot;t do bulk) */
 DECL|macro|qlen
 mdefine_line|#define qlen(gadget) DEFAULT_QLEN
 macro_line|#endif
@@ -1370,7 +1368,7 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef&t;HIGHSPEED
+macro_line|#ifdef&t;CONFIG_USB_GADGET_DUALSPEED
 multiline_comment|/*&n; * usb 2.0 devices need to expose both high speed and full speed&n; * descriptors, unless they only run at full speed.&n; */
 macro_line|#ifdef&t;EP_STATUS_NUM
 r_static
@@ -1647,7 +1645,7 @@ macro_line|#else
 multiline_comment|/* if there&squot;s no high speed support, maxpacket doesn&squot;t change. */
 DECL|macro|ep_desc
 mdefine_line|#define ep_desc(g,hs,fs) fs
-macro_line|#endif&t;/* !HIGHSPEED */
+macro_line|#endif&t;/* !CONFIG_USB_GADGET_DUALSPEED */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* descriptors that are built on-demand */
 macro_line|#ifdef&t;DEV_CONFIG_CDC
@@ -1774,7 +1772,7 @@ id|function
 op_assign
 id|fs_function
 suffix:semicolon
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 r_int
 id|hs
 op_assign
@@ -2695,7 +2693,7 @@ l_string|&quot;full&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 r_case
 id|USB_SPEED_HIGH
 suffix:colon
@@ -3313,10 +3311,18 @@ id|value
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 r_case
 id|USB_DT_DEVICE_QUALIFIER
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gadget-&gt;is_dualspeed
+)paren
+r_break
+suffix:semicolon
 id|value
 op_assign
 id|min
@@ -3345,8 +3351,16 @@ suffix:semicolon
 r_case
 id|USB_DT_OTHER_SPEED_CONFIG
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|gadget-&gt;is_dualspeed
+)paren
+r_break
+suffix:semicolon
 singleline_comment|// FALLTHROUGH
-macro_line|#endif /* HIGHSPEED */
+macro_line|#endif /* CONFIG_USB_GADGET_DUALSPEED */
 r_case
 id|USB_DT_CONFIG
 suffix:colon
@@ -5493,7 +5507,7 @@ id|req-&gt;length
 op_assign
 id|length
 suffix:semicolon
-macro_line|#ifdef&t;HIGHSPEED
+macro_line|#ifdef&t;CONFIG_USB_GADGET_DUALSPEED
 multiline_comment|/* throttle highspeed IRQ rate back slightly */
 id|req-&gt;no_interrupt
 op_assign
@@ -5979,7 +5993,7 @@ id|device_desc.bMaxPacketSize0
 op_assign
 id|gadget-&gt;ep0-&gt;maxpacket
 suffix:semicolon
-macro_line|#ifdef&t;HIGHSPEED
+macro_line|#ifdef&t;CONFIG_USB_GADGET_DUALSPEED
 multiline_comment|/* assumes ep0 uses the same value for both speeds ... */
 id|dev_qualifier.bMaxPacketSize0
 op_assign
@@ -6337,7 +6351,7 @@ id|usb_gadget_driver
 id|eth_driver
 op_assign
 (brace
-macro_line|#ifdef HIGHSPEED
+macro_line|#ifdef CONFIG_USB_GADGET_DUALSPEED
 dot
 id|speed
 op_assign

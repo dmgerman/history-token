@@ -11288,6 +11288,10 @@ op_assign
 op_amp
 id|net2280_ops
 suffix:semicolon
+id|dev-&gt;gadget.is_dualspeed
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* the &quot;gadget&quot; abstracts/virtualizes the controller */
 id|strcpy
 (paren
