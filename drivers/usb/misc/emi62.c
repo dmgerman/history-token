@@ -1240,6 +1240,12 @@ r_goto
 id|wraperr
 suffix:semicolon
 )brace
+id|kfree
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
 multiline_comment|/* return 1 to fail the driver inialization&n;&t; * and give real driver change to load */
 r_return
 l_int|1

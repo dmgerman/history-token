@@ -2,65 +2,14 @@ multiline_comment|/*&n;    mxb.c - v4l2 driver for the Multimedia eXtension Boar
 DECL|macro|DEBUG_VARIABLE
 mdefine_line|#define DEBUG_VARIABLE debug
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-macro_line|#include &lt;linux/video_decoder.h&gt;&t;/* for saa7111a */
+macro_line|#include &lt;media/tuner.h&gt;
+macro_line|#include &lt;linux/video_decoder.h&gt;
 macro_line|#include &quot;mxb.h&quot;
 macro_line|#include &quot;tea6415c.h&quot;
 macro_line|#include &quot;tea6420.h&quot;
 macro_line|#include &quot;tda9840.h&quot;
-macro_line|#include &lt;media/tuner.h&gt;
-DECL|macro|I2C_SAA7111A
-mdefine_line|#define I2C_SAA7111A            0x24
-multiline_comment|/* All unused bytes are reserverd. */
-DECL|macro|SAA711X_CHIP_VERSION
-mdefine_line|#define SAA711X_CHIP_VERSION            0x00
-DECL|macro|SAA711X_ANALOG_INPUT_CONTROL_1
-mdefine_line|#define SAA711X_ANALOG_INPUT_CONTROL_1  0x02
-DECL|macro|SAA711X_ANALOG_INPUT_CONTROL_2
-mdefine_line|#define SAA711X_ANALOG_INPUT_CONTROL_2  0x03
-DECL|macro|SAA711X_ANALOG_INPUT_CONTROL_3
-mdefine_line|#define SAA711X_ANALOG_INPUT_CONTROL_3  0x04
-DECL|macro|SAA711X_ANALOG_INPUT_CONTROL_4
-mdefine_line|#define SAA711X_ANALOG_INPUT_CONTROL_4  0x05
-DECL|macro|SAA711X_HORIZONTAL_SYNC_START
-mdefine_line|#define SAA711X_HORIZONTAL_SYNC_START   0x06
-DECL|macro|SAA711X_HORIZONTAL_SYNC_STOP
-mdefine_line|#define SAA711X_HORIZONTAL_SYNC_STOP    0x07
-DECL|macro|SAA711X_SYNC_CONTROL
-mdefine_line|#define SAA711X_SYNC_CONTROL            0x08
-DECL|macro|SAA711X_LUMINANCE_CONTROL
-mdefine_line|#define SAA711X_LUMINANCE_CONTROL       0x09
-DECL|macro|SAA711X_LUMINANCE_BRIGHTNESS
-mdefine_line|#define SAA711X_LUMINANCE_BRIGHTNESS    0x0A
-DECL|macro|SAA711X_LUMINANCE_CONTRAST
-mdefine_line|#define SAA711X_LUMINANCE_CONTRAST      0x0B
-DECL|macro|SAA711X_CHROMA_SATURATION
-mdefine_line|#define SAA711X_CHROMA_SATURATION       0x0C
-DECL|macro|SAA711X_CHROMA_HUE_CONTROL
-mdefine_line|#define SAA711X_CHROMA_HUE_CONTROL      0x0D
-DECL|macro|SAA711X_CHROMA_CONTROL
-mdefine_line|#define SAA711X_CHROMA_CONTROL          0x0E
-DECL|macro|SAA711X_FORMAT_DELAY_CONTROL
-mdefine_line|#define SAA711X_FORMAT_DELAY_CONTROL    0x10
-DECL|macro|SAA711X_OUTPUT_CONTROL_1
-mdefine_line|#define SAA711X_OUTPUT_CONTROL_1        0x11
-DECL|macro|SAA711X_OUTPUT_CONTROL_2
-mdefine_line|#define SAA711X_OUTPUT_CONTROL_2        0x12
-DECL|macro|SAA711X_OUTPUT_CONTROL_3
-mdefine_line|#define SAA711X_OUTPUT_CONTROL_3        0x13
-DECL|macro|SAA711X_V_GATE_1_START
-mdefine_line|#define SAA711X_V_GATE_1_START          0x15
-DECL|macro|SAA711X_V_GATE_1_STOP
-mdefine_line|#define SAA711X_V_GATE_1_STOP           0x16
-DECL|macro|SAA711X_V_GATE_1_MSB
-mdefine_line|#define SAA711X_V_GATE_1_MSB            0x17
-DECL|macro|SAA711X_TEXT_SLICER_STATUS
-mdefine_line|#define SAA711X_TEXT_SLICER_STATUS      0x1A
-DECL|macro|SAA711X_DECODED_BYTES_OF_TS_1
-mdefine_line|#define SAA711X_DECODED_BYTES_OF_TS_1   0x1B
-DECL|macro|SAA711X_DECODED_BYTES_OF_TS_2
-mdefine_line|#define SAA711X_DECODED_BYTES_OF_TS_2   0x1C
-DECL|macro|SAA711X_STATUS_BYTE
-mdefine_line|#define SAA711X_STATUS_BYTE             0x1F
+DECL|macro|I2C_SAA7111
+mdefine_line|#define I2C_SAA7111 0x24
 DECL|macro|MXB_BOARD_CAN_DO_VBI
 mdefine_line|#define MXB_BOARD_CAN_DO_VBI(dev)   (dev-&gt;revision != 0) 
 multiline_comment|/* global variable */
@@ -794,132 +743,6 @@ r_struct
 id|saa7146_extension
 id|extension
 suffix:semicolon
-DECL|function|mxb_vbi_bypass
-r_static
-r_int
-id|mxb_vbi_bypass
-c_func
-(paren
-r_struct
-id|saa7146_dev
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|mxb
-op_star
-id|mxb
-op_assign
-(paren
-r_struct
-id|mxb
-op_star
-)paren
-id|dev-&gt;ext_priv
-suffix:semicolon
-id|s32
-id|byte
-op_assign
-l_int|0x0
-suffix:semicolon
-r_int
-id|result
-op_assign
-l_int|0
-suffix:semicolon
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;dev:%p&bslash;n&quot;
-comma
-id|dev
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* switch bypass in saa7111a, this should be done in the&n;&t;   saa7111a driver of course... */
-r_if
-c_cond
-(paren
-op_minus
-l_int|1
-op_eq
-(paren
-id|result
-op_assign
-id|i2c_smbus_read_byte_data
-c_func
-(paren
-id|mxb-&gt;saa7111a
-comma
-id|SAA711X_OUTPUT_CONTROL_3
-)paren
-)paren
-)paren
-(brace
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;could not read from saa7111a.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-id|byte
-op_assign
-id|result
-suffix:semicolon
-id|byte
-op_and_assign
-l_int|0xf0
-suffix:semicolon
-id|byte
-op_or_assign
-l_int|0x0a
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
-id|result
-op_assign
-id|i2c_smbus_write_byte_data
-c_func
-(paren
-id|mxb-&gt;saa7111a
-comma
-id|SAA711X_OUTPUT_CONTROL_3
-comma
-id|byte
-)paren
-)paren
-)paren
-(brace
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;could not write to saa7111a.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|mxb_probe
 r_static
 r_int
@@ -949,36 +772,144 @@ id|list_head
 op_star
 id|item
 suffix:semicolon
-id|request_module
-c_func
-(paren
-l_string|&quot;tuner&quot;
-)paren
+r_int
+id|result
 suffix:semicolon
-id|request_module
-c_func
+r_if
+c_cond
 (paren
-l_string|&quot;tea6420&quot;
-)paren
-suffix:semicolon
-id|request_module
-c_func
 (paren
-l_string|&quot;tea6415c&quot;
-)paren
-suffix:semicolon
-id|request_module
-c_func
-(paren
-l_string|&quot;tda9840&quot;
-)paren
-suffix:semicolon
+id|result
+op_assign
 id|request_module
 c_func
 (paren
 l_string|&quot;saa7111&quot;
 )paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;mxb: saa7111 i2c module not available.&bslash;n&quot;
+)paren
 suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|result
+op_assign
+id|request_module
+c_func
+(paren
+l_string|&quot;tuner&quot;
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;mxb: tuner i2c module not available.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|result
+op_assign
+id|request_module
+c_func
+(paren
+l_string|&quot;tea6420&quot;
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;mxb: tea6420 i2c module not available.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|result
+op_assign
+id|request_module
+c_func
+(paren
+l_string|&quot;tea6415c&quot;
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;mxb: tea6415c i2c module not available.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|result
+op_assign
+id|request_module
+c_func
+(paren
+l_string|&quot;tda9840&quot;
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;mxb: tda9840 i2c module not available.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|mxb
 op_assign
 (paren
@@ -1030,25 +961,6 @@ r_sizeof
 (paren
 r_struct
 id|mxb
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME: enable i2c-port pins, video-port-pins&n;&t;   video port pins should be enabled here ?! */
-id|saa7146_write
-c_func
-(paren
-id|dev
-comma
-id|MC1
-comma
-(paren
-id|MASK_08
-op_or
-id|MASK_24
-op_or
-id|MASK_10
-op_or
-id|MASK_26
 )paren
 )paren
 suffix:semicolon
@@ -1175,7 +1087,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|I2C_SAA7111A
+id|I2C_SAA7111
 op_eq
 id|client-&gt;addr
 )paren
@@ -1231,13 +1143,7 @@ id|mxb-&gt;tuner
 id|printk
 c_func
 (paren
-l_string|&quot;mxb: did not find all i2c devices. are you sure you&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;mxb: insmod&squot;ed tea6420, tea6415c, saa7111, tea6415c and tuner?&bslash;n&quot;
+l_string|&quot;mxb: did not find all i2c devices. aborting&bslash;n&quot;
 )paren
 suffix:semicolon
 id|i2c_del_adapter
@@ -2406,11 +2312,11 @@ l_int|0
 suffix:semicolon
 DECL|variable|mxb_saa7111_init
 r_static
+r_const
 r_int
 r_char
 id|mxb_saa7111_init
 (braket
-l_int|25
 )braket
 op_assign
 (brace
@@ -2419,74 +2325,120 @@ comma
 l_int|0x00
 comma
 multiline_comment|/* 00 - ID byte */
+l_int|0x01
+comma
 l_int|0x00
 comma
 multiline_comment|/* 01 - reserved */
 multiline_comment|/*front end */
+l_int|0x02
+comma
 l_int|0xd8
 comma
 multiline_comment|/* 02 - FUSE=x, GUDL=x, MODE=x */
+l_int|0x03
+comma
 l_int|0x23
 comma
 multiline_comment|/* 03 - HLNRS=0, VBSL=1, WPOFF=0, HOLDG=0, GAFIX=0, GAI1=256, GAI2=256 */
+l_int|0x04
+comma
 l_int|0x00
 comma
 multiline_comment|/* 04 - GAI1=256 */
+l_int|0x05
+comma
 l_int|0x00
 comma
 multiline_comment|/* 05 - GAI2=256 */
 multiline_comment|/* decoder */
+l_int|0x06
+comma
 l_int|0xf0
 comma
 multiline_comment|/* 06 - HSB at  xx(50Hz) /  xx(60Hz) pixels after end of last line */
+l_int|0x07
+comma
 l_int|0x30
 comma
 multiline_comment|/* 07 - HSS at  xx(50Hz) /  xx(60Hz) pixels after end of last line */
+l_int|0x08
+comma
 l_int|0xa8
 comma
 multiline_comment|/* 08 - AUFD=x, FSEL=x, EXFIL=x, VTRC=x, HPLL=x, VNOI=x */
+l_int|0x09
+comma
 l_int|0x02
 comma
 multiline_comment|/* 09 - BYPS=x, PREF=x, BPSS=x, VBLB=x, UPTCV=x, APER=x */
+l_int|0x0a
+comma
 l_int|0x80
 comma
 multiline_comment|/* 0a - BRIG=128 */
+l_int|0x0b
+comma
 l_int|0x47
 comma
 multiline_comment|/* 0b - CONT=1.109 */
+l_int|0x0c
+comma
 l_int|0x40
 comma
 multiline_comment|/* 0c - SATN=1.0 */
+l_int|0x0d
+comma
 l_int|0x00
 comma
 multiline_comment|/* 0d - HUE=0 */
+l_int|0x0e
+comma
 l_int|0x01
 comma
 multiline_comment|/* 0e - CDTO=0, CSTD=0, DCCF=0, FCTC=0, CHBW=1 */
+l_int|0x0f
+comma
 l_int|0x00
 comma
 multiline_comment|/* 0f - reserved */
+l_int|0x10
+comma
 l_int|0xd0
 comma
 multiline_comment|/* 10 - OFTS=x, HDEL=x, VRLN=x, YDEL=x */
+l_int|0x11
+comma
 l_int|0x8c
 comma
 multiline_comment|/* 11 - GPSW=x, CM99=x, FECO=x, COMPO=x, OEYC=1, OEHV=1, VIPB=0, COLO=0 */
+l_int|0x12
+comma
 l_int|0x80
 comma
 multiline_comment|/* 12 - xx output control 2 */
+l_int|0x13
+comma
 l_int|0x30
 comma
 multiline_comment|/* 13 - xx output control 3 */
+l_int|0x14
+comma
 l_int|0x00
 comma
 multiline_comment|/* 14 - reserved */
 l_int|0x15
 comma
+l_int|0x15
+comma
 multiline_comment|/* 15 - VBI */
+l_int|0x16
+comma
 l_int|0x04
 comma
 multiline_comment|/* 16 - VBI */
+l_int|0x17
+comma
 l_int|0x00
 comma
 multiline_comment|/* 17 - VBI */
@@ -2518,6 +2470,10 @@ op_star
 id|dev-&gt;ext_priv
 suffix:semicolon
 r_struct
+id|video_decoder_init
+id|init
+suffix:semicolon
+r_struct
 id|i2c_msg
 id|msg
 suffix:semicolon
@@ -2534,37 +2490,50 @@ r_struct
 id|tea6415c_multiplex
 id|vm
 suffix:semicolon
-multiline_comment|/* write configuration to saa7111a */
+multiline_comment|/* select video mode in saa7111a */
 id|i
 op_assign
-id|i2c_master_send
+id|VIDEO_MODE_PAL
+suffix:semicolon
+multiline_comment|/* fixme: currently pointless: gets overwritten by configuration below */
+id|mxb-&gt;saa7111a-&gt;driver
+op_member_access_from_pointer
+id|command
 c_func
 (paren
 id|mxb-&gt;saa7111a
 comma
-id|mxb_saa7111_init
+id|DECODER_SET_NORM
 comma
+op_amp
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* write configuration to saa7111a */
+id|init.data
+op_assign
+id|mxb_saa7111_init
+suffix:semicolon
+id|init.len
+op_assign
 r_sizeof
 (paren
 id|mxb_saa7111_init
 )paren
-)paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-OL
-l_int|0
-)paren
-(brace
-id|printk
+id|mxb-&gt;saa7111a-&gt;driver
+op_member_access_from_pointer
+id|command
 c_func
 (paren
-l_string|&quot;failed to initialize saa7111a. this should never happen.&bslash;n&quot;
+id|mxb-&gt;saa7111a
+comma
+id|DECODER_INIT
+comma
+op_amp
+id|init
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* select tuner-output on saa7111a */
 id|i
 op_assign
@@ -2583,12 +2552,22 @@ op_amp
 id|i
 )paren
 suffix:semicolon
-singleline_comment|//&t;i = VIDEO_MODE_PAL;
-singleline_comment|//&t;mxb-&gt;saa7111a-&gt;driver-&gt;command(mxb-&gt;saa7111a,DECODER_SET_NORM, &amp;i);
-id|mxb_vbi_bypass
+multiline_comment|/* enable vbi bypass */
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+id|mxb-&gt;saa7111a-&gt;driver
+op_member_access_from_pointer
+id|command
 c_func
 (paren
-id|dev
+id|mxb-&gt;saa7111a
+comma
+id|DECODER_SET_VBI_BYPASS
+comma
+op_amp
+id|i
 )paren
 suffix:semicolon
 multiline_comment|/* select a tuner type */
@@ -3309,145 +3288,6 @@ c_func
 id|mxb
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* hack: this should go into saa711x */
-DECL|function|saa7111_set_gpio
-r_static
-r_int
-id|saa7111_set_gpio
-c_func
-(paren
-r_struct
-id|saa7146_dev
-op_star
-id|dev
-comma
-r_int
-id|bl
-)paren
-(brace
-r_struct
-id|mxb
-op_star
-id|mxb
-op_assign
-(paren
-r_struct
-id|mxb
-op_star
-)paren
-id|dev-&gt;ext_priv
-suffix:semicolon
-id|s32
-id|byte
-op_assign
-l_int|0x0
-suffix:semicolon
-r_int
-id|result
-op_assign
-l_int|0
-suffix:semicolon
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;dev:%p&bslash;n&quot;
-comma
-id|dev
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* get the old register contents */
-r_if
-c_cond
-(paren
-op_minus
-l_int|1
-op_eq
-(paren
-id|byte
-op_assign
-id|i2c_smbus_read_byte_data
-c_func
-(paren
-id|mxb-&gt;saa7111a
-comma
-id|SAA711X_OUTPUT_CONTROL_1
-)paren
-)paren
-)paren
-(brace
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;could not read from saa711x&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-l_int|0
-op_eq
-id|bl
-)paren
-(brace
-id|byte
-op_and_assign
-l_int|0x7f
-suffix:semicolon
-)brace
-r_else
-(brace
-id|byte
-op_or_assign
-l_int|0x80
-suffix:semicolon
-)brace
-multiline_comment|/* write register contents back */
-r_if
-c_cond
-(paren
-l_int|0
-op_ne
-(paren
-id|result
-op_assign
-id|i2c_smbus_write_byte_data
-c_func
-(paren
-id|mxb-&gt;saa7111a
-comma
-id|SAA711X_OUTPUT_CONTROL_1
-comma
-id|byte
-)paren
-)paren
-)paren
-(brace
-id|DEB_D
-c_func
-(paren
-(paren
-l_string|&quot;could not write to saa711x&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -5236,6 +5076,28 @@ op_star
 id|std
 )paren
 (brace
+r_struct
+id|mxb
+op_star
+id|mxb
+op_assign
+(paren
+r_struct
+id|mxb
+op_star
+)paren
+id|dev-&gt;ext_priv
+suffix:semicolon
+r_int
+id|zero
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|one
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5264,12 +5126,17 @@ l_int|0x00404050
 )paren
 suffix:semicolon
 multiline_comment|/* unset the 7111 gpio register -- I don&squot;t know what this does exactly */
-id|saa7111_set_gpio
+id|mxb-&gt;saa7111a-&gt;driver
+op_member_access_from_pointer
+id|command
 c_func
 (paren
-id|dev
+id|mxb-&gt;saa7111a
 comma
-l_int|0
+id|DECODER_SET_GPIO
+comma
+op_amp
+id|zero
 )paren
 suffix:semicolon
 )brace
@@ -5295,12 +5162,17 @@ l_int|0x00404050
 )paren
 suffix:semicolon
 multiline_comment|/* set the 7111 gpio register -- I don&squot;t know what this does exactly */
-id|saa7111_set_gpio
+id|mxb-&gt;saa7111a-&gt;driver
+op_member_access_from_pointer
+id|command
 c_func
 (paren
-id|dev
+id|mxb-&gt;saa7111a
 comma
-l_int|1
+id|DECODER_SET_GPIO
+comma
+op_amp
+id|one
 )paren
 suffix:semicolon
 )brace

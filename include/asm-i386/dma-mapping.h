@@ -2,6 +2,8 @@ macro_line|#ifndef _ASM_I386_DMA_MAPPING_H
 DECL|macro|_ASM_I386_DMA_MAPPING_H
 mdefine_line|#define _ASM_I386_DMA_MAPPING_H
 macro_line|#include &lt;asm/cache.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/scatterlist.h&gt;
 DECL|macro|dma_alloc_noncoherent
 mdefine_line|#define dma_alloc_noncoherent(d, s, h, f) dma_alloc_coherent(d, s, h, f)
 DECL|macro|dma_free_noncoherent

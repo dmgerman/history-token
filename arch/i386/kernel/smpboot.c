@@ -5116,15 +5116,9 @@ id|max_cpus
 )paren
 (brace
 macro_line|#ifdef CONFIG_X86_IO_APIC
-id|cpumask_t
-id|targets
-op_assign
-id|CPU_MASK_ALL
-suffix:semicolon
 id|setup_ioapic_dest
 c_func
 (paren
-id|targets
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -2576,7 +2576,9 @@ id|result
 id|o
 )braket
 comma
-l_int|1
+id|in_len
+op_minus
+id|o
 )paren
 suffix:semicolon
 r_if
@@ -2622,7 +2624,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;Name using charecter set %s contains a charecter that &quot;
+l_string|&quot;Name using character set %s contains a character that &quot;
 l_string|&quot;cannot be converted to unicode.&quot;
 comma
 id|nls-&gt;charset
