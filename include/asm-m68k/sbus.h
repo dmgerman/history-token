@@ -133,10 +133,36 @@ op_assign
 id|val
 suffix:semicolon
 )brace
+DECL|function|_sbus_readl
+r_extern
+r_inline
+r_int
+r_int
+id|_sbus_readl
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+r_return
+op_star
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
 DECL|macro|sbus_readb
 mdefine_line|#define sbus_readb(a) _sbus_readb((unsigned long)a)
 DECL|macro|sbus_writeb
 mdefine_line|#define sbus_writeb(v, a) _sbus_writeb(v, (unsigned long)a)
+DECL|macro|sbus_readl
+mdefine_line|#define sbus_readl(a) _sbus_readl((unsigned long)a)
 DECL|macro|sbus_writel
 mdefine_line|#define sbus_writel(v, a) _sbus_writel(v, (unsigned long)a)
 macro_line|#endif
