@@ -19,7 +19,7 @@ DECL|macro|div_long_long_rem
 mdefine_line|#define div_long_long_rem(dividend,divisor,remainder) ({ &bslash;&n;&t;&t;       u64 result = dividend;&t;&t;&bslash;&n;&t;&t;       *remainder = do_div(result,divisor); &bslash;&n;&t;&t;       result; })
 macro_line|#endif
 DECL|macro|CLOCK_REALTIME_RES
-mdefine_line|#define CLOCK_REALTIME_RES TICK_NSEC(TICK_USEC)  
+mdefine_line|#define CLOCK_REALTIME_RES TICK_NSEC  
 singleline_comment|// In nano seconds.
 DECL|function|mpy_l_X_l_ll
 r_static
@@ -4007,6 +4007,14 @@ op_amp
 id|rq_time
 )paren
 suffix:semicolon
+id|rq_time
+op_add_assign
+(paren
+id|t.tv_sec
+op_logical_or
+id|t.tv_nsec
+)paren
+suffix:semicolon
 )brace
 id|left
 op_assign
@@ -4144,10 +4152,6 @@ suffix:semicolon
 id|left
 op_mul_assign
 id|TICK_NSEC
-c_func
-(paren
-id|TICK_USEC
-)paren
 suffix:semicolon
 id|tsave-&gt;tv_sec
 op_assign

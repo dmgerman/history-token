@@ -83,7 +83,7 @@ macro_line|#ifndef NSEC_PER_USEC
 DECL|macro|NSEC_PER_USEC
 mdefine_line|#define NSEC_PER_USEC (1000L)
 macro_line|#endif
-multiline_comment|/*&n; * We want to do realistic conversions of time so we need to use the same&n; * values the update wall clock code uses as the jiffie size.  This value&n; * is: TICK_NSEC(TICK_USEC) (both of which are defined in timex.h).  This &n; * is a constant and is in nanoseconds.  We will used scaled math and&n; * with a scales defined here as SEC_JIFFIE_SC,  USEC_JIFFIE_SC and &n; * NSEC_JIFFIE_SC.  Note that these defines contain nothing but&n; * constants and so are computed at compile time.  SHIFT_HZ (computed in&n; * timex.h) adjusts the scaling for different HZ values.&n; */
+multiline_comment|/*&n; * We want to do realistic conversions of time so we need to use the same&n; * values the update wall clock code uses as the jiffie size.  This value&n; * is: TICK_NSEC (both of which are defined in timex.h).  This &n; * is a constant and is in nanoseconds.  We will used scaled math and&n; * with a scales defined here as SEC_JIFFIE_SC,  USEC_JIFFIE_SC and &n; * NSEC_JIFFIE_SC.  Note that these defines contain nothing but&n; * constants and so are computed at compile time.  SHIFT_HZ (computed in&n; * timex.h) adjusts the scaling for different HZ values.&n; */
 DECL|macro|SEC_JIFFIE_SC
 mdefine_line|#define SEC_JIFFIE_SC (30 - SHIFT_HZ)
 DECL|macro|NSEC_JIFFIE_SC
@@ -91,13 +91,18 @@ mdefine_line|#define NSEC_JIFFIE_SC (SEC_JIFFIE_SC + 30)
 DECL|macro|USEC_JIFFIE_SC
 mdefine_line|#define USEC_JIFFIE_SC (SEC_JIFFIE_SC + 20)
 DECL|macro|SEC_CONVERSION
-mdefine_line|#define SEC_CONVERSION ((unsigned long)(((u64)NSEC_PER_SEC &lt;&lt; SEC_JIFFIE_SC) /&bslash;&n;                            (u64)TICK_NSEC(TICK_USEC))) 
+mdefine_line|#define SEC_CONVERSION ((unsigned long)(((u64)NSEC_PER_SEC &lt;&lt; SEC_JIFFIE_SC) /&bslash;&n;&t;&t;&t;&t;(u64)TICK_NSEC))
 DECL|macro|NSEC_CONVERSION
-mdefine_line|#define NSEC_CONVERSION ((unsigned long)(((u64)1 &lt;&lt; NSEC_JIFFIE_SC) / &bslash;&n;                            (u64)TICK_NSEC(TICK_USEC))) 
+mdefine_line|#define NSEC_CONVERSION ((unsigned long)(((u64)1 &lt;&lt; NSEC_JIFFIE_SC) /&bslash;&n;&t;&t;&t;&t;(u64)TICK_NSEC))
 DECL|macro|USEC_CONVERSION
-mdefine_line|#define USEC_CONVERSION &bslash;&n;               ((unsigned long)(((u64)NSEC_PER_USEC &lt;&lt; USEC_JIFFIE_SC)/ &bslash;&n;                                 (u64)TICK_NSEC(TICK_USEC))) 
+mdefine_line|#define USEC_CONVERSION ((unsigned long)(((u64)NSEC_PER_USEC &lt;&lt; USEC_JIFFIE_SC)/&bslash;&n;&t;&t;&t;&t;(u64)TICK_NSEC))
+macro_line|#if BITS_PER_LONG &lt; 64
 DECL|macro|MAX_SEC_IN_JIFFIES
-mdefine_line|#define MAX_SEC_IN_JIFFIES &bslash;&n;    (u32)((u64)((u64)MAX_JIFFY_OFFSET * TICK_NSEC(TICK_USEC)) / NSEC_PER_SEC)
+macro_line|# define MAX_SEC_IN_JIFFIES &bslash;&n;&t;(long)((u64)((u64)MAX_JIFFY_OFFSET * TICK_NSEC) / NSEC_PER_SEC)
+macro_line|#else&t;/* take care of overflow on 64 bits machines */
+DECL|macro|MAX_SEC_IN_JIFFIES
+macro_line|# define MAX_SEC_IN_JIFFIES &bslash;&n;&t;(SH_DIV((MAX_JIFFY_OFFSET &gt;&gt; SEC_JIFFIE_SC) * TICK_NSEC, NSEC_PER_SEC, 1) - 1)
+macro_line|#endif
 r_static
 id|__inline__
 r_int
@@ -124,10 +129,6 @@ op_assign
 id|value-&gt;tv_nsec
 op_plus
 id|TICK_NSEC
-c_func
-(paren
-id|TICK_USEC
-)paren
 op_minus
 l_int|1
 suffix:semicolon
@@ -138,9 +139,16 @@ id|sec
 op_ge
 id|MAX_SEC_IN_JIFFIES
 )paren
-r_return
-id|MAX_JIFFY_OFFSET
+(brace
+id|sec
+op_assign
+id|MAX_SEC_IN_JIFFIES
 suffix:semicolon
+id|nsec
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_return
 (paren
 (paren
@@ -200,10 +208,6 @@ id|u64
 id|jiffies
 op_star
 id|TICK_NSEC
-c_func
-(paren
-id|TICK_USEC
-)paren
 suffix:semicolon
 id|value-&gt;tv_sec
 op_assign
@@ -245,9 +249,7 @@ id|usec
 op_assign
 id|value-&gt;tv_usec
 op_plus
-id|USEC_PER_SEC
-op_div
-id|HZ
+id|TICK_USEC
 op_minus
 l_int|1
 suffix:semicolon
@@ -258,9 +260,16 @@ id|sec
 op_ge
 id|MAX_SEC_IN_JIFFIES
 )paren
-r_return
-id|MAX_JIFFY_OFFSET
+(brace
+id|sec
+op_assign
+id|MAX_SEC_IN_JIFFIES
 suffix:semicolon
+id|usec
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_return
 (paren
 (paren
@@ -320,10 +329,6 @@ id|u64
 id|jiffies
 op_star
 id|TICK_NSEC
-c_func
-(paren
-id|TICK_USEC
-)paren
 suffix:semicolon
 id|value-&gt;tv_sec
 op_assign

@@ -259,10 +259,6 @@ id|wall_jiffies
 )paren
 op_star
 id|TICK_NSEC
-c_func
-(paren
-id|TICK_USEC
-)paren
 suffix:semicolon
 r_while
 c_loop

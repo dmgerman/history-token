@@ -1513,10 +1513,6 @@ r_int
 id|tick_nsec
 op_assign
 id|TICK_NSEC
-c_func
-(paren
-id|TICK_USEC
-)paren
 suffix:semicolon
 multiline_comment|/* USER_HZ period (nsec) */
 multiline_comment|/* &n; * The current time &n; * wall_to_monotonic is what we need to add to xtime (or xtime corrected &n; * for sub jiffie times) to get to monotonic time.  Monotonic is pegged at zero&n; * at zero at system boot time, so wall_to_monotonic will be negative,&n; * however, we will ALWAYS keep the tv_nsec part positive so we can use&n; * the usual normalization.&n; */
@@ -1629,7 +1625,8 @@ id|time_freq
 op_assign
 (paren
 (paren
-l_int|1000000
+(paren
+id|NSEC_PER_SEC
 op_plus
 id|HZ
 op_div
@@ -1644,6 +1641,9 @@ l_int|2
 )paren
 op_lshift
 id|SHIFT_USEC
+)paren
+op_div
+id|NSEC_PER_USEC
 suffix:semicolon
 multiline_comment|/* frequency offset (scaled ppm)*/
 DECL|variable|time_adj
@@ -2183,7 +2183,7 @@ c_cond
 id|time_phase
 op_le
 op_minus
-id|FINEUSEC
+id|FINENSEC
 )paren
 (brace
 r_int
@@ -2219,7 +2219,7 @@ c_cond
 (paren
 id|time_phase
 op_ge
-id|FINEUSEC
+id|FINENSEC
 )paren
 (brace
 r_int

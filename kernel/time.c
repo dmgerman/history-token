@@ -1143,7 +1143,7 @@ id|txc-&gt;tick
 suffix:semicolon
 id|tick_nsec
 op_assign
-id|TICK_NSEC
+id|TICK_USEC_TO_NSEC
 c_func
 (paren
 id|tick_usec
