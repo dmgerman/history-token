@@ -2,6 +2,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &quot;scsi.h&quot;
@@ -53,12 +54,6 @@ op_assign
 l_string|&quot;                &quot;
 suffix:semicolon
 multiline_comment|/* 16 of them */
-DECL|variable|scsi_dev_flags
-r_static
-r_char
-op_star
-id|scsi_dev_flags
-suffix:semicolon
 DECL|variable|scsi_default_dev_flags
 r_static
 r_int
@@ -70,6 +65,15 @@ c_func
 (paren
 id|scsi_dev_info_list
 )paren
+suffix:semicolon
+DECL|variable|scsi_dev_flags
+r_static
+id|__init
+r_char
+id|scsi_dev_flags
+(braket
+l_int|256
+)braket
 suffix:semicolon
 multiline_comment|/*&n; * scsi_static_device_list: deprecated list of devices that require&n; * settings that differ from the default, includes black-listed (broken)&n; * devices. The entries here are added to the tail of scsi_dev_info_list&n; * via scsi_dev_info_list_init.&n; *&n; * Do not add to this list, use the command line or proc interface to add&n; * to the scsi_dev_info_list. This table will eventually go away.&n; */
 r_static
@@ -1342,6 +1346,18 @@ id|BLIST_LARGELUN
 )brace
 comma
 (brace
+l_string|&quot;XYRATEX&quot;
+comma
+l_string|&quot;RS&quot;
+comma
+l_string|&quot;*&quot;
+comma
+id|BLIST_SPARSELUN
+op_or
+id|BLIST_LARGELUN
+)brace
+comma
+(brace
 l_int|NULL
 comma
 l_int|NULL
@@ -2326,127 +2342,53 @@ r_return
 id|err
 suffix:semicolon
 )brace
-id|MODULE_PARM
+id|module_param_string
 c_func
 (paren
+id|dev_flags
+comma
 id|scsi_dev_flags
 comma
-l_string|&quot;s&quot;
+r_sizeof
+(paren
+id|scsi_dev_flags
+)paren
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|scsi_dev_flags
+id|dev_flags
 comma
-l_string|&quot;Given scsi_dev_flags=vendor:model:flags, add a black/white list&quot;
-l_string|&quot; entry for vendor and model with an integer value of flags&quot;
+l_string|&quot;Given scsi_dev_flags=vendor:model:flags[,v:m:f] add black/white&quot;
+l_string|&quot; list entries for vendor and model with an integer value of flags&quot;
 l_string|&quot; to the scsi device info list&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_named
 c_func
 (paren
+id|default_dev_flags
+comma
 id|scsi_default_dev_flags
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|scsi_default_dev_flags
+id|default_dev_flags
 comma
 l_string|&quot;scsi default device flag integer value&quot;
 )paren
 suffix:semicolon
-DECL|function|setup_scsi_dev_flags
-r_static
-r_int
-id|__init
-id|setup_scsi_dev_flags
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|scsi_dev_flags
-op_assign
-id|str
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|setup_scsi_default_dev_flags
-r_static
-r_int
-id|__init
-id|setup_scsi_default_dev_flags
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-r_int
-id|tmp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|tmp
-)paren
-op_eq
-l_int|1
-)paren
-(brace
-id|scsi_default_dev_flags
-op_assign
-id|tmp
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s %d&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|scsi_default_dev_flags
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s: usage scsi_default_dev_flags=intr&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/**&n; * scsi_dev_info_list_delete: called from scsi.c:exit_scsi to remove&n; * &t;the scsi_dev_info_list.&n; **/
 DECL|function|scsi_exit_devinfo
 r_void
@@ -2659,20 +2601,4 @@ r_return
 id|error
 suffix:semicolon
 )brace
-id|__setup
-c_func
-(paren
-l_string|&quot;scsi_dev_flags=&quot;
-comma
-id|setup_scsi_dev_flags
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;scsi_default_dev_flags=&quot;
-comma
-id|setup_scsi_default_dev_flags
-)paren
-suffix:semicolon
 eof

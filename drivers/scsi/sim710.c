@@ -526,7 +526,7 @@ l_int|0
 suffix:semicolon
 id|out_unregister
 suffix:colon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|host

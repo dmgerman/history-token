@@ -115,8 +115,9 @@ DECL|macro|MAX_SPAN_DEPTH
 mdefine_line|#define MAX_SPAN_DEPTH&t;&t;&t;8
 DECL|macro|NVIRT_CHAN
 mdefine_line|#define NVIRT_CHAN&t;&t;4&t;/* # of virtual channels to represent&n;&t;&t;&t;&t;&t;   up to 60 logical drives */
-r_typedef
+DECL|struct|mbox_out
 r_struct
+id|mbox_out
 (brace
 DECL|member|cmd
 multiline_comment|/* 0x0 */
@@ -158,6 +159,18 @@ multiline_comment|/* 0xE */
 id|u8
 id|resvd
 suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|struct|mbox_in
+r_struct
+id|mbox_in
+(brace
 DECL|member|busy
 multiline_comment|/* 0xF */
 r_volatile
@@ -194,6 +207,27 @@ DECL|member|ack
 r_volatile
 id|u8
 id|ack
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+r_typedef
+r_struct
+(brace
+DECL|member|m_out
+r_struct
+id|mbox_out
+id|m_out
+suffix:semicolon
+DECL|member|m_in
+r_struct
+id|mbox_in
+id|m_in
 suffix:semicolon
 DECL|typedef|mbox_t
 )brace
@@ -2746,14 +2780,6 @@ id|megaraid_release
 (paren
 r_struct
 id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|megaraid_command
-(paren
-id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon

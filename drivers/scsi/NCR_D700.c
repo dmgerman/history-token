@@ -647,7 +647,7 @@ l_int|0
 suffix:semicolon
 id|irq_failed
 suffix:colon
-id|scsi_unregister
+id|scsi_host_put
 c_func
 (paren
 id|host
