@@ -10,6 +10,12 @@ DECL|member|dev
 id|kdev_t
 id|dev
 suffix:semicolon
+DECL|member|bdev
+r_struct
+id|block_device
+op_star
+id|bdev
+suffix:semicolon
 DECL|member|size
 r_int
 r_int

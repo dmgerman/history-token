@@ -1623,6 +1623,10 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* readahead.c */
+DECL|macro|VM_MAX_READAHEAD
+mdefine_line|#define VM_MAX_READAHEAD&t;128&t;/* kbytes */
+DECL|macro|VM_MIN_READAHEAD
+mdefine_line|#define VM_MIN_READAHEAD&t;16&t;/* kbytes (includes current page) */
 r_void
 id|do_page_cache_readahead
 c_func

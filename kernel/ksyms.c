@@ -2665,11 +2665,11 @@ c_func
 id|kdevname
 )paren
 suffix:semicolon
-DECL|variable|bdevname
+DECL|variable|__bdevname
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|bdevname
+id|__bdevname
 )paren
 suffix:semicolon
 DECL|variable|cdevname

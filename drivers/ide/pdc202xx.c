@@ -6857,13 +6857,6 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * we cannot support queued operations on promise, so fail to&n;&t;&t; * to enable it...&n;&t;&t; */
-r_case
-id|ide_dma_queued_on
-suffix:colon
-r_return
-l_int|1
-suffix:semicolon
 r_default
 suffix:colon
 r_break

@@ -105,6 +105,8 @@ id|unlikely
 c_func
 (paren
 id|proc_dentry
+op_ne
+l_int|NULL
 )paren
 )paren
 (brace
@@ -168,6 +170,8 @@ id|unlikely
 c_func
 (paren
 id|proc_dentry
+op_ne
+l_int|NULL
 )paren
 )paren
 (brace
