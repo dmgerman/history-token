@@ -658,7 +658,6 @@ op_ne
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|ftape_proc_destroy
 r_void
 id|ftape_proc_destroy
@@ -677,6 +676,5 @@ id|proc_root
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#endif /* defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_FT_PROC_FS) */
 eof
