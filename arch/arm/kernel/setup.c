@@ -669,6 +669,9 @@ op_star
 id|prefix
 comma
 r_int
+id|cpu
+comma
+r_int
 r_int
 id|cache
 )paren
@@ -695,7 +698,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: %d bytes, associativity %d, %d byte lines, %d sets&bslash;n&quot;
+l_string|&quot;CPU%u: %s: %d bytes, associativity %d, %d byte lines, %d sets&bslash;n&quot;
+comma
+id|cpu
 comma
 id|prefix
 comma
@@ -764,7 +769,8 @@ id|__init
 id|dump_cpu_info
 c_func
 (paren
-r_void
+r_int
+id|cpu
 )paren
 (brace
 r_int
@@ -788,7 +794,9 @@ id|processor_id
 id|printk
 c_func
 (paren
-l_string|&quot;CPU: D %s %s cache&bslash;n&quot;
+l_string|&quot;CPU%u: D %s %s cache&bslash;n&quot;
+comma
+id|cpu
 comma
 id|cache_is_vivt
 c_func
@@ -823,7 +831,9 @@ id|info
 id|dump_cache
 c_func
 (paren
-l_string|&quot;CPU: I cache&quot;
+l_string|&quot;I cache&quot;
+comma
+id|cpu
 comma
 id|CACHE_ISIZE
 c_func
@@ -835,7 +845,9 @@ suffix:semicolon
 id|dump_cache
 c_func
 (paren
-l_string|&quot;CPU: D cache&quot;
+l_string|&quot;D cache&quot;
+comma
+id|cpu
 comma
 id|CACHE_DSIZE
 c_func
@@ -850,7 +862,9 @@ r_else
 id|dump_cache
 c_func
 (paren
-l_string|&quot;CPU: cache&quot;
+l_string|&quot;cache&quot;
+comma
+id|cpu
 comma
 id|CACHE_ISIZE
 c_func
@@ -1085,6 +1099,10 @@ suffix:semicolon
 id|dump_cpu_info
 c_func
 (paren
+id|smp_processor_id
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 id|sprintf
