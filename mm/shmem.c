@@ -1984,7 +1984,7 @@ id|ENOMEM
 )paren
 suffix:semicolon
 )brace
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page
@@ -2249,7 +2249,7 @@ op_amp
 id|info-&gt;lock
 )paren
 suffix:semicolon
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page

@@ -3028,7 +3028,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* Try again...  */
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page

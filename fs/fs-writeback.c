@@ -298,6 +298,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|wait
+)paren
+id|filemap_fdatawait
+c_func
+(paren
+id|mapping
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|mapping-&gt;a_ops-&gt;writeback_mapping
 )paren
 id|mapping-&gt;a_ops
@@ -311,7 +322,7 @@ id|nr_to_write
 )paren
 suffix:semicolon
 r_else
-id|filemap_fdatasync
+id|filemap_fdatawrite
 c_func
 (paren
 id|mapping
@@ -1710,7 +1721,7 @@ id|OSYNC_DATA
 (brace
 id|err2
 op_assign
-id|filemap_fdatasync
+id|filemap_fdatawrite
 c_func
 (paren
 id|inode-&gt;i_mapping

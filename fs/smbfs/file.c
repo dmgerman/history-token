@@ -1442,7 +1442,13 @@ id|openers
 )paren
 (brace
 multiline_comment|/* We must flush any dirty pages now as we won&squot;t be able to&n;&t;&t;   write anything after close. mmap can trigger this.&n;&t;&t;   &quot;openers&quot; should perhaps include mmap&squot;ers ... */
-id|filemap_fdatasync
+id|filemap_fdatawait
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
+id|filemap_fdatawrite
 c_func
 (paren
 id|inode-&gt;i_mapping

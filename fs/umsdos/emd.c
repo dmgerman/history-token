@@ -498,7 +498,7 @@ id|page
 r_goto
 id|sync_fail
 suffix:semicolon
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page
@@ -660,7 +660,7 @@ r_goto
 id|sync_fail
 suffix:semicolon
 )brace
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page2
@@ -1696,7 +1696,7 @@ id|page
 r_goto
 id|sync_fail
 suffix:semicolon
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page
@@ -1921,7 +1921,7 @@ r_goto
 id|sync_fail
 suffix:semicolon
 )brace
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|next_page

@@ -32,6 +32,8 @@ DECL|macro|PG_launder
 mdefine_line|#define PG_launder&t;&t;12&t;/* written out by VM pressure.. */
 DECL|macro|PG_private
 mdefine_line|#define PG_private&t;&t;13&t;/* Has something at -&gt;private */
+DECL|macro|PG_writeback
+mdefine_line|#define PG_writeback&t;&t;14&t;/* Page is under writeback */
 multiline_comment|/*&n; * Global page accounting.  One instance per CPU.&n; */
 DECL|struct|page_state
 r_extern
@@ -163,6 +165,16 @@ DECL|macro|ClearPagePrivate
 mdefine_line|#define ClearPagePrivate(page)&t;clear_bit(PG_private, &amp;(page)-&gt;flags)
 DECL|macro|PagePrivate
 mdefine_line|#define PagePrivate(page)&t;test_bit(PG_private, &amp;(page)-&gt;flags)
+DECL|macro|PageWriteback
+mdefine_line|#define PageWriteback(page)&t;test_bit(PG_writeback, &amp;(page)-&gt;flags)
+DECL|macro|SetPageWriteback
+mdefine_line|#define SetPageWriteback(page)&t;set_bit(PG_writeback, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageWriteback
+mdefine_line|#define ClearPageWriteback(page) clear_bit(PG_writeback, &amp;(page)-&gt;flags)
+DECL|macro|TestSetPageWriteback
+mdefine_line|#define TestSetPageWriteback(page)&t;&bslash;&n;&t;test_and_set_bit(PG_writeback, &amp;(page)-&gt;flags)
+DECL|macro|TestClearPageWriteback
+mdefine_line|#define TestClearPageWriteback(page)&t;&bslash;&n;&t;test_and_clear_bit(PG_writeback, &amp;(page)-&gt;flags)
 multiline_comment|/*&n; * The PageSwapCache predicate doesn&squot;t use a PG_flag at this time,&n; * but it may again do so one day.&n; */
 r_extern
 r_struct

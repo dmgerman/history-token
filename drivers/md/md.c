@@ -1761,7 +1761,7 @@ id|page
 r_goto
 id|out
 suffix:semicolon
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page
@@ -3948,7 +3948,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page

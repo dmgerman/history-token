@@ -4987,7 +4987,7 @@ op_star
 suffix:semicolon
 r_extern
 r_int
-id|filemap_fdatasync
+id|filemap_fdatawrite
 c_func
 (paren
 r_struct

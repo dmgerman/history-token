@@ -320,7 +320,7 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Do this now, rather than at the next wait_on_page().&n;&t; */
+multiline_comment|/*&n;&t; * Do this now, rather than at the next wait_on_page_locked().&n;&t; */
 id|run_task_queue
 c_func
 (paren

@@ -302,6 +302,13 @@ c_func
 (paren
 id|bh-&gt;b_page
 )paren
+op_logical_and
+op_logical_neg
+id|PageWriteback
+c_func
+(paren
+id|bh-&gt;b_page
+)paren
 )paren
 id|buffer_error
 c_func
@@ -638,7 +645,7 @@ id|bh
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * write out all the dirty data associated with a block device&n; * via its mapping.  Does not take the superblock lock.&n; *&n; * If `wait&squot; is true, wait on the writeout.&n; */
+multiline_comment|/*&n; * write out all the dirty data associated with a block device&n; * via its mapping.  Does not take the superblock lock.&n; *&n; * If `wait&squot; is true, wait on the writeout.&n; *&n; * FIXME: rename this function.&n; */
 DECL|function|sync_buffers
 r_int
 id|sync_buffers
@@ -658,7 +665,7 @@ id|ret
 suffix:semicolon
 id|ret
 op_assign
-id|filemap_fdatasync
+id|filemap_fdatawrite
 c_func
 (paren
 id|bdev-&gt;bd_inode-&gt;i_mapping
@@ -1113,7 +1120,7 @@ op_logical_neg
 id|file-&gt;f_op-&gt;fsync
 )paren
 (brace
-multiline_comment|/* Why?  We can still call filemap_fdatasync */
+multiline_comment|/* Why?  We can still call filemap_fdatawrite */
 r_goto
 id|out_putf
 suffix:semicolon
@@ -1128,11 +1135,29 @@ id|inode-&gt;i_sem
 suffix:semicolon
 id|ret
 op_assign
-id|filemap_fdatasync
+id|filemap_fdatawait
 c_func
 (paren
 id|inode-&gt;i_mapping
 )paren
+suffix:semicolon
+id|err
+op_assign
+id|filemap_fdatawrite
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+id|ret
+op_assign
+id|err
 suffix:semicolon
 id|err
 op_assign
@@ -1151,8 +1176,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
-op_logical_and
 op_logical_neg
 id|ret
 )paren
@@ -1171,8 +1194,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
-op_logical_and
 op_logical_neg
 id|ret
 )paren
@@ -1288,11 +1309,29 @@ id|inode-&gt;i_sem
 suffix:semicolon
 id|ret
 op_assign
-id|filemap_fdatasync
+id|filemap_fdatawait
 c_func
 (paren
 id|inode-&gt;i_mapping
 )paren
+suffix:semicolon
+id|err
+op_assign
+id|filemap_fdatawrite
+c_func
+(paren
+id|inode-&gt;i_mapping
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+)paren
+id|ret
+op_assign
+id|err
 suffix:semicolon
 id|err
 op_assign
@@ -1311,8 +1350,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
-op_logical_and
 op_logical_neg
 id|ret
 )paren
@@ -1331,8 +1368,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|err
-op_logical_and
 op_logical_neg
 id|ret
 )paren
@@ -2101,12 +2136,34 @@ c_func
 id|page
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
+multiline_comment|/* It was a write */
+id|end_page_writeback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* read */
 id|unlock_page
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+)brace
 r_return
 suffix:semicolon
 id|still_busy
@@ -2147,6 +2204,13 @@ id|bh
 )paren
 suffix:semicolon
 )brace
+DECL|variable|set_buffer_async_io
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|set_buffer_async_io
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * osync is designed to support O_SYNC io.  It waits synchronously for&n; * all already-submitted IO to complete, but does not queue any new&n; * writes to the disk.&n; *&n; * To do O_SYNC writes, just queue the buffer writes with ll_rw_block as&n; * you dirty the buffers, and then use osync_inode_buffers to wait for&n; * completion.  Any other dirty buffers which are not yet queued for&n; * write will not be flushed to disk by the osync.&n; */
 DECL|function|osync_buffers_list
 r_static
@@ -4005,6 +4069,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|mapping
 op_logical_and
 id|mapping-&gt;a_ops-&gt;releasepage
@@ -4442,8 +4518,8 @@ id|nr_underway
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 op_logical_neg
 id|PageLocked
@@ -4451,10 +4527,6 @@ c_func
 (paren
 id|page
 )paren
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|last_block
@@ -4788,6 +4860,29 @@ op_ne
 id|head
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+id|SetPageWriteback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+multiline_comment|/* Keeps try_to_free_buffers() away */
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * The page may come unlocked any time after the *first* submit_bh()&n;&t; * call.  Be careful with its buffers.&n;&t; */
 r_do
 (brace
@@ -4909,7 +5004,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|unlock_page
+id|end_page_writeback
 c_func
 (paren
 id|page
@@ -4921,7 +5016,7 @@ id|err
 suffix:semicolon
 id|recover
 suffix:colon
-multiline_comment|/*&n;&t; * ENOSPC, or some other error.  We may already have added some&n;&t; * blocks to the file, so we need to write these out to avoid&n;&t; * exposing stale data.&n;&t; */
+multiline_comment|/*&n;&t; * ENOSPC, or some other error.  We may already have added some&n;&t; * blocks to the file, so we need to write these out to avoid&n;&t; * exposing stale data.&n;&t; * The page is currently locked and not marked for writeback&n;&t; */
 id|ClearPageUptodate
 c_func
 (paren
@@ -5035,6 +5130,28 @@ c_loop
 id|bh
 op_ne
 id|head
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+suffix:semicolon
+id|SetPageWriteback
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|unlock_page
+c_func
+(paren
+id|page
 )paren
 suffix:semicolon
 r_goto
@@ -8129,7 +8246,7 @@ suffix:colon
 id|transferred
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; */
+multiline_comment|/*&n; * Start I/O on a page.&n; * This function expects the page to be locked and may return&n; * before I/O is complete. You then have to check page-&gt;locked&n; * and page-&gt;uptodate.&n; *&n; * FIXME: we need a swapper_inode-&gt;get_block function to remove&n; *        some of the bmap kludges and interface ugliness here.&n; *&n; * NOTE: unlike file pages, swap pages are locked while under writeout.&n; * This is to avoid a deadlock which occurs when free_swap_and_cache()&n; * calls block_flushpage() under spinlock and hits a locked buffer, and&n; * schedules under spinlock.   Another approach would be to teach&n; * find_trylock_page() to also trylock the page&squot;s writeback flags.&n; */
 DECL|function|brw_page
 r_int
 id|brw_page
@@ -8240,7 +8357,6 @@ id|rw
 op_eq
 id|WRITE
 )paren
-multiline_comment|/* To support submit_bh debug tests */
 id|set_buffer_uptodate
 c_func
 (paren
@@ -8434,7 +8550,7 @@ comma
 id|page
 )paren
 suffix:semicolon
-id|wait_on_page
+id|wait_on_page_locked
 c_func
 (paren
 id|page
@@ -8772,6 +8888,18 @@ c_func
 id|page
 )paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|PageWriteback
+c_func
+(paren
+id|page
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 r_if
 c_cond

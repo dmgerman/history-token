@@ -2368,8 +2368,14 @@ id|init_mm.mm_users
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Wait for and lock page.  When do_swap_page races with&n;&t;&t; * try_to_unuse, do_swap_page can handle the fault much&n;&t;&t; * faster than try_to_unuse can locate the entry.  This&n;&t;&t; * apparently redundant &quot;wait_on_page&quot; lets try_to_unuse&n;&t;&t; * defer to do_swap_page in such a case - in some tests,&n;&t;&t; * do_swap_page and try_to_unuse repeatedly compete.&n;&t;&t; */
-id|wait_on_page
+multiline_comment|/*&n;&t;&t; * Wait for and lock page.  When do_swap_page races with&n;&t;&t; * try_to_unuse, do_swap_page can handle the fault much&n;&t;&t; * faster than try_to_unuse can locate the entry.  This&n;&t;&t; * apparently redundant &quot;wait_on_page_locked&quot; lets try_to_unuse&n;&t;&t; * defer to do_swap_page in such a case - in some tests,&n;&t;&t; * do_swap_page and try_to_unuse repeatedly compete.&n;&t;&t; */
+id|wait_on_page_locked
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|wait_on_page_writeback
 c_func
 (paren
 id|page

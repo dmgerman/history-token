@@ -1735,7 +1735,13 @@ id|mp
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * write out dirty pages of bmap&n;&t; */
-id|filemap_fdatasync
+id|filemap_fdatawait
+c_func
+(paren
+id|ipbmap-&gt;i_mapping
+)paren
+suffix:semicolon
+id|filemap_fdatawrite
 c_func
 (paren
 id|ipbmap-&gt;i_mapping
