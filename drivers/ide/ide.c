@@ -3079,7 +3079,7 @@ c_func
 id|ide_setup_ports
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Register an IDE interface, specifing exactly the registers etc&n; * Set init=1 iff calling before probes have taken place.&n; */
+multiline_comment|/*&n; * Register an IDE interface, specifying exactly the registers etc&n; * Set init=1 iff calling before probes have taken place.&n; */
 DECL|function|ide_register_hw
 r_int
 id|ide_register_hw
@@ -3343,7 +3343,7 @@ c_func
 id|ide_register_hw
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Compatability function with existing drivers.  If you want&n; * something different, use the function above.&n; */
+multiline_comment|/*&n; * Compatibility function with existing drivers.  If you want&n; * something different, use the function above.&n; */
 DECL|function|ide_register
 r_int
 id|ide_register
