@@ -411,6 +411,8 @@ DECL|macro|atomic_inc_return
 mdefine_line|#define atomic_inc_return(v)    (atomic_add_return(1, v))
 DECL|macro|atomic_dec_return
 mdefine_line|#define atomic_dec_return(v)    (atomic_sub_return(1, v))
+DECL|macro|atomic_sub_and_test
+mdefine_line|#define atomic_sub_and_test(i, v) (atomic_sub_return(i, v) == 0)
 DECL|macro|atomic_add_negative
 mdefine_line|#define atomic_add_negative(i,v) (atomic_add_return(i, v) &lt; 0)
 multiline_comment|/* Atomic operations are already serializing on ARM */
