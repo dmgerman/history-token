@@ -135,6 +135,10 @@ id|timeout
 comma
 id|irqmask
 suffix:semicolon
+r_void
+op_star
+id|base
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -186,12 +190,16 @@ id|host-&gt;cclk
 op_div
 l_int|1000000000ULL
 suffix:semicolon
+id|base
+op_assign
+id|host-&gt;base
+suffix:semicolon
 id|writel
 c_func
 (paren
 id|timeout
 comma
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIDATATIMER
 )paren
@@ -201,7 +209,7 @@ c_func
 (paren
 id|host-&gt;size
 comma
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIDATALENGTH
 )paren
@@ -244,7 +252,7 @@ c_func
 (paren
 id|datactrl
 comma
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIDATACTRL
 )paren
@@ -254,7 +262,7 @@ c_func
 (paren
 id|irqmask
 comma
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIMASK1
 )paren
@@ -280,6 +288,12 @@ id|u32
 id|c
 )paren
 (brace
+r_void
+op_star
+id|base
+op_assign
+id|host-&gt;base
+suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -300,7 +314,7 @@ c_cond
 id|readl
 c_func
 (paren
-id|host-&gt;base
+id|base
 op_plus
 id|MMCICOMMAND
 )paren
@@ -313,7 +327,7 @@ c_func
 (paren
 l_int|0
 comma
-id|host-&gt;base
+id|base
 op_plus
 id|MMCICOMMAND
 )paren
@@ -382,7 +396,7 @@ c_func
 (paren
 id|cmd-&gt;arg
 comma
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIARGUMENT
 )paren
@@ -392,7 +406,7 @@ c_func
 (paren
 id|c
 comma
-id|host-&gt;base
+id|base
 op_plus
 id|MMCICOMMAND
 )paren
@@ -523,7 +537,6 @@ id|data-&gt;mrq
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/*if (readl(host-&gt;base + MMCIDATACNT) &gt; 6)*/
 (brace
 id|mmci_start_command
 c_func
@@ -559,6 +572,12 @@ r_int
 id|status
 )paren
 (brace
+r_void
+op_star
+id|base
+op_assign
+id|host-&gt;base
+suffix:semicolon
 id|host-&gt;cmd
 op_assign
 l_int|NULL
@@ -571,7 +590,7 @@ op_assign
 id|readl
 c_func
 (paren
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIRESPONSE0
 )paren
@@ -584,7 +603,7 @@ op_assign
 id|readl
 c_func
 (paren
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIRESPONSE1
 )paren
@@ -597,7 +616,7 @@ op_assign
 id|readl
 c_func
 (paren
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIRESPONSE2
 )paren
@@ -610,7 +629,7 @@ op_assign
 id|readl
 c_func
 (paren
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIRESPONSE3
 )paren
@@ -688,6 +707,7 @@ id|cmd-&gt;data
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/*&n; * PIO data transfer IRQ handler.&n; */
 DECL|function|mmci_pio_irq
 r_static
 id|irqreturn_t
@@ -714,6 +734,12 @@ id|host
 op_assign
 id|dev_id
 suffix:semicolon
+r_void
+op_star
+id|base
+op_assign
+id|host-&gt;base
+suffix:semicolon
 id|u32
 id|status
 suffix:semicolon
@@ -729,7 +755,7 @@ op_assign
 id|readl
 c_func
 (paren
-id|host-&gt;base
+id|base
 op_plus
 id|MMCISTATUS
 )paren
@@ -745,8 +771,6 @@ op_amp
 id|MCI_RXDATAAVLBL
 op_or
 id|MCI_RXFIFOHALFFULL
-op_or
-id|MCI_TXFIFOEMPTY
 op_or
 id|MCI_TXFIFOHALFEMPTY
 )paren
@@ -777,6 +801,7 @@ id|MCI_RXFIFOHALFFULL
 )paren
 (brace
 r_int
+r_int
 id|count
 op_assign
 id|host-&gt;size
@@ -785,7 +810,7 @@ op_minus
 id|readl
 c_func
 (paren
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIFIFOCNT
 )paren
@@ -815,7 +840,7 @@ id|host-&gt;buffer
 id|readsl
 c_func
 (paren
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIFIFO
 comma
@@ -875,7 +900,7 @@ suffix:semicolon
 id|readl
 c_func
 (paren
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIFIFO
 )paren
@@ -919,7 +944,7 @@ suffix:semicolon
 id|writesl
 c_func
 (paren
-id|host-&gt;base
+id|base
 op_plus
 id|MMCIFIFO
 comma
@@ -976,6 +1001,7 @@ id|ret
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Handle completion of command and data transfers.&n; */
 DECL|function|mmci_irq
 r_static
 id|irqreturn_t
@@ -1793,8 +1819,6 @@ id|min
 c_func
 (paren
 id|host-&gt;mclk
-op_div
-l_int|2
 comma
 id|fmax
 )paren
