@@ -534,22 +534,22 @@ mdefine_line|#define DE4X5_CLASS_CODE     0x00020000 /* Network controller, Ethe
 DECL|macro|NO_MORE_PCI
 mdefine_line|#define NO_MORE_PCI          -2         /* PCI bus search all done */
 multiline_comment|/*&n;** Memory Alignment. Each descriptor is 4 longwords long. To force a&n;** particular alignment on the TX descriptor, adjust DESC_SKIP_LEN and&n;** DESC_ALIGN. ALIGN aligns the start address of the private memory area&n;** and hence the RX descriptor ring&squot;s first entry. &n;*/
-DECL|macro|ALIGN4
-mdefine_line|#define ALIGN4      ((u_long)4 - 1)     /* 1 longword align */
-DECL|macro|ALIGN8
-mdefine_line|#define ALIGN8      ((u_long)8 - 1)     /* 2 longword align */
-DECL|macro|ALIGN16
-mdefine_line|#define ALIGN16     ((u_long)16 - 1)    /* 4 longword align */
-DECL|macro|ALIGN32
-mdefine_line|#define ALIGN32     ((u_long)32 - 1)    /* 8 longword align */
-DECL|macro|ALIGN64
-mdefine_line|#define ALIGN64     ((u_long)64 - 1)    /* 16 longword align */
-DECL|macro|ALIGN128
-mdefine_line|#define ALIGN128    ((u_long)128 - 1)   /* 32 longword align */
-DECL|macro|ALIGN
-mdefine_line|#define ALIGN         ALIGN32           /* Keep the DC21040 happy... */
-DECL|macro|CACHE_ALIGN
-mdefine_line|#define CACHE_ALIGN   CAL_16LONG
+DECL|macro|DE4X5_ALIGN4
+mdefine_line|#define DE4X5_ALIGN4      ((u_long)4 - 1)     /* 1 longword align */
+DECL|macro|DE4X5_ALIGN8
+mdefine_line|#define DE4X5_ALIGN8      ((u_long)8 - 1)     /* 2 longword align */
+DECL|macro|DE4X5_ALIGN16
+mdefine_line|#define DE4X5_ALIGN16     ((u_long)16 - 1)    /* 4 longword align */
+DECL|macro|DE4X5_ALIGN32
+mdefine_line|#define DE4X5_ALIGN32     ((u_long)32 - 1)    /* 8 longword align */
+DECL|macro|DE4X5_ALIGN64
+mdefine_line|#define DE4X5_ALIGN64     ((u_long)64 - 1)    /* 16 longword align */
+DECL|macro|DE4X5_ALIGN128
+mdefine_line|#define DE4X5_ALIGN128    ((u_long)128 - 1)   /* 32 longword align */
+DECL|macro|DE4X5_ALIGN
+mdefine_line|#define DE4X5_ALIGN         DE4X5_ALIGN32           /* Keep the DC21040 happy... */
+DECL|macro|DE4X5_CACHE_ALIGN
+mdefine_line|#define DE4X5_CACHE_ALIGN   CAL_16LONG
 DECL|macro|DESC_SKIP_LEN
 mdefine_line|#define DESC_SKIP_LEN DSL_0             /* Must agree with DESC_ALIGN */
 multiline_comment|/*#define DESC_ALIGN    u32 dummy[4];  / * Must agree with DESC_SKIP_LEN */
@@ -3509,7 +3509,7 @@ r_struct
 id|de4x5_private
 )paren
 op_plus
-id|ALIGN
+id|DE4X5_ALIGN
 comma
 id|GFP_KERNEL
 )paren
@@ -3545,11 +3545,11 @@ id|u_long
 )paren
 id|dev-&gt;priv
 op_plus
-id|ALIGN
+id|DE4X5_ALIGN
 )paren
 op_amp
 op_complement
-id|ALIGN
+id|DE4X5_ALIGN
 )paren
 suffix:semicolon
 id|lp
@@ -3754,7 +3754,7 @@ id|RX_BUFF_SZ
 op_star
 id|NUM_RX_DESC
 op_plus
-id|ALIGN
+id|DE4X5_ALIGN
 suffix:semicolon
 macro_line|#endif
 id|lp-&gt;rx_ring
@@ -3896,11 +3896,11 @@ op_assign
 (paren
 id|dma_rx_bufs
 op_plus
-id|ALIGN
+id|DE4X5_ALIGN
 )paren
 op_amp
 op_complement
-id|ALIGN
+id|DE4X5_ALIGN
 suffix:semicolon
 id|lp-&gt;rx_bufs
 op_assign
@@ -3921,11 +3921,11 @@ op_plus
 id|NUM_TX_DESC
 )paren
 op_plus
-id|ALIGN
+id|DE4X5_ALIGN
 )paren
 op_amp
 op_complement
-id|ALIGN
+id|DE4X5_ALIGN
 )paren
 suffix:semicolon
 r_for
@@ -4811,7 +4811,7 @@ id|PBL_4
 op_or
 id|DESC_SKIP_LEN
 op_or
-id|CACHE_ALIGN
+id|DE4X5_CACHE_ALIGN
 suffix:semicolon
 id|bmr
 op_or_assign
@@ -15891,7 +15891,7 @@ c_func
 (paren
 id|IEEE802_3_SZ
 op_plus
-id|ALIGN
+id|DE4X5_ALIGN
 op_plus
 l_int|2
 )paren
@@ -15923,11 +15923,11 @@ op_assign
 (paren
 id|tmp
 op_plus
-id|ALIGN
+id|DE4X5_ALIGN
 )paren
 op_amp
 op_complement
-id|ALIGN
+id|DE4X5_ALIGN
 )paren
 op_minus
 id|tmp

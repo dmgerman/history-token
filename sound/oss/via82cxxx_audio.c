@@ -883,17 +883,6 @@ comma
 )brace
 comma
 (brace
-id|PCI_VENDOR_ID_VIA
-comma
-id|PCI_DEVICE_ID_VIA_8233_5
-comma
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-)brace
-comma
-(brace
 l_int|0
 comma
 )brace

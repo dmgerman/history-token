@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2001 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#ifndef __LINUX_EHCI_HCD_H
 DECL|macro|__LINUX_EHCI_HCD_H
 mdefine_line|#define __LINUX_EHCI_HCD_H
@@ -61,9 +61,9 @@ op_star
 id|pshadow
 suffix:semicolon
 multiline_comment|/* mirror hw periodic table */
-DECL|member|next_frame
+DECL|member|next_uframe
 r_int
-id|next_frame
+id|next_uframe
 suffix:semicolon
 multiline_comment|/* scan periodic, start here */
 DECL|member|periodic_urbs
@@ -104,6 +104,11 @@ id|ehci_regs
 op_star
 id|regs
 suffix:semicolon
+DECL|member|hcs_params
+id|u32
+id|hcs_params
+suffix:semicolon
+multiline_comment|/* cached register copy */
 multiline_comment|/* per-HC memory pools (could be per-PCI-bus, but ...) */
 DECL|member|qh_pool
 r_struct
@@ -708,11 +713,6 @@ id|urb
 op_star
 id|urb
 suffix:semicolon
-DECL|member|index
-r_int
-id|index
-suffix:semicolon
-multiline_comment|/* in urb-&gt;iso_frame_desc */
 DECL|member|itd_list
 r_struct
 id|list_head
@@ -724,19 +724,25 @@ id|dma_addr_t
 id|buf_dma
 suffix:semicolon
 multiline_comment|/* frame&squot;s buffer address */
-DECL|member|uframe
-r_int
-id|uframe
-suffix:semicolon
-multiline_comment|/* in periodic schedule */
+multiline_comment|/* for now, only one hw_transaction per itd */
 DECL|member|transaction
 id|u32
 id|transaction
-(braket
-l_int|8
-)braket
 suffix:semicolon
-multiline_comment|/* copy of hw_transaction */
+DECL|member|index
+id|u16
+id|index
+suffix:semicolon
+multiline_comment|/* in urb-&gt;iso_frame_desc */
+DECL|member|uframe
+id|u16
+id|uframe
+suffix:semicolon
+multiline_comment|/* in periodic schedule */
+DECL|member|usecs
+id|u16
+id|usecs
+suffix:semicolon
 )brace
 id|__attribute__
 (paren

@@ -1561,7 +1561,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;ES3210 I/O base address(es)&quot;
+l_string|&quot;I/O base address(es)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1569,7 +1569,7 @@ c_func
 (paren
 id|irq
 comma
-l_string|&quot;ES3210 IRQ number(s)&quot;
+l_string|&quot;IRQ number(s)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1577,7 +1577,19 @@ c_func
 (paren
 id|mem
 comma
-l_string|&quot;ES3210 memory base address(es)&quot;
+l_string|&quot;memory base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Racal-Interlan ES3210 EISA ethernet driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 r_int
@@ -1797,10 +1809,4 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* MODULE */
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 eof

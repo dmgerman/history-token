@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
@@ -1394,10 +1395,6 @@ id|pmd_t
 op_star
 id|pmd
 suffix:semicolon
-id|pte_t
-op_star
-id|ptep
-suffix:semicolon
 r_static
 r_int
 id|nopreload
@@ -1467,17 +1464,6 @@ op_star
 id|pmd
 )paren
 )paren
-(brace
-id|ptep
-op_assign
-id|pte_offset
-c_func
-(paren
-id|pmd
-comma
-id|address
-)paren
-suffix:semicolon
 id|add_hash_page
 c_func
 (paren
@@ -1485,9 +1471,13 @@ id|mm-&gt;context
 comma
 id|address
 comma
-id|ptep
+id|pmd_val
+c_func
+(paren
+op_star
+id|pmd
+)paren
 )paren
 suffix:semicolon
-)brace
 )brace
 eof

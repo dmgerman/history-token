@@ -468,6 +468,16 @@ id|snd_info_entry_t
 op_star
 id|snd_seq_root
 suffix:semicolon
+macro_line|#ifdef CONFIG_SND_OSSEMUL
+r_extern
+id|snd_info_entry_t
+op_star
+id|snd_oss_root
+suffix:semicolon
+macro_line|#else
+DECL|macro|snd_oss_root
+mdefine_line|#define snd_oss_root NULL
+macro_line|#endif
 r_int
 id|snd_iprintf
 c_func
@@ -713,6 +723,8 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|snd_seq_root
 mdefine_line|#define snd_seq_root NULL
+DECL|macro|snd_oss_root
+mdefine_line|#define snd_oss_root NULL
 DECL|function|snd_iprintf
 r_static
 r_inline

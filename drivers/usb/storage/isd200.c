@@ -2728,7 +2728,7 @@ r_return
 id|retStatus
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * Invoke the transport and basic error-handling/recovery methods&n; *&n; * This is used by the protocol layers to actually send the message to&n; * the device and recieve the response.&n; */
+multiline_comment|/**************************************************************************&n; * Invoke the transport and basic error-handling/recovery methods&n; *&n; * This is used by the protocol layers to actually send the message to&n; * the device and receive the response.&n; */
 DECL|function|isd200_invoke_transport
 r_void
 id|isd200_invoke_transport

@@ -38,6 +38,9 @@ DECL|macro|CRAMFS_NAMELEN_WIDTH
 mdefine_line|#define CRAMFS_NAMELEN_WIDTH 6
 DECL|macro|CRAMFS_OFFSET_WIDTH
 mdefine_line|#define CRAMFS_OFFSET_WIDTH 26
+multiline_comment|/*&n; * Since inode.namelen is a unsigned 6-bit number, the maximum cramfs&n; * path length is 63 &lt;&lt; 2 = 252.&n; */
+DECL|macro|CRAMFS_MAXPATHLEN
+mdefine_line|#define CRAMFS_MAXPATHLEN (((1 &lt;&lt; CRAMFS_NAMELEN_WIDTH) - 1) &lt;&lt; 2)
 multiline_comment|/*&n; * Reasonably terse representation of the inode data.&n; */
 DECL|struct|cramfs_inode
 r_struct
@@ -122,12 +125,12 @@ DECL|member|flags
 id|u32
 id|flags
 suffix:semicolon
-multiline_comment|/* 0 */
+multiline_comment|/* feature flags */
 DECL|member|future
 id|u32
 id|future
 suffix:semicolon
-multiline_comment|/* 0 */
+multiline_comment|/* reserved for future use */
 DECL|member|signature
 id|u8
 id|signature
@@ -155,7 +158,7 @@ r_struct
 id|cramfs_inode
 id|root
 suffix:semicolon
-multiline_comment|/* Root inode data */
+multiline_comment|/* root inode data */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Feature flags&n; *&n; * 0x00000000 - 0x000000ff: features that work for all past kernels&n; * 0x00000100 - 0xffffffff: features that don&squot;t work for past kernels&n; */
@@ -171,7 +174,7 @@ DECL|macro|CRAMFS_FLAG_SHIFTED_ROOT_OFFSET
 mdefine_line|#define CRAMFS_FLAG_SHIFTED_ROOT_OFFSET&t;0x00000400&t;/* shifted root fs */
 multiline_comment|/*&n; * Valid values in super.flags.  Currently we refuse to mount&n; * if (flags &amp; ~CRAMFS_SUPPORTED_FLAGS).  Maybe that should be&n; * changed to test super.future instead.&n; */
 DECL|macro|CRAMFS_SUPPORTED_FLAGS
-mdefine_line|#define CRAMFS_SUPPORTED_FLAGS (0x7ff)
+mdefine_line|#define CRAMFS_SUPPORTED_FLAGS&t;( 0x000000ff &bslash;&n;&t;&t;&t;&t;| CRAMFS_FLAG_HOLES &bslash;&n;&t;&t;&t;&t;| CRAMFS_FLAG_WRONG_SIGNATURE &bslash;&n;&t;&t;&t;&t;| CRAMFS_FLAG_SHIFTED_ROOT_OFFSET )
 multiline_comment|/* Uncompression interfaces to the underlying zlib */
 r_int
 id|cramfs_uncompress_block

@@ -8781,7 +8781,7 @@ suffix:semicolon
 multiline_comment|/* This is required because the device can go &amp; come back */
 multiline_comment|/* even before we realize it is gone owing to the waits in our kernel threads */
 multiline_comment|/* &amp; the device will be marked as not owned but its status will be good */
-multiline_comment|/* &amp; an attempt to accidently reprobe it may be done. */
+multiline_comment|/* &amp; an attempt to accidentally reprobe it may be done. */
 id|remove
 suffix:colon
 id|chandev_remove

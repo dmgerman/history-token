@@ -1,6 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/dtc2278.c&t;&t;Version 0.02&t;Feb 10, 1996&n; *&n; *  Copyright (C) 1996  Linus Torvalds &amp; author (see below)&n; */
-DECL|macro|REALLY_SLOW_IO
-macro_line|#undef REALLY_SLOW_IO           /* most systems can safely undef this */
+multiline_comment|/*&n; *  Copyright (C) 1996  Linus Torvalds &amp; author (see below)&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;

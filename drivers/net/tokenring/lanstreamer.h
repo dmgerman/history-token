@@ -1,8 +1,40 @@
-multiline_comment|/*&n; *   lanstreamer.h -- driver for the IBM Auto LANStreamer PCI Adapter&n; *&n; *  Written By: Mike Sullivan, IBM Corporation&n; *&n; *  Copyright (C) 1999 IBM Corporation&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the LanStreamer MPC&n; *  chipset. &n; *&n; *  This driver is based on the olympic driver for IBM PCI TokenRing cards (Pit/Pit-Phy/Olympic&n; *  chipsets) written  by:&n; *      1999 Peter De Schrijver All Rights Reserved&n; *&t;1999 Mike Phillips (phillim@amtrak.com)&n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; * This program is free software; you can redistribute it and/or modify      &n; * it under the terms of the GNU General Public License as published by      &n; * the Free Software Foundation; either version 2 of the License, or         &n; * (at your option) any later version.                                       &n; *                                                                           &n; * This program is distributed in the hope that it will be useful,           &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of            &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n; * GNU General Public License for more details.                              &n; *                                                                           &n; * NO WARRANTY                                                               &n; * THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n; * CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n; * LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n; * solely responsible for determining the appropriateness of using and       &n; * distributing the Program and assumes all risks associated with its        &n; * exercise of rights under this Agreement, including but not limited to     &n; * the risks and costs of program errors, damage to or loss of data,         &n; * programs or equipment, and unavailability or interruption of operations.  &n; *                                                                           &n; * DISCLAIMER OF LIABILITY                                                   &n; * NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n; * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n; * DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n; * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n; * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n; * USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n; * HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n; *                                                                           &n; * You should have received a copy of the GNU General Public License         &n; * along with this program; if not, write to the Free Software               &n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n; *                                                                           &n; * &n; *  12/10/99 - Alpha Release 0.1.0&n; *            First release to the public&n; *&n; */
+multiline_comment|/*&n; *   lanstreamer.h -- driver for the IBM Auto LANStreamer PCI Adapter&n; *&n; *  Written By: Mike Sullivan, IBM Corporation&n; *&n; *  Copyright (C) 1999 IBM Corporation&n; *&n; *  Linux driver for IBM PCI tokenring cards based on the LanStreamer MPC&n; *  chipset. &n; *&n; *  This driver is based on the olympic driver for IBM PCI TokenRing cards (Pit/Pit-Phy/Olympic&n; *  chipsets) written  by:&n; *      1999 Peter De Schrijver All Rights Reserved&n; *&t;1999 Mike Phillips (phillim@amtrak.com)&n; *&n; *  Base Driver Skeleton:&n; *      Written 1993-94 by Donald Becker.&n; *&n; *      Copyright 1993 United States Government as represented by the&n; *      Director, National Security Agency.&n; *&n; * This program is free software; you can redistribute it and/or modify      &n; * it under the terms of the GNU General Public License as published by      &n; * the Free Software Foundation; either version 2 of the License, or         &n; * (at your option) any later version.                                       &n; *                                                                           &n; * This program is distributed in the hope that it will be useful,           &n; * but WITHOUT ANY WARRANTY; without even the implied warranty of            &n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n; * GNU General Public License for more details.                              &n; *                                                                           &n; * NO WARRANTY                                                               &n; * THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n; * CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n; * LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n; * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n; * solely responsible for determining the appropriateness of using and       &n; * distributing the Program and assumes all risks associated with its        &n; * exercise of rights under this Agreement, including but not limited to     &n; * the risks and costs of program errors, damage to or loss of data,         &n; * programs or equipment, and unavailability or interruption of operations.  &n; *                                                                           &n; * DISCLAIMER OF LIABILITY                                                   &n; * NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n; * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n; * DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n; * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n; * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n; * USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n; * HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n; *                                                                           &n; * You should have received a copy of the GNU General Public License         &n; * along with this program; if not, write to the Free Software               &n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n; *                                                                           &n; * &n; *  12/10/99 - Alpha Release 0.1.0&n; *            First release to the public&n; *  08/15/01 - Added ioctl() definitions and others - Kent Yoder &lt;yoder1@us.ibm.com&gt;&n; *&n; */
+macro_line|#if STREAMER_IOCTL &amp;&amp; (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0))
+macro_line|#include &lt;asm/ioctl.h&gt;
+DECL|macro|IOCTL_PRINT_RX_BUFS
+mdefine_line|#define IOCTL_PRINT_RX_BUFS   SIOCDEVPRIVATE
+DECL|macro|IOCTL_PRINT_TX_BUFS
+mdefine_line|#define IOCTL_PRINT_TX_BUFS   SIOCDEVPRIVATE+1
+DECL|macro|IOCTL_RX_CMD
+mdefine_line|#define IOCTL_RX_CMD          SIOCDEVPRIVATE+2
+DECL|macro|IOCTL_TX_CMD
+mdefine_line|#define IOCTL_TX_CMD          SIOCDEVPRIVATE+3
+DECL|macro|IOCTL_PRINT_REGISTERS
+mdefine_line|#define IOCTL_PRINT_REGISTERS SIOCDEVPRIVATE+4
+DECL|macro|IOCTL_PRINT_BDAS
+mdefine_line|#define IOCTL_PRINT_BDAS      SIOCDEVPRIVATE+5
+DECL|macro|IOCTL_SPIN_LOCK_TEST
+mdefine_line|#define IOCTL_SPIN_LOCK_TEST  SIOCDEVPRIVATE+6
+DECL|macro|IOCTL_SISR_MASK
+mdefine_line|#define IOCTL_SISR_MASK       SIOCDEVPRIVATE+7
+macro_line|#endif
+multiline_comment|/* MAX_INTR - the maximum number of times we can loop&n; * inside the interrupt function before returning&n; * control to the OS (maximum value is 256)&n; */
+DECL|macro|MAX_INTR
+mdefine_line|#define MAX_INTR 5
+DECL|macro|CLS
+mdefine_line|#define CLS 0x0C
+DECL|macro|MLR
+mdefine_line|#define MLR 0x86
+DECL|macro|LTR
+mdefine_line|#define LTR 0x0D
 DECL|macro|BCTL
 mdefine_line|#define BCTL 0x60
 DECL|macro|BCTL_SOFTRESET
 mdefine_line|#define BCTL_SOFTRESET (1&lt;&lt;15)
+DECL|macro|BCTL_RX_FIFO_8
+mdefine_line|#define BCTL_RX_FIFO_8 (1&lt;&lt;1)
+DECL|macro|BCTL_TX_FIFO_8
+mdefine_line|#define BCTL_TX_FIFO_8 (1&lt;&lt;3)
 DECL|macro|GPR
 mdefine_line|#define GPR 0x4a
 DECL|macro|GPR_AUTOSENSE
@@ -49,6 +81,8 @@ DECL|macro|SISR_MASK_RUM
 mdefine_line|#define SISR_MASK_RUM 0x58
 DECL|macro|SISR_MI
 mdefine_line|#define SISR_MI (1&lt;&lt;15)
+DECL|macro|SISR_SERR_ERR
+mdefine_line|#define SISR_SERR_ERR (1&lt;&lt;14)
 DECL|macro|SISR_TIMER
 mdefine_line|#define SISR_TIMER (1&lt;&lt;11)
 DECL|macro|SISR_LAP_PAR_ERR
@@ -258,8 +292,9 @@ mdefine_line|#define ASB_RECEIVE_DATA 0x81
 multiline_comment|/* Streamer defaults for buffers */
 DECL|macro|STREAMER_RX_RING_SIZE
 mdefine_line|#define STREAMER_RX_RING_SIZE 16&t;/* should be a power of 2 */
+multiline_comment|/* Setting the number of TX descriptors to 1 is a workaround for an&n; * undocumented hardware problem with the lanstreamer board. Setting&n; * this to something higher may slightly increase the throughput you&n; * can get from the card, but at the risk of locking up the box. - &n; * &lt;yoder1@us.ibm.com&gt;&n; */
 DECL|macro|STREAMER_TX_RING_SIZE
-mdefine_line|#define STREAMER_TX_RING_SIZE 8&t;/* should be a power of 2 */
+mdefine_line|#define STREAMER_TX_RING_SIZE 1&t;/* should be a power of 2 */
 DECL|macro|PKT_BUF_SZ
 mdefine_line|#define PKT_BUF_SZ 4096&t;&t;/* Default packet size */
 multiline_comment|/* Streamer data structures */

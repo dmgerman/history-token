@@ -193,6 +193,7 @@ multiline_comment|/* for timeouts */
 DECL|member|rx_urb
 r_struct
 id|urb
+op_star
 id|rx_urb
 (braket
 id|IU_MAX_RX_URBS
@@ -209,12 +210,14 @@ multiline_comment|/* Pointer to idle URB in Rx path */
 DECL|member|tx_urb
 r_struct
 id|urb
+op_star
 id|tx_urb
 suffix:semicolon
 multiline_comment|/* URB used to send data frames */
 DECL|member|speed_urb
 r_struct
 id|urb
+op_star
 id|speed_urb
 suffix:semicolon
 multiline_comment|/* URB used to send speed commands */

@@ -14,20 +14,6 @@ macro_line|#include &lt;linux/coda_linux.h&gt;
 macro_line|#include &lt;linux/coda_psdev.h&gt;
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 multiline_comment|/* initialize the debugging variables */
-DECL|variable|coda_debug
-r_int
-id|coda_debug
-suffix:semicolon
-DECL|variable|coda_print_entry
-r_int
-id|coda_print_entry
-suffix:semicolon
-DECL|variable|coda_access_cache
-r_int
-id|coda_access_cache
-op_assign
-l_int|1
-suffix:semicolon
 DECL|variable|coda_fake_statfs
 r_int
 id|coda_fake_statfs
@@ -317,20 +303,10 @@ id|O_ACCMODE
 op_eq
 id|O_RDONLY
 )paren
-(brace
-id|CDEBUG
-c_func
-(paren
-id|D_FILE
-comma
-l_string|&quot;--&gt; C_O_READ added&bslash;n&quot;
-)paren
-suffix:semicolon
 id|coda_flags
 op_or_assign
 id|C_O_READ
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -342,22 +318,12 @@ id|O_ACCMODE
 op_eq
 id|O_RDWR
 )paren
-(brace
-id|CDEBUG
-c_func
-(paren
-id|D_FILE
-comma
-l_string|&quot;--&gt; C_O_READ | C_O_WRITE added&bslash;n&quot;
-)paren
-suffix:semicolon
 id|coda_flags
 op_or_assign
 id|C_O_READ
 op_or
 id|C_O_WRITE
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -369,20 +335,10 @@ id|O_ACCMODE
 op_eq
 id|O_WRONLY
 )paren
-(brace
-id|CDEBUG
-c_func
-(paren
-id|D_FILE
-comma
-l_string|&quot;--&gt; C_O_WRITE added&bslash;n&quot;
-)paren
-suffix:semicolon
 id|coda_flags
 op_or_assign
 id|C_O_WRITE
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -390,20 +346,10 @@ id|flags
 op_amp
 id|O_TRUNC
 )paren
-(brace
-id|CDEBUG
-c_func
-(paren
-id|D_FILE
-comma
-l_string|&quot;--&gt; C_O_TRUNC added&bslash;n&quot;
-)paren
-suffix:semicolon
 id|coda_flags
 op_or_assign
 id|C_O_TRUNC
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -411,20 +357,10 @@ id|flags
 op_amp
 id|O_CREAT
 )paren
-(brace
-id|CDEBUG
-c_func
-(paren
-id|D_FILE
-comma
-l_string|&quot;--&gt; C_O_CREAT added&bslash;n&quot;
-)paren
-suffix:semicolon
 id|coda_flags
 op_or_assign
 id|C_O_CREAT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -432,20 +368,10 @@ id|flags
 op_amp
 id|O_EXCL
 )paren
-(brace
 id|coda_flags
 op_or_assign
 id|C_O_EXCL
 suffix:semicolon
-id|CDEBUG
-c_func
-(paren
-id|D_FILE
-comma
-l_string|&quot;--&gt; C_O_EXCL added&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 r_return
 id|coda_flags
 suffix:semicolon

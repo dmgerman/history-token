@@ -3005,7 +3005,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;EtherLink II I/O base address(es)&quot;
+l_string|&quot;I/O base address(es)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -3013,7 +3013,7 @@ c_func
 (paren
 id|irq
 comma
-l_string|&quot;EtherLink II IRQ number(s) (assigned)&quot;
+l_string|&quot;IRQ number(s) (assigned)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -3021,7 +3021,19 @@ c_func
 (paren
 id|xcvr
 comma
-l_string|&quot;EtherLink II tranceiver(s) (0=internal, 1=external)&quot;
+l_string|&quot;tranceiver(s) (0=internal, 1=external)&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;3Com ISA EtherLink II, II/16 (3c503, 3c503/16) driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* This is set up so that only a single autoprobe takes place per call.&n;ISA device autoprobes on a running machine are not recommended. */
@@ -3247,12 +3259,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* MODULE */
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * Local variables:&n; *  version-control: t&n; *  kept-new-versions: 5&n; *  c-indent-level: 4&n; * End:&n; */
 eof

@@ -2247,7 +2247,7 @@ l_char|&squot;$&squot;
 )paren
 (brace
 r_int
-id|index
+id|i
 op_assign
 id|get_varnum
 c_func
@@ -2269,7 +2269,7 @@ c_cond
 op_logical_neg
 id|vartable
 (braket
-id|index
+id|i
 )braket
 dot
 id|global_written
@@ -2280,7 +2280,7 @@ c_func
 (paren
 id|vartable
 (braket
-id|index
+id|i
 )braket
 dot
 id|name
@@ -3984,9 +3984,6 @@ id|kconfig
 op_star
 id|cfg
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|printf
 c_func
 (paren
@@ -4351,6 +4348,9 @@ op_eq
 id|token_tristate
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 r_if
 c_cond
 (paren

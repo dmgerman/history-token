@@ -756,6 +756,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

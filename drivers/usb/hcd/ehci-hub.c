@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2001 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this file is part of ehci-hcd.c */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * EHCI Root Hub ... the nonsharable stuff&n; *&n; * Registers don&squot;t need cpu_to_le32, that happens transparently&n; */
@@ -155,19 +155,11 @@ l_int|0
 op_assign
 l_int|0
 suffix:semicolon
-id|temp
-op_assign
-id|readl
-(paren
-op_amp
-id|ehci-&gt;caps-&gt;hcs_params
-)paren
-suffix:semicolon
 id|ports
 op_assign
 id|HCS_N_PORTS
 (paren
-id|temp
+id|ehci-&gt;hcs_params
 )paren
 suffix:semicolon
 r_if
@@ -344,21 +336,12 @@ op_star
 id|desc
 )paren
 (brace
-id|u32
-id|params
-op_assign
-id|readl
-(paren
-op_amp
-id|ehci-&gt;caps-&gt;hcs_params
-)paren
-suffix:semicolon
 r_int
 id|ports
 op_assign
 id|HCS_N_PORTS
 (paren
-id|params
+id|ehci-&gt;hcs_params
 )paren
 suffix:semicolon
 id|u16
@@ -436,27 +419,27 @@ c_cond
 (paren
 id|HCS_PPC
 (paren
-id|params
+id|ehci-&gt;hcs_params
 )paren
 )paren
-multiline_comment|/* per-port power control */
 id|temp
 op_or_assign
 l_int|0x0001
 suffix:semicolon
+multiline_comment|/* per-port power control */
 r_if
 c_cond
 (paren
 id|HCS_INDICATOR
 (paren
-id|params
+id|ehci-&gt;hcs_params
 )paren
 )paren
-multiline_comment|/* per-port indicators (LEDs) */
 id|temp
 op_or_assign
 l_int|0x0080
 suffix:semicolon
+multiline_comment|/* per-port indicators (LEDs) */
 id|desc-&gt;wHubCharacteristics
 op_assign
 id|cpu_to_le16
@@ -503,21 +486,12 @@ id|hcd_to_ehci
 id|hcd
 )paren
 suffix:semicolon
-id|u32
-id|params
-op_assign
-id|readl
-(paren
-op_amp
-id|ehci-&gt;caps-&gt;hcs_params
-)paren
-suffix:semicolon
 r_int
 id|ports
 op_assign
 id|HCS_N_PORTS
 (paren
-id|params
+id|ehci-&gt;hcs_params
 )paren
 suffix:semicolon
 id|u32
@@ -672,7 +646,7 @@ c_cond
 (paren
 id|HCS_PPC
 (paren
-id|params
+id|ehci-&gt;hcs_params
 )paren
 )paren
 id|writel
@@ -1188,7 +1162,7 @@ c_cond
 (paren
 id|HCS_PPC
 (paren
-id|params
+id|ehci-&gt;hcs_params
 )paren
 )paren
 id|writel
@@ -1249,6 +1223,44 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Philips 1562 wants CMD_RUN to reset */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|ehci-&gt;hcd.state
+)paren
+)paren
+(brace
+id|u32
+id|cmd
+op_assign
+id|readl
+(paren
+op_amp
+id|ehci-&gt;regs-&gt;command
+)paren
+suffix:semicolon
+id|cmd
+op_or_assign
+id|CMD_RUN
+suffix:semicolon
+id|writel
+(paren
+id|cmd
+comma
+op_amp
+id|ehci-&gt;regs-&gt;command
+)paren
+suffix:semicolon
+id|ehci-&gt;hcd.state
+op_assign
+id|USB_STATE_RUNNING
+suffix:semicolon
+)brace
 id|vdbg
 (paren
 l_string|&quot;%s port %d reset&quot;

@@ -4081,7 +4081,7 @@ id|card-&gt;u.x.x25_timer
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Device is not up untill the we are in connected state */
+multiline_comment|/* Device is not up until the we are in connected state */
 id|do_gettimeofday
 c_func
 (paren
@@ -16546,7 +16546,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*===============================================================&n; * send_delayed_cmd_result&n; *&n; *&t;Wait commands like PLEACE CALL or CLEAR CALL must wait&n; *      untill the result arrivers. This function passes&n; *      the result to a waiting sock. &n; *&n; *===============================================================*/
+multiline_comment|/*===============================================================&n; * send_delayed_cmd_result&n; *&n; *&t;Wait commands like PLEACE CALL or CLEAR CALL must wait&n; *      until the result arrives. This function passes&n; *      the result to a waiting sock. &n; *&n; *===============================================================*/
 DECL|function|send_delayed_cmd_result
 r_static
 r_void

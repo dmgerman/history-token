@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* For TASK_SIZE */
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/kmap_types.h&gt;
 r_extern
 r_void
 id|_tlbie
@@ -376,6 +377,16 @@ id|page_va
 suffix:semicolon
 r_extern
 r_void
+id|__flush_dcache_icache_phys
+c_func
+(paren
+r_int
+r_int
+id|physaddr
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|flush_dcache_page
 c_func
 (paren
@@ -526,8 +537,6 @@ DECL|macro|_PAGE_HWWRITE
 mdefine_line|#define _PAGE_HWWRITE&t;0x0100&t;/* h/w write enable: never set in Linux PTE */
 DECL|macro|_PAGE_USER
 mdefine_line|#define _PAGE_USER&t;0x0800&t;/* One of the PP bits, the other is USER&amp;~RW */
-DECL|macro|_PMD_PRESENT
-mdefine_line|#define _PMD_PRESENT&t;0x0001
 DECL|macro|_PMD_PAGE_MASK
 mdefine_line|#define _PMD_PAGE_MASK&t;0x000c
 DECL|macro|_PMD_PAGE_8M
@@ -669,9 +678,9 @@ mdefine_line|#define pte_clear(ptep)&t;&t;do { set_pte((ptep), __pte(0)); } whil
 DECL|macro|pmd_none
 mdefine_line|#define pmd_none(pmd)&t;&t;(!pmd_val(pmd))
 DECL|macro|pmd_bad
-mdefine_line|#define&t;pmd_bad(pmd)&t;&t;((pmd_val(pmd) &amp; ~PAGE_MASK) != 0)
+mdefine_line|#define&t;pmd_bad(pmd)&t;&t;(0)
 DECL|macro|pmd_present
-mdefine_line|#define&t;pmd_present(pmd)&t;((pmd_val(pmd) &amp; PAGE_MASK) != 0)
+mdefine_line|#define&t;pmd_present(pmd)&t;(pmd_val(pmd) != 0)
 DECL|macro|pmd_clear
 mdefine_line|#define&t;pmd_clear(pmdp)&t;&t;do { pmd_val(*(pmdp)) = 0; } while (0)
 DECL|macro|pte_page
@@ -1473,8 +1482,10 @@ suffix:semicolon
 )brace
 DECL|macro|pte_same
 mdefine_line|#define pte_same(A,B)&t;(((pte_val(A) ^ pte_val(B)) &amp; ~_PAGE_HASHPTE) == 0)
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd)&t;&bslash;&n;&t;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd)&t;(pmd_val(pmd) &amp; PAGE_MASK)
+mdefine_line|#define pmd_page(pmd)&t;&t;&bslash;&n;&t;(mem_map + (pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
@@ -1510,50 +1521,18 @@ id|dir
 suffix:semicolon
 )brace
 multiline_comment|/* Find an entry in the third-level page table.. */
-DECL|function|pte_offset
-r_static
-r_inline
-id|pte_t
-op_star
-id|pte_offset
-c_func
-(paren
-id|pmd_t
-op_star
-id|dir
-comma
-r_int
-r_int
-id|address
-)paren
-(brace
-r_return
-(paren
-id|pte_t
-op_star
-)paren
-id|pmd_page
-c_func
-(paren
-op_star
-id|dir
-)paren
-op_plus
-(paren
-(paren
-id|address
-op_rshift
-id|PAGE_SHIFT
-)paren
-op_amp
-(paren
-id|PTRS_PER_PTE
-op_minus
-l_int|1
-)paren
-)paren
-suffix:semicolon
-)brace
+DECL|macro|__pte_offset
+mdefine_line|#define __pte_offset(address)&t;&t;&bslash;&n;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(dir, addr)&t;&bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) + __pte_offset(addr))
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir, addr)&t;&t;&bslash;&n;&t;((pte_t *) kmap_atomic(pmd_page(*(dir)), KM_PTE0) + __pte_offset(addr))
+DECL|macro|pte_offset_map_nested
+mdefine_line|#define pte_offset_map_nested(dir, addr)&t;&bslash;&n;&t;((pte_t *) kmap_atomic(pmd_page(*(dir)), KM_PTE1) + __pte_offset(addr))
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte)&t;&t;kunmap_atomic(pte, KM_PTE0)
+DECL|macro|pte_unmap_nested
+mdefine_line|#define pte_unmap_nested(pte)&t;kunmap_atomic(pte, KM_PTE1)
 r_extern
 id|pgd_t
 id|swapper_pg_dir
@@ -1572,7 +1551,7 @@ suffix:semicolon
 multiline_comment|/*&n; * When flushing the tlb entry for a page, we also need to flush the hash&n; * table entry.  flush_hash_page is assembler (for speed) in hashtable.S.&n; */
 r_extern
 r_int
-id|flush_hash_page
+id|flush_hash_pages
 c_func
 (paren
 r_int
@@ -1582,9 +1561,12 @@ r_int
 r_int
 id|va
 comma
-id|pte_t
-op_star
-id|ptep
+r_int
+r_int
+id|pmdval
+comma
+r_int
+id|count
 )paren
 suffix:semicolon
 multiline_comment|/* Add an HPTE to the hash table */
@@ -1600,9 +1582,9 @@ r_int
 r_int
 id|va
 comma
-id|pte_t
-op_star
-id|ptep
+r_int
+r_int
+id|pmdval
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Encode and decode a swap entry.&n; * Note that the bits we use in a PTE for representing a swap entry&n; * must not include the _PAGE_PRESENT bit, or the _PAGE_HASHPTE bit&n; * (if used).  -- paulus&n; */

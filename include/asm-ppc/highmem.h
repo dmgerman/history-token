@@ -306,6 +306,8 @@ r_int
 r_int
 )paren
 id|kvaddr
+op_amp
+id|PAGE_MASK
 suffix:semicolon
 r_int
 r_int

@@ -1670,6 +1670,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|dev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 id|tmp_ax-&gt;rx_packets
 op_increment
 suffix:semicolon

@@ -1319,6 +1319,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
 id|need_resched
 c_func
 (paren

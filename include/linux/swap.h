@@ -131,16 +131,6 @@ l_int|1
 )paren
 comma
 multiline_comment|/* ok to write to this swap?&t;*/
-DECL|enumerator|SWP_BLOCKDEV
-id|SWP_BLOCKDEV
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
-comma
-multiline_comment|/* is this swap a block device? */
 DECL|enumerator|SWP_ACTIVE
 id|SWP_ACTIVE
 op_assign
@@ -516,14 +506,6 @@ id|swap_info_struct
 id|swap_info
 (braket
 )braket
-suffix:semicolon
-r_extern
-r_int
-id|is_swap_partition
-c_func
-(paren
-id|kdev_t
-)paren
 suffix:semicolon
 r_extern
 r_void

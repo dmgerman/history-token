@@ -7274,11 +7274,7 @@ l_string|&quot;clm-6000: error reading block %lu on dev %s&bslash;n&quot;
 comma
 id|bh-&gt;b_blocknr
 comma
-id|kdevname
-c_func
-(paren
-id|bh-&gt;b_dev
-)paren
+id|p_s_inode-&gt;i_sb-&gt;s_id
 )paren
 suffix:semicolon
 id|error

@@ -590,15 +590,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ide_4drives
-suffix:colon
-id|name
-op_assign
-l_string|&quot;4drives&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|ide_pmac
 suffix:colon
 id|name
@@ -1489,7 +1480,7 @@ id|parse_error
 suffix:semicolon
 id|len
 op_assign
-id|IDE_MIN
+id|min
 c_func
 (paren
 id|p
@@ -1506,7 +1497,7 @@ id|name
 comma
 id|start
 comma
-id|IDE_MIN
+id|min
 c_func
 (paren
 id|len
@@ -1786,9 +1777,7 @@ r_int
 r_int
 r_int
 )paren
-id|drive-&gt;driver
-op_member_access_from_pointer
-id|capacity
+id|ata_capacity
 c_func
 (paren
 id|drive

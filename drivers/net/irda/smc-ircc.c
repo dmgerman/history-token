@@ -4191,6 +4191,10 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+id|self-&gt;netdev-&gt;last_rx
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ircc_interrupt (irq, dev_id, regs)&n; *&n; *    An interrupt from the chip has arrived. Time to do some work&n; *&n; */
 DECL|function|ircc_interrupt

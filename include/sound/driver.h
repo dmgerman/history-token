@@ -100,11 +100,5 @@ DECL|macro|vfree
 macro_line|#undef vfree
 macro_line|#endif
 macro_line|#include &quot;sndmagic.h&quot;
-multiline_comment|/*&n; * Temporary hack, until linux/init.h is fixed.&n; */
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#ifndef __devexit_p
-DECL|macro|__devexit_p
-mdefine_line|#define __devexit_p(x) x
-macro_line|#endif
 macro_line|#endif /* __SOUND_DRIVER_H */
 eof

@@ -4508,7 +4508,7 @@ id|mount_devfs_fs
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef BUILD_CRAMDISK
+macro_line|#if defined(BUILD_CRAMDISK) &amp;&amp; defined(CONFIG_BLK_DEV_RAM)
 multiline_comment|/*&n; * gzip declarations&n; */
 DECL|macro|OF
 mdefine_line|#define OF(args)  args
@@ -5070,5 +5070,5 @@ r_return
 id|result
 suffix:semicolon
 )brace
-macro_line|#endif  /* BUILD_CRAMDISK */
+macro_line|#endif  /* BUILD_CRAMDISK &amp;&amp; CONFIG_BLK_DEV_RAM */
 eof

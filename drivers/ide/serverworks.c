@@ -3511,6 +3511,7 @@ c_cond
 id|hwif-&gt;dma_base
 )paren
 (brace
+macro_line|#ifdef CONFIG_IDEDMA_AUTO
 r_if
 c_cond
 (paren
@@ -3521,6 +3522,7 @@ id|hwif-&gt;autodma
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 id|hwif-&gt;dmaproc
 op_assign
 op_amp

@@ -325,7 +325,7 @@ id|ascii2utf
 (paren
 r_char
 op_star
-id|ascii
+id|s
 comma
 id|u8
 op_star
@@ -346,7 +346,7 @@ op_assign
 l_int|0
 suffix:semicolon
 op_star
-id|ascii
+id|s
 op_logical_and
 id|utfmax
 OG
@@ -366,10 +366,8 @@ id|utf
 op_increment
 op_assign
 op_star
-id|ascii
+id|s
 op_increment
-op_amp
-l_int|0x7f
 suffix:semicolon
 op_star
 id|utf
@@ -392,13 +390,9 @@ r_int
 id|id
 comma
 r_struct
-id|pci_dev
+id|usb_hcd
 op_star
-id|pci_desc
-comma
-r_char
-op_star
-id|type
+id|hcd
 comma
 id|u8
 op_star
@@ -467,7 +461,7 @@ id|strcpy
 (paren
 id|buf
 comma
-id|pci_desc-&gt;slot_name
+id|hcd-&gt;bus_name
 )paren
 suffix:semicolon
 singleline_comment|// product description
@@ -485,7 +479,7 @@ id|strcpy
 (paren
 id|buf
 comma
-id|pci_desc-&gt;name
+id|hcd-&gt;product_desc
 )paren
 suffix:semicolon
 singleline_comment|// id 3 == vendor description
@@ -509,7 +503,7 @@ id|UTS_SYSNAME
 comma
 id|UTS_RELEASE
 comma
-id|type
+id|hcd-&gt;description
 )paren
 suffix:semicolon
 singleline_comment|// unsupported IDs --&gt; &quot;protocol stall&quot;
@@ -805,13 +799,7 @@ id|wValue
 op_amp
 l_int|0xff
 comma
-id|hcd-&gt;pdev
-comma
-(paren
-r_char
-op_star
-)paren
-id|hcd-&gt;description
+id|hcd
 comma
 id|ubuf
 comma
@@ -3086,6 +3074,10 @@ id|hcd-&gt;bus_name
 op_assign
 id|dev-&gt;slot_name
 suffix:semicolon
+id|hcd-&gt;product_desc
+op_assign
+id|dev-&gt;name
+suffix:semicolon
 id|INIT_LIST_HEAD
 (paren
 op_amp
@@ -3910,6 +3902,8 @@ id|flags
 suffix:semicolon
 r_int
 id|pipe
+comma
+id|temp
 suffix:semicolon
 r_if
 c_cond
@@ -4001,6 +3995,13 @@ id|pipe
 op_assign
 id|urb-&gt;pipe
 suffix:semicolon
+id|temp
+op_assign
+id|usb_pipetype
+(paren
+id|urb-&gt;pipe
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4049,10 +4050,7 @@ singleline_comment|// only affects UHCI
 r_switch
 c_cond
 (paren
-id|usb_pipetype
-(paren
-id|pipe
-)paren
+id|temp
 )paren
 (brace
 r_case
@@ -4110,7 +4108,7 @@ id|urb-&gt;transfer_flags
 op_ne
 id|orig_flags
 )paren
-id|warn
+id|err
 (paren
 l_string|&quot;BOGUS urb flags, %x --&gt; %x&quot;
 comma
@@ -4121,7 +4119,144 @@ id|urb-&gt;transfer_flags
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t; * FIXME:  alloc periodic bandwidth here, for interrupt and iso?&n;&t; * Need to look at the ring submit mechanism for iso tds ... they&n;&t; * aren&squot;t actually &quot;periodic&quot; in 2.4 kernels.&n;&t; *&n;&t; * FIXME:  make urb timeouts be generic, keeping the HCD cores&n;&t; * as simple as possible.&n;&t; */
+multiline_comment|/*&n;&t; * Force periodic transfer intervals to be legal values that are&n;&t; * a power of two (so HCDs don&squot;t need to).&n;&t; *&n;&t; * FIXME want bus-&gt;{intr,iso}_sched_horizon values here.  Each HC&n;&t; * supports different values... this uses EHCI/UHCI defaults (and&n;&t; * EHCI can use smaller non-default values).&n;&t; */
+r_switch
+c_cond
+(paren
+id|temp
+)paren
+(brace
+r_case
+id|PIPE_ISOCHRONOUS
+suffix:colon
+r_case
+id|PIPE_INTERRUPT
+suffix:colon
+multiline_comment|/* too small? */
+r_if
+c_cond
+(paren
+id|urb-&gt;interval
+op_le
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+multiline_comment|/* too big? */
+r_switch
+c_cond
+(paren
+id|urb-&gt;dev-&gt;speed
+)paren
+(brace
+r_case
+id|USB_SPEED_HIGH
+suffix:colon
+multiline_comment|/* units are microframes */
+singleline_comment|// NOTE usb handles 2^15
+r_if
+c_cond
+(paren
+id|urb-&gt;interval
+OG
+(paren
+l_int|1024
+op_star
+l_int|8
+)paren
+)paren
+id|urb-&gt;interval
+op_assign
+l_int|1024
+op_star
+l_int|8
+suffix:semicolon
+id|temp
+op_assign
+l_int|1024
+op_star
+l_int|8
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|USB_SPEED_FULL
+suffix:colon
+multiline_comment|/* units are frames/msec */
+r_case
+id|USB_SPEED_LOW
+suffix:colon
+r_if
+c_cond
+(paren
+id|temp
+op_eq
+id|PIPE_INTERRUPT
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|urb-&gt;interval
+OG
+l_int|255
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+singleline_comment|// NOTE ohci only handles up to 32
+id|temp
+op_assign
+l_int|128
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|urb-&gt;interval
+OG
+l_int|1024
+)paren
+id|urb-&gt;interval
+op_assign
+l_int|1024
+suffix:semicolon
+singleline_comment|// NOTE usb and ohci handle up to 2^15
+id|temp
+op_assign
+l_int|1024
+suffix:semicolon
+)brace
+r_default
+suffix:colon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+multiline_comment|/* power of two? */
+r_while
+c_loop
+(paren
+id|temp
+OG
+id|urb-&gt;interval
+)paren
+id|temp
+op_rshift_assign
+l_int|1
+suffix:semicolon
+id|urb-&gt;interval
+op_assign
+id|temp
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * FIXME:  make urb timeouts be generic, keeping the HCD cores&n;&t; * as simple as possible.&n;&t; */
 singleline_comment|// NOTE:  a generic device/urb monitoring hook would go here.
 singleline_comment|// hcd_monitor_hook(MONITOR_URB_SUBMIT, urb)
 singleline_comment|// It would catch submission paths for all urbs.
@@ -5002,6 +5137,19 @@ id|start
 op_assign
 id|hcd-&gt;state
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+(paren
+id|hcd-&gt;state
+op_eq
+id|USB_STATE_HALT
+)paren
+)paren
+multiline_comment|/* irq sharing? */
+r_return
+suffix:semicolon
 id|hcd-&gt;driver-&gt;irq
 (paren
 id|hcd
@@ -5111,11 +5259,13 @@ id|urb-&gt;status
 )paren
 id|dbg
 (paren
-l_string|&quot;giveback urb %p status %d&quot;
+l_string|&quot;giveback urb %p status %d len %d&quot;
 comma
 id|urb
 comma
 id|urb-&gt;status
+comma
+id|urb-&gt;actual_length
 )paren
 suffix:semicolon
 multiline_comment|/* if no error, make sure urb-&gt;next progresses */

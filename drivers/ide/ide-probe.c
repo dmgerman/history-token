@@ -1,7 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/ide/ide-probe.c&t;Version 1.07&t;March 18, 2001&n; *&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors (see below)&n; */
-multiline_comment|/*&n; *  Mostly written by Mark Lord &lt;mlord@pobox.com&gt;&n; *                and Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *                and Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; * This is the IDE probe module, as evolved from hd.c and ide.c.&n; *&n; * Version 1.00&t;&t;move drive probing code from ide.c to ide-probe.c&n; * Version 1.01&t;&t;fix compilation problem for m68k&n; * Version 1.02&t;&t;increase WAIT_PIDENTIFY to avoid CD-ROM locking at boot&n; *&t;&t;&t; by Andrea Arcangeli&n; * Version 1.03&t;&t;fix for (hwif-&gt;chipset == ide_4drives)&n; * Version 1.04&t;&t;fixed buggy treatments of known flash memory cards&n; *&n; * Version 1.05&t;&t;fix for (hwif-&gt;chipset == ide_pdc4030)&n; *&t;&t;&t;added ide6/7/8/9&n; *&t;&t;&t;allowed for secondary flash card to be detectable&n; *&t;&t;&t; with new flag : drive-&gt;ata_flash : 1;&n; * Version 1.06&t;&t;stream line request queue and prep for cascade project.&n; * Version 1.07&t;&t;max_sect &lt;= 255; slower disks would get behind and&n; * &t;&t;&t;then fall over when they get to 256.&t;Paul G.&n; */
-DECL|macro|REALLY_SLOW_IO
-macro_line|#undef REALLY_SLOW_IO&t;&t;/* most systems can safely undef this */
+multiline_comment|/*&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors (see below)&n; *&n; *  Mostly written by Mark Lord &lt;mlord@pobox.com&gt;&n; *                and Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; *                and Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  See linux/MAINTAINERS for address of current maintainer.&n; *&n; * This is the IDE probe module, as evolved from hd.c and ide.c.&n; *&n; * Version 1.00&t;&t;move drive probing code from ide.c to ide-probe.c&n; * Version 1.01&t;&t;fix compilation problem for m68k&n; * Version 1.02&t;&t;increase WAIT_PIDENTIFY to avoid CD-ROM locking at boot&n; *&t;&t;&t; by Andrea Arcangeli&n; * Version 1.03&t;&t;fix for (hwif-&gt;chipset == ide_4drives)&n; * Version 1.04&t;&t;fixed buggy treatments of known flash memory cards&n; *&n; * Version 1.05&t;&t;fix for (hwif-&gt;chipset == ide_pdc4030)&n; *&t;&t;&t;added ide6/7/8/9&n; *&t;&t;&t;allowed for secondary flash card to be detectable&n; *&t;&t;&t; with new flag : drive-&gt;ata_flash : 1;&n; * Version 1.06&t;&t;stream line request queue and prep for cascade project.&n; * Version 1.07&t;&t;max_sect &lt;= 255; slower disks would get behind and&n; *&t;&t;&t;then fall over when they get to 256.&t;Paul G.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -229,7 +226,7 @@ r_goto
 id|err_misc
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_SCSI_EATA_DMA || CONFIG_SCSI_EATA_PIO */
+macro_line|#endif
 multiline_comment|/*&n;&t; *  WIN_IDENTIFY returns little-endian info,&n;&t; *  WIN_PIDENTIFY *usually* returns little-endian info.&n;&t; */
 r_if
 c_cond
@@ -437,7 +434,7 @@ r_goto
 id|err_misc
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
+macro_line|#endif
 r_switch
 c_cond
 (paren
@@ -689,15 +686,29 @@ c_func
 l_string|&quot;ATA DISK drive&bslash;n&quot;
 )paren
 suffix:semicolon
-id|QUIRK_LIST
-c_func
+multiline_comment|/* Initialize our quirk list. */
+r_if
+c_cond
 (paren
 id|HWIF
 c_func
 (paren
 id|drive
 )paren
-comma
+op_member_access_from_pointer
+id|quirkproc
+)paren
+id|drive-&gt;quirk_list
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|quirkproc
+c_func
+(paren
 id|drive
 )paren
 suffix:semicolon
@@ -1130,15 +1141,12 @@ c_func
 (paren
 id|drive-&gt;ctl
 op_or
-l_int|2
+l_int|0x02
 comma
 id|IDE_CONTROL_REG
 )paren
 suffix:semicolon
 multiline_comment|/* mask device irq */
-(paren
-r_void
-)paren
 id|GET_STAT
 c_func
 (paren
@@ -1179,7 +1187,6 @@ id|irq
 OG
 l_int|0
 )paren
-(brace
 id|HWIF
 c_func
 (paren
@@ -1190,9 +1197,7 @@ id|irq
 op_assign
 id|irq
 suffix:semicolon
-)brace
 r_else
-(brace
 multiline_comment|/* Mmmm.. multiple IRQs.. don&squot;t know which was ours */
 id|printk
 c_func
@@ -1204,36 +1209,6 @@ comma
 id|cookie
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_CMD640
-macro_line|#ifdef CMD640_DUMP_REGS
-r_if
-c_cond
-(paren
-id|HWIF
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|chipset
-op_eq
-id|ide_cmd640
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: Hmmm.. probably a driver problem.&bslash;n&quot;
-comma
-id|drive-&gt;name
-)paren
-suffix:semicolon
-id|CMD640_DUMP_REGS
-suffix:semicolon
-)brace
-macro_line|#endif /* CMD640_DUMP_REGS */
-macro_line|#endif /* CONFIG_BLK_DEV_CMD640 */
-)brace
 )brace
 )brace
 r_return
@@ -2121,6 +2096,7 @@ id|hwif-&gt;device.driver_data
 op_assign
 id|hwif
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 r_if
 c_cond
 (paren
@@ -2132,6 +2108,7 @@ op_amp
 id|hwif-&gt;pci_dev-&gt;dev
 suffix:semicolon
 r_else
+macro_line|#endif
 id|hwif-&gt;device.parent
 op_assign
 l_int|NULL
@@ -2435,15 +2412,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|hwif-&gt;chipset
-op_ne
-id|ide_4drives
-op_logical_or
-op_logical_neg
-id|hwif-&gt;mate-&gt;present
-)paren
-op_logical_and
 macro_line|#if CONFIG_BLK_DEV_PDC4030
 (paren
 id|hwif-&gt;chipset
@@ -2455,13 +2423,11 @@ op_eq
 l_int|0
 )paren
 op_logical_and
-macro_line|#endif /* CONFIG_BLK_DEV_PDC4030 */
-(paren
+macro_line|#endif
 id|hwif_check_regions
 c_func
 (paren
 id|hwif
-)paren
 )paren
 )paren
 (brace
@@ -2593,24 +2559,12 @@ id|hwif-&gt;present
 op_assign
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hwif-&gt;chipset
-op_ne
-id|ide_4drives
-op_logical_or
-op_logical_neg
-id|hwif-&gt;mate-&gt;present
-)paren
-(brace
 id|hwif_register
 c_func
 (paren
 id|hwif
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 r_if
@@ -2786,91 +2740,6 @@ multiline_comment|/* auto-tune PIO mode */
 )brace
 )brace
 )brace
-macro_line|#if MAX_HWIFS &gt; 1
-multiline_comment|/*&n; * save_match() is used to simplify logic in init_irq() below.&n; *&n; * A loophole here is that we may not know about a particular&n; * hwif&squot;s irq until after that hwif is actually probed/initialized..&n; * This could be a problem for the case where an hwif is on a&n; * dual interface that requires serialization (eg. cmd640) and another&n; * hwif using one of the same irqs is initialized beforehand.&n; *&n; * This routine detects and reports such situations, but does not fix them.&n; */
-DECL|function|save_match
-r_static
-r_void
-id|save_match
-(paren
-id|ide_hwif_t
-op_star
-id|hwif
-comma
-id|ide_hwif_t
-op_star
-r_new
-comma
-id|ide_hwif_t
-op_star
-op_star
-id|match
-)paren
-(brace
-id|ide_hwif_t
-op_star
-id|m
-op_assign
-op_star
-id|match
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|m
-op_logical_and
-id|m-&gt;hwgroup
-op_logical_and
-id|m-&gt;hwgroup
-op_ne
-r_new
-op_member_access_from_pointer
-id|hwgroup
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-r_new
-op_member_access_from_pointer
-id|hwgroup
-)paren
-r_return
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s: potential irq problem with %s and %s&bslash;n&quot;
-comma
-id|hwif-&gt;name
-comma
-r_new
-op_member_access_from_pointer
-id|name
-comma
-id|m-&gt;name
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|m
-op_logical_or
-id|m-&gt;irq
-op_ne
-id|hwif-&gt;irq
-)paren
-multiline_comment|/* don&squot;t undo a prior perfect match */
-op_star
-id|match
-op_assign
-r_new
-suffix:semicolon
-)brace
-macro_line|#endif /* MAX_HWIFS &gt; 1 */
 multiline_comment|/*&n; * init request queue&n; */
 DECL|function|ide_init_queue
 r_static
@@ -2983,6 +2852,92 @@ id|PRD_ENTRIES
 )paren
 suffix:semicolon
 )brace
+macro_line|#if MAX_HWIFS &gt; 1
+multiline_comment|/*&n; * This is used to simplify logic in init_irq() below.&n; *&n; * A loophole here is that we may not know about a particular hwif&squot;s irq until&n; * after that hwif is actually probed/initialized..  This could be a problem&n; * for the case where an hwif is on a dual interface that requires&n; * serialization (eg. cmd640) and another hwif using one of the same irqs is&n; * initialized beforehand.&n; *&n; * This routine detects and reports such situations, but does not fix them.&n; */
+DECL|function|save_match
+r_static
+r_void
+id|save_match
+c_func
+(paren
+id|ide_hwif_t
+op_star
+id|hwif
+comma
+id|ide_hwif_t
+op_star
+r_new
+comma
+id|ide_hwif_t
+op_star
+op_star
+id|match
+)paren
+(brace
+id|ide_hwif_t
+op_star
+id|m
+op_assign
+op_star
+id|match
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|m
+op_logical_and
+id|m-&gt;hwgroup
+op_logical_and
+id|m-&gt;hwgroup
+op_ne
+r_new
+op_member_access_from_pointer
+id|hwgroup
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+r_new
+op_member_access_from_pointer
+id|hwgroup
+)paren
+r_return
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: potential irq problem with %s and %s&bslash;n&quot;
+comma
+id|hwif-&gt;name
+comma
+r_new
+op_member_access_from_pointer
+id|name
+comma
+id|m-&gt;name
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|m
+op_logical_or
+id|m-&gt;irq
+op_ne
+id|hwif-&gt;irq
+)paren
+multiline_comment|/* don&squot;t undo a prior perfect match */
+op_star
+id|match
+op_assign
+r_new
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/*&n; * This routine sets up the irq for an ide interface, and creates a new&n; * hwgroup for the irq/hwif if none was previously assigned.&n; *&n; * Much of the code is for correctly detecting/handling irq sharing&n; * and irq serialization situations.  This is somewhat complex because&n; * it handles static as well as dynamic (PCMCIA) IDE interfaces.&n; *&n; * The SA_INTERRUPT in sa_flags means ide_intr() is always entered with&n; * interrupts completely disabled.  This can be bad for interrupt latency,&n; * but anything else has led to problems on some machines.  We re-enable&n; * interrupts as much as we can safely do in most places.&n; */
 DECL|function|init_irq
 r_static
@@ -3029,19 +2984,15 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|ide_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* all CPUs */
 id|hwif-&gt;hwgroup
 op_assign
 l_int|NULL
@@ -3105,7 +3056,6 @@ id|h-&gt;chipset
 op_ne
 id|ide_pci
 )paren
-(brace
 id|save_match
 c_func
 (paren
@@ -3117,7 +3067,6 @@ op_amp
 id|match
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -3175,7 +3124,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* MAX_HWIFS &gt; 1 */
+macro_line|#endif
 multiline_comment|/*&n;&t; * If we are still without a hwgroup, then form a new one&n;&t; */
 r_if
 c_cond
@@ -3214,13 +3163,15 @@ op_logical_neg
 id|hwgroup
 )paren
 (brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ide_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
 r_return
 l_int|1
 suffix:semicolon
@@ -3308,7 +3259,7 @@ id|SA_SHIRQ
 suffix:colon
 id|SA_INTERRUPT
 suffix:semicolon
-macro_line|#else /* !CONFIG_IDEPCI_SHARE_IRQ */
+macro_line|#else
 r_int
 id|sa
 op_assign
@@ -3325,7 +3276,7 @@ id|SA_SHIRQ
 suffix:colon
 id|SA_INTERRUPT
 suffix:semicolon
-macro_line|#endif /* CONFIG_IDEPCI_SHARE_IRQ */
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3377,19 +3328,21 @@ c_func
 id|hwgroup
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ide_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs */
 r_return
 l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Everything is okay, so link us into the hwgroup&n;&t; */
+multiline_comment|/*&n;&t; * Everything is okay, so link us into the hwgroup.&n;&t; */
 id|hwif-&gt;hwgroup
 op_assign
 id|hwgroup
@@ -3486,13 +3439,15 @@ id|hwif-&gt;name
 suffix:semicolon
 macro_line|#endif
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ide_lock
+comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* all CPUs; safe now that hwif-&gt;hwgroup is set up */
 macro_line|#if !defined(__mc68000__) &amp;&amp; !defined(CONFIG_APUS) &amp;&amp; !defined(__sparc__)
 id|printk
 c_func

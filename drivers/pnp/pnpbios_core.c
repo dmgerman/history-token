@@ -4742,7 +4742,7 @@ id|pnpbios_init
 )paren
 suffix:semicolon
 DECL|function|pnpbios_init
-r_void
+r_int
 id|__init
 id|pnpbios_init
 c_func
@@ -4791,6 +4791,7 @@ l_string|&quot;PnPBIOS: Disabled.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 r_if
@@ -5063,6 +5064,9 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;
+r_return
+l_int|0
+suffix:semicolon
 )brace
 macro_line|#ifdef MODULE
 id|MODULE_LICENSE

@@ -14,7 +14,6 @@ DECL|macro|INIT_STUCK
 mdefine_line|#define INIT_STUCK 200000000 /*0xffffffff*/
 multiline_comment|/*&n; * Try to acquire a spinlock.&n; * Only does the stwcx. if the load returned 0 - the Programming&n; * Environments Manual suggests not doing unnecessary stcwx.&squot;s&n; * since they may inhibit forward progress by other CPUs in getting&n; * a lock.&n; */
 DECL|function|__spin_trylock
-r_static
 r_int
 r_int
 id|__spin_trylock

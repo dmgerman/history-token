@@ -9860,7 +9860,7 @@ suffix:semicolon
 r_case
 l_int|0x3490
 suffix:colon
-singleline_comment|// Resetting event recieved. Since the driver does not support resetting event recovery
+singleline_comment|// Resetting event received. Since the driver does not support resetting event recovery
 singleline_comment|// (which has to be handled by the I/O Layer), we&squot;ll report and retry our command.
 id|tape34xx_error_recovery_do_retry
 c_func
@@ -10089,7 +10089,7 @@ singleline_comment|// Global status intercept. We have to reissue the command.
 id|PRINT_WARN
 c_func
 (paren
-l_string|&quot;An global status intercept was recieved, which will be recovered.&bslash;n&quot;
+l_string|&quot;An global status intercept was received, which will be recovered.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tape34xx_error_recovery_do_retry

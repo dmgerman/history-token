@@ -160,12 +160,12 @@ r_return
 id|pmd
 suffix:semicolon
 )brace
-DECL|function|pmd_page
+DECL|function|__pmd_page
 r_static
 r_inline
 r_int
 r_int
-id|pmd_page
+id|__pmd_page
 c_func
 (paren
 id|pmd_t

@@ -271,7 +271,7 @@ c_cond
 (paren
 id|dent-&gt;d_name.len
 op_le
-id|SMB_MAXPATHLEN
+id|SMB_MAXNAMELEN
 op_logical_and
 (paren
 r_int

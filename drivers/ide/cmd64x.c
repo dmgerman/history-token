@@ -1756,7 +1756,7 @@ id|setup_count
 suffix:semicolon
 id|setup_count
 op_assign
-id|IDE_MAX
+id|max
 c_func
 (paren
 id|drives

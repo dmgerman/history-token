@@ -14607,7 +14607,7 @@ r_return
 id|blk_ioctl
 c_func
 (paren
-id|device
+id|inode-&gt;i_bdev
 comma
 id|cmd
 comma

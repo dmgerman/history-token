@@ -2884,6 +2884,7 @@ id|m
 (brace
 DECL|macro|minfo
 mdefine_line|#define minfo ((struct matrox_fb_info*)outdev)
+macro_line|#ifdef CONFIG_FB_MATROX_G450
 r_if
 c_cond
 (paren
@@ -2905,6 +2906,7 @@ id|M_PIXEL_PLL_C
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 (brace
 r_int
 id|i

@@ -422,6 +422,8 @@ suffix:semicolon
 (brace
 r_int
 id|r
+comma
+id|trv
 suffix:semicolon
 id|uInt
 id|b
@@ -444,7 +446,7 @@ id|Z_NULL
 r_return
 id|Z_STREAM_ERROR
 suffix:semicolon
-id|f
+id|trv
 op_assign
 id|f
 op_eq
@@ -777,7 +779,7 @@ id|Z_OK
 )paren
 id|r
 op_assign
-id|f
+id|trv
 suffix:semicolon
 r_if
 c_cond
@@ -791,7 +793,7 @@ id|r
 suffix:semicolon
 id|r
 op_assign
-id|f
+id|trv
 suffix:semicolon
 id|zlib_inflate_blocks_reset
 c_func

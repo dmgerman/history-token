@@ -1646,7 +1646,7 @@ c_func
 (paren
 id|io
 comma
-l_string|&quot;LNE390 I/O base address(es)&quot;
+l_string|&quot;I/O base address(es)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1654,7 +1654,7 @@ c_func
 (paren
 id|irq
 comma
-l_string|&quot;LNE390 IRQ number(s)&quot;
+l_string|&quot;IRQ number(s)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1662,7 +1662,13 @@ c_func
 (paren
 id|mem
 comma
-l_string|&quot;LNE390 memory base address(es)&quot;
+l_string|&quot;memory base address(es)&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Mylex LNE390A/B EISA Ethernet driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
