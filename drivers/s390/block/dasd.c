@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.154 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.156 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -653,7 +653,7 @@ c_func
 (paren
 id|device-&gt;debug_area
 comma
-id|DBF_DEBUG
+id|DBF_EMERG
 )paren
 suffix:semicolon
 id|DBF_DEV_EVENT
@@ -2955,9 +2955,9 @@ id|DBF_DEBUG
 comma
 id|device
 comma
-l_string|&quot;%s&quot;
-comma
 l_string|&quot;start_IO: request %p started successful&quot;
+comma
+id|cqr
 )paren
 suffix:semicolon
 r_break
@@ -6429,7 +6429,7 @@ id|device-&gt;cdev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Allocate and initialize request queue.&n; */
+multiline_comment|/*&n; * Allocate and initialize request queue and default I/O scheduler.&n; */
 r_static
 r_int
 DECL|function|dasd_alloc_queue
@@ -6442,6 +6442,9 @@ op_star
 id|device
 )paren
 (brace
+r_int
+id|rc
+suffix:semicolon
 id|device-&gt;request_queue
 op_assign
 id|blk_init_queue
@@ -6468,7 +6471,6 @@ id|device-&gt;request_queue-&gt;queuedata
 op_assign
 id|device
 suffix:semicolon
-macro_line|#if 0
 id|elevator_exit
 c_func
 (paren
@@ -6482,7 +6484,7 @@ c_func
 (paren
 id|device-&gt;request_queue
 comma
-l_string|&quot;noop&quot;
+l_string|&quot;deadline&quot;
 )paren
 suffix:semicolon
 r_if
@@ -6501,7 +6503,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -7905,7 +7906,7 @@ c_func
 (paren
 id|dasd_debug_area
 comma
-id|DBF_DEBUG
+id|DBF_EMERG
 )paren
 suffix:semicolon
 id|DBF_EVENT
