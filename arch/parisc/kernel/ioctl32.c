@@ -20767,17 +20767,6 @@ c_func
 id|DRM_IOCTL_FINISH
 )paren
 macro_line|#endif /* DRM */
-multiline_comment|/* elevator */
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|BLKELVGET
-)paren
-id|COMPATIBLE_IOCTL
-c_func
-(paren
-id|BLKELVSET
-)paren
 multiline_comment|/* Big R */
 id|COMPATIBLE_IOCTL
 c_func
