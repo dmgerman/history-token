@@ -116,6 +116,12 @@ r_struct
 id|completion
 id|comp
 suffix:semicolon
+DECL|member|sync_srp
+r_union
+id|viosrp_iu
+op_star
+id|sync_srp
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* a pool of event structs for use */
