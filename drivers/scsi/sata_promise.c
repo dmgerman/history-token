@@ -52,6 +52,12 @@ op_assign
 l_int|0x44
 comma
 multiline_comment|/* Flash control register */
+DECL|enumerator|PDC_PCI_CTL
+id|PDC_PCI_CTL
+op_assign
+l_int|0x48
+comma
+multiline_comment|/* PCI control and status register */
 DECL|enumerator|PDC_CTLSTAT
 id|PDC_CTLSTAT
 op_assign
@@ -238,6 +244,16 @@ op_assign
 l_int|2
 comma
 multiline_comment|/* FastTrak S150 SX4 */
+DECL|enumerator|PDC_HAS_PATA
+id|PDC_HAS_PATA
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+comma
+multiline_comment|/* PDC20375 has PATA */
 DECL|enumerator|PDC_FLAG_20621
 id|PDC_FLAG_20621
 op_assign
@@ -8414,6 +8430,32 @@ id|PDC_HDMA_CTLSTAT
 suffix:semicolon
 multiline_comment|/* flush */
 )brace
+DECL|function|pdc_pata_possible
+r_static
+r_int
+id|pdc_pata_possible
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pdev-&gt;device
+op_eq
+l_int|0x3375
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|pdc_host_init
 r_static
 r_void
@@ -8430,6 +8472,13 @@ op_star
 id|pe
 )paren
 (brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+id|pe-&gt;pdev
+suffix:semicolon
 r_void
 op_star
 id|mmio
@@ -8446,7 +8495,10 @@ id|chip_id
 op_eq
 id|board_20621
 )paren
-r_return
+id|BUG
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* change FIFO_SHD to 8 dwords. Promise driver does this...&n;&t; * dunno why.&n;&t; */
 id|tmp
@@ -8599,6 +8651,49 @@ op_plus
 id|PDC_SLEW_CTL
 )paren
 suffix:semicolon
+multiline_comment|/* check for PATA port on PDC20375 */
+r_if
+c_cond
+(paren
+id|pdc_pata_possible
+c_func
+(paren
+id|pdev
+)paren
+)paren
+(brace
+id|tmp
+op_assign
+id|readl
+c_func
+(paren
+id|mmio
+op_plus
+id|PDC_PCI_CTL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tmp
+op_amp
+id|PDC_HAS_PATA
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+id|DRV_NAME
+l_string|&quot;(%s): sorry, PATA port not supported yet&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|pdc_sata_init_one
 r_static
