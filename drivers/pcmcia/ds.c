@@ -250,14 +250,6 @@ id|proc_dir_entry
 op_star
 id|proc_pccard
 suffix:semicolon
-multiline_comment|/* We use this to distinguish in-kernel from modular drivers */
-DECL|variable|init_status
-r_static
-r_int
-id|init_status
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|function|cs_error
 r_static
@@ -342,10 +334,6 @@ suffix:semicolon
 id|driver-&gt;use_count
 op_assign
 l_int|0
-suffix:semicolon
-id|driver-&gt;status
-op_assign
-id|init_status
 suffix:semicolon
 id|driver-&gt;drv.bus
 op_assign
@@ -811,11 +799,9 @@ c_func
 op_star
 id|p
 comma
-l_string|&quot;%-24.24s %d %d&bslash;n&quot;
+l_string|&quot;%-24.24s 1 %d&bslash;n&quot;
 comma
 id|driver-&gt;name
-comma
-id|p_dev-&gt;status
 comma
 id|p_dev-&gt;use_count
 )paren

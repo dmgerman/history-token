@@ -359,11 +359,8 @@ r_struct
 id|pcmcia_driver
 (brace
 DECL|member|use_count
-DECL|member|status
 r_int
 id|use_count
-comma
-id|status
 suffix:semicolon
 DECL|member|attach
 id|dev_link_t
