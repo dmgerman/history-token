@@ -680,7 +680,7 @@ id|same_tt
 (paren
 id|dev
 comma
-id|here.itd-&gt;urb-&gt;dev
+id|here.sitd-&gt;urb-&gt;dev
 )paren
 )paren
 (brace
@@ -717,7 +717,7 @@ id|type
 op_assign
 id|Q_NEXT_TYPE
 (paren
-id|here.qh-&gt;hw_next
+id|here.sitd-&gt;hw_next
 )paren
 suffix:semicolon
 id|here
@@ -4431,9 +4431,20 @@ id|status
 suffix:semicolon
 id|ready
 suffix:colon
+multiline_comment|/* report high speed start in uframes; full speed, in frames */
 id|urb-&gt;start_frame
 op_assign
 id|stream-&gt;next_uframe
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|stream-&gt;highspeed
+)paren
+id|urb-&gt;start_frame
+op_rshift_assign
+l_int|3
 suffix:semicolon
 r_return
 l_int|0
@@ -5858,13 +5869,13 @@ id|packet-&gt;bufp
 op_assign
 id|buf
 suffix:semicolon
-id|buf
-op_add_assign
-id|length
-suffix:semicolon
 id|packet-&gt;buf1
 op_assign
+(paren
 id|buf
+op_plus
+id|length
+)paren
 op_amp
 op_complement
 l_int|0x0fff
@@ -5900,17 +5911,13 @@ r_continue
 suffix:semicolon
 id|length
 op_assign
-l_int|1
-op_plus
 (paren
 id|length
+op_plus
+l_int|187
+)paren
 op_div
 l_int|188
-)paren
-suffix:semicolon
-id|packet-&gt;buf1
-op_or_assign
-id|length
 suffix:semicolon
 r_if
 c_cond
@@ -5920,11 +5927,15 @@ OG
 l_int|1
 )paren
 multiline_comment|/* BEGIN vs ALL */
-id|packet-&gt;buf1
+id|length
 op_or_assign
 l_int|1
 op_lshift
 l_int|3
+suffix:semicolon
+id|packet-&gt;buf1
+op_or_assign
+id|length
 suffix:semicolon
 )brace
 )brace
@@ -6280,7 +6291,6 @@ c_cond
 (paren
 id|uf-&gt;cross
 )paren
-(brace
 id|bufp
 op_add_assign
 l_int|4096
@@ -6297,7 +6307,6 @@ op_rshift
 l_int|32
 )paren
 suffix:semicolon
-)brace
 id|sitd-&gt;index
 op_assign
 id|index
@@ -6441,7 +6450,7 @@ id|ehci_vdbg
 (paren
 id|ehci
 comma
-l_string|&quot;sched dev%s ep%d%s-iso [%d] %dms/%04x&bslash;n&quot;
+l_string|&quot;sched devp %s ep%d%s-iso [%d] %dms/%04x&bslash;n&quot;
 comma
 id|urb-&gt;dev-&gt;devpath
 comma
@@ -6639,7 +6648,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|macro|SITD_ERRS
-mdefine_line|#define&t;SITD_ERRS (SITD_STS_ERR | SITD_STS_DBE | SITD_STS_BABBLE &bslash;&n;&t;&t;&t;| SITD_STS_XACT | SITD_STS_MMF | SITD_STS_STS)
+mdefine_line|#define&t;SITD_ERRS (SITD_STS_ERR | SITD_STS_DBE | SITD_STS_BABBLE &bslash;&n;&t;       &t;&t;&t;| SITD_STS_XACT | SITD_STS_MMF)
 r_static
 r_int
 DECL|function|sitd_complete
@@ -6980,29 +6989,6 @@ id|ehci_iso_stream
 op_star
 id|stream
 suffix:semicolon
-singleline_comment|// FIXME remove when csplits behave
-r_if
-c_cond
-(paren
-id|usb_pipein
-c_func
-(paren
-id|urb-&gt;pipe
-)paren
-)paren
-(brace
-id|ehci_dbg
-(paren
-id|ehci
-comma
-l_string|&quot;no iso-IN split transactions yet&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 multiline_comment|/* Get iso_stream head */
 id|stream
 op_assign
