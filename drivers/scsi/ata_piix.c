@@ -1010,7 +1010,7 @@ id|ap
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;piix_sata_probe - Probe PCI device for present SATA devices&n; *&t;@pdev: PCI device to probe&n; *&n; *&t;Reads SATA PCI device&squot;s PCI config register Port Configuration&n; *&t;and Status (PCS) to determine port and device availability.&n; *&n; *&t;LOCKING:&n; *&t;None (inherited from caller).&n; *&n; *&t;RETURNS:&n; *&t;Non-zero if device detected, zero otherwise.&n; */
+multiline_comment|/**&n; *&t;piix_sata_probe - Probe PCI device for present SATA devices&n; *&t;@ap: Port associated with the PCI device we wish to probe&n; *&n; *&t;Reads SATA PCI device&squot;s PCI config register Port Configuration&n; *&t;and Status (PCS) to determine port and device availability.&n; *&n; *&t;LOCKING:&n; *&t;None (inherited from caller).&n; *&n; *&t;RETURNS:&n; *&t;Non-zero if device detected, zero otherwise.&n; */
 DECL|function|piix_sata_probe
 r_static
 r_int
