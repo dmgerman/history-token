@@ -4163,8 +4163,6 @@ id|sk_buff
 op_star
 id|skb
 )paren
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|function|handle_bridge
 r_static
