@@ -2,56 +2,9 @@ multiline_comment|/*&n; *&t;Ioctl handler&n; *&t;Linux ethernet bridge&n; *&n; *
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
-multiline_comment|/* import values in USER_HZ  */
-DECL|function|user_to_ticks
-r_static
-r_inline
-r_int
-r_int
-id|user_to_ticks
-c_func
-(paren
-r_int
-r_int
-id|utick
-)paren
-(brace
-r_return
-(paren
-id|utick
-op_star
-id|HZ
-)paren
-op_div
-id|USER_HZ
-suffix:semicolon
-)brace
-multiline_comment|/* export values in USER_HZ */
-DECL|function|ticks_to_user
-r_static
-r_inline
-r_int
-r_int
-id|ticks_to_user
-c_func
-(paren
-r_int
-r_int
-id|tick
-)paren
-(brace
-r_return
-(paren
-id|tick
-op_star
-id|USER_HZ
-)paren
-op_div
-id|HZ
-suffix:semicolon
-)brace
 multiline_comment|/* Report time remaining in user HZ  */
 DECL|function|timer_residue
 r_static
@@ -68,9 +21,6 @@ id|timer
 )paren
 (brace
 r_return
-id|ticks_to_user
-c_func
-(paren
 id|timer_pending
 c_func
 (paren
@@ -78,6 +28,8 @@ id|timer
 )paren
 ques
 c_cond
+id|jiffies_to_clock_t
+c_func
 (paren
 id|timer-&gt;expires
 op_minus
@@ -85,7 +37,6 @@ id|jiffies
 )paren
 suffix:colon
 l_int|0
-)paren
 suffix:semicolon
 )brace
 DECL|function|br_ioctl_device
@@ -290,7 +241,7 @@ id|br-&gt;root_path_cost
 suffix:semicolon
 id|b.max_age
 op_assign
-id|ticks_to_user
+id|jiffies_to_clock_t
 c_func
 (paren
 id|br-&gt;max_age
@@ -298,7 +249,7 @@ id|br-&gt;max_age
 suffix:semicolon
 id|b.hello_time
 op_assign
-id|ticks_to_user
+id|jiffies_to_clock_t
 c_func
 (paren
 id|br-&gt;hello_time
@@ -318,7 +269,7 @@ id|br-&gt;bridge_hello_time
 suffix:semicolon
 id|b.bridge_forward_delay
 op_assign
-id|ticks_to_user
+id|jiffies_to_clock_t
 c_func
 (paren
 id|br-&gt;bridge_forward_delay
@@ -342,7 +293,7 @@ id|br-&gt;stp_enabled
 suffix:semicolon
 id|b.ageing_time
 op_assign
-id|ticks_to_user
+id|jiffies_to_clock_t
 c_func
 (paren
 id|br-&gt;ageing_time
@@ -556,7 +507,7 @@ id|br-&gt;lock
 suffix:semicolon
 id|br-&gt;bridge_forward_delay
 op_assign
-id|user_to_ticks
+id|clock_t_to_jiffies
 c_func
 (paren
 id|arg0
@@ -611,7 +562,7 @@ id|br-&gt;lock
 suffix:semicolon
 id|br-&gt;bridge_hello_time
 op_assign
-id|user_to_ticks
+id|clock_t_to_jiffies
 c_func
 (paren
 id|arg0
@@ -666,7 +617,7 @@ id|br-&gt;lock
 suffix:semicolon
 id|br-&gt;bridge_max_age
 op_assign
-id|user_to_ticks
+id|clock_t_to_jiffies
 c_func
 (paren
 id|arg0
@@ -714,7 +665,7 @@ id|EPERM
 suffix:semicolon
 id|br-&gt;ageing_time
 op_assign
-id|user_to_ticks
+id|clock_t_to_jiffies
 c_func
 (paren
 id|arg0

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;Forwarding database&n; *&t;Linux ethernet bridge&n; 
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/if_bridge.h&gt;
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
@@ -132,17 +133,13 @@ ques
 c_cond
 l_int|0
 suffix:colon
-(paren
+id|jiffies_to_clock_t
+c_func
 (paren
 id|jiffies
 op_minus
 id|f-&gt;ageing_timer
 )paren
-op_star
-id|USER_HZ
-)paren
-op_div
-id|HZ
 suffix:semicolon
 )brace
 DECL|function|br_mac_hash
