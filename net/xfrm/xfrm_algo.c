@@ -1159,7 +1159,6 @@ op_increment
 r_if
 c_cond
 (paren
-op_logical_neg
 id|strcmp
 c_func
 (paren
