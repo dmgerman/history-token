@@ -2,28 +2,19 @@ multiline_comment|/*&n; *&t;X.25 Packet Layer release 002&n; *&n; *&t;This is AL
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/socket.h&gt;
-macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/net.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/termios.h&gt;&t;/* For TIOCINQ/OUTQ */
-macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/x25.h&gt;
@@ -807,7 +798,7 @@ id|x25_list_lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Find a socket that wants to accept the Call Request we just&n; *&t;received.&n; */
+multiline_comment|/*&n; *&t;Find a socket that wants to accept the Call Request we just&n; *&t;received. Check the full list for an address/cud match.&n; *&t;If no cuds match return the next_best thing, an address match.&n; *&t;Note: if a listening socket has cud set it must only get calls&n; *&t;with matching cud.&n; */
 DECL|function|x25_find_listener
 r_static
 r_struct
@@ -820,12 +811,22 @@ r_struct
 id|x25_address
 op_star
 id|addr
+comma
+r_struct
+id|x25_calluserdata
+op_star
+id|calluserdata
 )paren
 (brace
 r_struct
 id|sock
 op_star
 id|s
+suffix:semicolon
+r_struct
+id|sock
+op_star
+id|next_best
 suffix:semicolon
 r_struct
 id|hlist_node
@@ -838,6 +839,10 @@ c_func
 op_amp
 id|x25_list_lock
 )paren
+suffix:semicolon
+id|next_best
+op_assign
+l_int|NULL
 suffix:semicolon
 id|sk_for_each
 c_func
@@ -883,6 +888,66 @@ op_eq
 id|TCP_LISTEN
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * Found a listening socket, now check the incoming&n;&t;&t;&t; * call user data vs this sockets call user data&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|x25_check_calluserdata
+c_func
+(paren
+op_amp
+id|x25_sk
+c_func
+(paren
+id|s
+)paren
+op_member_access_from_pointer
+id|calluserdata
+comma
+id|calluserdata
+)paren
+)paren
+(brace
+id|sock_hold
+c_func
+(paren
+id|s
+)paren
+suffix:semicolon
+r_goto
+id|found
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|x25_sk
+c_func
+(paren
+id|s
+)paren
+op_member_access_from_pointer
+id|calluserdata.cudlength
+op_eq
+l_int|0
+)paren
+(brace
+id|next_best
+op_assign
+id|s
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|next_best
+)paren
+(brace
+id|s
+op_assign
+id|next_best
+suffix:semicolon
 id|sock_hold
 c_func
 (paren
@@ -3397,6 +3462,10 @@ r_struct
 id|x25_facilities
 id|facilities
 suffix:semicolon
+r_struct
+id|x25_calluserdata
+id|calluserdata
+suffix:semicolon
 r_int
 id|len
 comma
@@ -3430,7 +3499,57 @@ id|dest_addr
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Find a listener for the particular address.&n;&t; */
+multiline_comment|/*&n;&t; *&t;Get the length of the facilities, skip past them for the moment&n;&t; *&t;get the call user data because this is needed to determine&n;&t; *&t;the correct listener&n;&t; */
+id|len
+op_assign
+id|skb-&gt;data
+(braket
+l_int|0
+)braket
+op_plus
+l_int|1
+suffix:semicolon
+id|skb_pull
+c_func
+(paren
+id|skb
+comma
+id|len
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Incoming Call User Data.&n;&t; */
+r_if
+c_cond
+(paren
+id|skb-&gt;len
+op_ge
+l_int|0
+)paren
+(brace
+id|memcpy
+c_func
+(paren
+id|calluserdata.cuddata
+comma
+id|skb-&gt;data
+comma
+id|skb-&gt;len
+)paren
+suffix:semicolon
+id|calluserdata.cudlength
+op_assign
+id|skb-&gt;len
+suffix:semicolon
+)brace
+id|skb_push
+c_func
+(paren
+id|skb
+comma
+id|len
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Find a listener for the particular address/cud pair.&n;&t; */
 id|sk
 op_assign
 id|x25_find_listener
@@ -3438,6 +3557,9 @@ c_func
 (paren
 op_amp
 id|source_addr
+comma
+op_amp
+id|calluserdata
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;We can&squot;t accept the Call Request.&n;&t; */
@@ -3507,7 +3629,7 @@ id|make
 r_goto
 id|out_sock_put
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Remove the facilities, leaving any Call User Data.&n;&t; */
+multiline_comment|/*&n;&t; *&t;Remove the facilities&n;&t; */
 id|skb_pull
 c_func
 (paren
@@ -3562,6 +3684,10 @@ id|sk
 op_member_access_from_pointer
 id|vc_facil_mask
 suffix:semicolon
+id|makex25-&gt;calluserdata
+op_assign
+id|calluserdata
+suffix:semicolon
 id|x25_write_internal
 c_func
 (paren
@@ -3570,30 +3696,6 @@ comma
 id|X25_CALL_ACCEPTED
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *&t;Incoming Call User Data.&n;&t; */
-r_if
-c_cond
-(paren
-id|skb-&gt;len
-op_ge
-l_int|0
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|makex25-&gt;calluserdata.cuddata
-comma
-id|skb-&gt;data
-comma
-id|skb-&gt;len
-)paren
-suffix:semicolon
-id|makex25-&gt;calluserdata.cudlength
-op_assign
-id|skb-&gt;len
-suffix:semicolon
-)brace
 id|makex25-&gt;state
 op_assign
 id|X25_STATE_3

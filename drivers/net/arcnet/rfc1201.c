@@ -129,6 +129,12 @@ l_int|1500
 comma
 multiline_comment|/* could be more, but some receivers can&squot;t handle it... */
 dot
+id|is_ip
+op_assign
+l_int|1
+comma
+multiline_comment|/* This is for sending IP and ARP packages */
+dot
 id|rx
 op_assign
 id|rx
@@ -148,6 +154,10 @@ id|continue_tx
 op_assign
 id|continue_tx
 comma
+dot
+id|ack_tx
+op_assign
+l_int|NULL
 )brace
 suffix:semicolon
 DECL|function|arcnet_rfc1201_init
