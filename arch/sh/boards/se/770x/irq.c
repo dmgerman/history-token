@@ -1,9 +1,9 @@
-multiline_comment|/* $Id: irq.c,v 1.1.2.2 2002/10/29 00:56:09 lethal Exp $&n; * &n; * linux/arch/sh/boards/se/770x/irq.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * Hitachi SolutionEngine Support.&n; *&n; */
+multiline_comment|/* $Id: irq.c,v 1.4 2004/02/22 22:44:36 kkojima Exp $&n; * &n; * linux/arch/sh/boards/se/770x/irq.c&n; *&n; * Copyright (C) 2000  Kazumoto Kojima&n; *&n; * Hitachi SolutionEngine Support.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/hitachi_se.h&gt;
+macro_line|#include &lt;asm/se/se.h&gt;
 multiline_comment|/*&n; * Initialize IRQ setting&n; */
 DECL|function|init_se_IRQ
 r_void

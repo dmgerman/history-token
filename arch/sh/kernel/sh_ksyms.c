@@ -441,4 +441,11 @@ id|synchronize_irq
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 eof

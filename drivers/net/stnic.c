@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/hitachi_se.h&gt;
+macro_line|#include &lt;asm/se/se.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#ifdef CONFIG_SH_STANDARD_BIOS 
 macro_line|#include &lt;asm/sh_bios.h&gt;

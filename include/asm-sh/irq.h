@@ -28,6 +28,14 @@ DECL|macro|TIMER_IPR_POS
 mdefine_line|#define TIMER_IPR_POS&t; 3
 DECL|macro|TIMER_PRIORITY
 mdefine_line|#define TIMER_PRIORITY&t; 2
+DECL|macro|TIMER1_IRQ
+mdefine_line|#define TIMER1_IRQ&t;17
+DECL|macro|TIMER1_IPR_ADDR
+mdefine_line|#define TIMER1_IPR_ADDR&t;INTC_IPRA
+DECL|macro|TIMER1_IPR_POS
+mdefine_line|#define TIMER1_IPR_POS&t; 2
+DECL|macro|TIMER1_PRIORITY
+mdefine_line|#define TIMER1_PRIORITY&t; 4
 DECL|macro|RTC_IRQ
 mdefine_line|#define RTC_IRQ&t;&t;22
 DECL|macro|RTC_IPR_ADDR
@@ -212,7 +220,7 @@ macro_line|# define OFFCHIP_NR_IRQS 16
 macro_line|#else
 macro_line|# if defined(CONFIG_HD64461)
 DECL|macro|OFFCHIP_NR_IRQS
-macro_line|#  define OFFCHIP_NR_IRQS 16
+macro_line|#  define OFFCHIP_NR_IRQS 18
 macro_line|# elif defined (CONFIG_SH_BIGSUR) /* must be before CONFIG_HD64465 */
 DECL|macro|OFFCHIP_NR_IRQS
 macro_line|#  define OFFCHIP_NR_IRQS 48

@@ -112,6 +112,16 @@ op_assign
 id|hd64461_outsl
 comma
 dot
+id|mv_readw
+op_assign
+id|hd64461_readw
+comma
+dot
+id|mv_writew
+op_assign
+id|hd64461_writew
+comma
+dot
 id|mv_irq_demux
 op_assign
 id|hd64461_irq_demux

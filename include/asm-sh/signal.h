@@ -9,6 +9,8 @@ suffix:semicolon
 r_struct
 id|siginfo
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+multiline_comment|/* Most things should be clean enough to redefine this at will, if care&n;   is taken to make libc match.  */
 DECL|macro|_NSIG
 mdefine_line|#define _NSIG&t;&t;64
 DECL|macro|_NSIG_BPW
@@ -37,6 +39,17 @@ DECL|typedef|sigset_t
 )brace
 id|sigset_t
 suffix:semicolon
+macro_line|#else
+multiline_comment|/* Here we must cater to libcs that poke about in kernel headers.  */
+DECL|macro|NSIG
+mdefine_line|#define NSIG&t;&t;32
+DECL|typedef|sigset_t
+r_typedef
+r_int
+r_int
+id|sigset_t
+suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
 DECL|macro|SIGHUP
 mdefine_line|#define SIGHUP&t;&t; 1
 DECL|macro|SIGINT

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: traps.c,v 1.14 2003/11/14 18:40:10 lethal Exp $&n; *&n; *  linux/arch/sh/traps.c&n; *&n; *  SuperH version: Copyright (C) 1999 Niibe Yutaka&n; *                  Copyright (C) 2000 Philipp Rumpf&n; *                  Copyright (C) 2000 David Howells&n; *                  Copyright (C) 2002, 2003 Paul Mundt&n; */
+multiline_comment|/* $Id: traps.c,v 1.16 2004/03/16 00:10:54 lethal Exp $&n; *&n; *  linux/arch/sh/traps.c&n; *&n; *  SuperH version: Copyright (C) 1999 Niibe Yutaka&n; *                  Copyright (C) 2000 Philipp Rumpf&n; *                  Copyright (C) 2000 David Howells&n; *                  Copyright (C) 2002, 2003 Paul Mundt&n; */
 multiline_comment|/*&n; * &squot;Traps.c&squot; handles hardware traps and faults after we have saved some&n; * state in &squot;entry.S&squot;.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -2441,6 +2441,25 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tsk
+op_logical_and
+op_logical_neg
+id|sp
+)paren
+(brace
+id|sp
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|tsk-&gt;thread.sp
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

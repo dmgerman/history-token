@@ -1102,6 +1102,7 @@ c_func
 op_amp
 id|sh_wdt_miscdev
 )paren
+suffix:semicolon
 r_if
 c_cond
 (paren

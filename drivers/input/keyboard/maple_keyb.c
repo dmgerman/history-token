@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;$Id: maple_keyb.c,v 1.1 2001/11/02 17:27:32 jsimmons Exp $&n; * &t;SEGA Dreamcast keyboard driver&n; *&t;Based on drivers/usb/usbkbd.c&n; */
+multiline_comment|/*&n; *&t;$Id: maple_keyb.c,v 1.4 2004/03/22 01:18:15 lethal Exp $&n; * &t;SEGA Dreamcast keyboard driver&n; *&t;Based on drivers/usb/usbkbd.c&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
@@ -1033,6 +1033,13 @@ c_func
 id|EV_REP
 )paren
 suffix:semicolon
+id|init_input_dev
+c_func
+(paren
+op_amp
+id|kbd-&gt;dev
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1115,16 +1122,12 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;input%d: keyboard(0x%lx): %s&bslash;n&quot;
-comma
-id|kbd-&gt;dev.number
+l_string|&quot;input: keyboard(0x%lx): %s&bslash;n&quot;
 comma
 id|data
 comma
 id|kbd-&gt;dev.name
 )paren
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -1161,8 +1164,6 @@ c_func
 (paren
 id|kbd
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|variable|dc_kbd_driver

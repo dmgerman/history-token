@@ -23,5 +23,7 @@ DECL|macro|flush_cache_sigtramp
 mdefine_line|#define flush_cache_sigtramp(vaddr)&t;&t;do { } while (0)
 DECL|macro|p3_cache_init
 mdefine_line|#define p3_cache_init()&t;&t;&t;&t;do { } while (0)
+DECL|macro|HAVE_ARCH_UNMAPPED_AREA
+mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
 macro_line|#endif /* __ASM_CPU_SH3_CACHEFLUSH_H */
 eof

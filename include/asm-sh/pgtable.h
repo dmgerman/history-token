@@ -755,6 +755,8 @@ id|prot
 )paren
 suffix:semicolon
 )brace
+DECL|macro|pgprot_writecombine
+mdefine_line|#define pgprot_writecombine(prot) __pgprot(pgprot_val(prot) &amp; ~_PAGE_CACHABLE)
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; *&n; * extern pte_t mk_pte(struct page *page, pgprot_t pgprot)&n; */
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page, pgprot)&t;pfn_pte(page_to_pfn(page), (pgprot))
