@@ -777,7 +777,14 @@ op_assign
 op_amp
 id|non_mem
 suffix:semicolon
-singleline_comment|//&t;resource[2] = &amp;pre_mem;
+id|resource
+(braket
+l_int|2
+)braket
+op_assign
+op_amp
+id|pre_mem
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
