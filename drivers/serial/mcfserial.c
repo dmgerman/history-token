@@ -6852,7 +6852,6 @@ c_func
 id|mcfrs_init
 )paren
 suffix:semicolon
-multiline_comment|/* DAVIDM module_exit(mcfrs_fini); */
 multiline_comment|/****************************************************************************/
 multiline_comment|/*                          Serial Console                                  */
 multiline_comment|/****************************************************************************/

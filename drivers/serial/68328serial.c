@@ -5955,7 +5955,6 @@ c_func
 id|rs68328_init
 )paren
 suffix:semicolon
-multiline_comment|/* DAVIDM module_exit(rs68328_fini); */
 DECL|function|m68328_set_baud
 r_static
 r_void
