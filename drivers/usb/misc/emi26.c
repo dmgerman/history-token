@@ -327,6 +327,8 @@ r_return
 id|response
 suffix:semicolon
 )brace
+DECL|macro|FW_LOAD_SIZE
+mdefine_line|#define FW_LOAD_SIZE&t;&t;1023
 DECL|function|emi26_load_firmware
 r_static
 r_int
@@ -355,11 +357,46 @@ id|addr
 suffix:semicolon
 multiline_comment|/* Address to write */
 id|__u8
+op_star
 id|buf
-(braket
-l_int|1023
-)braket
 suffix:semicolon
+id|buf
+op_assign
+id|kmalloc
+c_func
+(paren
+id|FW_LOAD_SIZE
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|buf
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;%s - error loading firmware: error = %d&quot;
+comma
+id|__FUNCTION__
+comma
+op_minus
+id|ENOMEM
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|wraperr
+suffix:semicolon
+)brace
 multiline_comment|/* Assert reset (stop the CPU in the EMI) */
 id|err
 op_assign
@@ -389,8 +426,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|wraperr
 suffix:semicolon
 )brace
 multiline_comment|/* 1. We need to put the loader for the FPGA into the EZ-USB */
@@ -463,8 +500,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|wraperr
 suffix:semicolon
 )brace
 )brace
@@ -520,10 +557,7 @@ id|pos
 dot
 id|length
 OL
-r_sizeof
-(paren
-id|buf
-)paren
+id|FW_LOAD_SIZE
 )paren
 )paren
 (brace
@@ -596,8 +630,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|wraperr
 suffix:semicolon
 )brace
 )brace
@@ -638,8 +672,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|wraperr
 suffix:semicolon
 )brace
 multiline_comment|/* 3. We need to put the loader for the firmware into the EZ-USB (again...) */
@@ -712,8 +746,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|wraperr
 suffix:semicolon
 )brace
 )brace
@@ -746,8 +780,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|wraperr
 suffix:semicolon
 )brace
 multiline_comment|/* 4. We put the part of the firmware that lies in the external RAM into the EZ-USB */
@@ -836,8 +870,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|wraperr
 suffix:semicolon
 )brace
 )brace
@@ -871,8 +905,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|wraperr
 suffix:semicolon
 )brace
 r_for
@@ -959,8 +993,8 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|wraperr
 suffix:semicolon
 )brace
 )brace
@@ -994,13 +1028,24 @@ comma
 id|err
 )paren
 suffix:semicolon
-r_return
-id|err
+r_goto
+id|wraperr
 suffix:semicolon
 )brace
 multiline_comment|/* return 1 to fail the driver inialization&n;&t; * and give real driver change to load */
 r_return
 l_int|1
+suffix:semicolon
+id|wraperr
+suffix:colon
+id|kfree
+c_func
+(paren
+id|buf
+)paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|variable|id_table
