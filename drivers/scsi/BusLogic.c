@@ -9516,6 +9516,12 @@ op_amp
 id|HostAdapter-&gt;host_list
 )paren
 suffix:semicolon
+id|scsi_host_put
+c_func
+(paren
+id|Host
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
