@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|ACPI_PROCESSOR_BUSY_METRIC
 mdefine_line|#define ACPI_PROCESSOR_BUSY_METRIC&t;10
 DECL|macro|ACPI_PROCESSOR_MAX_POWER
-mdefine_line|#define ACPI_PROCESSOR_MAX_POWER&t;ACPI_C_STATE_COUNT
+mdefine_line|#define ACPI_PROCESSOR_MAX_POWER&t;8
 DECL|macro|ACPI_PROCESSOR_MAX_C2_LATENCY
 mdefine_line|#define ACPI_PROCESSOR_MAX_C2_LATENCY&t;100
 DECL|macro|ACPI_PROCESSOR_MAX_C3_LATENCY
@@ -20,6 +20,46 @@ mdefine_line|#define ACPI_PROCESSOR_MAX_DUTY_WIDTH&t;4
 multiline_comment|/* Power Management */
 r_struct
 id|acpi_processor_cx
+suffix:semicolon
+DECL|struct|acpi_power_register
+r_struct
+id|acpi_power_register
+(brace
+DECL|member|descriptor
+id|u8
+id|descriptor
+suffix:semicolon
+DECL|member|length
+id|u16
+id|length
+suffix:semicolon
+DECL|member|space_id
+id|u8
+id|space_id
+suffix:semicolon
+DECL|member|bit_width
+id|u8
+id|bit_width
+suffix:semicolon
+DECL|member|bit_offset
+id|u8
+id|bit_offset
+suffix:semicolon
+DECL|member|reserved
+id|u8
+id|reserved
+suffix:semicolon
+DECL|member|address
+id|u64
+id|address
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 DECL|struct|acpi_processor_cx_policy
 r_struct
@@ -120,6 +160,10 @@ suffix:semicolon
 DECL|member|bm_activity
 id|u32
 id|bm_activity
+suffix:semicolon
+DECL|member|count
+r_int
+id|count
 suffix:semicolon
 DECL|member|states
 r_struct
@@ -381,6 +425,12 @@ suffix:semicolon
 DECL|member|bm_check
 id|u8
 id|bm_check
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|has_cst
+id|u8
+id|has_cst
 suffix:colon
 l_int|1
 suffix:semicolon
