@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * TLB support routines.&n; *&n; * Copyright (C) 1998-2001, 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 08/02/00 A. Mallick &lt;asit.k.mallick@intel.com&gt;&n; *&t;&t;Modified RID allocation for SMP&n; *          Goutham Rao &lt;goutham.rao@intel.com&gt;&n; *              IPI based ptc implementation and A-step IPI implementation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -474,6 +475,13 @@ c_func
 suffix:semicolon
 multiline_comment|/* srlz.i implies srlz.d */
 )brace
+DECL|variable|local_flush_tlb_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|local_flush_tlb_all
+)paren
+suffix:semicolon
 r_void
 DECL|function|flush_tlb_range
 id|flush_tlb_range
@@ -647,6 +655,13 @@ c_func
 suffix:semicolon
 multiline_comment|/* srlz.i implies srlz.d */
 )brace
+DECL|variable|flush_tlb_range
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_tlb_range
+)paren
+suffix:semicolon
 r_void
 id|__init
 DECL|function|ia64_tlb_init

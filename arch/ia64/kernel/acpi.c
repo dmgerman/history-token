@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  acpi.c - Architecture-Specific Low-Level ACPI Support&n; *&n; *  Copyright (C) 1999 VA Linux Systems&n; *  Copyright (C) 1999,2000 Walt Drummond &lt;drummond@valinux.com&gt;&n; *  Copyright (C) 2000, 2002-2003 Hewlett-Packard Co.&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *  Copyright (C) 2000 Intel Corp.&n; *  Copyright (C) 2000,2001 J.I. Lee &lt;jung-ik.lee@intel.com&gt;&n; *  Copyright (C) 2001 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2001 Jenna Hall &lt;jenna.s.hall@intel.com&gt;&n; *  Copyright (C) 2001 Takayoshi Kochi &lt;t-kochi@bq.jp.nec.com&gt;&n; *  Copyright (C) 2002 Erich Focht &lt;efocht@ess.nec.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -26,6 +27,13 @@ id|pm_idle
 )paren
 (paren
 r_void
+)paren
+suffix:semicolon
+DECL|variable|pm_idle
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pm_idle
 )paren
 suffix:semicolon
 DECL|variable|pm_power_off
@@ -2399,5 +2407,12 @@ id|IOSAPIC_LEVEL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_register_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_register_irq
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_ACPI_BOOT */
 eof

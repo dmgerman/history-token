@@ -1924,13 +1924,6 @@ c_func
 id|master_dev_list
 )paren
 suffix:semicolon
-DECL|variable|master_dev_lock
-r_static
-id|spinlock_t
-id|master_dev_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 DECL|variable|max_equalizers
 r_static
 r_int
@@ -2050,13 +2043,6 @@ id|master
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|master_dev_lock
-)paren
-suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -2065,13 +2051,6 @@ id|master-&gt;master_list
 comma
 op_amp
 id|master_dev_list
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|master_dev_lock
 )paren
 suffix:semicolon
 )brace
@@ -2098,13 +2077,6 @@ id|master
 comma
 op_star
 id|nxt
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|master_dev_lock
-)paren
 suffix:semicolon
 id|list_for_each_entry_safe
 c_func
@@ -2133,7 +2105,6 @@ op_amp
 id|master-&gt;qops
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: we&squot;re inside a spinlock; unregister_netdev() blocks */
 id|unregister_netdev
 c_func
 (paren
@@ -2147,13 +2118,6 @@ id|master-&gt;dev
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|master_dev_lock
-)paren
-suffix:semicolon
 )brace
 DECL|variable|teql_init
 id|module_init

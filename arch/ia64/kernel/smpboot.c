@@ -2,6 +2,7 @@ multiline_comment|/*&n; * SMP boot-related support&n; *&n; * Copyright (C) 1998-
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -106,9 +107,23 @@ DECL|variable|cpu_online_map
 id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
+DECL|variable|cpu_online_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_online_map
+)paren
+suffix:semicolon
 DECL|variable|phys_cpu_present_map
 id|cpumask_t
 id|phys_cpu_present_map
+suffix:semicolon
+DECL|variable|phys_cpu_present_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_cpu_present_map
+)paren
 suffix:semicolon
 multiline_comment|/* which logical CPU number maps to which CPU (physical APIC ID) */
 DECL|variable|ia64_cpu_to_sapicid
@@ -118,6 +133,13 @@ id|ia64_cpu_to_sapicid
 (braket
 id|NR_CPUS
 )braket
+suffix:semicolon
+DECL|variable|ia64_cpu_to_sapicid
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_cpu_to_sapicid
+)paren
 suffix:semicolon
 DECL|variable|cpu_callin_map
 r_static
@@ -1245,6 +1267,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|cpu_isset
 c_func
 (paren
@@ -1253,19 +1276,6 @@ comma
 id|cpu_callin_map
 )paren
 )paren
-(brace
-multiline_comment|/* number CPUs logically, starting from 1 (BSP is 0) */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;CPU%d: CPU has booted.&bslash;n&quot;
-comma
-id|cpu
-)paren
-suffix:semicolon
-)brace
-r_else
 (brace
 id|printk
 c_func
@@ -1510,6 +1520,13 @@ id|cpu_to_node_map
 id|NR_CPUS
 )braket
 id|__cacheline_aligned
+suffix:semicolon
+DECL|variable|cpu_to_node_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|cpu_to_node_map
+)paren
 suffix:semicolon
 multiline_comment|/* which logical CPUs are on which nodes */
 DECL|variable|__cacheline_aligned
@@ -1935,17 +1952,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Processor %d/%d is spinning up...&bslash;n&quot;
-comma
-id|sapicid
-comma
-id|cpu
-)paren
-suffix:semicolon
 multiline_comment|/* Processor goes to start_secondary(), sets online flag */
 id|ret
 op_assign
@@ -1966,15 +1972,6 @@ l_int|0
 )paren
 r_return
 id|ret
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;Processor %d has spun up...&bslash;n&quot;
-comma
-id|cpu
-)paren
 suffix:semicolon
 r_return
 l_int|0

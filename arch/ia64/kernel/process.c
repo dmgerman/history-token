@@ -2636,6 +2636,13 @@ r_return
 id|tid
 suffix:semicolon
 )brace
+DECL|variable|kernel_thread
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kernel_thread
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Flush thread state.  This is called when a thread does an execve().&n; */
 r_void
 DECL|function|flush_thread

@@ -211,6 +211,7 @@ r_int
 id|size
 )paren
 (brace
+r_int
 r_float
 id|d
 op_assign

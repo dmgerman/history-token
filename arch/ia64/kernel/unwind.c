@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Copyright (C) 1999-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; * Copyright (C) 2003 Fenghua Yu &lt;fenghua.yu@intel.com&gt;&n; * &t;- Change pt_regs_off() to make it less dependant on pt_regs structure.&n; */
 multiline_comment|/*&n; * This file implements call frame unwind support for the Linux&n; * kernel.  Parsing and processing the unwind information is&n; * time-consuming, so this implementation translates the unwind&n; * descriptors into unwind scripts.  These scripts are very simple&n; * (basically a sequence of assignments) and efficient to execute.&n; * They are cached for later re-use.  Each script is specific for a&n; * given instruction pointer address and the set of predicate values&n; * that the script depends on (most unwind descriptors are&n; * unconditional and scripts often do not depend on predicates at&n; * all).  This code is based on the unwind conventions described in&n; * the &quot;IA-64 Software Conventions and Runtime Architecture&quot; manual.&n; *&n; * SMP conventions:&n; *&t;o updates to the global unwind data (in structure &quot;unw&quot;) are serialized&n; *&t;  by the unw.lock spinlock&n; *&t;o each unwind script has its own read-write lock; a thread must acquire&n; *&t;  a read lock before executing a script and must acquire a write lock&n; *&t;  before modifying a script&n; *&t;o if both the unw.lock spinlock and a script&squot;s read-write lock must be&n; *&t;  acquired, then the read-write lock must be acquired first.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1980,6 +1981,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|unw_access_gr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unw_access_gr
+)paren
+suffix:semicolon
 r_int
 DECL|function|unw_access_br
 id|unw_access_br
@@ -2162,6 +2170,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|unw_access_br
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unw_access_br
+)paren
+suffix:semicolon
 r_int
 DECL|function|unw_access_fr
 id|unw_access_fr
@@ -2413,6 +2428,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|unw_access_fr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unw_access_fr
+)paren
+suffix:semicolon
 r_int
 DECL|function|unw_access_ar
 id|unw_access_ar
@@ -2763,6 +2785,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|unw_access_ar
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unw_access_ar
+)paren
+suffix:semicolon
 r_int
 DECL|function|unw_access_pr
 id|unw_access_pr
@@ -2823,6 +2852,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|unw_access_pr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unw_access_pr
+)paren
+suffix:semicolon
 "&f;"
 multiline_comment|/* Routines to manipulate the state stack.  */
 r_static
@@ -9246,6 +9282,13 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|unw_unwind
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unw_unwind
+)paren
+suffix:semicolon
 r_int
 DECL|function|unw_unwind_to_user
 id|unw_unwind_to_user
@@ -9350,6 +9393,13 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|unw_unwind_to_user
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unw_unwind_to_user
+)paren
+suffix:semicolon
 r_static
 r_void
 DECL|function|init_frame_info
@@ -9867,6 +9917,13 @@ id|sw
 )paren
 suffix:semicolon
 )brace
+DECL|variable|unw_init_from_blocked_task
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|unw_init_from_blocked_task
+)paren
+suffix:semicolon
 r_static
 r_void
 DECL|function|init_unwind_table

@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;xmac_ii.h&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.48 $&n; * Date:&t;$Date: 2003/05/13 17:17:55 $&n; * Purpose:&t;Defines and Macros for Gigabit Ethernet Controller&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;xmac_ii.h&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.52 $&n; * Date:&t;$Date: 2003/10/02 16:35:50 $&n; * Purpose:&t;Defines and Macros for Gigabit Ethernet Controller&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: xmac_ii.h,v $&n; *&t;Revision 1.48  2003/05/13 17:17:55  mkarl&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.47  2003/03/31 07:37:25  mkarl&n; *&t;Corrected Copyright.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.46  2003/01/28 09:47:45  rschmidt&n; *&t;Added defines for copper MDI/MDIX configuration&n; *&t;Added defines for LED Control Register&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.45  2002/12/10 14:35:13  rschmidt&n; *&t;Corrected defines for Extended PHY Specific Control&n; *&t;Added defines for Ext. PHY Specific Ctrl 2 Reg. (Fiber specific)&n; *&t;&n; *&t;Revision 1.44  2002/12/09 14:58:41  rschmidt&n; *&t;Added defines for Ext. PHY Specific Ctrl Reg. (downshift feature)&n; *&t;Added &squot;GMR_FS_UN_SIZE&squot;-Bit to Rx GMAC FIFO Flush Mask&n; *&t;&n; *&t;Revision 1.43  2002/12/05 10:14:45  rschmidt&n; *&t;Added define for GMAC&squot;s Half Duplex Burst Mode&n; *&t;Added define for Rx GMAC FIFO Flush Mask (default)&n; *&t;&n; *&t;Revision 1.42  2002/11/12 16:48:19  rschmidt&n; *&t;Added defines for Cable Diagnostic Register (GPHY)&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.41  2002/10/21 11:20:22  rschmidt&n; *&t;Added bit GMR_FS_GOOD_FC to GMR_FS_ANY_ERR&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.40  2002/10/14 14:54:14  rschmidt&n; *&t;Added defines for GPHY Specific Status and GPHY Interrupt Status&n; *&t;Added bits PHY_M_IS_AN_ERROR and PHY_M_IS_FIFO_ERROR to PHY_M_DEF_MSK&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.39  2002/10/10 15:53:44  mkarl&n; *&t;added some bit definitions for link speed status and LED&squot;s&n; *&t;&n; *&t;Revision 1.38  2002/08/21 16:23:46  rschmidt&n; *&t;Added defines for PHY Specific Ctrl Reg&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.37  2002/08/16 14:50:33  rschmidt&n; *&t;Added defines for Auto-Neg. Advertisement YUKON Fiber (88E1011S only)&n; *&t;Changed define PHY_M_DEF_MSK for GPHY IRQ Mask&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.36  2002/08/12 13:21:10  rschmidt&n; *&t;Added defines for different Broadcom PHY Ids&n; *&t;&n; *&t;Revision 1.35  2002/08/08 15:58:01  rschmidt&n; *&t;Added defines for Manual LED Override register (YUKON)&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.34  2002/07/31 17:23:36  rwahl&n; *&t;Added define GMR_FS_ANY_ERR (analogous to XMR_FS_ANY_ERR).&n; *&t;&n; *&t;Revision 1.33  2002/07/23 16:03:37  rschmidt&n; *&t;Added defines for GPHY registers&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.32  2002/07/15 18:14:37  rwahl&n; *&t;Added GMAC MIB counters definitions.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.31  2002/07/15 15:42:50  rschmidt&n; *&t;Removed defines from PHY specific reg. which are&n; *&t;common to all PHYs&n; *&t;Added defines for GMAC MIB Counters&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.30  2002/06/05 08:22:12  rschmidt&n; *&t;Changed defines for GMAC Rx Control Register and Rx Status&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.29  2002/04/25 11:43:56  rschmidt&n; *&t;Added define PHY_B_AS_PAUSE_MSK for BCom Pause Res.&n; *&t;Added new registers and defines for YUKON (GMAC, GPHY)&n; *&t;Added Receive Frame Status Encoding for YUKON&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.28  2000/11/09 12:32:49  rassmann&n; *&t;Renamed variables.&n; *&t;&n; *&t;Revision 1.27  2000/05/17 11:00:46  malthoff&n; *&t;Add bit for enable/disable power management in BCOM chip.&n; *&t;&n; *&t;Revision 1.26  1999/11/22 14:03:00  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.25  1999/08/12 19:19:38  malthoff&n; *&t;Add PHY_B_AC_TX_TST bit according to BCOM A1 errata sheet.&n; *&t;&n; *&t;Revision 1.24  1999/07/30 11:27:21  cgoos&n; *&t;Fixed a missing end-of-comment.&n; *&t;&n; *&t;Revision 1.23  1999/07/30 07:03:31  malthoff&n; *&t;Cut some long comments.&n; *&t;Correct the XMAC PHY ID definitions.&n; *&t;&n; *&t;Revision 1.22  1999/05/19 07:33:18  cgoos&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.21  1999/03/25 07:46:11  malthoff&n; *&t;Add XM_HW_CFG, XM_TS_READ, and XM_TS_LOAD registers.&n; *&t;&n; *&t;Revision 1.20  1999/03/12 13:36:09  malthoff&n; *&t;Remove __STDC__.&n; *&n; *&t;Revision 1.19  1998/12/10 12:22:54  gklug&n; *&t;fix: RX_PAGE must be in interrupt mask&n; *&n; *&t;Revision 1.18  1998/12/10 10:36:36  gklug&n; *&t;fix: swap of pause bits&n; *&n; *&t;Revision 1.17  1998/11/18 13:21:45  gklug&n; *&t;fix: Default interrupt mask&n; *&n; *&t;Revision 1.16  1998/10/29 15:53:21  gklug&n; *&t;fix: Default mask uses ASS (GP0) signal&n; *&n; *&t;Revision 1.15  1998/10/28 13:52:52  malthoff&n; *&t;Add new bits in RX_CMD register.&n; *&n; *&t;Revision 1.14  1998/10/19 15:34:53  gklug&n; *&t;fix: typos&n; *&n; *&t;Revision 1.13  1998/10/14 07:19:03  malthoff&n; *&t;bug fix: Every define which describes bit 31&n; *&t;must be declared as unsigned long &squot;UL&squot;.&n; *&t;fix bit definitions of PHY_AN_RFB and PHY_AN_PAUSE.&n; *&t;Remove ANP defines. Rework the RFB defines.&n; *&n; *&t;Revision 1.12  1998/10/14 06:22:44  cgoos&n; *&t;Changed shifted constant to ULONG.&n; *&n; *&t;Revision 1.11  1998/10/14 05:43:26  gklug&n; *&t;add: shift pause coding&n; *&t;fix: PAUSE bits definition&n; *&n; *&t;Revision 1.10  1998/10/13 09:19:21  malthoff&n; *&t;Again change XMR_FS_ANY_ERR because of new info from XaQti.&n; *&n; *&t;Revision 1.9  1998/10/09 07:58:30  malthoff&n; *&t;Add XMR_FS_FCS_ERR to XMR_FS_ANY_ERR.&n; *&n; *&t;Revision 1.8  1998/10/09 07:18:17  malthoff&n; *&t;bug fix of a bug fix: XM_PAUSE_MODE and XM_DEF_MODE&n; *&t;are not inverted! Bug XM_DEF_MSK is inverted.&n; *&n; *&t;Revision 1.7  1998/10/05 08:04:32  malthoff&n; *&t;bug fix: XM_PAUSE_MODE and XM_DEF_MODE&n; *&t;must be inverted declarations.&n; *&n; *&t;Revision 1.6  1998/09/28 13:38:18  malthoff&n; *&t;Add default modes and masks XM_DEF_MSK,&n; *&t;XM_PAUSE_MODE and XM_DEF_MODE&n; *&n; *&t;Revision 1.5  1998/09/16 14:42:04  malthoff&n; *&t;Bug Fix: XM_GP_PORT is a 32 bit (not a 16 bit) register.&n; *&n; *&t;Revision 1.4  1998/08/20 14:59:47  malthoff&n; *&t;Rework this file after reading the XaQti data sheet&n; *&t;&quot;Differences between Rev. B2 &amp; Rev. C XMAC II&quot;.&n; *&t;This file is now 100% XMAC II Rev. C complained.&n; *&n; *&t;Revision 1.3  1998/06/29 12:18:23  malthoff&n; *&t;Correct XMR_FS_ANY_ERR definition.&n; *&n; *&t;Revision 1.2  1998/06/29 12:10:56  malthoff&n; *&t;Add define XMR_FS_ANY_ERR.&n; *&n; *&t;Revision 1.1  1998/06/19 13:37:17  malthoff&n; *&t;created.&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: xmac_ii.h,v $&n; *&t;Revision 1.52  2003/10/02 16:35:50  rschmidt&n; *&t;Added defines for default values of GMAC parameters&n; *&t;Changed defines for setting GMAC parameters&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.51  2003/09/23 09:04:27  malthoff&n; *&t;Add bit definitions for PHY_MARV_EXT_P_STAT.&n; *&t;&n; *&t;Revision 1.50  2003/09/16 14:15:07  rschmidt&n; *&t;Added defines for Extended PHY Specific Control&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.49  2003/09/16 07:22:46  mschmid&n; *&t;Added defines for Marvell PHY energy detect modes&n; *&t;Added macros for MAC parameter setting in port structure&n; *&t;&n; *&t;Revision 1.48  2003/05/13 17:17:55  mkarl&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.47  2003/03/31 07:37:25  mkarl&n; *&t;Corrected Copyright.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.46  2003/01/28 09:47:45  rschmidt&n; *&t;Added defines for copper MDI/MDIX configuration&n; *&t;Added defines for LED Control Register&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.45  2002/12/10 14:35:13  rschmidt&n; *&t;Corrected defines for Extended PHY Specific Control&n; *&t;Added defines for Ext. PHY Specific Ctrl 2 Reg. (Fiber specific)&n; *&t;&n; *&t;Revision 1.44  2002/12/09 14:58:41  rschmidt&n; *&t;Added defines for Ext. PHY Specific Ctrl Reg. (downshift feature)&n; *&t;Added &squot;GMR_FS_UN_SIZE&squot;-Bit to Rx GMAC FIFO Flush Mask&n; *&t;&n; *&t;Revision 1.43  2002/12/05 10:14:45  rschmidt&n; *&t;Added define for GMAC&squot;s Half Duplex Burst Mode&n; *&t;Added define for Rx GMAC FIFO Flush Mask (default)&n; *&t;&n; *&t;Revision 1.42  2002/11/12 16:48:19  rschmidt&n; *&t;Added defines for Cable Diagnostic Register (GPHY)&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.41  2002/10/21 11:20:22  rschmidt&n; *&t;Added bit GMR_FS_GOOD_FC to GMR_FS_ANY_ERR&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.40  2002/10/14 14:54:14  rschmidt&n; *&t;Added defines for GPHY Specific Status and GPHY Interrupt Status&n; *&t;Added bits PHY_M_IS_AN_ERROR and PHY_M_IS_FIFO_ERROR to PHY_M_DEF_MSK&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.39  2002/10/10 15:53:44  mkarl&n; *&t;added some bit definitions for link speed status and LED&squot;s&n; *&t;&n; *&t;Revision 1.38  2002/08/21 16:23:46  rschmidt&n; *&t;Added defines for PHY Specific Ctrl Reg&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.37  2002/08/16 14:50:33  rschmidt&n; *&t;Added defines for Auto-Neg. Advertisement YUKON Fiber (88E1011S only)&n; *&t;Changed define PHY_M_DEF_MSK for GPHY IRQ Mask&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.36  2002/08/12 13:21:10  rschmidt&n; *&t;Added defines for different Broadcom PHY Ids&n; *&t;&n; *&t;Revision 1.35  2002/08/08 15:58:01  rschmidt&n; *&t;Added defines for Manual LED Override register (YUKON)&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.34  2002/07/31 17:23:36  rwahl&n; *&t;Added define GMR_FS_ANY_ERR (analogous to XMR_FS_ANY_ERR).&n; *&t;&n; *&t;Revision 1.33  2002/07/23 16:03:37  rschmidt&n; *&t;Added defines for GPHY registers&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.32  2002/07/15 18:14:37  rwahl&n; *&t;Added GMAC MIB counters definitions.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.31  2002/07/15 15:42:50  rschmidt&n; *&t;Removed defines from PHY specific reg. which are&n; *&t;common to all PHYs&n; *&t;Added defines for GMAC MIB Counters&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.30  2002/06/05 08:22:12  rschmidt&n; *&t;Changed defines for GMAC Rx Control Register and Rx Status&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.29  2002/04/25 11:43:56  rschmidt&n; *&t;Added define PHY_B_AS_PAUSE_MSK for BCom Pause Res.&n; *&t;Added new registers and defines for YUKON (GMAC, GPHY)&n; *&t;Added Receive Frame Status Encoding for YUKON&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.28  2000/11/09 12:32:49  rassmann&n; *&t;Renamed variables.&n; *&t;&n; *&t;Revision 1.27  2000/05/17 11:00:46  malthoff&n; *&t;Add bit for enable/disable power management in BCOM chip.&n; *&t;&n; *&t;Revision 1.26  1999/11/22 14:03:00  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.25  1999/08/12 19:19:38  malthoff&n; *&t;Add PHY_B_AC_TX_TST bit according to BCOM A1 errata sheet.&n; *&t;&n; *&t;Revision 1.24  1999/07/30 11:27:21  cgoos&n; *&t;Fixed a missing end-of-comment.&n; *&t;&n; *&t;Revision 1.23  1999/07/30 07:03:31  malthoff&n; *&t;Cut some long comments.&n; *&t;Correct the XMAC PHY ID definitions.&n; *&t;&n; *&t;Revision 1.22  1999/05/19 07:33:18  cgoos&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.21  1999/03/25 07:46:11  malthoff&n; *&t;Add XM_HW_CFG, XM_TS_READ, and XM_TS_LOAD registers.&n; *&t;&n; *&t;Revision 1.20  1999/03/12 13:36:09  malthoff&n; *&t;Remove __STDC__.&n; *&n; *&t;Revision 1.19  1998/12/10 12:22:54  gklug&n; *&t;fix: RX_PAGE must be in interrupt mask&n; *&n; *&t;Revision 1.18  1998/12/10 10:36:36  gklug&n; *&t;fix: swap of pause bits&n; *&n; *&t;Revision 1.17  1998/11/18 13:21:45  gklug&n; *&t;fix: Default interrupt mask&n; *&n; *&t;Revision 1.16  1998/10/29 15:53:21  gklug&n; *&t;fix: Default mask uses ASS (GP0) signal&n; *&n; *&t;Revision 1.15  1998/10/28 13:52:52  malthoff&n; *&t;Add new bits in RX_CMD register.&n; *&n; *&t;Revision 1.14  1998/10/19 15:34:53  gklug&n; *&t;fix: typos&n; *&n; *&t;Revision 1.13  1998/10/14 07:19:03  malthoff&n; *&t;bug fix: Every define which describes bit 31&n; *&t;must be declared as unsigned long &squot;UL&squot;.&n; *&t;fix bit definitions of PHY_AN_RFB and PHY_AN_PAUSE.&n; *&t;Remove ANP defines. Rework the RFB defines.&n; *&n; *&t;Revision 1.12  1998/10/14 06:22:44  cgoos&n; *&t;Changed shifted constant to ULONG.&n; *&n; *&t;Revision 1.11  1998/10/14 05:43:26  gklug&n; *&t;add: shift pause coding&n; *&t;fix: PAUSE bits definition&n; *&n; *&t;Revision 1.10  1998/10/13 09:19:21  malthoff&n; *&t;Again change XMR_FS_ANY_ERR because of new info from XaQti.&n; *&n; *&t;Revision 1.9  1998/10/09 07:58:30  malthoff&n; *&t;Add XMR_FS_FCS_ERR to XMR_FS_ANY_ERR.&n; *&n; *&t;Revision 1.8  1998/10/09 07:18:17  malthoff&n; *&t;bug fix of a bug fix: XM_PAUSE_MODE and XM_DEF_MODE&n; *&t;are not inverted! Bug XM_DEF_MSK is inverted.&n; *&n; *&t;Revision 1.7  1998/10/05 08:04:32  malthoff&n; *&t;bug fix: XM_PAUSE_MODE and XM_DEF_MODE&n; *&t;must be inverted declarations.&n; *&n; *&t;Revision 1.6  1998/09/28 13:38:18  malthoff&n; *&t;Add default modes and masks XM_DEF_MSK,&n; *&t;XM_PAUSE_MODE and XM_DEF_MODE&n; *&n; *&t;Revision 1.5  1998/09/16 14:42:04  malthoff&n; *&t;Bug Fix: XM_GP_PORT is a 32 bit (not a 16 bit) register.&n; *&n; *&t;Revision 1.4  1998/08/20 14:59:47  malthoff&n; *&t;Rework this file after reading the XaQti data sheet&n; *&t;&quot;Differences between Rev. B2 &amp; Rev. C XMAC II&quot;.&n; *&t;This file is now 100% XMAC II Rev. C complained.&n; *&n; *&t;Revision 1.3  1998/06/29 12:18:23  malthoff&n; *&t;Correct XMR_FS_ANY_ERR definition.&n; *&n; *&t;Revision 1.2  1998/06/29 12:10:56  malthoff&n; *&t;Add define XMR_FS_ANY_ERR.&n; *&n; *&t;Revision 1.1  1998/06/19 13:37:17  malthoff&n; *&t;created.&n; *&n; *&n; ******************************************************************************/
 macro_line|#ifndef __INC_XMAC_H
 DECL|macro|__INC_XMAC_H
 mdefine_line|#define __INC_XMAC_H
@@ -677,7 +677,7 @@ mdefine_line|#define PHY_XMAC_AUNE_EXP&t;0x06&t;/* 16 bit r/o&t;Auto-Neg. Expans
 DECL|macro|PHY_XMAC_NEPG
 mdefine_line|#define PHY_XMAC_NEPG&t;&t;0x07&t;/* 16 bit r/w&t;Next Page Register */
 DECL|macro|PHY_XMAC_NEPG_LP
-mdefine_line|#define PHY_XMAC_NEPG_LP&t;0x08&t;/* 16 bit r/o&t;Next Page Link P Reg */
+mdefine_line|#define PHY_XMAC_NEPG_LP&t;0x08&t;/* 16 bit r/o&t;Next Page Link Partner */
 multiline_comment|/* 0x09 - 0x0e:&t;&t;reserved */
 DECL|macro|PHY_XMAC_EXT_STAT
 mdefine_line|#define PHY_XMAC_EXT_STAT&t;0x0f&t;/* 16 bit r/o&t;Ext Status Register */
@@ -702,7 +702,7 @@ mdefine_line|#define PHY_BCOM_AUNE_EXP&t;0x06&t;/* 16 bit r/o&t;Auto-Neg. Expans
 DECL|macro|PHY_BCOM_NEPG
 mdefine_line|#define PHY_BCOM_NEPG&t;&t;0x07&t;/* 16 bit r/w&t;Next Page Register */
 DECL|macro|PHY_BCOM_NEPG_LP
-mdefine_line|#define PHY_BCOM_NEPG_LP&t;0x08&t;/* 16 bit r/o&t;Next Page Link P Reg */
+mdefine_line|#define PHY_BCOM_NEPG_LP&t;0x08&t;/* 16 bit r/o&t;Next Page Link Partner */
 multiline_comment|/* Broadcom-specific registers */
 DECL|macro|PHY_BCOM_1000T_CTRL
 mdefine_line|#define PHY_BCOM_1000T_CTRL&t;0x09&t;/* 16 bit r/w&t;1000Base-T Ctrl Reg */
@@ -718,7 +718,7 @@ mdefine_line|#define PHY_BCOM_P_EXT_STAT&t;0x11&t;/* 16 bit r/o&t;PHY Extended S
 DECL|macro|PHY_BCOM_RE_CTR
 mdefine_line|#define PHY_BCOM_RE_CTR&t;&t;0x12&t;/* 16 bit r/w&t;Receive Error Counter */
 DECL|macro|PHY_BCOM_FC_CTR
-mdefine_line|#define PHY_BCOM_FC_CTR&t;&t;0x13&t;/* 16 bit r/w&t;False Carr Sense Cnt */
+mdefine_line|#define PHY_BCOM_FC_CTR&t;&t;0x13&t;/* 16 bit r/w&t;False Carrier Sense Cnt */
 DECL|macro|PHY_BCOM_RNO_CTR
 mdefine_line|#define PHY_BCOM_RNO_CTR&t;0x14&t;/* 16 bit r/w&t;Receiver NOT_OK Cnt */
 multiline_comment|/* 0x15 - 0x17:&t;&t;reserved */
@@ -751,7 +751,7 @@ mdefine_line|#define PHY_MARV_AUNE_EXP&t;0x06&t;/* 16 bit r/o&t;Auto-Neg. Expans
 DECL|macro|PHY_MARV_NEPG
 mdefine_line|#define PHY_MARV_NEPG&t;&t;0x07&t;/* 16 bit r/w&t;Next Page Register */
 DECL|macro|PHY_MARV_NEPG_LP
-mdefine_line|#define PHY_MARV_NEPG_LP&t;0x08&t;/* 16 bit r/o&t;Next Page Link P Reg */
+mdefine_line|#define PHY_MARV_NEPG_LP&t;0x08&t;/* 16 bit r/o&t;Next Page Link Partner */
 multiline_comment|/* Marvel-specific registers */
 DECL|macro|PHY_MARV_1000T_CTRL
 mdefine_line|#define PHY_MARV_1000T_CTRL&t;0x09&t;/* 16 bit r/w&t;1000Base-T Ctrl Reg */
@@ -805,7 +805,7 @@ mdefine_line|#define PHY_LONE_AUNE_EXP&t;0x06&t;/* 16 bit r/o&t;Auto-Neg. Expans
 DECL|macro|PHY_LONE_NEPG
 mdefine_line|#define PHY_LONE_NEPG&t;&t;0x07&t;/* 16 bit r/w&t;Next Page Register */
 DECL|macro|PHY_LONE_NEPG_LP
-mdefine_line|#define PHY_LONE_NEPG_LP&t;0x08&t;/* 16 bit r/o&t;Next Page Link Partner*/
+mdefine_line|#define PHY_LONE_NEPG_LP&t;0x08&t;/* 16 bit r/o&t;Next Page Link Partner */
 multiline_comment|/* Level One-specific registers */
 DECL|macro|PHY_LONE_1000T_CTRL
 mdefine_line|#define PHY_LONE_1000T_CTRL&t;0x09&t;/* 16 bit r/w&t;1000Base-T Control Reg*/
@@ -871,9 +871,10 @@ multiline_comment|/* 0x15 -0x18:&t;&t;reserved */
 DECL|macro|PHY_NAT_PHY_ADDR
 mdefine_line|#define PHY_NAT_PHY_ADDR&t;0x19&t;/* 16 bit r/o&t;PHY Address Register */
 multiline_comment|/*----------------------------------------------------------------------------*/
-multiline_comment|/*&n; * PHY bit definitions&n; * Bits defined as PHY_X_..., PHY_B_..., PHY_L_... or PHY_N_... are&n; * Xmac/Broadcom/LevelOne/National-specific.&n; * All other are general.&n; */
+multiline_comment|/*&n; * PHY bit definitions&n; * Bits defined as PHY_X_..., PHY_B_..., PHY_L_... or PHY_N_... are&n; * XMAC/Broadcom/LevelOne/National/Marvell-specific.&n; * All other are general.&n; */
 multiline_comment|/*****  PHY_XMAC_CTRL&t;16 bit r/w&t;PHY Control Register *****/
 multiline_comment|/*****  PHY_BCOM_CTRL&t;16 bit r/w&t;PHY Control Register *****/
+multiline_comment|/*****  PHY_MARV_CTRL&t;16 bit r/w&t;PHY Status Register *****/
 multiline_comment|/*****  PHY_LONE_CTRL&t;16 bit r/w&t;PHY Control Register *****/
 DECL|macro|PHY_CT_RESET
 mdefine_line|#define PHY_CT_RESET&t;(1&lt;&lt;15)&t;/* Bit 15: (sc)&t;clear all PHY related regs */
@@ -1007,32 +1008,24 @@ DECL|macro|PHY_SEL_TYPE
 mdefine_line|#define PHY_SEL_TYPE&t;0x01&t;/* 00001 = Ethernet */
 multiline_comment|/*****  PHY_XMAC_AUNE_EXP&t;16 bit r/o&t;Auto-Negotiation Expansion Reg *****/
 multiline_comment|/* Bit 15..4:&t;reserved */
-DECL|macro|PHY_AN_LP_NP
-mdefine_line|#define PHY_AN_LP_NP&t;(1&lt;&lt;3)&t;/* Bit  3:&t;Link Partner can Next Page */
-DECL|macro|PHY_AN_LOC_NP
-mdefine_line|#define PHY_AN_LOC_NP&t;(1&lt;&lt;2)&t;/* Bit  2:&t;Local PHY can Next Page */
-DECL|macro|PHY_AN_RX_PG
-mdefine_line|#define PHY_AN_RX_PG&t;(1&lt;&lt;1)&t;/* Bit  1:&t;Page Received */
+DECL|macro|PHY_ANE_LP_NP
+mdefine_line|#define PHY_ANE_LP_NP&t;(1&lt;&lt;3)&t;/* Bit  3:&t;Link Partner can Next Page */
+DECL|macro|PHY_ANE_LOC_NP
+mdefine_line|#define PHY_ANE_LOC_NP&t;(1&lt;&lt;2)&t;/* Bit  2:&t;Local PHY can Next Page */
+DECL|macro|PHY_ANE_RX_PG
+mdefine_line|#define PHY_ANE_RX_PG&t;(1&lt;&lt;1)&t;/* Bit  1:&t;Page Received */
 multiline_comment|/* Bit  0:&t;reserved */
 multiline_comment|/*****  PHY_BCOM_AUNE_EXP&t;16 bit r/o&t;Auto-Negotiation Expansion Reg *****/
-multiline_comment|/* Bit 15..5:&t;reserved */
-DECL|macro|PHY_B_AN_PDF
-mdefine_line|#define PHY_B_AN_PDF&t;(1&lt;&lt;4)&t;/* Bit  4:&t;Parallel Detection Fault */
-multiline_comment|/*&t;PHY_AN_LP_NP&t;&t;(see XMAC) Bit  3:&t;Link Partner can Next Page */
-multiline_comment|/*&t;PHY_AN_LOC_NP&t;&t;(see XMAC) Bit  2:&t;Local PHY can Next Page */
-multiline_comment|/*&t;PHY_AN_RX_PG&t;&t;(see XMAC) Bit  1:&t;Page Received */
-DECL|macro|PHY_B_AN_LP_CAP
-mdefine_line|#define PHY_B_AN_LP_CAP&t;(1&lt;&lt;0)&t;/* Bit  0:&t;Link Partner Auto-Neg. Cap. */ &t;
 multiline_comment|/*****  PHY_LONE_AUNE_EXP&t;16 bit r/o&t;Auto-Negotiation Expansion Reg *****/
-DECL|macro|PHY_L_AN_BP
-mdefine_line|#define PHY_L_AN_BP&t;&t;(1&lt;&lt;5)&t;/* Bit  5:&t;Base Page Indication */
-DECL|macro|PHY_L_AN_PDF
-mdefine_line|#define PHY_L_AN_PDF&t;(1&lt;&lt;4)&t;/* Bit  4:&t;Parallel Detection Fault */
-multiline_comment|/*&t;PHY_AN_LP_NP&t;&t;(see XMAC) Bit  3:&t;Link Partner can Next Page */
-multiline_comment|/*&t;PHY_AN_LOC_NP&t;&t;(see XMAC) Bit  2:&t;Local PHY can Next Page */
-multiline_comment|/*&t;PHY_AN_RX_PG&t;&t;(see XMAC) Bit  1:&t;Page Received */
-DECL|macro|PHY_B_AN_LP_CAP
-mdefine_line|#define PHY_B_AN_LP_CAP&t;(1&lt;&lt;0)&t;/* Bit  0:&t;Link Partner Auto-Neg. Cap. */ &t;
+multiline_comment|/*****  PHY_MARV_AUNE_EXP&t;16 bit r/o&t;Auto-Negotiation Expansion Reg *****/
+multiline_comment|/* Bit 15..5:&t;reserved */
+DECL|macro|PHY_ANE_PAR_DF
+mdefine_line|#define PHY_ANE_PAR_DF&t;(1&lt;&lt;4)&t;/* Bit  4:&t;Parallel Detection Fault */
+multiline_comment|/*&t;PHY_ANE_LP_NP&t;&t;(see XMAC) Bit  3:&t;Link Partner can Next Page */
+multiline_comment|/*&t;PHY_ANE_LOC_NP&t;&t;(see XMAC) Bit  2:&t;Local PHY can Next Page */
+multiline_comment|/*&t;PHY_ANE_RX_PG&t;&t;(see XMAC) Bit  1:&t;Page Received */
+DECL|macro|PHY_ANE_LP_CAP
+mdefine_line|#define PHY_ANE_LP_CAP&t;(1&lt;&lt;0)&t;/* Bit  0:&t;Link Partner Auto-Neg. Cap. */ &t;
 multiline_comment|/*****  PHY_XMAC_NEPG&t;&t;16 bit r/w&t;Next Page Register *****/
 multiline_comment|/*****  PHY_BCOM_NEPG&t;&t;16 bit r/w&t;Next Page Register *****/
 multiline_comment|/*****  PHY_LONE_NEPG&t;&t;16 bit r/w&t;Next Page Register *****/
@@ -1069,7 +1062,7 @@ mdefine_line|#define PHY_X_RS_FD&t;&t;(1&lt;&lt;5)&t;/* Bit  5:&t;Full Duplex Mo
 DECL|macro|PHY_X_RS_ABLMIS
 mdefine_line|#define PHY_X_RS_ABLMIS (1&lt;&lt;4)&t;/* Bit  4:&t;duplex or pause cap mismatch */
 DECL|macro|PHY_X_RS_PAUMIS
-mdefine_line|#define PHY_X_RS_PAUMIS (1&lt;&lt;3)&t;/* Bit  3:&t;pause capability missmatch */
+mdefine_line|#define PHY_X_RS_PAUMIS (1&lt;&lt;3)&t;/* Bit  3:&t;pause capability mismatch */
 multiline_comment|/* Bit  2..0:&t;reserved */
 multiline_comment|/*&n; * Remote Fault Bits (PHY_X_AN_RFB) encoding&n; */
 DECL|macro|X_RFB_OK
@@ -1105,6 +1098,7 @@ DECL|macro|PHY_B_1000C_AHD
 mdefine_line|#define PHY_B_1000C_AHD&t;&t;(1&lt;&lt;8)&t;/* Bit  8:&t;Advertise Half Duplex */
 multiline_comment|/* Bit  7..0:&t;reserved */
 multiline_comment|/*****  PHY_BCOM_1000T_STAT&t;16 bit r/o&t;1000Base-T Status Reg *****/
+multiline_comment|/*****  PHY_MARV_1000T_STAT&t;16 bit r/o&t;1000Base-T Status Reg *****/
 DECL|macro|PHY_B_1000S_MSF
 mdefine_line|#define PHY_B_1000S_MSF&t;&t;(1&lt;&lt;15)&t;/* Bit 15:&t;Master/Slave Fault */
 DECL|macro|PHY_B_1000S_MSR
@@ -1612,6 +1606,10 @@ DECL|macro|PHY_M_PC_POL_R_DIS
 mdefine_line|#define PHY_M_PC_POL_R_DIS&t;(1&lt;&lt;1)&t;/* Bit  1:&t;Polarity Reversal Disabled */
 DECL|macro|PHY_M_PC_DIS_JABBER
 mdefine_line|#define PHY_M_PC_DIS_JABBER&t;(1&lt;&lt;0)&t;/* Bit  0:&t;Disable Jabber */
+DECL|macro|PHY_M_PC_EN_DET
+mdefine_line|#define PHY_M_PC_EN_DET&t;&t;&t;SHIFT8(2)&t;/* Energy Detect (Mode 1) */
+DECL|macro|PHY_M_PC_EN_DET_PLUS
+mdefine_line|#define PHY_M_PC_EN_DET_PLUS&t;SHIFT8(3)&t;/* Energy Detect Plus (Mode 2) */
 DECL|macro|PHY_M_PC_MDI_XMODE
 mdefine_line|#define PHY_M_PC_MDI_XMODE(x)&t;SHIFT5(x)&t;
 DECL|macro|PHY_M_PC_MAN_MDI
@@ -1695,6 +1693,8 @@ DECL|macro|PHY_M_EC_S_DSC_MSK
 mdefine_line|#define PHY_M_EC_S_DSC_MSK&t;(3&lt;&lt;8)&t;/* Bit  9.. 8:&t;Slave  downshift counter */
 DECL|macro|PHY_M_EC_MAC_S_MSK
 mdefine_line|#define PHY_M_EC_MAC_S_MSK&t;(7&lt;&lt;4)&t;/* Bit  6.. 4:&t;Def. MAC interface speed */
+DECL|macro|PHY_M_EC_FIB_AN_ENA
+mdefine_line|#define PHY_M_EC_FIB_AN_ENA&t;(1&lt;&lt;3)&t;/* Bit  3:&t;Fiber Auto-Neg. Enable */
 DECL|macro|PHY_M_EC_M_DSC
 mdefine_line|#define PHY_M_EC_M_DSC(x)&t;&t;SHIFT10(x)&t;/* 00=1x; 01=2x; 10=3x; 11=4x */
 DECL|macro|PHY_M_EC_S_DSC
@@ -1789,6 +1789,24 @@ DECL|macro|PHY_M_EC2_FO_BOOST
 mdefine_line|#define PHY_M_EC2_FO_BOOST&t;(1&lt;&lt;3)&t;/* Bit  3:&t;Fiber Output Boost */
 DECL|macro|PHY_M_EC2_FO_AM_MSK
 mdefine_line|#define PHY_M_EC2_FO_AM_MSK&t;7&t;&t;/* Bit  2.. 0:&t;Fiber Output Amplitude */
+multiline_comment|/*****&t;PHY_MARV_EXT_P_STAT 16 bit r/w&t;Ext. PHY Specific Status *****/
+DECL|macro|PHY_M_FC_AUTO_SEL
+mdefine_line|#define PHY_M_FC_AUTO_SEL&t;(1&lt;&lt;15)&t;/* Bit 15:&t;Fiber/Copper Auto Sel. dis. */
+DECL|macro|PHY_M_FC_AN_REG_ACC
+mdefine_line|#define PHY_M_FC_AN_REG_ACC (1&lt;&lt;14) /* Bit 14:&t;Fiber/Copper Autoneg. reg acc */
+DECL|macro|PHY_M_FC_RESULUTION
+mdefine_line|#define PHY_M_FC_RESULUTION (1&lt;&lt;13)&t;/* Bit 13:&t;Fiber/Copper Resulution */
+DECL|macro|PHY_M_SER_IF_AN_BP
+mdefine_line|#define PHY_M_SER_IF_AN_BP  (1&lt;&lt;12) /* Bit 12:&t;Ser IF autoneg. bypass enable */
+DECL|macro|PHY_M_SER_IF_BP_ST
+mdefine_line|#define PHY_M_SER_IF_BP_ST&t;(1&lt;&lt;11) /* Bit 11:&t;Ser IF autoneg. bypass status */
+DECL|macro|PHY_M_IRQ_POLARITY
+mdefine_line|#define PHY_M_IRQ_POLARITY&t;(1&lt;&lt;10) /* Bit 10:&t;IRQ polarity */
+multiline_comment|/* Bit 9..4: reserved */
+DECL|macro|PHY_M_UNDOC1
+mdefine_line|#define PHY_M_UNDOC1&t;&t;(1&lt;&lt; 7) /* undocumented bit !! */
+DECL|macro|PHY_M_MODE_MASK
+mdefine_line|#define PHY_M_MODE_MASK&t;&t;(0xf&lt;&lt;0)/* Bit 3..0: copy of HWCFG MODE[3:0] */
 multiline_comment|/*****  PHY_MARV_CABLE_DIAG&t;16 bit r/o&t;Cable Diagnostic Reg *****/
 DECL|macro|PHY_M_CABD_ENA_TEST
 mdefine_line|#define PHY_M_CABD_ENA_TEST&t;(1&lt;&lt;15)&t;/* Bit 15:&t;Enable Test */
@@ -1893,7 +1911,7 @@ mdefine_line|#define GM_RXO_ERR_HI &bslash;&n;&t;&t;&t;(GM_MIB_CNT_BASE + 72)&t;
 DECL|macro|GM_RXF_SHT
 mdefine_line|#define GM_RXF_SHT &bslash;&n;&t;&t;&t;(GM_MIB_CNT_BASE + 80)&t;/* Frames &lt;64 Byte Received OK */
 DECL|macro|GM_RXE_FRAG
-mdefine_line|#define GM_RXE_FRAG &bslash;&n;&t;&t;&t;(GM_MIB_CNT_BASE + 88)&t;/* Frames &lt;64 Byte Receeived with FCS Err */
+mdefine_line|#define GM_RXE_FRAG &bslash;&n;&t;&t;&t;(GM_MIB_CNT_BASE + 88)&t;/* Frames &lt;64 Byte Received with FCS Err */
 DECL|macro|GM_RXF_64B
 mdefine_line|#define GM_RXF_64B &bslash;&n;&t;&t;&t;(GM_MIB_CNT_BASE + 96)&t;/* 64 Byte Rx Frame */
 DECL|macro|GM_RXF_127B
@@ -2029,8 +2047,12 @@ DECL|macro|GM_TXCR_CRC_DIS
 mdefine_line|#define GM_TXCR_CRC_DIS&t;&t;(1&lt;&lt;14)&t;/* Bit 14:&t;Disable insertion of CRC */
 DECL|macro|GM_TXCR_PAD_DIS
 mdefine_line|#define GM_TXCR_PAD_DIS&t;&t;(1&lt;&lt;13)&t;/* Bit 13:&t;Disable padding of packets */
-DECL|macro|GM_TXCR_COL_THR
-mdefine_line|#define GM_TXCR_COL_THR&t;&t;(4&lt;&lt;10)&t;/* Bit 12..10:&t;Collision Threshold */
+DECL|macro|GM_TXCR_COL_THR_MSK
+mdefine_line|#define GM_TXCR_COL_THR_MSK&t;(1&lt;&lt;10)&t;/* Bit 12..10:&t;Collision Threshold */
+DECL|macro|TX_COL_THR
+mdefine_line|#define TX_COL_THR(x)&t;&t;(SHIFT10(x) &amp; GM_TXCR_COL_THR_MSK)
+DECL|macro|TX_COL_DEF
+mdefine_line|#define TX_COL_DEF&t;&t;&t;0x04
 multiline_comment|/*&t;GM_RX_CTRL&t;&t;&t;&t;16 bit r/w&t;Receive Control Register */
 DECL|macro|GM_RXCR_UCF_ENA
 mdefine_line|#define GM_RXCR_UCF_ENA&t;&t;(1&lt;&lt;15)&t;/* Bit 15:&t;Enable Unicast filtering */
@@ -2048,15 +2070,21 @@ mdefine_line|#define GM_TXPA_JAMIPG_MSK&t;(0x1f&lt;&lt;9)&t;/* Bit 13..9:&t;Jam 
 DECL|macro|GM_TXPA_JAMDAT_MSK
 mdefine_line|#define GM_TXPA_JAMDAT_MSK&t;(0x1f&lt;&lt;4)&t;/* Bit  8..4:&t;IPG Jam to Data */
 multiline_comment|/* Bit  3..0:&t;reserved */
-DECL|macro|JAM_LEN_VAL
-mdefine_line|#define JAM_LEN_VAL(x)&t;&t;SHIFT14(x)
-DECL|macro|JAM_IPG_VAL
-mdefine_line|#define JAM_IPG_VAL(x)&t;&t;SHIFT9(x)
-DECL|macro|IPG_JAM_DATA
-mdefine_line|#define IPG_JAM_DATA(x)&t;&t;SHIFT4(x)
+DECL|macro|TX_JAM_LEN_VAL
+mdefine_line|#define TX_JAM_LEN_VAL(x)&t;(SHIFT14(x) &amp; GM_TXPA_JAMLEN_MSK)
+DECL|macro|TX_JAM_IPG_VAL
+mdefine_line|#define TX_JAM_IPG_VAL(x)&t;(SHIFT9(x) &amp; GM_TXPA_JAMIPG_MSK)
+DECL|macro|TX_IPG_JAM_DATA
+mdefine_line|#define TX_IPG_JAM_DATA(x)&t;(SHIFT4(x) &amp; GM_TXPA_JAMDAT_MSK)
+DECL|macro|TX_JAM_LEN_DEF
+mdefine_line|#define TX_JAM_LEN_DEF&t;&t;0x03
+DECL|macro|TX_JAM_IPG_DEF
+mdefine_line|#define TX_JAM_IPG_DEF&t;&t;0x0b
+DECL|macro|TX_IPG_JAM_DEF
+mdefine_line|#define TX_IPG_JAM_DEF&t;&t;0x1c
 multiline_comment|/*&t;GM_SERIAL_MODE&t;&t;&t;16 bit r/w&t;Serial Mode Register */
 DECL|macro|GM_SMOD_DATABL_MSK
-mdefine_line|#define GM_SMOD_DATABL_MSK&t;(0x1f&lt;&lt;11)&t;/* Bit 15..11:&t;Data Blinder */
+mdefine_line|#define GM_SMOD_DATABL_MSK&t;(0x1f&lt;&lt;11)&t;/* Bit 15..11:&t;Data Blinder (r/o) */
 DECL|macro|GM_SMOD_LIMIT_4
 mdefine_line|#define GM_SMOD_LIMIT_4&t;&t;(1&lt;&lt;10)&t;/* Bit 10:&t;4 consecutive Tx trials */
 DECL|macro|GM_SMOD_VLAN_ENA
@@ -2067,20 +2095,18 @@ multiline_comment|/* Bit  7..5:&t;reserved */
 DECL|macro|GM_SMOD_IPG_MSK
 mdefine_line|#define GM_SMOD_IPG_MSK&t;&t;0x1f&t;/* Bit 4..0:&t;Inter-Packet Gap (IPG) */
 DECL|macro|DATA_BLIND_VAL
-mdefine_line|#define DATA_BLIND_VAL(x)&t;SHIFT11(x)
-DECL|macro|DATA_BLIND_FAST_ETH
-mdefine_line|#define DATA_BLIND_FAST_ETH&t;0x1c
-DECL|macro|DATA_BLIND_GIGABIT
-mdefine_line|#define DATA_BLIND_GIGABIT&t;4
-DECL|macro|IPG_VAL_FAST_ETH
-mdefine_line|#define IPG_VAL_FAST_ETH&t;0x1e
-DECL|macro|IPG_VAL_GIGABIT
-mdefine_line|#define IPG_VAL_GIGABIT&t;&t;6
+mdefine_line|#define DATA_BLIND_VAL(x)&t;(SHIFT11(x) &amp; GM_SMOD_DATABL_MSK)
+DECL|macro|DATA_BLIND_DEF
+mdefine_line|#define DATA_BLIND_DEF&t;&t;0x04
+DECL|macro|IPG_DATA_VAL
+mdefine_line|#define IPG_DATA_VAL(x)&t;&t;(x &amp; GM_SMOD_IPG_MSK)
+DECL|macro|IPG_DATA_DEF
+mdefine_line|#define IPG_DATA_DEF&t;&t;0x1e
 multiline_comment|/*&t;GM_SMI_CTRL&t;&t;&t;&t;16 bit r/w&t;SMI Control Register */
-DECL|macro|GM_SMI_CT_PHY_AD
-mdefine_line|#define GM_SMI_CT_PHY_AD(x)&t;SHIFT11(x)
-DECL|macro|GM_SMI_CT_REG_AD
-mdefine_line|#define GM_SMI_CT_REG_AD(x)&t;SHIFT6(x)
+DECL|macro|GM_SMI_CT_PHY_A_MSK
+mdefine_line|#define GM_SMI_CT_PHY_A_MSK&t;(0x1f&lt;&lt;11)&t;/* Bit 15..11:&t;PHY Device Address */
+DECL|macro|GM_SMI_CT_REG_A_MSK
+mdefine_line|#define GM_SMI_CT_REG_A_MSK&t;(0x1f&lt;&lt;6)&t;/* Bit 10.. 6:&t;PHY Register Address */
 DECL|macro|GM_SMI_CT_OP_RD
 mdefine_line|#define GM_SMI_CT_OP_RD&t;&t;(1&lt;&lt;5)&t;/* Bit  5:&t;OpCode Read (0=Write)*/
 DECL|macro|GM_SMI_CT_RD_VAL
@@ -2088,6 +2114,10 @@ mdefine_line|#define GM_SMI_CT_RD_VAL&t;(1&lt;&lt;4)&t;/* Bit  4:&t;Read Valid (
 DECL|macro|GM_SMI_CT_BUSY
 mdefine_line|#define GM_SMI_CT_BUSY&t;&t;(1&lt;&lt;3)&t;/* Bit  3:&t;Busy (Operation in progress) */
 multiline_comment|/* Bit   2..0:&t;reserved */
+DECL|macro|GM_SMI_CT_PHY_AD
+mdefine_line|#define GM_SMI_CT_PHY_AD(x)&t;(SHIFT11(x) &amp; GM_SMI_CT_PHY_A_MSK)
+DECL|macro|GM_SMI_CT_REG_AD
+mdefine_line|#define GM_SMI_CT_REG_AD(x)&t;(SHIFT6(x) &amp; GM_SMI_CT_REG_A_MSK)
 multiline_comment|/*&t;GM_PHY_ADDR&t;&t;&t;&t;16 bit r/w&t;GPHY Address Register */
 multiline_comment|/* Bit  15..6:&t;reserved */
 DECL|macro|GM_PAR_MIB_CLR

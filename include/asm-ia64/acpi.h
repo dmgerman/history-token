@@ -3,6 +3,8 @@ macro_line|#ifndef _ASM_ACPI_H
 DECL|macro|_ASM_ACPI_H
 mdefine_line|#define _ASM_ACPI_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/numa.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|COMPILER_DEPENDENT_INT64
 mdefine_line|#define COMPILER_DEPENDENT_INT64&t;long
@@ -222,7 +224,6 @@ id|irq
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_NUMA
-macro_line|#include &lt;asm/numa.h&gt;
 multiline_comment|/* Proximity bitmap length; _PXM is at most 255 (8 bit)*/
 DECL|macro|MAX_PXM_DOMAINS
 mdefine_line|#define MAX_PXM_DOMAINS (256)

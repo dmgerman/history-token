@@ -1,7 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;ski2c.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.57 $&n; * Date:&t;$Date: 2003/01/28 09:17:38 $&n; * Purpose:&t;Functions to access Voltage and Temperature Sensor&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2003 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: ski2c.c,v $&n; *&t;Revision 1.57  2003/01/28 09:17:38  rschmidt&n; *&t;Fixed handling for sensors on YUKON Fiber.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.56  2002/12/19 14:20:41  rschmidt&n; *&t;Added debugging code in SkI2cWait().&n; *&t;Replaced all I2C-write operations with function SkI2cWrite().&n; *&t;Fixed compiler warning because of uninitialized &squot;Time&squot; in SkI2cEvent().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.55  2002/10/15 07:23:55  rschmidt&n; *&t;Added setting of the GIYukon32Bit bool variable to distinguish&n; *&t;32-bit adapters.&n; *&t;Editorial changes (TWSI).&n; *&t;&n; *&t;Revision 1.54  2002/08/13 09:05:06  rschmidt&n; *&t;Added new thresholds if VAUX is not available (GIVauxAvail).&n; *&t;Merged defines for PHY PLL 3V3 voltage (A and B).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.53  2002/08/08 11:04:53  rwahl&n; *&t;Added missing comment for revision 1.51&n; *&t;&n; *&t;Revision 1.52  2002/08/08 10:09:02  jschmalz&n; *&t;Sensor init state caused wrong error log entry&n; *&t;&n; *&t;Revision 1.51  2002/08/06 09:43:03  jschmalz&n; *&t;Extensions and changes for Yukon&n; *&t;&n; *&t;Revision 1.50  2002/08/02 12:09:22  rschmidt&n; *&t;Added support for YUKON sensors.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.49  2002/07/30 11:07:52  rschmidt&n; *&t;Replaced MaxSens init by update for Copper in SkI2cInit1(),&n; *&t;because it was already initialized in SkI2cInit0().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.48  2001/08/16 12:44:33  afischer&n; *&t;LM80 sensor init values corrected&n; *&t;&n; *&t;Revision 1.47  2001/04/05 11:38:09  rassmann&n; *&t;Set SenState to idle in SkI2cWaitIrq().&n; *&t;Changed error message in SkI2cWaitIrq().&n; *&t;&n; *&t;Revision 1.46  2001/04/02 14:03:35  rassmann&n; *&t;Changed pAC to IoC in SK_IN32().&n; *&t;&n; *&t;Revision 1.45  2001/03/21 12:12:49  rassmann&n; *&t;Resetting I2C_READY interrupt in SkI2cInit1().&n; *&t;&n; *&t;Revision 1.44  2000/08/07 15:49:03  gklug&n; *&t;Fix: SK_INFAST only in NetWare driver.&n; *&t;&n; *&t;Revision 1.43  2000/08/03 14:28:17  rassmann&n; *&t;Added function to wait for I2C being ready before resetting the board.&n; *&t;Replaced one duplicate &quot;out of range&quot; message with correct one.&n; *&t;&n; *&t;Revision 1.42  1999/11/22 13:35:12  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.41  1999/09/14 14:11:30  malthoff&n; *&t;The 1000BT Dual Link adapter has got only one Fan.&n; *&t;The second Fan has been removed.&n; *&t;&n; *&t;Revision 1.40  1999/05/27 13:37:27  malthoff&n; *&t;Set divisor of 1 for fan count calculation.&n; *&t;&n; *&t;Revision 1.39  1999/05/20 14:54:43  malthoff&n; *&t;I2c.DummyReads is not used in Diagnostics.&n; *&t;&n; *&t;Revision 1.38  1999/05/20 09:20:56  cgoos&n; *&t;Changes for 1000Base-T (up to 9 sensors and fans).&n; *&t;&n; *&t;Revision 1.37  1999/03/25 15:11:36  gklug&n; *&t;fix: reset error flag if sensor reads correct value&n; *&t;&n; *&t;Revision 1.36  1999/01/07 14:11:16  gklug&n; *&t;fix: break added&n; *&t;&n; *&t;Revision 1.35  1999/01/05 15:31:49  gklug&n; *&t;fix: CLEAR STAT command is now added correctly&n; *&t;&n; *&t;Revision 1.34  1998/12/01 13:45:16  gklug&n; *&t;fix: introduced Init level, because we don&squot;t need reinits&n; *&t;&n; *&t;Revision 1.33  1998/11/09 14:54:25  malthoff&n; *&t;Modify I2C Transfer Timeout handling for Diagnostics.&n; *&t;&n; *&t;Revision 1.32  1998/11/03 06:54:35  gklug&n; *&t;fix: Need dummy reads at the beginning to init sensors&n; *&n; *&t;Revision 1.31  1998/11/03 06:42:42  gklug&n; *&t;fix: select correctVIO range only if between warning levels&n; *&t;&n; *&t;Revision 1.30  1998/11/02 07:36:53  gklug&n; *&t;fix: Error should not include WARNING message&n; *&t;&n; *&t;Revision 1.29  1998/10/30 15:07:43  malthoff&n; *&t;Disable &squot;I2C does not compelete&squot; error log for diagnostics.&n; *&t;&n; *&t;Revision 1.28  1998/10/22 09:48:11  gklug&n; *&t;fix: SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.27  1998/10/20 09:59:46  gklug&n; *&t;add: parameter to SkOsGetTime&n; *&t;&n; *&t;Revision 1.26  1998/10/09 06:10:59  malthoff&n; *&t;Remove ID_sccs by SysKonnectFileId.&n; *&t;&n; *&t;Revision 1.25  1998/09/08 12:40:26  gklug&n; *&t;fix: syntax error in if clause&n; *&t;&n; *&t;Revision 1.24  1998/09/08 12:19:42  gklug&n; *&t;chg: INIT Level checking&n; *&t;&n; *&t;Revision 1.23  1998/09/08 07:37:20  gklug&n; *&t;fix: log error if PCI_IO voltage sensor could not be initialized&n; *&t;&n; *&t;Revision 1.22  1998/09/04 08:30:03  malthoff&n; *&t;Bugfixes during SK_DIAG testing:&n; *&t;- correct NS2BCLK() macro&n; *&t;- correct SkI2cSndDev()&n; *&t;- correct SkI2cWait() loop waiting for an event&n; *&t;&n; *&t;Revision 1.21  1998/08/27 14:46:01  gklug&n; *&t;chg: if-then-else replaced by switch&n; *&n; *&t;Revision 1.20  1998/08/27 14:40:07  gklug&n; *&t;test: integral types&n; *&t;&n; *&t;Revision 1.19  1998/08/25 07:51:54  gklug&n; *&t;fix: typos for compiling&n; *&t;&n; *&t;Revision 1.18  1998/08/25 06:12:24  gklug&n; *&t;add: count errors and warnings&n; *&t;fix: check not the sensor state but the ErrFlag!&n; *&t;&n; *&t;Revision 1.17  1998/08/25 05:56:48  gklug&n; *&t;add: CheckSensor function&n; *&t;&n; *&t;Revision 1.16  1998/08/20 11:41:10  gklug&n; *&t;chg: omit STRCPY macro by using char * as Sensor Description&n; *&t;&n; *&t;Revision 1.15  1998/08/20 11:37:35  gklug&n; *&t;chg: change Ioc to IoC&n; *&t;&n; *&t;Revision 1.14  1998/08/20 11:32:52  gklug&n; *&t;fix: Para compile error&n; *&t;&n; *&t;Revision 1.13  1998/08/20 11:27:41  gklug&n; *&t;fix: Compile bugs with new awrning constants&n; *&t;&n; *&t;Revision 1.12  1998/08/20 08:53:05  gklug&n; *&t;fix: compiler errors&n; *&t;add: Threshold values&n; *&t;&n; *&t;Revision 1.11  1998/08/19 12:39:22  malthoff&n; *&t;Compiler Fix: Some names have changed.&n; *&t;&n; *&t;Revision 1.10  1998/08/19 12:20:56  gklug&n; *&t;fix: remove struct from C files (see CCC)&n; *&t;&n; *&t;Revision 1.9  1998/08/19 06:28:46  malthoff&n; *&t;SkOsGetTime returns SK_U64 now.&n; *&t;&n; *&t;Revision 1.8  1998/08/17 13:53:33  gklug&n; *&t;fix: Parameter of event function and its result&n; *&t;&n; *&t;Revision 1.7  1998/08/17 07:02:15  malthoff&n; *&t;Modify the functions for accessing the I2C SW Registers.&n; *&t;Modify SkI2cWait().&n; *&t;Put Lm80RcvReg into sklm80.c&n; *&t;Remove Compiler Errors.&n; *&t;&n; *&t;Revision 1.6  1998/08/14 07:13:20  malthoff&n; *&t;remove pAc with pAC&n; *&t;remove smc with pAC&n; *&t;change names to new convention&n; *&n; *&t;Revision 1.5  1998/08/14 06:24:49  gklug&n; *&t;add: init level 1 and 2&n; *&n; *&t;Revision 1.4  1998/08/12 14:31:12  gklug&n; *&t;add: error log for unknown event&n; *&n; *&t;Revision 1.3  1998/08/12 13:37:04  gklug&n; *&t;add: Init 0 function&n; *&n; *&t;Revision 1.2  1998/08/11 07:27:15  gklug&n; *&t;add: functions of the interface&n; *&t;adapt rest of source to C coding Conventions&n; *&t;rmv: unnecessary code taken from Mona Lisa&n; *&n; *&t;Revision 1.1  1998/06/19 14:28:43  malthoff&n; *&t;Created. Sources taken from ML Projekt.&n; *&t;Sources have to be reworked for GE.&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;ski2c.c&n; * Project:&t;Gigabit Ethernet Adapters, TWSI-Module&n; * Version:&t;$Revision: 1.59 $&n; * Date:&t;$Date: 2003/10/20 09:07:25 $&n; * Purpose:&t;Functions to access Voltage and Temperature Sensor&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: ski2c.c,v $&n; *&t;Revision 1.59  2003/10/20 09:07:25  rschmidt&n; *&t;Added cast SK_U32 in SkI2cWrite() to avoid compiler warning.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.58  2003/09/23 09:22:53  malthoff&n; *&t;Parameter I2cDevSize added in SkI2cRead and SkI2cWrite to&n; *&t;support larger devices on the TWSI bus.&n; *&t;&n; *&t;Revision 1.57  2003/01/28 09:17:38  rschmidt&n; *&t;Fixed handling for sensors on YUKON Fiber.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.56  2002/12/19 14:20:41  rschmidt&n; *&t;Added debugging code in SkI2cWait().&n; *&t;Replaced all I2C-write operations with function SkI2cWrite().&n; *&t;Fixed compiler warning because of uninitialized &squot;Time&squot; in SkI2cEvent().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.55  2002/10/15 07:23:55  rschmidt&n; *&t;Added setting of the GIYukon32Bit bool variable to distinguish&n; *&t;32-bit adapters.&n; *&t;Editorial changes (TWSI).&n; *&t;&n; *&t;Revision 1.54  2002/08/13 09:05:06  rschmidt&n; *&t;Added new thresholds if VAUX is not available (GIVauxAvail).&n; *&t;Merged defines for PHY PLL 3V3 voltage (A and B).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.53  2002/08/08 11:04:53  rwahl&n; *&t;Added missing comment for revision 1.51&n; *&t;&n; *&t;Revision 1.52  2002/08/08 10:09:02  jschmalz&n; *&t;Sensor init state caused wrong error log entry&n; *&t;&n; *&t;Revision 1.51  2002/08/06 09:43:03  jschmalz&n; *&t;Extensions and changes for Yukon&n; *&t;&n; *&t;Revision 1.50  2002/08/02 12:09:22  rschmidt&n; *&t;Added support for YUKON sensors.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.49  2002/07/30 11:07:52  rschmidt&n; *&t;Replaced MaxSens init by update for Copper in SkI2cInit1(),&n; *&t;because it was already initialized in SkI2cInit0().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.48  2001/08/16 12:44:33  afischer&n; *&t;LM80 sensor init values corrected&n; *&t;&n; *&t;Revision 1.47  2001/04/05 11:38:09  rassmann&n; *&t;Set SenState to idle in SkI2cWaitIrq().&n; *&t;Changed error message in SkI2cWaitIrq().&n; *&t;&n; *&t;Revision 1.46  2001/04/02 14:03:35  rassmann&n; *&t;Changed pAC to IoC in SK_IN32().&n; *&t;&n; *&t;Revision 1.45  2001/03/21 12:12:49  rassmann&n; *&t;Resetting I2C_READY interrupt in SkI2cInit1().&n; *&t;&n; *&t;Revision 1.44  2000/08/07 15:49:03  gklug&n; *&t;Fix: SK_INFAST only in NetWare driver.&n; *&t;&n; *&t;Revision 1.43  2000/08/03 14:28:17  rassmann&n; *&t;Added function to wait for I2C being ready before resetting the board.&n; *&t;Replaced one duplicate &quot;out of range&quot; message with correct one.&n; *&t;&n; *&t;Revision 1.42  1999/11/22 13:35:12  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.41  1999/09/14 14:11:30  malthoff&n; *&t;The 1000BT Dual Link adapter has got only one Fan.&n; *&t;The second Fan has been removed.&n; *&t;&n; *&t;Revision 1.40  1999/05/27 13:37:27  malthoff&n; *&t;Set divisor of 1 for fan count calculation.&n; *&t;&n; *&t;Revision 1.39  1999/05/20 14:54:43  malthoff&n; *&t;I2c.DummyReads is not used in Diagnostics.&n; *&t;&n; *&t;Revision 1.38  1999/05/20 09:20:56  cgoos&n; *&t;Changes for 1000Base-T (up to 9 sensors and fans).&n; *&t;&n; *&t;Revision 1.37  1999/03/25 15:11:36  gklug&n; *&t;fix: reset error flag if sensor reads correct value&n; *&t;&n; *&t;Revision 1.36  1999/01/07 14:11:16  gklug&n; *&t;fix: break added&n; *&t;&n; *&t;Revision 1.35  1999/01/05 15:31:49  gklug&n; *&t;fix: CLEAR STAT command is now added correctly&n; *&t;&n; *&t;Revision 1.34  1998/12/01 13:45:16  gklug&n; *&t;fix: introduced Init level, because we don&squot;t need reinits&n; *&t;&n; *&t;Revision 1.33  1998/11/09 14:54:25  malthoff&n; *&t;Modify I2C Transfer Timeout handling for Diagnostics.&n; *&t;&n; *&t;Revision 1.32  1998/11/03 06:54:35  gklug&n; *&t;fix: Need dummy reads at the beginning to init sensors&n; *&n; *&t;Revision 1.31  1998/11/03 06:42:42  gklug&n; *&t;fix: select correctVIO range only if between warning levels&n; *&t;&n; *&t;Revision 1.30  1998/11/02 07:36:53  gklug&n; *&t;fix: Error should not include WARNING message&n; *&t;&n; *&t;Revision 1.29  1998/10/30 15:07:43  malthoff&n; *&t;Disable &squot;I2C does not compelete&squot; error log for diagnostics.&n; *&t;&n; *&t;Revision 1.28  1998/10/22 09:48:11  gklug&n; *&t;fix: SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.27  1998/10/20 09:59:46  gklug&n; *&t;add: parameter to SkOsGetTime&n; *&t;&n; *&t;Revision 1.26  1998/10/09 06:10:59  malthoff&n; *&t;Remove ID_sccs by SysKonnectFileId.&n; *&t;&n; *&t;Revision 1.25  1998/09/08 12:40:26  gklug&n; *&t;fix: syntax error in if clause&n; *&t;&n; *&t;Revision 1.24  1998/09/08 12:19:42  gklug&n; *&t;chg: INIT Level checking&n; *&t;&n; *&t;Revision 1.23  1998/09/08 07:37:20  gklug&n; *&t;fix: log error if PCI_IO voltage sensor could not be initialized&n; *&t;&n; *&t;Revision 1.22  1998/09/04 08:30:03  malthoff&n; *&t;Bugfixes during SK_DIAG testing:&n; *&t;- correct NS2BCLK() macro&n; *&t;- correct SkI2cSndDev()&n; *&t;- correct SkI2cWait() loop waiting for an event&n; *&t;&n; *&t;Revision 1.21  1998/08/27 14:46:01  gklug&n; *&t;chg: if-then-else replaced by switch&n; *&n; *&t;Revision 1.20  1998/08/27 14:40:07  gklug&n; *&t;test: integral types&n; *&t;&n; *&t;Revision 1.19  1998/08/25 07:51:54  gklug&n; *&t;fix: typos for compiling&n; *&t;&n; *&t;Revision 1.18  1998/08/25 06:12:24  gklug&n; *&t;add: count errors and warnings&n; *&t;fix: check not the sensor state but the ErrFlag!&n; *&t;&n; *&t;Revision 1.17  1998/08/25 05:56:48  gklug&n; *&t;add: CheckSensor function&n; *&t;&n; *&t;Revision 1.16  1998/08/20 11:41:10  gklug&n; *&t;chg: omit STRCPY macro by using char * as Sensor Description&n; *&t;&n; *&t;Revision 1.15  1998/08/20 11:37:35  gklug&n; *&t;chg: change Ioc to IoC&n; *&t;&n; *&t;Revision 1.14  1998/08/20 11:32:52  gklug&n; *&t;fix: Para compile error&n; *&t;&n; *&t;Revision 1.13  1998/08/20 11:27:41  gklug&n; *&t;fix: Compile bugs with new awrning constants&n; *&t;&n; *&t;Revision 1.12  1998/08/20 08:53:05  gklug&n; *&t;fix: compiler errors&n; *&t;add: Threshold values&n; *&t;&n; *&t;Revision 1.11  1998/08/19 12:39:22  malthoff&n; *&t;Compiler Fix: Some names have changed.&n; *&t;&n; *&t;Revision 1.10  1998/08/19 12:20:56  gklug&n; *&t;fix: remove struct from C files (see CCC)&n; *&t;&n; *&t;Revision 1.9  1998/08/19 06:28:46  malthoff&n; *&t;SkOsGetTime returns SK_U64 now.&n; *&t;&n; *&t;Revision 1.8  1998/08/17 13:53:33  gklug&n; *&t;fix: Parameter of event function and its result&n; *&t;&n; *&t;Revision 1.7  1998/08/17 07:02:15  malthoff&n; *&t;Modify the functions for accessing the I2C SW Registers.&n; *&t;Modify SkI2cWait().&n; *&t;Put Lm80RcvReg into sklm80.c&n; *&t;Remove Compiler Errors.&n; *&t;&n; *&t;Revision 1.6  1998/08/14 07:13:20  malthoff&n; *&t;remove pAc with pAC&n; *&t;remove smc with pAC&n; *&t;change names to new convention&n; *&n; *&t;Revision 1.5  1998/08/14 06:24:49  gklug&n; *&t;add: init level 1 and 2&n; *&n; *&t;Revision 1.4  1998/08/12 14:31:12  gklug&n; *&t;add: error log for unknown event&n; *&n; *&t;Revision 1.3  1998/08/12 13:37:04  gklug&n; *&t;add: Init 0 function&n; *&n; *&t;Revision 1.2  1998/08/11 07:27:15  gklug&n; *&t;add: functions of the interface&n; *&t;adapt rest of source to C coding Conventions&n; *&t;rmv: unnecessary code taken from Mona Lisa&n; *&n; *&t;Revision 1.1  1998/06/19 14:28:43  malthoff&n; *&t;Created. Sources taken from ML Projekt.&n; *&t;Sources have to be reworked for GE.&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *&t;I2C Protocol&n; */
+macro_line|#if (defined(DEBUG) || ((!defined(LINT)) &amp;&amp; (!defined(SK_SLIM))))
 DECL|variable|SysKonnectFileId
 r_static
 r_const
@@ -10,8 +11,9 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;$Id: ski2c.c,v 1.57 2003/01/28 09:17:38 rschmidt Exp $&quot;
+l_string|&quot;@(#) $Id: ski2c.c,v 1.59 2003/10/20 09:07:25 rschmidt Exp $ (C) Marvell. &quot;
 suffix:semicolon
+macro_line|#endif
 macro_line|#include &quot;h/skdrv1st.h&quot;&t;&t;/* Driver Specific Definitions */
 macro_line|#include &quot;h/lm80.h&quot;
 macro_line|#include &quot;h/skdrv2nd.h&quot;&t;&t;/* Adapter Control- and Driver specific Def. */
@@ -25,7 +27,7 @@ c_func
 (brace
 )brace
 macro_line|#endif
-macro_line|#ifdef&t;SK_DIAG
+macro_line|#ifdef SK_DIAG
 multiline_comment|/*&n; * I2C Fast Mode timing values used by the LM80.&n; * If new devices are added to the I2C bus the timing values have to be checked.&n; */
 macro_line|#ifndef I2C_SLOW_TIMING
 DECL|macro|T_CLK_LOW
@@ -480,7 +482,7 @@ id|IoC
 )paren
 multiline_comment|/* I/O Context */
 (brace
-multiline_comment|/*&n;&t; * Received bit must be zero.&n;&t; *&n;&t; */
+multiline_comment|/*&n;&t; * Received bit must be zero.&n;&t; */
 id|SkI2cSndBit
 c_func
 (paren
@@ -699,7 +701,7 @@ id|Rw
 suffix:semicolon
 )brace
 multiline_comment|/* SkI2cSndDev */
-macro_line|#endif&t;/* SK_DIAG */
+macro_line|#endif /* SK_DIAG */
 multiline_comment|/*----------------- I2C CTRL Register Functions ----------*/
 multiline_comment|/*&n; * waits for a completion of an I2C transfer&n; *&n; * returns&t;0:&t;success, transfer completes&n; *&t;&t;&t;1:&t;error,&t; transfer does not complete, I2C transfer&n; *&t;&t;&t;&t;&t;&t; killed, wait loop terminated.&n; */
 DECL|function|SkI2cWait
@@ -779,7 +781,7 @@ comma
 id|SKERR_I2C_E002MSG
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* !SK_DIAG */
+macro_line|#endif /* !SK_DIAG */
 r_return
 l_int|1
 suffix:semicolon
@@ -931,7 +933,7 @@ comma
 id|SKERR_I2C_E016MSG
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* !SK_DIAG */
+macro_line|#endif /* !SK_DIAG */
 r_return
 suffix:semicolon
 )brace
@@ -991,6 +993,10 @@ id|I2cDev
 comma
 multiline_comment|/* I2C Device Address */
 r_int
+id|I2cDevSize
+comma
+multiline_comment|/* I2C Device Size (e.g. I2C_025K_DEV or I2C_2K_DEV) */
+r_int
 id|I2cReg
 comma
 multiline_comment|/* I2C Device Register Address */
@@ -1017,6 +1023,8 @@ comma
 id|I2C_WRITE
 comma
 id|I2cDev
+comma
+id|I2cDevSize
 comma
 id|I2cReg
 comma
@@ -1057,6 +1065,10 @@ id|I2cDev
 comma
 multiline_comment|/* I2C Device Address */
 r_int
+id|I2cDevSize
+comma
+multiline_comment|/* I2C Device Size (e.g. I2C_025K_DEV or I2C_2K_DEV) */
+r_int
 id|I2cReg
 comma
 multiline_comment|/* I2C Device Register Address */
@@ -1086,6 +1098,8 @@ comma
 id|I2C_READ
 comma
 id|I2cDev
+comma
+id|I2cDevSize
 comma
 id|I2cReg
 comma
@@ -1133,7 +1147,7 @@ id|Data
 suffix:semicolon
 )brace
 multiline_comment|/* SkI2cRead */
-macro_line|#endif&t;/* SK_DIAG */
+macro_line|#endif /* SK_DIAG */
 multiline_comment|/*&n; * read a sensor&squot;s value&n; *&n; * This function reads a sensor&squot;s value from the I2C sensor chip. The sensor&n; * is defined by its index into the sensors database in the struct pAC points&n; * to.&n; * Returns&n; *&t;&t;1 if the read is completed&n; *&t;&t;0 if the read must be continued (I2C Bus still allocated)&n; */
 DECL|function|SkI2cReadSensor
 r_int
@@ -1178,12 +1192,14 @@ id|pSen
 suffix:semicolon
 )brace
 r_else
+(brace
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* no success */
 )brace
-multiline_comment|/* SkI2cReadSensor*/
+)brace
+multiline_comment|/* SkI2cReadSensor */
 multiline_comment|/*&n; * Do the Init state 0 initialization&n; */
 DECL|function|SkI2cInit0
 r_static
@@ -1208,14 +1224,14 @@ suffix:semicolon
 multiline_comment|/* Begin with timeout control for state machine */
 id|pAC-&gt;I2c.TimerMode
 op_assign
-id|SK_TIMER_WATCH_STATEMACHINE
+id|SK_TIMER_WATCH_SM
 suffix:semicolon
 multiline_comment|/* Set sensor number to zero */
 id|pAC-&gt;I2c.MaxSens
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifndef&t;SK_DIAG
+macro_line|#ifndef SK_DIAG
 multiline_comment|/* Initialize Number of Dummy Reads */
 id|pAC-&gt;I2c.DummyReads
 op_assign
@@ -1481,6 +1497,8 @@ l_int|0
 comma
 id|LM80_ADDR
 comma
+id|I2C_025K_DEV
+comma
 id|LM80_CFG
 comma
 l_int|0
@@ -1503,9 +1521,11 @@ id|pAC
 comma
 id|IoC
 comma
-l_int|0xff
+l_int|0xffUL
 comma
 id|LM80_ADDR
+comma
+id|I2C_025K_DEV
 comma
 id|LM80_IMSK_1
 comma
@@ -1522,9 +1542,11 @@ id|pAC
 comma
 id|IoC
 comma
-l_int|0xff
+l_int|0xffUL
 comma
 id|LM80_ADDR
+comma
+id|I2C_025K_DEV
 comma
 id|LM80_IMSK_2
 comma
@@ -1545,6 +1567,8 @@ l_int|0
 comma
 id|LM80_ADDR
 comma
+id|I2C_025K_DEV
+comma
 id|LM80_FAN_CTRL
 comma
 l_int|0
@@ -1564,6 +1588,8 @@ l_int|0
 comma
 id|LM80_ADDR
 comma
+id|I2C_025K_DEV
+comma
 id|LM80_TEMP_CTRL
 comma
 l_int|0
@@ -1579,9 +1605,14 @@ id|pAC
 comma
 id|IoC
 comma
+(paren
+id|SK_U32
+)paren
 id|LM80_CFG_START
 comma
 id|LM80_ADDR
+comma
+id|I2C_025K_DEV
 comma
 id|LM80_CFG
 comma
@@ -2218,7 +2249,7 @@ id|i
 dot
 id|SenDesc
 op_assign
-l_string|&quot;Voltage ASIC-Co 1V5&quot;
+l_string|&quot;Voltage Core 1V5&quot;
 suffix:semicolon
 id|pAC-&gt;I2c.SenTable
 (braket
@@ -2588,12 +2619,12 @@ op_assign
 id|LM80_ADDR
 suffix:semicolon
 )brace
-macro_line|#ifndef&t;SK_DIAG
+macro_line|#ifndef SK_DIAG
 id|pAC-&gt;I2c.DummyReads
 op_assign
 id|pAC-&gt;I2c.MaxSens
 suffix:semicolon
-macro_line|#endif&t;/* !SK_DIAG */
+macro_line|#endif /* !SK_DIAG */
 multiline_comment|/* Clear I2C IRQ */
 id|SK_OUT32
 c_func
@@ -3369,7 +3400,7 @@ id|SK_SEN_PCI_IO_3V3_HIGH_ERR
 suffix:semicolon
 )brace
 )brace
-macro_line|#if 0
+macro_line|#ifdef TEST_ONLY
 multiline_comment|/* Dynamic thresholds also for VAUX of LM80 sensor */
 r_if
 c_cond
@@ -3502,7 +3533,7 @@ id|SKERR_I2C_E013MSG
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* SkI2cCheckSensor*/
+multiline_comment|/* SkI2cCheckSensor */
 multiline_comment|/*&n; * The only Event to be served is the timeout event&n; *&n; */
 DECL|function|SkI2cEvent
 r_int
@@ -3593,6 +3624,7 @@ id|ReadComplete
 (brace
 multiline_comment|/* Check sensor against defined thresholds */
 id|SkI2cCheckSensor
+c_func
 (paren
 id|pAC
 comma
@@ -3671,7 +3703,7 @@ l_int|0
 suffix:semicolon
 id|pAC-&gt;I2c.TimerMode
 op_assign
-id|SK_TIMER_WATCH_STATEMACHINE
+id|SK_TIMER_WATCH_SM
 suffix:semicolon
 id|SkTimerStart
 c_func
@@ -3752,6 +3784,7 @@ id|ReadComplete
 (brace
 multiline_comment|/* Check sensor against defined thresholds */
 id|SkI2cCheckSensor
+c_func
 (paren
 id|pAC
 comma
@@ -4035,5 +4068,5 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* SkI2cEvent*/
-macro_line|#endif&t;/* !SK_DIAG */
+macro_line|#endif /* !SK_DIAG */
 eof

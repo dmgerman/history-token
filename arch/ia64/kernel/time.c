@@ -42,6 +42,13 @@ r_int
 r_int
 id|last_cli_ip
 suffix:semicolon
+DECL|variable|last_cli_ip
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|last_cli_ip
+)paren
+suffix:semicolon
 macro_line|#endif
 r_int
 r_int

@@ -1,10 +1,12 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdrv1st.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.1 $&n; * Date:&t;$Date: 2003/07/21 07:22:43 $&n; * Purpose:&t;First header file for driver and all other modules&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2003 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skdrv1st.h,v $&n; *&t;Revision 1.1  2003/07/21 07:22:43  rroesler&n; *&t;Fix: Re-Enter after CVS crash&n; *&t;&n; *&t;Revision 1.15  2003/07/17 14:54:09  rroesler&n; *&t;Fix: Corrected SK_PNMI_READ macros to copy right amount of bytes&n; *&t;&n; *&t;Revision 1.14  2003/06/03 14:36:32  mlindner&n; *&t;Add: Additions for SK_SLIM&n; *&t;&n; *&t;Revision 1.13  2003/05/26 14:03:06  mlindner&n; *&t;Add: Support for SLIM skaddr&n; *&t;&n; *&t;Revision 1.12  2003/05/26 12:56:39  mlindner&n; *&t;Add: Support for Kernel 2.5/2.6&n; *&t;Add: New SkOsGetTimeCurrent function&n; *&t;Add: SK_PNMI_HUNDREDS_SEC definition&n; *&t;Fix: SK_TICKS_PER_SEC on Intel Itanium2&n; *&t;&n; *&t;Revision 1.11  2003/02/25 14:16:40  mlindner&n; *&t;Fix: Copyright statement&n; *&t;&n; *&t;Revision 1.10  2002/10/02 12:46:02  mlindner&n; *&t;Add: Support for Yukon&n; *&t;&n; *&t;Revision 1.9.2.2  2001/12/07 12:06:42  mlindner&n; *&t;Fix: malloc -&gt; slab changes&n; *&t;&n; *&t;Revision 1.9.2.1  2001/03/12 16:50:59  mlindner&n; *&t;chg: kernel 2.4 adaption&n; *&t;&n; *&t;Revision 1.9  2001/01/22 14:16:04  mlindner&n; *&t;added ProcFs functionality&n; *&t;Dual Net functionality integrated&n; *&t;Rlmt networks added&n; *&t;&n; *&t;Revision 1.8  2000/02/21 12:19:18  cgoos&n; *&t;Added default for SK_DEBUG_CHKMOD/_CHKCAT&n; *&t;&n; *&t;Revision 1.7  1999/11/22 13:50:00  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Added overwrite for several functions.&n; *&t;Removed linux 2.0.x definitions.&n; *&t;Removed PCI vendor ID definition (now in kernel).&n; *&t;&n; *&t;Revision 1.6  1999/07/27 08:03:33  cgoos&n; *&t;Changed SK_IN/OUT macros to readX/writeX instead of memory&n; *&t;accesses (necessary for ALPHA).&n; *&t;&n; *&t;Revision 1.5  1999/07/23 12:10:21  cgoos&n; *&t;Removed SK_RLMT_SLOW_LOOKAHEAD define.&n; *&t;&n; *&t;Revision 1.4  1999/07/14 12:31:13  cgoos&n; *&t;Added SK_RLMT_SLOW_LOOKAHEAD define.&n; *&t;&n; *&t;Revision 1.3  1999/04/07 10:12:54  cgoos&n; *&t;Added check for KERNEL and OPTIMIZATION defines.&n; *&t;&n; *&t;Revision 1.2  1999/03/01 08:51:47  cgoos&n; *&t;Fixed pcibios_read/write definitions.&n; *&t;&n; *&t;Revision 1.1  1999/02/16 07:40:49  cgoos&n; *&t;First version.&n; *&t;&n; *&t;&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skdrv1st.h&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.4 $&n; * Date:&t;$Date: 2003/11/12 14:28:14 $&n; * Purpose:&t;First header file for driver and all other modules&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect GmbH.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skdrv1st.h,v $&n; *&t;Revision 1.4  2003/11/12 14:28:14  rroesler&n; *&t;Fix: use dedicated ip_fast_csum() on X86_64 systems&n; *&t;&n; *&t;Revision 1.3  2003/10/07 08:16:52  mlindner&n; *&t;Fix: Copyright changes&n; *&t;&n; *&t;Revision 1.2  2003/09/29 12:05:59  mlindner&n; *&t;Fix: Added define SK_CS_CALCULSTE_CHECKSUM&n; *&t;&n; *&t;Revision 1.1  2003/07/21 07:22:43  rroesler&n; *&t;Fix: Re-Enter after CVS crash&n; *&t;&n; *&t;Revision 1.15  2003/07/17 14:54:09  rroesler&n; *&t;Fix: Corrected SK_PNMI_READ macros to copy right amount of bytes&n; *&t;&n; *&t;Revision 1.14  2003/06/03 14:36:32  mlindner&n; *&t;Add: Additions for SK_SLIM&n; *&t;&n; *&t;Revision 1.13  2003/05/26 14:03:06  mlindner&n; *&t;Add: Support for SLIM skaddr&n; *&t;&n; *&t;Revision 1.12  2003/05/26 12:56:39  mlindner&n; *&t;Add: Support for Kernel 2.5/2.6&n; *&t;Add: New SkOsGetTimeCurrent function&n; *&t;Add: SK_PNMI_HUNDREDS_SEC definition&n; *&t;Fix: SK_TICKS_PER_SEC on Intel Itanium2&n; *&t;&n; *&t;Revision 1.11  2003/02/25 14:16:40  mlindner&n; *&t;Fix: Copyright statement&n; *&t;&n; *&t;Revision 1.10  2002/10/02 12:46:02  mlindner&n; *&t;Add: Support for Yukon&n; *&t;&n; *&t;Revision 1.9.2.2  2001/12/07 12:06:42  mlindner&n; *&t;Fix: malloc -&gt; slab changes&n; *&t;&n; *&t;Revision 1.9.2.1  2001/03/12 16:50:59  mlindner&n; *&t;chg: kernel 2.4 adaption&n; *&t;&n; *&t;Revision 1.9  2001/01/22 14:16:04  mlindner&n; *&t;added ProcFs functionality&n; *&t;Dual Net functionality integrated&n; *&t;Rlmt networks added&n; *&t;&n; *&t;Revision 1.8  2000/02/21 12:19:18  cgoos&n; *&t;Added default for SK_DEBUG_CHKMOD/_CHKCAT&n; *&t;&n; *&t;Revision 1.7  1999/11/22 13:50:00  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Added overwrite for several functions.&n; *&t;Removed linux 2.0.x definitions.&n; *&t;Removed PCI vendor ID definition (now in kernel).&n; *&t;&n; *&t;Revision 1.6  1999/07/27 08:03:33  cgoos&n; *&t;Changed SK_IN/OUT macros to readX/writeX instead of memory&n; *&t;accesses (necessary for ALPHA).&n; *&t;&n; *&t;Revision 1.5  1999/07/23 12:10:21  cgoos&n; *&t;Removed SK_RLMT_SLOW_LOOKAHEAD define.&n; *&t;&n; *&t;Revision 1.4  1999/07/14 12:31:13  cgoos&n; *&t;Added SK_RLMT_SLOW_LOOKAHEAD define.&n; *&t;&n; *&t;Revision 1.3  1999/04/07 10:12:54  cgoos&n; *&t;Added check for KERNEL and OPTIMIZATION defines.&n; *&t;&n; *&t;Revision 1.2  1999/03/01 08:51:47  cgoos&n; *&t;Fixed pcibios_read/write definitions.&n; *&t;&n; *&t;Revision 1.1  1999/02/16 07:40:49  cgoos&n; *&t;First version.&n; *&t;&n; *&t;&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This is the first include file of the driver, which includes all&n; * neccessary system header files and some of the GEnesis header files.&n; * It also defines some basic items.&n; *&n; * Include File Hierarchy:&n; *&n; *&t;see skge.c&n; *&n; ******************************************************************************/
 macro_line|#ifndef __INC_SKDRV1ST_H
 DECL|macro|__INC_SKDRV1ST_H
 mdefine_line|#define __INC_SKDRV1ST_H
+multiline_comment|/* Check kernel version */
+macro_line|#include &lt;linux/version.h&gt;
 DECL|typedef|SK_AC
 r_typedef
 r_struct
@@ -27,8 +29,6 @@ DECL|macro|SK_PNMI_READ_U32
 mdefine_line|#define SK_PNMI_READ_U32(p,v)&t;&t;memcpy((char*)&amp;(v),(char*)(p),4)
 DECL|macro|SK_PNMI_READ_U64
 mdefine_line|#define SK_PNMI_READ_U64(p,v)&t;&t;memcpy((char*)&amp;(v),(char*)(p),8)
-DECL|macro|SkCsCalculateChecksum
-mdefine_line|#define SkCsCalculateChecksum(p,l)&t;((~ip_compute_csum(p, l)) &amp; 0xffff)
 DECL|macro|SK_ADDR_EQUAL
 mdefine_line|#define SK_ADDR_EQUAL(a1,a2)&t;&t;(!memcmp(a1,a2,6))
 macro_line|#if !defined(__OPTIMIZE__)  ||  !defined(__KERNEL__)
@@ -36,6 +36,7 @@ macro_line|#warning  You must compile this file with the correct options!
 macro_line|#warning  See the last lines of the source file.
 macro_line|#error You must compile this driver with &quot;-O&quot;.
 macro_line|#endif
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -53,6 +54,15 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
+DECL|macro|SK_CS_CALCULATE_CHECKSUM
+mdefine_line|#define SK_CS_CALCULATE_CHECKSUM
+macro_line|#ifndef CONFIG_X86_64
+DECL|macro|SkCsCalculateChecksum
+mdefine_line|#define SkCsCalculateChecksum(p,l)&t;((~ip_compute_csum(p, l)) &amp; 0xffff)
+macro_line|#else
+DECL|macro|SkCsCalculateChecksum
+mdefine_line|#define SkCsCalculateChecksum(p,l)&t;((~ip_fast_csum(p, l)) &amp; 0xffff)
+macro_line|#endif
 macro_line|#include&t;&quot;h/sktypes.h&quot;
 macro_line|#include&t;&quot;h/skerror.h&quot;
 macro_line|#include&t;&quot;h/skdebug.h&quot;

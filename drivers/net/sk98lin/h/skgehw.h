@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgehw.h&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.53 $&n; * Date:&t;$Date: 2003/07/04 12:39:01 $&n; * Purpose:&t;Defines and Macros for the Gigabit Ethernet Adapter Product Family&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgehw.h&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.56 $&n; * Date:&t;$Date: 2003/09/23 09:01:00 $&n; * Purpose:&t;Defines and Macros for the Gigabit Ethernet Adapter Product Family&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; * $Log: skgehw.h,v $&n; * Revision 1.53  2003/07/04 12:39:01  rschmidt&n; * Added SK_FAR to pointers in XM_IN32() and GM_IN32() macros (for PXE)&n; * Editorial changes&n; *&n; * Revision 1.52  2003/05/13 17:16:36  mkarl&n; * Added SK_FAR for PXE.&n; * Editorial changes.&n; *&n; * Revision 1.51  2003/04/08 16:31:50  rschmidt&n; * Added defines for new Chip IDs (YUKON-Lite, YUKON-LP)&n; * Editorial changes&n; *&n; * Revision 1.50  2003/03/31 07:29:45  mkarl&n; * Corrected Copyright.&n; * Editorial changes.&n; *&n; * Revision 1.49  2003/01/28 09:43:49  rschmidt&n; * Added defines for PCI-Spec. 2.3 IRQ&n; * Added defines for CLK_RUN (YUKON-Lite)&n; * Editorial changes&n; *&n; * Revision 1.48  2002/12/05 10:25:11  rschmidt&n; * Added defines for Half Duplex Burst Mode On/Off&n; * Added defines for Rx GMAC FIFO Flush feature&n; * Editorial changes&n; *&n; * Revision 1.47  2002/11/12 17:01:31  rschmidt&n; * Added defines for WOL_CTL_DEFAULT&n; * Editorial changes&n; *&n; * Revision 1.46  2002/10/14 14:47:57  rschmidt&n; * Corrected bit mask for HW self test results&n; * Added defines for WOL Registers&n; * Editorial changes&n; *&n; * Revision 1.45  2002/10/11 09:25:22  mkarl&n; * Added bit mask for HW self test results.&n; *&n; * Revision 1.44  2002/08/16 14:44:36  rschmidt&n; * Added define GPC_HWCFG_GMII_FIB for YUKON Fiber&n; *&n; * Revision 1.43  2002/08/12 13:31:50  rschmidt&n; * Corrected macros for GMAC Address Registers: GM_INADDR(),&n; * GM_OUTADDR(), GM_INHASH, GM_OUTHASH.&n; * Editorial changes&n; *&n; * Revision 1.42  2002/08/08 15:37:56  rschmidt&n; * Added defines for Power Management Capabilities&n; * Editorial changes&n; *&n; * Revision 1.41  2002/07/23 16:02:25  rschmidt&n; * Added macro WOL_REG() to access WOL reg. (HW-Bug in YUKON 1st rev.)&n; *&n; * Revision 1.40  2002/07/15 15:41:37  rschmidt&n; * Added new defines for Power Management Cap. &amp; Control&n; * Editorial changes&n; *&n; * Revision 1.39  2002/06/10 09:37:07  rschmidt&n; * Added macros for the ADDR-Modul&n; *&n; * Revision 1.38  2002/06/05 08:15:19  rschmidt&n; * Added defines for WOL Registers&n; * Editorial changes&n; *&n; * Revision 1.37  2002/04/25 11:39:23  rschmidt&n; * Added new defines for PCI Our Register 1&n; * Added new registers and defines for YUKON (Rx FIFO, Tx FIFO,&n; * Time Stamp Timer, GMAC Control, GPHY Control,Link Control,&n; * GMAC IRQ Source and Mask, Wake-up Frame Pattern Match);&n; * Added new defines for Control/Status (VAUX available)&n; * Added Chip ID for YUKON&n; * Added define for descriptors with UDP ext. for YUKON&n; * Added macros to access the GMAC&n; * Added new Phy Type for Marvell 88E1011S (GPHY)&n; * Editorial changes&n; *&n; * Revision 1.36  2000/11/09 12:32:49  rassmann&n; * Renamed variables.&n; *&n; * Revision 1.35  2000/05/19 10:17:13  cgoos&n; * Added inactivity check in PHY_READ (in DEBUG mode only).&n; *&n; * Revision 1.34  1999/11/22 13:53:40  cgoos&n; * Changed license header to GPL.&n; *&n; * Revision 1.33  1999/08/27 11:17:10  malthoff&n; * It&squot;s more savely to put brackets around macro parameters.&n; * Brackets added for PHY_READ and PHY_WRITE.&n; *&n; * Revision 1.32  1999/05/19 07:31:01  cgoos&n; * Changes for 1000Base-T.&n; * Added HWAC_LINK_LED macro.&n; *&n; * Revision 1.31  1999/03/12 13:27:40  malthoff&n; * Remove __STDC__.&n; *&n; * Revision 1.30  1999/02/09 09:28:20  malthoff&n; * Add PCI_ERRBITS.&n; *&n; * Revision 1.29  1999/01/26 08:55:48  malthoff&n; * Bugfix: The 16 bit field relations inside the descriptor are&n; * &t;endianess dependend if the descriptor reversal feature&n; * &t;(PCI_REV_DESC bit in PCI_OUR_REG_2) is enabled.&n; * &t;Drivers which use this feature has to set the define&n; * &t;SK_USE_REV_DESC.&n; *&n; * Revision 1.28  1998/12/10 11:10:22  malthoff&n; * bug fix: IS_IRQ_STAT and IS_IRQ_MST_ERR has been twisted.&n; *&n; * Revision 1.27  1998/11/13 14:19:21  malthoff&n; * Bug Fix: The bit definition of B3_PA_CTRL has completely&n; * changed from HW Spec v1.3 to v1.5.&n; *&n; * Revision 1.26  1998/11/04 08:31:48  cgoos&n; * Fixed byte ordering in XM_OUTADDR/XM_OUTHASH macros.&n; *&n; * Revision 1.25  1998/11/04 07:16:25  cgoos&n; * Changed byte ordering in XM_INADDR/XM_INHASH again.&n; *&n; * Revision 1.24  1998/11/02 11:08:43  malthoff&n; * RxCtrl and TxCtrl must be volatile.&n; *&n; * Revision 1.23  1998/10/28 13:50:45  malthoff&n; * Fix: Endian support missing in XM_IN/OUT-ADDR/HASH macros.&n; *&n; * Revision 1.22  1998/10/26 08:01:36  malthoff&n; * RX_MFF_CTRL1 is split up into RX_MFF_CTRL1,&n; * RX_MFF_STAT_TO, and RX_MFF_TIST_TO.&n; * TX_MFF_CTRL1 is split up TX_MFF_CTRL1 and TX_MFF_WAF.&n; *&n; * Revision 1.21  1998/10/20 07:43:10  malthoff&n; * Fix: XM_IN/OUT/ADDR/HASH macros:&n; * The pointer must be casted.&n; *&n; * Revision 1.20  1998/10/19 15:53:59  malthoff&n; * Remove ML proto definitions.&n; *&n; * Revision 1.19  1998/10/16 14:40:17  gklug&n; * fix: typo B0_XM_IMSK regs&n; *&n; * Revision 1.18  1998/10/16 09:46:54  malthoff&n; * Remove temp defines for ML diag prototype.&n; * Fix register definition for B0_XM1_PHY_DATA, B0_XM1_PHY_DATA&n; * B0_XM2_PHY_DATA, B0_XM2_PHY_ADDR, B0_XA1_CSR, B0_XS1_CSR,&n; * B0_XS2_CSR, and B0_XA2_CSR.&n; *&n; * Revision 1.17  1998/10/14 06:03:14  cgoos&n; * Changed shifted constant to ULONG.&n; *&n; * Revision 1.16  1998/10/09 07:05:41  malthoff&n; * Rename ALL_PA_ENA_TO to PA_ENA_TO_ALL.&n; *&n; * Revision 1.15  1998/10/05 07:54:23  malthoff&n; * Split up RB_CTRL and it&squot;s bit definition into&n; * RB_CTRL, RB_TST1, and RB_TST2.&n; * Rename RB_RX_HTPP to RB_RX_LTPP.&n; * Add ALL_PA_ENA_TO. Modify F_WATER_MARK&n; * according to HW Spec. v1.5.&n; * Add MFF_TX_CTRL_DEF.&n; *&n; * Revision 1.14  1998/09/28 13:31:16  malthoff&n; * bug fix: B2_MAC_3 is 0x110 not 0x114&n; *&n; * Revision 1.13  1998/09/24 14:42:56  malthoff&n; * Split the RX_MFF_TST into RX_MFF_CTRL2,&n; * RX_MFF_TST1, and RX_MFF_TST2.&n; * Rename RX_MFF_CTRL to RX_MFF_CTRL1.&n; * Add BMU bit CSR_SV_IDLE.&n; * Add macros PHY_READ() and PHY_WRITE().&n; * Rename macro SK_ADDR() to SK_HW_ADDR()&n; * because of conflicts with the Address Module.&n; *&n; * Revision 1.12  1998/09/16 07:25:33  malthoff&n; * Change the parameter order in the XM_INxx and XM_OUTxx macros,&n; * to have the IoC as first parameter.&n; *&n; * Revision 1.11  1998/09/03 09:58:41  malthoff&n; * Rework the XM_xxx macros. Use {} instead of () to&n; * be compatible with SK_xxx macros which are defined&n; * with {}.&n; *&n; * Revision 1.10  1998/09/02 11:16:39  malthoff&n; * Temporary modify B2_I2C_SW to make tests with&n; * the GE/ML prototype.&n; *&n; * Revision 1.9  1998/08/19 09:11:49  gklug&n; * fix: struct are removed from c-source (see CCC)&n; * add: typedefs for all structs&n; *&n; * Revision 1.8  1998/08/18 08:27:27  malthoff&n; * Add some temporary workarounds to test GE&n; * sources with the ML.&n; *&n; * Revision 1.7  1998/07/03 14:42:26  malthoff&n; * bug fix: Correct macro XMA().&n; * Add temporary workaround to access the PCI config space over I/O&n; *&n; * Revision 1.6  1998/06/23 11:30:36  malthoff&n; * Remove &squot;;&squot; with &squot;,&squot; in macors.&n; *&n; * Revision 1.5  1998/06/22 14:20:57  malthoff&n; * Add macro SK_ADDR(Base,Addr).&n; *&n; * Revision 1.4  1998/06/19 13:35:43  malthoff&n; * change &squot;pGec&squot; with &squot;pAC&squot;&n; *&n; * Revision 1.3  1998/06/17 14:58:16  cvs&n; * Lost keywords reinserted.&n; *&n; * Revision 1.1  1998/06/17 14:16:36  cvs&n; * created&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; * $Log: skgehw.h,v $&n; * Revision 1.56  2003/09/23 09:01:00  malthoff&n; * Minor change: Define I2C device size constants as long.&n; *&n; * Revision 1.55  2003/09/16 14:03:34  rschmidt&n; * Added define for YUKON-Lite Rev. A1,A2 Chip Revision&n; * Moved defines for PHY power down modes to skgeinit.h&n; * Editorial changes&n; *&n; * Revision 1.54  2003/09/16 07:37:58  mschmid&n; * Added defines for Marvell PHY low power modes&n; *&n; * Revision 1.53  2003/07/04 12:39:01  rschmidt&n; * Added SK_FAR to pointers in XM_IN32() and GM_IN32() macros (for PXE)&n; * Editorial changes&n; *&n; * Revision 1.52  2003/05/13 17:16:36  mkarl&n; * Added SK_FAR for PXE.&n; * Editorial changes.&n; *&n; * Revision 1.51  2003/04/08 16:31:50  rschmidt&n; * Added defines for new Chip IDs (YUKON-Lite, YUKON-LP)&n; * Editorial changes&n; *&n; * Revision 1.50  2003/03/31 07:29:45  mkarl&n; * Corrected Copyright.&n; * Editorial changes.&n; *&n; * Revision 1.49  2003/01/28 09:43:49  rschmidt&n; * Added defines for PCI-Spec. 2.3 IRQ&n; * Added defines for CLK_RUN (YUKON-Lite)&n; * Editorial changes&n; *&n; * Revision 1.48  2002/12/05 10:25:11  rschmidt&n; * Added defines for Half Duplex Burst Mode On/Off&n; * Added defines for Rx GMAC FIFO Flush feature&n; * Editorial changes&n; *&n; * Revision 1.47  2002/11/12 17:01:31  rschmidt&n; * Added defines for WOL_CTL_DEFAULT&n; * Editorial changes&n; *&n; * Revision 1.46  2002/10/14 14:47:57  rschmidt&n; * Corrected bit mask for HW self test results&n; * Added defines for WOL Registers&n; * Editorial changes&n; *&n; * Revision 1.45  2002/10/11 09:25:22  mkarl&n; * Added bit mask for HW self test results.&n; *&n; * Revision 1.44  2002/08/16 14:44:36  rschmidt&n; * Added define GPC_HWCFG_GMII_FIB for YUKON Fiber&n; *&n; * Revision 1.43  2002/08/12 13:31:50  rschmidt&n; * Corrected macros for GMAC Address Registers: GM_INADDR(),&n; * GM_OUTADDR(), GM_INHASH, GM_OUTHASH.&n; * Editorial changes&n; *&n; * Revision 1.42  2002/08/08 15:37:56  rschmidt&n; * Added defines for Power Management Capabilities&n; * Editorial changes&n; *&n; * Revision 1.41  2002/07/23 16:02:25  rschmidt&n; * Added macro WOL_REG() to access WOL reg. (HW-Bug in YUKON 1st rev.)&n; *&n; * Revision 1.40  2002/07/15 15:41:37  rschmidt&n; * Added new defines for Power Management Cap. &amp; Control&n; * Editorial changes&n; *&n; * Revision 1.39  2002/06/10 09:37:07  rschmidt&n; * Added macros for the ADDR-Module&n; *&n; * Revision 1.38  2002/06/05 08:15:19  rschmidt&n; * Added defines for WOL Registers&n; * Editorial changes&n; *&n; * Revision 1.37  2002/04/25 11:39:23  rschmidt&n; * Added new defines for PCI Our Register 1&n; * Added new registers and defines for YUKON (Rx FIFO, Tx FIFO,&n; * Time Stamp Timer, GMAC Control, GPHY Control,Link Control,&n; * GMAC IRQ Source and Mask, Wake-up Frame Pattern Match);&n; * Added new defines for Control/Status (VAUX available)&n; * Added Chip ID for YUKON&n; * Added define for descriptors with UDP ext. for YUKON&n; * Added macros to access the GMAC&n; * Added new Phy Type for Marvell 88E1011S (GPHY)&n; * Editorial changes&n; *&n; * Revision 1.36  2000/11/09 12:32:49  rassmann&n; * Renamed variables.&n; *&n; * Revision 1.35  2000/05/19 10:17:13  cgoos&n; * Added inactivity check in PHY_READ (in DEBUG mode only).&n; *&n; * Revision 1.34  1999/11/22 13:53:40  cgoos&n; * Changed license header to GPL.&n; *&n; * Revision 1.33  1999/08/27 11:17:10  malthoff&n; * It&squot;s more savely to put brackets around macro parameters.&n; * Brackets added for PHY_READ and PHY_WRITE.&n; *&n; * Revision 1.32  1999/05/19 07:31:01  cgoos&n; * Changes for 1000Base-T.&n; * Added HWAC_LINK_LED macro.&n; *&n; * Revision 1.31  1999/03/12 13:27:40  malthoff&n; * Remove __STDC__.&n; *&n; * Revision 1.30  1999/02/09 09:28:20  malthoff&n; * Add PCI_ERRBITS.&n; *&n; * Revision 1.29  1999/01/26 08:55:48  malthoff&n; * Bugfix: The 16 bit field relations inside the descriptor are&n; * &t;endianess dependend if the descriptor reversal feature&n; * &t;(PCI_REV_DESC bit in PCI_OUR_REG_2) is enabled.&n; * &t;Drivers which use this feature has to set the define&n; * &t;SK_USE_REV_DESC.&n; *&n; * Revision 1.28  1998/12/10 11:10:22  malthoff&n; * bug fix: IS_IRQ_STAT and IS_IRQ_MST_ERR has been twisted.&n; *&n; * Revision 1.27  1998/11/13 14:19:21  malthoff&n; * Bug Fix: The bit definition of B3_PA_CTRL has completely&n; * changed from HW Spec v1.3 to v1.5.&n; *&n; * Revision 1.26  1998/11/04 08:31:48  cgoos&n; * Fixed byte ordering in XM_OUTADDR/XM_OUTHASH macros.&n; *&n; * Revision 1.25  1998/11/04 07:16:25  cgoos&n; * Changed byte ordering in XM_INADDR/XM_INHASH again.&n; *&n; * Revision 1.24  1998/11/02 11:08:43  malthoff&n; * RxCtrl and TxCtrl must be volatile.&n; *&n; * Revision 1.23  1998/10/28 13:50:45  malthoff&n; * Fix: Endian support missing in XM_IN/OUT-ADDR/HASH macros.&n; *&n; * Revision 1.22  1998/10/26 08:01:36  malthoff&n; * RX_MFF_CTRL1 is split up into RX_MFF_CTRL1,&n; * RX_MFF_STAT_TO, and RX_MFF_TIST_TO.&n; * TX_MFF_CTRL1 is split up TX_MFF_CTRL1 and TX_MFF_WAF.&n; *&n; * Revision 1.21  1998/10/20 07:43:10  malthoff&n; * Fix: XM_IN/OUT/ADDR/HASH macros:&n; * The pointer must be casted.&n; *&n; * Revision 1.20  1998/10/19 15:53:59  malthoff&n; * Remove ML proto definitions.&n; *&n; * Revision 1.19  1998/10/16 14:40:17  gklug&n; * fix: typo B0_XM_IMSK regs&n; *&n; * Revision 1.18  1998/10/16 09:46:54  malthoff&n; * Remove temp defines for ML diag prototype.&n; * Fix register definition for B0_XM1_PHY_DATA, B0_XM1_PHY_DATA&n; * B0_XM2_PHY_DATA, B0_XM2_PHY_ADDR, B0_XA1_CSR, B0_XS1_CSR,&n; * B0_XS2_CSR, and B0_XA2_CSR.&n; *&n; * Revision 1.17  1998/10/14 06:03:14  cgoos&n; * Changed shifted constant to ULONG.&n; *&n; * Revision 1.16  1998/10/09 07:05:41  malthoff&n; * Rename ALL_PA_ENA_TO to PA_ENA_TO_ALL.&n; *&n; * Revision 1.15  1998/10/05 07:54:23  malthoff&n; * Split up RB_CTRL and it&squot;s bit definition into&n; * RB_CTRL, RB_TST1, and RB_TST2.&n; * Rename RB_RX_HTPP to RB_RX_LTPP.&n; * Add ALL_PA_ENA_TO. Modify F_WATER_MARK&n; * according to HW Spec. v1.5.&n; * Add MFF_TX_CTRL_DEF.&n; *&n; * Revision 1.14  1998/09/28 13:31:16  malthoff&n; * bug fix: B2_MAC_3 is 0x110 not 0x114&n; *&n; * Revision 1.13  1998/09/24 14:42:56  malthoff&n; * Split the RX_MFF_TST into RX_MFF_CTRL2,&n; * RX_MFF_TST1, and RX_MFF_TST2.&n; * Rename RX_MFF_CTRL to RX_MFF_CTRL1.&n; * Add BMU bit CSR_SV_IDLE.&n; * Add macros PHY_READ() and PHY_WRITE().&n; * Rename macro SK_ADDR() to SK_HW_ADDR()&n; * because of conflicts with the Address Module.&n; *&n; * Revision 1.12  1998/09/16 07:25:33  malthoff&n; * Change the parameter order in the XM_INxx and XM_OUTxx macros,&n; * to have the IoC as first parameter.&n; *&n; * Revision 1.11  1998/09/03 09:58:41  malthoff&n; * Rework the XM_xxx macros. Use {} instead of () to&n; * be compatible with SK_xxx macros which are defined&n; * with {}.&n; *&n; * Revision 1.10  1998/09/02 11:16:39  malthoff&n; * Temporary modify B2_I2C_SW to make tests with&n; * the GE/ML prototype.&n; *&n; * Revision 1.9  1998/08/19 09:11:49  gklug&n; * fix: struct are removed from c-source (see CCC)&n; * add: typedefs for all structs&n; *&n; * Revision 1.8  1998/08/18 08:27:27  malthoff&n; * Add some temporary workarounds to test GE&n; * sources with the ML.&n; *&n; * Revision 1.7  1998/07/03 14:42:26  malthoff&n; * bug fix: Correct macro XMA().&n; * Add temporary workaround to access the PCI config space over I/O&n; *&n; * Revision 1.6  1998/06/23 11:30:36  malthoff&n; * Remove &squot;;&squot; with &squot;,&squot; in macors.&n; *&n; * Revision 1.5  1998/06/22 14:20:57  malthoff&n; * Add macro SK_ADDR(Base,Addr).&n; *&n; * Revision 1.4  1998/06/19 13:35:43  malthoff&n; * change &squot;pGec&squot; with &squot;pAC&squot;&n; *&n; * Revision 1.3  1998/06/17 14:58:16  cvs&n; * Lost keywords reinserted.&n; *&n; * Revision 1.1  1998/06/17 14:16:36  cvs&n; * created&n; *&n; *&n; ******************************************************************************/
 macro_line|#ifndef __INC_SKGEHW_H
 DECL|macro|__INC_SKGEHW_H
 mdefine_line|#define __INC_SKGEHW_H
@@ -592,8 +592,8 @@ mdefine_line|#define B2_FAR&t;&t;&t;0x0120&t;/* 32 bit&t;Flash-Prom Addr Reg/Cnt
 DECL|macro|B2_FDP
 mdefine_line|#define B2_FDP&t;&t;&t;0x0124&t;/*  8 bit&t;Flash-Prom Data Port */
 multiline_comment|/* 0x0125 - 0x0127:&t;reserved */
-DECL|macro|B2_LD_CRTL
-mdefine_line|#define B2_LD_CRTL&t;&t;0x0128&t;/*  8 bit&t;EPROM loader control register */
+DECL|macro|B2_LD_CTRL
+mdefine_line|#define B2_LD_CTRL&t;&t;0x0128&t;/*  8 bit&t;EPROM loader control register */
 DECL|macro|B2_LD_TEST
 mdefine_line|#define B2_LD_TEST&t;&t;0x0129&t;/*  8 bit&t;EPROM loader test register */
 multiline_comment|/* 0x012a - 0x012f:&t;reserved */
@@ -601,8 +601,8 @@ DECL|macro|B2_TI_INI
 mdefine_line|#define B2_TI_INI&t;&t;0x0130&t;/* 32 bit&t;Timer Init Value */
 DECL|macro|B2_TI_VAL
 mdefine_line|#define B2_TI_VAL&t;&t;0x0134&t;/* 32 bit&t;Timer Value */
-DECL|macro|B2_TI_CRTL
-mdefine_line|#define B2_TI_CRTL&t;&t;0x0138&t;/*  8 bit&t;Timer Control */
+DECL|macro|B2_TI_CTRL
+mdefine_line|#define B2_TI_CTRL&t;&t;0x0138&t;/*  8 bit&t;Timer Control */
 DECL|macro|B2_TI_TEST
 mdefine_line|#define B2_TI_TEST&t;&t;0x0139&t;/*  8 Bit&t;Timer Test */
 multiline_comment|/* 0x013a - 0x013f:&t;reserved */
@@ -1086,7 +1086,7 @@ multiline_comment|/*&t;B0_RAP&t;&t;8 bit&t;Register Address Port */
 multiline_comment|/* Bit 7:&t;reserved */
 DECL|macro|RAP_RAP
 mdefine_line|#define RAP_RAP&t;&t;&t;0x3f&t;/* Bit 6..0:&t;0 = block 0,..,6f = block 6f */
-multiline_comment|/*&t;B0_CTST&t;&t;16 bit&t;Control/Status register */
+multiline_comment|/*&t;B0_CTST&t;&t;&t;16 bit&t;Control/Status register */
 multiline_comment|/* Bit 15..14:&t;reserved */
 DECL|macro|CS_CLK_RUN_HOT
 mdefine_line|#define CS_CLK_RUN_HOT&t;BIT_13S&t;&t;/* CLK_RUN hot m. (YUKON-Lite only) */
@@ -1116,7 +1116,7 @@ DECL|macro|CS_RST_CLR
 mdefine_line|#define CS_RST_CLR&t;&t;BIT_1S&t;&t;/* Clear Software reset&t;*/
 DECL|macro|CS_RST_SET
 mdefine_line|#define CS_RST_SET&t;&t;BIT_0S&t;&t;/* Set   Software reset&t;*/
-multiline_comment|/*&t;B0_LED&t;&t; 8 Bit&t;LED register */
+multiline_comment|/*&t;B0_LED&t;&t;&t; 8 Bit&t;LED register */
 multiline_comment|/* Bit  7.. 2:&t;reserved */
 DECL|macro|LED_STAT_ON
 mdefine_line|#define LED_STAT_ON&t;&t;BIT_1S&t;&t;/* Status LED on&t;*/
@@ -1139,9 +1139,9 @@ DECL|macro|PC_VCC_ON
 mdefine_line|#define PC_VCC_ON&t;&t;BIT_1       /* Switch VCC On  */
 DECL|macro|PC_VCC_OFF
 mdefine_line|#define PC_VCC_OFF&t;&t;BIT_0       /* Switch VCC Off */
-multiline_comment|/*&t;B0_ISRC&t;&t;32 bit&t;Interrupt Source Register */
-multiline_comment|/*&t;B0_IMSK&t;&t;32 bit&t;Interrupt Mask Register */
-multiline_comment|/*&t;B0_SP_ISRC&t;32 bit&t;Special Interrupt Source Reg */
+multiline_comment|/*&t;B0_ISRC&t;&t;&t;32 bit&t;Interrupt Source Register */
+multiline_comment|/*&t;B0_IMSK&t;&t;&t;32 bit&t;Interrupt Mask Register */
+multiline_comment|/*&t;B0_SP_ISRC&t;&t;32 bit&t;Special Interrupt Source Reg */
 multiline_comment|/*&t;B2_IRQM_MSK &t;32 bit&t;IRQ Moderation Mask */
 DECL|macro|IS_ALL_MSK
 mdefine_line|#define IS_ALL_MSK&t;&t;0xbfffffffUL&t;/* All Interrupt bits */
@@ -1215,9 +1215,9 @@ DECL|macro|IS_XA2_F
 mdefine_line|#define IS_XA2_F&t;&t;BIT_1&t;&t;/* Q_XA2 End of Frame */
 DECL|macro|IS_XA2_C
 mdefine_line|#define IS_XA2_C&t;&t;BIT_0&t;&t;/* Q_XA2 Encoding Error */
-multiline_comment|/*&t;B0_HWE_ISRC&t;32 bit&t;HW Error Interrupt Src Reg */
-multiline_comment|/*&t;B0_HWE_IMSK&t;32 bit&t;HW Error Interrupt Mask Reg */
-multiline_comment|/*&t;B2_IRQM_HWE_MSK 32 bit&t;IRQ Moderation HW Error Mask */
+multiline_comment|/*&t;B0_HWE_ISRC&t;&t;32 bit&t;HW Error Interrupt Src Reg */
+multiline_comment|/*&t;B0_HWE_IMSK&t;&t;32 bit&t;HW Error Interrupt Mask Reg */
+multiline_comment|/*&t;B2_IRQM_HWE_MSK&t;32 bit&t;IRQ Moderation HW Error Mask */
 DECL|macro|IS_ERR_MSK
 mdefine_line|#define IS_ERR_MSK&t;&t;0x00000fffL&t;/* &t;&t;All Error bits */
 multiline_comment|/* Bit 31..14:&t;reserved */
@@ -1249,10 +1249,10 @@ DECL|macro|IS_R1_PAR_ERR
 mdefine_line|#define IS_R1_PAR_ERR&t;BIT_1&t;/* Queue R1 Parity Error */
 DECL|macro|IS_R2_PAR_ERR
 mdefine_line|#define IS_R2_PAR_ERR&t;BIT_0&t;/* Queue R2 Parity Error */
-multiline_comment|/*&t;B2_CONN_TYP&t; 8 bit&t;Connector type */
-multiline_comment|/*&t;B2_PMD_TYP&t; 8 bit&t;PMD type */
+multiline_comment|/*&t;B2_CONN_TYP&t;&t; 8 bit&t;Connector type */
+multiline_comment|/*&t;B2_PMD_TYP&t;&t; 8 bit&t;PMD type */
 multiline_comment|/*&t;Values of connector and PMD type comply to SysKonnect internal std */
-multiline_comment|/*&t;B2_MAC_CFG&t; 8 bit&t;MAC Configuration / Chip Revision */
+multiline_comment|/*&t;B2_MAC_CFG&t;&t; 8 bit&t;MAC Configuration / Chip Revision */
 DECL|macro|CFG_CHIP_R_MSK
 mdefine_line|#define CFG_CHIP_R_MSK&t;(0xf&lt;&lt;4)&t;/* Bit 7.. 4: Chip Revision */
 multiline_comment|/* Bit 3.. 2:&t;reserved */
@@ -1260,21 +1260,25 @@ DECL|macro|CFG_DIS_M2_CLK
 mdefine_line|#define CFG_DIS_M2_CLK&t;BIT_1S&t;&t;/* Disable Clock for 2nd MAC */
 DECL|macro|CFG_SNG_MAC
 mdefine_line|#define CFG_SNG_MAC&t;&t;BIT_0S&t;&t;/* MAC Config: 0=2 MACs / 1=1 MAC*/
-multiline_comment|/*&t;B2_CHIP_ID&t; 8 bit &t;Chip Identification Number */
+multiline_comment|/*&t;B2_CHIP_ID&t;&t; 8 bit &t;Chip Identification Number */
 DECL|macro|CHIP_ID_GENESIS
 mdefine_line|#define CHIP_ID_GENESIS&t;&t;0x0a&t;/* Chip ID for GENESIS */
 DECL|macro|CHIP_ID_YUKON
 mdefine_line|#define CHIP_ID_YUKON&t;&t;0xb0&t;/* Chip ID for YUKON */
 DECL|macro|CHIP_ID_YUKON_LITE
-mdefine_line|#define CHIP_ID_YUKON_LITE&t;0xb1&t;/* Chip ID for YUKON-Lite (Rev. A1) */
+mdefine_line|#define CHIP_ID_YUKON_LITE&t;0xb1&t;/* Chip ID for YUKON-Lite (Rev. A1-A3) */
 DECL|macro|CHIP_ID_YUKON_LP
 mdefine_line|#define CHIP_ID_YUKON_LP&t;0xb2&t;/* Chip ID for YUKON-LP */
-multiline_comment|/*&t;B2_FAR&t;&t;32 bit&t;Flash-Prom Addr Reg/Cnt */
+DECL|macro|CHIP_REV_YU_LITE_A1
+mdefine_line|#define CHIP_REV_YU_LITE_A1&t;3&t;&t;/* Chip Rev. for YUKON-Lite A1,A2 */
+DECL|macro|CHIP_REV_YU_LITE_A3
+mdefine_line|#define CHIP_REV_YU_LITE_A3&t;7&t;&t;/* Chip Rev. for YUKON-Lite A3 */
+multiline_comment|/*&t;B2_FAR&t;&t;&t;32 bit&t;Flash-Prom Addr Reg/Cnt */
 DECL|macro|FAR_ADDR
 mdefine_line|#define FAR_ADDR&t;&t;0x1ffffL&t;/* Bit 16.. 0:&t;FPROM Address mask */
-multiline_comment|/*&t;B2_LD_CRTL&t; 8 bit&t;EPROM loader control register */
+multiline_comment|/*&t;B2_LD_CTRL&t;&t; 8 bit&t;EPROM loader control register */
 multiline_comment|/*&t;Bits are currently reserved */
-multiline_comment|/*&t;B2_LD_TEST&t; 8 bit&t;EPROM loader test register */
+multiline_comment|/*&t;B2_LD_TEST&t;&t; 8 bit&t;EPROM loader test register */
 multiline_comment|/* Bit 7.. 4:&t;reserved */
 DECL|macro|LD_T_ON
 mdefine_line|#define LD_T_ON&t;&t;&t;BIT_3S&t;/* Loader Test mode on */
@@ -1285,7 +1289,7 @@ mdefine_line|#define LD_T_STEP&t;&t;BIT_1S&t;/* Decrement FPROM addr. Counter */
 DECL|macro|LD_START
 mdefine_line|#define LD_START&t;&t;BIT_0S&t;/* Start loading FPROM */
 multiline_comment|/*&n; *&t;Timer Section&n; */
-multiline_comment|/*&t;B2_TI_CRTL&t; 8 bit&t;Timer control */
+multiline_comment|/*&t;B2_TI_CTRL&t;&t; 8 bit&t;Timer control */
 multiline_comment|/*&t;B2_IRQM_CTRL&t; 8 bit&t;IRQ Moderation Timer Control */
 multiline_comment|/* Bit 7.. 3:&t;reserved */
 DECL|macro|TIM_START
@@ -1294,9 +1298,9 @@ DECL|macro|TIM_STOP
 mdefine_line|#define TIM_STOP&t;&t;BIT_1S&t;/* Stop  Timer */
 DECL|macro|TIM_CLR_IRQ
 mdefine_line|#define TIM_CLR_IRQ&t;&t;BIT_0S&t;/* Clear Timer IRQ (!IRQM) */
-multiline_comment|/*&t;B2_TI_TEST&t; 8 Bit&t;Timer Test */
+multiline_comment|/*&t;B2_TI_TEST&t;&t; 8 Bit&t;Timer Test */
 multiline_comment|/*&t;B2_IRQM_TEST&t; 8 bit&t;IRQ Moderation Timer Test */
-multiline_comment|/*&t;B28_DPT_TST&t; 8 bit&t;Descriptor Poll Timer Test Reg */
+multiline_comment|/*&t;B28_DPT_TST&t;&t; 8 bit&t;Descriptor Poll Timer Test Reg */
 multiline_comment|/* Bit 7.. 3:&t;reserved */
 DECL|macro|TIM_T_ON
 mdefine_line|#define TIM_T_ON&t;&t;BIT_2S&t;/* Test mode on */
@@ -1346,7 +1350,7 @@ DECL|macro|TST_FRC_APERR_1M64
 mdefine_line|#define TST_FRC_APERR_1M64&t;BIT_1S&t;/* AddrPERR on 1. phase */
 DECL|macro|TST_FRC_APERR_2M64
 mdefine_line|#define TST_FRC_APERR_2M64&t;BIT_0S&t;/* AddrPERR on 2. phase */
-multiline_comment|/*&t;B2_GP_IO&t;32 bit&t;General Purpose I/O Register */
+multiline_comment|/*&t;B2_GP_IO&t;&t;32 bit&t;General Purpose I/O Register */
 multiline_comment|/* Bit 31..26:&t;reserved */
 DECL|macro|GP_DIR_9
 mdefine_line|#define GP_DIR_9&t;BIT_25&t;/* IO_9 direct, 0=In/1=Out */
@@ -1389,7 +1393,7 @@ DECL|macro|GP_IO_1
 mdefine_line|#define GP_IO_1&t;&t;BIT_1&t;/* IO_1 pin */
 DECL|macro|GP_IO_0
 mdefine_line|#define GP_IO_0&t;&t;BIT_0&t;/* IO_0 pin */
-multiline_comment|/*&t;B2_I2C_CTRL&t;32 bit&t;I2C HW Control Register */
+multiline_comment|/*&t;B2_I2C_CTRL&t;&t;32 bit&t;I2C HW Control Register */
 DECL|macro|I2C_FLAG
 mdefine_line|#define I2C_FLAG&t;&t;BIT_31&t;&t;/* Start read/write if WR */
 DECL|macro|I2C_ADDR
@@ -1400,30 +1404,30 @@ multiline_comment|/* Bit&t;8.. 5:&t;reserved&t;*/
 DECL|macro|I2C_BURST_LEN
 mdefine_line|#define I2C_BURST_LEN&t;BIT_4&t;&t;/* Burst Len, 1/4 bytes */
 DECL|macro|I2C_DEV_SIZE
-mdefine_line|#define I2C_DEV_SIZE&t;(7L&lt;&lt;1)&t;&t;/* Bit&t;3.. 1:&t;I2C Device Size&t;*/
+mdefine_line|#define I2C_DEV_SIZE&t;(7&lt;&lt;1)&t;&t;/* Bit&t;3.. 1:&t;I2C Device Size&t;*/
 DECL|macro|I2C_025K_DEV
-mdefine_line|#define I2C_025K_DEV&t;(0L&lt;&lt;1)&t;&t;/*&t;&t;0: 256 Bytes or smal. */
+mdefine_line|#define I2C_025K_DEV&t;(0&lt;&lt;1)&t;&t;/*&t;&t;0: 256 Bytes or smal. */
 DECL|macro|I2C_05K_DEV
-mdefine_line|#define I2C_05K_DEV&t;&t;(1L&lt;&lt;1)&t;&t;/* &t;&t;1: 512&t;Bytes&t;*/
+mdefine_line|#define I2C_05K_DEV&t;&t;(1&lt;&lt;1)&t;&t;/* &t;&t;1: 512&t;Bytes&t;*/
 DECL|macro|I2C_1K_DEV
-mdefine_line|#define I2C_1K_DEV&t;&t;(2L&lt;&lt;1)&t;&t;/*&t;&t;2: 1024 Bytes&t;*/
+mdefine_line|#define I2C_1K_DEV&t;&t;(2&lt;&lt;1)&t;&t;/*&t;&t;2: 1024 Bytes&t;*/
 DECL|macro|I2C_2K_DEV
-mdefine_line|#define I2C_2K_DEV&t;&t;(3L&lt;&lt;1)&t;&t;/*&t;&t;3: 2048&t;Bytes&t;*/
+mdefine_line|#define I2C_2K_DEV&t;&t;(3&lt;&lt;1)&t;&t;/*&t;&t;3: 2048&t;Bytes&t;*/
 DECL|macro|I2C_4K_DEV
-mdefine_line|#define I2C_4K_DEV&t;&t;(4L&lt;&lt;1)&t;&t;/*&t;&t;4: 4096 Bytes&t;*/
+mdefine_line|#define I2C_4K_DEV&t;&t;(4&lt;&lt;1)&t;&t;/*&t;&t;4: 4096 Bytes&t;*/
 DECL|macro|I2C_8K_DEV
-mdefine_line|#define I2C_8K_DEV&t;&t;(5L&lt;&lt;1)&t;&t;/*&t;&t;5: 8192 Bytes&t;*/
+mdefine_line|#define I2C_8K_DEV&t;&t;(5&lt;&lt;1)&t;&t;/*&t;&t;5: 8192 Bytes&t;*/
 DECL|macro|I2C_16K_DEV
-mdefine_line|#define I2C_16K_DEV&t;&t;(6L&lt;&lt;1)&t;&t;/*&t;&t;6: 16384 Bytes&t;*/
+mdefine_line|#define I2C_16K_DEV&t;&t;(6&lt;&lt;1)&t;&t;/*&t;&t;6: 16384 Bytes&t;*/
 DECL|macro|I2C_32K_DEV
-mdefine_line|#define I2C_32K_DEV&t;&t;(7L&lt;&lt;1)&t;&t;/*&t;&t;7: 32768 Bytes&t;*/
+mdefine_line|#define I2C_32K_DEV&t;&t;(7&lt;&lt;1)&t;&t;/*&t;&t;7: 32768 Bytes&t;*/
 DECL|macro|I2C_STOP
 mdefine_line|#define I2C_STOP&t;&t;BIT_0&t;&t;/* Interrupt I2C transfer */
-multiline_comment|/*&t;B2_I2C_IRQ&t;32 bit&t;I2C HW IRQ Register */
+multiline_comment|/*&t;B2_I2C_IRQ&t;&t;32 bit&t;I2C HW IRQ Register */
 multiline_comment|/* Bit 31.. 1&t;reserved */
 DECL|macro|I2C_CLR_IRQ
 mdefine_line|#define I2C_CLR_IRQ&t;&t;BIT_0&t;/* Clear I2C IRQ */
-multiline_comment|/*&t;B2_I2C_SW&t;32 bit (8 bit access)&t;I2C HW SW Port Register */
+multiline_comment|/*&t;B2_I2C_SW&t;&t;32 bit (8 bit access)&t;I2C HW SW Port Register */
 multiline_comment|/* Bit  7.. 3:&t;reserved */
 DECL|macro|I2C_DATA_DIR
 mdefine_line|#define I2C_DATA_DIR&t;BIT_2S&t;&t;/* direction of I2C_DATA */
@@ -1434,29 +1438,29 @@ mdefine_line|#define I2C_CLK&t;&t;&t;BIT_0S&t;&t;/* I2C Clock Port&t;*/
 multiline_comment|/*&n; * I2C Address&n; */
 DECL|macro|I2C_SENS_ADDR
 mdefine_line|#define I2C_SENS_ADDR&t;LM80_ADDR&t;/* I2C Sensor Address, (Volt and Temp)*/
-multiline_comment|/*&t;B2_BSC_CTRL&t; 8 bit&t;Blink Source Counter Control */
+multiline_comment|/*&t;B2_BSC_CTRL&t;&t; 8 bit&t;Blink Source Counter Control */
 multiline_comment|/* Bit  7.. 2:&t;reserved */
 DECL|macro|BSC_START
 mdefine_line|#define BSC_START&t;BIT_1S&t;&t;/* Start Blink Source Counter */
 DECL|macro|BSC_STOP
 mdefine_line|#define BSC_STOP&t;BIT_0S&t;&t;/* Stop  Blink Source Counter */
-multiline_comment|/*&t;B2_BSC_STAT&t; 8 bit&t;Blink Source Counter Status */
+multiline_comment|/*&t;B2_BSC_STAT&t;&t; 8 bit&t;Blink Source Counter Status */
 multiline_comment|/* Bit  7.. 1:&t;reserved */
 DECL|macro|BSC_SRC
 mdefine_line|#define BSC_SRC&t;&t;BIT_0S&t;&t;/* Blink Source, 0=Off / 1=On */
-multiline_comment|/*&t;B2_BSC_TST&t;16 bit&t;Blink Source Counter Test Reg */
+multiline_comment|/*&t;B2_BSC_TST&t;&t;16 bit&t;Blink Source Counter Test Reg */
 DECL|macro|BSC_T_ON
 mdefine_line|#define BSC_T_ON&t;BIT_2S&t;&t;/* Test mode on */
 DECL|macro|BSC_T_OFF
 mdefine_line|#define BSC_T_OFF&t;BIT_1S&t;&t;/* Test mode off */
 DECL|macro|BSC_T_STEP
 mdefine_line|#define BSC_T_STEP&t;BIT_0S&t;&t;/* Test step */
-multiline_comment|/*&t;B3_RAM_ADDR&t;32 bit&t;RAM Address, to read or write */
+multiline_comment|/*&t;B3_RAM_ADDR&t;&t;32 bit&t;RAM Address, to read or write */
 multiline_comment|/* Bit 31..19:&t;reserved */
 DECL|macro|RAM_ADR_RAN
 mdefine_line|#define RAM_ADR_RAN&t;0x0007ffffL&t;/* Bit 18.. 0:&t;RAM Address Range */
 multiline_comment|/* RAM Interface Registers */
-multiline_comment|/*&t;B3_RI_CTRL&t;16 bit&t;RAM Iface Control Register */
+multiline_comment|/*&t;B3_RI_CTRL&t;&t;16 bit&t;RAM Iface Control Register */
 multiline_comment|/* Bit 15..10:&t;reserved */
 DECL|macro|RI_CLR_RD_PERR
 mdefine_line|#define RI_CLR_RD_PERR&t;BIT_9S&t;/* Clear IRQ RAM Read Parity Err */
@@ -1467,7 +1471,7 @@ DECL|macro|RI_RST_CLR
 mdefine_line|#define RI_RST_CLR&t;&t;BIT_1S&t;/* Clear RAM Interface Reset */
 DECL|macro|RI_RST_SET
 mdefine_line|#define RI_RST_SET&t;&t;BIT_0S&t;/* Set   RAM Interface Reset */
-multiline_comment|/*&t;B3_RI_TEST&t; 8 bit&t;RAM Iface Test Register */
+multiline_comment|/*&t;B3_RI_TEST&t;&t; 8 bit&t;RAM Iface Test Register */
 multiline_comment|/* Bit 15.. 4:&t;reserved */
 DECL|macro|RI_T_EV
 mdefine_line|#define RI_T_EV&t;&t;&t;BIT_3S&t;/* Timeout Event occured */
@@ -1507,7 +1511,7 @@ mdefine_line|#define MA_ENA_REC_RX1&t;BIT_1S&t;/* Enable  Recovery Timer RX1 */
 DECL|macro|MA_DIS_REC_RX1
 mdefine_line|#define MA_DIS_REC_RX1&t;BIT_0S&t;/* Disable Recovery Timer RX1 */
 multiline_comment|/* Packet Arbiter Registers */
-multiline_comment|/*&t;B3_PA_CTRL&t;16 bit&t;Packet Arbiter Ctrl Register */
+multiline_comment|/*&t;B3_PA_CTRL&t;&t;16 bit&t;Packet Arbiter Ctrl Register */
 multiline_comment|/* Bit 15..14:&t;reserved */
 DECL|macro|PA_CLR_TO_TX2
 mdefine_line|#define PA_CLR_TO_TX2&t;BIT_13S&t;/* Clear IRQ Packet Timeout TX2 */
@@ -1542,7 +1546,7 @@ mdefine_line|#define PA_ENA_TO_ALL&t;(PA_ENA_TO_RX1 | PA_ENA_TO_RX2 |&bslash;&n;
 multiline_comment|/* Rx/Tx Path related Arbiter Test Registers */
 multiline_comment|/*&t;B3_MA_TO_TEST&t;16 bit&t;MAC Arbiter Timeout Test Reg */
 multiline_comment|/*&t;B3_MA_RC_TEST&t;16 bit&t;MAC Arbiter Recovery Test Reg */
-multiline_comment|/*&t;B3_PA_TEST&t;16 bit&t;Packet Arbiter Test Register */
+multiline_comment|/*&t;B3_PA_TEST&t;&t;16 bit&t;Packet Arbiter Test Register */
 multiline_comment|/*&t;&t;&t;Bit 15, 11, 7, and 3 are reserved in B3_PA_TEST */
 DECL|macro|TX2_T_EV
 mdefine_line|#define TX2_T_EV&t;BIT_15S&t;&t;/* TX2 Timeout/Recv Event occured */
@@ -1577,14 +1581,14 @@ mdefine_line|#define RX1_T_OFF&t;BIT_1S&t;&t;/* RX1 Timeout/Recv Timer Tst Off *
 DECL|macro|RX1_T_STEP
 mdefine_line|#define RX1_T_STEP&t;BIT_0S&t;&t;/* RX1 Timeout/Recv Timer Step */
 multiline_comment|/* Transmit Arbiter Registers MAC 1 and 2, use MR_ADDR() to access */
-multiline_comment|/*&t;TXA_ITI_INI&t;32 bit&t;Tx Arb Interval Timer Init Val */
-multiline_comment|/*&t;TXA_ITI_VAL&t;32 bit&t;Tx Arb Interval Timer Value */
-multiline_comment|/*&t;TXA_LIM_INI&t;32 bit&t;Tx Arb Limit Counter Init Val */
-multiline_comment|/*&t;TXA_LIM_VAL&t;32 bit&t;Tx Arb Limit Counter Value */
+multiline_comment|/*&t;TXA_ITI_INI&t;&t;32 bit&t;Tx Arb Interval Timer Init Val */
+multiline_comment|/*&t;TXA_ITI_VAL&t;&t;32 bit&t;Tx Arb Interval Timer Value */
+multiline_comment|/*&t;TXA_LIM_INI&t;&t;32 bit&t;Tx Arb Limit Counter Init Val */
+multiline_comment|/*&t;TXA_LIM_VAL&t;&t;32 bit&t;Tx Arb Limit Counter Value */
 multiline_comment|/* Bit 31..24:&t;reserved */
 DECL|macro|TXA_MAX_VAL
 mdefine_line|#define TXA_MAX_VAL&t;0x00ffffffUL/* Bit 23.. 0:&t;Max TXA Timer/Cnt Val */
-multiline_comment|/*&t;TXA_CTRL&t; 8 bit&t;Tx Arbiter Control Register */
+multiline_comment|/*&t;TXA_CTRL&t;&t; 8 bit&t;Tx Arbiter Control Register */
 DECL|macro|TXA_ENA_FSYNC
 mdefine_line|#define TXA_ENA_FSYNC&t;BIT_7S&t;/* Enable  force of sync Tx queue */
 DECL|macro|TXA_DIS_FSYNC
@@ -1601,7 +1605,7 @@ DECL|macro|TXA_ENA_ARB
 mdefine_line|#define TXA_ENA_ARB&t;&t;BIT_1S&t;/* Enable  Tx Arbiter */
 DECL|macro|TXA_DIS_ARB
 mdefine_line|#define TXA_DIS_ARB&t;&t;BIT_0S&t;/* Disable Tx Arbiter */
-multiline_comment|/*&t;TXA_TEST&t; 8 bit&t;Tx Arbiter Test Register */
+multiline_comment|/*&t;TXA_TEST&t;&t; 8 bit&t;Tx Arbiter Test Register */
 multiline_comment|/* Bit 7.. 6:&t;reserved */
 DECL|macro|TXA_INT_T_ON
 mdefine_line|#define TXA_INT_T_ON&t;BIT_5S&t;/* Tx Arb Interval Timer Test On */
@@ -1615,22 +1619,22 @@ DECL|macro|TXA_LIM_T_OFF
 mdefine_line|#define TXA_LIM_T_OFF&t;BIT_1S&t;/* Tx Arb Limit Timer Test Off */
 DECL|macro|TXA_LIM_T_STEP
 mdefine_line|#define TXA_LIM_T_STEP&t;BIT_0S&t;/* Tx Arb Limit Timer Step */
-multiline_comment|/*&t;TXA_STAT&t; 8 bit&t;Tx Arbiter Status Register */
+multiline_comment|/*&t;TXA_STAT&t;&t; 8 bit&t;Tx Arbiter Status Register */
 multiline_comment|/* Bit 7.. 1:&t;reserved */
 DECL|macro|TXA_PRIO_XS
 mdefine_line|#define TXA_PRIO_XS&t;&t;BIT_0S&t;/* sync queue has prio to send */
-multiline_comment|/*&t;Q_BC&t;32 bit&t;Current Byte Counter */
+multiline_comment|/*&t;Q_BC&t;&t;&t;32 bit&t;Current Byte Counter */
 multiline_comment|/* Bit 31..16:&t;reserved */
 DECL|macro|BC_MAX
 mdefine_line|#define BC_MAX&t;&t;&t;0xffff&t;/* Bit 15.. 0:&t;Byte counter */
 multiline_comment|/* BMU Control Status Registers */
-multiline_comment|/*&t;B0_R1_CSR&t;32 bit&t;BMU Ctrl/Stat Rx Queue 1 */
-multiline_comment|/*&t;B0_R2_CSR&t;32 bit&t;BMU Ctrl/Stat Rx Queue 2 */
-multiline_comment|/*&t;B0_XA1_CSR&t;32 bit&t;BMU Ctrl/Stat Sync Tx Queue 1 */
-multiline_comment|/*&t;B0_XS1_CSR&t;32 bit&t;BMU Ctrl/Stat Async Tx Queue 1 */
-multiline_comment|/*&t;B0_XA2_CSR&t;32 bit&t;BMU Ctrl/Stat Sync Tx Queue 2 */
-multiline_comment|/*&t;B0_XS2_CSR&t;32 bit&t;BMU Ctrl/Stat Async Tx Queue 2 */
-multiline_comment|/*&t;Q_CSR&t;&t;32 bit&t;BMU Control/Status Register */
+multiline_comment|/*&t;B0_R1_CSR&t;&t;32 bit&t;BMU Ctrl/Stat Rx Queue 1 */
+multiline_comment|/*&t;B0_R2_CSR&t;&t;32 bit&t;BMU Ctrl/Stat Rx Queue 2 */
+multiline_comment|/*&t;B0_XA1_CSR&t;&t;32 bit&t;BMU Ctrl/Stat Sync Tx Queue 1 */
+multiline_comment|/*&t;B0_XS1_CSR&t;&t;32 bit&t;BMU Ctrl/Stat Async Tx Queue 1 */
+multiline_comment|/*&t;B0_XA2_CSR&t;&t;32 bit&t;BMU Ctrl/Stat Sync Tx Queue 2 */
+multiline_comment|/*&t;B0_XS2_CSR&t;&t;32 bit&t;BMU Ctrl/Stat Async Tx Queue 2 */
+multiline_comment|/*&t;Q_CSR&t;&t;&t;32 bit&t;BMU Control/Status Register */
 multiline_comment|/* Bit 31..25:&t;reserved */
 DECL|macro|CSR_SV_IDLE
 mdefine_line|#define CSR_SV_IDLE&t;&t;BIT_24&t;&t;/* BMU SM Idle */
@@ -1683,7 +1687,7 @@ DECL|macro|CSR_SET_RESET
 mdefine_line|#define CSR_SET_RESET&t;(CSR_DESC_SET | CSR_FIFO_SET | CSR_HPI_RST |&bslash;&n;&t;&t;&t;&t;&t;&t;CSR_SV_RST | CSR_DREAD_RST | CSR_DWRITE_RST |&bslash;&n;&t;&t;&t;&t;&t;&t;CSR_TRANS_RST)
 DECL|macro|CSR_CLR_RESET
 mdefine_line|#define CSR_CLR_RESET&t;(CSR_DESC_CLR | CSR_FIFO_CLR | CSR_HPI_RUN |&bslash;&n;&t;&t;&t;&t;&t;&t;CSR_SV_RUN | CSR_DREAD_RUN | CSR_DWRITE_RUN |&bslash;&n;&t;&t;&t;&t;&t;&t;CSR_TRANS_RUN)
-multiline_comment|/*&t;Q_F&t;32 bit&t;Flag Register */
+multiline_comment|/*&t;Q_F&t;&t;&t;&t;32 bit&t;Flag Register */
 multiline_comment|/* Bit 31..28:&t;reserved */
 DECL|macro|F_ALM_FULL
 mdefine_line|#define F_ALM_FULL&t;&t;BIT_27&t;&t;/* Rx FIFO: almost full */
@@ -1699,20 +1703,20 @@ mdefine_line|#define F_FIFO_LEVEL&t;(0x1fL&lt;&lt;16)&t;/* Bit 23..16:&t;# of Qw
 multiline_comment|/* Bit 15..11: &t;reserved */
 DECL|macro|F_WATER_MARK
 mdefine_line|#define F_WATER_MARK&t;0x0007ffL&t;/* Bit 10.. 0:&t;Watermark */
-multiline_comment|/*&t;Q_T1&t;32 bit&t;Test Register 1 */
+multiline_comment|/*&t;Q_T1&t;&t;&t;32 bit&t;Test Register 1 */
 multiline_comment|/*&t;&t;Holds four State Machine control Bytes */
-DECL|macro|SM_CRTL_SV_MSK
-mdefine_line|#define SM_CRTL_SV_MSK&t;(0xffL&lt;&lt;24)&t;/* Bit 31..24:&t;Control Supervisor SM */
-DECL|macro|SM_CRTL_RD_MSK
-mdefine_line|#define SM_CRTL_RD_MSK&t;(0xffL&lt;&lt;16)&t;/* Bit 23..16:&t;Control Read Desc SM */
-DECL|macro|SM_CRTL_WR_MSK
-mdefine_line|#define SM_CRTL_WR_MSK&t;(0xffL&lt;&lt;8)&t;/* Bit 15.. 8:&t;Control Write Desc SM */
-DECL|macro|SM_CRTL_TR_MSK
-mdefine_line|#define SM_CRTL_TR_MSK&t;0xffL&t;&t;/* Bit&t;7.. 0:&t;Control Transfer SM */
-multiline_comment|/*&t;Q_T1_TR&t; 8 bit&t;Test Register 1 Transfer SM */
-multiline_comment|/*&t;Q_T1_WR&t; 8 bit&t;Test Register 1 Write Descriptor SM */
-multiline_comment|/*&t;Q_T1_RD&t; 8 bit&t;Test Register 1 Read Descriptor SM */
-multiline_comment|/*&t;Q_T1_SV&t; 8 bit&t;Test Register 1 Supervisor SM */
+DECL|macro|SM_CTRL_SV_MSK
+mdefine_line|#define SM_CTRL_SV_MSK&t;(0xffL&lt;&lt;24)&t;/* Bit 31..24:&t;Control Supervisor SM */
+DECL|macro|SM_CTRL_RD_MSK
+mdefine_line|#define SM_CTRL_RD_MSK&t;(0xffL&lt;&lt;16)&t;/* Bit 23..16:&t;Control Read Desc SM */
+DECL|macro|SM_CTRL_WR_MSK
+mdefine_line|#define SM_CTRL_WR_MSK&t;(0xffL&lt;&lt;8)&t;/* Bit 15.. 8:&t;Control Write Desc SM */
+DECL|macro|SM_CTRL_TR_MSK
+mdefine_line|#define SM_CTRL_TR_MSK&t;0xffL&t;&t;/* Bit&t;7.. 0:&t;Control Transfer SM */
+multiline_comment|/*&t;Q_T1_TR&t;&t;&t; 8 bit&t;Test Register 1 Transfer SM */
+multiline_comment|/*&t;Q_T1_WR&t;&t;&t; 8 bit&t;Test Register 1 Write Descriptor SM */
+multiline_comment|/*&t;Q_T1_RD&t;&t;&t; 8 bit&t;Test Register 1 Read Descriptor SM */
+multiline_comment|/*&t;Q_T1_SV&t;&t;&t; 8 bit&t;Test Register 1 Supervisor SM */
 multiline_comment|/* The control status byte of each machine looks like ... */
 DECL|macro|SM_STATE
 mdefine_line|#define SM_STATE&t;&t;0xf0&t;/* Bit 7.. 4:&t;State which shall be loaded */
@@ -1725,7 +1729,7 @@ mdefine_line|#define SM_TEST_OFF&t;&t;BIT_1S&t;/* Go off the Test Mode */
 DECL|macro|SM_STEP
 mdefine_line|#define SM_STEP&t;&t;&t;BIT_0S&t;/* Step the State Machine */
 multiline_comment|/* The encoding of the states is not supported by the Diagnostics Tool */
-multiline_comment|/*&t;Q_T2&t;32 bit&t;Test Register 2&t;*/
+multiline_comment|/*&t;Q_T2&t;&t;&t;32 bit&t;Test Register 2&t;*/
 multiline_comment|/* Bit 31.. 8:&t;reserved */
 DECL|macro|T2_AC_T_ON
 mdefine_line|#define T2_AC_T_ON&t;&t;BIT_7&t;/* Address Counter Test Mode on */
@@ -1743,7 +1747,7 @@ DECL|macro|T2_STEP02
 mdefine_line|#define T2_STEP02&t;&t;BIT_1&t;/* Inc AC/Dec BC by 2 */
 DECL|macro|T2_STEP01
 mdefine_line|#define T2_STEP01&t;&t;BIT_0&t;/* Inc AC/Dec BC by 1 */
-multiline_comment|/*&t;Q_T3&t;32 bit&t;Test Register 3&t;*/
+multiline_comment|/*&t;Q_T3&t;&t;&t;32 bit&t;Test Register 3&t;*/
 multiline_comment|/* Bit 31.. 7:&t;reserved */
 DECL|macro|T3_MUX_MSK
 mdefine_line|#define T3_MUX_MSK&t;&t;(7&lt;&lt;4)&t;/* Bit  6.. 4:&t;Mux Position */
@@ -1751,16 +1755,16 @@ multiline_comment|/* Bit  3:&t;reserved */
 DECL|macro|T3_VRAM_MSK
 mdefine_line|#define T3_VRAM_MSK&t;&t;7&t;&t;/* Bit  2.. 0:&t;Virtual RAM Buffer Address */
 multiline_comment|/* RAM Buffer Register Offsets, use RB_ADDR(Queue, Offs) to access */
-multiline_comment|/*&t;RB_START&t;32 bit&t;RAM Buffer Start Address */
-multiline_comment|/*&t;RB_END&t;&t;32 bit&t;RAM Buffer End Address */
-multiline_comment|/*&t;RB_WP&t;&t;32 bit&t;RAM Buffer Write Pointer */
-multiline_comment|/*&t;RB_RP&t;&t;32 bit&t;RAM Buffer Read Pointer */
-multiline_comment|/*&t;RB_RX_UTPP&t;32 bit&t;Rx Upper Threshold, Pause Pack */
-multiline_comment|/*&t;RB_RX_LTPP&t;32 bit&t;Rx Lower Threshold, Pause Pack */
-multiline_comment|/*&t;RB_RX_UTHP&t;32 bit&t;Rx Upper Threshold, High Prio */
-multiline_comment|/*&t;RB_RX_LTHP&t;32 bit&t;Rx Lower Threshold, High Prio */
-multiline_comment|/*&t;RB_PC&t;&t;32 bit&t;RAM Buffer Packet Counter */
-multiline_comment|/*&t;RB_LEV&t;&t;32 bit&t;RAM Buffer Level Register */
+multiline_comment|/*&t;RB_START&t;&t;32 bit&t;RAM Buffer Start Address */
+multiline_comment|/*&t;RB_END&t;&t;&t;32 bit&t;RAM Buffer End Address */
+multiline_comment|/*&t;RB_WP&t;&t;&t;32 bit&t;RAM Buffer Write Pointer */
+multiline_comment|/*&t;RB_RP&t;&t;&t;32 bit&t;RAM Buffer Read Pointer */
+multiline_comment|/*&t;RB_RX_UTPP&t;&t;32 bit&t;Rx Upper Threshold, Pause Pack */
+multiline_comment|/*&t;RB_RX_LTPP&t;&t;32 bit&t;Rx Lower Threshold, Pause Pack */
+multiline_comment|/*&t;RB_RX_UTHP&t;&t;32 bit&t;Rx Upper Threshold, High Prio */
+multiline_comment|/*&t;RB_RX_LTHP&t;&t;32 bit&t;Rx Lower Threshold, High Prio */
+multiline_comment|/*&t;RB_PC&t;&t;&t;32 bit&t;RAM Buffer Packet Counter */
+multiline_comment|/*&t;RB_LEV&t;&t;&t;32 bit&t;RAM Buffer Level Register */
 multiline_comment|/* Bit 31..19:&t;reserved */
 DECL|macro|RB_MSK
 mdefine_line|#define RB_MSK&t;0x0007ffff&t;/* Bit 18.. 0:&t;RAM Buffer Pointer Bits */
@@ -1804,17 +1808,17 @@ mdefine_line|#define RB_RST_CLR&t;&t;BIT_1S&t;/* Clear RAM Buf STM Reset */
 DECL|macro|RB_RST_SET
 mdefine_line|#define RB_RST_SET&t;&t;BIT_0S&t;/* Set   RAM Buf STM Reset */
 multiline_comment|/* Receive and Transmit MAC FIFO Registers (GENESIS only) */
-multiline_comment|/*&t;RX_MFF_EA&t;32 bit&t;Receive MAC FIFO End Address */
-multiline_comment|/*&t;RX_MFF_WP&t;32 bit &t;Receive MAC FIFO Write Pointer */
-multiline_comment|/*&t;RX_MFF_RP&t;32 bit&t;Receive MAC FIFO Read Pointer */
-multiline_comment|/*&t;RX_MFF_PC&t;32 bit&t;Receive MAC FIFO Packet Counter */
-multiline_comment|/*&t;RX_MFF_LEV&t;32 bit&t;Receive MAC FIFO Level */
-multiline_comment|/*&t;TX_MFF_EA&t;32 bit&t;Transmit MAC FIFO End Address */
-multiline_comment|/*&t;TX_MFF_WP&t;32 bit &t;Transmit MAC FIFO Write Pointer */
-multiline_comment|/*&t;TX_MFF_WSP&t;32 bit&t;Transmit MAC FIFO WR Shadow Pointer */
-multiline_comment|/*&t;TX_MFF_RP&t;32 bit&t;Transmit MAC FIFO Read Pointer */
-multiline_comment|/*&t;TX_MFF_PC&t;32 bit&t;Transmit MAC FIFO Packet Cnt */
-multiline_comment|/*&t;TX_MFF_LEV&t;32 bit&t;Transmit MAC FIFO Level */
+multiline_comment|/*&t;RX_MFF_EA&t;&t;32 bit&t;Receive MAC FIFO End Address */
+multiline_comment|/*&t;RX_MFF_WP&t;&t;32 bit &t;Receive MAC FIFO Write Pointer */
+multiline_comment|/*&t;RX_MFF_RP&t;&t;32 bit&t;Receive MAC FIFO Read Pointer */
+multiline_comment|/*&t;RX_MFF_PC&t;&t;32 bit&t;Receive MAC FIFO Packet Counter */
+multiline_comment|/*&t;RX_MFF_LEV&t;&t;32 bit&t;Receive MAC FIFO Level */
+multiline_comment|/*&t;TX_MFF_EA&t;&t;32 bit&t;Transmit MAC FIFO End Address */
+multiline_comment|/*&t;TX_MFF_WP&t;&t;32 bit &t;Transmit MAC FIFO Write Pointer */
+multiline_comment|/*&t;TX_MFF_WSP&t;&t;32 bit&t;Transmit MAC FIFO WR Shadow Pointer */
+multiline_comment|/*&t;TX_MFF_RP&t;&t;32 bit&t;Transmit MAC FIFO Read Pointer */
+multiline_comment|/*&t;TX_MFF_PC&t;&t;32 bit&t;Transmit MAC FIFO Packet Cnt */
+multiline_comment|/*&t;TX_MFF_LEV&t;&t;32 bit&t;Transmit MAC FIFO Level */
 multiline_comment|/* Bit 31.. 6:&t;reserved */
 DECL|macro|MFF_MSK
 mdefine_line|#define MFF_MSK&t;&t;&t;0x007fL&t;/* Bit&t;5.. 0:&t;MAC FIFO Address/Ptr Bits */
@@ -2027,7 +2031,7 @@ DECL|macro|GMF_TX_CTRL_DEF
 mdefine_line|#define GMF_TX_CTRL_DEF&t;&t;GMF_OPER_ON
 DECL|macro|RX_GMF_FL_THR_DEF
 mdefine_line|#define RX_GMF_FL_THR_DEF&t;0x0a&t;/* Rx GMAC FIFO Flush Threshold default */
-multiline_comment|/*&t;GMAC_TI_ST_CTRL&t;&t;  8 bit&t;Time Stamp Timer Ctrl Reg (YUKON only) */
+multiline_comment|/*&t;GMAC_TI_ST_CTRL&t; 8 bit&t;Time Stamp Timer Ctrl Reg (YUKON only) */
 multiline_comment|/* Bit 7.. 3:&t;reserved */
 DECL|macro|GMT_ST_START
 mdefine_line|#define GMT_ST_START&t;BIT_2S&t;&t;/* Start Time Stamp Timer */
@@ -2151,13 +2155,13 @@ DECL|macro|GM_IS_RX_COMPL
 mdefine_line|#define GM_IS_RX_COMPL&t;BIT_0&t;&t;/* Frame Reception Complete */
 DECL|macro|GMAC_DEF_MSK
 mdefine_line|#define GMAC_DEF_MSK&t;(GM_IS_TX_CO_OV | GM_IS_RX_CO_OV | &bslash;&n;&t;&t;&t;&t;&t;&t;GM_IS_TX_FF_UR)
-multiline_comment|/*&t;GMAC_LINK_CTRL&t;&t;16 bit&t;GMAC Link Control Reg (YUKON only) */
+multiline_comment|/*&t;GMAC_LINK_CTRL&t;16 bit&t;GMAC Link Control Reg (YUKON only) */
 multiline_comment|/* Bits 15.. 2:&t;reserved */
 DECL|macro|GMLC_RST_CLR
 mdefine_line|#define GMLC_RST_CLR&t;BIT_1S&t;&t;/* Clear GMAC Link Reset */
 DECL|macro|GMLC_RST_SET
 mdefine_line|#define GMLC_RST_SET&t;BIT_0S&t;&t;/* Set   GMAC Link Reset */
-multiline_comment|/*&t;WOL_CTRL_STAT&t;&t;16 bit&t;WOL Control/Status Reg */
+multiline_comment|/*&t;WOL_CTRL_STAT&t;16 bit&t;WOL Control/Status Reg */
 DECL|macro|WOL_CTL_LINK_CHG_OCC
 mdefine_line|#define WOL_CTL_LINK_CHG_OCC&t;&t;&t;BIT_15S
 DECL|macro|WOL_CTL_MAGIC_PKT_OCC
@@ -2192,7 +2196,7 @@ DECL|macro|WOL_CTL_DIS_PATTERN_UNIT
 mdefine_line|#define WOL_CTL_DIS_PATTERN_UNIT&t;&t;BIT_0S
 DECL|macro|WOL_CTL_DEFAULT
 mdefine_line|#define WOL_CTL_DEFAULT&t;&t;&t;&t;&bslash;&n;&t;(WOL_CTL_DIS_PME_ON_LINK_CHG |&t;&bslash;&n;&t;WOL_CTL_DIS_PME_ON_PATTERN |&t;&bslash;&n;&t;WOL_CTL_DIS_PME_ON_MAGIC_PKT |&t;&bslash;&n;&t;WOL_CTL_DIS_LINK_CHG_UNIT |&t;&t;&bslash;&n;&t;WOL_CTL_DIS_PATTERN_UNIT |&t;&t;&bslash;&n;&t;WOL_CTL_DIS_MAGIC_PKT_UNIT)
-multiline_comment|/*&t;WOL_MATCH_CTL&t;&t; 8 bit&t;WOL Match Control Reg */
+multiline_comment|/*&t;WOL_MATCH_CTL&t; 8 bit&t;WOL Match Control Reg */
 DECL|macro|WOL_CTL_PATT_ENA
 mdefine_line|#define WOL_CTL_PATT_ENA(x)&t;&t;&t;&t;(BIT_0 &lt;&lt; (x))
 DECL|macro|SK_NUM_WOL_PATTERN

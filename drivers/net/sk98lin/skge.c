@@ -1,8 +1,8 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:    skge.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.11 $&n; * Date:       &t;$Date: 2003/08/26 16:05:19 $&n; * Purpose:&t;The main driver source module&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2003 SysKonnect GmbH.&n; *&n; *&t;Driver for SysKonnect Gigabit Ethernet Server Adapters:&n; *&n; *&t;SK-9871 (single link 1000Base-ZX)&n; *&t;SK-9872 (dual link   1000Base-ZX)&n; *&t;SK-9861 (single link 1000Base-SX, VF45 Volition Plug)&n; *&t;SK-9862 (dual link   1000Base-SX, VF45 Volition Plug)&n; *&t;SK-9841 (single link 1000Base-LX)&n; *&t;SK-9842 (dual link   1000Base-LX)&n; *&t;SK-9843 (single link 1000Base-SX)&n; *&t;SK-9844 (dual link   1000Base-SX)&n; *&t;SK-9821 (single link 1000Base-T)&n; *&t;SK-9822 (dual link   1000Base-T)&n; *&t;SK-9881 (single link 1000Base-SX V2 LC)&n; *&t;SK-9871 (single link 1000Base-ZX V2)&n; *&t;SK-9861 (single link 1000Base-SX V2, VF45 Volition Plug)&n; *&t;SK-9841 (single link 1000Base-LX V2)&n; *&t;SK-9843 (single link 1000Base-SX V2)&n; *&t;SK-9821 (single link 1000Base-T V2)&n; *&n; *&t;Created 10-Feb-1999, based on Linux&squot; acenic.c, 3c59x.c and&n; *&t;SysKonnects GEnesis Solaris driver&n; *&t;Author: Christoph Goos (cgoos@syskonnect.de)&n; *&t;        Mirko Lindner (mlindner@syskonnect.de)&n; *&n; *&t;Address all question to: linux@syskonnect.de&n; *&n; *&t;The technical manual for the adapters is available from SysKonnect&squot;s&n; *&t;web pages: www.syskonnect.com&n; *&t;Goto &quot;Support&quot; and search Knowledge Base for &quot;manual&quot;.&n; *&t;&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skge.c,v $&n; *&t;Revision 1.16  2003/09/23 11:07:35  mlindner&n; *&t;Fix: IO-control return race condition&n; *&t;Fix: Interrupt moderation value check&n; *&t;&n; *&t;Revision 1.15  2003/09/22 08:40:05  mlindner&n; *&t;Add: Added DRIVER_FILE_NAME and DRIVER_REL_DATE&n; *&t;&n; *&t;Revision 1.14  2003/09/22 08:11:10  mlindner&n; *&t;Add: New function for PCI initialization (SkGeInitPCI)&n; *&t;Add: Yukon Plus changes (ChipID, PCI...)&n; *&t;Fix: TCP and UDP Checksum calculation&n; *&t;&n; *&t;Revision 1.11  2003/08/26 16:05:19  mlindner&n; *&t;Fix: Compiler warnings (void *)&n; *&t;&n; *&t;Revision 1.10  2003/08/25 09:24:08  mlindner&n; *&t;Add: Dynamic Interrupt Moderation (DIM) port up message&n; *&t;&n; *&t;Revision 1.9  2003/08/21 14:09:43  mlindner&n; *&t;Fix: Disable Half Duplex with Gigabit-Speed (Yukon). Enable Full Duplex.&n; *&t;&n; *&t;Revision 1.8  2003/08/19 15:09:18  mlindner&n; *&t;Fix: Ignore ConType parameter if empty value&n; *&t;&n; *&t;Revision 1.7  2003/08/13 12:00:35  mlindner&n; *&t;Fix: Removed useless defines&n; *&t;&n; *&t;Revision 1.6  2003/08/12 16:49:41  mlindner&n; *&t;Fix: UDP and TCP HW-CSum calculation (Kernel 2.5/2.6)&n; *&t;Fix: UDP and TCP Proto checks&n; *&t;Fix: Build without ProcFS&n; *&t;Fix: Kernel 2.6 editorial changes&n; *&t;&n; *&t;Revision 1.5  2003/08/07 12:25:07  mlindner&n; *&t;Fix: ConType parameter check and error detection&n; *&t;Fix: Insert various fixes applied to the kernel tree&n; *&t;&n; *&t;Revision 1.4  2003/08/07 10:50:21  mlindner&n; *&t;Add: Speed and HW-Csum support for Yukon Lite chipset&n; *&t;&n; *&t;Revision 1.3  2003/08/06 11:24:08  mlindner&n; *&t;Add: Kernel updates&n; *&t;&n; *&t;Revision 1.2  2003/07/21 08:28:47  rroesler&n; *&t;Fix: Handle padded bytes using skb_put()&n; *&t;&n; *&t;Revision 1.63  2003/07/15 09:26:23  rroesler&n; *&t;Fix: Removed memory leak when sending short padded frames&n; *&t;&n; *&t;Revision 1.62  2003/07/09 11:11:16  rroesler&n; *&t;Fix: Call of ReceiveIrq() performed with parameter SK_FALSE in&n; *&t;     order not to hang the system with multiple spinlocks&n; *&t;&n; *&t;Revision 1.61  2003/07/08 07:32:41  rroesler&n; *&t;Fix: Correct Kernel-version&n; *&t;&n; *&t;Revision 1.60  2003/07/07 15:42:30  rroesler&n; *&t;Fix: Removed function pci_present() for 2.5/2.6 kernels (deprecated)&n; *&t;Fix: Corrected warning in GetConfiguration()&n; *&t;&n; *&t;Revision 1.59  2003/07/07 09:44:32  rroesler&n; *&t;Add: HW checksumming on kernel 2.5/2.6&n; *&t;Add: padding of short frames (&lt;60 bytes) with 0x00 instead of 0xaa&n; *&t;Add: ConType parameter combining multiple other parameters into one&n; *&t;Fix: Corrected bugreport #10721 (warning when changing MTU size)&n; *&t;Fix: Removed obsolete function SetQueueSize()&n; *&t;Fix: Function ChangeMtuSize() returns new MTU size in kernel 2.5/2.6&n; *&t;&n; *&t;Revision 1.58  2003/06/17 07:14:29  mlindner&n; *&t;Add: Disable checksum functionality&n; *&t;Fix: Unload module (Kernel 2.5)&n; *&t;&n; *&t;Revision 1.57  2003/06/05 14:55:27  mlindner&n; *&t;Fix: ProcFS creation (Kernel 2.2.x)&n; *&t;Fix: ProcFS OWNER (Kernel 2.2.x)&n; *&t;&n; *&t;Revision 1.56  2003/06/03 14:34:29  mlindner&n; *&t;Add: Additions for SK_SLIM&n; *&t;Fix: SkGeIoctl SK_IOCTL_GEN&n; *&t;&n; *&t;Revision 1.55  2003/05/26 13:00:52  mlindner&n; *&t;Add: Support for Kernel 2.5/2.6&n; *&t;Add: Support for new IO-control MIB data structure&n; *&t;Add: New SkOsGetTime function&n; *&t;Fix: Race condition with broken LM80 chip&n; *&t;Fix: Race condition with padded frames&n; *&t;&n; *&t;Revision 1.54  2003/04/28 13:07:27  mlindner&n; *&t;Fix: Delay race condition with some server machines&n; *&t;&n; *&t;Revision 1.53  2003/04/28 12:49:49  mlindner&n; *&t;Fix: Code optimization&n; *&t;&n; *&t;Revision 1.52  2003/04/28 12:24:32  mlindner&n; *&t;Fix: Disabled HW Error IRQ on 32-bit Yukon if sensor IRQ occurs&n; *&t;&n; *&t;Revision 1.51  2003/04/16 08:31:14  mlindner&n; *&t;Fix: Kernel 2.2 compilation&n; *&t;&n; *&t;Revision 1.49  2003/04/10 09:08:51  mlindner&n; *&t;Add: Blink mode verification&n; *&t;Fix: Checksum calculation&n; *&t;&n; *&t;Revision 1.48  2003/03/21 14:48:38  rroesler&n; *&t;Added code for interrupt moderation&n; *&t;&n; *&t;Revision 1.47  2003/03/12 13:56:15  mlindner&n; *&t;Fix: Mac update during SK_DRV_NET_UP&n; *&t;&n; *&t;Revision 1.46  2003/02/25 14:16:36  mlindner&n; *&t;Fix: Copyright statement&n; *&t;&n; *&t;Revision 1.45  2003/02/25 13:25:55  mlindner&n; *&t;Add: Performance improvements&n; *&t;Add: Support for various vendors&n; *&t;Fix: Init function&n; *&t;&n; *&t;Revision 1.44  2003/01/09 09:25:26  mlindner&n; *&t;Fix: Remove useless init_module/cleanup_module forward declarations&n; *&t;&n; *&t;Revision 1.43  2002/11/29 08:42:41  mlindner&n; *&t;Fix: Boot message&n; *&t;&n; *&t;Revision 1.42  2002/11/28 13:30:23  mlindner&n; *&t;Add: New frame check&n; *&t;&n; *&t;Revision 1.41  2002/11/27 13:55:18  mlindner&n; *&t;Fix: Drop wrong csum packets&n; *&t;Fix: Initialize proc_entry after hw check&n; *&t;&n; *&t;Revision 1.40  2002/10/31 07:50:37  tschilli&n; *&t;Function SkGeInitAssignRamToQueues() from common module inserted.&n; *&t;Autonegotiation is set to ON for all adapters.&n; *&t;LinkSpeedUsed is used in link up status report.&n; *&t;Role parameter will show up for 1000 Mbps links only.&n; *&t;GetConfiguration() inserted after init level 1 in SkGeChangeMtu().&n; *&t;All return values of SkGeInit() and SkGeInitPort() are checked.&n; *&t;&n; *&t;Revision 1.39  2002/10/02 12:56:05  mlindner&n; *&t;Add: Support for Yukon&n; *&t;Add: Support for ZEROCOPY, scatter-gather and hw checksum&n; *&t;Add: New transmit ring function (use SG and TCP/UDP hardware checksumming)&n; *&t;Add: New init function&n; *&t;Add: Speed check and setup&n; *&t;Add: Merge source for kernel 2.2.x and 2.4.x&n; *&t;Add: Opcode check for tcp&n; *&t;Add: Frame length check&n; *&t;Fix: Transmit complete interrupt&n; *&t;Fix: Interrupt moderation&n; *&t;&n; *&t;Revision 1.29.2.13  2002/01/14 12:44:52  mlindner&n; *&t;Fix: Rlmt modes&n; *&t;&n; *&t;Revision 1.29.2.12  2001/12/07 12:06:18  mlindner&n; *&t;Fix: malloc -&gt; slab changes&n; *&t;&n; *&t;Revision 1.29.2.11  2001/12/06 15:19:20  mlindner&n; *&t;Add: DMA attributes&n; *&t;Fix: Module initialisation&n; *&t;Fix: pci_map_single and pci_unmap_single replaced&n; *&t;&n; *&t;Revision 1.29.2.10  2001/12/06 09:56:50  mlindner&n; *&t;Corrected some printk&squot;s&n; *&t;&n; *&t;Revision 1.29.2.9  2001/09/05 12:15:34  mlindner&n; *&t;Add: LBFO Changes&n; *&t;Fix: Counter Errors (Jumbo == to long errors)&n; *&t;Fix: Changed pAC-&gt;PciDev declaration&n; *&t;Fix: too short counters&n; *&t;&n; *&t;Revision 1.29.2.8  2001/06/25 12:10:44  mlindner&n; *&t;fix: ReceiveIrq() changed.&n; *&t;&n; *&t;Revision 1.29.2.7  2001/06/25 08:07:05  mlindner&n; *&t;fix: RLMT locking in ReceiveIrq() changed.&n; *&t;&n; *&t;Revision 1.29.2.6  2001/05/21 07:59:29  mlindner&n; *&t;fix: MTU init problems&n; *&t;&n; *&t;Revision 1.29.2.5  2001/05/08 11:25:08  mlindner&n; *&t;fix: removed VLAN error message&n; *&t;&n; *&t;Revision 1.29.2.4  2001/05/04 13:31:43  gklug&n; *&t;fix: do not handle eth_copy on bad fragments received.&n; *&t;&n; *&t;Revision 1.29.2.3  2001/04/23 08:06:43  mlindner&n; *&t;Fix: error handling&n; *&t;&n; *&t;Revision 1.29.2.2  2001/03/15 12:04:54  mlindner&n; *&t;Fixed memory problem&n; *&t;&n; *&t;Revision 1.29.2.1  2001/03/12 16:41:44  mlindner&n; *&t;add: procfs function&n; *&t;add: dual-net function&n; *&t;add: RLMT networks&n; *&t;add: extended PNMI features&n; *&t;&n; *&t;Kernel 2.4.x specific:&n; *&t;Revision 1.xx  2000/09/12 13:31:56  cgoos&n; *&t;Fixed missign &quot;dev=NULL in skge_probe.&n; *&t;Added counting for jumbo frames (corrects error statistic).&n; *&t;Removed VLAN tag check (enables VLAN support).&n; *&t;&n; *&t;Kernel 2.2.x specific:&n; *&t;Revision 1.29  2000/02/21 13:31:56  cgoos&n; *&t;Fixed &quot;unused&quot; warning for UltraSPARC change.&n; *&t;&n; *&t;Partially kernel 2.2.x specific:&n; *&t;Revision 1.28  2000/02/21 10:32:36  cgoos&n; *&t;Added fixes for UltraSPARC.&n; *&t;Now printing RlmtMode and PrefPort setting at startup.&n; *&t;Changed XmitFrame return value.&n; *&t;Fixed rx checksum calculation for BIG ENDIAN systems.&n; *&t;Fixed rx jumbo frames counted as ierrors.&n; *&t;&n; *&t;&n; *&t;Revision 1.27  1999/11/25 09:06:28  cgoos&n; *&t;Changed base_addr to unsigned long.&n; *&t;&n; *&t;Revision 1.26  1999/11/22 13:29:16  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Changes for inclusion in linux kernel (2.2.13).&n; *&t;Removed 2.0.x defines.&n; *&t;Changed SkGeProbe to skge_probe.&n; *&t;Added checks in SkGeIoctl.&n; *&t;&n; *&t;Revision 1.25  1999/10/07 14:47:52  cgoos&n; *&t;Changed 984x to 98xx.&n; *&t;&n; *&t;Revision 1.24  1999/09/30 07:21:01  cgoos&n; *&t;Removed SK_RLMT_SLOW_LOOKAHEAD option.&n; *&t;Giving spanning tree packets also to OS now.&n; *&t;&n; *&t;Revision 1.23  1999/09/29 07:36:50  cgoos&n; *&t;Changed assignment for IsBc/IsMc.&n; *&t;&n; *&t;Revision 1.22  1999/09/28 12:57:09  cgoos&n; *&t;Added CheckQueue also to Single-Port-ISR.&n; *&t;&n; *&t;Revision 1.21  1999/09/28 12:42:41  cgoos&n; *&t;Changed parameter strings for RlmtMode.&n; *&t;&n; *&t;Revision 1.20  1999/09/28 12:37:57  cgoos&n; *&t;Added CheckQueue for fast delivery of RLMT frames.&n; *&t;&n; *&t;Revision 1.19  1999/09/16 07:57:25  cgoos&n; *&t;Copperfield changes.&n; *&t;&n; *&t;Revision 1.18  1999/09/03 13:06:30  cgoos&n; *&t;Fixed RlmtMode=CheckSeg bug: wrong DEV_KFREE_SKB in RLMT_SEND caused&n; *&t;double allocated skb&squot;s.&n; *&t;FrameStat in ReceiveIrq was accessed via wrong Rxd.&n; *&t;Queue size for async. standby Tx queue was zero.&n; *&t;FillRxLimit of 0 could cause problems with ReQueue, changed to 1.&n; *&t;Removed debug output of checksum statistic.&n; *&t;&n; *&t;Revision 1.17  1999/08/11 13:55:27  cgoos&n; *&t;Transmit descriptor polling was not reenabled after SkGePortInit.&n; *&t;&n; *&t;Revision 1.16  1999/07/27 15:17:29  cgoos&n; *&t;Added some &quot;&bslash;n&quot; in output strings (removed while debuging...).&n; *&t;&n; *&t;Revision 1.15  1999/07/23 12:09:30  cgoos&n; *&t;Performance optimization, rx checksumming, large frame support.&n; *&t;&n; *&t;Revision 1.14  1999/07/14 11:26:27  cgoos&n; *&t;Removed Link LED settings (now in RLMT).&n; *&t;Added status output at NET UP.&n; *&t;Fixed SMP problems with Tx and SWITCH running in parallel.&n; *&t;Fixed return code problem at RLMT_SEND event.&n; *&t;&n; *&t;Revision 1.13  1999/04/07 10:11:42  cgoos&n; *&t;Fixed Single Port problems.&n; *&t;Fixed Multi-Adapter problems.&n; *&t;Always display startup string.&n; *&t;&n; *&t;Revision 1.12  1999/03/29 12:26:37  cgoos&n; *&t;Reversed locking to fine granularity.&n; *&t;Fixed skb double alloc problem (caused by incorrect xmit return code).&n; *&t;Enhanced function descriptions.&n; *&t;&n; *&t;Revision 1.11  1999/03/15 13:10:51  cgoos&n; *&t;Changed device identifier in output string to ethX.&n; *&t;&n; *&t;Revision 1.10  1999/03/15 12:12:34  cgoos&n; *&t;Changed copyright notice.&n; *&t;&n; *&t;Revision 1.9  1999/03/15 12:10:17  cgoos&n; *&t;Changed locking to one driver lock.&n; *&t;Added check of SK_AC-size (for consistency with library).&n; *&t;&n; *&t;Revision 1.8  1999/03/08 11:44:02  cgoos&n; *&t;Fixed missing dev-&gt;tbusy in SkGeXmit.&n; *&t;Changed large frame (jumbo) buffer number.&n; *&t;Added copying of short frames.&n; *&t;&n; *&t;Revision 1.7  1999/03/04 13:26:57  cgoos&n; *&t;Fixed spinlock calls for SMP.&n; *&t;&n; *&t;Revision 1.6  1999/03/02 09:53:51  cgoos&n; *&t;Added descriptor revertion for big endian machines.&n; *&t;&n; *&t;Revision 1.5  1999/03/01 08:50:59  cgoos&n; *&t;Fixed SkGeChangeMtu.&n; *&t;Fixed pci config space accesses.&n; *&t;&n; *&t;Revision 1.4  1999/02/18 15:48:44  cgoos&n; *&t;Corrected some printk&squot;s.&n; *&t;&n; *&t;Revision 1.3  1999/02/18 12:45:55  cgoos&n; *&t;Changed SK_MAX_CARD_PARAM to default 16&n; *&t;&n; *&t;Revision 1.2  1999/02/18 10:55:32  cgoos&n; *&t;Removed SkGeDrvTimeStamp function.&n; *&t;Printing &quot;ethX:&quot; before adapter type at adapter init.&n; *&t;&n; *&n; *&t;10-Feb-1999 cg&t;Created, based on Linux&squot; acenic.c, 3c59x.c and&n; *&t;&t;&t;SysKonnects GEnesis Solaris driver&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skge.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.42 $&n; * Date:       &t;$Date: 2003/12/12 10:05:43 $&n; * Purpose:&t;The main driver source module&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect GmbH.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;Driver for Marvell Yukon chipset and SysKonnect Gigabit Ethernet &n; *      Server Adapters.&n; *&n; *&t;Created 10-Feb-1999, based on Linux&squot; acenic.c, 3c59x.c and&n; *&t;SysKonnects GEnesis Solaris driver&n; *&t;Author: Christoph Goos (cgoos@syskonnect.de)&n; *&t;        Mirko Lindner (mlindner@syskonnect.de)&n; *&n; *&t;Address all question to: linux@syskonnect.de&n; *&n; *&t;The technical manual for the adapters is available from SysKonnect&squot;s&n; *&t;web pages: www.syskonnect.com&n; *&t;Goto &quot;Support&quot; and search Knowledge Base for &quot;manual&quot;.&n; *&t;&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skge.c,v $&n; *&t;Revision 1.42  2003/12/12 10:05:43  mlindner&n; *&t;Fix: Format of error message corrected&n; *&t;&n; *&t;Revision 1.41  2003/12/11 16:03:57  mlindner&n; *&t;Fix: Create backup from pnmi data structure&n; *&t;&n; *&t;Revision 1.40  2003/12/11 12:14:48  mlindner&n; *&t;Fix: Initalize Board before network configuration&n; *&t;Fix: Change device names to driver name&n; *&t;&n; *&t;Revision 1.39  2003/12/10 08:57:38  rroesler&n; *&t;Fix: Modifications regarding try_module_get() and capable()&n; *&t;&n; *&t;Revision 1.38  2003/12/01 17:16:50  mlindner&n; *&t;Fix: Remove useless register_netdev&n; *&t;&n; *&t;Revision 1.37  2003/12/01 17:11:30  mlindner&n; *&t;Fix: Register net device before SkGeBoardInit&n; *&t;&n; *&t;Revision 1.36  2003/11/28 13:04:27  rroesler&n; *&t;Fix: do not print interface status in case DIAG is used&n; *&t;&n; *&t;Revision 1.35  2003/11/17 14:41:06  mlindner&n; *&t;Fix: Endif command&n; *&t;&n; *&t;Revision 1.34  2003/11/17 13:29:05  mlindner&n; *&t;Fix: Editorial changes&n; *&t;&n; *&t;Revision 1.33  2003/11/14 14:56:54  rroesler&n; *&t;Fix: corrected compilation warnings kernel 2.2&n; *&t;&n; *&t;Revision 1.32  2003/11/13 14:18:47  rroesler&n; *&t;Fix: added latest changes regarding the use of the proc system&n; *&t;&n; *&t;Revision 1.31  2003/11/13 09:28:35  rroesler&n; *&t;Fix: removed kernel warning &squot;driver changed get_stats after register&squot;&n; *&t;&n; *&t;Revision 1.30  2003/11/11 13:15:27  rroesler&n; *&t;Fix: use suitables kernel usage count macros when using the diag&n; *&t;&n; *&t;Revision 1.29  2003/11/10 09:38:26  rroesler&n; *&t;Fix: restore PNMI structure backup for DIAG actions&n; *&t;&n; *&t;Revision 1.28  2003/11/07 17:28:45  rroesler&n; *&t;Fix: Additions for the LeaveDiagMode&n; *&t;&n; *&t;Revision 1.27  2003/11/03 13:21:14  mlindner&n; *&t;Add: SkGeBuffPad function for padding to ensure the trailing bytes exist&n; *&t;&n; *&t;Revision 1.26  2003/10/30 09:20:40  mlindner&n; *&t;Fix: Control bit check&n; *&t;&n; *&t;Revision 1.25  2003/10/29 07:43:37  rroesler&n; *&t;Fix: Implemented full None values handling for parameter Moderation&n; *&t;&n; *&t;Revision 1.24  2003/10/22 14:18:12  rroesler&n; *&t;Fix: DIAG handling for DualNet cards&n; *&t;&n; *&t;Revision 1.23  2003/10/17 10:05:13  mlindner&n; *&t;Add: New blinkmode for Morvell cards&n; *&t;&n; *&t;Revision 1.22  2003/10/15 12:31:25  rroesler&n; *&t;Fix: Corrected bugreport #10954 (Linux System crash when using vlans)&n; *&t;&n; *&t;Revision 1.21  2003/10/07 12:32:28  mlindner&n; *&t;Fix: Editorial changes&n; *&t;&n; *&t;Revision 1.20  2003/10/07 12:22:40  mlindner&n; *&t;Fix: Compiler warnings&n; *&t;&n; *&t;Revision 1.19  2003/10/07 09:33:40  mlindner&n; *&t;Fix: No warnings for illegal values of Mod and IntsPerSec&n; *&t;Fix: Speed 100 in Half Duplex not allowed for Yukon&n; *&t;Fix: PrefPort=B not allowed on single NICs&n; *&t;&n; *&t;Revision 1.18  2003/10/07 08:17:08  mlindner&n; *&t;Fix: Copyright changes&n; *&t;&n; *&t;Revision 1.17  2003/09/29 12:06:59  mlindner&n; *&t;*** empty log message ***&n; *&t;&n; *&t;Revision 1.16  2003/09/23 11:07:35  mlindner&n; *&t;Fix: IO-control return race condition&n; *&t;Fix: Interrupt moderation value check&n; *&t;&n; *&t;Revision 1.15  2003/09/22 08:40:05  mlindner&n; *&t;Add: Added DRIVER_FILE_NAME and DRIVER_REL_DATE&n; *&t;&n; *&t;Revision 1.14  2003/09/22 08:11:10  mlindner&n; *&t;Add: New function for PCI initialization (SkGeInitPCI)&n; *&t;Add: Yukon Plus changes (ChipID, PCI...)&n; *&t;Fix: TCP and UDP Checksum calculation&n; *&t;&n; *&t;Revision 1.13  2003/09/01 13:30:08  rroesler&n; *&t;Fix: Corrected missing defines&n; *&t;&n; *&t;Revision 1.12  2003/09/01 13:12:02  rroesler&n; *&t;Add: Code for improved DIAG Attach/Detach interface&n; *&t;&n; *&t;Revision 1.11  2003/08/26 16:05:19  mlindner&n; *&t;Fix: Compiler warnings (void *)&n; *&t;&n; *&t;Revision 1.10  2003/08/25 09:24:08  mlindner&n; *&t;Add: Dynamic Interrupt Moderation (DIM) port up message&n; *&t;&n; *&t;Revision 1.9  2003/08/21 14:09:43  mlindner&n; *&t;Fix: Disable Half Duplex with Gigabit-Speed (Yukon). Enable Full Duplex.&n; *&t;&n; *&t;Revision 1.8  2003/08/19 15:09:18  mlindner&n; *&t;Fix: Ignore ConType parameter if empty value&n; *&t;&n; *&t;Revision 1.7  2003/08/13 12:00:35  mlindner&n; *&t;Fix: Removed useless defines&n; *&t;&n; *&t;Revision 1.6  2003/08/12 16:49:41  mlindner&n; *&t;Fix: UDP and TCP HW-CSum calculation (Kernel 2.5/2.6)&n; *&t;Fix: UDP and TCP Proto checks&n; *&t;Fix: Build without ProcFS&n; *&t;Fix: Kernel 2.6 editorial changes&n; *&t;&n; *&t;Revision 1.5  2003/08/07 12:25:07  mlindner&n; *&t;Fix: ConType parameter check and error detection&n; *&t;Fix: Insert various fixes applied to the kernel tree&n; *&t;&n; *&t;Revision 1.4  2003/08/07 10:50:21  mlindner&n; *&t;Add: Speed and HW-Csum support for Yukon Lite chipset&n; *&t;&n; *&t;Revision 1.3  2003/08/06 11:24:08  mlindner&n; *&t;Add: Kernel updates&n; *&t;&n; *&t;Revision 1.2  2003/07/21 08:28:47  rroesler&n; *&t;Fix: Handle padded bytes using skb_put()&n; *&t;&n; *&t;Revision 1.63  2003/07/15 09:26:23  rroesler&n; *&t;Fix: Removed memory leak when sending short padded frames&n; *&t;&n; *&t;Revision 1.62  2003/07/09 11:11:16  rroesler&n; *&t;Fix: Call of ReceiveIrq() performed with parameter SK_FALSE in&n; *&t;     order not to hang the system with multiple spinlocks&n; *&t;&n; *&t;Revision 1.61  2003/07/08 07:32:41  rroesler&n; *&t;Fix: Correct Kernel-version&n; *&t;&n; *&t;Revision 1.60  2003/07/07 15:42:30  rroesler&n; *&t;Fix: Removed function pci_present() for 2.5/2.6 kernels (deprecated)&n; *&t;Fix: Corrected warning in GetConfiguration()&n; *&t;&n; *&t;Revision 1.59  2003/07/07 09:44:32  rroesler&n; *&t;Add: HW checksumming on kernel 2.5/2.6&n; *&t;Add: padding of short frames (&lt;60 bytes) with 0x00 instead of 0xaa&n; *&t;Add: ConType parameter combining multiple other parameters into one&n; *&t;Fix: Corrected bugreport #10721 (warning when changing MTU size)&n; *&t;Fix: Removed obsolete function SetQueueSize()&n; *&t;Fix: Function ChangeMtuSize() returns new MTU size in kernel 2.5/2.6&n; *&t;&n; *&t;Revision 1.58  2003/06/17 07:14:29  mlindner&n; *&t;Add: Disable checksum functionality&n; *&t;Fix: Unload module (Kernel 2.5)&n; *&t;&n; *&t;Revision 1.57  2003/06/05 14:55:27  mlindner&n; *&t;Fix: ProcFS creation (Kernel 2.2.x)&n; *&t;Fix: ProcFS OWNER (Kernel 2.2.x)&n; *&t;&n; *&t;Revision 1.56  2003/06/03 14:34:29  mlindner&n; *&t;Add: Additions for SK_SLIM&n; *&t;Fix: SkGeIoctl SK_IOCTL_GEN&n; *&t;&n; *&t;Revision 1.55  2003/05/26 13:00:52  mlindner&n; *&t;Add: Support for Kernel 2.5/2.6&n; *&t;Add: Support for new IO-control MIB data structure&n; *&t;Add: New SkOsGetTime function&n; *&t;Fix: Race condition with broken LM80 chip&n; *&t;Fix: Race condition with padded frames&n; *&t;&n; *&t;Revision 1.54  2003/04/28 13:07:27  mlindner&n; *&t;Fix: Delay race condition with some server machines&n; *&t;&n; *&t;Revision 1.53  2003/04/28 12:49:49  mlindner&n; *&t;Fix: Code optimization&n; *&t;&n; *&t;Revision 1.52  2003/04/28 12:24:32  mlindner&n; *&t;Fix: Disabled HW Error IRQ on 32-bit Yukon if sensor IRQ occurs&n; *&t;&n; *&t;Revision 1.51  2003/04/16 08:31:14  mlindner&n; *&t;Fix: Kernel 2.2 compilation&n; *&t;&n; *&t;Revision 1.49  2003/04/10 09:08:51  mlindner&n; *&t;Add: Blink mode verification&n; *&t;Fix: Checksum calculation&n; *&t;&n; *&t;Revision 1.48  2003/03/21 14:48:38  rroesler&n; *&t;Added code for interrupt moderation&n; *&t;&n; *&t;Revision 1.47  2003/03/12 13:56:15  mlindner&n; *&t;Fix: Mac update during SK_DRV_NET_UP&n; *&t;&n; *&t;Revision 1.46  2003/02/25 14:16:36  mlindner&n; *&t;Fix: Copyright statement&n; *&t;&n; *&t;Revision 1.45  2003/02/25 13:25:55  mlindner&n; *&t;Add: Performance improvements&n; *&t;Add: Support for various vendors&n; *&t;Fix: Init function&n; *&t;&n; *&t;Revision 1.44  2003/01/09 09:25:26  mlindner&n; *&t;Fix: Remove useless init_module/cleanup_module forward declarations&n; *&t;&n; *&t;Revision 1.43  2002/11/29 08:42:41  mlindner&n; *&t;Fix: Boot message&n; *&t;&n; *&t;Revision 1.42  2002/11/28 13:30:23  mlindner&n; *&t;Add: New frame check&n; *&t;&n; *&t;Revision 1.41  2002/11/27 13:55:18  mlindner&n; *&t;Fix: Drop wrong csum packets&n; *&t;Fix: Initialize proc_entry after hw check&n; *&t;&n; *&t;Revision 1.40  2002/10/31 07:50:37  tschilli&n; *&t;Function SkGeInitAssignRamToQueues() from common module inserted.&n; *&t;Autonegotiation is set to ON for all adapters.&n; *&t;LinkSpeedUsed is used in link up status report.&n; *&t;Role parameter will show up for 1000 Mbps links only.&n; *&t;GetConfiguration() inserted after init level 1 in SkGeChangeMtu().&n; *&t;All return values of SkGeInit() and SkGeInitPort() are checked.&n; *&t;&n; *&t;Revision 1.39  2002/10/02 12:56:05  mlindner&n; *&t;Add: Support for Yukon&n; *&t;Add: Support for ZEROCOPY, scatter-gather and hw checksum&n; *&t;Add: New transmit ring function (use SG and TCP/UDP hardware checksumming)&n; *&t;Add: New init function&n; *&t;Add: Speed check and setup&n; *&t;Add: Merge source for kernel 2.2.x and 2.4.x&n; *&t;Add: Opcode check for tcp&n; *&t;Add: Frame length check&n; *&t;Fix: Transmit complete interrupt&n; *&t;Fix: Interrupt moderation&n; *&t;&n; *&t;Revision 1.29.2.13  2002/01/14 12:44:52  mlindner&n; *&t;Fix: Rlmt modes&n; *&t;&n; *&t;Revision 1.29.2.12  2001/12/07 12:06:18  mlindner&n; *&t;Fix: malloc -&gt; slab changes&n; *&t;&n; *&t;Revision 1.29.2.11  2001/12/06 15:19:20  mlindner&n; *&t;Add: DMA attributes&n; *&t;Fix: Module initialisation&n; *&t;Fix: pci_map_single and pci_unmap_single replaced&n; *&t;&n; *&t;Revision 1.29.2.10  2001/12/06 09:56:50  mlindner&n; *&t;Corrected some printk&squot;s&n; *&t;&n; *&t;Revision 1.29.2.9  2001/09/05 12:15:34  mlindner&n; *&t;Add: LBFO Changes&n; *&t;Fix: Counter Errors (Jumbo == to long errors)&n; *&t;Fix: Changed pAC-&gt;PciDev declaration&n; *&t;Fix: too short counters&n; *&t;&n; *&t;Revision 1.29.2.8  2001/06/25 12:10:44  mlindner&n; *&t;fix: ReceiveIrq() changed.&n; *&t;&n; *&t;Revision 1.29.2.7  2001/06/25 08:07:05  mlindner&n; *&t;fix: RLMT locking in ReceiveIrq() changed.&n; *&t;&n; *&t;Revision 1.29.2.6  2001/05/21 07:59:29  mlindner&n; *&t;fix: MTU init problems&n; *&t;&n; *&t;Revision 1.29.2.5  2001/05/08 11:25:08  mlindner&n; *&t;fix: removed VLAN error message&n; *&t;&n; *&t;Revision 1.29.2.4  2001/05/04 13:31:43  gklug&n; *&t;fix: do not handle eth_copy on bad fragments received.&n; *&t;&n; *&t;Revision 1.29.2.3  2001/04/23 08:06:43  mlindner&n; *&t;Fix: error handling&n; *&t;&n; *&t;Revision 1.29.2.2  2001/03/15 12:04:54  mlindner&n; *&t;Fixed memory problem&n; *&t;&n; *&t;Revision 1.29.2.1  2001/03/12 16:41:44  mlindner&n; *&t;add: procfs function&n; *&t;add: dual-net function&n; *&t;add: RLMT networks&n; *&t;add: extended PNMI features&n; *&t;&n; *&t;Kernel 2.4.x specific:&n; *&t;Revision 1.xx  2000/09/12 13:31:56  cgoos&n; *&t;Fixed missign &quot;dev=NULL in skge_probe.&n; *&t;Added counting for jumbo frames (corrects error statistic).&n; *&t;Removed VLAN tag check (enables VLAN support).&n; *&t;&n; *&t;Kernel 2.2.x specific:&n; *&t;Revision 1.29  2000/02/21 13:31:56  cgoos&n; *&t;Fixed &quot;unused&quot; warning for UltraSPARC change.&n; *&t;&n; *&t;Partially kernel 2.2.x specific:&n; *&t;Revision 1.28  2000/02/21 10:32:36  cgoos&n; *&t;Added fixes for UltraSPARC.&n; *&t;Now printing RlmtMode and PrefPort setting at startup.&n; *&t;Changed XmitFrame return value.&n; *&t;Fixed rx checksum calculation for BIG ENDIAN systems.&n; *&t;Fixed rx jumbo frames counted as ierrors.&n; *&t;&n; *&t;&n; *&t;Revision 1.27  1999/11/25 09:06:28  cgoos&n; *&t;Changed base_addr to unsigned long.&n; *&t;&n; *&t;Revision 1.26  1999/11/22 13:29:16  cgoos&n; *&t;Changed license header to GPL.&n; *&t;Changes for inclusion in linux kernel (2.2.13).&n; *&t;Removed 2.0.x defines.&n; *&t;Changed SkGeProbe to skge_probe.&n; *&t;Added checks in SkGeIoctl.&n; *&t;&n; *&t;Revision 1.25  1999/10/07 14:47:52  cgoos&n; *&t;Changed 984x to 98xx.&n; *&t;&n; *&t;Revision 1.24  1999/09/30 07:21:01  cgoos&n; *&t;Removed SK_RLMT_SLOW_LOOKAHEAD option.&n; *&t;Giving spanning tree packets also to OS now.&n; *&t;&n; *&t;Revision 1.23  1999/09/29 07:36:50  cgoos&n; *&t;Changed assignment for IsBc/IsMc.&n; *&t;&n; *&t;Revision 1.22  1999/09/28 12:57:09  cgoos&n; *&t;Added CheckQueue also to Single-Port-ISR.&n; *&t;&n; *&t;Revision 1.21  1999/09/28 12:42:41  cgoos&n; *&t;Changed parameter strings for RlmtMode.&n; *&t;&n; *&t;Revision 1.20  1999/09/28 12:37:57  cgoos&n; *&t;Added CheckQueue for fast delivery of RLMT frames.&n; *&t;&n; *&t;Revision 1.19  1999/09/16 07:57:25  cgoos&n; *&t;Copperfield changes.&n; *&t;&n; *&t;Revision 1.18  1999/09/03 13:06:30  cgoos&n; *&t;Fixed RlmtMode=CheckSeg bug: wrong DEV_KFREE_SKB in RLMT_SEND caused&n; *&t;double allocated skb&squot;s.&n; *&t;FrameStat in ReceiveIrq was accessed via wrong Rxd.&n; *&t;Queue size for async. standby Tx queue was zero.&n; *&t;FillRxLimit of 0 could cause problems with ReQueue, changed to 1.&n; *&t;Removed debug output of checksum statistic.&n; *&t;&n; *&t;Revision 1.17  1999/08/11 13:55:27  cgoos&n; *&t;Transmit descriptor polling was not reenabled after SkGePortInit.&n; *&t;&n; *&t;Revision 1.16  1999/07/27 15:17:29  cgoos&n; *&t;Added some &quot;&bslash;n&quot; in output strings (removed while debuging...).&n; *&t;&n; *&t;Revision 1.15  1999/07/23 12:09:30  cgoos&n; *&t;Performance optimization, rx checksumming, large frame support.&n; *&t;&n; *&t;Revision 1.14  1999/07/14 11:26:27  cgoos&n; *&t;Removed Link LED settings (now in RLMT).&n; *&t;Added status output at NET UP.&n; *&t;Fixed SMP problems with Tx and SWITCH running in parallel.&n; *&t;Fixed return code problem at RLMT_SEND event.&n; *&t;&n; *&t;Revision 1.13  1999/04/07 10:11:42  cgoos&n; *&t;Fixed Single Port problems.&n; *&t;Fixed Multi-Adapter problems.&n; *&t;Always display startup string.&n; *&t;&n; *&t;Revision 1.12  1999/03/29 12:26:37  cgoos&n; *&t;Reversed locking to fine granularity.&n; *&t;Fixed skb double alloc problem (caused by incorrect xmit return code).&n; *&t;Enhanced function descriptions.&n; *&t;&n; *&t;Revision 1.11  1999/03/15 13:10:51  cgoos&n; *&t;Changed device identifier in output string to ethX.&n; *&t;&n; *&t;Revision 1.10  1999/03/15 12:12:34  cgoos&n; *&t;Changed copyright notice.&n; *&t;&n; *&t;Revision 1.9  1999/03/15 12:10:17  cgoos&n; *&t;Changed locking to one driver lock.&n; *&t;Added check of SK_AC-size (for consistency with library).&n; *&t;&n; *&t;Revision 1.8  1999/03/08 11:44:02  cgoos&n; *&t;Fixed missing dev-&gt;tbusy in SkGeXmit.&n; *&t;Changed large frame (jumbo) buffer number.&n; *&t;Added copying of short frames.&n; *&t;&n; *&t;Revision 1.7  1999/03/04 13:26:57  cgoos&n; *&t;Fixed spinlock calls for SMP.&n; *&t;&n; *&t;Revision 1.6  1999/03/02 09:53:51  cgoos&n; *&t;Added descriptor revertion for big endian machines.&n; *&t;&n; *&t;Revision 1.5  1999/03/01 08:50:59  cgoos&n; *&t;Fixed SkGeChangeMtu.&n; *&t;Fixed pci config space accesses.&n; *&t;&n; *&t;Revision 1.4  1999/02/18 15:48:44  cgoos&n; *&t;Corrected some printk&squot;s.&n; *&t;&n; *&t;Revision 1.3  1999/02/18 12:45:55  cgoos&n; *&t;Changed SK_MAX_CARD_PARAM to default 16&n; *&t;&n; *&t;Revision 1.2  1999/02/18 10:55:32  cgoos&n; *&t;Removed SkGeDrvTimeStamp function.&n; *&t;Printing &quot;ethX:&quot; before adapter type at adapter init.&n; *&t;&n; *&n; *&t;10-Feb-1999 cg&t;Created, based on Linux&squot; acenic.c, 3c59x.c and&n; *&t;&t;&t;SysKonnects GEnesis Solaris driver&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; * Possible compiler options (#define xxx / -Dxxx):&n; *&n; *&t;debugging can be enable by changing SK_DEBUG_CHKMOD and&n; *&t;SK_DEBUG_CHKCAT in makefile (described there).&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; *&t;This is the main module of the Linux GE driver.&n; *&t;&n; *&t;All source files except skge.c, skdrv1st.h, skdrv2nd.h and sktypes.h&n; *&t;are part of SysKonnect&squot;s COMMON MODULES for the SK-98xx adapters.&n; *&t;Those are used for drivers on multiple OS&squot;, so some thing may seem&n; *&t;unnecessary complicated on Linux. Please do not try to &squot;clean up&squot;&n; *&t;them without VERY good reasons, because this will make it more&n; *&t;difficult to keep the Linux driver in synchronisation with the&n; *&t;other versions.&n; *&n; * Include file hierarchy:&n; *&n; *&t;&lt;linux/module.h&gt;&n; *&n; *&t;&quot;h/skdrv1st.h&quot;&n; *&t;&t;&lt;linux/version.h&gt;&n; *&t;&t;&lt;linux/types.h&gt;&n; *&t;&t;&lt;linux/kernel.h&gt;&n; *&t;&t;&lt;linux/string.h&gt;&n; *&t;&t;&lt;linux/errno.h&gt;&n; *&t;&t;&lt;linux/ioport.h&gt;&n; *&t;&t;&lt;linux/slab.h&gt;&n; *&t;&t;&lt;linux/interrupt.h&gt;&n; *&t;&t;&lt;linux/pci.h&gt;&n; *&t;&t;&lt;asm/byteorder.h&gt;&n; *&t;&t;&lt;asm/bitops.h&gt;&n; *&t;&t;&lt;asm/io.h&gt;&n; *&t;&t;&lt;linux/netdevice.h&gt;&n; *&t;&t;&lt;linux/etherdevice.h&gt;&n; *&t;&t;&lt;linux/skbuff.h&gt;&n; *&t;    those three depending on kernel version used:&n; *&t;&t;&lt;linux/bios32.h&gt;&n; *&t;&t;&lt;linux/init.h&gt;&n; *&t;&t;&lt;asm/uaccess.h&gt;&n; *&t;&t;&lt;net/checksum.h&gt;&n; *&n; *&t;&t;&quot;h/skerror.h&quot;&n; *&t;&t;&quot;h/skdebug.h&quot;&n; *&t;&t;&quot;h/sktypes.h&quot;&n; *&t;&t;&quot;h/lm80.h&quot;&n; *&t;&t;&quot;h/xmac_ii.h&quot;&n; *&n; *      &quot;h/skdrv2nd.h&quot;&n; *&t;&t;&quot;h/skqueue.h&quot;&n; *&t;&t;&quot;h/skgehwt.h&quot;&n; *&t;&t;&quot;h/sktimer.h&quot;&n; *&t;&t;&quot;h/ski2c.h&quot;&n; *&t;&t;&quot;h/skgepnmi.h&quot;&n; *&t;&t;&quot;h/skvpd.h&quot;&n; *&t;&t;&quot;h/skgehw.h&quot;&n; *&t;&t;&quot;h/skgeinit.h&quot;&n; *&t;&t;&quot;h/skaddr.h&quot;&n; *&t;&t;&quot;h/skgesirq.h&quot;&n; *&t;&t;&quot;h/skcsum.h&quot;&n; *&t;&t;&quot;h/skrlmt.h&quot;&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; *&t;This is the main module of the Linux GE driver.&n; *&t;&n; *&t;All source files except skge.c, skdrv1st.h, skdrv2nd.h and sktypes.h&n; *&t;are part of SysKonnect&squot;s COMMON MODULES for the SK-98xx adapters.&n; *&t;Those are used for drivers on multiple OS&squot;, so some thing may seem&n; *&t;unnecessary complicated on Linux. Please do not try to &squot;clean up&squot;&n; *&t;them without VERY good reasons, because this will make it more&n; *&t;difficult to keep the Linux driver in synchronisation with the&n; *&t;other versions.&n; *&n; * Include file hierarchy:&n; *&n; *&t;&lt;linux/module.h&gt;&n; *&n; *&t;&quot;h/skdrv1st.h&quot;&n; *&t;&t;&lt;linux/types.h&gt;&n; *&t;&t;&lt;linux/kernel.h&gt;&n; *&t;&t;&lt;linux/string.h&gt;&n; *&t;&t;&lt;linux/errno.h&gt;&n; *&t;&t;&lt;linux/ioport.h&gt;&n; *&t;&t;&lt;linux/slab.h&gt;&n; *&t;&t;&lt;linux/interrupt.h&gt;&n; *&t;&t;&lt;linux/pci.h&gt;&n; *&t;&t;&lt;asm/byteorder.h&gt;&n; *&t;&t;&lt;asm/bitops.h&gt;&n; *&t;&t;&lt;asm/io.h&gt;&n; *&t;&t;&lt;linux/netdevice.h&gt;&n; *&t;&t;&lt;linux/etherdevice.h&gt;&n; *&t;&t;&lt;linux/skbuff.h&gt;&n; *&t;    those three depending on kernel version used:&n; *&t;&t;&lt;linux/bios32.h&gt;&n; *&t;&t;&lt;linux/init.h&gt;&n; *&t;&t;&lt;asm/uaccess.h&gt;&n; *&t;&t;&lt;net/checksum.h&gt;&n; *&n; *&t;&t;&quot;h/skerror.h&quot;&n; *&t;&t;&quot;h/skdebug.h&quot;&n; *&t;&t;&quot;h/sktypes.h&quot;&n; *&t;&t;&quot;h/lm80.h&quot;&n; *&t;&t;&quot;h/xmac_ii.h&quot;&n; *&n; *      &quot;h/skdrv2nd.h&quot;&n; *&t;&t;&quot;h/skqueue.h&quot;&n; *&t;&t;&quot;h/skgehwt.h&quot;&n; *&t;&t;&quot;h/sktimer.h&quot;&n; *&t;&t;&quot;h/ski2c.h&quot;&n; *&t;&t;&quot;h/skgepnmi.h&quot;&n; *&t;&t;&quot;h/skvpd.h&quot;&n; *&t;&t;&quot;h/skgehw.h&quot;&n; *&t;&t;&quot;h/skgeinit.h&quot;&n; *&t;&t;&quot;h/skaddr.h&quot;&n; *&t;&t;&quot;h/skgesirq.h&quot;&n; *&t;&t;&quot;h/skcsum.h&quot;&n; *&t;&t;&quot;h/skrlmt.h&quot;&n; *&n; ******************************************************************************/
 macro_line|#include&t;&quot;h/skversion.h&quot;
 macro_line|#include&t;&lt;linux/module.h&gt;
 macro_line|#include&t;&lt;linux/init.h&gt;
@@ -500,6 +500,45 @@ id|sk_buff
 op_star
 )paren
 suffix:semicolon
+macro_line|#ifdef SK_DIAG_SUPPORT
+r_static
+id|SK_U32
+id|ParseDeviceNbrFromSlotName
+c_func
+(paren
+r_const
+r_char
+op_star
+id|SlotName
+)paren
+suffix:semicolon
+r_static
+r_int
+id|SkDrvInitAdapter
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+r_int
+id|devNbr
+)paren
+suffix:semicolon
+r_static
+r_int
+id|SkDrvDeInitAdapter
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+r_int
+id|devNbr
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*******************************************************************************&n; *&n; * Extern Function Prototypes&n; *&n; ******************************************************************************/
 macro_line|#ifdef CONFIG_PROC_FS
 DECL|variable|SK_Root_Dir_entry
@@ -518,6 +557,8 @@ r_struct
 id|proc_dir_entry
 op_star
 id|pSkRootDir
+op_assign
+l_int|NULL
 suffix:semicolon
 r_extern
 r_struct
@@ -628,6 +669,13 @@ id|__initdata
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|DoPrintInterfaceChange
+r_static
+id|SK_BOOL
+id|DoPrintInterfaceChange
+op_assign
+id|SK_TRUE
+suffix:semicolon
 multiline_comment|/* local variables **********************************************************/
 DECL|variable|TxQueueAddr
 r_static
@@ -668,6 +716,15 @@ comma
 l_int|0x480
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
+DECL|variable|pSkRootDir
+r_static
+r_struct
+id|proc_dir_entry
+op_star
+id|pSkRootDir
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*****************************************************************************&n; *&n; * &t;skge_probe - find all SK-98xx adapters&n; *&n; * Description:&n; *&t;This function scans the PCI bus for SK-98xx adapters. Resources for&n; *&t;each adapter are allocated and the adapter is brought into Init 1&n; *&t;state.&n; *&n; * Returns:&n; *&t;0, if everything is ok&n; *&t;!=0, on error&n; */
 DECL|function|skge_probe
 r_static
@@ -726,6 +783,11 @@ r_int
 id|retval
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
+r_int
+id|proc_root_initialized
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|proc_dir_entry
 op_star
@@ -1042,6 +1104,11 @@ op_assign
 op_amp
 id|SkGeStats
 suffix:semicolon
+id|dev-&gt;last_stats
+op_assign
+op_amp
+id|SkGeStats
+suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 op_amp
@@ -1102,12 +1169,6 @@ id|pAC
 )paren
 )paren
 (brace
-id|FreeResources
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|free_netdev
 c_func
 (paren
@@ -1117,29 +1178,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|memcpy
-c_func
-(paren
-(paren
-id|caddr_t
-)paren
-op_amp
-id|dev-&gt;dev_addr
-comma
-(paren
-id|caddr_t
-)paren
-op_amp
-id|pAC-&gt;Addr.Net
-(braket
-l_int|0
-)braket
-dot
-id|CurrentMacAddress
-comma
-l_int|6
-)paren
-suffix:semicolon
+multiline_comment|/* Register net device */
 r_if
 c_cond
 (paren
@@ -1172,6 +1211,137 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* Print adapter specific string from vpd */
+id|ProductStr
+c_func
+(paren
+id|pAC
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s: %s&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|pAC-&gt;DeviceStr
+)paren
+suffix:semicolon
+multiline_comment|/* Print configuration settings */
+id|printk
+c_func
+(paren
+l_string|&quot;      PrefPort:%c  RlmtMode:%s&bslash;n&quot;
+comma
+l_char|&squot;A&squot;
+op_plus
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|Port
+(braket
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|PrefPort
+)braket
+op_member_access_from_pointer
+id|PortNumber
+comma
+(paren
+id|pAC-&gt;RlmtMode
+op_eq
+l_int|0
+)paren
+ques
+c_cond
+l_string|&quot;Check Link State&quot;
+suffix:colon
+(paren
+(paren
+id|pAC-&gt;RlmtMode
+op_eq
+l_int|1
+)paren
+ques
+c_cond
+l_string|&quot;Check Link State&quot;
+suffix:colon
+(paren
+(paren
+id|pAC-&gt;RlmtMode
+op_eq
+l_int|3
+)paren
+ques
+c_cond
+l_string|&quot;Check Local Port&quot;
+suffix:colon
+(paren
+(paren
+id|pAC-&gt;RlmtMode
+op_eq
+l_int|7
+)paren
+ques
+c_cond
+l_string|&quot;Check Segmentation&quot;
+suffix:colon
+(paren
+(paren
+id|pAC-&gt;RlmtMode
+op_eq
+l_int|17
+)paren
+ques
+c_cond
+l_string|&quot;Dual Check Link State&quot;
+suffix:colon
+l_string|&quot;Error&quot;
+)paren
+)paren
+)paren
+)paren
+)paren
+suffix:semicolon
+id|SkGeYellowLED
+c_func
+(paren
+id|pAC
+comma
+id|pAC-&gt;IoBase
+comma
+l_int|1
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+(paren
+id|caddr_t
+)paren
+op_amp
+id|dev-&gt;dev_addr
+comma
+(paren
+id|caddr_t
+)paren
+op_amp
+id|pAC-&gt;Addr.Net
+(braket
+l_int|0
+)braket
+dot
+id|CurrentMacAddress
+comma
+l_int|6
+)paren
+suffix:semicolon
 multiline_comment|/* First adapter... Create proc and print message */
 macro_line|#ifdef CONFIG_PROC_FS
 r_if
@@ -1225,6 +1395,7 @@ c_cond
 op_logical_neg
 id|pSkRootDir
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -1236,11 +1407,14 @@ comma
 id|SK_Root_Dir_entry
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
 id|pSkRootDir-&gt;owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/* Create proc file */
@@ -1384,6 +1558,11 @@ op_assign
 op_amp
 id|SkGeStats
 suffix:semicolon
+id|dev-&gt;last_stats
+op_assign
+op_amp
+id|SkGeStats
+suffix:semicolon
 id|dev-&gt;set_multicast_list
 op_assign
 op_amp
@@ -1441,8 +1620,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;SKGE: Could not register &quot;
-l_string|&quot;second port.&bslash;n&quot;
+l_string|&quot;SKGE: Could not register device.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|free_netdev
@@ -1558,6 +1736,50 @@ op_plus
 id|pAC-&gt;GIni.GIPciHwRev
 op_amp
 l_int|0x0F
+)paren
+suffix:semicolon
+multiline_comment|/* Set driver globals */
+id|pAC-&gt;Pnmi.pDriverFileName
+op_assign
+id|DRIVER_FILE_NAME
+suffix:semicolon
+id|pAC-&gt;Pnmi.pDriverReleaseDate
+op_assign
+id|DRIVER_REL_DATE
+suffix:semicolon
+id|SK_MEMSET
+c_func
+(paren
+op_amp
+(paren
+id|pAC-&gt;PnmiBackup
+)paren
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|SK_PNMI_STRUCT_DATA
+)paren
+)paren
+suffix:semicolon
+id|SK_MEMCPY
+c_func
+(paren
+op_amp
+(paren
+id|pAC-&gt;PnmiBackup
+)paren
+comma
+op_amp
+(paren
+id|pAC-&gt;PnmiStruct
+)paren
+comma
+r_sizeof
+(paren
+id|SK_PNMI_STRUCT_DATA
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * This is bollocks, but we need to tell the net-init&n;&t;&t; * code that it shall go for the next device.&n;&t;&t; */
@@ -2910,11 +3132,6 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* clear proc-dir */
-r_if
-c_cond
-(paren
-id|pSkRootDir
-)paren
 id|remove_proc_entry
 c_func
 (paren
@@ -3296,7 +3513,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;HWInit (1) failed.&bslash;n&quot;
+l_string|&quot;sk98lin: HWInit (1) failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -3488,9 +3705,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Illegal number of ports: %d&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;sk98lin: Illegal number of ports: %d&bslash;n&quot;
 comma
 id|pAC-&gt;GIni.GIMacsFound
 )paren
@@ -3510,9 +3725,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Requested IRQ %d is busy.&bslash;n&quot;
-comma
-id|dev-&gt;name
+l_string|&quot;sk98lin: Requested IRQ %d is busy.&bslash;n&quot;
 comma
 id|dev-&gt;irq
 )paren
@@ -3626,7 +3839,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;SkGeInitAssignRamToQueues failed.&bslash;n&quot;
+l_string|&quot;sk98lin: SkGeInitAssignRamToQueues failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3634,114 +3847,6 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-multiline_comment|/* Print adapter specific string from vpd */
-id|ProductStr
-c_func
-(paren
-id|pAC
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s: %s&bslash;n&quot;
-comma
-id|dev-&gt;name
-comma
-id|pAC-&gt;DeviceStr
-)paren
-suffix:semicolon
-multiline_comment|/* Print configuration settings */
-id|printk
-c_func
-(paren
-l_string|&quot;      PrefPort:%c  RlmtMode:%s&bslash;n&quot;
-comma
-l_char|&squot;A&squot;
-op_plus
-id|pAC-&gt;Rlmt.Net
-(braket
-l_int|0
-)braket
-dot
-id|Port
-(braket
-id|pAC-&gt;Rlmt.Net
-(braket
-l_int|0
-)braket
-dot
-id|PrefPort
-)braket
-op_member_access_from_pointer
-id|PortNumber
-comma
-(paren
-id|pAC-&gt;RlmtMode
-op_eq
-l_int|0
-)paren
-ques
-c_cond
-l_string|&quot;Check Link State&quot;
-suffix:colon
-(paren
-(paren
-id|pAC-&gt;RlmtMode
-op_eq
-l_int|1
-)paren
-ques
-c_cond
-l_string|&quot;Check Link State&quot;
-suffix:colon
-(paren
-(paren
-id|pAC-&gt;RlmtMode
-op_eq
-l_int|3
-)paren
-ques
-c_cond
-l_string|&quot;Check Local Port&quot;
-suffix:colon
-(paren
-(paren
-id|pAC-&gt;RlmtMode
-op_eq
-l_int|7
-)paren
-ques
-c_cond
-l_string|&quot;Check Segmentation&quot;
-suffix:colon
-(paren
-(paren
-id|pAC-&gt;RlmtMode
-op_eq
-l_int|17
-)paren
-ques
-c_cond
-l_string|&quot;Dual Check Link State&quot;
-suffix:colon
-l_string|&quot;Error&quot;
-)paren
-)paren
-)paren
-)paren
-)paren
-suffix:semicolon
-id|SkGeYellowLED
-c_func
-(paren
-id|pAC
-comma
-id|pAC-&gt;IoBase
-comma
-l_int|1
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Register the device here&n;&t; */
 id|pAC-&gt;Next
 op_assign
@@ -6148,13 +6253,67 @@ id|pAC
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef SK_DIAG_SUPPORT
+r_if
+c_cond
+(paren
+id|pAC-&gt;DiagModeActive
+op_eq
+id|DIAG_ACTIVE
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;Pnmi.DiagAttached
+op_eq
+id|SK_DIAG_RUNNING
+)paren
+(brace
+r_return
+(paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* still in use by diag; deny actions */
+)brace
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+(brace
+r_return
+(paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* increase of usage count not possible */
+)brace
 multiline_comment|/* Set blink mode */
 r_if
 c_cond
 (paren
+(paren
 id|pAC-&gt;PciDev-&gt;vendor
 op_eq
 l_int|0x1186
+)paren
+op_logical_or
+(paren
+id|pAC-&gt;PciDev-&gt;vendor
+op_eq
+l_int|0x11ab
+)paren
 )paren
 id|pAC-&gt;GIni.GILedBlinkCtrl
 op_assign
@@ -6185,6 +6344,13 @@ op_ne
 l_int|0
 )paren
 (brace
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
+multiline_comment|/* decrease usage count */
 id|printk
 c_func
 (paren
@@ -6289,6 +6455,13 @@ op_ne
 l_int|0
 )paren
 (brace
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
+multiline_comment|/* decrease usage count */
 id|printk
 c_func
 (paren
@@ -6592,12 +6765,6 @@ id|pNet-&gt;Up
 op_assign
 l_int|1
 suffix:semicolon
-id|try_module_get
-c_func
-(paren
-id|THIS_MODULE
-)paren
-suffix:semicolon
 id|SK_DBG_MSG
 c_func
 (paren
@@ -6636,6 +6803,10 @@ id|DEV_NET
 op_star
 id|pNet
 suffix:semicolon
+id|DEV_NET
+op_star
+id|newPtrNet
+suffix:semicolon
 id|SK_AC
 op_star
 id|pAC
@@ -6653,40 +6824,6 @@ id|PortIdx
 suffix:semicolon
 id|SK_EVPARA
 id|EvPara
-suffix:semicolon
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|pNet
-op_assign
-(paren
-id|DEV_NET
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
-id|pAC
-op_assign
-id|pNet-&gt;pAC
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pAC-&gt;RlmtNets
-op_eq
-l_int|1
-)paren
-id|PortIdx
-op_assign
-id|pAC-&gt;ActivePort
-suffix:semicolon
-r_else
-id|PortIdx
-op_assign
-id|pNet-&gt;NetNr
 suffix:semicolon
 id|SK_DBG_MSG
 c_func
@@ -6707,6 +6844,117 @@ r_int
 id|pAC
 )paren
 )paren
+suffix:semicolon
+id|pNet
+op_assign
+(paren
+id|DEV_NET
+op_star
+)paren
+id|dev-&gt;priv
+suffix:semicolon
+id|pAC
+op_assign
+id|pNet-&gt;pAC
+suffix:semicolon
+macro_line|#ifdef SK_DIAG_SUPPORT
+r_if
+c_cond
+(paren
+id|pAC-&gt;DiagModeActive
+op_eq
+id|DIAG_ACTIVE
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;DiagFlowCtrl
+op_eq
+id|SK_FALSE
+)paren
+(brace
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t;&t;&t;** notify that the interface which has been closed&n;&t;&t;&t;** by operator interaction must not be started up &n;&t;&t;&t;** again when the DIAG has finished. &n;&t;&t;&t;*/
+id|newPtrNet
+op_assign
+(paren
+id|DEV_NET
+op_star
+)paren
+id|pAC-&gt;dev
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|priv
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|newPtrNet
+op_eq
+id|pNet
+)paren
+(brace
+id|pAC-&gt;WasIfUp
+(braket
+l_int|0
+)braket
+op_assign
+id|SK_FALSE
+suffix:semicolon
+)brace
+r_else
+(brace
+id|pAC-&gt;WasIfUp
+(braket
+l_int|1
+)braket
+op_assign
+id|SK_FALSE
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/* return to system everything is fine... */
+)brace
+r_else
+(brace
+id|pAC-&gt;DiagFlowCtrl
+op_assign
+id|SK_FALSE
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;RlmtNets
+op_eq
+l_int|1
+)paren
+id|PortIdx
+op_assign
+id|pAC-&gt;ActivePort
+suffix:semicolon
+r_else
+id|PortIdx
+op_assign
+id|pNet-&gt;NetNr
 suffix:semicolon
 id|StopDrvCleanupTimer
 c_func
@@ -7063,6 +7311,41 @@ id|SK_DBGCAT_DRV_ENTRY
 comma
 (paren
 l_string|&quot;SkGeClose: done &quot;
+)paren
+)paren
+suffix:semicolon
+id|SK_MEMSET
+c_func
+(paren
+op_amp
+(paren
+id|pAC-&gt;PnmiBackup
+)paren
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|SK_PNMI_STRUCT_DATA
+)paren
+)paren
+suffix:semicolon
+id|SK_MEMCPY
+c_func
+(paren
+op_amp
+(paren
+id|pAC-&gt;PnmiBackup
+)paren
+comma
+op_amp
+(paren
+id|pAC-&gt;PnmiStruct
+)paren
+comma
+r_sizeof
+(paren
+id|SK_PNMI_STRUCT_DATA
 )paren
 )paren
 suffix:semicolon
@@ -7445,39 +7728,31 @@ OL
 id|C_LEN_ETHERNET_MINSIZE
 )paren
 (brace
-id|skb_put
+r_if
+c_cond
+(paren
+(paren
+id|pMessage
+op_assign
+id|skb_padto
 c_func
 (paren
 id|pMessage
 comma
-(paren
 id|C_LEN_ETHERNET_MINSIZE
-op_minus
-id|BytesSend
 )paren
 )paren
-suffix:semicolon
-id|SK_MEMSET
-c_func
-(paren
-(paren
-(paren
-r_char
-op_star
+op_eq
+l_int|NULL
 )paren
-(paren
-id|pMessage-&gt;data
-)paren
-)paren
-op_plus
-id|BytesSend
-comma
+(brace
+r_return
 l_int|0
-comma
+suffix:semicolon
+)brace
+id|pMessage-&gt;len
+op_assign
 id|C_LEN_ETHERNET_MINSIZE
-op_minus
-id|BytesSend
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* &n;&t;** advance head counter behind descriptor needed for this frame, &n;&t;** so that needed descriptor is reserved from that on. The next&n;&t;** action will be to add the passed buffer to the TX-descriptor&n;&t;*/
@@ -11352,6 +11627,38 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#ifdef SK_DIAG_SUPPORT
+r_if
+c_cond
+(paren
+id|pAC-&gt;DiagModeActive
+op_eq
+id|DIAG_ACTIVE
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pAC-&gt;DiagFlowCtrl
+op_eq
+id|SK_FALSE
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* still in use, deny any actions of MTU */
+)brace
+r_else
+(brace
+id|pAC-&gt;DiagFlowCtrl
+op_assign
+id|SK_FALSE
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 id|pNet-&gt;Mtu
 op_assign
 id|NewMtu
@@ -12360,7 +12667,25 @@ op_assign
 op_amp
 id|pAC-&gt;PnmiStruct
 suffix:semicolon
-id|memset
+macro_line|#ifdef SK_DIAG_SUPPORT
+r_if
+c_cond
+(paren
+(paren
+id|pAC-&gt;DiagModeActive
+op_eq
+id|DIAG_NOTACTIVE
+)paren
+op_logical_and
+(paren
+id|pAC-&gt;BoardLevel
+op_eq
+id|SK_INIT_RUN
+)paren
+)paren
+(brace
+macro_line|#endif
+id|SK_MEMSET
 c_func
 (paren
 id|pPnmiStruct
@@ -12410,6 +12735,9 @@ comma
 id|Flags
 )paren
 suffix:semicolon
+macro_line|#ifdef SK_DIAG_SUPPORT
+)brace
+macro_line|#endif
 id|pPnmiStat
 op_assign
 op_amp
@@ -12696,6 +13024,13 @@ suffix:semicolon
 r_void
 op_star
 id|pMemBuf
+suffix:semicolon
+r_struct
+id|pci_dev
+op_star
+id|pdev
+op_assign
+l_int|NULL
 suffix:semicolon
 id|SK_GE_IOCTL
 id|Ioctl
@@ -13094,6 +13429,224 @@ suffix:semicolon
 multiline_comment|/* cleanup everything */
 r_break
 suffix:semicolon
+macro_line|#ifdef SK_DIAG_SUPPORT
+r_case
+id|SK_IOCTL_DIAG
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|capable
+c_func
+(paren
+id|CAP_NET_ADMIN
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|Ioctl.Len
+OL
+(paren
+r_sizeof
+(paren
+id|pAC-&gt;PnmiStruct
+)paren
+op_plus
+id|HeaderLength
+)paren
+)paren
+(brace
+id|Length
+op_assign
+id|Ioctl.Len
+suffix:semicolon
+)brace
+r_else
+(brace
+id|Length
+op_assign
+r_sizeof
+(paren
+id|pAC-&gt;PnmiStruct
+)paren
+op_plus
+id|HeaderLength
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+(paren
+id|pMemBuf
+op_assign
+id|kmalloc
+c_func
+(paren
+id|Length
+comma
+id|GFP_KERNEL
+)paren
+)paren
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+id|pMemBuf
+comma
+id|Ioctl.pData
+comma
+id|Length
+)paren
+)paren
+(brace
+id|Err
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_goto
+id|fault_diag
+suffix:semicolon
+)brace
+id|pdev
+op_assign
+id|pAC-&gt;PciDev
+suffix:semicolon
+id|Length
+op_assign
+l_int|3
+op_star
+r_sizeof
+(paren
+id|SK_U32
+)paren
+suffix:semicolon
+multiline_comment|/* Error, Bus and Device */
+multiline_comment|/* &n;&t;&t;** While coding this new IOCTL interface, only a few lines of code&n;&t;&t;** are to to be added. Therefore no dedicated function has been &n;&t;&t;** added. If more functionality is added, a separate function &n;&t;&t;** should be used...&n;&t;&t;*/
+op_star
+(paren
+(paren
+id|SK_U32
+op_star
+)paren
+id|pMemBuf
+)paren
+op_assign
+l_int|0
+suffix:semicolon
+op_star
+(paren
+(paren
+id|SK_U32
+op_star
+)paren
+id|pMemBuf
+op_plus
+l_int|1
+)paren
+op_assign
+id|pdev-&gt;bus-&gt;number
+suffix:semicolon
+op_star
+(paren
+(paren
+id|SK_U32
+op_star
+)paren
+id|pMemBuf
+op_plus
+l_int|2
+)paren
+op_assign
+id|ParseDeviceNbrFromSlotName
+c_func
+(paren
+id|pdev-&gt;slot_name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|Ioctl.pData
+comma
+id|pMemBuf
+comma
+id|Length
+)paren
+)paren
+(brace
+id|Err
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_goto
+id|fault_diag
+suffix:semicolon
+)brace
+id|Ioctl.Len
+op_assign
+id|Length
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_to_user
+c_func
+(paren
+id|rq-&gt;ifr_data
+comma
+op_amp
+id|Ioctl
+comma
+r_sizeof
+(paren
+id|SK_GE_IOCTL
+)paren
+)paren
+)paren
+(brace
+id|Err
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_goto
+id|fault_diag
+suffix:semicolon
+)brace
+id|fault_diag
+suffix:colon
+id|kfree
+c_func
+(paren
+id|pMemBuf
+)paren
+suffix:semicolon
+multiline_comment|/* cleanup everything */
+r_break
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 id|Err
@@ -13508,16 +14061,9 @@ multiline_comment|/* Set the speed parameter back */
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; &quot;
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; &quot;
 l_string|&quot;for ConType.&quot;
 l_string|&quot; Using Auto.&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
 comma
 id|ConType
 (braket
@@ -13850,14 +14396,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for ConType&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for ConType&bslash;n&quot;
 comma
 id|ConType
 (braket
@@ -14019,14 +14558,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for Speed_A&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for Speed_A&bslash;n&quot;
 comma
 id|Speed_A
 (braket
@@ -14082,16 +14614,9 @@ id|SK_LSPEED_1000MBPS
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value for Speed_A. &quot;
+l_string|&quot;sk98lin: Illegal value for Speed_A. &quot;
 l_string|&quot;Not a copper card or GE V2 card&bslash;n    Using &quot;
 l_string|&quot;speed 1000&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 id|LinkSpeed
@@ -14245,14 +14770,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for AutoNeg_A&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for AutoNeg_A&bslash;n&quot;
 comma
 id|AutoNeg_A
 (braket
@@ -14389,14 +14907,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for DupCap_A&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for DupCap_A&bslash;n&quot;
 comma
 id|DupCap_A
 (braket
@@ -14412,7 +14923,7 @@ c_cond
 (paren
 (paren
 id|LinkSpeed
-op_assign
+op_eq
 id|SK_LSPEED_1000MBPS
 )paren
 op_logical_and
@@ -14438,15 +14949,8 @@ id|pAC-&gt;ChipsetType
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Half Duplex not possible with Gigabit speed!&bslash;n&quot;
+l_string|&quot;sk98lin: Half Duplex not possible with Gigabit speed!&bslash;n&quot;
 l_string|&quot;    Using Full Duplex.&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 id|DuplexCap
@@ -14469,15 +14973,8 @@ id|DupSet
 id|printk
 c_func
 (paren
-l_string|&quot;%s, Port A: DuplexCapabilities&quot;
+l_string|&quot;sk98lin, Port A: DuplexCapabilities&quot;
 l_string|&quot; ignored using Sense mode&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 )brace
@@ -14500,16 +14997,9 @@ id|DC_BOTH
 id|printk
 c_func
 (paren
-l_string|&quot;%s, Port A: Illegal combination&quot;
+l_string|&quot;sk98lin: Port A: Illegal combination&quot;
 l_string|&quot; of values AutoNeg. and DuplexCap.&bslash;n    Using &quot;
 l_string|&quot;Full Duplex&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 id|DuplexCap
@@ -14547,16 +15037,9 @@ id|DupSet
 id|printk
 c_func
 (paren
-l_string|&quot;%s, Port A: Duplex setting not&quot;
+l_string|&quot;sk98lin: Port A: Duplex setting not&quot;
 l_string|&quot; possible in&bslash;n    default AutoNegotiation mode&quot;
 l_string|&quot; (Sense).&bslash;n    Using AutoNegotiation On&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 id|AutoNeg
@@ -14728,14 +15211,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for FlowCtrl_A&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for FlowCtrl_A&bslash;n&quot;
 comma
 id|FlowCtrl_A
 (braket
@@ -14781,16 +15257,9 @@ id|SK_FLOW_MODE_NONE
 id|printk
 c_func
 (paren
-l_string|&quot;%s, Port A: FlowControl&quot;
+l_string|&quot;sk98lin: Port A: FlowControl&quot;
 l_string|&quot; impossible without AutoNegotiation,&quot;
 l_string|&quot; disabled&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 id|FlowCtrl
@@ -14924,14 +15393,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for Role_A&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for Role_A&bslash;n&quot;
 comma
 id|Role_A
 (braket
@@ -15125,14 +15587,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for Speed_B&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for Speed_B&bslash;n&quot;
 comma
 id|Speed_B
 (braket
@@ -15188,16 +15643,9 @@ id|SK_LSPEED_1000MBPS
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value for Speed_B. &quot;
+l_string|&quot;sk98lin: Illegal value for Speed_B. &quot;
 l_string|&quot;Not a copper card or GE V2 card&bslash;n    Using &quot;
 l_string|&quot;speed 1000&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 id|LinkSpeed
@@ -15351,14 +15799,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for AutoNeg_B&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for AutoNeg_B&bslash;n&quot;
 comma
 id|AutoNeg_B
 (braket
@@ -15495,14 +15936,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for DupCap_B&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for DupCap_B&bslash;n&quot;
 comma
 id|DupCap_B
 (braket
@@ -15518,7 +15952,7 @@ c_cond
 (paren
 (paren
 id|LinkSpeed
-op_assign
+op_eq
 id|SK_LSPEED_1000MBPS
 )paren
 op_logical_and
@@ -15544,15 +15978,8 @@ id|pAC-&gt;ChipsetType
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Half Duplex not possible with Gigabit speed!&bslash;n&quot;
+l_string|&quot;sk98lin: Half Duplex not possible with Gigabit speed!&bslash;n&quot;
 l_string|&quot;    Using Full Duplex.&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 id|DuplexCap
@@ -15575,15 +16002,8 @@ id|DupSet
 id|printk
 c_func
 (paren
-l_string|&quot;%s, Port B: DuplexCapabilities&quot;
+l_string|&quot;sk98lin, Port B: DuplexCapabilities&quot;
 l_string|&quot; ignored using Sense mode&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 )brace
@@ -15606,16 +16026,9 @@ id|DC_BOTH
 id|printk
 c_func
 (paren
-l_string|&quot;%s, Port B: Illegal combination&quot;
+l_string|&quot;sk98lin: Port B: Illegal combination&quot;
 l_string|&quot; of values AutoNeg. and DuplexCap.&bslash;n    Using &quot;
 l_string|&quot;Full Duplex&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 id|DuplexCap
@@ -15653,16 +16066,9 @@ id|DupSet
 id|printk
 c_func
 (paren
-l_string|&quot;%s, Port B: Duplex setting not&quot;
+l_string|&quot;sk98lin: Port B: Duplex setting not&quot;
 l_string|&quot; possible in&bslash;n    default AutoNegotiation mode&quot;
 l_string|&quot; (Sense).&bslash;n    Using AutoNegotiation On&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 id|AutoNeg
@@ -15834,14 +16240,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for FlowCtrl_B&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for FlowCtrl_B&bslash;n&quot;
 comma
 id|FlowCtrl_B
 (braket
@@ -15887,16 +16286,9 @@ id|SK_FLOW_MODE_NONE
 id|printk
 c_func
 (paren
-l_string|&quot;%s, Port B: FlowControl&quot;
+l_string|&quot;sk98lin: Port B: FlowControl&quot;
 l_string|&quot; impossible without AutoNegotiation,&quot;
 l_string|&quot; disabled&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|name
 )paren
 suffix:semicolon
 id|FlowCtrl
@@ -16030,14 +16422,7 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for Role_B&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|1
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for Role_B&bslash;n&quot;
 comma
 id|Role_B
 (braket
@@ -16159,7 +16544,7 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;    ** do not set ActivePort here, thus a port&n;&t;&t;    ** switch is issued after net up.&n;&t;&t;    */
+multiline_comment|/*&n;&t;&t;&t;** do not set ActivePort here, thus a port&n;&t;&t;&t;** switch is issued after net up.&n;&t;&t;&t;*/
 id|Port
 op_assign
 l_int|0
@@ -16201,7 +16586,49 @@ op_eq
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;    ** do not set ActivePort here, thus a port&n;&t;&t;    ** switch is issued after net up.&n;&t;&t;    */
+multiline_comment|/*&n;&t;&t;&t;** do not set ActivePort here, thus a port&n;&t;&t;&t;** switch is issued after net up.&n;&t;&t;&t;*/
+r_if
+c_cond
+(paren
+id|pAC-&gt;GIni.GIMacsFound
+op_eq
+l_int|1
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;B&bslash;&quot; for PrefPort.&bslash;n&quot;
+l_string|&quot;      Port B not available on single port adapters.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|pAC-&gt;ActivePort
+op_assign
+l_int|0
+suffix:semicolon
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|Preference
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* auto */
+id|pAC-&gt;Rlmt.Net
+(braket
+l_int|0
+)braket
+dot
+id|PrefPort
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
 id|Port
 op_assign
 l_int|1
@@ -16225,19 +16652,13 @@ op_assign
 id|Port
 suffix:semicolon
 )brace
+)brace
 r_else
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for PrefPort&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for PrefPort&bslash;n&quot;
 comma
 id|PrefPort
 (braket
@@ -16407,15 +16828,8 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot;%s: Illegal value &bslash;&quot;%s&bslash;&quot; for&quot;
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for&quot;
 l_string|&quot; RlmtMode, using default&bslash;n&quot;
-comma
-id|pAC-&gt;dev
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|name
 comma
 id|RlmtMode
 (braket
@@ -16448,6 +16862,29 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|Moderation
+(braket
+id|pAC-&gt;Index
+)braket
+comma
+l_string|&quot;&quot;
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|pAC-&gt;DynIrqModInfo.IntModTypeSelect
+op_assign
+id|C_INT_MOD_NONE
+suffix:semicolon
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -16494,7 +16931,42 @@ id|C_INT_MOD_DYNAMIC
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|Moderation
+(braket
+id|pAC-&gt;Index
+)braket
+comma
+l_string|&quot;None&quot;
+)paren
+op_eq
+l_int|0
+)paren
 (brace
+id|pAC-&gt;DynIrqModInfo.IntModTypeSelect
+op_assign
+id|C_INT_MOD_NONE
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%s&bslash;&quot; for Moderation.&bslash;n&quot;
+l_string|&quot;      Disable interrupt moderation.&bslash;n&quot;
+comma
+id|Moderation
+(braket
+id|pAC-&gt;Index
+)braket
+)paren
+suffix:semicolon
 id|pAC-&gt;DynIrqModInfo.IntModTypeSelect
 op_assign
 id|C_INT_MOD_NONE
@@ -16997,7 +17469,7 @@ id|IntsPerSec
 id|pAC-&gt;Index
 )braket
 OL
-l_int|30
+id|C_INT_MOD_IPS_LOWER_RANGE
 )paren
 op_logical_or
 (paren
@@ -17006,10 +17478,28 @@ id|IntsPerSec
 id|pAC-&gt;Index
 )braket
 OG
-l_int|40000
+id|C_INT_MOD_IPS_UPPER_RANGE
 )paren
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;sk98lin: Illegal value &bslash;&quot;%d&bslash;&quot; for IntsPerSec. (Range: %d - %d)&bslash;n&quot;
+l_string|&quot;      Using default value of %i.&bslash;n&quot;
+comma
+id|IntsPerSec
+(braket
+id|pAC-&gt;Index
+)braket
+comma
+id|C_INT_MOD_IPS_LOWER_RANGE
+comma
+id|C_INT_MOD_IPS_UPPER_RANGE
+comma
+id|C_INTS_PER_SEC_DEFAULT
+)paren
+suffix:semicolon
 id|pAC-&gt;DynIrqModInfo.MaxModIntsPerSec
 op_assign
 id|C_INTS_PER_SEC_DEFAULT
@@ -18151,6 +18641,23 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Mac update */
+id|SkAddrMcUpdate
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|FromPort
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|DoPrintInterfaceChange
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -18241,17 +18748,6 @@ l_string|&quot;    speed:           unknown&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Mac update */
-id|SkAddrMcUpdate
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|FromPort
-)paren
-suffix:semicolon
 id|Stat
 op_assign
 id|pAC-&gt;GIni.GP
@@ -18537,6 +19033,14 @@ l_string|&quot;    rx-checksum:     disabled&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
+r_else
+(brace
+id|DoPrintInterfaceChange
+op_assign
+id|SK_TRUE
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -18620,6 +19124,12 @@ l_string|&quot;NET DOWN EVENT &quot;
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|DoPrintInterfaceChange
+)paren
+(brace
 id|printk
 c_func
 (paren
@@ -18636,6 +19146,14 @@ op_member_access_from_pointer
 id|name
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|DoPrintInterfaceChange
+op_assign
+id|SK_TRUE
+suffix:semicolon
+)brace
 id|pAC-&gt;dev
 (braket
 id|Param.Para32
@@ -19595,6 +20113,676 @@ id|pErrorMsg
 suffix:semicolon
 )brace
 multiline_comment|/* SkErrorLog */
+macro_line|#ifdef SK_DIAG_SUPPORT
+multiline_comment|/*****************************************************************************&n; *&n; *&t;SkDrvEnterDiagMode - handles DIAG attach request&n; *&n; * Description:&n; *&t;Notify the kernel to NOT access the card any longer due to DIAG&n; *&t;Deinitialize the Card&n; *&n; * Returns:&n; *&t;int&n; */
+DECL|function|SkDrvEnterDiagMode
+r_int
+id|SkDrvEnterDiagMode
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAc
+)paren
+multiline_comment|/* pointer to adapter context */
+(brace
+id|SK_AC
+op_star
+id|pAC
+op_assign
+l_int|NULL
+suffix:semicolon
+id|DEV_NET
+op_star
+id|pNet
+op_assign
+l_int|NULL
+suffix:semicolon
+id|pNet
+op_assign
+(paren
+id|DEV_NET
+op_star
+)paren
+id|pAc-&gt;dev
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|priv
+suffix:semicolon
+id|pAC
+op_assign
+id|pNet-&gt;pAC
+suffix:semicolon
+id|SK_MEMCPY
+c_func
+(paren
+op_amp
+(paren
+id|pAc-&gt;PnmiBackup
+)paren
+comma
+op_amp
+(paren
+id|pAc-&gt;PnmiStruct
+)paren
+comma
+r_sizeof
+(paren
+id|SK_PNMI_STRUCT_DATA
+)paren
+)paren
+suffix:semicolon
+id|pAC-&gt;DiagModeActive
+op_assign
+id|DIAG_ACTIVE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAC-&gt;BoardLevel
+OG
+id|SK_INIT_DATA
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pNet-&gt;Up
+)paren
+(brace
+id|pAC-&gt;WasIfUp
+(braket
+l_int|0
+)braket
+op_assign
+id|SK_TRUE
+suffix:semicolon
+id|pAC-&gt;DiagFlowCtrl
+op_assign
+id|SK_TRUE
+suffix:semicolon
+multiline_comment|/* for SkGeClose      */
+id|DoPrintInterfaceChange
+op_assign
+id|SK_FALSE
+suffix:semicolon
+id|SkDrvDeInitAdapter
+c_func
+(paren
+id|pAC
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* performs SkGeClose */
+)brace
+r_else
+(brace
+id|pAC-&gt;WasIfUp
+(braket
+l_int|0
+)braket
+op_assign
+id|SK_FALSE
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pNet
+op_ne
+(paren
+id|DEV_NET
+op_star
+)paren
+id|pAc-&gt;dev
+(braket
+l_int|1
+)braket
+op_member_access_from_pointer
+id|priv
+)paren
+(brace
+id|pNet
+op_assign
+(paren
+id|DEV_NET
+op_star
+)paren
+id|pAc-&gt;dev
+(braket
+l_int|1
+)braket
+op_member_access_from_pointer
+id|priv
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pNet-&gt;Up
+)paren
+(brace
+id|pAC-&gt;WasIfUp
+(braket
+l_int|1
+)braket
+op_assign
+id|SK_TRUE
+suffix:semicolon
+id|pAC-&gt;DiagFlowCtrl
+op_assign
+id|SK_TRUE
+suffix:semicolon
+multiline_comment|/* for SkGeClose */
+id|DoPrintInterfaceChange
+op_assign
+id|SK_FALSE
+suffix:semicolon
+id|SkDrvDeInitAdapter
+c_func
+(paren
+id|pAC
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* do SkGeClose  */
+)brace
+r_else
+(brace
+id|pAC-&gt;WasIfUp
+(braket
+l_int|1
+)braket
+op_assign
+id|SK_FALSE
+suffix:semicolon
+)brace
+)brace
+id|pAC-&gt;BoardLevel
+op_assign
+id|SK_INIT_DATA
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*****************************************************************************&n; *&n; *&t;SkDrvLeaveDiagMode - handles DIAG detach request&n; *&n; * Description:&n; *&t;Notify the kernel to may access the card again after use by DIAG&n; *&t;Initialize the Card&n; *&n; * Returns:&n; * &t;int&n; */
+DECL|function|SkDrvLeaveDiagMode
+r_int
+id|SkDrvLeaveDiagMode
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAc
+)paren
+multiline_comment|/* pointer to adapter control context */
+(brace
+id|SK_MEMCPY
+c_func
+(paren
+op_amp
+(paren
+id|pAc-&gt;PnmiStruct
+)paren
+comma
+op_amp
+(paren
+id|pAc-&gt;PnmiBackup
+)paren
+comma
+r_sizeof
+(paren
+id|SK_PNMI_STRUCT_DATA
+)paren
+)paren
+suffix:semicolon
+id|pAc-&gt;DiagModeActive
+op_assign
+id|DIAG_NOTACTIVE
+suffix:semicolon
+id|pAc-&gt;Pnmi.DiagAttached
+op_assign
+id|SK_DIAG_IDLE
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pAc-&gt;WasIfUp
+(braket
+l_int|0
+)braket
+op_eq
+id|SK_TRUE
+)paren
+(brace
+id|pAc-&gt;DiagFlowCtrl
+op_assign
+id|SK_TRUE
+suffix:semicolon
+multiline_comment|/* for SkGeClose */
+id|DoPrintInterfaceChange
+op_assign
+id|SK_FALSE
+suffix:semicolon
+id|SkDrvInitAdapter
+c_func
+(paren
+id|pAc
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* first device  */
+)brace
+r_if
+c_cond
+(paren
+id|pAc-&gt;WasIfUp
+(braket
+l_int|1
+)braket
+op_eq
+id|SK_TRUE
+)paren
+(brace
+id|pAc-&gt;DiagFlowCtrl
+op_assign
+id|SK_TRUE
+suffix:semicolon
+multiline_comment|/* for SkGeClose */
+id|DoPrintInterfaceChange
+op_assign
+id|SK_FALSE
+suffix:semicolon
+id|SkDrvInitAdapter
+c_func
+(paren
+id|pAc
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* second device */
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*****************************************************************************&n; *&n; *&t;ParseDeviceNbrFromSlotName - Evaluate PCI device number&n; *&n; * Description:&n; * &t;This function parses the PCI slot name information string and will&n; *&t;retrieve the devcie number out of it. The slot_name maintianed by&n; *&t;linux is in the form of &squot;02:0a.0&squot;, whereas the first two characters &n; *&t;represent the bus number in hex (in the sample above this is &n; *&t;pci bus 0x02) and the next two characters the device number (0x0a).&n; *&n; * Returns:&n; *&t;SK_U32: The device number from the PCI slot name&n; */
+DECL|function|ParseDeviceNbrFromSlotName
+r_static
+id|SK_U32
+id|ParseDeviceNbrFromSlotName
+c_func
+(paren
+r_const
+r_char
+op_star
+id|SlotName
+)paren
+multiline_comment|/* pointer to pci slot name eg. &squot;02:0a.0&squot; */
+(brace
+r_char
+op_star
+id|CurrCharPos
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|SlotName
+suffix:semicolon
+r_int
+id|FirstNibble
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+r_int
+id|SecondNibble
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|SK_U32
+id|Result
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_star
+id|CurrCharPos
+op_ne
+l_char|&squot;&bslash;0&squot;
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_star
+id|CurrCharPos
+op_eq
+l_char|&squot;:&squot;
+)paren
+(brace
+r_while
+c_loop
+(paren
+op_star
+id|CurrCharPos
+op_ne
+l_char|&squot;.&squot;
+)paren
+(brace
+id|CurrCharPos
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|CurrCharPos
+op_ge
+l_char|&squot;0&squot;
+)paren
+op_logical_and
+(paren
+op_star
+id|CurrCharPos
+op_le
+l_char|&squot;9&squot;
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|FirstNibble
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+multiline_comment|/* dec. value for &squot;0&squot; */
+id|FirstNibble
+op_assign
+op_star
+id|CurrCharPos
+op_minus
+l_int|48
+suffix:semicolon
+)brace
+r_else
+(brace
+id|SecondNibble
+op_assign
+op_star
+id|CurrCharPos
+op_minus
+l_int|48
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+op_star
+id|CurrCharPos
+op_ge
+l_char|&squot;a&squot;
+)paren
+op_logical_and
+(paren
+op_star
+id|CurrCharPos
+op_le
+l_char|&squot;f&squot;
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|FirstNibble
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|FirstNibble
+op_assign
+op_star
+id|CurrCharPos
+op_minus
+l_int|87
+suffix:semicolon
+)brace
+r_else
+(brace
+id|SecondNibble
+op_assign
+op_star
+id|CurrCharPos
+op_minus
+l_int|87
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|Result
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+id|Result
+op_assign
+id|FirstNibble
+suffix:semicolon
+id|Result
+op_assign
+id|Result
+op_lshift
+l_int|4
+suffix:semicolon
+multiline_comment|/* first nibble is higher one */
+id|Result
+op_assign
+id|Result
+op_or
+id|SecondNibble
+suffix:semicolon
+)brace
+id|CurrCharPos
+op_increment
+suffix:semicolon
+multiline_comment|/* next character */
+)brace
+r_return
+(paren
+id|Result
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/****************************************************************************&n; *&n; *&t;SkDrvDeInitAdapter - deinitialize adapter (this function is only &n; *&t;&t;&t;&t;called if Diag attaches to that card)&n; *&n; * Description:&n; *&t;Close initialized adapter.&n; *&n; * Returns:&n; *&t;0 - on success&n; *&t;error code - on error&n; */
+DECL|function|SkDrvDeInitAdapter
+r_static
+r_int
+id|SkDrvDeInitAdapter
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* pointer to adapter context   */
+r_int
+id|devNbr
+)paren
+multiline_comment|/* what device is to be handled */
+(brace
+r_struct
+id|SK_NET_DEVICE
+op_star
+id|dev
+suffix:semicolon
+id|dev
+op_assign
+id|pAC-&gt;dev
+(braket
+id|devNbr
+)braket
+suffix:semicolon
+multiline_comment|/*&n;&t;** Function SkGeClose() uses MOD_DEC_USE_COUNT (2.2/2.4)&n;&t;** or module_put() (2.6) to decrease the number of users for&n;&t;** a device, but if a device is to be put under control of &n;&t;** the DIAG, that count is OK already and does not need to &n;&t;** be adapted! Hence the opposite MOD_INC_USE_COUNT or &n;&t;** try_module_get() needs to be used again to correct that.&n;&t;*/
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+(brace
+r_return
+(paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|SkGeClose
+c_func
+(paren
+id|dev
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
+r_return
+(paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkDrvDeInitAdapter() */
+multiline_comment|/****************************************************************************&n; *&n; *&t;SkDrvInitAdapter - Initialize adapter (this function is only &n; *&t;&t;&t;&t;called if Diag deattaches from that card)&n; *&n; * Description:&n; *&t;Close initialized adapter.&n; *&n; * Returns:&n; *&t;0 - on success&n; *&t;error code - on error&n; */
+DECL|function|SkDrvInitAdapter
+r_static
+r_int
+id|SkDrvInitAdapter
+c_func
+(paren
+id|SK_AC
+op_star
+id|pAC
+comma
+multiline_comment|/* pointer to adapter context   */
+r_int
+id|devNbr
+)paren
+multiline_comment|/* what device is to be handled */
+(brace
+r_struct
+id|SK_NET_DEVICE
+op_star
+id|dev
+suffix:semicolon
+id|dev
+op_assign
+id|pAC-&gt;dev
+(braket
+id|devNbr
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|SkGeOpen
+c_func
+(paren
+id|dev
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+r_return
+(paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;** Function SkGeOpen() uses MOD_INC_USE_COUNT (2.2/2.4) &n;&t;&t;** or try_module_get() (2.6) to increase the number of &n;&t;&t;** users for a device, but if a device was just under &n;&t;&t;** control of the DIAG, that count is OK already and &n;&t;&t;** does not need to be adapted! Hence the opposite &n;&t;&t;** MOD_DEC_USE_COUNT or module_put() needs to be used &n;&t;&t;** again to correct that.&n;&t;&t;*/
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;** Use correct MTU size and indicate to kernel TX queue can be started&n;&t;*/
+r_if
+c_cond
+(paren
+id|SkGeChangeMtu
+c_func
+(paren
+id|dev
+comma
+id|dev-&gt;mtu
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+r_return
+(paren
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* SkDrvInitAdapter */
+macro_line|#endif
 macro_line|#ifdef DEBUG
 multiline_comment|/****************************************************************************/
 multiline_comment|/* &quot;debug only&quot; section *****************************************************/

@@ -5,7 +5,6 @@ mdefine_line|#define _ASM_IA64_NUMA_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_NUMA
 macro_line|#include &lt;linux/cache.h&gt;
-macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;linux/numa.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;

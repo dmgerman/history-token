@@ -1,4 +1,5 @@
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#ifdef CONFIG_IA64_GENERIC
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9,6 +10,13 @@ DECL|variable|ia64_mv
 r_struct
 id|ia64_machine_vector
 id|ia64_mv
+suffix:semicolon
+DECL|variable|ia64_mv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ia64_mv
+)paren
 suffix:semicolon
 r_static
 r_struct
@@ -138,6 +146,13 @@ r_void
 )paren
 (brace
 )brace
+DECL|variable|machvec_noop
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machvec_noop
+)paren
+suffix:semicolon
 r_void
 DECL|function|machvec_memory_fence
 id|machvec_memory_fence
@@ -151,4 +166,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machvec_memory_fence
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machvec_memory_fence
+)paren
+suffix:semicolon
 eof

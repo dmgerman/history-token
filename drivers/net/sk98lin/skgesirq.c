@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgesirq.c&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.91 $&n; * Date:&t;$Date: 2003/07/04 12:46:22 $&n; * Purpose:&t;Special IRQ module&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skgesirq.c&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.92 $&n; * Date:&t;$Date: 2003/09/16 14:37:07 $&n; * Purpose:&t;Special IRQ module&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgesirq.c,v $&n; *&t;Revision 1.91  2003/07/04 12:46:22  rschmidt&n; *&t;Added debug messages in SkGePortCheckUpGmac().&n; *&t;Added error log message and new driver event SK_DRV_DOWNSHIFT_DET&n; *&t;for Downshift detection (Yukon-Copper).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.90  2003/05/28 15:35:45  rschmidt&n; *&t;Added parameter AutoNeg in all SkGePortCheckUp...() to save code.&n; *&t;Added setting for AutoNeg only once in SkGePortCheckUp().&n; *&t;Moved defines for return codes of SkGePortCheckUp() to header file.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.89  2003/05/13 17:32:20  mkarl&n; *&t;Removed links to RLMT and PNMI for SLIM driver (SK_SLIM).&n; *&t;Separated GENESIS and YUKON only code to reduce code size.&n; *&t;&n; *&t;Revision 1.88  2003/05/06 13:20:34  rschmidt&n; *&t;Changed workaround for Tx hang in half duplex only for Genesis.&n; *&t;Replaced SkPnmiGetVar() calls for Tx Octets Counter&n; *&t;with SkXmMacStatistic() in SkGeSirqIsr().&n; *&t;Added defines around GENESIS resp. YUKON branches to reduce&n; *&t;code size for PXE.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.87  2003/04/28 09:18:31  rschmidt&n; *&t;Added increment for GITimeStampCnt (high dword for&n; *&t;Time Stamp Timer counter), when overflow IRQ occurs.&n; *&t;Disabled HW Error IRQ on 32-bit Yukon if sensor IRQ occurs&n; *&t;by changing the common mask stored in GIValIrqMask.&n; *&t;Changed handling for HW Error IRQ in SkGeSirqIsr().&n; *&t;Added clearing of the software forced IRQ in SkGeSirqIsr().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.86  2003/04/09 13:03:24  rschmidt&n; *&t;Added workaround for configuration of GPHY&squot;s Auto-negotiation&n; *&t;advertisement register after link down event in SkPhyIsrGmac().&n; *&t;&n; *&t;Revision 1.85  2003/04/08 16:39:02  rschmidt&n; *&t;Changed handling for different PhyTypes for source code&n; *&t;portability to PXE, UNDI.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.84  2003/03/31 07:01:43  mkarl&n; *&t;Corrected Copyright.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.83  2003/02/05 15:10:59  rschmidt&n; *&t;Fixed setting of PLinkSpeedUsed in SkHWLinkUp() when&n; *&t;auto-negotiation is disabled.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.82  2003/01/29 13:34:33  rschmidt&n; *&t;Added some typecasts to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.81  2002/12/05 10:49:51  rschmidt&n; *&t;Fixed missing Link Down Event for fiber (Bug Id #10768)&n; *&t;Added reading of cable length when link is up&n; *&t;Removed testing of unused error bits in PHY ISR&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.80  2002/11/12 17:15:21  rschmidt&n; *&t;Replaced SkPnmiGetVar() by ...MacStatistic() in SkMacParity().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.79  2002/10/14 15:14:51  rschmidt&n; *&t;Changed clearing of IS_M1_PAR_ERR (MAC 1 Parity Error) in&n; *&t;SkMacParity() depending on GIChipRev (HW-Bug #8).&n; *&t;Added error messages for GPHY Auto-Negotiation Error and&n; *&t;FIFO Overflow/Underrun in SkPhyIsrGmac().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.78  2002/10/10 15:54:29  mkarl&n; *&t;changes for PLinkSpeedUsed&n; *&t;&n; *&t;Revision 1.77  2002/09/12 08:58:51  rwahl&n; *&t;Retrieve counters needed for XMAC errata workarounds directly because&n; *&t;PNMI returns corrected counter values (e.g. #10620).&n; *&t;&n; *&t;Revision 1.76  2002/08/16 15:21:54  rschmidt&n; *&t;Replaced all if(GIChipId == CHIP_ID_GENESIS) with new entry GIGenesis.&n; *&t;Replaced wrong 1st para pAC with IoC in SK_IN/OUT macros.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.75  2002/08/12 13:50:47  rschmidt&n; *&t;Changed clearing of IS_M1_PAR_ERR (MAC 1 Parity Error) in&n; *&t;SkMacParity() by GMF_CLI_TX_FC instead of GMF_CLI_TX_PE (HW-Bug #8).&n; *&t;Added clearing of IS_IRQ_TIST_OV and IS_IRQ_SENSOR in SkGeHwErr().&n; *&t;Corrected handling of Link Up and Auto-Negotiation Over for GPHY.&n; *&t;in SkGePortCheckUpGmac().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.74  2002/08/08 16:17:04  rschmidt&n; *&t;Added PhyType check for SK_HWEV_SET_ROLE event (copper only)&n; *&t;Changed Link Up check reading PHY Specific Status (YUKON)&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.73  2002/07/15 18:36:53  rwahl&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.72  2002/07/15 15:46:26  rschmidt&n; *&t;Added new event: SK_HWEV_SET_SPEED&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.71  2002/06/10 09:34:19  rschmidt&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.70  2002/06/05 08:29:18  rschmidt&n; *&t;SkXmRxTxEnable() replaced by SkMacRxTxEnable().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.69  2002/04/25 13:03:49  rschmidt&n; *&t;Changes for handling YUKON.&n; *&t;Use of #ifdef OTHER_PHY to eliminate code for unused Phy types.&n; *&t;Replaced all XMAC-access macros by functions: SkMacRxTxDisable(),&n; *&t;SkMacIrqDisable().&n; *&t;Added handling for GMAC FIFO in SkMacParity().&n; *&t;Replaced all SkXm...() functions with SkMac...() to handle also&n; *&t;YUKON&squot;s GMAC.&n; *&t;Macros for XMAC PHY access PHY_READ(), PHY_WRITE() replaced&n; *&t;by functions SkXmPhyRead(), SkXmPhyWrite().&n; *&t;Disabling all PHY interrupts moved to SkMacIrqDisable().&n; *&t;Added handling for GPHY IRQ in SkGeSirqIsr().&n; *&t;Removed status parameter from MAC IRQ handler SkMacIrq().&n; *&t;Added SkGePortCheckUpGmac(), SkPhyIsrGmac() for GMAC.&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.68  2002/02/26 15:24:53  rwahl&n; *&t;Fix: no link with manual configuration (#10673). The previous fix for&n; *&t;#10639 was removed. So for RLMT mode = CLS the RLMT may switch to&n; *&t;misconfigured port. It should not occur for the other RLMT modes.&n; *&t;&n; *&t;Revision 1.67  2001/11/20 09:19:58  rwahl&n; *&t;Reworked bugfix #10639 (no dependency to RLMT mode).&n; *&t;&n; *&t;Revision 1.66  2001/10/26 07:52:53  afischer&n; *&t;Port switching bug in `check local link` mode&n; *&t;&n; *&t;Revision 1.65  2001/02/23 13:41:51  gklug&n; *&t;fix: PHYS2INST should be used correctly for Dual Net operation&n; *&t;chg: do no longer work with older PNMI&n; *&t;&n; *&t;Revision 1.64  2001/02/15 11:27:04  rassmann&n; *&t;Working with RLMT v1 if SK_MAX_NETS undefined.&n; *&t;&n; *&t;Revision 1.63  2001/02/06 10:44:23  mkunz&n; *&t;- NetIndex added to interface functions of pnmi V4 with dual net support&n; *&t;&n; *&t;Revision 1.62  2001/01/31 15:31:41  gklug&n; *&t;fix: problem with autosensing an SR8800 switch&n; *&t;&n; *&t;Revision 1.61  2000/11/09 11:30:09  rassmann&n; *&t;WA: Waiting after releasing reset until BCom chip is accessible.&n; *&n; *&t;Revision 1.60  2000/10/18 12:37:48  cgoos&n; *&t;Reinserted the comment for version 1.56.&n; *&t;&n; *&t;Revision 1.59  2000/10/18 12:22:20  cgoos&n; *&t;Added workaround for half duplex hangup.&n; *&t;&n; *&t;Revision 1.58  2000/09/28 13:06:04  gklug&n; *&t;fix: BCom may NOT be touched if XMAC is in RESET state&n; *&t;&n; *&t;Revision 1.57  2000/09/08 12:38:39  cgoos&n; *&t;Added forgotten variable declaration.&n; *&t;&n; *&t;Revision 1.56  2000/09/08 08:12:13  cgoos&n; *&t;Changed handling of parity errors in SkGeHwErr (correct reset of error).&n; *&n; *&t;Revision 1.55  2000/06/19 08:36:25  cgoos&n; *&t;Changed comment.&n; *&t;&n; *&t;Revision 1.54  2000/05/22 08:45:57  malthoff&n; *&t;Fix: #10523 is valid for all BCom PHYs.&n; *&t;&n; *&t;Revision 1.53  2000/05/19 10:20:30  cgoos&n; *&t;Removed Solaris debug output code.&n; *&t;&n; *&t;Revision 1.52  2000/05/19 10:19:37  cgoos&n; *&t;Added PHY state check in HWLinkDown.&n; *&t;Move PHY interrupt code to IS_EXT_REG case in SkGeSirqIsr.&n; *&t;&n; *&t;Revision 1.51  2000/05/18 05:56:20  cgoos&n; *&t;Fixed typo.&n; *&t;&n; *&t;Revision 1.50  2000/05/17 12:49:49  malthoff&n; *&t;Fixes BCom link bugs (#10523).&n; *&t;&n; *&t;Revision 1.49  1999/12/17 11:02:50  gklug&n; *&t;fix: read PHY_STAT of Broadcom chip more often to assure good status&n; *&t;&n; *&t;Revision 1.48  1999/12/06 10:01:17  cgoos&n; *&t;Added SET function for Role.&n; *&t;&n; *&t;Revision 1.47  1999/11/22 13:34:24  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.46  1999/09/16 10:30:07  cgoos&n; *&t;Removed debugging output statement from Linux.&n; *&t;&n; *&t;Revision 1.45  1999/09/16 07:32:55  cgoos&n; *&t;Fixed dual-port copperfield bug (PHY_READ from resetted port).&n; *&t;Removed some unused variables.&n; *&t;&n; *&t;Revision 1.44  1999/08/03 15:25:04  cgoos&n; *&t;Removed workaround for disabled interrupts in half duplex mode.&n; *&t;&n; *&t;Revision 1.43  1999/08/03 14:27:58  cgoos&n; *&t;Removed SENSE mode code from SkGePortCheckUpBcom.&n; *&t;&n; *&t;Revision 1.42  1999/07/26 09:16:54  cgoos&n; *&t;Added some typecasts to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.41  1999/05/19 07:28:59  cgoos&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.40  1999/04/08 13:59:39  gklug&n; *&t;fix: problem with 3Com switches endless RESTARTs&n; *&t;&n; *&t;Revision 1.39  1999/03/08 10:10:52  gklug&n; *&t;fix: AutoSensing did switch to next mode even if LiPa indicated offline&n; *&t;&n; *&t;Revision 1.38  1999/03/08 09:49:03  gklug&n; *&t;fix: Bug using pAC instead of IoC, causing AIX problems&n; *&t;fix: change compare for Linux compiler bug workaround&n; *&t;&n; *&t;Revision 1.37  1999/01/28 14:51:33  gklug&n; *&t;fix: monitor for autosensing and extra RESETS the RX on wire counters&n; *&t;&n; *&t;Revision 1.36  1999/01/22 09:19:55  gklug&n; *&t;fix: Init DupMode and InitPauseMd are now called in RxTxEnable&n; *&t;&n; *&t;Revision 1.35  1998/12/11 15:22:59  gklug&n; *&t;chg: autosensing: check for receive if manual mode was guessed&n; *&t;chg: simplified workaround for XMAC errata&n; *&t;chg: wait additional 100 ms before link goes up.&n; *&t;chg: autoneg timeout to 600 ms&n; *&t;chg: restart autoneg even if configured to autonegotiation&n; *&t;&n; *&t;Revision 1.34  1998/12/10 10:33:14  gklug&n; *&t;add: more debug messages&n; *&t;fix: do a new InitPhy if link went down (AutoSensing problem)&n; *&t;chg: Check for zero shorts if link is NOT up&n; *&t;chg: reset Port if link goes down&n; *&t;chg: wait additional 100 ms when link comes up to check shorts&n; *&t;fix: dummy read extended autoneg status to prevent link going down immediately&n; *&t;&n; *&t;Revision 1.33  1998/12/07 12:18:29  gklug&n; *&t;add: refinement of autosense mode: take into account the autoneg cap of LiPa&n; *&t;&n; *&t;Revision 1.32  1998/12/07 07:11:21  gklug&n; *&t;fix: compiler warning&n; *&t;&n; *&t;Revision 1.31  1998/12/02 09:29:05  gklug&n; *&t;fix: WA XMAC Errata: FCSCt check was not correct.&n; *&t;fix: WA XMAC Errata: Prec Counter were NOT updated in case of short checks.&n; *&t;fix: Clear Stat : now clears the Prev counters of all known Ports&n; *&t;&n; *&t;Revision 1.30  1998/12/01 10:54:15  gklug&n; *&t;dd: workaround for XMAC errata changed. Check RX count and CRC err Count, too.&n; *&t;&n; *&t;Revision 1.29  1998/12/01 10:01:53  gklug&n; *&t;fix: if MAC IRQ occurs during port down, this will be handled correctly&n; *&t;&n; *&t;Revision 1.28  1998/11/26 16:22:11  gklug&n; *&t;fix: bug in autosense if manual modes are used&n; *&t;&n; *&t;Revision 1.27  1998/11/26 15:50:06  gklug&n; *&t;fix: PNMI needs to set PLinkModeConf&n; *&t;&n; *&t;Revision 1.26  1998/11/26 14:51:58  gklug&n; *&t;add: AutoSensing functionalty&n; *&t;&n; *&t;Revision 1.25  1998/11/26 07:34:37  gklug&n; *&t;fix: Init PrevShorts when restarting port due to Link connection&n; *&t;&n; *&t;Revision 1.24  1998/11/25 10:57:32  gklug&n; *&t;fix: remove unreferenced local vars&n; *&t;&n; *&t;Revision 1.23  1998/11/25 08:26:40  gklug&n; *&t;fix: don&squot;t do a RESET on a starting or stopping port&n; *&t;&n; *&t;Revision 1.22  1998/11/24 13:29:44  gklug&n; *&t;add: Workaround for MAC parity errata&n; *&t;&n; *&t;Revision 1.21  1998/11/18 15:31:06  gklug&n; *&t;fix: lint bugs&n; *&t;&n; *&t;Revision 1.20  1998/11/18 12:58:54  gklug&n; *&t;fix: use PNMI query instead of hardware access&n; *&t;&n; *&t;Revision 1.19  1998/11/18 12:54:55  gklug&n; *&t;chg: add new workaround for XMAC Errata&n; *&t;add: short event counter monitoring on active link too&n; *&t;&n; *&t;Revision 1.18  1998/11/13 14:27:41  malthoff&n; *&t;Bug Fix: Packet Arbiter Timeout was not cleared correctly&n; *&t;for timeout on TX1 and TX2.&n; *&t;&n; *&t;Revision 1.17  1998/11/04 07:01:59  cgoos&n; *&t;Moved HW link poll sequence.&n; *&t;Added call to SkXmRxTxEnable.&n; *&t;&n; *&t;Revision 1.16  1998/11/03 13:46:03  gklug&n; *&t;add: functionality of SET_LMODE and SET_FLOW_MODE&n; *&t;fix: send RLMT LinkDown event when Port stop is given with LinkUp&n; *&t;&n; *&t;Revision 1.15  1998/11/03 12:56:47  gklug&n; *&t;fix: Needs more events&n; *&t;&n; *&t;Revision 1.14  1998/10/30 07:36:35  gklug&n; *&t;rmv: unnecessary code&n; *&t;&n; *&t;Revision 1.13  1998/10/29 15:21:57  gklug&n; *&t;add: Poll link feature for activating HW link&n; *&t;fix: Deactivate HWLink when Port STOP is given&n; *&t;&n; *&t;Revision 1.12  1998/10/28 07:38:57  cgoos&n; *&t;Checking link status at begin of SkHWLinkUp.&n; *&t;&n; *&t;Revision 1.11  1998/10/22 09:46:50  gklug&n; *&t;fix SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.10  1998/10/14 13:57:47  gklug&n; *&t;add: Port start/stop event&n; *&t;&n; *&t;Revision 1.9  1998/10/14 05:48:29  cgoos&n; *&t;Added definition for Para.&n; *&t;&n; *&t;Revision 1.8  1998/10/14 05:40:09  gklug&n; *&t;add: Hardware Linkup signal used&n; *&t;&n; *&t;Revision 1.7  1998/10/09 06:50:20  malthoff&n; *&t;Remove ID_sccs by SysKonnectFileId.&n; *&n; *&t;Revision 1.6  1998/10/08 09:11:49  gklug&n; *&t;add: clear IRQ commands&n; *&t;&n; *&t;Revision 1.5  1998/10/02 14:27:35  cgoos&n; *&t;Fixed some typos and wrong event names.&n; *&t;&n; *&t;Revision 1.4  1998/10/02 06:24:17  gklug&n; *&t;add: HW error function&n; *&t;fix: OUT macros&n; *&t;&n; *&t;Revision 1.3  1998/10/01 07:03:00  gklug&n; *&t;add: ISR for the usual interrupt source register&n; *&t;&n; *&t;Revision 1.2  1998/09/03 13:50:33  gklug&n; *&t;add: function prototypes&n; *&t;&n; *&t;Revision 1.1  1998/08/27 11:50:21  gklug&n; *&t;initial revision&n; *&t;&n; *&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skgesirq.c,v $&n; *&t;Revision 1.92  2003/09/16 14:37:07  rschmidt&n; *&t;Added debug messages in some SkGePortCheckUp...() routines.&n; *&t;Fixed compiler warnings for different types.&n; *&t;Avoided port check up in reset state (eg. coma mode).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.91  2003/07/04 12:46:22  rschmidt&n; *&t;Added debug messages in SkGePortCheckUpGmac().&n; *&t;Added error log message and new driver event SK_DRV_DOWNSHIFT_DET&n; *&t;for Downshift detection (Yukon-Copper).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.90  2003/05/28 15:35:45  rschmidt&n; *&t;Added parameter AutoNeg in all SkGePortCheckUp...() to save code.&n; *&t;Added setting for AutoNeg only once in SkGePortCheckUp().&n; *&t;Moved defines for return codes of SkGePortCheckUp() to header file.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.89  2003/05/13 17:32:20  mkarl&n; *&t;Removed links to RLMT and PNMI for SLIM driver (SK_SLIM).&n; *&t;Separated GENESIS and YUKON only code to reduce code size.&n; *&t;&n; *&t;Revision 1.88  2003/05/06 13:20:34  rschmidt&n; *&t;Changed workaround for Tx hang in half duplex only for Genesis.&n; *&t;Replaced SkPnmiGetVar() calls for Tx Octets Counter&n; *&t;with SkXmMacStatistic() in SkGeSirqIsr().&n; *&t;Added defines around GENESIS resp. YUKON branches to reduce&n; *&t;code size for PXE.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.87  2003/04/28 09:18:31  rschmidt&n; *&t;Added increment for GITimeStampCnt (high dword for&n; *&t;Time Stamp Timer counter), when overflow IRQ occurs.&n; *&t;Disabled HW Error IRQ on 32-bit Yukon if sensor IRQ occurs&n; *&t;by changing the common mask stored in GIValIrqMask.&n; *&t;Changed handling for HW Error IRQ in SkGeSirqIsr().&n; *&t;Added clearing of the software forced IRQ in SkGeSirqIsr().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.86  2003/04/09 13:03:24  rschmidt&n; *&t;Added workaround for configuration of GPHY&squot;s Auto-negotiation&n; *&t;advertisement register after link down event in SkPhyIsrGmac().&n; *&t;&n; *&t;Revision 1.85  2003/04/08 16:39:02  rschmidt&n; *&t;Changed handling for different PhyTypes for source code&n; *&t;portability to PXE, UNDI.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.84  2003/03/31 07:01:43  mkarl&n; *&t;Corrected Copyright.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.83  2003/02/05 15:10:59  rschmidt&n; *&t;Fixed setting of PLinkSpeedUsed in SkHWLinkUp() when&n; *&t;auto-negotiation is disabled.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.82  2003/01/29 13:34:33  rschmidt&n; *&t;Added some typecasts to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.81  2002/12/05 10:49:51  rschmidt&n; *&t;Fixed missing Link Down Event for fiber (Bug Id #10768)&n; *&t;Added reading of cable length when link is up&n; *&t;Removed testing of unused error bits in PHY ISR&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.80  2002/11/12 17:15:21  rschmidt&n; *&t;Replaced SkPnmiGetVar() by ...MacStatistic() in SkMacParity().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.79  2002/10/14 15:14:51  rschmidt&n; *&t;Changed clearing of IS_M1_PAR_ERR (MAC 1 Parity Error) in&n; *&t;SkMacParity() depending on GIChipRev (HW-Bug #8).&n; *&t;Added error messages for GPHY Auto-Negotiation Error and&n; *&t;FIFO Overflow/Underrun in SkPhyIsrGmac().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.78  2002/10/10 15:54:29  mkarl&n; *&t;changes for PLinkSpeedUsed&n; *&t;&n; *&t;Revision 1.77  2002/09/12 08:58:51  rwahl&n; *&t;Retrieve counters needed for XMAC errata workarounds directly because&n; *&t;PNMI returns corrected counter values (e.g. #10620).&n; *&t;&n; *&t;Revision 1.76  2002/08/16 15:21:54  rschmidt&n; *&t;Replaced all if(GIChipId == CHIP_ID_GENESIS) with new entry GIGenesis.&n; *&t;Replaced wrong 1st para pAC with IoC in SK_IN/OUT macros.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.75  2002/08/12 13:50:47  rschmidt&n; *&t;Changed clearing of IS_M1_PAR_ERR (MAC 1 Parity Error) in&n; *&t;SkMacParity() by GMF_CLI_TX_FC instead of GMF_CLI_TX_PE (HW-Bug #8).&n; *&t;Added clearing of IS_IRQ_TIST_OV and IS_IRQ_SENSOR in SkGeHwErr().&n; *&t;Corrected handling of Link Up and Auto-Negotiation Over for GPHY.&n; *&t;in SkGePortCheckUpGmac().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.74  2002/08/08 16:17:04  rschmidt&n; *&t;Added PhyType check for SK_HWEV_SET_ROLE event (copper only)&n; *&t;Changed Link Up check reading PHY Specific Status (YUKON)&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.73  2002/07/15 18:36:53  rwahl&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.72  2002/07/15 15:46:26  rschmidt&n; *&t;Added new event: SK_HWEV_SET_SPEED&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.71  2002/06/10 09:34:19  rschmidt&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.70  2002/06/05 08:29:18  rschmidt&n; *&t;SkXmRxTxEnable() replaced by SkMacRxTxEnable().&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.69  2002/04/25 13:03:49  rschmidt&n; *&t;Changes for handling YUKON.&n; *&t;Use of #ifdef OTHER_PHY to eliminate code for unused Phy types.&n; *&t;Replaced all XMAC-access macros by functions: SkMacRxTxDisable(),&n; *&t;SkMacIrqDisable().&n; *&t;Added handling for GMAC FIFO in SkMacParity().&n; *&t;Replaced all SkXm...() functions with SkMac...() to handle also&n; *&t;YUKON&squot;s GMAC.&n; *&t;Macros for XMAC PHY access PHY_READ(), PHY_WRITE() replaced&n; *&t;by functions SkXmPhyRead(), SkXmPhyWrite().&n; *&t;Disabling all PHY interrupts moved to SkMacIrqDisable().&n; *&t;Added handling for GPHY IRQ in SkGeSirqIsr().&n; *&t;Removed status parameter from MAC IRQ handler SkMacIrq().&n; *&t;Added SkGePortCheckUpGmac(), SkPhyIsrGmac() for GMAC.&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.68  2002/02/26 15:24:53  rwahl&n; *&t;Fix: no link with manual configuration (#10673). The previous fix for&n; *&t;#10639 was removed. So for RLMT mode = CLS the RLMT may switch to&n; *&t;misconfigured port. It should not occur for the other RLMT modes.&n; *&t;&n; *&t;Revision 1.67  2001/11/20 09:19:58  rwahl&n; *&t;Reworked bugfix #10639 (no dependency to RLMT mode).&n; *&t;&n; *&t;Revision 1.66  2001/10/26 07:52:53  afischer&n; *&t;Port switching bug in `check local link` mode&n; *&t;&n; *&t;Revision 1.65  2001/02/23 13:41:51  gklug&n; *&t;fix: PHYS2INST should be used correctly for Dual Net operation&n; *&t;chg: do no longer work with older PNMI&n; *&t;&n; *&t;Revision 1.64  2001/02/15 11:27:04  rassmann&n; *&t;Working with RLMT v1 if SK_MAX_NETS undefined.&n; *&t;&n; *&t;Revision 1.63  2001/02/06 10:44:23  mkunz&n; *&t;- NetIndex added to interface functions of pnmi V4 with dual net support&n; *&t;&n; *&t;Revision 1.62  2001/01/31 15:31:41  gklug&n; *&t;fix: problem with autosensing an SR8800 switch&n; *&t;&n; *&t;Revision 1.61  2000/11/09 11:30:09  rassmann&n; *&t;WA: Waiting after releasing reset until BCom chip is accessible.&n; *&n; *&t;Revision 1.60  2000/10/18 12:37:48  cgoos&n; *&t;Reinserted the comment for version 1.56.&n; *&t;&n; *&t;Revision 1.59  2000/10/18 12:22:20  cgoos&n; *&t;Added workaround for half duplex hangup.&n; *&t;&n; *&t;Revision 1.58  2000/09/28 13:06:04  gklug&n; *&t;fix: BCom may NOT be touched if XMAC is in RESET state&n; *&t;&n; *&t;Revision 1.57  2000/09/08 12:38:39  cgoos&n; *&t;Added forgotten variable declaration.&n; *&t;&n; *&t;Revision 1.56  2000/09/08 08:12:13  cgoos&n; *&t;Changed handling of parity errors in SkGeHwErr (correct reset of error).&n; *&n; *&t;Revision 1.55  2000/06/19 08:36:25  cgoos&n; *&t;Changed comment.&n; *&t;&n; *&t;Revision 1.54  2000/05/22 08:45:57  malthoff&n; *&t;Fix: #10523 is valid for all BCom PHYs.&n; *&t;&n; *&t;Revision 1.53  2000/05/19 10:20:30  cgoos&n; *&t;Removed Solaris debug output code.&n; *&t;&n; *&t;Revision 1.52  2000/05/19 10:19:37  cgoos&n; *&t;Added PHY state check in HWLinkDown.&n; *&t;Move PHY interrupt code to IS_EXT_REG case in SkGeSirqIsr.&n; *&t;&n; *&t;Revision 1.51  2000/05/18 05:56:20  cgoos&n; *&t;Fixed typo.&n; *&t;&n; *&t;Revision 1.50  2000/05/17 12:49:49  malthoff&n; *&t;Fixes BCom link bugs (#10523).&n; *&t;&n; *&t;Revision 1.49  1999/12/17 11:02:50  gklug&n; *&t;fix: read PHY_STAT of Broadcom chip more often to assure good status&n; *&t;&n; *&t;Revision 1.48  1999/12/06 10:01:17  cgoos&n; *&t;Added SET function for Role.&n; *&t;&n; *&t;Revision 1.47  1999/11/22 13:34:24  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.46  1999/09/16 10:30:07  cgoos&n; *&t;Removed debugging output statement from Linux.&n; *&t;&n; *&t;Revision 1.45  1999/09/16 07:32:55  cgoos&n; *&t;Fixed dual-port copperfield bug (PHY_READ from resetted port).&n; *&t;Removed some unused variables.&n; *&t;&n; *&t;Revision 1.44  1999/08/03 15:25:04  cgoos&n; *&t;Removed workaround for disabled interrupts in half duplex mode.&n; *&t;&n; *&t;Revision 1.43  1999/08/03 14:27:58  cgoos&n; *&t;Removed SENSE mode code from SkGePortCheckUpBcom.&n; *&t;&n; *&t;Revision 1.42  1999/07/26 09:16:54  cgoos&n; *&t;Added some typecasts to avoid compiler warnings.&n; *&t;&n; *&t;Revision 1.41  1999/05/19 07:28:59  cgoos&n; *&t;Changes for 1000Base-T.&n; *&t;&n; *&t;Revision 1.40  1999/04/08 13:59:39  gklug&n; *&t;fix: problem with 3Com switches endless RESTARTs&n; *&t;&n; *&t;Revision 1.39  1999/03/08 10:10:52  gklug&n; *&t;fix: AutoSensing did switch to next mode even if LiPa indicated offline&n; *&t;&n; *&t;Revision 1.38  1999/03/08 09:49:03  gklug&n; *&t;fix: Bug using pAC instead of IoC, causing AIX problems&n; *&t;fix: change compare for Linux compiler bug workaround&n; *&t;&n; *&t;Revision 1.37  1999/01/28 14:51:33  gklug&n; *&t;fix: monitor for autosensing and extra RESETS the RX on wire counters&n; *&t;&n; *&t;Revision 1.36  1999/01/22 09:19:55  gklug&n; *&t;fix: Init DupMode and InitPauseMd are now called in RxTxEnable&n; *&t;&n; *&t;Revision 1.35  1998/12/11 15:22:59  gklug&n; *&t;chg: autosensing: check for receive if manual mode was guessed&n; *&t;chg: simplified workaround for XMAC errata&n; *&t;chg: wait additional 100 ms before link goes up.&n; *&t;chg: autoneg timeout to 600 ms&n; *&t;chg: restart autoneg even if configured to autonegotiation&n; *&t;&n; *&t;Revision 1.34  1998/12/10 10:33:14  gklug&n; *&t;add: more debug messages&n; *&t;fix: do a new InitPhy if link went down (AutoSensing problem)&n; *&t;chg: Check for zero shorts if link is NOT up&n; *&t;chg: reset Port if link goes down&n; *&t;chg: wait additional 100 ms when link comes up to check shorts&n; *&t;fix: dummy read extended autoneg status to prevent link going down immediately&n; *&t;&n; *&t;Revision 1.33  1998/12/07 12:18:29  gklug&n; *&t;add: refinement of autosense mode: take into account the autoneg cap of LiPa&n; *&t;&n; *&t;Revision 1.32  1998/12/07 07:11:21  gklug&n; *&t;fix: compiler warning&n; *&t;&n; *&t;Revision 1.31  1998/12/02 09:29:05  gklug&n; *&t;fix: WA XMAC Errata: FCSCt check was not correct.&n; *&t;fix: WA XMAC Errata: Prec Counter were NOT updated in case of short checks.&n; *&t;fix: Clear Stat : now clears the Prev counters of all known Ports&n; *&t;&n; *&t;Revision 1.30  1998/12/01 10:54:15  gklug&n; *&t;dd: workaround for XMAC errata changed. Check RX count and CRC err Count, too.&n; *&t;&n; *&t;Revision 1.29  1998/12/01 10:01:53  gklug&n; *&t;fix: if MAC IRQ occurs during port down, this will be handled correctly&n; *&t;&n; *&t;Revision 1.28  1998/11/26 16:22:11  gklug&n; *&t;fix: bug in autosense if manual modes are used&n; *&t;&n; *&t;Revision 1.27  1998/11/26 15:50:06  gklug&n; *&t;fix: PNMI needs to set PLinkModeConf&n; *&t;&n; *&t;Revision 1.26  1998/11/26 14:51:58  gklug&n; *&t;add: AutoSensing functionalty&n; *&t;&n; *&t;Revision 1.25  1998/11/26 07:34:37  gklug&n; *&t;fix: Init PrevShorts when restarting port due to Link connection&n; *&t;&n; *&t;Revision 1.24  1998/11/25 10:57:32  gklug&n; *&t;fix: remove unreferenced local vars&n; *&t;&n; *&t;Revision 1.23  1998/11/25 08:26:40  gklug&n; *&t;fix: don&squot;t do a RESET on a starting or stopping port&n; *&t;&n; *&t;Revision 1.22  1998/11/24 13:29:44  gklug&n; *&t;add: Workaround for MAC parity errata&n; *&t;&n; *&t;Revision 1.21  1998/11/18 15:31:06  gklug&n; *&t;fix: lint bugs&n; *&t;&n; *&t;Revision 1.20  1998/11/18 12:58:54  gklug&n; *&t;fix: use PNMI query instead of hardware access&n; *&t;&n; *&t;Revision 1.19  1998/11/18 12:54:55  gklug&n; *&t;chg: add new workaround for XMAC Errata&n; *&t;add: short event counter monitoring on active link too&n; *&t;&n; *&t;Revision 1.18  1998/11/13 14:27:41  malthoff&n; *&t;Bug Fix: Packet Arbiter Timeout was not cleared correctly&n; *&t;for timeout on TX1 and TX2.&n; *&t;&n; *&t;Revision 1.17  1998/11/04 07:01:59  cgoos&n; *&t;Moved HW link poll sequence.&n; *&t;Added call to SkXmRxTxEnable.&n; *&t;&n; *&t;Revision 1.16  1998/11/03 13:46:03  gklug&n; *&t;add: functionality of SET_LMODE and SET_FLOW_MODE&n; *&t;fix: send RLMT LinkDown event when Port stop is given with LinkUp&n; *&t;&n; *&t;Revision 1.15  1998/11/03 12:56:47  gklug&n; *&t;fix: Needs more events&n; *&t;&n; *&t;Revision 1.14  1998/10/30 07:36:35  gklug&n; *&t;rmv: unnecessary code&n; *&t;&n; *&t;Revision 1.13  1998/10/29 15:21:57  gklug&n; *&t;add: Poll link feature for activating HW link&n; *&t;fix: Deactivate HWLink when Port STOP is given&n; *&t;&n; *&t;Revision 1.12  1998/10/28 07:38:57  cgoos&n; *&t;Checking link status at begin of SkHWLinkUp.&n; *&t;&n; *&t;Revision 1.11  1998/10/22 09:46:50  gklug&n; *&t;fix SysKonnectFileId typo&n; *&t;&n; *&t;Revision 1.10  1998/10/14 13:57:47  gklug&n; *&t;add: Port start/stop event&n; *&t;&n; *&t;Revision 1.9  1998/10/14 05:48:29  cgoos&n; *&t;Added definition for Para.&n; *&t;&n; *&t;Revision 1.8  1998/10/14 05:40:09  gklug&n; *&t;add: Hardware Linkup signal used&n; *&t;&n; *&t;Revision 1.7  1998/10/09 06:50:20  malthoff&n; *&t;Remove ID_sccs by SysKonnectFileId.&n; *&n; *&t;Revision 1.6  1998/10/08 09:11:49  gklug&n; *&t;add: clear IRQ commands&n; *&t;&n; *&t;Revision 1.5  1998/10/02 14:27:35  cgoos&n; *&t;Fixed some typos and wrong event names.&n; *&t;&n; *&t;Revision 1.4  1998/10/02 06:24:17  gklug&n; *&t;add: HW error function&n; *&t;fix: OUT macros&n; *&t;&n; *&t;Revision 1.3  1998/10/01 07:03:00  gklug&n; *&t;add: ISR for the usual interrupt source register&n; *&t;&n; *&t;Revision 1.2  1998/09/03 13:50:33  gklug&n; *&t;add: function prototypes&n; *&t;&n; *&t;Revision 1.1  1998/08/27 11:50:21  gklug&n; *&t;initial revision&n; *&t;&n; *&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *&t;Special Interrupt handler&n; *&n; *&t;The following abstract should show how this module is included&n; *&t;in the driver path:&n; *&n; *&t;In the ISR of the driver the bits for frame transmission complete and&n; *&t;for receive complete are checked and handled by the driver itself.&n; *&t;The bits of the slow path mask are checked after that and then the&n; *&t;entry into the so-called &quot;slow path&quot; is prepared. It is an implementors&n; *&t;decision whether this is executed directly or just scheduled by&n; *&t;disabling the mask. In the interrupt service routine some events may be&n; *&t;generated, so it would be a good idea to call the EventDispatcher&n; *&t;right after this ISR.&n; *&n; *&t;The Interrupt source register of the adapter is NOT read by this module.&n; *  SO if the drivers implementor needs a while loop around the&n; *&t;slow data paths interrupt bits, he needs to call the SkGeSirqIsr() for&n; *&t;each loop entered.&n; *&n; *&t;However, the MAC Interrupt status registers are read in a while loop.&n; *&n; */
 macro_line|#if (defined(DEBUG) || ((!defined(LINT)) &amp;&amp; (!defined(SK_SLIM))))
 DECL|variable|SysKonnectFileId
@@ -11,7 +11,7 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;@(#) $Id: skgesirq.c,v 1.91 2003/07/04 12:46:22 rschmidt Exp $ (C) Marvell.&quot;
+l_string|&quot;@(#) $Id: skgesirq.c,v 1.92 2003/09/16 14:37:07 rschmidt Exp $ (C) Marvell.&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &quot;h/skdrv1st.h&quot;&t;&t;/* Driver Specific Definitions */
@@ -258,6 +258,9 @@ id|Port
 suffix:semicolon
 id|pPrt-&gt;PLinkMode
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_AUTOFULL
 suffix:semicolon
 r_return
@@ -552,6 +555,9 @@ id|SK_FLOW_STAT_NONE
 suffix:semicolon
 id|pPrt-&gt;PLinkSpeedUsed
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LSPEED_STAT_INDETERMINATED
 suffix:semicolon
 multiline_comment|/* Re-init Phy especially when the AutoSense default is set now */
@@ -672,6 +678,9 @@ id|SK_LSPEED_1000MBPS
 suffix:colon
 id|pPrt-&gt;PLinkSpeedUsed
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LSPEED_STAT_1000MBPS
 suffix:semicolon
 r_break
@@ -681,6 +690,9 @@ id|SK_LSPEED_100MBPS
 suffix:colon
 id|pPrt-&gt;PLinkSpeedUsed
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LSPEED_STAT_100MBPS
 suffix:semicolon
 r_break
@@ -690,6 +702,9 @@ id|SK_LSPEED_10MBPS
 suffix:colon
 id|pPrt-&gt;PLinkSpeedUsed
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LSPEED_STAT_10MBPS
 suffix:semicolon
 r_break
@@ -706,6 +721,9 @@ id|SK_LMODE_FULL
 (brace
 id|pPrt-&gt;PLinkModeStatus
 op_assign
+(paren
+id|SK_U8
+)paren
 id|SK_LMODE_STAT_FULL
 suffix:semicolon
 )brace
@@ -4600,22 +4618,6 @@ op_amp
 id|ExtStat
 )paren
 suffix:semicolon
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_HWM
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;AutoNeg done Port %d&bslash;n&quot;
-comma
-id|Port
-)paren
-)paren
-suffix:semicolon
 r_return
 id|SK_HW_PS_LINK
 suffix:semicolon
@@ -5872,9 +5874,9 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;AutoNeg: %d, PhyStat: 0x%04X&bslash;n&quot;
+l_string|&quot;CheckUp Port %d, PhyStat: 0x%04X&bslash;n&quot;
 comma
-id|AutoNeg
+id|Port
 comma
 id|PhyStat
 )paren
@@ -6152,22 +6154,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 macro_line|#endif /* DEBUG */
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_HWM
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;AutoNeg done Port %d&bslash;n&quot;
-comma
-id|Port
-)paren
-)paren
-suffix:semicolon
 r_return
 id|SK_HW_PS_LINK
 suffix:semicolon
@@ -6352,6 +6338,12 @@ multiline_comment|/* Master/Slave resolution */
 id|SK_EVPARA
 id|Para
 suffix:semicolon
+macro_line|#ifdef DEBUG
+id|SK_U16
+id|Word
+suffix:semicolon
+multiline_comment|/* I/O helper */
+macro_line|#endif /* DEBUG */
 id|pPrt
 op_assign
 op_amp
@@ -6359,6 +6351,50 @@ id|pAC-&gt;GIni.GP
 (braket
 id|Port
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PHWLinkUp
+)paren
+(brace
+r_return
+id|SK_HW_PS_NONE
+suffix:semicolon
+)brace
+multiline_comment|/* Read PHY Status */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_STAT
+comma
+op_amp
+id|PhyStat
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;CheckUp Port %d, PhyStat: 0x%04X&bslash;n&quot;
+comma
+id|Port
+comma
+id|PhyStat
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Read PHY Interrupt Status */
 id|SkGmPhyRead
@@ -6434,50 +6470,6 @@ id|PhyIsrc
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|pPrt-&gt;PHWLinkUp
-)paren
-(brace
-r_return
-id|SK_HW_PS_NONE
-suffix:semicolon
-)brace
-multiline_comment|/* Read PHY Status */
-id|SkGmPhyRead
-c_func
-(paren
-id|pAC
-comma
-id|IoC
-comma
-id|Port
-comma
-id|PHY_MARV_STAT
-comma
-op_amp
-id|PhyStat
-)paren
-suffix:semicolon
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_HWM
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;AutoNeg: %d, PhyStat: 0x%04X&bslash;n&quot;
-comma
-id|AutoNeg
-comma
-id|PhyStat
-)paren
-)paren
-suffix:semicolon
 id|SkMacAutoNegLipaPhy
 c_func
 (paren
@@ -6572,14 +6564,92 @@ comma
 id|SK_DBGCAT_CTRL
 comma
 (paren
-l_string|&quot;AutoNeg: %d, PhySpecStat: 0x%04X&bslash;n&quot;
+l_string|&quot;Phy1000BT: 0x%04X, PhySpecStat: 0x%04X&bslash;n&quot;
 comma
-id|AutoNeg
+id|ResAb
 comma
 id|PhySpecStat
 )paren
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_AUNE_EXP
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|PhyIsrc
+op_amp
+id|PHY_M_IS_AN_PR
+)paren
+op_ne
+l_int|0
+op_logical_or
+(paren
+id|Word
+op_amp
+id|PHY_ANE_RX_PG
+)paren
+op_ne
+l_int|0
+op_logical_or
+(paren
+id|PhySpecStat
+op_amp
+id|PHY_M_PS_PAGE_REC
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+multiline_comment|/* Read PHY Next Page Link Partner */
+id|SkGmPhyRead
+c_func
+(paren
+id|pAC
+comma
+id|IoC
+comma
+id|Port
+comma
+id|PHY_MARV_NEPG_LP
+comma
+op_amp
+id|Word
+)paren
+suffix:semicolon
+id|SK_DBG_MSG
+c_func
+(paren
+id|pAC
+comma
+id|SK_DBGMOD_HWM
+comma
+id|SK_DBGCAT_CTRL
+comma
+(paren
+l_string|&quot;Page Received, NextPage: 0x%04X&bslash;n&quot;
+comma
+id|Word
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* DEBUG */
 r_if
 c_cond
 (paren
@@ -6747,22 +6817,6 @@ r_return
 id|SK_HW_PS_RESTART
 suffix:semicolon
 )brace
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_HWM
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;AutoNeg done Port %d&bslash;n&quot;
-comma
-id|Port
-)paren
-)paren
-suffix:semicolon
 r_return
 id|SK_HW_PS_LINK
 suffix:semicolon
@@ -7175,22 +7229,6 @@ op_amp
 id|ExtStat
 )paren
 suffix:semicolon
-id|SK_DBG_MSG
-c_func
-(paren
-id|pAC
-comma
-id|SK_DBGMOD_HWM
-comma
-id|SK_DBGCAT_CTRL
-comma
-(paren
-l_string|&quot;AutoNeg done Port %d&bslash;n&quot;
-comma
-id|Port
-)paren
-)paren
-suffix:semicolon
 r_return
 id|SK_HW_PS_LINK
 suffix:semicolon
@@ -7456,6 +7494,21 @@ id|Event
 r_case
 id|SK_HWEV_WATIM
 suffix:colon
+r_if
+c_cond
+(paren
+id|pPrt-&gt;PState
+op_eq
+id|SK_PRT_RESET
+)paren
+(brace
+id|PortStat
+op_assign
+id|SK_HW_PS_NONE
+suffix:semicolon
+)brace
+r_else
+(brace
 multiline_comment|/* Check whether port came up */
 id|PortStat
 op_assign
@@ -7472,6 +7525,7 @@ r_int
 id|Port
 )paren
 suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren

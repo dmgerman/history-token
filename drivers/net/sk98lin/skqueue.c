@@ -1,7 +1,7 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skqueue.c&n; * Project:&t;Gigabit Ethernet Adapters, Schedule-Modul&n; * Version:&t;$Revision: 1.19 $&n; * Date:&t;$Date: 2003/05/13 18:00:07 $&n; * Purpose:&t;Management of an event queue.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skqueue.c&n; * Project:&t;Gigabit Ethernet Adapters, Event Scheduler Module&n; * Version:&t;$Revision: 1.20 $&n; * Date:&t;$Date: 2003/09/16 13:44:00 $&n; * Purpose:&t;Management of an event queue.&n; *&n; ******************************************************************************/
 multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect GmbH.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skqueue.c,v $&n; *&t;Revision 1.19  2003/05/13 18:00:07  mkarl&n; *&t;Removed calls to RLMT, TWSI, and PNMI for SLIM driver (SK_SLIM).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.18  2002/05/07 14:11:11  rwahl&n; *&t;Fixed Watcom Precompiler error.&n; *&t;&n; *&t;Revision 1.17  2002/03/25 10:06:41  mkunz&n; *&t;SkIgnoreEvent deleted&n; *&t;&n; *&t;Revision 1.16  2002/03/15 10:51:59  mkunz&n; *&t;Added event classes for link aggregation&n; *&t;&n; *&t;Revision 1.15  1999/11/22 13:36:29  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.14  1998/10/15 15:11:35  gklug&n; *&t;fix: ID_sccs to SysKonnectFileId&n; *&t;&n; *&t;Revision 1.13  1998/09/08 08:47:52  gklug&n; *&t;add: init level handling&n; *&t;&n; *&t;Revision 1.12  1998/09/08 07:43:20  gklug&n; *&t;fix: Sirq Event function name&n; *&t;&n; *&t;Revision 1.11  1998/09/08 05:54:34  gklug&n; *&t;chg: define SK_CSUM is replaced by SK_USE_CSUM&n; *&t;&n; *&t;Revision 1.10  1998/09/03 14:14:49  gklug&n; *&t;add: CSUM and HWAC Eventclass and function.&n; *&t;&n; *&t;Revision 1.9  1998/08/19 09:50:50  gklug&n; *&t;fix: remove struct keyword from c-code (see CCC) add typedefs&n; *&t;&n; *&t;Revision 1.8  1998/08/17 13:43:11  gklug&n; *&t;chg: Parameter will be union of 64bit para, 2 times SK_U32 or SK_PTR&n; *&t;&n; *&t;Revision 1.7  1998/08/14 07:09:11  gklug&n; *&t;fix: chg pAc -&gt; pAC&n; *&t;&n; *&t;Revision 1.6  1998/08/11 12:13:14  gklug&n; *&t;add: return code feature of Event service routines&n; *&t;add: correct Error log calls&n; *&t;&n; *&t;Revision 1.5  1998/08/07 12:53:45  gklug&n; *&t;fix: first compiled version&n; *&t;&n; *&t;Revision 1.4  1998/08/07 09:20:48  gklug&n; *&t;adapt functions to C coding conventions.&n; *&t;&n; *&t;Revision 1.3  1998/08/05 11:29:32  gklug&n; *&t;rmv: Timer event entry. Timer will queue event directly&n; *&t;&n; *&t;Revision 1.2  1998/07/31 11:22:40  gklug&n; *&t;Initial version&n; *&t;&n; *&t;Revision 1.1  1998/07/30 15:14:01  gklug&n; *&t;Initial version. Adapted from SMT&n; *&t;&n; *&t;&n; *&n; ******************************************************************************/
-multiline_comment|/*&n;&t;Event queue and dispatcher&n;*/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skqueue.c,v $&n; *&t;Revision 1.20  2003/09/16 13:44:00  rschmidt&n; *&t;Added (C) Marvell to SysKonnectFileId&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.19  2003/05/13 18:00:07  mkarl&n; *&t;Removed calls to RLMT, TWSI, and PNMI for SLIM driver (SK_SLIM).&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.18  2002/05/07 14:11:11  rwahl&n; *&t;Fixed Watcom Precompiler error.&n; *&t;&n; *&t;Revision 1.17  2002/03/25 10:06:41  mkunz&n; *&t;SkIgnoreEvent deleted&n; *&t;&n; *&t;Revision 1.16  2002/03/15 10:51:59  mkunz&n; *&t;Added event classes for link aggregation&n; *&t;&n; *&t;Revision 1.15  1999/11/22 13:36:29  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.14  1998/10/15 15:11:35  gklug&n; *&t;fix: ID_sccs to SysKonnectFileId&n; *&t;&n; *&t;Revision 1.13  1998/09/08 08:47:52  gklug&n; *&t;add: init level handling&n; *&t;&n; *&t;Revision 1.12  1998/09/08 07:43:20  gklug&n; *&t;fix: Sirq Event function name&n; *&t;&n; *&t;Revision 1.11  1998/09/08 05:54:34  gklug&n; *&t;chg: define SK_CSUM is replaced by SK_USE_CSUM&n; *&t;&n; *&t;Revision 1.10  1998/09/03 14:14:49  gklug&n; *&t;add: CSUM and HWAC Eventclass and function.&n; *&t;&n; *&t;Revision 1.9  1998/08/19 09:50:50  gklug&n; *&t;fix: remove struct keyword from c-code (see CCC) add typedefs&n; *&t;&n; *&t;Revision 1.8  1998/08/17 13:43:11  gklug&n; *&t;chg: Parameter will be union of 64bit para, 2 times SK_U32 or SK_PTR&n; *&t;&n; *&t;Revision 1.7  1998/08/14 07:09:11  gklug&n; *&t;fix: chg pAc -&gt; pAC&n; *&t;&n; *&t;Revision 1.6  1998/08/11 12:13:14  gklug&n; *&t;add: return code feature of Event service routines&n; *&t;add: correct Error log calls&n; *&t;&n; *&t;Revision 1.5  1998/08/07 12:53:45  gklug&n; *&t;fix: first compiled version&n; *&t;&n; *&t;Revision 1.4  1998/08/07 09:20:48  gklug&n; *&t;adapt functions to C coding conventions.&n; *&t;&n; *&t;Revision 1.3  1998/08/05 11:29:32  gklug&n; *&t;rmv: Timer event entry. Timer will queue event directly&n; *&t;&n; *&t;Revision 1.2  1998/07/31 11:22:40  gklug&n; *&t;Initial version&n; *&t;&n; *&t;Revision 1.1  1998/07/30 15:14:01  gklug&n; *&t;Initial version. Adapted from SMT&n; *&n; ******************************************************************************/
+multiline_comment|/*&n; *&t;Event queue and dispatcher&n; */
 macro_line|#if (defined(DEBUG) || ((!defined(LINT)) &amp;&amp; (!defined(SK_SLIM))))
 DECL|variable|SysKonnectFileId
 r_static
@@ -11,7 +11,7 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;$Header: /usr56/projects/ge/schedule/skqueue.c,v 1.19 2003/05/13 18:00:07 mkarl Exp $&quot;
+l_string|&quot;@(#) $Id: skqueue.c,v 1.20 2003/09/16 13:44:00 rschmidt Exp $ (C) Marvell.&quot;
 suffix:semicolon
 macro_line|#endif
 macro_line|#include &quot;h/skdrv1st.h&quot;&t;&t;/* Driver Specific Definitions */
@@ -258,6 +258,7 @@ suffix:semicolon
 r_case
 id|SKGE_PNMI
 suffix:colon
+multiline_comment|/* PNMI Event */
 id|Rtv
 op_assign
 id|SkPnmiEvent
@@ -296,7 +297,7 @@ id|pEv-&gt;Para
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifndef SK_USE_SW_TIMER        
+macro_line|#ifndef SK_USE_SW_TIMER
 r_case
 id|SKGE_HWAC
 suffix:colon
@@ -337,7 +338,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 macro_line|#endif /* !SK_USE_SW_TIMER */
-macro_line|#ifdef SK_USE_LAC_EV        
+macro_line|#ifdef SK_USE_LAC_EV
 r_case
 id|SKGE_LACP
 suffix:colon
@@ -464,9 +465,7 @@ l_int|0
 )paren
 (brace
 r_return
-(paren
 id|Rtv
-)paren
 suffix:semicolon
 )brace
 r_if
@@ -492,9 +491,7 @@ id|pEv
 suffix:semicolon
 )brace
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* End of file */
