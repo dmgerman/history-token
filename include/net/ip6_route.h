@@ -396,8 +396,7 @@ r_void
 id|rt6_purge_dflt_routers
 c_func
 (paren
-r_int
-id|lst_resort
+r_void
 )paren
 suffix:semicolon
 r_extern

@@ -1725,8 +1725,6 @@ id|daddr
 comma
 op_amp
 id|tmpaddr
-comma
-l_int|0
 )paren
 )paren
 r_return
@@ -4680,7 +4678,6 @@ multiline_comment|/*&n;&t;&t; *&t;If we where using an &quot;all destinations on
 id|rt6_purge_dflt_routers
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 )brace
