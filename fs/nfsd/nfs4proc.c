@@ -429,7 +429,6 @@ r_return
 id|status
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * nfs4_unlock_state() called in encode&n; */
 r_static
 r_inline
 r_int
@@ -514,10 +513,6 @@ id|NFS4_OPEN_CLAIM_NULL
 )paren
 r_return
 id|nfserr_inval
-suffix:semicolon
-id|open-&gt;op_stateowner
-op_assign
-l_int|NULL
 suffix:semicolon
 id|nfs4_lock_state
 c_func
@@ -711,6 +706,11 @@ id|nfs4_get_stateowner
 c_func
 (paren
 id|open-&gt;op_stateowner
+)paren
+suffix:semicolon
+id|nfs4_unlock_state
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

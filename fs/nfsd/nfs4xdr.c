@@ -2610,8 +2610,6 @@ suffix:semicolon
 id|DECODE_TAIL
 suffix:semicolon
 )brace
-DECL|macro|NFS4_STATE_NOT_LOCKED
-mdefine_line|#define NFS4_STATE_NOT_LOCKED&t;((void *)-1)
 r_static
 r_int
 DECL|function|nfsd4_decode_close
@@ -2633,7 +2631,7 @@ id|DECODE_HEAD
 suffix:semicolon
 id|close-&gt;cl_stateowner
 op_assign
-id|NFS4_STATE_NOT_LOCKED
+l_int|NULL
 suffix:semicolon
 id|READ_BUF
 c_func
@@ -3025,7 +3023,7 @@ id|DECODE_HEAD
 suffix:semicolon
 id|lock-&gt;lk_stateowner
 op_assign
-id|NFS4_STATE_NOT_LOCKED
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t;* type, reclaim(boolean), offset, length, new_lock_owner(boolean)&n;&t;*/
 id|READ_BUF
@@ -3309,7 +3307,7 @@ id|DECODE_HEAD
 suffix:semicolon
 id|locku-&gt;lu_stateowner
 op_assign
-id|NFS4_STATE_NOT_LOCKED
+l_int|NULL
 suffix:semicolon
 id|READ_BUF
 c_func
@@ -3491,7 +3489,7 @@ l_int|0
 suffix:semicolon
 id|open-&gt;op_stateowner
 op_assign
-id|NFS4_STATE_NOT_LOCKED
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* seqid, share_access, share_deny, clientid, ownerlen */
 id|READ_BUF
@@ -3849,7 +3847,7 @@ id|DECODE_HEAD
 suffix:semicolon
 id|open_conf-&gt;oc_stateowner
 op_assign
-id|NFS4_STATE_NOT_LOCKED
+l_int|NULL
 suffix:semicolon
 id|READ_BUF
 c_func
@@ -3910,7 +3908,7 @@ id|DECODE_HEAD
 suffix:semicolon
 id|open_down-&gt;od_stateowner
 op_assign
-id|NFS4_STATE_NOT_LOCKED
+l_int|NULL
 suffix:semicolon
 id|READ_BUF
 c_func
@@ -5949,7 +5947,7 @@ DECL|macro|ENCODE_SEQID_OP_HEAD
 mdefine_line|#define ENCODE_SEQID_OP_HEAD&t;&t;&t;&t;&t;&bslash;&n;&t;u32 *p;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 *save;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;save = resp-&gt;p;
 multiline_comment|/*&n; * Routine for encoding the result of a&n; * &quot;seqid-mutating&quot; NFSv4 operation.  This is&n; * where seqids are incremented, and the&n; * replay cache is filled.&n; */
 DECL|macro|ENCODE_SEQID_OP_TAIL
-mdefine_line|#define ENCODE_SEQID_OP_TAIL(stateowner) do {&t;&t;&t;&bslash;&n;&t;if (seqid_mutating_err(nfserr) &amp;&amp; stateowner&t;&t;&bslash;&n;&t;    &amp;&amp; (stateowner != NFS4_STATE_NOT_LOCKED)) { &t;&bslash;&n;&t;&t;if (stateowner-&gt;so_confirmed)&t;&t;&t;&bslash;&n;&t;&t;&t;stateowner-&gt;so_seqid++;&t;&t;&t;&bslash;&n;&t;&t;stateowner-&gt;so_replay.rp_status = nfserr;   &t;&bslash;&n;&t;&t;stateowner-&gt;so_replay.rp_buflen = &t;&t;&bslash;&n;&t;&t;&t;  (((char *)(resp)-&gt;p - (char *)save)); &bslash;&n;&t;&t;memcpy(stateowner-&gt;so_replay.rp_buf, save,      &bslash;&n; &t;&t;&t;stateowner-&gt;so_replay.rp_buflen); &t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (stateowner != NFS4_STATE_NOT_LOCKED)&t;&t;&bslash;&n;&t;&t;nfs4_unlock_state();&t;&t;&t;&t;&bslash;&n;&t;} while (0);
+mdefine_line|#define ENCODE_SEQID_OP_TAIL(stateowner) do {&t;&t;&t;&bslash;&n;&t;if (seqid_mutating_err(nfserr) &amp;&amp; stateowner) { &t;&bslash;&n;&t;&t;if (stateowner-&gt;so_confirmed)&t;&t;&t;&bslash;&n;&t;&t;&t;stateowner-&gt;so_seqid++;&t;&t;&t;&bslash;&n;&t;&t;stateowner-&gt;so_replay.rp_status = nfserr;   &t;&bslash;&n;&t;&t;stateowner-&gt;so_replay.rp_buflen = &t;&t;&bslash;&n;&t;&t;&t;  (((char *)(resp)-&gt;p - (char *)save)); &bslash;&n;&t;&t;memcpy(stateowner-&gt;so_replay.rp_buf, save,      &bslash;&n; &t;&t;&t;stateowner-&gt;so_replay.rp_buflen); &t;&bslash;&n;&t;} } while (0);
 DECL|variable|nfs4_ftypes
 r_static
 id|u32
@@ -12079,11 +12077,6 @@ id|rp-&gt;rp_buflen
 )paren
 suffix:semicolon
 id|ADJUST_ARGS
-c_func
-(paren
-)paren
-suffix:semicolon
-id|nfs4_unlock_state
 c_func
 (paren
 )paren
