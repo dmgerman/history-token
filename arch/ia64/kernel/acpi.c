@@ -50,6 +50,13 @@ id|pm_power_off
 r_void
 )paren
 suffix:semicolon
+DECL|variable|pm_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pm_power_off
+)paren
+suffix:semicolon
 DECL|variable|acpi_kbd_controller_present
 r_int
 r_char
