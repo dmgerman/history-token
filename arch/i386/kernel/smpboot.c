@@ -350,12 +350,6 @@ r_goto
 id|valid_k7
 suffix:semicolon
 multiline_comment|/* If we get here, it&squot;s not a certified SMP capable AMD system. */
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;WARNING: This combination of AMD processors is not suitable for SMP.&bslash;n&quot;
-)paren
-suffix:semicolon
 id|tainted
 op_or_assign
 id|TAINT_UNSAFE_SMP
@@ -3748,6 +3742,33 @@ id|KERN_WARNING
 l_string|&quot;WARNING: SMP operation may be unreliable with B stepping processors.&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Don&squot;t taint if we are running SMP kernel on a single non-MP approved Athlon  */
+r_if
+c_cond
+(paren
+id|tainted
+op_amp
+id|TAINT_UNSAFE_SMP
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cpucount
+)paren
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;WARNING: This combination of AMD processors is not suitable for SMP.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|tainted
+op_and_assign
+op_complement
+id|TAINT_UNSAFE_SMP
+suffix:semicolon
+)brace
 id|Dprintk
 c_func
 (paren
