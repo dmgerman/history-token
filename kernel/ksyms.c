@@ -2625,20 +2625,6 @@ c_func
 id|kstat
 )paren
 suffix:semicolon
-DECL|variable|nr_running
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nr_running
-)paren
-suffix:semicolon
-DECL|variable|nr_context_switches
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nr_context_switches
-)paren
-suffix:semicolon
 multiline_comment|/* misc */
 DECL|variable|panic
 id|EXPORT_SYMBOL
