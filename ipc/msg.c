@@ -211,7 +211,7 @@ l_string|&quot;sysvipc/msg&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|sysvipc_msg_read_proc
 comma

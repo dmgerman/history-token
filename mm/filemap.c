@@ -7731,7 +7731,7 @@ id|lru_pvec
 suffix:semicolon
 id|current-&gt;backing_dev_info
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|err
