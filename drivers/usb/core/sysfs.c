@@ -12,7 +12,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb.h&quot;
 multiline_comment|/* Active configuration fields */
 DECL|macro|usb_actconfig_show
-mdefine_line|#define usb_actconfig_show(field, multiplier, format_string)&t;&t;&bslash;&n;static ssize_t  show_##field (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_device *udev;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;udev = to_usb_device (dev);&t;&t;&t;&t;&t;&bslash;&n;&t;if (udev-&gt;actconfig)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return sprintf (buf, format_string,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;udev-&gt;actconfig-&gt;desc.field * multiplier);&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
+mdefine_line|#define usb_actconfig_show(field, multiplier, format_string)&t;&t;&bslash;&n;static ssize_t  show_##field (struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_device *udev;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_host_config *actconfig;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;udev = to_usb_device (dev);&t;&t;&t;&t;&t;&bslash;&n;&t;actconfig = udev-&gt;actconfig;&t;&t;&t;&t;&t;&bslash;&n;&t;if (actconfig)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return sprintf (buf, format_string,&t;&t;&t;&bslash;&n;&t;&t;&t;&t;actconfig-&gt;desc.field * multiplier);&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;
 DECL|macro|usb_actconfig_attr
 mdefine_line|#define usb_actconfig_attr(field, multiplier, format_string)&t;&t;&bslash;&n;usb_actconfig_show(field, multiplier, format_string)&t;&t;&t;&bslash;&n;static DEVICE_ATTR(field, S_IRUGO, show_##field, NULL);
 id|usb_actconfig_attr
@@ -38,6 +38,14 @@ comma
 l_int|2
 comma
 l_string|&quot;%3dmA&bslash;n&quot;
+)paren
+DECL|macro|usb_actconfig_str
+mdefine_line|#define usb_actconfig_str(name, field)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t  show_##name(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_device *udev;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_host_config *actconfig;&t;&t;&t;&t;&bslash;&n;&t;int len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;udev = to_usb_device (dev);&t;&t;&t;&t;&t;&bslash;&n;&t;actconfig = udev-&gt;actconfig;&t;&t;&t;&t;&t;&bslash;&n;&t;if (!actconfig)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;len = usb_string(udev, actconfig-&gt;desc.field, buf, PAGE_SIZE);&t;&bslash;&n;&t;if (len &lt; 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;buf[len] = &squot;&bslash;n&squot;;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;buf[len+1] = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return len+1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(name, S_IRUGO, show_##name, NULL);
+id|usb_actconfig_str
+(paren
+id|configuration
+comma
+id|iConfiguration
 )paren
 multiline_comment|/* configuration value is always present, and r/w */
 id|usb_actconfig_show
@@ -629,6 +637,14 @@ op_amp
 id|dev_attr_serial
 )paren
 suffix:semicolon
+id|device_create_file
+(paren
+id|dev
+comma
+op_amp
+id|dev_attr_configuration
+)paren
+suffix:semicolon
 )brace
 DECL|function|usb_remove_sysfs_dev_files
 r_void
@@ -700,6 +716,14 @@ op_amp
 id|dev_attr_serial
 )paren
 suffix:semicolon
+id|device_remove_file
+(paren
+id|dev
+comma
+op_amp
+id|dev_attr_configuration
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Interface fields */
 DECL|macro|usb_intf_attr
@@ -740,12 +764,15 @@ id|bInterfaceProtocol
 comma
 l_string|&quot;%02x&bslash;n&quot;
 )paren
-id|usb_intf_attr
+DECL|macro|usb_intf_str
+mdefine_line|#define usb_intf_str(name, field)&t;&t;&t;&t;&t;&bslash;&n;static ssize_t  show_##name(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_interface *intf;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_device *udev;&t;&t;&t;&t;&t;&bslash;&n;&t;int len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;intf = to_usb_interface (dev);&t;&t;&t;&t;&t;&bslash;&n;&t;udev = interface_to_usbdev (intf);&t;&t;&t;&t;&bslash;&n;&t;len = usb_string(udev, intf-&gt;cur_altsetting-&gt;desc.field, buf, PAGE_SIZE);&bslash;&n;&t;if (len &lt; 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;buf[len] = &squot;&bslash;n&squot;;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;buf[len+1] = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return len+1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(name, S_IRUGO, show_##name, NULL);
+id|usb_intf_str
 (paren
-id|iInterface
+id|interface
 comma
-l_string|&quot;%02x&bslash;n&quot;
+id|iInterface
 )paren
+suffix:semicolon
 DECL|variable|intf_attrs
 r_static
 r_struct
@@ -773,9 +800,6 @@ id|dev_attr_bInterfaceSubClass.attr
 comma
 op_amp
 id|dev_attr_bInterfaceProtocol.attr
-comma
-op_amp
-id|dev_attr_iInterface.attr
 comma
 l_int|NULL
 comma
@@ -815,6 +839,21 @@ op_amp
 id|intf_attr_grp
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|intf-&gt;cur_altsetting-&gt;desc.iInterface
+)paren
+id|device_create_file
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+op_amp
+id|dev_attr_interface
+)paren
+suffix:semicolon
 )brace
 DECL|function|usb_remove_sysfs_intf_files
 r_void
@@ -834,6 +873,21 @@ id|intf-&gt;dev.kobj
 comma
 op_amp
 id|intf_attr_grp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|intf-&gt;cur_altsetting-&gt;desc.iInterface
+)paren
+id|device_remove_file
+c_func
+(paren
+op_amp
+id|intf-&gt;dev
+comma
+op_amp
+id|dev_attr_interface
 )paren
 suffix:semicolon
 )brace
