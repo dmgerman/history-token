@@ -1,5 +1,5 @@
 multiline_comment|/*&n;   Driver for the Microtune 7202D Frontend&n;*/
-multiline_comment|/*&n;   This driver needs a copy of the Avermedia firmware. The version tested&n;   is part of the Avermedia DVB-T 1.3.26.3 Application. If the software is&n;   installed in Windows the file will be in the /Program Files/AVerTV DVB-T/&n;   directory and is called sc_main.mc. Alternatively it can &quot;extracted&quot; from&n;   the install cab files. Copy this file to /etc/dvb/sc_main.mc.&n;   With this version of the file the first 10 bytes are discarded and the&n;   next 0x4000 loaded. This may change in future versions.&n; */
+multiline_comment|/*&n;   This driver needs a copy of the Avermedia firmware. The version tested&n;   is part of the Avermedia DVB-T 1.3.26.3 Application. If the software is&n;   installed in Windows the file will be in the /Program Files/AVerTV DVB-T/&n;   directory and is called sc_main.mc. Alternatively it can &quot;extracted&quot; from&n;   the install cab files. Copy this file to &squot;/usr/lib/hotplug/firmware/sc_main.mc&squot;.&n;   With this version of the file the first 10 bytes are discarded and the&n;   next 0x4000 loaded. This may change in future versions.&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -17,7 +17,7 @@ macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
 macro_line|#ifndef DVB_SP887X_FIRMWARE_FILE
 DECL|macro|DVB_SP887X_FIRMWARE_FILE
-mdefine_line|#define DVB_SP887X_FIRMWARE_FILE &quot;/etc/dvb/sc_main.mc&quot;
+mdefine_line|#define DVB_SP887X_FIRMWARE_FILE &quot;/usr/lib/hotplug/firmware/sc_main.mc&quot;
 macro_line|#endif
 DECL|variable|sp887x_firmware
 r_static
