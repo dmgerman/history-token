@@ -181,7 +181,7 @@ id|regs-&gt;skas.is_user
 op_assign
 l_int|1
 suffix:semicolon
-id|regs-&gt;fault_addr
+id|regs-&gt;skas.fault_addr
 op_assign
 l_int|0
 suffix:semicolon

@@ -2151,7 +2151,7 @@ suffix:semicolon
 )brace
 id|page
 op_assign
-id|_alloc_pages
+id|alloc_pages
 c_func
 (paren
 id|mask

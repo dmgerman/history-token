@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * 
 macro_line|#include &quot;linux/sched.h&quot;
 macro_line|#include &quot;linux/signal.h&quot;
 macro_line|#include &quot;linux/kernel.h&quot;
+macro_line|#include &quot;linux/interrupt.h&quot;
 macro_line|#include &quot;asm/system.h&quot;
 macro_line|#include &quot;asm/pgalloc.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
