@@ -1679,6 +1679,14 @@ id|entry
 op_assign
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|acpi_disabled
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/* &squot;sleep&squot; [R/W]*/
 id|entry
 op_assign
