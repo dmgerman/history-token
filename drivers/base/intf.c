@@ -335,7 +335,7 @@ c_func
 id|entry
 comma
 op_amp
-id|cls-&gt;devices
+id|cls-&gt;devices.list
 )paren
 id|add
 c_func

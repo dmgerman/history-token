@@ -6,13 +6,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;base.h&quot;
-r_static
-id|LIST_HEAD
-c_func
-(paren
-id|class_list
-)paren
-suffix:semicolon
 DECL|macro|to_class_attr
 mdefine_line|#define to_class_attr(_attr) container_of(_attr,struct devclass_attribute,attr)
 DECL|macro|to_class
@@ -270,7 +263,7 @@ id|sysfs_create_link
 c_func
 (paren
 op_amp
-id|cls-&gt;devsubsys.kobj
+id|cls-&gt;devices.kobj
 comma
 op_amp
 id|dev-&gt;kobj
@@ -318,7 +311,7 @@ id|sysfs_remove_link
 c_func
 (paren
 op_amp
-id|cls-&gt;devsubsys.kobj
+id|cls-&gt;devices.kobj
 comma
 id|linkname
 )paren
@@ -365,7 +358,7 @@ id|sysfs_create_link
 c_func
 (paren
 op_amp
-id|drv-&gt;devclass-&gt;drvsubsys.kobj
+id|drv-&gt;devclass-&gt;drivers.kobj
 comma
 op_amp
 id|drv-&gt;kobj
@@ -415,7 +408,7 @@ id|sysfs_remove_link
 c_func
 (paren
 op_amp
-id|drv-&gt;devclass-&gt;drvsubsys.kobj
+id|drv-&gt;devclass-&gt;drivers.kobj
 comma
 id|name
 )paren
@@ -555,7 +548,7 @@ op_amp
 id|drv-&gt;class_list
 comma
 op_amp
-id|cls-&gt;drivers
+id|cls-&gt;drivers.list
 )paren
 suffix:semicolon
 id|devclass_drv_link
@@ -818,7 +811,7 @@ op_amp
 id|dev-&gt;class_list
 comma
 op_amp
-id|cls-&gt;devices
+id|cls-&gt;devices.list
 )paren
 suffix:semicolon
 multiline_comment|/* notify userspace (call /sbin/hotplug) */
@@ -1026,20 +1019,6 @@ op_star
 id|cls
 )paren
 (brace
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|cls-&gt;drivers
-)paren
-suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|cls-&gt;devices
-)paren
-suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -1078,14 +1057,14 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|cls-&gt;devsubsys.kobj.name
+id|cls-&gt;devices.kobj.name
 comma
 id|KOBJ_NAME_LEN
 comma
 l_string|&quot;devices&quot;
 )paren
 suffix:semicolon
-id|cls-&gt;devsubsys.parent
+id|cls-&gt;devices.parent
 op_assign
 op_amp
 id|cls-&gt;subsys
@@ -1094,20 +1073,20 @@ id|subsystem_register
 c_func
 (paren
 op_amp
-id|cls-&gt;devsubsys
+id|cls-&gt;devices
 )paren
 suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|cls-&gt;drvsubsys.kobj.name
+id|cls-&gt;drivers.kobj.name
 comma
 id|KOBJ_NAME_LEN
 comma
 l_string|&quot;drivers&quot;
 )paren
 suffix:semicolon
-id|cls-&gt;drvsubsys.parent
+id|cls-&gt;drivers.parent
 op_assign
 op_amp
 id|cls-&gt;subsys
@@ -1116,7 +1095,7 @@ id|subsystem_register
 c_func
 (paren
 op_amp
-id|cls-&gt;drvsubsys
+id|cls-&gt;drivers
 )paren
 suffix:semicolon
 r_return
@@ -1146,14 +1125,14 @@ id|subsystem_unregister
 c_func
 (paren
 op_amp
-id|cls-&gt;drvsubsys
+id|cls-&gt;drivers
 )paren
 suffix:semicolon
 id|subsystem_unregister
 c_func
 (paren
 op_amp
-id|cls-&gt;devsubsys
+id|cls-&gt;devices
 )paren
 suffix:semicolon
 id|subsystem_unregister
