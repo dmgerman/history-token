@@ -471,6 +471,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|node_set_online
+c_func
+(paren
+id|numa_domain
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -915,7 +921,9 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|setup_nonnuma
+r_static
 r_void
+id|__init
 id|setup_nonnuma
 c_func
 (paren
