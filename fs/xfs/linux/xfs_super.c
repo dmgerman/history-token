@@ -635,7 +635,8 @@ l_string|&quot;XFS: this kernel does not support dmapi/xdsm.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|rval
+op_minus
+id|EINVAL
 suffix:semicolon
 macro_line|#endif
 )brace
