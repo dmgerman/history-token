@@ -753,6 +753,7 @@ DECL|function|cuda_probe
 id|cuda_probe
 c_func
 (paren
+r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_PPC
@@ -857,6 +858,7 @@ DECL|function|cuda_init_via
 id|cuda_init_via
 c_func
 (paren
+r_void
 )paren
 (brace
 id|out_8
@@ -1696,6 +1698,7 @@ DECL|function|cuda_start
 id|cuda_start
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -1811,6 +1814,7 @@ DECL|function|cuda_poll
 id|cuda_poll
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int

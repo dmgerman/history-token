@@ -707,6 +707,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -2743,6 +2744,7 @@ DECL|function|find_via_pmu
 id|find_via_pmu
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if
@@ -3130,6 +3132,7 @@ DECL|function|pmu_probe
 id|pmu_probe
 c_func
 (paren
+r_void
 )paren
 (brace
 r_return
@@ -3751,6 +3754,7 @@ DECL|function|init_pmu
 id|init_pmu
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -5274,6 +5278,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -6764,6 +6769,7 @@ DECL|function|pmu_start
 id|pmu_start
 c_func
 (paren
+r_void
 )paren
 (brace
 r_struct
@@ -6839,6 +6845,7 @@ DECL|function|pmu_poll
 id|pmu_poll
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if
@@ -12673,6 +12680,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -12971,6 +12979,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

@@ -105,6 +105,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -121,6 +122,7 @@ r_int
 id|i
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|p
 op_assign
@@ -222,6 +224,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -239,6 +242,7 @@ id|i
 suffix:semicolon
 r_const
 r_char
+id|__user
 op_star
 id|p
 op_assign
@@ -387,6 +391,7 @@ id|part
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -430,6 +435,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
