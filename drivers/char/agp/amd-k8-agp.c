@@ -2284,6 +2284,7 @@ id|agp_amdk8_probe
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Not static due to IOMMU code calling it early. */
 DECL|function|agp_amdk8_init
 r_int
 id|__init
