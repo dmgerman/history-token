@@ -794,8 +794,6 @@ r_char
 op_star
 comma
 id|hfs_u32
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
