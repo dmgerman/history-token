@@ -26,6 +26,13 @@ DECL|struct|dvb_ca_en50221
 r_struct
 id|dvb_ca_en50221
 (brace
+multiline_comment|/* the module owning this structure */
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 multiline_comment|/* NOTE: the read_*, write_* and poll_slot_status functions must use locks as&n;&t; * they may be called from several threads at once */
 multiline_comment|/* functions for accessing attribute memory on the CAM */
 DECL|member|read_attribute_mem
@@ -175,6 +182,9 @@ id|ca
 comma
 r_int
 id|slot
+comma
+r_int
+id|open
 )paren
 suffix:semicolon
 multiline_comment|/* private data, used by caller */
