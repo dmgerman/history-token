@@ -136,12 +136,6 @@ id|sti_struct
 op_star
 id|default_sti
 suffix:semicolon
-r_extern
-r_struct
-id|display_switch
-id|fbcon_sti
-suffix:semicolon
-multiline_comment|/* fbcon-sti.c */
 r_int
 id|sti_init_graph
 c_func
