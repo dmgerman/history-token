@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresnte - AML Interpreter object resolution&n; *              $Revision: 50 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exresnte - AML Interpreter object resolution&n; *              $Revision: 52 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -184,6 +184,22 @@ id|AE_AML_OPERAND_TYPE
 )paren
 suffix:semicolon
 )brace
+id|status
+op_assign
+id|acpi_ds_get_package_arguments
+(paren
+id|source_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_SUCCESS
+(paren
+id|status
+)paren
+)paren
+(brace
 multiline_comment|/* Return an additional reference to the object */
 id|obj_desc
 op_assign
@@ -194,6 +210,7 @@ id|acpi_ut_add_reference
 id|obj_desc
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -227,6 +244,22 @@ id|AE_AML_OPERAND_TYPE
 )paren
 suffix:semicolon
 )brace
+id|status
+op_assign
+id|acpi_ds_get_buffer_arguments
+(paren
+id|source_desc
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_SUCCESS
+(paren
+id|status
+)paren
+)paren
+(brace
 multiline_comment|/* Return an additional reference to the object */
 id|obj_desc
 op_assign
@@ -237,6 +270,7 @@ id|acpi_ut_add_reference
 id|obj_desc
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -356,6 +390,8 @@ id|status
 op_assign
 id|acpi_ex_read_data_from_field
 (paren
+id|walk_state
+comma
 id|source_desc
 comma
 op_amp

@@ -1,14 +1,14 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 106 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acobject.h - Definition of acpi_operand_object  (Internal object only)&n; *       $Revision: 110 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACOBJECT_H
 DECL|macro|_ACOBJECT_H
 mdefine_line|#define _ACOBJECT_H
-multiline_comment|/*&n; * The acpi_operand_object  is used to pass AML operands from the dispatcher&n; * to the interpreter, and to keep track of the various handlers such as&n; * address space handlers and notify handlers.  The object is a constant&n; * size in order to allow them to be cached and reused.&n; *&n; * All variants of the acpi_operand_object  are defined with the same&n; * sequence of field types, with fields that are not used in a particular&n; * variant being named &quot;Reserved&quot;.  This is not strictly necessary, but&n; * may in some circumstances simplify understanding if these structures&n; * need to be displayed in a debugger having limited (or no) support for&n; * union types.  It also simplifies some debug code in Dump_table() which&n; * dumps multi-level values: fetching Buffer.Pointer suffices to pick up&n; * the value or next level for any of several types.&n; */
-multiline_comment|/******************************************************************************&n; *&n; * Common Descriptors&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; * The acpi_operand_object  is used to pass AML operands from the dispatcher&n; * to the interpreter, and to keep track of the various handlers such as&n; * address space handlers and notify handlers.  The object is a constant&n; * size in order to allow it to be cached and reused.&n; */
+multiline_comment|/*******************************************************************************&n; *&n; * Common Descriptors&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; * Common area for all objects.&n; *&n; * Data_type is used to differentiate between internal descriptors, and MUST&n; * be the first byte in this structure.&n; */
 DECL|macro|ACPI_OBJECT_COMMON_HEADER
 mdefine_line|#define ACPI_OBJECT_COMMON_HEADER           /* SIZE/ALIGNMENT: 32 bits, one ptr plus trailing 8-bit flag */&bslash;&n;&t;u8                          descriptor;         /* To differentiate various internal objs */&bslash;&n;&t;u8                          type;               /* acpi_object_type */&bslash;&n;&t;u16                         reference_count;    /* For object deletion management */&bslash;&n;&t;union acpi_operand_obj      *next_object;       /* Objects linked to parent NS node */&bslash;&n;&t;u8                          flags; &bslash;&n;
-multiline_comment|/* Defines for flag byte above */
+multiline_comment|/* Values for flag byte above */
 DECL|macro|AOPOBJ_RESERVED
 mdefine_line|#define AOPOBJ_RESERVED             0x01
 DECL|macro|AOPOBJ_STATIC_POINTER
@@ -27,35 +27,24 @@ mdefine_line|#define ACPI_COMMON_FIELD_INFO              /* SIZE/ALIGNMENT: 24 b
 multiline_comment|/*&n; * Fields common to both Strings and Buffers&n; */
 DECL|macro|ACPI_COMMON_BUFFER_INFO
 mdefine_line|#define ACPI_COMMON_BUFFER_INFO &bslash;&n;&t;u32                         length;
-multiline_comment|/******************************************************************************&n; *&n; * Individual Object Descriptors&n; *&n; *****************************************************************************/
+multiline_comment|/*&n; * Common fields for objects that support ASL notifications&n; */
+DECL|macro|ACPI_COMMON_NOTIFY_INFO
+mdefine_line|#define ACPI_COMMON_NOTIFY_INFO &bslash;&n;&t;union acpi_operand_obj      *sys_handler;        /* Handler for system notifies */&bslash;&n;&t;union acpi_operand_obj      *drv_handler;        /* Handler for driver notifies */&bslash;&n;&t;union acpi_operand_obj      *addr_handler;       /* Handler for Address space */
+multiline_comment|/******************************************************************************&n; *&n; * Basic data types&n; *&n; *****************************************************************************/
+DECL|struct|acpi_object_common
 r_typedef
 r_struct
-multiline_comment|/* COMMON */
+id|acpi_object_common
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|typedef|ACPI_OBJECT_COMMON
 )brace
 id|ACPI_OBJECT_COMMON
 suffix:semicolon
+DECL|struct|acpi_object_integer
 r_typedef
 r_struct
-multiline_comment|/* CACHE_LIST */
-(brace
-id|ACPI_OBJECT_COMMON_HEADER
-DECL|member|next
-r_union
-id|acpi_operand_obj
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* Link for object cache and internal lists*/
-DECL|typedef|ACPI_OBJECT_CACHE_LIST
-)brace
-id|ACPI_OBJECT_CACHE_LIST
-suffix:semicolon
-r_typedef
-r_struct
-multiline_comment|/* NUMBER - has value */
+id|acpi_object_integer
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|value
@@ -66,9 +55,11 @@ DECL|typedef|ACPI_OBJECT_INTEGER
 )brace
 id|ACPI_OBJECT_INTEGER
 suffix:semicolon
+DECL|struct|acpi_object_string
 r_typedef
 r_struct
-multiline_comment|/* STRING - has length and pointer - Null terminated, ASCII characters only */
+id|acpi_object_string
+multiline_comment|/* Null terminated, ASCII characters only */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_BUFFER_INFO
@@ -77,14 +68,15 @@ id|NATIVE_CHAR
 op_star
 id|pointer
 suffix:semicolon
-multiline_comment|/* String value in AML stream or in allocated space */
+multiline_comment|/* String in AML stream or allocated string */
 DECL|typedef|ACPI_OBJECT_STRING
 )brace
 id|ACPI_OBJECT_STRING
 suffix:semicolon
+DECL|struct|acpi_object_buffer
 r_typedef
 r_struct
-multiline_comment|/* BUFFER - has length and pointer - not null terminated */
+id|acpi_object_buffer
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_BUFFER_INFO
@@ -93,20 +85,30 @@ id|u8
 op_star
 id|pointer
 suffix:semicolon
-multiline_comment|/* Buffer value in AML stream or in allocated space */
+multiline_comment|/* Buffer in AML stream or allocated buffer */
 DECL|member|node
 id|acpi_namespace_node
 op_star
 id|node
 suffix:semicolon
 multiline_comment|/* Link back to parent node */
+DECL|member|aml_start
+id|u8
+op_star
+id|aml_start
+suffix:semicolon
+DECL|member|aml_length
+id|u32
+id|aml_length
+suffix:semicolon
 DECL|typedef|ACPI_OBJECT_BUFFER
 )brace
 id|ACPI_OBJECT_BUFFER
 suffix:semicolon
+DECL|struct|acpi_object_package
 r_typedef
 r_struct
-multiline_comment|/* PACKAGE - has count, elements, next element */
+id|acpi_object_package
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|count
@@ -114,6 +116,21 @@ id|u32
 id|count
 suffix:semicolon
 multiline_comment|/* # of elements in package */
+DECL|member|aml_length
+id|u32
+id|aml_length
+suffix:semicolon
+DECL|member|aml_start
+id|u8
+op_star
+id|aml_start
+suffix:semicolon
+DECL|member|node
+id|acpi_namespace_node
+op_star
+id|node
+suffix:semicolon
+multiline_comment|/* Link back to parent node */
 DECL|member|elements
 r_union
 id|acpi_operand_obj
@@ -122,51 +139,15 @@ op_star
 id|elements
 suffix:semicolon
 multiline_comment|/* Array of pointers to Acpi_objects */
-DECL|member|next_element
-r_union
-id|acpi_operand_obj
-op_star
-op_star
-id|next_element
-suffix:semicolon
-multiline_comment|/* used only while initializing */
 DECL|typedef|ACPI_OBJECT_PACKAGE
 )brace
 id|ACPI_OBJECT_PACKAGE
 suffix:semicolon
+multiline_comment|/******************************************************************************&n; *&n; * Complex data types&n; *&n; *****************************************************************************/
+DECL|struct|acpi_object_event
 r_typedef
 r_struct
-multiline_comment|/* DEVICE - has handle and notification handler/context */
-(brace
-id|ACPI_OBJECT_COMMON_HEADER
-DECL|member|sys_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|sys_handler
-suffix:semicolon
-multiline_comment|/* Handler for system notifies */
-DECL|member|drv_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|drv_handler
-suffix:semicolon
-multiline_comment|/* Handler for driver notifies */
-DECL|member|addr_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|addr_handler
-suffix:semicolon
-multiline_comment|/* Handler for Address space */
-DECL|typedef|ACPI_OBJECT_DEVICE
-)brace
-id|ACPI_OBJECT_DEVICE
-suffix:semicolon
-r_typedef
-r_struct
-multiline_comment|/* EVENT */
+id|acpi_object_event
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|semaphore
@@ -180,9 +161,10 @@ id|ACPI_OBJECT_EVENT
 suffix:semicolon
 DECL|macro|INFINITE_CONCURRENCY
 mdefine_line|#define INFINITE_CONCURRENCY        0xFF
+DECL|struct|acpi_object_method
 r_typedef
 r_struct
-multiline_comment|/* METHOD */
+id|acpi_object_method
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|method_flags
@@ -223,11 +205,10 @@ DECL|typedef|ACPI_OBJECT_METHOD
 )brace
 id|ACPI_OBJECT_METHOD
 suffix:semicolon
-DECL|struct|acpi_obj_mutex
+DECL|struct|acpi_object_mutex
 r_typedef
 r_struct
-id|acpi_obj_mutex
-multiline_comment|/* MUTEX */
+id|acpi_object_mutex
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|sync_level
@@ -267,22 +248,15 @@ DECL|typedef|ACPI_OBJECT_MUTEX
 )brace
 id|ACPI_OBJECT_MUTEX
 suffix:semicolon
+DECL|struct|acpi_object_region
 r_typedef
 r_struct
-multiline_comment|/* REGION */
+id|acpi_object_region
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|space_id
 id|u8
 id|space_id
-suffix:semicolon
-DECL|member|length
-id|u32
-id|length
-suffix:semicolon
-DECL|member|address
-id|ACPI_PHYSICAL_ADDRESS
-id|address
 suffix:semicolon
 DECL|member|addr_handler
 r_union
@@ -303,15 +277,49 @@ id|acpi_operand_obj
 op_star
 id|next
 suffix:semicolon
+DECL|member|length
+id|u32
+id|length
+suffix:semicolon
+DECL|member|address
+id|ACPI_PHYSICAL_ADDRESS
+id|address
+suffix:semicolon
 DECL|typedef|ACPI_OBJECT_REGION
 )brace
 id|ACPI_OBJECT_REGION
 suffix:semicolon
+multiline_comment|/******************************************************************************&n; *&n; * Objects that can be notified.  All share a common Notify_info area.&n; *&n; *****************************************************************************/
+DECL|struct|acpi_object_notify_common
 r_typedef
 r_struct
-multiline_comment|/* POWER RESOURCE - has Handle and notification handler/context*/
+id|acpi_object_notify_common
+multiline_comment|/* COMMON NOTIFY for POWER, PROCESSOR, DEVICE, and THERMAL */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
+id|ACPI_COMMON_NOTIFY_INFO
+DECL|typedef|ACPI_OBJECT_NOTIFY_COMMON
+)brace
+id|ACPI_OBJECT_NOTIFY_COMMON
+suffix:semicolon
+DECL|struct|acpi_object_device
+r_typedef
+r_struct
+id|acpi_object_device
+(brace
+id|ACPI_OBJECT_COMMON_HEADER
+id|ACPI_COMMON_NOTIFY_INFO
+DECL|typedef|ACPI_OBJECT_DEVICE
+)brace
+id|ACPI_OBJECT_DEVICE
+suffix:semicolon
+DECL|struct|acpi_object_power_resource
+r_typedef
+r_struct
+id|acpi_object_power_resource
+(brace
+id|ACPI_OBJECT_COMMON_HEADER
+id|ACPI_COMMON_NOTIFY_INFO
 DECL|member|system_level
 id|u32
 id|system_level
@@ -320,29 +328,17 @@ DECL|member|resource_order
 id|u32
 id|resource_order
 suffix:semicolon
-DECL|member|sys_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|sys_handler
-suffix:semicolon
-multiline_comment|/* Handler for system notifies */
-DECL|member|drv_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|drv_handler
-suffix:semicolon
-multiline_comment|/* Handler for driver notifies */
 DECL|typedef|ACPI_OBJECT_POWER_RESOURCE
 )brace
 id|ACPI_OBJECT_POWER_RESOURCE
 suffix:semicolon
+DECL|struct|acpi_object_processor
 r_typedef
 r_struct
-multiline_comment|/* PROCESSOR - has Handle and notification handler/context*/
+id|acpi_object_processor
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
+id|ACPI_COMMON_NOTIFY_INFO
 DECL|member|proc_id
 id|u32
 id|proc_id
@@ -355,64 +351,26 @@ DECL|member|address
 id|ACPI_IO_ADDRESS
 id|address
 suffix:semicolon
-DECL|member|sys_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|sys_handler
-suffix:semicolon
-multiline_comment|/* Handler for system notifies */
-DECL|member|drv_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|drv_handler
-suffix:semicolon
-multiline_comment|/* Handler for driver notifies */
-DECL|member|addr_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|addr_handler
-suffix:semicolon
-multiline_comment|/* Handler for Address space */
 DECL|typedef|ACPI_OBJECT_PROCESSOR
 )brace
 id|ACPI_OBJECT_PROCESSOR
 suffix:semicolon
+DECL|struct|acpi_object_thermal_zone
 r_typedef
 r_struct
-multiline_comment|/* THERMAL ZONE - has Handle and Handler/Context */
+id|acpi_object_thermal_zone
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
-DECL|member|sys_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|sys_handler
-suffix:semicolon
-multiline_comment|/* Handler for system notifies */
-DECL|member|drv_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|drv_handler
-suffix:semicolon
-multiline_comment|/* Handler for driver notifies */
-DECL|member|addr_handler
-r_union
-id|acpi_operand_obj
-op_star
-id|addr_handler
-suffix:semicolon
-multiline_comment|/* Handler for Address space */
+id|ACPI_COMMON_NOTIFY_INFO
 DECL|typedef|ACPI_OBJECT_THERMAL_ZONE
 )brace
 id|ACPI_OBJECT_THERMAL_ZONE
 suffix:semicolon
-multiline_comment|/*&n; * Fields.  All share a common header/info field.&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Fields.  All share a common header/info field.&n; *&n; *****************************************************************************/
+DECL|struct|acpi_object_field_common
 r_typedef
 r_struct
+id|acpi_object_field_common
 multiline_comment|/* COMMON FIELD (for BUFFER, REGION, BANK, and INDEX fields) */
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
@@ -429,9 +387,10 @@ DECL|typedef|ACPI_OBJECT_FIELD_COMMON
 )brace
 id|ACPI_OBJECT_FIELD_COMMON
 suffix:semicolon
+DECL|struct|acpi_object_region_field
 r_typedef
 r_struct
-multiline_comment|/* REGION FIELD */
+id|acpi_object_region_field
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_FIELD_INFO
@@ -446,9 +405,10 @@ DECL|typedef|ACPI_OBJECT_REGION_FIELD
 )brace
 id|ACPI_OBJECT_REGION_FIELD
 suffix:semicolon
+DECL|struct|acpi_object_bank_field
 r_typedef
 r_struct
-multiline_comment|/* BANK FIELD */
+id|acpi_object_bank_field
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_FIELD_INFO
@@ -470,9 +430,10 @@ DECL|typedef|ACPI_OBJECT_BANK_FIELD
 )brace
 id|ACPI_OBJECT_BANK_FIELD
 suffix:semicolon
+DECL|struct|acpi_object_index_field
 r_typedef
 r_struct
-multiline_comment|/* INDEX FIELD */
+id|acpi_object_index_field
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_FIELD_INFO
@@ -496,9 +457,10 @@ DECL|typedef|ACPI_OBJECT_INDEX_FIELD
 id|ACPI_OBJECT_INDEX_FIELD
 suffix:semicolon
 multiline_comment|/* The Buffer_field is different in that it is part of a Buffer, not an Op_region */
+DECL|struct|acpi_object_buffer_field
 r_typedef
 r_struct
-multiline_comment|/* BUFFER FIELD */
+id|acpi_object_buffer_field
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 id|ACPI_COMMON_FIELD_INFO
@@ -513,10 +475,11 @@ DECL|typedef|ACPI_OBJECT_BUFFER_FIELD
 )brace
 id|ACPI_OBJECT_BUFFER_FIELD
 suffix:semicolon
-multiline_comment|/*&n; * Handlers&n; */
+multiline_comment|/******************************************************************************&n; *&n; * Objects for handlers&n; *&n; *****************************************************************************/
+DECL|struct|acpi_object_notify_handler
 r_typedef
 r_struct
-multiline_comment|/* NOTIFY HANDLER */
+id|acpi_object_notify_handler
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|node
@@ -541,9 +504,10 @@ suffix:semicolon
 multiline_comment|/* Flags for address handler */
 DECL|macro|ACPI_ADDR_HANDLER_DEFAULT_INSTALLED
 mdefine_line|#define ACPI_ADDR_HANDLER_DEFAULT_INSTALLED  0x1
+DECL|struct|acpi_object_addr_handler
 r_typedef
 r_struct
-multiline_comment|/* ADDRESS HANDLER */
+id|acpi_object_addr_handler
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|space_id
@@ -590,10 +554,12 @@ DECL|typedef|ACPI_OBJECT_ADDR_HANDLER
 )brace
 id|ACPI_OBJECT_ADDR_HANDLER
 suffix:semicolon
+multiline_comment|/******************************************************************************&n; *&n; * Special internal objects&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; * The Reference object type is used for these opcodes:&n; * Arg[0-6], Local[0-7], Index_op, Name_op, Zero_op, One_op, Ones_op, Debug_op&n; */
+DECL|struct|acpi_object_reference
 r_typedef
 r_struct
-multiline_comment|/* Reference - Local object type */
+id|acpi_object_reference
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|target_type
@@ -633,9 +599,10 @@ DECL|typedef|ACPI_OBJECT_REFERENCE
 id|ACPI_OBJECT_REFERENCE
 suffix:semicolon
 multiline_comment|/*&n; * Extra object is used as additional storage for types that&n; * have AML code in their declarations (Term_args) that must be&n; * evaluated at run time.&n; *&n; * Currently: Region and Field_unit types&n; */
+DECL|struct|acpi_object_extra
 r_typedef
 r_struct
-multiline_comment|/* EXTRA */
+id|acpi_object_extra
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|byte_fill1
@@ -671,9 +638,11 @@ DECL|typedef|ACPI_OBJECT_EXTRA
 )brace
 id|ACPI_OBJECT_EXTRA
 suffix:semicolon
+multiline_comment|/* Additional data that can be attached to namespace nodes */
+DECL|struct|acpi_object_data
 r_typedef
 r_struct
-multiline_comment|/* DATA */
+id|acpi_object_data
 (brace
 id|ACPI_OBJECT_COMMON_HEADER
 DECL|member|handler
@@ -689,7 +658,25 @@ DECL|typedef|ACPI_OBJECT_DATA
 )brace
 id|ACPI_OBJECT_DATA
 suffix:semicolon
-multiline_comment|/******************************************************************************&n; *&n; * acpi_operand_object  Descriptor - a giant union of all of the above&n; *&n; *****************************************************************************/
+multiline_comment|/* Structure used when objects are cached for reuse */
+DECL|struct|acpi_object_cache_list
+r_typedef
+r_struct
+id|acpi_object_cache_list
+(brace
+id|ACPI_OBJECT_COMMON_HEADER
+DECL|member|next
+r_union
+id|acpi_operand_obj
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* Link for object cache and internal lists*/
+DECL|typedef|ACPI_OBJECT_CACHE_LIST
+)brace
+id|ACPI_OBJECT_CACHE_LIST
+suffix:semicolon
+multiline_comment|/******************************************************************************&n; *&n; * acpi_operand_object Descriptor - a giant union of all of the above&n; *&n; *****************************************************************************/
 DECL|union|acpi_operand_obj
 r_typedef
 r_union
@@ -698,10 +685,6 @@ id|acpi_operand_obj
 DECL|member|common
 id|ACPI_OBJECT_COMMON
 id|common
-suffix:semicolon
-DECL|member|cache
-id|ACPI_OBJECT_CACHE_LIST
-id|cache
 suffix:semicolon
 DECL|member|integer
 id|ACPI_OBJECT_INTEGER
@@ -719,14 +702,6 @@ DECL|member|package
 id|ACPI_OBJECT_PACKAGE
 id|package
 suffix:semicolon
-DECL|member|buffer_field
-id|ACPI_OBJECT_BUFFER_FIELD
-id|buffer_field
-suffix:semicolon
-DECL|member|device
-id|ACPI_OBJECT_DEVICE
-id|device
-suffix:semicolon
 DECL|member|event
 id|ACPI_OBJECT_EVENT
 id|event
@@ -742,6 +717,14 @@ suffix:semicolon
 DECL|member|region
 id|ACPI_OBJECT_REGION
 id|region
+suffix:semicolon
+DECL|member|common_notify
+id|ACPI_OBJECT_NOTIFY_COMMON
+id|common_notify
+suffix:semicolon
+DECL|member|device
+id|ACPI_OBJECT_DEVICE
+id|device
 suffix:semicolon
 DECL|member|power_resource
 id|ACPI_OBJECT_POWER_RESOURCE
@@ -763,6 +746,10 @@ DECL|member|field
 id|ACPI_OBJECT_REGION_FIELD
 id|field
 suffix:semicolon
+DECL|member|buffer_field
+id|ACPI_OBJECT_BUFFER_FIELD
+id|buffer_field
+suffix:semicolon
 DECL|member|bank_field
 id|ACPI_OBJECT_BANK_FIELD
 id|bank_field
@@ -770,10 +757,6 @@ suffix:semicolon
 DECL|member|index_field
 id|ACPI_OBJECT_INDEX_FIELD
 id|index_field
-suffix:semicolon
-DECL|member|reference
-id|ACPI_OBJECT_REFERENCE
-id|reference
 suffix:semicolon
 DECL|member|notify_handler
 id|ACPI_OBJECT_NOTIFY_HANDLER
@@ -783,6 +766,10 @@ DECL|member|addr_handler
 id|ACPI_OBJECT_ADDR_HANDLER
 id|addr_handler
 suffix:semicolon
+DECL|member|reference
+id|ACPI_OBJECT_REFERENCE
+id|reference
+suffix:semicolon
 DECL|member|extra
 id|ACPI_OBJECT_EXTRA
 id|extra
@@ -790,6 +777,10 @@ suffix:semicolon
 DECL|member|data
 id|ACPI_OBJECT_DATA
 id|data
+suffix:semicolon
+DECL|member|cache
+id|ACPI_OBJECT_CACHE_LIST
+id|cache
 suffix:semicolon
 DECL|typedef|acpi_operand_object
 )brace

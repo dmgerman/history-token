@@ -343,7 +343,7 @@ op_star
 id|packet
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * The generic read, write and lock functions.  All recognize the local node ID&n; * and act accordingly.  Read and write automatically use quadlet commands if&n; * length == 4 and and block commands otherwise (however, they do not yet&n; * support lengths that are not a multiple of 4).&n; */
+multiline_comment|/*&n; * The generic read, write and lock functions.  All recognize the local node ID&n; * and act accordingly.  Read and write automatically use quadlet commands if&n; * length == 4 and and block commands otherwise (however, they do not yet&n; * support lengths that are not a multiple of 4).  You must explicitly specifiy&n; * the generation for which the node ID is valid, to avoid sending packets to&n; * the wrong nodes when we race with a bus reset.&n; */
 r_int
 id|hpsb_read
 c_func
@@ -355,6 +355,10 @@ id|host
 comma
 id|nodeid_t
 id|node
+comma
+r_int
+r_int
+id|generation
 comma
 id|u64
 id|addr
@@ -379,6 +383,10 @@ comma
 id|nodeid_t
 id|node
 comma
+r_int
+r_int
+id|generation
+comma
 id|u64
 id|addr
 comma
@@ -401,6 +409,10 @@ id|host
 comma
 id|nodeid_t
 id|node
+comma
+r_int
+r_int
+id|generation
 comma
 id|u64
 id|addr

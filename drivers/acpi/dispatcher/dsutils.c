@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 88 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: dsutils - Dispatcher utilities&n; *              $Revision: 89 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -192,6 +192,30 @@ id|op-&gt;parent-&gt;opcode
 op_eq
 id|AML_DATA_REGION_OP
 )paren
+op_logical_or
+(paren
+id|op-&gt;parent-&gt;opcode
+op_eq
+id|AML_PACKAGE_OP
+)paren
+op_logical_or
+(paren
+id|op-&gt;parent-&gt;opcode
+op_eq
+id|AML_VAR_PACKAGE_OP
+)paren
+op_logical_or
+(paren
+id|op-&gt;parent-&gt;opcode
+op_eq
+id|AML_BUFFER_OP
+)paren
+op_logical_or
+(paren
+id|op-&gt;parent-&gt;opcode
+op_eq
+id|AML_INT_EVAL_SUBTREE_OP
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * These opcodes allow Term_arg(s) as operands and therefore&n;&t;&t;&t; * the operands can be method calls.  The result is used.&n;&t;&t;&t; */
@@ -202,9 +226,9 @@ suffix:semicolon
 r_goto
 id|result_not_used
 suffix:semicolon
-multiline_comment|/*&n;&t; * In all other cases. the parent will actually use the return&n;&t; * object, so keep it.&n;&t; */
 r_default
 suffix:colon
+multiline_comment|/*&n;&t;&t; * In all other cases. the parent will actually use the return&n;&t;&t; * object, so keep it.&n;&t;&t; */
 r_goto
 id|result_used
 suffix:semicolon

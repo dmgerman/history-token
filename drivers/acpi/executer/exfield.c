@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfield - ACPI AML (p-code) execution - field manipulation&n; *              $Revision: 105 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exfield - ACPI AML (p-code) execution - field manipulation&n; *              $Revision: 108 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acdispat.h&quot;
@@ -13,11 +13,15 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exfield&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_read_data_from_field&n; *&n; * PARAMETERS:  Obj_desc            - The named field&n; *              Ret_buffer_desc     - Where the return data object is stored&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read from a named field.  Returns either an Integer or a&n; *              Buffer, depending on the size of the field.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_read_data_from_field&n; *&n; * PARAMETERS:  Walk_state          - Current execution state&n; *              Obj_desc            - The named field&n; *              Ret_buffer_desc     - Where the return data object is stored&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Read from a named field.  Returns either an Integer or a&n; *              Buffer, depending on the size of the field.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_read_data_from_field
 id|acpi_ex_read_data_from_field
 (paren
+id|acpi_walk_state
+op_star
+id|walk_state
+comma
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -37,6 +41,9 @@ id|buffer_desc
 suffix:semicolon
 id|u32
 id|length
+suffix:semicolon
+id|u32
+id|integer_size
 suffix:semicolon
 r_void
 op_star
@@ -118,15 +125,37 @@ id|ACPI_ROUND_BITS_UP_TO_BYTES
 id|obj_desc-&gt;field.bit_length
 )paren
 suffix:semicolon
+multiline_comment|/* Handle both ACPI 1.0 and ACPI 2.0 Integer widths */
+id|integer_size
+op_assign
+r_sizeof
+(paren
+id|acpi_integer
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|walk_state-&gt;method_node-&gt;flags
+op_amp
+id|ANOBJ_DATA_WIDTH_32
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * We are running a method that exists in a 32-bit ACPI table.&n;&t;&t; * Integer size is 4.&n;&t;&t; */
+id|integer_size
+op_assign
+r_sizeof
+(paren
+id|u32
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|length
 OG
-r_sizeof
-(paren
-id|acpi_integer
-)paren
+id|integer_size
 )paren
 (brace
 multiline_comment|/* Field is too large for an Integer, create a Buffer instead */
@@ -176,6 +205,10 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+id|buffer_desc-&gt;common.flags
+op_assign
+id|AOPOBJ_DATA_VALID
+suffix:semicolon
 id|buffer_desc-&gt;buffer.length
 op_assign
 id|length
@@ -210,10 +243,11 @@ suffix:semicolon
 )brace
 id|length
 op_assign
-r_sizeof
-(paren
+id|integer_size
+suffix:semicolon
 id|buffer_desc-&gt;integer.value
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 id|buffer
 op_assign
@@ -224,7 +258,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_BFIELD
 comma
 l_string|&quot;Obj=%p Type=%X Buf=%p Len=%X&bslash;n&quot;
 comma
@@ -241,7 +275,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_BFIELD
 comma
 l_string|&quot;Field_write: Bit_len=%X Bit_off=%X Byte_off=%X&bslash;n&quot;
 comma
@@ -543,7 +577,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_BFIELD
 comma
 l_string|&quot;Obj=%p Type=%X Buf=%p Len=%X&bslash;n&quot;
 comma
@@ -560,7 +594,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_BFIELD
 comma
 l_string|&quot;Field_read: Bit_len=%X Bit_off=%X Byte_off=%X&bslash;n&quot;
 comma

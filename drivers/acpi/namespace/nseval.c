@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nseval - Object evaluation interfaces -- includes control&n; *                       method lookup and execution.&n; *              $Revision: 109 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: nseval - Object evaluation interfaces -- includes control&n; *                       method lookup and execution.&n; *              $Revision: 112 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -201,7 +201,7 @@ id|status
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_NAMES
 comma
 l_string|&quot;Object [%s] not found [%s]&bslash;n&quot;
 comma
@@ -222,7 +222,7 @@ multiline_comment|/*&n;&t; * Now that we have a handle to the object, we can att
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_NAMES
 comma
 l_string|&quot;%s [%p] Value %p&bslash;n&quot;
 comma
@@ -251,7 +251,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_NAMES
 comma
 l_string|&quot;*** Completed eval of object %s ***&bslash;n&quot;
 comma
@@ -401,7 +401,7 @@ id|status
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_NAMES
 comma
 l_string|&quot;Object at [%s] was not found, status=%.4X&bslash;n&quot;
 comma
@@ -419,7 +419,7 @@ multiline_comment|/*&n;&t; * Now that we have a handle to the object, we can att
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_NAMES
 comma
 l_string|&quot;%s [%p] Value %p&bslash;n&quot;
 comma
@@ -448,7 +448,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_NAMES
 comma
 l_string|&quot;*** Completed eval of object %s ***&bslash;n&quot;
 comma
@@ -760,30 +760,13 @@ id|AE_NULL_OBJECT
 )paren
 suffix:semicolon
 )brace
-id|ACPI_DEBUG_PRINT
-(paren
-(paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;Control method at Offset %p Length %x]&bslash;n&quot;
-comma
-id|obj_desc-&gt;method.aml_start
-op_plus
-l_int|1
-comma
-id|obj_desc-&gt;method.aml_length
-op_minus
-l_int|1
-)paren
-)paren
-suffix:semicolon
 id|ACPI_DUMP_PATHNAME
 (paren
 id|method_node
 comma
 l_string|&quot;Ns_execute_control_method: Executing&quot;
 comma
-id|ACPI_LV_NAMES
+id|ACPI_LV_INFO
 comma
 id|_COMPONENT
 )paren
@@ -791,12 +774,16 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_NAMES
+id|ACPI_DB_EXEC
 comma
-l_string|&quot;At offset %p&bslash;n&quot;
+l_string|&quot;Method at AML address %p Length %x&bslash;n&quot;
 comma
 id|obj_desc-&gt;method.aml_start
 op_plus
+l_int|1
+comma
+id|obj_desc-&gt;method.aml_length
+op_minus
 l_int|1
 )paren
 )paren
@@ -984,7 +971,7 @@ suffix:semicolon
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
-id|ACPI_DB_INFO
+id|ACPI_DB_NAMES
 comma
 l_string|&quot;Returning obj %p&bslash;n&quot;
 comma

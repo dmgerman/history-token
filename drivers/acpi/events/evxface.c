@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *              $Revision: 125 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evxface - External interfaces for ACPI events&n; *              $Revision: 126 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;achware.h&quot;
@@ -362,7 +362,7 @@ id|notify_obj
 suffix:semicolon
 id|acpi_namespace_node
 op_star
-id|device_node
+id|node
 suffix:semicolon
 id|acpi_status
 id|status
@@ -376,6 +376,11 @@ multiline_comment|/* Parameter validation */
 r_if
 c_cond
 (paren
+(paren
+op_logical_neg
+id|device
+)paren
+op_logical_or
 (paren
 op_logical_neg
 id|handler
@@ -417,7 +422,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Convert and validate the device handle */
-id|device_node
+id|node
 op_assign
 id|acpi_ns_map_handle_to_node
 (paren
@@ -428,7 +433,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|device_node
+id|node
 )paren
 (brace
 id|status
@@ -491,7 +496,7 @@ id|ACPI_SYSTEM_NOTIFY
 (brace
 id|acpi_gbl_sys_notify.node
 op_assign
-id|device_node
+id|node
 suffix:semicolon
 id|acpi_gbl_sys_notify.handler
 op_assign
@@ -507,7 +512,7 @@ multiline_comment|/* ACPI_DEVICE_NOTIFY */
 (brace
 id|acpi_gbl_drv_notify.node
 op_assign
-id|device_node
+id|node
 suffix:semicolon
 id|acpi_gbl_drv_notify.handler
 op_assign
@@ -523,38 +528,20 @@ multiline_comment|/* Global notify handler installed */
 multiline_comment|/*&n;&t; * All Other Objects:&n;&t; * Caller will only receive notifications specific to the target object.&n;&t; * Note that only certain object types can receive notifications.&n;&t; */
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * These are the ONLY objects that can receive ACPI notifications&n;&t;&t; */
+multiline_comment|/* Notifies allowed on this object? */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|acpi_ev_is_notify_object
 (paren
-id|device_node-&gt;type
-op_ne
-id|ACPI_TYPE_DEVICE
-)paren
-op_logical_and
-(paren
-id|device_node-&gt;type
-op_ne
-id|ACPI_TYPE_PROCESSOR
-)paren
-op_logical_and
-(paren
-id|device_node-&gt;type
-op_ne
-id|ACPI_TYPE_POWER
-)paren
-op_logical_and
-(paren
-id|device_node-&gt;type
-op_ne
-id|ACPI_TYPE_THERMAL
+id|node
 )paren
 )paren
 (brace
 id|status
 op_assign
-id|AE_BAD_PARAMETER
+id|AE_TYPE
 suffix:semicolon
 r_goto
 id|unlock_and_exit
@@ -565,7 +552,7 @@ id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
-id|device_node
+id|node
 )paren
 suffix:semicolon
 r_if
@@ -585,7 +572,7 @@ op_eq
 id|ACPI_SYSTEM_NOTIFY
 )paren
 op_logical_and
-id|obj_desc-&gt;device.sys_handler
+id|obj_desc-&gt;common_notify.sys_handler
 )paren
 op_logical_or
 (paren
@@ -595,7 +582,7 @@ op_eq
 id|ACPI_DEVICE_NOTIFY
 )paren
 op_logical_and
-id|obj_desc-&gt;device.drv_handler
+id|obj_desc-&gt;common_notify.drv_handler
 )paren
 )paren
 (brace
@@ -615,7 +602,7 @@ id|obj_desc
 op_assign
 id|acpi_ut_create_internal_object
 (paren
-id|device_node-&gt;type
+id|node-&gt;type
 )paren
 suffix:semicolon
 r_if
@@ -642,7 +629,7 @@ id|device
 comma
 id|obj_desc
 comma
-id|device_node-&gt;type
+id|node-&gt;type
 )paren
 suffix:semicolon
 r_if
@@ -684,7 +671,7 @@ suffix:semicolon
 )brace
 id|notify_obj-&gt;notify_handler.node
 op_assign
-id|device_node
+id|node
 suffix:semicolon
 id|notify_obj-&gt;notify_handler.handler
 op_assign
@@ -702,7 +689,7 @@ op_eq
 id|ACPI_SYSTEM_NOTIFY
 )paren
 (brace
-id|obj_desc-&gt;device.sys_handler
+id|obj_desc-&gt;common_notify.sys_handler
 op_assign
 id|notify_obj
 suffix:semicolon
@@ -710,7 +697,7 @@ suffix:semicolon
 r_else
 multiline_comment|/* ACPI_DEVICE_NOTIFY */
 (brace
-id|obj_desc-&gt;device.drv_handler
+id|obj_desc-&gt;common_notify.drv_handler
 op_assign
 id|notify_obj
 suffix:semicolon
@@ -757,7 +744,7 @@ id|obj_desc
 suffix:semicolon
 id|acpi_namespace_node
 op_star
-id|device_node
+id|node
 suffix:semicolon
 id|acpi_status
 id|status
@@ -771,6 +758,11 @@ multiline_comment|/* Parameter validation */
 r_if
 c_cond
 (paren
+(paren
+op_logical_neg
+id|device
+)paren
+op_logical_or
 (paren
 op_logical_neg
 id|handler
@@ -812,7 +804,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* Convert and validate the device handle */
-id|device_node
+id|node
 op_assign
 id|acpi_ns_map_handle_to_node
 (paren
@@ -823,7 +815,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|device_node
+id|node
 )paren
 (brace
 id|status
@@ -926,38 +918,20 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * All Other Objects&n;&t; */
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * These are the ONLY objects that can receive ACPI notifications&n;&t;&t; */
+multiline_comment|/* Notifies allowed on this object? */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|acpi_ev_is_notify_object
 (paren
-id|device_node-&gt;type
-op_ne
-id|ACPI_TYPE_DEVICE
-)paren
-op_logical_and
-(paren
-id|device_node-&gt;type
-op_ne
-id|ACPI_TYPE_PROCESSOR
-)paren
-op_logical_and
-(paren
-id|device_node-&gt;type
-op_ne
-id|ACPI_TYPE_POWER
-)paren
-op_logical_and
-(paren
-id|device_node-&gt;type
-op_ne
-id|ACPI_TYPE_THERMAL
+id|node
 )paren
 )paren
 (brace
 id|status
 op_assign
-id|AE_BAD_PARAMETER
+id|AE_TYPE
 suffix:semicolon
 r_goto
 id|unlock_and_exit
@@ -968,7 +942,7 @@ id|obj_desc
 op_assign
 id|acpi_ns_get_attached_object
 (paren
-id|device_node
+id|node
 )paren
 suffix:semicolon
 r_if
@@ -997,14 +971,14 @@ id|ACPI_SYSTEM_NOTIFY
 (brace
 id|notify_obj
 op_assign
-id|obj_desc-&gt;device.sys_handler
+id|obj_desc-&gt;common_notify.sys_handler
 suffix:semicolon
 )brace
 r_else
 (brace
 id|notify_obj
 op_assign
-id|obj_desc-&gt;device.drv_handler
+id|obj_desc-&gt;common_notify.drv_handler
 suffix:semicolon
 )brace
 r_if
@@ -1039,14 +1013,14 @@ op_eq
 id|ACPI_SYSTEM_NOTIFY
 )paren
 (brace
-id|obj_desc-&gt;device.sys_handler
+id|obj_desc-&gt;common_notify.sys_handler
 op_assign
 l_int|NULL
 suffix:semicolon
 )brace
 r_else
 (brace
-id|obj_desc-&gt;device.drv_handler
+id|obj_desc-&gt;common_notify.drv_handler
 op_assign
 l_int|NULL
 suffix:semicolon

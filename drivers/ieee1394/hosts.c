@@ -105,6 +105,7 @@ suffix:colon
 id|dummy_devctl
 )brace
 suffix:semicolon
+multiline_comment|/**&n; * hpsb_ref_host - increase reference count for host controller.&n; * @host: the host controller&n; *&n; * Increase the reference count for the specified host controller.&n; * When holding a reference to a host, the memory allocated for the&n; * host struct will not be freed and the host is guaranteed to be in a&n; * consistent state.  The driver may be unloaded or the controller may&n; * be removed (PCMCIA), but the host struct will remain valid.&n; */
 DECL|function|hpsb_ref_host
 r_int
 id|hpsb_ref_host
@@ -165,9 +166,6 @@ id|host_list
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
 id|host-&gt;ops
 op_member_access_from_pointer
 id|devctl
@@ -179,8 +177,7 @@ id|MODIFY_USAGE
 comma
 l_int|1
 )paren
-)paren
-(brace
+suffix:semicolon
 id|host-&gt;refcount
 op_increment
 suffix:semicolon
@@ -188,7 +185,6 @@ id|retval
 op_assign
 l_int|1
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 )brace
@@ -206,6 +202,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * hpsb_unref_host - decrease reference count for host controller.&n; * @host: the host controller&n; *&n; * Decrease the reference count for the specified host controller.&n; * When the reference count reaches zero, the memory allocated for the&n; * &amp;hpsb_host will be freed.&n; */
 DECL|function|hpsb_unref_host
 r_void
 id|hpsb_unref_host
@@ -251,7 +248,6 @@ c_cond
 op_logical_neg
 id|host-&gt;refcount
 op_logical_and
-op_logical_neg
 id|host-&gt;is_shutdown
 )paren
 id|kfree
@@ -270,6 +266,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * hpsb_alloc_host - allocate a new host controller.&n; * @drv: the driver that will manage the host controller&n; * @extra: number of extra bytes to allocate for the driver&n; *&n; * Allocate a &amp;hpsb_host and initialize the general subsystem specific&n; * fields.  If the driver needs to store per host data, as drivers&n; * usually do, the amount of memory required can be specified by the&n; * @extra parameter.  Once allocated, the driver should initialize the&n; * driver specific parts, enable the controller and make it available&n; * to the general subsystem using hpsb_add_host().&n; *&n; * The &amp;hpsb_host is allocated with an single initial reference&n; * belonging to the driver.  Once the driver is done with the struct,&n; * for example, when the driver is unloaded, it should release this&n; * reference using hpsb_unref_host().&n; *&n; * Return Value: a pointer to the &amp;hpsb_host if succesful, %NULL if&n; * no memory was available.&n; */
 DECL|function|hpsb_alloc_host
 r_struct
 id|hpsb_host
@@ -328,9 +325,13 @@ r_sizeof
 r_struct
 id|hpsb_host
 )paren
-op_plus
-id|extra
 )paren
+suffix:semicolon
+id|h-&gt;hostdata
+op_assign
+id|h
+op_plus
+l_int|1
 suffix:semicolon
 id|h-&gt;driver
 op_assign
@@ -340,10 +341,8 @@ id|h-&gt;ops
 op_assign
 id|drv-&gt;ops
 suffix:semicolon
-id|h-&gt;hostdata
+id|h-&gt;refcount
 op_assign
-id|h
-op_plus
 l_int|1
 suffix:semicolon
 id|INIT_LIST_HEAD
@@ -565,18 +564,6 @@ id|host-&gt;host_list
 suffix:semicolon
 id|drv-&gt;number_of_hosts
 op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|host-&gt;refcount
-)paren
-id|kfree
-c_func
-(paren
-id|host
-)paren
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func

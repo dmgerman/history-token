@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - ACPI device notification handler dispatch&n; *                       and ACPI Global Lock support&n; *              $Revision: 47 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: evmisc - Miscellaneous event manager support functions&n; *              $Revision: 48 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acevents.h&quot;
@@ -11,6 +11,49 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evmisc&quot;
 )paren
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_is_notify_object&n; *&n; * PARAMETERS:  Node            - Node to check&n; *&n; * RETURN:      TRUE if notifies allowed on this object&n; *&n; * DESCRIPTION: Check type of node for a object that supports notifies.&n; *&n; *              TBD: This could be replaced by a flag bit in the node.&n; *&n; ******************************************************************************/
+id|u8
+DECL|function|acpi_ev_is_notify_object
+id|acpi_ev_is_notify_object
+(paren
+id|acpi_namespace_node
+op_star
+id|node
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|node-&gt;type
+)paren
+(brace
+r_case
+id|ACPI_TYPE_DEVICE
+suffix:colon
+r_case
+id|ACPI_TYPE_PROCESSOR
+suffix:colon
+r_case
+id|ACPI_TYPE_POWER
+suffix:colon
+r_case
+id|ACPI_TYPE_THERMAL
+suffix:colon
+multiline_comment|/*&n;&t;&t; * These are the ONLY objects that can receive ACPI notifications&n;&t;&t; */
+r_return
+(paren
+id|TRUE
+)paren
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+(paren
+id|FALSE
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ev_get_gpe_register_index&n; *&n; * PARAMETERS:  Gpe_number      - Raw GPE number&n; *&n; * RETURN:      None.&n; *&n; * DESCRIPTION: Returns the register index (index into the GPE register info&n; *              table) associated with this GPE.&n; *&n; ******************************************************************************/
 id|u32
 DECL|function|acpi_ev_get_gpe_register_index

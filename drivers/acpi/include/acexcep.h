@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 57 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 59 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACEXCEP_H__
 DECL|macro|__ACEXCEP_H__
@@ -75,8 +75,10 @@ DECL|macro|AE_NO_HARDWARE_RESPONSE
 mdefine_line|#define AE_NO_HARDWARE_RESPONSE         (acpi_status) (0x0019 | AE_CODE_ENVIRONMENTAL)
 DECL|macro|AE_NO_GLOBAL_LOCK
 mdefine_line|#define AE_NO_GLOBAL_LOCK               (acpi_status) (0x001A | AE_CODE_ENVIRONMENTAL)
+DECL|macro|AE_LOGICAL_ADDRESS
+mdefine_line|#define AE_LOGICAL_ADDRESS              (acpi_status) (0x001B | AE_CODE_ENVIRONMENTAL)
 DECL|macro|AE_CODE_ENV_MAX
-mdefine_line|#define AE_CODE_ENV_MAX                 0x001A
+mdefine_line|#define AE_CODE_ENV_MAX                 0x001B
 multiline_comment|/*&n; * Programmer exceptions&n; */
 DECL|macro|AE_BAD_PARAMETER
 mdefine_line|#define AE_BAD_PARAMETER                (acpi_status) (0x0001 | AE_CODE_PROGRAMMER)
@@ -90,8 +92,14 @@ DECL|macro|AE_BAD_ADDRESS
 mdefine_line|#define AE_BAD_ADDRESS                  (acpi_status) (0x0005 | AE_CODE_PROGRAMMER)
 DECL|macro|AE_ALIGNMENT
 mdefine_line|#define AE_ALIGNMENT                    (acpi_status) (0x0006 | AE_CODE_PROGRAMMER)
+DECL|macro|AE_BAD_HEX_CONSTANT
+mdefine_line|#define AE_BAD_HEX_CONSTANT             (acpi_status) (0x0007 | AE_CODE_PROGRAMMER)
+DECL|macro|AE_BAD_OCTAL_CONSTANT
+mdefine_line|#define AE_BAD_OCTAL_CONSTANT           (acpi_status) (0x0008 | AE_CODE_PROGRAMMER)
+DECL|macro|AE_BAD_DECIMAL_CONSTANT
+mdefine_line|#define AE_BAD_DECIMAL_CONSTANT         (acpi_status) (0x0009 | AE_CODE_PROGRAMMER)
 DECL|macro|AE_CODE_PGM_MAX
-mdefine_line|#define AE_CODE_PGM_MAX                 0x0006
+mdefine_line|#define AE_CODE_PGM_MAX                 0x0009
 multiline_comment|/*&n; * Acpi table exceptions&n; */
 DECL|macro|AE_BAD_SIGNATURE
 mdefine_line|#define AE_BAD_SIGNATURE                (acpi_status) (0x0001 | AE_CODE_ACPI_TABLES)
@@ -251,6 +259,8 @@ comma
 l_string|&quot;AE_NO_HARDWARE_RESPONSE&quot;
 comma
 l_string|&quot;AE_NO_GLOBAL_LOCK&quot;
+comma
+l_string|&quot;AE_LOGICAL_ADDRESS&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_pgm
@@ -273,6 +283,12 @@ comma
 l_string|&quot;AE_BAD_ADDRESS&quot;
 comma
 l_string|&quot;AE_ALIGNMENT&quot;
+comma
+l_string|&quot;AE_BAD_HEX_CONSTANT&quot;
+comma
+l_string|&quot;AE_BAD_OCTAL_CONSTANT&quot;
+comma
+l_string|&quot;AE_BAD_DECIMAL_CONSTANT&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_tbl

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  acpi_thermal.c - ACPI Thermal Zone Driver ($Revision: 33 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This driver fully implements the ACPI thermal policy as described in the&n; *  ACPI 2.0 Specification.&n; *&n; *  TBD: 1. Implement passive cooling hysteresis.&n; *       2. Enhance passive cooling (CPU) states/limit interface to support&n; *          concepts of &squot;multiple limiters&squot;, upper/lower limits, etc.&n; *&n; */
+multiline_comment|/*&n; *  acpi_thermal.c - ACPI Thermal Zone Driver ($Revision: 36 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This driver fully implements the ACPI thermal policy as described in the&n; *  ACPI 2.0 Specification.&n; *&n; *  TBD: 1. Implement passive cooling hysteresis.&n; *       2. Enhance passive cooling (CPU) states/limit interface to support&n; *          concepts of &squot;multiple limiters&squot;, upper/lower limits, etc.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -152,11 +152,6 @@ id|reserved
 suffix:colon
 l_int|4
 suffix:semicolon
-DECL|member|passive_index
-r_int
-id|passive_index
-suffix:semicolon
-multiline_comment|/* a.k.a. limit state */
 DECL|member|active_index
 r_int
 id|active_index
@@ -1850,7 +1845,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|acpi_processor_set_limit
+id|acpi_processor_set_thermal_limit
 c_func
 (paren
 id|passive-&gt;devices.handles
@@ -1859,9 +1854,6 @@ id|i
 )braket
 comma
 id|ACPI_PROCESSOR_LIMIT_INCREMENT
-comma
-op_amp
-id|tz-&gt;state.passive_index
 )paren
 suffix:semicolon
 multiline_comment|/* Cooling off? */
@@ -1887,7 +1879,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|acpi_processor_set_limit
+id|acpi_processor_set_thermal_limit
 c_func
 (paren
 id|passive-&gt;devices.handles
@@ -1896,9 +1888,6 @@ id|i
 )braket
 comma
 id|ACPI_PROCESSOR_LIMIT_DECREMENT
-comma
-op_amp
-id|tz-&gt;state.passive_index
 )paren
 suffix:semicolon
 )brace
@@ -1924,7 +1913,9 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|acpi_processor_set_limit
+id|result
+op_assign
+id|acpi_processor_set_thermal_limit
 c_func
 (paren
 id|passive-&gt;devices.handles
@@ -1933,17 +1924,14 @@ id|i
 )braket
 comma
 id|ACPI_PROCESSOR_LIMIT_DECREMENT
-comma
-op_amp
-id|tz-&gt;state.passive_index
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-l_int|0
+l_int|1
 op_eq
-id|tz-&gt;state.passive_index
+id|result
 )paren
 (brace
 id|tz-&gt;trips.passive.flags.enabled
@@ -2685,7 +2673,8 @@ r_else
 id|tz-&gt;timer.data
 op_assign
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|tz
 suffix:semicolon
@@ -2882,9 +2871,7 @@ c_func
 (paren
 id|p
 comma
-l_string|&quot;passive[%d] &quot;
-comma
-id|tz-&gt;state.passive_index
+l_string|&quot;passive &quot;
 )paren
 suffix:semicolon
 r_if
@@ -3322,6 +3309,7 @@ suffix:semicolon
 id|j
 op_increment
 )paren
+(brace
 id|p
 op_add_assign
 id|sprintf
@@ -3337,6 +3325,7 @@ id|j
 )braket
 )paren
 suffix:semicolon
+)brace
 id|p
 op_add_assign
 id|sprintf

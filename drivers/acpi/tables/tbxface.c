@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *              $Revision: 51 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *              $Revision: 52 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -18,8 +18,8 @@ id|acpi_load_tables
 r_void
 )paren
 (brace
-id|ACPI_PHYSICAL_ADDRESS
-id|rsdp_physical_address
+id|ACPI_POINTER
+id|rsdp_address
 suffix:semicolon
 id|acpi_status
 id|status
@@ -42,7 +42,7 @@ id|acpi_os_get_root_pointer
 id|ACPI_LOGICAL_ADDRESSING
 comma
 op_amp
-id|rsdp_physical_address
+id|rsdp_address
 )paren
 suffix:semicolon
 r_if
@@ -71,11 +71,16 @@ id|error_exit
 suffix:semicolon
 )brace
 multiline_comment|/* Map and validate the RSDP */
+id|acpi_gbl_table_flags
+op_assign
+id|rsdp_address.pointer_type
+suffix:semicolon
 id|status
 op_assign
 id|acpi_tb_verify_rsdp
 (paren
-id|rsdp_physical_address
+op_amp
+id|rsdp_address
 )paren
 suffix:semicolon
 r_if
@@ -254,6 +259,9 @@ suffix:semicolon
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
+id|ACPI_POINTER
+id|address
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;Acpi_load_table&quot;
@@ -273,13 +281,20 @@ id|AE_BAD_PARAMETER
 suffix:semicolon
 )brace
 multiline_comment|/* Copy the table to a local buffer */
+id|address.pointer_type
+op_assign
+id|ACPI_LOGICAL_POINTER
+suffix:semicolon
+id|address.pointer.logical
+op_assign
+id|table_ptr
+suffix:semicolon
 id|status
 op_assign
 id|acpi_tb_get_table
 (paren
-l_int|0
-comma
-id|table_ptr
+op_amp
+id|address
 comma
 op_amp
 id|table_info
