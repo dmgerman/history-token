@@ -4903,7 +4903,12 @@ op_assign
 id|sdp-&gt;device
 ques
 c_cond
+id|atomic_read
+c_func
+(paren
+op_amp
 id|sdp-&gt;device-&gt;access_count
+)paren
 suffix:colon
 l_int|0
 )paren
@@ -15664,7 +15669,12 @@ comma
 (paren
 r_int
 )paren
+id|atomic_read
+c_func
+(paren
+op_amp
 id|scsidp-&gt;access_count
+)paren
 comma
 (paren
 r_int

@@ -554,6 +554,15 @@ id|sdev
 )paren
 )paren
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|sdev-&gt;access_count
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|sdev-&gt;vendor
 op_assign
 id|scsi_null_device_strs

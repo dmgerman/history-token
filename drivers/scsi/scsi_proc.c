@@ -973,7 +973,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|atomic_read
+c_func
+(paren
+op_amp
 id|sdev-&gt;access_count
+)paren
 )paren
 r_goto
 id|out

@@ -4,6 +4,7 @@ mdefine_line|#define _SCSI_SCSI_DEVICE_H
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 r_struct
 id|request_queue
 suffix:semicolon
@@ -139,7 +140,7 @@ id|sector_size
 suffix:semicolon
 multiline_comment|/* size in bytes */
 DECL|member|access_count
-r_int
+id|atomic_t
 id|access_count
 suffix:semicolon
 multiline_comment|/* Count of open channels/mounts */
