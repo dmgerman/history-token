@@ -4869,13 +4869,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Not everything should be copied */
-r_new
-op_member_access_from_pointer
-id|notify.instance
-op_assign
-id|instance
-suffix:semicolon
+multiline_comment|/* Try to dup the LSAP (may fail if we were too slow) */
 r_new
 op_member_access_from_pointer
 id|lsap
@@ -4887,6 +4881,42 @@ id|orig-&gt;lsap
 comma
 r_new
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+r_new
+op_member_access_from_pointer
+id|lsap
+)paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;%s(), dup failed!&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+r_new
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/* Not everything should be copied */
+r_new
+op_member_access_from_pointer
+id|notify.instance
+op_assign
+id|instance
 suffix:semicolon
 id|init_timer
 c_func

@@ -1789,6 +1789,16 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|self-&gt;connected
+)paren
+suffix:semicolon
+multiline_comment|/* TRUE */
 id|irlmp_send_lcf_pdu
 c_func
 (paren
@@ -1835,6 +1845,10 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Disconnect, get out... - Jean II */
+id|self-&gt;lap
+op_assign
+l_int|NULL
+suffix:semicolon
 id|self-&gt;dlsap_sel
 op_assign
 id|LSAP_ANY
@@ -1851,6 +1865,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+multiline_comment|/* LM_LAP_DISCONNECT_INDICATION : Should never happen, we&n;&t;&t; * are *not* yet bound to the IrLAP link. Jean II */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -2049,6 +2064,10 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Go back to disconnected mode, keep the socket waiting */
+id|self-&gt;lap
+op_assign
+l_int|NULL
+suffix:semicolon
 id|self-&gt;dlsap_sel
 op_assign
 id|LSAP_ANY
@@ -2082,6 +2101,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+multiline_comment|/* LM_LAP_DISCONNECT_INDICATION : Should never happen, we&n;&t;&t; * are *not* yet bound to the IrLAP link. Jean II */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -2328,6 +2348,7 @@ comma
 id|LSAP_DISCONNECTED
 )paren
 suffix:semicolon
+multiline_comment|/* Called only from irlmp_disconnect_request(), will&n;&t;&t; * unbind from LAP over there. Jean II */
 multiline_comment|/* Try to close the LAP connection if its still there */
 r_if
 c_cond

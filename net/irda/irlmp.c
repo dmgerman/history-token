@@ -1907,16 +1907,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-id|set_bit
-c_func
-(paren
-l_int|0
-comma
-op_amp
-id|self-&gt;connected
-)paren
-suffix:semicolon
-multiline_comment|/* TRUE */
+multiline_comment|/* We set the connected bit and move the lsap to the connected list&n;&t; * in the state machine itself. Jean II */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -2184,9 +2175,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/* Only allowed to duplicate unconnected LSAP&squot;s */
+multiline_comment|/* Only allowed to duplicate unconnected LSAP&squot;s, and only LSAPs&n;&t; * that have received a connect indication. Jean II */
 r_if
 c_cond
+(paren
 (paren
 op_logical_neg
 id|hashbin_find
@@ -2202,13 +2194,20 @@ comma
 l_int|NULL
 )paren
 )paren
+op_logical_or
+(paren
+id|orig-&gt;lap
+op_eq
+l_int|NULL
+)paren
+)paren
 (brace
 id|IRDA_DEBUG
 c_func
 (paren
 l_int|0
 comma
-l_string|&quot;%s(), unable to find LSAP&bslash;n&quot;
+l_string|&quot;%s(), invalid LSAP (wrong state)&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -2338,8 +2337,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* Make sure that we invalidate the cache */
 macro_line|#ifdef CONFIG_IRDA_CACHE_LAST_LSAP
+multiline_comment|/* Make sure that we invalidate the LSAP cache */
 r_new
 op_member_access_from_pointer
 id|lap-&gt;cache.valid
