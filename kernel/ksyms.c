@@ -1598,6 +1598,13 @@ c_func
 id|dcache_readdir
 )paren
 suffix:semicolon
+DECL|variable|simple_getattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|simple_getattr
+)paren
+suffix:semicolon
 DECL|variable|simple_statfs
 id|EXPORT_SYMBOL
 c_func
