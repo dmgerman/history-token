@@ -10466,7 +10466,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-r_extern
+id|asmlinkage
 r_int
 id|sys_fadvise64_64
 c_func

@@ -1327,7 +1327,7 @@ r_int
 id|write
 )paren
 suffix:semicolon
-r_extern
+id|asmlinkage
 r_int
 id|sys_remap_file_pages
 c_func
@@ -1353,7 +1353,7 @@ r_int
 id|nonblock
 )paren
 suffix:semicolon
-r_extern
+id|asmlinkage
 r_int
 id|sys_fadvise64_64
 c_func
