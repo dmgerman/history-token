@@ -6587,20 +6587,6 @@ suffix:semicolon
 macro_line|#endif&t;/* CONFIG_SCSI_LOGGING */ /* } */
 )brace
 macro_line|#endif&t;&t;&t;&t;/* CONFIG_PROC_FS */
-DECL|variable|scsihosts
-r_static
-r_char
-op_star
-id|scsihosts
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|scsihosts
-comma
-l_string|&quot;s&quot;
-)paren
-suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -6613,35 +6599,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#ifndef MODULE
-DECL|function|scsi_setup
-r_int
-id|__init
-id|scsi_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|scsihosts
-op_assign
-id|str
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;scsihosts=&quot;
-comma
-id|scsi_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|scsi_pool_alloc
 r_static
 r_void
@@ -7294,10 +7251,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|scsi_host_hn_init
+id|scsi_host_init
 c_func
 (paren
-id|scsihosts
 )paren
 suffix:semicolon
 id|bus_register
@@ -7338,11 +7294,6 @@ suffix:semicolon
 id|devfs_unregister
 (paren
 id|scsi_devfs_handle
-)paren
-suffix:semicolon
-id|scsi_host_hn_release
-c_func
-(paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS

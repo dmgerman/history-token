@@ -1082,16 +1082,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|scsi_host_hn_init
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_host_hn_release
+id|scsi_host_init
 c_func
 (paren
 r_void
