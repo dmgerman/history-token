@@ -694,6 +694,8 @@ mdefine_line|#define CPU_MASK_ALL&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((cpumask_t) { 
 macro_line|#endif
 DECL|macro|CPU_MASK_NONE
 mdefine_line|#define CPU_MASK_NONE&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((cpumask_t) { {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;[0 ... BITS_TO_LONGS(NR_CPUS)-1] =  0UL&t;&t;&t;&t;&bslash;&n;} })
+DECL|macro|CPU_MASK_CPU0
+mdefine_line|#define CPU_MASK_CPU0&t;&t;&t;&t;&t;&t;&t;&bslash;&n;((cpumask_t) { {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;[0] =  1UL&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} })
 DECL|macro|cpus_addr
 mdefine_line|#define cpus_addr(src) ((src).bits)
 DECL|macro|cpumask_scnprintf
