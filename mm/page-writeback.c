@@ -1010,14 +1010,14 @@ c_cond
 (paren
 id|page-&gt;mapping
 op_logical_and
-id|TestClearPageDirty
+op_logical_neg
+id|PageWriteback
 c_func
 (paren
 id|page
 )paren
 op_logical_and
-op_logical_neg
-id|PageWriteback
+id|TestClearPageDirty
 c_func
 (paren
 id|page
