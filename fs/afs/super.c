@@ -249,7 +249,8 @@ l_string|&quot;afs_inode_cache&quot;
 comma
 r_sizeof
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 )paren
 comma
 l_int|0
@@ -490,7 +491,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end want_no_value() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * parse the mount options&n; * - this function has been shamelessly adapted from the ext3 fs which shamelessly adapted it from&n; *   the msdos fs&n; */
+multiline_comment|/*&n; * parse the mount options&n; * - this function has been shamelessly adapted from the ext3 fs which&n; *   shamelessly adapted it from the msdos fs&n; */
 DECL|function|afs_super_parse_options
 r_static
 r_int
@@ -854,6 +855,10 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
+id|afs_fid
+id|fid
+suffix:semicolon
+r_struct
 id|dentry
 op_star
 id|root
@@ -866,9 +871,6 @@ op_star
 id|inode
 op_assign
 l_int|NULL
-suffix:semicolon
-id|afs_fid_t
-id|fid
 suffix:semicolon
 r_int
 id|ret
@@ -1456,12 +1458,14 @@ r_int
 id|flags
 )paren
 (brace
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 op_assign
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 )paren
 id|_vnode
@@ -1560,14 +1564,16 @@ op_star
 id|sb
 )paren
 (brace
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 id|vnode
 suffix:semicolon
 id|vnode
 op_assign
 (paren
-id|afs_vnode_t
+r_struct
+id|afs_vnode
 op_star
 )paren
 id|kmem_cache_alloc
