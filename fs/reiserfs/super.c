@@ -5214,7 +5214,9 @@ id|s
 comma
 id|REISERFS_ROOT_OBJECTID
 comma
-l_int|0
+id|reiserfs_find_actor
+comma
+id|reiserfs_init_locked_inode
 comma
 (paren
 r_void

@@ -4806,6 +4806,50 @@ singleline_comment|//
 singleline_comment|// initially this function was derived from minix or ext2&squot;s analog and
 singleline_comment|// evolved as the prototype did
 singleline_comment|//
+DECL|function|reiserfs_init_locked_inode
+r_int
+id|reiserfs_init_locked_inode
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+comma
+r_void
+op_star
+id|p
+)paren
+(brace
+r_struct
+id|reiserfs_iget4_args
+op_star
+id|args
+op_assign
+(paren
+r_struct
+id|reiserfs_iget4_args
+op_star
+)paren
+id|p
+suffix:semicolon
+id|INODE_PKEY
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|k_dir_id
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|args-&gt;objectid
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/* looks for stat data in the tree, and fills up the fields of in-core&n;   inode stat data fields */
 DECL|function|reiserfs_read_inode2
 r_void
@@ -5018,9 +5062,8 @@ id|path_to_sd
 suffix:semicolon
 multiline_comment|/* init inode should be relsing */
 )brace
-multiline_comment|/**&n; * reiserfs_find_actor() - &quot;find actor&quot; reiserfs supplies to iget4().&n; *&n; * @inode:    inode from hash table to check&n; * @inode_no: inode number we are looking for&n; * @opaque:   &quot;cookie&quot; passed to iget4(). This is &amp;reiserfs_iget4_args.&n; *&n; * This function is called by iget4() to distinguish reiserfs inodes&n; * having the same inode numbers. Such inodes can only exist due to some&n; * error condition. One of them should be bad. Inodes with identical&n; * inode numbers (objectids) are distinguished by parent directory ids.&n; *&n; */
+multiline_comment|/**&n; * reiserfs_find_actor() - &quot;find actor&quot; reiserfs supplies to iget4().&n; *&n; * @inode:    inode from hash table to check&n; * @opaque:   &quot;cookie&quot; passed to iget4(). This is &amp;reiserfs_iget4_args.&n; *&n; * This function is called by iget4() to distinguish reiserfs inodes&n; * having the same inode numbers. Such inodes can only exist due to some&n; * error condition. One of them should be bad. Inodes with identical&n; * inode numbers (objectids) are distinguished by parent directory ids.&n; *&n; */
 DECL|function|reiserfs_find_actor
-r_static
 r_int
 id|reiserfs_find_actor
 c_func
@@ -5029,10 +5072,6 @@ r_struct
 id|inode
 op_star
 id|inode
-comma
-r_int
-r_int
-id|inode_no
 comma
 r_void
 op_star
@@ -5107,6 +5146,8 @@ comma
 id|key-&gt;on_disk_key.k_objectid
 comma
 id|reiserfs_find_actor
+comma
+id|reiserfs_init_locked_inode
 comma
 (paren
 r_void
