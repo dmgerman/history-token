@@ -1047,7 +1047,7 @@ l_int|NULL
 id|tty_wakeup
 c_func
 (paren
-id|tty
+id|sclp_tty
 )paren
 suffix:semicolon
 )brace

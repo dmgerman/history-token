@@ -5265,6 +5265,7 @@ op_star
 id|filp
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -5659,6 +5660,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|ubuf
 comma
@@ -5962,10 +5964,6 @@ op_star
 id|ctx
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|ret
 suffix:semicolon
 r_if
@@ -6024,14 +6022,7 @@ op_minus
 id|EBADF
 suffix:semicolon
 )brace
-id|PROTECT_CTX
-c_func
-(paren
-id|ctx
-comma
-id|flags
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * we cannot mask interrupts during this call because this may&n;&t; * may go to sleep if memory is not readily avalaible.&n;&t; *&n;&t; * We are protected from the conetxt disappearing by the get_fd()/put_fd()&n;&t; * done in caller. Serialization of this function is ensured by caller.&n;&t; */
 id|ret
 op_assign
 id|pfm_do_fasync
@@ -6060,14 +6051,6 @@ id|ctx-&gt;ctx_async_queue
 comma
 id|ret
 )paren
-)paren
-suffix:semicolon
-id|UNPROTECT_CTX
-c_func
-(paren
-id|ctx
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -7754,7 +7737,7 @@ id|rlim_cur
 )paren
 r_return
 op_minus
-id|EAGAIN
+id|ENOMEM
 suffix:semicolon
 multiline_comment|/*&n;&t; * We do the easy to undo allocations first.&n; &t; *&n;&t; * pfm_rvmalloc(), clears the buffer, so there is no leak&n;&t; */
 id|smpl_buf
@@ -8818,9 +8801,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|task-&gt;state
 op_ne
 id|TASK_STOPPED
+)paren
+op_logical_and
+(paren
+id|task-&gt;state
+op_ne
+id|TASK_TRACED
+)paren
 )paren
 (brace
 id|DPRINT
@@ -16102,9 +16093,17 @@ id|cmd
 r_if
 c_cond
 (paren
+(paren
 id|task-&gt;state
 op_ne
 id|TASK_STOPPED
+)paren
+op_logical_and
+(paren
+id|task-&gt;state
+op_ne
+id|TASK_TRACED
+)paren
 )paren
 (brace
 id|DPRINT
@@ -16192,6 +16191,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 comma

@@ -6594,7 +6594,7 @@ l_int|1
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|ptr
@@ -6612,7 +6612,7 @@ suffix:semicolon
 singleline_comment|// Report page size
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|ptr
@@ -6702,7 +6702,7 @@ id|mode_page_01
 suffix:semicolon
 (paren
 (paren
-id|u16
+id|__be16
 op_star
 )paren
 id|ptr

@@ -19,7 +19,7 @@ op_star
 id|off
 )paren
 (brace
-id|u16
+id|__be16
 id|retval
 (braket
 l_int|2
@@ -270,7 +270,7 @@ id|data_rec_off
 comma
 id|end_rec_off
 suffix:semicolon
-id|u32
+id|__be32
 id|cnid
 suffix:semicolon
 id|tree
@@ -2096,7 +2096,7 @@ c_cond
 id|new_node
 )paren
 (brace
-id|u32
+id|__be32
 id|cnid
 suffix:semicolon
 id|fd-&gt;bnode
@@ -2241,7 +2241,7 @@ id|key_size
 comma
 id|rec
 suffix:semicolon
-id|u32
+id|__be32
 id|cnid
 suffix:semicolon
 id|node

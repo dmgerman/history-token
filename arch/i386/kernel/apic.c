@@ -224,6 +224,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|APIC_INTEGRATED
+c_func
+(paren
+id|version
+)paren
+op_logical_or
 id|version
 op_ge
 l_int|0x14
@@ -2407,6 +2414,17 @@ op_logical_neg
 id|cpu_has_apic
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * Over-ride BIOS and try to enable LAPIC&n;&t;&t; * only if &quot;lapic&quot; specified&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|enable_local_apic
+op_ne
+l_int|1
+)paren
+r_goto
+id|no_apic
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Some BIOSes disable the local APIC in the&n;&t;&t; * APIC_BASE MSR. This can only be done in&n;&t;&t; * software for Intel P6 and AMD K7 (Model &gt; 1).&n;&t;&t; */
 id|rdmsr
 c_func

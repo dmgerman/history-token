@@ -101,6 +101,9 @@ mdefine_line|#define EP_ITEM_FROM_WAIT(p) ((struct epitem *) container_of(p, str
 multiline_comment|/* Get the &quot;struct epitem&quot; from an epoll queue wrapper */
 DECL|macro|EP_ITEM_FROM_EPQUEUE
 mdefine_line|#define EP_ITEM_FROM_EPQUEUE(p) (container_of(p, struct ep_pqueue, pt)-&gt;epi)
+multiline_comment|/* Tells if the epoll_ctl(2) operation needs an event copy from userspace */
+DECL|macro|EP_OP_HASH_EVENT
+mdefine_line|#define EP_OP_HASH_EVENT(op) ((op) != EPOLL_CTL_DEL)
 DECL|struct|epoll_filefd
 r_struct
 id|epoll_filefd
@@ -1409,6 +1412,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|EP_OP_HASH_EVENT
+c_func
+(paren
+id|op
+)paren
+op_logical_and
 id|copy_from_user
 c_func
 (paren

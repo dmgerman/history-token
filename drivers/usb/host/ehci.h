@@ -81,7 +81,7 @@ r_int
 id|periodic_size
 suffix:semicolon
 DECL|member|periodic
-id|u32
+id|__le32
 op_star
 id|periodic
 suffix:semicolon
@@ -142,7 +142,7 @@ op_star
 id|regs
 suffix:semicolon
 DECL|member|hcs_params
-id|u32
+id|__u32
 id|hcs_params
 suffix:semicolon
 multiline_comment|/* cached register copy */
@@ -619,17 +619,17 @@ id|ehci_qtd
 (brace
 multiline_comment|/* first part defined by EHCI spec */
 DECL|member|hw_next
-id|u32
+id|__le32
 id|hw_next
 suffix:semicolon
 multiline_comment|/* see EHCI 3.5.1 */
 DECL|member|hw_alt_next
-id|u32
+id|__le32
 id|hw_alt_next
 suffix:semicolon
 multiline_comment|/* see EHCI 3.5.2 */
 DECL|member|hw_token
-id|u32
+id|__le32
 id|hw_token
 suffix:semicolon
 multiline_comment|/* see EHCI 3.5.3 */
@@ -660,7 +660,7 @@ mdefine_line|#define&t;QTD_STS_STS&t;(1 &lt;&lt; 1)&t;/* split transaction state
 DECL|macro|QTD_STS_PING
 mdefine_line|#define&t;QTD_STS_PING&t;(1 &lt;&lt; 0)&t;/* issue PING? */
 DECL|member|hw_buf
-id|u32
+id|__le32
 id|hw_buf
 (braket
 l_int|5
@@ -668,7 +668,7 @@ l_int|5
 suffix:semicolon
 multiline_comment|/* see EHCI 3.5.4 */
 DECL|member|hw_buf_hi
-id|u32
+id|__le32
 id|hw_buf_hi
 (braket
 l_int|5
@@ -788,49 +788,49 @@ id|ehci_qh
 (brace
 multiline_comment|/* first part defined by EHCI spec */
 DECL|member|hw_next
-id|u32
+id|__le32
 id|hw_next
 suffix:semicolon
 multiline_comment|/* see EHCI 3.6.1 */
 DECL|member|hw_info1
-id|u32
+id|__le32
 id|hw_info1
 suffix:semicolon
 multiline_comment|/* see EHCI 3.6.2 */
 DECL|macro|QH_HEAD
 mdefine_line|#define&t;QH_HEAD&t;&t;0x00008000
 DECL|member|hw_info2
-id|u32
+id|__le32
 id|hw_info2
 suffix:semicolon
 multiline_comment|/* see EHCI 3.6.2 */
 DECL|member|hw_current
-id|u32
+id|__le32
 id|hw_current
 suffix:semicolon
 multiline_comment|/* qtd list - see EHCI 3.6.4 */
 multiline_comment|/* qtd overlay (hardware parts of a struct ehci_qtd) */
 DECL|member|hw_qtd_next
-id|u32
+id|__le32
 id|hw_qtd_next
 suffix:semicolon
 DECL|member|hw_alt_next
-id|u32
+id|__le32
 id|hw_alt_next
 suffix:semicolon
 DECL|member|hw_token
-id|u32
+id|__le32
 id|hw_token
 suffix:semicolon
 DECL|member|hw_buf
-id|u32
+id|__le32
 id|hw_buf
 (braket
 l_int|5
 )braket
 suffix:semicolon
 DECL|member|hw_buf_hi
-id|u32
+id|__le32
 id|hw_buf_hi
 (braket
 l_int|5
@@ -957,7 +957,7 @@ id|bufp
 suffix:semicolon
 multiline_comment|/* itd-&gt;hw_bufp{,_hi}[pg] |= */
 DECL|member|transaction
-id|u32
+id|__le32
 id|transaction
 suffix:semicolon
 multiline_comment|/* itd-&gt;hw_transaction[i] |= */
@@ -1004,11 +1004,11 @@ id|ehci_iso_stream
 (brace
 multiline_comment|/* first two fields match QH, but info1 == 0 */
 DECL|member|hw_next
-id|u32
+id|__le32
 id|hw_next
 suffix:semicolon
 DECL|member|hw_info1
-id|u32
+id|__le32
 id|hw_info1
 suffix:semicolon
 DECL|member|refcount
@@ -1063,7 +1063,7 @@ r_int
 id|next_uframe
 suffix:semicolon
 DECL|member|splits
-id|u32
+id|__le32
 id|splits
 suffix:semicolon
 multiline_comment|/* the rest is derived from the endpoint descriptor,&n;&t; * trusting urb-&gt;interval == f(epdesc-&gt;bInterval) and&n;&t; * including the extra info for hw_bufp[0..2]&n;&t; */
@@ -1092,20 +1092,20 @@ id|bandwidth
 suffix:semicolon
 multiline_comment|/* This is used to initialize iTD&squot;s hw_bufp fields */
 DECL|member|buf0
-id|u32
+id|__le32
 id|buf0
 suffix:semicolon
 DECL|member|buf1
-id|u32
+id|__le32
 id|buf1
 suffix:semicolon
 DECL|member|buf2
-id|u32
+id|__le32
 id|buf2
 suffix:semicolon
 multiline_comment|/* this is used to initialize sITD&squot;s tt info */
 DECL|member|address
-id|u32
+id|__le32
 id|address
 suffix:semicolon
 )brace
@@ -1118,12 +1118,12 @@ id|ehci_itd
 (brace
 multiline_comment|/* first part defined by EHCI spec */
 DECL|member|hw_next
-id|u32
+id|__le32
 id|hw_next
 suffix:semicolon
 multiline_comment|/* see EHCI 3.3.1 */
 DECL|member|hw_transaction
-id|u32
+id|__le32
 id|hw_transaction
 (braket
 l_int|8
@@ -1145,7 +1145,7 @@ mdefine_line|#define&t;EHCI_ITD_IOC&t;&t;(1 &lt;&lt; 15)&t;/* interrupt on compl
 DECL|macro|ITD_ACTIVE
 mdefine_line|#define ITD_ACTIVE&t;__constant_cpu_to_le32(EHCI_ISOC_ACTIVE)
 DECL|member|hw_bufp
-id|u32
+id|__le32
 id|hw_bufp
 (braket
 l_int|7
@@ -1153,7 +1153,7 @@ l_int|7
 suffix:semicolon
 multiline_comment|/* see EHCI 3.3.3 */
 DECL|member|hw_bufp_hi
-id|u32
+id|__le32
 id|hw_bufp_hi
 (braket
 l_int|7
@@ -1235,22 +1235,22 @@ id|ehci_sitd
 (brace
 multiline_comment|/* first part defined by EHCI spec */
 DECL|member|hw_next
-id|u32
+id|__le32
 id|hw_next
 suffix:semicolon
 multiline_comment|/* uses bit field macros above - see EHCI 0.95 Table 3-8 */
 DECL|member|hw_fullspeed_ep
-id|u32
+id|__le32
 id|hw_fullspeed_ep
 suffix:semicolon
 multiline_comment|/* EHCI table 3-9 */
 DECL|member|hw_uframe
-id|u32
+id|__le32
 id|hw_uframe
 suffix:semicolon
 multiline_comment|/* EHCI table 3-10 */
 DECL|member|hw_results
-id|u32
+id|__le32
 id|hw_results
 suffix:semicolon
 multiline_comment|/* EHCI table 3-11 */
@@ -1277,7 +1277,7 @@ mdefine_line|#define&t;SITD_STS_STS&t;(1 &lt;&lt; 1)&t;/* split transaction stat
 DECL|macro|SITD_ACTIVE
 mdefine_line|#define SITD_ACTIVE&t;__constant_cpu_to_le32(SITD_STS_ACTIVE)
 DECL|member|hw_buf
-id|u32
+id|__le32
 id|hw_buf
 (braket
 l_int|2
@@ -1285,12 +1285,12 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* EHCI table 3-12 */
 DECL|member|hw_backpointer
-id|u32
+id|__le32
 id|hw_backpointer
 suffix:semicolon
 multiline_comment|/* EHCI table 3-13 */
 DECL|member|hw_buf_hi
-id|u32
+id|__le32
 id|hw_buf_hi
 (braket
 l_int|2
@@ -1353,12 +1353,12 @@ r_struct
 id|ehci_fstn
 (brace
 DECL|member|hw_next
-id|u32
+id|__le32
 id|hw_next
 suffix:semicolon
 multiline_comment|/* any periodic q entry */
 DECL|member|hw_prev
-id|u32
+id|__le32
 id|hw_prev
 suffix:semicolon
 multiline_comment|/* qh or EHCI_LIST_END */

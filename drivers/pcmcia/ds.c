@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|IN_CARD_SERVICES
@@ -4603,16 +4604,10 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Ugly. But we want to wait for the socket threads to have started up.&n;&t; * We really should let the drivers themselves drive some of this..&n;&t; */
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
-id|HZ
-op_div
-l_int|4
+l_int|250
 )paren
 suffix:semicolon
 id|init_waitqueue_head

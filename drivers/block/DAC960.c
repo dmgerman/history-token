@@ -1993,6 +1993,7 @@ op_assign
 id|Command-&gt;Controller
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -2090,6 +2091,7 @@ op_assign
 id|Command-&gt;Controller
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -2187,6 +2189,7 @@ op_assign
 id|Command-&gt;Controller
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -2284,6 +2287,7 @@ op_assign
 id|Command-&gt;Controller
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -2381,6 +2385,7 @@ op_assign
 id|Command-&gt;Controller
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -2478,6 +2483,7 @@ op_assign
 id|Command-&gt;Controller
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -2575,6 +2581,7 @@ op_assign
 id|Command-&gt;Controller
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -2640,6 +2647,7 @@ op_assign
 id|Command-&gt;Controller
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -3948,6 +3956,7 @@ id|Controller
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -4790,6 +4799,7 @@ id|Controller
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -10317,6 +10327,7 @@ op_assign
 id|PCI_Device-&gt;irq
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|BaseAddress
 suffix:semicolon
@@ -19487,6 +19498,7 @@ op_star
 id|DeviceIdentifier
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -19636,6 +19648,7 @@ op_star
 id|DeviceIdentifier
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -19785,6 +19798,7 @@ op_star
 id|DeviceIdentifier
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -19921,6 +19935,7 @@ op_star
 id|DeviceIdentifier
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -20057,6 +20072,7 @@ op_star
 id|DeviceIdentifier
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign
@@ -20183,6 +20199,7 @@ op_star
 id|DeviceIdentifier
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 op_assign

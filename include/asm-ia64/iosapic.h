@@ -63,6 +63,7 @@ id|iosapic_read
 c_func
 (paren
 r_char
+id|__iomem
 op_star
 id|iosapic
 comma
@@ -99,6 +100,7 @@ id|iosapic_write
 c_func
 (paren
 r_char
+id|__iomem
 op_star
 id|iosapic
 comma
@@ -139,6 +141,7 @@ id|iosapic_eoi
 c_func
 (paren
 r_char
+id|__iomem
 op_star
 id|iosapic
 comma
@@ -282,6 +285,7 @@ r_int
 id|iosapic_version
 (paren
 r_char
+id|__iomem
 op_star
 id|addr
 )paren

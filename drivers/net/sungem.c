@@ -4186,8 +4186,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+id|NETDEV_TX_LOCKED
 suffix:semicolon
 )brace
 multiline_comment|/* This is a hard error, log it. */
@@ -4239,7 +4238,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 r_return
-l_int|1
+id|NETDEV_TX_BUSY
 suffix:semicolon
 )brace
 id|entry
@@ -4698,7 +4697,7 @@ op_assign
 id|jiffies
 suffix:semicolon
 r_return
-l_int|0
+id|NETDEV_TX_OK
 suffix:semicolon
 )brace
 multiline_comment|/* Jumbo-grams don&squot;t seem to work :-( */
@@ -12264,59 +12263,6 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif /* not Sparc and not PPC */
-macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
-multiline_comment|/*&n; * Polling &squot;interrupt&squot; - used by things like netconsole to send skbs&n; * without having to re-enable interrupts. It&squot;s not called while&n; * the interrupt routine is executing.&n; */
-DECL|function|gem_netpoll
-r_static
-r_void
-id|gem_netpoll
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|netdev
-)paren
-(brace
-r_struct
-id|gem
-op_star
-id|gp
-op_assign
-id|netdev-&gt;priv
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|gp-&gt;pdev
-)paren
-r_return
-suffix:semicolon
-id|disable_irq
-c_func
-(paren
-id|gp-&gt;pdev-&gt;irq
-)paren
-suffix:semicolon
-id|gem_interrupt
-c_func
-(paren
-id|gp-&gt;pdev-&gt;irq
-comma
-id|netdev
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|enable_irq
-c_func
-(paren
-id|gp-&gt;pdev-&gt;irq
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 DECL|function|gem_get_device_address
 r_static
 r_int
@@ -13134,12 +13080,6 @@ id|dev-&gt;poll
 op_assign
 id|gem_poll
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
-id|dev-&gt;poll_controller
-op_assign
-id|gem_netpoll
-suffix:semicolon
-macro_line|#endif
 id|dev-&gt;weight
 op_assign
 l_int|64

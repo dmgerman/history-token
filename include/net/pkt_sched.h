@@ -1176,6 +1176,11 @@ r_struct
 id|tc_action
 op_star
 id|a
+comma
+r_struct
+id|tcf_result
+op_star
+id|res
 )paren
 suffix:semicolon
 r_extern

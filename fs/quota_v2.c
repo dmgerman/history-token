@@ -2231,7 +2231,7 @@ id|newact
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|ref
 suffix:semicolon
@@ -2344,7 +2344,7 @@ suffix:semicolon
 id|ref
 op_assign
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|buf
@@ -3212,12 +3212,12 @@ suffix:semicolon
 id|uint
 id|newblk
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|ref
 op_assign
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|buf
@@ -3805,12 +3805,12 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
+id|__le32
 op_star
 id|ref
 op_assign
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|buf

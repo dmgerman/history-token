@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 macro_line|#include &lt;asm/arch/lubbock.h&gt;
+macro_line|#include &lt;asm/mach/time.h&gt;
 multiline_comment|/*&n; * Debug macros&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -147,9 +148,11 @@ id|checksum
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-r_int
+r_struct
+id|timespec
 id|delta
+comma
+id|rtc
 suffix:semicolon
 r_int
 id|i
@@ -166,11 +169,23 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* preserve current time */
-id|delta
+id|rtc.tv_sec
 op_assign
-id|xtime.tv_sec
-op_minus
 id|RCNR
+suffix:semicolon
+id|rtc.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|save_time_delta
+c_func
+(paren
+op_amp
+id|delta
+comma
+op_amp
+id|rtc
+)paren
 suffix:semicolon
 multiline_comment|/* save vital registers */
 id|SAVE
@@ -627,11 +642,19 @@ id|ICMR
 )paren
 suffix:semicolon
 multiline_comment|/* restore current time */
-id|xtime.tv_sec
+id|rtc.tv_sec
 op_assign
 id|RCNR
-op_plus
+suffix:semicolon
+id|restore_time_delta
+c_func
+(paren
+op_amp
 id|delta
+comma
+op_amp
+id|rtc
+)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk

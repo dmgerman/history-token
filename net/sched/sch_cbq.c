@@ -6787,10 +6787,6 @@ comma
 id|q-&gt;now
 )paren
 suffix:semicolon
-id|q-&gt;link.xstats.avgidle
-op_assign
-id|q-&gt;link.avgidle
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -17,12 +17,12 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* &quot;GEM&quot;, &quot;BGM&quot;, &quot;XGM&quot;, or other */
 DECL|member|st
-id|u32
+id|__be32
 id|st
 suffix:semicolon
 multiline_comment|/* start of partition */
 DECL|member|siz
-id|u32
+id|__be32
 id|siz
 suffix:semicolon
 multiline_comment|/* length of partition */

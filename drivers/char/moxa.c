@@ -4710,7 +4710,7 @@ suffix:semicolon
 id|tty_wakeup
 c_func
 (paren
-id|tty
+id|tp
 )paren
 suffix:semicolon
 id|wake_up_interruptible
@@ -5510,7 +5510,7 @@ suffix:semicolon
 id|tty_wakeup
 c_func
 (paren
-id|tty
+id|ch-&gt;tty
 )paren
 suffix:semicolon
 id|wake_up_interruptible

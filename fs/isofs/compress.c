@@ -530,7 +530,7 @@ c_func
 (paren
 op_star
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 (paren
@@ -613,7 +613,7 @@ c_func
 (paren
 op_star
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 (paren

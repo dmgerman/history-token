@@ -406,11 +406,12 @@ op_star
 id|bnode
 suffix:semicolon
 id|u32
-id|data
-comma
 id|nidx
 comma
 id|parent
+suffix:semicolon
+id|__be32
+id|data
 suffix:semicolon
 r_int
 id|height

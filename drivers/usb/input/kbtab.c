@@ -233,7 +233,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 op_amp
@@ -253,7 +253,7 @@ id|get_unaligned
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 op_amp

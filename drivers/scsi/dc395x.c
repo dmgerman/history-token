@@ -3469,7 +3469,7 @@ l_int|0
 suffix:semicolon
 id|srb-&gt;virt_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|srb-&gt;sg_index
 op_assign
@@ -7985,7 +7985,7 @@ l_string|&quot;sg_update_list: sg_to_virt failed&bslash;n&quot;
 suffix:semicolon
 id|srb-&gt;virt_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We have transfered a single byte (PIO mode?) and need to update&n; * the count of bytes remaining (total_xfer_length) and update the sg&n; * entry to either point to next byte in the current sg entry, or of&n; * already at the end to point to the start of the next sg entry&n; */
@@ -15380,7 +15380,7 @@ id|acb
 comma
 id|DID_RESET
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|1
 )paren

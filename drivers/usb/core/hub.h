@@ -61,11 +61,11 @@ r_struct
 id|usb_port_status
 (brace
 DECL|member|wPortStatus
-id|__u16
+id|__le16
 id|wPortStatus
 suffix:semicolon
 DECL|member|wPortChange
-id|__u16
+id|__le16
 id|wPortChange
 suffix:semicolon
 )brace
@@ -126,11 +126,11 @@ r_struct
 id|usb_hub_status
 (brace
 DECL|member|wHubStatus
-id|__u16
+id|__le16
 id|wHubStatus
 suffix:semicolon
 DECL|member|wHubChange
-id|__u16
+id|__le16
 id|wHubChange
 suffix:semicolon
 )brace

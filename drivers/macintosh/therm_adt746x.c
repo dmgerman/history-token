@@ -18,6 +18,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/of_device.h&gt;
+macro_line|#include &lt;linux/kthread.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 DECL|macro|CONFIG_REG
@@ -196,7 +197,7 @@ c_func
 (paren
 id|limit_adjust
 comma
-l_string|&quot;Adjust maximum temperatures (50&#xfffd;C cpu, 70&#xfffd;C gpu) by N &#xfffd;C.&quot;
+l_string|&quot;Adjust maximum temperatures (50 cpu, 70 gpu) by N degrees.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -295,21 +296,14 @@ id|thermostat
 op_star
 id|thermostat
 suffix:semicolon
-DECL|variable|monitor_thread_id
-r_static
-id|pid_t
-id|monitor_thread_id
-suffix:semicolon
-DECL|variable|monitor_running
-r_static
-r_int
-id|monitor_running
-suffix:semicolon
-DECL|variable|monitor_task_compl
+DECL|variable|thread_therm
 r_static
 r_struct
-id|completion
-id|monitor_task_compl
+id|task_struct
+op_star
+id|thread_therm
+op_assign
+l_int|NULL
 suffix:semicolon
 r_static
 r_int
@@ -647,18 +641,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|monitor_running
+id|thread_therm
+op_ne
+l_int|NULL
 )paren
 (brace
-id|monitor_running
-op_assign
-l_int|0
-suffix:semicolon
-id|wait_for_completion
+id|kthread_stop
 c_func
 (paren
-op_amp
-id|monitor_task_compl
+id|thread_therm
 )paren
 suffix:semicolon
 )brace
@@ -667,7 +658,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;adt746x: Putting max temperatures back from %d, %d, %d,&quot;
-l_string|&quot; to %d, %d, %d, (&#xfffd;C)&bslash;n&quot;
+l_string|&quot; to %d, %d, %d&bslash;n&quot;
 comma
 id|th-&gt;limits
 (braket
@@ -865,7 +856,16 @@ op_lshift
 l_int|8
 )paren
 suffix:semicolon
+multiline_comment|/* &quot;a value of 0xffff means that the fan has stopped&quot; */
 r_return
+(paren
+id|res
+op_eq
+l_int|0xffff
+ques
+c_cond
+l_int|0
+suffix:colon
 (paren
 l_int|90000
 op_star
@@ -873,6 +873,7 @@ l_int|60
 )paren
 op_div
 id|res
+)paren
 suffix:semicolon
 )brace
 DECL|function|write_both_fan_speed
@@ -1209,41 +1210,17 @@ r_int
 id|mfan_speed
 suffix:semicolon
 macro_line|#endif
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|daemonize
-c_func
-(paren
-l_string|&quot;kfand&quot;
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|current-&gt;comm
-comma
-l_string|&quot;thermostat&quot;
-)paren
-suffix:semicolon
-id|monitor_running
-op_assign
-l_int|1
-suffix:semicolon
 r_while
 c_loop
 (paren
-id|monitor_running
+op_logical_neg
+id|kthread_should_stop
+c_func
+(paren
+)paren
 )paren
 (brace
-id|msleep
+id|msleep_interruptible
 c_func
 (paren
 l_int|2000
@@ -1393,7 +1370,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;adt746x: Limit exceeded by %d&#xfffd;C, overriding specified fan speed for %s.&bslash;n&quot;
+l_string|&quot;adt746x: Limit exceeded by %d, overriding specified fan speed for %s.&bslash;n&quot;
 comma
 id|var
 comma
@@ -1462,7 +1439,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;adt746x: Limit exceeded by %d&#xfffd;C, setting speed to specified for %s.&bslash;n&quot;
+l_string|&quot;adt746x: Limit exceeded by %d, setting speed to specified for %s.&bslash;n&quot;
 comma
 id|var
 comma
@@ -1632,8 +1609,8 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;adt746x: Temperature infos:&quot;
-l_string|&quot; thermostats: %d,%d,%d &#xfffd;C;&quot;
-l_string|&quot; limits: %d,%d,%d &#xfffd;C;&quot;
+l_string|&quot; thermostats: %d,%d,%d;&quot;
+l_string|&quot; limits: %d,%d,%d;&quot;
 l_string|&quot; fan speed: %d RPM&bslash;n&quot;
 comma
 id|temps
@@ -1702,15 +1679,6 @@ l_int|2
 suffix:semicolon
 macro_line|#endif&t;&t;
 )brace
-id|complete_and_exit
-c_func
-(paren
-op_amp
-id|monitor_task_compl
-comma
-l_int|0
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2009,7 +1977,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;adt746x: Lowering max temperatures from %d, %d, %d&quot;
-l_string|&quot; to %d, %d, %d (&#xfffd;C)&bslash;n&quot;
+l_string|&quot; to %d, %d, %d&bslash;n&quot;
 comma
 id|th-&gt;initial_limits
 (braket
@@ -2060,6 +2028,7 @@ id|th-&gt;clt
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;adt746x: Thermostat failed to attach client !&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2125,27 +2094,47 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|init_completion
-c_func
-(paren
-op_amp
-id|monitor_task_compl
-)paren
-suffix:semicolon
-id|monitor_thread_id
+id|thread_therm
 op_assign
-id|kernel_thread
+id|kthread_run
 c_func
 (paren
 id|monitor_task
 comma
 id|th
 comma
-id|SIGCHLD
-op_or
-id|CLONE_KERNEL
+l_string|&quot;kfand&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|thread_therm
+op_eq
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOMEM
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;adt746x: Kthread creation failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|thread_therm
+op_assign
+l_int|NULL
+suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2153,10 +2142,12 @@ suffix:semicolon
 multiline_comment|/* &n; * Now, unfortunately, sysfs doesn&squot;t give us a nice void * we could&n; * pass around to the attribute functions, so we don&squot;t really have&n; * choice but implement a bunch of them...&n; *&n; */
 DECL|macro|BUILD_SHOW_FUNC_INT
 mdefine_line|#define BUILD_SHOW_FUNC_INT(name, data)&t;&t;&t;&t;&bslash;&n;static ssize_t show_##name(struct device *dev, char *buf)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d&bslash;n&quot;, data);&t;&t;&t;&bslash;&n;}
+DECL|macro|BUILD_SHOW_FUNC_FAN
+mdefine_line|#define BUILD_SHOW_FUNC_FAN(name, data)&t;&t;&t;&t;&bslash;&n;static ssize_t show_##name(struct device *dev, char *buf)       &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return sprintf(buf, &quot;%d (%d rpm)&bslash;n&quot;, &t;&t;&t;&bslash;&n;&t;&t;thermostat-&gt;last_speed[data],&t;&t;&t;&bslash;&n;&t;&t;read_fan_speed(thermostat, FAN_SPEED[data])&t;&bslash;&n;&t;&t;);&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|BUILD_STORE_FUNC_DEG
 mdefine_line|#define BUILD_STORE_FUNC_DEG(name, data)&t;&t;&t;&bslash;&n;static ssize_t store_##name(struct device *dev, const char *buf, size_t n) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val = simple_strtol(buf, NULL, 10);&t;&t;&t;&bslash;&n;&t;printk(KERN_INFO &quot;Adjusting limits by %d&#xfffd;C&bslash;n&quot;, val);&t;&bslash;&n;&t;limit_adjust = val;&t;&t;&t;&t;&t;&bslash;&n;&t;for (i=0; i &lt; 3; i++)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;set_limit(thermostat, i);&t;&t;&t;&bslash;&n;&t;return n;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|BUILD_STORE_FUNC_INT
-mdefine_line|#define BUILD_STORE_FUNC_INT(name, data)&t;&t;&t;&bslash;&n;static ssize_t store_##name(struct device *dev, const char *buf, size_t n) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val = simple_strtoul(buf, NULL, 10);&t;&t;&t;&bslash;&n;&t;if (val &lt; 0 || val &gt; 255)&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&bslash;&n;&t;printk(KERN_INFO &quot;Setting fan speed to %d&bslash;n&quot;, val);&t;&bslash;&n;&t;data = val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return n;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define BUILD_STORE_FUNC_INT(name, data)&t;&t;&t;&bslash;&n;static ssize_t store_##name(struct device *dev, const char *buf, size_t n) &bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;val = simple_strtoul(buf, NULL, 10);&t;&t;&t;&bslash;&n;&t;if (val &lt; 0 || val &gt; 255)&t;&t;&t;&t;&bslash;&n;&t;&t;return -EINVAL;&t;&t;&t;&t;&t;&bslash;&n;&t;printk(KERN_INFO &quot;Setting specified fan speed to %d&bslash;n&quot;, val);&t;&bslash;&n;&t;data = val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return n;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 id|BUILD_SHOW_FUNC_INT
 c_func
 (paren
@@ -2220,41 +2211,19 @@ id|specified_fan_speed
 comma
 id|fan_speed
 )paren
-id|BUILD_SHOW_FUNC_INT
+id|BUILD_SHOW_FUNC_FAN
 c_func
 (paren
 id|cpu_fan_speed
 comma
-(paren
-id|read_fan_speed
-c_func
-(paren
-id|thermostat
-comma
-id|FAN_SPEED
-(braket
 l_int|0
-)braket
 )paren
-)paren
-)paren
-id|BUILD_SHOW_FUNC_INT
+id|BUILD_SHOW_FUNC_FAN
 c_func
 (paren
 id|gpu_fan_speed
 comma
-(paren
-id|read_fan_speed
-c_func
-(paren
-id|thermostat
-comma
-id|FAN_SPEED
-(braket
 l_int|1
-)braket
-)paren
-)paren
 )paren
 id|BUILD_STORE_FUNC_INT
 c_func

@@ -1917,13 +1917,13 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|DO_ERROR
-mdefine_line|#define DO_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_OK) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, NULL); &bslash;&n;}
+mdefine_line|#define DO_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_STOP) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, NULL); &bslash;&n;}
 DECL|macro|DO_ERROR_INFO
-mdefine_line|#define DO_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_BAD) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, &amp;info); &bslash;&n;}
+mdefine_line|#define DO_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_STOP) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 0, regs, error_code, &amp;info); &bslash;&n;}
 DECL|macro|DO_VM86_ERROR
-mdefine_line|#define DO_VM86_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_OK) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, NULL); &bslash;&n;}
+mdefine_line|#define DO_VM86_ERROR(trapnr, signr, str, name) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_STOP) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, NULL); &bslash;&n;}
 DECL|macro|DO_VM86_ERROR_INFO
-mdefine_line|#define DO_VM86_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_OK) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, &amp;info); &bslash;&n;}
+mdefine_line|#define DO_VM86_ERROR_INFO(trapnr, signr, str, name, sicode, siaddr) &bslash;&n;asmlinkage void do_##name(struct pt_regs * regs, long error_code) &bslash;&n;{ &bslash;&n;&t;siginfo_t info; &bslash;&n;&t;info.si_signo = signr; &bslash;&n;&t;info.si_errno = 0; &bslash;&n;&t;info.si_code = sicode; &bslash;&n;&t;info.si_addr = (void __user *)siaddr; &bslash;&n;&t;if (notify_die(DIE_TRAP, str, regs, error_code, trapnr, signr) &bslash;&n;&t;&t;&t;&t;&t;&t;== NOTIFY_STOP) &bslash;&n;&t;&t;return; &bslash;&n;&t;do_trap(trapnr, signr, str, 1, regs, error_code, &amp;info); &bslash;&n;}
 id|DO_VM86_ERROR_INFO
 c_func
 (paren
@@ -2256,7 +2256,7 @@ comma
 id|SIGSEGV
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 suffix:semicolon
 r_return
@@ -2592,7 +2592,7 @@ comma
 id|SIGINT
 )paren
 op_eq
-id|NOTIFY_BAD
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -2644,7 +2644,7 @@ comma
 id|SIGINT
 )paren
 op_eq
-id|NOTIFY_BAD
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -2834,7 +2834,7 @@ comma
 id|SIGTRAP
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 l_int|1
@@ -2930,7 +2930,7 @@ comma
 id|SIGTRAP
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon

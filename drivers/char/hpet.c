@@ -3960,12 +3960,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__initdata
+DECL|variable|hpet_acpi_driver
 r_static
 r_struct
 id|acpi_driver
 id|hpet_acpi_driver
-id|__initdata
 op_assign
 (brace
 dot

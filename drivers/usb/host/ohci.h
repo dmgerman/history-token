@@ -6,7 +6,7 @@ id|ed
 (brace
 multiline_comment|/* first fields are hardware-specified, le32 */
 DECL|member|hwINFO
-id|__u32
+id|__le32
 id|hwINFO
 suffix:semicolon
 multiline_comment|/* endpoint config bitmap */
@@ -25,12 +25,12 @@ mdefine_line|#define ED_OUT&t;&t;__constant_cpu_to_le32(0x01 &lt;&lt; 11)
 DECL|macro|ED_IN
 mdefine_line|#define ED_IN&t;&t;__constant_cpu_to_le32(0x02 &lt;&lt; 11)
 DECL|member|hwTailP
-id|__u32
+id|__le32
 id|hwTailP
 suffix:semicolon
 multiline_comment|/* tail of TD list */
 DECL|member|hwHeadP
-id|__u32
+id|__le32
 id|hwHeadP
 suffix:semicolon
 multiline_comment|/* head of TD list (hc r/w) */
@@ -39,7 +39,7 @@ mdefine_line|#define ED_C&t;&t;__constant_cpu_to_le32(0x02)&t;/* toggle carry */
 DECL|macro|ED_H
 mdefine_line|#define ED_H&t;&t;__constant_cpu_to_le32(0x01)&t;/* halted */
 DECL|member|hwNextED
-id|__u32
+id|__le32
 id|hwNextED
 suffix:semicolon
 multiline_comment|/* next ED in list */
@@ -138,7 +138,7 @@ id|td
 (brace
 multiline_comment|/* first fields are hardware-specified, le32 */
 DECL|member|hwINFO
-id|__u32
+id|__le32
 id|hwINFO
 suffix:semicolon
 multiline_comment|/* transfer info bitmask */
@@ -181,17 +181,17 @@ DECL|macro|TD_R
 mdefine_line|#define TD_R        0x00040000&t;&t;&t;/* round: short packets OK? */
 multiline_comment|/* (no hwINFO #defines yet for iso tds) */
 DECL|member|hwCBP
-id|__u32
+id|__le32
 id|hwCBP
 suffix:semicolon
 multiline_comment|/* Current Buffer Pointer (or 0) */
 DECL|member|hwNextTD
-id|__u32
+id|__le32
 id|hwNextTD
 suffix:semicolon
 multiline_comment|/* Next TD Pointer */
 DECL|member|hwBE
-id|__u32
+id|__le32
 id|hwBE
 suffix:semicolon
 multiline_comment|/* Memory Buffer End Pointer */
@@ -199,7 +199,7 @@ multiline_comment|/* PSW is only for ISO */
 DECL|macro|MAXPSW
 mdefine_line|#define MAXPSW 1&t;&t;/* hardware allows 8 */
 DECL|member|hwPSW
-id|__u16
+id|__le16
 id|hwPSW
 (braket
 id|MAXPSW
@@ -378,7 +378,7 @@ id|ohci_hcca
 DECL|macro|NUM_INTS
 mdefine_line|#define NUM_INTS 32
 DECL|member|int_table
-id|__u32
+id|__le32
 id|int_table
 (braket
 id|NUM_INTS
@@ -387,14 +387,14 @@ suffix:semicolon
 multiline_comment|/* periodic schedule */
 multiline_comment|/* &n;&t; * OHCI defines u16 frame_no, followed by u16 zero pad.&n;&t; * Since some processors can&squot;t do 16 bit bus accesses,&n;&t; * portable access must be a 32 bit byteswapped access.&n;&t; */
 DECL|member|frame_no
-id|u32
+id|__le32
 id|frame_no
 suffix:semicolon
 multiline_comment|/* current frame number */
 DECL|macro|OHCI_FRAME_NO
 mdefine_line|#define OHCI_FRAME_NO(hccap) ((u16)le32_to_cpup(&amp;(hccap)-&gt;frame_no))
 DECL|member|done_head
-id|__u32
+id|__le32
 id|done_head
 suffix:semicolon
 multiline_comment|/* info returned for an interrupt */

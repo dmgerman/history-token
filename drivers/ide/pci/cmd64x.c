@@ -36,8 +36,6 @@ r_static
 r_int
 id|n_cmd_devs
 suffix:semicolon
-DECL|macro|DEBUG_CMD_REGS
-macro_line|#undef DEBUG_CMD_REGS
 DECL|function|print_cmd64x_get_info
 r_static
 r_char
@@ -123,17 +121,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* extra */
-macro_line|#ifdef DEBUG_CMD_REGS
-id|u8
-id|hi_byte
-op_assign
-l_int|0
-comma
-id|lo_byte
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif /* DEBUG_CMD_REGS */
 id|p
 op_add_assign
 id|sprintf
@@ -1175,89 +1162,6 @@ suffix:colon
 l_string|&quot;enabled&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_CMD_REGS
-id|SPLIT_BYTE
-c_func
-(paren
-id|reg50
-comma
-id|hi_byte
-comma
-id|lo_byte
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;CFR       = 0x%02x, HI = 0x%02x, &quot;
-l_string|&quot;LOW = 0x%02x&bslash;n&quot;
-comma
-id|reg50
-comma
-id|hi_byte
-comma
-id|lo_byte
-)paren
-suffix:semicolon
-id|SPLIT_BYTE
-c_func
-(paren
-id|reg57
-comma
-id|hi_byte
-comma
-id|lo_byte
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;ARTTIM23  = 0x%02x, HI = 0x%02x, &quot;
-l_string|&quot;LOW = 0x%02x&bslash;n&quot;
-comma
-id|reg57
-comma
-id|hi_byte
-comma
-id|lo_byte
-)paren
-suffix:semicolon
-id|SPLIT_BYTE
-c_func
-(paren
-id|reg71
-comma
-id|hi_byte
-comma
-id|lo_byte
-)paren
-suffix:semicolon
-id|p
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|p
-comma
-l_string|&quot;MRDMODE   = 0x%02x, HI = 0x%02x, &quot;
-l_string|&quot;LOW = 0x%02x&bslash;n&quot;
-comma
-id|reg71
-comma
-id|hi_byte
-comma
-id|lo_byte
-)paren
-suffix:semicolon
-macro_line|#endif /* DEBUG_CMD_REGS */
 r_return
 (paren
 r_char

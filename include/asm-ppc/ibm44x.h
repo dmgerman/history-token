@@ -87,9 +87,9 @@ mdefine_line|#define DCRN_SDR_PFC0&t;&t;0x4100
 DECL|macro|DCRN_SDR_PFC1
 mdefine_line|#define DCRN_SDR_PFC1&t;&t;0x4101
 DECL|macro|DCRN_SDR_PFC1_EPS
-mdefine_line|#define DCRN_SDR_PFC1_EPS&t;0x1c000000
+mdefine_line|#define DCRN_SDR_PFC1_EPS&t;0x1c00000
 DECL|macro|DCRN_SDR_PFC1_EPS_SHIFT
-mdefine_line|#define DCRN_SDR_PFC1_EPS_SHIFT&t;26
+mdefine_line|#define DCRN_SDR_PFC1_EPS_SHIFT&t;22
 DECL|macro|DCRN_SDR_PFC1_RMII
 mdefine_line|#define DCRN_SDR_PFC1_RMII&t;0x02000000
 DECL|macro|DCRN_SDR_MFR

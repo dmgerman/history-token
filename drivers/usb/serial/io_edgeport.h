@@ -208,7 +208,7 @@ id|BootMinorVersion
 suffix:semicolon
 multiline_comment|/*&t;   &t;&t;  yy. */
 DECL|member|BootBuildNumber
-id|__u16
+id|__le16
 id|BootBuildNumber
 suffix:semicolon
 multiline_comment|/*&t;&t;      &t;  zzzz (LE format) */
@@ -223,7 +223,7 @@ id|FirmwareMinorVersion
 suffix:semicolon
 multiline_comment|/*&t;&t;&t;&t;yy. */
 DECL|member|FirmwareBuildNumber
-id|__u16
+id|__le16
 id|FirmwareBuildNumber
 suffix:semicolon
 multiline_comment|/*&t;&t;&t;&t;zzzz (LE format) */

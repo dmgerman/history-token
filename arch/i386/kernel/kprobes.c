@@ -862,7 +862,7 @@ id|args-&gt;regs
 )paren
 )paren
 r_return
-id|NOTIFY_OK
+id|NOTIFY_STOP
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -879,7 +879,7 @@ id|args-&gt;regs
 )paren
 )paren
 r_return
-id|NOTIFY_OK
+id|NOTIFY_STOP
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -903,7 +903,7 @@ id|args-&gt;trapnr
 )paren
 )paren
 r_return
-id|NOTIFY_OK
+id|NOTIFY_STOP
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -927,7 +927,7 @@ id|args-&gt;trapnr
 )paren
 )paren
 r_return
-id|NOTIFY_OK
+id|NOTIFY_STOP
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -937,7 +937,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-id|NOTIFY_BAD
+id|NOTIFY_DONE
 suffix:semicolon
 )brace
 DECL|function|setjmp_pre_handler

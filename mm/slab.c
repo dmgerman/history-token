@@ -9371,7 +9371,7 @@ id|__kmalloc
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-multiline_comment|/**&n; * __alloc_percpu - allocate one copy of the object for every present&n; * cpu in the system, zeroing them.&n; * Objects should be dereferenced using per_cpu_ptr/get_cpu_ptr&n; * macros only.&n; *&n; * @size: how many bytes of memory are required.&n; * @align: the alignment, which can&squot;t be greater than SMP_CACHE_BYTES.&n; */
+multiline_comment|/**&n; * __alloc_percpu - allocate one copy of the object for every present&n; * cpu in the system, zeroing them.&n; * Objects should be dereferenced using the per_cpu_ptr macro only.&n; *&n; * @size: how many bytes of memory are required.&n; * @align: the alignment, which can&squot;t be greater than SMP_CACHE_BYTES.&n; */
 DECL|function|__alloc_percpu
 r_void
 op_star

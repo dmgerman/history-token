@@ -151,15 +151,15 @@ r_struct
 id|mm_dma_desc
 (brace
 DECL|member|pci_addr
-id|u64
+id|__le64
 id|pci_addr
 suffix:semicolon
 DECL|member|local_addr
-id|u64
+id|__le64
 id|local_addr
 suffix:semicolon
 DECL|member|transfer_size
-id|u32
+id|__le32
 id|transfer_size
 suffix:semicolon
 DECL|member|zero1
@@ -167,15 +167,15 @@ id|u32
 id|zero1
 suffix:semicolon
 DECL|member|next_desc_addr
-id|u64
+id|__le64
 id|next_desc_addr
 suffix:semicolon
 DECL|member|sem_addr
-id|u64
+id|__le64
 id|sem_addr
 suffix:semicolon
 DECL|member|control_bits
-id|u32
+id|__le32
 id|control_bits
 suffix:semicolon
 DECL|member|zero2
@@ -188,7 +188,7 @@ id|data_dma_handle
 suffix:semicolon
 multiline_comment|/* Copy of the bits */
 DECL|member|sem_control_bits
-id|u64
+id|__le64
 id|sem_control_bits
 suffix:semicolon
 )brace

@@ -4396,6 +4396,7 @@ r_int
 )paren
 id|sch
 suffix:semicolon
+multiline_comment|/* We should also udate ssd info, but this has to wait. */
 id|ccw_device_start_id
 c_func
 (paren

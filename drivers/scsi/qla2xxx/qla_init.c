@@ -3478,7 +3478,7 @@ id|ha-&gt;outstanding_cmds
 id|cnt
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ha-&gt;current_outstanding_cmd
 op_assign
@@ -15878,7 +15878,7 @@ id|ha-&gt;outstanding_cmds
 id|cnt
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond

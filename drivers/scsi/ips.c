@@ -202,7 +202,7 @@ mdefine_line|#define __devexit_p(x) x
 macro_line|#endif
 macro_line|#else
 DECL|macro|IPS_SG_ADDRESS
-mdefine_line|#define IPS_SG_ADDRESS(sg)      (page_address((sg)-&gt;page) ? &bslash;&n;                                     page_address((sg)-&gt;page)+(sg)-&gt;offset : 0)
+mdefine_line|#define IPS_SG_ADDRESS(sg)      (page_address((sg)-&gt;page) ? &bslash;&n;                                   page_address((sg)-&gt;page)+(sg)-&gt;offset : NULL)
 DECL|macro|IPS_LOCK_SAVE
 mdefine_line|#define IPS_LOCK_SAVE(lock,flags) do{spin_lock(lock);(void)flags;}while(0)
 DECL|macro|IPS_UNLOCK_RESTORE
@@ -25912,14 +25912,14 @@ id|ips_ha
 id|index
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ips_sh
 (braket
 id|index
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 op_minus

@@ -509,7 +509,7 @@ c_func
 id|ppc_md
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_PSERIES
+macro_line|#ifdef CONFIG_PPC_MULTIPLATFORM
 DECL|variable|find_devices
 id|EXPORT_SYMBOL
 c_func

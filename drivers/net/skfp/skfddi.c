@@ -3657,7 +3657,7 @@ id|FDDI_K_LLC_LEN
 )paren
 )paren
 (brace
-id|bp-&gt;MacStat.tx_errors
+id|bp-&gt;MacStat.gen.tx_errors
 op_increment
 suffix:semicolon
 multiline_comment|/* bump error counter */
@@ -4892,11 +4892,11 @@ id|txd-&gt;txd_os.dma_addr
 op_assign
 l_int|0
 suffix:semicolon
-id|smc-&gt;os.MacStat.tx_packets
+id|smc-&gt;os.MacStat.gen.tx_packets
 op_increment
 suffix:semicolon
 singleline_comment|// Count transmitted packets.
-id|smc-&gt;os.MacStat.tx_bytes
+id|smc-&gt;os.MacStat.gen.tx_bytes
 op_add_assign
 id|skb-&gt;len
 suffix:semicolon
@@ -5231,7 +5231,7 @@ id|KERN_INFO
 l_string|&quot;No skb in rxd&bslash;n&quot;
 )paren
 suffix:semicolon
-id|smc-&gt;os.MacStat.rx_errors
+id|smc-&gt;os.MacStat.gen.rx_errors
 op_increment
 suffix:semicolon
 r_goto
@@ -5399,15 +5399,16 @@ l_int|0
 suffix:semicolon
 )brace
 singleline_comment|// Count statistics.
-id|smc-&gt;os.MacStat.rx_packets
+id|smc-&gt;os.MacStat.gen.rx_packets
 op_increment
 suffix:semicolon
-singleline_comment|// Count indicated receive packets.
-id|smc-&gt;os.MacStat.rx_bytes
+singleline_comment|// Count indicated receive
+singleline_comment|// packets.
+id|smc-&gt;os.MacStat.gen.rx_bytes
 op_add_assign
 id|len
 suffix:semicolon
-singleline_comment|// Count bytes
+singleline_comment|// Count bytes.
 singleline_comment|// virt points to header again
 r_if
 c_cond
@@ -5421,7 +5422,7 @@ l_int|0x01
 )paren
 (brace
 singleline_comment|// Check group (multicast) bit.
-id|smc-&gt;os.MacStat.multicast
+id|smc-&gt;os.MacStat.gen.multicast
 op_increment
 suffix:semicolon
 )brace
@@ -5492,10 +5493,11 @@ comma
 id|frag_count
 )paren
 suffix:semicolon
-id|smc-&gt;os.MacStat.rx_errors
+id|smc-&gt;os.MacStat.gen.rx_errors
 op_increment
 suffix:semicolon
-singleline_comment|// Count receive packets not indicated.
+singleline_comment|// Count receive packets
+singleline_comment|// not indicated.
 )brace
 singleline_comment|// mac_drv_rx_complete
 multiline_comment|/************************&n; *&n; *&t;mac_drv_requeue_rxd&n; *&n; *&t;The hardware module calls this function to request the OS-specific&n; *&t;module to queue the receive buffer(s) represented by the pointer&n; *&t;to the RxD and the frag_count into the receive queue again. This&n; *&t;buffer was filled with an invalid frame or an SMT frame.&n; * Args&n; *&t;smc - A pointer to the SMT context struct.&n; *&n; *&t;rxd - A pointer to the first RxD which is used by the receive frame.&n; *&n; *&t;frag_count - Count of RxDs used by the received frame.&n; * Out&n; *&t;Nothing.&n; *&n; ************************/
@@ -6569,7 +6571,7 @@ id|KERN_INFO
 l_string|&quot;Receive fifo overflow.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|smc-&gt;os.MacStat.rx_errors
+id|smc-&gt;os.MacStat.gen.rx_errors
 op_increment
 suffix:semicolon
 r_break

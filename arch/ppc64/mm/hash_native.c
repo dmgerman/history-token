@@ -1711,7 +1711,8 @@ c_func
 id|root
 )paren
 suffix:semicolon
-r_return
+r_goto
+id|bail
 suffix:semicolon
 )brace
 id|of_node_put
@@ -1726,6 +1727,8 @@ id|ppc_md.flush_hash_range
 op_assign
 id|native_flush_hash_range
 suffix:semicolon
+id|bail
+suffix:colon
 id|htab_finish_init
 c_func
 (paren

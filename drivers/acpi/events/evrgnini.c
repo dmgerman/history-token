@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evrgnini&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_system_memory_region_setup&n; *&n; * PARAMETERS:  region_obj          - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling, a nop for now&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_system_memory_region_setup&n; *&n; * PARAMETERS:  Handle              - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling, a nop for now&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_system_memory_region_setup
 id|acpi_ev_system_memory_region_setup
@@ -132,7 +132,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_io_space_region_setup&n; *&n; * PARAMETERS:  region_obj          - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_io_space_region_setup&n; *&n; * PARAMETERS:  Handle              - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_io_space_region_setup
 id|acpi_ev_io_space_region_setup
@@ -186,7 +186,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_pci_config_region_setup&n; *&n; * PARAMETERS:  region_obj          - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; * MUTEX:       Assumes namespace is not locked&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_pci_config_region_setup&n; *&n; * PARAMETERS:  Handle             - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; * MUTEX:       Assumes namespace is not locked&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_pci_config_region_setup
 id|acpi_ev_pci_config_region_setup
@@ -639,7 +639,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_pci_bar_region_setup&n; *&n; * PARAMETERS:  region_obj          - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; * MUTEX:       Assumes namespace is not locked&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_pci_bar_region_setup&n; *&n; * PARAMETERS:  Handle              - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; * MUTEX:       Assumes namespace is not locked&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_pci_bar_region_setup
 id|acpi_ev_pci_bar_region_setup
@@ -671,7 +671,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_cmos_region_setup&n; *&n; * PARAMETERS:  region_obj          - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; * MUTEX:       Assumes namespace is not locked&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_cmos_region_setup&n; *&n; * PARAMETERS:  Handle              - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; * MUTEX:       Assumes namespace is not locked&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_cmos_region_setup
 id|acpi_ev_cmos_region_setup
@@ -703,7 +703,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_default_region_setup&n; *&n; * PARAMETERS:  region_obj          - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_default_region_setup&n; *&n; * PARAMETERS:  Handle              - Region we are interested in&n; *              Function            - Start or stop&n; *              handler_context     - Address space handler context&n; *              region_context      - Region specific context&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Do any prep work for region handling&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_default_region_setup
 id|acpi_ev_default_region_setup

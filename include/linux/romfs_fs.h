@@ -17,7 +17,7 @@ mdefine_line|#define __mkw(h,l) (((h)&amp;0x00ff)&lt;&lt; 8|((l)&amp;0x00ff))
 DECL|macro|__mkl
 mdefine_line|#define __mkl(h,l) (((h)&amp;0xffff)&lt;&lt;16|((l)&amp;0xffff))
 DECL|macro|__mk4
-mdefine_line|#define __mk4(a,b,c,d) htonl(__mkl(__mkw(a,b),__mkw(c,d)))
+mdefine_line|#define __mk4(a,b,c,d) cpu_to_be32(__mkl(__mkw(a,b),__mkw(c,d)))
 DECL|macro|ROMSB_WORD0
 mdefine_line|#define ROMSB_WORD0 __mk4(&squot;-&squot;,&squot;r&squot;,&squot;o&squot;,&squot;m&squot;)
 DECL|macro|ROMSB_WORD1
@@ -28,19 +28,19 @@ r_struct
 id|romfs_super_block
 (brace
 DECL|member|word0
-id|__u32
+id|__be32
 id|word0
 suffix:semicolon
 DECL|member|word1
-id|__u32
+id|__be32
 id|word1
 suffix:semicolon
 DECL|member|size
-id|__u32
+id|__be32
 id|size
 suffix:semicolon
 DECL|member|checksum
-id|__u32
+id|__be32
 id|checksum
 suffix:semicolon
 DECL|member|name
@@ -59,20 +59,20 @@ r_struct
 id|romfs_inode
 (brace
 DECL|member|next
-id|__u32
+id|__be32
 id|next
 suffix:semicolon
 multiline_comment|/* low 4 bits see ROMFH_ */
 DECL|member|spec
-id|__u32
+id|__be32
 id|spec
 suffix:semicolon
 DECL|member|size
-id|__u32
+id|__be32
 id|size
 suffix:semicolon
 DECL|member|checksum
-id|__u32
+id|__be32
 id|checksum
 suffix:semicolon
 DECL|member|name

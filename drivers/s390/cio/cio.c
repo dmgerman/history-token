@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.123 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.128 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -478,6 +478,11 @@ id|sch
 r_return
 l_int|1
 suffix:semicolon
+id|local_bh_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 id|irq_enter
 (paren
 )paren
@@ -528,6 +533,11 @@ id|sch-&gt;lock
 )paren
 suffix:semicolon
 id|irq_exit
+(paren
+)paren
+suffix:semicolon
+id|__local_bh_enable
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1406,25 +1416,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|sch-&gt;schib.pmcw.ena
-op_assign
-l_int|1
-suffix:semicolon
-id|sch-&gt;schib.pmcw.isc
-op_assign
-id|isc
-suffix:semicolon
-id|sch-&gt;schib.pmcw.intparm
-op_assign
-(paren
-id|__u32
-)paren
-(paren
-r_int
-r_int
-)paren
-id|sch
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1444,6 +1435,25 @@ id|retry
 op_decrement
 )paren
 (brace
+id|sch-&gt;schib.pmcw.ena
+op_assign
+l_int|1
+suffix:semicolon
+id|sch-&gt;schib.pmcw.isc
+op_assign
+id|isc
+suffix:semicolon
+id|sch-&gt;schib.pmcw.intparm
+op_assign
+(paren
+id|__u32
+)paren
+(paren
+r_int
+r_int
+)paren
+id|sch
+suffix:semicolon
 id|ret
 op_assign
 id|cio_modify
@@ -1624,10 +1634,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-id|sch-&gt;schib.pmcw.ena
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1647,6 +1653,10 @@ id|retry
 op_decrement
 )paren
 (brace
+id|sch-&gt;schib.pmcw.ena
+op_assign
+l_int|0
+suffix:semicolon
 id|ret
 op_assign
 id|cio_modify

@@ -587,7 +587,7 @@ comma
 id|SIGSEGV
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon
@@ -1424,7 +1424,7 @@ comma
 id|SIGSEGV
 )paren
 op_eq
-id|NOTIFY_OK
+id|NOTIFY_STOP
 )paren
 r_return
 suffix:semicolon

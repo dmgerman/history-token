@@ -62,7 +62,7 @@ op_div
 id|BITS_PER_LONG
 )paren
 suffix:semicolon
-id|uintBPL_t
+r_int
 id|result
 op_assign
 id|offset
@@ -74,7 +74,8 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
-id|uintBPL_t
+r_int
+r_int
 id|tmp
 suffix:semicolon
 r_if

@@ -1733,17 +1733,6 @@ id|port-&gt;tty-&gt;low_latency
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* Notify the tty driver that the termios have changed.&n;&t;   FIXME: Why - the ldisc will do this anyway and NULL is not&n;&t;   a valid previous state */
-id|port-&gt;tty-&gt;ldisc
-dot
-id|set_termios
-c_func
-(paren
-id|port-&gt;tty
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace

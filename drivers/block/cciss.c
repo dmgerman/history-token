@@ -7468,7 +7468,7 @@ c_func
 op_star
 (paren
 (paren
-id|__u32
+id|__be32
 op_star
 )paren
 op_amp
@@ -7490,7 +7490,7 @@ c_func
 op_star
 (paren
 (paren
-id|__u32
+id|__be32
 op_star
 )paren
 op_amp
@@ -8984,7 +8984,9 @@ suffix:semicolon
 multiline_comment|/*&n; * Map (physical) PCI mem into (virtual) kernel space&n; */
 DECL|function|remap_pci_mem
 r_static
-id|ulong
+r_void
+id|__iomem
+op_star
 id|remap_pci_mem
 c_func
 (paren
@@ -9019,12 +9021,11 @@ id|base
 op_minus
 id|page_base
 suffix:semicolon
-id|ulong
+r_void
+id|__iomem
+op_star
 id|page_remapped
 op_assign
-(paren
-id|ulong
-)paren
 id|ioremap
 c_func
 (paren
@@ -9036,10 +9037,6 @@ id|size
 )paren
 suffix:semicolon
 r_return
-(paren
-id|ulong
-)paren
-(paren
 id|page_remapped
 ques
 c_cond
@@ -9049,8 +9046,7 @@ op_plus
 id|page_offs
 )paren
 suffix:colon
-l_int|0UL
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Takes jobs of the Q and sends them to the hardware, then puts it on &n; * the Q to wait for completion. &n; */
@@ -11577,10 +11573,6 @@ suffix:semicolon
 macro_line|#endif /* CCISS_DEBUG */
 id|c-&gt;cfgtable
 op_assign
-(paren
-id|CfgTable_struct
-op_star
-)paren
 id|remap_pci_mem
 c_func
 (paren
@@ -14077,10 +14069,6 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|hba
 (braket
 id|i

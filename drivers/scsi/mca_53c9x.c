@@ -623,23 +623,23 @@ suffix:semicolon
 multiline_comment|/* Optional functions */
 id|esp-&gt;dma_barrier
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|esp-&gt;dma_drain
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|esp-&gt;dma_invalidate
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|esp-&gt;dma_irq_entry
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|esp-&gt;dma_irq_exit
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|esp-&gt;dma_led_on
 op_assign
@@ -651,11 +651,11 @@ id|dma_led_off
 suffix:semicolon
 id|esp-&gt;dma_poll
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|esp-&gt;dma_reset
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Set the command buffer */
 id|esp-&gt;esp_command

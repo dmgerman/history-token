@@ -1225,7 +1225,7 @@ op_star
 )paren
 id|__LC_IRB
 suffix:semicolon
-multiline_comment|/* Retry sense id for cc=1. */
+multiline_comment|/* Retry sense id, if needed. */
 r_if
 c_cond
 (paren
@@ -1241,9 +1241,14 @@ id|SCSW_STCTL_ALERT_STATUS
 r_if
 c_cond
 (paren
+(paren
 id|irb-&gt;scsw.cc
 op_eq
 l_int|1
+)paren
+op_logical_or
+op_logical_neg
+id|irb-&gt;scsw.actl
 )paren
 (brace
 id|ret

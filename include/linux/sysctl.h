@@ -1328,6 +1328,11 @@ id|NET_TCP_MODERATE_RCVBUF
 op_assign
 l_int|106
 comma
+DECL|enumerator|NET_TCP_TSO_WIN_DIVISOR
+id|NET_TCP_TSO_WIN_DIVISOR
+op_assign
+l_int|107
+comma
 )brace
 suffix:semicolon
 r_enum

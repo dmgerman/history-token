@@ -2167,7 +2167,7 @@ op_logical_neg
 id|pDCB
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -2193,7 +2193,7 @@ op_eq
 id|pACB-&gt;pLinkDCB
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|DCBDEBUG1
@@ -5592,7 +5592,7 @@ comma
 op_star
 id|pDCB2
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|uint
 id|id

@@ -70,6 +70,7 @@ id|isl38xx_w32_flush
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|base
 comma
@@ -294,6 +295,7 @@ id|isl38xx_disable_interrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -302,6 +304,7 @@ id|isl38xx_enable_common_interrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -316,6 +319,7 @@ r_int
 op_star
 comma
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -330,6 +334,7 @@ r_int
 op_star
 comma
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -340,6 +345,7 @@ c_func
 r_int
 comma
 r_void
+id|__iomem
 op_star
 )paren
 suffix:semicolon
@@ -348,6 +354,7 @@ id|isl38xx_interface_reset
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 comma
 id|dma_addr_t

@@ -538,6 +538,11 @@ DECL|member|cooling_mode
 id|u8
 id|cooling_mode
 suffix:semicolon
+DECL|member|zombie
+r_volatile
+id|u8
+id|zombie
+suffix:semicolon
 DECL|member|flags
 r_struct
 id|acpi_thermal_flags
@@ -2621,6 +2626,24 @@ r_int
 id|data
 )paren
 (brace
+r_struct
+id|acpi_thermal
+op_star
+id|tz
+op_assign
+(paren
+r_struct
+id|acpi_thermal
+op_star
+)paren
+id|data
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|tz-&gt;zombie
+)paren
 id|acpi_os_queue_for_execution
 c_func
 (paren
@@ -5838,10 +5861,13 @@ c_func
 id|device
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|timer_pending
+multiline_comment|/* avoid timer adding new defer task */
+id|tz-&gt;zombie
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* wait for running timer (on other CPUs) finish */
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -5849,8 +5875,16 @@ op_amp
 id|tz-&gt;timer
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* synchronize deferred task */
+id|acpi_os_wait_events_complete
+c_func
+(paren
+l_int|NULL
 )paren
-id|del_timer
+suffix:semicolon
+multiline_comment|/* deferred task may reinsert timer */
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -5948,6 +5982,12 @@ id|acpi_thermal_remove_fs
 c_func
 (paren
 id|device
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|tz
 )paren
 suffix:semicolon
 id|return_VALUE

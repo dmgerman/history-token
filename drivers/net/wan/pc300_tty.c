@@ -660,8 +660,10 @@ id|pc300dev
 )paren
 (brace
 r_int
+r_int
 id|port
-comma
+suffix:semicolon
+r_int
 id|aux
 suffix:semicolon
 id|st_cpc_tty_area
@@ -689,7 +691,7 @@ id|CPC_TTY_NPORTS
 id|printk
 c_func
 (paren
-l_string|&quot;%s-tty: invalid interface selected (0-%i): %i&quot;
+l_string|&quot;%s-tty: invalid interface selected (0-%i): %li&quot;
 comma
 id|pc300dev-&gt;dev-&gt;name
 comma
@@ -2713,8 +2715,10 @@ id|data
 )paren
 (brace
 r_int
+r_int
 id|port
-comma
+suffix:semicolon
+r_int
 id|i
 comma
 id|j
@@ -2778,6 +2782,7 @@ id|port
 op_assign
 (paren
 r_int
+r_int
 )paren
 id|data
 suffix:semicolon
@@ -2827,7 +2832,7 @@ op_assign
 id|tty_ldisc_ref
 c_func
 (paren
-id|cpc_tty
+id|cpc_tty-&gt;tty
 )paren
 suffix:semicolon
 r_if
@@ -2840,7 +2845,6 @@ r_if
 c_cond
 (paren
 id|ld-&gt;receive_buf
-)paren
 )paren
 (brace
 id|CPC_TTY_DBG

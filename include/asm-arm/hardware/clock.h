@@ -72,7 +72,7 @@ op_star
 id|clk
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * clk_get_rate - obtain the current clock rate for a clock source.&n; *&t;&t;  This is only valid once the clock source has been enabled.&n; * @clk: clock source&n; */
+multiline_comment|/**&n; * clk_get_rate - obtain the current clock rate (in Hz) for a clock source.&n; *&t;&t;  This is only valid once the clock source has been enabled.&n; * @clk: clock source&n; */
 r_int
 r_int
 id|clk_get_rate
@@ -96,7 +96,7 @@ id|clk
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * The remaining APIs are optional for machine class support.&n; */
-multiline_comment|/**&n; * clk_round_rate - adjust a rate to the exact rate a clock can provide&n; * @clk: clock source&n; * @rate: desired clock rate in kHz&n; *&n; * Returns rounded clock rate, or negative errno.&n; */
+multiline_comment|/**&n; * clk_round_rate - adjust a rate to the exact rate a clock can provide&n; * @clk: clock source&n; * @rate: desired clock rate in Hz&n; *&n; * Returns rounded clock rate in Hz, or negative errno.&n; */
 r_int
 id|clk_round_rate
 c_func
@@ -111,7 +111,7 @@ r_int
 id|rate
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * clk_set_rate - set the clock rate for a clock source&n; * @clk: clock source&n; * @rate: desired clock rate in kHz&n; *&n; * Returns success (0) or negative errno.&n; */
+multiline_comment|/**&n; * clk_set_rate - set the clock rate for a clock source&n; * @clk: clock source&n; * @rate: desired clock rate in Hz&n; *&n; * Returns success (0) or negative errno.&n; */
 r_int
 id|clk_set_rate
 c_func

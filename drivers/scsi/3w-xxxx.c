@@ -1815,7 +1815,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Flag internal command */
 id|tw_dev-&gt;state
@@ -2651,7 +2651,7 @@ id|tw_dev-&gt;srb
 id|request_id
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Flag chrdev ioctl */
 id|tw_dev-&gt;chrdev_request_id
@@ -12605,11 +12605,11 @@ multiline_comment|/* Fake like we just shut down, so notify the card that&n;&t; 
 id|tw_halt
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 singleline_comment|// parameters aren&squot;t actually used

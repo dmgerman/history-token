@@ -44,6 +44,7 @@ id|iosapic_intr_info
 (brace
 DECL|member|addr
 r_char
+id|__iomem
 op_star
 id|addr
 suffix:semicolon
@@ -102,6 +103,7 @@ id|iosapic
 (brace
 DECL|member|addr
 r_char
+id|__iomem
 op_star
 id|addr
 suffix:semicolon
@@ -330,6 +332,7 @@ comma
 id|high32
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|addr
 suffix:semicolon
@@ -610,6 +613,7 @@ r_int
 id|flags
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|addr
 suffix:semicolon
@@ -718,6 +722,7 @@ r_int
 id|flags
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|addr
 suffix:semicolon
@@ -840,6 +845,7 @@ comma
 id|rte_index
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|addr
 suffix:semicolon
@@ -1293,6 +1299,7 @@ DECL|function|iosapic_version
 id|iosapic_version
 (paren
 r_char
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1485,7 +1492,8 @@ r_int
 r_int
 id|gsi_base
 suffix:semicolon
-r_char
+r_void
+id|__iomem
 op_star
 id|iosapic_address
 suffix:semicolon
@@ -2502,6 +2510,7 @@ comma
 id|ver
 suffix:semicolon
 r_char
+id|__iomem
 op_star
 id|addr
 suffix:semicolon

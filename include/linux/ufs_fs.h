@@ -7,6 +7,42 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#ifndef __KERNEL__
+DECL|typedef|__fs64
+r_typedef
+id|__u64
+id|__fs64
+suffix:semicolon
+DECL|typedef|__fs32
+r_typedef
+id|__u32
+id|__fs32
+suffix:semicolon
+DECL|typedef|__fs16
+r_typedef
+id|__u16
+id|__fs16
+suffix:semicolon
+macro_line|#else
+DECL|typedef|__fs64
+r_typedef
+id|__u64
+id|__bitwise
+id|__fs64
+suffix:semicolon
+DECL|typedef|__fs32
+r_typedef
+id|__u32
+id|__bitwise
+id|__fs32
+suffix:semicolon
+DECL|typedef|__fs16
+r_typedef
+id|__u16
+id|__bitwise
+id|__fs16
+suffix:semicolon
+macro_line|#endif
 macro_line|#include &lt;linux/ufs_fs_i.h&gt;
 macro_line|#include &lt;linux/ufs_fs_sb.h&gt;
 DECL|macro|UFS_BBLOCK
@@ -289,11 +325,11 @@ r_struct
 id|ufs_timeval
 (brace
 DECL|member|tv_sec
-id|__s32
+id|__fs32
 id|tv_sec
 suffix:semicolon
 DECL|member|tv_usec
-id|__s32
+id|__fs32
 id|tv_usec
 suffix:semicolon
 )brace
@@ -303,19 +339,19 @@ r_struct
 id|ufs_dir_entry
 (brace
 DECL|member|d_ino
-id|__u32
+id|__fs32
 id|d_ino
 suffix:semicolon
 multiline_comment|/* inode number of this entry */
 DECL|member|d_reclen
-id|__u16
+id|__fs16
 id|d_reclen
 suffix:semicolon
 multiline_comment|/* length of this entry */
 r_union
 (brace
 DECL|member|d_namlen
-id|__u16
+id|__fs16
 id|d_namlen
 suffix:semicolon
 multiline_comment|/* actual length of d_name */
@@ -356,22 +392,22 @@ r_struct
 id|ufs_csum
 (brace
 DECL|member|cs_ndir
-id|__u32
+id|__fs32
 id|cs_ndir
 suffix:semicolon
 multiline_comment|/* number of directories */
 DECL|member|cs_nbfree
-id|__u32
+id|__fs32
 id|cs_nbfree
 suffix:semicolon
 multiline_comment|/* number of free blocks */
 DECL|member|cs_nifree
-id|__u32
+id|__fs32
 id|cs_nifree
 suffix:semicolon
 multiline_comment|/* number of free inodes */
 DECL|member|cs_nffree
-id|__u32
+id|__fs32
 id|cs_nffree
 suffix:semicolon
 multiline_comment|/* number of free frags */
@@ -382,32 +418,32 @@ r_struct
 id|ufs2_csum_total
 (brace
 DECL|member|cs_ndir
-id|__u64
+id|__fs64
 id|cs_ndir
 suffix:semicolon
 multiline_comment|/* number of directories */
 DECL|member|cs_nbfree
-id|__u64
+id|__fs64
 id|cs_nbfree
 suffix:semicolon
 multiline_comment|/* number of free blocks */
 DECL|member|cs_nifree
-id|__u64
+id|__fs64
 id|cs_nifree
 suffix:semicolon
 multiline_comment|/* number of free inodes */
 DECL|member|cs_nffree
-id|__u64
+id|__fs64
 id|cs_nffree
 suffix:semicolon
 multiline_comment|/* number of free frags */
 DECL|member|cs_numclusters
-id|__u64
+id|__fs64
 id|cs_numclusters
 suffix:semicolon
 multiline_comment|/* number of free clusters */
 DECL|member|cs_spare
-id|__u64
+id|__fs64
 id|cs_spare
 (braket
 l_int|3
@@ -422,172 +458,172 @@ r_struct
 id|ufs_super_block
 (brace
 DECL|member|fs_link
-id|__u32
+id|__fs32
 id|fs_link
 suffix:semicolon
 multiline_comment|/* UNUSED */
 DECL|member|fs_rlink
-id|__u32
+id|__fs32
 id|fs_rlink
 suffix:semicolon
 multiline_comment|/* UNUSED */
 DECL|member|fs_sblkno
-id|__u32
+id|__fs32
 id|fs_sblkno
 suffix:semicolon
 multiline_comment|/* addr of super-block in filesys */
 DECL|member|fs_cblkno
-id|__u32
+id|__fs32
 id|fs_cblkno
 suffix:semicolon
 multiline_comment|/* offset of cyl-block in filesys */
 DECL|member|fs_iblkno
-id|__u32
+id|__fs32
 id|fs_iblkno
 suffix:semicolon
 multiline_comment|/* offset of inode-blocks in filesys */
 DECL|member|fs_dblkno
-id|__u32
+id|__fs32
 id|fs_dblkno
 suffix:semicolon
 multiline_comment|/* offset of first data after cg */
 DECL|member|fs_cgoffset
-id|__u32
+id|__fs32
 id|fs_cgoffset
 suffix:semicolon
 multiline_comment|/* cylinder group offset in cylinder */
 DECL|member|fs_cgmask
-id|__u32
+id|__fs32
 id|fs_cgmask
 suffix:semicolon
 multiline_comment|/* used to calc mod fs_ntrak */
 DECL|member|fs_time
-id|__u32
+id|__fs32
 id|fs_time
 suffix:semicolon
 multiline_comment|/* last time written -- time_t */
 DECL|member|fs_size
-id|__u32
+id|__fs32
 id|fs_size
 suffix:semicolon
 multiline_comment|/* number of blocks in fs */
 DECL|member|fs_dsize
-id|__u32
+id|__fs32
 id|fs_dsize
 suffix:semicolon
 multiline_comment|/* number of data blocks in fs */
 DECL|member|fs_ncg
-id|__u32
+id|__fs32
 id|fs_ncg
 suffix:semicolon
 multiline_comment|/* number of cylinder groups */
 DECL|member|fs_bsize
-id|__u32
+id|__fs32
 id|fs_bsize
 suffix:semicolon
 multiline_comment|/* size of basic blocks in fs */
 DECL|member|fs_fsize
-id|__u32
+id|__fs32
 id|fs_fsize
 suffix:semicolon
 multiline_comment|/* size of frag blocks in fs */
 DECL|member|fs_frag
-id|__u32
+id|__fs32
 id|fs_frag
 suffix:semicolon
 multiline_comment|/* number of frags in a block in fs */
 multiline_comment|/* these are configuration parameters */
 DECL|member|fs_minfree
-id|__u32
+id|__fs32
 id|fs_minfree
 suffix:semicolon
 multiline_comment|/* minimum percentage of free blocks */
 DECL|member|fs_rotdelay
-id|__u32
+id|__fs32
 id|fs_rotdelay
 suffix:semicolon
 multiline_comment|/* num of ms for optimal next block */
 DECL|member|fs_rps
-id|__u32
+id|__fs32
 id|fs_rps
 suffix:semicolon
 multiline_comment|/* disk revolutions per second */
 multiline_comment|/* these fields can be computed from the others */
 DECL|member|fs_bmask
-id|__u32
+id|__fs32
 id|fs_bmask
 suffix:semicolon
 multiline_comment|/* ``blkoff&squot;&squot; calc of blk offsets */
 DECL|member|fs_fmask
-id|__u32
+id|__fs32
 id|fs_fmask
 suffix:semicolon
 multiline_comment|/* ``fragoff&squot;&squot; calc of frag offsets */
 DECL|member|fs_bshift
-id|__u32
+id|__fs32
 id|fs_bshift
 suffix:semicolon
 multiline_comment|/* ``lblkno&squot;&squot; calc of logical blkno */
 DECL|member|fs_fshift
-id|__u32
+id|__fs32
 id|fs_fshift
 suffix:semicolon
 multiline_comment|/* ``numfrags&squot;&squot; calc number of frags */
 multiline_comment|/* these are configuration parameters */
 DECL|member|fs_maxcontig
-id|__u32
+id|__fs32
 id|fs_maxcontig
 suffix:semicolon
 multiline_comment|/* max number of contiguous blks */
 DECL|member|fs_maxbpg
-id|__u32
+id|__fs32
 id|fs_maxbpg
 suffix:semicolon
 multiline_comment|/* max number of blks per cyl group */
 multiline_comment|/* these fields can be computed from the others */
 DECL|member|fs_fragshift
-id|__u32
+id|__fs32
 id|fs_fragshift
 suffix:semicolon
 multiline_comment|/* block to frag shift */
 DECL|member|fs_fsbtodb
-id|__u32
+id|__fs32
 id|fs_fsbtodb
 suffix:semicolon
 multiline_comment|/* fsbtodb and dbtofsb shift constant */
 DECL|member|fs_sbsize
-id|__u32
+id|__fs32
 id|fs_sbsize
 suffix:semicolon
 multiline_comment|/* actual size of super block */
 DECL|member|fs_csmask
-id|__u32
+id|__fs32
 id|fs_csmask
 suffix:semicolon
 multiline_comment|/* csum block offset */
 DECL|member|fs_csshift
-id|__u32
+id|__fs32
 id|fs_csshift
 suffix:semicolon
 multiline_comment|/* csum block number */
 DECL|member|fs_nindir
-id|__u32
+id|__fs32
 id|fs_nindir
 suffix:semicolon
 multiline_comment|/* value of NINDIR */
 DECL|member|fs_inopb
-id|__u32
+id|__fs32
 id|fs_inopb
 suffix:semicolon
 multiline_comment|/* value of INOPB */
 DECL|member|fs_nspf
-id|__u32
+id|__fs32
 id|fs_nspf
 suffix:semicolon
 multiline_comment|/* value of NSPF */
 multiline_comment|/* yet another configuration parameter */
 DECL|member|fs_optim
-id|__u32
+id|__fs32
 id|fs_optim
 suffix:semicolon
 multiline_comment|/* optimization preference, see below */
@@ -597,7 +633,7 @@ r_union
 r_struct
 (brace
 DECL|member|fs_npsect
-id|__u32
+id|__fs32
 id|fs_npsect
 suffix:semicolon
 multiline_comment|/* # sectors/track including spares */
@@ -608,7 +644,7 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|fs_state
-id|__s32
+id|__fs32
 id|fs_state
 suffix:semicolon
 multiline_comment|/* file system state time stamp */
@@ -621,12 +657,12 @@ DECL|member|fs_u1
 id|fs_u1
 suffix:semicolon
 DECL|member|fs_interleave
-id|__u32
+id|__fs32
 id|fs_interleave
 suffix:semicolon
 multiline_comment|/* hardware sector interleave */
 DECL|member|fs_trackskew
-id|__u32
+id|__fs32
 id|fs_trackskew
 suffix:semicolon
 multiline_comment|/* sector 0 skew, per track */
@@ -635,7 +671,7 @@ multiline_comment|/* In 4.3 Tahoe this space is used by fs_headswitch and fs_trk
 multiline_comment|/* Neither of those fields is used in the Tahoe code right now but */
 multiline_comment|/* there could be problems if they are.                            */
 DECL|member|fs_id
-id|__u32
+id|__fs32
 id|fs_id
 (braket
 l_int|2
@@ -644,55 +680,55 @@ suffix:semicolon
 multiline_comment|/* file system id */
 multiline_comment|/* sizes determined by number of cylinder groups and their sizes */
 DECL|member|fs_csaddr
-id|__u32
+id|__fs32
 id|fs_csaddr
 suffix:semicolon
 multiline_comment|/* blk addr of cyl grp summary area */
 DECL|member|fs_cssize
-id|__u32
+id|__fs32
 id|fs_cssize
 suffix:semicolon
 multiline_comment|/* size of cyl grp summary area */
 DECL|member|fs_cgsize
-id|__u32
+id|__fs32
 id|fs_cgsize
 suffix:semicolon
 multiline_comment|/* cylinder group size */
 multiline_comment|/* these fields are derived from the hardware */
 DECL|member|fs_ntrak
-id|__u32
+id|__fs32
 id|fs_ntrak
 suffix:semicolon
 multiline_comment|/* tracks per cylinder */
 DECL|member|fs_nsect
-id|__u32
+id|__fs32
 id|fs_nsect
 suffix:semicolon
 multiline_comment|/* sectors per track */
 DECL|member|fs_spc
-id|__u32
+id|__fs32
 id|fs_spc
 suffix:semicolon
 multiline_comment|/* sectors per cylinder */
 multiline_comment|/* this comes from the disk driver partitioning */
 DECL|member|fs_ncyl
-id|__u32
+id|__fs32
 id|fs_ncyl
 suffix:semicolon
 multiline_comment|/* cylinders in file system */
 multiline_comment|/* these fields can be computed from the others */
 DECL|member|fs_cpg
-id|__u32
+id|__fs32
 id|fs_cpg
 suffix:semicolon
 multiline_comment|/* cylinders per group */
 DECL|member|fs_ipg
-id|__u32
+id|__fs32
 id|fs_ipg
 suffix:semicolon
 multiline_comment|/* inodes per cylinder group */
 DECL|member|fs_fpg
-id|__u32
+id|__fs32
 id|fs_fpg
 suffix:semicolon
 multiline_comment|/* blocks per group * fs_frag */
@@ -737,12 +773,12 @@ id|UFS_MAXMNTLEN
 suffix:semicolon
 multiline_comment|/* name mounted on */
 DECL|member|fs_cgrotor
-id|__u32
+id|__fs32
 id|fs_cgrotor
 suffix:semicolon
 multiline_comment|/* last cg searched */
 DECL|member|fs_csp
-id|__u32
+id|__fs32
 id|fs_csp
 (braket
 id|UFS_MAXCSBUFS
@@ -750,16 +786,16 @@ id|UFS_MAXCSBUFS
 suffix:semicolon
 multiline_comment|/*list of fs_cs info buffers */
 DECL|member|fs_maxcluster
-id|__u32
+id|__fs32
 id|fs_maxcluster
 suffix:semicolon
 DECL|member|fs_cpc
-id|__u32
+id|__fs32
 id|fs_cpc
 suffix:semicolon
 multiline_comment|/* cyl per cycle in postbl */
 DECL|member|fs_opostbl
-id|__u16
+id|__fs16
 id|fs_opostbl
 (braket
 l_int|16
@@ -792,22 +828,22 @@ id|UFS2_MAXVOLLEN
 suffix:semicolon
 multiline_comment|/* volume name */
 DECL|member|fs_swuid
-id|__u64
+id|__fs64
 id|fs_swuid
 suffix:semicolon
 multiline_comment|/* system-wide uid */
 DECL|member|fs_pad
-id|__s32
+id|__fs32
 id|fs_pad
 suffix:semicolon
 multiline_comment|/* due to alignment of fs_swuid */
 DECL|member|fs_cgrotor
-id|__u32
+id|__fs32
 id|fs_cgrotor
 suffix:semicolon
 multiline_comment|/* last cg searched */
 DECL|member|fs_ocsp
-id|__u32
+id|__fs32
 id|fs_ocsp
 (braket
 id|UFS2_NOCSPTRS
@@ -815,36 +851,36 @@ id|UFS2_NOCSPTRS
 suffix:semicolon
 multiline_comment|/*list of fs_cs info buffers */
 DECL|member|fs_contigdirs
-id|__u32
+id|__fs32
 id|fs_contigdirs
 suffix:semicolon
 multiline_comment|/*# of contiguously allocated dirs */
 DECL|member|fs_csp
-id|__u32
+id|__fs32
 id|fs_csp
 suffix:semicolon
 multiline_comment|/* cg summary info buffer for fs_cs */
 DECL|member|fs_maxcluster
-id|__u32
+id|__fs32
 id|fs_maxcluster
 suffix:semicolon
 DECL|member|fs_active
-id|__u32
+id|__fs32
 id|fs_active
 suffix:semicolon
 multiline_comment|/* used by snapshots to track fs */
 DECL|member|fs_old_cpc
-id|__s32
+id|__fs32
 id|fs_old_cpc
 suffix:semicolon
 multiline_comment|/* cyl per cycle in postbl */
 DECL|member|fs_maxbsize
-id|__s32
+id|__fs32
 id|fs_maxbsize
 suffix:semicolon
 multiline_comment|/*maximum blocking factor permitted */
 DECL|member|fs_sparecon64
-id|__s64
+id|__fs64
 id|fs_sparecon64
 (braket
 l_int|17
@@ -852,7 +888,7 @@ l_int|17
 suffix:semicolon
 multiline_comment|/*old rotation block list head */
 DECL|member|fs_sblockloc
-id|__s64
+id|__fs64
 id|fs_sblockloc
 suffix:semicolon
 multiline_comment|/* byte offset of standard superblock */
@@ -869,27 +905,27 @@ id|fs_time
 suffix:semicolon
 multiline_comment|/* last time written */
 DECL|member|fs_size
-id|__s64
+id|__fs64
 id|fs_size
 suffix:semicolon
 multiline_comment|/* number of blocks in fs */
 DECL|member|fs_dsize
-id|__s64
+id|__fs64
 id|fs_dsize
 suffix:semicolon
 multiline_comment|/* number of data blocks in fs */
 DECL|member|fs_csaddr
-id|__u64
+id|__fs64
 id|fs_csaddr
 suffix:semicolon
 multiline_comment|/* blk addr of cyl grp summary area */
 DECL|member|fs_pendingblocks
-id|__s64
+id|__fs64
 id|fs_pendingblocks
 suffix:semicolon
 multiline_comment|/* blocks in process of being freed */
 DECL|member|fs_pendinginodes
-id|__s32
+id|__fs32
 id|fs_pendinginodes
 suffix:semicolon
 multiline_comment|/*inodes in process of being freed */
@@ -906,7 +942,7 @@ r_union
 r_struct
 (brace
 DECL|member|fs_sparecon
-id|__s32
+id|__fs32
 id|fs_sparecon
 (braket
 l_int|53
@@ -914,23 +950,23 @@ l_int|53
 suffix:semicolon
 multiline_comment|/* reserved for future constants */
 DECL|member|fs_reclaim
-id|__s32
+id|__fs32
 id|fs_reclaim
 suffix:semicolon
 DECL|member|fs_sparecon2
-id|__s32
+id|__fs32
 id|fs_sparecon2
 (braket
 l_int|1
 )braket
 suffix:semicolon
 DECL|member|fs_state
-id|__s32
+id|__fs32
 id|fs_state
 suffix:semicolon
 multiline_comment|/* file system state time stamp */
 DECL|member|fs_qbmask
-id|__u32
+id|__fs32
 id|fs_qbmask
 (braket
 l_int|2
@@ -938,7 +974,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* ~usb_bmask */
 DECL|member|fs_qfmask
-id|__u32
+id|__fs32
 id|fs_qfmask
 (braket
 l_int|2
@@ -952,7 +988,7 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|fs_sparecon
-id|__s32
+id|__fs32
 id|fs_sparecon
 (braket
 l_int|53
@@ -960,23 +996,23 @@ l_int|53
 suffix:semicolon
 multiline_comment|/* reserved for future constants */
 DECL|member|fs_reclaim
-id|__s32
+id|__fs32
 id|fs_reclaim
 suffix:semicolon
 DECL|member|fs_sparecon2
-id|__s32
+id|__fs32
 id|fs_sparecon2
 (braket
 l_int|1
 )braket
 suffix:semicolon
 DECL|member|fs_npsect
-id|__u32
+id|__fs32
 id|fs_npsect
 suffix:semicolon
 multiline_comment|/* # sectors/track including spares */
 DECL|member|fs_qbmask
-id|__u32
+id|__fs32
 id|fs_qbmask
 (braket
 l_int|2
@@ -984,7 +1020,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* ~usb_bmask */
 DECL|member|fs_qfmask
-id|__u32
+id|__fs32
 id|fs_qfmask
 (braket
 l_int|2
@@ -998,7 +1034,7 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|fs_sparecon
-id|__s32
+id|__fs32
 id|fs_sparecon
 (braket
 l_int|50
@@ -1006,22 +1042,22 @@ l_int|50
 suffix:semicolon
 multiline_comment|/* reserved for future constants */
 DECL|member|fs_contigsumsize
-id|__s32
+id|__fs32
 id|fs_contigsumsize
 suffix:semicolon
 multiline_comment|/* size of cluster summary array */
 DECL|member|fs_maxsymlinklen
-id|__s32
+id|__fs32
 id|fs_maxsymlinklen
 suffix:semicolon
 multiline_comment|/* max length of an internal symlink */
 DECL|member|fs_inodefmt
-id|__s32
+id|__fs32
 id|fs_inodefmt
 suffix:semicolon
 multiline_comment|/* format of on-disk inodes */
 DECL|member|fs_maxfilesize
-id|__u32
+id|__fs32
 id|fs_maxfilesize
 (braket
 l_int|2
@@ -1029,7 +1065,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* max representable file size */
 DECL|member|fs_qbmask
-id|__u32
+id|__fs32
 id|fs_qbmask
 (braket
 l_int|2
@@ -1037,7 +1073,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* ~usb_bmask */
 DECL|member|fs_qfmask
-id|__u32
+id|__fs32
 id|fs_qfmask
 (braket
 l_int|2
@@ -1045,7 +1081,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* ~usb_fmask */
 DECL|member|fs_state
-id|__s32
+id|__fs32
 id|fs_state
 suffix:semicolon
 multiline_comment|/* file system state time stamp */
@@ -1058,27 +1094,27 @@ DECL|member|fs_u2
 id|fs_u2
 suffix:semicolon
 DECL|member|fs_postblformat
-id|__s32
+id|__fs32
 id|fs_postblformat
 suffix:semicolon
 multiline_comment|/* format of positional layout tables */
 DECL|member|fs_nrpos
-id|__s32
+id|__fs32
 id|fs_nrpos
 suffix:semicolon
 multiline_comment|/* number of rotational positions */
 DECL|member|fs_postbloff
-id|__s32
+id|__fs32
 id|fs_postbloff
 suffix:semicolon
 multiline_comment|/* (__s16) rotation block list head */
 DECL|member|fs_rotbloff
-id|__s32
+id|__fs32
 id|fs_rotbloff
 suffix:semicolon
 multiline_comment|/* (__u8) blocks for each rotation */
 DECL|member|fs_magic
-id|__s32
+id|__fs32
 id|fs_magic
 suffix:semicolon
 multiline_comment|/* magic number */
@@ -1116,37 +1152,37 @@ r_struct
 id|ufs_cylinder_group
 (brace
 DECL|member|cg_link
-id|__u32
+id|__fs32
 id|cg_link
 suffix:semicolon
 multiline_comment|/* linked list of cyl groups */
 DECL|member|cg_magic
-id|__u32
+id|__fs32
 id|cg_magic
 suffix:semicolon
 multiline_comment|/* magic number */
 DECL|member|cg_time
-id|__u32
+id|__fs32
 id|cg_time
 suffix:semicolon
 multiline_comment|/* time last written */
 DECL|member|cg_cgx
-id|__u32
+id|__fs32
 id|cg_cgx
 suffix:semicolon
 multiline_comment|/* we are the cgx&squot;th cylinder group */
 DECL|member|cg_ncyl
-id|__u16
+id|__fs16
 id|cg_ncyl
 suffix:semicolon
 multiline_comment|/* number of cyl&squot;s this cg */
 DECL|member|cg_niblk
-id|__u16
+id|__fs16
 id|cg_niblk
 suffix:semicolon
 multiline_comment|/* number of inode blocks this cg */
 DECL|member|cg_ndblk
-id|__u32
+id|__fs32
 id|cg_ndblk
 suffix:semicolon
 multiline_comment|/* number of data blocks this cg */
@@ -1157,22 +1193,22 @@ id|cg_cs
 suffix:semicolon
 multiline_comment|/* cylinder summary information */
 DECL|member|cg_rotor
-id|__u32
+id|__fs32
 id|cg_rotor
 suffix:semicolon
 multiline_comment|/* position of last used block */
 DECL|member|cg_frotor
-id|__u32
+id|__fs32
 id|cg_frotor
 suffix:semicolon
 multiline_comment|/* position of last used frag */
 DECL|member|cg_irotor
-id|__u32
+id|__fs32
 id|cg_irotor
 suffix:semicolon
 multiline_comment|/* position of last used inode */
 DECL|member|cg_frsum
-id|__u32
+id|__fs32
 id|cg_frsum
 (braket
 id|UFS_MAXFRAG
@@ -1180,27 +1216,27 @@ id|UFS_MAXFRAG
 suffix:semicolon
 multiline_comment|/* counts of available frags */
 DECL|member|cg_btotoff
-id|__u32
+id|__fs32
 id|cg_btotoff
 suffix:semicolon
 multiline_comment|/* (__u32) block totals per cylinder */
 DECL|member|cg_boff
-id|__u32
+id|__fs32
 id|cg_boff
 suffix:semicolon
 multiline_comment|/* (short) free block positions */
 DECL|member|cg_iusedoff
-id|__u32
+id|__fs32
 id|cg_iusedoff
 suffix:semicolon
 multiline_comment|/* (char) used inode map */
 DECL|member|cg_freeoff
-id|__u32
+id|__fs32
 id|cg_freeoff
 suffix:semicolon
 multiline_comment|/* (u_char) free block map */
 DECL|member|cg_nextfreeoff
-id|__u32
+id|__fs32
 id|cg_nextfreeoff
 suffix:semicolon
 multiline_comment|/* (u_char) next available space */
@@ -1209,22 +1245,22 @@ r_union
 r_struct
 (brace
 DECL|member|cg_clustersumoff
-id|__u32
+id|__fs32
 id|cg_clustersumoff
 suffix:semicolon
 multiline_comment|/* (u_int32) counts of avail clusters */
 DECL|member|cg_clusteroff
-id|__u32
+id|__fs32
 id|cg_clusteroff
 suffix:semicolon
 multiline_comment|/* (u_int8) free cluster map */
 DECL|member|cg_nclusterblks
-id|__u32
+id|__fs32
 id|cg_nclusterblks
 suffix:semicolon
 multiline_comment|/* number of clusters this cg */
 DECL|member|cg_sparecon
-id|__u32
+id|__fs32
 id|cg_sparecon
 (braket
 l_int|13
@@ -1238,32 +1274,32 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|cg_clustersumoff
-id|__u32
+id|__fs32
 id|cg_clustersumoff
 suffix:semicolon
 multiline_comment|/* (u_int32) counts of avail clusters */
 DECL|member|cg_clusteroff
-id|__u32
+id|__fs32
 id|cg_clusteroff
 suffix:semicolon
 multiline_comment|/* (u_int8) free cluster map */
 DECL|member|cg_nclusterblks
-id|__u32
+id|__fs32
 id|cg_nclusterblks
 suffix:semicolon
 multiline_comment|/* number of clusters this cg */
 DECL|member|cg_niblk
-id|__u32
+id|__fs32
 id|cg_niblk
 suffix:semicolon
 multiline_comment|/* number of inode blocks this cg */
 DECL|member|cg_initediblk
-id|__u32
+id|__fs32
 id|cg_initediblk
 suffix:semicolon
 multiline_comment|/* last initialized inode */
 DECL|member|cg_sparecon32
-id|__u32
+id|__fs32
 id|cg_sparecon32
 (braket
 l_int|3
@@ -1271,12 +1307,12 @@ l_int|3
 suffix:semicolon
 multiline_comment|/* reserved for future use */
 DECL|member|cg_time
-id|__u64
+id|__fs64
 id|cg_time
 suffix:semicolon
 multiline_comment|/* time last written */
 DECL|member|cg_sparecon
-id|__u64
+id|__fs64
 id|cg_sparecon
 (braket
 l_int|3
@@ -1288,7 +1324,7 @@ DECL|member|cg_u2
 id|cg_u2
 suffix:semicolon
 DECL|member|cg_sparecon
-id|__u32
+id|__fs32
 id|cg_sparecon
 (braket
 l_int|16
@@ -1316,12 +1352,12 @@ r_struct
 id|ufs_inode
 (brace
 DECL|member|ui_mode
-id|__u16
+id|__fs16
 id|ui_mode
 suffix:semicolon
 multiline_comment|/*  0x0 */
 DECL|member|ui_nlink
-id|__u16
+id|__fs16
 id|ui_nlink
 suffix:semicolon
 multiline_comment|/*  0x2 */
@@ -1330,12 +1366,12 @@ r_union
 r_struct
 (brace
 DECL|member|ui_suid
-id|__u16
+id|__fs16
 id|ui_suid
 suffix:semicolon
 multiline_comment|/*  0x4 */
 DECL|member|ui_sgid
-id|__u16
+id|__fs16
 id|ui_sgid
 suffix:semicolon
 multiline_comment|/*  0x6 */
@@ -1344,12 +1380,12 @@ DECL|member|oldids
 id|oldids
 suffix:semicolon
 DECL|member|ui_inumber
-id|__u32
+id|__fs32
 id|ui_inumber
 suffix:semicolon
 multiline_comment|/*  0x4 lsf: inode number */
 DECL|member|ui_author
-id|__u32
+id|__fs32
 id|ui_author
 suffix:semicolon
 multiline_comment|/*  0x4 GNU HURD: author */
@@ -1358,7 +1394,7 @@ DECL|member|ui_u1
 id|ui_u1
 suffix:semicolon
 DECL|member|ui_size
-id|__u64
+id|__fs64
 id|ui_size
 suffix:semicolon
 multiline_comment|/*  0x8 */
@@ -1385,7 +1421,7 @@ r_union
 r_struct
 (brace
 DECL|member|ui_db
-id|__u32
+id|__fs32
 id|ui_db
 (braket
 id|UFS_NDADDR
@@ -1393,7 +1429,7 @@ id|UFS_NDADDR
 suffix:semicolon
 multiline_comment|/* 0x28 data blocks */
 DECL|member|ui_ib
-id|__u32
+id|__fs32
 id|ui_ib
 (braket
 id|UFS_NINDIR
@@ -1423,17 +1459,17 @@ DECL|member|ui_u2
 id|ui_u2
 suffix:semicolon
 DECL|member|ui_flags
-id|__u32
+id|__fs32
 id|ui_flags
 suffix:semicolon
 multiline_comment|/* 0x64 immutable, append-only... */
 DECL|member|ui_blocks
-id|__u32
+id|__fs32
 id|ui_blocks
 suffix:semicolon
 multiline_comment|/* 0x68 blocks in use */
 DECL|member|ui_gen
-id|__u32
+id|__fs32
 id|ui_gen
 suffix:semicolon
 multiline_comment|/* 0x6c like ext2 i_version, for NFS support */
@@ -1442,22 +1478,22 @@ r_union
 r_struct
 (brace
 DECL|member|ui_shadow
-id|__u32
+id|__fs32
 id|ui_shadow
 suffix:semicolon
 multiline_comment|/* 0x70 shadow inode with security data */
 DECL|member|ui_uid
-id|__u32
+id|__fs32
 id|ui_uid
 suffix:semicolon
 multiline_comment|/* 0x74 long EFT version of uid */
 DECL|member|ui_gid
-id|__u32
+id|__fs32
 id|ui_gid
 suffix:semicolon
 multiline_comment|/* 0x78 long EFT version of gid */
 DECL|member|ui_oeftflag
-id|__u32
+id|__fs32
 id|ui_oeftflag
 suffix:semicolon
 multiline_comment|/* 0x7c reserved */
@@ -1468,17 +1504,17 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|ui_uid
-id|__u32
+id|__fs32
 id|ui_uid
 suffix:semicolon
 multiline_comment|/* 0x70 File owner */
 DECL|member|ui_gid
-id|__u32
+id|__fs32
 id|ui_gid
 suffix:semicolon
 multiline_comment|/* 0x74 File group */
 DECL|member|ui_spare
-id|__s32
+id|__fs32
 id|ui_spare
 (braket
 l_int|2
@@ -1492,27 +1528,27 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|ui_uid
-id|__u32
+id|__fs32
 id|ui_uid
 suffix:semicolon
 multiline_comment|/* 0x70 */
 DECL|member|ui_gid
-id|__u32
+id|__fs32
 id|ui_gid
 suffix:semicolon
 multiline_comment|/* 0x74 */
 DECL|member|ui_modeh
-id|__u16
+id|__fs16
 id|ui_modeh
 suffix:semicolon
 multiline_comment|/* 0x78 mode high bits */
 DECL|member|ui_spare
-id|__u16
+id|__fs16
 id|ui_spare
 suffix:semicolon
 multiline_comment|/* 0x7A unused */
 DECL|member|ui_trans
-id|__u32
+id|__fs32
 id|ui_trans
 suffix:semicolon
 multiline_comment|/* 0x7c filesystem translator */
@@ -1533,37 +1569,37 @@ r_struct
 id|ufs2_inode
 (brace
 DECL|member|ui_mode
-id|__u16
+id|__fs16
 id|ui_mode
 suffix:semicolon
 multiline_comment|/*   0: IFMT, permissions; see below. */
 DECL|member|ui_nlink
-id|__s16
+id|__fs16
 id|ui_nlink
 suffix:semicolon
 multiline_comment|/*   2: File link count. */
 DECL|member|ui_uid
-id|__u32
+id|__fs32
 id|ui_uid
 suffix:semicolon
 multiline_comment|/*   4: File owner. */
 DECL|member|ui_gid
-id|__u32
+id|__fs32
 id|ui_gid
 suffix:semicolon
 multiline_comment|/*   8: File group. */
 DECL|member|ui_blksize
-id|__u32
+id|__fs32
 id|ui_blksize
 suffix:semicolon
 multiline_comment|/*  12: Inode blocksize. */
 DECL|member|ui_size
-id|__u64
+id|__fs64
 id|ui_size
 suffix:semicolon
 multiline_comment|/*  16: File byte count. */
 DECL|member|ui_blocks
-id|__u64
+id|__fs64
 id|ui_blocks
 suffix:semicolon
 multiline_comment|/*  24: Bytes actually held. */
@@ -1592,47 +1628,47 @@ id|ui_birthtime
 suffix:semicolon
 multiline_comment|/*  56: Inode creation time. */
 DECL|member|ui_mtimensec
-id|__s32
+id|__fs32
 id|ui_mtimensec
 suffix:semicolon
 multiline_comment|/*  64: Last modified time. */
 DECL|member|ui_atimensec
-id|__s32
+id|__fs32
 id|ui_atimensec
 suffix:semicolon
 multiline_comment|/*  68: Last access time. */
 DECL|member|ui_ctimensec
-id|__s32
+id|__fs32
 id|ui_ctimensec
 suffix:semicolon
 multiline_comment|/*  72: Last inode change time. */
 DECL|member|ui_birthnsec
-id|__s32
+id|__fs32
 id|ui_birthnsec
 suffix:semicolon
 multiline_comment|/*  76: Inode creation time. */
 DECL|member|ui_gen
-id|__s32
+id|__fs32
 id|ui_gen
 suffix:semicolon
 multiline_comment|/*  80: Generation number. */
 DECL|member|ui_kernflags
-id|__u32
+id|__fs32
 id|ui_kernflags
 suffix:semicolon
 multiline_comment|/*  84: Kernel flags. */
 DECL|member|ui_flags
-id|__u32
+id|__fs32
 id|ui_flags
 suffix:semicolon
 multiline_comment|/*  88: Status flags (chflags). */
 DECL|member|ui_extsize
-id|__s32
+id|__fs32
 id|ui_extsize
 suffix:semicolon
 multiline_comment|/*  92: External attributes block. */
 DECL|member|ui_extb
-id|__s64
+id|__fs64
 id|ui_extb
 (braket
 id|UFS_NXADDR
@@ -1644,7 +1680,7 @@ r_union
 r_struct
 (brace
 DECL|member|ui_db
-id|__s64
+id|__fs64
 id|ui_db
 (braket
 id|UFS_NDADDR
@@ -1652,7 +1688,7 @@ id|UFS_NDADDR
 suffix:semicolon
 multiline_comment|/* 112: Direct disk blocks. */
 DECL|member|ui_ib
-id|__s64
+id|__fs64
 id|ui_ib
 (braket
 id|UFS_NINDIR
@@ -1684,7 +1720,7 @@ DECL|member|ui_u2
 id|ui_u2
 suffix:semicolon
 DECL|member|ui_spare
-id|__s64
+id|__fs64
 id|ui_spare
 (braket
 l_int|3
@@ -2164,135 +2200,135 @@ r_struct
 id|ufs_super_block_first
 (brace
 DECL|member|fs_link
-id|__u32
+id|__fs32
 id|fs_link
 suffix:semicolon
 DECL|member|fs_rlink
-id|__u32
+id|__fs32
 id|fs_rlink
 suffix:semicolon
 DECL|member|fs_sblkno
-id|__u32
+id|__fs32
 id|fs_sblkno
 suffix:semicolon
 DECL|member|fs_cblkno
-id|__u32
+id|__fs32
 id|fs_cblkno
 suffix:semicolon
 DECL|member|fs_iblkno
-id|__u32
+id|__fs32
 id|fs_iblkno
 suffix:semicolon
 DECL|member|fs_dblkno
-id|__u32
+id|__fs32
 id|fs_dblkno
 suffix:semicolon
 DECL|member|fs_cgoffset
-id|__u32
+id|__fs32
 id|fs_cgoffset
 suffix:semicolon
 DECL|member|fs_cgmask
-id|__u32
+id|__fs32
 id|fs_cgmask
 suffix:semicolon
 DECL|member|fs_time
-id|__u32
+id|__fs32
 id|fs_time
 suffix:semicolon
 DECL|member|fs_size
-id|__u32
+id|__fs32
 id|fs_size
 suffix:semicolon
 DECL|member|fs_dsize
-id|__u32
+id|__fs32
 id|fs_dsize
 suffix:semicolon
 DECL|member|fs_ncg
-id|__u32
+id|__fs32
 id|fs_ncg
 suffix:semicolon
 DECL|member|fs_bsize
-id|__u32
+id|__fs32
 id|fs_bsize
 suffix:semicolon
 DECL|member|fs_fsize
-id|__u32
+id|__fs32
 id|fs_fsize
 suffix:semicolon
 DECL|member|fs_frag
-id|__u32
+id|__fs32
 id|fs_frag
 suffix:semicolon
 DECL|member|fs_minfree
-id|__u32
+id|__fs32
 id|fs_minfree
 suffix:semicolon
 DECL|member|fs_rotdelay
-id|__u32
+id|__fs32
 id|fs_rotdelay
 suffix:semicolon
 DECL|member|fs_rps
-id|__u32
+id|__fs32
 id|fs_rps
 suffix:semicolon
 DECL|member|fs_bmask
-id|__u32
+id|__fs32
 id|fs_bmask
 suffix:semicolon
 DECL|member|fs_fmask
-id|__u32
+id|__fs32
 id|fs_fmask
 suffix:semicolon
 DECL|member|fs_bshift
-id|__u32
+id|__fs32
 id|fs_bshift
 suffix:semicolon
 DECL|member|fs_fshift
-id|__u32
+id|__fs32
 id|fs_fshift
 suffix:semicolon
 DECL|member|fs_maxcontig
-id|__u32
+id|__fs32
 id|fs_maxcontig
 suffix:semicolon
 DECL|member|fs_maxbpg
-id|__u32
+id|__fs32
 id|fs_maxbpg
 suffix:semicolon
 DECL|member|fs_fragshift
-id|__u32
+id|__fs32
 id|fs_fragshift
 suffix:semicolon
 DECL|member|fs_fsbtodb
-id|__u32
+id|__fs32
 id|fs_fsbtodb
 suffix:semicolon
 DECL|member|fs_sbsize
-id|__u32
+id|__fs32
 id|fs_sbsize
 suffix:semicolon
 DECL|member|fs_csmask
-id|__u32
+id|__fs32
 id|fs_csmask
 suffix:semicolon
 DECL|member|fs_csshift
-id|__u32
+id|__fs32
 id|fs_csshift
 suffix:semicolon
 DECL|member|fs_nindir
-id|__u32
+id|__fs32
 id|fs_nindir
 suffix:semicolon
 DECL|member|fs_inopb
-id|__u32
+id|__fs32
 id|fs_inopb
 suffix:semicolon
 DECL|member|fs_nspf
-id|__u32
+id|__fs32
 id|fs_nspf
 suffix:semicolon
 DECL|member|fs_optim
-id|__u32
+id|__fs32
 id|fs_optim
 suffix:semicolon
 r_union
@@ -2300,7 +2336,7 @@ r_union
 r_struct
 (brace
 DECL|member|fs_npsect
-id|__u32
+id|__fs32
 id|fs_npsect
 suffix:semicolon
 DECL|member|fs_sun
@@ -2310,7 +2346,7 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|fs_state
-id|__s32
+id|__fs32
 id|fs_state
 suffix:semicolon
 DECL|member|fs_sunx86
@@ -2322,58 +2358,58 @@ DECL|member|fs_u1
 id|fs_u1
 suffix:semicolon
 DECL|member|fs_interleave
-id|__u32
+id|__fs32
 id|fs_interleave
 suffix:semicolon
 DECL|member|fs_trackskew
-id|__u32
+id|__fs32
 id|fs_trackskew
 suffix:semicolon
 DECL|member|fs_id
-id|__u32
+id|__fs32
 id|fs_id
 (braket
 l_int|2
 )braket
 suffix:semicolon
 DECL|member|fs_csaddr
-id|__u32
+id|__fs32
 id|fs_csaddr
 suffix:semicolon
 DECL|member|fs_cssize
-id|__u32
+id|__fs32
 id|fs_cssize
 suffix:semicolon
 DECL|member|fs_cgsize
-id|__u32
+id|__fs32
 id|fs_cgsize
 suffix:semicolon
 DECL|member|fs_ntrak
-id|__u32
+id|__fs32
 id|fs_ntrak
 suffix:semicolon
 DECL|member|fs_nsect
-id|__u32
+id|__fs32
 id|fs_nsect
 suffix:semicolon
 DECL|member|fs_spc
-id|__u32
+id|__fs32
 id|fs_spc
 suffix:semicolon
 DECL|member|fs_ncyl
-id|__u32
+id|__fs32
 id|fs_ncyl
 suffix:semicolon
 DECL|member|fs_cpg
-id|__u32
+id|__fs32
 id|fs_cpg
 suffix:semicolon
 DECL|member|fs_ipg
-id|__u32
+id|__fs32
 id|fs_ipg
 suffix:semicolon
 DECL|member|fs_fpg
-id|__u32
+id|__fs32
 id|fs_fpg
 suffix:semicolon
 DECL|member|fs_cstotal
@@ -2420,26 +2456,26 @@ l_int|212
 )braket
 suffix:semicolon
 DECL|member|fs_cgrotor
-id|__u32
+id|__fs32
 id|fs_cgrotor
 suffix:semicolon
 DECL|member|fs_csp
-id|__u32
+id|__fs32
 id|fs_csp
 (braket
 id|UFS_MAXCSBUFS
 )braket
 suffix:semicolon
 DECL|member|fs_maxcluster
-id|__u32
+id|__fs32
 id|fs_maxcluster
 suffix:semicolon
 DECL|member|fs_cpc
-id|__u32
+id|__fs32
 id|fs_cpc
 suffix:semicolon
 DECL|member|fs_opostbl
-id|__u16
+id|__fs16
 id|fs_opostbl
 (braket
 l_int|82
@@ -2452,7 +2488,7 @@ r_struct
 id|ufs_super_block_third
 (brace
 DECL|member|fs_opostbl
-id|__u16
+id|__fs16
 id|fs_opostbl
 (braket
 l_int|46
@@ -2463,7 +2499,7 @@ r_union
 r_struct
 (brace
 DECL|member|fs_sparecon
-id|__s32
+id|__fs32
 id|fs_sparecon
 (braket
 l_int|53
@@ -2471,23 +2507,23 @@ l_int|53
 suffix:semicolon
 multiline_comment|/* reserved for future constants */
 DECL|member|fs_reclaim
-id|__s32
+id|__fs32
 id|fs_reclaim
 suffix:semicolon
 DECL|member|fs_sparecon2
-id|__s32
+id|__fs32
 id|fs_sparecon2
 (braket
 l_int|1
 )braket
 suffix:semicolon
 DECL|member|fs_state
-id|__s32
+id|__fs32
 id|fs_state
 suffix:semicolon
 multiline_comment|/* file system state time stamp */
 DECL|member|fs_qbmask
-id|__u32
+id|__fs32
 id|fs_qbmask
 (braket
 l_int|2
@@ -2495,7 +2531,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* ~usb_bmask */
 DECL|member|fs_qfmask
-id|__u32
+id|__fs32
 id|fs_qfmask
 (braket
 l_int|2
@@ -2509,7 +2545,7 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|fs_sparecon
-id|__s32
+id|__fs32
 id|fs_sparecon
 (braket
 l_int|53
@@ -2517,23 +2553,23 @@ l_int|53
 suffix:semicolon
 multiline_comment|/* reserved for future constants */
 DECL|member|fs_reclaim
-id|__s32
+id|__fs32
 id|fs_reclaim
 suffix:semicolon
 DECL|member|fs_sparecon2
-id|__s32
+id|__fs32
 id|fs_sparecon2
 (braket
 l_int|1
 )braket
 suffix:semicolon
 DECL|member|fs_npsect
-id|__u32
+id|__fs32
 id|fs_npsect
 suffix:semicolon
 multiline_comment|/* # sectors/track including spares */
 DECL|member|fs_qbmask
-id|__u32
+id|__fs32
 id|fs_qbmask
 (braket
 l_int|2
@@ -2541,7 +2577,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* ~usb_bmask */
 DECL|member|fs_qfmask
-id|__u32
+id|__fs32
 id|fs_qfmask
 (braket
 l_int|2
@@ -2555,7 +2591,7 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|fs_sparecon
-id|__s32
+id|__fs32
 id|fs_sparecon
 (braket
 l_int|50
@@ -2563,22 +2599,22 @@ l_int|50
 suffix:semicolon
 multiline_comment|/* reserved for future constants */
 DECL|member|fs_contigsumsize
-id|__s32
+id|__fs32
 id|fs_contigsumsize
 suffix:semicolon
 multiline_comment|/* size of cluster summary array */
 DECL|member|fs_maxsymlinklen
-id|__s32
+id|__fs32
 id|fs_maxsymlinklen
 suffix:semicolon
 multiline_comment|/* max length of an internal symlink */
 DECL|member|fs_inodefmt
-id|__s32
+id|__fs32
 id|fs_inodefmt
 suffix:semicolon
 multiline_comment|/* format of on-disk inodes */
 DECL|member|fs_maxfilesize
-id|__u32
+id|__fs32
 id|fs_maxfilesize
 (braket
 l_int|2
@@ -2586,7 +2622,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* max representable file size */
 DECL|member|fs_qbmask
-id|__u32
+id|__fs32
 id|fs_qbmask
 (braket
 l_int|2
@@ -2594,7 +2630,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* ~usb_bmask */
 DECL|member|fs_qfmask
-id|__u32
+id|__fs32
 id|fs_qfmask
 (braket
 l_int|2
@@ -2602,7 +2638,7 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* ~usb_fmask */
 DECL|member|fs_state
-id|__s32
+id|__fs32
 id|fs_state
 suffix:semicolon
 multiline_comment|/* file system state time stamp */
@@ -2615,23 +2651,23 @@ DECL|member|fs_u2
 id|fs_u2
 suffix:semicolon
 DECL|member|fs_postblformat
-id|__s32
+id|__fs32
 id|fs_postblformat
 suffix:semicolon
 DECL|member|fs_nrpos
-id|__s32
+id|__fs32
 id|fs_nrpos
 suffix:semicolon
 DECL|member|fs_postbloff
-id|__s32
+id|__fs32
 id|fs_postbloff
 suffix:semicolon
 DECL|member|fs_rotbloff
-id|__s32
+id|__fs32
 id|fs_rotbloff
 suffix:semicolon
 DECL|member|fs_magic
-id|__s32
+id|__fs32
 id|fs_magic
 suffix:semicolon
 DECL|member|fs_space
@@ -2679,7 +2715,7 @@ r_struct
 id|inode
 op_star
 comma
-id|u32
+id|__fs32
 op_star
 comma
 r_int

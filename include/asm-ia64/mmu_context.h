@@ -300,7 +300,7 @@ op_assign
 id|ia64_get_rr
 c_func
 (paren
-l_int|0x8000000000000000
+l_int|0x8000000000000000UL
 )paren
 suffix:semicolon
 id|rid
@@ -389,7 +389,7 @@ macro_line|#endif
 id|ia64_set_rr
 c_func
 (paren
-l_int|0x0000000000000000
+l_int|0x0000000000000000UL
 comma
 id|rr0
 )paren
@@ -397,7 +397,7 @@ suffix:semicolon
 id|ia64_set_rr
 c_func
 (paren
-l_int|0x2000000000000000
+l_int|0x2000000000000000UL
 comma
 id|rr1
 )paren
@@ -405,7 +405,7 @@ suffix:semicolon
 id|ia64_set_rr
 c_func
 (paren
-l_int|0x4000000000000000
+l_int|0x4000000000000000UL
 comma
 id|rr2
 )paren
@@ -413,7 +413,7 @@ suffix:semicolon
 id|ia64_set_rr
 c_func
 (paren
-l_int|0x6000000000000000
+l_int|0x6000000000000000UL
 comma
 id|rr3
 )paren
@@ -421,7 +421,7 @@ suffix:semicolon
 id|ia64_set_rr
 c_func
 (paren
-l_int|0x8000000000000000
+l_int|0x8000000000000000UL
 comma
 id|rr4
 )paren

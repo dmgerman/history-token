@@ -191,7 +191,7 @@ DECL|macro|REGION_KERNEL
 mdefine_line|#define REGION_KERNEL&t;&t;7
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
 DECL|macro|htlbpage_to_page
-macro_line|# define htlbpage_to_page(x)&t;((REGION_NUMBER(x) &lt;&lt; 61)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t; | (REGION_OFFSET(x) &gt;&gt; (HPAGE_SHIFT-PAGE_SHIFT)))
+macro_line|# define htlbpage_to_page(x)&t;(((unsigned long) REGION_NUMBER(x) &lt;&lt; 61)&t;&t;&t;&bslash;&n;&t;&t;&t;&t; | (REGION_OFFSET(x) &gt;&gt; (HPAGE_SHIFT-PAGE_SHIFT)))
 DECL|macro|HUGETLB_PAGE_ORDER
 macro_line|# define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 DECL|macro|is_hugepage_only_range
@@ -365,7 +365,7 @@ DECL|macro|__pgprot
 macro_line|# define __pgprot(x)&t;(x)
 macro_line|#endif /* !STRICT_MM_TYPECHECKS */
 DECL|macro|PAGE_OFFSET
-mdefine_line|#define PAGE_OFFSET&t;&t;&t;0xe000000000000000
+mdefine_line|#define PAGE_OFFSET&t;&t;&t;__IA64_UL_CONST(0xe000000000000000)
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;&t;(VM_READ | VM_WRITE |&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC |&t;&t;&bslash;&n;&t;&t;&t;&t;&t; (((current-&gt;personality &amp; READ_IMPLIES_EXEC) != 0)&t;&bslash;&n;&t;&t;&t;&t;&t;  ? VM_EXEC : 0))
 macro_line|#endif /* _ASM_IA64_PAGE_H */

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/arch-pxa/serial.h&n; *&n; * Author:&t;Nicolas Pitre&n; * Copyright:&t;(C) 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;asm/arch/pxa-regs.h&gt;
 DECL|macro|BAUD_BASE
 mdefine_line|#define BAUD_BASE&t;921600
 multiline_comment|/* Standard COM flags */

@@ -8579,11 +8579,13 @@ id|DAC960_Controller
 (brace
 DECL|member|BaseAddress
 r_void
+id|__iomem
 op_star
 id|BaseAddress
 suffix:semicolon
 DECL|member|MemoryMappedAddress
 r_void
+id|__iomem
 op_star
 id|MemoryMappedAddress
 suffix:semicolon
@@ -9527,6 +9529,7 @@ id|dma_addr_t
 id|addr
 comma
 r_void
+id|__iomem
 op_star
 id|write_address
 )paren
@@ -9869,6 +9872,7 @@ id|DAC960_BA_HardwareMailboxNewCommand
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -9903,6 +9907,7 @@ id|DAC960_BA_AcknowledgeHardwareMailboxStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -9937,6 +9942,7 @@ id|DAC960_BA_GenerateInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -9971,6 +9977,7 @@ id|DAC960_BA_ControllerReset
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10005,6 +10012,7 @@ id|DAC960_BA_MemoryMailboxNewCommand
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10039,6 +10047,7 @@ id|DAC960_BA_HardwareMailboxFullP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10069,6 +10078,7 @@ id|DAC960_BA_InitializationInProgressP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10099,6 +10109,7 @@ id|DAC960_BA_AcknowledgeHardwareMailboxInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10133,6 +10144,7 @@ id|DAC960_BA_AcknowledgeMemoryMailboxInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10167,6 +10179,7 @@ id|DAC960_BA_AcknowledgeInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10205,6 +10218,7 @@ id|DAC960_BA_HardwareMailboxStatusAvailableP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10234,6 +10248,7 @@ id|DAC960_BA_MemoryMailboxStatusAvailableP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10263,6 +10278,7 @@ id|DAC960_BA_EnableInterrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10301,6 +10317,7 @@ id|DAC960_BA_DisableInterrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10339,6 +10356,7 @@ id|DAC960_BA_InterruptsEnabledP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10433,6 +10451,7 @@ id|DAC960_BA_WriteHardwareMailbox
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 comma
@@ -10459,6 +10478,7 @@ id|DAC960_BA_ReadCommandIdentifier
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10481,6 +10501,7 @@ id|DAC960_BA_ReadCommandStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10505,6 +10526,7 @@ id|DAC960_BA_ReadErrorStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 comma
@@ -10883,6 +10905,7 @@ id|DAC960_LP_HardwareMailboxNewCommand
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10917,6 +10940,7 @@ id|DAC960_LP_AcknowledgeHardwareMailboxStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10951,6 +10975,7 @@ id|DAC960_LP_GenerateInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -10985,6 +11010,7 @@ id|DAC960_LP_ControllerReset
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11019,6 +11045,7 @@ id|DAC960_LP_MemoryMailboxNewCommand
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11053,6 +11080,7 @@ id|DAC960_LP_HardwareMailboxFullP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11082,6 +11110,7 @@ id|DAC960_LP_InitializationInProgressP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11111,6 +11140,7 @@ id|DAC960_LP_AcknowledgeHardwareMailboxInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11145,6 +11175,7 @@ id|DAC960_LP_AcknowledgeMemoryMailboxInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11179,6 +11210,7 @@ id|DAC960_LP_AcknowledgeInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11217,6 +11249,7 @@ id|DAC960_LP_HardwareMailboxStatusAvailableP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11246,6 +11279,7 @@ id|DAC960_LP_MemoryMailboxStatusAvailableP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11275,6 +11309,7 @@ id|DAC960_LP_EnableInterrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11309,6 +11344,7 @@ id|DAC960_LP_DisableInterrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11343,6 +11379,7 @@ id|DAC960_LP_InterruptsEnabledP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11437,6 +11474,7 @@ id|DAC960_LP_WriteHardwareMailbox
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 comma
@@ -11463,6 +11501,7 @@ id|DAC960_LP_ReadCommandIdentifier
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11485,6 +11524,7 @@ id|DAC960_LP_ReadCommandStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11509,6 +11549,7 @@ id|DAC960_LP_ReadErrorStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 comma
@@ -11947,6 +11988,7 @@ id|DAC960_LA_HardwareMailboxNewCommand
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -11981,6 +12023,7 @@ id|DAC960_LA_AcknowledgeHardwareMailboxStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12015,6 +12058,7 @@ id|DAC960_LA_GenerateInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12049,6 +12093,7 @@ id|DAC960_LA_ControllerReset
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12083,6 +12128,7 @@ id|DAC960_LA_MemoryMailboxNewCommand
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12117,6 +12163,7 @@ id|DAC960_LA_HardwareMailboxFullP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12147,6 +12194,7 @@ id|DAC960_LA_InitializationInProgressP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12177,6 +12225,7 @@ id|DAC960_LA_AcknowledgeHardwareMailboxInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12211,6 +12260,7 @@ id|DAC960_LA_AcknowledgeMemoryMailboxInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12245,6 +12295,7 @@ id|DAC960_LA_AcknowledgeInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12283,6 +12334,7 @@ id|DAC960_LA_HardwareMailboxStatusAvailableP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12312,6 +12364,7 @@ id|DAC960_LA_MemoryMailboxStatusAvailableP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12341,6 +12394,7 @@ id|DAC960_LA_EnableInterrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12375,6 +12429,7 @@ id|DAC960_LA_DisableInterrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12409,6 +12464,7 @@ id|DAC960_LA_InterruptsEnabledP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12506,6 +12562,7 @@ id|DAC960_LA_WriteHardwareMailbox
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 comma
@@ -12575,6 +12632,7 @@ id|DAC960_LA_ReadStatusCommandIdentifier
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12597,6 +12655,7 @@ id|DAC960_LA_ReadStatusRegister
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -12619,6 +12678,7 @@ id|DAC960_LA_ReadErrorStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 comma
@@ -13065,6 +13125,7 @@ id|DAC960_PG_HardwareMailboxNewCommand
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13099,6 +13160,7 @@ id|DAC960_PG_AcknowledgeHardwareMailboxStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13133,6 +13195,7 @@ id|DAC960_PG_GenerateInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13167,6 +13230,7 @@ id|DAC960_PG_ControllerReset
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13201,6 +13265,7 @@ id|DAC960_PG_MemoryMailboxNewCommand
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13235,6 +13300,7 @@ id|DAC960_PG_HardwareMailboxFullP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13264,6 +13330,7 @@ id|DAC960_PG_InitializationInProgressP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13293,6 +13360,7 @@ id|DAC960_PG_AcknowledgeHardwareMailboxInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13327,6 +13395,7 @@ id|DAC960_PG_AcknowledgeMemoryMailboxInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13361,6 +13430,7 @@ id|DAC960_PG_AcknowledgeInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13399,6 +13469,7 @@ id|DAC960_PG_HardwareMailboxStatusAvailableP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13428,6 +13499,7 @@ id|DAC960_PG_MemoryMailboxStatusAvailableP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13457,6 +13529,7 @@ id|DAC960_PG_EnableInterrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13499,6 +13572,7 @@ id|DAC960_PG_DisableInterrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13541,6 +13615,7 @@ id|DAC960_PG_InterruptsEnabledP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13638,6 +13713,7 @@ id|DAC960_PG_WriteHardwareMailbox
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 comma
@@ -13707,6 +13783,7 @@ id|DAC960_PG_ReadStatusCommandIdentifier
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13729,6 +13806,7 @@ id|DAC960_PG_ReadStatusRegister
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -13751,6 +13829,7 @@ id|DAC960_PG_ReadErrorStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 comma
@@ -14158,6 +14237,7 @@ id|DAC960_PD_NewCommand
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14192,6 +14272,7 @@ id|DAC960_PD_AcknowledgeStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14226,6 +14307,7 @@ id|DAC960_PD_GenerateInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14260,6 +14342,7 @@ id|DAC960_PD_ControllerReset
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14294,6 +14377,7 @@ id|DAC960_PD_MailboxFullP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14323,6 +14407,7 @@ id|DAC960_PD_InitializationInProgressP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14352,6 +14437,7 @@ id|DAC960_PD_AcknowledgeInterrupt
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14386,6 +14472,7 @@ id|DAC960_PD_StatusAvailableP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14415,6 +14502,7 @@ id|DAC960_PD_EnableInterrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14449,6 +14537,7 @@ id|DAC960_PD_DisableInterrupts
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14483,6 +14572,7 @@ id|DAC960_PD_InterruptsEnabledP
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14512,6 +14602,7 @@ id|DAC960_PD_WriteCommandMailbox
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 comma
@@ -14581,6 +14672,7 @@ id|DAC960_PD_ReadStatusCommandIdentifier
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14603,6 +14695,7 @@ id|DAC960_PD_ReadStatusRegister
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 )paren
@@ -14625,6 +14718,7 @@ id|DAC960_PD_ReadErrorStatus
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|ControllerBaseAddress
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm/hardware/s3c2410/&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;           http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 GPIO register definitions&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    23-06-2003     BJD     Updated GSTATUS registers&n; *    12-03-2004     BJD     Updated include protection&n; *    20-07-2004     BJD     Added GPIO pin numbers, added Port A definitions&n; */
+multiline_comment|/* linux/include/asm/hardware/s3c2410/&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;           http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 GPIO register definitions&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    23-06-2003     BJD     Updated GSTATUS registers&n; *    12-03-2004     BJD     Updated include protection&n; *    20-07-2004     BJD     Added GPIO pin numbers, added Port A definitions&n; *    04-10-2004     BJD     Fixed number of bugs, added EXT IRQ filter defs&n;*/
 macro_line|#ifndef __ASM_ARCH_REGS_GPIO_H
 DECL|macro|__ASM_ARCH_REGS_GPIO_H
 mdefine_line|#define __ASM_ARCH_REGS_GPIO_H &quot;$Id: gpio.h,v 1.5 2003/05/19 12:51:08 ben Exp $&quot;
@@ -865,8 +865,8 @@ DECL|macro|S3C2410_GPG10_OUTP
 mdefine_line|#define S3C2410_GPG10_OUTP    (0x01 &lt;&lt; 20)
 DECL|macro|S3C2410_GPG10_EINT18
 mdefine_line|#define S3C2410_GPG10_EINT18  (0x02 &lt;&lt; 20)
-DECL|macro|S3C2410_GPG10
-mdefine_line|#define S3C2410_GPG10         S3C2410_GPIONO(S3C2410_GPIO_BANKG, 10)
+DECL|macro|S3C2410_GPG11
+mdefine_line|#define S3C2410_GPG11         S3C2410_GPIONO(S3C2410_GPIO_BANKG, 11)
 DECL|macro|S3C2410_GPG11_INP
 mdefine_line|#define S3C2410_GPG11_INP     (0x00 &lt;&lt; 22)
 DECL|macro|S3C2410_GPG11_OUTP
@@ -875,44 +875,44 @@ DECL|macro|S3C2410_GPG11_EINT19
 mdefine_line|#define S3C2410_GPG11_EINT19  (0x02 &lt;&lt; 22)
 DECL|macro|S3C2410_GPG11_TCLK1
 mdefine_line|#define S3C2410_GPG11_TCLK1   (0x03 &lt;&lt; 22)
-DECL|macro|S3C2410_GPG10
-mdefine_line|#define S3C2410_GPG10         S3C2410_GPIONO(S3C2410_GPIO_BANKG, 10)
+DECL|macro|S3C2410_GPG12
+mdefine_line|#define S3C2410_GPG12         S3C2410_GPIONO(S3C2410_GPIO_BANKG, 12)
 DECL|macro|S3C2410_GPG12_INP
 mdefine_line|#define S3C2410_GPG12_INP     (0x00 &lt;&lt; 24)
 DECL|macro|S3C2410_GPG12_OUTP
 mdefine_line|#define S3C2410_GPG12_OUTP    (0x01 &lt;&lt; 24)
-DECL|macro|S3C2410_GPG12_EINT18
-mdefine_line|#define S3C2410_GPG12_EINT18  (0x02 &lt;&lt; 24)
+DECL|macro|S3C2410_GPG12_EINT20
+mdefine_line|#define S3C2410_GPG12_EINT20  (0x02 &lt;&lt; 24)
 DECL|macro|S3C2410_GPG12_XMON
 mdefine_line|#define S3C2410_GPG12_XMON    (0x03 &lt;&lt; 24)
-DECL|macro|S3C2410_GPG10
-mdefine_line|#define S3C2410_GPG10         S3C2410_GPIONO(S3C2410_GPIO_BANKG, 10)
+DECL|macro|S3C2410_GPG13
+mdefine_line|#define S3C2410_GPG13         S3C2410_GPIONO(S3C2410_GPIO_BANKG, 13)
 DECL|macro|S3C2410_GPG13_INP
 mdefine_line|#define S3C2410_GPG13_INP     (0x00 &lt;&lt; 26)
 DECL|macro|S3C2410_GPG13_OUTP
 mdefine_line|#define S3C2410_GPG13_OUTP    (0x01 &lt;&lt; 26)
-DECL|macro|S3C2410_GPG13_EINT18
-mdefine_line|#define S3C2410_GPG13_EINT18  (0x02 &lt;&lt; 26)
+DECL|macro|S3C2410_GPG13_EINT21
+mdefine_line|#define S3C2410_GPG13_EINT21  (0x02 &lt;&lt; 26)
 DECL|macro|S3C2410_GPG13_nXPON
 mdefine_line|#define S3C2410_GPG13_nXPON   (0x03 &lt;&lt; 26)
-DECL|macro|S3C2410_GPG10
-mdefine_line|#define S3C2410_GPG10         S3C2410_GPIONO(S3C2410_GPIO_BANKG, 10)
+DECL|macro|S3C2410_GPG14
+mdefine_line|#define S3C2410_GPG14         S3C2410_GPIONO(S3C2410_GPIO_BANKG, 14)
 DECL|macro|S3C2410_GPG14_INP
 mdefine_line|#define S3C2410_GPG14_INP     (0x00 &lt;&lt; 28)
 DECL|macro|S3C2410_GPG14_OUTP
 mdefine_line|#define S3C2410_GPG14_OUTP    (0x01 &lt;&lt; 28)
-DECL|macro|S3C2410_GPG14_EINT18
-mdefine_line|#define S3C2410_GPG14_EINT18  (0x02 &lt;&lt; 28)
+DECL|macro|S3C2410_GPG14_EINT22
+mdefine_line|#define S3C2410_GPG14_EINT22  (0x02 &lt;&lt; 28)
 DECL|macro|S3C2410_GPG14_YMON
 mdefine_line|#define S3C2410_GPG14_YMON    (0x03 &lt;&lt; 28)
-DECL|macro|S3C2410_GPG10
-mdefine_line|#define S3C2410_GPG10         S3C2410_GPIONO(S3C2410_GPIO_BANKG, 10)
+DECL|macro|S3C2410_GPG15
+mdefine_line|#define S3C2410_GPG15         S3C2410_GPIONO(S3C2410_GPIO_BANKG, 15)
 DECL|macro|S3C2410_GPG15_INP
 mdefine_line|#define S3C2410_GPG15_INP     (0x00 &lt;&lt; 30)
 DECL|macro|S3C2410_GPG15_OUTP
 mdefine_line|#define S3C2410_GPG15_OUTP    (0x01 &lt;&lt; 30)
-DECL|macro|S3C2410_GPG15_EINT18
-mdefine_line|#define S3C2410_GPG15_EINT18  (0x02 &lt;&lt; 30)
+DECL|macro|S3C2410_GPG15_EINT23
+mdefine_line|#define S3C2410_GPG15_EINT23  (0x02 &lt;&lt; 30)
 DECL|macro|S3C2410_GPG15_nYPON
 mdefine_line|#define S3C2410_GPG15_nYPON   (0x03 &lt;&lt; 30)
 DECL|macro|S3C2410_GPG_PUPDIS
@@ -1065,6 +1065,14 @@ DECL|macro|S3C2410_MISCCR_USBSUSPND1
 mdefine_line|#define S3C2410_MISCCR_USBSUSPND1   (1&lt;&lt;13)
 DECL|macro|S3C2410_MISCCR_nRSTCON
 mdefine_line|#define S3C2410_MISCCR_nRSTCON&t;    (1&lt;&lt;16)
+DECL|macro|S3C2410_MISCCR_nEN_SCLK0
+mdefine_line|#define S3C2410_MISCCR_nEN_SCLK0    (1&lt;&lt;17)
+DECL|macro|S3C2410_MISCCR_nEN_SCLK1
+mdefine_line|#define S3C2410_MISCCR_nEN_SCLK1    (1&lt;&lt;18)
+DECL|macro|S3C2410_MISCCR_nEN_SCLKE
+mdefine_line|#define S3C2410_MISCCR_nEN_SCLKE    (1&lt;&lt;19)
+DECL|macro|S3C2410_MISCCR_SDSLEEP
+mdefine_line|#define S3C2410_MISCCR_SDSLEEP&t;    (7&lt;&lt;17)
 multiline_comment|/* external interrupt control... */
 multiline_comment|/* S3C2410_EXTINT0 -&gt; irq sense control for EINT0..EINT7&n; * S3C2410_EXTINT1 -&gt; irq sense control for EINT8..EINT15&n; * S3C2410_EXTINT2 -&gt; irq sense control for EINT16..EINT23&n; *&n; * note S3C2410_EXTINT2 has filtering options for EINT16..EINT23&n; *&n; * Samsung datasheet p9-25&n;*/
 DECL|macro|S3C2410_EXTINT0
@@ -1093,6 +1101,13 @@ DECL|macro|S3C2410_EINFLT2
 mdefine_line|#define S3C2410_EINFLT2&t;   S3C2410_GPIOREG(0x9C)
 DECL|macro|S3C2410_EINFLT3
 mdefine_line|#define S3C2410_EINFLT3&t;   S3C2410_GPIOREG(0xA0)
+multiline_comment|/* values for interrupt filtering */
+DECL|macro|S3C2410_EINTFLT_PCLK
+mdefine_line|#define S3C2410_EINTFLT_PCLK&t;&t;(0x00)
+DECL|macro|S3C2410_EINTFLT_EXTCLK
+mdefine_line|#define S3C2410_EINTFLT_EXTCLK&t;&t;(1&lt;&lt;7)
+DECL|macro|S3C2410_EINTFLT_WIDTHMSK
+mdefine_line|#define S3C2410_EINTFLT_WIDTHMSK(x)&t;((x) &amp; 0x3f)
 multiline_comment|/* removed EINTxxxx defs from here, not meant for this */
 multiline_comment|/* GSTATUS have miscellaneous information in them&n; *&n; */
 DECL|macro|S3C2410_GSTATUS0

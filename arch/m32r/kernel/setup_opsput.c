@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup_opsput.c&n; *&n; *  Setup routines for Renesas OPSPUT Board&n; *&n; *  Copyright (c) 2002-2004&n; * &t;Hiroyuki Kondo, Hirokazu Takata,&n; *      Hitoshi Yamamoto, Takeo Takahashi, Mamoru Sakugawa&n; *&n; *  This file is subject to the terms and conditions of the GNU General&n; *  Public License.  See the file &quot;COPYING&quot; in the main directory of this&n; *  archive for more details.&n; *&n; *  $Id: setup_opsput.c,v 1.1 2004/07/27 06:54:20 sakugawa Exp $&n; */
+multiline_comment|/*&n; *  linux/arch/m32r/kernel/setup_opsput.c&n; *&n; *  Setup routines for Renesas OPSPUT Board&n; *&n; *  Copyright (c) 2002-2004&n; * &t;Hiroyuki Kondo, Hirokazu Takata,&n; *      Hitoshi Yamamoto, Takeo Takahashi, Mamoru Sakugawa&n; *&n; *  This file is subject to the terms and conditions of the GNU General&n; *  Public License.  See the file &quot;COPYING&quot; in the main directory of this&n; *  archive for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
