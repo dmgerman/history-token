@@ -813,6 +813,12 @@ DECL|macro|nfserr_locks_held
 mdefine_line|#define&t;nfserr_locks_held&t;__constant_htonl(NFSERR_LOCKS_HELD)
 DECL|macro|nfserr_op_illegal
 mdefine_line|#define&t;nfserr_op_illegal&t;__constant_htonl(NFSERR_OP_ILLEGAL)
+DECL|macro|nfserr_grace
+mdefine_line|#define&t;nfserr_grace&t;&t;__constant_htonl(NFSERR_GRACE)
+DECL|macro|nfserr_no_grace
+mdefine_line|#define&t;nfserr_no_grace&t;&t;__constant_htonl(NFSERR_NO_GRACE)
+DECL|macro|nfserr_reclaim_bad
+mdefine_line|#define&t;nfserr_reclaim_bad&t;__constant_htonl(NFSERR_RECLAIM_BAD)
 multiline_comment|/* error codes for internal use */
 multiline_comment|/* if a request fails due to kmalloc failure, it gets dropped.&n; *  Client should resend eventually&n; */
 DECL|macro|nfserr_dropit

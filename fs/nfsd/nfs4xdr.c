@@ -2256,6 +2256,8 @@ suffix:semicolon
 id|DECODE_TAIL
 suffix:semicolon
 )brace
+DECL|macro|NFS4_STATE_NOT_LOCKED
+mdefine_line|#define NFS4_STATE_NOT_LOCKED&t;((void *)-1)
 r_static
 r_int
 DECL|function|nfsd4_decode_close
@@ -2274,6 +2276,10 @@ id|close
 )paren
 (brace
 id|DECODE_HEAD
+suffix:semicolon
+id|close-&gt;cl_stateowner
+op_assign
+id|NFS4_STATE_NOT_LOCKED
 suffix:semicolon
 id|READ_BUF
 c_func
@@ -2663,6 +2669,10 @@ id|lock
 (brace
 id|DECODE_HEAD
 suffix:semicolon
+id|lock-&gt;lk_stateowner
+op_assign
+id|NFS4_STATE_NOT_LOCKED
+suffix:semicolon
 multiline_comment|/*&n;&t;* type, reclaim(boolean), offset, length, new_lock_owner(boolean)&n;&t;*/
 id|READ_BUF
 c_func
@@ -2943,6 +2953,10 @@ id|locku
 (brace
 id|DECODE_HEAD
 suffix:semicolon
+id|locku-&gt;lu_stateowner
+op_assign
+id|NFS4_STATE_NOT_LOCKED
+suffix:semicolon
 id|READ_BUF
 c_func
 (paren
@@ -3120,6 +3134,10 @@ suffix:semicolon
 id|open-&gt;op_iattr.ia_valid
 op_assign
 l_int|0
+suffix:semicolon
+id|open-&gt;op_stateowner
+op_assign
+id|NFS4_STATE_NOT_LOCKED
 suffix:semicolon
 multiline_comment|/* seqid, share_access, share_deny, clientid, ownerlen */
 id|READ_BUF
@@ -3472,6 +3490,10 @@ id|open_conf
 (brace
 id|DECODE_HEAD
 suffix:semicolon
+id|open_conf-&gt;oc_stateowner
+op_assign
+id|NFS4_STATE_NOT_LOCKED
+suffix:semicolon
 id|READ_BUF
 c_func
 (paren
@@ -3528,6 +3550,10 @@ id|open_down
 )paren
 (brace
 id|DECODE_HEAD
+suffix:semicolon
+id|open_down-&gt;od_stateowner
+op_assign
+id|NFS4_STATE_NOT_LOCKED
 suffix:semicolon
 id|READ_BUF
 c_func
@@ -5563,7 +5589,7 @@ DECL|macro|ENCODE_SEQID_OP_HEAD
 mdefine_line|#define ENCODE_SEQID_OP_HEAD&t;&t;&t;&t;&t;&bslash;&n;&t;u32 *p;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;u32 *save;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;save = resp-&gt;p;
 multiline_comment|/*&n; * Routine for encoding the result of a&n; * &quot;seqid-mutating&quot; NFSv4 operation.  This is&n; * where seqids are incremented, and the&n; * replay cache is filled.&n; */
 DECL|macro|ENCODE_SEQID_OP_TAIL
-mdefine_line|#define ENCODE_SEQID_OP_TAIL(stateowner) do {&t;&t;&t;&bslash;&n;&t;if (seqid_mutating_err(nfserr) &amp;&amp; stateowner) {&t;&t;&bslash;&n;&t;&t;if (stateowner-&gt;so_confirmed)&t;&t;&t;&bslash;&n;&t;&t;&t;stateowner-&gt;so_seqid++;&t;&t;&t;&bslash;&n;&t;&t;stateowner-&gt;so_replay.rp_status = nfserr;   &t;&bslash;&n;&t;&t;stateowner-&gt;so_replay.rp_buflen = &t;&t;&bslash;&n;&t;&t;&t;  (((char *)(resp)-&gt;p - (char *)save)); &bslash;&n;&t;&t;memcpy(stateowner-&gt;so_replay.rp_buf, save,      &bslash;&n; &t;&t;&t;stateowner-&gt;so_replay.rp_buflen); &t;&bslash;&n;&t;} } while(0)
+mdefine_line|#define ENCODE_SEQID_OP_TAIL(stateowner) do {&t;&t;&t;&bslash;&n;&t;if (seqid_mutating_err(nfserr) &amp;&amp; stateowner&t;&t;&bslash;&n;&t;    &amp;&amp; (stateowner != NFS4_STATE_NOT_LOCKED)) { &t;&bslash;&n;&t;&t;if (stateowner-&gt;so_confirmed)&t;&t;&t;&bslash;&n;&t;&t;&t;stateowner-&gt;so_seqid++;&t;&t;&t;&bslash;&n;&t;&t;stateowner-&gt;so_replay.rp_status = nfserr;   &t;&bslash;&n;&t;&t;stateowner-&gt;so_replay.rp_buflen = &t;&t;&bslash;&n;&t;&t;&t;  (((char *)(resp)-&gt;p - (char *)save)); &bslash;&n;&t;&t;memcpy(stateowner-&gt;so_replay.rp_buf, save,      &bslash;&n; &t;&t;&t;stateowner-&gt;so_replay.rp_buflen); &t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (stateowner != NFS4_STATE_NOT_LOCKED)&t;&t;&bslash;&n;&t;&t;nfs4_unlock_state();&t;&t;&t;&t;&bslash;&n;&t;} while (0);
 DECL|variable|nfs4_ftypes
 r_static
 id|u32
@@ -8887,7 +8913,8 @@ c_cond
 (paren
 id|nfserr
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 id|RESERVE_SPACE
 c_func
@@ -9142,6 +9169,8 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* XXX save filehandle here */
+id|out
+suffix:colon
 id|ENCODE_SEQID_OP_TAIL
 c_func
 (paren
@@ -10123,6 +10152,17 @@ r_if
 c_cond
 (paren
 id|nfserr
+op_eq
+id|nfserr_symlink
+)paren
+id|nfserr
+op_assign
+id|nfserr_notdir
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfserr
 )paren
 r_goto
 id|err_no_verf
@@ -10649,54 +10689,6 @@ c_func
 id|op-&gt;opnum
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|op-&gt;opnum
-op_ne
-id|OP_SETATTR
-)paren
-op_logical_and
-(paren
-id|op-&gt;opnum
-op_ne
-id|OP_LOCK
-)paren
-op_logical_and
-(paren
-id|op-&gt;opnum
-op_ne
-id|OP_LOCKT
-)paren
-op_logical_and
-(paren
-id|op-&gt;opnum
-op_ne
-id|OP_SETCLIENTID
-)paren
-op_logical_and
-(paren
-id|op-&gt;status
-)paren
-)paren
-(brace
-op_star
-id|p
-op_increment
-op_assign
-id|op-&gt;status
-suffix:semicolon
-id|ADJUST_ARGS
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_else
-(brace
 id|statp
 op_assign
 id|p
@@ -10708,7 +10700,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 r_switch
 c_cond
 (paren
@@ -11125,7 +11116,7 @@ op_assign
 id|op-&gt;status
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Encode the reply stored in the stateowner reply cache &n; * &n; * XDR note: do not encode rp-&gt;rp_buflen: the buffer contains the&n; * previously sent already encoded operation.&n; */
+multiline_comment|/* &n; * Encode the reply stored in the stateowner reply cache &n; * &n; * XDR note: do not encode rp-&gt;rp_buflen: the buffer contains the&n; * previously sent already encoded operation.&n; *&n; * called with nfs4_lock_state() held&n; */
 r_void
 DECL|function|nfsd4_encode_replay
 id|nfsd4_encode_replay
@@ -11197,6 +11188,11 @@ id|rp-&gt;rp_buflen
 )paren
 suffix:semicolon
 id|ADJUST_ARGS
+c_func
+(paren
+)paren
+suffix:semicolon
+id|nfs4_unlock_state
 c_func
 (paren
 )paren

@@ -9021,8 +9021,6 @@ r_struct
 id|aty128fb_par
 op_star
 id|par
-op_assign
-id|info-&gt;par
 suffix:semicolon
 r_if
 c_cond
@@ -9031,6 +9029,10 @@ op_logical_neg
 id|info
 )paren
 r_return
+suffix:semicolon
+id|par
+op_assign
+id|info-&gt;par
 suffix:semicolon
 id|unregister_framebuffer
 c_func
