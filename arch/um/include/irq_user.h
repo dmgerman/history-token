@@ -91,6 +91,14 @@ id|irqnum
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|deactivate_all_fds
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|forward_interrupts
 c_func

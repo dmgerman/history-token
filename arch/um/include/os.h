@@ -709,6 +709,15 @@ id|owner
 suffix:semicolon
 r_extern
 r_int
+id|os_clear_fd_async
+c_func
+(paren
+r_int
+id|fd
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|os_set_fd_block
 c_func
 (paren
