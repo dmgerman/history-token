@@ -87,7 +87,7 @@ mdefine_line|#define IDE_TIMING_UDMA&t;&t;0x80
 DECL|macro|IDE_TIMING_ALL
 mdefine_line|#define IDE_TIMING_ALL&t;&t;0xff
 DECL|macro|FIT
-mdefine_line|#define FIT(v,x,y)&t;max_t(int,min_t(int,v,x),y)
+mdefine_line|#define FIT(v,x,y)&t;max_t(int,min_t(int,v,y),x)
 DECL|macro|ENOUGH
 mdefine_line|#define ENOUGH(v,unit)&t;(((v)-1)/(unit)+1)
 DECL|macro|EZ
