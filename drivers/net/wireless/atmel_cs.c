@@ -22,6 +22,7 @@ macro_line|#include &lt;pcmcia/ciscode.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/wireless.h&gt;
+macro_line|#include &quot;atmel.h&quot;
 multiline_comment|/*&n;   All the PCMCIA modules use PCMCIA_DEBUG to control debugging.  If&n;   you do not define PCMCIA_DEBUG at all, all the debug code will be&n;   left out.  If you compile with PCMCIA_DEBUG=0, the debug code will&n;   be present but disabled -- but it can then be enabled for specific&n;   modules at load time with a &squot;pc_debug=#&squot; option to insmod.&n;*/
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|variable|pc_debug
@@ -82,57 +83,6 @@ l_string|&quot;Atmel at76c50x PCMCIA cards&quot;
 suffix:semicolon
 multiline_comment|/*====================================================================*/
 multiline_comment|/*&n;   The event() function is this driver&squot;s Card Services event handler.&n;   It will be called by Card Services when an appropriate card status&n;   event is received.  The config() and release() entry points are&n;   used to configure or release a socket, in response to card&n;   insertion and ejection events.  They are invoked from the atmel_cs&n;   event handler. &n;*/
-r_struct
-id|net_device
-op_star
-id|init_atmel_card
-c_func
-(paren
-r_int
-comma
-r_int
-comma
-r_char
-op_star
-comma
-r_struct
-id|device
-op_star
-comma
-r_int
-(paren
-op_star
-id|present_func
-)paren
-(paren
-r_void
-op_star
-)paren
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-r_void
-id|stop_atmel_card
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_int
-id|atmel_open
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
 r_static
 r_void
 id|atmel_config
@@ -657,8 +607,7 @@ op_star
 id|ver1
 suffix:semicolon
 DECL|member|firmware
-r_char
-op_star
+id|AtmelFWType
 id|firmware
 suffix:semicolon
 DECL|member|name
@@ -680,7 +629,7 @@ l_int|0
 comma
 l_string|&quot;WLAN/802.11b PC CARD&quot;
 comma
-l_string|&quot;atmel_at76c502d%s.bin&quot;
+id|ATMEL_FW_TYPE_502D
 comma
 l_string|&quot;Actiontec 802CAT1&quot;
 )brace
@@ -692,7 +641,7 @@ l_int|0
 comma
 l_string|&quot;ATMEL/AT76C502AR&quot;
 comma
-l_string|&quot;atmel_at76c502%s.bin&quot;
+id|ATMEL_FW_TYPE_502
 comma
 l_string|&quot;NoName-RFMD&quot;
 )brace
@@ -704,7 +653,7 @@ l_int|0
 comma
 l_string|&quot;ATMEL/AT76C502AR_D&quot;
 comma
-l_string|&quot;atmel_at76c502d%s.bin&quot;
+id|ATMEL_FW_TYPE_502D
 comma
 l_string|&quot;NoName-revD&quot;
 )brace
@@ -716,7 +665,7 @@ l_int|0
 comma
 l_string|&quot;ATMEL/AT76C502AR_E&quot;
 comma
-l_string|&quot;atmel_at76c502e%s.bin&quot;
+id|ATMEL_FW_TYPE_502E
 comma
 l_string|&quot;NoName-revE&quot;
 )brace
@@ -728,7 +677,7 @@ l_int|0
 comma
 l_string|&quot;ATMEL/AT76C504&quot;
 comma
-l_string|&quot;atmel_at76c504%s.bin&quot;
+id|ATMEL_FW_TYPE_504
 comma
 l_string|&quot;NoName-504&quot;
 )brace
@@ -740,7 +689,7 @@ l_int|0
 comma
 l_string|&quot;ATMEL/AT76C504A&quot;
 comma
-l_string|&quot;atmel_at76c504a_2958%s.bin&quot;
+id|ATMEL_FW_TYPE_504A_2958
 comma
 l_string|&quot;NoName-504a-2958&quot;
 )brace
@@ -752,7 +701,7 @@ l_int|0
 comma
 l_string|&quot;ATMEL/AT76C504_R&quot;
 comma
-l_string|&quot;atmel_at76c504_2958%s.bin&quot;
+id|ATMEL_FW_TYPE_504_2958
 comma
 l_string|&quot;NoName-504-2958&quot;
 )brace
@@ -764,7 +713,7 @@ l_int|0x0620
 comma
 l_int|NULL
 comma
-l_string|&quot;atmel_at76c502_3com%s.bin&quot;
+id|ATMEL_FW_TYPE_502_3COM
 comma
 l_string|&quot;3com 3CRWE62092B&quot;
 )brace
@@ -776,7 +725,7 @@ l_int|0x0696
 comma
 l_int|NULL
 comma
-l_string|&quot;atmel_at76c502_3com%s.bin&quot;
+id|ATMEL_FW_TYPE_502_3COM
 comma
 l_string|&quot;3com 3CRSHPW196&quot;
 )brace
@@ -788,7 +737,7 @@ l_int|0
 comma
 l_string|&quot;SMC/2632W-V2&quot;
 comma
-l_string|&quot;atmel_at76c502%s.bin&quot;
+id|ATMEL_FW_TYPE_502
 comma
 l_string|&quot;SMC 2632W-V2&quot;
 )brace
@@ -800,7 +749,7 @@ l_int|0
 comma
 l_string|&quot;SMC/2632W&quot;
 comma
-l_string|&quot;atmel_at76c502d%s.bin&quot;
+id|ATMEL_FW_TYPE_502D
 comma
 l_string|&quot;SMC 2632W-V3&quot;
 )brace
@@ -812,7 +761,7 @@ l_int|0x0007
 comma
 l_int|NULL
 comma
-l_string|&quot;atmel_at76c502%s.bin&quot;
+id|ATMEL_FW_TYPE_502
 comma
 l_string|&quot;Sitecom WLAN-011&quot;
 )brace
@@ -824,7 +773,7 @@ l_int|0x3302
 comma
 l_int|NULL
 comma
-l_string|&quot;atmel_at76c502e%s.bin&quot;
+id|ATMEL_FW_TYPE_502E
 comma
 l_string|&quot;Belkin F5D6020-V2&quot;
 )brace
@@ -836,7 +785,7 @@ l_int|0
 comma
 l_string|&quot;BT/Voyager 1020 Laptop Adapter&quot;
 comma
-l_string|&quot;atmel_at76c502%s.bin&quot;
+id|ATMEL_FW_TYPE_502
 comma
 l_string|&quot;BT Voyager 1020&quot;
 )brace
@@ -848,7 +797,7 @@ l_int|0
 comma
 l_string|&quot;IEEE 802.11b/Wireless LAN PC Card&quot;
 comma
-l_string|&quot;atmel_at76c502%s.bin&quot;
+id|ATMEL_FW_TYPE_502
 comma
 l_string|&quot;Siemens Gigaset PC Card II&quot;
 )brace
@@ -860,7 +809,7 @@ l_int|0
 comma
 l_string|&quot;CNet/CNWLC 11Mbps Wireless PC Card V-5&quot;
 comma
-l_string|&quot;atmel_at76c502e%s.bin&quot;
+id|ATMEL_FW_TYPE_502E
 comma
 l_string|&quot;CNet CNWLC-811ARL&quot;
 )brace
@@ -872,7 +821,7 @@ l_int|0
 comma
 l_string|&quot;Wireless/PC_CARD&quot;
 comma
-l_string|&quot;atmel_at76c502d%s.bin&quot;
+id|ATMEL_FW_TYPE_502D
 comma
 l_string|&quot;Planet WL-3552&quot;
 )brace
@@ -884,7 +833,7 @@ l_int|0
 comma
 l_string|&quot;OEM/11Mbps Wireless LAN PC Card V-3&quot;
 comma
-l_string|&quot;atmel_at76c502%s.bin&quot;
+id|ATMEL_FW_TYPE_502
 comma
 l_string|&quot;OEM 11Mbps WLAN PCMCIA Card&quot;
 )brace
@@ -896,7 +845,7 @@ l_int|0
 comma
 l_string|&quot;11WAVE/11WP611AL-E&quot;
 comma
-l_string|&quot;atmel_at76c502e%s.bin&quot;
+id|ATMEL_FW_TYPE_502E
 comma
 l_string|&quot;11WAVE WaveBuddy&quot;
 )brace
@@ -1937,7 +1886,7 @@ op_minus
 l_int|1
 ques
 c_cond
-l_int|NULL
+id|ATMEL_FW_TYPE_NONE
 suffix:colon
 id|card_table
 (braket
