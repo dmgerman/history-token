@@ -919,7 +919,6 @@ id|wt
 )paren
 )paren
 suffix:semicolon
-suffix:semicolon
 )brace
 r_return
 l_int|0

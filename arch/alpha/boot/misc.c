@@ -32,7 +32,6 @@ l_int|2
 )paren
 )paren
 suffix:semicolon
-suffix:semicolon
 multiline_comment|/*&n; * gzip delarations&n; */
 DECL|macro|OF
 mdefine_line|#define OF(args)  args

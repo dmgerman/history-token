@@ -8608,7 +8608,6 @@ id|info_p-&gt;log_drives
 op_assign
 id|id_ctlr_buf-&gt;nr_drvs
 suffix:semicolon
-suffix:semicolon
 r_for
 c_loop
 (paren

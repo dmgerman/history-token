@@ -1771,7 +1771,6 @@ id|p_ziv
 op_minus
 id|literals
 suffix:semicolon
-suffix:semicolon
 id|hash
 (braket
 id|HASH

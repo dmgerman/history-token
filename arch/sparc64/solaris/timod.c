@@ -1467,7 +1467,6 @@ c_func
 id|old_fs
 )paren
 suffix:semicolon
-suffix:semicolon
 r_if
 c_cond
 (paren

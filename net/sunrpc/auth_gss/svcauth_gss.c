@@ -776,7 +776,6 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
-suffix:semicolon
 id|status
 op_assign
 op_minus

@@ -6646,7 +6646,6 @@ comma
 id|RTAX_ADVMSS
 )paren
 suffix:semicolon
-suffix:semicolon
 id|tcp_initialize_rcv_mss
 c_func
 (paren

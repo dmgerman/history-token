@@ -3142,7 +3142,6 @@ id|rinfo-&gt;panel_info.ref_divider
 op_assign
 id|rinfo-&gt;pll.ref_div
 suffix:semicolon
-suffix:semicolon
 id|rinfo-&gt;panel_info.post_divider
 op_assign
 l_int|0x6
@@ -3171,7 +3170,6 @@ id|rinfo-&gt;panel_info.ref_divider
 op_assign
 id|rinfo-&gt;pll.ref_div
 suffix:semicolon
-suffix:semicolon
 id|rinfo-&gt;panel_info.post_divider
 op_assign
 l_int|0x4
@@ -3199,7 +3197,6 @@ l_string|&quot;PowerBook6,3&quot;
 id|rinfo-&gt;panel_info.ref_divider
 op_assign
 id|rinfo-&gt;pll.ref_div
-suffix:semicolon
 suffix:semicolon
 id|rinfo-&gt;panel_info.post_divider
 op_assign

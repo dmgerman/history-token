@@ -1639,7 +1639,6 @@ id|SMP_CACHE_BYTES
 )paren
 )paren
 suffix:semicolon
-suffix:semicolon
 DECL|member|last_tx
 DECL|member|last_std_rx
 DECL|member|last_mini_rx

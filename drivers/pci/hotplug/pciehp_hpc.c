@@ -3450,7 +3450,6 @@ suffix:semicolon
 r_return
 id|IRQ_NONE
 suffix:semicolon
-suffix:semicolon
 )brace
 id|temp_word
 op_assign
@@ -3491,7 +3490,6 @@ id|__FUNCTION__
 suffix:semicolon
 r_return
 id|IRQ_NONE
-suffix:semicolon
 suffix:semicolon
 )brace
 )brace

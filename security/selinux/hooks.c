@@ -5762,7 +5762,6 @@ comma
 id|FILE__QUOTAON
 )paren
 suffix:semicolon
-suffix:semicolon
 )brace
 DECL|function|selinux_syslog
 r_static

@@ -8766,7 +8766,6 @@ id|in6_addr
 )paren
 )paren
 suffix:semicolon
-suffix:semicolon
 id|sin6-&gt;sin6_scope_id
 op_assign
 l_int|0

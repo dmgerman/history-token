@@ -373,7 +373,6 @@ comma
 id|SEND_SHUTDOWN
 )paren
 suffix:semicolon
-suffix:semicolon
 id|cFYI
 c_func
 (paren

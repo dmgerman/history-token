@@ -3568,7 +3568,6 @@ op_assign
 op_amp
 id|fcpci2_read_isac
 suffix:semicolon
-suffix:semicolon
 id|adapter-&gt;isac.write_isac
 op_assign
 op_amp
@@ -3604,7 +3603,6 @@ op_assign
 op_amp
 id|fcpci_read_isac
 suffix:semicolon
-suffix:semicolon
 id|adapter-&gt;isac.write_isac
 op_assign
 op_amp
@@ -3639,7 +3637,6 @@ id|adapter-&gt;isac.read_isac
 op_assign
 op_amp
 id|fcpci_read_isac
-suffix:semicolon
 suffix:semicolon
 id|adapter-&gt;isac.write_isac
 op_assign

@@ -29641,7 +29641,6 @@ id|last_pci_hit
 )paren
 r_return
 suffix:semicolon
-suffix:semicolon
 id|QETH_DBF_CARD3
 c_func
 (paren
@@ -34610,7 +34609,6 @@ op_eq
 id|QETH_CARD_TYPE_OSAE
 )paren
 )paren
-suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n;&t; * however, as the portname indication of OSA is wrong, we have to&n;&t; * do this:&n;&t; */
 id|card-&gt;portname_required
