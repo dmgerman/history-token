@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pnp.h&gt;
@@ -274,7 +275,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|3
@@ -479,7 +480,7 @@ l_int|1
 id|b
 op_increment
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|3

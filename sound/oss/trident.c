@@ -20038,7 +20038,7 @@ id|T4D_GAME_CR
 )paren
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|20

@@ -2352,7 +2352,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* delay 10ms to give the drive a chance to see it */
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10
@@ -2394,7 +2394,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* delay 50ms to give the drive a chance to recover after SRST */
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|50

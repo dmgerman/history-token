@@ -399,6 +399,10 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+r_int
+r_int
+id|ctrl
+suffix:semicolon
 multiline_comment|/* Only need to enable them once */
 r_if
 c_cond
@@ -560,6 +564,36 @@ l_int|0xBB
 )braket
 op_assign
 l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * On SMT machines we have to set the run latch in the ctrl register&n;&t; * in order to make PMC6 spin.&n;&t; */
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SMT
+)paren
+(brace
+id|ctrl
+op_assign
+id|mfspr
+c_func
+(paren
+id|CTRLF
+)paren
+suffix:semicolon
+id|ctrl
+op_or_assign
+id|RUNLATCH
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|CTRLT
+comma
+id|ctrl
+)paren
 suffix:semicolon
 )brace
 )brace

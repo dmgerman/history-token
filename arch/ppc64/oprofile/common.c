@@ -606,6 +606,9 @@ suffix:semicolon
 r_case
 id|PV_GPUL
 suffix:colon
+r_case
+id|PV_GPULp
+suffix:colon
 id|model
 op_assign
 op_amp
@@ -623,6 +626,9 @@ r_break
 suffix:semicolon
 r_case
 id|PV_POWER5
+suffix:colon
+r_case
+id|PV_POWER5p
 suffix:colon
 id|model
 op_assign

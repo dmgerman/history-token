@@ -174,41 +174,6 @@ id|therm_pm72_detach
 comma
 )brace
 suffix:semicolon
-DECL|function|wait_ms
-r_static
-r_inline
-r_void
-id|wait_ms
-c_func
-(paren
-r_int
-r_int
-id|ms
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
-op_plus
-(paren
-id|ms
-op_star
-id|HZ
-op_plus
-l_int|999
-)paren
-op_div
-l_int|1000
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Utility function to create an i2c_client structure and&n; * attach it to one of u3 adapters&n; */
 DECL|function|attach_i2c_chip
 r_static
@@ -640,7 +605,7 @@ r_goto
 id|error
 suffix:semicolon
 multiline_comment|/* Wait for convertion */
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|1
@@ -755,7 +720,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10
@@ -842,7 +807,7 @@ l_int|100
 )paren
 r_break
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10
@@ -920,7 +885,7 @@ l_int|100
 )paren
 r_break
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10
@@ -1049,7 +1014,7 @@ l_int|100
 )paren
 r_break
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10

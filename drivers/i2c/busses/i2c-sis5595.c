@@ -5,6 +5,7 @@ multiline_comment|/* TO DO: &n; * Add Block Transfers (ugly, but supported by th
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -769,7 +770,7 @@ suffix:semicolon
 multiline_comment|/* We will always wait for a fraction of a second! */
 r_do
 (brace
-id|i2c_delay
+id|msleep
 c_func
 (paren
 l_int|1

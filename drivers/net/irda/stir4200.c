@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
@@ -2431,7 +2432,7 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* estimate transfer time for remaining chars */
-id|wait_ms
+id|msleep
 c_func
 (paren
 (paren
@@ -3100,7 +3101,7 @@ id|stir-&gt;receiving
 op_assign
 l_int|0
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10

@@ -958,7 +958,7 @@ op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
-id|msec_delay
+id|msleep
 (paren
 l_int|3
 )paren
@@ -1000,7 +1000,7 @@ id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
 multiline_comment|/* TRSMRCY */
-id|msec_delay
+id|msleep
 (paren
 l_int|10
 )paren

@@ -947,7 +947,7 @@ c_func
 id|reg
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|13
@@ -994,7 +994,7 @@ id|j
 op_increment
 )paren
 (brace
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10
@@ -1046,7 +1046,7 @@ c_func
 id|reg
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|15
@@ -1075,7 +1075,7 @@ c_func
 id|reg
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|15
@@ -1107,7 +1107,7 @@ c_func
 id|reg
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|15
@@ -1155,7 +1155,7 @@ c_func
 id|reg
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|15
@@ -1202,7 +1202,7 @@ id|j
 op_increment
 )paren
 (brace
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|10
@@ -1248,7 +1248,7 @@ c_func
 id|reg
 )paren
 suffix:semicolon
-id|wait_ms
+id|msleep
 c_func
 (paren
 l_int|15
