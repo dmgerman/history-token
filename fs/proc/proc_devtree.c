@@ -648,7 +648,7 @@ suffix:semicolon
 op_star
 id|lastp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|de-&gt;subdir
 op_assign
@@ -684,7 +684,7 @@ c_func
 (paren
 l_string|&quot;device-tree&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

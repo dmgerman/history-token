@@ -320,7 +320,7 @@ c_func
 (paren
 l_string|&quot;ppc64&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -369,7 +369,7 @@ c_func
 (paren
 l_string|&quot;rtas&quot;
 comma
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;ppc64/rtas&quot;
 )paren
