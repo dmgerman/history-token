@@ -93,5 +93,11 @@ DECL|macro|CPCI690_IPMI_SIZE_ACTUAL
 mdefine_line|#define&t;CPCI690_IPMI_SIZE_ACTUAL&t;&t;0x10 /* 16 bytes of IPMI */
 DECL|macro|CPCI690_IPMI_SIZE
 mdefine_line|#define&t;CPCI690_IPMI_SIZE&t;&t;max(GT64260_WINDOW_SIZE_MIN,&t;&bslash;&n;&t;&t;&t;&t;&t;&t;CPCI690_IPMI_SIZE_ACTUAL)
+DECL|macro|CPCI690_MPSC_BAUD
+mdefine_line|#define&t;CPCI690_MPSC_BAUD&t;&t;&t;9600
+DECL|macro|CPCI690_MPSC_CLK_SRC
+mdefine_line|#define&t;CPCI690_MPSC_CLK_SRC&t;&t;&t;8 /* TCLK */
+DECL|macro|CPCI690_BUS_FREQ
+mdefine_line|#define&t;CPCI690_BUS_FREQ&t;&t;&t;133333333
 macro_line|#endif /* __PPC_PLATFORMS_CPCI690_H */
 eof
