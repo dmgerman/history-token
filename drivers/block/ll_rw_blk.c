@@ -1377,6 +1377,17 @@ id|bits
 comma
 id|i
 suffix:semicolon
+r_struct
+id|request
+op_star
+op_star
+id|tag_index
+suffix:semicolon
+r_int
+r_int
+op_star
+id|tag_map
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1405,7 +1416,7 @@ id|depth
 )paren
 suffix:semicolon
 )brace
-id|tags-&gt;tag_index
+id|tag_index
 op_assign
 id|kmalloc
 c_func
@@ -1426,7 +1437,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tags-&gt;tag_index
+id|tag_index
 )paren
 r_goto
 id|fail
@@ -1441,7 +1452,7 @@ id|BLK_TAGS_PER_LONG
 op_plus
 l_int|1
 suffix:semicolon
-id|tags-&gt;tag_map
+id|tag_map
 op_assign
 id|kmalloc
 c_func
@@ -1461,7 +1472,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|tags-&gt;tag_map
+id|tag_map
 )paren
 r_goto
 id|fail
@@ -1469,7 +1480,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|tags-&gt;tag_index
+id|tag_index
 comma
 l_int|0
 comma
@@ -1486,7 +1497,7 @@ suffix:semicolon
 id|memset
 c_func
 (paren
-id|tags-&gt;tag_map
+id|tag_map
 comma
 l_int|0
 comma
@@ -1508,6 +1519,14 @@ op_assign
 id|bits
 op_star
 id|BITS_PER_LONG
+suffix:semicolon
+id|tags-&gt;tag_index
+op_assign
+id|tag_index
+suffix:semicolon
+id|tags-&gt;tag_map
+op_assign
+id|tag_map
 suffix:semicolon
 multiline_comment|/*&n;&t; * set the upper bits if the depth isn&squot;t a multiple of the word size&n;&t; */
 r_for
@@ -1531,7 +1550,7 @@ c_func
 (paren
 id|i
 comma
-id|tags-&gt;tag_map
+id|tag_map
 )paren
 suffix:semicolon
 r_return
@@ -1542,7 +1561,7 @@ suffix:colon
 id|kfree
 c_func
 (paren
-id|tags-&gt;tag_index
+id|tag_index
 )paren
 suffix:semicolon
 r_return
