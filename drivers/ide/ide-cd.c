@@ -11376,6 +11376,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 id|ide_cdrom_reinit
 (paren
@@ -11386,29 +11387,14 @@ id|drive
 suffix:semicolon
 DECL|variable|ide_cdrom_driver
 r_static
-id|ide_driver_t
+r_struct
+id|ata_operations
 id|ide_cdrom_driver
 op_assign
 (brace
-id|name
+id|owner
 suffix:colon
-l_string|&quot;ide-cdrom&quot;
-comma
-id|media
-suffix:colon
-id|ide_cdrom
-comma
-id|busy
-suffix:colon
-l_int|0
-comma
-id|supports_dma
-suffix:colon
-l_int|1
-comma
-id|supports_dsc_overlap
-suffix:colon
-l_int|1
+id|THIS_MODULE
 comma
 id|cleanup
 suffix:colon
@@ -11495,6 +11481,7 @@ l_string|&quot;ATAPI CD-ROM Driver&quot;
 )paren
 suffix:semicolon
 DECL|function|ide_cdrom_reinit
+r_static
 r_int
 id|ide_cdrom_reinit
 (paren
@@ -11597,7 +11584,8 @@ id|drive-&gt;driver_data
 op_assign
 id|info
 suffix:semicolon
-id|DRIVER
+multiline_comment|/* ATA-PATTERN */
+id|ata_ops
 c_func
 (paren
 id|drive
@@ -11615,7 +11603,7 @@ id|drive
 )paren
 )paren
 (brace
-id|DRIVER
+id|ata_ops
 c_func
 (paren
 id|drive
@@ -11643,7 +11631,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|DRIVER
+id|ata_ops
 c_func
 (paren
 id|drive
@@ -11692,10 +11680,11 @@ c_loop
 id|drive
 op_assign
 id|ide_scan_devices
+c_func
 (paren
-id|ide_cdrom
+id|ATA_ROM
 comma
-id|ide_cdrom_driver.name
+l_string|&quot;ide-cdrom&quot;
 comma
 op_amp
 id|ide_cdrom_driver
@@ -11759,9 +11748,9 @@ id|drive
 op_assign
 id|ide_scan_devices
 (paren
-id|ide_cdrom
+id|ATA_ROM
 comma
-id|ide_cdrom_driver.name
+l_string|&quot;ide-cdrom&quot;
 comma
 l_int|NULL
 comma
@@ -11903,7 +11892,8 @@ id|drive-&gt;driver_data
 op_assign
 id|info
 suffix:semicolon
-id|DRIVER
+multiline_comment|/* ATA-PATTERN */
+id|ata_ops
 c_func
 (paren
 id|drive
@@ -11921,7 +11911,7 @@ id|drive
 )paren
 )paren
 (brace
-id|DRIVER
+id|ata_ops
 c_func
 (paren
 id|drive
@@ -11948,7 +11938,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-id|DRIVER
+id|ata_ops
 c_func
 (paren
 id|drive

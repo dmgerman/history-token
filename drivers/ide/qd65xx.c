@@ -977,9 +977,9 @@ id|drive
 op_member_access_from_pointer
 id|channel
 op_logical_and
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 (brace
 id|qd_write_reg

@@ -5892,14 +5892,6 @@ id|blk_max_pfn
 op_assign
 id|max_pfn
 suffix:semicolon
-macro_line|#if defined(CONFIG_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE)
-id|ide_init
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* this MUST precede hd_init */
-macro_line|#endif
 macro_line|#if defined(CONFIG_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_HD)
 id|hd_init
 c_func

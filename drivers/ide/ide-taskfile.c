@@ -3310,7 +3310,7 @@ id|drive-&gt;driver
 op_ne
 l_int|NULL
 )paren
-id|DRIVER
+id|ata_ops
 c_func
 (paren
 id|drive

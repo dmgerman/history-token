@@ -151,16 +151,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* ide-proc.c */
-r_extern
-r_char
-op_star
-id|ide_media_verbose
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|variable|bmide_dev
 r_static
 r_struct
@@ -2904,9 +2894,9 @@ r_if
 c_cond
 (paren
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 op_logical_and
 (paren
@@ -4207,15 +4197,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 (brace
 id|cmdprintk
 c_func
 (paren
-l_string|&quot;CMD64X: drive-&gt;media != ide_disk at double check, inital check failed!!&bslash;n&quot;
+l_string|&quot;CMD64X: drive is not a disk at double check, inital check failed!!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5117,9 +5107,9 @@ op_logical_and
 id|hwif-&gt;autodma
 op_logical_and
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_eq
-id|ide_disk
+id|ATA_DISK
 )paren
 )paren
 (brace

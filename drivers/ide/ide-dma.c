@@ -1810,9 +1810,9 @@ macro_line|#ifdef CONFIG_IDEDMA_ONLYDISK
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 id|config_allows_dma
 op_assign
@@ -2292,9 +2292,9 @@ c_cond
 (paren
 id|on
 op_logical_and
-id|drive-&gt;media
+id|drive-&gt;type
 op_eq
-id|ide_disk
+id|ATA_DISK
 op_logical_and
 id|HWIF
 c_func
@@ -2591,9 +2591,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 r_return
 l_int|0

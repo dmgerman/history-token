@@ -121,9 +121,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 op_logical_or
 op_logical_neg
 id|drive-&gt;present

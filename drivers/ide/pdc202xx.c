@@ -66,16 +66,6 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/* ide-proc.c */
-r_extern
-r_char
-op_star
-id|ide_media_verbose
-c_func
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
 DECL|variable|bmide_dev
 r_static
 r_struct
@@ -2428,9 +2418,9 @@ r_if
 c_cond
 (paren
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 op_logical_and
 (paren
@@ -5267,9 +5257,9 @@ id|jumpbit
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 r_return
 id|ide_dma_off_quietly
@@ -5667,9 +5657,9 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_ne
-id|ide_disk
+id|ATA_DISK
 )paren
 r_return
 id|ide_dma_off_quietly
@@ -5725,9 +5715,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;media
+id|drive-&gt;type
 op_eq
-id|ide_disk
+id|ATA_DISK
 )paren
 multiline_comment|/* PREFETCH_EN */
 id|pci_write_config_byte

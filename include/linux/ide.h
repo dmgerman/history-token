@@ -1,7 +1,7 @@
 macro_line|#ifndef _IDE_H
 DECL|macro|_IDE_H
 mdefine_line|#define _IDE_H
-multiline_comment|/*&n; *  linux/include/linux/ide.h&n; *&n; *  Copyright (C) 1994-1998  Linus Torvalds &amp; authors&n; */
+multiline_comment|/*&n; *  Copyright (C) 1994-2002  Linus Torvalds &amp; authors&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -470,18 +470,20 @@ mdefine_line|#define IN_WORD(p)             (short)inw_p(p)
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Now for the data we need to maintain per-drive:  ide_drive_t&n; */
-DECL|macro|ide_scsi
-mdefine_line|#define ide_scsi&t;0x21
-DECL|macro|ide_disk
-mdefine_line|#define ide_disk&t;0x20
-DECL|macro|ide_optical
-mdefine_line|#define ide_optical&t;0x7
-DECL|macro|ide_cdrom
-mdefine_line|#define ide_cdrom&t;0x5
-DECL|macro|ide_tape
-mdefine_line|#define ide_tape&t;0x1
-DECL|macro|ide_floppy
-mdefine_line|#define ide_floppy&t;0x0
+DECL|macro|ATA_DISK
+mdefine_line|#define ATA_DISK        0x20
+DECL|macro|ATA_TAPE
+mdefine_line|#define ATA_TAPE        0x01
+DECL|macro|ATA_ROM
+mdefine_line|#define ATA_ROM         0x05&t;/* CD-ROM */
+DECL|macro|ATA_MOD
+mdefine_line|#define ATA_MOD&t;&t;0x07    /* optical */
+DECL|macro|ATA_FLOPPY
+mdefine_line|#define ATA_FLOPPY&t;0x00
+DECL|macro|ATA_SCSI
+mdefine_line|#define ATA_SCSI&t;0x21
+DECL|macro|ATA_NO_LUN
+mdefine_line|#define ATA_NO_LUN      0x7f
 r_typedef
 r_union
 (brace
@@ -544,11 +546,17 @@ r_typedef
 r_struct
 id|ide_drive_s
 (brace
+DECL|member|type
+r_char
+id|type
+suffix:semicolon
+multiline_comment|/* distingiush different devices: disk, cdrom, tape, floppy, ... */
+multiline_comment|/* NOTE: If we had proper separation between channel and host chip, we&n;&t; * could move this to the chanell and many sync problems would&n;&t; * magically just go away.&n;&t; */
 DECL|member|queue
 id|request_queue_t
 id|queue
 suffix:semicolon
-multiline_comment|/* request queue */
+multiline_comment|/* per device request queue */
 DECL|member|next
 r_struct
 id|ide_drive_s
@@ -757,11 +765,6 @@ id|byte
 id|scsi
 suffix:semicolon
 multiline_comment|/* 0=default, 1=skip current ide-subdriver for ide-scsi emulation */
-DECL|member|media
-id|byte
-id|media
-suffix:semicolon
-multiline_comment|/* disk, cdrom, tape, floppy, ... */
 DECL|member|select
 id|select_t
 id|select
@@ -905,11 +908,10 @@ suffix:semicolon
 multiline_comment|/* drive name, such as &quot;hda&quot; */
 DECL|member|driver
 r_struct
-id|ide_driver_s
+id|ata_operations
 op_star
 id|driver
 suffix:semicolon
-multiline_comment|/* (ide_driver_t *) */
 DECL|member|driver_data
 r_void
 op_star
@@ -1519,12 +1521,6 @@ id|byte
 id|straight8
 suffix:semicolon
 multiline_comment|/* Alan&squot;s straight 8 check */
-DECL|member|hwif_data
-r_void
-op_star
-id|hwif_data
-suffix:semicolon
-multiline_comment|/* extra hwif data */
 DECL|member|busproc
 id|ide_busproc_t
 op_star
@@ -1915,28 +1911,6 @@ r_void
 )paren
 suffix:semicolon
 r_void
-id|recreate_proc_ide_device
-c_func
-(paren
-id|ide_hwif_t
-op_star
-comma
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_void
-id|destroy_proc_ide_device
-c_func
-(paren
-id|ide_hwif_t
-op_star
-comma
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-r_void
 id|destroy_proc_ide_drives
 c_func
 (paren
@@ -1998,21 +1972,16 @@ macro_line|#else
 DECL|macro|PROC_IDE_READ_RETURN
 mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
 macro_line|#endif
-multiline_comment|/*&n; * Subdrivers support.&n; */
-DECL|struct|ide_driver_s
-r_typedef
+multiline_comment|/*&n; * This structure describes the operations possible on a particular device type&n; * (CD-ROM, tape, DISK and so on).&n; *&n; * This is the main hook for device type support submodules.&n; */
+DECL|struct|ata_operations
 r_struct
-id|ide_driver_s
+id|ata_operations
 (brace
-DECL|member|name
-r_const
-r_char
+DECL|member|owner
+r_struct
+id|module
 op_star
-id|name
-suffix:semicolon
-DECL|member|media
-id|byte
-id|media
+id|owner
 suffix:semicolon
 DECL|member|busy
 r_int
@@ -2020,18 +1989,7 @@ id|busy
 suffix:colon
 l_int|1
 suffix:semicolon
-DECL|member|supports_dma
-r_int
-id|supports_dma
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|supports_dsc_overlap
-r_int
-id|supports_dsc_overlap
-suffix:colon
-l_int|1
-suffix:semicolon
+multiline_comment|/* FIXME: this will go soon away... */
 DECL|member|cleanup
 r_int
 (paren
@@ -2233,12 +2191,46 @@ id|ide_drive_t
 op_star
 )paren
 suffix:semicolon
-DECL|typedef|ide_driver_t
 )brace
-id|ide_driver_t
 suffix:semicolon
-DECL|macro|DRIVER
-mdefine_line|#define DRIVER(drive)&t;&t;((drive)-&gt;driver)
+multiline_comment|/* Alas, no aliases. Too much hassle with bringing module.h everywhere */
+DECL|macro|ata_get
+mdefine_line|#define ata_get(ata) &bslash;&n;&t;(((ata) &amp;&amp; (ata)-&gt;owner)&t;&bslash;&n;&t;&t;? ( try_inc_mod_count((ata)-&gt;owner) ? (ata) : NULL ) &bslash;&n;&t;&t;: (ata))
+DECL|macro|ata_put
+mdefine_line|#define ata_put(ata) &bslash;&n;do {&t;&bslash;&n;&t;if ((ata) &amp;&amp; (ata)-&gt;owner) &bslash;&n;&t;&t;__MOD_DEC_USE_COUNT((ata)-&gt;owner);&t;&bslash;&n;} while(0)
+multiline_comment|/* FIXME: Actually implement and use them as soon as possible!  to make the&n; * ide_scan_devices() go away! */
+r_extern
+r_int
+id|unregister_ata_driver
+c_func
+(paren
+r_int
+r_int
+id|type
+comma
+r_struct
+id|ata_operations
+op_star
+id|driver
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|register_ata_driver
+c_func
+(paren
+r_int
+r_int
+id|type
+comma
+r_struct
+id|ata_operations
+op_star
+id|driver
+)paren
+suffix:semicolon
+DECL|macro|ata_ops
+mdefine_line|#define ata_ops(drive)&t;&t;((drive)-&gt;driver)
 multiline_comment|/*&n; * ide_hwifs[] is the master data structure used to keep track&n; * of just about everything in ide.c.  Whenever possible, routines&n; * should be using pointers to a drive (ide_drive_t *) or&n; * pointers to a hwif (ide_hwif_t *), rather than indexing this&n; * structure directly (the allocation/layout may change!).&n; *&n; */
 r_extern
 r_struct
@@ -3251,31 +3243,13 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDISK
 r_extern
 r_int
-id|idedisk_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|idedisk_init
 (paren
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDISK */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDECD
-r_extern
-r_int
-id|ide_cdrom_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|ide_cdrom_init
@@ -3283,17 +3257,8 @@ id|ide_cdrom_init
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDECD */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDETAPE
-r_extern
-r_int
-id|idetape_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|idetape_init
@@ -3301,17 +3266,8 @@ id|idetape_init
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDETAPE */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEFLOPPY
-r_extern
-r_int
-id|idefloppy_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|idefloppy_init
@@ -3319,17 +3275,8 @@ id|idefloppy_init
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEFLOPPY */
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDESCSI
-r_extern
-r_int
-id|idescsi_reinit
-(paren
-id|ide_drive_t
-op_star
-id|drive
-)paren
-suffix:semicolon
 r_extern
 r_int
 id|idescsi_init
@@ -3337,7 +3284,7 @@ id|idescsi_init
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDESCSI */
+macro_line|#endif
 id|ide_drive_t
 op_star
 id|ide_scan_devices
@@ -3350,7 +3297,8 @@ r_char
 op_star
 id|name
 comma
-id|ide_driver_t
+r_struct
+id|ata_operations
 op_star
 id|driver
 comma
@@ -3367,7 +3315,8 @@ id|ide_drive_t
 op_star
 id|drive
 comma
-id|ide_driver_t
+r_struct
+id|ata_operations
 op_star
 id|driver
 )paren
@@ -3380,21 +3329,6 @@ c_func
 id|ide_drive_t
 op_star
 id|drive
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ide_replace_subdriver
-c_func
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_const
-r_char
-op_star
-id|driver
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
