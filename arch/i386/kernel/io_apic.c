@@ -4682,35 +4682,15 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|UNEXPECTED_IO_APIC
+r_static
+r_inline
 r_void
-id|__init
 id|UNEXPECTED_IO_APIC
 c_func
 (paren
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;INFO: unexpected IO-APIC, please file a report at&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;      http://bugzilla.kernel.org&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;      if your kernel is less than 3 months old.&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 DECL|function|print_IO_APIC
 r_void
