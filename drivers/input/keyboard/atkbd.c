@@ -2368,6 +2368,13 @@ r_return
 l_int|4
 suffix:semicolon
 multiline_comment|/*&n; * Try to set the set we want.&n; */
+id|param
+(braket
+l_int|0
+)braket
+op_assign
+id|atkbd_set
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2376,8 +2383,7 @@ c_func
 (paren
 id|atkbd
 comma
-op_amp
-id|atkbd_set
+id|param
 comma
 id|ATKBD_CMD_SSCANSET
 )paren
