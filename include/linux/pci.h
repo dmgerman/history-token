@@ -1022,7 +1022,7 @@ id|pci_device_id
 op_star
 id|id_table
 suffix:semicolon
-multiline_comment|/* NULL if wants all devices */
+multiline_comment|/* must be non-NULL for probe to be called */
 DECL|member|probe
 r_int
 (paren

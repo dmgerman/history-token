@@ -179,6 +179,15 @@ id|pci_device_id
 op_star
 id|id
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drv-&gt;id_table
+)paren
+r_return
+id|error
+suffix:semicolon
 id|id
 op_assign
 id|pci_match_device
