@@ -1183,6 +1183,13 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
+id|cond_resched_lock
+c_func
+(paren
+op_amp
+id|dcache_lock
+)paren
+suffix:semicolon
 id|tmp
 op_assign
 id|dentry_unused.prev
@@ -1667,7 +1674,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Search the dentry child list for the specified parent,&n; * and move any unused dentries to the end of the unused&n; * list for prune_dcache(). We descend to the next level&n; * whenever the d_subdirs list is non-empty and continue&n; * searching.&n; */
+multiline_comment|/*&n; * Search the dentry child list for the specified parent,&n; * and move any unused dentries to the end of the unused&n; * list for prune_dcache(). We descend to the next level&n; * whenever the d_subdirs list is non-empty and continue&n; * searching.&n; *&n; * It returns zero iff there are no unused children,&n; * otherwise  it returns the number of children moved to&n; * the end of the unused list. This may not be the total&n; * number of unused children, because select_parent can&n; * drop the lock and return early due to latency&n; * constraints.&n; */
 DECL|function|select_parent
 r_static
 r_int
@@ -1800,6 +1807,20 @@ id|found
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * We can return to the caller if we have found some (this&n;&t;&t; * ensures forward progress). We&squot;ll be coming back to find&n;&t;&t; * the rest.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|found
+op_logical_and
+id|need_resched
+c_func
+(paren
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Descend a level if the d_subdirs list is non-empty.&n;&t;&t; */
 r_if
 c_cond
@@ -1873,6 +1894,8 @@ r_goto
 id|resume
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 id|spin_unlock
 c_func
 (paren
