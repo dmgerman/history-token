@@ -5017,17 +5017,13 @@ id|sighand_struct
 op_star
 id|psig
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|sig
 op_eq
 op_minus
 l_int|1
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* do_notify_parent_cldstop should have been called instead.  */
