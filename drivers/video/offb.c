@@ -27,13 +27,6 @@ macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
 macro_line|#include &lt;video/fbcon-cfb32.h&gt;
 macro_line|#include &lt;video/macmodes.h&gt;
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Supported palette hacks */
 r_enum
 (brace
@@ -799,7 +792,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -1002,7 +995,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -2874,6 +2867,11 @@ id|info-&gt;info.disp
 op_assign
 id|disp
 suffix:semicolon
+id|info-&gt;info.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|info-&gt;info.fontname
 (braket
 l_int|0
@@ -3143,7 +3141,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -3154,7 +3152,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -3166,7 +3164,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -3479,7 +3477,7 @@ r_else
 id|do_install_cmap
 c_func
 (paren
-id|currcon
+id|info-&gt;currcon
 comma
 id|info
 )paren
@@ -4047,7 +4045,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon

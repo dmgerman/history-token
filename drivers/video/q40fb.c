@@ -276,13 +276,6 @@ id|q40fb_ioctl
 comma
 )brace
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|q40fb_name
 r_static
 r_char
@@ -989,7 +982,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -1161,7 +1154,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -1556,6 +1549,11 @@ id|fb_info.disp
 op_assign
 id|disp
 suffix:semicolon
+id|fb_info.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|fb_info.switch_con
 op_assign
 op_amp
@@ -1677,7 +1675,7 @@ op_star
 id|info
 )paren
 (brace
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon

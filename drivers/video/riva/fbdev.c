@@ -5892,7 +5892,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -6116,7 +6116,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -6337,7 +6337,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 )paren
 (brace
 id|rivainfo-&gt;riva
@@ -6564,7 +6564,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 op_ge
 l_int|0
 )paren
@@ -6582,7 +6582,7 @@ c_func
 (paren
 l_string|&quot;switch1: con = %d, cmap.len = %d&bslash;n&quot;
 comma
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 comma
 id|cmap-&gt;len
 )paren
@@ -6621,7 +6621,7 @@ id|info
 suffix:semicolon
 )brace
 )brace
-id|rivainfo-&gt;currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -7138,6 +7138,11 @@ multiline_comment|/* FIXME: set monspecs to what??? */
 id|info-&gt;display_fg
 op_assign
 l_int|NULL
+suffix:semicolon
+id|info-&gt;currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|strncpy
 c_func

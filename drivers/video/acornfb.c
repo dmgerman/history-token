@@ -2941,7 +2941,7 @@ id|bpp
 op_assign
 id|fb_display
 (braket
-id|current_par.currcon
+id|info-&gt;currcon
 )braket
 dot
 id|var.bits_per_pixel
@@ -3163,7 +3163,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|current_par.currcon
+id|info-&gt;currcon
 )paren
 id|err
 op_assign
@@ -3304,7 +3304,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|current_par.currcon
+id|info-&gt;currcon
 )paren
 id|err
 op_assign
@@ -4198,7 +4198,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|current_par.currcon
+id|info-&gt;currcon
 )paren
 (brace
 r_struct
@@ -4669,7 +4669,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|current_par.currcon
+id|info-&gt;currcon
 )paren
 id|acornfb_update_dma
 c_func
@@ -4710,7 +4710,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current_par.currcon
+id|info-&gt;currcon
 op_ge
 l_int|0
 )paren
@@ -4720,7 +4720,7 @@ op_assign
 op_amp
 id|fb_display
 (braket
-id|current_par.currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -4743,7 +4743,7 @@ id|info
 )paren
 suffix:semicolon
 )brace
-id|current_par.currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -4802,7 +4802,7 @@ id|bpp
 op_assign
 id|fb_display
 (braket
-id|current_par.currcon
+id|info-&gt;currcon
 )braket
 dot
 id|var.bits_per_pixel
@@ -6679,7 +6679,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|current_par.currcon
+id|fb_info.currcon
 op_assign
 op_minus
 l_int|1

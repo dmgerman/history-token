@@ -2790,23 +2790,11 @@ r_int
 id|con
 )paren
 (brace
-r_struct
-id|sa1100fb_info
-op_star
-id|fbi
-op_assign
-(paren
-r_struct
-id|sa1100fb_info
-op_star
-)paren
-id|info
-suffix:semicolon
 r_return
 (paren
 id|con
 op_eq
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 op_logical_or
 id|con
 op_eq
@@ -2816,7 +2804,7 @@ l_int|1
 ques
 c_cond
 op_amp
-id|fbi-&gt;fb.var
+id|info-&gt;var
 suffix:colon
 op_amp
 id|fb_display
@@ -2894,23 +2882,11 @@ r_int
 id|con
 )paren
 (brace
-r_struct
-id|sa1100fb_info
-op_star
-id|fbi
-op_assign
-(paren
-r_struct
-id|sa1100fb_info
-op_star
-)paren
-id|info
-suffix:semicolon
 r_return
 (paren
 id|con
 op_eq
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 op_logical_or
 id|con
 op_eq
@@ -2920,7 +2896,7 @@ l_int|1
 ques
 c_cond
 op_amp
-id|fbi-&gt;fb.cmap
+id|info-&gt;cmap
 suffix:colon
 op_amp
 id|fb_display
@@ -3203,7 +3179,7 @@ c_func
 (paren
 id|info
 comma
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 )paren
 suffix:semicolon
 id|u_int
@@ -4254,7 +4230,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|fbi-&gt;currcon
+id|fbi-&gt;fb.currcon
 )paren
 r_return
 l_int|0
@@ -4334,7 +4310,7 @@ l_int|1
 )paren
 id|con
 op_assign
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 suffix:semicolon
 multiline_comment|/* no colormap allocated? (we always have &quot;this&quot; colour map allocated) */
 r_if
@@ -4370,7 +4346,7 @@ id|err
 op_logical_and
 id|con
 op_eq
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 )paren
 id|err
 op_assign
@@ -4703,7 +4679,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 )paren
 r_return
 l_int|0
@@ -4711,7 +4687,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 op_ge
 l_int|0
 )paren
@@ -4720,7 +4696,7 @@ id|disp
 op_assign
 id|fb_display
 op_plus
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Save the old colormap and video mode.&n;&t;&t; */
 id|disp-&gt;var
@@ -4745,7 +4721,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|fbi-&gt;currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -7114,7 +7090,7 @@ id|display
 )paren
 )paren
 suffix:semicolon
-id|fbi-&gt;currcon
+id|fbi-&gt;fb.currcon
 op_assign
 op_minus
 l_int|1
@@ -7225,6 +7201,11 @@ suffix:semicolon
 id|fbi-&gt;fb.monspecs
 op_assign
 id|monspecs
+suffix:semicolon
+id|fbi-&gt;fb.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|fbi-&gt;fb.disp
 op_assign

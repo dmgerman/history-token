@@ -148,10 +148,6 @@ DECL|member|video_cmap_len
 r_int
 id|video_cmap_len
 suffix:semicolon
-DECL|member|currcon
-r_int
-id|currcon
-suffix:semicolon
 DECL|member|disp
 r_struct
 id|display
@@ -1713,7 +1709,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|info-&gt;currcon
+id|fb_info-&gt;currcon
 )paren
 r_return
 suffix:semicolon
@@ -1805,7 +1801,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|info-&gt;currcon
+id|fb_info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -1962,7 +1958,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|fb-&gt;currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -2319,7 +2315,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|info-&gt;currcon
+id|fb_info-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -2330,7 +2326,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|info-&gt;currcon
+id|fb_info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -2342,7 +2338,7 @@ comma
 id|fb_info
 )paren
 suffix:semicolon
-id|info-&gt;currcon
+id|fb_info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -2557,6 +2553,11 @@ id|info-&gt;fb_info.disp
 op_assign
 op_amp
 id|info-&gt;disp
+suffix:semicolon
+id|info-&gt;fb_info.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|strcpy
 c_func

@@ -82,13 +82,6 @@ id|current_par_valid
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|disp
 r_static
 r_struct
@@ -3769,7 +3762,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 id|DPRINTK
@@ -4273,7 +4266,7 @@ id|var
 comma
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 )paren
 )paren
@@ -4483,7 +4476,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -4686,7 +4679,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -5197,6 +5190,11 @@ op_assign
 op_amp
 id|disp
 suffix:semicolon
+id|fb_info.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|fb_info.switch_con
 op_assign
 op_amp
@@ -5410,7 +5408,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -5422,7 +5420,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -5449,7 +5447,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon

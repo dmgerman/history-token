@@ -164,11 +164,6 @@ r_int
 r_int
 id|montype
 suffix:semicolon
-DECL|member|currcon
-r_int
-r_int
-id|currcon
-suffix:semicolon
 DECL|member|using_vram
 r_int
 r_int

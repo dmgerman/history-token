@@ -333,13 +333,6 @@ id|dn_fb_set_cmap
 comma
 )brace
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|macro|NUM_TOTAL_MODES
 mdefine_line|#define NUM_TOTAL_MODES 1
 DECL|variable|dn_fb_predefined
@@ -1078,6 +1071,11 @@ op_assign
 op_amp
 id|dn_fb_ops
 suffix:semicolon
+id|fb_info.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -1215,7 +1213,7 @@ op_star
 id|info
 )paren
 (brace
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon

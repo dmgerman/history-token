@@ -30,13 +30,6 @@ macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-cfb8.h&gt;
 macro_line|#include &lt;video/fbcon-cfb16.h&gt;
 macro_line|#include &lt;video/macmodes.h&gt;
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|struct|fb_info_chips
 r_struct
 id|fb_info_chips
@@ -694,7 +687,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -873,7 +866,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -953,7 +946,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -964,7 +957,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -989,12 +982,12 @@ id|old_bpp
 op_assign
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|var.bits_per_pixel
 suffix:semicolon
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -1623,7 +1616,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon
@@ -1747,7 +1740,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 id|write_cr
@@ -1849,7 +1842,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 id|write_cr
@@ -3015,6 +3008,11 @@ id|p-&gt;info.disp
 op_assign
 op_amp
 id|p-&gt;disp
+suffix:semicolon
+id|p-&gt;info.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|p-&gt;info.fontname
 (braket

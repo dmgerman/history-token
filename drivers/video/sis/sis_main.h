@@ -561,13 +561,6 @@ id|sisvga_enabled
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*karl*/
 DECL|variable|sisfb_tvmode
 r_static
@@ -3886,6 +3879,11 @@ r_static
 r_void
 id|sis_get_glyph
 (paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
 id|SIS_GLYINFO
 op_star
 id|gly

@@ -692,13 +692,6 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|atyfb_ops
 r_static
 r_struct
@@ -10439,6 +10432,11 @@ id|info-&gt;fb_info.disp
 op_assign
 id|disp
 suffix:semicolon
+id|info-&gt;fb_info.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -13693,7 +13691,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -13704,7 +13702,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap
@@ -13729,7 +13727,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 comma
 id|CM_ERASE
@@ -13740,7 +13738,7 @@ id|info-&gt;cursor-&gt;pos.y
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_FB_ATY_CT */
-id|currcon
+id|fb-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -14417,7 +14415,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon

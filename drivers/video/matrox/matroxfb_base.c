@@ -833,7 +833,7 @@ op_eq
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 )paren
 id|matrox_pan_var
@@ -3257,7 +3257,7 @@ op_eq
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 )paren
 (brace
@@ -4393,7 +4393,7 @@ op_eq
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 )paren
 multiline_comment|/* current console? */
@@ -4583,7 +4583,7 @@ op_eq
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 )paren
 (brace
@@ -5021,7 +5021,7 @@ c_func
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 comma
 id|info
@@ -5478,7 +5478,7 @@ c_func
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 comma
 id|info
@@ -5722,7 +5722,7 @@ c_cond
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 op_ge
 l_int|0
@@ -5751,7 +5751,7 @@ comma
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 comma
 id|cmap-&gt;len
@@ -5816,7 +5816,7 @@ macro_line|#endif
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 op_assign
 id|con
@@ -8872,7 +8872,7 @@ suffix:semicolon
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 op_assign
 op_minus
@@ -9867,7 +9867,7 @@ c_cond
 id|ACCESS_FBINFO
 c_func
 (paren
-id|currcon
+id|fbcon.currcon
 )paren
 OL
 l_int|0

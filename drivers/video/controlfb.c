@@ -996,11 +996,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/************************** Internal variables *******************************/
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-suffix:semicolon
 DECL|variable|control_fb
 r_static
 r_struct
@@ -1515,7 +1510,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 id|control_set_hardware
@@ -1754,7 +1749,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -1937,7 +1932,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 id|fb_set_cmap
@@ -2237,13 +2232,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|currcon
+id|info-&gt;currcon
 op_ge
 l_int|0
 op_logical_and
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -2254,7 +2249,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -2266,7 +2261,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -3328,7 +3323,7 @@ comma
 id|p
 )paren
 suffix:semicolon
-id|currcon
+id|p-&gt;info.currcon
 op_assign
 op_minus
 l_int|1

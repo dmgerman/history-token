@@ -71,13 +71,6 @@ r_struct
 id|fb_var_screeninfo
 id|default_var
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|inverse
 r_static
 r_int
@@ -804,6 +797,11 @@ id|fb_info.gen.info.disp
 op_assign
 op_amp
 id|disp
+suffix:semicolon
+id|fb_info.gen.info.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|fb_info.gen.info.switch_con
 op_assign

@@ -16,13 +16,6 @@ id|colreg
 l_int|16
 )braket
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|fb_info
 r_static
 r_struct
@@ -484,7 +477,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 id|fb_get_cmap
@@ -625,7 +618,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 id|fb_set_cmap
@@ -681,7 +674,7 @@ op_star
 id|info
 )paren
 (brace
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -792,8 +785,7 @@ l_string|&quot;AnakinFB&quot;
 suffix:semicolon
 id|fb_info.node
 op_assign
-op_minus
-l_int|1
+id|NODEV
 suffix:semicolon
 id|fb_info.flags
 op_assign
@@ -803,6 +795,11 @@ id|fb_info.fbops
 op_assign
 op_amp
 id|anakinfb_ops
+suffix:semicolon
+id|fb_info.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|fb_info.disp
 op_assign

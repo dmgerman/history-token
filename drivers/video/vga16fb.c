@@ -324,13 +324,6 @@ id|palette
 l_int|256
 )braket
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|vga16fb_pan_var
 r_static
@@ -2646,7 +2639,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;fb_info.currcon
 )paren
 id|vga16fb_set_par
 c_func
@@ -2986,7 +2979,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|currcon
+id|fb_info-&gt;currcon
 OL
 l_int|0
 )paren
@@ -2999,7 +2992,7 @@ id|gray
 op_assign
 id|fb_display
 (braket
-id|currcon
+id|fb_info-&gt;currcon
 )braket
 dot
 id|var.grayscale
@@ -3097,7 +3090,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon
@@ -3175,7 +3168,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -3319,7 +3312,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -3425,7 +3418,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 id|vga16fb_pan_var
 c_func
@@ -3632,7 +3625,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -3643,7 +3636,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap
@@ -3655,7 +3648,7 @@ comma
 id|fb
 )paren
 suffix:semicolon
-id|currcon
+id|fb-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -4474,7 +4467,7 @@ id|info-&gt;palette_blanked
 id|do_install_cmap
 c_func
 (paren
-id|currcon
+id|fb_info-&gt;currcon
 comma
 id|fb_info
 )paren
@@ -4705,6 +4698,11 @@ id|vga16fb.fb_info.disp
 op_assign
 op_amp
 id|disp
+suffix:semicolon
+id|vga16fb.fb_info.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|vga16fb.fb_info.switch_con
 op_assign

@@ -1094,10 +1094,6 @@ suffix:semicolon
 id|mtrr
 suffix:semicolon
 macro_line|#endif
-DECL|member|currcon
-r_int
-id|currcon
-suffix:semicolon
 DECL|member|blitter_may_be_busy
 r_int
 id|blitter_may_be_busy
@@ -6869,7 +6865,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|fb-&gt;currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -6988,25 +6984,13 @@ op_star
 id|info
 )paren
 (brace
-r_int
-id|err
-suffix:semicolon
-r_struct
-id|fb_info_aty128
-op_star
-id|fb
-op_assign
-(paren
-r_struct
-id|fb_info_aty128
-op_star
-)paren
-id|info
-suffix:semicolon
 r_struct
 id|display
 op_star
 id|disp
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -7077,7 +7061,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|fb-&gt;currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -8412,7 +8396,7 @@ id|info-&gt;pdev
 op_assign
 id|pdev
 suffix:semicolon
-id|info-&gt;currcon
+id|info-&gt;fb_info.currcon
 op_assign
 op_minus
 l_int|1
@@ -9472,7 +9456,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|info-&gt;currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -9483,7 +9467,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|info-&gt;currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap
@@ -9496,7 +9480,7 @@ id|fb
 )paren
 suffix:semicolon
 multiline_comment|/* set the current console */
-id|info-&gt;currcon
+id|fb-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -10319,24 +10303,12 @@ op_star
 id|info
 )paren
 (brace
-r_struct
-id|fb_info_aty128
-op_star
-id|fb
-op_assign
-(paren
-r_struct
-id|fb_info_aty128
-op_star
-)paren
-id|info
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|con
 op_ne
-id|fb-&gt;currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon

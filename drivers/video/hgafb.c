@@ -316,14 +316,6 @@ id|display
 id|disp
 suffix:semicolon
 multiline_comment|/* Don&squot;t assume that tty1 will be the initial current console. */
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 DECL|variable|release_io_port
 r_static
 r_int
@@ -2154,7 +2146,7 @@ c_func
 (paren
 l_string|&quot;hgafbcon_switch: currcon:%d, con:%d, info:%x, fb_info:%x&bslash;n&quot;
 comma
-id|currcon
+id|info-&gt;currcon
 comma
 id|con
 comma
@@ -2181,7 +2173,7 @@ comma
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -2193,7 +2185,7 @@ macro_line|#endif
 r_if
 c_cond
 (paren
-id|currcon
+id|info-&gt;currcon
 op_ne
 op_minus
 l_int|1
@@ -2205,7 +2197,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|var
@@ -2275,7 +2267,7 @@ id|fb_var_screeninfo
 )paren
 suffix:semicolon
 multiline_comment|/* hga_set_var(&amp;info-&gt;var, con, &amp;fb_info); is it necessary? */
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -2491,7 +2483,6 @@ id|disp.var
 op_assign
 id|hga_default_var
 suffix:semicolon
-multiline_comment|/*&t;disp.cmap = ???; */
 id|disp.screen_base
 op_assign
 (paren
@@ -2569,7 +2560,6 @@ id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-multiline_comment|/*&t;fb_info.open = ??? */
 id|fb_info.var
 op_assign
 id|hga_default_var
@@ -2616,8 +2606,10 @@ op_assign
 op_amp
 id|disp
 suffix:semicolon
-multiline_comment|/*&t;fb_info.display_fg = ??? */
-multiline_comment|/*&t;fb_info.fontname initialized later */
+id|fb_info.currcon
+op_assign
+l_int|1
+suffix:semicolon
 id|fb_info.changevar
 op_assign
 l_int|NULL

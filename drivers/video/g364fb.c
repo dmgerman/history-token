@@ -94,13 +94,6 @@ DECL|macro|MON_ID_REG
 mdefine_line|#define MON_ID_REG &t;0xe4100000 &t;/* unused */
 DECL|macro|RESET_REG
 mdefine_line|#define RESET_REG &t;0xe4180000  &t;/* Write only */
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|disp
 r_static
 r_struct
@@ -927,7 +920,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -1086,7 +1079,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -1720,6 +1713,11 @@ op_assign
 op_amp
 id|disp
 suffix:semicolon
+id|fb_info.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|fb_info.fontname
 (braket
 l_int|0
@@ -1818,7 +1816,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -1829,7 +1827,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -1841,7 +1839,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -1887,7 +1885,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 r_struct
@@ -1898,7 +1896,7 @@ op_assign
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|var
@@ -2215,7 +2213,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon

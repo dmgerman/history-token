@@ -179,14 +179,14 @@ multiline_comment|/* register bitfields (not all, only as needed) */
 DECL|macro|BIT
 mdefine_line|#define BIT(x) (1UL &lt;&lt; (x))
 multiline_comment|/* COMMAND_2D reg. values */
-DECL|macro|ROP_COPY
-mdefine_line|#define ROP_COPY&t;0xcc     
+DECL|macro|TDFX_ROP_COPY
+mdefine_line|#define TDFX_ROP_COPY&t;     0xcc     
 singleline_comment|// src
-DECL|macro|ROP_INVERT
-mdefine_line|#define ROP_INVERT      0x55     
+DECL|macro|TDFX_ROP_INVERT
+mdefine_line|#define TDFX_ROP_INVERT      0x55     
 singleline_comment|// NOT dst
-DECL|macro|ROP_XOR
-mdefine_line|#define ROP_XOR         0x66     
+DECL|macro|TDFX_ROP_XOR
+mdefine_line|#define TDFX_ROP_XOR         0x66     
 singleline_comment|// src XOR dst
 DECL|macro|AUTOINC_DSTX
 mdefine_line|#define AUTOINC_DSTX                    BIT(10)
@@ -1356,13 +1356,6 @@ id|pci_dev
 op_star
 id|pdev
 )paren
-suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|tdfxfb_ops
 r_static
@@ -2851,7 +2844,7 @@ op_assign
 id|COMMAND_2D_S2S_BITBLT
 op_or
 (paren
-id|ROP_COPY
+id|TDFX_ROP_COPY
 op_lshift
 l_int|24
 )paren
@@ -3205,7 +3198,7 @@ comma
 id|COMMAND_2D_H2S_BITBLT
 op_or
 (paren
-id|ROP_COPY
+id|TDFX_ROP_COPY
 op_lshift
 l_int|24
 )paren
@@ -3687,7 +3680,7 @@ comma
 id|COMMAND_2D_H2S_BITBLT
 op_or
 (paren
-id|ROP_COPY
+id|TDFX_ROP_COPY
 op_lshift
 l_int|24
 )paren
@@ -4966,7 +4959,7 @@ id|fb_info.current_par.lpitch
 comma
 id|fb_info.current_par.bpp
 comma
-id|ROP_COPY
+id|TDFX_ROP_COPY
 )paren
 suffix:semicolon
 )brace
@@ -4995,7 +4988,7 @@ id|fb_info.current_par.lpitch
 comma
 id|fb_info.current_par.bpp
 comma
-id|ROP_COPY
+id|TDFX_ROP_COPY
 )paren
 suffix:semicolon
 )brace
@@ -5692,7 +5685,7 @@ id|fb_info.current_par.lpitch
 comma
 id|fb_info.current_par.bpp
 comma
-id|ROP_COPY
+id|TDFX_ROP_COPY
 )paren
 suffix:semicolon
 )brace
@@ -5788,7 +5781,7 @@ id|fb_info.current_par.lpitch
 comma
 id|fb_info.current_par.bpp
 comma
-id|ROP_COPY
+id|TDFX_ROP_COPY
 )paren
 suffix:semicolon
 )brace
@@ -5884,7 +5877,7 @@ id|fb_info.current_par.lpitch
 comma
 id|fb_info.current_par.bpp
 comma
-id|ROP_COPY
+id|TDFX_ROP_COPY
 )paren
 suffix:semicolon
 )brace
@@ -5957,7 +5950,7 @@ id|fb_info.current_par.lpitch
 comma
 id|bpp
 comma
-id|ROP_XOR
+id|TDFX_ROP_XOR
 )paren
 suffix:semicolon
 )brace
@@ -9427,7 +9420,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|fb-&gt;currcon
 )paren
 id|do_pan_var
 c_func
@@ -9517,7 +9510,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|fb-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -9693,7 +9686,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|fb-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -10006,7 +9999,7 @@ comma
 id|fb_info.bufbase_size
 )paren
 suffix:semicolon
-id|currcon
+id|fb_info.fb_info.currcon
 op_assign
 op_minus
 l_int|1
@@ -10088,6 +10081,11 @@ id|fb_info.fb_info.disp
 op_assign
 op_amp
 id|fb_info.disp
+suffix:semicolon
+id|fb_info.fb_info.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|strcpy
 c_func
@@ -10743,7 +10741,7 @@ suffix:semicolon
 r_int
 id|old_con
 op_assign
-id|currcon
+id|fb-&gt;currcon
 suffix:semicolon
 r_int
 id|set_par
@@ -10754,7 +10752,7 @@ multiline_comment|/* Do we have to save the colormap? */
 r_if
 c_cond
 (paren
-id|currcon
+id|fb-&gt;currcon
 op_ge
 l_int|0
 )paren
@@ -10763,7 +10761,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -10775,7 +10773,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap
@@ -10788,13 +10786,13 @@ id|fb
 )paren
 suffix:semicolon
 )brace
-id|currcon
+id|fb-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
 id|fb_display
 (braket
-id|currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|var.activate
@@ -11232,7 +11230,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|fb-&gt;currcon
 )paren
 op_logical_and
 (paren

@@ -1250,6 +1250,10 @@ op_assign
 op_amp
 id|fb_info.disp
 suffix:semicolon
+id|fb_info.gen.info.currcon
+op_assign
+l_int|1
+suffix:semicolon
 id|fb_info.gen.info.changevar
 op_assign
 l_int|NULL

@@ -2004,6 +2004,11 @@ op_assign
 op_amp
 id|e1355fb_ops
 suffix:semicolon
+id|fb_info.gen.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|fb_info.gen.info.disp
 op_assign
 op_amp

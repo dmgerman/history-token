@@ -235,13 +235,6 @@ id|pmagbafb_par
 (brace
 )brace
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|current_par
 r_struct
 id|pmagbafb_par
@@ -1082,7 +1075,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -1447,6 +1440,11 @@ id|ip-&gt;info.disp
 op_assign
 op_amp
 id|disp
+suffix:semicolon
+id|ip-&gt;info.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|ip-&gt;info.switch_con
 op_assign

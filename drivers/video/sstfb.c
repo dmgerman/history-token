@@ -56,11 +56,6 @@ multiline_comment|/* Careful with this one : writing back the data just read wil
 DECL|macro|FBIINIT6_DEFAULT
 mdefine_line|#define FBIINIT6_DEFAULT&t;(0x0)
 multiline_comment|/********/
-DECL|variable|currcon
-r_int
-id|currcon
-suffix:semicolon
-multiline_comment|/* =0 */
 DECL|variable|num_sst
 r_int
 id|num_sst
@@ -1991,7 +1986,7 @@ c_func
 (paren
 l_string|&quot;currcon: %d&bslash;n&quot;
 comma
-id|currcon
+id|info-&gt;currcon
 )paren
 suffix:semicolon
 r_if
@@ -1999,7 +1994,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon
@@ -3505,7 +3500,7 @@ op_logical_or
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 )paren
 (brace
@@ -3633,7 +3628,7 @@ l_string|&quot;con: %d, currcon: %d, d-&gt;cmap.len %d&bslash;n&quot;
 comma
 id|con
 comma
-id|currcon
+id|info-&gt;currcon
 comma
 id|d-&gt;cmap.len
 )paren
@@ -3678,7 +3673,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 r_return
@@ -3754,7 +3749,7 @@ l_string|&quot;con %d, curcon %d, cmap.len %d&bslash;n&quot;
 comma
 id|con
 comma
-id|currcon
+id|info-&gt;currcon
 comma
 id|fb_display
 (braket
@@ -3770,7 +3765,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 id|fb_get_cmap
@@ -4214,7 +4209,7 @@ c_func
 (paren
 l_string|&quot;currcon: %d, bpp %d&bslash;n&quot;
 comma
-id|currcon
+id|info-&gt;currcon
 comma
 id|fb_display
 (braket
@@ -4239,7 +4234,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|var.bits_per_pixel
@@ -4284,7 +4279,7 @@ id|__LINE__
 comma
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|var.bits_per_pixel
@@ -8073,6 +8068,11 @@ op_assign
 op_amp
 id|disp
 suffix:semicolon
+id|fb_info.info.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|fb_info.info.changevar
 op_assign
 l_int|NULL
@@ -8299,7 +8299,7 @@ c_func
 (paren
 l_string|&quot;currcon: %d&bslash;n&quot;
 comma
-id|currcon
+id|info-&gt;currcon
 )paren
 suffix:semicolon
 id|v_dprintk
@@ -8307,13 +8307,13 @@ c_func
 (paren
 l_string|&quot;currcon: %d&bslash;n&quot;
 comma
-id|currcon
+id|info-&gt;currcon
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|currcon
+id|info-&gt;currcon
 op_ge
 l_int|0
 )paren
@@ -8323,7 +8323,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -8334,7 +8334,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -8347,7 +8347,7 @@ id|info
 )paren
 suffix:semicolon
 )brace
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon

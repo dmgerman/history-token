@@ -231,10 +231,6 @@ r_int
 r_int
 id|physregs
 suffix:semicolon
-DECL|member|currcon
-r_int
-id|currcon
-suffix:semicolon
 DECL|member|current_par_valid
 r_int
 id|current_par_valid
@@ -5575,23 +5571,12 @@ op_star
 id|info
 )paren
 (brace
-r_struct
-id|retz3_fb_info
-op_star
-id|zinfo
-op_assign
-id|retz3info
-c_func
-(paren
-id|info
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|con
 op_ne
-id|zinfo-&gt;currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon
@@ -6080,7 +6065,7 @@ id|var
 comma
 id|con
 op_eq
-id|zinfo-&gt;currcon
+id|info-&gt;currcon
 )paren
 )paren
 )paren
@@ -6371,7 +6356,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|zinfo-&gt;currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -6541,7 +6526,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|zinfo-&gt;currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -7090,6 +7075,11 @@ op_assign
 op_amp
 id|zinfo-&gt;disp
 suffix:semicolon
+id|fb_info-&gt;currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|fb_info-&gt;switch_con
 op_assign
 op_amp
@@ -7275,7 +7265,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|zinfo-&gt;currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -7286,7 +7276,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|zinfo-&gt;currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -7314,7 +7304,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|zinfo-&gt;currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon

@@ -48,11 +48,6 @@ op_star
 id|options
 )paren
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_char
@@ -1479,7 +1474,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 multiline_comment|/* current console? */
 r_return
@@ -1638,7 +1633,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -1929,7 +1924,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -1940,7 +1935,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -2114,7 +2109,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -2486,7 +2481,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon
@@ -3125,6 +3120,11 @@ suffix:semicolon
 id|fb-&gt;info.disp
 op_assign
 id|disp
+suffix:semicolon
+id|fb-&gt;info.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|strcpy
 c_func

@@ -73,13 +73,6 @@ id|default_var_valid
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 DECL|member|red
 DECL|member|green
 DECL|member|blue
@@ -4632,7 +4625,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 (brace
 multiline_comment|/* current console? */
@@ -5489,6 +5482,11 @@ id|fb_info.gen.info.disp
 op_assign
 op_amp
 id|disp
+suffix:semicolon
+id|fb_info.gen.info.currcon
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 id|fb_info.gen.info.changevar
 op_assign

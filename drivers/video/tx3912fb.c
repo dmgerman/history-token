@@ -53,13 +53,6 @@ r_struct
 id|display
 id|global_disp
 suffix:semicolon
-DECL|variable|currcon
-r_static
-r_int
-id|currcon
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n; * Interface used by the world&n; */
 r_static
 r_int
@@ -1081,7 +1074,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 id|fb_get_cmap
@@ -1236,7 +1229,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 id|fb_set_cmap
@@ -1522,6 +1515,11 @@ op_assign
 op_amp
 id|global_disp
 suffix:semicolon
+id|fb_info.currcon
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|fb_info.switch_con
 op_assign
 op_amp
@@ -1617,7 +1615,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -1628,7 +1626,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|currcon
+id|info-&gt;currcon
 )braket
 dot
 id|cmap
@@ -1641,7 +1639,7 @@ id|info
 )paren
 suffix:semicolon
 multiline_comment|/* Make the switch */
-id|currcon
+id|info-&gt;currcon
 op_assign
 id|con
 suffix:semicolon
@@ -2008,7 +2006,7 @@ c_cond
 (paren
 id|con
 op_ne
-id|currcon
+id|info-&gt;currcon
 )paren
 r_return
 suffix:semicolon

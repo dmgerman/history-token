@@ -1933,7 +1933,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|m2info-&gt;currcon
+id|m2info-&gt;fbcon.currcon
 )paren
 (brace
 r_struct
@@ -2367,7 +2367,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|m2info-&gt;currcon
+id|m2info-&gt;fbcon.currcon
 )paren
 r_return
 id|fb_get_cmap
@@ -2516,7 +2516,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|m2info-&gt;currcon
+id|m2info-&gt;fbcon.currcon
 )paren
 r_return
 id|fb_set_cmap
@@ -2620,7 +2620,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|m2info-&gt;currcon
+id|m2info-&gt;fbcon.currcon
 )paren
 id|matroxfb_dh_pan_var
 c_func
@@ -3002,7 +3002,7 @@ suffix:semicolon
 id|matroxfb_dh_switch
 c_func
 (paren
-id|m2info-&gt;currcon
+id|m2info-&gt;fbcon.currcon
 comma
 id|info
 )paren
@@ -3194,7 +3194,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|m2info-&gt;currcon
+id|m2info-&gt;fbcon.currcon
 op_ge
 l_int|0
 )paren
@@ -3224,7 +3224,7 @@ id|info
 suffix:semicolon
 )brace
 )brace
-id|m2info-&gt;currcon
+id|m2info-&gt;fbcon.currcon
 op_assign
 id|con
 suffix:semicolon
@@ -3571,7 +3571,7 @@ id|m2info-&gt;fbcon.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
-id|m2info-&gt;currcon
+id|m2info-&gt;fbcon.currcon
 op_assign
 op_minus
 l_int|1
@@ -3834,7 +3834,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|m2info-&gt;currcon
+id|m2info-&gt;fbcon.currcon
 OL
 l_int|0
 )paren
