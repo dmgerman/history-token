@@ -1683,7 +1683,7 @@ op_assign
 id|CIFS_I
 c_func
 (paren
-id|netfile-&gt;pfile-&gt;f_dentry-&gt;d_inode
+id|netfile-&gt;pInode
 )paren
 suffix:semicolon
 id|pCifsInode-&gt;clientCanCacheAll
@@ -1710,7 +1710,9 @@ suffix:semicolon
 id|AllocOplockQEntry
 c_func
 (paren
-id|netfile-&gt;pfile
+id|netfile-&gt;pInode
+comma
+id|netfile-&gt;netfid
 comma
 id|tcon
 )paren
