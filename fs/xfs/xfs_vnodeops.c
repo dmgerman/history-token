@@ -5839,6 +5839,17 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* If this is a read-only mount, don&squot;t do this (would generate I/O) */
+r_if
+c_cond
+(paren
+id|vp-&gt;v_vfsp-&gt;vfs_flag
+op_amp
+id|VFS_RDONLY
+)paren
+r_return
+l_int|0
+suffix:semicolon
 id|mp
 op_assign
 id|ip-&gt;i_mount
@@ -6119,6 +6130,17 @@ suffix:semicolon
 id|error
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* If this is a read-only mount, don&squot;t do this (would generate I/O) */
+r_if
+c_cond
+(paren
+id|vp-&gt;v_vfsp-&gt;vfs_flag
+op_amp
+id|VFS_RDONLY
+)paren
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond
