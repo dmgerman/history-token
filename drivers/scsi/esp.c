@@ -7922,7 +7922,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_PENDING
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* If it is still in the issue queue then we can safely&n;&t; * call the completion routine and report abort success.&n;&t; */
@@ -8069,7 +8069,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SUCCESS
+id|SUCCESS
 suffix:semicolon
 )brace
 )brace
@@ -8101,10 +8101,10 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_BUSY
+id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* It&squot;s disconnected, we have to reconnect to re-establish&n;&t; * the nexus and tell the device to abort.  However, we really&n;&t; * cannot &squot;reconnect&squot; per se, therefore we tell the upper layer&n;&t; * the safest thing we can.  This is, wait a bit, if nothing&n;&t; * happens, we are really hung so reset the bus.&n;&t; */
+multiline_comment|/* It&squot;s disconnected, we have to reconnect to re-establish&n;&t; * the nexus and tell the device to abort.  However, we really&n;&t; * cannot &squot;reconnect&squot; per se.  Don&squot;t try to be fancy, just&n;&t; * indicate failure, which causes our caller to reset the whole&n;&t; * bus.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8125,7 +8125,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|SCSI_ABORT_SNOOZE
+id|FAILED
 suffix:semicolon
 )brace
 multiline_comment|/* We&squot;ve sent ESP_CMD_RS to the ESP, the interrupt had just&n; * arrived indicating the end of the SCSI bus reset.  Our job&n; * is to clean out the command queues and begin re-execution&n; * of SCSI commands once more.&n; */
