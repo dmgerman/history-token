@@ -17,7 +17,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/parisc-device.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
-macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;lasi700.h&quot;
 macro_line|#include &quot;53c700.h&quot;
@@ -59,7 +58,8 @@ l_int|0
 suffix:semicolon
 DECL|variable|lasi700_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|lasi700_template
 op_assign
 (brace
