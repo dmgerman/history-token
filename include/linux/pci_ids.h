@@ -1498,6 +1498,8 @@ DECL|macro|PCI_VENDOR_ID_SGI
 mdefine_line|#define PCI_VENDOR_ID_SGI&t;&t;0x10a9
 DECL|macro|PCI_DEVICE_ID_SGI_IOC3
 mdefine_line|#define PCI_DEVICE_ID_SGI_IOC3&t;&t;0x0003
+DECL|macro|PCI_VENDOR_ID_SGI_LITHIUM
+mdefine_line|#define PCI_VENDOR_ID_SGI_LITHIUM&t;0x1002
 DECL|macro|PCI_VENDOR_ID_ACC
 mdefine_line|#define PCI_VENDOR_ID_ACC&t;&t;0x10aa
 DECL|macro|PCI_DEVICE_ID_ACC_2056

@@ -451,7 +451,6 @@ id|value
 suffix:semicolon
 )brace
 DECL|variable|pci_direct_conf1
-r_static
 r_struct
 id|pci_ops
 id|pci_direct_conf1
