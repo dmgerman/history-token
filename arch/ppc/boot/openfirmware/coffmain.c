@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &quot;nonstdio.h&quot;
@@ -136,7 +137,7 @@ mdefine_line|#define RAM_END&t;&t;(RAM_START + 0x800000)&t;/* only 8M mapped wit
 DECL|macro|PROG_START
 mdefine_line|#define PROG_START&t;RAM_START
 DECL|macro|PROG_SIZE
-mdefine_line|#define PROG_SIZE&t;0x00400000
+mdefine_line|#define PROG_SIZE&t;0x00700000
 DECL|macro|SCRATCH_SIZE
 mdefine_line|#define SCRATCH_SIZE&t;(128 &lt;&lt; 10)
 DECL|variable|heap

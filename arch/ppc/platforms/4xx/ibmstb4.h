@@ -4,7 +4,7 @@ macro_line|#ifndef __ASM_IBMSTB4_H__
 DECL|macro|__ASM_IBMSTB4_H__
 mdefine_line|#define __ASM_IBMSTB4_H__
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;platforms/ibm_ocp.h&gt;
+macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
 multiline_comment|/* serial port defines */
 DECL|macro|STB04xxx_IO_BASE
 mdefine_line|#define STB04xxx_IO_BASE&t;((uint)0xe0000000)
@@ -335,7 +335,7 @@ DECL|macro|DCRN_BESR0
 mdefine_line|#define DCRN_BESR0&t;(DCRN_EBIMC_BASE + 0x21)&t;/* Bus Error Status Register */
 DECL|macro|DCRN_BIUCR
 mdefine_line|#define DCRN_BIUCR&t;(DCRN_EBIMC_BASE + 0x2A)&t;/* Bus Interfac Unit Ctrl Reg */
-macro_line|#include &lt;platforms/ibm405.h&gt;
+macro_line|#include &lt;asm/ibm405.h&gt;
 macro_line|#endif&t;&t;&t;&t;/* __ASM_IBMSTB4_H__ */
 macro_line|#endif&t;&t;&t;&t;/* __KERNEL__ */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: nfsroot.c,v 1.45 1998/03/07 10:44:46 mj Exp $&n; *&n; *  Copyright (C) 1995, 1996  Gero Kuhlmann &lt;gero@gkminix.han.de&gt;&n; *&n; *  Allow an NFS filesystem to be mounted as root. The way this works is:&n; *     (1) Use the IP autoconfig mechanism to set local IP addresses and routes.&n; *     (2) Handle RPC negotiation with the system which replied to RARP or&n; *         was reported as a boot server by BOOTP or manually.&n; *     (3) The actual mounting is done later, when init() is running.&n; *&n; *&n; *&t;Changes:&n; *&n; *&t;Alan Cox&t;:&t;Removed get_address name clash with FPU.&n; *&t;Alan Cox&t;:&t;Reformatted a bit.&n; *&t;Gero Kuhlmann&t;:&t;Code cleanup&n; *&t;Michael Rausch  :&t;Fixed recognition of an incoming RARP answer.&n; *&t;Martin Mares&t;: (2.0)&t;Auto-configuration via BOOTP supported.&n; *&t;Martin Mares&t;:&t;Manual selection of interface &amp; BOOTP/RARP.&n; *&t;Martin Mares&t;:&t;Using network routes instead of host routes,&n; *&t;&t;&t;&t;allowing the default configuration to be used&n; *&t;&t;&t;&t;for normal operation of the host.&n; *&t;Martin Mares&t;:&t;Randomized timer with exponential backoff&n; *&t;&t;&t;&t;installed to minimize network congestion.&n; *&t;Martin Mares&t;:&t;Code cleanup.&n; *&t;Martin Mares&t;: (2.1)&t;BOOTP and RARP made configuration options.&n; *&t;Martin Mares&t;:&t;Server hostname generation fixed.&n; *&t;Gerd Knorr&t;:&t;Fixed wired inode handling&n; *&t;Martin Mares&t;: (2.2)&t;&quot;0.0.0.0&quot; addresses from command line ignored.&n; *&t;Martin Mares&t;:&t;RARP replies not tested for server address.&n; *&t;Gero Kuhlmann&t;: (2.3) Some bug fixes and code cleanup again (please&n; *&t;&t;&t;&t;send me your new patches _before_ bothering&n; *&t;&t;&t;&t;Linus so that I don&squot; always have to cleanup&n; *&t;&t;&t;&t;_afterwards_ - thanks)&n; *&t;Gero Kuhlmann&t;:&t;Last changes of Martin Mares undone.&n; *&t;Gero Kuhlmann&t;: &t;RARP replies are tested for specified server&n; *&t;&t;&t;&t;again. However, it&squot;s now possible to have&n; *&t;&t;&t;&t;different RARP and NFS servers.&n; *&t;Gero Kuhlmann&t;:&t;&quot;0.0.0.0&quot; addresses from command line are&n; *&t;&t;&t;&t;now mapped to INADDR_NONE.&n; *&t;Gero Kuhlmann&t;:&t;Fixed a bug which prevented BOOTP path name&n; *&t;&t;&t;&t;from being used (thanks to Leo Spiekman)&n; *&t;Andy Walker&t;:&t;Allow to specify the NFS server in nfs_root&n; *&t;&t;&t;&t;without giving a path name&n; *&t;Swen Th&#xfffd;mmler&t;:&t;Allow to specify the NFS options in nfs_root&n; *&t;&t;&t;&t;without giving a path name. Fix BOOTP request&n; *&t;&t;&t;&t;for domainname (domainname is NIS domain, not&n; *&t;&t;&t;&t;DNS domain!). Skip dummy devices for BOOTP.&n; *&t;Jacek Zapala&t;:&t;Fixed a bug which prevented server-ip address&n; *&t;&t;&t;&t;from nfsroot parameter from being used.&n; *&t;Olaf Kirch&t;:&t;Adapted to new NFS code.&n; *&t;Jakub Jelinek&t;:&t;Free used code segment.&n; *&t;Marko Kohtala&t;:&t;Fixed some bugs.&n; *&t;Martin Mares&t;:&t;Debug message cleanup&n; *&t;Martin Mares&t;:&t;Changed to use the new generic IP layer autoconfig&n; *&t;&t;&t;&t;code. BOOTP and RARP moved there.&n; *&t;Martin Mares&t;:&t;Default path now contains host name instead of&n; *&t;&t;&t;&t;host IP address (but host name defaults to IP&n; *&t;&t;&t;&t;address anyway).&n; *&t;Martin Mares&t;:&t;Use root_server_addr appropriately during setup.&n; *&t;Martin Mares&t;:&t;Rewrote parameter parsing, now hopefully giving&n; *&t;&t;&t;&t;correct overriding.&n; *&t;Trond Myklebust :&t;Add in preliminary support for NFSv3 and TCP.&n; *&t;&t;&t;&t;Fix bug in root_nfs_addr(). nfs_data.namlen&n; *&t;&t;&t;&t;is NOT for the length of the hostname.&n; */
+multiline_comment|/*&n; *  $Id: nfsroot.c,v 1.45 1998/03/07 10:44:46 mj Exp $&n; *&n; *  Copyright (C) 1995, 1996  Gero Kuhlmann &lt;gero@gkminix.han.de&gt;&n; *&n; *  Allow an NFS filesystem to be mounted as root. The way this works is:&n; *     (1) Use the IP autoconfig mechanism to set local IP addresses and routes.&n; *     (2) Handle RPC negotiation with the system which replied to RARP or&n; *         was reported as a boot server by BOOTP or manually.&n; *     (3) The actual mounting is done later, when init() is running.&n; *&n; *&n; *&t;Changes:&n; *&n; *&t;Alan Cox&t;:&t;Removed get_address name clash with FPU.&n; *&t;Alan Cox&t;:&t;Reformatted a bit.&n; *&t;Gero Kuhlmann&t;:&t;Code cleanup&n; *&t;Michael Rausch  :&t;Fixed recognition of an incoming RARP answer.&n; *&t;Martin Mares&t;: (2.0)&t;Auto-configuration via BOOTP supported.&n; *&t;Martin Mares&t;:&t;Manual selection of interface &amp; BOOTP/RARP.&n; *&t;Martin Mares&t;:&t;Using network routes instead of host routes,&n; *&t;&t;&t;&t;allowing the default configuration to be used&n; *&t;&t;&t;&t;for normal operation of the host.&n; *&t;Martin Mares&t;:&t;Randomized timer with exponential backoff&n; *&t;&t;&t;&t;installed to minimize network congestion.&n; *&t;Martin Mares&t;:&t;Code cleanup.&n; *&t;Martin Mares&t;: (2.1)&t;BOOTP and RARP made configuration options.&n; *&t;Martin Mares&t;:&t;Server hostname generation fixed.&n; *&t;Gerd Knorr&t;:&t;Fixed wired inode handling&n; *&t;Martin Mares&t;: (2.2)&t;&quot;0.0.0.0&quot; addresses from command line ignored.&n; *&t;Martin Mares&t;:&t;RARP replies not tested for server address.&n; *&t;Gero Kuhlmann&t;: (2.3) Some bug fixes and code cleanup again (please&n; *&t;&t;&t;&t;send me your new patches _before_ bothering&n; *&t;&t;&t;&t;Linus so that I don&squot; always have to cleanup&n; *&t;&t;&t;&t;_afterwards_ - thanks)&n; *&t;Gero Kuhlmann&t;:&t;Last changes of Martin Mares undone.&n; *&t;Gero Kuhlmann&t;: &t;RARP replies are tested for specified server&n; *&t;&t;&t;&t;again. However, it&squot;s now possible to have&n; *&t;&t;&t;&t;different RARP and NFS servers.&n; *&t;Gero Kuhlmann&t;:&t;&quot;0.0.0.0&quot; addresses from command line are&n; *&t;&t;&t;&t;now mapped to INADDR_NONE.&n; *&t;Gero Kuhlmann&t;:&t;Fixed a bug which prevented BOOTP path name&n; *&t;&t;&t;&t;from being used (thanks to Leo Spiekman)&n; *&t;Andy Walker&t;:&t;Allow to specify the NFS server in nfs_root&n; *&t;&t;&t;&t;without giving a path name&n; *&t;Swen Th&#xfffd;mmler&t;:&t;Allow to specify the NFS options in nfs_root&n; *&t;&t;&t;&t;without giving a path name. Fix BOOTP request&n; *&t;&t;&t;&t;for domainname (domainname is NIS domain, not&n; *&t;&t;&t;&t;DNS domain!). Skip dummy devices for BOOTP.&n; *&t;Jacek Zapala&t;:&t;Fixed a bug which prevented server-ip address&n; *&t;&t;&t;&t;from nfsroot parameter from being used.&n; *&t;Olaf Kirch&t;:&t;Adapted to new NFS code.&n; *&t;Jakub Jelinek&t;:&t;Free used code segment.&n; *&t;Marko Kohtala&t;:&t;Fixed some bugs.&n; *&t;Martin Mares&t;:&t;Debug message cleanup&n; *&t;Martin Mares&t;:&t;Changed to use the new generic IP layer autoconfig&n; *&t;&t;&t;&t;code. BOOTP and RARP moved there.&n; *&t;Martin Mares&t;:&t;Default path now contains host name instead of&n; *&t;&t;&t;&t;host IP address (but host name defaults to IP&n; *&t;&t;&t;&t;address anyway).&n; *&t;Martin Mares&t;:&t;Use root_server_addr appropriately during setup.&n; *&t;Martin Mares&t;:&t;Rewrote parameter parsing, now hopefully giving&n; *&t;&t;&t;&t;correct overriding.&n; *&t;Trond Myklebust :&t;Add in preliminary support for NFSv3 and TCP.&n; *&t;&t;&t;&t;Fix bug in root_nfs_addr(). nfs_data.namlen&n; *&t;&t;&t;&t;is NOT for the length of the hostname.&n; *&t;Hua Qin&t;&t;:&t;Support for mounting root file system via&n; *&t;&t;&t;&t;NFS over TCP.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1559,6 +1559,34 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
+r_int
+id|protocol
+op_assign
+(paren
+id|nfs_data.flags
+op_amp
+id|NFS_MOUNT_TCP
+)paren
+ques
+c_cond
+id|IPPROTO_TCP
+suffix:colon
+id|IPPROTO_UDP
+suffix:semicolon
+r_int
+id|version
+op_assign
+(paren
+id|nfs_data.flags
+op_amp
+id|NFS_MOUNT_VER3
+)paren
+ques
+c_cond
+id|NFS_MNT3_VERSION
+suffix:colon
+id|NFS_MNT_VERSION
+suffix:semicolon
 id|set_sockaddr
 c_func
 (paren
@@ -1570,16 +1598,9 @@ comma
 id|mount_port
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|nfs_data.flags
-op_amp
-id|NFS_MOUNT_VER3
-)paren
 id|status
 op_assign
-id|nfs3_mount
+id|nfsroot_mount
 c_func
 (paren
 op_amp
@@ -1589,21 +1610,10 @@ id|nfs_path
 comma
 op_amp
 id|nfs_data.root
-)paren
-suffix:semicolon
-r_else
-id|status
-op_assign
-id|nfs_mount
-c_func
-(paren
-op_amp
-id|sin
 comma
-id|nfs_path
+id|version
 comma
-op_amp
-id|nfs_data.root
+id|protocol
 )paren
 suffix:semicolon
 r_if

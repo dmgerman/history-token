@@ -7,7 +7,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;cpc700.h&quot;
+macro_line|#include &lt;syslib/cpc700.h&gt;
 macro_line|#include &quot;pal4.h&quot;
 multiline_comment|/* not much to this.... */
 r_static

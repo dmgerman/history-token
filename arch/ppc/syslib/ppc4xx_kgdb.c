@@ -18,7 +18,7 @@ DECL|macro|LSR_TEMT
 mdefine_line|#define LSR_TEMT&t;0x40 /* Xmitter empty */
 DECL|macro|LSR_ERR
 mdefine_line|#define LSR_ERR&t;&t;0x80 /* Error */
-macro_line|#include &lt;platforms/ibm_ocp.h&gt;
+macro_line|#include &lt;platforms/4xx/ibm_ocp.h&gt;
 r_extern
 r_struct
 id|NS16550

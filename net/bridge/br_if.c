@@ -405,6 +405,13 @@ op_assign
 op_amp
 id|br-&gt;dev
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|br-&gt;tick
+)paren
+suffix:semicolon
 id|strncpy
 c_func
 (paren

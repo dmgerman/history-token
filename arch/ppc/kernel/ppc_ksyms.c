@@ -44,6 +44,7 @@ macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
+macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#ifdef  CONFIG_8xx
 macro_line|#include &lt;asm/commproc.h&gt;
 macro_line|#endif
@@ -490,6 +491,13 @@ c_func
 id|strcasecmp
 )paren
 suffix:semicolon
+DECL|variable|__div64_32
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__div64_32
+)paren
+suffix:semicolon
 multiline_comment|/* EXPORT_SYMBOL(csum_partial); already in net/netsyms.c */
 DECL|variable|csum_partial_copy_generic
 id|EXPORT_SYMBOL
@@ -848,13 +856,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|flush_icache_user_range
-)paren
-suffix:semicolon
-DECL|variable|flush_icache_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|flush_icache_page
 )paren
 suffix:semicolon
 DECL|variable|flush_dcache_page

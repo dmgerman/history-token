@@ -1607,7 +1607,12 @@ comma
 dot
 id|proto
 op_assign
+id|inet-&gt;hdrincl
+ques
+c_cond
 id|IPPROTO_RAW
+suffix:colon
+id|sk-&gt;protocol
 )brace
 suffix:semicolon
 id|err

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) Paul Mackerras 1997.&n; *&n; * This prog
 macro_line|#include &quot;zlib.h&quot;
 macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#include &quot;of1275.h&quot;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/* Information from the linker */

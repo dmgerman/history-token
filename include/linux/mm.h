@@ -171,8 +171,13 @@ DECL|macro|VM_ACCOUNT
 mdefine_line|#define VM_ACCOUNT&t;0x00100000&t;/* Is a VM accounted object */
 DECL|macro|VM_HUGETLB
 mdefine_line|#define VM_HUGETLB&t;0x00400000&t;/* Huge TLB Page VM */
+macro_line|#ifdef CONFIG_STACK_GROWSUP
 DECL|macro|VM_STACK_FLAGS
-mdefine_line|#define VM_STACK_FLAGS&t;(0x00000100 | VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT)
+mdefine_line|#define VM_STACK_FLAGS&t;(VM_GROWSUP | VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT)
+macro_line|#else
+DECL|macro|VM_STACK_FLAGS
+mdefine_line|#define VM_STACK_FLAGS&t;(VM_GROWSDOWN | VM_DATA_DEFAULT_FLAGS | VM_ACCOUNT)
+macro_line|#endif
 DECL|macro|VM_READHINTMASK
 mdefine_line|#define VM_READHINTMASK&t;&t;&t;(VM_SEQ_READ | VM_RAND_READ)
 DECL|macro|VM_ClearReadHint

@@ -10,14 +10,9 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/* Be sure to change arch/ppc/Makefile to match */
-macro_line|#ifdef CONFIG_KERNEL_START_BOOL
+multiline_comment|/* This must match what is in arch/ppc/Makefile */
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;CONFIG_KERNEL_START
-macro_line|#else
-DECL|macro|PAGE_OFFSET
-mdefine_line|#define PAGE_OFFSET&t;0xc0000000
-macro_line|#endif /* CONFIG_KERNEL_START_BOOL */
 DECL|macro|KERNELBASE
 mdefine_line|#define KERNELBASE&t;PAGE_OFFSET
 macro_line|#ifndef __ASSEMBLY__

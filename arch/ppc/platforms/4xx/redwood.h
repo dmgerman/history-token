@@ -4,7 +4,7 @@ macro_line|#ifndef __ASM_REDWOOD_H__
 DECL|macro|__ASM_REDWOOD_H__
 mdefine_line|#define __ASM_REDWOOD_H__
 multiline_comment|/* Redwoods have an STB03xxx or STB04xxx core */
-macro_line|#include &lt;platforms/ibmstb3.h&gt;
+macro_line|#include &lt;platforms/4xx/ibmstb3.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 DECL|struct|board_info
 r_typedef

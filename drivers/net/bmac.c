@@ -17,10 +17,10 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/pmac_feature.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#endif
 macro_line|#include &quot;bmac.h&quot;
 DECL|macro|trunc_page
@@ -5679,12 +5679,6 @@ id|addrs
 suffix:semicolon
 r_int
 id|i
-comma
-id|j
-comma
-id|bit
-comma
-id|byte
 suffix:semicolon
 r_int
 r_int
