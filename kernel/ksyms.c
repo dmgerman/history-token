@@ -2889,11 +2889,11 @@ c_func
 id|new_inode
 )paren
 suffix:semicolon
-DECL|variable|insert_inode_hash
+DECL|variable|__insert_inode_hash
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|insert_inode_hash
+id|__insert_inode_hash
 )paren
 suffix:semicolon
 DECL|variable|remove_inode_hash

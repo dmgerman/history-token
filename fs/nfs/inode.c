@@ -2824,7 +2824,7 @@ l_int|NULL
 suffix:semicolon
 r_int
 r_int
-id|ino
+id|hash
 suffix:semicolon
 r_if
 c_cond
@@ -2857,7 +2857,7 @@ r_goto
 id|out_no_inode
 suffix:semicolon
 )brace
-id|ino
+id|hash
 op_assign
 id|nfs_fattr_to_ino_t
 c_func
@@ -2877,7 +2877,7 @@ c_func
 (paren
 id|sb
 comma
-id|ino
+id|hash
 comma
 id|nfs_find_actor
 comma
@@ -2910,9 +2910,10 @@ suffix:semicolon
 id|time_t
 id|new_atime
 suffix:semicolon
+multiline_comment|/* We set i_ino for the few things that still rely on it,&n;&t;&t; * such as stat(2) */
 id|inode-&gt;i_ino
 op_assign
-id|ino
+id|hash
 suffix:semicolon
 multiline_comment|/* We can&squot;t support UPDATE_ATIME(), since the server will reset it */
 id|inode-&gt;i_flags

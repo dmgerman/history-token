@@ -2272,14 +2272,14 @@ id|sb
 comma
 r_int
 r_int
-id|i_ino
+id|hashval
 )paren
 (brace
 r_int
 r_int
 id|tmp
 op_assign
-id|i_ino
+id|hashval
 op_plus
 (paren
 (paren
@@ -2488,7 +2488,7 @@ id|sb
 comma
 r_int
 r_int
-id|ino
+id|hashval
 comma
 r_int
 (paren
@@ -2535,7 +2535,7 @@ c_func
 (paren
 id|sb
 comma
-id|ino
+id|hashval
 )paren
 suffix:semicolon
 r_struct
@@ -2744,16 +2744,20 @@ c_func
 id|unlock_new_inode
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;insert_inode_hash - hash an inode&n; *&t;@inode: unhashed inode&n; *&n; *&t;Add an inode to the inode hash for this superblock. If the inode&n; *&t;has no superblock it is added to a separate anonymous chain.&n; */
-DECL|function|insert_inode_hash
+multiline_comment|/**&n; *&t;__insert_inode_hash - hash an inode&n; *&t;@inode: unhashed inode&n; *&t;@hashval: unsigned long value used to locate this object in the&n; *&t;&t;inode_hashtable.&n; *&n; *&t;Add an inode to the inode hash for this superblock. If the inode&n; *&t;has no superblock it is added to a separate anonymous chain.&n; */
+DECL|function|__insert_inode_hash
 r_void
-id|insert_inode_hash
+id|__insert_inode_hash
 c_func
 (paren
 r_struct
 id|inode
 op_star
 id|inode
+comma
+r_int
+r_int
+id|hashval
 )paren
 (brace
 r_struct
@@ -2778,7 +2782,7 @@ c_func
 (paren
 id|inode-&gt;i_sb
 comma
-id|inode-&gt;i_ino
+id|hashval
 )paren
 suffix:semicolon
 id|spin_lock
