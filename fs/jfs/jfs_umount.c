@@ -237,12 +237,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure all metadata makes it to disk before we mark&n;&t; * the superblock as clean&n;&t; */
-id|filemap_fdatawait
-c_func
-(paren
-id|sbi-&gt;direct_inode-&gt;i_mapping
-)paren
-suffix:semicolon
 id|filemap_fdatawrite
 c_func
 (paren
@@ -356,12 +350,6 @@ id|diSync
 c_func
 (paren
 id|sbi-&gt;ipimap
-)paren
-suffix:semicolon
-id|filemap_fdatawait
-c_func
-(paren
-id|sbi-&gt;direct_inode-&gt;i_mapping
 )paren
 suffix:semicolon
 id|filemap_fdatawrite

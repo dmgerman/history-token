@@ -4661,12 +4661,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We have to fail this writepage to avoid cross-fs transactions.&n;&t; * Put the page back on mapping-&gt;dirty_pages, but leave its buffer&squot;s&n;&t; * dirty state as-is.&n;&t; */
-id|__set_page_dirty_nobuffers
-c_func
-(paren
-id|page
-)paren
+multiline_comment|/*&n;&t; * We have to fail this writepage to avoid cross-fs transactions.&n;&t; * Return EAGAIN so the caller will the page back on&n;&t; * mapping-&gt;dirty_pages.  The page&squot;s buffers&squot; dirty state will be left&n;&t; * as-is.&n;&t; */
+id|ret
+op_assign
+op_minus
+id|EAGAIN
 suffix:semicolon
 id|unlock_page
 c_func

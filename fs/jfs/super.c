@@ -559,12 +559,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; * We need to clean out the direct_inode pages since this inode&n;&t; * is not in the inode hash.&n;&t; */
-id|filemap_fdatawait
-c_func
-(paren
-id|sbi-&gt;direct_inode-&gt;i_mapping
-)paren
-suffix:semicolon
 id|filemap_fdatawrite
 c_func
 (paren
@@ -1583,12 +1577,6 @@ suffix:semicolon
 )brace
 id|out_mount_failed
 suffix:colon
-id|filemap_fdatawait
-c_func
-(paren
-id|sbi-&gt;direct_inode-&gt;i_mapping
-)paren
-suffix:semicolon
 id|filemap_fdatawrite
 c_func
 (paren

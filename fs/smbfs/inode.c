@@ -2672,12 +2672,6 @@ r_int
 id|attr-&gt;ia_size
 )paren
 suffix:semicolon
-id|filemap_fdatawait
-c_func
-(paren
-id|inode-&gt;i_mapping
-)paren
-suffix:semicolon
 id|filemap_fdatawrite
 c_func
 (paren

@@ -909,12 +909,6 @@ id|mp
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * write out dirty pages of imap&n;&t; */
-id|filemap_fdatawait
-c_func
-(paren
-id|ipimap-&gt;i_mapping
-)paren
-suffix:semicolon
 id|filemap_fdatawrite
 c_func
 (paren
@@ -2062,12 +2056,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|filemap_fdatawait
-c_func
-(paren
-id|ip-&gt;i_mapping
-)paren
-suffix:semicolon
 id|filemap_fdatawrite
 c_func
 (paren

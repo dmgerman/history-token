@@ -1166,6 +1166,8 @@ DECL|macro|PF_IOTHREAD
 mdefine_line|#define PF_IOTHREAD&t;0x00020000&t;/* this thread is needed for doing I/O to swap */
 DECL|macro|PF_FROZEN
 mdefine_line|#define PF_FROZEN&t;0x00040000&t;/* frozen for system suspend */
+DECL|macro|PF_SYNC
+mdefine_line|#define PF_SYNC&t;&t;0x00080000&t;/* performing fsync(), etc */
 multiline_comment|/*&n; * Ptrace flags&n; */
 DECL|macro|PT_PTRACED
 mdefine_line|#define PT_PTRACED&t;0x00000001

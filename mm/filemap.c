@@ -1766,13 +1766,6 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Set the page dirty again, unlock */
-id|set_page_dirty
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|unlock_page
 c_func
 (paren
@@ -1780,8 +1773,10 @@ id|page
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|EAGAIN
 suffix:semicolon
+multiline_comment|/* It will be set dirty again */
 )brace
 DECL|variable|fail_writepage
 id|EXPORT_SYMBOL
@@ -1790,7 +1785,7 @@ c_func
 id|fail_writepage
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *  filemap_fdatawrite - walk the list of dirty pages of the given address space&n; *                      and writepage() all of them.&n; *&n; *  @mapping: address space structure to write&n; *&n; */
+multiline_comment|/**&n; * filemap_fdatawrite - start writeback against all of a mapping&squot;s dirty pages&n; * @mapping: address space structure to write&n; *&n; * This is a &quot;data integrity&quot; operation, as opposed to a regular memory&n; * cleansing writeback.  The difference between these two operations is that&n; * if a dirty page/buffer is encountered, it must be waited upon, and not just&n; * skipped over.&n; *&n; * The PF_SYNC flag is set across this operation and the various functions&n; * which care about this distinction must use called_for_sync() to find out&n; * which behaviour they should implement.&n; */
 DECL|function|filemap_fdatawrite
 r_int
 id|filemap_fdatawrite
@@ -1802,7 +1797,15 @@ op_star
 id|mapping
 )paren
 (brace
-r_return
+r_int
+id|ret
+suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_SYNC
+suffix:semicolon
+id|ret
+op_assign
 id|do_writepages
 c_func
 (paren
@@ -1811,8 +1814,16 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|current-&gt;flags
+op_and_assign
+op_complement
+id|PF_SYNC
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
 )brace
-multiline_comment|/**&n; *      filemap_fdatawait - walk the list of locked pages of the given address space&n; *     &t;and wait for all of them.&n; * &n; *      @mapping: address space structure to wait for&n; *&n; */
+multiline_comment|/**&n; * filemap_fdatawait - walk the list of locked pages of the given address&n; *                     space and wait for all of them.&n; * @mapping: address space structure to wait for&n; */
 DECL|function|filemap_fdatawait
 r_int
 id|filemap_fdatawait
@@ -1851,6 +1862,8 @@ id|mapping-&gt;locked_pages
 r_struct
 id|page
 op_star
+id|page
+suffix:semicolon
 id|page
 op_assign
 id|list_entry
