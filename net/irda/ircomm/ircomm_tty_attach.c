@@ -28,7 +28,7 @@ r_void
 id|ircomm_tty_discovery_indication
 c_func
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 id|discovery
 comma
@@ -1037,7 +1037,7 @@ r_void
 id|ircomm_tty_discovery_indication
 c_func
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 id|discovery
 comma

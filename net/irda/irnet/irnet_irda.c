@@ -4912,14 +4912,14 @@ suffix:semicolon
 )brace
 macro_line|#ifdef DISCOVERY_EVENTS
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Function irnet_discovery_indication (discovery)&n; *&n; *    Got a discovery indication from IrLMP, post an event&n; *&n; * Note : IrLMP take care of matching the hint mask for us, we only&n; * check if it is a &quot;new&quot; node...&n; *&n; * As IrLMP filter on the IrLAN hint bit, we get both IrLAN and IrNET&n; * nodes, so it&squot;s only at connection time that we will know if the&n; * node support IrNET, IrLAN or both. The other solution is to check&n; * in IAS the PNP ids and service name.&n; * Note : even if a node support IrNET (or IrLAN), it&squot;s no guarantee&n; * that we will be able to connect to it, the node might already be&n; * busy...&n; *&n; * One last thing : in some case, this function will trigger duplicate&n; * discovery events. On the other hand, we should catch all&n; * discoveries properly (i.e. not miss one). Filtering duplicate here&n; * is to messy, so we leave that to user space...&n; */
+multiline_comment|/*&n; * Function irnet_discovery_indication (discovery)&n; *&n; *    Got a discovery indication from IrLMP, post an event&n; *&n; * Note : IrLMP take care of matching the hint mask for us, and also&n; * check if it is a &quot;new&quot; node for us...&n; *&n; * As IrLMP filter on the IrLAN hint bit, we get both IrLAN and IrNET&n; * nodes, so it&squot;s only at connection time that we will know if the&n; * node support IrNET, IrLAN or both. The other solution is to check&n; * in IAS the PNP ids and service name.&n; * Note : even if a node support IrNET (or IrLAN), it&squot;s no guarantee&n; * that we will be able to connect to it, the node might already be&n; * busy...&n; *&n; * One last thing : in some case, this function will trigger duplicate&n; * discovery events. On the other hand, we should catch all&n; * discoveries properly (i.e. not miss one). Filtering duplicate here&n; * is to messy, so we leave that to user space...&n; */
 r_static
 r_void
 DECL|function|irnet_discovery_indication
 id|irnet_discovery_indication
 c_func
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 id|discovery
 comma
@@ -4972,27 +4972,6 @@ r_int
 id|priv
 )paren
 suffix:semicolon
-multiline_comment|/* Check if node is discovered is a new one or an old one.&n;   * We check when how long ago this node was discovered, with a&n;   * coarse timeout (we may miss some discovery events or be delayed).&n;   */
-r_if
-c_cond
-(paren
-(paren
-id|jiffies
-op_minus
-id|discovery-&gt;first_timestamp
-)paren
-op_ge
-(paren
-id|sysctl_discovery_timeout
-op_star
-id|HZ
-)paren
-)paren
-(brace
-r_return
-suffix:semicolon
-multiline_comment|/* Too old, not interesting -&gt; goodbye */
-)brace
 id|DEBUG
 c_func
 (paren
@@ -5000,7 +4979,7 @@ id|IRDA_OCB_INFO
 comma
 l_string|&quot;Discovered new IrNET/IrLAN node %s...&bslash;n&quot;
 comma
-id|discovery-&gt;nickname
+id|discovery-&gt;info
 )paren
 suffix:semicolon
 multiline_comment|/* Notify the control channel */
@@ -5015,7 +4994,7 @@ id|discovery-&gt;saddr
 comma
 id|discovery-&gt;daddr
 comma
-id|discovery-&gt;nickname
+id|discovery-&gt;info
 )paren
 suffix:semicolon
 id|DEXIT
@@ -5035,7 +5014,7 @@ DECL|function|irnet_expiry_indication
 id|irnet_expiry_indication
 c_func
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 id|expiry
 comma
@@ -5095,7 +5074,7 @@ id|IRDA_OCB_INFO
 comma
 l_string|&quot;IrNET/IrLAN node %s expired...&bslash;n&quot;
 comma
-id|expiry-&gt;nickname
+id|expiry-&gt;info
 )paren
 suffix:semicolon
 multiline_comment|/* Notify the control channel */
@@ -5110,7 +5089,7 @@ id|expiry-&gt;saddr
 comma
 id|expiry-&gt;daddr
 comma
-id|expiry-&gt;nickname
+id|expiry-&gt;info
 )paren
 suffix:semicolon
 id|DEXIT

@@ -1395,7 +1395,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|discovery_rsp-&gt;daddr
+id|discovery_rsp-&gt;data.daddr
 op_assign
 id|info-&gt;daddr
 suffix:semicolon
@@ -1857,7 +1857,7 @@ l_string|&quot;%s(), daddr=%08x&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|info-&gt;discovery-&gt;daddr
+id|info-&gt;discovery-&gt;data.daddr
 )paren
 suffix:semicolon
 r_if
@@ -1891,7 +1891,7 @@ op_star
 )paren
 id|info-&gt;discovery
 comma
-id|info-&gt;discovery-&gt;daddr
+id|info-&gt;discovery-&gt;data.daddr
 comma
 l_int|NULL
 )paren
@@ -2290,7 +2290,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|discovery_rsp-&gt;daddr
+id|discovery_rsp-&gt;data.daddr
 op_assign
 id|info-&gt;daddr
 suffix:semicolon

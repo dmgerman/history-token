@@ -397,7 +397,7 @@ r_void
 id|irnet_discovery_indication
 c_func
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 comma
 id|DISCOVERY_MODE
@@ -411,7 +411,7 @@ r_void
 id|irnet_expiry_indication
 c_func
 (paren
-id|discovery_t
+id|discinfo_t
 op_star
 comma
 id|DISCOVERY_MODE
