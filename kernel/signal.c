@@ -2579,11 +2579,7 @@ c_func
 (paren
 id|sig
 comma
-(paren
-r_void
-op_star
-)paren
-l_int|1
+id|info
 comma
 id|t
 )paren

@@ -553,6 +553,7 @@ id|task_t
 op_star
 id|curr_target
 suffix:semicolon
+multiline_comment|/* shared signal handling: */
 DECL|member|shared_pending
 r_struct
 id|sigpending
