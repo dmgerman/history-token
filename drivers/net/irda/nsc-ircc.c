@@ -173,6 +173,7 @@ id|chips
 )braket
 op_assign
 (brace
+multiline_comment|/*  Name, {cfg registers}, chip id index reg, chip id expected value, revision mask */
 (brace
 l_string|&quot;PC87108&quot;
 comma
@@ -209,6 +210,29 @@ comma
 l_int|0x08
 comma
 l_int|0xb0
+comma
+l_int|0xf8
+comma
+id|nsc_ircc_probe_338
+comma
+id|nsc_ircc_init_338
+)brace
+comma
+multiline_comment|/* Contributed by Kevin Thayer - OmniBook 6100 */
+(brace
+l_string|&quot;PC87338?&quot;
+comma
+(brace
+l_int|0x2e
+comma
+l_int|0x15c
+comma
+l_int|0x398
+)brace
+comma
+l_int|0x08
+comma
+l_int|0x00
 comma
 l_int|0xf8
 comma
@@ -2755,6 +2779,19 @@ c_func
 id|iobase
 op_plus
 id|MID
+)paren
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|2
+comma
+id|__FUNCTION__
+l_string|&quot;() Driver %s Found chip version %02x&bslash;n&quot;
+comma
+id|driver_name
+comma
+id|version
 )paren
 suffix:semicolon
 multiline_comment|/* Should be 0x2? */
