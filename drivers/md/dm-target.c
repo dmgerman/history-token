@@ -235,8 +235,6 @@ c_func
 id|module_name
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|function|dm_get_target_type
 r_struct
@@ -631,8 +629,6 @@ id|ti
 )paren
 (brace
 multiline_comment|/* empty */
-r_return
-suffix:semicolon
 )brace
 DECL|function|io_err_map
 r_static
