@@ -4293,7 +4293,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;jffs2_g_c_deletion_dirent(): Short read (%zd not %zd) reading header from obsolete node at %08x&bslash;n&quot;
+l_string|&quot;jffs2_g_c_deletion_dirent(): Short read (%zd not %u) reading header from obsolete node at %08x&bslash;n&quot;
 comma
 id|retlen
 comma
