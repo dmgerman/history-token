@@ -122,11 +122,18 @@ op_assign
 id|c
 suffix:semicolon
 )brace
-macro_line|#else
+macro_line|#else /* defined(CONFIG_PLAT_M32700UT_Alpha) || defined(CONFIG_PLAT_M32700UT) */
+macro_line|#ifdef CONFIG_MMU
 DECL|macro|SIO0STS
 mdefine_line|#define SIO0STS&t;(volatile unsigned short *)(0xa0efd000 + 14)
 DECL|macro|SIO0TXB
 mdefine_line|#define SIO0TXB&t;(volatile unsigned short *)(0xa0efd000 + 30)
+macro_line|#else
+DECL|macro|SIO0STS
+mdefine_line|#define SIO0STS&t;(volatile unsigned short *)(0x00efd000 + 14)
+DECL|macro|SIO0TXB
+mdefine_line|#define SIO0TXB&t;(volatile unsigned short *)(0x00efd000 + 30)
+macro_line|#endif
 DECL|function|putc
 r_static
 r_void

@@ -1,53 +1,16 @@
 macro_line|#ifndef _ASM_M32R_MMU_H
 DECL|macro|_ASM_M32R_MMU_H
 mdefine_line|#define _ASM_M32R_MMU_H
-multiline_comment|/* $Id$ */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if !defined(CONFIG_MMU)
-DECL|struct|mm_rblock_struct
-r_struct
-id|mm_rblock_struct
-(brace
-DECL|member|size
-r_int
-id|size
-suffix:semicolon
-DECL|member|refcount
-r_int
-id|refcount
-suffix:semicolon
-DECL|member|kblock
-r_void
-op_star
-id|kblock
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|mm_tblock_struct
-r_struct
-id|mm_tblock_struct
-(brace
-DECL|member|rblock
-r_struct
-id|mm_rblock_struct
-op_star
-id|rblock
-suffix:semicolon
-DECL|member|next
-r_struct
-id|mm_tblock_struct
-op_star
-id|next
-suffix:semicolon
-)brace
-suffix:semicolon
 r_typedef
 r_struct
 (brace
-DECL|member|tblock
+DECL|member|vmlist
 r_struct
-id|mm_tblock_struct
-id|tblock
+id|vm_list_struct
+op_star
+id|vmlist
 suffix:semicolon
 DECL|member|end_brk
 r_int
