@@ -460,6 +460,13 @@ c_func
 id|disable_irq
 )paren
 suffix:semicolon
+DECL|variable|probe_irq_mask
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|probe_irq_mask
+)paren
+suffix:semicolon
 DECL|variable|set_irq_type
 id|EXPORT_SYMBOL
 c_func
