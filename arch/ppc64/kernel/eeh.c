@@ -697,12 +697,6 @@ id|dev
 )paren
 )paren
 suffix:semicolon
-id|pci_dev_put
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -743,15 +737,16 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-id|pci_dev_put
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* The cache holds a reference to the device... */
+id|pci_dev_get
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* Walk resources on this device, poke them into the tree */
 r_for
 c_loop
@@ -989,6 +984,7 @@ id|n
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* The cache no longer holds its reference to this device... */
 id|pci_dev_put
 c_func
 (paren
@@ -1096,12 +1092,6 @@ op_eq
 id|PCI_BASE_CLASS_BRIDGE
 )paren
 (brace
-id|pci_dev_put
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
