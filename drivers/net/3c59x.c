@@ -8931,7 +8931,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;  diagnostics: net %04x media %04x dma %08x fifo %04x&bslash;n&quot;
+l_string|&quot;  diagnostics: net %04x media %04x dma %08lx fifo %04x&bslash;n&quot;
 comma
 id|inw
 c_func
@@ -13821,7 +13821,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;  Transmit list %8.8x vs. %p.&bslash;n&quot;
+l_string|&quot;  Transmit list %8.8lx vs. %p.&bslash;n&quot;
 comma
 id|inl
 c_func

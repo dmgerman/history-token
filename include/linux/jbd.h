@@ -37,6 +37,7 @@ r_void
 op_star
 id|__jbd_kmalloc
 (paren
+r_const
 r_char
 op_star
 id|where

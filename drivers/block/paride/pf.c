@@ -1220,9 +1220,11 @@ id|PF_FD_MAX
 (brace
 id|g.cylinders
 op_assign
-id|capacity
-op_div
+id|sector_div
+c_func
 (paren
+id|capacity
+comma
 id|PF_FD_HDS
 op_star
 id|PF_FD_SPT
@@ -1241,9 +1243,11 @@ r_else
 (brace
 id|g.cylinders
 op_assign
-id|capacity
-op_div
+id|sector_div
+c_func
 (paren
+id|capacity
+comma
 id|PF_HD_HDS
 op_star
 id|PF_HD_SPT
