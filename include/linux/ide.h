@@ -2275,6 +2275,100 @@ DECL|typedef|ide_dma_ops_t
 id|ide_dma_ops_t
 suffix:semicolon
 multiline_comment|/*&n; * mapping stuff, prepare for highmem...&n; * &n; * temporarily mapping a (possible) highmem bio for PIO transfer&n; */
+macro_line|#ifndef CONFIG_IDE_TASKFILE_IO
+DECL|macro|ide_rq_offset
+mdefine_line|#define ide_rq_offset(rq) &bslash;&n;&t;(((rq)-&gt;hard_cur_sectors - (rq)-&gt;current_nr_sectors) &lt;&lt; 9)
+multiline_comment|/*&n; * taskfiles really should use hard_cur_sectors as well!&n; */
+DECL|macro|task_rq_offset
+mdefine_line|#define task_rq_offset(rq) &bslash;&n;&t;(((rq)-&gt;nr_sectors - (rq)-&gt;current_nr_sectors) * SECTOR_SIZE)
+DECL|function|ide_map_buffer
+r_static
+r_inline
+r_void
+op_star
+id|ide_map_buffer
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|rq
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+multiline_comment|/*&n;&t; * fs request&n;&t; */
+r_if
+c_cond
+(paren
+id|rq-&gt;bio
+)paren
+r_return
+id|bio_kmap_irq
+c_func
+(paren
+id|rq-&gt;bio
+comma
+id|flags
+)paren
+op_plus
+id|ide_rq_offset
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * task request&n;&t; */
+r_return
+id|rq-&gt;buffer
+op_plus
+id|task_rq_offset
+c_func
+(paren
+id|rq
+)paren
+suffix:semicolon
+)brace
+DECL|function|ide_unmap_buffer
+r_static
+r_inline
+r_void
+id|ide_unmap_buffer
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|rq
+comma
+r_char
+op_star
+id|buffer
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|rq-&gt;bio
+)paren
+id|bio_kunmap_irq
+c_func
+(paren
+id|buffer
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
+macro_line|#else /* !CONFIG_IDE_TASKFILE_IO */
 DECL|function|task_map_rq
 r_static
 r_inline
@@ -2356,6 +2450,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* !CONFIG_IDE_TASKFILE_IO */
 DECL|macro|IDE_CHIPSET_PCI_MASK
 mdefine_line|#define IDE_CHIPSET_PCI_MASK&t;&bslash;&n;    ((1&lt;&lt;ide_pci)|(1&lt;&lt;ide_cmd646)|(1&lt;&lt;ide_ali14xx))
 DECL|macro|IDE_CHIPSET_IS_PCI
@@ -4890,6 +4985,7 @@ comma
 id|u32
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IDE_TASKFILE_IO
 DECL|macro|IDE_PIO_IN
 mdefine_line|#define IDE_PIO_IN&t;0
 DECL|macro|IDE_PIO_OUT
@@ -4989,6 +5085,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_IDE_TASKFILE_IO */
 r_extern
 r_int
 id|drive_is_ready
