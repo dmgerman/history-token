@@ -8930,7 +8930,11 @@ id|sis900_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|sis900_remove
+)paren
 comma
 )brace
 suffix:semicolon

@@ -807,7 +807,11 @@ id|com20020pci_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|com20020pci_remove
+)paren
 )brace
 suffix:semicolon
 DECL|function|com20020pci_init

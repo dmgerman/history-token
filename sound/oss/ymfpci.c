@@ -12403,7 +12403,11 @@ id|ymf_probe_one
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|ymf_remove_one
+)paren
 comma
 id|suspend
 suffix:colon

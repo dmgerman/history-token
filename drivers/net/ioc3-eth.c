@@ -6080,7 +6080,11 @@ id|ioc3_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|ioc3_remove_one
+)paren
 comma
 )brace
 suffix:semicolon

@@ -1714,7 +1714,11 @@ id|parport_serial_pci_probe
 comma
 id|remove
 suffix:colon
+id|__devexit_p
+c_func
+(paren
 id|parport_serial_pci_remove
+)paren
 comma
 )brace
 suffix:semicolon
