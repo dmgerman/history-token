@@ -2,9 +2,8 @@ macro_line|#ifndef __SOUND_CORE_H
 DECL|macro|__SOUND_CORE_H
 mdefine_line|#define __SOUND_CORE_H
 multiline_comment|/*&n; *  Main header file for the ALSA driver&n; *  Copyright (c) 1994-2001 by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-macro_line|#ifdef CONFIG_PM
-macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* wake_up() and struct semaphore */
-macro_line|#endif
+macro_line|#include &lt;linux/sched.h&gt;&t;&t;/* wake_up() */
+macro_line|#include &lt;asm/semaphore.h&gt;&t;&t;/* struct semaphore */
 multiline_comment|/* Typedef&squot;s */
 DECL|typedef|snd_timestamp_t
 r_typedef
@@ -46,6 +45,11 @@ multiline_comment|/* forward declarations */
 macro_line|#ifdef CONFIG_PCI
 r_struct
 id|pci_dev
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SBUS
+r_struct
+id|sbus_dev
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* device allocation stuff */
@@ -1035,6 +1039,72 @@ r_struct
 id|pci_dev
 op_star
 id|pci
+comma
+r_int
+r_int
+id|size
+comma
+r_void
+op_star
+id|ptr
+comma
+id|dma_addr_t
+id|dma_addr
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SBUS
+r_void
+op_star
+id|snd_malloc_sbus_pages
+c_func
+(paren
+r_struct
+id|sbus_dev
+op_star
+id|sdev
+comma
+r_int
+r_int
+id|size
+comma
+id|dma_addr_t
+op_star
+id|dma_addr
+)paren
+suffix:semicolon
+r_void
+op_star
+id|snd_malloc_sbus_pages_fallback
+c_func
+(paren
+r_struct
+id|sbus_dev
+op_star
+id|sdev
+comma
+r_int
+r_int
+id|size
+comma
+id|dma_addr_t
+op_star
+id|dma_addr
+comma
+r_int
+r_int
+op_star
+id|res_size
+)paren
+suffix:semicolon
+r_void
+id|snd_free_sbus_pages
+c_func
+(paren
+r_struct
+id|sbus_dev
+op_star
+id|sdev
 comma
 r_int
 r_int

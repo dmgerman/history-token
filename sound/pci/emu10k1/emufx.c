@@ -4398,7 +4398,6 @@ c_func
 op_star
 id|ptr
 comma
-op_amp
 id|icode-&gt;code_valid
 )paren
 suffix:semicolon
@@ -4516,7 +4515,6 @@ c_func
 op_star
 id|ptr
 comma
-op_amp
 id|icode-&gt;code_valid
 )paren
 suffix:semicolon
@@ -4704,7 +4702,6 @@ c_func
 (paren
 id|gpr
 comma
-op_amp
 id|icode-&gt;gpr_valid
 )paren
 )paren
@@ -4767,7 +4764,6 @@ c_func
 (paren
 id|gpr
 comma
-op_amp
 id|icode-&gt;gpr_valid
 )paren
 suffix:semicolon
@@ -4832,7 +4828,6 @@ c_func
 (paren
 id|tram
 comma
-op_amp
 id|icode-&gt;tram_valid
 )paren
 )paren
@@ -4912,7 +4907,6 @@ c_func
 (paren
 id|tram
 comma
-op_amp
 id|icode-&gt;tram_valid
 )paren
 suffix:semicolon
@@ -4994,7 +4988,6 @@ c_func
 (paren
 id|pc
 comma
-op_amp
 id|icode-&gt;code_valid
 )paren
 )paren
@@ -5078,7 +5071,6 @@ c_func
 (paren
 id|pc
 comma
-op_amp
 id|icode-&gt;code_valid
 )paren
 suffix:semicolon
@@ -7014,7 +7006,6 @@ c_func
 (paren
 id|i
 comma
-op_amp
 id|icode-&gt;gpr_valid
 )paren
 suffix:semicolon
@@ -9031,7 +9022,6 @@ c_func
 (paren
 id|i
 comma
-op_amp
 id|icode-&gt;gpr_valid
 )paren
 suffix:semicolon
@@ -9055,7 +9045,6 @@ c_func
 (paren
 id|i
 comma
-op_amp
 id|icode-&gt;tram_valid
 )paren
 suffix:semicolon
