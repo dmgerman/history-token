@@ -111,6 +111,11 @@ r_int
 r_char
 id|pktcnt
 suffix:semicolon
+DECL|member|pktsize
+r_int
+r_char
+id|pktsize
+suffix:semicolon
 DECL|member|type
 r_int
 r_char

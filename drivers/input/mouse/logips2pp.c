@@ -1540,7 +1540,8 @@ l_int|1
 )braket
 )paren
 r_return
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 id|model
 op_assign
@@ -1875,6 +1876,10 @@ id|psmouse-&gt;protocol_handler
 op_assign
 id|ps2pp_process_byte
 suffix:semicolon
+id|psmouse-&gt;pktsize
+op_assign
+l_int|3
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1949,6 +1954,12 @@ suffix:semicolon
 )brace
 r_return
 id|use_ps2pp
+ques
+c_cond
+l_int|0
+suffix:colon
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 eof
