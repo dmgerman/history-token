@@ -1350,12 +1350,6 @@ op_star
 id|data
 )paren
 (brace
-id|mce_checkregs
-c_func
-(paren
-l_int|NULL
-)paren
-suffix:semicolon
 id|smp_call_function
 (paren
 id|mce_checkregs
