@@ -1,6 +1,8 @@
 macro_line|#ifndef _ASM_PPC64_MODULE_H
 DECL|macro|_ASM_PPC64_MODULE_H
 mdefine_line|#define _ASM_PPC64_MODULE_H
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;asm/bug.h&gt;
 DECL|struct|mod_arch_specific
 r_struct
 id|mod_arch_specific
@@ -17,7 +19,36 @@ r_int
 r_int
 id|toc_section
 suffix:semicolon
+multiline_comment|/* List of BUG addresses, source line numbers and filenames */
+DECL|member|bug_list
+r_struct
+id|list_head
+id|bug_list
+suffix:semicolon
+DECL|member|bug_table
+r_struct
+id|bug_entry
+op_star
+id|bug_table
+suffix:semicolon
+DECL|member|num_bugs
+r_int
+r_int
+id|num_bugs
+suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|bug_entry
+op_star
+id|module_find_bug
+c_func
+(paren
+r_int
+r_int
+id|bugaddr
+)paren
 suffix:semicolon
 DECL|macro|Elf_Shdr
 mdefine_line|#define Elf_Shdr Elf64_Shdr
