@@ -1248,6 +1248,11 @@ id|NET_IPV4_IGMP_MAX_MSF
 op_assign
 l_int|96
 comma
+DECL|enumerator|NET_TCP_NO_METRICS_SAVE
+id|NET_TCP_NO_METRICS_SAVE
+op_assign
+l_int|97
+comma
 )brace
 suffix:semicolon
 r_enum

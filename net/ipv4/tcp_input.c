@@ -81,6 +81,10 @@ DECL|variable|sysctl_tcp_westwood
 r_int
 id|sysctl_tcp_westwood
 suffix:semicolon
+DECL|variable|sysctl_tcp_nometrics_save
+r_int
+id|sysctl_tcp_nometrics_save
+suffix:semicolon
 DECL|macro|FLAG_DATA
 mdefine_line|#define FLAG_DATA&t;&t;0x01 /* Incoming frame contained data.&t;&t;*/
 DECL|macro|FLAG_WIN_UPDATE
@@ -1511,6 +1515,13 @@ c_func
 (paren
 id|sk
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sysctl_tcp_nometrics_save
+)paren
+r_return
 suffix:semicolon
 id|dst_confirm
 c_func

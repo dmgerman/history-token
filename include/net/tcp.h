@@ -1320,6 +1320,10 @@ r_int
 id|sysctl_tcp_westwood
 suffix:semicolon
 r_extern
+r_int
+id|sysctl_tcp_nometrics_save
+suffix:semicolon
+r_extern
 id|atomic_t
 id|tcp_memory_allocated
 suffix:semicolon
