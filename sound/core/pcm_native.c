@@ -3142,6 +3142,7 @@ id|substream
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_sart&n; */
 DECL|function|snd_pcm_start
 r_int
 id|snd_pcm_start
@@ -3281,6 +3282,7 @@ id|runtime-&gt;sleep
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_stop&n; */
 DECL|function|snd_pcm_stop
 r_int
 id|snd_pcm_stop
@@ -3643,6 +3645,7 @@ id|runtime-&gt;sleep
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_suspend&n; */
 DECL|function|snd_pcm_suspend
 r_int
 id|snd_pcm_suspend
@@ -3664,6 +3667,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_suspend_all&n; */
 DECL|function|snd_pcm_suspend_all
 r_int
 id|snd_pcm_suspend_all
@@ -4510,6 +4514,7 @@ op_assign
 id|SNDRV_PCM_STATE_PREPARED
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_prepare&n; */
 DECL|function|snd_pcm_prepare
 r_int
 id|snd_pcm_prepare
@@ -4984,6 +4989,10 @@ suffix:colon
 r_goto
 id|_end
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -5434,6 +5443,10 @@ suffix:semicolon
 r_goto
 id|_xrun_recovery
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 id|runtime-&gt;control-&gt;appl_ptr
 op_assign
@@ -5668,6 +5681,10 @@ suffix:semicolon
 r_goto
 id|_xrun_recovery
 suffix:semicolon
+r_default
+suffix:colon
+r_break
+suffix:semicolon
 )brace
 id|_end
 suffix:colon
@@ -5846,6 +5863,10 @@ comma
 id|SNDRV_PCM_STATE_SETUP
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_break
 suffix:semicolon
 )brace
@@ -8723,10 +8744,6 @@ suffix:semicolon
 id|wait_queue_t
 id|wait
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|snd_runtime_check
 c_func
 (paren
@@ -9002,10 +9019,6 @@ id|file
 suffix:semicolon
 id|__error1
 suffix:colon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
@@ -9160,10 +9173,6 @@ comma
 id|file
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

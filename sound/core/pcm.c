@@ -2762,6 +2762,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_new_stream - create a new PCM stream&n; * @pcm: the pcm instance&n; * @stream: the stream direction, SNDRV_PCM_STREAM_XXX&n; * @substream_count: the number of substreams&n; *&n; * Creates a new stream for the pcm.&n; * The corresponding stream on the pcm must have been empty before&n; * calling this, i.e. zero must be given to the argument of&n; * snd_pcm_new().&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_pcm_new_stream
 r_int
 id|snd_pcm_new_stream
@@ -2984,7 +2985,7 @@ suffix:semicolon
 )brace
 id|substream-&gt;dma_type
 op_assign
-id|SNDRV_PCM_DMA_TYPE_ISA
+id|SNDRV_PCM_DMA_TYPE_UNKNOWN
 suffix:semicolon
 id|substream-&gt;dma_private
 op_assign
@@ -3006,6 +3007,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_new - create a new PCM instance&n; * @card: the card instance&n; * @id: the id string&n; * @device: the device index (zero based)&n; * @playback_count: the number of substreams for playback&n; * @capture_count: the number of substreams for capture&n; * @rpcm: the pointer to store the new pcm instance&n; *&n; * Creates a new PCM instance.&n; *&n; * The pcm operators have to be set afterwards to the new instance&n; * via snd_pcm_set_ops().&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_pcm_new
 r_int
 id|snd_pcm_new
@@ -3394,6 +3396,12 @@ id|pcm-&gt;private_free
 id|pcm
 op_member_access_from_pointer
 id|private_free
+c_func
+(paren
+id|pcm
+)paren
+suffix:semicolon
+id|snd_pcm_lib_preallocate_free_for_all
 c_func
 (paren
 id|pcm
@@ -4038,6 +4046,10 @@ suffix:semicolon
 id|substream-&gt;runtime
 op_assign
 id|runtime
+suffix:semicolon
+id|substream-&gt;private_data
+op_assign
+id|pcm-&gt;private_data
 suffix:semicolon
 id|pstr-&gt;substream_opened
 op_increment

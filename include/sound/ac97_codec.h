@@ -299,6 +299,10 @@ mdefine_line|#define AC97_CXR_SPDIF_PCM&t;0x0
 DECL|macro|AC97_CXR_SPDIF_AC3
 mdefine_line|#define AC97_CXR_SPDIF_AC3&t;0x2
 multiline_comment|/* specific - ALC */
+DECL|macro|AC97_ALC650_SURR_DAC_VOL
+mdefine_line|#define AC97_ALC650_SURR_DAC_VOL&t;0x64
+DECL|macro|AC97_ALC650_LFE_DAC_VOL
+mdefine_line|#define AC97_ALC650_LFE_DAC_VOL&t;&t;0x66
 DECL|macro|AC97_ALC650_MULTICH
 mdefine_line|#define AC97_ALC650_MULTICH&t;0x6a
 DECL|macro|AC97_ALC650_CLOCK
@@ -422,16 +426,6 @@ id|ac97_t
 op_star
 id|ac97
 )paren
-suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
-suffix:semicolon
-DECL|member|proc_regs_entry
-id|snd_info_entry_t
-op_star
-id|proc_regs_entry
 suffix:semicolon
 DECL|member|private_data
 r_void
