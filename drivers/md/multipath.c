@@ -204,7 +204,7 @@ id|conf-&gt;multipaths
 id|i
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 suffix:semicolon
 r_return
 (paren
@@ -436,7 +436,7 @@ id|conf-&gt;multipaths
 id|mp_bh-&gt;path
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 suffix:semicolon
 id|md_error
 (paren
@@ -600,7 +600,7 @@ id|bio
 suffix:semicolon
 id|mp_bh-&gt;bio.bi_bdev
 op_assign
-id|multipath-&gt;bdev
+id|multipath-&gt;rdev-&gt;bdev
 suffix:semicolon
 id|mp_bh-&gt;bio.bi_end_io
 op_assign
@@ -774,7 +774,7 @@ id|DISK_FAILED
 comma
 id|bdev_partition_name
 (paren
-id|multipath-&gt;bdev
+id|multipath-&gt;rdev-&gt;bdev
 )paren
 comma
 id|conf-&gt;working_disks
@@ -854,7 +854,7 @@ id|multipaths
 id|i
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 op_eq
 id|bdev
 op_logical_and
@@ -906,7 +906,7 @@ id|multipaths
 id|i
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 op_eq
 id|bdev
 op_logical_and
@@ -1033,7 +1033,7 @@ comma
 id|bdev_partition_name
 c_func
 (paren
-id|tmp-&gt;bdev
+id|tmp-&gt;rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -1096,9 +1096,9 @@ op_logical_neg
 id|p-&gt;used_slot
 )paren
 (brace
-id|p-&gt;bdev
+id|p-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|p-&gt;operational
 op_assign
@@ -1222,7 +1222,7 @@ r_goto
 m_abort
 suffix:semicolon
 )brace
-id|p-&gt;bdev
+id|p-&gt;rdev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1665,9 +1665,9 @@ op_plus
 id|disk_idx
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Mark all disks as active to start with, there are no&n;&t;&t; * spares.  multipath_read_balance deals with choose&n;&t;&t; * the &quot;best&quot; operational device.&n;&t;&t; */
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|disk-&gt;operational
 op_assign

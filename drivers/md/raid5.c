@@ -1780,7 +1780,7 @@ id|conf-&gt;disks
 id|i
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 )paren
 suffix:semicolon
 id|clear_bit
@@ -2000,7 +2000,7 @@ id|conf-&gt;disks
 id|i
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 )paren
 suffix:semicolon
 id|clear_bit
@@ -2073,12 +2073,6 @@ r_int
 id|i
 )paren
 (brace
-id|raid5_conf_t
-op_star
-id|conf
-op_assign
-id|sh-&gt;raid_conf
-suffix:semicolon
 r_struct
 id|r5dev
 op_star
@@ -2116,15 +2110,6 @@ suffix:semicolon
 id|dev-&gt;vec.bv_offset
 op_assign
 l_int|0
-suffix:semicolon
-id|dev-&gt;req.bi_bdev
-op_assign
-id|conf-&gt;disks
-(braket
-id|i
-)braket
-dot
-id|bdev
 suffix:semicolon
 id|dev-&gt;req.bi_sector
 op_assign
@@ -2223,7 +2208,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|disk-&gt;bdev
+id|disk-&gt;rdev-&gt;bdev
 op_ne
 id|bdev
 )paren
@@ -2286,7 +2271,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|disk-&gt;bdev
+id|disk-&gt;rdev-&gt;bdev
 op_eq
 id|bdev
 )paren
@@ -5198,7 +5183,7 @@ id|conf-&gt;disks
 id|i
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 comma
 id|STRIPE_SECTORS
 )paren
@@ -6118,7 +6103,7 @@ id|conf-&gt;disks
 id|failed_num
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 comma
 id|STRIPE_SECTORS
 )paren
@@ -6136,7 +6121,7 @@ id|conf-&gt;spare
 id|md_sync_acct
 c_func
 (paren
-id|spare-&gt;bdev
+id|spare-&gt;rdev-&gt;bdev
 comma
 id|STRIPE_SECTORS
 )paren
@@ -6299,7 +6284,7 @@ id|conf-&gt;disks
 id|i
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 suffix:semicolon
 r_else
 r_if
@@ -6318,7 +6303,7 @@ l_int|1
 )paren
 id|bi-&gt;bi_bdev
 op_assign
-id|spare-&gt;bdev
+id|spare-&gt;rdev-&gt;bdev
 suffix:semicolon
 r_else
 id|skip
@@ -7572,9 +7557,9 @@ id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|disk-&gt;operational
 op_assign
@@ -7640,9 +7625,9 @@ comma
 id|raid_disk
 )paren
 suffix:semicolon
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|disk-&gt;operational
 op_assign
@@ -7672,9 +7657,9 @@ id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|disk-&gt;operational
 op_assign
@@ -7722,7 +7707,7 @@ op_logical_neg
 id|disk-&gt;used_slot
 )paren
 (brace
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -8680,7 +8665,7 @@ comma
 id|bdev_partition_name
 c_func
 (paren
-id|tmp-&gt;bdev
+id|tmp-&gt;rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -8917,7 +8902,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sdisk-&gt;bdev
+id|sdisk-&gt;rdev
 )paren
 id|sdisk-&gt;used_slot
 op_assign
@@ -9237,7 +9222,7 @@ r_goto
 m_abort
 suffix:semicolon
 )brace
-id|p-&gt;bdev
+id|p-&gt;rdev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -9338,9 +9323,9 @@ id|p-&gt;used_slot
 )paren
 (brace
 multiline_comment|/* it will be held open by rdev */
-id|p-&gt;bdev
+id|p-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|p-&gt;operational
 op_assign

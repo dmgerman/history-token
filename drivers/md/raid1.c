@@ -836,7 +836,7 @@ id|conf-&gt;mirrors
 id|i
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 suffix:semicolon
 r_return
 l_int|0
@@ -1121,7 +1121,7 @@ id|conf-&gt;mirrors
 id|mirror
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 )paren
 suffix:semicolon
 r_else
@@ -1203,7 +1203,7 @@ id|conf-&gt;mirrors
 id|mirror
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 )paren
 comma
 id|r1_bio-&gt;sector
@@ -1894,7 +1894,7 @@ id|r1_bio-&gt;sector
 suffix:semicolon
 id|read_bio-&gt;bi_bdev
 op_assign
-id|mirror-&gt;bdev
+id|mirror-&gt;rdev-&gt;bdev
 suffix:semicolon
 id|read_bio-&gt;bi_end_io
 op_assign
@@ -2005,7 +2005,7 @@ id|conf-&gt;mirrors
 id|i
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 suffix:semicolon
 id|mbio-&gt;bi_end_io
 op_assign
@@ -2284,7 +2284,7 @@ comma
 id|bdev_partition_name
 c_func
 (paren
-id|mirror-&gt;bdev
+id|mirror-&gt;rdev-&gt;bdev
 )paren
 comma
 id|conf-&gt;working_disks
@@ -2354,16 +2354,16 @@ id|mirrors
 id|i
 )braket
 dot
-id|bdev
-op_eq
-id|bdev
+id|operational
 op_logical_and
 id|mirrors
 (braket
 id|i
 )braket
 dot
-id|operational
+id|rdev-&gt;bdev
+op_eq
+id|bdev
 )paren
 r_break
 suffix:semicolon
@@ -2491,7 +2491,7 @@ comma
 id|bdev_partition_name
 c_func
 (paren
-id|tmp-&gt;bdev
+id|tmp-&gt;rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -2796,7 +2796,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sdisk-&gt;bdev
+id|sdisk-&gt;rdev
 )paren
 id|sdisk-&gt;used_slot
 op_assign
@@ -3075,10 +3075,9 @@ op_logical_neg
 id|p-&gt;used_slot
 )paren
 (brace
-multiline_comment|/* it will be held open by rdev */
-id|p-&gt;bdev
+id|p-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|p-&gt;operational
 op_assign
@@ -3201,7 +3200,7 @@ r_goto
 m_abort
 suffix:semicolon
 )brace
-id|p-&gt;bdev
+id|p-&gt;rdev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3330,7 +3329,7 @@ id|conf-&gt;mirrors
 id|r1_bio-&gt;read_disk
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 )paren
 suffix:semicolon
 r_else
@@ -3458,7 +3457,7 @@ id|conf-&gt;mirrors
 id|mirror
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 )paren
 suffix:semicolon
 id|update_head_pos
@@ -3699,7 +3698,7 @@ id|conf-&gt;mirrors
 id|i
 )braket
 dot
-id|bdev
+id|rdev-&gt;bdev
 suffix:semicolon
 id|mbio-&gt;bi_sector
 op_assign
@@ -4455,7 +4454,7 @@ id|sector_nr
 suffix:semicolon
 id|read_bio-&gt;bi_bdev
 op_assign
-id|mirror-&gt;bdev
+id|mirror-&gt;rdev-&gt;bdev
 suffix:semicolon
 id|read_bio-&gt;bi_end_io
 op_assign
@@ -4777,9 +4776,9 @@ c_cond
 id|rdev-&gt;faulty
 )paren
 (brace
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|disk-&gt;operational
 op_assign
@@ -4847,9 +4846,9 @@ comma
 id|disk_idx
 )paren
 suffix:semicolon
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|disk-&gt;operational
 op_assign
@@ -4890,9 +4889,9 @@ id|rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|disk-&gt;operational
 op_assign
@@ -5001,7 +5000,7 @@ op_logical_neg
 id|disk-&gt;used_slot
 )paren
 (brace
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 op_assign
 l_int|NULL
 suffix:semicolon

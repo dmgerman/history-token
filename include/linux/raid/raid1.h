@@ -12,11 +12,10 @@ DECL|struct|mirror_info
 r_struct
 id|mirror_info
 (brace
-DECL|member|bdev
-r_struct
-id|block_device
+DECL|member|rdev
+id|mdk_rdev_t
 op_star
-id|bdev
+id|rdev
 suffix:semicolon
 DECL|member|head_position
 id|sector_t

@@ -7,11 +7,10 @@ DECL|struct|multipath_info
 r_struct
 id|multipath_info
 (brace
-DECL|member|bdev
-r_struct
-id|block_device
+DECL|member|rdev
+id|mdk_rdev_t
 op_star
-id|bdev
+id|rdev
 suffix:semicolon
 multiline_comment|/*&n;&t; * State bits:&n;&t; */
 DECL|member|operational

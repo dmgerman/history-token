@@ -136,7 +136,7 @@ id|j
 template_param
 id|mddev-&gt;raid_disks
 op_logical_or
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 )paren
 (brace
 id|printk
@@ -149,9 +149,9 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-id|disk-&gt;bdev
+id|disk-&gt;rdev
 op_assign
-id|rdev-&gt;bdev
+id|rdev
 suffix:semicolon
 id|disk-&gt;size
 op_assign
@@ -550,7 +550,7 @@ comma
 id|bdevname
 c_func
 (paren
-id|tmp_dev-&gt;bdev
+id|tmp_dev-&gt;rdev-&gt;bdev
 )paren
 comma
 id|tmp_dev-&gt;size
@@ -570,7 +570,7 @@ suffix:semicolon
 )brace
 id|bio-&gt;bi_bdev
 op_assign
-id|tmp_dev-&gt;bdev
+id|tmp_dev-&gt;rdev-&gt;bdev
 suffix:semicolon
 id|bio-&gt;bi_sector
 op_assign
@@ -667,7 +667,7 @@ id|conf-&gt;hash_table
 id|j
 )braket
 dot
-id|dev0-&gt;bdev
+id|dev0-&gt;rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
@@ -700,7 +700,7 @@ id|conf-&gt;hash_table
 id|j
 )braket
 dot
-id|dev1-&gt;bdev
+id|dev1-&gt;rdev-&gt;bdev
 )paren
 )paren
 suffix:semicolon
