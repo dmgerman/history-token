@@ -2206,15 +2206,6 @@ id|err
 op_assign
 id|nfserr_perm
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|file.f_op-&gt;read
-)paren
-r_goto
-id|out_close
-suffix:semicolon
 id|inode
 op_assign
 id|file.f_dentry-&gt;d_inode
@@ -2267,10 +2258,6 @@ id|file.f_ra
 op_assign
 id|ra-&gt;p_ra
 suffix:semicolon
-id|file.f_pos
-op_assign
-id|offset
-suffix:semicolon
 id|oldfs
 op_assign
 id|get_fs
@@ -2286,9 +2273,7 @@ id|KERNEL_DS
 suffix:semicolon
 id|err
 op_assign
-id|file.f_op
-op_member_access_from_pointer
-id|read
+id|vfs_read
 c_func
 (paren
 op_amp
@@ -2300,7 +2285,7 @@ op_star
 id|count
 comma
 op_amp
-id|file.f_pos
+id|offset
 )paren
 suffix:semicolon
 id|set_fs
@@ -2468,15 +2453,6 @@ id|err
 op_assign
 id|nfserr_perm
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|file.f_op-&gt;write
-)paren
-r_goto
-id|out_close
-suffix:semicolon
 macro_line|#ifdef MSNFS
 r_if
 c_cond
@@ -2567,11 +2543,6 @@ id|file.f_flags
 op_or_assign
 id|O_SYNC
 suffix:semicolon
-id|file.f_pos
-op_assign
-id|offset
-suffix:semicolon
-multiline_comment|/* set write offset */
 multiline_comment|/* Write the data. */
 id|oldfs
 op_assign
@@ -2588,9 +2559,7 @@ id|KERNEL_DS
 suffix:semicolon
 id|err
 op_assign
-id|file.f_op
-op_member_access_from_pointer
-id|write
+id|vfs_write
 c_func
 (paren
 op_amp
@@ -2601,7 +2570,7 @@ comma
 id|cnt
 comma
 op_amp
-id|file.f_pos
+id|offset
 )paren
 suffix:semicolon
 r_if
