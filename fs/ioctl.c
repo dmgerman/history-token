@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
 DECL|function|file_ioctl
@@ -263,6 +264,36 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
+id|error
+op_assign
+id|security_ops
+op_member_access_from_pointer
+id|file_ioctl
+c_func
+(paren
+id|filp
+comma
+id|cmd
+comma
+id|arg
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+(brace
+id|fput
+c_func
+(paren
+id|filp
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|lock_kernel
 c_func
 (paren
