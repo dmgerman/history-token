@@ -3835,6 +3835,8 @@ DECL|macro|TG3_FLG2_IS_5788
 mdefine_line|#define TG3_FLG2_IS_5788&t;&t;0x00000008
 DECL|macro|TG3_FLG2_MAX_RXPEND_64
 mdefine_line|#define TG3_FLG2_MAX_RXPEND_64&t;&t;0x00000010
+DECL|macro|TG3_FLG2_TSO_CAPABLE
+mdefine_line|#define TG3_FLG2_TSO_CAPABLE&t;&t;0x00000020
 DECL|member|split_mode_max_reqs
 id|u32
 id|split_mode_max_reqs
