@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptscsih.c&n; *      High performance SCSI / Fibre Channel SCSI Host device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Original author: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptscsih.c,v 1.104 2002/12/03 21:26:34 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptscsih.c&n; *      High performance SCSI / Fibre Channel SCSI Host device driver.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Pamela Delaney (LSI Logic) for tons of work&n; *      and countless enhancements while adding support for the 1030&n; *      chip family.  Pam has been instrumental in the development of&n; *      of the 2.xx.xx series fusion drivers, and her contributions are&n; *      far too numerous to hope to list in one place.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2003 LSI Logic Corporation&n; *  Original author: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:mpt_linux_developer@lsil.com)&n; *&n; *  $Id: mptscsih.c,v 1.104 2002/12/03 21:26:34 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -584,6 +584,16 @@ id|data
 )paren
 suffix:semicolon
 r_static
+r_void
+id|mptscsih_schedule_reset
+c_func
+(paren
+r_void
+op_star
+id|hd
+)paren
+suffix:semicolon
+r_static
 r_int
 id|mptscsih_do_cmd
 c_func
@@ -609,6 +619,12 @@ comma
 r_int
 id|portnum
 )paren
+suffix:semicolon
+DECL|variable|mptscsih_rstTask
+r_static
+r_struct
+id|mpt_work_struct
+id|mptscsih_rstTask
 suffix:semicolon
 macro_line|#ifndef MPTSCSIH_DISABLE_DOMAIN_VALIDATION
 r_static
@@ -7962,7 +7978,7 @@ c_func
 (paren
 l_string|&quot;Called mptscsih_proc_info: hostno=%d, func=%d&bslash;n&quot;
 comma
-id|hostno
+id|host-&gt;host_no
 comma
 id|func
 )paren
@@ -10232,6 +10248,12 @@ suffix:semicolon
 r_int
 id|scpnt_idx
 suffix:semicolon
+id|spinlock_t
+op_star
+id|host_lock
+op_assign
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
+suffix:semicolon
 multiline_comment|/* If we can&squot;t locate our host adapter structure, return FAILED status.&n;&t; */
 r_if
 c_cond
@@ -10263,7 +10285,7 @@ c_func
 id|SCpnt
 )paren
 suffix:semicolon
-id|nehprintk
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -10350,7 +10372,7 @@ c_func
 id|SCpnt
 )paren
 suffix:semicolon
-id|nehprintk
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -10370,6 +10392,12 @@ id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/*  Wait a fixed amount of time for the TM pending flag to be cleared.&n;&t; *  If we time out, then we return a FAILED status to the caller.  This&n;&t; *  call to mptscsih_tm_pending_wait() will set the pending flag if we are&n;&t; *  successful.&n;&t; */
+id|spin_unlock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10382,7 +10410,7 @@ op_eq
 id|FAILED
 )paren
 (brace
-id|nehprintk
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -10398,10 +10426,22 @@ id|SCpnt
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_return
 id|FAILED
 suffix:semicolon
 )brace
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 multiline_comment|/* If this command is pended, then timeout/hang occurred&n;&t; * during DV. Post command and flush pending Q&n;&t; * and then following up with the reset request.&n;&t; */
 r_if
 c_cond
@@ -10437,7 +10477,7 @@ c_func
 id|hd
 )paren
 suffix:semicolon
-id|nehprintk
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -10472,6 +10512,12 @@ id|hd-&gt;abortSCpnt
 op_assign
 id|SCpnt
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10488,7 +10534,7 @@ id|SCpnt-&gt;device-&gt;lun
 comma
 id|ctx2abort
 comma
-id|NO_SLEEP
+id|CAN_SLEEP
 )paren
 OL
 l_int|0
@@ -10515,10 +10561,22 @@ id|hd-&gt;tmState
 op_assign
 id|TM_STATE_NONE
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_return
 id|FAILED
 suffix:semicolon
 )brace
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_return
 id|FAILED
 suffix:semicolon
@@ -10539,6 +10597,12 @@ id|MPT_SCSI_HOST
 op_star
 id|hd
 suffix:semicolon
+id|spinlock_t
+op_star
+id|host_lock
+op_assign
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
+suffix:semicolon
 multiline_comment|/* If we can&squot;t locate our host adapter structure, return FAILED status.&n;&t; */
 r_if
 c_cond
@@ -10556,7 +10620,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|nehprintk
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -10602,6 +10666,12 @@ r_return
 id|FAILED
 suffix:semicolon
 multiline_comment|/*  Wait a fixed amount of time for the TM pending flag to be cleared.&n;&t; *  If we time out, then we return a FAILED status to the caller.  This&n;&t; *  call to mptscsih_tm_pending_wait() will set the pending flag if we are&n;&t; *  successful.&n;&t; */
+id|spin_unlock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10614,7 +10684,7 @@ op_eq
 id|FAILED
 )paren
 (brace
-id|nehprintk
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -10628,6 +10698,12 @@ id|hd-&gt;ioc-&gt;name
 comma
 id|SCpnt
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
 )paren
 suffix:semicolon
 r_return
@@ -10650,7 +10726,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|NO_SLEEP
+id|CAN_SLEEP
 )paren
 OL
 l_int|0
@@ -10676,10 +10752,22 @@ id|hd-&gt;tmState
 op_assign
 id|TM_STATE_NONE
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_return
 id|FAILED
 suffix:semicolon
 )brace
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -10700,6 +10788,12 @@ id|MPT_SCSI_HOST
 op_star
 id|hd
 suffix:semicolon
+id|spinlock_t
+op_star
+id|host_lock
+op_assign
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
+suffix:semicolon
 multiline_comment|/* If we can&squot;t locate our host adapter structure, return FAILED status.&n;&t; */
 r_if
 c_cond
@@ -10717,7 +10811,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|nehprintk
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -10765,6 +10859,12 @@ id|hd-&gt;timeouts
 op_increment
 suffix:semicolon
 multiline_comment|/*  Wait a fixed amount of time for the TM pending flag to be cleared.&n;&t; *  If we time out, then we return a FAILED status to the caller.  This&n;&t; *  call to mptscsih_tm_pending_wait() will set the pending flag if we are&n;&t; *  successful.&n;&t; */
+id|spin_unlock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10777,7 +10877,7 @@ op_eq
 id|FAILED
 )paren
 (brace
-id|nehprintk
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -10791,6 +10891,12 @@ id|hd-&gt;ioc-&gt;name
 comma
 id|SCpnt
 )paren
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
 )paren
 suffix:semicolon
 r_return
@@ -10814,7 +10920,7 @@ l_int|0
 comma
 l_int|0
 comma
-id|NO_SLEEP
+id|CAN_SLEEP
 )paren
 OL
 l_int|0
@@ -10840,10 +10946,22 @@ id|hd-&gt;tmState
 op_assign
 id|TM_STATE_NONE
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_return
 id|FAILED
 suffix:semicolon
 )brace
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -10869,6 +10987,12 @@ id|status
 op_assign
 id|SUCCESS
 suffix:semicolon
+id|spinlock_t
+op_star
+id|host_lock
+op_assign
+id|SCpnt-&gt;device-&gt;host-&gt;host_lock
+suffix:semicolon
 multiline_comment|/*  If we can&squot;t locate the host to reset, then we failed. */
 r_if
 c_cond
@@ -10886,7 +11010,7 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|nehprintk
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -10933,6 +11057,12 @@ id|queue_depth
 )paren
 suffix:semicolon
 multiline_comment|/*  If our attempts to reset the host failed, then return a failed&n;&t; *  status.  The host will be taken off line by the SCSI mid-layer.&n;&t; */
+id|spin_unlock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10941,7 +11071,7 @@ c_func
 (paren
 id|hd-&gt;ioc
 comma
-id|NO_SLEEP
+id|CAN_SLEEP
 )paren
 OL
 l_int|0
@@ -10964,7 +11094,13 @@ op_assign
 id|TM_STATE_NONE
 suffix:semicolon
 )brace
-id|nehprintk
+id|spin_lock_irq
+c_func
+(paren
+id|host_lock
+)paren
+suffix:semicolon
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -11072,10 +11208,18 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|mdelay
+id|set_current_state
 c_func
 (paren
-l_int|250
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_div
+l_int|4
 )paren
 suffix:semicolon
 )brace
@@ -17395,6 +17539,56 @@ id|hd-&gt;TMtimer
 )paren
 suffix:semicolon
 multiline_comment|/* Call the reset handler. Already had a TM request&n;&t; * timeout - so issue a diagnostic reset&n;&t; */
+id|MPT_INIT_WORK
+c_func
+(paren
+op_amp
+id|mptscsih_rstTask
+comma
+id|mptscsih_schedule_reset
+comma
+(paren
+r_void
+op_star
+)paren
+id|hd
+)paren
+suffix:semicolon
+id|SCHEDULE_TASK
+c_func
+(paren
+op_amp
+id|mptscsih_rstTask
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+multiline_comment|/*&t;mptscsih_schedule_reset - Call back for timeout on a&n; *&t;task management request.&n; *&t;@data: Pointer to MPT_SCSI_HOST recast as an unsigned long&n; *&n; */
+r_static
+r_void
+DECL|function|mptscsih_schedule_reset
+id|mptscsih_schedule_reset
+c_func
+(paren
+r_void
+op_star
+id|arg
+)paren
+(brace
+id|MPT_SCSI_HOST
+op_star
+id|hd
+suffix:semicolon
+id|hd
+op_assign
+(paren
+id|MPT_SCSI_HOST
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17403,7 +17597,7 @@ c_func
 (paren
 id|hd-&gt;ioc
 comma
-id|NO_SLEEP
+id|CAN_SLEEP
 )paren
 OL
 l_int|0
@@ -17422,7 +17616,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Because we have reset the IOC, no TM requests can be&n;&t;&t; * pending.  So let&squot;s make sure the tmPending flag is reset.&n;&t;&t; */
-id|nehprintk
+id|dtmprintk
 c_func
 (paren
 (paren
@@ -25923,7 +26117,6 @@ multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 r_static
 r_int
 DECL|function|get_setup_token
-id|__init
 id|get_setup_token
 c_func
 (paren
@@ -26007,7 +26200,6 @@ multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 r_static
 r_int
 DECL|function|mptscsih_setup
-id|__init
 id|mptscsih_setup
 c_func
 (paren
