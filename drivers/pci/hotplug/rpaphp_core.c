@@ -69,7 +69,7 @@ c_func
 (paren
 id|debug
 comma
-r_int
+r_bool
 comma
 l_int|0644
 )paren
