@@ -5289,6 +5289,11 @@ l_string|&quot;io mem&quot;
 suffix:colon
 l_string|&quot;io base&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|hcd-&gt;rsrc_start
 )paren
 suffix:semicolon
@@ -5323,6 +5328,11 @@ l_string|&quot;io mem&quot;
 suffix:colon
 l_string|&quot;io base&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|hcd-&gt;rsrc_start
 )paren
 suffix:semicolon
