@@ -140,6 +140,13 @@ id|sysctl_tcp_bic_low_window
 op_assign
 l_int|14
 suffix:semicolon
+DECL|variable|sysctl_tcp_bic_beta
+r_int
+id|sysctl_tcp_bic_beta
+op_assign
+l_int|819
+suffix:semicolon
+multiline_comment|/* = 819/1024 (BICTCP_BETA_SCALE) */
 DECL|macro|FLAG_DATA
 mdefine_line|#define FLAG_DATA&t;&t;0x01 /* Incoming frame contained data.&t;&t;*/
 DECL|macro|FLAG_WIN_UPDATE
