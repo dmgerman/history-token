@@ -228,7 +228,7 @@ comma
 id|HPET_T0_CFG
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Some systems seems to need two writes to HPET_T0_CMP,&n;&t; * to get interrupts working&n;&t; */
+multiline_comment|/*&n;&t; * The first write after writing TN_SETVAL to the config register sets&n;&t; * the counter value, the second write sets the threshold.&n;&t; */
 id|hpet_writel
 c_func
 (paren
