@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/video/hgafb.c -- Hercules graphics adaptor frame buffer device&n; * &n; *      Created 25 Nov 1999 by Ferenc Bakonyi (fero@drama.obuda.kando.hu)&n; *      Based on skeletonfb.c by Geert Uytterhoeven and&n; *               mdacon.c by Andrew Apted&n; *&n; * History:&n; *&n; * - Revision 0.1.8 (23 Oct 2002): Ported to new framebuffer api.&n; * &n; * - Revision 0.1.7 (23 Jan 2001): fix crash resulting from MDA only cards &n; *&t;&t;&t;&t;   being detected as Hercules.&t; (Paul G.)&n; * - Revision 0.1.6 (17 Aug 2000): new style structs&n; *                                 documentation&n; * - Revision 0.1.5 (13 Mar 2000): spinlocks instead of saveflags();cli();etc&n; *                                 minor fixes&n; * - Revision 0.1.4 (24 Jan 2000): fixed a bug in hga_card_detect() for &n; *                                  HGA-only systems&n; * - Revision 0.1.3 (22 Jan 2000): modified for the new fb_info structure&n; *                                 screen is cleared after rmmod&n; *                                 virtual resolutions&n; *                                 kernel parameter &squot;video=hga:font:{fontname}&squot;&n; *                                 module parameter &squot;font={fontname}&squot;&n; *                                 module parameter &squot;nologo={0|1}&squot;&n; *                                 the most important: boot logo :)&n; * - Revision 0.1.0  (6 Dec 1999): faster scrolling and minor fixes&n; * - First release  (25 Nov 1999)&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * linux/drivers/video/hgafb.c -- Hercules graphics adaptor frame buffer device&n; * &n; *      Created 25 Nov 1999 by Ferenc Bakonyi (fero@drama.obuda.kando.hu)&n; *      Based on skeletonfb.c by Geert Uytterhoeven and&n; *               mdacon.c by Andrew Apted&n; *&n; * History:&n; *&n; * - Revision 0.1.8 (23 Oct 2002): Ported to new framebuffer api.&n; * &n; * - Revision 0.1.7 (23 Jan 2001): fix crash resulting from MDA only cards &n; *&t;&t;&t;&t;   being detected as Hercules.&t; (Paul G.)&n; * - Revision 0.1.6 (17 Aug 2000): new style structs&n; *                                 documentation&n; * - Revision 0.1.5 (13 Mar 2000): spinlocks instead of saveflags();cli();etc&n; *                                 minor fixes&n; * - Revision 0.1.4 (24 Jan 2000): fixed a bug in hga_card_detect() for &n; *                                  HGA-only systems&n; * - Revision 0.1.3 (22 Jan 2000): modified for the new fb_info structure&n; *                                 screen is cleared after rmmod&n; *                                 virtual resolutions&n; *                                 module parameter &squot;nologo={0|1}&squot;&n; *                                 the most important: boot logo :)&n; * - Revision 0.1.0  (6 Dec 1999): faster scrolling and minor fixes&n; * - First release  (25 Nov 1999)&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -13,11 +13,9 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/vga.h&gt;
-macro_line|#ifdef MODULE
 DECL|macro|INCLUDE_LINUX_LOGO_DATA
 mdefine_line|#define INCLUDE_LINUX_LOGO_DATA
 macro_line|#include &lt;linux/linux_logo.h&gt;
-macro_line|#endif /* MODULE */
 macro_line|#if 0
 mdefine_line|#define DPRINTK(args...) printk(KERN_DEBUG __FILE__&quot;: &quot; ##args)
 macro_line|#else
@@ -309,15 +307,6 @@ id|release_io_ports
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|variable|font
-r_static
-r_char
-op_star
-id|font
-op_assign
-l_int|NULL
-suffix:semicolon
 DECL|variable|nologo
 r_static
 r_int
@@ -325,7 +314,6 @@ id|nologo
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* -------------------------------------------------------------------------&n; *&n; * Low level hardware functions&n; *&n; * ------------------------------------------------------------------------- */
 DECL|function|write_hga_b
 r_static
@@ -544,7 +532,6 @@ id|hga_vram_len
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|hga_txt_mode
 r_static
 r_void
@@ -733,7 +720,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
 DECL|function|hga_gfx_mode
 r_static
 r_void
@@ -922,7 +908,6 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|hga_show_logo
 r_static
 r_void
@@ -936,15 +921,21 @@ id|info
 )paren
 (brace
 r_int
-id|x
-comma
-id|y
+r_int
+id|dest
+op_assign
+id|hga_vram_base
 suffix:semicolon
 r_char
 op_star
 id|logo
 op_assign
 id|linux_logo_bw
+suffix:semicolon
+r_int
+id|x
+comma
+id|y
 suffix:semicolon
 r_for
 c_loop
@@ -1003,7 +994,6 @@ l_int|40
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */&t;
 DECL|function|hga_pan
 r_static
 r_void
@@ -1448,6 +1438,78 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/**&n; *&t;hgafb_open - open the framebuffer device&n; *&t;@info:pointer to fb_info object containing info for current hga board&n; *&t;@int:open by console system or userland.&n; */
+DECL|function|hgafb_open
+r_static
+r_int
+id|hgafb_open
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_int
+id|init
+)paren
+(brace
+id|hga_gfx_mode
+c_func
+(paren
+)paren
+suffix:semicolon
+id|hga_clear_screen
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nologo
+)paren
+id|hga_show_logo
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/**&n; *&t;hgafb_open - open the framebuffer device&n; *&t;@info:pointer to fb_info object containing info for current hga board&n; *&t;@int:open by console system or userland.&n; */
+DECL|function|hgafb_release
+r_static
+r_int
+id|hgafb_release
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|info
+comma
+r_int
+id|init
+)paren
+(brace
+id|hga_txt_mode
+c_func
+(paren
+)paren
+suffix:semicolon
+id|hga_clear_screen
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;hgafb_setcolreg - set color registers&n; *&t;@regno:register index to set&n; *&t;@red:red value, unused&n; *&t;@green:green value, unused&n; *&t;@blue:blue value, unused&n; *&t;@transp:transparency value, unused&n; *&t;@info:unused&n; *&n; *&t;This callback function is used to set the color registers of a HGA&n; *&t;board. Since we have only two fixed colors only @regno is checked.&n; *&t;A zero is returned on success and 1 for failure.&n; */
 DECL|function|hgafb_setcolreg
 r_static
@@ -1567,31 +1629,6 @@ comma
 id|var-&gt;yoffset
 )paren
 suffix:semicolon
-id|info-&gt;var.xoffset
-op_assign
-id|var-&gt;xoffset
-suffix:semicolon
-id|info-&gt;var.yoffset
-op_assign
-id|var-&gt;yoffset
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|var-&gt;vmode
-op_amp
-id|FB_VMODE_YWRAP
-)paren
-id|info-&gt;var.vmode
-op_or_assign
-id|FB_VMODE_YWRAP
-suffix:semicolon
-r_else
-id|info-&gt;var.vmode
-op_and_assign
-op_complement
-id|FB_VMODE_YWRAP
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1691,20 +1728,7 @@ id|rect-&gt;rop
 r_case
 id|ROP_COPY
 suffix:colon
-id|fb_memset
-c_func
-(paren
-id|dest
-comma
-id|rect-&gt;color
-comma
-(paren
-id|rect-&gt;width
-op_rshift
-l_int|3
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//fb_memset(dest, rect-&gt;color, (rect-&gt;width &gt;&gt; 3));
 r_break
 suffix:semicolon
 r_case
@@ -1813,20 +1837,7 @@ op_rshift
 l_int|3
 )paren
 suffix:semicolon
-id|fb_memmove
-c_func
-(paren
-id|dest
-comma
-id|src
-comma
-(paren
-id|area-&gt;width
-op_rshift
-l_int|3
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//fb_memmove(dest, src, (area-&gt;width &gt;&gt; 3));
 id|y1
 op_increment
 suffix:semicolon
@@ -1897,20 +1908,7 @@ op_rshift
 l_int|3
 )paren
 suffix:semicolon
-id|fb_memmove
-c_func
-(paren
-id|dest
-comma
-id|src
-comma
-(paren
-id|area-&gt;width
-op_rshift
-l_int|3
-)paren
-)paren
-suffix:semicolon
+singleline_comment|//fb_memmove(dest, src, (area-&gt;width &gt;&gt; 3));
 id|y1
 op_decrement
 suffix:semicolon
@@ -2012,6 +2010,16 @@ op_assign
 id|THIS_MODULE
 comma
 dot
+id|fb_open
+op_assign
+id|hgafb_open
+comma
+dot
+id|fb_release
+op_assign
+id|hgafb_release
+comma
+dot
 id|fb_setcolreg
 op_assign
 id|hgafb_setcolreg
@@ -2029,18 +2037,21 @@ comma
 dot
 id|fb_fillrect
 op_assign
-id|hgafb_fillrect
+id|cfb_fillrect
 comma
+singleline_comment|//hgafb_fillrect,
 dot
 id|fb_copyarea
 op_assign
-id|hgafb_copyarea
+id|cfb_copyarea
 comma
+singleline_comment|//hgafb_copyarea,
 dot
 id|fb_imageblit
 op_assign
-id|hgafb_imageblit
+id|cfb_imageblit
 comma
+singleline_comment|//hgafb_imageblit,
 )brace
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------------------- *&n; *&n; * Functions in fb_info&n; * &n; * ------------------------------------------------------------------------- */
@@ -2088,16 +2099,6 @@ comma
 id|hga_vram_len
 op_div
 l_int|1024
-)paren
-suffix:semicolon
-id|hga_gfx_mode
-c_func
-(paren
-)paren
-suffix:semicolon
-id|hga_clear_screen
-c_func
-(paren
 )paren
 suffix:semicolon
 id|hga_fix.smem_start
@@ -2177,21 +2178,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-macro_line|#ifdef MODULE
-r_if
-c_cond
-(paren
-op_logical_neg
-id|nologo
-)paren
-id|hga_show_logo
-c_func
-(paren
-op_amp
-id|fb_info
-)paren
-suffix:semicolon
-macro_line|#endif /* MODULE */
 id|printk
 c_func
 (paren
