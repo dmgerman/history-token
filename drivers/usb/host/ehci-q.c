@@ -228,7 +228,6 @@ multiline_comment|/*------------------------------------------------------------
 multiline_comment|/* update halted (but potentially linked) qh */
 DECL|function|qh_update
 r_static
-r_inline
 r_void
 id|qh_update
 (paren
@@ -866,36 +865,6 @@ id|token
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* hc&squot;s on-chip qh overlay cache can overwrite our idea of&n;&t;&t; * next qtd ptrs, if we appended a qtd while the queue was&n;&t;&t; * advancing.  (because we don&squot;t use dummy qtds.)&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|cpu_to_le32
-(paren
-id|qtd-&gt;qtd_dma
-)paren
-op_eq
-id|qh-&gt;hw_current
-op_logical_and
-id|qtd-&gt;hw_next
-op_ne
-id|qh-&gt;hw_qtd_next
-)paren
-(brace
-id|qh-&gt;hw_alt_next
-op_assign
-id|qtd-&gt;hw_alt_next
-suffix:semicolon
-id|qh-&gt;hw_qtd_next
-op_assign
-id|qtd-&gt;hw_next
-suffix:semicolon
-id|COUNT
-(paren
-id|ehci-&gt;stats.qpatch
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* clean up any state from previous QTD ...*/
 r_if
 c_cond
@@ -1884,8 +1853,19 @@ id|qtd-&gt;qtd_dma
 suffix:semicolon
 )brace
 multiline_comment|/* by default, enable interrupt on urb completion */
-singleline_comment|// ... do it always, unless we switch over to dummy qtds
-singleline_comment|//&t;if (likely (!(urb-&gt;transfer_flags &amp; URB_NO_INTERRUPT)))
+r_if
+c_cond
+(paren
+id|likely
+(paren
+op_logical_neg
+(paren
+id|urb-&gt;transfer_flags
+op_amp
+id|URB_NO_INTERRUPT
+)paren
+)paren
+)paren
 id|qtd-&gt;hw_token
 op_or_assign
 id|__constant_cpu_to_le32
@@ -2481,6 +2461,31 @@ id|qtd_list
 )paren
 )paren
 (brace
+r_struct
+id|ehci_qtd
+op_star
+id|qtd
+suffix:semicolon
+multiline_comment|/* hc&squot;s list view ends with dummy td; we might update it */
+id|qtd
+op_assign
+id|list_entry
+(paren
+id|qtd_list-&gt;prev
+comma
+r_struct
+id|ehci_qtd
+comma
+id|qtd_list
+)paren
+suffix:semicolon
+id|qtd-&gt;hw_next
+op_assign
+id|QTD_NEXT
+(paren
+id|qh-&gt;dummy-&gt;qtd_dma
+)paren
+suffix:semicolon
 id|list_splice
 (paren
 id|qtd_list
@@ -2489,10 +2494,8 @@ op_amp
 id|qh-&gt;qtd_list
 )paren
 suffix:semicolon
-id|qh_update
-(paren
-id|qh
-comma
+id|qtd
+op_assign
 id|list_entry
 (paren
 id|qtd_list-&gt;next
@@ -2502,6 +2505,12 @@ id|ehci_qtd
 comma
 id|qtd_list
 )paren
+suffix:semicolon
+id|qh_update
+(paren
+id|qh
+comma
+id|qtd
 )paren
 suffix:semicolon
 )brace
@@ -2932,14 +2941,69 @@ id|qtd
 r_struct
 id|ehci_qtd
 op_star
-id|last_qtd
+id|dummy
+suffix:semicolon
+id|dma_addr_t
+id|dma
 suffix:semicolon
 id|u32
-id|hw_next
+id|token
 suffix:semicolon
-multiline_comment|/* update the last qtd&squot;s &quot;next&quot; pointer */
-singleline_comment|// dbg_qh (&quot;non-empty qh&quot;, ehci, qh);
-id|last_qtd
+multiline_comment|/* to avoid racing the HC, use the dummy td instead of&n;&t;&t;&t; * the first td of our list (becomes new dummy).  both&n;&t;&t;&t; * tds stay deactivated until we&squot;re done, when the&n;&t;&t;&t; * HC is allowed to fetch the old dummy (4.10.2).&n;&t;&t;&t; */
+id|token
+op_assign
+id|qtd-&gt;hw_token
+suffix:semicolon
+id|qtd-&gt;hw_token
+op_assign
+l_int|0
+suffix:semicolon
+id|dummy
+op_assign
+id|qh-&gt;dummy
+suffix:semicolon
+singleline_comment|// dbg (&quot;swap td %p with dummy %p&quot;, qtd, dummy);
+id|dma
+op_assign
+id|dummy-&gt;qtd_dma
+suffix:semicolon
+op_star
+id|dummy
+op_assign
+op_star
+id|qtd
+suffix:semicolon
+id|dummy-&gt;qtd_dma
+op_assign
+id|dma
+suffix:semicolon
+id|list_del
+(paren
+op_amp
+id|qtd-&gt;qtd_list
+)paren
+suffix:semicolon
+id|list_add
+(paren
+op_amp
+id|dummy-&gt;qtd_list
+comma
+id|qtd_list
+)paren
+suffix:semicolon
+id|ehci_qtd_init
+(paren
+id|qtd
+comma
+id|qtd-&gt;qtd_dma
+)paren
+suffix:semicolon
+id|qh-&gt;dummy
+op_assign
+id|qtd
+suffix:semicolon
+multiline_comment|/* hc must see the new dummy at list end */
+id|qtd
 op_assign
 id|list_entry
 (paren
@@ -2951,52 +3015,52 @@ comma
 id|qtd_list
 )paren
 suffix:semicolon
-id|hw_next
+id|qtd-&gt;hw_next
 op_assign
 id|QTD_NEXT
 (paren
-id|qtd-&gt;qtd_dma
+id|dma
 )paren
 suffix:semicolon
-id|last_qtd-&gt;hw_next
-op_assign
-id|hw_next
-suffix:semicolon
-multiline_comment|/* previous urb allows short rx? maybe optimize. */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|last_qtd-&gt;urb-&gt;transfer_flags
-op_amp
-id|URB_SHORT_NOT_OK
-)paren
-op_logical_and
-(paren
-id|epnum
-op_amp
-l_int|0x10
-)paren
-)paren
-(brace
-singleline_comment|// only the last QTD for now
-id|last_qtd-&gt;hw_alt_next
-op_assign
-id|hw_next
-suffix:semicolon
-)brace
-multiline_comment|/* qh_completions() may need to patch the qh overlay if&n;&t;&t;&t; * the hc was advancing this queue while we appended.&n;&t;&t;&t; * we know it can: last_qtd-&gt;hw_token has IOC set.&n;&t;&t;&t; *&n;&t;&t;&t; * or:  use a dummy td (so the overlay gets the next td&n;&t;&t;&t; * only when we set its active bit); fewer irqs.&n;&t;&t;&t; */
+multiline_comment|/* let the hc process these next qtds */
 id|wmb
 (paren
 )paren
+suffix:semicolon
+id|dummy-&gt;hw_token
+op_assign
+id|token
 suffix:semicolon
 multiline_comment|/* no URB queued */
 )brace
 r_else
 (brace
+r_struct
+id|ehci_qtd
+op_star
+id|last_qtd
+suffix:semicolon
+multiline_comment|/* make sure hc sees current dummy at the end */
+id|last_qtd
+op_assign
+id|list_entry
+(paren
+id|qtd_list-&gt;prev
+comma
+r_struct
+id|ehci_qtd
+comma
+id|qtd_list
+)paren
+suffix:semicolon
+id|last_qtd-&gt;hw_next
+op_assign
+id|QTD_NEXT
+(paren
+id|qh-&gt;dummy-&gt;qtd_dma
+)paren
+suffix:semicolon
 singleline_comment|// dbg_qh (&quot;empty qh&quot;, ehci, qh);
-multiline_comment|/* NOTE: we already canceled any queued URBs&n;&t;&t;&t; * when the endpoint halted.&n;&t;&t;&t; */
 multiline_comment|/* usb_clear_halt() means qh data toggle gets reset */
 r_if
 c_cond

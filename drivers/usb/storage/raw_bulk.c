@@ -1,6 +1,5 @@
-multiline_comment|/*&n; * Common routines for a handful of drivers.&n; * Unrelated to CF/SM - just USB stuff.&n; *&n; * This is mostly a thin layer on top of transport.c.&n; * It converts routines that return values like -EPIPE&n; * into routines that return USB_STOR_TRANSPORT_ABORTED etc.&n; *&n; * There is also some debug printing here.&n; */
-macro_line|#include &quot;debug.h&quot;
-macro_line|#include &quot;transport.h&quot;
+multiline_comment|/*&n; * Common routines for a handful of drivers.&n; * Unrelated to CF/SM - just scatter-gather stuff.&n; */
+macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;raw_bulk.h&quot;
 multiline_comment|/*&n; * The routines below convert scatter-gather to single buffer.&n; * Some drivers claim this is necessary.&n; * Nothing is done when use_sg is zero.&n; */
 multiline_comment|/*&n; * Copy from scatter-gather buffer into a newly allocated single buffer,&n; * starting at a given index and offset.&n; * When done, update index and offset.&n; * Return a pointer to the single buffer.&n; */

@@ -268,14 +268,6 @@ DECL|member|current_page
 r_int
 id|current_page
 suffix:semicolon
-DECL|member|crtc_offset
-id|u32
-id|crtc_offset
-suffix:semicolon
-DECL|member|crtc_offset_cntl
-id|u32
-id|crtc_offset_cntl
-suffix:semicolon
 DECL|member|color_fmt
 id|u32
 id|color_fmt
@@ -766,6 +758,10 @@ DECL|macro|RADEON_CRTC_TILE_EN
 macro_line|#&t;define RADEON_CRTC_TILE_EN&t;&t;(1 &lt;&lt; 15)
 DECL|macro|RADEON_CRTC_OFFSET_FLIP_CNTL
 macro_line|#&t;define RADEON_CRTC_OFFSET_FLIP_CNTL&t;(1 &lt;&lt; 16)
+DECL|macro|RADEON_CRTC2_OFFSET
+mdefine_line|#define RADEON_CRTC2_OFFSET&t;&t;0x0324
+DECL|macro|RADEON_CRTC2_OFFSET_CNTL
+mdefine_line|#define RADEON_CRTC2_OFFSET_CNTL&t;0x0328
 DECL|macro|RADEON_RB3D_COLORPITCH
 mdefine_line|#define RADEON_RB3D_COLORPITCH&t;&t;0x1c48
 DECL|macro|RADEON_DP_GUI_MASTER_CNTL
@@ -1390,6 +1386,12 @@ DECL|macro|RADEON_TXFORMAT_VYUY422
 mdefine_line|#define RADEON_TXFORMAT_VYUY422         10
 DECL|macro|RADEON_TXFORMAT_YVYU422
 mdefine_line|#define RADEON_TXFORMAT_YVYU422         11
+DECL|macro|RADEON_TXFORMAT_DXT1
+mdefine_line|#define RADEON_TXFORMAT_DXT1            12
+DECL|macro|RADEON_TXFORMAT_DXT23
+mdefine_line|#define RADEON_TXFORMAT_DXT23           14
+DECL|macro|RADEON_TXFORMAT_DXT45
+mdefine_line|#define RADEON_TXFORMAT_DXT45           15
 DECL|macro|R200_PP_TXCBLEND_0
 mdefine_line|#define R200_PP_TXCBLEND_0                0x2f00
 DECL|macro|R200_PP_TXCBLEND_1
@@ -1444,6 +1446,78 @@ DECL|macro|R200_PP_TXOFFSET_1
 mdefine_line|#define R200_PP_TXOFFSET_1                0x2d18
 DECL|macro|R200_PP_TXOFFSET_0
 mdefine_line|#define R200_PP_TXOFFSET_0                0x2d00
+DECL|macro|R200_PP_CUBIC_FACES_0
+mdefine_line|#define R200_PP_CUBIC_FACES_0             0x2c18
+DECL|macro|R200_PP_CUBIC_FACES_1
+mdefine_line|#define R200_PP_CUBIC_FACES_1             0x2c38
+DECL|macro|R200_PP_CUBIC_FACES_2
+mdefine_line|#define R200_PP_CUBIC_FACES_2             0x2c58
+DECL|macro|R200_PP_CUBIC_FACES_3
+mdefine_line|#define R200_PP_CUBIC_FACES_3             0x2c78
+DECL|macro|R200_PP_CUBIC_FACES_4
+mdefine_line|#define R200_PP_CUBIC_FACES_4             0x2c98
+DECL|macro|R200_PP_CUBIC_FACES_5
+mdefine_line|#define R200_PP_CUBIC_FACES_5             0x2cb8
+DECL|macro|R200_PP_CUBIC_OFFSET_F1_0
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F1_0         0x2d04
+DECL|macro|R200_PP_CUBIC_OFFSET_F2_0
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F2_0         0x2d08
+DECL|macro|R200_PP_CUBIC_OFFSET_F3_0
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F3_0         0x2d0c
+DECL|macro|R200_PP_CUBIC_OFFSET_F4_0
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F4_0         0x2d10
+DECL|macro|R200_PP_CUBIC_OFFSET_F5_0
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F5_0         0x2d14
+DECL|macro|R200_PP_CUBIC_OFFSET_F1_1
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F1_1         0x2d1c
+DECL|macro|R200_PP_CUBIC_OFFSET_F2_1
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F2_1         0x2d20
+DECL|macro|R200_PP_CUBIC_OFFSET_F3_1
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F3_1         0x2d24
+DECL|macro|R200_PP_CUBIC_OFFSET_F4_1
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F4_1         0x2d28
+DECL|macro|R200_PP_CUBIC_OFFSET_F5_1
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F5_1         0x2d2c
+DECL|macro|R200_PP_CUBIC_OFFSET_F1_2
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F1_2         0x2d34
+DECL|macro|R200_PP_CUBIC_OFFSET_F2_2
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F2_2         0x2d38
+DECL|macro|R200_PP_CUBIC_OFFSET_F3_2
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F3_2         0x2d3c
+DECL|macro|R200_PP_CUBIC_OFFSET_F4_2
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F4_2         0x2d40
+DECL|macro|R200_PP_CUBIC_OFFSET_F5_2
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F5_2         0x2d44
+DECL|macro|R200_PP_CUBIC_OFFSET_F1_3
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F1_3         0x2d4c
+DECL|macro|R200_PP_CUBIC_OFFSET_F2_3
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F2_3         0x2d50
+DECL|macro|R200_PP_CUBIC_OFFSET_F3_3
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F3_3         0x2d54
+DECL|macro|R200_PP_CUBIC_OFFSET_F4_3
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F4_3         0x2d58
+DECL|macro|R200_PP_CUBIC_OFFSET_F5_3
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F5_3         0x2d5c
+DECL|macro|R200_PP_CUBIC_OFFSET_F1_4
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F1_4         0x2d64
+DECL|macro|R200_PP_CUBIC_OFFSET_F2_4
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F2_4         0x2d68
+DECL|macro|R200_PP_CUBIC_OFFSET_F3_4
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F3_4         0x2d6c
+DECL|macro|R200_PP_CUBIC_OFFSET_F4_4
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F4_4         0x2d70
+DECL|macro|R200_PP_CUBIC_OFFSET_F5_4
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F5_4         0x2d74
+DECL|macro|R200_PP_CUBIC_OFFSET_F1_5
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F1_5         0x2d7c
+DECL|macro|R200_PP_CUBIC_OFFSET_F2_5
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F2_5         0x2d80
+DECL|macro|R200_PP_CUBIC_OFFSET_F3_5
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F3_5         0x2d84
+DECL|macro|R200_PP_CUBIC_OFFSET_F4_5
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F4_5         0x2d88
+DECL|macro|R200_PP_CUBIC_OFFSET_F5_5
+mdefine_line|#define R200_PP_CUBIC_OFFSET_F5_5         0x2d8c
 DECL|macro|R200_RE_AUX_SCISSOR_CNTL
 mdefine_line|#define R200_RE_AUX_SCISSOR_CNTL          0x26f0
 DECL|macro|R200_SE_VTE_CNTL

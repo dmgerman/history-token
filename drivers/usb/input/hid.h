@@ -564,7 +564,7 @@ mdefine_line|#define HID_REPORT_TYPES 3
 DECL|macro|HID_BUFFER_SIZE
 mdefine_line|#define HID_BUFFER_SIZE&t;&t;32
 DECL|macro|HID_CONTROL_FIFO_SIZE
-mdefine_line|#define HID_CONTROL_FIFO_SIZE&t;64
+mdefine_line|#define HID_CONTROL_FIFO_SIZE&t;256&t;&t;/* to init devices with &gt;100 reports */
 DECL|macro|HID_OUTPUT_FIFO_SIZE
 mdefine_line|#define HID_OUTPUT_FIFO_SIZE&t;64
 DECL|struct|hid_control_fifo

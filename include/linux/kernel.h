@@ -541,7 +541,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if DEBUG
+macro_line|#ifdef DEBUG
 DECL|macro|pr_debug
 mdefine_line|#define pr_debug(fmt,arg...) &bslash;&n;&t;printk(KERN_DEBUG fmt,##arg)
 macro_line|#else

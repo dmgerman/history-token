@@ -2001,7 +2001,7 @@ op_star
 id|interface
 suffix:semicolon
 r_struct
-id|usb_host_endpoint
+id|usb_endpoint_descriptor
 op_star
 id|endpoint
 suffix:semicolon
@@ -2214,14 +2214,6 @@ id|interface
 op_assign
 id|intf-&gt;altsetting
 suffix:semicolon
-id|endpoint
-op_assign
-op_amp
-id|interface-&gt;endpoint
-(braket
-l_int|0
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * Start checking for two bulk endpoints OR two bulk endpoints *and* one&n; * interrupt endpoint. If we have an interrupt endpoint go ahead and&n; * setup the handler. FIXME: This is a future enhancement...&n; */
 id|dbg
 c_func
@@ -2279,6 +2271,16 @@ OL
 id|interface-&gt;desc.bNumEndpoints
 )paren
 (brace
+id|endpoint
+op_assign
+op_amp
+id|interface-&gt;endpoint
+(braket
+id|ep_cnt
+)braket
+dot
+id|desc
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2289,9 +2291,6 @@ id|IS_EP_BULK_IN
 c_func
 (paren
 id|endpoint
-(braket
-id|ep_cnt
-)braket
 )paren
 )paren
 (brace
@@ -2323,9 +2322,6 @@ id|IS_EP_BULK_OUT
 c_func
 (paren
 id|endpoint
-(braket
-id|ep_cnt
-)braket
 )paren
 )paren
 (brace
@@ -2357,9 +2353,6 @@ id|IS_EP_INTR
 c_func
 (paren
 id|endpoint
-(braket
-id|ep_cnt
-)braket
 )paren
 )paren
 (brace

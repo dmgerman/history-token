@@ -49,9 +49,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.1&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.2&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Aug 30, 2002&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;Nov 14, 2002&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -9957,8 +9957,8 @@ op_minus
 id|skb-&gt;data_len
 )paren
 suffix:semicolon
-multiline_comment|/* No BH disabling for tx_lock here.  We are running in BH disabled&n;&t; * context and TX reclaim runs via tp-&gt;poll inside of a software&n;&t; * interrupt.  Rejoice!&n;&t; */
-id|spin_lock
+multiline_comment|/* No BH disabling for tx_lock here.  We are running in BH disabled&n;&t; * context and TX reclaim runs via tp-&gt;poll inside of a software&n;&t; * interrupt.  Rejoice!&n;&t; *&n;&t; * Actually, things are not so simple.  If we are to take a hw&n;&t; * IRQ here, we can deadlock, consider:&n;&t; *&n;&t; *       CPU1&t;&t;CPU2&n;&t; *   tg3_start_xmit&n;&t; *   take tp-&gt;tx_lock&n;&t; *&t;&t;&t;tg3_timer&n;&t; *&t;&t;&t;take tp-&gt;lock&n;&t; *   tg3_interrupt&n;&t; *   spin on tp-&gt;lock&n;&t; *&t;&t;&t;spin on tp-&gt;tx_lock&n;&t; *&n;&t; * So we really do need to disable interrupts when taking&n;&t; * tx_lock here.&n;&t; */
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -9998,7 +9998,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -10723,7 +10723,7 @@ id|dev
 suffix:semicolon
 id|out_unlock
 suffix:colon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -10782,8 +10782,8 @@ op_minus
 id|skb-&gt;data_len
 )paren
 suffix:semicolon
-multiline_comment|/* No BH disabling for tx_lock here.  We are running in BH disabled&n;&t; * context and TX reclaim runs via tp-&gt;poll inside of a software&n;&t; * interrupt.  Rejoice!&n;&t; */
-id|spin_lock
+multiline_comment|/* No BH disabling for tx_lock here.  We are running in BH disabled&n;&t; * context and TX reclaim runs via tp-&gt;poll inside of a software&n;&t; * interrupt.  Rejoice!&n;&t; *&n;&t; * Actually, things are not so simple.  If we are to take a hw&n;&t; * IRQ here, we can deadlock, consider:&n;&t; *&n;&t; *       CPU1&t;&t;CPU2&n;&t; *   tg3_start_xmit&n;&t; *   take tp-&gt;tx_lock&n;&t; *&t;&t;&t;tg3_timer&n;&t; *&t;&t;&t;take tp-&gt;lock&n;&t; *   tg3_interrupt&n;&t; *   spin on tp-&gt;lock&n;&t; *&t;&t;&t;spin on tp-&gt;tx_lock&n;&t; *&n;&t; * So we really do need to disable interrupts when taking&n;&t; * tx_lock here.&n;&t; */
+id|spin_lock_irq
 c_func
 (paren
 op_amp
@@ -10823,7 +10823,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -11313,7 +11313,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp

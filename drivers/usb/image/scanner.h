@@ -1326,13 +1326,13 @@ id|scanner_device_ids
 )paren
 suffix:semicolon
 DECL|macro|IS_EP_BULK
-mdefine_line|#define IS_EP_BULK(ep)  ((ep).desc.bmAttributes == USB_ENDPOINT_XFER_BULK ? 1 : 0)
+mdefine_line|#define IS_EP_BULK(ep)  ((ep)-&gt;bmAttributes == USB_ENDPOINT_XFER_BULK ? 1 : 0)
 DECL|macro|IS_EP_BULK_IN
-mdefine_line|#define IS_EP_BULK_IN(ep) (IS_EP_BULK(ep) &amp;&amp; ((ep).desc.bEndpointAddress &amp; USB_ENDPOINT_DIR_MASK) == USB_DIR_IN)
+mdefine_line|#define IS_EP_BULK_IN(ep) (IS_EP_BULK(ep) &amp;&amp; ((ep)-&gt;bEndpointAddress &amp; USB_ENDPOINT_DIR_MASK) == USB_DIR_IN)
 DECL|macro|IS_EP_BULK_OUT
-mdefine_line|#define IS_EP_BULK_OUT(ep) (IS_EP_BULK(ep) &amp;&amp; ((ep).desc.bEndpointAddress &amp; USB_ENDPOINT_DIR_MASK) == USB_DIR_OUT)
+mdefine_line|#define IS_EP_BULK_OUT(ep) (IS_EP_BULK(ep) &amp;&amp; ((ep)-&gt;bEndpointAddress &amp; USB_ENDPOINT_DIR_MASK) == USB_DIR_OUT)
 DECL|macro|IS_EP_INTR
-mdefine_line|#define IS_EP_INTR(ep) ((ep).desc.bmAttributes == USB_ENDPOINT_XFER_INT ? 1 : 0)
+mdefine_line|#define IS_EP_INTR(ep) ((ep)-&gt;bmAttributes == USB_ENDPOINT_XFER_INT ? 1 : 0)
 DECL|macro|USB_SCN_MINOR
 mdefine_line|#define USB_SCN_MINOR(X) minor((X)-&gt;i_rdev) - SCN_BASE_MNR
 macro_line|#ifdef DEBUG
