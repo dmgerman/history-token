@@ -1294,10 +1294,6 @@ id|ppc_md.init_IRQ
 op_assign
 id|iSeries_init_IRQ
 suffix:semicolon
-id|ppc_md.init_ras_IRQ
-op_assign
-l_int|NULL
-suffix:semicolon
 id|ppc_md.get_irq
 op_assign
 id|iSeries_get_irq

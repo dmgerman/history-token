@@ -72,14 +72,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|init_ras_IRQ
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|find_and_init_phbs
 c_func
 (paren
@@ -766,10 +758,6 @@ op_assign
 id|xics_get_irq
 suffix:semicolon
 )brace
-id|ppc_md.init_ras_IRQ
-op_assign
-id|init_ras_IRQ
-suffix:semicolon
 id|ppc_md.init
 op_assign
 id|chrp_init2
