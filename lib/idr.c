@@ -67,7 +67,7 @@ id|p-&gt;ary
 l_int|0
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_unlock
 c_func
@@ -729,7 +729,7 @@ id|ary
 l_int|0
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_new
 op_member_access_from_pointer
@@ -1492,7 +1492,7 @@ l_int|0
 comma
 id|idr_cache_ctor
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

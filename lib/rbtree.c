@@ -1071,7 +1071,7 @@ op_logical_neg
 id|n
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop

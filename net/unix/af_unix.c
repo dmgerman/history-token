@@ -8836,9 +8836,9 @@ l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
