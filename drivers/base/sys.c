@@ -318,6 +318,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|cls
+op_logical_and
 id|kset_get
 c_func
 (paren
