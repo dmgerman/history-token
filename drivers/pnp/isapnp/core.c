@@ -5327,7 +5327,7 @@ op_plus
 (paren
 id|tmp
 op_lshift
-l_int|2
+l_int|3
 )paren
 comma
 (paren
