@@ -64,6 +64,13 @@ suffix:semicolon
 id|u8
 id|bit
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|vi
+)paren
+suffix:semicolon
 id|ntfs_debug
 c_func
 (paren
@@ -91,13 +98,6 @@ r_int
 r_int
 )paren
 id|value
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|vi
 )paren
 suffix:semicolon
 id|BUG_ON
