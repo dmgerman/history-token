@@ -66,6 +66,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
 (paren
 id|res-&gt;irq_resource
 (braket
@@ -74,7 +75,7 @@ id|i
 dot
 id|flags
 op_amp
-id|IORESOURCE_IRQ
+id|IORESOURCE_UNSET
 )paren
 op_logical_and
 id|i
@@ -168,6 +169,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
 (paren
 id|res-&gt;dma_resource
 (braket
@@ -176,7 +178,7 @@ id|i
 dot
 id|flags
 op_amp
-id|IORESOURCE_DMA
+id|IORESOURCE_UNSET
 )paren
 op_logical_and
 id|i
@@ -273,6 +275,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
 (paren
 id|res-&gt;port_resource
 (braket
@@ -281,7 +284,7 @@ id|i
 dot
 id|flags
 op_amp
-id|IORESOURCE_IO
+id|IORESOURCE_UNSET
 )paren
 op_logical_and
 id|i
@@ -399,6 +402,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+op_logical_neg
 (paren
 id|res-&gt;mem_resource
 (braket
@@ -407,7 +411,7 @@ id|i
 dot
 id|flags
 op_amp
-id|IORESOURCE_MEM
+id|IORESOURCE_UNSET
 )paren
 op_logical_and
 id|i

@@ -3226,7 +3226,7 @@ c_func
 op_amp
 id|adapter-&gt;dev
 comma
-l_string|&quot;Unrecgonized version/stepping 0x%02x&quot;
+l_string|&quot;Unrecognized version/stepping 0x%02x&quot;
 l_string|&quot; Defaulting to LM85.&bslash;n&quot;
 comma
 id|verstep
@@ -3296,7 +3296,7 @@ c_func
 op_amp
 id|adapter-&gt;dev
 comma
-l_string|&quot;Unrecgonized version/stepping 0x%02x&quot;
+l_string|&quot;Unrecognized version/stepping 0x%02x&quot;
 l_string|&quot; Defaulting to ADM1027.&bslash;n&quot;
 comma
 id|verstep
@@ -5518,7 +5518,7 @@ id|lm85_driver
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Thanks to Richard Barrington for adding the LM85 to sensors-detect.&n; * Thanks to Margit Schubert-While &lt;margitsw@t-online.de&gt; for help with&n; *     post 2.7.0 CVS changes&n; */
+multiline_comment|/* Thanks to Richard Barrington for adding the LM85 to sensors-detect.&n; * Thanks to Margit Schubert-While &lt;margitsw@t-online.de&gt; for help with&n; *     post 2.7.0 CVS changes.&n; */
 id|MODULE_LICENSE
 c_func
 (paren

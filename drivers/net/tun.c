@@ -288,7 +288,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize net device. */
 DECL|function|tun_net_init
-r_int
+r_static
+r_void
 id|tun_net_init
 c_func
 (paren
@@ -309,15 +310,6 @@ id|tun_struct
 op_star
 )paren
 id|dev-&gt;priv
-suffix:semicolon
-id|DBG
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: tun_net_init&bslash;n&quot;
-comma
-id|tun-&gt;dev-&gt;name
-)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -406,10 +398,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/* Character device part */
 multiline_comment|/* Poll */
@@ -1427,10 +1415,6 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|dev-&gt;init
-op_assign
-id|tun_net_init
-suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
 (paren
@@ -1713,6 +1697,12 @@ suffix:semicolon
 id|tun-&gt;flags
 op_assign
 id|flags
+suffix:semicolon
+id|tun_net_init
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond

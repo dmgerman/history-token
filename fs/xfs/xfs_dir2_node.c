@@ -6685,8 +6685,17 @@ l_string|&quot;%llu needed freesp block %lld for&bslash;n&quot;
 l_string|&quot;  data block %lld, got %lld&bslash;n&quot;
 l_string|&quot;  ifbno %llu lastfbno %d&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|dp-&gt;i_ino
 comma
+(paren
+r_int
+r_int
+)paren
 id|XFS_DIR2_DB_TO_FDB
 c_func
 (paren
@@ -6695,10 +6704,23 @@ comma
 id|dbno
 )paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|dbno
 comma
+(paren
+r_int
+r_int
+)paren
 id|fbno
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|ifbno
 comma
 id|lastfbno
@@ -6715,11 +6737,16 @@ c_func
 (paren
 id|CE_ALERT
 comma
-l_string|&quot; fblk 0x%llu blkno %llu &quot;
+l_string|&quot; fblk 0x%p blkno %llu &quot;
 l_string|&quot;index %d magic 0x%x&bslash;n&quot;
 comma
 id|fblk
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|fblk-&gt;blkno
 comma
 id|fblk-&gt;index

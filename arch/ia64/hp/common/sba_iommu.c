@@ -25,15 +25,18 @@ mdefine_line|#define PFX &quot;IOC: &quot;
 multiline_comment|/*&n;** Enabling timing search of the pdir resource map.  Output in /proc.&n;** Disabled by default to optimize performance.&n;*/
 DECL|macro|PDIR_SEARCH_TIMING
 macro_line|#undef PDIR_SEARCH_TIMING
-multiline_comment|/*&n;** This option allows cards capable of 64bit DMA to bypass the IOMMU.  If&n;** not defined, all DMA will be 32bit and go through the TLB.&n;** There&squot;s potentially a conflict in the bio merge code with us&n;** advertising an iommu, but then bypassing it.  Since I/O MMU bypassing&n;** appears to give more performance than bio-level virtual merging, we&squot;ll&n;** do the former for now.&n;*/
+multiline_comment|/*&n;** This option allows cards capable of 64bit DMA to bypass the IOMMU.  If&n;** not defined, all DMA will be 32bit and go through the TLB.&n;** There&squot;s potentially a conflict in the bio merge code with us&n;** advertising an iommu, but then bypassing it.  Since I/O MMU bypassing&n;** appears to give more performance than bio-level virtual merging, we&squot;ll&n;** do the former for now.  NOTE: BYPASS_SG also needs to be undef&squot;d to&n;** completely restrict DMA to the IOMMU.&n;*/
 DECL|macro|ALLOW_IOV_BYPASS
 mdefine_line|#define ALLOW_IOV_BYPASS
+multiline_comment|/*&n;** This option specifically allows/disallows bypassing scatterlists with&n;** multiple entries.  Coalescing these entries can allow better DMA streaming&n;** and in some cases shows better performance than entirely bypassing the&n;** IOMMU.  Performance increase on the order of 1-2% sequential output/input&n;** using bonnie++ on a RAID0 MD device (sym2 &amp; mpt).&n;*/
+DECL|macro|ALLOW_IOV_BYPASS_SG
+macro_line|#undef ALLOW_IOV_BYPASS_SG
 multiline_comment|/*&n;** If a device prefetches beyond the end of a valid pdir entry, it will cause&n;** a hard failure, ie. MCA.  Version 3.0 and later of the zx1 LBA should&n;** disconnect on 4k boundaries and prevent such issues.  If the device is&n;** particularly agressive, this option will keep the entire pdir valid such&n;** that prefetching will hit a valid address.  This could severely impact&n;** error containment, and is therefore off by default.  The page that is&n;** used for spill-over is poisoned, so that should help debugging somewhat.&n;*/
 DECL|macro|FULL_VALID_PDIR
 macro_line|#undef FULL_VALID_PDIR
 DECL|macro|ENABLE_MARK_CLEAN
 mdefine_line|#define ENABLE_MARK_CLEAN
-multiline_comment|/*&n;** The number of debug flags is a clue - this code is fragile.&n;*/
+multiline_comment|/*&n;** The number of debug flags is a clue - this code is fragile.  NOTE: since&n;** tightening the use of res_lock the resource bitmap and actual pdir are no&n;** longer guaranteed to stay in sync.  The sanity checking code isn&squot;t going to&n;** like that.&n;*/
 DECL|macro|DEBUG_SBA_INIT
 macro_line|#undef DEBUG_SBA_INIT
 DECL|macro|DEBUG_SBA_RUN
@@ -98,9 +101,7 @@ mdefine_line|#define ASSERT(expr)
 macro_line|#endif
 multiline_comment|/*&n;** The number of pdir entries to &quot;free&quot; before issuing&n;** a read to PCOM register to flush out PCOM writes.&n;** Interacts with allocation granularity (ie 4 or 8 entries&n;** allocated and free&squot;d/purged at a time might make this&n;** less interesting).&n;*/
 DECL|macro|DELAYED_RESOURCE_CNT
-mdefine_line|#define DELAYED_RESOURCE_CNT&t;16
-DECL|macro|DEFAULT_DMA_HINT_REG
-mdefine_line|#define DEFAULT_DMA_HINT_REG&t;0
+mdefine_line|#define DELAYED_RESOURCE_CNT&t;64
 DECL|macro|ZX1_IOC_ID
 mdefine_line|#define ZX1_IOC_ID&t;((PCI_DEVICE_ID_HP_ZX1_IOC &lt;&lt; 16) | PCI_VENDOR_ID_HP)
 DECL|macro|REO_IOC_ID
@@ -190,16 +191,17 @@ op_star
 id|res_hint
 suffix:semicolon
 multiline_comment|/* next avail IOVP - circular search */
+DECL|member|dma_mask
+r_int
+r_int
+id|dma_mask
+suffix:semicolon
 DECL|member|res_lock
 id|spinlock_t
 id|res_lock
 suffix:semicolon
-DECL|member|hint_mask_pdir
-r_int
-r_int
-id|hint_mask_pdir
-suffix:semicolon
-multiline_comment|/* bits used for DMA hints */
+multiline_comment|/* protects the resource bitmap, but must be held when */
+multiline_comment|/* clearing pdir to prevent races with allocations. */
 DECL|member|res_bitshift
 r_int
 r_int
@@ -212,17 +214,13 @@ r_int
 id|res_size
 suffix:semicolon
 multiline_comment|/* size of resource map in bytes */
-DECL|member|hint_shift_pdir
-r_int
-r_int
-id|hint_shift_pdir
-suffix:semicolon
-DECL|member|dma_mask
-r_int
-r_int
-id|dma_mask
-suffix:semicolon
 macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
+DECL|member|saved_lock
+id|spinlock_t
+id|saved_lock
+suffix:semicolon
+multiline_comment|/* may want to try to get this on a separate cacheline */
+multiline_comment|/* than res_lock for bigger systems. */
 DECL|member|saved_cnt
 r_int
 id|saved_cnt
@@ -326,6 +324,36 @@ r_int
 id|reserve_sba_gart
 op_assign
 l_int|1
+suffix:semicolon
+r_static
+id|SBA_INLINE
+r_void
+id|sba_mark_invalid
+c_func
+(paren
+r_struct
+id|ioc
+op_star
+comma
+id|dma_addr_t
+comma
+r_int
+)paren
+suffix:semicolon
+r_static
+id|SBA_INLINE
+r_void
+id|sba_free_range
+c_func
+(paren
+r_struct
+id|ioc
+op_star
+comma
+id|dma_addr_t
+comma
+r_int
+)paren
 suffix:semicolon
 DECL|macro|sba_sg_address
 mdefine_line|#define sba_sg_address(sg)&t;(page_address((sg)-&gt;page) + (sg)-&gt;offset)
@@ -887,7 +915,7 @@ DECL|macro|PAGES_PER_RANGE
 mdefine_line|#define PAGES_PER_RANGE 1&t;/* could increase this to 4 or 8 if needed */
 multiline_comment|/* Convert from IOVP to IOVA and vice versa. */
 DECL|macro|SBA_IOVA
-mdefine_line|#define SBA_IOVA(ioc,iovp,offset,hint_reg) ((ioc-&gt;ibase) | (iovp) | (offset))
+mdefine_line|#define SBA_IOVA(ioc,iovp,offset) ((ioc-&gt;ibase) | (iovp) | (offset))
 DECL|macro|SBA_IOVP
 mdefine_line|#define SBA_IOVP(ioc,iova) ((iova) &amp; ~(ioc-&gt;ibase))
 DECL|macro|PDIR_ENTRY_SIZE
@@ -1040,16 +1068,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|bits_wanted
-OG
+id|likely
+c_func
 (paren
-id|BITS_PER_LONG
-op_div
-l_int|2
+id|bits_wanted
+op_eq
+l_int|1
 )paren
 )paren
 (brace
-multiline_comment|/* Search word at a time - no mask needed */
+r_int
+r_int
+id|bitshiftcnt
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1058,26 +1089,40 @@ id|res_ptr
 OL
 id|res_end
 suffix:semicolon
-op_increment
 id|res_ptr
+op_increment
 )paren
 (brace
 r_if
 c_cond
 (paren
-op_star
-id|res_ptr
-op_eq
-l_int|0
-)paren
-(brace
-op_star
-id|res_ptr
-op_assign
-id|RESMAP_MASK
+id|likely
 c_func
 (paren
-id|bits_wanted
+op_star
+id|res_ptr
+op_ne
+op_complement
+l_int|0UL
+)paren
+)paren
+(brace
+id|bitshiftcnt
+op_assign
+id|ffz
+c_func
+(paren
+op_star
+id|res_ptr
+)paren
+suffix:semicolon
+op_star
+id|res_ptr
+op_or_assign
+(paren
+l_int|1UL
+op_lshift
+id|bitshiftcnt
 )paren
 suffix:semicolon
 id|pide
@@ -1101,20 +1146,38 @@ op_lshift_assign
 l_int|3
 suffix:semicolon
 multiline_comment|/* convert to bit address */
-r_break
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* point to the next word on next pass */
-id|res_ptr
-op_increment
+id|pide
+op_add_assign
+id|bitshiftcnt
 suffix:semicolon
 id|ioc-&gt;res_bitshift
 op_assign
-l_int|0
+id|bitshiftcnt
+op_plus
+id|bits_wanted
+suffix:semicolon
+r_goto
+id|found_it
 suffix:semicolon
 )brace
-r_else
+)brace
+r_goto
+id|not_found
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|bits_wanted
+op_le
+id|BITS_PER_LONG
+op_div
+l_int|2
+)paren
+)paren
 (brace
 multiline_comment|/*&n;&t;&t;** Search the resource bit map on well-aligned values.&n;&t;&t;** &quot;o&quot; is the alignment.&n;&t;&t;** We need the alignment to invalidate I/O TLB using&n;&t;&t;** SBA HW features in the unmap path.&n;&t;&t;*/
 r_int
@@ -1145,30 +1208,20 @@ suffix:semicolon
 r_int
 r_int
 id|mask
+comma
+id|base_mask
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|bitshiftcnt
-op_ge
-id|BITS_PER_LONG
-)paren
-(brace
-id|bitshiftcnt
-op_assign
-l_int|0
-suffix:semicolon
-id|res_ptr
-op_increment
-suffix:semicolon
-)brace
-id|mask
+id|base_mask
 op_assign
 id|RESMAP_MASK
 c_func
 (paren
 id|bits_wanted
 )paren
+suffix:semicolon
+id|mask
+op_assign
+id|base_mask
 op_lshift
 id|bitshiftcnt
 suffix:semicolon
@@ -1184,12 +1237,16 @@ comma
 id|res_ptr
 )paren
 suffix:semicolon
-r_while
+r_for
 c_loop
 (paren
+suffix:semicolon
 id|res_ptr
 OL
 id|res_end
+suffix:semicolon
+id|res_ptr
+op_increment
 )paren
 (brace
 id|DBG_RES
@@ -1213,6 +1270,21 @@ op_ne
 id|mask
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|mask
+suffix:semicolon
+id|mask
+op_lshift_assign
+id|o
+comma
+id|bitshiftcnt
+op_add_assign
+id|o
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -1259,59 +1331,209 @@ id|pide
 op_add_assign
 id|bitshiftcnt
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|mask
-op_lshift_assign
-id|o
-suffix:semicolon
-id|bitshiftcnt
-op_add_assign
-id|o
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_eq
-id|mask
-)paren
-(brace
-id|mask
-op_assign
-id|RESMAP_MASK
-c_func
-(paren
-id|bits_wanted
-)paren
-suffix:semicolon
-id|bitshiftcnt
-op_assign
-l_int|0
-suffix:semicolon
-id|res_ptr
-op_increment
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* look in the same word on the next pass */
 id|ioc-&gt;res_bitshift
 op_assign
 id|bitshiftcnt
 op_plus
 id|bits_wanted
 suffix:semicolon
+r_goto
+id|found_it
+suffix:semicolon
 )brace
-multiline_comment|/* wrapped ? */
+)brace
+id|bitshiftcnt
+op_assign
+l_int|0
+suffix:semicolon
+id|mask
+op_assign
+id|base_mask
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_int
+id|qwords
+comma
+id|bits
+comma
+id|i
+suffix:semicolon
+r_int
+r_int
+op_star
+id|end
+suffix:semicolon
+id|qwords
+op_assign
+id|bits_wanted
+op_rshift
+l_int|6
+suffix:semicolon
+multiline_comment|/* /64 */
+id|bits
+op_assign
+id|bits_wanted
+op_minus
+(paren
+id|qwords
+op_star
+id|BITS_PER_LONG
+)paren
+suffix:semicolon
+id|end
+op_assign
+id|res_end
+op_minus
+id|qwords
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|res_ptr
+OL
+id|end
+suffix:semicolon
+id|res_ptr
+op_increment
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|qwords
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|res_end
-op_le
 id|res_ptr
+(braket
+id|i
+)braket
+op_ne
+l_int|0
 )paren
-(brace
+r_goto
+id|next_ptr
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|bits
+op_logical_and
+id|res_ptr
+(braket
+id|i
+)braket
+op_logical_and
+(paren
+id|__ffs
+c_func
+(paren
+id|res_ptr
+(braket
+id|i
+)braket
+)paren
+OL
+id|bits
+)paren
+)paren
+r_continue
+suffix:semicolon
+multiline_comment|/* Found it, mark it */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|qwords
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|res_ptr
+(braket
+id|i
+)braket
+op_assign
+op_complement
+l_int|0UL
+suffix:semicolon
+id|res_ptr
+(braket
+id|i
+)braket
+op_or_assign
+id|RESMAP_MASK
+c_func
+(paren
+id|bits
+)paren
+suffix:semicolon
+id|pide
+op_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|res_ptr
+op_minus
+(paren
+r_int
+r_int
+)paren
+id|ioc-&gt;res_map
+)paren
+suffix:semicolon
+id|pide
+op_lshift_assign
+l_int|3
+suffix:semicolon
+multiline_comment|/* convert to bit address */
+id|res_ptr
+op_add_assign
+id|qwords
+suffix:semicolon
+id|ioc-&gt;res_bitshift
+op_assign
+id|bits
+suffix:semicolon
+r_goto
+id|found_it
+suffix:semicolon
+id|next_ptr
+suffix:colon
+suffix:semicolon
+)brace
+)brace
+id|not_found
+suffix:colon
+id|prefetch
+c_func
+(paren
+id|ioc-&gt;res_map
+)paren
+suffix:semicolon
 id|ioc-&gt;res_hint
 op_assign
 (paren
@@ -1325,14 +1547,17 @@ id|ioc-&gt;res_bitshift
 op_assign
 l_int|0
 suffix:semicolon
-)brace
-r_else
-(brace
+r_return
+(paren
+id|pide
+)paren
+suffix:semicolon
+id|found_it
+suffix:colon
 id|ioc-&gt;res_hint
 op_assign
 id|res_ptr
 suffix:semicolon
-)brace
 r_return
 (paren
 id|pide
@@ -1367,29 +1592,20 @@ macro_line|#ifdef PDIR_SEARCH_TIMING
 r_int
 r_int
 id|itc_start
-op_assign
-id|ia64_get_itc
-c_func
-(paren
-)paren
 suffix:semicolon
 macro_line|#endif
 r_int
 r_int
 id|pide
 suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|pages_needed
-)paren
+r_int
+r_int
+id|flags
 suffix:semicolon
 id|ASSERT
 c_func
 (paren
 id|pages_needed
-op_le
-id|BITS_PER_LONG
 )paren
 suffix:semicolon
 id|ASSERT
@@ -1405,6 +1621,24 @@ id|iovp_mask
 )paren
 )paren
 suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ioc-&gt;res_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+macro_line|#ifdef PDIR_SEARCH_TIMING
+id|itc_start
+op_assign
+id|ia64_get_itc
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t;** &quot;seek and ye shall find&quot;...praying never hurts either...&n;&t;*/
 id|pide
 op_assign
@@ -1419,12 +1653,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|pide
 op_ge
 (paren
 id|ioc-&gt;res_size
 op_lshift
 l_int|3
+)paren
 )paren
 )paren
 (brace
@@ -1441,12 +1679,131 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|pide
 op_ge
 (paren
 id|ioc-&gt;res_size
 op_lshift
 l_int|3
+)paren
+)paren
+)paren
+(brace
+macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
+multiline_comment|/*&n;&t;&t;&t;** With delayed resource freeing, we can give this one more shot.  We&squot;re&n;&t;&t;&t;** getting close to being in trouble here, so do what we can to make this&n;&t;&t;&t;** one count.&n;&t;&t;&t;*/
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ioc-&gt;saved_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioc-&gt;saved_cnt
+OG
+l_int|0
+)paren
+(brace
+r_struct
+id|sba_dma_pair
+op_star
+id|d
+suffix:semicolon
+r_int
+id|cnt
+op_assign
+id|ioc-&gt;saved_cnt
+suffix:semicolon
+id|d
+op_assign
+op_amp
+(paren
+id|ioc-&gt;saved
+(braket
+id|ioc-&gt;saved_cnt
+)braket
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|cnt
+op_decrement
+)paren
+(brace
+id|sba_mark_invalid
+c_func
+(paren
+id|ioc
+comma
+id|d-&gt;iova
+comma
+id|d-&gt;size
+)paren
+suffix:semicolon
+id|sba_free_range
+c_func
+(paren
+id|ioc
+comma
+id|d-&gt;iova
+comma
+id|d-&gt;size
+)paren
+suffix:semicolon
+id|d
+op_decrement
+suffix:semicolon
+)brace
+id|ioc-&gt;saved_cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|READ_REG
+c_func
+(paren
+id|ioc-&gt;ioc_hpa
+op_plus
+id|IOC_PCOM
+)paren
+suffix:semicolon
+multiline_comment|/* flush purges */
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ioc-&gt;saved_lock
+)paren
+suffix:semicolon
+id|pide
+op_assign
+id|sba_search_bitmap
+c_func
+(paren
+id|ioc
+comma
+id|pages_needed
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|pide
+op_ge
+(paren
+id|ioc-&gt;res_size
+op_lshift
+l_int|3
+)paren
 )paren
 )paren
 id|panic
@@ -1458,7 +1815,56 @@ comma
 id|ioc-&gt;ioc_hpa
 )paren
 suffix:semicolon
+macro_line|#else
+id|panic
+c_func
+(paren
+id|__FILE__
+l_string|&quot;: I/O MMU @ %p is out of mapping resources&bslash;n&quot;
+comma
+id|ioc-&gt;ioc_hpa
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
+)brace
+macro_line|#ifdef PDIR_SEARCH_TIMING
+id|ioc-&gt;avg_search
+(braket
+id|ioc-&gt;avg_idx
+op_increment
+)braket
+op_assign
+(paren
+id|ia64_get_itc
+c_func
+(paren
+)paren
+op_minus
+id|itc_start
+)paren
+op_div
+id|pages_needed
+suffix:semicolon
+id|ioc-&gt;avg_idx
+op_and_assign
+id|SBA_SEARCH_SAMPLE
+op_minus
+l_int|1
+suffix:semicolon
+macro_line|#endif
+id|prefetchw
+c_func
+(paren
+op_amp
+(paren
+id|ioc-&gt;pdir_base
+(braket
+id|pide
+)braket
+)paren
+)paren
+suffix:semicolon
 macro_line|#ifdef ASSERT_PDIR_SANITY
 multiline_comment|/* verify the first enable bit is clear */
 r_if
@@ -1527,27 +1933,15 @@ comma
 id|ioc-&gt;res_bitshift
 )paren
 suffix:semicolon
-macro_line|#ifdef PDIR_SEARCH_TIMING
-id|ioc-&gt;avg_search
-(braket
-id|ioc-&gt;avg_idx
-op_increment
-)braket
-op_assign
-id|ia64_get_itc
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ioc-&gt;res_lock
+comma
+id|flags
 )paren
-op_minus
-id|itc_start
 suffix:semicolon
-id|ioc-&gt;avg_idx
-op_and_assign
-id|SBA_SEARCH_SAMPLE
-op_minus
-l_int|1
-suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|pide
@@ -1637,9 +2031,52 @@ id|size
 op_rshift
 id|iovp_shift
 suffix:semicolon
+r_int
+r_int
+id|m
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|bits_not_wanted
+OG
+l_int|0
+suffix:semicolon
+id|res_ptr
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|bits_not_wanted
+OG
+id|BITS_PER_LONG
+)paren
+)paren
+(brace
+multiline_comment|/* these mappings start 64bit aligned */
+op_star
+id|res_ptr
+op_assign
+l_int|0UL
+suffix:semicolon
+id|bits_not_wanted
+op_sub_assign
+id|BITS_PER_LONG
+suffix:semicolon
+id|pide
+op_add_assign
+id|BITS_PER_LONG
+suffix:semicolon
+)brace
+r_else
+(brace
 multiline_comment|/* 3-bits &quot;bit&quot; address plus 2 (or 3) bits for &quot;byte&quot; == bit in word */
-r_int
-r_int
 id|m
 op_assign
 id|RESMAP_MASK
@@ -1657,6 +2094,10 @@ op_minus
 l_int|1
 )paren
 )paren
+suffix:semicolon
+id|bits_not_wanted
+op_assign
+l_int|0
 suffix:semicolon
 id|DBG_RES
 c_func
@@ -1702,26 +2143,6 @@ id|ASSERT
 c_func
 (paren
 (paren
-id|bits_not_wanted
-op_star
-id|iovp_size
-)paren
-op_le
-id|DMA_CHUNK_SIZE
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|bits_not_wanted
-op_le
-id|BITS_PER_LONG
-)paren
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-(paren
 op_star
 id|res_ptr
 op_amp
@@ -1739,9 +2160,9 @@ op_complement
 id|m
 suffix:semicolon
 )brace
+)brace
+)brace
 multiline_comment|/**************************************************************&n;*&n;*   &quot;Dynamic DMA Mapping&quot; support (aka &quot;Coherent I/O&quot;)&n;*&n;***************************************************************/
-DECL|macro|SBA_DMA_HINT
-mdefine_line|#define SBA_DMA_HINT(ioc, val) ((val) &lt;&lt; (ioc)-&gt;hint_shift_pdir)
 multiline_comment|/**&n; * sba_io_pdir_entry - fill in one IO PDIR entry&n; * @pdir_ptr:  pointer to IO PDIR entry&n; * @vba: Virtual CPU address of buffer to map&n; *&n; * SBA Mapping Routine&n; *&n; * Given a virtual address (vba, arg1) sba_io_pdir_entry()&n; * loads the I/O PDIR entry pointed to by pdir_ptr (arg0).&n; * Each IO Pdir entry consists of 8 bytes as shown below&n; * (LSB == bit 0):&n; *&n; *  63                    40                                 11    7        0&n; * +-+---------------------+----------------------------------+----+--------+&n; * |V|        U            |            PPN[39:12]            | U  |   FF   |&n; * +-+---------------------+----------------------------------+----+--------+&n; *&n; *  V  == Valid Bit&n; *  U  == Unused&n; * PPN == Physical Page Number&n; *&n; * The physical address fields are filled with the results of virt_to_phys()&n; * on the vba.&n; */
 macro_line|#if 1
 DECL|macro|sba_io_pdir_entry
@@ -2129,10 +2550,6 @@ id|ioc
 op_star
 id|ioc
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|dma_addr_t
 id|iovp
 suffix:semicolon
@@ -2146,6 +2563,12 @@ suffix:semicolon
 r_int
 id|pide
 suffix:semicolon
+macro_line|#ifdef ASSERT_PDIR_SANITY
+r_int
+r_int
+id|flags
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef ALLOW_IOV_BYPASS
 r_int
 r_int
@@ -2157,6 +2580,65 @@ c_func
 id|addr
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef ALLOW_IOV_BYPASS
+id|ASSERT
+c_func
+(paren
+id|to_pci_dev
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|dma_mask
+)paren
+suffix:semicolon
+multiline_comment|/*&n; &t;** Check if the PCI device can DMA to ptr... if so, just return ptr&n; &t;*/
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+(paren
+id|pci_addr
+op_amp
+op_complement
+id|to_pci_dev
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|dma_mask
+)paren
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+multiline_comment|/*&n; &t;&t;** Device is bit capable of DMA&squot;ing to the buffer...&n;&t;&t;** just return the PCI address of ptr&n; &t;&t;*/
+id|DBG_BYPASS
+c_func
+(paren
+l_string|&quot;sba_map_single() bypass mask/addr: 0x%lx/0x%lx&bslash;n&quot;
+comma
+id|to_pci_dev
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|dma_mask
+comma
+id|pci_addr
+)paren
+suffix:semicolon
+r_return
+id|pci_addr
+suffix:semicolon
+)brace
 macro_line|#endif
 id|ioc
 op_assign
@@ -2172,43 +2654,12 @@ c_func
 id|ioc
 )paren
 suffix:semicolon
-macro_line|#ifdef ALLOW_IOV_BYPASS
-multiline_comment|/*&n; &t;** Check if the PCI device can DMA to ptr... if so, just return ptr&n; &t;*/
-r_if
-c_cond
-(paren
-id|dev
-op_logical_and
-id|dev-&gt;dma_mask
-op_logical_and
-(paren
-id|pci_addr
-op_amp
-op_complement
-op_star
-id|dev-&gt;dma_mask
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-multiline_comment|/*&n; &t;&t;** Device is bit capable of DMA&squot;ing to the buffer...&n;&t;&t;** just return the PCI address of ptr&n; &t;&t;*/
-id|DBG_BYPASS
+id|prefetch
 c_func
 (paren
-l_string|&quot;sba_map_single() bypass mask/addr: 0x%lx/0x%lx&bslash;n&quot;
-comma
-op_star
-id|dev-&gt;dma_mask
-comma
-id|pci_addr
+id|ioc-&gt;res_hint
 )paren
 suffix:semicolon
-r_return
-id|pci_addr
-suffix:semicolon
-)brace
-macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -2255,6 +2706,7 @@ id|iovp_mask
 op_amp
 id|iovp_mask
 suffix:semicolon
+macro_line|#ifdef ASSERT_PDIR_SANITY
 id|spin_lock_irqsave
 c_func
 (paren
@@ -2264,7 +2716,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef ASSERT_PDIR_SANITY
 r_if
 c_cond
 (paren
@@ -2280,6 +2731,15 @@ id|panic
 c_func
 (paren
 l_string|&quot;Sanity check failed&quot;
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ioc-&gt;res_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2398,6 +2858,15 @@ c_func
 suffix:semicolon
 multiline_comment|/* form complete address */
 macro_line|#ifdef ASSERT_PDIR_SANITY
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ioc-&gt;res_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|sba_check_pdir
 c_func
 (paren
@@ -2406,7 +2875,6 @@ comma
 l_string|&quot;Check after sba_map_single()&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -2416,6 +2884,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 id|SBA_IOVA
 c_func
@@ -2425,8 +2894,6 @@ comma
 id|iovp
 comma
 id|offset
-comma
-id|DEFAULT_DMA_HINT_REG
 )paren
 suffix:semicolon
 )brace
@@ -2488,6 +2955,9 @@ macro_line|#ifdef ALLOW_IOV_BYPASS
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 (paren
 id|iova
 op_amp
@@ -2495,6 +2965,7 @@ id|ioc-&gt;imask
 )paren
 op_ne
 id|ioc-&gt;ibase
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;** Address does not fall w/in IOVA, must be bypassing&n;&t;&t;*/
@@ -2574,16 +3045,16 @@ comma
 id|iovp_size
 )paren
 suffix:semicolon
+macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
 id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|ioc-&gt;res_lock
+id|ioc-&gt;saved_lock
 comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
 id|d
 op_assign
 op_amp
@@ -2605,6 +3076,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_increment
 (paren
 id|ioc-&gt;saved_cnt
@@ -2612,11 +3086,19 @@ id|ioc-&gt;saved_cnt
 op_ge
 id|DELAYED_RESOURCE_CNT
 )paren
+)paren
 (brace
 r_int
 id|cnt
 op_assign
 id|ioc-&gt;saved_cnt
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|ioc-&gt;res_lock
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -2662,8 +3144,33 @@ id|IOC_PCOM
 )paren
 suffix:semicolon
 multiline_comment|/* flush purges */
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|ioc-&gt;res_lock
+)paren
+suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ioc-&gt;saved_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 macro_line|#else /* DELAYED_RESOURCE_CNT == 0 */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ioc-&gt;res_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|sba_mark_invalid
 c_func
 (paren
@@ -2693,6 +3200,15 @@ id|IOC_PCOM
 )paren
 suffix:semicolon
 multiline_comment|/* flush purges */
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ioc-&gt;res_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 macro_line|#endif /* DELAYED_RESOURCE_CNT == 0 */
 macro_line|#ifdef ENABLE_MARK_CLEAN
 r_if
@@ -2817,16 +3333,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ioc-&gt;res_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* XXX REVISIT for 2.5 Linux - need syncdma for zero-copy support.&n;&t;** For Astro based systems this isn&squot;t a big deal WRT performance.&n;&t;** As long as 2.4 kernels copyin/copyout data from/to userspace,&n;&t;** we don&squot;t need the syncdma. The issue here is I/O MMU cachelines&n;&t;** are *not* coherent in all cases.  May be hwrev dependent.&n;&t;** Need to investigate more.&n;&t;asm volatile(&quot;syncdma&quot;);&n;&t;*/
 )brace
 multiline_comment|/**&n; * sba_alloc_coherent - allocate/map shared mem for DMA&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @dma_handle:  IOVA of new buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 r_void
@@ -2880,13 +3386,96 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|addr
+)paren
 )paren
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t; * REVISIT: if sba_map_single starts needing more than dma_mask from the&n;&t; * device, this needs to be updated.&n;&t; */
+id|memset
+c_func
+(paren
+id|addr
+comma
+l_int|0
+comma
+id|size
+)paren
+suffix:semicolon
+op_star
+id|dma_handle
+op_assign
+id|virt_to_phys
+c_func
+(paren
+id|addr
+)paren
+suffix:semicolon
+macro_line|#ifdef ALLOW_IOV_BYPASS
+id|ASSERT
+c_func
+(paren
+id|to_pci_dev
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|consistent_dma_mask
+)paren
+suffix:semicolon
+multiline_comment|/*&n; &t;** Check if the PCI device can DMA to ptr... if so, just return ptr&n; &t;*/
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+(paren
+op_star
+id|dma_handle
+op_amp
+op_complement
+id|to_pci_dev
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|consistent_dma_mask
+)paren
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+id|DBG_BYPASS
+c_func
+(paren
+l_string|&quot;sba_alloc_coherent() bypass mask/addr: 0x%lx/0x%lx&bslash;n&quot;
+comma
+id|to_pci_dev
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|consistent_dma_mask
+comma
+op_star
+id|dma_handle
+)paren
+suffix:semicolon
+r_return
+id|addr
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/*&n;&t; * If device can&squot;t bypass or bypass is disabled, pass the 32bit fake&n;&t; * device to map single to get an iova mapping.&n;&t; */
 id|ioc
 op_assign
 id|GET_IOC
@@ -2915,16 +3504,6 @@ comma
 id|size
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|addr
-comma
-l_int|0
-comma
-id|size
 )paren
 suffix:semicolon
 r_return
@@ -3616,11 +4195,13 @@ id|filled
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef ASSERT_PDIR_SANITY
 r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef ALLOW_IOV_BYPASS
+macro_line|#endif
+macro_line|#ifdef ALLOW_IOV_BYPASS_SG
 r_struct
 id|scatterlist
 op_star
@@ -3651,23 +4232,40 @@ c_func
 id|ioc
 )paren
 suffix:semicolon
-macro_line|#ifdef ALLOW_IOV_BYPASS
+macro_line|#ifdef ALLOW_IOV_BYPASS_SG
+id|ASSERT
+c_func
+(paren
+id|to_pci_dev
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|dma_mask
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev
-op_logical_and
-id|dev-&gt;dma_mask
-op_logical_and
+id|likely
+c_func
+(paren
 (paren
 id|ioc-&gt;dma_mask
 op_amp
 op_complement
-op_star
-id|dev-&gt;dma_mask
+id|to_pci_dev
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|dma_mask
 )paren
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 r_for
@@ -3745,6 +4343,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#ifdef ASSERT_PDIR_SANITY
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3754,7 +4353,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#ifdef ASSERT_PDIR_SANITY
 r_if
 c_cond
 (paren
@@ -3784,7 +4382,22 @@ l_string|&quot;Check before sba_map_sg()&quot;
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ioc-&gt;res_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 macro_line|#endif
+id|prefetch
+c_func
+(paren
+id|ioc-&gt;res_hint
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;** First coalesce the chunks and allocate I/O pdir space&n;&t;**&n;&t;** If this is one DMA stream, we can properly map using the&n;&t;** correct virtual address associated with each DMA page.&n;&t;** w/o this association, we wouldn&squot;t have coherent DMA!&n;&t;** Access to the virtual address is what forces a two pass algorithm.&n;&t;*/
 id|coalesced
 op_assign
@@ -3812,6 +4425,15 @@ id|nents
 )paren
 suffix:semicolon
 macro_line|#ifdef ASSERT_PDIR_SANITY
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ioc-&gt;res_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3841,7 +4463,6 @@ l_string|&quot;Check after sba_map_sg()&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3851,6 +4472,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#endif
 id|ASSERT
 c_func
 (paren
@@ -3895,12 +4517,12 @@ r_int
 id|dir
 )paren
 (brace
+macro_line|#ifdef ASSERT_PDIR_SANITY
 r_struct
 id|ioc
 op_star
 id|ioc
 suffix:semicolon
-macro_line|#ifdef ASSERT_PDIR_SANITY
 r_int
 r_int
 id|flags
@@ -3924,6 +4546,7 @@ comma
 id|sglist-&gt;length
 )paren
 suffix:semicolon
+macro_line|#ifdef ASSERT_PDIR_SANITY
 id|ioc
 op_assign
 id|GET_IOC
@@ -3938,7 +4561,6 @@ c_func
 id|ioc
 )paren
 suffix:semicolon
-macro_line|#ifdef ASSERT_PDIR_SANITY
 id|spin_lock_irqsave
 c_func
 (paren
@@ -4656,6 +5278,15 @@ op_amp
 id|ioc-&gt;res_lock
 )paren
 suffix:semicolon
+macro_line|#if DELAYED_RESOURCE_CNT &gt; 0
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|ioc-&gt;saved_lock
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* resource map size dictated by pdir_size */
 id|ioc-&gt;res_size
 op_assign
@@ -5621,9 +6252,17 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;IOVA size       : %d MB&bslash;n&quot;
+l_string|&quot;IOVA size       : %ld MB&bslash;n&quot;
 comma
-id|ioc-&gt;iov_size
+(paren
+(paren
+id|ioc-&gt;pdir_size
+op_rshift
+l_int|3
+)paren
+op_star
+id|iovp_size
+)paren
 op_div
 (paren
 l_int|1024
@@ -5685,8 +6324,8 @@ id|s
 comma
 l_string|&quot;PDIR size       : %d entries&bslash;n&quot;
 comma
-id|ioc-&gt;res_size
-op_lshift
+id|ioc-&gt;pdir_size
+op_rshift
 l_int|3
 )paren
 suffix:semicolon
@@ -5791,7 +6430,7 @@ c_func
 (paren
 id|s
 comma
-l_string|&quot;Bitmap search   : %ld/%ld/%ld (min/avg/max CPU Cycles)&bslash;n&quot;
+l_string|&quot;Bitmap search   : %ld/%ld/%ld (min/avg/max CPU Cycles/IOVA page)&bslash;n&quot;
 comma
 id|min
 comma

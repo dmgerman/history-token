@@ -13,8 +13,6 @@ c_func
 r_void
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren

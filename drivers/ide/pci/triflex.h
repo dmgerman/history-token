@@ -48,11 +48,10 @@ comma
 r_int
 )paren
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|triflex_proc
 r_static
 id|ide_pci_host_proc_t
 id|triflex_proc
-id|__initdata
 op_assign
 (brace
 dot

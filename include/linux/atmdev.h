@@ -245,10 +245,7 @@ DECL|macro|ATM_VS2TXT_MAP
 mdefine_line|#define ATM_VS2TXT_MAP &bslash;&n;    &quot;IDLE&quot;, &quot;CONNECTED&quot;, &quot;CLOSING&quot;, &quot;LISTEN&quot;, &quot;INUSE&quot;, &quot;BOUND&quot;
 DECL|macro|ATM_VF2TXT_MAP
 mdefine_line|#define ATM_VF2TXT_MAP &bslash;&n;    &quot;ADDR&quot;,&t;&quot;READY&quot;,&t;&quot;PARTIAL&quot;,&t;&quot;REGIS&quot;, &bslash;&n;    &quot;RELEASED&quot;, &quot;HASQOS&quot;,&t;&quot;LISTEN&quot;,&t;&quot;META&quot;, &bslash;&n;    &quot;256&quot;,&t;&quot;512&quot;,&t;&t;&quot;1024&quot;,&t;&t;&quot;2048&quot;, &bslash;&n;    &quot;SESSION&quot;,&t;&quot;HASSAP&quot;,&t;&quot;BOUND&quot;,&t;&quot;CLOSE&quot;
-macro_line|#ifndef __KERNEL__
-DECL|macro|__AAL_STAT_ITEMS
-macro_line|#undef __AAL_STAT_ITEMS
-macro_line|#else
+macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/wait.h&gt; /* wait_queue_head_t */
 macro_line|#include &lt;linux/time.h&gt; /* struct timeval */
 macro_line|#include &lt;linux/net.h&gt;

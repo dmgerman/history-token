@@ -123,6 +123,16 @@ r_int
 id|irq
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|systemcfg-&gt;platform
+op_eq
+id|PLATFORM_POWERMAC
+)paren
+r_return
+id|irq
+suffix:semicolon
 r_return
 id|irq
 op_add_assign

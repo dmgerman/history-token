@@ -157,7 +157,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S%d TX I(%d) S%d R%d&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|lapb-&gt;state
 comma
@@ -575,7 +575,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S%d TX %02X %02X %02X&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|lapb-&gt;state
 comma
@@ -649,7 +649,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S%d TX SABME(1)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|lapb-&gt;state
 )paren
@@ -677,7 +677,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S%d TX SABM(1)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|lapb-&gt;state
 )paren
@@ -727,7 +727,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S%d TX RR(1) R%d&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|lapb-&gt;state
 comma
@@ -771,7 +771,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S%d TX RR(0) R%d&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|lapb-&gt;state
 comma

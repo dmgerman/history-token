@@ -58,7 +58,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S0 RX SABM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -79,7 +79,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S0 TX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -107,7 +107,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S0 TX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -120,7 +120,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S0 -&gt; S3&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -193,7 +193,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S0 RX SABME(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -214,7 +214,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S0 TX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -227,7 +227,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S0 -&gt; S3&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -297,7 +297,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S0 TX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -328,7 +328,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S0 RX DISC(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -339,7 +339,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S0 TX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -410,7 +410,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 RX SABM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -431,7 +431,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 TX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -459,7 +459,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 TX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -490,7 +490,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 RX SABME(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -511,7 +511,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 TX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -539,7 +539,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 TX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -570,7 +570,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 RX DISC(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -581,7 +581,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 TX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -611,7 +611,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 RX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -630,7 +630,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 -&gt; S3&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -691,7 +691,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 RX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -710,7 +710,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S1 -&gt; S0&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -797,7 +797,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 RX {SABM,SABME}(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -808,7 +808,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 TX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -838,7 +838,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 RX DISC(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -849,7 +849,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 TX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -879,7 +879,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 RX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -898,7 +898,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 -&gt; S0&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -939,7 +939,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 RX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -958,7 +958,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 -&gt; S0&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1009,7 +1009,7 @@ id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 RX {I,REJ,RNR,RR}&quot;
 l_string|&quot;(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -1020,7 +1020,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S2 RX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -1111,7 +1111,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 RX SABM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -1132,7 +1132,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 TX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -1160,7 +1160,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 TX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -1229,7 +1229,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 RX SABME(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -1250,7 +1250,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 TX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -1316,7 +1316,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 TX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -1347,7 +1347,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 RX DISC(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -1360,7 +1360,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 -&gt; S0&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1418,7 +1418,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 RX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -1431,7 +1431,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 -&gt; S0&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1477,7 +1477,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 RX RNR(%d) R%d&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 comma
@@ -1544,7 +1544,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 -&gt; S4&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1581,7 +1581,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 RX RR(%d) R%d&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 comma
@@ -1649,7 +1649,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 -&gt; S4&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1686,7 +1686,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 RX REJ(%d) R%d&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 comma
@@ -1770,7 +1770,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 -&gt; S4&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1807,7 +1807,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 RX I(%d) S%d R%d&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 comma
@@ -1852,7 +1852,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 -&gt; S4&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2030,7 +2030,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 TX REJ(%d) R%d&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 comma
@@ -2074,7 +2074,7 @@ id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 RX FRMR(%d) %02X &quot;
 l_string|&quot;%02X %02X %02X %02X&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 comma
@@ -2118,7 +2118,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 -&gt; S1&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2144,7 +2144,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 RX ILLEGAL(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -2172,7 +2172,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S3 -&gt; S4&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2251,7 +2251,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S4 RX SABM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -2272,7 +2272,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S4 TX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -2300,7 +2300,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S4 TX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -2313,7 +2313,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S4 -&gt; S3&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2386,7 +2386,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S4 RX SABME(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -2407,7 +2407,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S4 TX UA(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren
@@ -2420,7 +2420,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S4 -&gt; S3&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2490,7 +2490,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S4 TX DM(%d)&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|frame-&gt;pf
 )paren

@@ -741,5 +741,8 @@ DECL|macro|PWR_MGT_SLOWDOWN_MCLK
 mdefine_line|#define PWR_MGT_SLOWDOWN_MCLK&t;&t;&t;0x00002000
 DECL|macro|PMI_PMSCR_REG
 mdefine_line|#define PMI_PMSCR_REG&t;&t;&t;&t;0x60
+multiline_comment|/* used by ATI bug fix for hardware ROM */
+DECL|macro|RAGE128_MPP_TB_CONFIG
+mdefine_line|#define RAGE128_MPP_TB_CONFIG                   0x01c0
 macro_line|#endif&t;&t;&t;&t;/* REG_RAGE128_H */
 eof

@@ -447,64 +447,6 @@ DECL|typedef|xfs_perag_t
 )brace
 id|xfs_perag_t
 suffix:semicolon
-DECL|macro|XFS_AG_MIN_BYTES
-mdefine_line|#define&t;XFS_AG_MIN_BYTES&t;(1LL &lt;&lt; 24)&t;/* 16 MB */
-DECL|macro|XFS_AG_BEST_BYTES
-mdefine_line|#define&t;XFS_AG_BEST_BYTES&t;(1LL &lt;&lt; 30)&t;/*  1 GB */
-DECL|macro|XFS_AG_MAX_BYTES
-mdefine_line|#define&t;XFS_AG_MAX_BYTES&t;(1LL &lt;&lt; 32)&t;/*  4 GB */
-macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AG_MIN_BLOCKS)
-id|xfs_extlen_t
-id|xfs_ag_min_blocks
-c_func
-(paren
-r_int
-id|bl
-)paren
-suffix:semicolon
-DECL|macro|XFS_AG_MIN_BLOCKS
-mdefine_line|#define&t;XFS_AG_MIN_BLOCKS(bl)&t;&t;xfs_ag_min_blocks(bl)
-macro_line|#else
-DECL|macro|XFS_AG_MIN_BLOCKS
-mdefine_line|#define&t;XFS_AG_MIN_BLOCKS(bl)&t;((xfs_extlen_t)(XFS_AG_MIN_BYTES &gt;&gt; bl))
-macro_line|#endif
-macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AG_BEST_BLOCKS)
-id|xfs_extlen_t
-id|xfs_ag_best_blocks
-c_func
-(paren
-r_int
-id|bl
-comma
-id|xfs_drfsbno_t
-id|blks
-)paren
-suffix:semicolon
-DECL|macro|XFS_AG_BEST_BLOCKS
-mdefine_line|#define&t;XFS_AG_BEST_BLOCKS(bl,blks)&t;xfs_ag_best_blocks(bl,blks)
-macro_line|#else
-multiline_comment|/*--#define XFS_AG_BEST_BLOCKS(bl) ((xfs_extlen_t)(XFS_AG_BEST_BYTES &gt;&gt; bl))*/
-multiline_comment|/*&n; * Best is XFS_AG_BEST_BLOCKS at and below 64 Gigabyte filesystems, and&n; * XFS_AG_MAX_BLOCKS above 64 Gigabytes.&n; */
-DECL|macro|XFS_AG_BEST_BLOCKS
-mdefine_line|#define XFS_AG_BEST_BLOCKS(bl,blks)&t;&bslash;&n;&t;((xfs_extlen_t)((1LL &lt;&lt; (36 - bl)) &gt;= blks) ? &bslash;&n;&t;&t;((xfs_extlen_t)(XFS_AG_BEST_BYTES &gt;&gt; bl)) : &bslash;&n;&t;&t;XFS_AG_MAX_BLOCKS(bl))
-macro_line|#endif
-macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AG_MAX_BLOCKS)
-id|xfs_extlen_t
-id|xfs_ag_max_blocks
-c_func
-(paren
-r_int
-id|bl
-)paren
-suffix:semicolon
-DECL|macro|XFS_AG_MAX_BLOCKS
-mdefine_line|#define&t;XFS_AG_MAX_BLOCKS(bl)&t;&t;xfs_ag_max_blocks(bl)
-macro_line|#else
-DECL|macro|XFS_AG_MAX_BLOCKS
-mdefine_line|#define&t;XFS_AG_MAX_BLOCKS(bl)&t;((xfs_extlen_t)(XFS_AG_MAX_BYTES &gt;&gt; bl))
-macro_line|#endif
-DECL|macro|XFS_MAX_AGNUMBER
-mdefine_line|#define&t;XFS_MAX_AGNUMBER&t;((xfs_agnumber_t)(NULLAGNUMBER - 1))
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_AG_MAXLEVELS)
 r_int
 id|xfs_ag_maxlevels

@@ -31,6 +31,13 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|WATCHDOG_MINOR
+id|MODULE_ALIAS_MISCDEV
+c_func
+(paren
+id|WATCHDOG_MINOR
+)paren
+suffix:semicolon
 macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
 DECL|macro|CONFIG_WATCHDOG_NOWAYOUT
 mdefine_line|#define CONFIG_WATCHDOG_NOWAYOUT 0

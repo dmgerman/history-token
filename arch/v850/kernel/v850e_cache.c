@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * arch/v850/kernel/v850e_cache.c -- Cache control for V850E cache memories&n; *&n; *  Copyright (C) 2003  NEC Electronics Corporation&n; *  Copyright (C) 2003  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * Written by Miles Bader &lt;miles@gnu.org&gt;&n; */
 multiline_comment|/* This file implements cache control for the rather simple cache used on&n;   some V850E CPUs, specifically the NB85E/TEG CPU-core and the V850E/ME2&n;   CPU.  V850E2 processors have their own (better) cache&n;   implementation.  */
 macro_line|#include &lt;asm/entry.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/v850e_cache.h&gt;
 DECL|macro|WAIT_UNTIL_CLEAR
 mdefine_line|#define WAIT_UNTIL_CLEAR(value) while (value) {}

@@ -839,113 +839,6 @@ comma
 multiline_comment|/* Packet type handler irlap_frame.c */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Function irda_device_event (this, event, ptr)&n; *&n; *    Called when a device is taken up or down&n; *&n; */
-DECL|function|irda_device_event
-r_static
-r_int
-id|irda_device_event
-c_func
-(paren
-r_struct
-id|notifier_block
-op_star
-id|this
-comma
-r_int
-r_int
-id|event
-comma
-r_void
-op_star
-id|ptr
-)paren
-(brace
-r_struct
-id|net_device
-op_star
-id|dev
-op_assign
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-id|ptr
-suffix:semicolon
-multiline_comment|/* Reject non IrDA devices */
-r_if
-c_cond
-(paren
-id|dev-&gt;type
-op_ne
-id|ARPHRD_IRDA
-)paren
-r_return
-id|NOTIFY_DONE
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|event
-)paren
-(brace
-r_case
-id|NETDEV_UP
-suffix:colon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|3
-comma
-l_string|&quot;%s(), NETDEV_UP&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-multiline_comment|/* irda_dev_device_up(dev); */
-r_break
-suffix:semicolon
-r_case
-id|NETDEV_DOWN
-suffix:colon
-id|IRDA_DEBUG
-c_func
-(paren
-l_int|3
-comma
-l_string|&quot;%s(), NETDEV_DOWN&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-multiline_comment|/* irda_kill_by_device(dev); */
-multiline_comment|/* irda_rt_device_down(dev); */
-multiline_comment|/* irda_dev_device_down(dev); */
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
-r_return
-id|NOTIFY_DONE
-suffix:semicolon
-)brace
-DECL|variable|irda_dev_notifier
-r_static
-r_struct
-id|notifier_block
-id|irda_dev_notifier
-op_assign
-(brace
-id|irda_device_event
-comma
-l_int|NULL
-comma
-l_int|0
-)brace
-suffix:semicolon
 multiline_comment|/*&n; * Function irda_notify_init (notify)&n; *&n; *    Used for initializing the notify structure&n; *&n; */
 DECL|function|irda_notify_init
 r_void
@@ -1058,14 +951,6 @@ op_amp
 id|irda_packet_type
 )paren
 suffix:semicolon
-multiline_comment|/* Notifier for Interface changes */
-id|register_netdevice_notifier
-c_func
-(paren
-op_amp
-id|irda_dev_notifier
-)paren
-suffix:semicolon
 multiline_comment|/* External APIs */
 macro_line|#ifdef CONFIG_PROC_FS
 id|irda_proc_register
@@ -1122,14 +1007,6 @@ c_func
 (paren
 op_amp
 id|irda_packet_type
-)paren
-suffix:semicolon
-multiline_comment|/* Stop receiving interfaces notifications */
-id|unregister_netdevice_notifier
-c_func
-(paren
-op_amp
-id|irda_dev_notifier
 )paren
 suffix:semicolon
 multiline_comment|/* Remove higher layers */

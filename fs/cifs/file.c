@@ -4259,7 +4259,7 @@ suffix:semicolon
 id|kunmap_atomic
 c_func
 (paren
-id|page
+id|target
 comma
 id|KM_USER0
 )paren

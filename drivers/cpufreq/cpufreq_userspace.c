@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/cpufreq/cpufreq_userspace.c&n; *&n; *  Copyright (C)  2001 Russell King&n; *            (C)  2002 - 2003 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
+multiline_comment|/*&n; *  linux/drivers/cpufreq/cpufreq_userspace.c&n; *&n; *  Copyright (C)  2001 Russell King&n; *            (C)  2002 - 2004 Dominik Brodowski &lt;linux@brodo.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -204,9 +204,10 @@ id|cpu_max_freq
 id|cpu
 )braket
 suffix:semicolon
+multiline_comment|/*&n;&t; * We&squot;re safe from concurrent calls to -&gt;target() here&n;&t; * as we hold the userspace_sem lock. If we were calling&n;&t; * cpufreq_driver_target, a deadlock situation might occur:&n;&t; * A: cpufreq_set (lock userspace_sem) -&gt; cpufreq_driver_target(lock policy-&gt;lock)&n;&t; * B: cpufreq_set_policy(lock policy-&gt;lock) -&gt; __cpufreq_governor -&gt; cpufreq_governor_userspace (lock userspace_sem)&n;&t; */
 id|ret
 op_assign
-id|cpufreq_driver_target
+id|__cpufreq_driver_target
 c_func
 (paren
 op_amp

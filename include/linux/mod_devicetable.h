@@ -212,5 +212,59 @@ DECL|macro|CCW_DEVICE_ID_MATCH_DEVICE_TYPE
 mdefine_line|#define CCW_DEVICE_ID_MATCH_DEVICE_TYPE&t;&t;0x04
 DECL|macro|CCW_DEVICE_ID_MATCH_DEVICE_MODEL
 mdefine_line|#define CCW_DEVICE_ID_MATCH_DEVICE_MODEL&t;0x08
+DECL|macro|PNP_ID_LEN
+mdefine_line|#define PNP_ID_LEN&t;8
+DECL|macro|PNP_MAX_DEVICES
+mdefine_line|#define PNP_MAX_DEVICES&t;8
+DECL|struct|pnp_device_id
+r_struct
+id|pnp_device_id
+(brace
+DECL|member|id
+id|__u8
+id|id
+(braket
+id|PNP_ID_LEN
+)braket
+suffix:semicolon
+DECL|member|driver_data
+id|kernel_ulong_t
+id|driver_data
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|pnp_card_device_id
+r_struct
+id|pnp_card_device_id
+(brace
+DECL|member|id
+id|__u8
+id|id
+(braket
+id|PNP_ID_LEN
+)braket
+suffix:semicolon
+DECL|member|driver_data
+id|kernel_ulong_t
+id|driver_data
+suffix:semicolon
+r_struct
+(brace
+DECL|member|id
+id|__u8
+id|id
+(braket
+id|PNP_ID_LEN
+)braket
+suffix:semicolon
+DECL|member|devs
+)brace
+id|devs
+(braket
+id|PNP_MAX_DEVICES
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 macro_line|#endif /* LINUX_MOD_DEVICETABLE_H */
 eof

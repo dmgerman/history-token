@@ -14,6 +14,10 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_PPC_OF
+macro_line|#include &lt;asm/prom.h&gt;
+macro_line|#include &lt;asm/pci-bridge.h&gt;
+macro_line|#endif
 macro_line|#include &quot;rivafb.h&quot;
 macro_line|#include &quot;nvreg.h&quot;
 macro_line|#ifndef CONFIG_PCI&t;&t;/* sanity check */
@@ -8091,9 +8095,9 @@ id|riva_get_EDID_OF
 c_func
 (paren
 r_struct
-id|riva_par
+id|fb_info
 op_star
-id|par
+id|info
 comma
 r_struct
 id|pci_dev
@@ -8101,6 +8105,18 @@ op_star
 id|pd
 )paren
 (brace
+r_struct
+id|riva_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|riva_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 r_struct
 id|device_node
 op_star
