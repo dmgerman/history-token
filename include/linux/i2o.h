@@ -448,18 +448,21 @@ suffix:semicolon
 multiline_comment|/* Controller list */
 DECL|member|post_port
 r_void
+id|__iomem
 op_star
 id|post_port
 suffix:semicolon
 multiline_comment|/* Inbout port address */
 DECL|member|reply_port
 r_void
+id|__iomem
 op_star
 id|reply_port
 suffix:semicolon
 multiline_comment|/* Outbound port address */
 DECL|member|irq_mask
 r_void
+id|__iomem
 op_star
 id|irq_mask
 suffix:semicolon
@@ -741,6 +744,7 @@ op_star
 comma
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 op_star
 )paren
@@ -756,6 +760,7 @@ op_star
 comma
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 op_star
 comma
@@ -1645,6 +1650,7 @@ id|c
 comma
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 op_star
 id|msg
@@ -1820,6 +1826,7 @@ r_static
 r_inline
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|i2o_msg_in_to_virt
 c_func
