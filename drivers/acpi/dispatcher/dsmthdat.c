@@ -392,10 +392,10 @@ id|index
 )braket
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * A valid parameter.&n;&t;&t; * Store the argument in the method/walk descriptor&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * A valid parameter.&n;&t;&t; * Store the argument in the method/walk descriptor.&n;&t;&t; * Do not copy the arg in order to implement call by reference&n;&t;&t; */
 id|status
 op_assign
-id|acpi_ds_store_object_to_local
+id|acpi_ds_method_data_set_value
 (paren
 id|AML_ARG_OP
 comma
@@ -948,6 +948,15 @@ id|AE_AML_UNINITIALIZED_LOCAL
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Not Arg/Local opcode: %X&bslash;n&quot;
+comma
+id|opcode
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|AE_AML_INTERNAL
@@ -1210,7 +1219,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If the reference count on the object is more than one, we must&n;&t; * take a copy of the object before we store.&n;&t; */
+multiline_comment|/*&n;&t; * If the reference count on the object is more than one, we must&n;&t; * take a copy of the object before we store.  A reference count&n;&t; * of exactly 1 means that the object was just created during the&n;&t; * evaluation of an expression, and we can safely use it since it&n;&t; * is not used anywhere else.&n;&t; */
 id|new_obj_desc
 op_assign
 id|obj_desc
