@@ -367,7 +367,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|__remove_inode_page
+id|__remove_from_page_cache
 c_func
 (paren
 id|page
@@ -717,7 +717,8 @@ id|err
 )paren
 (brace
 multiline_comment|/* Remove it from the page cache */
-id|__remove_inode_page
+id|__remove_from_page_cache
+c_func
 (paren
 id|page
 )paren

@@ -2447,9 +2447,9 @@ l_int|0
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;zam-4001:&quot;
+l_string|&quot;zam-4001:%s inode has negative prealloc blocks count.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: inode has negative prealloc blocks count.&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif  
@@ -2535,9 +2535,9 @@ id|ei-&gt;i_prealloc_count
 id|reiserfs_warning
 c_func
 (paren
-l_string|&quot;zam-4001:&quot;
+l_string|&quot;zam-4001:%s: inode is in prealloc list but has no preallocated blocks.&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: inode is in prealloc list but has no preallocated blocks.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

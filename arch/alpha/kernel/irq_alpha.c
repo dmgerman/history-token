@@ -8,16 +8,6 @@ macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;irq_impl.h&quot;
-macro_line|#ifndef CONFIG_SMP
-DECL|variable|__irq_attempt
-r_int
-r_int
-id|__irq_attempt
-(braket
-id|NR_IRQS
-)braket
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Hack minimum IPL during interrupt processing for broken hardware.  */
 macro_line|#ifdef CONFIG_ALPHA_BROKEN_IRQ_MASK
 DECL|variable|__min_ipl
@@ -170,15 +160,6 @@ op_ne
 id|boot_cpuid
 )paren
 (brace
-id|irq_attempt
-c_func
-(paren
-id|cpu
-comma
-id|RTC_IRQ
-)paren
-op_increment
-suffix:semicolon
 id|kstat.irqs
 (braket
 id|cpu

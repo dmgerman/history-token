@@ -347,14 +347,16 @@ DECL|macro|SPRN_EAR
 mdefine_line|#define&t;SPRN_EAR&t;0x11A&t;/* External Address Register */
 DECL|macro|SPRN_ESR
 mdefine_line|#define&t;SPRN_ESR&t;0x3D4&t;/* Exception Syndrome Register */
+DECL|macro|ESR_MCI
+mdefine_line|#define&t;  ESR_MCI&t;0x80000000&t;/* 405 Machine Check - Instruction */
 DECL|macro|ESR_IMCP
-mdefine_line|#define&t;  ESR_IMCP&t;0x80000000&t;/* Instr. Machine Check - Protection */
+mdefine_line|#define&t;  ESR_IMCP&t;0x80000000&t;/* 403 Inst. Mach. Check - Protection */
 DECL|macro|ESR_IMCN
-mdefine_line|#define&t;  ESR_IMCN&t;0x40000000&t;/* Instr. Machine Check - Non-config */
+mdefine_line|#define&t;  ESR_IMCN&t;0x40000000&t;/* 403 Inst. Mach. Check - Non-config */
 DECL|macro|ESR_IMCB
-mdefine_line|#define&t;  ESR_IMCB&t;0x20000000&t;/* Instr. Machine Check - Bus error */
+mdefine_line|#define&t;  ESR_IMCB&t;0x20000000&t;/* 403 Inst. Mach. Check - Bus error */
 DECL|macro|ESR_IMCT
-mdefine_line|#define&t;  ESR_IMCT&t;0x10000000&t;/* Instr. Machine Check - Timeout */
+mdefine_line|#define&t;  ESR_IMCT&t;0x10000000&t;/* 403 Inst. Mach. Check - Timeout */
 DECL|macro|ESR_PIL
 mdefine_line|#define&t;  ESR_PIL&t;0x08000000&t;/* Program Exception - Illegal */
 DECL|macro|ESR_PPR
@@ -1376,10 +1378,25 @@ mdefine_line|#define KSTK_EIP(tsk)  ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.reg
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.regs? (tsk)-&gt;thread.regs-&gt;gpr[1]: 0)
 multiline_comment|/* Get/set floating-point exception mode */
-DECL|macro|GET_FP_EXC_MODE
-mdefine_line|#define GET_FP_EXC_MODE(tsk)&t;&t;__unpack_fe01((tsk)-&gt;thread.fpexc_mode)
-DECL|macro|SET_FP_EXC_MODE
-mdefine_line|#define SET_FP_EXC_MODE(tsk, val)&t;set_fpexc_mode((tsk), (val))
+DECL|macro|GET_FPEXC_CTL
+mdefine_line|#define GET_FPEXC_CTL(tsk, adr)&t;get_fpexc_mode((tsk), (adr))
+DECL|macro|SET_FPEXC_CTL
+mdefine_line|#define SET_FPEXC_CTL(tsk, val)&t;set_fpexc_mode((tsk), (val))
+r_extern
+r_int
+id|get_fpexc_mode
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_int
+r_int
+id|adr
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|set_fpexc_mode

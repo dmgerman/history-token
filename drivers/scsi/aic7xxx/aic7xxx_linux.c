@@ -6446,6 +6446,22 @@ op_star
 )paren
 id|dev_id
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ahc-&gt;platform_data-&gt;host
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;aic7xxx: interrupt while setup incomplete&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|ahc_lock
 c_func
 (paren

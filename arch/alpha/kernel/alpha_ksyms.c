@@ -24,6 +24,8 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/cacheflush.h&gt;
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -1063,13 +1065,6 @@ c_func
 id|cpu_data
 )paren
 suffix:semicolon
-DECL|variable|__cpu_number_map
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__cpu_number_map
-)paren
-suffix:semicolon
 DECL|variable|smp_num_cpus
 id|EXPORT_SYMBOL
 c_func
@@ -1089,41 +1084,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|smp_call_function_on_cpu
-)paren
-suffix:semicolon
-DECL|variable|global_irq_holder
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|global_irq_holder
-)paren
-suffix:semicolon
-DECL|variable|__global_cli
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_cli
-)paren
-suffix:semicolon
-DECL|variable|__global_sti
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_sti
-)paren
-suffix:semicolon
-DECL|variable|__global_save_flags
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_save_flags
-)paren
-suffix:semicolon
-DECL|variable|__global_restore_flags
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_restore_flags
 )paren
 suffix:semicolon
 DECL|variable|atomic_dec_and_lock

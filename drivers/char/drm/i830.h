@@ -14,6 +14,32 @@ DECL|macro|__HAVE_MTRR
 mdefine_line|#define __HAVE_MTRR&t;&t;1
 DECL|macro|__HAVE_CTX_BITMAP
 mdefine_line|#define __HAVE_CTX_BITMAP&t;1
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;VA Linux Systems Inc.&quot;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME&t;&t;&quot;i830&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&t;&quot;Intel 830M&quot;
+DECL|macro|DRIVER_DATE
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20011004&quot;
+DECL|macro|DRIVER_MAJOR
+mdefine_line|#define DRIVER_MAJOR&t;&t;1
+DECL|macro|DRIVER_MINOR
+mdefine_line|#define DRIVER_MINOR&t;&t;2
+DECL|macro|DRIVER_PATCHLEVEL
+mdefine_line|#define DRIVER_PATCHLEVEL&t;0
+DECL|macro|DRIVER_IOCTLS
+mdefine_line|#define DRIVER_IOCTLS&t;&t;&t;&t;&t;&t;&t;    &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_INIT)]   = { i830_dma_init,    1, 1 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_VERTEX)] = { i830_dma_vertex,  1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_CLEAR)]  = { i830_clear_bufs,  1, 0 }, &bslash;&n;      &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_FLUSH)]  = { i830_flush_ioctl, 1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_GETAGE)] = { i830_getage,      1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_I830_GETBUF)] = { i830_getbuf,      1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_SWAP)]   = { i830_swap_bufs,   1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_COPY)]   = { i830_copybuf,     1, 0 }, &bslash;&n;   &t;[DRM_IOCTL_NR(DRM_IOCTL_I830_DOCOPY)] = { i830_docopy,      1, 0 },
+DECL|macro|__HAVE_COUNTERS
+mdefine_line|#define __HAVE_COUNTERS         4
+DECL|macro|__HAVE_COUNTER6
+mdefine_line|#define __HAVE_COUNTER6         _DRM_STAT_IRQ
+DECL|macro|__HAVE_COUNTER7
+mdefine_line|#define __HAVE_COUNTER7         _DRM_STAT_PRIMARY
+DECL|macro|__HAVE_COUNTER8
+mdefine_line|#define __HAVE_COUNTER8         _DRM_STAT_SECONDARY
+DECL|macro|__HAVE_COUNTER9
+mdefine_line|#define __HAVE_COUNTER9         _DRM_STAT_DMA
 multiline_comment|/* Driver customization:&n; */
 DECL|macro|__HAVE_RELEASE
 mdefine_line|#define __HAVE_RELEASE&t;&t;1

@@ -2449,14 +2449,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
+id|local_irq_save
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* turn off Rx and Tx interrupts */
@@ -2473,7 +2469,8 @@ id|IF_RBF
 op_or
 id|IF_TBE
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
+c_func
 (paren
 id|flags
 )paren

@@ -335,6 +335,12 @@ r_struct
 id|erase_info
 id|instr
 suffix:semicolon
+DECL|member|disk
+r_struct
+id|gendisk
+op_star
+id|disk
+suffix:semicolon
 )brace
 suffix:semicolon
 r_int

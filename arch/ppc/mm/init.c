@@ -24,6 +24,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
+macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &quot;mem_pieces.h&quot;
 macro_line|#include &quot;mmu_decl.h&quot;
 macro_line|#ifdef CONFIG_LOWMEM_SIZE_BOOL
@@ -865,7 +866,17 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Figure out how much memory we have, how much&n;&t; * is lowmem, and how much is highmem.&n;&t; */
+multiline_comment|/*&n;&t; * Figure out how much memory we have, how much&n;&t; * is lowmem, and how much is highmem.  If we were&n;&t; * passed the total memory size from the bootloader,&n;&t; * just use it.&n;&t; */
+r_if
+c_cond
+(paren
+id|boot_mem_size
+)paren
+id|total_memory
+op_assign
+id|boot_mem_size
+suffix:semicolon
+r_else
 id|total_memory
 op_assign
 id|ppc_md

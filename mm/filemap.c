@@ -27,9 +27,9 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/*&n; * Remove a page from the page cache and free it. Caller has to make&n; * sure the page is locked and that nobody else uses it - or that usage&n; * is safe.  The caller must hold a write_lock on the mapping&squot;s page_lock.&n; */
-DECL|function|__remove_inode_page
+DECL|function|__remove_from_page_cache
 r_void
-id|__remove_inode_page
+id|__remove_from_page_cache
 c_func
 (paren
 r_struct
@@ -100,9 +100,9 @@ id|nr_pagecache
 )paren
 suffix:semicolon
 )brace
-DECL|function|remove_inode_page
+DECL|function|remove_from_page_cache
 r_void
-id|remove_inode_page
+id|remove_from_page_cache
 c_func
 (paren
 r_struct
@@ -145,7 +145,7 @@ op_amp
 id|mapping-&gt;page_lock
 )paren
 suffix:semicolon
-id|__remove_inode_page
+id|__remove_from_page_cache
 c_func
 (paren
 id|page
@@ -346,7 +346,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|__remove_inode_page
+id|__remove_from_page_cache
 c_func
 (paren
 id|page
@@ -547,7 +547,7 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|remove_inode_page
+id|remove_from_page_cache
 c_func
 (paren
 id|page
@@ -2924,36 +2924,6 @@ id|cached_page
 suffix:semicolon
 r_return
 id|page
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Returns locked page at given index in given cache, creating it if needed.&n; */
-DECL|function|grab_cache_page
-r_struct
-id|page
-op_star
-id|grab_cache_page
-c_func
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-comma
-r_int
-r_int
-id|index
-)paren
-(brace
-r_return
-id|find_or_create_page
-c_func
-(paren
-id|mapping
-comma
-id|index
-comma
-id|mapping-&gt;gfp_mask
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Same as grab_cache_page, but do not wait if the page is unavailable.&n; * This is intended for speculative data generators, where the data can&n; * be regenerated if the page couldn&squot;t be grabbed.  This routine should&n; * be safe to call while holding the lock for another page.&n; *&n; * Clear __GFP_FS when allocating the page to avoid recursion into the fs&n; * and deadlock against the caller&squot;s locked page.&n; */

@@ -200,7 +200,7 @@ mdefine_line|#define N_TXTOFF(x) &bslash;&n;  ((long) N_MAGIC(x) == ZMAGIC ? 0 :
 macro_line|#ifdef __KERNEL__
 multiline_comment|/* Assume that start addresses below 4G belong to a TASO application.&n;   Unfortunately, there is no proper bit in the exec header to check.&n;   Worse, we have to notice the start address before swapping to use&n;   /sbin/loader, which of course is _not_ a TASO application.  */
 DECL|macro|SET_AOUT_PERSONALITY
-mdefine_line|#define SET_AOUT_PERSONALITY(BFPM, EX) &bslash;&n;&t;set_personality (BFPM-&gt;sh_bang || EX.ah.entry &lt; 0x100000000 &bslash;&n;&t;&t;&t; ? PER_LINUX_32BIT : PER_LINUX)
+mdefine_line|#define SET_AOUT_PERSONALITY(BFPM, EX) &bslash;&n;&t;set_personality (((BFPM-&gt;sh_bang || EX.ah.entry &lt; 0x100000000 &bslash;&n;&t;&t;&t;   ? ADDR_LIMIT_32BIT : 0) | PER_OSF4))
 DECL|macro|STACK_TOP
 mdefine_line|#define STACK_TOP &bslash;&n;  (current-&gt;personality &amp; ADDR_LIMIT_32BIT ? 0x80000000 : 0x00120000000UL)
 macro_line|#endif
