@@ -64,7 +64,7 @@ l_string|&quot;blez&t;%0, 2f&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;addi&t;%0, #-1&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot;bgtz&t;%0, 1b&t;&t;&t;&bslash;n&bslash;t&quot;
 l_string|&quot; .fillinsn&t;&t;&t;&bslash;n&bslash;t&quot;
-l_string|&quot;2:i&t;&t;&t;&t;&bslash;n&bslash;t&quot;
+l_string|&quot;2:&t;&t;&t;&t;&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;+r&quot;
 (paren
