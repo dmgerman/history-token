@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;flask.h&quot;
 macro_line|#include &quot;avc.h&quot;
@@ -1995,7 +1996,6 @@ suffix:semicolon
 )brace
 DECL|function|compute_sid_handle_invalid_context
 r_static
-r_inline
 r_int
 id|compute_sid_handle_invalid_context
 c_func
@@ -2019,34 +2019,21 @@ op_star
 id|newcontext
 )paren
 (brace
-r_int
-id|rc
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|selinux_enforcing
-)paren
-(brace
-id|rc
-op_assign
-op_minus
-id|EACCES
-suffix:semicolon
-)brace
-r_else
-(brace
 r_char
 op_star
 id|s
+op_assign
+l_int|NULL
 comma
 op_star
 id|t
+op_assign
+l_int|NULL
 comma
 op_star
 id|n
+op_assign
+l_int|NULL
 suffix:semicolon
 id|u32
 id|slen
@@ -2055,6 +2042,9 @@ id|tlen
 comma
 id|nlen
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|context_struct_to_string
 c_func
 (paren
@@ -2066,7 +2056,15 @@ comma
 op_amp
 id|slen
 )paren
+OL
+l_int|0
+)paren
+r_goto
+id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|context_struct_to_string
 c_func
 (paren
@@ -2078,7 +2076,15 @@ comma
 op_amp
 id|tlen
 )paren
+OL
+l_int|0
+)paren
+r_goto
+id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|context_struct_to_string
 c_func
 (paren
@@ -2090,36 +2096,27 @@ comma
 op_amp
 id|nlen
 )paren
+OL
+l_int|0
+)paren
+r_goto
+id|out
 suffix:semicolon
-id|printk
+id|audit_log
 c_func
 (paren
-id|KERN_ERR
+id|current-&gt;audit_context
+comma
 l_string|&quot;security_compute_sid:  invalid context %s&quot;
+l_string|&quot; for scontext=%s&quot;
+l_string|&quot; tcontext=%s&quot;
+l_string|&quot; tclass=%s&quot;
 comma
 id|n
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; for scontext=%s&quot;
 comma
 id|s
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; tcontext=%s&quot;
 comma
 id|t
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; tclass=%s&bslash;n&quot;
 comma
 id|policydb.p_class_val_to_name
 (braket
@@ -2129,6 +2126,8 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|kfree
 c_func
 (paren
@@ -2147,9 +2146,18 @@ c_func
 id|n
 )paren
 suffix:semicolon
-)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|selinux_enforcing
+)paren
 r_return
-id|rc
+l_int|0
+suffix:semicolon
+r_return
+op_minus
+id|EACCES
 suffix:semicolon
 )brace
 DECL|function|security_compute_sid
