@@ -336,10 +336,14 @@ id|RTA_FLOW
 comma
 DECL|enumerator|RTA_CACHEINFO
 id|RTA_CACHEINFO
+comma
+DECL|enumerator|RTA_SESSION
+id|RTA_SESSION
+comma
 )brace
 suffix:semicolon
 DECL|macro|RTA_MAX
-mdefine_line|#define RTA_MAX RTA_CACHEINFO
+mdefine_line|#define RTA_MAX RTA_SESSION
 DECL|macro|RTM_RTA
 mdefine_line|#define RTM_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct rtmsg))))
 DECL|macro|RTM_PAYLOAD
@@ -490,6 +494,58 @@ mdefine_line|#define RTAX_REORDERING RTAX_REORDERING
 suffix:semicolon
 DECL|macro|RTAX_MAX
 mdefine_line|#define RTAX_MAX RTAX_REORDERING
+DECL|struct|rta_session
+r_struct
+id|rta_session
+(brace
+DECL|member|proto
+id|__u8
+id|proto
+suffix:semicolon
+r_union
+(brace
+r_struct
+(brace
+DECL|member|sport
+id|__u16
+id|sport
+suffix:semicolon
+DECL|member|dport
+id|__u16
+id|dport
+suffix:semicolon
+DECL|member|ports
+)brace
+id|ports
+suffix:semicolon
+r_struct
+(brace
+DECL|member|type
+id|__u8
+id|type
+suffix:semicolon
+DECL|member|code
+id|__u8
+id|code
+suffix:semicolon
+DECL|member|ident
+id|__u16
+id|ident
+suffix:semicolon
+DECL|member|icmpt
+)brace
+id|icmpt
+suffix:semicolon
+DECL|member|spi
+id|__u32
+id|spi
+suffix:semicolon
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*********************************************************&n; *&t;&t;Interface address.&n; ****/
 DECL|struct|ifaddrmsg
 r_struct
@@ -1067,7 +1123,7 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_int
+id|u32
 op_star
 id|metrics
 )paren

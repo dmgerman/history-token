@@ -486,7 +486,7 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_int
+id|u32
 op_star
 id|metrics
 )paren
@@ -552,7 +552,7 @@ l_int|1
 comma
 r_sizeof
 (paren
-r_int
+id|u32
 )paren
 comma
 id|metrics
