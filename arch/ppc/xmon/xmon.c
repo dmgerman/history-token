@@ -1692,6 +1692,7 @@ DECL|function|insert_bpts
 id|insert_bpts
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -1817,6 +1818,7 @@ DECL|function|remove_bpts
 id|remove_bpts
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -4313,6 +4315,7 @@ DECL|function|getsp
 id|getsp
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -4994,6 +4997,7 @@ DECL|function|super_regs
 id|super_regs
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -5286,6 +5290,7 @@ DECL|function|dump_hash_table
 id|dump_hash_table
 c_func
 (paren
+r_void
 )paren
 (brace
 id|printf
@@ -6082,6 +6087,7 @@ DECL|function|dump_hash_table
 id|dump_hash_table
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -6727,6 +6733,7 @@ DECL|function|memex
 id|memex
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -7432,6 +7439,7 @@ DECL|function|bsesc
 id|bsesc
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -7496,6 +7504,7 @@ DECL|function|dump
 id|dump
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -8114,11 +8123,9 @@ DECL|function|print_address
 id|print_address
 c_func
 (paren
-id|addr
-)paren
 r_int
 id|addr
-suffix:semicolon
+)paren
 (brace
 id|printf
 c_func
@@ -8452,6 +8459,7 @@ DECL|function|memlocate
 id|memlocate
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -8638,6 +8646,7 @@ DECL|function|memzcan
 id|memzcan
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -9053,6 +9062,7 @@ DECL|function|skipbl
 id|skipbl
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -9213,12 +9223,10 @@ DECL|function|scanhex
 id|scanhex
 c_func
 (paren
-id|vp
-)paren
 r_int
 op_star
 id|vp
-suffix:semicolon
+)paren
 (brace
 r_int
 id|c
@@ -9595,6 +9603,7 @@ DECL|function|scannl
 id|scannl
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int
@@ -9625,11 +9634,12 @@ c_func
 suffix:semicolon
 )brace
 )brace
-r_int
 DECL|function|hexdigit
+r_int
 id|hexdigit
 c_func
 (paren
+r_int
 id|c
 )paren
 (brace
@@ -9797,6 +9807,7 @@ DECL|function|flush_input
 id|flush_input
 c_func
 (paren
+r_void
 )paren
 (brace
 id|lineptr
@@ -9809,6 +9820,7 @@ DECL|function|inchar
 id|inchar
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if
@@ -9867,12 +9879,10 @@ DECL|function|take_input
 id|take_input
 c_func
 (paren
-id|str
-)paren
 r_char
 op_star
 id|str
-suffix:semicolon
+)paren
 (brace
 id|lineptr
 op_assign
