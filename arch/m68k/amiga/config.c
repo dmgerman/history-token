@@ -3473,7 +3473,7 @@ id|SAVEKMSG_MAGIC2
 suffix:semicolon
 id|savekmsg-&gt;magicptr
 op_assign
-id|virt_to_phys
+id|ZTWO_PADDR
 c_func
 (paren
 id|savekmsg
