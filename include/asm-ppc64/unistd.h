@@ -481,8 +481,30 @@ DECL|macro|__NR_sys_epoll_wait
 mdefine_line|#define __NR_sys_epoll_wait&t;238
 DECL|macro|__NR_remap_file_pages
 mdefine_line|#define __NR_remap_file_pages&t;239
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;240
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;241
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;242
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;243
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;244
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;245
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;246
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;247
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;248
+DECL|macro|__NR_syscalls
+mdefine_line|#define __NR_syscalls&t;&t;249
+macro_line|#ifdef __KERNEL__
 DECL|macro|NR_syscalls
-mdefine_line|#define NR_syscalls&t;&t;260
+mdefine_line|#define NR_syscalls&t;__NR_syscalls
+macro_line|#endif
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef __KERNEL_SYSCALLS__
 multiline_comment|/*&n; * Forking from kernel space will result in the child getting a new,&n; * empty kernel stack area.  Thus the child cannot access automatic&n; * variables set in the parent unless they are in registers, and the&n; * procedure where the fork was done cannot return to its caller in&n; * the child.&n; */
