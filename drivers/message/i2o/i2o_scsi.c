@@ -2367,7 +2367,7 @@ id|u32
 op_star
 )paren
 (paren
-id|c-&gt;mem_offset
+id|c-&gt;msg_virt
 op_plus
 id|m
 )paren
@@ -3427,8 +3427,8 @@ suffix:semicolon
 id|u32
 id|m
 suffix:semicolon
-r_int
-r_int
+r_void
+op_star
 id|msg
 suffix:semicolon
 r_int
@@ -3538,7 +3538,7 @@ suffix:semicolon
 )brace
 id|msg
 op_assign
-id|c-&gt;mem_offset
+id|c-&gt;msg_virt
 op_plus
 id|m
 suffix:semicolon
