@@ -892,7 +892,7 @@ suffix:semicolon
 r_default
 suffix:colon
 r_return
-l_string|&quot;MORE-CAFFIENE-FOR-RUSTY&quot;
+l_string|&quot;MORE-CAFFEINE-FOR-RUSTY&quot;
 suffix:semicolon
 )brace
 )brace
