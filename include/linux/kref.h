@@ -24,9 +24,7 @@ op_star
 id|kref
 )paren
 suffix:semicolon
-r_struct
-id|kref
-op_star
+r_void
 id|kref_get
 c_func
 (paren

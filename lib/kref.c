@@ -25,9 +25,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * kref_get - increment refcount for object.&n; * @kref: object.&n; */
 DECL|function|kref_get
-r_struct
-id|kref
-op_star
+r_void
 id|kref_get
 c_func
 (paren
@@ -55,9 +53,6 @@ c_func
 op_amp
 id|kref-&gt;refcount
 )paren
-suffix:semicolon
-r_return
-id|kref
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * kref_put - decrement refcount for object.&n; * @kref: object.&n; * @release: pointer to the function that will clean up the object when the&n; *&t;     last reference to the object is released.&n; *&t;     This pointer is required, and it is not acceptable to pass kfree&n; *&t;     in as this function.&n; *&n; * Decrement the refcount, and if 0, call release().&n; */
