@@ -2506,9 +2506,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|__save_flags
 (paren
 id|flags
