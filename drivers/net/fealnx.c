@@ -4682,8 +4682,8 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Media selection timer tick, status %8.8lx &quot;
-l_string|&quot;config %8.8lx.&bslash;n&quot;
+l_string|&quot;%s: Media selection timer tick, status %8.8x &quot;
+l_string|&quot;config %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -4836,7 +4836,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Transmit timed out, status %8.8lx,&quot;
+l_string|&quot;%s: Transmit timed out, status %8.8x,&quot;
 l_string|&quot; resetting...&bslash;n&quot;
 comma
 id|dev-&gt;name
@@ -6626,7 +6626,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: exiting interrupt, status=%#4.4lx.&bslash;n&quot;
+l_string|&quot;%s: exiting interrupt, status=%#4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
