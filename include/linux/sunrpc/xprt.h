@@ -509,7 +509,7 @@ op_star
 )paren
 suffix:semicolon
 r_void
-id|xprt_reconnect
+id|xprt_connect
 c_func
 (paren
 r_struct

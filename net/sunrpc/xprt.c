@@ -78,7 +78,7 @@ op_star
 suffix:semicolon
 r_static
 r_void
-id|xprt_reconn_status
+id|xprt_conn_status
 c_func
 (paren
 r_struct
@@ -332,7 +332,7 @@ op_star
 id|sk-&gt;user_data
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Serialize write access to sockets, in order to prevent different&n; * requests from interfering with each other.&n; * Also prevents TCP socket reconnections from colliding with writes.&n; */
+multiline_comment|/*&n; * Serialize write access to sockets, in order to prevent different&n; * requests from interfering with each other.&n; * Also prevents TCP socket connects from colliding with writes.&n; */
 r_static
 r_int
 DECL|function|__xprt_lock_write
@@ -1401,10 +1401,10 @@ id|ENOTCONN
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reconnect a broken TCP connection.&n; *&n; * Note: This cannot collide with the TCP reads, as both run from rpciod&n; */
+multiline_comment|/*&n; * Attempt to connect a TCP socket.&n; *&n; * NB: This never collides with TCP reads, as both run from rpciod&n; */
 r_void
-DECL|function|xprt_reconnect
-id|xprt_reconnect
+DECL|function|xprt_connect
+id|xprt_connect
 c_func
 (paren
 r_struct
@@ -1438,7 +1438,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: %4d xprt_reconnect xprt %p %s connected&bslash;n&quot;
+l_string|&quot;RPC: %4d xprt_connect xprt %p %s connected&bslash;n&quot;
 comma
 id|task-&gt;tk_pid
 comma
@@ -1675,7 +1675,7 @@ id|xprt-&gt;pending
 comma
 id|task
 comma
-id|xprt_reconn_status
+id|xprt_conn_status
 comma
 l_int|NULL
 )paren
@@ -1833,11 +1833,11 @@ id|task
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reconnect timeout. We just mark the transport as not being in the&n; * process of reconnecting, and leave the rest to the upper layers.&n; */
+multiline_comment|/*&n; * We arrive here when awoken from waiting on connection establishment.&n; */
 r_static
 r_void
-DECL|function|xprt_reconn_status
-id|xprt_reconn_status
+DECL|function|xprt_conn_status
+id|xprt_conn_status
 c_func
 (paren
 r_struct
@@ -1865,7 +1865,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: %4d xprt_reconn_status: connection established&bslash;n&quot;
+l_string|&quot;RPC: %4d xprt_conn_status: connection established&bslash;n&quot;
 comma
 id|task-&gt;tk_pid
 )paren
@@ -1880,7 +1880,7 @@ suffix:colon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: %4d xprt_reconn_status: timed out&bslash;n&quot;
+l_string|&quot;RPC: %4d xprt_conn_status: timed out&bslash;n&quot;
 comma
 id|task-&gt;tk_pid
 )paren
@@ -5962,7 +5962,7 @@ id|sk
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Create a client socket given the protocol and peer address.&n; */
+multiline_comment|/*&n; * Datastream sockets are created here, but xprt_connect will create&n; * and connect stream sockets.&n; */
 r_static
 r_struct
 id|socket

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/net/sunrpc/rpcclnt.c&n; *&n; *  This file contains the high-level RPC interface.&n; *  It is modeled as a finite state machine to support both synchronous&n; *  and asynchronous requests.&n; *&n; *  -&t;RPC header generation and argument serialization.&n; *  -&t;Credential refresh.&n; *  -&t;TCP reconnect handling (when finished).&n; *  -&t;Retry of operation when it is suspected the operation failed because&n; *&t;of uid squashing on the server, or when the credentials were stale&n; *&t;and need to be refreshed, or when a packet was damaged in transit.&n; *&t;This may be have to be moved to the VFS layer.&n; *&n; *  NB: BSD uses a more intelligent approach to guessing when a request&n; *  or reply has been lost by keeping the RTO estimate for each procedure.&n; *  We currently make do with a constant timeout value.&n; *&n; *  Copyright (C) 1992,1993 Rick Sladkey &lt;jrs@world.std.com&gt;&n; *  Copyright (C) 1995,1996 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
+multiline_comment|/*&n; *  linux/net/sunrpc/rpcclnt.c&n; *&n; *  This file contains the high-level RPC interface.&n; *  It is modeled as a finite state machine to support both synchronous&n; *  and asynchronous requests.&n; *&n; *  -&t;RPC header generation and argument serialization.&n; *  -&t;Credential refresh.&n; *  -&t;TCP connect handling.&n; *  -&t;Retry of operation when it is suspected the operation failed because&n; *&t;of uid squashing on the server, or when the credentials were stale&n; *&t;and need to be refreshed, or when a packet was damaged in transit.&n; *&t;This may be have to be moved to the VFS layer.&n; *&n; *  NB: BSD uses a more intelligent approach to guessing when a request&n; *  or reply has been lost by keeping the RTO estimate for each procedure.&n; *  We currently make do with a constant timeout value.&n; *&n; *  Copyright (C) 1992,1993 Rick Sladkey &lt;jrs@world.std.com&gt;&n; *  Copyright (C) 1995,1996 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -154,7 +154,7 @@ id|task
 suffix:semicolon
 r_static
 r_void
-id|call_reconnect
+id|call_connect
 c_func
 (paren
 r_struct
@@ -165,22 +165,24 @@ id|task
 suffix:semicolon
 r_static
 r_void
-id|child_reconnect
+id|child_connect
 c_func
 (paren
 r_struct
 id|rpc_task
 op_star
+id|task
 )paren
 suffix:semicolon
 r_static
 r_void
-id|child_reconnect_status
+id|child_connect_status
 c_func
 (paren
 r_struct
 id|rpc_task
 op_star
+id|task
 )paren
 suffix:semicolon
 r_static
@@ -2167,7 +2169,7 @@ ques
 c_cond
 id|call_transmit
 suffix:colon
-id|call_reconnect
+id|call_connect
 suffix:semicolon
 r_if
 c_cond
@@ -2178,7 +2180,7 @@ id|clnt-&gt;cl_port
 (brace
 id|task-&gt;tk_action
 op_assign
-id|call_reconnect
+id|call_connect
 suffix:semicolon
 id|task-&gt;tk_timeout
 op_assign
@@ -2194,11 +2196,11 @@ id|clnt
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * 4a.&t;Reconnect to the RPC server (TCP case)&n; */
+multiline_comment|/*&n; * 4a.&t;Connect to the RPC server (TCP case)&n; */
 r_static
 r_void
-DECL|function|call_reconnect
-id|call_reconnect
+DECL|function|call_connect
+id|call_connect
 c_func
 (paren
 r_struct
@@ -2222,7 +2224,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC: %4d call_reconnect status %d&bslash;n&quot;
+l_string|&quot;RPC: %4d call_connect status %d&bslash;n&quot;
 comma
 id|task-&gt;tk_pid
 comma
@@ -2245,7 +2247,7 @@ id|clnt-&gt;cl_xprt-&gt;stream
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* Run as a child to ensure it runs as an rpciod task */
+multiline_comment|/* Run as a child to ensure it runs as an rpciod task.  Rpciod&n;&t; * guarantees we have the correct capabilities for socket bind&n;&t; * to succeed. */
 id|child
 op_assign
 id|rpc_new_child
@@ -2264,7 +2266,7 @@ id|child
 (brace
 id|child-&gt;tk_action
 op_assign
-id|child_reconnect
+id|child_connect
 suffix:semicolon
 id|rpc_run_child
 c_func
@@ -2278,10 +2280,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-DECL|function|child_reconnect
 r_static
 r_void
-id|child_reconnect
+DECL|function|child_connect
+id|child_connect
 c_func
 (paren
 r_struct
@@ -2290,28 +2292,25 @@ op_star
 id|task
 )paren
 (brace
-id|task-&gt;tk_client-&gt;cl_stats-&gt;netreconn
-op_increment
-suffix:semicolon
 id|task-&gt;tk_status
 op_assign
 l_int|0
 suffix:semicolon
 id|task-&gt;tk_action
 op_assign
-id|child_reconnect_status
+id|child_connect_status
 suffix:semicolon
-id|xprt_reconnect
+id|xprt_connect
 c_func
 (paren
 id|task
 )paren
 suffix:semicolon
 )brace
-DECL|function|child_reconnect_status
 r_static
 r_void
-id|child_reconnect_status
+DECL|function|child_connect_status
+id|child_connect_status
 c_func
 (paren
 r_struct
@@ -2330,7 +2329,7 @@ id|EAGAIN
 )paren
 id|task-&gt;tk_action
 op_assign
-id|child_reconnect
+id|child_connect
 suffix:semicolon
 r_else
 id|task-&gt;tk_action
