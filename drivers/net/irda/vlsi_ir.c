@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
-macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/vlsi_ir.h&gt;
 multiline_comment|/********************************************************/
 id|MODULE_DESCRIPTION

@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -3256,9 +3255,7 @@ id|si
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 r_static
-macro_line|#endif
 DECL|function|sa1100_irda_init
 r_int
 id|__init
@@ -3741,7 +3738,6 @@ comma
 id|sa1100ir_setup
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|sa1100_irda_init
 id|module_init
 c_func
@@ -3756,7 +3752,6 @@ c_func
 id|sa1100_irda_exit
 )paren
 suffix:semicolon
-macro_line|#endif
 id|MODULE_AUTHOR
 c_func
 (paren

@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/irtty.h&gt;
 r_static
@@ -135,6 +134,7 @@ suffix:semicolon
 )brace
 DECL|function|girbil_cleanup
 r_void
+id|__exit
 id|girbil_cleanup
 c_func
 (paren
@@ -729,7 +729,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -749,35 +748,19 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize Girbil module&n; *&n; */
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|girbil_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|girbil_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Function cleanup_module (void)&n; *&n; *    Cleanup Girbil module&n; *&n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|girbil_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|girbil_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof

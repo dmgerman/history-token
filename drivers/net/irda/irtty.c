@@ -10,7 +10,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irtty.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
-macro_line|#include &lt;net/irda/timer.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 DECL|variable|irtty
 r_static
@@ -453,10 +452,10 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* &n; *  Function irtty_cleanup ( )&n; *&n; *    Called when the irda module is removed. Here we remove all instances&n; *    of the driver, and the master array.&n; */
-macro_line|#ifdef MODULE
 DECL|function|irtty_cleanup
 r_static
 r_void
+id|__exit
 id|irtty_cleanup
 c_func
 (paren
@@ -503,7 +502,6 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
 multiline_comment|/* &n; *  Function irtty_open(tty)&n; *&n; *    This function is called by the TTY module when the IrDA line&n; *    discipline is called for.  Because we are sure the tty line exists,&n; *    we only have to link it to a free IrDA channel.  &n; */
 DECL|function|irtty_open
 r_static
@@ -3799,7 +3797,6 @@ op_amp
 id|self-&gt;stats
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -3835,35 +3832,19 @@ l_string|&quot;Minimum Turn Time&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Function init_module (void)&n; *&n; *    Initialize IrTTY module&n; *&n; */
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|irtty_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|irtty_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Function cleanup_module (void)&n; *&n; *    Cleanup IrTTY module&n; *&n; */
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|irtty_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|irtty_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof

@@ -2,6 +2,7 @@ multiline_comment|/*************************************************************
 macro_line|#ifndef IRCOMM_EVENT_H
 DECL|macro|IRCOMM_EVENT_H
 mdefine_line|#define IRCOMM_EVENT_H
+macro_line|#include &lt;net/irda/irmod.h&gt;
 r_typedef
 r_enum
 (brace

@@ -16,8 +16,6 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irmod.h&gt;
-macro_line|#include &lt;net/irda/irlap_frame.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/ali-ircc.h&gt;
 DECL|macro|CHIP_IO_EXTENT
@@ -268,7 +266,6 @@ op_star
 id|info
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 r_static
 r_int
 id|ali_ircc_close
@@ -280,7 +277,6 @@ op_star
 id|self
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
 r_static
 r_int
 id|ali_ircc_setup
@@ -1036,10 +1032,10 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ali_ircc_cleanup ()&n; *&n; *    Close all configured chips&n; *&n; */
-macro_line|#ifdef MODULE
 DECL|function|ali_ircc_cleanup
 r_static
 r_void
+id|__exit
 id|ali_ircc_cleanup
 c_func
 (paren
@@ -1107,7 +1103,6 @@ l_string|&quot;(), ----------------- End -----------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
 multiline_comment|/*&n; * Function ali_ircc_open (int i, chipio_t *inf)&n; *&n; *    Open driver instance&n; *&n; */
 DECL|function|ali_ircc_open
 r_static
@@ -1697,11 +1692,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 multiline_comment|/*&n; * Function ali_ircc_close (self)&n; *&n; *    Close driver instance&n; *&n; */
 DECL|function|ali_ircc_close
 r_static
 r_int
+id|__exit
 id|ali_ircc_close
 c_func
 (paren
@@ -1832,7 +1827,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* MODULE */
 multiline_comment|/*&n; * Function ali_ircc_init_43 (chip, info)&n; *&n; *    Initialize the ALi M1543 chip. &n; */
 DECL|function|ali_ircc_init_43
 r_static
@@ -8625,7 +8619,6 @@ l_string|&quot;(), ----------------- End ------------------&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -8692,34 +8685,18 @@ comma
 l_string|&quot;DMA channels&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
-r_int
-id|init_module
+DECL|variable|ali_ircc_init
+id|module_init
 c_func
 (paren
-r_void
-)paren
-(brace
-r_return
 id|ali_ircc_init
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+DECL|variable|ali_ircc_cleanup
+id|module_exit
 c_func
 (paren
-r_void
-)paren
-(brace
 id|ali_ircc_cleanup
-c_func
-(paren
 )paren
 suffix:semicolon
-)brace
-macro_line|#endif /* MODULE */
 eof
