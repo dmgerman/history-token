@@ -1389,15 +1389,6 @@ c_func
 r_void
 )paren
 (brace
-r_extern
-r_void
-id|cpu_idle
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* arch/parisc/kernel/process.c */
 r_int
 id|slave_id
 op_assign

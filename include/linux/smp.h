@@ -3,6 +3,14 @@ DECL|macro|__LINUX_SMP_H
 mdefine_line|#define __LINUX_SMP_H
 multiline_comment|/*&n; *&t;Generic SMP support&n; *&t;&t;Alan Cox. &lt;alan@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
+r_extern
+r_void
+id|cpu_idle
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/preempt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

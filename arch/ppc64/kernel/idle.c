@@ -905,7 +905,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 DECL|function|cpu_idle
-r_int
+r_void
 id|cpu_idle
 c_func
 (paren
@@ -916,9 +916,6 @@ id|idle_loop
 c_func
 (paren
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|powersave_nap

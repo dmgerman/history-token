@@ -47,7 +47,7 @@ r_void
 macro_line|#ifndef CONFIG_SMP
 multiline_comment|/*&n; * the idle loop on a Sparc... ;)&n; */
 DECL|function|cpu_idle
-r_int
+r_void
 id|cpu_idle
 c_func
 (paren
@@ -62,8 +62,6 @@ op_ne
 l_int|0
 )paren
 r_return
-op_minus
-id|EPERM
 suffix:semicolon
 multiline_comment|/* endless idle loop with no priority at all */
 r_for
@@ -100,7 +98,6 @@ c_func
 suffix:semicolon
 )brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#else
@@ -110,7 +107,7 @@ mdefine_line|#define idle_me_harder()&t;(cpu_data(smp_processor_id()).idle_volum
 DECL|macro|unidle_me
 mdefine_line|#define unidle_me()&t;&t;(cpu_data(smp_processor_id()).idle_volume = 0)
 DECL|function|cpu_idle
-r_int
+r_void
 id|cpu_idle
 c_func
 (paren

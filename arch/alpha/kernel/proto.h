@@ -960,22 +960,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* process.c */
-r_extern
-r_void
-id|cpu_idle
-c_func
-(paren
-r_void
-)paren
-id|__attribute__
-c_func
-(paren
-(paren
-id|noreturn
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* ptrace.c */
 r_extern
 r_int

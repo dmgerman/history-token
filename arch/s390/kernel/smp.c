@@ -17,16 +17,6 @@ macro_line|#include &lt;asm/cpcmd.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 multiline_comment|/* prototypes */
 r_extern
-r_int
-id|cpu_idle
-c_func
-(paren
-r_void
-op_star
-id|unused
-)paren
-suffix:semicolon
-r_extern
 r_volatile
 r_int
 id|__cpu_logical_map
@@ -2033,12 +2023,13 @@ id|S390_lowcore.cpu_data
 )paren
 suffix:semicolon
 multiline_comment|/* cpu_idle will call schedule for us */
-r_return
 id|cpu_idle
 c_func
 (paren
-l_int|NULL
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|smp_create_idle

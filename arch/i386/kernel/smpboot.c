@@ -1239,17 +1239,10 @@ DECL|variable|cpucount
 r_int
 id|cpucount
 suffix:semicolon
-r_extern
-r_int
-id|cpu_idle
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Activate a secondary processor.&n; */
 DECL|function|start_secondary
-r_int
+r_static
+r_void
 id|__init
 id|start_secondary
 c_func
@@ -1349,7 +1342,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
 id|cpu_idle
 c_func
 (paren

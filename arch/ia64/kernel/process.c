@@ -1087,8 +1087,6 @@ DECL|function|cpu_idle
 id|cpu_idle
 (paren
 r_void
-op_star
-id|unused
 )paren
 (brace
 r_void

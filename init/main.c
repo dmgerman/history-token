@@ -990,14 +990,6 @@ op_star
 op_star
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|cpu_idle
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#ifndef CONFIG_SMP
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 DECL|function|smp_init

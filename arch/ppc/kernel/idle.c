@@ -110,7 +110,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The body of the idle task.&n; */
 DECL|function|cpu_idle
-r_int
+r_void
 id|cpu_idle
 c_func
 (paren
@@ -142,9 +142,6 @@ id|default_idle
 c_func
 (paren
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#if defined(CONFIG_SYSCTL) &amp;&amp; defined(CONFIG_6xx)
