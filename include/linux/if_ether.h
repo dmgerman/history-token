@@ -131,6 +131,13 @@ id|h_proto
 suffix:semicolon
 multiline_comment|/* packet type ID field&t;*/
 )brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
 macro_line|#endif&t;/* _LINUX_IF_ETHER_H */
 eof
