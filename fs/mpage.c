@@ -2716,6 +2716,11 @@ op_amp
 id|pvec
 )paren
 suffix:semicolon
+id|cond_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
