@@ -3638,8 +3638,7 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-r_int
-r_int
+id|cpumask_t
 id|cpumask
 suffix:semicolon
 id|daemonize
@@ -3661,7 +3660,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|cpus_empty
+c_func
+(paren
 id|cpumask
+)paren
 )paren
 id|set_cpus_allowed
 c_func

@@ -222,7 +222,8 @@ comma
 id|new_freq
 comma
 id|reg
-comma
+suffix:semicolon
+id|cpumask_t
 id|cpus_allowed
 suffix:semicolon
 r_struct
@@ -250,9 +251,9 @@ c_func
 (paren
 id|current
 comma
+id|cpumask_of_cpu
+c_func
 (paren
-l_int|1UL
-op_lshift
 id|cpu
 )paren
 )paren

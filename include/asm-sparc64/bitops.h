@@ -691,6 +691,42 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * hweightN: returns the hamming weight (i.e. the number&n; * of bits set) of a N-bit word&n; */
 macro_line|#ifdef ULTRA_HAS_POPULATION_COUNT
+DECL|function|hweight64
+r_static
+id|__inline__
+r_int
+r_int
+id|hweight64
+c_func
+(paren
+r_int
+r_int
+id|w
+)paren
+(brace
+r_int
+r_int
+id|res
+suffix:semicolon
+id|__asm__
+(paren
+l_string|&quot;popc %1,%0&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|res
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|w
+)paren
+)paren
+suffix:semicolon
+r_return
+id|res
+suffix:semicolon
+)brace
 DECL|function|hweight32
 r_static
 id|__inline__
@@ -806,6 +842,8 @@ id|res
 suffix:semicolon
 )brace
 macro_line|#else
+DECL|macro|hweight64
+mdefine_line|#define hweight64(x) generic_hweight64(x)
 DECL|macro|hweight32
 mdefine_line|#define hweight32(x) generic_hweight32(x)
 DECL|macro|hweight16

@@ -55,15 +55,11 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Set when the idlers are all forked. */
 DECL|variable|cpu_online_map
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_online_map
 suffix:semicolon
 DECL|variable|cpu_possible_map
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_possible_map
 suffix:semicolon
 DECL|variable|cache_decay_ticks
@@ -601,9 +597,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Reboot, halt and power_off routines for SMP.&n; */
 DECL|variable|cpu_restart_map
 r_static
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_restart_map
 suffix:semicolon
 DECL|function|do_machine_restart
@@ -617,7 +611,7 @@ op_star
 id|__unused
 )paren
 (brace
-id|clear_bit
+id|cpu_clear
 c_func
 (paren
 id|smp_processor_id
@@ -625,7 +619,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_restart_map
 )paren
 suffix:semicolon
@@ -644,9 +637,12 @@ multiline_comment|/* Wait for all other cpus to enter do_machine_restart. */
 r_while
 c_loop
 (paren
+op_logical_neg
+id|cpus_empty
+c_func
+(paren
 id|cpu_restart_map
-op_ne
-l_int|0
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Store status of other cpus. */
@@ -1525,12 +1521,11 @@ id|sigp_not_operational
 )paren
 r_continue
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|num_cpus
 comma
-op_amp
 id|cpu_possible_map
 )paren
 suffix:semicolon
@@ -1615,7 +1610,7 @@ c_func
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Mark this cpu as online */
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -1623,7 +1618,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
@@ -2126,7 +2120,7 @@ c_func
 r_void
 )paren
 (brace
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -2134,11 +2128,10 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_online_map
 )paren
 suffix:semicolon
-id|set_bit
+id|cpu_set
 c_func
 (paren
 id|smp_processor_id
@@ -2146,7 +2139,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_possible_map
 )paren
 suffix:semicolon

@@ -910,9 +910,11 @@ id|mm-&gt;rss
 op_assign
 l_int|0
 suffix:semicolon
+id|cpus_clear
+c_func
+(paren
 id|mm-&gt;cpu_vm_mask
-op_assign
-l_int|0
+)paren
 suffix:semicolon
 id|pprev
 op_assign

@@ -2538,8 +2538,8 @@ l_string|&quot;fpu&bslash;t&bslash;t: %s&bslash;n&quot;
 l_string|&quot;promlib&bslash;t&bslash;t: Version 3 Revision %d&bslash;n&quot;
 l_string|&quot;prom&bslash;t&bslash;t: %d.%d.%d&bslash;n&quot;
 l_string|&quot;type&bslash;t&bslash;t: sun4u&bslash;n&quot;
-l_string|&quot;ncpus probed&bslash;t: %d&bslash;n&quot;
-l_string|&quot;ncpus active&bslash;t: %d&bslash;n&quot;
+l_string|&quot;ncpus probed&bslash;t: %ld&bslash;n&quot;
+l_string|&quot;ncpus active&bslash;t: %ld&bslash;n&quot;
 macro_line|#ifndef CONFIG_SMP
 l_string|&quot;Cpu0Bogo&bslash;t: %lu.%02lu&bslash;n&quot;
 l_string|&quot;Cpu0ClkTck&bslash;t: %016lx&bslash;n&quot;
@@ -2573,8 +2573,14 @@ id|prom_prev
 op_amp
 l_int|0xff
 comma
+(paren
+r_int
+)paren
 id|linux_num_cpus
 comma
+(paren
+r_int
+)paren
 id|num_online_cpus
 c_func
 (paren

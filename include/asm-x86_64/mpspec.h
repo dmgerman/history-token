@@ -471,8 +471,7 @@ id|MAX_MP_BUSSES
 )braket
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|mp_bus_to_cpumask
 (braket
 id|MAX_MP_BUSSES
@@ -484,8 +483,7 @@ r_int
 id|boot_cpu_physical_apicid
 suffix:semicolon
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|phys_cpu_present_map
 suffix:semicolon
 r_extern

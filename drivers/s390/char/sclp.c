@@ -1746,9 +1746,7 @@ multiline_comment|/*&n; * SCLP quiesce event handler&n; */
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|cpu_quiesce_map
 r_static
-r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpu_quiesce_map
 suffix:semicolon
 r_static
@@ -1765,7 +1763,7 @@ id|__unused
 id|psw_t
 id|quiesce_psw
 suffix:semicolon
-id|clear_bit
+id|cpu_clear
 c_func
 (paren
 id|smp_processor_id
@@ -1773,7 +1771,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpu_quiesce_map
 )paren
 suffix:semicolon
@@ -1792,9 +1789,12 @@ multiline_comment|/* Wait for all other cpus to enter do_load_quiesce_psw */
 r_while
 c_loop
 (paren
+op_logical_neg
+id|cpus_empty
+c_func
+(paren
 id|cpu_quiesce_map
-op_ne
-l_int|0
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Quiesce the last cpu with the special psw */

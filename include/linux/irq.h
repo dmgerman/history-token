@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if !defined(CONFIG_ARCH_S390)
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/*&n; * IRQ line status.&n; */
@@ -122,9 +123,8 @@ r_int
 r_int
 id|irq
 comma
-r_int
-r_int
-id|mask
+id|cpumask_t
+id|dest
 )paren
 suffix:semicolon
 )brace

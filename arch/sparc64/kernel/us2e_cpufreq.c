@@ -866,8 +866,6 @@ r_int
 id|new_bits
 comma
 id|new_freq
-comma
-id|cpus_allowed
 suffix:semicolon
 r_int
 r_int
@@ -878,6 +876,9 @@ comma
 id|old_divisor
 comma
 id|estar
+suffix:semicolon
+id|cpumask_t
+id|cpus_allowed
 suffix:semicolon
 r_struct
 id|cpufreq_freqs
@@ -904,9 +905,9 @@ c_func
 (paren
 id|current
 comma
+id|cpumask_of_cpu
+c_func
 (paren
-l_int|1UL
-op_lshift
 id|cpu
 )paren
 )paren
