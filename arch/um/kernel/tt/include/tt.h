@@ -132,16 +132,6 @@ id|task
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|singlestepping_tt
-c_func
-(paren
-r_void
-op_star
-id|t
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|clear_singlestep
 c_func

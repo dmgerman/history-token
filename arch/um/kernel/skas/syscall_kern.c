@@ -1,5 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2002 - 2003 Jeff Dike (jdike@addtoit.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/sys.h&quot;
+macro_line|#include &quot;linux/ptrace.h&quot;
 macro_line|#include &quot;asm/errno.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
@@ -84,6 +85,30 @@ comma
 id|regs
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|current-&gt;thread.singlestep_syscall
+)paren
+(brace
+id|current-&gt;thread.singlestep_syscall
+op_assign
+l_int|0
+suffix:semicolon
+id|current-&gt;ptrace
+op_and_assign
+op_complement
+id|PT_DTRACE
+suffix:semicolon
+id|force_sig
+c_func
+(paren
+id|SIGTRAP
+comma
+id|current
+)paren
+suffix:semicolon
+)brace
 r_return
 id|res
 suffix:semicolon

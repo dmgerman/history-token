@@ -19,30 +19,6 @@ macro_line|#include &quot;frame.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;mode.h&quot;
 macro_line|#include &quot;proc_mm.h&quot;
-DECL|function|singlestepping_skas
-r_int
-id|singlestepping_skas
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|ret
-op_assign
-id|current-&gt;ptrace
-op_amp
-id|PT_DTRACE
-suffix:semicolon
-id|current-&gt;ptrace
-op_and_assign
-op_complement
-id|PT_DTRACE
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
 DECL|function|switch_to_skas
 r_void
 op_star

@@ -926,9 +926,10 @@ id|PTRACE_SYSCALL
 suffix:semicolon
 id|op
 op_assign
-id|singlestepping_skas
+id|singlestepping
 c_func
 (paren
+l_int|NULL
 )paren
 ques
 c_cond

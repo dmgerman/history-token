@@ -15,6 +15,7 @@ macro_line|#include &quot;linux/capability.h&quot;
 macro_line|#include &quot;linux/vmalloc.h&quot;
 macro_line|#include &quot;linux/spinlock.h&quot;
 macro_line|#include &quot;linux/proc_fs.h&quot;
+macro_line|#include &quot;linux/ptrace.h&quot;
 macro_line|#include &quot;asm/unistd.h&quot;
 macro_line|#include &quot;asm/mman.h&quot;
 macro_line|#include &quot;asm/segment.h&quot;
@@ -1921,5 +1922,41 @@ c_func
 id|make_proc_sysemu
 )paren
 suffix:semicolon
+DECL|function|singlestepping
+r_int
+id|singlestepping
+c_func
+(paren
+r_void
+op_star
+id|t
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|task
+op_assign
+id|t
+ques
+c_cond
+id|t
+suffix:colon
+id|current
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|task-&gt;thread.singlestep_syscall
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_return
+id|task-&gt;ptrace
+op_amp
+id|PT_DTRACE
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

@@ -1965,7 +1965,7 @@ id|tracing
 r_if
 c_cond
 (paren
-id|singlestepping_tt
+id|singlestepping
 c_func
 (paren
 id|task
